@@ -13,6 +13,9 @@ namespace GlobalTheory.BirigidPow
 
 variable {S : Scheme.{0}} {A : Over S} [GrpObj A] [IsCommMonObj A]
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => rw [pow_zero, pow_zero, MonObj.comp_one]`. Consider the case `succ n ih => rw [pow_succ, pow_succ, MonObj.comp_mul, ih]`.
+-/
 theorem comp_pow_pt {T T' : Over S} (ρ : T' ⟶ T) (x : T ⟶ A) (n : ℕ) : ρ ≫ x ^ n = (ρ ≫ x) ^ n := by
   induction n with
   | zero => rw [pow_zero, pow_zero, MonObj.comp_one]
@@ -23,6 +26,9 @@ def val {P : LB (G2 A).left} (hP : P.IsLB) {T : Over S} (x y : T ⟶ A) : CechPi
 
 variable {P : LB (G2 A).left} (hP : P.IsLB)
 
+/- English proof (translation)
+Establish `e : lift (1 : T ⟶ A) y = y ≫ lift (1 : A ⟶ A) (𝟙 A)`. Rewrite using `[comp_lift, MonObj.comp_one, Category.comp_id]`. Rewrite using `[val, e, Over.comp_left, CechPic.pull_comp, ← CechPic.cls_pull hP _ (pull_isLB hP _), (CechPic.cls_eq_zero_iff (pull_isLB hP _)).2 h₁, map_zero]`.
+-/
 theorem val_one_left (h₁ : ∃ t : (P.pull (lift (1 : A ⟶ A) (𝟙 A)).left).Gen, t.IsGen) {T : Over S}
     (y : T ⟶ A) : val hP 1 y = 0 := by
   have e : lift (1 : T ⟶ A) y = y ≫ lift (1 : A ⟶ A) (𝟙 A) := by
@@ -30,6 +36,9 @@ theorem val_one_left (h₁ : ∃ t : (P.pull (lift (1 : A ⟶ A) (𝟙 A)).left)
   rw [val, e, Over.comp_left, CechPic.pull_comp, ← CechPic.cls_pull hP _ (pull_isLB hP _),
     (CechPic.cls_eq_zero_iff (pull_isLB hP _)).2 h₁, map_zero]
 
+/- English proof (translation)
+Establish `e : lift x (1 : T ⟶ A) = x ≫ lift (𝟙 A) (1 : A ⟶ A)`. Rewrite using `[comp_lift, MonObj.comp_one, Category.comp_id]`. Rewrite using `[val, e, Over.comp_left, CechPic.pull_comp, ← CechPic.cls_pull hP _ (pull_isLB hP _), (CechPic.cls_eq_zero_iff (pull_isLB hP _)).2 h₂, map_zero]`.
+-/
 theorem val_one_right (h₂ : ∃ t : (P.pull (lift (𝟙 A) (1 : A ⟶ A)).left).Gen, t.IsGen) {T : Over S}
     (x : T ⟶ A) : val hP x 1 = 0 := by
   have e : lift x (1 : T ⟶ A) = x ≫ lift (𝟙 A) (1 : A ⟶ A) := by
@@ -37,6 +46,11 @@ theorem val_one_right (h₂ : ∃ t : (P.pull (lift (𝟙 A) (1 : A ⟶ A)).left
   rw [val, e, Over.comp_left, CechPic.pull_comp, ← CechPic.cls_pull hP _ (pull_isLB hP _),
     (CechPic.cls_eq_zero_iff (pull_isLB hP _)).2 h₂, map_zero]
 
+/- English proof (translation)
+Establish `hL` using `LB.isLB_linComb hP (![a, b, c] : Fin 3 → _) ![1, -1, -1]`. Establish `z` using `(CechPic.cls_linComb hP _ _ hL).symm.trans ((CechPic.cls_eq_zero_iff hL).2 H)`. Rewrite `z` using `[Fin.sum_univ_three]`. Establish `z' : (1 : ℤ) • CechPic.pull a (CechPic.cls P hP) + (-1 : ℤ) • CechPic.pull b (CechPic.cls P hP) + (-1 : ℤ) • CechPic.pull c (CechPic.cls P hP) = 0` using `z`. Rewrite `z'` using `[one_zsmul, neg_one_zsmul, neg_one_zsmul]`.
+
+Rewrite using `[← sub_eq_zero, ← z']`. Normalize the expressions using the abelian group laws.
+-/
 theorem add_of_triv {T : Over S} (a b c : T.left ⟶ (G2 A).left)
     (H : ∃ t : (LB.LinComb P (K := Fin 3) ![a, b, c] ![1, -1, -1]).Gen, t.IsGen) :
     CechPic.pull a (CechPic.cls P hP) = CechPic.pull b (CechPic.cls P hP) + CechPic.pull c (CechPic.cls P hP) := by
@@ -56,25 +70,40 @@ variable (hA : IsAbelianScheme A)
 
 include hA hamp h₁ h₂
 
+/- English proof (translation)
+The claim follows from `add_of_triv hP _ _ _ (Biadditive.biadditive_of_triv_axes GlobalTheory.laws_without_cohomology.1 S A _ hA (pull_isLB hP _) hamp P hP h₁ h₂ T x x' y).1`.
+-/
 theorem val_mul_left {T : Over S} (x x' y : T ⟶ A) : val hP (x * x') y = val hP x y + val hP x' y :=
   add_of_triv hP _ _ _ (Biadditive.biadditive_of_triv_axes GlobalTheory.laws_without_cohomology.1 S A _ hA
     (pull_isLB hP _) hamp P hP h₁ h₂ T x x' y).1
 
+/- English proof (translation)
+The claim follows from `add_of_triv hP _ _ _ (Biadditive.biadditive_of_triv_axes GlobalTheory.laws_without_cohomology.1 S A _ hA (pull_isLB hP _) hamp P hP h₁ h₂ T y y' x).2`.
+-/
 theorem val_mul_right {T : Over S} (x y y' : T ⟶ A) : val hP x (y * y') = val hP x y + val hP x y' :=
   add_of_triv hP _ _ _ (Biadditive.biadditive_of_triv_axes GlobalTheory.laws_without_cohomology.1 S A _ hA
     (pull_isLB hP _) hamp P hP h₁ h₂ T y y' x).2
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => rw [pow_zero, zero_smul]`. Conclude with `val_one_left hP h₁ y`. Consider the case `succ n ih => rw [pow_succ, val_mul_left hP hA hamp h₁ h₂, ih, succ_nsmul]`.
+-/
 theorem val_pow_left {T : Over S} (x y : T ⟶ A) (n : ℕ) : val hP (x ^ n) y = n • val hP x y := by
   induction n with
   | zero => rw [pow_zero, zero_smul]; exact val_one_left hP h₁ y
   | succ n ih => rw [pow_succ, val_mul_left hP hA hamp h₁ h₂, ih, succ_nsmul]
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => rw [pow_zero, zero_smul]`. Conclude with `val_one_right hP h₂ x`. Consider the case `succ n ih => rw [pow_succ, val_mul_right hP hA hamp h₁ h₂, ih, succ_nsmul]`.
+-/
 theorem val_pow_right {T : Over S} (x y : T ⟶ A) (n : ℕ) : val hP x (y ^ n) = n • val hP x y := by
   induction n with
   | zero => rw [pow_zero, zero_smul]; exact val_one_right hP h₂ x
   | succ n ih => rw [pow_succ, val_mul_right hP hA hamp h₁ h₂, ih, succ_nsmul]
 
 omit hA hamp h₁ h₂ in
+/- English proof (translation)
+Unfold `Hecke.lbPow at h ⊢`. Rewrite using `[CechPic.cls_linComb hP _ _ h]`. Simplify using `[CechPic.pull_id]`.
+-/
 theorem cls_lbPow (m : ℕ) (h : (Hecke.lbPow P m).IsLB) : CechPic.cls _ h = m • CechPic.cls P hP := by
   unfold Hecke.lbPow at h ⊢
   rw [CechPic.cls_linComb hP _ _ h]
@@ -82,6 +111,9 @@ theorem cls_lbPow (m : ℕ) (h : (Hecke.lbPow P m).IsLB) : CechPic.cls _ h = m �
 
 include hP in
 
+/- English proof (translation)
+Establish `hL : (Hecke.lbPow P (n ^ 2)).IsLB` using `LB.isLB_linComb hP _ _`. Use `(CechPic.cls_eq_iff hL (pull_isLB hP _)).1 ?_` and prove the remaining obligations. Rewrite using `[cls_lbPow hP, CechPic.cls_pull hP _ (pull_isLB hP _)]`. Express the relevant statement in the definitionally equal form `_ = val hP (fst A A ≫ (𝟙 A) ^ n) (snd A A ≫ (𝟙 A) ^ n)`. Rewrite using `[comp_pow_pt, comp_pow_pt, Category.comp_id, Category.comp_id, val_pow_left hP hA hamp h₁ h₂, val_pow_right hP hA hamp h₁ h₂, val, lift_fst_snd, Over.id_left, CechPic.pull_id, smul_smul, sq]`.
+-/
 theorem lineBundleIso_tensorPowSq_pullback_mulPair (n : ℕ) :
     LBIso (Hecke.lbPow P (n ^ 2)) (P.pull (Hecke.sq2 ((𝟙 A) ^ n))) := by
   have hL : (Hecke.lbPow P (n ^ 2)).IsLB := LB.isLB_linComb hP _ _
@@ -93,6 +125,9 @@ theorem lineBundleIso_tensorPowSq_pullback_mulPair (n : ℕ) :
 
 omit hP hA hamp h₁ h₂ in
 
+/- English proof (translation)
+Introduce `_ _ _ _ hA _ hP h₁ h₂ hamp n` and use `lineBundleIso_tensorPowSq_pullback_mulPair hP hA hamp h₁ h₂ n`.
+-/
 theorem birigidified_pullback_mulPair_iso_tensorPowSq : ∀ (S : Scheme.{0}) (A : Over S) [GrpObj A] [IsCommMonObj A], IsAbelianScheme A →
     ∀ P : LB (G2 A).left, P.IsLB → (∃ t : (P.pull (lift (1 : A ⟶ A) (𝟙 A)).left).Gen, t.IsGen) →
     (∃ t : (P.pull (lift (𝟙 A) (1 : A ⟶ A)).left).Gen, t.IsGen) → Out.RelAmple A (P.pull (lift (𝟙 A) (𝟙 A)).left) →

@@ -9,6 +9,33 @@ namespace GlobalTheory.Lin
 
 open Finset in
 
+/- English proof (translation)
+Unfold `_root_.GlobalTheory.Lin.PrimesRel at h`. Take `⟨c₁, c₂, c₃, CA, cS, hc₁, hc₁8, hc₂, hc₃, hCA, hcS, hmain⟩` from `h`. Use `set cr := min c₃ (Real.sqrt c₃) with hcr`. Establish `hcr0 : 0 < cr` using `lt_min hc₃ (Real.sqrt_pos.mpr hc₃)`. Establish `hdata : _root_.Formalism.HermitianLattices.GlobalBoundRefinements.PrimeCountAsymptoticInProgressions c₂ CA cr cS`.
+
+Unfold `_root_.Formalism.HermitianLattices.GlobalBoundRefinements.PrimeCountAsymptoticInProgressions`. Introduce `m a hm ha`. Use `haveI : NeZero m := ⟨by omega⟩`. Take `⟨huniq, hgap, hcount⟩` from `hmain m hm`. Establish `hm1 : (1 : ℝ) < m` using `by exact_mod_cast (by omega : 1 < m)`.
+
+Establish `hlogm : 0 < Real.log m` using `Real.log_pos hm1`. Establish `hlog4m : Real.log m ≤ Real.log (4 * m)` using `Real.log_le_log (by positivity) (by linarith)`. Establish `hlog3 : 1 < Real.log m`. Rewrite using `[Real.lt_log_iff_exp_lt (by positivity)]`. Establish `: (3 : ℝ) ≤ m` using `by exact_mod_cast hm`.
+
+Combine the linear relations using `[Real.exp_one_lt_d9]`. Establish `hterm : ∃ (θ : ℤ) (β : ℝ), θ ∈ ({-1, 0, 1} : Set ℤ) ∧ (θ ≠ 0 → 1 / 2 ≤ β ∧ β < 1 ∧ cS / ((4 * (m : ℝ)) ^ 2 * Real.log (4 * m)) ≤ 1 - β) ∧ _root_.GlobalTheory.Lin.ExcData c₁ m a θ β`. Distinguish the cases in `hex : ∃ (χ : DirichletCharacter ℂ m) (β : ℝ), _root_.GlobalTheory.Lin.IsExc c₁ χ β`. Take `⟨χ, β, hχ⟩` from `hex`. Establish `hunit : IsUnit (a : ZMod m)` using `(ZMod.isUnit_iff_coprime a m).mpr ha`.
+
+Establish `hsq : χ (a : ZMod m) ^ 2 = 1`. Rewrite using `[← MulChar.pow_apply' χ (by norm_num), hχ.1, MulChar.one_apply hunit]`. Choose the witnesses or unpack the hypotheses as in `⟨θ, hθ, hθmem⟩ : ∃ θ : ℤ, χ (a : ZMod m) = θ ∧ θ ∈ ({-1, 0, 1} : Set ℤ) := by`. Establish `hsq' : χ (a : ZMod m) * χ (a : ZMod m) = 1` using `by rw [← pow_two]; exact hsq`. Break down `mul_self_eq_one_iff.mp hsq' with h1 | h1` into its components or cases.
+
+Conclude with `⟨1, by simp [h1], by simp⟩`. Conclude with `⟨-1, by simp [h1], by simp⟩`. Use `⟨θ, β, hθmem, fun _ => ⟨?_, hχ.2.2.1, ?_⟩, Or.inr ⟨χ, hχ, hθ⟩⟩` and prove the remaining obligations. Establish `h1` using `hχ.2.1`. Establish `: c₁ / Real.log m ≤ 1 / 2`.
+
+Rewrite using `[div_le_iff₀ hlogm]`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Use `le_trans ?_ (hgap χ β hχ)` and prove the remaining obligations. Apply `div_le_div_of_nonneg_left hcS.le (by positivity)` to reduce the goal to its premises.
+
+Establish `: (m : ℝ) ^ 2 ≤ (4 * m) ^ 2`. Apply `pow_le_pow_left₀ (by positivity)` to reduce the goal to its premises. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `mul_le_mul this hlog4m hlogm.le (by positivity)`. Use `⟨0, 1 / 2, by simp, fun h0 => absurd rfl h0, Or.inl ⟨rfl, fun χ β hχ => hex ⟨χ, β, hχ⟩⟩⟩` and prove the remaining obligations.
+
+Take `⟨θ, β, hθmem, hβ, hdat⟩` from `hterm`. Use `⟨θ, β, fun _ => 0, hθmem, hβ, fun _ => ⟨le_rfl, mul_nonneg (by norm_num) (Real.log_nonneg (by linarith))⟩, ?_⟩` and prove the remaining obligations. Introduce `Y hY`. Establish `hY1 : (m : ℝ) ^ c₂ ≤ Y`. Use `le_trans ?_ hY` and prove the remaining obligations.
+
+Conclude with `Real.rpow_le_rpow (by positivity) (by linarith) hc₂.le`. Establish `hb` using `hcount a θ β ha hdat Y hY1`. Establish `hY1' : 1 ≤ Y` using `le_trans (Real.one_le_rpow (by linarith) hc₂.le) hY1`. Establish `hL : 0 ≤ Real.log Y` using `Real.log_nonneg hY1'`. Establish `hpos : 0 < CA * (Real.exp (-c₃ * Real.log Y / Real.log m) + Real.exp (-√(c₃ * Real.log Y)))`.
+
+Check the signs of the components of the expression. Establish `hE : 0 ≤ _root_.Formalism.HermitianLattices.GL2PrimeSums.Emain θ β Y` using `(mul_nonneg_iff_of_pos_left hpos).mp ((abs_nonneg _).trans hb)`. Establish `h1 : Real.exp (-c₃ * Real.log Y / Real.log m) ≤ Real.exp (-cr * Real.log Y / Real.log (4 * m))`. Rewrite using `[Real.exp_le_exp, neg_mul, neg_mul, neg_div, neg_div, neg_le_neg_iff]`. Conclude with `div_le_div₀ (by positivity) (mul_le_mul_of_nonneg_right (min_le_left _ _) hL) hlogm hlog4m`.
+
+Establish `h2 : Real.exp (-√(c₃ * Real.log Y)) ≤ Real.exp (-cr * √(Real.log Y))`. Rewrite using `[Real.exp_le_exp, neg_mul, neg_le_neg_iff, Real.sqrt_mul hc₃.le]`. Conclude with `mul_le_mul_of_nonneg_right (min_le_right _ _) (Real.sqrt_nonneg _)`. Simplify using `only [add_zero]`. Use `hb.trans (mul_le_mul_of_nonneg_right ?_ hE)` and prove the remaining obligations.
+
+Unfold `_root_.Formalism.HermitianLattices.GL2PrimeSums.rhoErr`. Rewrite using `[mul_add]`. Conclude with `add_le_add (mul_le_mul_of_nonneg_left h1 hCA.le) (mul_le_mul_of_nonneg_left h2 hCA.le)`. Take `⟨C₀', c, hC₀', hc, hint⟩` from `_root_.Formalism.HermitianLattices.GlobalBoundRefinements.shortIntervalImpliesProgressions_statement _root_.Formalism.HermitianLattices.GlobalBoundRefinements.shortIntervalLowerBound c₂ CA cr cS hc₂ hCA hcr0 hcS hdata`. Conclude with `⟨C₀', CA, cr, c, hC₀', hCA, hcr0, hc, hint⟩`.
+-/
 theorem _root_.GlobalTheory.Lin.primesAPInterval_of_primesRel (h : _root_.GlobalTheory.Lin.PrimesRel) :
     ∃ C₀ Cr cr c : ℝ, 0 < C₀ ∧ 0 < Cr ∧ 0 < cr ∧ 0 < c ∧ _root_.Formalism.HermitianLattices.GL2PrimeSums.PrimesAPInterval C₀ Cr cr c := by
   unfold _root_.GlobalTheory.Lin.PrimesRel at h

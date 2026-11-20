@@ -17,6 +17,13 @@ open scoped TensorProduct Matrix
 noncomputable section
 namespace GlobalTheory.WeilLocalityV
 
+/- English proof (translation)
+Establish `hW` using `GlobalTheory.WeilM.IsUWeilPair.isUSplitting hTr.weil`. Use `set w := G.M.co.e.symm (p, q) with hw`. Establish `he : G.M.co.e (u • w) = (u • p, u • q)`. Rewrite using `[LinearEquiv.map_smul, hw, LinearEquiv.apply_symm_apply, Prod.smul_mk]`. Establish `h0 : u • (mat g - 1) = 0` using `hg u hu`.
+
+Establish `hact : GlobalTheory.WeilM.actAB (cA σ) ((g, 1) : UA σ G.V.J × UA σ G.W.J) (u • w) = u • w`. Establish `h1 : mat g * (u • w) - u • w = (u • (mat g - 1)) * w`. Rewrite using `[Matrix.smul_mul, Matrix.sub_mul, Matrix.one_mul, Matrix.mul_smul, smul_sub]`. Rewrite `h1` using `[h0, Matrix.zero_mul, sub_eq_zero]`. Simplify using `only [GlobalTheory.WeilM.actAB]`.
+
+Simplify `h1` using `[mat]`. Establish `h2` using `hW.impl (g, 1) (u • w) Φ hΦ`. Simplify using `only [GlobalTheory.WeilM.Darboux.rho, he, hact] at h2`. Conclude with `h2`.
+-/
 theorem comm_off {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {a a' : ℕ}
     (B : Base F E) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W)
     (hTr : IsTriple B G X om om') (v : Pl F) (g : UA σ G.V.J) (hg : g ∈ UAt σ G.V (evFin F v))
@@ -38,6 +45,13 @@ theorem comm_off {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E
   simp only [GlobalTheory.WeilM.Darboux.rho, he, hact] at h2
   exact h2
 
+/- English proof (translation)
+Use `Prod.ext ?_ ?_` and prove the remaining obligations. Conclude with `zero_mul _`. Express the relevant statement in the definitionally equal form `GlobalTheory.AdelicU.singleFin v 1 * b.2 = GlobalTheory.AdelicU.singleFin v (evFin F v b)`. Apply `GlobalTheory.AdelicU.af_ext` to reduce the goal to its premises. Introduce `w`.
+
+Rewrite using `[map_mul]`. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Rewrite using `[GlobalTheory.AdelicU.evalV_singleFin_self, GlobalTheory.AdelicU.evalV_singleFin_self, one_mul]`. Both sides reduce to the same expression.
+
+Rewrite using `[GlobalTheory.AdelicU.evalV_singleFin_ne hw, GlobalTheory.AdelicU.evalV_singleFin_ne hw, zero_mul]`.
+-/
 theorem liftV_one_mul {F : Type} [Field F] [NumberField F] (v : Pl F) (b : AF F) :
     GlobalTheory.LatVac.liftV v 1 * b = GlobalTheory.LatVac.liftV v (evFin F v b) := by
   refine Prod.ext ?_ ?_
@@ -52,11 +66,37 @@ theorem liftV_one_mul {F : Type} [Field F] [NumberField F] (v : Pl F) (b : AF F)
       rfl
     · rw [GlobalTheory.AdelicU.evalV_singleFin_ne hw, GlobalTheory.AdelicU.evalV_singleFin_ne hw, zero_mul]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `y`. Simplify using `[GlobalTheory.WeilM.schr]`.
+-/
 theorem schr_trans {F : Type} [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ) {κ : Type} [Fintype κ]
     (w : κ → AF F) (Φ : (κ → AF F) → ℂ) : GlobalTheory.WeilM.schr ψ (w, 0) Φ = fun y => Φ (y + w) := by
   funext y
   simp [GlobalTheory.WeilM.schr]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B a a' G X om om' hTr v g hg φ hφ`. Establish `hW` using `GlobalTheory.WeilM.IsUWeilPair.isUSplitting hTr.weil`. Use `set T := om (g, 1) with hTdef`. Establish `hkeep : ∀ Φ ∈ GlobalTheory.WeilM.schA F (Fin a × Fin (a + a')), T Φ ∈ GlobalTheory.WeilM.schA F _` using `fun Φ hΦ => hW.pres (g, 1) Φ hΦ`. Establish `hcomm` using `comm_off B G X om om' hTr v g hg`.
+
+Establish `hfib` using `GlobalTheory.T.isometry_commuting_heisenberg_acts_fibrewise v B.ψ T hTr.base.std (GlobalTheory.T.standardAdelicAddChar_nontrivial_finitePlace B.ψ hTr.base.std) hkeep (fun μ hμ Φ hΦ => hW.unit μ hμ (g, 1) Φ hΦ) hcomm`. Establish `htr : ∀ u : AF F, evFin F v u = 0 → ∀ p : Fin a × Fin (a + a') → AF F, ∀ Φ ∈ GlobalTheory.WeilM.schA F (Fin a × Fin (a + a')), T (fun y => Φ (y + u • p)) = fun y => T Φ (y + u • p)`. Introduce `u hu p Φ hΦ`. Establish `h'` using `hcomm u hu p 0 Φ hΦ`. Rewrite `h'` using `[smul_zero, schr_trans, schr_trans]`.
+
+Conclude with `h'`. Take `⟨R, hR0, hR⟩` from `GlobalTheory.T.exists_complementary_adelicSchwartz_restFunction (Fin a × Fin (a + a')) v`. Use `⟨fun t => (R 0)⁻¹ * T (tens (evFin F v) φ R) (fun i => GlobalTheory.LatVac.liftV v (t i)), ?_, ?_⟩` and prove the remaining obligations. Establish `h4` using `GlobalTheory.T.adelicSchwartz_restrict_finitePlace_mem_schwartzBruhat v _ (hkeep _ (hR φ hφ).2)`. Conclude with `(GlobalTheory.WeilM.SB _).smul_mem (R 0)⁻¹ h4`.
+
+Introduce `r hr`. Use function extensionality and compare the values at `y`. Use `set u : AF F := 1 - GlobalTheory.LatVac.liftV v 1 with hudef`. Establish `hu : evFin F v u = 0` using `by simp [hudef, GlobalTheory.LatVac.evFin_liftV]`. Use `set p : Fin a × Fin (a + a') → AF F := fun i => GlobalTheory.LatVac.liftV v (evFin F v (y i)) with hpdef`.
+
+Establish `hyp : y + u • (-y) = p`. Use function extensionality and compare the values at `i`. Simplify using `only [Pi.add_apply, Pi.smul_apply, Pi.neg_apply, smul_eq_mul, hudef, hpdef]`. Rewrite using `[← liftV_one_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hpat : At (evFin F v) p`. Introduce `u' hu'`. Use function extensionality and compare the values at `i`. Conclude with `GlobalTheory.LatVac.at_liftV v _ u' hu'`. Use `set Φ₀ := tens (evFin F v) φ R with hΦ₀`.
+
+Use `set Φ₁ := tens (evFin F v) φ r with hΦ₁`. Use `set Φ₂ : (Fin a × Fin (a + a') → AF F) → ℂ := (r y / R 0) • (fun w => Φ₀ (w + u • (-y))) with hΦ₂`. Establish `hm₀ : Φ₀ ∈ GlobalTheory.WeilM.schA F _` using `(hR φ hφ).2`. Establish `hm₂ : Φ₂ ∈ GlobalTheory.WeilM.schA F _` using `Submodule.smul_mem _ _ (GlobalTheory.T.adelicSchwartzSpace_translate_mem_of_mem _ _ hm₀)`. Establish `hfz : ∀ z, At (evFin F v) z → (Φ₁ - Φ₂) (y + z) = 0`.
+
+Introduce `z hz`. Establish `e1 : r (y + z) = r y` using `hr.1 y z hz`. Establish `e2 : y + z + u • (-y) = p + z` using `by rw [← hyp]; abel`. Establish `hpz : At (evFin F v) (p + z)` using `fun u' hu' => by`. Rewrite using `[smul_add, hpat u' hu', hz u' hu', add_zero]`.
+
+Establish `e3 : R (p + z) = R 0` using `by simpa using (hR φ hφ).1 0 (p + z) hpz`. Establish `e4 : (fun i => evFin F v ((y + z + u • (-y)) i)) = fun i => evFin F v ((y + z) i)`. Use function extensionality and compare the values at `i`. Simplify using `[hu]`. Simplify using `only [Pi.sub_apply, hΦ₂, hΦ₁, hΦ₀, Pi.smul_apply, smul_eq_mul, tens]`.
+
+Rewrite using `[e4, e2, e3, e1]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `h0` using `hfib (Φ₁ - Φ₂) (sub_mem hr.2 hm₂) y hfz`. Rewrite `h0` using `[map_sub, Pi.sub_apply, sub_eq_zero]`.
+
+Establish `h2 : T Φ₂ y = (r y / R 0) * T Φ₀ p`. Rewrite using `[hΦ₂, map_smul, htr u hu (-y) Φ₀ hm₀, Pi.smul_apply, smul_eq_mul, hyp]`. Rewrite using `[h0, h2]`. Simplify using `only [tens, hpdef]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem locality : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →
     ∀ (v : Pl F), ∀ g ∈ UAt σ G.V (evFin F v), ∀ φ ∈ SB (Fin a × Fin (a + a') → Fv F v),

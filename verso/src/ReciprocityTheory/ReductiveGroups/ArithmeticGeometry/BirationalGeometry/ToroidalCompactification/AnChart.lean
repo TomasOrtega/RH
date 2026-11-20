@@ -6,6 +6,11 @@ namespace ReciprocityTheory.ChartRestriction.G.Geo.Tor
 
 open MvPolynomial
 
+/- English proof (translation)
+Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C a => simpa using hasFDerivAt_const a x`. Consider the case `add p q hp hq`. Use `((hp.add hq).congr_fderiv ?_).congr_of_eventuallyEq (Filter.Eventually.of_forall fun y => map_add _ _ _)` and prove the remaining obligations. Simplify using `[add_smul, Finset.sum_add_distrib]`.
+
+Consider the case `mul_X p j hp`. Use `((hp.mul (hasFDerivAt_apply (𝕜 := ℂ) j x)).congr_fderiv (ContinuousLinearMap.ext fun v => ?_)).congr_of_eventuallyEq (Filter.Eventually.of_forall fun y => by simp)` and prove the remaining obligations. Simplify using `[pderiv_X, Pi.single_apply, mul_add, Finset.sum_add_distrib, Finset.mul_sum, mul_comm, mul_left_comm, apply_ite, add_comm]`.
+-/
 theorem hasFDerivAt_eval {I : Type} [Fintype I] [DecidableEq I] (p : MvPolynomial I ℂ) (x : I → ℂ) :
     HasFDerivAt (fun x => eval x p) (∑ i, eval x (pderiv i p) • ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : I => ℂ) i) x := by
   induction p using MvPolynomial.induction_on with
@@ -18,6 +23,41 @@ theorem hasFDerivAt_eval {I : Type} [Fintype I] [DecidableEq I] (p : MvPolynomia
       (Filter.Eventually.of_forall fun y => by simp)
     simp [pderiv_X, Pi.single_apply, mul_add, Finset.sum_add_distrib, Finset.mul_sum, mul_comm, mul_left_comm, apply_ite, add_comm]
 
+/- English proof (translation)
+Take `⟨I, J, _, _, P, hd⟩` from `h.out`. Use `Fintype.ofFinite I` as an intermediate fact. Use `Fintype.ofFinite J` as an intermediate fact. Establish `e : Fin D ≃ {i : I // i ∉ Set.range P.map}` using `(Fintype.equivFinOfCardEq (by`. Rewrite using `[Fintype.card_subtype_compl, ← hd, Algebra.Presentation.dimension, Nat.card_eq_fintype_card, Nat.card_eq_fintype_card, Set.card_range_of_injective P.map_inj])).symm`.
+
+Set `ev` to `fun (x : I → ℂ) => eval₂Hom σ x`. Establish `pt : ∀ ψ : A →+* ℂ, ψ.comp (algebraMap k A) = σ → ∀ p, ψ (algebraMap P.Ring A p) = ev (fun i => ψ (P.val i)) p` using `fun ψ hψ p => by`. Rewrite using `[P.algebraMap_apply, aeval_def, ← coe_eval₂Hom, map_eval₂Hom, hψ]`. Set `q : I → MvPolynomial I k` to `fun i => if h : i ∈ Set.range P.map then P.relation h.choose else X i`. Establish `q₁ : ∀ j, q (P.map j) = P.relation j` using `fun j => (dif_pos ⟨j, rfl⟩).trans (congrArg _ (P.map_inj (⟨j, rfl⟩ : P.map j ∈ Set.range P.map).choose_spec))`.
+
+Establish `q₂ : ∀ i : {i : I // i ∉ Set.range P.map}, q i = X i.1` using `fun i => dif_neg i.2`. Set `Φ : (I → ℂ) → I → ℂ` to `fun x i => eval x (map σ (q i))`. Establish `Φe : ∀ x i, Φ x i = ev x (q i)` using `fun x i => eval_map _ _ _`. Set `x₀ : I → ℂ` to `fun i => ψ₀ (P.val i)`. Set `F : (I → ℂ) →L[ℂ] (I → ℂ)` to `ContinuousLinearMap.pi fun i => ∑ i', eval x₀ (pderiv i' (map σ (q i))) • ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : I => ℂ) i'`.
+
+Establish `hF : HasFDerivAt Φ F x₀` using `hasFDerivAt_pi.2 fun i => hasFDerivAt_eval _ _`. Establish `Fv : ∀ v i, F v i = ∑ i', ev x₀ (pderiv i' (q i)) * v i'` using `fun v i => by`. Simplify using `[F, ev, pderiv_map, eval_map]`. Establish `inj : Function.Injective F` using `(injective_iff_map_eq_zero F).2 fun v hv => by`. Establish `z₁ : ∀ i, i ∉ Set.range P.map → v i = 0` using `fun i hi => by`.
+
+Use `congrFun hv i` as an intermediate fact. Rewrite `this` using `[Fv, q₂ ⟨i, hi⟩]`. Simplify `this` using `[pderiv_X, Pi.single_apply, apply_ite]`. Establish `dt : ((ev x₀).mapMatrix P.jacobiMatrix).det ≠ 0`. Rewrite using `[← RingHom.map_det, ← pt ψ₀ h₀, ← P.jacobian_eq_jacobiMatrix_det]`.
+
+Conclude with `(P.jacobian_isUnit.map ψ₀).ne_zero`. Establish `z₂ : (fun j => v (P.map j)) = 0` using `Matrix.eq_zero_of_vecMul_eq_zero dt (funext fun j => by`. Use `congrFun hv (P.map j)` as an intermediate fact. Rewrite using `[Fv, q₁, ← Finset.sum_subset (Finset.subset_univ (Finset.univ.image P.map)) (fun i _ hi => by`. Rewrite `this` using `[z₁ i (by simpa using hi), mul_zero]), Finset.sum_image fun a _ b _ h => P.map_inj h]`.
+
+Simplify `this)` using `[Matrix.vecMul, dotProduct, P.jacobiMatrix_apply, mul_comm]`. Use function extensionality and compare the values at `i`. Distinguish the cases in `hi : i ∈ Set.range P.map`. Take `⟨j, rfl⟩` from `hi`. Conclude with `congrFun z₂ j`.
+
+Conclude with `z₁ i hi`. Set `F' : (I → ℂ) ≃L[ℂ] (I → ℂ)` to `(LinearEquiv.ofInjectiveEndo F.toLinearMap inj).toContinuousLinearEquiv`. Establish `cd : ContDiffAt ℂ 1 Φ x₀` using `contDiffAt_pi.2 fun i => (AnalyticOnNhd.eval_mvPolynomial (map σ (q i)) x₀ trivial).contDiffAt`. Set `T` to `cd.toOpenPartialHomeomorph Φ (f' := F') hF one_ne_zero`. Set `O` to `T.target ∩ interior {w | ContDiffAt ℂ 1 T.symm w}`.
+
+Establish `oO : IsOpen O` using `T.open_target.inter isOpen_interior`. Establish `mO : Φ x₀ ∈ O` using `⟨cd.image_mem_toOpenPartialHomeomorph_target (f' := F') hF one_ne_zero, mem_interior_iff_mem_nhds.2 ((cd.to_localInverse (f' := F') hF one_ne_zero).eventually (by simp))⟩`. Set `em : (Fin D → ℂ) →L[ℂ] (I → ℂ)` to `ContinuousLinearMap.pi fun i => if h : i ∈ Set.range P.map then 0 else ContinuousLinearMap.proj (e.symm ⟨i, h⟩)`. Establish `m₁ : ∀ b j, em b (P.map j) = 0` using `fun b j => by simp [em]`. Establish `m₂ : ∀ b i, em b (e i) = b i` using `fun b i => by simp only [em, ContinuousLinearMap.pi_apply, dif_neg (e i).2]; simp`.
+
+Establish `lf : ∀ x : I → ℂ, (∀ j, ev x (P.relation j) = 0) → ∃ ψ : A →+* ℂ, ∀ p, ψ (algebraMap P.Ring A p) = ev x p` using `fun x hx => ⟨(algebraMap P.Ring A).liftOfSurjective P.algebraMap_surjective ⟨ev x, by show P.ker ≤ _`. Rewrite using `[← P.span_range_relation_eq_ker, Ideal.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩`. Conclude with `hx j⟩, fun p => RingHom.liftOfRightInverse_comp_apply _ _ _ _ p⟩`. Use `choose Ψ hΨ using lf`.
+
+Establish `rel : ∀ b, em b ∈ O → ∀ j, ev (T.symm (em b)) (P.relation j) = 0` using `fun b hb j => by`. Rewrite using `[← q₁, ← Φe, show Φ (T.symm (em b)) = em b from T.right_inv hb.1, m₁]`. Take `⟨ε, ε0, hε⟩` from `Metric.mem_nhds_iff.1 (Filter.inter_mem (T.open_source.mem_nhds (cd.mem_toOpenPartialHomeomorph_source (f' := F') hF one_ne_zero)) (hF.continuousAt.preimage_mem_nhds (oO.mem_nhds mO)))`. Set `n` to `Fintype.equivFin I`. Use `⟨_, fun j => P.val (n.symm j), fun i => P.val (e i), em ⁻¹' O, ε, fun b => if h : em b ∈ O then Ψ _ (rel b h) else ψ₀, ε0, oO.preimage em.continuous, fun b hb => ?_, fun a => ?_, fun ψ hψ hg => ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [dif_pos (show em b ∈ O from hb)]`. Use `⟨RingHom.ext fun r => ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[RingHom.comp_apply, IsScalarTower.algebraMap_apply k P.Ring A, hΨ]`. Conclude with `eval₂Hom_C _ _ _`. Rewrite using `[show P.val (e i) = algebraMap P.Ring A (X (e i).1) by simp, hΨ, ← q₂, ← Φe, show Φ (T.symm (em b)) = em b from T.right_inv hb.1, m₂]`.
+
+Take `⟨p, rfl⟩` from `P.algebraMap_surjective a`. Use `DifferentiableOn.congr (f := fun b => eval (T.symm (em b)) (map σ p)) (fun b hb => ?_) fun b hb => ?_` and prove the remaining obligations. Establish `c₁ : ContDiffAt ℂ 1 T.symm (em b)` using `interior_subset hb.2`. Establish `c₂ : DifferentiableAt ℂ (fun x : I → ℂ => eval x (map σ p)) (T.symm (em b))` using `(hasFDerivAt_eval _ _).differentiableAt`. Conclude with `(c₂.comp b ((c₁.differentiableAt one_ne_zero).comp b em.differentiableAt)).differentiableWithinAt`.
+
+Simplify using `only [dif_pos (show em b ∈ O from hb)]`. Rewrite using `[hΨ, eval_map]`. Both sides reduce to the same expression. Establish `hx` using `hε (show (fun i => ψ (P.val i)) ∈ Metric.ball x₀ ε from (dist_pi_lt_iff ε0).2 fun i => by`. Simplify `hg (n i))` using `[dist_eq_norm]`.
+
+Establish `e₁ : em (fun i => ψ (P.val (e i))) = Φ fun i => ψ (P.val i)` using `funext fun i => by`. Distinguish the cases in `hi : i ∈ Set.range P.map`. Take `⟨j, rfl⟩` from `hi`. Rewrite using `[m₁, Φe, q₁, ← pt ψ hψ, P.algebraMap_apply, P.aeval_val_relation, map_zero]`. Take `⟨j, hj⟩` from `e.surjective ⟨i, hi⟩`.
+
+Take `rfl : (e j).1 = i` from `congrArg Subtype.val hj`. Rewrite using `[m₂, Φe, q₂]`. Simplify using `only [ev, eval₂Hom_X']`. Establish `mB : em (fun i => ψ (P.val (e i))) ∈ O` using `by rw [e₁]; exact hx.2`. Use `⟨mB, (dif_pos mB).trans (RingHom.ext fun a => ?_)⟩` and prove the remaining obligations.
+
+Take `⟨p, rfl⟩` from `P.algebraMap_surjective a`. Rewrite using `[hΨ, pt ψ hψ, e₁, show T.symm (Φ fun i => ψ (P.val i)) = _ from T.left_inv hx.1]`.
+-/
 theorem anChart_alg {k A : Type} [Field k] [CommRing A] [Algebra k A] (D : ℕ) [h : Algebra.IsStandardSmoothOfRelativeDimension D k A]
     (σ : k →+* ℂ) (ψ₀ : A →+* ℂ) (h₀ : ψ₀.comp (algebraMap k A) = σ) :
     ∃ (N : ℕ) (g : Fin N → A) (f : Fin D → A) (B : Set (Fin D → ℂ)) (ε : ℝ) (Ψ : (Fin D → ℂ) → (A →+* ℂ)),

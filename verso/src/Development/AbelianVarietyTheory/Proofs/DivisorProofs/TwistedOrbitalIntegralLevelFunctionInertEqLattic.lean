@@ -30,6 +30,65 @@ namespace GlobalTheory.TwOrbLevel
 
 open GlobalTheory.TwLat
 
+/- English proof (translation)
+Introduce `E _ _ _ hE w hw K e hc hint hval hq k t ht htk m Q B hQm hQd hQs hQc hadj hQu hfin huσ`. Use `set u : B.A := 1 + algebraMap K.O B.A t * B.g with hu_def`. Take `⟨-, -, hθK, hnrm, -, -, -, -, -, -⟩` from `GlobalTheory.BCT.ThBasic.twist_basic E hE m w`. Use `set cong : Set (GLw m w) := {g : GLw m w | g ∈ GlobalTheory.LFun.KGL w m ∧ ∀ i j, Valued.v (g.val i j - (1 : Matrix (Fin m) (Fin m) (w.adicCompletion E)) i j) ≤ WithZero.exp (-(k : ℤ))} with hcong`. Use `set f : GLw m w → ℂ := fun y => if y ∈ GlobalTheory.LFun.KGL w m ∧ nrmL m w y ∈ cong then 1 else 0 with hf`.
+
+Use `set S : Set (GLw m w) := {y | (nrmL m w y).val.charpoly = Q} with hS`. Use `show clSum (thL m w) (GlobalTheory.LFun.KGL w m) S (fun _ => 1) f = _`. Establish `hfK : ∀ c ∈ GlobalTheory.LFun.KGL w m, ∀ y, f (c⁻¹ * y * thL m w c) = f y`. Introduce `c hcK y`. Establish `h1 : c⁻¹ * y * thL m w c ∈ GlobalTheory.LFun.KGL w m ↔ y ∈ GlobalTheory.LFun.KGL w m`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `mul_mem (mul_mem hcK h) (inv_mem (hθK c hcK))` as an intermediate fact. Simplify `this` using `[mul_assoc]`. Introduce `h`.
+
+Conclude with `mul_mem (mul_mem (inv_mem hcK) h) (hθK c hcK)`. Establish `h2 : nrmL m w (c⁻¹ * y * thL m w c) ∈ cong ↔ nrmL m w y ∈ cong`. Rewrite using `[hnrm]`. Conclude with `GlobalTheory.T.principalCongruenceGL_conj_maxCompact_iff E w m k c _ hcK`. Simplify using `only [hf, h1, h2]`.
+
+Establish `hf01 : ∀ y, f y = 0 ∨ f y = 1`. Apply the tactic sequence `intro y; simp only [hf]; split_ifs <;> simp`. Establish `hSinv : ∀ y g, g⁻¹ * y * thL m w g ∈ S ↔ y ∈ S`. Introduce `y g`. Simplify using `only [hS, Set.mem_setOf_eq, hnrm, Units.val_mul]`.
+
+Rewrite using `[Matrix.coe_units_inv, Matrix.charpoly_units_conj']`. Establish `hrstab : ∀ (δ x : GLw m w), (rStab fun k : GlobalTheory.LFun.KGL w m => f ((x * k)⁻¹ * δ * thL m w (x * k))).index ≠ 0`. Introduce `δ x`. Establish `: rStab (fun k : GlobalTheory.LFun.KGL w m => f ((x * k)⁻¹ * δ * thL m w (x * k))) = ⊤`. Use `eq_top_iff.2 fun k' _ z => ?_` and prove the remaining obligations.
+
+Use `hfK (k' : GLw m w) k'.2 ((x * ↑z)⁻¹ * δ * thL m w (x * ↑z))` as an intermediate fact. Use `show f ((x * ↑(z * k'))⁻¹ * δ * thL m w (x * ↑(z * k'))) = f ((x * ↑z)⁻¹ * δ * thL m w (x * ↑z))`. Rewrite using `[← this]`. Use `congr 1`. Simplify using `only [Subgroup.coe_mul, map_mul, _root_.mul_inv_rev, mul_assoc]`.
+
+Rewrite using `[this, Subgroup.index_top]`. Conclude with `one_ne_zero`. Establish `htwinv : ∀ y g, twOrb (thL m w) (GlobalTheory.LFun.KGL w m) (g⁻¹ * y * thL m w g) f = twOrb (thL m w) (GlobalTheory.LFun.KGL w m) y f` using `fun y g => GlobalTheory.TwOrbConj.twOrb_twConj _ _ _ y g f (hrstab y)`. Establish `hrank : Module.finrank K.E B.A = m` using `hfin.trans hQd`. Set `b : Module.Basis (Fin m) K.E B.A` to `Module.finBasisOfFinrankEq K.E B.A hrank`.
+
+Establish `hgu : ∀ L : Submodule K.O B.A, (∀ y ∈ L, B.g * y ∈ L) → ∀ y ∈ L, u * y ∈ L`. Introduce `L hg y hy`. Rewrite using `[hu_def, add_mul, one_mul, mul_assoc]`. Use `L.add_mem hy ?_` and prove the remaining obligations. Rewrite using `[← Algebra.smul_def]`.
+
+Conclude with `L.smul_mem t (hg y hy)`. Distinguish the cases in `hui : IsIntegral K.O u`. Set `Bu : GlobalTheory.UnitLemma.InvAlg K` to `{ B with g := u }`. Establish `hP : (LinearMap.mulLeft K.E u).charpoly = Q.map e.symm.toRingHom` using `GlobalTheory.T.charpoly_mulLeft_generator_eq_map_symm K B _ e u Q hQm hadj hQu hfin`. Establish `hsep : (Q.map e.symm.toRingHom).Separable` using `hQs.map`.
+
+Take `⟨β₀, hβ₀, hX⟩` from `GlobalTheory.UnitLemma.TwistUnit.twisted_unit_eq_unit K Bu huσ (by show (LinearMap.mulLeft K.E u).charpoly.Separable; rw [hP]; exact hsep) hui ((-1) ^ (m - 1)) (neg_one_pow_eq_or B.A (m - 1))`. Establish `hβ₀' : B.σ (β₀ : B.A) = β₀ * ((-1) ^ (m - 1) * u)` using `hβ₀`. Establish `hgram : ∀ x : B.Aˣ, IsUnit (gram e b ((β₀ : B.A) * x))` using `fun x => GlobalTheory.T.separable_element_basis_integral E hE w hw K e hc hint hval B m b u _ hsep hQu hadj _ (β₀.isUnit.mul x.isUnit)`. Establish `hσβ : ∀ x : B.Aˣ, B.σ (x : B.A) = x → B.σ ((β₀ : B.A) * x) = (β₀ * x) * ((-1) ^ (m - 1) * u)`. Introduce `x hx`.
+
+Rewrite using `[map_mul, hβ₀', hx]`. Expand and normalize the polynomial expressions, which then agree. Establish `hN : ∀ x : B.Aˣ, B.σ (x : B.A) = x → (nrmL m w (dlt e b ((β₀ : B.A) * x))).val = mulMat e b u` using `fun x hx => GlobalTheory.T.inertPlace_norm_gramInverse_eq_mulMatrix E hE w hw K e hc hint hval B m b u _ (hgram x) (hσβ x hx)`. Establish `hcp : (mulMat e b u).charpoly = Q`. Establish `h1` using `Matrix.charpoly_map (LinearMap.toMatrix b b (LinearMap.mulLeft K.E u)) (e : K.E →+* w.adicCompletion E)`.
+
+Establish `h2 : mulMat e b u = (LinearMap.toMatrix b b (LinearMap.mulLeft K.E u)).map (e : K.E →+* w.adicCompletion E)` using `rfl`. Rewrite using `[h2, h1, LinearMap.charpoly_toMatrix, hP, Polynomial.map_map]`. Use extensionality with `n`. Simplify using `[Polynomial.coeff_map]`. Take `⟨hΛK, hlat⟩` from `GlobalTheory.T.latticeSpannedByGLColumns_eq_iff_GLint_coset E hE w hw K e hc hint hval B m b`.
+
+Establish `hOrb : ∀ x : B.Aˣ, B.σ (x : B.A) = x → twOrb (thL m w) (GlobalTheory.LFun.KGL w m) (dlt e b ((β₀ : B.A) * x)) f = ((B.N x : ℚ) : ℂ)`. Introduce `x hx`. Take `⟨φ, hφv, hφc⟩` from `GlobalTheory.T.twistedCentralizer_equiv_normOneTorus_nonsplit E hE w hw K e hc hint hval B m b u _ (β₀.isUnit.mul x.isUnit) (hσβ x hx) hadj (hgram x)`. Use `GlobalTheory.T.twistedOrbitalIntegral_indicator_eq_latticeCount K B x (GLw m w) (thL m w) (GlobalTheory.LFun.KGL w m) _ f φ (lat e b) hfK hf01 hφc hΛK ?_ ?_ (fun L hL => GlobalTheory.T.exists_GL_completion_lattice_eq_columns E hE w hw K e hc hint hval B m b L hL.1)` and prove the remaining obligations. Introduce `t' q`.
+
+Use `GlobalTheory.T.latticeSpannedByGLColumns_mulLeftMatrix_eq_mul E hE w hw K e hc hint hval B m b _ q _ ?_` and prove the remaining obligations. Rewrite using `[Units.val_mul, hφv t']`. Introduce `q`. Establish `hf1 : f (q⁻¹ * dlt e b ((β₀ : B.A) * x) * thL m w q) = 1 ↔ (q⁻¹ * dlt e b ((β₀ : B.A) * x) * thL m w q ∈ GlobalTheory.LFun.KGL w m ∧ nrmL m w (q⁻¹ * dlt e b ((β₀ : B.A) * x) * thL m w q) ∈ cong)`. Apply the tactic sequence `simp only [hf]; split_ifs with h <;> simp [h]`.
+
+Rewrite using `[hf1, hnrm, GlobalTheory.T.twistedNorm_integral_iff_lattice_unimodular E hE w hw K e hc hint hval B m b _ (hgram x) q]`. Establish `hlev : q⁻¹ * nrmL m w (dlt e b ((β₀ : B.A) * x)) * q ∈ cong ↔ ∀ y ∈ lat e b q, B.g * y ∈ lat e b q` using `GlobalTheory.T.principalCongruenceLevel_iff_lattice_stable E hE w hw K e hc hint hval B m b t k ht htk q _ (hN x hx)`. Rewrite using `[hlev]`. Establish `hXiff : (GlobalTheory.UnitLemma.IsLat K.O K.E (lat e b q) ∧ ∀ z, z ∈ lat e b q ↔ ∀ y ∈ lat e b q, B.herm ((β₀ : B.A) * x) y z ∈ (algebraMap K.O K.E).range) ↔ lat e b q ∈ Bu.X x`. Rewrite using `[← hX x hx]`.
+
+Both sides reduce to the same expression. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hL, hg, hsd⟩`. Conclude with `⟨(hXiff.2 ⟨hL, hgu _ hg, hsd⟩).2, hg⟩`. Introduce and unpack `⟨hun, hg⟩`.
+
+Take `⟨hL, -, hsd⟩` from `hXiff.1 ⟨hlat q, hun⟩`. Conclude with `⟨hL, hg, hsd⟩`. Establish `hsum` using `GlobalTheory.T.sum_twistedOrbitalIntegrals_eq_finsum_parametrised (GLw m w) (thL m w) (GlobalTheory.LFun.KGL w m) S f B.Cl (fun c => dlt e b ((β₀ : B.A) * ((Quot.out c).1 : B.Aˣ))) (fun c => ((B.N c.rep : ℚ) : ℂ)) (fun c => by show (nrmL m w _).val.charpoly = Q; rw [hN _ (Quot.ou …`. Introduce `y hy`. Take `⟨x, hx, g, rfl⟩` from `GlobalTheory.T.exists_twistedConj_delta_of_unit_mod_norms E hE w hw K e hc hint hval B m b u Q hQs hQu hadj β₀ hβ₀' hgram y hy`.
+
+Set `c : B.Cl` to `Quot.mk _ ⟨x, hx⟩`. Take `⟨a, ha⟩` from `GlobalTheory.T.exists_norm_of_classOfFixedUnits_eq K B ⟨x, hx⟩ (Quot.out c) (Quot.out_eq c).symm`. Take `⟨g', hg'⟩` from `(GlobalTheory.T.twistedConj_iff_mul_norm_invAlg E hE w hw K e hc hint hval B m b u hadj β₀ hβ₀' hgram x (Quot.out c).1 hx (Quot.out c).2).2 ⟨a, ha⟩`. Use `⟨c, g'⁻¹ * g, ?_⟩` and prove the remaining obligations. Use `show _ = _ * dlt e b ((β₀ : B.A) * ((Quot.out c).1 : B.Aˣ)) * _`.
+
+Rewrite using `[hg']`. Simplify using `only [map_mul, map_inv, _root_.mul_inv_rev, inv_inv, mul_assoc, mul_inv_cancel_left, inv_mul_cancel_left])`. Use the proof step `(by`. Introduce `c c' hcc`. Take `⟨a, ha⟩` from `(GlobalTheory.T.twistedConj_iff_mul_norm_invAlg E hE w hw K e hc hint hval B m b u hadj β₀ hβ₀' hgram (Quot.out c).1 (Quot.out c').1 (Quot.out c).2 (Quot.out c').2).1 hcc`.
+
+Rewrite using `[← Quot.out_eq c, ← Quot.out_eq c']`. Conclude with `Quot.sound ⟨a, ha⟩)`. Use `hSinv htwinv (fun c => hOrb _ (Quot.out c).2)`. Rewrite using `[hsum]`. Use `show _ = ((∑ᶠ c : B.Cl, B.N c.rep : ℚ) : ℂ)`.
+
+Distinguish the cases in `hfs : (Function.support fun c : B.Cl => B.N c.rep).Finite`. Conclude with `(map_finsum (Rat.castHom ℂ) hfs).symm`. Establish `hfs' : ¬ (Function.support fun c : B.Cl => ((B.N c.rep : ℚ) : ℂ)).Finite`. Simplify `hfs` using `[Function.support]`. Rewrite using `[finsum_of_infinite_support hfs, finsum_of_infinite_support hfs']`.
+
+Simplify using the standard rewrite rules. Establish `hX0 : ∀ x : B.A, B.X x = ∅`. Introduce `x`. Use extensionality with `L`. Simplify using `only [Set.mem_empty_iff_false, iff_false]`.
+
+Introduce and unpack `⟨hL, hg, -⟩`. Conclude with `hui (GlobalTheory.T.isIntegral_of_preserves_fullLattice K B u L hL (hgu L hg))`. Establish `hN0 : ∀ x : B.A, B.N x = 0`. Introduce `x`. Unfold `GlobalTheory.UnitLemma.InvAlg.N GlobalTheory.UnitLemma.orbSum`.
+
+Use `haveI : IsEmpty (GlobalTheory.UnitLemma.Orb K.O B.T (B.X x)) := by`. Prove the components needed by the constructor for the conclusion. Introduce `o`. Proceed by induction on `o using Quot.ind with`. Consider the case `mk L`.
+
+Establish `h` using `(hX0 x).subset L.2`. Simplify using `at h`. Conclude with `finsum_of_isEmpty _`. Establish `hf0 : ∀ y ∈ S, ∀ q : GLw m w, f (q⁻¹ * y * thL m w q) = 0`. Introduce `y hy q`.
+
+Simplify using `only [hf]`. Rewrite using `[if_neg]`. Introduce and unpack `⟨-, hn, -⟩`. Conclude with `hui (GlobalTheory.T.isIntegral_of_integral_matrix_charpoly_root E hE w hw K e hc hint hval B m b u Q hQm hQu _ hn ((hSinv y q).2 hy))`. Establish `hst : B.stSum = 0`.
+
+Unfold `GlobalTheory.UnitLemma.InvAlg.stSum`. Simplify using `[hN0]`. Rewrite using `[hst, Rat.cast_zero]`. Unfold `clSum`. Use `(finsum_congr fun c => ?_).trans finsum_zero` and prove the remaining obligations.
+
+Use `split_ifs with hc'`. Establish `h0` using `hf0 _ hc'`. Simplify using `only [twOrb, avg, h0, finsum_zero, mul_zero]`. Both sides reduce to the same expression.
+-/
 theorem twOrb_level_eq_stSum : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ (w : Pl E), ¬ IsSplitAt w → ∀ (K : GlobalTheory.UnitLemma.UQ) (e : K.E ≃+* w.adicCompletion E), (∀ x, e (K.c x) = cj w (e x)) → (∀ x, x ∈ (algebraMap K.O K.E).range ↔ Valued.v (e x) ≤ 1) → (∀ x, GlobalTheory.UnitLemma.val K.O x = ordL (e x)) → qV E w = K.q ^ 2 → ∀ (k : ℕ) (t : K.O), K.Small t → GlobalTheory.UnitLemma.val K.O (algebraMap K.O K.E t) = k → ∀ (m : ℕ) (Q : (w.adicCompletion E)[X]) (B : GlobalTheory.UnitLemma.InvAlg K), Q.Monic → Q.natDegree = m → Q.Separable → IsCsr w Q → Algebra.adjoin K.E {(1 + algebraMap K.O B.A t * B.g)} = ⊤ → aeval (1 + algebraMap K.O B.A t * B.g) (Q.map e.symm.toRingHom) = 0 → Module.finrank K.E B.A = Q.natDegree → (1 + algebraMap K.O B.A t * B.g) * B.σ (1 + algebraMap K.O B.A t * B.g) = 1 → stTw m w Q (fun y : GLw m w => if y ∈ GlobalTheory.LFun.KGL w m ∧ nrmL m w y ∈ {g : GLw m w | g ∈ GlobalTheory.LFun.KGL w m ∧ ∀ i j, Valued.v (g.val i j - (1 : Matrix (Fin m) (Fin m) (w.adicCompletion E)) i j) ≤ WithZero.exp (-(k : ℤ))} then 1 else 0) = ((B.stSum : ℚ) : ℂ) := by
   intro E _ _ _ hE w hw K e hc hint hval hq k t ht htk m Q B hQm hQd hQs hQc hadj hQu hfin huσ
   set u : B.A := 1 + algebraMap K.O B.A t * B.g with hu_def

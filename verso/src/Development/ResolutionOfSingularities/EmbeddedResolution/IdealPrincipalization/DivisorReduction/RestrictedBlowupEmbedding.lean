@@ -42,9 +42,15 @@ def iteratedPreimage (U₀ : (s.toSequenceOfBlowups.schemeAt 0).Opens) :
   | t + 1 => s.toSequenceOfBlowups.transitionMapSucc t ⁻¹ᵁ iteratedPreimage U₀ t
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem iteratedPreimage_zero (U₀ : (s.toSequenceOfBlowups.schemeAt 0).Opens) :
     iteratedPreimage T j hj I₀ E₀ s U₀ 0 = U₀ := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem iteratedPreimage_succ (U₀ : (s.toSequenceOfBlowups.schemeAt 0).Opens) (t : ℕ) :
     iteratedPreimage T j hj I₀ E₀ s U₀ (t + 1) =
       s.toSequenceOfBlowups.transitionMapSucc t ⁻¹ᵁ iteratedPreimage T j hj I₀ E₀ s U₀ t := rfl
@@ -54,12 +60,20 @@ def restrictedBlowupMorphism (U₀ : (s.toSequenceOfBlowups.schemeAt 0).Opens) (
       (↑(iteratedPreimage T j hj I₀ E₀ s U₀ t) : Scheme.{u}) :=
   s.toSequenceOfBlowups.transitionMapSucc t ∣_ iteratedPreimage T j hj I₀ E₀ s U₀ t
 
+/- English proof (translation)
+The claim follows from `AlgebraicGeometry.morphismRestrict_ι (s.toSequenceOfBlowups.transitionMapSucc t) (iteratedPreimage T j hj I₀ E₀ s U₀ t)`.
+-/
 theorem restrictedBlowupMorphism_comp_ι (U₀ : (s.toSequenceOfBlowups.schemeAt 0).Opens) (t : ℕ) :
     restrictedBlowupMorphism T j hj I₀ E₀ s U₀ t ≫ (iteratedPreimage T j hj I₀ E₀ s U₀ t).ι =
       (iteratedPreimage T j hj I₀ E₀ s U₀ (t + 1)).ι ≫ s.toSequenceOfBlowups.transitionMapSucc t :=
   AlgebraicGeometry.morphismRestrict_ι (s.toSequenceOfBlowups.transitionMapSucc t)
     (iteratedPreimage T j hj I₀ E₀ s U₀ t)
 
+/- English proof (translation)
+Proceed by induction on `t with`. Consider the case `zero => exact hU`. Consider the case `succ n ih`. Establish `hV : IsOpen ((iteratedPreimage T j hj I₀ E₀ s U₀ n : Set ↥(s.toSequenceOfBlowups.schemeAt n))ᶜ)` using `ih.isOpen_compl`. Establish `h2 : IsOpen (((s.toSequenceOfBlowups.transitionMapSucc n ⁻¹ᵁ (⟨(iteratedPreimage T j hj I₀ E₀ s U₀ n : Set ↥(s.toSequenceOfBlowups.schemeAt n))ᶜ, hV⟩ : (s.toSequenceOfBlowups.schemeAt n).Opens)) : (s.toSequenceOfBlowups.schemeAt (n + 1)).Opens) : Set ↥(s.toSequenceOfBlowups.schem …` using `TopologicalSpace.Opens.isOpen _`.
+
+Establish `hop : IsOpen ((iteratedPreimage T j hj I₀ E₀ s U₀ (n + 1) : Set ↥(s.toSequenceOfBlowups.schemeAt (n + 1)))ᶜ)` using `h2`. Conclude with `isOpen_compl_iff.mp hop`.
+-/
 theorem isClosed_iteratedPreimage (U₀ : (s.toSequenceOfBlowups.schemeAt 0).Opens)
     (hU : IsClosed ((U₀ : Set ↥(s.toSequenceOfBlowups.schemeAt 0)))) (t : ℕ) :
     IsClosed ((iteratedPreimage T j hj I₀ E₀ s U₀ t : Set ↥(s.toSequenceOfBlowups.schemeAt t))) := by
@@ -78,6 +92,9 @@ theorem isClosed_iteratedPreimage (U₀ : (s.toSequenceOfBlowups.schemeAt 0).Ope
           Set ↥(s.toSequenceOfBlowups.schemeAt (n + 1)))ᶜ) := h2
       exact isOpen_compl_iff.mp hop
 
+/- English proof (translation)
+Establish `: AlgebraicGeometry.Smooth (s.projectionToSpec t)` using `MarkedSequenceOfBlowups.smooth_projectionToSpec effectiveCartierSupportContainsNoComponent hV s t ht`. Use `infer_instance`.
+-/
 theorem smooth_iteratedPreimage_ι_comp_projectionToSpec (U₀ : (s.toSequenceOfBlowups.schemeAt 0).Opens)
     (hV : (restrictToBoundaryDivisor T j hj I₀ E₀).IsAdmissible) (t : ℕ) (ht : t ≤ s.toSequenceOfBlowups.length) :
     AlgebraicGeometry.Smooth ((iteratedPreimage T j hj I₀ E₀ s U₀ t).ι ≫ s.projectionToSpec t) := by
@@ -85,6 +102,13 @@ theorem smooth_iteratedPreimage_ι_comp_projectionToSpec (U₀ : (s.toSequenceOf
     MarkedSequenceOfBlowups.smooth_projectionToSpec effectiveCartierSupportContainsNoComponent hV s t ht
   infer_instance
 
+/- English proof (translation)
+Introduce `y hy`. Establish `hy0 : y ∈ ((s.toSequenceOfBlowups.center t).comap (iteratedPreimage T j hj I₀ E₀ s U₀ t).ι).support` using `hy`. Establish `hy1 : (iteratedPreimage T j hj I₀ E₀ s U₀ t).ι.base y ∈ (s.toSequenceOfBlowups.center t).support`. Rewrite `hy0` using `[AlgebraicGeometry.Scheme.IdealSheafData.support_comap]`. Conclude with `hy0`.
+
+Establish `hy2 : (iteratedPreimage T j hj I₀ E₀ s U₀ t).ι.base y ∈ ((s.toSequenceOfBlowups.center t).support : Set ↥(s.toSequenceOfBlowups.schemeAt t))` using `hy1`. Establish `hc : (iteratedPreimage T j hj I₀ E₀ s U₀ t).ι.base y ∈ orderAtLeastLocus (s.ideal t) T.mult` using `s.center_order t ht hy2`. Establish `hord : (T.mult : ℕ∞) ≤ orderAt (s.ideal t) ((iteratedPreimage T j hj I₀ E₀ s U₀ t).ι.base y)` using `(mem_orderAtLeastLocus_iff _ _ _).1 hc`. Use `(mem_orderAtLeastLocus_iff _ _ _).2 ?_` and prove the remaining obligations. Rewrite using `[orderAt_comap_of_isOpenImmersion]`.
+
+Conclude with `hord`.
+-/
 theorem support_center_comap_subset_orderAtLeastLocus (U₀ : (s.toSequenceOfBlowups.schemeAt 0).Opens)
     (_hV : (restrictToBoundaryDivisor T j hj I₀ E₀).IsAdmissible) (t : ℕ) (ht : t < s.toSequenceOfBlowups.length) :
     (((s.toSequenceOfBlowups.center t).comap (iteratedPreimage T j hj I₀ E₀ s U₀ t).ι).support : Set _) ⊆
@@ -105,6 +129,9 @@ theorem support_center_comap_subset_orderAtLeastLocus (U₀ : (s.toSequenceOfBlo
   rw [orderAt_comap_of_isOpenImmersion]
   exact hord
 
+/- English proof (translation)
+Establish `: AlgebraicGeometry.Smooth (s.projectionToSpec t)` using `MarkedSequenceOfBlowups.smooth_projectionToSpec effectiveCartierSupportContainsNoComponent hV s t (le_of_lt ht)`. Establish `hZE : HasStrictNormalCrossingsWith (s.projectionToSpec t) (s.toSequenceOfBlowups.center t) (s.boundary t)`. Rewrite using `[MarkedSequenceOfBlowups.projectionToSpec_eq]`. Conclude with `s.center_snc t ht`. Conclude with `hasStrictNormalCrossingsWith_comap (s.projectionToSpec t) (iteratedPreimage T j hj I₀ E₀ s U₀ t).ι (s.toSequenceOfBlowups.center t) (s.boundary t) hZE`.
+-/
 theorem hasStrictNormalCrossingsWith_iteratedPreimage (U₀ : (s.toSequenceOfBlowups.schemeAt 0).Opens)
     (hV : (restrictToBoundaryDivisor T j hj I₀ E₀).IsAdmissible) (t : ℕ) (ht : t < s.toSequenceOfBlowups.length) :
     HasStrictNormalCrossingsWith ((iteratedPreimage T j hj I₀ E₀ s U₀ t).ι ≫ s.projectionToSpec t)
@@ -118,6 +145,11 @@ theorem hasStrictNormalCrossingsWith_iteratedPreimage (U₀ : (s.toSequenceOfBlo
   exact hasStrictNormalCrossingsWith_comap (s.projectionToSpec t) (iteratedPreimage T j hj I₀ E₀ s U₀ t).ι
     (s.toSequenceOfBlowups.center t) (s.boundary t) hZE
 
+/- English proof (translation)
+Establish `: AlgebraicGeometry.IsNoetherian (s.toSequenceOfBlowups.schemeAt (t + 1))` using `MarkedSequenceOfBlowups.isNoetherian_schemeAt effectiveCartierSupportContainsNoComponent hV s (t + 1) ht`. Establish `: AlgebraicGeometry.IsLocallyNoetherian (s.toSequenceOfBlowups.schemeAt (t + 1))` using `inferInstance`. Establish `hex : (Blowup.exceptionalIdeal (s.toSequenceOfBlowups.transitionMapSucc t) (s.toSequenceOfBlowups.center t)).comap (iteratedPreimage T j hj I₀ E₀ s U₀ (t + 1)).ι = Blowup.exceptionalIdeal (restrictedBlowupMorphism T j hj I₀ E₀ s U₀ t) ((s.toSequenceOfBlowups.center t).comap (iter …` using `restrictIdeal_exceptionalIdeal (s.toSequenceOfBlowups.transitionMapSucc t) (s.toSequenceOfBlowups.center t) (iteratedPreimage T j hj I₀ E₀ s U₀ t)`. Establish `hst : ∀ D : (s.toSequenceOfBlowups.schemeAt t).IdealSheafData, (Blowup.strictTransform (s.toSequenceOfBlowups.transitionMapSucc t) (s.toSequenceOfBlowups.center t) D).comap (iteratedPreimage T j hj I₀ E₀ s U₀ (t + 1)).ι = Blowup.strictTransform (restrictedBlowupMorphism T j hj I₀ …` using `fun D => restrictIdeal_strictTransform_preimage (s.toSequenceOfBlowups.transitionMapSucc t) (s.toSequenceOfBlowups.center t) D (iteratedPreimage T j hj I₀ E₀ s U₀ t)`. Rewrite using `[s.boundary_succ t ht]`.
+
+Simplify using `only [List.map_append, List.map_map, List.map_cons, List.map_nil, hex]`. Use `congr 1`. Conclude with `List.map_congr_left fun D _ => hst D`.
+-/
 theorem boundary_comap_iteratedPreimage_succ (U₀ : (s.toSequenceOfBlowups.schemeAt 0).Opens)
     (hV : (restrictToBoundaryDivisor T j hj I₀ E₀).IsAdmissible) (t : ℕ) (ht : t < s.toSequenceOfBlowups.length) :
     List.map (fun D => D.comap (iteratedPreimage T j hj I₀ E₀ s U₀ (t + 1)).ι) (s.boundary (t + 1)) =
@@ -159,12 +191,18 @@ def restrictedEmbedding [AlgebraicGeometry.IsNoetherian T.scheme]
     (↑(iteratedPreimage T j hj I₀ E₀ s U₀ t) : Scheme.{u}) ⟶ (ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).obj t :=
   (iteratedPreimage T j hj I₀ E₀ s U₀ t).ι ≫ embeddingIntoAmbient hres hno T j hj I₀ E₀ s hpr t
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem restrictedEmbedding_eq_ι_comp_embeddingIntoAmbient [AlgebraicGeometry.IsNoetherian T.scheme]
     (hpr : (MarkedBlowupSequenceData.ofMarkedSequence s).toBlowupSequenceData.CentersContainNoComponent)
     (U₀ : (s.toSequenceOfBlowups.schemeAt 0).Opens) (t : ℕ) :
     restrictedEmbedding T j hj I₀ E₀ s hres hno hpr U₀ t =
       (iteratedPreimage T j hj I₀ E₀ s U₀ t).ι ≫ embeddingIntoAmbient hres hno T j hj I₀ E₀ s hpr t := rfl
 
+/- English proof (translation)
+Establish `hι : AlgebraicGeometry.IsClosedImmersion (iteratedPreimage T j hj I₀ E₀ s U₀ t).ι` using `Scheme.Opens.isClosedImmersion_ι_of_isClosed (iteratedPreimage T j hj I₀ E₀ s U₀ t) (isClosed_iteratedPreimage T j hj I₀ E₀ s U₀ hU t)`. Establish `hemb : AlgebraicGeometry.IsClosedImmersion (embeddingIntoAmbient hres hno T j hj I₀ E₀ s hpr t)` using `isClosedImmersion_embeddingIntoAmbient hres hno T j hj I₀ E₀ s hpr t`. Rewrite using `[restrictedEmbedding_eq_ι_comp_embeddingIntoAmbient]`. Conclude with `@IsClosedImmersion.comp _ _ _ _ _ hι hemb`.
+-/
 theorem isClosedImmersion_restrictedEmbedding [AlgebraicGeometry.IsNoetherian T.scheme]
     (hpr : (MarkedBlowupSequenceData.ofMarkedSequence s).toBlowupSequenceData.CentersContainNoComponent)
     (U₀ : (s.toSequenceOfBlowups.schemeAt 0).Opens)
@@ -178,6 +216,13 @@ theorem isClosedImmersion_restrictedEmbedding [AlgebraicGeometry.IsNoetherian T.
   rw [restrictedEmbedding_eq_ι_comp_embeddingIntoAmbient]
   exact @IsClosedImmersion.comp _ _ _ _ _ hι hemb
 
+/- English proof (translation)
+Establish `h1` using `embeddingIntoAmbient_comp_blowupMorphism hres hno T j hj I₀ E₀ s hpr t`. Establish `h2` using `restrictedBlowupMorphism_comp_ι T j hj I₀ E₀ s U₀ t`. Establish `e1 : restrictedEmbedding T j hj I₀ E₀ s hres hno hpr U₀ (t + 1) ≫ (ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).map t = (iteratedPreimage T j hj I₀ E₀ s U₀ (t + 1)).ι ≫ (embeddingIntoAmbient hres hno T j hj I₀ E₀ s hpr (t + 1) ≫ (ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).map …`. Rewrite using `[restrictedEmbedding_eq_ι_comp_embeddingIntoAmbient]`. Conclude with `Category.assoc _ _ _`.
+
+Establish `e2 : (iteratedPreimage T j hj I₀ E₀ s U₀ (t + 1)).ι ≫ (embeddingIntoAmbient hres hno T j hj I₀ E₀ s hpr (t + 1) ≫ (ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).map t) = (iteratedPreimage T j hj I₀ E₀ s U₀ (t + 1)).ι ≫ (s.toSequenceOfBlowups.transitionMapSucc t ≫ embeddingIntoAmb …` using `congrArg (fun g => (iteratedPreimage T j hj I₀ E₀ s U₀ (t + 1)).ι ≫ g) h1`. Establish `e3 : (iteratedPreimage T j hj I₀ E₀ s U₀ (t + 1)).ι ≫ (s.toSequenceOfBlowups.transitionMapSucc t ≫ embeddingIntoAmbient hres hno T j hj I₀ E₀ s hpr t) = ((iteratedPreimage T j hj I₀ E₀ s U₀ (t + 1)).ι ≫ s.toSequenceOfBlowups.transitionMapSucc t) ≫ embeddingIntoAmbient hres hno T …` using `(Category.assoc _ _ _).symm`. Establish `e4 : ((iteratedPreimage T j hj I₀ E₀ s U₀ (t + 1)).ι ≫ s.toSequenceOfBlowups.transitionMapSucc t) ≫ embeddingIntoAmbient hres hno T j hj I₀ E₀ s hpr t = (restrictedBlowupMorphism T j hj I₀ E₀ s U₀ t ≫ (iteratedPreimage T j hj I₀ E₀ s U₀ t).ι) ≫ embeddingIntoAmbient hres hno T j h …` using `congrArg (fun f => f ≫ embeddingIntoAmbient hres hno T j hj I₀ E₀ s hpr t) h2.symm`. Establish `e5 : (restrictedBlowupMorphism T j hj I₀ E₀ s U₀ t ≫ (iteratedPreimage T j hj I₀ E₀ s U₀ t).ι) ≫ embeddingIntoAmbient hres hno T j hj I₀ E₀ s hpr t = restrictedBlowupMorphism T j hj I₀ E₀ s U₀ t ≫ restrictedEmbedding T j hj I₀ E₀ s hres hno hpr U₀ t`. Rewrite using `[restrictedEmbedding_eq_ι_comp_embeddingIntoAmbient]`.
+
+Conclude with `Category.assoc _ _ _`. Conclude with `e1.trans (e2.trans (e3.trans (e4.trans e5)))`.
+-/
 theorem restrictedEmbedding_comp_blowupMorphism [AlgebraicGeometry.IsNoetherian T.scheme]
     (hpr : (MarkedBlowupSequenceData.ofMarkedSequence s).toBlowupSequenceData.CentersContainNoComponent)
     (U₀ : (s.toSequenceOfBlowups.schemeAt 0).Opens) (t : ℕ) :
@@ -215,6 +260,11 @@ theorem restrictedEmbedding_comp_blowupMorphism [AlgebraicGeometry.IsNoetherian 
     exact Category.assoc _ _ _
   exact e1.trans (e2.trans (e3.trans (e4.trans e5)))
 
+/- English proof (translation)
+Establish `h1 : embeddingIntoAmbient hres hno T j hj I₀ E₀ s hpr t ≫ (ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).projectionToBase t = s.toSequenceOfBlowups.projectionToBase t ≫ divisorEmbedding T j hj I₀ E₀` using `embeddingIntoAmbient_comp_projectionToBase hres hno T j hj I₀ E₀ s hpr t`. Establish `h2 : (s.toSequenceOfBlowups.projectionToBase t ≫ divisorEmbedding T j hj I₀ E₀) ≫ T.structMap = s.projectionToSpec t` using `(Category.assoc (s.toSequenceOfBlowups.projectionToBase t) (divisorEmbedding T j hj I₀ E₀) T.structMap).trans (MarkedSequenceOfBlowups.projectionToSpec_eq s t).symm`. Establish `h3 : (embeddingIntoAmbient hres hno T j hj I₀ E₀ s hpr t ≫ (ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).projectionToBase t) ≫ T.structMap = s.projectionToSpec t`. Rewrite using `[h1]`. Conclude with `h2`.
+
+Establish `key : embeddingIntoAmbient hres hno T j hj I₀ E₀ s hpr t ≫ ambientBlowupSeqStructureMorphism hres hno T j hj I₀ E₀ s hpr t = s.projectionToSpec t` using `(Category.assoc (embeddingIntoAmbient hres hno T j hj I₀ E₀ s hpr t) ((ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).projectionToBase t) T.structMap).symm.trans h3`. Establish `e1 : restrictedEmbedding T j hj I₀ E₀ s hres hno hpr U₀ t ≫ ambientBlowupSeqStructureMorphism hres hno T j hj I₀ E₀ s hpr t = (iteratedPreimage T j hj I₀ E₀ s U₀ t).ι ≫ (embeddingIntoAmbient hres hno T j hj I₀ E₀ s hpr t ≫ ambientBlowupSeqStructureMorphism hres hno T j hj I₀ E₀ s …`. Rewrite using `[restrictedEmbedding_eq_ι_comp_embeddingIntoAmbient]`. Conclude with `Category.assoc _ _ _`. Conclude with `e1.trans (congrArg (fun g => (iteratedPreimage T j hj I₀ E₀ s U₀ t).ι ≫ g) key)`.
+-/
 theorem restrictedEmbedding_comp_structureMorphism_ambientBlowupSeq [AlgebraicGeometry.IsNoetherian T.scheme]
     (hpr : (MarkedBlowupSequenceData.ofMarkedSequence s).toBlowupSequenceData.CentersContainNoComponent)
     (U₀ : (s.toSequenceOfBlowups.schemeAt 0).Opens) (t : ℕ) :
@@ -245,6 +295,13 @@ theorem restrictedEmbedding_comp_structureMorphism_ambientBlowupSeq [AlgebraicGe
     exact Category.assoc _ _ _
   exact e1.trans (congrArg (fun g => (iteratedPreimage T j hj I₀ E₀ s U₀ t).ι ≫ g) key)
 
+/- English proof (translation)
+Establish `hlen : (MarkedBlowupSequenceData.ofMarkedSequence s).toBlowupSequenceData.length = s.toSequenceOfBlowups.length`. Rewrite using `[MarkedBlowupSequenceData.blowupSequenceData_ofMarkedSequence, BlowupSequenceData.ofSequenceOfBlowups_length]`. Establish `htlt : t < (MarkedBlowupSequenceData.ofMarkedSequence s).toBlowupSequenceData.length`. Rewrite using `[hlen]`. Conclude with `ht`.
+
+Establish `htle : t + 1 ≤ (MarkedBlowupSequenceData.ofMarkedSequence s).toBlowupSequenceData.length` using `htlt`. Establish `: AlgebraicGeometry.IsNoetherian ((ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).obj (t + 1))` using `isNoetherian_ambientBlowupSequence_schemeAt (T.boundary.get ⟨j, hj⟩).subschemeι (MarkedBlowupSequenceData.ofMarkedSequence s).toBlowupSequenceData hres hno hpr (t + 1) htle`. Establish `: AlgebraicGeometry.IsLocallyNoetherian ((ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).obj (t + 1))` using `inferInstance`. Establish `hker : Scheme.Hom.ker (embeddingIntoAmbient hres hno T j hj I₀ E₀ s hpr (t + 1)) = Blowup.strictTransform ((ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).map t) ((ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).center t) (Scheme.Hom.ker (embeddingIntoAmbient hres hno T j hj I₀ E₀ s …` using `ker_embeddingIntoAmbientBlowupSequence_succ (T.boundary.get ⟨j, hj⟩).subschemeι (MarkedBlowupSequenceData.ofMarkedSequence s).toBlowupSequenceData hres hno hpr t htlt`. Establish `h` using `ker_preimage_ι_comp_eq_strictTransform_of_isClopen (embeddingIntoAmbient hres hno T j hj I₀ E₀ s hpr t) (embeddingIntoAmbient hres hno T j hj I₀ E₀ s hpr (t + 1)) (s.toSequenceOfBlowups.transitionMapSucc t) ((ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).map t) (embeddingIntoAmbi …`.
+
+Rewrite using `[restrictedEmbedding_eq_ι_comp_embeddingIntoAmbient, restrictedEmbedding_eq_ι_comp_embeddingIntoAmbient, iteratedPreimage_succ]`. Conclude with `h`.
+-/
 theorem ker_restrictedEmbedding_succ [AlgebraicGeometry.IsNoetherian T.scheme]
     (hpr : (MarkedBlowupSequenceData.ofMarkedSequence s).toBlowupSequenceData.CentersContainNoComponent)
     (U₀ : (s.toSequenceOfBlowups.schemeAt 0).Opens)
@@ -282,6 +339,13 @@ theorem ker_restrictedEmbedding_succ [AlgebraicGeometry.IsNoetherian T.scheme]
   rw [restrictedEmbedding_eq_ι_comp_embeddingIntoAmbient, restrictedEmbedding_eq_ι_comp_embeddingIntoAmbient, iteratedPreimage_succ]
   exact h
 
+/- English proof (translation)
+Introduce `t`. Proceed by induction on `t with`. Consider the case `zero`. Introduce `_`. Conclude with `hsupp`.
+
+Consider the case `succ n ih`. Introduce `hn`. Establish `hn' : n < s.toSequenceOfBlowups.length` using `hn`. Establish `h1` using `s.support_ideal_succ_subset_preimage n hn'`. Establish `h2` using `ih (le_of_lt hn')`.
+
+Introduce `x hx`. Establish `hx1 : (s.toSequenceOfBlowups.transitionMapSucc n).base x ∈ (((s.ideal n).support : Set ↥(s.toSequenceOfBlowups.schemeAt n)))` using `h1 hx`. Conclude with `h2 hx1`.
+-/
 private theorem support_ideal_subset_iteratedPreimage (U₀ : (s.toSequenceOfBlowups.schemeAt 0).Opens)
     (hsupp : (((s.ideal 0).support : Set ↥(s.toSequenceOfBlowups.schemeAt 0))) ⊆
       (U₀ : Set ↥(s.toSequenceOfBlowups.schemeAt 0))) :
@@ -303,6 +367,11 @@ private theorem support_ideal_subset_iteratedPreimage (U₀ : (s.toSequenceOfBlo
           (((s.ideal n).support : Set ↥(s.toSequenceOfBlowups.schemeAt n))) := h1 hx
       exact h2 hx1
 
+/- English proof (translation)
+Introduce `x hx`. Establish `h1 : x ∈ orderAtLeastLocus (s.ideal t) T.mult` using `s.center_order t ht hx`. Establish `h2 : x ∈ orderAtLeastLocus (s.ideal t) 1` using `orderAtLeastLocus_subset_of_le (s.ideal t) hm h1`. Establish `h3 : x ∈ (s.ideal t).support` using `(mem_orderAtLeastLocus_one_iff _ _).1 h2`. Establish `h4 : x ∈ (((s.ideal t).support : Set ↥(s.toSequenceOfBlowups.schemeAt t)))` using `h3`.
+
+Conclude with `support_ideal_subset_iteratedPreimage T j hj I₀ E₀ s U₀ hsupp t (le_of_lt ht) h4`.
+-/
 private theorem support_center_subset_iteratedPreimage (U₀ : (s.toSequenceOfBlowups.schemeAt 0).Opens) (hm : 1 ≤ T.mult)
     (hsupp : (((s.ideal 0).support : Set ↥(s.toSequenceOfBlowups.schemeAt 0))) ⊆
       (U₀ : Set ↥(s.toSequenceOfBlowups.schemeAt 0)))
@@ -317,12 +386,20 @@ private theorem support_center_subset_iteratedPreimage (U₀ : (s.toSequenceOfBl
   have h4 : x ∈ (((s.ideal t).support : Set ↥(s.toSequenceOfBlowups.schemeAt t))) := h3
   exact support_ideal_subset_iteratedPreimage T j hj I₀ E₀ s U₀ hsupp t (le_of_lt ht) h4
 
+/- English proof (translation)
+Substitute `hJ` using the available equality. Conclude with `Scheme.IdealSheafData.map_comp J ι emb`.
+-/
 private theorem imageIdealSheaf_comp_of_eq {S X P : Scheme.{u}} (ι : S ⟶ X) (emb : X ⟶ P)
     (J : S.IdealSheafData) (Z : X.IdealSheafData) (hJ : imageIdealSheaf ι J = Z) :
     imageIdealSheaf (ι ≫ emb) J = imageIdealSheaf emb Z := by
   subst hJ
   exact Scheme.IdealSheafData.map_comp J ι emb
 
+/- English proof (translation)
+Establish `hcl : IsClosed ((iteratedPreimage T j hj I₀ E₀ s U₀ t : Set ↥(s.toSequenceOfBlowups.schemeAt t)))` using `isClosed_iteratedPreimage T j hj I₀ E₀ s U₀ hU t`. Establish `: AlgebraicGeometry.IsClosedImmersion (iteratedPreimage T j hj I₀ E₀ s U₀ t).ι` using `Scheme.Opens.isClosedImmersion_ι_of_isClosed _ hcl`. Establish `hsub : (((s.toSequenceOfBlowups.center t).support : Set ↥(s.toSequenceOfBlowups.schemeAt t))) ⊆ ((iteratedPreimage T j hj I₀ E₀ s U₀ t : Set ↥(s.toSequenceOfBlowups.schemeAt t)))` using `support_center_subset_iteratedPreimage T j hj I₀ E₀ s U₀ hm hsupp t ht`. Establish `h1 : imageIdealSheaf (iteratedPreimage T j hj I₀ E₀ s U₀ t).ι ((s.toSequenceOfBlowups.center t).comap (iteratedPreimage T j hj I₀ E₀ s U₀ t).ι) = s.toSequenceOfBlowups.center t` using `imageIdealSheaf_comap_ι_eq_self_of_support_subset (s.toSequenceOfBlowups.center t) (iteratedPreimage T j hj I₀ E₀ s U₀ t) hcl hsub`. Rewrite using `[ambientBlowupSeq_center_eq_imageIdealSheaf, restrictedEmbedding_eq_ι_comp_embeddingIntoAmbient]`.
+
+Conclude with `(imageIdealSheaf_comp_of_eq (iteratedPreimage T j hj I₀ E₀ s U₀ t).ι (embeddingIntoAmbient hres hno T j hj I₀ E₀ s hpr t) ((s.toSequenceOfBlowups.center t).comap (iteratedPreimage T j hj I₀ E₀ s U₀ t).ι) (s.toSequenceOfBlowups.center t) h1).symm`.
+-/
 theorem center_ambientBlowupSeq_eq_imageIdealSheaf [AlgebraicGeometry.IsNoetherian T.scheme]
     (hpr : (MarkedBlowupSequenceData.ofMarkedSequence s).toBlowupSequenceData.CentersContainNoComponent)
     (U₀ : (s.toSequenceOfBlowups.schemeAt 0).Opens)

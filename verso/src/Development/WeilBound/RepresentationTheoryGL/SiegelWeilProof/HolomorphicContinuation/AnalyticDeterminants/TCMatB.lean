@@ -12,24 +12,39 @@ open PositivityTheory.Rg.Sw PositivityTheory.Rg.Sw.LVs
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Unfold `JJ`. Rewrite using `[fromBlocks_multiply, ← fromBlocks_one, fromBlocks_neg]`. Simplify using the standard rewrite rules.
+-/
 theorem jj_mul_jj : JJ n * JJ n = -1 := by
   unfold JJ
   rw [fromBlocks_multiply, ← fromBlocks_one, fromBlocks_neg]
   simp
 
+/- English proof (translation)
+Unfold `InG at *`. Rewrite using `[conjTranspose_mul, show hᴴ * gᴴ * JJ n * (g * h) = hᴴ * (gᴴ * JJ n * g) * h by simp only [Matrix.mul_assoc], hg, hh]`.
+-/
 theorem inG_mul {g h : M2 n} (hg : InG g) (hh : InG h) : InG (g * h) := by
   unfold InG at *
   rw [conjTranspose_mul, show hᴴ * gᴴ * JJ n * (g * h) = hᴴ * (gᴴ * JJ n * g) * h by simp only [Matrix.mul_assoc], hg, hh]
 
+/- English proof (translation)
+Unfold `InG at hg`. Rewrite using `[show -(JJ n) * gᴴ * JJ n * g = -(JJ n) * (gᴴ * JJ n * g) by simp only [Matrix.mul_assoc], hg, neg_mul, jj_mul_jj, neg_neg]`.
+-/
 theorem inG_left_inv {g : M2 n} (hg : InG g) : (-(JJ n) * gᴴ * JJ n) * g = 1 := by
   unfold InG at hg
   rw [show -(JJ n) * gᴴ * JJ n * g = -(JJ n) * (gᴴ * JJ n * g) by simp only [Matrix.mul_assoc], hg, neg_mul, jj_mul_jj,
     neg_neg]
 
+/- English proof (translation)
+Rewrite using `[Matrix.inv_eq_left_inv (inG_left_inv hg)]`. Conclude with `mul_eq_one_comm.1 (inG_left_inv hg)`.
+-/
 theorem inG_mul_inv {g : M2 n} (hg : InG g) : g * g⁻¹ = 1 := by
   rw [Matrix.inv_eq_left_inv (inG_left_inv hg)]
   exact mul_eq_one_comm.1 (inG_left_inv hg)
 
+/- English proof (translation)
+Establish `h1` using `inG_mul_inv hg`. Unfold `InG at *`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem inG_inv {g : M2 n} (hg : InG g) : InG g⁻¹ := by
   have h1 := inG_mul_inv hg
   unfold InG at *
@@ -37,10 +52,20 @@ theorem inG_inv {g : M2 n} (hg : InG g) : InG g⁻¹ := by
     _ = (g * g⁻¹)ᴴ * JJ n * (g * g⁻¹) := by rw [conjTranspose_mul]; simp only [Matrix.mul_assoc]
     _ = JJ n := by rw [h1]; simp
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.Yha8.main j Q S hQ hS`.
+-/
 theorem mul_compl_zero (j : ℕ) (Q S : Matrix (Fin n) (Fin n) ℂ) (hQ : ∀ a b, Q a b ≠ 0 → b ∈ blkA j)
     (hS : ∀ a b, S a b ≠ 0 → a ∈ blkB j) : Q * S = 0 :=
   _root_.UpperTheory.Reformulated.B.Yha8.main j Q S hQ hS
 
+/- English proof (translation)
+Establish `hQS : Q * S = 0` using `mul_compl_zero j Q S (fun a b h => (hQ a b h).2) (fun a b h => (hS a b h).1)`. Establish `hRP : R * P = 0`. Use extensionality with `a b`. Rewrite using `[Matrix.mul_apply, Matrix.zero_apply]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `hr : R a k = 0`. Simplify using `[hr]`. Distinguish the cases in `hp : P k b = 0`. Simplify using `[hp]`. Conclude with `absurd (hP k b hp).1 (by have := (hR a k hr).2; simp [blkB] at this; exact this)`.
+
+Unfold `mX`. Rewrite using `[cm_inv, show Cm n * fromBlocks 1 Q R 1 * CmI n * (Cm n * fromBlocks (1 + P) 0 0 (1 + S) * CmI n) = Cm n * (fromBlocks 1 Q R 1 * (CmI n * Cm n) * fromBlocks (1 + P) 0 0 (1 + S)) * CmI n by`. Simplify using `only [Matrix.mul_assoc], cmI_mul_cm, Matrix.mul_one, fromBlocks_multiply]`. Simplify using `[Matrix.mul_add, hQS, hRP]`.
+-/
 theorem mX_factor (j : ℕ) (P Q R S : Matrix (Fin n) (Fin n) ℂ) (hP : ∀ a b, P a b ≠ 0 → a ∈ blkA j ∧ b ∈ blkB j)
     (hS : ∀ a b, S a b ≠ 0 → a ∈ blkB j ∧ b ∈ blkA j) (hQ : ∀ a b, Q a b ≠ 0 → a ∈ blkA j ∧ b ∈ blkA j)
     (hR : ∀ a b, R a b ≠ 0 → a ∈ blkB j ∧ b ∈ blkB j) :

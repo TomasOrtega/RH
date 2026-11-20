@@ -26,6 +26,9 @@ section Comm
 
 variable {K : Type} [Field K] [NumberField K]
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `x ⟨t, ht, hx⟩`. Conclude with `⟨s * t, lc_mul_notMem w hs ht, by rw [mul_smul]; exact h1 _ hx⟩`. Introduce and unpack `x ⟨t, ht, hx⟩`. Conclude with `⟨s * t, lc_mul_notMem w hs ht, by rw [mul_smul]; exact h2 _ hx⟩`.
+-/
 theorem localized_eq_of_commensurable {W : Type} [AddCommGroup W] [Module (𝓞 K) W] (w : HeightOneSpectrum (𝓞 K))
     {M M' : Submodule (𝓞 K) W} {s : 𝓞 K} (hs : s ∉ w.asIdeal) (h1 : ∀ x ∈ M, s • x ∈ M') (h2 : ∀ x ∈ M', s • x ∈ M) :
     Formalism.HermitianLatticesTheory.localization₂ w.asIdeal M = Formalism.HermitianLatticesTheory.localization₂ w.asIdeal M' := by
@@ -35,12 +38,18 @@ theorem localized_eq_of_commensurable {W : Type} [AddCommGroup W] [Module (𝓞 
   · rintro x ⟨t, ht, hx⟩
     exact ⟨s * t, lc_mul_notMem w hs ht, by rw [mul_smul]; exact h2 _ hx⟩
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `only [lc_mem_locP, Submodule.mem_comap, map_smul]`.
+-/
 theorem localized_comap {V W : Type} [AddCommGroup V] [Module (𝓞 K) V] [AddCommGroup W] [Module (𝓞 K) W]
     (w : HeightOneSpectrum (𝓞 K)) (f : V →ₗ[𝓞 K] W) (N : Submodule (𝓞 K) W) :
     Formalism.HermitianLatticesTheory.localization₂ w.asIdeal (N.comap f) = (Formalism.HermitianLatticesTheory.localization₂ w.asIdeal N).comap f := by
   ext x
   simp only [lc_mem_locP, Submodule.mem_comap, map_smul]
 
+/- English proof (translation)
+Introduce `x hx y hy`. Use `show (s • x) ⬝ᵥ y ∈ (1 : Submodule (𝓞 K) K)`. Rewrite using `[smul_dotProduct, ← dotProduct_smul]`. Conclude with `hx _ (h y hy)`.
+-/
 theorem lat_dualFr_comm {n : ℕ} {M M' : Submodule (𝓞 K) (Fin n → K)} {s : 𝓞 K} (h : ∀ y ∈ M, s • y ∈ M') :
     ∀ x ∈ dualFr M', s • x ∈ dualFr M := by
   intro x hx y hy
@@ -50,6 +59,11 @@ theorem lat_dualFr_comm {n : ℕ} {M M' : Submodule (𝓞 K) (Fin n → K)} {s :
 
 variable {E : Type} [Field E] [NumberField E] {ι : Type} [Fintype ι] {n : ℕ} (emb : ι → E →+* K)
 
+/- English proof (translation)
+Introduce `y hy`. Establish `hle : tauLat emb τ L ≤ (tauLat emb τ L').comap (LinearMap.lsmul (𝓞 K) (Fin n → K) (q : 𝓞 K))`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Use `show (q : 𝓞 K) • (fun a => emb τ (x a)) ∈ tauLat emb τ L'`.
+
+Use `Submodule.subset_span ⟨(q : 𝓞 E) • x, h x hx, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `a`. Simplify using `[Algebra.smul_def]`. Conclude with `hle hy`.
+-/
 theorem lat_tauLat_comm (τ : ι) {L L' : Submodule (𝓞 E) (Fin n → E)} {q : ℕ} (h : ∀ x ∈ L, (q : 𝓞 E) • x ∈ L') :
     ∀ y ∈ tauLat emb τ L, (q : 𝓞 K) • y ∈ tauLat emb τ L' := by
   intro y hy
@@ -62,6 +76,13 @@ theorem lat_tauLat_comm (τ : ι) {L L' : Submodule (𝓞 E) (Fin n → E)} {q :
     simp [Algebra.smul_def]
   exact hle hy
 
+/- English proof (translation)
+Establish `hM : ∀ τ, Formalism.HermitianLatticesTheory.localization₂ w.asIdeal (dualFr (tauLat emb τ L)) = Formalism.HermitianLatticesTheory.localization₂ w.asIdeal (dualFr (tauLat emb τ L'))` using `fun τ => localized_eq_of_commensurable w hq (lat_dualFr_comm (lat_tauLat_comm emb τ h2)) (lat_dualFr_comm (lat_tauLat_comm emb τ h1))`. Establish `hlat` using `fun τ => dualFr_tauLat_isLattice emb τ L hL`. Establish `hlat'` using `fun τ => dualFr_tauLat_isLattice emb τ L' hL'`. Use `choose B hB using fun τ => latticeBasisExists_holds K n (dualFr (tauLat emb τ L)) (hlat τ) w`. Establish `hB' : ∀ τ, IsBasisAt w (dualFr (tauLat emb τ L')) (B τ)` using `fun τ => by`.
+
+Unfold `IsBasisAt`. Rewrite using `[← hM τ]`. Conclude with `hB τ`. Unfold `nabAtr nabK`. Rewrite using `[localized_comap, localized_comap]`.
+
+Use `congr 1`. Unfold `nabP`. Rewrite using `[nb_loc (nb_stab_nab lam) (nb_comm_nab lam) _ hlat w B hB, nb_loc (nb_stab_nab lam) (nb_comm_nab lam) _ hlat' w B hB']`.
+-/
 theorem localized_nabla_eq_of_commensurable (lam : ι → DomWeight n) (w : HeightOneSpectrum (𝓞 K)) {L L' : Submodule (𝓞 E) (Fin n → E)}
     (hL : Submodule.IsLattice E L) (hL' : Submodule.IsLattice E L') {q : ℕ} (h1 : ∀ x ∈ L, (q : 𝓞 E) • x ∈ L')
     (h2 : ∀ x ∈ L', (q : 𝓞 E) • x ∈ L) (hq : (q : 𝓞 K) ∉ w.asIdeal) :
@@ -86,6 +107,11 @@ end Comm
 
 end
 
+/- English proof (translation)
+Unfold `NG.heckeD`. Apply `finsum_induction (fun w => w ∈ Λ g)` to reduce the goal to its premises. Conclude with `(Λ g).zero_mem`. Introduce `a b ha hb`. Conclude with `(Λ g).add_mem ha hb`.
+
+Introduce `c split_ifs with hc`. Conclude with `hΛ g _ hc.choose_spec.1 (hf _)`. Conclude with `(Λ g).zero_mem`.
+-/
 theorem heckeD_mem {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ} {W : Type} [AddCommGroup W]
     (Λ : Formalism.AUTREP.GAf L n → AddSubmonoid W) (J : Subgroup (Formalism.AUTREP.GAf L n)) (T : Set (Formalism.AUTREP.GAf L n))
     (hΛ : ∀ g, ∀ x ∈ T, Λ (g * x) ≤ Λ g) (f : Formalism.AUTREP.GAf L n → W) (hf : ∀ g, f g ∈ Λ g) (g : Formalism.AUTREP.GAf L n) :
@@ -100,6 +126,9 @@ theorem heckeD_mem {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ} 
     · exact hΛ g _ hc.choose_spec.1 (hf _)
     · exact (Λ g).zero_mem
 
+/- English proof (translation)
+Take `⟨v, hv, e⟩` from `heckeD_mem (fun g => (Λ g).map c0.toAddMonoidHom) J _ (fun g x hx => AddSubmonoid.monotone_map (hΛ g x hx)) f (fun g => by obtain ⟨v, hv, e⟩ := hf g; exact ⟨v, hv, e.symm⟩) g`. Use `⟨v, hv, ?_⟩` and prove the remaining obligations. Use `show ((s.q : ℂ) ^ (k * (n - 1)))⁻¹ • NG.heckeD J (Formalism.AUTREP.tSet L n s ϖ k) f g = _`. Rewrite using `[← e, map_smulₛₗ, map_inv₀, map_pow, map_natCast]`. Both sides reduce to the same expression.
+-/
 theorem tN_val {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ} {W : Type} [AddCommGroup W] [Module ℂ W]
     {K U : Type} [Field K] [AddCommGroup U] [Module K U] {σ : K →+* ℂ} (c0 : U →ₛₗ[σ] W)
     (Λ : Formalism.AUTREP.GAf L n → AddSubmonoid U) (J : Subgroup (Formalism.AUTREP.GAf L n)) (s : ReciprocityTheory.Aut.SplitPlace L)
@@ -123,8 +152,14 @@ variable {K : Type} [Field K] [NumberField K] [StarRing K] (S : CSD K) {G₀ : T
 def lvlLin : (Fin (S.lvlDim r P ψ) → K) →ₗ[K] S.Forms :=
   (S.basis.equivFun.symm : (Fin S.dim → K) →ₗ[K] S.Forms) ∘ₗ (S.lvlE r P ψ).mulVecLin
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem lvlLin_apply (x : Fin (S.lvlDim r P ψ) → K) : lvlLin S r P ψ x = lvlForm S r P ψ x := rfl
 
+/- English proof (translation)
+Establish `e : pres.ext (lvlForm S r P ψ x).1 = ∑ a, σ (x a) • pres.ext (lvlForm S r P ψ (Pi.single a 1)).1` using `by show pres.extL (lvlLin S r P ψ x) = ∑ a, σ (x a) • pres.extL (lvlLin S r P ψ (Pi.single a 1)) conv_lhs => rw [pi_eq_sum_univ' x]`. Simplify using `only [map_sum, map_smul, map_smulₛₗ]`. Rewrite using `[e]`. Conclude with `Submodule.sum_mem _ fun a _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, rfl⟩)`.
+-/
 theorem ext_mem_span {G Γ W : Type} [Group G] [Group Γ] [NormedAddCommGroup W] [InnerProductSpace ℂ W] {ι : Γ →* G}
     {σ : K →+* ℂ} {ρ : Γ →* Module.End ℂ W} {J : Subgroup G} {χ : J →* ℂˣ} (pres : Bridge.ClassPres ι S σ ρ J χ)
     (x : Fin (S.lvlDim r P ψ) → K) :
@@ -137,6 +172,11 @@ theorem ext_mem_span {G Γ W : Type} [Group G] [Group Γ] [NormedAddCommGroup W]
   rw [e]
   exact Submodule.sum_mem _ fun a _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, rfl⟩)
 
+/- English proof (translation)
+Use `choose t ht hm using h`. Use `⟨∏ c, t c, ?_, fun c => ?_⟩` and prove the remaining obligations. Conclude with `(w.asIdeal.primeCompl (hp := w.isPrime)).prod_mem (fun c _ => ht c)`. Establish `e : (lvlForm S r P ψ ((∏ c, t c) • x)).1 c = (∏ c, t c) • (lvlForm S r P ψ x).1 c`. Rewrite using `[← algebraMap_smul K (∏ c, t c) x, ← lvlLin_apply, map_smul, ← algebraMap_smul K (∏ c, t c)]`.
+
+Both sides reduce to the same expression. Rewrite using `[e, ← Finset.prod_erase_mul _ _ (Finset.mem_univ c), mul_smul]`. Conclude with `Submodule.smul_mem _ _ (hm c)`.
+-/
 theorem clear_den (w : HeightOneSpectrum (𝓞 K)) (x : Fin (S.lvlDim r P ψ) → K)
     (h : ∀ c, ∃ t : 𝓞 K, t ∉ w.asIdeal ∧ t • (lvlForm S r P ψ x).1 c ∈ S.Nab c) :
     ∃ d : 𝓞 K, d ∉ w.asIdeal ∧ ∀ c, (lvlForm S r P ψ (d • x)).1 c ∈ S.Nab c := by
@@ -152,6 +192,13 @@ theorem clear_den (w : HeightOneSpectrum (𝓞 K)) (x : Fin (S.lvlDim r P ψ) �
 
 end Lvl
 
+/- English proof (translation)
+Take `⟨t, ht, hv⟩` from `hv`. Establish `hq0 : (q : K) ≠ 0`. Introduce `h`. Establish `: q = 0` using `by exact_mod_cast h`. Apply `hq` to reduce the goal to its premises.
+
+Rewrite using `[this, Nat.cast_zero]`. Conclude with `w.asIdeal.zero_mem`. Use `⟨t * (q : 𝓞 K) ^ N, fun h => ?_, ?_⟩` and prove the remaining obligations. Break down `w.isPrime.mem_or_mem h with h | h` into its components or cases. Conclude with `ht h`.
+
+Conclude with `hq (w.isPrime.mem_of_pow_mem _ h)`. Rewrite using `[mul_smul, ← algebraMap_smul K ((q : 𝓞 K) ^ N), map_pow, map_natCast, smul_smul ((q : K) ^ N), mul_inv_cancel₀ (pow_ne_zero _ hq0), one_smul]`. Conclude with `hv`.
+-/
 theorem inv_smul_locP {K U : Type} [Field K] [NumberField K] [AddCommGroup U] [Module K U] [Module (𝓞 K) U]
     [IsScalarTower (𝓞 K) K U] (w : HeightOneSpectrum (𝓞 K)) (M : Submodule (𝓞 K) U) {q : ℕ} (N : ℕ)
     (hq : (q : 𝓞 K) ∉ w.asIdeal) {v : U} (hv : v ∈ Formalism.HermitianLatticesTheory.localization₂ w.asIdeal M) :
@@ -173,6 +220,11 @@ theorem inv_smul_locP {K U : Type} [Field K] [NumberField K] [AddCommGroup U] [M
 
 variable {D : D7}
 
+/- English proof (translation)
+Establish `h : Formalism.UG.bc (swapAE D) k.1 ∈ lev D.sp.cm V.gram 1 (flag1L L)` using `hk`. Take `⟨y, hy⟩` from `parLev_St h.1`. Establish `e : intGL D.host.F D.host.E V.rank y = Formalism.UG.bc (swapAE D) k.1`. Rewrite using `[← hy]`. Simplify using `[frGL]`.
+
+Establish `e2 : ((y.val a b : Formalism.L2.Herm.intAf D.host.F D.host.E) : EAf D) = swapAE D (k.1.val a b)` using `congrArg (fun g : GL (Fin V.rank) (EAf D) => g.val a b) e`. Rewrite using `[← e2]`. Conclude with `(y.val a b).2`.
+-/
 theorem lev_int (V : HSp D) (L : Formalism.L2.DIV.LevDat D.host.E ℂ V.rank) (k : Bridge.Gf V) (hk : k ∈ (levEnv V 1 L).J) (a b) :
     swapAE D (k.1.val a b) ∈ Formalism.L2.Herm.intAf D.host.F D.host.E := by
   have h : Formalism.UG.bc (swapAE D) k.1 ∈ lev D.sp.cm V.gram 1 (flag1L L) := hk
@@ -184,6 +236,11 @@ theorem lev_int (V : HSp D) (L : Formalism.L2.DIV.LevDat D.host.E ℂ V.rank) (k
   rw [← e2]
   exact (y.val a b).2
 
+/- English proof (translation)
+Establish `key : ∀ k ∈ (levEnv V 1 L).J, ∀ h, Bridge.hLat V h ≤ Bridge.hLat V (h * k)`. Introduce `k hk h y hy`. Use `(GlobalTheory.HLatStd.hLat_props D V hV).2.1 h k 1 (fun a b => by` as an intermediate fact. Rewrite using `[Nat.cast_one, one_mul]`. Conclude with `lev_int V L _ (inv_mem hk) a b) y hy`.
+
+Rewrite `this` using `[Nat.cast_one, one_smul]`. Then use the resulting hypothesis. Introduce `k hk h`. Use `le_antisymm ?_ (key k hk h)` and prove the remaining obligations. Use `key k⁻¹ (inv_mem hk) (h * k)` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel_right]`. Then use the resulting hypothesis.
+-/
 theorem hLat_lev (V : HSp D) (hV : Seed.FrmC.StdLat V) (L : Formalism.L2.DIV.LevDat D.host.E ℂ V.rank) :
     ∀ k ∈ (levEnv V 1 L).J, ∀ h, Bridge.hLat V (h * k) = Bridge.hLat V h := by
   have key : ∀ k ∈ (levEnv V 1 L).J, ∀ h, Bridge.hLat V h ≤ Bridge.hLat V (h * k) := by
@@ -196,10 +253,16 @@ theorem hLat_lev (V : HSp D) (hV : Seed.FrmC.StdLat V) (L : Formalism.L2.DIV.Lev
   have := key k⁻¹ (inv_mem hk) (h * k)
   rwa [mul_inv_cancel_right] at this
 
+/- English proof (translation)
+Rewrite using `[← hU x]`. Both sides reduce to the same expression.
+-/
 theorem swap_toGf {V : HSp D} (P : principalLevelFrame.RowPsi V V.rank) (hU : UnitFr P) (x) (a b) :
     swapAE D ((toGf P x).1.val a b) = (km D V.rank x).val a b := by
   rw [← hU x]; rfl
 
+/- English proof (translation)
+Take `⟨h1, h2, -⟩` from `GlobalTheory.HLatStd.hLat_props D V hV`. Establish `a1` using `h2 (h * y) y⁻¹ p (fun a b => by rw [inv_inv]; exact hy a b)`. Rewrite `a1` using `[mul_inv_cancel_right]`. Conclude with `localized_nabla_eq_of_commensurable _ lam w (h1 _) (h1 _) a1 (h2 h y p hy') hp`.
+-/
 theorem localization_nabAtr_eq' {V : HSp D} (hV : Seed.FrmC.StdLat V)
     (lam : D.what₂.Tau → DomWeight V.rank) (w : HeightOneSpectrum (𝓞 D.what₂.LL)) {p : ℕ} (hp : (p : 𝓞 D.what₂.LL) ∉ w.asIdeal)
     (h y : Bridge.Gf V)
@@ -212,6 +275,11 @@ theorem localization_nabAtr_eq' {V : HSp D} (hV : Seed.FrmC.StdLat V)
   rw [mul_inv_cancel_right] at a1
   exact localized_nabla_eq_of_commensurable _ lam w (h1 _) (h1 _) a1 (h2 h y p hy') hp
 
+/- English proof (translation)
+Establish `e1 : toGf P (g * x) = toGf P g * toGf P x` using `(toGf P).map_mul g x`. Establish `e2 : (toGf P x)⁻¹ = toGf P x⁻¹` using `((toGf P).map_inv x).symm`. Rewrite using `[e1]`. Use `localization_nabAtr_eq' hV lam w hp _ _ (fun a b => ?_) (fun a b => ?_)` and prove the remaining obligations. Rewrite using `[swap_toGf P hU]`.
+
+Conclude with `(hx a b).1`. Rewrite using `[e2, swap_toGf P hU]`. Conclude with `(hx a b).2`.
+-/
 theorem line₅ {V : HSp D} (hV : Seed.FrmC.StdLat V) (P : principalLevelFrame.RowPsi V V.rank) (hU : UnitFr P)
     (lam : D.what₂.Tau → DomWeight V.rank) (w : HeightOneSpectrum (𝓞 D.what₂.LL)) {p : ℕ} (hp : (p : 𝓞 D.what₂.LL) ∉ w.asIdeal)
     (g x : Formalism.AUTREP.GAf D.host.E V.rank)
@@ -228,6 +296,27 @@ theorem line₅ {V : HSp D} (hV : Seed.FrmC.StdLat V) (P : principalLevelFrame.R
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Take `⟨-, hspan, hrat, hnab, hy, hinj⟩` from `GlobalTheory.MtIn.lvlForm_adelic_basis _ _ _ _ _ S _ _ _ _ pres _ _ G₀ act tie P₀ ψ`. Establish `hbij` using `(GlobalTheory.MtInRat.toGf_bij_ratIso D V P hg hU).1`. Establish `hvals` using `GlobalTheory.T.adelicFormFunction_values_mem_coefficientLattice D V hV c S _ _ pres lam c0 pair del hmap hcoef hlev hint (lvlForm S act P₀ ψ x)`. Establish `hF0` using `ext_mem_span S act P₀ ψ pres x`. Rewrite `hF0` using `[hspan]`.
+
+Establish `hT` using `hTS _ ((htype _).1 hF0)`. Take `⟨eV, -, hce, -, hN, -⟩` from `hcoef`. Take `⟨u, hu, hu'⟩ : ∃ u : Bridge.Gf V → Formalism.AUTREP.GAf D.host.E V.rank, (∀ g, u (toGf P g) = g) ∧ ∀ h, toGf P (u h) = h` from `⟨Function.surjInv hbij.2, Function.leftInverse_surjInv hbij, Function.surjInv_eq hbij.2⟩`. Establish `hval` using `fun Λ h1 h2 => tN_val c0 Λ Js s ϖ k h1 (fun g => pres.ext (lvlForm S act P₀ ψ x).1 (toGf P g)) h2`. Establish `hv1 : ∀ g, ∃ v ∈ (⊤ : AddSubmonoid (VV D.what₂.LL lam)), pres.ext (lvlForm S act P₀ ψ x).1 (toGf P g) = c0 v` using `fun g => (Set.mem_range.1 (hvals.1 (toGf P g))).imp fun v hv => ⟨trivial, hv.symm⟩`.
+
+Take `⟨T, hTd⟩ : ∃ T : Formalism.AUTREP.GAf D.host.E V.rank → c.W, T = NG.tN (W` from `c.W) Js s ϖ k (fun g => pres.ext (lvlForm S act P₀ ψ x).1 (toGf P g)) := ⟨_, rfl⟩`. Use `replace hT : T ∈ TS := by rw [hTd]; exact hT`. Use `replace hval : ∀ Λ : Formalism.AUTREP.GAf D.host.E V.rank → AddSubmonoid (VV D.what₂.LL lam), (∀ g, ∀ y ∈ Formalism.AUTREP.tSet D.host.E V.rank s ϖ k, Λ (g * y) ≤ Λ g) → (∀ g, ∃ v ∈ Λ g, pres.ext (lvlForm S act P₀ ψ x).1 (toGf P g) = c0 v) → ∀ g, ∃ v ∈ Λ g, T g = c0 (((s.q : D.wh …`. Rewrite using `[hTd]`. Conclude with `hval`.
+
+Establish `hTu : (fun g => T (u (toGf P g))) = T` using `funext fun g => congrArg T (hu g)`. Establish `hT' : (fun g => T (u (toGf P g))) ∈ TS` using `by rw [hTu]; exact hT`. Establish `hcut` using `(htype (fun h => T (u h))).2 hT'`. Take `⟨x', hx'⟩` from `hrat _ hcut (fun a => by`. Take `⟨v, -, hv⟩` from `hval (fun _ => ⊤) (fun _ _ _ => le_rfl) hv1 (u (pres.y a))`.
+
+Conclude with `⟨eV.symm _, (hce _).trans ((congrArg c0 (eV.apply_symm_apply _)).trans hv.symm)⟩)`. Use `⟨x', (funext fun g => (congrFun hx' (toGf P g)).symm).trans (hTu.trans hTd), fun w hw hx => ?_⟩` and prove the remaining obligations. Take `⟨p, hp, hab, ⟨m, hq⟩, hts⟩` from `GlobalTheory.TSetDenom.tSet_denominator D V.rank s ϖ k hϖ`. Establish `hpw` using `hw p hp hab`. Establish `hqw : ((s.q : ℕ) : 𝓞 D.what₂.LL) ∉ w.asIdeal` using `fun h => hpw (w.isPrime.mem_of_pow_mem m (by`.
+
+Rewrite using `[hq, Nat.cast_pow] at h))` and apply the resulting hypothesis. Establish `hint'` using `hvals.2 ((hnab x).1 hx)`. Take `⟨d, hd, hdm⟩` from `clear_den S act P₀ ψ w x' (fun a => by`. Take `⟨v, hvm, hv⟩` from `hval (fun g => (Formalism.HermitianLatticesTheory.localization₂ w.asIdeal (nabAtr (labLL D) lam (Bridge.hLat V (toGf P g)))).toAddSubmonoid) (fun g y hy => le_of_eq (congrArg Submodule.toAddSubmonoid (line₅ hV P hU lam w hpw g y (hts y hy)))) (fun g => by`. Take `⟨v, hv, e⟩` from `hint' (toGf P g)`.
+
+Conclude with `⟨v, ⟨1, (w.asIdeal.primeCompl (hp := w.isPrime)).one_mem, by rwa [one_smul]⟩, e⟩) (u (pres.y a))`. Rewrite `hvm` using `[hu']`. Take `⟨t, ht, htm⟩` from `inv_smul_locP w _ (k * (V.rank - 1)) hqw hvm`. Use `⟨t, ht, ?_⟩` and prove the remaining obligations. Establish `e1 : (lvlForm S act P₀ ψ x').1 a = eV.symm (((s.q : D.what₂.LL) ^ (k * (V.rank - 1)))⁻¹ • v)`.
+
+Apply `hinj` to reduce the goal to its premises. Conclude with `(hy _ a).symm.trans ((congrFun hx' _).symm.trans (hv.trans ((hce _).trans (congrArg c0 (eV.apply_symm_apply _))).symm))`. Rewrite `htm` using `[← hN a]`. Take `⟨z, hz, hze⟩` from `htm`. Establish `: t • (lvlForm S act P₀ ψ x').1 a = z`.
+
+Apply `eV.injective` to reduce the goal to its premises. Rewrite using `[e1, ← algebraMap_smul D.what₂.LL t, map_smul, LinearEquiv.apply_symm_apply, algebraMap_smul]`. Conclude with `hze.symm`. Rewrite using `[this]`. Conclude with `hz)`.
+
+Conclude with `⟨d, hd, (hnab _).2 hdm⟩`.
+-/
 theorem tN_core {V : HSp D} {c : CoefA V} (P : principalLevelFrame.RowPsi V V.rank) (hg : V.gram = 1) (hV : Seed.FrmC.StdLat V) (hU : UnitFr P)
     {J : Subgroup (Bridge.Gf V)} {χ : J →* ℂˣ} {Qg : Subgroup (Bridge.Gf V)} {ch : Qg →* ℂˣ}
     {G₀ : Type} [Group G₀] [Fintype G₀] (S : CSD D.what₂.LL) (act : Representation D.what₂.LL G₀ S.Forms)
@@ -304,6 +393,9 @@ theorem tN_core {V : HSp D} {c : CoefA V} (P : principalLevelFrame.RowPsi V V.ra
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Introduce `D V hr Pg Q chi xi c P e hg hV hU hR halg hirr G₀ _ _ S act pres tie eG P₀ ψ₀ hred lam c0 pair del hmap hcoef hint B hB s ϖ k hs hϖ hk1 hk2 x`. Conclude with `tN_core P hg hV hU S act pres tie P₀ ψ₀⁻¹ lam c0 pair del hmap hcoef (hLat_lev V hV _) hint _ _ (GlobalTheory.T.definiteLevelForms_iff_stdGroupTypeSpace D V hr Pg Q chi xi c P e hg hU hR G₀ tie.red eG P₀ ψ₀ hred) s ϖ k hϖ (GlobalTheory.HeckeStdFacts.heckeStdPlain D.host.E V.rank …`.
+-/
 theorem tN_lvlForm : ∀ (D : D7) (V : HSp D) (hr : D.R.r ≤ V.rank) (Pg Q : Finset (Pl D.host.E)) (chi xi : ∀ PP : Pl D.host.E, (kP PP)ˣ →* ℂˣ) (c : CoefA V) (P : principalLevelFrame.RowPsi V V.rank) (e : ReciprocityTheory.Aut.GQ D.host.E V.rank ≃* Formalism.L2.Theta.GQ V), V.gram = 1 → Seed.FrmC.StdLat V → UnitFr P → RatIso P e → Formalism.AUTREP.IsAlgWeight D.host.E V.rank (wtRep c e) → (wtRep c e).IsIrreducible → ∀ (G₀ : Type) [Group G₀] [Fintype G₀] (S : CSD D.what₂.LL) (act : Representation D.what₂.LL G₀ S.Forms) (pres : Bridge.ClassPres (Bridge.ratF V) S D.what₂.embLL c.coef.ρ (levEnv V 1 (datV D V.rank hr Pg Q (LevelP.triv _ _ _) chi xi)).J (levEnv V 1 (datV D V.rank hr Pg Q (LevelP.triv _ _ _) chi xi)).χ) (tie : Bridge.ActTie (Bridge.ratF V) pres (levEnv V 1 (datV D V.rank hr Pg Q (LevelP.triv _ _ _) chi xi)).Q (levEnv V 1 (datV D V.rank hr Pg Q (LevelP.triv _ _ _) chi xi)).ch act) (eG : G₀ ≃* G0 Pg D.R.r) (P₀ : Subgroup G₀) (ψ₀ : P₀ →* D.what₂.LLˣ), (∀ q : (levEnv V 1 (datV D V.rank hr Pg Q (LevelP.triv _ _ _) chi xi)).Q, eG (tie.red q) = rTup 1 (datV D V.rank hr Pg Q (LevelP.triv _ _ _) chi xi) (Formalism.UG.bc (swapAE D) ((q : Bridge.Gf V) : GL _ _))) → ∀ (lam : D.what₂.Tau → DomWeight V.rank) (c0 : VV D.what₂.LL lam →ₛₗ[D.what₂.embLL] c.W) pair del, Bridge.CoefMapTie V c.coef c0 (rhoVr (labLL D) lam) → Bridge.CoefTie V c.coef pres lam c0 pair (nabAtr (labLL D) lam) del → (∀ k : (levEnv V 1 (datV D V.rank hr Pg Q (LevelP.triv _ _ _) chi xi)).J, ∃ z : 𝓞 D.what₂.LL, D.what₂.embLL (z : D.what₂.LL) = ((levEnv V 1 (datV D V.rank hr Pg Q (LevelP.triv _ _ _) chi xi)).χ k : ℂ)) → ∀ B, NG.HypOutside (stdJ (datV D V.rank hr Pg Q (levPOf eG D.what₂.embLL P₀ ψ₀) chi xi)) (stdX (datV D V.rank hr Pg Q (levPOf eG D.what₂.embLL P₀ ψ₀) chi xi)) B → ∀ (s : ReciprocityTheory.Aut.SplitPlace D.host.E) (ϖ : s.v.adicCompletion (maximalRealSubfield D.host.E)) (k : ℕ), s.v ∉ B → Formalism.AUTREP.IsUnif D.host.E s.v ϖ → 1 ≤ k → k ≤ V.rank → ∀ x, ∃ x', (fun g => pres.ext (lvlForm S act P₀ ψ₀⁻¹ x').1 (toGf P g)) = NG.tN (stdJ (datV D V.rank hr Pg Q (levPOf eG D.what₂.embLL P₀ ψ₀) chi xi)) s ϖ k (fun g => pres.ext (lvlForm S act P₀ ψ₀⁻¹ x).1 (toGf P g)) ∧ ∀ 𝔴 : HeightOneSpectrum (𝓞 D.what₂.LL), (∀ p : ℕ, p.Prime → s.Above p → (p : 𝓞 D.what₂.LL) ∉ 𝔴.asIdeal) → x ∈ S.lvlNab act P₀ ψ₀⁻¹ → ∃ d : 𝓞 D.what₂.LL, d ∉ 𝔴.asIdeal ∧ d • x' ∈ S.lvlNab act P₀ ψ₀⁻¹ := by
   intro D V hr Pg Q chi xi c P e hg hV hU hR halg hirr G₀ _ _ S act pres tie eG P₀ ψ₀ hred lam c0 pair del hmap hcoef hint
     B hB s ϖ k hs hϖ hk1 hk2 x

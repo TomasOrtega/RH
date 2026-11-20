@@ -19,6 +19,9 @@ section
 variable {R : Type} [CommRing R] [IsDomain R] [IsLocalRing R] {D : DegData R (maximalIdeal R)}
   {A : PolAV (Sp (FractionRing R))} {G : Over (Sp R)} [GrpObj G] [IsCommMonObj G]
 
+/- English proof (translation)
+Take `rfl` from `ha`. Take `rfl : k = k'` from `AddMonoidHom.ext hk`. Take `⟨u₁, u₂⟩` from `GlobalTheory.MumUniq.main R hR.1 D A G hG U a k`. Conclude with `u₂ g g' (congrFun (u₁ _ _ (linHom_iff_linEnd.1 h).2 (linHom_iff_linEnd.1 h').2))`.
+-/
 theorem linHom_unique (hR : Base R) (hG : IsSemiAbelian G) {U : Unif (maximalIdeal R) D A G} {a a' k k' g g'}
     (h : LinHom U.toUnifPre U.toUnifPre a k g) (h' : LinHom U.toUnifPre U.toUnifPre a' k' g') (ha : a = a')
     (hk : ∀ y, k y = k' y) : g = g' := by
@@ -29,6 +32,27 @@ theorem linHom_unique (hR : Base R) (hG : IsSemiAbelian G) {U : Unif (maximalIde
 
 end
 
+/- English proof (translation)
+Introduce `R _ _ _ hR D D' F hF A' G' _ _ hG' U' oA oG hlin G _ _ hG inc pr hinc hpr hip hpi A₀ G₀ _ _ hG₀ U₀`. Take `⟨-, hsym, g, hg⟩` from `hF`. Take `⟨u, u', hu, hu', hadj⟩` from `GlobalTheory.T.uniformisedGroups_adjointHomPair_closedForm R hR D' A' G' hG' U' D A₀ G₀ hG₀ U₀ _ _ _ _ (GlobalTheory.T.idempotentFactor_projection_adjointPair R _ D D' F)`. Establish `hO : ∀ a : F.O, LinHom U'.toUnifPre U'.toUnifPre (F.o.onB.act a) (DistribMulAction.toAddMonoidHom D'.toPre.X (Star.star a)) (oG.act a)` using `fun a => ⟨oG.hom a, fun e => hlin.q_lin e a, fun e => by`. Take `⟨t, ht, hi⟩` from `hlin.i_lin e a`.
+
+Conclude with `⟨t, ht, hi⟩⟩`. Establish `hu1` using `hu.1`. Establish `hu1'` using `hu'.1`. Establish `hee : Star.star F.e * Star.star F.e = Star.star F.e` using `by rw [← star_mul, F.idem]`. Establish `hsS : Star.star (Star.star F.e * F.f * F.e) = Star.star F.e * F.f * F.e`.
+
+Rewrite using `[star_mul, star_mul, star_star, ← _root_.mul_assoc, ← hsym]`. Establish `hsg : (Star.star F.e * F.f * F.e) * Star.star g = Star.star F.e`. Use `congrArg Star.star hg` as an intermediate fact. Rewrite `this` using `[star_mul, hsS]`. Then use the resulting hypothesis. Establish `hkey : F.e * Star.star g * (Star.star F.e * F.f * F.e) = F.e`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← _root_.mul_assoc (Star.star F.e) (Star.star F.e * F.f) F.e, ← _root_.mul_assoc (Star.star F.e) (Star.star F.e) F.f, hee, hg]`. Establish `hxi : ∀ y, F.xi y = F.e • F.xi y` using `fun y => by rw [← F.xi_xp, F.xp_xi]`. Establish `hincE : F.inc ≫ F.o.onB.act F.e = F.inc`. Rewrite using `[← F.pr_inc, ← Category.assoc, F.inc_pr, Category.id_comp]`.
+
+Establish `h1 : u ≫ u' = oG.act (Star.star F.e * F.f * F.e)` using `GlobalTheory.MumIsoAdj.linHom_unique hR hG' (hu.comp hu') (hO _) (by rw [F.o.onB.map_mul (Star.star F.e * F.f) F.e, ← F.pr_inc]; exact (Category.assoc _ _ _).symm) (fun y => by`. Express the relevant statement in the definitionally equal form `(Star.star F.e * F.f) • F.xi (F.xp y) = Star.star (Star.star F.e * F.f * F.e) • y`. Rewrite using `[hsS, F.xi_xp, smul_smul])`. Establish `h2 : u' ≫ oG.act (F.e * g) ≫ u = 𝟙 G₀` using `GlobalTheory.MumIsoAdj.linHom_unique hR hG₀ ((hu'.comp (hO _)).comp hu) (LinHom.id _) (by`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[F.o.onB.map_mul (F.e * g) (Star.star F.e * F.f * F.e), F.o.onB.map_mul (Star.star F.e * F.f) F.e]`. Use `conv_lhs => rw [← hincE]`. Simplify using `only [Category.assoc]`. Use `_ = 𝟙 _ := by`. Rewrite using `[_root_.mul_assoc F.e g, hg, F.idem, ← F.pr_inc]`.
+
+Simplify using `only [← Category.assoc, F.inc_pr, Category.id_comp])`. Use the proof step `(fun y => by`. Express the relevant statement in the definitionally equal form `F.xp (Star.star (F.e * g) • ((Star.star F.e * F.f) • F.xi y)) = y`. Establish `hw : Star.star (F.e * g) • ((Star.star F.e * F.f) • F.xi y) = (Star.star g * (Star.star F.e * F.f * F.e)) • F.xi y` using `by conv_lhs => rw [hxi y]`. Rewrite using `[smul_smul, smul_smul, star_mul]`.
+
+Use `congr 1`. Simplify using `only [_root_.mul_assoc]`. Rewrite using `[← _root_.mul_assoc (Star.star F.e) (Star.star F.e), hee]`. Establish `h3 : F.xi (F.xp (Star.star (F.e * g) • ((Star.star F.e * F.f) • F.xi y))) = F.xi y`. Rewrite using `[F.xi_xp, hw, smul_smul, ← _root_.mul_assoc, hkey, ← hxi]`.
+
+Use `congrArg F.xp h3` as an intermediate fact. Rewrite using `[F.xp_xi, F.xp_xi] at this)` and apply the resulting hypothesis. Use `⟨⟨inc ≫ u, u' ≫ oG.act g ≫ pr, ?_, ?_⟩, u, u', inferInstance, hu.1, hu'.1, rfl, h1, hadj⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h1, ← oG.map_mul, hg, ← hpi]`.
+
+Simplify using `only [← Category.assoc, hip, Category.id_comp]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem iso_of_factor_adj : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (D D' : DegData R (maximalIdeal R)) (F : Factor D.toPre D'.toPre), F.Alg → ∀ (A' : PolAV (Sp (FractionRing R))) (G' : Over (Sp R)) [GrpObj G'] [IsCommMonObj G'], IsSemiAbelian G' → ∀ (U' : Unif (maximalIdeal R) D' A' G') (oA : A'.OAct F.O) (oG : RingAct G' F.O), U'.toUnifPre.OLinear F.O F.o oA oG → ∀ (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ (inc : G ⟶ G') (pr : G' ⟶ G), IsMonHom inc → IsMonHom pr → inc ≫ pr = 𝟙 G → pr ≫ inc = oG.act F.e → ∀ (A₀ : PolAV (Sp (FractionRing R))) (G₀ : Over (Sp R)) [GrpObj G₀] [IsCommMonObj G₀], IsSemiAbelian G₀ → ∀ U₀ : Unif (maximalIdeal R) D A₀ G₀, ∃ (ε : G ≅ G₀) (u : G' ⟶ G₀) (u' : G₀ ⟶ G'), IsMonHom ε.hom ∧ IsMonHom u ∧ IsMonHom u' ∧ ε.hom = inc ≫ u ∧ u ≫ u' = oG.act (Star.star F.e * F.f * F.e) ∧ GAdj U'.LG.L U₀.LG.L u u' := by
   intro R _ _ _ hR D D' F hF A' G' _ _ hG' U' oA oG hlin G _ _ hG inc pr hinc hpr hip hpi A₀ G₀ _ _ hG₀ U₀
   obtain ⟨-, hsym, g, hg⟩ := hF

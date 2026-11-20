@@ -15,6 +15,11 @@ open scoped CategoryTheory.Obj
 
 namespace GlobalTheory.SiegFamAll
 
+/- English proof (translation)
+Take `⟨β, rfl⟩` from `GlobalTheory.SiegelRingChange.exists_spMap t`. Take `⟨R₀, β₀, c₀, hft, hβ, hp₀, hpb⟩` from `GlobalTheory.T.principalSiegel_descends_finiteType_subring g n hn hodd R β d hd`. Use `haveI : IsNoetherianRing R₀ := Algebra.FiniteType.isNoetherianRing ℤ R₀`. Take `⟨f₀, hf₀, hpb₀⟩` from `GlobalTheory.T.siegelFamily_classifies_noetherian g n hg hn hodd F R₀ β₀ c₀ hp₀`. Use `⟨spMap R₀.subtype ≫ f₀, ?_, GlobalTheory.TChart.AbLevel.siegPB_trans hpb hpb₀⟩` and prove the remaining obligations.
+
+Rewrite using `[Category.assoc, hf₀, ← GlobalTheory.SiegelRingChange.spMap_comp', hβ]`.
+-/
 theorem exists_classify_affine {g n : ℕ} (hg : 1 ≤ g) (hn : 3 ≤ n) (hodd : Odd n) (F : SFam g n (zetaAway n))
     (R : Type) [CommRing R] (t : Sp R ⟶ Sp (cycAway n)) (d : SiegPre g n (zetaAway n) t) (hd : d.Principal) :
     ∃ f : Sp R ⟶ F.X, f ≫ F.s = t ∧ SiegPB d F.univ f := by
@@ -25,6 +30,13 @@ theorem exists_classify_affine {g n : ℕ} (hg : 1 ≤ g) (hn : 3 ≤ n) (hodd :
   refine ⟨spMap R₀.subtype ≫ f₀, ?_, GlobalTheory.TChart.AbLevel.siegPB_trans hpb hpb₀⟩
   rw [Category.assoc, hf₀, ← GlobalTheory.SiegelRingChange.spMap_comp', hβ]
 
+/- English proof (translation)
+Introduce `g n hg hn hodd F S s' c hc`. Take `⟨f, hf, hpf⟩` from `GlobalTheory.T.siegelFamily_classified_of_local g n hg hn hodd F S s' c hc (fun x => by`. Set `𝒰` to `S.affineOpenCover`. Set `j : Sp (𝒰.X (𝒰.idx x)) ⟶ S` to `𝒰.f (𝒰.idx x)`. Establish `hid : j ≫ s' = (j ≫ s') ≫ spMap (RingHom.id (cycAway n))` using `by simp [spMap]`.
+
+Establish `key` using `GlobalTheory.SiegelRingChange.siegPre_pull_ringChange g n (cycAway n) (cycAway n) (zetaAway n) (zetaAway n) (RingHom.id _) S (Sp (𝒰.X (𝒰.idx x))) s' (j ≫ s') j rfl hid`. Take `⟨cV, hcV⟩` from `key.1 c`. Establish `hpV : cV.Principal` using `key.2.1 c cV hcV hc`. Take `⟨fV, hfV, hpbV⟩` from `exists_classify_affine hg hn hodd F (𝒰.X (𝒰.idx x)) (j ≫ s') cV hpV`. Conclude with `⟨Sp (𝒰.X (𝒰.idx x)), j, cV, inferInstance, 𝒰.covers x, hcV, fV, hfV, hpbV⟩)`.
+
+Conclude with `⟨f, ⟨hf, hpf⟩, fun f' hf' => GlobalTheory.T.siegelFamily_classifyingMap_unique g n hg hn hodd F S s' c f' f hf'.1 hf hf'.2 hpf⟩`.
+-/
 theorem existsUnique_classify : ∀ (g n : ℕ), 1 ≤ g → 3 ≤ n → Odd n → ∀ F : SFam g n (zetaAway n),
     ∀ (S : Scheme.{0}) (s' : S ⟶ Sp (cycAway n)) (c : SiegPre g n (zetaAway n) s'), c.Principal →
       ∃! f : S ⟶ F.X, f ≫ F.s = s' ∧ SiegPB c F.univ f := by

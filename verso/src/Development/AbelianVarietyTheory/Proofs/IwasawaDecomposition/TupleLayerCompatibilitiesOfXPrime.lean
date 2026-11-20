@@ -14,6 +14,13 @@ noncomputable section
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Introduce `B X I hI hP l Z l0 inQ H F T J W Lv hQ hF hW hLv hTop`. Establish `hQ' : ∀ a v, v ∈ T.Q a ↔ I.UnderQ a v` using `fun a v => (T.Q_iff a v).trans (hQ a v)`. Establish `hC` using `fun u a => GlobalTheory.T.tuplePrimedSpaceClasses_level_and_comparison I hI hP l Z u a (T.Q a) (F u).clsP (hQ' a) (J.Q_off u a) (hF u).1.what₂`. Use `choose K hLb hfin hrd hU hchi using hC`. Establish `hV` using `fun u a => GlobalTheory.T.formsX_tupleChain_of_levelReading I hI hP l Z u a (T.Q a) (K u a) (hQ' a) (J.Q_off u a) (hrd u a)`.
+
+Use `choose V hN hE using hV`. Use `choose k hk hkT using hTop`. Establish `hTil` using `fun u a ha h1 => GlobalTheory.Mem.Col2.TwP.til_tw I hI hP l Z hF hW hLv u a ha h1 (K u a) (hrd u a) (hk u a ha h1) (hkT u a ha h1)`. Use `choose Tl hz hev using hTil`. Use `choose jM hj0 hj1 hj2 hj3 hj4 using fun u a => GlobalTheory.Mem.Col2.PerConj.period_conj I hI hP l Z u a`.
+
+Set `Pt : TwPTiedS Lv` to `{ cls := fun u a _ => K u a Lb := fun u a _ => hLb u a chi_fin := fun u a _ => hfin u a val := fun u a _ => V u a norm := fun u a _ => hN u a til := fun u a ha h1 => Tl u a ha h1 }`. Set `E : TwPEvzS Pt` to `{ eWz := fun u a => LinearEquiv.refl ℂ _ evz := fun u a ha h1 φ c s s' hs => hev u a ha h1 φ c s s' hs jM := jM per := fun u a _ => ⟨hj1 u a, hj2 u a, hj3 u a⟩ }`. Use `⟨Pt, E, ⟨fun u a _ v hv => hU u a v hv, fun u a _ κ κ' h h' => hchi u a κ κ' h h'⟩, ⟨fun u a _ => hrd u a, fun u a _ z c s s' h => hE u a z c s s' h, fun u a ha h1 => hz u a ha h1, fun u a z => rfl⟩⟩` and prove the remaining obligations.
+-/
 theorem GlobalTheory.Mem.Col2.TC.tupleLayer_compatibility : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)), ∀ (l0 : I.Law0 l) (inQ : I.ι → HeightOneSpectrum (𝓞 (I.rec7 l Z).host.F) → Prop) (H : Formalism.L2.Herm.HermColsCh (I.rec7 l Z)) (F : ∀ u, FormsTiedSym (I.rec7 l Z) u (H.Ch u) (H.chOf u)) (T : Formalism.L2.Herm.TwChTied (I.rec7 l Z) inQ) (J : Formalism.L2.Herm.TwChJointS T H) (W : TwFormsTiedS (I.rec7 l Z) (I.tw l l0 Z) T J F) (Lv : SymmetricTwistedLevelData W), (∀ a v, inQ a v ↔ I.UnderQ a v) → (∀ u, I.StdF l Z u (F u) ∧ I.StdLvC l Z u (F u)) → I.StdW l Z l0 W → I.StdLv l Z l0 Lv → (∀ u a (ha : a ≠ I.mu0) (h1 : 1 ≤ B.R.m), ∃ k, I.Reads u a B.R.m (T.chOf u a B.R.m) (fun β => (W.ch u a ha B.R.m h1 le_rfl β).lev.Lb)
       (fun β => (W.ch u a ha B.R.m h1 le_rfl β).lev.U) (fun β => (W.ch u a ha B.R.m h1 le_rfl β).lev.chi)
       (fun c => ((W.ch u a ha B.R.m h1 le_rfl (T.chOf u a B.R.m c)).y ⟨c, rfl⟩).1)

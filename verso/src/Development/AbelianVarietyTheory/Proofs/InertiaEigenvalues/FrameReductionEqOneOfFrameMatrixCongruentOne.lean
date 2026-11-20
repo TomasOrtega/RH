@@ -21,6 +21,15 @@ open Classical
 
 namespace GlobalTheory.RedAt
 
+/- English proof (translation)
+Introduce `D W β k PP hk hv`. Take `⟨y, hy⟩` from `hk`. Establish `hyv : (Formalism.L2.DIV.intGL _ _ _ y).val = (HMul.hMul (HMul.hMul ((β)⁻¹).val ((Formalism.L2.Theta.mt W k).map (toEAf D))) (β).val : Matrix (Fin (W).rank) (Fin (W).rank) (Formalism.IndefR.Datum.EAf D))`. Establish `h2 : Formalism.L2.DIV.intGL _ _ _ y = β⁻¹ * finE W k * β`. Rewrite using `[← hy]`.
+
+Simplify using `[Formalism.L2.DIV.frGL, MulAut.conj_apply, mul_assoc]`. Rewrite using `[h2]`. Both sides reduce to the same expression. Rewrite using `[← hy, GlobalTheory.LiftLevel.redFn_eq_one_iff]`. Introduce `i j`.
+
+Rewrite using `[GlobalTheory.AdIsom.resS_eq_zero_iff_cpt]`. Use `hv i j` as an intermediate fact. Rewrite `this` using `[← hyv]`. Use `this using 3` and compare the differences between its conclusion and the goal. Simplify using `[Matrix.sub_apply, Matrix.one_apply, Formalism.L2.DIV.intGL, Formalism.UG.bc]`.
+
+Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem redFn_finE_eq_one : ∀ (D : D7) (W : HSp D) (β : GL (Fin W.rank) (Formalism.IndefR.Lev.EAf D)) (k : GA D W) (PP : Pl D.host.E), finE W k ∈ St β → (∀ a b, Valued.v (GlobalTheory.StdFrames.cpt PP (((HMul.hMul (HMul.hMul ((β)⁻¹).val ((Formalism.L2.Theta.mt W k).map (toEAf D))) (β).val : Matrix (Fin (W).rank) (Fin (W).rank) (Formalism.IndefR.Datum.EAf D)) - 1) a b)) < 1) → redFn β PP (finE W k) = 1 := by
   intro D W β k PP hk hv
   obtain ⟨y, hy⟩ := hk

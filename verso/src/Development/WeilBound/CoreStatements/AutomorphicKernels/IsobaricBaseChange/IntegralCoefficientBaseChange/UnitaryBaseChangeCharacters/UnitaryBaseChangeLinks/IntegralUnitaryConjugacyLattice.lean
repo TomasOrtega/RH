@@ -24,9 +24,15 @@ open GlobalTheory.UTr GroundTheory.LocalField
 
 variable {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))]
 
+/- English proof (translation)
+The claim follows from `Subtype.ext h.2.2.1`.
+-/
 theorem sigO_piO {ϖ : L} {σ : L →+* L} {q : ℕ} (h : IsUnramInv ϖ σ q) : sigO σ h.2.1 (piO h) = piO h :=
   Subtype.ext h.2.2.1
 
+/- English proof (translation)
+Unfold `piPow at *`. Rewrite `*` using `[Ideal.mem_span_singleton]`. Take `⟨b, rfl⟩` from `ha`. Conclude with `⟨conj P b, by rw [map_mul, map_pow, conj_algebraMap, sigO_piO]⟩`.
+-/
 theorem conj_mem_piPow {ϖ : L} {σ : L →+* L} {q : ℕ} (h : IsUnramInv ϖ σ q) (P : Csr (sigO σ h.2.1)) (m : ℕ)
     {a : Alg P} (ha : a ∈ piPow h P m) : conj P a ∈ piPow h P m := by
   unfold piPow at *
@@ -34,6 +40,11 @@ theorem conj_mem_piPow {ϖ : L} {σ : L →+* L} {q : ℕ} (h : IsUnramInv ϖ σ
   obtain ⟨b, rfl⟩ := ha
   exact ⟨conj P b, by rw [map_mul, map_pow, conj_algebraMap, sigO_piO]⟩
 
+/- English proof (translation)
+Rewrite `*` using `[mem_filt]`. Establish `hc : conj P (g : Alg P) - 1 ∈ piPow h P m`. Use `conj_mem_piPow h P m hg` as an intermediate fact. Rewrite `this` using `[map_sub, map_one]`. Then use the resulting hypothesis. Establish `e : ((normU P g : (Alg P)ˣ) : Alg P) - 1 = ((g : Alg P) - 1) * conj P (g : Alg P) + (conj P (g : Alg P) - 1)`.
+
+Rewrite using `[val_normU]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `(piPow h P m).add_mem ((piPow h P m).mul_mem_right _ hg) hc`.
+-/
 theorem normU_mem_filt {ϖ : L} {σ : L →+* L} {q : ℕ} (h : IsUnramInv ϖ σ q) (P : Csr (sigO σ h.2.1)) (m : ℕ)
     {g : (Alg P)ˣ} (hg : g ∈ filt h P m) : normU P g ∈ filt h P m := by
   rw [mem_filt] at *
@@ -45,12 +56,26 @@ theorem normU_mem_filt {ϖ : L} {σ : L →+* L} {q : ℕ} (h : IsUnramInv ϖ σ
   rw [e]
   exact (piPow h P m).add_mem ((piPow h P m).mul_mem_right _ hg) hc
 
+/- English proof (translation)
+Establish `e : ((x / u : Rˣ) : R) - 1 = ((x : R) - u) * ((u⁻¹ : Rˣ) : R)`. Rewrite using `[div_eq_mul_inv, Units.val_mul, sub_mul, Units.mul_inv]`. Rewrite using `[e]`. Conclude with `I.mul_mem_right _ hx`.
+-/
 theorem div_mem_of_sub_mem {R : Type} [CommRing R] {I : Ideal R} {x u : Rˣ} (hx : (x : R) - u ∈ I) :
     ((x / u : Rˣ) : R) - 1 ∈ I := by
   have e : ((x / u : Rˣ) : R) - 1 = ((x : R) - u) * ((u⁻¹ : Rˣ) : R) := by
     rw [div_eq_mul_inv, Units.val_mul, sub_mul, Units.mul_inv]
   rw [e]; exact I.mul_mem_right _ hx
 
+/- English proof (translation)
+Establish `hs : ∀ b, sigO σ h.2.1 (sigO σ h.2.1 b) = b` using `fun b => Subtype.ext (h.1 b)`. Set `f : (Alg P)ˣ →* plus P` to `(normU P).codRestrict (plus P) (normU_mem_plus P hs)`. Set `E : ℕ → Subgroup (plus P)` to `fun m => (filt h P m).comap (plus P).subtype`. Establish `hE : Antitone E` using `fun a b hab => Subgroup.comap_mono (filt_antitone h P hab)`. Establish `hsepE : FiltrationSeparated E`.
+
+Introduce `g hg`. Establish `h0 : ((g : (Alg P)ˣ) : Alg P) - 1 = 0` using `GlobalTheory.T.eq_zero_of_mem_all_powers L σ ϖ q h P _ fun m => hg m`. Conclude with `Subtype.ext (Units.ext (sub_eq_zero.1 h0))`. Establish `hE0 : E (id 0) = ⊤`. Use extensionality with `g`.
+
+Simplify using `[E, filt_zero]`. Establish `hmap : ∀ n, ∀ g ∈ filt h P n, f g ∈ E (id n)` using `fun n g hg => normU_mem_filt h P n hg`. Establish `hgr : ∀ n, ∀ z ∈ E (id n), ∃ g ∈ filt h P n, z / f g ∈ E (id (n + 1))`. Introduce `n z hz`. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases.
+
+Take `⟨u, hu⟩` from `GlobalTheory.T.norm_approximation_first_level L σ ϖ q h P hP z.1 z.2`. Use `⟨u, by rw [filt_zero]; exact Subgroup.mem_top u, ?_⟩` and prove the remaining obligations. Use `show ((z.1 / normU P u : (Alg P)ˣ) : Alg P) - 1 ∈ piPow h P (0 + 1)`. Conclude with `div_mem_of_sub_mem hu`. Take `⟨u, hu, hu'⟩` from `GlobalTheory.T.norm_approximation_filtration L σ ϖ q h P n hn z.1 z.2 hz`.
+
+Use `⟨u, hu, ?_⟩` and prove the remaining obligations. Use `show ((z.1 / normU P u : (Alg P)ˣ) : Alg P) - 1 ∈ piPow h P (n + 1)`. Conclude with `div_mem_of_sub_mem hu'`. Take `⟨u, hu⟩` from `surjective_of_graded_surjective (F := filt h P) (E := E) (filt_antitone h P) hE (GlobalTheory.T.norm_filtration_complete L σ ϖ q h P) hsepE f tendsto_id (filt_zero h P) hE0 hmap hgr ⟨x, hx⟩`. Conclude with `⟨u, congrArg Subtype.val hu⟩`.
+-/
 theorem normU_surj (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] [CompleteSpace L]
     (σ : L →+* L) (ϖ : L) (q : ℕ) (h : IsUnramInv ϖ σ q) (P : Csr (sigO σ h.2.1)) (hP : P.1.Separable)
     (x : (Alg P)ˣ) (hx : x ∈ plus P) : ∃ u : (Alg P)ˣ, normU P u = x := by
@@ -85,6 +110,39 @@ end GlobalTheory.NormEq
 namespace GlobalTheory.NormEq
 open GlobalTheory.UTr
 
+/- English proof (translation)
+Introduce `L _ _ _ σ ϖ q h n y Q₀ hy hyu hch hsep t ht hti htc ⟨p, hp⟩`. Set `sO` to `sigO σ h.2.1`. Set `Φ : Matrix (Fin n) (Fin n) (intL L) →+* Matrix (Fin n) (Fin n) L` to `(intL L).subtype.mapMatrix`. Establish `hΦinj : Function.Injective Φ` using `fun a b hab => by`. Use extensionality with `i j`.
+
+Conclude with `congrFun (congrFun hab i) j`. Set `yO : Matrix (Fin n) (Fin n) (intL L)` to `fun i j => ⟨y i j, hy i j⟩`. Establish `hyO : Φ yO = y` using `rfl`. Establish `hΦcT : ∀ M, Φ (cT sO M) = cT σ (Φ M)` using `fun M => rfl`. Establish `hchO : yO.charpoly = Q₀`.
+
+Apply `Polynomial.map_injective _ (intL L).subtype_injective` to reduce the goal to its premises. Rewrite using `[← hch, ← hyO]`. Conclude with `(Matrix.charpoly_map yO (intL L).subtype).symm`. Establish `hyuO : cT sO yO * yO = 1` using `hΦinj (by rw [map_mul, hΦcT, hyO, hyu, map_one])`. Establish `hcsr : IsCsr sO Q₀` using `hchO ▸ GlobalTheory.T.conjugate_self_reciprocal_charpoly _ sO n yO hyuO`.
+
+Set `P : Csr sO` to `⟨Q₀, hcsr⟩`. Establish `hg : aeval yO P.1 = 0` using `by show aeval yO Q₀ = 0`. Rewrite using `[← hchO]`. Conclude with `Matrix.aeval_self_charpoly yO`. Set `ev` to `evalMat P yO hg`.
+
+Establish `hev : ∀ r : (intL L)[X], ev (aeval (root P) r) = aeval yO r` using `fun r => by`. Rewrite using `[← aeval_algHom_apply, evalMat_root]`. Establish `hevinj : ∀ z, ev z = 0 → z = 0`. Introduce `z hz`. Take `⟨r, rfl⟩` from `exists_aeval_root P z`.
+
+Rewrite `hz` using `[hev]`. Establish `hd` using `GlobalTheory.T.charpoly_dvd_of_aeval_eq_zero_alt (intL L) n yO r (hchO ▸ hsep) hz`. Rewrite `hd` using `[hchO]`. Conclude with `(aeval_root_eq_zero_iff P).2 hd`. Establish `hevinj' : Function.Injective ev` using `(injective_iff_map_eq_zero ev).2 hevinj`.
+
+Establish `hcomp : Φ.comp (algebraMap (intL L) (Matrix (Fin n) (Fin n) (intL L))) = (algebraMap L (Matrix (Fin n) (Fin n) L)).comp (intL L).subtype`. Use extensionality with `a i j`. Simplify using `only [RingHom.coe_comp, Function.comp_apply, Φ, RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.algebraMap_matrix_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `hΦaeval : ∀ r : (intL L)[X], Φ (aeval yO r) = aeval y (r.map (intL L).subtype)`.
+
+Introduce `r`. Rewrite using `[aeval_def, aeval_def, Polynomial.hom_eval₂, eval₂_map, hcomp, hyO]`. Set `tz : Alg P` to `aeval (root P) p`. Set `tO` to `ev tz`. Establish `htO : Φ tO = t.val` using `by rw [show tO = aeval yO p from hev p, hΦaeval, hp]`.
+
+Set `tiO : Matrix (Fin n) (Fin n) (intL L)` to `fun i j => ⟨(t⁻¹ : GL (Fin n) L).val i j, hti i j⟩`. Establish `htiO : tO * tiO = 1` using `hΦinj (by`. Rewrite using `[map_mul, htO, map_one]`. Conclude with `t.mul_inv)`. Establish `hdet : IsUnit tO.det` using `isUnit_iff_exists_inv.2 ⟨tiO.det, by rw [← Matrix.det_mul, htiO, Matrix.det_one]⟩`.
+
+Establish `hunit : IsUnit tz`. Establish `h0 : aeval tz tO.charpoly = 0` using `hevinj _ (by`. Rewrite using `[← aeval_algHom_apply]`. Conclude with `Matrix.aeval_self_charpoly tO)`. Establish `hc0 : IsUnit (tO.charpoly.coeff 0)`.
+
+Use `Matrix.det_eq_sign_charpoly_coeff tO` as an intermediate fact. Rewrite `hdet` using `[this]`. Conclude with `isUnit_of_mul_isUnit_right hdet`. Establish `e` using `congrArg (aeval tz) (X_mul_divX_add tO.charpoly)`. Rewrite `e` using `[h0, map_add, map_mul, aeval_X, aeval_C]`.
+
+Establish `hu : IsUnit (tz * aeval tz tO.charpoly.divX)`. Rewrite using `[eq_neg_of_add_eq_zero_left e]`. Conclude with `(hc0.map _).neg`. Conclude with `isUnit_of_mul_isUnit_left hu`. Set `T : (Alg P)ˣ` to `hunit.unit`.
+
+Establish `hyuO' : yO * cT sO yO = 1` using `mul_eq_one_comm.1 hyuO`. Set `gU : UJ sO (1 : Matrix (Fin n) (Fin n) (intL L))` to `⟨⟨yO, cT sO yO, hyuO', hyuO⟩, by show cT sO yO * 1 * yO = 1`. Rewrite using `[Matrix.mul_one, hyuO]⟩`. Establish `hcT : ∀ z, cT sO (ev z) = ev (conj P z)` using `fun z => by`. Use `cT_evalMat P gU hg z` as an intermediate fact.
+
+Rewrite `this` using `[Matrix.mul_one, Matrix.one_mul]`. Then use the resulting hypothesis. Establish `htz : conj P tz = tz` using `hevinj' (by`. Rewrite using `[← hcT]`. Conclude with `hΦinj (by rw [hΦcT, htO, htc]))`. Establish `hT : T ∈ plus P` using `mem_plus.2 htz`.
+
+Take `⟨u, hu⟩` from `normU_surj L σ ϖ q h P hsep T hT`. Set `Ψ : Alg P →* Matrix (Fin n) (Fin n) L` to `(Φ.comp ev.toRingHom : Alg P →+* _)`. Use `⟨Units.map Ψ u, ?_, ?_⟩` and prove the remaining obligations. Use `show Φ (ev u) * y = y * Φ (ev u)`. Rewrite using `[← hyO, ← map_mul, ← map_mul]`.
+
+Use `congr 1`. Rewrite using `[← evalMat_root P yO hg, ← map_mul, ← map_mul, mul_comm]`. Use `show Φ (ev u) * cT σ (Φ (ev u)) = t.val`. Rewrite using `[← hΦcT, hcT, ← map_mul, ← map_mul, ← val_normU, hu, ← htO]`. Both sides reduce to the same expression.
+-/
 theorem hermUnit_eq_norm : ∀ (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] [CompleteSpace L] (σ : L →+* L) (ϖ : L) (q : ℕ), IsUnramInv ϖ σ q → ∀ (n : ℕ) (y : Matrix (Fin n) (Fin n) L) (Q₀ : (intL L)[X]), (∀ i j, y i j ∈ intL L) → cT σ y * y = 1 → y.charpoly = Q₀.map (intL L).subtype → Q₀.Separable → ∀ t : GL (Fin n) L, (∀ i j, t.val i j ∈ intL L) → (∀ i j, (t⁻¹ : GL (Fin n) L).val i j ∈ intL L) → cT σ t.val = t.val → (∃ p : (intL L)[X], t.val = aeval y (p.map (intL L).subtype)) → ∃ s : GL (Fin n) L, s.val * y = y * s.val ∧ s.val * cT σ s.val = t.val := by
   intro L _ _ _ σ ϖ q h n y Q₀ hy hyu hch hsep t ht hti htc ⟨p, hp⟩
   let sO := sigO σ h.2.1

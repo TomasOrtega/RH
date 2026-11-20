@@ -10,6 +10,47 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace GlobalTheory.UnitLemma.IsometryUnit
 
+/- English proof (translation)
+Introduce `K B hs ε hε a β β' hβ hβ' b b' hgram`. Establish `hs' : (LinearMap.mulLeft K.E B.g).charpoly.Separable` using `hs`. Establish `σsm : ∀ (r : K.E) (y : B.A), B.σ (r • y) = K.c r • B.σ y`. Introduce `r y`. Rewrite using `[Algebra.smul_def, map_mul, B.σ_alg, Algebra.smul_def]`.
+
+Establish `trσ` using `GlobalTheory.UnitLemma.PairClass.trace_σ K B`. Establish `addL : ∀ (x u u' v : B.A), B.herm x (u + u') v = B.herm x u v + B.herm x u' v`. Introduce `x u u' v`. Unfold `InvAlg.herm`. Rewrite using `[mul_add, add_mul, map_add]`.
+
+Establish `subL : ∀ (x u u' v : B.A), B.herm x (u - u') v = B.herm x u v - B.herm x u' v`. Introduce `x u u' v`. Unfold `InvAlg.herm`. Rewrite using `[mul_sub, sub_mul, map_sub]`. Establish `smulL : ∀ (x : B.A) (r : K.E) (u v : B.A), B.herm x (r • u) v = r * B.herm x u v`.
+
+Introduce `x r u v`. Unfold `InvAlg.herm`. Rewrite using `[mul_smul_comm, smul_mul_assoc, map_smul, smul_eq_mul]`. Establish `addR : ∀ (x u v v' : B.A), B.herm x u (v + v') = B.herm x u v + B.herm x u v'`. Introduce `x u v v'`.
+
+Unfold `InvAlg.herm`. Rewrite using `[map_add, mul_add, map_add]`. Establish `smulR : ∀ (x : B.A) (r : K.E) (u v : B.A), B.herm x u (r • v) = K.c r * B.herm x u v`. Introduce `x r u v`. Unfold `InvAlg.herm`.
+
+Rewrite using `[σsm, mul_smul_comm, map_smul, smul_eq_mul]`. Establish `asym : ∀ (x : B.A), B.σ x = x * (ε * B.g) → ∀ z y, K.c (B.herm x z y) = B.herm x (ε * B.g * y) z`. Introduce `x hx z y`. Unfold `InvAlg.herm`. Rewrite using `[← trσ]`.
+
+Use `congr 1`. Simplify using `only [map_mul, B.σ_σ, hx]`. Expand and normalize the polynomial expressions, which then agree. Establish `nd : ∀ x : B.A, (∀ y, Algebra.trace K.E B.A (x * y) = 0) → x = 0` using `fun x hx => GlobalTheory.UnitLemma.PairClass.trace_nondeg K.E B.A B.g hs' x hx`. Establish `ndh : ∀ w : B.A, (∀ z, B.herm β w z = 0) → w = 0`.
+
+Introduce `w hw`. Establish `h0 : (β : B.A) * w = 0` using `nd _ (fun y => by`. Use `hw (B.σ y)` as an intermediate fact. Unfold `InvAlg.herm at this`. Rewrite using `[B.σ_σ] at this)` and apply the resulting hypothesis.
+
+Use `congrArg (fun z => ((β⁻¹ : B.Aˣ) : B.A) * z) h0` as an intermediate fact. Simplify `this` using `[← mul_assoc]`. Set `φ : B.A ≃ₗ[K.E] B.A` to `b'.equiv b (Equiv.refl _)`. Establish `hφb : ∀ i, φ (b' i) = b i` using `fun i => by simp [φ, Module.Basis.equiv_apply]`. Establish `hφ : ∀ u v, B.herm β (φ u) (φ v) = B.herm β' u v`.
+
+Set `F₁ : B.A →ₗ[K.E] B.A →ₛₗ[(K.c : K.E →+* K.E)] K.E` to `LinearMap.mk₂'ₛₗ (RingHom.id K.E) (K.c : K.E →+* K.E) (fun u v => B.herm β (φ u) (φ v)) (fun u u' v => by rw [map_add, addL]) (fun r u v => by rw [map_smul, smulL]; rfl) (fun u v v' => by rw [map_add, addR]) (fun r u v => by rw [map_smul, smulR]; rfl)`. Set `F₂ : B.A →ₗ[K.E] B.A →ₛₗ[(K.c : K.E →+* K.E)] K.E` to `LinearMap.mk₂'ₛₗ (RingHom.id K.E) (K.c : K.E →+* K.E) (fun u v => B.herm β' u v) (fun u u' v => addL _ _ _ _) (fun r u v => smulL _ _ _ _) (fun u v v' => addR _ _ _ _) (fun r u v => smulR _ _ _ _)`. Establish `hF : F₁ = F₂` using `LinearMap.ext_basis b' b' (fun i j => by`. Simplify using `only [F₁, F₂, LinearMap.mk₂'ₛₗ_apply, hφb]`. Conclude with `hgram i j)`.
+
+Introduce `u v`. Use `LinearMap.congr_fun₂ hF u v` as an intermediate fact. Simplify using `only [F₁, F₂, LinearMap.mk₂'ₛₗ_apply] at this`. Conclude with `this`. Establish `hcomm : ∀ u, φ (ε * B.g * u) = ε * B.g * φ u`.
+
+Introduce `u`. Rewrite using `[← sub_eq_zero]`. Apply `ndh` to reduce the goal to its premises. Introduce `z`. Take `⟨v, rfl⟩ : ∃ v, φ v = z` from `⟨φ.symm z, by simp⟩`.
+
+Rewrite using `[subL, hφ, ← asym _ hβ', ← hφ, asym _ hβ, sub_self]`. Establish `hg : ∀ u, φ (B.g * u) = B.g * φ u`. Introduce `u`. Break down `hε with rfl | rfl` into its components or cases. Simplify using `using hcomm u`.
+
+Use `hcomm u` as an intermediate fact. Simplify using `only [neg_mul, one_mul, map_neg, neg_inj] at this`. Conclude with `this`. Establish `hpoly : ∀ q : K.E[X], ∀ u, φ (aeval B.g q * u) = aeval B.g q * φ u`. Introduce `q`.
+
+Proceed by induction on `q using Polynomial.induction_on with`. Consider the case `C r => intro u`. Rewrite using `[aeval_C, ← Algebra.smul_def, ← Algebra.smul_def, map_smul]`. Consider the case `add p q hp hq => intro u`. Rewrite using `[map_add, add_mul, add_mul, map_add, hp, hq]`.
+
+Consider the case `monomial n r h`. Introduce `u`. Establish `e : aeval B.g (C r * X ^ (n + 1)) = aeval B.g (C r * X ^ n) * B.g`. Simplify using `[pow_succ, mul_assoc]`. Rewrite using `[e, mul_assoc, h, hg, mul_assoc]`.
+
+Establish `hmul : ∀ y, φ y = y * φ 1`. Introduce `y`. Take `⟨q, rfl⟩` from `GlobalTheory.UnitLemma.PairClass.exists_aeval_eq_of_separable B.g hs' y`. Simplify using `using hpoly q 1`. Establish `ht : IsUnit (φ 1)`.
+
+Use `hmul (φ.symm 1)` as an intermediate fact. Rewrite `this` using `[LinearEquiv.apply_symm_apply]`. Conclude with `⟨⟨φ 1, φ.symm 1, by rw [mul_comm]; exact this.symm, this.symm⟩, rfl⟩`. Use `⟨ht.unit, ?_⟩` and prove the remaining obligations. Rewrite using `[IsUnit.unit_spec]`.
+
+Rewrite using `[← sub_eq_zero]`. Apply `nd` to reduce the goal to its premises. Introduce `y`. Establish `h1` using `hφ y 1`. Rewrite `h1` using `[hmul y]`.
+
+Unfold `InvAlg.herm at h1`. Rewrite `h1` using `[map_one B.σ, mul_one]`. Establish `h2 : ((β' : B.A) - β * (φ 1 * B.σ (φ 1))) * y = (β' : B.A) * y - β * (y * φ 1) * B.σ (φ 1)` using `by ring`. Rewrite using `[h2, map_sub, h1, sub_self]`.
+-/
 theorem isometry_unit : ∀ (K : GlobalTheory.UnitLemma.UQ) (B : GlobalTheory.UnitLemma.InvAlg K), B.P.Separable → ∀ (ε : B.A), (ε = 1 ∨ ε = -1) → ∀ (a : ℕ) (β β' : B.Aˣ), B.σ (β : B.A) = β * (ε * B.g) → B.σ (β' : B.A) = β' * (ε * B.g) → ∀ b b' : Module.Basis (Fin a) K.E B.A, (∀ i j, B.herm β (b i) (b j) = B.herm β' (b' i) (b' j)) → ∃ t : B.Aˣ, (β' : B.A) = β * (t * B.σ t) := by
   intro K B hs ε hε a β β' hβ hβ' b b' hgram
   have hs' : (LinearMap.mulLeft K.E B.g).charpoly.Separable := hs

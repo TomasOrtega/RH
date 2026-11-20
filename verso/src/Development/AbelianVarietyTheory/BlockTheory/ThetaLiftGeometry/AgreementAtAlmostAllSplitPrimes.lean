@@ -14,16 +14,25 @@ def HeckeCharEqOfSplit {R : Ranks} {H : Host R} {what₂ : Rows.Data R} (N : NDa
     (A : NAut N) : Prop :=
   ∀ χ χ' : A.CG 1, AgreeAtAlmostAllSplit A χ χ' → χ = χ'
 
+/- English proof (translation)
+Simplify using `only [AgreeAtAlmostAllSplit, Filter.eventually_cofinite, Classical.not_imp]`.
+-/
 theorem agreeAtAlmostAllSplit_iff {R : Ranks} {H : Host R} {what₂ : Rows.Data R} {N : NData R H what₂}
     (A : NAut N) (χ χ' : A.CG 1) :
     AgreeAtAlmostAllSplit A χ χ' ↔
       ∀ᶠ w in Filter.cofinite, IsSplitPl H w → A.locG χ w = A.locG χ' w := by
   simp only [AgreeAtAlmostAllSplit, Filter.eventually_cofinite, Classical.not_imp]
 
+/- English proof (translation)
+Simplify using `[AgreeAtAlmostAllSplit]`.
+-/
 example {R : Ranks} {H : Host R} {what₂ : Rows.Data R} {N : NData R H what₂}
     (A : NAut N) (χ : A.CG 1) : AgreeAtAlmostAllSplit A χ χ := by
   simp [AgreeAtAlmostAllSplit]
 
+/- English proof (translation)
+The claim follows from `h χ χ' ((agreeAtAlmostAllSplit_iff A χ χ').2 (Filter.Eventually.of_forall hw))`.
+-/
 theorem HeckeCharEqOfSplit.of_forall {R : Ranks} {H : Host R} {what₂ : Rows.Data R} {N : NData R H what₂}
     {A : NAut N} (h : HeckeCharEqOfSplit N A) (χ χ' : A.CG 1)
     (hw : ∀ w, IsSplitPl H w → A.locG χ w = A.locG χ' w) : χ = χ' :=

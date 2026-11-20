@@ -8,6 +8,9 @@ noncomputable section
 open MeasureTheory ValuativeRel Matrix GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.IndefiniteRowSideFullHecke.IwahoriDoubleCosets
 open scoped Classical ENNReal
 
+/- English proof (translation)
+Use `haveI : ρ.IsIrreducible := hi`. Take `⟨c, hc⟩` from `(GroundTheory.Automorphic.algebraMap_intertwiningMap_bijective_of_isSmooth (show GroundTheory.Automorphic.IsSmooth ρ from hs)).2 (⟨φ, fun g => LinearMap.ext fun x => hφ g x⟩ : Representation.IntertwiningMap ρ ρ)`. Conclude with `⟨c, LinearMap.ext fun x => (congrArg (fun f : Representation.IntertwiningMap ρ ρ => f x) hc).symm⟩`.
+-/
 private theorem exists_eq_smul_id_of_irreducible {E : Type} [Field E] [ValuativeRel E] [TopologicalSpace E]
     [IsNonarchimedeanLocalField E] {n : ℕ} {X : Type} [AddCommGroup X] [Module ℂ X]
     (ρ : Representation ℂ (GL (Fin n) E) X) (hs : IsSmooth ρ) (hi : ρ.IsIrreducible)
@@ -20,6 +23,25 @@ private theorem exists_eq_smul_id_of_irreducible {E : Type} [Field E] [Valuative
     (congrArg (fun f : Representation.IntertwiningMap ρ ρ => f x) hc).symm⟩
 
 set_option maxHeartbeats 400000 in
+/- English proof (translation)
+Introduce `k E _ _ _ _ _ _ _ _ _ _ _ _ _ σ hgen n V _ _ ρ hs hi I hI`. Use `haveI := hi`. Use `set m := Module.finrank k E with hm`. Establish `hmpos : 0 < m` using `Module.finrank_pos`. Establish `hiter : ∀ j : ℕ, ∀ g x, ((I : V →ₗ[ℂ] V) ^ j) (ρ g x) = ρ (GlobalTheory.LBC.galAct (σ ^ j) n g) (((I : V →ₗ[ℂ] V) ^ j) x)`.
+
+Introduce `j`. Proceed by induction on `j with`. Consider the case `zero`. Introduce `g x`. Rewrite using `[pow_zero, pow_zero, GlobalTheory.LBC.galAct_one]`.
+
+Both sides reduce to the same expression. Consider the case `succ j ih`. Introduce `g x`. Rewrite using `[pow_succ', pow_succ', GlobalTheory.LBC.galAct_mul, Module.End.mul_apply, Module.End.mul_apply, ih]`. Conclude with `hI _ _`.
+
+Establish `hσm : σ ^ m = 1`. Rewrite using `[hm, ← IsGalois.card_aut_eq_finrank]`. Conclude with `pow_card_eq_one'`. Take `⟨c, hc⟩` from `exists_eq_smul_id_of_irreducible ρ hs hi ((I : V →ₗ[ℂ] V) ^ m) (by`. Introduce `g x`.
+
+Rewrite using `[hiter m g x, hσm, GlobalTheory.LBC.galAct_one]`. Use the proof step `rfl)`. Establish `hinj : Function.Injective ((I : V →ₗ[ℂ] V) ^ m)`. Rewrite using `[Module.End.coe_pow]`. Conclude with `I.injective.iterate m`.
+
+Establish `hc0 : c ≠ 0`. Introduce and unpack `rfl`. Take `⟨v, hv⟩` from `GroundTheory.Automorphic.exists_ne_zero_of_isIrreducible (ρ := ρ)`. Apply `hv` to reduce the goal to its premises. Apply `hinj` to reduce the goal to its premises.
+
+Rewrite using `[hc, zero_smul, map_zero]`. Both sides reduce to the same expression. Take `⟨a, ha⟩` from `IsAlgClosed.exists_pow_nat_eq c⁻¹ hmpos`. Use `⟨a, ?_, ?_, hmpos, ?_⟩` and prove the remaining obligations. Introduce and unpack `rfl`.
+
+Rewrite `ha` using `[zero_pow hmpos.ne']`. Conclude with `inv_ne_zero hc0 ha.symm`. Introduce `g`. Use extensionality with `x`. Simplify using `only [LinearMap.comp_apply, LinearMap.smul_apply, map_smul, LinearEquiv.coe_coe]`.
+
+Rewrite using `[hI]`. Rewrite using `[smul_pow, hc, ha, smul_smul, inv_mul_cancel₀ hc0, one_smul]`. Both sides reduce to the same expression.
+-/
 theorem UpperTheory.Gal.InertialTypesAlt.L.twScale :
     UpperTheory.Gal.InertialTypesAlt.L.TwScale := by
   intro k E _ _ _ _ _ _ _ _ _ _ _ _ _ σ hgen n V _ _ ρ hs hi I hI

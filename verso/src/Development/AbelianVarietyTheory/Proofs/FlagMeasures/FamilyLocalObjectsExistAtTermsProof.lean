@@ -14,6 +14,13 @@ namespace GlobalTheory.SnFam
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Introduce `Cg cb Cw cT CT C0`. Use `⟨0, 0, fun C' Cl _ _ D large₂ X Y u u' hctx K S TS cls hF γ hP => ?_⟩` and prove the remaining obligations. Establish `hTie : ConcTie X Y` using `hctx.2.2`. Take `⟨hTS, _, hrow⟩` from `hF`. Take `⟨t₀, ht₀, hv, rfl⟩` from `hP`.
+
+Establish `hG : ∀ t ∈ TS, t.G ≠ 0`. Introduce `t ht h0`. Rewrite `ht` using `[hTS]`. Apply `ht.1` to reduce the goal to its premises. Use `show Gt t = 0`.
+
+Simplify using `[Gt, h0]`. Establish `hrel : t₀.relevant` using `(GlobalTheory.T.nonGeneric_family_classes_determine_rows D X Y u u' hTie).2.2 t₀ hv`. Conclude with `GlobalTheory.T.exists_localObjectFamily_classesDetermineRows D X Y u u' TS cls hG hrow t₀ ht₀ hrel`.
+-/
 theorem existFam : ExistFam := by
   intro Cg cb Cw cT CT C0
   refine ⟨0, 0, fun C' Cl _ _ D large₂ X Y u u' hctx K S TS cls hF γ hP => ?_⟩

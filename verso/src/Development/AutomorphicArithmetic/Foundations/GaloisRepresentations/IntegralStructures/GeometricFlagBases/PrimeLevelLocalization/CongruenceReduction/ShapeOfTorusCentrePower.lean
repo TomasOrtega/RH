@@ -21,26 +21,46 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 private noncomputable abbrev sm (u : Plc E) (g : GUf E n) : u.adicCompletion E :=
   finiteAdeleMap ℚ E ((sim g : AfQˣ) : AfQ) u
 
+/- English proof (translation)
+Use `show finiteAdeleMap ℚ E (((sim (g * h) : AfQˣ)) : AfQ) u = _`. Rewrite using `[map_mul, Units.val_mul, map_mul]`. Both sides reduce to the same expression.
+-/
 private theorem sm_mul (u : Plc E) (g h : GUf E n) : sm u (g * h) = sm u g * sm u h := by
   show finiteAdeleMap ℚ E (((sim (g * h) : AfQˣ)) : AfQ) u = _
   rw [map_mul, Units.val_mul, map_mul]; rfl
 
+/- English proof (translation)
+Use `show finiteAdeleMap ℚ E (((sim (1 : GUf E n) : AfQˣ)) : AfQ) u = _`. Rewrite using `[map_one, Units.val_one, map_one]`. Both sides reduce to the same expression.
+-/
 private theorem sm_one (u : Plc E) : sm u (1 : GUf E n) = 1 := by
   show finiteAdeleMap ℚ E (((sim (1 : GUf E n) : AfQˣ)) : AfQ) u = _
   rw [map_one, Units.val_one, map_one]; rfl
 
+/- English proof (translation)
+Proceed by induction on `i with`. Consider the case `zero => simpa using sm_one u`. Consider the case `succ k ih => rw [pow_succ, sm_mul, ih, pow_succ]`.
+-/
 private theorem sm_pow (u : Plc E) (g : GUf E n) (i : ℕ) : sm u (g ^ i) = sm u g ^ i := by
   induction i with
   | zero => simpa using sm_one u
   | succ k ih => rw [pow_succ, sm_mul, ih, pow_succ]
 
+/- English proof (translation)
+Use `show finiteAdeleMap ℚ E (((sim (loc hw t) : AfQˣ)) : AfQ) u = _`. Rewrite using `[UpperTheory.Gal.CertificateRingHomMap.sim_loc, Units.val_one, map_one]`. Both sides reduce to the same expression.
+-/
 private theorem sm_loc {w : Plc E} (hw : IsSplitAt w) (t : GLw n w) (u : Plc E) : sm u (loc hw t) = 1 := by
   show finiteAdeleMap ℚ E (((sim (loc hw t) : AfQˣ)) : AfQ) u = _
   rw [UpperTheory.Gal.CertificateRingHomMap.sim_loc, Units.val_one, map_one]; rfl
 
+/- English proof (translation)
+Rewrite using `[← Units.val_mul, ← map_mul, mul_inv_cancel, map_one, Units.val_one]`.
+-/
 private theorem comp_mul_inv_val (u : Plc E) (g : GUf E n) : (comp u g).val * (comp u g⁻¹).val = 1 := by
   rw [← Units.val_mul, ← map_mul, mul_inv_cancel, map_one, Units.val_one]
 
+/- English proof (translation)
+Establish `e : Valued.v ((comp (cj u) z).val a a) = Valued.v (sm u z * (comp u z⁻¹).val a a)` using `(cjEnt E n z u a a).2`. Establish `h3` using `congrFun (congrFun (comp_mul_inv_val u z) a) a`. Rewrite `h3` using `[h1, smul_mul_assoc, Matrix.one_mul]`. Establish `h4 : c * (comp u z⁻¹).val a a = 1` using `by simpa using h3`. Rewrite `e` using `[h2]`.
+
+Establish `e' : Valued.v c' = Valued.v (sm u z) * Valued.v ((comp u z⁻¹).val a a)`. Simplify `e` using `[map_mul]`. Rewrite using `[e', mul_assoc, ← map_mul, mul_comm _ c, h4, map_one, mul_one]`.
+-/
 private theorem val_sm_of (z : GUf E n) (u : Plc E) (a : Fin n) {c : u.adicCompletion E} {c' : (cj u).adicCompletion E}
     (h1 : (comp u z).val = c • (1 : Matrix (Fin n) (Fin n) _)) (h2 : (comp (cj u) z).val = c' • (1 : Matrix (Fin n) (Fin n) _)) :
     Valued.v (sm u z) = Valued.v c' * Valued.v c := by
@@ -53,6 +73,11 @@ private theorem val_sm_of (z : GUf E n) (u : Plc E) (a : Fin n) {c : u.adicCompl
     simpa [map_mul] using e
   rw [e', mul_assoc, ← map_mul, mul_comm _ c, h4, map_one, mul_one]
 
+/- English proof (translation)
+Establish `h` using `conjPl_conjSrc (conjE E) w`. Use `HeightOneSpectrum.ext (Ideal.ext fun y => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `algebraMap (𝓞 ℚ) (𝓞 E) y ∈ (conjSrc (conjE E) w).asIdeal ↔ algebraMap (𝓞 ℚ) (𝓞 E) y ∈ w.asIdeal`. Rewrite using `[← HeightOneSpectrum.valuation_lt_one_iff_mem (K := E), ← HeightOneSpectrum.valuation_lt_one_iff_mem (K := E), ← h]`. Establish `: conjE E ((algebraMap (𝓞 ℚ) (𝓞 E) y : 𝓞 E) : E) = ((algebraMap (𝓞 ℚ) (𝓞 E) y : 𝓞 E) : E)`.
+
+Express the relevant statement in the definitionally equal form `conjE E (algebraMap ℚ E (y : ℚ)) = algebraMap ℚ E (y : ℚ)`. Simplify using `[eq_ratCast]`. Rewrite using `[this]`.
+-/
 private theorem below_cj (w : Plc E) : below ℚ (cj w) = below ℚ w := by
   have h := conjPl_conjSrc (conjE E) w
   refine HeightOneSpectrum.ext (Ideal.ext fun y => ?_)
@@ -63,25 +88,42 @@ private theorem below_cj (w : Plc E) : below ℚ (cj w) = below ℚ w := by
     simp [eq_ratCast]
   rw [this]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `_ ↔ algebraMap (𝓞 ℚ) (𝓞 E) (m : 𝓞 ℚ) ∈ u.asIdeal`. Rewrite using `[map_natCast]`.
+-/
 private theorem nat_mem_below (u : Plc E) (m : ℕ) : ((m : ℕ) : 𝓞 E) ∈ u.asIdeal ↔ ((m : ℕ) : 𝓞 ℚ) ∈ (below ℚ u).asIdeal := by
   change _ ↔ algebraMap (𝓞 ℚ) (𝓞 E) (m : 𝓞 ℚ) ∈ u.asIdeal
   rw [map_natCast]
 
+/- English proof (translation)
+Rewrite `h` using `[nat_mem_below, below_cj, ← nat_mem_below]`. Conclude with `h`.
+-/
 private theorem nat_mem_cj (u : Plc E) (m : ℕ) (h : ((m : ℕ) : 𝓞 E) ∈ (cj u).asIdeal) : ((m : ℕ) : 𝓞 E) ∈ u.asIdeal := by
   rw [nat_mem_below, below_cj, ← nat_mem_below] at h
   exact h
 
+/- English proof (translation)
+Establish `e : ((m : ℕ) : u.adicCompletion E) = algebraMap (𝓞 E) (u.adicCompletion E) (m : 𝓞 E)` using `(map_natCast _ m).symm`. Rewrite using `[e]`. Conclude with `(GroundTheory.Global.SemiLocal.valued_algebraMap_int_lt_one_iff u _).2 h`.
+-/
 private theorem val_nat_lt (u : Plc E) (m : ℕ) (h : ((m : ℕ) : 𝓞 E) ∈ u.asIdeal) : Valued.v ((m : ℕ) : u.adicCompletion E) < 1 := by
   have e : ((m : ℕ) : u.adicCompletion E) = algebraMap (𝓞 E) (u.adicCompletion E) (m : 𝓞 E) := (map_natCast _ m).symm
   rw [e]
   exact (GroundTheory.Global.SemiLocal.valued_algebraMap_int_lt_one_iff u _).2 h
 
+/- English proof (translation)
+Establish `e : ((m : ℕ) : u.adicCompletion E) = algebraMap (𝓞 E) (u.adicCompletion E) (m : 𝓞 E)` using `(map_natCast _ m).symm`. Rewrite using `[e]`. Conclude with `le_antisymm (GroundTheory.Global.SemiLocal.valued_algebraMap_int_le_one u _) (not_lt.1 fun h' => h ((GroundTheory.Global.SemiLocal.valued_algebraMap_int_lt_one_iff u _).1 h'))`.
+-/
 private theorem val_nat_one (u : Plc E) (m : ℕ) (h : ((m : ℕ) : 𝓞 E) ∉ u.asIdeal) : Valued.v ((m : ℕ) : u.adicCompletion E) = 1 := by
   have e : ((m : ℕ) : u.adicCompletion E) = algebraMap (𝓞 E) (u.adicCompletion E) (m : 𝓞 E) := (map_natCast _ m).symm
   rw [e]
   exact le_antisymm (GroundTheory.Global.SemiLocal.valued_algebraMap_int_le_one u _)
     (not_lt.1 fun h' => h ((GroundTheory.Global.SemiLocal.valued_algebraMap_int_lt_one_iff u _).1 h'))
 
+/- English proof (translation)
+Establish `hmax : (Ideal.span {(q : ℤ)}).IsMaximal` using `PrincipalIdealRing.isMaximal_of_irreducible (Nat.prime_iff_prime_int.1 hq).irreducible`. Establish `hle : Ideal.span {(q : ℤ)} ≤ w.asIdeal.under ℤ`. Rewrite using `[Ideal.span_singleton_le_iff_mem, Ideal.under_def, Ideal.mem_comap]`. Simplify using `using hwq`. Establish `: w.asIdeal.LiesOver (Ideal.span {(q : ℤ)})` using `⟨hmax.eq_of_le (Ideal.IsPrime.ne_top inferInstance) hle⟩`.
+
+Conclude with `⟨_, Ideal.absNorm_eq_pow_inertiaDeg' w.asIdeal hq⟩`.
+-/
 private theorem norm_pow {q : ℕ} (hq : q.Prime) (w : Plc E) (hwq : (q : 𝓞 E) ∈ w.asIdeal) :
     ∃ f : ℕ, Ideal.absNorm w.asIdeal = q ^ f := by
   have hmax : (Ideal.span {(q : ℤ)}).IsMaximal :=
@@ -92,12 +134,22 @@ private theorem norm_pow {q : ℕ} (hq : q.Prime) (w : Plc E) (hwq : (q : 𝓞 E
   have : w.asIdeal.LiesOver (Ideal.span {(q : ℤ)}) := ⟨hmax.eq_of_le (Ideal.IsPrime.ne_top inferInstance) hle⟩
   exact ⟨_, Ideal.absNorm_eq_pow_inertiaDeg' w.asIdeal hq⟩
 
+/- English proof (translation)
+Use `v.isMaximal` as an intermediate fact. Take `⟨Q, hQ, hl⟩` from `Ideal.exists_maximal_ideal_liesOver_of_isIntegral (S := 𝓞 E) v.asIdeal`. Establish `hne : Q ≠ ⊥` using `Ideal.ne_bot_of_liesOver_of_ne_bot v.ne_bot Q`. Conclude with `⟨⟨Q, hQ.isPrime, hne⟩, HeightOneSpectrum.ext hl.over.symm⟩`.
+-/
 private theorem exists_over (v : Plc ℚ) : ∃ u : Plc E, below ℚ u = v := by
   have := v.isMaximal
   obtain ⟨Q, hQ, hl⟩ := Ideal.exists_maximal_ideal_liesOver_of_isIntegral (S := 𝓞 E) v.asIdeal
   have hne : Q ≠ ⊥ := Ideal.ne_bot_of_liesOver_of_ne_bot v.ne_bot Q
   exact ⟨⟨Q, hQ.isPrime, hne⟩, HeightOneSpectrum.ext hl.over.symm⟩
 
+/- English proof (translation)
+Rewrite using `[hϖ]`. Break down `eq_or_ne (Valued.v y) 0 with h0 | h0` into its components or cases. Rewrite using `[h0]`. Conclude with `zero_le'`. Take `⟨m, hm⟩` from `WithZero.ne_zero_iff_exists.1 h0`.
+
+Rewrite `h`, the goal using `[← hm]`. Rewrite `h` using `[← WithZero.coe_one, WithZero.coe_lt_coe]`. Rewrite using `[WithZero.coe_le_coe]`. Establish `h' : Multiplicative.toAdd m < 0` using `h`. Use `show Multiplicative.toAdd m ≤ -1`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 private theorem le_unif {w : Plc E} {ϖ y : w.adicCompletion E} (hϖ : Formalism.UG.IsUnifV E w ϖ) (h : Valued.v y < 1) :
     Valued.v y ≤ Valued.v ϖ := by
   rw [hϖ]
@@ -117,11 +169,28 @@ private structure Pos (x : E) (q : ℕ) (w : Plc E) : Prop where
   h4 : ∀ u : Plc E, SameK x u w → (q : 𝓞 E) ∈ u.asIdeal
   h5 : ∀ u u' : Plc E, SameK x u u' → SameK x (cj u) (cj u')
 
+/- English proof (translation)
+The claim follows from `P.h1 fun y hy => (P.h5 _ _ ha y hy).symm.trans (hb y hy)`.
+-/
 private theorem not_both {x : E} {q : ℕ} {w : Plc E} (P : Pos x q w) (u : Plc E) (ha : SameK x u w) (hb : SameK x (cj u) w) : False :=
   P.h1 fun y hy => (P.h5 _ _ ha y hy).symm.trans (hb y hy)
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.SplitPts.conjSrc_conjSrc_cm u`.
+-/
 private theorem cc (u : Plc E) : cj (cj u) = u := GlobalTheory.SplitPts.conjSrc_conjSrc_cm u
 
+/- English proof (translation)
+Establish `tr : ∀ u : Plc E, below ℚ u = v → Valued.v (sm u z) = Valued.v ((Ideal.absNorm w.asIdeal : ℕ) : u.adicCompletion E) → Valued.v (((sim z : AfQˣ) : AfQ) v) = Valued.v ((Ideal.absNorm w.asIdeal : ℕ) : v.adicCompletion ℚ)`. Introduce `u hu h`. Substitute `hu` using the available equality. Establish `e1 : sm u z = completionMap (below ℚ u) u (((sim z : AfQˣ) : AfQ) (below ℚ u))` using `rfl`. Establish `e2 : ((Ideal.absNorm w.asIdeal : ℕ) : u.adicCompletion E) = completionMap (below ℚ u) u ((Ideal.absNorm w.asIdeal : ℕ) : (below ℚ u).adicCompletion ℚ)` using `(map_natCast _ _).symm`.
+
+Rewrite `h` using `[e1, e2, valued_completionMap, valued_completionMap]`. Conclude with `(pow_left_inj₀ zero_le' zero_le' (Ideal.ramificationIdx_pos u.asIdeal (𝓞 ℚ)).ne').1 h`. Take `⟨u0, hu0⟩` from `exists_over (E := E) v`. Distinguish the cases in `hq0 : (q : 𝓞 E) ∈ u0.asIdeal`. Take `⟨u, hu, hc⟩ : ∃ u : Plc E, below ℚ u = v ∧ SameK x (cj u) w` from `(P.h3 u0 hq0).elim (fun h => ⟨cj u0, by rw [below_cj, hu0], by rw [cc]; exact h⟩) fun h => ⟨u0, hu0, h⟩`.
+
+Use `tr u hu ?_` and prove the remaining obligations. Establish `hnot : ¬ SameK x u w` using `fun h => not_both P u h hc`. Establish `c1` using `(hz u).1 hc`. Establish `c2` using `(hz (cj u)).2 (by rw [cc]; exact hnot)`. Rewrite using `[val_sm_of z u a (c' := 1) c1 (by rw [c2]; simp), map_one, one_mul]`.
+
+Use `tr u0 hu0 ?_` and prove the remaining obligations. Establish `hn1 : ¬ SameK x u0 w` using `fun h => hq0 (P.h4 _ h)`. Establish `hn2 : ¬ SameK x (cj u0) w` using `fun h => hq0 (nat_mem_cj u0 q (P.h4 _ h))`. Establish `c1` using `(hz u0).2 hn2`. Establish `c2` using `(hz (cj u0)).2 (by rw [cc]; exact hn1)`.
+
+Rewrite using `[val_sm_of z u0 a (c := 1) (c' := 1) (by rw [c1]; simp) (by rw [c2]; simp), map_one, map_one, one_mul]`. Take `⟨f, hf⟩` from `norm_pow hq w hwq`. Use `(val_nat_one u0 _ fun h => hq0 ?_).symm` and prove the remaining obligations. Rewrite `h` using `[hf, Nat.cast_pow]`. Conclude with `u0.isPrime.mem_of_pow_mem _ h`.
+-/
 private theorem val_sim {x : E} {q : ℕ} {w : Plc E} (P : Pos x q w) (hq : q.Prime) (hwq : (q : 𝓞 E) ∈ w.asIdeal)
     {z : GUf E n} (hz : IsCen x w z) (a : Fin n) (v : Plc ℚ) :
     Valued.v (((sim z : AfQˣ) : AfQ) v) = Valued.v ((Ideal.absNorm w.asIdeal : ℕ) : v.adicCompletion ℚ) := by
@@ -154,6 +223,9 @@ private theorem val_sim {x : E} {q : ℕ} {w : Plc E} (P : Pos x q w) (hq : q.Pr
     rw [hf, Nat.cast_pow] at h
     exact u0.isPrime.mem_of_pow_mem _ h
 
+/- English proof (translation)
+Establish `e1 : sm w z = completionMap (below ℚ w) w (((sim z : AfQˣ) : AfQ) (below ℚ w))` using `rfl`. Establish `e2 : ((Ideal.absNorm w.asIdeal : ℕ) : w.adicCompletion E) = completionMap (below ℚ w) w ((Ideal.absNorm w.asIdeal : ℕ) : (below ℚ w).adicCompletion ℚ)` using `(map_natCast _ _).symm`. Rewrite using `[e1, e2, valued_completionMap, valued_completionMap, val_sim P hq hwq hz a]`.
+-/
 private theorem val_sm_self {x : E} {q : ℕ} {w : Plc E} (P : Pos x q w) (hq : q.Prime) (hwq : (q : 𝓞 E) ∈ w.asIdeal)
     {z : GUf E n} (hz : IsCen x w z) (a : Fin n) :
     Valued.v (sm w z) = Valued.v ((Ideal.absNorm w.asIdeal : ℕ) : w.adicCompletion E) := by
@@ -162,6 +234,9 @@ private theorem val_sm_self {x : E} {q : ℕ} {w : Plc E} (P : Pos x q w) (hq : 
       completionMap (below ℚ w) w ((Ideal.absNorm w.asIdeal : ℕ) : (below ℚ w).adicCompletion ℚ) := (map_natCast _ _).symm
   rw [e1, e2, valued_completionMap, valued_completionMap, val_sim P hq hwq hz a]
 
+/- English proof (translation)
+Introduce `a b`. Rewrite using `[Matrix.smul_apply, Matrix.one_apply]`. Use `split_ifs`. Simplify using `using natCast_mem (u.adicCompletionIntegers E) m`. Simplify using the standard rewrite rules.
+-/
 private theorem intM_nat (u : Plc E) (m : ℕ) : IntM u (((m : ℕ) : u.adicCompletion E) • (1 : Matrix (Fin n) (Fin n) _)) := by
   intro a b
   rw [Matrix.smul_apply, Matrix.one_apply]
@@ -169,6 +244,9 @@ private theorem intM_nat (u : Plc E) (m : ℕ) : IntM u (((m : ℕ) : u.adicComp
   · simpa using natCast_mem (u.adicCompletionIntegers E) m
   · simp
 
+/- English proof (translation)
+Proceed by induction on `i with`. Consider the case `zero => rfl`. Consider the case `succ k ih`. Rewrite using `[pow_succ, pow_succ, ← ih]`. Both sides reduce to the same expression.
+-/
 private theorem adele_pow (s : AfQ) (v : Plc ℚ) (i : ℕ) : (s ^ i) v = s v ^ i := by
   induction i with
   | zero => rfl
@@ -176,6 +254,55 @@ private theorem adele_pow (s : AfQ) (v : Plc ℚ) (i : ℕ) : (s ^ i) v = s v ^ 
     rw [pow_succ, pow_succ, ← ih]
     rfl
 
+/- English proof (translation)
+Take `⟨ϖ, hϖ, htv⟩` from `id ht`. Establish `hϖ0 : ϖ ≠ 0` using `fun h => by`. Rewrite `hϖ` using `[Formalism.UG.IsUnifV, h, map_zero]`. Conclude with `WithZero.zero_ne_coe hϖ`. Establish `hϖ1 : Valued.v ϖ ≤ 1`.
+
+Rewrite using `[hϖ, ← WithZero.coe_one, WithZero.coe_le_coe]`. Use `show (-1 : ℤ) ≤ 0`. Use linear arithmetic over natural numbers and integers. Establish `hzw : comp w z = 1` using `(hz w).2 P.h1`. Establish `hgw : comp w (loc hw t * z ^ i) = t`.
+
+Rewrite using `[map_mul, map_pow, UpperTheory.Gal.CertificateRingHomMap.comp_loc, hzw, one_pow, mul_one]`. Establish `hap : ∀ u : Plc E, u ≠ w → u ≠ cj w → GlobalTheory.Cong.Apart u w` using `fun u h1 h2 e => (GlobalTheory.BCT.GlobLev.eq_or_eq_conjSrc e).elim h1 h2`. Establish `hgu : ∀ u : Plc E, u ≠ w → u ≠ cj w → comp u (loc hw t * z ^ i) = (comp u z) ^ i` using `fun u h1 h2 => by`. Rewrite using `[map_mul, map_pow, UpperTheory.Gal.CertificateRingHomMap.comp_loc_of_apart hw (hap u h1 h2), one_mul]`. Establish `hoff : ∀ u : Plc E, u ≠ w → ¬ SameK x (cj u) w → comp u (loc hw t * z ^ i) = 1` using `fun u h1 h2 => by`.
+
+Establish `h3 : u ≠ cj w` using `fun e => h2 (by rw [e, cc]; exact fun _ _ => Iff.rfl)`. Rewrite using `[hgu u h1 h3, (hz u).2 h2, one_pow]`. Establish `hcen : ∀ u : Plc E, u ≠ cj w → SameK x (cj u) w → (comp u (loc hw t * z ^ i)).val = ((Ideal.absNorm w.asIdeal ^ i : ℕ) : u.adicCompletion E) • (1 : Matrix (Fin n) (Fin n) _)` using `fun u h1 h2 => by`. Establish `h3 : u ≠ w` using `fun e => P.h1 (e ▸ h2)`. Rewrite using `[hgu u h3 h1, Units.val_pow_eq_pow_val, (hz u).1 h2, smul_pow, one_pow, Nat.cast_pow]`.
+
+Establish `htinv : (t⁻¹).val = Matrix.diagonal fun k : Fin n => if (k : ℕ) < i then ϖ⁻¹ else 1`. Use `Units.inv_eq_of_mul_eq_one_right ?_` and prove the remaining obligations. Rewrite using `[htv, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `k`.
+
+Use `split_ifs`. Conclude with `mul_inv_cancel₀ hϖ0`. Conclude with `one_mul 1`. Establish `hN1 : Valued.v ((Ideal.absNorm w.asIdeal : ℕ) : w.adicCompletion E) < 1` using `val_nat_lt w _ (Ideal.absNorm_mem w.asIdeal)`. Establish `hNϖ` using `le_unif hϖ hN1`.
+
+Establish `hb : ∀ a b : Fin n, Valued.v ((Ideal.absNorm w.asIdeal : ℕ) : w.adicCompletion E) ^ i * Valued.v ((t⁻¹).val a b) ≤ 1`. Introduce `a b`. Rewrite using `[htinv, Matrix.diagonal_apply]`. Use `split_ifs with hab hk`. Establish `hi0 : i ≠ 0` using `by omega`.
+
+Establish `h1` using `pow_le_of_le_one zero_le' hN1.le hi0`. Rewrite using `[map_inv₀]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_one, mul_one]`. Conclude with `pow_le_one' hN1.le _`.
+
+Rewrite using `[map_zero, mul_zero]`. Conclude with `zero_le'`. Apply the tactic sequence `have hentry : ∀ a b : Fin n, Valued.v (t.val a b) ≤ 1 := by`. Introduce `a b`. Rewrite using `[htv, Matrix.diagonal_apply]`.
+
+Use `split_ifs`. Conclude with `hϖ1`. Rewrite using `[map_one]`. Rewrite using `[map_zero]`. Conclude with `zero_le'`.
+
+Use `⟨by rw [hgw]; exact ht, hoff, hcen, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `u a b`. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers]`. Distinguish the cases in `huw : u = w`. Substitute `huw` using the available equality.
+
+Rewrite using `[hgw]`. Apply the tactic sequence `exact hentry a b`. Distinguish the cases in `huc : u = cj w`. Substitute `huc` using the available equality. Establish `hh : Valued.v ((comp (cj w) (loc hw t * z ^ i)).val a b) = Valued.v (sm w (loc hw t * z ^ i) * (comp w (loc hw t * z ^ i)⁻¹).val b a)` using `(cjEnt E n _ w a b).2`.
+
+Rewrite using `[hh, map_inv, hgw, sm_mul, sm_loc, one_mul, sm_pow, map_mul, map_pow, val_sm_self P hq hwq hz a]`. Conclude with `hb b a`. Distinguish the cases in `hs : SameK x (cj u) w`. Rewrite using `[hcen u huc hs]`. Conclude with `(HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).1 (intM_nat u _ a b)`.
+
+Rewrite using `[hoff u huw hs]`. Use `intM_nat (n := n) u 1 a b` as an intermediate fact. Simplify `this` using `[HeightOneSpectrum.mem_adicCompletionIntegers]`. Introduce `u a b`. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers, Matrix.smul_apply, smul_eq_mul, map_mul, Nat.cast_pow, map_pow]`.
+
+Distinguish the cases in `huw : u = w`. Substitute `huw` using the available equality. Rewrite using `[map_inv, hgw]`. Conclude with `hb a b`. Distinguish the cases in `huc : u = cj w`.
+
+Substitute `huc` using the available equality. Establish `hh : Valued.v ((comp (cj w) (loc hw t * z ^ i)⁻¹).val a b) = Valued.v (sm w (loc hw t * z ^ i)⁻¹ * (comp w (loc hw t * z ^ i)⁻¹⁻¹).val b a)` using `(cjEnt E n _ w a b).2`. Establish `hN : Valued.v (sm w z) = Valued.v ((Ideal.absNorm w.asIdeal : ℕ) : (cj w).adicCompletion E)`. Rewrite using `[val_sm_of z w a (c := 1) (c' := ((Ideal.absNorm w.asIdeal : ℕ) : (cj w).adicCompletion E)) (by rw [hzw]; simp) ((hz (cj w)).1 (by rw [cc]; exact fun _ _ => Iff.rfl)), map_one, mul_one]`. Establish `hs : sm w (loc hw t * z ^ i) * sm w (loc hw t * z ^ i)⁻¹ = 1`.
+
+Rewrite using `[← sm_mul, mul_inv_cancel, sm_one]`. Establish `hs' : Valued.v (sm w z) ^ i * Valued.v (sm w (loc hw t * z ^ i)⁻¹) = 1`. Use `congrArg Valued.v hs` as an intermediate fact. Rewrite `this` using `[sm_mul, sm_loc, one_mul, sm_pow, map_mul, map_pow, map_one]`. Then use the resulting hypothesis. Rewrite using `[hh, inv_inv, hgw, map_mul, ← mul_assoc, ← hN, hs', one_mul]`.
+
+Apply the tactic sequence `exact hentry b a`. Distinguish the cases in `hs : SameK x (cj u) w`. Establish `h1` using `comp_mul_inv_val u (loc hw t * z ^ i)`. Rewrite `h1` using `[hcen u huc hs, smul_mul_assoc, Matrix.one_mul]`. Establish `h2` using `congrArg Valued.v (congrFun (congrFun h1 a) b)`.
+
+Rewrite `h2` using `[Matrix.smul_apply, smul_eq_mul, map_mul, Nat.cast_pow, map_pow]`. Rewrite using `[h2, Matrix.one_apply]`. Use `split_ifs`. Rewrite using `[map_one]`. Rewrite using `[map_zero]`.
+
+Conclude with `zero_le'`. Rewrite using `[map_inv, hoff u huw hs, inv_one]`. Establish `h1 : Valued.v ((Ideal.absNorm w.asIdeal : ℕ) : u.adicCompletion E) ≤ 1`. Establish `e : ((Ideal.absNorm w.asIdeal : ℕ) : u.adicCompletion E) = algebraMap (𝓞 E) (u.adicCompletion E) (Ideal.absNorm w.asIdeal : 𝓞 E)` using `(map_natCast _ _).symm`. Rewrite using `[e]`.
+
+Conclude with `GroundTheory.Global.SemiLocal.valued_algebraMap_int_le_one u _`. Establish `h2 : Valued.v (((1 : GLw n u)).val a b) ≤ 1`. Rewrite using `[Units.val_one, Matrix.one_apply]`. Use `split_ifs`. Rewrite using `[map_one]`.
+
+Rewrite using `[map_zero]`. Conclude with `zero_le'`. Conclude with `mul_le_one' (pow_le_one' h1 _) h2`. Introduce `v`. Break down `Nat.eq_zero_or_pos i with rfl | hi0` into its components or cases.
+
+Establish `e : sim (loc hw t * z ^ 0) = 1`. Rewrite using `[pow_zero, mul_one, UpperTheory.Gal.CertificateRingHomMap.sim_loc]`. Rewrite using `[e, Units.val_one, pow_zero, Nat.cast_one]`. Conclude with `congrArg Valued.v (rfl : (1 : AfQ) v = 1)`. Establish `e : ((sim (loc hw t * z ^ i) : AfQˣ) : AfQ) = ((sim z : AfQˣ) : AfQ) ^ i`.
+
+Rewrite using `[map_mul, UpperTheory.Gal.CertificateRingHomMap.sim_loc, one_mul, map_pow, Units.val_pow_eq_pow_val]`. Rewrite using `[e, adele_pow, map_pow, val_sim P hq hwq hz ⟨0, by omega⟩, Nat.cast_pow, map_pow]`.
+-/
 private theorem shape_of_torus_centre_power {x : E} {q : ℕ} {w : Plc E} (P : Pos x q w) (hq : q.Prime) (hwq : (q : 𝓞 E) ∈ w.asIdeal)
     (hw : IsSplitAt w) {i : ℕ} (hi : i ≤ n) {t : GLw n w} {z : GUf E n} (ht : IsT w i t) (hz : IsCen x w z) :
     Shp x w i (loc hw t * z ^ i) := by
@@ -304,6 +431,9 @@ private theorem shape_of_torus_centre_power {x : E} {q : ℕ} {w : Plc E} (P : P
 
 end UpperTheory.Gal.Int.Geo.Pl.Tj
 
+/- English proof (translation)
+Introduce `hS E _ _ _ A n x hx q hq hsp w hwq hw i hi t z ht hz`. Take `⟨h1, -, h3, h4, h5, -, -⟩` from `hS E A x hx q hq hsp w hwq`. Conclude with `shape_of_torus_centre_power ⟨h1, h3, h4, h5⟩ hq hwq hw hi ht hz`.
+-/
 theorem UpperTheory.Gal.Int.Geo.Pl.Tj.shpOf :
     UpperTheory.Gal.Int.Geo.Pl.Tj.ShpOf := by
   intro hS E _ _ _ A n x hx q hq hsp w hwq hw i hi t z ht hz

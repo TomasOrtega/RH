@@ -25,6 +25,19 @@ open GlobalTheory.Cartier GlobalTheory.CxPts GlobalTheory.ProjVar GlobalTheory.T
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `F _ _ X Z q i _ κ _ _ _`. Use `set p : ℕ := ringChar κ with hpdef`. Establish `hp : p ≠ 0` using `CharP.char_ne_zero_of_finite κ p`. Establish `hpF : ((p : ℕ) : 𝓞 F) ≠ 0` using `Nat.cast_ne_zero.2 hp`. Establish `hp0 : ((p : ℕ) : Γ(Z, ⊤)) = 0`.
+
+Rewrite using `[← map_natCast (algebraMap κ Γ(Z, ⊤)), hpdef, ringChar.Nat.cast_ringChar, map_zero]`. Establish `e : i ≫ q = Z.toSpecΓ ≫ Spec.map ((Scheme.ΓSpecIso (CommRingCat.of (𝓞 F))).inv ≫ (i ≫ q).appTop)`. Rewrite using `[Spec.map_comp, ← Scheme.toSpecΓ_naturality_assoc, toSpecΓ_SpecMap_ΓSpecIso_inv, Category.comp_id]`. Establish `key : ∀ z : Z, ((p : ℕ) : 𝓞 F) ∈ (q (i z)).asIdeal`. Introduce `z`.
+
+Establish `hz : q (i z) = (Z.toSpecΓ ≫ Spec.map ((Scheme.ΓSpecIso (CommRingCat.of (𝓞 F))).inv ≫ (i ≫ q).appTop)) z`. Rewrite using `[← e]`. Both sides reduce to the same expression. Rewrite using `[hz]`. Use `show _ ∈ Ideal.comap _ _`.
+
+Rewrite using `[Ideal.mem_comap, map_natCast, hp0]`. Conclude with `zero_mem _`. Establish `hne : ∀ z : Z, (q (i z)).asIdeal ≠ ⊥` using `fun z h => hpF (by`. Use `key z` as an intermediate fact. Rewrite `this` using `[h]`.
+
+Conclude with `(Submodule.mem_bot _).1 this)`. Set `η : Z` to `genericPoint Z`. Establish `hmax : (q (i η)).asIdeal.IsMaximal` using `(q (i η)).isPrime.isMaximal (hne η)`. Use `⟨⟨(q (i η)).asIdeal, (q (i η)).isPrime, hne η⟩, key η, fun z => ?_⟩` and prove the remaining obligations. Establish `hsp : η ⤳ z` using `(genericPoint_spec Z).specializes (Set.mem_univ z)`.
+
+Establish `hsp' : (q (i η)) ⤳ (q (i z))` using `(hsp.map i.continuous).map q.continuous`. Establish `hle : (q (i η)).asIdeal ≤ (q (i z)).asIdeal` using `(PrimeSpectrum.le_iff_specializes _ _).2 hsp'`. Conclude with `(hmax.eq_of_le (q (i z)).isPrime.ne_top hle).symm`.
+-/
 theorem fibre_over_prime_of_finite_field_action : ∀ (F : Type) [Field F] [NumberField F] (X Z : Scheme.{0}) (q : X ⟶ Sp (𝓞 F)) (i : Z ⟶ X) [IsIntegral Z]
     (κ : Type) [Field κ] [Finite κ] [Algebra κ Γ(Z, ⊤)],
     ∃ v : HeightOneSpectrum (𝓞 F), ((ringChar κ : ℕ) : 𝓞 F) ∈ v.asIdeal ∧ ∀ z : Z, (q (i z)).asIdeal = v.asIdeal := by

@@ -18,6 +18,13 @@ open GlobalTheory.HeightCounting.Up GlobalTheory.Mem.SRe GlobalTheory.Mem.R3.Rw
 noncomputable section
 namespace GlobalTheory.HeightCounting.Up
 set_option maxHeartbeats 4000000
+/- English proof (translation)
+Introduce `hL cDep Γ`. Introduce `K B f T w Z O x N h O' hO' col n`. Take `⟨t', hs, hgeo, hpk, hobj, hrx⟩` from `GlobalTheory.T.rows_pass_to_moved_divisionLatticesHeights K B f T w Z x.Wt O x.what₂ N h O' hO'`. Take `⟨nch', xd', hkept, hnx, -, -, hmv⟩` from `_root_.GlobalTheory.T.exists_kept_choice_upper_lattice_alt hL K B f T w Z x.Wt Z.S N h O.nch O.xd`. Take `⟨hn1, hn2⟩` from `hnx rfl`.
+
+Substitute `hO'` using the available equality. Establish `e1 : nch' = (O.tr N h).nch` using `eq_of_heq hn1`. Establish `e2 : xd' = (O.tr N h).xd` using `eq_of_heq hn2`. Substitute `e1 e2` using the available equality. Establish `hlp` using `GlobalTheory.Mem.GridMove.listPin_rowsSame cDep K.s.b K B f T w Z x.Wt Z.S N h O.p0 x.what₂ (O.tr N h).p0 t' hs x.nx.2.1.2.down`.
+
+Take `⟨P, y, l, hls, hW, hk⟩` from `x.nx.2.2.down`. Take `⟨c⟩` from `hmv O.p0 x.what₂ x.n (O.tr N h).p0 t' n hs hgeo ⟨x.nx.1, x.nx.2.1.1⟩`. Take `⟨s⟩` from `GlobalTheory.T.spectralStageData_transfer_lattices_heights K B f T w Z x.Wt O.p0 x.what₂ x.col.toColT N h (O.tr N h).p0 t' col.toColT hpk ⟨x.sx.1⟩`. Take `⟨o⟩` from `GlobalTheory.T.divisionGeometryScalars_transfer_setDivision Γ K B f T w Z x.Wt N h O (O.tr N h) rfl x.what₂ t' hs x.ox`. Conclude with `⟨t', hobj x.obj, hrx ⟨x.rx⟩, ⟨⟨c.1, ⟨c.2, ⟨hlp⟩⟩, ⟨⟨P, y, l, hls, hW, kept_trans hk hkept⟩⟩⟩⟩, ⟨⟨s, PUnit.unit⟩⟩, ⟨o⟩⟩`.
+-/
 theorem movable_prmR_nel_alt : ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (cDep : ℝ) (Γ : GeoP), PositionMv (_root_.GlobalTheory.Mem.Top.Bl.parametersOfExtension (_root_.GlobalTheory.HeightCounting.Up.extensionWithOrigin hL cDep) SExt.none (geoCl Γ)).s := by
   intro hL cDep Γ
   intro K B f T w Z O x N h O' hO' col n

@@ -10,6 +10,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 noncomputable section
 
+/- English proof (translation)
+Rewrite using `[Matrix.submatrix_mul_equiv β x id e.symm e.symm, Matrix.mul_assoc (β * x)]`. Establish `h1 : γ * β.submatrix id e.symm = (γ * β).submatrix id e.symm`. Use extensionality with `i j`. Simplify using `[Matrix.mul_apply]`. Rewrite using `[h1, hγβ]`.
+
+Use extensionality with `i j`. Simplify using `[Matrix.mul_apply, Matrix.one_apply]`.
+-/
 theorem GlobalTheory.TopLevQ.moved_mat {k Z : Type} [Field k] [Fintype Z] [DecidableEq Z] {n : ℕ} (β : Matrix (Fin n) Z k) (γ : Matrix Z (Fin n) k) (hγβ : γ * β = 1) (x : Matrix Z Z k) (e : Z ≃ Fin n) : β * x * γ * β.submatrix id e.symm = β.submatrix id e.symm * x.submatrix e.symm e.symm := by
   rw [Matrix.submatrix_mul_equiv β x id e.symm e.symm, Matrix.mul_assoc (β * x)]
   have h1 : γ * β.submatrix id e.symm = (γ * β).submatrix id e.symm := by
@@ -17,6 +22,15 @@ theorem GlobalTheory.TopLevQ.moved_mat {k Z : Type} [Field k] [Fintype Z] [Decid
   rw [h1, hγβ]
   ext i j; simp [Matrix.mul_apply, Matrix.one_apply]
 
+/- English proof (translation)
+Establish `hm : ∀ x y : GA D V, Formalism.L2.Theta.mt V (x * y) = Formalism.L2.Theta.mt V x * Formalism.L2.Theta.mt V y` using `fun x y => by`. Unfold `Formalism.L2.Theta.mt`. Rewrite using `[map_mul]`. Both sides reduce to the same expression. Establish `h1 : Formalism.L2.Theta.mt V b⁻¹ * Formalism.L2.Theta.mt V b = 1`.
+
+Rewrite using `[← hm, inv_mul_cancel]`. Unfold `Formalism.L2.Theta.mt`. Rewrite using `[map_one]`. Both sides reduce to the same expression. Establish `key : Formalism.L2.Theta.mt V (b⁻¹ * g * b) - 1 = Formalism.L2.Theta.mt V b⁻¹ * (Formalism.L2.Theta.mt V g - 1) * Formalism.L2.Theta.mt V b`.
+
+Rewrite using `[hm, hm, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, h1]`. Establish `hg' : (e + (cA D) e) • (Formalism.L2.Theta.mt V g - 1) = Formalism.L2.Theta.mt V g - 1`. Use extensionality with `i j`. Conclude with `hg i j`. Establish `h2 : (e + (cA D) e) • (Formalism.L2.Theta.mt V b⁻¹ * (Formalism.L2.Theta.mt V g - 1) * Formalism.L2.Theta.mt V b) = Formalism.L2.Theta.mt V b⁻¹ * ((e + (cA D) e) • (Formalism.L2.Theta.mt V g - 1)) * Formalism.L2.Theta.mt V b`.
+
+Rewrite using `[Matrix.mul_smul, Matrix.smul_mul]`. Rewrite `h2` using `[hg']`. Introduce `i j`. Rewrite using `[key]`. Conclude with `congrFun (congrFun h2 i) j`.
+-/
 theorem GlobalTheory.TopLevQ.suppAt_conj {D : D7} {e : AE D} {V : HSp D} (g b : GA D V) (hg : Formalism.L2.Theta.SuppAt e V g) :
     Formalism.L2.Theta.SuppAt e V (b⁻¹ * g * b) := by
   have hm : ∀ x y : GA D V, Formalism.L2.Theta.mt V (x * y) = Formalism.L2.Theta.mt V x * Formalism.L2.Theta.mt V y := fun x y => by
@@ -36,6 +50,23 @@ theorem GlobalTheory.TopLevQ.suppAt_conj {D : D7} {e : AE D} {V : HSp D} (g b : 
   rw [key]
   exact congrFun (congrFun h2 i) j
 
+/- English proof (translation)
+Establish `hlo : ∀ a : Fin κ ⊕ Fin (s + 1), (e (Sum.inl a)).val < κ + (s + 1)`. Apply the tactic sequence `intro a; rw [he]; rcases a with a | a <;> simp [GlobalTheory.SymBridge.zPos] <;> omega`. Establish `hhi : ∀ p : Fin (s + 2) × Fin τ, κ + (s + 1) ≤ (e (Sum.inr p)).val`. Introduce `p`. Rewrite using `[he]`.
+
+Simplify using `only [GlobalTheory.SymBridge.zPos]`. Conclude with `Nat.le_add_right_of_le (Nat.le_add_right _ _)`. Prove the components needed by the constructor for the conclusion. Introduce `h p a`. Use `h (e (Sum.inr p)) (e (Sum.inl a)) (by` as an intermediate fact.
+
+Simplify using `only [Formalism.L2.DIV.blk2, if_pos (hlo a), if_neg (Nat.not_lt.2 (hhi p))]`. Use the proof step `omega)`. Simplify using `only [Equiv.symm_apply_apply] at this`. Conclude with `this`. Introduce `h i j hij`.
+
+Establish `hj : j.val < κ + (s + 1)`. Assume the negation of the conclusion as `hc`. Simplify using `only [Formalism.L2.DIV.blk2, if_neg hc] at hij`. Apply the tactic sequence `split_ifs at hij <;> omega`. Establish `hi : ¬ i.val < κ + (s + 1)`.
+
+Introduce `hc`. Simplify using `only [Formalism.L2.DIV.blk2, if_pos hc, if_pos hj] at hij`. Use linear arithmetic over natural numbers and integers. Choose the witnesses or unpack the hypotheses as in `⟨p, hp⟩ : ∃ p, e.symm i = Sum.inr p := by`. Break down `hi' : e.symm i with a | p` into its components or cases.
+
+It suffices to derive a contradiction. Apply `hi` to reduce the goal to its premises. Use `hlo a` as an intermediate fact. Rewrite `this` using `[← hi', Equiv.apply_symm_apply]`. Conclude with `this`.
+
+Conclude with `⟨p, rfl⟩`. Choose the witnesses or unpack the hypotheses as in `⟨a, ha⟩ : ∃ a, e.symm j = Sum.inl a := by`. Break down `hj' : e.symm j with a | p` into its components or cases. Conclude with `⟨a, rfl⟩`. It suffices to derive a contradiction.
+
+Use `hhi p` as an intermediate fact. Rewrite `this` using `[← hj', Equiv.apply_symm_apply]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hp, ha]`. Conclude with `h p a`.
+-/
 theorem GlobalTheory.TopLevQ.blk_iff {K : Type} [Field K] [ValuativeRel K] {κ τ s n : ℕ}
     (e : GlobalTheory.StepData.Ix (Fin κ ⊕ Fin (s + 1)) (Fin τ) (s + 2) ≃ Fin n) (he : GlobalTheory.SymBridge.IsOrd GlobalTheory.SymBridge.zPos e)
     (x : Matrix (GlobalTheory.StepData.Ix (Fin κ ⊕ Fin (s + 1)) (Fin τ) (s + 2)) (GlobalTheory.StepData.Ix (Fin κ ⊕ Fin (s + 1)) (Fin τ) (s + 2)) K) :
@@ -71,6 +102,9 @@ theorem GlobalTheory.TopLevQ.blk_iff {K : Type} [Field K] [ValuativeRel K] {κ �
     rw [hp, ha]
     exact h p a
 
+/- English proof (translation)
+Use `show y ∈ GfC V ⊓ Subgroup.comap (Lev.finE V) (Formalism.L2.DIV.lev _ _ β L) ↔ _`. Rewrite using `[Subgroup.mem_inf, Subgroup.mem_comap]`. Use `show _ ∧ (_ ∈ Formalism.L2.DIV.parLev _ _ _ _ ∧ _) ↔ _`. Rewrite using `[Formalism.L2.DIV.mem_parLev]`. Simplify using `only [GlobalTheory.LevSplit.finE_mem_UA, true_and]`.
+-/
 theorem GlobalTheory.TopLevQ.mem_levS_iff {D : D7} (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (L : Formalism.L2.DIV.LevDat D.host.E ℂ V.rank) (y : GA D V) :
     y ∈ levS V β L ↔ y ∈ GfC V ∧ ((Lev.finE V y ∈ Formalism.L2.DIV.St β ∧
         (∀ PP' ∈ L.Pg, Formalism.L2.DIV.redFn β PP' (Lev.finE V y) ∈ Formalism.L2.DIV.blockTri (Formalism.L2.DIV.blkOf L.r L.t)) ∧

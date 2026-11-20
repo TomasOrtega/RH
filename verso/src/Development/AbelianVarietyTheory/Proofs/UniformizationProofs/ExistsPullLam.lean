@@ -24,6 +24,15 @@ namespace GlobalTheory.UU.BiLift
 section Gen
 variable {X Y Y₀ : Scheme.{0}} {L : LB X} {K : Type} [Fintype K]
 
+/- English proof (translation)
+Establish `le : ∀ j : PUnit → K → L.ι, ((LB.LinComb L φ ε).pull f).U j ≤ LB.wchart L (fun k => f ≫ φ k) (j PUnit.unit)` using `fun j y hy => Set.mem_iInter.2 fun k => Set.mem_iInter.1 (mem_pull.1 hy) k`. Set `c : LB.Gen ((LB.LinComb L φ ε).pull f)` to `⟨fun j => res (le j) (t₀.s (j PUnit.unit))⟩`. Establish `hc : c.IsGen` using `isGen_of_gm (M := LB.LinComb L φ ε) c fun y j j' hj hj' => by`. Use `(gm_res _ y _ hj _).trans ((gen_trans ht₀ (𝟙 Y₀) y (le j hj) (le j' hj')).trans (congrArg₂ (· * ·) ?_ (gm_res _ y _ hj' _).symm))` and prove the remaining obligations. Unfold `trF`.
+
+Use `symm`. Rewrite using `[Fintype.prod_unique, zpow_one]`. Use `(gm_linComb L φ ε (𝟙 Y₀ ≫ f) y _ _ (mem_pull.1 hj) (mem_pull.1 hj')).trans ?_` and prove the remaining obligations. Simplify using `only [Category.assoc]`. Take `⟨t, ht, e⟩` from `GenLift.exists_genPull_eq f (LB.isLB_linComb hL φ ε) c hc`.
+
+Use `⟨t, ht, fun Z r z J hJ => ?_⟩` and prove the remaining obligations. Rewrite using `[val_of t (r ≫ f) z J (fun k => J (r ≫ f ≫ φ k)) (fun k => by rw [Category.assoc])]`. Establish `hm` using `hJ.mem (fun k => f ≫ φ k) r`. Establish `hm' : r z ∈ ((LB.LinComb L φ ε).pull f).U (fun _ k => J (r ≫ f ≫ φ k))` using `mem_pull.2 (Set.mem_iInter.2 fun k => Set.mem_iInter.1 hm k)`. Establish `e'` using `congrArg (fun q : LB.Gen ((LB.LinComb L φ ε).pull f) => gm r z _ (q.s fun _ k => J (r ≫ f ≫ φ k))) e`.
+
+Use `Eq.trans ?_ (e'.trans (gm_res r z _ hm' _))` and prove the remaining obligations. Conclude with `((gm_res r z _ hm' _).trans (gm_pull r f z _ (mem_pull.1 hm') _)).symm`.
+-/
 theorem exists_val_lift (hL : L.IsLB) (f : Y₀ ⟶ Y) [IsClosedImmersion f] [Surjective f] [IsAffine Y]
     (φ : K → (Y ⟶ X)) (ε : K → ℤ) (t₀ : LB.Gen (LB.LinComb L (fun k => f ≫ φ k) ε)) (ht₀ : t₀.IsGen) :
     ∃ t : LB.Gen (LB.LinComb L φ ε), t.IsGen ∧
@@ -49,6 +58,9 @@ theorem exists_val_lift (hL : L.IsLB) (f : Y₀ ⟶ Y) [IsClosedImmersion f] [Su
   refine Eq.trans ?_ (e'.trans (gm_res r z _ hm' _))
   exact ((gm_res r z _ hm' _).trans (gm_pull r f z _ (mem_pull.1 hm') _)).symm
 
+/- English proof (translation)
+The claim follows from `unit_ext fun y _ => by obtain ⟨W, hy, e⟩ := h y exact gm_inj W.ι (⟨y, hy⟩ : W.toScheme) (U := ⊤) (U' := ⊤) trivial trivial (e.trans (map_one _).symm)`.
+-/
 theorem unit_eq_one {u : Γ(Y, ⊤)ˣ}
     (h : ∀ y : Y, ∃ (W : Y.Opens) (hy : y ∈ W), gm W.ι (⟨y, hy⟩ : W.toScheme) ⊤ u = 1) : u = 1 :=
   unit_ext fun y _ => by
@@ -61,6 +73,9 @@ variable {S : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj G] {L : RigLB G}
 
 def lam {Y : Over S} (a x : Y ⟶ G) : Fin 4 → (Y.left ⟶ G.left) := ![(a * x).left, a.left, x.left, (1 : Y ⟶ G).left]
 
+/- English proof (translation)
+Use `fin_cases k`. Conclude with `congrArg (·.left) (MonObj.comp_mul r a x)`. Both sides reduce to the same expression. Both sides reduce to the same expression. Conclude with `congrArg (·.left) (MonObj.comp_one (M := G) r)`.
+-/
 theorem comp_lam {Y Z : Over S} (r : Z ⟶ Y) (a x : Y ⟶ G) (k : Fin 4) : r.left ≫ lam a x k = lam (r ≫ a) (r ≫ x) k := by
   fin_cases k
   · exact congrArg (·.left) (MonObj.comp_mul r a x)
@@ -68,10 +83,16 @@ theorem comp_lam {Y Z : Over S} (r : Z ⟶ Y) (a x : Y ⟶ G) (k : Fin 4) : r.le
   · rfl
   · exact congrArg (·.left) (MonObj.comp_one (M := G) r)
 
+/- English proof (translation)
+Simplify using `[Fin.prod_univ_four, lam, Oε]`.
+-/
 theorem prod_lam {Y : Over S} (a x : Y ⟶ G) {U : Type} [CommGroup U] (h : (Y.left ⟶ G.left) → U) :
     ∏ k, h (lam a x k) ^ Oε k = h (a * x).left * (h a.left)⁻¹ * (h x.left)⁻¹ * h (1 : Y ⟶ G).left := by
   simp [Fin.prod_univ_four, lam, Oε]
 
+/- English proof (translation)
+Substitute `ha hx` using the available equality. Take `⟨s', hs', e⟩` from `exists_gen L.isLB (φ' := lam (r ≫ a) (r ≫ x)) (ε' := Oε) (fun U _ h => by simp only [comp_lam]) (LB.pullGen L.L _ _ s r.left) (DVR.pullGen_isGen _ _ _ _ hs _)`. Conclude with `⟨s', hs', fun W q z J hJ => (e W q z J hJ).trans (val_pull hJ _ _ _)⟩`.
+-/
 theorem exists_pull_lam {Y Z : Over S} (r : Z ⟶ Y) {a x : Y ⟶ G} {a' x' : Z ⟶ G} (ha : r ≫ a = a') (hx : r ≫ x = x')
     (s : LB.Gen (LB.LinComb L.L (lam a x) Oε)) (hs : s.IsGen) :
     ∃ s' : LB.Gen (LB.LinComb L.L (lam a' x') Oε), s'.IsGen ∧
@@ -81,6 +102,11 @@ theorem exists_pull_lam {Y Z : Over S} (r : Z ⟶ Y) {a x : Y ⟶ G} {a' x' : Z 
     (fun U _ h => by simp only [comp_lam]) (LB.pullGen L.L _ _ s r.left) (DVR.pullGen_isGen _ _ _ _ hs _)
   exact ⟨s', hs', fun W q z J hJ => (e W q z J hJ).trans (val_pull hJ _ _ _)⟩
 
+/- English proof (translation)
+Take `⟨f, hf⟩` from `TorusCoord.exists_ratio L.isLB (fun U _ h => by`. Use `Eq.trans ?_ (DVR.prod_sum₂ (K := thK ⊕ Fin 4) (K' := Fin 4) (U := U) _ (DVR.prod_sum₂ (K := thK) (K' := Fin 4) (U := U) _ (prod_cub a b x h) ((h₂ U h).trans (prod_lam a x h))) ((h₃ U h).trans (prod_lam b x h))).symm` and prove the remaining obligations. Rewrite using `[h₁ U h, prod_lam]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`.
+
+Use the proof step `abel) s₁ g₁`. Use the proof step `(LB.mulGen L.L _ _ _ _ (LB.mulGen L.L _ _ _ _ (LB.pullGen L.L (thφ G (x3 G)) thε c.t (lift a (lift b x)).left) s₂) s₃)`. Use the proof step `(DVR.mulGen_isGen _ _ _ _ _ _ _ (DVR.mulGen_isGen _ _ _ _ _ _ _ (DVR.pullGen_isGen _ _ _ _ c.isGen _) g₂) g₃)`. Use `⟨f, fun Z r z J hJ => (hf _ r.left z J hJ).trans (congrArg _ ?_)⟩` and prove the remaining obligations. Conclude with `(val_mul hJ _ _ _).trans (congrArg (· * _) ((val_mul hJ _ _ _).trans (congrArg (· * _) (val_cub c r hJ _ _ _))))`.
+-/
 theorem exists_defect {Y : Over S} (a b x : Y ⟶ G) {φ₁ φ₂ φ₃ : Fin 4 → (Y.left ⟶ G.left)}
     (h₁ : FormEq φ₁ Oε (lam (a * b) x) Oε) (h₂ : FormEq φ₂ Oε (lam a x) Oε) (h₃ : FormEq φ₃ Oε (lam b x) Oε)
     (s₁ : LB.Gen (LB.LinComb L.L φ₁ Oε)) (s₂ : LB.Gen (LB.LinComb L.L φ₂ Oε)) (s₃ : LB.Gen (LB.LinComb L.L φ₃ Oε))
@@ -102,13 +128,26 @@ theorem exists_defect {Y : Over S} (a b x : Y ⟶ G) {φ₁ φ₂ φ₃ : Fin 4 
   exact (val_mul hJ _ _ _).trans (congrArg (· * _) ((val_mul hJ _ _ _).trans (congrArg (· * _) (val_cub c r hJ _ _ _))))
 
 omit [GrpObj G] [IsCommMonObj G] in
+/- English proof (translation)
+Introduce `_ _ _` and use `rfl`.
+-/
 theorem formEq_refl {Y : Over S} (φ : Fin 4 → (Y.left ⟶ G.left)) : FormEq φ Oε φ Oε := fun _ _ _ => rfl
 
+/- English proof (translation)
+Introduce `U _ h` and use `by rw [prod_lam, prod_lam, mul_comm x a, mul_right_comm (h _) (h a.left)⁻¹]`.
+-/
 theorem formEq_symm {Y : Over S} (a x : Y ⟶ G) : FormEq (lam a x) Oε (lam x a) Oε := fun U _ h => by
   rw [prod_lam, prod_lam, mul_comm x a, mul_right_comm (h _) (h a.left)⁻¹]
 
 variable {H Y : Over S} [GrpObj H] {i : H ⟶ G} [IsMonHom i] {x : Y ⟶ G}
 
+/- English proof (translation)
+Set `p : H ⊗ H ⊗ Y ⟶ H` to `fst _ _`. Set `p' : H ⊗ H ⊗ Y ⟶ H` to `snd _ _ ≫ fst _ _`. Set `q : H ⊗ H ⊗ Y ⟶ Y` to `snd _ _ ≫ snd _ _`. Take `⟨s₁, g₁, e₁⟩` from `exists_pull_lam (lift (p * p') q) (a' := p ≫ i * p' ≫ i) (x' := q ≫ x) (by rw [lift_fst_assoc, MonObj.mul_comp]) (lift_snd_assoc _ _ _) s hs`. Take `⟨s₂, g₂, e₂⟩` from `exists_pull_lam (lift p q) (lift_fst_assoc _ _ _) (lift_snd_assoc _ _ _) s hs`.
+
+Take `⟨s₃, g₃, e₃⟩` from `exists_pull_lam (lift p' q) (lift_fst_assoc _ _ _) (lift_snd_assoc _ _ _) s hs`. Take `⟨f, hf⟩` from `exists_defect c _ _ _ (formEq_refl _) (formEq_refl _) (formEq_refl _) s₁ s₂ s₃ g₁ g₂ g₃`. Use `⟨f, fun Z t t' y z J hJ => ?_⟩` and prove the remaining obligations. Establish `e` using `hf Z (lift t (lift t' y)) z J hJ`. Rewrite `e` using `[e₁ _ _ z J hJ, e₂ _ _ z J hJ, e₃ _ _ z J hJ]`.
+
+Simplify `e` using `only [← Over.comp_left, comp_lift, MonObj.comp_mul, p, p', q, lift_fst, lift_snd, lift_fst_assoc, lift_snd_assoc, Category.assoc]`.
+-/
 theorem exists_defect₁ (s : LB.Gen (LB.LinComb L.L (lam (fst H Y ≫ i) (snd H Y ≫ x)) Oε)) (hs : s.IsGen) :
     ∃ f : Γ((H ⊗ H ⊗ Y).left, ⊤)ˣ, ∀ (Z : Over S) (t t' : Z ⟶ H) (y : Z ⟶ Y) (z : Z.left) (J), Good L.L z J →
       val s (lift (t * t') y).left z J = gm (lift t (lift t' y)).left z ⊤ f *
@@ -129,6 +168,13 @@ theorem exists_defect₁ (s : LB.Gen (LB.LinComb L.L (lam (fst H Y ≫ i) (snd H
 
 omit [IsMonHom i] [GrpObj H] in
 
+/- English proof (translation)
+Set `p : H ⊗ G ⊗ G ⟶ H` to `fst _ _`. Set `q : H ⊗ G ⊗ G ⟶ G` to `snd _ _ ≫ fst _ _`. Set `q' : H ⊗ G ⊗ G ⟶ G` to `snd _ _ ≫ snd _ _`. Take `⟨s₁, g₁, e₁⟩` from `exists_pull_lam (lift p (q * q')) (lift_fst_assoc _ _ _) (lift_snd _ _) s hs`. Take `⟨s₂, g₂, e₂⟩` from `exists_pull_lam (lift p q) (lift_fst_assoc _ _ _) (lift_snd _ _) s hs`.
+
+Take `⟨s₃, g₃, e₃⟩` from `exists_pull_lam (lift p q') (lift_fst_assoc _ _ _) (lift_snd _ _) s hs`. Take `⟨f, hf⟩` from `exists_defect c _ _ _ (formEq_symm _ _) (formEq_symm _ _) (formEq_symm _ _) s₁ s₂ s₃ g₁ g₂ g₃`. Use `⟨f, fun Z t y z J hJ => ?_⟩` and prove the remaining obligations. Establish `e` using `hf Z (lift t y) z J hJ`. Rewrite `e` using `[e₁ _ _ z J hJ, e₂ _ _ z J hJ, e₃ _ _ z J hJ, (isCub_cubV c hJ).s12, (isCub_cubV c hJ).s01]`.
+
+Simplify `e` using `only [← Over.comp_left, comp_lift, MonObj.comp_mul, p, q, q', lift_fst, lift_snd, lift_fst_assoc, lift_snd_assoc, Category.assoc]`.
+-/
 theorem exists_defect₂ (s : LB.Gen (LB.LinComb L.L (lam (fst H G ≫ i) (snd H G)) Oε)) (hs : s.IsGen) :
     ∃ f : Γ((H ⊗ G ⊗ G).left, ⊤)ˣ, ∀ (Z : Over S) (t : Z ⟶ H) (y : Z ⟶ G ⊗ G) (z : Z.left) (J), Good L.L z J →
       val s (lift t (y ≫ fst _ _ * y ≫ snd _ _)).left z J = gm (lift t y).left z ⊤ f *

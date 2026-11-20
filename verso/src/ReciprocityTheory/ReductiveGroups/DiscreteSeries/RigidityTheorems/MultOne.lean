@@ -13,6 +13,13 @@ def closGen {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] {D : Su
     (E : Fin n → Fin n → Module.End ℂ D) (V : Submodule ℂ D) : Submodule ℂ H :=
   ((genSub E V).map D.subtype).topologicalClosure
 
+/- English proof (translation)
+Use extensionality with `v'`. Establish `hort` using `rigid_orth hgap hσ hD hV hc hVK j' hj horth`. Establish `hle : ((genSub E V).map D.subtype).topologicalClosure ≤ (Submodule.span ℂ {j' v'})ᗮ`. Apply `generatedSub_closure_le hσ hD _ (Submodule.isClosed_orthogonal _)` to reduce the goal to its premises. Introduce `g hg v hv`.
+
+Rewrite using `[Submodule.mem_orthogonal_singleton_iff_inner_right]`. Conclude with `hort g hg ⟨v, hv⟩ v'`. Establish `hmem : j' v' ∈ (Submodule.span ℂ {j' v'})ᗮ` using `hle (hrange v')`. Rewrite `hmem` using `[Submodule.mem_orthogonal_singleton_iff_inner_right]`. Rewrite using `[LinearMap.zero_apply]`.
+
+Conclude with `inner_self_eq_zero.mp hmem`.
+-/
 theorem rigid_multOne {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
     {ε : Fin n → Bool} {lam : Fin n → ℝ} (hgap : StdGap ε lam)
     {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} (hσ : IsURepOn (UJset ε) σ)

@@ -14,6 +14,9 @@ def act (k : Type) {K V O : Type} [Field K] [AddCommGroup V] [Module K V] [CommR
     [Algebra k K] (ρ : O →+* Module.End K V) : TensorProduct ℤ k O →+* Module.End K V :=
   (actMap (k := k) ρ).toRingHom
 
+/- English proof (translation)
+The claim follows from `actMap_tmul ρ c a`.
+-/
 theorem act_tmul (k : Type) {K V O : Type} [Field K] [AddCommGroup V] [Module K V] [CommRing O]
     [Field k] [Algebra k K] (ρ : O →+* Module.End K V) (c : k) (a : O) :
     act k ρ (c ⊗ₜ[ℤ] a) = algebraMap k K c • ρ a :=
@@ -23,6 +26,9 @@ def toEnd {K O : Type} [Field K] [CommRing O] {d : ℕ} (ρ : O →+* Matrix (Fi
     O →+* Module.End K (Fin d → K) :=
   (Matrix.toLinAlgEquiv' (R := K) (n := Fin d)).toAlgHom.toRingHom.comp ρ
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toEnd_apply {K O : Type} [Field K] [CommRing O] {d : ℕ}
     (ρ : O →+* Matrix (Fin d) (Fin d) K) (a : O) (v : Fin d → K) :
     toEnd ρ a v = (ρ a).mulVec v := rfl
@@ -31,6 +37,9 @@ def twist {K O : Type} [Field K] [CommRing O] {d : ℕ} (p : ℕ) [Fact p.Prime]
     (ρ : O →+* Matrix (Fin d) (Fin d) K) : O →+* Matrix (Fin d) (Fin d) K :=
   (frobenius K p).mapMatrix.comp ρ
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem twist_apply {K O : Type} [Field K] [CommRing O] {d : ℕ} (p : ℕ) [Fact p.Prime] [CharP K p]
     (ρ : O →+* Matrix (Fin d) (Fin d) K) (a : O) : twist p ρ a = (ρ a).map (· ^ p) := rfl
 
@@ -43,6 +52,9 @@ def conjT {K O : Type} [Field K] [CommRing O] [StarRing O] {d : ℕ}
   map_zero' := by simp
   map_add' a b := by simp [star_add]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem conjT_apply {K O : Type} [Field K] [CommRing O] [StarRing O] {d : ℕ}
     (ρ : O →+* Matrix (Fin d) (Fin d) K) (a : O) : conjT ρ a = (ρ (star a)).transpose := rfl
 
@@ -50,6 +62,9 @@ def frobT (k O : Type) [Field k] [CommRing O] (p : ℕ) [Fact p.Prime] [CharP k 
     TensorProduct ℤ k O →+* TensorProduct ℤ k O :=
   (Algebra.TensorProduct.map (frobenius k p).toIntAlgHom (AlgHom.id ℤ O)).toRingHom
 
+/- English proof (translation)
+Simplify using `[frobT, frobenius_def]`.
+-/
 theorem frobT_tmul (k O : Type) [Field k] [CommRing O] (p : ℕ) [Fact p.Prime] [CharP k p] (c : k)
     (a : O) : frobT k O p (c ⊗ₜ[ℤ] a) = (c ^ p) ⊗ₜ[ℤ] a := by
   simp [frobT, frobenius_def]
@@ -57,6 +72,9 @@ theorem frobT_tmul (k O : Type) [Field k] [CommRing O] (p : ℕ) [Fact p.Prime] 
 def chiT {k O : Type} [Field k] [CommRing O] (χ : O →+* k) : TensorProduct ℤ k O →ₐ[k] k :=
   Algebra.TensorProduct.lift (AlgHom.id k k) χ.toIntAlgHom (fun _ _ => Commute.all _ _)
 
+/- English proof (translation)
+Simplify using `[chiT]`.
+-/
 theorem chiT_tmul {k O : Type} [Field k] [CommRing O] (χ : O →+* k) (c : k) (a : O) :
     chiT χ (c ⊗ₜ[ℤ] a) = c * χ a := by
   simp [chiT]

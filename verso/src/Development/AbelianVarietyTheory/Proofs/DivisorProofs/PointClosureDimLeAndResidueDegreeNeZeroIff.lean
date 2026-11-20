@@ -18,12 +18,20 @@ def DimFormula (R : Type) [CommRing R] (c : ℕ) : Prop :=
   ∀ (B : Type) [CommRing B] [IsDomain B] [Algebra R B] [FaithfulSMul R B] [Algebra.FiniteType R B] (e : ℕ),
     Algebra.trdeg R B = e → ringKrullDim B = (e + c : ℕ)
 
+/- English proof (translation)
+Introduce `B _ _ _ _ _ e he`. Take `⟨d, h₁, h₂⟩` from `exists_ringKrullDim_eq_and_trdeg_eq F B`. Establish `: d = e` using `by exact_mod_cast h₂.symm.trans he`. Rewrite using `[h₁, this, add_zero]`.
+-/
 theorem dimFormula_field (F : Type) [Field F] : DimFormula F 0 := by
   intro B _ _ _ _ _ e he
   obtain ⟨d, h₁, h₂⟩ := exists_ringKrullDim_eq_and_trdeg_eq F B
   have : d = e := by exact_mod_cast h₂.symm.trans he
   rw [h₁, this, add_zero]
 
+/- English proof (translation)
+Introduce `B _ _ _ _ _ e he`. Establish `: CharZero B` using `charZero_of_injective_algebraMap (FaithfulSMul.algebraMap_injective ℤ B)`. Use `le_antisymm ?_ (PrimeDivDim.succ_trdeg_le_ringKrullDim B he)` and prove the remaining obligations. Establish `hZ1 : ringKrullDim ℤ ≤ 1`. Conclude with `Ring.krullDimLE_iff.mp (inferInstance : Ring.KrullDimLE 1 ℤ)` after adjusting the coercions.
+
+Use `(IntModel.ringKrullDim_le_add (O := ℤ) ℚ).trans ?_` and prove the remaining obligations. Rewrite using `[ringKrullDim_genericFibre_eq ℤ ℚ he]`. Use `(add_le_add hZ1 (le_refl ((e : ℕ) : WithBot ℕ∞))).trans_eq ?_` and prove the remaining obligations. Use `push_cast`. Conclude with `add_comm _ _`.
+-/
 theorem dimFormula_int : DimFormula ℤ 1 := by
   intro B _ _ _ _ _ e he
   have : CharZero B := charZero_of_injective_algebraMap (FaithfulSMul.algebraMap_injective ℤ B)
@@ -36,6 +44,17 @@ theorem dimFormula_int : DimFormula ℤ 1 := by
   push_cast
   exact add_comm _ _
 
+/- English proof (translation)
+Set `B : Subalgebra R K` to `{ φ.range.toSubsemiring with algebraMap_mem' := fun r => by`. Take `⟨n, rfl⟩` from `hs r`. Conclude with `⟨n, by simp⟩ }`. Set `ψ : A →+* B` to `φ.codRestrict B fun a => ⟨a, rfl⟩`. Establish `hψ : Function.Surjective ψ`.
+
+Introduce and unpack `⟨_, a, rfl⟩`. Conclude with `⟨a, rfl⟩`. Establish `hft : Algebra.FiniteType R B`. Establish `h1 : (ψ.comp (Int.castRingHom A)).FiniteType` using `(RingHom.FiniteType.of_surjective ψ hψ).comp hA`. Rewrite `h1` using `[Subsingleton.elim (ψ.comp (Int.castRingHom A)) ((algebraMap R B).comp (Int.castRingHom R))]`.
+
+Conclude with `RingHom.finiteType_algebraMap.1 h1.of_comp_finiteType`. Establish `: FaithfulSMul R B` using `(faithfulSMul_iff_algebraMap_injective _ _).2 fun a b h => FaithfulSMul.algebraMap_injective R K (by`. Rewrite using `[IsScalarTower.algebraMap_apply R B K, IsScalarTower.algebraMap_apply R B K, h])`. Establish `: IsFractionRing B K` using `IsFractionRing.of_field B K fun z => by`. Take `⟨a, b, h⟩` from `hφ z`.
+
+Conclude with `⟨ψ a, ψ b, h⟩`. Establish `: Algebra.IsAlgebraic B K` using `IsLocalization.isAlgebraic K (nonZeroDivisors B)`. Take `⟨e, he⟩` from `exists_trdeg_eq_natCast R (A := B)`. Use `⟨e, (trdeg_eq_of_isAlgebraic_top R B K).trans he, ?_⟩` and prove the remaining obligations. Establish `hk : RingHom.ker φ = RingHom.ker ψ` using `Ideal.ext fun a => by`.
+
+Simplify using `only [RingHom.mem_ker]`. Conclude with `(Subtype.ext_iff (a1 := ψ a) (a2 := 0)).symm`. Rewrite using `[← hR B e he, hk]`. Conclude with `ringKrullDim_eq_of_ringEquiv (RingHom.quotientKerEquivOfSurjective hψ)`.
+-/
 theorem exists_dim_quotient_ker {R : Type} [CommRing R] [IsDomain R] {c : ℕ} (hR : DimFormula R c)
     (hs : Function.Surjective (Int.cast : ℤ → R)) {A K : Type} [CommRing A] (hA : (Int.castRingHom A).FiniteType)
     [Field K] [Algebra R K] [FaithfulSMul R K] (φ : A →+* K) (hφ : ∀ z : K, ∃ a b : A, z = φ a / φ b) :
@@ -68,6 +87,19 @@ theorem exists_dim_quotient_ker {R : Type} [CommRing R] [IsDomain R] {c : ℕ} (
   rw [← hR B e he, hk]
   exact ringKrullDim_eq_of_ringEquiv (RingHom.quotientKerEquivOfSurjective hψ)
 
+/- English proof (translation)
+Establish `hA : (Int.castRingHom Γ(X, U)).FiniteType`. Set `φ` to `Spec.preimage (hU.fromSpec ≫ t)`. Establish `hφ : Spec.map φ = hU.fromSpec ≫ t` using `Spec.map_preimage _`. Establish `h` using `(HasRingHomProperty.Spec_iff (P := @LocallyOfFiniteType) (φ := φ)).mp (hφ ▸ inferInstance)`. Rewrite using `[Subsingleton.elim (Int.castRingHom Γ(X, U)) φ.hom]` and apply the resulting hypothesis.
+
+Use `letI : Algebra Γ(X, U) (X.presheaf.stalk x) := (X.presheaf.germ U x hx).hom.toAlgebra`. Establish `hloc : IsLocalization.AtPrime (X.presheaf.stalk x) (hU.primeIdealOf ⟨x, hx⟩).asIdeal` using `hU.isLocalization_stalk ⟨x, hx⟩`. Take `⟨e, h₁, h₂⟩` from `exists_dim_quotient_ker hR hs hA (X.evaluation U x hx).hom (by`. Introduce `z`. Take `⟨w, rfl⟩` from `X.residue_surjective x z`.
+
+Take `⟨⟨a, b⟩, h⟩` from `IsLocalization.surj (hU.primeIdealOf ⟨x, hx⟩).asIdeal.primeCompl (S := X.presheaf.stalk x) w`. Establish `hu` using `(IsLocalization.map_units (X.presheaf.stalk x) b).map (X.residue x).hom`. Use `⟨a, b, (eq_div_iff hu.ne_zero).2 ?_⟩` and prove the remaining obligations. Conclude with `(map_mul (X.residue x).hom _ _).symm.trans (congrArg (X.residue x).hom h))`. Use `⟨e, h₁, ?_⟩` and prove the remaining obligations.
+
+Establish `hk : RingHom.ker (X.evaluation U x hx).hom = (hU.primeIdealOf ⟨x, hx⟩).asIdeal`. Use extensionality with `f`. Rewrite using `[RingHom.mem_ker]`. Use `(X.evaluation_eq_zero_iff_notMem_basicOpen x hx f).trans ?_` and prove the remaining obligations. Establish `h` using `hU.fromSpec_preimage_basicOpen f`.
+
+Establish `h' : hU.fromSpec (hU.primeIdealOf ⟨x, hx⟩) ∈ X.basicOpen f ↔ f ∉ (hU.primeIdealOf ⟨x, hx⟩).asIdeal` using `SetLike.ext_iff.1 h (hU.primeIdealOf ⟨x, hx⟩)`. Rewrite `h'` using `[hU.fromSpec_primeIdealOf]`. Conclude with `h'.not.trans not_not`. Establish `h` using `topologicalKrullDim_range_inter_closure_eq (B := Γ(X, U)) hU.fromSpec (hU.primeIdealOf ⟨x, hx⟩)`. Rewrite using `[← h₂, hk, ← h]`.
+
+Establish `h3` using `hU.fromSpec_primeIdealOf ⟨x, hx⟩`. Establish `h4` using `hU.range_fromSpec`. Conclude with `congrArg (fun s : Set X => topologicalKrullDim s) (congrArg₂ (· ∩ ·) h4.symm (congrArg (fun z => closure {z}) h3.symm))`.
+-/
 theorem exists_dim_inter {R : Type} [CommRing R] [IsDomain R] {c : ℕ} (hR : DimFormula R c)
     (hs : Function.Surjective (Int.cast : ℤ → R)) {X : Scheme.{0}} (t : X ⟶ Sp ℤ) [LocallyOfFiniteType t] (x : X)
     [Algebra R (X.residueField x)] [FaithfulSMul R (X.residueField x)] {U : X.Opens} (hU : IsAffineOpen U) (hx : x ∈ U) :
@@ -105,6 +137,13 @@ theorem exists_dim_inter {R : Type} [CommRing R] [IsDomain R] {c : ℕ} (hR : Di
   exact congrArg (fun s : Set X => topologicalKrullDim s)
     (congrArg₂ (· ∩ ·) h4.symm (congrArg (fun z => closure {z}) h3.symm))
 
+/- English proof (translation)
+Take `⟨U, hU, hxU, -⟩` from `Opens.isBasis_iff_nbhd.1 X.isBasis_affineOpens (Opens.mem_top x)`. Take `⟨e, h₁, h₂⟩` from `exists_dim_inter hR hs t x hU hxU`. Use `⟨e, h₁, le_antisymm ?_ ?_⟩` and prove the remaining obligations. Use `topologicalKrullDim_le_of_forall_exists_isOpen fun z => ?_` and prove the remaining obligations. Take `⟨V, hV, hzV, -⟩` from `Opens.isBasis_iff_nbhd.1 X.isBasis_affineOpens (Opens.mem_top z.1)`.
+
+Establish `hxV : x ∈ V` using `(specializes_iff_mem_closure.2 z.2).mem_open V.isOpen hzV`. Take `⟨e', h₁', h₂'⟩` from `exists_dim_inter hR hs t x hV hxV`. Take `rfl : e = e'` from `by exact_mod_cast h₁.symm.trans h₁'`. Use `⟨Subtype.val ⁻¹' (V : Set X), V.isOpen.preimage continuous_subtype_val, hzV, ?_⟩` and prove the remaining obligations. Rewrite using `[← h₂']`.
+
+Use `(topologicalKrullDim_eq_of_isEmbedding (Topology.IsEmbedding.subtypeVal.comp Topology.IsEmbedding.subtypeVal) ?_).ge` and prove the remaining obligations. Rewrite using `[Set.range_comp, Subtype.range_val, Subtype.image_preimage_val, Set.inter_comm]`. Rewrite using `[← h₂]`. Conclude with `(Topology.IsEmbedding.inclusion Set.inter_subset_right).isInducing.topologicalKrullDim_le`.
+-/
 theorem exists_hasDim {R : Type} [CommRing R] [IsDomain R] {c : ℕ} (hR : DimFormula R c)
     (hs : Function.Surjective (Int.cast : ℤ → R)) {X : Scheme.{0}} (t : X ⟶ Sp ℤ) [LocallyOfFiniteType t] (x : X)
     [Algebra R (X.residueField x)] [FaithfulSMul R (X.residueField x)] :
@@ -125,6 +164,9 @@ theorem exists_hasDim {R : Type} [CommRing R] [IsDomain R] {c : ℕ} (hR : DimFo
   · rw [← h₂]
     exact (Topology.IsEmbedding.inclusion Set.inter_subset_right).isInducing.topologicalKrullDim_le
 
+/- English proof (translation)
+Take `⟨N, jN, _, hjN⟩` from `h.isProjOver`. Use `isProper_str k N` as an intermediate fact. Establish `: IsProper p` using `hjN ▸ inferInstance`. Use `infer_instance`.
+-/
 theorem locallyOfFiniteType_of_isAmb {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} (h : IsAmb p) :
     LocallyOfFiniteType p := by
   obtain ⟨N, jN, _, hjN⟩ := h.isProjOver
@@ -132,6 +174,19 @@ theorem locallyOfFiniteType_of_isAmb {k : Type} [CommRing k] {X : Scheme.{0}} {p
   have : IsProper p := hjN ▸ inferInstance
   infer_instance
 
+/- English proof (translation)
+Use `letI := (π.residueFieldMap y).hom.toAlgebra`. Use `letI : Algebra R (Y.residueField y) := ((π.residueFieldMap y).hom.comp (algebraMap R _)).toAlgebra`. Use `haveI : IsScalarTower R (X.residueField (π y)) (Y.residueField y) := IsScalarTower.of_algebraMap_eq' rfl`. Use `haveI : FaithfulSMul R (Y.residueField y) := (faithfulSMul_iff_algebraMap_injective _ _).2 ((π.residueFieldMap y).hom.injective.comp (FaithfulSMul.algebraMap_injective R _))`. Use `haveI : Algebra.EssFiniteType (X.residueField (π y)) (Y.residueField y) := RingHom.EssFiniteType.residueFieldMap (LocallyOfFiniteType.stalkMap π y)`.
+
+Take `⟨e, h₁, h₂⟩` from `exists_hasDim hR hs (π ≫ t) y`. Take `⟨e', h₁', h₂'⟩` from `exists_hasDim hR hs t (π y)`. Take `rfl : d = e + c` from `by exact_mod_cast hd.symm.trans h₂`. Take `rfl : d' = e' + c` from `by exact_mod_cast hd'.symm.trans h₂'`. Establish `hadd` using `trdeg_add_eq R (X.residueField (π y)) (A := Y.residueField y)`.
+
+Rewrite `hadd` using `[h₁, h₁']`. Establish `hle : e' ≤ e` using `by exact_mod_cast (self_le_add_right _ _).trans_eq hadd`. Use `⟨by omega, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Module.finrank (X.residueField (π y)) (Y.residueField y) ≠ 0 ↔ _`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h`. Establish `: Module.Finite (X.residueField (π y)) (Y.residueField y)` using `Module.finite_of_finrank_pos (Nat.pos_of_ne_zero h)`. Rewrite `hadd` using `[trdeg_eq_zero, add_zero]`. Establish `: e' = e` using `by exact_mod_cast hadd`. Rewrite using `[this]`.
+
+Introduce `h`. Take `rfl : e = e'` from `by omega`. Establish `h0 : Algebra.trdeg (X.residueField (π y)) (Y.residueField y) = 0`. Break down `(Cardinal.add_eq_left_iff).1 hadd with h | h` into its components or cases. Conclude with `absurd (le_trans (le_max_left _ _) h) (not_le.2 Cardinal.natCast_lt_aleph0)`.
+
+Conclude with `h`. Establish `: Algebra.IsAlgebraic (X.residueField (π y)) (Y.residueField y)` using `trdeg_eq_zero_iff.1 h0`. Establish `: Module.Finite (X.residueField (π y)) (Y.residueField y)` using `Algebra.finite_of_essFiniteType_of_isAlgebraic`. Conclude with `Module.finrank_pos.ne'`.
+-/
 theorem le_and_iff_of_dimFormula {R : Type} [CommRing R] [IsDomain R] {c : ℕ} (hR : DimFormula R c)
     (hs : Function.Surjective (Int.cast : ℤ → R)) {X Y : Scheme.{0}} (t : X ⟶ Sp ℤ) [LocallyOfFiniteType t]
     (π : Y ⟶ X) [LocallyOfFiniteType π] (y : Y) [Algebra R (X.residueField (π y))]
@@ -169,6 +224,13 @@ theorem le_and_iff_of_dimFormula {R : Type} [CommRing R] [IsDomain R] {c : ℕ} 
     have : Module.Finite (X.residueField (π y)) (Y.residueField y) := Algebra.finite_of_essFiniteType_of_isAlgebraic
     exact Module.finrank_pos.ne'
 
+/- English proof (translation)
+Introduce `k _ X Y p q hp hq π hπ y d d' hd hd'`. Use `locallyOfFiniteType_of_isAmb hp` as an intermediate fact. Establish `: LocallyOfFiniteType (π ≫ p)` using `hπ ▸ locallyOfFiniteType_of_isAmb hq`. Establish `: LocallyOfFiniteType π` using `locallyOfFiniteType_of_comp π p`. Establish `: IsFinite (spMap (Int.castRingHom k))` using `(IsFinite.SpecMap_iff _).2 (RingHom.finite_algebraMap.2 hp.finite)`.
+
+Take `⟨l, hl⟩` from `CharP.exists (X.residueField (π y))`. Break down `CharP.char_is_prime_or_zero (X.residueField (π y)) l with h | rfl` into its components or cases. Use `haveI : Fact l.Prime := ⟨h⟩`. Use `letI := ZMod.algebra (X.residueField (π y)) l`. Conclude with `le_and_iff_of_dimFormula (dimFormula_field (ZMod l)) (ZMod.intCast_surjective) (p ≫ spMap (Int.castRingHom k)) π y d d' hd hd'`.
+
+Use `haveI := CharP.charP_to_charZero (X.residueField (π y))`. Conclude with `le_and_iff_of_dimFormula dimFormula_int (fun n => ⟨n, rfl⟩) (p ≫ spMap (Int.castRingHom k)) π y d d' hd hd'`.
+-/
 theorem dim_le_and_residueDegree_ne_zero_iff : ∀ (k : Type) [CommRing k] (X Y : Scheme.{0}) (p : X ⟶ Sp k) (q : Y ⟶ Sp k), IsAmb p → IsAmb q → ∀ (π : Y ⟶ X), π ≫ p = q → ∀ (y : Y) (d d' : ℕ), HasDim y d → HasDim (π y) d' → d' ≤ d ∧ (π.residueDegree y ≠ 0 ↔ d = d') := by
   intro k _ X Y p q hp hq π hπ y d d' hd hd'
   have := locallyOfFiniteType_of_isAmb hp

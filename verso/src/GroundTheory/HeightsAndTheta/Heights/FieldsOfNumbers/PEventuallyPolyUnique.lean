@@ -6,6 +6,13 @@ namespace GroundTheory.Heights₂.Heights.FieldNumbers
 
 open MvPolynomial GroundTheory.Heights₂.Heights.NumbersDVR
 
+/- English proof (translation)
+Introduce `K _ h p q hp hq`. Take `⟨M, hM⟩` from `Filter.eventually_atTop.1 (hp.and hq)`. Establish `hpq : p - q = 0`. Apply `MvPolynomial.eq_zero_of_eval_zero_at_prod_finset (p - q) (fun k => (Finset.range ((p - q).degreeOf k + 1)).image (fun i : ℕ => ((M k + (i : ℤ) : ℤ) : ℚ)))` to reduce the goal to its premises. Introduce `k`.
+
+Rewrite using `[Finset.card_image_of_injective]`. Simplify using the standard rewrite rules. Introduce `a b hab`. Simplify using `using hab`. Introduce `x hx choose i _ hix using fun k => Finset.mem_image.1 (hx k)`.
+
+Establish `hm : M ≤ fun k => M k + (i k : ℤ)` using `fun k => by simp`. Establish `hxm : x = fun k => (((M k + (i k : ℤ) : ℤ)) : ℚ)` using `funext fun k => (hix k).symm`. Take `⟨h1, h2⟩` from `hM _ hm`. Rewrite using `[map_sub, hxm, ← h1, ← h2, sub_self]`. Conclude with `sub_eq_zero.1 hpq`.
+-/
 theorem EventuallyPolyUnique.proof : EventuallyPolyUnique.Statement := by
   intro K _ h p q hp hq
   classical

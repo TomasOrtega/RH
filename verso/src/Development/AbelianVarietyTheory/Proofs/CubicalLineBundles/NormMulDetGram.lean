@@ -12,6 +12,9 @@ open GlobalTheory GlobalTheory.CM
 noncomputable section
 namespace GlobalTheory.CM.TopDifferential
 
+/- English proof (translation)
+Use `RingHom.ext fun x => ?_` and prove the remaining obligations. Establish `e : x = algebraMap R _ x.fst + algebraMap R _ x.snd * DualNumber.eps`. Apply the tactic sequence `ext <;> simp [TrivSqZeroExt.algebraMap_eq_inl]`. Rewrite using `[e, map_add, map_mul, h₁, h₁, h₂, ← e]`. Apply the tactic sequence `ext <;> simp [Chart.dualMapR, TrivSqZeroExt.algebraMap_eq_inl]`.
+-/
 theorem eq_dualMapR {R R' : Type} [CommRing R] [CommRing R'] {f : R →+* R'} {F : DualNumber R →+* DualNumber R'}
     (h₁ : ∀ a, F (algebraMap R _ a) = algebraMap R' _ (f a)) (h₂ : F DualNumber.eps = DualNumber.eps) :
     F = Chart.dualMapR f := by
@@ -21,6 +24,9 @@ theorem eq_dualMapR {R R' : Type} [CommRing R] [CommRing R'] {f : R →+* R'} {F
   rw [e, map_add, map_mul, h₁, h₁, h₂, ← e]
   ext <;> simp [Chart.dualMapR, TrivSqZeroExt.algebraMap_eq_inl]
 
+/- English proof (translation)
+Establish `e : (Matrix.of fun i j => (Real.pi : ℂ) * hermForm Hm (W j) (W i)) = (Real.pi : ℂ) • (W * (Hm * W.conjTranspose)).transpose` using `rfl`. Rewrite using `[e, Matrix.det_smul, Matrix.det_transpose, Matrix.det_mul, Matrix.det_mul, Matrix.det_conjTranspose, Fintype.card_fin, mul_left_comm W.det, Complex.star_def, Complex.mul_conj, Complex.normSq_eq_norm_sq, mul_comm Hm.det, ← _root_.mul_assoc, ← Complex.ofReal_pow, ← Complex.ofReal_m …`.
+-/
 theorem det_gram {g : ℕ} (Hm W : Matrix (Fin g) (Fin g) ℂ) :
     (Matrix.of fun i j => (Real.pi : ℂ) * hermForm Hm (W j) (W i)).det.re = Real.pi ^ g * ‖W.det‖ ^ 2 * Hm.det.re := by
   have e : (Matrix.of fun i j => (Real.pi : ℂ) * hermForm Hm (W j) (W i)) =
@@ -29,6 +35,15 @@ theorem det_gram {g : ℕ} (Hm W : Matrix (Fin g) (Fin g) ℂ) :
     Fintype.card_fin, mul_left_comm W.det, Complex.star_def, Complex.mul_conj, Complex.normSq_eq_norm_sq,
     mul_comm Hm.det, ← _root_.mul_assoc, ← Complex.ofReal_pow, ← Complex.ofReal_mul, Complex.re_ofReal_mul]
 
+/- English proof (translation)
+Introduce `hU _ K _ _ P F hg rig hr th hth h hH σ x' nth nη hx hn`. Take `⟨φ, -, w, e, D, hp, hw, -, -, h₁, h₂, hv⟩` from `hx`. Take `rfl` from `eq_dualMapR h₁ h₂`. Take `⟨u, Hm, W, χ, θ, Fd, hA, -, -, hW, hF, -, rfl⟩` from `hn`. Take `⟨Q, ψ, v, u', Hm', χ', W', a, b, c, d⟩` from `hH σ`.
+
+Express the relevant statement in the definitionally equal form `x'.P.g = F.P₀.g at e`. Establish `hf : IsPolFibre σ F.P₀ x'.P φ` using `⟨e, hp, LBIso.symm ⟨w, hw⟩⟩`. Establish `key` using `LieMetric.hermForm_eq hU a hf b hA F.basis.1 c (w' := fun i => x'.v (i.cast e.symm)) (W' := fun i => W (i.cast e.symm)) fun i => ⟨hv (i.cast e.symm), hW _⟩`. Establish `e₁ : h.gram σ (Pi.basisFun K (Fin F.P₀.g)) = (Matrix.of fun i j => (Real.pi : ℂ) * hermForm Hm (W j) (W i)).submatrix (finCongr e.symm) (finCongr e.symm)`. Use extensionality with `i j`.
+
+Simplify using `only [HermFam.gram, Matrix.of_apply, Pi.basisFun_apply, d, key]`. Both sides reduce to the same expression. Take `⟨Ef, t₁, t₂, -, -, t₃, -⟩` from `AHWeil.tangent_and_weil_of_isAH hU x'.P _ u Hm χ hA`. Use `u.discrete` as an intermediate fact. Establish `hvol` using `volume_mul_det_eq_one_of_unimodular _ u.Λ u.full Hm Ef Fd hA.1 hA.2.1 t₁ t₂ hF`.
+
+Establish `hdet : W.det ≠ 0` using `((Matrix.isUnit_iff_isUnit_det W).1 (Matrix.linearIndependent_rows_iff_isUnit.1 (LieMetric.linearIndependent_of_isLieBasis u t₃ x'.basis hW))).ne_zero`. Establish `hne : Real.pi ^ x'.P.g * ‖W.det‖ ^ 2 ≠ 0` using `by positivity`. Rewrite using `[e₁, Matrix.det_submatrix_equiv_self, det_gram, ← _root_.mul_assoc, div_mul_cancel₀ _ hne, hvol]`.
+-/
 theorem norm_mul_det_gram : ThetaUnifAV → Out.Laws → ∀ (K : Type) [Field K] [NumberField K] (P : Out.PolAV (Sp (𝓞 K))) (F : GenFib P) (hg rig hr th hth) (h : HermFam K (Fin F.P₀.g → K)), F.IsHerm h → ∀ (σ : K →+* ℂ) (x' : KeyIn ℂ) (nth nη : ℝ), KeyPB x' (F.key hg rig hr th hth) σ → KeyPow.IsArchNorm x' nth nη → nη * (h.gram σ (Pi.basisFun K (Fin F.P₀.g))).det.re = 1 := by
   intro hU _ K _ _ P F hg rig hr th hth h hH σ x' nth nη hx hn
   obtain ⟨φ, -, w, e, D, hp, hw, -, -, h₁, h₂, hv⟩ := hx

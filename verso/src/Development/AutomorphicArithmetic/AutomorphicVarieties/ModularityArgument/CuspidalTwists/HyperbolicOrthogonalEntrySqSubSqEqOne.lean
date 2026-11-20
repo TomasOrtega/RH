@@ -13,15 +13,26 @@ section Alg
 
 variable {R : Type} [CommRing R]
 
+/- English proof (translation)
+Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [flg, tn, nA, low, Matrix.mul_apply, Fin.sum_univ_succ]`.
+-/
 theorem flg_eq (x σ : R) : flg x σ = !![1, 0, 0, 0; σ, 1, 0, 0; -(x * σ), -x, 1, 0; x, 0, -σ, 1] := by
   ext i j
   fin_cases i <;> fin_cases j <;> simp [flg, tn, nA, low, Matrix.mul_apply, Fin.sum_univ_succ]
 
+/- English proof (translation)
+Rewrite using `[flg_eq]`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [adj_apply, sgn, Fin.rev]`.
+-/
 theorem adj_flg (x σ : R) : adj (flg x σ) = !![1, 0, 0, 0; -σ, 1, 0, 0; 0, x, 1, 0; -x, x * σ, σ, 1] := by
   rw [flg_eq]
   ext i j
   fin_cases i <;> fin_cases j <;> simp [adj_apply, sgn, Fin.rev]
 
+/- English proof (translation)
+Rewrite using `[adj_flg, flg_eq]`. Use `fin_cases i`. Simplify using `[tn, Matrix.mul_apply, Fin.sum_univ_succ, ht1, ht2]`. Take the linear combination `(c * (t 0 0 + t 0 1 * σ)) * h1`. Simplify using `[tn, Matrix.mul_apply, Fin.sum_univ_succ, ht1, ht2]`.
+
+Take the linear combination `(c * (t 0 0 - t 0 1 * σ)) * h1`. Simplify using `[tn, Matrix.mul_apply, Fin.sum_univ_succ, ht1, ht2]`. Take the linear combination `(c * (t 0 0 + t 0 1 * σ)) * h2`. Simplify using `[tn, Matrix.mul_apply, Fin.sum_univ_succ, ht1, ht2]`. Take the linear combination `(c * (t 0 0 - t 0 1 * σ)) * h2`.
+-/
 theorem diag (c x σ y : R) (g t : M2 R)
     (h1 : g 0 0 + g 0 1 * x = y) (h2 : g 1 1 - x * g 0 1 = 1)
     (ht1 : t 1 1 = t 0 0) (ht2 : t 1 0 = t 0 1) (i : Fin 4) :
@@ -38,6 +49,9 @@ theorem diag (c x σ y : R) (g t : M2 R)
   · simp [tn, Matrix.mul_apply, Fin.sum_univ_succ, ht1, ht2]
     linear_combination (c * (t 0 0 - t 0 1 * σ)) * h2
 
+/- English proof (translation)
+Use `congrFun (congrFun h 0) 0` as an intermediate fact. Simplify using `[Matrix.mul_apply, Fin.sum_univ_succ] at this`. Rewrite `this` using `[ht2]`. Take the linear combination `this`.
+-/
 theorem hyperbolicOrthogonal_entry_sq_sub_sq_eq_one (t : M2 R) (h : tᵀ * !![1, 0; 0, -1] * t = !![1, 0; 0, -1]) (ht2 : t 1 0 = t 0 1) :
     t 0 0 * t 0 0 - t 0 1 * t 0 1 = 1 := by
   have := congrFun (congrFun h 0) 0
@@ -45,6 +59,9 @@ theorem hyperbolicOrthogonal_entry_sq_sub_sq_eq_one (t : M2 R) (h : tᵀ * !![1,
   rw [ht2] at this
   linear_combination this
 
+/- English proof (translation)
+Rewrite using `[mul_pow, hD, zpow_add]`. Use `congr 1`. Apply the tactic sequence `fin_cases i <;> simp <;> group`.
+-/
 theorem fin_cg {α : Type} [CommGroup α] (E D : α) (j : ℤ) (n m : ℕ) (hD : D ^ 2 = E ^ j) (i : Fin 4) :
     (D * ![E ^ n * E ^ m, E ^ n * (E ^ m)⁻¹, E ^ m, (E ^ m)⁻¹] i) ^ 2 =
       E ^ (j + 2 * ![(n : ℤ) + m, (n : ℤ) - m, (m : ℤ), -(m : ℤ)] i) := by
@@ -54,6 +71,11 @@ theorem fin_cg {α : Type} [CommGroup α] (E D : α) (j : ℤ) (n m : ℕ) (hD :
 
 end Alg
 
+/- English proof (translation)
+Establish `a : adj ((P.n v).map f) = (adj (P.n v)).map f`. Use extensionality with `i j`. Simplify using `[adj_apply]`. Establish `b : (P.map f).r s = (P.r s).map f` using `rfl`. Establish `c : (P.map f).n v = (P.n v).map f` using `rfl`.
+
+Rewrite using `[PD.ψ, b, c, a, ← Matrix.map_mul, ← Matrix.map_mul]`. Both sides reduce to the same expression.
+-/
 private theorem psi_map {ι Γ R R' : Type} [Group Γ] [CommRing R] [CommRing R'] (P : PD ι Γ R) (f : R →+* R') (v : ι) (i : Fin 4) (s : Γ) :
     (P.map f).ψ v i s = f (P.ψ v i s) := by
   have a : adj ((P.n v).map f) = (adj (P.n v)).map f := by
@@ -66,18 +88,36 @@ private theorem psi_map {ι Γ R R' : Type} [Group Γ] [CommRing R] [CommRing R'
 
 variable {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime]
 
+/- English proof (translation)
+Use `haveI : FaithfulSMul E Ω := (faithfulSMul_iff_algebraMap_injective E Ω).2 (algebraMap E Ω).injective`. Use `haveI : Module.IsTorsionFree E Ω := DivisionSemiring.to_moduleIsTorsionFree`. Use `haveI : IsAlgClosure E Ω := ⟨IsAlgClosure.isAlgClosed ℚ, Algebra.IsAlgebraic.tower_top (K := ℚ) E⟩`. Conclude with `(galEmbTop ℚ E Ω).1.continuous`.
+-/
 private theorem cont_emb (E : Type) [Field E] [NumberField E] [Algebra E Ω] : Continuous (galEmb ℚ E Ω) := by
   haveI : FaithfulSMul E Ω := (faithfulSMul_iff_algebraMap_injective E Ω).2 (algebraMap E Ω).injective
   haveI : Module.IsTorsionFree E Ω := DivisionSemiring.to_moduleIsTorsionFree
   haveI : IsAlgClosure E Ω := ⟨IsAlgClosure.isAlgClosed ℚ, Algebra.IsAlgebraic.tower_top (K := ℚ) E⟩
   exact (galEmbTop ℚ E Ω).1.continuous
 
+/- English proof (translation)
+The claim follows from `cont_emb F`.
+-/
 private theorem cont_res (F : IntermediateField ℚ Ω) [NumberField F] : Continuous (resQ F) := cont_emb F
 
+/- English proof (translation)
+Use `ext`. Both sides reduce to the same expression.
+-/
 private theorem toB_chi (c : Coef l) (g : G ℚ Ω) : toB (chiO ℚ Ω l c.O) g = cycBar ℚ Ω l g := by
   ext
   rfl
 
+/- English proof (translation)
+Establish `hA` using `T.ovl v`. Establish `hD` using `Ine_le_Dec _ hs`. Establish `hK` using `d.quad.split _ hA hD`. Take `⟨h1, h2⟩` from `d.mod.ine _ hA _ hs`. Take `⟨ht1, ht2⟩` from `d.tau.on _ hK`.
+
+Establish `hp` using `d.tau.ine _ hA _ hs`. Establish `hσ : d.s (T.pl v) * d.s (T.pl v) = 1`. Apply the tactic sequence `rcases d.tau.sgn (T.pl v) with h | h <;> rw [h] <;> ring`. Establish `hf : d.τ (resQ T.F s) 0 0 * d.τ (resQ T.F s) 0 0 - d.τ (resQ T.F s) 0 1 * d.τ (resQ T.F s) 0 1 = 1` using `hyperbolicOrthogonal_entry_sq_sub_sq_eq_one _ (d.tau.form (resQ T.F s)) ht2`. Establish `hm : d.τ (resQ T.F s) 0 0 - d.τ (resQ T.F s) 0 1 * d.s (T.pl v) = (((chiO ℚ Ω l d.c₁.O (resQ T.F s) ^ d.m)⁻¹ : d.c₁.Oˣ) : d.c₁.O)`.
+
+Use `Units.eq_inv_of_mul_eq_one_right ?_` and prove the remaining obligations. Rewrite using `[← hp]`. Take the linear combination `hf - d.τ (resQ T.F s) 0 1 * d.τ (resQ T.F s) 0 1 * hσ`. Establish `e : (d.Q T).ψ v i s = (adj (flg (d.x (T.pl v)) (d.s (T.pl v))) * (((toC d.h d.δ (resQ T.F s) : d.c₁.Oˣ) : d.c₁.O) • tn (d.ρ₁ (resQ T.F s)) (d.τ (resQ T.F s))) * flg (d.x (T.pl v)) (d.s (T.pl v))) i i` using `rfl`. Rewrite using `[e, diag _ _ _ _ _ _ h1 h2 ht1 ht2 i, hp, hm, Units.val_mul]`.
+
+Use `congr 1`. Apply the tactic sequence `fin_cases i <;> simp [Units.val_mul]`.
+-/
 theorem psi_eq (d : Dat Ω l) (T : Tower d.D) (v : T.ι) (s : G T.F Ω) (hs : resQ T.F s ∈ Ine (F := ℚ) (T.pl v)) (i : Fin 4) :
     (d.Q T).ψ v i s = ((toC d.h d.δ (resQ T.F s) * ![chiO ℚ Ω l d.c₁.O (resQ T.F s) ^ (d.k - 1) * chiO ℚ Ω l d.c₁.O (resQ T.F s) ^ d.m,
       chiO ℚ Ω l d.c₁.O (resQ T.F s) ^ (d.k - 1) * (chiO ℚ Ω l d.c₁.O (resQ T.F s) ^ d.m)⁻¹,
@@ -108,6 +148,15 @@ end UpperTheory.V.Cu.RankFourHodgeWeights
 
 open UpperTheory.V.Cu
 
+/- English proof (translation)
+Introduce `Ω _ _ _ l _ d T U j hU hj`. Use `⟨U.comap (resQ T.F), hU.preimage (RankFourHodgeWeights.cont_res T.F), fun v i s hs => ?_⟩` and prove the remaining obligations. Establish `hI : resQ T.F s ∈ Ine (F` using `ℚ) (T.pl v) := ⟨hs.2.1, hs.2.2⟩`. Establish `e3 : toB d.δ (resQ T.F s) ^ 2 = cycBar T.F Ω l s ^ j`. Use `congrArg (Units.map (algebraMap d.c.O (PadicAlgCl l)).toMonoidHom) (hj _ hs.1)` as an intermediate fact.
+
+Rewrite `this` using `[map_pow, map_zpow]`. Conclude with `this.trans (congrArg (· ^ j) (RankFourHodgeWeights.toB_chi d.c (resQ T.F s)))`. Establish `hk : (d.k : ℤ) - 1 = ((d.k - 1 : ℕ) : ℤ)`. Use `d.big` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+
+Simplify using `only`. Rewrite using `[RankFourHodgeWeights.psi_map, RankFourHodgeWeights.psi_eq d T v s hI i, hk]`. Establish `key` using `RankFourHodgeWeights.fin_cg (cycBar T.F Ω l s) (toB d.δ (resQ T.F s)) j (d.k - 1) d.m e3 i`. Establish `hδ : (Units.map (algebraMap d.c₁.O (PadicAlgCl l)).toMonoidHom) (toC d.h d.δ (resQ T.F s)) = toB d.δ (resQ T.F s)` using `Units.ext rfl`. Establish `hE : (Units.map (algebraMap d.c₁.O (PadicAlgCl l)).toMonoidHom) (chiO ℚ Ω l d.c₁.O (resQ T.F s)) = cycBar T.F Ω l s` using `Units.ext rfl`.
+
+Establish `hU : (Units.map (algebraMap d.c₁.O (PadicAlgCl l)).toMonoidHom) (toC d.h d.δ (resQ T.F s) * ![chiO ℚ Ω l d.c₁.O (resQ T.F s) ^ (d.k - 1) * chiO ℚ Ω l d.c₁.O (resQ T.F s) ^ d.m, chiO ℚ Ω l d.c₁.O (resQ T.F s) ^ (d.k - 1) * (chiO ℚ Ω l d.c₁.O (resQ T.F s) ^ d.m)⁻¹, chiO ℚ Ω l d.c₁. …`. Rewrite using `[← hδ, ← hE]`. Apply the tactic sequence `fin_cases i <;> simp [map_mul, map_pow, map_inv]`. Rewrite using `[← key, ← hU, Units.val_pow_eq_pow_val, Units.coe_map]`. Both sides reduce to the same expression.
+-/
 theorem UpperTheory.V.Cu.wtsOf4 : WtsOf4 := by
   intro Ω _ _ _ l _ d T U j hU hj
   refine ⟨U.comap (resQ T.F), hU.preimage (RankFourHodgeWeights.cont_res T.F), fun v i s hs => ?_⟩

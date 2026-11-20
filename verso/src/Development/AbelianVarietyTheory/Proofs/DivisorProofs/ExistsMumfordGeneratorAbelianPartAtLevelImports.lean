@@ -16,6 +16,15 @@ namespace GlobalTheory.HomMum
 
 variable {S : Scheme.{0}}
 
+/- English proof (translation)
+Break down `k with I | I` into its components or cases. Establish `e : lift x y ≫ lift (fst H₁ H₁ ≫ a) (snd H₁ H₁ ≫ b) ≫ psum H₂ (x2 H₂) I.down = psum H₂ ![x ≫ a, y ≫ b] I.down`. Rewrite using `[← Category.assoc, ReciprocityTheory.ChartRestriction.G.Geo.Tor.comp_psum]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+
+Apply the tactic sequence `fin_cases i <;> simp [x2]`. Use `show (lift x y).left ≫ (lift (fst H₁ H₁ ≫ a) (snd H₁ H₁ ≫ b)).left ≫ (psum H₂ (x2 H₂) I.down).left ≫ coprod.inr = (psum H₂ ![x ≫ a, y ≫ b] I.down).left ≫ coprod.inr`. Rewrite using `[← e]`. Simplify using `only [Over.comp_left, Category.assoc]`. Establish `e : lift x y ≫ psum H₁ (x2 H₁) I.down = psum H₁ ![x, y] I.down`.
+
+Rewrite using `[ReciprocityTheory.ChartRestriction.G.Geo.Tor.comp_psum]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> simp [x2]`. Use `show (lift x y).left ≫ (psum H₁ (x2 H₁) I.down).left ≫ coprod.inl = (psum H₁ ![x, y] I.down).left ≫ coprod.inl`.
+
+Rewrite using `[← e]`. Simplify using `only [Over.comp_left, Category.assoc]`.
+-/
 theorem mφ_comp {H₁ H₂ : Over S} [GrpObj H₁] [IsCommMonObj H₁] [GrpObj H₂] [IsCommMonObj H₂] (a b : H₁ ⟶ H₂)
     {T : Over S} (x y : T ⟶ H₁) (k : MK) :
     (lift x y).left ≫ mφ H₁ H₂ a b k =
@@ -41,6 +50,17 @@ theorem mφ_comp {H₁ H₂ : Over S} [GrpObj H₁] [IsCommMonObj H₁] [GrpObj 
     rw [← e]
     simp only [Over.comp_left, Category.assoc]
 
+/- English proof (translation)
+Set `ρ₁ : (T ⟶ E₁) →* ((Over.map j).obj T ⟶ A₁)` to `MonoidHom.mk' (push p₁) fun x y => hm₁ x y`. Set `ρ₂ : (T ⟶ E₂) →* ((Over.map j).obj T ⟶ A₂)` to `MonoidHom.mk' (push p₂) fun x y => hm₂ x y`. Establish `pa : ∀ (z : T ⟶ E₁) {c' : E₁ ⟶ E₂} {c : A₁ ⟶ A₂}, push p₂ c' = p₁ ≫ c → push p₂ (z ≫ c') = push p₁ z ≫ c` using `fun z c' c h => by`. Simplify using `only [push, Functor.map_comp, Category.assoc] at h ⊢`. Rewrite using `[h]`.
+
+Rewrite using `[← Category.assoc, mφ_comp, mφ_comp]`. Break down `k with I | I` into its components or cases. Establish `e` using `ReciprocityTheory.ChartRestriction.G.Geo.Tor.psum_hom ρ₂ ![x ≫ a', y ≫ b'] I.down`. Establish `e' : (fun i => ρ₂ ((![x ≫ a', y ≫ b'] : Fin 2 → (T ⟶ E₂)) i)) = ![push p₁ x ≫ a, push p₁ y ≫ b]`. Use function extensionality and compare the values at `i`.
+
+Use `fin_cases i`. Conclude with `pa x ha`. Conclude with `pa y hb`. Rewrite `e` using `[e']`. Use `show (psum A₂ ![push p₁ x ≫ a, push p₁ y ≫ b] I.down).left ≫ coprod.inr = ((psum E₂ ![x ≫ a', y ≫ b'] I.down).left ≫ coprod.inr) ≫ coprod.map p₁.left p₂.left`.
+
+Rewrite using `[← e, Category.assoc, coprod.inr_map, ← Category.assoc]`. Both sides reduce to the same expression. Establish `e` using `ReciprocityTheory.ChartRestriction.G.Geo.Tor.psum_hom ρ₁ ![x, y] I.down`. Establish `e' : (fun i => ρ₁ ((![x, y] : Fin 2 → (T ⟶ E₁)) i)) = ![push p₁ x, push p₁ y]`. Use function extensionality and compare the values at `i`.
+
+Apply the tactic sequence `fin_cases i <;> rfl`. Rewrite `e` using `[e']`. Use `show (psum A₁ ![push p₁ x, push p₁ y] I.down).left ≫ coprod.inl = ((psum E₁ ![x, y] I.down).left ≫ coprod.inl) ≫ coprod.map p₁.left p₂.left`. Rewrite using `[← e, Category.assoc, coprod.inl_map, ← Category.assoc]`. Both sides reduce to the same expression.
+-/
 theorem mφ_push {S' : Scheme.{0}} {j : S' ⟶ S} {E₁ E₂ : Over S'} [GrpObj E₁] [IsCommMonObj E₁] [GrpObj E₂]
     [IsCommMonObj E₂] {A₁ A₂ : Over S} [GrpObj A₁] [IsCommMonObj A₁] [GrpObj A₂] [IsCommMonObj A₂]
     (p₁ : (Over.map j).obj E₁ ⟶ A₁) (p₂ : (Over.map j).obj E₂ ⟶ A₂)

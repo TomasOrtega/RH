@@ -16,6 +16,19 @@ namespace GlobalTheory.AscFin.LineZero
 
 variable {D : D7}
 
+/- English proof (translation)
+Introduce `x hx`. Proceed by induction on `hx using AddSubgroup.closure_induction with`. Consider the case `mem x hx`. Take `⟨α, hα, hv, a, ha, s, hs, t, ht, rfl⟩` from `hx`. Use `AddSubgroup.subset_closure ⟨α, hα, hv, a, ha, s, hs, -(q *ᵥ t), neg_mem (hq t ht), ?_⟩` and prove the remaining obligations.
+
+Use extensionality with `i j`. Simplify using `only [Matrix.mul_apply, rat, Matrix.map_apply, Matrix.of_apply]`. Establish `e : ∀ (e : D.host.E) (u : AF D.host.F) (c : D.host.E), incA D e * (u ⊗ₜ[D.host.F] c) = u ⊗ₜ[D.host.F] (e * c)`. Introduce `e u c`. Use `show (Algebra.TensorProduct.includeRight e : AF D.host.F ⊗[D.host.F] D.host.E) * _ = _`.
+
+Rewrite using `[Algebra.TensorProduct.includeRight_apply, Algebra.TensorProduct.tmul_mul_tmul, one_mul]`. Simplify using `only [e, ← TensorProduct.tmul_sum]`. Use `congr 1`. Establish `hX : ∑ k, star (s k) * (negSp V).gram k j = -∑ k, star (s k) * V.gram k j`. Simplify using `only [negSp_gram, Matrix.neg_apply, mul_neg, Finset.sum_neg_distrib]`.
+
+Rewrite using `[hX]`. Generalize the expression as in `(∑ k, star (s k) * V.gram k j) = X`. Simplify using `only [Matrix.mulVec, dotProduct, Pi.neg_apply, Finset.mul_sum, Finset.sum_mul, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+
+Consider the case `zero => rw [Matrix.mul_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [Matrix.mul_add]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [Matrix.mul_neg]`.
+
+Conclude with `neg_mem hx`.
+-/
 theorem rat_mul_mem_latO_neg {V T T' : HSp D} {LS : Set (Fin V.rank → D.host.E)} {LT : Set (Fin T.rank → D.host.E)}
     {LT' : Submodule (𝓞 D.host.E) (Fin T'.rank → D.host.E)} {P : HeightOneSpectrum (𝓞 D.host.F) → Prop}
     (q : Matrix (Fin T'.rank) (Fin T.rank) D.host.E) (hq : ∀ t ∈ LT, q *ᵥ t ∈ LT') :
@@ -44,6 +57,31 @@ theorem rat_mul_mem_latO_neg {V T T' : HSp D} {LS : Set (Fin V.rank → D.host.E
   | add x y _ _ hx hy => rw [Matrix.mul_add]; exact add_mem hx hy
   | neg x _ hx => rw [Matrix.mul_neg]; exact neg_mem hx
 
+/- English proof (translation)
+Introduce `D hq T L μ0 hL sc G W M hM F hF`. Establish `hq0 : ∀ t ∈ (G.Λ (.core 0) : Set (Fin (G.V (.core 0)).rank → D.host.E)), F.oz.qB *ᵥ t ∈ Submodule.span (𝓞 D.host.E) {F.ζ 0}`. Introduce `t ht`. Establish `ht' : t ∈ G.sp.dec0.lat (L.ΛY 0) fun _ => 1` using `by rw [← G.sp.lat0]; exact ht`. Take `⟨y, -, u, hu, rfl⟩` from `ht'`.
+
+Take `⟨r, hr⟩` from `(FractionalIdeal.mem_one_iff _).1 (hu 0)`. Establish `ha : G.sp.dec0.a *ᵥ u = u 0 • (F.oz.iB *ᵥ F.ζ 0)`. Rewrite using `[hF.zB]`. Use function extensionality and compare the values at `i`. Simplify using `[Matrix.mulVec, dotProduct, mul_comm]`.
+
+Rewrite using `[Matrix.mulVec_add, ha, Matrix.mulVec_smul, ← hF.zA, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, F.oz.qB_iA, F.oz.qB_iB, Matrix.one_mulVec, Matrix.zero_mulVec, zero_add, ← hr, algebraMap_smul]`. Conclude with `Submodule.smul_mem _ r (Submodule.mem_span_singleton_self _)`. Establish `hLT : IsSelfDualC (negSp F.Lz) (Submodule.span (𝓞 D.host.E) {F.ζ 0})`. Establish `hs : Subsingleton (Fin F.Lz.rank)` using `by rw [F.rk]; infer_instance`. Establish `hne : Nonempty (Fin F.Lz.rank)` using `⟨⟨0, by rw [F.rk]; omega⟩⟩`.
+
+Set `B : Matrix (Fin F.Lz.rank) (Fin F.Lz.rank) D.host.E` to `Matrix.of fun i _ => F.ζ 0 i`. Set `f : Fin F.Lz.rank → Fin 1` to `fun _ => 0`. Establish `hiB : F.oz.iB * B = G.sp.dec0.a.submatrix id f`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Use `congrFun hF.zB i` as an intermediate fact.
+
+Simplify using `only [Matrix.mulVec, dotProduct] at this`. Simplify using `only [Matrix.mul_apply, B, Matrix.of_apply, Matrix.submatrix_apply, id, f]`. Conclude with `this`. Establish `hB : Bᴴ * F.Lz.gram * B = 1`. Rewrite using `[← F.oz.isoB]`.
+
+Establish `e : Bᴴ * (F.oz.iBᴴ * (G.V (.core 0)).gram * F.oz.iB) * B = (F.oz.iB * B)ᴴ * (G.V (.core 0)).gram * (F.oz.iB * B)`. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Rewrite using `[e, hiB]`. Use `(G.sp.dec0.gram_sub f f).trans (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Rewrite using `[Subsingleton.elim i j]`.
+
+Simplify using `[antiDiagonalSignGramMatrix, f]`. Establish `hB' : B * (Bᴴ * F.Lz.gram) = 1` using `mul_eq_one_comm.1 hB`. Set `Bg : GL (Fin F.Lz.rank) D.host.E` to `⟨B, Bᴴ * F.Lz.gram, hB', hB⟩`. Establish `hc : IsSelfDualC F.Lz (Formalism.L2.DIV.colLat Bg)` using `GlobalTheory.FunObj.OrthoFrame.isSelfDualC_colLat_of_orthonormal F.Lz Bg hB`. Establish `hcs : Formalism.L2.DIV.colLat Bg = Submodule.span (𝓞 D.host.E) {F.ζ 0}`.
+
+Unfold `Formalism.L2.DIV.colLat`. Use `congr 1`. Use extensionality with `v`. Simplify using `only [Set.mem_range, Set.mem_singleton_iff]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨j, rfl⟩`. Both sides reduce to the same expression. Introduce and unpack `rfl`. Conclude with `⟨Classical.arbitrary _, rfl⟩`. Rewrite `hc` using `[hcs]`.
+
+Conclude with `isSelfDualC_neg hc`. Establish `hLS : IsSelfDualC (G.V (.core 1)) (G.Λ (.core 1))` using `(G.sp.P_is 1 (by have := D.R.two_le_m; omega)).sd`. Establish `hle : lineLat F 0 ≤ latO (G.V (.core 1)) (negSp F.Lz) (G.Λ (.core 1) : Set _) (Submodule.span (𝓞 D.host.E) {F.ζ 0} : Set _) (fun _ => True)`. Introduce `b hb`. Rewrite `hb` using `[lineLat]`.
+
+Establish `hb' : F.oz.jA ⬝ (0 : WO (G.V (.core 1)) (Yc D 0)) + F.oz.jB ⬝ b ∈ latCore G 0` using `hb`. Establish `e : b = rat F.oz.qB ⬝ (F.oz.jA ⬝ (0 : WO (G.V (.core 1)) (Yc D 0)) + F.oz.jB ⬝ b)`. Rewrite using `[Matrix.mul_add, ← Matrix.mul_assoc, ← Matrix.mul_assoc]`. Express the relevant statement in the definitionally equal form `b = F.oz.pB ⬝ F.oz.jA ⬝ (0 : WO (G.V (.core 1)) (Yc D 0)) + F.oz.pB ⬝ F.oz.jB ⬝ b`. Rewrite using `[OrthDec.pB_jA, OrthDec.pB_jB, Matrix.mul_zero, zero_add, Matrix.one_mul]`.
+
+Rewrite using `[e]`. Conclude with `rat_mul_mem_latO_neg (V := G.V (.core 1)) F.oz.qB hq0 _ hb'.1`. Conclude with `GlobalTheory.AscFin.VacSub.exists_vacG_ne_zero D W.ψ W.ψ_std _ _ _ _ hLS hLT _ hle`.
+-/
 theorem exists_vacG_lineLat_zero : OnStd fun {D} _ _ _ {G} W F => ∃ Φ₀, VacG W.ψ _ _ (lineLat F 0) Φ₀ ∧ Φ₀ ≠ 0 := by
   intro D hq T L μ0 hL sc G W M hM F hF
   have hq0 : ∀ t ∈ (G.Λ (.core 0) : Set (Fin (G.V (.core 0)).rank → D.host.E)),

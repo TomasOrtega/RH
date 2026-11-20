@@ -14,6 +14,9 @@ def LeafDblSum : Prop := ∀ (X : Scheme.{0}) (U : X.Opens) (A : Type) (E : A �
 def LeafDiscSumH : Prop := ∀ (A : Type) (E : A → PSh) (c : Cofan E), Nonempty (IsColimit c) →
   Nonempty (IsColimit (Cofan.mk (disc.obj c.pt) fun a => disc.map (c.inj a)))
 
+/- English proof (translation)
+Introduce `A E c hc` and use `⟨isColimitCofanMkObjOfIsColimit disc E (fun a => c.inj a) (hc.some.ofIsoColimit (Cofan.ext (Iso.refl _) (fun _ => by simp)))⟩`.
+-/
 theorem leafDiscSumH : LeafDiscSumH := fun A E c hc =>
   ⟨isColimitCofanMkObjOfIsColimit disc E (fun a => c.inj a)
     (hc.some.ofIsoColimit (Cofan.ext (Iso.refl _) (fun _ => by simp)))⟩
@@ -24,13 +27,22 @@ def LeafPbSum : Prop := ∀ (X : Scheme.{0}) (U : X.Opens) (A : Type) (E : A →
   Nonempty (IsColimit (Cofan.mk (abv U (E := disc.obj c.pt) (disc.map π)).left
     fun a => (abvRel U (disc.map (c.inj a)) (disc.map (π' a)) (disc.map π) (h a)).left))
 
+/- English proof (translation)
+The claim follows from `pushout.inl_desc _ _ _`.
+-/
 theorem dbl_inl_map {P' P : Arrow Spc} (φ : P' ⟶ P) : dbl.inl P' ≫ dbl.map φ = φ.right ≫ dbl.inl P :=
   pushout.inl_desc _ _ _
 
+/- English proof (translation)
+Rewrite using `[← Category.assoc, dbl_inl_map, Category.assoc]`.
+-/
 theorem dbl_inl_map_assoc {P' P : Arrow Spc} (φ : P' ⟶ P) {Z : Spc} (h : dbl P ⟶ Z) :
     dbl.inl P' ≫ dbl.map φ ≫ h = φ.right ≫ dbl.inl P ≫ h := by
   rw [← Category.assoc, dbl_inl_map, Category.assoc]
 
+/- English proof (translation)
+Rewrite using `[← Category.assoc, dbl.inr_map, Category.assoc]`.
+-/
 theorem dbl_inr_map_assoc {P' P : Arrow Spc} (φ : P' ⟶ P) {Z : Spc} (h : dbl P ⟶ Z) :
     dbl.inr P' ≫ dbl.map φ ≫ h = φ.right ≫ dbl.inr P ≫ h := by
   rw [← Category.assoc, dbl.inr_map, Category.assoc]
@@ -72,9 +84,23 @@ def dbl_cofan {A : Type} {P : Arrow Spc} (Q : A → Arrow Spc) (φ : ∀ a, Q a 
       refine Eq.trans ?_ f2.symm
       exact (dbl_inr_map_assoc (φ a) m).symm.trans (congrArg _ (hm a))
 
+/- English proof (translation)
+Introduce `X U A E c hc π π' h` and use `⟨dbl_cofan _ _ (hP X U A E c hc π π' h).some (leafDiscSumH A E c hc).some⟩`.
+-/
 theorem leafDblSum_of (hP : LeafPbSum) : LeafDblSum := fun X U A E c hc π π' h =>
   ⟨dbl_cofan _ _ (hP X U A E c hc π π' h).some (leafDiscSumH A E c hc).some⟩
 
+/- English proof (translation)
+Introduce `q X U A E c hc π π' h n i`. Establish `S1` using `hS (ZMod q) (tw q i) A _ _ (hD X U A E c hc π π' h) n`. Establish `S2` using `hS (ZMod q) (tw q i) A _ _ (hd A E c hc) n`. Prove the components needed by the constructor for the conclusion. Introduce `x y e`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Apply `S1.1` to reduce the goal to its premises. Use function extensionality and compare the values at `a`. Conclude with `congrArg Subtype.val (congrFun e a)`. Introduce `y`.
+
+Take `⟨x, hx⟩` from `S1.2 (fun a => (y a).1)`. Establish `hx' : ∀ a, pull _ (dbl.map (abvRel U (disc.map (c.inj a)) (disc.map (π' a)) (disc.map π) (h a))) (tw q i) n x = (y a).1` using `fun a => congrFun hx a`. Establish `m : x ∈ Hs q (abv U (E` using `disc.obj c.pt) (disc.map π)) n i := by`. Use `AddMonoidHom.mem_ker.mpr ?_` and prove the remaining obligations. Apply `S2.1` to reduce the goal to its premises.
+
+Use function extensionality and compare the values at `a`. Establish `e` using `dbl.inr_map (abvRel U (disc.map (c.inj a)) (disc.map (π' a)) (disc.map π) (h a))`. Establish `y0 : pull _ (dbl.inr _) (tw q i) n (y a).1 = 0` using `(y a).2`. Establish `e2 : disc.map (c.inj a) ≫ dbl.inr (abv U (E` using `disc.obj c.pt) (disc.map π)) = dbl.inr _ ≫ dbl.map (abvRel U (disc.map (c.inj a)) (disc.map (π' a)) (disc.map π) (h a)) := e.symm`. Establish `key : pull _ (disc.map (c.inj a) ≫ dbl.inr (abv U (E` using `disc.obj c.pt) (disc.map π))) (tw q i) n x = 0 := by`.
+
+Conclude with `(congrArg (fun f => pull (ZMod q) f (tw q i) n x) e2).trans ((pull_comp _ _ _ _ _ _).trans ((congrArg (pull (ZMod q) (dbl.inr _) (tw q i) n) (hx' a)).trans y0))`. Conclude with `((pull_comp _ _ _ _ _ _).symm.trans key).trans (map_zero _).symm`. Conclude with `⟨⟨x, m⟩, funext fun a => Subtype.ext (hx' a)⟩`.
+-/
 theorem LeafHsSum_of_dbl (hS : LeafSum) (hD : LeafDblSum) (hd : LeafDiscSumH) : LeafHsSum := by
   intro q X U A E c hc π π' h n i
   have S1 := hS (ZMod q) (tw q i) A _ _ (hD X U A E c hc π π' h) n
@@ -107,5 +133,8 @@ end LateralTheory.CohomologicalPurity.TubeCut
 
 namespace LateralTheory.CohomologicalPurity.TubeCut
 
+/- English proof (translation)
+The claim follows from `LeafHsSum_of_dbl hS (leafDblSum_of hP) leafDiscSumH`.
+-/
 theorem LeafHsSum_of (hS : LeafSum) (hP : LeafPbSum) : LeafHsSum := LeafHsSum_of_dbl hS (leafDblSum_of hP) leafDiscSumH
 end LateralTheory.CohomologicalPurity.TubeCut

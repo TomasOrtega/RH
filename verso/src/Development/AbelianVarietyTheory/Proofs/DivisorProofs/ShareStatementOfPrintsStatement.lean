@@ -25,5 +25,8 @@ open GlobalTheory.IndefiniteRowSideFullHecke.LevelStructureAutomorphisms (LevelA
 open GlobalTheory.BadCount
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CovTop.ShareRowsNef.share | exact GlobalTheory.CovTop.ShareRowsNef.share | (intros; apply GlobalTheory.CovTop.ShareRowsNef.share <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.share_of_toroidal : GlobalTheory.CovTop.HypothesesX → Hypotheses2 → GlobalTheory.Published.SiegelToroidalIntegral → GlobalTheory.Published.ToroidalForFanKS → GlobalTheory.Published.GrothendieckDeformation → GlobalTheory.HSCore.Quoted → GlobalTheory.Published.SemiAbelianLieSeminegative → DeepGood → Size → FlatDeg → Deg → Share := by
   first | exact @GlobalTheory.CovTop.ShareRowsNef.share | exact GlobalTheory.CovTop.ShareRowsNef.share | (intros; apply GlobalTheory.CovTop.ShareRowsNef.share <;> assumption)

@@ -7,6 +7,9 @@ open GlobalTheory GlobalTheory.VB GlobalTheory.LieFilt GlobalTheory.GrFilt
 open GlobalTheory.Twist (resM)
 open scoped Classical
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.GrFilt.genSpan_eq_of_adaptedAt | exact GlobalTheory.GrFilt.genSpan_eq_of_adaptedAt | (intros; apply GlobalTheory.GrFilt.genSpan_eq_of_adaptedAt <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.adapted_frames_filtration_generic : ∀ {X : Scheme.{0}} [IsIntegral X] {ι : Type} [Fintype ι] {L : X.Modules} {E E' : ι → X.Modules} {r : ι → ℕ}
     (o : ι → ℕ), Function.Injective o → ∀ (T : ∀ a, E a ⟶ L) (u : ∀ a, E a ⟶ E' a) {V : X.Opens}
     (f : ∀ a, Fin (r a) → Γ(E a, V)), (∀ a, IsFrame (f a)) → ∀ (f' : ∀ a, Fin (r a) → Γ(E' a, V)) (hf' : ∀ a, IsFrame (f' a))

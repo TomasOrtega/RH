@@ -13,9 +13,15 @@ namespace CanonicalFiltration
 
 variable {K : Type} [Field K] [NumberField K] (E : HermitianBundle.{0} K)
 
+/- English proof (translation)
+The claim follows from `Submodule.finrank_mono h`.
+-/
 theorem rank_mono {A B : Submodule (𝓞 K) E.carrier} (h : A ≤ B) : E.rank A ≤ E.rank B :=
   Submodule.finrank_mono h
 
+/- English proof (translation)
+Establish `h` using `Submodule.rank_sup_add_rank_inf_eq A B`. Unfold `HermitianBundle.rank`. Rewrite `h` using `[← Module.finrank_eq_rank, ← Module.finrank_eq_rank, ← Module.finrank_eq_rank, ← Module.finrank_eq_rank]`. Conclude with `h` after adjusting the coercions.
+-/
 theorem rank_sup_add_rank_inf (A B : Submodule (𝓞 K) E.carrier) :
     E.rank (A ⊔ B) + E.rank (A ⊓ B) = E.rank A + E.rank B := by
   have h := Submodule.rank_sup_add_rank_inf_eq A B
@@ -24,6 +30,13 @@ theorem rank_sup_add_rank_inf (A B : Submodule (𝓞 K) E.carrier) :
     ← Module.finrank_eq_rank] at h
   exact_mod_cast h
 
+/- English proof (translation)
+Introduce `x hx`. Use `set N : Submodule (𝓞 K) H := F.comap H.subtype`. Establish `hN : Module.finrank (𝓞 K) N = E.rank F` using `(Submodule.comapSubtypeEquivOfLe hFH).finrank_eq`. Establish `hq` using `Submodule.finrank_quotient_add_finrank N`. Establish `hH : Module.finrank (𝓞 K) H = E.rank H` using `rfl`.
+
+Establish `h0 : Module.finrank (𝓞 K) (H ⧸ N) = 0` using `by omega`. Establish `htor` using `Module.finrank_eq_zero_iff_isTorsion.mp h0`. Take `⟨⟨a, ha⟩, hax⟩` from `@htor (Submodule.Quotient.mk (⟨x, hx⟩ : H))`. Establish `hmk : Submodule.Quotient.mk (p` using `N) (a • (⟨x, hx⟩ : H)) = 0 := by`. Rewrite using `[Submodule.Quotient.mk_smul]`.
+
+Conclude with `hax`. Establish `hmem` using `(Submodule.Quotient.mk_eq_zero N).mp hmk`. Conclude with `hF a x (nonZeroDivisors.ne_zero ha) hmem`.
+-/
 theorem le_of_saturated_of_rank_le {F H : Submodule (𝓞 K) E.carrier} (hF : E.Saturated F)
     (hFH : F ≤ H) (hr : E.rank H ≤ E.rank F) : H ≤ F := by
   intro x hx
@@ -40,6 +53,9 @@ theorem le_of_saturated_of_rank_le {F H : Submodule (𝓞 K) E.carrier} (hF : E.
   have hmem := (Submodule.Quotient.mk_eq_zero N).mp hmk
   exact hF a x (nonZeroDivisors.ne_zero ha) hmem
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h`. Conclude with `hFH.not_ge (le_of_saturated_of_rank_le E hF hFH.le (not_lt.mp h))`.
+-/
 theorem rank_lt_of_saturated {F H : Submodule (𝓞 K) E.carrier} (hF : E.Saturated F) (hFH : F < H) :
     E.rank F < E.rank H := by
   by_contra h
@@ -61,13 +77,26 @@ def saturation (G : Submodule (𝓞 K) E.carrier) : Submodule (𝓞 K) E.carrier
     rw [smul_comm]
     exact G.smul_mem c hx
 
+/- English proof (translation)
+The claim follows from `fun x hx ↦ ⟨1, one_ne_zero, by rw [one_smul]; exact hx⟩`.
+-/
 theorem le_saturation (G : Submodule (𝓞 K) E.carrier) : G ≤ saturation E G :=
   fun x hx ↦ ⟨1, one_ne_zero, by rw [one_smul]; exact hx⟩
 
+/- English proof (translation)
+The claim follows from `fun a _ ha hx ↦ h ⟨a, ha, hx⟩`.
+-/
 theorem saturated_of_saturation_le {G : Submodule (𝓞 K) E.carrier} (h : saturation E G ≤ G) :
     E.Saturated G :=
   fun a _ ha hx ↦ h ⟨a, ha, hx⟩
 
+/- English proof (translation)
+Use `set S := saturation E G`. Use `set N : Submodule (𝓞 K) S := G.comap S.subtype`. Establish `hN : Module.finrank (𝓞 K) N = E.rank G` using `(Submodule.comapSubtypeEquivOfLe (le_saturation E G)).finrank_eq`. Establish `hq` using `Submodule.finrank_quotient_add_finrank N`. Establish `htor : Module.IsTorsion (𝓞 K) (S ⧸ N)`.
+
+Introduce `q`. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective N q`. Take `⟨a, ha, hay⟩` from `y.2`. Use `⟨⟨a, mem_nonZeroDivisors_of_ne_zero ha⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Submonoid.smul_def, ← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`.
+
+Conclude with `hay`. Establish `h0` using `Module.finrank_eq_zero_iff_isTorsion.mpr htor`. Establish `hS : Module.finrank (𝓞 K) S = E.rank S` using `rfl`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem rank_saturation (G : Submodule (𝓞 K) E.carrier) : E.rank (saturation E G) = E.rank G := by
   set S := saturation E G
   set N : Submodule (𝓞 K) S := G.comap S.subtype
@@ -85,6 +114,17 @@ theorem rank_saturation (G : Submodule (𝓞 K) E.carrier) : E.rank (saturation 
   have hS : Module.finrank (𝓞 K) S = E.rank S := rfl
   omega
 
+/- English proof (translation)
+Take `⟨s, hs⟩` from `E.exists_linearIndependent_rank G`. Set `t : Fin (E.rank G) → S` to `fun i ↦ Submodule.inclusion hGS (s i)`. Establish `ht : LinearIndependent (𝓞 K) t` using `hs.map' _ (LinearMap.ker_eq_bot.mpr (Submodule.inclusion_injective hGS))`. Rewrite using `[E.degree_eq_of_linearIndependent G hs (Fintype.card_fin _), E.degree_eq_of_linearIndependent S ht (by rw [Fintype.card_fin]; exact hr)]`. Use `sub_le_sub_right ?_ _` and prove the remaining obligations.
+
+Establish `hspan : Submodule.span (𝓞 K) (Set.range t) = (Submodule.span (𝓞 K) (Set.range s)).map (Submodule.inclusion hGS)`. Rewrite using `[Submodule.map_span, ← Set.range_comp]`. Both sides reduce to the same expression. Establish `hle : Submodule.span (𝓞 K) (Set.range s) ≤ (Submodule.span (𝓞 K) (Set.range t)).comap (Submodule.inclusion hGS)`. Rewrite using `[hspan]`.
+
+Conclude with `Submodule.le_comap_map _ _`. Set `φ` to `Submodule.mapQ _ _ (Submodule.inclusion hGS) hle`. Establish `hinj : Function.Injective φ`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `m hm`.
+
+Take `⟨x, rfl⟩` from `Submodule.mkQ_surjective _ m`. Rewrite `hm` using `[Submodule.mkQ_apply, Submodule.mapQ_apply, Submodule.Quotient.mk_eq_zero, hspan]`. Rewrite using `[Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Take `⟨y, hy, hyx⟩` from `hm`. Rewrite `hy` using `[Submodule.inclusion_injective hGS hyx]`. Then use the resulting hypothesis.
+
+Establish `hfin : Finite (S ⧸ Submodule.span (𝓞 K) (Set.range t))` using `finite_quotient_span ht (by rw [Fintype.card_fin]; exact hr)`. Establish `hfin' : Finite (G ⧸ Submodule.span (𝓞 K) (Set.range s))` using `Finite.of_injective φ hinj`. Establish `hcard` using `Nat.card_le_card_of_injective φ hinj`. Establish `hpos : 0 < Nat.card (G ⧸ Submodule.span (𝓞 K) (Set.range s))` using `Nat.card_pos`. Conclude with `Real.log_le_log (by exact_mod_cast hpos) (by exact_mod_cast hcard)`.
+-/
 theorem degree_le_of_le_of_rank_eq {G S : Submodule (𝓞 K) E.carrier} (hGS : G ≤ S)
     (hr : E.rank G = E.rank S) : E.degree G ≤ E.degree S := by
   obtain ⟨s, hs⟩ := E.exists_linearIndependent_rank G
@@ -118,6 +158,9 @@ theorem degree_le_of_le_of_rank_eq {G S : Submodule (𝓞 K) E.carrier} (hGS : G
   have hpos : 0 < Nat.card (G ⧸ Submodule.span (𝓞 K) (Set.range s)) := Nat.card_pos
   exact Real.log_le_log (by exact_mod_cast hpos) (by exact_mod_cast hcard)
 
+/- English proof (translation)
+Establish `hd : (0 : ℝ) < Module.finrank ℚ K` using `by exact_mod_cast Module.finrank_pos`. Simplify using `only [HermitianBundle.normDegree]`. Rewrite using `[← add_div, ← add_div]`. Conclude with `div_le_div_of_nonneg_right (hsub K E A B) hd.le`.
+-/
 theorem normDegree_sup_inf (hsub : DegreeSupInf.Statement) (A B : Submodule (𝓞 K) E.carrier) :
     E.normDegree A + E.normDegree B ≤ E.normDegree (A ⊔ B) + E.normDegree (A ⊓ B) := by
   have hd : (0 : ℝ) < Module.finrank ℚ K := by exact_mod_cast Module.finrank_pos
@@ -125,6 +168,11 @@ theorem normDegree_sup_inf (hsub : DegreeSupInf.Statement) (A B : Submodule (�
   rw [← add_div, ← add_div]
   exact div_le_div_of_nonneg_right (hsub K E A B) hd.le
 
+/- English proof (translation)
+Establish `h1` using `normDegree_sup_inf E hsub A B`. Establish `hr : ((E.rank (A ⊔ B) : ℕ) : ℝ) + E.rank (A ⊓ B) = E.rank A + E.rank B`. Conclude with `rank_sup_add_rank_inf E A B` after adjusting the coercions. Establish `h2 : s * (E.rank (A ⊔ B) : ℝ) + s * E.rank (A ⊓ B) = s * E.rank A + s * E.rank B`. Rewrite using `[← mul_add, ← mul_add, hr]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem defect_sup_inf (hsub : DegreeSupInf.Statement) (s : ℝ) (A B : Submodule (𝓞 K) E.carrier) :
     (E.normDegree A - s * E.rank A) + (E.normDegree B - s * E.rank B) ≤
       (E.normDegree (A ⊔ B) - s * E.rank (A ⊔ B)) + (E.normDegree (A ⊓ B) - s * E.rank (A ⊓ B)) := by
@@ -135,22 +183,56 @@ theorem defect_sup_inf (hsub : DegreeSupInf.Statement) (s : ℝ) (A B : Submodul
     rw [← mul_add, ← mul_add, hr]
   linarith
 
+/- English proof (translation)
+Establish `hpos : (0 : ℝ) < (E.rank H : ℝ) - E.rank F` using `sub_pos.mpr (by exact_mod_cast h)`. Rewrite using `[HermitianBundle.relSlope, div_le_iff₀ hpos, mul_sub]`. Apply the tactic sequence `constructor <;> intro h' <;> linarith`.
+-/
 theorem relSlope_le_iff {F H : Submodule (𝓞 K) E.carrier} (h : E.rank F < E.rank H) (s : ℝ) :
     E.relSlope F H ≤ s ↔ E.normDegree H - s * E.rank H ≤ E.normDegree F - s * E.rank F := by
   have hpos : (0 : ℝ) < (E.rank H : ℝ) - E.rank F := sub_pos.mpr (by exact_mod_cast h)
   rw [HermitianBundle.relSlope, div_le_iff₀ hpos, mul_sub]
   constructor <;> intro h' <;> linarith
 
+/- English proof (translation)
+Establish `hpos : (0 : ℝ) < (E.rank H : ℝ) - E.rank F` using `sub_pos.mpr (by exact_mod_cast h)`. Rewrite using `[HermitianBundle.relSlope, le_div_iff₀ hpos, mul_sub]`. Apply the tactic sequence `constructor <;> intro h' <;> linarith`.
+-/
 theorem le_relSlope_iff {F H : Submodule (𝓞 K) E.carrier} (h : E.rank F < E.rank H) (s : ℝ) :
     s ≤ E.relSlope F H ↔ E.normDegree F - s * E.rank F ≤ E.normDegree H - s * E.rank H := by
   have hpos : (0 : ℝ) < (E.rank H : ℝ) - E.rank F := sub_pos.mpr (by exact_mod_cast h)
   rw [HermitianBundle.relSlope, le_div_iff₀ hpos, mul_sub]
   constructor <;> intro h' <;> linarith
 
+/- English proof (translation)
+Rewrite using `[← not_le, le_relSlope_iff E h, not_le]`.
+-/
 theorem relSlope_lt_iff {F H : Submodule (𝓞 K) E.carrier} (h : E.rank F < E.rank H) (s : ℝ) :
     E.relSlope F H < s ↔ E.normDegree H - s * E.rank H < E.normDegree F - s * E.rank F := by
   rw [← not_le, le_relSlope_iff E h, not_le]
 
+/- English proof (translation)
+Use `set c0 := E.relSlope F ⊤`. Use `set n : ℝ := (E.rank ⊤ : ℝ)`. Establish `hd : (0 : ℝ) < Module.finrank ℚ K` using `by exact_mod_cast Module.finrank_pos`. Set `S : Set (Submodule (𝓞 K) E.carrier)` to `{H | F < H ∧ c0 ≤ E.relSlope F H}`. Establish `hSfin : S.Finite`.
+
+Use `(hfin K E ((E.normDegree F - |c0| * n) * Module.finrank ℚ K)).subset ?_` and prove the remaining obligations. Introduce and unpack `H ⟨hFH, hc⟩`. Use `show (E.normDegree F - |c0| * n) * Module.finrank ℚ K ≤ E.degree H`. Establish `hr` using `rank_lt_of_saturated E hF hFH`. Establish `hrr : (0 : ℝ) < (E.rank H : ℝ) - E.rank F` using `sub_pos.mpr (by exact_mod_cast hr)`.
+
+Establish `hrH : (E.rank H : ℝ) ≤ n` using `(Nat.cast_le (α := ℝ)).mpr (rank_mono E (le_top : H ≤ ⊤))`. Establish `hrF : (0 : ℝ) ≤ E.rank F` using `Nat.cast_nonneg _`. Rewrite `hc` using `[le_relSlope_iff E hr]`. Establish `e1 : 0 ≤ (|c0| + c0) * ((E.rank H : ℝ) - E.rank F)` using `mul_nonneg (by linarith [neg_abs_le c0]) hrr.le`. Establish `e2 : 0 ≤ |c0| * (n - ((E.rank H : ℝ) - E.rank F))` using `mul_nonneg (abs_nonneg _) (by linarith)`.
+
+Establish `h3 : E.normDegree F - |c0| * n ≤ E.normDegree H` using `by nlinarith`. Establish `h4 : E.normDegree H * Module.finrank ℚ K = E.degree H`. Unfold `HermitianBundle.normDegree`. Clear the denominators using the available nonvanishing facts. Use the polynomial consequences of the given equalities and inequalities.
+
+Establish `hSne : S.Nonempty` using `⟨⊤, hFt, le_rfl⟩`. Take `⟨G0, hG0S, hG0max⟩` from `Set.exists_max_image S (E.relSlope F) hSfin hSne`. Use `set s := E.relSlope F G0`. Establish `hmax : ∀ H, F < H → E.relSlope F H ≤ s`. Introduce `H hH`.
+
+Distinguish the cases in `hc : c0 ≤ E.relSlope F H`. Conclude with `hG0max H ⟨hH, hc⟩`. Conclude with `(lt_of_not_ge hc).le.trans hG0S.2`. Establish `hmax' : ∀ I, F ≤ I → E.normDegree I - s * E.rank I ≤ E.normDegree F - s * E.rank F`. Introduce `I hI`.
+
+Break down `hI.lt_or_eq with hI | rfl` into its components or cases. Conclude with `(relSlope_le_iff E (rank_lt_of_saturated E hF hI) s).mp (hmax I hI)`. Conclude with `le_rfl`. Set `T : Set (Submodule (𝓞 K) E.carrier)` to `{H | F < H ∧ E.relSlope F H = s}`. Establish `hTfin : T.Finite` using `hSfin.subset fun H hH ↦ ⟨hH.1, hG0S.2.trans hH.2.ge⟩`.
+
+Take `⟨G, hGT, hGmax⟩` from `hTfin.exists_maximal ⟨G0, hG0S.1, rfl⟩`. Establish `hsupT : ∀ H ∈ T, G ⊔ H ∈ T`. Introduce `H hH`. Establish `hFU : F < G ⊔ H` using `lt_of_lt_of_le hGT.1 le_sup_left`. Use `⟨hFU, le_antisymm (hmax _ hFU) ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[le_relSlope_iff E (rank_lt_of_saturated E hF hFU)]`. Establish `hI` using `hmax' (G ⊓ H) (le_inf hGT.1.le hH.1.le)`. Establish `hG` using `(le_relSlope_iff E (rank_lt_of_saturated E hF hGT.1) s).mp hGT.2.ge`. Establish `hH'` using `(le_relSlope_iff E (rank_lt_of_saturated E hF hH.1) s).mp hH.2.ge`. Establish `hsm` using `defect_sup_inf E hsub s G H`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hlarge : ∀ H, F < H → E.relSlope F H = s → H ≤ G` using `fun H hFH hs ↦ le_sup_right.trans (hGmax (hsupT H ⟨hFH, hs⟩) le_sup_left)`. Establish `hsat : E.Saturated G`. Use `saturated_of_saturation_le E (hlarge _ (lt_of_lt_of_le hGT.1 (le_saturation E G)) ?_)` and prove the remaining obligations. Establish `hFS : F < saturation E G` using `lt_of_lt_of_le hGT.1 (le_saturation E G)`.
+
+Use `le_antisymm (hmax _ hFS) ?_` and prove the remaining obligations. Rewrite using `[le_relSlope_iff E (rank_lt_of_saturated E hF hFS)]`. Establish `hG` using `(le_relSlope_iff E (rank_lt_of_saturated E hF hGT.1) s).mp hGT.2.ge`. Establish `hdeg` using `degree_le_of_le_of_rank_eq E (le_saturation E G) (rank_saturation E G).symm`. Establish `hnd : E.normDegree G ≤ E.normDegree (saturation E G)` using `div_le_div_of_nonneg_right hdeg hd.le`.
+
+Rewrite using `[rank_saturation E G]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨G, hGT.1, hsat, fun H hH ↦ (hmax H hH).trans_eq hGT.2.symm, fun H hH heq ↦ ?_⟩` and prove the remaining obligations. Conclude with `hlarge H hH (heq.trans hGT.2)`.
+-/
 theorem exists_relMax (hfin : DegreeBoundedFinite.Statement) (hsub : DegreeSupInf.Statement)
     {F : Submodule (𝓞 K) E.carrier} (hF : E.Saturated F) (hFt : F < ⊤) :
     ∃ G, F < G ∧ E.Saturated G ∧ (∀ H, F < H → E.relSlope F H ≤ E.relSlope F G) ∧
@@ -228,11 +310,35 @@ structure IsCanonicalFrom (F : Submodule (𝓞 K) E.carrier) {m : ℕ}
     E.relSlope (f i.castSucc) G ≤ E.relSlope (f i.castSucc) (f i.succ)
   anti : StrictAnti fun i : Fin m ↦ E.relSlope (f i.castSucc) (f i.succ)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h ↦ ⟨h.bot, h.top, h.strictMono, h.saturated, h.semistable, h.anti⟩, fun h ↦ ⟨h.bot, h.top, h.strictMono, h.saturated, h.semistable, h.anti⟩⟩`.
+-/
 theorem isCanonicalFrom_bot_iff {m : ℕ} (f : Fin (m + 1) → Submodule (𝓞 K) E.carrier) :
     IsCanonicalFrom E ⊥ f ↔ E.IsCanonicalFiltration f :=
   ⟨fun h ↦ ⟨h.bot, h.top, h.strictMono, h.saturated, h.semistable, h.anti⟩,
     fun h ↦ ⟨h.bot, h.top, h.strictMono, h.saturated, h.semistable, h.anti⟩⟩
 
+/- English proof (translation)
+Establish `hg0 : g 0 = G` using `hg.bot`. Use `⟨Fin.cons_zero _ _, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← Fin.succ_last, Fin.cons_succ]`. Conclude with `hg.top`. Rewrite using `[Fin.strictMono_iff_lt_succ]`.
+
+Introduce `i`. Use `Fin.cases ?_ (fun j ↦ ?_) i` and prove the remaining obligations. Rewrite using `[Fin.castSucc_zero, Fin.cons_zero, Fin.cons_succ, hg0]`. Conclude with `hFG`. Rewrite using `[← Fin.succ_castSucc, Fin.cons_succ, Fin.cons_succ]`.
+
+Conclude with `hg.strictMono Fin.castSucc_lt_succ`. Introduce `i`. Use `Fin.cases ?_ (fun j ↦ ?_) i` and prove the remaining obligations. Rewrite using `[Fin.cons_zero]`. Conclude with `hF`.
+
+Rewrite using `[Fin.cons_succ]`. Conclude with `hg.saturated j`. Introduce `i H`. Use `Fin.cases ?_ (fun j ↦ ?_) i` and prove the remaining obligations. Rewrite using `[Fin.castSucc_zero, Fin.cons_zero, Fin.cons_succ, hg0]`.
+
+Introduce `h1 _`. Conclude with `hmax H h1`. Rewrite using `[← Fin.succ_castSucc, Fin.cons_succ, Fin.cons_succ]`. Conclude with `hg.semistable j H`. Break down `m with _ | k` into its components or cases.
+
+Establish `: Subsingleton (Fin (0 + 1))` using `inferInstanceAs (Subsingleton (Fin 1))`. Conclude with `Subsingleton.strictAnti _`. Rewrite using `[Fin.strictAnti_iff_succ_lt]`. Introduce `i`. Use `Fin.cases ?_ (fun j ↦ ?_) i` and prove the remaining obligations.
+
+Simplify using `only [← Fin.succ_castSucc, Fin.cons_succ, Fin.cons_zero, Fin.castSucc_zero, hg0]`. Establish `hG1 : G < g (Fin.succ 0)`. Rewrite using `[← hg0]`. Conclude with `hg.strictMono (Fin.succ_pos 0)`. Establish `hrFG` using `rank_lt_of_saturated E hF hFG`.
+
+Establish `hrG1` using `rank_lt_of_saturated E (hg0 ▸ hg.saturated 0) hG1`. Assume the negation of the conclusion as `hcon`. Rewrite `hcon` using `[not_lt, le_relSlope_iff E hrG1]`. Establish `h1` using `(le_relSlope_iff E hrFG (E.relSlope F G)).mp le_rfl`. Establish `h2 : E.relSlope F G ≤ E.relSlope F (g (Fin.succ 0))`.
+
+Rewrite using `[le_relSlope_iff E (hrFG.trans hrG1)]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h3` using `hlarge _ (hFG.trans hG1) (le_antisymm (hmax _ (hFG.trans hG1)) h2)`. Conclude with `hG1.not_ge h3`. Simplify using `only [← Fin.succ_castSucc, Fin.cons_succ]`.
+
+Establish `h` using `hg.anti (Fin.castSucc_lt_succ (i := j))`. Simplify using `only [← Fin.succ_castSucc] at h`. Conclude with `h`.
+-/
 theorem isCanonicalFrom_cons {F G : Submodule (𝓞 K) E.carrier} {m : ℕ}
     {g : Fin (m + 1) → Submodule (𝓞 K) E.carrier} (hF : E.Saturated F) (hFG : F < G)
     (hmax : ∀ H, F < H → E.relSlope F H ≤ E.relSlope F G)
@@ -288,6 +394,13 @@ theorem isCanonicalFrom_cons {F G : Submodule (𝓞 K) E.carrier} {m : ℕ}
       simp only [← Fin.succ_castSucc] at h
       exact h
 
+/- English proof (translation)
+Use `⟨?_, ?_, hg.strictMono.comp (Fin.strictMono_succ), fun i ↦ hg.saturated _, ?_, ?_⟩` and prove the remaining obligations. Use `show g (Fin.succ 0) = g 1`. Rewrite using `[Fin.succ_zero_eq_one]`. Use `show g (Fin.succ (Fin.last k)) = ⊤`. Rewrite using `[Fin.succ_last]`.
+
+Conclude with `hg.top`. Introduce `i H show g (Fin.succ (Fin.castSucc i)) < H → H ≤ g (Fin.succ (Fin.succ i)) → E.relSlope (g (Fin.succ (Fin.castSucc i))) H ≤ E.relSlope (g (Fin.succ (Fin.castSucc i))) (g (Fin.succ (Fin.succ i)))`. Rewrite using `[Fin.succ_castSucc]`. Conclude with `hg.semistable i.succ H`. Introduce `a b hab show E.relSlope (g (Fin.succ (Fin.castSucc b))) (g (Fin.succ (Fin.succ b))) < E.relSlope (g (Fin.succ (Fin.castSucc a))) (g (Fin.succ (Fin.succ a)))`.
+
+Rewrite using `[Fin.succ_castSucc, Fin.succ_castSucc]`. Conclude with `hg.anti (Fin.succ_lt_succ_iff.mpr hab)`.
+-/
 theorem IsCanonicalFrom.tail {F : Submodule (𝓞 K) E.carrier} {k : ℕ}
     {g : Fin (k + 2) → Submodule (𝓞 K) E.carrier} (hg : IsCanonicalFrom E F g) :
     IsCanonicalFrom E (g 1) (Fin.tail g) := by
@@ -309,6 +422,25 @@ theorem IsCanonicalFrom.tail {F : Submodule (𝓞 K) E.carrier} {k : ℕ}
     rw [Fin.succ_castSucc, Fin.succ_castSucc]
     exact hg.anti (Fin.succ_lt_succ_iff.mpr hab)
 
+/- English proof (translation)
+Establish `hF : E.Saturated F` using `hg.bot ▸ hg.saturated 0`. Establish `hone : (1 : Fin (k + 2)) = ⟨1, by omega⟩` using `Fin.ext (by simp)`. Establish `hzero : g ⟨0, by omega⟩ = F`. Rewrite using `[← hg.bot]`. Conclude with `congrArg g (Fin.ext (by simp))`.
+
+Rewrite using `[hone]`. Use `set s0 := E.relSlope F (g ⟨1, by omega⟩) with hs0`. Establish `key : ∀ j : ℕ, ∀ (hj : j + 1 < k + 2) (H : Submodule (𝓞 K) E.carrier), F < H → H ≤ g ⟨j + 1, hj⟩ → E.relSlope F H ≤ s0 ∧ (E.relSlope F H = s0 → H ≤ g ⟨1, by omega⟩)`. Introduce `j`. Proceed by induction on `j with`.
+
+Consider the case `zero`. Introduce `hj H hFH hHle`. Establish `hz' : g (Fin.castSucc (⟨0, by omega⟩ : Fin (k + 1))) = F` using `hzero`. Establish `h` using `hg.semistable ⟨0, by omega⟩ H (by rw [hz']; exact hFH) hHle`. Rewrite `h` using `[hz']`.
+
+Conclude with `⟨h, fun _ ↦ hHle⟩`. Consider the case `succ j ih`. Introduce `hj H hFH hHle`. Distinguish the cases in `hHA : H ≤ g ⟨j + 1, by omega⟩`. Conclude with `ih (by omega) H hFH hHA`.
+
+Establish `hFA : F ≤ g ⟨j + 1, by omega⟩`. Rewrite using `[← hzero]`. Conclude with `hg.strictMono.monotone (Fin.mk_le_mk.mpr (by omega))`. Establish `hAsat : E.Saturated (g ⟨j + 1, by omega⟩)` using `hg.saturated _`. Establish `hAB : g ⟨j + 1, by omega⟩ ≤ g ⟨j + 1 + 1, hj⟩` using `hg.strictMono.monotone (Fin.mk_le_mk.mpr (by omega))`.
+
+Establish `hAU : g ⟨j + 1, by omega⟩ < H ⊔ g ⟨j + 1, by omega⟩` using `lt_of_le_of_ne le_sup_right (fun h ↦ hHA (le_sup_left.trans h.ge))`. Establish `hUB : H ⊔ g ⟨j + 1, by omega⟩ ≤ g ⟨j + 1 + 1, hj⟩` using `sup_le hHle hAB`. Establish `hss : E.relSlope (g ⟨j + 1, by omega⟩) (H ⊔ g ⟨j + 1, by omega⟩) ≤ E.relSlope (g ⟨j + 1, by omega⟩) (g ⟨j + 1 + 1, hj⟩)` using `hg.semistable ⟨j + 1, by omega⟩ _ hAU hUB`. Establish `hanti` using `hg.anti (show (⟨0, by omega⟩ : Fin (k + 1)) < ⟨j + 1, by omega⟩ from Fin.mk_lt_mk.mpr (by omega))`. Simplify using `only [Fin.castSucc_mk, Fin.succ_mk, zero_add] at hanti`.
+
+Rewrite `hanti` using `[hzero]`. Establish `hU` using `lt_of_le_of_lt hss hanti`. Rewrite `hU` using `[relSlope_lt_iff E (rank_lt_of_saturated E hAsat hAU)]`. Establish `hsm` using `defect_sup_inf E hsub s0 H (g ⟨j + 1, by omega⟩)`. Establish `hI : E.normDegree (H ⊓ g ⟨j + 1, by omega⟩) - s0 * E.rank (H ⊓ g ⟨j + 1, by omega⟩) ≤ E.normDegree F - s0 * E.rank F`.
+
+Break down `(le_inf hFH.le hFA : F ≤ H ⊓ g ⟨j + 1, by omega⟩).lt_or_eq with hlt | heq` into its components or cases. Conclude with `(relSlope_le_iff E (rank_lt_of_saturated E hF hlt) s0).mp (ih (by omega) _ hlt inf_le_right).1`. Rewrite using `[← heq]`. Establish `hlt : E.relSlope F H < s0`. Rewrite using `[relSlope_lt_iff E (rank_lt_of_saturated E hF hFH)]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `⟨hlt.le, fun h ↦ absurd h hlt.ne⟩`. Establish `htop : g ⟨k + 1, by omega⟩ = ⊤` using `hg.top`. Conclude with `key k (by omega) H hFH (by rw [htop]; exact le_top)`.
+-/
 theorem IsCanonicalFrom.relSlope_le (hsub : DegreeSupInf.Statement) {F : Submodule (𝓞 K) E.carrier}
     {k : ℕ} {g : Fin (k + 2) → Submodule (𝓞 K) E.carrier} (hg : IsCanonicalFrom E F g)
     {H : Submodule (𝓞 K) E.carrier} (hFH : F < H) :
@@ -366,6 +498,17 @@ theorem IsCanonicalFrom.relSlope_le (hsub : DegreeSupInf.Statement) {F : Submodu
   have htop : g ⟨k + 1, by omega⟩ = ⊤ := hg.top
   exact key k (by omega) H hFH (by rw [htop]; exact le_top)
 
+/- English proof (translation)
+Proceed by induction on `F using WellFoundedGT.induction with`. Consider the case `ind F ih`. Introduce `m m' f f' hf hf'`. Establish `hone : ∀ i : Fin (0 + 1), i = 0` using `fun i ↦ Fin.ext (by rw [Fin.val_zero]; have := i.isLt; omega)`. Apply the tactic sequence `rcases m with _ | k <;> rcases m' with _ | k'`.
+
+Establish `: f = f'` using `funext fun i ↦ by rw [hone i, hf.bot, hf'.bot]`. Rewrite using `[this]`. Establish `hFt : F = ⊤` using `by rw [← hf.bot]; exact hf.top`. Use `hf'.strictMono (Fin.succ_pos (0 : Fin (k' + 1)))` as an intermediate fact. Rewrite `this` using `[hf'.bot, hFt]`.
+
+Conclude with `absurd this not_top_lt`. Establish `hFt : F = ⊤` using `by rw [← hf'.bot]; exact hf'.top`. Use `hf.strictMono (Fin.succ_pos (0 : Fin (k + 1)))` as an intermediate fact. Rewrite `this` using `[hf.bot, hFt]`. Conclude with `absurd this not_top_lt`.
+
+Establish `h01 : ∀ n : ℕ, (0 : Fin (n + 2)) < 1` using `fun n ↦ by`. Rewrite using `[Fin.lt_def, Fin.val_zero, Fin.val_one]`. Use linear arithmetic over natural numbers and integers. Establish `hF1 : F < f 1` using `hf.bot ▸ hf.strictMono (h01 k)`. Establish `hF1' : F < f' 1` using `hf'.bot ▸ hf'.strictMono (h01 k')`.
+
+Establish `a` using `hf.relSlope_le E hsub hF1'`. Establish `b` using `hf'.relSlope_le E hsub hF1`. Establish `heq : f 1 = f' 1` using `le_antisymm (b.2 (le_antisymm b.1 a.1)) (a.2 (le_antisymm a.1 b.1))`. Establish `ht` using `ih (f 1) hF1 hf.tail (by rw [heq]; exact hf'.tail)`. Rewrite using `[← Fin.cons_self_tail f, ← Fin.cons_self_tail f', Fin.range_cons, Fin.range_cons, ht, hf.bot, hf'.bot]`.
+-/
 theorem range_eq_of_isCanonicalFrom (hsub : DegreeSupInf.Statement) (F : Submodule (𝓞 K) E.carrier) :
     ∀ {m m' : ℕ} {f : Fin (m + 1) → Submodule (𝓞 K) E.carrier}
       {f' : Fin (m' + 1) → Submodule (𝓞 K) E.carrier},
@@ -398,6 +541,11 @@ theorem range_eq_of_isCanonicalFrom (hsub : DegreeSupInf.Statement) (F : Submodu
     rw [← Fin.cons_self_tail f, ← Fin.cons_self_tail f', Fin.range_cons, Fin.range_cons, ht, hf.bot,
       hf'.bot]
 
+/- English proof (translation)
+Proceed by induction on `F using WellFoundedGT.induction with`. Consider the case `ind F ih`. Introduce `hF`. Break down `(le_top : F ≤ ⊤).lt_or_eq with hFt | rfl` into its components or cases. Take `⟨G, hFG, hG, hmax, hlarge⟩` from `exists_relMax E hfin hsub hF hFt`.
+
+Take `⟨m, g, hg⟩` from `ih G hFG hG`. Conclude with `⟨m + 1, _, isCanonicalFrom_cons E hF hFG hmax hlarge hg⟩`. Use `⟨0, fun _ ↦ ⊤, rfl, rfl, ?_, fun _ ↦ E.saturated_top, fun i ↦ i.elim0, fun i ↦ i.elim0⟩` and prove the remaining obligations. Introduce `a b hab`. Conclude with `absurd (Fin.lt_def.mp hab) (by have := a.isLt; have := b.isLt; omega)`.
+-/
 theorem exists_isCanonicalFrom (hfin : DegreeBoundedFinite.Statement) (hsub : DegreeSupInf.Statement)
     (F : Submodule (𝓞 K) E.carrier) :
     E.Saturated F → ∃ (m : ℕ) (f : Fin (m + 1) → Submodule (𝓞 K) E.carrier), IsCanonicalFrom E F f := by
@@ -414,6 +562,9 @@ theorem exists_isCanonicalFrom (hfin : DegreeBoundedFinite.Statement) (hsub : De
 
 end CanonicalFiltration
 
+/- English proof (translation)
+Introduce `K _ _ E`. Take `⟨m, f, hf⟩` from `CanonicalFiltration.exists_isCanonicalFrom E h₁ h₂ ⊥ E.saturated_bot`. Use `⟨m, f, (CanonicalFiltration.isCanonicalFrom_bot_iff E f).mp hf, fun m' g hg ↦ ?_⟩` and prove the remaining obligations. Conclude with `CanonicalFiltration.range_eq_of_isCanonicalFrom E h₂ ⊥ ((CanonicalFiltration.isCanonicalFrom_bot_iff E g).mpr hg) hf`.
+-/
 theorem CanonicalFiltration.proof (h₁ : DegreeBoundedFinite.Statement) (h₂ : DegreeSupInf.Statement) :
     CanonicalFiltration.Statement := by
   intro K _ _ E
@@ -422,6 +573,9 @@ theorem CanonicalFiltration.proof (h₁ : DegreeBoundedFinite.Statement) (h₂ :
   exact CanonicalFiltration.range_eq_of_isCanonicalFrom E h₂ ⊥
     ((CanonicalFiltration.isCanonicalFrom_bot_iff E g).mpr hg) hf
 
+/- English proof (translation)
+The claim follows from `(CanonicalFiltration.isCanonicalFrom_bot_iff _ _).mpr (isCanonicalFiltration_integers K)`.
+-/
 example (K : Type) [Field K] [NumberField K] :
     CanonicalFiltration.IsCanonicalFrom (HermitianBundle.integers K) ⊥
       (trivialFlag (HermitianBundle.integers K)) :=

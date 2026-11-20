@@ -8,6 +8,21 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.AbEnd
 
+/- English proof (translation)
+Introduce `S A _ hA φ hgeo`. Use `haveI : IsProper A.hom := hA.proper`. Use `haveI : IsProper (φ.left ≫ A.hom) := by rw [Over.w φ]; infer_instance`. Use `haveI : IsProper φ.left := IsProper.of_comp φ.left A.hom`. Use `haveI : LocallyQuasiFinite φ.left := by`.
+
+Use `LocallyQuasiFinite.of_finite_preimage_singleton φ.left fun y => ?_` and prove the remaining obligations. Set `K` to `AlgebraicClosure (A.left.residueField y)`. Set `u : Spec (CommRingCat.of K) ⟶ A.left` to `Spec.map (CommRingCat.ofHom (algebraMap (A.left.residueField y) K)) ≫ A.left.fromSpecResidueField y`. Set `t` to `u ≫ A.hom`. Use `haveI := hgeo K t`.
+
+Set `φ'` to `((Over.pullback t).map φ).left`. Set `p : Spec (CommRingCat.of K)` to `(⊥ : PrimeSpectrum K)`. Establish `hup : u p = y` using `Scheme.fromSpecResidueField_apply y _`. Set `v : Spec (CommRingCat.of K) ⟶ pullback A.hom t` to `pullback.lift u (𝟙 _) (by simp [t])`. Use `((φ'.finite_preimage_singleton (v p)).image (pullback.fst A.hom t)).subset fun x hx => ?_` and prove the remaining obligations.
+
+Establish `hx' : φ.left x = u p` using `by rw [hup]; exact hx`. Take `⟨w, hw1, hw2⟩` from `Scheme.Pullback.exists_preimage_pullback (f := φ.left) (g := u) x p hx'`. Set `m : pullback φ.left u ⟶ pullback A.hom t` to `pullback.lift (pullback.fst _ _) (pullback.snd _ _) (by`. Rewrite using `[← Over.w φ, ← Category.assoc, pullback.condition, Category.assoc])`. Establish `hm1 : m ≫ pullback.fst A.hom t = pullback.fst _ _` using `pullback.lift_fst _ _ _`.
+
+Establish `hφ1 : φ' ≫ pullback.fst A.hom t = pullback.fst A.hom t ≫ φ.left` using `(GlobalTheory.AbLaw.MulN.isPullback_baseChange t φ).w.symm`. Establish `hφ2 : φ' ≫ pullback.snd A.hom t = pullback.snd A.hom t` using `pullback.lift_snd _ _ _`. Establish `hmv : m ≫ φ' = pullback.snd φ.left u ≫ v`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, hφ1, ← Category.assoc, hm1, Category.assoc, pullback.lift_fst, pullback.condition]`.
+
+Rewrite using `[Category.assoc, hφ2, pullback.lift_snd, Category.assoc, pullback.lift_snd, Category.comp_id]`. Use `⟨m w, ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `φ' (m w) = v p`. Rewrite using `[← Scheme.Hom.comp_apply, hmv, Scheme.Hom.comp_apply, hw2]`. Rewrite using `[← Scheme.Hom.comp_apply, hm1, hw1]`.
+
+Conclude with `IsFinite.of_isProper_of_locallyQuasiFinite φ.left`.
+-/
 theorem isFinite_of_isFinite_geomFibres :
     ∀ (S : Scheme.{0}) (A : Over S) [GrpObj A], IsAbelianScheme A → ∀ (φ : A ⟶ A),
     (∀ (k : Type) [Field k] [IsAlgClosed k] (t : Sp k ⟶ S), IsFinite ((Over.pullback t).map φ).left) →

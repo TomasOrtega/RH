@@ -6,6 +6,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 
 open Matrix UpperTheory.V.Z.Sym UpperTheory.V.Z.Sym.Loc UpperTheory.V.Z.Sym.Glob UpperTheory.V.Z.Sym.Glob.FK
 
+/- English proof (translation)
+Use `haveI : Finite s := hs.to_subtype`. Set `F : s → H ⧸ C.subgroupOf H` to `fun x => if h : ∃ a : H, φ a = (x : X) then QuotientGroup.mk h.choose else QuotientGroup.mk 1`. Use `haveI : Finite (H ⧸ C.subgroupOf H) := by`. Use `Finite.of_surjective F ?_` and prove the remaining obligations. Introduce `q`.
+
+Use `QuotientGroup.induction_on q fun a => ?_` and prove the remaining obligations. Establish `hex : ∃ b : H, φ b = ((⟨φ a, hmem a a.2⟩ : s) : X)` using `⟨a, rfl⟩`. Use `⟨⟨φ a, hmem a a.2⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [F, dif_pos hex]`. Rewrite using `[QuotientGroup.eq, Subgroup.mem_subgroupOf]`.
+
+Simplify using `using hinj _ _ hex.choose_spec`. Conclude with `Subgroup.index_ne_zero_of_finite`.
+-/
 private theorem relIndex_ne {Γ X : Type} [Group Γ] (C H : Subgroup Γ) (φ : Γ → X) (s : Set X) (hs : s.Finite)
     (hmem : ∀ γ ∈ H, φ γ ∈ s) (hinj : ∀ γ δ, φ γ = φ δ → γ⁻¹ * δ ∈ C) : C.relIndex H ≠ 0 := by
   classical
@@ -23,6 +30,15 @@ private theorem relIndex_ne {Γ X : Type} [Group Γ] (C H : Subgroup Γ) (φ : �
     simpa using hinj _ _ hex.choose_spec
   exact Subgroup.index_ne_zero_of_finite
 
+/- English proof (translation)
+Take `⟨n1, hn1, h1⟩` from `hden g`. Take `⟨n2, hn2, h2⟩` from `hden g⁻¹`. Use `⟨n1 * n2 * (n1 * n2), mul_ne_zero (mul_ne_zero hn1 hn2) (mul_ne_zero hn1 hn2), ?_⟩` and prove the remaining obligations. Introduce `b hb γ hγ`. Rewrite `hγ` using `[Subgroup.mem_comap, Subgroup.mem_map]`.
+
+Take `⟨u, hu, hug⟩` from `hγ`. Establish `hιγ : ι γ = g * u * g⁻¹`. Rewrite using `[← hug]`. Simplify using `[MulAut.conj_apply]`. Establish `hιγ' : ι γ⁻¹ = g * u⁻¹ * g⁻¹`.
+
+Rewrite using `[map_inv, hιγ]`. Use `group`. Rewrite `hb`, the goal using `[Subring.mem_comap]`. Rewrite using `[nsmul_eq_mul, map_mul, map_mul, map_mul, map_natCast, ← hι, ← hι, hιγ, hιγ', map_mul, map_mul, map_mul, map_mul]`. Establish `key : ((n1 * n2 * (n1 * n2) : ℕ) : M) * (ρ g * ρ u * ρ g⁻¹ * j b * (ρ g * ρ u⁻¹ * ρ g⁻¹)) = ((n1 : M) * ρ g) * (ρ u * (((n2 : M) * ρ g⁻¹) * j b * ((n1 : M) * ρ g)) * ρ u⁻¹) * ((n2 : M) * ρ g⁻¹)`.
+
+Simplify using `only [← nsmul_eq_mul, smul_mul_assoc, mul_smul_comm, smul_smul, mul_assoc]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key]`. Conclude with `R.mul_mem (R.mul_mem h1 (hU u hu _ (R.mul_mem (R.mul_mem h2 hb) h1))) h2`.
+-/
 private theorem conj_abs {A M Γ G : Type} [Ring A] [Ring M] [Group Γ] [Group G] (j : A →+* M) (R : Subring M) (ι : Γ →* G) (σ : Γ →* A)
     (ρ : G →* M) (hι : ∀ γ, ρ (ι γ) = j (σ γ)) (U : Subgroup G) (hU : ∀ u ∈ U, ∀ r ∈ R, ρ u * r * ρ u⁻¹ ∈ R)
     (hden : ∀ g, ∃ n : ℕ, n ≠ 0 ∧ (n : M) * ρ g ∈ R) (g : G) :
@@ -49,6 +65,9 @@ private theorem conj_abs {A M Γ G : Type} [Ring A] [Ring M] [Group Γ] [Group G
   rw [key]
   exact R.mul_mem (R.mul_mem h1 (hU u hu _ (R.mul_mem (R.mul_mem h2 hb) h1))) h2
 
+/- English proof (translation)
+Establish `e1 : σ γ⁻¹ * σ γ = 1` using `by rw [← map_mul, inv_mul_cancel, map_one]`. Establish `e2 : σ δ⁻¹ * σ δ = 1` using `by rw [← map_mul, inv_mul_cancel, map_one]`. Rewrite using `[map_mul]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem comm_of_conj {A Γ : Type} [Ring A] [Group Γ] (σ : Γ →* A) (b : A) (γ δ : Γ) (h : σ γ * b * σ γ⁻¹ = σ δ * b * σ δ⁻¹) :
     σ (γ⁻¹ * δ) * b = b * σ (γ⁻¹ * δ) := by
   have e1 : σ γ⁻¹ * σ γ = 1 := by rw [← map_mul, inv_mul_cancel, map_one]
@@ -63,6 +82,15 @@ private noncomputable def sg {K : Type} [Field K] (Δ : K) : DX Δ →* Matrix (
   map_one' := rfl
   map_mul' _ _ := rfl
 
+/- English proof (translation)
+Take `⟨N, hN, hNmem⟩` from `conj_abs j R ι (sg Δ) ρ hι U hU hden g`. Establish `hcan : ∀ x y : Matrix (Fin 2) (Fin 2) (Lsq F Δ), N • x = N • y → x = y`. Introduce `x y h`. Establish `h' : (N : F) • x = (N : F) • y`. Rewrite using `[Nat.cast_smul_eq_nsmul, Nat.cast_smul_eq_nsmul]`.
+
+Conclude with `h`. Conclude with `smul_right_injective _ (Nat.cast_ne_zero.2 hN) h'`. Establish `hdet : ∀ (γ : DX Δ) (b : Matrix (Fin 2) (Fin 2) (Lsq F Δ)), (N • (sg Δ γ * b * sg Δ γ⁻¹)).det = (N • b).det`. Introduce `γ b`. Establish `e : N • (sg Δ γ * b * sg Δ γ⁻¹) = sg Δ γ * (N • b) * sg Δ γ⁻¹`.
+
+Rewrite using `[mul_smul_comm, smul_mul_assoc]`. Rewrite using `[e, Matrix.det_mul, Matrix.det_mul, mul_comm (Matrix.det (sg Δ γ)), mul_assoc, ← Matrix.det_mul, ← map_mul, mul_inv_cancel, map_one, Matrix.det_one, mul_one]`. Use `relIndex_ne (ZD Δ) ((U.map (MulAut.conj g).toMonoidHom).comap ι) (fun γ => (N • (sg Δ γ * qm ⟨0, c⟩ 0 * sg Δ γ⁻¹), N • (sg Δ γ * qm 0 1 * sg Δ γ⁻¹))) ({y | y ∈ R.comap j ∧ y.det = (N • qm (⟨0, c⟩ : Lsq F Δ) 0).det} ×ˢ {y | y ∈ R.comap j ∧ y.det = (N • qm (0 : Lsq F Δ) 1).det}) (( …` and prove the remaining obligations. Introduce `γ hγ`. Conclude with `⟨⟨hNmem _ h1 γ hγ, hdet γ _⟩, ⟨hNmem _ h2 γ hγ, hdet γ _⟩⟩`.
+
+Introduce `γ δ h`. Take `⟨e1, e2⟩` from `Prod.mk.inj h`. Establish `c1` using `comm_of_conj (sg Δ) _ γ δ (hcan _ _ e1)`. Establish `c2` using `comm_of_conj (sg Δ) _ γ δ (hcan _ _ e2)`. Conclude with `FK.mem_ZD hΔ hc (γ⁻¹ * δ) c1 c2`.
+-/
 private theorem stab_F {F G : Type} [Field F] [CharZero F] [Group G] {Δ : F} (hΔ : Δ ≠ 0) {M : Type} [Ring M]
     (j : Matrix (Fin 2) (Fin 2) (Lsq F Δ) →+* M) (R : Subring M) (ι : DX Δ →* G)
     (ρ : G →* M) (hι : ∀ γ, ρ (ι γ) = j (sg Δ γ)) (U : Subgroup G) (hU : ∀ u ∈ U, ∀ r ∈ R, ρ u * r * ρ u⁻¹ ∈ R)
@@ -97,9 +125,39 @@ private theorem stab_F {F G : Type} [Field F] [CharZero F] [Group G] {Δ : F} (h
     have c2 := comm_of_conj (sg Δ) _ γ δ (hcan _ _ e2)
     exact FK.mem_ZD hΔ hc (γ⁻¹ * δ) c1 c2
 
+/- English proof (translation)
+The claim follows from `Subgroup.mem_iInf`.
+-/
 private theorem mem_box {I G : Type} [Group G] {Gv : I → Type} [∀ v, Group (Gv v)] {K : ∀ v, Subgroup (Gv v)} (P : RPG G Gv K)
     (U : ∀ v, Subgroup (Gv v)) (g : G) : g ∈ P.box U ↔ ∀ v, P.p v g ∈ U v := Subgroup.mem_iInf
 
+/- English proof (translation)
+Use `haveI := hD.real`. Establish `hΔ : Δ ≠ 0`. Introduce `h0`. Take `⟨σ, -⟩` from `FK.real_emb (Classical.arbitrary (F →+* ℂ))`. Establish `h` using `hD.neg σ`.
+
+Rewrite `h` using `[h0, map_zero]`. Conclude with `lt_irrefl _ h`. Establish `hιρ : ∀ γ, rho Δ (ι γ) = jj Δ (sg Δ γ)`. Introduce `γ`. Use function extensionality and compare the values at `v`.
+
+Rewrite using `[FK.jj_apply]`. Conclude with `hι γ v`. Establish `hU : ∀ u ∈ D.UZ, ∀ r ∈ RR Δ, rho Δ u * r * rho Δ u⁻¹ ∈ RR Δ`. Introduce `u hu r hr`. Rewrite `hr`, the goal using `[FK.mem_RR]`.
+
+Introduce `v`. Establish `huv` using `(mem_box _ _ u).1 hu v`. Establish `hle : ZD ((cv v) Δ) ⊔ D.J2v v ≤ ZD ((cv v) Δ) ⊔ KD ((cv v) Δ) (Ov v)`. Use `sup_le_sup_left ?_ _` and prove the remaining obligations. Unfold `Dat.J2v`.
+
+Use `split_ifs with hv`. Conclude with `(hD.sig v hv).levelTwoLeIntegral`. Conclude with `le_rfl`. Conclude with `FK.conj_mem (Ov v) (hle huv) (hr v)`. Establish `hfin` using `FK.det_fin hD.neg hΔ`.
+
+Take `⟨c, hc0, hcint⟩` from `FK.den_glob Δ`. Establish `hq1 : qm (⟨0, (c : F)⟩ : Lsq F Δ) 0 ∈ (RR Δ).comap (jj Δ)`. Rewrite using `[Subring.mem_comap, FK.mem_RR]`. Introduce `v`. Rewrite using `[FK.jj_apply, FK.qm_map]`.
+
+Establish `e : (lmap (cv v) Δ) (⟨0, (c : F)⟩ : Lsq F Δ) = ⟨0, (c : Kv v)⟩`. Simplify using `[lmap]`. Rewrite using `[e, map_zero]`. Conclude with `FK.qm_mem (Ov v) (FK.int_om (Ov v) (FK.int_cD hcint v)) isIntegral_zero`. Establish `hq2 : qm (0 : Lsq F Δ) 1 ∈ (RR Δ).comap (jj Δ)`.
+
+Rewrite using `[Subring.mem_comap, FK.mem_RR]`. Introduce `v`. Rewrite using `[FK.jj_apply, FK.qm_map, map_zero, map_one]`. Conclude with `FK.qm_mem (Ov v) isIntegral_zero isIntegral_one`. Use `⟨?_, fun g => stab_F hΔ (jj Δ) (RR Δ) ι (rho Δ) hιρ D.UZ hU FK.den_rho hfin (Nat.cast_ne_zero.2 hc0) hq1 hq2 g⟩` and prove the remaining obligations.
+
+Use `haveI := FK.lam_fg hΔ`. Use `haveI : CharZero (Matrix (Fin 2) (Fin 2) (Lsq F Δ)) := charZero_of_injective_algebraMap (algebraMap F _).injective`. Establish `hbig` using `cls_abs (jj Δ) (RR Δ) ι (sg Δ) (rho Δ) hιρ ((rpg (fun v => DX ((cv v) Δ)) fun v => KD ((cv v) Δ) (Ov v)).box fun v => KD ((cv v) Δ) (Ov v)) (by`. Introduce `g h1 h2`. Rewrite using `[mem_box]`.
+
+Introduce `v`. Rewrite using `[FK.mem_KD]`. Rewrite `h1`, `h2` using `[FK.mem_RR]`. Conclude with `⟨h1 v, h2 v⟩)`. Use the proof step `(by`.
+
+Introduce `y hy hy0`. Take `⟨γ, hγ⟩` from `FK.unit_of_shape hD.neg (FK.lam_shape hy) hy0`. Conclude with `⟨γ, hγ⟩)`. Use the proof step `(FK.approx_R hΔ) FK.den_rho`. Use `cls_of_relIndex ι _ D.UZ ?_ hbig` and prove the remaining obligations.
+
+Use `box_relIndex _ _ _ D.Sg (fun v hv => ?_) (fun v hv => ?_)` and prove the remaining obligations. Unfold `Dat.J2v`. Rewrite using `[if_pos hv]`. Conclude with `ne_zero_of_dvd_ne_zero (hD.sig v hv).levelTwoFiniteIndex (Subgroup.relIndex_dvd_of_le_left _ le_sup_right)`. Unfold `Dat.J2v`.
+
+Rewrite using `[if_neg hv]`. Conclude with `le_sup_right`.
+-/
 private theorem finK_fin (F : Type) [Field F] [NumberField F] (Δ : F) (D : Dat Δ) (hD : D.Ok) (ι : DX Δ →* DA Δ) (hι : IsIotaD ι) :
     (∃ S : Finset (DA Δ), ∀ g, ∃ γ, ∃ s ∈ S, ∃ u ∈ D.UZ, g = ι γ * s * u) ∧
     ∀ g, (ZD Δ).relIndex ((D.UZ.map (MulAut.conj g).toMonoidHom).comap ι) ≠ 0 := by
@@ -171,6 +229,11 @@ private theorem finK_fin (F : Type) [Field F] [NumberField F] (Δ : F) (D : Dat 
     rw [if_neg hv]
     exact le_sup_right
 
+/- English proof (translation)
+Introduce `F _ _ Δ D hD V _ _ ch B hB`. Use `⟨?_, finK_test F Δ D hD V ch B hB⟩` and prove the remaining obligations. Take `⟨hcls, hstab⟩` from `finK_fin F Δ D hD B.ι hB.ι`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hB.U]`.
+
+Conclude with `hcls`. Introduce `g`. Rewrite using `[hB.U, hB.Γ₀]`. Conclude with `hstab g`.
+-/
 theorem UpperTheory.V.Z.Sym.Glob.finK :
     UpperTheory.V.Z.Sym.Glob.FinK := by
   intro F _ _ Δ D hD V _ _ ch B hB

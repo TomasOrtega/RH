@@ -6,6 +6,11 @@ universe u v
 
 namespace UpperTheory.Gal.CertificateRingHomMap
 
+/- English proof (translation)
+Rewrite using `[← Ideal.Quotient.eq]`. Establish `hT : (fun j => Ideal.Quotient.mkₐ F I (T j)) = fun j => ((Ideal.Quotient.mkₐ F I).comp (Algebra.ofId F B)) (θ j)`. Use function extensionality and compare the values at `j`. Simplify using `only [AlgHom.comp_apply, Algebra.ofId_apply, Ideal.Quotient.mkₐ_eq_mk]`. Conclude with `Ideal.Quotient.eq.mpr (h j)`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem wop_sub_mem {F B J : Type*} [Field F] [CommRing B] [Algebra F B] (I : Ideal B)
     (T : J → B) (θ : J → F) (h : ∀ j, T j - algebraMap F B (θ j) ∈ I) (s : List J →₀ F) :
     wop T s - algebraMap F B (wop θ s) ∈ I := by
@@ -21,6 +26,23 @@ private theorem wop_sub_mem {F B J : Type*} [Field F] [CommRing B] [Algebra F B]
     _ = ((Ideal.Quotient.mkₐ F I).comp (Algebra.ofId F B)) (wop θ s) := (map_wop _ _ _).symm
     _ = Ideal.Quotient.mk I (algebraMap F B (wop θ s)) := rfl
 
+/- English proof (translation)
+Set `A : Ideal B` to `{ carrier := {b | g b x = 0} add_mem' := by`. Introduce `a b ha hb`. Simplify using `only [Set.mem_setOf_eq] at *`. Rewrite using `[map_add, LinearMap.add_apply, ha, hb, add_zero]`. Use the proof step `zero_mem' := by simp`.
+
+Use the proof step `smul_mem' := by`. Introduce `c b hb`. Simplify using `only [Set.mem_setOf_eq, smul_eq_mul] at *`. Rewrite using `[map_mul, Module.End.mul_apply, hb, map_zero] }`. Establish `hmem : ∀ b : B, (∃ k : ℕ, ((g b) ^ k) x = 0) → b ∈ A.radical`.
+
+Introduce and unpack `b ⟨k, hk⟩`. Use `⟨k, ?_⟩` and prove the remaining obligations. Use `show g (b ^ k) x = 0`. Rewrite using `[map_pow]`. Conclude with `hk`.
+
+Establish `hmem' : ∀ b ∈ A.radical, ∃ k : ℕ, ((g b) ^ k) x = 0`. Introduce and unpack `b ⟨k, hk⟩`. Use `⟨k, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_pow]`. Conclude with `hk`.
+
+Establish `hT : ∀ j, T' j - algebraMap F B (θ j) ∈ A.radical`. Introduce `j`. Apply `hmem` to reduce the goal to its premises. Take `⟨k, hk⟩` from `hx j`. Use `⟨k, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_sub, AlgHom.commutes]`. Conclude with `hk`. Establish `hw` using `wop_sub_mem A.radical T' θ hT t`. Rewrite `hw` using `[h1, map_one]`. Take `⟨k, hk⟩` from `hmem' _ (A.radical.neg_mem hw)`.
+
+Rewrite `hk` using `[neg_sub, map_sub, map_one, map_wop]`. Establish `hid` using `h2.one_sub`. Consider the cases of `k with`. Consider the case `zero`. Simplify using `at hk`.
+
+Simplify using `[hk]`. Consider the case `succ m`. Rewrite `hk` using `[hid.pow_succ_eq m]`. Establish `hk2 : x - wop (fun j => g (T' j)) t x = 0` using `by simpa using hk`. Conclude with `(sub_eq_zero.mp hk2).symm`.
+-/
 private theorem fix_of_cert {F B W J : Type*} [Field F] [CommRing B] [Algebra F B] [AddCommGroup W]
     [Module F W] (g : B →ₐ[F] End F W) (T' : J → B) (θ : J → F) (t : List J →₀ F)
     (h1 : wop θ t = 1) (h2 : IsIdempotentElem (wop (fun j => g (T' j)) t)) (x : W)
@@ -71,6 +93,17 @@ private theorem fix_of_cert {F B W J : Type*} [Field F] [CommRing B] [Algebra F 
 
 end UpperTheory.Gal.CertificateRingHomMap
 
+/- English proof (translation)
+Introduce and unpack `F _ W _ _ J T hc θ t ⟨h1, h2, h3⟩`. Prove the components needed by the constructor for the conclusion. Introduce `x`. Rewrite using `[Submodule.mem_iInf]`. Introduce `j`.
+
+Rewrite using `[Module.End.mem_maxGenEigenspace]`. Take `⟨N, hN⟩` from `h3 j`. Use `⟨N, ?_⟩` and prove the remaining obligations. Rewrite using `[← Algebra.algebraMap_eq_smul_one, ← Module.End.mul_apply, hN, LinearMap.zero_apply]`. Introduce `x hx`.
+
+Establish `hs : ∀ a ∈ Set.range T, ∀ b ∈ Set.range T, a * b = b * a`. Introduce and unpack `_ ⟨i, rfl⟩ _ ⟨j, rfl⟩`. Conclude with `hc i j`. Use `letI : CommRing (Algebra.adjoin F (Set.range T)) := Algebra.adjoinCommRingOfComm F hs`. Set `T' : J → Algebra.adjoin F (Set.range T)` to `fun j => ⟨T j, Algebra.subset_adjoin ⟨j, rfl⟩⟩`.
+
+Use `fix_of_cert (Algebra.adjoin F (Set.range T)).val T' θ t h1 h2 x ?_` and prove the remaining obligations. Introduce `j`. Establish `hj` using `(Submodule.mem_iInf _).mp hx j`. Rewrite `hj` using `[Module.End.mem_maxGenEigenspace]`. Take `⟨k, hk⟩` from `hj`.
+
+Conclude with `⟨k, by rw [Algebra.algebraMap_eq_smul_one]; exact hk⟩`.
+-/
 theorem UpperTheory.Gal.CertificateRingHomMap.pCertProj_holds :
     UpperTheory.Gal.CertificateRingHomMap.CertProj.{u} := by
   rintro F _ W _ _ J T hc θ t ⟨h1, h2, h3⟩

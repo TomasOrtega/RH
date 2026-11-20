@@ -8,6 +8,13 @@ open UpperTheory.V.Lit UpperTheory.V.Lit.Geo UpperTheory.V.Lit.Bor UpperTheory.V
 open scoped TensorProduct GlobalTheory.CuspRep.CuspidalL2GL
 open UpperTheory.V.Cj UpperTheory.V.Cj.H
 
+/- English proof (translation)
+Introduce `E _ _ _ a ha n e he U Ξ r c hc q ω hω hd`. Take `⟨k0, k1⟩` from `kugaSm E a n e he Ξ r c hc`. Consider the cases of `q with`. Consider the case `zero => exact ⟨k0 ω hω.equiv hd, fun _ _ => trivial⟩`. Consider the case `succ q`.
+
+Establish `hk` using `k1 q ω hω.equiv hd`. Take `⟨d1, d2⟩` from `delLev E a n e he U Ξ r q ω`. Take `⟨l1, l2, -⟩` from `levLin E a U Ξ q`. Establish `hl` using `d1 hω`. Use `⟨⟨(-1 : ℂ) • del (smAdj Ξ r) e ω + (0 : ℂ) • del (smAdj Ξ r) e ω, l1 _ _ _ _ hl hl, ?_⟩, fun hs h0 => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[l2, hk, zero_smul, add_zero]`. Conclude with `AlternatingMap.ext fun X => neg_one_smul ℂ _`. Rewrite `h0` using `[hk, neg_eq_zero]`. Conclude with `(sqOrth E a ha n e he Ξ r q).2 ω hs (d2 hs) h0`.
+-/
 theorem UpperTheory.V.Cj.H.resExact :
     UpperTheory.V.Cj.H.ResExact := by
   intro E _ _ _ a ha n e he U Ξ r c hc q ω hω hd

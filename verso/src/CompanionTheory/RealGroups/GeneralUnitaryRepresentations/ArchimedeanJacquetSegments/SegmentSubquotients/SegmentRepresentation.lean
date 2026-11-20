@@ -6,6 +6,9 @@ import CompanionTheory.SpectralGeometry.LocalGlobalProofs.GlobalTheory.Bernstein
 
 namespace CompanionTheory.RgGu
 
+/- English proof (translation)
+The claim follows from `have hG : GlobalTheory.Published.GeometricLemma := GlobalTheory.geometricLemma_of_filtration GlobalTheory.CompanionTheory.Published.bernsteinZelevinskyFiniteness CompanionTheory.Geo.geometricLemmaFiltration SRC.segRep_of SRC.stageP hG (SRC.segTwo_of hG NR.rhoNuRhoReducibleC)`.
+-/
 theorem segmentRepresentation : GlobalTheory.Published.SegmentRepresentation :=
   have hG : GlobalTheory.Published.GeometricLemma :=
     GlobalTheory.geometricLemma_of_filtration GlobalTheory.CompanionTheory.Published.bernsteinZelevinskyFiniteness CompanionTheory.Geo.geometricLemmaFiltration

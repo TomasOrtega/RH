@@ -9,6 +9,17 @@ open CategoryTheory AlgebraicGeometry DividedPowers GroundTheory.PAdicHodge Glob
 
 namespace GlobalTheory.CompanionTheory.TowerAcr
 
+/- English proof (translation)
+Use function extensionality and compare the values at `m`. Establish `hB : ∀ a b : B, a - b ∈ J → (l : B) ∣ a ^ l - b ^ l`. Introduce `a b hab`. Take `⟨r, hr⟩` from `exists_add_pow_prime_eq hl b (a - b)`. Establish `hab' : b + (a - b) = a` using `by ring`.
+
+Rewrite `hr` using `[hab']`. Establish `hu` using `hJ _ hab`. Rewrite `hu` using `[Ideal.mem_span_singleton]`. Rewrite using `[hr]`. Establish `hrw : b ^ l + (a - b) ^ l + (l : B) * b * (a - b) * r - b ^ l = (a - b) ^ l + (l : B) * (b * (a - b) * r)` using `by ring`.
+
+Rewrite using `[hrw]`. Conclude with `dvd_add hu (dvd_mul_right _ _)`. Establish `key : ∀ z : ℕ → B, (∀ m, z (m + 1) ^ l = z m) → ∀ k, z (m + k) ^ (l ^ k) = z m`. Introduce `z hz k`. Proceed by induction on `k with`.
+
+Consider the case `zero => simp`. Consider the case `succ k ih => rw [pow_succ', pow_mul, ← Nat.add_assoc, hz, ih]`. Establish `hd : (l : B) ∣ x (m + (n + 1)) ^ l - y (m + (n + 1)) ^ l` using `hB _ _ (hxy _)`. Establish `hdiv` using `dvd_sub_pow_of_dvd_sub hd n`. Rewrite `hdiv` using `[← pow_mul, ← pow_mul, ← pow_succ', key x hx (n + 1), key y hy (n + 1)]`.
+
+Establish `hz : (l : B) ^ (n + 1) = 0` using `by rw [pow_succ, hln, zero_mul]`. Rewrite `hdiv` using `[hz, zero_dvd_iff, sub_eq_zero]`. Conclude with `hdiv`.
+-/
 theorem roots_eq {B : Type} [CommRing B] {l n : ℕ} (hl : l.Prime) (hn : n ≠ 0) (hln : (l : B) ^ n = 0) (J : Ideal B)
     (hJ : ∀ u ∈ J, u ^ l ∈ Ideal.span {(l : B)}) (x y : ℕ → B) (hx : ∀ m, x (m + 1) ^ l = x m)
     (hy : ∀ m, y (m + 1) ^ l = y m) (hxy : ∀ m, x m - y m ∈ J) : x = y := by
@@ -37,6 +48,19 @@ theorem roots_eq {B : Type} [CommRing B] {l n : ℕ} (hl : l.Prime) (hn : n ≠ 
   rw [hz, zero_dvd_iff, sub_eq_zero] at hdiv
   exact hdiv
 
+/- English proof (translation)
+Set `K : Ideal E` to `{ carrier := {u | u ^ l ∈ Ideal.span {(l : E)}} add_mem' := by`. Introduce `a b ha hb`. Take `⟨r, hr⟩` from `exists_add_pow_prime_eq hl a b`. Simplify using `only [Set.mem_ofPred_eq] at ha hb ⊢`. Rewrite using `[hr]`.
+
+Conclude with `Ideal.add_mem _ (Ideal.add_mem _ ha hb) (Ideal.mul_mem_right _ _ (Ideal.mul_mem_right _ _ (Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _))))`. Use the proof step `zero_mem' := by`. Simplify using `only [Set.mem_ofPred_eq]`. Rewrite using `[zero_pow hl.ne_zero]`. Conclude with `Ideal.zero_mem _`.
+
+Use the proof step `smul_mem' := by`. Introduce `c a ha`. Simplify using `only [Set.mem_ofPred_eq, smul_eq_mul] at ha ⊢`. Rewrite using `[mul_pow]`. Conclude with `Ideal.mul_mem_left _ _ ha }`.
+
+Establish `hle : P.map h ≤ K`. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `x hx`. Rewrite using `[Ideal.mem_comap]`. Use `show (h x) ^ l ∈ Ideal.span {(l : E)}`.
+
+Establish `hx'` using `hP x hx`. Rewrite `hx'`, the goal using `[Ideal.mem_span_singleton]`. Take `⟨c, hc⟩` from `hx'`. Conclude with `⟨h c, by rw [← map_pow, hc, map_mul, map_natCast]⟩`. Introduce `u hu`.
+
+Conclude with `hle hu`.
+-/
 theorem pow_mem_map {Λ E : Type} [CommRing Λ] [CommRing E] {l : ℕ} (hl : l.Prime) (h : Λ →+* E) (P : Ideal Λ)
     (hP : ∀ x ∈ P, x ^ l ∈ Ideal.span {(l : Λ)}) : ∀ u ∈ P.map h, u ^ l ∈ Ideal.span {(l : E)} := by
   let K : Ideal E :=
@@ -70,6 +94,9 @@ theorem pow_mem_map {Λ E : Type} [CommRing Λ] [CommRing E] {l : ℕ} (hl : l.P
   intro u hu
   exact hle hu
 
+/- English proof (translation)
+Introduce `u hu`. Establish `hu'` using `hJ u hu`. Rewrite `hu'` using `[Ideal.mem_span_singleton]`. Take `⟨c, hc⟩` from `hu'`. Conclude with `⟨l * n, by rw [pow_mul, hc, mul_pow, hln, zero_mul]⟩`.
+-/
 theorem nil_of {E : Type} [CommRing E] {l n : ℕ} (hln : (l : E) ^ n = 0) (J : Ideal E)
     (hJ : ∀ u ∈ J, u ^ l ∈ Ideal.span {(l : E)}) : ∀ u ∈ J, IsNilpotent u := by
   intro u hu
@@ -78,6 +105,25 @@ theorem nil_of {E : Type} [CommRing E] {l n : ℕ} (hln : (l : E) ^ n = 0) (J : 
   obtain ⟨c, hc⟩ := hu'
   exact ⟨l * n, by rw [pow_mul, hc, mul_pow, hln, zero_mul]⟩
 
+/- English proof (translation)
+Establish `hroot : ∀ k m, e' (τ k m) = X.r k m`. Introduce `k m`. Establish `h` using `roots_eq hl hn hln J hJ (fun m => e' (τ k m)) (fun m => X.r k m) (fun m => by show e' (τ k (m + 1)) ^ l = e' (τ k m); rw [← map_pow, hτ]) (fun m => X.r_succ k m) (fun m => hr k m)`. Conclude with `congrFun h m`. Establish `hmod : ∀ z, Ideal.Quotient.mk J (e' (φ z)) = Ideal.Quotient.mk J (algebraMap 𝓛.D X.E z)`.
+
+Establish `hh : ∀ x ∈ I, ((Ideal.Quotient.mk J).comp ((algebraMap 𝓛.D X.E).comp 𝓛.i)) x = 0`. Introduce `x hx`. Simplify using `only [RingHom.comp_apply]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.mpr (hIJ x hx)`. Establish `hg : ∀ o x, Ideal.Quotient.mk I x = κ o → g' (a o) = ((Ideal.Quotient.mk J).comp ((algebraMap 𝓛.D X.E).comp 𝓛.i)) x`.
+
+Introduce `o x hx`. Simplify using `only [RingHom.comp_apply]`. Conclude with `(hg' (a o) (𝓛.i x) (𝓛.hj o x hx).symm).symm`. Take `⟨f, -, huniq⟩` from `𝓛.univ (X.E ⧸ J) ((Ideal.Quotient.mk J).comp ((algebraMap 𝓛.D X.E).comp 𝓛.i)) g' hh hg`. Establish `e1` using `huniq ((Ideal.Quotient.mk J).comp (e'.comp φ)) ⟨RingHom.ext fun x => by simp only [RingHom.comp_apply]; rw [hi], fun r z hz => hD r z hz⟩`.
+
+Establish `e2` using `huniq ((Ideal.Quotient.mk J).comp (algebraMap 𝓛.D X.E)) ⟨RingHom.ext fun x => by simp only [RingHom.comp_apply], fun r z hz => hg' r z hz⟩`. Introduce `z`. Conclude with `RingHom.congr_fun (e1.trans e2.symm) z`. Establish `hφ : e'.comp φ = algebraMap 𝓛.D X.E`. Use `letI : Algebra (MvPolynomial (Fin d) Λ) 𝓛.D := (MvPolynomial.eval₂Hom 𝓛.i 𝓛.t).toAlgebra`.
+
+Use `haveI : Algebra.Etale (MvPolynomial (Fin d) Λ) 𝓛.D := 𝓛.et`. Use `letI : Algebra (MvPolynomial (Fin d) Λ) X.E := ((algebraMap 𝓛.D X.E).comp (MvPolynomial.eval₂Hom 𝓛.i 𝓛.t)).toAlgebra`. Establish `hcomp : (e'.comp φ).comp (MvPolynomial.eval₂Hom 𝓛.i 𝓛.t) = (algebraMap 𝓛.D X.E).comp (MvPolynomial.eval₂Hom 𝓛.i 𝓛.t)`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `c`.
+
+Simplify using `only [RingHom.comp_apply, MvPolynomial.eval₂Hom_C]`. Conclude with `hi c`. Introduce `k`. Simplify using `only [RingHom.comp_apply, MvPolynomial.eval₂Hom_X']`. Rewrite using `[h0, hroot, X.r_zero]`.
+
+Set `h₁ : 𝓛.D →ₐ[MvPolynomial (Fin d) Λ] X.E` to `{ toRingHom := e'.comp φ, commutes' := fun q => RingHom.congr_fun hcomp q }`. Set `h₂ : 𝓛.D →ₐ[MvPolynomial (Fin d) Λ] X.E` to `{ toRingHom := algebraMap 𝓛.D X.E, commutes' := fun q => rfl }`. Establish `h12` using `GlobalTheory.CompanionTheory.EtNil.lift_unique J (nil_of hln J hJ) h₁ h₂ (fun z => hmod z)`. Conclude with `congrArg AlgHom.toRingHom h12`. Establish `hid : e'.comp e = RingHom.id X.E`.
+
+Take `⟨g, -, huniq⟩` from `X.univ X.E (algebraMap 𝓛.D X.E) X.r X.r_zero X.r_succ`. Establish `e1` using `huniq (e'.comp e) ⟨RingHom.ext fun z => by`. Simplify using `only [RingHom.comp_apply]`. Rewrite using `[he]`. Conclude with `RingHom.congr_fun hφ z,`.
+
+Use `fun k m => by simp only [RingHom.comp_apply]; rw [her, hroot]⟩`. Establish `e2` using `huniq (RingHom.id X.E) ⟨RingHom.ext fun z => rfl, fun k m => rfl⟩`. Conclude with `e1.trans e2.symm`. Introduce `x`. Conclude with `RingHom.congr_fun hid x`.
+-/
 theorem finish {O R Λ : Type} [CommRing O] [CommRing R] [CommRing Λ] {a : O →+* R} {d : ℕ} {T : Fin d → R}
     {I : Ideal Λ} {κ : O →+* Λ ⧸ I} (𝓛 : Lift a T Λ I κ) {l n : ℕ} (hl : l.Prime) (hn : n ≠ 0)
     (X : RootExt l 𝓛.D 𝓛.t) (J : Ideal X.E) (hln : (l : X.E) ^ n = 0)
@@ -147,6 +193,19 @@ end GlobalTheory.CompanionTheory.TowerAcr
 
 namespace GlobalTheory.CompanionTheory.TowerAcr
 
+/- English proof (translation)
+Break down `subsingleton_or_nontrivial A.A with hA | hA` into its components or cases. Establish `hs : A.sW w = WittVector.teichmuller l (A.s (w.coeff 0))` using `WittVector.ext fun i => Subsingleton.elim _ _`. Rewrite using `[hs, sub_self]`. Conclude with `Ideal.zero_mem _`. Establish `hl0 : ((l : ℕ) : A.A) = 0`.
+
+Rewrite using `[← map_natCast A.s l, CharP.cast_eq_zero, map_zero]`. Use `haveI : CharP A.A l := (CharP.charP_iff_prime_eq_zero (Fact.out : l.Prime)).mpr hl0`. Take `⟨π, hπ, -, -, -⟩` from `(GlobalTheory.T.period_ring_base_change_from_universal A n).1`. Establish `hlP : ((l : ℕ) : A.Acr n) ∈ A.PFil n`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_natCast, ← map_natCast π l, hl0, map_zero]`.
+
+Take `⟨y, hy⟩ : ∃ y : WittVector l A.A, y = A.sW w - WittVector.teichmuller l (A.s (w.coeff 0))` from `⟨_, rfl⟩`. Establish `hx0 : (A.sW w).coeff 0 = A.s (w.coeff 0)` using `WittVector.map_coeff A.s w 0`. Establish `hy0 : y.coeff 0 = 0`. Establish `h1 : WittVector.constantCoeff y = y.coeff 0` using `rfl`. Rewrite using `[← h1, hy, map_sub]`.
+
+Use `show (A.sW w).coeff 0 - (WittVector.teichmuller l (A.s (w.coeff 0))).coeff 0 = 0`. Rewrite using `[hx0, WittVector.teichmuller_coeff_zero, sub_self]`. Establish `hV : WittVector.verschiebung (y.shift 1) = y`. Establish `h : WittVector.verschiebung (y.shift 1) = y.shift 0` using `WittVector.verschiebung_shift y 0 (fun i hi => by`. Establish `hi0 : i = 0` using `by omega`.
+
+Substitute `hi0` using the available equality. Conclude with `hy0)`. Rewrite using `[h]`. Use extensionality with `i`. Simplify using `[WittVector.shift_coeff]`.
+
+Take `⟨u, hu⟩` from `(WittVector.frobenius_bijective l A.A).2 (y.shift 1)`. Establish `hyu : y = u * (l : WittVector l A.A)`. Rewrite using `[← hV, ← hu, WittVector.verschiebung_frobenius]`. Rewrite using `[← map_sub, ← hy, hyu, map_mul, map_natCast]`. Conclude with `Ideal.mul_mem_left _ _ hlP`.
+-/
 theorem toAcr_sub_mem {l : ℕ} [Fact l.Prime] (A : PAlg l) (n : ℕ) (w : Ainf l) :
     A.toAcr n (A.sW w) - A.toAcr n (WittVector.teichmuller l (A.s (w.coeff 0))) ∈ A.PFil n := by
   rcases subsingleton_or_nontrivial A.A with hA | hA
@@ -183,11 +242,19 @@ theorem toAcr_sub_mem {l : ℕ} [Fact l.Prime] (A : PAlg l) (n : ℕ) (w : Ainf 
     rw [← map_sub, ← hy, hyu, map_mul, map_natCast]
     exact Ideal.mul_mem_left _ _ hlP
 
+/- English proof (translation)
+Rewrite using `[CommRingCat.ofHom_comp, Functor.map_comp_apply]`.
+-/
 theorem map_map {G : CommRingCat.{0} ⥤ Type} {B₀ B₁ B₂ : Type} [CommRing B₀] [CommRing B₁] [CommRing B₂]
     (f : B₀ →+* B₁) (g : B₁ →+* B₂) (y : G.obj (CommRingCat.of B₀)) :
     G.map (CommRingCat.ofHom g) (G.map (CommRingCat.ofHom f) y) = G.map (CommRingCat.ofHom (g.comp f)) y := by
   rw [CommRingCat.ofHom_comp, Functor.map_comp_apply]
 
+/- English proof (translation)
+Establish `h2 : F.Pt.map (CommRingCat.ofHom (Ideal.quotientMap (JJ k 𝒯.A n) θ.φ θ.hle)) (F.Pt.map (CommRingCat.ofHom 𝓛.j) s.y₀) = F.Pt.map (CommRingCat.ofHom (uJ k 𝒯.A n)) (F.Pt.map (CommRingCat.ofHom 𝒯.g) s.y₀)` using `congrArg (fun z => (Subtype.val z).2) θ.pt`. Establish `h3` using `(map_map (G := F.Pt) 𝓛.j (Ideal.quotientMap (JJ k 𝒯.A n) θ.φ θ.hle) s.y₀).symm.trans (h2.trans (map_map (G := F.Pt) 𝒯.g (uJ k 𝒯.A n) s.y₀))`. Take `⟨g0, -, huniq⟩` from `s.univ (CommRingCat.of (𝒯.A.Acr n ⧸ JJ k 𝒯.A n)) (F.Pt.map (CommRingCat.ofHom ((uJ k 𝒯.A n).comp 𝒯.g)) s.y₀) _ (F.ov_map (CommRingCat.ofHom ((uJ k 𝒯.A n).comp 𝒯.g)) s.ov)`. Establish `e1` using `huniq _ h3`. Establish `e2` using `huniq ((uJ k 𝒯.A n).comp 𝒯.g) rfl`.
+
+Conclude with `RingHom.congr_fun (e1.trans e2.symm) r`.
+-/
 theorem pt_eq {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] {F : Fn O} {κ : O →+* OC l} {d : ℕ} {s : F.Small d}
     (𝒯 : Tower κ s) (k : Bool) (n : ℕ)
     (𝓛 : Lift s.a (fun k => (s.T k : s.R)) (bs l k n).R (bs l k n).I (κb κ k n))
@@ -212,6 +279,59 @@ end GlobalTheory.CompanionTheory.TowerAcr
 
 namespace GlobalTheory.CompanionTheory.TowerAcr
 
+/- English proof (translation)
+Introduce `hn0 ht`. Establish `hl : l.Prime` using `Fact.out`. Take `⟨⟨πb, hπb, -, hπb0, -⟩, -, -, -, -, hPb, -⟩` from `GlobalTheory.T.period_ring_base_change_from_universal (base l) n`. Take `⟨⟨πA, hπA, -, hπA0, -⟩, -, hJJ, -, -, -, -⟩` from `GlobalTheory.T.period_ring_base_change_from_universal 𝒯.A n`. Establish `hPP : 𝒯.A.PFil n = ((base l).PFil n).map (mapAcr 𝒯.A.fromBase n)` using `hJJ true`.
+
+Set `φ : 𝓛.D →+* 𝒯.A.Acr n` to `θ.φ`. Establish `hφ : ∀ r, φ (𝓛.i r) = mapAcr 𝒯.A.fromBase n r` using `θ.comm`. Set `τ : Fin d → ℕ → 𝒯.A.Acr n` to `fun j m => 𝒯.A.toAcr n (WittVector.teichmuller l (𝒯.c j m : 𝒯.A.A))`. Establish `hτ : ∀ j m, τ j (m + 1) ^ l = τ j m` using `fun j m => by`. Simplify using `only [τ]`.
+
+Rewrite using `[← map_pow, ← map_pow, ← Units.val_pow_eq_pow_val, 𝒯.c_succ]`. Take `⟨e, ⟨he0, her⟩, -⟩` from `X.univ (𝒯.A.Acr n) φ τ (fun j => (ht j).symm) hτ`. Establish `he : ∀ z, e (algebraMap 𝓛.D X.E z) = φ z` using `fun z => RingHom.congr_fun he0 z`. Set `h : (base l).Acr n →+* X.E` to `(algebraMap 𝓛.D X.E).comp 𝓛.i`. Establish `hh : ∀ x, e (h x) = mapAcr 𝒯.A.fromBase n x` using `fun x => (he _).trans (hφ x)`.
+
+Set `J : Ideal X.E` to `((base l).PFil n).map h`. Establish `hIle : (JJ k (base l) n).map 𝓛.i ≤ J.comap (algebraMap 𝓛.D X.E)` using `Ideal.map_le_iff_le_comap.2 fun x hx => Ideal.mem_map_of_mem h (le_pfil k (base l) n hx)`. Set `qJ : 𝓛.D ⧸ (JJ k (base l) n).map 𝓛.i →+* X.E ⧸ J` to `Ideal.quotientMap J (algebraMap 𝓛.D X.E) hIle`. Set `g0 : s.R →+* X.E ⧸ J` to `qJ.comp 𝓛.j`. Set `qh : (base l).Acr n ⧸ (base l).PFil n →+* X.E ⧸ J` to `Ideal.quotientMap J h Ideal.le_comap_map`.
+
+Set `o : Ob l →+* X.E ⧸ J` to `qh.comp πb`. Establish `ho : ∀ a, o a = Ideal.Quotient.mk J (h ((base l).toAcr n (WittVector.teichmuller l a)))` using `fun a => by`. Express the relevant statement in the definitionally equal form `qh (πb a) = _`. Rewrite using `[hπb]`. Both sides reduce to the same expression.
+
+Establish `hg0 : ∀ r z, Ideal.Quotient.mk ((JJ k (base l) n).map 𝓛.i) z = 𝓛.j r → Ideal.Quotient.mk J (algebraMap 𝓛.D X.E z) = g0 r` using `fun r z hz => by`. Express the relevant statement in the definitionally equal form `_ = qJ (𝓛.j r)`. Rewrite using `[← hz]`. Both sides reduce to the same expression. Establish `hκ : ∀ (x : O) (w : Ainf l), theta0 l w = κ x → Ideal.Quotient.mk (JJ k (base l) n) ((base l).toAcr n ((base l).sW w)) = κb κ k n x` using `fun x w hw => by`.
+
+Express the relevant statement in the definitionally equal form `_ = uJ k (base l) n ((base l).oC (κ x))`. Rewrite using `[← hw, oC_theta0]`. Both sides reduce to the same expression. Take `⟨f, ⟨hfs, hfg, hfc⟩, -⟩` from `𝒯.univ (X.E ⧸ J) o g0 (fun j m => Ideal.Quotient.mk J (X.r j m)) (by change qh (πb (base l).pi) = 0; rw [hπb0, map_zero]) (fun x w hw => by`. Rewrite using `[← hg0 _ _ (𝓛.hj x _ (hκ x w hw)).symm, ho]`.
+
+Use `Ideal.Quotient.eq.2 ?_` and prove the remaining obligations. Use `Ideal.mem_map_of_mem h (toAcr_sub_mem (base l) n w)` as an intermediate fact. Rewrite `this` using `[map_sub]`. Conclude with `this)`. Use the proof step `(fun j => by rw [X.r_zero]; exact hg0 _ _ (𝓛.hT j).symm)`.
+
+Use the proof step `(fun j m => by rw [← map_pow, X.r_succ])`. Take `⟨e', he'0, he'f⟩` from `(GlobalTheory.T.period_ring_universal_property 𝒯.A n X.E h).1 f fun a => by`. Rewrite using `[← ho]`. Conclude with `RingHom.congr_fun hfs a`. Establish `he'm : ∀ x, e' (mapAcr 𝒯.A.fromBase n x) = h x` using `fun x => RingHom.congr_fun he'0 x`.
+
+Establish `hJle : J ≤ (𝒯.A.PFil n).comap e` using `Ideal.map_le_iff_le_comap.2 fun x hx => by`. Rewrite using `[Ideal.mem_comap, Ideal.mem_comap, hh, hPP]`. Conclude with `Ideal.mem_map_of_mem _ hx`. Establish `hPle : 𝒯.A.PFil n ≤ J.comap e'`. Rewrite using `[hPP]`.
+
+Use `Ideal.map_le_iff_le_comap.2 fun x hx => ?_` and prove the remaining obligations. Rewrite using `[Ideal.mem_comap, Ideal.mem_comap, he'm]`. Conclude with `Ideal.mem_map_of_mem h hx`. Set `qe : X.E ⧸ J →+* 𝒯.A.Acr n ⧸ 𝒯.A.PFil n` to `Ideal.quotientMap _ e hJle`. Set `qe' : 𝒯.A.Acr n ⧸ 𝒯.A.PFil n →+* X.E ⧸ J` to `Ideal.quotientMap _ e' hPle`.
+
+Set `fac : 𝒯.A.Acr n ⧸ JJ k 𝒯.A n →+* 𝒯.A.Acr n ⧸ 𝒯.A.PFil n` to `Ideal.Quotient.factor (le_pfil k 𝒯.A n)`. Set `uP : 𝒯.A.U →+* 𝒯.A.Acr n ⧸ 𝒯.A.PFil n` to `fac.comp (uJ k 𝒯.A n)`. Establish `huP : ∀ x, uP (𝒯.A.th x) = Ideal.Quotient.mk _ (𝒯.A.toAcr n x)` using `fun x => rfl`. Establish `huPl : ∀ u v, u - v ∈ Ideal.span {(l : 𝒯.A.U)} → uP u = uP v` using `fun u v huv => by`. Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.1 huv`.
+
+Rewrite using `[← sub_eq_zero, ← map_sub, ← hc, map_mul, map_natCast]`. Establish `: ((l : 𝒯.A.Acr n ⧸ 𝒯.A.PFil n)) = 0`. Rewrite using `[← map_natCast (Ideal.Quotient.mk (𝒯.A.PFil n))]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_sup_left (Ideal.mem_span_singleton_self _))`. Rewrite using `[this, mul_zero]`.
+
+Establish `hφg : ∀ r z, Ideal.Quotient.mk ((JJ k (base l) n).map 𝓛.i) z = 𝓛.j r → Ideal.Quotient.mk (𝒯.A.PFil n) (φ z) = uP (𝒯.g r)` using `fun r z hz => by`. Use `pt_eq 𝒯 k n 𝓛 δ hδ hp hn θ r` as an intermediate fact. Rewrite `this` using `[← hz]`. Conclude with `congrArg fac this`. Establish `hqg : ∀ r, qe (g0 r) = uP (𝒯.g r)` using `fun r => by`.
+
+Take `⟨z, hz⟩` from `Ideal.Quotient.mk_surjective (𝓛.j r)`. Rewrite using `[← hg0 r z hz, ← hφg r z hz]`. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk _ (e (algebraMap _ _ z)) = _`. Rewrite using `[he]`. Establish `hπ : qe.comp f = πA`.
+
+Take `⟨f2, -, uniq⟩` from `𝒯.univ (𝒯.A.Acr n ⧸ 𝒯.A.PFil n) (πA.comp 𝒯.A.s) (uP.comp 𝒯.g) (fun j m => Ideal.Quotient.mk _ (τ j m)) hπA0 (fun x w hw => by`. Establish `e1 : 𝒯.g (s.a x) = 𝒯.A.th (𝒯.A.sW w)` using `(RingHom.congr_fun 𝒯.hg x).trans (by rw [RingHom.comp_apply, ← hw, oC_theta0])`. Express the relevant statement in the definitionally equal form `uP (𝒯.g (s.a x)) = πA (𝒯.A.s (w.coeff 0))`. Rewrite using `[e1, huP, hπA]`. Conclude with `Ideal.Quotient.eq.2 (toAcr_sub_mem 𝒯.A n w))`.
+
+Use the proof step `(fun j => by`. Express the relevant statement in the definitionally equal form `_ = uP (𝒯.g (s.T j))`. Rewrite using `[← 𝒯.c_sharp]`. Conclude with `(huP _).symm)`. Use the proof step `(fun j m => by rw [← map_pow, hτ])`.
+
+Use `(uniq _ ⟨?_, fun r a ha => ?_, fun j m => ?_⟩).trans (uniq πA ⟨rfl, fun r a ha => ?_, fun j m => hπA _⟩).symm` and prove the remaining obligations. Use `RingHom.ext fun a => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `qe (f (𝒯.A.s a)) = πA (𝒯.A.s a)`. Establish `h3 : f (𝒯.A.s a) = o a` using `RingHom.congr_fun hfs a`. Rewrite using `[h3, ho, hπA]`.
+
+Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk _ (e (h _)) = _`. Rewrite using `[hh, mapAcr_toAcr, mapW, WittVector.map_teichmuller]`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `qe (f a) = uP (𝒯.g r)`. Rewrite using `[hfg r a ha, hqg]`.
+
+Express the relevant statement in the definitionally equal form `qe (f (𝒯.c j m : 𝒯.A.A)) = _`. Rewrite using `[hfc]`. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk _ (e (X.r j m)) = _`. Rewrite using `[her]`. Express the relevant statement in the definitionally equal form `πA a = uP (𝒯.g r)`.
+
+Rewrite using `[hπA, ← huPl _ _ ha]`. Conclude with `(huP _).symm`. Establish `h1 : ∀ y, e (e' y) = y` using `fun y => by`. Establish `h4` using `(GlobalTheory.T.period_ring_universal_property 𝒯.A n (𝒯.A.Acr n) (mapAcr 𝒯.A.fromBase n)).2 (e.comp e') (RingHom.id _) (RingHom.ext fun x => by rw [RingHom.comp_apply, RingHom.comp_apply, he'm, hh]) (RingHom.id_comp _) (fun a => by`. Rewrite using `[← hPP]`.
+
+Use `Ideal.Quotient.eq.1 ?_` and prove the remaining obligations. Establish `h5 : Ideal.Quotient.mk (𝒯.A.PFil n) (e (e' (𝒯.A.toAcr n (WittVector.teichmuller l a)))) = qe (Ideal.Quotient.mk J (e' (𝒯.A.toAcr n (WittVector.teichmuller l a))))` using `rfl`. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk (𝒯.A.PFil n) (e (e' (𝒯.A.toAcr n (WittVector.teichmuller l a)))) = _`. Rewrite using `[h5, he'f a]`. Conclude with `(RingHom.congr_fun hπ a).trans (hπA a))`.
+
+Conclude with `RingHom.congr_fun h4 y`. Establish `hln : (l : X.E) ^ n = 0`. Rewrite using `[← map_natCast h, ← map_pow, (base l).pow_l_acr n, map_zero]`. Establish `h2 : ∀ x, e' (e x) = x` using `finish 𝓛 hl hn0 X J hln (pow_mem_map hl h _ fun x hx => (hPb x hx).2) (fun x hx => Ideal.mem_map_of_mem h (le_pfil k (base l) n hx)) g0 hg0 φ e' τ hτ ht (fun x => by rw [hφ, he'm]; rfl) (fun j m => by`. Use `Ideal.Quotient.eq.1 ?_` and prove the remaining obligations.
+
+Rewrite using `[he'f, hfc])`. Use the proof step `(fun r z hz => by`. Take `⟨a, ha⟩` from `(RL.u_mod 𝒯.A).1 (Ideal.Quotient.mk _ (𝒯.g r))`. Rewrite `ha` using `[sharpMap_eq]`. Establish `ha' : 𝒯.A.sharp a - 𝒯.g r ∈ Ideal.span {(l : 𝒯.A.U)}`.
+
+Establish `h6` using `Ideal.Quotient.eq.1 ha`. Rewrite `h6` using `[pow_one]`. Then use the resulting hypothesis. Rewrite using `[← hfg r a ha']`. Establish `e2 : Ideal.Quotient.mk J (e' (φ z)) = qe' (Ideal.Quotient.mk _ (φ z))` using `rfl`. Rewrite using `[e2, hφg r z hz, ← huPl _ _ ha', ← he'f a]`.
+
+Conclude with `congrArg qe' (huP _))`. Use `e he her`. Conclude with `⟨e, Function.bijective_iff_has_inverse.2 ⟨e', h2, h1⟩, he, her⟩`.
+-/
 theorem tower_acr {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] {F : Fn O} {κ : O →+* OC l} {d : ℕ} {s : F.Small d}
     (𝒯 : Tower κ s) (k : Bool) (n : ℕ)
     (𝓛 : Lift s.a (fun k => (s.T k : s.R)) (bs l k n).R (bs l k n).I (κb κ k n))

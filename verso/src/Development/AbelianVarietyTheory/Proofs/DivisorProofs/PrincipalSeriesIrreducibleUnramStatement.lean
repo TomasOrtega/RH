@@ -3,6 +3,9 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PrincipalSeriesIrre
 import Mathlib
 import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.IsSubquotientDetRepParInd
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.PrinTwo.Irr.isIrreducible_prod₂ | exact GlobalTheory.PrinTwo.Irr.isIrreducible_prod₂ | (intros; apply GlobalTheory.PrinTwo.Irr.isIrreducible_prod₂ <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.principal_series_irreducible_unram : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (μ₁ μ₂ : kˣ →* ℂˣ), GlobalTheory.SplitWeil.IsUnram μ₁ → GlobalTheory.SplitWeil.IsUnram μ₂ →
     μ₁ ≠ μ₂ * GlobalTheory.SmGL.absPow k 1 → μ₂ ≠ μ₁ * GlobalTheory.SmGL.absPow k 1 →

@@ -12,6 +12,13 @@ namespace ReciprocityTheory.ChartRestriction.DS.HW
 
 open ReciprocityTheory.ChartRestriction.DS
 
+/- English proof (translation)
+Introduce `a b ha hb h`. Establish `he : ε a = ε b` using `ha.trans hb.symm`. Simplify using `only [Pi.add_apply] at h`. Break down `lt_trichotomy a b with hab | rfl | hab` into its components or cases. Establish `h1` using `rhoC_sub_ge_one ε hab he`.
+
+Establish `h2` using `hΛ a b hab he`. Combine the linear equalities and inequalities to obtain the conclusion. Both sides reduce to the same expression. Establish `h1` using `rhoC_sub_ge_one ε hab he.symm`. Establish `h2` using `hΛ b a hab he.symm`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem weylSum_inj {n : ℕ} {ε : Fin n → Bool} {Λ : Fin n → ℝ} (hΛ : KDom ε Λ) (β : Bool) :
     ∀ a b, ε a = β → ε b = β → (Λ + rhoC ε) a = (Λ + rhoC ε) b → a = b := by
   intro a b ha hb h
@@ -26,6 +33,9 @@ theorem weylSum_inj {n : ℕ} {ε : Fin n → Bool} {Λ : Fin n → ℝ} (hΛ : 
     have h2 := hΛ b a hab he.symm
     linarith
 
+/- English proof (translation)
+Rewrite using `[← Finset.sum_filter_add_sum_filter_not univ (fun s => ε s = true)]`. Use `congr 1`. Use `Finset.sum_congr ?_ fun _ _ => rfl` and prove the remaining obligations. Use extensionality with `s`. Simplify using the standard rewrite rules.
+-/
 theorem weylSum_split {n : ℕ} (ε : Fin n → Bool) (f : Fin n → ℝ) :
     ∑ s, f s = ∑ s ∈ univ.filter (fun s => ε s = true), f s +
       ∑ s ∈ univ.filter (fun s => ε s = false), f s := by
@@ -34,18 +44,27 @@ theorem weylSum_split {n : ℕ} (ε : Fin n → Bool) (f : Fin n → ℝ) :
   refine Finset.sum_congr ?_ fun _ _ => rfl
   ext s; simp
 
+/- English proof (translation)
+Establish `h` using `weylSum_split ε (fun _ => (1 : ℝ))`. Simplify using `only [Finset.sum_const, nsmul_eq_mul, mul_one, Finset.card_univ, Fintype.card_fin] at h`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem weylSum_card_split {n : ℕ} (ε : Fin n → Bool) :
     ((univ.filter (fun s => ε s = true)).card : ℝ) + ((univ.filter (fun s => ε s = false)).card : ℝ) = n := by
   have h := weylSum_split ε (fun _ => (1 : ℝ))
   simp only [Finset.sum_const, nsmul_eq_mul, mul_one, Finset.card_univ, Fintype.card_fin] at h
   linarith
 
+/- English proof (translation)
+Rewrite using `[Finset.sum_mul_sum, ← Finset.sum_product', ← Finset.filter_product, Finset.univ_product_univ]`. Conclude with `(Finset.sum_subtype _ (by simp) (fun q : Fin n × Fin n => F q.1 * G q.2)).symm`.
+-/
 theorem weylSum_pIdx {n : ℕ} (ε : Fin n → Bool) (β : Bool) (F G : Fin n → ℝ) :
     ∑ p : pIdx ε β, F p.1.1 * G p.1.2 =
       (∑ i ∈ univ.filter (fun i => ε i = β), F i) * ∑ j ∈ univ.filter (fun j => ε j = !β), G j := by
   rw [Finset.sum_mul_sum, ← Finset.sum_product', ← Finset.filter_product, Finset.univ_product_univ]
   exact (Finset.sum_subtype _ (by simp) (fun q : Fin n × Fin n => F q.1 * G q.2)).symm
 
+/- English proof (translation)
+Establish `h` using `weylSum_pIdx ε β (fun _ => (1 : ℝ)) (fun _ => (1 : ℝ))`. Simplify using `only [mul_one, Finset.sum_const, nsmul_eq_mul, Finset.card_univ] at h`. Rewrite using `[Nat.card_eq_fintype_card, ← h]`.
+-/
 theorem weylSum_card_pIdx {n : ℕ} (ε : Fin n → Bool) (β : Bool) :
     (Nat.card (pIdx ε β) : ℝ) = ((univ.filter (fun i => ε i = β)).card : ℝ) *
       ((univ.filter (fun j => ε j = !β)).card : ℝ) := by
@@ -53,6 +72,9 @@ theorem weylSum_card_pIdx {n : ℕ} (ε : Fin n → Bool) (β : Bool) :
   simp only [mul_one, Finset.sum_const, nsmul_eq_mul, Finset.card_univ] at h
   rw [Nat.card_eq_fintype_card, ← h]
 
+/- English proof (translation)
+Simplify using `only [weylK_add_smul_single ε Λ hΛ]`. Rewrite using `[← Finset.mul_sum, weylSum_split ε, hc true, hc false, weylSum_card_split]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem weylSum_shift {n : ℕ} (ε : Fin n → Bool) (Λ : Fin n → ℝ) (hΛ : KDom ε Λ) (c : ℝ)
     (hc : ∀ β : Bool, ∑ s ∈ univ.filter (fun s => ε s = β), ∏ b ∈ univ.filter (fun b => b ≠ s ∧ ε b = ε s),
       ((Λ + rhoC ε) s - (Λ + rhoC ε) b + c) / ((Λ + rhoC ε) s - (Λ + rhoC ε) b) =
@@ -62,12 +84,20 @@ theorem weylSum_shift {n : ℕ} (ε : Fin n → Bool) (Λ : Fin n → ℝ) (hΛ 
   rw [← Finset.mul_sum, weylSum_split ε, hc true, hc false, weylSum_card_split]
   ring
 
+/- English proof (translation)
+Introduce `n ε Λ hint hΛ`. Use `⟨?_, fun s hs => weylK_std_vanish ε Λ hint hΛ s hs⟩` and prove the remaining obligations. Establish `h` using `weylSum_shift ε Λ hΛ 1 fun β => blockSum_plus ε β _ (weylSum_inj hΛ β)`. Simplify `h` using `only [one_smul, stdWt]`.
+-/
 theorem weylSumStd : WeylSumStdStatement := by
   intro n ε Λ hint hΛ
   refine ⟨?_, fun s hs => weylK_std_vanish ε Λ hint hΛ s hs⟩
   have h := weylSum_shift ε Λ hΛ 1 fun β => blockSum_plus ε β _ (weylSum_inj hΛ β)
   simpa only [one_smul, stdWt] using h
 
+/- English proof (translation)
+Introduce `n ε Λ hint hΛ`. Use `⟨?_, fun s hs => weylK_dual_vanish ε Λ hint hΛ s hs⟩` and prove the remaining obligations. Establish `h` using `weylSum_shift ε Λ hΛ (-1) fun β => by`. Rewrite using `[← blockSum_minus ε β _ (weylSum_inj hΛ β)]`. Use `Finset.sum_congr rfl fun s _ => Finset.prod_congr rfl fun b _ => by ring` and prove the remaining obligations.
+
+Simplify `h` using `only [neg_one_smul, dualWt]`.
+-/
 theorem weylSumDual : WeylSumDualStatement := by
   intro n ε Λ hint hΛ
   refine ⟨?_, fun s hs => weylK_dual_vanish ε Λ hint hΛ s hs⟩
@@ -76,6 +106,11 @@ theorem weylSumDual : WeylSumDualStatement := by
     refine Finset.sum_congr rfl fun s _ => Finset.prod_congr rfl fun b _ => by ring
   simpa only [neg_one_smul, dualWt] using h
 
+/- English proof (translation)
+Introduce `n ε β Λ hint hΛ`. Use `⟨?_, fun p hp => weylK_p_vanish ε β Λ hint hΛ p hp⟩` and prove the remaining obligations. Establish `hr : ∀ p : pIdx ε β, weylK ε (Λ + pWt ε β p) = weylK ε Λ * ((∏ b ∈ univ.filter (fun b => b ≠ p.1.1 ∧ ε b = ε p.1.1), ((Λ + rhoC ε) p.1.1 - (Λ + rhoC ε) b + 1) / ((Λ + rhoC ε) p.1.1 - (Λ + rhoC ε) b)) * (∏ b ∈ univ.filter (fun b => b ≠ p.1.2 ∧ ε b = ε p.1.2), ((Λ + rhoC ε) p.1.2 - …`. Introduce `p`. Apply the tactic sequence `have hij : ε p.1.1 ≠ ε p.1.2 := by rw [p.2.1, p.2.2]; cases β <;> decide`.
+
+Rewrite using `[← mul_assoc]`. Conclude with `weylK_add_single_sub_single ε Λ hΛ p.1.1 p.1.2 hij`. Rewrite using `[Finset.sum_congr rfl fun p _ => hr p, ← Finset.mul_sum, weylSum_pIdx ε β (fun i => ∏ b ∈ univ.filter (fun b => b ≠ i ∧ ε b = ε i), ((Λ + rhoC ε) i - (Λ + rhoC ε) b + 1) / ((Λ + rhoC ε) i - (Λ + rhoC ε) b)) (fun j => ∏ b ∈ univ.filter (fun b => b ≠ j ∧ ε b = ε j), ((Λ + rhoC ε) j …`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem weylSumP : WeylSumPStatement := by
   intro n ε β Λ hint hΛ
   refine ⟨?_, fun p hp => weylK_p_vanish ε β Λ hint hΛ p hp⟩

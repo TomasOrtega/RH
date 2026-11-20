@@ -16,6 +16,13 @@ open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `p T _ _ ψ y`. Take `⟨z, hx, -, pm, h1, h2, h3⟩` from `GlobalTheory.FramedBaseChange.exists_frMap GlobalTheory.firstFiveLaws.1 E H Dw l Xo c p.R T ψ y`. Take `⟨x, _, _, _, _, _, s, gen⟩` from `z`. Simplify using `only at hx pm h1 h2 h3`. Substitute `hx` using the available equality.
+
+Establish `hpm : pm = bcPm ψ.toRingHom y.x`. Apply `pullback.hom_ext` to reduce the goal to its premises. Conclude with `h2.trans (bcPm_fst _ _).symm`. Conclude with `h1.trans (bcPm_snd _ _).symm`. Substitute `hpm` using the available equality.
+
+Conclude with `⟨s, h3, gen⟩`.
+-/
 theorem framedPoint_bcGenR (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H)
     (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) : BcGenRSt Xo c := by
   intro p T _ _ ψ y
@@ -31,6 +38,11 @@ theorem framedPoint_bcGenR (E : Type) [Field E] [NumberField E] [IsCMField E] (H
   subst hpm
   exact ⟨s, h3, gen⟩
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c`. Use `⟨?_, ?_, framedPoint_bcGenR E H Dw l Xo c, ?_⟩` and prove the remaining obligations. Introduce `S _ _ K _ _ ψ y τ w hw he`. Conclude with `GlobalTheory.frame_baseChange_eigen_basis E H Dw l Xo c S K ψ y τ w hw he`. Introduce `p T _ _ ψ y τ w hw he`.
+
+Conclude with `GlobalTheory.frame_baseChange_eigen_basis E H Dw l Xo c p.R T ψ y τ w hw he`. Introduce `S _ _ y K _ _ ψ`. Conclude with `GlobalTheory.FramedBaseChange.exists_frMap GlobalTheory.firstFiveLaws.1 E H Dw l Xo c S K ψ y`.
+-/
 theorem framedPoint_baseChange_clauses :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), BcLieAnySt Xo c ∧ BcLieRSt Xo c ∧ BcGenRSt Xo c ∧ FrBCFieldSt Xo c := by
   intro E _ _ _ H Dw l Xo c

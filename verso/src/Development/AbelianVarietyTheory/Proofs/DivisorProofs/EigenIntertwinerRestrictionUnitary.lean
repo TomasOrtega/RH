@@ -18,6 +18,25 @@ namespace GlobalTheory.AnisConstTerm
 
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+Introduce `hKP F E _ _ _ _ _ σ B n d d₁ X W W₁ M M₁ H' i₀ i₁ hH hM₁ e₀ he₀ χX χW om r s r' s' hP μ 𝓕 hμ h𝓕 h1 Ψ hΨ ξ hξ`. Use `haveI : FiniteDimensional F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `haveI : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) _`. Use `haveI : IsTopologicalGroup (UA σ W.J) := inferInstance`. Use `haveI : BorelSpace (UA σ W.J) := ⟨rfl⟩`.
+
+Take `⟨κ, hκ, hph⟩` from `GlobalTheory.T.eval_map_pair_compat hKP F E σ B n d d₁ X W W₁ M M₁ H' i₀ i₁ hH hM₁ e₀ he₀ χX χW om r s r' s' hP ξ hξ`. Take `⟨s₀, hs₀⟩` from `GlobalTheory.T.standard_adelic_char_exists_ne_one F B.ψ hP.base.std`. Set `k : (AF F)ˣ` to `Units.map (algebraMap F (AF F) : F →* AF F) (Units.mk0 κ hκ)`. Establish `ht : (s₀ * ((k⁻¹ : (AF F)ˣ) : AF F)) * algebraMap F (AF F) κ = s₀`. Rewrite using `[mul_assoc, show algebraMap F (AF F) κ = (k : AF F) from rfl, Units.inv_mul, mul_one]`.
+
+Take `⟨z, hzU, hzc, hzy⟩` from `GlobalTheory.T.exists_central_unipotent_translate F E σ B d d₁ W W₁ H' i₀ i₁ r' s' hP.base.cm hP.skew hH (s₀ * ((k⁻¹ : (AF F)ˣ) : AF F))`. Use `set T : UA σ W.J → ℂ := fun u => thetaSum F (e₀ (M.co.rho B.ψ (Matrix.vecMulVec (incV F ξ) (incV F H'.y)) (om (1, u) Ψ))) with hTdef`. Establish `hT : ∀ u, T (z * u) = B.ψ s₀ * T u` using `fun u => by`. Use `hph _ z hzU hzy u Ψ hΨ` as an intermediate fact. Rewrite `this` using `[ht]`.
+
+Conclude with `this`. Establish `hR : ∀ γ ∈ ratU σ W.J, γ ∈ unip σ W H' → ∀ u, T (γ * u) = T u` using `fun γ hγ hγU u => GlobalTheory.T.eval_map_pair_compat_alt hKP F E σ B n d d₁ X W W₁ M M₁ H' i₀ i₁ hH hM₁ e₀ he₀ χX χW om r s r' s' hP ξ γ hγ hγU u Ψ hΨ`. Use `set z' : unip σ W H' := ⟨z, hzU⟩`. Use `haveI : Countable ((ratU σ W.J).subgroupOf (unip σ W H')) := GlobalTheory.UnipMass.countable_ratU' σ W.J (unip σ W H')`. Use `letI : MeasurableSpace ((ratU σ W.J).subgroupOf (unip σ W H')) := ⊤`.
+
+Use `haveI : MeasurableSMul ((ratU σ W.J).subgroupOf (unip σ W H')) (unip σ W H') := { measurable_const_smul := fun c => measurable_const_mul (c : unip σ W H') measurable_smul_const := fun _ => measurable_from_top }`. Use `haveI : SMulInvariantMeasure ((ratU σ W.J).subgroupOf (unip σ W H')) (unip σ W H') μ := ⟨fun c _ _ => measure_preimage_mul μ (c : unip σ W H') _⟩`. Set `f : unip σ W H' ≃ᵐ unip σ W H'` to `MeasurableEquiv.mulLeft z'`. Establish `hpres : MeasurePreserving f μ μ` using `measurePreserving_mul_left μ z'`. Establish `h𝓕' : IsFundamentalDomain ((ratU σ W.J).subgroupOf (unip σ W H')) (f ⁻¹' 𝓕) μ`.
+
+Use `h𝓕.preimage_of_equiv hpres.quasiMeasurePreserving (e := id) Function.bijective_id ?_` and prove the remaining obligations. Introduce `g x`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show z * ((g : unip σ W H') * x : unip σ W H').1 = ((g : unip σ W H') : UA σ W.J) * (z * x.1)`. Rewrite using `[Subgroup.coe_mul, ← mul_assoc, hzc _ (g : unip σ W H').2, mul_assoc]`.
+
+Establish `hinvz : ∀ (g : (ratU σ W.J).subgroupOf (unip σ W H')) (x : unip σ W H'), T (z * (g • x).1) = T (z * x.1)`. Introduce `g x`. Use `show T (z * ((g : unip σ W H') * x : unip σ W H').1) = _`. Rewrite using `[Subgroup.coe_mul, ← mul_assoc, hzc _ (g : unip σ W H').2, mul_assoc]`. Conclude with `hR _ (Subgroup.mem_subgroupOf.1 g.2) (g : unip σ W H').2 _`.
+
+Establish `A : ∫ u in 𝓕, T (z * u.1) ∂μ = ∫ u in f ⁻¹' 𝓕, T (z * u.1) ∂μ` using `h𝓕.setIntegral_eq h𝓕' hinvz`. Establish `B' : ∫ u in f ⁻¹' 𝓕, T (z * u.1) ∂μ = ∫ u in 𝓕, T u.1 ∂μ` using `hpres.setIntegral_preimage_emb f.measurableEmbedding (fun u : unip σ W H' => T u.1) 𝓕`. Establish `C : ∫ u in 𝓕, T (z * u.1) ∂μ = B.ψ s₀ * ∫ u in 𝓕, T u.1 ∂μ`. Repeatedly rewrite using `[hT]`. Conclude with `integral_const_mul _ _`.
+
+Establish `D : (B.ψ s₀ - 1) * ∫ u in 𝓕, T u.1 ∂μ = 0`. Rewrite using `[sub_mul, ← C, A, B', one_mul, sub_self]`. Conclude with `(mul_eq_zero.1 D).resolve_left (sub_ne_zero.2 hs₀)`.
+-/
 theorem integral_anisotropic_eq_zero : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n d d₁ : ℕ) (X : Spc F E n) (W : Spc F E d) (W₁ : Spc F E d₁) (M : Model σ X W) (M₁ : Model σ X W₁) (H' : Plane E d d₁) (i₀ i₁ : ℕ),
     H'.IsAdapted σ B W W₁ i₀ i₁ → M₁.IsGood B.ψ → ∀ (e₀ : Fn F n d →ₗ[ℂ] Fn F n d₁), IsEv B M M₁ 1 H'.ι (iso0 n H') e₀ → ∀ (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' → ∀ (μ : Measure (unip σ W H')) (𝓕 : Set (unip σ W H')), μ.IsHaarMeasure →

@@ -8,12 +8,23 @@ namespace GlobalTheory.VolBridge
 section PrXIff
 variable {E : Type} [Field E] {M c' : ℕ}
 
+/- English proof (translation)
+Simplify using `[Loc.inX]`.
+-/
 theorem inX_castAdd (v : Sp E M) (i : Fin M) : Loc.inX E M c' v (Fin.castAdd c' i) = v i := by
   simp [Loc.inX]
 
+/- English proof (translation)
+Simplify using `[Loc.inX]`.
+-/
 theorem inX_natAdd (v : Sp E M) (i : Fin c') : Loc.inX E M c' v (Fin.natAdd M i) = 0 := by
   simp [Loc.inX]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `l`. Use `Fin.addCases (fun i => ?_) (fun i => ?_) l` and prove the remaining obligations. Rewrite using `[extX_castAdd, inX_castAdd]`. Establish `h : (fun j => Loc.inX E M c' v (Fin.castAdd c' j)) = v` using `funext fun j => inX_castAdd v j`. Rewrite using `[h]`.
+
+Rewrite using `[extX_natAdd, inX_natAdd, inX_natAdd]`.
+-/
 theorem extX_inX (y : Sp E M ≃ₗ[E] Sp E M) (v : Sp E M) :
     extX c' y (Loc.inX E M c' v) = Loc.inX E M c' (y v) := by
   funext l
@@ -27,11 +38,24 @@ variable {A : Type} {c : ℕ} (e : A ⊕ Fin c ≃ Fin (M + c')) (hcc : c' = c)
   (he : ∀ i : Fin c, (e (Sum.inr i)).val = M + i.val)
 
 include he in
+/- English proof (translation)
+The claim follows from `Fin.ext (by simp [eX_val])`.
+-/
 theorem e_inl (a : A) : e (Sum.inl a) = Fin.castAdd c' (eX e hcc he a) := Fin.ext (by simp [eX_val])
 
 include he in
+/- English proof (translation)
+The claim follows from `Fin.ext (by simp [he])`.
+-/
 theorem e_inr (i : Fin c) : e (Sum.inr i) = Fin.natAdd M (⟨i.val, hcc ▸ i.isLt⟩ : Fin c') := Fin.ext (by simp [he])
 
+/- English proof (translation)
+Rewrite using `[e_inl e hcc he]`. Use function extensionality and compare the values at `l`. Use `Fin.addCases (fun i => ?_) (fun i => ?_) l` and prove the remaining obligations. Rewrite using `[inX_castAdd]`. Distinguish the cases in `h : i = eX e hcc he a`.
+
+Substitute `h` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[Pi.single_eq_of_ne (fun h' => h (Fin.castAdd_injective _ _ h')), Pi.single_eq_of_ne h]`. Rewrite using `[inX_natAdd, Pi.single_eq_of_ne]`. Introduce `h`.
+
+Use `congrArg Fin.val h` as an intermediate fact. Simplify using `at this`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem single_inl (a : A) :
     (Pi.single (e (Sum.inl a)) 1 : Sp E (M + c')) = Loc.inX E M c' (Pi.single (eX e hcc he a) 1) := by
   rw [e_inl e hcc he]
@@ -53,12 +77,32 @@ section Blocks
 variable {E k : Type} [Field E] [Field k] (ι : E →+* k) {A : Type} [Fintype A] [DecidableEq A] {M c c' : ℕ}
   (e : A ⊕ Fin c ≃ Fin (M + c')) (hcc : c' = c) (he : ∀ i : Fin c, (e (Sum.inr i)).val = M + i.val)
 
+/- English proof (translation)
+Use `show ι (r (Pi.single (e (Sum.inl b)) 1) (e (Sum.inl a))) = ι (y (Pi.single (eX e hcc he b) 1) (eX e hcc he a))`. Rewrite using `[single_inl e hcc he, hr, e_inl e hcc he, inX_castAdd]`.
+-/
 theorem locHom_inl_inl (r : Sp E (M + c') ≃ₗ[E] Sp E (M + c')) (y : Sp E M ≃ₗ[E] Sp E M)
     (hr : ∀ v, r (Loc.inX E M c' v) = Loc.inX E M c' (y v)) (a b : A) :
     (locHom ι e r).val (Sum.inl a) (Sum.inl b) = (locHom ι (eX e hcc he) y).val a b := by
   show ι (r (Pi.single (e (Sum.inl b)) 1) (e (Sum.inl a))) = ι (y (Pi.single (eX e hcc he b) 1) (eX e hcc he a))
   rw [single_inl e hcc he, hr, e_inl e hcc he, inX_castAdd]
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[GlobalTheory.RootEx.VolN.val_embX]`. Use `show ι (extX c' y (Pi.single (e j) 1) (e i)) = _`. Break down `i with a | s` into its components or cases. Rewrite using `[e_inl e hcc he, extX_castAdd]`.
+
+Break down `j with b | t` into its components or cases. Rewrite using `[single_inl e hcc he]`. Establish `h : (fun l => Loc.inX E M c' (Pi.single (eX e hcc he b) (1 : E)) (Fin.castAdd c' l)) = Pi.single (eX e hcc he b) 1`. Use function extensionality and compare the values at `fun l => inX_castAdd _ l`. Rewrite using `[h]`.
+
+Both sides reduce to the same expression. Establish `h : (fun l => (Pi.single (e (Sum.inr t)) (1 : E) : Sp E (M + c')) (Fin.castAdd c' l)) = 0`. Use function extensionality and compare the values at `l`. Rewrite using `[Pi.single_eq_of_ne]`. Both sides reduce to the same expression.
+
+Introduce `h'`. Use `congrArg Fin.val h'` as an intermediate fact. Simplify using `[he] at this`. Use linear arithmetic over natural numbers and integers. Rewrite using `[h, map_zero]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[e_inr e hcc he, extX_natAdd]`. Break down `j with b | t` into its components or cases. Rewrite using `[Pi.single_eq_of_ne]`. Simplify using the standard rewrite rules.
+
+Introduce `h'`. Use `congrArg Fin.val h'` as an intermediate fact. Simplify using `[eX_val] at this`. Use `eX_lt e hcc he b` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+
+Rewrite using `[e_inr e hcc he]`. Distinguish the cases in `h : s = t`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[Pi.single_eq_of_ne]`.
+
+Simplify using `[Matrix.one_apply, h]`. Introduce `h'`. Use `congrArg Fin.val h'` as an intermediate fact. Simplify using `at this`. Conclude with `h (Fin.ext this)`.
+-/
 theorem locHom_extX (y : Sp E M ≃ₗ[E] Sp E M) :
     locHom ι e (extX c' y) = embX c (locHom ι (eX e hcc he) y) := by
   ext i j
@@ -103,6 +147,19 @@ theorem locHom_extX (y : Sp E M ≃ₗ[E] Sp E M) :
 
 end Blocks
 
+/- English proof (translation)
+Introduce `E k _ _ _ _ _ ι A _ _ M c c' e hcc he hN hdense CE Ck O hO hCkO hCkR hCE y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨r, hr, hry⟩`. Establish `hg : locHom ι e r ∈ Ck` using `(hCE r).1 hr`. Take `⟨x', u, hu, hxu⟩` from `GlobalTheory.RootEx.VolN.exists_of_mem_R (hCkR hg)`.
+
+Establish `hu'` using `GlobalTheory.RootEx.Model.mem_N_iff.1 hu`. Establish `hx' : x' = locHom ι (eX e hcc he) y`. Use extensionality with `a b`. Rewrite using `[← locHom_inl_inl ι e hcc he r y hry a b, hxu, Units.val_mul, GlobalTheory.RootEx.VolN.val_embX, Matrix.mul_apply, Fintype.sum_sum_type]`. Establish `h1 : ∀ a', u.val (Sum.inl a') (Sum.inl b) = if a' = b then 1 else 0` using `fun a' => by`.
+
+Rewrite using `[hu' (Sum.inl a') (Sum.inl b) le_rfl]`. Simplify using `[Matrix.one_apply]`. Simplify using `[h1]`. Use `⟨embX c x' * u * (embX c x')⁻¹, ?_, ?_⟩` and prove the remaining obligations. Use `GlobalTheory.RootEx.Model.conj_mem hu x'⁻¹` as an intermediate fact.
+
+Simplify `this` using `[map_inv, inv_inv]`. Rewrite using `[← hx']`. Simplify `hg` using `[mul_assoc, ← hxu]`. Introduce and unpack `⟨u, hu, huC⟩ set x := locHom ι (eX e hcc he) y with hx`. Establish `huO : u * embX c x ∈ O` using `(hCkO _ (hCkR huC)).1 huC`.
+
+Establish `hV : IsOpen {v : GL (A ⊕ Fin c) k | v * embX c x ∈ O}` using `hO.preimage (continuous_mul_const _)`. Take `⟨x₀, hx₀, hx₀V⟩` from `hdense u hu _ hV huO`. Use `⟨x₀ * extX c' y, ?_, fun v => ?_⟩` and prove the remaining obligations. Rewrite using `[hCE, map_mul, locHom_extX ι e hcc he]`. Establish `hR : locHom ι e x₀ * embX c x ∈ R k A c 1` using `mul_mem (Subgroup.mem_sup_right ((hN x₀).1 hx₀)) (Subgroup.mem_sup_left ⟨x, rfl⟩)`.
+
+Conclude with `(hCkO _ hR).2 hx₀V`. Use `show x₀ (extX c' y (Loc.inX E M c' v)) = _`. Rewrite using `[extX_inX]`. Conclude with `(Subgroup.mem_inf.1 hx₀).2 (y v)`.
+-/
 theorem prX_iff_locHom : ∀ {E k : Type} [Field E] [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (ι : E →+* k) {A : Type} [Fintype A] [DecidableEq A] {M c c' : ℕ} (e : A ⊕ Fin c ≃ Fin (M + c')) (hcc : c' = c) (he : ∀ i : Fin c, (e (Sum.inr i)).val = M + i.val), (∀ x, x ∈ Loc.N1 E M c' ↔ locHom ι e x ∈ N k A c 1) → (∀ u ∈ N k A c 1, ∀ V : Set (GL (A ⊕ Fin c) k), IsOpen V → u ∈ V → ∃ x ∈ Loc.N1 E M c', locHom ι e x ∈ V) → ∀ (CE : Subgroup (Sp E (M + c') ≃ₗ[E] Sp E (M + c'))) (Ck : Subgroup (GL (A ⊕ Fin c) k)) (O : Set (GL (A ⊕ Fin c) k)), IsOpen O → (∀ z ∈ R k A c 1, z ∈ Ck ↔ z ∈ O) → Ck ≤ R k A c 1 → (∀ x, x ∈ CE ↔ locHom ι e x ∈ Ck) → ∀ y, y ∈ Loc.prX CE ↔ locHom ι (eX e hcc he) y ∈ prX Ck := by
   intro E k _ _ _ _ _ ι A _ _ M c c' e hcc he hN hdense CE Ck O hO hCkO hCkR hCE y
   constructor

@@ -23,9 +23,15 @@ def conjEquiv (N : Subgroup G) (b : G) (hb : ∀ u : G, u ∈ N ↔ b * u * b⁻
   continuous_invFun :=
     ((continuous_const.mul continuous_subtype_val).mul continuous_const).subtype_mk _
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coe_conjEquiv (N : Subgroup G) (b : G) (hb : ∀ u : G, u ∈ N ↔ b * u * b⁻¹ ∈ N)
     (u : N) : ((conjEquiv N b hb u : N) : G) = b * (u : G) * b⁻¹ := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coe_conjEquiv_symm (N : Subgroup G) (b : G)
     (hb : ∀ u : G, u ∈ N ↔ b * u * b⁻¹ ∈ N) (u : N) :
     (((conjEquiv N b hb).symm u : N) : G) = b⁻¹ * (u : G) * b := rfl

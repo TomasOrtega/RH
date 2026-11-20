@@ -18,6 +18,9 @@ namespace GlobalTheory.AtMember
 
 open GlobalTheory.FinalJoin GlobalTheory.FinalJoin2 GlobalTheory.FieldSize
 
+/- English proof (translation)
+Establish `h` using `(P.level_cond p hp).2`. Establish `h2 : (2 : ℕ) ∣ P.host.QS * P.host.q * P.host.d` using `((((dvd_pow_self 2 (Nat.succ_ne_zero _)).trans P.host.tower_dvd).mul_right _).mul_right _)`. Rewrite using `[Nat.odd_iff, ← Nat.mod_mod_of_dvd p h2, h]`.
+-/
 theorem odd_of_mem_levelPrimes (P : Pre) {p : ℕ} (hp : p ∈ P.host.levelPrimes) : Odd p := by
   have h := (P.level_cond p hp).2
   have h2 : (2 : ℕ) ∣ P.host.QS * P.host.q * P.host.d := ((((dvd_pow_self 2 (Nat.succ_ne_zero _)).trans P.host.tower_dvd).mul_right _).mul_right _)
@@ -25,6 +28,25 @@ theorem odd_of_mem_levelPrimes (P : Pre) {p : ℕ} (hp : p ∈ P.host.levelPrime
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Introduce `hR X f δ hx`. Use `GlobalTheory.Mem.FieldsEx.host_cplx X.B.toPre` as an intermediate fact. Establish `hFO : FO X.toD7 = X.B.KsC` using `SetLike.ext fun z => (mem_FO_assembled_iff X z).trans (X.B.mem_KsC).symm`. Establish `hxe : X.B.KsC = Fld.listField δ f` using `hx`. Take `⟨hray, -, hchar, -⟩` from `Base.KsExact.lower hx`.
+
+Establish `key : ∀ p, (p = X.B.host.pde ∨ p = X.B.host.pde') → FieldOK0 X.toD7 p`. Introduce `p hp`. Establish `hpl : p ∈ X.B.host.levelPrimes`. Break down `hp with rfl | rfl` into its components or cases. Use `exacts [X.B.host.pde_level.1, X.B.host.pde_level.2]`.
+
+Establish `hpp : p.Prime` using `(X.B.toPre.level_cond p hpl).1`. Establish `hdvd : X.B.host.g 0 * X.B.host.g 1 * p ∣ Fld.modulus X.B.toPre`. Break down `hp with rfl | rfl` into its components or cases. Conclude with `dvd_mul_right _ _`. Conclude with `⟨X.B.host.pde, by unfold Fld.modulus; ring⟩`.
+
+Establish `hpd : p ∣ Fld.modulus X.B.toPre` using `(dvd_mul_left p _).trans hdvd`. Use `⟨hp, hermitianCodeWordStages_ringOfIntegers_full _, hermitianCodeWordStages_has_rootOfUnity _, ?_, ?_, TypeNormPin.hermitianCodeWordStages_typeNorms_principal _, fun h => Nat.not_prime_zero (X.B.toPre.level_cond 0 h).1, ?_⟩` and prove the remaining obligations. Rewrite using `[hFO]`. Conclude with `hray (GlobalTheory.Mem.RayRoots.rootOne_mem_of_isRayFieldIn X.B.host.E X.B.host.φ₀ (Fld.modulus X.B.toPre) p δ.ray (Fld.modulus_ne_zero _) hpd δ.isRay)`. Establish `hn0 : 0 < X.B.host.g 0 * X.B.host.g 1 * p` using `Nat.mul_pos (Nat.mul_pos (X.B.host.g_prime 0).pos (X.B.host.g_prime 1).pos) hpp.pos`.
+
+Use `GlobalTheory.FieldSize.curveOver_of_weberSet X.toD7 _ hn0 ?_ fun L hL => ?_` and prove the remaining obligations. Rewrite using `[hFO]`. Conclude with `X.B.imField_le_KsC ⟨_, rfl⟩`. Establish `hodd : Odd (X.B.host.g 0 * X.B.host.g 1 * p)` using `((odd_of_mem_levelPrimes X.B.toPre (X.B.host.g_level 0)).mul (odd_of_mem_levelPrimes X.B.toPre (X.B.host.g_level 1))).mul (odd_of_mem_levelPrimes X.B.toPre hpl)`. Establish `h3 : 3 ≤ X.B.host.g 0 * X.B.host.g 1 * p`.
+
+Establish `a` using `(X.B.host.g_prime 0).two_le`. Establish `b` using `(X.B.host.g_prime 1).two_le`. Establish `c` using `hpp.two_le`. Use `Nat.mul_le_mul (Nat.mul_le_mul a b) c` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+
+Rewrite using `[hFO]`. Conclude with `(GlobalTheory.FieldSize.WeberRay.weberSet_subset_ray X.B.toPre δ L hL _ hodd h3 hdvd).trans fun z hz => hray hz`. Break down `hp with rfl | rfl exacts [X.B.toPre.level_split _ X.B.host.pde_level.1, X.B.toPre.level_split _ X.B.host.pde_level.2]` into its components or cases. Use `⟨key _ (Or.inl rfl), key _ (Or.inr rfl), fun x => ?_, fun x => ?_, fun L hL => ?_⟩` and prove the remaining obligations. Rewrite using `[hFO]`.
+
+Conclude with `GlobalTheory.Mem.ValFin.mem_of_orderDvd X.B.host.E f.del X.B.KsC f.isDel.fin ((le_sup_right.trans (le_sup_left.trans le_sup_left)).trans hchar) x`. Rewrite using `[hFO]`. Conclude with `GlobalTheory.Mem.ValFin.mem_of_orderDvd X.B.host.E f.del' X.B.KsC f.isDel'.fin ((le_sup_right.trans le_sup_left).trans hchar) x`. Establish `hle : FO X.toD7 ≤ δ.Om`. Rewrite using `[hFO, hxe]`.
+
+Conclude with `GlobalTheory.Mem.FieldsEx.listField_le_Om δ f`. Conclude with `GlobalTheory.FieldSize.sz_mono_and_of_le.2 _ _ _ _ hle (GlobalTheory.T.omegaField_degree_rootDiscr_bounded_by_ringPolynomial hR X.B.toPre δ L hL)`.
+-/
 theorem fieldTies_of_ksExact : GlobalTheory.NT.RayField → ∀ (X : Stages) (f : Fr X.B.toPre) (δ : Fld.FieldDat X.B.toPre),
     X.B.KsExact δ f → FieldTies X.toD7 (Fr.at X f) := by
   intro hR X f δ hx

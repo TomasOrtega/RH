@@ -12,6 +12,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option synthInstance.maxHeartbeats 400000
 set_option maxHeartbeats 4000000
 
+/- English proof (translation)
+Use `⟨{ PV := pvL L l std := (by with_unfolding_all exact (l.mt.ad.std :)) eW := (by with_unfolding_all exact (l.mt.ad.eW :)) read := fun μ h i y g => ?_ rat := (by with_unfolding_all exact (l.mt.ad.rat :)) wt := (by with_unfolding_all exact (l.mt.ad.wt :)) id := (by with_unfolding_al …` and prove the remaining obligations. Establish `h1` using `l.mt.ad.read ((by with_unfolding_all exact (μ :))) ((by with_unfolding_all exact (h :))) ((by with_unfolding_all exact (i :))) ((by with_unfolding_all exact (y :))) ((by with_unfolding_all exact (g :)))`. Establish `h2` using `hY.jMt μ h i y`. Conclude with `(by with_unfolding_all exact (h1.trans (congrFun (eq_of_heq h2) _).symm :))`.
+-/
 theorem mtAd_L {hL : GlobalTheory.Published.LocalLanglandsGL} {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B} {w : ColW B f T} {P : Pre2 K w}
     {x : St P} (L : LocAll (lay0 (Dof x))) (l : LC hL x) {p0 : BaseLevelRowSide (w.D (oL x L).Z)} (Y : YT x L p0) (hY : YRel L Y) :
     ∃ ad : MtAd Y (mtD L l), ad.PV = pvL L l := by

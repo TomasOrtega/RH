@@ -15,10 +15,18 @@ open MvPowerSeries
 section Lin
 variable {p : ℕ} [Fact p.Prime] {σ σ' : Type*} [Fintype σ] [Fintype σ']
 
+/- English proof (translation)
+The claim follows from `hasSubst_of_constantCoeff_zero fun k => by simp`.
+-/
 theorem hasSubst_linear {κ : Type*} [Fintype κ] (c : σ → κ → ℂ_[p]) :
     HasSubst (fun k : σ => ∑ x : κ, algebraMap ℂ_[p] (MvPowerSeries κ ℂ_[p]) (c k x) * X x) :=
   hasSubst_of_constantCoeff_zero fun k => by simp
 
+/- English proof (translation)
+Unfold `linAt`. Rewrite using `[subst_comp_subst_apply (hasSubst_linear c₁) (hasSubst_linear c₂)]`. Use `congr 1`. Use function extensionality and compare the values at `k`. Rewrite using `[← coe_substAlgHom (hasSubst_linear c₂)]`.
+
+Simplify using `only [map_sum, map_mul, AlgHom.commutes, substAlgHom_X, Finset.mul_sum, Finset.sum_mul, mul_assoc]`. Rewrite using `[Finset.sum_comm]`.
+-/
 theorem linAt_comp {κ : Type*} [Fintype κ] (c₁ : σ → σ' → ℂ_[p]) (c₂ : σ' → κ → ℂ_[p]) (F : MvPowerSeries σ ℂ_[p]) :
     linAt c₂ (linAt c₁ F) = linAt (fun k x => ∑ j, c₁ k j * c₂ j x) F := by
   unfold linAt
@@ -29,6 +37,11 @@ theorem linAt_comp {κ : Type*} [Fintype κ] (c₁ : σ → σ' → ℂ_[p]) (c�
   simp only [map_sum, map_mul, AlgHom.commutes, substAlgHom_X, Finset.mul_sum, Finset.sum_mul, mul_assoc]
   rw [Finset.sum_comm]
 
+/- English proof (translation)
+Unfold `linAt`. Establish `e : (fun k : σ => ∑ x : σ, algebraMap ℂ_[p] (MvPowerSeries σ ℂ_[p]) (if k = x then (1 : ℂ_[p]) else 0) * X x) = X`. Use function extensionality and compare the values at `k`. Simplify using `[apply_ite]`. Rewrite using `[e, subst_self]`.
+
+Both sides reduce to the same expression.
+-/
 theorem linAt_delta [DecidableEq σ] (F : MvPowerSeries σ ℂ_[p]) :
     linAt (fun k x : σ => if k = x then (1 : ℂ_[p]) else 0) F = F := by
   unfold linAt
@@ -50,6 +63,9 @@ def blk (ev : T → Prop) [DecidablePred ev] (A : T → Matrix J J K) (e : I ≃
 def blkInv (ev : T → Prop) [DecidablePred ev] (A : T → Matrix J J K) (e : I ≃ J) (τ : T) : Matrix I J K :=
   if ev τ then ((A τ)⁻¹).submatrix e id else (A τ).transpose.submatrix e id
 
+/- English proof (translation)
+Unfold `blk blkInv`. Use `split_ifs`. Rewrite using `[← Matrix.submatrix_mul _ _ _ _ _ Function.bijective_id, Matrix.nonsing_inv_mul _ (hA τ), Matrix.submatrix_one_equiv]`. Rewrite using `[← Matrix.submatrix_mul _ _ _ _ _ Function.bijective_id, ← Matrix.transpose_mul, Matrix.nonsing_inv_mul _ (hA τ), Matrix.transpose_one, Matrix.submatrix_one_equiv]`.
+-/
 theorem blkInv_mul_blk (ev : T → Prop) [DecidablePred ev] (A : T → Matrix J J K) (e : I ≃ J)
     (hA : ∀ τ, IsUnit (A τ).det) (τ : T) : blkInv ev A e τ * blk ev A e τ = 1 := by
   unfold blk blkInv
@@ -71,6 +87,19 @@ def coef (t : S → T) (P : T → Matrix J₂ I₂ K) (Q : T → Matrix I₁ J�
 def coefInv (t : S → T) (P' : T → Matrix I₂ J₂ K) (Q' : T → Matrix J₁ I₁ K) : S × I₁ × I₂ → T × J₂ × J₁ → K :=
   fun x k => if t x.1 = k.1 then P' k.1 x.2.2 k.2.1 * Q' k.1 k.2.2 x.2.1 else 0
 
+/- English proof (translation)
+Rewrite using `[Fintype.sum_prod_type, Finset.sum_eq_single (t x.1)]`. Unfold `coef coefInv`. Simplify using `only [if_true]`. Distinguish the cases in `hxx : t x'.1 = t x.1`. Establish `h1 : x'.1 = x.1` using `ht hxx`.
+
+Simplify using `only [hxx, if_true]`. Establish `e : ∀ y : J₂ × J₁, P' (t x.1) x.2.2 y.1 * Q' (t x.1) y.2 x.2.1 * (P (t x.1) y.1 x'.2.2 * Q (t x.1) x'.2.1 y.2) = (P' (t x.1) x.2.2 y.1 * P (t x.1) y.1 x'.2.2) * (Q (t x.1) x'.2.1 y.2 * Q' (t x.1) y.2 x.2.1)` using `fun y => by ring`. Rewrite using `[Finset.sum_congr rfl fun y _ => e y, Fintype.sum_prod_type]`. Simplify using `only [← Finset.mul_sum, ← Finset.sum_mul]`. Establish `e1` using `congrFun (congrFun (hP (t x.1)) x.2.2) x'.2.2`.
+
+Establish `e2` using `congrFun (congrFun (hQ (t x.1)) x'.2.1) x.2.1`. Rewrite `e1`, `e2` using `[Matrix.mul_apply]`. Rewrite using `[e1, e2, Matrix.one_apply, Matrix.one_apply]`. Take `⟨a, b, c⟩` from `x`. Take `⟨a', b', c'⟩` from `x'`.
+
+Simplify using `only at h1 ⊢`. Substitute `h1` using the available equality. Apply the tactic sequence `rcases eq_or_ne b b' with rfl | hb <;> rcases eq_or_ne c c' with rfl | hc <;> first | (simp; done) | (simp [hb, hb.symm]; done) | (simp [hc, hc.symm]; done) | simp [hb, hb.symm, hc, hc.symm]`. Establish `hne : x ≠ x'` using `fun hx => hxx (by rw [hx])`. Simplify using `only [hxx, if_false, mul_zero, Finset.sum_const_zero, hne]`.
+
+Introduce `τ _ hτ`. Use `Finset.sum_eq_zero fun y _ => ?_` and prove the remaining obligations. Unfold `coefInv`. Rewrite using `[if_neg (Ne.symm hτ), zero_mul]`. Introduce `h`.
+
+Conclude with `absurd (Finset.mem_univ _) h`.
+-/
 theorem sum_coefInv_coef (t : S → T) (ht : Function.Injective t) (P : T → Matrix J₂ I₂ K) (Q : T → Matrix I₁ J₁ K)
     (P' : T → Matrix I₂ J₂ K) (Q' : T → Matrix J₁ I₁ K) (hP : ∀ τ, P' τ * P τ = 1) (hQ : ∀ τ, Q τ * Q' τ = 1)
     (x x' : S × I₁ × I₂) :
@@ -107,6 +136,11 @@ end Sum
 
 section Main
 
+/- English proof (translation)
+Unfold `rhoMat`. Establish `e` using `RingHom.map_det (Kp.iK.comp (((Fl.Pj j).ι ((posJ Gt u w h Fl j).symm τ).1).comp (RingEquiv.toRingHom (((Fl.Pj j).σ ((posJ Gt u w h Fl j).symm τ).1) ^ ((posJ Gt u w h Fl j).symm τ).2.val)))) (g ((posJ Gt u w h Fl j).symm τ).1)`. Rewrite `e` using `[RingHom.mapMatrix_apply]`. Establish `hu` using `(hg ((posJ Gt u w h Fl j).symm τ).1).map (Kp.iK.comp (((Fl.Pj j).ι ((posJ Gt u w h Fl j).symm τ).1).comp (RingEquiv.toRingHom (((Fl.Pj j).σ ((posJ Gt u w h Fl j).symm τ).1) ^ ((posJ Gt u w h Fl j).symm τ).2.val))))`. Rewrite `hu` using `[e]`.
+
+Conclude with `hu`.
+-/
 theorem isUnit_det_rhoMat {D : D7} {Gt : GatTies D} {c : LatCmp D} {Tw : TwForms D} {u : D.what₂.Word} {w : D.what₂.places.Pl}
     {h : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)} {Fl : G.Fills (D.gat u w h)} {Lv : G.Levels Fl}
     {Ch : G.Chain Lv} (Kp : LocalToGlobal₂ D Gt c Tw u w h Ch) (j : ℕ) (τ : D.what₂.Tau)
@@ -124,6 +158,21 @@ theorem isUnit_det_rhoMat {D : D7} {Gt : GatTies D} {c : LatCmp D} {Tw : TwForms
 
 open Classical in
 
+/- English proof (translation)
+Introduce `D Dx Gt c Tw u w h Fl Lv KD E hlam`. Set `g : ∀ (j : ℕ) (_ : Lv.comp j × (Fl.Pj j).Tup) (v : Fin (Fl.Pj j).nV), Matrix (Fin ((Fl.Pj j).m + 1)) (Fin ((Fl.Pj j).m + 1)) ((Fl.Pj j).Qq v)` to `fun j La v => if hL : (Fl.Pj j).IsLatTup La.2 then (hL v).choose else 1`. Establish `hg : ∀ j La v, IsUnit (g j La v).det`. Introduce `j La v`. Distinguish the cases in `hL : (Fl.Pj j).IsLatTup La.2`.
+
+Simplify using `only [g, dif_pos hL]`. Conclude with `(hL v).choose_spec.1`. Simplify using `only [g, dif_neg hL, Matrix.det_one]`. Conclude with `isUnit_one`. Set `K0` to `Formalism.L2.G.Cmp.kerAtP_of Gt KD`.
+
+Set `ev : ℕ → D.what₂.Tau → Prop` to `fun j τ => Formalism.MainNotions.G.IsTypeV ((posJ Gt u w h Fl j).symm τ).2`. Set `Th : ∀ j, Lv.comp j × (Fl.Pj j).Tup → Lv.comp (j + 1) × (Fl.Pj (j + 1)).Tup → MvPowerSeries (D.what₂.Tau × Fin ((Fl.Pj (j + 1)).m + 1) × Fin ((Fl.Pj j).m + 1)) ℂ_[D.what₂.places.resChar w]` to `fun j La La' => if hh : (Fl.Pj j).m + 1 = D.R.N j ∧ (Fl.Pj (j + 1)).m + 1 = D.R.N (j + 1) then linAt (coefInv (Formalism.BasicNotions.tauPl D) (blkInv (ev j) (fun τ => rhoMat K0 (j + 1) τ (g (j + 1) La')) (finCongr hh.2.symm)) (blk (ev j) (fun τ => rhoMat K0 j τ (g j La)) (finCon …`. Use `⟨Th, hlam, g, ?_, ?_⟩` and prove the remaining obligations. Introduce `j _ La hL v`. Use `⟨hg j La v, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [g, dif_pos hL]`. Conclude with `(hL v).choose_spec.2`. Introduce `j _ hN hN' La La' _ _`. Use `⟨fun _ => 1, fun _ => norm_one, ?_⟩` and prove the remaining obligations. Establish `hTh : Th j La La' = linAt (coefInv (Formalism.BasicNotions.tauPl D) (blkInv (ev j) (fun τ => rhoMat K0 (j + 1) τ (g (j + 1) La')) (finCongr hN'.symm)) (blk (ev j) (fun τ => rhoMat K0 j τ (g j La)) (finCongr hN.symm))) (E.Th u (D.what₂.muAt w) w j (KD.cls j La.1 La.2) (KD.cls (j + …`.
+
+Simplify using `only [Th, dif_pos (And.intro hN hN')]`. Establish `hC : (fun (k : D.what₂.Tau × Fin ((Fl.Pj (j + 1)).m + 1) × Fin ((Fl.Pj j).m + 1)) (x : (Bool × G.HH D) × Fin (D.R.N j) × Fin (D.R.N (j + 1))) => if Formalism.BasicNotions.tauPl D x.1 = k.1 then (if Formalism.MainNotions.G.IsTypeV ((posJ Gt u w h Fl j).symm k.1).2 then (fun _ => ( …`. Use function extensionality and compare the values at `k x`. Simplify using `only [coef, blk, blkInv, ev]`. Apply the tactic sequence `split_ifs <;> simp [Matrix.submatrix_apply, Matrix.transpose_apply]`.
+
+Establish `hS` using `sum_coefInv_coef (Formalism.BasicNotions.tauPl D) (Formalism.BasicNotions.tauPl_bij D).1 (blk (ev j) (fun τ => rhoMat K0 (j + 1) τ (g (j + 1) La')) (finCongr hN'.symm)) (blkInv (ev j) (fun τ => rhoMat K0 j τ (g j La)) (finCongr hN.symm)) (blkInv (ev j) (fun τ => rhoMat K0 (j + 1) …`. Establish `key : E.Th u (D.what₂.muAt w) w j (KD.cls j La.1 La.2) (KD.cls (j + 1) La'.1 La'.2) = linAt (coef (Formalism.BasicNotions.tauPl D) (blk (ev j) (fun τ => rhoMat K0 (j + 1) τ (g (j + 1) La')) (finCongr hN'.symm)) (blkInv (ev j) (fun τ => rhoMat K0 j τ (g j La)) (finCongr hN.symm))) …`. Rewrite using `[hTh, linAt_comp]`. Simplify using `only [hS]`. Conclude with `(linAt_delta _).symm`.
+
+Rewrite `key` using `[← hC]`. Conclude with `key`.
+-/
 theorem exists_th_served : ∀ {D : D7} {Dx : DivX D} (Gt : GatTies D) {c : LatCmp D} {Tw : TwForms D} {u : D.what₂.Word} {w : D.what₂.places.Pl}
     {h : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)} {Fl : G.Fills (D.gat u w h)} {Lv : G.Levels Fl}
     (KD : Formalism.L2.G.Cmp.KerData D c Tw u w h Lv) (E : KerEnt D Dx Tw), KD.lam = E.lam w →

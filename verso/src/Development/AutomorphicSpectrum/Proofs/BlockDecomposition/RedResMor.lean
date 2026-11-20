@@ -7,10 +7,16 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.EdgeRed
 
+/- English proof (translation)
+Simplify using `[Sec.res]`.
+-/
 theorem res_res {R : Type} [CommRing R] {F : Shv R} {W V U : Scheme.{0}} (h : W ⟶ V) (g : V ⟶ U) (x : Sec F U) :
     Sec.res h (Sec.res g x) = Sec.res (h ≫ g) x := by
   simp [Sec.res]
 
+/- English proof (translation)
+Establish `h` using `φ.hom.naturality g.op`. Conclude with `(congrArg (fun t => t.hom x) h).symm`.
+-/
 theorem res_map {R : Type} [CommRing R] {F G : Shv R} (φ : F ⟶ G) {V U : Scheme.{0}} (g : V ⟶ U) (x : Sec F U) :
     Sec.res g (Sec.map φ x) = Sec.map φ (Sec.res g x) := by
   have h := φ.hom.naturality g.op
@@ -45,6 +51,11 @@ def redResMor (hS : KapSpec) (hK : KapRed) (hR : InRed) {Q q : ℕ} [NeZero Q] [
       Sec.map ((GlobalTheory.EtC.res _ (tw q i)).d (s : ℤ) ((s + 1 : ℕ) : ℤ)) (Sec.res (g c) ((redMap Q q i).app _ (s : ℤ) x))
     rw [← (redMap Q q i).comm, res_map]
 
+/- English proof (translation)
+Introduce `hSpec hEdge hRep hOpR hS hK hGen hR hOp Q q _ _ h C C' _ _ P P' X Y Y' m g hg hτ hy hζ i j x`. Take `⟨a, ha⟩` from `(hRep _ _ X (j : ℤ)).1 x`. Establish `hE` using `(hSpec hGen Q C P X Y i j x).1 a ha`. Establish `hE'` using `hEdge ℤ ℤ (RingHom.id ℤ) C C' P.L P'.L (P.res i) (P'.res i) m (redResMor hS hK hR h P P' m g hg hτ hζ i) j _ _ hE`. Establish `hr : Rep (red Q q _ (j : ℤ) i x) ((redMap Q q i).app X (j : ℤ) a)` using `hOpR hOp _ _ _ _ (redMap Q q i) X (j : ℤ) x a ha`.
+
+Use `(hSpec hGen q C' P' X Y' i j (red Q q _ (j : ℤ) i x)).2 _ ⟨_, hr, ?_⟩` and prove the remaining obligations. Use `hE' using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `t`. Express the relevant statement in the definitionally equal form `Sec.res (Y'.y _) ((redMap Q q i).app X (j : ℤ) a) = Sec.res (g _) ((redMap Q q i).app _ (j : ℤ) (Sec.res (Y.y _) a))`. Rewrite using `[← (redMap Q q i).nat, res_res, hy]`.
+-/
 theorem etRed : CrystallineSemistableComparison.E.EtSpec → CrystallineSemistableComparison.E.EdgeMap → CrystallineSemistableComparison.E.RepBasic → CrystallineSemistableComparison.E.RepOp → CrystallineSemistableComparison.E.KapSpec →
     CrystallineSemistableComparison.E.KapRed → CrystallineSemistableComparison.E.EtRed := by
   intro hSpec hEdge hRep hOpR hS hK hGen hR hOp Q q _ _ h C C' _ _ P P' X Y Y' m g hg hτ hy hζ i j x

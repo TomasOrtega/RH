@@ -45,10 +45,16 @@ def toObjects (D : AddBlockData P) : Heights.AddBlockData P where
       simp only [map_sum, map_mul, funFieldEquiv_div_chartPow, RingEquiv.apply_symm_apply, map_one]
       exact hsum
 
+/- English proof (translation)
+Break down `D with ⟨deg, m, x, _, _, _⟩` into its components or cases. Simplify using `only [toObjects, ofObjects, RingEquiv.apply_symm_apply]`.
+-/
 theorem ofObjects_toObjects (D : AddBlockData P) : ofObjects (toObjects D) = D := by
   rcases D with ⟨deg, m, x, _, _, _⟩
   simp only [toObjects, ofObjects, RingEquiv.apply_symm_apply]
 
+/- English proof (translation)
+Use `show funFieldEquiv P (D.elt j) * chartPow P c (-D.deg) = funFieldEquiv P (D.elt j / P.chartPow c D.deg)`. Rewrite using `[funFieldEquiv_div_chartPow]`.
+-/
 theorem ξ_ofObjects (D : Heights.AddBlockData P) (c : (k : ι) → Fin (n k + 1))
     (j : Fin (D.size + 1)) : (ofObjects D).ξ c j = funFieldEquiv P (D.xi c j) := by
   show funFieldEquiv P (D.elt j) * chartPow P c (-D.deg) =
@@ -61,6 +67,11 @@ open _root_.GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Close.Add
 
 omit [Fintype ι] in
 
+/- English proof (translation)
+Take `⟨δ, hδ, hδk⟩` from `h`. Establish `e : (fun k ↦ ((d k : ℤ) + a k).toNat) = δ`. Use function extensionality and compare the values at `k`. Use `hδk k` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+
+Rewrite using `[e]`. Conclude with `hδ`.
+-/
 theorem isWeightedHomogeneous_toNat {f : MvPolynomial (Coord n) ℤ} {d : ι → ℕ} {a : ι → ℤ}
     (h : ∃ δ : ι → ℕ, IsWeightedHomogeneous (coordDeg n) f δ ∧ ∀ k, (δ k : ℤ) = d k + a k) :
     IsWeightedHomogeneous (coordDeg n) f (fun k ↦ ((d k : ℤ) + a k).toNat) := by
@@ -76,6 +87,9 @@ namespace ChartForms
 
 variable {D : AddBlockData P}
 
+/- English proof (translation)
+The claim follows from `G.d_pos nonneg := G.dn_nonneg homog c j := by refine ⟨fun k ↦ ((G.d k : ℤ) + D.deg k).toNat, ?_, fun k ↦ ?_⟩ · by_cases hc : IsLive P c · exact G.g_homog c hc j · rw [G.g_dead c hc j] exact isWeightedHomogeneous_zero ℤ _ _ · have := G.dn_nonneg k show (((G.d k : ℤ) + D.deg k).toN …`.
+-/
 theorem isFormSystem (G : ChartForms D) : (toObjects D).IsFormSystem G.d G.g where
   pos := G.d_pos
   nonneg := G.dn_nonneg
@@ -94,6 +108,9 @@ theorem isFormSystem (G : ChartForms D) : (toObjects D).IsFormSystem G.d G.g whe
     exact (G.g_val c hc j).trans (congrArg _ (RingEquiv.apply_symm_apply _ _).symm)
   dead c hc j := G.g_dead c hc j
 
+/- English proof (translation)
+The claim follows from `G.d_pos nonneg := G.dn_nonneg homog c j := G.isFormSystem.homog c j value c hc j := by apply (funFieldEquiv P).injective rw [map_mul, funFieldEquiv_mkF, funFieldEquiv_mkF] exact G.g_val c hc j dead c hc j := G.g_dead c hc j`.
+-/
 theorem isFormSystem_ofObjects {D : Heights.AddBlockData P} (G : ChartForms (ofObjects D)) :
     D.IsFormSystem G.d G.g where
   pos := G.d_pos
@@ -135,6 +152,9 @@ def ofToObjects {d : ι → ℕ}
 
 end ChartForms
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `⟨ChartForms.ofFormSystem h, rfl, rfl⟩`. Introduce and unpack `⟨G, rfl, rfl⟩`. Conclude with `G.isFormSystem_ofObjects`.
+-/
 theorem isFormSystem_iff_exists_chartForms (D : Heights.AddBlockData P) (d : ι → ℕ)
     (g : ((k : ι) → Fin (n k + 1)) → Fin (D.size + 1) → MvPolynomial (Coord n) ℤ) :
     D.IsFormSystem d g ↔ ∃ G : ChartForms (ofObjects D), G.d = d ∧ G.g = g := by
@@ -144,6 +164,9 @@ theorem isFormSystem_iff_exists_chartForms (D : Heights.AddBlockData P) (d : ι 
   · rintro ⟨G, rfl, rfl⟩
     exact G.isFormSystem_ofObjects
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨G, rfl, rfl⟩`. Conclude with `G.isFormSystem`. Introduce `h`. Conclude with `⟨ChartForms.ofToObjects h, rfl, rfl⟩`.
+-/
 theorem exists_chartForms_iff_isFormSystem (D : AddBlockData P) (d : ι → ℕ)
     (g : ((k : ι) → Fin (n k + 1)) → Fin (D.m + 1) → MvPolynomial (Coord n) ℤ) :
     (∃ G : ChartForms D, G.d = d ∧ G.g = g) ↔ (toObjects D).IsFormSystem d g := by
@@ -157,9 +180,15 @@ section Metric
 
 variable {D : AddBlockData P}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem den_eq (G : ChartForms D) (Γ : GenSystem P) :
     den G Γ = (toObjects D).den G.d G.g Γ.f Γ.δ := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem den_ofFormSystem {D : Heights.AddBlockData P} {d : ι → ℕ}
     {g : ((k : ι) → Fin (n k + 1)) → Fin (D.size + 1) → MvPolynomial (Coord n) ℤ}
     (h : D.IsFormSystem d g) {r : ℕ} {f : Fin r → MvPolynomial (Coord n) ℤ} {δ : Fin r → ι → ℕ}
@@ -170,9 +199,15 @@ end Metric
 
 omit [DecidableEq ι] in
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem hermLine_pow_metric (A : HermLine n) (m : ℕ) (z : Cone n ℂ) :
     (A.pow m).metric z = A.metric z ^ m := rfl
 
+/- English proof (translation)
+The claim follows from `(powChartForms n k₀ e).isFormSystem`.
+-/
 example (k₀ : ι) (e : ℕ) :
     (toObjects (powBlock n k₀ e)).IsFormSystem (powChartForms n k₀ e).d (powChartForms n k₀ e).g :=
   (powChartForms n k₀ e).isFormSystem

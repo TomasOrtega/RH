@@ -18,17 +18,29 @@ open scoped Formalism.Per
 
 namespace GlobalTheory.CrisComparison
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toB_tmul' {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [Algebra ℤ_[l] O] (o : O) (w : Ainf l) :
     toB l O (o ⊗ₜ w) = o ⊗ₜ acrisToBcris l (ainfToAcris l w) := rfl
 
+/- English proof (translation)
+Simplify using `only [toB, AlgHom.comp_apply, frobOB_toOB, frobOCr_toOCr]`.
+-/
 theorem toB_frobOA {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [Algebra ℤ_[l] O] (x : OA l O) :
     toB l O (frobOA l O x) = frobOB l O (toB l O x) := by
   simp only [toB, AlgHom.comp_apply, frobOB_toOB, frobOCr_toOCr]
 
+/- English proof (translation)
+Simplify using `only [toB, AlgHom.comp_apply, galOB_toOB, galOCr_toOCr]`.
+-/
 theorem toB_galOA {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [Algebra ℤ_[l] O] (g : GQ l) (x : OA l O) :
     toB l O (galOA O g x) = galOB O g (toB l O x) := by
   simp only [toB, AlgHom.comp_apply, galOB_toOB, galOCr_toOCr]
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp only [smul_zero, map_zero]`. Consider the case `tmul x y => simp only [TensorProduct.smul_tmul', TensorProduct.map_tmul, AlgHom.toLinearMap_apply, smul_eq_mul, map_mul]`. Consider the case `add x y hx hy => simp only [smul_add, map_add, hx, hy]`.
+-/
 theorem map_smul_tw {O R N : Type} [CommRing O] [CommRing R] [Algebra O R] [AddCommGroup N] [Module O N]
     (σ : R →ₐ[O] R) (h : N →ₗ[O] N) (r : R) (z : R ⊗[O] N) :
     TensorProduct.map σ.toLinearMap h (r • z) = σ r • TensorProduct.map σ.toLinearMap h z := by
@@ -37,6 +49,9 @@ theorem map_smul_tw {O R N : Type} [CommRing O] [CommRing R] [Algebra O R] [AddC
   | tmul x y => simp only [TensorProduct.smul_tmul', TensorProduct.map_tmul, AlgHom.toLinearMap_apply, smul_eq_mul, map_mul]
   | add x y hx hy => simp only [smul_add, map_add, hx, hy]
 
+/- English proof (translation)
+Rewrite using `[inclL_apply, inclL_apply, ← Matrix.mulVec_smul]`. Conclude with `congrArg _ (funext fun i => map_mul _ _ _)`.
+-/
 theorem inclL_smul' {l : ℕ} [Fact l.Prime] {a e : ℕ} [NeZero a] [NeZero e] {O K : Type} [CommRing O] [Algebra ℤ_[l] O] [Module.Free ℤ_[l] O] [Module.Finite ℤ_[l] O]
     [NormedField K] [IsUltrametricDist K] [Algebra O K] [IsUnitBall O K] [NormedAlgebra ℚ_[l] K]
     (t : Wq l a →ₐ[ℤ_[l]] O) (ϖ : PiSys l e) {ι : Type} [Fintype ι] [DecidableEq ι] (P : PhiMod O K l e a ι)
@@ -44,6 +59,13 @@ theorem inclL_smul' {l : ℕ} [Fact l.Prime] {a e : ℕ} [NeZero a] [NeZero e] {
   rw [inclL_apply, inclL_apply, ← Matrix.mulVec_smul]
   exact congrArg _ (funext fun i => map_mul _ _ _)
 
+/- English proof (translation)
+Introduce `l _ a e _ _ O K _ _ _ _ _ _ _ _ _ _ t ϖ ι _ _ P α hα`. Establish `key : ∀ i j, ∃ f : ZMod a → A O K, (∀ τ, (f τ : K⟦X⟧) = E K l e ^ α * P.mx τ i j)`. Introduce `i j`. Establish `hv : (fun τ k => P.mx τ k j : Vec K a ι) ∈ P.L` using `mem_tot.2 fun τ => P.mem_extc.2 ⟨Pi.single j 1, fun k => by`. Distinguish the cases in `hk : k = j`.
+
+Substitute `hk` using the available equality. Simplify using `only [Pi.single_eq_same]`. Conclude with `one_mem _`. Rewrite using `[Pi.single_eq_of_ne hk]; exact zero_mem _, by`. Use `ext1 k`.
+
+Simplify using `[Matrix.mulVec_single]⟩`. Establish `h` using `hα _ hv`. Conclude with `⟨fun τ => ⟨E K l e ^ α * P.mx τ i j, mem_tot.1 h τ i⟩, fun τ => rfl⟩`. Use `choose f hf using key`. Conclude with `⟨fun i j => ϖ.iTot t K (f i j), fun i j => ⟨f i j, hf i j, rfl⟩⟩`.
+-/
 theorem exists_Y : ∀ (l : ℕ) [Fact l.Prime] (a e : ℕ) [NeZero a] [NeZero e] (O K : Type) [CommRing O] [Algebra ℤ_[l] O] [Module.Free ℤ_[l] O] [Module.Finite ℤ_[l] O] [NormedField K] [IsUltrametricDist K] [Algebra O K] [IsUnitBall O K] [NormedAlgebra ℚ_[l] K] [TameDescentExponentData K l e a] (t : Wq l a →ₐ[ℤ_[l]] O) (ϖ : PiSys l e) (ι : Type) [Fintype ι] [DecidableEq ι] (P : PhiMod O K l e a ι) (α : ℕ), (∀ m ∈ P.L, E K l e ^ α • m ∈ P.M) → ∃ Y : Matrix ι ι (OA l O), (∀ i j, ∃ f : ZMod a → A O K, (∀ τ, (f τ : K⟦X⟧) = E K l e ^ α * P.mx τ i j) ∧ Y i j = ϖ.iTot t K f) := by
   intro l _ a e _ _ O K _ _ _ _ _ _ _ _ _ _ t ϖ ι _ _ P α hα
   have key : ∀ i j, ∃ f : ZMod a → A O K, (∀ τ, (f τ : K⟦X⟧) = E K l e ^ α * P.mx τ i j) := by
@@ -59,6 +81,33 @@ theorem exists_Y : ∀ (l : ℕ) [Fact l.Prime] (a e : ℕ) [NeZero a] [NeZero e
   choose f hf using key
   exact ⟨fun i j => ϖ.iTot t K (f i j), fun i j => ⟨f i j, hf i j, rfl⟩⟩
 
+/- English proof (translation)
+Introduce `l _ a e _ _ O K _ _ _ _ _ _ _ _ _ _ t ϖ ι _ _ P T I`. Take `⟨ε, hε⟩` from `(GlobalTheory.T.teichmullerSubOneAinf_properties_compatibleRoots l).1`. Take `⟨δ, hδ, -⟩` from `hε.2`. Take `⟨-, -, -, hμB, -, -, -⟩` from `(GlobalTheory.T.teichmullerSubOneAinf_properties_compatibleRoots l).2 ε δ hε hδ`. Take `⟨α, β, hα, hβ⟩` from `P.exists_exponents`.
+
+Take `⟨-, -, hK3, hK4⟩` from `GlobalTheory.T.breuilKisin_lattice_exponents_ainf_comparison l a e O K t ϖ ι P T I α β hα hβ ε δ hε hδ`. Establish `hunit : ∀ n : ℕ, IsUnit (toB l O (1 ⊗ₜ (muOf ε ^ n)))` using `fun n => by`. Rewrite using `[toB_tmul', map_pow, map_pow]`. Conclude with `(hμB.pow n).map (Algebra.TensorProduct.includeRight : Per.Bcris l →ₐ[ℤ_[l]] OB l O)`. Take `⟨Y, hY⟩` from `exists_Y l a e O K t ϖ ι P α hα`.
+
+Establish `hEu` using `GlobalTheory.T.isUnit_toB_frobOA_eis l a e O ϖ`. Establish `hYphi` using `GlobalTheory.T.eis_pow_smul_phiW_inclL_eq_inclL_mulVec l a e O K t ϖ ι P α Y hY`. Establish `hSl` using `GlobalTheory.T.toBcris_phi_alt l a e O K t ϖ ι P α Y hY`. Use `⟨GlobalTheory.T.exists_bcris_comparison_kisinLattice l a e O K t ϖ ι P T I, fun jB hjB => ?_⟩` and prove the remaining obligations. Establish `hμL : ∀ v ∈ LA t ϖ P, ∃ z : TW (OA l O) T, I.j (inclO l O (1 ⊗ₜ (muOf ε ^ α)) • v) = TWincl (inclO l O) T z` using `hK4`.
+
+Establish `keyφ` using `GlobalTheory.T.cmp_semilinear_pair_alt l a e O K t ϖ ι P T I jB hjB _ (hunit α) hμL (frobOA l O) (frobOW l O) (frobOB l O) LinearMap.id (phiW t ϖ P) (frobOA l O (1 ⊗ₜ ϖ.ev a (eis l a e)) ^ α) (Y.map (frobOA l O)) (fun x => (frobOW_inclO x).symm) toB_frobOA (fun v => I.j_φ v) (phi …`. Use `⟨fun m m' hmm => ?_, fun w b b' hb hb' => ?_, fun w b hb => ?_, fun x => ?_, fun g hg w b hb => ?_⟩` and prove the remaining obligations. Use `(hEu.pow α).smul_left_cancel.1 ?_` and prove the remaining obligations. Rewrite using `[← LinearEquiv.map_smul, hSl m m' hmm, keyφ, map_pow]`. Both sides reduce to the same expression.
+
+Take `⟨m, c, hm, hw, hb⟩` from `hb`. Take `⟨m', c', hm', hw', hb'⟩` from `hb'`. Establish `h1 : m' • c = m • c'` using `inclL_injective t ϖ P (by`. Rewrite using `[inclL_smul', inclL_smul', ← hw, ← hw', smul_smul, smul_smul, ← map_mul, ← map_mul, mul_comm])`. Establish `h2 : ∀ (r : OA l O) (d : ι → OA l O), toB l O r • (fun i => toB l O (d i)) = fun i => toB l O ((r • d) i)` using `fun r d => funext fun i => by simp only [Pi.smul_apply, smul_eq_mul, map_mul]`.
+
+Use `((hm.mul hm').smul_left_cancel).1 ?_` and prove the remaining obligations. Rewrite using `[mul_comm, mul_smul, hb, mul_comm, mul_smul, hb', ← LinearEquiv.map_smul, ← LinearEquiv.map_smul, h2, h2, h1]`. Take `⟨m, c, hm, hw, hb⟩` from `hb`. Use `⟨frobOA l O (1 ⊗ₜ ϖ.ev a (eis l a e)) ^ α * frobOA l O m, Y.map (frobOA l O) *ᵥ fun i => frobOA l O (c i), ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_pow, toB_frobOA m]`.
+
+Conclude with `(hEu.pow α).mul (hm.map _)`. Rewrite using `[map_mul, map_pow, mul_smul, ← frobOW_inclO m, ← phiW_smul, hw]`. Conclude with `hYphi c`. Establish `h3` using `keyφ (fun i => toB l O (c i))`. Rewrite using `[map_mul, mul_smul, toB_frobOA m]`.
+
+Express the relevant statement in the definitionally equal form `_ • frobOB l O (toB l O m) • TensorProduct.map (frobOB l O).toLinearMap LinearMap.id b = _`. Rewrite using `[← map_smul_tw, hb, ← h3]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.map_apply, map_sum, map_mul, toB_frobOA]`.
+
+Take `⟨c, hc⟩` from `hK3 x`. Use `⟨1 ⊗ₜ (muOf ε ^ β), c, hunit β, hc.symm, ?_⟩` and prove the remaining obligations. Establish `h4` using `hjB c ((1 ⊗ₜ (muOf ε ^ β)) ⊗ₜ x) (by`. Rewrite using `[hc, LinearEquiv.map_smul, I.j_ofT, TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Use the proof step `rfl)`.
+
+Rewrite using `[h4, TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Both sides reduce to the same expression. Take `⟨m, c, hm, hw, hb⟩` from `hb`. Take `⟨Γ, hΓ⟩` from `(I.exists_isLMat_iff (sQ l g) g).2 hg`. Establish `key` using `GlobalTheory.T.cmp_semilinear_pair_alt l a e O K t ϖ ι P T I jB hjB _ (hunit α) hμL (galOA O (sQ l g)) (galOW O (sQ l g)) (galOB O (sQ l g)) (T.actT g) (I.act (sQ l g) g) 1 Γ (fun x => (galOW_inclO _ x).symm) (toB_galOA _) (fun v => I.j_act _ _ v) (I.act_smul _ _) (fun c => by rw …`.
+
+Use `⟨galOA O (sQ l g) m, Γ *ᵥ fun i => galOA O (sQ l g) (c i), ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[toB_galOA]`. Conclude with `hm.map _`. Rewrite using `[← galOW_inclO, ← I.act_smul, hw]`. Conclude with `hΓ c`.
+
+Establish `h3` using `key (fun i => toB l O (c i))`. Rewrite `h3` using `[map_one, one_smul]`. Rewrite using `[toB_galOA]`. Express the relevant statement in the definitionally equal form `_ • TensorProduct.map (galOB O (sQ l g)).toLinearMap (T.actT g) b = _`. Rewrite using `[← map_smul_tw, hb, ← h3]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.map_apply, map_sum, map_mul, toB_galOA]`.
+-/
 theorem main : ∀ (l : ℕ) [Fact l.Prime] (a e : ℕ) [NeZero a] [NeZero e] (O K : Type) [CommRing O] [Algebra ℤ_[l] O] [Module.Free ℤ_[l] O] [Module.Finite ℤ_[l] O] [NormedField K] [IsUltrametricDist K] [Algebra O K] [IsUnitBall O K] [NormedAlgebra ℚ_[l] K] [TameDescentExponentData K l e a] (t : Wq l a →ₐ[ℤ_[l]] O) (ϖ : PiSys l e) (ι : Type) [Fintype ι] [DecidableEq ι] (P : PhiMod O K l e a ι) (T : LocLat (Gl l) ℚ_[l] K O) (I : Ident t ϖ P T), (∃ jB, IsCrisCmp I jB) ∧ ∀ (jB : (ι → OB l O) ≃ₗ[OB l O] TW (OB l O) T), IsCrisCmp I jB → (∀ (m m' : P.MMl), m'.1 = P.phi m.1 → jB (toBcris t ϖ P m') = TWmap (frobOB l O) T (jB (toBcris t ϖ P m))) ∧ (∀ w b b', IsCrisVal t ϖ P jB w b → IsCrisVal t ϖ P jB w b' → b = b') ∧ (∀ w b, IsCrisVal t ϖ P jB w b → IsCrisVal t ϖ P jB (phiW t ϖ P w) (TWmap (frobOB l O) T b)) ∧ (∀ x : ↥T.L.T, IsCrisVal t ϖ P jB (I.ofT x) ((1 : OB l O) ⊗ₜ[O] x)) ∧ (∀ g : Gl l, (∀ v ∈ LA t ϖ P, I.act (sQ l g) g v ∈ LA t ϖ P) → ∀ w b, IsCrisVal t ϖ P jB w b → IsCrisVal t ϖ P jB (I.act (sQ l g) g w) (actB (sQ l) T g b)) := by
   intro l _ a e _ _ O K _ _ _ _ _ _ _ _ _ _ t ϖ ι _ _ P T I
   obtain ⟨ε, hε⟩ := (GlobalTheory.T.teichmullerSubOneAinf_properties_compatibleRoots l).1

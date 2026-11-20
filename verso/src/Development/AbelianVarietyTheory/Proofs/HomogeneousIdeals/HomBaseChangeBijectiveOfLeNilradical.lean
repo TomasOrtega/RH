@@ -25,29 +25,57 @@ variable {S : Scheme.{u}} {X Y Z : Type u} [AddCommGroup X] [AddCommGroup Y] [Ad
 
 def val (g : T ⟶ splitTorus S X) (a : X) : Γ(T.left, ⊤) := (coord g).hom (single a 1)
 
+/- English proof (translation)
+Rewrite using `[val, chi, ← Category.comp_id g, coord_comp, Category.comp_id]`. Both sides reduce to the same expression.
+-/
 theorem val_eq (g : T ⟶ splitTorus S X) (a : X) : val g a = g.left.appTop.hom (chi X a) := by
   rw [val, chi, ← Category.comp_id g, coord_comp, Category.comp_id]; rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem val_id (a : X) : val (𝟙 (splitTorus S X)) a = chi X a := rfl
 
+/- English proof (translation)
+Rewrite using `[val, coord_comp]`. Both sides reduce to the same expression.
+-/
 theorem val_comp (h : T' ⟶ T) (g : T ⟶ splitTorus S X) (a : X) :
     val (h ≫ g) a = h.left.appTop.hom (val g a) := by
   rw [val, coord_comp]; rfl
 
+/- English proof (translation)
+Rewrite using `[val, ← AddMonoidAlgebra.one_def, map_one]`.
+-/
 theorem val_zero (g : T ⟶ splitTorus S X) : val g 0 = 1 := by
   rw [val, ← AddMonoidAlgebra.one_def, map_one]
 
+/- English proof (translation)
+Rewrite using `[val, val, val, ← map_mul, AddMonoidAlgebra.single_mul_single, _root_.mul_one]`.
+-/
 theorem val_add (g : T ⟶ splitTorus S X) (a b : X) : val g (a + b) = val g a * val g b := by
   rw [val, val, val, ← map_mul, AddMonoidAlgebra.single_mul_single, _root_.mul_one]
 
+/- English proof (translation)
+The claim follows from `(isUnit_single_one (R := ULift.{u} ℤ) a).map _`.
+-/
 theorem isUnit_val (g : T ⟶ splitTorus S X) (a : X) : IsUnit (val g a) :=
   (isUnit_single_one (R := ULift.{u} ℤ) a).map _
 
+/- English proof (translation)
+Apply `coord_injective` to reduce the goal to its premises. Use `ext1`. Conclude with `ringHom_ext_ZU h`.
+-/
 theorem hom_ext {g g' : T ⟶ splitTorus S X} (h : ∀ a, val g a = val g' a) : g = g' := by
   apply coord_injective
   ext1
   exact ringHom_ext_ZU h
 
+/- English proof (translation)
+Establish `A : ∀ {X Y : Over S} (a : X ⟶ Y), ((Over.pullback f).map a).left ≫ pullback.fst Y.hom f = pullback.fst X.hom f ≫ a.left` using `fun a => pullback.lift_fst _ _ _`. Set `z : T ⟶ (Over.pullback f).obj (G ⊗ G)` to `lift x y ≫ Functor.LaxMonoidal.μ (Over.pullback f) G G`. Establish `z₁ : z ≫ (Over.pullback f).map (fst G G) = x` using `by simp [z]`. Establish `z₂ : z ≫ (Over.pullback f).map (snd G G) = y` using `by simp [z]`. Establish `hz : (lift x₀ y₀).left = z.left ≫ pullback.fst (G ⊗ G).hom f`.
+
+Apply `pullback.hom_ext` to reduce the goal to its premises. Use `show (lift x₀ y₀ ≫ fst G G).left = _ ≫ (fst G G).left`. Rewrite using `[lift_fst, hx, Category.assoc, ← A, ← Category.assoc, ← Over.comp_left, z₁]`. Use `show (lift x₀ y₀ ≫ snd G G).left = _ ≫ (snd G G).left`. Rewrite using `[lift_snd, hy, Category.assoc, ← A, ← Category.assoc, ← Over.comp_left, z₂]`.
+
+Establish `hxy : x * y = z ≫ (Over.pullback f).map μ[G]`. Rewrite using `[Hom.mul_def, Functor.obj.μ_def, ← Category.assoc]`. Rewrite using `[hxy, Over.comp_left, Category.assoc, A, ← Category.assoc, ← hz]`. Both sides reduce to the same expression.
+-/
 theorem mul_left_comp_fst {S' : Scheme.{u}} (G : Over S) [GrpObj G] (f : S' ⟶ S) {T : Over S'}
     (x y : T ⟶ (Over.pullback f).obj G) (x₀ y₀ : Over.mk (T.hom ≫ f) ⟶ G)
     (hx : x₀.left = x.left ≫ pullback.fst G.hom f) (hy : y₀.left = y.left ≫ pullback.fst G.hom f) :
@@ -70,11 +98,23 @@ theorem mul_left_comp_fst {S' : Scheme.{u}} (G : Over S) [GrpObj G] (f : S' ⟶ 
   rw [hxy, Over.comp_left, Category.assoc, A, ← Category.assoc, ← hz]
   rfl
 
+/- English proof (translation)
+Rewrite using `[← CommRingCat.comp_apply, ← CommRingCat.comp_apply, Scheme.ΓSpecIso_inv_naturality]`.
+-/
 theorem specMap_appTop_apply {A B : CommRingCat.{u}} (φ : A ⟶ B) (c : A) :
     (Spec.map φ).appTop.hom ((Scheme.ΓSpecIso A).inv.hom c) =
       (Scheme.ΓSpecIso B).inv.hom (φ.hom c) := by
   rw [← CommRingCat.comp_apply, ← CommRingCat.comp_apply, Scheme.ΓSpecIso_inv_naturality]
 
+/- English proof (translation)
+Set `l₀ : W.left ⟶ pullback (Spec.map (CommRingCat.ofHom (algebraMap R A))) (Spec.map (CommRingCat.ofHom (algebraMap R A)))` to `(lift x y).left`. Set `x' : W.left ⟶ Spec A` to `x.left`. Set `y' : W.left ⟶ Spec A` to `y.left`. Set `m : W.left ⟶ Spec A` to `(x * y).left`. Establish `h0 : m = (l₀ ≫ (pullbackSpecIso R A A).hom) ≫ Spec.map (CommRingCat.ofHom (Bialgebra.comulAlgHom R A))`.
+
+Rewrite using `[Category.assoc]`. Both sides reduce to the same expression. Establish `h1 : x' = (l₀ ≫ (pullbackSpecIso R A A).hom) ≫ Spec.map (CommRingCat.ofHom Algebra.TensorProduct.includeLeftRingHom)`. Rewrite using `[Category.assoc, pullbackSpecIso_hom_fst]`. Conclude with `congrArg (·.left) (lift_fst x y).symm`.
+
+Establish `h2 : y' = (l₀ ≫ (pullbackSpecIso R A A).hom) ≫ Spec.map (CommRingCat.ofHom (Algebra.TensorProduct.includeRight : A →ₐ[R] A ⊗[R] A))`. Rewrite using `[Category.assoc, pullbackSpecIso_hom_snd]`. Conclude with `congrArg (·.left) (lift_snd x y).symm`. Establish `key : ∀ {B : CommRingCat.{u}} (l : W.left ⟶ Spec B) (φ₀ φ₁ φ₂ : A ⟶ B), φ₀.hom a = φ₁.hom a * φ₂.hom a → (l ≫ Spec.map φ₀).appTop.hom ((Scheme.ΓSpecIso A).inv.hom a) = (l ≫ Spec.map φ₁).appTop.hom ((Scheme.ΓSpecIso A).inv.hom a) * (l ≫ Spec.map φ₂).appTop.hom ((Scheme.ΓSpecIso A) …`. Introduce `B l φ₀ φ₁ φ₂ h`.
+
+Rewrite using `[appTop_comp_apply, appTop_comp_apply, appTop_comp_apply, specMap_appTop_apply, specMap_appTop_apply, specMap_appTop_apply, h, map_mul, map_mul]`. Express the relevant statement in the definitionally equal form `m.appTop.hom _ = x'.appTop.hom _ * y'.appTop.hom _`. Rewrite using `[h0, h1, h2]`. Conclude with `key _ _ _ _ (by simp [ha.comul_eq_tmul_self])`.
+-/
 theorem aff_mul {R A : CommRingCat.{u}} [Bialgebra R A] {W : Over (Spec R)}
     (x y : W ⟶ (Spec A).asOver (Spec R)) {a : A} (ha : IsGroupLikeElem R a) :
     (x * y).left.appTop.hom ((Scheme.ΓSpecIso A).inv.hom a) =
@@ -108,6 +148,9 @@ theorem aff_mul {R A : CommRingCat.{u}} [Bialgebra R A] {W : Over (Spec R)}
   rw [h0, h1, h2]
   exact key _ _ _ _ (by simp [ha.comul_eq_tmul_self])
 
+/- English proof (translation)
+Set `p : ∀ (z : T ⟶ splitTorus S X), Over.mk (T.hom ≫ toZ S) ⟶ splitTorusAff ZU X` to `fun z => Over.homMk (z.left ≫ torusFst S X) (specULiftZIsTerminal.hom_ext _ _)`. Establish `h` using `mul_left_comp_fst (splitTorusAff ZU X) (toZ S) x y (p x) (p y) rfl rfl`. Establish `e` using `aff_mul (p x) (p y) (AddMonoidAlgebra.isGroupLikeElem_single_one (R := ZU.{u}) (A := ZU.{u}) a)`. Rewrite `e` using `[h]`. Conclude with `e`.
+-/
 theorem val_mul (x y : T ⟶ splitTorus S X) (a : X) : val (x * y) a = val x a * val y a := by
   let p : ∀ (z : T ⟶ splitTorus S X), Over.mk (T.hom ≫ toZ S) ⟶ splitTorusAff ZU X := fun z =>
     Over.homMk (z.left ≫ torusFst S X) (specULiftZIsTerminal.hom_ext _ _)
@@ -116,6 +159,9 @@ theorem val_mul (x y : T ⟶ splitTorus S X) (a : X) : val (x * y) a = val x a *
   rw [h] at e
   exact e
 
+/- English proof (translation)
+Establish `h` using `val_mul (1 : T ⟶ splitTorus S X) 1 a`. Rewrite `h` using `[_root_.mul_one]`. Conclude with `(isUnit_val _ a).mul_left_cancel (h.symm.trans (_root_.mul_one _).symm)`.
+-/
 theorem val_one (a : X) : val (1 : T ⟶ splitTorus S X) a = 1 := by
   have h := val_mul (1 : T ⟶ splitTorus S X) 1 a
   rw [_root_.mul_one] at h
@@ -125,6 +171,9 @@ def ofCoord (c : torusRing ZU X ⟶ Γ(T.left, ⊤)) : T ⟶ splitTorus S X :=
   Over.homMk (pullback.lift (T.left.toSpecΓ ≫ Spec.map c) T.hom (specULiftZIsTerminal.hom_ext _ _))
     (pullback.lift_snd _ _ _)
 
+/- English proof (translation)
+Establish `: (ofCoord c).left ≫ torusFst S X = T.left.toSpecΓ ≫ Spec.map c` using `pullback.lift_fst _ _ _`. Rewrite using `[coord, this, Scheme.Hom.comp_appTop, ← Category.assoc, ← Scheme.ΓSpecIso_inv_naturality]`. Simplify using the standard rewrite rules.
+-/
 theorem coord_ofCoord (c : torusRing ZU X ⟶ Γ(T.left, ⊤)) : coord (ofCoord c) = c := by
   have : (ofCoord c).left ≫ torusFst S X = T.left.toSpecΓ ≫ Spec.map c := pullback.lift_fst _ _ _
   rw [coord, this, Scheme.Hom.comp_appTop, ← Category.assoc, ← Scheme.ΓSpecIso_inv_naturality]
@@ -135,6 +184,9 @@ def ofVal (c : X →+ Additive Γ(T.left, ⊤)ˣ) : T ⟶ splitTorus S X :=
     ((Int.castRingHom Γ(T.left, ⊤)).comp (ULift.ringEquiv : ULift.{u} ℤ ≃+* ℤ).toRingHom)
     ((Units.coeHom _).comp (AddMonoidHom.toMultiplicativeLeft c)) (fun _ _ => Commute.all _ _)))
 
+/- English proof (translation)
+Rewrite using `[val, ofVal, coord_ofCoord]`. Simplify using the standard rewrite rules.
+-/
 theorem val_ofVal (c : X →+ Additive Γ(T.left, ⊤)ˣ) (a : X) :
     val (ofVal c) a = (Additive.toMul (c a)).val := by
   rw [val, ofVal, coord_ofCoord]
@@ -144,6 +196,9 @@ def valHom (g : T ⟶ splitTorus S X) : X →+ Additive Γ(T.left, ⊤)ˣ :=
   AddMonoidHom.mk' (fun a => Additive.ofMul (isUnit_val g a).unit) fun a b => by
     rw [← ofMul_mul]; congr 1; ext; simp [val_add]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem valHom_apply (g : T ⟶ splitTorus S X) (a : X) :
     (Additive.toMul (valHom g a)).val = val g a := rfl
 
@@ -156,9 +211,15 @@ def pointsEquiv (T : Over S) (X : Type u) [AddCommGroup X] :
     ext a
     exact val_ofVal c a
 
+/- English proof (translation)
+The claim follows from `val_eq g a`.
+-/
 @[simp] theorem pointsEquiv_apply (g : T ⟶ splitTorus S X) (a : X) :
     (Additive.toMul (pointsEquiv T X g a)).val = g.left.appTop.hom (chi X a) := val_eq g a
 
+/- English proof (translation)
+Use extensionality with `a`. Conclude with `val_mul x y a`.
+-/
 theorem pointsEquiv_mul (x y : T ⟶ splitTorus S X) :
     pointsEquiv T X (x * y) = pointsEquiv T X x + pointsEquiv T X y := by
   ext a
@@ -169,12 +230,20 @@ def pointsMulEquiv (T : Over S) (X : Type u) [AddCommGroup X] :
   toEquiv := (pointsEquiv T X).trans Multiplicative.ofAdd
   map_mul' x y := congrArg Multiplicative.ofAdd (pointsEquiv_mul x y)
 
+/- English proof (translation)
+Use extensionality with `a`. Conclude with `val_comp h g a`.
+-/
 theorem pointsEquiv_comp (h : T' ⟶ T) (g : T ⟶ splitTorus S X) :
     pointsEquiv T' X (h ≫ g) =
       (MonoidHom.toAdditive (Units.map h.left.appTop.hom.toMonoidHom)).comp (pointsEquiv T X g) := by
   ext a
   exact val_comp h g a
 
+/- English proof (translation)
+Establish `h1 : chi (S` using `S) X a = (torusFst S X).appTop.hom ((Scheme.ΓSpecIso (torusRing ZU X)).inv.hom (single a 1)) := by`. Rewrite using `[chi, coord, Over.id_left, Category.id_comp]`. Both sides reduce to the same expression. Establish `h2 : (charUnit S X a).val = ((torusFst S X).appLE ⊤ ⊤ (fun _ _ => trivial)).hom ((Scheme.ΓSpecIso (torusRing ZU X)).inv.hom (single a 1))`. Simplify using `[charUnit, res, pullU, Scheme.Hom.appLE, AddMonoidAlgebra.of_apply]`.
+
+Both sides reduce to the same expression. Rewrite using `[h1, h2, Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]`. Both sides reduce to the same expression.
+-/
 theorem charUnit_val (a : X) : (charUnit S X a).val = chi X a := by
   have h1 : chi (S := S) X a = (torusFst S X).appTop.hom
       ((Scheme.ΓSpecIso (torusRing ZU X)).inv.hom (single a 1)) := by
@@ -185,6 +254,9 @@ theorem charUnit_val (a : X) : (charUnit S X a).val = chi X a := by
     rfl
   rw [h1, h2, Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]; rfl
 
+/- English proof (translation)
+Establish `: (res h (pullU g.left ⊤ (charUnit S X a))).val = (g.left.appLE ⊤ ⊤ h).hom (charUnit S X a).val` using `rfl`. Rewrite using `[this, charUnit_val, Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]`. Both sides reduce to the same expression.
+-/
 theorem res_pullU_charUnit (g : T ⟶ splitTorus S X) (a : X) (h : ⊤ ≤ g.left ⁻¹ᵁ ⊤) :
     (res h (pullU g.left ⊤ (charUnit S X a))).val = g.left.appTop.hom (chi X a) := by
   have : (res h (pullU g.left ⊤ (charUnit S X a))).val =
@@ -200,6 +272,13 @@ instance isCommMonObj (S : Scheme.{u}) (X : Type u) [AddCommGroup X] :
     rw [Hom.mul_def, Hom.mul_def, lift_fst_snd, Category.id_comp, lift_snd_fst] at this
     exact this
 
+/- English proof (translation)
+Establish `hm : μ[G] ≫ f = (f ⊗ₘ f) ≫ μ`. Use `hom_ext fun a => ?_` and prove the remaining obligations. Rewrite using `[h, ← val_mul, Hom.mul_def]`. Use `congr 2`. Use `⟨?_, hm⟩` and prove the remaining obligations.
+
+Establish `e : (η[G] ≫ f) * (η[G] ≫ f) = η[G] ≫ f`. Rewrite using `[Hom.mul_def, ← lift_map, Category.assoc, ← hm, ← Category.assoc]`. Use `congr 1`. Simplify `_root_.mul_one (1 : 𝟙_ (Over S) ⟶ G)` using `[Hom.mul_def, Hom.one_def]`. Establish `e' : η[G] ≫ f = 1` using `by simpa using e`.
+
+Rewrite using `[e', Hom.one_def]`. Simplify using the standard rewrite rules.
+-/
 theorem isMonHom_of_val {G : Over S} [GrpObj G] (f : G ⟶ splitTorus S X)
     (h : ∀ a, val (μ[G] ≫ f) a = val (fst G G ≫ f) a * val (snd G G ≫ f) a) : IsMonHom f := by
   have hm : μ[G] ≫ f = (f ⊗ₘ f) ≫ μ := by
@@ -217,17 +296,29 @@ theorem isMonHom_of_val {G : Over S} [GrpObj G] (f : G ⟶ splitTorus S X)
 def torusMap (S : Scheme.{u}) (φ : Y →+ X) : splitTorus S X ⟶ splitTorus S Y :=
   ofVal ((valHom (𝟙 (splitTorus S X))).comp φ)
 
+/- English proof (translation)
+Rewrite using `[torusMap, val_ofVal]`. Both sides reduce to the same expression.
+-/
 theorem val_torusMap (φ : Y →+ X) (b : Y) : val (torusMap S φ) b = chi X (φ b) := by
   rw [torusMap, val_ofVal]; rfl
 
+/- English proof (translation)
+Rewrite using `[← val_eq, val_torusMap]`.
+-/
 theorem torusMap_appTop_chi (φ : Y →+ X) (b : Y) :
     (torusMap S φ).left.appTop.hom (chi Y b) = chi X (φ b) := by
   rw [← val_eq, val_torusMap]
 
+/- English proof (translation)
+Rewrite using `[val_comp, val_torusMap, ← val_eq]`.
+-/
 theorem val_comp_torusMap (g : T ⟶ splitTorus S X) (φ : Y →+ X) (b : Y) :
     val (g ≫ torusMap S φ) b = val g (φ b) := by
   rw [val_comp, val_torusMap, ← val_eq]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h b => h ▸ torusMap_appTop_chi φ b, fun h => hom_ext fun b => by rw [val_eq, h, val_torusMap]⟩`.
+-/
 theorem eq_torusMap_iff (f : splitTorus S X ⟶ splitTorus S Y) (φ : Y →+ X) :
     f = torusMap S φ ↔ ∀ b, f.left.appTop.hom (chi Y b) = chi X (φ b) :=
   ⟨fun h b => h ▸ torusMap_appTop_chi φ b, fun h => hom_ext fun b => by rw [val_eq, h, val_torusMap]⟩
@@ -237,15 +328,27 @@ instance isMonHom_torusMap (φ : Y →+ X) : IsMonHom (torusMap S φ) :=
     rw [val_comp_torusMap, val_comp_torusMap, val_comp_torusMap, ← val_mul, Hom.mul_def, lift_fst_snd,
       Category.id_comp]
 
+/- English proof (translation)
+The claim follows from `hom_ext fun a => by rw [val_torusMap]; rfl`.
+-/
 theorem torusMap_id : torusMap S (AddMonoidHom.id X) = 𝟙 _ := hom_ext fun a => by rw [val_torusMap]; rfl
 
+/- English proof (translation)
+The claim follows from `hom_ext fun a => by rw [val_comp_torusMap, val_torusMap, val_torusMap]; rfl`.
+-/
 theorem torusMap_comp (φ : Y →+ X) (ψ : Z →+ Y) : torusMap S (φ.comp ψ) = torusMap S φ ≫ torusMap S ψ :=
   hom_ext fun a => by rw [val_comp_torusMap, val_torusMap, val_torusMap]; rfl
 
+/- English proof (translation)
+The claim follows from `hom_ext fun a => by rw [val_mul, val_torusMap, val_torusMap, val_torusMap, ← val_id, ← val_id, ← val_id, ← val_add]; rfl`.
+-/
 theorem torusMap_add (φ ψ : Y →+ X) : torusMap S (φ + ψ) = torusMap S φ * torusMap S ψ :=
   hom_ext fun a => by
     rw [val_mul, val_torusMap, val_torusMap, val_torusMap, ← val_id, ← val_id, ← val_id, ← val_add]; rfl
 
+/- English proof (translation)
+The claim follows from `hom_ext fun a => by rw [val_one, val_torusMap]; exact chi_zero X`.
+-/
 theorem torusMap_zero : torusMap S (0 : Y →+ X) = 1 :=
   hom_ext fun a => by rw [val_one, val_torusMap]; exact chi_zero X
 
@@ -257,6 +360,13 @@ variable {A : Type*} [CommRing A] {X : Type*}
 
 open Classical in
 
+/- English proof (translation)
+Set `c : X → AddMonoidAlgebra A X →ₗ[A] A` to `fun x => { toFun := fun v => v.coeff x, map_add' := by simp, map_smul' := by simp }`. Set `L : AddMonoidAlgebra A X ⊗[A] AddMonoidAlgebra A X →ₗ[A] A` to `TensorProduct.lift ((LinearMap.mul A A).compl₁₂ (c x) (c y))`. Establish `hc : ∀ v w, L (v ⊗ₜ w) = v.coeff x * w.coeff y` using `fun v w => rfl`. Establish `hL : ∀ v : AddMonoidAlgebra A X, L (Coalgebra.comul (R` using `A) v) = if x = y then v.coeff x else 0 := by`. Introduce `v`.
+
+Proceed by induction on `v using AddMonoidAlgebra.induction_linear with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => rw [map_add, map_add, ha, hb]; split_ifs <;> simp`. Consider the case `single a r`. Simplify using `[hc, Finsupp.single_apply]`.
+
+Discharge the remaining goals by the proof search in `aesop`. Rewrite using `[← hL, hu.comul_eq_tmul_self, hc]`.
+-/
 theorem coeff_mul_coeff {u : AddMonoidAlgebra A X} (hu : IsGroupLikeElem A u) (x y : X) :
     u.coeff x * u.coeff y = if x = y then u.coeff x else 0 := by
   let c : X → AddMonoidAlgebra A X →ₗ[A] A := fun x =>
@@ -275,6 +385,11 @@ theorem coeff_mul_coeff {u : AddMonoidAlgebra A X} (hu : IsGroupLikeElem A u) (x
       aesop
   rw [← hL, hu.comul_eq_tmul_self, hc]
 
+/- English proof (translation)
+Establish `hL : ∀ v : AddMonoidAlgebra A X, Coalgebra.counit (R` using `A) v = v.coeff.sum fun _ r => r := by`. Introduce `v`. Proceed by induction on `v using AddMonoidAlgebra.induction_linear with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => rw [map_add, ha, hb]`.
+
+Simplify using `[Finsupp.sum_add_index']`. Consider the case `single a r => simp`. Rewrite using `[← hu.counit_eq_one, hL]`. Both sides reduce to the same expression.
+-/
 theorem sum_coeff {u : AddMonoidAlgebra A X} (hu : IsGroupLikeElem A u) :
     ∑ x ∈ u.coeff.support, u.coeff x = 1 := by
   have hL : ∀ v : AddMonoidAlgebra A X,
@@ -286,10 +401,18 @@ theorem sum_coeff {u : AddMonoidAlgebra A X} (hu : IsGroupLikeElem A u) :
     | single a r => simp
   rw [← hu.counit_eq_one, hL]; rfl
 
+/- English proof (translation)
+Simplify `coeff_mul_coeff hu x x` using `[IsIdempotentElem]`.
+-/
 theorem isIdempotentElem_coeff {u : AddMonoidAlgebra A X} (hu : IsGroupLikeElem A u) (x : X) :
     IsIdempotentElem (u.coeff x) := by
   simpa [IsIdempotentElem] using coeff_mul_coeff hu x x
 
+/- English proof (translation)
+Establish `h1 : u.coeff x = 1`. Rewrite using `[← sum_coeff hu, Finset.sum_eq_single x (fun y _ hy => h y hy) (fun hx => Finsupp.notMem_support_iff.1 hx)]`. Use extensionality with `y`. Distinguish the cases in `hy : y = x`. Substitute `hy` using the available equality.
+
+Simplify using `[h1]`. Simplify using `[h y hy, Finsupp.single_apply, Ne.symm hy]`.
+-/
 theorem eq_single_of_coeff_eq_zero {u : AddMonoidAlgebra A X} (hu : IsGroupLikeElem A u) (x : X)
     (h : ∀ y, y ≠ x → u.coeff y = 0) : u = single x 1 := by
   have h1 : u.coeff x = 1 := by
@@ -300,6 +423,11 @@ theorem eq_single_of_coeff_eq_zero {u : AddMonoidAlgebra A X} (hu : IsGroupLikeE
   · subst hy; simp [h1]
   · simp [h y hy, Finsupp.single_apply, Ne.symm hy]
 
+/- English proof (translation)
+Use `⟨fun hu => ?_, ?_⟩` and prove the remaining obligations. Take `⟨x, hx⟩ : ∃ x, u.coeff x ≠ 0` from `by by_contra! h`. Use `sum_coeff hu` as an intermediate fact. Simplify using `[h] at this`. Establish `h1` using `(hA _ (isIdempotentElem_coeff hu x)).resolve_left hx`.
+
+Use `⟨x, eq_single_of_coeff_eq_zero hu x fun y hy => ?_⟩` and prove the remaining obligations. Use `coeff_mul_coeff hu y x` as an intermediate fact. Rewrite `this` using `[h1, _root_.mul_one, if_neg hy]`. Then use the resulting hypothesis. Introduce and unpack `⟨x, rfl⟩`. Conclude with `AddMonoidAlgebra.isGroupLikeElem_single_one x`.
+-/
 theorem isGroupLikeElem_iff [Nontrivial A] (hA : ∀ e : A, IsIdempotentElem e → e = 0 ∨ e = 1)
     (u : AddMonoidAlgebra A X) : IsGroupLikeElem A u ↔ ∃ x, u = single x 1 := by
   refine ⟨fun hu => ?_, ?_⟩
@@ -314,6 +442,9 @@ theorem isGroupLikeElem_iff [Nontrivial A] (hA : ∀ e : A, IsIdempotentElem e �
   · rintro ⟨x, rfl⟩
     exact AddMonoidAlgebra.isGroupLikeElem_single_one x
 
+/- English proof (translation)
+Introduce `x y h`. Assume the negation of the conclusion as `hxy`. Use `congrArg (fun v : AddMonoidAlgebra A X => v.coeff x) h` as an intermediate fact. Simplify using `[Finsupp.single_apply, Ne.symm hxy] at this`.
+-/
 theorem single_one_injective [Nontrivial A] :
     Function.Injective fun x : X => (single x 1 : AddMonoidAlgebra A X) := by
   intro x y h
@@ -331,18 +462,30 @@ def pull {s : Spec B ⟶ S} (g : Over.mk s ⟶ splitTorus S X) :
     Γ((splitTorus S X).left, ⊤) →+* B :=
   (Scheme.ΓSpecIso B).hom.hom.comp (Scheme.Hom.appTop (X := Spec B) g.left).hom
 
+/- English proof (translation)
+Rewrite using `[val_eq]`. Both sides reduce to the same expression.
+-/
 theorem pull_chi {s : Spec B ⟶ S} (g : Over.mk s ⟶ splitTorus S X) (a : X) :
     pull g (chi X a) = (Scheme.ΓSpecIso B).hom.hom (val g a) := by
   rw [val_eq]; rfl
 
+/- English proof (translation)
+The claim follows from `hom_ext fun a => (cr_iso_bij (Scheme.ΓSpecIso B)).1 (by rw [← pull_chi, ← pull_chi, h])`.
+-/
 theorem pull_ext {s : Spec B ⟶ S} {g g' : Over.mk s ⟶ splitTorus S X}
     (h : ∀ a, pull g (chi X a) = pull g' (chi X a)) : g = g' :=
   hom_ext fun a => (cr_iso_bij (Scheme.ΓSpecIso B)).1 (by rw [← pull_chi, ← pull_chi, h])
 
+/- English proof (translation)
+Rewrite using `[pull_chi, pull_chi, pull_chi, val_mul]`. Conclude with `map_mul _ _ _`.
+-/
 theorem pull_mul_chi {s : Spec B ⟶ S} (g g' : Over.mk s ⟶ splitTorus S X) (a : X) :
     pull (g * g') (chi X a) = pull g (chi X a) * pull g' (chi X a) := by
   rw [pull_chi, pull_chi, pull_chi, val_mul]; exact map_mul _ _ _
 
+/- English proof (translation)
+Rewrite using `[pull_chi, val_one]`. Conclude with `map_one _`.
+-/
 theorem pull_one_chi {s : Spec B ⟶ S} (a : X) :
     pull (1 : Over.mk s ⟶ splitTorus S X) (chi X a) = 1 := by
   rw [pull_chi, val_one]; exact map_one _
@@ -358,6 +501,9 @@ def univPt (t : Spec A ⟶ S) :
 def ev (t : Spec A ⟶ S) : Γ((splitTorus S X).left, ⊤) →+* AddMonoidAlgebra A X :=
   pull (univPt X t)
 
+/- English proof (translation)
+Rewrite using `[ev, pull_chi, val, univPt, coord_ofCoord]`. Use `erw [← CommRingCat.comp_apply, Category.assoc, Iso.inv_hom_id, Category.comp_id]`. Simplify using the standard rewrite rules.
+-/
 theorem ev_chi (t : Spec A ⟶ S) (a : X) : ev t (chi X a) = single a 1 := by
   rw [ev, pull_chi, val, univPt, coord_ofCoord]
   erw [← CommRingCat.comp_apply, Category.assoc, Iso.inv_hom_id, Category.comp_id]
@@ -371,6 +517,9 @@ def ptOf (t : Spec A ⟶ S) (ψ : AddMonoidAlgebra A X →+* B) {s : Spec B ⟶ 
       Over.mk s ⟶ Over.mk (Spec.map (CommRingCat.ofHom (algebraMap A (torusRing A X))) ≫ t)) ≫
     univPt X t
 
+/- English proof (translation)
+Set `p : Spec (torusRing A X) ⟶ (splitTorus S X).left` to `(univPt X t).left`. Express the relevant statement in the definitionally equal form `(Scheme.ΓSpecIso B).hom.hom ((Spec.map (CommRingCat.ofHom (R := torusRing A X) ψ) ≫ p).appTop.hom u) = ψ ((Scheme.ΓSpecIso (torusRing A X)).hom.hom (p.appTop.hom u))`. Rewrite using `[appTop_comp_apply, ← CommRingCat.comp_apply, Scheme.ΓSpecIso_naturality]`. Both sides reduce to the same expression.
+-/
 theorem pull_ptOf (t : Spec A ⟶ S) (ψ : AddMonoidAlgebra A X →+* B) {s : Spec B ⟶ S}
     (hs : Spec.map (CommRingCat.ofHom (ψ.comp (algebraMap A _))) ≫ t = s)
     (u : Γ((splitTorus S X).left, ⊤)) : pull (ptOf t ψ hs) u = ψ (ev t u) := by
@@ -381,6 +530,11 @@ theorem pull_ptOf (t : Spec A ⟶ S) (ψ : AddMonoidAlgebra A X →+* B) {s : Sp
   rw [appTop_comp_apply, ← CommRingCat.comp_apply, Scheme.ΓSpecIso_naturality]
   rfl
 
+/- English proof (translation)
+Establish `hs : Spec.map (CommRingCat.ofHom (S` using `torusRing B X) ((AddMonoidAlgebra.mapRingHom X φ.hom).comp (algebraMap A _))) ≫ t = Spec.map (CommRingCat.ofHom (algebraMap B (torusRing B X))) ≫ Spec.map φ ≫ t := by`. Rewrite using `[← Spec.map_comp_assoc]`. Use `congr 2`. Use `ext`. Simplify using the standard rewrite rules.
+
+Establish `e : univPt X (Spec.map φ ≫ t) = ptOf (B` using `torusRing B X) t (AddMonoidAlgebra.mapRingHom X φ.hom) hs := pull_ext fun a => by`. Rewrite using `[pull_ptOf, ev_chi]`. Conclude with `(ev_chi _ a).trans (by simp)`. Rewrite using `[ev, e, pull_ptOf]`.
+-/
 theorem ev_comp (t : Spec A ⟶ S) (φ : A ⟶ B) (u : Γ((splitTorus S X).left, ⊤)) :
     ev (Spec.map φ ≫ t) u = AddMonoidAlgebra.mapRingHom X φ.hom (ev t u) := by
   have hs : Spec.map (CommRingCat.ofHom (S := torusRing B X)
@@ -396,6 +550,15 @@ theorem ev_comp (t : Spec A ⟶ S) (φ : A ⟶ B) (u : Γ((splitTorus S X).left,
       exact (ev_chi _ a).trans (by simp)
   rw [ev, e, pull_ptOf]
 
+/- English proof (translation)
+Use `(splitTorus S X).left.affineOpenCover.openCover.ext_elem u v fun i => ?_` and prove the remaining obligations. Set `j` to `(splitTorus S X).left.affineOpenCover.f i`. Set `B` to `(splitTorus S X).left.affineOpenCover.X i`. Set `g : Over.mk (j ≫ (splitTorus S X).hom) ⟶ splitTorus S X` to `Over.homMk j`. Set `ψ : AddMonoidAlgebra B X →ₐ[B] B` to `AddMonoidAlgebra.lift B B X { toFun := fun a => pull g (chi X a.toAdd) map_one' := by simp [chi_zero] map_mul' := fun a b => by`.
+
+Rewrite using `[toAdd_mul, ← val_id, val_add, map_mul]`. Use `rfl }`. Establish `hs : Spec.map (CommRingCat.ofHom (ψ.toRingHom.comp (algebraMap B _))) ≫ (j ≫ (splitTorus S X).hom) = j ≫ (splitTorus S X).hom`. Establish `: ψ.toRingHom.comp (algebraMap B _) = RingHom.id B` using `by ext; simp`. Rewrite using `[this]`.
+
+Simplify using the standard rewrite rules. Establish `e : g = ptOf _ ψ.toRingHom hs` using `pull_ext fun a => by`. Rewrite using `[pull_ptOf, ev_chi]`. Simplify using `[ψ]`. Establish `: pull g u = pull g v` using `by rw [e, pull_ptOf, pull_ptOf, h]`.
+
+Conclude with `(cr_iso_bij (Scheme.ΓSpecIso B)).1 this`.
+-/
 theorem eq_of_ev {u v : Γ((splitTorus S X).left, ⊤)}
     (h : ∀ (A : CommRingCat.{u}) (t : Spec A ⟶ S), ev t u = ev t v) : u = v := by
   refine (splitTorus S X).left.affineOpenCover.openCover.ext_elem u v fun i => ?_
@@ -416,6 +579,15 @@ theorem eq_of_ev {u v : Γ((splitTorus S X).left, ⊤)}
   have : pull g u = pull g v := by rw [e, pull_ptOf, pull_ptOf, h]
   exact (cr_iso_bij (Scheme.ΓSpecIso B)).1 this
 
+/- English proof (translation)
+Establish `hm' : ∀ {B : CommRingCat.{u}} {s : Spec B ⟶ S} (x y : Over.mk s ⟶ splitTorus S X), pull (x * y) u = pull x u * pull y u` using `fun {B s} x y => (congrArg (Scheme.ΓSpecIso B).hom.hom (hm _ x y)).trans (map_mul _ _ _)`. Establish `hs : ∀ {B : Type u} [CommRing B] [Algebra A B] (ψ : AddMonoidAlgebra A X →ₐ[A] B), Spec.map (CommRingCat.ofHom (ψ.toRingHom.comp (algebraMap A _))) ≫ t = Spec.map (CommRingCat.ofHom (algebraMap A B)) ≫ t` using `fun ψ => by`. Use `congr 3`. Conclude with `ψ.comp_algebraMap`. Prove the components needed by the constructor for the conclusion.
+
+Establish `e : ptOf (B` using `.of A) t _ (hs (Bialgebra.counitAlgHom A (AddMonoidAlgebra A X))) = 1 := pull_ext fun a => by rw [pull_ptOf, ev_chi, pull_one_chi]; simp`. Establish `h1` using `hm' (1 : Over.mk (Spec.map (CommRingCat.ofHom (algebraMap A A)) ≫ t) ⟶ _) 1`. Rewrite `h1` using `[_root_.mul_one]`. Establish `h2` using `(hu.map _).mul_left_cancel (h1.symm.trans (_root_.mul_one _).symm)`. Rewrite `h2` using `[← e, pull_ptOf]`.
+
+Conclude with `h2`. Set `B : CommRingCat.{u}` to `.of (AddMonoidAlgebra A X ⊗[A] AddMonoidAlgebra A X)`. Establish `e : ptOf (B` using `B) t _ (hs (Bialgebra.comulAlgHom A (AddMonoidAlgebra A X))) = ptOf (B := B) t _ (hs Algebra.TensorProduct.includeLeft) * ptOf (B := B) t _ (hs Algebra.TensorProduct.includeRight) := pull_ext fun a => by`. Rewrite using `[pull_mul_chi, pull_ptOf, pull_ptOf, pull_ptOf, ev_chi]`. Simplify using `[B]`.
+
+Establish `h1` using `hm' (ptOf (B := B) t _ (hs Algebra.TensorProduct.includeLeft)) (ptOf (B := B) t _ (hs Algebra.TensorProduct.includeRight))`. Rewrite `h1` using `[← e, pull_ptOf, pull_ptOf, pull_ptOf]`. Simplify `h1` using `[B]`.
+-/
 theorem isGroupLikeElem_ev {u : Γ((splitTorus S X).left, ⊤)} (hu : IsUnit u)
     (hm : ∀ (T : Over S) (x y : T ⟶ splitTorus S X),
       (x * y).left.appTop.hom u = x.left.appTop.hom u * y.left.appTop.hom u)
@@ -452,6 +624,9 @@ section Characters
 
 variable {S : Scheme.{u}} {X Y Z : Type u} [AddCommGroup X] [AddCommGroup Y] [AddCommGroup Z]
 
+/- English proof (translation)
+Introduce `a b h`. Take `⟨s⟩` from `‹Nonempty S›`. Use `congrArg (ev (S.fromSpecResidueField s)) h` as an intermediate fact. Rewrite `this` using `[ev_chi, ev_chi]`. Conclude with `single_one_injective this`.
+-/
 theorem chi_injective [Nonempty S] : Function.Injective (chi (S := S) X) := by
   intro a b h
   obtain ⟨s⟩ := ‹Nonempty S›
@@ -459,6 +634,25 @@ theorem chi_injective [Nonempty S] : Function.Injective (chi (S := S) X) := by
   rw [ev_chi, ev_chi] at this
   exact single_one_injective this
 
+/- English proof (translation)
+Establish `h0 : ∀ s : S, ∃ a, ev (S.fromSpecResidueField s) u = single a 1` using `fun s => (isGroupLikeElem_iff (fun e he => IsIdempotentElem.iff_eq_zero_or_one.1 he) _).1 (hu _ _)`. Use `choose idx hidx using h0`. Establish `hA : ∀ (K : Type u) [Field K] (t : Spec (.of K) ⟶ S), ev t u = single (idx (t (IsLocalRing.closedPoint K))) 1` using `fun K _ t => by conv_lhs => rw [← Scheme.descResidueField_stalkClosedPointTo_fromSpecResidueField K S t]`. Rewrite using `[ev_comp, hidx]`. Simplify using the standard rewrite rules.
+
+Establish `hB : ∀ (A : CommRingCat.{u}) (t : Spec A ⟶ S) (p : Spec A) (a : X), (ev t u).coeff a ∉ p.asIdeal ↔ idx (t p) = a` using `fun A t p a => by haveI := p.isPrime`. Set `φ : A ⟶ .of p.asIdeal.ResidueField` to `CommRingCat.ofHom (algebraMap _ _)`. Establish `h1` using `hA p.asIdeal.ResidueField (Spec.map φ ≫ t)`. Establish `h2 : (Spec.map φ ≫ t) (IsLocalRing.closedPoint p.asIdeal.ResidueField) = t p`. Use `(Scheme.Hom.comp_apply _ _ _).trans (congrArg t ?_)` and prove the remaining obligations.
+
+Apply `PrimeSpectrum.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `Ideal.comap (algebraMap A p.asIdeal.ResidueField) (IsLocalRing.maximalIdeal _) = _`. Rewrite using `[IsLocalRing.maximalIdeal_eq_bot, ← RingHom.ker_eq_comap_bot, Ideal.ker_algebraMap_residueField]`. Rewrite `h1` using `[h2, ev_comp]`. Establish `h3` using `congrArg (fun v => v.coeff a) h1`.
+
+Simplify using `only [AddMonoidAlgebra.coeff_mapRingHom, AddMonoidAlgebra.coeff_single] at h3`. Rewrite using `[← Ideal.algebraMap_residueField_eq_zero]`. Express the relevant statement in the definitionally equal form `¬ φ.hom _ = 0 ↔ _`. Rewrite using `[h3]`. Simplify using `[Finsupp.single_apply]`.
+
+Establish `hloc : IsLocallyConstant idx`. Rewrite using `[IsLocallyConstant.iff_isOpen_fiber]`. Introduce `a`. Rewrite using `[isOpen_iff_forall_mem_open]`. Introduce `s hs`.
+
+Take `⟨i, p, rfl⟩` from `S.affineOpenCover.openCover.exists_eq s`. Set `t` to `S.affineOpenCover.f i`. Use `haveI : IsOpenImmersion t := S.affineOpenCover.map_prop i`. Use `⟨t '' {q | (ev t u).coeff a ∉ q.asIdeal}, ?_, ?_, p, ?_, rfl⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨q, hq, rfl⟩`.
+
+Conclude with `(hB _ t q a).1 hq`. Conclude with `t.isOpenEmbedding.isOpenMap _ (PrimeSpectrum.basicOpen _).isOpen`. Conclude with `(hB _ t p a).2 hs`. Take `⟨s₀⟩ : Nonempty S` from `inferInstance`. Use `⟨idx s₀, eq_of_ev fun A t => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[ev_chi]`. Use `eq_single_of_coeff_eq_zero (hu A t) _ fun y hy => ?_` and prove the remaining obligations. Establish `hn : IsNilpotent ((ev t u).coeff y)`. Rewrite using `[nilpotent_iff_mem_prime]`. Introduce `p hp`.
+
+Assume the negation of the conclusion as `h`. Conclude with `hy (((hB A t ⟨p, hp⟩ y).1 h).symm.trans (hloc.apply_eq_of_preconnectedSpace _ _))`. Conclude with `(isIdempotentElem_coeff (hu A t) y).eq_zero_of_isNilpotent hn`.
+-/
 theorem exists_eq_chi_of_ev [ConnectedSpace S] {u : Γ((splitTorus S X).left, ⊤)}
     (hu : ∀ (A : CommRingCat.{u}) (t : Spec A ⟶ S), IsGroupLikeElem A (ev t u)) :
     ∃ a, u = chi X a := by
@@ -512,11 +706,17 @@ theorem exists_eq_chi_of_ev [ConnectedSpace S] {u : Γ((splitTorus S X).left, �
     exact hy (((hB A t ⟨p, hp⟩ y).1 h).symm.trans (hloc.apply_eq_of_preconnectedSpace _ _))
   exact (isIdempotentElem_coeff (hu A t) y).eq_zero_of_isNilpotent hn
 
+/- English proof (translation)
+The claim follows from `exists_eq_chi_of_ev fun _ t => isGroupLikeElem_ev (isUnit_val f b) (fun T x y => by rw [← val_comp, ← val_comp, ← val_comp, MonObj.mul_comp, val_mul]) t`.
+-/
 theorem exists_val_eq_chi [ConnectedSpace S] (f : splitTorus S X ⟶ splitTorus S Y) [IsMonHom f]
     (b : Y) : ∃ a, val f b = chi X a :=
   exists_eq_chi_of_ev fun _ t => isGroupLikeElem_ev (isUnit_val f b) (fun T x y => by
     rw [← val_comp, ← val_comp, ← val_comp, MonObj.mul_comp, val_mul]) t
 
+/- English proof (translation)
+Introduce `φ ψ h`. Use extensionality with `b`. Apply `chi_injective (S := S)` to reduce the goal to its premises. Rewrite using `[← val_torusMap, ← val_torusMap, h]`.
+-/
 theorem torusMap_injective [Nonempty S] :
     Function.Injective (torusMap S : (Y →+ X) → (splitTorus S X ⟶ splitTorus S Y)) := by
   intro φ ψ h
@@ -524,6 +724,9 @@ theorem torusMap_injective [Nonempty S] :
   apply chi_injective (S := S)
   rw [← val_torusMap, ← val_torusMap, h]
 
+/- English proof (translation)
+Use `choose φ hφ using exists_val_eq_chi f`. Use `⟨AddMonoidHom.mk' φ fun a b => chi_injective (S := S) ?_, hom_ext fun b => ?_⟩` and prove the remaining obligations. Rewrite using `[← hφ, val_add, hφ, hφ, ← val_id, ← val_id, ← val_id, val_add]`. Rewrite using `[val_torusMap, hφ]`. Both sides reduce to the same expression.
+-/
 theorem exists_eq_torusMap [ConnectedSpace S] (f : splitTorus S X ⟶ splitTorus S Y) [IsMonHom f] :
     ∃ φ : Y →+ X, f = torusMap S φ := by
   choose φ hφ using exists_val_eq_chi f
@@ -540,9 +743,15 @@ def homEquiv [ConnectedSpace S] :
       obtain ⟨φ, rfl⟩ := exists_eq_torusMap f
       exact ⟨φ, rfl⟩⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem homEquiv_apply [ConnectedSpace S] (φ : Y →+ X) :
     (homEquiv S X Y φ).1 = torusMap S φ := rfl
 
+/- English proof (translation)
+The claim follows from `torusMap_comp φ ψ`.
+-/
 theorem homEquiv_comp [ConnectedSpace S] (φ : Y →+ X) (ψ : Z →+ Y) :
     (homEquiv S X Z (φ.comp ψ)).1 = (homEquiv S X Y φ).1 ≫ (homEquiv S Y Z ψ).1 :=
   torusMap_comp φ ψ
@@ -568,11 +777,19 @@ def charactersEquiv [ConnectedSpace S] : X ≃ characters (splitTorus S X) :=
 
 end Characters
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero => rw [pow_zero]`. Both sides reduce to the same expression. Consider the case `succ n ih => rw [pow_succ, ← ih]`. Both sides reduce to the same expression.
+-/
 theorem mulN_eq_pow {S : Scheme.{u}} (G : Over S) [GrpObj G] (m : ℕ) : mulN G m = (𝟙 G) ^ m := by
   induction m with
   | zero => rw [pow_zero]; rfl
   | succ n ih => rw [pow_succ, ← ih]; rfl
 
+/- English proof (translation)
+Rewrite using `[mulN_eq_pow]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[MonObj.comp_pow, Category.comp_id]`. Establish `: η[G] = 1` using `by rw [Hom.one_def]; simp`. Rewrite using `[this, one_pow]`.
+
+Establish `h1 : μ[G] = fst G G * snd G G` using `by rw [Hom.mul_def, lift_fst_snd, Category.id_comp]`. Establish `h2 : ((𝟙 G) ^ m ⊗ₘ (𝟙 G) ^ m) ≫ μ[G] = (fst G G ≫ (𝟙 G) ^ m) * (snd G G ≫ (𝟙 G) ^ m)`. Rewrite using `[Hom.mul_def]`. Use `congr 1`. Rewrite using `[h2, MonObj.comp_pow, MonObj.comp_pow, MonObj.comp_pow, Category.comp_id, Category.comp_id, Category.comp_id, ← mul_pow, ← h1]`.
+-/
 theorem isMonHom_mulN {S : Scheme.{u}} (G : Over S) [GrpObj G] [IsCommMonObj G] (m : ℕ) :
     IsMonHom (mulN G m) := by
   rw [mulN_eq_pow]
@@ -586,12 +803,18 @@ theorem isMonHom_mulN {S : Scheme.{u}} (G : Over S) [GrpObj G] [IsCommMonObj G] 
     rw [h2, MonObj.comp_pow, MonObj.comp_pow, MonObj.comp_pow, Category.comp_id, Category.comp_id,
       Category.comp_id, ← mul_pow, ← h1]
 
+/- English proof (translation)
+Establish `h` using `PrimeSpectrum.isHomeomorph_comap (Ideal.Quotient.mk I) (fun x => ⟨1, one_pos, by simpa using Ideal.Quotient.mk_surjective x⟩) (by simpa using hI)`. Conclude with `h.homeomorph.symm.surjective.connectedSpace h.homeomorph.symm.continuous`.
+-/
 theorem connectedSpace_quotient {R : Type*} [CommRing R] [ConnectedSpace (PrimeSpectrum R)]
     (I : Ideal R) (hI : I ≤ nilradical R) : ConnectedSpace (PrimeSpectrum (R ⧸ I)) := by
   have h := PrimeSpectrum.isHomeomorph_comap (Ideal.Quotient.mk I)
     (fun x => ⟨1, one_pos, by simpa using Ideal.Quotient.mk_surjective x⟩) (by simpa using hI)
   exact h.homeomorph.symm.surjective.connectedSpace h.homeomorph.symm.continuous
 
+/- English proof (translation)
+Establish `: PreconnectedSpace (PrimeSpectrum R)`. Use `⟨isPreconnected_of_forall (IsLocalRing.closedPoint R) fun y _ => ⟨closure {y}, Set.subset_univ _, ?_, subset_closure rfl, isPreconnected_singleton.closure⟩⟩` and prove the remaining obligations. Conclude with `(IsLocalRing.specializes_closedPoint y).mem_closure`. Conclude with `⟨inferInstance⟩`.
+-/
 theorem connectedSpace_of_isLocalRing (R : Type*) [CommRing R] [IsLocalRing R] :
     ConnectedSpace (PrimeSpectrum R) := by
   have : PreconnectedSpace (PrimeSpectrum R) := by
@@ -607,19 +830,34 @@ variable {S S' : Scheme.{u}} (f : S' ⟶ S) (X Y : Type u) [AddCommGroup X] [Add
 def bcMap : (splitTorus S' X).left ⟶ (splitTorus S X).left :=
   pullback.lift (torusFst S' X) ((splitTorus S' X).hom ≫ f) (specULiftZIsTerminal.hom_ext _ _)
 
+/- English proof (translation)
+The claim follows from `pullback.lift_fst _ _ _`.
+-/
 @[reassoc] theorem bcMap_torusFst : bcMap f X ≫ torusFst S X = torusFst S' X :=
   pullback.lift_fst _ _ _
 
+/- English proof (translation)
+The claim follows from `pullback.lift_snd _ _ _`.
+-/
 @[reassoc] theorem bcMap_hom : bcMap f X ≫ (splitTorus S X).hom = (splitTorus S' X).hom ≫ f :=
   pullback.lift_snd _ _ _
 
+/- English proof (translation)
+Rewrite using `[chi, coord, Over.id_left, Category.id_comp]`. Both sides reduce to the same expression.
+-/
 theorem chi_eq (a : X) : chi (S := S) X a = (torusFst S X).appTop.hom
     ((Scheme.ΓSpecIso (torusRing ZU X)).inv.hom (single a 1)) := by
   rw [chi, coord, Over.id_left, Category.id_comp]; rfl
 
+/- English proof (translation)
+Rewrite using `[chi_eq, chi_eq, ← appTop_comp_apply, bcMap_torusFst]`.
+-/
 theorem bcMap_appTop_chi (a : X) : (bcMap f X).appTop.hom (chi X a) = chi X a := by
   rw [chi_eq, chi_eq, ← appTop_comp_apply, bcMap_torusFst]
 
+/- English proof (translation)
+Establish `h1 : IsPullback (torusFst S X) (splitTorus S X).hom (splitTorusAff ZU X).hom (toZ S)` using `IsPullback.of_hasPullback _ _`. Establish `h2 : IsPullback (bcMap f X ≫ torusFst S X) (splitTorus S' X).hom (splitTorusAff ZU X).hom (f ≫ toZ S)`. Rewrite using `[bcMap_torusFst, show f ≫ toZ S = toZ S' from specULiftZIsTerminal.hom_ext _ _]`. Conclude with `IsPullback.of_hasPullback _ _`. Conclude with `h2.of_right (bcMap_hom f X) h1`.
+-/
 theorem isPullback_bcMap :
     IsPullback (bcMap f X) (splitTorus S' X).hom (splitTorus S X).hom f := by
   have h1 : IsPullback (torusFst S X) (splitTorus S X).hom (splitTorusAff ZU X).hom (toZ S) :=
@@ -633,15 +871,24 @@ theorem isPullback_bcMap :
 def bcIso : splitTorus S' X ≅ (Over.pullback f).obj (splitTorus S X) :=
   Over.isoMk (isPullback_bcMap f X).isoPullback (isPullback_bcMap f X).isoPullback_hom_snd
 
+/- English proof (translation)
+The claim follows from `(isPullback_bcMap f X).isoPullback_hom_fst`.
+-/
 @[reassoc] theorem bcIso_hom_fst :
     (bcIso f X).hom.left ≫ pullback.fst (splitTorus S X).hom f = bcMap f X :=
   (isPullback_bcMap f X).isoPullback_hom_fst
 
+/- English proof (translation)
+The claim follows from `(isPullback_bcMap f X).isoPullback_inv_fst`.
+-/
 @[reassoc] theorem bcIso_inv_bcMap :
     (bcIso f X).inv.left ≫ bcMap f X = pullback.fst (splitTorus S X).hom f :=
   (isPullback_bcMap f X).isoPullback_inv_fst
 
 variable {X} in
+/- English proof (translation)
+Rewrite using `[val_eq, ← bcIso_inv_bcMap, ← Category.assoc, appTop_comp_apply _ (bcMap f X), bcMap_appTop_chi, Over.comp_left]`.
+-/
 theorem val_comp_bcIso_inv {T : Over S'} (z : T ⟶ (Over.pullback f).obj (splitTorus S X)) (a : X) :
     val (z ≫ (bcIso f X).inv) a =
       (z.left ≫ pullback.fst (splitTorus S X).hom f).appTop.hom (chi X a) := by
@@ -666,6 +913,9 @@ instance isMonHom_bcIso_hom : IsMonHom (bcIso f X).hom :=
   haveI : IsMonHom (bcIso f X).symm.hom := isMonHom_bcIso_inv f X
   inferInstanceAs (IsMonHom (bcIso f X).symm.inv)
 
+/- English proof (translation)
+Establish `h` using `mul_left_comp_fst (splitTorus S X) f (x ≫ (bcIso f X).hom) (y ≫ (bcIso f X).hom) x₀ y₀ (by rw [hx, Over.comp_left, Category.assoc, bcIso_hom_fst]) (by rw [hy, Over.comp_left, Category.assoc, bcIso_hom_fst])`. Rewrite using `[h, ← MonObj.mul_comp, Over.comp_left, Category.assoc, bcIso_hom_fst]`.
+-/
 theorem mul_left_bcMap (T : Over S') (x y : T ⟶ splitTorus S' X)
     (x₀ y₀ : Over.mk (T.hom ≫ f) ⟶ splitTorus S X) (hx : x₀.left = x.left ≫ bcMap f X)
     (hy : y₀.left = y.left ≫ bcMap f X) : (x₀ * y₀).left = (x * y).left ≫ bcMap f X := by
@@ -674,12 +924,22 @@ theorem mul_left_bcMap (T : Over S') (x y : T ⟶ splitTorus S' X)
     (by rw [hy, Over.comp_left, Category.assoc, bcIso_hom_fst])
   rw [h, ← MonObj.mul_comp, Over.comp_left, Category.assoc, bcIso_hom_fst]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨isPullback_bcMap f X, mul_left_bcMap f X⟩`.
+-/
 theorem isGrpPullback_bcMap {S S' : Scheme.{0}} (f : S' ⟶ S) (X : Type) [AddCommGroup X] :
     ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsGrpPullback (splitTorus S' X) (splitTorus S X) f (bcMap f X) :=
   ⟨isPullback_bcMap f X, mul_left_bcMap f X⟩
 
 variable {X Y}
 
+/- English proof (translation)
+Set `p : Over.mk ((splitTorus S' X).hom ≫ f) ⟶ splitTorus S Y` to `Over.homMk ((torusMap S' φ).left ≫ bcMap f Y) (by`. Rewrite using `[Category.assoc, bcMap_hom, ← Category.assoc, Over.w]`. Use the proof step `rfl)`. Set `q : Over.mk ((splitTorus S' X).hom ≫ f) ⟶ splitTorus S Y` to `Over.homMk (bcMap f X ≫ (torusMap S φ).left) (by`. Rewrite using `[Category.assoc, Over.w, bcMap_hom]`.
+
+Use the proof step `rfl)`. Establish `: p = q` using `hom_ext fun b => by`. Rewrite using `[val_eq, val_eq]`. Express the relevant statement in the definitionally equal form `((torusMap S' φ).left ≫ bcMap f Y).appTop.hom _ = (bcMap f X ≫ (torusMap S φ).left).appTop.hom _`. Rewrite using `[appTop_comp_apply, appTop_comp_apply, bcMap_appTop_chi, torusMap_appTop_chi, torusMap_appTop_chi, bcMap_appTop_chi]`.
+
+Conclude with `congrArg (·.left) this`.
+-/
 theorem torusMap_bcMap (φ : Y →+ X) :
     (torusMap S' φ).left ≫ bcMap f Y = bcMap f X ≫ (torusMap S φ).left := by
   let p : Over.mk ((splitTorus S' X).hom ≫ f) ⟶ splitTorus S Y :=
@@ -696,6 +956,11 @@ theorem torusMap_bcMap (φ : Y →+ X) :
       torusMap_appTop_chi, bcMap_appTop_chi]
   exact congrArg (·.left) this
 
+/- English proof (translation)
+Establish `A : ((Over.pullback f).map g).left ≫ pullback.fst (splitTorus S Y).hom f = pullback.fst (splitTorus S X).hom f ≫ g.left` using `pullback.lift_fst _ _ _`. Establish `B : ((bcIso f X).hom ≫ (Over.pullback f).map g).left ≫ pullback.fst (splitTorus S Y).hom f = bcMap f X ≫ g.left`. Rewrite using `[Over.comp_left, Category.assoc, A, bcIso_hom_fst_assoc]`. Establish `C : (g' ≫ (bcIso f Y).hom).left ≫ pullback.fst (splitTorus S Y).hom f = g'.left ≫ bcMap f Y`. Rewrite using `[Over.comp_left, Category.assoc, bcIso_hom_fst]`.
+
+Use `⟨fun h => Over.OverMorphism.ext (pullback.hom_ext ?_ ?_), fun h => by rw [← C, h, B]⟩` and prove the remaining obligations. Rewrite using `[B, C, h]`. Conclude with `(Over.w _).trans (Over.w _).symm`.
+-/
 theorem comm_bcMap_iff (g : splitTorus S X ⟶ splitTorus S Y)
     (g' : splitTorus S' X ⟶ splitTorus S' Y) :
     g'.left ≫ bcMap f Y = bcMap f X ≫ g.left ↔
@@ -712,6 +977,9 @@ theorem comm_bcMap_iff (g : splitTorus S X ⟶ splitTorus S Y)
   · rw [B, C, h]
   · exact (Over.w _).trans (Over.w _).symm
 
+/- English proof (translation)
+Rewrite using `[(comm_bcMap_iff f _ _).1 (torusMap_bcMap f φ), Iso.inv_hom_id_assoc]`.
+-/
 theorem pullback_map_torusMap (φ : Y →+ X) :
     (Over.pullback f).map (torusMap S φ) =
       (bcIso f X).inv ≫ torusMap S' φ ≫ (bcIso f Y).hom := by

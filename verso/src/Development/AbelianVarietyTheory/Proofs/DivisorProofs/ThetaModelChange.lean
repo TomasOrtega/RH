@@ -11,6 +11,13 @@ open scoped Matrix
 
 namespace GlobalTheory.ModelChg
 
+/- English proof (translation)
+Take `⟨hrs, P, hP⟩` from `h`. Establish `hu : IsUnit (Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℂ) (0 : Matrix (Fin r) (Fin s) ℂ) (0 : Matrix (Fin s) (Fin r) ℂ) (-1 : Matrix (Fin s) (Fin s) ℂ))`. Rewrite using `[Matrix.isUnit_iff_isUnit_det, Matrix.det_fromBlocks_zero₂₁]`. Simplify using `[Matrix.det_neg]`. Establish `h1` using `Matrix.rank_of_isUnit _ hu`.
+
+Establish `h2 : (Pᵀ * A * P.map star).rank ≤ A.rank` using `(Matrix.rank_mul_le_left _ _).trans (Matrix.rank_mul_le_right _ _)`. Rewrite `h2` using `[hP, h1]`. Simplify using `at h2`. Establish `h3 : A.rank = n` using `le_antisymm (by simpa using A.rank_le_card_width) (by omega)`. Establish `h4 : LinearMap.range A.mulVecLin = ⊤` using `Submodule.eq_top_of_finrank_eq (by rw [Module.finrank_fin_fun]; exact h3)`.
+
+Establish `h5 : Function.Surjective A.mulVec` using `LinearMap.range_eq_top.mp h4`. Conclude with `(Matrix.isUnit_iff_isUnit_det A |>.mp (Matrix.mulVec_surjective_iff_isUnit.mp h5)).ne_zero`.
+-/
 theorem det_ne_zero_of_hasSig {n r s : ℕ} {A : Matrix (Fin n) (Fin n) ℂ} (h : HasSig A r s) : A.det ≠ 0 := by
   obtain ⟨hrs, P, hP⟩ := h
   have hu : IsUnit (Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℂ) (0 : Matrix (Fin r) (Fin s) ℂ)
@@ -27,6 +34,11 @@ theorem det_ne_zero_of_hasSig {n r s : ℕ} {A : Matrix (Fin n) (Fin n) ℂ} (h 
   have h5 : Function.Surjective A.mulVec := LinearMap.range_eq_top.mp h4
   exact (Matrix.isUnit_iff_isUnit_det A |>.mp (Matrix.mulVec_surjective_iff_isUnit.mp h5)).ne_zero
 
+/- English proof (translation)
+Take `⟨w⟩` from `(inferInstance : Nonempty (InfinitePlace F))`. Establish `h1` using `det_ne_zero_of_hasSig (h w)`. Rewrite `h1` using `[Matrix.det_smul]`. Introduce `h0`. Apply `h1` to reduce the goal to its premises.
+
+Rewrite using `[show (J.map (B.emb w).1).det = (B.emb w).1 J.det from ((B.emb w).1.map_det J).symm, h0, map_zero, mul_zero]`.
+-/
 theorem det_ne_zero_of_sig {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (B : Base F E) {n r s : ℕ} (J : Matrix (Fin n) (Fin n) E) (c : ℂ) (hc : c ≠ 0)
     (h : ∀ w, HasSig (c • J.map (B.emb w).1) r s) : J.det ≠ 0 := by
@@ -37,6 +49,11 @@ theorem det_ne_zero_of_sig {F E : Type} [Field F] [NumberField F] [Field E] [Num
   apply h1
   rw [show (J.map (B.emb w).1).det = (B.emb w).1 J.det from ((B.emb w).1.map_det J).symm, h0, map_zero, mul_zero]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP M₁ om₁ hP₁`. Take `⟨a, ha, hco⟩` from `GlobalTheory.T.good_models_differ_by_symplectic_matrix F E σ B.ψ n d X W M M₁ hP.good hP₁.good`. Take `⟨e, c, hc, hev, hbij, hθ⟩` from `GlobalTheory.T.symplectic_change_of_good_models_intertwines hK F E σ B n d X W M M₁ r s r' s' hP.base hP.herm hP.skew hP.good hP₁.good a ha hco`. Take `⟨om₂, hW₂, hint⟩` from `GlobalTheory.T.eigen_intertwiner_preserves_schwartz_space hK F E σ B n d X W M χX χW om r s r' s' hP M₁ hP₁.good e hev hbij`. Establish `hX : X.J.det ≠ 0` using `det_ne_zero_of_sig B X.J 1 one_ne_zero (fun w => by simpa using hP.herm.sig w)`.
+
+Establish `hWd : W.J.det ≠ 0` using `det_ne_zero_of_sig B W.J Complex.I Complex.I_ne_zero hP.skew.sig`. Establish `huniq` using `GlobalTheory.T.adelicWeilRep_schrodingerModel_unique F E σ hP.base.cm n d X W M₁ B.ψ χX χW hP.base.std hP.herm.herm hX hP.skew.skew hWd om₂ om₁ hW₂ hP₁.weil`. Use `⟨e, c, hc, hev, hbij, fun Φ hΦ => ⟨hθ Φ hΦ, fun x => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hint x Φ hΦ, huniq x (e Φ) (hbij.mapsTo hΦ)]`.
+-/
 theorem modelChange (hK : GlobalTheory.FunPr.Hypotheses₂) : GlobalTheory.ThK.ModelChange := by
   intro F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP M₁ om₁ hP₁
   obtain ⟨a, ha, hco⟩ := GlobalTheory.T.good_models_differ_by_symplectic_matrix F E σ B.ψ n d X W M M₁ hP.good hP₁.good

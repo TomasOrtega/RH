@@ -25,6 +25,9 @@ instance (ψ : AddChar F Circle) : (leviMeasure β ψ).IsHaarMeasure := by
 
 omit [MeasurableSpace F] [BorelSpace F] in
 
+/- English proof (translation)
+Establish `h3 : Continuous (leviAbsDetShift (F` using `F) β) := by`. Use `continuous_monoidHom_of_eq_one _ ⟨leviIntegral F n β, isOpen_leviIntegral (F := F)⟩ fun k hk => ?_` and prove the remaining obligations. Use `show leviAbsDet β k ^ (((n : ℝ) - 1) / 2) = 1`. Rewrite using `[leviAbsDet_of_mem_integralGL (Subgroup.mem_subgroupOf.1 hk), NNReal.one_rpow]`. Conclude with `(continuous_leviRatio.mul continuous_leviSqrtModular).mul h3`.
+-/
 theorem continuous_inducedChar : Continuous (inducedChar (F := F) β) := by
   have h3 : Continuous (leviAbsDetShift (F := F) β) := by
     refine continuous_monoidHom_of_eq_one _
@@ -33,6 +36,21 @@ theorem continuous_inducedChar : Continuous (inducedChar (F := F) β) := by
     rw [leviAbsDet_of_mem_integralGL (Subgroup.mem_subgroupOf.1 hk), NNReal.one_rpow]
   exact (continuous_leviRatio.mul continuous_leviSqrtModular).mul h3
 
+/- English proof (translation)
+Establish `: BorelSpace (integralGL F n)` using `Subtype.borelSpace _`. Establish `: CompactSpace (integralGL F n)` using `isCompact_iff_compactSpace.1 (isCompact_integralGL F n)`. Set `μK : Measure (integralGL F n)` to `Measure.haar`. Use `set κ : ℝ := μP.real (Subtype.val ⁻¹' (integralGL F n : Set (GL (Fin n) F))) * μK.real Set.univ with hκ`. Use `set κ' : ℝ := μG.real (integralGL F n) * μK.real ((congruenceSubgroup F n r).subgroupOf (integralGL F n) : Set (integralGL F n)) with hκ'`.
+
+Use `⟨((κ⁻¹ * κ' : ℝ) : ℂ), fun f hf hr hint => ?_⟩` and prove the remaining obligations. Establish `hintP : ∀ y ∈ integralGL F n, Integrable (fun p : blockUpper F n β => f ((p : GL (Fin n) F) * y)) μP`. Introduce `y hy`. Take `⟨h, hq⟩` from `QuotientGroup.mk_out_eq_mul ((congruenceSubgroup F n r).subgroupOf (integralGL F n)) (⟨y, hy⟩ : integralGL F n)`. Establish `heq : ∀ p : blockUpper F n β, f ((p : GL (Fin n) F) * y) = f ((p : GL (Fin n) F) * (((QuotientGroup.mk ⟨y, hy⟩ : integralGL F n ⧸ (congruenceSubgroup F n r).subgroupOf (integralGL F n)).out : integralGL F n) : GL (Fin n) F))`.
+
+Introduce `p`. Rewrite using `[hq, Subgroup.coe_mul, ← mul_assoc]`. Conclude with `(hr _ _ (Subgroup.mem_subgroupOf.1 h.2)).symm`. Repeatedly rewrite using `[heq]`. Conclude with `hint _`.
+
+Establish `hP0 : μP (Subtype.val ⁻¹' (integralGL F n : Set (GL (Fin n) F))) ≠ 0` using `((isOpen_integralGL F n).preimage continuous_subtype_val).measure_ne_zero _ ⟨1, by simp [one_mem]⟩`. Establish `hK0 : μK Set.univ ≠ 0` using `isOpen_univ.measure_ne_zero μK Set.univ_nonempty`. Establish `hintG : Integrable f μG`. Use `⟨hf.aestronglyMeasurable, ?_⟩` and prove the remaining obligations. Establish `hC` using `lintegral_eq_sum_parabolic (β := β) (r := r) μG μP μK hf.enorm.measurable (h := fun g => ‖f g‖ₑ) (fun g k hk => by simp only [hr g k hk])`.
+
+Establish `hlt : μG (integralGL F n) * (μK ((congruenceSubgroup F n r).subgroupOf (integralGL F n)) * ∑ q : integralGL F n ⧸ (congruenceSubgroup F n r).subgroupOf (integralGL F n), ∫⁻ p, ‖f ((p : GL (Fin n) F) * ((q.out : integralGL F n) : GL (Fin n) F))‖ₑ ∂μP) < ⊤` using `ENNReal.mul_lt_top (isCompact_integralGL F n).measure_lt_top (ENNReal.mul_lt_top (measure_lt_top _ _) (ENNReal.sum_lt_top.2 fun q _ => (hint q).2))`. Rewrite `hlt` using `[hC]`. Conclude with `ENNReal.lt_top_of_mul_ne_top_right hlt.ne (mul_ne_zero hP0 hK0)`. Use `⟨hintG, ?_⟩` and prove the remaining obligations. Establish `hκ0 : κ ≠ 0`.
+
+Rewrite using `[hκ]`. Establish `hPc : IsCompact (Subtype.val ⁻¹' (integralGL F n : Set (GL (Fin n) F)) : Set (blockUpper F n β))` using `(Measures.isClosed_blockUpper F n β).isClosedEmbedding_subtypeVal.isCompact_preimage (isCompact_integralGL F n)`. Conclude with `mul_ne_zero (ENNReal.toReal_ne_zero.2 ⟨hP0, hPc.measure_lt_top.ne⟩) (ENNReal.toReal_ne_zero.2 ⟨hK0, measure_ne_top _ _⟩)`. Establish `hC` using `integral_eq_sum_parabolic (β := β) μG μP μK hintG hr hintP`. Rewrite `hC` using `[Complex.real_smul, Complex.real_smul, Complex.real_smul]`.
+
+Establish `hκC : (κ : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 hκ0`. Rewrite `hC` using `[← hκ, ← mul_assoc, ← Complex.ofReal_mul, ← hκ']`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Take the linear combination `hC.symm`.
+-/
 theorem iwasawa_transfer (μG : Measure (GL (Fin n) F)) [μG.IsHaarMeasure]
     (μP : Measure (blockUpper F n β)) [μP.IsHaarMeasure] (r : ℕ)
     [Fintype (integralGL F n ⧸ (congruenceSubgroup F n r).subgroupOf (integralGL F n))] :
@@ -103,10 +121,52 @@ theorem iwasawa_transfer (μG : Measure (GL (Fin n) F)) [μG.IsHaarMeasure]
   linear_combination hC.symm
 
 omit [MeasurableSpace F] [BorelSpace F] in
+/- English proof (translation)
+Rewrite using `[detPow_mul, detPow_of_mem_integralGL ((integralGL F n).inv_mem hy), one_mul]`.
+-/
 theorem detPow_inv_mul_of_mem {y : GL (Fin n) F} (hy : y ∈ integralGL F n) (g : GL (Fin n) F)
     (s : ℂ) : detPow (y⁻¹ * g) s = detPow g s := by
   rw [detPow_mul, detPow_of_mem_integralGL ((integralGL F n).inv_mem hy), one_mul]
 
+/- English proof (translation)
+Take `rfl : mG = Units.instMeasurableSpace` from `hGB.measurable_eq.trans (borelSpace_GL (F := F) (n := n)).measurable_eq.symm`. Introduce `Φ hΦ φ hφ ℓ hℓ`. Take `⟨r₁, hr₁⟩` from `hΦ.exists_mul_congruenceSubgroup`. Take `⟨K', hK'o, hK'⟩` from `hφ.2`. Take `⟨r₂, -, hr₂⟩` from `(hasBasis_nhds_one F n).mem_iff.1 (hK'o.mem_nhds K'.one_mem)`.
+
+Use `set r := max r₁ r₂ with hrdef`. Establish `hΦr : ∀ X : Matrix (Fin n) (Fin n) F, ∀ k ∈ congruenceSubgroup F n r, Φ (X * (k : Matrix (Fin n) (Fin n) F)) = Φ X` using `fun X k hk => hr₁ X k (congruenceSubgroup_antitone F n (le_max_left _ _) hk)`. Establish `hφr : ∀ g, ∀ k ∈ congruenceSubgroup F n r, φ (g * k) = φ g` using `fun g k hk => hK' k (hr₂ (congruenceSubgroup_antitone F n (le_max_right _ _) hk)) g`. Establish `hk₀ : ∀ k ∈ congruenceSubgroup F n r, k ∈ integralGL F n` using `fun k hk => congruenceSubgroup_le F n r hk`. Establish `: CompactSpace (integralGL F n)` using `isCompact_iff_compactSpace.1 (isCompact_integralGL F n)`.
+
+Establish `: Finite (integralGL F n ⧸ (congruenceSubgroup F n r).subgroupOf (integralGL F n))` using `Subgroup.quotient_finite_of_isOpen _ ((isOpen_congruenceSubgroup F n r).preimage continuous_subtype_val)`. Set `_` to `Fintype.ofFinite (integralGL F n ⧸ (congruenceSubgroup F n r).subgroupOf (integralGL F n))`. Take `⟨C, hCf⟩` from `iwasawa_transfer (β := β) μG (measureP β ψ) r`. Use `set y : integralGL F n ⧸ (congruenceSubgroup F n r).subgroupOf (integralGL F n) → GL (Fin n) F := fun q => ((q.out : integralGL F n) : GL (Fin n) F) with hydef`. Establish `hy : ∀ q, y q ∈ integralGL F n` using `fun q => (q.out).2`.
+
+Establish `hD` using `fun q => levi_decomp hψ hψ1 hL (hΦ.comp_mulRight (y q)) (φ (y q)) hℓ`. Use `choose sA hsA using fun q => (hD q).1`. Use `choose sB hsB using fun q => (hD q).2.1`. Establish `hRq` using `fun q => (hD q).2.2`. Use `set s₁ : ℝ := ∑ q, (|sA q| + |sB q|) with hs₁`.
+
+Establish `hsA' : ∀ q, sA q ≤ s₁` using `fun q => (le_abs_self _).trans ((le_add_of_nonneg_right (abs_nonneg _)).trans (Finset.single_le_sum (f := fun q => |sA q| + |sB q|) (fun q _ => add_nonneg (abs_nonneg _) (abs_nonneg _)) (Finset.mem_univ q)))`. Establish `hsB' : ∀ q, -s₁ ≤ sB q` using `fun q => by`. Establish `h1 : |sB q| ≤ s₁` using `(le_add_of_nonneg_left (abs_nonneg _)).trans (Finset.single_le_sum (f := fun q => |sA q| + |sB q|) (fun q _ => add_nonneg (abs_nonneg _) (abs_nonneg _)) (Finset.mem_univ q))`. Combine the linear relations using `[neg_abs_le (sB q)]`. Establish `hcontA : ∀ s : ℂ, Continuous fun g : GL (Fin n) F => Φ (g : Matrix (Fin n) (Fin n) F) * detPow g (s + ((n : ℂ) - 1) / 2) * ℓ (φ g)` using `fun s => continuous_inducedIntegrand hΦ hφ.2 ℓ _`.
+
+Establish `hrA : ∀ s : ℂ, ∀ g, ∀ k ∈ congruenceSubgroup F n r, Φ ((g * k : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) * detPow (g * k) (s + ((n : ℂ) - 1) / 2) * ℓ (φ (g * k)) = Φ (g : Matrix (Fin n) (Fin n) F) * detPow g (s + ((n : ℂ) - 1) / 2) * ℓ (φ g)`. Introduce `s g k hk`. Rewrite using `[Units.val_mul, hΦr _ k hk, detPow_mul_of_mem_integralGL g (hk₀ k hk), hφr g k hk]`. Establish `hPA : ∀ s : ℂ, s₁ < s.re → ∀ q, Integrable (fun p : blockUpper F n β => Φ (((p : GL (Fin n) F) * y q : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) * detPow ((p : GL (Fin n) F) * y q) (s + ((n : ℂ) - 1) / 2) * ℓ (φ ((p : GL (Fin n) F) * y q))) (measureP β ψ)`. Introduce `s hs q`.
+
+Use `⟨((hcontA s).comp (continuous_subtype_val.mul continuous_const)).aestronglyMeasurable, ?_⟩` and prove the remaining obligations. Use `show ∫⁻ p, ‖inducedIntegrand Φ φ ℓ (s + ((n : ℂ) - 1) / 2) ((p : GL (Fin n) F) * y q)‖ₑ ∂measureP β ψ < ⊤`. Rewrite using `[lintegral_inducedIntegrand_mul (leviCoordMeasure β ψ) (unipMeasure β ψ) hΦ hφ ℓ _ (hy q)]`. Repeatedly rewrite using `[leviIntegrand_shift]`. Conclude with `hsA q s (lt_of_le_of_lt (hsA' q) hs)`.
+
+Establish `hformA : ∀ s : ℂ, s₁ < s.re → Integrable (fun g : GL (Fin n) F => Φ (g : Matrix (Fin n) (Fin n) F) * detPow g (s + ((n : ℂ) - 1) / 2) * ℓ (φ g)) μG ∧ ∫ g, Φ (g : Matrix (Fin n) (Fin n) F) * detPow g (s + ((n : ℂ) - 1) / 2) * ℓ (φ g) ∂μG = C * ∑ q, ∫ m, leviIntegrand σ (inducedCha …`. Introduce `s hs`. Take `⟨hint, heq⟩` from `hCf _ (hcontA s) (hrA s) (hPA s hs)`. Use `⟨hint, heq.trans ?_⟩` and prove the remaining obligations. Use `congr 1`.
+
+Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Use `integral_inducedIntegrand_mul (leviCoordMeasure β ψ) (unipMeasure β ψ) hφ ℓ (s + ((n : ℂ) - 1) / 2) (hy q) (hPA s hs q)` as an intermediate fact. Simplify using `only [inducedIntegrand] at this`. Rewrite using `[this]`. Repeatedly rewrite using `[leviIntegrand_shift]`.
+
+Use `set fB : ℂ → GL (Fin n) F → ℂ := fun s g => localMatrixFourier ψ Φ (g : Matrix (Fin n) (Fin n) F) * detPow g (1 - s + ((n : ℂ) - 1) / 2) * ℓ (φ g⁻¹) with hfB`. Establish `hΦh : IsSchwartzBruhat (localMatrixFourier ψ Φ)` using `hΦ.localMatrixFourier hψ hψ1`. Establish `hℓφ : Continuous fun g => ℓ (φ g)`. Use `IsLocallyConstant.continuous fun S => isOpen_iff_forall_mem_open.2 fun g hg => ?_` and prove the remaining obligations. Use `⟨g • (K' : Set (GL (Fin n) F)), ?_, hK'o.smul g, ⟨1, one_mem _, mul_one g⟩⟩` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨k, hk, rfl⟩`. Simplify using `only [Set.mem_preimage, smul_eq_mul, hK' k hk]`. Conclude with `hg`. Establish `hcontB : ∀ s : ℂ, Continuous fun g : GL (Fin n) F => fB s g⁻¹` using `fun s => ((hΦh.1.continuous.comp (Units.continuous_val.comp continuous_inv)).mul ((continuous_detPow _).comp continuous_inv)).mul (hℓφ.comp (continuous_inv.comp continuous_inv))`. Establish `hΦhr : ∀ Z : Matrix (Fin n) (Fin n) F, ∀ k ∈ congruenceSubgroup F n r, localMatrixFourier ψ Φ (((k⁻¹ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) * Z) = localMatrixFourier ψ Φ Z`.
+
+Introduce `Z k hk`. Rewrite using `[← localMatrixFourier_mul_right ψ Φ (hk₀ k hk) Z]`. Use `congr 1`. Use function extensionality and compare the values at `X`. Conclude with `hΦr X k hk`.
+
+Establish `hrB : ∀ s : ℂ, ∀ g, ∀ k ∈ congruenceSubgroup F n r, fB s (g * k)⁻¹ = fB s g⁻¹`. Introduce `s g k hk`. Simplify using `only [hfB, _root_.mul_inv_rev, inv_inv, Units.val_mul]`. Rewrite using `[hΦhr _ k hk, detPow_inv_mul_of_mem (hk₀ k hk), hφr g k hk]`. Establish `hΞ : ∀ q, IsSchwartzBruhat (localMatrixFourier ψ fun X => Φ (X * (y q : Matrix (Fin n) (Fin n) F)))` using `fun q => (hΦ.comp_mulRight (y q)).localMatrixFourier hψ hψ1`.
+
+Establish `hBeq : ∀ s : ℂ, ∀ q, ∀ p : blockUpper F n β, fB s ((p : GL (Fin n) F) * y q)⁻¹ = parabolicB β (localMatrixFourier ψ fun X => Φ (X * (y q : Matrix (Fin n) (Fin n) F))) φ ℓ s (y q) p⁻¹`. Introduce `s q p`. Simplify using `only [hfB, parabolicB, _root_.mul_inv_rev, inv_inv, Subgroup.coe_inv, Units.val_mul]`. Rewrite using `[localMatrixFourier_mul_right ψ Φ (hy q), detPow_inv_mul_of_mem (hy q)]`. Establish `hPB : ∀ s : ℂ, s.re < -s₁ → ∀ q, Integrable (fun p : blockUpper F n β => fB s ((p : GL (Fin n) F) * y q)⁻¹) (measureP β ψ)`.
+
+Introduce `s hs q`. Repeatedly rewrite using `[hBeq s q]`. Use `⟨((continuous_parabolicB hφ (hΞ q) ℓ s (y q)).comp continuous_inv).aestronglyMeasurable, ?_⟩` and prove the remaining obligations. Use `show ∫⁻ p, ‖parabolicB β (localMatrixFourier ψ fun X => Φ (X * (y q : Matrix (Fin n) (Fin n) F))) φ ℓ s (y q) p⁻¹‖ₑ ∂measureP β ψ < ⊤`. Rewrite using `[lintegral_parabolicB_inv ψ hφ (hΞ q) ℓ s (y q)]`.
+
+Conclude with `hsB q s (lt_of_lt_of_le hs (hsB' q))`. Establish `hinvG : μG.IsInvInvariant` using `⟨inv_eq_self_GL F n μG⟩`. Establish `hformB : ∀ s : ℂ, s.re < -s₁ → Integrable (fB s) μG ∧ ∫ g, fB s g ∂μG = C * ∑ q, ∫ m, leviIntegrandB σ (inducedChar β) (fun X => ∫ u, localMatrixFourier ψ (fun X => Φ (X * (y q : Matrix (Fin n) (Fin n) F))) (X + unipMatrix F u) ∂unipMeasure β ψ) (φ (y q)) ℓ s m ∂measureM β ψ`. Introduce `s hs`. Take `⟨hint, heq⟩` from `hCf (fun g => fB s g⁻¹) (hcontB s) (hrB s) (hPB s hs)`.
+
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Simplify using `using hint.comp_inv`. Rewrite using `[← integral_inv_eq_self (fB s) μG, heq]`. Use `congr 1`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations.
+
+Establish `hint2 : Integrable (fun p => parabolicB β (localMatrixFourier ψ fun X => Φ (X * (y q : Matrix (Fin n) (Fin n) F))) φ ℓ s (y q) p⁻¹) (measureP β ψ)`. Use `hPB s hs q` as an intermediate fact. Rewrite `this` using `[hBeq s q]`. Conclude with `this`. Use `(integral_congr_ae (Filter.Eventually.of_forall fun p => hBeq s q p)).trans ?_` and prove the remaining obligations.
+
+Conclude with `integral_parabolicB_inv ψ hφ (hΞ q) ℓ s (y q) hint2`. Use `⟨⟨s₁, fun s hs => (hformA s hs).1⟩, ⟨-s₁, fun s hs => (hformB s hs).1⟩, ?_⟩` and prove the remaining obligations. Establish `hR` using `(RatFE.sum Finset.univ fun q _ => hRq q).const_mul C`. Conclude with `hR.congr ⟨s₁, fun s hs => (hformA s hs).2⟩ ⟨-s₁, fun s hs => (hformB s hs).2⟩`.
+-/
 theorem inducedFE_of_leviFE [mG : MeasurableSpace (GL (Fin n) F)] [hGB : BorelSpace (GL (Fin n) F)]
     (μG : Measure (GL (Fin n) F)) [μG.IsHaarMeasure] {ψ : AddChar F Circle} (hψ : Continuous ψ)
     (hψ1 : ψ ≠ 1) {γ : RatFunc ℂ} (hL : LeviFE F σ (inducedChar β) (leviMeasure β ψ) ψ γ) :

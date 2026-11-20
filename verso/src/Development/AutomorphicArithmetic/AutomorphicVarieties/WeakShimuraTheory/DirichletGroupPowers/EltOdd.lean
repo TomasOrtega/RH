@@ -11,6 +11,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws
 
+/- English proof (translation)
+Establish `h : Nat.totient (2 ^ n) ∣ 2 ^ n`. Break down `n with _ | n` into its components or cases. Simplify using the standard rewrite rules. Rewrite using `[Nat.totient_prime_pow_succ Nat.prime_two]`. Simplify using `using pow_dvd_pow 2 (Nat.le_succ n)`.
+
+Conclude with `orderOf_dvd_iff_pow_eq_one.1 ((orderOf_dvd_of_pow_eq_one (ZMod.pow_totient u)).trans h)`.
+-/
 private theorem pow_two_pow (n : ℕ) (u : (ZMod (2 ^ n))ˣ) : u ^ 2 ^ n = 1 := by
   have h : Nat.totient (2 ^ n) ∣ 2 ^ n := by
     rcases n with _ | n
@@ -19,12 +24,18 @@ private theorem pow_two_pow (n : ℕ) (u : (ZMod (2 ^ n))ˣ) : u ^ 2 ^ n = 1 := 
       simpa using pow_dvd_pow 2 (Nat.le_succ n)
   exact orderOf_dvd_iff_pow_eq_one.1 ((orderOf_dvd_of_pow_eq_one (ZMod.pow_totient u)).trans h)
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_pow_eq_pow_val, MulChar.coe_toUnitHom, ← MulChar.pow_apply_coe, pow_orderOf_eq_one, MulChar.one_apply_coe, Units.val_one]`.
+-/
 private theorem pow_ord {O : Type} [CommRing O] {N : ℕ} (ψ : DirichletCharacter O N) (a : (ZMod N)ˣ) :
     ψ.toUnitHom a ^ orderOf ψ = 1 := by
   apply Units.ext
   rw [Units.val_pow_eq_pow_val, MulChar.coe_toUnitHom, ← MulChar.pow_apply_coe, pow_orderOf_eq_one,
     MulChar.one_apply_coe, Units.val_one]
 
+/- English proof (translation)
+Take `⟨k, rfl⟩` from `hm`. Use `⟨y ^ (k + 1), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← pow_mul, show (k + 1) * 2 = 2 * k + 1 + 1 by ring, pow_succ, hy, one_mul]`. Rewrite using `[← pow_mul, mul_comm, pow_mul, hy, one_pow]`.
+-/
 private theorem half {Γ : Type} [CommGroup Γ] {y : Γ} {m : ℕ} (hm : Odd m) (hy : y ^ m = 1) :
     ∃ x : Γ, x ^ 2 = y ∧ x ^ m = 1 := by
   obtain ⟨k, rfl⟩ := hm
@@ -32,6 +43,33 @@ private theorem half {Γ : Type} [CommGroup Γ] {y : Γ} {m : ℕ} (hm : Odd m) 
   · rw [← pow_mul, show (k + 1) * 2 = 2 * k + 1 + 1 by ring, pow_succ, hy, one_mul]
   · rw [← pow_mul, mul_comm, pow_mul, hy, one_pow]
 
+/- English proof (translation)
+Introduce `Ω _ _ _ l hl c D ⟨hG, h, t, e, ψ, hB, he, het, hX, ⟨hlB, hle, hodd, hne⟩, hO⟩ s hs`. Take `⟨-, hψ, -, _, ξ', ξ₀, -, -, hord, hξ⟩` from `hO`. Establish `lp : l.Prime` using `hl.out`. Take `⟨-, -, -, hpN, hb⟩` from `bchiFacts h t hB`. Take `⟨-, hlo, -, -, -, hlp, -, hb⟩` from `hb l lp hG.l_odd hlB`.
+
+Take `⟨-, -, hlN⟩` from `hb e he het hle`. Take `⟨-, ⟨pp, -, pc⟩, -⟩` from `UpperTheory.V.pK_pOne_prime_conditions h.chi`. Establish `hdo : orderOf ψ ∣ h.o` using `(((hostOdd h c.O ψ (h.mem_X.1 hX).1).1 hodd).1).trans (Nat.ordCompl_dvd _ _)`. Establish `hlm : l.Coprime (orderOf ψ)` using `lp.coprime_iff_not_dvd.2 fun hd => hlo (hd.trans hdo)`. Use `haveI : NeZero l := ⟨lp.ne_zero⟩`.
+
+Generalize the expression as in `UpperTheory.V.pOne h.chi = p at *`. Generalize the expression as in `h.nIII l ψ = n at *`. Establish `hom : ∀ g, Chr.cls ℚ Ω l g = 1 → D.om g = 1`. Establish `hT : IsOmT c D.om` using `⟨hG.om_pow, fun σ => by`. Use `hG.om_bar σ` as an intermediate fact.
+
+Rewrite using `[← IsLocalRing.residue_eq_zero_iff, map_sub]`. Conclude with `sub_eq_zero.2 this⟩`. Introduce `g hg`. Establish `hk` using `((omT Ω l c).2 D.om hT).2.1`. Rewrite using `[← MonoidHom.mem_ker, hk]`.
+
+Conclude with `hg`. Choose the witnesses or unpack the hypotheses as in `⟨a, ha⟩ : ∃ a : (ZMod h.N)ˣ, ψ.toUnitHom a ≠ 1 := by`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Apply `hne` to reduce the goal to its premises.
+
+Use extensionality with `a`. Rewrite using `[MulChar.one_apply_coe, ← MulChar.coe_toUnitHom, hc a, Units.val_one]`. Use `haveI : NeZero (l * p) := ⟨mul_ne_zero lp.ne_zero pp.ne_zero⟩`. Establish `c1 : h.N.Coprime (l * p)` using `Nat.Coprime.mul_right (lp.coprime_iff_not_dvd.2 hlN).symm (pp.coprime_iff_not_dvd.2 hpN).symm`. Take `⟨u, hu, hu'⟩` from `UpperTheory.V.Ws.large₂.clsIndep (Ω := Ω) h.N (l * p) c1 a`.
+
+Establish `hy : (ψ.toUnitHom a ^ 2 ^ n) ^ s ≠ 1`. Establish `h1 : ψ.toUnitHom a ^ 2 ^ n ≠ 1`. Introduce `h2`. Apply `ha` to reduce the goal to its premises. Establish `hc : (2 ^ n).Coprime (orderOf ψ)` using `(Nat.coprime_two_left.2 hodd).pow_left _`.
+
+Use `pow_gcd_eq_one.2 ⟨h2, pow_ord ψ a⟩` as an intermediate fact. Rewrite `this` using `[hc.gcd_eq_one, pow_one]`. Then use the resulting hypothesis. Break down `hs with rfl | rfl` into its components or cases. Simplify using `using h1`. Simplify using `using h1`.
+
+Establish `hym : ((ψ.toUnitHom a ^ 2 ^ n) ^ s) ^ orderOf ψ = 1`. Rewrite using `[← zpow_natCast, ← zpow_mul, mul_comm, zpow_mul, zpow_natCast, ← pow_mul, mul_comm, pow_mul, pow_ord, one_pow, one_zpow]`. Take `⟨x, hx2, hxm⟩` from `half hodd hym`. Take `⟨b, hb⟩` from `UpperTheory.V.Ws.large₂.imgRoots p ξ₀ x (hord ▸ hxm)`. Use `haveI : NeZero (h.N * l * 2 ^ n) := ⟨mul_ne_zero (mul_ne_zero (NeZero.ne _) lp.ne_zero) (by positivity)⟩`.
+
+Establish `c2 : p.Coprime (h.N * l * 2 ^ n)`. Use `Nat.Coprime.mul_right (Nat.Coprime.mul_right (pp.coprime_iff_not_dvd.2 hpN) ?_) (Nat.Coprime.pow_right _ ?_)` and prove the remaining obligations. Conclude with `(Nat.coprime_primes pp lp).2 hlp.symm`. Conclude with `Nat.Coprime.coprime_dvd_right ((dvd_mul_right _ _).mul_right _) pc`. Take `⟨v, hv, hv'⟩` from `UpperTheory.V.Ws.large₂.clsIndep (Ω := Ω) p (h.N * l * 2 ^ n) c2 b`.
+
+Establish `e1 : D.ξ (u ^ 2 ^ n * v) = x`. Establish `f1 : Chr.cls ℚ Ω p (u ^ 2 ^ n * v) = b`. Rewrite using `[map_mul, map_pow, hu' p (dvd_mul_left _ _), hv, one_pow, one_mul]`. Establish `f2 : Chr.cls ℚ Ω (2 ^ n) (u ^ 2 ^ n * v) = 1`. Rewrite using `[map_mul, map_pow, hv' (2 ^ n) (dvd_mul_left _ _), pow_two_pow, one_mul]`.
+
+Rewrite using `[hξ, MonoidHom.mul_apply, Chr.dirG, Chr.dirG, MonoidHom.comp_apply, MonoidHom.comp_apply, f1, f2, map_one, mul_one, hb]`. Establish `e2 : D.ψ (u ^ 2 ^ n * v) = ψ.toUnitHom a ^ 2 ^ n`. Rewrite using `[hψ, Chr.dirG, MonoidHom.comp_apply, map_mul, map_pow, hu, hv' h.N ((dvd_mul_right _ _).mul_right _), mul_one, map_pow]`. Use `⟨u ^ 2 ^ n * v, orderOf ψ, hodd, hlm, hom _ ?_, by rw [e1, e2, hx2], by rw [e1, hxm], ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_pow, hu' l (dvd_mul_right _ _), hv' l ((dvd_mul_left _ _).mul_right _), one_pow, one_mul]`.
+
+Rewrite using `[e1]`. Introduce and unpack `rfl`. Conclude with `hy (by rw [← hx2, one_pow])`.
+-/
 theorem UpperTheory.V.Ws.large₂.eltOdd :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} (D : Raw Ω c), Ctx3 D → ∀ s : ℤ, s = 1 ∨ s = -1 → ∃ (g : G ℚ Ω) (m : ℕ), Odd m ∧ l.Coprime m ∧ D.om g = 1 ∧ D.ξ g ^ 2 = D.ψ g ^ s ∧ D.ξ g ^ m = 1 ∧ D.ξ g ≠ 1 := by
   intro Ω _ _ _ l hl c D ⟨hG, h, t, e, ψ, hB, he, het, hX, ⟨hlB, hle, hodd, hne⟩, hO⟩ s hs

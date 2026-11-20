@@ -5,6 +5,13 @@ namespace ReciprocityTheory.L2DbarEstimates.Y
 open Matrix
 open scoped MatrixOrder
 
+/- English proof (translation)
+Establish `hs` using `hQ.1.spectral_theorem`. Rewrite `hs` using `[Unitary.conjStarAlgAut_apply]`. Use `set U := hQ.1.eigenvectorUnitary with hU`. Establish `hUU : (U : Matrix ι ι ℝ) * star (U : Matrix ι ι ℝ) = 1` using `Unitary.coe_mul_star_self U`. Establish `hUU' : star (U : Matrix ι ι ℝ) * (U : Matrix ι ι ℝ) = 1` using `Unitary.coe_star_mul_self U`.
+
+Establish `e : 1 + Q = (U : Matrix ι ι ℝ) * (1 + diagonal (RCLike.ofReal ∘ hQ.1.eigenvalues)) * star (U : Matrix ι ι ℝ)` using `by conv_lhs => rw [hs]`. Rewrite using `[mul_add, add_mul, mul_one, hUU]`. Establish `hd : ((U : Matrix ι ι ℝ)).det * (star (U : Matrix ι ι ℝ)).det = 1`. Rewrite using `[← det_mul, hUU, det_one]`. Rewrite using `[e, det_mul, det_mul, mul_comm ((U : Matrix ι ι ℝ).det), mul_assoc, hd, mul_one, ← diagonal_one, diagonal_add, det_diagonal]`.
+
+Simplify using `[RCLike.ofReal_real_eq_id]`.
+-/
 theorem uniLat_det_one_add {ι : Type*} [Fintype ι] [DecidableEq ι] {Q : Matrix ι ι ℝ}
     (hQ : Q.PosSemidef) : (1 + Q).det = ∏ i, (1 + hQ.1.eigenvalues i) := by
   have hs := hQ.1.spectral_theorem
@@ -22,6 +29,25 @@ theorem uniLat_det_one_add {ι : Type*} [Fintype ι] [DecidableEq ι] {Q : Matri
     ← diagonal_one, diagonal_add, det_diagonal]
   simp [RCLike.ofReal_real_eq_id]
 
+/- English proof (translation)
+Use `set Q := H - G with hQdef`. Establish `hH : H = G + Q` using `by rw [hQdef]; abel`. Establish `hs` using `hG.1.spectral_theorem`. Rewrite `hs` using `[Unitary.conjStarAlgAut_apply, RCLike.ofReal_real_eq_id, Function.id_comp]`. Use `set U := hG.1.eigenvectorUnitary with hU`.
+
+Use `set ev := hG.1.eigenvalues with hev`. Establish `hpos : ∀ i, 0 < ev i` using `hG.eigenvalues_pos`. Use `set D : Matrix ι ι ℝ := diagonal (fun i => (Real.sqrt (ev i))⁻¹) with hD`. Use `set C : Matrix ι ι ℝ := D * star (U : Matrix ι ι ℝ) with hC`. Establish `hUU' : star (U : Matrix ι ι ℝ) * (U : Matrix ι ι ℝ) = 1` using `Unitary.coe_star_mul_self U`.
+
+Establish `hCt : Cᴴ = (U : Matrix ι ι ℝ) * D`. Rewrite using `[hC, conjTranspose_mul, ← star_eq_conjTranspose, star_star, hD, diagonal_conjTranspose]`. Use `congr 2`. Establish `hCG : C * G * Cᴴ = 1`. Rewrite using `[hCt, hC]`.
+
+Use `conv_lhs => rw [hs]`. Establish `e : D * star (U : Matrix ι ι ℝ) * ((U : Matrix ι ι ℝ) * diagonal ev * star (U : Matrix ι ι ℝ)) * ((U : Matrix ι ι ℝ) * D) = D * (star (U : Matrix ι ι ℝ) * (U : Matrix ι ι ℝ)) * diagonal ev * (star (U : Matrix ι ι ℝ) * (U : Matrix ι ι ℝ)) * D`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[e, hUU', Matrix.mul_one, Matrix.mul_one, hD, diagonal_mul_diagonal, diagonal_mul_diagonal, ← diagonal_one]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `i`. Establish `h1` using `Real.mul_self_sqrt (hpos i).le`. Establish `h2 : Real.sqrt (ev i) ≠ 0` using `(Real.sqrt_pos.mpr (hpos i)).ne'`. Clear the denominators using the available nonvanishing facts. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hQ' : (C * Q * Cᴴ).PosSemidef`. Use `hGH.conjTranspose_mul_mul_same Cᴴ` as an intermediate fact. Rewrite `this` using `[conjTranspose_conjTranspose]`. Then use the resulting hypothesis. Establish `hCH : C * H * Cᴴ = 1 + C * Q * Cᴴ`. Rewrite using `[hH, Matrix.mul_add, Matrix.add_mul, hCG]`.
+
+Establish `h1 : 1 ≤ (C * H * Cᴴ).det`. Rewrite using `[hCH, uniLat_det_one_add hQ']`. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : (C * G * Cᴴ).det = 1` using `by rw [hCG, det_one]`. Rewrite `h1`, `h2` using `[det_mul, det_mul, det_conjTranspose, star_trivial]`.
+
+Establish `hc : C.det ≠ 0`. Introduce `h0`. Rewrite `h2` using `[h0]`. Simplify using `at h2`. Establish `hc2 : 0 < C.det * C.det` using `mul_self_pos.mpr hc`.
+
+Establish `: G.det * (C.det * C.det) ≤ H.det * (C.det * C.det)` using `by nlinarith`. Conclude with `le_of_mul_le_mul_right this hc2`.
+-/
 theorem uniLat_det_le_of_sub {ι : Type*} [Fintype ι] [DecidableEq ι] {G H : Matrix ι ι ℝ}
     (hG : G.PosDef) (hGH : (H - G).PosSemidef) : G.det ≤ H.det := by
   set Q := H - G with hQdef

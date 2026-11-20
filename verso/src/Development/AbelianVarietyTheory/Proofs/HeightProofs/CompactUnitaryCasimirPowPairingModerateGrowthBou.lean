@@ -24,6 +24,11 @@ namespace GlobalTheory.KFourier.CasimirMove
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Establish `hEG` using `group_exponential_facts n ε X hX.1`. Establish `hEK` using `hEG.2.2.2 hX`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show ((expK ε X (s + t) : KG ε) : UJ ε) = (expK ε X s : UJ ε) * (expK ε X t : UJ ε)`. Rewrite using `[hEK.1, hEK.1, hEK.1]`.
+
+Conclude with `hEG.2.1 s t`.
+-/
 theorem expK_add {ε : Fin n → Bool} {X : Mx n} (hX : inK ε X) (s t : ℝ) :
     expK ε X (s + t) = expK ε X s * expK ε X t := by
   have hEG := group_exponential_facts n ε X hX.1
@@ -33,6 +38,11 @@ theorem expK_add {ε : Fin n → Bool} {X : Mx n} (hX : inK ε X) (s t : ℝ) :
   rw [hEK.1, hEK.1, hEK.1]
   exact hEG.2.1 s t
 
+/- English proof (translation)
+Establish `hEG` using `group_exponential_facts n ε X hX.1`. Establish `hEK` using `hEG.2.2.2 hX`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show ((expK ε X 0 : KG ε) : UJ ε) = 1`. Rewrite using `[hEK.1]`.
+
+Conclude with `hEG.1`.
+-/
 theorem expK_zero {ε : Fin n → Bool} {X : Mx n} (hX : inK ε X) : expK ε X 0 = 1 := by
   have hEG := group_exponential_facts n ε X hX.1
   have hEK := hEG.2.2.2 hX
@@ -40,6 +50,13 @@ theorem expK_zero {ε : Fin n → Bool} {X : Mx n} (hX : inK ε X) : expK ε X 0
   show ((expK ε X 0 : KG ε) : UJ ε) = 1
   rw [hEK.1]; exact hEG.1
 
+/- English proof (translation)
+Establish `hder' : ∀ k s, HasDerivAt (fun t => G (k * expK ε X t)) (D (k * expK ε X s)) s`. Introduce `k s`. Establish `h1` using `hder (k * expK ε X s)`. Establish `h2 : HasDerivAt (fun t => G (k * expK ε X s * expK ε X (t - s))) (D (k * expK ε X s)) s` using `HasDerivAt.comp_sub_const (f := fun t => G (k * expK ε X s * expK ε X t)) s s (by rw [sub_self]; exact h1)`. Establish `hfun : (fun t => G (k * expK ε X s * expK ε X (t - s))) = fun t => G (k * expK ε X t)`.
+
+Use function extensionality and compare the values at `t`. Rewrite using `[mul_assoc, ← expK_add hX, add_sub_cancel]`. Rewrite `h2` using `[hfun]`. Conclude with `h2`. Establish `h` using `(hasDerivAt_integral_of_dominated_loc_of_deriv_le (μ := muK ε) (𝕜 := ℝ) (F := fun t k => G (k * expK ε X t)) (F' := fun t k => D (k * expK ε X t)) (x₀ := 0) (bound := fun _ => C) (s := Set.univ) Filter.univ_mem (Filter.Eventually.of_forall fun t => (hG.comp (measurable_mul_const …`.
+
+Simplify using `only [integral_mul_right_eq_self (μ := muK ε) G, expK_zero hX, mul_one] at h`. Conclude with `h.unique (hasDerivAt_const _ _)`.
+-/
 theorem integral_deriv_eq_zero {ε : Fin n → Bool} {X : Mx n} (hX : inK ε X) {G D : KG ε → ℂ}
     (hG : Measurable G) (hD : Measurable D) (hGi : Integrable G (muK ε)) {C : ℝ} (hC : ∀ k, ‖D k‖ ≤ C)
     (hder : ∀ k, HasDerivAt (fun t : ℝ => G (k * expK ε X t)) (D k) 0) : ∫ k, D k ∂(muK ε) = 0 := by
@@ -64,6 +81,11 @@ theorem integral_deriv_eq_zero {ε : Fin n → Bool} {X : Mx n} (hX : inK ε X) 
   simp only [integral_mul_right_eq_self (μ := muK ε) G, expK_zero hX, mul_one] at h
   exact h.unique (hasDerivAt_const _ _)
 
+/- English proof (translation)
+Establish `hlim : Filter.Tendsto (fun m : ℕ => 1 / ((m : ℝ) + 1)) Filter.atTop (nhdsWithin 0 {0}ᶜ)`. Use `tendsto_nhdsWithin_iff.2 ⟨tendsto_one_div_add_atTop_nhds_zero_nat, Filter.Eventually.of_forall fun m => ?_⟩` and prove the remaining obligations. Establish `: (0 : ℝ) < 1 / ((m : ℝ) + 1)` using `Nat.one_div_pos_of_nat`. Conclude with `this.ne'`. Use `measurable_of_tendsto_metrizable (f := fun (m : ℕ) k => slope (fun t : ℝ => G (k * expK ε X t)) 0 (1 / ((m : ℝ) + 1))) (fun m => ?_) ?_` and prove the remaining obligations.
+
+Simplify using `only [slope_def_module, expK_zero hX, mul_one]`. Conclude with `((hG.comp (measurable_mul_const _)).sub hG).const_smul _`. Conclude with `tendsto_pi_nhds.2 fun k => (hasDerivAt_iff_tendsto_slope.1 (hder k)).comp hlim`.
+-/
 theorem measurable_of_deriv {ε : Fin n → Bool} {X : Mx n} (hX : inK ε X) {G D : KG ε → ℂ}
     (hG : Measurable G) (hder : ∀ k, HasDerivAt (fun t : ℝ => G (k * expK ε X t)) (D k) 0) : Measurable D := by
   have hlim : Filter.Tendsto (fun m : ℕ => 1 / ((m : ℝ) + 1)) Filter.atTop (nhdsWithin 0 {0}ᶜ) := by
@@ -76,12 +98,20 @@ theorem measurable_of_deriv {ε : Fin n → Bool} {X : Mx n} (hX : inK ε X) {G 
     exact ((hG.comp (measurable_mul_const _)).sub hG).const_smul _
   · exact tendsto_pi_nhds.2 fun k => (hasDerivAt_iff_tendsto_slope.1 (hder k)).comp hlim
 
+/- English proof (translation)
+Establish `h` using `hF w (fun Y hY => (hw Y hY).1) X hX.1 (y * toMK k) (mul_mem_UJ hy (K_le_UJ (toMK_mem_K k)))`. Simplify `h` using `only [toMK_mul, toMK_expK hX, Complex.coe_smul, Matrix.mul_assoc]`.
+-/
 theorem hasDerivAt_fam {ε : Fin n → Bool} {F : List (Mx n) → Mx n → ℂ} (hF : IsDerFam ε F) {w : List (Mx n)}
     (hw : ∀ Y ∈ w, inK ε Y) {X : Mx n} (hX : inK ε X) {y : Mx n} (hy : y ∈ UJset ε) (k : KG ε) :
     HasDerivAt (fun t : ℝ => F w (y * toMK (k * expK ε X t))) (F (X :: w) (y * toMK k)) 0 := by
   have h := hF w (fun Y hY => (hw Y hY).1) X hX.1 (y * toMK k) (mul_mem_UJ hy (K_le_UJ (toMK_mem_K k)))
   simpa only [toMK_mul, toMK_expK hX, Complex.coe_smul, Matrix.mul_assoc] using h
 
+/- English proof (translation)
+Proceed by induction on `w with`. Consider the case `nil`. Conclude with `(hc.comp_continuous (continuous_const.mul (continuous_toMK ε)) fun k => mul_mem_UJ hy (K_le_UJ (toMK_mem_K k))).measurable`. Consider the case `cons X w ih`. Establish `hw'` using `fun Y hY => hw Y (List.mem_cons_of_mem _ hY)`.
+
+Establish `hX` using `hw X List.mem_cons_self`. Conclude with `measurable_of_deriv hX (ih hw') (hasDerivAt_fam hF hw' hX hy)`.
+-/
 theorem measurable_fam {ε : Fin n → Bool} {F : List (Mx n) → Mx n → ℂ} (hF : IsDerFam ε F)
     (hc : ContinuousOn (F []) (UJset ε)) {y : Mx n} (hy : y ∈ UJset ε) {w : List (Mx n)} (hw : ∀ Y ∈ w, inK ε Y) :
     Measurable fun k : KG ε => F w (y * toMK k) := by
@@ -94,6 +124,9 @@ theorem measurable_fam {ε : Fin n → Bool} {F : List (Mx n) → Mx n → ℂ} 
     have hX := hw X List.mem_cons_self
     exact measurable_of_deriv hX (ih hw') (hasDerivAt_fam hF hw' hX hy)
 
+/- English proof (translation)
+Take `⟨C, hC⟩` from `hg w fun Y hY => (hw Y hY).1`. Use `⟨C, fun y hy k => ?_⟩` and prove the remaining obligations. Establish `h` using `hC _ (mul_mem_UJ hy (K_le_UJ (toMK_mem_K k)))`. Rewrite `h` using `[((hermitian_small_ball n ε).2 _ _ (toMK_mem_K k)).1]`. Then use the resulting hypothesis.
+-/
 theorem bound_fam {ε : Fin n → Bool} {N : ℕ} {F : List (Mx n) → Mx n → ℂ} (hg : FamGrowth ε N F)
     {w : List (Mx n)} (hw : ∀ Y ∈ w, inK ε Y) :
     ∃ C : ℝ, ∀ y ∈ UJset ε, ∀ k : KG ε, ‖F w (y * toMK k)‖ ≤ C * (1 + hs y) ^ N := by
@@ -102,6 +135,9 @@ theorem bound_fam {ε : Fin n → Bool} {N : ℕ} {F : List (Mx n) → Mx n → 
   have h := hC _ (mul_mem_UJ hy (K_le_UJ (toMK_mem_K k)))
   rwa [((hermitian_small_ball n ε).2 _ _ (toMK_mem_K k)).1] at h
 
+/- English proof (translation)
+Take `⟨C, hC⟩` from `bound_fam hg hw`. Conclude with `(integrable_of_continuousK hp).mul_bdd (measurable_fam hF hc hy hw).aestronglyMeasurable (Filter.Eventually.of_forall (hC y hy))`.
+-/
 theorem integrable_mul_fam {ε : Fin n → Bool} {N : ℕ} {F : List (Mx n) → Mx n → ℂ} (hF : IsDerFam ε F)
     (hg : FamGrowth ε N F) (hc : ContinuousOn (F []) (UJset ε)) {y : Mx n} (hy : y ∈ UJset ε) {w : List (Mx n)}
     (hw : ∀ Y ∈ w, inK ε Y) {p : KG ε → ℂ} (hp : Continuous p) :
@@ -110,6 +146,13 @@ theorem integrable_mul_fam {ε : Fin n → Bool} {N : ℕ} {F : List (Mx n) → 
   exact (integrable_of_continuousK hp).mul_bdd (measurable_fam hF hc hy hw).aestronglyMeasurable
     (Filter.Eventually.of_forall (hC y hy))
 
+/- English proof (translation)
+Establish `hw' : ∀ Y ∈ X :: w, inK ε Y` using `fun Y hY => (List.mem_cons.1 hY).elim (fun e => e ▸ hX) (hw Y)`. Take `⟨hq, hd⟩` from `rder_mem_and_hasDerivAt ε d p hp X hX`. Establish `cp` using `continuous_of_mem hp`. Establish `cq` using `continuous_of_mem hq`. Take `⟨C₁, h₁⟩` from `bound_fam hg hw`.
+
+Take `⟨C₂, h₂⟩` from `bound_fam hg hw'`. Take `⟨B₁, b₁⟩` from `isCompact_univ.exists_bound_of_continuousOn cq.continuousOn`. Take `⟨B₂, b₂⟩` from `isCompact_univ.exists_bound_of_continuousOn cp.continuousOn`. Establish `key` using `integral_deriv_eq_zero hX (G := fun k => p k * F w (y * toMK k)) (D := fun k => rder ε [X] p k * F w (y * toMK k) + p k * F (X :: w) (y * toMK k)) (cp.measurable.mul (measurable_fam hF hc hy hw)) ((cq.measurable.mul (measurable_fam hF hc hy hw)).add (cp.measurable.mul (measurable …`. Establish `h` using `(hd k).fun_mul (hasDerivAt_fam hF hw hX hy k)`.
+
+Simplify `h)` using `only [expK_zero hX, mul_one]`. Rewrite `key` using `[integral_add (integrable_mul_fam hF hg hc hy hw cq) (integrable_mul_fam hF hg hc hy hw' cp)]`. Conclude with `eq_neg_of_add_eq_zero_left key`.
+-/
 theorem by_parts {ε : Fin n → Bool} {N : ℕ} {F : List (Mx n) → Mx n → ℂ} (hF : IsDerFam ε F)
     (hg : FamGrowth ε N F) (hc : ContinuousOn (F []) (UJset ε)) {y : Mx n} (hy : y ∈ UJset ε) {w : List (Mx n)}
     (hw : ∀ Y ∈ w, inK ε Y) {X : Mx n} (hX : inK ε X) {d : ℕ} {p : KG ε → ℂ} (hp : p ∈ polyV ε d) :
@@ -135,6 +178,11 @@ theorem by_parts {ε : Fin n → Bool} {N : ℕ} {F : List (Mx n) → Mx n → �
   rw [integral_add (integrable_mul_fam hF hg hc hy hw cq) (integrable_mul_fam hF hg hc hy hw' cp)] at key
   exact eq_neg_of_add_eq_zero_left key
 
+/- English proof (translation)
+Establish `i1 : Integrable (fun k => ‖p k‖) (muK ε)` using `(integrable_of_continuousK hp).norm`. Establish `i2 : Integrable (fun k => ‖p k‖ ^ 2) (muK ε)` using `(hp.norm.pow 2).integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace _)`. Use `set a := ∫ k, ‖p k‖ ∂(muK ε) with ha`. Establish `h0 : 0 ≤ ∫ k, (‖p k‖ ^ 2 - 2 * a * ‖p k‖ + a ^ 2) ∂(muK ε)` using `integral_nonneg fun k => by`. Use `sq_nonneg (‖p k‖ - a)` as an intermediate fact.
+
+Simplify using `only [Pi.zero_apply]`. Use the polynomial consequences of the given equalities and inequalities. Rewrite `h0` using `[integral_add (f := fun k => ‖p k‖ ^ 2 - 2 * a * ‖p k‖) (i2.sub (i1.const_mul _)) (integrable_const _), integral_sub i2 (i1.const_mul _), integral_const_mul, integral_const, ← ha]`. Simplify using `only [probReal_univ, smul_eq_mul, one_mul] at h0`. Conclude with `Real.le_sqrt_of_sq_le (by nlinarith)`.
+-/
 theorem integral_norm_le_sqrt {ε : Fin n → Bool} {p : KG ε → ℂ} (hp : Continuous p) :
     ∫ k, ‖p k‖ ∂(muK ε) ≤ Real.sqrt (∫ k, ‖p k‖ ^ 2 ∂(muK ε)) := by
   have i1 : Integrable (fun k => ‖p k‖) (muK ε) := (integrable_of_continuousK hp).norm
@@ -151,11 +199,29 @@ theorem integral_norm_le_sqrt {ε : Fin n → Bool} {p : KG ε → ℂ} (hp : Co
   simp only [probReal_univ, smul_eq_mul, one_mul] at h0
   exact Real.le_sqrt_of_sq_le (by nlinarith)
 
+/- English proof (translation)
+The claim follows from `Submodule.sum_mem _ fun j _ => (rder_mem_and_hasDerivAt ε d _ (rder_mem_and_hasDerivAt ε d p hp _ (hX j)).1 _ (hX j)).1`.
+-/
 theorem casimir_mem {ε : Fin n → Bool} {r : ℕ} {X : Fin r → Mx n} (hX : ∀ j, inK ε (X j)) {d : ℕ}
     {p : KG ε → ℂ} (hp : p ∈ polyV ε d) : (∑ j, rder ε [X j, X j] p) ∈ polyV ε d :=
   Submodule.sum_mem _ fun j _ =>
     (rder_mem_and_hasDerivAt ε d _ (rder_mem_and_hasDerivAt ε d p hp _ (hX j)).1 _ (hX j)).1
 
+/- English proof (translation)
+Introduce `n ε N F hF hg hc r X hX M`. Proceed by induction on `M with`. Consider the case `zero`. Introduce `u hu`. Take `⟨C, hC⟩` from `bound_fam hg hu`.
+
+Use `⟨C, fun d p hp y hy => ?_⟩` and prove the remaining obligations. Establish `cp` using `continuous_of_mem hp`. Establish `h0 : 0 ≤ C * (1 + hs y) ^ N` using `(norm_nonneg _).trans (hC y hy 1)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_comm (C * _)]`.
+
+Conclude with `norm_mul_le_of_le le_rfl (hC y hy k))`. Use `_ ≤ _ := by`. Rewrite using `[integral_const_mul]`. Conclude with `mul_le_mul_of_nonneg_left (integral_norm_le_sqrt cp) h0`. Consider the case `succ M ih`.
+
+Introduce `u hu`. Establish `h1 : ∀ j, ∀ Y ∈ X j :: u, inK ε Y` using `fun j Y hY => (List.mem_cons.1 hY).elim (fun e => e ▸ hX j) (hu Y)`. Establish `h2 : ∀ j, ∀ Y ∈ X j :: X j :: u, inK ε Y` using `fun j Y hY => (List.mem_cons.1 hY).elim (fun e => e ▸ hX j) (h1 j Y)`. Use `choose C hC using fun j => ih _ (h2 j)`. Use `⟨∑ j, C j, fun d p hp y hy => ?_⟩` and prove the remaining obligations.
+
+Establish `hq : (fun φ : KG ε → ℂ => ∑ j, rder ε [X j, X j] φ)^[M] p ∈ polyV ε d` using `Function.Iterate.rec (fun φ => φ ∈ polyV ε d) hp (fun _ h => casimir_mem hX h) M`. Rewrite using `[Function.iterate_succ_apply']`. Use `set q := (fun φ : KG ε → ℂ => ∑ j, rder ε [X j, X j] φ)^[M] p with hqd`. Establish `hr : ∀ j, rder ε [X j] q ∈ polyV ε d` using `fun j => (rder_mem_and_hasDerivAt ε d q hq _ (hX j)).1`. Establish `hrr : ∀ j, rder ε [X j, X j] q ∈ polyV ε d` using `fun j => (rder_mem_and_hasDerivAt ε d _ (hr j) _ (hX j)).1`.
+
+Establish `e : ∀ j, ∫ k, rder ε [X j, X j] q k * F u (y * toMK k) ∂(muK ε) = ∫ k, q k * F (X j :: X j :: u) (y * toMK k) ∂(muK ε)` using `fun j => by`. Establish `a` using `by_parts hF hg hc hy hu (hX j) (hr j)`. Rewrite `a` using `[by_parts hF hg hc hy (h1 j) (hX j) hq, neg_neg]`. Conclude with `a`. Simplify using `only [Finset.sum_apply, Finset.sum_mul]`.
+
+Rewrite using `[integral_finset_sum _ fun j _ => integrable_mul_fam hF hg hc hy hu (continuous_of_mem (hrr j))]`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[e j]`. Conclude with `hC j d p hp y hy`.
+-/
 theorem casimir_pow_bound : ∀ {n : ℕ} (ε : Fin n → Bool) (N : ℕ) (F : List (Mx n) → Mx n → ℂ), IsDerFam ε F → FamGrowth ε N F → ContinuousOn (F []) (UJset ε) → ∀ {r : ℕ} (X : Fin r → Mx n), (∀ j, inK ε (X j)) → ∀ (M : ℕ) (u : List (Mx n)), (∀ Y ∈ u, inK ε Y) → ∃ C : ℝ, ∀ (d : ℕ) (p : KG ε → ℂ), p ∈ polyV ε d → ∀ y ∈ UJset ε, ‖∫ k, ((fun φ : KG ε → ℂ => ∑ j, rder ε [X j, X j] φ)^[M] p) k * F u (y * toMK k) ∂(muK ε)‖ ≤ C * (1 + hs y) ^ N * Real.sqrt (∫ k, ‖p k‖ ^ 2 ∂(muK ε)) := by
   intro n ε N F hF hg hc r X hX M
   induction M with

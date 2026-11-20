@@ -9,6 +9,13 @@ namespace GlobalTheory.GramCount
 
 variable {B : Type} [CommRing B] [Fintype B]
 
+/- English proof (translation)
+Establish `h1 : ∀ s : Fin m → B, χ (∑ i, s i * w i) = ∏ i, χ (s i * w i)`. Introduce `s`. Proceed by induction on `(Finset.univ : Finset (Fin m)) using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a S ha ih => rw [Finset.sum_insert ha, Finset.prod_insert ha, AddChar.map_add_eq_mul, ih]`.
+
+Simplify using `only [h1]`. Establish `h2` using `Finset.prod_univ_sum (fun _ : Fin m => (Finset.univ : Finset B)) (fun i b => χ (b * w i))`. Rewrite `h2` using `[Fintype.piFinset_univ]`. Rewrite using `[← h2]`. Simplify using `only [AddChar.sum_mulShift _ hχ]`.
+
+Use `split_ifs with hw`. Simplify using `[hw]`. Take `⟨i, hi⟩` from `Function.ne_iff.1 hw`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ i) (by simp [show w i ≠ 0 from hi])`.
+-/
 theorem quad_sum_char_pi (χ : AddChar B ℂ) (hχ : χ.IsPrimitive) {m : ℕ} (w : Fin m → B) :
     ∑ s : Fin m → B, χ (∑ i, s i * w i) =
       if w = 0 then (Fintype.card B : ℂ) ^ m else 0 := by
@@ -30,6 +37,11 @@ theorem quad_sum_char_pi (χ : AddChar B ℂ) (hχ : χ.IsPrimitive) {m : ℕ} (
 
 omit [Fintype B] in
 
+/- English proof (translation)
+Take `⟨θ, e, hθ, -, -⟩` from `exists_trace_one c hc hω`. Establish `h1 : a * w = θ * (a * w) + c (θ * (-(a * w)))`. Simplify using `only [map_mul, map_neg, ha, hw]`. Take the linear combination `(-(a * w)) * hθ`. Rewrite using `[h1, AddChar.map_add_eq_mul, hχc, ← AddChar.map_add_eq_mul]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem quad_char_skew (c : B →+* B) (hc : ∀ u, c (c u) = u) {ω : B} (hω : IsUnit (ω - c ω))
     (χ : AddChar B ℂ) (hχc : ∀ u, χ (c u) = χ u) {a w : B} (ha : c a = -a) (hw : c w = w) :
     χ (a * w) = 1 := by
@@ -40,6 +52,9 @@ theorem quad_char_skew (c : B →+* B) (hc : ∀ u, c (c u) = u) {ω : B} (hω :
   rw [h1, AddChar.map_add_eq_mul, hχc, ← AddChar.map_add_eq_mul]
   simp
 
+/- English proof (translation)
+The claim follows from `|(Set.ncard {y : Fin n → B | (∀ i, ip c y (x i) = g i) ∧ ip c y y = t} : ℝ) - (q : ℝ) ^ (2 * n - (2 * k + 1))| ≤ (q : ℝ) ^ n := by set N := Set.ncard {y : Fin n → B | (∀ i, ip c y (x i) = g i) ∧ ip c y y = t} with hN let F : B × (Fin k → B) → ℂ := fun z => ∑ y : Fin n → B, χ (z.1 …`.
+-/
 theorem quad_count {B : Type} [CommRing B] [Fintype B] (c : B →+* B) (hc : ∀ u, c (c u) = u)
     (ω : B) (hω : IsUnit (ω - c ω)) (hf : ∀ t, c t = t → t ≠ 0 → IsUnit t) (q : ℕ) (hq : 2 ≤ q)
     (hB : Fintype.card B = q ^ 2) (χ : AddChar B ℂ) (hχ : χ.IsPrimitive)

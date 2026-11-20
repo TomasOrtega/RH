@@ -19,6 +19,17 @@ namespace GlobalTheory.Mem.R3.IotaRd
 
 open Formalism.IndefR.Cx.CxData
 
+/- English proof (translation)
+Use `set q : A.FR t := cr.toR X.zs b t (((lv (fc X.zs) b).Pq t).mulVec F) with hq`. Establish `hdV : eV t F - q ∈ cv.v0R X.zs b t` using `sub_mem (hV t F) (hC t _)`. Establish `hdo : ∀ x, cv.hR t (cr.toR X.zs b t x) (eV t F - q) = 0`. Introduce `x`. Rewrite using `[map_sub, hO t F x, sub_self]`.
+
+Establish `hjV : X.jR t (eV t F - q) ∈ X.V0C cv b t` using `Submodule.subset_span ⟨_, hdV, rfl⟩`. Establish `hΘE : X.Θ t (X.jR t (eV t F - q)) ∈ X.EEl b` using `hDn t ⟨_, hjV, rfl⟩`. Establish `horth : ∀ e ∈ X.EEl b, ⟪e, X.Θ t (X.jR t (eV t F - q))⟫_ℂ = 0`. Introduce `e he`. Rewrite using `[← LinearMap.adjoint_inner_left]`.
+
+Establish `h1 : LinearMap.adjoint (X.Θ t) e ∈ Submodule.span ℂ (Set.range fun x : Fin ((lv (fc X.zs) b).dQ t) → K => X.jR t (cr.toR X.zs b t x))`. Rewrite using `[hRL t]`. Conclude with `Submodule.mem_inf.2 ⟨LinearMap.mem_range_self _ e, hUp t (Submodule.mem_map_of_mem he)⟩`. Establish `h2 : Submodule.span ℂ (Set.range fun x : Fin ((lv (fc X.zs) b).dQ t) → K => X.jR t (cr.toR X.zs b t x)) ≤ (Submodule.span ℂ {X.jR t (eV t F - q)})ᗮ`. Rewrite using `[Submodule.span_le]`.
+
+Introduce and unpack `_ ⟨x, rfl⟩`. Rewrite using `[SetLike.mem_coe, Submodule.mem_orthogonal_singleton_iff_inner_right, inner_eq_zero_symm, hJ, hdo x, map_zero]`. Establish `h3` using `Submodule.mem_orthogonal_singleton_iff_inner_right.1 (h2 h1)`. Rewrite `h3` using `[inner_eq_zero_symm]`. Then use the resulting hypothesis. Establish `h0 : X.Θ t (X.jR t (eV t F - q)) = 0` using `inner_self_eq_zero.1 (horth _ hΘE)`.
+
+Rewrite `h0` using `[map_sub, map_sub, sub_eq_zero]`. Conclude with `h0`.
+-/
 theorem theta_eq_proj {K : Type} [Field K] [NumberField K] [StarRing K] {Bs : DefBase K} {A : DefAmb Bs} (X : CxData A)
     {fc : DefSub A → DefFace Bs} (cr : Crd A fc) (cv : CrdV A) (b : Bool)
     (eV : ∀ t, (Fin ((lv (fc X.zs) b).nV t) → K) →ₗ[K] A.FR t) (hJ : X.JIsoR cv)
@@ -58,6 +69,9 @@ namespace GlobalTheory.Mem.R3.IotaRd
 
 open Formalism.IndefR.Cx.CxData Formalism.IndefR.Links.EvTie
 
+/- English proof (translation)
+Proceed by induction on `j with`. Consider the case `zero => rfl`. Consider the case `succ j ih => show ((RowSide.sharp D).downTo μ j).comp (D.what₂.io μ j) = (D.what₂.downTo μ j).comp (D.what₂.io μ j)`. Rewrite using `[ih]`. Both sides reduce to the same expression.
+-/
 theorem sharp_downTo' (D : D7) (μ) (j : ℕ) : (RowSide.sharp D).downTo μ j = D.what₂.downTo μ j := by
   induction j with
   | zero => rfl
@@ -65,10 +79,30 @@ theorem sharp_downTo' (D : D7) (μ) (j : ℕ) : (RowSide.sharp D).downTo μ j = 
     show ((RowSide.sharp D).downTo μ j).comp (D.what₂.io μ j) = (D.what₂.downTo μ j).comp (D.what₂.io μ j)
     rw [ih]; rfl
 
+/- English proof (translation)
+Unfold `RowSide.iota Rows.Data.iota`. Rewrite using `[sharp_downTo']`. Both sides reduce to the same expression.
+-/
 theorem sharp_iota' (D : D7) (μ) : (RowSide.sharp D).iota μ = D.what₂.iota μ := by
   unfold RowSide.iota Rows.Data.iota
   rw [sharp_downTo']; rfl
 
+/- English proof (translation)
+Introduce `hCusp D G _ _ Pl0 I0 T A3 Ks _ _ _ R F cG X0 Y Z hP hH`. Take `⟨h1, h0⟩` from `GlobalTheory.T.compositeIntertwiner_eq_thetaLift_goodProjector hCusp D G Pl0 I0 T A3 Ks R F cG X0 Y hP hH`. Establish `hC` using `complex_data_conditions_base_level_of_primitive_links hH.ok hH.sep hP.char hH.prim`. Establish `hOk` using `hH.ok`. Establish `hout : ∀ t y, Tw.out (s` using `twAt D.what₂.embLL A3.A.v0) (E := R.HE.H) ((R.toCx3 F).Θ t ((R.toCx3 F).jR t y)) = R.Th t (R.jX t y) := fun t y => rfl`.
+
+Establish `hb : ∀ t (P : Subgroup G) (ψ : P →* D.what₂.LLˣ), BlockHyp (A3.A.fam.R t) (A3.A.fam.lvl P ψ) A3.A.fam.v0 1` using `fun t P ψ => ⟨hOk.ok2.conj, hOk.ok2.irr, hOk.ok2.what₂ t⟩`. Establish `hrow : ∀ t (P : Subgroup G) (ψ : P →* D.what₂.LLˣ) x, rowForm A3.A P ψ t ((rV0 D A3.A P ψ t) *ᵥ x) = (A3.A.fam.R t).S.basis.equivFun.symm ((A3.A.fam.R t).vE (A3.A.fam.lvl P ψ) *ᵥ x)`. Introduce `t P ψ x`. Unfold `rowForm rV0`. Rewrite using `[Matrix.mulVec_mulVec, ← Matrix.mul_assoc, BlockDat.lf_lvl_vE (hb t P ψ)]`.
+
+Establish `k1 : ∀ t x, R.Th t (R.jX t (rowForm A3.A F.P1 F.ψ1 t (rV0 D A3.A F.P1 F.ψ1 t *ᵥ x))) = Tw.out (s` using `twAt D.what₂.embLL A3.A.v0) (E := R.HE.H) ((R.toCx3 F).iC F.cr true A3.A.μ0 (cpt A3.A.v0.embedding ((A3.indefDown (s1Of R F)).ι t *ᵥ ((A3.A.side F.P1 F.ψ1 (A3.fam3.toSub2 (zsOf R F))).Pq t *ᵥ x)))) := by`. Introduce `t x`. Establish `e` using `theta_eq_proj (R.toCx3 F) F.cr F.cv true (F.eV (R.toCx3 F).zs) hC.jIsoR (hC.levs true).1 (hC.levs true).2.1 (hC.levs true).2.2 (definite_coordinates_in_good_part _ true) (evTie_of_ok hOk F _).1 (evTie_of_ok hOk F _).2 t x`. Establish `k` using `((R.toCx3 F).key_row F.cr true (hC.what₂ true).1 (hC.ratMu true) t (((A3.A.side F.P1 F.ψ1 (A3.fam3.toSub2 (zsOf R F))).Pq t *ᵥ x))).trans ((R.toCx3 F).iC_cpt' F.cr true t _)`. Conclude with `(congrArg (fun y => R.Th t (R.jX t y)) (hrow t F.P1 F.ψ1 x)).trans ((hout t _).symm.trans (congrArg (Tw.out (s := twAt D.what₂.embLL A3.A.v0) (E := R.HE.H)) (e.trans k.symm)))`.
+
+Establish `k0 : ∀ t x, R.Th t (R.jX t (rowForm A3.A F.P0 F.ψ0 t (rV0 D A3.A F.P0 F.ψ0 t *ᵥ x))) = Tw.out (s` using `twAt D.what₂.embLL A3.A.v0) (E := R.HE.H) ((R.toCx3 F).iC F.cr false A3.A.μ0 (cpt A3.A.v0.embedding ((A3.indefDown (s0Of R F)).ι t *ᵥ ((A3.A.side F.P0 F.ψ0 (A3.fam3.toSub2 (zsOf R F))).Pq t *ᵥ x)))) := by`. Introduce `t x`. Set `eV0 : ∀ t, (Fin ((lv (F.fc (R.toCx3 F).zs) false).nV t) → D.what₂.LL) →ₗ[D.what₂.LL] A3.fam3.amb3.FR t` to `fun t => ((A3.A.fam.R t).S.basis.equivFun.symm : (Fin (A3.A.fam.R t).S.dim → D.what₂.LL) →ₗ[D.what₂.LL] (A3.A.fam.R t).S.Forms) ∘ₗ ((A3.A.fam.R t).vE (A3.A.fam.lvl F.P0 F.ψ0)).mulVecLin`. Establish `e` using `theta_eq_proj (R.toCx3 F) F.cr F.cv false eV0 hC.jIsoR (hC.levs false).1 (hC.levs false).2.1 (hC.levs false).2.2 (definite_coordinates_in_good_part _ false) (fun t y => ⟨y, rfl⟩) (fun t y x => evTie_block (A3.A.fam.R t) (A3.A.fam.lvl F.P0 F.ψ0) ((R.toCx3 F).zs.Z t) (BlockDat.HZ_d …`. Establish `k` using `((R.toCx3 F).key_row F.cr false (hC.what₂ false).1 (hC.ratMu false) t (((A3.A.side F.P0 F.ψ0 (A3.fam3.toSub2 (zsOf R F))).Pq t *ᵥ x))).trans ((R.toCx3 F).iC_cpt' F.cr false t _)`.
+
+Conclude with `(congrArg (fun y => R.Th t (R.jX t y)) (hrow t F.P0 F.ψ0 x)).trans ((hout t _).symm.trans (congrArg (Tw.out (s := twAt D.what₂.embLL A3.A.v0) (E := R.HE.H)) (e.trans k.symm)))`. Use `⟨⟨Y.formsA, Y.latA, ?_⟩, ⟨Y.formsAtBottomLevel, Y.latA0, ?_⟩⟩` and prove the remaining obligations. Introduce `t x`. Apply `Y.Ish.jE.injective` to reduce the goal to its premises. Apply `Subtype.val_injective` to reduce the goal to its premises.
+
+Establish `e1` using `h1 t ((rV0 D A3.A F.P1 F.ψ1 t).mulVec x)`. Establish `e2` using `Z.jEE (((A3.indefDown (s1Of R F)).ι t).mulVec (((A3.A.side F.P1 F.ψ1 (A3.fam3.toSub2 (zsOf R F))).Pq t).mulVec x))`. Rewrite `e1` using `[k1]`. Rewrite using `[sharp_iota']`. Conclude with `e1.trans e2.symm`.
+
+Introduce `t x`. Apply `Y.Iz.jE.injective` to reduce the goal to its premises. Apply `Subtype.val_injective` to reduce the goal to its premises. Establish `e1` using `h0 t ((rV0 D A3.A F.P0 F.ψ0 t).mulVec x)`. Establish `e2` using `Z.jEE0 (((A3.indefDown (s0Of R F)).ι t).mulVec (((A3.A.side F.P0 F.ψ0 (A3.fam3.toSub2 (zsOf R F))).Pq t).mulVec x))`.
+
+Rewrite `e1` using `[k0]`. Conclude with `e1.trans e2.symm`.
+-/
 theorem rowSideDef3_both : (GlobalTheory.Published.DiscreteSeriesCover ∧ GlobalTheory.Published.HarishChandraModules ∧ GlobalTheory.Published.CasselmanWallach ∧ GlobalTheory.Published.HarishChandraFinite ∧ GlobalTheory.Published.CuspRapidDecay) → ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 I0 T : Type) (A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3) (cG : G0 R.Pg D.R.r ≃* G0g D.nd) (X0 : BaseLevelRowSide D) (Y : Read (A3 := A3) R.toRealDat F.lv2 X0) (Z : ReadL R F X0 Y), Pins R F cG → Holds R F → RowSideDef3 D A3.A (RowSide.sharp D) F.P1 F.ψ1 (A3.fam3.toSub2 (zsOf R F)) (A3.indefDown (s1Of R F)) Y.tup Z.eRR Y.jA ∧ RowSideDef3 D A3.A X0.s F.P0 F.ψ0 (A3.fam3.toSub2 (zsOf R F)) (A3.indefDown (s0Of R F)) Y.tup Z.eRR0 Y.jA0 := by
   intro hCusp D G _ _ Pl0 I0 T A3 Ks _ _ _ R F cG X0 Y Z hP hH
   obtain ⟨h1, h0⟩ := GlobalTheory.T.compositeIntertwiner_eq_thetaLift_goodProjector hCusp D G Pl0 I0 T A3 Ks R F cG X0 Y hP hH

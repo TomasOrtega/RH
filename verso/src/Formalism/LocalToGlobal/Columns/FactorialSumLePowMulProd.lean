@@ -31,6 +31,11 @@ def wS (m : (Unit × Fin n × Fin n) →₀ ℕ) : ℝ := (mfact m : ℝ) / (ext
 
 end Std2
 
+/- English proof (translation)
+Establish `h1` using `Nat.multinomial_spec Finset.univ a`. Establish `h2` using `Finset.sum_pow_eq_sum_piAntidiag (Finset.univ : Finset (Fin k)) (fun _ => (1 : ℕ)) (∑ i, a i)`. Simplify using `only [Finset.sum_const, Finset.card_univ, Fintype.card_fin, smul_eq_mul, mul_one, one_pow, Finset.prod_const_one, Nat.cast_id] at h2`. Establish `h3 : Nat.multinomial Finset.univ a ≤ k ^ (∑ i, a i)`. Rewrite using `[h2]`.
+
+Conclude with `Finset.single_le_sum (f := fun b => Nat.multinomial Finset.univ b) (fun _ _ => Nat.zero_le _) (Finset.mem_piAntidiag.2 ⟨rfl, fun i _ => Finset.mem_univ i⟩)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem factorial_sum_le_pow_mul_prod {k : ℕ} (a : Fin k → ℕ) : (∑ i, a i).factorial ≤ k ^ (∑ i, a i) * ∏ i, (a i).factorial := by
   have h1 := Nat.multinomial_spec Finset.univ a
   have h2 := Finset.sum_pow_eq_sum_piAntidiag (Finset.univ : Finset (Fin k)) (fun _ => (1 : ℕ)) (∑ i, a i)
@@ -55,6 +60,11 @@ def HwNormBound : Prop :=
     Formalism.GradedWeylDivisibility.fockQ (Formalism.GradedWeylDivisibility.hw ℚ (le_refl (κ + 1)) ν) (Formalism.GradedWeylDivisibility.hw ℚ (le_refl (κ + 1)) ν) ≤
       ((∏ i, (ν i).factorial : ℕ) : ℚ) * ((ν 0 + κ + 1 : ℕ) : ℚ) ^ ((κ + 1) * κ / 2)
 
+/- English proof (translation)
+Establish `hds : lam.detShift = lam.w (Fin.last κ)`. Unfold `DomWeight.detShift`. Rewrite using `[dif_pos (Nat.succ_pos κ)]`. Use `congr 1`. Establish `hle : lam.w (Fin.last κ) ≤ lam.w i` using `lam.anti (Fin.le_last i)`.
+
+Simplify using `only [DomWeight.natW, plus, castW, Fin.cast_eq_self, hds]`. Rewrite using `[Int.toNat_of_nonneg (by linarith)]`.
+-/
 theorem natural_weight_cast_eq {κ : ℕ} (lam : DomWeight (κ + 1)) (i : Fin (κ + 1)) :
     ((lam.natW i : ℕ) : ℤ) = plus (castW rfl lam) i := by
   have hds : lam.detShift = lam.w (Fin.last κ) := by
@@ -65,10 +75,18 @@ theorem natural_weight_cast_eq {κ : ℕ} (lam : DomWeight (κ + 1)) (i : Fin (�
   simp only [DomWeight.natW, plus, castW, Fin.cast_eq_self, hds]
   rw [Int.toNat_of_nonneg (by linarith)]
 
+/- English proof (translation)
+Introduce `a b hab` and use `by show (lam.w b - lam.detShift).toNat ≤ (lam.w a - lam.detShift).toNat exact Int.toNat_le_toNat (sub_le_sub_right (lam.anti hab) _)`.
+-/
 theorem natural_weight_antitone {n : ℕ} (lam : DomWeight n) : Antitone lam.natW := fun a b hab => by
   show (lam.w b - lam.detShift).toNat ≤ (lam.w a - lam.detShift).toNat
   exact Int.toNat_le_toNat (sub_le_sub_right (lam.anti hab) _)
 
+/- English proof (translation)
+Establish `h2 : 2 ∣ (κ + 1) * κ`. Rewrite using `[mul_comm]`. Conclude with `(Nat.even_mul_succ_self κ).two_dvd`. Rewrite using `[Nat.cast_div h2 (by norm_num)]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem triangular_number_cast (κ : ℕ) : (((κ + 1) * κ / 2 : ℕ) : ℝ) = ((κ : ℝ) + 1) * (κ : ℝ) / 2 := by
   have h2 : 2 ∣ (κ + 1) * κ := by
     rw [mul_comm]

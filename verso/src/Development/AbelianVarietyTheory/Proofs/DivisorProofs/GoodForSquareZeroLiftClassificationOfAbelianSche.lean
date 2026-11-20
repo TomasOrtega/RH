@@ -18,6 +18,19 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.LiftSys
 
+/- English proof (translation)
+Introduce `HC HH R _ _ A _ g hA hg`. Establish `hs : Smooth A.hom` using `hA.smooth`. Establish `hp : IsProper A.hom` using `hA.proper`. Establish `hsep : IsSeparated A.hom` using `inferInstance`. Establish `hqc : QuasiCompact A.hom` using `inferInstance`.
+
+Establish `bij` using `HC.bijective_cechDeRhamComparison_degreeOne A.hom hs hsep hqc`. Take `⟨-, -, ⟨-, hproj, -⟩, -, ⟨hcl, hinj, -⟩, -⟩` from `HH R A g hA hg`. Establish `key : ∀ f : Form A.hom, cmp1 A.hom (Form.cl A.hom f) = clForm A.hom (cmpForm A.hom f)` using `comparison_formClass A.hom`. Use `⟨GlobalTheory.T.globalFunctionsAreConstant_abelianScheme_noetherian R A hA, GlobalTheory.T.abelianScheme_differentials_from_globalForms HC HH R A g hA hg, hproj, fun w ↦ ?_, fun f ↦ ?_⟩` and prove the remaining obligations. Establish `hw : w ∈ ClosedForm A.hom` using `hcl ▸ Submodule.mem_top`.
+
+Take `⟨c, hc⟩` from `bij.2 (clForm A.hom ⟨w, hw⟩)`. Establish `h1 : clForm A.hom ⟨w, hw⟩ ∈ CechHodgeFiltration A.hom` using `(cechHodgeFiltration_eq_range A.hom).symm ▸ ⟨_, rfl⟩`. Establish `h2 : c ∈ F1 A.hom`. Express the relevant statement in the definitionally equal form `toH1O A.hom c = 0`. Apply `cmpO_injective R A.left A.hom` to reduce the goal to its premises.
+
+Rewrite using `[← structureSheaf_comparison_comm, hc, map_zero]`. Conclude with `h1`. Rewrite `h2` using `[hodgeFiltration_eq_range]`. Take `⟨f, rfl⟩` from `h2`. Use `⟨f, ?_⟩` and prove the remaining obligations.
+
+Use `hinj ((key f).symm.trans hc)` as an intermediate fact. Conclude with `congrArg Subtype.val this`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Apply `hinj` to reduce the goal to its premises.
+
+Rewrite using `[← key, h, map_zero, map_zero]`. Introduce `h`. Apply `bij.1` to reduce the goal to its premises. Rewrite using `[key, h, map_zero, map_zero]`.
+-/
 theorem good_of_isAbelianScheme : CrystallineSmoothLift → AbelianHodgeDeRham → ∀ (R : Type) [CommRing R]
     [IsNoetherianRing R] (A : Over (Sp R)) [GrpObj A] (g : ℕ), IsAbelianScheme A →
     SmoothOfRelativeDimension g A.hom → Good A.hom := by

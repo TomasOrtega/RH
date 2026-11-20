@@ -20,6 +20,11 @@ def IsPtL {K : Type*} [Zero K] (l : List (ℕ × K)) (i : ℕ) : Prop :=
 def ptList {K : Type*} [Zero K] {i : ℕ} (p : Formalism.MainNotions.S.Point K i) : List (ℕ × K) :=
   p.1.map Prod.swap
 
+/- English proof (translation)
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `h` using `p.2.2 show ((p.1.map Prod.swap).map Prod.fst).sum = i`. Rewrite using `[List.map_map]`. Conclude with `h`. Introduce `b hb`.
+
+Simplify using `only [ptList, List.mem_map] at hb`. Take `⟨c, hc, rfl⟩` from `hb`. Conclude with `⟨(p.2.1 c hc).2, (p.2.1 c hc).1⟩`.
+-/
 theorem ptList_isPtL {K : Type*} [Zero K] {i : ℕ} (p : Formalism.MainNotions.S.Point K i) : IsPtL (ptList p) i := by
   refine ⟨?_, ?_⟩
   · have h := p.2.2
@@ -50,6 +55,9 @@ def ptEquiv (K : Type*) [Zero K] (i : ℕ) : Formalism.MainNotions.S.Point K i �
     apply Subtype.ext
     simp [ptList, List.map_map]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem ptEquiv_apply {K : Type*} [Zero K] {i : ℕ} (p : Formalism.MainNotions.S.Point K i) :
     (ptEquiv K i p).1 = ptList p := rfl
 

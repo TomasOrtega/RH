@@ -14,9 +14,15 @@ set_option autoImplicit false
 
 namespace Formalism.L2.SG.Pf.Tau
 
+/- English proof (translation)
+The claim follows from `reductionTau_of (third_estimate_of_first_two h0 (lattice_finitelyGenerated_of_commensurable h0)) (sizes_locally_comparable t4 t5) t7 h8 (lattice_vectors_bounded_below h0) (packet_conditions_closed (lattice_finitelyGenerated_of_commensurable h0) t2)`.
+-/
 theorem reduction_theory_of_lattice (h0 : LatticeCommensurable) (h8 : MinkowskiSubmodule) : ReductionTau :=
   reductionTau_of (third_estimate_of_first_two h0 (lattice_finitelyGenerated_of_commensurable h0)) (sizes_locally_comparable t4 t5) t7 h8 (lattice_vectors_bounded_below h0) (packet_conditions_closed (lattice_finitelyGenerated_of_commensurable h0) t2)
 
+/- English proof (translation)
+The claim follows from `reduction_theory_of_lattice t0 h8`.
+-/
 theorem reductionTau_of_minkowskiSubmodule (h8 : MinkowskiSubmodule) : ReductionTau :=
   reduction_theory_of_lattice t0 h8
 

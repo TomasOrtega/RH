@@ -9,6 +9,11 @@ open NumberField IsDedekindDomain Formalism.L2.Host IsLocalRing Polynomial
 
 namespace GlobalTheory.Mem.WildChar
 
+/- English proof (translation)
+Distinguish the cases in `hg : g = 0`. Rewrite using `[hg]`. Conclude with `zero_le`. Rewrite `hy`, the goal using `[← WithZero.exp_log hg]`. Rewrite `hy` using `[← WithZero.exp_zero, WithZero.exp_lt_exp]`.
+
+Rewrite using `[WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem le_exp_neg_one_of_lt_one {g : WithZero (Multiplicative ℤ)} (hy : g < 1) :
     g ≤ WithZero.exp (-1 : ℤ) := by
   by_cases hg : g = 0
@@ -18,6 +23,11 @@ theorem le_exp_neg_one_of_lt_one {g : WithZero (Multiplicative ℤ)} (hy : g < 1
     rw [WithZero.exp_le_exp]
     omega
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.ValuationPowSubPow.valuation_pow_sub_pow_le`. Consider the case `exact _root_.GlobalTheory.ValuationPowSubPow.valuation_pow_sub_pow_le`. Consider the case `(apply _root_.GlobalTheory.ValuationPowSubPow.valuation_pow_sub_pow_le <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.ValuationPowSubPow.valuation_pow_sub_pow_le <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.ValuationPowSubPow.valuation_pow_sub_pow_le <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.ValuationPowSubPow.valuation_pow_sub_pow_le ..)`.
+-/
 theorem val_pow_sub_pow_le {K Γ : Type*} [Field K] [LinearOrderedCommGroupWithZero Γ]
     (w : Valuation K Γ) {a b : K} (ha : w a ≤ 1) (hb : w b ≤ 1) (m : ℕ) :
     w (a ^ m - b ^ m) ≤ w (a - b) := by
@@ -29,6 +39,11 @@ theorem val_pow_sub_pow_le {K Γ : Type*} [Field K] [LinearOrderedCommGroupWithZ
   | (intros; apply @_root_.GlobalTheory.ValuationPowSubPow.valuation_pow_sub_pow_le <;> first | assumption | infer_instance)
   | (intros; exact _root_.GlobalTheory.ValuationPowSubPow.valuation_pow_sub_pow_le ..)
 
+/- English proof (translation)
+Rewrite using `[← mul_geom_sum, map_mul]`. Use `mul_le_mul_right (le_exp_neg_one_of_lt_one ?_) _` and prove the remaining obligations. Establish `e : ∑ i ∈ Finset.range q, u ^ i = (q : K) + ∑ i ∈ Finset.range q, (u ^ i - 1 ^ i)`. Simplify using the standard rewrite rules. Rewrite using `[e]`.
+
+Use `Valuation.map_add_lt _ hq (Valuation.map_sum_lt _ one_ne_zero fun i _ => ?_)` and prove the remaining obligations. Conclude with `(val_pow_sub_pow_le w hu (map_one w).le i).trans_lt hu1`.
+-/
 theorem val_pow_sub_one_le {K : Type*} [Field K] (w : Valuation K (WithZero (Multiplicative ℤ)))
     {u : K} (hu : w u ≤ 1) (hu1 : w (u - 1) < 1) {q : ℕ} (hq : w (q : K) < 1) :
     w (u ^ q - 1) ≤ w (u - 1) * WithZero.exp (-1 : ℤ) := by
@@ -40,6 +55,13 @@ theorem val_pow_sub_one_le {K : Type*} [Field K] (w : Valuation K (WithZero (Mul
   refine Valuation.map_add_lt _ hq (Valuation.map_sum_lt _ one_ne_zero fun i _ => ?_)
   exact (val_pow_sub_pow_le w hu (map_one w).le i).trans_lt hu1
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simpa using hu1.le`. Consider the case `succ n ih`. Establish `h1 : w (u ^ (q ^ n)) ≤ 1` using `by rw [map_pow]; exact pow_le_one' hu _`. Establish `h2 : w (u ^ (q ^ n) - 1) < 1`.
+
+Use `val_pow_sub_pow_le w hu (map_one w).le (q ^ n)` as an intermediate fact. Rewrite `this` using `[one_pow]`. Conclude with `this.trans_lt hu1`. Rewrite using `[pow_succ, pow_mul]`. Use `(val_pow_sub_one_le w h1 h2 hq).trans ((mul_le_mul_left ih _).trans (le_of_eq ?_))` and prove the remaining obligations.
+
+Rewrite using `[← WithZero.exp_add]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem val_pow_pow_sub_one_le {K : Type*} [Field K] (w : Valuation K (WithZero (Multiplicative ℤ)))
     {u : K} (hu : w u ≤ 1) (hu1 : w (u - 1) < 1) {q : ℕ} (hq : w (q : K) < 1) (n : ℕ) :
     w (u ^ (q ^ n) - 1) ≤ WithZero.exp (-(n : ℤ)) := by
@@ -60,6 +82,9 @@ theorem val_pow_pow_sub_one_le {K : Type*} [Field K] (w : Valuation K (WithZero 
 
 variable {L : Type} [Field L] [NumberField L] (v : HeightOneSpectrum (𝓞 L))
 
+/- English proof (translation)
+Establish `h3 : Valued.v (algebraMap (𝓞 L) (v.adicCompletion L) y) = v.valuation L (algebraMap (𝓞 L) L y)` using `ReciprocityTheory.Aut.adic_valued_algebraMap v (algebraMap (𝓞 L) L y)`. Rewrite using `[h3]`. Conclude with `HeightOneSpectrum.valuation_lt_one_iff_mem v _`.
+-/
 theorem valued_algebraMap_lt_one {y : 𝓞 L} :
     Valued.v (algebraMap (𝓞 L) (v.adicCompletion L) y) < 1 ↔ y ∈ v.asIdeal := by
   have h3 : Valued.v (algebraMap (𝓞 L) (v.adicCompletion L) y)
@@ -68,11 +93,19 @@ theorem valued_algebraMap_lt_one {y : 𝓞 L} :
   rw [h3]
   exact HeightOneSpectrum.valuation_lt_one_iff_mem v _
 
+/- English proof (translation)
+Rewrite using `[← map_natCast (algebraMap (𝓞 L) (v.adicCompletion L)), valued_algebraMap_lt_one]`. Conclude with `Ideal.absNorm_mem v.asIdeal`.
+-/
 theorem valued_absNorm_lt_one :
     Valued.v ((Ideal.absNorm v.asIdeal : ℕ) : v.adicCompletion L) < 1 := by
   rw [← map_natCast (algebraMap (𝓞 L) (v.adicCompletion L)), valued_algebraMap_lt_one]
   exact Ideal.absNorm_mem v.asIdeal
 
+/- English proof (translation)
+Establish `h0 : Ideal.absNorm v.asIdeal ≠ 0`. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff]`. Conclude with `v.ne_bot`. Establish `h1 : Ideal.absNorm v.asIdeal ≠ 1`. Rewrite using `[Ne, Ideal.absNorm_eq_one_iff]`.
+
+Conclude with `v.isPrime.ne_top`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem one_lt_absNorm : 1 < Ideal.absNorm v.asIdeal := by
   have h0 : Ideal.absNorm v.asIdeal ≠ 0 := by
     rw [Ne, Ideal.absNorm_eq_zero_iff]; exact v.ne_bot
@@ -80,6 +113,15 @@ theorem one_lt_absNorm : 1 < Ideal.absNorm v.asIdeal := by
     rw [Ne, Ideal.absNorm_eq_one_iff]; exact v.isPrime.ne_top
   omega
 
+/- English proof (translation)
+Take `⟨y, hy⟩` from `ReciprocityTheory.Aut.adic_exists_approx v x hx.le`. Establish `hy1 : Valued.v (algebraMap (𝓞 L) (v.adicCompletion L) y) = 1`. Rewrite using `[← hx]`. Apply `Valuation.map_eq_of_sub_lt` to reduce the goal to its premises. Rewrite using `[Valuation.map_sub_swap, hx]`.
+
+Conclude with `hy`. Establish `hnot : y ∉ v.asIdeal`. Rewrite using `[← valued_algebraMap_lt_one, hy1]`. Conclude with `lt_irrefl _`. Establish `hmem : y ^ (Ideal.absNorm v.asIdeal - 1) - 1 ∈ v.asIdeal` using `by haveI := v.isMaximal`.
+
+Use `letI := Ideal.Quotient.field v.asIdeal`. Use `haveI : Finite (𝓞 L ⧸ v.asIdeal) := v.asIdeal.finiteQuotientOfFreeOfNeBot v.ne_bot`. Use `letI := Fintype.ofFinite (𝓞 L ⧸ v.asIdeal)`. Rewrite using `[← Ideal.Quotient.eq, map_pow, map_one, Ideal.absNorm_apply, Submodule.cardQuot_apply, Nat.card_eq_fintype_card]`. Conclude with `FiniteField.pow_card_sub_one_eq_one _ (fun h => hnot (Ideal.Quotient.eq_zero_iff_mem.1 h))`.
+
+Rewrite `hmem` using `[← valued_algebraMap_lt_one, map_sub, map_pow, map_one]`. Rewrite using `[← sub_add_sub_cancel _ (algebraMap (𝓞 L) (v.adicCompletion L) y ^ (Ideal.absNorm v.asIdeal - 1))]`. Conclude with `Valuation.map_add_lt _ ((val_pow_sub_pow_le _ hx.le hy1.le _).trans_lt hy) hmem`.
+-/
 theorem valued_pow_sub_one_lt_one {x : v.adicCompletion L} (hx : Valued.v x = 1) :
     Valued.v (x ^ (Ideal.absNorm v.asIdeal - 1) - 1) < 1 := by
   obtain ⟨y, hy⟩ := ReciprocityTheory.Aut.adic_exists_approx v x hx.le
@@ -103,6 +145,9 @@ theorem valued_pow_sub_one_lt_one {x : v.adicCompletion L} (hx : Valued.v x = 1)
     (algebraMap (𝓞 L) (v.adicCompletion L) y ^ (Ideal.absNorm v.asIdeal - 1))]
   exact Valuation.map_add_lt _ ((val_pow_sub_pow_le _ hx.le hy1.le _).trans_lt hy) hmem
 
+/- English proof (translation)
+Rewrite using `[mem_maximalIdeal, mem_nonunits_iff, HeightOneSpectrum.adicCompletionIntegers.isUnit_iff_valued_eq_one]`. Establish `h : Valued.v (a : v.adicCompletion L) ≤ 1` using `a.2`. Conclude with `⟨fun h' => lt_of_le_of_ne h h', fun h' => h'.ne⟩`.
+-/
 theorem mem_maximalIdeal_iff (a : v.adicCompletionIntegers L) :
     a ∈ maximalIdeal (v.adicCompletionIntegers L) ↔ Valued.v (a : v.adicCompletion L) < 1 := by
   rw [mem_maximalIdeal, mem_nonunits_iff,
@@ -110,6 +155,19 @@ theorem mem_maximalIdeal_iff (a : v.adicCompletionIntegers L) :
   have h : Valued.v (a : v.adicCompletion L) ≤ 1 := a.2
   exact ⟨fun h' => lt_of_le_of_ne h h', fun h' => h'.ne⟩
 
+/- English proof (translation)
+Establish `hc : IsAdicComplete (maximalIdeal (v.adicCompletionIntegers L)) (v.adicCompletionIntegers L)`. Use `NormIntegers.isAdicComplete_of_fg (C := v.adicCompletion L) ⟨?_, ?_, ?_⟩ (IsNoetherian.noetherian _) (maximalIdeal.isMaximal _).ne_top` and prove the remaining obligations. Conclude with `FaithfulSMul.algebraMap_injective _ _`. Introduce `x`. Establish `: ‖(x : v.adicCompletion L)‖ ≤ 1` using `Valued.toNormedField.norm_le_one_iff.2 x.2`.
+
+Conclude with `this` after adjusting the coercions. Introduce `x hx`. Establish `: ‖x‖ ≤ 1` using `by exact_mod_cast hx`. Conclude with `⟨⟨x, Valued.toNormedField.norm_le_one_iff.1 this⟩, rfl⟩`. Establish `hq` using `one_lt_absNorm v`.
+
+Set `a : v.adicCompletionIntegers L` to `⟨x, hx.le⟩`. Take `⟨ζ, h1, h2⟩` from `HenselianRing.is_henselian (I := maximalIdeal (v.adicCompletionIntegers L)) (X ^ (Ideal.absNorm v.asIdeal - 1) - C 1) (monic_X_pow_sub_C _ (by omega)) a (by`. Rewrite using `[mem_maximalIdeal_iff]`. Simplify `valued_pow_sub_one_lt_one v hx)` using `[a]`. Use the proof step `(by`.
+
+Apply `IsUnit.map` to reduce the goal to its premises. Rewrite using `[HeightOneSpectrum.adicCompletionIntegers.isUnit_iff_valued_eq_one]`. Establish `h3 : Valued.v (((Ideal.absNorm v.asIdeal - 1 : ℕ)) : v.adicCompletion L) = 1`. Rewrite using `[Nat.cast_sub hq.le, Nat.cast_one, Valuation.map_sub_swap]`. Conclude with `Valuation.map_one_sub_of_lt _ (valued_absNorm_lt_one v)`.
+
+Simplify using `[a, derivative_X_pow, hx, h3])`. Use `⟨ζ, ?_, ?_⟩` and prove the remaining obligations. Establish `h4 : ζ ^ (Ideal.absNorm v.asIdeal - 1) = 1`. Simplify `h1` using `[sub_eq_zero]`. Establish `h5` using `congrArg (algebraMap (v.adicCompletionIntegers L) (v.adicCompletion L)) h4`.
+
+Rewrite `h5` using `[map_pow, map_one]`. Conclude with `h5`. Establish `h6` using `(mem_maximalIdeal_iff v _).1 h2`. Rewrite `h6` using `[AddSubgroupClass.coe_sub]`. Conclude with `h6`.
+-/
 theorem exists_rootOfUnity_congr {x : v.adicCompletion L} (hx : Valued.v x = 1) :
     ∃ ζ : v.adicCompletion L, ζ ^ (Ideal.absNorm v.asIdeal - 1) = 1 ∧ Valued.v (ζ - x) < 1 := by
   have hc : IsAdicComplete (maximalIdeal (v.adicCompletionIntegers L))
@@ -147,6 +205,19 @@ theorem exists_rootOfUnity_congr {x : v.adicCompletion L} (hx : Valued.v x = 1) 
     rw [AddSubgroupClass.coe_sub] at h6
     exact h6
 
+/- English proof (translation)
+Introduce `L _ _ χ v`. Use `⟨fun h x hx => ?_, fun h x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[← map_pow]`. Use `h _ (GlobalTheory.Mem.UnrAe.isUnitAt_pow hx _) ?_` and prove the remaining obligations. Rewrite using `[Units.val_pow_eq_pow_val]`.
+
+Simplify using `using le_exp_neg_one_of_lt_one (valued_pow_sub_one_lt_one v hx)`. Take `⟨n, hn⟩` from `GlobalTheory.Mem.UnrAe.exists_levelLe χ v`. Establish `hx' : Valued.v (x : v.adicCompletion L) = 1` using `hx`. Take `⟨ζ, h1, h2⟩` from `exists_rootOfUnity_congr v hx'`. Establish `hζ : Valued.v ζ = 1`.
+
+Rewrite using `[← hx']`. Apply `Valuation.map_eq_of_sub_lt` to reduce the goal to its premises. Rewrite using `[hx']` and apply the resulting hypothesis. Establish `h0 : ζ ≠ 0`. Introduce and unpack `rfl`.
+
+Simplify using `at hζ`. Set `z : (v.adicCompletion L)ˣ` to `Units.mk0 ζ h0`. Establish `hz : χ.loc v z = 1` using `h z (Units.ext (by simpa [z] using h1))`. Establish `hu : IsUnitAt v (x * z⁻¹)`. Simplify using `[IsUnitAt, z, hx', hζ]`.
+
+Establish `hu1 : Valued.v (((x * z⁻¹ : (v.adicCompletion L)ˣ) : v.adicCompletion L) - 1) < 1`. Establish `e : ((x * z⁻¹ : (v.adicCompletion L)ˣ) : v.adicCompletion L) - 1 = (x - ζ) * ζ⁻¹`. Simplify using `[z, sub_mul, h0]`. Rewrite using `[e, map_mul, map_inv₀, hζ, inv_one, mul_one, Valuation.map_sub_swap]`. Conclude with `h2`.
+
+Use `⟨n, ?_⟩` and prove the remaining obligations. Establish `h3` using `hn _ (GlobalTheory.Mem.UnrAe.isUnitAt_pow hu (Ideal.absNorm v.asIdeal ^ n)) (by`. Rewrite using `[Units.val_pow_eq_pow_val]`. Conclude with `val_pow_pow_sub_one_le _ (le_of_eq hu) hu1 (valued_absNorm_lt_one v) n)`. Rewrite `h3` using `[map_pow, map_mul, map_inv, hz, inv_one, mul_one]`. Then use the resulting hypothesis.
+-/
 theorem orders_on_units : ∀ (L : Type) [Field L] [NumberField L] (χ : HChar L) (v : HeightOneSpectrum (𝓞 L)), (χ.TameAt v → ∀ x, IsUnitAt v x → χ.loc v x ^ (Ideal.absNorm v.asIdeal - 1) = 1) ∧ ((∀ x : (v.adicCompletion L)ˣ, x ^ (Ideal.absNorm v.asIdeal - 1) = 1 → χ.loc v x = 1) → ∀ x, IsUnitAt v x → ∃ n : ℕ, χ.loc v x ^ (Ideal.absNorm v.asIdeal ^ n) = 1) := by
   intro L _ _ χ v
   refine ⟨fun h x hx => ?_, fun h x hx => ?_⟩

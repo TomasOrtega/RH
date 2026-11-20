@@ -7,6 +7,9 @@ open ValuativeRel
 open scoped Matrix Topology
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.LagrFrame.exists_frame | exact GlobalTheory.LagrFrame.exists_frame | (intros; apply GlobalTheory.LagrFrame.exists_frame <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.lagrangian_combined_isotropic : ∀ {k : Type} [Field k] {κ : Type} [Fintype κ] (U : Submodule k ((κ → k) × (κ → k))),
     (∀ u ∈ U, ∀ u' ∈ U, u.1 ⬝ᵥ u'.2 - u'.1 ⬝ᵥ u.2 = 0) →
     ∃ (n : ℕ) (wT wM : (Fin n → k) →ₗ[k] (κ → k) × (κ → k)) (I : Finset (Fin n)),

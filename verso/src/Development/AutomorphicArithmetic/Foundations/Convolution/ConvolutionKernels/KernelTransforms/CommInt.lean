@@ -12,6 +12,17 @@ open GroundTheory.Automorphic GroundTheory.Automorphic.Reduction GroundTheory.Au
 open GroundTheory.Automorphic.AutomorphicForm GroundTheory.Automorphic.CuspidalSpectrum
 open scoped TensorProduct InnerProductSpace ComplexConjugate Pointwise
 
+/- English proof (translation)
+Introduce `G G₁ G₂ H _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ π p₁ h₁ p₂ h₂ μ₁ _ μ₂ _ f₁ f₂`. Establish `key : ∀ {L : Type} [Group L] [TopologicalSpace L] [MeasurableSpace L] [BorelSpace L] (σ : UnitaryRep L H) (μ : Measure L) [IsFiniteMeasureOnCompacts μ] (f : CompactlySupportedContinuousMap L ℂ) (w u : H), ⟪w, σ.integrated μ (UnitaryRep.ccToL1 μ f) u⟫_ℂ = ∫ g, f g * ⟪w, σ g u⟫_ℂ ∂ …`. Introduce `L _ _ _ _ σ μ _ f w u`. Rewrite using `[UnitaryRep.inner_integrated]`. Use `integral_congr_ae ((RightCosetSpace.coeFn_compactSupportToL1 μ f).mono fun g hg => ?_)` and prove the remaining obligations.
+
+Conclude with `congrArg (· * ⟪w, σ g u⟫_ℂ) hg`. Use `⟨fun w v => ?_, fun hc => ?_⟩` and prove the remaining obligations. Rewrite using `[key]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun a => ?_)` and prove the remaining obligations. Simplify using `only`.
+
+Rewrite using `[UnitaryRep.compHom_apply, UnitaryRep.inner_map_right, key, ← integral_const_mul]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun b => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[UnitaryRep.compHom_apply, UnitaryRep.inner_map_left, inv_inv, ← UnitaryRep.map_mul_apply, mul_assoc]`. Establish `step : ∀ b, π (p₂ b) ∘L (π.compHom p₁ h₁).integrated μ₁ (UnitaryRep.ccToL1 μ₁ f₁) = (π.compHom p₁ h₁).integrated μ₁ (UnitaryRep.ccToL1 μ₁ f₁) ∘L π (p₂ b)` using `fun b => by`.
+
+Use `UnitaryRep.comp_integrated_of_mem_intertwiners _ _ ?_ _` and prove the remaining obligations. Introduce `a v`. Simplify using `only [UnitaryRep.compHom_apply]`. Rewrite using `[← UnitaryRep.map_mul_apply, ← UnitaryRep.map_mul_apply, hc]`. Use `UnitaryRep.comp_integrated_of_mem_intertwiners _ _ ?_ _` and prove the remaining obligations.
+
+Introduce `b v`. Conclude with `(DFunLike.congr_fun (step b) v).symm`.
+-/
 theorem UpperTheory.ConvolutionTheory.Tf.commInt :
     ∀ (G G₁ G₂ H : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Group G₁] [TopologicalSpace G₁] [IsTopologicalGroup G₁] [LocallyCompactSpace G₁] [T2Space G₁] [SecondCountableTopology G₁] [MeasurableSpace G₁] [BorelSpace G₁] [Group G₂] [TopologicalSpace G₂] [IsTopologicalGroup G₂] [LocallyCompactSpace G₂] [T2Space G₂] [SecondCountableTopology G₂] [MeasurableSpace G₂] [BorelSpace G₂] [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
       (π : UnitaryRep G H) (p₁ : G₁ →* G) (h₁ : Continuous p₁) (p₂ : G₂ →* G) (h₂ : Continuous p₂)

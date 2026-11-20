@@ -49,6 +49,9 @@ def cre (i : Pos n) : Module.End ℂ (Cn n V) where
 def lift (n : ℕ) {V' : Type} [AddCommGroup V'] [Module ℂ V'] (T : V →ₗ[ℂ] V') : Cn n V →ₗ[ℂ] Cn n V' :=
   T.compLeft (Finset (Pos n))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem lift_apply {V' : Type} [AddCommGroup V'] [Module ℂ V'] (T : V →ₗ[ℂ] V') (x : Cn n V)
     (A : Finset (Pos n)) : lift n T x A = T (x A) := rfl
 

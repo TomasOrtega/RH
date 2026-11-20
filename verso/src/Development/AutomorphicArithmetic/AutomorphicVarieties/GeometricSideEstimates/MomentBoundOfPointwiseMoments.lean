@@ -2,6 +2,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.LiteratureResults.
 
 open UpperTheory.V.Lit.Geo
 
+/- English proof (translation)
+Establish `h1 : (1 + x) ^ k / (k.factorial : ℝ) ≤ Real.exp (1 + x)` using `Real.pow_div_factorial_le_exp (1 + x) (by linarith) k`. Establish `hf : (0 : ℝ) < k.factorial` using `by exact_mod_cast Nat.factorial_pos k`. Establish `h2 : (1 + x) ^ k ≤ k.factorial * Real.exp (1 + x)`. Rewrite `h1` using `[div_le_iff₀ hf]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Real.exp_add, Real.exp_add]`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ (k.factorial * Real.exp 1) * Real.exp (-Real.pi * (1 / 2 * x)) := by`. Apply `mul_le_mul_of_nonneg_left _ (by positivity)` to reduce the goal to its premises.
+
+Apply `Real.exp_le_exp.2` to reduce the goal to its premises. Use polynomial arithmetic with `[Real.pi_gt_three]`.
+-/
 private theorem moment_pt (k : ℕ) (x : ℝ) (hx : 0 ≤ x) :
     (1 + x) ^ k * Real.exp (-Real.pi * x) ≤
       (k.factorial * Real.exp 1) * Real.exp (-Real.pi * (1 / 2 * x)) := by
@@ -22,6 +29,13 @@ private theorem moment_pt (k : ℕ) (x : ℝ) (hx : 0 ≤ x) :
         apply Real.exp_le_exp.2
         nlinarith [Real.pi_gt_three]
 
+/- English proof (translation)
+Introduce `N k`. Use `⟨k.factorial * Real.exp 1 * 2 ^ N, by positivity, fun ι q hq => ?_⟩` and prove the remaining obligations. Take `⟨hs1, hle⟩` from `hq.2 (1 / 2) 1 (by norm_num) (by norm_num)`. Establish `hnn : ∀ i, 0 ≤ (1 + q i) ^ k * Real.exp (-Real.pi * q i)` using `fun i => by`. Use `hq.1 i` as an intermediate fact.
+
+Check the signs of the components of the expression. Establish `hpt : ∀ i, (1 + q i) ^ k * Real.exp (-Real.pi * q i) ≤ (k.factorial * Real.exp 1) * Real.exp (-Real.pi * (1 / 2 * q i))` using `fun i => moment_pt k (q i) (hq.1 i)`. Establish `hsum : Summable fun i => (1 + q i) ^ k * Real.exp (-Real.pi * q i)` using `Summable.of_nonneg_of_le hnn hpt (hs1.mul_left _)`. Use `⟨hsum, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[show (1 : ℝ) / (1 / 2) = 2 by norm_num]`. Simplify using `only [one_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem UpperTheory.moment_bound_of_pointwise_moments :
     Moment := by
   intro N k

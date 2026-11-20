@@ -9,6 +9,19 @@ open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.Weakl
 
 namespace GlobalTheory.PMC.PeriodVector
 
+/- English proof (translation)
+Set `b` to `Module.finBasis F K`. Set `B` to `Algebra.traceForm F K`. Set `d` to `B.dualBasis (traceForm_nondegenerate F K) b`. Establish `h1 : ∀ x, ∑ k, Algebra.trace F K (x * b k) • d k = x` using `fun x => by conv_rhs => rw [← d.sum_repr x]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[LinearMap.BilinForm.dualBasis_repr_apply]`. Both sides reduce to the same expression. Establish `h2 : ∀ x, ∑ k, Algebra.trace F K (d k * x) • b k = x` using `fun x => by conv_rhs => rw [← b.sum_repr x]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Use `congr 1`.
+
+Establish `: B (d k) = b.coord k` using `b.ext fun j => by`. Rewrite using `[LinearMap.BilinForm.apply_dualBasis_left]`. Simplify using `[Finsupp.single_apply]`. Conclude with `LinearMap.congr_fun this x`. Use `⟨_, b, d, by simpa using h2 1, fun M _ _ β c => ?_⟩` and prove the remaining obligations.
+
+Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `conv_lhs => rw [← h2 (c * b j)]`. Simplify using `only [map_sum, map_smul, LinearMap.sum_apply, LinearMap.smul_apply]`. Use `_ = ∑ k, ∑ j, Algebra.trace F K (c * d k * b j) • β (b k) (d j) := by`.
+
+Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[show d k * (c * b j) = c * d k * b j by ring]`. Use `_ = _ := by`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Use `conv_rhs => rw [← h1 (c * d k)]`. Simplify using `only [map_sum, map_smul]`.
+-/
 theorem exists_casimir (F K : Type) [Field F] [Field K] [Algebra F K] [FiniteDimensional F K]
     [Algebra.IsSeparable F K] :
     ∃ (n : ℕ) (b d : Fin n → K), (∑ j, Algebra.trace F K (d j) • b j = 1) ∧
@@ -55,6 +68,31 @@ variable {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field 
     (PD : PeriodData G Qp K₀ K B BdR)
     {LL : Type} [Field LL] [Algebra Qp LL]
 
+/- English proof (translation)
+Use `PD.finK` as an intermediate fact. Take `⟨n, b, d, hbd, hcas⟩` from `exists_casimir Qp K`. Set `e : Fin 1 → LL` to `fun _ => 1`. Set `β : K →ₗ[Qp] K →ₗ[Qp] ((Fin 1 → LL) ⊗[Qp] BdR)` to `(TensorProduct.mk Qp (Fin 1 → LL) BdR).compl₁₂ (((LinearMap.toSpanSingleton LL _ e).restrictScalars Qp) ∘ₗ τ.toLinearMap) ((LinearMap.toSpanSingleton K _ Y).restrictScalars Qp)`. Establish `hβ : ∀ u v, β u v = (τ u • e) ⊗ₜ[Qp] (v • Y)` using `fun _ _ => rfl`.
+
+Establish `hmul : ∀ c : K, mulVdR (K` using `K) (BdR := BdR) (V := Fin 1 → LL) (LL := LL) c (∑ j, β (b j) (d j)) = τ c • ∑ j, β (b j) (d j) := fun c => by`. Establish `hl : ∀ j, mulVdR (K` using `K) (BdR := BdR) (V := Fin 1 → LL) (LL := LL) c (β (b j) (d j)) = β (b j) (c * d j) := fun j => by`. Rewrite using `[hβ, hβ, mulVdR, AlgebraTensorModule.map_tmul, LinearMap.id_apply, LinearMap.mulLeft_apply, ← Algebra.smul_def, smul_smul]`. Rewrite using `[map_sum, Finset.smul_sum]`. Simplify using `only [hl]`.
+
+Rewrite using `[← hcas]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hβ, hβ, map_mul, mul_smul, TensorProduct.smul_tmul']`. Use `⟨∑ j, β (b j) (d j), ⟨?_, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Use `(Submodule.mem_iInf _).2 fun g => ?_` and prove the remaining obligations.
+
+Rewrite using `[LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, sub_eq_zero]`. Establish `hne : τ (χ g : K) ≠ 0` using `(map_ne_zero τ).2 (χ g).ne_zero`. Establish `: actVdR PD ρ g (∑ j, β (b j) (d j)) = (τ (χ g : K))⁻¹ • mulVdR (K` using `K) (BdR := BdR) (V := Fin 1 → LL) (LL := LL) (χ g : K) (∑ j, β (b j) (d j)) := by`. Rewrite using `[map_sum, map_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[hβ, actVdR, mulVdR, AlgebraTensorModule.map_tmul, AlgebraTensorModule.map_tmul, hρ, ← TensorProduct.smul_tmul', LinearMap.id_apply, LinearMap.mulLeft_apply]`. Use `congr 2`. Express the relevant statement in the definitionally equal form `PD.actdR g (d j • Y) = _`. Rewrite using `[map_smul, hY, mul_smul_comm]`. Rewrite using `[this, hmul, smul_smul, inv_mul_cancel₀ hne, one_smul]`.
+
+Use `(Submodule.mem_iInf _).2 fun c => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, hmul, sub_self]`. Use `Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Conclude with `⟨(τ (b j) • e) ⊗ₜ[Qp] ⟨d j • Y, (PD.Fil 1).smul_mem _ h1⟩, rfl⟩`. Introduce and unpack `⟨z, hz⟩`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨lam, hlam⟩ : ∃ lam : LL →ₗ[Qp] Qp, lam 1 ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `one_ne_zero ((Module.forall_dual_apply_eq_zero_iff Qp (1 : LL)).1 h)`. Set `Λ : ((Fin 1 → LL) ⊗[Qp] BdR) →ₗ[Qp] BdR` to `TensorProduct.lift ((LinearMap.lsmul Qp BdR) ∘ₗ lam ∘ₗ LinearMap.proj 0)`.
+
+Establish `hΛ : ∀ v y, Λ (v ⊗ₜ[Qp] y) = lam (v 0) • y` using `fun _ _ => rfl`. Establish `hmem : ∀ z, Λ (AlgebraTensorModule.map (LinearMap.id : (Fin 1 → LL) →ₗ[LL] (Fin 1 → LL)) ((PD.Fil 2).restrictScalars Qp).subtype z) ∈ PD.Fil 2` using `fun z => by`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v y`.
+
+Rewrite using `[AlgebraTensorModule.map_tmul, hΛ]`. Conclude with `((PD.Fil 2).restrictScalars Qp).smul_mem _ y.2`. Consider the case `add x y hx hy => rw [map_add, map_add]`. Conclude with `add_mem hx hy`. Establish `hx` using `hmem z`.
+
+Rewrite `hx` using `[hz]`. Establish `hκ : Λ (∑ j, β (b j) (d j)) = (∑ j, lam (τ (b j)) • d j) • Y`. Rewrite using `[map_sum, Finset.sum_smul]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hβ, hΛ, smul_assoc]`.
+
+Simplify using `[e]`. Establish `hκ0 : (∑ j, lam (τ (b j)) • d j) ≠ 0` using `fun h => hlam (by`. Establish `h'` using `congrArg (Algebra.trace Qp K) h`. Establish `h''` using `congrArg (fun u => lam (τ u)) hbd`. Simplify using `only [map_sum, map_smul, map_zero, map_one, smul_eq_mul] at h' h''`.
+
+Rewrite using `[← h'', ← h']`. Conclude with `Finset.sum_congr rfl fun j _ => mul_comm _ _)`. Rewrite `hx` using `[hκ]`. Conclude with `h2 (((PD.Fil 2).smul_mem_iff hκ0).1 hx)`.
+-/
 theorem exists_vector [Algebra.IsSeparable Qp K] (χ : G →* Kˣ) (τ : K →ₐ[Qp] LL)
     (ρ : Representation LL G (Fin 1 → LL)) (hρ : ∀ g v, ρ g v = (τ (χ g : K))⁻¹ • v) (Y : BdR)
     (hY : ∀ g, PD.actdR g Y = algebraMap K BdR (χ g : K) * Y) (h1 : Y ∈ PD.Fil 1) (h2 : Y ∉ PD.Fil 2) :
@@ -131,6 +169,9 @@ theorem exists_vector [Algebra.IsSeparable Qp K] (χ : G →* Kˣ) (τ : K →�
 
 end General
 
+/- English proof (translation)
+Introduce `l _ P K LL χ τ₀ Y hY h1 h2`. Use `(P.PD K).finK` as an intermediate fact. Use `exists_vector (P.PD K) χ τ₀ _ (fun g v => ?_) Y hY h1 h2` and prove the remaining obligations. Simplify using `[lineRep, ltChar]`.
+-/
 theorem exists_degree_one : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (K LL : FinExt l) (χ : ↥(GK K) →* (↥K.1)ˣ)
     (τ₀ : ↥K.1 →ₐ[ℚ_[l]] ↥LL.1) (Y : P.R.BdR),
     (∀ g : ↥(GK K), (P.PD K).actdR g Y = algebraMap ↥K.1 P.R.BdR (χ g : ↥K.1) * Y) →

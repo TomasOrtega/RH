@@ -17,6 +17,13 @@ namespace WeilVac
 
 variable {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ}
 
+/- English proof (translation)
+Use `finprod_induction (fun x : ℂ => x ≠ 0) one_ne_zero (fun _ _ => mul_ne_zero) fun p => zpow_ne_zero _ ?_` and prove the remaining obligations. Introduce `h0`. Establish `h1` using `k.rt_pow p p.2.1 p.2.2`. Establish `hpi : k.pi p ≠ 0`. Introduce `h`.
+
+Establish `h2` using `k.pi_gen p p.2.1 p.2.2`. Rewrite `h2` using `[h, Ideal.span_singleton_zero]`. Conclude with `pow_ne_zero _ (k.pp p).ne_bot h2`. Establish `hE : (((k.pi p : 𝓞 D.host.K) : D.host.K) : D.host.E) ≠ 0` using `by simpa using hpi`. Rewrite `h1` using `[h0, zero_pow (mul_ne_zero two_ne_zero (classNumber_ne_zero _))]`.
+
+Conclude with `div_ne_zero ((map_ne_zero _).2 hE) ((map_ne_zero _).2 ((map_ne_zero _).2 hE)) h1.symm`.
+-/
 theorem kappa_ne_zero {γ₀ : IsoK D} (k : KapChoice γ₀) : k.kappa ≠ 0 := by
   refine finprod_induction (fun x : ℂ => x ≠ 0) one_ne_zero (fun _ _ => mul_ne_zero) fun p => zpow_ne_zero _ ?_
   intro h0
@@ -30,21 +37,37 @@ theorem kappa_ne_zero {γ₀ : IsoK D} (k : KapChoice γ₀) : k.kappa ≠ 0 := 
   rw [h0, zero_pow (mul_ne_zero two_ne_zero (classNumber_ne_zero _))] at h1
   exact div_ne_zero ((map_ne_zero _).2 hE) ((map_ne_zero _).2 ((map_ne_zero _).2 hE)) h1.symm
 
+/- English proof (translation)
+Take `⟨e, u⟩` from `ThetaVec.thetaVector _ _ _ _ _ _ _ _ h _ (kappa_ne_zero B.kc)`. Establish `h1 : B.IsThMM B.thMM` using `Classical.epsilon_spec (p := IsThM B.L B.ω₀ B.cq B.lamM B.gC B.kappa) e`. Conclude with `⟨h1, (u _ h1.1 h1.2).1⟩`.
+-/
 theorem thMM_spec (B : Base D cc δ) (h : B.StdOK) : B.IsThMM B.thMM ∧ B.thMM ≠ 0 := by
   obtain ⟨e, u⟩ := ThetaVec.thetaVector _ _ _ _ _ _ _ _ h _ (kappa_ne_zero B.kc)
   have h1 : B.IsThMM B.thMM := Classical.epsilon_spec (p := IsThM B.L B.ω₀ B.cq B.lamM B.gC B.kappa) e
   exact ⟨h1, (u _ h1.1 h1.2).1⟩
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `Function.ne_iff.1 (thMM_spec B h).2`. Use `Function.ne_iff.2 ⟨fun τ _ _ => a τ, ?_⟩` and prove the remaining obligations. Use `show ∏ _i : Fin N', ∏ _j : Fin N, B.thMM a ≠ 0`. Conclude with `Finset.prod_ne_zero_iff.2 fun _ _ => Finset.prod_ne_zero_iff.2 fun _ _ => ha`.
+-/
 theorem thZero_ne_zero (B : Base D cc δ) (h : B.StdOK) (N N' : ℕ) : B.thZero N N' ≠ 0 := by
   obtain ⟨a, ha⟩ := Function.ne_iff.1 (thMM_spec B h).2
   refine Function.ne_iff.2 ⟨fun τ _ _ => a τ, ?_⟩
   show ∏ _i : Fin N', ∏ _j : Fin N, B.thMM a ≠ 0
   exact Finset.prod_ne_zero_iff.2 fun _ _ => Finset.prod_ne_zero_iff.2 fun _ _ => ha
 
+/- English proof (translation)
+Rewrite using `[Base.AreaOK, ThetaVec.area_eq]`. Conclude with `GlobalTheory.OddTheta.area_eq B.L _ fun z => by rw [← B.lat]; rfl`.
+-/
 theorem areaOK (B : Base D cc δ) : B.AreaOK := by
   rw [Base.AreaOK, ThetaVec.area_eq]
   exact GlobalTheory.OddTheta.area_eq B.L _ fun z => by rw [← B.lat]; rfl
 
+/- English proof (translation)
+Establish `hs : ∀ a, slice a (0 : Fin 4 × D.what₂.Tau → ℂ) = 0` using `fun _ => rfl`. Establish `h1` using `h.betaSemi.1 (B.gC (ThetaVec.ins 0 x)) ⟨ThetaVec.ins 0 x, fun a => by`. Rewrite using `[ThetaVec.slice_ins]`. Use `split_ifs`. Use `exacts [hx, B.lamM.zero_mem], rfl⟩`.
+
+Rewrite `h1` using `[h.betaAlpha, ← mul_self_eq_one_iff]`. Simplify using `only [ThetaVec.slice_ins, Fin.prod_univ_four, hs, h.alpha0, Fin.isValue, if_true, Fin.reduceEq, if_false, mul_one] at h1`. Rewrite `h1` using `[alphaQ, ← Complex.exp_add, Complex.exp_eq_one_iff]`. Take `⟨m, hm⟩` from `h1`. Use `⟨m, ?_⟩` and prove the remaining obligations.
+
+Establish `: (qOf B.cq (matH (hOne B.L D.what₂.Tau)) x : ℂ) = m`. Apply `mul_left_cancel₀ Complex.two_pi_I_ne_zero` to reduce the goal to its premises. Take the linear combination `hm`. Conclude with `this` after adjusting the coercions.
+-/
 theorem q_int (B : Base D cc δ) (h : B.StdOK) {x : D.what₂.Tau → ℂ} (hx : x ∈ B.lamM) :
     ∃ m : ℤ, qOf B.cq (matH (hOne B.L D.what₂.Tau)) x = m := by
   have hs : ∀ a, slice a (0 : Fin 4 × D.what₂.Tau → ℂ) = 0 := fun _ => rfl
@@ -61,12 +84,18 @@ theorem q_int (B : Base D cc δ) (h : B.StdOK) {x : D.what₂.Tau → ℂ} (hx :
     linear_combination hm
   exact_mod_cast this
 
+/- English proof (translation)
+Use `(AddSubgroup.closure_le _).2 ?_ hx` and prove the remaining obligations. Introduce and unpack `_ ⟨w, hw, A, hA, rfl⟩ i j`. Conclude with `AddSubgroup.subset_closure ⟨w, hw, A i j, (GlobalTheory.OddGenus.mem_iff_entries D N N' A).1 hA i j, rfl⟩`.
+-/
 theorem entry_mem (B : Base D cc δ) {N N' : ℕ} {x : VC D N N'}
     (hx : x ∈ La D (tor0 D cc δ) (stdL D N) (stdL D N')) : x ∈ powLat B.lamM N N' := by
   refine (AddSubgroup.closure_le _).2 ?_ hx
   rintro _ ⟨w, hw, A, hA, rfl⟩ i j
   exact AddSubgroup.subset_closure ⟨w, hw, A i j, (GlobalTheory.OddGenus.mem_iff_entries D N N' A).1 hA i j, rfl⟩
 
+/- English proof (translation)
+Establish `hA : area (tor0 D cc δ).abelian₂ = latticeArea B.L` using `(areaOK B).trans (ThetaVec.area_eq _)`. Establish `e : ∀ u v : D.what₂.Tau → ℂ, matH (hOne B.L D.what₂.Tau) u v = ∑ τ, u τ * conj (v τ) / (latticeArea B.L : ℂ)` using `fun u v => ThetaVec.stdH_apply B.L u v`. Simplify using `only [e, Hf, hA, Finset.sum_div]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_comm`.
+-/
 theorem Hf_eq (B : Base D cc δ) {N N' : ℕ} (z w : VC D N N') :
     Hf D (tor0 D cc δ) z w =
       ∑ i, ∑ j, matH (hOne B.L D.what₂.Tau) (fun τ => z τ i j) (fun τ => w τ i j) := by
@@ -77,6 +106,15 @@ theorem Hf_eq (B : Base D cc δ) {N N' : ℕ} (z w : VC D N N') :
   rw [Finset.sum_comm]
   exact Finset.sum_congr rfl fun i _ => Finset.sum_comm
 
+/- English proof (translation)
+Establish `hθ` using `(thMM_spec B h).1.1`. Use `⟨?_, fun x hx z => ?_⟩` and prove the remaining obligations. Establish `hd : Differentiable ℂ B.thMM` using `differentiableOn_univ.1 hθ.1.differentiableOn`. Unfold `Base.thZero tensPow`. Use `fun_prop`.
+
+Establish `hx'` using `entry_mem B hx choose m hm using fun i j => q_int B h (hx' i j)`. Establish `h1 : Real.sqrt D.host.d / 2 * (Hf D (tor0 D cc δ) x x).re = ((∑ i, ∑ j, m i j : ℤ) : ℝ)`. Rewrite using `[Hf_eq B]`. Use `push_cast`. Simplify using `only [Complex.re_sum, Finset.mul_sum, ← hm]`.
+
+Both sides reduce to the same expression. Establish `h2 : al D (tor0 D cc δ) x = ∏ i, ∏ j, alphaQ B.cq (matH (hOne B.L D.what₂.Tau)) fun τ => x τ i j`. Rewrite using `[al, h1, round_intCast, ← Complex.exp_pi_mul_I, ← Complex.exp_int_mul]`. Simplify using `only [alphaQ, hm, ← Complex.exp_sum, ← Finset.mul_sum]`. Use `congr 1`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h2, U, Hf_eq B, Hf_eq B]`. Simplify using `only [Base.thZero, tensPow, Finset.mul_sum, Finset.sum_div, ← Finset.sum_sub_distrib, Complex.exp_sum, ← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_congr rfl fun i _ => Finset.prod_congr rfl fun j _ => hθ.2 _ (hx' i j) fun τ => z τ i j`.
+-/
 theorem thZero_mem (B : Base D cc δ) (h : B.StdOK) (N N' : ℕ) :
     B.thZero N N' ∈ Th D (tor0 D cc δ) (stdL D N) (stdL D N') := by
   have hθ := (thMM_spec B h).1.1

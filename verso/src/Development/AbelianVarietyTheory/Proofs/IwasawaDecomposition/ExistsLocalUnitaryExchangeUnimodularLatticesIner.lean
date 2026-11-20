@@ -14,6 +14,69 @@ open Classical
 
 namespace GlobalTheory.InertExchange
 
+/- English proof (translation)
+Introduce `E _ _ _ n P hP hin X Z hXl hZl hXu hZu hXZ`. Take `⟨g, hg, hgX, hgZ⟩` from `GlobalTheory.T.cartan_exchange_unimodular_inert_prime n P hP hin X Z hXl hZl hXu hZu hXZ`. Establish `hcc : ∀ Q : HeightOneSpectrum (𝓞 E), conjPrime₂ (conjPrime₂ Q) = Q` using `fun Q => by`. Apply `HeightOneSpectrum.ext` to reduce the goal to its premises. Use extensionality with `r`.
+
+Express the relevant statement in the definitionally equal form `cO E (cO E r) ∈ Q.asIdeal ↔ r ∈ Q.asIdeal`. Rewrite using `[cO_cO]`. Establish `locg : ∀ (h : Sp E n ≃ₗ[E] Sp E n) (Q : HeightOneSpectrum (𝓞 E)) (M N : Submodule (𝓞 E) (Sp E n)), localization₂ Q.asIdeal M = localization₂ Q.asIdeal N → localization₂ Q.asIdeal (gmap h M) = localization₂ Q.asIdeal (gmap h N)`. Introduce `h Q M N e`. Use extensionality with `x`.
+
+Rewrite using `[mem_localization_gmap, mem_localization_gmap, e]`. Establish `locg_inv : ∀ (h : Sp E n ≃ₗ[E] Sp E n) (Q : HeightOneSpectrum (𝓞 E)) (M N : Submodule (𝓞 E) (Sp E n)), localization₂ Q.asIdeal (gmap h M) = localization₂ Q.asIdeal (gmap h N) → localization₂ Q.asIdeal M = localization₂ Q.asIdeal N`. Introduce `h Q M N e`. Use extensionality with `x`. Establish `h1` using `(mem_localization_gmap Q h M (h x)).symm`.
+
+Establish `h2` using `(mem_localization_gmap Q h N (h x)).symm`. Simplify using `only [LinearEquiv.symm_apply_apply] at h1 h2`. Rewrite using `[h1, h2, e]`. Establish `ginv : ∀ M : Submodule (𝓞 E) (Sp E n), gmap g⁻¹ (gmap g M) = M`. Introduce `M`.
+
+Use extensionality with `x`. Rewrite using `[mem_gmap, mem_gmap]`. Establish `e : g⁻¹ = g.symm` using `rfl`. Rewrite using `[e, LinearEquiv.symm_symm, LinearEquiv.symm_apply_apply]`. Establish `hginv : g⁻¹ ∈ UF E n` using `inv_mem hg`.
+
+Establish `unimodG : ∀ (h : Sp E n ≃ₗ[E] Sp E n), h ∈ UF E n → ∀ M : Submodule (𝓞 E) (Sp E n), IsUnimodular (hStd E n) M → IsUnimodular (hStd E n) (gmap h M)`. Introduce `h hh M hM`. Establish `hM' : dual (hStd E n) M = M` using `hM`. Use `show dual (hStd E n) (gmap h M) = gmap h M`. Rewrite using `[dual_gmap h hh, hM']`.
+
+Establish `unimod : ∀ A B C : Submodule (𝓞 E) (Sp E n), Submodule.IsLattice E A → Submodule.IsLattice E B → Submodule.IsLattice E C → IsUnimodular (hStd E n) B → IsUnimodular (hStd E n) C → localization₂ P.asIdeal A = localization₂ P.asIdeal B → (∀ Q : HeightOneSpectrum (𝓞 E), Q ≠ P → local …`. Introduce `A B C hA hB hC hBu hCu hAP hAQ`. Establish `hBu' : dual (hStd E n) B = B` using `hBu`. Establish `hCu' : dual (hStd E n) C = C` using `hCu`. Use `show dual (hStd E n) A = A`.
+
+Apply `Formalism.L2.DIV.eq_of_forall_localized_eq` to reduce the goal to its premises. Introduce `Q`. Distinguish the cases in `hQ : Q = P`. Rewrite using `[hQ]`. Establish `h1 : localization₂ (conjPrime₂ P).asIdeal A = localization₂ (conjPrime₂ P).asIdeal B` using `by rw [hP]; exact hAP`.
+
+Rewrite using `[GlobalTheory.T.localization_hermitianDual_eq P A B hA hB h1, hBu', hAP]`. Establish `hQ' : conjPrime₂ Q ≠ P` using `fun h => hQ (by rw [← hcc Q, h, hP])`. Rewrite using `[GlobalTheory.T.localization_hermitianDual_eq Q A C hA hC (hAQ _ hQ'), hCu', hAQ Q hQ]`. Establish `locσ : ∀ Y : Submodule (𝓞 E) (Sp E n), Submodule.IsLattice E Y → ∀ Q : HeightOneSpectrum (𝓞 E), localization₂ Q.asIdeal (patchAt P (gmap g Y) Y) = localization₂ Q.asIdeal (if Q = P then gmap g Y else Y)` using `fun Y hY => (GlobalTheory.T.submodulePatchAtPrime_isLattice_locP P (gmap g Y) Y (gmap_lattice g Y hY) hY).2`. Establish `latσ : ∀ Y : Submodule (𝓞 E) (Sp E n), Submodule.IsLattice E Y → Submodule.IsLattice E (patchAt P (gmap g Y) Y)` using `fun Y hY => (GlobalTheory.T.submodulePatchAtPrime_isLattice_locP P (gmap g Y) Y (gmap_lattice g Y hY) hY).1`.
+
+Use `⟨fun Y => patchAt P (gmap g Y) Y, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `show patchAt P (gmap g X) X = Z`. Apply `Formalism.L2.DIV.eq_of_forall_localized_eq` to reduce the goal to its premises. Introduce `Q`. Rewrite using `[locσ X hXl Q]`.
+
+Use `split_ifs with hQ`. Rewrite using `[hQ]`. Conclude with `hgX.localization_eq.symm`. Conclude with `(hXZ Q hQ).localization_eq.symm`. Use `show patchAt P (gmap g Z) Z = X`.
+
+Apply `Formalism.L2.DIV.eq_of_forall_localized_eq` to reduce the goal to its premises. Introduce `Q`. Rewrite using `[locσ Z hZl Q]`. Use `split_ifs with hQ`. Rewrite using `[hQ]`.
+
+Conclude with `hgZ.localization_eq.symm`. Conclude with `(hXZ Q hQ).localization_eq`. Introduce `Y hYl hYu hYS show Submodule.IsLattice E (patchAt P (gmap g Y) Y) ∧ IsUnimodular (hStd E n) (patchAt P (gmap g Y) Y) ∧ ∀ Q : HeightOneSpectrum (𝓞 E), Q ≠ P → SameAt Q X (patchAt P (gmap g Y) Y)`. Use `⟨latσ Y hYl, ?_, ?_⟩` and prove the remaining obligations. Use `unimod _ (gmap g Y) X (latσ Y hYl) (gmap_lattice g Y hYl) hXl (unimodG g hg Y hYu) hXu ?_ ?_` and prove the remaining obligations.
+
+Rewrite using `[locσ Y hYl P, if_pos rfl]`. Introduce `Q hQ`. Rewrite using `[locσ Y hYl Q, if_neg hQ]`. Conclude with `(hYS Q hQ).localization_eq`. Introduce `Q hQ`.
+
+Apply `GlobalTheory.T.sameAt_of_localization_eq Q X _ hXl (latσ Y hYl)` to reduce the goal to its premises. Rewrite using `[locσ Y hYl Q, if_neg hQ]`. Conclude with `(hYS Q hQ).localization_eq.symm`. Introduce `Y' hl' hu' hS'`. Take `⟨hYl, hYloc⟩` from `GlobalTheory.T.submodulePatchAtPrime_isLattice_locP P (gmap g⁻¹ Y') Y' (gmap_lattice _ _ hl') hl'`.
+
+Use `⟨patchAt P (gmap g⁻¹ Y') Y', hYl, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `unimod _ (gmap g⁻¹ Y') Y' hYl (gmap_lattice _ _ hl') hl' (unimodG _ hginv Y' hu') hu' ?_ ?_` and prove the remaining obligations. Rewrite using `[hYloc P, if_pos rfl]`. Introduce `Q hQ`. Rewrite using `[hYloc Q, if_neg hQ]`.
+
+Introduce `Q hQ`. Apply `GlobalTheory.T.sameAt_of_localization_eq Q X _ hXl hYl` to reduce the goal to its premises. Rewrite using `[hYloc Q, if_neg hQ]`. Conclude with `(hS' Q hQ).localization_eq.symm`. Use `show patchAt P (gmap g (patchAt P (gmap g⁻¹ Y') Y')) (patchAt P (gmap g⁻¹ Y') Y') = Y'`.
+
+Apply `Formalism.L2.DIV.eq_of_forall_localized_eq` to reduce the goal to its premises. Introduce `Q`. Rewrite using `[locσ _ hYl Q]`. Use `split_ifs with hQ`. Rewrite using `[hQ]`.
+
+Use extensionality with `x`. Rewrite using `[mem_localization_gmap, hYloc P, if_pos rfl, mem_localization_gmap]`. Establish `e : g⁻¹ = g.symm` using `rfl`. Rewrite using `[e, LinearEquiv.symm_symm, LinearEquiv.apply_symm_apply]`. Rewrite using `[hYloc Q, if_neg hQ]`.
+
+Introduce `Y Y' hYl hYu hYS hY'l hY'u hY'S he`. Establish `he' : patchAt P (gmap g Y) Y = patchAt P (gmap g Y') Y'` using `he`. Apply `Formalism.L2.DIV.eq_of_forall_localized_eq` to reduce the goal to its premises. Introduce `Q`. Distinguish the cases in `hQ : Q = P`.
+
+Rewrite using `[hQ]`. Apply `locg_inv g P` to reduce the goal to its premises. Establish `h1` using `congrArg (localization₂ P.asIdeal) he'`. Rewrite `h1` using `[locσ Y hYl P, locσ Y' hY'l P, if_pos rfl, if_pos rfl]`. Conclude with `h1`.
+
+Rewrite using `[(hYS Q hQ).localization_eq, (hY'S Q hQ).localization_eq]`. Introduce `s Y Y' hYl hYu hYS hY'l hY'u hY'S show IsInertNbr P.asIdeal s (patchAt P (gmap g Y) Y) (patchAt P (gmap g Y') Y') ↔ IsInertNbr P.asIdeal s Y Y'`. Establish `hAl` using `gmap_lattice g Y hYl`. Establish `hBl` using `gmap_lattice g Y' hY'l`. Establish `hAA'` using `GlobalTheory.T.sameAt_of_localization_eq P (gmap g Y) _ hAl (latσ Y hYl) (by rw [locσ Y hYl P, if_pos rfl])`.
+
+Establish `hBB'` using `GlobalTheory.T.sameAt_of_localization_eq P (gmap g Y') _ hBl (latσ Y' hY'l) (by rw [locσ Y' hY'l P, if_pos rfl])`. Establish `hAB : ∀ Q : HeightOneSpectrum (𝓞 E), Q ≠ P → localization₂ Q.asIdeal (gmap g Y) = localization₂ Q.asIdeal (gmap g Y')` using `fun Q hQ => locg g Q Y Y' ((hYS Q hQ).localization_eq.trans (hY'S Q hQ).localization_eq.symm)`. Establish `hA'B' : ∀ Q : HeightOneSpectrum (𝓞 E), Q ≠ P → localization₂ Q.asIdeal (patchAt P (gmap g Y) Y) = localization₂ Q.asIdeal (patchAt P (gmap g Y') Y')`. Introduce `Q hQ`. Rewrite using `[locσ Y hYl Q, locσ Y' hY'l Q, if_neg hQ, if_neg hQ, (hYS Q hQ).localization_eq, (hY'S Q hQ).localization_eq]`.
+
+Take `⟨k1, hk1, hk1'⟩` from `GlobalTheory.T.exists_prime_pow_smul_le_of_localizations_eq_away P _ _ hAl hBl hAB`. Take `⟨k2, hk2, hk2'⟩` from `GlobalTheory.T.exists_prime_pow_smul_le_of_localizations_eq_away P _ _ (latσ Y hYl) (latσ Y' hY'l) hA'B'`. Take `⟨a, ha, a', ha', h1, h2⟩` from `hAA'`. Take `⟨b, hb, b', hb', h3, h4⟩` from `hBB'`. Establish `hα0 : a * a' * b * b' ∉ P.asIdeal` using `Formalism.L2.DIV.lc_mul_notMem P (Formalism.L2.DIV.lc_mul_notMem P (Formalism.L2.DIV.lc_mul_notMem P ha ha') hb) hb'`.
+
+Take `⟨t, p, hp, e⟩` from `P.isMaximal.exists_inv hα0`. Establish `hgeom` using `geom_sum_mul p (k1 + k2)`. Establish `hgd : t * (∑ i ∈ Finset.range (k1 + k2), p ^ i) * (a * a' * b * b') + p ^ (k1 + k2) = 1`. Take the linear combination `(∑ i ∈ Finset.range (k1 + k2), p ^ i) * e - hgeom`. Establish `hδ : p ^ (k1 + k2) ∈ P.asIdeal ^ (k1 + k2)` using `Ideal.pow_mem_pow hp _`.
+
+Use `set S := ∑ i ∈ Finset.range (k1 + k2), p ^ i`. Establish `rAA' : HiRel (t * S * (a * a' * b * b')) (gmap g Y) (patchAt P (gmap g Y) Y)`. Use `⟨fun x hx => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Establish `: (t * S * (a * a' * b * b')) • x = (t * S * a * b * b') • (a' • x)` using `by rw [smul_smul]; congr 1; ring`. Rewrite using `[this]`.
+
+Conclude with `Submodule.smul_mem _ _ (h2 x hx)`. Establish `: (t * S * (a * a' * b * b')) • x = (t * S * a' * b * b') • (a • x)` using `by rw [smul_smul]; congr 1; ring`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (h1 x hx)`. Establish `rBB' : HiRel (t * S * (a * a' * b * b')) (gmap g Y') (patchAt P (gmap g Y') Y')`.
+
+Use `⟨fun x hx => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Establish `: (t * S * (a * a' * b * b')) • x = (t * S * a * a' * b) • (b' • x)` using `by rw [smul_smul]; congr 1; ring`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (h4 x hx)`. Establish `: (t * S * (a * a' * b * b')) • x = (t * S * a * a' * b') • (b • x)` using `by rw [smul_smul]; congr 1; ring`.
+
+Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (h3 x hx)`. Establish `le1 : P.asIdeal ^ (k1 + k2) ≤ P.asIdeal ^ k1` using `Ideal.pow_le_pow_right (by omega)`. Establish `le2 : P.asIdeal ^ (k1 + k2) ≤ P.asIdeal ^ k2` using `Ideal.pow_le_pow_right (by omega)`. Establish `rAB : HiRel (p ^ (k1 + k2)) (gmap g Y) (gmap g Y')` using `HiRel.of_ideal ((Submodule.smul_mono_left le1).trans hk1) ((Submodule.smul_mono_left le1).trans hk1') hδ`.
+
+Establish `rA'B' : HiRel (p ^ (k1 + k2)) (patchAt P (gmap g Y) Y) (patchAt P (gmap g Y') Y')` using `HiRel.of_ideal ((Submodule.smul_mono_left le2).trans hk2) ((Submodule.smul_mono_left le2).trans hk2') hδ`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h5` using `isInertNbr_par hgd rAA'.symm rBB'.symm rA'B' rAB h`. Establish `h6` using `h5.gmap g⁻¹`.
+
+Rewrite `h6` using `[ginv, ginv]`. Then use the resulting hypothesis. Introduce `h`. Conclude with `isInertNbr_par hgd rAA' rBB' rAB rA'B' (h.gmap g)`.
+-/
 theorem exchange : ∀ {E : Type} [Field E] [NumberField E] [StarRing E] {n : ℕ} (P : HeightOneSpectrum (𝓞 E)),
   conjPrime₂ P = P → (∃ x : 𝓞 E, cO E x - x ∉ P.asIdeal) →
   ∀ (X Z : Submodule (𝓞 E) (Sp E n)), Submodule.IsLattice E X → Submodule.IsLattice E Z →

@@ -30,6 +30,11 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.Ar.SlopeUnif
 
+/- English proof (translation)
+Use `⟨?_, fun T x y x₀ y₀ hx hy => ?_⟩` and prove the remaining obligations. Use `haveI : IsIso e.hom.left := ((Over.forget S).mapIso e).isIso_hom`. Conclude with `IsPullback.of_horiz_isIso ⟨by simp⟩`. Apply the tactic sequence `have e₁ : (x * y) ≫ e.hom = (x ≫ e.hom) * (y ≫ e.hom) := by first | exact Hom.mul_comp _ _ _ | exact MonObj.mul_comp _ _ _ | exact CategoryTheory.Hom.mul_comp _ _ _`. Establish `: (x * y).left ≫ e.hom.left = ((x ≫ e.hom) * (y ≫ e.hom)).left`.
+
+Rewrite using `[← e₁]`. Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `mul_left_congr (Category.comp_id _) _ _ _ _ hx hy`.
+-/
 theorem isGrpPullback_iso {S : Scheme.{0}} {A B : Over S} [GrpObj A] [GrpObj B] (e : A ≅ B) [IsMonHom e.hom] :
     IsGrpPullback A B (𝟙 S) e.hom.left := by
   refine ⟨?_, fun T x y x₀ y₀ hx hy => ?_⟩
@@ -42,6 +47,9 @@ theorem isGrpPullback_iso {S : Scheme.{0}} {A B : Over S} [GrpObj A] [GrpObj B] 
     rw [this]
     exact mul_left_congr (Category.comp_id _) _ _ _ _ hx hy
 
+/- English proof (translation)
+Use `⟨hA'.1.lift a A.hom hA.1.w, hA'.1.lift_fst _ _ _, hA'.1.lift_snd _ _ _, ?_⟩` and prove the remaining obligations. Use `IsGrpPullback.cancel hA' ?_ ?_` and prove the remaining obligations. Rewrite using `[hA'.1.lift_fst, Category.id_comp]`. Conclude with `hA`. Rewrite using `[hA'.1.lift_snd, Category.comp_id]`.
+-/
 theorem exists_compare {S S₁ : Scheme.{0}} {f : S₁ ⟶ S} {A A' : Over S₁} {C : Over S} [GrpObj A] [GrpObj A'] [GrpObj C]
     {a : A.left ⟶ C.left} {a' : A'.left ⟶ C.left} (hA : IsGrpPullback A C f a) (hA' : IsGrpPullback A' C f a') :
     ∃ w : A.left ⟶ A'.left, w ≫ a' = a ∧ w ≫ A'.hom = A.hom ∧ IsGrpPullback A A' (𝟙 S₁) w := by
@@ -50,6 +58,31 @@ theorem exists_compare {S S₁ : Scheme.{0}} {f : S₁ ⟶ S} {A A' : Over S₁}
   · rw [hA'.1.lift_fst, Category.id_comp]; exact hA
   · rw [hA'.1.lift_snd, Category.comp_id]
 
+/- English proof (translation)
+Introduce `hN hP hR hH hS E _ _ _ H D l Xo c Y S Ω _ K _ J _ y 𝔐 h hpq`. Take `⟨K₀, hK₀, hQ⟩` from `GlobalTheory.T.lie_metric_height_bound hR E H D l Xo c Y S Ω K J y 𝔐 h hpq`. Use `haveI : CharZero Ω := charZero_of_injective_ringHom 𝔐.cst.injective`. Take `⟨C₁, hC₁, hT⟩` from `GlobalTheory.T.semiabelian_lie_metric_height hH 𝔐.X Ω K J y 𝔐.ξ inferInstance 𝔐.all 𝔐.tie 𝔐.t.G 𝔐.t.semi 𝔐.Li 𝔐.M h`. Take `⟨C₀, hC₀, hSl⟩` from `hS`.
+
+Take `⟨Cc, hCc1, hCcK, hCc₁, hCc₀⟩ : ∃ Cc : ℝ, 1 ≤ Cc ∧ K₀ ≤ Cc ∧ C₁ ≤ Cc ∧ C₀ ≤ Cc` from `⟨max (max K₀ C₁) (max C₀ 1), by simp, by simp, by simp, by simp⟩`. Take `⟨C', hC', hPB⟩` from `GlobalTheory.T.hermitian_bundle_quotient_degree_bound (Module.finrank Ω 𝔐.Li) Cc hCc1`. Use `⟨C', hC', fun L₀ _ _ z₀ => ?_⟩` and prove the remaining obligations. Take `⟨L₁, _, _, e₁, ⟨P₁⟩⟩` from `GlobalTheory.T.exists_abelian_part_extension E H 𝔐.X 𝔐.t L₀ (spMap (algebraMap (𝓞 L₀) L₀) ≫ z₀)`. Take `⟨σ₁⟩ : Nonempty (L₁ →+* ℂ)` from `inferInstance`.
+
+Take `⟨P₁c, _, mBc, _, _⟩` from `GlobalTheory.T.abelian_part_base_change E H 𝔐.X 𝔐.t L₁ ℂ _ P₁ σ₁`. Establish `hpr : IsPrincipal P₁.tB` using `(GlobalTheory.T.isPrincipal_base_change_iff E H L₁ ℂ σ₁ P₁.tB P₁c.tB mBc).1 (hQ _ P₁c).1`. Take `⟨L, _, _, e₂, t', tK, ⟨m'⟩, ⟨mP⟩⟩` from `GlobalTheory.T.lie_signature_number_field hN hP E H L₁ P₁.tB hpr (GlobalTheory.T.abelian_part_lie_signature E H D l Xo c Y S Ω K J y 𝔐 L₁ _ P₁)`. Establish `hprK : IsPrincipal tK` using `(GlobalTheory.T.isPrincipal_base_change_iff E H L₁ L e₂ P₁.tB tK mP).2 hpr`. Use `⟨L, inferInstance, inferInstance, e₂.comp e₁, fun B MB hB => ?_⟩` and prove the remaining obligations.
+
+Establish `hz : spMap (algebraMap (𝓞 L) L) ≫ (spMap (RingOfIntegers.mapRingHom (e₂.comp e₁)) ≫ z₀) = spMap e₂ ≫ (spMap e₁ ≫ spMap (algebraMap (𝓞 L₀) L₀) ≫ z₀)`. Establish `e : spMap (algebraMap (𝓞 L) L) ≫ spMap (RingOfIntegers.mapRingHom (e₂.comp e₁)) = spMap e₂ ≫ spMap e₁ ≫ spMap (algebraMap (𝓞 L₀) L₀)`. Simplify using `only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Use `congr 2`. Rewrite using `[← Category.assoc, e]`.
+
+Simplify using `only [Category.assoc]`. Take `⟨B', MB', hB'⟩` from `GlobalTheory.T.principal_hermitian_fibre E H L t' tK m' hprK`. Establish `hslope` using `hSl E H L t' tK m' hprK B' MB' hB'`. Take `⟨P₂, mK2, mB2, c1, c2⟩` from `GlobalTheory.T.abelian_part_base_change E H 𝔐.X 𝔐.t L₁ L _ P₁ e₂`. Take `⟨w, hw, hw', hwp⟩` from `exists_compare mB2.cart mP.cart`.
+
+Use `letI := P₂.τ.addCommGroup`. Use `letI := P₂.τ.grpB`. Use `haveI := P₂.e_hom`. Establish `hφ' : IsGrpPullback P₂.τ.B t'.G (spMap (algebraMap (𝓞 L) L)) (P₂.e.hom.left ≫ w ≫ m'.φ)`. Use `(isGrpPullback_iso P₂.e).comp (hwp.comp m'.cart)` as an intermediate fact.
+
+Simplify using `using this`. Take `⟨MT, hMT⟩` from `GlobalTheory.T.exists_cocharacter_lie_model (Sp L) P₂.τ.X L (𝟙 _)`. Establish `hcart : IsGrpPullback P₂.tK.G 𝔐.t.G (spMap (algebraMap (𝓞 L) L) ≫ (spMap (RingOfIntegers.mapRingHom (e₂.comp e₁)) ≫ z₀)) P₂.m.φ`. Rewrite using `[hz]`. Conclude with `P₂.m.cart`.
+
+Take `⟨r, bs, hbs⟩` from `hT L _ P₂.tK.G P₂.m.φ P₂.τ hcart`. Take `⟨ε, f, hε, hf, hli, hker, hsur⟩` from `GlobalTheory.T.semi_abelian_pullback_torus_extension 𝔐.X 𝔐.t.G 𝔐.t.semi L _ P₂.tK.G P₂.m.φ P₂.τ t'.G _ t'.semi hcart hφ' MT hMT B.carrier B'.carrier MB MB' r bs`. Establish `hbd` using `hbs MT hMT B MB hB ε hε`. Establish `hnb` using `GlobalTheory.T.abelian_part_maps_compatible_right E H 𝔐.X 𝔐.t L₁ L e₂ _ _ hz P₁ P₂ mK2 mB2 c1 c2 t' tK m' mP w hw hw' Ω 𝔐.ξ 𝔐.Li 𝔐.M K J y h K₀ (fun zc P v v₀ c => (hQ zc P).2 v v₀ c) B B' MB MB' hB hB' f hf`. Use `haveI : Smooth 𝔐.t.G.hom := 𝔐.t.semi.smooth`.
+
+Establish `hrk` using `GlobalTheory.T.lie_model_rank_eq_generic 𝔐.X Ω 𝔐.ξ 𝔐.all 𝔐.t.G 𝔐.Li 𝔐.M L _ B.carrier MB`. Establish `hC₁0 : (0 : ℝ) < C₁` using `by linarith`. Establish `hCc0 : (0 : ℝ) < Cc` using `by linarith`. Use `hPB L B B' r ε f hrk hli hker hsur ?_ ?_ ?_` and prove the remaining obligations. Introduce `σ u`.
+
+Establish `hs : 0 ≤ ∑ a, ‖u a‖ ^ 2` using `Finset.sum_nonneg fun a _ => by positivity`. Take `⟨h₁, h₂⟩` from `hbd σ u`. Use `⟨le_trans (mul_le_mul_of_nonneg_right ?_ hs) h₁, h₂.trans (mul_le_mul_of_nonneg_right hCc₁ hs)⟩` and prove the remaining obligations. Conclude with `inv_anti₀ hC₁0 hCc₁`. Introduce `σ x`.
+
+Establish `h0 : 0 ≤ sqAt B σ x`. Use `(B.metric.form σ).re_inner_nonneg x` as an intermediate fact. Simplify `this` using `[sqAt]`. Conclude with `(hnb σ x).trans (mul_le_mul_of_nonneg_right hCcK h0)`. Use `hslope.trans (EReal.coe_le_coe_iff.2 (mul_le_mul_of_nonneg_right hCc₀ (Real.log_nonneg ?_)))` and prove the remaining obligations.
+
+Establish `: (0 : ℝ) ≤ max (-B'.normDegree ⊤) 0` using `le_max_right _ _`. Establish `h' : (0 : ℝ) ≤ Module.finrank (𝓞 L) B'.carrier` using `Nat.cast_nonneg _`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem slope_unif : N1ab → PartI → Geo.ResK.ResKStatement → GlobalTheory.Published.SemiAbelianHomExtension → SlopeBoundSt → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (Y : Model Xo c (algebraMap (𝓞 c.F) c.F)) (S : Finset ℕ) (Ω : Type) [Field Ω] (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (y : (Σ k, J k) → Ω) (𝔐 : HodgeCpt Y S y) (h : LieMetric 𝔐.M y), 1 ≤ D.p + D.q → ∃ C : ℝ, 0 ≤ C ∧ ∀ (L₀ : Type) [Field L₀] [NumberField L₀] (z₀ : Sp (𝓞 L₀) ⟶ 𝔐.X), ∃ (L : Type) (_ : Field L) (_ : NumberField L) (e : L₀ →+* L), ∀ (B : GroundTheory.Heights₂.Heights.HermitianBundle.{0} L) (MB : LieModel 𝔐.t.G (spMap (RingOfIntegers.mapRingHom e) ≫ z₀) B.carrier), IsFibre (fun z v w c => c = h.ip z v w) _ B MB → B.slopeMax ≤ ((C * Real.log (2 + C + max (-B.normDegree ⊤) 0) + C : ℝ) : EReal) := by
   intro hN hP hR hH hS E _ _ _ H D l Xo c Y S Ω _ K _ J _ y 𝔐 h hpq
   obtain ⟨K₀, hK₀, hQ⟩ := GlobalTheory.T.lie_metric_height_bound hR E H D l Xo c Y S Ω K J y 𝔐 h hpq

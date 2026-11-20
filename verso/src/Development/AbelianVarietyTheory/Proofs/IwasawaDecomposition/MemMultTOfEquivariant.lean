@@ -15,6 +15,13 @@ namespace GlobalTheory.DefLiftMult
 
 open Matrix
 
+/- English proof (translation)
+Take `⟨hn, Q, hQ⟩` from `Formalism.UG.P.sig_data G p q h`. Establish `hq : q = 0`. Assume the negation of the conclusion as `hq`. Establish `j : Fin q` using `⟨0, Nat.pos_of_ne_zero hq⟩`. Establish `h1` using `(hG.posSemidef.conjTranspose_mul_mul_same Q).diag_nonneg (i := Sum.inr j)`.
+
+Rewrite `h1` using `[hQ]`. Simplify using `[Formalism.UG.Jpq] at h1`. Conclude with `absurd h1 (by norm_num)`. Substitute `hq` using the available equality. Simplify using `at hn`.
+
+Rewrite using `[hn]`.
+-/
 theorem sig_of_posDef {n : ℕ} {G : Matrix (Fin n) (Fin n) ℂ} (hG : G.PosDef) {p q : ℕ}
     (h : Formalism.UG.HasSignature G p q) : (p, q) = (n, 0) := by
   obtain ⟨hn, Q, hQ⟩ := Formalism.UG.P.sig_data G p q h
@@ -29,6 +36,13 @@ theorem sig_of_posDef {n : ℕ} {G : Matrix (Fin n) (Fin n) ℂ} (hG : G.PosDef)
   simp at hn
   rw [hn]
 
+/- English proof (translation)
+Take `⟨g, rfl⟩` from `(factEmb D.R D.host).1.2 σ`. Establish `key : ∀ (t : D.R.GG) (ht : t ∈ D.R.Psi), tauE D (D.eTau.symm ⟨t, ht⟩) = D.host.emb t` using `fun t ht => by`. Unfold `tauE`. Rewrite using `[Equiv.apply_symm_apply]`. Distinguish the cases in `h : g ∈ D.R.Psi`.
+
+Conclude with `⟨D.eTau.symm ⟨_, h⟩, Or.inl (key g h).symm⟩`. Establish `h' : g * D.R.cc ∈ D.R.Psi`. Assume the negation of the conclusion as `h2`. Conclude with `h ((Formalism.L2.Geo.mem_Psi_iff_mul_cc_notMem _).2 h2)`. Use `⟨D.eTau.symm ⟨_, h'⟩, Or.inr ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[key, Formalism.L2.Geo.emb_mul_cc_comp]`. Use `RingHom.ext fun x => ?_` and prove the remaining obligations. Use `D.host.conjE_apply (D.host.emb g) x` as an intermediate fact. Conclude with `((starRingEnd_self_apply _).symm.trans (congrArg (starRingEnd ℂ) this.symm))`.
+-/
 theorem exists_tauE (D : D7) (σ : D.host.E →+* ℂ) :
     ∃ τ, σ = tauE D τ ∨ σ = (starRingEnd ℂ).comp (tauE D τ) := by
   obtain ⟨g, rfl⟩ := (factEmb D.R D.host).1.2 σ
@@ -49,6 +63,11 @@ theorem exists_tauE (D : D7) (σ : D.host.E →+* ℂ) :
 
 variable {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} {M : DSModel V S}
 
+/- English proof (translation)
+Introduce `σ`. Use `Or.inl (sig_of_posDef ?_ (hs σ))` and prove the remaining obligations. Take `⟨τ, rfl | rfl⟩` from `exists_tauE D σ`. Conclude with `h.posDef τ`. Establish `e : V.gram.map ((starRingEnd ℂ).comp (tauE D τ)) = (gramAt D V τ)ᴴᵀ`.
+
+Use extensionality with `i j`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `(h.posDef τ).conjTranspose.transpose`.
+-/
 theorem isDefinite (hs : V.SigOK) (h : AllPlus M) : V.IsDefinite := by
   intro σ
   refine Or.inl (sig_of_posDef ?_ (hs σ))
@@ -60,6 +79,15 @@ theorem isDefinite (hs : V.SigOK) (h : AllPlus M) : V.IsDefinite := by
     rw [e]
     exact (h.posDef τ).conjTranspose.transpose
 
+/- English proof (translation)
+Take `⟨-, -, r3, -⟩` from `(GlobalTheory.SmoothForms.RealPts.realPoints D).2 θ hθ V`. Establish `hu` using `GlobalTheory.RealLift.archM_mem hθ V k`. Establish `e : GlobalTheory.RealLift.prodAt θ V Finset.univ.toList (fun τ => Formalism.L2.Pj.archM V (θ τ) k) = k` using `r3 _ (GlobalTheory.RealLift.prodAt_mem θ V _ _) _ hk fun τ => by`. Rewrite using `[GlobalTheory.RealLift.infMat_prodAt hθ V hu τ _ (Finset.nodup_toList _), if_pos (Finset.mem_toList.2 (Finset.mem_univ _))]`. Both sides reduce to the same expression.
+
+Rewrite using `[← e]`. Use `clear e`. Generalize the expression as in `(Finset.univ.toList : List D.what₂.Tau) = l`. Proceed by induction on `l with`. Consider the case `nil`.
+
+Introduce `f hf`. Use `hf using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `g`. Conclude with `congrArg f (mul_one g)`. Consider the case `cons τ l ih`.
+
+Introduce `f hf`. Use `hU τ _ (hu τ) _ (ih f hf) using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `g`. Conclude with `congrArg f (mul_assoc _ _ _).symm`.
+-/
 theorem rTr_mem {θ : InfFam D} (hθ : IsInfFam θ) (U : Set (GA D V → ℂ))
     (hU : ∀ τ, ∀ g ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ), ∀ f ∈ U, rTr V (atTau θ V τ g) f ∈ U) {k : GA D V}
     (hk : k ∈ GinfC V) : ∀ f ∈ U, rTr V k f ∈ U := by
@@ -87,6 +115,11 @@ theorem rTr_mem {θ : InfFam D} (hθ : IsInfFam θ) (U : Set (GA D V → ℂ))
     exact congrArg f (mul_assoc _ _ _).symm
 
 open Classical in
+/- English proof (translation)
+Unfold `inclT actT`. Simplify using `only [PiTensorProduct.map_tprod]`. Use `congr 1`. Use function extensionality and compare the values at `ρ`. Distinguish the cases in `c : ρ = τ`.
+
+Substitute `c` using the available equality. Simplify using `using hw`. Simplify using `[Function.update_of_ne c]`.
+-/
 theorem actT_tprod (τ : D.what₂.Tau) (g : Matrix (Fin V.rank) (Fin V.rank) ℂ) (v : M.Vec) (w : M.sm τ)
     (hw : (w : M.H τ) = M.rep τ g (v τ)) :
     inclT M (PiTensorProduct.tprod ℂ (Function.update v τ w)) = actT M τ g (inclT M (PiTensorProduct.tprod ℂ v)) := by
@@ -99,6 +132,15 @@ theorem actT_tprod (τ : D.what₂.Tau) (g : Matrix (Fin V.rank) (Fin V.rank) �
     simpa using hw
   · simp [Function.update_of_ne c]
 
+/- English proof (translation)
+Introduce `D θ V S M π J χ L hθ hs hp hfd hT hinj hπ haut hlev heq`. Establish `hd` using `isDefinite hs hp`. Use `(mem_multT θ M J χ L).2 (Submodule.subset_span ?_)` and prove the remaining obligations. Establish `e : ∀ v : M.Vec, PiTensorProduct.lift.symm L v = L (PiTensorProduct.tprod ℂ v)` using `fun v => rfl`. Use `⟨fun v => ?_, fun v => GlobalTheory.DefiniteEnd.isCuspFun_of_definite hs hd _, fun v k hk g => hlev _ k hk g, fun τ g hg v w hw => ?_, fun τ v x => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[e]`. Use `(GlobalTheory.DefiniteForms.autFunDefIffSm D θ hθ V hs hd _).1 ⟨haut _, ?_⟩` and prove the remaining obligations. Use `Submodule.finiteDimensional_of_le (S₂ := LinearMap.range L) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨k, hk, rfl⟩`. Use `rTr_mem hθ _ (fun τ g hg => ?_) hk _ (LinearMap.mem_range_self L _)` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨x, rfl⟩`. Take `⟨u, rfl⟩` from `hp.exists_unfr τ hg`. Conclude with `⟨_, heq τ u x⟩`. Take `⟨u, rfl⟩` from `hp.exists_unfr τ hg`. Rewrite using `[e, e, ← heq]`.
+
+Use `congr 1`. Conclude with `hinj ((actT_tprod τ _ v w hw).trans (hπ τ u _).symm)`. Use `haveI := (hfd τ).1`. Conclude with `GlobalTheory.DefiniteEnd.exists_sobCont M τ _ v x`.
+-/
 theorem mem_multT_of_equivariant : ∀ (D : D7) (θ : InfFam D) (V : HSp D) (S : D.what₂.Tau → SPar) (M : DSModel V S) (π : D.what₂.Tau → Matrix.unitaryGroup (Fin V.rank) ℂ → Module.End ℂ (SmT M)) (J : Set (GA D V)) (χ : GA D V → ℂ) (L : SmT M →ₗ[ℂ] (GA D V → ℂ)), IsInfFam θ → V.SigOK → AllPlus M → (∀ τ, FiniteDimensional ℂ (M.H τ) ∧ M.sm τ = ⊤) → FiniteDimensional ℂ (SmT M) → Function.Injective (inclT M) → IsTensAct M π → (∀ x, IsAutFun V (L x)) → (∀ x, ∀ k ∈ J, ∀ g, L x (g * k) = χ k * L x g) → (∀ τ u x, L (π τ u x) = rTr V (atTau θ V τ (unfr M τ u)) (L x)) → L ∈ MultT θ M J χ := by
   intro D θ V S M π J χ L hθ hs hp hfd hT hinj hπ haut hlev heq
   have hd := isDefinite hs hp

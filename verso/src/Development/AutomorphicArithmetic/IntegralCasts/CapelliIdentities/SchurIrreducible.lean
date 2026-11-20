@@ -16,6 +16,17 @@ noncomputable def UpperTheory.Reformulated.B.SchurIrreducible.SchurStep :
                 C * (↑((σ : G → GL (Fin M) ℂ) g) : Matrix (Fin M) (Fin M) ℂ)) →
             ∃ (c : ℂ), C = c • (1 : Matrix (Fin M) (Fin M) ℂ)
 
+/- English proof (translation)
+Introduce `G _ M σ hσ C hC`. Break down `Nat.eq_zero_or_pos M with rfl | hM` into its components or cases. Conclude with `⟨0, Subsingleton.elim _ _⟩`. Use `haveI : Nonempty (Fin M) := ⟨⟨0, hM⟩⟩`. Take `⟨c, hc⟩` from `Module.End.exists_eigenvalue (Matrix.toLin' C)`.
+
+Use `⟨c, ?_⟩` and prove the remaining obligations. Establish `hS` using `hσ (Module.End.eigenspace (Matrix.toLin' C) c) (by`. Introduce `g v hv`. Rewrite `hv`, the goal using `[Module.End.mem_eigenspace_iff, Matrix.toLin'_apply]`. Rewrite using `[Matrix.mulVec_mulVec, ← hC g, ← Matrix.mulVec_mulVec, hv, Matrix.mulVec_smul])`.
+
+Break down `hS with h | h` into its components or cases. Conclude with `absurd h hc`. Apply `Matrix.toLin'.injective` to reduce the goal to its premises. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `v`.
+
+Establish `hv : v ∈ Module.End.eigenspace (Matrix.toLin' C) c`. Rewrite using `[h]`. Conclude with `Submodule.mem_top`. Rewrite `hv` using `[Module.End.mem_eigenspace_iff]`. Rewrite using `[hv]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem UpperTheory.Reformulated.B.SchurIrreducible.schurStep :
     UpperTheory.Reformulated.B.SchurIrreducible.SchurStep := by
   intro G _ M σ hσ C hC

@@ -27,6 +27,9 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteS
   {lam : Fin n → ℝ} {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {D : Submodule ℂ H}
   {E : Fin n → Fin n → Module.End ℂ D} {V : Submodule ℂ D}
 
+/- English proof (translation)
+Take `⟨w, hwg, hw0, hwK⟩` from `exists_khw_genSub_of_kType hσ hD hV.1 hV.2.1 hS hST`. Take `⟨j, -, hpos, hle⟩` from `casimir_gap_at_noncompact_weight hD.glRep (isInfUnitary_of_isDerivedOn hσ hD) hV hc hgap.1 hh hbig hwg hw0 hwK hμ`. Establish `hj : (0 : ℝ) ≤ j` using `Nat.cast_nonneg j`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem data_casValK_gap (hgap : StdGap ε lam) (hσ : IsURepOn (UJset ε) σ) (hD : IsDerivedOn ε σ D E)
     (hV : IsKIrrHW ε E (lowK ε lam) V) (hc : ∀ v ∈ V, casimir E v = (casVal lam : ℂ) • v)
     (hVK : ∀ k ∈ Kset ε, ∀ v ∈ V, ∃ w ∈ V, (w : H) = σ k v) {h : ℝ} (hh : GapAtLeast ε lam h)
@@ -39,6 +42,9 @@ theorem data_casValK_gap (hgap : StdGap ε lam) (hσ : IsURepOn (UJset ε) σ) (
   have hj : (0 : ℝ) ≤ j := Nat.cast_nonneg j
   nlinarith
 
+/- English proof (translation)
+Take `⟨w, hwg, hw0, hwK⟩` from `exists_khw_genSub_of_kType hσ hD hV.1 hV.2.1 hS hST`. Conclude with `vogan_min hD.glRep (isInfUnitary_of_isDerivedOn hσ hD) hV hc hgap hwg hw0 hwK`.
+-/
 theorem data_vogan (hgap : StdGap ε lam) (hσ : IsURepOn (UJset ε) σ) (hD : IsDerivedOn ε σ D E)
     (hV : IsKIrrHW ε E (lowK ε lam) V) (hc : ∀ v ∈ V, casimir E v = (casVal lam : ℂ) • v)
     (hVK : ∀ k ∈ Kset ε, ∀ v ∈ V, ∃ w ∈ V, (w : H) = σ k v) {μ : Fin n → ℝ} (S : Submodule ℂ H) (hS : S ≤ closGen E V)
@@ -47,12 +53,22 @@ theorem data_vogan (hgap : StdGap ε lam) (hσ : IsURepOn (UJset ε) σ) (hD : I
   obtain ⟨w, hwg, hw0, hwK⟩ := exists_khw_genSub_of_kType hσ hD hV.1 hV.2.1 hS hST
   exact vogan_min hD.glRep (isInfUnitary_of_isDerivedOn hσ hD) hV hc hgap hwg hw0 hwK
 
+/- English proof (translation)
+Conclude with `isKTypeOf_of_isKIrrHW hσ hD hV hVK fun μ x hx hx0 hμ => weights_le_of_irr_hw hD.glRep (isInfUnitary_of_isDerivedOn hσ hD) hV hx hx0 hμ`.
+-/
 theorem data_isKTypeOf (hgap : StdGap ε lam) (hσ : IsURepOn (UJset ε) σ) (hD : IsDerivedOn ε σ D E)
     (hV : IsKIrrHW ε E (lowK ε lam) V) (hc : ∀ v ∈ V, casimir E v = (casVal lam : ℂ) • v)
     (hVK : ∀ k ∈ Kset ε, ∀ v ∈ V, ∃ w ∈ V, (w : H) = σ k v) : Formalism.MainNotions.S.IsKTypeOf ε σ (lowK ε lam) (V.map D.subtype) := by
   exact isKTypeOf_of_isKIrrHW hσ hD hV hVK fun μ x hx hx0 hμ =>
     weights_le_of_irr_hw hD.glRep (isInfUnitary_of_isDerivedOn hσ hD) hV hx hx0 hμ
 
+/- English proof (translation)
+Establish `hE` using `hD.glRep`. Set `T : Submodule ℂ D` to `LinearMap.ker (casimir E - ((casVal lam : ℝ) : ℂ) • LinearMap.id)`. Establish `memT : ∀ v : D, v ∈ T ↔ casimir E v = ((casVal lam : ℝ) : ℂ) • v`. Introduce `v`. Simplify using `only [T, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, sub_eq_zero]`.
+
+Establish `hT : genSub E V ≤ T`. Apply `sInf_le` to reduce the goal to its premises. Use `⟨fun v hv => (memT v).2 (hc v hv), fun a b v hv => ?_⟩` and prove the remaining obligations. Rewrite `hv`, the goal using `[memT]`. Establish `h1` using `congrArg (fun f : Module.End ℂ D => f v) (casimir_comm hE a b)`.
+
+Simplify using `only [Module.End.mul_apply] at h1`. Rewrite using `[h1, hv, map_smul]`. Rewrite using `[casU_eq_casimir hD x, (memT x).1 (hT hx)]`. Both sides reduce to the same expression.
+-/
 theorem data_casU (hgap : StdGap ε lam) (hσ : IsURepOn (UJset ε) σ) (hD : IsDerivedOn ε σ D E)
     (hV : IsKIrrHW ε E (lowK ε lam) V) (hc : ∀ v ∈ V, casimir E v = (casVal lam : ℂ) • v)
     (hVK : ∀ k ∈ Kset ε, ∀ v ∈ V, ∃ w ∈ V, (w : H) = σ k v) (x : D) (hx : x ∈ genSub E V) :
@@ -72,6 +88,11 @@ theorem data_casU (hgap : StdGap ε lam) (hσ : IsURepOn (UJset ε) σ) (hD : Is
   rw [casU_eq_casimir hD x, (memT x).1 (hT hx)]
   rfl
 
+/- English proof (translation)
+Break down `hirr (closGen E V) (Submodule.isClosed_topologicalClosure _) (closGen_stable hgap hσ hD hV hc hVK) with h | h` into its components or cases. It suffices to derive a contradiction. Take `⟨v, hv, hv0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hV0`. Establish `h2 : ((v : D) : H) ∈ closGen E V` using `UnitaryGroupOfForm.mem_closGen (E := E) V v hv`. Rewrite `h2` using `[h, Submodule.mem_bot]`.
+
+Conclude with `hv0 (Subtype.ext h2)`. Conclude with `h`.
+-/
 theorem data_closGen_eq_top (hgap : StdGap ε lam) (hσ : IsURepOn (UJset ε) σ) (hD : IsDerivedOn ε σ D E)
     (hV : IsKIrrHW ε E (lowK ε lam) V) (hc : ∀ v ∈ V, casimir E v = (casVal lam : ℂ) • v)
     (hVK : ∀ k ∈ Kset ε, ∀ v ∈ V, ∃ w ∈ V, (w : H) = σ k v) (hirr : Formalism.MainNotions.S.IsIrredOn (UJset ε) σ) (hV0 : V ≠ ⊥) :

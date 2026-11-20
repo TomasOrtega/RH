@@ -19,6 +19,9 @@ open GlobalTheory.FlagCell GlobalTheory.FlagConnect
 
 namespace GlobalTheory.FlagCell
 
+/- English proof (translation)
+Use `(GlobalTheory.QCoh.app_app (M := structureModule X) (N := GlobalTheory.QCoh.freeModule X I) (P := GlobalTheory.QCoh.freeModule X J) (SheafOfModules.ιFree i) (SheafOfModules.freeMap f) ⊤ (show Γ(structureModule X, ⊤) from (1 : Γ(X, ⊤)))).trans ?_` and prove the remaining obligations. Unfold `freeFrame`. Use `congr 2`. Conclude with `congrArg (fun φ => Scheme.Modules.Hom.app φ ⊤) (SheafOfModules.ιFree_freeMap (R := X.ringCatSheaf) f i)`.
+-/
 theorem freeMap_app_freeFrame {X : Scheme.{0}} {I J : Type} (f : I → J) (i : I) :
     Scheme.Modules.Hom.app (M := GlobalTheory.QCoh.freeModule X I) (N := GlobalTheory.QCoh.freeModule X J)
       (SheafOfModules.freeMap (R := X.ringCatSheaf) f) ⊤ (freeFrame X I i) = freeFrame X J (f i) := by
@@ -28,6 +31,9 @@ theorem freeMap_app_freeFrame {X : Scheme.{0}} {I J : Type} (f : I → J) (i : I
   congr 2
   exact congrArg (fun φ => Scheme.Modules.Hom.app φ ⊤) (SheafOfModules.ιFree_freeMap (R := X.ringCatSheaf) f i)
 
+/- English proof (translation)
+Introduce `X F m v hv`. Use `⟨(GlobalTheory.FlagSurj.freeFlag X m).ofIso ((isFrame_freeFrame X (Fin m)).iso hv), fun l => ?_⟩` and prove the remaining obligations. Use `⟨freeFrame X (Fin l), isFrame_freeFrame X (Fin l), fun j => ?_⟩` and prove the remaining obligations. Use `(GlobalTheory.QCoh.app_app (M := GlobalTheory.QCoh.freeModule X (Fin l)) (N := GlobalTheory.QCoh.freeModule X (Fin m)) (P := F) (SheafOfModules.freeMap (R := X.ringCatSheaf) (Fin.castLE (Nat.lt_succ_iff.mp l.2))) ((isFrame_freeFrame X (Fin m)).iso hv).hom ⊤ (freeFrame X (Fin l) j …` and prove the remaining obligations. Rewrite using `[freeMap_app_freeFrame, IsFrame.iso_hom_app]`.
+-/
 theorem exists_flag_spans_of_frame : ∀ (X : Scheme.{0}) (F : X.Modules) (m : ℕ) (v : Fin m → Γ(F, ⊤)),
     IsFrame v → ∃ fl : Vert.Flag F m, Spans fl ⊤ v := by
   intro X F m v hv

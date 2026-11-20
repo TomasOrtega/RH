@@ -15,6 +15,35 @@ noncomputable section
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hneg`. Use `push_neg at hneg`. Establish `he : X.IsIsoV (X.uvec u a)` using `isIsoV_uvec (X := X) hu ha`. Establish `hreal : ∀ s : X.Ψ → ℝ, F (X.flowV (X.uvec u a) (fun τ => (s τ : ℂ)) x0) = cexp (4 * Real.pi * I * ∑ τ, ((X.chiAt χ a τ).re : ℂ) * s τ) * F x0`. Introduce `s`.
+
+Rewrite using `[Data.flowV_uvec (X := X), hZ _ (herm_rank1 X s a) x0 hx0, pairR_rank1]`. Use `congr 3`. Use `push_cast`. Conclude with `Finset.sum_congr rfl fun τ _ => mul_comm _ _`. Establish `hcont` using `holomorphic_periodicity_extension r X (X.uvec u a) he F hF (fun τ => ((X.chiAt χ a τ).re : ℂ)) x0 hx0 hreal`.
+
+Take `⟨T, hT_eq⟩ : ∃ T, T = X.ttV (X.uvec u a) x0 τ0` from `⟨_, rfl⟩`. Establish `hT : 0 < T`. Rewrite using `[hT_eq, Data.ttV]`. Conclude with `one_div_pos.2 (mul_pos (d4l4_c_pos X τ0) (Data.maj_pos (X := X) hx0 τ0 (he τ0).2))`. Take `⟨b, hb_eq⟩ : ∃ b : ℝ, b = -(4 * Real.pi * (X.chiAt χ a τ0).re * T)` from `⟨_, rfl⟩`.
+
+Establish `hb : 0 < b`. Establish `h1` using `mul_pos (mul_pos (mul_pos four_pos Real.pi_pos) (neg_pos.2 hneg)) hT`. Rewrite using `[hb_eq]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hK : 0 < ‖F x0‖ * X.nfac la x0` using `mul_pos (norm_pos_iff.2 hF0) (BoundedSectionAlgebra.nfac_pos (X := X) hx0 la)`.
+
+Take `⟨y, hyM, hy1⟩` from `(((tendsto_exp_mul_div_rpow_atTop (X.spread la τ0 / 2) b hb).eventually_gt_atTop (C / (‖F x0‖ * X.nfac la x0 * Real.exp (-b)))).and (Filter.eventually_ge_atTop 1)).exists`. Take `⟨t, ht_eq⟩ : ∃ t : ℝ, t = T * (y - 1)` from `⟨_, rfl⟩`. Set `s : X.Ψ → ℂ` to `Function.update 0 τ0 (I * t)`. Establish `hs0 : s τ0 = I * t` using `by simp [s]`. Establish `hsne : ∀ τ, τ ≠ τ0 → s τ = 0` using `fun τ h => by simp [s, h]`.
+
+Establish `hq : ∀ τ, 1 + (s τ).im / X.ttV (X.uvec u a) x0 τ = if τ = τ0 then y else 1`. Introduce `τ`. Use `split_ifs with h`. Rewrite using `[h, hs0, ← hT_eq, ht_eq]`. Simplify using `only [Complex.mul_im, Complex.I_re, Complex.I_im, Complex.ofReal_re, Complex.ofReal_im, zero_mul, one_mul, zero_add]`.
+
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hsne τ h]`. Simplify using the standard rewrite rules. Establish `hdom : X.flowV (X.uvec u a) s x0 ∈ X.dom`.
+
+Use `((flowDomainCriterion_holds r X (X.uvec u a) he x0 hx0 s).1).2 fun τ => ?_` and prove the remaining obligations. Rewrite using `[hq τ]`. Apply the tactic sequence `split_ifs <;> linarith`. Establish `hsum : ∑ τ, ((X.chiAt χ a τ).re : ℂ) * s τ = ((X.chiAt χ a τ0).re : ℂ) * (I * t)`. Rewrite using `[Finset.sum_eq_single τ0 (fun τ _ h => by rw [hsne τ h, mul_zero]) (fun h => absurd (Finset.mem_univ τ0) h), hs0]`.
+
+Establish `hnormF : ‖F (X.flowV (X.uvec u a) s x0)‖ = Real.exp (b * (y - 1)) * ‖F x0‖`. Rewrite using `[hcont s hdom, hsum, norm_mul]`. Use `congr 1`. Establish `h1 : 4 * (Real.pi : ℂ) * I * (((X.chiAt χ a τ0).re : ℂ) * (I * t)) = ((b * (y - 1) : ℝ) : ℂ)`. Rewrite using `[hb_eq, ht_eq]`.
+
+Use `push_cast`. Take the linear combination `(4 * (Real.pi : ℂ) * ((X.chiAt χ a τ0).re : ℂ) * T * (y - 1)) * Complex.I_sq`. Rewrite using `[h1, Complex.norm_exp_ofReal]`. Establish `hN` using `(m3bNorm_holds r X (X.uvec u a) he la x0 hx0 s hdom).2`. Simplify using `only [hq] at hN`.
+
+Establish `hprod : ∏ τ, max (if τ = τ0 then y else 1) (if τ = τ0 then y else 1)⁻¹ ^ (X.spread la τ / 2) = y ^ (X.spread la τ0 / 2)`. Rewrite using `[Finset.prod_eq_single τ0 (fun τ _ h => by simp [h]) (fun h => absurd (Finset.mem_univ τ0) h)]`. Rewrite using `[if_pos rfl, max_eq_left ((inv_le_one_of_one_le₀ hy1).trans hy1)]`. Rewrite `hN` using `[hprod]`. Establish `hY` using `BoundedSectionAlgebra.nfac_pos (X := X) hdom la`.
+
+Establish `hypos : 0 < y ^ (X.spread la τ0 / 2)` using `Real.rpow_pos_of_pos (by linarith) _`. Establish `hnf : X.nfac la x0 / y ^ (X.spread la τ0 / 2) ≤ X.nfac la (X.flowV (X.uvec u a) s x0)`. Rewrite `hN` using `[div_le_iff₀ hY]`. Rewrite using `[div_le_iff₀ hypos]`. Combine the linear relations using `[mul_comm (y ^ (X.spread la τ0 / 2)) (X.nfac la (X.flowV (X.uvec u a) s x0))]`.
+
+Establish `hC'` using `hC _ hdom`. Rewrite `hC'` using `[BoundedSectionAlgebra.pnorm_eq (X := X), hnormF]`. Establish `key : ‖F x0‖ * X.nfac la x0 * Real.exp (-b) * (Real.exp (b * y) / y ^ (X.spread la τ0 / 2)) ≤ C`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[show b * (y - 1) = b * y + -b by ring, Real.exp_add]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ Real.exp (b * (y - 1)) * ‖F x0‖ * X.nfac la (X.flowV (X.uvec u a) s x0) := mul_le_mul_of_nonneg_left hnf (by positivity)`. Use `_ ≤ C := hC'`. Rewrite `hyM` using `[div_lt_iff₀ (mul_pos hK (Real.exp_pos _))]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 lemma chiAt_nonneg (X : Data E r) (u : Fin 2 → Fin r → E) (hu : IsIsoPair X.Gm u) (la : Wt X.Ψ r)
     (χ : X.Ψ → Fin 2 → Fin 2 → ℂ) (F : Frame X.Ψ r → ℂ) (hF : DifferentiableOn ℂ F X.dom)
     (hZ : ∀ b, IsHermFam b → ∀ x ∈ X.dom, F (X.Zb u b x) = cexp (4 * Real.pi * I * X.pairR χ b) * F x)
@@ -102,6 +131,11 @@ lemma chiAt_nonneg (X : Data E r) (u : Fin 2 → Fin r → E) (hu : IsIsoPair X.
   rw [div_lt_iff₀ (mul_pos hK (Real.exp_pos _))] at hyM
   linarith
 
+/- English proof (translation)
+Use `posSemidef_of (X := X) hχ τ0 (fun x hx => ?_)` and prove the remaining obligations. Establish `ha : ∀ τ : X.Ψ, (fun i => conj (x i)) ≠ 0`. Introduce `τ h`. Apply `hx` to reduce the goal to its premises. Use function extensionality and compare the values at `i`.
+
+Establish `h1` using `congrFun h i`. Simplify using `using h1`. Establish `h2` using `chiAt_nonneg X u hu la χ F hF hZ C hC hx0 hF0 (fun _ i => conj (x i)) ha τ0`. Simplify `h2` using `[Data.chiAt, mul_comm, mul_left_comm, mul_assoc]`.
+-/
 lemma psd_of (X : Data E r) (u : Fin 2 → Fin r → E) (hu : IsIsoPair X.Gm u) (la : Wt X.Ψ r)
     (χ : X.Ψ → Fin 2 → Fin 2 → ℂ) (hχ : IsHermFam χ) (F : Frame X.Ψ r → ℂ)
     (hF : DifferentiableOn ℂ F X.dom)
@@ -118,6 +152,11 @@ lemma psd_of (X : Data E r) (u : Fin 2 → Fin r → E) (hu : IsIsoPair X.Gm u) 
   have h2 := chiAt_nonneg X u hu la χ F hF hZ C hC hx0 hF0 (fun _ i => conj (x i)) ha τ0
   simpa [Data.chiAt, mul_comm, mul_left_comm, mul_assoc] using h2
 
+/- English proof (translation)
+Establish `h1 : X.flow ξ (fun τ => (s τ : ℂ)) y = X.flowV (X.uvec u a) (fun τ => (s τ : ℂ)) y`. Use function extensionality and compare the values at `τ`. Simplify using `only [Data.flow, Data.flowV]`. Use `congr 1`. Rewrite using `[← hemb τ]`.
+
+Use extensionality with `i j`. Simplify using `[Data.flowMat, Data.flowMatV, Data.emb]`. Rewrite using `[h1, X.flowV_uvec]`.
+-/
 lemma flow_eq_Zb (X : Data E r) (u : Fin 2 → Fin r → E) (ξ : Fin r → E) (a : X.Ψ → Fin 2 → ℂ)
     (hemb : ∀ τ : X.Ψ, Data.emb τ.1 ξ = X.uvec u a τ) (s : X.Ψ → ℝ) (y : Frame X.Ψ r) :
     X.flow ξ (fun τ => (s τ : ℂ)) y = X.Zb u (fun τ i k => (s τ : ℂ) * a τ i * conj (a τ k)) y := by
@@ -130,6 +169,39 @@ lemma flow_eq_Zb (X : Data E r) (u : Fin 2 → Fin r → E) (ξ : Fin r → E) (
     simp [Data.flowMat, Data.flowMatV, Data.emb]
   rw [h1, X.flowV_uvec]
 
+/- English proof (translation)
+Take `⟨-, -, hfd_pos, hfd_top⟩` from `(exists_fd X la).choose_spec`. Establish `hωH : ∀ j, IsHermFam (hωex.choose j)` using `fun j => herm_of_LZ (X := X) (hωex.choose_spec.1 j)`. Set `K : Set (Fin (4 * Fintype.card X.Ψ) → ℝ)` to `Set.pi Set.univ fun _ => Set.Icc (0 : ℝ) 1`. Set `B : (Fin (4 * Fintype.card X.Ψ) → ℝ) → X.Ψ → Fin 2 → Fin 2 → ℂ` to `fun t => ∑ j, (t j : ℂ) • hωex.choose j`. Set `R : (X.Ψ → ℝ) → X.Ψ → Fin 2 → Fin 2 → ℂ` to `fun s τ i k => (s τ : ℂ) * a τ i * conj (a τ k)`.
+
+Set `e : (Fin (4 * Fintype.card X.Ψ) → ℝ) → ℂ` to `fun t => cexp (-(4 * Real.pi * I) * X.pairR χ (B t))`. Establish `hfz : ∀ y, X.fz u g χ P y = ∫ t in K, P (X.Zb u (B t) y) * e t`. Introduce `y`. Simplify using `only [Data.fz, if_pos hcond, dif_pos hωex]`. Both sides reduce to the same expression.
+
+Establish `hHerm : ∀ s t, IsHermFam (B t + R s)`. Introduce `s t τ i k`. Establish `h1` using `herm_comb (X := X) hωH t τ i k`. Establish `h2` using `herm_rank1 X s a τ i k`. Simplify using `only at h2`.
+
+Use `show (B t + R s) τ k i = conj ((B t + R s) τ i k)`. Simplify using `only [Pi.add_apply, B, R, map_add, h1, h2]`. Establish `hdom : ∀ s t, X.Zb u (B t + R s) x0 ∈ X.dom` using `fun s t => X.Zb_dom u hu _ (hHerm s t) hx0`. Establish `hN0` using `BoundedSectionAlgebra.nfac_pos (X := X) hx0 la`. Establish `hbdP : ∀ s t, ‖P (X.Zb u (B t + R s) x0)‖ ≤ C / X.nfac la x0`.
+
+Introduce `s t`. Establish `h1` using `hC _ (hdom s t)`. Rewrite `h1` using `[BoundedSectionAlgebra.pnorm_eq (X := X), X.nfac_Zb u hu _ (hHerm s t) la x0]`. Rewrite using `[le_div_iff₀ hN0]`. Conclude with `h1`.
+
+Establish `he1 : ∀ t, ‖e t‖ = 1`. Introduce `t`. Simplify using `only [e]`. Rewrite using `[show -(4 * (Real.pi : ℂ) * I) * (X.pairR χ (B t) : ℂ) = ((-(4 * Real.pi * X.pairR χ (B t)) : ℝ) : ℂ) * I by push_cast; ring]`. Conclude with `Complex.norm_exp_ofReal_mul_I _`.
+
+Establish `hZc : Continuous fun b : X.Ψ → Fin 2 → Fin 2 → ℂ => X.Zb u b x0`. Use `continuous_pi fun τ => continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Simplify using `only [Data.Zb, Data.zmat, mat, Matrix.mul_apply, Matrix.of_apply]`. Use `fun_prop`. Establish `hBc : Continuous B`.
+
+Simplify using `only [B]`. Use `fun_prop`. Establish `hRc : Continuous R`. Simplify using `only [R]`. Use `fun_prop`.
+
+Establish `hec : Continuous e`. Simplify using `only [e, B, Data.pairR]`. Use `fun_prop`. Set `f : (X.Ψ → ℝ) → (Fin (4 * Fintype.card X.Ψ) → ℝ) → ℂ` to `fun s t => P (X.Zb u (B t + R s) x0) * e t`. Establish `hfc : Continuous (Function.uncurry f)`.
+
+Establish `h1 : Continuous fun p : (X.Ψ → ℝ) × (Fin (4 * Fintype.card X.Ψ) → ℝ) => P (X.Zb u (B p.2 + R p.1) x0)` using `hPc.comp_continuous (hZc.comp ((hBc.comp continuous_snd).add (hRc.comp continuous_fst))) (fun p => hdom p.1 p.2)`. Conclude with `h1.mul (hec.comp continuous_snd)`. Establish `hfb : ∀ s t, ‖f s t‖ ≤ C / X.nfac la x0` using `fun s t => by`. Simplify using `only [f]`. Rewrite using `[norm_mul, he1, mul_one]`.
+
+Conclude with `hbdP s t`. Establish `hK : volume K < ⊤` using `(isCompact_univ_pi fun _ => isCompact_Icc).measure_lt_top`. Establish `hswap` using `integral_swap_of_bdd hfd_top hK hfc hfb`. Establish `hL : ∫ s in (exists_fd X la).choose, ∫ t in K, f s t = (volume (exists_fd X la).choose).toReal • X.fz u g χ P x0`. Rewrite using `[← MeasureTheory.measureReal_def, ← MeasureTheory.setIntegral_const]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `s`. Rewrite using `[← hinv s, hfz, flow_eq_Zb X u ξ a hemb s x0]`. Simplify using `only [f, R, X.Zb_Zb u hu]`. Establish `hR0 : ∀ t, ∫ s in (exists_fd X la).choose, f s t = 0`.
+
+Introduce `t`. Establish `hy` using `X.Zb_dom u hu (B t) (herm_comb (X := X) hωH t) hx0`. Establish `hc` using `hcusp _ hy`. Simplify using `only [Data.fj] at hc`. Rewrite `hc` using `[if_pos (fun p _ => ⟨0, by simp⟩), dif_pos (exists_fd X la)]`.
+
+Simplify using `only [Pi.zero_apply, Complex.ofReal_zero, zero_mul, Finset.sum_const_zero, mul_zero, Complex.exp_zero, mul_one] at hc`. Establish `hV : ((volume (exists_fd X la).choose).toReal : ℂ)⁻¹ ≠ 0` using `inv_ne_zero (by exact_mod_cast (ENNReal.toReal_pos hfd_pos.ne' hfd_top.ne).ne')`. Establish `hI` using `(mul_eq_zero.1 hc).resolve_left hV`. Establish `hpt : ∀ s : X.Ψ → ℝ, P (X.Zb u (B t + R s) x0) = P (X.flow ξ (fun τ => (s τ : ℂ)) (X.Zb u (B t) x0))`. Introduce `s`.
+
+Rewrite using `[flow_eq_Zb X u ξ a hemb s, X.Zb_Zb u hu, add_comm]`. Simplify using `only [f]`. Rewrite using `[MeasureTheory.integral_mul_const]`. Repeatedly rewrite using `[hpt]`. Rewrite using `[hI, zero_mul]`.
+
+Rewrite `hL` using `[hswap]`. Simplify using `only [hR0, MeasureTheory.integral_zero] at hL`. Establish `hV : (volume (exists_fd X la).choose).toReal ≠ 0` using `(ENNReal.toReal_pos hfd_pos.ne' hfd_top.ne).ne'`. Conclude with `(smul_eq_zero.1 hL.symm).resolve_left hV`.
+-/
 lemma fz_zero_of_inv (X : Data E r) (u : Fin 2 → Fin r → E) (hu : ∀ i k, herm X.Gm (u i) (u k) = 0)
     (g : ℕ) (χ : X.Ψ → Fin 2 → Fin 2 → ℂ) (hcond : IsHermFam χ ∧ X.IsFreqZ g χ)
     (hωex : ∃ ω, X.IsLZBasis g ω) (la : Wt X.Ψ r) (P : Frame X.Ψ r → ℂ) (hPc : ContinuousOn P X.dom)
@@ -230,26 +302,67 @@ lemma fz_zero_of_inv (X : Data E r) (u : Fin 2 → Fin r → E) (hu : ∀ i k, h
   have hV : (volume (exists_fd X la).choose).toReal ≠ 0 := (ENNReal.toReal_pos hfd_pos.ne' hfd_top.ne).ne'
   exact (smul_eq_zero.1 hL.symm).resolve_left hV
 
+/- English proof (translation)
+Simplify using `only [herm, Pi.add_apply, add_mul, Finset.sum_add_distrib]`.
+-/
 private lemma herm_add_left_fundamental_domains (G : Matrix (Fin r) (Fin r) E) (x y z : Fin r → E) :
     herm G (x + y) z = herm G x z + herm G y z := by
   simp only [herm, Pi.add_apply, add_mul, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Simplify using `only [herm, cc, Pi.add_apply, map_add, mul_add, Finset.sum_add_distrib]`.
+-/
 private lemma herm_add_right_fundamental_domains (G : Matrix (Fin r) (Fin r) E) (x y z : Fin r → E) :
     herm G x (y + z) = herm G x y + herm G x z := by
   simp only [herm, cc, Pi.add_apply, map_add, mul_add, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Simplify using `only [herm, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 private lemma herm_smul_left_fundamental_domains' (G : Matrix (Fin r) (Fin r) E) (t : E) (x y : Fin r → E) :
     herm G (t • x) y = t * herm G x y := by
   simp only [herm, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]
   refine Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_
   ring
 
+/- English proof (translation)
+Simplify using `only [herm, cc, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 private lemma herm_smul_right_eq_cc_mul' (G : Matrix (Fin r) (Fin r) E) (t : E) (x y : Fin r → E) :
     herm G x (t • y) = cc t * herm G x y := by
   simp only [herm, cc, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]
   refine Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_
   ring
 
+/- English proof (translation)
+Introduce `r X u hu hΛ la P hP hχΓ χ hex τ`. Take `⟨x1, hx1, hfz⟩` from `hex`. Take `⟨-, hinvP, hβ⟩` from `h2 r X u hu hΛ`. Establish `hcond : IsHermFam χ ∧ X.IsFreqZ X.g χ`. Assume the negation of the conclusion as `hc`.
+
+Conclude with `hfz (by simp only [Data.fz, if_neg hc])`. Establish `hωex : ∃ ω, X.IsLZBasis X.g ω`. Assume the negation of the conclusion as `hc`. Conclude with `hfz (by simp only [Data.fz, if_pos hcond, dif_neg hc])`. Take `⟨⟨hPsec, C, hC⟩, hcusp⟩` from `hP`.
+
+Establish `hPinv` using `hinvP la P hPsec hχΓ`. Take `⟨⟨hFd, -, hFZ⟩, hFn, -⟩` from `h3 r X.toData u X.g hu X.g_pos la P hPsec.1 hPsec.2.1 hPinv χ`. Establish `hFC : ∀ y ∈ X.dom, X.pnorm la (X.fz u X.g χ P) y ≤ C` using `fun y hy => hFn y hy C fun b hb => hC _ (X.toData.Zb_dom u hu.1 b hb hy)`. Establish `hpsd` using `psd_of X.toData u hu la χ hcond.1 _ hFd hFZ C hFC hx1 hfz τ`. Take `⟨β, -, rfl, -⟩` from `hβ χ hcond.1 hcond.2`.
+
+Use `posDef_of_posSemidef_det hpsd ?_` and prove the remaining obligations. Establish `hdet : (Matrix.of (X.embH β τ)).det = τ.1 β.det`. Rewrite using `[RingHom.map_det, RingHom.mapMatrix_apply]`. Both sides reduce to the same expression. Rewrite using `[hdet]`.
+
+Introduce `h0`. Establish `hβ0 : β.det = 0` using `(RingHom.injective τ.1) (h0.trans (map_zero τ.1).symm)`. Take `⟨c, hc0, hcβ⟩` from `Matrix.exists_vecMul_eq_zero_iff.2 hβ0`. Take `⟨d, hint⟩` from `IsLocalization.exist_integer_multiples (nonZeroDivisors (𝓞 E)) Finset.univ c`. Establish `hint' : ∀ i, ∃ y : 𝓞 E, algebraMap (𝓞 E) E y = (d : 𝓞 E) • c i` using `fun i => RingHom.mem_rangeS.1 (hint i (Finset.mem_univ i))`.
+
+Use `choose c' hc' using hint'`. Use `set e : Fin 2 → E := fun i => algebraMap (𝓞 E) E (c' i) with he_def`. Establish `hde : ∀ i, e i = algebraMap (𝓞 E) E d * c i` using `fun i => by`. Simplify using `only [he_def, hc', Algebra.smul_def]`. Establish `hdne : algebraMap (𝓞 E) E d ≠ 0`.
+
+Rewrite using `[Ne, ← map_zero (algebraMap (𝓞 E) E)]`. Conclude with `fun h => nonZeroDivisors.coe_ne_zero d (IsFractionRing.injective (𝓞 E) E h)`. Establish `he0 : e ≠ 0`. Introduce `h`. Apply `hc0` to reduce the goal to its premises.
+
+Use function extensionality and compare the values at `i`. Establish `h1` using `congrFun h i`. Rewrite `h1` using `[hde, Pi.zero_apply]`. Simplify `h1` using `[hdne]`. Establish `hek : ∀ k, ∑ i, e i * β i k = 0`.
+
+Introduce `k`. Establish `h1` using `congrFun hcβ k`. Simplify using `only [Matrix.vecMul, dotProduct, Pi.zero_apply] at h1`. Simplify using `only [hde, mul_assoc, ← Finset.mul_sum, h1, mul_zero]`. Use `set ξ : Fin r → E := ∑ i, e i • u i with hξ_def`.
+
+Establish `hξΛ : ξ ∈ X.Λ`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[he_def]`. Simplify using `only`. Rewrite using `[algebraMap_smul E (c' i) (u i)]`.
+
+Conclude with `Submodule.smul_mem _ _ (hΛ i)`. Establish `hξ0 : ξ ≠ 0` using `fun h => he0 (funext (Fintype.linearIndependent_iff.1 hu.2 e h))`. Establish `hξξ : herm X.Gm ξ ξ = 0`. Simplify using `only [hξ_def, Fin.sum_univ_two, herm_add_left_fundamental_domains, herm_add_right_fundamental_domains, herm_smul_left_fundamental_domains', herm_smul_right_eq_cc_mul', hu.1, mul_zero, add_zero]`. Establish `hemb : ∀ σ : X.Ψ, Data.emb σ.1 ξ = X.uvec u (fun σ i => σ.1 (e i)) σ`.
+
+Introduce `σ`. Use function extensionality and compare the values at `j`. Simplify using `[Data.emb, Data.uvec, hξ_def, Finset.sum_apply, map_sum, map_mul]`. Establish `hinv : ∀ s : X.Ψ → ℝ, X.fz u X.g (X.embH β) P (X.flow ξ (fun τ => (s τ : ℂ)) x1) = X.fz u X.g (X.embH β) P x1`. Introduce `s`.
+
+Rewrite using `[flow_eq_Zb X.toData u ξ _ hemb s x1, hFZ _ (herm_rank1 X.toData s _) x1 hx1, pairR_rank1]`. Establish `hz : ∀ σ, X.chiAt (X.embH β) (fun σ i => σ.1 (e i)) σ = 0`. Introduce `σ`. Rewrite using `[chiAt_embH, Finset.sum_comm]`. Establish `h1 : ∑ k, ∑ i, β i k * e i * cc (e k) = 0` using `Finset.sum_eq_zero fun k _ => by`.
+
+Rewrite using `[← Finset.sum_mul, show (∑ i, β i k * e i) = ∑ i, e i * β i k from Finset.sum_congr rfl fun i _ => mul_comm _ _, hek k, zero_mul]`. Rewrite using `[h1, map_zero]`. Simplify using `[hz]`. Conclude with `hfz (fz_zero_of_inv X.toData u hu.1 X.g _ hcond hωex la P hPsec.1.continuousOn C hC ξ hξξ _ hemb (hcusp ξ ⟨hξΛ, hξξ, hξ0⟩) hx1 hinv)`.
+-/
 theorem nonvanishing_coefficient_positivity_of (h2 : UnipotentLatticeLift (E := E)) (h3 : FourierCoefficientProperties (E := E)) :
     NonvanishingCoefficientPositivity (E := E) := by
   intro r X u hu hΛ la P hP hχΓ χ hex τ

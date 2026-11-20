@@ -10,6 +10,15 @@ open MvPowerSeries ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheor
 
 variable {k : Type} [CommRing k] {d n : ℕ}
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h0` using `h 0 (by simp)`. Use `first`. Consider the case `simpa [MvPowerSeries.coeff_zero_eq_constantCoeff_apply] using h0`.
+
+Consider the case `simpa [MvPowerSeries.coeff_zero_eq_constantCoeff] using h0`. Introduce `h m hm`. Establish `hm0 : m = 0`. Establish `hd : m.degree = 0` using `by omega`. Use `first`.
+
+Consider the case `exact (Finsupp.degree_eq_zero_iff m).1 hd`. Consider the case `exact Finsupp.degree_eq_zero_iff.1 hd`. Substitute `hm0` using the available equality. Use `first`. Consider the case `simpa [MvPowerSeries.coeff_zero_eq_constantCoeff_apply] using h`.
+
+Consider the case `simpa [MvPowerSeries.coeff_zero_eq_constantCoeff] using h`.
+-/
 theorem ordGe_one_iff (f : PS k n d) : OrdGe 1 f ↔ constantCoeff f = 0 := by
   constructor
   · intro h
@@ -28,6 +37,15 @@ theorem ordGe_one_iff (f : PS k n d) : OrdGe 1 f ↔ constantCoeff f = 0 := by
       | simpa [MvPowerSeries.coeff_zero_eq_constantCoeff_apply] using h
       | simpa [MvPowerSeries.coeff_zero_eq_constantCoeff] using h
 
+/- English proof (translation)
+Introduce `m hm`. Rewrite using `[MvPowerSeries.coeff_mul]`. Use `Finset.sum_eq_zero fun p hp => ?_` and prove the remaining obligations. Use `replace hp : p.1 + p.2 = m := by first`. Consider the case `exact Finset.HasAntidiagonal.mem_antidiagonal.mp hp`.
+
+Consider the case `exact Finset.mem_antidiagonal.mp hp`. Consider the case `simpa using hp`. Establish `hdeg : p.1.degree + p.2.degree = m.degree`. Rewrite using `[← hp]`. Use `first`.
+
+Consider the case `exact (map_add _ _ _).symm`. Consider the case `(simp only [Finsupp.degree_eq_weight_one, map_add])`. Consider the case `(rw [Finsupp.degree_eq_sum, Finsupp.degree_eq_sum, Finsupp.degree_eq_sum, ← Finset.sum_add_distrib]; rfl)`. Consider the case `(simp only [Finsupp.degree_eq_sum, Finsupp.coe_add, Pi.add_apply, Finset.sum_add_distrib])`. Consider the case `(unfold Finsupp.degree`.
+
+Conclude with `(Finsupp.sum_add_index' (h := fun _ (x : ℕ) => x) (fun _ => rfl) (fun _ _ _ => rfl)).symm)`. Distinguish the cases in `h1 : p.1.degree < a`. Rewrite using `[hf _ h1, zero_mul]`. Rewrite using `[hg _ (by omega), mul_zero]`.
+-/
 theorem OrdGe.mul {a b : ℕ} {f g : PS k n d} (hf : OrdGe a f) (hg : OrdGe b g) : OrdGe (a + b) (f * g) := by
   intro m hm
   rw [MvPowerSeries.coeff_mul]
@@ -50,28 +68,50 @@ theorem OrdGe.mul {a b : ℕ} {f g : PS k n d} (hf : OrdGe a f) (hg : OrdGe b g)
   · rw [hf _ h1, zero_mul]
   · rw [hg _ (by omega), mul_zero]
 
+/- English proof (translation)
+Introduce `m hm`. Conclude with `absurd hm (Nat.not_lt_zero _)`.
+-/
 theorem cro_ordGe_zero (f : PS k n d) : OrdGe 0 f := by
   intro m hm
   exact absurd hm (Nat.not_lt_zero _)
 
+/- English proof (translation)
+Introduce `m hm`. Rewrite using `[map_add, hf m hm, hg m hm, add_zero]`.
+-/
 theorem cro_ordGe_add {t : ℕ} {f g : PS k n d} (hf : OrdGe t f) (hg : OrdGe t g) : OrdGe t (f + g) := by
   intro m hm
   rw [map_add, hf m hm, hg m hm, add_zero]
 
+/- English proof (translation)
+Introduce `m _`. Conclude with `map_zero _`.
+-/
 theorem cro_ordGe_zero' (t : ℕ) : OrdGe t (0 : PS k n d) := by
   intro m _
   exact map_zero _
 
+/- English proof (translation)
+Introduce `m hm`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_eq_zero fun i hi => hf i hi m hm`.
+-/
 theorem cro_ordGe_sum {t : ℕ} {ι : Type} (s : Finset ι) (f : ι → PS k n d) (hf : ∀ i ∈ s, OrdGe t (f i)) :
     OrdGe t (∑ i ∈ s, f i) := by
   intro m hm
   rw [map_sum]
   exact Finset.sum_eq_zero fun i hi => hf i hi m hm
 
+/- English proof (translation)
+Establish `h` using `OrdGe.mul (cro_ordGe_zero g) hf`. Rewrite `h` using `[zero_add]`. Then use the resulting hypothesis.
+-/
 theorem cro_ordGe_mul_left {t : ℕ} (g : PS k n d) {f : PS k n d} (hf : OrdGe t f) : OrdGe t (g * f) := by
   have h := OrdGe.mul (cro_ordGe_zero g) hf
   rwa [zero_add] at h
 
+/- English proof (translation)
+Introduce `m hm`. Unfold `pderiv`. Use `show coeff m (pderivFun i f) = 0`. Unfold `pderivFun`. Establish `hz : coeff (m + Finsupp.single i 1) f = 0` using `hf _ (by`.
+
+Establish `e : (m + Finsupp.single i 1).degree = m.degree + 1` using `by first`. Consider the case `(rw [map_add, Finsupp.degree_single])`. Consider the case `simp [Finsupp.degree_single]`. Consider the case `(rw [Finsupp.degree_eq_sum, Finsupp.degree_eq_sum]`. Simplify using `[Finset.sum_add_distrib, Finsupp.single_apply])`.
+
+Use the proof step `omega)`. Use `show coeff (m + Finsupp.single i 1) f * ((m i : k) + 1) = 0`. Rewrite using `[hz, zero_mul]`.
+-/
 theorem cro_ordGe_pderiv {t : ℕ} {f : PS k n d} (hf : OrdGe (t + 1) f) (i : Fin n × Fin d) :
     OrdGe t (pderiv k i f) := by
   intro m hm
@@ -89,11 +129,23 @@ theorem cro_ordGe_pderiv {t : ℕ} {f : PS k n d} (hf : OrdGe (t + 1) f) (i : Fi
   show coeff (m + Finsupp.single i 1) f * ((m i : k) + 1) = 0
   rw [hz, zero_mul]
 
+/- English proof (translation)
+Unfold `Lin`. Conclude with `cro_ordGe_sum _ _ fun j _ => cro_ordGe_mul_left _ (cro_ordGe_pderiv hf _)`.
+-/
 theorem cro_ordGe_lin {t : ℕ} {f : PS k n d} (hf : OrdGe (t + 1) f) (b : Fin n) (v : Fin d → k) :
     OrdGe t (Lin b v f) := by
   unfold Lin
   exact cro_ordGe_sum _ _ fun j _ => cro_ordGe_mul_left _ (cro_ordGe_pderiv hf _)
 
+/- English proof (translation)
+Establish `ha' : MvPowerSeries.HasSubst (fun p : Fin m × Fin d => a p.1 p.2)` using `by first`. Consider the case `exact MvPowerSeries.hasSubst_of_constantCoeff_zero (fun p => ha p.1 p.2)`. Consider the case `exact MvPowerSeries.HasSubst.of_constantCoeff_nilpotent (fun p => by rw [ha p.1 p.2]; exact IsNilpotent.zero)`. Consider the case `exact MvPowerSeries.hasSubst_of_constantCoeff_nilpotent (fun p => by rw [ha p.1 p.2]; exact IsNilpotent.zero)`. Unfold `ev`.
+
+Rewrite using `[MvPowerSeries.constantCoeff_subst ha', finsum_eq_single _ 0]`. Simplify using the standard rewrite rules. Introduce `e he`. Choose the witnesses or unpack the hypotheses as in `⟨s, hs⟩ : ∃ s, e s ≠ 0 := by`. Assume the negation of the conclusion as `h`.
+
+Use `push_neg at h`. Conclude with `he (Finsupp.ext h)`. Establish `h0 : MvPowerSeries.constantCoeff (e.prod fun s j => (fun p : Fin m × Fin d => a p.1 p.2) s ^ j) = 0`. Rewrite using `[Finsupp.prod, map_prod]`. Conclude with `Finset.prod_eq_zero (Finsupp.mem_support_iff.mpr hs) (by simp [ha s.1 s.2, zero_pow hs])`.
+
+Rewrite using `[h0, smul_zero]`.
+-/
 theorem cro_constCoeff_ev {m : ℕ} (a : Fin m → Pt k n d) (ha : ∀ p i, constantCoeff (a p i) = 0)
     (f : PS k m d) : constantCoeff (ev a f) = constantCoeff f := by
   have ha' : MvPowerSeries.HasSubst (fun p : Fin m × Fin d => a p.1 p.2) := by
@@ -115,6 +167,11 @@ theorem cro_constCoeff_ev {m : ℕ} (a : Fin m → Pt k n d) (ha : ∀ p i, cons
       exact Finset.prod_eq_zero (Finsupp.mem_support_iff.mpr hs) (by simp [ha s.1 s.2, zero_pow hs])
     rw [h0, smul_zero]
 
+/- English proof (translation)
+Establish `hs' : PowerSeries.HasSubst s` using `PowerSeries.HasSubst.of_constantCoeff_zero hs`. Unfold `FB.expS`. Rewrite using `[PowerSeries.constantCoeff_subst hs', finsum_eq_single _ 0]`. Simplify using `[PowerSeries.coeff_exp]`. Introduce `e he`.
+
+Rewrite using `[map_pow, hs, zero_pow he, smul_zero]`.
+-/
 theorem cro_constCoeff_expS [Algebra ℚ k] (s : PS k n d) (hs : constantCoeff s = 0) :
     constantCoeff (FB.expS k s) = 1 := by
   have hs' : PowerSeries.HasSubst s := PowerSeries.HasSubst.of_constantCoeff_zero hs
@@ -124,6 +181,11 @@ theorem cro_constCoeff_expS [Algebra ℚ k] (s : PS k n d) (hs : constantCoeff s
   · intro e he
     rw [map_pow, hs, zero_pow he, smul_zero]
 
+/- English proof (translation)
+Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Use `first`. Consider the case `simp`. Consider the case `simp [MvPowerSeries.monomial_zero_eq_C]`. Consider the case `(rw [Finset.prod_empty, Finset.sum_empty]; rfl)`.
+
+Introduce `i s hi ih`. Rewrite using `[Finset.prod_insert hi, Finset.sum_insert hi, ih, MvPowerSeries.monomial_mul_monomial, one_mul]`.
+-/
 theorem cro_prod_monomial {ι σ : Type} (s : Finset ι) (f : ι → σ →₀ ℕ) :
     ∏ i ∈ s, (monomial (f i) (1 : k) : MvPowerSeries σ k) = monomial (∑ i ∈ s, f i) 1 := by
   classical
@@ -135,6 +197,39 @@ theorem cro_prod_monomial {ι σ : Type} (s : Finset ι) (f : ι → σ →₀ �
   · intro i s hi ih
     rw [Finset.prod_insert hi, Finset.sum_insert hi, ih, MvPowerSeries.monomial_mul_monomial, one_mul]
 
+/- English proof (translation)
+Establish `hu` using `congrArg (coeff (Finsupp.single ((0 : Fin 1), i) 1)) (G.unit j)`. Rewrite `hu` using `[MvPowerSeries.coeff_X]`. Establish `hrhs : (if Finsupp.single ((0 : Fin 1), i) 1 = Finsupp.single ((0 : Fin 1), j) 1 then (1 : k) else 0) = if i = j then 1 else 0`. Distinguish the cases in `hij : i = j`. Simplify using `[hij]`.
+
+Rewrite using `[if_neg hij, if_neg]`. Introduce `hs`. Apply `hij` to reduce the goal to its premises. Establish `h2` using `congrArg (fun D : Fin 1 × Fin d →₀ ℕ => D ((0 : Fin 1), i)) hs`. Simplify using `[Finsupp.single_apply] at h2`.
+
+Use `first`. Consider the case `exact h2.symm`. Consider the case `exact h2`. Rewrite `hu` using `[hrhs]`. Rewrite using `[← hu]`.
+
+Unfold `ev`. Establish `hc0 : ∀ p : Fin 2 × Fin d, constantCoeff ((![0, pt k d 0] : Fin 2 → Pt k 1 d) p.1 p.2) = 0`. Introduce and unpack `⟨p1, p2⟩`. Apply the tactic sequence `fin_cases p1 <;> simp [pt]`. Establish `ha : MvPowerSeries.HasSubst (fun p : Fin 2 × Fin d => (![0, pt k d 0] : Fin 2 → Pt k 1 d) p.1 p.2)` using `by first`.
+
+Consider the case `exact MvPowerSeries.hasSubst_of_constantCoeff_zero hc0`. Consider the case `exact MvPowerSeries.HasSubst.of_constantCoeff_nilpotent (fun p => by rw [hc0 p]; exact IsNilpotent.zero)`. Consider the case `exact MvPowerSeries.hasSubst_of_constantCoeff_nilpotent (fun p => by rw [hc0 p]; exact IsNilpotent.zero)`. Rewrite using `[MvPowerSeries.coeff_subst ha, finsum_eq_single _ (Finsupp.single ((1 : Fin 2), i) 1)]`. Rewrite using `[Finsupp.prod_single_index (by simp)]`.
+
+Simplify using `[pt, MvPowerSeries.coeff_X]`. Introduce `D hD`. It suffices to establish `hc : coeff (Finsupp.single ((0 : Fin 1), i) 1) (D.prod fun s m => (fun p : Fin 2 × Fin d => (![0, pt k d 0] : Fin 2 → Pt k 1 d) p.1 p.2) s ^ m) = 0 by`. Rewrite using `[hc, smul_zero]`. Distinguish the cases in `hx : ∃ s ∈ D.support, s.1 = 0`.
+
+Take `⟨⟨s1, s2⟩, hs, hs0⟩` from `hx`. Establish `hz : (D.prod fun s m => (fun p : Fin 2 × Fin d => (![0, pt k d 0] : Fin 2 → Pt k 1 d) p.1 p.2) s ^ m) = 0`. Rewrite using `[Finsupp.prod]`. Apply `Finset.prod_eq_zero hs` to reduce the goal to its premises. Simplify using `only at hs0`.
+
+Substitute `hs0` using the available equality. Simplify using `[zero_pow (Finsupp.mem_support_iff.mp hs)]`. Rewrite using `[hz, map_zero]`. Use `push_neg at hx`. Establish `hprod : (D.prod fun s m => (fun p : Fin 2 × Fin d => (![0, pt k d 0] : Fin 2 → Pt k 1 d) p.1 p.2) s ^ m) = monomial (∑ s ∈ D.support, Finsupp.single ((0 : Fin 1), s.2) (D s)) (1 : k)`.
+
+Rewrite using `[Finsupp.prod, ← cro_prod_monomial]`. Use `Finset.prod_congr rfl fun s hs => ?_` and prove the remaining obligations. Take `⟨s1, s2⟩` from `s`. Establish `h1 : s1 = 1`. Use `hx _ hs` as an intermediate fact.
+
+Use `fin_cases s1`. Conclude with `absurd rfl this`. Both sides reduce to the same expression. Substitute `h1` using the available equality. Use `first`.
+
+Consider the case `simp [pt, MvPowerSeries.X_pow_eq]`. Consider the case `simp [pt, MvPowerSeries.X, MvPowerSeries.monomial_pow]`. Rewrite using `[hprod, MvPowerSeries.coeff_monomial, if_neg]`. Introduce `heq`. Apply `hD` to reduce the goal to its premises.
+
+Use extensionality with `⟨s1, s2⟩`. Establish `hev` using `congrArg (fun D' : Fin 1 × Fin d →₀ ℕ => D' ((0 : Fin 1), s2)) heq`. Simplify using `only [Finsupp.finset_sum_apply, Finsupp.single_apply, Prod.mk.injEq, true_and] at hev`. Rewrite `hev` using `[Finset.sum_eq_single ((1 : Fin 2), s2)]`. Use `fin_cases s1`.
+
+Establish `h0 : D ((0 : Fin 2), s2) = 0`. Assume the negation of the conclusion as `hne`. Conclude with `hx _ (Finsupp.mem_support_iff.mpr hne) rfl`. Simplify using `[h0, Finsupp.single_apply]`. Apply the tactic sequence `simp [Finsupp.single_apply] at hev ⊢ split_ifs at hev ⊢ <;> omega`.
+
+Introduce `s hs hne`. Rewrite using `[if_neg]`. Introduce `h2`. Apply `hne` to reduce the goal to its premises. Take `⟨t1, t2⟩` from `s`.
+
+Use `hx _ hs` as an intermediate fact. Simplify using `only at h2 this`. Substitute `h2` using the available equality. Use `fin_cases t1`. Conclude with `absurd rfl this`.
+
+Both sides reduce to the same expression. Introduce `hnot`. Establish `h0 : D ((1 : Fin 2), s2) = 0` using `by simpa using hnot`. Simplify using `[h0]`.
+-/
 theorem cro_coeff_lin (G : FGLaw k d) (i j : Fin d) :
     coeff (Finsupp.single ((1 : Fin 2), i) 1) (G.F j) = if i = j then 1 else 0 := by
   have hu := congrArg (coeff (Finsupp.single ((0 : Fin 1), i) 1)) (G.unit j)
@@ -230,6 +325,15 @@ section Word
 
 variable (Op Op' : PS k n d → PS k n d)
 
+/- English proof (translation)
+Proceed by induction on `c with`. Consider the case `zero`. Introduce `s X Y hX hY hXY`. Simplify using `only [Function.iterate_zero_apply]`. Conclude with `⟨by simpa using hX, by simpa using hY, by simpa using hXY⟩`.
+
+Consider the case `succ c ih`. Introduce `s X Y hX hY hXY`. Establish `hX' : OrdGe (c + s + 1) X` using `by rwa [show c + s + 1 = c + 1 + s by omega]`. Establish `hY' : OrdGe (c + s + 1) Y` using `by rwa [show c + s + 1 = c + 1 + s by omega]`. Establish `hXY' : OrdGe (c + s + 1 + 1) (X - Y)` using `by rwa [show c + s + 1 + 1 = c + 1 + s + 1 by omega]`.
+
+Establish `h1 : OrdGe (c + s) (Op X)` using `hlow _ _ hX'`. Establish `h2 : OrdGe (c + s) (Op' Y)` using `hlow' _ _ hY'`. Establish `h3 : OrdGe (c + s + 1) (Op X - Op' Y)`. Establish `e : Op X - Op' Y = Op (X - Y) + (Op Y - Op' Y)`. Rewrite using `[hsub]`.
+
+Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Conclude with `cro_ordGe_add (hlow _ _ hXY') (hdiff _ _ hY')`. Simplify using `only [Function.iterate_succ_apply]`. Conclude with `ih s (Op X) (Op' Y) h1 h2 h3`.
+-/
 theorem cro_iter (hsub : ∀ X Y, Op (X - Y) = Op X - Op Y)
     (hlow : ∀ t X, OrdGe (t + 1) X → OrdGe t (Op X)) (hlow' : ∀ t X, OrdGe (t + 1) X → OrdGe t (Op' X))
     (hdiff : ∀ t X, OrdGe (t + 1) X → OrdGe (t + 1) (Op X - Op' X)) (c : ℕ) :
@@ -258,6 +362,15 @@ theorem cro_iter (hsub : ∀ X Y, Op (X - Y) = Op X - Op Y)
 
 end Word
 
+/- English proof (translation)
+Proceed by induction on `L with`. Consider the case `nil`. Introduce `s X Y hX hY hXY`. Simplify using `only [List.map_nil, List.sum_nil, List.foldr_nil, zero_add] at hX hY hXY ⊢`. Conclude with `⟨hX, hY, hXY⟩`.
+
+Consider the case `cons l L ih`. Introduce `s X Y hX hY hXY`. Rewrite `hX`, `hY`, `hXY` using `[List.map_cons, List.sum_cons]`. Establish `hX' : OrdGe ((L.map m).sum + (m l + s)) X`. Rewrite using `[show (L.map m).sum + (m l + s) = m l + (L.map m).sum + s by omega]` and apply the resulting hypothesis.
+
+Establish `hY' : OrdGe ((L.map m).sum + (m l + s)) Y`. Rewrite using `[show (L.map m).sum + (m l + s) = m l + (L.map m).sum + s by omega]` and apply the resulting hypothesis. Establish `hXY' : OrdGe ((L.map m).sum + (m l + s) + 1) (X - Y)`. Rewrite using `[show (L.map m).sum + (m l + s) + 1 = m l + (L.map m).sum + s + 1 by omega]` and apply the resulting hypothesis. Take `⟨h1, h2, h3⟩` from `ih (m l + s) X Y hX' hY' hXY'`.
+
+Simplify using `only [List.foldr_cons]`. Conclude with `cro_iter (Op l) (Op' l) (hsub l) (hlow l) (hlow' l) (hdiff l) (m l) s _ _ h1 h2 h3`.
+-/
 theorem cro_word {ι : Type} (Op Op' : ι → PS k n d → PS k n d) (m : ι →₀ ℕ)
     (hsub : ∀ l X Y, Op l (X - Y) = Op l X - Op l Y)
     (hlow : ∀ l t X, OrdGe (t + 1) X → OrdGe t (Op l X)) (hlow' : ∀ l t X, OrdGe (t + 1) X → OrdGe t (Op' l X))
@@ -284,6 +397,15 @@ theorem cro_word {ι : Type} (Op Op' : ι → PS k n d → PS k n d) (m : ι →
     simp only [List.foldr_cons]
     exact cro_iter (Op l) (Op' l) (hsub l) (hlow l) (hlow' l) (hdiff l) (m l) s _ _ h1 h2 h3
 
+/- English proof (translation)
+Establish `hs : ((Finset.univ : Finset ι).toList.map m).sum = m.degree`. Establish `h1 : ((Finset.univ : Finset ι).toList.map m).sum = ∑ i, m i` using `by first`. Consider the case `exact Finset.sum_map_toList _ _`. Consider the case `exact Finset.sum_toList _ _`. Consider the case `simp [Finset.sum_map_toList]`.
+
+Consider the case `simp`. Rewrite using `[h1]`. Use `first`. Consider the case `exact (Finsupp.degree_eq_sum m).symm`. Consider the case `(unfold Finsupp.degree; exact (Finset.sum_subset (Finset.subset_univ _) fun i _ hi => by simpa using hi).symm)`.
+
+Establish `hX' : OrdGe (((Finset.univ : Finset ι).toList.map m).sum + 0) X` using `by rw [hs, add_zero]; exact hX`. Establish `hY' : OrdGe (((Finset.univ : Finset ι).toList.map m).sum + 0) Y` using `by rw [hs, add_zero]; exact hY`. Establish `hXY' : OrdGe (((Finset.univ : Finset ι).toList.map m).sum + 0 + 1) (X - Y)`. Rewrite using `[hs, add_zero]`. Conclude with `hXY`.
+
+Take `⟨-, -, h⟩` from `cro_word Op Op' m hsub hlow hlow' hdiff _ 0 X Y hX' hY' hXY'`. Rewrite `h` using `[zero_add, ordGe_one_iff, map_sub, sub_eq_zero]`. Conclude with `h`.
+-/
 theorem cro_word_const {ι : Type} [Fintype ι] (Op Op' : ι → PS k n d → PS k n d) (m : ι →₀ ℕ)
     (hsub : ∀ l X Y, Op l (X - Y) = Op l X - Op l Y)
     (hlow : ∀ l t X, OrdGe (t + 1) X → OrdGe t (Op l X)) (hlow' : ∀ l t X, OrdGe (t + 1) X → OrdGe t (Op' l X))
@@ -310,20 +432,40 @@ theorem cro_word_const {ι : Type} [Fintype ι] (Op Op' : ι → PS k n d → PS
   rw [zero_add, ordGe_one_iff, map_sub, sub_eq_zero] at h
   exact h
 
+/- English proof (translation)
+Unfold `Lin`. Simplify using `only [map_sub, mul_sub, Finset.sum_sub_distrib]`.
+-/
 theorem cro_lin_sub (b : Fin n) (v : Fin d → k) (X Y : PS k n d) : Lin b v (X - Y) = Lin b v X - Lin b v Y := by
   unfold Lin
   simp only [map_sub, mul_sub, Finset.sum_sub_distrib]
 
+/- English proof (translation)
+Unfold `DofN`. Simplify using `only [map_sub, mul_sub, Finset.sum_sub_distrib]`.
+-/
 theorem cro_dofN_sub (F : Fin d → PS k 2 d) (b : Fin n) (v : Fin d → k) (X Y : PS k n d) :
     DofN F b v (X - Y) = DofN F b v X - DofN F b v Y := by
   unfold DofN
   simp only [map_sub, mul_sub, Finset.sum_sub_distrib]
 
+/- English proof (translation)
+Unfold `DofN`. Conclude with `cro_ordGe_sum _ _ fun j _ => cro_ordGe_mul_left _ (cro_ordGe_pderiv hX _)`.
+-/
 theorem cro_ordGe_dofN (F : Fin d → PS k 2 d) (b : Fin n) (v : Fin d → k) {t : ℕ} {X : PS k n d}
     (hX : OrdGe (t + 1) X) : OrdGe t (DofN F b v X) := by
   unfold DofN
   exact cro_ordGe_sum _ _ fun j _ => cro_ordGe_mul_left _ (cro_ordGe_pderiv hX _)
 
+/- English proof (translation)
+Unfold `DofN Lin`. Rewrite using `[← Finset.sum_sub_distrib]`. Use `cro_ordGe_sum _ _ fun j _ => ?_` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[← sub_mul]`.
+
+Establish `key : ∀ A : PS k n d, constantCoeff A = v j → OrdGe (t + 1) ((A - C (v j)) * pderiv k (b, j) X)`. Introduce `A hA`. Establish `h1 : OrdGe 1 (A - C (v j))`. Rewrite using `[ordGe_one_iff, map_sub, hA, MvPowerSeries.constantCoeff_C, sub_self]`. Establish `h3` using `OrdGe.mul h1 (cro_ordGe_pderiv hX (b, j))`.
+
+Rewrite `h3` using `[add_comm]`. Then use the resulting hypothesis. Apply `key` to reduce the goal to its premises. Establish `hc : ∀ i, constantCoeff (ev ![pt k d b, 0] ((pderiv k ((1 : Fin 2), i)) (F j))) = if i = j then 1 else 0`. Introduce `i`. Rewrite using `[cro_constCoeff_ev]`.
+
+Rewrite using `[← hF i j] first`. Consider the case `(show coeff (0 + Finsupp.single ((1 : Fin 2), i) 1) (F j) * (((0 : Fin 2 × Fin d →₀ ℕ) ((1 : Fin 2), i) : k) + 1) = _ simp)`. Consider the case `(unfold pderiv show coeff 0 (pderivFun ((1 : Fin 2), i) (F j)) = _`. Unfold `pderivFun`. Use the proof step `simp)`.
+
+Apply the tactic sequence `intro p l fin_cases p <;> simp [pt]`. Rewrite using `[map_sum]`. Use `first`. Consider the case `(simp only [map_mul, MvPowerSeries.constantCoeff_C, hc] simp)`. Consider the case `simp [hc]`.
+-/
 theorem cro_dofN_lin (F : Fin d → PS k 2 d)
     (hF : ∀ i j, coeff (Finsupp.single ((1 : Fin 2), i) 1) (F j) = if i = j then 1 else 0)
     (b : Fin n) (v : Fin d → k) {t : ℕ} {X : PS k n d} (hX : OrdGe (t + 1) X) :
@@ -362,6 +504,29 @@ theorem cro_dofN_lin (F : Fin d → PS k 2 d)
        simp)
     | simp [hc]
 
+/- English proof (translation)
+Establish `hpt : ∀ {n' : ℕ} (b : Fin n') (i : Fin d), constantCoeff (pt k d b i : PS k n' d) = 0`. Introduce `n' b i`. Simplify using `[pt]`. Establish `hh0 : constantCoeff h = 0`. Use `congrArg constantCoeff hg.ax0` as an intermediate fact.
+
+Rewrite `this` using `[cro_constCoeff_ev]`. Simplify using `using this`. Introduce `p i`. Use `fin_cases p`. Simplify using the standard rewrite rules.
+
+Conclude with `hpt 0 i`. Establish `hL0 : constantCoeff (B.hL k h w0) = 0`. Unfold `FB.hL`. Rewrite using `[cro_constCoeff_ev, hh0]`. Introduce `p i`.
+
+Use `fin_cases p`. Conclude with `hpt 0 i`. Use `show constantCoeff (comp1 (B.actK k w0) (pt k d 0) i) = 0`. Unfold `comp1`. Rewrite using `[cro_constCoeff_ev]`.
+
+Simplify using `[FB.actK, B.A.const]`. Introduce `p i'`. Use `fin_cases p`. Conclude with `hpt 0 i'`. Use `set g := FB.expS k ((m : k) • ∑ b : Fin n, ev (n := n) ![pt k d b] (B.hL k h w0)) with hg_def`.
+
+Establish `hg1 : constantCoeff g = 1`. Apply `cro_constCoeff_expS` to reduce the goal to its premises. Rewrite using `[smul_eq_C_mul, map_mul, map_sum]`. Establish `: ∀ b : Fin n, constantCoeff (ev (n` using `n) ![pt k d b] (B.hL k h w0)) = 0 := by`. Introduce `b`.
+
+Rewrite using `[cro_constCoeff_ev, hL0]`. Introduce `p i`. Use `fin_cases p`. Conclude with `hpt b i`. Simplify using `[this]`.
+
+Establish `hFK : ∀ i j, coeff (Finsupp.single ((1 : Fin 2), i) 1) (B.FK k j) = if i = j then 1 else 0`. Introduce `i j`. Simplify using `only [FB.FK, FGLaw.mapF, coeff_map, cro_coeff_lin, Algebra.algebraMap_self, RingHom.id_apply]`. Unfold `nabValN DpolyN`. Rewrite using `[map_sum]`.
+
+Use `Finset.sum_congr rfl fun a ha => ?_` and prove the remaining obligations. Rewrite using `[map_mul, constantCoeff_C]`. Use `congr 1`. Establish `hfa : OrdGe a.degree f` using `(hP a ha) ▸ hf`. Establish `hfg : OrdGe a.degree (f * g)` using `by simpa using hfa.mul (cro_ordGe_zero g)`.
+
+Establish `hg' : OrdGe 1 (g - 1)` using `(ordGe_one_iff _).2 (by rw [map_sub, hg1, map_one, sub_self])`. Establish `hdiff : OrdGe (a.degree + 1) (f * g - f)`. Establish `: f * g - f = f * (g - 1)` using `by ring`. Rewrite using `[this]`. Conclude with `hfa.mul hg'`.
+
+Establish `s1` using `cro_word_const (fun l => DofN (B.FK k) (cp l) (u l)) (fun l => Lin (cp l) (u l)) a (fun l X Y => cro_dofN_sub _ _ _ X Y) (fun l t X hX => cro_ordGe_dofN _ _ _ hX) (fun l t X hX => cro_ordGe_lin hX _ _) (fun l t X hX => cro_dofN_lin _ hFK _ _ hX) (f * g) (f * g) hfg hfg (by rw [su …`. Establish `s2` using `cro_word_const (fun l => Lin (cp l) (u l)) (fun l => Lin (cp l) (u l)) a (fun l X Y => cro_lin_sub _ _ X Y) (fun l t X hX => cro_ordGe_lin hX _ _) (fun l t X hX => cro_ordGe_lin hX _ _) (fun l t X hX => by rw [sub_self]; exact cro_ordGe_zero' _) (f * g) f hfg hfa hdiff`. Unfold `DmonN LinMon`. Conclude with `s1.trans s2`.
+-/
 theorem nabValN_eq_lin [Algebra ℚ k] {O : Type} [CommRing O] [StarRing O] (B : FB k d O) (h : PS k 2 d)
     (hg : B.IsCanonGauge k h) (w0 : O) (m : ℕ) (f : PS k n d) {ι : Type} [Fintype ι] (cp : ι → Fin n)
     (u : ι → Fin d → k) (P : MvPolynomial ι k) (N : ℕ) (hP : ∀ a ∈ P.support, a.degree = N)

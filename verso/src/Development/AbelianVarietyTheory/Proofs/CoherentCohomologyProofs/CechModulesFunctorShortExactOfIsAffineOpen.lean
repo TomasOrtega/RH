@@ -13,22 +13,34 @@ section Cech
 
 variable {X : Scheme.{u}} {ι : Type} {V : X.Opens} {U : ι → X.Opens}
 
+/- English proof (translation)
+Introduce `s hs q` and use `cohOn.subsingleton_of_isAffineOpen F (hU s hs) q.succ_pos`.
+-/
 theorem cechAcyclicMod_of_isAffineOpen
     (hU : ∀ s : Finset ι, s.Nonempty → IsAffineOpen (cechOpen V U s))
     (F : X.Modules) [F.IsQuasicoherent] : CechAcyclicMod V U F :=
   fun s hs q => cohOn.subsingleton_of_isAffineOpen F (hU s hs) q.succ_pos
 
+/- English proof (translation)
+Rewrite using `[cechOpen_of_nonempty h hs]`. Conclude with `hU s hs`.
+-/
 theorem isAffineOpen_cechOpen_of_le (h : ∀ i, U i ≤ V)
     (hU : ∀ s : Finset ι, s.Nonempty → IsAffineOpen (⨅ i ∈ s, U i)) (s : Finset ι)
     (hs : s.Nonempty) : IsAffineOpen (cechOpen V U s) := by
   rw [cechOpen_of_nonempty h hs]
   exact hU s hs
 
+/- English proof (translation)
+The claim follows from `IsAffineOpen.biInf (s : Set ι) s.finite_toSet hs fun i _ => hU i`.
+-/
 theorem isAffineOpen_finset_biInf [IsAffineHom (pullback.diagonal (terminal.from X))]
     (hU : ∀ i, IsAffineOpen (U i)) (s : Finset ι) (hs : s.Nonempty) :
     IsAffineOpen (⨅ i ∈ s, U i) :=
   IsAffineOpen.biInf (s : Set ι) s.finite_toSet hs fun i _ => hU i
 
+/- English proof (translation)
+Establish `: IsSeparated (terminal.from X)`. Rewrite using `[← terminal.comp_from f]`. Use `infer_instance`. Use `infer_instance`.
+-/
 theorem isAffineHom_diagonal_of_isSeparated {S : Scheme.{u}} [IsAffine S] (f : X ⟶ S)
     [IsSeparated f] : IsAffineHom (pullback.diagonal (terminal.from X)) := by
   have : IsSeparated (terminal.from X) := by
@@ -36,6 +48,9 @@ theorem isAffineHom_diagonal_of_isSeparated {S : Scheme.{u}} [IsAffine S] (f : X
     infer_instance
   infer_instance
 
+/- English proof (translation)
+Take `⟨κ, _, 𝒰, h₁, h₂⟩` from `QCoh.exists_finite_affine_cover_of_isCompact hV`. Conclude with `⟨_, fun i => 𝒰 ((Fintype.equivFin κ).symm i), fun i => h₁ _, ((Fintype.equivFin κ).symm.iSup_comp (g := 𝒰)).trans h₂.symm⟩`.
+-/
 theorem exists_fin_affine_cover (hV : IsCompact (V : Set X)) :
     ∃ (m : ℕ) (U : Fin m → X.Opens), (∀ i, IsAffineOpen (U i)) ∧ ⨆ i, U i = V := by
   obtain ⟨κ, _, 𝒰, h₁, h₂⟩ := QCoh.exists_finite_affine_cover_of_isCompact hV
@@ -50,6 +65,9 @@ variable (R : Type v) [CommRing R] [Algebra R Γ(X, ⊤)] [LinearOrder ι] [Fini
 omit [LinearOrder ι] [Finite ι] in
 include hU in
 
+/- English proof (translation)
+The claim follows from `cechAcyclicMod_of_isAffineOpen (isAffineOpen_cechOpen_of_le (fun _ => le_top) hU) F`.
+-/
 theorem cechAcyclicMod_top_of_isAffineOpen (F : X.Modules) [F.IsQuasicoherent] :
     CechAcyclicMod ⊤ U F :=
   cechAcyclicMod_of_isAffineOpen (isAffineOpen_cechOpen_of_le (fun _ => le_top) hU) F
@@ -58,16 +76,25 @@ def cechHEquivCoh (F : X.Modules) [F.IsQuasicoherent] (n : ℕ) :
     cechH R F ⊤ U n ≃ₗ[R] coh F n :=
   cechHEquivCohOn R hc.ge (cechAcyclicMod_top_of_isAffineOpen hU F) n
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cechHEquivCoh_def (F : X.Modules) [F.IsQuasicoherent] (n : ℕ) :
     cechHEquivCoh R hc hU F n =
       cechHEquivCohOn R hc.ge (cechAcyclicMod_top_of_isAffineOpen hU F) n := rfl
 
+/- English proof (translation)
+The claim follows from `cechHEquivCohOn_map R hc.ge _ _ φ n x`.
+-/
 theorem cechHEquivCoh_map {F G : X.Modules} [F.IsQuasicoherent] [G.IsQuasicoherent] (φ : F ⟶ G)
     (n : ℕ) (x : cechH R F ⊤ U n) :
     cechHEquivCoh R hc hU G n ((cechHMap R ⊤ U φ n).hom x) =
       cohOn.map R φ ⊤ n (cechHEquivCoh R hc hU F n x) :=
   cechHEquivCohOn_map R hc.ge _ _ φ n x
 
+/- English proof (translation)
+Rewrite using `[cechHEquivCoh_def, cechHEquivCohOn_zero, cechHZeroEquivCohOn, LinearEquiv.trans_apply, cechHZeroEquiv_toCechH]`.
+-/
 theorem cechHEquivCoh_toCechH (F : X.Modules) [F.IsQuasicoherent] (x : sectionsOn F ⊤) :
     cechHEquivCoh R hc hU F 0 (toCechH R F ⊤ U x) = (cohOn.zeroEquiv R F ⊤).symm x := by
   rw [cechHEquivCoh_def, cechHEquivCohOn_zero, cechHZeroEquivCohOn, LinearEquiv.trans_apply,
@@ -76,11 +103,17 @@ theorem cechHEquivCoh_toCechH (F : X.Modules) [F.IsQuasicoherent] (x : sectionsO
 omit [Finite ι] in
 include hU in
 
+/- English proof (translation)
+The claim follows from `cechModulesFunctor_shortExact_of_acyclic R hS (cechAcyclicMod_top_of_isAffineOpen hU _)`.
+-/
 theorem cechModulesFunctor_shortExact_of_isAffineOpen {S : ShortComplex X.Modules}
     (hS : S.ShortExact) [S.X₁.IsQuasicoherent] :
     (S.map (cechModulesFunctor R ⊤ U)).ShortExact :=
   cechModulesFunctor_shortExact_of_acyclic R hS (cechAcyclicMod_top_of_isAffineOpen hU _)
 
+/- English proof (translation)
+The claim follows from `cechHEquivCohOn_δ R hc.ge hS _ _ n x`.
+-/
 theorem cechHEquivCoh_δ {S : ShortComplex X.Modules} (hS : S.ShortExact) [S.X₁.IsQuasicoherent]
     [S.X₃.IsQuasicoherent] (h : (S.map (cechModulesFunctor R ⊤ U)).ShortExact) (n : ℕ)
     (x : cechH R S.X₃ ⊤ U n) :
@@ -90,12 +123,18 @@ theorem cechHEquivCoh_δ {S : ShortComplex X.Modules} (hS : S.ShortExact) [S.X�
 
 end Comparison
 
+/- English proof (translation)
+The claim follows from `subsingleton_cohOn_of_cechAcyclic hc (cechAcyclicMod_of_isAffineOpen hU F) hn`.
+-/
 theorem cohOn.subsingleton_of_card_le [Fintype ι] (hc : V ≤ ⨆ i, U i)
     (hU : ∀ s : Finset ι, s.Nonempty → IsAffineOpen (cechOpen V U s))
     (F : X.Modules) [F.IsQuasicoherent] {n : ℕ} (hn : Fintype.card ι ≤ n) :
     Subsingleton (cohOn F V n) :=
   subsingleton_cohOn_of_cechAcyclic hc (cechAcyclicMod_of_isAffineOpen hU F) hn
 
+/- English proof (translation)
+The claim follows from `subsingleton_cohOn_of_cechAcyclic hc.ge (cechAcyclicMod_top_of_isAffineOpen hU F) hn`.
+-/
 theorem coh.subsingleton_of_card_le [Fintype ι] (hc : ⨆ i, U i = ⊤)
     (hU : ∀ s : Finset ι, s.Nonempty → IsAffineOpen (⨅ i ∈ s, U i))
     (F : X.Modules) [F.IsQuasicoherent] {n : ℕ} (hn : Fintype.card ι ≤ n) :
@@ -108,11 +147,17 @@ section Affine
 
 variable {X : Scheme.{u}} (R : Type v) [CommRing R] [Algebra R Γ(X, ⊤)]
 
+/- English proof (translation)
+The claim follows from `QCoh.exact_app_of_exact hS hU`.
+-/
 theorem sectionsOn.exact_of_isAffineOpen {S : ShortComplex X.Modules} (hS : S.Exact)
     [S.X₁.IsQuasicoherent] [S.X₂.IsQuasicoherent] [S.X₃.IsQuasicoherent] {U : X.Opens}
     (hU : IsAffineOpen U) : Function.Exact (sectionsOn.map R S.f U) (sectionsOn.map R S.g U) :=
   QCoh.exact_app_of_exact hS hU
 
+/- English proof (translation)
+The claim follows from `sections_shortExact_of_subsingleton (T := X.toPresheafedSpace.carrier) (shortExact_toAbSheaf hS) U (cohOn.subsingleton_of_isAffineOpen S.X₁ hU one_pos)`.
+-/
 theorem sectionsOn.shortExact_of_isAffineOpen {S : ShortComplex X.Modules} (hS : S.ShortExact)
     [S.X₁.IsQuasicoherent] {U : X.Opens} (hU : IsAffineOpen U) :
     Function.Injective (sectionsOn.map R S.f U) ∧
@@ -133,12 +178,21 @@ variable {X : Scheme.{u}} {κ : Type w} [DecidableEq κ] {F : κ → X.Modules} 
 def cofanProj (k : κ) : c.pt ⟶ F k :=
   Cofan.IsColimit.desc hc fun j => if h : j = k then eqToHom (congrArg F h) else 0
 
+/- English proof (translation)
+Rewrite using `[cofanProj, Cofan.IsColimit.fac, dif_pos rfl, eqToHom_refl]`.
+-/
 theorem inj_cofanProj (k : κ) : c.inj k ≫ cofanProj hc k = 𝟙 _ := by
   rw [cofanProj, Cofan.IsColimit.fac, dif_pos rfl, eqToHom_refl]
 
+/- English proof (translation)
+Rewrite using `[cofanProj, Cofan.IsColimit.fac, dif_neg h]`.
+-/
 theorem inj_cofanProj_of_ne {j k : κ} (h : j ≠ k) : c.inj j ≫ cofanProj hc k = 0 := by
   rw [cofanProj, Cofan.IsColimit.fac, dif_neg h]
 
+/- English proof (translation)
+Rewrite using `[Preadditive.comp_sum, Finset.sum_eq_single_of_mem j hj]`. Rewrite using `[← Category.assoc, inj_cofanProj, Category.id_comp]`. Introduce `k _ hk`. Rewrite using `[← Category.assoc, inj_cofanProj_of_ne hc hk.symm, zero_comp]`.
+-/
 theorem inj_comp_sum_cofanProj {T : Finset κ} {j : κ} (hj : j ∈ T) :
     c.inj j ≫ ∑ k ∈ T, cofanProj hc k ≫ c.inj k = c.inj j := by
   rw [Preadditive.comp_sum, Finset.sum_eq_single_of_mem j hj]
@@ -146,6 +200,13 @@ theorem inj_comp_sum_cofanProj {T : Finset κ} {j : κ} (hj : j ∈ T) :
   · intro k _ hk
     rw [← Category.assoc, inj_cofanProj_of_ne hc hk.symm, zero_comp]
 
+/- English proof (translation)
+Set `N : Submodule Γ(X, W) Γ(c.pt, W)` to `{ carrier := {s | ∃ T : Finset κ, ∀ T', T ⊆ T' → QCoh.appLinear (∑ k ∈ T', cofanProj hc k ≫ c.inj k) W s = s} add_mem' := by`. Introduce and unpack `a b ⟨A, hA⟩ ⟨B, hB⟩`. Conclude with `⟨A ∪ B, fun T h => by`. Rewrite using `[map_add, hA T (Finset.subset_union_left.trans h), hB T (Finset.subset_union_right.trans h)]⟩`. Use the proof step `zero_mem' := ⟨∅, fun _ _ => map_zero _⟩`.
+
+Use the proof step `smul_mem' := by`. Introduce and unpack `r a ⟨A, hA⟩`. Conclude with `⟨A, fun T h => by rw [map_smul, hA T h]⟩ }`. Use `QCoh.preservesColimit_sections hW (Discrete.functor F)` as an intermediate fact. Establish `h0 : (ModuleCat.ofHom N.mkQ : ((QCoh.sections W).mapCocone c).pt ⟶ _) = 0`.
+
+Use `(isColimitOfPreserves (QCoh.sections W) hc).hom_ext fun j => ?_` and prove the remaining obligations. Use `Eq.trans (ModuleCat.hom_ext (LinearMap.ext fun x => ?_)) comp_zero.symm` and prove the remaining obligations. Use `(Submodule.Quotient.mk_eq_zero N).2 ⟨{j.as}, fun T hT => ?_⟩` and prove the remaining obligations. Conclude with `congr(($(inj_comp_sum_cofanProj hc (hT (Finset.mem_singleton_self j.as)))).app W x)`. Conclude with `(Submodule.Quotient.mk_eq_zero N).1 congr(($h0).hom s)`.
+-/
 theorem exists_finset_sum_cofanProj_app [Small.{u} κ] [∀ k, (F k).IsQuasicoherent] {W : X.Opens}
     (hW : IsAffineOpen W) (s : Γ(c.pt, W)) : ∃ T : Finset κ, ∀ T', T ⊆ T' →
       (∑ k ∈ T', cofanProj hc k ≫ c.inj k).app W s = s := by
@@ -179,6 +240,9 @@ def cohOn.directSumMap : (⨁ k, cohOn (F k) V n) →ₗ[R] cohOn c.pt V n :=
 variable (c) in
 
 @[simp]
+/- English proof (translation)
+The claim follows from `DirectSum.toModule_lof (M := fun k => cohOn (F k) V n) R k x`.
+-/
 theorem cohOn.directSumMap_lof (k : κ) (x : cohOn (F k) V n) :
     cohOn.directSumMap c R V n (DirectSum.lof R κ (fun k => cohOn (F k) V n) k x) =
       cohOn.map R (c.inj k) V n x :=
@@ -186,6 +250,11 @@ theorem cohOn.directSumMap_lof (k : κ) (x : cohOn (F k) V n) :
 
 include hc in
 
+/- English proof (translation)
+Establish `key (j : κ) : cohOn.map R (cofanProj hc j) V n ∘ₗ cohOn.directSumMap c R V n = DirectSum.component R κ (fun k => cohOn (F k) V n) j`. Use `DirectSum.linearMap_ext _ fun k => LinearMap.ext fun x => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, cohOn.directSumMap_lof, cohOn.map_map]`. Distinguish the cases in `h : k = j`. Substitute `h` using the available equality.
+
+Rewrite using `[inj_cofanProj, cohOn.map_id, DirectSum.component.lof_self, LinearMap.id_apply]`. Rewrite using `[inj_cofanProj_of_ne hc h, cohOn.map_zero_hom, DirectSum.component.of, dif_neg h, LinearMap.zero_apply]`. Introduce `x y hxy`. Use `DirectSum.ext_component R fun j => ?_` and prove the remaining obligations. Rewrite using `[← key j, LinearMap.comp_apply, LinearMap.comp_apply, hxy]`.
+-/
 theorem cohOn.directSumMap_injective : Function.Injective (cohOn.directSumMap c R V n) := by
   have key (j : κ) : cohOn.map R (cofanProj hc j) V n ∘ₗ cohOn.directSumMap c R V n =
       DirectSum.component R κ (fun k => cohOn (F k) V n) j := by
@@ -204,6 +273,13 @@ variable {V} [Small.{u} κ] [∀ k, (F k).IsQuasicoherent]
 
 include hc in
 
+/- English proof (translation)
+Use `⟨cohOn.directSumMap_injective hc R V n, fun x => ?_⟩` and prove the remaining obligations. Consider the cases of `nonempty_fintype ι`. Use `letI : LinearOrder ι := LinearOrder.lift' _ (Fintype.equivFin ι).injective`. Use `haveI : c.pt.IsQuasicoherent := QCoh.isQuasicoherent_of_isColimit hc`. Establish `ha` using `cechAcyclicMod_of_isAffineOpen hU c.pt`.
+
+Take `⟨y, rfl⟩` from `(cechHEquivCohOn R hV ha n).surjective x`. Take `⟨z, rfl⟩` from `cechClass_surjective (cechCube R c.pt V U) n y`. Use `choose T hT using fun s : {s : Finset ι // s.card = n + 1} => exists_finset_sum_cofanProj_app hc (hU s.1 (Finset.card_pos.1 (by have := s.2; omega))) (sectionsOn.toΓ c.pt _ (z.1 s))`. Establish `h` using `cechHEquivCohOn_map R hV ha ha (∑ k ∈ Finset.univ.biUnion T, cofanProj hc k ≫ c.inj k) n (cechClass (cechCube R c.pt V U) n z)`. Establish `hz : (cechHMap R V U (∑ k ∈ Finset.univ.biUnion T, cofanProj hc k ≫ c.inj k) n).hom (cechClass (cechCube R c.pt V U) n z) = cechClass (cechCube R c.pt V U) n z` using `homologyMap_cechClass (cechCubeMap R V U _) n z z (funext fun s => hT s _ (Finset.subset_biUnion_of_mem T (Finset.mem_univ s)))`.
+
+Rewrite `h` using `[hz, cohOn.map_sum_hom, LinearMap.sum_apply]`. Use `⟨∑ k ∈ Finset.univ.biUnion T, DirectSum.lof R κ (fun k => cohOn (F k) V n) k (cohOn.map R (cofanProj hc k) V n (cechHEquivCohOn R hV ha n (cechClass (cechCube R c.pt V U) n z))), Eq.trans ?_ h.symm⟩` and prove the remaining obligations. Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun k _ => by rw [cohOn.directSumMap_lof, cohOn.map_map]`.
+-/
 theorem cohOn.directSumMap_bijective {ι : Type} [Finite ι] {U : ι → X.Opens} (hV : V ≤ ⨆ i, U i)
     (hU : ∀ s : Finset ι, s.Nonempty → IsAffineOpen (cechOpen V U s)) :
     Function.Bijective (cohOn.directSumMap c R V n) := by
@@ -240,6 +316,9 @@ def coh.sigmaEquiv {ι : Type} [Finite ι] {U : ι → X.Opens} (hcov : ⨆ i, U
       (isAffineOpen_cechOpen_of_le (fun _ => le_top) hU))
 
 @[simp]
+/- English proof (translation)
+The claim follows from `cohOn.directSumMap_lof (Cofan.mk (∐ F) (Sigma.ι F)) R ⊤ n k x`.
+-/
 theorem coh.sigmaEquiv_lof {ι : Type} [Finite ι] {U : ι → X.Opens} (hcov : ⨆ i, U i = ⊤)
     (hU : ∀ s : Finset ι, s.Nonempty → IsAffineOpen (⨅ i ∈ s, U i)) (k : κ) (x : coh (F k) n) :
     coh.sigmaEquiv F R n hcov hU (DirectSum.lof R κ (fun k => coh (F k) n) k x) =
@@ -252,6 +331,23 @@ section Disjoint
 
 open SheafLES in
 
+/- English proof (translation)
+Proceed by induction on `n generalizing F with`. Consider the case `zero`. Prove the components needed by the constructor for the conclusion. Introduce `x y hxy`. Apply `(equivZero F V).injective` to reduce the goal to its premises.
+
+Use `TopCat.Sheaf.eq_of_locally_eq' (X := T) F U V (fun i => homOfLE (h i)) hc _ _ fun i => ?_` and prove the remaining obligations. Conclude with `(equivZero_res _ x).symm.trans ((congrArg _ (congrFun hxy i)).trans (equivZero_res _ y))`. Introduce `y`. Take `⟨s, hs, -⟩` from `TopCat.Sheaf.existsUnique_gluing' (X := T) F U V (fun i => homOfLE (h i)) hc (fun i => equivZero F (U i) (y i)) fun i j => by`. Distinguish the cases in `hij : i = j`.
+
+Substitute `hij` using the available equality. Both sides reduce to the same expression. Use `haveI : Subsingleton (F.obj.obj (op (U i ⊓ U j))) := AddCommGrpCat.subsingleton_of_isZero (TopCat.Sheaf.isTerminalOfEqEmpty F (hd hij).eq_bot).isZero`. Conclude with `Subsingleton.elim (α := F.obj.obj (op (U i ⊓ U j))) _ _`. Use `⟨(equivZero F V).symm s, funext fun i => (equivZero F (U i)).injective ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[equivZero_res, AddEquiv.apply_symm_apply]`. Conclude with `hs i`. Consider the case `succ n ih`. Establish `hS` using `Flasque.injectiveShortComplex_shortExact F`. Establish `inj : Injective (Flasque.injectiveShortComplex F).X₂` using `inferInstanceAs (Injective (Injective.under F))`.
+
+Establish `hδ (W : Opens T)` using `δ_surjective_of_subsingleton.{u} hS n W (Flasque.subsingleton_H'_of_injective _ n W)`. Prove the components needed by the constructor for the conclusion. Establish `key (z) (hz : ∀ i, δ.{u} hS n (U i) (res _ n (homOfLE (h i)) z) = 0) : δ.{u} hS n V z = 0` using `by choose w hw using fun i => (exact₃ hS n (U i) _).1 (hz i)`. Take `⟨w₀, rfl⟩` from `(ih _).2 w`. Establish `: map (Flasque.injectiveShortComplex F).g n V w₀ = z` using `(ih _).1 (funext fun i => (res_map _ n _ w₀).trans (hw i))`.
+
+Rewrite using `[← this, δ_map]`. Introduce `x y hxy`. Take `⟨x, rfl⟩` from `hδ V x`. Take `⟨y, rfl⟩` from `hδ V y`. Rewrite using `[← sub_eq_zero, ← map_sub]`.
+
+Use `key _ fun i => ?_` and prove the remaining obligations. Rewrite using `[map_sub, map_sub, ← δ_res, ← δ_res, sub_eq_zero]`. Conclude with `congrFun hxy i`. Introduce `y choose z hz using fun i => hδ (U i) (y i)`. Take `⟨z₀, rfl⟩` from `(ih _).2 z`.
+
+Conclude with `⟨δ hS n V z₀, funext fun i => (δ_res hS n _ z₀).trans (hz i)⟩`.
+-/
 theorem SheafLES.pi_res_bijective_of_disjoint {T : TopCat.{u}} {κ : Type w} {V : Opens T}
     {U : κ → Opens T} (h : ∀ i, U i ≤ V) (hc : V ≤ ⨆ i, U i)
     (hd : Pairwise fun i j => Disjoint (U i) (U j))
@@ -308,6 +404,9 @@ theorem SheafLES.pi_res_bijective_of_disjoint {T : TopCat.{u}} {κ : Type w} {V 
 variable {X : Scheme.{u}} (R : Type v) [CommRing R] [Algebra R Γ(X, ⊤)] {κ : Type w}
   {V : X.Opens} {U : κ → X.Opens}
 
+/- English proof (translation)
+The claim follows from `SheafLES.pi_res_bijective_of_disjoint (T := X.toPresheafedSpace.carrier) h hc hd ((toAbSheaf X).obj F) n`.
+-/
 theorem cohOn.pi_res_bijective_of_disjoint (h : ∀ i, U i ≤ V) (hc : V ≤ ⨆ i, U i)
     (hd : Pairwise fun i j => Disjoint (U i) (U j)) (F : X.Modules) (n : ℕ) :
     Function.Bijective (LinearMap.pi fun i => cohOn.res R F (h i) n) :=
@@ -319,6 +418,9 @@ def coh.disjointEquiv (hc : ⨆ i, U i = ⊤) (hd : Pairwise fun i j => Disjoint
   LinearEquiv.ofBijective _ (cohOn.pi_res_bijective_of_disjoint R (fun _ => le_top) hc.ge hd F n)
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coh.disjointEquiv_apply (hc : ⨆ i, U i = ⊤)
     (hd : Pairwise fun i j => Disjoint (U i) (U j)) (F : X.Modules) (n : ℕ) (x : coh F n) (i : κ) :
     coh.disjointEquiv R hc hd F n x i = cohOn.res R F le_top n x := rfl
@@ -334,6 +436,9 @@ def coh.disjointRestrictEquiv (F : X.Modules) (n : ℕ) :
   (coh.disjointEquiv R hc hd F n).trans (LinearEquiv.piCongrRight fun i =>
     cohOn.restrictEquiv R (hj i) F (j i).image_top_eq_opensRange n)
 
+/- English proof (translation)
+The claim follows from `cohOn.pull_res (σ := RingHom.id R) (hj i) (G := F.restrict (j i)) _ le_top _ x`.
+-/
 theorem coh.disjointRestrictEquiv_apply (F : X.Modules) (n : ℕ) (x : coh F n) (i : κ) :
     coh.disjointRestrictEquiv R j hj hc hd F n x i =
       cohOn.pull (σ := RingHom.id R) (hj i) (G := F.restrict (j i))
@@ -345,6 +450,11 @@ end Disjoint
 attribute [local instance] Abelian.hasFiniteBiproducts in
 open DirectSum in
 
+/- English proof (translation)
+Use `⟨fun h ι U hU => ?_, fun ι _ _ U hc hU => ⟨⟨cechHEquivCoh R hc hU, cechHEquivCoh_toCechH R hc hU, fun _ _ _ _ => cechHEquivCoh_map R hc hU, fun S hS _ _ => ⟨cechModulesFunctor_shortExact_of_isAffineOpen R hU hS, cechHEquivCoh_δ R hc hU hS _⟩⟩, fun F _ _ hn => coh.subsingleton_of_ …` and prove the remaining obligations. Establish `: IsAffineHom (pullback.diagonal (terminal.from X))`. Break down `h with h | h` into its components or cases. Use `infer_instance`. Conclude with `h`.
+
+Conclude with `isAffineOpen_finset_biInf hU`. Establish `: IsAffineHom f`. Apply the tactic sequence `rcases h with h | h | h <;> infer_instance`. Conclude with `⟨coh.pushforwardEquiv R hf, fun G _ x => cohOn.zeroEquiv_pushforwardEquiv R hf G ⊤ x, fun _ _ _ _ => coh.pushforwardEquiv_map R hf⟩`.
+-/
 theorem cech_computes_coh_of_affine_cover (X : Scheme.{u}) (R : Type v) [CommRing R]
     [Algebra R Γ(X, ⊤)] :
     ((X.IsSeparated ∨ IsAffineHom (pullback.diagonal (terminal.from X))) →

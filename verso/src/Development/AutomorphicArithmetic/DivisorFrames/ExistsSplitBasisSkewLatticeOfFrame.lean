@@ -17,6 +17,13 @@ open GlobalTheory.StageGeo
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 open GlobalTheory.AdelicU in
+/- English proof (translation)
+Take `⟨y, hy, rfl⟩` from `hu`. Use `latLoc_induction (p := fun y => (fun i => splitVec τ y (f i)) ∈ splitLat τ' L') (fun a ha x hx => ?_) ?_ (fun y z hy hz => ?_) (fun y hy => ?_) hy` and prove the remaining obligations. Take `⟨x', hx', e⟩` from `h x hx`. Conclude with `⟨_, tmul_mem_latLoc (mul_mem ha hs) hx', funext fun i => by simp [splitVec, e, mul_assoc]⟩`. Establish `e1 : (fun i => splitVec τ (0 : Fin d → Fv F v ⊗[F] E) (f i)) = 0` using `funext fun i => by simp [splitVec]`.
+
+Rewrite using `[e1]`. Conclude with `zero_mem _`. Rewrite using `[splitVec_add]`. Conclude with `add_mem hy hz`. Establish `e1 : (fun i => splitVec τ (-y) (f i)) = -fun i => splitVec τ y (f i)` using `funext fun i => by simp [splitVec]`.
+
+Rewrite using `[e1]`. Conclude with `neg_mem hy`.
+-/
 private theorem splitLat_comp {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] {n d : ℕ}
     {v : HeightOneSpectrum (𝓞 F)} {τ τ' : E →ₐ[F] Fv F v} {L : Submodule (𝓞 E) (Fin d → E)}
     {L' : Submodule (𝓞 E) (Fin n → E)} (f : Fin n → Fin d) {s : Fv F v} (hs : s ∈ v.adicCompletionIntegers F)
@@ -33,12 +40,30 @@ private theorem splitLat_comp {F E : Type} [Field F] [NumberField F] [Field E] [
   · have e1 : (fun i => splitVec τ (-y) (f i)) = -fun i => splitVec τ y (f i) := funext fun i => by simp [splitVec]
     rw [e1]; exact neg_mem hy
 
+/- English proof (translation)
+Use `⟨fun h => by simp [h] at hs, ?_⟩` and prove the remaining obligations. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers, map_inv₀, hs, inv_one]`.
+-/
 private theorem unit_inv_mem {F : Type} [Field F] [NumberField F] {v : HeightOneSpectrum (𝓞 F)} {s : Fv F v}
     (hs : Valued.v s = 1) : s ≠ 0 ∧ s⁻¹ ∈ v.adicCompletionIntegers F := by
   refine ⟨fun h => by simp [h] at hs, ?_⟩
   rw [HeightOneSpectrum.mem_adicCompletionIntegers, map_inv₀, hs, inv_one]
 
 open GlobalTheory.AdelicU GlobalTheory.FunObj GlobalTheory.StdFrames GlobalTheory.LFun GlobalTheory.LFun.SplitTie Formalism.L2.DIV in
+/- English proof (translation)
+Introduce `D n d e Λ L β hβ hL v t hA`. Take `⟨⟨a, ha, hta⟩, z, hz, htz⟩` from `hA`. Establish `h1` using `GlobalTheory.FlipMatch.RowChart.isSplitBasis_conj t (GlobalTheory.FlipMatch.RowChart.isFrameAt_loc hβ (splitPrime t))`. Establish `e1 : splitLat (t.comp D.sp.cm.sig) (GlobalTheory.TripleSpaceW.conjSub Λ) = splitLat t Λ`. Use `le_antisymm (GlobalTheory.FlipMatch.RowChart.splitLat_le fun x hx => ⟨star x, hx, fun i => rfl⟩) (GlobalTheory.FlipMatch.RowChart.splitLat_le fun x hx => ⟨star x, ?_, fun i => ?_⟩)` and prove the remaining obligations.
+
+Rewrite using `[GlobalTheory.TripleSpaceW.mem_conjSub, star_star]`. Conclude with `hx`. Express the relevant statement in the definitionally equal form `t (x i) = t (star (star (x i)))`. Rewrite using `[star_star]`. Use `set β' := GeneralLinearGroup.map (complEquiv t (splitPrime_under t)).symm.toRingHom (loc (splitPrime t) β) with hβ'`.
+
+Establish `hv : β'.val = β.val.map (GlobalTheory.BotMatch.evW t)` using `rfl`. Establish `h2 : IsSplitBasis t Λ β'` using `fun u => by rw [← e1]; exact h1 u`. Take `⟨ha0, hai⟩` from `unit_inv_mem hta`. Take `⟨hz0, hzi⟩` from `unit_inv_mem htz`. Establish `key : ∀ u : Fin d → Fv D.host.F v, u ∈ splitLat t L ↔ (fun k => u (e.symm k)) ∈ splitLat t Λ` using `fun u => by`.
+
+Use `⟨fun hu => splitLat_comp e.symm hzi (fun x hx => ⟨_, (hL x).1 hx z hz, fun i => ?_⟩) hu, fun hu => ?_⟩` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, smul_eq_mul, map_mul, inv_mul_cancel_left₀ hz0]`. Use `splitLat_comp (τ' := t) (L' := L) e hai (fun x hx => ⟨fun i => a * x (e i), (hL _).2 (by` as an intermediate fact. Use `GlobalTheory.BigDat.smul_mem_scLat_of_mem ha hx` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+
+Use function extensionality and compare the values at `k`. Use the proof step `simp), fun i => by rw [map_mul, inv_mul_cancel_left₀ ha0]⟩) hu`. Simplify using `using this`. Use `⟨⟨β'.val.submatrix e e, (β'⁻¹).val.submatrix e e, ?_, ?_⟩, fun u => ?_, by rw [← hv]⟩` and prove the remaining obligations. Rewrite using `[submatrix_mul_equiv, Units.mul_inv, submatrix_one_equiv]`.
+
+Rewrite using `[submatrix_mul_equiv, Units.inv_mul, submatrix_one_equiv]`. Rewrite using `[key]`. Establish `e2 : (fun k => (β'.val.submatrix e e *ᵥ u) (e.symm k)) = β'.val *ᵥ fun k => u (e.symm k)`. Use function extensionality and compare the values at `k`. Rewrite using `[submatrix_mulVec_equiv]`.
+
+Simplify using `[Function.comp_def]`. Use `Iff.trans ?_ ((h2 fun k => u (e.symm k)).trans (by rw [← e2]))` and prove the remaining obligations. Conclude with `⟨fun h k => h _, fun h i => by simpa using h (e i)⟩`.
+-/
 theorem UpperTheory.exists_splitBasis_skewLattice_of_frame :
     ∀ (D : D7) (n d : ℕ) (e : Fin d ≃ Fin n) (Λ : Submodule (𝓞 D.host.E) (Fin n → D.host.E))
         (L : Submodule (𝓞 D.host.E) (Fin d → D.host.E)) (β : GL (Fin n) (EAf D)), Formalism.L2.DIV.IsFrame β Λ →

@@ -18,10 +18,16 @@ section Homog
 
 variable {K : Type*} [Fintype K] {ι : K → Type*} [∀ k, Fintype (ι k)]
 
+/- English proof (translation)
+Introduce `m hm`. Simplify using `at hm`.
+-/
 theorem isMultiHomog_zero (a : K → ℕ) : IsMultiHomog (0 : MRing ι) a := by
   intro m hm
   simp at hm
 
+/- English proof (translation)
+Introduce `m hm k`. Rewrite `hm` using `[support_one]`. Rewrite `hm` using `[Finset.mem_singleton]`. Substitute `hm` using the available equality. Simplify using the standard rewrite rules.
+-/
 theorem isMultiHomog_one : IsMultiHomog (1 : MRing ι) 0 := by
   intro m hm k
   rw [support_one] at hm
@@ -29,11 +35,17 @@ theorem isMultiHomog_one : IsMultiHomog (1 : MRing ι) 0 := by
     subst hm
     simp
 
+/- English proof (translation)
+Introduce `m hm`. Rewrite `hm` using `[support_neg]`. Conclude with `hf m hm`.
+-/
 theorem mhNeg {f : MRing ι} {a : K → ℕ} (hf : IsMultiHomog f a) : IsMultiHomog (-f) a := by
   intro m hm
   rw [support_neg] at hm
   exact hf m hm
 
+/- English proof (translation)
+Introduce `m hm`. Break down `Finset.mem_union.mp (support_add hm) with h | h` into its components or cases. Conclude with `hf m h`. Conclude with `hg m h`.
+-/
 theorem mhAdd {f g : MRing ι} {a : K → ℕ} (hf : IsMultiHomog f a) (hg : IsMultiHomog g a) :
     IsMultiHomog (f + g) a := by
   intro m hm
@@ -42,6 +54,9 @@ theorem mhAdd {f g : MRing ι} {a : K → ℕ} (hf : IsMultiHomog f a) (hg : IsM
   · exact hf m h
   · exact hg m h
 
+/- English proof (translation)
+Introduce `m hm k`. Take `⟨m₁, hm₁, m₂, hm₂, rfl⟩` from `Finset.mem_add.mp (support_mul f g hm)`. Simplify using `only [Finsupp.coe_add, Pi.add_apply, Finset.sum_add_distrib, hf m₁ hm₁ k, hg m₂ hm₂ k]`.
+-/
 theorem mhMul {f g : MRing ι} {a b : K → ℕ} (hf : IsMultiHomog f a) (hg : IsMultiHomog g b) :
     IsMultiHomog (f * g) (a + b) := by
   intro m hm k
@@ -49,6 +64,13 @@ theorem mhMul {f g : MRing ι} {a b : K → ℕ} (hf : IsMultiHomog f a) (hg : I
   obtain ⟨m₁, hm₁, m₂, hm₂, rfl⟩ := Finset.mem_add.mp (support_mul f g hm)
   simp only [Finsupp.coe_add, Pi.add_apply, Finset.sum_add_distrib, hf m₁ hm₁ k, hg m₂ hm₂ k]
 
+/- English proof (translation)
+Introduce `m hm k`. Rewrite `hm` using `[support_X, Finset.mem_singleton]`. Substitute `hm` using the available equality. Take `⟨k₀, i₀⟩` from `p`. Distinguish the cases in `hk : k = k₀`.
+
+Substitute `hk` using the available equality. Simplify using `[Finsupp.single_apply]`. Simplify using `only [hk, if_false]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finsupp.single_apply, if_neg]`.
+
+Introduce `h`. Conclude with `hk (congrArg Sigma.fst h).symm`.
+-/
 theorem isMultiHomog_X (p : Σ k, ι k) [DecidableEq K] :
     IsMultiHomog (X p : MRing ι) (fun k => if k = p.1 then 1 else 0) := by
   intro m hm k
@@ -71,6 +93,9 @@ abbrev Kfr : Type := FractionRing (MRing (GlobalTheory (Fin 2)))
 
 abbrev Xk (i : Fin 2) : Kfr := algebraMap (MRing (GlobalTheory (Fin 2))) Kfr (X ⟨(), i⟩)
 
+/- English proof (translation)
+Rewrite using `[Ne, ← map_zero (algebraMap (MRing (GlobalTheory (Fin 2))) Kfr), (IsFractionRing.injective (MRing (GlobalTheory (Fin 2))) Kfr).eq_iff]`. Conclude with `X_ne_zero _`.
+-/
 theorem Xk_ne_zero (i : Fin 2) : Xk i ≠ 0 := by
   rw [Ne, ← map_zero (algebraMap (MRing (GlobalTheory (Fin 2))) Kfr),
     (IsFractionRing.injective (MRing (GlobalTheory (Fin 2))) Kfr).eq_iff]
@@ -84,11 +109,22 @@ def uF : FnField := ⟨u, Subfield.subset_closure rfl⟩
 
 def y : Ix (Fin 2) → FnField := fun p => ![1, uF] p.2
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem y_zero : y ⟨(), 0⟩ = 1 := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem y_one : y ⟨(), 1⟩ = uF := rfl
 
 abbrev incl : FnField →+* Kfr := (Subfield.closure ({u} : Set Kfr)).subtype
 
+/- English proof (translation)
+Take `⟨⟨⟩, i⟩` from `p`. Use `fin_cases i`. Simplify using `[y]`. Simplify using `only [y, Fin.mk_one, Matrix.cons_val_one, Matrix.cons_val_fin_one]`. Express the relevant statement in the definitionally equal form `u * Xk 0 = Xk 1`.
+
+Rewrite using `[u, div_mul_cancel₀ _ (Xk_ne_zero 0)]`.
+-/
 theorem incl_y_mul (p : Ix (Fin 2)) : incl (y p) * Xk 0 = algebraMap _ Kfr (X p : MRing (GlobalTheory (Fin 2))) := by
   obtain ⟨⟨⟩, i⟩ := p
   fin_cases i
@@ -97,6 +133,9 @@ theorem incl_y_mul (p : Ix (Fin 2)) : incl (y p) * Xk 0 = algebraMap _ Kfr (X p 
     change u * Xk 0 = Xk 1
     rw [u, div_mul_cancel₀ _ (Xk_ne_zero 0)]
 
+/- English proof (translation)
+Establish `h : (Polynomial.eval₂RingHom incl (Xk 0)).comp (coneMap ℤ y).toRingHom = algebraMap (MRing (GlobalTheory (Fin 2))) Kfr`. Use `MvPolynomial.ringHom_ext (fun n => by simp) (fun p => ?_)` and prove the remaining obligations. Simplify using `only [RingHom.coe_comp, Function.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, coneMap, aeval_X, Polynomial.coe_eval₂RingHom, Polynomial.eval₂_mul, Polynomial.eval₂_C, Polynomial.eval₂_X]`. Conclude with `incl_y_mul p`. Conclude with `congrArg (fun φ : MRing (GlobalTheory (Fin 2)) →+* Kfr => φ f) h`.
+-/
 theorem eval_coneMap (f : MRing (GlobalTheory (Fin 2))) :
     Polynomial.eval₂ incl (Xk 0) (coneMap ℤ y f) = algebraMap _ Kfr f := by
   have h : (Polynomial.eval₂RingHom incl (Xk 0)).comp (coneMap ℤ y).toRingHom =
@@ -108,6 +147,11 @@ theorem eval_coneMap (f : MRing (GlobalTheory (Fin 2))) :
     exact incl_y_mul p
   exact congrArg (fun φ : MRing (GlobalTheory (Fin 2)) →+* Kfr => φ f) h
 
+/- English proof (translation)
+Rewrite using `[eq_bot_iff]`. Introduce `f hf`. Rewrite using `[Ideal.mem_bot]`. Establish `h0 : coneMap ℤ y f = 0` using `hf`. Establish `h1` using `eval_coneMap f`.
+
+Rewrite `h1` using `[h0, Polynomial.eval₂_zero]`. Conclude with `(IsFractionRing.injective (MRing (GlobalTheory (Fin 2))) Kfr) (by rw [← h1, map_zero])`.
+-/
 theorem coordIdeal_y : coordIdeal ℤ y = ⊥ := by
   rw [eq_bot_iff]
   intro f hf
@@ -117,6 +161,9 @@ theorem coordIdeal_y : coordIdeal ℤ y = ⊥ := by
   rw [h0, Polynomial.eval₂_zero] at h1
   exact (IsFractionRing.injective (MRing (GlobalTheory (Fin 2))) Kfr) (by rw [← h1, map_zero])
 
+/- English proof (translation)
+Establish `h : (MvPolynomial.eval₂Hom incl (fun _ : Unit => Xk 0)).comp (mConeMap y).toRingHom = algebraMap (MRing (GlobalTheory (Fin 2))) Kfr`. Use `MvPolynomial.ringHom_ext (fun n => by simp) (fun p => ?_)` and prove the remaining obligations. Simplify using `only [RingHom.coe_comp, Function.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, mConeMap, aeval_X, coe_eval₂Hom, eval₂_mul, eval₂_C, eval₂_X]`. Conclude with `incl_y_mul p`. Conclude with `congrArg (fun φ : MRing (GlobalTheory (Fin 2)) →+* Kfr => φ f) h`.
+-/
 theorem eval_mConeMap (f : MRing (GlobalTheory (Fin 2))) :
     MvPolynomial.eval₂ incl (fun _ => Xk 0) (mConeMap y f) = algebraMap _ Kfr f := by
   have h : (MvPolynomial.eval₂Hom incl (fun _ : Unit => Xk 0)).comp (mConeMap y).toRingHom =
@@ -127,6 +174,11 @@ theorem eval_mConeMap (f : MRing (GlobalTheory (Fin 2))) :
     exact incl_y_mul p
   exact congrArg (fun φ : MRing (GlobalTheory (Fin 2)) →+* Kfr => φ f) h
 
+/- English proof (translation)
+Rewrite using `[eq_bot_iff]`. Introduce `f hf`. Rewrite using `[Ideal.mem_bot]`. Establish `h0 : mConeMap y f = 0` using `hf`. Establish `h1` using `eval_mConeMap f`.
+
+Rewrite `h1` using `[h0, eval₂_zero]`. Conclude with `(IsFractionRing.injective (MRing (GlobalTheory (Fin 2))) Kfr) (by rw [← h1, map_zero])`.
+-/
 theorem mCoordIdeal_y : mCoordIdeal (ι := GlobalTheory (Fin 2)) y = ⊥ := by
   rw [eq_bot_iff]
   intro f hf
@@ -136,14 +188,29 @@ theorem mCoordIdeal_y : mCoordIdeal (ι := GlobalTheory (Fin 2)) y = ⊥ := by
   rw [h0, eval₂_zero] at h1
   exact (IsFractionRing.injective (MRing (GlobalTheory (Fin 2))) Kfr) (by rw [← h1, map_zero])
 
+/- English proof (translation)
+Rewrite using `[coordIdeal_y]`. Conclude with `GroundTheory.Heights₂.Heights.Inter.isArithVar_projLine`.
+-/
 theorem isArithVar_y : IsArithVar (ι := GlobalTheory (Fin 2)) (coordIdeal ℤ y) 2 := by
   rw [coordIdeal_y]
   exact GroundTheory.Heights₂.Heights.Inter.isArithVar_projLine
 
+/- English proof (translation)
+Rewrite using `[mCoordIdeal_y]`. Conclude with `GroundTheory.Heights₂.Heights.Inter.isArithVar_projLine`.
+-/
 theorem isArithVar_y' : IsArithVar (ι := GlobalTheory (Fin 2)) (mCoordIdeal y) 2 := by
   rw [mCoordIdeal_y]
   exact GroundTheory.Heights₂.Heights.Inter.isArithVar_projLine
 
+/- English proof (translation)
+Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg p`. Establish `hs : (g ⟨(), 0⟩ : FnField) + (g ⟨(), 1⟩ : FnField) * uF = 0`. Rewrite `hg` using `[Fintype.sum_sigma]`. Simplify `hg` using `[Fin.sum_univ_two, zsmul_eq_mul]`.
+
+Establish `hK : algebraMap (MRing (GlobalTheory (Fin 2))) Kfr (C (g ⟨(), 0⟩) * X ⟨(), 0⟩ + C (g ⟨(), 1⟩) * X ⟨(), 1⟩) = 0`. Use `congrArg (fun t => incl t * Xk 0) hs` as an intermediate fact. Simplify using `only [map_add, map_mul, map_intCast, map_zero, zero_mul] at this`. Rewrite using `[map_add, map_mul, map_mul, ← this]`. Establish `hu : incl uF * Xk 0 = Xk 1` using `incl_y_mul ⟨(), 1⟩`.
+
+Simplify using `only [map_intCast, eq_intCast]`. Rewrite using `[add_mul, mul_assoc, hu]`. Establish `hP : C (g ⟨(), 0⟩) * X ⟨(), 0⟩ + C (g ⟨(), 1⟩) * (X ⟨(), 1⟩ : MRing (GlobalTheory (Fin 2))) = 0` using `(IsFractionRing.injective (MRing (GlobalTheory (Fin 2))) Kfr) (by rw [hK, map_zero])`. Take `⟨⟨⟩, i⟩` from `p`. Use `fin_cases i`.
+
+Use `congrArg (eval (fun q : Ix (Fin 2) => ![(1 : ℤ), 0] q.2)) hP` as an intermediate fact. Simplify using `using this`. Use `congrArg (eval (fun q : Ix (Fin 2) => ![(0 : ℤ), 1] q.2)) hP` as an intermediate fact. Simplify using `using this`.
+-/
 theorem linearIndependent_y : LinearIndependent ℤ y := by
   rw [Fintype.linearIndependent_iff]
   intro g hg p
@@ -166,6 +233,33 @@ theorem linearIndependent_y : LinearIndependent ℤ y := by
   · have := congrArg (eval (fun q : Ix (Fin 2) => ![(0 : ℤ), 1] q.2)) hP
     simpa using this
 
+/- English proof (translation)
+Introduce `s`. Take `⟨s, hs⟩` from `s`. Proceed by induction on `hs using Subfield.closure_induction with`. Consider the case `mem x hx`. Rewrite `hx` using `[Set.mem_singleton_iff]`.
+
+Substitute `hx` using the available equality. Use `⟨fun _ => 1, X ⟨(), 1⟩, X ⟨(), 0⟩, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `isMultiHomog_X (ι := GlobalTheory (Fin 2)) ⟨(), 1⟩ using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `k`. Simplify using the standard rewrite rules.
+
+Use `isMultiHomog_X (ι := GlobalTheory (Fin 2)) ⟨(), 0⟩ using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `k`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using `only [aeval_X, y_zero, y_one, mul_one]`.
+
+Both sides reduce to the same expression. Consider the case `one`. Use `⟨0, 1, 1, isMultiHomog_one, isMultiHomog_one, by simp, ?_⟩` and prove the remaining obligations. Simplify using `only [map_one, mul_one]`. Both sides reduce to the same expression.
+
+Consider the case `add a b ha hb iha ihb`. Take `⟨d₁, g₁, h₁, hg₁, hh₁, hne₁, he₁⟩` from `iha`. Take `⟨d₂, g₂, h₂, hg₂, hh₂, hne₂, he₂⟩` from `ihb`. Establish `hsum : IsMultiHomog (g₁ * h₂ + g₂ * h₁) (d₁ + d₂)`. Use `mhAdd (mhMul hg₁ hh₂) ?_` and prove the remaining obligations.
+
+Rewrite using `[add_comm d₁]`. Conclude with `mhMul hg₂ hh₁`. Use `⟨d₁ + d₂, g₁ * h₂ + g₂ * h₁, h₁ * h₂, hsum, mhMul hh₁ hh₂, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `mul_ne_zero hne₁ hne₂`.
+
+Rewrite using `[map_add, map_mul, map_mul, map_mul, he₁, he₂]`. Establish `: (⟨a + b, add_mem ha hb⟩ : FnField) = ⟨a, ha⟩ + ⟨b, hb⟩` using `rfl`. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `neg a ha iha`.
+
+Take `⟨d, g, h, hg, hh, hne, he⟩` from `iha`. Use `⟨d, -g, h, mhNeg hg, hh, hne, ?_⟩` and prove the remaining obligations. Rewrite using `[map_neg, he]`. Establish `: (⟨-a, neg_mem ha⟩ : FnField) = -⟨a, ha⟩` using `rfl`. Rewrite using `[this]`.
+
+Expand and normalize the polynomial expressions, which then agree. Consider the case `inv a ha iha`. Take `⟨d, g, h, hg, hh, hne, he⟩` from `iha`. Distinguish the cases in `ha0 : (⟨a, ha⟩ : FnField) = 0`. Use `⟨0, 0, 1, isMultiHomog_zero _, isMultiHomog_one, by simp, ?_⟩` and prove the remaining obligations.
+
+Establish `: (⟨a⁻¹, inv_mem ha⟩ : FnField) = (⟨a, ha⟩ : FnField)⁻¹` using `rfl`. Rewrite using `[this, ha0]`. Simplify using the standard rewrite rules. Establish `hg0 : aeval y g ≠ 0`. Rewrite using `[he]`.
+
+Conclude with `mul_ne_zero ha0 hne`. Use `⟨d, h, g, hh, hg, hg0, ?_⟩` and prove the remaining obligations. Establish `: (⟨a⁻¹, inv_mem ha⟩ : FnField) = (⟨a, ha⟩ : FnField)⁻¹` using `rfl`. Rewrite using `[this, he]`. Clear the denominators using the available nonvanishing facts.
+
+Consider the case `mul a b ha hb iha ihb`. Take `⟨d₁, g₁, h₁, hg₁, hh₁, hne₁, he₁⟩` from `iha`. Take `⟨d₂, g₂, h₂, hg₂, hh₂, hne₂, he₂⟩` from `ihb`. Use `⟨d₁ + d₂, g₁ * g₂, h₁ * h₂, mhMul hg₁ hg₂, mhMul hh₁ hh₂, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul]`.
+
+Conclude with `mul_ne_zero hne₁ hne₂`. Rewrite using `[map_mul, map_mul, he₁, he₂]`. Establish `: (⟨a * b, mul_mem ha hb⟩ : FnField) = ⟨a, ha⟩ * ⟨b, hb⟩` using `rfl`. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem birational_y : Birational (ι := GlobalTheory (Fin 2)) y := by
   intro s
   obtain ⟨s, hs⟩ := s
@@ -242,23 +336,38 @@ variable {J : Type} [Fintype J]
 abbrev eL : (J → ℂ) →L[ℝ] EuclideanSpace ℂ J :=
   ((EuclideanSpace.equiv J ℂ).symm.toContinuousLinearMap).restrictScalars ℝ
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem eL_apply (z : J → ℂ) : eL z = WithLp.toLp 2 z := rfl
 
 def reInner : (J → ℂ) →L[ℝ] ((J → ℂ) →L[ℝ] ℝ) :=
   ((ContinuousLinearMap.compL ℝ (J → ℂ) (EuclideanSpace ℂ J) ℝ).flip eL).comp
     ((innerSL ℝ (E := EuclideanSpace ℂ J)).comp eL)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem reInner_apply (y v : J → ℂ) : reInner y v = inner ℝ (eL y) (eL v) := rfl
 
+/- English proof (translation)
+Rewrite using `[PiLp.inner_apply, PiLp.inner_apply, map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => real_inner_eq_re_inner ℂ _ _`.
+-/
 theorem realInner_eq (x y : EuclideanSpace ℂ J) : inner ℝ x y = RCLike.re (inner ℂ x y) := by
   rw [PiLp.inner_apply, PiLp.inner_apply, map_sum]
   exact Finset.sum_congr rfl fun i _ => real_inner_eq_re_inner ℂ _ _
 
 def normSqE (z : J → ℂ) : ℝ := ‖eL z‖ ^ 2
 
+/- English proof (translation)
+The claim follows from `eL.hasFDerivAt.norm_sq`.
+-/
 theorem hasFDerivAt_normSqE (z : J → ℂ) : HasFDerivAt normSqE (2 • reInner z) z :=
   eL.hasFDerivAt.norm_sq
 
+/- English proof (translation)
+Unfold `normSqE`. Establish `: eL z ≠ 0` using `fun h => hz (by`. Use `congrArg (fun v : EuclideanSpace ℂ J => v.ofLp) h` as an intermediate fact. Simplify `this)` using `[eL_apply]`. Check the signs of the components of the expression.
+-/
 theorem normSqE_pos {z : J → ℂ} (hz : z ≠ 0) : 0 < normSqE z := by
   unfold normSqE
   have : eL z ≠ 0 := fun h => hz (by
@@ -266,6 +375,9 @@ theorem normSqE_pos {z : J → ℂ} (hz : z ≠ 0) : 0 < normSqE z := by
     simpa [eL_apply] using this)
   positivity
 
+/- English proof (translation)
+Use function extensionality and compare the values at `z`. Express the relevant statement in the definitionally equal form `Real.log ‖WithLp.toLp 2 z‖ = _`. Rewrite using `[normSqE, eL_apply, Real.log_pow]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem log_fs_eq : (fun z => Real.log ((fsMetric J).ρ z)) = fun z => (1 / 2) * Real.log (normSqE z) := by
   funext z
   change Real.log ‖WithLp.toLp 2 z‖ = _
@@ -273,6 +385,11 @@ theorem log_fs_eq : (fun z => Real.log ((fsMetric J).ρ z)) = fun z => (1 / 2) *
   push_cast
   ring
 
+/- English proof (translation)
+Rewrite using `[log_fs_eq]`. Establish `h` using `((hasFDerivAt_normSqE y).log (normSqE_pos hy).ne').const_mul (1 / 2 : ℝ)`. Use `h.congr_fderiv ?_` and prove the remaining obligations. Use extensionality with `v`. Simplify using the standard rewrite rules.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hasFDerivAt_log_fs {y : J → ℂ} (hy : y ≠ 0) :
     HasFDerivAt (fun z => Real.log ((fsMetric J).ρ z)) ((normSqE y)⁻¹ • reInner y) y := by
   rw [log_fs_eq]
@@ -282,6 +399,25 @@ theorem hasFDerivAt_log_fs {y : J → ℂ} (hy : y ≠ 0) :
   simp
   ring
 
+/- English proof (translation)
+Use `set G : (J → ℂ) → ((J → ℂ) →L[ℝ] ℝ) := fun y => (normSqE y)⁻¹ • reInner y with hG`. Establish `hev : fderiv ℝ (fun z => Real.log ((fsMetric J).ρ z)) =ᶠ[𝓝 z] G` using `by filter_upwards [isOpen_ne.mem_nhds hz] with y hy`. Conclude with `(hasFDerivAt_log_fs hy).fderiv`. Establish `hq` using `normSqE_pos hz`. Establish `hc : HasFDerivAt (fun y => (normSqE y)⁻¹) ((-(normSqE z ^ 2)⁻¹) • (2 • reInner z)) z` using `(hasDerivAt_inv hq.ne').comp_hasFDerivAt z (hasFDerivAt_normSqE z)`.
+
+Establish `hGd : HasFDerivAt G ((normSqE z)⁻¹ • reInner + ((-(normSqE z ^ 2)⁻¹) • (2 • reInner z)).smulRight (reInner z)) z` using `hc.smul reInner.hasFDerivAt`. Establish `hD : ∀ v, fderiv ℝ (fderiv ℝ (fun z => Real.log ((fsMetric J).ρ z))) z v v = (normSqE z)⁻¹ * inner ℝ (eL v) (eL v) - 2 * (normSqE z ^ 2)⁻¹ * inner ℝ (eL z) (eL v) ^ 2`. Introduce `v`. Rewrite using `[hev.fderiv_eq, hGd.fderiv]`. Simplify using `only [ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, ContinuousLinearMap.smulRight_apply, smul_eq_mul, nsmul_eq_mul, reInner_apply]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Unfold `leviForm`. Rewrite using `[hD, hD]`. Establish `hI : eL (Complex.I • w) = Complex.I • eL w`.
+
+Rewrite using `[eL_apply, eL_apply, WithLp.toLp_smul]`. Rewrite using `[hI]`. Use `set q := normSqE z`. Establish `hq' : q = ‖eL z‖ ^ 2` using `rfl`. Use `set c : ℂ := inner ℂ (eL z) (eL w) with hcdef`.
+
+Establish `h1 : inner ℝ (eL w) (eL w) = ‖eL w‖ ^ 2` using `real_inner_self_eq_norm_sq _`. Establish `h2 : inner ℝ (Complex.I • eL w) (Complex.I • eL w) = ‖eL w‖ ^ 2`. Rewrite using `[real_inner_self_eq_norm_sq, norm_smul, Complex.norm_I, one_mul]`. Establish `h3 : inner ℝ (eL z) (eL w) = RCLike.re c` using `realInner_eq _ _`. Establish `h4 : inner ℝ (eL z) (Complex.I • eL w) = RCLike.re (Complex.I * c)`.
+
+Rewrite using `[realInner_eq, inner_smul_right]`. Simplify using `only [h1, h2, h3, h4]`. Establish `hcs : ‖c‖ ^ 2 ≤ q * ‖eL w‖ ^ 2`. Rewrite using `[hq', ← mul_pow]`. Conclude with `pow_le_pow_left₀ (norm_nonneg _) (norm_inner_le_norm _ _) 2`.
+
+Establish `hre : RCLike.re c ^ 2 + RCLike.re (Complex.I * c) ^ 2 = ‖c‖ ^ 2`. Rewrite using `[Complex.sq_norm, Complex.normSq_apply]`. Simplify using `only [RCLike.re_to_complex, Complex.mul_re, Complex.I_re, Complex.I_im, zero_mul, one_mul, zero_sub]`. Expand and normalize the polynomial expressions, which then agree. Establish `key : 0 ≤ q⁻¹ * ‖eL w‖ ^ 2 - 2 * (q ^ 2)⁻¹ * RCLike.re c ^ 2 + (q⁻¹ * ‖eL w‖ ^ 2 - 2 * (q ^ 2)⁻¹ * RCLike.re (Complex.I * c) ^ 2)`.
+
+Establish `h2 : q⁻¹ * ‖eL w‖ ^ 2 - 2 * (q ^ 2)⁻¹ * RCLike.re c ^ 2 + (q⁻¹ * ‖eL w‖ ^ 2 - 2 * (q ^ 2)⁻¹ * RCLike.re (Complex.I * c) ^ 2) = 2 * (q ^ 2)⁻¹ * (q * ‖eL w‖ ^ 2 - ‖c‖ ^ 2)`. Rewrite using `[← hre]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h2]`.
+
+Establish `: 0 ≤ q * ‖eL w‖ ^ 2 - ‖c‖ ^ 2` using `by linarith`. Check the signs of the components of the expression. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem leviForm_log_fs_nonneg {z : J → ℂ} (hz : z ≠ 0) (w : J → ℂ) :
     0 ≤ leviForm (fun z => Real.log ((fsMetric J).ρ z)) z w := by
   set G : (J → ℂ) → ((J → ℂ) →L[ℝ] ℝ) := fun y => (normSqE y)⁻¹ • reInner y with hG
@@ -337,6 +473,11 @@ theorem leviForm_log_fs_nonneg {z : J → ℂ} (hz : z ≠ 0) (w : J → ℂ) :
     positivity
   linarith
 
+/- English proof (translation)
+Unfold `IsSmoothMetric`. Introduce `z hz`. Establish `h : (fsMetric J).ρ = fun z => ‖eL z‖` using `rfl`. Rewrite using `[h]`. Establish `hne : eL z ≠ 0` using `fun h0 => hz (by`.
+
+Use `congrArg (fun v : EuclideanSpace ℂ J => v.ofLp) h0` as an intermediate fact. Simplify `this)` using `[eL_apply]`. Conclude with `((contDiffAt_norm ℝ hne).comp z (ContinuousLinearMap.contDiff (eL (J := J))).contDiffAt).contDiffWithinAt`.
+-/
 theorem isSmoothMetric_fs : IsSmoothMetric (fsMetric J) := by
   unfold IsSmoothMetric
   intro z hz
@@ -347,17 +488,28 @@ theorem isSmoothMetric_fs : IsSmoothMetric (fsMetric J) := by
     simpa [eL_apply] using this)
   exact ((contDiffAt_norm ℝ hne).comp z (ContinuousLinearMap.contDiff (eL (J := J))).contDiffAt).contDiffWithinAt
 
+/- English proof (translation)
+Introduce `z`. Express the relevant statement in the definitionally equal form `‖WithLp.toLp 2 _‖ = ‖WithLp.toLp 2 z‖`. Rewrite using `[EuclideanSpace.norm_eq, EuclideanSpace.norm_eq]`. Simplify using the standard rewrite rules.
+-/
 theorem isConjInvariant_fs : IsConjInvariant (fsMetric J) := by
   intro z
   change ‖WithLp.toLp 2 _‖ = ‖WithLp.toLp 2 z‖
   rw [EuclideanSpace.norm_eq, EuclideanSpace.norm_eq]
   simp
 
+/- English proof (translation)
+Use `(isSmoothMetric_fs (J := Ix κ)).mono fun z hz h0 => ?_` and prove the remaining obligations. Take `⟨i, hi⟩` from `hz ()`. Conclude with `hi (congrFun h0 _)`.
+-/
 theorem isSmoothHerm_fs (κ : Type) [Fintype κ] : IsSmoothHerm (HermLine.ofCone (fsMetric (Ix κ))) := by
   refine (isSmoothMetric_fs (J := Ix κ)).mono fun z hz h0 => ?_
   obtain ⟨i, hi⟩ := hz ()
   exact hi (congrFun h0 _)
 
+/- English proof (translation)
+Use `⟨isSmoothHerm_fs κ, fun z hz w _ => ?_⟩` and prove the remaining obligations. Establish `hz0 : z ≠ 0`. Introduce `h0`. Take `⟨i, hi⟩` from `hz.1 ()`. Conclude with `hi (congrFun h0 _)`.
+
+Conclude with `leviForm_log_fs_nonneg hz0 w`.
+-/
 theorem isSemipositiveRel_fs {κ : Type} [Fintype κ] (P0 P : Ideal (MRing (GlobalTheory κ))) :
     IsSemipositiveRel P0 P (HermLine.ofCone (fsMetric (Ix κ))) := by
   refine ⟨isSmoothHerm_fs κ, fun z hz w _ => ?_⟩
@@ -367,6 +519,9 @@ theorem isSemipositiveRel_fs {κ : Type} [Fintype κ] (P0 P : Ideal (MRing (Glob
     exact hi (congrFun h0 _)
   exact leviForm_log_fs_nonneg hz0 w
 
+/- English proof (translation)
+Introduce `z` and use `isConjInvariant_fs z`.
+-/
 theorem isConjInvariantH_fs (κ : Type) [Fintype κ] : IsConjInvariantH (HermLine.ofCone (fsMetric (Ix κ))) :=
   fun z => isConjInvariant_fs z
 

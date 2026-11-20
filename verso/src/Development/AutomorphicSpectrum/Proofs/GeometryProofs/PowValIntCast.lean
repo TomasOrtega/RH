@@ -17,11 +17,19 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.HT
 open GlobalTheory.CompanionTheory.Ar.HTTie
 
+/- English proof (translation)
+Establish `h : (((j : ZMod N).val : ℕ) : ℤ) = j % N` using `ZMod.val_intCast j`. Rewrite using `[← zpow_natCast, h, ← zpow_eq_zpow_emod' j hg]`.
+-/
 theorem pow_val_intCast {G : Type} [Group G] (g : G) (N : ℕ) [NeZero N] (hg : g ^ N = 1) (j : ℤ) :
     g ^ (j : ZMod N).val = g ^ j := by
   have h : (((j : ZMod N).val : ℕ) : ℤ) = j % N := ZMod.val_intCast j
   rw [← zpow_natCast, h, ← zpow_eq_zpow_emod' j hg]
 
+/- English proof (translation)
+Unfold `IsCp at h`. Use `split_ifs at h ⊢`. Conclude with `hinj (by rw [h, map_ofNat])`. Take `⟨ζ, h1, h2⟩` from `h`. Use `⟨κ + 1, IsPrimitiveRoot.of_map_of_injective (f := algebraMap A Ω) ?_ hinj, by ring⟩` and prove the remaining obligations.
+
+Rewrite using `[map_add, map_one, h2, sub_add_cancel]` and apply the resulting hypothesis.
+-/
 theorem cp_descend {A Ω : Type} [CommRing A] [Field Ω] [Algebra A Ω] (hinj : Function.Injective (algebraMap A Ω))
     (p : ℕ) (κ : A) (h : IsCp p (algebraMap A Ω κ)) :
     if p = 2 then κ = 4 else ∃ ζ : A, IsPrimitiveRoot ζ p ∧ κ = ζ - 1 := by
@@ -32,6 +40,45 @@ theorem cp_descend {A Ω : Type} [CommRing A] [Field Ω] [Algebra A Ω] (hinj : 
     refine ⟨κ + 1, IsPrimitiveRoot.of_map_of_injective (f := algebraMap A Ω) ?_ hinj, by ring⟩
     rwa [map_add, map_one, h2, sub_add_cancel]
 
+/- English proof (translation)
+Establish `hinj` using `IsFractionRing.injective A Ω`. Establish `: CharZero A` using `(algebraMap A Ω).charZero`. Establish `hp` using `(Fact.out : p.Prime)`. Establish `hn : p ^ m ≠ 0` using `pow_ne_zero _ hp.ne_zero`. Establish `: NeZero (p ^ m)` using `⟨hn⟩`.
+
+Use `t.semi.smooth` as an intermediate fact. Use `t.semi.separated` as an intermediate fact. Set `κ : FractionRing A ≃+* Ω` to `(FractionRing.algEquiv A Ω).toRingEquiv`. Establish `hκ : ∀ a, κ (algebraMap A _ a) = algebraMap A Ω a` using `(FractionRing.algEquiv A Ω).commutes`. Establish `hκ' : κ.toRingHom.comp (algebraMap A (FractionRing A)) = algebraMap A Ω` using `RingHom.ext hκ`.
+
+Establish `hx' : spMap (κ.toRingHom.comp (algebraMap A (FractionRing A))) ≫ x = ξ` using `by rw [hκ', hx]`. Take `⟨Γ, i, htor, hpt, hact, hprop', htate⟩` from `exists_chartGroup D t ξ h450 p m hev hprop hfull A x κ hx'`. Establish `: Finite (LevGrp D.La p m)`. Use `hu.finite` as an intermediate fact. Establish `: Finite (D.La ⧸ LinearMap.range ((p ^ m) • (LinearMap.id : D.La →ₗ[ℤ] D.La)))`.
+
+Use `Module.finite_of_fg_torsion _ fun a => ?_` and prove the remaining obligations. Take `⟨a, rfl⟩` from `Submodule.Quotient.mk_surjective _ a`. Use `⟨⟨((p ^ m : ℕ) : ℤ), mem_nonZeroDivisors_of_ne_zero (Int.natCast_ne_zero.2 hn)⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Submonoid.smul_def, ← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`. Conclude with `⟨a, (natCast_zsmul a (p ^ m)).symm⟩`.
+
+Use `infer_instance`. Take `⟨L₀, _, _, ⟨M₀⟩⟩` from `lieModel_exists X t.G A x`. Take `⟨ρ₀, hρ₀, -⟩` from `lieModel_exists_unique_act X t.G A x L₀ M₀ (𝓞 E) t.act.act t.act.hom t.act.one t.act.mul t.act.add`. Establish `hfin : Module.Finite A L₀` using `(lie_proj X t.G A x L₀ M₀).1`. Choose the witnesses or unpack the hypotheses as in `⟨j₀, j, hj, hjj, hj₀, hspan, hrk₀⟩ : ∃ (j₀ : L₀ →+ Li) (j : Module.Dual A L₀ →ₗ[A] Module.Dual Ω Li), IsBaseChange Ω j ∧ (∀ w b, j w (j₀ b) = algebraMap A Ω (w b)) ∧ (∀ v, (M.pt (j₀ v)).left = Spec.map (CommRingCat.ofHom (dualMap (algebraMap A Ω))) ≫ (M₀.pt v).left) ∧ ((∀ w w' : …`.
+
+Use `letI : Module A Li := Module.compHom Li (algebraMap A Ω)`. Use `haveI : IsScalarTower A Ω Li := ⟨fun r a l => by rw [Algebra.smul_def, mul_smul]; rfl⟩`. Take `⟨j₀, h1, h2⟩` from `exists_lieBC M M₀ hx`. Take `⟨j, h3, h4⟩` from `exists_dualBC j₀ h1`. Conclude with `⟨j₀.toAddMonoidHom, j, h3, h4, h2, ⟨fun w w' h => h1.algHom_ext _ _ h, fun w => ⟨w.restrictScalars A ∘ₗ j₀, fun _ => rfl⟩⟩, h1.finrank_eq⟩`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨ζ, hζ⟩ : ∃ ζ : Aˣ, algebraMap A Ω ζ = ζ₀ := by`. Establish `h0 : (ζ₀ : Ω) ^ (p ^ m) = 1` using `by rw [← Units.val_pow_eq_pow_val, hev.prim.pow_eq_one, Units.val_one]`. Take `⟨a, ha⟩` from `IsIntegrallyClosed.algebraMap_eq_of_integral (R := A) (K := Ω) (IsIntegral.of_pow (Nat.pos_of_ne_zero hn) (by rw [h0]; exact isIntegral_one))`. Conclude with `⟨Units.ofPowEqOne a (p ^ m) (hinj (by rw [map_pow, ha, h0, map_one])) hn, ha⟩`. Establish `hζ1 : ζ ^ (p ^ m) = 1` using `Units.ext (hinj (by`.
+
+Rewrite using `[Units.val_pow_eq_pow_val, map_pow, hζ, ← Units.val_pow_eq_pow_val, hev.prim.pow_eq_one]`. Use the proof step `simp))`. Take `⟨Dc, hDe, hDc⟩` from `h758 A Ω E (cmConj E) p m (D.p + D.q) _ Γ X t.G x i htor inferInstance t.act.act t.act.hom L₀ M₀ ρ₀ hρ₀ _ j hj π hsurj hker (fun a y => by`. Rewrite using `[hπ, hπ, ← hact, Finset.smul_sum]`. Simplify using `only [Pi.smul_apply, smul_eq_mul, mul_smul]) ζ hζ1 e halt hadj hes hei`.
+
+Establish `hom` using `fun q hq w => mem_omLat_iff M M₀ hξ hinj hx j₀ hj₀ q hq (hsub q hq) w`. Establish `hsm : ∀ (a : A) (w : Module.Dual Ω Li), a • w = algebraMap A Ω a • w` using `fun a w => (algebraMap_smul Ω a w).symm`. Use `⟨Dc, hDe, fun a w => ?_, fun w => ⟨?_, fun h => ?_⟩, fun q hq => le_antisymm (fun w hw => ?_) ?_, fun q hq z w' => ?_, fun c hPt hc => ?_⟩` and prove the remaining obligations. Proceed by induction on `w using hj.inductionOn with`. Consider the case `zero => simp`.
+
+Consider the case `tmul w`. Rewrite using `[hDc.2.1, ModelTest.bar_eq H]`. Use `hspan.1 _ _ fun b => ?_` and prove the remaining obligations. Establish `: ρ (H.bar a) (j₀ b) = j₀ (ρ₀ (H.bar a) b)` using `M.inj (Over.OverMorphism.ext (by`. Rewrite using `[hρ, hj₀, hρ₀, Over.comp_left, Over.comp_left, hj₀, Category.assoc]))`.
+
+Rewrite using `[LinearMap.comp_apply, this, hjj, hjj]`. Both sides reduce to the same expression. Consider the case `smul s w ih => rw [map_smul, ih, LinearMap.smul_comp]`. Consider the case `add w w' ih ih' => rw [map_add, ih, ih', LinearMap.add_comp]`. Rewrite using `[hDc.1]`.
+
+Introduce and unpack `⟨w₀, rfl⟩ q hq`. Conclude with `(hom q hq _).2 fun b => by rw [hjj]; exact hsub q hq _`. Take `⟨w₁, hw₁⟩` from `hspan.2 w`. Take `⟨v, w₀, h1, h2, h3⟩` from `clear_denom hinj (algebraMap A Ω).range (by rintro _ ⟨a, rfl⟩; exact ⟨1, a, by simp, by simp, by simp⟩) w₁ (fun b => by`. Set `I : Ideal A` to `(Submodule.span A {(1 : Ω)}).comap (LinearMap.toSpanSingleton A Ω (w₁ b))`.
+
+Distinguish the cases in `hI : I = ⊤`. Establish `h1 : (1 : A) ∈ I` using `hI ▸ Submodule.mem_top`. Take `⟨a, ha⟩` from `Submodule.mem_span_singleton.1 h1`. Conclude with `⟨a, by simpa [Algebra.smul_def] using ha⟩`. Take `⟨P, hP, hle⟩` from `Ideal.exists_le_maximal I hI`.
+
+Set `P' : PrimeSpectrum A` to `⟨P, hP.isPrime⟩`. Take `⟨s, a, hs, hsa⟩` from `(regAt_frac hξ hinj hx P' ⟨x P', hall _⟩ rfl (hsub _ ⟨P', rfl⟩)).2 (w₁ b) (by rw [hw₁]; exact (hom _ ⟨P', rfl⟩ w).1 (h _ ⟨P', rfl⟩) b)`. Conclude with `absurd (hle (Submodule.mem_span_singleton.2 ⟨a, by simp [Algebra.smul_def, hsa]⟩)) hs)`. Take `⟨v', hv'⟩` from `h2`. Rewrite using `[hDc.1]`.
+
+Use `⟨v' • w₀, hspan.1 _ _ fun b => ?_⟩` and prove the remaining obligations. Rewrite using `[hjj, LinearMap.smul_apply, smul_eq_mul, map_mul, h3, hv', ← _root_.mul_assoc, inv_mul_cancel₀ h1, _root_.one_mul, hw₁]`. Take `⟨w₁, hw₁⟩` from `hspan.2 w`. Take `⟨P, hP⟩ : ∃ P : PrimeSpectrum A, x P = q.1` from `hq`. Establish `hf` using `regAt_frac hξ hinj hx P q hP (hsub q ⟨P, hP⟩)`.
+
+Take `⟨v, w₀, h1, h2, h3⟩` from `clear_denom hinj (regAt ξ q) (fun b hb => by`. Take `⟨s, a, hs, hsa⟩` from `hf.2 b hb`. Conclude with `⟨s, a, (hf.1 s hs).1, (hf.1 s hs).2, hsa⟩) w₁ (fun b => by rw [hw₁]; exact (hom q ⟨P, hP⟩ w).1 hw b)`. Establish `: w = (⟨_, h2⟩ : regAt ξ q) • j w₀` using `hspan.1 _ _ fun b => by show _ = (algebraMap A Ω v)⁻¹ * j w₀ (j₀ b)`. Rewrite using `[hjj, h3, ← _root_.mul_assoc, inv_mul_cancel₀ h1, _root_.one_mul, hw₁]`.
+
+Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span (by rw [hDc.1]; exact ⟨w₀, rfl⟩))`. Rewrite using `[Submodule.span_le, hDc.1]`. Introduce and unpack `_ ⟨w₀, rfl⟩`. Conclude with `(hom q hq _).2 fun b => by rw [hjj]; exact hsub q hq _`.
+
+Take `⟨χ, w₀, hχ, hh, hHT⟩` from `hDc.2.2 z`. Use `isHTAt_iff lie_proj h876 hξ t.PP.L hn hfull M x κ hx' Γ i htor M₀ j₀ (by rw [hκ']; exact hj₀) _ χ w₀ _ (fun s k _ _ a xk gk c h1 h2 => ?_) hHT (fun b => by rw [hh, hjj, hκ]) q hq (fun a => by rw [hκ]; exact hsub q hq a) w'` and prove the remaining obligations. Take `⟨z', rfl⟩` from `hsurj s`. Establish `hz' : z' = Multiplicative.ofAdd (Multiplicative.toAdd z')` using `rfl`. Rewrite `h2`, the goal using `[hz']`.
+
+Rewrite `h2` using `[hπ]`. Rewrite using `[hev.weil _ _ k a xk gk c h1 (h2.trans (congrArg (spMap a ≫ ·) (hpt _))), hχ, hDe, he, hκ, ← pow_val_intCast ζ₀ (p ^ m) hev.prim.pow_eq_one, Units.val_pow_eq_pow_val, Units.val_pow_eq_pow_val, map_pow, map_pow, map_pow, hζ]`. Use `h576 hPt E H D p A Ω m _ Dc u hu X t x Γ i htor L₀ M₀ ρ₀ hρ₀ j hj π ζ c hDc hπ (by rw [hDe]; exact he) (by rw [← hrk₀, hrk]) hprop' (fun k _ _ f => ?_) (cp_descend hinj p c hc)` and prove the remaining obligations. Take `⟨I, h1, h2⟩` from `htate k f`. Conclude with `⟨I, by rw [h1, ← hζ, ← hκ, RingEquiv.symm_apply_apply], h2⟩`.
+-/
 theorem exists_chart (h876 : type_of% @GlobalTheory.T.section_eq_zero_of_values) (h450 : type_of% @GlobalTheory.T.torsion_embedding_geometric_points)
     (h758 : type_of% @GlobalTheory.T.HTChartExists_holds) (h576 : type_of% @GlobalTheory.T.hodge_tate_chart_integral)
     {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} (D : Datum H) {X : Scheme.{0}}

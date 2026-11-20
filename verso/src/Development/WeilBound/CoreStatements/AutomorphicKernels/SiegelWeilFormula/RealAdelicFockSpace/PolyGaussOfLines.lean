@@ -9,6 +9,9 @@ open scoped TensorProduct NNReal Matrix SchwartzMap Classical InnerProductSpace
 
 namespace PositivityTheory.SiegelWeilFormula.KFP
 
+/- English proof (translation)
+Conclude with `KFPB.poly_of_rot q hq μ ω hμ hω0 hω`.
+-/
 theorem poly_of_rot (q : Polynomial ℂ) (hq : q ≠ 0) (μ ω : ℂ) (hμ : μ ≠ 0) (hω0 : ω ≠ 0)
     (hω : ∀ j : ℕ, 0 < j → ω ^ j ≠ 1) :
     ∃ N : ℕ, ∀ E : ℂ → ℂ, Differentiable ℂ E →
@@ -16,6 +19,9 @@ theorem poly_of_rot (q : Polynomial ℂ) (hq : q ≠ 0) (μ ω : ℂ) (hμ : μ 
       ∃ p : Polynomial ℂ, p.natDegree ≤ N ∧ ∀ z, E z = p.eval z := by
   exact KFPB.poly_of_rot q hq μ ω hμ hω0 hω
 
+/- English proof (translation)
+Conclude with `KFPB.poly_gauss_of_lines c hc N h H`.
+-/
 theorem poly_gauss_of_lines {ι : Type} [Fintype ι] (c : ℝ) (hc : 0 < c) (N : ℕ) (h : 𝓢(EuclideanSpace ℝ ι, ℂ))
     (H : ∀ ξ : EuclideanSpace ℝ ι, ∃ p : Polynomial ℂ, p.natDegree ≤ N ∧ ∀ z : ℂ,
       ∫ u, h u * Real.exp (-(c * ‖u‖ ^ 2)) * Complex.exp (z * ⟪ξ, u⟫_ℝ) =
@@ -24,6 +30,9 @@ theorem poly_gauss_of_lines {ι : Type} [Fintype ι] (c : ℝ) (hc : 0 < c) (N :
       ∀ u, h u = MvPolynomial.eval (fun i => ((u i : ℝ) : ℂ)) P * Real.exp (-(c * ‖u‖ ^ 2)) := by
   exact KFPB.poly_gauss_of_lines c hc N h H
 
+/- English proof (translation)
+Conclude with `KFPB.entire_laplace c hc h ξ`.
+-/
 theorem entire_laplace {ι : Type} [Fintype ι] (c : ℝ) (hc : 0 < c) (h : 𝓢(EuclideanSpace ℝ ι, ℂ))
     (ξ : EuclideanSpace ℝ ι) :
     Differentiable ℂ (fun z : ℂ => ∫ u, h u * Real.exp (-(c * ‖u‖ ^ 2)) * Complex.exp (z * ⟪ξ, u⟫_ℝ)) := by

@@ -15,6 +15,9 @@ section Reduction
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Use `Units.ext (Matrix.ext fun r s => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Algebra.TensorProduct.map (sndA F) (AlgHom.id F E) ((1 : AF F) ⊗ₜ[F] (γ.1.1 r s)) = (1 : Af F) ⊗ₜ[F] (γ.1.1 r s)`. Simplify using the standard rewrite rules.
+-/
 theorem projFin_ratEmb_val (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (γ : GRat σ J) :
     (GlobalTheory.AdelicU.projFin σ J (ratEmb σ J γ)).1 = bc (inclR (Af F)) γ.1 := by
   refine Units.ext (Matrix.ext fun r s => ?_)

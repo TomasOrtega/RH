@@ -27,6 +27,9 @@ open Formalism.QuantumDeterminants Formalism.FourierDecayAlt.B Formalism.Fourier
 
 variable {k r : ℕ}
 
+/- English proof (translation)
+Use `(Measure.FiniteSpanningSetsIn.sigmaFinite (C := Set.univ) ⟨fun n => (inc : Gp U hU → Mt k r) ⁻¹' spanningSets μ n, fun _ => trivial, fun n => ?_, ?_⟩)` and prove the remaining obligations. Rewrite using `[pull, inc_memb.comap_apply]`. Conclude with `lt_of_le_of_lt (measure_mono (Set.image_preimage_subset _ _)) (measure_spanningSets_lt_top μ n)`. Rewrite using `[← Set.preimage_iUnion, iUnion_spanningSets, Set.preimage_univ]`.
+-/
 theorem hu_pull_sigmaFinite {U : Set (Mat k r)} (hU : IsClosedSubgroup U) (μ : Measure (Mt k r)) [SigmaFinite μ] :
     SigmaFinite (pull hU μ) := by
   refine (Measure.FiniteSpanningSetsIn.sigmaFinite (C := Set.univ)
@@ -35,6 +38,13 @@ theorem hu_pull_sigmaFinite {U : Set (Mat k r)} (hU : IsClosedSubgroup U) (μ : 
     exact lt_of_le_of_lt (measure_mono (Set.image_preimage_subset _ _)) (measure_spanningSets_lt_top μ n)
   · rw [← Set.preimage_iUnion, iUnion_spanningSets, Set.preimage_univ]
 
+/- English proof (translation)
+Simplify using `[h.conc] left := fun a ha => by rw [Measure.map_smul, h.left a ha] right := fun a ha => by rw [Measure.map_smul, h.right a ha] finite_compact := fun K hK => by`. Rewrite using `[Measure.smul_apply, smul_eq_mul]`. Conclude with `ENNReal.mul_lt_top (lt_top_iff_ne_top.2 hc1) (h.finite_compact K hK)`. Use `ne_zero := by`. Introduce `h0`.
+
+Apply `h.ne_zero` to reduce the goal to its premises. Use extensionality with `s _`. Use `congrArg (fun m : Measure (Mt k r) => m s) h0` as an intermediate fact. Simplify using `only [Measure.smul_apply, Measure.coe_zero, Pi.zero_apply, smul_eq_mul, mul_eq_zero] at this`. Break down `this with h1 | h1` into its components or cases.
+
+Conclude with `absurd h1 hc0`. Simplify using `using h1`.
+-/
 theorem hu_smul {U : Set (Mat k r)} {ν : Measure (Mt k r)} (h : Formalism.FourierDecayAlt.B.IsHaarOn U ν) {c : ℝ≥0∞} (hc0 : c ≠ 0)
     (hc1 : c ≠ ∞) : Formalism.FourierDecayAlt.B.IsHaarOn U (c • ν) where
   conc := by simp [h.conc]
@@ -53,6 +63,23 @@ theorem hu_smul {U : Set (Mat k r)} {ν : Measure (Mt k r)} (h : Formalism.Fouri
     · exact absurd h1 hc0
     · simpa using h1
 
+/- English proof (translation)
+Take `⟨hσ, h0, hc, hl⟩` from `hμ`. Establish `hc' : μ Uᶜ = 0` using `hc`. Establish `: SigmaFinite ν` using `Formalism.FourierDecayAlt.P.B5.haar_sigmaFinite hν`. Establish `i1 : SigmaFinite (pull hU μ)` using `hu_pull_sigmaFinite hU μ`. Establish `i2 : SigmaFinite (pull hU ν)` using `hu_pull_sigmaFinite hU ν`.
+
+Establish `i3 : (pull hU μ).IsMulLeftInvariant` using `pull_left μ hl`. Establish `i4 : (pull hU ν).IsMulLeftInvariant` using `pull_left ν hν.left`. Establish `i5 : IsFiniteMeasureOnCompacts (pull hU ν)` using `pull_fin ν hν.finite_compact`. Establish `hν0 : pull hU ν ≠ 0`. Introduce `h`.
+
+Apply `hν.ne_zero` to reduce the goal to its premises. Rewrite using `[← map_pull (hU := hU) ν hν.conc, h, Measure.map_zero]`. Establish `hμ0 : pull hU μ ≠ 0`. Introduce `h`. Apply `h0` to reduce the goal to its premises.
+
+Rewrite using `[← map_pull (hU := hU) μ hc', h, Measure.map_zero]`. Take `⟨K, hK, hK0⟩` from `exists_pos (pull hU ν) hν0`. Establish `hKt : pull hU ν K ≠ ∞` using `hK.measure_lt_top.ne`. Establish `key` using `measure_eq_div_smul (pull hU μ) (pull hU ν) hK0 hKt`. Use `set c : ℝ≥0∞ := pull hU μ K / pull hU ν K with hcdef`.
+
+Establish `hc0 : c ≠ 0`. Introduce `h`. Apply `hμ0` to reduce the goal to its premises. Rewrite using `[key, h, zero_smul]`. Establish `hc1 : c ≠ ∞`.
+
+Introduce `h`. Take `⟨n, hn⟩` from `exists_pos_measure_of_cover (iUnion_spanningSets (pull hU μ)) hμ0`. Establish `hfin` using `measure_spanningSets_lt_top (pull hU μ) n`. Establish `e0 : ∀ s : Set (Gp U hU), pull hU μ s = ∞ * pull hU ν s`. Introduce `s`.
+
+Use `congrArg (fun m : Measure (Gp U hU) => m s) key` as an intermediate fact. Simplify `this` using `only [Measure.smul_apply, smul_eq_mul, h]`. Establish `e` using `e0 (spanningSets (pull hU μ) n)`. Distinguish the cases in `hz : pull hU ν (spanningSets (pull hU μ) n) = 0`. Rewrite `hn` using `[e, hz, mul_zero]`.
+
+Conclude with `lt_irrefl _ hn`. Rewrite `hfin` using `[e, ENNReal.top_mul hz]`. Conclude with `lt_irrefl _ hfin`. Use `⟨c, hc0, hc1, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem hu_eq_smul {U : Set (Mat k r)} (hU : IsClosedSubgroup U) {ν μ : Measure (Mt k r)}
     (hν : Formalism.FourierDecayAlt.B.IsHaarOn U ν) (hμ : Formalism.MainNotions.S.IsHaarOn U μ) : ∃ c : ℝ≥0∞, c ≠ 0 ∧ c ≠ ∞ ∧ μ = c • ν := by
   obtain ⟨hσ, h0, hc, hl⟩ := hμ
@@ -98,11 +125,17 @@ theorem hu_eq_smul {U : Set (Mat k r)} (hU : IsClosedSubgroup U) {ν μ : Measur
     _ = (c • pull hU ν).map inc := by rw [← key]
     _ = c • ν := by rw [Measure.map_smul, map_pull ν hν.conc]
 
+/- English proof (translation)
+Take `⟨c, hc0, hc1, rfl⟩` from `hu_eq_smul hU hν hμ`. Conclude with `hu_smul hν hc0 hc1`.
+-/
 theorem hu_general {U : Set (Mat k r)} (hU : IsClosedSubgroup U) {ν μ : Measure (Mt k r)}
     (hν : Formalism.FourierDecayAlt.B.IsHaarOn U ν) (hμ : Formalism.MainNotions.S.IsHaarOn U μ) : Formalism.FourierDecayAlt.B.IsHaarOn U μ := by
   obtain ⟨c, hc0, hc1, rfl⟩ := hu_eq_smul hU hν hμ
   exact hu_smul hν hc0 hc1
 
+/- English proof (translation)
+Use `⟨fun k r z μ hz hT hμ => ?_, fun k r μ hμ => ?_⟩` and prove the remaining obligations. Take `⟨ν, hν⟩` from `Formalism.FourierDecayAlt.P.weyl_haar_exists k r z hz hT`. Conclude with `hu_general (Formalism.FourierDecayAlt.P.weyl_subgroup_closed k r z) hν hμ`. Take `⟨ν, hν⟩` from `Formalism.FourierDecayAlt.P.unipotent_haar_exists k r`. Conclude with `hu_general (Formalism.FourierDecayAlt.P.unipotent_radical_closed k r) hν hμ`.
+-/
 theorem hu_haarUp :
     (∀ (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ) (μ : Measure (Mt k r)), inWb k r z → 0 < Tz k r z →
       Formalism.MainNotions.S.IsHaarOn (UWset k r z) μ → Formalism.FourierDecayAlt.B.IsHaarOn (UWset k r z) μ) ∧
@@ -113,6 +146,9 @@ theorem hu_haarUp :
   · obtain ⟨ν, hν⟩ := Formalism.FourierDecayAlt.P.unipotent_haar_exists k r
     exact hu_general (Formalism.FourierDecayAlt.P.unipotent_radical_closed k r) hν hμ
 
+/- English proof (translation)
+Take `⟨ν, hν⟩` from `Formalism.FourierDecayAlt.P.unitary_group_haar_exists k r`. Conclude with `hu_general (Formalism.FourierDecayAlt.P.unitary_group_closed k r) hν hμ`.
+-/
 theorem hu_haarG (k r : ℕ) (μ : Measure (Mt k r)) (hμ : Formalism.MainNotions.S.IsHaarOn (UH (Hpk k r)) μ) :
     Formalism.FourierDecayAlt.B.IsHaarOn (GV k r) μ := by
   obtain ⟨ν, hν⟩ := Formalism.FourierDecayAlt.P.unitary_group_haar_exists k r
@@ -148,13 +184,26 @@ def rp_blk (k r : ℕ) (m : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) �
 def rp_Std (k r : ℕ) (m : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) : Prop :=
   ∀ i, ¬ rp_Mid k r i → (∀ j, m i j = if i = j then 1 else 0) ∧ (∀ j, m j i = if j = i then 1 else 0)
 
+/- English proof (translation)
+Use `i.2` as an intermediate fact. Apply the tactic sequence `constructor <;> simp only [rp_ι] <;> omega`.
+-/
 theorem rp_mid_ι (i : Fin k) : rp_Mid k r (rp_ι k r i) := by
   have := i.2
   constructor <;> simp only [rp_ι] <;> omega
 
+/- English proof (translation)
+Introduce `a b hab` and use `Fin.ext (by have := congrArg Fin.val hab; simpa [rp_ι] using this)`.
+-/
 theorem rp_ι_inj : Function.Injective (rp_ι k r) := fun a b hab =>
   Fin.ext (by have := congrArg Fin.val hab; simpa [rp_ι] using this)
 
+/- English proof (translation)
+Use extensionality with `i j`. Unfold `blockW`. Distinguish the cases in `hi : r ≤ i.val ∧ i.val < r + k`. Rewrite using `[dif_pos hi]`. Distinguish the cases in `hj : r ≤ j.val ∧ j.val < r + k`.
+
+Rewrite using `[dif_pos hj]`. Establish `e1 : rp_ι k r ⟨i.val - r, by omega⟩ = i` using `Fin.ext (by simp only [rp_ι]; omega)`. Establish `e2 : rp_ι k r ⟨j.val - r, by omega⟩ = j` using `Fin.ext (by simp only [rp_ι]; omega)`. Simplify using `only [rp_blk, e1, e2]`. Rewrite using `[dif_neg hj, (h j hj).2 i, if_neg]`.
+
+Introduce and unpack `rfl`. Conclude with `hj hi`. Rewrite using `[dif_neg hi, (h i hi).1 j]`.
+-/
 theorem rp_eq_blockW (m : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) (h : rp_Std k r m) :
     m = blockW k r (rp_blk k r m) := by
   ext i j
@@ -171,6 +220,11 @@ theorem rp_eq_blockW (m : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ
       exact hj hi
   · rw [dif_neg hi, (h i hi).1 j]
 
+/- English proof (translation)
+Use `symm`. Use `Fintype.sum_of_injective (rp_ι k r) rp_ι_inj _ _ ?_ (fun _ => rfl)` and prove the remaining obligations. Introduce `l hl`. Apply `h` to reduce the goal to its premises. Introduce `hm`.
+
+Conclude with `hl ⟨⟨l.val - r, by have := hm.2; have := hm.1; omega⟩, Fin.ext (by simp only [rp_ι]; have := hm.1; omega)⟩`.
+-/
 theorem rp_sum (f : Fin (2 * r + k + 1) → ℂ) (h : ∀ l, ¬ rp_Mid k r l → f l = 0) :
     ∑ l, f l = ∑ i, f (rp_ι k r i) := by
   symm
@@ -180,6 +234,11 @@ theorem rp_sum (f : Fin (2 * r + k + 1) → ℂ) (h : ∀ l, ¬ rp_Mid k r l →
   intro hm
   exact hl ⟨⟨l.val - r, by have := hm.2; have := hm.1; omega⟩, Fin.ext (by simp only [rp_ι]; have := hm.1; omega)⟩
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [rp_blk, Matrix.mul_apply]`. Use `rp_sum _ fun l hl => ?_` and prove the remaining obligations. Rewrite using `[(ha l hl).2 (rp_ι k r i), if_neg, zero_mul]`. Introduce and unpack `rfl`.
+
+Conclude with `hl (rp_mid_ι i)`.
+-/
 theorem rp_blk_mul (a b : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) (ha : rp_Std k r a) :
     rp_blk k r (a * b) = rp_blk k r a * rp_blk k r b := by
   ext i j
@@ -189,6 +248,9 @@ theorem rp_blk_mul (a b : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ
   rintro rfl
   exact hl (rp_mid_ι i)
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [rp_blk, Matrix.one_apply]`. Distinguish the cases in `h : i = j`. Rewrite using `[if_pos h, if_pos (by rw [h])]`. Rewrite using `[if_neg h, if_neg (fun e => h (rp_ι_inj e))]`.
+-/
 theorem rp_blk_one : rp_blk k r 1 = 1 := by
   ext i j
   simp only [rp_blk, Matrix.one_apply]
@@ -196,16 +258,29 @@ theorem rp_blk_one : rp_blk k r 1 = 1 := by
   · rw [if_pos h, if_pos (by rw [h])]
   · rw [if_neg h, if_neg (fun e => h (rp_ι_inj e))]
 
+/- English proof (translation)
+Use extensionality with `i`. Simplify using `[bvec, Matrix.mulVec, dotProduct, Pi.single_apply]`.
+-/
 theorem rp_mulVec_bvec {n : ℕ} (M : Matrix (Fin n) (Fin n) ℂ) (c : Fin n) : M *ᵥ bvec c = fun i => M i c := by
   ext i
   simp [bvec, Matrix.mulVec, dotProduct, Pi.single_apply]
 
+/- English proof (translation)
+Establish `e` using `congrFun h l`. Rewrite `e` using `[rp_mulVec_bvec]`. Simplify `e` using `[bvec, Pi.single_apply]`.
+-/
 theorem rp_col {n : ℕ} (g : Matrix (Fin n) (Fin n) ℂ) (c : Fin n) (h : g *ᵥ bvec c = bvec c) (l : Fin n) :
     g l c = if l = c then 1 else 0 := by
   have e := congrFun h l
   rw [rp_mulVec_bvec] at e
   simpa [bvec, Pi.single_apply] using e
 
+/- English proof (translation)
+Establish `h1 : mᴴ *ᵥ (H *ᵥ (m *ᵥ bvec c)) = H *ᵥ bvec c`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hm]`. Rewrite `h1` using `[hc, hH, Matrix.mulVec_smul]`. Establish `h2 : mᴴ *ᵥ bvec i = bvec i` using `smul_right_injective _ hs h1`. Establish `h3` using `rp_col mᴴ i h2 j`.
+
+Rewrite `h3` using `[Matrix.conjTranspose_apply]`. Establish `h4` using `congrArg star h3`. Rewrite `h4` using `[star_star]`. Rewrite using `[h4]`. Distinguish the cases in `hij : i = j`.
+
+Rewrite using `[if_pos hij, if_pos hij.symm, star_one]`. Rewrite using `[if_neg hij, if_neg (fun e => hij e.symm), star_zero]`.
+-/
 theorem rp_rowOf {n : ℕ} (m H : Matrix (Fin n) (Fin n) ℂ) (hm : mᴴ * H * m = H) (c i : Fin n) (s : ℂ) (hs : s ≠ 0)
     (hc : m *ᵥ bvec c = bvec c) (hH : H *ᵥ bvec c = s • bvec i) (j : Fin n) : m i j = if i = j then 1 else 0 := by
   have h1 : mᴴ *ᵥ (H *ᵥ (m *ᵥ bvec c)) = H *ᵥ bvec c := by
@@ -221,6 +296,11 @@ theorem rp_rowOf {n : ℕ} (m H : Matrix (Fin n) (Fin n) ℂ) (hm : mᴴ * H * m
   · rw [if_pos hij, if_pos hij.symm, star_one]
   · rw [if_neg hij, if_neg (fun e => hij e.symm), star_zero]
 
+/- English proof (translation)
+Rewrite using `[rp_mulVec_bvec]`. Use extensionality with `i`. Use `a.2` as an intermediate fact. Use `i.2` as an intermediate fact. Simplify using `only [Hpk, esI, eI, bvec, Pi.smul_apply, Pi.single_apply, Fin.ext_iff, smul_eq_mul, one_mul]`.
+
+Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega)`.
+-/
 theorem rp_H_e (a : Fin r) : Hpk k r *ᵥ bvec (eI k r a) = (1 : ℂ) • bvec (esI k r a) := by
   rw [rp_mulVec_bvec]
   ext i
@@ -229,6 +309,11 @@ theorem rp_H_e (a : Fin r) : Hpk k r *ᵥ bvec (eI k r a) = (1 : ℂ) • bvec (
   simp only [Hpk, esI, eI, bvec, Pi.smul_apply, Pi.single_apply, Fin.ext_iff, smul_eq_mul, one_mul]
   split_ifs <;> first | rfl | (exfalso; omega)
 
+/- English proof (translation)
+Rewrite using `[rp_mulVec_bvec]`. Use extensionality with `i`. Use `a.2` as an intermediate fact. Use `i.2` as an intermediate fact. Simplify using `only [Hpk, esI, eI, bvec, Pi.smul_apply, Pi.single_apply, Fin.ext_iff, smul_eq_mul, one_mul]`.
+
+Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega)`.
+-/
 theorem rp_H_es (a : Fin r) : Hpk k r *ᵥ bvec (esI k r a) = (1 : ℂ) • bvec (eI k r a) := by
   rw [rp_mulVec_bvec]
   ext i
@@ -237,6 +322,9 @@ theorem rp_H_es (a : Fin r) : Hpk k r *ᵥ bvec (esI k r a) = (1 : ℂ) • bvec
   simp only [Hpk, esI, eI, bvec, Pi.smul_apply, Pi.single_apply, Fin.ext_iff, smul_eq_mul, one_mul]
   split_ifs <;> first | rfl | (exfalso; omega)
 
+/- English proof (translation)
+Rewrite using `[rp_mulVec_bvec]`. Use extensionality with `i`. Use `i.2` as an intermediate fact. Simplify using `only [Hpk, wI, bvec, Pi.smul_apply, Pi.single_apply, Fin.ext_iff, smul_eq_mul, Fin.val_last]`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega) | simp`.
+-/
 theorem rp_H_w : Hpk k r *ᵥ bvec (wI k r (Fin.last k)) = (-1 : ℂ) • bvec (wI k r (Fin.last k)) := by
   rw [rp_mulVec_bvec]
   ext i
@@ -244,6 +332,9 @@ theorem rp_H_w : Hpk k r *ᵥ bvec (wI k r (Fin.last k)) = (-1 : ℂ) • bvec (
   simp only [Hpk, wI, bvec, Pi.smul_apply, Pi.single_apply, Fin.ext_iff, smul_eq_mul, Fin.val_last]
   split_ifs <;> first | rfl | (exfalso; omega) | simp
 
+/- English proof (translation)
+Use `i.2` as an intermediate fact. Use `j.2` as an intermediate fact. Take `⟨h1, h2⟩` from `hi`. Simplify using `only [Hpk, Fin.ext_iff]`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega)`.
+-/
 theorem rp_H_mid (i : Fin (2 * r + k + 1)) (hi : rp_Mid k r i) (j : Fin (2 * r + k + 1)) :
     Hpk k r i j = if i = j then 1 else 0 := by
   have := i.2
@@ -252,6 +343,13 @@ theorem rp_H_mid (i : Fin (2 * r + k + 1)) (hi : rp_Mid k r i) (j : Fin (2 * r +
   simp only [Hpk, Fin.ext_iff]
   split_ifs <;> first | rfl | (exfalso; omega)
 
+/- English proof (translation)
+Introduce `i hi`. Establish `hi2` using `i.2`. Establish `hcase : i.val < r ∨ i.val = r + k ∨ r + k < i.val`. Unfold `rp_Mid at hi`. Use linear arithmetic over natural numbers and integers.
+
+Break down `hcase with h | h | h` into its components or cases. Take `⟨a, rfl⟩ : ∃ a, i = eI k r a` from `⟨⟨i.val, h⟩, rfl⟩`. Conclude with `⟨fun j => rp_rowOf m _ hU (esI k r a) _ 1 one_ne_zero (hfix a).2 (rp_H_es a) j, fun j => rp_col m _ (hfix a).1 j⟩`. Take `rfl : i = wI k r (Fin.last k)` from `Fin.ext (by simp only [wI, Fin.val_last]; omega)`. Conclude with `⟨fun j => rp_rowOf m _ hU _ _ (-1) (by norm_num) hw rp_H_w j, fun j => rp_col m _ hw j⟩`.
+
+Take `⟨a, rfl⟩ : ∃ a, i = esI k r a` from `⟨⟨2 * r + k - i.val, by omega⟩, Fin.ext (by simp only [esI]; omega)⟩`. Conclude with `⟨fun j => rp_rowOf m _ hU (eI k r a) _ 1 one_ne_zero (hfix a).1 (rp_H_e a) j, fun j => rp_col m _ (hfix a).2 j⟩`.
+-/
 theorem rp_std_of_fix (m : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) (hU : m ∈ UH (Hpk k r))
     (hfix : ∀ a : Fin r, m *ᵥ bvec (eI k r a) = bvec (eI k r a) ∧ m *ᵥ bvec (esI k r a) = bvec (esI k r a))
     (hw : m *ᵥ bvec (wI k r (Fin.last k)) = bvec (wI k r (Fin.last k))) : rp_Std k r m := by
@@ -271,6 +369,15 @@ theorem rp_std_of_fix (m : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) �
     exact ⟨fun j => rp_rowOf m _ hU (eI k r a) _ 1 one_ne_zero (hfix a).1 (rp_H_e a) j,
       fun j => rp_col m _ (hfix a).2 j⟩
 
+/- English proof (translation)
+Use extensionality with `i j`. Establish `e` using `congrFun (congrFun (show mᴴ * Hpk k r * m = Hpk k r from hU) (rp_ι k r i)) (rp_ι k r j)`. Rewrite `e` using `[Matrix.mul_assoc, Matrix.mul_apply, rp_H_mid _ (rp_mid_ι i)]`. Establish `e2 : ∑ l, mᴴ (rp_ι k r i) l * (Hpk k r * m) l (rp_ι k r j) = ∑ a, mᴴ (rp_ι k r i) (rp_ι k r a) * (Hpk k r * m) (rp_ι k r a) (rp_ι k r j)` using `rp_sum _ fun l hl => by`. Rewrite using `[Matrix.conjTranspose_apply, (hs l hl).1 (rp_ι k r i), if_neg, star_zero, zero_mul]`.
+
+Introduce and unpack `rfl`. Conclude with `hl (rp_mid_ι i)`. Establish `e3 : ∀ a, (Hpk k r * m) (rp_ι k r a) (rp_ι k r j) = m (rp_ι k r a) (rp_ι k r j)`. Introduce `a`. Rewrite using `[Matrix.mul_apply]`.
+
+Simplify using `only [rp_H_mid _ (rp_mid_ι a), ite_mul, one_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Rewrite `e` using `[e2]`. Simplify using `only [e3] at e`. Simplify using `only [Matrix.mul_apply, Matrix.conjTranspose_apply, rp_blk, Matrix.one_apply]`. Simplify using `only [Matrix.conjTranspose_apply] at e`.
+
+Rewrite using `[e]`. Distinguish the cases in `h : i = j`. Rewrite using `[if_pos h, if_pos (by rw [h])]`. Rewrite using `[if_neg h, if_neg (fun e => h (rp_ι_inj e))]`.
+-/
 theorem rp_blk_unitary (m : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) (hU : m ∈ UH (Hpk k r))
     (hs : rp_Std k r m) : (rp_blk k r m)ᴴ * rp_blk k r m = 1 := by
   ext i j
@@ -295,6 +402,9 @@ theorem rp_blk_unitary (m : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) �
   · rw [if_pos h, if_pos (by rw [h])]
   · rw [if_neg h, if_neg (fun e => h (rp_ι_inj e))]
 
+/- English proof (translation)
+Establish `hJ : Formalism.REAL.Jm (allPos k) = 1`. Simplify using `[Formalism.REAL.Jm, allPos]`. Use `show (rp_blk k r m)ᴴ * Formalism.REAL.Jm (allPos k) * rp_blk k r m = Formalism.REAL.Jm (allPos k)`. Rewrite using `[hJ, Matrix.mul_one, rp_blk_unitary m hU hs]`.
+-/
 theorem rp_blk_mem (m : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) (hU : m ∈ UH (Hpk k r))
     (hs : rp_Std k r m) : rp_blk k r m ∈ UJset (allPos k) := by
   have hJ : Formalism.REAL.Jm (allPos k) = 1 := by
@@ -304,6 +414,31 @@ theorem rp_blk_mem (m : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) 
 
 end aux
 
+/- English proof (translation)
+Introduce `k r z u H _ _ π _ hT hπ0`. Take `⟨g, ⟨hgU, hgfix, hgz⟩, -, hfd, ⟨⟨hσ1, hσm⟩, hσi, hσc⟩, -⟩` from `hπ0`. Establish `hsq : Hpk k r * Hpk k r = 1` using `(hpkFacts k r).2.1`. Establish `hdet : IsUnit (Hpk k r).det` using `(Matrix.isUnit_iff_isUnit_det _).mp ⟨⟨Hpk k r, Hpk k r, hsq, hsq⟩, rfl⟩`. Take `⟨hone, hmul, hinv⟩` from `uHGroup _ (Hpk k r) hdet`.
+
+Take `⟨hgdet, hgi⟩` from `hinv g hgU`. Establish `hgg : g⁻¹ * g = 1` using `Matrix.nonsing_inv_mul g hgdet`. Establish `hgg' : g * g⁻¹ = 1` using `Matrix.mul_nonsing_inv g hgdet`. Establish `hfixv : ∀ (h : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) (v : Fin (2 * r + k + 1) → ℂ), h *ᵥ (g *ᵥ v) = g *ᵥ v → (g⁻¹ * h * g) *ᵥ v = v`. Introduce `h v hv`.
+
+Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hv, Matrix.mulVec_mulVec, hgg, Matrix.one_mulVec]`. Establish `hs0 : ((Real.sqrt (Tz k r z) : ℝ) : ℂ) ≠ 0`. Conclude with `(Real.sqrt_pos.mpr hT).ne'` after adjusting the coercions. Establish `key : ∀ h ∈ UWset k r z, (g⁻¹ * h * g) ∈ UH (Hpk k r) ∧ rp_Std k r (g⁻¹ * h * g)`. Introduce `h hh`.
+
+Take `⟨hhU, hhfix, hhz⟩` from `hh`. Establish `hU : (g⁻¹ * h * g) ∈ UH (Hpk k r)` using `hmul _ (hmul _ hgi _ hhU) _ hgU`. Use `⟨hU, rp_std_of_fix _ hU (fun a => ⟨?_, ?_⟩) ?_⟩` and prove the remaining obligations. Conclude with `hfixv h _ (by rw [(hgfix a).1]; exact (hhfix a).1)`. Conclude with `hfixv h _ (by rw [(hgfix a).2]; exact (hhfix a).2)`.
+
+Establish `h1` using `hfixv h _ (by rw [hgz]; exact hhz)`. Rewrite `h1` using `[Matrix.mulVec_smul]`. Conclude with `smul_right_injective _ hs0 h1`. Establish `hback : ∀ h : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ, g * (g⁻¹ * h * g) * g⁻¹ = h`. Introduce `h`.
+
+Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, hgg', Matrix.one_mul, Matrix.mul_assoc, hgg', Matrix.mul_one]`. Establish `hπ : ∀ h ∈ UWset k r z, π h = π (g * blockW k r (rp_blk k r (g⁻¹ * h * g)) * g⁻¹)`. Introduce `h hh`. Rewrite using `[← rp_eq_blockW _ (key h hh).2, hback]`. Establish `hmem : ∀ h ∈ UWset k r z, rp_blk k r (g⁻¹ * h * g) ∈ UJset (allPos k)` using `fun h hh => rp_blk_mem _ (key h hh).1 (key h hh).2`.
+
+Establish `h1mem : (1 : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) ∈ UWset k r z` using `⟨hone, fun a => ⟨Matrix.one_mulVec _, Matrix.one_mulVec _⟩, Matrix.one_mulVec _⟩`. Use `⟨⟨?_, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hπ 1 h1mem, Matrix.mul_one, hgg, rp_blk_one]`. Conclude with `hσ1`. Introduce `a ha b hb`.
+
+Establish `hab : a * b ∈ UWset k r z`. Use `⟨hmul _ ha.1 _ hb.1, fun c => ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← Matrix.mulVec_mulVec, (hb.2.1 c).1, (ha.2.1 c).1]`. Rewrite using `[← Matrix.mulVec_mulVec, (hb.2.1 c).2, (ha.2.1 c).2]`. Rewrite using `[← Matrix.mulVec_mulVec, hb.2.2, ha.2.2]`.
+
+Establish `hsplit : g⁻¹ * (a * b) * g = (g⁻¹ * a * g) * (g⁻¹ * b * g)`. Establish `: (g⁻¹ * a * g) * (g⁻¹ * b * g) = g⁻¹ * a * (g * g⁻¹) * b * g`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[this, hgg', Matrix.mul_one]`. Simplify using `only [Matrix.mul_assoc]`.
+
+Rewrite using `[hπ _ hab, hπ a ha, hπ b hb, hsplit, rp_blk_mul _ _ (key a ha).2]`. Conclude with `hσm _ (hmem a ha) _ (hmem b hb)`. Introduce `h hh v`. Rewrite using `[hπ h hh]`. Conclude with `hσi _ (hmem h hh) v`.
+
+Use `hfd` as an intermediate fact. Establish `hσC : ContinuousOn (fun x => π (g * blockW k r x * g⁻¹)) (UJset (allPos k))` using `continuousOn_clm_apply.2 hσc`. Establish `hb : Continuous fun h : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ => rp_blk k r (g⁻¹ * h * g)`. Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Conclude with `((continuous_const.matrix_mul continuous_id).matrix_mul continuous_const).matrix_elem _ _`.
+
+Conclude with `(hσC.comp hb.continuousOn hmem).congr hπ`.
+-/
 theorem rp_repOfHC :
     ∀ (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ) (u : Fin k → ℝ) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H]
       (π : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ → (H →L[ℂ] H)), inWb k r z → 0 < Tz k r z →
@@ -408,14 +543,31 @@ def cal_expE : List (cal_Ix k r) → List (ℂ × List (Mat k r))
   | ab :: w => ((cal_expE w).map fun cv => (cv.1, hermitianRealPartUnit ab :: cv.2)) ++
       ((cal_expE w).map fun cv => (Complex.I * cv.1, hermitianImagPartUnit ab :: cv.2))
 
+/- English proof (translation)
+The claim follows from `(hpkFacts k r).1`.
+-/
 theorem cal_Hh : (Hpk k r)ᴴ = Hpk k r := (hpkFacts k r).1
+/- English proof (translation)
+The claim follows from `(hpkFacts k r).2.1`.
+-/
 theorem cal_HH : Hpk k r * Hpk k r = 1 := (hpkFacts k r).2.1
+/- English proof (translation)
+The claim follows from `Matrix.inv_eq_right_inv cal_HH`.
+-/
 theorem cal_Hinv : (Hpk k r)⁻¹ = Hpk k r := Matrix.inv_eq_right_inv cal_HH
 
+/- English proof (translation)
+Rewrite using `[eq_comm, eq_div_iff (mul_ne_zero two_ne_zero Complex.I_ne_zero)]`. Take the linear combination `(-1 : ℂ) * Complex.I_sq`.
+-/
 theorem cal_twoI : (1 / (2 * Complex.I) : ℂ) = -(Complex.I / 2) := by
   rw [eq_comm, eq_div_iff (mul_ne_zero two_ne_zero Complex.I_ne_zero)]
   linear_combination (-1 : ℂ) * Complex.I_sq
 
+/- English proof (translation)
+Unfold `inLie hpart1`. Rewrite using `[cal_Hinv, conjTranspose_smul, conjTranspose_sub, conjTranspose_mul, conjTranspose_mul, conjTranspose_conjTranspose, cal_Hh, Matrix.smul_mul, Matrix.mul_smul, Matrix.sub_mul, Matrix.mul_sub]`. Establish `e1 : Hpk k r * (Z * Hpk k r) * Hpk k r = Hpk k r * Z`. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, cal_HH, Matrix.mul_one]`. Establish `e2 : Hpk k r * (Hpk k r * Zᴴ * Hpk k r) = Zᴴ * Hpk k r`.
+
+Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc, cal_HH, Matrix.one_mul]`. Rewrite using `[e1, e2]`. Establish `: star (1 / 2 : ℂ) = 1 / 2` using `by simp`. Rewrite using `[this, ← smul_add]`. Simplify using the standard rewrite rules.
+-/
 theorem cal_hpart1_lie (Z : Mat k r) : inLie k r (hpart1 (Hpk k r) Z) := by
   unfold inLie hpart1
   rw [cal_Hinv, conjTranspose_smul, conjTranspose_sub, conjTranspose_mul, conjTranspose_mul, conjTranspose_conjTranspose,
@@ -429,6 +581,13 @@ theorem cal_hpart1_lie (Z : Mat k r) : inLie k r (hpart1 (Hpk k r) Z) := by
   rw [this, ← smul_add]
   simp
 
+/- English proof (translation)
+Unfold `inLie hpart2`. Rewrite using `[cal_twoI, cal_Hinv, conjTranspose_smul, conjTranspose_add, conjTranspose_mul, conjTranspose_mul, conjTranspose_conjTranspose, cal_Hh, Matrix.smul_mul, Matrix.mul_smul, Matrix.add_mul, Matrix.mul_add]`. Establish `e1 : Hpk k r * (Z * Hpk k r) * Hpk k r = Hpk k r * Z`. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, cal_HH, Matrix.mul_one]`. Establish `e2 : Hpk k r * (Hpk k r * Zᴴ * Hpk k r) = Zᴴ * Hpk k r`.
+
+Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc, cal_HH, Matrix.one_mul]`. Rewrite using `[e1, e2]`. Establish `: star (-(Complex.I / 2) : ℂ) = Complex.I / 2`. Simplify using `[Complex.conj_I]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[this, neg_smul, add_comm (Hpk k r * Z)]`. Simplify using the standard rewrite rules.
+-/
 theorem cal_hpart2_lie (Z : Mat k r) : inLie k r (hpart2 (Hpk k r) Z) := by
   unfold inLie hpart2
   rw [cal_twoI, cal_Hinv, conjTranspose_smul, conjTranspose_add, conjTranspose_mul, conjTranspose_mul,
@@ -444,9 +603,22 @@ theorem cal_hpart2_lie (Z : Mat k r) : inLie k r (hpart2 (Hpk k r) Z) := by
   rw [this, neg_smul, add_comm (Hpk k r * Z)]
   simp
 
+/- English proof (translation)
+The claim follows from `cal_hpart1_lie _`.
+-/
 theorem hermitian_real_part_index_lie (ab : cal_Ix k r) : inLie k r (hermitianRealPartUnit ab) := cal_hpart1_lie _
+/- English proof (translation)
+The claim follows from `cal_hpart2_lie _`.
+-/
 theorem hermitian_imag_part_index_lie (ab : cal_Ix k r) : inLie k r (hermitianImagPartUnit ab) := cal_hpart2_lie _
 
+/- English proof (translation)
+Proceed by induction on `w with`. Consider the case `nil => intro cv h`. Simplify using `[cal_expE] at h`. Simplify using `[h]`. Consider the case `cons ab w ih`.
+
+Introduce `cv h X hX`. Simplify using `only [cal_expE, List.mem_append, List.mem_map] at h`. Break down `h with ⟨cv', h', rfl⟩ | ⟨cv', h', rfl⟩` into its components or cases. Break down `List.mem_cons.1 hX with rfl | hX` into its components or cases. Conclude with `hermitian_real_part_index_lie ab`.
+
+Conclude with `ih cv' h' X hX`. Break down `List.mem_cons.1 hX with rfl | hX` into its components or cases. Conclude with `hermitian_imag_part_index_lie ab`. Conclude with `ih cv' h' X hX`.
+-/
 theorem cal_expE_lie (w : List (cal_Ix k r)) : ∀ cv ∈ cal_expE w, ∀ X ∈ cv.2, inLie k r X := by
   induction w with
   | nil => intro cv h; simp [cal_expE] at h; simp [h]
@@ -677,10 +849,18 @@ def hsColumnsInverse : PiLp 2 (fun _ : Fin (Module.finrank ℂ Wq) => Wp) →L[�
   ∑ i, (ContinuousLinearMap.smulRightL ℂ Wq Wp (innerSL ℂ (stdOrthonormalBasis ℂ Wq i))).comp
     (PiLp.proj 2 (fun _ : Fin (Module.finrank ℂ Wq) => Wp) i)
 
+/- English proof (translation)
+Simplify using `[hsColumnsInverse]`.
+-/
 theorem hs_columns_inverse_apply (y : PiLp 2 (fun _ : Fin (Module.finrank ℂ Wq) => Wp)) (x : Wq) :
     hsColumnsInverse y x = ∑ i, ⟪stdOrthonormalBasis ℂ Wq i, x⟫_ℂ • y i := by
   simp [hsColumnsInverse]
 
+/- English proof (translation)
+Use extensionality with `x`. Rewrite using `[hs_columns_inverse_apply]`. Use `conv_rhs => rw [← (stdOrthonormalBasis ℂ Wq).sum_repr' x]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_smul]`. Both sides reduce to the same expression.
+-/
 theorem hs_columns_inverse_left_inv (A : Wq →L[ℂ] Wp) : hsColumnsInverse (hsVec A) = A := by
   ext x
   rw [hs_columns_inverse_apply]
@@ -690,6 +870,9 @@ theorem hs_columns_inverse_left_inv (A : Wq →L[ℂ] Wp) : hsColumnsInverse (hs
   rw [map_smul]
   rfl
 
+/- English proof (translation)
+Use extensionality with `i`. Use `show hsColumnsInverse y (stdOrthonormalBasis ℂ Wq i) = y i`. Rewrite using `[hs_columns_inverse_apply]`. Establish `h` using `(stdOrthonormalBasis ℂ Wq).orthonormal`. Simplify using `[orthonormal_iff_ite.1 h]`.
+-/
 theorem hs_columns_right_inv (y : PiLp 2 (fun _ : Fin (Module.finrank ℂ Wq) => Wp)) : hsVec (hsColumnsInverse y) = y := by
   ext i
   show hsColumnsInverse y (stdOrthonormalBasis ℂ Wq i) = y i
@@ -702,6 +885,9 @@ def hsAdjoint (T : (Wq →L[ℂ] Wp) →L[ℂ] (Wq →L[ℂ] Wp)) : (Wq →L[ℂ
   hsColumnsInverse.comp ((ContinuousLinearMap.adjoint ((B5.hsL (Wp := Wp) (Wq := Wq)).comp (T.comp hsColumnsInverse))).comp
     (B5.hsL (Wp := Wp) (Wq := Wq)))
 
+/- English proof (translation)
+Establish `: CompleteSpace Wp` using `FiniteDimensional.complete ℂ Wp`. Unfold `hsInner hsAdjoint`. Simplify using `only [ContinuousLinearMap.comp_apply, B5.hsL_apply, hs_columns_right_inv]`. Rewrite using `[ContinuousLinearMap.adjoint_inner_left]`. Simplify using `only [ContinuousLinearMap.comp_apply, B5.hsL_apply, hs_columns_inverse_left_inv]`.
+-/
 theorem hs_inner_adjoint_identity (T : (Wq →L[ℂ] Wp) →L[ℂ] (Wq →L[ℂ] Wp)) (A B : Wq →L[ℂ] Wp) :
     hsInner (T A) B = hsInner A (hsAdjoint T B) := by
   have : CompleteSpace Wp := FiniteDimensional.complete ℂ Wp
@@ -710,11 +896,17 @@ theorem hs_inner_adjoint_identity (T : (Wq →L[ℂ] Wp) →L[ℂ] (Wq →L[ℂ]
   rw [ContinuousLinearMap.adjoint_inner_left]
   simp only [ContinuousLinearMap.comp_apply, B5.hsL_apply, hs_columns_inverse_left_inv]
 
+/- English proof (translation)
+Establish `: CompleteSpace Wp` using `FiniteDimensional.complete ℂ Wp`. Unfold `hsAdjoint`. Simplify using `only [ContinuousLinearMap.add_comp, ContinuousLinearMap.comp_add, map_add]`.
+-/
 theorem hs_adjoint_add (S T : (Wq →L[ℂ] Wp) →L[ℂ] (Wq →L[ℂ] Wp)) : hsAdjoint (S + T) = hsAdjoint S + hsAdjoint T := by
   have : CompleteSpace Wp := FiniteDimensional.complete ℂ Wp
   unfold hsAdjoint
   simp only [ContinuousLinearMap.add_comp, ContinuousLinearMap.comp_add, map_add]
 
+/- English proof (translation)
+Establish `: CompleteSpace Wp` using `FiniteDimensional.complete ℂ Wp`. Establish `e : ∀ (X : (Wq →L[ℂ] Wp) →L[ℂ] (Wq →L[ℂ] Wp)), c • X = (c : ℂ) • X` using `fun X => by ext; simp`. Rewrite using `[e, e]`. Unfold `hsAdjoint`. Simplify using `only [ContinuousLinearMap.smul_comp, ContinuousLinearMap.comp_smul, map_smulₛₗ, Complex.conj_ofReal]`.
+-/
 theorem hs_adjoint_real_smul (c : ℝ) (T : (Wq →L[ℂ] Wp) →L[ℂ] (Wq →L[ℂ] Wp)) : hsAdjoint (c • T) = c • hsAdjoint T := by
   have : CompleteSpace Wp := FiniteDimensional.complete ℂ Wp
   have e : ∀ (X : (Wq →L[ℂ] Wp) →L[ℂ] (Wq →L[ℂ] Wp)), c • X = (c : ℂ) • X := fun X => by
@@ -899,8 +1091,14 @@ namespace Formalism.MainNotions.BridgeLemma₃
 
 open Formalism.MainNotions Formalism.MainNotions.S.TopsChoicePartA Formalism.MainNotions.BridgeLemma₅
 
+/- English proof (translation)
+The claim follows from `hu_haarUp`.
+-/
 theorem lbHaarUp_proved : lbHaarUp := hu_haarUp
 
+/- English proof (translation)
+The claim follows from `rp_repOfHC`.
+-/
 theorem lbRepOfHC_proved : lbRepOfHC := rp_repOfHC
 
 end Formalism.MainNotions.BridgeLemma₃

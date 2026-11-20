@@ -28,6 +28,9 @@ variable {K L : Type*} [Field K] [Field L] [Algebra K L]
 
 variable [Algebra K ℂ]
 
+/- English proof (translation)
+The claim follows from `stable_iff_exists_baseChange (fun σ : ℂ ≃ₐ[K] ℂ => σ.toAlgHom) complex_mem_range_of_forall_algEquiv W`.
+-/
 theorem complex_stable_iff_exists_baseChange {V : Type*} [AddCommGroup V]
     [Module K V] (W : Submodule ℂ (ℂ ⊗[K] V)) :
     (∀ σ : ℂ ≃ₐ[K] ℂ, ∀ w ∈ W, σ.toLinearMap.rTensor V w ∈ W) ↔

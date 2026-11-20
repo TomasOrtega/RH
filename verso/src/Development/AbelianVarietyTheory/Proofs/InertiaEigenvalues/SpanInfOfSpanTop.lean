@@ -12,6 +12,13 @@ namespace GlobalTheory.IntRestBall
 
 open GlobalTheory.TwAll
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Conclude with `fun f hf => ((hM f).1 hf).2`. Introduce `f hf`. Establish `h1 : f ∈ Submodule.span (FractionRing O) (B : Set V)` using `hB ▸ Submodule.mem_top`.
+
+Take `⟨t, ht⟩` from `multiple_mem_span_of_mem_localization_span (nonZeroDivisors O) (FractionRing O) (B : Set V) f h1`. Rewrite `ht` using `[Submodule.span_eq]`. Establish `e : t • f = (algebraMap O (FractionRing O) t) • f`. Rewrite using `[algebraMap_smul]`. Both sides reduce to the same expression.
+
+Establish `hne : algebraMap O (FractionRing O) t ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors t.2`. Establish `h2 : t • f ∈ M` using `(hM _).2 ⟨ht, e ▸ W.smul_mem _ hf⟩`. Establish `h3` using `(Submodule.span (FractionRing O) (M : Set V)).smul_mem (algebraMap O (FractionRing O) t)⁻¹ (Submodule.subset_span h2)`. Rewrite `h3` using `[e, smul_smul, inv_mul_cancel₀ hne, one_smul]`. Then use the resulting hypothesis.
+-/
 theorem span_inf_of_span_top {O V : Type} [CommRing O] [IsDomain O] [AddCommGroup V] [Module O V]
     [Module (FractionRing O) V] [IsScalarTower O (FractionRing O) V] (B : Submodule O V)
     (hB : Submodule.span (FractionRing O) (B : Set V) = ⊤) (W : Submodule (FractionRing O) V)
@@ -36,6 +43,9 @@ theorem span_inf_of_span_top {O V : Type} [CommRing O] [IsDomain O] [AddCommGrou
 variable {D : Formalism.BasicNotions.D7} {N : NData D.R D.host D.what₂} {X : NTw D.R D.host D.what₂ D.LL0 N}
   {Y : NExp D.R D.host D.what₂ D.LL0 N X} (T : NTh D.R D.host D.what₂ D.LL0 N X Y)
 
+/- English proof (translation)
+Rewrite using `[← map_natCast (algebraMap ℚ_[X.l i] (PadicComplex (X.l i))), norm_algebraMap', Padic.norm_p]`.
+-/
 theorem norm_l (i : X.Tw) : ‖((X.l i : ℕ) : ℂ_[X.l i])‖ = ((X.l i : ℝ))⁻¹ := by
   rw [← map_natCast (algebraMap ℚ_[X.l i] (PadicComplex (X.l i))), norm_algebraMap', Padic.norm_p]
 

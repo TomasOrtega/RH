@@ -12,6 +12,15 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.Inhab Fo
 
 namespace GlobalTheory.EX.DC.TameGen
 
+/- English proof (translation)
+Establish `hn : orderOf x ≠ 0` using `hx.orderOf_pos.ne'`. Use `set a := (orderOf x).factorization l with ha`. Use `set M := orderOf x / l ^ a with hM`. Establish `hmul : l ^ a * M = orderOf x` using `Nat.ordProj_mul_ordCompl_eq_self _ _`. Establish `hcop : M.Coprime l` using `(Nat.coprime_ordCompl hl hn).symm`.
+
+Establish `hM0 : M ≠ 0` using `(Nat.ordCompl_pos l hn).ne'`. Use `haveI : NeZero M := ⟨hM0⟩`. Use `set u := (((l ^ a : ℕ) : ZMod M)⁻¹).val with hu`. Establish `hz : Formalism.CyclotomicNorms.primeToPart l x = x ^ (l ^ a * u)` using `rfl`. Establish `hone : (x ^ (l ^ a)) ^ M = 1` using `by rw [← pow_mul, hmul, pow_orderOf_eq_one]`.
+
+Establish `hmod : l ^ a * u ≡ 1 [MOD M]`. Rewrite using `[← ZMod.natCast_eq_natCast_iff, Nat.cast_mul, hu, ZMod.natCast_zmod_val, Nat.cast_one]`. Conclude with `ZMod.coe_mul_inv_eq_one _ (Nat.Coprime.pow_left a hcop.symm)`. Use `⟨a, ?_⟩` and prove the remaining obligations. Rewrite using `[hz, ← pow_mul, mul_comm, pow_mul]`.
+
+Use `pow_eq_pow_of_modEq hmod hone` as an intermediate fact. Rewrite `this` using `[pow_one]`. Then use the resulting hypothesis.
+-/
 theorem part_pow {G : Type} [Monoid G] {l : ℕ} (hl : l.Prime) {x : G} (hx : IsOfFinOrder x) :
     ∃ a : ℕ, Formalism.CyclotomicNorms.primeToPart l x ^ (l ^ a) = x ^ (l ^ a) := by
   have hn : orderOf x ≠ 0 := hx.orderOf_pos.ne'
@@ -32,6 +41,11 @@ theorem part_pow {G : Type} [Monoid G] {l : ℕ} (hl : l.Prime) {x : G} (hx : Is
   have := pow_eq_pow_of_modEq hmod hone
   rwa [pow_one] at this
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `part_pow hl hx`. Take `⟨b, hb⟩` from `part_pow hl hy`. Use `⟨a + b, ?_⟩` and prove the remaining obligations. Establish `h1 : x ^ (l ^ (a + b)) = Formalism.CyclotomicNorms.primeToPart l x ^ (l ^ (a + b))`. Rewrite using `[pow_add, pow_mul, pow_mul, ha]`.
+
+Establish `h2 : y ^ (l ^ (a + b)) = Formalism.CyclotomicNorms.primeToPart l y ^ (l ^ (a + b))`. Rewrite using `[add_comm, pow_add, pow_mul, pow_mul, hb]`. Rewrite using `[h1, h2, h]`.
+-/
 theorem pow_eq_of_part_eq {G : Type} [Monoid G] {l : ℕ} (hl : l.Prime) {x y : G} (hx : IsOfFinOrder x)
     (hy : IsOfFinOrder y) (h : Formalism.CyclotomicNorms.primeToPart l x = Formalism.CyclotomicNorms.primeToPart l y) :
     ∃ a : ℕ, x ^ (l ^ a) = y ^ (l ^ a) := by
@@ -49,6 +63,9 @@ def expo {m : ℕ} : Option (Fin m × Bool) → ℤ
   | some (j, true) => (j.1 : ℤ) + 1
   | some (j, false) => -((j.1 : ℤ) + 1)
 
+/- English proof (translation)
+Apply the tactic sequence `rintro (_ | ⟨i, _ | _⟩) (_ | ⟨j, _ | _⟩) h <;> simp only [expo] at h <;> first`. Consider the case `rfl`. Consider the case `(exfalso; omega)`. Consider the case `(have : i = j := Fin.ext (by omega); rw [this])`.
+-/
 theorem expo_inj {m : ℕ} : Function.Injective (expo (m := m)) := by
   rintro (_ | ⟨i, _ | _⟩) (_ | ⟨j, _ | _⟩) h <;> simp only [expo] at h <;>
     first
@@ -56,12 +73,22 @@ theorem expo_inj {m : ℕ} : Function.Injective (expo (m := m)) := by
     | (exfalso; omega)
     | (have : i = j := Fin.ext (by omega); rw [this])
 
+/- English proof (translation)
+Apply the tactic sequence `rcases o with (_ | ⟨i, _ | _⟩) <;> simp only [expo]`. Use linear arithmetic over natural numbers and integers. Use `i.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `i.2` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem expo_bound {m : ℕ} (o : Option (Fin m × Bool)) : -(m : ℤ) ≤ expo o ∧ expo o ≤ m := by
   rcases o with (_ | ⟨i, _ | _⟩) <;> simp only [expo]
   · omega
   · have := i.2; omega
   · have := i.2; omega
 
+/- English proof (translation)
+Apply the tactic sequence `rcases o with (_ | ⟨i, _ | _⟩) <;> simp only [expo, DC.tameList]`. Simplify using the standard rewrite rules. Rewrite using `[mul_neg, zpow_neg, ← zpow_natCast]`. Use `push_cast`. Both sides reduce to the same expression.
+
+Rewrite using `[← zpow_natCast]`. Use `push_cast`. Both sides reduce to the same expression.
+-/
 theorem tameList_eq {g m : ℕ} (w : (ZMod g)ˣ) (o : Option (Fin m × Bool)) :
     DC.tameList (fun j : Fin m => w ^ (2 * (j.1 + 1))) o = w ^ (2 * expo o) := by
   rcases o with (_ | ⟨i, _ | _⟩) <;> simp only [expo, DC.tameList]
@@ -69,6 +96,11 @@ theorem tameList_eq {g m : ℕ} (w : (ZMod g)ˣ) (o : Option (Fin m × Bool)) :
   · rw [mul_neg, zpow_neg, ← zpow_natCast]; push_cast; rfl
   · rw [← zpow_natCast]; push_cast; rfl
 
+/- English proof (translation)
+Establish `h1 : expo o ≠ expo o'` using `fun e => hne (expo_inj e)`. Establish `b1` using `expo_bound o`. Establish `b2` using `expo_bound o'`. Use `⟨(2 * expo o' - 2 * expo o).natAbs, by omega, by omega, ?_⟩` and prove the remaining obligations. Rewrite `h` using `[← zpow_natCast, ← zpow_natCast, ← zpow_mul, ← zpow_mul, zpow_eq_zpow_iff_modEq]`.
+
+Establish `h2` using `h.dvd`. Rewrite `h2` using `[← sub_mul, Int.natCast_dvd, Int.natAbs_mul, Int.natAbs_natCast]`. Conclude with `h2`.
+-/
 theorem dvd_of_pow_eq {g m : ℕ} (w : (ZMod g)ˣ) {o o' : Option (Fin m × Bool)} (hne : o ≠ o') (k : ℕ)
     (h : (w ^ (2 * expo o)) ^ k = (w ^ (2 * expo o')) ^ k) :
     ∃ D : ℕ, 0 < D ∧ D ≤ 4 * m ∧ orderOf w ∣ D * k := by
@@ -81,6 +113,29 @@ theorem dvd_of_pow_eq {g m : ℕ} (w : (ZMod g)ˣ) {o o' : Option (Fin m × Bool
   rw [← sub_mul, Int.natCast_dvd, Int.natAbs_mul, Int.natAbs_natCast] at h2
   exact h2
 
+/- English proof (translation)
+Introduce `r g m hg w hw hlt hr`. Establish `hg2 : 2 ≤ g` using `hg.out.two_le`. Establish `hgR : (1 : ℝ) ≤ g` using `by exact_mod_cast (by omega : 1 ≤ g)`. Establish `hcast : ((g - 1 : ℕ) : ℝ) = (g : ℝ) - 1`. Rewrite using `[Nat.cast_sub (by omega)]; simp`.
+
+Establish `hq : (1 : ℝ) ≤ (g : ℝ) ^ ((1 : ℝ) / 4)` using `Real.one_le_rpow hgR (by norm_num)`. Establish `hm0 : (0 : ℝ) ≤ 4 * (m : ℝ)` using `by positivity`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `o o' h`. Assume the negation of the conclusion as `hne`.
+
+Rewrite `h` using `[tameList_eq, tameList_eq]`. Take `⟨D, hD0, hD, hdvd⟩` from `dvd_of_pow_eq w hne 1 (by rw [h])`. Rewrite `hdvd` using `[mul_one, hw]`. Establish `h1 : g - 1 ≤ 4 * m` using `(Nat.le_of_dvd hD0 hdvd).trans hD`. Establish `h2 : ((g - 1 : ℕ) : ℝ) ≤ ((4 * m : ℕ) : ℝ)` using `by exact_mod_cast h1`.
+
+Rewrite `h2` using `[hcast]`. Move the coercions through the operations in `at h2`. Use the polynomial consequences of the given equalities and inequalities. Introduce `l hl hB o o' h`. Assume the negation of the conclusion as `hne`.
+
+Apply `hB` to reduce the goal to its premises. Simplify using `only [tameList_eq] at h`. Establish `hfin : ∀ u : (ZMod g)ˣ, IsOfFinOrder (algebraMap (ZMod g) (Formalism.CyclotomicNorms.Fbar g) (u : ZMod g))`. Introduce `u`. Conclude with `(((algebraMap (ZMod g) (Formalism.CyclotomicNorms.Fbar g)).toMonoidHom.comp (Units.coeHom (ZMod g))).isOfFinOrder (isOfFinOrder_of_finite u))`.
+
+Take `⟨a, ha⟩` from `pow_eq_of_part_eq hl (hfin _) (hfin _) h`. Rewrite `ha` using `[← map_pow, ← map_pow, ← Units.val_pow_eq_pow_val, ← Units.val_pow_eq_pow_val]`. Establish `ha'` using `Units.ext ((algebraMap (ZMod g) (Formalism.CyclotomicNorms.Fbar g)).injective ha)`. Take `⟨D, hD0, hD, hdvd⟩` from `dvd_of_pow_eq w hne _ ha'`. Rewrite `hdvd` using `[hw]`.
+
+Establish `hn : g - 1 ≠ 0` using `by omega`. Use `set v := (g - 1).factorization l with hv`. Use `set M := (g - 1) / l ^ v with hM`. Establish `hmul : l ^ v * M = g - 1` using `Nat.ordProj_mul_ordCompl_eq_self _ _`. Establish `hcop : M.Coprime l` using `(Nat.coprime_ordCompl hl hn).symm`.
+
+Establish `hMD : M ∣ D` using `(Nat.Coprime.pow_right a hcop).dvd_of_dvd_mul_right ((Dvd.intro_left _ hmul).trans hdvd)`. Establish `hMle : M ≤ 4 * m` using `(Nat.le_of_dvd hD0 hMD).trans hD`. Establish `h1 : g - 1 ≤ 4 * m * l ^ v`. Rewrite using `[← hmul, mul_comm]`. Conclude with `Nat.mul_le_mul_right _ hMle`.
+
+Establish `h2 : ((g - 1 : ℕ) : ℝ) ≤ ((4 * m * l ^ v : ℕ) : ℝ)` using `by exact_mod_cast h1`. Rewrite `h2` using `[hcast]`. Move the coercions through the operations in `at h2`. Establish `h3 : (g : ℝ) ^ ((1 : ℝ) / 4) < (l : ℝ) ^ v` using `lt_of_mul_lt_mul_left (hlt.trans_le h2) hm0`. Establish `h4 : ((g : ℝ) ^ ((1 : ℝ) / 4)) ^ 4 < ((l : ℝ) ^ v) ^ 4` using `pow_lt_pow_left₀ h3 (by positivity) (by norm_num)`.
+
+Establish `h5 : ((g : ℝ) ^ ((1 : ℝ) / 4)) ^ 4 = g`. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul (by positivity)]; norm_num`. Rewrite `h4` using `[h5, ← pow_mul, mul_comm]`. Use `Or.inr ⟨1, le_rfl, hr, hl, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_one, ← Nat.factorization_def _ hl, ← hv]`.
+
+Conclude with `h4` after adjusting the coercions. Introduce `j`. Conclude with `⟨w ^ (j.1 + 1), by rw [← pow_add, ← two_mul]⟩`.
+-/
 theorem tameDistinct_gen : ∀ (r g m : ℕ) [Fact g.Prime] (w : (ZMod g)ˣ), orderOf w = g - 1 → 4 * (m : ℝ) * (g : ℝ) ^ ((1 : ℝ) / 4) < (g : ℝ) - 1 → 1 ≤ r → DC.TameDistinct r g (fun j : Fin m => w ^ (2 * (j.1 + 1))) := by
   intro r g m hg w hw hlt hr
   have hg2 : 2 ≤ g := hg.out.two_le

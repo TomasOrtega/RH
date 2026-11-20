@@ -14,16 +14,25 @@ def polyR (l e : ℕ) (U : Finset ℤ) (η : ℕ) : Polynomial ℤ :=
 
 def polyR₁ (l e : ℕ) (U : Finset ℤ) (η : ℕ) : Polynomial ℤ := (polyR l e U η).divX
 
+/- English proof (translation)
+Rewrite using `[polyR₁, mul_comm, ← Polynomial.coeff_zero_eq_eval_zero]`. Conclude with `eq_sub_of_add_eq (Polynomial.divX_mul_X_add _)`.
+-/
 theorem X_mul_polyR₁ (l e : ℕ) (U : Finset ℤ) (η : ℕ) :
     Polynomial.X * polyR₁ l e U η = polyR l e U η - Polynomial.C ((polyR l e U η).eval 0) := by
   rw [polyR₁, mul_comm, ← Polynomial.coeff_zero_eq_eval_zero]
   exact eq_sub_of_add_eq (Polynomial.divX_mul_X_add _)
 
+/- English proof (translation)
+Rewrite using `[shifts, Finset.mem_image₂]`. Simplify using `only [Finset.mem_Icc]`.
+-/
 theorem mem_shifts {U : Finset ℤ} {η : ℕ} {n : ℤ} :
     n ∈ shifts U η ↔ ∃ i ∈ U, ∃ k : ℤ, (1 ≤ k ∧ k ≤ η) ∧ i + k = n := by
   rw [shifts, Finset.mem_image₂]
   simp only [Finset.mem_Icc]
 
+/- English proof (translation)
+Evaluate the decidable proposition.
+-/
 example : shifts {-1, 0} 1 = {0, 1} := by decide
 
 section Clauses
@@ -99,6 +108,9 @@ variable {O K : Type} [CommRing O] [NormedField K] [IsUltrametricDist K] [Comple
   [IsUnitBall O K] {l e a : ℕ} [Fact l.Prime] [NormedAlgebra ℚ_[l] K] [NeZero e] [NeZero a]
   [TameDescentExponentData K l e a] {η H : ℕ}
 
+/- English proof (translation)
+Use `⟨by rw [Finset.coe_singleton]; exact (jumps_rankOne j).le, mem_shifts.2 ⟨j, by simp, 1, ⟨le_rfl, by omega⟩, rfl⟩, ?_⟩` and prove the remaining obligations. Take `⟨h, h0⟩` from `cls_mem_Z_rankOneDat (O := O) (K := K) (l := l) (e := e) (a := a) h₁ h₂ hη`. Use `Module.End.hasEigenvalue_of_hasEigenvector (x := ⟨_, Descent.mem_Zl_of_mem_Z _ h⟩) ⟨?_, fun h' => h0 (congrArg Subtype.val h')⟩` and prove the remaining obligations. Rewrite using `[Module.End.mem_eigenspace_iff]`. Conclude with `Subtype.ext (Lc_rankOneDat h₁ h₂ 1)`.
+-/
 example {j : ℤ} (h₁ : -(η : ℤ) ≤ j) (h₂ : j ≤ H) (hη : 1 ≤ η) :
     (rankOneDat O K l e a η H j h₁ h₂ 1).jumps ⊆ (({j} : Finset ℤ) : Set ℤ) ∧
       j + 1 ∈ shifts {j} η ∧

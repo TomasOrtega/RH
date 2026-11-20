@@ -5,6 +5,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Infi
 open NumberField Matrix GlobalTheory.CuspRep GlobalTheory.GKCoh UpperTheory.V.Af UpperTheory.V.AlgRepEndIrreducible UpperTheory.V.Lit UpperTheory.V.Lit.Bor
 open scoped TensorProduct
 
+/- English proof (translation)
+Introduce `E _ _ _ a Ξ`. Take `⟨R, D, hRD, hD⟩` from `cxExt E a Ξ`. Take `⟨G, hG, hadj⟩` from `admissible_abs_bound (E →+* ℂ) a Ξ.d R D hRD`. Use `⟨G, hG, fun X => ?_⟩` and prove the remaining obligations. Establish `hs : (star X).map (emb E) = star (X.map (emb E))`.
+
+Use extensionality with `i j τ`. Conclude with `UpperTheory.V.FieldIso.coord_star τ (X j i)`. Rewrite using `[← hD, ← hD, hs]`. Conclude with `hadj _`.
+-/
 theorem UpperTheory.V.Lit.Bor.admEx :
     UpperTheory.V.Lit.Bor.AdmEx := by
   intro E _ _ _ a Ξ

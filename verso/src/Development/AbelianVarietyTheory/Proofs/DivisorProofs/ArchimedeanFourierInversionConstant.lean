@@ -10,6 +10,13 @@ open scoped GlobalTheory.VacAny
 
 namespace GlobalTheory.ArchFourier
 
+/- English proof (translation)
+Introduce `F _ _ κ _ _ _ μ hμ`. Take `⟨⟨c, hc, hinv⟩, hint⟩` from `GlobalTheory.fourier_inversion_haar_symm_form (-(traceDot F κ)) (fun x y => by simp only [LinearMap.neg_apply, traceDot_comm x y]) (fun x hx => traceDot_nondeg x (fun y => by simpa using hx y)) μ hμ`. Use `⟨(c : ℂ), by exact_mod_cast hc.ne', fun f a => ?_⟩` and prove the remaining obligations. Establish `hk : ∀ x y : κ → mixedEmbedding.mixedSpace F, Complex.exp (2 * Real.pi * Complex.I * (((-(traceDot F κ)) x y : ℝ) : ℂ)) = Complex.exp (-(2 * Real.pi * Complex.I) * (Algebra.trace ℝ (mixedEmbedding.mixedSpace F) (x ⬝ᵥ y) : ℝ))`. Introduce `x y`.
+
+Rewrite using `[LinearMap.neg_apply, LinearMap.neg_apply, traceDot_apply]`. Use `push_cast`. Put the polynomial expressions in normal form. Establish `h` using `hinv f f.continuous (hint f).1 (hint f).2 a`. Simplify using `only [hk] at h`.
+
+Conclude with `h`.
+-/
 theorem fourier_twice_sInf : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] [MeasurableSpace (κ → mixedEmbedding.mixedSpace F)]
     [BorelSpace (κ → mixedEmbedding.mixedSpace F)] (μ : Measure (κ → mixedEmbedding.mixedSpace F)) [μ.IsAddHaarMeasure],
     ∃ d : ℂ, d ≠ 0 ∧ ∀ (f : SInf F κ) (a : κ → mixedEmbedding.mixedSpace F),

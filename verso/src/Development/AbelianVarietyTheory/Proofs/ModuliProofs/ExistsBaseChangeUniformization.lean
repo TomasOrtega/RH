@@ -16,6 +16,21 @@ namespace GlobalTheory.TorsionFormCompare
 
 open UnifBaseChange ExpandsLinear in
 
+/- English proof (translation)
+Take `⟨U', wL', hL, hgen, hw, hlev⟩` from `exists_unifPre_pull hG R R' I I' φ D D' hD A A' G G' bc hI hbc U.toUnifPre eA heA hwA L' wL he hwL hrig`. Substitute `hL` using the available equality. Take `rfl` from `eq_of_heq hw`. Use `haveI := hsa.geomConnected`. Use `haveI := hsa.quasiCompact`.
+
+Use `haveI : GeometricallyConnected G'.hom := by`. Rewrite using `[← Over.w bc.hom]`. Establish `: IsIso bc.hom.left` using `((Over.forget _).mapIso bc).isIso_hom`. Establish `: GeometricallyConnected ((Over.pullback (specOf φ)).obj G).hom` using `inferInstanceAs (GeometricallyConnected (pullback.snd G.hom (specOf φ)))`. Conclude with `MorphismProperty.of_isPullback (P := @GeometricallyConnected) (IsPullback.of_horiz_isIso (fst := bc.hom.left) (f := ((Over.pullback (specOf φ)).obj G).hom) (g := 𝟙 _) ⟨(Category.comp_id _).symm⟩) this`.
+
+Use `haveI := hR.1`. Use `haveI := hR'.1`. Establish `hexp : ∀ k : ℕ, 1 ≤ k → U'.ExpBij k`. Introduce `k hk`. Take `⟨-, hd⟩` from `FamDim.finrank_fam hG hP hT R D.toPre D.tau_bimult (psiOnExists R I hR D) (FractionRing R) k hk`.
+
+Take `⟨hfin, hd'⟩` from `FamDim.finrank_fam hG hP hT R' D'.toPre D'.tau_bimult (psiOnExists R' I' hR' D') (FractionRing R') k hk`. Establish `hdA` using `finrank_fam_of_expBij hS R I hR D A G U.toUnifPre k hk (U.expand k hk)`. Establish `hrk : D'.toPre.rank = D.toPre.rank` using `hD.xe.toIntLinearEquiv.finrank_eq`. Use `ExpansionCriterion.expBij_of_onto hS R' I' hR' D' A' G' U' k hk hfin (by rw [hd', hrk, hgD, ← hd, hdA, hg]) fun F₀ => ?_` and prove the remaining obligations. Take `⟨n, F, f, F', f', hF, hspan⟩` from `T.exists_integral_families_span_pullDegeneration hP hG hT R R' I hR φ D D'.toPre hD k hk`.
+
+Establish `hb : ∀ i, ∃ b : U'.SecK k, U'.Expands k b (F' i)`. Introduce `i`. Take `⟨σ, hσ⟩` from `exists_sec_expandsAt_of_integral_family R I hR D A G U.toUnifPre k (fun F => ((U.expand k hk).2 F).exists) (F i) (f i) (hF i).1`. Take `⟨σ', hσ', -⟩` from `SecPull.existsUnique_secPull _ _ _ _ U.LG.L U'.LG.L _ U.LG.isLB U'.LG.isLB wL' hwL (Fin 1) (fun _ => 𝟙 G'.left) (fun _ => 𝟙 G.left) (fun _ => (k : ℤ)) (bc.hom.left ≫ pullback.fst G.hom (specOf φ)) (fun _ => by rw [Category.id_comp, Category.comp_id]) σ`. Take `⟨b, hb⟩` from `exists_secScal_one U'.LG.L (fun _ : Fin 1 => 𝟙 G'.left) (fun _ => (k : ℤ)) (pullback.fst G'.hom (jK R')) (fun _ => pullback.fst G'.hom (jK R')) (funext fun _ => (Category.comp_id _).symm) σ'`.
+
+Use `⟨b, 1, one_ne_zero, σ', f' i, by rw [scal_one]; exact hb, fun α => by rw [scal_one]; exact (hF i).2.1 α, fun e => ?_⟩` and prove the remaining obligations. Take `⟨h, hh⟩` from `hlev e`. Conclude with `expandsAt_transport R R' I I' D D' A A' G G' U.toUnifPre U' _ hD.w hD.xe _ wL' hD.w_gen hwL (ExpGTrans.famφB_pull hD) e e k h ⟨hh.1, hh.2⟩ σ σ' (f i) (f' i) hσ' (hF i).2.2 (hσ e)`. Use `choose b hb using hb`. Take `⟨c, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun _).1 (hspan ▸ Submodule.mem_top : F₀ ∈ _)`.
+
+Conclude with `⟨secComb (fun i => scal (pullback.snd G'.hom (jK R')) (c i)) b, expands_linear R' I' hR' D' A' G' U' k n b F' c _ hb fun _ => rfl⟩`. Conclude with `⟨⟨U', hexp⟩, rfl, hgen, (isPullUnif_iff_stalks R R' I I' φ D D' hD A A' G G' bc U ⟨U', hexp⟩).2 ⟨wL', hwL, he, hrig, hlev⟩⟩`.
+-/
 theorem exists_unif_pull_of_deg (hP : PolBaseChangeSt) (hG : GlobalFnsSt) (hS : SecBaseChangeSt)
     (hT : DVR.TwistBaseChangeStatement)
     (R R' : Type) [CommRing R] [IsDomain R] [CommRing R'] [IsDomain R'] (I : Ideal R)
@@ -82,6 +97,9 @@ theorem exists_unif_pull_of_deg (hP : PolBaseChangeSt) (hG : GlobalFnsSt) (hS : 
   exact ⟨⟨U', hexp⟩, rfl, hgen,
     (isPullUnif_iff_stalks R R' I I' φ D D' hD A A' G G' bc U ⟨U', hexp⟩).2 ⟨wL', hwL, he, hrig, hlev⟩⟩
 
+/- English proof (translation)
+Substitute `hF he₀` using the available equality. Establish `he : eSec G' ≫ ε.left = 𝟙 S ≫ eSec G`. Use `Eq.trans ?_ (Category.id_comp _).symm` and prove the remaining obligations. Conclude with `congrArg (fun f => f.left) (IsMonHom.one_hom ε)`. Conclude with `⟨w, he, h.1, (maps_iff _ _ (fun _ => eSec G) _ L'.rig L.rig (𝟙 _) _ (rigPull_le _ _ he L.L) (fun _ => rfl)).2 h.2⟩`.
+-/
 theorem RigAlong.read {S : Scheme.{0}} {G' G : Over S} [GrpObj G'] [IsCommMonObj G'] [GrpObj G] [IsCommMonObj G]
     {ε : G' ⟶ G} [IsMonHom ε] {L : RigLB G} {L' : RigLB G'} {w : LB.Iso L'.L (L.L.pull ε.left)}
     (h : RigAlong ε L L' w) {F : G'.left ⟶ G.left} (hF : F = ε.left) {e : S ⟶ S} (he₀ : e = 𝟙 S) :
@@ -95,6 +113,13 @@ theorem RigAlong.read {S : Scheme.{0}} {G' G : Over S} [GrpObj G'] [IsCommMonObj
   exact ⟨w, he, h.1, (maps_iff _ _ (fun _ => eSec G) _ L'.rig L.rig (𝟙 _) _ (rigPull_le _ _ he L.L)
     (fun _ => rfl)).2 h.2⟩
 
+/- English proof (translation)
+Introduce `R _ _ I D A G G' _ _ _ _ ε hR hsa hε U L' w hw hD`. Establish `hs` using `specOf_id R`. Establish `gp₁ : IsGrpPullback G' G (specOf (RingHom.id R)) ε.hom.left` using `(isGrpPullback_of_iso ε).congr hs.symm rfl`. Take `⟨bc, mbc, hbc⟩` from `grpPullback_iso gp₁ (isGrpPullback_pullback G (specOf (RingHom.id R)))`. Use `U.gen_hom` as an intermediate fact.
+
+Set `eA : (Over.pullback (jK R)).obj G' ≅ A.A` to `(Over.pullback (jK R)).mapIso ε ≪≫ U.gen`. Establish `mE : IsMonHom eA.hom` using `by show IsMonHom ((Over.pullback (jK R)).map ε.hom ≫ U.gen.hom) infer_instance`. Establish `wA : LBIso (A.L.pull eA.hom.left) (U.LG.L.pull (pullback.fst G'.hom (jK R) ≫ bc.hom.left ≫ pullback.fst G.hom (specOf (RingHom.id R))))` using `LBIso.chartPull (h := ((Over.pullback (jK R)).map ε.hom).left) (chartPullSame A.L (fun _ => eA.hom.left) (fun _ => U.gen.hom.left) _ _ fun _ => rfl) (chartPullSame U.LG.L _ (fun _ => pullback.fst G.hom (jK R)) _ _ fun _ => by`. Rewrite using `[hbc]`. Conclude with `(pullback.lift_fst _ _ _).symm) U.ext`.
+
+Take `⟨wL, he, gL, rL⟩` from `hw.read hbc hs`. Take `⟨U', hL, hgen, hPU⟩` from `exists_unif_pull_of_deg GlobalTheory.abelianSchemeLaws_all.1.polBaseChange GlobalTheory.abelianSchemeLaws_all.1.globalFns GlobalTheory.abelianSchemeLaws_all.1.secBaseChange GlobalTheory.twistBaseChange R R I I hR hR (RingHom.id R) (by rw [Ideal.map_id]) D A G hsa U D hD rfl G' bc …`. Conclude with `⟨bc, U', mbc, hbc, hL, by rw [hgen]; rfl, hPU⟩`.
+-/
 theorem exists_unif_move : ∀ (R : Type) [CommRing R] [IsDomain R] (I : Ideal R) (D : DegData R I) (A : PolAV (Sp (FractionRing R))) (G G' : Over (Sp R)) [GrpObj G] [IsCommMonObj G] [GrpObj G'] [IsCommMonObj G'] (ε : G' ≅ G), AdmBase R I → IsSemiAbelian G → IsMonHom ε.hom → ∀ (U : Unif I D A G) (L' : RigLB G') (w : LB.Iso L'.L (U.LG.L.pull ε.hom.left)), RigAlong ε.hom U.LG L' w → ∀ hD : IsPullDeg (RingHom.id R) D.toPre D.toPre, ∃ (bc : G' ≅ (Over.pullback (specOf (RingHom.id R))).obj G) (U' : Unif I D A G'), IsMonHom bc.hom ∧ bc.hom.left ≫ pullback.fst G.hom (specOf (RingHom.id R)) = ε.hom.left ∧ U'.LG = L' ∧ U'.gen.hom = (Over.pullback (jK R)).map ε.hom ≫ U.gen.hom ∧ IsPullUnif (RingHom.id R) hD bc U U' := by
   intro R _ _ I D A G G' _ _ _ _ ε hR hsa hε U L' w hw hD
   have hs := specOf_id R

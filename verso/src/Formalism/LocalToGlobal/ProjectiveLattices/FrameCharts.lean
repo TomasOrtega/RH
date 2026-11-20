@@ -56,6 +56,13 @@ def BorOver (A : TRing K) (u : pts A.R) : Prop :=
 
 variable {pts mapR borR}
 
+/- English proof (translation)
+Take `⟨wm, hwm, hc⟩` from `hcl`. Introduce `p φ y hy`. Take `⟨g, hg, p', lam, y', a, hlam, h1, h2⟩` from `hloc p φ y hy`. Establish `hunit : IsUnit (((locM K m).comp φ) g)` using `IsLocalization.map_units (Localization.AtPrime m) (⟨φ g, hg⟩ : m.primeCompl)`. Take `⟨μ, hμ⟩` from `hlam (Localization.AtPrime m) ((locM K m).comp φ) hunit`.
+
+Use `⟨p', lam, a, μ, y', h1, h2, hμ, ?_⟩` and prove the remaining obligations. Establish `h3 : mapR (μ.comp lam) y wm`. Rewrite using `[hμ]`. Conclude with `hT _ _ _ φ (locM K m) y w wm hy hwm`. Establish `h4 : mapR μ y' wm` using `hC _ _ _ lam μ y y' wm h1 h3`.
+
+Conclude with `hu _ (μ.comp a) c wm (hT _ _ _ a μ u y' wm h2 h4) hc`.
+-/
 theorem chartAt_of_cover (hT : MapTrans pts mapR) (hC : MapCancel pts mapR) {S : Type} [CommRing S] [Algebra K S]
     {w : pts S} {m : Ideal S} [m.IsPrime] {A : TRing K} {u : pts A.R} {c : A.R →ₐ[K] Localization.AtPrime m}
     (hu : IsMonoPt pts mapR u) (hcl : ChartCls pts mapR w m u c) (hloc : ChartLoc pts mapR w m A u) :
@@ -73,6 +80,9 @@ theorem chartAt_of_cover (hT : MapTrans pts mapR) (hC : MapCancel pts mapR) {S :
   have h4 : mapR μ y' wm := hC _ _ _ lam μ y y' wm h1 h3
   exact hu _ (μ.comp a) c wm (hT _ _ _ a μ u y' wm h2 h4) hc
 
+/- English proof (translation)
+Introduce `S _ _ w m _`. Take `⟨A, u, c, hu, hcl, hloc⟩` from `h S w m`. Conclude with `⟨A, u, c, chartAt_of_cover hT hC hu hcl hloc⟩`.
+-/
 theorem frChart_of_cover (hT : MapTrans pts mapR) (hC : MapCancel pts mapR)
     (h : ∀ (S : Type) [CommRing S] [Algebra K S] (w : pts S) (m : Ideal S) [m.IsMaximal],
       ∃ (A : TRing K) (u : pts A.R) (c : A.R →ₐ[K] Localization.AtPrime m),
@@ -82,6 +92,13 @@ theorem frChart_of_cover (hT : MapTrans pts mapR) (hC : MapCancel pts mapR)
   obtain ⟨A, u, c, hu, hcl, hloc⟩ := h S w m
   exact ⟨A, u, c, chartAt_of_cover hT hC hu hcl hloc⟩
 
+/- English proof (translation)
+Introduce `S _ _ t w w' hb m _`. Take `⟨A, u, c, c', hu, hBo, hcl, hloc, hcl', hloc'⟩` from `h S t w w' hb m`. Take `⟨B, uB, uB', tB, π, π', hπ, hπ', hbB, huniv⟩` from `hBo`. Establish `ch` using `chartAt_of_cover hT hC hu hcl hloc`. Establish `ch'` using `chartAt_of_cover hT hC hu hcl' hloc'`.
+
+Take `⟨wm, hwm, hc⟩` from `hcl`. Take `⟨wm', hwm', hc'⟩` from `hcl'`. Establish `hbm` using `hB S _ (locM K m) t w w' wm wm' hb hwm hwm'`. Take `⟨cB, e1, e2, e3⟩` from `huniv _ c c' wm wm' _ hc hc' hbm`. Use `⟨A, u, c, c', B, uB, uB', tB, π, π', cB, ch, ch', hπ, hπ', hbB, e1, e2, fun i => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[e3 i]`. Both sides reduce to the same expression.
+-/
 theorem borChart_of_cover (hT : MapTrans pts mapR) (hC : MapCancel pts mapR) (hB : BorBC pts mapR borR)
     (h : ∀ (S : Type) [CommRing S] [Algebra K S] (t : ι → Sˣ) (w w' : pts S), borR t w w' →
       ∀ (m : Ideal S) [m.IsMaximal],
@@ -108,17 +125,26 @@ section Frames
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
 
+/- English proof (translation)
+Simplify using `only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Both sides reduce to the same expression.
+-/
 theorem spMap_algHom_comp {K : Type} [Field K] {S T U : Type} [CommRing S] [Algebra K S] [CommRing T] [Algebra K T]
     [CommRing U] [Algebra K U] (φ : S →ₐ[K] T) (ψ : T →ₐ[K] U) :
     spMap (ψ.comp φ).toRingHom = spMap ψ.toRingHom ≫ spMap φ.toRingHom := by
   simp only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]
   rfl
 
+/- English proof (translation)
+The claim follows from `RingHom.ext fun x => by ext <;> simp [dualMap]`.
+-/
 theorem dualMap_comp {S T U : Type} [CommRing S] [CommRing T] [CommRing U] (φ : S →+* T) (ψ : T →+* U) :
     dualMap (ψ.comp φ) = (dualMap ψ).comp (dualMap φ) :=
   RingHom.ext fun x => by
     ext <;> simp [dualMap]
 
+/- English proof (translation)
+Establish `e : (ψ.comp φ).toRingHom = ψ.toRingHom.comp φ.toRingHom` using `rfl`. Rewrite using `[e, dualMap_comp]`. Simplify using `only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`.
+-/
 theorem spMap_dual_comp {K : Type} [Field K] {S T U : Type} [CommRing S] [Algebra K S] [CommRing T] [Algebra K T]
     [CommRing U] [Algebra K U] (φ : S →ₐ[K] T) (ψ : T →ₐ[K] U) :
     spMap (dualMap (ψ.comp φ).toRingHom) = spMap (dualMap ψ.toRingHom) ≫ spMap (dualMap φ.toRingHom) := by
@@ -128,6 +154,11 @@ theorem spMap_dual_comp {K : Type} [Field K] {S T U : Type} [CommRing S] [Algebr
 
 variable {Xo : Moduli Dw l}
 
+/- English proof (translation)
+Introduce `p hp`. Establish `hp' : ∀ k, p ∈ (snd (Over.mk x') Xo.univ.t.G).left.base ⁻¹' (Xo.univ.t.PP.L.U (i k) : Set _)` using `Set.mem_iInter.1 hp`. Establish `e` using `congrArg (fun f : Gx x' ⟶ Xo.univ.t.G.left => f.base p) hs`. Use `show pm.base p ∈ ⋂ k, (snd (Over.mk x) Xo.univ.t.G).left.base ⁻¹' (Xo.univ.t.PP.L.U (i k) : Set _)`. Use `Set.mem_iInter.2 fun k => ?_` and prove the remaining obligations.
+
+Use `show (pm ≫ (snd (Over.mk x) Xo.univ.t.G).left).base p ∈ (Xo.univ.t.PP.L.U (i k) : Set _)`. Rewrite using `[e]`. Conclude with `hp' k`.
+-/
 theorem ppx_le_cov {S T : Type} [CommRing S] [CommRing T] {x : Sp S ⟶ Xo.X} {x' : Sp T ⟶ Xo.X}
     (pm : Gx x' ⟶ Gx x)
     (hs : pm ≫ (snd (Over.mk x) Xo.univ.t.G).left = (snd (Over.mk x') Xo.univ.t.G).left)
@@ -144,6 +175,13 @@ theorem ppx_le_cov {S T : Type} [CommRing S] [CommRing T] {x : Sp S ⟶ Xo.X} {x
 
 variable {c : Coeff l}
 
+/- English proof (translation)
+Introduce `S T U _ _ _ _ _ _ φ ψ y z w h₁ h₂`. Take `⟨hx1, hu1, pm1, hs1, hf1, ha1⟩` from `h₁`. Take `⟨hx2, hu2, pm2, hs2, hf2, ha2⟩` from `h₂`. Use `⟨?_, ?_, pm2 ≫ pm1, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hx2, hx1, spMap_algHom_comp, Category.assoc]`.
+
+Introduce `τ i`. Rewrite using `[hu2 τ i, hu1 τ i, spMap_dual_comp, Category.assoc]`. Rewrite using `[Category.assoc, hs1, hs2]`. Rewrite using `[Category.assoc, hf1, ← Category.assoc, hf2, Category.assoc, spMap_algHom_comp]`. Introduce `i h`.
+
+Establish `h1'` using `ppx_le_cov pm1 hs1 i`. Establish `h2'` using `ppx_le_cov pm2 hs2 i`. Establish `e : (pm2 ≫ pm1).appLE _ _ h = pm1.appLE _ _ h1' ≫ pm2.appLE _ _ h2'` using `(Scheme.Hom.appLE_comp_appLE pm2 pm1 _ _ _ h1' h2').symm`. Rewrite using `[e, CommRingCat.hom_comp, RingHom.comp_apply, ha1 i h1', ha2 i h2']`.
+-/
 theorem frMap_trans : MapTrans (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) := by
   intro S T U _ _ _ _ _ _ φ ψ y z w h₁ h₂
   obtain ⟨hx1, hu1, pm1, hs1, hf1, ha1⟩ := h₁
@@ -161,6 +199,19 @@ theorem frMap_trans : MapTrans (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z
       (Scheme.Hom.appLE_comp_appLE pm2 pm1 _ _ _ h1' h2').symm
     rw [e, CommRingCat.hom_comp, RingHom.comp_apply, ha1 i h1', ha2 i h2']
 
+/- English proof (translation)
+Introduce `S T U _ _ _ _ _ _ φ ψ y z w h₁ h₂`. Take `⟨hx1, hu1, pm1, hs1, hf1, ha1⟩` from `h₁`. Take `⟨hx2, hu2, pm2, hs2, hf2, ha2⟩` from `h₂`. Establish `hxw : w.x = spMap ψ.toRingHom ≫ z.x`. Rewrite using `[hx2, hx1, spMap_algHom_comp, Category.assoc]`.
+
+Set `pm : Gx w.x ⟶ Gx z.x` to `pullback.lift (pullback.fst (Over.mk w.x).hom Xo.univ.t.G.hom ≫ spMap ψ.toRingHom) (pullback.snd (Over.mk w.x).hom Xo.univ.t.G.hom) (by show pullback.fst (Over.mk w.x).hom Xo.univ.t.G.hom ≫ spMap ψ.toRingHom ≫ z.x = pullback.snd (Over.mk w.x).hom Xo.univ.t.G.hom ≫ Xo.univ.t.G.hom`. Rewrite using `[← hxw]`. Conclude with `pullback.condition)`. Establish `pfst : pm ≫ pullback.fst (Over.mk z.x).hom Xo.univ.t.G.hom = pullback.fst (Over.mk w.x).hom Xo.univ.t.G.hom ≫ spMap ψ.toRingHom` using `pullback.lift_fst _ _ _`. Establish `psnd : pm ≫ pullback.snd (Over.mk z.x).hom Xo.univ.t.G.hom = pullback.snd (Over.mk w.x).hom Xo.univ.t.G.hom` using `pullback.lift_snd _ _ _`.
+
+Establish `hs1' : pm1 ≫ pullback.snd (Over.mk y.x).hom Xo.univ.t.G.hom = pullback.snd (Over.mk z.x).hom Xo.univ.t.G.hom` using `hs1`. Establish `hf1' : pm1 ≫ pullback.fst (Over.mk y.x).hom Xo.univ.t.G.hom = pullback.fst (Over.mk z.x).hom Xo.univ.t.G.hom ≫ spMap φ.toRingHom` using `hf1`. Establish `hs2' : pm2 ≫ pullback.snd (Over.mk y.x).hom Xo.univ.t.G.hom = pullback.snd (Over.mk w.x).hom Xo.univ.t.G.hom` using `hs2`. Establish `hf2' : pm2 ≫ pullback.fst (Over.mk y.x).hom Xo.univ.t.G.hom = pullback.fst (Over.mk w.x).hom Xo.univ.t.G.hom ≫ spMap (ψ.comp φ).toRingHom` using `hf2`. Establish `hcomp : pm ≫ pm1 = pm2`.
+
+Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, hf1', ← Category.assoc, pfst, hf2', spMap_algHom_comp, Category.assoc]`. Rewrite using `[Category.assoc, hs1', psnd, hs2']`. Use `⟨hxw, ?_, pm, psnd, pfst, ?_⟩` and prove the remaining obligations. Introduce `τ i`.
+
+Rewrite using `[hu2 τ i, hu1 τ i, spMap_dual_comp, Category.assoc]`. Introduce `i h`. Establish `h1'` using `ppx_le_cov pm1 hs1 i`. Establish `key : ∀ (q : Gx w.x ⟶ Gx y.x), q = pm2 → ∀ hh : (PPx w.x).U i ≤ q ⁻¹ᵁ (PPx y.x).U i, (q.appLE _ _ hh).hom (y.s.f i) = w.s.f i`. Introduce and unpack `q rfl hh`.
+
+Conclude with `ha2 i hh`. Establish `e` using `(Scheme.Hom.appLE_comp_appLE pm pm1 _ _ _ h1' h).symm`. Rewrite using `[← ha1 i h1', ← RingHom.comp_apply, ← CommRingCat.hom_comp, ← e]`. Conclude with `key _ hcomp _`.
+-/
 theorem frMap_cancel : MapCancel (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) := by
   intro S T U _ _ _ _ _ _ φ ψ y z w h₁ h₂
   obtain ⟨hx1, hu1, pm1, hs1, hf1, ha1⟩ := h₁
@@ -222,11 +273,17 @@ def FrBorBCF : Prop :=
 
 variable {Xo c}
 
+/- English proof (translation)
+Use `frChart_of_cover frMap_trans frMap_cancel fun S _ _ w m _ => ?_` and prove the remaining obligations. Take `⟨A, u, cw, _, hu, _, hcl, hloc, _, _⟩` from `h S w w rfl m`. Conclude with `⟨A, u, cw, hu, hcl, hloc⟩`.
+-/
 theorem frChartF_of (h : ChartCoverF Xo c) : FrChartF Xo c := by
   refine frChart_of_cover frMap_trans frMap_cancel fun S _ _ w m _ => ?_
   obtain ⟨A, u, cw, _, hu, _, hcl, hloc, _, _⟩ := h S w w rfl m
   exact ⟨A, u, cw, hu, hcl, hloc⟩
 
+/- English proof (translation)
+Use `borChart_of_cover frMap_trans frMap_cancel hB fun S _ _ t w w' hb m _ => ?_` and prove the remaining obligations. Conclude with `h S w w' hb.1 m`.
+-/
 theorem borChartF_of (h : ChartCoverF Xo c) (hB : FrBorBCF Xo c) : BorChartF Xo c := by
   refine borChart_of_cover frMap_trans frMap_cancel hB fun S _ _ t w w' hb m _ => ?_
   exact h S w w' hb.1 m
@@ -240,20 +297,38 @@ open MonObj
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
 variable {Xo : Moduli Dw l} {c : Coeff l}
 
+/- English proof (translation)
+Simplify using `only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`.
+-/
 theorem spMap_comp_ring {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : B →+* C) (g : A →+* B) :
     spMap f ≫ spMap g = spMap (f.comp g) := by
   simp only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]
 
+/- English proof (translation)
+The claim follows from `RingHom.ext fun a => by ext <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl]`.
+-/
 theorem dualMap_alg {S T : Type} [CommRing S] [CommRing T] (φ : S →+* T) :
     (dualMap φ).comp (algebraMap S (DualNumber S)) = (algebraMap T (DualNumber T)).comp φ :=
   RingHom.ext fun a => by
     ext <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl]
 
+/- English proof (translation)
+The claim follows from `RingHom.ext fun x => by ext <;> simp [dualMap, epsMul, mul_comm]`.
+-/
 theorem dualMap_eps {S T : Type} [CommRing S] [CommRing T] (φ : S →+* T) (a : S) :
     (dualMap φ).comp (epsMul a) = (epsMul (φ a)).comp (dualMap φ) :=
   RingHom.ext fun x => by
     ext <;> simp [dualMap, epsMul, mul_comm]
 
+/- English proof (translation)
+Take `⟨u, hu, hprod⟩` from `h`. Set `D : tEps x' ⟶ tEps x` to `Over.homMk (spMap (dualMap φ)) (by show spMap (dualMap φ) ≫ spMap (algebraMap S (DualNumber S)) ≫ x = spMap (algebraMap T (DualNumber T)) ≫ x'`. Rewrite using `[hx, ← Category.assoc, ← Category.assoc, spMap_comp_ring, spMap_comp_ring, dualMap_alg])`. Establish `hL : ∀ L : List (tEps x ⟶ Xo.univ.t.G), (L.map (D ≫ ·)).prod = D ≫ L.prod`. Introduce `L`.
+
+Proceed by induction on `L with`. Consider the case `nil => simp [MonObj.comp_one]`. Consider the case `cons a L ih => rw [List.map_cons, List.prod_cons, List.prod_cons, ih, MonObj.comp_mul]`. Use `⟨fun j => D ≫ u j, fun j => ?_, ?_⟩` and prove the remaining obligations. Use `show spMap (dualMap φ) ≫ (u j).left = spMap (epsMul (φ (cf j))) ≫ v' j`.
+
+Rewrite using `[hu j, hv j, ← Category.assoc, ← Category.assoc, spMap_comp_ring, spMap_comp_ring, dualMap_eps]`. Establish `e : (List.ofFn fun j => D ≫ u j) = (List.ofFn u).map (D ≫ ·)`. Rewrite using `[List.map_ofFn]`. Both sides reduce to the same expression. Rewrite using `[e, hL, Over.comp_left, hprod, hw]`.
+
+Both sides reduce to the same expression.
+-/
 theorem isCombAt_pull {S T : Type} [CommRing S] [CommRing T] (φ : S →+* T) {x : Sp S ⟶ Xo.X}
     {x' : Sp T ⟶ Xo.X} (hx : x' = spMap φ ≫ x) {m : ℕ} {v : Fin m → (Sp (DualNumber S) ⟶ Xo.univ.t.G.left)}
     {v' : Fin m → (Sp (DualNumber T) ⟶ Xo.univ.t.G.left)} (hv : ∀ j, v' j = spMap (dualMap φ) ≫ v j)
@@ -277,6 +352,15 @@ theorem isCombAt_pull {S T : Type} [CommRing S] [CommRing T] (φ : S →+* T) {x
     rw [e, hL, Over.comp_left, hprod, hw]
     rfl
 
+/- English proof (translation)
+Establish `key : ∀ (q : Gx x' ⟶ Sp S), q = (fst (Over.mk x') Xo.univ.t.G).left ≫ spMap φ → ∀ e : (PPx x').U i ≤ q ⁻¹ᵁ ⊤, q.appLE ⊤ ((PPx x').U i) e = (spMap φ).appTop ≫ (fst (Over.mk x') Xo.univ.t.G).left.appLE ⊤ _ (le_top)`. Introduce and unpack `q rfl e`. Conclude with `Scheme.Hom.comp_appLE _ _ _ _ _`. Establish `M : (fst (Over.mk x) Xo.univ.t.G).left.appTop ≫ (Gx x).presheaf.map (homOfLE le_top).op ≫ pm.appLE _ _ h = (spMap φ).appTop ≫ (fst (Over.mk x') Xo.univ.t.G).left.appTop ≫ (Gx x').presheaf.map (homOfLE le_top).op`. Rewrite using `[Scheme.Hom.map_appLE]`.
+
+Establish `e1 : (fst (Over.mk x) Xo.univ.t.G).left.appTop = (fst (Over.mk x) Xo.univ.t.G).left.appLE ⊤ ⊤ le_top` using `(Scheme.Hom.appLE_eq_app _).symm`. Rewrite using `[e1]`. Conclude with `(Scheme.Hom.appLE_comp_appLE _ _ _ _ _ _ _).trans ((key _ hf _).trans rfl)`. Establish `M'` using `congrArg (fun f => f.hom (toΓ S a)) M`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply] at M'`.
+
+Establish `N` using `congrArg (fun f => f.hom a) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom φ))`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_ofHom] at N`. Use `show (pm.appLE _ _ h).hom (((Gx x).presheaf.map (homOfLE le_top).op).hom ((fst (Over.mk x) Xo.univ.t.G).left.appTop.hom (toΓ S a))) = ((Gx x').presheaf.map (homOfLE le_top).op).hom ((fst (Over.mk x') Xo.univ.t.G).left.appTop.hom (toΓ T (φ a)))`. Rewrite using `[M']`. Use `congr 2`.
+
+Conclude with `N.symm`.
+-/
 theorem scal_pull {S T : Type} [CommRing S] [CommRing T] (φ : S →+* T) {x : Sp S ⟶ Xo.X} {x' : Sp T ⟶ Xo.X}
     (pm : Gx x' ⟶ Gx x)
     (hf : pm ≫ (fst (Over.mk x) Xo.univ.t.G).left = (fst (Over.mk x') Xo.univ.t.G).left ≫ spMap φ)
@@ -305,6 +389,23 @@ theorem scal_pull {S T : Type} [CommRing S] [CommRing T] (φ : S →+* T) {x : S
   congr 2
   exact N.symm
 
+/- English proof (translation)
+Introduce `S T _ _ _ _ φ t y y' z z' hb hz hz'`. Take `⟨hx, hcomb, pmC, hsC, hfC, haC⟩` from `hb`. Take `⟨hx1, hu1, pmA, hsA, hfA, haA⟩` from `hz`. Take `⟨hx2, hu2, pmB, hsB, hfB, haB⟩` from `hz'`. Establish `hxz : z'.x = z.x` using `by rw [hx2, hx1, hx]`.
+
+Use `⟨hxz, fun τ i => ?_, ?_⟩` and prove the remaining obligations. Take `⟨cf, hci, hlow, hc⟩` from `hcomb τ i`. Use `⟨fun j => φ (cf j), ?_, fun j hj => by simp only [hlow j hj, map_zero], ?_⟩` and prove the remaining obligations. Simplify using `only [hci, Units.coe_map, MonoidHom.coe_coe]`. Conclude with `isCombAt_pull φ.toRingHom hx1 (hu1 τ) (hu2 τ i) hc`.
+
+Set `pm : Gx z'.x ⟶ Gx z.x` to `pullback.lift (pullback.fst (Over.mk z'.x).hom Xo.univ.t.G.hom) (pullback.snd (Over.mk z'.x).hom Xo.univ.t.G.hom) (by show pullback.fst (Over.mk z'.x).hom Xo.univ.t.G.hom ≫ z.x = pullback.snd (Over.mk z'.x).hom Xo.univ.t.G.hom ≫ Xo.univ.t.G.hom`. Rewrite using `[← hxz]`. Conclude with `pullback.condition)`. Establish `pfst : pm ≫ pullback.fst (Over.mk z.x).hom Xo.univ.t.G.hom = pullback.fst (Over.mk z'.x).hom Xo.univ.t.G.hom` using `pullback.lift_fst _ _ _`. Establish `psnd : pm ≫ pullback.snd (Over.mk z.x).hom Xo.univ.t.G.hom = pullback.snd (Over.mk z'.x).hom Xo.univ.t.G.hom` using `pullback.lift_snd _ _ _`.
+
+Establish `hsA' : pmA ≫ pullback.snd (Over.mk y.x).hom Xo.univ.t.G.hom = pullback.snd (Over.mk z.x).hom Xo.univ.t.G.hom` using `hsA`. Establish `hfA' : pmA ≫ pullback.fst (Over.mk y.x).hom Xo.univ.t.G.hom = pullback.fst (Over.mk z.x).hom Xo.univ.t.G.hom ≫ spMap φ.toRingHom` using `hfA`. Establish `hsB' : pmB ≫ pullback.snd (Over.mk y'.x).hom Xo.univ.t.G.hom = pullback.snd (Over.mk z'.x).hom Xo.univ.t.G.hom` using `hsB`. Establish `hfB' : pmB ≫ pullback.fst (Over.mk y'.x).hom Xo.univ.t.G.hom = pullback.fst (Over.mk z'.x).hom Xo.univ.t.G.hom ≫ spMap φ.toRingHom` using `hfB`. Establish `hsC' : pmC ≫ pullback.snd (Over.mk y.x).hom Xo.univ.t.G.hom = pullback.snd (Over.mk y'.x).hom Xo.univ.t.G.hom` using `hsC`.
+
+Establish `hfC' : pmC ≫ pullback.fst (Over.mk y.x).hom Xo.univ.t.G.hom = pullback.fst (Over.mk y'.x).hom Xo.univ.t.G.hom` using `hfC`. Establish `hcomp : pm ≫ pmA = pmB ≫ pmC`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, hfA', ← Category.assoc, pfst, Category.assoc, hfC', hfB']`. Rewrite using `[Category.assoc, hsA', psnd, Category.assoc, hsC', hsB']`.
+
+Use `⟨pm, psnd, pfst, fun i h => ?_⟩` and prove the remaining obligations. Establish `hA` using `ppx_le_cov pmA hsA i`. Establish `hB'` using `ppx_le_cov pmB hsB i`. Establish `hC'` using `ppx_le_cov pmC hsC i`. Establish `key : ∀ (q : Gx z'.x ⟶ Gx y.x), q = pmB ≫ pmC → ∀ hh : (PPx z'.x).U i ≤ q ⁻¹ᵁ (PPx y.x).U i, (q.appLE _ _ hh).hom (scal y.x (t none : S) i * y.s.f i) = z'.s.f i`.
+
+Introduce and unpack `q rfl hh`. Establish `e : (pmB ≫ pmC).appLE _ _ hh = pmC.appLE _ _ hC' ≫ pmB.appLE _ _ hB'` using `(Scheme.Hom.appLE_comp_appLE pmB pmC _ _ _ hC' hB').symm`. Rewrite using `[e, CommRingCat.hom_comp, RingHom.comp_apply, haC i hC', haB i hB']`. Establish `e1 : ((Units.map (φ : S →* T) (t none) : Tˣ) : T) = φ.toRingHom (t none : S)` using `rfl`. Use `show (pm.appLE _ _ h).hom (scal z.x ((Units.map (φ : S →* T) (t none) : Tˣ) : T) i * z.s.f i) = z'.s.f i`.
+
+Rewrite using `[e1, ← haA i hA, ← scal_pull φ.toRingHom pmA hfA i hA, ← map_mul (pmA.appLE _ _ hA).hom]`. Establish `e2` using `congrArg (fun f => f.hom (scal y.x (t none : S) i * y.s.f i)) (Scheme.Hom.appLE_comp_appLE pm pmA _ _ _ hA h)`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply] at e2`. Rewrite using `[e2]`. Conclude with `key _ hcomp _`.
+-/
 theorem frBorBC : FrBorBCF Xo c := by
   intro S T _ _ _ _ φ t y y' z z' hb hz hz'
   obtain ⟨hx, hcomb, pmC, hsC, hfC, haC⟩ := hb
@@ -358,6 +459,9 @@ theorem frBorBC : FrBorBCF Xo c := by
     rw [e2]
     exact key _ hcomp _
 
+/- English proof (translation)
+The claim follows from `borChartF_of h frBorBC`.
+-/
 theorem borChartF_of_cover (h : ChartCoverF Xo c) : BorChartF Xo c :=
   borChartF_of h frBorBC
 

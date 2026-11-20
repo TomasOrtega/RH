@@ -14,9 +14,19 @@ section Values
 
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Ωf : Type} [Field Ωf]
 
+/- English proof (translation)
+Introduce `m hm` and use `hg m (by simpa using hm)`.
+-/
 theorem isMultiHomog_neg {g : MRing ι} {d : K → ℕ} (hg : IsMultiHomog g d) : IsMultiHomog (-g) d :=
   fun m hm => hg m (by simpa using hm)
 
+/- English proof (translation)
+Take `⟨d, g, h0, hg, hh, -, heq, hz0, rfl⟩` from `h`. Take `⟨d', g', h0', hg', hh', -, heq', hz0', rfl⟩` from `h'`. Establish `hhom : IsMultiHomog (g * h0' + -(g' * h0)) (d + d')`. Use `isMultiHomog_add (isMultiHomog_mul hg hh') (isMultiHomog_neg ?_)` and prove the remaining obligations. Rewrite using `[add_comm]`.
+
+Conclude with `isMultiHomog_mul hg' hh`. Establish `haev : aeval y (g * h0' + -(g' * h0)) = 0`. Rewrite using `[map_add, map_neg, map_mul, map_mul, heq, heq']`. Expand and normalize the polynomial expressions, which then agree. Use `eval_eq_zero_of_mem_mcPts hz (mem_mCoordIdeal_of_aeval_eq_zero y hhom haev)` as an intermediate fact.
+
+Simplify using `only [map_add, map_neg, map_mul] at this`. Rewrite using `[div_eq_div_iff hz0 hz0']`. Take the linear combination `this`.
+-/
 theorem isValueAt_unique {y : (Σ k, ι k) → Ωf} {s : Ωf} {z : (Σ k, ι k) → ℂ}
     (hz : z ∈ mcPts (mCoordIdeal y)) {v v' : ℂ} (h : IsValueAt y s z v) (h' : IsValueAt y s z v') :
     v = v' := by
@@ -34,6 +44,13 @@ theorem isValueAt_unique {y : (Σ k, ι k) → Ωf} {s : Ωf} {z : (Σ k, ι k) 
   rw [div_eq_div_iff hz0 hz0']
   linear_combination this
 
+/- English proof (translation)
+Take `⟨d, g, h, hg, hh, hy, heq, hz0, rfl⟩` from `h₁`. Take `⟨d', g', h', hg', hh', hy', heq', hz0', rfl⟩` from `h₂`. Use `⟨d + d', g * g', h * h', isMultiHomog_mul hg hg', isMultiHomog_mul hh hh', ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `mul_ne_zero hy hy'`.
+
+Rewrite using `[map_mul, map_mul, heq, heq']`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[map_mul, map_mul]`. Conclude with `mul_ne_zero hz0 hz0'`. Rewrite using `[map_mul, map_mul, map_mul, map_mul]`.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem isValueAt_mul {y : (Σ k, ι k) → Ωf} {s₁ s₂ : Ωf} {z : (Σ k, ι k) → ℂ} {v₁ v₂ : ℂ}
     (h₁ : IsValueAt y s₁ z v₁) (h₂ : IsValueAt y s₂ z v₂) : IsValueAt y (s₁ * s₂) z (v₁ * v₂) := by
   obtain ⟨d, g, h, hg, hh, hy, heq, hz0, rfl⟩ := h₁
@@ -44,6 +61,13 @@ theorem isValueAt_mul {y : (Σ k, ι k) → Ωf} {s₁ s₂ : Ωf} {z : (Σ k, �
   · rw [map_mul, map_mul]; exact mul_ne_zero hz0 hz0'
   · rw [map_mul, map_mul, map_mul, map_mul]; field_simp
 
+/- English proof (translation)
+Take `⟨d, g, h, hg, hh, hy, heq, hz0, rfl⟩` from `h₁`. Take `⟨d', g', h', hg', hh', hy', heq', hz0', rfl⟩` from `h₂`. Use `⟨d + d', g * h' + g' * h, h * h', isMultiHomog_add (isMultiHomog_mul hg hh') ?_, isMultiHomog_mul hh hh', ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[add_comm]`. Conclude with `isMultiHomog_mul hg' hh`.
+
+Rewrite using `[map_mul]`. Conclude with `mul_ne_zero hy hy'`. Rewrite using `[map_add, map_mul, map_mul, map_mul, heq, heq']`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[map_mul, map_mul]`.
+
+Conclude with `mul_ne_zero hz0 hz0'`. Simplify using `only [map_add, map_mul]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem isValueAt_add {y : (Σ k, ι k) → Ωf} {s₁ s₂ : Ωf} {z : (Σ k, ι k) → ℂ} {v₁ v₂ : ℂ}
     (h₁ : IsValueAt y s₁ z v₁) (h₂ : IsValueAt y s₂ z v₂) : IsValueAt y (s₁ + s₂) z (v₁ + v₂) := by
   obtain ⟨d, g, h, hg, hh, hy, heq, hz0, rfl⟩ := h₁
@@ -56,9 +80,17 @@ theorem isValueAt_add {y : (Σ k, ι k) → Ωf} {s₁ s₂ : Ωf} {z : (Σ k, �
   · rw [map_mul, map_mul]; exact mul_ne_zero hz0 hz0'
   · simp only [map_add, map_mul]; field_simp
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨0, 0, 1, isMultiHomog_zero 0, isMultiHomog_one, by simp, by simp, by simp, by simp⟩`.
+-/
 theorem isValueAt_zero' (y : (Σ k, ι k) → Ωf) (z : (Σ k, ι k) → ℂ) : IsValueAt y 0 z 0 :=
   ⟨0, 0, 1, isMultiHomog_zero 0, isMultiHomog_one, by simp, by simp, by simp, by simp⟩
 
+/- English proof (translation)
+Take `⟨d, g, h0, hg, hh, hy, heq, hz0, rfl⟩` from `h`. Establish `hgz : eval z (map (Int.castRingHom ℂ) g) ≠ 0` using `fun h' => hv (by rw [h', zero_div])`. Establish `hgy : aeval y g ≠ 0` using `fun h' => hgz (eval_eq_zero_of_mem_mcPts hz (mem_mCoordIdeal_of_aeval_eq_zero y hg h'))`. Establish `hs : s ≠ 0` using `fun h' => hgy (by rw [heq, h', zero_mul])`. Use `⟨d, h0, g, hh, hg, hgy, ?_, hgz, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[heq]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[inv_div]`.
+-/
 theorem isValueAt_inv {y : (Σ k, ι k) → Ωf} {s : Ωf} {z : (Σ k, ι k) → ℂ}
     (hz : z ∈ mcPts (mCoordIdeal y)) {v : ℂ} (h : IsValueAt y s z v) (hv : v ≠ 0) :
     IsValueAt y s⁻¹ z v⁻¹ := by
@@ -71,12 +103,18 @@ theorem isValueAt_inv {y : (Σ k, ι k) → Ωf} {s : Ωf} {z : (Σ k, ι k) →
   · rw [heq]; field_simp
   · rw [inv_div]
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simpa using isValueAt_one_self y z`. Consider the case `succ k ih => rw [pow_succ, pow_succ]`. Conclude with `isValueAt_mul ih h`.
+-/
 theorem isValueAt_pow {y : (Σ k, ι k) → Ωf} {s : Ωf} {z : (Σ k, ι k) → ℂ} {v : ℂ}
     (h : IsValueAt y s z v) (n : ℕ) : IsValueAt y (s ^ n) z (v ^ n) := by
   induction n with
   | zero => simpa using isValueAt_one_self y z
   | succ k ih => rw [pow_succ, pow_succ]; exact isValueAt_mul ih h
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simpa using isValueAt_zero' y z`. Consider the case `succ n ih`. Rewrite using `[Fin.sum_univ_succ, Fin.sum_univ_succ]`. Conclude with `isValueAt_add (h 0) (ih _ _ fun i => h i.succ)`.
+-/
 theorem isValueAt_sum {y : (Σ k, ι k) → Ωf} {z : (Σ k, ι k) → ℂ} {n : ℕ} (s : Fin n → Ωf) (v : Fin n → ℂ)
     (h : ∀ i, IsValueAt y (s i) z (v i)) : IsValueAt y (∑ i, s i) z (∑ i, v i) := by
   induction n with
@@ -89,6 +127,11 @@ end Values
 
 section LineValues
 
+/- English proof (translation)
+Use `⟨fun _ => 1, X ⟨(), i⟩, X ⟨(), c⟩, isMultiHomog_X_line i, isMultiHomog_X_line c, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `using yLine_ne_zero _`. Use `yLine_ne_zero ⟨(), c⟩` as an intermediate fact. Simplify using `only [aeval_X]`. Clear the denominators using the available nonvanishing facts.
+
+Simplify using `using hc`. Simplify using the standard rewrite rules.
+-/
 theorem isValueAt_ratio (z : (Σ _ : Unit, Fin 2) → ℂ) (i c : Fin 2) (hc : z ⟨(), c⟩ ≠ 0) :
     IsValueAt yLine (yLine ⟨(), i⟩ / yLine ⟨(), c⟩) z (z ⟨(), i⟩ / z ⟨(), c⟩) := by
   refine ⟨fun _ => 1, X ⟨(), i⟩, X ⟨(), c⟩, isMultiHomog_X_line i, isMultiHomog_X_line c, ?_, ?_, ?_, ?_⟩
@@ -99,6 +142,15 @@ theorem isValueAt_ratio (z : (Σ _ : Unit, Fin 2) → ℂ) (i c : Fin 2) (hc : z
   · simpa using hc
   · simp
 
+/- English proof (translation)
+Proceed by induction on `hr using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Take `⟨c', rfl⟩` from `hx`. Use `⟨z ⟨(), c' ()⟩ / z ⟨(), c ()⟩, ?_⟩` and prove the remaining obligations. Establish `e1 : segreCoord yLine c' = yLine ⟨(), c' ()⟩` using `by simp [segreCoord]`.
+
+Establish `e2 : segreCoord yLine c = yLine ⟨(), c ()⟩` using `by simp [segreCoord]`. Use `show IsValueAt yLine (segreCoord yLine c' / segreCoord yLine c) z _`. Rewrite using `[e1, e2]`. Conclude with `isValueAt_ratio z (c' ()) (c ()) hc`. Consider the case `algebraMap a => exact ⟨a, by simpa using isValueAt_intCast z a⟩`.
+
+Consider the case `add x y _ _ hx hy`. Take `⟨v, hv⟩` from `hx`. Take `⟨w, hw⟩` from `hy`. Conclude with `⟨v + w, isValueAt_add hv hw⟩`. Consider the case `mul x y _ _ hx hy`.
+
+Take `⟨v, hv⟩` from `hx`. Take `⟨w, hw⟩` from `hy`. Conclude with `⟨v * w, isValueAt_mul hv hw⟩`.
+-/
 theorem exists_value_of_mem_chartRing (c : (k : Unit) → PBlk 2 k) (z : (Σ _ : Unit, Fin 2) → ℂ)
     (hc : z ⟨(), c ()⟩ ≠ 0) {r : Ω} (hr : r ∈ chartRing ℤ (segreCoord yLine) c) :
     ∃ v, IsValueAt yLine r z v := by

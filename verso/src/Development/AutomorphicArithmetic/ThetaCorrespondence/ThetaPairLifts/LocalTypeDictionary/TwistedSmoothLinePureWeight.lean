@@ -16,6 +16,13 @@ open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 open Filter Topology
 open GlobalTheory.AdelicU
 open scoped Classical
+/- English proof (translation)
+Introduce `hP F E _ _ _ _ _ σ n d Y Wd M ψ χX χW om hCM hψ hM hW γ hγ f φ hφ hv`. Establish `h1` using `fun t : ℝ => GlobalTheory.T.archimedeanPoint_pureTensor_keeps_finiteFactor M ψ χX χW om hψ hM hW (γ (Multiplicative.ofAdd t)) (hγ.2 _) f φ hφ hv`. Use `choose c hc using h1`. Distinguish the cases in `h : ∃ y : Fin n × Fin d → AF F, ∏ᶠ v, φ v (fun i => evFin F v (y i)) ≠ 0`. Take `⟨g, hg⟩` from `_root_.GlobalTheory.T.pure_tensor_theta_smooth_along_line hP M ψ χX χW om hCM hψ hM hW γ hγ f φ hφ hv h c hc`.
+
+Conclude with `⟨c, g, hc, hg⟩`. Use `push_neg at h`. Establish `h0 : ∀ c' : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.SInf F (Fin n × Fin d), GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure c' φ = 0` using `fun c' => by`. Use function extensionality and compare the values at `x`. Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure, h x]`.
+
+Use `⟨fun _ => 0, 0, fun t => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[h0 f, h0 0, map_zero]`. Simplify using the standard rewrite rules.
+-/
 theorem GlobalTheory.Twist.twist_smoothLine_isPure : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n d : ℕ}
     {Y : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E n} {Wd : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E d} (M : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Model σ Y Wd) (ψ : AddChar (AF F) ℂ)
     (χX χW : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chr F E) (om : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ Y Wd),
@@ -54,6 +61,9 @@ open Filter Topology
 open GlobalTheory.AdelicU
 open scoped Classical
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.Twist.twist_smoothLine_isPure | exact _root_.GlobalTheory.Twist.twist_smoothLine_isPure | (intros; apply _root_.GlobalTheory.Twist.twist_smoothLine_isPure <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.twisted_smoothLine_pure_weight : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n d : ℕ}
     {Y : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E n} {Wd : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E d} (M : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Model σ Y Wd) (ψ : AddChar (AF F) ℂ)
     (χX χW : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chr F E) (om : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ Y Wd),

@@ -39,6 +39,9 @@ variable {D : D7} (i : D.nd.Loc) (dc : TruncatedSeriesCountingIdentities.Decl D 
   (Dd : RingData (D.nd.O i) (D.nd.X i) (Fin D.R.nV) (GE D.nd) D.R.t (RepresentationBoundsCohomology.blk D.R))
   [∀ k, SMulCommClass Dd.R' (D.nd.O i) (blockRestrictedRepresentationType (RepresentationBoundsCohomology.blk D.R) Dd.ρk k)]
 
+/- English proof (translation)
+Rewrite using `[(D.nbr i w hw).eO_alg z, ← IsScalarTower.algebraMap_apply, IsScalarTower.algebraMap_apply ℤ_[D.nd.l i] ℚ_[D.nd.l i] (Br.LLw (D.nbr i w hw))]`. Both sides reduce to the same expression.
+-/
 theorem algZ_LL {w : HeightOneSpectrum (𝓞 D.host.E)} (hw : w ∈ placesOver D.host.E (D.nd.l i)) (z : ℤ_[D.nd.l i]) :
     algebraMap (Br.Ow (D.nbr i w hw)) (Br.LLw (D.nbr i w hw)) ((D.nbr i w hw).eO (algebraMap ℤ_[D.nd.l i] (D.nd.O i) z)) =
       algebraMap ℚ_[D.nd.l i] (Br.LLw (D.nbr i w hw)) (z : ℚ_[D.nd.l i]) := by
@@ -46,6 +49,9 @@ theorem algZ_LL {w : HeightOneSpectrum (𝓞 D.host.E)} (hw : w ∈ placesOver D
     IsScalarTower.algebraMap_apply ℤ_[D.nd.l i] ℚ_[D.nd.l i] (Br.LLw (D.nbr i w hw))]
   rfl
 
+/- English proof (translation)
+Establish `hc` using `hcyc w hw ((eW i dc hw).symm h)`. Rewrite `hc` using `[MulEquiv.apply_symm_apply]`. Rewrite using `[epsL, algZ_LL, Units.val_inv_eq_inv_val, hc]`. Use `congr 1`. Conclude with `eq_inv_of_mul_eq_one_left (by rw [← PadicInt.coe_mul, Units.inv_mul, PadicInt.coe_one])`.
+-/
 theorem epsL_eq (hcyc : CycW i dc) {w : HeightOneSpectrum (𝓞 D.host.E)} (hw : w ∈ placesOver D.host.E (D.nd.l i))
     (h : Br.G D.nbr i w hw) :
     algebraMap (Br.Ow (D.nbr i w hw)) (Br.LLw (D.nbr i w hw)) (epsL i dc hw h) =
@@ -64,6 +70,9 @@ def uRec {w : HeightOneSpectrum (𝓞 D.host.E)} (hw : w ∈ placesOver D.host.E
     Mc i Dd c ≃+ ((Fin 1 → Br.LLw (D.nbr i w hw)) ⧸ Formalism.MainNotions.N.stdG (Br.Ow (D.nbr i w hw)) (Br.LLw (D.nbr i w hw)) 1) :=
   φ.toAddEquiv.trans (koEquiv (D.nbr i w hw).eO (Formalism.MainNotions.N.KHf.eK (D.nbr i w hw)) (fun c => Br.toLLK_alg (D.nbr i w hw) c))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem uRec_apply {w : HeightOneSpectrum (𝓞 D.host.E)} (hw : w ∈ placesOver D.host.E (D.nd.l i)) (c : Fin (D.R.t + 1))
     (φ : Mc i Dd c ≃ₗ[D.nd.O i] KO (D.nd.O i)) (m : Mc i Dd c) :
     uRec i Dd hw c φ m =
@@ -80,6 +89,11 @@ variable {D : D7} (i : D.nd.Loc) (dc : TruncatedSeriesCountingIdentities.Decl D 
   (Dd : RingData (D.nd.O i) (D.nd.X i) (Fin D.R.nV) (GE D.nd) D.R.t (RepresentationBoundsCohomology.blk D.R))
   [∀ k, SMulCommClass Dd.R' (D.nd.O i) (blockRestrictedRepresentationType (RepresentationBoundsCohomology.blk D.R) Dd.ρk k)]
 
+/- English proof (translation)
+Introduce `ψ _`. Set `_` to `Formalism.MainNotions.N.K.Topo.fracTopology (D.nd.O i)`. Set `_` to `Formalism.MainNotions.N.K.Topo.rTopology (D.nd.O i) Dd.R'`. Use `Formalism.MainNotions.N.K.Topo.fracTop_addGroup_O i` as an intermediate fact. Use `Formalism.MainNotions.N.K.Topo.fracTop_smul_O i` as an intermediate fact.
+
+Use `Formalism.MainNotions.N.K.Topo.rTop_addGroup_RD i r π g0 eB e₁ s Dd hD` as an intermediate fact. Use `Formalism.MainNotions.N.K.Topo.rTop_constSMul_RD i Dd` as an intermediate fact. Use `Formalism.MainNotions.N.K.Topo.rTop_mul_RD i r π g0 eB e₁ s Dd hD` as an intermediate fact. Establish `h` using `Formalism.RepresentationBoundsCohomology.FIN.lc_of_torsion (D.nd.l i) Dd.r Dd.χ Dd.E (Formalism.MainNotions.N.K.Topo.padicCoeff_O i) (Formalism.MainNotions.N.K.Topo.fgTop_RD i r π g0 eB e₁ s Dd hD) (Formalism.MainNotions.N.K.Topo.uElt_cont i r π g0 eB e₁ s Dd hD hc) (fun m => For …`. Conclude with `h.comp_continuous continuous_subtype_val`.
+-/
 theorem yLoc_of
     (hD : RingDef (D.nd.O i) (D.nd.T i) (RepresentationBoundsCohomology.repX D.nd r) π (chiU D.nd i 1) (epsU D.nd i) g0 eB e₁ s Dd)
     (hc : Formalism.MainNotions.TruncatedSeriesCountingIdentities.FamilyContinuous (D := D) i r) (c : Fin (D.R.t + 1)) (n : ℕ) :

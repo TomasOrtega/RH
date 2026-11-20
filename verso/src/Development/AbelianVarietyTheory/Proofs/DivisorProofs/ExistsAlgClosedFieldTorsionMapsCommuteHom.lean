@@ -26,6 +26,11 @@ variable {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D₁ D₂ : DegData
   {A₁ A₂ : PolAV (Sp (FractionRing R))} {G₁ G₂ : Over (Sp R)} [GrpObj G₁] [IsCommMonObj G₁] [GrpObj G₂]
   [IsCommMonObj G₂] {U₁ : UnifPre I D₁ A₁ G₁} {U₂ : UnifPre I D₂ A₂ G₂}
 
+/- English proof (translation)
+Establish `e : c ≫ U₂.gen.inv = U₁.gen.inv ≫ (Over.pullback (jK R)).map a`. Rewrite using `[Iso.eq_inv_comp, ← Category.assoc, ← hc, Category.assoc, Iso.hom_inv_id, Category.comp_id]`. Establish `e' : c.left ≫ U₂.gen.inv.left = U₁.gen.inv.left ≫ ((Over.pullback (jK R)).map a).left` using `congrArg (fun q => q.left) e`. Establish `e₂ : ((Over.pullback (jK R)).map a).left ≫ pullback.fst G₂.hom (jK R) = pullback.fst G₁.hom (jK R) ≫ a.left` using `pullback.lift_fst _ _ _`. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [toG, Over.comp_left, Category.assoc]`. Use `_ = _ := by rw [e', Category.assoc, e₂, toG, Category.assoc, Category.assoc]`.
+-/
 theorem toG_gen₀ {a : G₁ ⟶ G₂} {c : A₁.A ⟶ A₂.A} (hc : Gen₀ U₁ U₂ a c) {F : Type} [Field F]
     [Algebra (FractionRing R) F] (x : TFK (R := R) F ⟶ A₁.A) : toG U₂ (x ≫ c) = toG U₁ x ≫ a.left := by
   have e : c ≫ U₂.gen.inv = U₁.gen.inv ≫ (Over.pullback (jK R)).map a := by
@@ -40,6 +45,11 @@ theorem toG_gen₀ {a : G₁ ⟶ G₂} {c : A₁.A ⟶ A₂.A} (hc : Gen₀ U₁
 
 end Gen
 
+/- English proof (translation)
+Establish `w : toG U z ≫ G.hom = (jFK (R` using `V) F ≫ jK V) ≫ specOf φ := by`. Rewrite using `[toG_over]`. Simplify using `only [jFK, jK, specOf, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Use `congr 2`. Conclude with `RingHom.ext hF`.
+
+Take `⟨z', hz'⟩` from `exists_toG U' (pullback.lift _ _ w) (pullback.lift_snd _ _ _)`. Conclude with `⟨z', by rw [hz']; exact pullback.lift_fst _ _ _⟩`.
+-/
 theorem exists_toG_pull {R V : Type} [CommRing R] [IsDomain R] [CommRing V] [IsDomain V] {I : Ideal R} {I' : Ideal V}
     (φ : R →+* V) {D : DegData R I} {D' : DegData V I'} {A : PolAV (Sp (FractionRing R))}
     {A' : PolAV (Sp (FractionRing V))} {G : Over (Sp R)} [GrpObj G] [IsCommMonObj G]
@@ -58,6 +68,29 @@ theorem exists_toG_pull {R V : Type} [CommRing R] [IsDomain R] [CommRing V] [IsD
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Introduce `R _ _ _ I hR D₁ D₂ A₁ A₂ G₁ G₂ _ _ _ _ hG₁ hG₂ U₁ U₂ a c b h _ hgen hlin hcoord hinj`. Establish `hL` using `GlobalTheory.firstFiveLaws`. Take `⟨V, _, _, _, φ, hV, hφ, hI⟩` from `GlobalTheory.adic_base_embeds_valuation_algebraic_closure.1 R I hR`. Establish `: CharZero V` using `charZero_of_injective_ringHom hφ`. Establish `hR' : AdmBase V (maximalIdeal V)` using `⟨inferInstance, inferInstance, inferInstance, hV⟩`.
+
+Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible V`. Take `⟨v, hv⟩` from `GlobalTheory.adic_base_embeds_valuation_algebraic_closure.2 V ϖ hϖ`. Take `⟨D₁', hD₁, A₁', U₁', hG₁', hU₁, hpt₁, -⟩` from `GlobalTheory.T.uniformisation_endomorphisms_to_complete_dvr hL R I hR D₁ A₁ G₁ hG₁ U₁ V φ hV hφ hI`. Take `⟨D₂', hD₂, A₂', U₂', hG₂', hU₂, hpt₂, -⟩` from `GlobalTheory.T.uniformisation_endomorphisms_to_complete_dvr hL R I hR D₂ A₂ G₂ hG₂ U₂ V φ hV hφ hI`. Set `Ω` to `AlgebraicClosure (FractionRing V)`.
+
+Set `ψ : R →+* Ω` to `((algebraMap (FractionRing V) Ω).comp (algebraMap V (FractionRing V))).comp φ`. Establish `hψ : Function.Injective ψ` using `((algebraMap (FractionRing V) Ω).injective.comp (IsFractionRing.injective V (FractionRing V))).comp hφ`. Set `_ : Algebra (FractionRing R) Ω` to `(IsFractionRing.lift hψ).toAlgebra`. Establish `hF : ∀ r : R, algebraMap (FractionRing R) Ω (algebraMap R _ r) = algebraMap (FractionRing V) Ω (algebraMap V _ (φ r))` using `fun r => IsFractionRing.lift_algebraMap hψ r`. Take `⟨ex₁, -, io₁, ns₁⟩` from `hpt₁ Ω hF`.
+
+Take `⟨ex₂, sur₂, io₂, ns₂⟩` from `hpt₂ Ω hF`. Take `⟨b', h', hlin', hb', hh'⟩` from `GlobalTheory.T.uniformisedGroupHom_pullback_maps R V I (maximalIdeal V) φ D₁ D₂ A₁ A₂ G₁ G₂ U₁ U₂ D₁' D₂' A₁' A₂' hD₁ hD₂ U₁' U₂' hU₁ hU₂ a b h hlin`. Establish `hcoord'` using `GlobalTheory.T.torusCoordinates_compare_normalisedGenerators V (maximalIdeal V) hR' D₁' D₂' A₁' A₂' _ _ U₁'.toUnifPre U₂'.toUnifPre ((Over.pullback (specOf φ)).map a) b' h' hlin'`. Set `c' : A₁'.A ⟶ A₂'.A` to `U₁'.gen.inv ≫ (Over.pullback (jK V)).map ((Over.pullback (specOf φ)).map a) ≫ U₂'.gen.hom`. Establish `hgen' : Gen₀ U₁'.toUnifPre U₂'.toUnifPre ((Over.pullback (specOf φ)).map a) c'`.
+
+Simplify using `only [Gen₀, c', Iso.hom_inv_id_assoc]`. Establish `hc' : IsMonHom c'`. Use `U₁'.gen_hom` as an intermediate fact. Use `U₂'.gen_hom` as an intermediate fact. Use `hlin'.1` as an intermediate fact.
+
+Simplify using `only [c']`. Use `infer_instance`. Establish `hinj' : Function.Injective h'` using `fun x y hxy => hD₂.xe.injective (hinj (by rw [← hh', ← hh', hxy]))`. Establish `key'` using `GlobalTheory.T.trait_torsion_point_map_commutes_char_injective_hom V hV ϖ hϖ Ω v hv D₁' D₂' A₁' A₂' _ _ hG₁' hG₂' U₁' U₂' ((Over.pullback (specOf φ)).map a) c' b' h' hc' hgen' hlin' hcoord' hinj'`. Use `choose π₁ hπ₁ _ using ex₁`.
+
+Use `choose π₂ hπ₂ _ using ex₂`. Use `⟨Ω, inferInstance, inferInstance, inferInstance, fun k hk p x hx g' hact => ?_⟩` and prove the remaining obligations. Establish `hact' : Act D₁'.toPre D₂'.toPre b' h' (π₁ p.g) (π₂ g')` using `(GlobalTheory.T.torusExtensionPointAction_pullback_data R V φ D₁.toPre D₂.toPre D₁'.toPre D₂'.toPre hD₁ hD₂ b h b' h' hlin.2.1 hlin'.2.1 hb' hh' (fun χ => (hcoord χ).imp fun _ hu => hu.1) Ω p.g g' (π₁ p.g) (π₂ g') (hπ₁ _) (hπ₂ _)).1 hact`. Set `ρp : QkPt D₁'.toPre Ω k` to `⟨hD₁.xe.symm p.y, π₁ p.g, by`. Take `⟨s, h1, h2⟩` from `p.eq`.
+
+Conclude with `⟨π₁ s, (ns₁ k _ _ _ _ (hπ₁ _) (hπ₁ _)).1 h1, (io₁ _ _ _ (hπ₁ _)).1 (by rwa [AddEquiv.apply_symm_apply])⟩⟩`. Take `⟨x', hx'e⟩` from `exists_toG_pull φ U₁.toUnifPre U₁'.toUnifPre hF x`. Establish `hx' : QkToAkU U₁'.toUnifPre Ω k ρp x'` using `hL.2.2.2.2.qkBaseChange R V I _ hR hR' φ D₁ A₁ G₁ U₁ _ (Iso.refl _) (inferInstanceAs (IsMonHom (𝟙 _))) A₁' D₁' hD₁ U₁' hU₁ Ω hF k hk p x ρp x' rfl (hπ₁ _) (by simpa only [toG, Category.assoc, Iso.refl_hom, Over.id_left, Category.id_comp] using hx'e) hx`. Take `⟨r, rg, hr⟩` from `key' k hk ρp x' hx' (π₂ g') hact'`. Set `p' : QkPt D₂.toPre Ω k` to `⟨hD₂.xe r.y, g', by`.
+
+Take `⟨s', h1, h2⟩` from `r.eq`. Take `⟨s, hs, -⟩` from `sur₂ s'`. Conclude with `⟨s, (ns₂ k _ _ _ _ (hπ₂ g') hs).2 (rg ▸ h1), (io₂ _ _ _ hs).2 h2⟩⟩`. Use `⟨p', rfl, ?_⟩` and prove the remaining obligations. Take `⟨f₂, hf₂, -⟩` from `GlobalTheory.T.uniformisation_torsion_identification_with_pairing hL R I hR D₂ A₂ G₂ hG₂ U₂ Ω k hk`.
+
+Take `⟨f₂', hf₂', -⟩` from `GlobalTheory.T.uniformisation_torsion_identification_with_pairing hL V _ hR' D₂' A₂' _ hG₂' U₂' Ω k hk`. Take `⟨z', hz'e⟩` from `exists_toG_pull φ U₂.toUnifPre U₂'.toUnifPre hF (f₂ p')`. Establish `hz' : QkToAkU U₂'.toUnifPre Ω k r z'` using `hL.2.2.2.2.qkBaseChange R V I _ hR hR' φ D₂ A₂ G₂ U₂ _ (Iso.refl _) (inferInstanceAs (IsMonHom (𝟙 _))) A₂' D₂' hD₂ U₂' hU₂ Ω hF k hk p' (f₂ p') r z' (hD₂.xe.symm_apply_apply r.y).symm (rg ▸ hπ₂ g') (by simpa only [toG, Category.assoc, Iso.refl_hom, Over.id_left, Category.id_comp] …`. Establish `ez : z' = x' ≫ c'` using `((hf₂' _ _).1 hz').trans ((hf₂' _ _).1 hr).symm`. Establish `hpa : ((Over.pullback (specOf φ)).map a).left ≫ pullback.fst G₂.hom (specOf φ) = pullback.fst G₁.hom (specOf φ) ≫ a.left` using `pullback.lift_fst _ _ _`.
+
+Use `(hf₂ _ _).2 (toG_injective U₂.toUnifPre ?_).symm` and prove the remaining obligations. Rewrite using `[← hz'e, ez, toG_gen₀ hgen', toG_gen₀ hgen, ← hx'e, Category.assoc, Category.assoc, hpa]`.
+-/
 theorem exists_key : ∀ (R : Type) [CommRing R] [IsDomain R] [CharZero R] (I : Ideal R), AdmBase R I → ∀ (D₁ D₂ : DegData R I) (A₁ A₂ : PolAV (Sp (FractionRing R))) (G₁ G₂ : Over (Sp R)) [GrpObj G₁] [IsCommMonObj G₁] [GrpObj G₂] [IsCommMonObj G₂], IsSemiAbelian G₁ → IsSemiAbelian G₂ → ∀ (U₁ : Unif I D₁ A₁ G₁) (U₂ : Unif I D₂ A₂ G₂) (a : G₁ ⟶ G₂) (c : A₁.A ⟶ A₂.A) (b : D₁.toPre.P.A ⟶ D₂.toPre.P.A) (h : D₂.toPre.X →+ D₁.toPre.X), IsMonHom c → Gen₀ U₁.toUnifPre U₂.toUnifPre a c → Lin U₁.toUnifPre U₂.toUnifPre a b h → Coord U₁.toUnifPre U₂.toUnifPre a b h → Function.Injective h → ∃ (F : Type) (_ : Field F) (_ : IsAlgClosed F) (_ : Algebra (FractionRing R) F), Key U₁.toUnifPre U₂.toUnifPre c b h F := by
   intro R _ _ _ I hR D₁ D₂ A₁ A₂ G₁ G₂ _ _ _ _ hG₁ hG₂ U₁ U₂ a c b h _ hgen hlin hcoord hinj
   have hL := GlobalTheory.firstFiveLaws

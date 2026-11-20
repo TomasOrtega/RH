@@ -12,6 +12,11 @@ def bwA_N {n : ℕ} (τv : D.what₂.Tau) (B B' : GL (Fin n) D.host.E) :
     D.what₂.Tau → Matrix (Fin n) (Fin n) ℂ :=
   fun τ => if τ = τv then atInf (embT D) (B'⁻¹ * B : GL (Fin n) D.host.E).1 τ else 1
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ`. Unfold `bwA_N`. Use `split_ifs with h`. Simplify using `only [atInf]`. Rewrite using `[← Matrix.map_mul, ← Units.val_mul, mul_assoc, mul_inv_cancel, mul_one]`.
+
+Rewrite using `[one_mul]`.
+-/
 theorem bwA_N_mul {n : ℕ} (τv : D.what₂.Tau) (B B' : GL (Fin n) D.host.E) :
     (fun τ => bwA_N D τv B B' τ * atInf (embT D) (B⁻¹ : GL (Fin n) D.host.E).1 τ) =
       fun τ => if τ = τv then atInf (embT D) (B'⁻¹ : GL (Fin n) D.host.E).1 τ
@@ -45,6 +50,11 @@ def BwLocGlob (Tt : FormsTied D u) : Prop :=
         fnOf _ (shiftOf (lamT u i)) (atInf (embT D) (B⁻¹ : GL (Fin (D.R.N i)) D.host.E).1) Q ((Tt.val i hi).eY z)) →
     y ∈ (D.fm u).S i w
 
+/- English proof (translation)
+Introduce `w hw i hi hs v hv x hx`. Apply `h3 w hw i hi` to reduce the goal to its premises. Introduce `c`. Take `⟨⟨B, hB⟩, hB'⟩` from `h1 i hi c`. Take `⟨B', hB'⟩` from `hB' v`.
+
+Take `⟨P, hP, hxP⟩` from `((Tt.bw i hi) w hw hs v x).1 hx c B B' hB hB'`. Use `⟨B, hB, _, h2 w hw hs v hv i hi c B B' hB hB' P hP, fun z => ?_⟩` and prove the remaining obligations. Rewrite using `[emb_tpow_smul, Pi.smul_apply, Pi.smul_apply, hxP z, ← bwA_N_mul, fnOf_mul, LinearMap.map_smul]`. Both sides reduce to the same expression.
+-/
 theorem bwA_bwIncl_of (Tt : FormsTied D u) (h1 : BwLocBases D u Tt) (h2 : BwSubInt D u Tt)
     (h3 : BwLocGlob D u Tt) : BwIncl D u := by
   intro w hw i hi hs v hv x hx
@@ -57,6 +67,9 @@ theorem bwA_bwIncl_of (Tt : FormsTied D u) (h1 : BwLocBases D u Tt) (h2 : BwSubI
   rw [emb_tpow_smul, Pi.smul_apply, Pi.smul_apply, hxP z, ← bwA_N_mul, fnOf_mul, LinearMap.map_smul]
   rfl
 
+/- English proof (translation)
+The claim follows from `lattice_inclusion_family_of fun D u hT _ => by obtain ⟨Tt, _⟩ := hT exact bwA_bwIncl_of D u Tt (h1 D u Tt) (h2 D u Tt) (h3 D u Tt)`.
+-/
 theorem lattice_inclusion_of_sub_integral
     (h1 : ∀ (D : D7) (u : D.what₂.Word) (Tt : FormsTied D u), BwLocBases D u Tt)
     (h2 : ∀ (D : D7) (u : D.what₂.Word) (Tt : FormsTied D u), BwSubInt D u Tt)

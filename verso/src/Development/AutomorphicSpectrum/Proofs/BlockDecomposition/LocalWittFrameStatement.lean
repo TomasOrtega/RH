@@ -5,5 +5,8 @@ open NumberField IsDedekindDomain Matrix Formalism.MainNotions.GlobalTheoryTheor
 open Formalism.UG (cT)
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.KFin.FrameLoc.isFrame_colV | exact GlobalTheory.CompanionTheory.KFin.FrameLoc.isFrame_colV | (intros; apply GlobalTheory.CompanionTheory.KFin.FrameLoc.isFrame_colV <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.local_witt_frame : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {r : ℕ} {X Y : Matrix (Fin n) (Fin r) E}, IsCMExt F E σ → IsHermND σ J → IsWittFrame σ J X Y → ∀ (v : HeightOneSpectrum (𝓞 F)), IsFrame (hR (Fv F v) σ J) (colV v X) (colV v Y) := by
   first | exact @GlobalTheory.CompanionTheory.KFin.FrameLoc.isFrame_colV | exact GlobalTheory.CompanionTheory.KFin.FrameLoc.isFrame_colV | (intros; apply GlobalTheory.CompanionTheory.KFin.FrameLoc.isFrame_colV <;> assumption)

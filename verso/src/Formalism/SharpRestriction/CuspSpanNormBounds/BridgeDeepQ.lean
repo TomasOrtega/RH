@@ -33,6 +33,15 @@ def VolRatio (X : CData) (Cv : ℝ) : Prop := VolRatioK X (X.I.volKg X.μf X.g) 
 
 def Comparison (X : CData) : Prop := 2 * Real.sqrt (X.I.n : ℝ) ≤ X.b ^ 2
 
+/- English proof (translation)
+Unfold `beP`. Establish `hn0 : (0 : ℝ) < n` using `by exact_mod_cast hn`. Establish `hn1 : (1 : ℝ) ≤ n` using `by exact_mod_cast hn`. Establish `h32 : (n : ℝ) ^ ((3 : ℝ) / 2) = n * Real.sqrt n`. Rewrite using `[show (3 : ℝ) / 2 = 1 + 1 / 2 by norm_num, Real.rpow_add hn0, Real.rpow_one, Real.sqrt_eq_rpow]`.
+
+Rewrite using `[h32]`. Use `set s := Real.sqrt (n : ℝ)`. Establish `hs1 : 1 ≤ s` using `by rw [show (1 : ℝ) = Real.sqrt 1 by simp]; exact Real.sqrt_le_sqrt hn1`. Establish `hss : s * s = n` using `Real.mul_self_sqrt hn0.le`. Establish `hsn : s ≤ n` using `by nlinarith`.
+
+Establish `hP : (0 : ℝ) ≤ P` using `Nat.cast_nonneg _`. Establish `hb2 : 0 ≤ b ^ 2` using `sq_nonneg b`. Establish `e1 : s * b ^ 2 ≤ n * b ^ 2` using `mul_le_mul_of_nonneg_right hsn hb2`. Establish `e2 : 3 / 2 * (n * s) ≤ 3 / 4 * (n * b ^ 2)` using `by nlinarith`. Establish `hnn : (1 : ℝ) ≤ n * n` using `by nlinarith`.
+
+Establish `e3 : 3 * (P : ℝ) ≤ 3 * (P * n * n)` using `by nlinarith [mul_le_mul_of_nonneg_left hnn hP]`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem beP₂ {n : ℕ} {b : ℝ} (hn : 1 ≤ n) (hc : 2 * Real.sqrt (n : ℝ) ≤ b ^ 2) (P : ℕ) :
     beP n P b ≤ 3 * (n : ℝ) * (b ^ 2 + (P : ℝ) * n) := by
   unfold beP

@@ -21,10 +21,18 @@ def ConeAt (Cn : ∀ (X : Type) [AddCommGroup X] [Module (𝓞 E) X] [Module.Fin
     ((residue R).comp (Scheme.stalkClosedPointTo ξ).hom).FormallyUnramified ∧ P.TorsionIso ∧
     Cn P.D.toPre.X m γ ∧ InCone P.D.toPre γ
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem hasCones_iff (Cn : ∀ (X : Type) [AddCommGroup X] [Module (𝓞 E) X] [Module.Finite (𝓞 E) X] (m : ℕ),
       (Fin m → LinearMap.BilinForm ℤ X) → Prop) (Z : Model Xo c β) : HasCones Cn Z ↔ ∀ z, ConeAt Cn Z z :=
   Iff.rfl
 
+/- English proof (translation)
+Establish `: IsIso (spMap (RingHom.id c.F))` using `by show IsIso (Spec.map (CommRingCat.ofHom (RingHom.id c.F)))`. Rewrite using `[show CommRingCat.ofHom (RingHom.id c.F) = 𝟙 (CommRingCat.of c.F) from rfl, Spec.map_id]`. Use `infer_instance`. Establish `: IsIso (genι Y)` using `inferInstance`. Use `set x := inv (genι Y) z with hx`.
+
+Establish `hz : genι Y x = z` using `by rw [hx, ← Scheme.Hom.comp_apply, IsIso.inv_hom_id]; rfl`. Distinguish the cases in `h : x ∈ genBd Y`. Conclude with `Or.inl ⟨x, h, hz⟩`. Take `⟨w, hw⟩` from `not_not.1 h`. Conclude with `Or.inr ⟨w, by rw [← hz, ← hw]; rfl⟩`.
+-/
 theorem exists_of_id (Y : Model Xo c (RingHom.id c.F)) (z : Y.X) :
     (∃ x ∈ genBd Y, genι Y x = z) ∨ z ∈ Set.range Y.j := by
   have : IsIso (spMap (RingHom.id c.F)) := by

@@ -16,12 +16,20 @@ set_option autoImplicit false
 noncomputable section
 namespace GlobalTheory.PushGenRank
 
+/- English proof (translation)
+Substitute `e` using the available equality. Rewrite using `[TopCat.Presheaf.stalkSpecializes_refl]`. Use `infer_instance`.
+-/
 theorem isIso_stalkSpecializes {X : Scheme.{0}} {x y : X} (h : x ⤳ y) (e : x = y) :
     IsIso (X.presheaf.stalkSpecializes h) := by
   subst e
   rw [TopCat.Presheaf.stalkSpecializes_refl]
   infer_instance
 
+/- English proof (translation)
+Establish `hP : ∀ (S : Scheme.{0}) (f : S ⟶ Sp k), IsProjOver f → IsProper f`. Introduce and unpack `S f ⟨N, i, hi, rfl⟩`. Use `haveI := ReciprocityTheory.ChartRestriction.G.Geo.Tor.isProper_str k N`. Use `infer_instance`. Use `haveI := hP _ _ hT.isProjOver`.
+
+Use `haveI : IsProper (ρ ≫ strHom k T) := hρ ▸ hP _ _ hT'.isProjOver`. Use `haveI : IsProper ρ := IsProper.of_comp ρ (strHom k T)`. Conclude with `ρ.isClosedMap`.
+-/
 theorem isClosedMap_of_surface (k : Type) [Field k] (T T' : Scheme.{0}) [Algebra k Γ(T, ⊤)]
     [Algebra k Γ(T', ⊤)] [IsIntegral T] [IsIntegral T'] (hT : IsProjSurface k T)
     (hT' : IsProjSurface k T') (ρ : T' ⟶ T) (hρ : ρ ≫ strHom k T = strHom k T') :
@@ -35,6 +43,17 @@ theorem isClosedMap_of_surface (k : Type) [Field k] (T T' : Scheme.{0}) [Algebra
   haveI : IsProper ρ := IsProper.of_comp ρ (strHom k T)
   exact ρ.isClosedMap
 
+/- English proof (translation)
+Introduce `k _ T T' _ _ _ _ hT hT' ρ hρ d hG M hM`. Use `haveI := hG.isDominant`. Establish `hg` using `GlobalTheory.GenFiniteComp.apply_genericPoint ρ`. Establish `hcl` using `isClosedMap_of_surface k T T' hT hT' ρ hρ`. Establish `hfib` using `GlobalTheory.T.generic_point_preimage_generic T T' ρ d hG`.
+
+Establish `hnbhd : ∀ V : T'.Opens, genericPoint T' ∈ V → ∃ U : T.Opens, genericPoint T ∈ U ∧ ρ ⁻¹ᵁ U ≤ V`. Introduce `V hV`. Establish `hZ` using `hcl _ V.isOpen.isClosed_compl`. Use `⟨⟨_, hZ.isOpen_compl⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨x, hx, hxη⟩`.
+
+Conclude with `hx ((hfib x hxη) ▸ hV)`. Introduce `y hy`. Assume the negation of the conclusion as `hyV`. Conclude with `hy ⟨y, hyV, rfl⟩`. Establish `hs : ρ (genericPoint T') ⤳ genericPoint T` using `by rw [hg]`.
+
+Rewrite using `[GlobalTheory.T.generic_rank_pushforward T T' ρ hs hnbhd, ((isVB_structureModule T').twist hM).genRank_eq, mul_one]`. Use `haveI := isIso_stalkSpecializes hs hg`. Establish `key` using `GlobalTheory.GenFiniteComp.finrank_comp (T.presheaf.stalkSpecializes hs) (ρ.stalkMap (genericPoint T')) (Field.toIsField T.functionField) (GlobalTheory.GenFiniteComp.isField_stalk_apply ρ)`. Use `key.trans ?_` and prove the remaining obligations. Rewrite using `[hG.finrank_eq]`.
+
+Use `(congrArg (· * d) ?_).trans (one_mul d)` and prove the remaining obligations. Use `letI := (T.presheaf.stalkSpecializes hs).hom.toAlgebra`. Conclude with `Module.finrank_of_bijective_algebraMap (ConcreteCategory.bijective_of_isIso (T.presheaf.stalkSpecializes hs))`.
+-/
 theorem genRank_pushforward_twist : ∀ (k : Type) [Field k] (T T' : Scheme.{0}) [Algebra k Γ(T, ⊤)] [Algebra k Γ(T', ⊤)] [IsIntegral T] [IsIntegral T'], IsProjSurface k T → IsProjSurface k T' → ∀ (ρ : T' ⟶ T), ρ ≫ strHom k T = strHom k T' → ∀ (d : ℕ), IsGenFinite ρ d → ∀ (M : LB T'), M.IsLB → genRank ((Scheme.Modules.pushforward ρ).obj (twist (structureModule T') M)) = d := by
   intro k _ T T' _ _ _ _ hT hT' ρ hρ d hG M hM
   haveI := hG.isDominant

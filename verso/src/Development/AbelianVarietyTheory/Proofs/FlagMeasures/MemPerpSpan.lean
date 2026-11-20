@@ -15,22 +15,39 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
 variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E]
 variable (L : LocE F E) {n : ℕ} (Hm : Matrix (Fin n) (Fin n) E)
 
+/- English proof (translation)
+Simplify using `[hf]`.
+-/
 theorem hf_zero_l (y : Fin n → E) : hf L Hm 0 y = 0 := by simp [hf]
 
+/- English proof (translation)
+Simplify using `[hf]`.
+-/
 theorem hf_zero_r (y : Fin n → E) : hf L Hm y 0 = 0 := by simp [hf]
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [hf_zero_l]`. Consider the case `insert i s hi ih => rw [Finset.sum_insert hi, Finset.sum_insert hi, hf_add_l, ih]`.
+-/
 theorem hf_sum_l {ι : Type} (s : Finset ι) (a : ι → Fin n → E) (y : Fin n → E) :
     hf L Hm (∑ i ∈ s, a i) y = ∑ i ∈ s, hf L Hm (a i) y := by
   induction s using Finset.induction_on with
   | empty => simp [hf_zero_l]
   | insert i s hi ih => rw [Finset.sum_insert hi, Finset.sum_insert hi, hf_add_l, ih]
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [hf_zero_r]`. Consider the case `insert i s hi ih => rw [Finset.sum_insert hi, Finset.sum_insert hi, hf_add_r, ih]`.
+-/
 theorem hf_sum_r {ι : Type} (s : Finset ι) (a : ι → Fin n → E) (y : Fin n → E) :
     hf L Hm y (∑ i ∈ s, a i) = ∑ i ∈ s, hf L Hm y (a i) := by
   induction s using Finset.induction_on with
   | empty => simp [hf_zero_r]
   | insert i s hi ih => rw [Finset.sum_insert hi, Finset.sum_insert hi, hf_add_r, ih]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h i`. Conclude with `h _ (Submodule.subset_span ⟨i, rfl⟩)`. Introduce `h y hy`. Proceed by induction on `hy using Submodule.span_induction with`.
+
+Consider the case `mem y hy => obtain ⟨i, rfl⟩ := hy`. Conclude with `h i`. Consider the case `zero => exact hf_zero_r L Hm x`. Consider the case `add a b _ _ ha hb => rw [hf_add_r, ha, hb, add_zero]`. Consider the case `smul c a _ ha => rw [hf_smul_r, ha, mul_zero]`.
+-/
 theorem mem_perp_span {ι : Type} (v : ι → Fin n → E) (x : Fin n → E) :
     x ∈ perp L Hm (Submodule.span E (Set.range v)) ↔ ∀ i, hf L Hm x (v i) = 0 := by
   constructor
@@ -43,6 +60,17 @@ theorem mem_perp_span {ι : Type} (v : ι → Fin n → E) (x : Fin n → E) :
     | add a b _ _ ha hb => rw [hf_add_r, ha, hb, add_zero]
     | smul c a _ ha => rw [hf_smul_r, ha, mul_zero]
 
+/- English proof (translation)
+Use `L.free` as an intermediate fact. Establish `: Module.Finite F E` using `Module.finite_of_finrank_pos (by rw [L.rank]; omega)`. Establish `h1 : ∀ x : E, ∃ c : F, c ≠ 0 ∧ c ∈ 𝒪[F] ∧ algebraMap F E c * x ∈ L.O`. Introduce `x`. Establish `hx : IsIntegral F x` using `Algebra.IsIntegral.isIntegral x`.
+
+Take `⟨m, hm⟩` from `IsIntegral.exists_multiple_integral_of_isLocalization (R := 𝒪[F]) (nonZeroDivisors 𝒪[F]) x hx`. Use `⟨((m : 𝒪[F]) : F), ?_, (m : 𝒪[F]).2, ?_⟩` and prove the remaining obligations. Use `nonZeroDivisors.ne_zero m.2` as an intermediate fact. Conclude with `fun h => this (Subtype.ext h)`. Rewrite using `[L.O_def]`.
+
+Use `hm using 1` and compare the differences between its conclusion and the goal. Rewrite using `[Submonoid.smul_def, Algebra.smul_def]`. Both sides reduce to the same expression. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact ⟨1, one_ne_zero, Subring.one_mem _, by simp⟩`.
+
+Consider the case `insert a s _ ih`. Take `⟨c, hc, hc', h⟩` from `ih`. Take `⟨d, hd, hd', h'⟩` from `h1 a`. Use `⟨c * d, mul_ne_zero hc hd, Subring.mul_mem _ hc' hd', fun x hx => ?_⟩` and prove the remaining obligations. Break down `Finset.mem_insert.1 hx with rfl | hx` into its components or cases.
+
+Rewrite using `[map_mul, mul_assoc]`. Conclude with `L.O.mul_mem ((UnramOrder.algebraMap_mem_iff L c).2 hc') h'`. Rewrite using `[map_mul, mul_comm (algebraMap F E c), mul_assoc]`. Conclude with `L.O.mul_mem ((UnramOrder.algebraMap_mem_iff L d).2 hd') (h x hx)`.
+-/
 theorem exists_mul_mem (s : Finset E) :
     ∃ c : F, c ≠ 0 ∧ c ∈ 𝒪[F] ∧ ∀ x ∈ s, algebraMap F E c * x ∈ L.O := by
   have := L.free
@@ -86,6 +114,9 @@ variable {L Hm} {r : ℕ} {e es : Fin r → Fin n → E} (hH : IsHerm L Hm)
   (hes : ∀ i j, hf L Hm (e i) (es j) = if i = j then 1 else 0)
 include hH hes
 
+/- English proof (translation)
+Rewrite using `[← hf_cj L hH, hes]`. Distinguish the cases in `h : i = j`. Simplify using `[h]`. Simplify using `[h, Ne.symm h]`.
+-/
 theorem hse (i j : Fin r) : hf L Hm (es i) (e j) = if i = j then 1 else 0 := by
   rw [← hf_cj L hH, hes]
   by_cases h : i = j
@@ -93,29 +124,47 @@ theorem hse (i j : Fin r) : hf L Hm (es i) (e j) = if i = j then 1 else 0 := by
   · simp [h, Ne.symm h]
 
 include hee in
+/- English proof (translation)
+Simplify using `[pr, hf_sub_l, hf_sum_l, hf_smul_l, hee, hse hH hes]`.
+-/
 theorem pr_e (x : Fin n → E) (j : Fin r) : hf L Hm (pr L Hm e es x) (e j) = 0 := by
   simp [pr, hf_sub_l, hf_sum_l, hf_smul_l, hee, hse hH hes]
 
 omit hH in
 include hss in
+/- English proof (translation)
+Simplify using `[pr, hf_sub_l, hf_sum_l, hf_smul_l, hss, hes]`.
+-/
 theorem pr_es (x : Fin n → E) (j : Fin r) : hf L Hm (pr L Hm e es x) (es j) = 0 := by
   simp [pr, hf_sub_l, hf_sum_l, hf_smul_l, hss, hes]
 
 omit hH hes in
+/- English proof (translation)
+Simplify using `only [pr, hf_add_l, add_smul, Finset.sum_add_distrib]`. Normalize the expressions using the abelian group laws.
+-/
 theorem pr_add (x y : Fin n → E) : pr L Hm e es (x + y) = pr L Hm e es x + pr L Hm e es y := by
   simp only [pr, hf_add_l, add_smul, Finset.sum_add_distrib]
   abel
 
 omit hH hes in
+/- English proof (translation)
+Simplify using `only [pr, hf_smul_l, mul_smul, smul_sub, Finset.smul_sum]`.
+-/
 theorem pr_smul (c : E) (x : Fin n → E) : pr L Hm e es (c • x) = c • pr L Hm e es x := by
   simp only [pr, hf_smul_l, mul_smul, smul_sub, Finset.smul_sum]
 
 omit hH hes in
+/- English proof (translation)
+Simplify using `[pr, hf_sub_r, hf_sum_r, hf_smul_r, h1, h2]`.
+-/
 theorem hf_pr_r {x : Fin n → E} (h1 : ∀ j, hf L Hm x (e j) = 0) (h2 : ∀ j, hf L Hm x (es j) = 0)
     (y : Fin n → E) : hf L Hm x (pr L Hm e es y) = hf L Hm x y := by
   simp [pr, hf_sub_r, hf_sum_r, hf_smul_r, h1, h2]
 
 include hee hss in
+/- English proof (translation)
+Rewrite using `[hf_pr_r (pr_e hH hee hes x) (pr_es hss hes x)]`. Simplify using `only [pr, hf_sub_l, hf_sum_l, hf_smul_l, hf_cj L hH]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hf_decomp (x y : Fin n → E) :
     hf L Hm x y = ∑ j, hf L Hm x (es j) * L.cj (hf L Hm y (e j)) +
       ∑ j, hf L Hm x (e j) * L.cj (hf L Hm y (es j)) +
@@ -127,6 +176,33 @@ theorem hf_decomp (x y : Fin n → E) :
 variable {A : Submodule L.O (Fin n → E)}
 
 include hee hss in
+/- English proof (translation)
+Establish `hite : ∀ (p : Prop) [Decidable p], (if p then (1 : E) else 0) ∈ L.O` using `fun p _ => by split_ifs exacts [L.O.one_mem, L.O.zero_mem]`. Prove the components needed by the constructor for the conclusion. Set `P : Submodule L.O (Fin n → E)` to `{ carrier := {x | (∀ j, hf L Hm x (es j) ∈ L.O) ∧ (∀ j, hf L Hm x (e j) ∈ L.O) ∧ pr L Hm e es x ∈ A} zero_mem' := by`. Use `⟨fun j => ?_, fun j => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hf_zero_l]`.
+
+Conclude with `L.O.zero_mem`. Rewrite using `[hf_zero_l]`. Conclude with `L.O.zero_mem`. Simplify using `[pr, hf_zero_l]`. Use the proof step `add_mem' := by`.
+
+Introduce and unpack `a b ⟨h1, h2, h3⟩ ⟨k1, k2, k3⟩`. Use `⟨fun j => ?_, fun j => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hf_add_l]`. Conclude with `L.O.add_mem (h1 j) (k1 j)`. Rewrite using `[hf_add_l]`.
+
+Conclude with `L.O.add_mem (h2 j) (k2 j)`. Rewrite using `[pr_add]`. Conclude with `A.add_mem h3 k3`. Use the proof step `smul_mem' := by`. Introduce and unpack `c a ⟨h1, h2, h3⟩`.
+
+Establish `hc : c • a = (c : E) • a` using `rfl`. Use `⟨fun j => ?_, fun j => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hc, hf_smul_l]`. Conclude with `L.O.mul_mem c.2 (h1 j)`. Rewrite using `[hc, hf_smul_l]`.
+
+Conclude with `L.O.mul_mem c.2 (h2 j)`. Rewrite using `[hc, pr_smul]`. Conclude with `A.smul_mem c h3 }`. Establish `: lat L Hm e es A ≤ P`. Use `sup_le (sup_le ?_ ?_) ?_` and prove the remaining obligations.
+
+Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Use `⟨fun j => ?_, fun j => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hes]`. Conclude with `hite _`.
+
+Rewrite using `[hee]`. Conclude with `L.O.zero_mem`. Simplify using `[pr, hes, hee]`. Introduce and unpack `x ⟨hx, hx'⟩`. Establish `hx2` using `(mem_perp_span L Hm es x).1 hx'`.
+
+Use `⟨fun j => ?_, fun j => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hx2]`. Conclude with `L.O.zero_mem`. Rewrite using `[hAp x hx]`. Conclude with `L.O.zero_mem`.
+
+Simplify `hx` using `[pr, hx2, hAp x hx]`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Use `⟨fun j => ?_, fun j => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hss]`.
+
+Conclude with `L.O.zero_mem`. Rewrite using `[hse hH hes]`. Conclude with `hite _`. Simplify using `[pr, hss, hse hH hes]`. Conclude with `fun h => this h`.
+
+Introduce and unpack `⟨h1, h2, h3⟩`. Establish `hx : x = ∑ j, hf L Hm x (es j) • e j + pr L Hm e es x + ∑ j, hf L Hm x (e j) • es j`. Simplify using `only [pr]`. Normalize the expressions using the abelian group laws. Rewrite using `[hx]`.
+
+Use `Submodule.add_mem_sup (Submodule.add_mem_sup ?_ ⟨h3, ?_⟩) ?_` and prove the remaining obligations. Conclude with `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ (⟨_, h1 j⟩ : L.O) (Submodule.subset_span ⟨j, rfl⟩)`. Conclude with `(mem_perp_span L Hm es _).2 (pr_es hss hes x)`. Conclude with `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ (⟨_, h2 j⟩ : L.O) (Submodule.subset_span ⟨j, rfl⟩)`.
+-/
 theorem mem_lat (hAp : ∀ x ∈ A, ∀ j, hf L Hm x (e j) = 0) (x : Fin n → E) :
     x ∈ lat L Hm e es A ↔
       (∀ j, hf L Hm x (es j) ∈ L.O) ∧ (∀ j, hf L Hm x (e j) ∈ L.O) ∧ pr L Hm e es x ∈ A := by
@@ -193,12 +269,18 @@ variable (hXA : ∀ x ∈ Submodule.span E (Set.range e), x ∈ A)
 
 omit hH hes in
 include hXA hAp in
+/- English proof (translation)
+Simplify using `only [pr, hAp x hx, zero_smul, Finset.sum_const_zero, sub_zero]`. Conclude with `A.sub_mem hx (hXA _ (Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)))`.
+-/
 theorem pr_mem {x : Fin n → E} (hx : x ∈ A) : pr L Hm e es x ∈ A := by
   simp only [pr, hAp x hx, zero_smul, Finset.sum_const_zero, sub_zero]
   exact A.sub_mem hx (hXA _ (Submodule.sum_mem _ fun j _ =>
     Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)))
 
 include hee hss hXA hAp hd in
+/- English proof (translation)
+Use `(hd _ (pr_e hH hee hes y)).1 fun x hx => ?_` and prove the remaining obligations. Rewrite using `[hf_decomp hH hee hss hes]`. Simplify using `only [pr_e hH hee hes, pr_es hss hes, map_zero, mul_zero, Finset.sum_const_zero, zero_add]`. Rewrite using `[hf_pr_r (pr_e hH hee hes x) (pr_es hss hes x), hf_pr_r (pr_e hH hee hes x) (pr_es hss hes x)]`. Conclude with `h _ (pr_mem hXA hAp hx) (pr_es hss hes x)`.
+-/
 theorem pr_mem_of (y : Fin n → E)
     (h : ∀ x ∈ A, (∀ j, hf L Hm x (es j) = 0) → hf L Hm x y ∈ L.O) : pr L Hm e es y ∈ A := by
   refine (hd _ (pr_e hH hee hes y)).1 fun x hx => ?_
@@ -208,6 +290,27 @@ theorem pr_mem_of (y : Fin n → E)
   exact h _ (pr_mem hXA hAp hx) (pr_es hss hes x)
 
 include hee hss hXA hAp hd in
+/- English proof (translation)
+Establish `hm` using `mem_lat hH hee hss hes hAp`. Establish `hcj : ∀ x : E, L.cj x ∈ L.O → x ∈ L.O` using `fun x hx => by`. Simplify `UnramOrder.cj_mem L hx` using `[L.cj_cj]`. Establish `he : ∀ j, e j ∈ lat L Hm e es A` using `fun j => Submodule.mem_sup_left (Submodule.mem_sup_left (Submodule.subset_span ⟨j, rfl⟩))`. Establish `hs : ∀ j, es j ∈ lat L Hm e es A` using `fun j => Submodule.mem_sup_right (Submodule.subset_span ⟨j, rfl⟩)`.
+
+Establish `h0 : ∀ x ∈ A, (∀ j, hf L Hm x (es j) = 0) → x ∈ lat L Hm e es A` using `fun x hx hx' => Submodule.mem_sup_left (Submodule.mem_sup_right ⟨hx, (mem_perp_span L Hm es x).2 hx'⟩)`. Use `⟨⟨((Submodule.fg_span (Set.finite_range e)).sup hfg).sup (Submodule.fg_span (Set.finite_range es)), ?_⟩, fun y => ⟨fun h => ?_, fun hy x hx => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff]`. Introduce and unpack `y -`. Take `⟨s, hs'⟩` from `hfg`.
+
+Take `⟨c, hc, -, hcs⟩` from `exists_mul_mem L (s.image fun x => hf L Hm x y)`. Establish `h1 : pr L Hm e es (algebraMap F E c • y) ∈ A`. Use `pr_mem_of hH hee hss hes hXA hAp hd _ fun x hx hx' => ?_` and prove the remaining obligations. Establish `hx2 : x ∈ Submodule.span L.O (s : Set (Fin n → E))`. Rewrite using `[hs']`.
+
+Conclude with `⟨hx, (mem_perp_span L Hm es x).2 hx'⟩`. Use `clear hx hx'`. Proceed by induction on `hx2 using Submodule.span_induction with`. Consider the case `mem x hx`. Rewrite using `[hf_smul_r, AlgEquiv.commutes]`.
+
+Conclude with `hcs _ (Finset.mem_image_of_mem _ hx)`. Consider the case `zero => rw [hf_zero_l]`. Conclude with `L.O.zero_mem`. Consider the case `add a b _ _ ha hb => rw [hf_add_l]`. Conclude with `L.O.add_mem ha hb`.
+
+Consider the case `smul d a _ ha`. Establish `hc : d • a = (d : E) • a` using `rfl`. Rewrite using `[hc, hf_smul_l]`. Conclude with `L.O.mul_mem d.2 ha`. Establish `h2` using `h0 _ h1 (pr_es hss hes _)`.
+
+Establish `hy : y = ∑ j, hf L Hm y (es j) • e j + algebraMap F E c⁻¹ • pr L Hm e es (algebraMap F E c • y) + ∑ j, hf L Hm y (e j) • es j`. Rewrite using `[pr_smul, smul_smul, ← map_mul, inv_mul_cancel₀ hc, map_one, one_smul]`. Simplify using `only [pr]`. Normalize the expressions using the abelian group laws. Rewrite using `[hy]`.
+
+Use `Submodule.add_mem _ (Submodule.add_mem _ ?_ ?_) ?_` and prove the remaining obligations. Conclude with `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span (he j))`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span h2)`. Conclude with `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span (hs j))`. Rewrite using `[hm]`.
+
+Use `⟨fun j => hcj _ ?_, fun j => hcj _ ?_, pr_mem_of hH hee hss hes hXA hAp hd _ fun x hx hx' => h x (h0 x hx hx')⟩` and prove the remaining obligations. Rewrite using `[hf_cj L hH]`. Conclude with `h _ (hs j)`. Rewrite using `[hf_cj L hH]`. Conclude with `h _ (he j)`.
+
+Rewrite `hx`, `hy` using `[hm]`. Rewrite using `[hf_decomp hH hee hss hes]`. Use `L.O.add_mem (L.O.add_mem ?_ ?_) ((hd _ (pr_e hH hee hes y)).2 hy.2.2 _ hx.2.2)` and prove the remaining obligations. Conclude with `L.O.sum_mem fun j _ => L.O.mul_mem (hx.1 j) (UnramOrder.cj_mem L (hy.2.1 j))`. Conclude with `L.O.sum_mem fun j _ => L.O.mul_mem (hx.2.1 j) (UnramOrder.cj_mem L (hy.1 j))`.
+-/
 theorem lat_isSD
     (hfg : (A ⊓ (perp L Hm (Submodule.span E (Set.range es))).restrictScalars L.O).FG) :
     IsSD L Hm (lat L Hm e es A) := by
@@ -262,6 +365,13 @@ theorem lat_isSD
     · exact L.O.sum_mem fun j _ => L.O.mul_mem (hx.2.1 j) (UnramOrder.cj_mem L (hy.1 j))
 
 include hee hss hXA hAp in
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hx`. Use `⟨pr L Hm e es x, Submodule.mem_sup_left (Submodule.mem_sup_right ⟨pr_mem hXA hAp hx, (mem_perp_span L Hm es _).2 (pr_es hss hes x)⟩), (mem_perp_span L Hm e _).2 (pr_e hH hee hes x), ?_⟩` and prove the remaining obligations. Simplify using `only [pr, hAp x hx, zero_smul, Finset.sum_const_zero, sub_zero, sub_sub_cancel_left]`. Conclude with `Submodule.neg_mem _ (Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩))`.
+
+Introduce and unpack `⟨y, hy, hy', hyx⟩`. Establish `h1` using `((mem_lat hH hee hss hes hAp y).1 hy).2.2`. Rewrite `hy'` using `[mem_perp_span]`. Simplify using `only [pr, hy', zero_smul, Finset.sum_const_zero, sub_zero] at h1`. Establish `h2 : y ∈ A`.
+
+Simplify using `using A.add_mem h1 (hXA (∑ j, hf L Hm y (es j) • e j) (Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)))`. Simplify using `using A.sub_mem h2 (hXA _ hyx)`.
+-/
 theorem mem_iff_lat (x : Fin n → E) : x ∈ A ↔ ∃ y ∈ lat L Hm e es A,
     y ∈ perp L Hm (Submodule.span E (Set.range e)) ∧ y - x ∈ Submodule.span E (Set.range e) := by
   constructor
@@ -283,6 +393,13 @@ theorem mem_iff_lat (x : Fin n → E) : x ∈ A ↔ ∃ y ∈ lat L Hm e es A,
 
 end
 
+/- English proof (translation)
+Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨i, hi, rfl⟩` from `hx`. Use `⟨Pi.single i 1, fun j hj => Pi.single_eq_of_ne (by rintro rfl; exact hj hi) _, ?_⟩` and prove the remaining obligations. Simplify using `[Pi.single_apply]`.
+
+Consider the case `zero => exact ⟨0, by simp, by simp⟩`. Consider the case `add a b _ _ ha hb`. Take `⟨c, hc, rfl⟩` from `ha`. Take `⟨d, hd, rfl⟩` from `hb`. Conclude with `⟨c + d, fun i hi => by simp [hc i hi, hd i hi], by simp [add_smul, Finset.sum_add_distrib]⟩`.
+
+Consider the case `smul t a _ ha`. Take `⟨c, hc, rfl⟩` from `ha`. Conclude with `⟨t • c, fun i hi => by simp [hc i hi], by simp [Finset.smul_sum, mul_smul]⟩`.
+-/
 theorem exists_coef {m : ℕ} {V : Type} [AddCommGroup V] [Module E V] (g : Fin m → V) (s : Set (Fin m))
     {x : V} (hx : x ∈ Submodule.span E (g '' s)) :
     ∃ c : Fin m → E, (∀ i, i ∉ s → c i = 0) ∧ x = ∑ i, c i • g i := by
@@ -300,6 +417,11 @@ theorem exists_coef {m : ℕ} {V : Type} [AddCommGroup V] [Module E V] (g : Fin 
     obtain ⟨c, hc, rfl⟩ := ha
     exact ⟨t • c, fun i hi => by simp [hc i hi], by simp [Finset.smul_sum, mul_smul]⟩
 
+/- English proof (translation)
+Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨i, hi, rfl⟩`. Conclude with `⟨⟨i, hi⟩, rfl⟩`. Introduce and unpack `⟨j, rfl⟩`.
+
+Conclude with `⟨j.castSucc, j.2, rfl⟩`.
+-/
 theorem image_lt {r : ℕ} {V : Type} (g : Fin (r + 1) → V) :
     g '' {i | (i : ℕ) < r} = Set.range fun j : Fin r => g j.castSucc := by
   ext x
@@ -309,6 +431,27 @@ theorem image_lt {r : ℕ} {V : Type} (g : Fin (r + 1) → V) :
   · rintro ⟨j, rfl⟩
     exact ⟨j.castSucc, j.2, rfl⟩
 
+/- English proof (translation)
+Introduce `F _ _ _ _ _ E _ _ _ L r k S g gs hg A hA`. Establish `hH` using `S.herm.1`. Establish `key : (∀ a (j : Fin r), hf L S.Hm (g a) (g j.castSucc) = 0) ∧ (∀ a j, hf L S.Hm (g a) (gs j) = if a = j.castSucc then 1 else 0) ∧ ∀ i j, hf L S.Hm (gs i) (gs j) = 0`. Break down `hg with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩` into its components or cases. Conclude with `⟨fun a j => by simp [S.gram, Fin.castSucc_ne_last], S.dual, S.iso⟩`.
+
+Conclude with `⟨fun a j => by simp [S.gram', Fin.castSucc_ne_last], S.dual', S.iso'⟩`. Take `⟨hge, hgs, hss⟩` from `key`. Use `set e : Fin r → S.V := fun j => g j.castSucc with he`. Establish `hX : S.spanTo g r = Submodule.span E (Set.range e)`. Rewrite using `[Frames.spanTo, image_lt]`.
+
+Establish `hl : S.stdLat g gs A = lat L S.Hm e gs A` using `rfl`. Take `⟨hXA, hAp, hfg, hd, hz, z', hz', hzz⟩` from `hA`. Rewrite `hXA`, `hAp`, `hd` using `[hX]`. Simplify using `only [mem_perp_span] at hAp hd`. Establish `hee : ∀ i j, hf L S.Hm (e i) (e j) = 0` using `fun i j => hge _ j`.
+
+Establish `hes : ∀ i j, hf L S.Hm (e i) (gs j) = if i = j then 1 else 0` using `fun i j => by`. Simplify using `[he, hgs]`. Rewrite using `[hX, hl]`. Use `⟨lat_isSD hH hee hss hes hXA hAp hd hfg, fun j _ x => ⟨?_, fun hx => ⟨?_, ?_⟩⟩, mem_iff_lat hH hee hss hes hXA hAp⟩` and prove the remaining obligations. Introduce and unpack `⟨hx, hx'⟩`.
+
+Take `⟨c, hc, rfl⟩` from `exists_coef g _ hx'`. Take `⟨h1, -, h3⟩` from `(mem_lat hH hee hss hes hAp _).1 hx`. Establish `h4 : ∀ j, hf L S.Hm (∑ i, c i • g i) (gs j) = c j.castSucc` using `fun j => by`. Simplify using `[hf_sum_l, hf_smul_l, hgs]`. Establish `h5 : ∀ j, hf L S.Hm (∑ i, c i • g i) (e j) = 0` using `fun j => by`.
+
+Simplify using `[hf_sum_l, hf_smul_l, he, hge]`. Establish `h6 : pr L S.Hm e gs (∑ i, c i • g i) = c (Fin.last r) • g (Fin.last r)`. Simplify using `only [pr, h4, h5, zero_smul, Finset.sum_const_zero, sub_zero]`. Rewrite using `[Fin.sum_univ_castSucc]`. Simplify using `[he]`.
+
+Establish `h7 : ∀ i, c i ∈ L.O` using `fun i => by`. Use `Fin.lastCases ?_ (fun i => h4 i ▸ h1 i) i` and prove the remaining obligations. Use `(hd z' (hAp z' hz')).2 hz' _ h3` as an intermediate fact. Rewrite `this` using `[h6, Frames.h, hf_smul_l]`. Rewrite `hzz` using `[Frames.h]`.
+
+Rewrite `this` using `[hzz, mul_one]`. Then use the resulting hypothesis. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Distinguish the cases in `hi : (i : ℕ) < j`. Conclude with `Submodule.smul_mem _ (⟨_, h7 i⟩ : L.O) (Submodule.subset_span ⟨i, hi, rfl⟩)`. Rewrite using `[hc i hi, zero_smul]`.
+
+Conclude with `Submodule.zero_mem _`. Use `(Submodule.span_le.2 ?_ : _ ≤ lat L S.Hm e gs A) hx` and prove the remaining obligations. Introduce and unpack `_ ⟨i, -, rfl⟩`. Use `Fin.lastCases ?_ (fun i => ?_) i` and prove the remaining obligations. Use `Submodule.mem_sup_left (Submodule.mem_sup_right ⟨hz, (mem_perp_span L _ gs _).2 fun j => ?_⟩)` and prove the remaining obligations.
+
+Simplify using `[hgs, (Fin.castSucc_ne_last j).symm]`. Conclude with `Submodule.mem_sup_left (Submodule.mem_sup_left (Submodule.subset_span ⟨i, rfl⟩))`. Conclude with `Submodule.span_subset_span L.O E _ hx`.
+-/
 theorem stdLat_spec : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [CharZero F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] (L : LocE F E), ∀ (r k : ℕ) (S : Frames L r k), ∀ (g : Fin (r + 1) → S.V) (gs : Fin r → S.V), (g = S.f ∧ gs = S.es) ∨ (g = S.f' ∧ gs = S.es') → ∀ A, S.IsInner g gs A → IsSD L S.Hm (S.stdLat g gs A) ∧ (∀ j ≤ r + 1, ∀ x, (x ∈ S.stdLat g gs A ∧ x ∈ S.spanTo g j) ↔ x ∈ Submodule.span L.O (g '' {i | (i : ℕ) < j})) ∧ ∀ x, x ∈ A ↔ ∃ y ∈ S.stdLat g gs A, y ∈ perp L S.Hm (S.spanTo g r) ∧ y - x ∈ S.spanTo g r := by
   intro F _ _ _ _ _ E _ _ _ L r k S g gs hg A hA
   have hH := S.herm.1

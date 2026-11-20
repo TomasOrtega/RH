@@ -105,6 +105,17 @@ def LongOrbitColengthAnyCoeff (l : ℕ) [Fact l.Prime] (P : LocPrime l) : Prop :
     WordHyp n size w S η b j →
     Concl P F n size w S η b j
 
+/- English proof (translation)
+Establish `ht : ∀ i : ZMod 3, Thick (fun i => if i = 2 then 0 else 80) 80 0 i ↔ i ≠ 2`. Unfold `Thick`. Evaluate the decidable proposition. Use `⟨le_rfl, ?_, fun _ => by simp [parG], by norm_num, {{0, 1}}, ?_, ?_⟩` and prove the remaining obligations. Introduce `i hi`.
+
+Rewrite `hi` using `[ht, not_not]`. Simplify using `[hi]`. Introduce and unpack `c rfl`. Use `⟨0, ⟨(ht _).2 (by decide), Or.inr ⟨1, by decide, (ht _).2 (by decide), rfl, ?_, by decide⟩⟩, ?_⟩` and prove the remaining obligations. Introduce `q h0 h1`.
+
+Establish `: ((1 : ZMod 3) - 0).val = 1` using `by decide`. Use linear arithmetic over natural numbers and integers. Introduce `q h0 h1`. Take `rfl : q = 1` from `by omega`. Rewrite using `[ht]`.
+
+Evaluate the decidable proposition. Introduce `i hi`. Rewrite `hi` using `[ht]`. Use `⟨{0, 1}, ⟨rfl, ?_⟩, fun c hc => hc.1⟩` and prove the remaining obligations. Simplify using `only [Set.mem_insert_iff, Set.mem_singleton_iff]`.
+
+Use `revert i`. Evaluate the decidable proposition.
+-/
 example : WordHyp 3 (fun i => if i = 2 then 0 else 80) 0 0 0 80 1 := by
   have ht : ∀ i : ZMod 3, Thick (fun i => if i = 2 then 0 else 80) 80 0 i ↔ i ≠ 2 := by
     unfold Thick; decide

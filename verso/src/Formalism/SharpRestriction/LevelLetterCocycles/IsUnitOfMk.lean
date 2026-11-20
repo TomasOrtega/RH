@@ -20,6 +20,11 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {v : AddValuation LL (WithTop ℚ)} {n : ℕ}
     {PD : PeriodData G Qp K₀ K B BdR}
 
+/- English proof (translation)
+Take `⟨y, hy⟩` from `hx.exists_right_inv`. Take `⟨y', rfl⟩` from `Ideal.Quotient.mk_surjective y`. Establish `h1 : x * y' - 1 ∈ I`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_sub, map_mul, hy, map_one, sub_self]`. Establish `h2` using `Ideal.mem_jacobson_bot.1 (IsAdicComplete.le_jacobson_bot I h1) 1`.
+
+Rewrite `h2` using `[mul_one, sub_add_cancel]`. Conclude with `isUnit_of_mul_isUnit_left h2`.
+-/
 theorem isUnit_of_mk {R : Type} [CommRing R] (I : Ideal R) [IsAdicComplete I R] {x : R}
     (hx : IsUnit (Ideal.Quotient.mk I x)) : IsUnit x := by
   obtain ⟨y, hy⟩ := hx.exists_right_inv
@@ -30,6 +35,11 @@ theorem isUnit_of_mk {R : Type} [CommRing R] (I : Ideal R) [IsAdicComplete I R] 
   rw [mul_one, sub_add_cancel] at h2
   exact isUnit_of_mul_isUnit_left h2
 
+/- English proof (translation)
+Proceed by induction on `r using Polynomial.induction_on' with`. Consider the case `add p q hp hq => rw [map_add, hp, hq, Polynomial.coe_add]`. Consider the case `monomial k c`. Rewrite using `[Polynomial.aeval_monomial, Polynomial.coe_monomial, PowerSeries.monomial_eq_mk]`. Use extensionality with `m`.
+
+Simplify using `[PowerSeries.coeff_X_pow, PowerSeries.coeff_C_mul, PowerSeries.coeff_mk, eq_comm]`.
+-/
 theorem aeval_X_coe {R : Type} [CommRing R] (r : Polynomial R) :
     Polynomial.aeval (PowerSeries.X : PowerSeries R) r = (r : PowerSeries R) := by
   induction r using Polynomial.induction_on' with
@@ -39,6 +49,9 @@ theorem aeval_X_coe {R : Type} [CommRing R] (r : Polynomial R) :
     ext m
     simp [PowerSeries.coeff_X_pow, PowerSeries.coeff_C_mul, PowerSeries.coeff_mk, eq_comm]
 
+/- English proof (translation)
+Rewrite using `[Polynomial.aeval_def, Polynomial.aeval_def, Polynomial.hom_eval₂, Polynomial.eval₂_map]`. Use `congr 1`. Use extensionality with `c : 1`. Simplify using `[PowerSeries.algebraMap_eq]`.
+-/
 theorem map_aeval {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) (x : PowerSeries R) (P : Polynomial R) :
     PowerSeries.map f (Polynomial.aeval x P) = Polynomial.aeval (PowerSeries.map f x) (P.map f) := by
   rw [Polynomial.aeval_def, Polynomial.aeval_def, Polynomial.hom_eval₂, Polynomial.eval₂_map]
@@ -48,6 +61,27 @@ theorem map_aeval {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) (x : Po
 
 variable [IsDomain O] [IsAdicComplete (Ideal.span {((PD.p : ℕ) : O)}) O]
 
+/- English proof (translation)
+Use `set I : Ideal O := Ideal.span {((PD.p : ℕ) : O)} with hIdef`. Establish `: Nontrivial (O ⧸ I)` using `Ideal.Quotient.nontrivial_iff.mpr (by`. Rewrite using `[Ne, hIdef, Ideal.span_singleton_eq_top]`. Conclude with `hpu)`. Use `set N : ℕ := (PD.p - 1) * PD.p ^ s with hN`.
+
+Use `set D : PowerSeries O := ps W s a with hDdef`. Take `⟨u, P, hu, hPm, hPd, hPc, hps⟩` from `hT.2.1 s`. Take `⟨w, hw, hπw⟩` from `ToolsR.π₀_comp hR`. Establish `hD : D = u a * Polynomial.aeval W.π₀₁ P`. Establish `h1` using `congrFun hps a`.
+
+Rewrite `h1` using `[Pi.mul_apply]`. Rewrite using `[hDdef, show ps W s = Formalism.MainNotions.WachCoordinates.pS W s from rfl, h1]`. Use `congr 1`. Conclude with `(Polynomial.aeval_algHom_apply (Pi.evalAlgHom O (fun _ : ZMod n => PowerSeries O) a) W.π₀ P).symm`. Establish `hPmap : P.map (Ideal.Quotient.mk I) = Polynomial.X ^ (PD.p ^ s)`.
+
+Use extensionality with `k`. Rewrite using `[Polynomial.coeff_map, Polynomial.coeff_X_pow]`. Break down `lt_trichotomy k (PD.p ^ s) with hk | rfl | hk` into its components or cases. Rewrite using `[if_neg hk.ne, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Ideal.mem_span_singleton.2 (hPc k hk)`.
+
+Rewrite using `[if_pos rfl, ← hPd, hPm.coeff_natDegree, map_one]`. Rewrite using `[if_neg hk.ne', Polynomial.coeff_eq_zero_of_natDegree_lt (by omega), map_zero]`. Use `set V : PowerSeries (O ⧸ I) := PowerSeries.map (Ideal.Quotient.mk I) (u a) * PowerSeries.map (Ideal.Quotient.mk I) w ^ (PD.p ^ s) with hV`. Establish `hmapD : PowerSeries.map (Ideal.Quotient.mk I) D = V * PowerSeries.X ^ N`. Rewrite using `[hD, map_mul, map_aeval, hPmap, Polynomial.aeval_X_pow, hπw, map_mul, map_pow, PowerSeries.map_X, hV, hN, mul_pow, ← pow_mul, mul_comm (PD.p - 1) (PD.p ^ s)]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `huV : IsUnit (PowerSeries.constantCoeff V)`. Rewrite using `[hV, map_mul, map_pow]`. Use `IsUnit.mul ?_ (IsUnit.pow _ ?_)` and prove the remaining obligations. Use `((hu.map (Pi.evalRingHom (fun _ : ZMod n => PowerSeries O) a)).map (PowerSeries.map (Ideal.Quotient.mk I))).map PowerSeries.constantCoeff` as an intermediate fact.
+
+Simplify using `using this`. Conclude with `(hw.map (PowerSeries.map (Ideal.Quotient.mk I))).map PowerSeries.constantCoeff`. Establish `hcN : PowerSeries.coeff N (PowerSeries.map (Ideal.Quotient.mk I) D) = PowerSeries.constantCoeff V`. Rewrite using `[hmapD, PowerSeries.coeff_mul_X_pow', if_pos le_rfl, Nat.sub_self, PowerSeries.coeff_zero_eq_constantCoeff]`. Establish `hord : (PowerSeries.map (Ideal.Quotient.mk I) D).order.toNat = N`.
+
+Establish `: (PowerSeries.map (Ideal.Quotient.mk I) D).order = N`. Use `PowerSeries.order_eq_nat.2 ⟨by rw [hcN]; exact huV.ne_zero, fun i hi => ?_⟩` and prove the remaining obligations. Rewrite using `[hmapD, PowerSeries.coeff_mul_X_pow', if_neg (by omega)]`. Rewrite using `[this, ENat.toNat_natCast]`. Establish `hdiv : D.IsWeierstrassDivisorAt I`.
+
+Unfold `PowerSeries.IsWeierstrassDivisorAt`. Rewrite using `[hord]`. Use `isUnit_of_mk I ?_` and prove the remaining obligations. Rewrite using `[← PowerSeries.coeff_map, hcN]`. Conclude with `huV`.
+
+Establish `HD` using `hdiv.isWeierstrassDivisionAt_div_mod f`. Use `⟨hdiv.div f, hdiv.mod f, ?_, HD.eq_mul_add⟩` and prove the remaining obligations. Use `HD.degree_lt` as an intermediate fact. Rewrite `this` using `[hord]`. Then use the resulting hypothesis.
+-/
 theorem wdiv_ps (W : LocWach PD LL O v n) (hR : ToolsR.RingP W) (hT : Formalism.MainNotions.WachCoordinates.ToolsAlg W)
     (hpu : ¬ IsUnit ((PD.p : ℕ) : O)) (a : ZMod n) (s : ℕ) (f : PowerSeries O) :
     ∃ (H : PowerSeries O) (r : Polynomial O), r.degree < ((PD.p - 1) * PD.p ^ s : ℕ) ∧
@@ -104,23 +138,53 @@ theorem wdiv_ps (W : LocWach PD LL O v n) (hR : ToolsR.RingP W) (hT : Formalism.
   have := HD.degree_lt
   rwa [hord] at this
 
+/- English proof (translation)
+Set `evA : LetA O n →ₐ[O] hB.F` to `{ hB.ev ζ with commutes' := hB.ev_O ζ }`. Rewrite using `[← hB.ev_π ζ]`. Conclude with `(Polynomial.aeval_algHom_apply evA letπ r).symm`.
+-/
 theorem ev_aeval {W : LocWach PD LL O v n} {a : ZMod n} {s : ℕ} (hB : LevBasics W a s) (ζ : Rs hB.F PD.p s)
     (r : Polynomial O) : hB.ev ζ (Polynomial.aeval (letπ : LetA O n) r) = Polynomial.aeval ((ζ : hB.F) - 1) r := by
   let evA : LetA O n →ₐ[O] hB.F := { hB.ev ζ with commutes' := hB.ev_O ζ }
   rw [← hB.ev_π ζ]
   exact (Polynomial.aeval_algHom_apply evA letπ r).symm
 
+/- English proof (translation)
+Take `⟨ζ₀, hζ₀⟩` from `hB.root`. Rewrite using `[Fintype.card_coe, hζ₀.card_primitiveRoots, Nat.totient_prime_pow_succ PD.hp, mul_comm]`.
+-/
 theorem card_Rs {W : LocWach PD LL O v n} {a : ZMod n} {s : ℕ} (hB : LevBasics W a s) :
     Fintype.card (Rs hB.F PD.p s) = (PD.p - 1) * PD.p ^ s := by
   obtain ⟨ζ₀, hζ₀⟩ := hB.root
   rw [Fintype.card_coe, hζ₀.card_primitiveRoots, Nat.totient_prime_pow_succ PD.hp, mul_comm]
 
+/- English proof (translation)
+The claim follows from `Polynomial.eq_zero_of_natDegree_lt_card_of_eval_eq_zero _ (f := fun ζ : Rs hB.F PD.p s => (ζ : hB.F) - 1) (fun x y hxy => Subtype.ext (sub_left_injective hxy)) h (by rw [card_Rs hB]; exact hdeg)`.
+-/
 theorem poly_eq_zero {W : LocWach PD LL O v n} {a : ZMod n} {s : ℕ} (hB : LevBasics W a s) (r : Polynomial hB.F)
     (hdeg : r.natDegree < (PD.p - 1) * PD.p ^ s) (h : ∀ ζ : Rs hB.F PD.p s, Polynomial.eval ((ζ : hB.F) - 1) r = 0) :
     r = 0 :=
   Polynomial.eq_zero_of_natDegree_lt_card_of_eval_eq_zero _ (f := fun ζ : Rs hB.F PD.p s => (ζ : hB.F) - 1)
     (fun x y hxy => Subtype.ext (sub_left_injective hxy)) h (by rw [card_Rs hB]; exact hdeg)
 
+/- English proof (translation)
+Introduce `g hg hev`. Establish `hNpos : 0 < (PD.p - 1) * PD.p ^ s` using `Nat.mul_pos (by have := PD.hp.two_le; omega) (pow_pos PD.hp.pos _)`. Take `⟨H, r, hdeg, heq⟩` from `wdiv_ps W hR hT hpu a s (g a)`. Use `set wH : LetA O n := Pi.single a H with hwH`. Establish `hRr : (fun _ : ZMod n => (r : PowerSeries O)) = Polynomial.aeval (letπ : LetA O n) r`.
+
+Use function extensionality and compare the values at `i`. Use `show (r : PowerSeries O) = Pi.evalAlgHom O (fun _ : ZMod n => PowerSeries O) i (Polynomial.aeval letπ r)`. Rewrite using `[← Polynomial.aeval_algHom_apply]`. Conclude with `(aeval_X_coe r).symm`. Establish `key : (letE a : LetA O n) * g = ps W s * wH + letE a * Polynomial.aeval (letπ : LetA O n) r`.
+
+Rewrite using `[← hRr]`. Use function extensionality and compare the values at `i`. Distinguish the cases in `hi : i = a`. Substitute `hi` using the available equality. Simplify using `only [Pi.mul_apply, Pi.add_apply, hwH, letE, Pi.single_eq_same, one_mul, heq]`.
+
+Simplify using `[Pi.mul_apply, Pi.add_apply, hwH, letE, Pi.single_eq_of_ne hi]`. Establish `hroots : ∀ ζ : Rs hB.F PD.p s, Polynomial.eval ((ζ : hB.F) - 1) (r.map (algebraMap O hB.F)) = 0`. Introduce `ζ`. Establish `h1` using `congrArg (hB.ev ζ) key`. Rewrite `h1` using `[map_mul, hB.ev_letE, one_mul, hev ζ, map_add, map_mul, hB.ev_ps, zero_mul, zero_add, map_mul, hB.ev_letE, one_mul, ev_aeval hB]`.
+
+Rewrite using `[Polynomial.eval_map, ← Polynomial.aeval_def]`. Conclude with `h1.symm`. Establish `hr0 : r.map (algebraMap O hB.F) = 0`. Use `poly_eq_zero hB _ (lt_of_le_of_lt Polynomial.natDegree_map_le ?_) hroots` and prove the remaining obligations. Distinguish the cases in `hr : r = 0`.
+
+Rewrite using `[hr, Polynomial.natDegree_zero]`. Conclude with `hNpos`. Conclude with `(Polynomial.natDegree_lt_iff_degree_lt hr).2 hdeg`. Establish `hr : r = 0` using `Polynomial.map_injective _ hB.inj (by rw [hr0, Polynomial.map_zero])`. Rewrite `key` using `[hr, map_zero, mul_zero, add_zero]`.
+
+Establish `hpsΔ : ps W s ∈ W.AΔ` using `RatW.ps_mem W hR.1 s`. Establish `hp0 : ((PD.p : ℕ) : O) ≠ 0`. Introduce `h`. Apply `hB.hp` to reduce the goal to its premises. Rewrite using `[← map_natCast (algebraMap O hB.F), h, map_zero]`.
+
+Establish `hps0 : ∀ i, ps W s i ≠ 0`. Introduce `i h`. Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.1 (hT.2.2.1 s)`. Establish `h1` using `congrFun hc i`. Establish `h2` using `congrArg PowerSeries.constantCoeff h1`.
+
+Simplify using `only [Pi.mul_apply, Pi.sub_apply, Pi.natCast_apply, map_mul, map_sub, map_natCast, LocWach.π₀, ToolsR.π₀₁_cc hR, mul_zero] at h2`. Rewrite `h2` using `[show Formalism.MainNotions.WachCoordinates.pS W s i = ps W s i from rfl, h, map_zero, zero_sub, eq_comm, neg_eq_zero]`. Conclude with `hp0 h2`. Use `⟨0, wH, ToolsR.cancel_AΔ hpsΔ hps0 ?_, by rw [pow_zero, one_mul, key]⟩` and prove the remaining obligations. Rewrite using `[← key]`.
+
+Conclude with `W.AΔ.mul_mem (Formalism.MainNotions.UnusedSlot80.SatPW.letE_mem_AΔ W a) hg`.
+-/
 theorem levDiv_of (W : LocWach PD LL O v n) (hR : ToolsR.RingP W) (hT : Formalism.MainNotions.WachCoordinates.ToolsAlg W)
     (hpu : ¬ IsUnit ((PD.p : ℕ) : O)) (a : ZMod n) (s : ℕ) (hB : LevBasics W a s) : LevDiv W a s hB.F hB.ev := by
   intro g hg hev

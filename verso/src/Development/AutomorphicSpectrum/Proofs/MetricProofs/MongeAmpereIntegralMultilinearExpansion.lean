@@ -13,6 +13,11 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.Ar.PB
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using st_hessC_eq_zero (f := fun _ => (0 : ℝ)) (y := z) 0 (Eventually.of_forall fun _ => rfl)`. Consider the case `insert a s ha ih`. Establish `h1 : ContDiffAt ℝ 2 (fun y => c a * f a y) z` using `contDiffAt_const.mul (hf a)`. Establish `h2 : ContDiffAt ℝ 2 (fun y => ∑ b ∈ s, c b * f b y) z` using `ContDiffAt.sum fun b _ => contDiffAt_const.mul (hf b)`.
+
+Simplify using `only [Finset.sum_insert ha]`. Rewrite using `[hessC_add' _ _ z h1 h2, ih, hessC_const_mul']`.
+-/
 theorem hessC_finset_sum_mul {D : ℕ} {ι : Type*} (s : Finset ι) (c : ι → ℝ)
     (f : ι → (Fin D → ℂ) → ℝ) (z : Fin D → ℂ) (hf : ∀ a, ContDiffAt ℝ 2 (f a) z) :
     hessC (fun y => ∑ a ∈ s, c a * f a y) z = ∑ a ∈ s, (c a : ℂ) • hessC (f a) z := by
@@ -26,6 +31,9 @@ theorem hessC_finset_sum_mul {D : ℕ} {ι : Type*} (s : Finset ι) (c : ι → 
     simp only [Finset.sum_insert ha]
     rw [hessC_add' _ _ z h1 h2, ih, hessC_const_mul']
 
+/- English proof (translation)
+Take `⟨M, hM⟩` from `ReciprocityTheory.AnForm.A.exists_multilinearMap_eq_mdisc (D := D)`. Rewrite using `[← hM, M.map_sum]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[M.map_smul_univ, smul_eq_mul]`.
+-/
 theorem mdisc_sum_smul {D : ℕ} {σ : Type*} [Fintype σ] (H : σ → Matrix (Fin D) (Fin D) ℂ)
     (c : Fin D → σ → ℂ) :
     mdisc (fun i => ∑ a, c i a • H a) =
@@ -36,6 +44,11 @@ theorem mdisc_sum_smul {D : ℕ} {σ : Type*} [Fintype σ] (H : σ → Matrix (F
   refine Finset.sum_congr rfl fun w _ => ?_
   rw [M.map_smul_univ, smul_eq_mul]
 
+/- English proof (translation)
+Establish `hf : ∀ a, ContDiffAt ℝ 2 (fun y' => (P a).φ ((A.chart j).symm y) ((A.chart j).symm y')) y`. Introduce `a`. Use `hC a j ((A.chart j).map_target hy)` as an intermediate fact. Rewrite `this` using `[(A.chart j).right_inv hy]`. Then use the resulting hypothesis. Establish `hH : ∀ i, hessC (fun y' => (sumPot (c i) P).φ ((A.chart j).symm y) ((A.chart j).symm y')) y = ∑ a, ((c i a : ℝ) : ℂ) • hessC (fun y' => (P a).φ ((A.chart j).symm y) ((A.chart j).symm y')) y` using `fun i => hessC_finset_sum_mul Finset.univ (c i) _ y hf`.
+
+Simplify using `only [locDens, maDens, hH]`. Rewrite using `[mdisc_sum_smul, Complex.re_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[← Complex.ofReal_prod, Complex.re_ofReal_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem locDens_sumPot_expand {e : ℕ} {X : Type} [TopologicalSpace X] (A : FinHolAtlas e X)
     {σ : Type} [Fintype σ] (P : σ → LocPot X) (c : Fin e → σ → ℝ) (j : Fin A.n)
     {y : Fin e → ℂ} (hy : y ∈ (A.chart j).target)
@@ -58,6 +71,19 @@ theorem locDens_sumPot_expand {e : ℕ} {X : Type} [TopologicalSpace X] (A : Fin
   rw [← Complex.ofReal_prod, Complex.re_ofReal_mul]
   ring
 
+/- English proof (translation)
+Establish `key : ∀ j, ∀ᵐ y, y ∈ (A.chart j).target → locDens A (fun i => sumPot (c i) P) j y = ∑ w : Fin e → σ, (∏ i, c i (w i)) * locDens A (fun i => P (w i)) j y`. Introduce `j`. Use `filter_upwards [measure_eq_zero_iff_ae_notMem.1 (hN j)] with y hy hyt`. Establish `hU : (A.chart j).symm y ∈ U`. Assume the negation of the conclusion as `h`.
+
+Conclude with `hy ⟨hyt, h⟩`. Conclude with `locDens_sumPot_expand A P c j hyt fun a => hC a _ hU`. Use `⟨fun j K hK hKc => ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : IntegrableOn (fun y => ∑ w : Fin e → σ, (∏ i, c i (w i)) * (g ((A.chart j).symm y) * locDens A (fun i => P (w i)) j y)) K` using `integrable_finsetSum _ fun w _ => (hI w j K hK hKc).const_mul _`. Use `Integrable.congr h1 ?_` and prove the remaining obligations.
+
+Use `filter_upwards [ae_restrict_of_ae (key j), ae_restrict_mem hKc.measurableSet] with y hy hyK`. Rewrite using `[hy (hK hyK), Finset.mul_sum]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Establish `h : Nonempty (ChartPartition A)` using `existsPartition A`.
+
+Simplify using `only [mInt, dif_pos h, integralWith]`. Simplify using `only [Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `hw : ∀ w : Fin e → σ, IntegrableOn (fun y => (∏ i, c i (w i)) * (h.some.χ j ((A.chart j).symm y) * g ((A.chart j).symm y) * locDens A (fun i => P (w i)) j y)) (A.chart j).target` using `fun w => (integrableOn_weight A h.some _ g (hI w) j).const_mul _`.
+
+Simplify using `only [← integral_const_mul]`. Rewrite using `[← integral_finsetSum _ fun w _ => hw w]`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [ae_restrict_of_ae (key j), ae_restrict_mem (A.chart j).open_target.measurableSet] with y hy hyt`. Rewrite using `[hy hyt, Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem mInt_sumPot_expand (e : ℕ) (X : Type) [TopologicalSpace X] [CompactSpace X] [T2Space X]
     (A : FinHolAtlas e X) (σ : Type) [Fintype σ] (U : Set X) (P : σ → LocPot X)
     (c : Fin e → σ → ℝ) (g : X → ℝ) (hN : IsNull A Uᶜ)

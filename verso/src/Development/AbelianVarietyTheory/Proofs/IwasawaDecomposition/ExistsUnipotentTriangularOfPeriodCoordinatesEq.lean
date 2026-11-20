@@ -7,6 +7,9 @@ open scoped Matrix
 
 namespace GlobalTheory.PeriodUnipotent
 
+/- English proof (translation)
+The claim follows from `tendsto_const_nhds_iff.1 (GlobalTheory.PeriodLift.tendsto_of_span (𝓕 := (⊤ : Filter Unit)) S hS σ (fun _ => Φ) Φ₀ (fun _ => ha) ha₀ (fun _ => hs) hs₀ hσ (fun v hv => by rw [h v hv]; exact tendsto_const_nhds) v)`.
+-/
 theorem eq_of_span {E : Type} [Field E] {r : ℕ} (S : Set (Fin r → E)) (hS : Submodule.span E S = ⊤) (σ : E → ℂ)
     (Φ Φ₀ : (Fin r → E) → ℂ)
     (ha : ∀ v w, Φ (v + w) = Φ v + Φ w) (ha₀ : ∀ v w, Φ₀ (v + w) = Φ₀ v + Φ₀ w)
@@ -15,6 +18,11 @@ theorem eq_of_span {E : Type} [Field E] {r : ℕ} (S : Set (Fin r → E)) (hS : 
   tendsto_const_nhds_iff.1 (GlobalTheory.PeriodLift.tendsto_of_span (𝓕 := (⊤ : Filter Unit)) S hS σ (fun _ => Φ) Φ₀
     (fun _ => ha) ha₀ (fun _ => hs) hs₀ hσ (fun v hv => by rw [h v hv]; exact tendsto_const_nhds) v)
 
+/- English proof (translation)
+Distinguish the cases in `h : (c : ℕ) < p`. Rewrite using `[← Matrix.nonsing_inv_mul A (Ne.isUnit hA)]`. Simplify using `only [Matrix.mul_apply, hc c h]`. Establish `h' : ¬ (a : ℕ) < p`. Establish `: (c : ℕ) ≤ a` using `hac`.
+
+Use linear arithmetic over natural numbers and integers. Rewrite using `[← Matrix.nonsing_inv_mul B (Ne.isUnit hB)]`. Simplify using `only [Matrix.mul_apply, hr a h']`.
+-/
 theorem inv_mul_apply {r p : ℕ} (A B : Matrix (Fin r) (Fin r) ℂ) (hA : A.det ≠ 0) (hB : B.det ≠ 0)
     (hc : ∀ a : Fin r, (a : ℕ) < p → ∀ k, B k a = A k a)
     (hr : ∀ a : Fin r, ¬ (a : ℕ) < p → ∀ k, B⁻¹ a k = A⁻¹ a k) (a c : Fin r) (hac : c ≤ a) :
@@ -28,6 +36,15 @@ theorem inv_mul_apply {r p : ℕ} (A B : Matrix (Fin r) (Fin r) ℂ) (hA : A.det
     rw [← Matrix.nonsing_inv_mul B (Ne.isUnit hB)]
     simp only [Matrix.mul_apply, hr a h']
 
+/- English proof (translation)
+Introduce `E _ _ _ r X x x' hx hx' h`. Establish `key : ∀ (τ : X.Ψ) (a c : Fin r), c ≤ a → ((mat x τ)⁻¹ * mat x' τ) a c = (1 : Matrix (Fin r) (Fin r) ℂ) a c`. Introduce `τ`. Use `inv_mul_apply (p := X.p0) _ _ (hx τ).1 (hx' τ).1 ?_ ?_` and prove the remaining obligations. Introduce `a ha k`.
+
+Use `eq_of_span (X.Λ : Set (Fin r → E)) X.Λ_span (fun c => (starRingEnd ℂ) (τ.1 c)) (fun v => hermC τ.1 X.Gm (col (mat x' τ) a) (Data.emb τ.1 v)) (fun v => hermC τ.1 X.Gm (col (mat x τ) a) (Data.emb τ.1 v)) (by intros; simp [hermC, Data.emb, mul_add, Finset.sum_add_distrib]) (by intro …` as an intermediate fact. Simplify `this` using `only [GlobalTheory.PeriodLift.hermC_emb_inv_col τ.1 X.Gm X.Gm_det, col]`. Introduce `a ha k`. Use `eq_of_span (X.Λ : Set (Fin r → E)) X.Λ_span (fun c => τ.1 c) (fun v => ((mat x' τ)⁻¹ *ᵥ Data.emb τ.1 v) a) (fun v => ((mat x τ)⁻¹ *ᵥ Data.emb τ.1 v) a) (by intros; simp [Matrix.mulVec, dotProduct, Data.emb, mul_add, Finset.sum_add_distrib]) (by intros; simp [Matrix.mulVec, dotPro …` as an intermediate fact. Simplify `this` using `[Matrix.mulVec, dotProduct, Data.emb, Pi.single_apply, apply_ite τ.1]`.
+
+Use `⟨fun τ => ((mat x τ)⁻¹ * mat x' τ : Matrix (Fin r) (Fin r) ℂ), fun τ => ⟨?_, fun a c hca => ?_⟩, fun τ i => ?_, funext fun τ => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((mat x τ)⁻¹ * mat x' τ).det ≠ 0`. Rewrite using `[Matrix.det_mul]`. Conclude with `mul_ne_zero (Matrix.isUnit_nonsing_inv_det _ (Ne.isUnit (hx τ).1)).ne_zero (hx' τ).1`. Conclude with `(key τ a c hca.le).trans (Matrix.one_apply_ne hca.ne')`.
+
+Conclude with `(key τ i i le_rfl).trans (Matrix.one_apply_eq i)`. Express the relevant statement in the definitionally equal form `mat x' τ = mat x τ * ((mat x τ)⁻¹ * mat x' τ)`. Rewrite using `[Matrix.mul_nonsing_inv_cancel_left _ _ (Ne.isUnit (hx τ).1)]`.
+-/
 theorem exists_unipotent_of_pc_eq : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r) (x x' : Frame X.Ψ r), x ∈ X.dom → x' ∈ X.dom → (∀ v ∈ X.Λ, ∀ τ a, GlobalTheory.GenericFrames.pc X x' v τ a = GlobalTheory.GenericFrames.pc X x v τ a) → ∃ b ∈ Bor X.Ψ r, (∀ τ i, b τ i i = 1) ∧ x' = rmul x b := by
   intro E _ _ _ r X x x' hx hx' h
   have key : ∀ (τ : X.Ψ) (a c : Fin r), c ≤ a →

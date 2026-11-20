@@ -5,6 +5,11 @@ open CategoryTheory Limits AlgebraicGeometry Opposite LateralTheory.E.E4 Lateral
 
 namespace LateralTheory.E.StalkOfAlgebra
 
+/- English proof (translation)
+Use `letI := φ.hom.toAlgebra`. Set `P` to `(p.comap φ.hom).asIdeal`. Use `haveI : p.asIdeal.LiesOver P := ⟨rfl⟩`. Use `letI := Localization.AtPrime.algebraOfLiesOver P p.asIdeal`. Rewrite using `[RingHom.FormallySmooth.respectsIso.arrow_mk_iso_iff (Scheme.arrowStalkMapSpecIso φ p)]`.
+
+Establish `: Algebra.FormallySmooth (Localization.AtPrime P) (Localization.AtPrime p.asIdeal)` using `(Algebra.FormallySmooth.iff_restrictScalars (R := R) (A := Localization.AtPrime P)).mp h`. Conclude with `this`.
+-/
 theorem stalk_of_smoothAt {R A : CommRingCat.{0}} (φ : R ⟶ A) (p : PrimeSpectrum A)
     (h : letI := φ.hom.toAlgebra; Algebra.IsSmoothAt R p.asIdeal) :
     ((Spec.map φ).stalkMap p).hom.FormallySmooth := by
@@ -17,6 +22,19 @@ theorem stalk_of_smoothAt {R A : CommRingCat.{0}} (φ : R ⟶ A) (p : PrimeSpect
     (Algebra.FormallySmooth.iff_restrictScalars (R := R) (A := Localization.AtPrime P)).mp h
   exact this
 
+/- English proof (translation)
+Use `letI : Algebra R A := φ.hom.toAlgebra`. Establish `hfp0 : φ.hom.FinitePresentation` using `(HasRingHomProperty.Spec_iff (P := @LocallyOfFinitePresentation) (φ := φ)).mp inferInstance`. Establish `hfp : Algebra.FinitePresentation R A` using `hfp0`. Establish `hpo` using `(CommRingCat.isPushout_tensorProduct R Ω A)`. Establish `hφ : CommRingCat.ofHom (algebraMap R A) = φ` using `rfl`.
+
+Rewrite `hpo` using `[hφ]`. Establish `hstd` using `(isPullback_SpecMap_of_isPushout _ _ _ _ hpo).flip`. Set `e` to `hv.isoIsPullback _ _ hstd`. Establish `h1 : e.hom ≫ Spec.map (CommRingCat.ofHom (S` using `Ω ⊗[R] A) Algebra.TensorProduct.includeRight.toRingHom) = v := hv.isoIsPullback_hom_fst _ _ hstd`. Establish `h2 : e.hom ≫ Spec.map (CommRingCat.ofHom (S` using `Ω ⊗[R] A) Algebra.TensorProduct.includeLeftRingHom) = c := hv.isoIsPullback_hom_snd _ _ hstd`.
+
+Use `haveI := hs`. Establish `hsm : Smooth (Spec.map (CommRingCat.ofHom (S` using `Ω ⊗[R] A) Algebra.TensorProduct.includeLeftRingHom)) := by`. Establish `: Spec.map (CommRingCat.ofHom (S` using `Ω ⊗[R] A) Algebra.TensorProduct.includeLeftRingHom) = e.inv ≫ c := by`. Rewrite using `[← h2, Iso.inv_hom_id_assoc]`. Rewrite using `[this]`.
+
+Use `infer_instance`. Establish `hrs` using `(HasRingHomProperty.Spec_iff (P := @Smooth) (φ := CommRingCat.ofHom (S := Ω ⊗[R] A) Algebra.TensorProduct.includeLeftRingHom)).mp hsm`. Establish `hinc : (Algebra.TensorProduct.includeLeftRingHom : Ω →+* Ω ⊗[R] A) = algebraMap Ω (Ω ⊗[R] A)`. Use extensionality with `x`. Both sides reduce to the same expression.
+
+Establish `hsA : Algebra.Smooth Ω (Ω ⊗[R] A)`. Rewrite using `[← RingHom.smooth_algebraMap, ← hinc]`. Conclude with `hrs`. Establish `key` using `hA k Ω R A hfp hsA (e.hom y)`. Rewrite using `[← h1, Scheme.Hom.comp_apply]`.
+
+Conclude with `stalk_of_smoothAt φ _ key`.
+-/
 theorem core (hA : LateralTheory.E.SpreadingOutSmoothness.LeafAlgDescend) (k : Type) [Field k] (Ω : Type) [Field Ω]
     [Algebra k Ω] (R : Subalgebra k Ω) {C : Scheme.{0}} {A : CommRingCat.{0}} (φ : CommRingCat.of R ⟶ A)
     (c : C ⟶ Sp Ω) (v : C ⟶ Spec A) [LocallyOfFinitePresentation (Spec.map φ)] (hs : Smooth c)
@@ -48,6 +66,15 @@ theorem core (hA : LateralTheory.E.SpreadingOutSmoothness.LeafAlgDescend) (k : T
   rw [← h1, Scheme.Hom.comp_apply]
   exact stalk_of_smoothAt φ _ key
 
+/- English proof (translation)
+Introduce `hA k _ Ω _ _ R _ C D c q v hD _ hs hv y`. Set `e` to `D.isoSpec`. Set `φ` to `Spec.preimage (e.inv ≫ q)`. Establish `hq : Spec.map φ = e.inv ≫ q` using `Spec.map_preimage _`. Use `haveI : LocallyOfFinitePresentation (Spec.map φ) := by rw [hq]; infer_instance`.
+
+Establish `hv' : IsPullback (v ≫ e.hom) c (Spec.map φ) (toR R)`. Rewrite using `[hq]`. Conclude with `hv.of_iso (Iso.refl _) e (Iso.refl _) (Iso.refl _) (by simp) (by simp) (by simp) (by simp)`. Establish `key` using `core hA k Ω R φ c (v ≫ e.hom) hs.smooth hv' y`. Establish `h2` using `Scheme.Hom.preimage_smoothLocus_eq e.hom (Spec.map φ)`.
+
+Establish `h3 : e.hom ≫ Spec.map φ = q` using `by rw [hq, Iso.hom_inv_id_assoc]`. Establish `h4 : v y ∈ (e.hom ≫ Spec.map φ).smoothLocus`. Rewrite using `[← h2]`. Simplify `key` using `[Scheme.Hom.comp_apply]`. Rewrite `h4`, the goal using `[Scheme.Hom.mem_smoothLocus]`.
+
+Rewrite `h4` using `[h3]`. Then use the resulting hypothesis.
+-/
 theorem LeafStalkOfAlg_of : LateralTheory.E.SpreadingOutSmoothness.LeafStalkOfAlg := by
   intro hA k _ Ω _ _ R _ C D c q v hD _ hs hv y
   let e := D.isoSpec

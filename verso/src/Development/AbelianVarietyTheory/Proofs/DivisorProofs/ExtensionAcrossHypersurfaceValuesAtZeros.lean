@@ -12,6 +12,103 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MeasureComplNonvani
 open MeasureTheory Filter Topology Metric ReciprocityTheory.L2DbarEstimates ReciprocityTheory.L2DbarEstimates.Y GlobalTheory.OTY GlobalTheory.Published.L2Extension
 open scoped ENNReal ContDiff
 
+/- English proof (translation)
+Introduce `n Y _ _ _ _ _ _ ι La _ A hn E L s hs hS hjac hle δ hδ Λ τ hτ hdense Ω h T θ hΩ hSΩ hθ hhint F hF hint`. Take `⟨hΩo, hhsec, hh0⟩` from `hΩ`. Establish `hUo : IsOpen (nz A τ)` using `(GlobalTheory.T.isOpen_atlasSectionNonvanishingSet_and_mem_iff n Y ι La A Λ τ hτ).1`. Establish `hmeas` using `GlobalTheory.T.measurable_nsq_and_psi_of_isSecOn n Y ι La A (A.kap + E) Ω h hΩo hhsec hh0`. Establish `hψm : Measurable (psi A L s)` using `hmeas.2 L s hs`.
+
+Establish `hψle : ∀ y, psi A L s y ≤ 0` using `fun y => by`. Unfold `psi`. Conclude with `mul_nonpos_of_nonneg_of_nonpos (Nat.cast_nonneg n) (Real.log_nonpos (A.sqn_nonneg L s y) (hle y))`. Use `set c0 : ℝ := 1 / (1 + (T + 1) ^ 2) with hc0def`. Establish `hc0 : 0 < c0` using `by positivity`.
+
+Establish `hwT : ∀ x, c0 ≤ wT T x` using `fun x => by`. Unfold `wT`. Apply `one_div_le_one_div_of_le (by positivity)` to reduce the goal to its premises. Combine the linear relations using `[min_le_right (x ^ 2) ((T + 1) ^ 2)]`. Establish `hwe : ∀ y, c0 * Real.exp (-psi A L s y) ≤ wT T (δ * psi A L s y) * Real.exp (-psi A L s y)` using `fun y => mul_le_mul_of_nonneg_right (hwT _) (Real.exp_pos _).le`.
+
+Establish `hexψ : ∀ y, 1 ≤ Real.exp (-psi A L s y)` using `fun y => Real.one_le_exp (by linarith [hψle y])`. Use `set X : ι → Y → ℂ := fun i x => (θ (δ * psi A L s x) : ℂ) * h i x - F i x with hXdef`. Establish `hpt : ∀ y, A.nsq (A.kap + E) F y ≤ 2 * A.nsq (A.kap + E) h y + (2 / c0) * (A.nsq (A.kap + E) X y * (wT T (δ * psi A L s y) * Real.exp (-psi A L s y)))`. Introduce `y`. Establish `hθ01` using `hθ.2.2.2.1 (δ * psi A L s y)`.
+
+Establish `key : A.nsq (A.kap + E) F y ≤ 2 * A.nsq (A.kap + E) h y + 2 * A.nsq (A.kap + E) X y`. Simplify using `only [WeightedAtlas.nsq, X]`. Use `set t := θ (δ * psi A L s y)`. Use `set a := F (A.pick y) y`. Use `set b := h (A.pick y) y`.
+
+Establish `n1 : ‖(t : ℂ) * b‖ ≤ ‖b‖`. Rewrite using `[norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg hθ01.1]`. Conclude with `mul_le_of_le_one_left (norm_nonneg _) hθ01.2`. Establish `ha : ‖a‖ ^ 2 ≤ 2 * ‖b‖ ^ 2 + 2 * ‖(t : ℂ) * b - a‖ ^ 2`. Establish `e1 : a = (t : ℂ) * b - ((t : ℂ) * b - a)` using `by ring`.
+
+Establish `n2 : ‖a‖ ≤ ‖(t : ℂ) * b‖ + ‖(t : ℂ) * b - a‖` using `by conv_lhs => rw [e1]`. Conclude with `norm_sub_le _ _`. Establish `n3 : 0 ≤ ‖(t : ℂ) * b‖` using `norm_nonneg _`. Establish `n4 : 0 ≤ ‖(t : ℂ) * b - a‖` using `norm_nonneg _`. Use polynomial arithmetic with `[sq_nonneg (‖(t : ℂ) * b‖ - ‖(t : ℂ) * b - a‖), norm_nonneg a]`.
+
+Establish `hex` using `Real.exp_pos (-A.ph (A.kap + E) (A.pick y) y)`. Use the polynomial consequences of the given equalities and inequalities. Establish `hX0 : 0 ≤ A.nsq (A.kap + E) X y` using `A.nsq_nonneg _ _ _`. Establish `hq : A.nsq (A.kap + E) X y ≤ A.nsq (A.kap + E) X y * (wT T (δ * psi A L s y) * Real.exp (-psi A L s y)) / c0`. Rewrite using `[le_div_iff₀ hc0]`.
+
+Use `(hwe y)` as an intermediate fact. Establish `h1 : c0 ≤ wT T (δ * psi A L s y) * Real.exp (-psi A L s y)`. Use polynomial arithmetic with `[hexψ y]`. Use the polynomial consequences of the given equalities and inequalities. Establish `: (2 / c0) * (A.nsq (A.kap + E) X y * (wT T (δ * psi A L s y) * Real.exp (-psi A L s y))) = 2 * (A.nsq (A.kap + E) X y * (wT T (δ * psi A L s y) * Real.exp (-psi A L s y)) / c0)`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hFint : ∫⁻ y in nz A τ, ENNReal.ofReal (A.nsq (A.kap + E) F y) ∂A.mu < ⊤`. Combine the equalities or inequalities in the displayed calculation.
+
+Apply `ENNReal.add_lt_top.2` to reduce the goal to its premises. Prove the components needed by the constructor for the conclusion. Establish `e : ∀ y, ENNReal.ofReal (2 * A.nsq (A.kap + E) h y) = ENNReal.ofReal 2 * ENNReal.ofReal (A.nsq (A.kap + E) h y)` using `fun y => ENNReal.ofReal_mul (by norm_num)`. Repeatedly rewrite using `[e]`. Rewrite using `[lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`.
+
+Conclude with `ENNReal.mul_lt_top ENNReal.ofReal_lt_top (lt_of_le_of_lt (setLIntegral_le_lintegral _ _) hhint)`. Establish `e : ∀ y, ENNReal.ofReal ((2 / c0) * (A.nsq (A.kap + E) X y * (wT T (δ * psi A L s y) * Real.exp (-psi A L s y)))) = ENNReal.ofReal (2 / c0) * ENNReal.ofReal (A.nsq (A.kap + E) X y * (wT T (δ * psi A L s y) * Real.exp (-psi A L s y)))` using `fun y => ENNReal.ofReal_mul (by positivity)`. Repeatedly rewrite using `[e]`. Rewrite using `[lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`. Conclude with `ENNReal.mul_lt_top ENNReal.ofReal_lt_top hint`.
+
+Take `⟨G, hG, hGF⟩` from `GlobalTheory.T.exists_isSec_extension_of_dense_nz_of_l2 n Y ι La A Λ (A.kap + E) τ F hτ hdense hF hFint`. Use `⟨G, hG, hGF, ?_⟩` and prove the remaining obligations. Introduce `P hP`. Establish `hP' : ∀ k, s k (A.pick P) P = 0` using `hP`. Establish `hsqP : A.sqn L s P = 0`.
+
+Simplify using `[WeightedAtlas.sqn, WeightedAtlas.nsq, hP']`. Use `set i := A.pick P with hidef`. Use `set e := A.chart i with hedef`. Establish `hPs : P ∈ e.source` using `A.mem_pick P`. Establish `hnpos : (0 : ℝ) < n` using `Nat.cast_pos.2 (by omega)`.
+
+Use `set ε : ℝ := Real.exp ((-T - 1) / (δ * n)) with hεdef`. Use `set N : Set Y := (e.source ∩ A.ph E i ⁻¹' Set.Iio (A.ph E i P + 1)) ∩ Ω ∩ (A.zeroSet s \ {P})ᶜ ∩ {y | A.sqn L s y < ε} with hNdef`. Establish `hNo : IsOpen N`. Use `((((A.continuousOn_ph E i).isOpen_inter_preimage e.open_source isOpen_Iio).inter hΩo).inter ((hS.subset Set.diff_subset).isClosed.isOpen_compl)).inter (isOpen_lt (A.continuous_sqn hs) continuous_const)` and prove the remaining obligations. Establish `hPN : P ∈ N`.
+
+Use `⟨⟨⟨⟨hPs, ?_⟩, hSΩ hP⟩, fun h' => h'.2 rfl⟩, ?_⟩` and prove the remaining obligations. Use `show A.ph E i P < A.ph E i P + 1`. Combine the linear equalities and inequalities to obtain the conclusion. Use `show A.sqn L s P < ε`. Rewrite using `[hsqP]`.
+
+Conclude with `Real.exp_pos _`. Use `set O : Set (V n) := e.target ∩ e.symm ⁻¹' N with hOdef`. Establish `hOo : IsOpen O` using `e.continuousOn_symm.isOpen_inter_preimage e.open_target hNo`. Establish `hpO : e P ∈ O` using `⟨e.map_source hPs, by show e.symm (e P) ∈ N; rw [e.left_inv hPs]; exact hPN⟩`. Use `set Z : V n → V n := A.zLoc (fun _ _ => 1) s i with hZdef`.
+
+Use `set lam : V n → ℝ := fun v => A.ph L i (e.symm v) with hlamdef`. Establish `hdiff : ∀ k, DifferentiableOn ℂ (s k i ∘ e.symm) e.target` using `fun k => by`. Simplify using `using (hs k).1 i`. Establish `hZd : DifferentiableOn ℂ Z O`. Introduce `v hv`.
+
+Apply `DifferentiableAt.differentiableWithinAt` to reduce the goal to its premises. Rewrite using `[differentiableAt_euclidean]`. Introduce `k`. Simplify using `only [Z, WeightedAtlas.zLoc, PiLp.toLp_apply, div_one]`. Conclude with `(hdiff k v hv.1).differentiableAt (e.open_target.mem_nhds hv.1)`.
+
+Establish `hZp : Z (e P) = 0`. Establish `h0 : ∀ k, s k i (e.symm (e P)) = 0` using `fun k => by rw [e.left_inv hPs]; exact hP' k`. Use extensionality with `k`. Simplify using `only [Z, WeightedAtlas.zLoc, PiLp.toLp_apply, div_one]`. Apply the tactic sequence `first | exact h0 k | simpa using h0 k | (simp; exact h0 k)`.
+
+Establish `hdet : (fderiv ℂ Z (e P)).det ≠ 0` using `hjac P hP`. Establish `hlam : ContinuousOn lam O` using `((A.smooth_ph L i).continuousOn).mono (fun v hv => hv.1)`. Use `set u : V n → ℂ := fun v => h i (e.symm v) - G i (e.symm v) with hudef`. Establish `hu : ContinuousOn u O`. Establish `h1 : ContinuousOn (h i ∘ e.symm) O` using `(hhsec.1 i).continuousOn.mono (fun v hv => ⟨hv.1, hv.2.1.1.2⟩)`.
+
+Establish `h2 : ContinuousOn (G i ∘ e.symm) O` using `(hG.1 i).continuousOn.mono (fun v hv => ⟨hv.1, trivial⟩)`. Conclude with `h1.sub h2`. Establish `hZn : ∀ v ∈ e.target, ‖Z v‖ ^ 2 * Real.exp (-lam v) = A.sqn L s (e.symm v)`. Introduce `v hv`. Establish `hy : e.symm v ∈ e.source` using `e.map_target hv`.
+
+Rewrite using `[A.sqn_s_eq (w0 := fun _ _ => 1) hs hy one_ne_zero, e.right_inv hv]`. Simplify using `[Z, lam]`. Expand and normalize the polynomial expressions, which then agree. Establish `hfin : ∫⁻ v in O, ENNReal.ofReal (‖u v‖ ^ 2 * Real.exp (-((n : ℝ) * Real.log (‖Z v‖ ^ 2 * Real.exp (-lam v))))) < ⊤`. Establish `hNmem : ∀ y ∈ N, y ∈ e.source ∧ A.ph E i y < A.ph E i P + 1 ∧ y ∈ Ω ∧ y ∉ A.zeroSet s \ {P} ∧ A.sqn L s y < ε` using `fun y hy => ⟨hy.1.1.1.1, hy.1.1.1.2, hy.1.1.2, hy.1.2, hy.2⟩`.
+
+Establish `hUt : IsOpen (e.target ∩ e.symm ⁻¹' nz A τ)` using `e.continuousOn_symm.isOpen_inter_preimage e.open_target hUo`. Use `set W : Set (V n) := (O ∩ (e.target ∩ e.symm ⁻¹' nz A τ)) \ {e P} with hWdef`. Establish `hWm : MeasurableSet W` using `(hOo.inter hUt).measurableSet.diff (measurableSet_singleton _)`. Establish `hWO : W ⊆ O` using `fun v hv => hv.1.1`. Establish `hWt : W ⊆ e.target` using `fun v hv => hv.1.1.1`.
+
+Establish `hnull : volume (e.target ∩ e.symm ⁻¹' (nz A τ)ᶜ) = 0`. Establish `hmu0 : A.mu (e.source ∩ (nz A τ)ᶜ) = 0` using `measure_mono_null Set.inter_subset_right (GlobalTheory.T.measure_compl_nonvanishingSet_eq_zero_of_dense n Y ι La A Λ τ hτ hdense)`. Rewrite `hmu0` using `[A.mu_chart i _ (e.open_source.measurableSet.inter hUo.measurableSet.compl) Set.inter_subset_left, e.image_source_inter_eq']`. Establish `hBm : MeasurableSet (e.target ∩ e.symm ⁻¹' (nz A τ)ᶜ)`. Establish `: e.target ∩ e.symm ⁻¹' (nz A τ)ᶜ = e.target \ (e.target ∩ e.symm ⁻¹' nz A τ)`.
+
+Use extensionality with `v`. Simplify using `only [Set.mem_inter_iff, Set.mem_preimage, Set.mem_compl_iff, Set.mem_diff]`. The claim follows by propositional logic. Rewrite using `[this]`. Conclude with `e.open_target.measurableSet.diff hUt.measurableSet`.
+
+Establish `hco : ContinuousOn (fun v => ENNReal.ofReal (Real.exp (A.ph A.kap i (e.symm v)))) e.target` using `ENNReal.continuous_ofReal.comp_continuousOn ((A.smooth_ph A.kap i).continuousOn.rexp)`. Establish `hae` using `(hco.mono Set.inter_subset_left).aemeasurable (μ := volume) hBm`. Rewrite `hmu0` using `[lintegral_eq_zero_iff' hae]`. Establish `h2 : ∀ᵐ v ∂volume, v ∉ e.target ∩ e.symm ⁻¹' (nz A τ)ᶜ` using `by filter_upwards [(ae_restrict_iff' hBm).1 hmu0] with v hv hvB`. Establish `h3` using `hv hvB`.
+
+Simplify using `only [Pi.zero_apply, ENNReal.ofReal_eq_zero] at h3`. Conclude with `absurd h3 (not_le.2 (Real.exp_pos _))`. Apply the tactic sequence `first | exact measure_zero_iff_ae_nmem.2 h2 | exact measure_eq_zero_iff_ae_notMem.2 h2`. Establish `hOW : volume (O \ W) = 0`. Apply `measure_mono_null (t := {e P} ∪ (e.target ∩ e.symm ⁻¹' (nz A τ)ᶜ))` to reduce the goal to its premises.
+
+Introduce `v hv`. Distinguish the cases in `hvp : v = e P`. Use `left`. Conclude with `hvp`. Use `right`.
+
+Conclude with `⟨hv.1.1, fun hU => hv.2 ⟨⟨hv.1, hv.1.1, hU⟩, hvp⟩⟩`. Use `haveI : Nonempty (Fin n) := ⟨⟨0, hn⟩⟩`. Conclude with `measure_union_null (measure_singleton _) hnull`. Establish `hOWeq : volume.restrict O = volume.restrict W` using `Measure.restrict_congr_set (ae_eq_set.2 ⟨hOW, by rw [Set.diff_eq_empty.2 hWO]; exact measure_empty⟩)`. Rewrite using `[hOWeq]`.
+
+Use `set c : Y → ℝ := fun y => Real.sqrt (wT T (δ * psi A L s y) * Real.exp (-psi A L s y)) with hcdef`. Use `set D : ι → Y → ℂ := fun j y => (c y : ℂ) * X j y with hDdef`. Establish `hq0 : ∀ y, 0 ≤ wT T (δ * psi A L s y) * Real.exp (-psi A L s y)` using `fun y => le_trans (mul_nonneg hc0.le (Real.exp_pos _).le) (hwe y)`. Establish `hDsq : ∀ j y, ‖D j y‖ ^ 2 = (wT T (δ * psi A L s y) * Real.exp (-psi A L s y)) * ‖X j y‖ ^ 2`. Introduce `j y`.
+
+Simplify using `only [D, c, norm_mul, Complex.norm_real, Real.norm_eq_abs, mul_pow, sq_abs, Real.sq_sqrt (hq0 y)]`. Establish `hnsqD : ∀ y, A.nsq (A.kap + E) D y = A.nsq (A.kap + E) X y * (wT T (δ * psi A L s y) * Real.exp (-psi A L s y))`. Introduce `y`. Simplify using `only [WeightedAtlas.nsq]`. Rewrite using `[hDsq]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hcoc : ∀ y ∈ e.source, e y ∈ W → D (A.pick y) y = A.g (A.kap + E) (A.pick y) i y * D i y`. Introduce `y hy hyW`. Establish `hyy : e.symm (e y) = y` using `e.left_inv hy`. Establish `hyU : y ∈ nz A τ`.
+
+Use `hyW.1.2.2` as an intermediate fact. Rewrite `this` using `[Set.mem_preimage, hyy]`. Then use the resulting hypothesis. Establish `hyΩ : y ∈ Ω`. Use `(hNmem _ hyW.1.1.2).2.2.1` as an intermediate fact. Rewrite `this` using `[hyy]`. Then use the resulting hypothesis.
+
+Simplify using `only [D, X]`. Rewrite using `[hhsec.2 (A.pick y) i y hyΩ (A.mem_pick y) hy, hF.2 (A.pick y) i y hyU (A.mem_pick y) hy]`. Expand and normalize the polynomial expressions, which then agree. Establish `hsymm : AEMeasurable e.symm (volume.restrict W)` using `(e.continuousOn_symm.mono hWt).aemeasurable hWm`. Establish `hwTc : Continuous (wT T)`.
+
+Unfold `wT`. Conclude with `continuous_const.div (by fun_prop) (fun x => by positivity)`. Establish `hcm : Measurable c`. Establish `: Measurable (fun x : ℝ => Real.sqrt (wT T (δ * x) * Real.exp (-x)))` using `(Real.continuous_sqrt.comp ((hwTc.comp (continuous_const.mul continuous_id)).mul (Real.continuous_exp.comp continuous_neg))).measurable`. Conclude with `this.comp hψm`.
+
+Establish `hDm : AEMeasurable (D i ∘ e.symm) (volume.restrict W)`. Establish `h1 : AEMeasurable (fun v => (c (e.symm v) : ℂ)) (volume.restrict W)` using `(Complex.measurable_ofReal.comp hcm).comp_aemeasurable hsymm`. Establish `h2 : AEMeasurable (fun v => (θ (δ * psi A L s (e.symm v)) : ℂ)) (volume.restrict W)` using `(Complex.measurable_ofReal.comp (hθ.1.continuous.measurable.comp (measurable_const.mul hψm))).comp_aemeasurable hsymm`. Establish `h3 : AEMeasurable (h i ∘ e.symm) (volume.restrict W)` using `((hhsec.1 i).continuousOn.mono (fun v hv => ⟨hWt hv, (hNmem _ (hWO hv).2).2.2.1⟩)).aemeasurable hWm`. Establish `h4 : AEMeasurable (F i ∘ e.symm) (volume.restrict W)` using `((hF.1 i).continuousOn.mono (fun v hv => ⟨hWt hv, hv.1.2.2⟩)).aemeasurable hWm`.
+
+Conclude with `h1.mul ((h2.mul h3).sub h4)`. Establish `hconv` using `GlobalTheory.T.lintegral_nsq_canonical_add_chart_part n Y ι La A E i W D hWm hWt hcoc hDm`. Establish `hbound : ∫⁻ v in W, ENNReal.ofReal (‖D i (e.symm v)‖ ^ 2 * Real.exp (-A.ph E i (e.symm v))) < ⊤`. Rewrite using `[← hconv]`. Use `lt_of_le_of_lt (lintegral_mono_set ?_) (?_ : ∫⁻ y in nz A τ, ENNReal.ofReal (A.nsq (A.kap + E) D y) ∂A.mu < ⊤)` and prove the remaining obligations.
+
+Introduce `y hy`. Use `hy.2.1.2.2` as an intermediate fact. Rewrite `this` using `[Set.mem_preimage, e.left_inv hy.1]`. Then use the resulting hypothesis. Repeatedly rewrite using `[hnsqD]`. Conclude with `hint`.
+
+Use `set K : ℝ := Real.exp (A.ph E i P + 1) / c0 with hKdef`. Establish `hK : 0 ≤ K` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Use `setLIntegral_mono' hWm (fun v hv => ?_)` and prove the remaining obligations. Rewrite using `[← ENNReal.ofReal_mul hK]`.
+
+Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises. Take `⟨⟨⟨hvt, hvN⟩, ⟨-, hvU⟩⟩, hvp⟩` from `hv`. Take `⟨hys, hyph, hyΩ, hyS, hysq⟩` from `hNmem _ hvN`. Establish `hvy : e (e.symm v) = v` using `e.right_inv hvt`. Establish `hyZ : e.symm v ∉ A.zeroSet s`.
+
+Introduce `hz`. Apply `hvp` to reduce the goal to its premises. Establish `: e.symm v = P`. Assume the negation of the conclusion as `hne`. Conclude with `hyS ⟨hz, hne⟩`.
+
+Use `show v = e P`. Rewrite using `[← hvy, this]`. Establish `hpos : 0 < A.sqn L s (e.symm v)` using `bsA_sqn_pos A (by by_contra hc; push_neg at hc; exact hyZ hc)`. Establish `hψlt : δ * psi A L s (e.symm v) ≤ -T - 1`. Establish `hlog : Real.log (A.sqn L s (e.symm v)) < (-T - 1) / (δ * n)` using `(Real.log_lt_iff_lt_exp hpos).2 hysq`.
+
+Establish `hdn : 0 < δ * n` using `mul_pos hδ hnpos`. Establish `h5` using `mul_lt_mul_of_pos_left hlog hdn`. Establish `e2 : (δ * n) * ((-T - 1) / (δ * n)) = -T - 1` using `by field_simp`. Unfold `psi`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hθ1 : θ (δ * psi A L s (e.symm v)) = 1` using `hθ.2.1 _ hψlt`. Establish `hGy : G i (e.symm v) = F i (e.symm v)` using `hGF i _ hvU hys`. Establish `huX : u v = X i (e.symm v)`. Simplify using `only [u, X, hθ1, hGy, Complex.ofReal_one, one_mul]`. Rewrite using `[hZn v hvt, huX, hDsq]`.
+
+Establish `hψdef : (n : ℝ) * Real.log (A.sqn L s (e.symm v)) = psi A L s (e.symm v)` using `rfl`. Rewrite using `[hψdef]`. Establish `h1` using `hwe (e.symm v)`. Establish `h2 : 1 ≤ Real.exp (A.ph E i P + 1) * Real.exp (-A.ph E i (e.symm v))`. Rewrite using `[← Real.exp_add]; exact Real.one_le_exp (by linarith)`.
+
+Establish `hx2 : 0 ≤ ‖X i (e.symm v)‖ ^ 2` using `by positivity`. Establish `hq` using `hq0 (e.symm v)`. Rewrite using `[hKdef, div_mul_eq_mul_div, le_div_iff₀ hc0]`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left h1 hx2, mul_le_mul_of_nonneg_left h2 (mul_nonneg hx2 hq)]`. Use `_ = ENNReal.ofReal K * ∫⁻ v in W, ENNReal.ofReal (‖D i (e.symm v)‖ ^ 2 * Real.exp (-A.ph E i (e.symm v))) := lintegral_const_mul' _ _ ENNReal.ofReal_ne_top`.
+
+Use `_ < ⊤ := ENNReal.mul_lt_top ENNReal.ofReal_lt_top hbound`. Establish `key` using `GlobalTheory.T.eq_zero_at_simple_zero_of_weighted_sq_integrable n hn (e P) O Z lam hOo hpO hZd hZp hdet hlam u hu hfin`. Simplify using `only [u, e.left_inv hPs, sub_eq_zero] at key`. Conclude with `key.symm`.
+-/
 theorem GlobalTheory.OTY.extension_values_at_zeros : ∀ (n : ℕ) (Y : Type) [TopologicalSpace Y] [T2Space Y] [SecondCountableTopology Y] [MeasurableSpace Y] [BorelSpace Y] [CompactSpace Y] (ι La : Type) [AddCommGroup La] (A : WeightedAtlas n Y ι La), 1 ≤ n → ∀ (E L : La) (s : Fin n → ι → Y → ℂ), (∀ k, A.IsSec L (s k)) → ∀ hS : (A.zeroSet s).Finite, (∀ P ∈ A.zeroSet s, jacAt A s P ≠ 0) → (∀ y, A.sqn L s y ≤ 1) → ∀ δ : ℝ, 0 < δ → ∀ (Λ : La) (τ : ι → Y → ℂ), A.IsSec Λ τ → Dense (nz A τ) → ∀ (Ω : Set Y) (h : ι → Y → ℂ) (T : ℝ) (θ : ℝ → ℝ), (IsOpen Ω ∧ A.IsSecOn (A.kap + E) Ω h ∧ (∀ i y, y ∉ Ω → h i y = 0)) → A.zeroSet s ⊆ Ω → IsCut T θ → ∫⁻ y, ENNReal.ofReal (A.nsq (A.kap + E) h y) ∂A.mu < ⊤ → ∀ F : ι → Y → ℂ, A.IsSecOn (A.kap + E) (nz A τ) F → ∫⁻ y in nz A τ, ENNReal.ofReal (A.nsq (A.kap + E) (fun i x => (θ (δ * psi A L s x) : ℂ) * h i x - F i x) y * (wT T (δ * psi A L s y) * Real.exp (-psi A L s y))) ∂A.mu < ⊤ → ∃ G : ι → Y → ℂ, A.IsSec (A.kap + E) G ∧ (∀ i y, y ∈ nz A τ → y ∈ (A.chart i).source → G i y = F i y) ∧ ∀ P ∈ A.zeroSet s, G (A.pick P) P = h (A.pick P) P := by
   intro n Y _ _ _ _ _ _ ι La _ A hn E L s hs hS hjac hle δ hδ Λ τ hτ hdense Ω h T θ hΩ hSΩ hθ hhint F hF hint
   obtain ⟨hΩo, hhsec, hh0⟩ := hΩ

@@ -10,6 +10,11 @@ open scoped ComplexOrder
 
 open private UpperTheory.ConvolutionTheory.R2.H.WhittakerCoefficientEigen.eig_int UpperTheory.ConvolutionTheory.R2.H.WhittakerCoefficientEigen.cont_n UpperTheory.ConvolutionTheory.R2.H.WhittakerCoefficientEigen.cont_mkE UpperTheory.ConvolutionTheory.R2.H.WhittakerCoefficientEigen.cont_ψ from Development.AutomorphicArithmetic.Foundations.Convolution.RealGroupAnalysis.UnramifiedSplitting.ContMkE
 
+/- English proof (translation)
+Introduce `E _ _ D φ w B hφ hB g`. Establish `hi : ∀ h : GL (Fin 2) (A E), IntegrableOn (fun x : Fin 2 → A ℚ => φ (nE D x * h) * ψ (x 1)) (FS2 ℚ) (adeleMeasurePi ℚ)`. Introduce `h`. Take `⟨C, hC, hEC⟩ : ∃ C, IsCompact C ∧ fundamentalSet ℚ ⊆ C` from `⟨closure (fundamentalSetInfinite ℚ) ×ˢ _, (isCompact_closure_fundamentalSetInfinite ℚ).prod (isCompact_integralFiniteAdeles ℚ), fun x hx => ⟨subset_closure hx.1, hx.2⟩⟩`. Establish `hK : IsCompact (Set.univ.pi fun _ : Fin 2 => C)` using `isCompact_univ_pi fun _ => hC`.
+
+Establish `hc : Continuous fun x : Fin 2 → A ℚ => φ (nE D x * h) * ψ (x 1)` using `(hφ.comp ((UpperTheory.ConvolutionTheory.R2.H.WhittakerCoefficientEigen.cont_n.comp (UpperTheory.ConvolutionTheory.R2.H.WhittakerCoefficientEigen.cont_mkE D)).mul continuous_const)).mul (UpperTheory.ConvolutionTheory.R2.H.WhittakerCoefficientEigen.cont_ψ.comp (continuous_apply 1) …`. Conclude with `(hc.continuousOn.integrableOn_compact hK).mono_set fun x hx i hi => hEC (hx i hi)`. Use `UpperTheory.ConvolutionTheory.R2.H.WhittakerCoefficientEigen.eig_int ((adeleMeasurePi ℚ).restrict (FS2 ℚ)) (hB 1).card (fun x y => φ (nE D x * (g * finGL E 2 (locGL E 2 w y)))) (fun x => ψ (x 1)) (fun x => ?_) fun y => hi _` and prove the remaining obligations. Simplify `hB (nE D x * g)` using `only [mul_assoc]`.
+-/
 theorem UpperTheory.eigAt_cmDatumOperator_of_eigAt :
     ∀ (E : Type) [Field E] [NumberField E] (D : Dat ℚ E) (φ : GL (Fin 2) (A E) → ℂ) (w : H.P E) (B : Multiset ℂˣ), Continuous φ → EigAt w B φ → EigAt w B (Wo D φ) := by
   intro E _ _ D φ w B hφ hB g

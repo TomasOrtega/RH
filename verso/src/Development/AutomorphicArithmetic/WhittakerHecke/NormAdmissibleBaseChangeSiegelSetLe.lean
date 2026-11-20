@@ -12,6 +12,11 @@ namespace UpperTheory.EmbeddingGeneralLinear
 
 variable {E : Type} [Field E] [NumberField E]
 
+/- English proof (translation)
+Establish `hfr : Module.finrank ℚ E = 2`. Rewrite using `[Module.finrank_eq_card_basis D.b, Fintype.card_fin]`. Establish `h` using `GroundTheory.Automorphic.EllipticTorus.ideleModule_ideleNorm (K := ℚ) (L := E) (ideleEmbedding ℚ E a)`. Rewrite `h` using `[ideleNorm_ideleEmbedding, hfr, map_pow]`. Simplify using `only [ab]`.
+
+Rewrite using `[← h]`. Both sides reduce to the same expression.
+-/
 private theorem ab_emb (D : Dat ℚ E) (a : (A ℚ)ˣ) :
     ab (ideleEmbedding ℚ E a : (A E)ˣ) = ab a ^ 2 := by
   have hfr : Module.finrank ℚ E = 2 := by
@@ -23,6 +28,13 @@ private theorem ab_emb (D : Dat ℚ E) (a : (A ℚ)ˣ) :
   rw [← h]
   rfl
 
+/- English proof (translation)
+Establish `hinv : (((ideleEmbedding ℚ E a : (A E)ˣ)⁻¹ : (A E)ˣ) : A E) = AdeleBaseChange.adeleMap ℚ E ((a⁻¹ : (A ℚ)ˣ) : A ℚ)`. Rewrite using `[← map_inv]`. Both sides reduce to the same expression. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`.
+
+Express the relevant statement in the definitionally equal form `AdeleBaseChange.adeleMap ℚ E ((nU b * mD a : G1 ℚ).1 i j) = (nU (AdeleBaseChange.adeleMap ℚ E b) * mD (ideleEmbedding ℚ E a : (A E)ˣ) : G1 E).1 i j`. Establish `hL : (nU b * mD a : G1 ℚ).1 = !![1, b; 0, 1] * !![(a : A ℚ), 0; 0, ((a⁻¹ : (A ℚ)ˣ) : A ℚ)]` using `rfl`. Establish `hR : (nU (AdeleBaseChange.adeleMap ℚ E b) * mD (ideleEmbedding ℚ E a : (A E)ˣ) : G1 E).1 = !![1, AdeleBaseChange.adeleMap ℚ E b; 0, 1] * !![AdeleBaseChange.adeleMap ℚ E (a : A ℚ), 0; 0, AdeleBaseChange.adeleMap ℚ E ((a⁻¹ : (A ℚ)ˣ) : A ℚ)]`. Rewrite using `[← hinv]`. Both sides reduce to the same expression.
+
+Rewrite using `[hL, hR]`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two]`.
+-/
 private theorem em_gl (b : A ℚ) (a : (A ℚ)ˣ) :
     em E (gl (nU b * mD a)) =
       gl (nU (AdeleBaseChange.adeleMap ℚ E b) * mD (ideleEmbedding ℚ E a : (A E)ˣ)) := by
@@ -41,12 +53,22 @@ private theorem em_gl (b : A ℚ) (a : (A ℚ)ˣ) :
   rw [hL, hR]
   fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two]
 
+/- English proof (translation)
+The claim follows from `Continuous.units_map _ (continuous_id.matrix_map AdeleBaseChange.continuous_adeleMap)`.
+-/
 private theorem continuous_em : Continuous (em E) :=
   Continuous.units_map _ (continuous_id.matrix_map AdeleBaseChange.continuous_adeleMap)
 
 end UpperTheory.EmbeddingGeneralLinear
 
 open UpperTheory.EmbeddingGeneralLinear in
+/- English proof (translation)
+Introduce `E _ _ D ω φ hφ C hC c hc r`. Take `⟨B, hB⟩` from `hφ.decay (em E '' C) (hC.image continuous_em) (c ^ 2) (by positivity) r`. Use `⟨|B| * c⁻¹ ^ r, fun b a k hk hca => ?_⟩` and prove the remaining obligations. Establish `ha : 0 < ab a` using `hc.trans_le hca`. Establish `h1` using `hB (AdeleBaseChange.adeleMap ℚ E b) (ideleEmbedding ℚ E a : (A E)ˣ) (em E k) ⟨k, hk, rfl⟩ (by rw [ab_emb D]; gcongr)`.
+
+Rewrite `h1` using `[ab_emb D]`. Rewrite using `[map_mul, em_gl]`. Use `h1.trans ?_` and prove the remaining obligations. Establish `h2 : ((ab a ^ 2)⁻¹) ^ r = (ab a)⁻¹ ^ r * (ab a)⁻¹ ^ r`. Rewrite using `[← mul_pow, sq, mul_inv]`.
+
+Establish `h3 : (ab a)⁻¹ ^ r ≤ c⁻¹ ^ r` using `by gcongr`. Establish `h4 : 0 ≤ (ab a)⁻¹ ^ r` using `by positivity`. Rewrite using `[h2]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem UpperTheory.norm_admissible_baseChange_siegelSet_le :
     ∀ {E : Type} [Field E] [NumberField E] (D : Dat ℚ E) (ω : HChar ℚ) (φ : GL (Fin 2) (A E) → ℂ), admitted D ω φ →
         ∀ (C : Set (GL (Fin 2) (A ℚ))), IsCompact C → ∀ (c : ℝ), 0 < c → ∀ r : ℕ,

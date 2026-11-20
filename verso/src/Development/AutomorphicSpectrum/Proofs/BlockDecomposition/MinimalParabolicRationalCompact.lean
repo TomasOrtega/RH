@@ -19,6 +19,11 @@ open scoped TensorProduct NNReal ENNReal Pointwise
 
 namespace GlobalTheory.CompanionTheory.ParCocompact
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ h n J hJ r X Y hW`. Take `⟨L, hL, hLc⟩` from `GlobalTheory.T.levi_parabolic_intersection_closed F E σ h n J hJ r X Y hW`. Establish `hmem : ∀ g, g ∈ L ↔ g ∈ leviMin σ J X Y ∧ g ∈ minParOne σ J X` using `fun g => by`. Rewrite using `[← SetLike.mem_coe, hL]`. Both sides reduce to the same expression.
+
+Take `⟨ε, hε, hh⟩` from `GlobalTheory.T.idele_bound_of_joint_anisotropic F E σ h n J hJ _ (hermFam σ J X Y) (L : Set (GAd σ J)) (GlobalTheory.T.hermitian_family_anisotropic_joint F E σ h n J hJ r X Y hW) (fun g hg j => GlobalTheory.T.levi_minimal_idele_hermitian_bound F E σ h n J hJ r X Y hW g ((hmem g). …`. Take `⟨Ω, hΩ, hsub, hred⟩` from `GlobalTheory.T.commutant_closed_subgroup_compact_quotient F E σ h n J hJ _ (projFam σ J X Y) L hLc (fun g hg k => GlobalTheory.T.levi_minimal_commutes_projection_family F E σ h n J hJ r X Y hW g ((hmem g).1 hg).1 k) ⟨ε, hε, hh⟩ (fun γ hγ hc => (hmem γ).2 (GlobalTheory.T.mem_levi_ …`. Use `⟨Ω, hΩ, fun c hc => (hmem c).1 (hsub hc), fun m hm hm1 => ?_⟩` and prove the remaining obligations. Take `⟨δ, hδ, hδL, hd⟩` from `hred m ((hmem m).2 ⟨hm, hm1⟩)`. Conclude with `⟨δ, hδ, ((hmem δ).1 hδL).1, _, hd, by group⟩`.
+-/
 theorem levi_cocompact : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J → ∀ (r : ℕ) (X Y : Matrix (Fin n) (Fin r) E), IsWittFrame σ J X Y → ∃ C : Set (GAd σ J), IsCompact C ∧ C ⊆ leviMin σ J X Y ∩ minParOne σ J X ∧ ∀ m ∈ leviMin σ J X Y, m ∈ minParOne σ J X → ∃ δ ∈ ratPts σ J, δ ∈ leviMin σ J X Y ∧ ∃ c ∈ C, m = δ * c := by
   intro F E _ _ _ _ _ σ h n J hJ r X Y hW
   obtain ⟨L, hL, hLc⟩ := GlobalTheory.T.levi_parabolic_intersection_closed F E σ h n J hJ r X Y hW
@@ -34,6 +39,15 @@ theorem levi_cocompact : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [N
   obtain ⟨δ, hδ, hδL, hd⟩ := hred m ((hmem m).2 ⟨hm, hm1⟩)
   exact ⟨δ, hδ, ((hmem δ).1 hδL).1, _, hd, by group⟩
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ h n J hJ r X Y hW`. Take `⟨hcl, hmul⟩` from `minParOne_props h hJ hW`. Take `⟨C, hC, hU⟩` from `GlobalTheory.CompanionTheory.UnipCocompact.unipMin_cocompact F E σ h n J hJ r X Y hW`. Take `⟨C', hC', hsub, hM⟩` from `levi_cocompact F E σ h n J hJ r X Y hW`. Use `⟨(C ∩ minParOne σ J X) * C', (hC.inter_right hcl).mul hC', ?_, fun p hp => ?_⟩` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨c, hc, c', hc', rfl⟩`. Conclude with `hmul _ hc.2 _ (hsub hc').2`. Take `⟨u, hu, m, hm, hm1, rfl⟩` from `GlobalTheory.T.minimal_parabolic_levi_decomposition F E σ h n J hJ r X Y hW p hp`. Take `⟨δ, hδ, hδL, c', hc', rfl⟩` from `hM m hm hm1`. Establish `hu'` using `GlobalTheory.T.levi_normalizes_unipotent_ter F E σ h n J hJ r X Y hW δ hδL u hu`.
+
+Take `⟨δ', hδ', hδU, c, hc, hcU, e⟩` from `hU _ hu'`. Use `⟨δ * δ', mul_mem hδ hδ', mul_mem_minPar (leviMin_subset X Y hδL) (minParOne_subset (unipMin_subset_minParOne X hδU)), c * c', ⟨c, ⟨hc, unipMin_subset_minParOne X hcU⟩, c', hc', rfl⟩, ?_⟩` and prove the remaining obligations. Establish `e2 : u = δ * (δ' * c) * δ⁻¹`. Rewrite using `[← e]`. Use `group`.
+
+Rewrite using `[e2]`. Use `group`.
+-/
 theorem minParOne_cocompact : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J → ∀ (r : ℕ) (X Y : Matrix (Fin n) (Fin r) E), IsWittFrame σ J X Y → ∃ Ω : Set (GAd σ J), IsCompact Ω ∧ Ω ⊆ minParOne σ J X ∧ ∀ p ∈ minParOne σ J X, ∃ δ ∈ ratPts σ J, δ ∈ minPar σ J X ∧ ∃ ω ∈ Ω, p = δ * ω := by
   intro F E _ _ _ _ _ σ h n J hJ r X Y hW
   obtain ⟨hcl, hmul⟩ := minParOne_props h hJ hW

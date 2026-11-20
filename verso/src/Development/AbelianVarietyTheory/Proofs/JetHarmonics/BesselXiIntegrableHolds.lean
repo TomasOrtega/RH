@@ -4,6 +4,9 @@ import Development.AbelianVarietyTheory.PublishedTheorems.BesselIntegrals.Bessel
 
 namespace GlobalTheory
 
+/- English proof (translation)
+The claim follows from `ReciprocityTheory.ChartRestriction.DS.Xi.xiExists`.
+-/
 theorem besselXiIntegrable_holds : GlobalTheory.HCXi.BesselXiIntegrable :=
   ReciprocityTheory.ChartRestriction.DS.Xi.xiExists
 

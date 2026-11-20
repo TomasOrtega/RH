@@ -69,8 +69,14 @@ def AllConjugatesGood (D : Formalism.BasicNotions.D7) (bkP : Formalism.MainNotio
 def AllPowers (D : Formalism.BasicNotions.D7) (bkP : Formalism.MainNotions.BlochKatoReduction.BK D) (E : XD D) (N0 : D.ntw.Tw → ℕ) : Prop :=
   ∀ i, D.ntw.NonzeroIndexPlace i → AllPowersAt D.nexp (Formalism.MainNotions.BlochKatoReduction.pin bkP) E N0 i
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨rfl, rfl⟩`.
+-/
 theorem samePlace_refl (i : X.Tw) (b : Bool) : SamePlace i b i b := ⟨rfl, rfl⟩
 
+/- English proof (translation)
+Use `⟨a, ha, fun g => ?_⟩` and prove the remaining obligations. Take `⟨n, hn⟩` from `Subgroup.mem_zpowers_iff.1 (hψ g)`. Use `⟨n, hn.symm, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_comm, zpow_mul, hn]`. Both sides reduce to the same expression.
+-/
 theorem isReading_zpow (i : X.Tw) (k : ℕ) (ψ : G D.host.E N.Om →* (X.Ok i k)ˣ)
     (hψ : ∀ g, ψ g ∈ Subgroup.zpowers (X.zk i k)) (a : ℤ) (ha : IsCoprime a (X.l i : ℤ)) :
     IsReading i i k ψ (ψ ^ a) := by
@@ -82,6 +88,9 @@ theorem isReading_zpow (i : X.Tw) (k : ℕ) (ψ : G D.host.E N.Om →* (X.Ok i k
 
 variable {Y bkP E}
 
+/- English proof (translation)
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Simplify using `using h 1 isCoprime_one_left`. Simplify using `using h (-1) isCoprime_one_left.neg_left`.
+-/
 theorem AllPowersGood.self_inv {N0 : X.Tw → ℕ} {i : X.Tw} {eps' : ℝ}
     {S : ∀ (j : ℕ) (b : Bool), Finset (Y.Dat i j b)} {A Q : Finset (PlE D.host)} {k' : ℕ}
     {ψ' : X.RCG i Q →* (X.Ok i k')ˣ} (h : AllPowersGood Y bkP E N0 i eps' S A Q k' ψ') :
@@ -90,12 +99,18 @@ theorem AllPowersGood.self_inv {N0 : X.Tw → ℕ} {i : X.Tw} {eps' : ℝ}
   · simpa using h 1 isCoprime_one_left
   · simpa using h (-1) isCoprime_one_left.neg_left
 
+/- English proof (translation)
+Introduce `i hi hs eps' he hF S hS A`. Take `⟨Q, k', ψ', h1, -⟩` from `h i hi hs eps' he hF S hS A`. Conclude with `⟨Q, k', ψ', h1⟩`.
+-/
 theorem AllConjugatesGood.allPowers {D : Formalism.BasicNotions.D7} {bkP : Formalism.MainNotions.BlochKatoReduction.BK D} {E : XD D} {N0 : D.ntw.Tw → ℕ}
     (h : AllConjugatesGood D bkP E N0) : AllPowers D bkP E N0 := by
   intro i hi hs eps' he hF S hS A
   obtain ⟨Q, k', ψ', h1, -⟩ := h i hi hs eps' he hF S hS A
   exact ⟨Q, k', ψ', h1⟩
 
+/- English proof (translation)
+Introduce `i hi hs eps' he hF S hS A`. Take `⟨Q, k', ψ', h1⟩` from `h i hi hs eps' he hF S hS A`. Conclude with `⟨Q, k', ψ', h1.self_inv.1⟩`.
+-/
 theorem AllPowers.aux₃ {D : Formalism.BasicNotions.D7} {bkP : Formalism.MainNotions.BlochKatoReduction.BK D} {E : XD D} {N0 : D.ntw.Tw → ℕ}
     (h : AllPowers D bkP E N0) : Formalism.MainNotions.IntegralHeckeForms.aux₃ D bkP E N0 := by
   intro i hi hs eps' he hF S hS A

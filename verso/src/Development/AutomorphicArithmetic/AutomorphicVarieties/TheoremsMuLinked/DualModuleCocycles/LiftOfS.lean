@@ -1,6 +1,19 @@
 import Development.AutomorphicArithmetic.AutomorphicVarieties.TheoremsMuLinked.DualModuleCocycles.RepRSingle
 open Matrix IsLocalRing UpperTheory.V UpperTheory.V.W UpperTheory.V.Alg UpperTheory.V.Pa UpperTheory.V.Th UpperTheory.V.Th.Coc
 
+/- English proof (translation)
+Introduce `O R X _ _ _ _ _ n E _ _ x δ ρ τ s β b hδ hρ htr hβ hs hx hst`. Establish `hx' : ∀ a i j, x (s a i j) = b * ρ a i j` using `fun a i j => congrFun (congrFun (hx a) i) j`. Establish `sm : ∀ (a : O) (y : X), a • y = algebraMap O X a * y` using `fun a y => Algebra.smul_def a y`. Establish `en : ∀ a i j, (b • ((s a).map δ - δ β • bar X (ρ a))) i j = algebraMap O X b * (δ (s a i j) - δ β * algebraMap O X (ρ a i j))` using `fun a i j => by`. Rewrite using `[Matrix.smul_apply, sm]`.
+
+Both sides reduce to the same expression. Use `⟨{ toFun := fun a => b • ((s a).map δ - δ β • bar X (ρ a)) map_zero' := by ext i j; simp [bar] map_add' := fun a a' => by` and prove the remaining obligations. Use extensionality with `i j`. Rewrite using `[Matrix.add_apply, en, en, en, map_add s, map_add ρ, Matrix.add_apply, Matrix.add_apply, map_add, map_add]`. Use `ring }, fun a a' => ?_, fun r a => ?_, fun a => ?_⟩`.
+
+Use extensionality with `i k`. Establish `h1` using `congrArg δ (congrFun (congrFun (hs a a') i) k)`. Rewrite `h1` using `[Matrix.mul_apply, map_sum, Matrix.smul_apply, smul_eq_mul, hδ β, hβ, hx']`. Simplify using `only [hδ _ _, hx', sm, map_mul] at h1`. Simplify using `only [AddMonoidHom.coe_mk, ZeroHom.coe_mk, Matrix.add_apply, Matrix.mul_apply, en, Matrix.map_apply]`.
+
+Rewrite using `[mul_sub, eq_sub_of_add_eq h1.symm]`. Simplify using `only [Matrix.mul_apply, map_mul, map_sum, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[← Finset.sum_sub_distrib, ← Finset.sum_sub_distrib, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun j _ => by ring`. Use extensionality with `i j`.
+
+Simplify using `only [AddMonoidHom.coe_mk, ZeroHom.coe_mk, Matrix.add_apply, en]`. Rewrite using `[Matrix.smul_apply, en, Matrix.smul_apply, map_smul s, hρ, Matrix.smul_apply, Matrix.smul_apply, smul_eq_mul, smul_eq_mul, smul_eq_mul, hδ r, hx']`. Simplify using `only [sm, map_mul, Matrix.map_apply]`. Expand and normalize the polynomial expressions, which then agree. Establish `h1 : ((s a).map δ).trace = δ (s a).trace` using `by simp [Matrix.trace, map_sum]`.
+
+Establish `h2 : (bar X (ρ a)).trace = algebraMap O X (ρ a).trace` using `by simp [bar, Matrix.trace, map_sum]`. Simplify using `only [AddMonoidHom.coe_mk, ZeroHom.coe_mk, Matrix.trace_smul, Matrix.trace_sub, h1, h2, hst, hδ _ _, hβ, htr]`. Simplify using `only [sm, map_mul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem UpperTheory.V.Th.Coc.liftOfS :
     ∀ {O R X : Type} [CommRing O] [CommRing R] [Algebra O R] [CommRing X] [Algebra O X] {n : ℕ} {E : Type} [Ring E] [Algebra R E] (x : R →ₐ[O] O) (δ : R →ₗ[O] X) (ρ : E →+* Matrix (Fin n) (Fin n) O) (τ : E → R) (s : E →ₗ[R] Matrix (Fin n) (Fin n) R) (β : R) (b : O), IsDer x δ → (∀ (r : R) a, ρ (r • a) = x r • ρ a) → (∀ a, (ρ a).trace = x (τ a)) → x β = b → (∀ a a', s a * s a' = β • s (a * a')) → (∀ a, (s a).map x = b • ρ a) → (∀ a, (s a).trace = β * τ a) → ∃ d : E →+ Matrix (Fin n) (Fin n) X, IsLift x δ ρ τ (b * b) d := by
   intro O R X _ _ _ _ _ n E _ _ x δ ρ τ s β b hδ hρ htr hβ hs hx hst

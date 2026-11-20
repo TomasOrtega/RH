@@ -21,6 +21,9 @@ open scoped Pointwise
 noncomputable section
 namespace GlobalTheory.SeeSaw.RedLev
 
+/- English proof (translation)
+Simplify using `[Formalism.L2.DIV.frGL]`.
+-/
 theorem frGL_mul {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ}
     (β : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) (y : GL (Fin n) (Formalism.L2.Herm.intAf F E)) :
     Formalism.L2.DIV.frGL β y * β = β * Formalism.L2.DIV.intGL F E n y := by
@@ -31,6 +34,17 @@ variable {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [Is
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Establish `hs : Function.Surjective (toEAf D)`. Use `(Algebra.TensorProduct.comm D.host.F (Af D.host.F) D.host.E).surjective.comp ?_` and prove the remaining obligations. Conclude with `Algebra.TensorProduct.map_surjective _ _ (fun α => ⟨pairA _ 0 α, rfl⟩) Function.surjective_id`. Use `choose f hf using hs`. Establish `h1` using `hM (β.val.map f) (Matrix.ext fun i j => hf _)`.
+
+Establish `h2 : (β.val.map f).map p.π = β.val.map π'` using `Matrix.ext fun i j => by`. Rewrite using `[Matrix.map_apply, Matrix.map_apply, ← hπ, hf]`. Both sides reduce to the same expression. Rewrite `h1` using `[Matrix.map_mul, h2]`. Establish `h3 : Lev.finE V (t⁻¹ * x * t) * β = β * Formalism.L2.DIV.intGL D.host.F D.host.E _ y`.
+
+Rewrite using `[← hy]`. Conclude with `frGL_mul (F := D.host.F) (E := D.host.E) β y`. Establish `h4 : (mt V (t⁻¹ * x * t)).map p.π * β.val.map π' = β.val.map π' * y.val.map (π'.comp (Formalism.L2.Herm.intAf D.host.F D.host.E).subtype)`. Establish `h5` using `congrArg (fun g : GL (Fin V.rank) (Lev.EAf D) => g.val.map π') h3`. Simplify using `only [Units.val_mul, Matrix.map_mul] at h5`.
+
+Establish `h6 : (Lev.finE V (t⁻¹ * x * t)).val.map π' = (mt V (t⁻¹ * x * t)).map p.π` using `Matrix.ext fun i j => hπ _`. Rewrite `h5` using `[h6]`. Conclude with `h5`. Establish `h7 : mt V x * mt V t = mt V t * mt V (t⁻¹ * x * t)`. Rewrite using `[← GlobalTheory.MixModel.mt_mul, ← GlobalTheory.MixModel.mt_mul, mul_assoc, mul_inv_cancel_left]`.
+
+Rewrite using `[← h1, ← Matrix.mul_assoc, ← Matrix.map_mul, h7, Matrix.map_mul, Matrix.mul_assoc, h4, Matrix.mul_assoc]`.
+-/
 theorem mul_moved (p : GlobalTheory.LocMod.Place D k) {π' : EAf D →+* k} (hπ : ∀ a, π' (toEAf D a) = p.π a) (V : HSp D)
     (t x : GA D V) (β : GL (Fin V.rank) (Lev.EAf D)) (y : GL (Fin V.rank) (Formalism.L2.Herm.intAf D.host.F D.host.E))
     (hy : Formalism.L2.DIV.frGL β y = Lev.finE V (t⁻¹ * x * t)) {M : Matrix (Fin V.rank) (Fin V.rank) k}
@@ -60,6 +74,11 @@ theorem mul_moved (p : GlobalTheory.LocMod.Place D k) {π' : EAf D →+* k} (hπ
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 
+/- English proof (translation)
+Establish `h1 : ((bas⁻¹).val * F.γ).submatrix σ id * (F.β * bas.val).submatrix id σ = 1`. Express the relevant statement in the definitionally equal form `((bas⁻¹).val * F.γ * (F.β * bas.val)).submatrix σ σ = 1`. Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc F.γ, F.γβ, Matrix.one_mul, Units.inv_mul, Matrix.submatrix_one_equiv]`. Rewrite using `[← Matrix.one_mul N, ← h1, Matrix.mul_assoc, ← h]`. Express the relevant statement in the definitionally equal form `_ = ((bas⁻¹).val * F.γ * (F.β * W.val * F.γ * (F.β * bas.val))).submatrix σ σ`.
+
+Use `congr 1`. Simplify using `only [Units.val_mul, Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc F.γ F.β bas.val, ← Matrix.mul_assoc F.γ F.β, F.γβ, Matrix.one_mul, Matrix.one_mul]`.
+-/
 theorem conj_eq {n : ℕ} {Y : Type} [Fintype Y] [DecidableEq Y] (F : GlobalTheory.LocMod.Frame k n Y) (bas W : GL Y k) (σ : Fin n ≃ Y)
     (N : Matrix (Fin n) (Fin n) k)
     (h : F.β * W.val * F.γ * (F.β * bas.val).submatrix id σ = (F.β * bas.val).submatrix id σ * N) :

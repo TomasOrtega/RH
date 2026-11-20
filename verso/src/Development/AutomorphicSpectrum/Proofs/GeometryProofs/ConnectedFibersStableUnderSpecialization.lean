@@ -11,6 +11,9 @@ open scoped CategoryTheory.Obj CategoryTheory.MonObj
 
 namespace GlobalTheory.CompanionTheory.Ar.Approx
 
+/- English proof (translation)
+Use `haveI : MorphismProperty.RespectsIso @GeometricallyConnected := MorphismProperty.IsStableUnderBaseChange.respectsIso`. Rewrite using `[← pullbackLeftPullbackSndIso_hom_snd g f b]`. Conclude with `MorphismProperty.cancel_left_of_respectsIso @GeometricallyConnected _ _`.
+-/
 theorem geometricallyConnected_snd_snd_iff {X S S' S'' : Scheme.{0}} (g : X ⟶ S) (f : S' ⟶ S)
     (b : S'' ⟶ S') :
     GeometricallyConnected (pullback.snd (pullback.snd g f) b) ↔
@@ -20,12 +23,24 @@ theorem geometricallyConnected_snd_snd_iff {X S S' S'' : Scheme.{0}} (g : X ⟶ 
   rw [← pullbackLeftPullbackSndIso_hom_snd g f b]
   exact MorphismProperty.cancel_left_of_respectsIso @GeometricallyConnected _ _
 
+/- English proof (translation)
+Unfold `spMap`. Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+-/
 private theorem spMap_comp_moduli_spaces {A B C : Type} [CommRing A] [CommRing B] [CommRing C]
     (f : A →+* B) (g : B →+* C) : spMap g ≫ spMap f = spMap (g.comp f) := by
   unfold spMap
   rw [← Spec.map_comp]
   rfl
 
+/- English proof (translation)
+Introduce `k _ _ G _ _ hsm hpr x y hxy hx`. Use `haveI := hsm`. Use `haveI := hpr`. Establish `hle : x.asIdeal ≤ y.asIdeal` using `(PrimeSpectrum.le_iff_specializes x y).mpr hxy`. Establish `hs' : Smooth ((Over.pullback (spMap (algebraMap k (k ⧸ x.asIdeal)))).obj G).hom` using `by show Smooth (pullback.snd G.hom (spMap (algebraMap k (k ⧸ x.asIdeal)))) infer_instance`.
+
+Establish `hp' : IsProper ((Over.pullback (spMap (algebraMap k (k ⧸ x.asIdeal)))).obj G).hom` using `by show IsProper (pullback.snd G.hom (spMap (algebraMap k (k ⧸ x.asIdeal)))) infer_instance`. Establish `hgen : GeometricallyConnected (pullback.snd ((Over.pullback (spMap (algebraMap k (k ⧸ x.asIdeal)))).obj G).hom (spMap (algebraMap (k ⧸ x.asIdeal) x.asIdeal.ResidueField)))` using `by show GeometricallyConnected (pullback.snd (pullback.snd G.hom (spMap (algebraMap k (k ⧸ x.asIdeal)))) (spMap (algebraMap (k ⧸ x.asIdeal) x.asIdeal.ResidueField)))`. Rewrite using `[geometricallyConnected_snd_snd_iff, spMap_comp_moduli_spaces, ← IsScalarTower.algebraMap_eq]`. Conclude with `hx`. Establish `hG' : GeometricallyConnected (pullback.snd G.hom (spMap (algebraMap k (k ⧸ x.asIdeal))))` using `GlobalTheory.T.geometricallyConnected_of_generic_fiber_smooth_proper (k ⧸ x.asIdeal) x.asIdeal.ResidueField ((Over.pullback (spMap (algebraMap k (k ⧸ x.asIdeal)))).obj G) hs' hp' hgen`.
+
+Establish `hker : ∀ a ∈ x.asIdeal, algebraMap k y.asIdeal.ResidueField a = 0` using `fun a ha => Ideal.algebraMap_residueField_eq_zero.mpr (hle ha)`. Establish `hφ : (Ideal.Quotient.lift x.asIdeal (algebraMap k y.asIdeal.ResidueField) hker).comp (algebraMap k (k ⧸ x.asIdeal)) = algebraMap k y.asIdeal.ResidueField`. Rewrite using `[Ideal.Quotient.algebraMap_eq]`. Conclude with `Ideal.Quotient.lift_comp_mk _ _ _`. Use `show GeometricallyConnected (pullback.snd G.hom (spMap (algebraMap k y.asIdeal.ResidueField)))`.
+
+Rewrite using `[← hφ, ← spMap_comp_moduli_spaces, ← geometricallyConnected_snd_snd_iff]`. Use `infer_instance`.
+-/
 theorem stableUnderSpecialization_geometricallyConnected :
     ∀ (k : Type) [CommRing k] [IsNoetherianRing k] (G : Over (Sp k)) [GrpObj G] [IsCommMonObj G],
       Smooth G.hom → IsProper G.hom →

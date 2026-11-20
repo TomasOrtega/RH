@@ -33,26 +33,48 @@ section Local
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n : ℕ}
 
+/- English proof (translation)
+Take `rfl : p = q` from `funext fun i => propext (h i)`. Use `congr!`.
+-/
 theorem det_block_congr {R : Type} [CommRing R] (M : Matrix (Fin n) (Fin n) R) {p q : Fin n → Prop} [DecidablePred p]
     [DecidablePred q] (h : ∀ i, p i ↔ q i) : (M.toSquareBlockProp p).det = (M.toSquareBlockProp q).det := by
   obtain rfl : p = q := funext fun i => propext (h i)
   congr!
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.HeckeScalarSph.mem_GLint_iff (O := 𝒪[k])`.
+-/
 theorem mem_KO_iff {g : GL (Fin n) k} :
     g ∈ KO k (Fin n) ↔ (∀ i j, valuation k (g.val i j) ≤ 1) ∧ ∀ i j, valuation k ((g⁻¹).val i j) ≤ 1 :=
   GlobalTheory.HeckeScalarSph.mem_GLint_iff (O := 𝒪[k])
 
+/- English proof (translation)
+Apply the tactic sequence `unfold ev; split_ifs <;> simp`.
+-/
 theorem ev_mul (χ η : kˣ →* ℂˣ) (x : k) : ev (χ * η) x = ev χ x * ev η x := by
   unfold ev; split_ifs <;> simp
 
+/- English proof (translation)
+Apply the tactic sequence `unfold ev; split_ifs <;> simp`.
+-/
 theorem ev_one (x : k) : ev (1 : kˣ →* ℂˣ) x = 1 := by
   unfold ev; split_ifs <;> simp
 
+/- English proof (translation)
+Unfold `ev`. Rewrite using `[dif_pos hd]`. Simplify using the standard rewrite rules.
+-/
 theorem ev_unit (χ : kˣ →* ℂˣ) (d : kˣ) (hd : valuation k (d : k) = 1) : ev χ (d : k) = χ d := by
   unfold ev; rw [dif_pos hd]; simp
 
 def fam (n m : ℕ) (α β : kˣ →* ℂˣ) : Fin n → kˣ →* ℂˣ := fun i => if (i : ℕ) < m then α * β else β
 
+/- English proof (translation)
+Break down `M with _ | M` into its components or cases. Use `haveI : IsEmpty {i : Fin n // (i : ℕ) < 0} := ⟨fun i => absurd i.2 (Nat.not_lt_zero _)⟩`. Rewrite using `[Matrix.det_isEmpty]`. Use `ev_unit γ 1 (by simp)` as an intermediate fact. Simplify using `only [Units.val_one, map_one] at this`.
+
+Simplify using `[ev_one, this]`. Rewrite using `[Finset.prod_eq_single (⟨M, hM⟩ : Fin n)]`. Rewrite using `[if_pos rfl, minor]`. Use `congr 1`. Conclude with `det_block_congr _ fun i => by rw [Fin.le_def]; simp only; omega`.
+
+Introduce `j _ hj`. Rewrite using `[if_neg (fun e => hj (Fin.ext (by simpa using e))), ev_one]`. Simplify using the standard rewrite rules.
+-/
 theorem prod_ev_ite (γ : kˣ →* ℂˣ) (h : GL (Fin n) k) (M : ℕ) (hM : M ≤ n) :
     ∏ j : Fin n, ev (if (j : ℕ) + 1 = M then γ else 1) (minor h j) =
       ev γ (h.val.toSquareBlockProp fun i => (i : ℕ) < M).det := by
@@ -70,6 +92,13 @@ theorem prod_ev_ite (γ : kˣ →* ℂˣ) (h : GL (Fin n) k) (M : ℕ) (hM : M �
       rw [if_neg (fun e => hj (Fin.ext (by simpa using e))), ev_one]
     · simp
 
+/- English proof (translation)
+Establish `key : ∀ j : Fin n, fam n m α β j / nxt (fam n m α β) j = (if (j : ℕ) + 1 = min m n then α else 1) * (if (j : ℕ) + 1 = n then β else 1)`. Introduce `j`. Establish `hj` using `j.2`. Unfold `nxt fam`. Simplify using `only`.
+
+Apply the tactic sequence `split_ifs <;> first | omega | simp`. Unfold `theta`. Simplify using `only [key, ev_mul, Finset.prod_mul_distrib]`. Rewrite using `[prod_ev_ite α h _ (min_le_right _ _), prod_ev_ite β h n le_rfl]`. Use `congr 2`.
+
+Conclude with `det_block_congr _ fun i => by have := i.2; omega`. Rewrite using `[← Matrix.det_submatrix_equiv_self (Equiv.subtypeUnivEquiv (p := fun i : Fin n => (i : ℕ) < n) fun i => i.2)]`. Both sides reduce to the same expression.
+-/
 theorem theta_fam (m : ℕ) (α β : kˣ →* ℂˣ) (h : GL (Fin n) k) :
     theta (fam n m α β) h = ev α (h.val.toSquareBlockProp fun i => (i : ℕ) < m).det * ev β h.val.det := by
   have key : ∀ j : Fin n, fam n m α β j / nxt (fam n m α β) j =
@@ -87,6 +116,13 @@ theorem theta_fam (m : ℕ) (α β : kˣ →* ℂˣ) (h : GL (Fin n) k) :
   · rw [← Matrix.det_submatrix_equiv_self (Equiv.subtypeUnivEquiv (p := fun i : Fin n => (i : ℕ) < n) fun i => i.2)]
     rfl
 
+/- English proof (translation)
+Introduce `i a b j hia hab hbj x hx`. Rewrite `hia`, `hab`, `hbj` using `[Fin.le_def]`. Distinguish the cases in `h : (a : ℕ) < m ∧ m ≤ b`. Establish `e : fam n m α β a / fam n m α β b = fam n m α β i / fam n m α β j`. Unfold `fam`.
+
+Rewrite using `[if_pos h.1, if_neg (by omega), if_pos (by omega), if_neg (by omega)]`. Rewrite using `[e]` and apply the resulting hypothesis. Establish `e : fam n m α β a = fam n m α β b`. Unfold `fam`. Apply the tactic sequence `split_ifs <;> first | rfl | omega`.
+
+Introduce `u _ _`. Simplify using `[e]`.
+-/
 theorem ordered_fam (m : ℕ) (α β : kˣ →* ℂˣ) : Ordered (fam n m α β) := by
   intro i a b j hia hab hbj x hx
   rw [Fin.le_def] at hia hab hbj
@@ -101,6 +137,23 @@ theorem ordered_fam (m : ℕ) (α β : kˣ →* ℂˣ) : Ordered (fam n m α β)
     intro u _ _
     simp [e]
 
+/- English proof (translation)
+Take `⟨v, hv0, hv⟩` from `h`. Set `t : kˣ → Fin n → kˣ` to `fun x => Pi.mulSingle i x`. Establish `htc : Continuous t` using `continuous_pi fun j => by`. Distinguish the cases in `e : j = i`. Substitute `e` using the available equality.
+
+Simplify `continuous_id'` using `[t]`. Simplify `continuous_const` using `[t, e]`. Establish `hc : Continuous fun x : kˣ => diagT k (Fin n) (t x)`. Use `Units.continuous_iff.2 ⟨?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Function.comp_def, val_diagT]`.
+
+Conclude with `Continuous.matrix_diagonal (continuous_pi fun j => Units.continuous_val.comp ((continuous_apply j).comp htc))`. Simplify using `only [← map_inv, val_diagT]`. Conclude with `Continuous.matrix_diagonal (continuous_pi fun j => Units.continuous_val.comp ((continuous_apply j).comp htc.inv))`. Establish `h1 : {x : kˣ | valuation k (x : k) = 1} ∈ nhds (1 : kˣ)`. Establish `: {x : k | valuation k x = 1} ∈ nhds (1 : k)`.
+
+Use `IsValuativeTopology.mem_nhds_iff'.2 ⟨1, fun z hz => ?_⟩` and prove the remaining obligations. Use `(valuation k).map_eq_of_sub_lt (x := 1) (y := z) (by simpa using hz)` as an intermediate fact. Simplify using `using this`. Conclude with `Units.continuous_val.tendsto (1 : kˣ) (show _ ∈ nhds ((1 : kˣ) : k) from this)`. Establish `h2 : {x : kˣ | π (diagT k (Fin n) (t x)) v = v} ∈ nhds (1 : kˣ)` using `((hπ v).preimage hc).mem_nhds (by simp [t])`.
+
+Apply `Subgroup.isOpen_of_mem_nhds (g := 1)` to reduce the goal to its premises. Use `filter_upwards [h1, h2] with x hx1 hx2`. Establish `ht : ∀ j, valuation k (t x j : k) = 1` using `fun j => by`. Distinguish the cases in `e : j = i`. Substitute `e` using the available equality.
+
+Simplify `hx1` using `[t]`. Simplify using `[t, e]`. Establish `hg : diagT k (Fin n) (t x) ∈ grp ψ`. Use `⟨iwahori_le_KO k _ (diagT_mem_iwahori ht), fun a b hab => ?_⟩` and prove the remaining obligations. Rewrite using `[val_diagT, Matrix.diagonal_apply_ne _ hab.ne]`.
+
+Introduce `u _ hu`. Establish `: u = 1` using `Units.ext (by simpa [sub_eq_zero] using hu)`. Rewrite using `[this, map_one]`. Establish `hth` using `GlobalTheory.PsType.theta_of_triangular k n ψ (diagT k (Fin n) (t x)) (t x) ht (fun a => by rw [val_diagT, Matrix.diagonal_apply_eq]) (Or.inr fun a b hab => by rw [val_diagT, Matrix.diagonal_apply_ne _ hab.ne'])`. Rewrite `hth` using `[Finset.prod_eq_single i (fun b _ hb => by simp [t, hb]) (by simp)]`.
+
+Rewrite `hx2` using `[hv _ hg, hth]`. Establish `: ((ψ i (t x i) : ℂ) - 1) • v = 0` using `by rw [sub_smul, hx2, one_smul, sub_self]`. Establish `h3` using `(smul_eq_zero.1 this).resolve_right hv0`. Use `show ψ i x = 1`. Conclude with `Units.ext (by simpa [t, sub_eq_zero] using h3)`.
+-/
 theorem smooth_of_hasVec {V : Type} [AddCommGroup V] [Module ℂ V] {π : Representation ℂ (GL (Fin n) k) V}
     (hπ : IsSmooth π) {ψ : Fin n → kˣ →* ℂˣ} (h : HasVec ψ π) (i : Fin n) : IsSmoothChar (ψ i) := by
   obtain ⟨v, hv0, hv⟩ := h
@@ -145,6 +198,17 @@ theorem smooth_of_hasVec {V : Type} [AddCommGroup V] [Module ℂ V] {π : Repres
   show ψ i x = 1
   exact Units.ext (by simpa [t, sub_eq_zero] using h3)
 
+/- English proof (translation)
+Take `⟨g, rfl⟩` from `hh`. Set `G` to `g.val.map (IsLocalRing.residue 𝒪[k])`. Establish `hG : G.det ≠ 0`. Use `(Matrix.isUnits_det_units g).map (IsLocalRing.residue 𝒪[k])` as an intermediate fact. Rewrite `this` using `[RingHom.map_det]`.
+
+Conclude with `this.ne_zero`. Rewrite `hG` using `[Matrix.twoBlockTriangular_det G fun i => ¬ (i : ℕ) < m]`. Establish `h2` using `(mul_ne_zero_iff.1 hG).2`. Rewrite `h2` using `[det_block_congr (q := fun i => (i : ℕ) < m) _ fun i => not_not]`. Establish `e1 : (G.toSquareBlockProp fun i => (i : ℕ) < m).det = IsLocalRing.residue 𝒪[k] (g.val.toSquareBlockProp fun i => (i : ℕ) < m).det`.
+
+Rewrite using `[RingHom.map_det]`. Both sides reduce to the same expression. Establish `e2 : ((GeneralLinearGroup.map (algebraMap 𝒪[k] k) g).val.toSquareBlockProp fun i => (i : ℕ) < m).det = algebraMap 𝒪[k] k (g.val.toSquareBlockProp fun i => (i : ℕ) < m).det`. Rewrite using `[RingHom.map_det]`. Both sides reduce to the same expression.
+
+Rewrite `h2` using `[e1, IsLocalRing.residue_ne_zero_iff_isUnit]`. Rewrite using `[e2]`. Conclude with `(Valuation.integer.integers _).one_of_isUnit h2`. Introduce `a ha b hb`. Use `hm a b (not_not.1 ha) (not_lt.1 hb)` as an intermediate fact.
+
+Conclude with `(IsLocalRing.residue_eq_zero_iff _).2 ((IsLocalRing.mem_maximalIdeal _).2 (Valuation.Integer.not_isUnit_iff_valuation_lt_one.mpr this))`.
+-/
 theorem val_det_block {h : GL (Fin n) k} (hh : h ∈ KO k (Fin n)) (m : ℕ)
     (hm : ∀ a b : Fin n, (a : ℕ) < m → m ≤ (b : ℕ) → valuation k (h.val a b) < 1) :
     valuation k (h.val.toSquareBlockProp fun i => (i : ℕ) < m).det = 1 := by
@@ -171,6 +235,13 @@ theorem val_det_block {h : GL (Fin n) k} (hh : h ∈ KO k (Fin n)) (m : ℕ)
     exact (IsLocalRing.residue_eq_zero_iff _).2
       ((IsLocalRing.mem_maximalIdeal _).2 (Valuation.Integer.not_isUnit_iff_valuation_lt_one.mpr this))
 
+/- English proof (translation)
+Take `⟨g, rfl⟩` from `hh`. Introduce `a b ha hb`. Set `G` to `GeneralLinearGroup.map (IsLocalRing.residue 𝒪[k]) g`. Set `β : Fin n → ℕ` to `fun i => if (i : ℕ) < m then 1 else 0`. Establish `hG : G.val.BlockTriangular β` using `fun i j hij => by`.
+
+Establish `hi : (i : ℕ) < m` using `by by_contra h0; simp [β, h0] at hij`. Establish `hj : m ≤ (j : ℕ)` using `by by_contra h0; simp [β, hi, not_le.1 h0] at hij`. Conclude with `(IsLocalRing.residue_eq_zero_iff _).2 ((IsLocalRing.mem_maximalIdeal _).2 (Valuation.Integer.not_isUnit_iff_valuation_lt_one.mpr (hm i j hi hj)))`. Use `letI := G.invertible`. Establish `h1` using `Matrix.blockTriangular_inv_of_blockTriangular hG (i := a) (j := b) (by simp [β, ha, not_lt.2 hb])`.
+
+Rewrite `h1` using `[← Matrix.coe_units_inv, ← map_inv]`. Rewrite using `[← map_inv]`. Conclude with `Valuation.Integer.not_isUnit_iff_valuation_lt_one.mp ((IsLocalRing.mem_maximalIdeal _).1 ((IsLocalRing.residue_eq_zero_iff _).1 h1))`.
+-/
 theorem inv_lower {h : GL (Fin n) k} (hh : h ∈ KO k (Fin n)) (m : ℕ)
     (hm : ∀ a b : Fin n, (a : ℕ) < m → m ≤ (b : ℕ) → valuation k (h.val a b) < 1) :
     ∀ a b : Fin n, (a : ℕ) < m → m ≤ (b : ℕ) → valuation k ((h⁻¹).val a b) < 1 := by
@@ -190,6 +261,9 @@ theorem inv_lower {h : GL (Fin n) k} (hh : h ∈ KO k (Fin n)) (m : ℕ)
   exact Valuation.Integer.not_isUnit_iff_valuation_lt_one.mp
     ((IsLocalRing.mem_maximalIdeal _).1 ((IsLocalRing.residue_eq_zero_iff _).1 h1))
 
+/- English proof (translation)
+Establish `H : IsCuspSupport σ.cl.rep.ρ (fun _ : Fin n => 1) fun a => detRep (Fin 1) (ω a)` using `⟨σ.cl.rep.irr, fun a => ⟨one_pos, isIrreducible_ofChar _, isCuspidal_detRep_one (hω a)⟩, _, ((GlobalTheory.JacStages.isSubquotient_of_equiv (equivRep σ).symm).trans h).trans (GlobalTheory.PrinProd.isSubquotient_prinSeries_multiProd k n ω)⟩`. Use `⟨_, hasSupport_of_isCuspSupport H, ?_⟩` and prove the remaining obligations. Introduce `y hy`. Take `⟨i, -, rfl⟩` from `Multiset.mem_map.1 hy`. Both sides reduce to the same expression.
+-/
 theorem toral_of_isSubquotient (σ : IrrRep (GL (Fin n) k)) (ω : Fin n → kˣ →* ℂˣ) (hω : ∀ i, IsSmoothChar (ω i))
     (h : IsSubquotient σ.ρ (prinSeries ω)) : Toral (GlobalTheory.LocLanglands.cls σ) := by
   have H : IsCuspSupport σ.cl.rep.ρ (fun _ : Fin n => 1) fun a => detRep (Fin 1) (ω a) :=
@@ -204,15 +278,26 @@ theorem toral_of_isSubquotient (σ : IrrRep (GL (Fin n) k)) (ω : Fin n → kˣ 
 def rv (g : GL (Fin n) k) : GL (Fin n) k :=
   GlobalTheory.PermPrin.permGL (k := k) Fin.revPerm * g * (GlobalTheory.PermPrin.permGL (k := k) Fin.revPerm)⁻¹
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.PermPrin.permGL_conj_apply _ g i j`.
+-/
 theorem rv_apply (g : GL (Fin n) k) (i j : Fin n) : (rv g).val i j = g.val i.rev j.rev :=
   GlobalTheory.PermPrin.permGL_conj_apply _ g i j
 
+/- English proof (translation)
+Rewrite `hg`, the goal using `[mem_KO_iff]`. Establish `e : (rv g)⁻¹ = rv g⁻¹` using `by unfold rv; group`. Rewrite using `[e]`. Conclude with `⟨fun i j => by rw [rv_apply]; exact hg.1 _ _, fun i j => by rw [rv_apply]; exact hg.2 _ _⟩`.
+-/
 theorem rv_mem_KO {g : GL (Fin n) k} (hg : g ∈ KO k (Fin n)) : rv g ∈ KO k (Fin n) := by
   rw [mem_KO_iff] at hg ⊢
   have e : (rv g)⁻¹ = rv g⁻¹ := by unfold rv; group
   rw [e]
   exact ⟨fun i j => by rw [rv_apply]; exact hg.1 _ _, fun i j => by rw [rv_apply]; exact hg.2 _ _⟩
 
+/- English proof (translation)
+Use `set w : GL (Fin n) k := GlobalTheory.PermPrin.permGL (k := k) Fin.revPerm`. Use `⟨π w⁻¹ u, fun h0 => hu ?_, fun g c hg => ?_⟩` and prove the remaining obligations. Use `congrArg (π w) h0` as an intermediate fact. Rewrite `this` using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, map_zero, Module.End.one_apply]`. Then use the resulting hypothesis. Rewrite using `[← map_smul, ← hg, ← Module.End.mul_apply, ← Module.End.mul_apply, ← map_mul, ← map_mul]`.
+
+Use `congr 2`. Use `show g * w⁻¹ = w⁻¹ * (w * g * w⁻¹)`. Use `group`.
+-/
 theorem exists_rv {V : Type} [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL (Fin n) k) V) {u : V} (hu : u ≠ 0) :
     ∃ u' : V, u' ≠ 0 ∧ ∀ (g : GL (Fin n) k) (c : ℂ), π (rv g) u = c • u → π g u' = c • u' := by
   set w : GL (Fin n) k := GlobalTheory.PermPrin.permGL (k := k) Fin.revPerm
@@ -224,6 +309,9 @@ theorem exists_rv {V : Type} [AddCommGroup V] [Module ℂ V] (π : Representatio
     show g * w⁻¹ = w⁻¹ * (w * g * w⁻¹)
     group
 
+/- English proof (translation)
+Take `⟨x, hx, rfl⟩` from `hg`. Use `mem_parab_iff.1 hx a b () () hab` as an intermediate fact. Conclude with `Valuation.Integer.not_isUnit_iff_valuation_lt_one.mp ((IsLocalRing.mem_maximalIdeal _).1 ((IsLocalRing.residue_eq_zero_iff _).1 this))`.
+-/
 theorem val_lt_of_mem_iwahori {g : GL (Fin n) k} (hg : g ∈ iwahori k (Fin n)) (a b : Fin n) (hab : b < a) :
     valuation k (g.val a b) < 1 := by
   obtain ⟨x, hx, rfl⟩ := hg
@@ -231,6 +319,25 @@ theorem val_lt_of_mem_iwahori {g : GL (Fin n) k} (hg : g ∈ iwahori k (Fin n)) 
   exact Valuation.Integer.not_isUnit_iff_valuation_lt_one.mp
     ((IsLocalRing.mem_maximalIdeal _).1 ((IsLocalRing.residue_eq_zero_iff _).1 this))
 
+/- English proof (translation)
+Establish `hu' : ∀ h ∈ KO k (Fin n), (∀ a b : Fin n, (a : ℕ) < m → m ≤ (b : ℕ) → valuation k (h.val a b) < 1) → σ.ρ h u = theta (fam n m α β) h • u ∧ (Triv α 1 → theta (fam n m α β) h = 1)`. Introduce `h hh hm`. Establish `h1` using `val_det_block hh m hm`. Establish `h2 : valuation k h.val.det = 1`. Use `val_det_block hh n fun a b _ hb => absurd b.2 (not_lt.2 hb)` as an intermediate fact.
+
+Rewrite `this` using `[← Matrix.det_submatrix_equiv_self (Equiv.subtypeUnivEquiv (p := fun i : Fin n => (i : ℕ) < n) fun i => i.2).symm]`. Then use the resulting hypothesis. Set `d : kˣ` to `Units.mk0 (h.val.toSquareBlockProp fun i => (i : ℕ) < m).det fun h0 => by`. Rewrite `h1` using `[h0, map_zero]`. Conclude with `zero_ne_one h1`. Set `e : kˣ` to `Units.mk0 h.val.det fun h0 => by rw [h0, map_zero] at h2; exact zero_ne_one h2`.
+
+Establish `e1 : theta (fam n m α β) h = (α d : ℂ) * (β e : ℂ)`. Rewrite using `[theta_fam, ← ev_unit α d h1, ← ev_unit β e h2]`. Both sides reduce to the same expression. Establish `hle : ∀ x : k, valuation k x = 1 → valuation k (x - 1) ≤ valuation k 1` using `fun x hx => by`. Rewrite using `[map_one]; exact Valuation.map_sub_le _ hx.le (by simp)`.
+
+Use `⟨by rw [e1]; exact hu h hh hm d e rfl rfl, fun hα => ?_⟩` and prove the remaining obligations. Rewrite using `[e1, hα d h1 (hle _ h1), hαβ hα e h2 (hle _ h2)]`. Simplify using the standard rewrite rules. Distinguish the cases in `hα : Triv α 1`. Take `⟨u', hu'0, hu'1⟩` from `exists_rv σ.ρ hu0`.
+
+Establish `hI : fixed σ.ρ (iwahori k (Fin n)) ≠ ⊥`. Use `(Submodule.ne_bot_iff _).2 ⟨u', fun g => ?_, hu'0⟩` and prove the remaining obligations. Take `⟨h1, h2⟩` from `hu' (rv g.1) (rv_mem_KO (iwahori_le_KO k _ g.2)) fun a b ha hb => by`. Rewrite using `[rv_apply]`. Conclude with `val_lt_of_mem_iwahori g.2 _ _ (Fin.rev_lt_rev.2 (Fin.lt_def.2 (by omega)))`.
+
+Rewrite `h1` using `[h2 hα]`. Simplify using `using hu'1 g.1 1 h1`. Establish `hadm : IsAdmissible σ.ρ` using `(hBZ k).1 (Fin n) σ.V σ.ρ σ.smooth σ.irr`. Take `⟨a, ha⟩` from `GlobalTheory.SatakeExists.exists_isSubquotient_prinSeries hadm σ.irr hI`. Conclude with `toral_of_isSubquotient σ _ (fun i => isSmoothChar_of_isUnram (isUnram_unrChar k (a i))) ha`.
+
+Establish `hvec : HasVec (fam n m α β) σ.ρ`. Use `⟨u, hu0, fun h hh => (hu' h hh.1 fun a b ha hb => ?_).1⟩` and prove the remaining obligations. Establish `h1` using `hh.2 a b (Fin.lt_def.2 (by omega))`. Establish `e : fam n m α β a / fam n m α β b = α`. Unfold `fam`.
+
+Rewrite using `[if_pos ha, if_neg (by omega), mul_div_cancel_right]`. Rewrite `h1` using `[e]`. Assume the negation of the conclusion as `hlt`. Conclude with `hα fun x hx hx1 => h1 x hx (hx1.trans (by rw [map_one]; exact not_lt.1 hlt))`. Take `⟨ω, hω, -, hsub⟩` from `GlobalTheory.PsType.subquotient_prinSeries_of_hasVec hBZ k n _ σ.V σ.ρ σ.smooth σ.irr (smooth_of_hasVec σ.smooth hvec) (ordered_fam m α β) hvec`.
+
+Conclude with `toral_of_isSubquotient σ ω hω hsub`.
+-/
 theorem toral_of_lower (hBZ : GlobalTheory.Published.BernsteinZelevinskyFiniteness) (σ : IrrRep (GL (Fin n) k)) (m : ℕ)
     (α β : kˣ →* ℂˣ) (hαβ : Triv α 1 → Triv β 1) {u : σ.V} (hu0 : u ≠ 0)
     (hu : ∀ h ∈ KO k (Fin n), (∀ a b : Fin n, (a : ℕ) < m → m ≤ (b : ℕ) → valuation k (h.val a b) < 1) →
@@ -280,6 +387,15 @@ theorem toral_of_lower (hBZ : GlobalTheory.Published.BernsteinZelevinskyFinitene
       (smooth_of_hasVec σ.smooth hvec) (ordered_fam m α β) hvec
     exact toral_of_isSubquotient σ ω hω hsub
 
+/- English proof (translation)
+Take `⟨u', hu'0, hu'1⟩` from `exists_rv σ.ρ hu0`. Use `toral_of_lower hBZ σ (n - r) ξ 1 (fun _ _ _ _ => rfl) hu'0 fun h hh hm d e hd _ => ?_` and prove the remaining obligations. Rewrite using `[MonoidHom.one_apply, Units.val_one, mul_one]`. Use `hu'1 h _ (hu _ (rv_mem_KO hh) (fun a b ha hb => ?_) d ?_)` and prove the remaining obligations. Rewrite using `[rv_apply]`.
+
+Use `a.2` as an intermediate fact. Use `b.2` as an intermediate fact. Conclude with `hm _ _ (by rw [Fin.val_rev]; omega) (by rw [Fin.val_rev]; omega)`. Set `E : {i : Fin n // r ≤ (i : ℕ)} ≃ {i : Fin n // (i : ℕ) < n - r}` to `Fin.revPerm.subtypeEquiv fun i => by`. Use `i.2` as an intermediate fact.
+
+Rewrite using `[Fin.revPerm_apply, Fin.val_rev]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hd, ← Matrix.det_submatrix_equiv_self E]`. Use `congr 1`. Use extensionality with `i j`.
+
+Conclude with `(rv_apply h i.1 j.1).symm`.
+-/
 theorem toral_of_upper (hBZ : GlobalTheory.Published.BernsteinZelevinskyFiniteness) (σ : IrrRep (GL (Fin n) k)) (r : ℕ)
     (ξ : kˣ →* ℂˣ) {u : σ.V} (hu0 : u ≠ 0)
     (hu : ∀ h ∈ KO k (Fin n), (∀ a b : Fin n, r ≤ (a : ℕ) → (b : ℕ) < r → valuation k (h.val a b) < 1) →
@@ -302,6 +418,9 @@ theorem toral_of_upper (hBZ : GlobalTheory.Published.BernsteinZelevinskyFinitene
     ext i j
     exact (rv_apply h i.1 j.1).symm
 
+/- English proof (translation)
+Use `toral_of_lower hBZ σ r ξ ξ⁻¹ (fun h x hx hx1 => by simp [h x hx hx1]) hu0 fun h hh hm d e hd he => ?_` and prove the remaining obligations. Establish `hJ` using `GlobalTheory.GramJacobi.jacobi_minor h.val (h⁻¹).val h.inv_mul fun i => (i : ℕ) < r`. Rewrite `hJ` using `[det_block_congr (q := fun i => r ≤ (i : ℕ)) _ (fun i => not_lt), ← hd, ← he]`. Rewrite using `[hu h hh hm (d * e⁻¹) (by rw [Units.val_mul, ← hJ, Units.mul_inv_cancel_right])]`. Simplify using the standard rewrite rules.
+-/
 theorem toral_of_lower_inv (hBZ : GlobalTheory.Published.BernsteinZelevinskyFiniteness) (σ : IrrRep (GL (Fin n) k)) (r : ℕ)
     (ξ : kˣ →* ℂˣ) {u : σ.V} (hu0 : u ≠ 0)
     (hu : ∀ h ∈ KO k (Fin n), (∀ a b : Fin n, (a : ℕ) < r → r ≤ (b : ℕ) → valuation k (h.val a b) < 1) →
@@ -319,6 +438,19 @@ section Global
 
 variable {L : Type} [Field L] [NumberField L] [IsCMField L]
 
+/- English proof (translation)
+Take `⟨v, i⟩` from `s`. Take `⟨v₀, i₀⟩` from `s₀`. Take `rfl : v = v₀` from `h`. Take `⟨y, hy⟩` from `DFunLike.ne_iff.mp (IsCMField.complexConj_ne_one L)`. Use `set δ : L := y - IsCMField.complexConj L y with hδdef`.
+
+Establish `hδ : IsCMField.complexConj L δ = -δ`. Rewrite using `[hδdef, map_sub, IsCMField.complexConj_apply_apply]`. Expand and normalize the polynomial expressions, which then agree. Establish `hδ0 : δ ≠ 0` using `sub_ne_zero.2 (Ne.symm hy)`. Establish `hfix : ∀ x : L, IsCMField.complexConj L x = x → ∀ j j' : L →ₐ[maximalRealSubfield L] v.adicCompletion (maximalRealSubfield L), j x = j' x` using `fun x hx j j' => (j.commutes ⟨x, (IsCMField.complexConj_eq_self_iff L _).1 hx⟩).trans (j'.commutes ⟨x, (IsCMField.complexConj_eq_self_iff L _).1 hx⟩).symm`.
+
+Establish `hext : ∀ j j' : L →ₐ[maximalRealSubfield L] v.adicCompletion (maximalRealSubfield L), j δ = j' δ → j = j'`. Introduce `j j' hj`. Use `ext1 x`. Establish `e : x = (x + IsCMField.complexConj L x) / 2 + (x - IsCMField.complexConj L x) / (2 * δ) * δ` using `by field_simp; ring`. Establish `h1` using `hfix ((x + IsCMField.complexConj L x) / 2) (by`.
+
+Rewrite using `[map_div₀, map_add, IsCMField.complexConj_apply_apply, map_ofNat, add_comm]) j j'`. Establish `h2` using `hfix ((x - IsCMField.complexConj L x) / (2 * δ)) (by`. Rewrite using `[map_div₀, map_sub, IsCMField.complexConj_apply_apply, map_mul, map_ofNat, hδ]`. Clear the denominators using the available nonvanishing facts. Use the proof step `ring) j j'`.
+
+Rewrite using `[e, map_add, map_add, map_mul, map_mul, h1, h2, hj]`. Establish `hsq : i₀ δ * i₀ δ = i δ * i δ`. Rewrite using `[← map_mul, ← map_mul]`. Conclude with `hfix _ (by rw [map_mul, hδ]; ring) _ _`. Break down `mul_self_eq_mul_self_iff.1 hsq with h | h` into its components or cases.
+
+Use `left`. Rewrite using `[hext i₀ i h]`. Use `right`. Establish `: i₀ = (GlobalTheory.TypeTame.conjSP (⟨v, i⟩ : SplitPlace L)).i` using `hext _ _ (by rw [GlobalTheory.TypeTame.conjSP_i, hδ, map_neg]; exact h)`. Rewrite using `[this]`.
+-/
 theorem eq_or_eq_conj (s s₀ : SplitPlace L) (h : s.v = s₀.v) : s₀ = s ∨ s₀ = GlobalTheory.TypeTame.conjSP s := by
   obtain ⟨v, i⟩ := s
   obtain ⟨v₀, i₀⟩ := s₀
@@ -353,6 +485,23 @@ theorem eq_or_eq_conj (s s₀ : SplitPlace L) (h : s.v = s₀.v) : s₀ = s ∨ 
       hext _ _ (by rw [GlobalTheory.TypeTame.conjSP_i, hδ, map_neg]; exact h)
     rw [this]
 
+/- English proof (translation)
+Take `⟨c, T₀, hc, hci, -, -, -⟩` from `id hσ`. Establish `hv` using `GlobalTheory.SplitConjVal.valuation_eq s c hc hci`. Take `⟨N, hN0, hN⟩` from `hN`. Take `⟨U, hU, hUN⟩` from `GlobalTheory.SplitCongNbhd.exists_nhds_one_cong L n s N hN0`. Take `⟨e, he1, he2⟩` from `GlobalTheory.SplitEmb.exists_hom_trivOutside_loc L n s`.
+
+Set `K` to `J.comap e ⊓ Formalism.UG.GLint (Fin n) (s.v.adicCompletionIntegers (maximalRealSubfield L)).toSubring`. Set `ε : K →* J` to `(e.comp K.subtype).codRestrict J fun g => g.2.1`. Establish `hopen : IsOpen ((χ.comp ε).ker : Set K)`. Apply `Subgroup.isOpen_of_mem_nhds (g := 1)` to reduce the goal to its premises. Use `filter_upwards [continuous_subtype_val.tendsto (1 : K) hU] with g hg`.
+
+Take `⟨_, h2⟩` from `hN (e g.1) (hUN _ (he1 _) (by rw [he2]; exact hg))`. Conclude with `h2`. Establish `hrt : ∀ κ, TrivOutside {s.v} κ → ∀ h : s.loc n κ ∈ K, NG.rt L n κ f = (((χ.comp ε) ⟨s.loc n κ, h⟩ : ℂˣ) : ℂ) • f`. Introduce `κ hκ h`. Take `⟨h1, h2⟩` from `hN (κ * (e (s.loc n κ))⁻¹) (hUN _ (GlobalTheory.SatInd.CosetFin.trivOutside_mul hκ (GlobalTheory.SatInd.CosetFin.trivOutside_inv (he1 _))) (by rw [map_mul, map_inv, he2, mul_inv_cancel]; exact mem_of_mem_nhds hU))`.
+
+Set `x : J` to `⟨_, h1⟩ * ε ⟨s.loc n κ, h⟩`. Establish `hx : (x : GAf L n) = κ` using `inv_mul_cancel_right κ _`. Use `hfT.2 x` as an intermediate fact. Rewrite `this` using `[hx, map_mul, h2, one_mul]`. Conclude with `this`.
+
+Take `⟨u, hu0, hu⟩` from `GlobalTheory.LocVec.main L n a S hS s σ hσ c hc hci K (χ.comp ε) (fun g hg => hg.2) hopen f hf hf0 hrt`. Use `⟨c, hv, u, hu0, fun h hh => ?_⟩` and prove the remaining obligations. Set `g` to `GeneralLinearGroup.map c.symm.toRingHom h`. Establish `key : ∀ y, valuation (s.w.adicCompletion L) y ≤ 1 → Valued.v (c.symm y) ≤ 1` using `fun y hy => by`. Rewrite using `[← hv, RingEquiv.apply_symm_apply]`.
+
+Conclude with `(GlobalTheory.BlockConj.valued_le_one_iff_w s y).1 hy`. Establish `hg : g ∈ Formalism.UG.GLint (Fin n) (s.v.adicCompletionIntegers (maximalRealSubfield L)).toSubring`. Rewrite `hh` using `[mem_KO_iff]`. Rewrite using `[GlobalTheory.HeckeScalarSph.mem_GLint_iff]`. Use `⟨fun p q => key _ (hh.1 p q), fun p q => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← map_inv]`. Conclude with `key _ (hh.2 p q)`. Use `⟨e g, he1 g, he2 g, by rw [he2]; exact hg, fun hJ => ?_⟩` and prove the remaining obligations. Establish `e1 : GeneralLinearGroup.map c.toRingHom g = h` using `Units.ext (Matrix.ext fun p q => c.apply_symm_apply _)`. Use `hu g ⟨hJ, hg⟩` as an intermediate fact.
+
+Rewrite `this` using `[e1]`. Conclude with `this`.
+-/
 theorem exists_vec {n : ℕ} (a : NG.AlgWt L n) (S : Submodule ℂ (GAf L n → a.W)) (hS : NG.IsIrrRep a.ρ S)
     (J : Subgroup (GAf L n)) (χ : J →* ℂˣ) (hN : ∃ N : ℕ, 0 < N ∧ ∀ κ, NG.Cong L n N κ → ∃ h : κ ∈ J, χ ⟨κ, h⟩ = 1)
     {f : GAf L n → a.W} (hf : f ∈ NG.isoTyp a.ρ S) (hfT : f ∈ NG.TypeSp a.ρ J χ) (hf0 : f ≠ 0) (s : SplitPlace L)
@@ -405,6 +554,23 @@ theorem exists_vec {n : ℕ} (a : NG.AlgWt L n) (S : Submodule ℂ (GAf L n → 
 
 end Global
 
+/- English proof (translation)
+Introduce `hBZ _ L _ _ _ n a S hS J χ hN s₀ r ξ hP f hf hfT hf0 s hs σ hσ`. Take `⟨c, hv, u, hu0, hu⟩` from `exists_vec a S hS J χ hN hf hfT hf0 s σ hσ`. Establish `key : ∀ y, valuation (s.w.adicCompletion L) y < 1 → Valued.v (c.symm y) < 1` using `fun y hy => by`. Rewrite using `[← hv, RingEquiv.apply_symm_apply]`. Conclude with `(GlobalTheory.BlockConj.valued_lt_one_iff_w s y).1 hy`.
+
+Break down `eq_or_eq_conj s s₀ hs with rfl | rfl` into its components or cases. Use `toral_of_upper hBZ σ r (ξ.comp (Units.map c.symm.toRingHom.toMonoidHom)) hu0 fun h hh hm d hd => ?_` and prove the remaining obligations. Take `⟨κ, hκ, hl, hi, hκu⟩` from `hu h hh`. Establish `hJ : κ ∈ J` using `(hP.mem κ hκ).2 ⟨hi, fun p q hp hq => by rw [hl]; exact key _ (hm p q hp hq)⟩`. Rewrite using `[hκu hJ, hP.chr κ hJ hκ (Units.map c.symm.toRingHom.toMonoidHom d) ?_]`.
+
+Both sides reduce to the same expression. Use `show c.symm.toRingHom (d : _) = _`. Rewrite using `[hd, hl, RingHom.map_det]`. Both sides reduce to the same expression. Use `toral_of_lower_inv hBZ σ r (ξ.comp (Units.map c.symm.toRingHom.toMonoidHom)) hu0 fun h hh hm d hd => ?_` and prove the remaining obligations.
+
+Take `⟨κ, hκ, hl, hi, hκu⟩` from `hu h hh`. Establish `e1` using `GlobalTheory.ConjLoc.loc_conjSP n s κ`. Establish `e2 : (((GlobalTheory.TypeTame.conjSP s).loc n κ)⁻¹).val = (s.loc n κ).val.transpose`. Use `Units.inv_eq_of_mul_eq_one_right ?_` and prove the remaining obligations. Rewrite using `[e1, ← Matrix.transpose_mul, Units.mul_inv, Matrix.transpose_one]`.
+
+Establish `hlow : ∀ p q : Fin n, (p : ℕ) < r → r ≤ (q : ℕ) → valuation (s.w.adicCompletion L) ((h⁻¹).val p q) < 1` using `inv_lower hh r hm`. Establish `e3 : ∀ p q, ((GlobalTheory.TypeTame.conjSP s).loc n κ).val p q = c.symm ((h⁻¹).val q p)` using `fun p q => by`. Rewrite using `[e1, hl, ← map_inv]`. Both sides reduce to the same expression. Establish `hJ : κ ∈ J`.
+
+Rewrite `hi` using `[GlobalTheory.HeckeScalarSph.mem_GLint_iff]`. Use `(hP.mem κ hκ).2 ⟨GlobalTheory.HeckeScalarSph.mem_GLint_iff.2 ⟨fun p q => ?_, fun p q => ?_⟩, fun p q hp hq => ?_⟩` and prove the remaining obligations. Rewrite using `[e1]`. Conclude with `hi.2 q p`. Rewrite using `[e2]`.
+
+Conclude with `hi.1 q p`. Rewrite using `[e3]`. Conclude with `key _ (hlow q p hq hp)`. Rewrite using `[hκu hJ, hP.chr κ hJ hκ (Units.map c.symm.toRingHom.toMonoidHom d) ?_]`. Both sides reduce to the same expression.
+
+Use `show c.symm.toRingHom (d : _) = _`. Rewrite using `[hd, RingHom.map_det, NG.detDD, ← Matrix.det_transpose]`. Use `congr 1`. Conclude with `Matrix.ext fun p q => (e3 p.1 q.1).symm`.
+-/
 theorem toral_of_levelPara : GlobalTheory.Published.BernsteinZelevinskyFiniteness → GlobalTheory.Published.ZelevinskyPolynomialRing → ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (a : NG.AlgWt L n) (S : Submodule ℂ (GAf L n → a.W)), NG.IsIrrRep a.ρ S → ∀ (J : Subgroup (GAf L n)) (χ : J →* ℂˣ), (∃ N : ℕ, 0 < N ∧ ∀ κ, NG.Cong L n N κ → ∃ h : κ ∈ J, χ ⟨κ, h⟩ = 1) → ∀ (s₀ : SplitPlace L) (r : ℕ) (ξ : (s₀.v.adicCompletion (maximalRealSubfield L))ˣ →* ℂˣ), NG.LevelPara J χ s₀ r ξ → ∀ f ∈ NG.isoTyp a.ρ S, f ∈ NG.TypeSp a.ρ J χ → f ≠ 0 → ∀ (s : SplitPlace L), s.v = s₀.v → ∀ (σ : IrrRep (GL (Fin n) (s.w.adicCompletion L))), IsLocS S s σ → Toral (GlobalTheory.LocLanglands.cls σ) := by
   intro hBZ _ L _ _ _ n a S hS J χ hN s₀ r ξ hP f hf hfT hf0 s hs σ hσ
   obtain ⟨c, hv, u, hu0, hu⟩ := exists_vec a S hS J χ hN hf hfT hf0 s σ hσ

@@ -5,6 +5,15 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor
 
 namespace GlobalTheory.StalkField
 
+/- English proof (translation)
+Introduce `Ω _ X p hfin`. Establish `hpt : genericPoint (Sp Ω) = IsLocalRing.closedPoint Ω` using `Subsingleton.elim _ _`. Rewrite `hfin`, the goal using `[hpt]`. Use `⟨(Scheme.stalkClosedPointTo p).hom, ?_, ?_⟩` and prove the remaining obligations. Establish `e : Scheme.stalkClosedPointTo p = p.stalkMap _ ≫ (stalkClosedPointIso (CommRingCat.of Ω)).hom` using `rfl`.
+
+Rewrite using `[e, CommRingCat.hom_comp]`. Conclude with `RingHom.Finite.comp (RingHom.Finite.of_surjective _ (ConcreteCategory.bijective_of_isIso (stalkClosedPointIso (CommRingCat.of Ω)).hom).2) hfin`. Introduce `K _ τ₁ τ₂ h`. Establish `hs : ∀ τ : Ω →+* K, (spMap τ ≫ p) (IsLocalRing.closedPoint K) ⤳ p (IsLocalRing.closedPoint Ω)`. Introduce `τ`.
+
+Apply `specializes_of_eq` to reduce the goal to its premises. Conclude with `congrArg p (Subsingleton.elim ((spMap τ).base (IsLocalRing.closedPoint K)) (IsLocalRing.closedPoint Ω))`. Establish `H : ∀ (q₁ q₂ : Sp K ⟶ X), q₁ = q₂ → ∀ (h₁ : q₁ (IsLocalRing.closedPoint K) ⤳ p (IsLocalRing.closedPoint Ω)) (h₂ : q₂ (IsLocalRing.closedPoint K) ⤳ p (IsLocalRing.closedPoint Ω)) a, (Scheme.stalkClosedPointTo q₁).hom ((X.presheaf.stalkSpecializes h₁).hom a) = (Scheme.stalkClosedPo …`. Introduce and unpack `_ _ rfl _ _ _`. Both sides reduce to the same expression.
+
+Use extensionality with `a`. Simplify using `only [RingHom.comp_apply]`. Rewrite using `[← GlobalTheory.TorRef.stalkClosedPointTo_comp_spMap_specializes X p τ₁ (hs τ₁) a, ← GlobalTheory.TorRef.stalkClosedPointTo_comp_spMap_specializes X p τ₂ (hs τ₂) a]`. Conclude with `H _ _ h _ _ a`.
+-/
 theorem exists_stalk_field_hom : ∀ (Ω : Type) [Field Ω] (X : Scheme.{0}) (p : Sp Ω ⟶ X), (p.stalkMap (genericPoint (Sp Ω))).hom.Finite → ∃ φ : X.presheaf.stalk (p.base (genericPoint (Sp Ω))) →+* Ω, φ.Finite ∧ ∀ (K : Type) [Field K] (τ₁ τ₂ : Ω →+* K), spMap τ₁ ≫ p = spMap τ₂ ≫ p → τ₁.comp φ = τ₂.comp φ := by
   intro Ω _ X p hfin
   have hpt : genericPoint (Sp Ω) = IsLocalRing.closedPoint Ω := Subsingleton.elim _ _

@@ -12,6 +12,43 @@ noncomputable section
 
 namespace GlobalTheory.Published.AbVarRed
 
+/- English proof (translation)
+Introduce `R K Ω _ _ _ _ _ _ _ _ V hV A _ _ hA m hm σ hσ x hx`. Take `⟨G, _, hG, e, he⟩` from `hA`. Establish `: IsCommMonObj G` using `hG.comm`. Establish `: Smooth G.hom` using `hG.smooth`. Establish `: IsProper G.hom` using `hG.proper`.
+
+Establish `: IsMonHom e.symm.hom` using `inferInstanceAs (IsMonHom e.inv)`. Establish `hP : IsGrpPullback A G (spMap (algebraMap R K)) (e.inv.left ≫ pullback.fst G.hom (spMap (algebraMap R K)))` using `((isGrpPullback_of_iso e.symm).comp (isGrpPullback_pullback G (spMap (algebraMap R K)))).congr (Category.id_comp _) rfl`. Use `set φ := e.inv.left ≫ pullback.fst G.hom (spMap (algebraMap R K)) with hφ`. Set `T0 : Over (Sp R)` to `Over.mk ((ptOver K Ω).hom ≫ spMap (algebraMap R K))`. Set `Φ : (ptOver K Ω ⟶ A) → (T0 ⟶ G)` to `fun y => Over.homMk (y.left ≫ φ) (by`.
+
+Express the relevant statement in the definitionally equal form `(y.left ≫ φ) ≫ G.hom = (ptOver K Ω).hom ≫ spMap (algebraMap R K)`. Rewrite using `[Category.assoc, hP.1.w, ← Category.assoc, Over.w y])`. Establish `Φmul : ∀ y y', Φ (y * y') = Φ y * Φ y'` using `fun y y' => Over.OverMorphism.ext (hP.2 (ptOver K Ω) y y' (Φ y) (Φ y') rfl rfl).symm`. Set `ΦM : (ptOver K Ω ⟶ A) →* (T0 ⟶ G)` to `MonoidHom.mk' Φ Φmul`. Establish `Φinj : Function.Injective Φ` using `fun y y' h => Over.OverMorphism.ext (hP.1.hom_ext (congrArg Over.Hom.left h) ((Over.w y).trans (Over.w y').symm))`.
+
+Establish `hmemV : ∀ r : R, algebraMap K Ω (algebraMap R K r) ∈ V` using `fun r => by`. Establish `: algebraMap R K r ∈ V.toSubring.comap (algebraMap K Ω)` using `by rw [hV]; exact ⟨r, rfl⟩`. Conclude with `this`. Set `rV : R →+* V` to `((algebraMap K Ω).comp (algebraMap R K)).codRestrict V hmemV`. Establish `hrV : (algebraMap V Ω).comp rV = (algebraMap K Ω).comp (algebraMap R K)` using `RingHom.ext fun _ => rfl`.
+
+Take `⟨hσV, hσr⟩` from `(mem_inertia_iff V σ).1 hσ`. Establish `hmem : ∀ y ∈ V, σ y ∈ V` using `fun y hy => by`. Establish `h` using `(ValuationSubring.smul_mem_pointwise_smul_iff (g := σ) (S := V) (x := y)).2 hy`. Rewrite `h` using `[hσV]`. Conclude with `h`.
+
+Set `σV : V →+* V` to `((σ : Ω →+* Ω).comp (algebraMap V Ω)).codRestrict V fun y => hmem y y.2`. Establish `F1 : (algebraMap V Ω).comp σV = (σ : Ω →+* Ω).comp (algebraMap V Ω)` using `RingHom.ext fun _ => rfl`. Establish `F2 : σV.comp rV = rV` using `RingHom.ext fun r => Subtype.ext (σ.commutes (algebraMap R K r))`. Establish `F3 : (residue V).comp σV = residue V` using `RingHom.ext fun y => by`. Express the relevant statement in the definitionally equal form `residue V (σV y) = residue V y`.
+
+Rewrite using `[← sub_eq_zero, ← map_sub, residue_eq_zero_iff, ValuationSubring.valuation_lt_one_iff]`. Conclude with `hσr y y.2`. Establish `hE : ValuativeCriterion.Existence G.hom`. Establish `h : (ValuativeCriterion.Existence ⊓ @QuasiCompact) G.hom`. Rewrite using `[← UniversallyClosed.eq_valuativeCriterion]`.
+
+Use `infer_instance`. Conclude with `h.1`. Set `S : ValuativeCommSq G.hom` to `⟨V, Ω, (Φ x).left, spMap rV, ⟨by`. Express the relevant statement in the definitionally equal form `(x.left ≫ φ) ≫ G.hom = spMap (algebraMap V Ω) ≫ spMap rV`. Rewrite using `[Category.assoc, hP.1.w, ← Category.assoc, Over.w x, GlobalTheory.RedPts.spMap_comp, hrV]`.
+
+Conclude with `GlobalTheory.RedPts.spMap_comp _ _⟩⟩`. Take `⟨l, hl1, hl2⟩` from `(hE S).exists_lift.some`. Express the relevant statement in the definitionally equal form `spMap (algebraMap V Ω) ≫ l = x.left ≫ φ at hl1`. Express the relevant statement in the definitionally equal form `l ≫ G.hom = spMap rV at hl2`. Set `P : Over (Sp R)` to `Over.mk (spMap rV)`.
+
+Set `a : P ⟶ G` to `Over.homMk l hl2`. Set `b : P ⟶ G` to `Over.homMk (spMap σV ≫ l) (by`. Express the relevant statement in the definitionally equal form `(spMap σV ≫ l) ≫ G.hom = spMap rV`. Rewrite using `[Category.assoc, hl2, GlobalTheory.RedPts.spMap_comp, F2])`. Set `u : T0 ⟶ P` to `Over.homMk (spMap (algebraMap V Ω)) (by`.
+
+Express the relevant statement in the definitionally equal form `spMap (algebraMap V Ω) ≫ spMap rV = (ptOver K Ω).hom ≫ spMap (algebraMap R K)`. Rewrite using `[GlobalTheory.RedPts.spMap_comp, hrV]`. Conclude with `(GlobalTheory.RedPts.spMap_comp _ _).symm)`. Establish `hua : u ≫ a = Φ x` using `Over.OverMorphism.ext hl1`. Establish `hub : u ≫ b = Φ (galPts A σ x)` using `Over.OverMorphism.ext (by`.
+
+Express the relevant statement in the definitionally equal form `spMap (algebraMap V Ω) ≫ spMap σV ≫ l = (galPts A σ x).left ≫ φ`. Rewrite using `[galPts_left, ← Category.assoc, GlobalTheory.RedPts.spMap_comp, F1, ← GlobalTheory.RedPts.spMap_comp, Category.assoc, hl1, Category.assoc])`. Set `Z : Over (Sp R)` to `Over.mk (spMap ((residue V).comp rV))`. Set `j : Z ⟶ P` to `Over.homMk (spMap (residue V)) (GlobalTheory.RedPts.spMap_comp _ _)`. Establish `hjb : j ≫ b = j ≫ a` using `Over.OverMorphism.ext (by`.
+
+Express the relevant statement in the definitionally equal form `spMap (residue V) ≫ spMap σV ≫ l = spMap (residue V) ≫ l`. Rewrite using `[← Category.assoc, GlobalTheory.RedPts.spMap_comp, F3])`. Establish `hdom : IsDominant (spMap (algebraMap V Ω))` using `⟨(PrimeSpectrum.denseRange_comap_iff_ker_le_nilRadical _).2 (by`. Express the relevant statement in the definitionally equal form `RingHom.ker (algebraMap V Ω) ≤ _`. Rewrite using `[(RingHom.injective_iff_ker_eq_bot _).1 (IsFractionRing.injective V Ω)]`.
+
+Conclude with `bot_le)⟩`. Establish `hu : Function.Injective (GlobalTheory.RedPts.precomp G u)` using `fun c d h => Over.OverMorphism.ext (ext_of_isDominant_of_isSeparated (X := Sp V) G.hom ((Over.w c).trans (Over.w d).symm) (spMap (algebraMap V Ω)) (congrArg Over.Hom.left h))`. Establish `hz : (b * a⁻¹) ^ m = 1`. Apply `hu` to reduce the goal to its premises. Rewrite using `[map_pow, map_one, map_mul, map_inv]`.
+
+Express the relevant statement in the definitionally equal form `((u ≫ b) * (u ≫ a)⁻¹) ^ m = 1`. Rewrite using `[hua, hub]`. Express the relevant statement in the definitionally equal form `(ΦM (galPts A σ x) * (ΦM x)⁻¹) ^ m = 1`. Rewrite using `[← map_inv, ← map_mul, ← map_pow, mul_pow, inv_pow, ← map_pow, hx, map_one, inv_one, _root_.mul_one, map_one]`. Establish `hjz : j ≫ (b * a⁻¹) = 1`.
+
+Rewrite using `[MonObj.comp_mul, GrpObj.comp_inv, hjb, mul_inv_cancel]`. Establish `hn : IsUnit (m : V)`. Establish `h1 : IsUnit (m : R)`. Assume the negation of the conclusion as `h`. Apply `hm` to reduce the goal to its premises.
+
+Rewrite using `[← map_natCast (residue R), residue_eq_zero_iff]`. Conclude with `h`. Simplify using `using h1.map rV`. Establish `h1` using `GlobalTheory.RedPts.eq_one_of_pow_of_closedPoint G (spMap rV) hn (b * a⁻¹) hz j ⟨IsLocalRing.closedPoint _, IsLocalRing.comap_closedPoint (IsLocalRing.residue V)⟩ hjz`. Establish `hba : b = a` using `mul_inv_eq_one.1 h1`.
+
+Apply `Φinj` to reduce the goal to its premises. Rewrite using `[← hub, ← hua, hba]`.
+-/
 theorem torsionUnramified_of_hasGoodReduction : ∀ (R K Ω : Type) [CommRing R] [IsDomain R] [IsDiscreteValuationRing R]
     [Field K] [Algebra R K] [IsFractionRing R K] [Field Ω] [Algebra K Ω] (V : ValuationSubring Ω),
     IsAbove R K V.toSubring → ∀ (A : Over (Sp K)) [GrpObj A] [IsCommMonObj A], HasGoodReduction R K A →

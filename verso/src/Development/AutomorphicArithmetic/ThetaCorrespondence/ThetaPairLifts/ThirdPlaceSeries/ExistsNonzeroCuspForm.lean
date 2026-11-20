@@ -23,6 +23,15 @@ set_option autoImplicit false
 set_option synthInstance.maxHeartbeats 400000
 noncomputable section
 namespace GlobalTheory.CovTop.LowNonzero
+/- English proof (translation)
+Introduce `hP hG hQ hS hT hN`. Establish `R` using `_root_.GlobalTheory.T.weight_conditions_at_index'`. Establish `W` using `_root_.GlobalTheory.T.weight_parameter_strict_antitone_alt _root_.GlobalTheory.CovTop.SizeRows.size_alt_bis`. Establish `B` using `_root_.GlobalTheory.HSApp.wtBig_run_alt`. Unfold `_root_.GlobalTheory.CovTop.CoversCondition _root_.GlobalTheory.CovTop.LiftsCondition at *`.
+
+Use `(R.and (W.and B)).imp fun Fm CH _ h => ?_` and prove the remaining obligations. Take `⟨⟨C1, h1, e1⟩, ⟨C2, h2, e2⟩, ⟨C3, h3, e3⟩⟩` from `h`. Use `⟨C1, h1, ?_⟩` and prove the remaining obligations. Take `⟨x0, hx0⟩` from `e1.and (e2.and e3)`. Use `⟨x0, fun x hx hle ι p hp i hi Y hY => ?_⟩` and prove the remaining obligations.
+
+Take `⟨hA, hB, hC⟩` from `hx0 x hx hle ι p hp`. Take `⟨hL, -, -, hf, hj, -⟩` from `hA i hi`. Take `⟨-, -, -, -, -, ⟨w, -, hw⟩, -⟩` from `hB i hi`. Establish `hbig` using `hC i hi`. Take `⟨Z⟩` from `GlobalTheory.CovTop.good_comp_nonempty _ p.T hL _ hj Y _ _ hY.1`.
+
+Use `⟨Z, _root_.GlobalTheory.CovTop.LowNonzero.exists_cusp_value_ne_zero_low_level hP hG hQ hS hT hN Y hY.1 hf hbig.one_le Z _ ?_⟩` and prove the remaining obligations. Rewrite using `[hw]`. Conclude with `gapGe_wt_add_parWt _ hbig _ w`.
+-/
 theorem exists_cusp_uM_alt_alt : _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → GlobalTheory.Published.GrothendieckDeformation → GlobalTheory.HSCore.Quoted → GlobalTheory.Published.SiegelToroidalIntegral → GlobalTheory.Published.ToroidalChartsForFan → GlobalTheory.Published.SemiAbelianLieSeminegative → _root_.GlobalTheory.CovTop.CoversCondition fun Fm x _ ι p i Y _ _ => ∃ Z : Comp Y.d.Xo₂ Y.d.c₂, ∃ f ∈ cuspOn Y.U Z (wtOf (dat p i) (uM p i) 0), f ≠ 0 := by
   intro hP hG hQ hS hT hN
   have R := _root_.GlobalTheory.T.weight_conditions_at_index'
@@ -56,6 +65,9 @@ open GlobalTheory.IndefiniteRowSideFullHecke.LevelStructureAutomorphisms (LevelA
 open GlobalTheory.BadCount
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.CovTop.LowNonzero.exists_cusp_uM_alt_alt | exact _root_.GlobalTheory.CovTop.LowNonzero.exists_cusp_uM_alt_alt | (intros; apply _root_.GlobalTheory.CovTop.LowNonzero.exists_cusp_uM_alt_alt <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_ne_zero_cuspOn_of_covers : _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → GlobalTheory.Published.GrothendieckDeformation → GlobalTheory.HSCore.Quoted → GlobalTheory.Published.SiegelToroidalIntegral → GlobalTheory.Published.ToroidalChartsForFan → GlobalTheory.Published.SemiAbelianLieSeminegative → _root_.GlobalTheory.CovTop.CoversCondition fun Fm x _ ι p i Y _ _ => ∃ Z : Comp Y.d.Xo₂ Y.d.c₂, ∃ f ∈ cuspOn Y.U Z (wtOf (dat p i) (uM p i) 0), f ≠ 0 := by
   first | exact @_root_.GlobalTheory.CovTop.LowNonzero.exists_cusp_uM_alt_alt | exact _root_.GlobalTheory.CovTop.LowNonzero.exists_cusp_uM_alt_alt | (intros; apply _root_.GlobalTheory.CovTop.LowNonzero.exists_cusp_uM_alt_alt <;> assumption)
 end

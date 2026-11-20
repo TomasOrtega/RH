@@ -24,6 +24,17 @@ namespace GlobalTheory.UnfoldLoss
 section
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Establish `h1 : ∀ Y : ℕ × ℕ, ∃ n : Fin (G.rank Y) → ℕ, (∀ a, n a ≤ e * (G.m - 1)) ∧ (1 : GL (Fin (G.rank Y)) k) = diagGL fun a => ϖ ^ n a` using `fun Y => ⟨fun _ => 0, fun _ => Nat.zero_le _, Units.ext (by simp)⟩`. Establish `h2 : ∀ j : ℕ, ∃ n : Fin (G.rank (G.m, j)) → ℕ, (∀ a, n a ≤ e * (G.m - 1)) ∧ stair G ϖ e j = diagGL fun a => ϖ ^ n a` using `fun j => ⟨fun a => e * (a.val + 1 - topRank G j), fun a => Nat.mul_le_mul_left _ (by`. Use `topRank_add hs j` as an intermediate fact. Use `a.2` as an intermediate fact. Use the proof step `omega), rfl⟩`.
+
+Take `⟨i, j⟩` from `X`. Distinguish the cases in `hi : i = G.m`. Substitute `hi` using the available equality. Distinguish the cases in `hj : j + 2 ≤ G.m`. Use `borelize k`.
+
+Rewrite using `[through_elt _ hj]`. Conclude with `h2 j`. Rewrite using `[Reps.elt, onColumn_apply]`. Consider the cases of `j with`. Consider the case `zero => exact h2 0`.
+
+Consider the case `succ j`. Establish `: ¬ j < G.m - 2` using `by omega`. Simplify using `only [dif_neg this]`. Conclude with `h1 _`. Rewrite using `[Reps.elt, onColumn, dif_neg hi]`.
+
+Conclude with `h1 _`.
+-/
 theorem stairElt_diag (G : Grid k) (hs : 1 ≤ G.s) (ϖ : kˣ) (e : ℕ) (J : G.Level) (X : ℕ × ℕ) :
     ∃ n : Fin (G.rank X) → ℕ, (∀ a, n a ≤ e * (G.m - 1)) ∧
       (Reps.through hs J (stair G ϖ e)).elt (fun i => DoubleCoset.mk _ _ (stair G ϖ e (i + 1))) X =
@@ -51,6 +62,11 @@ theorem stairElt_diag (G : Grid k) (hs : 1 ≤ G.s) (ϖ : kˣ) (e : ℕ) (J : G.
   · rw [Reps.elt, onColumn, dif_neg hi]
     exact h1 _
 
+/- English proof (translation)
+Apply the tactic sequence `rcases b with ⟨i, j⟩ | ⟨i, j⟩ <;> simp only [Pi.sub_apply, Matrix.sub_apply, fill] <;> split_ifs`. Simplify using `only [Matrix.transpose_apply, Matrix.submatrix_apply, downMap] split_ifs with h`. Simplify using `only [Matrix.reindex_apply, Matrix.submatrix_apply, stepPt, Matrix.add_apply, Matrix.of_apply, add_sub_add_left_eq_sub] split_ifs`. Simplify using `only [Pi.add_apply, add_sub_cancel_left]`. Conclude with `hl ⟨j, h⟩ _`.
+
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Apply the tactic sequence `all_goals simp`.
+-/
 theorem valuation_fill_sub_le (G : Grid k) (hs : 1 ≤ G.s) (ϖ : kˣ) (n : ℕ) (x : ColArgs G) (y : RowArgs G)
     (v l : Vars G) (hl : l ∈ varLat G ϖ n) (b : Edge) (r : Fin (G.rank b.tgt)) (s : Fin (G.rank b.src)) :
     valuation k ((fill hs x y (v + l) - fill hs x y v) b r s) ≤ valuation k ((ϖ ^ n : kˣ) : k) := by
@@ -69,6 +85,23 @@ theorem valuation_fill_sub_le (G : Grid k) (hs : 1 ≤ G.s) (ϖ : kˣ) (n : ℕ)
 
 end
 
+/- English proof (translation)
+Introduce `k _ _ _ _ G hs ϖ hϖ e T hT J keep x y v l hl`. Break down `Nat.eq_zero_or_pos G.m with hm | hm` into its components or cases. Establish `: l = 0` using `funext fun j => absurd j.2 (by omega)`. Rewrite using `[this, add_zero]`. Establish `hd` using `stairElt_diag G hs ϖ e J`.
+
+Generalize the expression as in `(Reps.through hs J (stair G ϖ e)).elt (fun i => DoubleCoset.mk _ _ (stair G ϖ e (i + 1))) = g at hd ⊢`. Establish `hf` using `valuation_fill_sub_le G hs ϖ _ x y v l hl`. Establish `hsum : G.moveArgs .one g (fill hs x y (v + l)) = G.moveArgs .one g (fill hs x y v) + G.moveArgs .one g (fill hs x y (v + l) - fill hs x y v)`. Use function extensionality and compare the values at `b`. Simplify using `only [Grid.moveArgs, Pi.add_apply, Pi.sub_apply, Matrix.mul_sub, Matrix.sub_mul, add_sub_cancel]`.
+
+Simplify using `only [moved, Grid.pathAct]`. Rewrite using `[hsum, hT.2.2]`. Introduce `b r`. Generalize the expression as in `fill hs x y (v + l) - fill hs x y v = d at hf`. Take `⟨n, -, hn⟩` from `hd b.tgt`.
+
+Take `⟨n', hn1, hn'⟩` from `hd b.src`. Establish `h0 : 0 < valuation k (ϖ : k)` using `zero_lt_iff.2 (by simp)`. Establish `h1 : valuation k (ϖ : k) ≤ 1` using `hϖ.mem`. Rewrite using `[SplitFlip.stdLat, smul_diagLat, mem_diagLat]`. Introduce `s`.
+
+Establish `hv : (G.moveArgs .one g d b).row r s = (ϖ : k) ^ n r * d b r s * ((ϖ : k) ^ n' s)⁻¹`. Establish `hinv : ((diagGL fun a => ϖ ^ n' a : GL (Fin (G.rank b.src)) k)⁻¹).val = Matrix.diagonal fun a => ((ϖ : k) ^ n' a)⁻¹`. Rewrite using `[Matrix.coe_units_inv]`. Use `Matrix.inv_eq_right_inv ?_` and prove the remaining obligations. Simplify using `[Matrix.diagonal_mul_diagonal]`.
+
+Simplify using `only [Grid.moveArgs, Assignment.read, invT_inv_val, invT_val, hn, hn', hinv, diagGL_val, Matrix.diagonal_transpose, Matrix.row, Matrix.mul_diagonal, Matrix.diagonal_mul, Units.val_pow_eq_pow_val]`. Establish `h2` using `hf b r s`. Rewrite using `[hv]`. Simplify using `only [map_mul, map_inv₀, map_pow, Units.val_pow_eq_pow_val, Pi.one_apply, mul_one] at h2 ⊢`. Rewrite using `[mul_inv_le_iff₀ (pow_pos h0 _), ← pow_add]`.
+
+Use `(mul_le_of_le_one_left' (pow_le_one' h1 _)).trans (h2.trans (pow_le_pow_right_of_le_one' h1 ?_))` and prove the remaining obligations. Use `hn1 s` as an intermediate fact. Take `⟨m', hm'⟩` from `Nat.exists_eq_add_of_le' hm`. Rewrite `this`, the goal using `[hm']`. Simplify using `only [Nat.succ_eq_add_one, zero_add, Nat.add_sub_cancel] at this ⊢`.
+
+Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem moved_stair_periodic : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (G : Grid k) (hs : 1 ≤ G.s)
     (ϖ : kˣ), IsUnif ϖ → ∀ (e : ℕ) (T : G.Args → ℂ), G.IsTensor ϖ e (oppositePath G.m) T → ∀ (J : G.Level) (keep : Bool)
     (x : ColArgs G) (y : RowArgs G) (v l : Vars G), l ∈ varLat G ϖ (G.m * e) →

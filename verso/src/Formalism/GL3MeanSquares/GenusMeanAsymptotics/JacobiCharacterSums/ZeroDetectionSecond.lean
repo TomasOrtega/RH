@@ -13,6 +13,41 @@ namespace Formalism.HermitianLattices.Ext.PrimesInProgressions.Dens
 open Formalism.HermitianLattices.Ext.PrimitiveCharacterCasts.ZD Formalism.ZeroFreeDirichlet
 
 attribute [local irreducible] qd pYd pJd pNd in
+/- English proof (translation)
+Introduce `M _ χ hχ1 T hT hM ρ hρ hρim hL`. Take `⟨X, hX⟩ : ∃ X : ℕ, qd M T = X` from `⟨_, rfl⟩`. Establish `hMT : (M : ℝ) * T ≤ X` using `by rw [← hX]; unfold qd; exact Nat.le_ceil _`. Establish `hM3 : (3 : ℝ) ≤ M` using `by exact_mod_cast hM`. Establish `hX6 : (6 : ℝ) ≤ X` using `by nlinarith`.
+
+Establish `hX1 : 1 ≤ X` using `by exact_mod_cast (show (1 : ℝ) ≤ X by linarith)`. Establish `hre0 : 0 < ρ.re` using `by linarith`. Establish `hNX : X ^ 8 ≤ pNd M T`. Establish `h` using `Nat.lt_pow_succ_log_self (by norm_num : 1 < 2) X`. Unfold `pNd pJd`.
+
+Rewrite using `[hX, mul_comm 8, pow_mul]`. Conclude with `Nat.pow_le_pow_left h.le 8`. Establish `hY : pYd M T = X ^ 3` using `by unfold pYd; rw [hX]`. Establish `hYN : pYd M T ≤ pNd M T`. Rewrite using `[hY]; exact le_trans (Nat.pow_le_pow_right hX1 (by norm_num)) hNX`.
+
+Establish `hY1 : 1 ≤ pYd M T` using `by rw [hY]; exact Nat.one_le_pow _ _ (by omega)`. Establish `hN1 : 1 ≤ pNd M T` using `le_trans hY1 hYN`. Establish `hB` using `Formalism.ZeroFreeDirichlet.norm_character_sum_Icc_le χ hχ1`. Establish `hP` using `Formalism.FX.l_function_partial_sum M χ hχ1 _ hB ρ hre0 (pNd M T) hN1`. Rewrite `hP` using `[hL, zero_sub, norm_neg]`.
+
+Establish `hMI` using `mollifier_identity M χ ρ (pYd M T) (pNd M T) (pYd M T * pNd M T) hY1 hYN le_rfl`. Establish `hMo` using `mollM_norm_le χ ρ hre0.le (pYd M T)`. Use `set P := ∑ n ∈ Icc 1 (pNd M T), χ (n : ZMod M) * (n : ℂ) ^ (-ρ) with hPdef`. Use `set Mo := ∑ d ∈ Icc 1 (pYd M T), (((ArithmeticFunction.moebius d : ℤ)) : ℂ) * χ (d : ZMod M) * (d : ℂ) ^ (-ρ) with hMdef`. Use `set D := ∑ n ∈ Ioc (pYd M T) (pYd M T * pNd M T), mco (pYd M T) (pNd M T) n * χ (n : ZMod M) * (n : ℂ) ^ (-ρ) with hD`.
+
+Establish `hnum : ‖P‖ * (pYd M T : ℝ) ≤ 1 / 2`. Establish `hXpos : (0 : ℝ) < X` using `by linarith`. Establish `hNpos : (0 : ℝ) < pNd M T` using `by exact_mod_cast hN1`. Establish `hrho : 1 + ‖ρ‖ / ρ.re ≤ 3 * T`. Establish `h1 : ‖ρ‖ ≤ ρ.re + T`.
+
+Use `(Complex.norm_le_abs_re_add_abs_im ρ).trans ?_` and prove the remaining obligations. Rewrite using `[abs_of_pos hre0]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2 : ‖ρ‖ / ρ.re ≤ 1 + T / ρ.re`. Rewrite using `[div_le_iff₀ hre0, add_mul, one_mul, div_mul_cancel₀ _ hre0.ne']`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `h3 : T / ρ.re ≤ 4 / 3 * T`. Rewrite using `[div_le_iff₀ hre0]`. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hpow : ((pNd M T : ℕ) : ℝ) ^ (-ρ.re) ≤ ((pNd M T : ℕ) : ℝ) ^ (-(3 / 4 : ℝ))` using `Real.rpow_le_rpow_of_exponent_le (by exact_mod_cast hN1) (by linarith)`. Establish `hN8 : (X : ℝ) ^ (8 : ℕ) ≤ (pNd M T : ℝ)` using `by exact_mod_cast hNX`. Establish `hpow2 : (X : ℝ) ^ (6 : ℕ) ≤ ((pNd M T : ℕ) : ℝ) ^ (3 / 4 : ℝ)`. Establish `e : ((X : ℝ) ^ (8 : ℕ)) ^ (3 / 4 : ℝ) = (X : ℝ) ^ (6 : ℕ)`. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul hXpos.le, ← Real.rpow_natCast]`.
+
+Evaluate the numerical expressions. Rewrite using `[← e]`. Conclude with `Real.rpow_le_rpow (by positivity) hN8 (by norm_num)`. Establish `hinv : ((pNd M T : ℕ) : ℝ) ^ (-(3 / 4 : ℝ)) ≤ 1 / (X : ℝ) ^ (6 : ℕ)`. Rewrite using `[Real.rpow_neg hNpos.le, one_div]`.
+
+Conclude with `inv_anti₀ (by positivity) hpow2`. Establish `hYr : (pYd M T : ℝ) = (X : ℝ) ^ (3 : ℕ)` using `by rw [hY, Nat.cast_pow]`. Establish `hc : 2 * ((M : ℝ) + 1) * (1 + ‖ρ‖ / ρ.re) ≤ 8 * X`. Establish `hpos : (0 : ℝ) ≤ 1 + ‖ρ‖ / ρ.re` using `by positivity`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hPle : ‖P‖ ≤ 8 * X * (1 / (X : ℝ) ^ (6 : ℕ))`. Use `hP.trans ?_` and prove the remaining obligations. Establish `a3 : ((pNd M T : ℕ) : ℝ) ^ (-ρ.re) ≤ 1 / (X : ℝ) ^ (6 : ℕ)` using `hpow.trans hinv`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hYr]`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hX0 : (X : ℝ) ≠ 0` using `hXpos.ne'`. Clear the denominators using the available nonvanishing facts. Use `_ ≤ 1 / 2 := by`. Rewrite using `[div_le_iff₀ (by positivity)]; nlinarith`.
+
+Establish `h1D : ‖1 + D‖ ≤ 1 / 2`. Rewrite using `[← hMI, norm_mul]`. Combine the equalities or inequalities in the displayed calculation. Establish `hDge : 1 / 2 ≤ ‖D‖`. Use `norm_sub_le (1 + D) D` as an intermediate fact.
+
+Simplify using `only [add_sub_cancel_right, norm_one] at this`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hsplit : D = ∑ j ∈ range (pJd M T), blkD (pYd M T) (pNd M T) (pYd M T * 2 ^ j) (fun n => χ (n : ZMod M)) ρ`. Rewrite using `[hD, show pNd M T = 2 ^ pJd M T by unfold pNd; rfl, sum_blocks]`. Both sides reduce to the same expression.
+
+Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Establish `hJ8 : 8 ≤ pJd M T` using `by unfold pJd; omega`. Establish `hJpos : (0 : ℝ) < pJd M T` using `by exact_mod_cast (by omega : 0 < pJd M T)`. Establish `hlt : ‖D‖ < 1 / 2`.
+
+Rewrite using `[hsplit]`. Use `(norm_sum_le _ _).trans_lt ?_` and prove the remaining obligations. Establish `hne : (range (pJd M T)).Nonempty` using `nonempty_range_iff.mpr (by omega)`. Combine the equalities or inequalities in the displayed calculation. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem zero_detection_second : Detect1 := by
   intro M _ χ hχ1 T hT hM ρ hρ hρim hL
   obtain ⟨X, hX⟩ : ∃ X : ℕ, qd M T = X := ⟨_, rfl⟩

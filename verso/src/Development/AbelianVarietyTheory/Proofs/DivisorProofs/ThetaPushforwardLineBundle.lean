@@ -14,6 +14,11 @@ open GlobalTheory.LB (toMod)
 
 namespace GlobalTheory.ThetaRR
 
+/- English proof (translation)
+Use `choose U hU θ hθ gen _ using h`. Set `e : ∀ x, Γ((Scheme.Modules.pushforward G.hom).obj (toMod L), U x)` to `fun x => GlobalTheory.LB.mkSec (θ x) (hθ x)`. Establish `he : ∀ x, GlobalTheory.LB.IsFrame (e x)` using `fun x W hW => by`. Rewrite using `[Function.bijective_iff_existsUnique]`. Introduce `s`.
+
+Use `(existsUnique_congr fun a => ?_).1 (gen x W hW _ (GlobalTheory.LB.coord_mem (L := L) s))` and prove the remaining obligations. Conclude with `⟨fun e => GlobalTheory.LB.sec_ext (L := L) fun i => (e i).symm, fun e i => (congrArg (fun s => GlobalTheory.LB.coord (L := L) s i) e).symm⟩`. Establish `hc : ⨆ x, U x = ⊤` using `top_le_iff.1 fun x _ => Opens.mem_iSup.2 ⟨x, hU x⟩`. Conclude with `⟨_, GlobalTheory.LB.ofFrames_isLB he hc, ⟨(GlobalTheory.LB.ofFramesIso he hc).symm⟩⟩`.
+-/
 theorem exists_lb_of_pushInvertible {S : Scheme.{0}} (G : Over S) (L : LB G.left) (h : PushInvertible G L) :
     ∃ M : LB S, M.IsLB ∧ Nonempty (toMod M ≅ (Scheme.Modules.pushforward G.hom).obj (toMod L)) := by
   choose U hU θ hθ gen _ using h
@@ -27,6 +32,11 @@ theorem exists_lb_of_pushInvertible {S : Scheme.{0}} (G : Over S) (L : LB G.left
   have hc : ⨆ x, U x = ⊤ := top_le_iff.1 fun x _ => Opens.mem_iSup.2 ⟨x, hU x⟩
   exact ⟨_, GlobalTheory.LB.ofFrames_isLB he hc, ⟨(GlobalTheory.LB.ofFramesIso he hc).symm⟩⟩
 
+/- English proof (translation)
+Introduce `k _ S p hS P L hL`. Take `⟨N, j, _, hj⟩` from `hS.isProjOver`. Use `isProper_str k N` as an intermediate fact. Establish `: IsProper p` using `hj ▸ inferInstance`. Use `hS.finite` as an intermediate fact.
+
+Establish `: IsNoetherianRing k` using `IsNoetherianRing.of_finite ℤ k`. Establish `: IsLocallyNoetherian S` using `LocallyOfFiniteType.isLocallyNoetherian p`. Conclude with `exists_lb_of_pushInvertible P.A L (GlobalTheory.PushInv.pushInvertible GlobalTheory.abelianSchemeLaws_all.1.secBaseChange S hL.polAV)`.
+-/
 theorem exists_lb_pushforward : ∀ (k : Type) [CommRing k] (S : Scheme.{0}) (p : S ⟶ Sp k), IsRegSurf p →
     ∀ (P : PPAS S) (L : LB P.A.left), IsTheta P L →
       ∃ M : LB S, M.IsLB ∧ Nonempty (toMod M ≅ (Scheme.Modules.pushforward P.A.hom).obj (toMod L)) := by

@@ -6,6 +6,11 @@ open scoped InnerProductSpace
 
 namespace GlobalTheory.Core.Rk
 
+/- English proof (translation)
+Unfold `hsDev`. Use `GlobalTheory.T.finrank_ker_le_hilbertSchmidtNormSq_sub_id (Kmat D.s u u) _ ?_` and prove the remaining obligations. Introduce `x hx`. Rewrite `hx` using `[LinearMap.mem_ker]`. Establish `hx' : D.s.Pu u x = 0` using `hx`.
+
+Simplify using `[Kmat, hx']`.
+-/
 theorem finrank_ker_Pu_le_hsDev (D : D7) (u : D.what₂.Word) :
     (Module.finrank ℂ (LinearMap.ker (D.s.Pu u : D.s.Cu u →ₗ[ℂ] D.s.HH)) : ℝ) ≤ hsDev D u := by
   unfold hsDev

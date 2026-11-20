@@ -15,6 +15,9 @@ namespace GlobalTheory.ArchUniq.FormTransport
 open GlobalTheory.RealWeil GlobalTheory.ArchUniq
 open scoped SchwartzMap ComplexConjugate
 
+/- English proof (translation)
+Establish `h : phase w x * conj (phase w x) = 1`. Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq, norm_phase]`. Simplify using the standard rewrite rules. Simplify using `only [rhoFun, map_mul]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem rhoFun_mul_conj {n : ℕ} (w : Fin n ⊕ Fin n → ℝ) (G G' : EuclideanSpace ℝ (Fin n) → ℂ)
     (x : EuclideanSpace ℝ (Fin n)) :
     rhoFun w G x * conj (rhoFun w G' x) = G (x + pPart w) * conj (G' (x + pPart w)) := by
@@ -24,6 +27,9 @@ theorem rhoFun_mul_conj {n : ℕ} (w : Fin n ⊕ Fin n → ℝ) (G G' : Euclidea
   calc _ = (phase w x * conj (phase w x)) * (G (x + pPart w) * conj (G' (x + pPart w))) := by ring
     _ = _ := by rw [h, one_mul]
 
+/- English proof (translation)
+Repeatedly rewrite using `[rhoFun_mul_conj]`. Conclude with `integral_add_right_eq_self (fun x => G x * conj (G' x)) (pPart w)`.
+-/
 theorem integral_rhoFun_mul_conj {n : ℕ} (w : Fin n ⊕ Fin n → ℝ) (G G' : EuclideanSpace ℝ (Fin n) → ℂ) :
     ∫ x, rhoFun w G x * conj (rhoFun w G' x) = ∫ x, G x * conj (G' x) := by
   simp_rw [rhoFun_mul_conj]
@@ -31,6 +37,11 @@ theorem integral_rhoFun_mul_conj {n : ℕ} (w : Fin n ⊕ Fin n → ℝ) (G G' :
 
 open scoped Classical in
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Establish `h2 : (⅟(2 : mixedEmbedding.mixedSpace F)) = algebraMap ℝ (mixedEmbedding.mixedSpace F) (1 / 2)`. Use `invOf_eq_right_inv ?_` and prove the remaining obligations. Rewrite using `[← map_ofNat (algebraMap ℝ (mixedEmbedding.mixedSpace F)) 2, ← map_mul]`. Evaluate the numerical expressions.
+
+Establish `ht : Algebra.trace ℝ (mixedEmbedding.mixedSpace F) (x ⬝ᵥ w.2 + ⅟(2 : mixedEmbedding.mixedSpace F) * (w.1 ⬝ᵥ w.2)) = trP F κ x w.2 + trP F κ w.1 w.2 / 2`. Rewrite using `[map_add, h2, ← Algebra.smul_def, map_smul, smul_eq_mul]`. Simplify using `only [trP, dotProduct]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [schr, schrF, hψ, ht]`.
+-/
 theorem schr_eq_schrF {F : Type} [Field F] [NumberField F] [Invertible (2 : mixedEmbedding.mixedSpace F)]
     {κ : Type} [Fintype κ] (ψ : AddChar (mixedEmbedding.mixedSpace F) ℂ)
     (hψ : ∀ a, ψ a = Complex.exp (-(2 * Real.pi * Complex.I) *
@@ -50,6 +61,11 @@ theorem schr_eq_schrF {F : Type} [Field F] [NumberField F] [Invertible (2 : mixe
     ring
   simp only [schr, schrF, hψ, ht]
 
+/- English proof (translation)
+Set `e : V ≃ᵐ EuclideanSpace ℝ (Fin n)` to `C.toHomeomorph.toMeasurableEquiv`. Establish `he : ∀ y, e y = C y` using `fun y => rfl`. Use `haveI : (μ.map e).IsAddHaarMeasure := C.isAddHaarMeasure_map μ`. Establish `hk` using `Measure.isAddLeftInvariant_eq_smul (μ.map e) (volume : Measure (EuclideanSpace ℝ (Fin n)))`. Use `⟨(Measure.addHaarScalarFactor (μ.map e) volume : ℝ), fun G => ?_⟩` and prove the remaining obligations.
+
+Establish `h1 : ∫ y, G y ∂μ = ∫ x, G (C.symm x) ∂(μ.map e)`. Rewrite using `[integral_map_equiv]`. Simplify using `[he]`. Rewrite using `[h1, congrArg (fun m => ∫ x, G (C.symm x) ∂m) hk]`. Simplify using `only [integral_smul_nnreal_measure, NNReal.smul_def, Complex.real_smul]`.
+-/
 theorem haar_coords_cplx {n : ℕ} {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [MeasurableSpace V]
     [BorelSpace V] [FiniteDimensional ℝ V] (μ : Measure V) [μ.IsAddHaarMeasure]
     (C : V ≃L[ℝ] EuclideanSpace ℝ (Fin n)) :
@@ -67,6 +83,35 @@ theorem haar_coords_cplx {n : ℕ} {V : Type} [NormedAddCommGroup V] [NormedSpac
 
 open scoped Classical in
 
+/- English proof (translation)
+Introduce `H F _ _ _ κ _ ψ hψ T A hT`. Use `letI : MeasurableSpace (κ → mixedEmbedding.mixedSpace F) := borel _`. Use `haveI : BorelSpace (κ → mixedEmbedding.mixedSpace F) := ⟨rfl⟩`. Establish `hP : IsPairing (trP F κ)` using `Coord.isPairing_trP κ`. Take `⟨C, φ, -, hS⟩` from `exists_pairing_coords (κ → mixedEmbedding.mixedSpace F) (trP F κ) hP _ rfl`.
+
+Generalize the expression as in `Module.finrank ℝ (κ → mixedEmbedding.mixedSpace F) = n at C φ hS`. Set `toE : SInf F κ →L[ℂ] Sch (Fin n)` to `SchwartzMap.compCLMOfContinuousLinearEquiv ℂ (F := ℂ) C.symm`. Set `toV : Sch (Fin n) →L[ℂ] SInf F κ` to `SchwartzMap.compCLMOfContinuousLinearEquiv ℂ (F := ℂ) C`. Establish `htoE : ∀ g, ⇑(toE g) = ⇑g ∘ ⇑C.symm` using `fun g => rfl`. Establish `htoV : ∀ h, ⇑(toV h) = ⇑h ∘ ⇑C` using `fun h => rfl`.
+
+Establish `hVE : ∀ g, toV (toE g) = g` using `fun g => by ext x; simp [htoE, htoV]`. Set `T' : Sch (Fin n) →L[ℂ] Sch (Fin n)` to `toE.comp (T.comp toV)`. Establish `hT' : ∀ h, T' h = toE (T (toV h))` using `fun h => rfl`. Establish `hI : ∀ w (h g : Sch (Fin n)), ⇑g = rhoFun w ⇑h → ⇑(T' g) = rhoFun (φ (A (φ.symm w))) ⇑(T' h)`. Introduce `w h g hg`.
+
+Establish `e1 : ⇑(toV g) = schr ψ (φ.symm w) ⇑(toV h)`. Rewrite using `[schr_eq_schrF ψ hψ]`. Use function extensionality and compare the values at `x`. Use `congrFun (hS (φ.symm w) ⇑h) x` as an intermediate fact. Simplify using `only [Function.comp_apply, LinearEquiv.apply_symm_apply] at this`.
+
+Simplify using `only [htoV, Function.comp_apply, hg]`. Conclude with `this.symm`. Establish `e2` using `hT _ _ _ e1`. Rewrite `e2` using `[schr_eq_schrF ψ hψ]`. Rewrite using `[hT', hT', htoE, htoE, e2]`.
+
+Take `⟨G, hG⟩ : ∃ G : EuclideanSpace ℝ (Fin n) → ℂ, ⇑(T (toV h)) = G ∘ ⇑C` from `⟨⇑(T (toV h)) ∘ ⇑C.symm, by ext x; simp⟩`. Establish `hGC : (G ∘ ⇑C) ∘ ⇑C.symm = G` using `by funext x; simp`. Rewrite using `[hG, hS, hGC]`. Use function extensionality and compare the values at `x`. Simplify using the standard rewrite rules.
+
+Set `B : Sch (Fin n) → Sch (Fin n) → ℂ` to `fun h h' => ∫ x, T' h x * conj (T' h' x)`. Establish `hcont : ∀ h', ∃ L : Sch (Fin n) →L[ℂ] ℂ, ∀ h, B h h' = L h`. Introduce `h'`. Use `⟨(innerSL ℂ ((T' h').toLp 2)).comp ((SchwartzMap.toLpCLM ℂ ℂ 2 (volume : Measure (EuclideanSpace ℝ (Fin n)))).comp T'), fun h => ?_⟩` and prove the remaining obligations. Simplify using `only [ContinuousLinearMap.comp_apply, innerSL_apply_apply, SchwartzMap.toLpCLM_apply]`.
+
+Rewrite using `[SchwartzMap.inner_toL2_toL2_eq (T' h') (T' h) volume]`. Simplify using `only [B, RCLike.inner_apply]`. Establish `hherm : ∀ h h', B h' h = conj (B h h')`. Introduce `h h'`. Simplify using `only [B]`.
+
+Rewrite using `[← integral_conj]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Simplify using `[mul_comm]`. Establish `hpos : ∀ h, 0 ≤ (B h h).re`.
+
+Introduce `h`. Establish `e : B h h = ((∫ x, Complex.normSq (T' h x) : ℝ) : ℂ)`. Establish `e0 : B h h = ∫ x, ((Complex.normSq (T' h x) : ℝ) : ℂ)` using `by simp only [B, Complex.mul_conj]`. Rewrite using `[e0]`. Use `first`.
+
+Consider the case `exact integral_complex_ofReal`. Consider the case `exact integral_ofReal`. Rewrite using `[e, Complex.ofReal_re]`. Conclude with `integral_nonneg fun x => Complex.normSq_nonneg _`. Establish `hinv : ∀ (w : Fin n ⊕ Fin n → ℝ) (h h' g g' : Sch (Fin n)), ⇑g = rhoFun w ⇑h → ⇑g' = rhoFun w ⇑h' → B g g' = B h h'`.
+
+Introduce `w h h' g g' hg hg'`. Simplify using `only [B]`. Rewrite using `[hI w h g hg, hI w h' g' hg']`. Conclude with `integral_rhoFun_mul_conj _ _ _`. Take `⟨c, hc0, hc⟩` from `H n B hcont hherm hpos hinv`.
+
+Establish `hB : ∀ f f' : SInf F κ, ∫ x, T f (C.symm x) * conj (T f' (C.symm x)) = (c : ℂ) * ∫ x, f (C.symm x) * conj (f' (C.symm x))`. Introduce `f f'`. Use `hc (toE f) (toE f')` as an intermediate fact. Simplify `this` using `only [B, hT', hVE, htoE, Function.comp_apply]`. Use `⟨c, hc0, fun μ hμ f f' => ?_⟩` and prove the remaining obligations.
+
+Use `haveI := hμ`. Take `⟨k, hk⟩` from `haar_coords_cplx μ C`. Rewrite using `[hk, hk, hB]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem const_of_euclidean : (∀ (n : ℕ) (B : GlobalTheory.RealWeil.Sch (Fin n) → GlobalTheory.RealWeil.Sch (Fin n) → ℂ),
     (∀ h', ∃ L : GlobalTheory.RealWeil.Sch (Fin n) →L[ℂ] ℂ, ∀ h, B h h' = L h) →
     (∀ h h', B h' h = starRingEnd ℂ (B h h')) → (∀ h, 0 ≤ (B h h).re) →

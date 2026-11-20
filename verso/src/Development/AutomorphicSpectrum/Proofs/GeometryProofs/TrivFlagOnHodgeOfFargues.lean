@@ -45,6 +45,9 @@ def zpLocSubalg (Ω : Type) [Field Ω] [CharZero Ω] (p : ℕ) [Fact p.Prime] : 
     refine ⟨a, 1, fun h => (Fact.out : p.Prime).one_lt.ne' (Nat.dvd_one.1 h), ?_⟩
     simp
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, rfl⟩`. Conclude with `z.2`. Introduce `hx`. Conclude with `⟨⟨x, hx⟩, rfl⟩`.
+-/
 theorem mem_range_zpLocSubalg (Ω : Type) [Field Ω] [CharZero Ω] (p : ℕ) [Fact p.Prime] (x : Ω) :
     x ∈ (algebraMap (zpLocSubalg Ω p) Ω).range ↔ ∃ (a : ℤ) (b : ℕ), ¬ p ∣ b ∧ x = (a : Ω) / (b : Ω) := by
   constructor
@@ -53,6 +56,11 @@ theorem mem_range_zpLocSubalg (Ω : Type) [Field Ω] [CharZero Ω] (p : ℕ) [Fa
   · intro hx
     exact ⟨⟨x, hx⟩, rfl⟩
 
+/- English proof (translation)
+Unfold `ReciprocityTheory.ChartRestriction.G.Geo.chartRing at *`. Proceed by induction on `hw using Algebra.adjoin_induction with`. Consider the case `mem w hw => exact Algebra.subset_adjoin hw`. Consider the case `algebraMap r`. Take `⟨a, ha⟩` from `hr r`.
+
+Rewrite using `[← ha]`. Conclude with `Subalgebra.algebraMap_mem _ a`. Consider the case `add _ _ _ _ h1 h2 => exact add_mem h1 h2`. Consider the case `mul _ _ _ _ h1 h2 => exact mul_mem h1 h2`.
+-/
 theorem mem_chartRing_of_range_le {o o' : Type} [CommRing o] [CommRing o'] {Ω : Type} [Field Ω] [Algebra o Ω]
     [Algebra o' Ω] (hr : ∀ a : o, algebraMap o Ω a ∈ (algebraMap o' Ω).range) {ι' : Type} (z : ι' → Ω) (s : ι')
     {w : Ω} (hw : w ∈ ReciprocityTheory.ChartRestriction.G.Geo.chartRing o z s) : w ∈ ReciprocityTheory.ChartRestriction.G.Geo.chartRing o' z s := by
@@ -66,6 +74,11 @@ theorem mem_chartRing_of_range_le {o o' : Type} [CommRing o] [CommRing o'] {Ω :
   | add _ _ _ _ h1 h2 => exact add_mem h1 h2
   | mul _ _ _ _ h1 h2 => exact mul_mem h1 h2
 
+/- English proof (translation)
+Take `⟨g, h1, h2⟩` from `h`. Use `⟨g, fun s hs => ?_, fun s t hs ht => ?_⟩` and prove the remaining obligations. Take `⟨hg, e, he, r, hr', heq⟩` from `h1 s hs`. Conclude with `⟨fun i j => mem_chartRing_of_range_le hr _ _ (hg i j), e, mem_chartRing_of_range_le hr _ _ he, r, mem_chartRing_of_range_le hr _ _ hr', by rw [hϖ]; exact heq⟩`. Take `⟨m, U, Z, hU, hZ, hlow, hdiag, hgs, heq⟩` from `h2 s t hs ht`.
+
+Conclude with `⟨m, U, Z, fun i j => mem_chartRing_of_range_le hr _ _ (hU i j), fun i j => mem_chartRing_of_range_le hr _ _ (hZ i j), hlow, hdiag, fun i j => mem_chartRing_of_range_le hr _ _ (hgs i j), by rw [hϖ]; exact heq⟩`.
+-/
 theorem trivFlagMod_of_range_le {o o' : Type} [CommRing o] [CommRing o'] {Ω : Type} [Field Ω] [Algebra o Ω]
     [Algebra o' Ω] {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
     (hr : ∀ a : o, algebraMap o Ω a ∈ (algebraMap o' Ω).range) (ϖ : o) (ϖ' : o')
@@ -81,6 +94,9 @@ theorem trivFlagMod_of_range_le {o o' : Type} [CommRing o] [CommRing o'] {Ω : T
       fun i j => mem_chartRing_of_range_le hr _ _ (hZ i j), hlow, hdiag,
       fun i j => mem_chartRing_of_range_le hr _ _ (hgs i j), by rw [hϖ]; exact heq⟩
 
+/- English proof (translation)
+Substitute `hN` using the available equality. Use `⟨fun _ => 0, fun s _ => ⟨fun i => i.elim0, 1, one_mem _, 0, zero_mem _, by simp⟩, fun s t _ _ => ⟨0, 0, 0, fun i => i.elim0, fun i => i.elim0, fun i => i.elim0, fun i => i.elim0, fun i => i.elim0, Subsingleton.elim _ _⟩⟩` and prove the remaining obligations.
+-/
 theorem trivFlagMod_of_eq_zero (o : Type) [CommRing o] {Ω : Type} [Field Ω] [Algebra o Ω] {K : Type} [Fintype K]
     {ι : K → Type} [∀ k, Fintype (ι k)] (ϖ : o) (x : (Σ k, ι k) → Ω) (N : ℕ) (hN : N = 0) (b : Fin N → K → ℤ) :
     TrivFlagMod o ϖ x N b := by
@@ -89,6 +105,13 @@ theorem trivFlagMod_of_eq_zero (o : Type) [CommRing o] {Ω : Type} [Field Ω] [A
     fun s t _ _ => ⟨0, 0, 0, fun i => i.elim0, fun i => i.elim0, fun i => i.elim0, fun i => i.elim0,
       fun i => i.elim0, Subsingleton.elim _ _⟩⟩
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hu`. Establish `hbO : algebraMap A O (b : A) ∈ IsLocalRing.maximalIdeal O`. Rewrite using `[map_natCast]`. Conclude with `hu`. Establish `hbm : (b : A) ∈ m` using `(IsLocalization.AtPrime.to_map_mem_maximal_iff O m _).1 hbO`.
+
+Establish `hcop : IsCoprime (b : ℤ) (p : ℤ)` using `Nat.isCoprime_iff_coprime.2 ((Nat.Prime.coprime_iff_not_dvd (Fact.out : p.Prime)).2 hb).symm`. Take `⟨u, v, huv⟩` from `hcop.map (Int.castRingHom A)`. Establish `h1 : (1 : A) ∈ m`. Rewrite using `[← huv]`. Simplify using `only [eq_intCast, Int.cast_natCast]`.
+
+Conclude with `add_mem (m.mul_mem_left _ hbm) (m.mul_mem_left _ hpm)`. Conclude with `(Ideal.IsPrime.ne_top inferInstance) ((Ideal.eq_top_iff_one _).2 h1)`.
+-/
 theorem isUnit_natCast_of_not_dvd {A O : Type} [CommRing A] [CommRing O] [IsLocalRing O] [Algebra A O]
     (m : Ideal A) [m.IsPrime] [IsLocalization.AtPrime O m] (p : ℕ) [Fact p.Prime] (hpm : (p : A) ∈ m) (b : ℕ)
     (hb : ¬ p ∣ b) : IsUnit (b : O) := by
@@ -106,6 +129,23 @@ theorem isUnit_natCast_of_not_dvd {A O : Type} [CommRing A] [CommRing O] [IsLoca
     exact add_mem (m.mul_mem_left _ hbm) (m.mul_mem_left _ hpm)
   exact (Ideal.IsPrime.ne_top inferInstance) ((Ideal.eq_top_iff_one _).2 h1)
 
+/- English proof (translation)
+Introduce `hF`. Unfold `TrivFlagOnHodge`. Introduce `E _ _ _ H D l Xo c O₀ _ β Y S Ω _ K _ _ J _ y 𝔐 d hd Fl x e hRL p hpS hHT A _ _ _`. Unfold `AtPlacesOver`. Introduce `m _ hpm O _ _ _ _ _ _ _ τ W hW`.
+
+Use `haveI : Fact p.Prime := ⟨𝔐.S_prime p hpS⟩`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Establish `hflag : TrivFlagMod O ϖ y (D.p + D.q) (fun i => x (τ, i))`. Break down `Nat.eq_zero_or_pos (D.p + D.q) with h0 | hpos` into its components or cases. Conclude with `trivFlagMod_of_eq_zero O ϖ y _ h0 _`.
+
+Establish `hint` using `intCast_injective_of_isArithVar hd haveI : CharZero Ω := ⟨fun a b hab => by`. Establish `: Int.castRingHom Ω (a : ℤ) = Int.castRingHom Ω (b : ℤ)` using `by simpa using hab`. Conclude with `hint this⟩` after adjusting the coercions. Establish `h1` using `GlobalTheory.T.hodge_tate_free_trivial_flag_mod hF E H D l Xo c O₀ β Y S Ω K J y 𝔐 p hpS hpos (zpLocSubalg Ω p) (mem_range_zpLocSubalg Ω p) Fl x e hHT hRL τ`. Establish `hr : ∀ a : zpLocSubalg Ω p, algebraMap (zpLocSubalg Ω p) Ω a ∈ (algebraMap O Ω).range`.
+
+Introduce `a`. Take `⟨a₁, b, hb, hab⟩` from `(mem_range_zpLocSubalg Ω p _).1 ⟨a, rfl⟩`. Establish `hu` using `isUnit_natCast_of_not_dvd (O := O) m p hpm b hb`. Use `⟨(a₁ : O) * ↑hu.unit⁻¹, ?_⟩` and prove the remaining obligations. Rewrite using `[hab, map_mul, map_intCast, div_eq_mul_inv]`.
+
+Use `congr 1`. Use `eq_inv_of_mul_eq_one_left ?_` and prove the remaining obligations. Rewrite using `[← map_natCast (algebraMap O Ω) b, ← map_mul, hu.val_inv_mul, map_one]`. Establish `h2 : TrivFlagMod O ((p : O) ^ (𝔐.R p - 2)) y (D.p + D.q) (fun i => x (τ, i))` using `trivFlagMod_of_range_le hr _ _ (by simp) _ _ _ h1`. Establish `hpO : (p : O) ∈ IsLocalRing.maximalIdeal O`.
+
+Use `(IsLocalization.AtPrime.to_map_mem_maximal_iff O m (p : A)).2 hpm` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Rewrite `hpO` using `[hϖ.maximalIdeal_eq, Ideal.mem_span_singleton]`. Establish `hR : 𝔐.R p - 2 ≠ 0`. Use `𝔐.R_ge p hpS` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Conclude with `GlobalTheory.T.triv_flag_mod_of_dvd O Ω K J y _ ϖ _ _ (dvd_pow hpO hR) h2`. Establish `hJ` using `isMultiHomogIdeal_pointIdeal_sup_map_C (ι := J) (O := O) y (IsLocalRing.maximalIdeal O)`. Establish `hWh` using `GroundTheory.Heights₂.Heights.NumbersDVR.MinimalPrimeMultiHomog.proof.{0} O K J _ W hJ hW.1`. Establish `hCϖ : (C ϖ : GroundTheory.Heights₂.Heights.NumbersDVR.MRing J O) ∈ W` using `hW.1.1.2 (Ideal.mem_sup_right (Ideal.mem_map_of_mem _ ((IsLocalRing.mem_maximalIdeal _).2 hϖ.not_isUnit)))`.
+
+Conclude with `GlobalTheory.T.trivial_flag_at_prime O Ω K J y ϖ hϖ _ _ hflag W ⟨hW.1.1.1, hWh, hW.2⟩ (le_sup_left.trans hW.1.1.2) hCϖ`.
+-/
 theorem trivFlagOnHodge_of_fargues : GlobalTheory.CompanionTheory.Ar.HT.FarguesHodgeTate → TrivFlagOnHodge := by
   intro hF
   unfold TrivFlagOnHodge

@@ -4,10 +4,22 @@ import Development.AutomorphicArithmetic.Foundations.Convolution.PolynomialCoeff
 
 open MvPolynomial Filter Topology PositivityTheory.Rg.Fx
 
+/- English proof (translation)
+Simplify using `[lift, AddMonoidAlgebra.liftNCRingHom]`.
+-/
 private theorem lift_single {ι A : Type} [CommRing A] [Algebra ℂ A] (x : ι → A) (τ : Multiplicative (ι → ℝ) →* A) (v : ι → ℝ)
     (p : MvPolynomial ι ℂ) : lift x τ (AddMonoidAlgebra.single v p) = aeval x p * τ (Multiplicative.ofAdd v) := by
   simp [lift, AddMonoidAlgebra.liftNCRingHom]
 
+/- English proof (translation)
+Establish `h1 : ∀ a, HasSum (fun k => if a ≤ k then g a (k - a) else 0) (s a)` using `fun a => by`. Rewrite using `[← hasSum_nat_add_iff' a, Finset.sum_eq_zero fun i hi => if_neg (not_le.2 (Finset.mem_range.1 hi)), sub_zero]`. Simplify using `using h a`. Use `hasSum_sum (s := Finset.range (d + 1)) fun a _ => h1 a using 2 with k` and compare the differences between its conclusion and the goal. Rewrite using `[← Finset.sum_range_reflect, ← Finset.sum_filter]`.
+
+Establish `e : ∀ j ∈ Finset.range (k + 1), g (k - (k + 1 - 1 - j)) (k + 1 - 1 - j) = g j (k - j)` using `fun j hj => by`. Use `Finset.mem_range.1 hj` as an intermediate fact. Use `congr 1`. Use linear arithmetic over natural numbers and integers. Rewrite using `[Finset.sum_congr rfl e]`.
+
+Use `symm`. Use `Finset.sum_subset (fun a ha => ?_) fun a ha hn => h0 a ?_ _` and prove the remaining obligations. Simplify using `only [Finset.mem_filter, Finset.mem_range] at ha ⊢`. Use linear arithmetic over natural numbers and integers. Simplify using `only [Finset.mem_filter, Finset.mem_range] at ha hn`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 private theorem shift_sum (g : ℕ → ℕ → ℂ) (s : ℕ → ℂ) (d : ℕ) (h0 : ∀ a, d < a → ∀ b, g a b = 0) (h : ∀ a, HasSum (g a) (s a)) :
     HasSum (fun k => ∑ b ∈ Finset.range (k + 1), g (k - b) b) (∑ a ∈ Finset.range (d + 1), s a) := by
   have h1 : ∀ a, HasSum (fun k => if a ≤ k then g a (k - a) else 0) (s a) := fun a => by
@@ -27,6 +39,17 @@ private theorem shift_sum (g : ℕ → ℕ → ℂ) (s : ℕ → ℂ) (d : ℕ) 
   · simp only [Finset.mem_filter, Finset.mem_range] at ha hn
     omega
 
+/- English proof (translation)
+Establish `e1 : HasSum (fun b : ℕ => (b.factorial : ℂ)⁻¹ * c ^ b) (Complex.exp c)`. Rewrite using `[Complex.exp_eq_exp_ℂ]`. Simplify `NormedSpace.expSeries_div_hasSum_exp c` using `[div_eq_inv_mul]`. Establish `s1` using `(summable_norm_sum_mul_range_of_summable_norm e1.summable.norm h.summable.norm).of_norm`. Establish `t` using `tsum_mul_tsum_eq_tsum_sum_range_of_summable_norm e1.summable.norm h.summable.norm`.
+
+Rewrite `t` using `[e1.tsum_eq, h.tsum_eq]`. Rewrite using `[t]`. Use `(congrArg (HasSum · _) (funext fun k => ?_)).mpr s1.hasSum` and prove the remaining obligations. Rewrite using `[add_pow, Finset.sum_smul, map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun b hb => ?_` and prove the remaining obligations.
+
+Establish `hbk : b ≤ k` using `Nat.lt_succ_iff.1 (Finset.mem_range.1 hb)`. Establish `e : algebraMap ℂ A c ^ b * l ^ (k - b) * (k.choose b : A) = (c ^ b * k.choose b : ℂ) • l ^ (k - b)`. Rewrite using `[Algebra.smul_def, map_mul, map_pow, map_natCast]`. Expand and normalize the polynomial expressions, which then agree. Establish `h4 : (k.factorial : ℂ) = k.choose b * b.factorial * (k - b).factorial`.
+
+Conclude with `(Nat.choose_mul_factorial_mul_factorial hbk).symm` after adjusting the coercions. Establish `hb0 : (b.factorial : ℂ) ≠ 0` using `by exact_mod_cast b.factorial_ne_zero`. Establish `hc0 : (k.choose b : ℂ) ≠ 0` using `by exact_mod_cast (Nat.choose_pos hbk).ne'`. Establish `he0 : ((k - b).factorial : ℂ) ≠ 0` using `by exact_mod_cast (k - b).factorial_ne_zero`. Rewrite using `[e, smul_assoc, map_smul, smul_eq_mul, h4]`.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 private theorem exp_sum {A M : Type} [CommRing A] [Algebra ℂ A] [AddCommGroup M] [Module ℂ M] [Module A M] [IsScalarTower ℂ A M]
     (φ : M →ₗ[ℂ] ℂ) (l : A) (c s : ℂ) (m : M) (h : HasSum (fun k : ℕ => (k.factorial : ℂ)⁻¹ * φ (l ^ k • m)) s) :
     HasSum (fun k : ℕ => (k.factorial : ℂ)⁻¹ * φ ((algebraMap ℂ A c + l) ^ k • m)) (Complex.exp c * s) := by
@@ -52,6 +75,25 @@ private theorem exp_sum {A M : Type} [CommRing A] [Algebra ℂ A] [AddCommGroup 
   rw [e, smul_assoc, map_smul, smul_eq_mul, h4]
   field_simp
 
+/- English proof (translation)
+Introduce `ι κ _ b A M _ _ _ _ _ _ D τ φ hT F m`. Use `set ξ : ι → A := fun i => algebraMap ℂ A (b.Λ i) + ∑ j, (b.emb i j : ℂ) • D j with hξ`. Establish `hA : ∀ (f : EP ι) (m : M), HasSum (fun k => φ (aeval ξ (piece k f) • m)) (φ (lift D τ (aff b.Λ b.emb f) • m))`. Introduce `f m`. Proceed by induction on `f using AddMonoidAlgebra.induction_linear with`.
+
+Consider the case `zero`. Simplify using `only [fun k => (UpperTheory.ConvolutionTheory.FX.piece_add ι k).2.1, map_zero, zero_smul]`. Conclude with `hasSum_zero`. Consider the case `add f g hf hg`. Simplify using `only [fun k => (UpperTheory.ConvolutionTheory.FX.piece_add ι k).1 f g, map_add, add_smul]`.
+
+Conclude with `hf.add hg`. Consider the case `single v p => set c : ℂ := ∑ i, (v i : ℂ) * b.Λ i with hc set t := τ (Multiplicative.ofAdd (Matrix.vecMul v b.emb)) with ht`. Establish `hl : aeval ξ (lin v) = algebraMap ℂ A c + ∑ j, ((Matrix.vecMul v b.emb j : ℝ) : ℂ) • D j`. Simplify using `only [lin, map_sum, map_mul, aeval_C, aeval_X, hξ, hc, mul_add, Finset.sum_add_distrib, Matrix.vecMul, dotProduct, Complex.ofReal_sum, Complex.ofReal_mul, Finset.sum_smul, Finset.mul_sum, Algebra.smul_def, mul_assoc]`. Rewrite using `[Finset.sum_comm]`.
+
+Simplify using `only [Finset.sum_mul, mul_assoc]`. Establish `hp : ∀ q : MvPolynomial ι ℂ, lift D τ (aeval (fun i => (AddMonoidAlgebra.single 0 (C (b.Λ i) + lin (b.emb i)) : EP (Fin b.r))) q) = aeval ξ q` using `fun q => by`. Proceed by induction on `q using MvPolynomial.induction_on with`. Consider the case `C a => simp [AddMonoidAlgebra.coe_algebraMap, lift_single]`. Consider the case `add p q hp hq => rw [map_add, map_add, map_add, hp, hq]`.
+
+Consider the case `mul_X p j hp`. Rewrite using `[map_mul, map_mul, map_mul, hp, aeval_X, aeval_X, lift_single]`. Simplify using `[hξ, lin, Algebra.smul_def]`. Establish `hv : lift D τ (aff b.Λ b.emb (AddMonoidAlgebra.single v p)) = aeval ξ p * (Complex.exp c • t)`. Rewrite using `[aff, lift_single, map_mul, hp]`.
+
+Simplify using `[affChar, expChar, lift_single, Algebra.smul_def, hc, ht]`. Establish `h1` using `shift_sum (fun a k => (k.factorial : ℂ)⁻¹ * φ (aeval ξ (lin v) ^ k • aeval ξ (homogeneousComponent a p) • m)) (fun a => Complex.exp c * φ (t • aeval ξ (homogeneousComponent a p) • m)) p.totalDegree (fun a ha k => by rw [homogeneousComponent_eq_zero a p ha]; simp) (fun a => by rw …`. Use `h1 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `k`. Rewrite using `[(UpperTheory.ConvolutionTheory.FX.piece_add ι k).2.2, map_sum, Finset.sum_smul, map_sum]`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, aeval_C, map_pow, mul_comm, ← Algebra.smul_def, smul_mul_assoc, smul_assoc, map_smul, mul_smul, smul_eq_mul]`. Rewrite using `[hv, ← Finset.mul_sum, ← map_sum, ← Finset.smul_sum, ← Finset.sum_smul, ← map_sum, sum_homogeneousComponent, mul_comm, smul_mul_assoc, smul_assoc, map_smul, mul_smul, smul_eq_mul]`. Establish `h2` using `hasSum_sum (s := F.support) fun β _ => hA (F.coeff β) ((β.prod fun k e => lift D τ (b.h k) ^ e) • m)`. Use `h2 using 1` and compare the differences between its conclusion and the goal.
+
+Use function extensionality and compare the values at `k`. Rewrite using `[pieceK, eval₂_sum, Finset.sum_smul, map_sum]`. Use `Finset.sum_congr rfl fun β _ => ?_` and prove the remaining obligations. Rewrite using `[eval₂_monomial, mul_smul]`. Both sides reduce to the same expression.
+
+Use `conv_lhs => rw [F.as_sum]`. Rewrite using `[map_sum, map_sum, Finset.sum_smul, map_sum]`. Use `Finset.sum_congr rfl fun β _ => ?_` and prove the remaining obligations. Rewrite using `[Fam.sub, eval₂Hom_monomial, map_mul, mul_smul, map_finsuppProd]`. Simplify using `only [map_pow]`.
+-/
 theorem UpperTheory.ConvolutionTheory.FX.rearrange :
     PositivityTheory.Rg.Fx.Rearrange := by
   intro ι κ _ b A M _ _ _ _ _ _ D τ φ hT F m

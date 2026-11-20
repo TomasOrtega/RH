@@ -9,6 +9,11 @@ open GlobalTheory.HodgeCoh GlobalTheory.CechDR
 
 namespace UpperTheory.Gal.W2
 
+/- English proof (translation)
+Introduce `X A _ g y e he w hw`. Take `⟨v, hv, -⟩` from `he.2.2.2.1 w`. Establish `hv0 : IsDerivAt0 (fun z => Over.Hom.left (e z)) 0 (Over.Hom.left v)`. Use `⟨hv.1, fun U h f => (hv.2 U h f).trans ?_⟩` and prove the remaining obligations. Establish `hb : spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom ≫ Over.Hom.left v = Over.Hom.left (e 0)` using `hv.1`.
+
+Establish `h' : ⊤ ≤ (Over.Hom.left (e 0)) ⁻¹ᵁ U`. Rewrite using `[← hb]`. Conclude with `fun x _ => h trivial`. Rewrite using `[hw U f h', map_zero]`. Conclude with `(he.2.2.2.2 v hv.1).unique hv hv0`.
+-/
 theorem expImm0_of : ExpImm0 := by
   intro X A _ g y e he w hw
   obtain ⟨v, hv, -⟩ := he.2.2.2.1 w

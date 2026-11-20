@@ -15,15 +15,26 @@ namespace GlobalTheory.FinPl.SplitPt
 
 variable {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Conclude with `Valuation.Integer.not_isUnit_iff_valuation_lt_one`.
+-/
 theorem mem_max_iff_val_lt_one (x : 𝒪[k]) : x ∈ IsLocalRing.maximalIdeal 𝒪[k] ↔ valuation k (x : k) < 1 := by
   rw [IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]
   exact Valuation.Integer.not_isUnit_iff_valuation_lt_one
 
+/- English proof (translation)
+The claim follows from `(q.pr_mem_iff _).2 (mul_mem (GlobalTheory.IdemRes.resS_idem_eq_one D q.e PP he).1 (Formalism.L2.DIV.oToS D.host.F D.host.E x).2)`.
+-/
 theorem pr_incA_int_mem (q : SplitPt D k) {PP : HeightOneSpectrum (𝓞 D.host.E)} (he : Formalism.L2.NTheta.IsIdemAt q.e PP)
     (x : 𝓞 D.host.E) : q.pr (incA D (x : D.host.E)) ∈ 𝒪[k] :=
   (q.pr_mem_iff _).2 (mul_mem (GlobalTheory.IdemRes.resS_idem_eq_one D q.e PP he).1
     (Formalism.L2.DIV.oToS D.host.F D.host.E x).2)
 
+/- English proof (translation)
+Establish `h1 : toEAf D (q.e * q.sec u) ∈ Formalism.L2.Herm.intAf D.host.F D.host.E`. Rewrite using `[map_mul]`. Conclude with `(q.pr_mem_iff (q.sec u)).1 (by rw [q.pr_sec]; exact hu)`. Establish `h2 : q.pr (q.e * q.sec u) = u` using `by rw [← q.sec_pr, q.pr_sec, q.pr_sec]`. Take `⟨a, ha0⟩` from `GlobalTheory.FunObj.Comparison₂.exists_approx PP.ne_bot (⟨_, h1⟩ : Formalism.L2.Herm.intAf D.host.F D.host.E)`.
+
+Establish `ha : (⟨_, h1⟩ : Formalism.L2.Herm.intAf D.host.F D.host.E) - Formalism.L2.DIV.oToS D.host.F D.host.E a ∈ Formalism.L2.DIV.idS D.host.F PP.asIdeal` using `ha0`. Establish `h3` using `q.val_lt_of_mem_idS he ha`. Establish `e2 : (((⟨_, h1⟩ : Formalism.L2.Herm.intAf D.host.F D.host.E) - Formalism.L2.DIV.oToS D.host.F D.host.E a : Formalism.L2.Herm.intAf D.host.F D.host.E) : EAf D) = toEAf D (q.e * q.sec u) - toEAf D (incA D (a : D.host.E))` using `rfl`. Rewrite `h3` using `[e2, RingHom.map_sub, prF_toEAf, prF_toEAf, h2]`. Conclude with `⟨a, h3⟩`.
+-/
 theorem exists_int_approx (q : SplitPt D k) {PP : HeightOneSpectrum (𝓞 D.host.E)} (he : Formalism.L2.NTheta.IsIdemAt q.e PP)
     {u : k} (hu : u ∈ 𝒪[k]) : ∃ z : 𝓞 D.host.E, valuation k (u - q.pr (incA D (z : D.host.E))) < 1 := by
   have h1 : toEAf D (q.e * q.sec u) ∈ Formalism.L2.Herm.intAf D.host.F D.host.E := by
@@ -41,6 +52,19 @@ theorem exists_int_approx (q : SplitPt D k) {PP : HeightOneSpectrum (𝓞 D.host
   rw [e2, RingHom.map_sub, prF_toEAf, prF_toEAf, h2] at h3
   exact ⟨a, h3⟩
 
+/- English proof (translation)
+Introduce `D k _ _ _ _ p PP he m b b' hb _ P hlat c₀ hval u hu r0 hr0`. Use `choose z hz using fun r => p.exists_int_approx he (hu r)`. Take `⟨s, hs, hv⟩` from `hval (fun r => (z r : D.host.E)) (fun r => (z r).isIntegral_coe) r0 hr0`. Establish `hw : ∀ r, p.pr (incA D (z r : D.host.E)) ∈ 𝒪[k]` using `fun r => p.pr_incA_int_mem he (z r)`. Set `d : Fin m → 𝒪[k]` to `fun r => ⟨u r - p.pr (incA D (z r : D.host.E)), sub_mem (hu r) (hw r)⟩`.
+
+Establish `hd : ∀ r, d r ∈ maximalIdeal 𝒪[k]` using `fun r => (mem_max_iff_val_lt_one (d r)).2 (hz r)`. Establish `hcol : ∀ r, b' *ᵥ (Pi.single r 1 : Fin m → k) ∈ P.lat` using `fun r => (hlat _).2 fun r' => by`. Rewrite using `[Matrix.mulVec_mulVec, hb, Matrix.one_mulVec, Pi.single_apply]`. Use `split_ifs`. Use `exacts [one_mem _, zero_mem _]`.
+
+Establish `hker : ∑ r, d r • (b' *ᵥ (Pi.single r 1 : Fin m → k)) ∈ P.ker` using `Submodule.sum_mem _ fun r _ => Pair.smul_mem_ker (hd r) (hcol r)`. Establish `hsum : b' *ᵥ u = (b' *ᵥ fun r' => p.pr (incA D (z r' : D.host.E))) + ∑ r, d r • (b' *ᵥ (Pi.single r 1 : Fin m → k))`. Establish `: ∀ r, d r • (b' *ᵥ (Pi.single r 1 : Fin m → k)) = b' *ᵥ (Pi.single r (d r : k) : Fin m → k)` using `fun r => by`. Express the relevant statement in the definitionally equal form `(d r : k) • (b' *ᵥ (Pi.single r 1 : Fin m → k)) = _`. Rewrite using `[← Matrix.mulVec_smul, ← Pi.single_smul, smul_eq_mul, mul_one]`.
+
+Rewrite using `[Finset.sum_congr rfl fun r _ => this r, ← Matrix.mulVec_sum, ← Matrix.mulVec_add, Finset.univ_sum_single]`. Use `congr 1`. Use function extensionality and compare the values at `r`. Simplify using `[d]`. Set `c : 𝒪[k]` to `⟨_, p.pr_incA_int_mem he c₀⟩`.
+
+Use `⟨s + c * d r0, ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(s : k) + p.pr (incA D (c₀ : D.host.E)) * (u r0 - p.pr (incA D (z r0 : D.host.E))) = _`. Rewrite using `[hs, map_mul, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hsum, map_add, (IsLocalRing.residue_eq_zero_iff _).2 (Ideal.mul_mem_left _ c (hd r0))]`.
+
+Conclude with `hv.add (Pair.mem_ker.1 hker)`.
+-/
 theorem hasVal_of_int_vectors : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (p : SplitPt D k) (PP : HeightOneSpectrum (𝓞 D.host.E)), Formalism.L2.NTheta.IsIdemAt p.e PP →
     ∀ (m : ℕ) (b b' : Matrix (Fin m) (Fin m) k), b * b' = 1 → b' * b = 1 →

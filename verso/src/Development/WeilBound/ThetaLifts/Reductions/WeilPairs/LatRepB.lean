@@ -12,14 +12,23 @@ namespace PositivityTheory.ThKW
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+The claim follows from `LatB.exists_w hB.cm hB.unram`.
+-/
 theorem exists_integral_trace_one (σ : E →ₐ[F] E) (B : Base F E) (hB : B.IsGood σ) : ∃ w : 𝓞 E, w + sgOF σ w = 1 :=
   LatB.exists_w hB.cm hB.unram
 
+/- English proof (translation)
+Use `haveI := hB.galois`. Conclude with `LatB.exists_goodNorm hB.cm hB.unram`.
+-/
 theorem exists_good_norm_character (σ : E →ₐ[F] E) (B : Base F E) (hB : B.IsGood σ) : ∃ lam : ℕ →* ℂ, GoodNorm (sgOF σ) lam ∧
     ∀ n : ℕ, n ≠ 0 → (∀ q : ℕ, q.Prime → InertQF σ q → ¬ q ∣ n) → lam n = (Real.sqrt n : ℂ) := by
   haveI := hB.galois
   exact LatB.exists_goodNorm hB.cm hB.unram
 
+/- English proof (translation)
+Introduce `e he a ha`. Take `⟨hf, hfc, hcc⟩` from `LatB.split_parts he`. Conclude with `⟨LatB.idem_smul_mem he.1 hf ha, LatB.idem_smul_mem hcc hfc ha⟩`.
+-/
 theorem lattice_stable_under_idempotents (σ : E →ₐ[F] E) (B : Base F E) (hB : B.IsGood σ) {nS nT : ℕ}
     (Λ : Submodule (𝓞 E) (Matrix (Fin nT) (Fin nS) E)) : ∀ e, IsSplitIdemF σ e → ∀ a ∈ latF F E nS nT Λ,
     mulFF e a ∈ latF F E nS nT Λ ∧ mulFF (cAF σ e) a ∈ latF F E nS nT Λ := by
@@ -27,6 +36,9 @@ theorem lattice_stable_under_idempotents (σ : E →ₐ[F] E) (B : Base F E) (hB
   obtain ⟨hf, hfc, hcc⟩ := LatB.split_parts he
   exact ⟨LatB.idem_smul_mem he.1 hf ha, LatB.idem_smul_mem hcc hfc ha⟩
 
+/- English proof (translation)
+The claim follows from `LatB.idx_main hB.cm hfin`.
+-/
 theorem lattice_index_prime_to_inert (σ : E →ₐ[F] E) (B : Base F E) (hB : B.IsGood σ) {nS nT : ℕ}
     (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E)
     (Λ : Submodule (𝓞 E) (Matrix (Fin nT) (Fin nS) E))

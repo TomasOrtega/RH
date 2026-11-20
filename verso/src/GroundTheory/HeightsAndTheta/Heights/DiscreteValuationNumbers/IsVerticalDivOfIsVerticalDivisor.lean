@@ -18,6 +18,13 @@ variable {R : Type*} [CommRing R] {Ω : Type*} [Field Ω] [Algebra R Ω]
 
 def coords (pt : MRingOver R ι →ₐ[R] Ω) : (Σ k, ι k) → Ω := fun p => pt (X p)
 
+/- English proof (translation)
+Use `conv_lhs => rw [s.as_sum]`. Use `conv_rhs => rw [s.as_sum]`. Rewrite using `[map_sum, map_sum, map_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations. Simplify using `only [NumbersDVR.pointConeMap, aeval_monomial]`.
+
+Rewrite using `[Finsupp.prod_fintype _ _ (fun _ => pow_zero _), Finsupp.prod_fintype _ _ (fun _ => pow_zero _)]`. Simplify using `only [mul_pow, Finset.prod_mul_distrib, map_mul, map_prod, map_pow, mul_assoc]`. Establish `hB : ∏ x : (Σ k, ι k), (X x.1 : MvPolynomial K Ω) ^ m x = ∏ k, X k ^ a k`. Rewrite using `[Fintype.prod_sigma]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Use `show ∏ i : ι k, (X k : MvPolynomial K Ω) ^ m ⟨k, i⟩ = _`. Rewrite using `[Finset.prod_pow_eq_pow_sum, hs m hm k]`. Rewrite using `[hB, MvPolynomial.algebraMap_apply]`.
+-/
 theorem pointConeMap_of_isMultiHomog (y : (Σ k, ι k) → Ω) {s : MRingOver R ι} {a : K → ℕ}
     (hs : IsMultiHomog s a) :
     NumbersDVR.pointConeMap R y s = C (aeval y s) * ∏ k, X k ^ a k := by
@@ -82,6 +89,13 @@ section Triangular
 
 variable {Ω : Type*} [Field Ω] {E : Type*} [AddCommGroup E] [Module Ω E] {N : ℕ}
 
+/- English proof (translation)
+Establish `hA : (w.toMatrix w').BlockTriangular id` using `fun i j hji => by`. Rewrite using `[Module.Basis.toMatrix_apply]`. Conclude with `h j i hji`. Establish `: Invertible (w.toMatrix w')` using `w.invertibleToMatrix w'`. Establish `hinv : (w.toMatrix w')⁻¹ = w'.toMatrix w` using `Matrix.inv_eq_right_inv (w.toMatrix_mul_toMatrix_flip w')`.
+
+Use `⟨fun i j hij => ?_, fun i => ?_⟩` and prove the remaining obligations. Establish `hB` using `Matrix.blockTriangular_inv_of_blockTriangular hA`. Rewrite `hB` using `[hinv]`. Use `@hB j i hij` as an intermediate fact. Rewrite `this` using `[Module.Basis.toMatrix_apply]`. Then use the resulting hypothesis.
+
+Establish `hdet : (w.toMatrix w').det ≠ 0` using `(Matrix.isUnit_det_of_right_inverse (w.toMatrix_mul_toMatrix_flip w')).ne_zero`. Rewrite `hdet` using `[Matrix.det_of_isUpperTriangular hA]`. Use `Finset.prod_ne_zero_iff.mp hdet i (Finset.mem_univ _)` as an intermediate fact. Rewrite `this` using `[Module.Basis.toMatrix_apply]`. Then use the resulting hypothesis.
+-/
 theorem triangular_flip (w w' : Module.Basis (Fin N) Ω E)
     (h : ∀ i j : Fin N, i < j → w.repr (w' i) j = 0) :
     (∀ i j : Fin N, i < j → w'.repr (w i) j = 0) ∧ ∀ i, w.repr (w' i) i ≠ 0 := by
@@ -109,6 +123,9 @@ section MultiHomog
 variable {K : Type*} [Fintype K] [DecidableEq K] {ι : K → Type*} [∀ k, Fintype (ι k)]
 variable {R : Type*} [CommRing R]
 
+/- English proof (translation)
+Rewrite using `[Finsupp.weight_apply, Finsupp.sum_fintype _ _ (by simp)]`. Simplify using `[NumbersDVR.blockWeight, Finset.sum_apply, Pi.single_apply, Fintype.sum_sigma]`. Rewrite using `[Finset.sum_eq_single k (fun b _ hb => by simp [Ne.symm hb]) (by simp)]`. Simplify using the standard rewrite rules.
+-/
 theorem weight_blockWeight (d : (Σ k, ι k) →₀ ℕ) (k : K) :
     Finsupp.weight (NumbersDVR.blockWeight ι) d k = ∑ i, d ⟨k, i⟩ := by
   rw [Finsupp.weight_apply, Finsupp.sum_fintype _ _ (by simp)]
@@ -116,6 +133,11 @@ theorem weight_blockWeight (d : (Σ k, ι k) →₀ ℕ) (k : K) :
   rw [Finset.sum_eq_single k (fun b _ hb => by simp [Ne.symm hb]) (by simp)]
   simp
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h d hd k`. Rewrite using `[← weight_blockWeight]`. Conclude with `congrFun (h (mem_support_iff.mp hd)) k`. Introduce `h d hd`.
+
+Use function extensionality and compare the values at `k`. Rewrite using `[weight_blockWeight]`. Conclude with `h d (mem_support_iff.mpr hd) k`.
+-/
 theorem isMultiHomog_iff (f : MRingOver R ι) (a : K → ℕ) :
     NumbersDVR.IsMultiHomog f a ↔ IsMultiHomog f a := by
   constructor
@@ -143,6 +165,9 @@ section Numbers
 variable {K : Type*} [Fintype K] [DecidableEq K] {ι : K → Type*} [∀ k, Fintype (ι k)]
 
 omit [Fintype K] [∀ k, Fintype (ι k)] in
+/- English proof (translation)
+Use function extensionality and compare the values at `m`. Simplify using `only [NumbersDVR.diffStep]`. Rewrite using `[sub_right_comm m a b]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem diffStep_comm (a b : K → ℤ) (h : (K → ℤ) → ℤ) :
     NumbersDVR.diffStep a (NumbersDVR.diffStep b h) =
       NumbersDVR.diffStep b (NumbersDVR.diffStep a h) := by
@@ -153,12 +178,18 @@ theorem diffStep_comm (a b : K → ℤ) (h : (K → ℤ) → ℤ) :
 
 omit [Fintype K] [∀ k, Fintype (ι k)] in
 
+/- English proof (translation)
+Establish `: LeftCommutative (NumbersDVR.diffStep (K` using `K)) := ⟨diffStep_comm⟩`. Simplify using `only [NumbersDVR.intNumL, NumbersDVR.intNum, NumbersDVR.mixedDiff, List.ofFn_get]`. Rewrite using `[h.foldr_eq]`.
+-/
 theorem intNumL_perm (F : Type*) [Field F] (V : Ideal (MRingOver F ι)) {L₁ L₂ : List (K → ℤ)}
     (h : L₁.Perm L₂) : NumbersDVR.intNumL F V L₁ = NumbersDVR.intNumL F V L₂ := by
   have : LeftCommutative (NumbersDVR.diffStep (K := K)) := ⟨diffStep_comm⟩
   simp only [NumbersDVR.intNumL, NumbersDVR.intNum, NumbersDVR.mixedDiff, List.ofFn_get]
   rw [h.foldr_eq]
 
+/- English proof (translation)
+Use extensionality with `a`. Rewrite using `[Multiset.coe_count, Finsupp.count_toMultiset]`. Simplify using `only [IndefiniteRowSideFullHecke.NumbersDVR.monoList, List.count_flatMap]`. Rewrite using `[← Fin.sum_univ_def]`. Simplify using `[List.count_replicate]`.
+-/
 theorem coe_monoList {N : ℕ} (μ : Fin N →₀ ℕ) :
     ((IndefiniteRowSideFullHecke.NumbersDVR.monoList μ : List (Fin N)) : Multiset (Fin N)) = Finsupp.toMultiset μ := by
   ext a
@@ -167,12 +198,20 @@ theorem coe_monoList {N : ℕ} (μ : Fin N →₀ ℕ) :
   rw [← Fin.sum_univ_def]
   simp [List.count_replicate]
 
+/- English proof (translation)
+Rewrite using `[← Multiset.coe_eq_coe, ← Multiset.map_coe, coe_monoList, NumbersDVR.classList, Multiset.coe_toList]`.
+-/
 theorem monoList_perm {N : ℕ} (cls : Fin N → K → ℤ) (μ : Fin N →₀ ℕ) :
     ((IndefiniteRowSideFullHecke.NumbersDVR.monoList μ).map cls).Perm (NumbersDVR.classList cls μ) := by
   rw [← Multiset.coe_eq_coe, ← Multiset.map_coe, coe_monoList, NumbersDVR.classList,
     Multiset.coe_toList]
 
 omit [Fintype K] [DecidableEq K] in
+/- English proof (translation)
+Establish `h1 : (IndefiniteRowSideFullHecke.NumbersDVR.monoList μ).length = Multiset.card (Finsupp.toMultiset μ)`. Rewrite using `[← coe_monoList, Multiset.coe_card]`. Establish `h2` using `hQ (mem_support_iff.mp hμ)`. Rewrite using `[h1, Finsupp.card_toMultiset, ← h2, Finsupp.weight_apply]`. Simplify using `only [Pi.one_apply, smul_eq_mul, mul_one]`.
+
+Both sides reduce to the same expression.
+-/
 theorem length_monoList {N : ℕ} {Q : MvPolynomial (Fin N) ℤ} {d : ℕ} (hQ : Q.IsHomogeneous d)
     {μ : Fin N →₀ ℕ} (hμ : μ ∈ Q.support) : (IndefiniteRowSideFullHecke.NumbersDVR.monoList μ).length = d := by
   have h1 : (IndefiniteRowSideFullHecke.NumbersDVR.monoList μ).length = Multiset.card (Finsupp.toMultiset μ) := by
@@ -188,6 +227,11 @@ section Divisors
 
 variable {K : Type*} [Fintype K] {ι : K → Type*} [∀ k, Fintype (ι k)]
 
+/- English proof (translation)
+Establish `hL : (ReciprocityTheory.ChartRestriction.G.Geo.divCycle P f W : ℕ) = if W ∈ divSupp P f then multAt (P ⊔ Ideal.span {f}) W else 0` using `rfl`. Rewrite using `[NumbersDVR.divCycle, hL]`. Distinguish the cases in `h : W ∈ (P ⊔ Ideal.span {f}).minimalPrimes ∧ NumbersDVR.IsRelevant W`. Establish `h' : W ∈ divSupp P f` using `h`. Rewrite using `[dif_pos h, if_pos h', multAt, dif_pos h.1.1.1]`.
+
+Both sides reduce to the same expression. Establish `h' : W ∉ divSupp P f` using `h`. Rewrite using `[dif_neg h, if_neg h']`. Simplify using the standard rewrite rules.
+-/
 theorem divCycle_eq {R : Type*} [CommRing R] [IsNoetherianRing R] (P : Ideal (MRingOver R ι))
     (f : MRingOver R ι) (W : Ideal (MRingOver R ι)) :
     NumbersDVR.divCycle P f W = (ReciprocityTheory.ChartRestriction.G.Geo.divCycle P f W : ℤ) := by
@@ -206,6 +250,11 @@ theorem divCycle_eq {R : Type*} [CommRing R] [IsNoetherianRing R] (P : Ideal (MR
 variable {O : Type*} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
 
 omit [Fintype K] [∀ k, Fintype (ι k)] in
+/- English proof (translation)
+Unfold `NumbersDVR.cycEval`. Rewrite using `[finsum_eq_sum_of_support_subset _ (s := Z.support) ?_]`. Both sides reduce to the same expression. Introduce `W hW`. Rewrite `hW` using `[Function.mem_support]`.
+
+Rewrite using `[Finset.mem_coe, Finsupp.mem_support_iff]`. Introduce `h0`. Conclude with `hW (by rw [h0, zero_mul])`.
+-/
 theorem cycEval_finsupp {R : Type*} [CommRing R] (n : Ideal (MRingOver R ι) → ℤ)
     (Z : Ideal (MRingOver R ι) →₀ ℤ) : NumbersDVR.cycEval n ⇑Z = Z.sum fun W c => c * n W := by
   unfold NumbersDVR.cycEval
@@ -246,6 +295,9 @@ variable {K : Type*} [Fintype K] [DecidableEq K] {ι : K → Type*} [∀ k, Fint
 variable {O : Type*} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {N : ℕ}
 
 omit [Fintype K] [∀ k, Fintype (ι k)] in
+/- English proof (translation)
+The claim follows from `intNumL_perm (IsLocalRing.ResidueField O) _ h`.
+-/
 theorem vNumL_perm (W : Ideal (MRingOver O ι)) {L₁ L₂ : List (K → ℤ)} (h : L₁.Perm L₂) :
     NumbersDVR.vNumL W L₁ = NumbersDVR.vNumL W L₂ :=
   intNumL_perm (IsLocalRing.ResidueField O) _ h

@@ -16,6 +16,9 @@ attribute [local instance] MvPolynomial.gradedAlgebra
 
 namespace UpperTheory.Gal.KunnethLefschetz.G
 
+/- English proof (translation)
+Establish `h0 : (Cl * Dk - Ck * Dl) * (T * T' * b ^ n) = 0`. Take the linear combination `(T' * Dk) * hl - (T' * Dl) * hk`. Establish `hu : T * T' * b ^ n ∈ nonZeroDivisors A` using `mul_mem (mul_mem hT hT') (hb.pow n).mem_nonZeroDivisors`. Conclude with `sub_eq_zero.1 ((mul_right_mem_nonZeroDivisors_eq_zero_iff hu).1 h0)`.
+-/
 private lemma cross_of_rel {A : Type*} [CommRing A] {T T' b Cl Ck Dl Dk : A} (hT : T ∈ nonZeroDivisors A)
     (hT' : T' ∈ nonZeroDivisors A) (hb : IsUnit b) {n : ℕ}
     (hl : T * Cl * b ^ n = T' * Dl) (hk : T * Ck * b ^ n = T' * Dk) :
@@ -26,6 +29,35 @@ private lemma cross_of_rel {A : Type*} [CommRing A] {T T' b Cl Ck Dl Dk : A} (hT
     mul_mem (mul_mem hT hT') (hb.pow n).mem_nonZeroDivisors
   exact sub_eq_zero.1 ((mul_right_mem_nonZeroDivisors_eq_zero_iff hu).1 h0)
 
+/- English proof (translation)
+Introduce `R _ _ Z W p hp I π hπ`. Take `⟨N, i, hi, rfl⟩` from `hp`. Take `⟨n, M, F, hF, hgen⟩` from `UpperTheory.exists_homogeneous_generators_idealSheaf_closedImmersion i I`. Establish `hU : ∀ a : Fin (N + 1), IsAffineOpen (i ⁻¹ᵁ Proj.basicOpen (grading R N) (X a))` using `fun a => (isAffineOpen_stdOpen a).preimage i`. Set `U : Fin (N + 1) → Z.affineOpens` to `fun a => ⟨_, hU a⟩`.
+
+Set `g : ∀ a, Fin (M + 1) → Γ(Z, (U a).1)` to `fun a m => i.appLE _ _ le_rfl (chartHom a (F m))`. Use `choose V le c hVa hVc hc1 hc2 hc3 hc4 hc5 using fun a => UpperTheory.exists_blowup_affine_chart_cover_of_span_eq I π hπ (U a) (g a) (hgen a (hU a))`. Establish `hle : ∀ a m, V a m ≤ (π ≫ i) ⁻¹ᵁ Proj.basicOpen (grading R N) (X a)` using `le`. Establish `key : ∀ a m (O : W.Opens) (hO : O ≤ V a m) l, W.presheaf.map (homOfLE hO).op (π.appLE _ _ (le a m) (g a l)) = (π ≫ i).appLE _ O (hO.trans (hle a m)) (chartHom a (F l))`. Introduce `a m O hO l`.
+
+Rewrite using `[← ConcreteCategory.comp_apply, Scheme.Hom.appLE_map]`. Simplify using `only [g]`. Rewrite using `[← ConcreteCategory.comp_apply, Scheme.Hom.appLE_comp_appLE]`. Establish `hcross : ∀ (x y : Fin (N + 1) × Fin (M + 1)) (l k : Fin (M + 1)), W.presheaf.map (homOfLE (inf_le_left : V x.1 x.2 ⊓ V y.1 y.2 ≤ V x.1 x.2)).op (c x.1 x.2 l) * W.presheaf.map (homOfLE (inf_le_right : V x.1 x.2 ⊓ V y.1 y.2 ≤ V y.1 y.2)).op (c y.1 y.2 k) = W.presheaf.map (homOfLE ( …`. Introduce and unpack `⟨a, m⟩ ⟨b, m'⟩ l k`.
+
+Simplify using `only`. Establish `h1 : V a m ⊓ V b m' ≤ V a m` using `inf_le_left`. Establish `h2 : V a m ⊓ V b m' ≤ V b m'` using `inf_le_right`. Take `⟨hu, hrel⟩` from `UpperTheory.isUnit_chart_coord_and_homogeneous_chart_transition (π ≫ i) (V a m ⊓ V b m') a b (h1.trans (hle a m)) (h2.trans (hle b m'))`. Establish `e1 : ∀ l, (π ≫ i).appLE _ _ (h1.trans (hle a m)) (chartHom a (F l)) = W.presheaf.map (homOfLE h1).op (π.appLE _ _ (le a m) (g a m)) * W.presheaf.map (homOfLE h1).op (c a m l)` using `fun l => by`.
+
+Rewrite using `[← key a m _ h1 l, hc1, map_mul]`. Establish `e2 : ∀ l, (π ≫ i).appLE _ _ (h2.trans (hle b m')) (chartHom b (F l)) = W.presheaf.map (homOfLE h2).op (π.appLE _ _ (le b m') (g b m')) * W.presheaf.map (homOfLE h2).op (c b m' l)` using `fun l => by`. Rewrite using `[← key b m' _ h2 l, hc1, map_mul]`. Establish `r : ∀ l, W.presheaf.map (homOfLE h1).op (π.appLE _ _ (le a m) (g a m)) * W.presheaf.map (homOfLE h1).op (c a m l) * (π ≫ i).appLE _ _ (h2.trans (hle b m')) (chartHom b (X a : MvPolynomial (Fin (N + 1)) R)) ^ n = W.presheaf.map (homOfLE h2).op (π.appLE _ _ (le b m') (g b m')) * W. …` using `fun l => by`. Rewrite using `[← e1, ← e2]`.
+
+Conclude with `hrel n (F l) (hF l)`. Conclude with `cross_of_rel (UpperTheory.restrict_mem_nonZeroDivisors_of_isAffineOpen (hVa a m) h1 _ (hc3 a m)) (UpperTheory.restrict_mem_nonZeroDivisors_of_isAffineOpen (hVa b m') h2 _ (hc3 b m')) hu (r l) (r k)`. Establish `hcov : iSup (fun x : Fin (N + 1) × Fin (M + 1) => V x.1 x.2) = ⊤`. Rewrite using `[iSup_prod]`. Repeatedly rewrite using `[hVc]`.
+
+Express the relevant statement in the definitionally equal form `⨆ a, (π ≫ i) ⁻¹ᵁ Proj.basicOpen (grading R N) (X a) = ⊤`. Rewrite using `[← Scheme.Hom.preimage_iSup, iSup_basicOpen_X]`. Both sides reduce to the same expression. Take `⟨f, hfs, hf⟩` from `UpperTheory.cech_cocycle_line_bundle (π ≫ i ≫ PSpace.str R N) M (fun x : Fin (N + 1) × Fin (M + 1) => V x.1 x.2) hcov (fun x => x.2) (fun x => c x.1 x.2) (fun x => hc2 x.1 x.2) hcross`. Use `choose hD hcoord using hf`.
+
+Establish `hpf : ∀ a m m', W.basicOpen (c a m' m) = V a m' ⊓ f ⁻¹ᵁ (Proj.basicOpen (grading R M) (X m') ⊓ Proj.basicOpen (grading R M) (X m))`. Introduce `a m m'`. Rewrite using `[← hcoord (a, m') m, Scheme.basicOpen_appLE, basicOpen_chartHom_X]`. Establish `eV : ∀ a m, V a m = π ⁻¹ᵁ (U a).1 ⊓ f ⁻¹ᵁ Proj.basicOpen (grading R M) (X m)`. Introduce `a m`.
+
+Use `_root_.le_antisymm (le_inf (le a m) (hD (a, m))) ?_` and prove the remaining obligations. Introduce and unpack `w ⟨hw1, hw2⟩`. Establish `hw : w ∈ iSup (V a)` using `by rw [hVc]; exact hw1`. Take `⟨m', hm'⟩` from `TopologicalSpace.Opens.mem_iSup.1 hw`. Establish `hb : w ∈ W.basicOpen (c a m' m)`.
+
+Rewrite using `[hpf]`. Conclude with `⟨hm', hD (a, m') hm', hw2⟩`. Rewrite `hb` using `[← hc5]`. Conclude with `hb.2`. Establish `cU : iSup (fun a => (U a).1) = ⊤`.
+
+Express the relevant statement in the definitionally equal form `⨆ a, i ⁻¹ᵁ Proj.basicOpen (grading R N) (X a) = ⊤`. Rewrite using `[← Scheme.Hom.preimage_iSup, iSup_basicOpen_X]`. Both sides reduce to the same expression. Use `⟨M, f, hfs.symm, UpperTheory.sections_generated_over_affine_product_cover (i ≫ PSpace.str R N) (PSpace.str R M) π f hfs.symm (fun a => (U a).1) (fun m => Proj.basicOpen (grading R M) (X m)) (fun a => hU a) (fun m => isAffineOpen_stdOpen m) cU iSup_basicOpen_X V hVa eV ?_⟩` and prove the remaining obligations. Introduce `a m s`.
+
+Take `⟨P, rfl⟩` from `hc4 a m s`. Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C r`. Rewrite using `[coe_eval₂Hom, eval₂_C]`. Conclude with `Subring.subset_closure (Or.inl ⟨r, rfl⟩)`.
+
+Consider the case `add p q hp hq`. Rewrite using `[map_add]`. Conclude with `add_mem hp hq`. Consider the case `mul_X p l hp`. Rewrite using `[map_mul, coe_eval₂Hom, eval₂_X]`.
+
+Conclude with `mul_mem hp (Subring.subset_closure (Or.inr ⟨chartHom m (X l), hcoord (a, m) l⟩))`.
+-/
 theorem blEmb : BlowUpEmbedding := by
   intro R _ _ Z W p hp I π hπ
   obtain ⟨N, i, hi, rfl⟩ := hp

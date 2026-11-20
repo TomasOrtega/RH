@@ -7,6 +7,9 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace GlobalTheory.SepConj
 
+/- English proof (translation)
+Introduce `K _ n a b he hs`. Conclude with `GlobalTheory.BCT.ClsFin.conj_of_charpoly a b hs he`.
+-/
 theorem conj_of_charpoly_eq_of_separable : ∀ (K : Type) [Field K] (n : ℕ) (a b : GL (Fin n) K),
     a.val.charpoly = b.val.charpoly → a.val.charpoly.Separable → ∃ h : GL (Fin n) K, b = h⁻¹ * a * h := by
   intro K _ n a b he hs

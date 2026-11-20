@@ -10,6 +10,11 @@ open scoped TensorProduct
 
 namespace GlobalTheory.KerSubInf
 
+/- English proof (translation)
+Introduce `r _ x`. Establish `h0 : tens (evI F) (⇑(0 : SInf F κ)) r = 0`. Use function extensionality and compare the values at `y`. Simplify using `[tens]`. Simplify using `only [h0, map_zero]`.
+
+Simplify using `using hasDerivAt_const (0:ℝ) (0:ℂ)`.
+-/
 theorem actsD_zero {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ]
     (T : ℝ → Module.End ℂ ((κ → AF F) → ℂ)) :
     ActsD (evI F) (fun t => ⇑(T t)) ⇑(0 : SInf F κ) ⇑(0 : SInf F κ) := by
@@ -19,6 +24,9 @@ theorem actsD_zero {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ]
   simp only [h0, map_zero]
   simpa using hasDerivAt_const (0:ℝ) (0:ℂ)
 
+/- English proof (translation)
+Introduce `r _`. Establish `h0 : tens (evI F) (⇑(0 : SInf F κ)) r = 0`. Use function extensionality and compare the values at `y`. Simplify using `[tens]`. Rewrite using `[h0, map_zero]`.
+-/
 theorem acts_zero {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ]
     (T : Module.End ℂ ((κ → AF F) → ℂ)) :
     Acts (evI F) ⇑T ⇑(0 : SInf F κ) ⇑(0 : SInf F κ) := by
@@ -27,6 +35,17 @@ theorem acts_zero {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ]
     funext y; simp [tens]
   rw [h0, map_zero]
 
+/- English proof (translation)
+Introduce `hKP F E _ _ _ _ _ σ B a a' G X om om' R Rf hM`. Establish `hP` using `GlobalTheory.T.real_line_polynomial_equivariance hKP F E σ B a a' G X om om' hM.triple`. Take `⟨hP1, hP2, hP3, hP4⟩` from `hP`. Use `⟨inf_le_left, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `γ hγ f hf f₁ hA`.
+
+Conclude with `⟨hP1 γ hγ f hf f₁ hA, hM.real.quot.lie γ hγ f hf f₁ hA⟩`. Introduce `k hk f hf f₁ hA`. Use `⟨sub_mem (hP2 k hk f hf f₁ hA) hf, ?_⟩` and prove the remaining obligations. Use `show R.p (f₁ - f) = 0`. Rewrite using `[map_sub, hM.real.quot.cpt k hk f hf f₁ hA, sub_self]`.
+
+Introduce `γ hγ f hf f₁ hA`. Take `⟨g, hg, _, hu⟩` from `hP3 γ hγ f hf.1`. Use `⟨hu f₁ hA ▸ hg, ?_⟩` and prove the remaining obligations. Use `show R.p f₁ = 0`. Establish `hf0 : R.p f = 0` using `hf.2`.
+
+Use `hM.real.lie γ hγ f hf.1 0 (zero_mem _) f₁ 0 hA (actsD_zero (fun t => om' (1, γ (Multiplicative.ofAdd t)))) (by rw [hf0, map_zero])` as an intermediate fact. Rewrite using `[this, map_zero]`. Introduce `k hk f hf f₁ hA`. Take `⟨g, hg, _, hu⟩` from `hP4 k hk f hf.1`. Use `⟨hu f₁ hA ▸ hg, ?_⟩` and prove the remaining obligations.
+
+Use `show R.p f₁ = 0`. Establish `hf0 : R.p f = 0` using `hf.2`. Use `hM.real.cpt k hk f hf.1 0 (zero_mem _) f₁ 0 hA (acts_zero (om' (1, k))) (by rw [hf0, map_zero])` as an intermediate fact. Rewrite using `[this, map_zero]`.
+-/
 theorem kerSub : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) (a a' : ℕ) (G : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo σ a a') (X : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chars F E) (om : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ G.V G.W) (om' : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ G.V' G.W) (R : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.RealMaps F a a') (Rf : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.FinMaps F a a'), GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsMatched B G X om om' R Rf → GlobalTheory.Published.ThetaSubInf G.M B.ψ B.emb om (G.M.Pol B.ψ B.emb ⊓ LinearMap.ker R.p) := by
   intro hKP F E _ _ _ _ _ σ B a a' G X om om' R Rf hM
   have hP := GlobalTheory.T.real_line_polynomial_equivariance hKP F E σ B a a' G X om om' hM.triple

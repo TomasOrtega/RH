@@ -7,6 +7,15 @@ open Finset
 
 namespace Formalism.CountingSumsFrames
 
+/- English proof (translation)
+Introduce `m B`. Proceed by induction on `B with`. Consider the case `zero => simp [dimPol]`. Consider the case `succ B ih`. Rewrite using `[Finset.sum_range_succ']`.
+
+Establish `h1 : ∀ j ∈ range (B + 1), dimPol m (B + 1 - (j + 1)) = dimPol m (B - j)`. Introduce `j _`. Use `congr 1`. Use linear arithmetic over natural numbers and integers. Rewrite using `[Finset.sum_congr rfl h1, ih]`.
+
+Simplify using `only [dimPol, Nat.sub_zero]`. Establish `: B + 1 + (m + 1) = (B + m + 1) + 1` using `by ring`. Rewrite using `[this, Nat.choose_succ_succ]`. Establish `h2 : B + 1 + m = B + m + 1` using `by ring`. Establish `h3 : B + (m + 1) = B + m + 1` using `by ring`.
+
+Rewrite using `[h2, h3, add_comm]`.
+-/
 theorem hockey_stick_identity : HockeyStick := by
   intro m B
   induction B with
@@ -27,6 +36,25 @@ theorem hockey_stick_identity : HockeyStick := by
 
 def digitSum {m P : ℕ} (τ : Fin m → Fin P) : ℕ := ∑ i, (τ i : ℕ)
 
+/- English proof (translation)
+Introduce `m P g hP`. Take `⟨p, rfl⟩ : ∃ p, P = p + 1` from `⟨P - 1, by omega⟩`. Set `f : (Fin m → Fin (p + 1)) → Fin (p + 1)` to `fun τ => ⟨(g + p * digitSum τ) % (p + 1), Nat.mod_lt _ (Nat.succ_pos p)⟩`. Establish `hsum : ∀ ρ : Fin (m + 1) → Fin (p + 1), (∑ i, (ρ i : ℕ)) = (ρ 0 : ℕ) + digitSum (Fin.tail ρ)`. Introduce `ρ`.
+
+Rewrite using `[Fin.sum_univ_succ]`. Both sides reduce to the same expression. Establish `hcard : (univ : Finset (Fin m → Fin (p + 1))).card = (p + 1) ^ m`. Simplify using the standard rewrite rules. Rewrite using `[← hcard]`.
+
+Apply `Finset.card_nbij' (fun ρ => Fin.tail ρ) (fun τ => Fin.cons (f τ) τ)` to reduce the goal to its premises. Introduce `ρ _`. Simplify using the standard rewrite rules. Introduce `τ _`. Simplify using `only [Finset.coe_filter, Finset.mem_univ, true_and, Set.mem_ofPred_eq]`.
+
+Rewrite using `[hsum]`. Simplify using `only [Fin.cons_zero, Fin.tail_cons, f]`. Rewrite using `[Nat.mod_add_mod]`. Establish `: g + p * digitSum τ + digitSum τ = g + (p + 1) * digitSum τ` using `by ring`. Rewrite using `[this, Nat.add_mul_mod_self_left]`.
+
+Introduce `ρ hρ`. Simplify using `only [Finset.coe_filter, Finset.mem_univ, true_and, Set.mem_ofPred_eq] at hρ`. Rewrite `hρ` using `[hsum]`. Establish `h0 : f (Fin.tail ρ) = ρ 0`. Apply `Fin.ext` to reduce the goal to its premises.
+
+Simplify using `only [f]`. Establish `hlt : (ρ 0 : ℕ) < p + 1` using `(ρ 0).isLt`. Establish `hmod : (ρ 0 : ℕ) + digitSum (Fin.tail ρ) ≡ g [MOD p + 1]` using `hρ`. Establish `h2` using `Nat.ModEq.add_right (p * digitSum (Fin.tail ρ)) hmod`. Establish `h3 : (ρ 0 : ℕ) + digitSum (Fin.tail ρ) + p * digitSum (Fin.tail ρ) = (ρ 0 : ℕ) + (p + 1) * digitSum (Fin.tail ρ)` using `by ring`.
+
+Rewrite `h2` using `[h3]`. Establish `h4 : (ρ 0 : ℕ) ≡ g + p * digitSum (Fin.tail ρ) [MOD p + 1]`. Establish `h5 : (ρ 0 : ℕ) + (p + 1) * digitSum (Fin.tail ρ) ≡ (ρ 0 : ℕ) [MOD p + 1]`. Unfold `Nat.ModEq`. Rewrite using `[Nat.add_mul_mod_self_left]`.
+
+Conclude with `h5.symm.trans h2`. Unfold `Nat.ModEq at h4`. Rewrite `h4` using `[Nat.mod_eq_of_lt hlt]`. Conclude with `h4.symm`. Simplify using `only`.
+
+Rewrite using `[h0, Fin.cons_self_tail]`. Introduce `τ _`. Simplify using the standard rewrite rules.
+-/
 theorem digit_class_count : DigitClassCount := by
   intro m P g hP
   obtain ⟨p, rfl⟩ : ∃ p, P = p + 1 := ⟨P - 1, by omega⟩
@@ -75,6 +103,25 @@ theorem digit_class_count : DigitClassCount := by
   · intro τ _
     simp
 
+/- English proof (translation)
+Introduce `j`. Proceed by induction on `j with`. Consider the case `zero => simp`. Consider the case `succ j ih`. Establish `hg : ((g + (j + 1)).choose (j + 1) : ℝ) * ((j : ℝ) + 1) = ((g : ℝ) + j + 1) * ((g + j).choose j : ℝ)`.
+
+Use `Nat.add_one_mul_choose_eq (g + j) j` as an intermediate fact. Establish `h' : g + (j + 1) = g + j + 1` using `by ring`. Rewrite using `[h']`. Establish `hc : (((g + j + 1) * (g + j).choose j : ℕ) : ℝ) = (((g + j + 1).choose (j + 1) * (j + 1) : ℕ) : ℝ)`. Rewrite using `[this]`.
+
+Move the coercions through the operations in `at hc`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `he : ((e + (j + 1)).choose (j + 1) : ℝ) * ((j : ℝ) + 1) = ((e : ℝ) + j + 1) * ((e + j).choose j : ℝ)`. Use `Nat.add_one_mul_choose_eq (e + j) j` as an intermediate fact. Establish `h' : e + (j + 1) = e + j + 1` using `by ring`.
+
+Rewrite using `[h']`. Establish `hc : (((e + j + 1) * (e + j).choose j : ℕ) : ℝ) = (((e + j + 1).choose (j + 1) * (j + 1) : ℕ) : ℝ)`. Rewrite using `[this]`. Move the coercions through the operations in `at hc`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hj1 : (0 : ℝ) < (j : ℝ) + 1` using `by positivity`. Establish `hCg : (0 : ℝ) ≤ ((g + j).choose j : ℝ)` using `by positivity`. Establish `hCe : (0 : ℝ) ≤ ((e + j).choose j : ℝ)` using `by positivity`. Establish `hRHS : (0 : ℝ) ≤ (P : ℝ) ^ (j + 1) * ((e + (j + 1)).choose (j + 1) : ℝ)` using `by positivity`. Use `push_cast`.
+
+Distinguish the cases in `hneg : 1 - ((j : ℝ) + 1) * t ≤ 0`. Establish `: (1 - ((j : ℝ) + 1) * t) * ((g + (j + 1)).choose (j + 1) : ℝ) ≤ 0` using `mul_nonpos_of_nonpos_of_nonneg hneg (by positivity)`. Combine the linear equalities and inequalities to obtain the conclusion. Use `push Not at hneg`. Establish `hA : 0 ≤ 1 - (j : ℝ) * t` using `by nlinarith`.
+
+Establish `hB : 0 ≤ 1 - t` using `by nlinarith`. Establish `hG : (0 : ℝ) ≤ (g : ℝ) + j + 1` using `by positivity`. Rewrite using `[← mul_le_mul_iff_of_pos_right hj1]`. Establish `hL : (1 - ((j : ℝ) + 1) * t) * ((g + (j + 1)).choose (j + 1) : ℝ) * ((j : ℝ) + 1) = (1 - ((j : ℝ) + 1) * t) * (((g : ℝ) + j + 1) * ((g + j).choose j : ℝ))`. Rewrite using `[mul_assoc, hg]`.
+
+Establish `hR : (P : ℝ) ^ (j + 1) * ((e + (j + 1)).choose (j + 1) : ℝ) * ((j : ℝ) + 1) = ((P : ℝ) ^ j * ((e + j).choose j : ℝ)) * ((P : ℝ) * ((e : ℝ) + j + 1))`. Rewrite using `[mul_assoc, he, pow_succ]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hL, hR]`. Establish `h1 : (1 - ((j : ℝ) + 1) * t) ≤ (1 - (j : ℝ) * t) * (1 - t)`.
+
+Use polynomial arithmetic with `[mul_nonneg (Nat.cast_nonneg j : (0:ℝ) ≤ j) (mul_nonneg ht ht)]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem digit_step (P g e : ℕ) (t : ℝ) (ht : 0 ≤ t)
     (hkey : ∀ j : ℕ, (1 - t) * ((g : ℝ) + j + 1) ≤ (P : ℝ) * ((e : ℝ) + j + 1)) :
     ∀ j : ℕ, (1 - (j : ℝ) * t) * ((g + j).choose j : ℝ) ≤ (P : ℝ) ^ j * ((e + j).choose j : ℝ) := by
@@ -133,6 +180,19 @@ theorem digit_step (P g e : ℕ) (t : ℝ) (ht : 0 ≤ t)
       _ ≤ ((P : ℝ) ^ j * ((e + j).choose j : ℝ)) * ((P : ℝ) * ((e : ℝ) + j + 1)) :=
           mul_le_mul ih (hkey j) (by positivity) (by positivity)
 
+/- English proof (translation)
+Introduce `m P g e hP hg he`. Establish `hPr : (1 : ℝ) ≤ P` using `by exact_mod_cast hP`. Establish `hPpos : (0 : ℝ) < P` using `by positivity`. Establish `hgpos : (0 : ℝ) < g` using `by exact_mod_cast hg`. Use `set t : ℝ := ((m : ℝ) + 1) * P / g with ht_def`.
+
+Establish `ht : 0 ≤ t` using `by positivity`. Establish `hgle : (g : ℝ) ≤ P * ((e : ℝ) + (m + 1))`. Establish `: (g : ℝ) / P ≤ (e : ℝ) + (m + 1)` using `by linarith`. Rewrite `this` using `[div_le_iff₀ hPpos]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `htg : t * g = ((m : ℝ) + 1) * P`. Rewrite using `[ht_def]`. Clear the denominators using the available nonvanishing facts. Establish `hkey : ∀ j : ℕ, (1 - t) * ((g : ℝ) + j + 1) ≤ (P : ℝ) * ((e : ℝ) + j + 1)`. Introduce `j`.
+
+Establish `hj : (0 : ℝ) ≤ j` using `Nat.cast_nonneg j`. Establish `htj : 0 ≤ t * ((j : ℝ) + 1)` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities. Establish `main` using `digit_step P g e t ht hkey m`. Establish `hdim : ∀ d, (dimPol m d : ℝ) = ((d + m).choose m : ℝ)` using `fun d => rfl`.
+
+Rewrite using `[hdim, hdim]`. Establish `hfac : 1 - ((m : ℝ) + 1) ^ 2 * P / g ≤ 1 - (m : ℝ) * t`. Establish `: ((m : ℝ) + 1) ^ 2 * P / g = ((m : ℝ) + 1) * t`. Rewrite using `[ht_def]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[this]`. Use the polynomial consequences of the given equalities and inequalities. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem digit_class_size : DigitClassSize := by
   intro m P g e hP hg he
   have hPr : (1 : ℝ) ≤ P := by exact_mod_cast hP

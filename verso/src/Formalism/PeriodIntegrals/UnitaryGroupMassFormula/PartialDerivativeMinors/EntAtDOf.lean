@@ -14,6 +14,9 @@ namespace PI.EntAtD.W
 
 open PI.EntAtD
 
+/- English proof (translation)
+The claim follows from `entAtD_of_core (core_of (expand_of hX) (vanish_of hB hC (lapZero_of hM hS hF)))`.
+-/
 theorem entAtD_of (hX : PExpCoeff) (hB : PBridge) (hC : PLapComm) (hM : PMinorAff) (hS : PSDegMul)
     (hF : PLapForms) : PI.EntAtD.EntAtD :=
   entAtD_of_core (core_of (expand_of hX) (vanish_of hB hC (lapZero_of hM hS hF)))

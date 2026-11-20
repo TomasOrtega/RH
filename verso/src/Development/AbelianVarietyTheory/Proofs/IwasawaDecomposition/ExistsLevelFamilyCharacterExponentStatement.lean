@@ -5,5 +5,8 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 open scoped TensorProduct
 attribute [local instance] GlobalTheory.Mem.Col2.starE Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.Mem.Col2.TopCh.levFam_chr_exp | exact GlobalTheory.Mem.Col2.TopCh.levFam_chr_exp | (intros; apply GlobalTheory.Mem.Col2.TopCh.levFam_chr_exp <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_levelFamily_character_exponent : ∀ {X : Fields} {n : ℕ} {SG : Finset (HeightOneSpectrum (𝓞 X.E))} (Λ : LevFam X.E X.K n SG), ∃ m : ℕ, 0 < m ∧ ∀ h, Λ.chr h ^ m = 1 := by
   first | exact @GlobalTheory.Mem.Col2.TopCh.levFam_chr_exp | exact GlobalTheory.Mem.Col2.TopCh.levFam_chr_exp | (intros; apply GlobalTheory.Mem.Col2.TopCh.levFam_chr_exp <;> assumption)

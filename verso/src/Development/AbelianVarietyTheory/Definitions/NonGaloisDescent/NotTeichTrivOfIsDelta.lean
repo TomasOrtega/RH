@@ -18,6 +18,9 @@ def TeichTriv (χ : Formalism.L2.Host.HChar H.E) : Prop :=
 
 variable {H} {χ χ' : Formalism.L2.Host.HChar H.E}
 
+/- English proof (translation)
+Establish `h1 : Ideal.absNorm w.asIdeal - 1 ≠ 0` using `by have := GlobalTheory.Mem.WildChar.one_lt_absNorm w; omega`. Use `congrArg (fun y : (w.adicCompletion E)ˣ => Valued.v (y : w.adicCompletion E)) hx` as an intermediate fact. Simplify using `only [Units.val_pow_eq_pow_val, map_pow, Units.val_one, map_one] at this`. Conclude with `(pow_eq_one_iff_left h1).1 this`.
+-/
 theorem isUnitAt_of_pow_eq_one {E : Type} [Field E] [NumberField E] {w : HeightOneSpectrum (𝓞 E)} {x : (w.adicCompletion E)ˣ}
     (hx : x ^ (Ideal.absNorm w.asIdeal - 1) = 1) : IsUnitAt w x := by
   have h1 : Ideal.absNorm w.asIdeal - 1 ≠ 0 := by have := GlobalTheory.Mem.WildChar.one_lt_absNorm w; omega
@@ -25,6 +28,15 @@ theorem isUnitAt_of_pow_eq_one {E : Type} [Field E] [NumberField E] {w : HeightO
   simp only [Units.val_pow_eq_pow_val, map_pow, Units.val_one, map_one] at this
   exact (pow_eq_one_iff_left h1).1 this
 
+/- English proof (translation)
+Introduce `x hx`. Establish `hx' : Valued.v (x : w.adicCompletion E) = 1` using `hx`. Take `⟨ζ, h1, h2⟩` from `GlobalTheory.Mem.WildChar.exists_rootOfUnity_congr w hx'`. Establish `hζ : Valued.v ζ = 1`. Rewrite using `[← hx']`.
+
+Apply `Valuation.map_eq_of_sub_lt` to reduce the goal to its premises. Rewrite using `[hx']` and apply the resulting hypothesis. Establish `h0 : ζ ≠ 0`. Introduce and unpack `rfl`. Simplify using `at hζ`.
+
+Set `z : (w.adicCompletion E)ˣ` to `Units.mk0 ζ h0`. Establish `hz : χ.loc w z = 1` using `h z (Units.ext (by simpa [z] using h1))`. Establish `hu : IsUnitAt w (x * z⁻¹)` using `by simp [IsUnitAt, z, hx', hζ]`. Establish `hu1 : Valued.v (((x * z⁻¹ : (w.adicCompletion E)ˣ) : w.adicCompletion E) - 1) < 1`. Establish `e : ((x * z⁻¹ : (w.adicCompletion E)ˣ) : w.adicCompletion E) - 1 = (x - ζ) * ζ⁻¹`.
+
+Simplify using `[z, sub_mul, h0]`. Rewrite using `[e, map_mul, map_inv₀, hζ, inv_one, mul_one, Valuation.map_sub_swap]`. Conclude with `h2`. Establish `h3` using `ht _ hu (by simpa using GlobalTheory.Mem.WildChar.le_exp_neg_one_of_lt_one hu1)`. Rewrite `h3` using `[map_mul, map_inv, hz, inv_one, mul_one]`. Then use the resulting hypothesis.
+-/
 theorem unrAt_of_tameAt_of_teich {E : Type} [Field E] [NumberField E] {χ : Formalism.L2.Host.HChar E} {w : HeightOneSpectrum (𝓞 E)}
     (ht : χ.TameAt w) (h : ∀ x : (w.adicCompletion E)ˣ, x ^ (Ideal.absNorm w.asIdeal - 1) = 1 → χ.loc w x = 1) : χ.UnrAt w := by
   intro x hx
@@ -50,25 +62,46 @@ theorem unrAt_of_tameAt_of_teich {E : Type} [Field E] [NumberField E] {χ : Form
 
 namespace TeichTriv
 
+/- English proof (translation)
+Introduce `_ _ _ _` and use `rfl`.
+-/
 theorem one : TeichTriv H 1 := fun _ _ _ _ => rfl
 
+/- English proof (translation)
+Introduce `w hw x hx` and use `by rw [HChar.loc_mul, h w hw x hx, h' w hw x hx, one_mul]`.
+-/
 theorem mul (h : TeichTriv H χ) (h' : TeichTriv H χ') : TeichTriv H (χ * χ') := fun w hw x hx => by
   rw [HChar.loc_mul, h w hw x hx, h' w hw x hx, one_mul]
 
+/- English proof (translation)
+Introduce `w hw x hx` and use `by rw [HChar.loc_inv, h w hw x hx, inv_one]`.
+-/
 theorem inv (h : TeichTriv H χ) : TeichTriv H χ⁻¹ := fun w hw x hx => by rw [HChar.loc_inv, h w hw x hx, inv_one]
 
+/- English proof (translation)
+Introduce `w hw x hx` and use `h w hw x (isUnitAt_of_pow_eq_one hx)`.
+-/
 theorem of_unr (h : ∀ w, OverP H H.pde w ∨ OverP H H.pde' w → χ.UnrAt w) : TeichTriv H χ :=
   fun w hw x hx => h w hw x (isUnitAt_of_pow_eq_one hx)
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.Mem.WildChar.orders_on_units _ χ w).2 (h w hw) x hx`.
+-/
 theorem pow_eq_one (h : TeichTriv H χ) {w : HeightOneSpectrum (𝓞 H.E)} (hw : OverP H H.pde w ∨ OverP H H.pde' w)
     {x : (w.adicCompletion H.E)ˣ} (hx : IsUnitAt w x) : ∃ n : ℕ, χ.loc w x ^ (Ideal.absNorm w.asIdeal ^ n) = 1 :=
   (GlobalTheory.Mem.WildChar.orders_on_units _ χ w).2 (h w hw) x hx
 
+/- English proof (translation)
+The claim follows from `unrAt_of_tameAt_of_teich ht (h w hw)`.
+-/
 theorem unrAt (h : TeichTriv H χ) {w : HeightOneSpectrum (𝓞 H.E)} (hw : OverP H H.pde w ∨ OverP H H.pde' w) (ht : χ.TameAt w) :
     χ.UnrAt w := unrAt_of_tameAt_of_teich ht (h w hw)
 
 end TeichTriv
 
+/- English proof (translation)
+Introduce `h` and use `by have := (hd.ine w hp 1).1 fun x hx => by rw [pow_one, h.unrAt hw (hd.tame w) x hx] omega`.
+-/
 theorem not_teichTriv_of_isDelta {p : ℕ} (hd : IsDelta (H := H) p χ) {w : HeightOneSpectrum (𝓞 H.E)} (hp : OverP H p w)
     (hw : OverP H H.pde w ∨ OverP H H.pde' w) : ¬ TeichTriv H χ := fun h => by
   have := (hd.ine w hp 1).1 fun x hx => by rw [pow_one, h.unrAt hw (hd.tame w) x hx]
@@ -84,6 +117,9 @@ def Teich : Prop := ∀ a, TeichTriv D.host (Z.chi a)
 
 variable {Z}
 
+/- English proof (translation)
+Unfold `lam0`. Rewrite using `[HChar.loc_mul, HChar.loc_mul, HChar.loc_inv, h a w hw x hx, inv_one, mul_one]`.
+-/
 theorem Teich.lambda_local_teichmuller (h : Z.Teich) (l : ℕ) (j a : Fin D.R.m) {w : HeightOneSpectrum (𝓞 D.host.E)}
     (hw : OverP D.host D.host.pde w ∨ OverP D.host D.host.pde' w) {x : (w.adicCompletion D.host.E)ˣ}
     (hx : x ^ (Ideal.absNorm w.asIdeal - 1) = 1) :
@@ -91,6 +127,9 @@ theorem Teich.lambda_local_teichmuller (h : Z.Teich) (l : ℕ) (j a : Fin D.R.m)
   unfold lam0
   rw [HChar.loc_mul, HChar.loc_mul, HChar.loc_inv, h a w hw x hx, inv_one, mul_one]
 
+/- English proof (translation)
+Introduce `h'` and use `by have h1 := (h a).inv.mul h' rw [inv_mul_cancel_left] at h1 exact not_teichTriv_of_isDelta Z.C.isDel hw (Or.inl hw) h1`.
+-/
 theorem Teich.not_mul_del (h : Z.Teich) (a : Fin D.R.m) {w : HeightOneSpectrum (𝓞 D.host.E)} (hw : OverP D.host D.host.pde w) :
     ¬ TeichTriv D.host (Z.chi a * Z.C.del) := fun h' => by
   have h1 := (h a).inv.mul h'
@@ -114,10 +153,16 @@ def IsLamTieFull (Z : LamDat D) : Prop :=
 
 variable {X} {Z : LamDat D}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨by exact_mod_cast h.2.1.2.1, by exact_mod_cast h.2.1.2.2⟩`.
+-/
 theorem IsLam.range {i : X.Tw} {ι : ℂ →+* Kbar X i} {lam : X.abelian₂ i} {j a : Fin D.R.m} {s : ℕ} (h : IsLam X Z i ι lam j a s) :
     1 ≤ s ∧ s ≤ BlochKatoReduction.Gen.NFun D.R + 1 :=
   ⟨by exact_mod_cast h.2.1.2.1, by exact_mod_cast h.2.1.2.2⟩
 
+/- English proof (translation)
+Introduce `i hi` and use `by obtain ⟨ι, h1, h2⟩ := hι i hi refine ⟨hS i hi, ι, h1, fun lam => ⟨_, _, _, h2 lam⟩, fun j a s b hs hs' => ?_⟩ obtain ⟨lam, rfl, rfl, rfl, rfl⟩ := hall i hi j a s b hs hs' exact ⟨lam, rfl, h2 lam⟩`.
+-/
 theorem isLamTieFull_of_labels (J A : ∀ i, X.abelian₂ i → Fin D.R.m) (S : ∀ i, X.abelian₂ i → ℕ)
     (hS : ∀ i, X.NonzeroIndexPlace i → ∀ P, (below P).asIdeal ∣ cond0 D.host Z.w0 → P ∈ X.S0 i)
     (hι : ∀ i, X.NonzeroIndexPlace i → ∃ ι : ℂ →+* Kbar X i, (∀ x : D.LL0, ι (D.what₂.embLL (x : D.what₂.LL)) = toBar X i (X.emb0 i x)) ∧
@@ -133,31 +178,52 @@ theorem isLamTieFull_of_labels (J A : ∀ i, X.abelian₂ i → Fin D.R.m) (S : 
 
 namespace IsLamTieFull
 
+/- English proof (translation)
+Introduce `i hi` and use `let ⟨h0, ι, h1, h2, _⟩ := h i hi ⟨h0, ι, h1, h2⟩`.
+-/
 theorem isLamTie (h : IsLamTieFull X Z) : IsLamTie X Z := fun i hi =>
   let ⟨h0, ι, h1, h2, _⟩ := h i hi
   ⟨h0, ι, h1, h2⟩
 
+/- English proof (translation)
+The claim follows from `let ⟨_, _, _, _, h3⟩ := h i hi let ⟨lam, e, hl, _⟩ := h3 j j s b hs hs' ⟨lam, e, hl.1.symm, hl.2.1.1⟩`.
+-/
 theorem exists_labels (h : IsLamTieFull X Z) {i : X.Tw} (hi : X.NonzeroIndexPlace i) (j : Fin D.R.m) {s : ℕ} (b : Bool) (hs : 1 ≤ s)
     (hs' : s ≤ BlochKatoReduction.Gen.NFun D.R + 1) : ∃ lam : X.abelian₂ i, X.sideL i lam = b ∧ X.jL i lam = j.1 + 1 ∧ X.s2 i lam = 2 * (s : ℤ) :=
   let ⟨_, _, _, _, h3⟩ := h i hi
   let ⟨lam, e, hl, _⟩ := h3 j j s b hs hs'
   ⟨lam, e, hl.1.symm, hl.2.1.1⟩
 
+/- English proof (translation)
+The claim follows from `let ⟨lam, _⟩ := h.exists_labels hi ⟨0, by have := D.R.two_le_m; omega⟩ true le_rfl (by omega) ⟨lam⟩`.
+-/
 theorem nonempty (h : IsLamTieFull X Z) {i : X.Tw} (hi : X.NonzeroIndexPlace i) : Nonempty (X.abelian₂ i) :=
   let ⟨lam, _⟩ := h.exists_labels hi ⟨0, by have := D.R.two_le_m; omega⟩ true le_rfl (by omega)
   ⟨lam⟩
 
 end IsLamTieFull
 
+/- English proof (translation)
+Introduce `h'` and use `(h'.nonempty hi).elim h.false`.
+-/
 example {i : X.Tw} (hi : X.NonzeroIndexPlace i) (h : IsEmpty (X.abelian₂ i)) : ¬ IsLamTieFull X Z := fun h' => (h'.nonempty hi).elim h.false
 
+/- English proof (translation)
+Take `⟨x, hx, -⟩` from `h.exists_labels hi ⟨0, by have := D.R.two_le_m; omega⟩ true le_rfl (by omega)`. Take `⟨y, hy, -⟩` from `h.exists_labels hi ⟨0, by have := D.R.two_le_m; omega⟩ false le_rfl (by omega)`. Conclude with `⟨x, y, fun e => by rw [e, hy] at hx; cases hx⟩`.
+-/
 example (h : IsLamTieFull X Z) {i : X.Tw} (hi : X.NonzeroIndexPlace i) : Nontrivial (X.abelian₂ i) := by
   obtain ⟨x, hx, -⟩ := h.exists_labels hi ⟨0, by have := D.R.two_le_m; omega⟩ true le_rfl (by omega)
   obtain ⟨y, hy, -⟩ := h.exists_labels hi ⟨0, by have := D.R.two_le_m; omega⟩ false le_rfl (by omega)
   exact ⟨x, y, fun e => by rw [e, hy] at hx; cases hx⟩
 
+/- English proof (translation)
+The claim follows from `TeichTriv.of_unr fun w _ => Z.C.isEta.unr w`.
+-/
 example (Z : LamDat D) : TeichTriv D.host Z.C.eta := TeichTriv.of_unr fun w _ => Z.C.isEta.unr w
 
+/- English proof (translation)
+The claim follows from `h a w (Or.inl hw) _ (Even.neg_one_pow (Nat.Odd.sub_odd ho odd_one))`.
+-/
 example (h : Z.Teich) (a : Fin D.R.m) {w : HeightOneSpectrum (𝓞 D.host.E)} (hw : OverP D.host D.host.pde w)
     (ho : Odd (Ideal.absNorm w.asIdeal)) : (Z.chi a).loc w (-1) = 1 :=
   h a w (Or.inl hw) _ (Even.neg_one_pow (Nat.Odd.sub_odd ho odd_one))

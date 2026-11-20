@@ -8,6 +8,41 @@ namespace GroundTheory.Heights₂.Heights.NineStatements
 
 open MeasureTheory Module
 
+/- English proof (translation)
+Break down `Nat.eq_zero_or_pos m with rfl | hm` into its components or cases. Simplify using the standard rewrite rules. Use `set W := Submodule.span ℝ (Set.range b)`. Set `B : Basis (Fin m) ℝ W` to `Basis.span hb`. Establish `: FiniteDimensional ℝ W` using `FiniteDimensional.span_of_finite ℝ (Set.finite_range b)`.
+
+Set `_ : MeasurableSpace W` to `borel W`. Establish `: BorelSpace W` using `⟨rfl⟩`. Establish `hBW : ∀ i, ((B i : W) : V) = b i` using `fun i => congrArg Subtype.val (Basis.span_apply hb i)`. Establish `hfin : finrank ℝ W = m` using `by rw [finrank_eq_card_basis B, Fintype.card_fin]`. Set `Λ : Submodule ℤ W` to `Submodule.span ℤ (Set.range B)`.
+
+Establish `hcov : ZLattice.covolume Λ = Real.sqrt (Matrix.gram ℝ b).det`. Rewrite using `[GroundTheory.Heights₂.Heights.covolume_eq_sqrt_det_gram Λ (B.restrictScalars ℤ)]`. Use `congr 2`. Use extensionality with `i j`. Simplify using `only [Matrix.gram, Matrix.of_apply]`.
+
+Rewrite using `[Basis.restrictScalars_apply, Basis.restrictScalars_apply]`. Conclude with `congrArg₂ (inner ℝ) (hBW i) (hBW j)`. Establish `hF` using `ZSpan.isAddFundamentalDomain' B (volume : Measure W)`. Establish `hFvol : volume (ZSpan.fundamentalDomain B) = ENNReal.ofReal (Real.sqrt (Matrix.gram ℝ b).det)`. Rewrite using `[← hcov, ZLattice.covolume_eq_measure_fundamentalDomain Λ volume (ZSpan.isAddFundamentalDomain B volume), measureReal_def, ENNReal.ofReal_toReal]`.
+
+Conclude with `(ZSpan.fundamentalDomain_isBounded B).measure_lt_top.ne`. Set `o : OrthonormalBasis (Fin m) ℝ W` to `(stdOrthonormalBasis ℝ W).reindex (finCongr hfin)`. Use `set r := lam / Real.sqrt m with hr`. Set `f : W →ₗ[ℝ] (Fin m → ℝ)` to `(WithLp.linearEquiv 2 ℝ (Fin m → ℝ)).toLinearMap ∘ₗ o.repr.toLinearEquiv.toLinearMap`. Establish `hf : ∀ x, f x = WithLp.ofLp (o.repr x)` using `fun x => rfl`.
+
+Set `s : Set W` to `f ⁻¹' Set.univ.pi fun _ => Set.Ioo (-r) r`. Establish `hs_symm : ∀ x ∈ s, -x ∈ s`. Introduce `x hx i _`. Use `hx i (Set.mem_univ i)` as an intermediate fact. Simplify using `only [map_neg, Pi.neg_apply, Set.mem_Ioo] at this ⊢`.
+
+Apply the tactic sequence `constructor <;> linarith [this.1, this.2]`. Establish `hs_conv : Convex ℝ s` using `(convex_pi fun i _ => convex_Ioo (-r) r).linear_preimage f`. Establish `hs_vol : volume s = ENNReal.ofReal (2 * r) ^ m`. Establish `h1 : s = o.repr ⁻¹' (WithLp.ofLp ⁻¹' Set.univ.pi fun _ => Set.Ioo (-r) r)` using `rfl`. Rewrite using `[h1, (o.measurePreserving_repr).measure_preimage (((MeasurableSet.univ_pi fun _ => measurableSet_Ioo).preimage (PiLp.volume_preserving_ofLp (Fin m)).measurable).nullMeasurableSet), (PiLp.volume_preserving_ofLp (Fin m)).measure_preimage (MeasurableSet.univ_pi fun _ => measurableSe …`.
+
+Use `congr 2`. Expand and normalize the polynomial expressions, which then agree. Establish `hs_lat : ∀ x : W, x ∈ Λ → x ∈ s → x = 0`. Introduce `x hxΛ hxs`. Assume the negation of the conclusion as `hx0`.
+
+Establish `hxV : (x : V) ∈ Submodule.span ℤ (Set.range b)`. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun ℤ).1 hxΛ`. Use `(Submodule.mem_span_range_iff_exists_fun ℤ).2 ⟨c, ?_⟩` and prove the remaining obligations. Rewrite using `[← hc, Submodule.coe_sum]`. Simplify using `[hBW]`.
+
+Establish `hxV0 : (x : V) ≠ 0` using `fun h => hx0 (Subtype.ext h)`. Establish `hr0 : 0 < r`. Use `hxs ⟨0, hm⟩ (Set.mem_univ _)` as an intermediate fact. Conclude with `neg_lt_self_iff.1 (this.1.trans this.2)`. Establish `hnorm : ‖(x : V)‖ < lam`.
+
+Establish `hxn : ‖(x : V)‖ = ‖o.repr x‖`. Rewrite using `[LinearIsometryEquiv.norm_map]`. Both sides reduce to the same expression. Rewrite using `[hxn, EuclideanSpace.norm_eq]`. Establish `hsum : ∑ i, ‖(o.repr x) i‖ ^ 2 < ∑ _i : Fin m, r ^ 2`.
+
+Establish `: Nonempty (Fin m)` using `⟨⟨0, hm⟩⟩`. Use `Finset.sum_lt_sum_of_nonempty Finset.univ_nonempty fun i _ => ?_` and prove the remaining obligations. Use `hxs i (Set.mem_univ i)` as an intermediate fact. Rewrite `this` using `[hf]`. Rewrite using `[Real.norm_eq_abs, sq_abs]`.
+
+Conclude with `sq_lt_sq' this.1 this.2`. Establish `hlam_eq : lam = Real.sqrt (∑ _i : Fin m, r ^ 2)`. Rewrite using `[Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul, Real.sqrt_mul (Nat.cast_nonneg m), Real.sqrt_sq hr0.le, hr, mul_div_cancel₀ _ (Real.sqrt_pos.2 (by exact_mod_cast hm)).ne']`. Rewrite using `[hlam_eq]`. Conclude with `Real.sqrt_lt_sqrt (Finset.sum_nonneg fun i _ => by positivity) hsum`.
+
+Conclude with `absurd (hmin _ hxV hxV0) (not_le.2 hnorm)`. Assume the negation of the conclusion as `hlt`. Use `push Not at hlt`. Establish `hr_nonneg : 0 ≤ r` using `div_nonneg hlam (Real.sqrt_nonneg _)`. Establish `hreal : Real.sqrt (Matrix.gram ℝ b).det * 2 ^ m < (2 * r) ^ m`.
+
+Rewrite using `[mul_pow, mul_comm]`. Conclude with `mul_lt_mul_of_pos_left hlt (by positivity)`. Establish `h2 : (2 : ENNReal) ^ m = ENNReal.ofReal ((2 : ℝ) ^ m)`. Rewrite using `[ENNReal.ofReal_pow (by norm_num)]`. Simplify using the standard rewrite rules.
+
+Establish `hbig : volume (ZSpan.fundamentalDomain B) * 2 ^ finrank ℝ W < volume s`. Rewrite using `[hFvol, hs_vol, hfin, h2, ← ENNReal.ofReal_mul (Real.sqrt_nonneg _), ← ENNReal.ofReal_pow (by positivity)]`. Conclude with `(ENNReal.ofReal_lt_ofReal_iff_of_nonneg (by positivity)).2 hreal`. Establish `: Countable (Submodule.span ℤ (Set.range B)).toAddSubgroup` using `inferInstanceAs (Countable (Submodule.span ℤ (Set.range B)))`. Take `⟨x, hx0, hxs⟩` from `exists_ne_zero_mem_lattice_of_measure_mul_two_pow_lt_measure hF hs_symm hs_conv hbig`.
+
+Conclude with `hx0 (Subtype.ext (hs_lat _ x.2 hxs))`.
+-/
 theorem pow_le_sqrt_det_gram {V : Type*} [NormedAddCommGroup V] [InnerProductSpace ℝ V]
     {m : ℕ} (b : Fin m → V) (hb : LinearIndependent ℝ b) {lam : ℝ} (hlam : 0 ≤ lam)
     (hmin : ∀ x ∈ Submodule.span ℤ (Set.range b), x ≠ 0 → lam ≤ ‖x‖) :

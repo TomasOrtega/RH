@@ -7,6 +7,21 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.TwistFlat
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩`. Establish `hy : y.left ≫ pullback.snd (h ≫ snd A T).left φ = Y.hom` using `Over.w y`. Establish `hT : (h ≫ snd A T).left ≫ T.hom = H.hom` using `Over.w _`. Establish `hc : (y.left ≫ pullback.fst (h ≫ snd A T).left φ) ≫ (h ≫ snd A T).left = Y.hom ≫ φ`.
+
+Rewrite using `[← hy]`. Conclude with `(Category.assoc _ _ _).trans ((congrArg (y.left ≫ ·) pullback.condition).trans (Category.assoc _ _ _).symm)`. Use `⟨Over.homMk (y.left ≫ pullback.fst (h ≫ snd A T).left φ) ?_, ?_⟩` and prove the remaining obligations. Use `show (y.left ≫ pullback.fst (h ≫ snd A T).left φ) ≫ H.hom = Y.hom ≫ φ ≫ T.hom`. Rewrite using `[← hT, ← Category.assoc, hc, Category.assoc]`.
+
+Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises. Rewrite using `[lift_fst, Category.assoc]`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Establish `e : (kerι A φ h).left ≫ pullback.fst A.hom (φ ≫ T.hom) = pullback.fst (h ≫ snd A T).left φ ≫ (h ≫ fst A T).left` using `pullback.lift_fst _ _ _`. Conclude with `(Category.assoc _ _ _).trans ((congrArg (y.left ≫ ·) e.symm).trans (Category.assoc _ _ _).symm)`.
+
+Rewrite using `[lift_snd, Category.assoc]`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Conclude with `hc`. Introduce and unpack `⟨z, hz⟩`. Establish `h1 : z ≫ h ≫ fst A T = upa φ x` using `by rw [← Category.assoc, hz, lift_fst]`.
+
+Establish `h2 : z ≫ h ≫ snd A T = upt φ Y` using `by rw [← Category.assoc, hz, lift_snd]`. Establish `h1' : z.left ≫ (h ≫ fst A T).left = x.left ≫ pullback.fst A.hom (φ ≫ T.hom)` using `congrArg (·.left) h1`. Establish `h2' : z.left ≫ (h ≫ snd A T).left = Y.hom ≫ φ` using `congrArg (·.left) h2`. Set `l : Y.left ⟶ pullback (h ≫ snd A T).left φ` to `pullback.lift z.left Y.hom h2'`. Establish `l1 : l ≫ pullback.fst _ _ = z.left` using `pullback.lift_fst _ _ _`.
+
+Establish `l2 : l ≫ pullback.snd _ _ = Y.hom` using `pullback.lift_snd _ _ _`. Use `⟨Over.homMk l l2, ?_⟩` and prove the remaining obligations. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Establish `e1 : (kerι A φ h).left ≫ pullback.fst A.hom (φ ≫ T.hom) = pullback.fst (h ≫ snd A T).left φ ≫ (h ≫ fst A T).left` using `pullback.lift_fst _ _ _`. Establish `e2 : (kerι A φ h).left ≫ pullback.snd A.hom (φ ≫ T.hom) = pullback.snd (h ≫ snd A T).left φ` using `pullback.lift_snd _ _ _`.
+
+Establish `hx : x.left ≫ pullback.snd A.hom (φ ≫ T.hom) = Y.hom` using `Over.w x`. Apply `pullback.hom_ext (f := A.hom) (g := φ ≫ T.hom)` to reduce the goal to its premises. Use `(Category.assoc _ _ _).trans ((congrArg (l ≫ ·) e1).trans ?_)` and prove the remaining obligations. Use `(Category.assoc _ _ _).symm.trans ((congrArg (· ≫ (h ≫ fst A T).left) l1).trans h1')` and prove the remaining obligations. Conclude with `(Category.assoc _ _ _).trans ((congrArg (l ≫ ·) e2).trans (l2.trans hx.symm))`.
+-/
 theorem factor_ker_iff {R : Type} [CommRing R] (A : Over (Sp R)) {T : Over (Sp R)} {V : Type} [CommRing V]
     (φ : Sp V ⟶ T.left) {H : Over (Sp R)} (h : H ⟶ A ⊗ T) (Y : Over (Sp V)) (x : Y ⟶ bc A φ) :
     (∃ y : Y ⟶ ker A φ h, y ≫ kerι A φ h = x) ↔

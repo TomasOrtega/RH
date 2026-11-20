@@ -14,6 +14,9 @@ variable {R X M : Type} [CommRing R] [AddCommGroup X] [Module R X] [AddCommGroup
 open Classical in
 open scoped BigOperators in
 variable {R X M : Type} [CommRing R] [AddCommGroup X] [Module R X] [AddCommGroup M] [Module ℂ M] in
+/- English proof (translation)
+Rewrite using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]`.
+-/
 theorem _root_.GlobalTheory.FinWeil.rep_inv_apply {Γ : Type} [Group Γ] (ρ : Γ →* Module.End R X) (g : Γ)
     (x : X) : ρ g⁻¹ (ρ g x) = x := by
   rw [← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]
@@ -21,6 +24,11 @@ theorem _root_.GlobalTheory.FinWeil.rep_inv_apply {Γ : Type} [Group Γ] (ρ : �
 open Classical in
 open scoped BigOperators in
 variable {R X M : Type} [CommRing R] [AddCommGroup X] [Module R X] [AddCommGroup M] [Module ℂ M] in
+/- English proof (translation)
+Rewrite using `[Submodule.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Rewrite using `[_root_.GlobalTheory.FinWeil.rep_inv_apply]` and apply the resulting hypothesis. Introduce `hx`.
+
+Use `⟨ρ g⁻¹ x, hx, ?_⟩` and prove the remaining obligations. Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`.
+-/
 theorem _root_.GlobalTheory.FinWeil.mem_map_rep {Γ : Type} [Group Γ] (ρ : Γ →* Module.End R X) (g : Γ)
     (A : Submodule R X) (x : X) :
     x ∈ A.map (ρ g) ↔ ρ g⁻¹ x ∈ A := by
@@ -35,6 +43,11 @@ theorem _root_.GlobalTheory.FinWeil.mem_map_rep {Γ : Type} [Group Γ] (ρ : Γ 
 open Classical in
 open scoped BigOperators in
 variable {R X M : Type} [CommRing R] [AddCommGroup X] [Module R X] [AddCommGroup M] [Module ℂ M] in
+/- English proof (translation)
+Introduce `x`. Rewrite using `[_root_.GlobalTheory.FinWeil.mem_map_rep, hA (ρ g⁻¹ x)]`. Prove the components needed by the constructor for the conclusion. Introduce `H b hb`. Rewrite using `[← hρ g⁻¹]`.
+
+Conclude with `H _ ((_root_.GlobalTheory.FinWeil.mem_map_rep ρ g A b).1 hb)`. Introduce `H a ha`. Establish `key` using `H (ρ g a) (Submodule.mem_map_of_mem ha)`. Rewrite `key` using `[← hρ g⁻¹, _root_.GlobalTheory.FinWeil.rep_inv_apply]`. Then use the resulting hypothesis.
+-/
 theorem _root_.GlobalTheory.FinWeil.selfDual_map_rep {γ : X → X → ℂ} {Γ : Type} [Group Γ]
     (ρ : Γ →* Module.End R X)
     (hρ : ∀ g x y, γ (ρ g x) (ρ g y) = γ x y) {A : Submodule R X} (hA : _root_.GlobalTheory.FinWeil.SelfDual γ A)
@@ -53,6 +66,9 @@ theorem _root_.GlobalTheory.FinWeil.selfDual_map_rep {γ : X → X → ℂ} {Γ 
 open Classical in
 open scoped BigOperators in
 variable {R X M : Type} [CommRing R] [AddCommGroup X] [Module R X] [AddCommGroup M] [Module ℂ M] in
+/- English proof (translation)
+Use `⟨h.sg_sg, h.w_add, h.add_left, h.add_right, h.alt, h.adj, fun v => ?_, fun x y v => ?_⟩` and prove the remaining obligations. Use `show W (ρ g 0) v = v`. Rewrite using `[map_zero, h.zero]`. Use `show W (ρ g x) (W (ρ g y) v) = γ (w • x) y • W (ρ g (x + y)) v`. Rewrite using `[h.comp, map_add, ← hρ g (w • x) y, LinearMap.map_smul]`.
+-/
 theorem _root_.GlobalTheory.FinWeil.isHeis_comp_rep {σ : R →+* R} {w : R} {γ : X → X → ℂ}
     {W : X → M →ₗ[ℂ] M} (h : _root_.GlobalTheory.FinWeil.IsHeis σ w γ W)
     {Γ : Type} [Group Γ] (ρ : Γ →* Module.End R X)
@@ -70,6 +86,9 @@ theorem _root_.GlobalTheory.FinWeil.isHeis_comp_rep {σ : R →+* R} {w : R} {γ
 open Classical in
 open scoped BigOperators in
 variable {R X M : Type} [CommRing R] [AddCommGroup X] [Module R X] [AddCommGroup M] [Module ℂ M] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem normOp_eq_inv_smul_sumOp (lam : ℕ →* ℂ) (W : X → M →ₗ[ℂ] M)
     (B C : Submodule R X) (v : M) :
     _root_.GlobalTheory.FinWeil.normOp lam W B C v =
@@ -78,6 +97,13 @@ private theorem normOp_eq_inv_smul_sumOp (lam : ℕ →* ℂ) (W : X → M →�
 open Classical in
 open scoped BigOperators in
 variable {R X M : Type} [CommRing R] [AddCommGroup X] [Module R X] [AddCommGroup M] [Module ℂ M] in
+/- English proof (translation)
+Set `T` to `Finsupp.linearCombination ℂ u`. Set `T'` to `Finsupp.linearCombination ℂ u'`. Establish `hsurj : Function.Surjective T`. Rewrite using `[← LinearMap.range_eq_top, Finsupp.range_linearCombination, hspan]`. Establish `hker : LinearMap.ker T ≤ LinearMap.ker T'`.
+
+Introduce `f hf`. Rewrite `hf`, the goal using `[LinearMap.mem_ker]`. Simplify using `only [T, T', Finsupp.linearCombination_apply, Finsupp.sum] at hf ⊢`. Conclude with `hrel _ _ hf`. Use `⟨(LinearMap.ker T).liftQ T' hker ∘ₗ (T.quotKerEquivOfSurjective hsurj).symm.toLinearMap, fun i => ?_⟩` and prove the remaining obligations.
+
+Establish `hq : (T.quotKerEquivOfSurjective hsurj).symm (u i) = Submodule.Quotient.mk (Finsupp.single i 1)`. Rewrite using `[LinearEquiv.symm_apply_eq, LinearMap.quotKerEquivOfSurjective_apply_mk]`. Simplify using `[T]`. Simplify using `[hq, T']`.
+-/
 private theorem exists_linearMap_of_relations (u u' : X → M)
     (hspan : Submodule.span ℂ (Set.range u) = ⊤)
     (hrel : ∀ (s : Finset X) (c : X → ℂ), ∑ i ∈ s, c i • u i = 0 → ∑ i ∈ s, c i • u' i = 0) :
@@ -102,6 +128,9 @@ private theorem exists_linearMap_of_relations (u u' : X → M)
 open Classical in
 open scoped BigOperators in
 variable {R X M : Type} [CommRing R] [AddCommGroup X] [Module R X] [AddCommGroup M] [Module ℂ M] in
+/- English proof (translation)
+Rewrite using `[h.comm, he a ha]`.
+-/
 private theorem apply_translate_eq_smul_of_fixes {σ : R →+* R} {w : R} {γ : X → X → ℂ}
     {W : X → M →ₗ[ℂ] M} (h : _root_.GlobalTheory.FinWeil.IsHeis σ w γ W) {A : Submodule R X}
     {e : M} (he : _root_.GlobalTheory.FinWeil.Fixes W A e) {a : X} (ha : a ∈ A) (x : X) :
@@ -111,6 +140,9 @@ private theorem apply_translate_eq_smul_of_fixes {σ : R →+* R} {w : R} {γ : 
 open Classical in
 open scoped BigOperators in
 variable {R X M : Type} [CommRing R] [AddCommGroup X] [Module R X] [AddCommGroup M] [Module ℂ M] in
+/- English proof (translation)
+Establish `key` using `h.comp y (x - y) e`. Rewrite `key` using `[he _ hxy, add_sub_cancel]`. Rewrite using `[key, smul_smul, inv_mul_cancel₀ (h.ne_zero _ _), one_smul]`.
+-/
 private theorem translate_eq_smul_of_sub_mem {σ : R →+* R} {w : R} {γ : X → X → ℂ}
     {W : X → M →ₗ[ℂ] M} (h : _root_.GlobalTheory.FinWeil.IsHeis σ w γ W) {A : Submodule R X}
     {e : M} (he : _root_.GlobalTheory.FinWeil.Fixes W A e) {x y : X} (hxy : x - y ∈ A) :
@@ -122,6 +154,9 @@ private theorem translate_eq_smul_of_sub_mem {σ : R →+* R} {w : R} {γ : X �
 open Classical in
 open scoped BigOperators in
 variable {R X M : Type} [CommRing R] [AddCommGroup X] [Module R X] [AddCommGroup M] [Module ℂ M] in
+/- English proof (translation)
+Introduce `h0`. Establish `key` using `h.neg_comp x e`. Rewrite `key` using `[h0, map_zero]`. Conclude with `he0 ((smul_eq_zero.mp key.symm).resolve_left (h.ne_zero _ _))`.
+-/
 private theorem translate_ne_zero' {σ : R →+* R} {w : R} {γ : X → X → ℂ}
     {W : X → M →ₗ[ℂ] M} (h : _root_.GlobalTheory.FinWeil.IsHeis σ w γ W) {e : M} (he0 : e ≠ 0)
     (x : X) : W x e ≠ 0 := by
@@ -133,6 +168,25 @@ private theorem translate_ne_zero' {σ : R →+* R} {w : R} {γ : X → X → �
 open Classical in
 open scoped BigOperators in
 variable {R X M : Type} [CommRing R] [AddCommGroup X] [Module R X] [AddCommGroup M] [Module ℂ M] in
+/- English proof (translation)
+Proceed by induction on `s using Finset.strongInduction with`. Consider the case `H s ih`. Introduce `c hc`. Establish `shift : ∀ (U : X → M →ₗ[ℂ] M) (z : M), _root_.GlobalTheory.FinWeil.IsHeis σ w γ U → _root_.GlobalTheory.FinWeil.Fixes U A z → ∀ x₀ ∈ s, ∀ a ∈ A, U a (∑ x ∈ s, c x • U x z) - γ a x₀ • ∑ x ∈ s, c x • U x z = ∑ x ∈ s.erase x₀, (c x * (γ a x - γ a x₀)) • U x z`. Introduce `U z hU hz x₀ hx₀ a ha`.
+
+Rewrite using `[Finset.sum_erase _ (by simp) , map_sum, Finset.smul_sum, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, apply_translate_eq_smul_of_fixes hU hz ha, smul_smul, smul_smul, ← sub_smul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `eig : ∀ x₀ ∈ s, ∀ a ∈ A, V a (∑ x ∈ s, c x • V x u) = γ a x₀ • ∑ x ∈ s, c x • V x u`. Introduce `x₀ hx₀ a ha`. Establish `h1` using `shift W e h he x₀ hx₀ a ha`. Simplify using `only [hc, map_zero, smul_zero, sub_self] at h1`. Establish `h2` using `ih (s.erase x₀) (Finset.erase_ssubset hx₀) _ h1.symm`.
+
+Establish `h3` using `shift V u hV hu x₀ hx₀ a ha`. Rewrite `h3` using `[h2]`. Conclude with `sub_eq_zero.mp h3`. Distinguish the cases in `hcase : ∀ x ∈ s, ∀ y ∈ s, x - y ∈ A`. Break down `s.eq_empty_or_nonempty with rfl | ⟨x₀, hx₀⟩` into its components or cases.
+
+Simplify using the standard rewrite rules. Establish `col : ∀ (U : X → M →ₗ[ℂ] M) (z : M), _root_.GlobalTheory.FinWeil.IsHeis σ w γ U → _root_.GlobalTheory.FinWeil.Fixes U A z → ∑ x ∈ s, c x • U x z = (∑ x ∈ s, c x * (γ (w • x₀) (x - x₀))⁻¹) • U x₀ z`. Introduce `U z hU hz`. Rewrite using `[Finset.sum_smul]`. Use `Finset.sum_congr rfl fun x hx => ?_` and prove the remaining obligations.
+
+Rewrite using `[translate_eq_smul_of_sub_mem hU hz (hcase x hx x₀ hx₀), smul_smul]`. Rewrite `hc` using `[col W e h he]`. Rewrite using `[col V u hV hu, (smul_eq_zero.mp hc).resolve_right (translate_ne_zero' h he0 x₀), zero_smul]`. Use `push_neg at hcase`. Take `⟨x, hx, y, hy, hxy⟩` from `hcase`.
+
+Establish `hnot : ¬ ∀ a ∈ A, γ (x - y) a = 1` using `fun H => hxy ((hA _).2 H)`. Use `push_neg at hnot`. Take `⟨a, ha, hne⟩` from `hnot`. Establish `hγ : γ a x ≠ γ a y`. Introduce `heq`.
+
+Apply `hne` to reduce the goal to its premises. Rewrite using `[sub_eq_add_neg, h.add_left, h.neg_left, h.swap a x, h.swap a y, heq]`. Conclude with `mul_inv_cancel₀ (inv_ne_zero (h.ne_zero _ _))`. Establish `e1` using `eig x hx a ha`. Establish `e2` using `eig y hy a ha`.
+
+Rewrite `e2` using `[e1]`. Establish `hzero : (γ a x - γ a y) • ∑ x ∈ s, c x • V x u = 0`. Rewrite using `[sub_smul, e2, sub_self]`. Conclude with `(smul_eq_zero.mp hzero).resolve_left (sub_ne_zero.mpr hγ)`.
+-/
 private theorem sum_smul_translate_eq_zero_of_fixes_selfDual {σ : R →+* R} {w : R} {γ : X → X → ℂ}
     {W V : X → M →ₗ[ℂ] M} (h : _root_.GlobalTheory.FinWeil.IsHeis σ w γ W)
     (hV : _root_.GlobalTheory.FinWeil.IsHeis σ w γ V) {A : Submodule R X}
@@ -195,6 +249,31 @@ open Classical in
 open scoped BigOperators in
 variable {R X M : Type} [CommRing R] [AddCommGroup X] [Module R X] [AddCommGroup M] [Module ℂ M] in
 
+/- English proof (translation)
+Introduce `R X M _ _ _ _ _ σ w γ W h lam hlam A hA e he0 he hspan Γ _ ρ hρ hidx`. Establish `hsd : ∀ g, _root_.GlobalTheory.FinWeil.SelfDual γ (A.map (ρ g))` using `fun g => _root_.GlobalTheory.FinWeil.selfDual_map_rep ρ hρ hA g`. Establish `hfixE : ∀ g, _root_.GlobalTheory.FinWeil.Fixes W (A.map (ρ g)) (_root_.GlobalTheory.FinWeil.normOp lam W A (A.map (ρ g)) e)`. Introduce `g b hb`. Establish `key` using `((_root_.GlobalTheory.FinWeil.sumOp_transversal h A _ (hsd g)).2.1 (hidx g)).2.1 e he b hb`.
+
+Rewrite using `[normOp_eq_inv_smul_sumOp, map_smul, key]`. Establish `hL : ∀ g, ∃ L : M →ₗ[ℂ] M, ∀ x, L (W x e) = W (ρ g x) (_root_.GlobalTheory.FinWeil.normOp lam W A (A.map (ρ g)) e)`. Introduce `g`. Use `exists_linearMap_of_relations (fun x => W x e) (fun x => W (ρ g x) (_root_.GlobalTheory.FinWeil.normOp lam W A (A.map (ρ g)) e)) hspan ?_` and prove the remaining obligations. Introduce `s c hc`.
+
+Conclude with `sum_smul_translate_eq_zero_of_fixes_selfDual h (_root_.GlobalTheory.FinWeil.isHeis_comp_rep h ρ hρ g) hA he0 he (fun a ha => hfixE g _ (Submodule.mem_map_of_mem ha)) s c hc`. Use `choose L hLe using hL`. Establish `hLint : ∀ g x v, L g (W x v) = W (ρ g x) (L g v)`. Introduce `g x`. Establish `hcomp : (L g).comp (W x) = (W (ρ g x)).comp (L g)`.
+
+Use `LinearMap.ext_on_range hspan fun y => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply]`. Rewrite using `[h.comp x y e, map_smul, hLe, hLe, h.comp (ρ g x) (ρ g y), map_add, ← LinearMap.map_smul (ρ g) w x, hρ]`. Introduce `v`. Simplify using `using LinearMap.congr_fun hcomp v`.
+
+Establish `hL1 : L 1 = 1`. Use `LinearMap.ext_on_range hspan fun x => ?_` and prove the remaining obligations. Establish `hmap : A.map (ρ 1) = A`. Rewrite using `[map_one ρ, Module.End.one_eq_id, Submodule.map_id]`. Establish `hT` using `(_root_.GlobalTheory.FinWeil.sumOp_transversal h A A hA).2.2 le_rfl`.
+
+Rewrite using `[hLe, hmap, normOp_eq_inv_smul_sumOp, hT.2 e he, hT.1, map_one lam, inv_one, one_smul, map_one ρ, Module.End.one_apply, Module.End.one_apply]`. Establish `hLmul : ∀ g k, L (g * k) = L g * L k`. Introduce `g k`. Use `LinearMap.ext_on_range hspan fun x => ?_` and prove the remaining obligations. Rewrite using `[Module.End.mul_apply, hLe, hLe, hLint, map_mul, Module.End.mul_apply]`.
+
+Use `congr 1`. Establish `hmapmul : A.map (ρ g * ρ k) = (A.map (ρ k)).map (ρ g)`. Rewrite using `[Module.End.mul_eq_comp, Submodule.map_comp]`. Take `⟨n, f, hfB, hfu⟩` from `_root_.GlobalTheory.FinWeil.exists_transversal_of_idx_ne_zero A (A.map (ρ k)) (hidx k)`. Take `⟨hsum, hn⟩` from `_root_.GlobalTheory.FinWeil.sumOp_eq_sum_transversal h A (A.map (ρ k)) (hsd k) e he (Fin n) f hfB hfu`.
+
+Establish `hgk` using `hidx (g * k)`. Rewrite `hgk` using `[map_mul, hmapmul]`. Establish `hsdgk` using `hsd (g * k)`. Rewrite `hsdgk` using `[map_mul, hmapmul]`. Rewrite using `[hmapmul, ← _root_.GlobalTheory.FinWeil.normOp_comp h lam hlam A (A.map (ρ g)) _ hA (hsd g) hsdgk (hidx g) hgk e he]`.
+
+Establish `hmem : ∀ y, ρ g y ∈ A.map (ρ g) ↔ y ∈ A` using `fun y => by`. Rewrite using `[_root_.GlobalTheory.FinWeil.mem_map_rep, _root_.GlobalTheory.FinWeil.rep_inv_apply]`. Take `⟨hsum', hn'⟩` from `_root_.GlobalTheory.FinWeil.sumOp_eq_sum_transversal h (A.map (ρ g)) ((A.map (ρ k)).map (ρ g)) hsdgk _ (hfixE g) (Fin n) (fun i => ρ g (f i)) (fun i => Submodule.mem_map_of_mem (hfB i)) (by`. Introduce `b hb`. Take `⟨b', hb', rfl⟩` from `Submodule.mem_map.mp hb`.
+
+Take `⟨i, hi, hiu⟩` from `hfu b' hb'`. Use `⟨i, ?_, fun j hj => hiu j ?_⟩` and prove the remaining obligations. Simplify using `only`. Rewrite using `[← map_sub, hmem]`. Conclude with `hi`.
+
+Simplify using `only at hj`. Rewrite using `[← map_sub, hmem] at hj)` and apply the resulting hypothesis. Rewrite using `[normOp_eq_inv_smul_sumOp (B := A.map (ρ g)), hsum', hn', normOp_eq_inv_smul_sumOp (B := A) (C := A.map (ρ k)), hsum, hn, map_smul, map_sum]`. Simplify using `only [hLe]`. Use `⟨{ toFun := L, map_one' := hL1, map_mul' := hLmul }, fun g x v => hLint g x v, fun g => ⟨hsd g, ?_⟩⟩` and prove the remaining obligations.
+
+Use `show L g e = _`. Establish `key` using `hLe g 0`. Rewrite `key` using `[h.zero, map_zero, h.zero]`. Conclude with `key`.
+-/
 theorem _root_.GlobalTheory.FinWeil.exists_weil_rep : ∀ {R X M : Type} [CommRing R] [AddCommGroup X]
     [Module R X] [AddCommGroup M] [Module ℂ M] {σ : R →+* R} {w : R} {γ : X → X → ℂ}
     {W : X → M →ₗ[ℂ] M}, _root_.GlobalTheory.FinWeil.IsHeis σ w γ W → ∀ lam : ℕ →* ℂ,

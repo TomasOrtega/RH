@@ -28,6 +28,9 @@ def IsIntegralLat (H : HermSpace K V) (M : Submodule R V) : Prop :=
 variable {R K V : Type} [CommRing R] [Field K] [StarRing K] [Algebra R K] [AddCommGroup V] [Module K V]
   [Module R V] [IsScalarTower R K V] in
 
+/- English proof (translation)
+Simplify using `[_root_.GlobalTheory.HermLat.perp, Submodule.mem_iInf]`.
+-/
 theorem _root_.GlobalTheory.HermLat.mem_perp_iff (H : _root_.Formalism.HermitianLatticeCounting.S6.HermSpace K V) (S : Submodule K V) (y : V) :
     y ∈ _root_.GlobalTheory.HermLat.perp H S ↔ ∀ x ∈ S, H.B y x = 0 := by
   simp [_root_.GlobalTheory.HermLat.perp, Submodule.mem_iInf]
@@ -35,6 +38,9 @@ theorem _root_.GlobalTheory.HermLat.mem_perp_iff (H : _root_.Formalism.Hermitian
 variable {R K V : Type} [CommRing R] [Field K] [StarRing K] [Algebra R K] [AddCommGroup V] [Module K V]
   [Module R V] [IsScalarTower R K V] in
 
+/- English proof (translation)
+Simplify using `only [_root_.GlobalTheory.HermLat.dual, _root_.GlobalTheory.HermLat.rs, Submodule.mem_inf, Submodule.restrictScalars_mem, _root_.Formalism.HermitianLatticesTheory.dualBasic_mem_dual, LinearMap.flip_apply]`.
+-/
 theorem _root_.GlobalTheory.HermLat.mem_dual_iff (H : _root_.Formalism.HermitianLatticeCounting.S6.HermSpace K V) (M : Submodule R V) (y : V) :
     y ∈ _root_.GlobalTheory.HermLat.dual H M ↔
       y ∈ Submodule.span K (M : Set V) ∧ ∀ x ∈ M, H.B y x ∈ (1 : Submodule R K) := by
@@ -44,6 +50,9 @@ theorem _root_.GlobalTheory.HermLat.mem_dual_iff (H : _root_.Formalism.Hermitian
 variable {R K V : Type} [CommRing R] [Field K] [StarRing K] [Algebra R K] [AddCommGroup V] [Module K V]
   [Module R V] [IsScalarTower R K V] in
 
+/- English proof (translation)
+Unfold `_root_.GlobalTheory.HermLat.IsIntegralLat _root_.Formalism.HermitianLatticesTheory.IsIntegralLat`. Simplify using `only [LinearMap.flip_apply]`. Conclude with `⟨fun h x hx y hy => h y hy x hx, fun h x hx y hy => h y hy x hx⟩`.
+-/
 theorem _root_.GlobalTheory.HermLat.isIntegralLat_iff (H : _root_.Formalism.HermitianLatticeCounting.S6.HermSpace K V) (M : Submodule R V) :
     _root_.GlobalTheory.HermLat.IsIntegralLat H M ↔ ∀ x ∈ M, ∀ y ∈ M, H.B x y ∈ (1 : Submodule R K) := by
   unfold _root_.GlobalTheory.HermLat.IsIntegralLat _root_.Formalism.HermitianLatticesTheory.IsIntegralLat
@@ -53,6 +62,9 @@ theorem _root_.GlobalTheory.HermLat.isIntegralLat_iff (H : _root_.Formalism.Herm
 variable {R K V : Type} [CommRing R] [Field K] [StarRing K] [Algebra R K] [AddCommGroup V] [Module K V]
   [Module R V] [IsScalarTower R K V] in
 
+/- English proof (translation)
+Rewrite using `[LinearMap.isSymm_def]`. Introduce `x y`. Simplify using `only [LinearMap.flip_apply, starRingEnd_apply]`. Conclude with `H.herm y x`.
+-/
 theorem _root_.GlobalTheory.HermLat.flip_isSymm (H : _root_.Formalism.HermitianLatticeCounting.S6.HermSpace K V) : H.B.flip.IsSymm := by
   rw [LinearMap.isSymm_def]
   intro x y
@@ -70,6 +82,11 @@ def IsUnimod (H : HermSpace K V) (M : Submodule R V) : Prop := IsUnimodMod H M �
 variable {R K V : Type} [CommRing R] [Field K] [StarRing K] [Algebra R K] [AddCommGroup V] [Module K V]
   [Module R V] [IsScalarTower R K V] in
 
+/- English proof (translation)
+Unfold `_root_.GlobalTheory.HermLat.IsLatMod`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨N, hN, rfl⟩, hs⟩`. Simplify using `only [_root_.GlobalTheory.HermLat.rs, Submodule.restrictScalars_bot, sup_bot_eq] at hs ⊢`. Conclude with `{ fg := hN, span_eq_top := hs }`.
+
+Introduce `hM`. Conclude with `⟨⟨M, hM.fg, by simp⟩, hM.span_eq_top⟩`.
+-/
 theorem _root_.GlobalTheory.HermLat.isLatMod_top_bot_iff (M : Submodule R V) :
     _root_.GlobalTheory.HermLat.IsLatMod M (⊤ : Submodule K V) ⊥ ↔ Submodule.IsLattice K M := by
   unfold _root_.GlobalTheory.HermLat.IsLatMod
@@ -83,6 +100,13 @@ theorem _root_.GlobalTheory.HermLat.isLatMod_top_bot_iff (M : Submodule R V) :
 variable {R K V : Type} [CommRing R] [Field K] [StarRing K] [Algebra R K] [AddCommGroup V] [Module K V]
   [Module R V] [IsScalarTower R K V] in
 
+/- English proof (translation)
+Unfold `_root_.GlobalTheory.HermLat.IsUnimod _root_.GlobalTheory.HermLat.IsUnimodMod`. Rewrite using `[_root_.GlobalTheory.HermLat.isLatMod_top_bot_iff]`. Unfold `_root_.Formalism.HermitianLatticesTheory.IsUnimodular _root_.GlobalTheory.HermLat.dual`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hM, hd⟩`.
+
+Use `⟨hM, ?_⟩` and prove the remaining obligations. Rewrite `hd` using `[hM.span_eq_top]`. Simplify using `using hd`. Introduce and unpack `⟨hM, hd⟩`. Use `⟨hM, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hM.span_eq_top]`. Simplify using `using hd`.
+-/
 theorem _root_.GlobalTheory.HermLat.isUnimod_iff (H : _root_.Formalism.HermitianLatticeCounting.S6.HermSpace K V) (M : Submodule R V) :
     _root_.GlobalTheory.HermLat.IsUnimod H M ↔ Submodule.IsLattice K M ∧ _root_.Formalism.HermitianLatticesTheory.IsUnimodular H.B.flip M := by
   unfold _root_.GlobalTheory.HermLat.IsUnimod _root_.GlobalTheory.HermLat.IsUnimodMod
@@ -184,6 +208,9 @@ def isomGrp (H : HermSpace K V) : Subgroup (V ≃ₗ[K] V) := Formalism.Hermitia
 variable {R K V : Type} [CommRing R] [Field K] [StarRing K] [Algebra R K] [AddCommGroup V] [Module K V]
   [Module R V] [IsScalarTower R K V] in
 
+/- English proof (translation)
+Unfold `_root_.GlobalTheory.HermLat.isomGrp _root_.Formalism.HermitianLatticesTheory.isom`. Express the relevant statement in the definitionally equal form `(∀ x y : V, H.B.flip (s x) (s y) = H.B.flip x y) ↔ _`. Simplify using `only [LinearMap.flip_apply]`. Conclude with `forall_swap`.
+-/
 theorem _root_.GlobalTheory.HermLat.mem_isomGrp (H : _root_.Formalism.HermitianLatticeCounting.S6.HermSpace K V) (s : V ≃ₗ[K] V) :
     s ∈ _root_.GlobalTheory.HermLat.isomGrp H ↔ ∀ x y, H.B (s x) (s y) = H.B x y := by
   unfold _root_.GlobalTheory.HermLat.isomGrp _root_.Formalism.HermitianLatticesTheory.isom
@@ -209,6 +236,9 @@ def genusMass (H : HermSpace K V) (L : Submodule R V) : ENNReal := genusSum H L 
 def genusMean (H : HermSpace K V) (L : Submodule R V) (φ : Submodule R V → ENNReal) : ENNReal :=
   genusSum H L φ / genusMass H L
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨1, (isomGrp H).one_mem, Formalism.HermitianLatticesTheory.genusBasic_gmap_one M⟩ symm := by rintro M _ ⟨s, hs, rfl⟩ exact ⟨s⁻¹, (isomGrp H).inv_mem hs, Formalism.HermitianLatticesTheory.genusBasic_gmap_inv s M⟩ trans := by rintro M _ _ ⟨s, hs, rfl⟩ ⟨t, ht, rfl⟩ exact ⟨t * s, (is …`.
+-/
 theorem isometric_equivalence (H : HermSpace K V) : Equivalence (Isometric (R := R) H) where
   refl M := ⟨1, (isomGrp H).one_mem, Formalism.HermitianLatticesTheory.genusBasic_gmap_one M⟩
   symm := by
@@ -218,6 +248,13 @@ theorem isometric_equivalence (H : HermSpace K V) : Equivalence (Isometric (R :=
     rintro M _ _ ⟨s, hs, rfl⟩ ⟨t, ht, rfl⟩
     exact ⟨t * s, (isomGrp H).mul_mem ht hs, Formalism.HermitianLatticesTheory.genusBasic_gmap_mul s t M⟩
 
+/- English proof (translation)
+Establish `key : ∀ {N N' : Submodule R V}, Isometric H N N' → autCard H N ≤ autCard H N'`. Introduce and unpack `N _ ⟨g, hg, rfl⟩`. Unfold `autCard`. Use `ENat.toENNReal_le.2 (Set.encard_le_encard_of_injOn (f := fun a => g * a * g⁻¹) ?_ ?_)` and prove the remaining obligations. Introduce and unpack `a ⟨ha, haN⟩`.
+
+Use `⟨mul_mem (mul_mem hg ha) (inv_mem hg), ?_⟩` and prove the remaining obligations. Unfold `imLat at haN ⊢`. Rewrite using `[Formalism.HermitianLatticesTheory.genusBasic_gmap_mul, Formalism.HermitianLatticesTheory.genusBasic_gmap_inv, Formalism.HermitianLatticesTheory.genusBasic_gmap_mul, haN]`. Introduce `a _ b _ hab`. Simplify using `using hab`.
+
+Conclude with `le_antisymm (key h) (key ((isometric_equivalence H).symm h))`.
+-/
 theorem autCard_eq_of_isometric (H : HermSpace K V) {M M' : Submodule R V} (h : Isometric H M M') :
     autCard H M = autCard H M' := by
   have key : ∀ {N N' : Submodule R V}, Isometric H N N' → autCard H N ≤ autCard H N' := by
@@ -243,6 +280,15 @@ variable {K V : Type} [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [M
 
 def IsTraceDef (H : HermSpace K V) : Prop := ∀ x : V, x ≠ 0 → 0 < Algebra.trace ℚ K (H.B x x)
 
+/- English proof (translation)
+Use `set r := fun M M' : {M : Submodule (𝓞 K) V // InGenus H L M} => Isometric H M.1 M'.1 with hr`. Establish `hre : Equivalence r` using `(isometric_equivalence H).comap _`. Establish `hq : ∀ a b, Quot.mk r a = Quot.mk r b ↔ r a b` using `fun a b => by`. Rewrite using `[Quot.eq, hre.eqvGen_iff]`. Set `f : s → Quot r` to `fun N => Quot.mk r ⟨N.1, hs.1 N.1 N.2⟩`.
+
+Establish `hf : Function.Bijective f`. Prove the components needed by the constructor for the conclusion. Introduce `N N' h`. Establish `h1 : Isometric H N.1 N'.1` using `(hq _ _).1 h`. Take `⟨P, -, hP⟩` from `hs.2 N'.1 (hs.1 _ N'.2)`.
+
+Conclude with `Subtype.ext ((hP N.1 ⟨N.2, h1⟩).trans (hP N'.1 ⟨N'.2, (isometric_equivalence H).refl _⟩).symm)`. Introduce and unpack `⟨M⟩`. Take `⟨N, ⟨hN, h⟩, -⟩` from `hs.2 M.1 M.2`. Conclude with `⟨⟨N, hN⟩, (hq _ _).2 h⟩`. Unfold `genusSum`.
+
+Rewrite using `[← (Equiv.ofBijective f hf).tsum_eq, ← Finset.tsum_subtype s (fun M => φ M / autCard H M)]`. Use `tsum_congr fun N => ?_` and prove the remaining obligations. Establish `h : Isometric H (Quot.out (f N)).1 N.1` using `(hq _ ⟨N.1, hs.1 N.1 N.2⟩).1 (Quot.out_eq _)`. Use `show φ (Quot.out (f N)).1 / autCard H (Quot.out (f N)).1 = _`. Rewrite using `[hφ _ _ (Quot.out (f N)).2 h, autCard_eq_of_isometric H h]`.
+-/
 theorem genusSum_eq_sum (H : HermSpace K V) {L : Submodule (𝓞 K) V} {s : Finset (Submodule (𝓞 K) V)}
     (hs : Formalism.ThetaLiftIndependence.IsClassReps H.B.flip L s) {φ : Submodule (𝓞 K) V → ENNReal}
     (hφ : ∀ M M', InGenus H L M → Isometric H M M' → φ M = φ M') :
@@ -278,6 +324,15 @@ variable {K V : Type} [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [M
   [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] in
 variable [FiniteDimensional K V] in
 
+/- English proof (translation)
+Establish `hA` using `_root_.Formalism.HermitianLatticesTheory.final_autFinite`. Unfold `_root_.Formalism.HermitianLatticesTheory.AutFinite at hA`. Establish `hfin : (_root_.Formalism.ThetaLiftIndependence.autL H.B.flip M).Finite`. Unfold `_root_.Formalism.ThetaLiftIndependence.autL`. Conclude with `hA K V H.B.flip (_root_.GlobalTheory.HermLat.flip_isSymm H) (fun x hx => by simpa using hH x hx) M hM`.
+
+Establish `hone : (1 : V ≃ₗ[K] V) ∈ _root_.Formalism.ThetaLiftIndependence.autL H.B.flip M`. Unfold `_root_.Formalism.ThetaLiftIndependence.autL`. Conclude with `⟨one_mem _, _root_.Formalism.ThetaLiftIndependence.LatticeLiftIndependence.gmap_one (K := K) M⟩`. Use `⟨hfin, ?_, ?_⟩` and prove the remaining obligations. Establish `: Finite (_root_.Formalism.ThetaLiftIndependence.autL H.B.flip M)` using `hfin.to_subtype`.
+
+Conclude with `Nat.card_pos_iff.2 ⟨⟨⟨1, hone⟩⟩, this⟩`. Establish `hset : {s : V ≃ₗ[K] V | s ∈ _root_.GlobalTheory.HermLat.isomGrp H ∧ _root_.GlobalTheory.HermLat.imLat s M = M} = _root_.Formalism.ThetaLiftIndependence.autL H.B.flip M`. Unfold `_root_.Formalism.ThetaLiftIndependence.autL`. Both sides reduce to the same expression. Unfold `_root_.GlobalTheory.HermLat.autCard`.
+
+Rewrite using `[hset, ← hfin.cast_ncard_eq, Nat.card_coe_set_eq]`. Simplify using the standard rewrite rules.
+-/
 theorem _root_.GlobalTheory.HermLat.autCard_eq_natCard {H : _root_.Formalism.HermitianLatticeCounting.S6.HermSpace K V} (hH : _root_.GlobalTheory.HermLat.IsTraceDef H)
     {M : Submodule (𝓞 K) V} (hM : Submodule.IsLattice K M) :
     (_root_.Formalism.ThetaLiftIndependence.autL H.B.flip M).Finite ∧ 0 < Nat.card (_root_.Formalism.ThetaLiftIndependence.autL H.B.flip M) ∧
@@ -301,6 +356,9 @@ theorem _root_.GlobalTheory.HermLat.autCard_eq_natCard {H : _root_.Formalism.Her
     rw [hset, ← hfin.cast_ncard_eq, Nat.card_coe_set_eq]
     simp
 
+/- English proof (translation)
+Take `⟨⟨s, hs⟩, hm, -⟩` from `Formalism.HermitianLatticesTheory.massBasic K V H.B.flip (flip_isSymm H) hH L hL`. Rewrite using `[genusMass, genusSum_eq_sum H hs (fun _ _ _ _ => rfl), hm s hs, ENNReal.ofReal_sum_of_nonneg (fun _ _ => by positivity)]`. Use `Finset.sum_congr rfl fun M hM => ?_` and prove the remaining obligations. Take `⟨-, hpos, he⟩` from `autCard_eq_natCard hH (hs.1 M hM).1`. Rewrite using `[he, ENNReal.ofReal_inv_of_pos (by exact_mod_cast hpos), ENNReal.ofReal_natCast, one_div]`.
+-/
 theorem genusMass_eq {H : HermSpace K V} (hH : IsTraceDef H) {L : Submodule (𝓞 K) V}
     (hL : Submodule.IsLattice K L) :
     genusMass H L = ENNReal.ofReal (Formalism.HermitianLatticesTheory.mass H.B.flip L) := by
@@ -311,16 +369,25 @@ theorem genusMass_eq {H : HermSpace K V} (hH : IsTraceDef H) {L : Submodule (�
   obtain ⟨-, hpos, he⟩ := autCard_eq_natCard hH (hs.1 M hM).1
   rw [he, ENNReal.ofReal_inv_of_pos (by exact_mod_cast hpos), ENNReal.ofReal_natCast, one_div]
 
+/- English proof (translation)
+Rewrite using `[genusMass_eq hH hL]`. Conclude with `(ENNReal.ofReal_pos.2 (Formalism.HermitianLatticesTheory.massBasic K V H.B.flip (flip_isSymm H) hH L hL).2.2).ne'`.
+-/
 theorem genusMass_ne_zero {H : HermSpace K V} (hH : IsTraceDef H) {L : Submodule (𝓞 K) V}
     (hL : Submodule.IsLattice K L) : genusMass H L ≠ 0 := by
   rw [genusMass_eq hH hL]
   exact (ENNReal.ofReal_pos.2 (Formalism.HermitianLatticesTheory.massBasic K V H.B.flip (flip_isSymm H) hH L hL).2.2).ne'
 
+/- English proof (translation)
+Rewrite using `[genusMass_eq hH hL]`. Conclude with `ENNReal.ofReal_ne_top`.
+-/
 theorem genusMass_ne_top {H : HermSpace K V} (hH : IsTraceDef H) {L : Submodule (𝓞 K) V}
     (hL : Submodule.IsLattice K L) : genusMass H L ≠ ⊤ := by
   rw [genusMass_eq hH hL]
   exact ENNReal.ofReal_ne_top
 
+/- English proof (translation)
+The claim follows from `ENNReal.div_self (genusMass_ne_zero hH hL) (genusMass_ne_top hH hL)`.
+-/
 theorem genusMean_one {H : HermSpace K V} (hH : IsTraceDef H) {L : Submodule (𝓞 K) V}
     (hL : Submodule.IsLattice K L) : genusMean H L (fun _ => 1) = 1 :=
   ENNReal.div_self (genusMass_ne_zero hH hL) (genusMass_ne_top hH hL)
@@ -330,11 +397,20 @@ end Mass
 section Examples
 
 omit [IsScalarTower R K V] [Algebra R K] [StarRing K] [Field K] [Module K V] in
+/- English proof (translation)
+Simplify using `[idx]`.
+-/
 example (M : Submodule R V) : idx M M = 1 := by simp [idx]
 
+/- English proof (translation)
+Simplify using `[del, gidx, idx, h.2]`.
+-/
 example {H : HermSpace K V} {M : Submodule R V} (h : IsUnimod H M) : del H M = 1 := by
   simp [del, gidx, idx, h.2]
 
+/- English proof (translation)
+Establish `: (Ideal.span {(2 : ℤ)}).toAddSubgroup = AddSubgroup.zmultiples 2`. Use extensionality with `x`. Simplify using `[Ideal.mem_span_singleton', AddSubgroup.mem_zmultiples_iff]`. Rewrite using `[idx, this]`. Simplify using `[Int.index_zmultiples]`.
+-/
 example : idx (⊤ : Submodule ℤ ℤ) (Ideal.span {2}) = 2 := by
   have : (Ideal.span {(2 : ℤ)}).toAddSubgroup = AddSubgroup.zmultiples 2 := by
     ext x; simp [Ideal.mem_span_singleton', AddSubgroup.mem_zmultiples_iff]
@@ -347,6 +423,11 @@ def ratLine : HermSpace ℚ ℚ where
   herm := by intro x y; simp; ring
   nondeg := by intro x h; simpa using h 1
 
+/- English proof (translation)
+Introduce `x hx`. Establish `: ratLine.B x x = x * x` using `rfl`. Rewrite using `[this]`. Establish `h : Algebra.trace ℚ ℚ (x * x) = x * x`. Use `Algebra.trace_algebraMap (R := ℚ) (S := ℚ) (x * x)` as an intermediate fact.
+
+Simplify using `using this`. Establish `h2` using `mul_self_pos.2 hx`. Rewrite `h2` using `[← h]`. Conclude with `h2`.
+-/
 theorem ratLine_isTraceDef : IsTraceDef ratLine := by
   intro x hx
   have : ratLine.B x x = x * x := rfl
@@ -358,6 +439,9 @@ theorem ratLine_isTraceDef : IsTraceDef ratLine := by
   rw [← h] at h2
   exact h2
 
+/- English proof (translation)
+Use `⟨by rw [Submodule.one_eq_span]; exact Submodule.fg_span_singleton _, ?_⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff]`. Introduce `x _`. Establish `h1 : (1 : ℚ) ∈ Submodule.span ℚ ((1 : Submodule (NumberField.RingOfIntegers ℚ) ℚ) : Set ℚ)` using `Submodule.subset_span (Submodule.mem_one.2 ⟨1, map_one _⟩)`. Simplify using `using Submodule.smul_mem _ x h1`.
+-/
 theorem ratLine_isLattice :
     Submodule.IsLattice ℚ (1 : Submodule (NumberField.RingOfIntegers ℚ) ℚ) := by
   refine ⟨by rw [Submodule.one_eq_span]; exact Submodule.fg_span_singleton _, ?_⟩
@@ -367,6 +451,9 @@ theorem ratLine_isLattice :
     Submodule.subset_span (Submodule.mem_one.2 ⟨1, map_one _⟩)
   simpa using Submodule.smul_mem _ x h1
 
+/- English proof (translation)
+The claim follows from `genusMean_one ratLine_isTraceDef ratLine_isLattice`.
+-/
 example : genusMean ratLine (1 : Submodule (NumberField.RingOfIntegers ℚ) ℚ) (fun _ => 1) = 1 :=
   genusMean_one ratLine_isTraceDef ratLine_isLattice
 

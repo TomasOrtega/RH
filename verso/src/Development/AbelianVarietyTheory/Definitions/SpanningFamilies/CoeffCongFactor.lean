@@ -16,6 +16,17 @@ noncomputable section
 
 variable {E : Type} [Field E] [NumberField E]
 
+/- English proof (translation)
+Distinguish the cases in `hb : A = ⊥`. Conclude with `⟨0, zero_mem _, by simp [hb]⟩`. Take `⟨d, hd, hint⟩` from `FractionalIdeal.isFractional_of_fg (S := nonZeroDivisors (𝓞 E)) hA`. Establish `hd0 : (d : E) ≠ 0` using `by simpa using nonZeroDivisors.ne_zero hd`. Set `f : 𝓞 E →ₗ[𝓞 E] E` to `LinearMap.toSpanSingleton (𝓞 E) E (d : E)⁻¹`.
+
+Establish `hf (a : 𝓞 E) : f a = (a : E) * (d : E)⁻¹` using `rfl`. Set `I : Ideal (𝓞 E)` to `A.comap f`. Establish `hI : Submodule.map f I = A`. Use `Submodule.map_comap_eq_self fun x hx => ?_` and prove the remaining obligations. Take `⟨a, ha⟩` from `hint x hx`.
+
+Use `⟨a, ?_⟩` and prove the remaining obligations. Establish `: (a : E) = (d : E) * x` using `ha`. Rewrite using `[hf, this]`. Clear the denominators using the available nonvanishing facts. Establish `hI0 : I ≠ ⊥` using `fun h => hb (by rw [← hI, h, Submodule.map_bot])`.
+
+Take `⟨p, hp⟩` from `IsDedekindDomain.exists_sup_span_eq (I := 𝔪 * I) (J := I) Ideal.mul_le_right (mul_ne_zero h0 hI0)`. Establish `hpI : p ∈ I` using `hp ▸ Submodule.mem_sup_right (Ideal.mem_span_singleton_self p)`. Use `⟨f p, hpI, ?_⟩` and prove the remaining obligations. Use `conv_lhs => rw [← hI, ← hp]`. Rewrite using `[Submodule.map_sup, sup_comm]`.
+
+Use `sup_le_sup ?_ ?_` and prove the remaining obligations. Rewrite using `[Ideal.span, Submodule.map_span, Set.image_singleton]`. Rewrite using `[← smul_eq_mul, Submodule.map_smul'', hI]`.
+-/
 theorem exists_gen_one {𝔪 : Ideal (𝓞 E)} (h0 : 𝔪 ≠ ⊥) (A : Submodule (𝓞 E) E) (hA : A.FG) :
     ∃ p ∈ A, A ≤ Submodule.span (𝓞 E) {p} ⊔ 𝔪 • A := by
   by_cases hb : A = ⊥
@@ -42,6 +53,23 @@ theorem exists_gen_one {𝔪 : Ideal (𝓞 E)} (h0 : 𝔪 ≠ ⊥) (A : Submodul
   · rw [Ideal.span, Submodule.map_span, Set.image_singleton]
   · rw [← smul_eq_mul, Submodule.map_smul'', hI]
 
+/- English proof (translation)
+Introduce `r`. Proceed by induction on `r with`. Consider the case `zero => exact fun L _ => ⟨fun i => i.elim0, fun i => i.elim0, fun v _ => by`. Rewrite using `[Subsingleton.elim v 0]`. Conclude with `zero_mem _⟩`.
+
+Consider the case `succ r ih`. Introduce `L hL`. Set `π : (Fin (r + 1) → E) →ₗ[𝓞 E] E` to `LinearMap.proj 0`. Set `ι : (Fin r → E) →ₗ[𝓞 E] (Fin (r + 1) → E)` to `LinearMap.vecCons 0 LinearMap.id`. Establish `hι : Function.Injective ι` using `fun a b h => by`.
+
+Simplify `h` using `[ι]`. Take `⟨_, ⟨b, hb, rfl⟩, hgen⟩` from `exists_gen_one h0 (L.map π) (hL.map π)`. Establish `hfg : (L.comap ι).FG` using `Submodule.fg_of_fg_map_injective ι hι (Submodule.FG.of_le hL (Submodule.map_comap_le _ _))`. Take `⟨β, hβ, hsp⟩` from `ih _ hfg`. Use `⟨Fin.cons b fun i => ι (β i), fun i => Fin.cases hb (fun i => hβ i) i, fun v hv => ?_⟩` and prove the remaining obligations.
+
+Establish `h1` using `hgen ⟨v, hv, rfl⟩`. Rewrite `h1` using `[← Set.image_singleton, ← Submodule.map_span, ← Submodule.map_smul'', ← Submodule.map_sup]`. Take `⟨w, hw, e⟩` from `h1`. Establish `hwL : w ∈ L` using `(sup_le (Submodule.span_le.2 (by simpa using hb)) Submodule.smul_le_right : _ ≤ L) hw`. Establish `e2 : v - w = ι (Fin.tail (v - w))`.
+
+Use function extensionality and compare the values at `j`. Use `Fin.cases ?_ (fun j => ?_) j` and prove the remaining obligations. Establish `: w 0 = v 0` using `e`. Simplify using `[ι, this]`. Simplify using `[ι, Fin.tail]`.
+
+Establish `h2 : Fin.tail (v - w) ∈ L.comap ι`. Rewrite using `[Submodule.mem_comap, ← e2]`. Conclude with `sub_mem hv hwL`. Establish `h3` using `Submodule.mem_map_of_mem (f := ι) (hsp h2)`. Rewrite `h3` using `[← e2, Submodule.map_sup, Submodule.map_smul'', Submodule.map_span]`.
+
+Rewrite using `[← sub_add_cancel v w]`. Use `add_mem (SetLike.le_def.1 (sup_le_sup (Submodule.span_mono ?_) (Submodule.smul_mono le_rfl (Submodule.map_comap_le _ _))) h3) (SetLike.le_def.1 (sup_le_sup_right (Submodule.span_mono ?_) _) hw)` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨i, rfl⟩, rfl⟩`. Conclude with `⟨i.succ, rfl⟩`. Introduce and unpack `_ rfl`.
+
+Conclude with `⟨0, rfl⟩`.
+-/
 theorem exists_gens {𝔪 : Ideal (𝓞 E)} (h0 : 𝔪 ≠ ⊥) : ∀ (r : ℕ) (L : Submodule (𝓞 E) (Fin r → E)), L.FG →
     ∃ β : Fin r → Fin r → E, (∀ i, β i ∈ L) ∧ L ≤ Submodule.span (𝓞 E) (Set.range β) ⊔ 𝔪 • L := by
   intro r
@@ -83,6 +111,21 @@ theorem exists_gens {𝔪 : Ideal (𝓞 E)} (h0 : 𝔪 ≠ ⊥) : ∀ (r : ℕ) 
     · rintro _ rfl
       exact ⟨0, rfl⟩
 
+/- English proof (translation)
+Distinguish the cases in `ht : 𝔞 = ⊤`. Simplify using `[ht]`. Take `⟨s, hs, hN⟩` from `nakayama hL hon`. Establish `hs0 : (s : E) ≠ 0` using `by simpa using cop_ne_zero ht hs`. Establish `hinj : Function.Injective δ`.
+
+Establish `h1 : Submodule.span E (LinearMap.range δ : Set (Fin r → E)) = ⊤`. Rewrite using `[eq_top_iff, ← hsp, Submodule.span_le]`. Conclude with `fun v hv => (Submodule.smul_mem_iff _ hs0).1 (Submodule.subset_span (hN v hv))`. Establish `h2 : r ≤ Module.finrank (𝓞 E) (LinearMap.range δ)`. Take `⟨b, hb, hs', hli⟩` from `exists_linearIndependent E (LinearMap.range δ : Set (Fin r → E))`.
+
+Establish `c : Cardinal.mk b = r`. Rewrite using `[← rank_span_set hli, hs', h1, rank_top]`. Simplify using the standard rewrite rules. Establish `li : LinearIndependent (𝓞 E) (fun x : b => (⟨x, hb x.2⟩ : LinearMap.range δ))` using `LinearIndependent.of_comp (LinearMap.range δ).subtype (hli.restrict_scalars' (𝓞 E))`. Use `li.cardinal_le_rank` as an intermediate fact.
+
+Rewrite `this` using `[c, ← Module.finrank_eq_rank]`. Conclude with `this` after adjusting the coercions. Establish `h3` using `Submodule.finrank_quotient_add_finrank (LinearMap.ker δ)`. Rewrite `h3` using `[δ.quotKerEquivRange.finrank_eq, hM]`. Establish `h4 : Module.finrank (𝓞 E) (LinearMap.ker δ) = 0` using `by omega`.
+
+Rewrite using `[← LinearMap.ker_eq_bot]`. Conclude with `Submodule.finrank_eq_zero.1 h4`. Rewrite using `[eq_top_iff]`. Introduce `a _`. Take `⟨t, ht, h1⟩` from `h (hδ a)`.
+
+Use `mem_of_loc (L := ⊤) trivial le_sup_right ⟨s * t, cop_mul hs ht, ?_⟩` and prove the remaining obligations. Establish `h2 : δ ((s * t) • a) ∈ (S ⊔ 𝔞 • ⊤).map δ`. Take `⟨u, hu, w, hw, e⟩` from `Submodule.mem_sup.1 h1`. Rewrite using `[map_smul, mul_smul, ← e, smul_add, Submodule.map_sup, Submodule.map_smul'', ← LinearMap.range_eq_map]`. Conclude with `Submodule.add_mem_sup (Submodule.smul_mem _ _ hu) (smul_map_mem LinearMap.id hN hw)`.
+
+Take `⟨b, hb, e⟩` from `h2`. Conclude with `hinj e ▸ hb`.
+-/
 theorem span_of_map {r : ℕ} {M : Type} [AddCommGroup M] [Module (𝓞 E) M] [Module.Finite (𝓞 E) M]
     [Module.Projective (𝓞 E) M] (hM : Module.finrank (𝓞 E) M = r) {𝔞 : Ideal (𝓞 E)}
     {L : Submodule (𝓞 E) (Fin r → E)} (hL : L.FG) (hsp : Submodule.span E (L : Set (Fin r → E)) = ⊤)
@@ -123,11 +166,21 @@ theorem span_of_map {r : ℕ} {M : Type} [AddCommGroup M] [Module (𝓞 E) M] [M
 
 variable [IsCMField E] {r n : ℕ} {X : Data E r}
 
+/- English proof (translation)
+Take `⟨s, hs, H⟩` from `H`. Take `⟨a, m, hm, e⟩` from `cop_iff.1 hs`. Conclude with `⟨s, cop_iff.2 ⟨a, m, h hm, e⟩, Submodule.smul_mono h le_rfl H⟩`.
+-/
 theorem cong_mono {𝔞 𝔟 : Ideal (𝓞 E)} (h : 𝔞 ≤ 𝔟) {u v : Fin r → E} (H : Cong X 𝔞 u v) : Cong X 𝔟 u v := by
   obtain ⟨s, hs, H⟩ := H
   obtain ⟨a, m, hm, e⟩ := cop_iff.1 hs
   exact ⟨s, cop_iff.2 ⟨a, m, h hm, e⟩, Submodule.smul_mono h le_rfl H⟩
 
+/- English proof (translation)
+Establish `hs (c : Fin r → 𝓞 E) : ∑ j, c j • D.β j ∈ X.Λ` using `X.Λ.sum_mem fun j _ => X.Λ.smul_mem _ (D.β_mem j)`. Establish `h1` using `mem_of_loc (sub_mem (hs c) (hs d)) le_rfl (cong_iff.1 h)`. Take `⟨e, he, f, hf, hef⟩` from `Ideal.isCoprime_iff_exists.1 hc`. Establish `h2 : Cong X D.𝔪 (∑ j, (e * c j) • D.β j) (∑ j, (e * d j) • D.β j)`. Rewrite using `[cong_iff]`.
+
+Use `le_loc _ ?_` and prove the remaining obligations. Simplify using `only [mul_smul, ← Finset.smul_sum, ← smul_sub]`. Rewrite using `[hm, Submodule.mul_smul]`. Conclude with `Submodule.smul_mem_smul he h1`. Establish `h3 : e * c j - e * d j ∈ 𝔟` using `(hm.le.trans Ideal.mul_le_right) (coeff_cong D h2 j)`.
+
+Establish `: c j - d j = (e * c j - e * d j) + (c j - d j) * f` using `by linear_combination -(c j - d j) * hef`. Rewrite using `[this]`. Conclude with `add_mem h3 (Ideal.mul_mem_left _ _ hf)`.
+-/
 theorem coeff_cong_factor (D : SW.Level X) {𝔞 𝔟 : Ideal (𝓞 E)} (hm : D.𝔪 = 𝔞 * 𝔟) (hc : IsCoprime 𝔞 𝔟)
     {c d : Fin r → 𝓞 E} (h : Cong X 𝔟 (∑ j, c j • D.β j) (∑ j, d j • D.β j)) (j) : c j - d j ∈ 𝔟 := by
   have hs (c : Fin r → 𝓞 E) : ∑ j, c j • D.β j ∈ X.Λ := X.Λ.sum_mem fun j _ => X.Λ.smul_mem _ (D.β_mem j)
@@ -143,6 +196,11 @@ theorem coeff_cong_factor (D : SW.Level X) {𝔞 𝔟 : Ideal (𝓞 E)} (hm : D.
   have : c j - d j = (e * c j - e * d j) + (c j - d j) * f := by linear_combination -(c j - d j) * hef
   rw [this]; exact add_mem h3 (Ideal.mul_mem_left _ _ hf)
 
+/- English proof (translation)
+Take `⟨s, hs, h⟩` from `h`. Take `⟨u, hu, w, hw, e⟩` from `Submodule.mem_sup.1 h`. Take `⟨a, m, hm, e'⟩` from `cop_iff.1 hs`. Use `⟨a • u, N.smul_mem _ hu, ?_⟩` and prove the remaining obligations. Establish `: v - a • u = m • v + a • w` using `by conv_lhs => rw [← one_smul (𝓞 E) v, ← e', add_smul, mul_smul, ← e, smul_add]`.
+
+Normalize the expressions using the abelian group laws. Rewrite using `[cong_iff, this]`. Use `add_mem ?_ (Submodule.smul_mem _ _ hw)` and prove the remaining obligations. Take `⟨t, ht, hv⟩` from `hv`. Conclude with `⟨t, ht, by rw [smul_comm]; exact Submodule.smul_mem_smul hm hv⟩`.
+-/
 theorem exists_cong {𝔞 : Ideal (𝓞 E)} {N : Submodule (𝓞 E) (Fin r → E)} {v : Fin r → E} (hv : v ∈ loc 𝔞 X.Λ)
     (h : v ∈ loc 𝔞 (N ⊔ loc 𝔞 (𝔞 • X.Λ))) : ∃ u ∈ N, Cong X 𝔞 v u := by
   obtain ⟨s, hs, h⟩ := h
@@ -157,6 +215,37 @@ theorem exists_cong {𝔞 : Ideal (𝓞 E)} {N : Submodule (𝓞 E) (Fin r → E
   obtain ⟨t, ht, hv⟩ := hv
   exact ⟨t, ht, by rw [smul_comm]; exact Submodule.smul_mem_smul hm hv⟩
 
+/- English proof (translation)
+Take `⟨-, s, hs, hLΛ, hΛL⟩` from `hL`. Establish `ha : D.𝔪 ≤ 𝔞` using `hm.le.trans Ideal.mul_le_left`. Establish `hb : D.𝔪 ≤ 𝔟` using `hm.le.trans Ideal.mul_le_right`. Establish `hsb : IsCoprime (Ideal.span {s}) 𝔟` using `(hm ▸ hs.of_mul_right_left).of_mul_right_right`. Establish `l1 : loc 𝔟 (𝔟 • X.Λ) ≤ loc 𝔟 (𝔟 • L)` using `fun v ⟨t, ht, hv⟩ => loc_loc ht ⟨s, hsb, smul_map_mem LinearMap.id hΛL hv⟩`.
+
+Establish `l2 : 𝔟 • L ≤ loc 𝔟 (𝔟 • X.Λ)` using `fun v hv => ⟨s, hsb, smul_map_mem LinearMap.id hLΛ hv⟩`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨k, -, hk⟩ v hv`. Take `⟨b, hb'⟩` from `exists_lift k⁻¹`. Establish `h3` using `red_comb hk hb'`.
+
+Rewrite `h3` using `[mul_inv_cancel]`. Use `loc_loc hsb (SetLike.le_def.1 (D.β_span.trans (sup_le (Submodule.span_le.2 ?_) ?_)) (hLΛ v hv))` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩`. Establish `h4` using `cong_trans (cong_mono hb (cong_of_red red_one h3 i)) (cong_sum h1 fun j => b j i)`. Use `add_mem (loc_mono (le_sup_right (a := Submodule.span (𝓞 E) (Set.range z))) (l1 (cong_iff.1 h4))) (le_loc _ (Submodule.mem_sup_left (Submodule.sum_mem _ (t := Finset.univ) fun j _ => Submodule.smul_mem _ (b j i) (Submodule.subset_span ⟨j, rfl⟩))))` as an intermediate fact.
+
+Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis. Conclude with `(Submodule.smul_mono hb le_rfl).trans ((le_loc _).trans (l1.trans (loc_mono le_sup_right)))`. Introduce `h`. Establish `hy (i) : y i ∈ loc D.𝔪 X.Λ`. Establish `a1 : y i ∈ loc 𝔞 X.Λ`.
+
+Simplify using `using add_mem (loc_mono Submodule.smul_le_right (cong_iff.1 (h2 i))) (le_loc _ (D.β_mem i))`. Establish `a2 : y i ∈ loc 𝔟 X.Λ`. Simplify using `using add_mem (loc_mono Submodule.smul_le_right (cong_iff.1 (h1 i))) (show z i ∈ loc 𝔟 X.Λ from ⟨s, hsb, hLΛ _ (hz i)⟩)`. Take `⟨t, ht, a1⟩` from `a1`. Take `⟨t', ht', a2⟩` from `a2`.
+
+Take `⟨p, q, hpq⟩` from `cop_glue hc ht ht'`. Use `⟨_, hm ▸ hpq, ?_⟩` and prove the remaining obligations. Rewrite using `[add_smul, mul_smul, mul_smul]`. Conclude with `add_mem (X.Λ.smul_mem _ a1) (X.Λ.smul_mem _ a2)`. Establish `hk (i) : ∃ c : Fin r → 𝓞 E, Cong X D.𝔪 (y i) (∑ j, c j • D.β j)`.
+
+Take `⟨u, hu, e⟩` from `exists_cong (N := Submodule.span (𝓞 E) (Set.range D.β)) (hy i) (loc_mono (D.β_span.trans (sup_le_sup_left (le_loc _) _)) (hy i))`. Take `⟨c, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun _).1 hu`. Conclude with `⟨c, e⟩`. Establish `hb' (i) : ∃ c : Fin r → 𝓞 E, Cong X 𝔟 (D.β i) (∑ j, c j • z j)`. Take `⟨u, hu, e⟩` from `exists_cong (N := Submodule.span (𝓞 E) (Set.range z)) (le_loc _ (D.β_mem i)) (loc_loc hsb (loc_mono (sup_le_sup_left l2 _) (h (hΛL _ (D.β_mem i)))))`.
+
+Take `⟨c, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun _).1 hu`. Conclude with `⟨c, e⟩`. Use `choose k hk using hk`. Use `choose b hb' using hb'`. Set `K : Matrix (Fin r) (Fin r) (𝓞 E)` to `Matrix.of fun j i => k i j`.
+
+Set `B : Matrix (Fin r) (Fin r) (𝓞 E)` to `Matrix.of fun j i => b i j`. Establish `one (i) : D.β i = ∑ j, (1 : Matrix (Fin r) (Fin r) (𝓞 E)) j i • D.β j` using `by simp [Matrix.one_apply]`. Establish `e1 (j i) : K j i - (1 : Matrix (Fin r) (Fin r) (𝓞 E)) j i ∈ 𝔞` using `coeff_cong_factor D (hm.trans (mul_comm _ _)) hc.symm (c := fun j => K j i) (d := fun j => (1 : Matrix (Fin r) (Fin r) (𝓞 E)) j i) (one i ▸ cong_trans (cong_symm (cong_mono ha (hk i))) (h2 i)) j`. Establish `e2 (j i) : (K * B) j i - (1 : Matrix (Fin r) (Fin r) (𝓞 E)) j i ∈ 𝔟`. Use `coeff_cong_factor D hm hc (c := fun j => (K * B) j i) (d := fun j => (1 : Matrix (Fin r) (Fin r) (𝓞 E)) j i) ?_ j` and prove the remaining obligations.
+
+Rewrite using `[← one i]`. Use `cong_trans (hb' i) (cong_sum (fun j => cong_trans (cong_symm (h1 j)) (cong_mono hb (hk j))) (b i))` as an intermediate fact. Use `cong_symm this using 1` and compare the differences between its conclusion and the goal. Simplify using `only [K, B, Matrix.mul_apply, Matrix.of_apply, Finset.sum_smul, Finset.smul_sum, smul_smul, mul_comm]`. Conclude with `Finset.sum_comm`.
+
+Establish `dt {I : Ideal (𝓞 E)} {A : Matrix (Fin r) (Fin r) (𝓞 E)} (h : ∀ j i, A j i - (1 : Matrix (Fin r) (Fin r) (𝓞 E)) j i ∈ I) : A.det - 1 ∈ I`. Rewrite using `[← Ideal.Quotient.eq, RingHom.map_det, map_one]`. Establish `: (Ideal.Quotient.mk I).mapMatrix A = (Ideal.Quotient.mk I).mapMatrix 1`. Use extensionality with `j i`. Conclude with `Ideal.Quotient.eq.2 (h j i)`.
+
+Rewrite using `[this, map_one, Matrix.det_one]`. Establish `c1 : IsCoprime (Ideal.span {K.det}) 𝔞` using `cop_of_sub_one (dt e1)`. Establish `c2 : IsCoprime (Ideal.span {K.det}) 𝔟`. Use `cop_of_sub_one (dt e2)` as an intermediate fact. Rewrite `this` using `[Matrix.det_mul, ← Ideal.span_singleton_mul_span_singleton]`.
+
+Conclude with `this.of_mul_left_left`. Take `⟨a, m, hm', e⟩` from `cop_iff.1 (hm ▸ c1.mul_right c2 : IsCoprime _ D.𝔪)`. Establish `hu : IsUnit (K.map (Ideal.Quotient.mk D.𝔪)).det`. Rewrite using `[← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Use `IsUnit.of_mul_eq_one (Ideal.Quotient.mk _ a) ?_` and prove the remaining obligations.
+
+Rewrite using `[← map_mul, ← map_one (Ideal.Quotient.mk D.𝔪), Ideal.Quotient.eq]`. Establish `: K.det * a - 1 = -m` using `by linear_combination e`. Rewrite using `[this]`. Conclude with `neg_mem hm'`. Use `⟨Matrix.GeneralLinearGroup.mk'' _ hu, fun i j => ⟨_, e1 i j, ?_⟩, K, rfl, hk⟩` and prove the remaining obligations.
+
+Rewrite using `[map_sub]`. Use `congr 1`. Apply the tactic sequence `by_cases h : i = j <;> simp [Matrix.one_apply, h]`.
+-/
 theorem red_iff (D : SW.Level X) {𝔞 𝔟 : Ideal (𝓞 E)} (hm : D.𝔪 = 𝔞 * 𝔟) (hc : IsCoprime 𝔞 𝔟)
     {L : Lt E r} (hL : L ∈ D.lats) {y z : Fin r → Fin r → E} (hz : ∀ i, z i ∈ L)
     (h1 : ∀ i, Cong X 𝔟 (y i) (z i)) (h2 : ∀ i, Cong X 𝔞 (y i) (D.β i)) :
@@ -247,17 +336,31 @@ theorem red_iff (D : SW.Level X) {𝔞 𝔟 : Ideal (𝓞 E)} (hm : D.𝔪 = �
 
 variable {H : Host E} {Dw : Datum H} {l : Geo.Tor.Level H} {Xo : Moduli Dw l} {c : Coeff l}
 
+/- English proof (translation)
+The claim follows from `RingOfIntegers.ext ((H.bar_eq a).trans (coe_bar a).symm)`.
+-/
 theorem hbar_eq (a : 𝓞 E) : H.bar a = bar a :=
   RingOfIntegers.ext ((H.bar_eq a).trans (coe_bar a).symm)
 
+/- English proof (translation)
+Use extensionality with `a`. Rewrite using `[mem_conjI, ← hbar_eq (H := H), Mfr]`. Conclude with `Ideal.apply_mem_of_equiv_iff (f := H.bar)`.
+-/
 theorem conjI_mfr (l : Geo.Tor.Level H) : conjI (Mfr l) = l.Mb := by
   ext a
   rw [mem_conjI, ← hbar_eq (H := H), Mfr]
   exact Ideal.apply_mem_of_equiv_iff (f := H.bar)
 
+/- English proof (translation)
+The claim follows from `(l.prod.ge.trans Ideal.mul_le_right) (Ideal.mem_span_singleton_self _)`.
+-/
 theorem m_mem (l : Geo.Tor.Level H) : (l.M : 𝓞 E) ∈ Mfr l :=
   (l.prod.ge.trans Ideal.mul_le_right) (Ideal.mem_span_singleton_self _)
 
+/- English proof (translation)
+Introduce `h`. Establish `h1 : l.Mb = ⊤`. Rewrite using `[← conjI_mfr, h, eq_top_iff]`. Conclude with `fun a _ => mem_conjI.2 trivial`. Establish `h2` using `l.prod`.
+
+Rewrite `h2` using `[h1, Ideal.map_top, Ideal.mul_top, eq_comm, Ideal.span_singleton_eq_top]`. Establish `h3` using `h2.map (Algebra.norm ℤ)`. Rewrite `h3` using `[← map_natCast (algebraMap ℤ (𝓞 E)), Algebra.norm_algebraMap, isUnit_pow_iff Module.finrank_pos.ne', Int.isUnit_iff]`. Use `l.three_le` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem mfr_ne_top (l : Geo.Tor.Level H) : Mfr l ≠ ⊤ := by
   intro h
   have h1 : l.Mb = ⊤ := by
@@ -274,6 +377,11 @@ def congGrp (r : ℕ) {𝔪 𝔞 : Ideal (𝓞 E)} (h : 𝔪 ≤ 𝔞) : Subgrou
   (Matrix.GeneralLinearGroup.map (Ideal.Quotient.factor h)).ker
 
 omit [NumberField E] [IsCMField E] in
+/- English proof (translation)
+Establish `key (x : 𝓞 E ⧸ 𝔪) : Ideal.Quotient.factor h x = 0 ↔ ∃ a ∈ 𝔞, x = Ideal.Quotient.mk 𝔪 a`. Prove the components needed by the constructor for the conclusion. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Conclude with `fun e => ⟨a, Ideal.Quotient.eq_zero_iff_mem.1 e, rfl⟩`. Introduce and unpack `⟨a, ha, rfl⟩`.
+
+Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 ha`. Rewrite using `[congGrp, MonoidHom.mem_ker, Units.ext_iff, ← Matrix.ext_iff]`. Use `forall₂_congr fun i j => ?_` and prove the remaining obligations. Rewrite using `[← key, map_sub, sub_eq_zero]`. Apply the tactic sequence `by_cases e : i = j <;> simp [Matrix.one_apply, e]`.
+-/
 theorem mem_congGrp {𝔪 𝔞 : Ideal (𝓞 E)} (h : 𝔪 ≤ 𝔞) (k : GL (Fin r) (𝓞 E ⧸ 𝔪)) :
     k ∈ congGrp r h ↔ ∀ i j, ∃ a ∈ 𝔞,
       (k : Matrix (Fin r) (Fin r) (𝓞 E ⧸ 𝔪)) i j - (1 : Matrix (Fin r) (Fin r) (𝓞 E ⧸ 𝔪)) i j =
@@ -336,11 +444,31 @@ def spanInd (d : DeltaDat Xo c n) (x : Fin n → LaJ Xo c d) : c.F :=
   if Submodule.span (𝓞 E) (x '' {b | b.val < Dw.p + Dw.q}) = ⊤ then 1 else 0
 
 omit [IsCMField E] in
+/- English proof (translation)
+Use extensionality with `a`. Conclude with `⟨fun ⟨b, hb, e⟩ => ⟨⟨b, hb⟩, e⟩, fun ⟨i, e⟩ => ⟨_, i.2, e⟩⟩`.
+-/
 theorem image_upper {α : Type} (hn : r ≤ n) (x : Fin n → α) :
     x '' {b | b.val < r} = Set.range fun i => x (Fin.castLE hn i) := by
   ext a
   exact ⟨fun ⟨b, hb, e⟩ => ⟨⟨b, hb⟩, e⟩, fun ⟨i, e⟩ => ⟨_, i.2, e⟩⟩
 
+/- English proof (translation)
+Use `Dw.fin` as an intermediate fact. Use `Dw.proj` as an intermediate fact. Establish `hp : Mfr d.l₂ = Mfr l * Jd d` using `by rw [Mfr, hI, Ideal.map_mul]; rfl`. Establish `hle : Mfr d.l₂ ≤ Mfr l` using `hp.le.trans Ideal.mul_le_left`. Establish `h0 : Mfr d.l₂ ≠ ⊥` using `fun e => by`.
+
+Use `m_mem d.l₂` as an intermediate fact. Rewrite `this` using `[e, Ideal.mem_bot, Nat.cast_eq_zero]`. Use `d.l₂.three_le` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Take `⟨β, h1, h2⟩` from `exists_gens h0 _ X.Λ X.Λ_fg`.
+
+Use `⟨mkLevel X d.l₂ hle β h1 h2, rfl, hp, hc, rfl, mem_congGrp hle, fun _ _ => rfl, ?_⟩` and prove the remaining obligations. Introduce `L hL δ hδ hon`. Use `⟨1, norm_one, fun xs y hup hlow => ?_⟩` and prove the remaining obligations. Establish `key` using `red_iff (mkLevel X d.l₂ hle β h1 h2) hp hc hL (fun i => hδ _) (fun i => (hup i).1) (fun i => (hup i).2)`. Use `set S := Submodule.span (𝓞 E) (Set.range fun i => xs (Fin.castLE hn i)) with hS`.
+
+Establish `e1 : Submodule.span (𝓞 E) (Set.range fun i => δ (xs (Fin.castLE hn i))) = S.map δ`. Rewrite using `[hS, Submodule.map_span, ← Set.range_comp]`. Both sides reduce to the same expression. Establish `e2 : Submodule.span (𝓞 E) ((fun b => (Submodule.Quotient.mk (xs b) : LaJ Xo c d)) '' {b | b.val < Dw.p + Dw.q}) = ⊤ ↔ S ⊔ Jd d • ⊤ = ⊤`. Rewrite using `[image_upper hn, sup_comm, ← Submodule.map_mkQ_eq_top, hS, Submodule.map_span, ← Set.range_comp]`.
+
+Both sides reduce to the same expression. Establish `e3 : S ⊔ Jd d • ⊤ = ⊤ ↔ L ≤ loc (Jd d) (S.map δ ⊔ Jd d • L)`. Use `⟨fun h => le_trans ?_ (le_loc _), span_of_map Dw.rank hL.1.1 (span_lats hL) hδ hon⟩` and prove the remaining obligations. Use `hon.trans (sup_le ?_ le_sup_right)` and prove the remaining obligations. Rewrite using `[LinearMap.range_eq_map, ← h, Submodule.map_sup, Submodule.map_smul'']`.
+
+Conclude with `sup_le_sup_left (Submodule.smul_mono le_rfl (by rintro _ ⟨a, -, rfl⟩; exact hδ a)) _`. Rewrite `key` using `[e1, ← e3, ← e2]`. Rewrite using `[one_mul, spanInd, datF]`. Use `split_ifs with a b b`. Rewrite using `[map_one]`.
+
+Both sides reduce to the same expression. Take `⟨k, hk, hk'⟩` from `key.2 a`. Conclude with `(b ⟨⟨⟨k, (mem_congGrp hle k).2 hk⟩, hk'⟩, hlow⟩).elim`. Take `⟨k, hk⟩` from `b.1`. Conclude with `(a (key.1 ⟨k.1, (mem_congGrp hle k.1).1 k.2, hk⟩)).elim`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem exists_levTie (d : DeltaDat Xo c n) (σ : c.F →+* ℂ) (hI : d.l₂.Mb = l.Mb * d.I)
     (hc : IsCoprime (Mfr l) (Jd d)) (X : Data E (Dw.p + Dw.q)) (hn : Dw.p + Dw.q ≤ n) :
     ∃ D : SW.Level X, LevTie d σ (spanInd d) D hn := by
@@ -381,6 +509,19 @@ theorem exists_levTie (d : DeltaDat Xo c n) (σ : c.F →+* ℂ) (hI : d.l₂.Mb
     exact (a (key.1 ⟨k.1, (mem_congGrp hle k.1).1 k.2, hk⟩)).elim
   · simp
 
+/- English proof (translation)
+Use `Dw.fin` as an intermediate fact. Use `Dw.proj` as an intermediate fact. Take `⟨s, hs, hLΛ, hΛL⟩` from `hL.2`. Establish `mono {t : 𝓞 E} (ht : IsCoprime (Ideal.span {t}) D.𝔪) : IsCoprime (Ideal.span {t}) (Mfr l)`. Take `⟨a, m, hm', e⟩` from `cop_iff.1 ht`.
+
+Conclude with `cop_iff.2 ⟨a, m, hm hm', e⟩`. Establish `hsb` using `mono hs.of_mul_right_left`. Establish `hp : IsCoprime (Ideal.span {(d.pd : 𝓞 E)}) (Mfr l)`. Take `⟨a, b, e⟩` from `(Nat.isCoprime_iff_coprime.2 hpd).map (Int.castRingHom (𝓞 E))`. Conclude with `cop_iff.2 ⟨a, _, Ideal.mul_mem_left _ b (m_mem l), by simpa using e⟩`.
+
+Establish `l1 : loc (Mfr l) (Mfr l • X.Λ) ≤ loc (Mfr l) (Mfr l • L)` using `fun v ⟨t, ht, hv⟩ => loc_loc ht ⟨s, hsb, smul_map_mem LinearMap.id hΛL hv⟩`. Establish `l2 : Mfr l • L ≤ loc (Mfr l) (Mfr l • X.Λ)` using `fun v hv => ⟨s, hsb, smul_map_mem LinearMap.id hLΛ hv⟩`. Establish `hx (i) : ∃ a : Dw.La, Cong X (Mfr l) (d.pd • δ a) (D.β i)`. Take `⟨u, hu, e⟩` from `exists_cong (N := LinearMap.range ((d.pd : 𝓞 E) • δ)) (le_loc _ (D.β_mem i)) (loc_loc (cop_mul hp hsb) (le_loc _ (by`. Take `⟨_, ⟨a, rfl⟩, w, hw, e⟩` from `Submodule.mem_sup.1 (hon (hΛL _ (D.β_mem i)))`.
+
+Rewrite using `[mul_smul, ← e, smul_add]`. Conclude with `Submodule.add_mem_sup ⟨a, rfl⟩ (Submodule.smul_mem _ _ (l2 hw)))))`. Take `⟨a, rfl⟩` from `hu`. Conclude with `⟨a, by simpa [Nat.cast_smul_eq_nsmul] using cong_symm e⟩`. Use `choose a ha using hx`.
+
+Use `⟨fun k => if h : (k : ℕ) < Dw.p + Dw.q then a ⟨k, h⟩ else 0, ⟨fun i => by simpa using ha i, fun k hk => by simp [not_lt.2 hk]⟩, ?_⟩` and prove the remaining obligations. Use `span_of_map Dw.rank hL.1.1 (span_lats hL) hδ hon fun v hv => ?_` and prove the remaining obligations. Use `loc_loc hsb (SetLike.le_def.1 (D.β_span.trans (sup_le (Submodule.span_le.2 ?_) ?_)) (hLΛ v hv))` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩`. Rewrite using `[← sub_add_cancel (D.β i) (d.pd • δ (a i))]`.
+
+Use `add_mem (loc_mono le_sup_right (l1 (cong_iff.1 (cong_symm (ha i))))) (le_loc _ (Submodule.mem_sup_left (nsmul_mem (Submodule.mem_map_of_mem (Submodule.subset_span ?_)) _)))` and prove the remaining obligations. Conclude with `⟨Fin.castLE hn i, Or.inr i.2, by simp⟩`. Conclude with `(Submodule.smul_mono hm le_rfl).trans ((le_loc _).trans (l1.trans (loc_mono le_sup_right)))`.
+-/
 theorem exists_x0Tie (d : DeltaDat Xo c n) (hpd : Nat.Coprime d.pd l.M) {X : Data E (Dw.p + Dw.q)}
     (D : SW.Level X) (hm : D.𝔪 ≤ Mfr l) (hn : Dw.p + Dw.q ≤ n) {L : Lt E (Dw.p + Dw.q)} (hL : L ∈ D.lats)
     {δ : Dw.La →ₗ[𝓞 E] (Fin (Dw.p + Dw.q) → E)} (hδ : ∀ a, δ a ∈ L) (hon : L ≤ LinearMap.range δ ⊔ Mfr l • L)
@@ -418,6 +559,11 @@ theorem exists_x0Tie (d : DeltaDat Xo c n) (hpd : Nat.Coprime d.pd l.M) {X : Dat
     exact ⟨Fin.castLE hn i, Or.inr i.2, by simp⟩
   · exact (Submodule.smul_mono hm le_rfl).trans ((le_loc _).trans (l1.trans (loc_mono le_sup_right)))
 
+/- English proof (translation)
+Take `⟨t, ht, h⟩` from `T.tie L hL δ hδ hon`. Set `y : Matrix (Fin n) (Fin r) E` to `Matrix.of fun k => if h : (k : ℕ) < r then D.β ⟨k, h⟩ else 0`. Establish `e (i : Fin r) : y (Fin.castLE hn i) = D.β i`. Express the relevant statement in the definitionally equal form `(if h : _ then _ else _) = _`. Simplify using the standard rewrite rules.
+
+Establish `e0 (k : Fin n) (hk : r ≤ (k : ℕ)) : Cong X (Mfr l) (y k) 0`. Establish `: y k = 0` using `dif_neg (not_lt.2 hk)`. Rewrite using `[this]`. Conclude with `cong_refl _`. Rewrite using `[h xs y (fun i => by rw [e]; exact ⟨hx i, cong_refl _⟩) e0, datF, dif_pos ⟨⟨1, by simp only [e]; exact red_one⟩, e0⟩, norm_mul, ht, norm_lam, one_mul]`.
+-/
 theorem LevTie.norm_eq_one {d : DeltaDat Xo c n} {σ : c.F →+* ℂ} {ph : (Fin n → LaJ Xo c d) → c.F}
     {D : SW.Level X} {hn : r ≤ n} (T : LevTie d σ ph D hn) {L : Lt E r} (hL : L ∈ D.lats)
     {δ : Dw.La →ₗ[𝓞 E] (Fin r → E)} (hδ : ∀ a, δ a ∈ L) (hon : L ≤ LinearMap.range δ ⊔ Jd d • L)
@@ -434,6 +580,11 @@ theorem LevTie.norm_eq_one {d : DeltaDat Xo c n} {σ : c.F →+* ℂ} {ph : (Fin
   rw [h xs y (fun i => by rw [e]; exact ⟨hx i, cong_refl _⟩) e0, datF,
     dif_pos ⟨⟨1, by simp only [e]; exact red_one⟩, e0⟩, norm_mul, ht, norm_lam, one_mul]
 
+/- English proof (translation)
+Use `⟨fun x x' h => ?_, fun x h => ?_, fun k x => ?_⟩` and prove the remaining obligations. Rewrite using `[spanInd, spanInd, Set.image_congr (s := {b : Fin n | b.val < Dw.p + Dw.q}) (g := x') h]`. Assume the negation of the conclusion as `e`. Conclude with `h (if_neg e)`. Establish `: Submodule.span (𝓞 E) ((fun b => k (x b)) '' {b | b.val < Dw.p + Dw.q}) = (Submodule.span (𝓞 E) (x '' {b | b.val < Dw.p + Dw.q})).map (k : LaJ Xo c d →ₗ[𝓞 E] LaJ Xo c d)`.
+
+Rewrite using `[Submodule.map_span, Set.image_image]`. Both sides reduce to the same expression. Simplify using `only [spanInd, this, Submodule.map_eq_top_iff]`.
+-/
 theorem spanInd_laws (d : DeltaDat Xo c n) :
     (∀ x x' : Fin n → LaJ Xo c d, (∀ b : Fin n, b.val < Dw.p + Dw.q → x b = x' b) → spanInd d x = spanInd d x') ∧
     (∀ x, spanInd d x ≠ 0 → Submodule.span (𝓞 E) (x '' {b | b.val < Dw.p + Dw.q}) = ⊤) ∧

@@ -47,6 +47,29 @@ namespace GlobalTheory.Core.Mi
 
 open GlobalTheory.Core.SBesEx GlobalTheory.Core.Mi.Unscaled in
 
+/- English proof (translation)
+Introduce `D X h u ψ F₀ tr hE hψ`. Take `⟨lam, hlam, hP⟩` from `GlobalTheory.Core.Mi.tiepsi_sign D X h u ψ hE hψ`. Establish `hg : ((X.B.g : ℕ) : D.host.E) ≠ 0` using `Nat.cast_ne_zero.2 (Formalism.L2.SG.Pf.modulus_g_ne_zero X)`. Establish `hl0 : lam ≠ 0`. Apply the tactic sequence `rcases hlam with hl | hl <;> rw [hl]`.
+
+Conclude with `hg`. Conclude with `neg_ne_zero.2 hg`. Use `⟨lam, hlam, fun μ vA hμ => ?_⟩` and prove the remaining obligations. Take `⟨L, t, ht, hL1, hz0, hLg⟩` from `GlobalTheory.RankOneLine.exists_line D X u`. Take `⟨⟨V₀, o⟩⟩` from `GlobalTheory.OrthSumExists.exists_orthDec D (D.sp.X 0) L`.
+
+Take `⟨d₀, hde, hde', hdi⟩` from `GlobalTheory.Core.SBesEx.exists_hypDec D X h u F₀ tr t lam ht hl0 (GlobalTheory.Core.SBesEx.cY_isom D X h hE) (GlobalTheory.Core.Mi.transported_frame_gram_orth D X u F₀ tr) L hL1 hLg V₀ o`. Establish `hcard : Fintype.card (Fin L.rank) = 1` using `by rw [Fintype.card_fin, hL1]`. Establish `hz₀ : d₀.i₀ *ᵥ vecB o (zeta L) = t • cY X h (X.zu u)`. Rewrite using `[vecB, Matrix.mulVec_mulVec, hdi, i0M, Matrix.add_mul, Matrix.mul_assoc, Matrix.mul_assoc, o.qA_iB, o.qB_iB, Matrix.mul_zero, zero_add, Matrix.mul_one]`. Use function extensionality and compare the values at `k`.
+
+Simplify using `only [Matrix.mulVec, dotProduct, zM, zeta, mul_one, Finset.sum_const, Finset.card_univ, hcard, one_smul, Pi.smul_apply, smul_eq_mul]`. Establish `hline₀ : IsLineVec L (zeta L)`. Use `⟨hL1, ?_⟩` and prove the remaining obligations. Simplify using `only [zeta, hLg, dotProduct, Matrix.mulVec, Pi.star_apply, star_one, one_mul, mul_one, Finset.sum_const, Finset.card_univ, hcard, one_smul]`. Conclude with `mul_ne_zero (mul_ne_zero (star_ne_zero.2 ht) ht) hz0`.
+
+Establish `ht' : μ * t⁻¹ ≠ 0` using `mul_ne_zero hμ (inv_ne_zero ht)`. Use `set d := rescale d₀ (μ * t⁻¹) ht' with hd`. Use `set ζ : Fin L.rank → D.host.E := (μ * t⁻¹) • zeta L with hζ`. Establish `hline : IsLineVec L ζ`. Use `⟨hline₀.1, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hζ, star_smul, Matrix.mulVec_smul, smul_dotProduct, dotProduct_smul, smul_eq_mul, smul_eq_mul]`. Conclude with `mul_ne_zero (star_ne_zero.2 ht') (mul_ne_zero ht' hline₀.2)`. Establish `hde1 : d.e = eM X h μ lam`. Use function extensionality and compare the values at `k a`. Use `show ((μ * t⁻¹) • d₀.e) k a = _`.
+
+Rewrite using `[hde]`. Simplify using `only [Matrix.smul_apply, eM, scl, smul_eq_mul]`. Clear the denominators using the available nonvanishing facts. Establish `hde1' : d.e' = e'M X h μ lam`. Use function extensionality and compare the values at `k a`.
+
+Use `show ((star (μ * t⁻¹))⁻¹ • d₀.e') k a = _`. Rewrite using `[hde']`. Simplify using `only [Matrix.smul_apply, e'M, scl, smul_eq_mul, star_mul', star_inv₀, inv_inv, mul_inv]`. Establish `hst : star t ≠ 0` using `star_ne_zero.2 ht`. Clear the denominators using the available nonvanishing facts.
+
+Establish `hz : d.i₀ *ᵥ vecB o ζ = μ • cY X h (X.zu u)` using `by show d₀.i₀ *ᵥ (o.iB *ᵥ ((μ * t⁻¹) • zeta L)) = _`. Rewrite using `[Matrix.mulVec_smul, Matrix.mulVec_smul, ← vecB, hz₀, smul_smul, inv_mul_cancel_right₀ ht]`. Use `⟨SBes.mk V₀ L d o ζ hline (GlobalTheory.Unf.DefCpt.coCpt_X_zero D) vA (GlobalTheory.Unf.Inhab.nonempty_volN d).some (GlobalTheory.T.mem_flagUnipotentRadical_iff_secondModel D X h u μ lam hμ hl0 hE V₀ d hde1) (GlobalTheory.T.range_besselAnisotropicEmbedding_eq_secondModelSubgroup …` and prove the remaining obligations. Introduce `k j show (d₀.i₀ * o.iA) k j = _`. Rewrite using `[hdi, i0M, Matrix.add_mul, Matrix.mul_assoc, Matrix.mul_assoc, o.qA_iA, o.qB_iA, Matrix.mul_zero, add_zero, Matrix.mul_one]`.
+
+Both sides reduce to the same expression. Introduce `k show (d.i₀ *ᵥ vecB o ζ) k = _`. Rewrite using `[hz]`. Both sides reduce to the same expression. Introduce `k a show d.e k a = _`.
+
+Rewrite using `[hde1]`. Both sides reduce to the same expression. Introduce `k a show d.e' k a = _`. Rewrite using `[hde1']`. Both sides reduce to the same expression.
+-/
 theorem exists_sBes_scaled_dual : ∀ (D : D7) (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D) (u : D.what₂.Word) (ψ : AddChar (AF D.host.F) ℂ) (F₀ : Formalism.L2.Forms.Forms0 D u) (tr : Formalism.L2.SG.ColDict.Transport X u F₀), IdE X → IsStdChar D ψ (-1) → ∃ lam : D.host.E, (lam = (X.B.g : D.host.E) ∨ lam = -(X.B.g : D.host.E)) ∧ ∀ (μ : D.host.E) (vA : Vol (D.sp.X 0)), μ ≠ 0 → ∃ B : SBes X h u ψ (D.sp.X 0), B.Adapted tr.wt ∧ B.vA = vA ∧ (∀ k, (B.d.i₀ *ᵥ vecB B.o B.ζ) k = μ * X.ιE (X.zR u (Fin.cast (rank_eq X h) k))) ∧ (∀ k (a : Fin D.R.rS), B.d.e k a = μ * lam ^ (D.R.rS - (a : ℕ)) * X.ιE (X.eR a (Fin.cast (rank_eq X h) k))) ∧ ∀ k (a : Fin D.R.rS), B.d.e' k a = (star (μ * lam ^ (D.R.rS - (a : ℕ))))⁻¹ * X.ιE (X.fR a (Fin.cast (rank_eq X h) k)) := by
   intro D X h u ψ F₀ tr hE hψ
   obtain ⟨lam, hlam, hP⟩ := GlobalTheory.Core.Mi.tiepsi_sign D X h u ψ hE hψ
@@ -117,6 +140,9 @@ theorem exists_sBes_scaled_dual : ∀ (D : D7) (X : Formalism.L2.SG.HidaSetting.
     rw [hde1']
     rfl
 
+/- English proof (translation)
+Introduce `D X h u ψ F₀ tr hE hψ`. Take `⟨lam, hlam, hB⟩` from `exists_sBes_scaled_dual D X h u ψ F₀ tr hE hψ`. Take `⟨B, hA, -, hz, he, he'⟩` from `hB 1 (GlobalTheory.Unf.Inhab.nonempty_vol _).some one_ne_zero`. Simplify using `only [one_mul] at hz he he'`. Conclude with `⟨lam, hlam, B, hA, hz, he, he'⟩`.
+-/
 theorem exists_sBes_unscaled_dual : ∀ (D : D7) (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D) (u : D.what₂.Word) (ψ : AddChar (AF D.host.F) ℂ) (F₀ : Formalism.L2.Forms.Forms0 D u) (tr : Formalism.L2.SG.ColDict.Transport X u F₀), IdE X → IsStdChar D ψ (-1) → ∃ lam : D.host.E, (lam = (X.B.g : D.host.E) ∨ lam = -(X.B.g : D.host.E)) ∧ ∃ B : SBes X h u ψ (D.sp.X 0), B.Adapted tr.wt ∧ (∀ k, (B.d.i₀ *ᵥ vecB B.o B.ζ) k = X.ιE (X.zR u (Fin.cast (rank_eq X h) k))) ∧ (∀ k (a : Fin D.R.rS), B.d.e k a = lam ^ (D.R.rS - (a : ℕ)) * X.ιE (X.eR a (Fin.cast (rank_eq X h) k))) ∧ ∀ k (a : Fin D.R.rS), B.d.e' k a = (star (lam ^ (D.R.rS - (a : ℕ))))⁻¹ * X.ιE (X.fR a (Fin.cast (rank_eq X h) k)) := by
   intro D X h u ψ F₀ tr hE hψ
   obtain ⟨lam, hlam, hB⟩ := exists_sBes_scaled_dual D X h u ψ F₀ tr hE hψ
@@ -124,6 +150,9 @@ theorem exists_sBes_unscaled_dual : ∀ (D : D7) (X : Formalism.L2.SG.HidaSettin
   simp only [one_mul] at hz he he'
   exact ⟨lam, hlam, B, hA, hz, he, he'⟩
 
+/- English proof (translation)
+Introduce `D X h u ψ F₀ tr hE hψ`. Take `⟨lam, hlam, B, hA, hz, he, -⟩` from `exists_sBes_unscaled_dual D X h u ψ F₀ tr hE hψ`. Conclude with `⟨lam, hlam, B, hA, hz, he⟩`.
+-/
 theorem exists_sBes_unscaled : ∀ (D : D7) (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D) (u : D.what₂.Word) (ψ : AddChar (AF D.host.F) ℂ) (F₀ : Formalism.L2.Forms.Forms0 D u) (tr : Formalism.L2.SG.ColDict.Transport X u F₀), IdE X → IsStdChar D ψ (-1) → ∃ lam : D.host.E, (lam = (X.B.g : D.host.E) ∨ lam = -(X.B.g : D.host.E)) ∧ ∃ B : SBes X h u ψ (D.sp.X 0), B.Adapted tr.wt ∧ (∀ k, (B.d.i₀ *ᵥ vecB B.o B.ζ) k = X.ιE (X.zR u (Fin.cast (rank_eq X h) k))) ∧ ∀ k (a : Fin D.R.rS), B.d.e k a = lam ^ (D.R.rS - (a : ℕ)) * X.ιE (X.eR a (Fin.cast (rank_eq X h) k)) := by
   intro D X h u ψ F₀ tr hE hψ
   obtain ⟨lam, hlam, B, hA, hz, he, -⟩ := exists_sBes_unscaled_dual D X h u ψ F₀ tr hE hψ

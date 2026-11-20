@@ -27,10 +27,16 @@ def IsEquivariant (ρ : Representation LL G V) (ρ' : Representation LL G V') (f
     Prop :=
   ∀ g x, f (ρ g x) = ρ' g (f x)
 
+/- English proof (translation)
+Simplify using `[Dcris, Submodule.mem_iInf, sub_eq_zero]`.
+-/
 theorem mem_Dcris (ρ : Representation LL G V) (x : V ⊗[Qp] B) :
     x ∈ Dcris PD ρ ↔ ∀ g, actVB PD ρ g x = x := by
   simp [Dcris, Submodule.mem_iInf, sub_eq_zero]
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v b => simp [actVB, mulVB]`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`.
+-/
 theorem actVB_mulVB (ρ : Representation LL G V) (g : G) (c : K₀) (x : V ⊗[Qp] B) :
     actVB PD ρ g (mulVB (K₀ := K₀) (B := B) (V := V) (LL := LL) c x) =
       mulVB (K₀ := K₀) (B := B) (V := V) (LL := LL) c (actVB PD ρ g x) := by
@@ -39,6 +45,11 @@ theorem actVB_mulVB (ρ : Representation LL G V) (g : G) (c : K₀) (x : V ⊗[Q
   | tmul v b => simp [actVB, mulVB]
   | add a b ha hb => simp only [map_add, ha, hb]
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul b v`. Rewrite using `[TensorProduct.smul_tmul', Algebra.smul_def]`. Simplify using `[mulVB]`.
+
+Consider the case `add a b ha hb => simp only [smul_add, map_add, ha, hb]`.
+-/
 theorem comm_smul (c : K₀) (x : B ⊗[Qp] V) :
     TensorProduct.comm Qp B V (c • x) =
       mulVB (K₀ := K₀) (B := B) (V := V) (LL := LL) c (TensorProduct.comm Qp B V x) := by
@@ -66,6 +77,9 @@ def comparison (ρ : Representation LL G V) :
     B ⊗[K₀] ↥(DcrisK₀ PD ρ) →ₗ[B] B ⊗[Qp] V :=
   LinearMap.liftBaseChange B (DcrisK₀ PD ρ).subtype
 
+/- English proof (translation)
+Simplify using `[comparison]`.
+-/
 theorem comparison_tmul (ρ : Representation LL G V) (b : B) (d : ↥(DcrisK₀ PD ρ)) :
     comparison PD ρ (b ⊗ₜ[K₀] d) = b • (d : B ⊗[Qp] V) := by
   simp [comparison]
@@ -73,6 +87,11 @@ theorem comparison_tmul (ρ : Representation LL G V) (b : B) (d : ↥(DcrisK₀ 
 def tensorB (f : V →ₗ[LL] V') : V ⊗[Qp] B →ₗ[LL] V' ⊗[Qp] B :=
   AlgebraTensorModule.map f (LinearMap.id : B →ₗ[Qp] B)
 
+/- English proof (translation)
+Establish `hm : ∀ g y, tensorB (Qp` using `Qp) (B := B) f (actVB PD ρ g y) = actVB PD ρ' g (tensorB (Qp := Qp) (B := B) f y) := by`. Introduce `g y`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v b => simp [tensorB, actVB, hf g]`.
+
+Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Rewrite `hx`, the goal using `[mem_Dcris]`. Introduce `g`. Rewrite using `[← hm, hx]`.
+-/
 theorem tensorB_mem {ρ : Representation LL G V} {ρ' : Representation LL G V'} {f : V →ₗ[LL] V'}
     (hf : IsEquivariant ρ ρ' f) (x : V ⊗[Qp] B) (hx : x ∈ Dcris PD ρ) :
     tensorB (Qp := Qp) (B := B) f x ∈ Dcris PD ρ' := by
@@ -96,6 +115,9 @@ def prodB : (V ⊗[Qp] B) ⊗[LL] (V' ⊗[Qp] B) →ₗ[LL] (V ⊗[LL] V') ⊗[Q
       (LinearMap.mul' Qp B)).comp
     (AlgebraTensorModule.tensorTensorTensorComm Qp Qp LL LL V B V' B).toLinearMap
 
+/- English proof (translation)
+Simplify using `[prodB]`.
+-/
 theorem prodB_tmul (v : V) (b : B) (v' : V') (b' : B) :
     prodB (LL := LL) ((v ⊗ₜ[Qp] b) ⊗ₜ[LL] (v' ⊗ₜ[Qp] b')) = (v ⊗ₜ[LL] v') ⊗ₜ[Qp] (b * b') := by
   simp [prodB]
@@ -105,6 +127,9 @@ end Objects
 def InvariantsEq : Prop :=
   ∀ b : B, (∀ g, PD.actB g b = b) ↔ b ∈ Set.range (algebraMap K₀ B)
 
+/- English proof (translation)
+Introduce `b` and use `⟨fun h => PD.invB b h, by rintro ⟨c, rfl⟩ g exact (PD.actB g).commutes c⟩`.
+-/
 theorem invariantsEq : InvariantsEq PD := fun b =>
   ⟨fun h => PD.invB b h, by
     rintro ⟨c, rfl⟩ g
@@ -231,6 +256,9 @@ def FontaineFormalism : Prop :=
 
 def FontaineFormalismTensor : Prop := FontaineFormalism l P ∧ LocDcrisTensor l P
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h K LL => ⟨h.1 K, h.2.1 K LL, h.2.2.1 K LL, h.2.2.2.1 K LL, h.2.2.2.2.1 K LL, h.2.2.2.2.2.1 K LL, h.2.2.2.2.2.2.1 K LL, h.2.2.2.2.2.2.2.1 K LL, h.2.2.2.2.2.2.2.2.1 K LL, h.2.2.2.2.2.2.2.2.2 K LL⟩, fun h => ⟨fun K => (h K K).1, fun K LL => (h K LL).2.1, fun K LL => (h K LL).2 …`.
+-/
 theorem fontaineFormalism_iff :
     FontaineFormalism l P ↔ ∀ K LL : FinExt l, FormalismFor (P.PD K) ↥LL.1 :=
   ⟨fun h K LL => ⟨h.1 K, h.2.1 K LL, h.2.2.1 K LL, h.2.2.2.1 K LL, h.2.2.2.2.1 K LL,
@@ -242,6 +270,9 @@ theorem fontaineFormalism_iff :
       fun K LL => (h K LL).2.2.2.2.2.2.2.1, fun K LL => (h K LL).2.2.2.2.2.2.2.2.1,
       fun K LL => (h K LL).2.2.2.2.2.2.2.2.2⟩⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.2.2.2.2.2.2.2.1 K LL T.V T.ρ hT, h.2.2.1 K LL T.V T.ρ hT⟩`.
+-/
 example (h : FontaineFormalism l P) (K LL : FinExt l)
     (T : LocLat ↥(GK K) ℚ_[l] ↥LL.1 ↥(OL LL)) (hT : IsCrys (P.PD K) T.ρ) :
     IsCrys (P.PD K) T.ρ.dual ∧ Function.Bijective (comparison (P.PD K) T.ρ) :=

@@ -8,6 +8,9 @@ namespace PositivityTheory.RgGu.NR.Sig
 
 def qf {n : ℕ} (M : Fin n → Fin n → ℂ) (x y : Fin n → ℂ) : ℂ := ∑ i, ∑ j, x i * (star (y j) * M i j)
 
+/- English proof (translation)
+Unfold `qf`. Use `continuous_finsetSum _ fun i _ => continuous_finsetSum _ fun j _ => ?_` and prove the remaining obligations. Conclude with `((continuous_apply i).comp (continuous_fst.comp continuous_snd)).mul ((continuous_star.comp ((continuous_apply j).comp (continuous_snd.comp continuous_snd))).mul ((continuous_apply j).comp ((continuous_apply i).comp continuous_fst)))`.
+-/
 theorem cont_qf {n : ℕ} :
     Continuous fun p : (Fin n → Fin n → ℂ) × (Fin n → ℂ) × (Fin n → ℂ) => qf p.1 p.2.1 p.2.2 := by
   unfold qf
@@ -16,11 +19,17 @@ theorem cont_qf {n : ℕ} :
     ((continuous_star.comp ((continuous_apply j).comp (continuous_snd.comp continuous_snd))).mul
       ((continuous_apply j).comp ((continuous_apply i).comp continuous_fst)))
 
+/- English proof (translation)
+Simplify using `only [qf, Pi.smul_apply, smul_eq_mul, star_mul', Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`.
+-/
 theorem qf_smul {n : ℕ} (M : Fin n → Fin n → ℂ) (a : ℂ) (x y : Fin n → ℂ) :
     qf M (a • x) (a • y) = a * star a * qf M x y := by
   simp only [qf, Pi.smul_apply, smul_eq_mul, star_mul', Finset.mul_sum]
   exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
 
+/- English proof (translation)
+Simplify using `[qf, Pi.single_apply]`.
+-/
 theorem qf_single {n : ℕ} (M : Fin n → Fin n → ℂ) (i j : Fin n) :
     qf M (Pi.single i 1) (Pi.single j 1) = M i j := by
   classical
@@ -48,9 +57,15 @@ def mk (M : Fin (finrank ℂ W) → Fin (finrank ℂ W) → ℂ) : Sq W :=
       simp only [qf, map_smul, Pi.smul_apply, smul_eq_mul, star_mul', Finset.mul_sum, starRingEnd_apply]
       exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mk_apply (M : Fin (finrank ℂ W) → Fin (finrank ℂ W) → ℂ) (v w : W) :
     mk M v w = qf M (ef W v) (ef W w) := rfl
 
+/- English proof (translation)
+Use `conv_lhs => rw [← (Module.finBasis ℂ W).sum_equivFun v, ← (Module.finBasis ℂ W).sum_equivFun w]`. Simplify using `only [map_sum, map_smul, LinearMap.sum_apply, LinearMap.smul_apply, LinearMap.map_smulₛₗ, smul_eq_mul, qf, gram, starRingEnd_apply, Finset.mul_sum, ef]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`.
+-/
 theorem expand (B : Sq W) (v w : W) : B v w = qf (gram B) (ef W v) (ef W w) := by
   conv_lhs => rw [← (Module.finBasis ℂ W).sum_equivFun v, ← (Module.finBasis ℂ W).sum_equivFun w]
   simp only [map_sum, map_smul, LinearMap.sum_apply, LinearMap.smul_apply, LinearMap.map_smulₛₗ, smul_eq_mul,
@@ -58,10 +73,18 @@ theorem expand (B : Sq W) (v w : W) : B v w = qf (gram B) (ef W v) (ef W w) := b
   rw [Finset.sum_comm]
   exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
 
+/- English proof (translation)
+Use extensionality with `v w`. Rewrite using `[mk_apply, expand]`.
+-/
 theorem mk_gram (B : Sq W) : mk (gram B) = B := by
   ext v w
   rw [mk_apply, expand]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i j`. Establish `h : ∀ a, (Module.finBasis ℂ W).equivFun (Module.finBasis ℂ W a) = Pi.single a 1` using `fun a => by`. Use function extensionality and compare the values at `b`. Rewrite using `[Module.Basis.equivFun_self]`. Simplify using `[Pi.single_apply, eq_comm]`.
+
+Simplify using `only [gram, mk_apply, ef, h]`. Conclude with `qf_single M i j`.
+-/
 theorem gram_mk (M : Fin (finrank ℂ W) → Fin (finrank ℂ W) → ℂ) : gram (mk M : Sq W) = M := by
   funext i j
   have h : ∀ a, (Module.finBasis ℂ W).equivFun (Module.finBasis ℂ W a) = Pi.single a 1 := fun a => by
@@ -71,6 +94,9 @@ theorem gram_mk (M : Fin (finrank ℂ W) → Fin (finrank ℂ W) → ℂ) : gram
   simp only [gram, mk_apply, ef, h]
   exact qf_single M i j
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i j`. Simplify using `[gram]`.
+-/
 theorem gram_smul (c : ℂ) (B : Sq W) : gram (c • B) = c • gram B := by
   funext i j
   simp [gram]
@@ -87,6 +113,11 @@ def Pos (B : Sq W) : Prop := ∀ v, v ≠ 0 → 0 < (B v v).re
 
 variable {ι T}
 
+/- English proof (translation)
+Establish `hst : ∀ i, ∀ w ∈ LinearMap.ker B, T i w ∈ LinearMap.ker B`. Introduce `i w hw`. Rewrite `hw`, the goal using `[LinearMap.mem_ker]`. Use extensionality with `u`. Rewrite using `[hinv, hw]`.
+
+Both sides reduce to the same expression. Break down `hsim (LinearMap.ker B) hst with h | h` into its components or cases. Conclude with `h`. Conclude with `absurd (LinearMap.ker_eq_top.1 h) hB`.
+-/
 theorem ker_bot (hsim : ∀ U : Submodule ℂ W, (∀ i, ∀ w ∈ U, T i w ∈ U) → U = ⊥ ∨ U = ⊤) (B : Sq W) (hB : B ≠ 0)
     (hinv : Inv ι T B) : LinearMap.ker B = ⊥ := by
   have hst : ∀ i, ∀ w ∈ LinearMap.ker B, T i w ∈ LinearMap.ker B := by
@@ -99,10 +130,28 @@ theorem ker_bot (hsim : ∀ U : Submodule ℂ W, (∀ i, ∀ w ∈ U, T i w ∈ 
   · exact h
   · exact absurd (LinearMap.ker_eq_top.1 h) hB
 
+/- English proof (translation)
+Introduce `i v w`. Simplify using `only [LinearMap.sub_apply, LinearMap.smul_apply, h i v w, h' i v w]`.
+-/
 theorem inv_sub {B B' : Sq W} (h : Inv ι T B) (h' : Inv ι T B') (c : ℂ) : Inv ι T (B - c • B') := by
   intro i v w
   simp only [LinearMap.sub_apply, LinearMap.smul_apply, h i v w, h' i v w]
 
+/- English proof (translation)
+Establish `hk` using `ker_bot hsim B₀ h0 hinv0`. Set `b` to `Module.finBasis ℂ W`. Set `E : (W →ₛₗ[starRingEnd ℂ] ℂ) →ₗ[ℂ] (Fin (finrank ℂ W) → ℂ)` to `{ toFun := fun f j => f (b j) map_add' := fun f g => by funext j; simp map_smul' := fun c f => by funext j; simp }`. Establish `hE : Function.Injective E` using `fun f g h => b.ext fun j => congrFun h j`. Establish `hinj : Function.Injective (E ∘ₗ B₀)` using `hE.comp (LinearMap.ker_eq_bot.1 hk)`.
+
+Establish `hdim : finrank ℂ W = finrank ℂ (Fin (finrank ℂ W) → ℂ)` using `by simp`. Establish `hsurj` using `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank hdim).1 hinj`. Set `e` to `LinearEquiv.ofBijective (E ∘ₗ B₀) ⟨hinj, hsurj⟩`. Set `A : Module.End ℂ W` to `e.symm.toLinearMap ∘ₗ (E ∘ₗ B)`. Establish `: Nontrivial W`.
+
+Assume the negation of the conclusion as `hn`. Rewrite `hn` using `[not_nontrivial_iff_subsingleton]`. Conclude with `h0 (by ext v w; simp [Subsingleton.elim v 0])`. Take `⟨c, hc⟩` from `Module.End.exists_eigenvalue A`. Take `⟨x, hx⟩` from `hc.exists_hasEigenvector`.
+
+Establish `hAx : A x = c • x` using `Module.End.mem_eigenspace_iff.1 hx.1`. Establish `key : B x = B₀ (c • x)`. Apply `hE` to reduce the goal to its premises. Establish `h1` using `congrArg e hAx`. Establish `h2 : e (A x) = E (B x)` using `by simp [A]`.
+
+Rewrite `h1` using `[h2]`. Rewrite using `[h1]`. Conclude with `LinearEquiv.ofBijective_apply _ _`. Use `⟨c, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`.
+
+Establish `hne' : B - c • B₀ ≠ 0` using `sub_ne_zero.2 hne`. Establish `hk'` using `ker_bot hsim (B - c • B₀) hne' (inv_sub hinv hinv0 c)`. Establish `hmem : x ∈ LinearMap.ker (B - c • B₀)`. Rewrite using `[LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, key, map_smul, sub_self]`. Rewrite `hmem` using `[hk']`.
+
+Conclude with `hx.2 ((Submodule.mem_bot ℂ).1 hmem)`.
+-/
 theorem uniq (hsim : ∀ U : Submodule ℂ W, (∀ i, ∀ w ∈ U, T i w ∈ U) → U = ⊥ ∨ U = ⊤) (B₀ B : Sq W) (h0 : B₀ ≠ 0)
     (hinv0 : Inv ι T B₀) (hinv : Inv ι T B) : ∃ c : ℂ, B = c • B₀ := by
   classical
@@ -141,6 +190,11 @@ theorem uniq (hsim : ∀ U : Submodule ℂ W, (∀ i, ∀ w ∈ U, T i w ∈ U) 
   rw [hk'] at hmem
   exact hx.2 ((Submodule.mem_bot ℂ).1 hmem)
 
+/- English proof (translation)
+Choose the witnesses or unpack the hypotheses as in `⟨v, w, hvw⟩ : ∃ v w, B₀ v w ≠ 0 := by`. Assume the negation of the conclusion as `hn`. Use `push Not at hn`. Conclude with `h0 (by ext v w; simp [hn])`. Establish `e1` using `hh v w`.
+
+Rewrite `e1` using `[hc]`. Simplify using `only [LinearMap.smul_apply, smul_eq_mul, map_mul, hh0 v w] at e1`. Establish `hz : starRingEnd ℂ (B₀ v w) ≠ 0` using `(map_ne_zero _).2 hvw`. Conclude with `(mul_right_cancel₀ hz e1).symm`.
+-/
 theorem real_of {B₀ B : Sq W} (h0 : B₀ ≠ 0) (hh0 : Herm B₀) (hh : Herm B) (c : ℂ) (hc : B = c • B₀) :
     starRingEnd ℂ c = c := by
   obtain ⟨v, w, hvw⟩ : ∃ v w, B₀ v w ≠ 0 := by
@@ -153,6 +207,27 @@ theorem real_of {B₀ B : Sq W} (h0 : B₀ ≠ 0) (hh0 : Herm B₀) (hh : Herm B
   have hz : starRingEnd ℂ (B₀ v w) ≠ 0 := (map_ne_zero _).2 hvw
   exact (mul_right_cancel₀ hz e1).symm
 
+/- English proof (translation)
+Introduce `v hv`. Break down `(hsd v).lt_or_eq with h | h` into its components or cases. Conclude with `h`. It suffices to derive a contradiction. Establish `hvv : B v v = 0`.
+
+Establish `e` using `hh v v`. Apply `Complex.ext` to reduce the goal to its premises. Conclude with `h.symm`. Use `congrArg Complex.im e` as an intermediate fact. Simplify using `only [Complex.conj_im] at this`.
+
+Simplify using `only [Complex.zero_im]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hB : B v = 0`. Use extensionality with `w`. Establish `hwv : B w v = starRingEnd ℂ (B v w)` using `hh v w`.
+
+Establish `hww : (B w w).im = 0`. Use `congrArg Complex.im (hh w w)` as an intermediate fact. Simplify using `only [Complex.conj_im] at this`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `key : ∀ t : ℝ, 0 ≤ -2 * t * Complex.normSq (B v w) + t ^ 2 * Complex.normSq (B v w) * (B w w).re`.
+
+Introduce `t`. Use `set a : ℂ := -(t : ℂ) * B v w with ha`. Use `hsd (v + a • w)` as an intermediate fact. Establish `e0 : B (v + a • w) (v + a • w) = starRingEnd ℂ a * B v w + a * starRingEnd ℂ (B v w) + a * starRingEnd ℂ a * B w w`. Simplify using `only [map_add, map_smul, LinearMap.add_apply, LinearMap.smul_apply, LinearMap.map_smulₛₗ, smul_eq_mul, hvv, hwv]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `e : (B (v + a • w) (v + a • w)).re = -2 * t * Complex.normSq (B v w) + t ^ 2 * Complex.normSq (B v w) * (B w w).re`. Rewrite using `[e0, ha]`. Simplify using `only [Complex.add_re, Complex.mul_re, Complex.mul_im, Complex.neg_re, Complex.neg_im, Complex.ofReal_re, Complex.ofReal_im, Complex.conj_re, Complex.conj_im, map_mul, map_neg, Complex.conj_ofReal, hww, Complex.normSq_apply]`. Expand and normalize the polynomial expressions, which then agree.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hR : 0 < |(B w w).re| + 1` using `by positivity`. Establish `h1` using `key (1 / (|(B w w).re| + 1))`. Establish `hn` using `Complex.normSq_nonneg (B v w)`. Establish `h2 : (1 / (|(B w w).re| + 1)) * (B w w).re ≤ 1 / (|(B w w).re| + 1) * |(B w w).re|` using `mul_le_mul_of_nonneg_left (le_abs_self _) (by positivity)`.
+
+Establish `h3 : 1 / (|(B w w).re| + 1) * |(B w w).re| < 1`. Rewrite using `[div_mul_eq_mul_div, one_mul, div_lt_one hR]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h4 : Complex.normSq (B v w) = 0`. Assume the negation of the conclusion as `hne`.
+
+Establish `hpos : 0 < Complex.normSq (B v w)` using `lt_of_le_of_ne hn (Ne.symm hne)`. Establish `ht : 0 < 1 / (|(B w w).re| + 1)` using `by positivity`. Use polynomial arithmetic with `[mul_pos ht hpos]`. Simplify using `using Complex.normSq_eq_zero.1 h4`. Establish `hm : v ∈ LinearMap.ker B` using `LinearMap.mem_ker.2 hB`.
+
+Rewrite `hm` using `[hk]`. Conclude with `hv ((Submodule.mem_bot ℂ).1 hm)`.
+-/
 theorem pos_of (B : Sq W) (hh : Herm B) (hk : LinearMap.ker B = ⊥) (hsd : ∀ v, 0 ≤ (B v v).re) : Pos B := by
   intro v hv
   rcases (hsd v).lt_or_eq with h | h
@@ -210,6 +285,11 @@ theorem pos_of (B : Sq W) (hh : Herm B) (hk : LinearMap.ker B = ⊥) (hsd : ∀ 
 
 end Fam
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h c hc`. Use `h ((ef W).symm c) (((ef W).symm.map_ne_zero_iff).2 hc)` as an intermediate fact. Rewrite `this` using `[mk_apply, LinearEquiv.apply_symm_apply]`. Then use the resulting hypothesis. Introduce `h v hv`.
+
+Rewrite using `[mk_apply]`. Conclude with `h _ ((LinearEquiv.map_ne_zero_iff _).2 hv)`.
+-/
 theorem pos_mk_iff (M : Fin (finrank ℂ W) → Fin (finrank ℂ W) → ℂ) :
     (∀ v : W, v ≠ 0 → 0 < ((mk M : Sq W) v v).re) ↔ ∀ c, c ≠ 0 → 0 < (qf M c c).re := by
   constructor
@@ -220,6 +300,17 @@ theorem pos_mk_iff (M : Fin (finrank ℂ W) → Fin (finrank ℂ W) → ℂ) :
     rw [mk_apply]
     exact h _ ((LinearEquiv.map_ne_zero_iff _).2 hv)
 
+/- English proof (translation)
+Establish `hK : IsCompact (Metric.sphere (0 : Fin n → ℂ) 1)` using `isCompact_sphere 0 1`. Establish `hcont : Continuous fun p : (Fin n → Fin n → ℂ) × (Fin n → ℂ) => (qf p.1 p.2 p.2).re` using `Complex.continuous_re.comp (cont_qf.comp (continuous_fst.prodMk (continuous_snd.prodMk continuous_snd)))`. Establish `h1 : ∀ᶠ M' in 𝓝 M, ∀ u ∈ Metric.sphere (0 : Fin n → ℂ) 1, 0 < (qf M' u u).re`. Use `hK.eventually_forall_of_forall_eventually fun u hu => ?_` and prove the remaining obligations. Establish `hu0 : u ≠ 0`.
+
+Introduce `h`. Rewrite `hu` using `[h, mem_sphere_zero_iff_norm, norm_zero]`. Conclude with `zero_ne_one hu`. Conclude with `(hcont.tendsto (M, u)).eventually (lt_mem_nhds (hM u hu0))`. Use `filter_upwards [h1] with M' hM' c hc`.
+
+Use `set a : ℂ := (‖c‖ : ℂ)`. Establish `ha : a ≠ 0` using `by simpa [a] using hc`. Establish `hu : a⁻¹ • c ∈ Metric.sphere (0 : Fin n → ℂ) 1`. Rewrite using `[mem_sphere_zero_iff_norm, norm_smul, norm_inv]`. Simplify using `[a, norm_ne_zero_iff.2 hc]`.
+
+Establish `e : c = a • (a⁻¹ • c)` using `by rw [smul_smul, mul_inv_cancel₀ ha, one_smul]`. Rewrite using `[e, qf_smul]`. Establish `hs : a * star a = ((‖c‖ ^ 2 : ℝ) : ℂ)`. Simplify using `only [a, Complex.star_def, Complex.conj_ofReal]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hs, Complex.re_ofReal_mul]`. Conclude with `mul_pos (by positivity) (hM' _ hu)`.
+-/
 theorem pos_open {n : ℕ} (M : Fin n → Fin n → ℂ) (hM : ∀ c : Fin n → ℂ, c ≠ 0 → 0 < (qf M c c).re) :
     ∀ᶠ M' in 𝓝 M, ∀ c : Fin n → ℂ, c ≠ 0 → 0 < (qf M' c c).re := by
   have hK : IsCompact (Metric.sphere (0 : Fin n → ℂ) 1) := isCompact_sphere 0 1
@@ -247,6 +338,9 @@ theorem pos_open {n : ℕ} (M : Fin n → Fin n → ℂ) (hM : ∀ c : Fin n →
   rw [hs, Complex.re_ofReal_mul]
   exact mul_pos (by positivity) (hM' _ hu)
 
+/- English proof (translation)
+Use extensionality with `v w`. Simplify using `only [mk_apply, qf, Pi.smul_apply, smul_eq_mul, LinearMap.smul_apply, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`.
+-/
 theorem mk_smul (a : ℂ) (M : Fin (finrank ℂ W) → Fin (finrank ℂ W) → ℂ) : (mk (a • M) : Sq W) = a • mk M := by
   ext v w
   simp only [mk_apply, qf, Pi.smul_apply, smul_eq_mul, LinearMap.smul_apply, Finset.mul_sum]
@@ -257,15 +351,26 @@ section Real
 variable {I : Type} {ι : I → I} {T : I → Module.End ℂ W}
 
 omit [FiniteDimensional ℂ W] in
+/- English proof (translation)
+Introduce `v w`. Simplify using `only [LinearMap.smul_apply, smul_eq_mul, map_mul, Complex.conj_ofReal, h v w]`.
+-/
 theorem herm_smul {B : Sq W} (h : Herm B) (r : ℝ) : Herm ((r : ℂ) • B) := by
   intro v w
   simp only [LinearMap.smul_apply, smul_eq_mul, map_mul, Complex.conj_ofReal, h v w]
 
 omit [FiniteDimensional ℂ W] in
+/- English proof (translation)
+Introduce `i v w`. Simplify using `only [LinearMap.smul_apply, h i v w]`.
+-/
 theorem inv_smul {B : Sq W} (h : Inv ι T B) (c : ℂ) : Inv ι T (c • B) := by
   intro i v w
   simp only [LinearMap.smul_apply, h i v w]
 
+/- English proof (translation)
+Establish `hg : gram B ≠ 0`. Introduce `h`. Apply `hB` to reduce the goal to its premises. Rewrite using `[← mk_gram B, h]`. Use extensionality with `v w`.
+
+Simplify using `[mk_apply, qf]`. Use `⟨‖gram B‖⁻¹, inv_pos.2 (norm_pos_iff.2 hg), ?_⟩` and prove the remaining obligations. Rewrite using `[gram_smul, norm_smul, Complex.norm_real, Real.norm_eq_abs, abs_of_pos (inv_pos.2 (norm_pos_iff.2 hg)), inv_mul_cancel₀ (norm_ne_zero_iff.2 hg)]`.
+-/
 theorem normalize (B : Sq W) (hB : B ≠ 0) :
     ∃ r : ℝ, 0 < r ∧ ‖gram ((r : ℂ) • B)‖ = 1 := by
   have hg : gram B ≠ 0 := by
@@ -281,6 +386,27 @@ theorem normalize (B : Sq W) (hB : B ≠ 0) :
 end Real
 
 set_option maxHeartbeats 400000 in
+/- English proof (translation)
+Establish `hmem : ∀ k, gram (B k) ∈ Metric.sphere (0 : Fin (finrank ℂ W) → Fin (finrank ℂ W) → ℂ) 1` using `fun k => by`. Rewrite using `[mem_sphere_zero_iff_norm]`. Conclude with `hn k`. Take `⟨M, hM, φ, hφ, hlim0⟩` from `(isCompact_sphere (0 : Fin (finrank ℂ W) → Fin (finrank ℂ W) → ℂ) 1).tendsto_subseq hmem`. Establish `hMn : ‖M‖ = 1` using `mem_sphere_zero_iff_norm.1 hM`.
+
+Establish `hcoord : ∀ i j, Tendsto (fun k => gram (B (φ k)) i j) atTop (𝓝 (M i j))`. Introduce `i j`. Establish `h0 : Tendsto (fun k => ‖gram (B (φ k)) - M‖) atTop (𝓝 0)` using `tendsto_iff_norm_sub_tendsto_zero.1 hlim0`. Rewrite using `[tendsto_iff_norm_sub_tendsto_zero]`. Use `squeeze_zero (fun _ => norm_nonneg _) (fun k => ?_) h0` and prove the remaining obligations.
+
+Establish `h1` using `norm_le_pi_norm ((gram (B (φ k)) - M) i) j`. Establish `h2` using `norm_le_pi_norm (gram (B (φ k)) - M) i`. Simplify using `only [Pi.sub_apply] at h1 h2`. Conclude with `h1.trans h2`. Establish `hlim : Tendsto (fun k => gram (B (φ k))) atTop (𝓝 M)` using `tendsto_pi_nhds.2 fun i => tendsto_pi_nhds.2 fun j => hcoord i j`.
+
+Establish `hcT : ∀ i v, Continuous fun t => ef W (T t i v)` using `fun i v => by`. Use `continuous_pi fun j => ?_` and prove the remaining obligations. Establish `h` using `hc i v ((Module.finBasis ℂ W).coord j)`. Establish `e : (fun t => ef W (T t i v) j) = fun t => (Module.finBasis ℂ W).coord j (T t i v)`. Use function extensionality and compare the values at `t`.
+
+Rewrite using `[Module.Basis.coord_apply, ef, Module.Basis.equivFun_apply]`. Rewrite using `[e]`. Conclude with `h`. Establish `key : ∀ (x y : ℕ → W) (x0 y0 : W), Tendsto (fun k => ef W (x k)) atTop (𝓝 (ef W x0)) → Tendsto (fun k => ef W (y k)) atTop (𝓝 (ef W y0)) → Tendsto (fun k => B (φ k) (x k) (y k)) atTop (𝓝 (mk M x0 y0))`. Introduce `x y x0 y0 hx hy`.
+
+Establish `e : (fun k => B (φ k) (x k) (y k)) = fun k => qf (gram (B (φ k))) (ef W (x k)) (ef W (y k))`. Use function extensionality and compare the values at `k`. Conclude with `expand _ _ _`. Rewrite using `[e, mk_apply]`. Unfold `qf`.
+
+Use `tendsto_finsetSum _ fun i _ => tendsto_finsetSum _ fun j _ => ?_` and prove the remaining obligations. Conclude with `(tendsto_pi_nhds.1 hx i).mul (((continuous_star.tendsto _).comp (tendsto_pi_nhds.1 hy j)).mul (hcoord i j))`. Establish `hsφ : Tendsto (fun k => s (φ k)) atTop (𝓝 p)` using `hs.comp hφ.tendsto_atTop`. Establish `cst : ∀ v : W, Tendsto (fun _ : ℕ => ef W v) atTop (𝓝 (ef W v))` using `fun v => tendsto_const_nhds`. Use `⟨φ, M, hφ, hMn, hlim, fun i v w => ?_, fun v w => ?_, fun v w => key _ _ v w (cst v) (cst w)⟩` and prove the remaining obligations.
+
+Establish `h1` using `key (fun k => T (s (φ k)) i v) (fun _ => w) (T p i v) w (((hcT i v).tendsto p).comp hsφ) (cst w)`. Establish `h2` using `key (fun _ => v) (fun k => T (s (φ k)) (ι i) w) v (T p (ι i) w) (cst v) (((hcT (ι i) w).tendsto p).comp hsφ)`. Establish `e : (fun k => B (φ k) (T (s (φ k)) i v) w) = fun k => B (φ k) v (T (s (φ k)) (ι i) w)`. Use function extensionality and compare the values at `fun k => hinv (φ k) i v w`. Rewrite `h1` using `[e]`.
+
+Conclude with `tendsto_nhds_unique h1 h2`. Establish `h1` using `key (fun _ => w) (fun _ => v) w v (cst w) (cst v)`. Establish `h2` using `key (fun _ => v) (fun _ => w) v w (cst v) (cst w)`. Establish `h3 : Tendsto (fun k => B (φ k) w v) atTop (𝓝 (starRingEnd ℂ (mk M v w)))`. Establish `e : (fun k => B (φ k) w v) = fun k => starRingEnd ℂ (B (φ k) v w)` using `funext fun k => hh (φ k) v w`.
+
+Rewrite using `[e]`. Conclude with `(Complex.continuous_conj.tendsto _).comp h2`. Conclude with `tendsto_nhds_unique h1 h3`.
+-/
 theorem lim_form {I : Type} (ι : I → I) (T : ℝ → I → Module.End ℂ W)
     (hc : ∀ (i : I) (w : W) (l : Module.Dual ℂ W), Continuous fun s => l (T s i w))
     (s : ℕ → ℝ) (p : ℝ) (hs : Tendsto s atTop (𝓝 p)) (B : ℕ → Sq W) (hinv : ∀ k, Inv ι (T (s k)) (B k))
@@ -350,6 +476,53 @@ namespace PositivityTheory.RgGu.NR
 open Sig
 
 set_option maxHeartbeats 800000 in
+/- English proof (translation)
+Introduce `I W _ _ _ ι T hc hsim hex hpos _ s hs B hB hh hinv`. Establish `hnt : Nontrivial W`. Assume the negation of the conclusion as `hn`. Rewrite `hn` using `[not_nontrivial_iff_subsingleton]`. Conclude with `hB (by ext v w; simp [Subsingleton.elim v 0])`.
+
+Establish `hpos_ne : ∀ B₀ : Sq W, Sig.Pos B₀ → B₀ ≠ 0`. Introduce `B₀ h e`. Take `⟨v, hv⟩` from `exists_ne (0 : W)`. Use `h v hv` as an intermediate fact. Rewrite `this` using `[e]`.
+
+Simplify using `at this`. Establish `re_smul : ∀ (c : ℂ) (z : ℂ), c.im = 0 → (c * z).re = c.re * z.re`. Introduce `c z h`. Simplify using `[Complex.mul_re, h]`. Set `D : Set ℝ` to `{t | ∃ B₀ : Sq W, Sig.Herm B₀ ∧ Sig.Inv ι (T t) B₀ ∧ Sig.Pos B₀}`.
+
+Set `P : Set (Set.Ici (0 : ℝ))` to `{x | x.1 ∈ D}`. Establish `: PreconnectedSpace (Set.Ici (0 : ℝ))` using `Subtype.preconnectedSpace isPreconnected_Ici`. Establish `hcl : IsClosed P`. Use `IsSeqClosed.isClosed fun x p hx hp => ?_` and prove the remaining obligations. Establish `hsq : Tendsto (fun n => (x n).1) atTop (𝓝 p.1)` using `(continuous_subtype_val.tendsto p).comp hp`.
+
+Use `choose B₁ hB1 hB2 hB3 using hx`. Use `choose r hr hrn using fun k => normalize (B₁ k) (hpos_ne _ (hB3 k))`. Take `⟨φ, M, hφ, hM, hlim, hinvM, hhM, hpt⟩` from `lim_form ι T hc (fun n => (x n).1) p.1 hsq (fun k => (r k : ℂ) • B₁ k) (fun k => inv_smul (hB2 k) _) (fun k => herm_smul (hB1 k) _) hrn`. Establish `hsd : ∀ v, 0 ≤ ((mk M : Sq W) v v).re`. Introduce `v`.
+
+Use `ge_of_tendsto ((Complex.continuous_re.tendsto _).comp (hpt v v)) (Eventually.of_forall fun k => ?_)` and prove the remaining obligations. Use `show 0 ≤ (((r (φ k) : ℂ) • B₁ (φ k)) v v).re`. Rewrite using `[LinearMap.smul_apply, LinearMap.smul_apply, smul_eq_mul, Complex.re_ofReal_mul]`. Distinguish the cases in `hv : v = 0`. Simplify using `[hv]`.
+
+Conclude with `(mul_pos (hr _) (hB3 _ v hv)).le`. Establish `hne : (mk M : Sq W) ≠ 0`. Introduce `e`. Use `gram_mk (W := W) M` as an intermediate fact. Rewrite `this` using `[e]`.
+
+Establish `h0 : gram (0 : Sq W) = 0` using `by funext i j; simp [gram]`. Rewrite `this` using `[h0]`. Rewrite `hM` using `[← this]`. Simplify using `at hM`. Conclude with `⟨mk M, hhM, hinvM, pos_of _ hhM (ker_bot (hsim p.1 p.2) _ hne hinvM) hsd⟩`.
+
+Establish `hop : IsClosed Pᶜ`. Use `IsSeqClosed.isClosed fun x p hx hp => ?_` and prove the remaining obligations. Introduce `hpD`. Take `⟨B₀, h0h, h0i, h0p⟩` from `hpD`. Establish `hsq : Tendsto (fun n => (x n).1) atTop (𝓝 p.1)` using `(continuous_subtype_val.tendsto p).comp hp`.
+
+Use `choose B₁ hB1 hB2 hB3 using fun k => hex (x k).1 (x k).2`. Use `choose r hr hrn using fun k => normalize (B₁ k) (hB1 k)`. Take `⟨φ, M, hφ, hM, hlim, hinvM, hhM, hpt⟩` from `lim_form ι T hc (fun n => (x n).1) p.1 hsq (fun k => (r k : ℂ) • B₁ k) (fun k => inv_smul (hB3 k) _) (fun k => herm_smul (hB2 k) _) hrn`. Establish `hne : (mk M : Sq W) ≠ 0`. Introduce `e`.
+
+Use `gram_mk (W := W) M` as an intermediate fact. Rewrite `this` using `[e]`. Establish `h0 : gram (0 : Sq W) = 0` using `by funext i j; simp [gram]`. Rewrite `this` using `[h0]`. Rewrite `hM` using `[← this]`.
+
+Simplify using `at hM`. Take `⟨c, hc⟩` from `uniq (hsim p.1 p.2) B₀ (mk M) (hpos_ne _ h0p) h0i hinvM`. Establish `hcr` using `real_of (hpos_ne _ h0p) h0h hhM c hc`. Establish `hcim : c.im = 0`. Use `congrArg Complex.im hcr` as an intermediate fact.
+
+Simplify using `only [Complex.conj_im] at this`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hc0 : c.re ≠ 0`. Introduce `h`. Apply `hne` to reduce the goal to its premises.
+
+Establish `: c = 0` using `Complex.ext h hcim`. Rewrite using `[hc, this, zero_smul]`. Choose the witnesses or unpack the hypotheses as in `⟨σ, hσ⟩ : ∃ σ : ℝ, 0 < σ * c.re := by`. Break down `lt_or_gt_of_ne hc0 with h | h` into its components or cases. Conclude with `⟨-1, by linarith⟩`.
+
+Conclude with `⟨1, by linarith⟩`. Establish `hposM : ∀ y, y ≠ 0 → 0 < (qf ((σ : ℂ) • M) y y).re`. Rewrite using `[← pos_mk_iff]`. Introduce `v hv`. Rewrite using `[mk_smul, hc, LinearMap.smul_apply, LinearMap.smul_apply, LinearMap.smul_apply, LinearMap.smul_apply, smul_eq_mul, smul_eq_mul, ← mul_assoc, re_smul _ _ (by simp [hcim])]`.
+
+Simplify using `only [Complex.mul_re, Complex.ofReal_re, Complex.ofReal_im, hcim, mul_zero, sub_zero]`. Conclude with `mul_pos hσ (h0p v hv)`. Establish `hev` using `(hlim.const_smul (σ : ℂ)).eventually (pos_open _ hposM)`. Take `⟨k, hk⟩` from `hev.exists`. Apply `hx (φ k)` to reduce the goal to its premises.
+
+Use `⟨(σ : ℂ) • ((r (φ k) : ℂ) • B₁ (φ k)), herm_smul (herm_smul (hB2 _) _) σ, inv_smul (inv_smul (hB3 _) _) _, ?_⟩` and prove the remaining obligations. Establish `hk'` using `(pos_mk_iff (W := W) _).2 hk`. Rewrite `hk'` using `[← gram_smul, mk_gram]`. Then use the resulting hypothesis. Establish `hne : P.Nonempty`. Take `⟨B₀, h1, h2, h3⟩` from `hpos`.
+
+Conclude with `⟨⟨0, Set.mem_Ici.2 le_rfl⟩, B₀, h1, h3, h2⟩`. Establish `huniv` using `IsClopen.eq_univ ⟨hcl, isClosed_compl_iff.1 hop⟩ hne`. Establish `hsD : s ∈ D`. Establish `: (⟨s, hs⟩ : Set.Ici (0 : ℝ)) ∈ P` using `by rw [huniv]; trivial`. Conclude with `this`.
+
+Take `⟨B₀, h0h, h0i, h0p⟩` from `hsD`. Take `⟨c, hc⟩` from `uniq (hsim s hs) B₀ B (hpos_ne _ h0p) h0i hinv`. Establish `hcr` using `real_of (hpos_ne _ h0p) h0h hh c hc`. Establish `hcim : c.im = 0`. Use `congrArg Complex.im hcr` as an intermediate fact.
+
+Simplify using `only [Complex.conj_im] at this`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hval : ∀ v, (B v v).re = c.re * (B₀ v v).re`. Introduce `v`. Rewrite using `[hc, LinearMap.smul_apply, LinearMap.smul_apply, smul_eq_mul, re_smul _ _ hcim]`.
+
+Establish `hc0 : c.re ≠ 0`. Introduce `h`. Apply `hB` to reduce the goal to its premises. Establish `: c = 0` using `Complex.ext h hcim`. Rewrite using `[hc, this, zero_smul]`.
+
+Break down `lt_or_gt_of_ne hc0 with h | h` into its components or cases. Use `right`. Introduce `v hv`. Rewrite using `[hval]`. Conclude with `mul_neg_of_neg_of_pos h (h0p v hv)`.
+
+Use `left`. Introduce `v hv`. Rewrite using `[hval]`. Conclude with `mul_pos h (h0p v hv)`.
+-/
 theorem signature : Signature := by
   intro I W _ _ _ ι T hc hsim hex hpos _ s hs B hB hh hinv
   classical

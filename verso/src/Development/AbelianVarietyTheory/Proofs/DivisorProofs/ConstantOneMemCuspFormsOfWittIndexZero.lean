@@ -11,6 +11,9 @@ open GlobalTheory.Core.Rk.IP
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `D θ A B sA sB t cA _ h`. Rewrite `h` using `[wittIndex_eq_zero_iff_isAniso]`. Conclude with `(mem_cuspForms).2 ⟨⟨isAutFunSm_const θ A 1, fun r C hC => absurd hC (h r C)⟩, .of_invariant fun _ _ _ => rfl⟩`.
+-/
 theorem constant_one_mem_cuspForms_of_wittIndex_zero : ∀ {D : D7} {θ : InfFam D} {A B : HSp D} {sA : RealMat A} {sB : RealMat B} {t : ℕ} {cA : CptF A}, HidaSetting θ A B sA sB t cA → wittIndex A = 0 → (fun _ : GA D A => (1 : ℂ)) ∈ A0 θ A cA := by
   intro D θ A B sA sB t cA _ h
   rw [wittIndex_eq_zero_iff_isAniso] at h

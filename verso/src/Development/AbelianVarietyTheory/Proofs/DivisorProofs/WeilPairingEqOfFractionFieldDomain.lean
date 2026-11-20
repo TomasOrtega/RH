@@ -14,11 +14,25 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.WeilDomain
 
+/- English proof (translation)
+The claim follows from `(congrArg (fun q => q.hom a) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom g))).symm`.
+-/
 theorem appTop_spMap_inv {A B : Type} [CommRing A] [CommRing B] (g : A →+* B) (a : A) :
     (spMap g).appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of A)).inv.hom a) =
       (Scheme.ΓSpecIso (CommRingCat.of B)).inv.hom (g a) :=
   (congrArg (fun q => q.hom a) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom g))).symm
 
+/- English proof (translation)
+Introduce `R _ _ P W L _ _ _ _ _ f e he n x y hx hy w H`. Establish `hL` using `(GlobalTheory.firstFiveLaws).1`. Take `⟨c, hc, -⟩` from `(hL.weil _ P n (Over.mk (spMap f))).1 x y hx hy`. Establish `H'` using `CommPairing.weilIs_pull hL.globalFns P.isAb P.isLB e hc`. Establish `hu` using `CommutatorPairing.weilIs_unique hL.globalFns P.isAb P.isLB H' H`.
+
+Establish `hinj : Function.Injective e.left.appTop.hom`. Rewrite using `[he]`. Introduce `a b hab`. Establish `ia` using `CommRingCat.inv_hom_apply (Scheme.ΓSpecIso (CommRingCat.of W)) a`. Establish `ib` using `CommRingCat.inv_hom_apply (Scheme.ΓSpecIso (CommRingCat.of W)) b`.
+
+Rewrite `hab` using `[← ia, ← ib, appTop_spMap_inv, appTop_spMap_inv]`. Establish `h1` using `(ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of L)).inv).1 hab`. Establish `h2` using `IsFractionRing.injective W L h1`. Rewrite using `[← ia, ← ib, h2]`. Establish `hc' : c = unitOn w`.
+
+Apply `Units.ext` to reduce the goal to its premises. Apply `hinj` to reduce the goal to its premises. Use `congrArg Units.val hu` as an intermediate fact. Use `this.trans ?_` and prove the remaining obligations. Use `show (Scheme.ΓSpecIso (CommRingCat.of L)).inv.hom (algebraMap W L w) = _`.
+
+Rewrite using `[he]`. Conclude with `(appTop_spMap_inv (algebraMap W L) (w : W)).symm`. Conclude with `hc' ▸ hc`.
+-/
 theorem weilIs_of_fractionField : ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (P : PolAV (Sp R)) (W L : Type) [CommRing W] [IsDomain W] [Field L] [Algebra W L] [IsFractionRing W L] (f : R →+* W) (e : Over.mk (spMap ((algebraMap W L).comp f)) ⟶ Over.mk (spMap f)), e.left = spMap (algebraMap W L) → ∀ (n : ℕ) (x y : Over.mk (spMap f) ⟶ P.A), x ^ n = 1 → y ^ n = 1 → ∀ (w : Wˣ), Out.WeilIs P.A P.L n (e ≫ x) (e ≫ y) (unitOn (Units.map (algebraMap W L).toMonoidHom w)) → Out.WeilIs P.A P.L n x y (unitOn w) := by
   intro R _ _ P W L _ _ _ _ _ f e he n x y hx hy w H
   have hL := (GlobalTheory.firstFiveLaws).1

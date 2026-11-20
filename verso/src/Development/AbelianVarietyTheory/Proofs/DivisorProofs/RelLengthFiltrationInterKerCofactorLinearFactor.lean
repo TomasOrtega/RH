@@ -35,8 +35,16 @@ namespace GlobalTheory.HerbCore
 variable {C : Type} [Field C] {v : AddValuation C (WithTop ℝ)} {S : Type} [Fintype S] [DecidableEq S]
   {a : S → Int0 v} {N : ℕ} {Fil : Submodule (RS a) (Fin N → RS a)}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mulR_apply (r : RS a) (x : Fin N → RS a) : mulR a N r x = r • x := rfl
 
+/- English proof (translation)
+Rewrite `hx`, the goal using `[filKer, Submodule.mem_inf]`. Take `⟨h1, h2⟩` from `hx`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mulR_apply]`. Conclude with `Fil.smul_mem _ h1`.
+
+Rewrite `h2`, the goal using `[LinearMap.mem_ker]`. Rewrite `h2` using `[mulR_apply]`. Rewrite using `[mulR_apply, mulR_apply, smul_smul, mul_comm, ← smul_smul, h2, smul_zero]`.
+-/
 theorem mulR_mem_filKer (τ : S) {x : Fin N → RS a} (hx : x ∈ filKer a Fil τ) :
     mulR a N (lin a τ) x ∈ filKer a Fil τ := by
   rw [filKer, Submodule.mem_inf] at hx ⊢
@@ -47,12 +55,26 @@ theorem mulR_mem_filKer (τ : S) {x : Fin N → RS a} (hx : x ∈ filKer a Fil �
     rw [mulR_apply] at h2
     rw [mulR_apply, mulR_apply, smul_smul, mul_comm, ← smul_smul, h2, smul_zero]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `s`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Simplify using `[compMap, diagMul, mulR_apply, ev_lin]`.
+-/
 theorem compMap_mulR (τ : S) (x : Fin N → RS a) (hx : x ∈ filKer a Fil τ) :
     compMap v a Fil τ ⟨mulR a N (lin a τ) x, mulR_mem_filKer τ hx⟩ =
       diagMul v a Fil τ (compMap v a Fil τ ⟨x, hx⟩) := by
   funext s; apply Subtype.ext; funext i
   simp [compMap, diagMul, mulR_apply, ev_lin]
 
+/- English proof (translation)
+Set `bs : ∀ s : {s // s ≠ τ}, Basis (Fin (finrank C (compSpan v a Fil s.1))) C (compSpan v a Fil s.1)` to `fun s => Module.finBasis C _`. Set `B` to `Pi.basis bs`. Rewrite using `[← LinearMap.det_toMatrix B]`. Establish `hM : LinearMap.toMatrix B B (diagMul v a Fil τ) = Matrix.diagonal (fun σ => (a σ.1.1 : C) - (a τ : C))`. Use extensionality with `σ ρ`.
+
+Rewrite using `[LinearMap.toMatrix_apply]`. Establish `: diagMul v a Fil τ (B ρ) = ((a ρ.1.1 : C) - (a τ : C)) • B ρ`. Use function extensionality and compare the values at `s`. Simplify using `only [B, Pi.basis_apply, diagMul, LinearMap.pi_apply, LinearMap.smul_apply, LinearMap.proj_apply, Pi.smul_apply]`. Distinguish the cases in `h : s = ρ.1`.
+
+Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_eq_of_ne h]`. Rewrite using `[this, map_smul, B.repr_self, Matrix.diagonal_apply, Finsupp.smul_apply, Finsupp.single_apply]`. Distinguish the cases in `h : ρ = σ`.
+
+Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h, Ne.symm h]`. Rewrite using `[hM, Matrix.det_diagonal, Fintype.prod_sigma]`. Use `Finset.prod_congr rfl fun s _ => ?_` and prove the remaining obligations.
+
+Simplify using `only [Finset.prod_const, Finset.card_univ, Fintype.card_fin]`. Both sides reduce to the same expression.
+-/
 theorem det_diagMul (τ : S) :
     LinearMap.det (diagMul v a Fil τ) =
       ∏ s : {s // s ≠ τ}, ((a s.1 : C) - (a τ : C)) ^ eigRank v a Fil s.1 := by
@@ -87,14 +109,23 @@ namespace GlobalTheory.HerbCore
 variable {C : Type} [Field C] {v : AddValuation C (WithTop ℝ)} {S : Type} [Fintype S] [DecidableEq S]
   {a : S → Int0 v} {N : ℕ} {Fil : Submodule (RS a) (Fin N → RS a)}
 
+/- English proof (translation)
+Simplify using `[lin, AdjoinRoot.mk_X, AdjoinRoot.mk_C, AdjoinRoot.algebraMap_eq]`.
+-/
 theorem lin_eq_mk (s : S) : lin a s = AdjoinRoot.mk _ (X - Polynomial.C (a s)) := by
   simp [lin, AdjoinRoot.mk_X, AdjoinRoot.mk_C, AdjoinRoot.algebraMap_eq]
 
+/- English proof (translation)
+Repeatedly rewrite using `[lin_eq_mk]`. Rewrite using `[← map_prod]`. Conclude with `AdjoinRoot.mk_self`.
+-/
 theorem prod_lin : ∏ s, lin a s = 0 := by
   simp_rw [lin_eq_mk]
   rw [← map_prod]
   exact AdjoinRoot.mk_self
 
+/- English proof (translation)
+Establish `h1 : lin a s * ∏ t ∈ (Finset.univ.erase τ).erase s, lin a t = cofac a τ` using `Finset.mul_prod_erase _ (lin a) (Finset.mem_erase.mpr ⟨h, Finset.mem_univ s⟩)`. Establish `h2 : cofac a s * lin a s = ∏ t, lin a t` using `Finset.prod_erase_mul _ (lin a) (Finset.mem_univ s)`. Rewrite using `[← h1, mul_comm (lin a s), mul_assoc, mul_comm (lin a s), h2, prod_lin, mul_zero]`.
+-/
 theorem cofac_mul_cofac {s τ : S} (h : s ≠ τ) : cofac a τ * cofac a s = 0 := by
   have h1 : lin a s * ∏ t ∈ (Finset.univ.erase τ).erase s, lin a t = cofac a τ :=
     Finset.mul_prod_erase _ (lin a) (Finset.mem_erase.mpr ⟨h, Finset.mem_univ s⟩)
@@ -102,21 +133,44 @@ theorem cofac_mul_cofac {s τ : S} (h : s ≠ τ) : cofac a τ * cofac a s = 0 :
     Finset.prod_erase_mul _ (lin a) (Finset.mem_univ s)
   rw [← h1, mul_comm (lin a s), mul_assoc, mul_comm (lin a s), h2, prod_lin, mul_zero]
 
+/- English proof (translation)
+Simplify using `[cofac, map_prod, ev_lin]`.
+-/
 theorem ev_cofac (t s : S) : ev a t (cofac a s) = ∏ u ∈ Finset.univ.erase s, (a t - a u) := by
   simp [cofac, map_prod, ev_lin]
 
+/- English proof (translation)
+Rewrite using `[ev_cofac]`. Conclude with `Finset.prod_eq_zero (Finset.mem_erase.mpr ⟨h, Finset.mem_univ t⟩) (sub_self _)`.
+-/
 theorem ev_cofac_of_ne {t s : S} (h : t ≠ s) : ev a t (cofac a s) = 0 := by
   rw [ev_cofac]
   exact Finset.prod_eq_zero (Finset.mem_erase.mpr ⟨h, Finset.mem_univ t⟩) (sub_self _)
 
+/- English proof (translation)
+Rewrite using `[ev_cofac]`. Use `Finset.prod_ne_zero_iff.mpr fun u hu => sub_ne_zero.mpr fun h => ?_` and prove the remaining obligations. Conclude with `(Finset.mem_erase.mp hu).1 (ha h).symm`.
+-/
 theorem ev_cofac_self_ne_zero (ha : Function.Injective a) (s : S) : ev a s (cofac a s) ≠ 0 := by
   rw [ev_cofac]
   refine Finset.prod_ne_zero_iff.mpr fun u hu => sub_ne_zero.mpr fun h => ?_
   exact (Finset.mem_erase.mp hu).1 (ha h).symm
 
+/- English proof (translation)
+Simplify using `[ev, AdjoinRoot.liftAlgHom, AdjoinRoot.lift_mk, Polynomial.eval₂_eq_eval_map]`.
+-/
 theorem ev_mk (s : S) (q : (Int0 v)[X]) : ev a s (AdjoinRoot.mk _ q) = q.eval (a s) := by
   simp [ev, AdjoinRoot.liftAlgHom, AdjoinRoot.lift_mk, Polynomial.eval₂_eq_eval_map]
 
+/- English proof (translation)
+Establish `hmon : (∏ s, (X - Polynomial.C (a s)) : (Int0 v)[X]).Monic` using `monic_prod_of_monic _ _ fun s _ => monic_X_sub_C _`. Establish `hdeg : (∏ s, (X - Polynomial.C (a s)) : (Int0 v)[X]).natDegree = Fintype.card S`. Rewrite using `[natDegree_prod_of_monic _ _ (fun s _ => monic_X_sub_C _)]`. Simplify using the standard rewrite rules. Proceed by induction on `r using AdjoinRoot.induction_on with`.
+
+Consider the case `ih p`. Establish `hmk : AdjoinRoot.mk (∏ s, (X - Polynomial.C (a s))) p = AdjoinRoot.mk (∏ s, (X - Polynomial.C (a s))) (p %ₘ ∏ s, (X - Polynomial.C (a s)))`. Rewrite using `[AdjoinRoot.mk_eq_mk]`. Use `⟨p /ₘ ∏ s, (X - Polynomial.C (a s)), ?_⟩` and prove the remaining obligations. Use `modByMonic_add_div p (∏ s, (X - Polynomial.C (a s)))` as an intermediate fact.
+
+Take the linear combination `this.symm`. Rewrite `h`, the goal using `[hmk]`. Establish `hev : ∀ s, (p %ₘ ∏ s, (X - Polynomial.C (a s))).eval (a s) = 0`. Introduce `s`. Rewrite using `[← ev_mk]`.
+
+Conclude with `h s`. Distinguish the cases in `hq : p %ₘ ∏ s, (X - Polynomial.C (a s)) = 0`. Rewrite using `[hq, map_zero]`. Establish `hlt : (p %ₘ ∏ s, (X - Polynomial.C (a s))).natDegree < Fintype.card S`. Rewrite using `[← hdeg]`.
+
+Conclude with `natDegree_lt_natDegree hq (degree_modByMonic_lt _ hmon)`. Rewrite using `[eq_zero_of_natDegree_lt_card_of_eval_eq_zero _ ha hev hlt, map_zero]`.
+-/
 theorem eq_zero_of_ev (ha : Function.Injective a) (r : RS a) (h : ∀ s, ev a s r = 0) : r = 0 := by
   have hmon : (∏ s, (X - Polynomial.C (a s)) : (Int0 v)[X]).Monic :=
     monic_prod_of_monic _ _ fun s _ => monic_X_sub_C _
@@ -141,6 +195,11 @@ theorem eq_zero_of_ev (ha : Function.Injective a) (r : RS a) (h : ∀ s, ev a s 
         exact natDegree_lt_natDegree hq (degree_modByMonic_lt _ hmon)
       rw [eq_zero_of_natDegree_lt_card_of_eval_eq_zero _ ha hev hlt, map_zero]
 
+/- English proof (translation)
+Use `eq_zero_of_ev ha r fun s => ?_` and prove the remaining obligations. Distinguish the cases in `hs : s = τ`. Substitute `hs` using the available equality. Use `congrArg (ev a s) hP` as an intermediate fact. Rewrite `this` using `[map_mul, map_zero]`.
+
+Conclude with `(mul_eq_zero.mp this).resolve_left (ev_cofac_self_ne_zero ha s)`. Conclude with `h s hs`.
+-/
 theorem eq_zero_of_cofac (ha : Function.Injective a) (τ : S) (r : RS a) (hP : cofac a τ * r = 0)
     (h : ∀ s, s ≠ τ → ev a s r = 0) : r = 0 := by
   refine eq_zero_of_ev ha r fun s => ?_
@@ -151,10 +210,18 @@ theorem eq_zero_of_cofac (ha : Function.Injective a) (τ : S) (r : RS a) (hP : c
     exact (mul_eq_zero.mp this).resolve_left (ev_cofac_self_ne_zero ha s)
   · exact h s hs
 
+/- English proof (translation)
+Rewrite using `[filKer, Submodule.mem_inf, LinearMap.mem_ker]`. Both sides reduce to the same expression.
+-/
 theorem mem_filKer_iff (τ : S) (x : Fin N → RS a) :
     x ∈ filKer a Fil τ ↔ x ∈ Fil ∧ cofac a τ • x = 0 := by
   rw [filKer, Submodule.mem_inf, LinearMap.mem_ker]; rfl
 
+/- English proof (translation)
+Rewrite `hx` using `[mem_filKer_iff]`. Use function extensionality and compare the values at `i`. Use `eq_zero_of_cofac ha τ (x i) (congrFun hx.2 i) fun s hs => ?_` and prove the remaining obligations. Use `congrArg (ev a s) (congrFun h0 i)` as an intermediate fact. Rewrite `this` using `[mulR_apply, Pi.smul_apply, smul_eq_mul, map_mul, ev_lin, Pi.zero_apply, map_zero]`.
+
+Conclude with `(mul_eq_zero.mp this).resolve_left (sub_ne_zero.mpr fun h => hs (ha h))`.
+-/
 theorem mulR_injOn (ha : Function.Injective a) (τ : S) {x : Fin N → RS a} (hx : x ∈ filKer a Fil τ)
     (h0 : mulR a N (lin a τ) x = 0) : x = 0 := by
   rw [mem_filKer_iff] at hx
@@ -164,6 +231,11 @@ theorem mulR_injOn (ha : Function.Injective a) (τ : S) {x : Fin N → RS a} (hx
   rw [mulR_apply, Pi.smul_apply, smul_eq_mul, map_mul, ev_lin, Pi.zero_apply, map_zero] at this
   exact (mul_eq_zero.mp this).resolve_left (sub_ne_zero.mpr fun h => hs (ha h))
 
+/- English proof (translation)
+Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `x hx`. Establish `hx2` using `((mem_filKer_iff τ x.1).mp x.2).2`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `i`.
+
+Use `eq_zero_of_cofac ha τ _ (congrFun hx2 i) fun s hs => ?_` and prove the remaining obligations. Use `congrArg (fun p => ((p ⟨s, hs⟩ : compSpan v a Fil s) : Fin N → C) i) hx` as an intermediate fact. Simplify `this` using `[compMap]`.
+-/
 theorem compMap_injective (ha : Function.Injective a) (τ : S) :
     Function.Injective (compMap v a Fil τ) := by
   rw [← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']
@@ -182,6 +254,13 @@ namespace GlobalTheory.HerbCore
 variable {C : Type} [Field C] {v : AddValuation C (WithTop ℝ)} {S : Type} [Fintype S] [DecidableEq S]
   {a : S → Int0 v} {N : ℕ} {Fil : Submodule (RS a) (Fin N → RS a)}
 
+/- English proof (translation)
+Establish `hmon : (∏ s, (X - Polynomial.C (a s)) : (Int0 v)[X]).Monic` using `monic_prod_of_monic _ _ fun s _ => monic_X_sub_C _`. Use `haveI : Module.Finite (Int0 v) (RS a) := hmon.finite_adjoinRoot`. Use `haveI : Module.Free (Int0 v) (RS a) := hmon.free_adjoinRoot`. Use `haveI : Module.Free (Int0 v) (Fin N → RS a) := inferInstance`. Use `haveI : Module.IsTorsionFree (Int0 v) (Fin N → RS a) := Module.Free.instIsTorsionFree _ _`.
+
+Establish `hsat' : GlobalTheory.IsSaturatedSubmodule (filKer a Fil τ)`. Rewrite using `[GlobalTheory.isSaturatedSubmodule_iff]`. Introduce `c hc x hx`. Rewrite `hx`, the goal using `[mem_filKer_iff]`. Use `⟨hsat c x hc hx.1, ?_⟩` and prove the remaining obligations.
+
+Establish `h2 : c • (cofac a τ • x) = 0` using `by rw [smul_comm]; exact hx.2`. Conclude with `(smul_eq_zero.mp h2).resolve_left hc`. Conclude with `⟨hsat'.finite_of_valuationRing, hsat'.free_of_valuationRing⟩`.
+-/
 theorem filKer_finite_free (hsat : ∀ (c : Int0 v) (x : Fin N → RS a), c ≠ 0 → c • x ∈ Fil → x ∈ Fil)
     (τ : S) : Module.Finite (Int0 v) (filKer a Fil τ) ∧ Module.Free (Int0 v) (filKer a Fil τ) := by
   have hmon : (∏ s, (X - Polynomial.C (a s)) : (Int0 v)[X]).Monic :=
@@ -199,6 +278,27 @@ theorem filKer_finite_free (hsat : ∀ (c : Int0 v) (x : Fin N → RS a), c ≠ 
     exact (smul_eq_zero.mp h2).resolve_left hc
   exact ⟨hsat'.finite_of_valuationRing, hsat'.free_of_valuationRing⟩
 
+/- English proof (translation)
+Use `set W := Submodule.span C (Set.range (compMap v a Fil τ)) with hW`. Establish `key : ∀ (s : {s // s ≠ τ}) (y : Fin N → Int0 v) (hy : y ∈ eigQuot a Fil s.1) (hy' : (fun i => (y i : C)) ∈ compSpan v a Fil s.1), Pi.single (M` using `fun t : {t // t ≠ τ} => compSpan v a Fil t.1) s ⟨fun i => (y i : C), hy'⟩ ∈ W := by`. Introduce `s y hy hy'`. Take `⟨x0, hx0, rfl⟩` from `hy`. Establish `hz : cofac a s.1 • x0 ∈ filKer a Fil τ`.
+
+Rewrite using `[mem_filKer_iff]`. Use `⟨Fil.smul_mem _ hx0, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_smul, cofac_mul_cofac s.2, zero_smul]`. Establish `hd : ((ev a s.1 (cofac a s.1) : Int0 v) : C) ≠ 0`. Rewrite using `[Ne, ZeroMemClass.coe_eq_zero]`.
+
+Conclude with `ev_cofac_self_ne_zero ha s.1`. Establish `hval : compMap v a Fil τ ⟨cofac a s.1 • x0, hz⟩ = ((ev a s.1 (cofac a s.1) : Int0 v) : C) • Pi.single (M` using `fun t : {t // t ≠ τ} => compSpan v a Fil t.1) s ⟨fun i => ((comp a N s.1 x0) i : C), hy'⟩ := by`. Use function extensionality and compare the values at `t`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `i`.
+
+Distinguish the cases in `h : t = s`. Substitute `h` using the available equality. Simplify using `[compMap]`. Conclude with `Or.inl rfl`. Establish `h' : t.1 ≠ s.1` using `fun e => h (Subtype.ext e)`.
+
+Simplify using `[compMap, Pi.single_eq_of_ne h, ev_cofac_of_ne h']`. Establish `: Pi.single (M` using `fun t : {t // t ≠ τ} => compSpan v a Fil t.1) s ⟨fun i => ((comp a N s.1 x0) i : C), hy'⟩ = (((ev a s.1 (cofac a s.1) : Int0 v) : C))⁻¹ • compMap v a Fil τ ⟨cofac a s.1 • x0, hz⟩ := by`. Rewrite using `[hval, smul_smul, inv_mul_cancel₀ hd, one_smul]`. Rewrite using `[this]`. Conclude with `W.smul_mem _ (Submodule.subset_span ⟨_, rfl⟩)`.
+
+Establish `hsingle : ∀ (s : {s // s ≠ τ}) (w : compSpan v a Fil s.1), Pi.single (M` using `fun t : {t // t ≠ τ} => compSpan v a Fil t.1) s w ∈ W := by`. Introduce `s w`. Take `⟨w, hw⟩` from `w`. Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem x hx`.
+
+Take `⟨y, hy, rfl⟩` from `hx`. Conclude with `key s y hy _`. Consider the case `zero`. Establish `: (⟨0, Submodule.zero_mem _⟩ : compSpan v a Fil s.1) = 0` using `rfl`. Rewrite using `[this, Pi.single_zero]`.
+
+Conclude with `W.zero_mem`. Consider the case `add x z hx hz ihx ihz`. Establish `: (⟨x + z, Submodule.add_mem _ hx hz⟩ : compSpan v a Fil s.1) = ⟨x, hx⟩ + ⟨z, hz⟩` using `rfl`. Rewrite using `[this, Pi.single_add]`. Conclude with `W.add_mem ihx ihz`.
+
+Consider the case `smul c x hx ih`. Establish `: (⟨c • x, Submodule.smul_mem _ c hx⟩ : compSpan v a Fil s.1) = c • ⟨x, hx⟩` using `rfl`. Rewrite using `[this, Pi.single_smul]`. Conclude with `W.smul_mem c ih`. Rewrite using `[eq_top_iff]`.
+
+Introduce `p _`. Rewrite using `[← Finset.univ_sum_single p]`. Conclude with `W.sum_mem fun s _ => hsingle s (p s)`.
+-/
 theorem span_range_compMap (ha : Function.Injective a) (τ : S) :
     Submodule.span C (Set.range (compMap v a Fil τ)) = ⊤ := by
   set W := Submodule.span C (Set.range (compMap v a Fil τ)) with hW
@@ -255,6 +355,35 @@ end GlobalTheory.HerbCore
 noncomputable section
 namespace GlobalTheory.HerbCore
 
+/- English proof (translation)
+Introduce `C _ v S _ _ a ha N Fil hsat τ`. Use `set K := filKer a Fil τ with hK`. Take `⟨hfin, hfree⟩` from `filKer_finite_free (v := v) (a := a) hsat τ`. Set `n` to `finrank (Int0 v) K`. Set `b : Basis (Fin n) (Int0 v) K` to `Module.finBasis _ _`.
+
+Set `T : K →ₗ[Int0 v] K` to `(mulR a N (lin a τ)).restrict (fun x hx => mulR_mem_filKer τ hx)`. Establish `hT : ∀ x : K, (T x : Fin N → RS a) = mulR a N (lin a τ) x` using `fun x => rfl`. Set `g : K →ₗ[Int0 v] (Fin N → RS a)` to `(mulR a N (lin a τ)).comp K.subtype`. Establish `hg : Function.Injective g`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`.
+
+Introduce `x hx`. Conclude with `Subtype.ext (mulR_injOn ha τ x.2 hx)`. Establish `hrange : LinearMap.range g = K.map (mulR a N (lin a τ))`. Simplify using `only [g, LinearMap.range_comp, Submodule.range_subtype]`. Set `e : K ≃ₗ[Int0 v] K.map (mulR a N (lin a τ))` to `(LinearEquiv.ofInjective g hg).trans (LinearEquiv.ofEq _ _ hrange)`.
+
+Set `A` to `LinearMap.toMatrix b b T`. Set `Φ` to `compMap v a Fil τ`. Establish `hli : LinearIndependent C (Φ ∘ b)` using `(LinearIndependent.iff_fractionRing (Int0 v) C).mp (b.linearIndependent.map' Φ (LinearMap.ker_eq_bot.mpr (compMap_injective ha τ)))`. Establish `hsp : ⊤ ≤ Submodule.span C (Set.range (Φ ∘ b))`. Rewrite using `[← span_range_compMap (v := v) (Fil := Fil) ha τ, Submodule.span_le]`.
+
+Introduce and unpack `_ ⟨x, rfl⟩`. Rewrite using `[← b.sum_repr x, map_sum]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, ← algebraMap_smul C]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`.
+
+Set `β : Basis (Fin n) C (CompProd v a Fil τ)` to `Basis.mk hli hsp`. Establish `hmat : LinearMap.toMatrix β β (diagMul v a Fil τ) = A.map (algebraMap (Int0 v) C)`. Use extensionality with `i k`. Rewrite using `[LinearMap.toMatrix_apply, Matrix.map_apply]`. Establish `h1 : diagMul v a Fil τ (β k) = ∑ j, (algebraMap (Int0 v) C (A j k)) • β j`.
+
+Rewrite using `[Basis.mk_apply, Function.comp_apply]`. Use `compMap_mulR (v := v) τ (b k : Fin N → RS a) (b k).2` as an intermediate fact. Simplify using `only [Subtype.coe_eta] at this`. Rewrite using `[← this]`. Establish `h2 : (⟨mulR a N (lin a τ) (b k), mulR_mem_filKer τ (b k).2⟩ : K) = ∑ j, A j k • b j` using `by show T (b k) = _ conv_lhs => rw [← b.sum_repr (T (b k))]`.
+
+Simplify using `[A, LinearMap.toMatrix_apply]`. Rewrite using `[h2, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, algebraMap_smul, Basis.mk_apply]`. Both sides reduce to the same expression.
+
+Rewrite using `[h1, β.repr_sum_self]`. Establish `hdetC : ((A.det : Int0 v) : C) = ∏ s : {s // s ≠ τ}, ((a s.1 : C) - (a τ : C)) ^ eigRank v a Fil s.1`. Rewrite using `[← det_diagMul, ← LinearMap.det_toMatrix β, hmat]`. Conclude with `RingHom.map_det (algebraMap (Int0 v) C) A`. Establish `hne : ((A.det : Int0 v) : C) ≠ 0`.
+
+Rewrite using `[hdetC]`. Use `Finset.prod_ne_zero_iff.mpr fun s _ => pow_ne_zero _ (sub_ne_zero.mpr ?_)` and prove the remaining obligations. Introduce `h`. Conclude with `s.2 (ha (Subtype.ext h))`. Establish `hval : v ((A.det : Int0 v) : C) = yExp v a Fil τ`.
+
+Establish `hprod : ∀ (ι : Type) (s : Finset ι) (f : ι → C), v (∏ i ∈ s, f i) = ∑ i ∈ s, v (f i)`. Introduce `ι s f`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert i s hi ih => rw [Finset.prod_insert hi, Finset.sum_insert hi, v.map_mul, ih]`.
+
+Rewrite using `[hdetC, hprod, yExp]`. Rewrite using `[Finset.sum_subtype (Finset.univ.erase τ) (p := fun s => s ≠ τ) (by simp) (fun s => eigRank v a Fil s • v ((a s : C) - (a τ : C)))]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[AddValuation.map_pow]`. Establish `htop : v ((A.det : Int0 v) : C) ≠ ⊤`.
+
+Rewrite using `[Ne, AddValuation.top_iff]`. Conclude with `hne`. Use `⟨(v ((A.det : Int0 v) : C)).untop htop, by rw [WithTop.coe_untop, hval], n, b, b.map e, A, fun k => ?_, by rw [WithTop.coe_untop]⟩` and prove the remaining obligations. Rewrite using `[Basis.map_apply]`. Establish `: ((e (b k) : K.map (mulR a N (lin a τ))) : Fin N → RS a) = (T (b k) : Fin N → RS a)` using `rfl`.
+
+Establish `h3 : T (b k) = ∑ i, A i k • b i` using `by conv_lhs => rw [← b.sum_repr (T (b k))]`. Simplify using `[A, LinearMap.toMatrix_apply]`. Rewrite using `[this, h3, Submodule.coe_sum]`. Simplify using the standard rewrite rules.
+-/
 theorem relLen_lin_filKer : ∀ (C : Type) [Field C] (v : AddValuation C (WithTop ℝ)) (S : Type) [Fintype S] [DecidableEq S] (a : S → Int0 v), Function.Injective a → ∀ (N : ℕ) (Fil : Submodule (RS a) (Fin N → RS a)), (∀ (c : Int0 v) (x : Fin N → RS a), c ≠ 0 → c • x ∈ Fil → x ∈ Fil) → ∀ τ : S, ∃ r : ℝ, (r : WithTop ℝ) = yExp v a Fil τ ∧ RelLen v ((filKer a Fil τ).map (mulR a N (lin a τ))) (filKer a Fil τ) r := by
   intro C _ v S _ _ a ha N Fil hsat τ
   set K := filKer a Fil τ with hK

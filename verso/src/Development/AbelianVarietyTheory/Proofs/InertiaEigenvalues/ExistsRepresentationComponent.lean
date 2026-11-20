@@ -14,6 +14,13 @@ namespace GlobalTheory.GoodPin
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Introduce `hG hZ hDZ hL D cf nch tp a hp hloc`. Establish `h0 : GoodFTAll a.nt.D`. Use `GlobalTheory.T.labels_of_depth_zero hG hZ hL a.nt.D a.nt.A.wdT a.nt.A.row a.nt.rep (fun k => @GlobalTheory.Mem.TypePl.labDat (a.nt.D.host.g k) ⟨a.nt.D.host.g_prime k⟩) a.nt.row a.depth hp.lab (fun k => @GlobalTheory.DepthZeroCusp.depthZeroCuspidal (a.nt.D.host.g k) ⟨a.nt.D.host.g …` and prove the remaining obligations. Introduce `I rc hrc k v`. Use `GlobalTheory.T.tame_parameter_coupled hDZ hL a.nt.D a.nt.A.wdT I rc hrc (fun k => @GlobalTheory.Mem.TypePl.labDat (a.nt.D.host.g k) ⟨a.nt.D.host.g_prime k⟩) k v (a.nt.A.grp.kv k v) ?_` and prove the remaining obligations.
+
+Rewrite using `[← hp.gen k]`. Conclude with `a.nt.A.grp.tg_tame k v`. Establish `e : ∀ D', D' = withLoc a.nt.L → GoodFTAll D'`. Introduce and unpack `_ rfl`. Conclude with `h0`.
+
+Conclude with `e D a.nt.eq`.
+-/
 theorem goodFTAll_pinned : GlobalTheory.GLq.Green → GlobalTheory.Published.ZelevinskyPolynomialRing → GlobalTheory.Published.DepthZeroInertia → ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (D : D7) (cf : CharFrame D) (nch : NChoice D) (tp : TupTied D cf nch) (a : NAt hL D cf nch tp), OPin a → (∀ (I : Ident a.nt.D) cp, IsComp I a.nt.rep cp → ∀ σ, ∃ (V : Type) (_ : AddCommGroup V) (_ : Module ℂ V) (ρ : Representation ℂ (G0g a.nt.D.nd) V) (W : Submodule ℂ V) (x : V), (∀ k v, GlobalTheory.GoodTypes.ConjIn ρ W (GlobalTheory.GoodTypes.facHom a.nt.D k v) (cp σ k v).ρ) ∧ x ≠ 0 ∧ (∀ b, ρ.asAlgebraHom b x ∈ W) ∧ ρ.asAlgebraHom a.nt.D.ntypes.e0 x = x) → GoodFTAll D := by
   intro hG hZ hDZ hL D cf nch tp a hp hloc
   have h0 : GoodFTAll a.nt.D := by

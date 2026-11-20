@@ -4,6 +4,9 @@ import CompanionTheory.AutomorphicTheory.LocalBesselUniqueness.BesselModels.Mult
 
 namespace GlobalTheory
 
+/- English proof (translation)
+The claim follows from `CompanionTheory.Lime.BM.wuDecayOfGap_holds'`.
+-/
 theorem wuDecayOfGap : Formalism.L2.SG.Pf.WuDecayOfGap := CompanionTheory.Lime.BM.wuDecayOfGap_holds'
 
 end GlobalTheory

@@ -5,6 +5,13 @@ import Formalism.SharpRestriction.GlobalSchurBounds.GeneralLinearActions.GenusMa
 import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.WeilTensorModels
 import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.AbsoluteValueAltAlt
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B nS nT JS JT ξ θ ι h`. Take `⟨-, -, -, h0, hσ, -, -⟩` from `h`. Establish `hz : ∀ n : ℤ, (n : E) - ξ ≠ 0` using `fun n hn => h0 <| by`. Establish `e : ξ = (n : E)` using `(sub_eq_zero.mp hn).symm`. Establish `e2 : σ ξ = ξ` using `by rw [e, map_intCast]`.
+
+Take the linear combination `(1 / 2 : E) * hσ - (1 / 2 : E) * e2`. Establish `hp : ∀ n : ℤ, (n : E) + ξ ≠ 0` using `fun n hn => hz (-n) <| by push_cast; linear_combination -hn`. Use `Set.infinite_of_injective_forall_mem (f := fun n : ℤ => ((n : E) + ξ) / ((n : E) - ξ)) (fun n m hnm => ?_) (fun n => ?_)` and prove the remaining obligations. Establish `e` using `(div_eq_div_iff (hz n) (hz m)).mp hnm`. Establish `e2 : ((n : E) - m) * ξ = 0` using `by linear_combination (-1 / 2 : E) * e`.
+
+Conclude with `Int.cast_injective (sub_eq_zero.mp ((mul_eq_zero.mp e2).resolve_right h0))`. Simplify using `only [Set.mem_setOf_eq, map_div₀, map_add, map_sub, map_intCast, hσ, sub_neg_eq_add, ← sub_eq_add_neg]`. Rewrite using `[div_mul_div_comm, mul_comm, div_self (mul_ne_zero (hz n) (hp n))]`.
+-/
 theorem UpperTheory.Reformulated.B.InfiniteNormOne.infinite_norm_one :
     ∀ {F E : Type} [inst : Field F] [inst_1 : NumberField F] [inst_2 : Field E] [inst_3 : NumberField E]
       [inst_4 : Algebra F E] {σ : E →ₐ[F] E} {B : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E} {nS nT : ℕ} {JS : Matrix (Fin nS) (Fin nS) E}

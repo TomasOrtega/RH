@@ -13,6 +13,21 @@ noncomputable section
 
 namespace GlobalTheory.TraitQuot
 
+/- English proof (translation)
+Introduce `E _ _ _ H R _ _ _ t P hR hT V _ _ _ hV ϖ hϖ ψ hψ hnl be hbe hF`. Take `⟨PP', cub, sym, adj, prim, mV, -⟩` from `sabPull CubePf.cubePull (spMap ψ) t`. Establish `j : Function.Injective ((algebraMap V (FractionRing V)).comp ψ)` using `(IsFractionRing.injective V _).comp hψ`. Set `gK : FractionRing R →+* FractionRing V` to `IsFractionRing.lift j`. Establish `e : spMap gK ≫ jK R = jK V ≫ spMap ψ` using `(GlobalTheory.Ex.UnifModel.spMap_comp (IsFractionRing.lift_algebraMap j)).trans (GlobalTheory.Ex.UnifModel.spMap_comp fun _ => rfl).symm`.
+
+Establish `hp` using `GlobalTheory.DatUniq.polAt_pull mV (GlobalTheory.DatUniq.polAt_of_unif P) (jK V) (spMap gK) e`. Take `⟨V', _, _, _, f, hV', hf, hfl, hfϖ, t', m', ⟨P'⟩⟩` from `GlobalTheory.T.exists_unramified_uniformisation_polarisedTriple E H V hV ϖ hϖ _ hp`. Take `⟨n, -⟩` from `sabComp pullCubComp E H _ _ _ _ _ _ _ _ mV m'`. Establish `hsp : spMap f ≫ spMap ψ = spMap (f.comp ψ)` using `GlobalTheory.Ex.UnifModel.spMap_comp fun _ => rfl`. Establish `n' : SABMap t' t (spMap (f.comp ψ))` using `hsp ▸ n`.
+
+Take `⟨ρ, hρs, hρ⟩` from `GlobalTheory.T.boundary_form_base_change_dvr E H R t P hR hT V' hV' (f.comp ψ) (hf.comp hψ) (fun hl => hnl ⟨fun a ha => hl.map_nonunit a (ha.map f)⟩) t' n' P'`. Take `⟨hd, hc, hz⟩` from `hV'`. Take `⟨be', hbe', hmon, -⟩` from `exists_periodForm P' hfϖ`. Use `⟨V', inferInstance, inferInstance, inferInstance, f, ⟨hd, hc, hz⟩, hf, hfl, hfϖ, t', n', P', be', ρ, hbe', hρs, ?_, hmon⟩` and prove the remaining obligations. Establish `hdiag : ∀ y, be' (ρ y) (ρ y) = be y y`.
+
+Introduce `y`. Take `⟨r, k, hr, hk, ha⟩` from `hF y`. Take `⟨u, m, hm, hc⟩` from `hmon (ρ y)`. Establish `h1` using `hρ y r _ hr hc`. Simplify using `only [Fin.prod_univ_one, Matrix.cons_val_zero, RingHom.comp_apply] at h1`.
+
+Establish `h2 : Associated ((f ϖ) ^ k) ((f ϖ) ^ (m 0))`. Establish `h3 : Associated (f (ψ r)) ((f ϖ) ^ k)`. Rewrite using `[← map_pow]`. Conclude with `ha.map f`. Conclude with `h3.symm.trans (h1.trans (associated_unit_mul_left _ _ u.isUnit))`.
+
+Establish `h4` using `BalancedTrait.pow_eq_of_associated hfϖ h2`. Establish `h5` using `hm 0`. Simplify using `only [Matrix.cons_val_zero] at h5`. Rewrite using `[h5, hk, h4]`. Introduce `a b`.
+
+Establish `s1` using `BalancedTrait.two_mul_apply be (mem_levelForms.1 hbe).1 a b`. Establish `s2` using `BalancedTrait.two_mul_apply be' (mem_levelForms.1 hbe').1 (ρ a) (ρ b)`. Rewrite `s2` using `[← map_add, hdiag, hdiag, hdiag]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem main : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (R : Type) [CommRing R] [IsDomain R]
     [IsLocalRing R] (t : SAB H (Sp R)) (P : PELUnif (maximalIdeal R) t), IsCN R → P.TorsionIso →
     ∀ (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V], CDvr V → ∀ ϖ : V, Irreducible ϖ →

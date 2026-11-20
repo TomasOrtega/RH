@@ -21,6 +21,15 @@ noncomputable section
 
 namespace GlobalTheory.MixDens
 
+/- English proof (translation)
+Introduce `k _ X Y p q π hπ σ E r h H D ch cE y hy hU`. Rewrite using `[← chernMat_congr (VMetric.isometric_det_pull H π hπ) ch hy]`. Establish `hi : y ∈ ptsIn q σ ((VMetric.det (H.pull π hπ)).B.U cE)` using `hU`. Establish `ho` using `ChartGlue.isOpen_over ch.e (isOpen_ptsIn (p := q) (σ := σ) cE.U)`. Establish `hm` using `ChartGlue.mem_over ch.e hy hU`.
+
+Establish `hM : MContDiffAt 2 (fun u => ((h.pull π hπ).met σ).G cE (ch.e.symm u)) (ch.e y)` using `((((H.pull π hπ) σ) cE y hU).mContDiffAt ch hy).of_le (WithTop.coe_le_coe.2 le_top)`. Establish `hH : ∀ᶠ w in 𝓝 (ch.e y), (((h.pull π hπ).met σ).G cE (ch.e.symm w)).IsHermitian` using `by filter_upwards [ho.mem_nhds hm] with v hv`. Conclude with `(((h.pull π hπ).met σ).posDef cE _ hv.2).1`. Establish `hu : IsUnit (((h.pull π hπ).met σ).G cE (ch.e.symm (ch.e y))).det`. Rewrite using `[ch.e.left_inv hy]`.
+
+Conclude with `(((h.pull π hπ).met σ).posDef cE y hU).det_pos.ne'.isUnit`. Establish `hd : ContDiffAt ℝ 2 (fun v => ((VMetric.det (H.pull π hπ)).φ σ).φ cE (ch.e.symm v)) (ch.e y)` using `((VMetric.det (H.pull π hπ)).cInf σ).contDiffAt ch hy hi`. Establish `hc : ContDiffAt ℝ 2 (fun v => ((((VMetric.det (H.pull π hπ)).φ σ).φ cE (ch.e.symm v) : ℝ) : ℂ)) (ch.e y)` using `Complex.ofRealCLM.contDiff.contDiffAt.comp _ hd`. Use extensionality with `a b`. Rewrite using `[chernMat, ch.hess_eq ((VMetric.det (H.pull π hπ)).cInf σ) hy hi (mem_pick _ y)]`.
+
+Use `show ReciprocityTheory.L2DbarEstimates.cHess D (fun v => ((((VMetric.det (H.pull π hπ)).φ σ).φ cE (ch.e.symm v) : ℝ) : ℂ)) (ch.e y) a b = _`. Rewrite using `[GlobalTheory.CurveDens.cHess_apply_eq_ddbar hc, Matrix.of_apply, trace_curv hM hH hu]`. Use `show leviForm (fun v => -Real.log (((h.pull π hπ).met σ).G cE (ch.e.symm v)).det.re) (ch.e y) _ _ = _`. Rewrite using `[leviForm_neg]`. Both sides reduce to the same expression.
+-/
 theorem chernMat_det_pull_eq_trace_curv : ∀ (k : Type) [CommRing k] (X Y : Scheme.{0}) (p : X ⟶ Sp k) (q : Y ⟶ Sp k) (π : Y ⟶ X) (hπ : π ≫ p = q) (σ : k →+* ℂ) (E : X.Modules) (r : ℕ) (h : VMetric p E r) (H : h.IsCInf) (D : ℕ) (ch : AlgChart q σ D) (cE : Chart ((Scheme.Modules.pullback π).obj E) r), ∀ y ∈ ch.e.source, y ∈ ptsIn q σ cE.U → chernMat (((VMetric.det H).pull π hπ).φ σ) ch y = Matrix.of fun a b => (curv (fun u => ((h.pull π hπ).met σ).G cE (ch.e.symm u)) (ch.e y) (bas D a) (bas D b)).trace := by
   intro k _ X Y p q π hπ σ E r h H D ch cE y hy hU
   rw [← chernMat_congr (VMetric.isometric_det_pull H π hπ) ch hy]

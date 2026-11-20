@@ -10,6 +10,9 @@ noncomputable section
 
 variable {E : Type} [Field E] [NumberField E] [NumberField.IsCMField E]
 
+/- English proof (translation)
+Take `⟨β, hβξ, hli, hspan⟩` from `PerpBasisExistence.exists_beta X.toData hξ.2.1 hξ.2.2`. Take `⟨Q, hQ, hSQ, hQf⟩` from `GramMatrixExistence.Q_exists X ξ z0 f hξ hz hf β hβξ hli hspan`. Conclude with `⟨β, PerpLatticeTransfer.Sform X β, PerpBasisExistence.LBsub X β ξ, Q, hβξ, hli, hspan, fun c c' => PerpLatticeTransfer.Sform_h X β c c', fun c => Iff.rfl, PerpLatticeTransfer.LB_lattice X β ξ hli, PerpLatticeTransfer.LB_selfDual X β ξ hξ hβξ hspan, hQ, hSQ, hQf⟩`.
+-/
 theorem exists_perp_hermitian_reduction (r : ℕ) (X : DataX E r) (ξ : Fin r → E) (z0 : Frame X.Ψ r)
     (f : X.Ψ → Fin (r - 2) → Fin r → ℂ) (hξ : X.IsIso ξ) (hz : z0 ∈ X.dom) (hf : X.UBasis z0 ξ f) :
     ∃ (β : Fin (r - 2) → Fin r → E) (S : ReciprocityTheory.MultiplicativeHeights.HermForm E (r - 2))

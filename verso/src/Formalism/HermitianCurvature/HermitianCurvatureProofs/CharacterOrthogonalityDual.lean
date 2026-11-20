@@ -12,28 +12,46 @@ section Alg
 
 variable {K : Type} [CommRing K] (R : Subring K) (ψ : AddChar K ℂ)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨r, rfl⟩`. Conclude with `r.2`. Introduce `h`. Conclude with `⟨⟨x, h⟩, rfl⟩`.
+-/
 theorem mem_rng (x : K) : x ∈ LinearMap.range (Algebra.linearMap R K) ↔ x ∈ R := by
   constructor
   · rintro ⟨r, rfl⟩; exact r.2
   · intro h; exact ⟨⟨x, h⟩, rfl⟩
 
+/- English proof (translation)
+Rewrite using `[Submodule.Quotient.mk_eq_zero, mem_rng]`.
+-/
 theorem mk_eq_zero (x : K) : (Submodule.Quotient.mk x : KR R) = 0 ↔ x ∈ R := by
   rw [Submodule.Quotient.mk_eq_zero, mem_rng]
 
+/- English proof (translation)
+Rewrite using `[Submodule.Quotient.eq, mem_rng]`.
+-/
 theorem mk_eq_mk (x y : K) :
     (Submodule.Quotient.mk x : KR R) = Submodule.Quotient.mk y ↔ x - y ∈ R := by
   rw [Submodule.Quotient.eq, mem_rng]
 
+/- English proof (translation)
+Rewrite using `[← Submodule.Quotient.mk_smul]`. Both sides reduce to the same expression.
+-/
 theorem smul_mk (r : R) (x : K) :
     r • (Submodule.Quotient.mk x : KR R) = Submodule.Quotient.mk ((r : K) * x) := by
   rw [← Submodule.Quotient.mk_smul]; rfl
 
 variable {R ψ}
 
+/- English proof (translation)
+Simplify using `using (h a).2 ha 1 R.one_mem`.
+-/
 theorem psi_of_mem (h : ∀ a : K, (∀ r ∈ R, ψ (a * r) = 1) ↔ a ∈ R) {a : K} (ha : a ∈ R) :
     ψ a = 1 := by
   simpa using (h a).2 ha 1 R.one_mem
 
+/- English proof (translation)
+Unfold `psiKR`. Establish `h1 : Quotient.out (Submodule.Quotient.mk a : KR R) - a ∈ R` using `(mk_eq_mk R _ _).1 (Submodule.Quotient.mk_out _)`. Establish `h2 : Quotient.out (Submodule.Quotient.mk a : KR R) = (Quotient.out (Submodule.Quotient.mk a : KR R) - a) + a` using `by ring`. Rewrite using `[h2, AddChar.map_add_eq_mul, psi_of_mem h h1, one_mul]`.
+-/
 theorem psiKR_mk (h : ∀ a : K, (∀ r ∈ R, ψ (a * r) = 1) ↔ a ∈ R) (a : K) :
     psiKR R ψ (Submodule.Quotient.mk a) = ψ a := by
   unfold psiKR
@@ -58,9 +76,17 @@ def psiBar (h : ∀ a : K, (∀ r ∈ R, ψ (a * r) = 1) ↔ a ∈ R) : AddChar 
         rw [← Submodule.Quotient.mk_add, psiKR_mk h, psiKR_mk h, psiKR_mk h,
           AddChar.map_add_eq_mul]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem psiBar_apply (h : ∀ a : K, (∀ r ∈ R, ψ (a * r) = 1) ↔ a ∈ R) (x : KR R) :
     psiBar h x = psiKR R ψ x := rfl
 
+/- English proof (translation)
+Proceed by induction on `y using Submodule.Quotient.induction_on with`. Consider the case `H a`. Rewrite using `[mk_eq_zero, ← h a]`. Introduce `r hr`. Use `hy ⟨r, hr⟩` as an intermediate fact.
+
+Rewrite `this` using `[smul_mk, psiKR_mk h]`. Rewrite using `[mul_comm]`. Conclude with `this`.
+-/
 theorem eq_zero_of_psi (h : ∀ a : K, (∀ r ∈ R, ψ (a * r) = 1) ↔ a ∈ R) (y : KR R)
     (hy : ∀ r : R, psiKR R ψ (r • y) = 1) : y = 0 := by
   induction y using Submodule.Quotient.induction_on with
@@ -71,6 +97,11 @@ theorem eq_zero_of_psi (h : ∀ a : K, (∀ r ∈ R, ψ (a * r) = 1) ↔ a ∈ R
     rw [smul_mk, psiKR_mk h] at this
     rw [mul_comm]; exact this
 
+/- English proof (translation)
+Use `Fintype.ofFinite G` as an intermediate fact. Rewrite using `[finsum_eq_sum_of_fintype, AddChar.sum_eq_ite, Nat.card_eq_fintype_card]`. Prove the components needed by the constructor for the conclusion. Introduce `hg`. Rewrite using `[if_pos (AddChar.eq_zero_iff.2 hg)]`.
+
+Introduce `hg`. Rewrite using `[if_neg (AddChar.ne_zero_iff.2 hg)]`.
+-/
 theorem finsum_char {G : Type} [AddCommGroup G] [Finite G] (χ : AddChar G ℂ) :
     ((∀ g, χ g = 1) → ∑ᶠ g, χ g = (Nat.card G : ℂ)) ∧ ((∃ g, χ g ≠ 1) → ∑ᶠ g, χ g = 0) := by
   classical
@@ -87,9 +118,17 @@ variable {C : Type} [AddCommGroup C] [Module R C]
 def chC (h : ∀ a : K, (∀ r ∈ R, ψ (a * r) = 1) ↔ a ∈ R) (μ : C →ₗ[R] KR R) : AddChar C ℂ :=
   (psiBar h).compAddMonoidHom μ.toAddMonoidHom
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem chC_apply (h : ∀ a : K, (∀ r ∈ R, ψ (a * r) = 1) ↔ a ∈ R) (μ : C →ₗ[R] KR R) (c : C) :
     chC h μ c = psiKR R ψ (μ c) := rfl
 
+/- English proof (translation)
+Introduce `μ ν hμν`. Use extensionality with `c`. Rewrite using `[← sub_eq_zero]`. Apply `eq_zero_of_psi h` to reduce the goal to its premises. Introduce `r`.
+
+Establish `h1 : chC h μ (r • c) = chC h ν (r • c)` using `by rw [hμν]`. Rewrite `h1` using `[chC_apply, chC_apply, map_smul, map_smul]`. Rewrite using `[smul_sub, sub_eq_add_neg, ← psiBar_apply h, AddChar.map_add_eq_mul, AddChar.map_neg_eq_inv, psiBar_apply, psiBar_apply, h1]`. Conclude with `mul_inv_cancel₀ (AddChar.val_isUnit (psiBar h) _).ne_zero`.
+-/
 theorem chC_injective (h : ∀ a : K, (∀ r ∈ R, ψ (a * r) = 1) ↔ a ∈ R) :
     Function.Injective (chC h : (C →ₗ[R] KR R) → AddChar C ℂ) := by
   intro μ ν hμν
@@ -103,12 +142,22 @@ theorem chC_injective (h : ∀ a : K, (∀ r ∈ R, ψ (a * r) = 1) ↔ a ∈ R)
     AddChar.map_neg_eq_inv, psiBar_apply, psiBar_apply, h1]
   exact mul_inv_cancel₀ (AddChar.val_isUnit (psiBar h) _).ne_zero
 
+/- English proof (translation)
+The claim follows from `Finite.of_injective _ (chC_injective h)`.
+-/
 theorem finite_dual (h : ∀ a : K, (∀ r ∈ R, ψ (a * r) = 1) ↔ a ∈ R) [Finite C] :
     Finite (C →ₗ[R] KR R) :=
   Finite.of_injective _ (chC_injective h)
 
 open Classical in
 
+/- English proof (translation)
+Use `split_ifs with hμ`. Apply `(finsum_char (chC h μ)).1` to reduce the goal to its premises. Introduce `g`. Rewrite using `[hμ, chC_apply, LinearMap.zero_apply, ← psiBar_apply h, AddChar.map_zero_eq_one]`. Apply `(finsum_char (chC h μ)).2` to reduce the goal to its premises.
+
+Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Apply `hμ` to reduce the goal to its premises. Apply `chC_injective h` to reduce the goal to its premises. Use extensionality with `c`.
+
+Rewrite using `[hcon c, chC_apply, LinearMap.zero_apply, ← psiBar_apply h, AddChar.map_zero_eq_one]`.
+-/
 theorem sum_over_C (h : ∀ a : K, (∀ r ∈ R, ψ (a * r) = 1) ↔ a ∈ R) [Finite C]
     (μ : C →ₗ[R] KR R) :
     ∑ᶠ c : C, psiKR R ψ (μ c) = if μ = 0 then (Nat.card C : ℂ) else 0 := by
@@ -129,12 +178,22 @@ def chS (h : ∀ a : K, (∀ r ∈ R, ψ (a * r) = 1) ↔ a ∈ R) (S : Submodul
   (psiBar h).compAddMonoidHom
     ((LinearMap.applyₗ c : (C →ₗ[R] KR R) →ₗ[R] KR R).comp S.subtype).toAddMonoidHom
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem chS_apply (h : ∀ a : K, (∀ r ∈ R, ψ (a * r) = 1) ↔ a ∈ R)
     (S : Submodule R (C →ₗ[R] KR R)) (c : C) (α : S) :
     chS h S c α = psiKR R ψ ((α : C →ₗ[R] KR R) c) := rfl
 
 open Classical in
 
+/- English proof (translation)
+Use `finite_dual (C := C) h` as an intermediate fact. Use `split_ifs with hc`. Apply `(finsum_char (chS h S c)).1` to reduce the goal to its premises. Introduce `α`. Rewrite using `[chS_apply, hc α α.2, ← psiBar_apply h, AddChar.map_zero_eq_one]`.
+
+Apply `(finsum_char (chS h S c)).2` to reduce the goal to its premises. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Apply `hc` to reduce the goal to its premises. Introduce `α hα`.
+
+Apply `eq_zero_of_psi h` to reduce the goal to its premises. Introduce `r`. Use `hcon ⟨r • α, S.smul_mem r hα⟩` as an intermediate fact. Rewrite `this` using `[chS_apply]`. Conclude with `this`.
+-/
 theorem sum_over_S (h : ∀ a : K, (∀ r ∈ R, ψ (a * r) = 1) ↔ a ∈ R) [Finite C]
     (S : Submodule R (C →ₗ[R] KR R)) (c : C) :
     ∑ᶠ α : S, psiKR R ψ ((α : C →ₗ[R] KR R) c) =
@@ -162,9 +221,27 @@ section Alg2
 variable {K : Type} [CommRing K] {R : Subring K} {ψ : AddChar K ℂ}
 variable {C : Type} [AddCommGroup C] [Module R C]
 
+/- English proof (translation)
+The claim follows from `(psiBar h).map_zero_eq_one`.
+-/
 theorem psiKR_zero (h : ∀ a : K, (∀ r ∈ R, ψ (a * r) = 1) ↔ a ∈ R) :
     psiKR R ψ (0 : KR R) = 1 := (psiBar h).map_zero_eq_one
 
+/- English proof (translation)
+Use `finite_dual (C := C) h` as an intermediate fact. Use `Fintype.ofFinite C` as an intermediate fact. Use `Fintype.ofFinite S` as an intermediate fact. Assume the negation of the conclusion as `hn`. Establish `e1 : ∑ c : C, ∑ α : S, psiKR R ψ (((α : C →ₗ[R] KR R) - μ) c) = 0`.
+
+Rewrite using `[Finset.sum_comm]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `α _`. Rewrite using `[← finsum_eq_sum_of_fintype, sum_over_C h, if_neg]`. Introduce `h0`.
+
+Apply `hn` to reduce the goal to its premises. Rewrite using `[← sub_eq_zero.1 h0]`. Conclude with `α.2`. Establish `e2 : ∀ c : C, ∑ α : S, psiKR R ψ (((α : C →ₗ[R] KR R) - μ) c) = if ∀ α ∈ S, α c = 0 then (Nat.card S : ℂ) else 0`. Introduce `c`.
+
+Establish `h3 : ∀ α : S, psiKR R ψ (((α : C →ₗ[R] KR R) - μ) c) = psiKR R ψ ((α : C →ₗ[R] KR R) c) * psiKR R ψ (-(μ c))`. Introduce `α`. Rewrite using `[LinearMap.sub_apply, sub_eq_add_neg]`. Conclude with `(psiBar h).map_add_eq_mul _ _`. Repeatedly rewrite using `[h3]`.
+
+Rewrite using `[← Finset.sum_mul, ← finsum_eq_sum_of_fintype, sum_over_S h]`. Use `split_ifs with hc`. Rewrite using `[hμ c hc, neg_zero, psiKR_zero h, mul_one]`. Rewrite using `[zero_mul]`. Rewrite `e1` using `[e2]`.
+
+Rewrite `e1` using `[Finset.sum_ite, Finset.sum_const_zero, add_zero, Finset.sum_const, nsmul_eq_mul]`. Break down `mul_eq_zero.1 e1 with h1 | h1` into its components or cases. Establish `h4 : (0 : C) ∈ Finset.univ.filter (fun c : C => ∀ α ∈ S, α c = 0)`. Simplify using the standard rewrite rules. Rewrite `h1` using `[Nat.cast_eq_zero, Finset.card_eq_zero]`.
+
+Rewrite `h4` using `[h1]`. Conclude with `absurd h4 (Finset.notMem_empty _)`. Rewrite `h1` using `[Nat.cast_eq_zero]`. Conclude with `Nat.card_pos.ne' h1`.
+-/
 theorem mem_of_kills (h : ∀ a : K, (∀ r ∈ R, ψ (a * r) = 1) ↔ a ∈ R) [Finite C]
     (S : Submodule R (C →ₗ[R] KR R)) (μ : C →ₗ[R] KR R)
     (hμ : ∀ c, (∀ α ∈ S, α c = 0) → μ c = 0) : μ ∈ S := by
@@ -208,6 +285,11 @@ theorem mem_of_kills (h : ∀ a : K, (∀ r ∈ R, ψ (a * r) = 1) ↔ a ∈ R) 
 
 open Classical in
 
+/- English proof (translation)
+Establish `h1` using `sum_over_S h (⊤ : Submodule R (C →ₗ[R] KR R)) x`. Establish `h2 : ∑ᶠ α : (⊤ : Submodule R (C →ₗ[R] KR R)), psiKR R ψ ((α : C →ₗ[R] KR R) x) = ∑ᶠ α : C →ₗ[R] KR R, psiKR R ψ (α x)` using `finsum_comp_equiv (Submodule.topEquiv (R := R) (M := C →ₗ[R] KR R)).toEquiv (f := fun α : C →ₗ[R] KR R => psiKR R ψ (α x))`. Rewrite using `[← h2, h1, Nat.card_congr (Submodule.topEquiv (R := R) (M := C →ₗ[R] KR R)).toEquiv]`. Distinguish the cases in `hx : x = 0`. Rewrite using `[if_pos hx, if_pos]`.
+
+Introduce `α _`. Rewrite using `[hx, map_zero]`. Rewrite using `[if_neg hx, if_neg]`. Introduce `hcon`. Conclude with `hx (hsep x fun α => hcon α Submodule.mem_top)`.
+-/
 theorem sum_over_dual' (h : ∀ a : K, (∀ r ∈ R, ψ (a * r) = 1) ↔ a ∈ R) [Finite C]
     (hsep : ∀ c : C, (∀ α : C →ₗ[R] KR R, α c = 0) → c = 0) (x : C) :
     ∑ᶠ α : C →ₗ[R] KR R, psiKR R ψ (α x) =
@@ -226,6 +308,13 @@ theorem sum_over_dual' (h : ∀ a : K, (∀ r ∈ R, ψ (a * r) = 1) ↔ a ∈ R
     intro hcon
     exact hx (hsep x fun α => hcon α Submodule.mem_top)
 
+/- English proof (translation)
+Use `finite_dual (C := C) h` as an intermediate fact. Use `Fintype.ofFinite C` as an intermediate fact. Use `Fintype.ofFinite (C →ₗ[R] KR R)` as an intermediate fact. Establish `e1 : ∑ c : C, ∑ α : C →ₗ[R] KR R, psiKR R ψ (α c) = (Nat.card (C →ₗ[R] KR R) : ℂ)`. Repeatedly rewrite using `[← finsum_eq_sum_of_fintype (fun α : C →ₗ[R] KR R => psiKR R ψ (α _)), sum_over_dual' h hsep]`.
+
+Rewrite using `[Finset.sum_ite_eq' Finset.univ (0 : C), if_pos (Finset.mem_univ _)]`. Establish `e2 : ∑ c : C, ∑ α : C →ₗ[R] KR R, psiKR R ψ (α c) = (Nat.card C : ℂ)`. Rewrite using `[Finset.sum_comm]`. Establish `h5 : ∀ α : C →ₗ[R] KR R, ∑ c : C, psiKR R ψ (α c) = if α = 0 then (Nat.card C : ℂ) else 0`. Introduce `α`.
+
+Rewrite using `[← finsum_eq_sum_of_fintype, sum_over_C h]`. Apply the tactic sequence `split_ifs <;> rfl`. Repeatedly rewrite using `[h5]`. Rewrite using `[Finset.sum_ite_eq' Finset.univ (0 : C →ₗ[R] KR R), if_pos (Finset.mem_univ _)]`. Conclude with `e1.symm.trans e2` after adjusting the coercions.
+-/
 theorem card_dual (h : ∀ a : K, (∀ r ∈ R, ψ (a * r) = 1) ↔ a ∈ R) [Finite C]
     (hsep : ∀ c : C, (∀ α : C →ₗ[R] KR R, α c = 0) → c = 0) :
     Nat.card (C →ₗ[R] KR R) = Nat.card C := by
@@ -258,9 +347,15 @@ def rowFun (Z : Matrix (Fin n) (Fin n) K) (a : Fin n) : (Fin n → R) →ₗ[R] 
   (Submodule.mkQ _).comp ((LinearMap.proj a : (Fin n → K) →ₗ[R] K).comp
     ((Z⁻¹.mulVecLin.restrictScalars R).comp (coeLin R)))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem rowFun_apply (Z : Matrix (Fin n) (Fin n) K) (a : Fin n) (v : Fin n → R) :
     rowFun R Z a v = Submodule.Quotient.mk ((Z⁻¹ *ᵥ coeLin R v) a) := rfl
 
+/- English proof (translation)
+Introduce `v hv`. Take `⟨y, hy⟩` from `(Formalism.DoubleCosetMeasures.P.mem_latZ R Z v).1 hv`. Rewrite using `[LinearMap.mem_ker, rowFun_apply, ← hy, mulVec_mulVec, Matrix.nonsing_inv_mul Z hZ, one_mulVec, mk_eq_zero, Formalism.DoubleCosetMeasures.P.coeLin_apply]`. Conclude with `(y a).2`.
+-/
 theorem rowFun_kills (Z : Matrix (Fin n) (Fin n) K) (hZ : IsUnit Z.det) (a : Fin n) :
     latZ R Z ≤ LinearMap.ker (rowFun R Z a) := by
   intro v hv
@@ -269,6 +364,13 @@ theorem rowFun_kills (Z : Matrix (Fin n) (Fin n) K) (hZ : IsUnit Z.det) (a : Fin
     one_mulVec, mk_eq_zero, Formalism.DoubleCosetMeasures.P.coeLin_apply]
   exact (y a).2
 
+/- English proof (translation)
+Proceed by induction on `c using Submodule.Quotient.induction_on with`. Consider the case `H v`. Rewrite using `[Submodule.Quotient.mk_eq_zero, Formalism.DoubleCosetMeasures.P.mem_latZ]`. Establish `h1 : ∀ a, (Z⁻¹ *ᵥ coeLin R v) a ∈ R`. Introduce `a`.
+
+Use `hc ((latZ R Z).liftQ (rowFun R Z a) (rowFun_kills R Z hZ a))` as an intermediate fact. Rewrite `this` using `[Submodule.liftQ_apply, rowFun_apply, mk_eq_zero]`. Conclude with `this`. Use `⟨fun a => ⟨_, h1 a⟩, ?_⟩` and prove the remaining obligations. Establish `h2 : coeLin R (fun a => (⟨_, h1 a⟩ : R)) = Z⁻¹ *ᵥ coeLin R v`.
+
+Use function extensionality and compare the values at `a`. Rewrite using `[Formalism.DoubleCosetMeasures.P.coeLin_apply]`. Rewrite using `[h2, mulVec_mulVec, Matrix.mul_nonsing_inv Z hZ, one_mulVec]`.
+-/
 theorem coker_sep (Z : Matrix (Fin n) (Fin n) K) (hZ : IsUnit Z.det) (c : coker R Z)
     (hc : ∀ α : coker R Z →ₗ[R] KR R, α c = 0) : c = 0 := by
   induction c using Submodule.Quotient.induction_on with
@@ -292,6 +394,15 @@ section Top
 variable {K : Type} [CommRing K] [TopologicalSpace K] [IsTopologicalRing K] {R : Subring K}
   {ψ : AddChar K ℂ}
 
+/- English proof (translation)
+Establish `: CompactSpace R` using `isCompact_iff_compactSpace.1 hD.isCompact`. Take `⟨u, hu⟩` from `hd`. Establish `hopen : IsOpen ((Ideal.span {d}).toAddSubgroup : Set R)`. Establish `h1 : ((Ideal.span {d}).toAddSubgroup : Set R) = (fun x : R => ((u⁻¹ : Kˣ) : K) * (x : K)) ⁻¹' (R : Set K)`. Use extensionality with `x`.
+
+Simplify using `only [Submodule.coe_toAddSubgroup, SetLike.mem_coe, Set.mem_preimage]`. Rewrite using `[Ideal.mem_span_singleton']`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, rfl⟩`. Rewrite using `[Subring.coe_mul, ← hu, mul_comm (c : K), ← mul_assoc, Units.inv_mul, one_mul]`.
+
+Conclude with `c.2`. Introduce `hx`. Use `⟨⟨_, hx⟩, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[Subring.coe_mul, ← hu]`.
+
+Simplify using `only`. Rewrite using `[mul_comm, ← mul_assoc, Units.mul_inv, one_mul]`. Rewrite using `[h1]`. Conclude with `hD.isOpen.preimage (by fun_prop)`. Conclude with `AddSubgroup.quotient_finite_of_isOpen (Ideal.span {d}).toAddSubgroup hopen`.
+-/
 theorem finite_quot (hD : LocalDatum K R ψ) (d : R) (hd : IsUnit (d : K)) :
     Finite (R ⧸ Ideal.span {d}) := by
   have : CompactSpace R := isCompact_iff_compactSpace.1 hD.isCompact
@@ -316,6 +427,9 @@ theorem finite_quot (hD : LocalDatum K R ψ) (d : R) (hd : IsUnit (d : K)) :
     exact hD.isOpen.preimage (by fun_prop)
   exact AddSubgroup.quotient_finite_of_isOpen (Ideal.span {d}).toAddSubgroup hopen
 
+/- English proof (translation)
+The claim follows from `(Formalism.DoubleCosetMeasures.P.isoFinite K R (finite_quot hD) n Z hZ hdet).1`.
+-/
 theorem finite_coker (hD : LocalDatum K R ψ) {n : ℕ} (Z : Matrix (Fin n) (Fin n) K)
     (hZ : IsInt R Z) (hdet : IsUnit Z.det) : Finite (coker R Z) :=
   (Formalism.DoubleCosetMeasures.P.isoFinite K R (finite_quot hD) n Z hZ hdet).1
@@ -328,12 +442,38 @@ namespace Formalism.FourierDecayAlt.P
 
 open A5x3
 
+/- English proof (translation)
+Introduce `K _ R ψ h C _ _ _ ι _ lam μ hμ`. Apply `mem_of_kills h` to reduce the goal to its premises. Introduce `c hc`. Conclude with `hμ c fun j => hc _ (Submodule.subset_span ⟨j, rfl⟩)`.
+-/
 theorem dualSpan_true_hc : Formalism.FourierDecayAlt.A5.DualSpan := by
   intro K _ R ψ h C _ _ _ ι _ lam μ hμ
   apply mem_of_kills h
   intro c hc
   exact hμ c fun j => hc _ (Submodule.subset_span ⟨j, rfl⟩)
 
+/- English proof (translation)
+Introduce `K _ _ _ R ψ hD f`. Take `⟨ϖ, hϖ, hex⟩` from `hD.unif`. Use `hD.t2` as an intermediate fact. Establish `hcl : IsClosed (R : Set K)` using `hD.isCompact.isClosed`. Set `A : ℕ → Set K` to `fun m => {r | r ∈ R ∧ ∀ x : K, (ϖ : K) ^ m * x ∈ R → f (Submodule.Quotient.mk x) = Submodule.Quotient.mk (r * x)}`.
+
+Establish `hclosed : ∀ m, IsClosed (A m)`. Introduce `m`. Establish `h1 : A m = (R : Set K) ∩ ⋂ x : K, ⋂ _ : (ϖ : K) ^ m * x ∈ R, {r | f (Submodule.Quotient.mk x) = Submodule.Quotient.mk (r * x)}`. Use extensionality with `r`. Simplify using `only [A, Set.mem_ofPred_eq, Set.mem_inter_iff, SetLike.mem_coe, Set.mem_iInter]`.
+
+Rewrite using `[h1]`. Use `hcl.inter (isClosed_iInter fun x => isClosed_iInter fun _ => ?_)` and prove the remaining obligations. Take `⟨y, hy⟩` from `Submodule.Quotient.mk_surjective _ (f (Submodule.Quotient.mk x))`. Establish `h2 : {r : K | f (Submodule.Quotient.mk x) = (Submodule.Quotient.mk (r * x) : KR R)} = (fun r => y - r * x) ⁻¹' (R : Set K)`. Use extensionality with `r`.
+
+Simplify using `only [Set.mem_ofPred_eq, Set.mem_preimage, SetLike.mem_coe]`. Rewrite using `[← hy, mk_eq_mk]`. Rewrite using `[h2]`. Conclude with `hcl.preimage (by fun_prop)`. Establish `hne : (⋂ m, A m).Nonempty`.
+
+Apply `IsCompact.nonempty_iInter_of_sequence_nonempty_isCompact_isClosed` to reduce the goal to its premises. Introduce `m r hr`. Use `⟨hr.1, fun x hx => hr.2 x ?_⟩` and prove the remaining obligations. Rewrite using `[pow_succ', mul_assoc]`. Conclude with `R.mul_mem hϖ hx`.
+
+Introduce `m`. Take `⟨y, hy⟩` from `Submodule.Quotient.mk_surjective _ (f (Submodule.Quotient.mk (((ϖ⁻¹ : Kˣ) : K) ^ m)))`. Establish `hpow : (ϖ : K) ^ m * ((ϖ⁻¹ : Kˣ) : K) ^ m = 1`. Rewrite using `[← mul_pow, Units.mul_inv, one_pow]`. Establish `hpm : (ϖ : K) ^ m ∈ R` using `R.pow_mem hϖ m`.
+
+Establish `hr : (ϖ : K) ^ m * y ∈ R`. Rewrite using `[← mk_eq_zero, ← smul_mk R ⟨_, hpm⟩, hy, ← map_smul, smul_mk, hpow, (mk_eq_zero R 1).2 R.one_mem, map_zero]`. Use `⟨(ϖ : K) ^ m * y, hr, fun x hx => ?_⟩` and prove the remaining obligations. Establish `hx1 : (Submodule.Quotient.mk x : KR R) = (⟨_, hx⟩ : R) • Submodule.Quotient.mk (((ϖ⁻¹ : Kˣ) : K) ^ m)`. Rewrite using `[smul_mk]`.
+
+Use `congr 1`. Simplify using `only`. Rewrite using `[mul_right_comm, hpow, one_mul]`. Rewrite using `[hx1, map_smul, ← hy, smul_mk]`. Use `congr 1`.
+
+Simplify using `only`. Expand and normalize the polynomial expressions, which then agree. Conclude with `hD.isCompact.of_isClosed_subset (hclosed 0) fun r hr => hr.1`. Conclude with `hclosed`. Take `⟨r, hr⟩` from `hne`.
+
+Rewrite `hr` using `[Set.mem_iInter]`. Use `⟨⟨r, (hr 0).1⟩, fun x => ?_⟩` and prove the remaining obligations. Proceed by induction on `x using Submodule.Quotient.induction_on with`. Consider the case `H x`. Take `⟨m, hm⟩` from `hex x`.
+
+Rewrite using `[(hr m).2 x hm, smul_mk]`.
+-/
 theorem quotientEndScalar : Formalism.FourierDecayAlt.A5.EndKR := by
   intro K _ _ _ R ψ hD f
   obtain ⟨ϖ, hϖ, hex⟩ := hD.unif
@@ -393,6 +533,9 @@ theorem quotientEndScalar : Formalism.FourierDecayAlt.A5.EndKR := by
     obtain ⟨m, hm⟩ := hex x
     rw [(hr m).2 x hm, smul_mk]
 
+/- English proof (translation)
+Introduce `K _ _ _ R ψ hD n Z hZ hdet`. Use `finite_coker hD Z hZ hdet` as an intermediate fact. Use `⟨finite_dual hD.selfDual, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[sum_over_dual' hD.selfDual (coker_sep R Z hdet) x, card_dual hD.selfDual (coker_sep R Z hdet)]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem characterOrthogonalityDual : Formalism.FourierDecayAlt.A5.CharOrthDual := by
   intro K _ _ _ R ψ hD n Z hZ hdet
   have := finite_coker hD Z hZ hdet
@@ -401,6 +544,9 @@ theorem characterOrthogonalityDual : Formalism.FourierDecayAlt.A5.CharOrthDual :
     card_dual hD.selfDual (coker_sep R Z hdet)]
   split_ifs <;> simp
 
+/- English proof (translation)
+Introduce `K _ _ _ R ψ hD n Z hZ hdet μ`. Use `finite_coker hD Z hZ hdet` as an intermediate fact. Rewrite using `[sum_over_C hD.selfDual μ]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem characterOrthogonality : Formalism.FourierDecayAlt.A5.CharOrth := by
   intro K _ _ _ R ψ hD n Z hZ hdet μ
   have := finite_coker hD Z hZ hdet

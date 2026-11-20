@@ -12,6 +12,15 @@ open scoped ComplexOrder
 
 namespace GlobalTheory.StdUnn
 
+/- English proof (translation)
+Introduce `k G s s' h h' hc`. Establish `key : ∀ w : Fin k → ℂ, s' *ᵥ w = -(s *ᵥ w) → w = 0`. Introduce `w hw`. Assume the negation of the conclusion as `hne`. Establish `h1` using `h.2.2.dotProduct_mulVec_pos hne`.
+
+Establish `h2` using `h'.2.2.dotProduct_mulVec_pos hne`. Rewrite `h2` using `[← Matrix.mulVec_mulVec, hw, Matrix.mulVec_neg, dotProduct_neg, Matrix.mulVec_mulVec]`. Conclude with `lt_asymm h1 (neg_pos.1 h2)`. Establish `e : s' * (1 - s * s') = -(s * (1 - s * s'))`. Rewrite using `[Matrix.mul_sub, Matrix.mul_sub, ← Matrix.mul_assoc, ← Matrix.mul_assoc, ← hc, h.1, Matrix.mul_assoc, h'.1]`.
+
+Simplify using the standard rewrite rules. Establish `hr : (1 - s * s') = 0`. Use extensionality with `i j`. Use `key ((1 - s * s') *ᵥ Pi.single j 1) (by` as an intermediate fact. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, e, Matrix.neg_mulVec])`.
+
+Simplify using `using congrFun this i`. Establish `h1 : s * s' = 1` using `(sub_eq_zero.1 hr).symm`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem isCartanInv_eq_of_commute : ∀ (k : ℕ) (G s s' : Matrix (Fin k) (Fin k) ℂ), IsCartanInv G s → IsCartanInv G s' → s * s' = s' * s → s = s' := by
   intro k G s s' h h' hc
   have key : ∀ w : Fin k → ℂ, s' *ᵥ w = -(s *ᵥ w) → w = 0 := by

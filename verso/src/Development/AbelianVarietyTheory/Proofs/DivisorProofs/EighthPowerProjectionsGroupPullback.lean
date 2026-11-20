@@ -18,6 +18,9 @@ noncomputable section
 
 namespace GlobalTheory.GrpPullPow
 
+/- English proof (translation)
+Rewrite using `[MonObj.one_eq_one, MonObj.one_eq_one]`. Conclude with `map_one (MonoidHom.mk' (fun x : 𝟙_ (Over S) ⟶ G ↦ x ≫ f) (h _))`. Use `mul_hom := by`. Rewrite using `[MonObj.mul_eq_mul, h, MonObj.mul_eq_mul, MonObj.comp_mul]`. Simplify using the standard rewrite rules.
+-/
 theorem isMonHom_of_mul_pts {S : Scheme.{0}} {G H : Over S} [GrpObj G] [GrpObj H] (f : G ⟶ H)
     (h : ∀ (T : Over S) (x y : T ⟶ G), (x * y) ≫ f = (x ≫ f) * (y ≫ f)) : IsMonHom f where
   one_hom := by
@@ -27,6 +30,23 @@ theorem isMonHom_of_mul_pts {S : Scheme.{0}} {G H : Over S} [GrpObj G] [GrpObj H
     rw [MonObj.mul_eq_mul, h, MonObj.mul_eq_mul, MonObj.comp_mul]
     simp
 
+/- English proof (translation)
+Introduce `T T' t B C _ _ B' C' _ _ φB χ pr hB hC hpr huniv`. Establish `hw : ∀ a, (φB ≫ (pr a).left) ≫ C.hom = B'.hom ≫ t` using `fun a => by`. Rewrite using `[Category.assoc, Over.w (pr a), hB.1.w]`. Set `pr' : Fin 8 → (B' ⟶ C')` to `fun a => Over.homMk (hC.1.lift (φB ≫ (pr a).left) B'.hom (hw a)) (hC.1.lift_snd _ _ _)`. Establish `h1 : ∀ a, (pr' a).left ≫ χ = φB ≫ (pr a).left` using `fun a => hC.1.lift_fst _ _ _`.
+
+Establish `hpush : ∀ (T₁ : Over T') (x : T₁ ⟶ B') a, pushPt hC.1.w (x ≫ pr' a) = pushPt hB.1.w x ≫ pr a`. Introduce `T₁ x a`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Use `show (x.left ≫ (pr' a).left) ≫ χ = (x.left ≫ φB) ≫ (pr a).left`. Rewrite using `[Category.assoc, h1, Category.assoc]`.
+
+Use `⟨pr', h1, fun a => ?_, fun T₁ y => ?_⟩` and prove the remaining obligations. Use `haveI := hpr a`. Use `isMonHom_of_mul_pts _ fun T₁ x y => ?_` and prove the remaining obligations. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `hC.1.hom_ext` to reduce the goal to its premises.
+
+Establish `e1` using `hC.2 T₁ (x ≫ pr' a) (y ≫ pr' a) (pushPt hC.1.w (x ≫ pr' a)) (pushPt hC.1.w (y ≫ pr' a)) rfl rfl`. Establish `e2` using `hB.2 T₁ x y (pushPt hB.1.w x) (pushPt hB.1.w y) rfl rfl`. Rewrite using `[← e1, hpush, hpush, ← MonObj.mul_comp, Over.comp_left, Over.comp_left, Category.assoc, h1, ← Category.assoc, ← e2]`. Rewrite using `[Over.w, Over.w]`. Set `T₀ : Over T` to `Over.mk (T₁.hom ≫ t)`.
+
+Take `⟨x₀, hx₀, hu⟩` from `huniv T₀ (fun a => pushPt hC.1.w (y a))`. Establish `wx : x₀.left ≫ B.hom = T₁.hom ≫ t` using `Over.w x₀`. Set `X : T₁ ⟶ B'` to `Over.homMk (hB.1.lift x₀.left T₁.hom wx) (hB.1.lift_snd _ _ _)`. Establish `hX : X.left ≫ φB = x₀.left` using `hB.1.lift_fst _ _ _`. Use `⟨X, fun a => ?_, fun x' hx' => ?_⟩` and prove the remaining obligations.
+
+Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `hC.1.hom_ext` to reduce the goal to its premises. Use `show (X.left ≫ (pr' a).left) ≫ χ = (y a).left ≫ χ`. Rewrite using `[Category.assoc, h1, ← Category.assoc, hX]`. Conclude with `congrArg (fun q => q.left) (hx₀ a)`.
+
+Rewrite using `[Over.w, Over.w]`. Establish `e : pushPt hB.1.w x' = x₀` using `hu _ fun a => by`. Rewrite using `[← hpush, hx' a]`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `hB.1.hom_ext` to reduce the goal to its premises.
+
+Rewrite using `[hX]`. Conclude with `congrArg (fun q => q.left) e`. Rewrite using `[Over.w, Over.w]`.
+-/
 theorem pr_pull : ∀ {T T' : Scheme.{0}} {t : T' ⟶ T} {B C : Over T} [GrpObj B] [GrpObj C] {B' C' : Over T'} [GrpObj B'] [GrpObj C'] {φB : B'.left ⟶ B.left} {χ : C'.left ⟶ C.left} (pr : Fin 8 → (B ⟶ C)), IsGrpPullback B' B t φB → IsGrpPullback C' C t χ → (∀ a, IsMonHom (pr a)) → (∀ (T₁ : Over T) (y : Fin 8 → (T₁ ⟶ C)), ∃! x : T₁ ⟶ B, ∀ a, x ≫ pr a = y a) → ∃ pr' : Fin 8 → (B' ⟶ C'), (∀ a, (pr' a).left ≫ χ = φB ≫ (pr a).left) ∧ (∀ a, IsMonHom (pr' a)) ∧ ∀ (T₁ : Over T') (y : Fin 8 → (T₁ ⟶ C')), ∃! x : T₁ ⟶ B', ∀ a, x ≫ pr' a = y a := by
   intro T T' t B C _ _ B' C' _ _ φB χ pr hB hC hpr huniv
   have hw : ∀ a, (φB ≫ (pr a).left) ≫ C.hom = B'.hom ≫ t := fun a => by

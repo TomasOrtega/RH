@@ -15,6 +15,15 @@ open scoped Classical
 
 namespace GlobalTheory.FlagReduce
 
+/- English proof (translation)
+Set `M : ∀ a, (h a).FlagModel` to `fun a => (hc a).1.some`. Establish `key : ∀ s : Finset ι, ∃ C : RegCover q, ∀ a ∈ s, ∃ t : C.Y ⟶ (M a).Y, t ≫ (M a).ρ = C.ρ`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact ⟨(GlobalTheory.T.exists_regular_cover_of_alteration hR k B q hB).some, fun a ha => by simp at ha⟩`.
+
+Consider the case `insert a s ha ih`. Take `⟨C, hC⟩` from `ih`. Take `⟨C', ⟨t₁, e₁⟩, t₂, e₂⟩` from `GlobalTheory.T.regular_covers_common_refinement hR k B q hB C (M a).toRegCover`. Use `⟨C', fun b hb => ?_⟩` and prove the remaining obligations. Break down `Finset.mem_insert.1 hb with rfl | hb` into its components or cases.
+
+Conclude with `⟨t₂, e₂⟩`. Take `⟨t, ht⟩` from `hC b hb`. Conclude with `⟨t₁ ≫ t, by rw [Category.assoc, ht, e₁]⟩`. Take `⟨C, hC⟩` from `key Finset.univ`. Use `choose t ht using fun a => hC a (Finset.mem_univ a)`.
+
+Conclude with `⟨C, fun a => ((M a).flag.pull (t a)).ofIso ((Scheme.Modules.pullbackComp (t a) (M a).ρ).app (E a) ≪≫ (Scheme.Modules.pullbackCongr (ht a)).app (E a)), fun a => (hc a).2 ⟨C, (H a).pull C.ρ rfl, _⟩⟩`.
+-/
 theorem exists_common_flagCover (hR : RegularAlteration) {k : Type} [CommRing k] {B : Scheme.{0}} [IsIntegral B]
     {q : B ⟶ Sp k} (hB : IsArithVar q 1) {ι : Type} [Fintype ι] {E : ι → B.Modules} {r : ι → ℕ}
     {h : ∀ a, VMetric q (E a) (r a)} (H : ∀ a, (h a).IsCInf) {c : ι → ℝ} (hc : ∀ a, (h a).IsCh2Deg (c a)) :
@@ -39,6 +48,13 @@ theorem exists_common_flagCover (hR : RegularAlteration) {k : Type} [CommRing k]
     ((Scheme.Modules.pullbackComp (t a) (M a).ρ).app (E a) ≪≫ (Scheme.Modules.pullbackCongr (ht a)).app (E a)),
     fun a => (hc a).2 ⟨C, (H a).pull C.ρ rfl, _⟩⟩
 
+/- English proof (translation)
+Introduce `_ hA hR hyp k _ B Y _ _ q p D hB hY π w ι _ E r h H fl hfl c hc Φ hΦ`. Take `⟨C, m, hm⟩` from `exists_common_flagCover hR hB H hc`. Take `⟨hI, hY', hdom⟩` from `GlobalTheory.T.flag_bundle_pullback_cover_integral k B Y q p D hB hY π w ι E r (fun a => (h a).isVB) fl hfl C`. Use `haveI := hI`. Take `⟨hgen, hdeg⟩` from `GlobalTheory.T.pullback_cover_generic_point k B Y q π hB hdom C`.
+
+Establish `w' : Limits.pullback.snd π C.ρ ≫ C.ρ ≫ q = Limits.pullback.fst π C.ρ ≫ p`. Rewrite using `[← Category.assoc, ← Limits.pullback.condition, Category.assoc, w]`. Establish `hproj` using `(hA.arProj k Y (Limits.pullback π C.ρ) p (Limits.pullback.fst π C.ρ ≫ p) D hY hY' (Limits.pullback.fst π C.ρ) rfl hgen (by rw [hdeg]; exact C.finite)).2 (Σ a, Fin (r a)) _ Φ hΦ`. Establish `hiso` using `((hA.arIso k (Limits.pullback π C.ρ) (Limits.pullback.fst π C.ρ ≫ p) D hY').2 _ _ _ hproj).2.1 (fun z => VMetric.grLB (FlagBaseChange.pullFlag π C.ρ (fl z.1)) z.2 (((H z.1).pull C.ρ rfl).pull (Limits.pullback.snd π C.ρ) w')) (fun z => GlobalTheory.T.grLB_pull_isometric_pullFlag k …`. Establish `e` using `hyp k C.Y (Limits.pullback π C.ρ) (C.ρ ≫ q) (Limits.pullback.fst π C.ρ ≫ p) D C.reg hY' (Limits.pullback.snd π C.ρ) w' ι (fun a => (Scheme.Modules.pullback C.ρ).obj (E a)) r (fun a => (h a).pull C.ρ rfl) (fun a => (H a).pull C.ρ rfl) (fun a => FlagBaseChange.pullFlag π C.ρ (fl a) …`.
+
+Rewrite `e` using `[hdeg, LinearMap.smul_apply, smul_eq_mul, ← Finset.mul_sum]`. Establish `hd : (C.deg : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 C.deg_pos.ne'`. Apply `mul_left_cancel₀ hd` to reduce the goal to its premises. Rewrite using `[e]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem powerSum_vandermonde_reduce : Hypotheses2 → ArCalc → RegularAlteration → (∀ (k : Type) [CommRing k] (B Y : Scheme.{0}) [IsIntegral B] [IsIntegral Y] (q : B ⟶ Sp k) (p : Y ⟶ Sp k) (D : ℕ), IsRegSurf q → IsArithVar p D → ∀ (π : Y ⟶ B) (w : π ≫ q = p) (ι : Type) [Fintype ι] (E : ι → B.Modules) (r : ι → ℕ) (h : ∀ a, VMetric q (E a) (r a)) (H : ∀ a, (h a).IsCInf) (fl : ∀ a, Vert.Flag ((Scheme.Modules.pullback π).obj (E a)) (r a)), IsFlagBundle π E r fl → ∀ (m : ∀ a, Vert.Flag (E a) (r a)) (c : ι → ℝ), (∀ a, VMetric.IsFlagCh2 (H a) (m a) (c a)) → ∀ Φ : MvPolynomial (Σ a, Fin (r a)) ℝ →ₗ[ℝ] ℝ, IsArFun (fun z : Σ a, Fin (r a) => VMetric.grLB (fl z.1) z.2 ((H z.1).pull π w)) D Φ → Φ ((∑ z : Σ a, Fin (r a), MvPolynomial.X z ^ 2) * (∏ a, ∏ i : Fin (r a), ∏ i' ∈ Finset.Ioi i, (MvPolynomial.X (⟨a, i'⟩ : Σ a, Fin (r a)) - MvPolynomial.X ⟨a, i⟩))) = (∏ a, ((r a).factorial : ℝ)) * (2 * ∑ a, c a)) → ∀ (k : Type) [CommRing k] (B Y : Scheme.{0}) [IsIntegral B] [IsIntegral Y] (q : B ⟶ Sp k) (p : Y ⟶ Sp k) (D : ℕ), IsArithVar q 1 → IsArithVar p D → ∀ (π : Y ⟶ B) (w : π ≫ q = p) (ι : Type) [Fintype ι] (E : ι → B.Modules) (r : ι → ℕ) (h : ∀ a, VMetric q (E a) (r a)) (H : ∀ a, (h a).IsCInf) (fl : ∀ a, Vert.Flag ((Scheme.Modules.pullback π).obj (E a)) (r a)), IsFlagBundle π E r fl → ∀ c : ι → ℝ, (∀ a, (h a).IsCh2Deg (c a)) → ∀ Φ : MvPolynomial (Σ a, Fin (r a)) ℝ →ₗ[ℝ] ℝ, IsArFun (fun z : Σ a, Fin (r a) => VMetric.grLB (fl z.1) z.2 ((H z.1).pull π w)) D Φ → Φ ((∑ z : Σ a, Fin (r a), MvPolynomial.X z ^ 2) * (∏ a, ∏ i : Fin (r a), ∏ i' ∈ Finset.Ioi i, (MvPolynomial.X (⟨a, i'⟩ : Σ a, Fin (r a)) - MvPolynomial.X ⟨a, i⟩))) = (∏ a, ((r a).factorial : ℝ)) * (2 * ∑ a, c a) := by
   intro _ hA hR hyp k _ B Y _ _ q p D hB hY π w ι _ E r h H fl hfl c hc Φ hΦ
   obtain ⟨C, m, hm⟩ := exists_common_flagCover hR hB H hc

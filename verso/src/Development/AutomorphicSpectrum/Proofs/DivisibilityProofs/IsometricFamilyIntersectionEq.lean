@@ -14,6 +14,11 @@ section Cyc
 
 variable {K : Type} [DecidableEq K] {ι : K → Type}
 
+/- English proof (translation)
+Use `haveI : LeftCommutative (diffStep : (K → ℤ) → ((K → ℤ) → ℤ) → (K → ℤ) → ℤ) := ⟨fun a b g => by`. Use function extensionality and compare the values at `m`. Simplify using `only [diffStep]`. Rewrite using `[sub_right_comm m a b]`. Use the proof step `ring⟩`.
+
+Unfold `intNumL intNum mixedDiff`. Rewrite using `[List.ofFn_get, List.ofFn_get, h.foldr_eq]`.
+-/
 theorem intNumL_perm (F : Type) [Field F] (V : Ideal (MRing ι F)) {l l' : List (K → ℤ)} (h : l.Perm l') :
     intNumL F V l = intNumL F V l' := by
   haveI : LeftCommutative (diffStep : (K → ℤ) → ((K → ℤ) → ℤ) → (K → ℤ) → ℤ) := ⟨fun a b g => by
@@ -26,6 +31,9 @@ theorem intNumL_perm (F : Type) [Field F] (V : Ideal (MRing ι F)) {l l' : List 
 
 variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
 
+/- English proof (translation)
+Unfold `cycList`. Use `congr 1`. Use function extensionality and compare the values at `W`. Conclude with `intNumL_perm (IsLocalRing.ResidueField O) (specialIdeal W) h`.
+-/
 theorem cycList_perm (Z : Ideal (MRing ι O) → ℤ) {l l' : List (K → ℤ)} (h : l.Perm l') :
     cycList Z l = cycList Z l' := by
   unfold cycList
@@ -35,6 +43,11 @@ theorem cycList_perm (Z : Ideal (MRing ι O) → ℤ) {l l' : List (K → ℤ)} 
 
 omit [DecidableEq K] in
 
+/- English proof (translation)
+Use `(Ideal.finite_minimalPrimes_of_isNoetherianRing _ (P ⊔ Ideal.span {f})).subset ?_` and prove the remaining obligations. Introduce `W hW`. Assume the negation of the conclusion as `h`. Apply `hW` to reduce the goal to its premises. Simplify using `only [divCycle]`.
+
+Rewrite using `[dif_neg (fun h' => h h'.1), zero_mul]`.
+-/
 theorem divCycle_mul_finite {R : Type} [CommRing R] [IsNoetherianRing (MRing ι R)] (P : Ideal (MRing ι R))
     (f : MRing ι R) (n : Ideal (MRing ι R) → ℤ) :
     (Function.support fun W => divCycle P f W * n W).Finite := by
@@ -45,6 +58,9 @@ theorem divCycle_mul_finite {R : Type} [CommRing R] [IsNoetherianRing (MRing ι 
   simp only [divCycle]
   rw [dif_neg (fun h' => h h'.1), zero_mul]
 
+/- English proof (translation)
+Unfold `cycList cycEval ratDiv`. Simplify using `only [sub_mul]`. Conclude with `finsum_sub_distrib (divCycle_mul_finite P f _) (divCycle_mul_finite P g _)`.
+-/
 theorem cycList_ratDiv [Fintype K] [∀ k, Fintype (ι k)] (P : Ideal (MRing ι O)) (f g : MRing ι O)
     (l : List (K → ℤ)) :
     cycList (ratDiv P f g) l = cycList (divCycle P f) l - cycList (divCycle P g) l := by
@@ -54,6 +70,25 @@ theorem cycList_ratDiv [Fintype K] [∀ k, Fintype (ι k)] (P : Ideal (MRing ι 
 
 end Cyc
 
+/- English proof (translation)
+Use `set m := μ.toMultiset.toList with hm`. Establish `hlen : m.length = D` using `by rw [hm, Multiset.length_toList, hμ]`. Substitute `hlen` using the available equality. Set `L : Fin m.length → HermLine ι` to `fun j => Sum.elim A A' (m.get j)`. Establish `hB : ∀ s, IsSmoothHerm (Sum.elim A A' s)`.
+
+Introduce and unpack `(s | s)`. Conclude with `hA s`. Conclude with `hA' s`. Establish `hL : ∀ j, IsSmoothHerm (L j)` using `fun j => hB _`. Establish `hofL : List.ofFn L = m.map (Sum.elim A A')` using `by conv_rhs => rw [← List.ofFn_get m]`.
+
+Rewrite using `[List.map_ofFn]`. Both sides reduce to the same expression. Establish `key : ∀ s, arList I P (((μ + Finsupp.single s 1).toMultiset.map (Sum.elim A A')).toList) = I P (m.length + 1) (Fin.snoc L (Sum.elim A A' s))`. Introduce `s`. Apply `arList_eq_of_perm hP hI` to reduce the goal to its premises.
+
+Introduce `j`. Use `Fin.lastCases ?_ (fun j => ?_) j` and prove the remaining obligations. Rewrite using `[Fin.snoc_last]`. Conclude with `hB s`. Rewrite using `[Fin.snoc_castSucc]`.
+
+Conclude with `hL j`. Rewrite using `[List.ofFn_succ']`. Simplify using `only [Fin.snoc_castSucc, Fin.snoc_last]`. Rewrite using `[show (List.ofFn fun j => L j) = m.map (Sum.elim A A') from hofL, ← Multiset.coe_eq_coe, Multiset.coe_toList, List.concat_eq_append, ← Multiset.coe_add, ← Multiset.map_coe, hm, Multiset.coe_toList, map_add, Finsupp.toMultiset_single, Multiset.map_add]`. Simplify using the standard rewrite rules.
+
+Establish `hdeg : (List.ofFn fun j => (L j).a).Perm (classList (Sum.elim T.x T.x') μ ++ [])`. Establish `h1 : (List.ofFn fun j => (L j).a) = m.map (Sum.elim T.x T.x')` using `by conv_rhs => rw [← List.ofFn_get m]`. Rewrite using `[List.map_ofFn]`. Use `congr 1`. Use function extensionality and compare the values at `j`.
+
+Simplify using `only [L, Function.comp]`. Break down `m.get j with s | s` into its components or cases. Conclude with `(hiso s).1`. Conclude with `(hiso s).2.1`. Rewrite using `[h1, List.append_nil, classList, ← Multiset.coe_eq_coe, Multiset.coe_toList, ← Multiset.map_coe, hm, Multiset.coe_toList]`.
+
+Rewrite using `[key, key]`. Establish `step` using `GlobalTheory.T.isometric_vertical_intersection_eq K ι P m.length hP I hI S (T.comp fun _ : Unit => i) (fun _ => hT i) (A i) (A' i) (hA i) (hA' i) (fun _ => hiso i) L hL`. Use `step.trans (Finset.sum_congr rfl fun p _ => ?_)` and prove the remaining obligations. Take `⟨⟨bf, bg, hf, hg, -⟩, hfP, hgP, -⟩` from `hT i`. Establish `e1` using `GlobalTheory.T.vertical_number_local_cycle K ι P m.length hP p bf (T.f i) hf hfP (List.ofFn fun j => (L j).a) (by simp)`.
+
+Establish `e2` using `GlobalTheory.T.vertical_number_local_cycle K ι P m.length hP p bg (T.g i) hg hgP (List.ofFn fun j => (L j).a) (by simp)`. Rewrite using `[← cycList_perm _ hdeg, cycList_ratDiv, ← e1, ← e2]`. Use `push_cast`. Both sides reduce to the same expression.
+-/
 theorem link_monomial {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type} [∀ k, Fintype (ι k)]
     {P : Ideal (MRing ι ℤ)} {D : ℕ} (hP : IsArithVar P (D + 1))
     {I : Ideal (MRing ι ℤ) → (n : ℕ) → (Fin n → HermLine ι) → ℝ} (hI : IsIntersectionFamily I)
@@ -116,6 +151,17 @@ theorem link_monomial {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type} [
   push_cast
   rfl
 
+/- English proof (translation)
+Introduce `K _ _ ι _ P D hP I hI σ _ S T hT A A' hA hA' hiso V Gs hV`. Take `⟨rfl, hG⟩` from `hV`. Rewrite using `[arNum_sum']`. Simplify using `only [LocPair.val, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [cycNum, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `conv_lhs => rw [(Gs i).as_sum, Finset.mul_sum, arNum_sum']`. Use `Finset.sum_congr rfl fun μ hμ => ?_` and prove the remaining obligations.
+
+Establish `hcard : μ.toMultiset.card = D`. Establish `h` using `hG i (MvPolynomial.mem_support_iff.1 hμ)`. Rewrite using `[Finsupp.card_toMultiset, ← h, Finsupp.weight_apply]`. Simplify using `only [Pi.one_apply, smul_eq_mul, mul_one]`. Both sides reduce to the same expression.
+
+Establish `hpoly : (X (Sum.inl i) - X (Sum.inr i)) * monomial μ (coeff μ (Gs i)) = monomial (μ + Finsupp.single (Sum.inl i) 1) (coeff μ (Gs i)) + monomial (μ + Finsupp.single (Sum.inr i) 1) (-coeff μ (Gs i))`. Rewrite using `[monomial_add_single, monomial_add_single, map_neg]`. Expand and normalize the polynomial expressions, which then agree. Establish `hmono` using `link_monomial hP hI hT hA hA' hiso i μ hcard`. Rewrite using `[hpoly, arNum_add', arNum_monomial', arNum_monomial', neg_mul, ← sub_eq_add_neg, ← mul_sub, hmono, Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Simplify using `only [LocPair.map]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem arNum_eq_sum_log_val : ∀ (K : Type) [Fintype K] [DecidableEq K] (ι : K → Type) [∀ k, Fintype (ι k)] (P : Ideal (MRing ι ℤ)) (D : ℕ), IsArithVar P (D + 1) → ∀ (I : Ideal (MRing ι ℤ) → (n : ℕ) → (Fin n → HermLine ι) → ℝ), IsIntersectionFamily I → ∀ (σ : Type) [Fintype σ] (S : Finset Nat.Primes) (T : LocPair ι ℤ σ), T.IsVertOff P S → ∀ A A' : σ → HermLine ι, (∀ i, IsSmoothHerm (A i)) → (∀ i, IsSmoothHerm (A' i)) → T.IsIsometric P A A' → ∀ (V : MvPolynomial (σ ⊕ σ) ℝ) (Gs : σ → MvPolynomial (σ ⊕ σ) ℝ), IsMixExpansion D V Gs → arNum I P (Sum.elim A A') V = ∑ p ∈ S, Real.log (p : ℕ) * (T.map (Int.castRingHom (ZP p))).val (extTo (ZP p) P) Gs := by
   intro K _ _ ι _ P D hP I hI σ _ S T hT A A' hA hA' hiso V Gs hV
   classical

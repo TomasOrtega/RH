@@ -13,6 +13,13 @@ noncomputable section
 
 namespace GlobalTheory.InertBridgeVac
 
+/- English proof (translation)
+Use function extensionality and compare the values at `y`. Use `set z : κ → AF F := fun i => GlobalTheory.LatVac.liftV v (y i - evFin F v (x₀ i)) with hz`. Establish `hza : At (evFin F v) z` using `GlobalTheory.VacAny.at_pi fun i => GlobalTheory.LatVac.at_liftV v _`. Establish `hrx : r (x₀ + z) = r x₀` using `hr.1 x₀ z hza`. Establish `hy : (fun i => evFin F v ((x₀ + z) i)) = y`.
+
+Use function extensionality and compare the values at `i`. Simplify using `only [hz, Pi.add_apply, map_add, GlobalTheory.LatVac.evFin_liftV, add_sub_cancel]`. Establish `e` using `congrFun ((h1 r hr).symm.trans (h2 r hr)) (x₀ + z)`. Simplify using `only [tens] at e`. Rewrite `e` using `[hrx, hy]`.
+
+Conclude with `mul_right_cancel₀ hx₀ e`.
+-/
 theorem acts_eq {F : Type} [Field F] [NumberField F] (v : Pl F) {κ : Type} [Fintype κ] {φ : (κ → Fv F v) → ℂ}
     {r : (κ → AF F) → ℂ} (hr : Rest (evFin F v) φ r) {x₀ : κ → AF F} (hx₀ : r x₀ ≠ 0)
     (T : ((κ → AF F) → ℂ) → (κ → AF F) → ℂ) (φ₁ φ₂ : (κ → Fv F v) → ℂ)
@@ -29,6 +36,13 @@ theorem acts_eq {F : Type} [Field F] [NumberField F] (v : Pl F) {κ : Type} [Fin
   rw [hrx, hy] at e
   exact mul_right_cancel₀ hx₀ e
 
+/- English proof (translation)
+Establish `e : evFin F v (⅟(2 : AF F)) = algebraMap F (Fv F v) (2 : F)⁻¹`. Establish `h1 : evFin F v (⅟(2 : AF F)) * 2 = 1`. Use `congrArg (evFin F v) (invOf_mul_self (2 : AF F))` as an intermediate fact. Rewrite `this` using `[map_mul, map_ofNat, map_one]`. Then use the resulting hypothesis. Establish `h2 : algebraMap F (Fv F v) (2 : F)⁻¹ * 2 = 1`.
+
+Rewrite using `[← map_ofNat (algebraMap F (Fv F v)) 2, ← map_mul, inv_mul_cancel₀ two_ne_zero, map_one]`. Establish `h20 : (2 : Fv F v) ≠ 0`. Introduce `h0`. Rewrite `h1` using `[h0, mul_zero]`. Conclude with `zero_ne_one h1`.
+
+Conclude with `mul_right_cancel₀ h20 (h1.trans h2.symm)`. Rewrite using `[e]`. Conclude with `GlobalTheory.LatVac.half_mem_adicCompletionIntegers F v h`.
+-/
 theorem evFin_half_mem {F : Type} [Field F] [NumberField F] (v : Pl F) (h : (2 : 𝓞 F) ∉ v.asIdeal) :
     evFin F v (⅟(2 : AF F)) ∈ v.adicCompletionIntegers F := by
   have e : evFin F v (⅟(2 : AF F)) = algebraMap F (Fv F v) (2 : F)⁻¹ := by
@@ -43,6 +57,13 @@ theorem evFin_half_mem {F : Type} [Field F] [NumberField F] (v : Pl F) (h : (2 :
   rw [e]
   exact GlobalTheory.LatVac.half_mem_adicCompletionIntegers F v h
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B a a' G X om om' hTr v w hin _ L _ _ ϖ σL q δ JS JT ψL κ ιS ιT hC ρ hρ`. Take `⟨_, _, _, _, _, _, _, _, _, _, _, hLat, _⟩` from `hC`. Take `⟨hSB, hne, θ, _, hfix⟩` from `hTr.geo.hM'.vac v`. Establish `h2 : (2 : 𝓞 F) ∉ v.asIdeal` using `(hTr.base.inert v w hin).1`. Establish `hb` using `evFin_half_mem v h2`.
+
+Take `⟨r, hr, x₀, hx₀⟩` from `GlobalTheory.RestComplement.exists_rest_ne_zero v (G.M'.vac v) hSB`. Use `⟨⟨G.M'.vac v, hSB⟩, rfl, fun h => hne (congrArg Subtype.val h), fun u hu => ?_⟩` and prove the remaining obligations. Establish `hγ : κ u ∈ latAtV G.V' G.W v` using `(hLat u).1 hu`. Establish `hone` using `GlobalTheory.LatVacArith.psi_symp_latAtV σ B G.V' G.W _ _ _ _ hTr.base hTr.geo.hV' hTr.geo.hW v θ (⅟(2 : AF F)) hb (κ u) hγ (κ u) hγ`. Establish `h1` using `hfix (κ u) hγ`.
+
+Rewrite `h1` using `[hone, one_smul]`. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `acts_eq v hr hx₀ _ _ _ (hρ u ⟨G.M'.vac v, hSB⟩) h1`.
+-/
 theorem vac_locVac : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →
     ∀ (v : Pl F) (w : HeightOneSpectrum (𝓞 E)), Formalism.UG.IsInertAt F E v w → v ∉ X.T →

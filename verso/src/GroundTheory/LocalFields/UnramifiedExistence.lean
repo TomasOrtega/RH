@@ -19,6 +19,9 @@ variable (K L : Type*) [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarc
   [Field L] [ValuativeRel L] [TopologicalSpace L] [IsNonarchimedeanLocalField L]
   [Algebra K L] [ValuativeExtension K L] [FiniteDimensional K L]
 
+/- English proof (translation)
+Use `Fintype.ofFinite 𝓀[K]` as an intermediate fact. Use `Fintype.ofFinite 𝓀[L]` as an intermediate fact. Rewrite using `[← residueDegree_eq_finrank_of_unramified K L h, residueDegree_eq_finrank, Nat.card_eq_fintype_card, Nat.card_eq_fintype_card, Module.card_eq_pow_finrank (K := 𝓀[K]) (V := 𝓀[L])]`.
+-/
 theorem card_residueField_of_unramified (h : ramificationIndex K L = 1) :
     Nat.card 𝓀[L] = Nat.card 𝓀[K] ^ Module.finrank K L := by
   have := Fintype.ofFinite 𝓀[K]
@@ -35,6 +38,9 @@ variable {K : Type*} [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchi
 
 omit [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K] in
 
+/- English proof (translation)
+Apply `map_injective K⟮α⟯.val` to reduce the goal to its premises. Rewrite using `[adjoin_map, Set.image_singleton, ← AlgHom.fieldRange_eq_map, fieldRange_val]`. Conclude with `congrArg (fun x ↦ K⟮x⟯) (AdjoinSimple.coe_gen K α)`.
+-/
 theorem adjoin_gen_eq_top (α : Ksep) : K⟮AdjoinSimple.gen K α⟯ = ⊤ := by
   apply map_injective K⟮α⟯.val
   rw [adjoin_map, Set.image_singleton, ← AlgHom.fieldRange_eq_map, fieldRange_val]
@@ -45,6 +51,11 @@ def IsUnramifiedSubextension (E : IntermediateField K Ksep) : Prop :=
     ∀ (_ : ValuativeRel E) (_ : TopologicalSpace E) (_ : IsNonarchimedeanLocalField E)
       (_ : ValuativeExtension K E), ramificationIndex K E = 1
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hfin, h⟩`. Conclude with `⟨hfin, (finiteExtensionStructure K E).rel, (finiteExtensionStructure K E).top, finiteExtensionStructure_isNonarchimedeanLocalField K E, finiteExtensionStructure_valuativeExtension K E, h (finiteExtensionStructure K E).rel (finiteExtensionStructure K E).top (finiteExtensionStructu …`. Introduce and unpack `⟨hfin, v₁, t₁, h₁, e₁, h⟩`. Use `⟨hfin, fun v₂ t₂ h₂ e₂ ↦ ?_⟩` and prove the remaining obligations.
+
+Take `rfl` from `valuativeRel_unique K h₁ h₂ e₁ e₂`. Conclude with `h`.
+-/
 theorem isUnramifiedSubextension_iff_exists (E : IntermediateField K Ksep) :
     IsUnramifiedSubextension E ↔ FiniteDimensional K E ∧
       ∃ (_ : ValuativeRel E) (_ : TopologicalSpace E) (_ : IsNonarchimedeanLocalField E)
@@ -64,11 +75,19 @@ theorem isUnramifiedSubextension_iff_exists (E : IntermediateField K Ksep) :
 
 omit [TopologicalSpace K] [IsNonarchimedeanLocalField K] in
 
+/- English proof (translation)
+The claim follows from `hE.2 inferInstance inferInstance inferInstance inferInstance`.
+-/
 theorem IsUnramifiedSubextension.ramificationIndex_eq_one {E : IntermediateField K Ksep}
     (hE : IsUnramifiedSubextension E) [ValuativeRel E] [TopologicalSpace E]
     [IsNonarchimedeanLocalField E] [ValuativeExtension K E] : ramificationIndex K E = 1 :=
   hE.2 inferInstance inferInstance inferInstance inferInstance
 
+/- English proof (translation)
+Use `hE.1` as an intermediate fact. Set `` to `(finiteExtensionStructure K E).rel`. Set `` to `(finiteExtensionStructure K E).top`. Use `finiteExtensionStructure_isNonarchimedeanLocalField K E` as an intermediate fact. Use `finiteExtensionStructure_valuativeExtension K E` as an intermediate fact.
+
+Conclude with `isGalois_of_unramified K E hE.ramificationIndex_eq_one`.
+-/
 theorem IsUnramifiedSubextension.isGalois {E : IntermediateField K Ksep}
     (hE : IsUnramifiedSubextension E) : IsGalois K E := by
   have := hE.1
@@ -78,6 +97,11 @@ theorem IsUnramifiedSubextension.isGalois {E : IntermediateField K Ksep}
   have := finiteExtensionStructure_valuativeExtension K E
   exact isGalois_of_unramified K E hE.ramificationIndex_eq_one
 
+/- English proof (translation)
+Use `hE.1` as an intermediate fact. Set `` to `(finiteExtensionStructure K E).rel`. Set `` to `(finiteExtensionStructure K E).top`. Use `finiteExtensionStructure_isNonarchimedeanLocalField K E` as an intermediate fact. Use `finiteExtensionStructure_valuativeExtension K E` as an intermediate fact.
+
+Conclude with `isCyclic_of_unramified K E hE.ramificationIndex_eq_one`.
+-/
 theorem IsUnramifiedSubextension.isCyclic {E : IntermediateField K Ksep}
     (hE : IsUnramifiedSubextension E) : IsCyclic (E ≃ₐ[K] E) := by
   have := hE.1
@@ -87,12 +111,18 @@ theorem IsUnramifiedSubextension.isCyclic {E : IntermediateField K Ksep}
   have := finiteExtensionStructure_valuativeExtension K E
   exact isCyclic_of_unramified K E hE.ramificationIndex_eq_one
 
+/- English proof (translation)
+Use `hE.1` as an intermediate fact. Use `hE.isGalois` as an intermediate fact. Conclude with `IsGalois.card_aut_eq_finrank K E`.
+-/
 theorem IsUnramifiedSubextension.card_algEquiv {E : IntermediateField K Ksep}
     (hE : IsUnramifiedSubextension E) : Nat.card (E ≃ₐ[K] E) = Module.finrank K E := by
   have := hE.1
   have := hE.isGalois
   exact IsGalois.card_aut_eq_finrank K E
 
+/- English proof (translation)
+Establish `hK` using `natCast_ne_zero_of_residueField (natCast_card_pow_sub_one_ne_zero (K := K) hn)`. Establish `: NeZero ((Nat.card 𝓀[K] ^ n - 1 : ℕ) : Ksep)` using `⟨by`. Rewrite using `[← map_natCast (algebraMap K Ksep)]`. Conclude with `(map_ne_zero_iff _ (algebraMap K Ksep).injective).mpr hK⟩`. Conclude with `HasEnoughRootsOfUnity.exists_primitiveRoot Ksep _`.
+-/
 theorem exists_isPrimitiveRoot_card_pow_sub_one [IsSepClosed Ksep] {n : ℕ} (hn : n ≠ 0) :
     ∃ ζ : Ksep, IsPrimitiveRoot ζ (Nat.card 𝓀[K] ^ n - 1) := by
   have hK := natCast_ne_zero_of_residueField (natCast_card_pow_sub_one_ne_zero (K := K) hn)
@@ -101,6 +131,13 @@ theorem exists_isPrimitiveRoot_card_pow_sub_one [IsSepClosed Ksep] {n : ℕ} (hn
     exact (map_ne_zero_iff _ (algebraMap K Ksep).injective).mpr hK⟩
   exact HasEnoughRootsOfUnity.exists_primitiveRoot Ksep _
 
+/- English proof (translation)
+Establish `hm` using `natCast_card_pow_sub_one_ne_zero (K := K) hn`. Establish `hpos : 0 < Nat.card 𝓀[K] ^ n - 1`. Use `Nat.one_lt_pow hn (one_lt_card_residueField K)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hint : IsIntegral K ζ` using `(hζ.isIntegral hpos).tower_top`.
+
+Establish `hfin : FiniteDimensional K K⟮ζ⟯` using `adjoin.finiteDimensional hint`. Establish `hζ' : IsPrimitiveRoot (AdjoinSimple.gen K ζ) (Nat.card 𝓀[K] ^ n - 1)` using `hζ.of_map_of_injective (f := K⟮ζ⟯.val) Subtype.val_injective`. Establish `htop` using `adjoin_gen_eq_top (K := K) ζ`. Use `⟨⟨hfin, fun _ _ _ _ ↦ ramificationIndex_eq_one_of_adjoin_eq_top hζ' hm htop⟩, ?_⟩` and prove the remaining obligations. Set `` to `(finiteExtensionStructure K K⟮ζ⟯).rel`.
+
+Set `` to `(finiteExtensionStructure K K⟮ζ⟯).top`. Use `finiteExtensionStructure_isNonarchimedeanLocalField K K⟮ζ⟯` as an intermediate fact. Use `finiteExtensionStructure_valuativeExtension K K⟮ζ⟯` as an intermediate fact. Conclude with `finrank_eq_of_adjoin_eq_top hn hζ' htop`.
+-/
 theorem isUnramifiedSubextension_adjoin {n : ℕ} (hn : n ≠ 0) {ζ : Ksep}
     (hζ : IsPrimitiveRoot ζ (Nat.card 𝓀[K] ^ n - 1)) :
     IsUnramifiedSubextension K⟮ζ⟯ ∧ Module.finrank K K⟮ζ⟯ = n := by
@@ -120,6 +157,15 @@ theorem isUnramifiedSubextension_adjoin {n : ℕ} (hn : n ≠ 0) {ζ : Ksep}
   have := finiteExtensionStructure_valuativeExtension K K⟮ζ⟯
   exact finrank_eq_of_adjoin_eq_top hn hζ' htop
 
+/- English proof (translation)
+Use `hE.1` as an intermediate fact. Set `` to `(finiteExtensionStructure K E).rel`. Set `` to `(finiteExtensionStructure K E).top`. Use `finiteExtensionStructure_isNonarchimedeanLocalField K E` as an intermediate fact. Use `finiteExtensionStructure_valuativeExtension K E` as an intermediate fact.
+
+Establish `h` using `hE.ramificationIndex_eq_one`. Take `⟨ξ, hξ, -⟩` from `exists_isPrimitiveRoot_adjoin_eq_top_of_unramified K E h`. Rewrite `hξ` using `[card_residueField_of_unramified K E h, hEn]`. Establish `hξ' : IsPrimitiveRoot (ξ : Ksep) (Nat.card 𝓀[K] ^ n - 1)` using `hξ.map_of_injective (f := E.val) Subtype.val_injective`. Establish `: NeZero (Nat.card 𝓀[K] ^ n - 1)` using `⟨by`.
+
+Use `Nat.one_lt_pow hn (one_lt_card_residueField K)` as an intermediate fact. Use the proof step `omega⟩`. Take `⟨i, -, hi⟩` from `hξ'.eq_pow_of_pow_eq_one hζ.pow_eq_one`. Establish `hζE : ζ ∈ E` using `hi ▸ pow_mem ξ.2 i`. Establish `hle : K⟮ζ⟯ ≤ E` using `adjoin_simple_le_iff.mpr hζE`.
+
+Use `(eq_of_le_of_finrank_eq hle ?_).symm` and prove the remaining obligations. Rewrite using `[(isUnramifiedSubextension_adjoin hn hζ).2, hEn]`.
+-/
 theorem IsUnramifiedSubextension.eq_adjoin {E : IntermediateField K Ksep}
     (hE : IsUnramifiedSubextension E) {n : ℕ} (hEn : Module.finrank K E = n) (hn : n ≠ 0) {ζ : Ksep}
     (hζ : IsPrimitiveRoot ζ (Nat.card 𝓀[K] ^ n - 1)) : E = K⟮ζ⟯ := by
@@ -142,12 +188,18 @@ theorem IsUnramifiedSubextension.eq_adjoin {E : IntermediateField K Ksep}
   refine (eq_of_le_of_finrank_eq hle ?_).symm
   rw [(isUnramifiedSubextension_adjoin hn hζ).2, hEn]
 
+/- English proof (translation)
+Take `⟨ζ, hζ⟩` from `exists_isPrimitiveRoot_card_pow_sub_one (K := K) (Ksep := Ksep) hn`. Conclude with `⟨K⟮ζ⟯, isUnramifiedSubextension_adjoin hn hζ, fun E ⟨hE, hEn⟩ ↦ hE.eq_adjoin hEn hn hζ⟩`.
+-/
 theorem existsUnique_isUnramifiedSubextension [IsSepClosed Ksep] {n : ℕ} (hn : n ≠ 0) :
     ∃! E : IntermediateField K Ksep, IsUnramifiedSubextension E ∧ Module.finrank K E = n := by
   obtain ⟨ζ, hζ⟩ := exists_isPrimitiveRoot_card_pow_sub_one (K := K) (Ksep := Ksep) hn
   exact ⟨K⟮ζ⟯, isUnramifiedSubextension_adjoin hn hζ,
     fun E ⟨hE, hEn⟩ ↦ hE.eq_adjoin hEn hn hζ⟩
 
+/- English proof (translation)
+Take `⟨hE, hEn⟩` from `isUnramifiedSubextension_adjoin hn hζ`. Conclude with `⟨hE, hEn, hE.isGalois, hE.isCyclic, hE.card_algEquiv.trans hEn, fun E hE' hE'n ↦ hE'.eq_adjoin hE'n hn hζ⟩`.
+-/
 theorem isUnramifiedSubextension_adjoin_spec {n : ℕ} (hn : n ≠ 0) {ζ : Ksep}
     (hζ : IsPrimitiveRoot ζ (Nat.card 𝓀[K] ^ n - 1)) :
     IsUnramifiedSubextension K⟮ζ⟯ ∧ Module.finrank K K⟮ζ⟯ = n ∧ IsGalois K K⟮ζ⟯ ∧

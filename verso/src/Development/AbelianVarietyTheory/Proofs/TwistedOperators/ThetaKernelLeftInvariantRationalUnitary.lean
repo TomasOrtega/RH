@@ -19,6 +19,11 @@ noncomputable section
 
 namespace GlobalTheory.SquareComm.ThetaLeft
 
+/- English proof (translation)
+Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨f, P, hf, rfl⟩` from `hx`. Conclude with `GlobalTheory.GalLift.Vec.theta_pureTensorO hψ hθ _ _ _ _ hf.1 P`. Consider the case `zero => exact GlobalTheory.OrientedHeis.theta_zero`.
+
+Consider the case `add x y _ _ hx hy => exact GlobalTheory.OrientedHeis.theta_add hx hy`. Consider the case `smul c x _ hx => exact GlobalTheory.OrientedHeis.theta_smul c hx`.
+-/
 theorem isThetaFunO_of_mem_algF {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} (hψ : IsStdChar D ψ (-1))
     (hθ : IsInfFam θ) {M X : HSp D} (A : Fr M) (B : Fr X) {Φ : WO M X → ℂ} (hΦ : Φ ∈ algF ψ θ false A B) :
     IsThetaFunO ψ M X Φ := by
@@ -30,6 +35,11 @@ theorem isThetaFunO_of_mem_algF {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {θ : 
   | add x y _ _ hx hy => exact GlobalTheory.OrientedHeis.theta_add hx hy
   | smul c x _ hx => exact GlobalTheory.OrientedHeis.theta_smul c hx
 
+/- English proof (translation)
+Introduce `D ψ θ hθ M X A B χ χ' ω hω Φ hΦ γ hγ g h`. Establish `hω' : IsWeilDatumO ψ M X χ χ' ω` using `hω`. Establish `hth : IsThetaFunO ψ M X Φ` using `isThetaFunO_of_mem_algF hω'.std hθ A B hΦ`. Unfold `thetaKO`. Establish `e : (γ * g, h) = (γ, (1 : GA D X)) * (g, h)` using `by simp`.
+
+Rewrite using `[e, map_mul, Module.End.mul_apply]`. Conclude with `hω'.om_aut _ hγ _ (Subgroup.one_mem _) _ (hω'.om_pres _ _ hth)`.
+-/
 theorem main : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsInfFam θ → ∀ (M X : HSp D) (A : Fr M) (B : Fr X)
     (χ χ' : (AE D)ˣ →* Circle) (ω : WRep M X), IsWeil ψ false M X χ χ' ω → ∀ Φ ∈ algF ψ θ false A B, ∀ γ ∈ GQ M,
     ∀ (g : GA D M) (h : GA D X), thetaKO ω (γ * g) h Φ = thetaKO ω g h Φ := by

@@ -15,6 +15,9 @@ def partSub {dim : (E →+* ℂ) → ℕ} (σ : E →+* ℂ) : Submodule ℂ (Vs
 
 variable {X : PT E} {DF : ℕ} {P : Par X DF} {I : Submodule ℤ (Vsp X.dim)}
 
+/- English proof (translation)
+Introduce `g hg hg0`. Take `⟨x, hx, hu⟩` from `hg`. Establish `h1` using `hI.sep x hx g hu hg0`. Establish `h2 : (1:ℝ) ≤ ‖g‖ ^ 2` using `P.C2.trans h1`. Use polynomial arithmetic with `[norm_nonneg g]`.
+-/
 lemma sep_X (hI : IsSplit P I) : ∀ g ∈ Xg X.L I, g ≠ 0 → 1 ≤ ‖g‖ := by
   intro g hg hg0
   obtain ⟨x, hx, hu⟩ := hg
@@ -22,6 +25,11 @@ lemma sep_X (hI : IsSplit P I) : ∀ g ∈ Xg X.L I, g ≠ 0 → 1 ≤ ‖g‖ :
   have h2 : (1:ℝ) ≤ ‖g‖ ^ 2 := P.C2.trans h1
   nlinarith [norm_nonneg g]
 
+/- English proof (translation)
+Take `⟨x, u, hxu, hli, hb⟩` from `hI.u1`. Use `⟨x, u, hxu, ?_, hb⟩` and prove the remaining obligations. Establish `hle : Submodule.span ℝ (Set.range u) ≤ IR I`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩`.
+
+Conclude with `(hxu j).2.1`. Apply `Submodule.eq_of_le_of_finrank_eq hle` to reduce the goal to its premises. Rewrite using `[finrank_span_eq_card hli, Fintype.card_fin]`.
+-/
 lemma exists_short_real_span (hI : IsSplit P I) : ∃ x u : Fin (Module.finrank ℝ (IR I)) → Vsp X.dim,
     (∀ j, x j ∈ X.L ∧ IsU I (x j) (u j)) ∧
     Submodule.span ℝ (Set.range u) = IR I ∧
@@ -35,6 +43,15 @@ lemma exists_short_real_span (hI : IsSplit P I) : ∃ x u : Fin (Module.finrank 
   apply Submodule.eq_of_le_of_finrank_eq hle
   rw [finrank_span_eq_card hli, Fintype.card_fin]
 
+/- English proof (translation)
+Introduce and unpack `v ⟨hvI, hvσ⟩`. Establish `hvσ' : ∀ j : Idx X.dim, j.1 ≠ σ → v j = 0` using `hvσ`. Establish `hfix : prj σ v = v`. Use extensionality with `i`. Distinguish the cases in `h : i.1 = σ`.
+
+Simplify using `[prj, h]`. Simplify using `[prj, h, hvσ' i h]`. Establish `hspan : Submodule.span ℂ (I : Set (Vsp X.dim)) ≤ Submodule.span ℂ (Set.range u)`. Rewrite using `[Submodule.span_le]`. Introduce `y hy`.
+
+Establish `hyR : y ∈ IR I` using `Submodule.subset_span hy`. Rewrite `hyR` using `[← hu]`. Conclude with `Submodule.span_le_restrictScalars ℝ ℂ (Set.range u) hyR`. Establish `hv : v ∈ Submodule.span ℂ (Set.range u)` using `hspan hvI`. Rewrite using `[← hfix]`.
+
+Establish `hmap : Submodule.map (prj σ) (Submodule.span ℂ (Set.range u)) ≤ W`. Rewrite using `[Submodule.map_span, Submodule.span_le]`. Introduce and unpack `_ ⟨_, ⟨j, rfl⟩, rfl⟩`. Conclude with `hW j`. Conclude with `hmap (Submodule.mem_map_of_mem hv)`.
+-/
 lemma span_inf_partSub_le {σ : E →+* ℂ} (u : Fin (Module.finrank ℝ (IR I)) → Vsp X.dim)
     (hu : Submodule.span ℝ (Set.range u) = IR I) (W : Submodule ℂ (Vsp X.dim))
     (hW : ∀ j, prj σ (u j) ∈ W) :
@@ -60,6 +77,11 @@ lemma span_inf_partSub_le {σ : E →+* ℂ} (u : Fin (Module.finrank ℝ (IR I)
     exact hW j
   exact hmap (Submodule.mem_map_of_mem hv)
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Establish `hle` using `span_inf_partSub_le u hu W hcon`. Establish `h2 : Module.finrank ℂ ((Submodule.span ℂ (I : Set (Vsp X.dim)) ⊓ partSub σ : Submodule ℂ (Vsp X.dim))) ≤ Module.finrank ℂ W` using `Submodule.finrank_mono hle`. Rewrite `h2` using `[hρ]`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 lemma exists_out {σ : E →+* ℂ} {ρ : ℕ}
     (hρ : Module.finrank ℂ (((Submodule.span ℂ (I : Set (Vsp X.dim)) ⊓ partSub σ : Submodule ℂ (Vsp X.dim)))) = ρ)
     (u : Fin (Module.finrank ℝ (IR I)) → Vsp X.dim)
@@ -73,6 +95,17 @@ lemma exists_out {σ : E →+* ℂ} {ρ : ℕ}
   rw [hρ] at h2
   omega
 
+/- English proof (translation)
+Take `⟨x, u, hxu, hspan, -⟩` from `exists_short_real_span hI`. Use `set S := prj σ '' (Xg X.L I : Set (Vsp X.dim))`. Take `⟨b, hbS, hbspan, hbli⟩` from `exists_linearIndependent ℂ S`. Establish `hbfin : b.Finite` using `hbli.setFinite`. Use `hbfin.fintype` as an intermediate fact.
+
+Establish `hV1 : ((Submodule.span ℂ (I : Set (Vsp X.dim)) ⊓ partSub σ : Submodule ℂ (Vsp X.dim))) ≤ Submodule.span ℂ b`. Rewrite using `[hbspan]`. Conclude with `span_inf_partSub_le u hspan _ fun j => Submodule.subset_span ⟨u j, ⟨x j, (hxu j).1, (hxu j).2⟩, rfl⟩`. Establish `h1 : ρ ≤ Fintype.card b`. Use `Submodule.finrank_mono hV1` as an intermediate fact.
+
+Rewrite `this` using `[hρ]`. Establish `h2` using `finrank_span_eq_card hbli`. Rewrite `h2` using `[Subtype.range_coe]`. Establish `h3 : Fintype.card {x // x ∈ b} = Fintype.card b` using `Fintype.card_congr (Equiv.refl _)`. Use linear arithmetic over natural numbers and integers.
+
+Establish `h2` using `rank_bound X.L I (sep_X hI) (fun α u hu => Xg_act X.stable hI.stable α hu) ω hω σ b hbS hbli`. Take `⟨ρ', hρ'm, hρ'⟩` from `hI.rank`. Establish `hn : 0 < Module.finrank ℚ E` using `Module.finrank_pos`. Establish `hf : 2 * PT.f E ≤ Module.finrank ℚ E` using `by unfold PT.f; omega`. Establish `h3 : Module.finrank ℚ E * Fintype.card b ≤ Module.finrank ℚ E * ρ'`.
+
+Rewrite `h2` using `[hρ']`. Use the polynomial consequences of the given equalities and inequalities. Establish `h4` using `Nat.le_of_mul_le_mul_left h3 hn`. Use linear arithmetic over natural numbers and integers.
+-/
 lemma rho_le [IsCMField E] (hI : IsSplit P I) (ω : Fin (Module.finrank ℚ E) → 𝓞 E)
     (hω : LinearIndependent ℚ (fun j => (ω j : E))) {σ : E →+* ℂ} {ρ : ℕ}
     (hρ : Module.finrank ℂ (((Submodule.span ℂ (I : Set (Vsp X.dim)) ⊓ partSub σ : Submodule ℂ (Vsp X.dim)))) = ρ) :

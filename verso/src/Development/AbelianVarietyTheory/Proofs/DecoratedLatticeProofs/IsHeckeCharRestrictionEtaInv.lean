@@ -10,6 +10,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.StdUnn
 
+/- English proof (translation)
+Introduce `D χ m h1 h2`. Use `⟨⟨h1.1.inv, fun x => ?_⟩, resEta_inv h2⟩` and prove the remaining obligations. Rewrite using `[MonoidHom.inv_apply, h1.2, inv_one]`.
+-/
 theorem isHeckeChar_resEta_inv : ∀ (D : D7) (χ : (AE D)ˣ →* Circle) (m : ℕ), IsHeckeChar D χ → ResEta D χ m → IsHeckeChar D χ⁻¹ ∧ ResEta D χ⁻¹ m := by
   intro D χ m h1 h2
   refine ⟨⟨h1.1.inv, fun x => ?_⟩, resEta_inv h2⟩

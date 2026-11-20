@@ -22,6 +22,15 @@ noncomputable section
 
 namespace GlobalTheory.TermDescend
 
+/- English proof (translation)
+Introduce `R _ _ Q O _ _ _ oa Y k α σ₀ σ₁ σ₂ τ₀ τ₁ τ₂ a b h₀ h₁ h₂ H z J hJ`. Take `⟨Z, p, w, y, hw, hp, hinj, hy⟩` from `GlobalTheory.RayLift.exists_flat_lift R Q O oa Y z`. Substitute `hw` using the available equality. Take `⟨J', hJ', hJJ⟩` from `exists_good Q.P.L Q.P.isLB w (K := (DegPre.BF Q (FractionRing R)).left ⟶ Q.P.A.left) (fun ψ => p ≫ ψ) J (fun ψ ψ' e => by rw [(cancel_epi p).1 e]) (fun ψ => by`. Rewrite using `[Scheme.Hom.comp_apply]`.
+
+Conclude with `hJ ψ)`. Establish `hfun : (fun ψ => J' (p ≫ ψ)) = J` using `funext hJJ`. Set `T : Over (Sp R)` to `Over.mk (y ≫ Y.H.hom)`. Set `x : T ⟶ Y.H` to `Over.homMk y rfl`. Set `v : (Z.presheaf.stalk w)ˣ` to `val ((Y.Φ T x).s α) (𝟙 _) w J'`.
+
+Establish `e₀ : sval τ₀ y w J' = sval σ₀ (y ≫ Y.q.left) w J' * v.val` using `h₀ T x w J' hJ'`. Establish `e₁ : sval τ₁ y w J' = sval σ₁ (y ≫ Y.q.left) w J' * v.val` using `h₁ T x w J' hJ'`. Establish `e₂ : sval τ₂ y w J' = sval σ₂ (y ≫ Y.q.left) w J' * v.val` using `h₂ T x w J' hJ'`. Establish `E` using `H Z y w J' hJ'`. Establish `hH : y ≫ Y.H.hom = p ≫ ((DegPre.prB Q (FractionRing R)).left ≫ Q.P.A.hom)`.
+
+Rewrite using `[← Category.assoc, ← hy, Category.assoc, Over.w Y.q]`. Rewrite `E` using `[e₀, e₁, e₂, ← _root_.mul_assoc, ← _root_.mul_assoc, ← add_mul]`. Establish `E'` using `(Units.mul_left_inj _).1 E`. Rewrite `E'` using `[hH, hy, GlobalTheory.HeatDefect.sval_comp_stalk _ _ _ _ hJ', GlobalTheory.HeatDefect.sval_comp_stalk _ _ _ _ hJ', GlobalTheory.HeatDefect.sval_comp_stalk _ _ _ _ hJ', GlobalTheory.HeatDefect.gs_comp_stalk p _ w ⊤ trivial, GlobalTheory.HeatDefect.gs_comp_stalk p _ w ⊤ trivial, hf …`. Conclude with `hinj E'`.
+-/
 theorem main : ∀ (R : Type) [CommRing R] [IsDomain R] (Q : DegPre R) (O : Type) [CommRing O] [StarRing O] [Module O Q.X] (oa : Q.OAct O) (Y : Ray oa) (k : ℕ) (α : Q.X) (σ₀ σ₁ σ₂ : Q.SecB k α) (τ₀ τ₁ τ₂ : SecM Y.q.left Q.P.L k) (a b : R), IsTerm Y k α σ₀ τ₀ → IsTerm Y k α σ₁ τ₁ → IsTerm Y k α σ₂ τ₂ → (∀ (Z : Scheme.{0}) (r : Z ⟶ Y.H.left) (z : Z) (J : (Z ⟶ Q.P.A.left) → Q.P.L.ι), Good Q.P.L z J → sval τ₀ r z J = gs (r ≫ Y.H.hom) z ⊤ ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom a) * sval τ₁ r z J + gs (r ≫ Y.H.hom) z ⊤ ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom b) * sval τ₂ r z J) → ∀ (z : (DegPre.BF Q (FractionRing R)).left) (J : ((DegPre.BF Q (FractionRing R)).left ⟶ Q.P.A.left) → Q.P.L.ι), Good Q.P.L z J → sval σ₀ (DegPre.prB Q (FractionRing R)).left z J = gs ((DegPre.prB Q (FractionRing R)).left ≫ Q.P.A.hom) z ⊤ ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom a) * sval σ₁ (DegPre.prB Q (FractionRing R)).left z J + gs ((DegPre.prB Q (FractionRing R)).left ≫ Q.P.A.hom) z ⊤ ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom b) * sval σ₂ (DegPre.prB Q (FractionRing R)).left z J := by
   intro R _ _ Q O _ _ _ oa Y k α σ₀ σ₁ σ₂ τ₀ τ₁ τ₂ a b h₀ h₁ h₂ H z J hJ
   obtain ⟨Z, p, w, y, hw, hp, hinj, hy⟩ := GlobalTheory.RayLift.exists_flat_lift R Q O oa Y z

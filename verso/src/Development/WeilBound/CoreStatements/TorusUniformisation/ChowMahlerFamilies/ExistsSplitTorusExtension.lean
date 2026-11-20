@@ -16,6 +16,11 @@ open scoped CategoryTheory.Obj
 
 namespace PositivityTheory.Xgn.SplitTorusExtension
 
+/- English proof (translation)
+Set `e : Over.mk (T.hom ≫ f) ⟶ G` to `Over.homMk ((1 : T ⟶ G').left ≫ φ) (by`. Express the relevant statement in the definitionally equal form `((1 : T ⟶ G').left ≫ φ) ≫ G.hom = T.hom ≫ f`. Rewrite using `[Category.assoc, h.1.w, ← Category.assoc, Over.w])`. Establish `h₁ : (e * e).left = e.left`. Rewrite using `[h.2 T 1 1 e e rfl rfl, _root_.mul_one]`.
+
+Both sides reduce to the same expression. Establish `h₂ : e * e = e` using `Over.OverMorphism.ext h₁`. Establish `h₃ : e = 1` using `by simpa using h₂`. Rewrite using `[← h₃]`. Both sides reduce to the same expression.
+-/
 theorem one_left {S S' : Scheme.{0}} {G' : Over S'} [GrpObj G'] {G : Over S} [GrpObj G] {f : S' ⟶ S}
     {φ : G'.left ⟶ G.left} (h : IsGrpPullback G' G f φ) (T : Over S') :
     (1 : Over.mk (T.hom ≫ f) ⟶ G).left = (1 : T ⟶ G').left ≫ φ := by
@@ -30,6 +35,15 @@ theorem one_left {S S' : Scheme.{0}} {G' : Over S'} [GrpObj G'] {G : Over S} [Gr
   rw [← h₃]
   rfl
 
+/- English proof (translation)
+Establish `hw : t.left ≫ G.hom = T.hom ≫ f` using `Over.w t`. Set `s : T.left ⟶ G'.left` to `hφ.1.lift t.left T.hom hw`. Establish `hs : s ≫ φ = t.left` using `hφ.1.lift_fst _ _ _`. Set `s' : T ⟶ G'` to `Over.homMk s (hφ.1.lift_snd _ _ _)`. Establish `h1 : s' ≫ i = 1`.
+
+Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `hψ.1.hom_ext` to reduce the goal to its premises. Rewrite using `[← one_left hψ T, Over.comp_left, Category.assoc, hu, ← Category.assoc]`. Express the relevant statement in the definitionally equal form `(s ≫ φ) ≫ u.left = _`. Rewrite using `[hs, ← Over.comp_left, ht]`.
+
+Rewrite using `[Over.w, Over.w]`. Establish `h2 : s' = 1`. Establish `h3 : (1 : T ⟶ G') ≫ i = 1` using `by simp [Hom.one_def]`. Rewrite `h1` using `[← h3]`. Conclude with `(cancel_mono i).mp h1`.
+
+Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[one_left hφ T, ← h2]`. Conclude with `hs.symm`.
+-/
 theorem eq_one {S S' : Scheme.{0}} {G' H' : Over S'} [GrpObj G'] [GrpObj H'] {G H : Over S} [GrpObj G] [GrpObj H]
     {f : S' ⟶ S} {φ : G'.left ⟶ G.left} {ψ : H'.left ⟶ H.left} (hφ : IsGrpPullback G' G f φ)
     (hψ : IsGrpPullback H' H f ψ) (i : G' ⟶ H') [IsMonHom i] [Mono i] (u : G ⟶ H)
@@ -55,6 +69,15 @@ theorem eq_one {S S' : Scheme.{0}} {G' H' : Over S'} [GrpObj G'] [GrpObj H'] {G 
 
 end PositivityTheory.Xgn.SplitTorusExtension
 
+/- English proof (translation)
+Introduce `hext Z' _ _ hnorm G _ hG L' _ j hj τ`. Use `letI := τ.addCommGroup`. Use `haveI := τ.free`. Use `haveI := τ.finite`. Use `haveI := τ.i_hom`.
+
+Use `haveI : Mono τ.i := τ.isKernel.mono_fst_of_mono`. Establish `hT : IsSemiAbelian (splitTorus Z' τ.X)` using `((GlobalTheory.splitTorus_properties Z').1 τ.X).2.2.2.2.2.2.2.2.1`. Take `⟨e, he, -⟩` from `GlobalTheory.splitTorus_baseChange Z' (Sp L') j τ.X`. Use `haveI := he`. Establish `hφ : IsGrpPullback (splitTorus (Sp L') τ.X) (splitTorus Z' τ.X) j (e.hom.left ≫ pullback.fst (splitTorus Z' τ.X).hom j)`.
+
+Establish `h0` using `(isGrpPullback_of_iso e).comp (isGrpPullback_pullback (splitTorus Z' τ.X) j)`. Rewrite `h0` using `[Category.id_comp]`. Then use the resulting hypothesis. Establish `hψ` using `isGrpPullback_pullback G j`. Take `⟨F, ⟨hF, hu⟩, -⟩` from `GlobalTheory.Published.SemiAbelianHomExtension.generic_of_isGrpPullback hext hnorm hj hT hG hφ hψ τ.i`. Use `⟨F, hF, fun A _ g t ht => ?_⟩` and prove the remaining obligations.
+
+Use `haveI := hF`. Conclude with `SplitTorusExtension.eq_one hφ hψ τ.i F hu (Over.mk (spMap g)) t ht`.
+-/
 theorem PositivityTheory.Xgn.exists_split_torus_extension : GlobalTheory.Published.SemiAbelianHomExtension → ∀ (Z' : Scheme.{0}) [IsIntegral Z'] [AlgebraicGeometry.IsNoetherian Z'], IsNormalScheme Z' → ∀ (G : Over Z') [GrpObj G], IsSemiAbelian G → ∀ (L' : Type) [Field L'] (j : Sp L' ⟶ Z'), GlobalTheory.IsGenericPointHom j → ∀ τ : TorusExtension ((Over.pullback j).obj G), letI := τ.addCommGroup; ∃ u : splitTorus Z' τ.X ⟶ G, IsMonHom u ∧ ∀ (A : Type) [CommRing A] (g : L' →+* A) (t : Over.mk (spMap g ≫ j) ⟶ splitTorus Z' τ.X), t ≫ u = 1 → t = 1 := by
   intro hext Z' _ _ hnorm G _ hG L' _ j hj τ
   letI := τ.addCommGroup

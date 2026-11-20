@@ -41,6 +41,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 open GlobalTheory.BadShare in
 
+/- English proof (translation)
+Establish `key : ∀ {H : Type} [Group H] [Fintype H] {a : H → ℂ}, (∀ x, conv a x = conv x a) → ∀ u v, a (u * v) = a (v * u)`. Introduce `H _ _ a ha u v`. Use `congrFun (ha fun y => if y = v⁻¹ then 1 else 0) u` as an intermediate fact. Simplify using `only [conv, mul_ite, mul_one, mul_zero, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true, inv_inv] at this`. Rewrite using `[← this, Finset.sum_eq_single (u * v)]`.
+
+Simplify using the standard rewrite rules. Introduce `y _ hy`. Rewrite using `[if_neg]`. Introduce `e`. Conclude with `hy (by rw [inv_mul_eq_iff_eq_mul] at e; rw [e, inv_mul_cancel_right])`.
+
+Simplify using the standard rewrite rules. Use function extensionality and compare the values at `x`. Simplify using `only [conv]`. Use `Fintype.sum_equiv ((Equiv.inv _).trans (Equiv.mulRight x)) _ _ fun y => ?_` and prove the remaining obligations. Simplify using `only [Equiv.trans_apply, Equiv.inv_apply, Equiv.coe_mulRight, tens2, _root_.mul_inv_rev, inv_inv, Prod.fst_mul, Prod.snd_mul, Prod.fst_inv, Prod.snd_inv]`.
+
+Rewrite using `[key ha _ x.1, key hb _ x.2, mul_inv_cancel_left, mul_inv_cancel_left, mul_comm]`.
+-/
 theorem central_tens2 {G G' : Type} [Group G] [Fintype G] [Group G'] [Fintype G'] {a : G → ℂ} {b : G' → ℂ}
     (ha : ∀ x, conv a x = conv x a) (hb : ∀ x, conv b x = conv x b) (z : G × G' → ℂ) :
     conv (tens2 a b) z = conv z (tens2 a b) := by
@@ -64,6 +73,9 @@ theorem central_tens2 {G G' : Type} [Group G] [Fintype G] [Group G'] [Fintype G'
     Prod.snd_mul, Prod.fst_inv, Prod.snd_inv]
   rw [key ha _ x.1, key hb _ x.2, mul_inv_cancel_left, mul_inv_cancel_left, mul_comm]
 
+/- English proof (translation)
+Rewrite using `[Module.finrank_eq_card_basis (Basis.multilinearMap (fun i => Module.finBasis ℂ (N i)) (Module.Basis.singleton Unit ℂ))]`. Simplify using the standard rewrite rules.
+-/
 theorem finrank_multilinear {ι : Type} [Fintype ι] (N : ι → Type) [∀ i, AddCommGroup (N i)] [∀ i, Module ℂ (N i)]
     [∀ i, FiniteDimensional ℂ (N i)] : Module.finrank ℂ (MultilinearMap ℂ N ℂ) = ∏ i, Module.finrank ℂ (N i) := by
   classical
@@ -71,6 +83,11 @@ theorem finrank_multilinear {ι : Type} [Fintype ι] (N : ι → Type) [∀ i, A
     (Basis.multilinearMap (fun i => Module.finBasis ℂ (N i)) (Module.Basis.singleton Unit ℂ))]
   simp
 
+/- English proof (translation)
+Substitute `h` using the available equality. Rewrite `hn` using `[upper_block_val_submatrix hr hg]`. Establish `e : (g : Matrix (Fin r) (Fin r) κ).submatrix (Fin.castLE hr) (Fin.castLE hr) = g`. Use extensionality with `i j`. Both sides reduce to the same expression.
+
+Rewrite `hn` using `[e]`. Then use the resulting hypothesis.
+-/
 theorem isNilpotent_sub_one_of_full_block_unipotent {κ : Type} [CommRing κ] {n r : ℕ} (hr : r ≤ n) (h : r = n) {g : GL (Fin n) κ}
     (hg : g ∈ blockTri (blk2 r)) (hn : IsNilpotent ((upperLeftBlock hr g).val - 1)) : IsNilpotent (g.val - 1) := by
   subst h
@@ -81,6 +98,11 @@ theorem isNilpotent_sub_one_of_full_block_unipotent {κ : Type} [CommRing κ] {n
 
 variable {D : D7}
 
+/- English proof (translation)
+Establish `hfin` using `GlobalTheory.T.isOfFinOrder_of_conj_mem_selfDualLatticeStabilizer _ _ D.sp.cm _ _ Λ β hU hβ u x (parLev_St hu)`. Take `⟨y, hy⟩` from `parLev_St hu`. Establish `hn'` using `isNilpotent_sub_one_of_full_block_unipotent L.hr hr (blockTri_blkOf_le _ _ (parLev_g hu PP.2)) hn`. Rewrite `hn'` using `[← hy, redFn_frGL]`. Use `Subtype.ext (GlobalTheory.T.eq_one_of_finiteOrder_unipotentReduction_largePrime D.host.E (EAf D) (kP PP.1) _ (Formalism.UG.inclE (F := D.host.F) (Formalism.L2.Herm.Af D.host.F)) (resS D.host.F PP.1) p V.rank hp hc hbig u ((x : GL (Fin V.rank) (EAf D)) * β) y ((UR D.sp.cm V.gram). …` and prove the remaining obligations.
+
+Rewrite `hy` using `[conjIn_apply]`. Establish `hy' : β * Formalism.UG.bc _ y * β⁻¹ = _` using `hy`. Rewrite using `[_root_.mul_inv_rev, show β⁻¹ * (x : GL (Fin V.rank) (EAf D))⁻¹ * Formalism.UG.bc (Formalism.UG.inclE (F := D.host.F) (Formalism.L2.Herm.Af D.host.F)) (u : GL (Fin V.rank) D.host.E) * ((x : GL (Fin V.rank) (EAf D)) * β) = β⁻¹ * ((x : GL (Fin V.rank) (EAf D))⁻¹ * Formalism.UG.bc ( …`. Use `group`.
+-/
 theorem eq_one_of_unipotent {V : HSp D} {β : GL (Fin V.rank) (EAf D)} {L : LevDat D.host.E ℂ V.rank}
     {Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)} (hU : IsDefUnimod D.sp.cm V.gram Λ) (hβ : IsFrame β Λ)
     (hr : L.r = V.rank) (PP : L.Pg) {p : ℕ} (hp : p.Prime) (hc : CharP (kP PP.1) p)
@@ -99,6 +121,13 @@ theorem eq_one_of_unipotent {V : HSp D} {β : GL (Fin V.rank) (EAf D)} {L : LevD
     β⁻¹ * ((x : GL (Fin V.rank) (EAf D))⁻¹ * Formalism.UG.bc (Formalism.UG.inclE (F := D.host.F) (Formalism.L2.Herm.Af D.host.F)) (u : GL (Fin V.rank) D.host.E) * x) * β by group, ← hy']
   group
 
+/- English proof (translation)
+Take `⟨γ, hγ, k, hk, e⟩` from `DoubleCoset.rel_iff.1 (Quotient.exact' hfix.symm)`. Take `⟨u, hu, hu'⟩` from `hγ`. Establish `hk1 : (k : GL (Fin V.rank) (EAf D)) ∈ parLev D.sp.cm V.gram β L` using `hk.1`. Establish `hk2 : rTup β L (k : GL (Fin V.rank) (EAf D)) = 1` using `hk.2`. Establish `e' : (x : GL (Fin V.rank) (EAf D)) * κ = γ * x * k` using `congrArg Subtype.val e`.
+
+Establish `hu'' : Formalism.UG.bc (Formalism.UG.inclE (F` using `D.host.F) (Formalism.L2.Herm.Af D.host.F)) u = (γ : GL (Fin V.rank) (EAf D)) := hu'`. Establish `e2 : conjIn D.sp.cm V.gram (x : GL (Fin V.rank) (EAf D)) ⟨u, hu⟩ = (κ : GL (Fin V.rank) (EAf D)) * (k : GL (Fin V.rank) (EAf D))⁻¹`. Rewrite using `[conjIn_apply, hu'', eq_mul_inv_iff_mul_eq, mul_assoc, mul_assoc, ← mul_assoc (γ : GL (Fin V.rank) (EAf D)), ← e', inv_mul_cancel_left]`. Establish `e3 : rTup β L ((κ : GL (Fin V.rank) (EAf D)) * (k : GL (Fin V.rank) (EAf D))⁻¹) = rTup β L κ`. Rewrite using `[rTup_mul hκ (inv_mem hk1), rTup_inv hk1, hk2, inv_one, mul_one]`.
+
+Establish `h1` using `eq_one_of_unipotent hU hβ hr PP hp hc hbig ⟨u, hu⟩ x (by rw [e2]; exact mul_mem hκ (inv_mem hk1)) (by rw [e2, e3]; exact hn)`. Rewrite using `[← e3, ← e2, h1, map_one, rTup_one]`.
+-/
 theorem rTup_eq_one_of_fixed {V : HSp D} {β : GL (Fin V.rank) (EAf D)} {L : LevDat D.host.E ℂ V.rank}
     {Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)} (hU : IsDefUnimod D.sp.cm V.gram Λ) (hβ : IsFrame β Λ)
     (hr : L.r = V.rank) (PP : L.Pg) {p : ℕ} (hp : p.Prime) (hc : CharP (kP PP.1) p)
@@ -121,6 +150,19 @@ theorem rTup_eq_one_of_fixed {V : HSp D} {β : GL (Fin V.rank) (EAf D)} {L : Lev
     (by rw [e2, e3]; exact hn)
   rw [← e3, ← e2, h1, map_one, rTup_one]
 
+/- English proof (translation)
+Establish `hfin` using `GlobalTheory.DefLift.AllPlus.finite_smooth_irreducible D V S M hM`. Use `haveI : ∀ τ, FiniteDimensional ℂ (M.H τ) := fun τ => (hfin τ).1`. Take `⟨c, pr, hc, hpr, hsurj⟩` from `GlobalTheory.T.exists_coefficientSpace_dual_discreteSeriesModel_posDef D θ V S M hθ hM`. Take `⟨a1, -, -, -, a5⟩` from `GlobalTheory.T.unitaryGroup_adelicClasses_via_finiteAdelicPart D V`. Take `⟨h1, h2, h3⟩` from `GlobalTheory.T.finrank_eq_card_mul_and_trace_eq_zero_of_free_values_alt (GA D V) _ (MMap M) _ (clsA V (lev D.sp.cm V.gram β (flag1L L))) (evAt M) (Mult θ M (levS V β (flag1L L)) (levChi V β (flag1L L))) (fun c => by`.
+
+Take `⟨h, -, e⟩` from `a1 (rep c)`. Conclude with `⟨h, by rw [clsA, e, mk_rep]⟩)`. Use the proof step `(fun T hT => by`. Use extensionality with `v h`. Conclude with `congrArg (fun f => f v) (hT h))`.
+
+Use the proof step `(fun h h' e => by`. Take `⟨γ, hγ, κ, hκ, k, hk, rfl⟩` from `(a5 _ h h').1 e`. Take `⟨φ, hφ⟩` from `GlobalTheory.T.realPoint_acts_linearly_on_multiplicity_values_posDef D θ V S M hθ hM k hk`. Use `⟨φ, fun T hT => ?_⟩` and prove the remaining obligations. Rewrite using `[hφ _ _ T hT]`.
+
+Use `congr 1`. Use extensionality with `v`. Establish `hT'` using `(GlobalTheory.MultMem.mem_mult_iff D θ V S M _ _ T).1 hT`. Rewrite using `[evAt_apply, evAt_apply, hT'.lev v κ hκ, (hT'.aut v).left γ hγ, levChi, hχ, Units.val_one, one_mul])`. Use the proof step `(GlobalTheory.T.exists_multiplicityMap_prescribed_value_definite D θ V S M c pr β L hθ hs hd hc hpr hsurj hχ hΓ)`.
+
+Use `⟨h1, ?_, fun H _ _ e he hr A κ hA hκ => h3 H e he hr A (fun h => h * κ) (fun x h => ?_) hκ⟩` and prove the remaining obligations. Rewrite using `[h2, finrank_multilinear]`. Use `congr 1`. Conclude with `Finset.prod_congr rfl fun τ _ => by rw [(hfin τ).2.1, finrank_top]`. Use extensionality with `v`.
+
+Conclude with `hA x v h`.
+-/
 theorem principal_count {θ : InfFam D} {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSModel V S) {β : GL (Fin V.rank) (EAf D)}
     {L : LevDat D.host.E ℂ V.rank} (hθ : IsInfFam θ) (hs : V.SigOK) (hd : V.IsDefinite) (hM : AllPlus M)
     (hχ : ∀ x, levFn β (flag1L L) x = 1) [Finite (Cl D.sp.cm V.gram (lev D.sp.cm V.gram β (flag1L L)))]
@@ -167,23 +209,40 @@ section Record
 variable {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m}
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks} {F : Face D A}
 
+/- English proof (translation)
+Use `show (D.sp.W ((i : ℕ) + 1)).IsPosDef`. Rewrite using `[hi]`. Conclude with `factWmPosDef D.R D.host.F D.host.E D.sp`.
+-/
 theorem posDef_last {i : Fin D.R.m} (hi : (i : ℕ) + 1 = D.R.m) : (Wc D i).IsPosDef := by
   show (D.sp.W ((i : ℕ) + 1)).IsPosDef
   rw [hi]
   exact factWmPosDef D.R D.host.F D.host.E D.sp
 
+/- English proof (translation)
+The claim follows from `D.sp.W_rank _ (Nat.le_add_left _ _) i.2`.
+-/
 theorem rank_weight_component_eq (i : Fin D.R.m) : (Wc D i).rank = D.R.r := D.sp.W_rank _ (Nat.le_add_left _ _) i.2
 
+/- English proof (translation)
+Introduce `τ a`. Rewrite using `[h.models.order i τ a, posDef_last hi (tauE D τ)]`. Conclude with `decide_eq_true a.2`.
+-/
 theorem allPlus_last (h : HidaSetting R F) {i : Fin D.R.m} (hi : (i : ℕ) + 1 = D.R.m) : AllPlus (R.MW i (sg0 D A)) := by
   intro τ a
   rw [h.models.order i τ a, posDef_last hi (tauE D τ)]
   exact decide_eq_true a.2
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `h.lev.βW i`. Conclude with `⟨GlobalTheory.T.isDefiniteSelfDual_of_baseFrame_posDef D _ _ _ _ (D.sp.W_sig _) (posDef_last hi) hc, hc.1⟩`.
+-/
 theorem unimod_last (h : HidaSetting R F) {i : Fin D.R.m} (hi : (i : ℕ) + 1 = D.R.m) :
     IsDefUnimod D.sp.cm (Wc D i).gram (R.ΛW i) ∧ IsFrame (R.βW i) (R.ΛW i) := by
   obtain ⟨c, hc⟩ := h.lev.βW i
   exact ⟨GlobalTheory.T.isDefiniteSelfDual_of_baseFrame_posDef D _ _ _ _ (D.sp.W_sig _) (posDef_last hi) hc, hc.1⟩
 
+/- English proof (translation)
+Establish `h2 : levFn (R.βW i) (flagL (R.datWp i R.triv)) x = 1`. Establish `h1 : ext1 (flagL (R.datWp i R.triv)).P.H (flagL (R.datWp i R.triv)).P.chi (rTup (R.βW i) (flagL (R.datWp i R.triv)) x) = 1` using `subgroupCharExtension_one_apply _ _`. Unfold `levFn`. Rewrite using `[h1, one_mul]`. Use `(congrArg₂ (· * ·) ?_ ?_).trans (one_mul 1)` and prove the remaining obligations.
+
+Conclude with `Finset.prod_eq_one fun _ _ => Finset.prod_empty`. Conclude with `Finset.prod_empty`. Conclude with `⟨(levFn_flag1 x).trans h2, h2⟩`.
+-/
 theorem levFn_eq_one_chainMember_flags_trivial (i : Fin D.R.m) (x : GL (Fin (Wc D i).rank) (EAf D)) :
     levFn (R.βW i) (flag1L (R.datWp i R.triv)) x = 1 ∧ levFn (R.βW i) (flagL (R.datWp i R.triv)) x = 1 := by
   have h2 : levFn (R.βW i) (flagL (R.datWp i R.triv)) x = 1 := by
@@ -199,6 +258,9 @@ theorem levFn_eq_one_chainMember_flags_trivial (i : Fin D.R.m) (x : GL (Fin (Wc 
 def UnipAt (R : RealDat D A Ks) (g : G0 R.Pg D.R.r) : Prop :=
   ∃ (k : Fin 2) (PP : R.Pg), CharP (kP PP.1) (D.host.g k) ∧ IsNilpotent ((g PP).val - 1)
 
+/- English proof (translation)
+Take `⟨k, PP, hc, hn⟩` from `hn`. Conclude with `rTup_eq_one_of_fixed (L := R.datWp i R.triv) (unimod_last h hi).1 (unimod_last h hi).2 (rank_weight_component_eq i).symm PP (D.host.g_prime k) hc (by rw [rank_weight_component_eq]; exact hbig k) x κ hκ hn hfix`.
+-/
 theorem fixed_last (h : HidaSetting R F) (hbig : ∀ k, Module.finrank ℚ D.host.E * D.R.r + 1 < D.host.g k) {i : Fin D.R.m}
     (hi : (i : ℕ) + 1 = D.R.m) (x κ : UA D.sp.cm (Wc D i).gram)
     (hκ : (κ : GL (Fin (Wc D i).rank) (EAf D)) ∈ parLev D.sp.cm (Wc D i).gram (R.βW i) (R.datWp i R.triv))
@@ -209,15 +271,24 @@ theorem fixed_last (h : HidaSetting R F) (hbig : ∀ k, Module.finrank ℚ D.hos
   exact rTup_eq_one_of_fixed (L := R.datWp i R.triv) (unimod_last h hi).1 (unimod_last h hi).2 (rank_weight_component_eq i).symm PP
     (D.host.g_prime k) hc (by rw [rank_weight_component_eq]; exact hbig k) x κ hκ hn hfix
 
+/- English proof (translation)
+Take `⟨Φ, -, -, -, -, h3, -⟩` from `GlobalTheory.T.levels_read_on_product_primeFieldGL D G Pl0 T A Ks R F h.grp false`. Use `h3 1 (Or.inl fun v => by simp)` as an intermediate fact. Rewrite `this` using `[map_one]`. Then use the resulting hypothesis.
+-/
 theorem unipAt_one (h : HidaSetting R F) : UnipAt R 1 := by
   obtain ⟨Φ, -, -, -, -, h3, -⟩ := GlobalTheory.T.levels_read_on_product_primeFieldGL D G Pl0 T A Ks R F h.grp false
   have := h3 1 (Or.inl fun v => by simp)
   rwa [map_one] at this
 
+/- English proof (translation)
+Take `⟨Φ, L₁, L₂, h1, -, h3, -⟩` from `GlobalTheory.T.levels_read_on_product_primeFieldGL D G Pl0 T A Ks R F h.grp b`. Conclude with `h3 g (Or.inl fun v => GlobalTheory.BadShare.Basic.isNilpotent_of_isUp (((h1 g).1 hg).1 v).1)`.
+-/
 theorem unipAt_of_mem (h : HidaSetting R F) (b : Bool) {g : G} (hg : g ∈ (F.lvl b).P) : UnipAt R (R.eG g) := by
   obtain ⟨Φ, L₁, L₂, h1, -, h3, -⟩ := GlobalTheory.T.levels_read_on_product_primeFieldGL D G Pl0 T A Ks R F h.grp b
   exact h3 g (Or.inl fun v => GlobalTheory.BadShare.Basic.isNilpotent_of_isUp (((h1 g).1 hg).1 v).1)
 
+/- English proof (translation)
+Use `(Subgroup.eq_bot_iff_forall _).2 fun u hu => ?_` and prove the remaining obligations. Take `⟨k, PP, hc, hn⟩` from `unipAt_one h`. Establish `h2 : rTup (R.βW i) (R.datWp i R.triv) (conjIn D.sp.cm (Wc D i).gram (rep c : UA D.sp.cm (Wc D i).gram) u) = 1` using `hu.2`. Conclude with `eq_one_of_unipotent (L := R.datWp i R.triv) (unimod_last h hi).1 (unimod_last h hi).2 (rank_weight_component_eq i).symm PP (D.host.g_prime k) hc (by rw [rank_weight_component_eq]; exact hbig k) u (rep c) hu.1 (by rw [h2]; exact hn)`.
+-/
 theorem gam_last (h : HidaSetting R F) (hbig : ∀ k, Module.finrank ℚ D.host.E * D.R.r + 1 < D.host.g k) {i : Fin D.R.m}
     (hi : (i : ℕ) + 1 = D.R.m) (c : Cls R i) : Gam c = ⊥ := by
   refine (Subgroup.eq_bot_iff_forall _).2 fun u hu => ?_
@@ -226,6 +297,19 @@ theorem gam_last (h : HidaSetting R F) (hbig : ∀ k, Module.finrank ℚ D.host.
   exact eq_one_of_unipotent (L := R.datWp i R.triv) (unimod_last h hi).1 (unimod_last h hi).2 (rank_weight_component_eq i).symm PP
     (D.host.g_prime k) hc (by rw [rank_weight_component_eq]; exact hbig k) u (rep c) hu.1 (by rw [h2]; exact hn)
 
+/- English proof (translation)
+Establish `hM` using `allPlus_last h hi`. Use `haveI hfin : Finite (Cls R i) := class_set_finite _ _ D.sp.cm ℂ _ _ _ _ _ (unimod_last h hi).1 (unimod_last h hi).2`. Use `haveI : Finite (Cl D.sp.cm (Wc D i).gram (lev D.sp.cm (Wc D i).gram (R.βW i) (flag1L (R.datWp i R.triv)))) := hfin`. Use `haveI hne : Nonempty (Cls R i) := ⟨clsOf R i 1⟩`. Take `⟨h1, h2, h3⟩` from `principal_count (θ := R.θ) (R.MW i (sg0 D A)) (β := R.βW i) (L := R.datWp i R.triv) h.models.inf (D.sp.W_sig _) (fun τ => Or.inl (posDef_last hi τ)) hM (fun x => (levFn_eq_one_chainMember_flags_trivial i x).1) (gam_last h hbig hi)`.
+
+Establish `hfd` using `fun τ => (GlobalTheory.DefLift.AllPlus.finite_smooth_irreducible D _ _ _ hM τ).1`. Establish `hρ : 1 ≤ dimRho R i`. Use `Finset.prod_pos (f := fun ρ => Module.finrank ℂ ((R.MW i (sg0 D A)).H ρ)) fun τ _ => ?_` and prove the remaining obligations. Use `haveI := hfd τ`. Use `haveI := ((R.MW i (sg0 D A)).ds τ).2.1`.
+
+Conclude with `Module.finrank_pos`. Establish `hK : dK R i = Nat.card (Cls R i) * dimRho R i` using `h2`. Take `⟨e1, e2, -⟩` from `h.models.HW i (sg0 D A)`. Use `⟨⟨hfin, hne, gam_last h hbig hi, hfd, hρ, h1, hK, ?_⟩, ?_, fun g hg hn => ?_⟩` and prove the remaining obligations. Rewrite using `[hK]`.
+
+Conclude with `Nat.mul_pos Nat.card_pos hρ`. Rewrite using `[dK, ← e2, LinearMap.finrank_range_of_inj e1]`. Establish `hl` using `GlobalTheory.GeoActRoad.levelLiftsExist_gridVertexSpaces h.lev i (R.eG g)`. Use `h3 _ _ e1 e2 _ hl.choose (fun x v y => ?_) fun y e => hg ?_` and prove the remaining obligations. Rewrite using `[h.models.gW] show actG0 _ _ _ _ _ y = _`.
+
+Unfold `actG0`. Rewrite using `[dif_pos hl, levChi, (levFn_eq_one_chainMember_flags_trivial i _).2, Units.val_one, inv_one, one_mul]`. Establish `hk` using `hl.choose_spec`. Use `fixed_last h hbig hi (finU _ y) (finU _ hl.choose) hk.2.1 (by rw [coe_finU, hk.2.2]; exact hn) (by rw [← map_mul]; exact e)` as an intermediate fact. Rewrite `this` using `[coe_finU, hk.2.2]`.
+
+Conclude with `R.eG.injective (this.trans (map_one _).symm)`.
+-/
 theorem principal_last (h : HidaSetting R F) (hbig : ∀ k, Module.finrank ℚ D.host.E * D.R.r + 1 < D.host.g k) {i : Fin D.R.m}
     (hi : (i : ℕ) + 1 = D.R.m) : PrincipalCount R i ∧ Module.finrank ℂ (R.HW i (sg0 D A)).H = dK R i ∧
       ∀ g : G, g ≠ 1 → UnipAt R (R.eG g) → LinearMap.trace ℂ _ (R.gW i (sg0 D A) g) = 0 := by
@@ -258,10 +342,26 @@ theorem principal_last (h : HidaSetting R F) (hbig : ∀ k, Module.finrank ℚ D
       rw [coe_finU, hk.2.2] at this
       exact R.eG.injective (this.trans (map_one _).symm)
 
+/- English proof (translation)
+The claim follows from `sgAt_mk _ R.hv0`.
+-/
 theorem sign_at_base_place_eq_embedding (R : RealDat D A Ks) : sg0 D A = D.what₂.embLL := sgAt_mk _ R.hv0
 
 def chiB (F : Face D A) (b : Bool) : (F.lvl b).P →* ℂˣ := (Units.map (sg0 D A).toMonoidHom).comp (F.lvl b).ψ⁻¹
 
+/- English proof (translation)
+Take `⟨e1, e2, -⟩` from `h.models.HW i (sg0 D A)`. Establish `key` using `fun U => GlobalTheory.LevelRowsObj.mem_mult_withP_iff (GlobalTheory.GeoActRoad.levelLiftsExist_gridVertexSpaces h.lev i) R.θ (R.MW i (sg0 D A)) (levB R F b) U`. Establish `hχ : ∀ (g : (F.lvl b).P) (hg : R.eG g ∈ (levB R F b).H), (levB R F b).chi ⟨R.eG g, hg⟩ = chiB F b g`. Introduce `g hg`. Use `show Units.map (sg0 D A).toMonoidHom ((F.lvl b).ψ⁻¹ ⟨R.eG.symm (R.eG g), hg⟩) = Units.map (sg0 D A).toMonoidHom ((F.lvl b).ψ⁻¹ g)`.
+
+Use `congr 2`. Conclude with `Subtype.ext (R.eG.symm_apply_apply g)`. Use extensionality with `U`. Prove the components needed by the constructor for the conclusion. Introduce `hU`.
+
+Take `⟨h1, h2⟩` from `(key U).1 hU`. Take `⟨x, rfl⟩ : U ∈ LinearMap.range (R.HW i (sg0 D A)).e` from `e2.ge h1`. Use `⟨x, mem_eig.2 fun g => e1 ?_, rfl⟩` and prove the remaining obligations. Establish `hg : R.eG g ∈ (levB R F b).H` using `by show R.eG.symm (R.eG g) ∈ (F.lvl b).P`. Rewrite using `[R.eG.symm_apply_apply]`.
+
+Conclude with `g.2`. Rewrite using `[h.models.gW, map_smul, ← hχ g hg]`. Conclude with `h2 ⟨_, hg⟩`. Introduce and unpack `⟨x, hx, rfl⟩`. Use `(key _).2 ⟨e2.le (LinearMap.mem_range_self _ x), fun p => ?_⟩` and prove the remaining obligations.
+
+Take `⟨p, hp⟩` from `p`. Take `⟨g, rfl⟩` from `R.eG.surjective p`. Establish `hg : g ∈ (F.lvl b).P`. Establish `: R.eG.symm (R.eG g) ∈ (F.lvl b).P` using `hp`. Rewrite `this` using `[R.eG.symm_apply_apply]`. Then use the resulting hypothesis.
+
+Use `congrArg (R.HW i (sg0 D A)).e (mem_eig.1 hx ⟨g, hg⟩)` as an intermediate fact. Rewrite `this` using `[h.models.gW, map_smul, ← hχ ⟨g, hg⟩ hp]`. Conclude with `this`.
+-/
 theorem allAt_eq (h : HidaSetting R F) (b : Bool) (i : Fin D.R.m) :
     allAt R F b i = (eig (R.gW i (sg0 D A)) (F.lvl b).P fun g => ((chiB F b g : ℂˣ) : ℂ)).map (R.HW i (sg0 D A)).e := by
   obtain ⟨e1, e2, -⟩ := h.models.HW i (sg0 D A)
@@ -294,6 +394,15 @@ theorem allAt_eq (h : HidaSetting R F) (b : Bool) (i : Fin D.R.m) :
     rw [h.models.gW, map_smul, ← hχ ⟨g, hg⟩ hp] at this
     exact this
 
+/- English proof (translation)
+Take `⟨e1, -, -⟩` from `h.models.HW i (sg0 D A)`. Establish `key : ∀ x, (R.HW i (sg0 D A)).e ((∑ g : G, RealDat.eC (A` using `A) (sg0 D A) g • R.gW i (sg0 D A) g) x) = postOn (R.MW i (sg0 D A)) (R.eWf i (sg0 D A)) ((R.HW i (sg0 D A)).e x) := by`. Introduce `x`. Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply, map_sum, map_smul, h.models.gW i (sg0 D A)]`. Use extensionality with `v y`.
+
+Simplify using `[postOn, RealDat.eWf, gaL, LinearMap.sum_apply]`. Both sides reduce to the same expression. Establish `e0 : R.Wat i (sg0 D A) (levB R F b) = allAt R F b i ⊓ LinearMap.ker (postOn (R.MW i (sg0 D A)) (R.eWf i (sg0 D A)) - LinearMap.id)` using `rfl`. Rewrite using `[e0, allAt_eq h]`. Use extensionality with `U`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨x, hx, rfl⟩, h2⟩`. Use `⟨x, ⟨hx, e1 ?_⟩, rfl⟩` and prove the remaining obligations. Rewrite using `[LinearMap.sub_apply, map_sub, key, map_zero]`. Conclude with `h2`.
+
+Introduce and unpack `⟨x, ⟨hx, h2⟩, rfl⟩`. Use `⟨⟨x, hx, rfl⟩, ?_⟩` and prove the remaining obligations. Use `congrArg (R.HW i (sg0 D A)).e (LinearMap.mem_ker.1 h2)` as an intermediate fact. Rewrite `this` using `[LinearMap.sub_apply, map_sub, key, map_zero]`. Conclude with `this`.
+-/
 theorem wat_eq (h : HidaSetting R F) (b : Bool) (i : Fin D.R.m) :
     R.Wat i (sg0 D A) (levB R F b) = ((eig (R.gW i (sg0 D A)) (F.lvl b).P fun g => ((chiB F b g : ℂˣ) : ℂ)) ⊓
       LinearMap.ker ((∑ g : G, RealDat.eC (A := A) (sg0 D A) g • R.gW i (sg0 D A) g) - LinearMap.id)).map
@@ -321,17 +430,32 @@ theorem wat_eq (h : HidaSetting R F) (b : Bool) (i : Fin D.R.m) :
     rw [LinearMap.sub_apply, map_sub, key, map_zero] at this
     exact this
 
+/- English proof (translation)
+Rewrite using `[d0, allAt_eq h]`. Conclude with `(Submodule.equivMapOfInjective _ (h.models.HW i (sg0 D A)).1 _).finrank_eq.symm`.
+-/
 theorem d0_eq (h : HidaSetting R F) (b : Bool) (i : Fin D.R.m) :
     d0 R F b i = Module.finrank ℂ (eig (R.gW i (sg0 D A)) (F.lvl b).P fun g => ((chiB F b g : ℂˣ) : ℂ)) := by
   rw [d0, allAt_eq h]
   exact (Submodule.equivMapOfInjective _ (h.models.HW i (sg0 D A)).1 _).finrank_eq.symm
 
+/- English proof (translation)
+Rewrite using `[dGood, wat_eq h]`. Conclude with `(Submodule.equivMapOfInjective _ (h.models.HW i (sg0 D A)).1 _).finrank_eq.symm`.
+-/
 theorem dGood_eq (h : HidaSetting R F) (b : Bool) (i : Fin D.R.m) :
     dGood R F b i = Module.finrank ℂ ((eig (R.gW i (sg0 D A)) (F.lvl b).P fun g => ((chiB F b g : ℂˣ) : ℂ)) ⊓
       LinearMap.ker ((∑ g : G, RealDat.eC (A := A) (sg0 D A) g • R.gW i (sg0 D A) g) - LinearMap.id) : Submodule ℂ _) := by
   rw [dGood, wat_eq h]
   exact (Submodule.equivMapOfInjective _ (h.models.HW i (sg0 D A)).1 _).finrank_eq.symm
 
+/- English proof (translation)
+Take `⟨hP, hdim, htr⟩` from `principal_last h hbig hi`. Establish `htr' : ∀ g ∈ (F.lvl b).P, g ≠ 1 → LinearMap.trace ℂ _ (R.gW i (sg0 D A) g) = 0` using `fun g hg h1 => htr g h1 (unipAt_of_mem h b hg)`. Establish `h0 : Nat.card (F.lvl b).P * d0 R F b i = dK R i`. Rewrite using `[d0_eq h, ← hdim]`. Conclude with `GlobalTheory.T.card_mul_finrank_subgroupEigenspace_of_trace_vanishes G _ _ _ _ htr'`.
+
+Use `⟨⟨fun u hu => ?_, fun x κ hκ e => ?_⟩, ?_, h0, ?_⟩` and prove the remaining obligations. Take `⟨κ, -, h2, h3⟩` from `GlobalTheory.GeoActRoad.levelLiftsExist_gridVertexSpaces h.lev i u`. Establish `h3' : rTup (R.βW i) (R.datWp i (levB R F b)) (finE (Wc D i) κ) = u` using `h3`. Conclude with `⟨finE (Wc D i) κ, ⟨h2, h3'.symm ▸ hu⟩, h3'⟩`. Use `fixed_last h hbig hi x κ hκ.1 ?_ e` and prove the remaining obligations.
+
+Establish `h1 : R.eG.symm (rTup (R.βW i) (R.datWp i R.triv) (κ : GL (Fin (Wc D i).rank) (EAf D))) ∈ (F.lvl b).P` using `hκ.2`. Use `unipAt_of_mem h b h1` as an intermediate fact. Conclude with `(R.eG.apply_symm_apply _).subst (motive := UnipAt R) this`. Rewrite using `[← hdim]`. Conclude with `GlobalTheory.T.free_monoidAlgebra_of_character_vanishes_off_one _ _ (repB R F b i) fun g hg => htr' g g.2 fun e => hg (Subtype.ext e)`.
+
+Use `hP.2.2.2.2.2.2.2` as an intermediate fact. Rewrite `this` using `[← h0]`. Conclude with `Nat.pos_of_mul_pos_left this`.
+-/
 theorem free_last (h : HidaSetting R F) (hbig : ∀ k, Module.finrank ℚ D.host.E * D.R.r + 1 < D.host.g k) {i : Fin D.R.m}
     (hi : (i : ℕ) + 1 = D.R.m) (b : Bool) : ActsFreely R F b i ∧ FreeCount R F b i := by
   obtain ⟨hP, hdim, htr⟩ := principal_last h hbig hi
@@ -356,6 +480,9 @@ theorem free_last (h : HidaSetting R F) (hbig : ∀ k, Module.finrank ℚ D.host
 
 end Record
 
+/- English proof (translation)
+Introduce `D L hP G _ _ Pl0 T A Ks _ _ _ R F h i hi`. Establish `hbig` using `fun k => (GlobalTheory.T.typePrime_large_and_one_mod_sixteen_q_d D L hP k).1`. Conclude with `⟨(principal_last h hbig hi).1, free_last h hbig hi⟩`.
+-/
 theorem definiteFree : DefiniteFree := by
   intro D L hP G _ _ Pl0 T A Ks _ _ _ R F h i hi
   have hbig := fun k => (GlobalTheory.T.typePrime_large_and_one_mod_sixteen_q_d D L hP k).1
@@ -363,6 +490,31 @@ theorem definiteFree : DefiniteFree := by
 
 open Classical GlobalTheory.BadShare in
 
+/- English proof (translation)
+Introduce `eps heps`. Distinguish the cases in `h1 : eps ≤ 1`. Use `swap`. Conclude with `⟨0, fun D L _ he => absurd (by have := L.sc.eps_lt; linarith) h1⟩`. Take `⟨x₀, hx₀⟩` from `UpperTheory.Win.badShare_win eps 5 heps h1`.
+
+Use `⟨max (max x₀ (Real.exp 209)) 16, fun D L hP he hx hS hE G _ _ Pl0 T A Ks _ _ _ R F h i hi b => ?_⟩` and prove the remaining obligations. Substitute `he` using the available equality. Establish `hnum` using `GlobalTheory.T.typePrime_large_and_one_mod_sixteen_q_d D L hP`. Establish `hbig` using `fun k => (hnum k).1`. Take `⟨hPC, hdim, htr⟩` from `principal_last h hbig hi`.
+
+Establish `hd0` using `(free_last h hbig hi b).2.2.2`. Establish `hsz` using `GlobalTheory.sizes_record_at L hS 5 le_rfl ((le_max_right _ _).trans hx)`. Establish `hr : 0 < D.R.r` using `by have := (hsz 0).2.2.2.2.1; omega`. Establish `hτ : ∀ k : Fin 2, ∃ τ : (ZMod (D.host.g k))[X] → GG (D.host.g k) D.R.r → ℂ, IsSeries τ ∧ ∀ f ∈ sqSet (D.host.g k) D.R.r, ∀ x, (D.ntypes.eSer k f).coeff x = zc (τ f) x`. Introduce `k`.
+
+Take `⟨Lb, -, hLb⟩` from `hE k`. Take `⟨τ, h1, h2⟩` from `GlobalTheory.T.exists_genericSeries_squarefreeLabels hG.green (D.host.g k) Lb D.R.r (le_trans (by norm_num) (hnum k).2.2.2.2.2.2.2.2) hr`. Conclude with `⟨τ, h1, fun f hf x => by rw [hLb]; convert h2 f hf x⟩`. Use `choose τ hτ1 hτ2 using hτ`. Take `⟨Φ, L₁, L₂, l1, l2, l3, l4⟩` from `GlobalTheory.T.levels_read_on_product_primeFieldGL D G Pl0 T A Ks R F h.grp b`.
+
+Establish `hez` using `GlobalTheory.T.coeff_e0_eq_eGood_mul_eGood D τ (fun k f hf x => by convert hτ2 k f hf x)`. Use `set c : GProd D → ℂ := tens2 (eGood (fun _ => τ 0) (D.nd.chiT 0)) (eGood (fun _ => τ 1) (D.nd.chiT 1)) with hc`. Establish `hcΦ : ∀ g, c (Φ g) = RealDat.eC (A` using `A) (sg0 D A) g := by`. Introduce `g`. Set `γ : G0g D.nd` to `fun kv => match kv with`.
+
+Consider the case `⟨0, v⟩ => (Φ g).1 v`. Consider the case `⟨1, v⟩ => (Φ g).2 v`. Rewrite using `[RealDat.eC, sign_at_base_place_eq_embedding R, l4 g γ (fun _ => rfl) (fun _ => rfl), hez γ]`. Both sides reduce to the same expression. Establish `p0` using `eGood_isProj_central _ _ _ _ (fun _ : D.nd.PlG 0 => τ 0) (D.nd.chiT 0) fun _ => hτ1 0`.
+
+Establish `p1` using `eGood_isProj_central _ _ _ _ (fun _ : D.nd.PlG 1 => τ 1) (D.nd.chiT 1) fun _ => hτ1 1`. Establish `hcc : conv c c = c` using `(Basic.isProj_tens2 p0.1 p1.1).1`. Establish `hcz : ∀ a, conv c a = conv a c` using `central_tens2 p0.2 p1.2`. Take `⟨r1, r2⟩` from `GlobalTheory.T.range_levelIdempotentProduct_and_centralProduct _ _ _ _ _ G _ Φ L₁ L₂ (F.lvl b).P (fun g => ((chiB F b g : ℂˣ) : ℂ)) (R.gW i (sg0 D A)) c l1 (fun g => by rw [← l2 g, ← sign_at_base_place_eq_embedding R]; rfl) hcc hcz`. Use `haveI : Nontrivial (R.HW i (sg0 D A)).H := Module.finrank_pos_iff.1 (by rw [hdim]; exact hPC.2.2.2.2.2.2.2)`.
+
+Establish `hcount : CountAt (M` using `(R.HW i (sg0 D A)).H) ((R.gW i (sg0 D A)).comp Φ.symm.toMonoidHom) 0 := by`. Use `Basic.countAt_of_trace_eq_zero _ fun γ hγ hu => ?_` and prove the remaining obligations. Take `⟨g, rfl⟩` from `Φ.surjective γ`. Use `htr g (fun e => hγ (by rw [e, map_one])) (l3 g hu)` as an intermediate fact. Simplify using `using this`.
+
+Establish `hx1` using `L.sc.one_lt_alt`. Establish `hre : L.sc.x ^ L.sc.eps ≤ (D.R.r : ℝ)`. Establish `a1 : L.sc.x ^ L.sc.eps ≤ L.sc.x ^ (2 : ℝ)` using `Real.rpow_le_rpow_of_exponent_le hx1.le (by linarith)`. Establish `a2` using `(hsz 0).2.1`. Establish `a3 : D.R.f ≤ D.R.r`.
+
+Establish `b1 : D.R.f ≤ D.R.k` using `D.R.f_le_k`. Use `D.R.two_le_m` as an intermediate fact. Unfold `Ranks.r`. Use linear arithmetic over natural numbers and integers. Establish `a4 : (D.R.f : ℝ) ≤ D.R.r` using `by exact_mod_cast a3`.
+
+Rewrite `a1` using `[Real.rpow_two]`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨del, -, hdel, hsh⟩` from `hx₀ L.sc.x (((le_max_left _ _).trans (le_max_left _ _)).trans hx) L.sc.ez L.sc.ez_le _ _ D.R.r D.R.m D.host.q D.host.d D.R.f (D.nd.PlG 0) (D.nd.PlG 1) (D.nd.card_PlG 0) (D.nd.card_PlG 1) (hnum 0).2 (hnum 1).2 (hsz 0).1 (hsz 1).1 (by rw [Real.rpow_two]; exact (hsz 0).2.1) (hsz 0). …`. Establish `hsum : ∑ g : G, c (Φ g) • R.gW i (sg0 D A) g = ∑ g : G, RealDat.eC (A` using `A) (sg0 D A) g • R.gW i (sg0 D A) g := Finset.sum_congr rfl fun g _ => by rw [hcΦ g]`. Rewrite `r2` using `[hsum]`.
+
+Rewrite `hsh` using `[rk, rk, r1, r2, ← d0_eq h, ← dGood_eq h]`. Establish `hd0' : (1 : ℝ) ≤ d0 R F b i` using `by exact_mod_cast hd0`. Establish `hlt : Real.exp (-(L.sc.x ^ (L.sc.ez / 7))) < 1` using `Real.exp_lt_one_iff.2 (neg_lt_zero.2 (Real.rpow_pos_of_pos (by linarith) _))`. Conclude with `⟨le_trans (mul_le_mul_of_nonneg_right (by linarith) (by linarith)) hsh, mul_pos (by linarith) (by linarith)⟩`.
+-/
 theorem definiteGoodShare (hG : GlobalTheory.Published.GreenCuspidal) : DefiniteGoodShare := by
   intro eps heps
   by_cases h1 : eps ≤ 1
@@ -433,6 +585,9 @@ theorem definiteGoodShare (hG : GlobalTheory.Published.GreenCuspidal) : Definite
     Real.exp_lt_one_iff.2 (neg_lt_zero.2 (Real.rpow_pos_of_pos (by linarith) _))
   exact ⟨le_trans (mul_le_mul_of_nonneg_right (by linarith) (by linarith)) hsh, mul_pos (by linarith) (by linarith)⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨definiteFree, definiteGoodShare hG⟩`.
+-/
 theorem goodVectorsDefinite (hG : GlobalTheory.Published.GreenCuspidal) : GoodVectorsDefinite := ⟨definiteFree, definiteGoodShare hG⟩
 
 end GlobalTheory.DefFree

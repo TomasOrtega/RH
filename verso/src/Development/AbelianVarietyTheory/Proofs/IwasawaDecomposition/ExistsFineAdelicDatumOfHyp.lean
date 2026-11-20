@@ -44,6 +44,15 @@ open Formalism.L2.Pj GlobalTheory.AtMember
 
 namespace GlobalTheory.Mem.R3.Rw
 
+/- English proof (translation)
+Introduce `a b P hP P' hP' hq`. Take `⟨q, hq, hqP, hqP'⟩` from `hq`. Take `⟨v, -, rfl⟩` from `(Formalism.L2.Col.mem_QE _ _ _).1 hP`. Take `⟨v', -, rfl⟩` from `(Formalism.L2.Col.mem_QE _ _ _).1 hP'`. Establish `hab : ∀ v, (w.I.sel v).under (𝓞 B.host.F) = v` using `fun v => by`.
+
+Establish `h` using `p.above v`. Unfold `Formalism.L2.Host.aboveF at h`. Rewrite `h` using `[Set.Finite.mem_toFinset]`. Conclude with `h`. Establish `hmem : ∀ v, ((q : 𝓞 B.host.E) ∈ (w.I.sel v).asIdeal) → (q : 𝓞 B.host.F) ∈ v.asIdeal` using `fun v h => by`.
+
+Rewrite using `[← hab v]`. Use `show (q : 𝓞 B.host.F) ∈ (w.I.sel v).asIdeal.comap (algebraMap _ _)`. Rewrite using `[Ideal.mem_comap, map_natCast]`. Conclude with `h`. Use `p.half v v' q hq (hmem v hqP) (hmem v' hqP')` as an intermediate fact.
+
+Conclude with `congrArg HeightOneSpectrum.asIdeal this`.
+-/
 theorem selHalf_of_pin {B : Base} {f : Fr B.toPre} {T : TwDat B} {w : ColW B f T} (p : ColPin w) : SelHalf w.I := by
   intro a b P hP P' hP' hq
   obtain ⟨q, hq, hqP, hqP'⟩ := hq
@@ -62,12 +71,18 @@ theorem selHalf_of_pin {B : Base} {f : Fr B.toPre} {T : TwDat B} {w : ColW B f T
   have := p.half v v' q hq (hmem v hqP) (hmem v' hqP')
   exact congrArg HeightOneSpectrum.asIdeal this
 
+/- English proof (translation)
+Substitute `hP` using the available equality. Take `rfl` from `eq_of_heq h`. Conclude with `h'`.
+-/
 theorem isIdG_of_heq' (X : Stages) {px : PreX X.B.toPre} {Pg Pg' : Finset (Pl X.toD7.host.E)} (e : Gc X.B px ≃* G0 Pg X.toD7.R.r)
     (e' : Gc X.B px ≃* G0 Pg' X.toD7.R.r) (hP : Pg = Pg') (h : HEq e e') (h' : IsPlacewiseIdentity X (px := px) e') : IsPlacewiseIdentity X (px := px) e := by
   subst hP
   obtain rfl := eq_of_heq h
   exact h'
 
+/- English proof (translation)
+Substitute `hP` using the available equality. Take `rfl` from `eq_of_heq h`. Take `rfl` from `eq_of_heq hc`. Both sides reduce to the same expression.
+-/
 theorem trans_eq_of_heq' (X : Stages) {px : PreX X.B.toPre} {Pg Pg' : Finset (Pl X.toD7.host.E)} (e : Gc X.B px ≃* G0 Pg X.toD7.R.r)
     (e' : Gc X.B px ≃* G0 Pg' X.toD7.R.r) (c : G0 Pg X.toD7.R.r ≃* G0g X.toD7.nd) (c' : G0 Pg' X.toD7.R.r ≃* G0g X.toD7.nd)
     (hP : Pg = Pg') (h : HEq e e') (hc : HEq c c') : e.trans c = e'.trans c' := by
@@ -78,6 +93,25 @@ theorem trans_eq_of_heq' (X : Stages) {px : PreX X.B.toPre} {Pg Pg' : Finset (Pl
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Use `GlobalTheory.Mem.Top.V4.TwoPass.ev_mono ?_ (GlobalTheory.Mem.Top.V4.TwoPass.ev_and GlobalTheory.Mem.HostFrames.hostHyp_frames_ev (GlobalTheory.Mem.Top.V4.TwoPass.ev_and GlobalTheory.T.eventually_definiteSpaces_standard_and_large GlobalTheory.T.valsIn_and_fam3_ok_of_coefficientFie …` and prove the remaining obligations. Introduce and unpack `K ⟨hK, hKC, hO⟩`. Use `hO.imp ?_` and prove the remaining obligations. Introduce and unpack `B f T hOv hOB w ⟨pin⟩ Z hX _ hgrp hVol`. Use `set X : Stages := w.st Z with hXd`.
+
+Use `set I := w.I with hId`. Use `set Wt : Set B.places.Pl := {v | B.places.resChar v ∈ T.pl} with hWt`. Take `⟨hHH, -, -, hPos, hStd, hX', -, -⟩` from `hK X hOv`. Take `⟨hVS, hnV⟩` from `hKC X hOv`. Establish `hok` using `w.ok`.
+
+Establish `hC` using `w.C_eq`. Establish `hrange` using `w.xi_range`. Establish `hsel : SelHalf I` using `selHalf_of_pin pin`. Establish `hfin : Wt.Finite` using `GlobalTheory.Mem.Top.TwFin.finite_pl B T.pl`. Establish `hconj : ∀ v ∈ Wt, B.places.conj v ∈ Wt` using `fun v hv => by simpa only [hWt, Set.mem_setOf_eq, GlobalTheory.Mem.Top.TwFin.resChar_conj] using hv`.
+
+Establish `hch : Fld.charField f ≤ B.KsC` using `(GlobalTheory.Mem.Base.KsExact.lower w.exact).2.2.1`. Establish `hval : Formalism.L2.Host.ValLL0 X.toD7 (Fr.at X f)` using `w.val _ _ _ _ _ _`. Take `⟨C, alg, hPin, hCe, hCL, hCK, hCE, hLJ, hAT, hVal, hmu⟩` from `GlobalTheory.T.character_value_mem_smallField_of_infPart_eq_one X f hch hval hVol`. Establish `hLC` using `hPin.laws`. Establish `hpb` using `hPin.pb`.
+
+Take `⟨hVals, hOk3⟩` from `hOB w.px I hX hok hC hrange`. Establish `hrange' : Set.range I.xi = T.set I.C` using `by rw [hC]; exact hrange`. Take `⟨Xg, tr₀, R₀, cG, hLev, hIdG, hGood, hMu, hIdem, hPre0, hIn, hTup, hAll, hKeep, hBrg⟩` from `GlobalTheory.T.exists_analyticData_kept_clauses_columnChoices X w.px I hX T Wt C.Q.c.F h6 hfin hconj hok hrange' hsel hgrp hVals hHH hStd hX' hPos hCK hCE (fun L hL hLC' => hmu _ L _ hL (hLC'.trans (by rw [hC])))`. Establish `hValR : Formalism.L2.Host.ValLL X.toD7 R₀.C` using `by rw [hLev.C, hC]; exact hVal`. Establish `hpbR : C.pb = R₀.C.P.pb` using `by rw [hLev.C, hC]; exact hpb`.
+
+Establish `hExAt : ∀ R : RealDat X.toD7 (famR X I hX (usedOf I T Wt) Xg tr₀).A C.Q.c.F, R.Pre1 (face0 X I hX (usedOf I T Wt) Xg tr₀).lv2 → R.IsChainW → R.IsThPW → R.FullY → R.FullP → R.ExAt` using `fun R hP hc ht _ _ => GlobalTheory.T.intertwinersAndLifts_exist_at_choices h1 h2 h3 h4 X.toD7 _ _ _ _ _ R hP.1.lev hP.1.fam hP.2 hP.1.record hHH hc ht`. Establish `hfinT : Finite (TupU I (usedOf I T Wt))`. Establish `hs : ({τ | τ = (mu0F (X` using `X.B.fields) (tuOf I (usedOf I T Wt))).1 ∨ τ ∈ tuOf I (usedOf I T Wt)} : Set _).Finite := (Set.finite_singleton _).union (tuOf I (usedOf I T Wt)).finite_toSet`. Conclude with `hs.to_subtype`. Establish `hGeoEx` using `GlobalTheory.T.geometricExistence_core_forms_analytic_phaseOne h3 X.toD7 _ _ _ _ _ C (face0 X I hX (usedOf I T Wt) Xg tr₀).lv2 hVol hLJ hLC hAT hfinT hVS hnV`.
+
+Take `⟨tr, dict, mu, chiW, x₀, cE, R, cG', hPins, hEx, hLevEq, hEG, hCG, -, hmuEq, htw, hBrgI, hGeo⟩` from `GlobalTheory.StandardWeightCharacter.charW_seed_std X w.px I hX (usedOf I T Wt) Xg tr₀ C R₀ cG (GlobalTheory.T.linksAnalyticHypotheses_of_weilRep_harishChandra h5 h6 h7 h3 X.toD7) hIdem hExAt hGeoEx hValR hpbR hPre0 hIn hTup hAll hKeep`. Establish `hPg : R.Pg = R₀.Pg` using `congrArg LevCh.Pg hLevEq`. Establish `hRC : R.C = R₀.C` using `congrArg LevCh.C hLevEq`. Establish `hgood : GoodSet X (px` using `w.px) (R.eG.trans cG') Xg := by`. Rewrite using `[trans_eq_of_heq' X R.eG R₀.eG cG' cG hPg hEG hCG]`.
+
+Conclude with `hGood`. Set `z : Dat X I hX T Wt` to `{ Xg := Xg, tr := tr, core := GlobalTheory.RealGeo.reCore C dict mu chiW x₀ cE, alg := inferInstanceAs (Algebra C.Q.c.F X.toD7.what₂.LL), alg_eq := hCe, R := R, cG := cG', geo := hGeo.some, pins := hPins, lev := by rw [hLevEq]; exact hLev, idG := isIdG_of_heq' X R.eG R₀.eG hPg hE …`. Establish `hch'` using `hPins.char`. Establish `hPre : GlobalTheory.RealGeo.PreChar R.toRealDat` using `⟨hch'.base.lev, hch'.base.grp.red_R, hch'.base.grp.red_L, hch'.base.grp.record, hch'.base.fam, hch'.base.models, RealDat.chain_of_weak hch'.base.chain hEx, RealDat.thP_of_weak hch'.base.thP hEx⟩`. Establish `hP : CorePin (GlobalTheory.RealGeo.reCore C dict mu chiW x₀ cE).toCore (Fr.at X f).P.pb` using `hPin.reCore hGeo.some.fw.laws.toLawsM`.
+
+Use `⟨z, hEx, ?_, ⟨hP.laws, hP.canon, hP.rank, hP.pb⟩, hBrgI hBrg⟩` and prove the remaining obligations. Conclude with `(GlobalTheory.RealGeoIn.inGeo_and_lUnif_and_lIntegral h3 X.toD7 _ _ _ _ (GlobalTheory.RealGeo.reCore C dict mu chiW x₀ cE) R.toRealDat (fun _ => 1) hGeo.some hPre hch'.base.grp.chiW (by show C.pb = _; rw [hRC]; exact hpbR) hnV).1`.
+-/
 theorem datExS_evLg (h1 : GlobalTheory.Published.DiscreteSeriesCover) (h2 : GlobalTheory.Published.HarishChandraModules) (h3 : GlobalTheory.Published.CuspRapidDecay)
     (h4 : GlobalTheory.Published.CasselmanWallach) (h5 : GlobalTheory.Published.WeilRepresentationUnitaryPair) (h6 : GlobalTheory.Published.DiscreteSeriesExists)
     (h7 : GlobalTheory.Published.HarishChandraFinite) :
@@ -144,6 +178,9 @@ theorem datExS_evLg (h1 : GlobalTheory.Published.DiscreteSeriesCover) (h2 : Glob
   exact (GlobalTheory.RealGeoIn.inGeo_and_lUnif_and_lIntegral h3 X.toD7 _ _ _ _ (GlobalTheory.RealGeo.reCore C dict mu chiW x₀ cE) R.toRealDat
     (fun _ => 1) hGeo.some hPre hch'.base.grp.chiW (by show C.pb = _; rw [hRC]; exact hpbR) hnV).1
 
+/- English proof (translation)
+Introduce `h1 h2 h3 h4 h5 h6 h7` and use `GlobalTheory.Mem.Top.GroupRetwisting.Step.of_evLgG (GlobalTheory.Mem.Top.evLgG_of_evLg (datExS_evLg h1 h2 h3 h4 h5 h6 h7))`.
+-/
 theorem datExS_of_harishChandra_casselmanWallach : GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.HarishChandraModules → GlobalTheory.Published.CuspRapidDecay →
     GlobalTheory.Published.CasselmanWallach → GlobalTheory.Published.WeilRepresentationUnitaryPair → GlobalTheory.Published.DiscreteSeriesExists →
     GlobalTheory.Published.HarishChandraFinite → DatExS :=

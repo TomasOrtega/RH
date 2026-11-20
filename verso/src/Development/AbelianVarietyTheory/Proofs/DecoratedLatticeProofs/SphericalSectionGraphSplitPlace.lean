@@ -21,6 +21,13 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 open Formalism.UG (ordL)
 open Formalism.L2.Host (atFin unif unif_spec IsUnifAt IsUnitAt)
 
+/- English proof (translation)
+Establish `hy : Valued.v y.1 ≠ 0` using `by simp`. Establish `h0 : Valued.v y.1 = WithZero.exp (-ordL y.1)`. Rewrite using `[ordL, dif_neg hy, neg_neg]`. Conclude with `(WithZero.coe_unzero hy).symm`. Establish `h1 : IsUnitAt w (y * (atFin w (unif w)) ^ (-ordL y.1))`.
+
+Use `unif_spec w` as an intermediate fact. Unfold `IsUnifAt at this`. Unfold `IsUnitAt`. Rewrite using `[Units.val_mul, Units.val_zpow_eq_zpow_val, map_mul, map_zpow₀, this, ← WithZero.exp_zsmul]`. Use `nth_rewrite 1 [h0]`.
+
+Rewrite using `[← WithZero.exp_add]`. Simplify using the standard rewrite rules. Use `h _ h1` as an intermediate fact. Rewrite `this` using `[map_mul, map_zpow, zpow_neg, mul_inv_eq_one]`. Then use the resulting hypothesis.
+-/
 theorem locChar_eq_val_zpow {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {χ : (AF F ⊗[F] E)ˣ →* Circle} {w : HeightOneSpectrum (𝓞 E)} (h : UnrAt χ w) (y : (w.adicCompletion E)ˣ) :
     locChar χ w y = val χ w ^ ordL y.1 := by
@@ -39,6 +46,11 @@ theorem locChar_eq_val_zpow {F E : Type} [Field F] [NumberField F] [Field E] [Nu
   have := h _ h1
   rwa [map_mul, map_zpow, zpow_neg, mul_inv_eq_one] at this
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.Doubling.npow, h, Complex.ofReal_zpow, Complex.ofReal_natCast, ← Complex.cpow_intCast, ← Complex.cpow_mul]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← Complex.natCast_log, Complex.mul_im, Complex.ofReal_im, Complex.intCast_im]`.
+
+Simplify using `[Real.pi_pos]`. Rewrite using `[← Complex.natCast_log, Complex.mul_im, Complex.ofReal_im, Complex.intCast_im]`. Simplify using `[Real.pi_pos.le]`.
+-/
 theorem npow_zpow_neg {r : ℝ≥0} {q : ℕ} {m : ℤ} (h : (r : ℝ) = (q : ℝ) ^ (-m)) (z : ℂ) :
     GlobalTheory.Doubling.npow r z = (q : ℂ) ^ (-z * (m : ℂ)) := by
   rw [GlobalTheory.Doubling.npow, h, Complex.ofReal_zpow, Complex.ofReal_natCast, ← Complex.cpow_intCast,
@@ -50,6 +62,13 @@ theorem npow_zpow_neg {r : ℝ≥0} {q : ℕ} {m : ℤ} (h : (r : ℝ) = (q : �
 open GlobalTheory.AdelicU GlobalTheory.Doubling Formalism.UG in
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Establish `habs` using `GlobalTheory.T.norm_cmExtension_splitPlace_eq_zpow _ _ _ hc v w h w' h' hne x`. Establish `hch` using `GlobalTheory.T.ideleCharacterFinitePlaceComponent_eq_mul_of_split _ _ χ⁻¹ v w h w' h' hne hall x`. Establish `s1 : ∑ i, max (d i) 0 + -∑ i, min (d i) 0 = ∑ i, |d i|`. Rewrite using `[← Finset.sum_neg_distrib, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [abs_eq_max_neg]; omega`.
+
+Establish `s2 : ∑ i, max (d i) 0 + ∑ i, min (d i) 0 = ∑ i, d i`. Rewrite using `[← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun i _ => by omega`. Rewrite `habs` using `[o1, o2, s1]`. Rewrite `hch` using `[locChar_eq_val_zpow hU.inv, locChar_eq_val_zpow hU'.inv, val_inv, val_inv, ← Units.val_mul]`.
+
+Express the relevant statement in the definitionally equal form `_ = (((val χ w)⁻¹ ^ ordL (toCompl h x.1) * (val χ w')⁻¹ ^ ordL (toCompl h' x.1) : ℂˣ) : ℂ) at hch`. Rewrite `hch` using `[o1, o2, eq_inv_of_mul_eq_one_right hm, inv_inv, zpow_neg (val χ w), ← inv_zpow, ← zpow_add, s2, Units.val_zpow_eq_zpow_val]`. Rewrite using `[hch, npow_zpow_neg habs]`.
+-/
 theorem char_value {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     (hc : IsCMExt F E σ) {χ : (AF F ⊗[F] E)ˣ →* Circle} {v : HeightOneSpectrum (𝓞 F)}
     {w w' : HeightOneSpectrum (𝓞 E)} (h : w.under (𝓞 F) = v) (h' : w'.under (𝓞 F) = v) (hne : w ≠ w')
@@ -88,6 +107,17 @@ open GlobalTheory.LFun (locChar IsSplitChart IsInertChart KGL UnrAt)
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Introduce `D A L hL χ b hχ v hv hU s φ hφ w h e he ϖ hϖ d t ht k₁ hk₁ k₂ hk₂`. Use `haveI := hL.1`. Establish `hc` using `isCMExt_host D`. Take `⟨w', hne, hall, -⟩` from `GlobalTheory.LFun.SplitChart.exists_conj_place hc h hv`. Establish `h' : w'.under (𝓞 D.host.F) = v` using `(hall w').2 (Or.inr rfl)`.
+
+Establish `hm : GlobalTheory.LFun.val χ w * GlobalTheory.LFun.val χ w' = 1` using `GlobalTheory.LFun.ResEta.val_mul_val hc.2.2.1 ((GlobalTheory.LFun.resEta_iff χ _).1 hχ) hne h h' (hU w h) (hU w' h')`. Take `⟨f, hfK, hfi, hfP, hfa⟩` from `GlobalTheory.T.exists_doubled_unitary_chart_split_place _ _ _ hc A.rank A.gram (GlobalTheory.Doubling.isHermND_gram A) (dblSp A).gram (gram_hdbl A) L v w h hv (IwSplit.isSelfDualAt_of_isSelfDualC hL v) e he`. Take `⟨κ, hκ, hP, hl, hq⟩` from `GlobalTheory.T.exists_integral_keepsDoublingDiagonal_adicCompletion _ w A.rank ϖ hϖ d t k₁ k₂ ht hk₁ hk₂`. Establish `hp : f (ioAt A v (e.symm (k₁ * t * k₂)) * f.symm κ) = blkGL finSumFinEquiv (k₁ * t * k₂, 1) * κ`. Rewrite using `[map_mul, f.apply_symm_apply, ioAt, hfi, e.apply_symm_apply, map_one]`.
+
+Rewrite `hP`, `hl`, `hq` using `[← hp]`. Rewrite using `[← hφ.2.1 (f.symm κ) ((hfK _).2 (by rwa [f.apply_symm_apply]))]`. Generalize the expression as in `ioAt A v (e.symm (k₁ * t * k₂)) * f.symm κ = g at hP hl hq ⊢`. Take `⟨ha, ha'⟩` from `hfa ⟨g, (hfP g).2 hP⟩`. Establish `ha'` using `ha' w' h' hne`.
+
+Establish `law` using `(mem_degPSH.1 hφ.1).1 ⟨g, (hfP g).2 hP⟩ 1`. Generalize the expression as in `aH _ D.sp.cm.sig (dblSp A).gram ⟨g, (hfP g).2 hP⟩ = x at ha ha' law`. Establish `o1 : Formalism.UG.ordL (GlobalTheory.LFun.toCompl h x.1) = ∑ i, max (d i) 0` using `by rw [ha]; exact hl`. Establish `o2 : Formalism.UG.ordL (GlobalTheory.LFun.toCompl h' x.1) = -∑ i, min (d i) 0` using `by rw [ha']; exact congrArg _ hq`. Rewrite `law` using `[mul_one, hφ.2.2, mul_one]`.
+
+Use `law.trans ?_` and prove the remaining obligations. Rewrite using `[add_comm ((A.rank : ℂ) / 2) s]`. Conclude with `char_value hc h h' hne hall (hU w h) (hU w' h') hm d x o1 o2 _`.
+-/
 theorem sphSec_split : ∀ (D : D7) (A : HSp D) (L : Lat A), IsSelfDualC A L → ∀ (χ : (AE D)ˣ →* Circle) (b : ℕ), ResEta D χ b → ∀ v : FinPl D, Formalism.MainNotions.SchurIrreducible.IsSplit (E := D.host.E) v → (∀ w : HeightOneSpectrum (𝓞 D.host.E), w.under (𝓞 D.host.F) = v → UnrAt χ w) → ∀ (s : ℂ) (φ : Gv (dblSp A) v → ℂ), IsSphSecAt A L v χ⁻¹ s φ → ∀ (w : HeightOneSpectrum (𝓞 D.host.E)) (h : w.under (𝓞 D.host.F) = v) (e : Gv A v ≃* GL (Fin A.rank) (w.adicCompletion D.host.E)), IsSplitChart D.sp.cm.sig A.gram L h e → ∀ ϖ, IsUnifV D.host.E w ϖ → ∀ (d : Fin A.rank → ℤ) (t : GL (Fin A.rank) (w.adicCompletion D.host.E)), t.1 = Matrix.diagonal (fun i => ϖ ^ d i) → ∀ k₁ ∈ KGL w A.rank, ∀ k₂ ∈ KGL w A.rank, φ (ioAt A v (e.symm (k₁ * t * k₂))) = (((GlobalTheory.LFun.val χ w)⁻¹ : ℂˣ) : ℂ) ^ (∑ i, d i) * (qV D.host.E w : ℂ) ^ (-((A.rank : ℂ) / 2 + s) * ((∑ i, |d i| : ℤ) : ℂ)) := by
   intro D A L hL χ b hχ v hv hU s φ hφ w h e he ϖ hϖ d t ht k₁ hk₁ k₂ hk₂
   haveI := hL.1

@@ -17,5 +17,8 @@ open GlobalTheory.AutomorphicL2Unitary (IsTopIrreducible)
 open GlobalTheory.HCChar GlobalTheory.Published GlobalTheory.Published.Langlands
 open scoped InnerProductSpace Topology ENNReal ComplexConjugate
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.Published.pseudoCoefficientUpq_of_hypotheses | exact GlobalTheory.Published.pseudoCoefficientUpq_of_hypotheses | (intros; apply GlobalTheory.Published.pseudoCoefficientUpq_of_hypotheses <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.pseudo_coefficient_unitary_pq : GlobalTheory.Published.IrreducibleUnitaryAdmissible → GlobalTheory.Published.KFiniteCoefficientsAnalytic → GlobalTheory.Published.CharacterRegularityFiniteLength → GlobalTheory.Published.PseudoCoefficientExistence → GlobalTheory.Published.CuspidalOrbitalIntegrals → GlobalTheory.Published.PseudoCoefficientUpq := by
   first | exact @GlobalTheory.Published.pseudoCoefficientUpq_of_hypotheses | exact GlobalTheory.Published.pseudoCoefficientUpq_of_hypotheses | (intros; apply GlobalTheory.Published.pseudoCoefficientUpq_of_hypotheses <;> assumption)

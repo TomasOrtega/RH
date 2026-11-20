@@ -4,6 +4,19 @@ namespace GlobalTheory
 
 open Module
 
+/- English proof (translation)
+Take `⟨n, ⟨bW⟩⟩ : ∃ n, Nonempty (Basis (Fin n) K W)` from `⟨_, ⟨Module.finBasis K W⟩⟩`. Establish `hli : LinearIndependent K (fun j => (bW j : A))` using `bW.linearIndependent.map' W.subtype (Submodule.ker_subtype W)`. Establish `hli'` using `hW n (fun j => (bW j : A)) (fun j => (bW j).2) hli`. Establish `hcoord : ∃ α : ι → Fin n → K, ∀ s, x s = ∑ j, α s j • (bW j : A)`. Use `⟨fun s j => bW.repr ⟨x s, hx s⟩ j, fun s => ?_⟩` and prove the remaining obligations.
+
+Establish `h1` using `congrArg (fun v : W => (v : A)) (bW.sum_repr ⟨x s, hx s⟩)`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul] at h1`. Conclude with `h1.symm`. Take `⟨α, hα⟩` from `hcoord`. Establish `hrdx : ∀ s, rd (x s) = ∑ j, σ (α s j) • rd (bW j : A)`.
+
+Introduce `s`. Rewrite using `[hα s, map_sum]`. Simplify using `only [hrd]`. Establish `hcoef : ∀ j, ∑ s, c s * σ (α s j) = 0`. Establish `h' : ∑ j, (∑ s, c s * σ (α s j)) • rd (bW j : A) = 0`.
+
+Rewrite using `[← h]`. Simplify using `only [hrdx, Finset.smul_sum, smul_smul, Finset.sum_smul]`. Conclude with `Finset.sum_comm`. Conclude with `fun j => Fintype.linearIndependent_iff.mp hli' _ h' j`. Establish `hgoal : ∑ s, φ (c s) • x s = ∑ j, (∑ s, φ (c s) * α s j) • (bW j : A)`.
+
+Simplify using `only [hα, Finset.smul_sum, smul_smul, Finset.sum_smul]`. Conclude with `Finset.sum_comm`. Rewrite using `[hgoal]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Establish `h5 : ∑ s, φ (c s) * α s j = φ (∑ s, c s * σ (α s j))`.
+
+Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm (c s), hφ]`. Conclude with `mul_comm _ _`. Rewrite using `[h5, hcoef j, map_zero, zero_smul]`.
+-/
 theorem relation_descends_along_functional (K A B : Type) [Field K] [CommRing A] [Algebra K A]
     [CommRing B] [Algebra ℂ B] (σ : K →+* ℂ) (rd : A →+* B)
     (hrd : ∀ (a : K) (f : A), rd (a • f) = σ a • rd f) (W : Submodule K A) [FiniteDimensional K W]
@@ -45,6 +58,11 @@ theorem relation_descends_along_functional (K A B : Type) [Field K] [CommRing A]
     exact mul_comm _ _
   rw [h5, hcoef j, map_zero, zero_smul]
 
+/- English proof (translation)
+Set `_ : Algebra K ℂ` to `σ.toAlgebra`. Choose the witnesses or unpack the hypotheses as in `⟨f, hf⟩ : ∃ f : Module.Dual K ℂ, f m ≠ 0 := by`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Conclude with `hm ((Module.forall_dual_apply_eq_zero_iff K m).mp hcon)`.
+
+Use `⟨f.toAddMonoidHom, fun a c => ?_, hf⟩` and prove the remaining obligations. Establish `hsmul : σ a * c = a • c`. Rewrite using `[Algebra.smul_def, RingHom.algebraMap_toAlgebra]`. Simplify using `only [LinearMap.toAddMonoidHom_coe, hsmul, LinearMap.map_smul, smul_eq_mul]`.
+-/
 theorem exists_functional_ne_zero_of_embedding (K : Type) [Field K] (σ : K →+* ℂ) (m : ℂ)
     (hm : m ≠ 0) : ∃ φ : ℂ →+ K, (∀ (a : K) (c : ℂ), φ (σ a * c) = a * φ c) ∧ φ m ≠ 0 := by
   let _ : Algebra K ℂ := σ.toAlgebra
@@ -57,6 +75,39 @@ theorem exists_functional_ne_zero_of_embedding (K : Type) [Field K] (σ : K →+
     rw [Algebra.smul_def, RingHom.algebraMap_toAlgebra]
   simp only [LinearMap.toAddMonoidHom_coe, hsmul, LinearMap.map_smul, smul_eq_mul]
 
+/- English proof (translation)
+Introduce `K A B _ _ _ _ _ σ rd hrd V V' _ _ hVV h hspan hne`. Establish `: FiniteDimensional K ↥(V * V')` using `Module.Finite.iff_fg.mpr (Submodule.FG.mul (Module.Finite.iff_fg.mp inferInstance) (Module.Finite.iff_fg.mp inferInstance))`. Establish `hrdsum : ∀ {m : ℕ} (a : Fin m → K) (v : Fin m → A), rd (∑ j, a j • v j) = ∑ j, σ (a j) • rd (v j)`. Introduce `m a v`. Rewrite using `[map_sum]`.
+
+Simplify using `only [hrd]`. Establish `hexp : ∀ {U : Submodule K A} {m : ℕ} (b : Basis (Fin m) K U) (u : U), (u : A) = ∑ j, b.repr u j • (b j : A)`. Introduce `U m b u`. Establish `h1` using `congrArg (fun v : U => (v : A)) (b.sum_repr u)`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul] at h1`.
+
+Conclude with `h1.symm`. Take `⟨n, ⟨bV⟩⟩ : ∃ n, Nonempty (Basis (Fin n) K V)` from `⟨_, ⟨Module.finBasis K V⟩⟩`. Take `⟨n', ⟨bV'⟩⟩ : ∃ n, Nonempty (Basis (Fin n) K V')` from `⟨_, ⟨Module.finBasis K V'⟩⟩`. Establish `hC : ∀ i, ∃ C : Fin n' → ℂ, h * rd (bV i : A) = ∑ j, C j • rd (bV' j : A)`. Introduce `i`.
+
+Establish `hm` using `hspan _ (bV i).2`. Establish `hsub : Submodule.span ℂ (rd '' (V' : Set A)) ≤ Submodule.span ℂ (Set.range fun j => rd (bV' j : A))`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨u, hu, rfl⟩`. Establish `e : u = ∑ j, bV'.repr ⟨u, hu⟩ j • (bV' j : A)` using `hexp bV' ⟨u, hu⟩`.
+
+Rewrite using `[e, hrdsum]`. Conclude with `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)`. Take `⟨C, hCe⟩` from `(Submodule.mem_span_range_iff_exists_fun ℂ).mp (hsub hm)`. Conclude with `⟨C, hCe.symm⟩`. Use `choose C hC using hC`.
+
+Establish `hi0 : ∃ i, h * rd (bV i : A) ≠ 0`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Take `⟨f, hf, hfne⟩` from `hne`. Apply `hfne` to reduce the goal to its premises.
+
+Establish `e : f = ∑ j, bV.repr ⟨f, hf⟩ j • (bV j : A)` using `hexp bV ⟨f, hf⟩`. Rewrite using `[e, hrdsum, Finset.mul_sum]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Rewrite using `[mul_smul_comm, hcon i, smul_zero]`. Take `⟨i0, hi0⟩` from `hi0`.
+
+Establish `hj0 : ∃ j, C i0 j ≠ 0`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Apply `hi0` to reduce the goal to its premises. Rewrite using `[hC i0]`.
+
+Conclude with `Finset.sum_eq_zero fun j _ => by rw [hcon j, zero_smul]`. Take `⟨j0, hj0⟩` from `hj0`. Take `⟨φ, hφ, hφne⟩` from `exists_functional_ne_zero_of_embedding K σ (C i0 j0) hj0`. Take `⟨T, hT⟩ : ∃ T : V →ₗ[K] V', ∀ i, T (bV i) = ∑ j, φ (C i j) • bV' j` from `⟨bV.constr K (fun i => ∑ j, φ (C i j) • bV' j), fun i => bV.constr_basis K _ i⟩`. Establish `hTA : ∀ i, ((T (bV i) : V') : A) = ∑ j, φ (C i j) • (bV' j : A)`.
+
+Introduce `i`. Rewrite using `[hT]`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul]`. Establish `hbasis : ∀ i k, ((T (bV i) : V') : A) * (bV k : A) = (bV i : A) * ((T (bV k) : V') : A)`. Introduce `i k`.
+
+Establish `key` using `relation_descends_along_functional K A B σ rd hrd (V * V') hVV φ hφ (ι := Fin n' ⊕ Fin n') (Sum.elim (fun j => (bV k : A) * (bV' j : A)) (fun j => (bV i : A) * (bV' j : A))) (by`. Introduce and unpack `(j | j)`. Conclude with `Submodule.mul_mem_mul (bV k).2 (bV' j).2`. Conclude with `Submodule.mul_mem_mul (bV i).2 (bV' j).2)`. Use the proof step `(Sum.elim (fun j => C i j) (fun j => - C k j))`.
+
+Use the proof step `(by`. Rewrite using `[Fintype.sum_sum_type]`. Simplify using `only [Sum.elim_inl, Sum.elim_inr, map_mul, neg_smul, Finset.sum_neg_distrib]`. Simplify using `only [← mul_smul_comm, ← Finset.mul_sum, ← hC]`. Use the proof step `ring)`.
+
+Rewrite `key` using `[Fintype.sum_sum_type]`. Simplify using `only [Sum.elim_inl, Sum.elim_inr, map_neg, neg_smul, Finset.sum_neg_distrib, ← mul_smul_comm, ← Finset.mul_sum] at key`. Rewrite using `[hTA, hTA, mul_comm _ ((bV k : V) : A)]`. Rewrite `key` using `[mul_neg]`. Conclude with `add_neg_eq_zero.mp key`.
+
+Establish `hleft : ∀ i (g : V), ((T (bV i) : V') : A) * (g : A) = (bV i : A) * ((T g : V') : A)`. Introduce `i g`. Establish `h2` using `bV.ext (f₁ := (LinearMap.mulLeft K ((T (bV i) : V') : A)).comp V.subtype) (f₂ := (LinearMap.mulLeft K ((bV i : V) : A)).comp (V'.subtype.comp T)) (fun k => by simpa using hbasis i k)`. Simplify using `using LinearMap.congr_fun h2 g`. Use `⟨T, ?_, fun f g => ?_⟩` and prove the remaining obligations.
+
+Introduce `hT0`. Establish `h1 : T (bV i0) = 0` using `by rw [hT0, LinearMap.zero_apply]`. Rewrite `h1` using `[hT]`. Conclude with `hφne (Fintype.linearIndependent_iff.mp bV'.linearIndependent _ h1 j0)`. Establish `h2` using `bV.ext (f₁ := (LinearMap.mulRight K (g : A)).comp (V'.subtype.comp T)) (f₂ := (LinearMap.mulRight K ((T g : V') : A)).comp V.subtype) (fun i => by simpa using hleft i g)`.
+
+Simplify using `using LinearMap.congr_fun h2 f`.
+-/
 theorem exists_rational_multiplier_of_complex :
     ∀ (K A B : Type) [Field K] [CommRing A] [Algebra K A] [CommRing B] [Algebra ℂ B] (σ : K →+* ℂ) (rd : A →+* B), (∀ (a : K) (f : A), rd (a • f) = σ a • rd f) → ∀ (V V' : Submodule K A) [FiniteDimensional K V] [FiniteDimensional K V'], (∀ (n : ℕ) (b : Fin n → A), (∀ i, b i ∈ V * V') → LinearIndependent K b → LinearIndependent ℂ (fun i => rd (b i))) → ∀ h : B, (∀ f ∈ V, h * rd f ∈ Submodule.span ℂ (rd '' (V' : Set A))) → (∃ f ∈ V, h * rd f ≠ 0) → ∃ T : V →ₗ[K] V', T ≠ 0 ∧ ∀ f g : V, (T f : A) * (g : A) = (f : A) * (T g : A) := by
   classical

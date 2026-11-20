@@ -9,6 +9,15 @@ open scoped TensorProduct
 
 namespace GlobalTheory.CompanionTheory.ThetaInj
 
+/- English proof (translation)
+Establish `hn : z.re ^ 2 + z.im ^ 2 ≤ 1`. Use `Complex.sq_norm z` as an intermediate fact. Rewrite `this` using `[Complex.normSq_apply]`. Use polynomial arithmetic with `[norm_nonneg z]`. Establish `hre : z.re < 1`.
+
+Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Apply `h1` to reduce the goal to its premises. Apply `Complex.ext` to reduce the goal to its premises. Simplify using `only [Complex.one_re]`.
+
+Use the polynomial consequences of the given equalities and inequalities. Simplify using `only [Complex.one_im]`. Use the polynomial consequences of the given equalities and inequalities. Establish `h2 : ‖1 + z‖ ^ 2 < 2 ^ 2`. Rewrite using `[Complex.sq_norm, Complex.normSq_apply]`.
+
+Simplify using `only [Complex.add_re, Complex.one_re, Complex.add_im, Complex.one_im]`. Use the polynomial consequences of the given equalities and inequalities. Establish `h3 : ‖1 + z‖ < 2` using `lt_of_pow_lt_pow_left₀ 2 (by norm_num) h2`. Rewrite using `[norm_div, show ‖(2 : ℂ)‖ = 2 by simp]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem norm_half_lt_one {z : ℂ} (h : ‖z‖ ≤ 1) (h1 : z ≠ 1) : ‖(1 + z) / 2‖ < 1 := by
   have hn : z.re ^ 2 + z.im ^ 2 ≤ 1 := by
     have := Complex.sq_norm z
@@ -29,11 +38,27 @@ theorem norm_half_lt_one {z : ℂ} (h : ‖z‖ ≤ 1) (h1 : z ≠ 1) : ‖(1 + 
   rw [norm_div, show ‖(2 : ℂ)‖ = 2 by simp]
   linarith
 
+/- English proof (translation)
+Distinguish the cases in `h1 : z = 1`. Substitute `h1` using the available equality. Simplify using the standard rewrite rules. Conclude with `(norm_half_lt_one h h1).le`.
+-/
 theorem norm_half_le_one {z : ℂ} (h : ‖z‖ ≤ 1) : ‖(1 + z) / 2‖ ≤ 1 := by
   by_cases h1 : z = 1
   · subst h1; simp
   · exact (norm_half_lt_one h h1).le
 
+/- English proof (translation)
+Establish `hb : ∀ (n : ℕ) a i, ‖c i * ((1 + e i t) / 2) ^ n * e i a‖ ≤ ‖c i‖`. Introduce `n a i`. Rewrite using `[norm_mul, norm_mul, norm_pow]`. Establish `h1 : ‖(1 + e i t) / 2‖ ^ n ≤ 1` using `pow_le_one₀ (norm_nonneg _) (norm_half_le_one (hle i t))`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hn : ∀ (n : ℕ) a, ∑' i, c i * ((1 + e i t) / 2) ^ n * e i a = 0`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => simpa using hF`. Consider the case `succ n ih`.
+
+Introduce `a`. Establish `: ∀ i, c i * ((1 + e i t) / 2) ^ (n + 1) * e i a = (c i * ((1 + e i t) / 2) ^ n * e i a + c i * ((1 + e i t) / 2) ^ n * e i (a + t)) / 2`. Introduce `i`. Rewrite using `[hmul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Simplify using `only [this]`. Rewrite using `[tsum_div_const, (Summable.of_norm_bounded hs (hb n a)).tsum_add (Summable.of_norm_bounded hs (hb n (a + t))), ih, ih]`. Simplify using the standard rewrite rules. Establish `hl : Filter.Tendsto (fun n : ℕ => ∑' i, c i * ((1 + e i t) / 2) ^ n * e i a) Filter.atTop (nhds (∑' i, (if e i t = 1 then c i else 0) * e i a))`. Use `tendsto_tsum_of_dominated_convergence hs (fun i => ?_) (Filter.Eventually.of_forall fun n i => hb n a i)` and prove the remaining obligations.
+
+Distinguish the cases in `h : e i t = 1`. Simplify using `[h]`. Use `((tendsto_pow_atTop_nhds_zero_of_norm_lt_one (norm_half_lt_one (hle i t) h)).const_mul (c i)).mul_const (e i a)` as an intermediate fact. Simplify `this` using `[h]`. Simplify using `only [hn] at hl`.
+
+Conclude with `(tendsto_nhds_unique tendsto_const_nhds hl).symm`.
+-/
 theorem charSeries_restrict {A I : Type} [AddCommGroup A] (e : I → A → ℂ) (c : I → ℂ)
     (hmul : ∀ i a b, e i (a + b) = e i a * e i b) (hle : ∀ i a, ‖e i a‖ ≤ 1)
     (hs : Summable (fun i => ‖c i‖)) (hF : ∀ a, ∑' i, c i * e i a = 0) (t : A) [∀ i, Decidable (e i t = 1)] (a : A) :
@@ -68,6 +93,17 @@ theorem charSeries_restrict {A I : Type} [AddCommGroup A] (e : I → A → ℂ) 
   simp only [hn] at hl
   exact (tendsto_nhds_unique tendsto_const_nhds hl).symm
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact ⟨c, rfl, by simp, fun _ => le_rfl, hF⟩`. Consider the case `insert j s hj ih`. Take `⟨c', h1, h2, h3, h4⟩` from `ih`. Distinguish the cases in `hji : j = i₀`.
+
+Use `⟨c', h1, ?_, h3, h4⟩` and prove the remaining obligations. Introduce `i hi hne`. Break down `Finset.mem_insert.1 hi with h | h` into its components or cases. Conclude with `absurd (h.trans hji) hne`. Conclude with `h2 i h hne`.
+
+Take `⟨t, ht⟩` from `hne j hji`. Use `⟨fun i => if e i t = 1 then c' i else 0, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `[h0, h1]`. Introduce `i hi hne`. Break down `Finset.mem_insert.1 hi with h | h` into its components or cases.
+
+Substitute `h` using the available equality. Simplify using `[ht]`. Simplify using `[h2 i h hne]`. Introduce `i`. Distinguish the cases in `h : e i t = 1`.
+
+Simplify `h3 i` using `[h]`. Simplify using `[h]`. Conclude with `charSeries_restrict e c' hmul hle (Summable.of_nonneg_of_le (fun _ => norm_nonneg _) h3 hs) h4 t`.
+-/
 theorem charSeries_remove {A I : Type} [AddCommGroup A] (e : I → A → ℂ) (c : I → ℂ) (i₀ : I)
     (hmul : ∀ i a b, e i (a + b) = e i a * e i b) (hle : ∀ i a, ‖e i a‖ ≤ 1)
     (h0 : ∀ a, e i₀ a = 1) (hne : ∀ i, i ≠ i₀ → ∃ a, e i a ≠ 1)
@@ -98,6 +134,15 @@ theorem charSeries_remove {A I : Type} [AddCommGroup A] (e : I → A → ℂ) (c
       · simp [h]
     · exact charSeries_restrict e c' hmul hle (Summable.of_nonneg_of_le (fun _ => norm_nonneg _) h3 hs) h4 t
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hc`. Establish `hpos : 0 < ‖c i₀‖` using `norm_pos_iff.2 hc`. Establish `ht` using `tendsto_tsum_compl_atTop_zero (fun i => ‖c i‖)`. Establish `hev` using `(ht.eventually (gt_mem_nhds hpos)).and (Filter.eventually_ge_atTop ({i₀} : Finset I))`. Take `⟨s, hs1, hs2⟩` from `hev.exists`.
+
+Establish `hi₀ : i₀ ∈ s` using `hs2 (Finset.mem_singleton_self _)`. Take `⟨c', h1, h2, h3, h4⟩` from `charSeries_remove e c i₀ hmul hle h0 hne hs hF s`. Establish `hb : ∀ i, ‖c' i * e i 0‖ ≤ ‖c i‖`. Introduce `i`. Rewrite using `[norm_mul]`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hsum : Summable (fun i => c' i * e i 0)` using `Summable.of_norm_bounded hs hb`. Establish `hsplit` using `hsum.sum_add_tsum_subtype_compl s`. Rewrite `hsplit` using `[h4 0, Finset.sum_eq_single_of_mem i₀ hi₀ (fun i hi hne => by simp [h2 i hi hne]), h0, h1, mul_one]`. Establish `hle' : ‖∑' i : {x // x ∉ s}, c' i * e i 0‖ ≤ ∑' i : {x // x ∉ s}, ‖c i‖` using `tsum_of_norm_bounded (hs.subtype _).hasSum (fun i => hb i)`.
+
+Rewrite `hle'` using `[eq_neg_of_add_eq_zero_right hsplit, norm_neg]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem charSeries_coeff_eq_zero {A I : Type} [AddCommGroup A] (e : I → A → ℂ) (c : I → ℂ) (i₀ : I)
     (hmul : ∀ i a b, e i (a + b) = e i a * e i b) (hle : ∀ i a, ‖e i a‖ ≤ 1)
     (h0 : ∀ a, e i₀ a = 1) (hne : ∀ i, i ≠ i₀ → ∃ a, e i a ≠ 1)
@@ -124,6 +169,19 @@ theorem charSeries_coeff_eq_zero {A I : Type} [AddCommGroup A] (e : I → A → 
   rw [eq_neg_of_add_eq_zero_right hsplit, norm_neg] at hle'
   linarith
 
+/- English proof (translation)
+Introduce `F _ _ _ _ κ _ ψ hc h1 hF Φ hΦ hθ`. Use function extensionality and compare the values at `x`. Establish `hnorm` using `(GlobalTheory.T.adelic_character_rational_dual F ψ hc h1 hF).1`. Establish `hs` using `(GlobalTheory.CompanionTheory.ThetaAdm.theta_adm F κ).1 _ ((GlobalTheory.T.theta_distribution_heisenberg_invariant F κ ψ hc h1 hF).1 (x, 0) Φ hΦ)`. Establish `key` using `charSeries_coeff_eq_zero (A := κ → AdeleRing (𝓞 F) F) (I := κ → F) (fun ξ y => ψ ((fun i => algebraMap F (AdeleRing (𝓞 F) F) (ξ i)) ⬝ᵥ y)) (fun ξ => Φ ((fun i => algebraMap F (AdeleRing (𝓞 F) F) (ξ i)) + x)) 0 (fun ξ a b => by simp only [dotProduct_add, AddChar.map_add_eq_mul]) ( …`.
+
+Establish `e : ((fun i => algebraMap F (AdeleRing (𝓞 F) F) ((0 : κ → F) i)) + x) = x`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Rewrite `key` using `[e]`. Conclude with `key`.
+
+Introduce `ξ hξ`. Take `⟨i, hi⟩` from `Function.ne_iff.1 hξ`. Establish `hi : ξ i ≠ 0` using `hi`. Take `⟨a, ha⟩` from `DFunLike.ne_iff.1 h1`. Use `⟨Pi.single i (algebraMap F (AdeleRing (𝓞 F) F) (ξ i)⁻¹ * a), ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [dotProduct_single]`. Rewrite using `[← mul_assoc, ← map_mul, mul_inv_cancel₀ hi, map_one, one_mul]`. Simplify using `using ha`. Simplify `hs` using `[schr]`. Introduce `y`.
+
+Establish `h` using `hθ (x, y)`. Simplify using `only [thetaSum, schr, AddChar.map_add_eq_mul] at h`. Establish `hne : ψ (⅟(2 : AdeleRing (𝓞 F) F) * (x ⬝ᵥ y)) ≠ 0`. Rewrite using `[← norm_ne_zero_iff, hnorm]`. Conclude with `one_ne_zero`.
+
+Apply `mul_left_cancel₀ hne` to reduce the goal to its premises. Rewrite using `[← tsum_mul_left, mul_zero, ← h]`. Conclude with `tsum_congr fun ξ => by ring`.
+-/
 theorem theta_inj : ∀ (F : Type) [Field F] [NumberField F] [LocallyCompactSpace (AdeleRing (𝓞 F) F)] [Invertible (2 : AdeleRing (𝓞 F) F)] (κ : Type) [Fintype κ] (ψ : AddChar (AdeleRing (𝓞 F) F) ℂ), Continuous ψ → ψ ≠ 1 → (∀ a : F, ψ (algebraMap F (AdeleRing (𝓞 F) F) a) = 1) → ∀ Φ ∈ schA F κ, (∀ w, thetaSum F (schr ψ w Φ) = 0) → Φ = 0 := by
   intro F _ _ _ _ κ _ ψ hc h1 hF Φ hΦ hθ
   classical

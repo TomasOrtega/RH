@@ -14,6 +14,15 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory.HTLat GlobalTheory.Published GlobalTheory.Published.AbVarRed IsLocalRing
 attribute [local instance] Over.cartesianMonoidalCategory
 
+/- English proof (translation)
+Introduce `W _ _ _ G _ hG M m t₀ hM hv`. Establish `hflat : Flat G.hom` using `by haveI := hG.smooth infer_instance`. Take `⟨n, t, ht⟩` from `GlobalTheory.T.exists_basis_lineBundleSections_projective_over_dvr W G.left G.hom M hflat ⟨M, hM, m, t₀, hv⟩ hM`. Establish `hne : Nonempty G.left`. Take `⟨x⟩ : Nonempty (Sp W)` from `inferInstance`.
+
+Conclude with `⟨(η[G]).left x⟩`. Take `⟨x⟩` from `hne`. Take `⟨i₀, hi₀⟩` from `TopologicalSpace.Opens.mem_iSup.1 (hv.1.ge (Set.mem_univ x))`. Establish `hn : n ≠ 0`. Introduce and unpack `rfl`.
+
+Take `⟨c, hc, -⟩` from `ht (t₀ i₀)`. Rewrite `hc` using `[Finset.univ_eq_empty, Finset.sum_empty]`. Rewrite `hi₀` using `[hc]`. Take `⟨k, hk⟩` from `TopologicalSpace.Opens.mem_iSup.1 hi₀`. Establish `hk' : x ∈ G.left.basicOpen (0 : Γ(G.left, M.U k))` using `hk`.
+
+Rewrite `hk'` using `[Scheme.basicOpen_zero]`. Conclude with `hk'`. Take `⟨N, rfl⟩` from `Nat.exists_eq_succ_of_ne_zero hn`. Use `choose a ha using fun i => (ht (t₀ i)).exists`. Conclude with `⟨N, t, GlobalTheory.T.isVeryAmpleBySections_of_linear_span_combination W G.left G.hom M m N t₀ t a hM hv ha, ht⟩`.
+-/
 theorem GlobalTheory.exists_veryAmpleBy_basis_of_dvr : ∀ (W : Type) [CommRing W] [IsDomain W] [IsDiscreteValuationRing W] (G : Over (Sp W)) [GrpObj G], IsAbelianScheme G → ∀ (M : LB G.left) (m : ℕ) (t₀ : Fin (m + 1) → M.Sec), M.IsLB → GlobalTheory.AbLaw.VeryAmpleBy G.hom M t₀ → ∃ (N : ℕ) (t : Fin (N + 1) → M.Sec), GlobalTheory.AbLaw.VeryAmpleBy G.hom M t ∧ ∀ u : M.Sec, ∃! c : Fin (N + 1) → W, u = ∑ j, GlobalTheory.AbLaw.cst G.hom ⊤ (c j) • t j := by
   intro W _ _ _ G _ hG M m t₀ hM hv
   have hflat : Flat G.hom := by

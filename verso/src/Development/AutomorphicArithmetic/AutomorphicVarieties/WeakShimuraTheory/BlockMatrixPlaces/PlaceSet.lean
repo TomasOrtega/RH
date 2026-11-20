@@ -3,6 +3,19 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Selm
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws UpperTheory.V.Ws.Bl
 
+/- English proof (translation)
+Introduce `Ω _ _ _ l hl S B hS hlS hB`. Establish `hfin : Set.Finite {v : HeightOneSpectrum (𝓞 ℚ) | ∃ p ∈ S, ((p : ℕ) : 𝓞 ℚ) ∈ v.asIdeal}`. Establish `e : {v : HeightOneSpectrum (𝓞 ℚ) | ∃ p ∈ S, ((p : ℕ) : 𝓞 ℚ) ∈ v.asIdeal} = ⋃ p ∈ (S : Set ℕ), {v : HeightOneSpectrum (𝓞 ℚ) | v.asIdeal ∣ Ideal.span {((p : ℕ) : 𝓞 ℚ)}}`. Use extensionality with `v`. Simplify using `[Ideal.dvd_span_singleton]`.
+
+Rewrite using `[e]`. Use `S.finite_toSet.biUnion fun p hp => Ideal.finite_factors ?_` and prove the remaining obligations. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot, Nat.cast_eq_zero]`. Conclude with `(hS p hp).ne_zero`. Take `⟨h1, h2, h3, -⟩` from `UpperTheory.V.Base.places ℚ Ω l B`.
+
+Take `⟨w, hw⟩` from `h1 fun h => (h2 h).2 hB`. Establish `hlw : ((l : ℕ) : 𝓞 ℚ) ∈ w.asIdeal` using `(h3 w hw).1 hB`. Establish `hex : ∀ v : HeightOneSpectrum (𝓞 ℚ), ∃ A : ValuationSubring Ω, IsPlaceOver A v ∧ (v = w → A = B)`. Introduce `v`. Distinguish the cases in `e : v = w`.
+
+Conclude with `⟨B, e ▸ hw, fun _ => rfl⟩`. Take `⟨A, hA⟩` from `(exists_isPlaceOver Ω v : ∃ A : ValuationSubring Ω, IsPlaceOver A v)`. Conclude with `⟨A, hA, fun h => absurd h e⟩`. Use `choose f hf hf' using hex`. Use `⟨hfin.toFinset, fun v => f v.1, ⟨w, hfin.mem_toFinset.2 ⟨l, hlS, hlw⟩⟩, fun v hv => hfin.mem_toFinset.2 ⟨l, hlS, hv⟩, fun v => hf v.1, hf' w rfl, hlw, fun K hK hc hI => ?_⟩` and prove the remaining obligations.
+
+Use `Subgroup.topologicalClosure_minimal _ (Subgroup.normalClosure_le_normal ?_) hc` and prove the remaining obligations. Introduce `g hg`. Simplify using `only [Set.mem_iUnion] at hg`. Take `⟨v, hv, A, hA, hg⟩` from `hg`. Use `hI A (fun p hp h => hv ?_) hg` and prove the remaining obligations.
+
+Use `Finset.mem_coe.2 (hfin.mem_toFinset.2 ⟨p, hp, (hA ((p : ℕ) : 𝓞 ℚ)).1 ?_⟩)` and prove the remaining obligations. Simplify using `using h`.
+-/
 theorem UpperTheory.V.Ws.Bl.placeSet :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] (S : Finset ℕ) (B : ValuationSubring Ω), (∀ p ∈ S, p.Prime) → l ∈ S → B.valuation (l : Ω) < 1 →
           ∃ (S' : Finset (HeightOneSpectrum (𝓞 ℚ))) (Av : S' → ValuationSubring Ω) (v0 : S'), ContainsAbove S' l ∧ (∀ v, IsPlaceOver (Av v) v.1) ∧ Av v0 = B ∧ ((l : ℕ) : 𝓞 ℚ) ∈ v0.1.asIdeal ∧

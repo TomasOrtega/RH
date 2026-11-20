@@ -18,6 +18,9 @@ export Formalism.MainNotions.S.UnitaryLevelOperators (Jop scalMat mulAfter Op4 o
   IsPosDefZ zpt fhat headEl headLt levOf haarOf lenI mid3 wnormSq Msq mm minv mdet psiC psiLow psiUp lowOf upOf
   sdScale muLow muUp stabU muStab IsOrbMeas OmG gTC gZW fNorm)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `g`. Simplify using `only [LocBessel.J, lJ, hc]`. Both sides reduce to the same expression.
+-/
 theorem levOf_J {k0 r : ℕ} (L : LocBessel (k0 + 1) r) (μsec : ℂ → Matrix (Fin (k0 + 1 + 1)) (Fin (k0 + 1 + 1)) ℂ)
     (hc : L.c = cStd) (F : (levOf L μsec).GF) : L.J F = lJ (levOf L μsec) (haarOf L μsec) F := by
   funext g

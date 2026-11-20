@@ -47,6 +47,9 @@ def weylRepW (R : Type) [CommRing R] (r n : ℕ) (hn : n ≤ r) (ν : Fin n → 
     rw [(Formalism.UG.P.dual_weyl_action_mul R r n g h).1]
     rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem dualWeylRep_apply (R : Type) [CommRing R] (r n : ℕ) (ν : Fin n → ℕ) (g : GL (Fin r) R)
     (f : Formalism.GradedWeylDivisibility.dualWeyl R r n ν) :
     ((dualWeylRep R r n ν g f : Formalism.GradedWeylDivisibility.dualWeyl R r n ν) : MvPolynomial (Fin r × Fin n) R) =

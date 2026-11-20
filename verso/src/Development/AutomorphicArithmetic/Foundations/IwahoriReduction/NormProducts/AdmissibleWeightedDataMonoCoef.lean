@@ -12,6 +12,13 @@ open scoped Matrix MatrixGroups
 
 namespace UpperTheory.Kd.K4
 
+/- English proof (translation)
+Introduce `l _ Ω _ _ _ ι e gN A W ε X pr N _ cw c d gm ψ cf hφ hgm hcop hl2 he hcw hadm _hWc _hWO`. Take `⟨x₀, hx₀⟩` from `hcw`. Establish `h3 : ∀ x : ZMod N, AdmissibleNewformZetaData ι e gN A W X pr N x c d gm ψ cf` using `fun x => hadm.1 x₀ hx₀`. Establish `hml` using `fun x : ZMod N => UpperTheory.Kd.K4.ml l Ω ι e gN A W ε X pr N x c d gm ψ cf hgm hcop hl2 he hφ (h3 x)`. Use `choose c₁ hc₁ using hml`.
+
+Set `C : ℕ` to `Finset.univ.sup c₁`. Establish `hC : ∀ x, c₁ x ≤ C` using `fun x => Finset.le_sup (f := c₁) (Finset.mem_univ x)`. Establish `hY` using `fun x : ZMod N => hc₁ x C (hC x)`. Use `choose Yx hZ hS hP hCt hO using hY`. Take `⟨k1, k2, k3, k4⟩` from `GlobalTheory.K4.shCoc_wsum_props l Ω (rhoK W e ψ) cf (ZMod N) cw Yx hS hP hCt hO hadm.2`.
+
+Use `⟨C, fun r s y => ∑ x, cw x • Yx x r s y, ⟨Yx, hZ, fun r s y => rfl⟩, k1, k2, k3, k4⟩` and prove the remaining obligations.
+-/
 theorem g3 : ∀ (l : ℕ) [Fact l.Prime] (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (ι : Qbar l ≃+* ℂ) (e : ℕ)
   (gN : Newform (2 * e + 1)) (A : ValuationSubring Ω) (W : R2 Ω l) (ε : Ω →+* ℂ) (X : Tower Ω ε)
   (pr : X.Fn l → Fin 2 → Qbar l) (N : ℕ) [NeZero N] (cw : ZMod N → Qbar l) (c d : ℕ) (gm : (ZMod l)ˣ → SL(2, ℤ))
@@ -41,6 +48,9 @@ namespace UpperTheory.Kd.K4.ZetaTop
 
 variable {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ} {l : ℕ} [Fact l.Prime]
 
+/- English proof (translation)
+Use `⟨fun x hx => ?_, fun x => hle (h.2 x)⟩` and prove the remaining obligations. Take `⟨h1, h2, h3, h4, h5, h6, h7, h8⟩` from `h.1 x hx`. Conclude with `⟨h1, h2, h3, h4, h5, h6, fun b hb i => hle (h7 b hb i), h8⟩`.
+-/
 theorem admissibleWeightedData_mono_coef {ι : Qbar l ≃+* ℂ} {e : ℕ} {g : Newform (2 * e + 1)} {A : ValuationSubring Ω} {W : R2 Ω l}
     {X : Tower Ω ε} {pr : X.Fn l → Fin 2 → Qbar l} {N : ℕ} [NeZero N] {cw : ZMod N → Qbar l} {c d : ℕ}
     {gm : (ZMod l)ˣ → SL(2, ℤ)} {ψ : ZMod l → Qbar l} {cf cf' : Coef l} (hle : cf.O ≤ cf'.O)
@@ -49,6 +59,9 @@ theorem admissibleWeightedData_mono_coef {ι : Qbar l ≃+* ℂ} {e : ℕ} {g : 
   obtain ⟨h1, h2, h3, h4, h5, h6, h7, h8⟩ := h.1 x hx
   exact ⟨h1, h2, h3, h4, h5, h6, fun b hb i => hle (h7 b hb i), h8⟩
 
+/- English proof (translation)
+Take `⟨Yx, hx, hs⟩` from `h`. Use `⟨Yx, fun x r n => ?_, hs⟩` and prove the remaining obligations. Take `⟨bB, hB, b, hb, hY⟩` from `hx x r n`. Conclude with `⟨bB, hB, b, fun y i => hle (hb y i), hY⟩`.
+-/
 theorem isZWc_mono {X : Tower Ω ε} {pr : X.Fn l → Fin 2 → Qbar l} {W : R2 Ω l} {e : ℕ} {ψ : ZMod l → Qbar l}
     {N : ℕ} [NeZero N] {cw : ZMod N → Qbar l} {c d k : ℕ} {gm : (ZMod l)ˣ → SL(2, ℤ)} {cf cf' : Coef l} {c₀ : ℕ}
     {Y : ∀ r : ℕ, (Ω ≃ₐ[ℚ] Ω) → (ZMod (l ^ r))ˣ → Fin 2 → Qbar l} (hle : cf.O ≤ cf'.O)
@@ -58,6 +71,11 @@ theorem isZWc_mono {X : Tower Ω ε} {pr : X.Fn l → Fin 2 → Qbar l} {W : R2 
   obtain ⟨bB, hB, b, hb, hY⟩ := hx x r n
   exact ⟨bB, hB, b, fun y i => hle (hb y i), hY⟩
 
+/- English proof (translation)
+Take `⟨Yx, hY, hsum⟩` from `h`. Use `⟨fun x r s y => ((l : Qbar l) ^ m) • Yx x r s y, fun x => GlobalTheory.K4.zetaSystem_exponent_raise_of_prime_pow_smul l Ω ε X pr W e ψ N x c d k gm cf c₀ m (Yx x) hadd hsm (hY x), ?_⟩` and prove the remaining obligations. Introduce `r s y`. Simplify using `only`. Rewrite using `[hsum r s y, Finset.smul_sum]`.
+
+Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[smul_comm]`.
+-/
 theorem isZWc_raise {X : Tower Ω ε} {pr : X.Fn l → Fin 2 → Qbar l} {W : R2 Ω l} {e : ℕ} {ψ : ZMod l → Qbar l}
     {N : ℕ} [NeZero N] {cw : ZMod N → Qbar l} {c d k : ℕ} {gm : (ZMod l)ˣ → SL(2, ℤ)} {cf : Coef l} {c₀ : ℕ}
     {Y : ∀ r : ℕ, (Ω ≃ₐ[ℚ] Ω) → (ZMod (l ^ r))ˣ → Fin 2 → Qbar l} (m : ℕ)
@@ -74,21 +92,43 @@ theorem isZWc_raise {X : Tower Ω ε} {pr : X.Fn l → Fin 2 → Qbar l} {W : R2
   refine Finset.sum_congr rfl fun x _ => ?_
   rw [smul_comm]
 
+/- English proof (translation)
+Introduce `s t x`. Simplify using `only [h s t x, smul_add, Matrix.mulVec_smul]`.
+-/
 theorem shCoc_smul {Γ X R : Type*} [Group Γ] [Monoid X] [CommRing R] {ρ : Γ → Matrix (Fin 2) (Fin 2) R} {κ : Γ →* X}
     {Y : Γ → X → Fin 2 → R} (a : R) (h : ShCoc ρ κ Y) : ShCoc ρ κ (fun s y => a • Y s y) := by
   intro s t x
   simp only [h s t x, smul_add, Matrix.mulVec_smul]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `s y`. Simplify using `only [GlobalTheory.KA.push, Finset.smul_sum]`.
+-/
 theorem push_smul {Γ X X' R : Type*} [Fintype X'] [DecidableEq X] [CommRing R] (π : X' → X)
     (Y : Γ → X' → Fin 2 → R) (a : R) :
     GlobalTheory.KA.push π (fun s y => a • Y s y) = fun s y => a • GlobalTheory.KA.push π Y s y := by
   funext s y
   simp only [GlobalTheory.KA.push, Finset.smul_sum]
 
+/- English proof (translation)
+Simplify using `only [GlobalTheory.KA.spec, Finset.smul_sum, smul_comm a]`.
+-/
 theorem spec_smul {Γ X R : Type*} [Fintype X] [CommRing R] (η : X → R) (Y : Γ → X → Fin 2 → R) (a : R) (s : Γ) :
     GlobalTheory.KA.spec η (fun s y => a • Y s y) s = a • GlobalTheory.KA.spec η Y s := by
   simp only [GlobalTheory.KA.spec, Finset.smul_sum, smul_comm a]
 
+/- English proof (translation)
+Use `haveI := Fintype.ofFinite T`. Establish `hU : ∀ x, ∀ᶠ s' in nhds (1 : Ω ≃ₐ[ℚ] Ω), ∀ s ∈ (Set.univ : Set (Ω ≃ₐ[ℚ] Ω)), ‖f (s * s') x - f s x‖ < δ`. Introduce `x`. Use `isCompact_univ.eventually_forall_of_forall_eventually fun s _ => ?_` and prove the remaining obligations. Establish `hc : Continuous fun z : (Ω ≃ₐ[ℚ] Ω) × (Ω ≃ₐ[ℚ] Ω) => ‖f (z.2 * z.1) x - f z.2 x‖` using `(((hf x).comp (continuous_snd.mul continuous_fst)).sub ((hf x).comp continuous_snd)).norm`.
+
+Establish `h0 : ‖f (s * 1) x - f s x‖ < δ` using `by simpa using hδ`. Conclude with `hc.continuousAt.eventually (gt_mem_nhds h0)`. Establish `hV : {s' : Ω ≃ₐ[ℚ] Ω | ∀ x, ∀ s, ‖f (s * s') x - f s x‖ < δ} ∈ nhds (1 : Ω ≃ₐ[ℚ] Ω)`. Use `Filter.eventually_all.2 hU` as an intermediate fact. Use `filter_upwards [this] with s' hs' x s using hs' x s (Set.mem_univ _)`.
+
+Take `⟨E, hEfin, hEsub⟩` from `(krullTopology_mem_nhds_one_iff ℚ Ω _).1 hV`. Establish `hfg : (Subalgebra.toSubmodule E.toSubalgebra).FG` using `(Submodule.fg_iff_finiteDimensional _).2 hEfin`. Take `⟨t, ht⟩` from `hfg`. Use `⟨t, fun s s' x hfix => ?_⟩` and prove the remaining obligations. Establish `hmem : s' ∈ E.fixingSubgroup`.
+
+Rewrite using `[IntermediateField.mem_fixingSubgroup_iff]`. Introduce `y hy`. Establish `hy' : y ∈ Subalgebra.toSubmodule E.toSubalgebra` using `hy`. Rewrite `hy'` using `[← ht]`. Use `clear hy`.
+
+Proceed by induction on `hy' using Submodule.span_induction with`. Consider the case `mem z hz => exact hfix z hz`. Consider the case `zero => exact map_zero s'`. Consider the case `add u v _ _ hu hv => rw [map_add, hu, hv]`. Consider the case `smul a u _ hu => rw [map_smul, hu]`.
+
+Conclude with `(hEsub hmem x s).le`.
+-/
 theorem exists_finset_unif [IsAlgClosure ℚ Ω] {T Q : Type} [Finite T] [SeminormedAddCommGroup Q]
     (f : (Ω ≃ₐ[ℚ] Ω) → T → Q) (hf : ∀ x, Continuous fun s => f s x) {δ : ℝ} (hδ : 0 < δ) :
     ∃ E0 : Finset Ω, ∀ (s s' : Ω ≃ₐ[ℚ] Ω) (x : T), (∀ z ∈ E0, s' z = z) → ‖f (s * s') x - f s x‖ ≤ δ := by
@@ -129,6 +169,25 @@ namespace UpperTheory.Kd.K4
 
 open UpperTheory.Kd.K4.ZetaTop
 
+/- English proof (translation)
+Introduce `l _ Ω _ _ _ ι e S A W g hNf hSrc ε X pr N _ cw c d gm ψ cf hφ hgm hlN hl2 he hcw hAdm hWc hmat`. Take `⟨c₀, Y, hZ, hSh, hPush, hCont, hO⟩` from `g3 l Ω ι e g A W ε X pr N cw c d gm ψ cf hφ hgm hlN hl2 he hcw hAdm hWc hmat`. Take `⟨x₀, hx₀⟩` from `hcw`. Take `⟨-, -, -, -, hadd, hsm, -⟩` from `hAdm.1 x₀ hx₀`. Take `⟨θ, hθc, hmatθ, hρO, hχO, hχcong, hηtw, hθIne, hDec, hη⟩` from `GlobalTheory.K4.twist_clauses l Ω ι e g A W ε X pr N cw c d gm ψ cf S hNf hl2 ⟨x₀, hx₀⟩ hAdm`.
+
+Take `⟨k, S', hIne, hfam⟩` from `UpperTheory.V.Z.Kato.Nb.kato_tame_relation_projected l Ω ι e g A W ε X pr N cw c d gm ψ cf S hNf hmat hgm hlN hl2 he ⟨x₀, hx₀⟩ hφ hAdm c₀ Y hZ`. Use `set Y' : ∀ r : ℕ, (Ω ≃ₐ[ℚ] Ω) → (ZMod (l ^ r))ˣ → Fin 2 → Qbar l := fun r s y => ((l : Qbar l) ^ k) • Y r s y with hY'`. Establish `hlk : ((l : Qbar l) ^ k) ∈ cf.O` using `pow_mem (natCast_mem _ _) _`. Establish `hSh' : ∀ r, GlobalTheory.KA.ShCoc (rhoK W e ψ) (cycMod (F` using `ℚ) (Ω := Ω) l r)⁻¹ (Y' r) := fun r => shCoc_smul _ (hSh r)`. Establish `hCont' : ∀ r y i, Continuous fun s => Y' r s y i`.
+
+Introduce `r y i`. Simplify using `only [hY', Pi.smul_apply, smul_eq_mul]`. Conclude with `continuous_const.mul (hCont r y i)`. Establish `hO' : ∀ r s u i, Y' r s u i ∈ cf.O`. Introduce `r s u i`.
+
+Simplify using `only [hY', Pi.smul_apply, smul_eq_mul]`. Conclude with `mul_mem hlk (hO r s u i)`. Establish `hPush' : ∀ r, Y' r = GlobalTheory.KA.push (redL l r) (Y' (r + 1))`. Introduce `r`. Simplify using `only [hY']`.
+
+Rewrite using `[push_smul, ← hPush r]`. Take `⟨m, y, S'', hy, hSys, hIw, hSp⟩` from `GlobalTheory.KZ.middle_glue2 l Ω W cf A e S' (chiK l (Function.update ψ 0 0)) θ (rhoK W e ψ) (nuD W e ψ) Y' hWc hθc hmat hmatθ (hρO cf hmat) (hχO cf) hχcong hηtw hSh' hCont' hO' (fun r s => congrFun (hPush' r) s) hDec hIne hθIne (by`. Introduce `n hn w hw hdvd ψw hk hs`. Take `⟨Yw, P, u, b, h1, h2, h3, h4, h5, h6, h7, h8, h9⟩` from `hfam n hn w hw hdvd ψw hk hs`. Use `⟨Yw, P, u, b, h1, h2, h3, h4, h5, h6, h7, ?_, h9⟩` and prove the remaining obligations.
+
+Introduce `r s i`. Rewrite using `[hη r]`. Simplify using `only [hY', spec_smul]`. Conclude with `h8 r s i)`. Use `⟨c₀ + k, m, cf, S'', Y', y, isZWc_raise k hadd hsm hZ, hSh', hPush', hCont', ?_, hO', fun z hz => hz, ?_, hSys, hIw, ?_⟩` and prove the remaining obligations.
+
+Introduce `r n`. Establish `hpos : (0 : ℝ) < ‖((l : Qbar l) ^ n)‖`. Rewrite using `[norm_pos_iff]`. Conclude with `pow_ne_zero _ (Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero)`. Take `⟨E0, hE0⟩` from `exists_finset_unif (fun s y => Y' r s y 1) (fun y => hCont' r y 1) hpos`.
+
+Conclude with `⟨E0, fun s s' y hfix => hE0 s s' y hfix⟩`. Introduce `r s i`. Use `hy r s i` as an intermediate fact. Rewrite `this` using `[hη r]`. Conclude with `this`.
+
+Introduce `n`. Take `⟨r₀, hr⟩` from `hSp n`. Use `⟨r₀, fun r hr' s hs hc => ?_⟩` and prove the remaining obligations. Use `hr r hr' s hs hc` as an intermediate fact. Rewrite `this` using `[hη r]`. Then use the resulting hypothesis.
+-/
 theorem top : ∀ (l : ℕ) [Fact l.Prime] (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (ι : Qbar l ≃+* ℂ) (e : ℕ) (S : Finset Pl)
     (A : ValuationSubring Ω) (W : R2 Ω l) (g : Newform (2 * e + 1)), Nf e S A W → SrcUr ι e A W g →
   ∀ (ε : Ω →+* ℂ) (X : Tower Ω ε) (pr : X.Fn l → Fin 2 → Qbar l) (N : ℕ) [NeZero N] (cw : ZMod N → Qbar l) (c d : ℕ)
@@ -205,4 +264,7 @@ theorem top : ∀ (l : ℕ) [Fact l.Prime] (Ω : Type) [Field Ω] [Algebra ℚ �
 
 end UpperTheory.Kd.K4
 
+/- English proof (translation)
+The claim follows from `UpperTheory.Kd.K4.top`.
+-/
 theorem UpperTheory.Kd.K4.kato_eulerSystem_integrality : UpperTheory.V.Z.Kato.Joint.KatoEulerSystemIwasawaClassStatement := UpperTheory.Kd.K4.top

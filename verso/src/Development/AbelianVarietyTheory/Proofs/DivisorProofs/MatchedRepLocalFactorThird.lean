@@ -13,6 +13,37 @@ noncomputable section
 
 namespace GlobalTheory.ThKTypes
 
+/- English proof (translation)
+Introduce `hKP F E _ _ _ _ _ σ B a a' G X om om' R Rf hM L hL m τ hτ I g e hg he`. Take `⟨h1, hmul, hiso, hcont⟩` from `hτ`. Set `ι : GlobalTheory.Dec.Kinf I → I.GA` to `fun k => (fun v => (k v : Formalism.REAL.UJ (I.ε v)), 1)`. Establish `hι1 : ι 1 = 1` using `rfl`. Establish `hιmul : ∀ x y, ι (x * y) = ι x * ι y` using `fun x y => Prod.ext rfl (mul_one 1).symm`.
+
+Establish `hιc : Continuous ι` using `Continuous.prodMk (continuous_pi fun v => continuous_subtype_val.comp (continuous_apply v)) continuous_const`. Establish `hk : ∀ k, e (ι k) ∈ KInf σ G.W B.emb` using `he.kinf`. Use `⟨⟨?_, ?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Use `show τ (e (ι 1)) = 1`. Rewrite using `[hι1, map_one, h1]`.
+
+Introduce `x y show τ (e (ι (x * y))) = τ (e (ι x)) ∘SL τ (e (ι y))`. Rewrite using `[hιmul, map_mul, hmul _ (hk x) _ (hk y)]`. Both sides reduce to the same expression. Introduce `k v`. Conclude with `hiso _ (hk k) v`.
+
+Introduce `v`. Conclude with `(hcont v).comp_continuous (he.cont.comp hιc) hk`. Introduce and unpack `Ψ hΨ ⟨T₀, hT₀, v₀, hv₀⟩`. Establish `hD` using `(GlobalTheory.T.matched_pair_theta_exists_data hKP F E σ B a a' G X om om' R Rf hM).2`. Establish `hlin` using `GlobalTheory.T.matched_pair_theta_local_global hKP F E σ B a a' G X om om' R Rf hM`.
+
+Set `S : Submodule ℂ (EuclideanSpace ℂ (Fin m))` to `(PolData B G.M' ⊓ G.M'.So B.ψ B.τ₁).comap T₀`. Establish `hS : ∀ k ∈ KInf σ G.W B.emb, ∀ w ∈ S, τ k w ∈ S`. Introduce `k hk w hw`. Rewrite `hw`, the goal using `[Submodule.mem_comap]`. Rewrite using `[hT₀ k hk]`.
+
+Conclude with `hD k hk _ hw`. Establish `hinner : ∀ k ∈ KInf σ G.W B.emb, ∀ x y, inner ℂ (τ k x) (τ k y) = inner ℂ x y`. Introduce `k hk x y`. Set `li : EuclideanSpace ℂ (Fin m) →ₗᵢ[ℂ] EuclideanSpace ℂ (Fin m)` to `{ toLinearMap := (τ k).toLinearMap, norm_map' := hiso k hk }`. Conclude with `li.inner_map_map x y`.
+
+Establish `hcomm : ∀ k ∈ KInf σ G.W B.emb, ∀ w, S.starProjection (τ k w) = τ k (S.starProjection w)`. Introduce `k hk w`. Apply `Submodule.eq_starProjection_of_mem_of_inner_eq_zero` to reduce the goal to its premises. Conclude with `hS k hk _ (S.starProjection_apply_mem w)`. Introduce `s hs`.
+
+Establish `hk'` using `GlobalTheory.ThetaFacCompl.inv_mem_KInf B.emb hk`. Establish `hs' : s = τ k (τ k⁻¹ s)`. Rewrite using `[← ContinuousLinearMap.mul_apply, ← hmul _ hk _ hk', mul_inv_cancel, h1]`. Both sides reduce to the same expression. Rewrite using `[hs', ← map_sub, hinner k hk]`.
+
+Conclude with `Submodule.starProjection_inner_eq_zero w _ (hS _ hk' s hs)`. Set `T₁` to `T₀.comp (S.starProjection : EuclideanSpace ℂ (Fin m) →L[ℂ] EuclideanSpace ℂ (Fin m)).toLinearMap`. Establish `hT₁D : ∀ w, T₁ w ∈ PolData B G.M' ⊓ G.M'.So B.ψ B.τ₁` using `fun w => S.starProjection_apply_mem w`. Establish `hT₁ : ∀ k ∈ KInf σ G.W B.emb, ∀ w, T₁ (τ k w) = om' (1, k) (T₁ w)`. Introduce `k hk w`.
+
+Use `show T₀ (S.starProjection (τ k w)) = _`. Rewrite using `[hcomm k hk w, hT₀ k hk]`. Both sides reduce to the same expression. Establish `hI0 : G.M'.I om' 0 = 0`. Establish `h` using `hlin 0 (Submodule.zero_mem _) 0 (Submodule.zero_mem _) 1`.
+
+Rewrite `h` using `[smul_zero, add_zero, one_smul]`. Conclude with `(left_eq_add.mp h)`. Set `T : EuclideanSpace ℂ (Fin m) →ₗ[ℂ] (I.GA → ℂ)` to `{ toFun := fun w y => G.M'.I om' (T₁ w) (e y) map_add' := fun w w' => by`. Use function extensionality and compare the values at `y`. Establish `h` using `hlin _ (hT₁D w) _ (hT₁D w') 1`.
+
+Simplify using `only [one_smul] at h`. Use `show G.M'.I om' (T₁ (w + w')) (e y) = G.M'.I om' (T₁ w) (e y) + G.M'.I om' (T₁ w') (e y)`. Rewrite using `[map_add, h]`. Both sides reduce to the same expression. Use the proof step `map_smul' := fun c w => by`.
+
+Use function extensionality and compare the values at `y`. Establish `h` using `hlin 0 (Submodule.zero_mem _) _ (hT₁D w) c`. Rewrite `h` using `[zero_add, hI0, zero_add]`. Use `show G.M'.I om' (T₁ (c • w)) (e y) = c • G.M'.I om' (T₁ w) (e y)`. Rewrite using `[map_smul, h]`.
+
+Use `rfl }`. Use `⟨T, ?_, v₀, ?_⟩` and prove the remaining obligations. Introduce `k w x show G.M'.I om' (T₁ (τ (e (ι k)) w)) (e x) = G.M'.I om' (T₁ w) (e (x * ι k))`. Rewrite using `[hT₁ _ (hk k), GlobalTheory.ThetaFacCompl.I_transl, map_mul]`. Establish `hv : v₀ ∈ S`.
+
+Rewrite using `[Submodule.mem_comap, hv₀]`. Conclude with `hΨ`. Use function extensionality and compare the values at `y`. Use `show G.M'.I om' (T₀ (S.starProjection v₀)) (e y) = _`. Rewrite using `[(Submodule.starProjection_eq_self_iff).2 hv, hv₀]`.
+-/
 theorem types_transport : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) (a a' : ℕ) (G : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo σ a a') (X : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chars F E) (om : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ G.V G.W) (om' : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ G.V' G.W) (R : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.RealMaps F a a') (Rf : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.FinMaps F a a'), GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsMatched B G X om om' R Rf → ∀ (L : Subgroup (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.UA σ G.W.J)), GlobalTheory.ThKAdm.IsLevel G.W L → ∀ (m : ℕ) (τ : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.UA σ G.W.J → (EuclideanSpace ℂ (Fin m) →L[ℂ] EuclideanSpace ℂ (Fin m))), GlobalTheory.ThKAdm.IsKRep B τ → ∀ (I : Formalism.MainNotions.S.AutInst) (g : ℕ) (e : I.GA →* GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.UA σ G.W.J), 1 ≤ g → GlobalTheory.ThKAdm.IsTransp B G.W L I g e → GlobalTheory.Dec.IsURep (fun k : GlobalTheory.Dec.Kinf I => τ (e (fun v => (k v : Formalism.REAL.UJ (I.ε v)), 1))) ∧ ∀ Ψ ∈ (GlobalTheory.ThK.PolData B G.M' ⊓ G.M'.So B.ψ B.τ₁), GlobalTheory.ThKAdm.HasTypes B om' τ Ψ → ∃ T : EuclideanSpace ℂ (Fin m) →ₗ[ℂ] (I.GA → ℂ), (∀ (k : GlobalTheory.Dec.Kinf I) w x, T (τ (e (fun v => (k v : Formalism.REAL.UJ (I.ε v)), 1)) w) x = T w (x * (fun v => (k v : Formalism.REAL.UJ (I.ε v)), 1))) ∧ (fun y => G.M'.I om' Ψ (e y)) ∈ LinearMap.range T := by
   intro hKP F E _ _ _ _ _ σ B a a' G X om om' R Rf hM L hL m τ hτ I g e hg he
   obtain ⟨h1, hmul, hiso, hcont⟩ := hτ

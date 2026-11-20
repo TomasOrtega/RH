@@ -20,6 +20,11 @@ open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainN
 
 namespace GlobalTheory.TheoremB
 
+/- English proof (translation)
+Establish `h0 : Ideal.span {((p : ℕ) : 𝓞 E)} ≠ 0`. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `hp` after adjusting the coercions. Use `(Ideal.finite_factors h0).subset fun v hv => ?_` and prove the remaining obligations. Use `show v.asIdeal ∣ _`.
+
+Rewrite using `[Ideal.dvd_iff_le, Ideal.span_singleton_le_iff_mem]`. Conclude with `hv`.
+-/
 theorem placesOver_finite (E : Type) [Field E] [NumberField E] (p : ℕ) (hp : p ≠ 0) :
     (placesOver E p).Finite := by
   have h0 : Ideal.span {((p : ℕ) : 𝓞 E)} ≠ 0 := by
@@ -30,11 +35,25 @@ theorem placesOver_finite (E : Type) [Field E] [NumberField E] (p : ℕ) (hp : p
   rw [Ideal.dvd_iff_le, Ideal.span_singleton_le_iff_mem]
   exact hv
 
+/- English proof (translation)
+Introduce `D i _`. Establish `hf` using `placesOver_finite D.host.E (D.nd.l i) (D.nd.lPrime i).out.ne_zero`. Conclude with `⟨⟨hf.toFinset, ∅, Finset.disjoint_empty_right _, fun v => by simp⟩, rfl⟩`.
+-/
 theorem declNoColumns : ∀ (D : D7) (i : D.nd.Loc), (D.nd.l i = D.host.q ∨ D.nd.l i = D.host.d) → ∃ dc : TruncatedSeriesCountingIdentities.Decl D i, dc.col = ∅ := by
   intro D i _
   have hf := placesOver_finite D.host.E (D.nd.l i) (D.nd.lPrime i).out.ne_zero
   exact ⟨⟨hf.toFinset, ∅, Finset.disjoint_empty_right _, fun v => by simp⟩, rfl⟩
 
+/- English proof (translation)
+Introduce `D i hl`. Establish `ht1 : 1 ≤ D.R.t` using `D.R.t_odd.pos`. Establish `hr1 : 1 ≤ D.R.r` using `by unfold Ranks.r; have := D.R.m_add_three_le_k; have := D.R.two_le_m; omega`. Establish `htr : D.R.t ≤ D.R.t * D.R.r` using `Nat.le_mul_of_pos_right _ hr1`. Establish `h4 : 4 * D.R.t * D.R.r = 4 * (D.R.t * D.R.r)` using `by ring`.
+
+Establish `hlt : D.R.t < D.nd.l i`. Apply the tactic sequence `rcases hl with h | h <;> rw [h]`. Use `D.host.qd_big.1` as an intermediate fact. Rewrite `this` using `[h4]`. Use linear arithmetic over natural numbers and integers.
+
+Use `D.host.qd_big.2` as an intermediate fact. Rewrite `this` using `[h4]`. Use linear arithmetic over natural numbers and integers. Establish `hl2 : D.nd.l i ≠ 2` using `by have := D.R.rank_add_five_le; omega`. Unfold `NData.vdel`.
+
+Rewrite using `[UpperTheory.Small.localLevel_eq_one_of_not_mem_smallPrimes D.nd i (UpperTheory.Small.not_mem_of_qd D.host hl)]`. Establish `hk : ∀ k ∈ Finset.Ioo 0 D.R.t, ((1 : ℕ) : ℚ) + (padicValNat (D.nd.l i) k : ℚ) = 1`. Introduce `k hk`. Rewrite `hk` using `[Finset.mem_Ioo]`. Rewrite using `[padicValNat.eq_zero_of_not_dvd (Nat.not_dvd_of_pos_of_lt hk.1 (by omega))]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[Finset.sum_congr rfl hk]`. Simplify using the standard rewrite rules.
+-/
 theorem localDelta_le_cuspTwistDepth : ∀ (D : D7) (i : D.nd.Loc), (D.nd.l i = D.host.q ∨ D.nd.l i = D.host.d) → D.nd.vdel i ≤ (D.R.t : ℚ) := by
   intro D i hl
   have ht1 : 1 ≤ D.R.t := D.R.t_odd.pos
@@ -56,20 +75,80 @@ theorem localDelta_le_cuspTwistDepth : ∀ (D : D7) (i : D.nd.Loc), (D.nd.l i = 
   rw [Finset.sum_congr rfl hk]
   simp
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.rowPlaces_satisfy_rowHypothesis_at_q_and_d`.
+-/
 theorem rowBound : ∀ (D : D7) (r : ∀ i : D.nd.Loc, D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i))) (ρ : ∀ i : D.nd.Loc, D.nd.X i → (GE D.nd →* GL (Fin D.R.r) (D.nd.O i))) (large₂ : SizeData₂ D) (ep : Bool) (CA : ℝ), EmbeddingTypeJumps.Conclusion0 D → EmbeddingTypeJumps.Conclusion1 D → EmbeddingTypeJumps.admA (D := D) CA → EmbeddingTypeJumps.HodgeJumpWindowsAtDistinguishedPrimes r ep large₂ → EmbeddingTypeJumps.FontaineSubOfSumsAtDistinguishedPrimes r ρ → EmbeddingTypeJumps.admG2 r ρ → EmbeddingTypeJumps.iwahoriAdmissibleSet r ρ → EmbeddingTypeJumps.LiteratureHypotheses (D := D) → EmbeddingTypeJumps.ParametersPolynomiallyBounded large₂ → ∀ i : D.nd.Loc, EmbeddingTypeJumps.AtQD i → ∀ π ∈ D.nd.Zgood i, ∀ dc : TruncatedSeriesCountingIdentities.Decl D i, ∃ lenRow : HeightOneSpectrum (𝓞 D.host.E) → ℚ, TruncatedSeriesCountingIdentities.LengthBoundAtPlaces i (r i) (ρ i) π dc lenRow ∧ ∀ w ∈ dc.row, (lenRow w : ℝ) ≤ max CA 0 * (((locDeg D.host.E w : ℕ) + 1 : ℝ) * (D.R.r : ℝ) * (4 * large₂.sc.b / (D.nd.l i : ℝ) + 2 * large₂.Sc + 2 * Real.logb (D.nd.l i : ℝ) (2 * large₂.sc.b) + 1 + large₂.etaSz + (D.R.t : ℝ)) + 3 * ((locDeg D.host.E w : ℕ) : ℝ) * (D.R.m : ℝ) * (2 * large₂.sc.b + 1)) + 1 := GlobalTheory.T.rowPlaces_satisfy_rowHypothesis_at_q_and_d
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.blockBound_qd_places_uniformConst`.
+-/
 theorem tbConst : ∀ (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (r : ∀ i : D.nd.Loc, D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i))) (ρ : ∀ i : D.nd.Loc, D.nd.X i → (GE D.nd →* GL (Fin D.R.r) (D.nd.O i))) (large₂ : SizeData₂ D) (ep : Bool), EmbeddingTypeJumps.Conclusion0 D → EmbeddingTypeJumps.Conclusion1 D → EmbeddingTypeJumps.admW (D := D) HW F → EmbeddingTypeJumps.admTB (D := D) HW F → EmbeddingTypeJumps.HodgeJumpWindowsAtDistinguishedPrimes r ep large₂ → EmbeddingTypeJumps.FontaineSubOfSumsAtDistinguishedPrimes r ρ → EmbeddingTypeJumps.admG2 r ρ → EmbeddingTypeJumps.iwahoriAdmissibleSet r ρ → EmbeddingTypeJumps.LiteratureHypotheses (D := D) → EmbeddingTypeJumps.ParametersPolynomiallyBounded large₂ → ∀ i : D.nd.Loc, EmbeddingTypeJumps.AtQD i → ∀ π ∈ D.nd.Zgood i, ∃ cB : ℕ, TruncatedSeriesCountingIdentities.admTB i (r i) π cB ∧ (cB : ℝ) ≤ 60 * (D.R.t : ℝ) * (D.R.f : ℝ) * ((D.R.r : ℝ) + (D.R.t : ℝ)) * Real.log large₂.sc.b := GlobalTheory.T.blockBound_qd_places_uniformConst
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.blochKatoHypothesis_globalStep_at_qd`.
+-/
 theorem bkAt : ∀ (D : D7), EmbeddingTypeJumps.admBK (D := D) → EmbeddingTypeJumps.LiteratureHypotheses (D := D) → ∀ i : D.nd.Loc, EmbeddingTypeJumps.AtQD i → TruncatedSeriesCountingIdentities.admBK i := GlobalTheory.T.blochKatoHypothesis_globalStep_at_qd
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.mul_lt_finrank_cyclotomic_at_q_and_d`.
+-/
 theorem cycDegree_gt : ∀ (D : D7), EmbeddingTypeJumps.Conclusion1 D → ∀ i : D.nd.Loc, (D.nd.l i = D.host.q ∨ D.nd.l i = D.host.d) → D.R.t * D.R.r < Module.finrank D.host.E (CyclotomicField (D.nd.l i) D.host.E) := GlobalTheory.T.mul_lt_finrank_cyclotomic_at_q_and_d
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.theoremB_ramifiedPrimes_ne_typePrimes`.
+-/
 theorem ne_typePrimes : ∀ (D : D7), EmbeddingTypeJumps.Conclusion1 D → ∀ i : D.nd.Loc, (D.nd.l i = D.host.q ∨ D.nd.l i = D.host.d) → D.nd.l i ≠ D.host.g 0 ∧ D.nd.l i ≠ D.host.g 1 := GlobalTheory.T.theoremB_ramifiedPrimes_ne_typePrimes
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.theoremB_localDegree_sum_bounds`.
+-/
 theorem degBounds : ∀ (D : D7), EmbeddingTypeJumps.Conclusion1 D → ∀ i : D.nd.Loc, (D.nd.l i = D.host.q ∨ D.nd.l i = D.host.d) → ∀ s : Finset (HeightOneSpectrum (𝓞 D.host.E)), (∀ w ∈ s, w ∈ placesOver D.host.E (D.nd.l i)) → (∑ w ∈ s, locDeg D.host.E w) ≤ 2 * D.R.f ∧ 2 * s.card ≤ ∑ w ∈ s, locDeg D.host.E w := GlobalTheory.T.theoremB_localDegree_sum_bounds
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.closing_numerical_inequality_theoremB`.
+-/
 theorem closingIneq : ∀ (CA C b l S η Rw Tb Vd : ℝ) (f r t m p : ℕ), 13 * max CA 0 ≤ C → 260 * f ^ 2 * t ^ 2 * (r + t) ≤ p → 1 ≤ t → 1 ≤ f → m ≤ r → 3 ≤ l → 0 ≤ S → 0 ≤ η → 0 < b → 1 < Real.log b → Rw ≤ max CA 0 * (3 * (f : ℝ) * r * (4 * b / l + 2 * S + 2 * Real.logb l (2 * b) + 1 + η + t) + 6 * (f : ℝ) * m * (2 * b + 1)) + f → Tb ≤ 240 * (t : ℝ) ^ 2 * (f : ℝ) ^ 2 * ((r : ℝ) + t) * Real.log b → Vd ≤ 4 * ((r : ℝ) + t) * t → Rw + Tb + Vd ≤ C * f * (r * (b / l + S + t + η + Real.log b) + m * b) + (p : ℝ) * Real.log b := GlobalTheory.T.closing_numerical_inequality_theoremB
 
+/- English proof (translation)
+Introduce `D HW F r ρ large₂ ep CA C Qp hC hP hW hA hN5 hG1 hG2 hG3 hG4 hG5 hG6 hSet hTB hBK hKill hJump hFon hLit hPar`. Take `⟨h0, h1⟩` from `GlobalTheory.T.local_fields_at_auxiliary_primes D`. Introduce `i hl tw hbig π hπ hsF hsha`. Establish `hQ : EmbeddingTypeJumps.AtQD i` using `⟨⟨hl, tw⟩, ⟨π, (D.Zgood_tie i π).1 hπ⟩⟩`. Take `⟨dc, hcol⟩` from `declNoColumns D i hl`.
+
+Take `⟨lenRow, hROW, hRowB⟩` from `rowBound D r ρ large₂ ep CA h0 h1 hA hJump hFon hG2 hSet hLit hPar i hQ π hπ dc`. Take `⟨cB, hTBi, hcB⟩` from `tbConst D HW F r ρ large₂ ep h0 h1 hW hTB hJump hFon hG2 hSet hLit hPar i hQ π hπ`. Establish `hAdm : TruncatedSeriesCountingIdentities.admitted i (r i) (ρ i) π dc lenRow (fun _ => 0) cB`. Use `⟨hG1 i hQ, hG2 i hQ π hπ, hG3 i hQ π hπ, hG4 i hQ, hG5 i hQ, (hLit i hQ).1, hG6 i hQ, bkAt D hBK hLit i hQ, hTBi, hROW, ?_, (hSet i hQ π hπ).1, (hSet i hQ π hπ).2.1, (hSet i hQ π hπ).2.2.1, (hSet i hQ π hπ).2.2.2, (hLit i hQ).2.2.1, (GlobalTheory.admissible_shape_and_epsilon_at_e …` and prove the remaining obligations. Introduce `w hw hwc`.
+
+Simplify using `[hcol] at hwc`. Take `⟨hg0, hg1⟩` from `ne_typePrimes D h1 i hl`. Establish `key` using `hN5 i π dc lenRow (fun _ => 0) cB hAdm hg0 hg1 (LargeLevelLemmas.zgoodSubsetZ i hπ) hsF hsha`. Establish `hlw : ∀ w ∈ dc.row, TruncatedSeriesCountingIdentities.lenW i (ρ i) π dc lenRow (fun _ => 0) w = lenRow w`. Introduce `w _`.
+
+Unfold `TruncatedSeriesCountingIdentities.lenW`. Rewrite using `[dif_neg (by simp [hcol])]`. Rewrite `key` using `[hcol]`. Simplify using `only [Finset.union_empty] at key`. Rewrite `key` using `[Finset.sum_congr rfl hlw]`.
+
+Simplify using `only [Finset.card_empty, Nat.cast_zero, zero_add, mul_one, mul_zero, zero_mul, add_zero] at key`. Establish `keyR` using `(Rat.cast_le (K := ℝ)).2 key`. Move the coercions through the operations in `at keyR`. Establish `ht1 : 1 ≤ D.R.t` using `D.R.t_odd.pos`. Establish `hmr : D.R.m ≤ D.R.r` using `by unfold Ranks.r; have := D.R.m_add_three_le_k; omega`.
+
+Establish `hr1 : 1 ≤ D.R.r` using `by unfold Ranks.r; have := D.R.m_add_three_le_k; have := D.R.two_le_m; omega`. Establish `hf1 : 1 ≤ D.R.f` using `by unfold Ranks.f Ranks.n; have := And.intro (Nat.one_le_two_pow (n := D.R.e)) (show 0 < D.R.ord by positivity); omega`. Establish `hl3 : 3 ≤ D.nd.l i`. Establish `htr : 1 ≤ D.R.t * D.R.r` using `Nat.mul_pos ht1 hr1`. Apply the tactic sequence `rcases hl with h | h <;> rw [h]`.
+
+Use `D.host.qd_big.1` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Use `D.host.qd_big.2` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish `hnV : (D.R.nV : ℝ) = D.R.r + D.R.t` using `by unfold Ranks.nV; push_cast; ring`.
+
+Establish `hL0 : 0 < large₂.sc.L` using `by unfold Scale.L; exact Real.rpow_pos_of_pos (by linarith [large₂.sc.one_lt_alt]) _`. Establish `hb1 : 1 < large₂.sc.b` using `by unfold Scale.b; have := Real.add_one_lt_exp (ne_of_gt hL0); linarith`. Establish `hb0 : 0 < large₂.sc.b` using `by linarith`. Establish `hLb : 1 < Real.log large₂.sc.b`. Unfold `Scale.b`.
+
+Rewrite using `[Real.log_exp]`. Unfold `Scale.L`. Conclude with `Real.one_lt_rpow large₂.sc.one_lt_alt large₂.sc.eps_pos`. Establish `hrowP : ∀ w ∈ dc.row, w ∈ placesOver D.host.E (D.nd.l i)` using `fun w hw => (dc.cover w).1 (Or.inl hw)`. Take `⟨hSD, hSC⟩` from `degBounds D h1 i hl dc.row hrowP`.
+
+Establish `hSDr : ((∑ w ∈ dc.row, locDeg D.host.E w : ℕ) : ℝ) ≤ 2 * D.R.f` using `by exact_mod_cast hSD`. Establish `hSCr : 2 * (dc.row.card : ℝ) ≤ ((∑ w ∈ dc.row, locDeg D.host.E w : ℕ) : ℝ)` using `by exact_mod_cast hSC`. Use `set SD : ℝ := ((∑ w ∈ dc.row, locDeg D.host.E w : ℕ) : ℝ) with hSDdef`. Use `set K := max CA 0 with hK`. Establish `hK0 : 0 ≤ K` using `le_max_right _ _`.
+
+Use `set X := 4 * large₂.sc.b / (D.nd.l i : ℝ) + 2 * large₂.Sc + 2 * Real.logb (D.nd.l i : ℝ) (2 * large₂.sc.b) + 1 + large₂.etaSz + (D.R.t : ℝ) with hX`. Establish `hl3r : (3 : ℝ) ≤ D.nd.l i` using `by exact_mod_cast hl3`. Establish `hX0 : 0 ≤ X`. Establish `: 0 ≤ Real.logb (D.nd.l i : ℝ) (2 * large₂.sc.b)` using `Real.logb_nonneg (by linarith) (by linarith)`. Use `large₂.Sc_pos` as an intermediate fact.
+
+Use `large₂.etaSz_pos` as an intermediate fact. Establish `: 0 ≤ 4 * large₂.sc.b / (D.nd.l i : ℝ)` using `by positivity`. Check the signs of the components of the expression. Use `set Y := 2 * large₂.sc.b + 1 with hY`. Establish `hY0 : 0 ≤ Y` using `by positivity`.
+
+Establish `hRw : (∑ w ∈ dc.row, (lenRow w : ℝ)) ≤ K * (3 * (D.R.f : ℝ) * D.R.r * X + 6 * (D.R.f : ℝ) * D.R.m * Y) + D.R.f`. Establish `hcard : (dc.row.card : ℝ) ≤ D.R.f` using `by linarith`. Establish `hsum : (∑ w ∈ dc.row, (K * (((locDeg D.host.E w : ℕ) + 1 : ℝ) * (D.R.r : ℝ) * X + 3 * ((locDeg D.host.E w : ℕ) : ℝ) * (D.R.m : ℝ) * Y) + 1)) = (K * D.R.r * X + 3 * K * D.R.m * Y) * SD + dc.row.card * (K * D.R.r * X + 1)`. Establish `: ∀ w ∈ dc.row, K * (((locDeg D.host.E w : ℕ) + 1 : ℝ) * (D.R.r : ℝ) * X + 3 * ((locDeg D.host.E w : ℕ) : ℝ) * (D.R.m : ℝ) * Y) + 1 = (K * D.R.r * X + 3 * K * D.R.m * Y) * ((locDeg D.host.E w : ℕ) : ℝ) + (K * D.R.r * X + 1)`. Introduce `w _`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.sum_congr rfl this, Finset.sum_add_distrib, ← Finset.mul_sum, Finset.sum_const, nsmul_eq_mul, hSDdef]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `e1 : (K * D.R.r * X + 3 * K * D.R.m * Y) * SD ≤ (K * D.R.r * X + 3 * K * D.R.m * Y) * (2 * D.R.f)` using `mul_le_mul_of_nonneg_left hSDr (by positivity)`.
+
+Establish `e2 : (dc.row.card : ℝ) * (K * D.R.r * X + 1) ≤ D.R.f * (K * D.R.r * X + 1)` using `mul_le_mul_of_nonneg_right hcard (by positivity)`. Combine the equalities or inequalities in the displayed calculation. Establish `hTb : (D.R.t : ℝ) * ∑ w ∈ dc.row, (((locDeg D.host.E w : ℕ) : ℝ) + 2) * (cB : ℝ) ≤ 240 * (D.R.t : ℝ) ^ 2 * (D.R.f : ℝ) ^ 2 * ((D.R.r : ℝ) + D.R.t) * Real.log large₂.sc.b`. Establish `hs : ∑ w ∈ dc.row, (((locDeg D.host.E w : ℕ) : ℝ) + 2) * (cB : ℝ) = (SD + 2 * dc.row.card) * cB`. Rewrite using `[← Finset.sum_mul, Finset.sum_add_distrib, Finset.sum_const, nsmul_eq_mul, hSDdef]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hs]`. Establish `h4 : SD + 2 * (dc.row.card : ℝ) ≤ 4 * D.R.f` using `by linarith`. Establish `hc0 : (0 : ℝ) ≤ cB` using `by positivity`.
+
+Establish `hS0 : (0 : ℝ) ≤ SD + 2 * (dc.row.card : ℝ)` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Establish `hVd : 4 * (D.R.nV : ℝ) * ((D.nd.vdel i : ℚ) : ℝ) ≤ 4 * ((D.R.r : ℝ) + D.R.t) * D.R.t`. Rewrite using `[hnV]`. Establish `h1' : ((D.nd.vdel i : ℚ) : ℝ) ≤ D.R.t` using `by exact_mod_cast localDelta_le_cuspTwistDepth D i hl`.
+
+Establish `: (0 : ℝ) ≤ D.R.r + D.R.t` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities. Establish `hK2` using `(hKill i hl tw (Or.inr (cycDegree_gt D h1 i hl)) π hπ).2`. Simplify using `only [EmbeddingTypeJumps.vZeta] at hK2`. Move the coercions through the operations in `at hK2`.
+
+Establish `har` using `closingIneq CA C large₂.sc.b (D.nd.l i) large₂.Sc large₂.etaSz (∑ w ∈ dc.row, (lenRow w : ℝ)) ((D.R.t : ℝ) * ∑ w ∈ dc.row, (((locDeg D.host.E w : ℕ) : ℝ) + 2) * (cB : ℝ)) (4 * (D.R.nV : ℝ) * ((D.nd.vdel i : ℚ) : ℝ)) D.R.f D.R.r D.R.t D.R.m (EmbeddingTypeJumps.polyVal Qp D.R.f D.R …`. Unfold `EmbeddingTypeJumps.bndB`. Use `push_cast`. Combine the linear relations using `[keyR, hK2, har]`.
+-/
 theorem theoremB_of_admitted : ∀ (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (r : ∀ i : D.nd.Loc, D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i))) (ρ : ∀ i : D.nd.Loc, D.nd.X i → (GE D.nd →* GL (Fin D.R.r) (D.nd.O i))) (large₂ : SizeData₂ D) (ep : Bool) (CA C : ℝ) (Qp : MvPolynomial (Fin 3) ℕ), 13 * max CA 0 ≤ C → (∀ f r t : ℕ, 260 * f ^ 2 * t ^ 2 * (r + t) ≤ EmbeddingTypeJumps.polyVal Qp f r t) → EmbeddingTypeJumps.admW (D := D) HW F → EmbeddingTypeJumps.admA (D := D) CA → EmbeddingTypeJumps.GlobalIndexAwayFromTypes r ρ → EmbeddingTypeJumps.admG1 r → EmbeddingTypeJumps.admG2 r ρ → EmbeddingTypeJumps.admG3 r ρ → EmbeddingTypeJumps.admG4 r → EmbeddingTypeJumps.admG5 r → EmbeddingTypeJumps.admG6 r → EmbeddingTypeJumps.iwahoriAdmissibleSet r ρ → EmbeddingTypeJumps.admTB (D := D) HW F → EmbeddingTypeJumps.admBK (D := D) → EmbeddingTypeJumps.KillingTwistedPlaces ρ → EmbeddingTypeJumps.HodgeJumpWindowsAtDistinguishedPrimes r ep large₂ → EmbeddingTypeJumps.FontaineSubOfSumsAtDistinguishedPrimes r ρ → EmbeddingTypeJumps.LiteratureHypotheses (D := D) → EmbeddingTypeJumps.ParametersPolynomiallyBounded large₂ → EmbeddingTypeJumps.Conclusion2 ρ large₂ C Qp := by
   intro D HW F r ρ large₂ ep CA C Qp hC hP hW hA hN5 hG1 hG2 hG3 hG4 hG5 hG6 hSet hTB hBK hKill hJump hFon hLit hPar
   obtain ⟨h0, h1⟩ := GlobalTheory.T.local_fields_at_auxiliary_primes D

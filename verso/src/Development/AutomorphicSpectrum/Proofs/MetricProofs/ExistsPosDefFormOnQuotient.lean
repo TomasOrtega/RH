@@ -8,6 +8,29 @@ open NumberField Matrix Filter Topology GlobalTheory.CompanionTheory.Ar GlobalTh
 
 namespace GlobalTheory.CompanionTheory.Ar.QuotUniv
 
+/- English proof (translation)
+Introduce `g g' Hm hHm hpos S q hq hker hproj`. Establish `hconj : ∀ x y : Fin g → ℂ, star (x ⬝ᵥ Hm *ᵥ star y) = y ⬝ᵥ Hm *ᵥ star x`. Introduce `x y`. Rewrite using `[← Matrix.star_dotProduct_star, Matrix.star_mulVec, star_star, hHm.eq, ← Matrix.dotProduct_mulVec]`. Establish `hmemS : ∀ z, q z = 0 → z ∈ S` using `fun z hz => by`.
+
+Rewrite using `[← hker]`. Conclude with `LinearMap.mem_ker.2 hz`. Use `choose z hz using fun i : Fin g' => hq (Pi.single i 1)`. Use `choose s hsS hs using fun i => hproj (z i)`. Set `A : Matrix (Fin g') (Fin g) ℂ` to `Matrix.of fun i => z i - s i`.
+
+Establish `hAq : ∀ i, q (z i - s i) = Pi.single i 1`. Introduce `i`. Establish `hs0 : q (s i) = 0`. Establish `: s i ∈ LinearMap.ker q` using `by rw [hker]; exact hsS i`. Conclude with `LinearMap.mem_ker.1 this`.
+
+Rewrite using `[map_sub, hz i, hs0, sub_zero]`. Establish `hT : ∀ u : Fin g' → ℂ, Matrix.vecMul u A = ∑ i, u i • (z i - s i)`. Introduce `u`. Use extensionality with `a`. Simplify using `[A, Matrix.vecMul, dotProduct, Finset.sum_apply]`.
+
+Establish `hTq : ∀ u, q (Matrix.vecMul u A) = u`. Introduce `u`. Rewrite using `[hT, map_sum]`. Repeatedly rewrite using `[map_smul, hAq]`. Use extensionality with `j`.
+
+Simplify using `[Finset.sum_apply, Pi.single_apply]`. Establish `hTorth : ∀ u, ∀ v ∈ S, Matrix.vecMul u A ⬝ᵥ Hm *ᵥ star v = 0`. Introduce `u v hv`. Rewrite using `[hT, sum_dotProduct]`. Conclude with `Finset.sum_eq_zero fun i _ => by rw [smul_dotProduct, hs i v hv, smul_zero]`.
+
+Establish `hkey : ∀ u u' : Fin g' → ℂ, u ⬝ᵥ (A * Hm * A.conjTranspose) *ᵥ star u' = Matrix.vecMul u A ⬝ᵥ Hm *ᵥ star (Matrix.vecMul u' A)`. Introduce `u u'`. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec u A, Matrix.star_vecMul]`. Establish `hlift : ∀ x : Fin g → ℂ, (∀ v ∈ S, x ⬝ᵥ Hm *ᵥ star v = 0) → Matrix.vecMul (q x) A = x`. Introduce `x hx`.
+
+Establish `hdS : Matrix.vecMul (q x) A - x ∈ S` using `hmemS _ (by rw [map_sub, hTq, sub_self])`. Establish `hd0 : (Matrix.vecMul (q x) A - x) ⬝ᵥ Hm *ᵥ star (Matrix.vecMul (q x) A - x) = 0`. Rewrite using `[sub_dotProduct, hTorth _ _ hdS, hx _ hdS, sub_zero]`. Assume the negation of the conclusion as `hne`. Use `hpos _ (sub_ne_zero.2 hne)` as an intermediate fact.
+
+Rewrite `this` using `[hd0, Complex.zero_re]`. Conclude with `lt_irrefl _ this`. Use `⟨A * Hm * A.conjTranspose, Matrix.isHermitian_mul_mul_conjTranspose A hHm, ?_, ?_⟩` and prove the remaining obligations. Introduce `u hu`. Rewrite using `[hkey]`.
+
+Apply `hpos` to reduce the goal to its premises. Introduce `h0`. Apply `hu` to reduce the goal to its premises. Rewrite using `[← hTq u, h0, map_zero]`. Introduce `x y hx`.
+
+Rewrite using `[hkey, hlift x hx, ← sub_eq_zero, ← sub_dotProduct, ← hconj, hx (Matrix.vecMul (q y) A - y) (hmemS _ (by rw [map_sub, hTq, sub_self])), star_zero]`.
+-/
 theorem hermitian_transport_along_orthogonal_complement :
     ∀ (g g' : ℕ) (Hm : Matrix (Fin g) (Fin g) ℂ), Hm.IsHermitian → (∀ z : Fin g → ℂ, z ≠ 0 → 0 < (z ⬝ᵥ Hm *ᵥ star z).re) → ∀ (S : Submodule ℂ (Fin g → ℂ)) (q : (Fin g → ℂ) →ₗ[ℂ] (Fin g' → ℂ)), Function.Surjective q → LinearMap.ker q = S → (∀ z : Fin g → ℂ, ∃ s ∈ S, ∀ v ∈ S, (z - s) ⬝ᵥ Hm *ᵥ star v = 0) → ∃ Hm' : Matrix (Fin g') (Fin g') ℂ, Hm'.IsHermitian ∧ (∀ z : Fin g' → ℂ, z ≠ 0 → 0 < (z ⬝ᵥ Hm' *ᵥ star z).re) ∧ ∀ x y : Fin g → ℂ, (∀ v ∈ S, x ⬝ᵥ Hm *ᵥ star v = 0) → q y ⬝ᵥ Hm' *ᵥ star (q x) = y ⬝ᵥ Hm *ᵥ star x := by
   intro g g' Hm hHm hpos S q hq hker hproj

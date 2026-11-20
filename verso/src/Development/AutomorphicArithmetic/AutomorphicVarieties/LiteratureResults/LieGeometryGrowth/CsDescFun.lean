@@ -10,6 +10,9 @@ namespace UpperTheory.V.Lit.Geo.Cs
 
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 
+/- English proof (translation)
+Unfold `pt`. Use `ga_ext ?_ ?_` and prove the remaining obligations. Simplify using `only [map_mul, pInf_infGL, pInf_finGL, mul_one]`. Simplify using `only [map_mul, pFin_infGL, pFin_finGL, one_mul]`. Both sides reduce to the same expression.
+-/
 private theorem rat_pt (γ : GL (Fin a) E) (g : GL (Fin a) (Cinf E)) (x : GL (Fin a) (Af E)) :
     pt (GeneralLinearGroup.map (pInf E) (ratGL E a γ) * g) (GeneralLinearGroup.map (algebraMap E (Af E)) γ * x) =
       ratGL E a γ * pt g x := by
@@ -19,12 +22,20 @@ private theorem rat_pt (γ : GL (Fin a) E) (g : GL (Fin a) (Cinf E)) (x : GL (Fi
   · simp only [map_mul, pFin_infGL, pFin_finGL, one_mul]
     rfl
 
+/- English proof (translation)
+Establish `h : (expU fun _ : InfinitePlace E => ((0 : ℝ) : ℂ)) = 1`. Use extensionality with `w`. Simplify using `[expU]`. Rewrite using `[splitCentre, h, map_one, map_one]`.
+-/
 private theorem centre_zero : splitCentre E a 0 = 1 := by
   have h : (expU fun _ : InfinitePlace E => ((0 : ℝ) : ℂ)) = 1 := by
     ext w
     simp [expU]
   rw [splitCentre, h, map_one, map_one]
 
+/- English proof (translation)
+Use `⟨Real.log r / 2, _, rfl, fun p => Subtype.ext ?_⟩` and prove the remaining obligations. Establish `h : (Units.map (Matrix.scalar (Fin a)).toMonoidHom (expU fun _ : InfinitePlace E => ((Real.log r / 2 : ℝ) : ℂ)) : GL (Fin a) (Cinf E)).val = Real.exp (Real.log r / 2) • (1 : Matrix (Fin a) (Fin a) (Cinf E))`. Use extensionality with `i j w`. Apply the tactic sequence `by_cases hij : i = j <;> simp [expU, hij, Matrix.one_apply]`. Establish `e : Real.exp (Real.log r / 2) * Real.exp (Real.log r / 2) = r`.
+
+Rewrite using `[← Real.exp_add, add_halves, Real.exp_log hr]`. Express the relevant statement in the definitionally equal form `Matrix.of (sand _ p).1 = r • Matrix.of p.1`. Rewrite using `[sand_val, h, star_smul, star_one, star_trivial, smul_mul_assoc, mul_smul_comm, one_mul, mul_one, smul_smul, e]`.
+-/
 private theorem scal_ex (r : ℝ) (hr : 0 < r) : ∃ (t : ℝ) (c : GL (Fin a) (Cinf E)),
     infGL E a c = splitCentre E a t ∧ ∀ p : HV E a, sand c p = r • p := by
   refine ⟨Real.log r / 2, _, rfl, fun p => Subtype.ext ?_⟩
@@ -42,6 +53,21 @@ end UpperTheory.V.Lit.Geo.Cs
 
 open UpperTheory.V.Lit.Geo.Cs
 
+/- English proof (translation)
+Introduce `E _ _ _ a ho U Ξ f Y C c f₀ hS Φ hΦ`. Use `⟨fun s p₀ hp₀ => ?_, ?_, ?_⟩` and prove the remaining obligations. Take `⟨x, rfl⟩` from `QuotientGroup.mk_surjective s`. Take `⟨τ, hτ, hs⟩` from `locSec E a p₀ hp₀`. Use `ContDiffAt.contDiffWithinAt ?_` and prove the remaining obligations.
+
+Take `⟨φ, hφ, -⟩` from `hS.f_sm`. Establish `h0` using `(contDiffAt_chart φ.2 (finGL E a x) (val_mem_invSet (τ p₀))).comp p₀ hτ`. Simplify using `only [Function.comp_def, chart_val, hφ] at h0`. Establish `h1` using `Complex.reCLM.contDiff.contDiffAt.comp p₀ h0`. Use `h1.congr_of_eventuallyEq (hs.mono fun p hp => ?_)` and prove the remaining obligations.
+
+Use `hΦ (τ p) x` as an intermediate fact. Rewrite `this` using `[hp]`. Rewrite using `[this, pt, infGL_comm]`. Simplify using the standard rewrite rules. Introduce and unpack `γ s p ⟨g, rfl⟩`.
+
+Take `⟨x, rfl⟩` from `QuotientGroup.mk_surjective s`. Establish `hs : ∀ p : HV E a, (geo ho U Ξ).ρ γ (sand g p) = sand (GeneralLinearGroup.map (pInf E) (ratGL E a γ.1) * g) p` using `fun p => by`. Rewrite using `[geo_ρ, map_mul]`. Both sides reduce to the same expression. Establish `hσ : (geo ho U Ξ).σ γ (x : GL (Fin a) (Af E) ⧸ U) = ((GeneralLinearGroup.map (algebraMap E (Af E)) γ.1 * x : GL (Fin a) (Af E)) : GL (Fin a) (Af E) ⧸ U)` using `rfl`.
+
+Establish `hl` using `hS.f_left γ.1 0 (pt g x)`. Rewrite `hl` using `[centre_zero, mul_one]`. Rewrite using `[hσ, hs, hΦ, hΦ, rat_pt, hl]`. Introduce and unpack `s r hr p ⟨g, rfl⟩`. Take `⟨x, rfl⟩` from `QuotientGroup.mk_surjective s`.
+
+Take `⟨t, c, hc, hp⟩` from `scal_ex (E := E) (a := a) r hr`. Establish `hl` using `hS.f_left 1 t (pt g x)`. Rewrite `hl` using `[map_one, one_mul, ← hc, pt, ← mul_assoc, ← map_mul]`. Establish `hs : ∀ p : HV E a, r • sand g p = sand (c * g) p` using `fun p => by`. Rewrite using `[map_mul, ContinuousLinearMap.mul_apply, hp]`.
+
+Rewrite using `[hs, hΦ, hΦ]`. Conclude with `hl`.
+-/
 theorem UpperTheory.V.Lit.Geo.Cs.descFun :
     DescFun := by
   intro E _ _ _ a ho U Ξ f Y C c f₀ hS Φ hΦ

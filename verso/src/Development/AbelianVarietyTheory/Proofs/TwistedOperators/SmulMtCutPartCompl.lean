@@ -24,6 +24,9 @@ open Classical in
 def cutPart (a : AE D) (V : HSp D) (g : GA D V) : GA D V :=
   if h : a * a = a ∧ cA D a = a then ⟨piece h.1 g.1, piece_mem _ _ h.1 h.2 g.2⟩ else g
 
+/- English proof (translation)
+Establish `e : cutPart a V g = ⟨piece h g.1, piece_mem _ _ h hc g.2⟩` using `dif_pos ⟨h, hc⟩`. Rewrite using `[e]`. Both sides reduce to the same expression.
+-/
 theorem mt_cutPart {a : AE D} (h : a * a = a) (hc : cA D a = a) (V : HSp D) (g : GA D V) :
     Formalism.L2.Theta.mt V (cutPart a V g) = a • Formalism.L2.Theta.mt V g + (1 - a) • (1 : Matrix _ _ (AE D)) := by
   have e : cutPart a V g = ⟨piece h g.1, piece_mem _ _ h hc g.2⟩ := dif_pos ⟨h, hc⟩
@@ -38,16 +41,25 @@ open GlobalTheory.IdemSupport
 
 variable {D : D7}
 
+/- English proof (translation)
+Establish `h1 : cA D e * cA D e = cA D e` using `by rw [← RingHom.map_mul, he]`. Use `⟨by linear_combination he + h1 + 2 * hc, ?_⟩` and prove the remaining obligations. Rewrite using `[RingHom.map_add, GlobalTheory.SplitOnto.cA_cA, add_comm]`.
+-/
 theorem idem_conj_sum {e : AE D} (he : e * e = e) (hc : e * cA D e = 0) :
     (e + cA D e) * (e + cA D e) = e + cA D e ∧ cA D (e + cA D e) = e + cA D e := by
   have h1 : cA D e * cA D e = cA D e := by rw [← RingHom.map_mul, he]
   refine ⟨by linear_combination he + h1 + 2 * hc, ?_⟩
   rw [RingHom.map_add, GlobalTheory.SplitOnto.cA_cA, add_comm]
 
+/- English proof (translation)
+Use `⟨by linear_combination hf.1, ?_⟩` and prove the remaining obligations. Rewrite using `[RingHom.map_sub, RingHom.map_one, hf.2]`.
+-/
 theorem idem_compl {f : AE D} (hf : f * f = f ∧ cA D f = f) : (1 - f) * (1 - f) = 1 - f ∧ cA D (1 - f) = 1 - f := by
   refine ⟨by linear_combination hf.1, ?_⟩
   rw [RingHom.map_sub, RingHom.map_one, hf.2]
 
+/- English proof (translation)
+Establish `h2` using `idem_compl hf`. Use `GlobalTheory.IdemSupport.mt_inj V ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.IdemSupport.mt_mul, mt_cutPart hf.1 hf.2, mt_cutPart h2.1 h2.2, sub_sub_cancel]`. Conclude with `(mix_split hf.1 rfl rfl).symm`.
+-/
 theorem cutPart_mul {f : AE D} (hf : f * f = f ∧ cA D f = f) (V : HSp D) (g : GA D V) :
     g = cutPart f V g * cutPart (1 - f) V g := by
   have h2 := idem_compl hf
@@ -55,11 +67,19 @@ theorem cutPart_mul {f : AE D} (hf : f * f = f ∧ cA D f = f) (V : HSp D) (g : 
   rw [GlobalTheory.IdemSupport.mt_mul, mt_cutPart hf.1 hf.2, mt_cutPart h2.1 h2.2, sub_sub_cancel]
   exact (mix_split hf.1 rfl rfl).symm
 
+/- English proof (translation)
+Establish `hf` using `idem_conj_sum he hc`. Conclude with `(supp_iff _ _).2 (smul_mix hf.1 (mt_cutPart hf.1 hf.2 V g))`.
+-/
 theorem suppAt_cutPart {e : AE D} (he : e * e = e) (hc : e * cA D e = 0) (V : HSp D) (g : GA D V) :
     SuppAt e V (cutPart (e + cA D e) V g) := by
   have hf := idem_conj_sum he hc
   exact (supp_iff _ _).2 (smul_mix hf.1 (mt_cutPart hf.1 hf.2 V g))
 
+/- English proof (translation)
+Establish `hf` using `idem_conj_sum he hc`. Establish `h2` using `idem_compl hf`. Rewrite using `[mt_cutPart h2.1 h2.2, sub_sub_cancel, smul_add, smul_smul, smul_smul]`. Establish `k1 : e * (1 - (e + cA D e)) = 0` using `by linear_combination -he - hc`. Establish `k2 : e * (e + cA D e) = e` using `by linear_combination he + hc`.
+
+Rewrite using `[k1, k2, zero_smul, zero_add]`.
+-/
 theorem smul_mt_cutPart_compl {e : AE D} (he : e * e = e) (hc : e * cA D e = 0) (V : HSp D) (g : GA D V) :
     e • Formalism.L2.Theta.mt V (cutPart (1 - (e + cA D e)) V g) = e • (1 : Matrix (Fin V.rank) (Fin V.rank) (AE D)) := by
   have hf := idem_conj_sum he hc
@@ -75,6 +95,9 @@ namespace GlobalTheory.ExpansionInvariance
 
 variable {D : D7}
 
+/- English proof (translation)
+Establish `hz' : e • z = z` using `Matrix.ext fun i j => hz i j`. Unfold `actO`. Rewrite using `[inv_inv, inv_one, GlobalTheory.IdemSupport.mt_one, Matrix.one_mul]`. Use `conv_lhs => rw [← hz']`. Rewrite using `[Matrix.smul_mul, ← Matrix.mul_smul, smul_mt_cutPart_compl he hc, Matrix.mul_smul, Matrix.mul_one, hz']`.
+-/
 theorem actO_cutPart_compl {S T : HSp D} {e : AE D} (he : e * e = e) (hc : e * cA D e = 0) (g : GA D S) {z : WO S T}
     (hz : IsHalf e z) : actO S T (cutPart (1 - (e + cA D e)) S g)⁻¹ 1⁻¹ z = z := by
   have hz' : e • z = z := Matrix.ext fun i j => hz i j
@@ -83,6 +106,11 @@ theorem actO_cutPart_compl {S T : HSp D} {e : AE D} (he : e * e = e) (hc : e * c
   conv_lhs => rw [← hz']
   rw [Matrix.smul_mul, ← Matrix.mul_smul, smul_mt_cutPart_compl he hc, Matrix.mul_smul, Matrix.mul_one, hz']
 
+/- English proof (translation)
+Establish `hf` using `idem_conj_sum he hc`. Establish `hg : g = cutPart (e + cA D e) S g * cutPart (1 - (e + cA D e)) S g` using `cutPart_mul hf S g`. Establish `key : actO S T g⁻¹ 1⁻¹ x = actO S T (cutPart (1 - (e + cA D e)) S g)⁻¹ 1⁻¹ (actO S T (cutPart (e + cA D e) S g)⁻¹ 1⁻¹ x)`. Rewrite using `[← GlobalTheory.SplitLinear.actO_mul, ← mul_inv_rev, ← hg, inv_one, mul_one]`. Rewrite using `[key]`.
+
+Distinguish the cases in `hy : IsHalf e (actO S T (cutPart (e + cA D e) S g)⁻¹ 1⁻¹ x)`. Rewrite using `[actO_cutPart_compl he hc g hy]`. Unfold `halfInd`. Rewrite using `[if_neg fun h => hy h.2, if_neg fun h => hy (GlobalTheory.ThetaMove.isHalf_of_act _ _ h.2)]`.
+-/
 theorem halfInd_cutPart {S T : HSp D} {e : AE D} (he : e * e = e) (hc : e * cA D e = 0) (Λ : AddSubgroup (WO S T))
     (g : GA D S) (x : WO S T) :
     halfInd e Λ (actO S T (cutPart (e + cA D e) S g)⁻¹ 1⁻¹ x) = halfInd e Λ (actO S T g⁻¹ 1⁻¹ x) := by

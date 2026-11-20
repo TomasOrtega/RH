@@ -32,6 +32,9 @@ section Loc
 variable {D : D7} {cf : CharFrame D} {jE : D.host.E →+* Qb} {A : _root_.GlobalTheory.HeightCounting.CharFrameHostEmbedding D cf jE} {M : MtFam D} {C : NChoice D}
   {tup : D.what₂.Tup → Fin D.R.m → HChar D.host.E}
 end Loc
+/- English proof (translation)
+Establish `R : _root_.GlobalTheory.NRows.PointConditions' D` using `_root_.GlobalTheory.T.theta_conditions_of_inputs_of_jumpsCard hPr hc dec hL D I hJ`. Establish `h1 : _root_.Formalism.MainNotions.SumRepresentations.provisionFirst D` using `I.Conclusion1 (_root_.UpperTheory.GalS.Parts.main_alt_alt D) R.a R.b`. Conclude with `⟨h1.1, _root_.GlobalTheory.HeightCounting.Up.PointStatements.residualIrreducibleGood_of_inputs hL D I R, h1.2.2, (SumRepresentations.multiplicity_statement_iff_reduced D I.isot h1.2.2).2 (_root_.GlobalTheory.T.reducedMultiplicity_of_inputs hL D I R)⟩`.
+-/
 theorem aux_residual_aux42_prvZ_of_inputs {hL : _root_.UpperTheory.Zero.LLC.RecTExists} {D : D7} (hPr : _root_.GlobalTheory.NRows.ThetaLocalInputsAlt) (hc : GlobalTheory.Published.HarishChandraFinite)
     (dec : GlobalTheory.Published.CuspRapidDecay) (I : _root_.GlobalTheory.NRows.LinkedInputs hL D) (hJ : JumpsCard D.nd D.naut) :
     _root_.Formalism.MainNotions.SumRepresentations.provisionFortyOne D ∧ AutomorphicSideWildInertia.ResidualIrreducibleGood D ∧ SumRepresentations.Conclusion42 D ∧ SumRepresentations.ConclusionZ D := by
@@ -40,6 +43,11 @@ theorem aux_residual_aux42_prvZ_of_inputs {hL : _root_.UpperTheory.Zero.LLC.RecT
   exact ⟨h1.1, _root_.GlobalTheory.HeightCounting.Up.PointStatements.residualIrreducibleGood_of_inputs hL D I R, h1.2.2, (SumRepresentations.multiplicity_statement_iff_reduced D I.isot h1.2.2).2 (_root_.GlobalTheory.T.reducedMultiplicity_of_inputs hL D I R)⟩
 end PointStatements
 open PointStatements in
+/- English proof (translation)
+Introduce `hP hX hL`. Establish `h` using `allSt_and (allSt_and (allSt_and (_root_.GlobalTheory.T.eventually_nonempty_inputs_of_level_c hL hP hX) (_root_.GlobalTheory.HeightCounting.JumpsSt.locComp_of_isRc_classMapD_cenLoc hL hP hX.ht)) (_root_.GlobalTheory.HeightCounting.Up.eventually_eigSpan_of_levelC hL hP)) (_root_.Gl …`. Use `allSt_mono (fun K B f T w P x H l => ?_) h` and prove the remaining obligations. Take `⟨⟨⟨hI, hJ⟩, hE⟩, hS⟩` from `H`. Use `_root_.GlobalTheory.HeightCounting.Up.PointStatements.eventuallyOfBuilt_mono_withLoc ?_ (_root_.GlobalTheory.HeightCounting.Up.PointStatements.eventuallyOfBuilt_and (_root_.GlobalTheory.HeightCounting.Up.PointStatements.eventuallyOfBuilt_and (hI l) (hJ l)) (hE l))` and prove the remaining obligations.
+
+Introduce and unpack `L ⟨⟨hI', hJ'⟩, hE'⟩`. Conclude with `⟨fun ho => _root_.GlobalTheory.HeightCounting.Up.PointStatements.aux_residual_aux42_prvZ_of_inputs hP.what₂ hP.hc hP.decay (hI' ho).some (hJ' ho), hE', hS.1⟩`.
+-/
 theorem ptSt_of_inputs_geometric_compat : _root_.GlobalTheory.HeightCounting.Up.PublishedInputsThirdLayerAlt → _root_.GlobalTheory.NRows.GeometricGaloisRepCompatibility → ∀ hL : _root_.UpperTheory.Zero.LLC.RecTExists, _root_.GlobalTheory.HeightCounting.Up.PointStatement hL := by
   intro hP hX hL
   have h := allSt_and (allSt_and (allSt_and (_root_.GlobalTheory.T.eventually_nonempty_inputs_of_level_c hL hP hX) (_root_.GlobalTheory.HeightCounting.JumpsSt.locComp_of_isRc_classMapD_cenLoc hL hP hX.ht))

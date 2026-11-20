@@ -18,6 +18,9 @@ section Discrete
 variable {G G' : Type u} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
   [Group G'] [TopologicalSpace G'] [IsTopologicalGroup G']
 
+/- English proof (translation)
+The claim follows from `continuous_prod_of_discrete_left.2 h`.
+-/
 theorem contAction_of_discrete [DiscreteTopology G] {V : Type u} [AddCommGroup V] [Module R V]
     [TopologicalSpace V] [IsTopologicalAddGroup V] [ContinuousConstSMul R V] (rho : Representation R G V)
     (h : ∀ g, Continuous (rho g)) : ReciprocityTheory.Gal.ContAction rho :=
@@ -42,6 +45,9 @@ def zIncl (M : TRep R G) (n : ℕ) : M.coch.Z n →ₗ[R] ((Fin n → G) → M.V
   map_add' _ _ := rfl
   map_smul' _ _ := rfl
 
+/- English proof (translation)
+Rewrite using `[inhomogeneousCochains.d_def]`. Use extensionality with `z g`. Conclude with `congrFun (congrArg Subtype.val z.2) g`.
+-/
 theorem zIncl_d (M : TRep R G) (n : ℕ) :
     ModuleCat.ofHom (zIncl M n) ≫ (inhomogeneousCochains (Rep.of M.rho)).d n (n + 1) = 0 := by
   rw [inhomogeneousCochains.d_def]
@@ -52,21 +58,33 @@ def toCyc (M : TRep R G) (n : ℕ) : ModuleCat.of R (M.coch.Z n) ⟶ cocycles (R
   (inhomogeneousCochains (Rep.of M.rho)).liftCycles (ModuleCat.ofHom (zIncl M n)) (n + 1) (by simp)
     (zIncl_d M n)
 
+/- English proof (translation)
+The claim follows from `congrArg (fun φ => φ.hom z) ((inhomogeneousCochains (Rep.of M.rho)).liftCycles_i (ModuleCat.ofHom (zIncl M n)) (n + 1) (by simp) (zIncl_d M n))`.
+-/
 theorem i_toCyc (M : TRep R G) (n : ℕ) (z : M.coch.Z n) :
     iCocycles (Rep.of M.rho) n (toCyc M n z) = z.1.1 :=
   congrArg (fun φ => φ.hom z)
     ((inhomogeneousCochains (Rep.of M.rho)).liftCycles_i (ModuleCat.ofHom (zIncl M n)) (n + 1) (by simp)
       (zIncl_d M n))
 
+/- English proof (translation)
+The claim follows from `(ModuleCat.mono_iff_injective _).1 inferInstance`.
+-/
 theorem iCocycles_injective (A : Rep R G) (n : ℕ) : Function.Injective (iCocycles A n) :=
   (ModuleCat.mono_iff_injective _).1 inferInstance
 
+/- English proof (translation)
+Establish `h` using `(inhomogeneousCochains A).iCycles_d n (n + 1)`. Rewrite `h` using `[inhomogeneousCochains.d_def]`. Conclude with `congrArg (fun φ => φ.hom c) h`.
+-/
 theorem d_iCocycles (A : Rep R G) (n : ℕ) (c : cocycles A n) :
     inhomogeneousCochains.d A n (iCocycles A n c) = 0 := by
   have h := (inhomogeneousCochains A).iCycles_d n (n + 1)
   rw [inhomogeneousCochains.d_def] at h
   exact congrArg (fun φ => φ.hom c) h
 
+/- English proof (translation)
+Establish `ex : (ShortComplex.mk (toCocycles A i n) (π A n) ((inhomogeneousCochains A).toCycles_comp_homologyπ i n)).Exact` using `ShortComplex.exact_of_g_is_cokernel _ ((inhomogeneousCochains A).homologyIsCokernel i n hi)`. Prove the components needed by the constructor for the conclusion. Conclude with `(ShortComplex.moduleCat_exact_iff _).1 ex c`. Introduce and unpack `⟨y, rfl⟩`. Conclude with `congrArg (fun φ => φ.hom y) ((inhomogeneousCochains A).toCycles_comp_homologyπ i n)`.
+-/
 theorem π_eq_zero_iff (A : Rep R G) (i n : ℕ) (hi : (ComplexShape.up ℕ).prev n = i) (c : cocycles A n) :
     π A n c = 0 ↔ ∃ y, toCocycles A i n y = c := by
   have ex : (ShortComplex.mk (toCocycles A i n) (π A n)
@@ -77,12 +95,18 @@ theorem π_eq_zero_iff (A : Rep R G) (i n : ℕ) (hi : (ComplexShape.up ℕ).pre
   · rintro ⟨y, rfl⟩
     exact congrArg (fun φ => φ.hom y) ((inhomogeneousCochains A).toCycles_comp_homologyπ i n)
 
+/- English proof (translation)
+The claim follows from `congrArg (fun φ => φ.hom y) ((inhomogeneousCochains A).toCycles_i i n)`.
+-/
 theorem i_toCocycles (A : Rep R G) (i n : ℕ) (y) :
     iCocycles A n (toCocycles A i n y) = (inhomogeneousCochains A).d i n y :=
   congrArg (fun φ => φ.hom y) ((inhomogeneousCochains A).toCycles_i i n)
 
 variable [DiscreteTopology G] [DiscreteTopology G']
 
+/- English proof (translation)
+Introduce `c`. Use `⟨⟨⟨iCocycles _ n c, continuous_of_discreteTopology⟩, Subtype.ext (d_iCocycles _ n c)⟩, ?_⟩` and prove the remaining obligations. Conclude with `iCocycles_injective _ n (i_toCyc M n _)`.
+-/
 theorem toCyc_surjective (M : TRep R G) (n : ℕ) : Function.Surjective (toCyc M n) := by
   intro c
   refine ⟨⟨⟨iCocycles _ n c, continuous_of_discreteTopology⟩, Subtype.ext (d_iCocycles _ n c)⟩, ?_⟩
@@ -91,6 +115,9 @@ theorem toCyc_surjective (M : TRep R G) (n : ℕ) : Function.Surjective (toCyc M
 def toH (M : TRep R G) (n : ℕ) : M.coch.Z n →ₗ[R] groupCohomology (Rep.of M.rho) n :=
   (toCyc M n ≫ π (Rep.of M.rho) n).hom
 
+/- English proof (translation)
+Introduce `x`. Proceed by induction on `x using groupCohomology_induction_on with`. Consider the case `h c`. Take `⟨z, rfl⟩` from `toCyc_surjective M n c`. Conclude with `⟨z, rfl⟩`.
+-/
 theorem toH_surjective (M : TRep R G) (n : ℕ) : Function.Surjective (toH M n) := by
   intro x
   induction x using groupCohomology_induction_on with
@@ -98,6 +125,19 @@ theorem toH_surjective (M : TRep R G) (n : ℕ) : Function.Surjective (toH M n) 
     obtain ⟨z, rfl⟩ := toCyc_surjective M n c
     exact ⟨z, rfl⟩
 
+/- English proof (translation)
+Use extensionality with `z`. Rewrite using `[LinearMap.mem_ker]`. Use `show z.1 ∈ M.coch.B n ↔ π _ n (toCyc M n z) = 0`. Consider the cases of `n with`. Consider the case `zero`.
+
+Rewrite using `[π_eq_zero_iff _ 0 0 (by simp)]`. Prove the components needed by the constructor for the conclusion. Introduce `hz`. Establish `hz' : z.1 = 0` using `hz`. Establish `: z = 0` using `Subtype.ext hz'`.
+
+Substitute `this` using the available equality. Conclude with `⟨0, by simp⟩`. Introduce and unpack `⟨y, hy⟩`. Establish `h` using `i_toCocycles (Rep.of M.rho) 0 0 y`. Rewrite `h` using `[hy, i_toCyc, (inhomogeneousCochains (Rep.of M.rho)).shape 0 0 (by simp)]`.
+
+Use `show z.1 = 0`. Conclude with `Subtype.ext h`. Consider the case `succ n`. Rewrite using `[π_eq_zero_iff _ n (n + 1) (by simp)]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨y, hy⟩`. Use `⟨y.1, iCocycles_injective _ _ ?_⟩` and prove the remaining obligations. Rewrite using `[i_toCocycles, i_toCyc, inhomogeneousCochains.d_def, ← hy]`. Both sides reduce to the same expression. Introduce and unpack `⟨y, hy⟩`.
+
+Use `⟨⟨y, continuous_of_discreteTopology⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Establish `h` using `i_toCocycles (Rep.of M.rho) n (n + 1) y`. Rewrite `h` using `[hy, i_toCyc, inhomogeneousCochains.d_def]`. Conclude with `h.symm`.
+-/
 theorem ker_toH (M : TRep R G) (n : ℕ) :
     (M.coch.B n).comap (M.coch.Z n).subtype = LinearMap.ker (toH M n) := by
   ext z
@@ -155,9 +195,17 @@ def scEquiv {V : Type u} [AddCommGroup V] [Module R V] (p q : V →ₗ[R] V)
 variable {C : Type u} [CommGroup C] [Fintype C] [TopologicalSpace C] [IsTopologicalGroup C]
   [DiscreteTopology C]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem sub_toLinearMap (M : TRep R C) (g : C) :
     (Rep.applyAsHom (Rep.of M.rho) g - 𝟙 (Rep.of M.rho)).hom.toLinearMap = M.rho g - LinearMap.id := rfl
 
+/- English proof (translation)
+Establish `: NeZero i` using `⟨h0⟩`. Establish `hW : LinearMap.ker (M.rho g - LinearMap.id) = M.rho.invariants`. Use extensionality with `x`. Rewrite using `[Representation.mem_invariants_iff_of_forall_mem_zpowers M.rho g hg, LinearMap.mem_ker]`. Simplify using `[sub_eq_zero]`.
+
+Rewrite `hW` using `[← sub_toLinearMap]`. Establish `e` using `scEquiv _ _ (Rep.FiniteCyclicGroup.normHomCompSub (Rep.of M.rho) g).zero _ hW`. Conclude with `⟨finEquiv M i ≪≫ₗ (Rep.FiniteCyclicGroup.groupCohomologyIsoEven (Rep.of M.rho) g hg i hi).toLinearEquiv ≪≫ₗ e⟩`.
+-/
 theorem nonempty_cyclic_even (M : TRep R C) (g : C) (hg : ∀ x, x ∈ Subgroup.zpowers g) (i : ℕ) (h0 : i ≠ 0)
     (hi : Even i) :
     Nonempty (M.H i ≃ₗ[R] (M.rho.invariants ⧸
@@ -172,6 +220,9 @@ theorem nonempty_cyclic_even (M : TRep R C) (g : C) (hg : ∀ x, x ∈ Subgroup.
   exact ⟨finEquiv M i ≪≫ₗ
     (Rep.FiniteCyclicGroup.groupCohomologyIsoEven (Rep.of M.rho) g hg i hi).toLinearEquiv ≪≫ₗ e⟩
 
+/- English proof (translation)
+Establish `e` using `scEquiv _ _ (Rep.FiniteCyclicGroup.subCompNormHom (Rep.of M.rho) g).zero _ rfl`. Conclude with `⟨finEquiv M i ≪≫ₗ (Rep.FiniteCyclicGroup.groupCohomologyIsoOdd (Rep.of M.rho) g hg i hi).toLinearEquiv ≪≫ₗ e⟩`.
+-/
 theorem nonempty_cyclic_odd (M : TRep R C) (g : C) (hg : ∀ x, x ∈ Subgroup.zpowers g) (i : ℕ) (hi : Odd i) :
     Nonempty (M.H i ≃ₗ[R] (LinearMap.ker M.rho.norm ⧸
       (LinearMap.range (M.rho g - LinearMap.id)).comap (LinearMap.ker M.rho.norm).subtype)) := by

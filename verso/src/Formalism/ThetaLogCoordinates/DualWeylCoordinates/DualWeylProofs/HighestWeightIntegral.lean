@@ -6,12 +6,20 @@ open MvPolynomial Finset
 
 namespace Formalism.InvariantFactorPaths.ColumnFamilies
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma qr_lastIdx (m : ℕ) : lastIdx (m + 1) = Fin.last m := rfl
 
 section Cols
 
 variable {m : ℕ} {lam : Fin (m + 1) → ℤ} {nu : Fin m → ℤ}
 
+/- English proof (translation)
+Unfold `colH`. Rewrite using `[← Finset.card_map Fin.castSuccEmb]`. Apply `Finset.card_le_card` to reduce the goal to its premises. Introduce `x hx`. Simplify using `only [Finset.mem_map, Finset.mem_filter, Finset.mem_univ, true_and] at hx ⊢`.
+
+Take `⟨a, ha, rfl⟩` from `hx`. Conclude with `ha.trans (hi a).1`.
+-/
 lemma qr_colH_le (hi : Interl lam nu) (c : ℤ) : colH nu c ≤ colH lam c := by
   unfold colH
   rw [← Finset.card_map Fin.castSuccEmb]
@@ -21,6 +29,11 @@ lemma qr_colH_le (hi : Interl lam nu) (c : ℤ) : colH nu c ≤ colH lam c := by
   obtain ⟨a, ha, rfl⟩ := hx
   exact ha.trans (hi a).1
 
+/- English proof (translation)
+Unfold `colH`. Rewrite using `[← Finset.card_map (Fin.succEmb m)]`. Use `le_trans (Finset.card_le_card ?_) (Finset.card_insert_le (0 : Fin (m + 1)) _)` and prove the remaining obligations. Introduce `x hx`. Simplify using `only [Finset.mem_insert, Finset.mem_map, Finset.mem_filter, Finset.mem_univ, true_and] at hx ⊢`.
+
+Proceed by induction on `x using Fin.cases with`. Consider the case `zero => left`. Both sides reduce to the same expression. Consider the case `succ a => right`. Conclude with `⟨a, hx.trans (hi a).2, rfl⟩`.
+-/
 lemma qr_colH_le' (hi : Interl lam nu) (c : ℤ) : colH lam c ≤ colH nu c + 1 := by
   unfold colH
   rw [← Finset.card_map (Fin.succEmb m)]
@@ -31,12 +44,24 @@ lemma qr_colH_le' (hi : Interl lam nu) (c : ℤ) : colH lam c ≤ colH nu c + 1 
   | zero => left; rfl
   | succ a => right; exact ⟨a, hx.trans (hi a).2, rfl⟩
 
+/- English proof (translation)
+Establish `h1` using `qr_colH_le hi c`. Establish `h2` using `qr_colH_le' hi c`. Apply the tactic sequence `split_ifs with h <;> omega`.
+-/
 lemma qr_colH_eq (hi : Interl lam nu) (c : ℤ) :
     colH lam c = colH nu c + if colH lam c = colH nu c + 1 then 1 else 0 := by
   have h1 := qr_colH_le hi c
   have h2 := qr_colH_le' hi c
   split_ifs with h <;> omega
 
+/- English proof (translation)
+Establish `h1 : ∀ c, (colH mu c : ℤ) = ∑ a, if c ≤ mu a then 1 else 0`. Introduce `c`. Rewrite using `[colH, Finset.card_filter]`. Use `push_cast`. Both sides reduce to the same expression.
+
+Simplify using `only [h1]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_filter, Finset.sum_const, nsmul_eq_mul, mul_one]`. Establish `h2 : (Finset.Ioc L U).filter (fun c => c ≤ mu a) = Finset.Ioc L (mu a)`.
+
+Use extensionality with `c`. Simplify using `only [Finset.mem_filter, Finset.mem_Ioc]`. Use `(h a).2` as an intermediate fact. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨h3, _⟩, h4⟩`.
+
+Conclude with `⟨h3, h4⟩`. Introduce and unpack `⟨h3, h4⟩`. Conclude with `⟨⟨h3, h4.trans this⟩, h4⟩`. Rewrite using `[h2, Int.card_Ioc, Int.toNat_of_nonneg (sub_nonneg.2 (h a).1)]`.
+-/
 lemma qr_sum_colH {n : ℕ} (mu : Fin n → ℤ) (L U : ℤ) (h : ∀ a, L ≤ mu a ∧ mu a ≤ U) :
     ∑ c ∈ Finset.Ioc L U, (colH mu c : ℤ) = ∑ a, (mu a - L) := by
   have h1 : ∀ c, (colH mu c : ℤ) = ∑ a, if c ≤ mu a then 1 else 0 := by
@@ -61,6 +86,9 @@ section J
 
 variable {m : ℕ} [NeZero m] {lam : Fin (m + 1) → ℤ} {nu : Fin m → ℤ}
 
+/- English proof (translation)
+Apply `hn` to reduce the goal to its premises. Rewrite using `[Fin.le_def]`. Use `show a.1 ≤ m - 1`. Use `a.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 lemma qr_le_last (hn : Dominant nu) (a : Fin m) : nu (lastIdx m) ≤ nu a := by
   apply hn
   rw [Fin.le_def]
@@ -68,8 +96,16 @@ lemma qr_le_last (hn : Dominant nu) (a : Fin m) : nu (lastIdx m) ≤ nu a := by
   have := a.2
   omega
 
+/- English proof (translation)
+The claim follows from `hn (Fin.zero_le a)`.
+-/
 lemma qr_le_zero {n : ℕ} [NeZero n] {mu : Fin n → ℤ} (hn : Dominant mu) (a : Fin n) : mu a ≤ mu 0 := hn (Fin.zero_le a)
 
+/- English proof (translation)
+Establish `h` using `(hi (lastIdx m)).2`. Establish `h1 : (lastIdx m).succ = Fin.last m`. Apply `Fin.ext` to reduce the goal to its premises. Use `show m - 1 + 1 = m`. Use `NeZero.pos m` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Rewrite `h` using `[h1]`. Then use the resulting hypothesis.
+-/
 lemma qr_lam_last_le (hi : Interl lam nu) : lam (Fin.last m) ≤ nu (lastIdx m) := by
   have h := (hi (lastIdx m)).2
   have h1 : (lastIdx m).succ = Fin.last m := by
@@ -79,22 +115,39 @@ lemma qr_lam_last_le (hi : Interl lam nu) : lam (Fin.last m) ≤ nu (lastIdx m) 
     omega
   rwa [h1] at h
 
+/- English proof (translation)
+The claim follows from `(hi 0).1`.
+-/
 lemma qr_nu_zero_le (hi : Interl lam nu) : nu 0 ≤ lam 0 := (hi 0).1
 
+/- English proof (translation)
+Simplify using `only [TCols, Finset.mem_Ioc, qr_lastIdx] at hc ⊢`. Conclude with `⟨lt_of_le_of_lt (qr_lam_last_le hi) hc.1, hc.2.trans (qr_nu_zero_le hi)⟩`.
+-/
 lemma qr_TCols_sub (hi : Interl lam nu) {c : ℤ} (hc : c ∈ TCols nu) : c ∈ TCols lam := by
   simp only [TCols, Finset.mem_Ioc, qr_lastIdx] at hc ⊢
   exact ⟨lt_of_le_of_lt (qr_lam_last_le hi) hc.1, hc.2.trans (qr_nu_zero_le hi)⟩
 
+/- English proof (translation)
+Rewrite using `[colH, Finset.filter_true_of_mem]`. Simplify using the standard rewrite rules. Introduce `a _`. Conclude with `hc.trans (qr_le_last hn a)`.
+-/
 lemma qr_colH_low (hn : Dominant nu) {c : ℤ} (hc : c ≤ nu (lastIdx m)) : colH nu c = m := by
   rw [colH, Finset.filter_true_of_mem]
   · simp
   · intro a _; exact hc.trans (qr_le_last hn a)
 
+/- English proof (translation)
+Rewrite using `[colH, Finset.filter_false_of_mem]`. Simplify using the standard rewrite rules. Introduce `a _`. Conclude with `not_le.2 (lt_of_le_of_lt (qr_le_zero hn a) hc)`.
+-/
 lemma qr_colH_high (hn : Dominant nu) {c : ℤ} (hc : nu 0 < c) : colH nu c = 0 := by
   rw [colH, Finset.filter_false_of_mem]
   · simp
   · intro a _; exact not_le.2 (lt_of_le_of_lt (qr_le_zero hn a) hc)
 
+/- English proof (translation)
+Simplify using `only [TCols, Finset.mem_Ioc, not_and_or, not_lt, not_le] at hc`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨S, hS⟩ ⟨S', hS'⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show S = S'`.
+
+Break down `hc with hc | hc` into its components or cases. Rewrite `hS`, `hS'` using `[qr_colH_low hn hc]`. Rewrite using `[Finset.eq_univ_of_card S (by simpa using hS), Finset.eq_univ_of_card S' (by simpa using hS')]`. Rewrite `hS`, `hS'` using `[qr_colH_high hn hc]`. Rewrite using `[Finset.card_eq_zero.1 hS, Finset.card_eq_zero.1 hS']`.
+-/
 lemma qr_subsing (hn : Dominant nu) {c : ℤ} (hc : c ∉ TCols nu) :
     Subsingleton {S : Finset (Fin m) // S.card = colH nu c} := by
   simp only [TCols, Finset.mem_Ioc, not_and_or, not_lt, not_le] at hc
@@ -114,10 +167,16 @@ def qr_can (nu : Fin m → ℤ) (c : ℤ) : {S : Finset (Fin m) // S.card = colH
 def qr_base (I' : TIdx nu) (c : ℤ) : {S : Finset (Fin m) // S.card = colH nu c} :=
   if h : c ∈ TCols nu then I' ⟨c, h⟩ else qr_can nu c
 
+/- English proof (translation)
+Unfold `qr_base`. Apply the tactic sequence `split_ifs <;> rfl`.
+-/
 lemma qr_base_can (c : ℤ) : qr_base (canT nu) c = qr_can nu c := by
   unfold qr_base
   split_ifs <;> rfl
 
+/- English proof (translation)
+Unfold `qr_base`. Rewrite using `[dif_pos c.2]`.
+-/
 lemma qr_base_mem (I' : TIdx nu) (c : ↥(TCols nu)) : qr_base I' c = I' c := by
   unfold qr_base
   rw [dif_pos c.2]
@@ -126,6 +185,11 @@ def qr_j (hi : Interl lam nu) (I' : TIdx nu) : TIdx lam := fun c =>
   ⟨qr_ext (colH lam c = colH nu c + 1) (qr_base I' c).1, by
     rw [qr_ext_card, (qr_base I' c).2]; exact (qr_colH_eq hi c).symm⟩
 
+/- English proof (translation)
+Introduce `I' K' h`. Use function extensionality and compare the values at `c`. Establish `h1` using `congrArg Subtype.val (congrFun h ⟨c.1, qr_TCols_sub hi c.2⟩)`. Establish `h2` using `qr_ext_inj _ h1`. Rewrite `h2` using `[qr_base_mem, qr_base_mem]`.
+
+Conclude with `Subtype.ext h2`.
+-/
 lemma qr_j_inj (hi : Interl lam nu) : Function.Injective (qr_j (lam := lam) hi) := by
   intro I' K' h
   funext c
@@ -134,6 +198,15 @@ lemma qr_j_inj (hi : Interl lam nu) : Function.Injective (qr_j (lam := lam) hi) 
   rw [qr_base_mem, qr_base_mem] at h2
   exact Subtype.ext h2
 
+/- English proof (translation)
+Establish `hc : ∀ c : ↥(TCols lam), (univ.filter fun a : Fin m => a.castSucc ∈ (K c).1).card = colH nu c`. Introduce `c`. Establish `h1` using `congrArg Finset.card (qr_ext_surj _ (K c).1 (hK c))`. Rewrite `h1` using `[qr_ext_card, (K c).2]`. Establish `h2` using `qr_colH_eq hi c`.
+
+Use linear arithmetic over natural numbers and integers. Use `⟨fun c => ⟨_, hc ⟨c.1, qr_TCols_sub hi c.2⟩⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `c`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show qr_ext _ _ = _`.
+
+Rewrite using `[qr_ext_surj _ (K c).1 (hK c)]`. Use `congr 1`. Distinguish the cases in `h : c.1 ∈ TCols nu`. Rewrite using `[qr_base, dif_pos h]`. Use `qr_subsing hn h` as an intermediate fact.
+
+Conclude with `congrArg Subtype.val (Subsingleton.elim (qr_base _ c.1) ⟨_, hc c⟩)`.
+-/
 lemma qr_j_surj (hn : Dominant nu) (hi : Interl lam nu) (K : TIdx lam)
     (hK : ∀ c : ↥(TCols lam), (Fin.last m ∈ (K c).1 ↔ colH lam c = colH nu c + 1)) :
     ∃ K' : TIdx nu, qr_j hi K' = K := by
@@ -154,12 +227,20 @@ lemma qr_j_surj (hn : Dominant nu) (hi : Interl lam nu) (K : TIdx lam)
   · have := qr_subsing hn h
     exact congrArg Subtype.val (Subsingleton.elim (qr_base _ c.1) ⟨_, hc c⟩)
 
+/- English proof (translation)
+Introduce `x hx`. Simplify using `only [qr_can, Finset.mem_map, Finset.mem_univ, true_and] at hx ⊢`. Take `⟨a, rfl⟩` from `hx`. Conclude with `⟨⟨a.1, lt_of_lt_of_le a.2 (qc_colH_succ_le nu c)⟩, rfl⟩`.
+-/
 lemma qr_can_sub (c : ℤ) : (qr_can nu (c + 1)).1 ⊆ (qr_can nu c).1 := by
   intro x hx
   simp only [qr_can, Finset.mem_map, Finset.mem_univ, true_and] at hx ⊢
   obtain ⟨a, rfl⟩ := hx
   exact ⟨⟨a.1, lt_of_lt_of_le a.2 (qc_colH_succ_le nu c)⟩, rfl⟩
 
+/- English proof (translation)
+Introduce `c hc t`. Use `show ((qr_ext _ (qr_base (canT nu) (c.1 + 1)).1).filter (· ≤ t)).card ≤ ((qr_ext _ (qr_base (canT nu) c.1).1).filter (· ≤ t)).card`. Rewrite using `[qr_base_can, qr_base_can]`. Proceed by induction on `t using Fin.lastCases with`. Consider the case `last`.
+
+Rewrite using `[qr_filter_last, qr_filter_last, qr_ext_card, qr_ext_card, (qr_can nu _).2, (qr_can nu _).2, ← qr_colH_eq hi, ← qr_colH_eq hi]`. Conclude with `qc_colH_succ_le lam c`. Consider the case `cast t`. Rewrite using `[qr_filter_castSucc, qr_filter_castSucc, Finset.card_map, Finset.card_map]`. Conclude with `Finset.card_le_card (Finset.filter_subset_filter _ (qr_can_sub c.1))`.
+-/
 lemma qr_j_can_std (hi : Interl lam nu) : StdT (qr_j (lam := lam) hi (canT nu)) := by
   intro c hc t
   show ((qr_ext _ (qr_base (canT nu) (c.1 + 1)).1).filter (· ≤ t)).card ≤

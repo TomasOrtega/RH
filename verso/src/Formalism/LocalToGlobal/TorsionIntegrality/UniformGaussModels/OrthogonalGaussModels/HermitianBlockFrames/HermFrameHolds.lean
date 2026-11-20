@@ -5,6 +5,9 @@ import Formalism.LocalToGlobal.TorsionIntegrality.UniformGaussModels.OrthogonalG
 
 namespace Formalism.L2.Th1.Top.FrP
 
+/- English proof (translation)
+The claim follows from `UnitaryGroupMassFormula.HermFrame.hermFrame_of_locCore UnitaryGroupMassFormula.HermFrame.Loc.local_core'`.
+-/
 theorem hermFrame_holds : HermFrame :=
   UnitaryGroupMassFormula.HermFrame.hermFrame_of_locCore UnitaryGroupMassFormula.HermFrame.Loc.local_core'
 

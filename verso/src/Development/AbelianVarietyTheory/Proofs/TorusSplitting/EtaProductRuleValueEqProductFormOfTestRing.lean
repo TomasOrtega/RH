@@ -18,6 +18,15 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 attribute [local instance] Over.cartesianMonoidalCategory in
 set_option autoImplicit false in
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c R hR J _ n cf xs f hf S _ _ y hy`. Establish `hlaws` using `_root_.GlobalTheory.EtaForm.etaValAt_existsUnique_natural _root_.GlobalTheory.firstFiveLaws.1 E H Dw l Xo c R hR J n cf xs`. Establish `transport : ∀ (S₀ S₁ : Type) [CommRing S₀] [Algebra c.F S₀] [CommRing S₁] [Algebra c.F S₁] (φ : S₀ →ₐ[c.F] S₁) (y₀ : _root_.Formalism.L2.Pj.FrPt Xo c S₀) (y₁ : _root_.Formalism.L2.Pj.FrPt Xo c S₁) (v : S₀), _root_.Formalism.L2.Pj.FrMap φ y₀ y₁ → _root_.GlobalTheory.EtaForm.EtaVal …`. Introduce `S₀ S₁ _ _ _ _ φ y₀ y₁ v hφ hv`. Take `⟨w, hw, -⟩` from `hlaws.1 S₁ y₁`.
+
+Rewrite using `[hlaws.2 S₀ S₁ φ y₀ y₁ hφ v w hv hw]` and apply the resulting hypothesis. Establish `key : ∃ (p : _root_.Formalism.L2.Pj.TRing c.F) (φ : p.R →ₐ[c.F] S) (y₀ : _root_.Formalism.L2.Pj.FrPt Xo c p.R), _root_.Formalism.L2.Pj.FrMap φ y₀ y ∧ _root_.Formalism.L2.Pj.evR Xo c f y = φ (f p y₀)`. Use `⟨hy.choose, hy.choose_spec.choose, hy.choose_spec.choose_spec.choose, hy.choose_spec.choose_spec.choose_spec, ?_⟩` and prove the remaining obligations. Unfold `_root_.Formalism.L2.Pj.evR _root_.Formalism.L2.Pj.evalAt`. Rewrite using `[dif_pos hy]`.
+
+Take `⟨p, φ, y₀, hφ, hval⟩` from `key`. Establish `h₀ : _root_.GlobalTheory.EtaForm.EtaValAt Xo c R cf xs y₀ (f p y₀)` using `hf p y₀`. Use `⟨hval ▸ transport _ _ φ y₀ y _ hφ h₀, ?_⟩` and prove the remaining obligations. Introduce `S' _ _ ψ z hz`. Rewrite using `[hval]`.
+
+Conclude with `transport _ _ (ψ.comp φ) y₀ z _ (_root_.GlobalTheory.FramedBaseChange.trans φ ψ hφ hz) h₀`.
+-/
 theorem _root_.GlobalTheory.EtaForm.etaValAt_evR_of_fromTest : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum H) (l : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H) (Xo : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Moduli Dw l) (c : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Coeff l) (R : ℕ), Odd R → ∀ (J : Type) [Fintype J] (n : ℕ) (cf : J → ℤ) (xs : J → Fin n → _root_.GlobalTheory.EtaForm.LatMod Dw (R ^ 4)) (f : _root_.Formalism.L2.Pj.Rul Xo c), _root_.GlobalTheory.EtaForm.IsEtaRule Xo c R cf xs f → ∀ (S : Type) [CommRing S] [Algebra c.F S] (y : _root_.Formalism.L2.Pj.FrPt Xo c S), _root_.Formalism.L2.Pj.FromTest (K := c.F) (fun S _ _ => _root_.Formalism.L2.Pj.FrPt Xo c S) (fun φ y z => _root_.Formalism.L2.Pj.FrMap φ y z) y → _root_.GlobalTheory.EtaForm.EtaValAt Xo c R cf xs y (_root_.Formalism.L2.Pj.evR Xo c f y) ∧ ∀ (S' : Type) [CommRing S'] [Algebra c.F S'] (φ : S →ₐ[c.F] S') (z : _root_.Formalism.L2.Pj.FrPt Xo c S'), _root_.Formalism.L2.Pj.FrMap φ y z → _root_.GlobalTheory.EtaForm.EtaValAt Xo c R cf xs z (φ (_root_.Formalism.L2.Pj.evR Xo c f y)) := by
   intro E _ _ _ H Dw l Xo c R hR J _ n cf xs f hf S _ _ y hy
   have hlaws := _root_.GlobalTheory.EtaForm.etaValAt_existsUnique_natural _root_.GlobalTheory.firstFiveLaws.1

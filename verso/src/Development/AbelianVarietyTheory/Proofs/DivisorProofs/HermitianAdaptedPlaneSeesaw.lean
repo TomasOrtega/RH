@@ -21,6 +21,11 @@ section Alg
 variable {R S : Type} [CommRing R] [CommRing S] [Algebra R S] (c : S →ₐ[R] S)
   {α β γ δ : Type} [Fintype α] [Fintype β] [Fintype γ] [Fintype δ]
 
+/- English proof (translation)
+Simplify using `only [hTens, Matrix.trace, Matrix.diag_apply, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `h1 : ∀ i, ∑ k, ∑ l, x i j * J i k * J' j l * c (y k l) = ∑ l, ∑ k, x i j * J i k * J' j l * c (y k l)` using `fun i => Finset.sum_comm`. Simplify using `only [h1]`.
+
+Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hTens_eq_trace (J : Matrix α α S) (J' : Matrix β β S) (x y : Matrix α β S) :
     hTens c J J' x y = Matrix.trace (xᵀ * J * y.map c * J'ᵀ) := by
   simp only [hTens, Matrix.trace, Matrix.diag_apply, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply,
@@ -36,6 +41,9 @@ theorem hTens_eq_trace (J : Matrix α α S) (J' : Matrix β β S) (x y : Matrix 
   refine Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun i _ => ?_
   ring
 
+/- English proof (translation)
+Rewrite using `[hTens_eq_trace, show (B * y).map c = B.map c * y.map c from Matrix.map_mul (f := c.toRingHom), Matrix.transpose_mul]`. Simplify using `only [Matrix.mul_assoc]`.
+-/
 theorem hTens_mul (J : Matrix α α S) (J' : Matrix β β S) (A : Matrix α γ S) (B : Matrix α δ S) (x : Matrix γ β S)
     (y : Matrix δ β S) :
     hTens c J J' (A * x) (B * y) = Matrix.trace (xᵀ * (Aᵀ * J * B.map c) * y.map c * J'ᵀ) := by
@@ -43,6 +51,11 @@ theorem hTens_mul (J : Matrix α α S) (J' : Matrix β β S) (A : Matrix α γ S
     Matrix.transpose_mul]
   simp only [Matrix.mul_assoc]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `only [schr, Prod.fst_add, Prod.snd_add, add_dotProduct, dotProduct_add]`. Rewrite using `[← mul_assoc, ← AddChar.map_add_eq_mul, add_assoc x, ← h]`. Use `congr 2`. Establish `h2 : (⅟(2 : R)) * 2 = 1` using `invOf_mul_self _`.
+
+Take the linear combination `(a.1 ⬝ᵥ b.2) * h2`.
+-/
 theorem schr_add [Invertible (2 : R)] (ψ : AddChar R ℂ) (a b : (α → R) × (α → R)) (h : a.1 ⬝ᵥ b.2 = b.1 ⬝ᵥ a.2)
     (φ : (α → R) → ℂ) : schr ψ (a + b) φ = schr ψ a (schr ψ b φ) := by
   funext x
@@ -56,12 +69,23 @@ end Alg
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+Simplify using `[cA, inclR]`.
+-/
 theorem cA_inclR (a : E) : cA σ (inclR (F := F) (AF F) a) = inclR (F := F) (AF F) (σ a) := by
   simp [cA, inclR]
 
+/- English proof (translation)
+The claim follows from `Matrix.map_mul`.
+-/
 theorem incM_mul {α β γ : Type} [Fintype β] (A : Matrix α β E) (B : Matrix β γ E) :
     incM F (A * B) = incM F A * incM F B := Matrix.map_mul
 
+/- English proof (translation)
+Rewrite using `[incM_mul, incM_mul]`. Establish `h : (incM F B).map (cA σ) = incM F (B.map σ)`. Use extensionality with `i j`. Conclude with `cA_inclR _`. Rewrite using `[h]`.
+
+Both sides reduce to the same expression.
+-/
 theorem incM_gram {α β γ : Type} [Fintype α] (J : Matrix α α E) (A : Matrix α β E) (B : Matrix α γ E) :
     (incM F A)ᵀ * incM F J * (incM F B).map (cA σ) = incM F (Aᵀ * J * B.map σ) := by
   rw [incM_mul, incM_mul]
@@ -71,6 +95,11 @@ theorem incM_gram {α β γ : Type} [Fintype α] (J : Matrix α α E) (A : Matri
   rw [h]
   rfl
 
+/- English proof (translation)
+Use `haveI : Nontrivial (AF F) := by`. Take `⟨w⟩ : Nonempty (InfinitePlace F)` from `inferInstance`. Use `⟨0, 1, fun h => ?_⟩` and prove the remaining obligations. Use `congrFun (congrArg Prod.fst h) w` as an intermediate fact. Conclude with `zero_ne_one this`.
+
+Conclude with `(algebraMap F (AF F)).injective`.
+-/
 theorem alg_inj : Function.Injective (algebraMap F (AF F)) := by
   haveI : Nontrivial (AF F) := by
     obtain ⟨w⟩ : Nonempty (InfinitePlace F) := inferInstance
@@ -79,15 +108,27 @@ theorem alg_inj : Function.Injective (algebraMap F (AF F)) := by
     exact zero_ne_one this
   exact (algebraMap F (AF F)).injective
 
+/- English proof (translation)
+The claim follows from `Algebra.TensorProduct.includeRight_injective (R := F) (A := AF F) (B := E) alg_inj`.
+-/
 theorem inclR_inj : Function.Injective (inclR (F := F) (E := E) (AF F)) :=
   Algebra.TensorProduct.includeRight_injective (R := F) (A := AF F) (B := E) alg_inj
 
+/- English proof (translation)
+The claim follows from `Matrix.map_injective inclR_inj`.
+-/
 theorem incM_inj {α β : Type} : Function.Injective (incM F : Matrix α β E → _) :=
   Matrix.map_injective inclR_inj
 
+/- English proof (translation)
+Use extensionality with `i j`. Conclude with `map_add (inclR (F := F) (AF F)) _ _`.
+-/
 theorem incM_add {α β : Type} (A B : Matrix α β E) : incM F (A + B) = incM F A + incM F B := by
   ext i j; exact map_add (inclR (F := F) (AF F)) _ _
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [incM, Matrix.map_apply, Matrix.smul_apply, algebraMap_smul]`. Conclude with `map_smul (Algebra.TensorProduct.includeRight : E →ₐ[F] AF F ⊗[F] E) a _`.
+-/
 theorem incM_smul {α β : Type} (a : F) (A : Matrix α β E) : incM F (a • A) = algebraMap F (AF F) a • incM F A := by
   ext i j
   simp only [incM, Matrix.map_apply, Matrix.smul_apply, algebraMap_smul]
@@ -96,10 +137,22 @@ theorem incM_smul {α β : Type} (a : F) (A : Matrix α β E) : incM F (a • A)
 def emb (F : Type) [Field F] [NumberField F] {κ : Type} (w : (κ → F) × (κ → F)) : (κ → AF F) × (κ → AF F) :=
   ((fun i => algebraMap F (AF F) (w.1 i)), (fun i => algebraMap F (AF F) (w.2 i)))
 
+/- English proof (translation)
+Introduce `_ _ h` and use `Prod.ext (funext fun i => alg_inj (congrFun (congrArg Prod.fst h) i)) (funext fun i => alg_inj (congrFun (congrArg Prod.snd h) i))`.
+-/
 theorem emb_inj {κ : Type} : Function.Injective (emb F (κ := κ)) := fun _ _ h =>
   Prod.ext (funext fun i => alg_inj (congrFun (congrArg Prod.fst h) i))
     (funext fun i => alg_inj (congrFun (congrArg Prod.snd h) i))
 
+/- English proof (translation)
+Use `choose y z hyz using hrat`. Establish `h : ∀ x, M.co.e (incM F x) = emb F (y x, z x)` using `hyz`. Set `f : Matrix (Fin n) (Fin d) E →ₗ[F] (Fin n × Fin d → F) × (Fin n × Fin d → F)` to `{ toFun := fun x => (y x, z x) map_add' := fun a b => emb_inj (by`. Rewrite using `[← h, incM_add, map_add, h, h]`. Conclude with `Prod.ext (funext fun i => (map_add _ _ _).symm) (funext fun i => (map_add _ _ _).symm))`.
+
+Use the proof step `map_smul' := fun a b => emb_inj (by`. Rewrite using `[← h, incM_smul, map_smul, h]`. Conclude with `Prod.ext (funext fun i => (map_mul _ _ _).symm) (funext fun i => (map_mul _ _ _).symm)) }`. Establish `hinj : Function.Injective f` using `fun a b hab => by`. Establish `: M.co.e (incM F a) = M.co.e (incM F b)`.
+
+Rewrite using `[h, h]`. Conclude with `congrArg (emb F) hab`. Conclude with `incM_inj (M.co.e.injective this)`. Use `haveI : Module.Finite F E := Module.finite_of_finrank_pos (by omega)`. Establish `hrk : Module.finrank F (Matrix (Fin n) (Fin d) E) = Module.finrank F ((Fin n × Fin d → F) × (Fin n × Fin d → F))`.
+
+Rewrite using `[Module.finrank_matrix, h2]`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Conclude with `⟨LinearMap.linearEquivOfInjective f hinj hrk, h⟩`.
+-/
 theorem exists_ratCoord {n d : ℕ} {X : Spc F E n} {W : Spc F E d} (M : Model σ X W) (h2 : Module.finrank F E = 2)
     (hrat : ∀ x : Matrix (Fin n) (Fin d) E, ∃ y z : Fin n × Fin d → F,
       M.co.e (incM F x) = (fun i => algebraMap F (AF F) (y i), fun i => algebraMap F (AF F) (z i))) :
@@ -131,6 +184,9 @@ variable {n n₁ d : ℕ} {X : Spc F E n} {X₁ : Spc F E n₁} {W : Spc F E d}
 
 abbrev colM {S : Type} {n : ℕ} (x : Fin n → S) : Matrix (Fin n) Unit S := Matrix.replicateCol Unit x
 
+/- English proof (translation)
+Use extensionality with `i j`. Use `h (Pi.single i 1)` as an intermediate fact. Rewrite using `[Matrix.mul_assoc]`. Simplify `this` using `[form, Matrix.mul_apply, dotProduct, Matrix.mulVec, Pi.single_apply]`.
+-/
 theorem gram_col {m : ℕ} (J : Matrix (Fin n) (Fin n) E) (A : Matrix (Fin n) (Fin m) E) (x : Fin n → E)
     (h : ∀ u, form σ J (A *ᵥ u) x = 0) : Aᵀ * J * (colM x).map σ = 0 := by
   ext i j
@@ -138,12 +194,18 @@ theorem gram_col {m : ℕ} (J : Matrix (Fin n) (Fin n) E) (A : Matrix (Fin n) (F
   rw [Matrix.mul_assoc]
   simpa [form, Matrix.mul_apply, dotProduct, Matrix.mulVec, Pi.single_apply] using this
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[Matrix.mul_assoc]`. Simplify using `[form, Matrix.mul_apply, dotProduct, Matrix.mulVec]`.
+-/
 theorem gram_col_col (J : Matrix (Fin n) (Fin n) E) (x y : Fin n → E) :
     (colM x)ᵀ * J * (colM y).map σ = Matrix.of fun _ _ => form σ J x y := by
   ext i j
   rw [Matrix.mul_assoc]
   simp [form, Matrix.mul_apply, dotProduct, Matrix.mulVec]
 
+/- English proof (translation)
+Rewrite using `[Matrix.vecMulVec_eq Unit]`. Both sides reduce to the same expression.
+-/
 theorem vmv (x : Fin n → E) (z : Fin d → AE F E) :
     Matrix.vecMulVec (incV F x) z = incM F (colM x) * Matrix.replicateRow Unit z := by
   rw [Matrix.vecMulVec_eq Unit]
@@ -153,6 +215,9 @@ abbrev sp (σ : E →ₐ[F] E) (X : Spc F E n) (W : Spc F E d) :
     Matrix (Fin n) (Fin d) (AE F E) → Matrix (Fin n) (Fin d) (AE F E) → AF F :=
   symp (R := AF F) (cA σ) (-1) (incM F X.J) (incM F W.J)
 
+/- English proof (translation)
+Rewrite using `[sp, symp, vmv, vmv, hTens_mul, incM_gram, gram_col_col, h]`. Establish `: incM F (Matrix.of fun (_ _ : Unit) => (0 : E)) = 0`. Use extensionality with `i j`. Conclude with `map_zero (inclR (F := F) (AF F))`. Simplify using `[this]`.
+-/
 theorem sp_xx {x : Fin n → E} (h : form σ X.J x x = 0) (z z' : Fin d → AE F E) :
     sp σ X W (Matrix.vecMulVec (incV F x) z) (Matrix.vecMulVec (incV F x) z') = 0 := by
   rw [sp, symp, vmv, vmv, hTens_mul, incM_gram, gram_col_col, h]
@@ -160,6 +225,9 @@ theorem sp_xx {x : Fin n → E} (h : form σ X.J x x = 0) (z z' : Fin d → AE F
     ext i j; exact map_zero (inclR (F := F) (AF F))
   simp [this]
 
+/- English proof (translation)
+Rewrite using `[sp, symp, vmv, hTens_mul, incM_gram, gram_col _ _ _ h]`. Establish `: incM F (0 : Matrix (Fin n₁) Unit E) = 0`. Use extensionality with `i j`. Conclude with `map_zero (inclR (F := F) (AF F))`. Simplify using `[this]`.
+-/
 theorem sp_ix {x : Fin n → E} {A : Matrix (Fin n) (Fin n₁) E} (h : ∀ u, form σ X.J (A *ᵥ u) x = 0)
     (m : Matrix (Fin n₁) (Fin d) (AE F E)) (z' : Fin d → AE F E) :
     sp σ X W (incM F A * m) (Matrix.vecMulVec (incV F x) z') = 0 := by
@@ -168,19 +236,33 @@ theorem sp_ix {x : Fin n → E} {A : Matrix (Fin n) (Fin n₁) E} (h : ∀ u, fo
     ext i j; exact map_zero (inclR (F := F) (AF F))
   simp [this]
 
+/- English proof (translation)
+Rewrite using `[sp, symp, hTens_mul, incM_gram, h, sp, symp, hTens_eq_trace]`.
+-/
 theorem sp_ii {A : Matrix (Fin n) (Fin n₁) E} (h : Aᵀ * X.J * A.map σ = X₁.J)
     (m m' : Matrix (Fin n₁) (Fin d) (AE F E)) :
     sp σ X W (incM F A * m) (incM F A * m') = sp σ X₁ W m m' := by
   rw [sp, symp, hTens_mul, incM_gram, h, sp, symp, hTens_eq_trace]
 
+/- English proof (translation)
+Use extensionality with `i j`. Conclude with `map_mul (inclR (F := F) (AF F)) _ _`.
+-/
 theorem incM_vmv (x : Fin n → E) (z : Fin d → E) :
     incM F (Matrix.vecMulVec x z) = Matrix.vecMulVec (incV F x) (incV F z) := by
   ext i j; exact map_mul (inclR (F := F) (AF F)) _ _
 
+/- English proof (translation)
+Simplify using `[emb, dotProduct]`.
+-/
 theorem emb_dot {κ : Type} [Fintype κ] (a b : (κ → F) × (κ → F)) :
     (emb F a).1 ⬝ᵥ (emb F b).2 = algebraMap F (AF F) (a.1 ⬝ᵥ b.2) := by
   simp [emb, dotProduct]
 
+/- English proof (translation)
+Establish `h1` using `(M.co.form _ _).symm.trans (sp_xx (W := W) hH.xx z z')`. Establish `h2` using `(M.co.form _ _).symm.trans (sp_ix (W := W) (fun u => (hH.orth u).1) m z')`. Establish `h3` using `(M.co.form _ _).symm.trans (sp_ix (W := W) (fun u => (hH.orth u).1) m' z)`. Establish `h4` using `(M.co.form _ _).symm.trans ((sp_ii (W := W) hH.gram m m').trans (M₁.co.form m m'))`. Rewrite `h4` using `[hm, hm', zero_dotProduct, zero_dotProduct, sub_self]`.
+
+Simplify using `only [map_add, Prod.fst_add, Prod.snd_add, add_dotProduct, dotProduct_add]`. Take the linear combination `h1 + h2 - h3 + h4`.
+-/
 theorem iso_lagr (B : Base F E) (M : Model σ X W) (M₁ : Model σ X₁ W) (H : Plane E n n₁) {j₀ j₁ : ℕ}
     (hH : H.IsAdapted σ B X X₁ j₀ j₁) (z z' : Fin d → AE F E) (m m' : Matrix (Fin n₁) (Fin d) (AE F E))
     (hm : (M₁.co.e m).1 = 0) (hm' : (M₁.co.e m').1 = 0) :
@@ -196,6 +278,19 @@ theorem iso_lagr (B : Base F E) (M : Model σ X W) (M₁ : Model σ X₁ W) (H :
   simp only [map_add, Prod.fst_add, Prod.snd_add, add_dotProduct, dotProduct_add]
   linear_combination h1 + h2 - h3 + h4
 
+/- English proof (translation)
+Establish `hz : z = 0`. Establish `h1` using `congrArg (fun A => Aᵀ * (X.J * (colM H.y).map σ)) h`. Simplify using `only [Matrix.vecMulVec_eq Unit, Matrix.transpose_add, Matrix.transpose_mul, Matrix.add_mul, Matrix.transpose_zero, Matrix.zero_mul, Matrix.mul_assoc] at h1`. Rewrite `h1` using `[← Matrix.mul_assoc H.ιᵀ, gram_col _ _ _ (fun u => (hH.orth u).2), ← Matrix.mul_assoc (Matrix.replicateCol Unit H.x)ᵀ, gram_col_col, hH.xy, Matrix.mul_zero, add_zero]`. Use function extensionality and compare the values at `k`.
+
+Simplify `congrFun (congrFun h1 k) ()` using `[Matrix.mul_apply]`. Use `⟨hz, ?_⟩` and prove the remaining obligations. Establish `hv : Matrix.vecMulVec H.x z = 0`. Use extensionality with `i j`. Simplify using `[hz, Matrix.vecMulVec_apply]`.
+
+Rewrite `h` using `[hv, zero_add]`. Establish `h0 : incM F H.ι * incM F m = 0`. Rewrite using `[← incM_mul, h]`. Use extensionality with `i j`. Conclude with `map_zero (inclR (F := F) (AF F))`.
+
+Establish `key : ∀ w : (Fin n₁ × Fin d → AF F) × (Fin n₁ × Fin d → AF F), (M₁.co.e (incM F m)).1 ⬝ᵥ w.2 - w.1 ⬝ᵥ (M₁.co.e (incM F m)).2 = 0` using `fun w => by`. Establish `h4` using `(M.co.form _ _).symm.trans ((sp_ii (W := W) hH.gram (incM F m) (M₁.co.e.symm w)).trans (M₁.co.form _ _))`. Rewrite `h4` using `[h0, map_zero, LinearEquiv.apply_symm_apply]`. Rewrite using `[← h4]`. Simplify using the standard rewrite rules.
+
+Establish `h5 : M₁.co.e (incM F m) = 0`. Use `Prod.ext (funext fun i => ?_) (funext fun i => ?_)` and prove the remaining obligations. Simplify using `using key (0, Pi.single i 1)`. Simplify using `using key (Pi.single i 1, 0)`. Establish `h6 : incM F m = incM F 0`.
+
+Rewrite using `[M₁.co.e.map_eq_zero_iff.1 h5]`. Use extensionality with `i j`. Conclude with `(map_zero (inclR (F := F) (AF F))).symm`. Conclude with `incM_inj h6`.
+-/
 theorem direct (B : Base F E) (M : Model σ X W) (M₁ : Model σ X₁ W) (H : Plane E n n₁) {j₀ j₁ : ℕ}
     (hH : H.IsAdapted σ B X X₁ j₀ j₁) (z : Fin d → E) (m : Matrix (Fin n₁) (Fin d) E)
     (h : Matrix.vecMulVec H.x z + H.ι * m = 0) : z = 0 ∧ m = 0 := by
@@ -225,6 +320,23 @@ theorem direct (B : Base F E) (M : Model σ X W) (M₁ : Model σ X₁ W) (H : P
     rw [M₁.co.e.map_eq_zero_iff.1 h5]; ext i j; exact (map_zero (inclR (F := F) (AF F))).symm
   exact incM_inj h6
 
+/- English proof (translation)
+Establish `h2 : Module.finrank F E = 2` using `hB.cm.2.2.1`. Use `haveI : Module.Finite F E := Module.finite_of_finrank_pos (by omega)`. Take `⟨φ, hφ⟩` from `exists_ratCoord M h2 hM.rat`. Take `⟨φ₁, hφ₁⟩` from `exists_ratCoord M₁ h2 hM₁.rat`. Set `g : ((Fin d → E) × (Fin n₁ × Fin d → F)) →ₗ[F] Matrix (Fin n) (Fin d) E` to `{ toFun := fun p => Matrix.vecMulVec H.x p.1 + H.ι * φ₁.symm (0, p.2) map_add' := fun p q => by`.
+
+Establish `: ((0 : Fin n₁ × Fin d → F), (p + q).2) = (0, p.2) + (0, q.2)` using `by simp`. Rewrite using `[this, map_add, Matrix.mul_add, Prod.fst_add, Matrix.vecMulVec_add]`. Normalize the expressions using the abelian group laws. Use the proof step `map_smul' := fun a p => by`. Establish `: ((0 : Fin n₁ × Fin d → F), (a • p).2) = a • (0, p.2)` using `by simp`.
+
+Rewrite using `[this, map_smul, Matrix.mul_smul, Prod.smul_fst, Matrix.vecMulVec_smul, RingHom.id_apply, smul_add] }`. Establish `hg : Function.Injective g`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `p hp`. Take `⟨h1, h3⟩` from `direct B M M₁ H hH p.1 _ hp`.
+
+Conclude with `Prod.ext h1 (Prod.ext_iff.1 (φ₁.symm.map_eq_zero_iff.1 h3)).2`. Establish `hemb : ∀ p, emb F (φ (g p)) = M.co.e (Matrix.vecMulVec (incV F H.x) (incV F p.1) + incM F H.ι * incM F (φ₁.symm (0, p.2)))` using `fun p => by`. Rewrite using `[← hφ, ← incM_vmv, ← incM_mul, ← incM_add]`. Both sides reduce to the same expression. Establish `hfst : ∀ b, (M₁.co.e (incM F (φ₁.symm (0, b)))).1 = 0` using `fun b => by`.
+
+Rewrite using `[hφ₁, LinearEquiv.apply_symm_apply]`. Use function extensionality and compare the values at `i`. Conclude with `map_zero (algebraMap F (AF F))`. Use `⟨LinearMap.range (φ.toLinearMap ∘ₗ g), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨p, rfl⟩ _ ⟨q, rfl⟩`.
+
+Apply `alg_inj` to reduce the goal to its premises. Rewrite using `[← emb_dot, ← emb_dot]`. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe, hemb]`. Conclude with `iso_lagr B M M₁ H hH _ _ _ _ (hfst _) (hfst _)`. Establish `hi : Function.Injective (φ.toLinearMap ∘ₗ g)` using `fun a b hab => hg (φ.injective hab)`.
+
+Rewrite using `[LinearMap.finrank_range_of_inj hi, Module.finrank_prod, Module.finrank_pi_fintype, Module.finrank_fintype_fun_eq_card]`. Simplify using `only [h2, Finset.sum_const, Finset.card_univ, Fintype.card_prod, Fintype.card_fin, smul_eq_mul, hH.rank]`. Expand and normalize the polynomial expressions, which then agree. Introduce and unpack `t _ ⟨p, rfl⟩`. Use `⟨t • incV F p.1, t • incM F (φ₁.symm (0, p.2)), by rw [map_smul, Prod.smul_fst, hfst, smul_zero], fun ψ => ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe, hemb]`. Rewrite using `[← map_smul, smul_add, ← Matrix.vecMulVec_smul, ← Matrix.mul_smul, map_add]`. Use `schr_add _ _ _ ?_ _` and prove the remaining obligations. Establish `h` using `(M.co.form _ _).symm.trans (sp_ix (W := W) (fun u => (hH.orth u).1) (t • incM F (φ₁.symm (0, p.2))) (t • incV F p.1))`. Conclude with `(sub_eq_zero.1 h).symm`.
+-/
 theorem exists_lagr (B : Base F E) (hB : B.IsGood σ) (M : Model σ X W) (M₁ : Model σ X₁ W) (hM : M.IsGood B.ψ)
     (hM₁ : M₁.IsGood B.ψ) (H : Plane E n n₁) {j₀ j₁ : ℕ} (hH : H.IsAdapted σ B X X₁ j₀ j₁) :
     ∃ L : Submodule F ((Fin n × Fin d → F) × (Fin n × Fin d → F)), (∀ a ∈ L, ∀ b ∈ L, a.1 ⬝ᵥ b.2 = b.1 ⬝ᵥ a.2) ∧
@@ -281,6 +393,11 @@ theorem exists_lagr (B : Base F E) (hB : B.IsGood σ) (M : Model σ X W) (M₁ :
 abbrev ev0 (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] : ((κ → AF F) → ℂ) →ₗ[ℂ] ℂ :=
   LinearMap.proj (R := ℂ) (φ := fun _ : (κ → AF F) => ℂ) 0
 
+/- English proof (translation)
+Introduce `g _`. Use `⟨g 0 • (BoundedContinuousFunction.evalCLM ℂ 0).comp (SchwartzMap.toBoundedContinuousFunctionCLM ℂ (κ → mixedEmbedding.mixedSpace F) ℂ), fun f => ?_⟩` and prove the remaining obligations. Simplify using `only [ev0, LinearMap.proj_apply, pureA, ContinuousLinearMap.coe_smul', ContinuousLinearMap.coe_comp', Function.comp_apply, Pi.smul_apply, SchwartzMap.toBoundedContinuousFunctionCLM_apply, BoundedContinuousFunction.evalCLM_apply, smul_eq_mul]`. Establish `h1 : (fun i : κ => InfiniteAdeleRing.ringEquiv_mixedSpace F ((0 : κ → AdeleRing (𝓞 F) F) i).1) = 0`. Use function extensionality and compare the values at `i`.
+
+Conclude with `map_zero (InfiniteAdeleRing.ringEquiv_mixedSpace F)`. Establish `h2 : (fun i : κ => ((0 : κ → AdeleRing (𝓞 F) F) i).2) = 0`. Use function extensionality and compare the values at `i`. Both sides reduce to the same expression. Rewrite using `[h1, h2, mul_comm]`.
+-/
 theorem adelicCoordinatesEvalZeroForm_mem_admissible (κ : Type) [Fintype κ] : ev0 F κ ∈ (adeleClass F).adm κ := by
   intro g _
   refine ⟨g 0 • (BoundedContinuousFunction.evalCLM ℂ 0).comp
@@ -294,9 +411,15 @@ theorem adelicCoordinatesEvalZeroForm_mem_admissible (κ : Type) [Fintype κ] : 
     funext i; rfl
   rw [h1, h2, mul_comm]
 
+/- English proof (translation)
+Rewrite using `[incM, Matrix.map_one _ (map_zero _) (map_one _), Matrix.transpose_one, Matrix.mul_one]`.
+-/
 theorem mul_transpose_incM_one (A : Matrix (Fin n) (Fin d) (AE F E)) : A * (incM F (1 : Matrix (Fin d) (Fin d) E))ᵀ = A := by
   rw [incM, Matrix.map_one _ (map_zero _) (map_one _), Matrix.transpose_one, Matrix.mul_one]
 
+/- English proof (translation)
+Rewrite using `[hS _ Φ hΦ]`. Simplify using `[ev0, Darboux.rho, schr]`.
+-/
 theorem apply_eq_evaluation_zero (M : Model σ X W) (M₁ : Model σ X₁ W) (ψ : AddChar (AF F) ℂ) (ι : Matrix (Fin n) (Fin n₁) E)
     (S : Fn F n d →ₗ[ℂ] Fn F n₁ d)
     (hS : ∀ z, ∀ Φ ∈ schA F (Fin n × Fin d), S (M.co.rho ψ (incM F ι * z * (incM F (1 : Matrix (Fin d) (Fin d) E))ᵀ) Φ) =
@@ -306,6 +429,11 @@ theorem apply_eq_evaluation_zero (M : Model σ X W) (M₁ : Model σ X₁ W) (ψ
   rw [hS _ Φ hΦ]
   simp [ev0, Darboux.rho, schr]
 
+/- English proof (translation)
+Take `⟨u, z, hz, he⟩` from `hw`. Establish `h1` using `GlobalTheory.HeisSchA.rho_mem_schA M ψ hψ (incM F H.ι * z) Φ hΦ`. Establish `h2` using `hS z Φ hΦ`. Rewrite `h2` using `[mul_transpose_incM_one]`. Simplify using `only [LinearMap.comp_apply, ev0, LinearMap.proj_apply]`.
+
+Rewrite using `[he, hI _ ⟨u, rfl⟩ _ h1, h2]`. Simplify using `[Darboux.rho, schr, hz]`.
+-/
 theorem evAt_zero_comp_eq_of_exp_phase_mul (M : Model σ X W) (M₁ : Model σ X₁ W) (ψ : AddChar (AF F) ℂ) (hψ : IsStd ψ) (H : Plane E n n₁)
     (S : Fn F n d →ₗ[ℂ] Fn F n₁ d)
     (hS : ∀ z, ∀ Φ ∈ schA F (Fin n × Fin d), S (M.co.rho ψ (incM F H.ι * z * (incM F (1 : Matrix (Fin d) (Fin d) E))ᵀ) Φ) =
@@ -324,6 +452,13 @@ theorem evAt_zero_comp_eq_of_exp_phase_mul (M : Model σ X W) (M₁ : Model σ X
   rw [he, hI _ ⟨u, rfl⟩ _ h1, h2]
   simp [Darboux.rho, schr, hz]
 
+/- English proof (translation)
+Introduce `_ F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP n₁ X₁ H j₀ j₁ M₁ om₁ r₁ s₁ hH hP₁ e he T _ hTh hTi hTa`. Establish `hψ : IsStd B.ψ` using `hP.base.std`. Take `⟨L, hiso, hrk, hL⟩` from `exists_lagr B hP.base M M₁ hP.good hP₁.good H hH`. Establish `hadmT : ev0 F (Fin n₁ × Fin d) ∘ₗ T ∈ (adeleClass F).adm (Fin n × Fin d)` using `hTa _ (adelicCoordinatesEvalZeroForm_mem_admissible _)`. Establish `hadmE : ev0 F (Fin n₁ × Fin d) ∘ₗ e ∈ (adeleClass F).adm (Fin n × Fin d)` using `GlobalTheory.T.eigen_intertwiner_good_models F E σ B n d n₁ d X W X₁ W M M₁ _ _ _ e hP.good hP₁.good he _ (adelicCoordinatesEvalZeroForm_mem_admissible _)`.
+
+Take `⟨Φ₀, hΦ₀, hne⟩` from `GlobalTheory.EvNonzero.exists_mem_schA_ev_ne_zero F E σ B n d n₁ d X W X₁ W M M₁ _ _ _ e hP.good hP₁.good he`. Take `⟨y, hy⟩` from `Function.ne_iff.1 hne`. Take `⟨c, hc⟩` from `GlobalTheory.T.adelicStoneVonNeumann_lagrangian_uniqueness F B.ψ hψ (Fin n × Fin d) L hiso hrk _ hadmT _ hadmE (fun t w hw Φ hΦ => evAt_zero_comp_eq_of_exp_phase_mul M M₁ B.ψ hψ H T hTh hTi _ (hL t w hw) Φ hΦ) (fun t w hw Φ hΦ => evAt_zero_comp_eq_of_exp_phase_mul M M₁ B.ψ hψ H e …`. Rewrite using `[LinearMap.comp_apply, ← apply_eq_evaluation_zero M M₁ B.ψ H.ι e he.Heisenberg₂ Φ₀ hΦ₀ y]`. Conclude with `hy⟩`.
+
+Use `⟨c, fun Φ hΦ => funext fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[apply_eq_evaluation_zero M M₁ B.ψ H.ι T hTh Φ hΦ y, Pi.smul_apply, apply_eq_evaluation_zero M M₁ B.ψ H.ι e he.Heisenberg₂ Φ hΦ y, smul_eq_mul]`. Conclude with `hc _ (GlobalTheory.HeisSchA.rho_mem_schA M B.ψ hψ _ Φ hΦ)`.
+-/
 theorem main : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d)
     (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' →
     ∀ (n₁ : ℕ) (X₁ : Spc F E n₁) (H : Plane E n n₁) (j₀ j₁ : ℕ) (M₁ : Model σ X₁ W) (om₁ : Rep σ X₁ W) (r₁ s₁ : ℕ),

@@ -16,6 +16,11 @@ def coeffOnChart {k : Type} [Field k] {R T D : Type} [Fintype R] [DecidableEq R]
     (Y : Matrix (R ⊕ T) D k) : Matrix T R k :=
   (Y.submatrix Sum.inl τ).det⁻¹ • (Y.toRows₂.submatrix id τ * (Y.submatrix Sum.inl τ).adjugate)
 
+/- English proof (translation)
+Establish `e1 : (stack Y₁ C).submatrix Sum.inl τ = Y₁.submatrix id τ`. Rewrite using `[submatrix_inl_eq, toRows₁_stack]`. Establish `e2 : (stack Y₁ C).toRows₂.submatrix id τ = C * Y₁.submatrix id τ`. Use extensionality with `i j`. Simplify using `[stack, Matrix.mul_apply]`.
+
+Rewrite using `[coeffOnChart, e1, e2, Matrix.mul_assoc, Matrix.mul_adjugate, Matrix.mul_smul, Matrix.mul_one, smul_smul, inv_mul_cancel₀ h, one_smul]`.
+-/
 theorem coeffOnChart_stack {k : Type} [Field k] {R T D : Type} [Fintype R] [DecidableEq R] [Fintype T] [DecidableEq T]
     [Fintype D] [DecidableEq D] (τ : R → D)
     (Y₁ : Matrix R D k) (C : Matrix T R k) (h : (Y₁.submatrix id τ).det ≠ 0) :
@@ -27,6 +32,9 @@ theorem coeffOnChart_stack {k : Type} [Field k] {R T D : Type} [Fintype R] [Deci
   rw [coeffOnChart, e1, e2, Matrix.mul_assoc, Matrix.mul_adjugate, Matrix.mul_smul, Matrix.mul_one, smul_smul,
     inv_mul_cancel₀ h, one_smul]
 
+/- English proof (translation)
+Establish `hA : Continuous fun Y : Matrix (R ⊕ T) D k => Y.submatrix Sum.inl τ` using `continuous_id.matrix_submatrix _ _`. Establish `hB : Continuous fun Y : Matrix (R ⊕ T) D k => Y.toRows₂.submatrix id τ` using `(continuous_id.matrix_submatrix Sum.inr id).matrix_submatrix _ _`. Conclude with `ContinuousOn.smul (f := fun Y : Matrix (R ⊕ T) D k => (Y.submatrix Sum.inl τ).det⁻¹) (hA.matrix_det.continuousOn.inv₀ fun Y hY => hY) (hB.matrix_mul hA.matrix_adjugate).continuousOn`.
+-/
 theorem coeffOnChart_continuousOn {k : Type} [Field k] [TopologicalSpace k] [IsTopologicalRing k]
     [ContinuousInv₀ k] {R T D : Type} [Fintype R] [DecidableEq R] (τ : R → D) :
     ContinuousOn (coeffOnChart (T := T) (k := k) τ) {Y | (Y.submatrix Sum.inl τ).det ≠ 0} := by
@@ -37,6 +45,13 @@ theorem coeffOnChart_continuousOn {k : Type} [Field k] [TopologicalSpace k] [IsT
   exact ContinuousOn.smul (f := fun Y : Matrix (R ⊕ T) D k => (Y.submatrix Sum.inl τ).det⁻¹)
     (hA.matrix_det.continuousOn.inv₀ fun Y hY => hY) (hB.matrix_mul hA.matrix_adjugate).continuousOn
 
+/- English proof (translation)
+Introduce `f hf hdet`. Establish `hcl : IsClosed (Function.support f)`. Use `(hf.1.isOpen_fiber 0).isClosed_compl` as an intermediate fact. Simplify `this` using `[Function.support, Set.compl_setOf]`. Establish `hK : IsCompact (Function.support f)`.
+
+Establish `h2 : HasCompactSupport f` using `hf.2`. Rewrite `h2` using `[HasCompactSupport, tsupport, hcl.closure_eq]`. Conclude with `h2`. Establish `hcont : ContinuousOn (coeffOnChart (T` using `T) (k := k) τ) (Function.support f) := (coeffOnChart_continuousOn τ).mono fun Y hY => hdet Y hY`. Take `⟨a, ha⟩` from `GlobalTheory.BoxCharComb.exists_box_superset (hK.image_of_continuousOn hcont)`.
+
+Use `⟨a, fun Y₁ C hY => ?_⟩` and prove the remaining obligations. Establish `hd` using `hdet _ hY`. Rewrite `hd` using `[submatrix_inl_eq, toRows₁_stack]`. Use `ha _ ⟨_, hY, coeffOnChart_stack τ Y₁ C hd⟩` as an intermediate fact. Conclude with `this`.
+-/
 theorem bounded_coeff_of_SB (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (R T D : Type) [Fintype R] [DecidableEq R] [Fintype T] [DecidableEq T] [Fintype D] [DecidableEq D] (τ : R → D) :
     ∀ f ∈ SB (Matrix (R ⊕ T) D k), (∀ Y : Matrix (R ⊕ T) D k, f Y ≠ 0 → (Y.submatrix Sum.inl τ).det ≠ 0) →

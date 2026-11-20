@@ -7,6 +7,11 @@ import Development.WeilBound.CoreStatements.RationalSupMetrics.MhbNeg
 
 open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.AI.I1 ReciprocityTheory.ChartRestriction.G.AI.I4 GlobalTheory.CompanionTheory.Ar.Small Filter Topology
 
+/- English proof (translation)
+Introduce `K _ ι _ Ω _ y F _ _ _ hbir _`. Take `⟨ω, -, hω⟩` from `MultiProjectiveCoordinates.Val.exists_prim F`. Take `⟨d, g, h, hg, hh, n, e⟩` from `hbir (algebraMap F Ω ω)`. Use `⟨h, ⟨⟨d, hh⟩, fun hm => n ((MultiProjectiveCoordinates.Val.mem_iff y hh).1 hm)⟩, ?_⟩` and prove the remaining obligations. Introduce `𝕜 _ _ z hz hn`.
+
+Establish `hx : MultiProjectiveCoordinates.Val.V y z (algebraMap F Ω ω) (aeval z g / aeval z h)` using `⟨d, g, h, hg, hh, e, hn, by rw [div_mul_cancel₀ _ hn]⟩`. Take `⟨φ, hφ⟩` from `MultiProjectiveCoordinates.Val.exists_hom hz.2 hω hx`. Conclude with `⟨φ, fun θ => (hφ θ).hasVal⟩`.
+-/
 theorem MultiProjectiveCoordinates.exists_field_hom_on_open : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Ω : Type) [Field Ω] (y : (Σ k, ι k) → Ω) (F : Type) [Field F] [NumberField F] [Algebra F Ω], Birational y → IsRelevant (mCoordIdeal y) → ∃ h : MRing ι, IsFormOff (mCoordIdeal y) h ∧ ∀ (𝕜 : Type) [Field 𝕜] [CharZero 𝕜] (z : (Σ k, ι k) → 𝕜), z ∈ ptsOver 𝕜 (mCoordIdeal y) → aeval z h ≠ 0 → ∃ φ : F →+* 𝕜, ∀ θ : F, HasVal y 0 (algebraMap F Ω θ) z (φ θ) := by
   intro K _ ι _ Ω _ y F _ _ _ hbir _
   obtain ⟨ω, -, hω⟩ := MultiProjectiveCoordinates.Val.exists_prim F

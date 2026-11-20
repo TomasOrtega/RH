@@ -7,6 +7,17 @@ namespace PositivityTheory.CW
 
 namespace ExistsFunctional
 
+/- English proof (translation)
+Establish `h0 : x₀ ≠ 0`. Introduce and unpack `rfl`. Conclude with `hx (map_zero q)`. Set `e` to `LinearEquiv.toSpanNonzeroSingleton ℂ E x₀ h0`. Set `f : Module.Dual ℂ (Submodule.span ℂ {x₀})` to `(q x₀ : ℂ) • (e.symm : _ →ₗ[ℂ] ℂ)`.
+
+Establish `hfe : ∀ t : ℂ, f (e t) = t * q x₀`. Introduce `t`. Simplify using `[f, mul_comm]`. Take `⟨g, hg, hgp⟩` from `Module.Dual.exists_extension_of_le_seminorm (Submodule.span ℂ {x₀}) f (p := q) (by`. Introduce `y`.
+
+Take `⟨t, rfl⟩` from `e.surjective y`. Rewrite using `[hfe, norm_mul, Complex.norm_real, Real.norm_of_nonneg (apply_nonneg q x₀)]`. Rewrite using `[LinearEquiv.toSpanNonzeroSingleton_apply]`. Simplify using `[map_smul_eq_mul])`. Use `⟨g, ?_, hgp⟩` and prove the remaining obligations.
+
+Establish `h1` using `hg (e 1)`. Rewrite `h1` using `[hfe, one_mul]`. Establish `: ((e 1 : Submodule.span ℂ {x₀}) : E) = x₀`. Rewrite using `[LinearEquiv.toSpanNonzeroSingleton_one]`. Rewrite `h1` using `[this]`.
+
+Rewrite using `[h1]`. Conclude with `hx` after adjusting the coercions.
+-/
 theorem exists_functional {E : Type} [AddCommGroup E] [Module ℂ E] (q : Seminorm ℂ E) {x₀ : E} (hx : q x₀ ≠ 0) :
     ∃ φ : Module.Dual ℂ E, φ x₀ ≠ 0 ∧ ∀ x, ‖φ x‖ ≤ q x := by
   have h0 : x₀ ≠ 0 := by
@@ -35,6 +46,19 @@ theorem exists_functional {E : Type} [AddCommGroup E] [Module ℂ E] (q : Semino
 
 end ExistsFunctional
 
+/- English proof (translation)
+Unfold `faceMap_comp_succAbove_castSucc AllTgt`. Introduce `n ε H _ _ _ σ hU hI E _ _ _ _ _ _ p π dπ hrep T hT i w₀ hw₀ hp u hu hu0`. Assume the negation of the conclusion as `hall`. Use `push_neg at hall`. Take `⟨φ, hφ0, hφ⟩` from `ExistsFunctional.exists_functional (p i) hp`.
+
+Set `ℓ : H →ₗ[ℂ] ℂ` to `φ ∘ₗ T`. Establish `hlie : ((GlobalTheory.LowTypeDetermined.lie (Jm ε) : Set (Mx n))) = lieSet ε` using `rfl`. Establish `hsm : ∀ w, Sm ε σ w → w ∈ GlobalTheory.LowTypeDetermined.smooth (Jm ε) (fun g => σ (1 * g * (1 : Mx n)⁻¹))`. Introduce `w hw`. Express the relevant statement in the definitionally equal form `SmoothVec ((GlobalTheory.LowTypeDetermined.lie (Jm ε) : Set (Mx n))) (fun g => σ (1 * g * (1 : Mx n)⁻¹)) w`.
+
+Simplify using `only [inv_one, mul_one, one_mul]`. Rewrite using `[hlie]`. Conclude with `hw`. Establish `key` using `GlobalTheory.LowTypeDetermined.eq_zero_of_translates (G := Jm ε) (P := 1) hU hI isUnit_one (by simp) (ℓ := ℓ) ?_ (hsm u hu) hu0 ?_ (hsm w₀ hw₀)`. Conclude with `hφ0 key`.
+
+Take `⟨S, C, hS, hb⟩` from `hT.2 i`. Use `⟨S, C, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hlie]`. Conclude with `hS`. Simplify using `only [inv_one, mul_one, one_mul]`.
+
+Rewrite using `[hlie]`. Introduce `w hw`. Conclude with `(hφ (T w)).trans (hb w hw)`. Introduce `g hg show φ (T (σ g u)) = 0`. Rewrite using `[hT.1 g hg u hu]`.
+
+Conclude with `norm_le_zero_iff.mp ((hφ _).trans (hall g hg).le)`.
+-/
 theorem e1b : faceMap_comp_succAbove_castSucc := by
   unfold faceMap_comp_succAbove_castSucc AllTgt
   intro n ε H _ _ _ σ hU hI E _ _ _ _ _ _ p π dπ hrep T hT i w₀ hw₀ hp u hu hu0

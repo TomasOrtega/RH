@@ -23,6 +23,17 @@ noncomputable section
 
 namespace GlobalTheory.FinClsLoc.SepLat
 
+/- English proof (translation)
+Introduce `p _ G Y hsep hdeg`. Use `filter_upwards [GlobalTheory.T.eventually_completedTensor_matrix_split_semilocal p G (Y : G.C) hdeg hsep, GlobalTheory.OrbFinAf.isIntV_mul_eventually G, GlobalTheory.OrbFinAf.KottLat.eventually_isIntV_map G ((1 : AfP p) ⊗ₜ[ℚ] (Y : G.C))] with w hA _ hY1`. Introduce `k h1 _`. Take `⟨K, _, R, Φ, hfin, hInt, Q, hQs, hQm⟩` from `hA`. Set `γ₀ : (w.1.adicCompletion ℚ ⊗[ℚ] G.C)ˣ` to `Units.map (inC G (w.1.adicCompletion ℚ)).toMonoidHom Y`.
+
+Establish `hγv : (γ₀ : w.1.adicCompletion ℚ ⊗[ℚ] G.C) = (1 : w.1.adicCompletion ℚ) ⊗ₜ[ℚ] (Y : G.C)` using `rfl`. Establish `hγi : (γ₀ : w.1.adicCompletion ℚ ⊗[ℚ] G.C) = inC G (w.1.adicCompletion ℚ) (Y : G.C)` using `rfl`. Establish `hγ0 : GlobalTheory.OrbFinAf.IsIntV G w (γ₀ : w.1.adicCompletion ℚ ⊗[ℚ] G.C)`. Rewrite `hY1` using `[Algebra.TensorProduct.map_tmul, map_one, AlgHom.id_apply]`. Rewrite using `[hγv]`.
+
+Conclude with `hY1`. Establish `hconj : GlobalTheory.OrbFinAf.IsIntV G w (((k⁻¹)⁻¹ * γ₀ * k⁻¹ : (w.1.adicCompletion ℚ ⊗[ℚ] G.C)ˣ) : w.1.adicCompletion ℚ ⊗[ℚ] G.C)`. Rewrite using `[inv_inv, Units.val_mul, Units.val_mul, hγi]`. Conclude with `h1`. Take `⟨U, hU, hU1, hU2⟩` from `GlobalTheory.OrbFinAf.KottLat.conj_integral R Φ hfin Q hQs γ₀ (by rw [hγv]; exact hQm) ((hInt _).1 hγ0) k⁻¹ ((hInt _).1 hconj)`.
+
+Establish `hcomm : k⁻¹ * U⁻¹ * γ₀ = γ₀ * (k⁻¹ * U⁻¹)`. Establish `e : U * (k * γ₀ * k⁻¹) = γ₀ * U` using `by simpa using hU`. Combine the equalities or inequalities in the displayed calculation. Use `⟨k⁻¹ * U⁻¹, U, ?_, (hInt _).2 hU1, (hInt _).2 hU2, by group⟩` and prove the remaining obligations. Use `show _ * _ = _ * _`.
+
+Rewrite using `[← hγi, ← Units.val_mul, ← Units.val_mul, hcomm]`.
+-/
 theorem kottwitz_lattice_sep : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p) (Y : G.Cˣ), (minpoly G.F (Y : G.C)).Separable →
     (minpoly G.F (Y : G.C)).natDegree = G.n →
     ∀ᶠ w : AwayP p in Filter.cofinite, ∀ k : (w.1.adicCompletion ℚ ⊗[ℚ] G.C)ˣ,

@@ -16,6 +16,13 @@ open GlobalTheory.ZJ
 
 namespace GlobalTheory.ZJ.FibreSplit
 
+/- English proof (translation)
+Substitute `hz` using the available equality. Set `ρ` to `Z.descResidueField (Scheme.stalkClosedPointTo s)`. Establish `hs : Function.Surjective (Scheme.stalkClosedPointTo s).hom`. Unfold `Scheme.stalkClosedPointTo`. Conclude with `(ConcreteCategory.bijective_of_isIso (stalkClosedPointIso (.of K)).hom).2.comp (s.stalkMap_surjective _)`.
+
+Establish `hρ : Function.Surjective ρ.hom`. Establish `h` using `congrArg CommRingCat.Hom.hom (Z.residue_descResidueField (Scheme.stalkClosedPointTo s))`. Rewrite `hs` using `[← h]`. Rewrite `hs` using `[CommRingCat.hom_comp, RingHom.coe_comp]`. Conclude with `Function.Surjective.of_comp hs`.
+
+Establish `: IsIso ρ` using `(ConcreteCategory.isIso_iff_bijective ρ).2 ⟨ρ.hom.injective, hρ⟩`. Use `⟨inv (Spec.map ρ), ?_⟩` and prove the remaining obligations. Rewrite using `[IsIso.inv_comp_eq]`. Conclude with `(Scheme.descResidueField_stalkClosedPointTo_fromSpecResidueField K Z s).symm`.
+-/
 theorem exists_residue_factor {K : Type} [Field K] {Z : Scheme.{0}} (s : Sp K ⟶ Z) [SurjectiveOnStalks s]
     (z : Z) (hz : s (IsLocalRing.closedPoint K) = z) :
     ∃ f : Sp (Z.residueField z) ⟶ Sp K, f ≫ s = Z.fromSpecResidueField z := by
@@ -34,6 +41,9 @@ theorem exists_residue_factor {K : Type} [Field K] {Z : Scheme.{0}} (s : Sp K �
   rw [IsIso.inv_comp_eq]
   exact (Scheme.descResidueField_stalkClosedPointTo_fromSpecResidueField K Z s).symm
 
+/- English proof (translation)
+Take `⟨hc, i, hT⟩` from `h`. Take `⟨B, gB, q, hB, hq, hf, hs, ha, hk, -⟩` from `GlobalTheory.T.splitCharts_torus_extension_over_field K H C d c i hc hT`. Conclude with `GlobalTheory.exists_splitExt_isGt_of_torusExtension K H ⟨{ X := Fin d → ℤ, B := B, grpB := gB, isAbelian := hB, i := i, q := q, i_hom := hT.hom, q_hom := hq, q_flat := hf, q_surjective := hs, q_quasiCompact := inferInstance, isKernel := hk }⟩`.
+-/
 theorem exists_splitExt_of_split (K : Type) [Field K] (H : Over (Sp K)) [GrpObj H] [IsCommMonObj H] [Smooth H.hom]
     [IsSeparated H.hom] [QuasiCompact H.hom] (C : Charts H.left) (d : ℕ) (c : Fin d → C.Cl) (h : C.Split c) :
     ∃ E : SplitExt (Sp K), E.IsGt H := by
@@ -43,6 +53,21 @@ theorem exists_splitExt_of_split (K : Type) [Field K] (H : Over (Sp K)) [GrpObj 
     X := Fin d → ℤ, B := B, grpB := gB, isAbelian := hB, i := i, q := q, i_hom := hT.hom, q_hom := hq,
     q_flat := hf, q_surjective := hs, q_quasiCompact := inferInstance, isKernel := hk }⟩
 
+/- English proof (translation)
+Introduce `C L hT hC`. Set `` to `L.grp`. Set `` to `L.comm`. Take `⟨hsep, -, hqc, -⟩` from `core_basic C`. Use `L.smooth` as an intermediate fact.
+
+Establish `hsm : Smooth C.GG.hom` using `SmoothOfRelativeDimension.smooth C.g _`. Establish `h : SplitAll C.GG`. Introduce `z`. Take `⟨R, _, _, _, t, _, ht, Ch, d, c, Sg, hd, hS, -⟩` from `DenseSplit.exists_dense_splitOn C L hT hC z`. Establish `: Smooth ((Over.pullback t).obj C.GG).hom` using `inferInstanceAs (Smooth (pullback.snd C.GG.hom t))`.
+
+Establish `: IsSeparated ((Over.pullback t).obj C.GG).hom` using `inferInstanceAs (IsSeparated (pullback.snd C.GG.hom t))`. Establish `: QuasiCompact ((Over.pullback t).obj C.GG).hom` using `inferInstanceAs (QuasiCompact (pullback.snd C.GG.hom t))`. Establish `: Smooth ((Over.pullback (Out.jK R)).obj ((Over.pullback t).obj C.GG)).hom` using `inferInstanceAs (Smooth (pullback.snd ((Over.pullback t).obj C.GG).hom _))`. Establish `: IsSeparated ((Over.pullback (Out.jK R)).obj ((Over.pullback t).obj C.GG)).hom` using `inferInstanceAs (IsSeparated (pullback.snd ((Over.pullback t).obj C.GG).hom _))`. Establish `: QuasiCompact ((Over.pullback (Out.jK R)).obj ((Over.pullback t).obj C.GG)).hom` using `inferInstanceAs (QuasiCompact (pullback.snd ((Over.pullback t).obj C.GG).hom _))`.
+
+Establish `: IsAffineHom (pullback.fst ((Over.pullback t).obj C.GG).hom (Out.jK R))` using `isAffineHom_isStableUnderBaseChange.of_isPullback (IsPullback.of_hasPullback _ _).flip inferInstance`. Take `⟨E, hE⟩` from `exists_splitExt_of_split (FractionRing R) _ _ d _ (GlobalTheory.T.weightedProjectiveCharts_split_generic_point R ((Over.pullback t).obj C.GG) Ch d c Sg hd hS)`. Establish `: IsPreimmersion (Out.jK R)` using `IsPreimmersion.of_isLocalization (nonZeroDivisors R)`. Take `⟨f, hf⟩` from `exists_residue_factor (Out.jK R ≫ t) z (by`. Rewrite using `[← ht]`.
+
+Use `(Scheme.Hom.comp_apply (Out.jK R) t _).trans (congrArg t (PrimeSpectrum.ext ?_))` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Ideal.comap (algebraMap R (FractionRing R)) (IsLocalRing.maximalIdeal _) = ⊥`. Rewrite using `[IsLocalRing.maximalIdeal_eq_bot, Ideal.comap_bot_of_injective _ (IsFractionRing.injective R _)])`. Establish `: IsMonHom (pullCompIso (Out.jK R) t C.GG).symm.hom` using `inferInstanceAs (IsMonHom (pullCompIso (Out.jK R) t C.GG).inv)`. Take `⟨D⟩` from `isGt_of_iso (pullCompIso (Out.jK R) t C.GG).symm hE`.
+
+Establish `: IsMonHom (pullCompIso f (Out.jK R ≫ t) C.GG).symm.hom` using `inferInstanceAs (IsMonHom (pullCompIso f (Out.jK R ≫ t) C.GG).inv)`. Establish `key : ∀ s : Sp (C.Z.residueField z) ⟶ C.Z, f ≫ Out.jK R ≫ t = s → ∃ E : SplitExt (Sp (C.Z.residueField z)), E.IsGt ((Over.pullback s).obj C.GG)`. Introduce and unpack `_ rfl`. Conclude with `⟨_, isGt_of_iso (pullCompIso f (Out.jK R ≫ t) C.GG).symm (GtBaseChange.isGt_extBC f E _ D)⟩`. Conclude with `key _ hf`.
+
+Conclude with `⟨h, (isSemiAbelian_of_splitAll C.Z C.GG h).1⟩`.
+-/
 theorem splitAll_and_isSemiAbelian : ∀ (C : Core) (L : C.Law), C.HasTests → C.HasCharts → letI := L.grp; letI := L.comm; SplitAll C.GG ∧ IsSemiAbelian C.GG := by
   intro C L hT hC
   let := L.grp

@@ -12,6 +12,9 @@ namespace GlobalTheory.Chain.RealIt.PolyIso
 
 open MvPolynomial GlobalTheory.IndefiniteRowSideFullHecke.RaisingLoweringOperators GlobalTheory.IndefiniteRowSideFullHecke.BarMatrix
 
+/- English proof (translation)
+Apply the tactic sequence `cases x <;> simp [sgn]`.
+-/
 theorem sgn_mul_self (x : Bool) : sgn x * sgn x = 1 := by cases x <;> simp [sgn]
 
 variable {p q r s a b : ℕ} (ε : Fin a → Bool) (ε' : Fin b → Bool) (e : Ix p q ≃ Fin a) (e' : Ix r s ≃ Fin b)
@@ -22,6 +25,9 @@ def fwd : LPol b a →ₐ[ℂ] Pol p q r s :=
 def bwd : Pol p q r s →ₐ[ℂ] LPol b a :=
   aeval fun l => sgn (ε (e l.1)) • (X (e' l.2, e l.1) : LPol b a)
 
+/- English proof (translation)
+Simplify using `[fwd]`.
+-/
 theorem fwd_X (c : Ix r s) (x : Ix p q) :
     fwd ε e e' (X (e' c, e x)) = sgn (ε (e x)) • (X (x, c) : Pol p q r s) := by
   simp [fwd]
@@ -37,6 +43,15 @@ def kap : LPol b a ≃ₐ[ℂ] Pol p q r s :=
       rintro ⟨i, j⟩
       simp [fwd, bwd, smul_smul, sgn_mul_self])
 
+/- English proof (translation)
+Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C z => simp [fwd]`. Consider the case `add P Q hP hQ => simp [hP, hQ]`. Consider the case `mul_X P v hP`. Take `⟨i, j⟩` from `v`.
+
+Take `⟨d, rfl⟩` from `e'.surjective i`. Take `⟨y, rfl⟩` from `e.surjective j`. Establish `h : pderiv (x, c) (fwd ε e e' (X (e' d, e y))) = sgn (ε (e x)) • fwd ε e e' (pderiv (e' c, e x) (X (e' d, e y) : LPol b a))`. Rewrite using `[fwd_X, Derivation.map_smul, pderiv_X, pderiv_X]`. Distinguish the cases in `hx : x = y`.
+
+Distinguish the cases in `hc : c = d`. Substitute `hx hc` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Ne.symm hc]`. Simplify using `[Ne.symm hx]`.
+
+Rewrite using `[map_mul, Derivation.leibniz, Derivation.leibniz, h, hP]`. Simplify using `only [smul_eq_mul, map_add, map_mul, smul_add, mul_smul_comm]`.
+-/
 theorem pderiv_fwd (c : Ix r s) (x : Ix p q) (P : LPol b a) :
     pderiv (x, c) (fwd ε e e' P) = sgn (ε (e x)) • fwd ε e e' (pderiv (e' c, e x) P) := by
   induction P using MvPolynomial.induction_on with
@@ -59,15 +74,26 @@ theorem pderiv_fwd (c : Ix r s) (x : Ix p q) (P : LPol b a) :
 
 variable {ε ε' e e'}
 
+/- English proof (translation)
+Rewrite using `[h x, h' c]`. Apply the tactic sequence `rcases x with x | x <;> rcases c with c | c <;> simp [linePos]`.
+-/
 theorem linePos_iff (h : SignCompat ε e) (h' : SignCompat ε' e') (x : Ix p q) (c : Ix r s) :
     linePos ((x, c) : Ln p q r s) = true ↔ ε' (e' c) = ε (e x) := by
   rw [h x, h' c]
   rcases x with x | x <;> rcases c with c | c <;> simp [linePos]
 
+/- English proof (translation)
+Rewrite using `[map_smul, map_mul, fwd_X, smul_mul_assoc, smul_smul, sgn_mul_self, one_smul]`.
+-/
 theorem fwd_mulX (c : Ix r s) (x : Ix p q) (P : LPol b a) :
     fwd ε e e' (sgn (ε (e x)) • (X (e' c, e x) * P)) = X (x, c) * fwd ε e e' P := by
   rw [map_smul, map_mul, fwd_X, smul_mul_assoc, smul_smul, sgn_mul_self, one_smul]
 
+/- English proof (translation)
+Unfold `rai raiB`. Distinguish the cases in `hl : ε' (e' c) = ε (e x)`. Rewrite using `[if_pos hl, if_pos ((linePos_iff h h' x c).2 hl)]`. Conclude with `fwd_mulX c x P`. Rewrite using `[if_neg hl, if_neg (mt (linePos_iff h h' x c).1 hl)]`.
+
+Simplify using `[pderiv_fwd]`.
+-/
 theorem fwd_rai (h : SignCompat ε e) (h' : SignCompat ε' e') (x : Ix p q) (c : Ix r s) (P : LPol b a) :
     fwd ε e e' (rai ε ε' (e' c) (e x) P) = raiB (x, c) (fwd ε e e' P) := by
   unfold rai raiB
@@ -77,6 +103,11 @@ theorem fwd_rai (h : SignCompat ε e) (h' : SignCompat ε' e') (x : Ix p q) (c :
   · rw [if_neg hl, if_neg (mt (linePos_iff h h' x c).1 hl)]
     simp [pderiv_fwd]
 
+/- English proof (translation)
+Unfold `low lowB`. Distinguish the cases in `hl : ε' (e' c) = ε (e x)`. Rewrite using `[if_pos hl, if_pos ((linePos_iff h h' x c).2 hl)]`. Simplify using `[pderiv_fwd]`. Rewrite using `[if_neg hl, if_neg (mt (linePos_iff h h' x c).1 hl)]`.
+
+Conclude with `fwd_mulX c x P`.
+-/
 theorem fwd_low (h : SignCompat ε e) (h' : SignCompat ε' e') (x : Ix p q) (c : Ix r s) (P : LPol b a) :
     fwd ε e e' (low ε ε' (e' c) (e x) P) = lowB (x, c) (fwd ε e e' P) := by
   unfold low lowB
@@ -86,11 +117,21 @@ theorem fwd_low (h : SignCompat ε e) (h' : SignCompat ε' e') (x : Ix p q) (c :
   · rw [if_neg hl, if_neg (mt (linePos_iff h h' x c).1 hl)]
     exact fwd_mulX c x P
 
+/- English proof (translation)
+Use `conv_lhs => rw [Matrix.matrix_eq_sum_single Z]`. Simplify using `only [map_sum, ← map_smul, Eab, Matrix.smul_single, smul_eq_mul, mul_one]`.
+-/
 theorem act_eq_sum {V : Type*} [AddCommGroup V] [Module ℂ V] (f : Mat p q →ₗ[ℂ] V) (Z : Mat p q) :
     f Z = ∑ x, ∑ y, Z x y • f (Eab x y) := by
   conv_lhs => rw [Matrix.matrix_eq_sum_single Z]
   simp only [map_sum, ← map_smul, Eab, Matrix.smul_single, smul_eq_mul, mul_one]
 
+/- English proof (translation)
+Rewrite using `[act_eq_sum (fockAct1 p q r s) Z, locS, ← e.sum_comp]`. Simplify using `only [LinearMap.sum_apply, map_sum]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[← e.sum_comp]`. Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[fockAct1_Eab, ← e'.sum_comp]`. Simplify using `only [LinearMap.smul_apply, LinearMap.sum_apply, map_smul, map_sum, Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.symm_apply_apply]`. Use `congr 1`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Simplify using `only [omE, LinearMap.add_apply, map_add, Module.End.mul_apply, fwd_rai h h', fwd_low h h']`.
+
+Use `congr 1`. Apply the tactic sequence `by_cases hxy : x = y <;> simp [hxy]`.
+-/
 theorem fwd_locS (h : SignCompat ε e) (h' : SignCompat ε' e') (Z : Mat p q) (P : LPol b a) :
     fwd ε e e' (locS ε ε' (Matrix.reindex e e Z) P) = fockAct1 p q r s Z (fwd ε e e' P) := by
   rw [act_eq_sum (fockAct1 p q r s) Z, locS, ← e.sum_comp]
@@ -107,6 +148,13 @@ theorem fwd_locS (h : SignCompat ε e) (h' : SignCompat ε' e') (Z : Mat p q) (P
   congr 1
   by_cases hxy : x = y <;> simp [hxy]
 
+/- English proof (translation)
+Rewrite using `[act_eq_sum (fockAct2 p q r s) Z, locT, ← e'.sum_comp]`. Simplify using `only [LinearMap.sum_apply, map_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[← e'.sum_comp]`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[fockAct2_Eab, ← e.sum_comp]`. Simplify using `only [LinearMap.smul_apply, LinearMap.sum_apply, map_smul, map_sum, Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.symm_apply_apply]`. Use `congr 1`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Simplify using `only [omE, LinearMap.add_apply, map_add, Module.End.mul_apply, fwd_rai h h', fwd_low h h']`.
+
+Use `congr 1`. Apply the tactic sequence `by_cases hcd : c = d <;> simp [hcd]`.
+-/
 theorem fwd_locT (h : SignCompat ε e) (h' : SignCompat ε' e') (Z : Mat r s) (P : LPol b a) :
     fwd ε e e' (locT ε ε' (Matrix.reindex e' e' Z) P) = fockAct2 p q r s Z (fwd ε e e' P) := by
   rw [act_eq_sum (fockAct2 p q r s) Z, locT, ← e'.sum_comp]
@@ -123,6 +171,9 @@ theorem fwd_locT (h : SignCompat ε e) (h' : SignCompat ε' e') (Z : Mat r s) (P
   congr 1
   by_cases hcd : c = d <;> simp [hcd]
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ _ ε _ e e' h h'` and use `⟨(kap ε e e').toLinearEquiv, fun Z P => fwd_locS h h' Z P, fun Z P => fwd_locT h h' Z P⟩`.
+-/
 theorem exists_isPolyIso : ∀ (p q r s a b : ℕ) (ε : Fin a → Bool) (ε' : Fin b → Bool) (e : Ix p q ≃ Fin a)
     (e' : Ix r s ≃ Fin b), GlobalTheory.IndefiniteRowSideFullHecke.BarMatrix.SignCompat ε e → GlobalTheory.IndefiniteRowSideFullHecke.BarMatrix.SignCompat ε' e' →
     ∃ κ : LPol b a ≃ₗ[ℂ] Pol p q r s, IsPolyIso ε ε' e e' κ :=

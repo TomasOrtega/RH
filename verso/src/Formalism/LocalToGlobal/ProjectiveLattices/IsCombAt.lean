@@ -103,6 +103,15 @@ def sec (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ) : Submodule c.F (Rul Xo c) 
 def evR (f : Rul Xo c) {S : Type} [CommRing S] [Algebra c.F S] (y : FrPt Xo c S) : S :=
   evalAt (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) f y
 
+/- English proof (translation)
+Take `⟨hf1, hf2⟩` from `hf`. Take `⟨hg1, hg2⟩` from `hg`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `p q φ y z h`. Express the relevant statement in the definitionally equal form `f q z * g q z = φ (f p y * g p y)`.
+
+Rewrite using `[hf1 p q φ y z h, hg1 p q φ y z h, map_mul]`. Introduce `p t y y' h`. Express the relevant statement in the definitionally equal form `f p y' * g p y' = _ * (f p y * g p y)`. Rewrite using `[hf2 p t y y' h, hg2 p t y y' h]`. Establish `he : ∀ i, ex Dw (a + a') (n + n') i = ex Dw a n i + ex Dw a' n' i`.
+
+Introduce `i`. Apply the tactic sequence `cases i <;> rfl`. Apply the tactic sequence `try unfold wchar`. Rewrite using `[show (∏ i, (t i : p.R) ^ ex Dw (a + a') (n + n') i) = (∏ i, (t i : p.R) ^ ex Dw a n i) * ∏ i, (t i : p.R) ^ ex Dw a' n' i by`. Rewrite using `[← Finset.prod_mul_distrib]`.
+
+Conclude with `Finset.prod_congr rfl fun i _ => by rw [he, pow_add]]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sec_mul (a a' : (E →+* ℂ) × ℕ → ℕ) (n n' : ℕ) {f g : Rul Xo c} (hf : f ∈ sec Xo c a n)
     (hg : g ∈ sec Xo c a' n') : f * g ∈ sec Xo c (a + a') (n + n') := by
   obtain ⟨hf1, hf2⟩ := hf

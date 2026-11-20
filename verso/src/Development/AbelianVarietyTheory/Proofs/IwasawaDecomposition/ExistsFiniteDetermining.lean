@@ -11,6 +11,11 @@ section Coord
 
 variable {K L : Type} [Field K] [Field L] (σ : K →+* L)
 
+/- English proof (translation)
+Use `letI : Algebra K L := σ.toAlgebra`. Set `b` to `Module.Basis.ofVectorSpace K L`. Use `⟨_, b, fun i => (b.coord i).toAddMonoidHom, fun i k a => ?_, fun a => ⟨(b.repr a).support, fun T' hT => ?_⟩⟩` and prove the remaining obligations. Conclude with `(b.coord i).map_smul k a`. Use `conv_rhs => rw [← b.linearCombination_repr a, Finsupp.linearCombination_apply, Finsupp.sum_of_support_subset _ hT _ (by simp)]`.
+
+Conclude with `Finset.sum_congr rfl fun i _ => mul_comm _ _`.
+-/
 theorem exists_coords : ∃ (ι : Type) (e : ι → L) (c : ι → L →+ K), (∀ i k a, c i (σ k * a) = k * c i a) ∧
     ∀ a, ∃ T : Finset ι, ∀ T' : Finset ι, T ⊆ T' → ∑ i ∈ T', e i * σ (c i a) = a := by
   letI : Algebra K L := σ.toAlgebra
@@ -26,6 +31,9 @@ variable {I : Type}
 def coefMap (c : L →+ K) (p : MvPolynomial I L) : MvPolynomial I K :=
   ∑ m ∈ p.support, MvPolynomial.monomial m (c (p.coeff m))
 
+/- English proof (translation)
+Simplify using `only [coefMap, MvPolynomial.coeff_sum, MvPolynomial.coeff_monomial, Finset.sum_ite_eq']`. Use `split_ifs with h`. Both sides reduce to the same expression. Rewrite using `[MvPolynomial.notMem_support_iff.1 h, map_zero]`.
+-/
 theorem coeff_coefMap (c : L →+ K) (p : MvPolynomial I L) (m : I →₀ ℕ) : (coefMap c p).coeff m = c (p.coeff m) := by
   classical
   simp only [coefMap, MvPolynomial.coeff_sum, MvPolynomial.coeff_monomial, Finset.sum_ite_eq']
@@ -33,14 +41,23 @@ theorem coeff_coefMap (c : L →+ K) (p : MvPolynomial I L) (m : I →₀ ℕ) :
   · rfl
   · rw [MvPolynomial.notMem_support_iff.1 h, map_zero]
 
+/- English proof (translation)
+Use extensionality with `m`. Simplify using `only [coeff_coefMap, MvPolynomial.coeff_add, map_add]`.
+-/
 theorem coefMap_add (c : L →+ K) (p q : MvPolynomial I L) : coefMap c (p + q) = coefMap c p + coefMap c q := by
   ext m
   simp only [coeff_coefMap, MvPolynomial.coeff_add, map_add]
 
+/- English proof (translation)
+Use extensionality with `m`. Simplify using `only [coeff_coefMap, MvPolynomial.coeff_zero, map_zero]`.
+-/
 theorem coefMap_zero (c : L →+ K) : coefMap c (0 : MvPolynomial I L) = 0 := by
   ext m
   simp only [coeff_coefMap, MvPolynomial.coeff_zero, map_zero]
 
+/- English proof (translation)
+Use extensionality with `m`. Simplify using `only [coeff_coefMap, MvPolynomial.coeff_sum, map_sum]`.
+-/
 theorem coefMap_sum {J : Type*} (c : L →+ K) (s : Finset J) (p : J → MvPolynomial I L) :
     coefMap c (∑ j ∈ s, p j) = ∑ j ∈ s, coefMap c (p j) := by
   ext m
@@ -48,17 +65,28 @@ theorem coefMap_sum {J : Type*} (c : L →+ K) (s : Finset J) (p : J → MvPolyn
 
 variable {σ}
 
+/- English proof (translation)
+Use extensionality with `m`. Rewrite using `[coeff_coefMap, MvPolynomial.coeff_smul, MvPolynomial.coeff_smul, MvPolynomial.coeff_map, smul_eq_mul, smul_eq_mul, mul_comm, hc, mul_comm]`.
+-/
 theorem coefMap_smul_map {c : L →+ K} (hc : ∀ k a, c (σ k * a) = k * c a) (a : L) (p : MvPolynomial I K) :
     coefMap c (a • MvPolynomial.map σ p) = c a • p := by
   ext m
   rw [coeff_coefMap, MvPolynomial.coeff_smul, MvPolynomial.coeff_smul, MvPolynomial.coeff_map, smul_eq_mul, smul_eq_mul,
     mul_comm, hc, mul_comm]
 
+/- English proof (translation)
+Use extensionality with `m`. Rewrite using `[coeff_coefMap, MvPolynomial.coeff_smul, MvPolynomial.coeff_smul, coeff_coefMap, smul_eq_mul, smul_eq_mul, hc]`.
+-/
 theorem coefMap_smul {c : L →+ K} (hc : ∀ k a, c (σ k * a) = k * c a) (k : K) (p : MvPolynomial I L) :
     coefMap c (σ k • p) = k • coefMap c p := by
   ext m
   rw [coeff_coefMap, MvPolynomial.coeff_smul, MvPolynomial.coeff_smul, coeff_coefMap, smul_eq_mul, smul_eq_mul, hc]
 
+/- English proof (translation)
+Use `choose T hT using h`. Use `⟨p.support.biUnion fun m => T (p.coeff m), fun T' hT' => ?_⟩` and prove the remaining obligations. Use extensionality with `m`. Simplify using `only [MvPolynomial.coeff_sum, MvPolynomial.coeff_smul, MvPolynomial.coeff_map, coeff_coefMap, smul_eq_mul]`. Distinguish the cases in `hm : m ∈ p.support`.
+
+Conclude with `hT _ _ ((Finset.subset_biUnion_of_mem (fun m => T (p.coeff m)) hm).trans hT')`. Simplify using `[MvPolynomial.notMem_support_iff.1 hm]`.
+-/
 theorem exists_sum_coefMap {ι : Type} {e : ι → L} {c : ι → L →+ K}
     (h : ∀ a, ∃ T : Finset ι, ∀ T' : Finset ι, T ⊆ T' → ∑ i ∈ T', e i * σ (c i a) = a) (p : MvPolynomial I L) :
     ∃ T : Finset ι, ∀ T' : Finset ι, T ⊆ T' → ∑ i ∈ T', e i • MvPolynomial.map σ (coefMap (c i) p) = p := by
@@ -73,6 +101,13 @@ theorem exists_sum_coefMap {ι : Type} {e : ι → L} {c : ι → L →+ K}
 
 variable (σ)
 
+/- English proof (translation)
+Take `⟨ι, e, c, hc, h⟩` from `exists_coords σ`. Rewrite `hf`, the goal using `[linearIndependent_iff']`. Introduce `s g hg j hj`. Establish `h0 : ∀ i, c i (g j) = 0` using `fun i => by`. Use `hf s (fun j => c i (g j)) (funext fun d => ?_) j hj` and prove the remaining obligations.
+
+Establish `h1` using `congrArg (coefMap (c i)) (congrFun hg d)`. Rewrite `h1` using `[Finset.sum_apply, coefMap_sum, Pi.zero_apply, coefMap_zero]`. Rewrite using `[Finset.sum_apply, Pi.zero_apply, ← h1]`. Conclude with `Finset.sum_congr rfl fun k _ => (coefMap_smul_map (hc i) _ _).symm`. Take `⟨T, hT⟩` from `h (g j)`.
+
+Rewrite using `[← hT T le_rfl]`. Simplify using `[h0]`.
+-/
 theorem linearIndependent_map_pi {D J : Type*} {f : J → D → MvPolynomial I K} (hf : LinearIndependent K f) :
     LinearIndependent L fun j d => MvPolynomial.map σ (f j d) := by
   obtain ⟨ι, e, c, hc, h⟩ := exists_coords σ
@@ -88,6 +123,11 @@ theorem linearIndependent_map_pi {D J : Type*} {f : J → D → MvPolynomial I K
   rw [← hT T le_rfl]
   simp [h0]
 
+/- English proof (translation)
+Establish `e : x = ∑ i, (bVV L lam).repr ⟨x, hx⟩ i • bVVfun L lam i` using `by conv_lhs => rw [show x = ((⟨x, hx⟩ : VV L lam) : Pol L ι n) from rfl, ← (bVV L lam).sum_repr ⟨x, hx⟩]`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul, bVV_coe]`. Rewrite using `[e]`. Use `Finset.sum_induction _ P hadd h0 fun i _ => ?_` and prove the remaining obligations. Take `⟨F, hF, hF'⟩` from `GlobalTheory.Proof.TensorMapDescent.bVVfun_desc σ lam i`.
+
+Rewrite using `[hF']`. Conclude with `hs _ ⟨F, hF⟩`.
+-/
 theorem VV_induction {ι : Type} [Fintype ι] {n : ℕ} (lam : ι → DomWeight n) {P : Pol L ι n → Prop} (h0 : P 0)
     (hadd : ∀ x y, P x → P y → P (x + y)) (hs : ∀ (a : L) (v : VV K lam), P (a • MvPolynomial.map σ v.1))
     (x : Pol L ι n) (hx : x ∈ VV L lam) : P x := by
@@ -102,6 +142,11 @@ theorem VV_induction {ι : Type} [Fintype ι] {n : ℕ} (lam : ι → DomWeight 
 
 variable {σ}
 
+/- English proof (translation)
+Use `VV_induction σ lam (P := fun x => coefMap c x ∈ VV K lam) ?_ (fun x y hx hy => ?_) (fun a v => ?_) x hx` and prove the remaining obligations. Rewrite using `[coefMap_zero]`. Conclude with `zero_mem _`. Rewrite using `[coefMap_add]`. Conclude with `add_mem hx hy`.
+
+Rewrite using `[coefMap_smul_map hc]`. Conclude with `Submodule.smul_mem _ _ v.2`.
+-/
 theorem coefMap_mem_VV {ι : Type} [Fintype ι] {n : ℕ} (lam : ι → DomWeight n) {c : L →+ K}
     (hc : ∀ k a, c (σ k * a) = k * c a) (x : Pol L ι n) (hx : x ∈ VV L lam) : coefMap c x ∈ VV K lam := by
   refine VV_induction σ lam (P := fun x => coefMap c x ∈ VV K lam) ?_ (fun x y hx hy => ?_) (fun a v => ?_) x hx
@@ -115,6 +160,13 @@ section CForms
 
 variable {X : Fields} {n : ℕ} {ST SG : Finset (HeightOneSpectrum (𝓞 X.E))} (σ : X.K →+* ℂ) (lam : X.Tau → DomWeight n)
 
+/- English proof (translation)
+Establish `h : ∃ y : VV X.K lam, y.1 = coefMap c x ∧ coefMap c (rhoC σ lam γ x) = (rhoV X.emb lam (ufGL X.E n γ) y).1`. Use `VV_induction σ lam (P := fun x => ∃ y : VV X.K lam, y.1 = coefMap c x ∧ coefMap c (rhoC σ lam γ x) = (rhoV X.emb lam (ufGL X.E n γ) y).1) ⟨0, (coefMap_zero c).symm, ?_⟩ ?_ ?_ x hx` and prove the remaining obligations. Rewrite using `[map_zero, coefMap_zero, map_zero]`. Both sides reduce to the same expression. Introduce and unpack `x y ⟨u, hu, hu'⟩ ⟨v, hv, hv'⟩`.
+
+Use `⟨u + v, by rw [coefMap_add, ← hu, ← hv]; rfl, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, coefMap_add, hu', hv', map_add]`. Both sides reduce to the same expression. Introduce `a v`. Use `⟨c a • v, (coefMap_smul_map hc a v.1).symm, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_smul, rhoC_map, coefMap_smul_map hc, map_smul]`. Both sides reduce to the same expression. Take `⟨y, hy, h⟩` from `h`. Rewrite using `[h]`. Conclude with `congrArg (fun z => (rhoV X.emb lam (ufGL X.E n γ) z).1) (Subtype.ext hy)`.
+-/
 theorem coefMap_rhoC {c : ℂ →+ X.K} (hc : ∀ k a, c (σ k * a) = k * c a) (γ : UF X.E n) (x : Pol ℂ X.Tau n)
     (hx : x ∈ VV ℂ lam) :
     coefMap c (rhoC σ lam γ x) = (rhoV X.emb lam (ufGL X.E n γ) ⟨coefMap c x, coefMap_mem_VV lam hc x hx⟩).1 := by
@@ -144,6 +196,9 @@ def coordForm {c : ℂ →+ X.K} (hc : ∀ k a, c (σ k * a) = k * c a) (F : cFo
     rw [coefMap_smul hc, coefMap_rhoC σ lam hc _ _ (F.2 d).1]
     rfl⟩
 
+/- English proof (translation)
+Use `LinearIndependent.of_comp (cForms ST σ lam Λ).subtype ?_` and prove the remaining obligations. Set `i : (formGSD (squarePk X lam L) Λ).EqFun →ₗ[X.K] (DecoSet X.E n ST SG → Pol X.K X.Tau n)` to `{ toFun := fun φ d => (φ.1 d).1 map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl }`. Establish `hi : Function.Injective i` using `fun _ _ e => Subtype.ext (funext fun d => Subtype.ext (congrFun e d))`. Conclude with `linearIndependent_map_pi σ (h.map' i (LinearMap.ker_eq_bot.2 hi))`.
+-/
 theorem toCForm_linearIndependent {J : Type*} {φ : J → (formGSD (squarePk X lam L) Λ).EqFun} (h : LinearIndependent X.K φ) :
     LinearIndependent ℂ fun j => toCForm σ lam L Λ (φ j) := by
   refine LinearIndependent.of_comp (cForms ST σ lam Λ).subtype ?_
@@ -154,6 +209,11 @@ theorem toCForm_linearIndependent {J : Type*} {φ : J → (formGSD (squarePk X l
   have hi : Function.Injective i := fun _ _ e => Subtype.ext (funext fun d => Subtype.ext (congrFun e d))
   exact linearIndependent_map_pi σ (h.map' i (LinearMap.ker_eq_bot.2 hi))
 
+/- English proof (translation)
+Take `⟨s, hs, hrep⟩` from `DecoSet.finite_reps (ST := ST) (SG := SG) (n := n) (posStar_of_conj hX.conjE)`. Use `⟨s, hs, fun F hF => Subtype.ext (funext fun d => ?_)⟩` and prove the remaining obligations. Take `⟨d0, hd0, g, rfl⟩` from `hrep d`. Establish `h` using `((mem_cForms σ lam Λ F.1).1 F.2 d0).2 g 1`. Rewrite `h` using `[hF d0 hd0, map_zero, smul_zero]`.
+
+Conclude with `h`.
+-/
 theorem exists_finite_determining (hX : X.Ok) : ∃ s : Set (DecoSet X.E n ST SG), s.Finite ∧
     ∀ F : cForms ST σ lam Λ, (∀ d ∈ s, F.1 d = 0) → F = 0 := by
   obtain ⟨s, hs, hrep⟩ := DecoSet.finite_reps (ST := ST) (SG := SG) (n := n) (posStar_of_conj hX.conjE)
@@ -163,6 +223,11 @@ theorem exists_finite_determining (hX : X.Ok) : ∃ s : Set (DecoSet X.E n ST SG
   rw [hF d0 hd0, map_zero, smul_zero] at h
   exact h
 
+/- English proof (translation)
+Take `⟨ι, e, c, hc, h⟩` from `exists_coords σ`. Take `⟨s, hs, hdet⟩` from `exists_finite_determining (ST := ST) σ lam Λ hX`. Use `eq_top_iff.2 fun F _ => ?_` and prove the remaining obligations. Use `choose T hT using fun d => exists_sum_coefMap h (F.1 d)`. Establish `e1 : F = ∑ i ∈ hs.toFinset.biUnion T, e i • toCForm σ lam L Λ (coordForm σ lam L Λ (hc i) F)`.
+
+Use `sub_eq_zero.1 (hdet _ fun d hd => ?_)` and prove the remaining obligations. Rewrite using `[Submodule.coe_sub, Pi.sub_apply, Submodule.coe_sum, Finset.sum_apply, sub_eq_zero]`. Conclude with `(hT d _ (Finset.subset_biUnion_of_mem T (hs.mem_toFinset.2 hd))).symm`. Rewrite using `[e1]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, rfl⟩)`.
+-/
 theorem toCForm_span (hX : X.Ok) : Submodule.span ℂ (Set.range (toCForm σ lam L Λ)) = ⊤ := by
   classical
   obtain ⟨ι, e, c, hc, h⟩ := exists_coords σ
@@ -176,6 +241,13 @@ theorem toCForm_span (hX : X.Ok) : Submodule.span ℂ (Set.range (toCForm σ lam
   rw [e1]
   exact Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, rfl⟩)
 
+/- English proof (translation)
+Use `eq_top_iff.2 ((toCForm_span σ lam L Λ hX).ge.trans (Submodule.span_le.2 ?_))` and prove the remaining obligations. Introduce and unpack `_ ⟨ψ, rfl⟩`. Establish `hψ : ψ ∈ Submodule.span X.K (Set.range φ)` using `h ▸ trivial`. Proceed by induction on `hψ using Submodule.span_induction with`. Consider the case `mem x hx => obtain ⟨j, rfl⟩ := hx`.
+
+Conclude with `Submodule.subset_span ⟨j, rfl⟩`. Consider the case `zero => rw [map_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `Submodule.add_mem _ hx hy`.
+
+Consider the case `smul a x _ hx => rw [map_smulₛₗ]`. Conclude with `Submodule.smul_mem _ _ hx`.
+-/
 theorem toCForm_span_of_span (hX : X.Ok) {J : Type*} {φ : J → (formGSD (squarePk X lam L) Λ).EqFun}
     (h : Submodule.span X.K (Set.range φ) = ⊤) : Submodule.span ℂ (Set.range fun j => toCForm σ lam L Λ (φ j)) = ⊤ := by
   refine eq_top_iff.2 ((toCForm_span σ lam L Λ hX).ge.trans (Submodule.span_le.2 ?_))
@@ -191,14 +263,23 @@ def basisCForm (hX : X.Ok) {J : Type*} (b : Module.Basis J X.K (formGSD (squareP
     Module.Basis J ℂ (cForms ST σ lam Λ) :=
   Module.Basis.mk (toCForm_linearIndependent σ lam L Λ b.linearIndependent) (toCForm_span_of_span σ lam L Λ hX b.span_eq).ge
 
+/- English proof (translation)
+The claim follows from `Module.Basis.mk_apply _ _ _`.
+-/
 theorem basisCForm_apply (hX : X.Ok) {J : Type*} (b : Module.Basis J X.K (formGSD (squarePk X lam L) Λ).EqFun) (j : J) :
     basisCForm σ lam L Λ hX b j = toCForm σ lam L Λ (b j) := Module.Basis.mk_apply _ _ _
 
+/- English proof (translation)
+Set `b` to `Module.Basis.ofVectorSpace X.K (formGSD (squarePk X lam L) Λ).EqFun`. Rewrite using `[← b.mk_eq_rank'', ← (basisCForm σ lam L Λ hX b).mk_eq_rank'']`.
+-/
 theorem rank_cForms (hX : X.Ok) :
     Module.rank ℂ (cForms ST σ lam Λ) = Module.rank X.K (formGSD (squarePk X lam L) Λ).EqFun := by
   let b := Module.Basis.ofVectorSpace X.K (formGSD (squarePk X lam L) Λ).EqFun
   rw [← b.mk_eq_rank'', ← (basisCForm σ lam L Λ hX b).mk_eq_rank'']
 
+/- English proof (translation)
+The claim follows from `congrArg Cardinal.toNat (rank_cForms σ lam L Λ hX)`.
+-/
 theorem finrank_cForms (hX : X.Ok) :
     Module.finrank ℂ (cForms ST σ lam Λ) = Module.finrank X.K (formGSD (squarePk X lam L) Λ).EqFun :=
   congrArg Cardinal.toNat (rank_cForms σ lam L Λ hX)
@@ -211,11 +292,20 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R) (Ch : Ch
   (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) {S : Set ℕ} (mu : Tup X.F X.E X.K S)
   (P : LevFam X.E X.K R.r Pr.vGs) (σ : X.K →+* ℂ)
 
+/- English proof (translation)
+The claim follows from `toCForm_linearIndependent σ W.sgTrue _ _ h`.
+-/
 theorem toMtilde_linearIndependent {J : Type*} {φ : J → MtildeV W Ch sel mu P} (h : LinearIndependent X.K φ) :
     LinearIndependent ℂ fun j => toMtP W Ch sel mu P σ (φ j) := toCForm_linearIndependent σ W.sgTrue _ _ h
 
+/- English proof (translation)
+The claim follows from `toCForm_span σ W.sgTrue _ _ hX`.
+-/
 theorem toMtilde_span (hX : X.Ok) : Submodule.span ℂ (Set.range (toMtP W Ch sel mu P σ)) = ⊤ := toCForm_span σ W.sgTrue _ _ hX
 
+/- English proof (translation)
+The claim follows from `finrank_cForms σ W.sgTrue _ _ hX`.
+-/
 theorem finrank_MtP (hX : X.Ok) : Module.finrank ℂ (MtP W Ch sel mu P σ) = Module.finrank X.K (MtildeV W Ch sel mu P) :=
   finrank_cForms σ W.sgTrue _ _ hX
 

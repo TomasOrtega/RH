@@ -21,6 +21,9 @@ private def Ev (a : Matrix (Fin 3) (Fin 3) R) : Prop :=
 variable {π D} (hD : ∀ x y, D (x * y) = π x * D y + π y * D x)
 include hD
 
+/- English proof (translation)
+Take `⟨⟨a1, a2, a3, a4⟩, a5, a6, a7, a8, a9⟩` from `ha`. Take `⟨⟨b1, b2, b3, b4⟩, b5, b6, b7, b8, b9⟩` from `hb`. Use `⟨by simp [Ev, Matrix.mul_apply, Fin.sum_univ_three, *], ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [th, Matrix.mul_apply, Fin.sum_univ_three, *] <;> ring`.
+-/
 private theorem ev_mul {a b : Matrix (Fin 3) (Fin 3) R} (ha : Ev π D a) (hb : Ev π D b) :
     Ev π D (a * b) ∧ th π D (a * b) = th π D a * th π D b := by
   obtain ⟨⟨a1, a2, a3, a4⟩, a5, a6, a7, a8, a9⟩ := ha
@@ -29,13 +32,22 @@ private theorem ev_mul {a b : Matrix (Fin 3) (Fin 3) R} (ha : Ev π D a) (hb : E
   ext i j
   fin_cases i <;> fin_cases j <;> simp [th, Matrix.mul_apply, Fin.sum_univ_three, *] <;> ring
 
+/- English proof (translation)
+Simplify using `using hD 1 1`.
+-/
 private theorem D_one : D 1 = 0 := by simpa using hD 1 1
 
+/- English proof (translation)
+Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [th]`.
+-/
 private theorem th_one : th π D 1 = 1 := by
   ext i j
   fin_cases i <;> fin_cases j <;> simp [th]
 
 omit hD in
+/- English proof (translation)
+Take `⟨⟨a1, a2, a3, a4⟩, a5, a6, a7, a8, a9⟩` from `ha`. Use `⟨by simp [Ev, *], ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [th]`.
+-/
 private theorem ev_sub {a : Matrix (Fin 3) (Fin 3) R} (ha : Ev π D a) {c : R} (hc : D c = 0) :
     Ev π D (a - c • (1 : Matrix (Fin 3) (Fin 3) R)) ∧
       th π D (a - c • (1 : Matrix (Fin 3) (Fin 3) R)) = th π D a - π c • (1 : Matrix (Fin 3) (Fin 3) Q) := by
@@ -44,6 +56,9 @@ private theorem ev_sub {a : Matrix (Fin 3) (Fin 3) R} (ha : Ev π D a) {c : R} (
   ext i j
   fin_cases i <;> fin_cases j <;> simp [th]
 
+/- English proof (translation)
+Establish `e i` using `ev_sub (hr (g i)) (hψ i (g i))`. Simplify using `only [ordProd, List.ofFn_succ, List.ofFn_zero, List.prod_cons, List.prod_nil, mul_one] at h ⊢`. Rewrite using `[← (e _).2, ← (e _).2, ← (e _).2, ← (ev_mul hD (e _).1 (e _).1).2, ← (ev_mul hD (e _).1 (ev_mul hD (e _).1 (e _).1).1).2, h]`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [th]`.
+-/
 private theorem th_ord {H : Type} (r : H → Matrix (Fin 3) (Fin 3) R) (ψ : Fin 3 → H → R) (g : Fin 3 → H)
     (hr : ∀ s, Ev π D (r s)) (hψ : ∀ i s, D (ψ i s) = 0) (h : ordProd r ψ g = 0) :
     ordProd (fun s => th π D (r s)) (fun i s => π (ψ i s)) g = 0 := by
@@ -54,6 +69,13 @@ private theorem th_ord {H : Type} (r : H → Matrix (Fin 3) (Fin 3) R) (ψ : Fin
   ext i j
   fin_cases i <;> fin_cases j <;> simp [th]
 
+/- English proof (translation)
+Proceed by induction on `N with`. Consider the case `zero => simp`. Consider the case `succ N ih`. Introduce `x hx`. Rewrite `hx` using `[pow_succ]`.
+
+Use `Submodule.mul_induction_on hx (fun a ha b hb => ?_) fun a b ha hb => by rw [map_add]; exact add_mem ha hb` and prove the remaining obligations. Rewrite using `[hD]`. Use `add_mem (Ideal.mul_mem_right _ _ ?_) ?_` and prove the remaining obligations. Rewrite using `[← Ideal.map_pow]`. Conclude with `Ideal.mem_map_of_mem _ ha`.
+
+Rewrite using `[pow_succ']`. Conclude with `Ideal.mul_mem_mul (Ideal.mem_map_of_mem _ hb) (ih a ha)`.
+-/
 private theorem D_pow {I : Ideal R} (N : ℕ) : ∀ x ∈ I ^ (N + 1), D x ∈ I.map π ^ N := by
   induction N with
   | zero => simp
@@ -67,6 +89,9 @@ private theorem D_pow {I : Ideal R} (N : ℕ) : ∀ x ∈ I ^ (N + 1), D x ∈ I
     · rw [pow_succ']; exact Ideal.mul_mem_mul (Ideal.mem_map_of_mem _ hb) (ih a ha)
 
 omit hD in
+/- English proof (translation)
+Introduce `N` and use `by refine (IsLocallyConstant.iff_exists_open _).2 fun g => ?_ obtain ⟨U, hU, hg, h⟩ := (IsLocallyConstant.iff_exists_open _).1 (hf (N + 1)) g refine ⟨U, hU, hg, fun g' hg' => Ideal.Quotient.eq.2 ?_⟩ rw [← map_sub] exact hT N _ (Ideal.Quotient.eq.1 (h g' hg'))`.
+-/
 private theorem ac_map {Γ : Type} [TopologicalSpace Γ] {I : Ideal R} {J : Ideal Q} {f : Γ → R} (hf : AdicCont I f)
     (T : R →+ Q) (hT : ∀ N, ∀ x ∈ I ^ (N + 1), T x ∈ J ^ N) : AdicCont J fun g => T (f g) := fun N => by
   refine (IsLocallyConstant.iff_exists_open _).2 fun g => ?_
@@ -77,6 +102,11 @@ private theorem ac_map {Γ : Type} [TopologicalSpace Γ] {I : Ideal R} {J : Idea
 
 end Th
 
+/- English proof (translation)
+Establish `hJ : Jmat R 3 * Jmat R 3 = 1`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Jmat, Matrix.mul_apply, Fin.sum_univ_three, Fin.rev]`. Establish `e (a : Matrix (Fin 3) (Fin 3) R) (c : R) : Jmat R 3 * aᵀ * Jmat R 3 - c • (1 : Matrix (Fin 3) (Fin 3) R) = Jmat R 3 * (a - c • (1 : Matrix (Fin 3) (Fin 3) R))ᵀ * Jmat R 3`. Simplify using `[mul_sub, sub_mul, hJ]`.
+
+Establish `hJ' (a : Matrix (Fin 3) (Fin 3) R) : Jmat R 3 * (Jmat R 3 * a) = a` using `by rw [← mul_assoc, hJ, one_mul]`. Establish `h` using `congrArg (fun a => Jmat R 3 * aᵀ * Jmat R 3) (ρ.ord v fun i => g i.rev)`. Simplify using `only [ordProd, List.ofFn_succ, List.ofFn_zero, List.prod_cons, List.prod_nil, mul_one, ρ.pol, e] at h ⊢`. Simplify using `only [transpose_mul, transpose_zero, mul_zero, zero_mul, mul_assoc, hJ'] at h ⊢`. Conclude with `h`.
+-/
 private theorem ord_star {l : ℕ} [Fact l.Prime] {k : Type} [Field k] {F : Frame l k} {R : Type} [CommRing R]
     (ρ : NRep F 3 R) (v : F.V) (g : Fin 3 → F.Gv v) :
     ordProd (fun s => ρ.r (F.star (F.loc0 v s))) (fun i s => (ρ.ψ v i.rev s : R)) g = 0 := by
@@ -92,6 +122,23 @@ private theorem ord_star {l : ℕ} [Fact l.Prime] {k : Type} [Field k] {F : Fram
   simp only [transpose_mul, transpose_zero, mul_zero, zero_mul, mul_assoc, hJ'] at h ⊢
   exact h
 
+/- English proof (translation)
+Establish `hs` using `(UpperTheory.V.Fr.star hF).2.2.2.2 ρ`. Establish `h1 g i j (h : Odd (w 3 i - w 3 j)) : Ideal.Quotient.mk P (ρ.r g i j) = 0` using `Ideal.Quotient.eq_zero_iff_mem.2 (hP.2.2 (Ideal.subset_span ⟨g, i, j, h, rfl⟩))`. Establish `hE g : Ev (Ideal.Quotient.mk P) D (ρ.r g)` using `⟨⟨h1 g _ _ (by decide), h1 g _ _ (by decide), h1 g _ _ (by decide), h1 g _ _ (by decide)⟩, h0 g _ _ (by decide), h0 g _ _ (by decide), h0 g _ _ (by decide), h0 g _ _ (by decide), h0 g _ _ (by decide)⟩`. Set `r : F.G0 →* Matrix (Fin 3) (Fin 3) (R ⧸ P)` to `{ toFun := fun g => th (Ideal.Quotient.mk P) D (ρ.r g) map_one' := by rw [map_one, th_one hD] map_mul' := fun g h => by rw [map_mul, (ev_mul hD (hE g) (hE h)).2] }`. Establish `c1 i j : AdicCont ((maximalIdeal R).map (Ideal.Quotient.mk P)) fun g => D (ρ.r g i j)` using `ac_map (hc.1 i j) D fun N => D_pow hD N`.
+
+Establish `c2 i j : AdicCont ((maximalIdeal R).map (Ideal.Quotient.mk P)) fun g => Ideal.Quotient.mk P (ρ.r g i j)` using `ac_map (hc.1 i j) (Ideal.Quotient.mk P).toAddMonoidHom fun N x hx => by`. Rewrite using `[← Ideal.map_pow]`. Conclude with `Ideal.mem_map_of_mem _ (Ideal.pow_le_pow_right N.le_succ hx)`. Establish `c3 : AdicCont ((maximalIdeal R).map (Ideal.Quotient.mk P)) fun _ : F.G0 => (0 : R ⧸ P)` using `fun _ => IsLocallyConstant.const _`. Use `⟨hP, r, fun i j => ?_, fun g i j h => ?_, fun g => ⟨rfl, rfl⟩, fun v g => th_ord hD _ _ g (fun _ => hE _) (hψ v) (ρ.ord v g), fun v g => th_ord hD _ _ g (fun _ => hE _) (fun i => hψ v i.rev) (ord_star ρ v g), ?_⟩` and prove the remaining obligations.
+
+Apply the tactic sequence `fin_cases i <;> fin_cases j <;> first | exact c2 _ _ | exact c1 _ _ | exact c3`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> first | rfl | exact absurd (by decide) h`. Introduce and unpack `K _ f hf ⟨y, y1, hy⟩`. Establish `u : f (Ideal.Quotient.mk P (ρ.r F.g0 0 0)) - f (Ideal.Quotient.mk P (ρ.r F.g0 2 2)) ≠ 0`. Rewrite using `[← map_sub, ← map_sub]`.
+
+Conclude with `((hζ.map _).map f).ne_zero`. Establish `d i j (h : i ≠ j) : ρ.r (F.star F.g0) i j = ρ.r F.g0 i j` using `(sub_eq_zero.1 (ρ.diag i j h)).symm`. Establish `a g i : f (r g i 0) * y 0 + f (r g i 1) + f (r g i 2) * y 2 = f (r g 1 1) * y i`. Simplify `congrFun (hy g) i` using `[mulVec, dotProduct, Fin.sum_univ_three, y1]`. Establish `a0 g : f (Ideal.Quotient.mk P (ρ.r g 0 0)) * y 0 + f (D (ρ.r g 0 1)) + f (Ideal.Quotient.mk P (ρ.r g 0 2)) * y 2 = f (Ideal.Quotient.mk P (ρ.r g 1 1)) * y 0` using `a g 0`.
+
+Establish `a2 g : f (Ideal.Quotient.mk P (ρ.r g 2 0)) * y 0 + f (D (ρ.r g 2 1)) + f (Ideal.Quotient.mk P (ρ.r g 2 2)) * y 2 = f (Ideal.Quotient.mk P (ρ.r g 1 1)) * y 2` using `a g 2`. Establish `s0 : ρ.r (F.star F.g0) 0 0 = ρ.r F.g0 2 2` using `hs _ _ _`. Establish `s1 : ρ.r (F.star F.g0) 1 1 = ρ.r F.g0 1 1` using `hs _ _ _`. Establish `s2 : ρ.r (F.star F.g0) 2 2 = ρ.r F.g0 0 0` using `hs _ _ _`. Establish `y0 : y 0 = 0`.
+
+Establish `e` using `a0 (F.star F.g0)`. Rewrite `e` using `[s0, s1, d 0 1 (by decide), d 0 2 (by decide)]`. Conclude with `(mul_eq_zero.1 (by linear_combination a0 F.g0 - e)).resolve_left u`. Establish `y2 : y 2 = 0`. Establish `e` using `a2 (F.star F.g0)`.
+
+Rewrite `e` using `[s2, s1, d 2 1 (by decide), d 2 0 (by decide)]`. Conclude with `(mul_eq_zero.1 (by linear_combination e - a2 F.g0)).resolve_left u`. Establish `b0 g : D (ρ.r g 0 1) = 0` using `hf (by simpa [y0, y2] using a0 g)`. Establish `b2 g : D (ρ.r g 2 1) = 0` using `hf (by simpa [y0, y2] using a2 g)`. Establish `b1 g : D (ρ.r g 1 2) = 0` using `by have := b0 (F.star g); rwa [hs] at this`.
+
+Establish `b3 g : D (ρ.r g 1 0) = 0` using `by have := b2 (F.star g); rwa [hs] at this`. Use `hne fun g i j => ?_` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> first | exact b0 g | exact b1 g | exact b2 g | exact b3 g | exact h0 g _ _ (by decide)`.
+-/
 private theorem thick_of_der {l : ℕ} [Fact l.Prime] {k : Type} [Field k] [CharP k l] {F : Frame l k} {C₀ : ℕ}
     (hF : F.Ok C₀) {R : Type} [CommRing R] [IsLocalRing R] (ρ : NRep F 3 R) (P : Ideal R) [P.IsPrime] (hP : ρ.TE P)
     (hc : ρ.Cont (maximalIdeal R)) (hζ : IsUnit (ρ.r F.g0 0 0 - ρ.r F.g0 2 2)) (D : R →+ R ⧸ P)
@@ -151,11 +198,17 @@ private theorem thick_of_der {l : ℕ} [Fact l.Prime] {k : Type} [Field k] [Char
   fin_cases i <;> fin_cases j <;>
     first | exact b0 g | exact b1 g | exact b2 g | exact b3 g | exact h0 g _ _ (by decide)
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.SpanOfVariable.span_X I s hs`.
+-/
 private theorem span_X {O σ : Type} [CommRing O] (I : Ideal (MvPowerSeries σ O)) (s : Finset σ)
     (hs : ∀ i ∈ s, MvPowerSeries.X i ∈ I) :
     ∀ f : MvPowerSeries σ O, (∀ n : σ →₀ ℕ, (∀ i ∈ s, n i = 0) → MvPowerSeries.coeff n f = 0) → f ∈ I :=
   _root_.UpperTheory.Reformulated.B.SpanOfVariable.span_X I s hs
 
+/- English proof (translation)
+Use `span_X I (Finset.univ.map ⟨Sum.inr, Sum.inr_injective⟩) (by simpa using hI) _ fun n hn => ?_` and prove the remaining obligations. Establish `h : ∀ j, n (.inr j) = 0` using `by simpa using hn`. Rewrite using `[MvPowerSeries.coeff_pderiv, hf, zero_mul]`. Rewrite using `[map_add, Finsupp.weight_single, Finsupp.weight_apply, Finsupp.sum_fintype _ _ (by simp)]`. Simplify using `[Space.Loc.par, h]`.
+-/
 private theorem pderiv_even {O : Type} [CommRing O] {a g : ℕ} (I : Ideal (MvPowerSeries (Fin a ⊕ Fin g) O))
     (hI : ∀ j, MvPowerSeries.X (.inr j) ∈ I) {f : MvPowerSeries (Fin a ⊕ Fin g) O}
     (hf : f ∈ wtPart O (Space.Loc.par a g) 0) (b : Fin g) : MvPowerSeries.pderiv O (.inr b) f ∈ I := by
@@ -165,6 +218,25 @@ private theorem pderiv_even {O : Type} [CommRing O] {a g : ℕ} (I : Ideal (MvPo
   rw [map_add, Finsupp.weight_single, Finsupp.weight_apply, Finsupp.sum_fintype _ _ (by simp)]
   simp [Space.Loc.par, h]
 
+/- English proof (translation)
+Set `φ : MvPowerSeries (Fin a ⊕ Fin g) O →+* Q` to `π.comp (p : _ →+* R)`. Establish `hφ f : π (p f) = φ f` using `rfl`. Simplify using `only [hφ] at hm hM`. Take `⟨ν, hν, hMν⟩` from `(Matrix.exists_mulVec_eq_zero_iff (M := φ.mapMatrix M)).2 (by rw [← RingHom.map_det, hM])`. Set `D0 : MvPowerSeries (Fin a ⊕ Fin g) O →+ Q` to `{ toFun := fun f => ∑ c, φ (MvPowerSeries.pderiv O (.inr c) f) * ν c map_zero' := by simp map_add' := fun x y => by simp [add_mul, Finset.sum_add_distrib] }`.
+
+Establish `e0 f : D0 f = ∑ c, φ (MvPowerSeries.pderiv O (.inr c) f) * ν c` using `rfl`. Establish `l0 x y : D0 (x * y) = φ x * D0 y + φ y * D0 x`. Simplify using `[e0, Finset.mul_sum, add_mul, Finset.sum_add_distrib, mul_assoc]`. Establish `x0 j : D0 (MvPowerSeries.X (.inr j)) = ν j`. Rewrite using `[e0, Finset.sum_eq_single j (fun c _ h => by`.
+
+Rewrite using `[MvPowerSeries.pderiv_X_of_ne (by simpa using h.symm), map_zero, zero_mul]) (by simp)]`. Simplify using the standard rewrite rules. Establish `ev f (hf : f ∈ wtPart O (Space.Loc.par a g) 0) : D0 f = 0` using `(e0 f).trans <| Finset.sum_eq_zero fun c _ => by rw [show φ _ = 0 from pderiv_even (RingHom.ker φ) hm hf c, zero_mul]`. Establish `k0 f (hf : p f = 0) : D0 f = 0`. Establish `hf' : f ∈ RingHom.ker p` using `hf`.
+
+Rewrite `hf'` using `[hk]`. Use `clear hf`. Proceed by induction on `hf' using Submodule.span_induction with`. Consider the case `mem x hx`. Break down `hx with ⟨i, rfl⟩ | ⟨i, rfl⟩` into its components or cases.
+
+Conclude with `ev _ (hFe i)`. Use `congrFun hMν i` as an intermediate fact. Simplify `this` using `[mulVec, dotProduct, l0, hm, x0]`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add, hx, hy, add_zero]`.
+
+Consider the case `smul c x hx h`. Establish `: p x = 0` using `hk.ge hx`. Rewrite using `[smul_eq_mul, l0, h, ← hφ x, this]`. Simplify using the standard rewrite rules. Establish `k1 f : D0 (Function.surjInv hp (p f)) = D0 f`.
+
+Rewrite using `[← sub_eq_zero, ← map_sub]`. Conclude with `k0 _ (by rw [map_sub, Function.surjInv_eq hp, sub_self])`. Use `⟨AddMonoidHom.mk' (fun x => D0 (Function.surjInv hp x)) fun x y => ?_, fun x y => ?_, fun f hf => ?_, ?_⟩` and prove the remaining obligations. Take `⟨x, rfl⟩` from `hp x`. Take `⟨y, rfl⟩` from `hp y`.
+
+Rewrite using `[← map_add p, k1, k1, k1, map_add]`. Take `⟨x, rfl⟩` from `hp x`. Take `⟨y, rfl⟩` from `hp y`. Simplify using `only [AddMonoidHom.mk'_apply]`. Rewrite using `[← map_mul p, k1, k1, k1, l0, hφ, hφ]`.
+
+Conclude with `(k1 f).trans (ev f hf)`. Take `⟨j, hj⟩` from `Function.ne_iff.1 hν`. Conclude with `⟨j, fun h => hj ((x0 j).symm.trans ((k1 _).symm.trans h))⟩`.
+-/
 private theorem der_ex {O R Q : Type} [CommRing O] [CommRing R] [CommRing Q] [IsDomain Q] [Algebra O R] {a b g : ℕ}
     (p : MvPowerSeries (Fin a ⊕ Fin g) O →ₐ[O] R) (hp : Function.Surjective p) (π : R →+* Q)
     (Fe : Fin b → MvPowerSeries (Fin a ⊕ Fin g) O) (M : Matrix (Fin g) (Fin g) (MvPowerSeries (Fin a ⊕ Fin g) O))
@@ -221,6 +293,21 @@ private theorem der_ex {O R Q : Type} [CommRing O] [CommRing R] [CommRing Q] [Is
   · obtain ⟨j, hj⟩ := Function.ne_iff.1 hν
     exact ⟨j, fun h => hj ((x0 j).symm.trans ((k1 _).symm.trans h))⟩
 
+/- English proof (translation)
+Introduce `l _ O _ _ _ _ F C₀ hF S x L E M hG P hP hT hM`. Take `⟨hc, hb, -⟩` from `UpperTheory.V.Fr.loc_rho hF (Or.inr rfl) S x L`. Establish `hm j : E.p (MvPowerSeries.X (.inr j)) ∈ L.ρ.ee` using `E.ee ▸ Ideal.subset_span ⟨j, rfl⟩`. Take `⟨D, hD, h0, j, hj⟩` from `der_ex E.p E.surj (Ideal.Quotient.mk P) E.Fe M (hG ▸ E.ker) E.even (fun j => Ideal.Quotient.eq_zero_iff_mem.2 (hT.2.2 (hm j))) (Ideal.Quotient.eq_zero_iff_mem.2 hM)`. Use `haveI : IsLocalHom (algebraMap O L.R) := ⟨fun a ha => by`.
+
+Assume the negation of the conclusion as `hn`. Establish `h1 : algebraMap O L.O' a ∈ maximalIdeal L.O'` using `L.unr ▸ Ideal.mem_map_of_mem _ hn`. Rewrite `ha` using `[IsScalarTower.algebraMap_apply O L.O' L.R]`. Conclude with `h1 (IsLocalHom.map_nonunit _ ha)⟩`. Use `thick_of_der hF L.ρ P hT hc ?_ D hD (fun g i j h => ?_) (fun v i s => ?_) fun h => hj ?_` and prove the remaining obligations.
+
+Establish `e` using `(hb (ResidueField.map (algebraMap O L.R)) fun a => ResidueField.map_residue _ a).1 F.g0`. Assume the negation of the conclusion as `hn`. Establish `h1 : residue L.R (L.ρ.r F.g0 0 0 - L.ρ.r F.g0 2 2) = 0` using `(residue_eq_zero_iff _).2 hn`. Rewrite `h1` using `[map_sub, sub_eq_zero]`. Establish `h2` using `Units.ext ((ResidueField.map (algebraMap O L.R)).injective ((e 0).symm.trans (h1.trans (e 2))))`.
+
+Rewrite `h2` using `[show w 3 0 = 1 by decide, show w 3 2 = -1 by decide, zpow_one, _root_.zpow_neg_one]`. Conclude with `hF.baseSubgroup_spec (by rw [sq]; exact mul_eq_one_iff_eq_inv.2 h2)`. Take `⟨f, hf, e⟩` from `E.ent g i j`. Rewrite `hf` using `[(ZMod.intCast_eq_zero_iff_even).2 (Int.not_odd_iff_even.1 h)]`. Conclude with `e ▸ h0 f hf`.
+
+Take `⟨f, hf, e⟩` from `E.base (S.ψB v i s)`. Conclude with `(congrArg D e.symm).trans (h0 f hf)`. Establish `key y (hy : y ∈ L.ρ.ee) : D y = 0`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy => obtain ⟨g, a, b, -, rfl⟩ := hy`.
+
+Conclude with `h g a b`. Consider the case `zero => simp`. Consider the case `add y z _ _ hy hz => rw [map_add, hy, hz, add_zero]`. Consider the case `smul c y hy h' => rw [smul_eq_mul, hD, h', Ideal.Quotient.eq_zero_iff_mem.2 (hT.2.2 hy)]`. Simplify using the standard rewrite rules.
+
+Conclude with `key _ (hm j)`.
+-/
 theorem UpperTheory.V.Fr.thick :
     ∀ {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsCoef l O] {F : Frame l (ResidueField O)} {C₀ : ℕ}, F.Ok C₀ → ∀ S : Space O F 3, ∀ (x : Ideal S.A) (L : S.Loc x), ∀ (E : L.EPres) (M : Matrix (Fin E.g) (Fin E.g) (MvPowerSeries (Fin E.a ⊕ Fin E.g) L.O')), E.Go = M *ᵥ (fun j => MvPowerSeries.X (.inr j)) → ∀ P : Ideal L.R, P.IsPrime → L.ρ.TE P → E.p M.det ∈ P → Thick L.ρ P := by
   intro l _ O _ _ _ _ F C₀ hF S x L E M hG P hP hT hM

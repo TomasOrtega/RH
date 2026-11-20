@@ -5,6 +5,13 @@ namespace GroundTheory.Heights₂.Heights.FiniteCovolume
 
 open NumberField Module
 
+/- English proof (translation)
+Establish `hcard : Fintype.card (Module.Free.ChooseBasisIndex ℤ (𝓞 E)) = finrank ℚ E`. Rewrite using `[← Module.finrank_eq_card_chooseBasisIndex, RingOfIntegers.rank]`. Set `e : Fin (finrank ℚ E) ≃ Module.Free.ChooseBasisIndex ℤ (𝓞 E)` to `(Fintype.equivFinOfCardEq hcard).symm`. Set `a : Fin (finrank ℚ E) → 𝓞 E` to `fun i => RingOfIntegers.basis E (e i)`. Use `⟨∑ i, ∑ σ : E →+* ℂ, ‖σ (a i)‖, a, ?_, ?_⟩` and prove the remaining obligations.
+
+Use `(integralBasis E).linearIndependent.comp e e.injective` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Simplify using `[a, integralBasis_apply]`. Introduce `i σ`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem IntegralFamilyBound.proof (E : Type*) [Field E] [NumberField E] :
     IntegralFamilyBound.Statement E := by
   have hcard : Fintype.card (Module.Free.ChooseBasisIndex ℤ (𝓞 E)) = finrank ℚ E := by

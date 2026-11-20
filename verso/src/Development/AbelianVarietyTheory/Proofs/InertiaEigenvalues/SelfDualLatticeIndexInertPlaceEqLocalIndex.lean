@@ -17,6 +17,19 @@ noncomputable section
 
 namespace GlobalTheory.LocKerMod
 
+/- English proof (translation)
+Establish `e1 : (A.map M).map m = (A.map φ).map M`. Rewrite using `[AddSubgroup.map_map, AddSubgroup.map_map]`. Use `congr 1`. Conclude with `AddMonoidHom.ext fun x => (hM x).symm`. Rewrite using `[e1, ← AddSubgroup.relIndex_comap (H := (A.map φ).map M) M A, ← AddSubgroup.inf_relIndex_right (A.map φ), ← AddSubgroup.inf_relIndex_right (((A.map φ).map M).comap M)]`.
+
+Use `congr 1`. Use extensionality with `x`. Simplify using `only [AddSubgroup.mem_inf, AddSubgroup.mem_comap]`. Use `⟨fun h => ⟨⟨x, h.1, rfl⟩, h.2⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨⟨z, ⟨y, hy, rfl⟩, hzx⟩, hx⟩`.
+
+Use `⟨?_, hx⟩` and prove the remaining obligations. Establish `h1 : P (φ y) = P x`. Use `hK (φ y - x) (by rw [map_sub, hzx, sub_self])` as an intermediate fact. Rewrite `this` using `[map_sub, sub_eq_zero]`. Then use the resulting hypothesis. Establish `hy' : (x - P x) + P y ∈ A` using `add_mem (sub_mem hx (hPA x hx)) (hPA y hy)`.
+
+Establish `hMy : M ((x - P x) + P y - y) = 0`. Rewrite using `[map_sub, map_add, map_sub, hMP, hMP]`. Normalize the expressions using the abelian group laws. Establish `h2 : P ((x - P x) + P y) = P y`. Use `hK _ hMy` as an intermediate fact.
+
+Rewrite `this` using `[map_sub, sub_eq_zero]`. Then use the resulting hypothesis. Establish `h3 : P (φ ((x - P x) + P y)) = P (φ y)`. Use `hK (φ ((x - P x) + P y) - φ y) (by rw [← map_sub, hM, hMy, map_zero])` as an intermediate fact. Rewrite `this` using `[map_sub, sub_eq_zero]`. Then use the resulting hypothesis. Use `⟨(x - P x) + P y, hy', ?_⟩` and prove the remaining obligations.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem relIndex_map_of_proj_left {X Y : Type} [AddCommGroup X] [AddCommGroup Y] (A : AddSubgroup X)
     (φ P : X →+ X) (M : X →+ Y) (m : Y →+ Y) (hM : ∀ x, M (φ x) = m (M x)) (hK : ∀ x, M x = 0 → P x = 0)
     (hMP : ∀ x, M (P x) = M x) (hPA : ∀ a ∈ A, P a ∈ A) (hφ : ∀ a ∈ A, φ a - P (φ a) = a - P a) :
@@ -55,6 +68,31 @@ end GlobalTheory.LocKerMod
 set_option maxHeartbeats 1000000 in
 open GlobalTheory.LFun in
 
+/- English proof (translation)
+Introduce `D T v w h hi g`. Set `φ : (Fin T.rank → Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E) →+ (Fin T.rank → Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E)` to `(finMat D.sp.cm.sig T.gram (GlobalTheory.FinZeta.embV T v g)).mulVecLin.toAddMonoidHom`. Set `P : (Fin T.rank → Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E) →+ (Fin T.rank → Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E)` to `AddMonoidHom.mk' (fun y i => singleAt D.host.F w 1 * y i) fun a b => funext fun i => mul_add _ _ _`. Set `M : (Fin T.rank → Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E) →+ (Fin T.rank → w.adicCompletion D.host.E)` to `AddMonoidHom.mk' (fun y i => compAt D.host.F w (y i)) fun a b => funext fun i => map_add _ _ _`. Set `m : (Fin T.rank → w.adicCompletion D.host.E) →+ (Fin T.rank → w.adicCompletion D.host.E)` to `(locMat D.sp.cm.sig T.gram h g).1.mulVecLin.toAddMonoidHom`.
+
+Establish `hcomp : ∀ (u : HeightOneSpectrum (𝓞 D.host.E)) (x : Fin T.rank → Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E) i, compAt D.host.F u (φ x i) = ((locMat D.sp.cm.sig T.gram (rfl : u.under (𝓞 D.host.F) = _) (proj D.sp.cm.sig T.gram (u.und …`. Introduce `u x i`. Rewrite using `[← finMat_map_compAt D.sp.cm.sig T.gram rfl]`. Conclude with `RingHom.map_mulVec (compAt D.host.F u) _ x i`. Establish `hM : ∀ x, M (φ x) = m (M x)`.
+
+Introduce `x`. Use function extensionality and compare the values at `i`. Use `hcomp w x i` as an intermediate fact. Substitute `h` using the available equality. Rewrite `this` using `[proj_emb_self]`.
+
+Conclude with `this`. Establish `hK : ∀ x, M x = 0 → P x = 0`. Introduce `x hx`. Use function extensionality and compare the values at `i`. Establish `h0 : compAt D.host.F w (x i) = 0` using `congrFun hx i`.
+
+Use `show singleAt D.host.F w 1 * x i = 0`. Rewrite using `[singleAt_mul, h0, mul_zero, singleAt_zero]`. Establish `hMP : ∀ x, M (P x) = M x`. Introduce `x`. Use function extensionality and compare the values at `i`.
+
+Use `show compAt D.host.F w (singleAt D.host.F w 1 * x i) = compAt D.host.F w (x i)`. Rewrite using `[map_mul, compAt_singleAt, one_mul]`. Establish `hPA : ∀ a ∈ Formalism.L2.NTheta.LamHat T, P a ∈ Formalism.L2.NTheta.LamHat T`. Introduce `a ha`. Establish `e : P a = fun i => singleAt D.host.F w (compAt D.host.F w (a i))`.
+
+Use function extensionality and compare the values at `i`. Use `show singleAt D.host.F w 1 * a i = _`. Rewrite using `[singleAt_mul, one_mul]`. Rewrite using `[e]`. Conclude with `singleAt_mem_lamHat (compAt_mem_latAt w (hermitianSpaceBaseLattice_eq_frameLattice T ▸ ha))`.
+
+Establish `hφ : ∀ a ∈ Formalism.L2.NTheta.LamHat T, φ a - P (φ a) = a - P a`. Introduce `a _`. Use function extensionality and compare the values at `i`. Use `show φ a i - singleAt D.host.F w 1 * φ a i = a i - singleAt D.host.F w 1 * a i`. Use `compAt_ext fun u => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `e : u = w`. Substitute `e` using the available equality. Simplify using `only [map_sub, map_mul, compAt_singleAt, one_mul, sub_self]`. Establish `hu : u.under (𝓞 D.host.F) ≠ v` using `fun hu => e ((InertChart.under_eq_iff hi u).1 hu)`. Simplify using `only [map_sub, map_mul, compAt_singleAt_ne e, zero_mul, sub_zero]`.
+
+Rewrite using `[hcomp u a i, GlobalTheory.FinZeta.embV, proj_emb_ne _ _ hu, map_one, Units.val_one, Matrix.one_mulVec]`. Establish `hLM : (Formalism.L2.NTheta.LamHat T).map M = (GlobalTheory.LFun.latAt w (frameLat T)).toAddSubgroup`. Use extensionality with `y`. Rewrite using `[Submodule.mem_toAddSubgroup, AddSubgroup.mem_map]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨a, ha, rfl⟩ show (fun i => compAt D.host.F w (a i)) ∈ GlobalTheory.LFun.latAt w (frameLat T)`. Conclude with `compAt_mem_latAt w (hermitianSpaceBaseLattice_eq_frameLattice T ▸ ha)`. Introduce `hy`. Use `⟨_, singleAt_mem_lamHat hy, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`.
+
+Conclude with `compAt_singleAt w (y i)`. Unfold `latIndex idxAt`. Rewrite using `[relIndex_map_of_proj_left _ φ P M m hM hK hMP hPA hφ, hLM]`.
+-/
 theorem GlobalTheory.LocKerMod.latIndex_embV_inert : ∀ (D : D7) (T : HSp D) (v : HeightOneSpectrum (𝓞 D.host.F))
     (w : HeightOneSpectrum (𝓞 D.host.E)) (h : w.under (𝓞 D.host.F) = v), IsInertAt D.host.F D.host.E v w →
     ∀ g : GlobalTheory.FinZeta.Gv T v, latIndex T (GlobalTheory.FinZeta.embV T v g) = GlobalTheory.LocKerMod.idxAt T w h g := by

@@ -11,6 +11,13 @@ section Relabel
 
 variable {Ψ Ψ' : Type} [Fintype Ψ] [DecidableEq Ψ] [Fintype Ψ'] [DecidableEq Ψ'] {N : ℕ} (e : Ψ ≃ Ψ')
 
+/- English proof (translation)
+Unfold `degFl`. Establish `hd : dimFl Ψ' N = dimFl Ψ N`. Unfold `dimFl`. Rewrite using `[Fintype.card_congr e]`. Rewrite using `[hd, ← (Equiv.arrowCongr e (Equiv.refl (Equiv.Perm (Fin N)))).sum_comp]`.
+
+Use `congr 1`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Establish `hp : permExp ((Equiv.arrowCongr e (Equiv.refl (Equiv.Perm (Fin N)))) σ) = Finsupp.mapDomain (e.prodCongr (Equiv.refl (Fin N))) (permExp σ)`. Use extensionality with `⟨τ', i⟩`. Rewrite using `[Finsupp.mapDomain_equiv_apply]`.
+
+Simplify using `[permExp]`. Rewrite using `[hp, coeff_rename_mapDomain _ (e.prodCongr (Equiv.refl (Fin N))).injective]`. Use `congr 1`. Conclude with `Equiv.prod_comp e.symm (fun τ => ((Equiv.Perm.sign (σ τ) : ℤ) : ℝ))`.
+-/
 theorem degFl_rename (F : RP Ψ N) : degFl (rename (e.prodCongr (Equiv.refl (Fin N))) F : RP Ψ' N) = degFl F := by
   unfold degFl
   have hd : dimFl Ψ' N = dimFl Ψ N := by
@@ -28,6 +35,11 @@ theorem degFl_rename (F : RP Ψ N) : degFl (rename (e.prodCongr (Equiv.refl (Fin
   congr 1
   exact Equiv.prod_comp e.symm (fun τ => ((Equiv.Perm.sign (σ τ) : ℤ) : ℝ))
 
+/- English proof (translation)
+Unfold `muSmall`. Use `split_ifs`. Simplify using `only [map_sum, rename_X, Equiv.prodCongr_apply, Prod.map_apply, Equiv.refl_apply]`. Conclude with `Fintype.sum_equiv e _ _ (fun _ => rfl)`. Simplify using `only [pkLow, map_neg, map_sum, map_pow, rename_X, Equiv.prodCongr_apply, Prod.map_apply, Equiv.refl_apply]`.
+
+Use `congr 1`. Conclude with `Fintype.sum_equiv e _ _ (fun _ => rfl)`.
+-/
 theorem rename_muSmall (j : ℕ) : (rename (e.prodCongr (Equiv.refl (Fin N))) (muSmall j : RP Ψ N) : RP Ψ' N) = muSmall j := by
   unfold muSmall
   split_ifs
@@ -38,6 +50,9 @@ theorem rename_muSmall (j : ℕ) : (rename (e.prodCongr (Equiv.refl (Fin N))) (m
     congr 1
     exact Fintype.sum_equiv e _ _ (fun _ => rfl)
 
+/- English proof (translation)
+Unfold `fibClass`. Simplify using `only [map_prod, map_sub, rename_X, Equiv.prodCongr_apply, Prod.map_apply, Equiv.refl_apply]`. Conclude with `Fintype.prod_equiv e _ _ (fun _ => rfl)`.
+-/
 theorem rename_fibClass (j : ℕ) : (rename (e.prodCongr (Equiv.refl (Fin N))) (fibClass j : RP Ψ N) : RP Ψ' N) = fibClass j := by
   unfold fibClass
   simp only [map_prod, map_sub, rename_X, Equiv.prodCongr_apply, Prod.map_apply, Equiv.refl_apply]
@@ -45,6 +60,9 @@ theorem rename_fibClass (j : ℕ) : (rename (e.prodCongr (Equiv.refl (Fin N))) (
 
 end Relabel
 
+/- English proof (translation)
+Introduce `Ψ _ _ N j`. Unfold `testDeg`. Rewrite using `[← degFl_rename (Fintype.equivFin Ψ), map_mul, map_pow, rename_muSmall, rename_fibClass]`. Simplify using `[dimX]`.
+-/
 theorem testRelabel : TestRelabel := by
   intro Ψ _ _ N j
   unfold testDeg
@@ -53,6 +71,17 @@ theorem testRelabel : TestRelabel := by
 
 variable {Ψ : Type} [Fintype Ψ] [DecidableEq Ψ] {p q : ℕ}
 
+/- English proof (translation)
+Establish `hL : (Finset.univ.filter fun ab : Fin (p + q) × Fin (p + q) => ab.1 < ab.2).card = (p + q) * (p + q - 1) / 2`. Rewrite using `[Finset.card_filter, Fintype.sum_prod_type, Finset.sum_comm, ← Finset.sum_range_id, ← Fin.sum_univ_eq_sum_range]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.card_filter, Finset.filter_gt_eq_Iio, Fin.card_Iio]`. Establish `hC : ((Finset.univ.filter fun ab : Fin (p + q) × Fin (p + q) => ab.1 < ab.2).filter fun ab => ¬ ((ab.1 : ℕ) < p ↔ (ab.2 : ℕ) < p)).card = p * q`.
+
+Establish `e : ((Finset.univ.filter fun ab : Fin (p + q) × Fin (p + q) => ab.1 < ab.2).filter fun ab => ¬ ((ab.1 : ℕ) < p ↔ (ab.2 : ℕ) < p)) = (Finset.univ.filter fun a : Fin (p + q) => (a : ℕ) < p) ×ˢ (Finset.univ.filter fun b : Fin (p + q) => ¬ (b : ℕ) < p)`. Use extensionality with `⟨a, b⟩`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_product, Fin.lt_iff_val_lt_val]`. Use linear arithmetic over natural numbers and integers. Establish `h1 : (Finset.univ.filter fun a : Fin (p + q) => (a : ℕ) < p).card = p`.
+
+Rewrite using `[Fin.card_filter_val_lt]`. Use linear arithmetic over natural numbers and integers. Establish `h2` using `Finset.card_filter_add_card_filter_not (s := (Finset.univ : Finset (Fin (p + q)))) (fun a : Fin (p + q) => (a : ℕ) < p)`. Rewrite `h2` using `[h1, Finset.card_univ, Fintype.card_fin]`. Rewrite using `[e, Finset.card_product, h1]`.
+
+Use `congr 1`. Use linear arithmetic over natural numbers and integers. Establish `hS : Fintype.card {ab : Fin (p + q) × Fin (p + q) // ab.1 < ab.2 ∧ ((ab.1 : ℕ) < p ↔ (ab.2 : ℕ) < p)} + p * q = (p + q) * (p + q - 1) / 2`. Rewrite using `[Fintype.card_subtype, ← hL, ← hC, ← Finset.filter_filter]`. Conclude with `Finset.card_filter_add_card_filter_not _`.
+
+Rewrite using `[Fintype.card_prod]`. Unfold `dimFl`. Rewrite using `[← hS]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem count_pairs : Fintype.card Ψ * p * q + Fintype.card (PairIx Ψ p q) = dimFl Ψ (p + q) := by
   classical
   have hL : (Finset.univ.filter fun ab : Fin (p + q) × Fin (p + q) => ab.1 < ab.2).card =
@@ -93,6 +122,11 @@ def muCoef (Ψ : Type) (p q : ℕ) : Ψ × Fin (p + q) → ℤ := fun x => if p 
 def fibCoef (t : PairIx Ψ p q) : Ψ × Fin (p + q) → ℤ := fun x =>
   (if x = (t.1, t.2.1.2) then 1 else 0) - if x = (t.1, t.2.1.1) then 1 else 0
 
+/- English proof (translation)
+Rewrite using `[Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_filter]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [muCoef]`.
+
+Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem sum_muCoef {A : Type} [AddCommGroup A] (x : Ψ × Fin (p + q) → A) :
     ∑ r, muCoef Ψ p q r • x r = ∑ τ, ∑ i ∈ Finset.univ.filter (fun i : Fin (p + q) => p ≤ (i : ℕ)), x (τ, i) := by
   rw [Fintype.sum_prod_type]
@@ -102,10 +136,22 @@ theorem sum_muCoef {A : Type} [AddCommGroup A] (x : Ψ × Fin (p + q) → A) :
   simp only [muCoef]
   split_ifs <;> simp
 
+/- English proof (translation)
+Simplify using `[fibCoef, sub_smul, Finset.sum_sub_distrib, ite_smul]`.
+-/
 theorem sum_fibCoef {A : Type} [AddCommGroup A] (x : Ψ × Fin (p + q) → A) (t : PairIx Ψ p q) :
     ∑ r, fibCoef t r • x r = x (t.1, t.2.1.2) - x (t.1, t.2.1.1) := by
   simp [fibCoef, sub_smul, Finset.sum_sub_distrib, ite_smul]
 
+/- English proof (translation)
+Establish `hN : p + q - p ≤ p` using `by omega`. Establish `hmu : (muSmall p : RP Ψ (p + q)) = ∑ x, muCoef Ψ p q x • (X x : RP Ψ (p + q))`. Rewrite using `[sum_muCoef (X : Ψ × Fin (p + q) → RP Ψ (p + q))]`. Unfold `muSmall`. Rewrite using `[if_pos hN]`.
+
+Establish `hdim : dimX Ψ (p + q) p = n`. Unfold `dimX`. Rewrite using `[hn, Nat.add_sub_cancel_left]`. Expand and normalize the polynomial expressions, which then agree. Establish `hfib : (fibClass p : RP Ψ (p + q)) = ∏ i : Fin r, ∑ x, fibCoef (e i) x • (X x : RP Ψ (p + q))`.
+
+Simplify using `only [sum_fibCoef]`. Rewrite using `[Fintype.prod_equiv e _ (fun t : PairIx Ψ p q => (X (t.1, t.2.1.2) - X (t.1, t.2.1.1) : RP Ψ (p + q))) (fun _ => rfl)]`. Unfold `fibClass`. Rewrite using `[Fintype.prod_prod_type]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[← Finset.prod_subtype_eq_prod_filter, Finset.subtype_univ]`. Apply the tactic sequence `try rfl`. Rewrite using `[Fin.prod_univ_add, hmu, hdim, hfib]`. Simplify using `only [Fin.append_left, Fin.append_right, Finset.prod_const, Finset.card_univ, Fintype.card_fin]`.
+-/
 theorem test_factor {n r : ℕ} (e : Fin r ≃ PairIx Ψ p q) (hq : q ≤ p) (hn : n = Fintype.card Ψ * p * q) :
     (muSmall p ^ dimX Ψ (p + q) p * fibClass p : RP Ψ (p + q)) =
       ∏ j : Fin (n + r), ∑ x, Fin.append (fun _ : Fin n => muCoef Ψ p q) (fun j => fibCoef (e j)) j x • X x := by

@@ -16,9 +16,15 @@ namespace GlobalTheory.ThK.IsoComp
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+The claim follows from `Matrix.map_one _ (map_zero _) (map_one _)`.
+-/
 theorem incM_one (k : ℕ) : incM F (1 : Matrix (Fin k) (Fin k) E) = 1 :=
   Matrix.map_one _ (map_zero _) (map_one _)
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[Matrix.vecMulVec_apply, Matrix.mulVec, dotProduct, Matrix.mul_apply, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem vecMulVec_mulVec {m k l : ℕ} (a : Fin m → AE F E) (P : Matrix (Fin k) (Fin l) (AE F E)) (z : Fin l → AE F E) :
     Matrix.vecMulVec a (P *ᵥ z) = Matrix.vecMulVec a z * Pᵀ := by
   ext i j
@@ -30,6 +36,29 @@ end GlobalTheory.ThK.IsoComp
 
 open GlobalTheory.ThK.IsoComp in
 
+/- English proof (translation)
+Introduce `hKP F E _ _ _ _ _ σ B n d d₁ X W W₁ M M₁ H' i₀ i₁ hH' hM₁ e₀ he₀ n₁ X₁ H j₀ j₁ M₂ hH hM₂ hB hM hXW e he`. Take `⟨e', he'⟩` from `GlobalTheory.T.adapted_models_eigen_compatible hKP F E σ B n d d₁ X W W₁ M₁ H' i₀ i₁ hH' hM₁ n₁ X₁ H j₀ j₁ M₂ hH hM₂ hB hXW`. Use `⟨e', he', ?_⟩` and prove the remaining obligations. Establish `hne : ∃ Ψ ∈ schA F (Fin n × Fin d), e' (e₀ Ψ) ≠ 0`. Take `⟨Ψ₁, hΨ₁, h1⟩` from `GlobalTheory.T.eigen_intertwiner_extension F E σ B n d₁ n₁ d₁ X W₁ X₁ W₁ M₁ M₂ H.ι 1 _ e' hM₁ hM₂ he'`.
+
+Take `⟨Ψ, hΨ, rfl⟩` from `GlobalTheory.T.eigen_map_exists_signature_models hKP F E σ B n d d₁ X W W₁ M M₁ H' i₀ i₁ hB hXW hM hM₁ hH' e₀ he₀ Ψ₁ hΨ₁`. Conclude with `⟨Ψ, hΨ, h1⟩`. Take `⟨ei₀, ev₀, h0ne, h0v, h0loc⟩` from `he₀.loc`. Take `⟨ei', ev', h1ne, h1v, h1loc⟩` from `he'.loc`. Establish `hSB : ∀ v, ∀ φ ∈ SB (Fin n × Fin d → Fv F v), ev₀ v φ ∈ SB (Fin n × Fin d₁ → Fv F v)` using `fun v φ hφ => by`.
+
+Rewrite using `[← (h0v v).2]`. Conclude with `Submodule.mem_map_of_mem hφ`. Establish `hcomp : ∀ f φ, (∀ v, φ v ∈ SB _) → (∀ᶠ v in cofinite, φ v = M.vac v) → e' (e₀ (pure f φ)) = pure (ei' (ei₀ f)) fun v => ev' v (ev₀ v (φ v))` using `fun f φ hφ hφv => by`. Rewrite using `[h0loc f φ hφ hφv, h1loc (ei₀ f) (fun v => ev₀ v (φ v)) (fun v => hSB v _ (hφ v))]`. Use `filter_upwards [hφv] with v hv`.
+
+Rewrite using `[hv, (h0v v).1]`. Establish `hine : ei'.comp ei₀ ≠ 0`. Introduce `h0`. Take `⟨Ψ, hΨ, hne⟩` from `hne`. Apply `hne` to reduce the goal to its premises.
+
+Take `⟨T, m, f, φ, hφ, hT, rfl⟩` from `GlobalTheory.SchADecomp.exists_sum_pure F (Fin n × Fin d) Ψ hΨ`. Rewrite using `[map_sum, map_sum]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Establish `hv : ∀ᶠ v in cofinite, φ i v = M.vac v` using `by filter_upwards [hM.std, (Set.Finite.compl_mem_cofinite T.finite_toSet : (↑T : Set (Pl F))ᶜ ∈ cofinite)] with v h1 h2`. Rewrite using `[h1, hT i v h2]`.
+
+Rewrite using `[hcomp (f i) (φ i) (hφ i) hv]`. Establish `: ei' (ei₀ (f i)) = 0`. Simplify using `using congrArg (fun L : SInf F (Fin n × Fin d) →L[ℂ] SInf F (Fin n₁ × Fin d₁) => L (f i)) h0`. Use function extensionality and compare the values at `x`. Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure, this]`.
+
+Establish `hev : IsEv B M M₂ H.ι H'.ι (isoA H H') (e'.comp e₀)`. Use `⟨fun Φ hΦ => he'.maps _ (he₀.maps Φ hΦ), fun z Φ hΦ => ?_, fun u hu Φ hΦ => ?_, ⟨ei'.comp ei₀, fun v => ev' v ∘ₗ ev₀ v, hine, fun v => ⟨?_, ?_⟩, fun f φ hφ hφv => ?_⟩⟩` and prove the remaining obligations. Establish `h1` using `he₀.Heisenberg₂ (incM F H.ι * z) Φ hΦ`. Rewrite `h1` using `[incM_one, Matrix.one_mul]`. Establish `h2` using `he'.Heisenberg₂ z (e₀ Φ) (he₀.maps Φ hΦ)`.
+
+Rewrite `h2` using `[incM_one, Matrix.transpose_one, Matrix.mul_one]`. Simplify using `only [LinearMap.comp_apply]`. Rewrite using `[h1, h2]`. Break down `hu with hu | ⟨z, rfl⟩` into its components or cases. Simplify using `only [LinearMap.comp_apply]`.
+
+Rewrite using `[he₀.inv u hu Φ hΦ]`. Establish `h1` using `he₀.Heisenberg₂ (Matrix.vecMulVec (incV F H.x) z) Φ hΦ`. Rewrite `h1` using `[incM_one, Matrix.one_mul, ← vecMulVec_mulVec]`. Simplify using `only [LinearMap.comp_apply]`. Rewrite using `[h1, he'.inv _ ⟨z, rfl⟩ _ (he₀.maps Φ hΦ)]`.
+
+Simplify using `only [LinearMap.comp_apply]`. Rewrite using `[(h0v v).1, (h1v v).1]`. Rewrite using `[Submodule.map_comp, (h0v v).2, (h1v v).2]`. Simplify using `only [LinearMap.comp_apply, ContinuousLinearMap.comp_apply]`. Conclude with `hcomp f φ hφ hφv`.
+
+Take `⟨c, hc⟩` from `GlobalTheory.T.models_pair_plane_adapted_good hKP F E σ B n d n₁ d₁ X W X₁ W₁ M M₂ H H' i₀ i₁ j₀ j₁ hB hXW hM hM₂ hH hH' e _ he hev`. Use `⟨c, fun hc0 => ?_, fun Ψ hΨ => hc Ψ hΨ⟩` and prove the remaining obligations. Take `⟨Ψ, hΨ, hne⟩` from `hne`. Conclude with `hne (by simpa [hc0] using hc Ψ hΨ)`.
+-/
 theorem GlobalTheory.ThK.IsoComp.main : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n d d₁ : ℕ) (X : Spc F E n) (W : Spc F E d) (W₁ : Spc F E d₁) (M : Model σ X W) (M₁ : Model σ X W₁) (H' : Plane E d d₁) (i₀ i₁ : ℕ),
     H'.IsAdapted σ B W W₁ i₀ i₁ → M₁.IsGood B.ψ → ∀ (e₀ : Fn F n d →ₗ[ℂ] Fn F n d₁), IsEv B M M₁ 1 H'.ι (iso0 n H') e₀ →

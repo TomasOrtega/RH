@@ -11,6 +11,9 @@ variable {A : Type} [Ring A] [Algebra ℂ A] {n : ℕ}
 
 omit [Algebra ℂ A] in
 
+/- English proof (translation)
+Introduce `a b c d`. Establish `h1` using `congrArg op (h d c b a)`. Simplify using `only [op_sub, op_mul, apply_ite op, op_zero] at h1`. Rewrite using `[h1]`. Simplify using `only [eq_comm (a := c) (b := b), eq_comm (a := a) (b := d)]`.
+-/
 private theorem glRel_op {X : Fin n → Fin n → A} (h : Formalism.REAL.GlRel X) : Formalism.REAL.GlRel fun i j => op (X j i) := by
   intro a b c d
   have h1 := congrArg op (h d c b a)
@@ -18,6 +21,17 @@ private theorem glRel_op {X : Fin n → Fin n → A} (h : Formalism.REAL.GlRel X
   rw [h1]
   simp only [eq_comm (a := c) (b := b), eq_comm (a := a) (b := d)]
 
+/- English proof (translation)
+Establish `hP : ∀ (arg : Fin n → ℂ) (σ τ : Equiv.Perm (Fin n)), orderedTermProduct (fun i j => op (X j i)) arg σ τ = op (orderedTermProduct X (arg ∘ Fin.revPerm) (τ * Fin.revPerm) (σ * Fin.revPerm))` using `fun arg σ τ => by`. Unfold `orderedTermProduct`. Rewrite using `[op_list_prod, List.map_ofFn]`. Use `congr 1`. Use `List.ext_getElem (by simp) fun k h1 h2 => ?_` and prove the remaining obligations.
+
+Establish `hk : k < n` using `by simpa using h1`. Establish `e : (⟨n - 1 - k, by omega⟩ : Fin n).rev = ⟨k, hk⟩` using `Fin.ext (by rw [Fin.val_rev]; simp only; omega)`. Simplify using `only [List.getElem_reverse, List.getElem_ofFn, List.length_ofFn, Function.comp_apply, Equiv.Perm.mul_apply, Fin.revPerm_apply, e, Tm, op_add, apply_ite op, op_zero, eq_comm (a := τ _)]`. Both sides reduce to the same expression. Establish `hS : ∀ arg : Fin n → ℂ, doublyAntisymmetrizedProduct (fun i j => op (X j i)) arg = op (doublyAntisymmetrizedProduct X (arg ∘ Fin.revPerm))` using `fun arg => by`.
+
+Unfold `doublyAntisymmetrizedProduct`. Rewrite using `[Finset.sum_comm, Finset.op_sum]`. Use `Fintype.sum_equiv (Equiv.mulRight Fin.revPerm) _ _ fun σ => ?_` and prove the remaining obligations. Rewrite using `[Finset.op_sum]`. Use `Fintype.sum_equiv (Equiv.mulRight Fin.revPerm) _ _ fun τ => ?_` and prove the remaining obligations.
+
+Simplify using `only [hP, ← zsmul_eq_mul, op_smul, smul_smul, Equiv.coe_mulRight, Equiv.Perm.sign_mul, Units.val_mul]`. Use `congr 1`. Take the linear combination `(-((Equiv.Perm.sign σ : ℤ) * (Equiv.Perm.sign τ : ℤ))) * Int.units_coe_mul_self (Equiv.Perm.sign (Fin.revPerm (n := n)))`. Establish `e` using `hS fun k => y - (k : ℂ)`. Rewrite `e` using `[antisymmetrizedProduct_perm_invariant, antisymmetrizedProduct_eq_factorial_smul_qdet _ h, antisymmetrizedProduct_eq_factorial_smul_qdet _ (glRel_op h), op_smul]`.
+
+Conclude with `(IsUnit.mk0 _ (by exact_mod_cast n.factorial_ne_zero)).smul_left_cancel.mp e`.
+-/
 private theorem qdet_op {X : Fin n → Fin n → A} (h : Formalism.REAL.GlRel X) (y : ℂ) :
     qdet (fun i j => op (X j i)) y = op (qdet X y) := by
   have hP : ∀ (arg : Fin n → ℂ) (σ τ : Equiv.Perm (Fin n)), orderedTermProduct (fun i j => op (X j i)) arg σ τ =
@@ -45,12 +59,20 @@ private theorem qdet_op {X : Fin n → Fin n → A} (h : Formalism.REAL.GlRel X)
   rw [antisymmetrizedProduct_perm_invariant, antisymmetrizedProduct_eq_factorial_smul_qdet _ h, antisymmetrizedProduct_eq_factorial_smul_qdet _ (glRel_op h), op_smul] at e
   exact (IsUnit.mk0 _ (by exact_mod_cast n.factorial_ne_zero)).smul_left_cancel.mp e
 
+/- English proof (translation)
+Rewrite using `[quantumDet_neg_transpose _ (glRel_op h), qdet_op h, op_smul]`.
+-/
 private theorem qdet_antipode {X : Fin n → Fin n → A} (h : Formalism.REAL.GlRel X) (x : ℂ) :
     qdet (fun i j => -op (X i j)) x = op ((-1 : ℂ) ^ n • qdet X ((n : ℂ) - 1 - x)) := by
   rw [quantumDet_neg_transpose _ (glRel_op h), qdet_op h, op_smul]
 
 omit [Algebra ℂ A] in
 
+/- English proof (translation)
+Introduce `a b c d`. Establish `h1` using `congrArg op (h c d a b)`. Simplify using `only [op_sub, op_mul, apply_ite op, op_zero] at h1`. Simplify using `only [neg_mul_neg]`. Rewrite using `[h1]`.
+
+Simplify using `only [eq_comm (a := d) (b := a), eq_comm (a := b) (b := c)]`. Apply the tactic sequence `split_ifs <;> abel`.
+-/
 private theorem glRel_negOp {X : Fin n → Fin n → A} (h : Formalism.REAL.GlRel X) :
     Formalism.REAL.GlRel fun i j => -op (X i j) := by
   intro a b c d
@@ -63,6 +85,9 @@ private theorem glRel_negOp {X : Fin n → Fin n → A} (h : Formalism.REAL.GlRe
 
 end UpperTheory.V.AlgRepEndIrreducible.GLNegationOpposite
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ h` and use `⟨GLNegationOpposite.glRel_negOp h, fun x => GLNegationOpposite.qdet_antipode h x⟩`.
+-/
 theorem UpperTheory.V.AlgRepEndIrreducible.glNegOp :
     ∀ (A : Type) [Ring A] [Algebra ℂ A] (n : ℕ) (X : Fin n → Fin n → A), Formalism.REAL.GlRel X →
       Formalism.REAL.GlRel (fun i j => -MulOpposite.op (X i j)) ∧

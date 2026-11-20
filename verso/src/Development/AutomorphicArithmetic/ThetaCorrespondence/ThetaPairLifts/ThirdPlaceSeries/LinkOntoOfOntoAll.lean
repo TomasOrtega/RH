@@ -30,19 +30,33 @@ namespace GlobalTheory.BaseChain
 open GlobalTheory.ChainOnto
 variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts}
   {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX}
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(_root_.GlobalTheory.T.base_chain_step_weil_datum_alt W u f hP hf j hj).1, (_root_.GlobalTheory.T.base_chain_step_weil_datum_alt W u f hP hf j hj).2, (_root_.GlobalTheory.T.base_chain_step_theta_functions_alt W u f hP hf j hj).1, (_root_.GlobalTheory.T.base_chain_step_theta_func …`.
+-/
 theorem stepY_is_alt {W : _root_.GlobalTheory.MiS.RealPackAlt ex} {u : D.what₂.Word} (f : _root_.GlobalTheory.Fam.FamilyCharacter W u) (hP : _root_.GlobalTheory.Fam.PackageHypotheses W) (hf : f.RowOK) (j : ℕ) (hj : j + 1 < D.R.m) :
     (_root_.GlobalTheory.BaseChain.transitionBetweenSpacesY f j).Is (j + 1) :=
   ⟨(_root_.GlobalTheory.T.base_chain_step_weil_datum_alt W u f hP hf j hj).1, (_root_.GlobalTheory.T.base_chain_step_weil_datum_alt W u f hP hf j hj).2, (_root_.GlobalTheory.T.base_chain_step_theta_functions_alt W u f hP hf j hj).1,
     (_root_.GlobalTheory.T.base_chain_step_theta_functions_alt W u f hP hf j hj).2, _root_.GlobalTheory.T.base_chain_step_theta_lift_alt W u f hP hf j hj⟩
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(_root_.GlobalTheory.T.base_chain_top_weil_datum_alt W u f hP hf j h).1, (_root_.GlobalTheory.T.base_chain_top_weil_datum_alt W u f hP hf j h).2, (_root_.GlobalTheory.T.base_chain_top_theta_functions_alt W u f hP hf j h).1, (_root_.GlobalTheory.T.base_chain_top_theta_functions_a …`.
+-/
 theorem chainX_is_succ_succ {W : _root_.GlobalTheory.MiS.RealPackAlt ex} {u : D.what₂.Word} (f : _root_.GlobalTheory.Fam.FamilyCharacter W u) (hP : _root_.GlobalTheory.Fam.PackageHypotheses W) (hf : f.RowOK) (j : ℕ)
     (h : j + 2 * 0 + 2 = D.R.m) : (_root_.GlobalTheory.BaseChain.transitionToSpaceX f j h).Is (j + 1 + 1) :=
   ⟨(_root_.GlobalTheory.T.base_chain_top_weil_datum_alt W u f hP hf j h).1, (_root_.GlobalTheory.T.base_chain_top_weil_datum_alt W u f hP hf j h).2, (_root_.GlobalTheory.T.base_chain_top_theta_functions_alt W u f hP hf j h).1,
     (_root_.GlobalTheory.T.base_chain_top_theta_functions_alt W u f hP hf j h).2, _root_.GlobalTheory.T.base_chain_top_theta_lift_alt W u f hP hf j h⟩
+/- English proof (translation)
+The claim follows from `| 0, _ => Reach.zero | k + 1, hk => Reach.step (reach_stageY_dn f hP hf k (by omega)) (_root_.GlobalTheory.T.baseChain_stageY_is_of_pkHyp_of_lt W hP (k + 1) (by omega)) (_root_.GlobalTheory.BaseChain.transitionBetweenSpacesY f k) (_root_.GlobalTheory.BaseChain.stepY_is_alt f hP h …`.
+-/
 theorem reach_stageY_dn {W : _root_.GlobalTheory.MiS.RealPackAlt ex} {u : D.what₂.Word} (f : _root_.GlobalTheory.Fam.FamilyCharacter W u) (hP : _root_.GlobalTheory.Fam.PackageHypotheses W) (hf : f.RowOK) :
     ∀ k, k + 1 ≤ D.R.m → Reach (_root_.GlobalTheory.BaseChain.com_z W) (_root_.GlobalTheory.BaseChain.stageOfSpaceY W 0) k (_root_.GlobalTheory.BaseChain.stageOfSpaceY W k) ((f.t W.P.A3.A.μ0).dn k)
   | 0, _ => Reach.zero
   | k + 1, hk => Reach.step (reach_stageY_dn f hP hf k (by omega)) (_root_.GlobalTheory.T.baseChain_stageY_is_of_pkHyp_of_lt W hP (k + 1) (by omega)) (_root_.GlobalTheory.BaseChain.transitionBetweenSpacesY f k)
       (_root_.GlobalTheory.BaseChain.stepY_is_alt f hP hf k (by omega))
+/- English proof (translation)
+Introduce `D L hT Gi Gl Kc Yd cX ex W u hP hO f hf n h T hT`. Establish `e : 2 * n + 1 + 1 = D.R.m` using `by omega`. Establish `hX : (_root_.GlobalTheory.BaseChain.stageOfSpaceX W).Is (_root_.GlobalTheory.BaseChain.com_z W) (2 * n + 1 + 1)` using `e ▸ _root_.GlobalTheory.T.baseChain_stageX_is_of_pkHyp W hP`. Establish `hR` using `Reach.step (_root_.GlobalTheory.BaseChain.reach_stageY_dn f hP hf (2 * n + 1) (by omega)) hX (_root_.GlobalTheory.BaseChain.transitionToSpaceX f (2 * n) h) (_root_.GlobalTheory.BaseChain.chainX_is_succ_succ f hP hf (2 * n) h)`. Take `⟨G, hG⟩` from `hO hP.gap (_root_.GlobalTheory.BaseChain.com_z W) (_root_.GlobalTheory.T.baseChain_com_z_is_of_pkHyp W hP) (_root_.GlobalTheory.BaseChain.stageOfSpaceY W 0) (_root_.GlobalTheory.T.baseChain_stageY_is_of_pkHyp_of_lt W hP 0 (by omega)) (2 * n + 1 + 1) (by omega) _ _ hR ⟨T, _root_.G …`.
+
+Conclude with `⟨G, congrArg Subtype.val hG⟩`.
+-/
 theorem linkOnto_of_ontoAll_third_place_series : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} (W : _root_.GlobalTheory.MiS.RealPackAlt ex) (u : D.what₂.Word),
     _root_.GlobalTheory.Fam.PackageHypotheses W → GlobalTheory.ChainOnto.OntoAll D → ∀ f : _root_.GlobalTheory.Fam.FamilyCharacter W u, f.RowOK → _root_.GlobalTheory.MiTop.LinkSurjective f := by
   intro D L hT Gi Gl Kc Yd cX ex W u hP hO f hf n h T hT

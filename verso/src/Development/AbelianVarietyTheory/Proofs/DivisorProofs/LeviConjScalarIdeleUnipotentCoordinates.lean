@@ -25,10 +25,18 @@ open GlobalTheory.SphEis GlobalTheory.SphEis.UnipCrd
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Use extensionality with `i k`. Simplify using `[cT]`.
+-/
 theorem cT_smul' (s : AF F ⊗[F] E →+* AF F ⊗[F] E) {p q : Type} (a : AF F ⊗[F] E) (M : Matrix p q (AF F ⊗[F] E)) :
     cT s (a • M) = s a • cT s M := by
   ext i k; simp [cT]
 
+/- English proof (translation)
+Establish `hd` using `congrArg Matrix.det h`. Rewrite `hd` using `[Matrix.det_mul, Matrix.det_mul]`. Establish `e : (cT s M).det = s M.det`. Rewrite using `[cT, Matrix.det_transpose]`. Conclude with `(RingHom.map_det s M).symm`.
+
+Rewrite `hd` using `[e]`. Apply `hK.mul_right_cancel` to reduce the goal to its premises. Rewrite using `[one_mul]`. Use `nth_rewrite 2 [← hd]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem det_conj_mul_det (s : AF F ⊗[F] E →+* AF F ⊗[F] E) {k : ℕ} (M K : Matrix (Fin k) (Fin k) (AF F ⊗[F] E))
     (hK : IsUnit K.det) (h : cT s M * K * M = K) : s M.det * M.det = 1 := by
   have hd := congrArg Matrix.det h
@@ -41,6 +49,65 @@ theorem det_conj_mul_det (s : AF F ⊗[F] E →+* AF F ⊗[F] E) {k : ℕ} (M K 
 
 open GlobalTheory.SphEis.UnipCrd in
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ n J j m C D Z J₀ hF g l γ hC hD`. Use `set s := sigR (AF F) σ with hs`. Use `set G := (matHom _ σ J g).1 with hG`. Establish `hU : cT s G * adMat F J * G = adMat F J` using `g.2`. Establish `pres : ∀ {p q : ℕ} (X : Matrix (Fin n) (Fin p) (AF F ⊗[F] E)) (Y : Matrix (Fin n) (Fin q) (AF F ⊗[F] E)), cT s (G * X) * adMat F J * (G * Y) = cT s X * adMat F J * Y`.
+
+Introduce `p q X Y`. Rewrite using `[Formalism.UG.cT_mul]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by rw [hU]`.
+
+Establish `g0 : ∀ {p q : ℕ} (X : Matrix (Fin n) (Fin p) E) (Y : Matrix (Fin n) (Fin q) E), cT (σ : E →+* E) X * J * Y = 0 → cT s (adMat F X) * adMat F J * adMat F Y = 0`. Introduce `p q X Y h`. Use `gr_adMat (F := F) σ J X Y` as an intermediate fact. Rewrite `this` using `[h]`. Simplify `this` using `[gr]`.
+
+Establish `hcd : cT s (adMat F C) * adMat F J * adMat F D = 1`. Use `gr_adMat (F := F) σ J C D` as an intermediate fact. Rewrite `this` using `[hF.cd]`. Simplify `this` using `[gr]`. Establish `hzz : cT s (adMat F Z) * adMat F J * adMat F Z = adMat F J₀`.
+
+Use `gr_adMat (F := F) σ J Z Z` as an intermediate fact. Rewrite `this` using `[hF.zz]`. Simplify `this` using `[gr]`. Establish `hcz` using `g0 C Z hF.cz`. Establish `hdz` using `g0 D Z hF.dz`.
+
+Establish `linv : (l : AF F ⊗[F] E) * ((l⁻¹ : (AF F ⊗[F] E)ˣ) : AF F ⊗[F] E) = 1` using `Units.mul_inv l`. Establish `sinv : s (l : AF F ⊗[F] E) * s ((l⁻¹ : (AF F ⊗[F] E)ˣ) : AF F ⊗[F] E) = 1` using `by rw [← map_mul, linv, map_one]`. Establish `ssl : ∀ x, s (s x) = x` using `sigR_invol σ hF.cm`. Establish `hγ : γ = s ((l⁻¹ : (AF F ⊗[F] E)ˣ) : AF F ⊗[F] E) • 1`. Establish `e` using `pres (adMat F C) (adMat F D)`.
+
+Rewrite `e` using `[hC, hD, hcd, GlobalTheory.ResidueEisenstein.LeviConj.cT_smul', Matrix.smul_mul, Matrix.smul_mul, ← Matrix.mul_assoc, hcd, Matrix.one_mul]`. Combine the equalities or inequalities in the displayed calculation. Establish `hcgz : cT s (adMat F C) * adMat F J * (G * adMat F Z) = 0`. Establish `e` using `pres (adMat F C) (adMat F Z)`. Rewrite `e` using `[hC, hcz, GlobalTheory.ResidueEisenstein.LeviConj.cT_smul', Matrix.smul_mul, Matrix.smul_mul]`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `cTγ : cT s γ = ((l⁻¹ : (AF F ⊗[F] E)ˣ) : AF F ⊗[F] E) • 1`. Rewrite using `[hγ, GlobalTheory.ResidueEisenstein.LeviConj.cT_smul', ssl, Formalism.UG.cT_one]`. Establish `hdgz : cT s (adMat F D) * adMat F J * (G * adMat F Z) = 0`. Establish `e` using `pres (adMat F D) (adMat F Z)`.
+
+Rewrite `e` using `[hD, hdz, Formalism.UG.cT_mul, cTγ, Matrix.smul_mul, Matrix.one_mul, Matrix.smul_mul, Matrix.smul_mul]`. Combine the equalities or inequalities in the displayed calculation. Establish `hsum : adMat F C * (cT s (adMat F D) * adMat F J) + adMat F Z * (adMat F J₀⁻¹ * (cT s (adMat F Z) * adMat F J)) + adMat F D * (cT s (adMat F C) * adMat F J) = 1`. Use `congrArg (fun M => adMat F M) hF.sum` as an intermediate fact. Simplify using `only [adMat, Matrix.map_add _ (map_add _), Matrix.map_mul, Matrix.map_one _ (map_zero _) (map_one _)] at this`.
+
+Rewrite using `[cT_adMat, cT_adMat, cT_adMat]`. Simplify `this` using `only [adMat]`. Take `⟨δ₀, hδ₀⟩ : ∃ X, X = adMat F J₀⁻¹ * (cT s (adMat F Z) * adMat F J * (G * adMat F Z))` from `⟨_, rfl⟩`. Establish `hGZ : G * adMat F Z = adMat F Z * δ₀`. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [Matrix.add_mul, Matrix.mul_assoc]`. Simplify using `only [← Matrix.mul_assoc (cT s (adMat F D)), ← Matrix.mul_assoc (cT s (adMat F C)), ← Matrix.mul_assoc (cT s (adMat F Z))]`. Rewrite using `[hdgz, hcgz, Matrix.mul_zero, Matrix.mul_zero, zero_add, add_zero, hδ₀]`. Establish `hδu : cT s δ₀ * adMat F J₀ * δ₀ = adMat F J₀`. Establish `e` using `pres (adMat F Z) (adMat F Z)`.
+
+Rewrite `e` using `[hGZ, hzz, Formalism.UG.cT_mul]`. Combine the equalities or inequalities in the displayed calculation. Establish `hu0 : IsUnit J₀.det` using `isUnit_iff_ne_zero.mpr hF.herm₀.2`. Establish `jj : adMat F J₀⁻¹ * adMat F J₀ = 1`. Rewrite using `[adMat, adMat, ← Matrix.map_mul, Matrix.nonsing_inv_mul _ hu0, Matrix.map_one _ (map_zero _) (map_one _)]`.
+
+Establish `jj' : adMat F J₀ * adMat F J₀⁻¹ = 1`. Rewrite using `[adMat, adMat, ← Matrix.map_mul, Matrix.mul_nonsing_inv _ hu0, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `hJ0 : cT s (adMat F J₀) = adMat F J₀`. Rewrite using `[cT_adMat]`. Use `congr 1`.
+
+Use extensionality with `i k`. Simplify using `[Formalism.UG.cT, hF.herm₀.1]`. Establish `hJ0i : cT s (adMat F J₀⁻¹) = adMat F J₀⁻¹`. Rewrite using `[cT_adMat, cT_inv_herm σ J₀ hF.herm₀]`. Establish `hK : IsUnit (adMat F J₀).det`.
+
+Rewrite using `[show (adMat F J₀).det = inclR (F := F) (AF F) J₀.det from (RingHom.map_det _ _).symm]`. Conclude with `hu0.map _`. Take `⟨δi, hδi⟩ : ∃ X, X = adMat F J₀⁻¹ * cT s δ₀ * adMat F J₀` from `⟨_, rfl⟩`. Establish `hl : δi * δ₀ = 1`. Rewrite using `[hδi, Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc (cT s δ₀), hδu, jj]`.
+
+Establish `hr : δ₀ * δi = 1` using `mul_eq_one_comm.mp hl`. Set `δ : GL (Fin m) (AF F ⊗[F] E)` to `⟨δi, δ₀, hl, hr⟩`. Establish `hδval : δ.1 = δi` using `rfl`. Establish `hiu : cT s δi * adMat F J₀ * δi = adMat F J₀`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `cTδi : cT s δi = adMat F J₀ * δ₀ * adMat F J₀⁻¹`. Rewrite using `[hδi, Formalism.UG.cT_mul, Formalism.UG.cT_mul, hJ0, hJ0i, cT_cT σ hF.cm, Matrix.mul_assoc]`. Establish `key : δ₀ * adMat F J₀⁻¹ = adMat F J₀⁻¹ * cT s δi`. Rewrite using `[cTδi, ← Matrix.mul_assoc, ← Matrix.mul_assoc, jj, Matrix.one_mul]`. Use `⟨δ, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Establish `h1` using `GlobalTheory.ResidueEisenstein.LeviConj.det_conj_mul_det s δi (adMat F J₀) hK hiu`. Establish `hu : GlobalTheory.Doubling.conjUnit σ (Matrix.GeneralLinearGroup.det δ) * Matrix.GeneralLinearGroup.det δ = 1`. Use `ext`. Use `show sigR (AF F) σ _ * _ = 1`. Conclude with `h1`.
+
+Establish `h2` using `congrArg (absE F E) hu`. Rewrite `h2` using `[map_mul, GlobalTheory.Doubling.absE_conjUnit, map_one, ← sq]`. Conclude with `(pow_eq_one_iff_of_nonneg (by positivity) two_ne_zero).1 h2`. Rewrite using `[hδval, Matrix.mul_assoc, ← key, hδi]`. Combine the equalities or inequalities in the displayed calculation.
+
+Introduce `u b c hu set Gi := (matHom _ σ J g⁻¹).1 with hGi`. Establish `hGiG : Gi * G = 1`. Rewrite using `[hGi, hG, ← Units.val_mul, ← map_mul, inv_mul_cancel, map_one, Units.val_one]`. Establish `iC : Gi * adMat F C = ((l⁻¹ : (AF F ⊗[F] E)ˣ) : AF F ⊗[F] E) • adMat F C`. Establish `e : adMat F C = ((l⁻¹ : (AF F ⊗[F] E)ˣ) : AF F ⊗[F] E) • (G * adMat F C)`.
+
+Rewrite using `[hC, smul_smul, Units.inv_mul, one_smul]`. Use `conv_lhs => rw [e]`. Rewrite using `[Matrix.mul_smul, ← Matrix.mul_assoc, hGiG, Matrix.one_mul]`. Establish `iZ : Gi * adMat F Z = adMat F Z * δi`. Establish `e : adMat F Z = G * adMat F Z * δi` using `by rw [hGZ, Matrix.mul_assoc, hr, Matrix.mul_one]`.
+
+Use `conv_lhs => rw [e]`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, hGiG, Matrix.one_mul]`. Establish `hGD : G * adMat F D = s ((l⁻¹ : (AF F ⊗[F] E)ˣ) : AF F ⊗[F] E) • adMat F D`. Rewrite using `[hD, hγ, Matrix.mul_smul, Matrix.mul_one]`. Establish `iD : Gi * adMat F D = s (l : AF F ⊗[F] E) • adMat F D`.
+
+Establish `e : adMat F D = s (l : AF F ⊗[F] E) • (G * adMat F D)`. Rewrite using `[hGD, smul_smul, sinv, one_smul]`. Use `conv_lhs => rw [e]`. Rewrite using `[Matrix.mul_smul, ← Matrix.mul_assoc, hGiG, Matrix.one_mul]`. Establish `hplus : adMat F Z * GlobalTheory.SphEis.plus σ J₀ ((l : AF F ⊗[F] E) • (b * δi)) = s (l : AF F ⊗[F] E) • (G * (adMat F Z * GlobalTheory.SphEis.plus σ J₀ b))`.
+
+Simplify using `only [GlobalTheory.SphEis.plus]`. Rewrite using `[GlobalTheory.ResidueEisenstein.LeviConj.cT_smul', Formalism.UG.cT_mul, ← Matrix.mul_assoc G, hGZ, Matrix.mul_smul, Matrix.mul_smul]`. Use `congr 1`. Rewrite using `[← hs, ← Matrix.mul_assoc (adMat F J₀⁻¹), ← key]`. Simplify using `only [Matrix.mul_assoc]`.
+
+Establish `hm : (matHom _ σ J (g * u * g⁻¹)).1 = G * (matHom _ σ J u).1 * Gi`. Rewrite using `[map_mul, map_mul, Units.val_mul, Units.val_mul]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hm]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[Matrix.mul_assoc, iC, Matrix.mul_smul, Matrix.mul_assoc]`. Use `_ = adMat F C := by rw [hu.onC, hC, smul_smul, Units.inv_mul, one_smul]`. Rewrite using `[hm, hδval]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_assoc, iZ, ← Matrix.mul_assoc, Matrix.mul_assoc G]`.
+
+Use `_ = _ := by`. Rewrite using `[hu.onZ, Matrix.mul_add, ← Matrix.mul_assoc G (adMat F C), hGZ, hC, Matrix.add_mul, Matrix.mul_assoc, hr, Matrix.mul_one, Matrix.smul_mul, Matrix.smul_mul, Matrix.mul_smul, Matrix.mul_assoc]`. Rewrite using `[hm, hδval, hplus]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_assoc, iD, Matrix.mul_smul, Matrix.mul_assoc]`.
+
+Use `_ = s (l : AF F ⊗[F] E) • (G * adMat F D - G * (adMat F Z * GlobalTheory.SphEis.plus σ J₀ b) + G * (adMat F C * c)) := by`. Rewrite using `[hu.onD, Matrix.mul_add, Matrix.mul_sub]`. Use `_ = _ := by`. Rewrite using `[hGD, ← Matrix.mul_assoc G (adMat F C), hC]`. Simplify using `only [smul_add, smul_sub, smul_smul, sinv, one_smul, Matrix.smul_mul, Matrix.mul_smul]`.
+
+Rewrite using `[mul_comm (s (l : AF F ⊗[F] E))]`.
+-/
 theorem crd_conj_scalar : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ) (J : Matrix (Fin n) (Fin n) E) (j m : ℕ) (C D : Matrix (Fin n) (Fin j) E) (Z : Matrix (Fin n) (Fin m) E) (J₀ : Matrix (Fin m) (Fin m) E), GlobalTheory.SphEis.Fr σ J C D Z J₀ → ∀ (g : GAd σ J) (l : (AF F ⊗[F] E)ˣ) (γ : Matrix (Fin j) (Fin j) (AF F ⊗[F] E)), (matHom _ σ J g).1 * adMat F C = (l : AF F ⊗[F] E) • adMat F C → (matHom _ σ J g).1 * adMat F D = adMat F D * γ → ∃ δ : GL (Fin m) (AF F ⊗[F] E), absE F E (Matrix.GeneralLinearGroup.det δ) = 1 ∧ δ.1 * adMat F J₀⁻¹ * cT (sigR (AF F) σ) δ.1 = adMat F J₀⁻¹ ∧ ∀ u b c, GlobalTheory.SphEis.Crd σ J C D Z J₀ u b c → GlobalTheory.SphEis.Crd σ J C D Z J₀ (g * u * g⁻¹) ((l : AF F ⊗[F] E) • (b * δ.1)) (((l : AF F ⊗[F] E) * sigR (AF F) σ (l : AF F ⊗[F] E)) • c) := by
   intro F E _ _ _ _ _ σ n J j m C D Z J₀ hF g l γ hC hD
   set s := sigR (AF F) σ with hs

@@ -16,6 +16,9 @@ section Units
 
 variable {Z Z' : Scheme.{0}}
 
+/- English proof (translation)
+Establish `hk : ((Units.map (f : R →* S) (u ^ k) : Sˣ) : S) = ((Units.map (f : R →* S) u ^ k : Sˣ) : S)`. Rewrite using `[map_zpow]`. Rewrite `hk` using `[Units.val_zpow_eq_zpow_val]`. Conclude with `hk`.
+-/
 private lemma ringHom_units_zpow_lemma {R S : Type*} [CommRing R] [Field S] (f : R →+* S) (u : Rˣ) (k : ℤ) :
     f ↑(u ^ k) = (f ↑u) ^ k := by
   have hk : ((Units.map (f : R →* S) (u ^ k) : Sˣ) : S) = ((Units.map (f : R →* S) u ^ k : Sˣ) : S) := by
@@ -23,12 +26,20 @@ private lemma ringHom_units_zpow_lemma {R S : Type*} [CommRing R] [Field S] (f :
   rw [Units.val_zpow_eq_zpow_val] at hk
   exact hk
 
+/- English proof (translation)
+Rewrite using `[valAt', valAt', dif_pos h, dif_pos h]`. Use `delta valAt`. Conclude with `ringHom_units_zpow_lemma ((Scheme.ΓSpecIso (CommRingCat.of ℂ)).hom.hom.comp (p.appLE V ⊤ h).hom) u k`.
+-/
 theorem vtf_valU (p : Sp ℂ ⟶ Z) {V : Z.Opens} (h : ⊤ ≤ p ⁻¹ᵁ V) (u : Γ(Z, V)ˣ) (k : ℤ) :
     valAt' p V ((u ^ k : Γ(Z, V)ˣ) : Γ(Z, V)) = valAt' p V (u : Γ(Z, V)) ^ k := by
   rw [valAt', valAt', dif_pos h, dif_pos h]
   delta valAt
   exact ringHom_units_zpow_lemma ((Scheme.ΓSpecIso (CommRingCat.of ℂ)).hom.hom.comp (p.appLE V ⊤ h).hom) u k
 
+/- English proof (translation)
+Establish `h' : ⊤ ≤ p ⁻¹ᵁ U` using `h.trans (fun x hx => hVU hx)`. Rewrite using `[valAt', valAt', dif_pos h, dif_pos h']`. Use `delta valAt res`. Use `congr 1`. Use `first`.
+
+Consider the case `(rw [Units.coe_map, MonoidHom.coe_coe, ← CommRingCat.comp_apply, Scheme.Hom.map_appLE])`. Consider the case `simp [← CommRingCat.comp_apply, Scheme.Hom.map_appLE]`.
+-/
 theorem vtf_val_res (p : Sp ℂ ⟶ Z) {U V : Z.Opens} (hVU : V ≤ U) (h : ⊤ ≤ p ⁻¹ᵁ V) (u : Γ(Z, U)ˣ) :
     valAt' p V (res hVU u : Γ(Z, V)) = valAt' p U (u : Γ(Z, U)) := by
   have h' : ⊤ ≤ p ⁻¹ᵁ U := h.trans (fun x hx => hVU hx)
@@ -39,6 +50,11 @@ theorem vtf_val_res (p : Sp ℂ ⟶ Z) {U V : Z.Opens} (hVU : V ≤ U) (h : ⊤ 
   | (rw [Units.coe_map, MonoidHom.coe_coe, ← CommRingCat.comp_apply, Scheme.Hom.map_appLE])
   | simp [← CommRingCat.comp_apply, Scheme.Hom.map_appLE]
 
+/- English proof (translation)
+Distinguish the cases in `hc : ⊤ ≤ p ⁻¹ᵁ (f ⁻¹ᵁ U)`. Establish `hc' : ⊤ ≤ (p ≫ f) ⁻¹ᵁ U` using `fun x hx => hc hx`. Rewrite using `[valAt', valAt', dif_pos hc, dif_pos hc']`. Use `delta valAt pullU`. Use `congr 1`.
+
+Establish `hc' : ¬ ⊤ ≤ (p ≫ f) ⁻¹ᵁ U` using `fun h' => hc (fun x hx => h' hx)`. Rewrite using `[valAt', valAt', dif_neg hc, dif_neg hc']`.
+-/
 theorem vtf_val_pullU (p : Sp ℂ ⟶ Z) (f : Z ⟶ Z') (U : Z'.Opens) (u : Γ(Z', U)ˣ) :
     valAt' p (f ⁻¹ᵁ U) (pullU f U u : Γ(Z, f ⁻¹ᵁ U)) = valAt' (p ≫ f) U (u : Γ(Z', U)) := by
   by_cases hc : ⊤ ≤ p ⁻¹ᵁ (f ⁻¹ᵁ U)
@@ -57,15 +73,28 @@ variable {S : Scheme.{0}} (A : Over S) [GrpObj A] (L : LB A.left) {x0 : Sp ℂ �
 
 abbrev vtfQ (a : Over.mk x0 ⟶ A) : Over.mk x0 ⟶ Over.mk x0 ⊗ A := lift (𝟙 _) a
 
+/- English proof (translation)
+Use `show (lift (𝟙 _) a ≫ snd (Over.mk x0) A).left = a.left`. Rewrite using `[lift_snd]`.
+-/
 theorem vtfQ_snd (a : Over.mk x0 ⟶ A) : (vtfQ A a).left ≫ (snd (Over.mk x0) A).left = a.left := by
   show (lift (𝟙 _) a ≫ snd (Over.mk x0) A).left = a.left
   rw [lift_snd]
 
+/- English proof (translation)
+Use `show (lift (𝟙 _) a ≫ fst (Over.mk x0) A).left = 𝟙 _`. Rewrite using `[lift_fst]`. Both sides reduce to the same expression.
+-/
 theorem vtfQ_fst (a : Over.mk x0 ⟶ A) : (vtfQ A a).left ≫ (fst (Over.mk x0) A).left = 𝟙 _ := by
   show (lift (𝟙 _) a ≫ fst (Over.mk x0) A).left = 𝟙 _
   rw [lift_fst]
   rfl
 
+/- English proof (translation)
+Establish `hw : pt ≫ (Over.mk x0 ⊗ A).hom = x0`. Rewrite using `[← Over.w (fst (Over.mk x0) A), ← Category.assoc, h2, Category.id_comp]`. Both sides reduce to the same expression. Set `q : Over.mk x0 ⟶ Over.mk x0 ⊗ A` to `Over.homMk pt hw`. Establish `hq : q = vtfQ A a`.
+
+Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises. Simplify using `only [vtfQ, lift_fst]`. Use `ext`. Conclude with `h2`. Simplify using `only [vtfQ, lift_snd]`.
+
+Use `ext`. Conclude with `h1`. Conclude with `congrArg CommaMorphism.left hq`.
+-/
 theorem vtf_pt_uniq (a : Over.mk x0 ⟶ A) (pt : Sp ℂ ⟶ (Over.mk x0 ⊗ A).left)
     (h1 : pt ≫ (snd (Over.mk x0) A).left = a.left) (h2 : pt ≫ (fst (Over.mk x0) A).left = 𝟙 _) :
     pt = (vtfQ A a).left := by
@@ -83,6 +112,13 @@ theorem vtf_pt_uniq (a : Over.mk x0 ⟶ A) (pt : Sp ℂ ⟶ (Over.mk x0 ⊗ A).l
       exact h1
   exact congrArg CommaMorphism.left hq
 
+/- English proof (translation)
+Introduce `x _`. Establish `hx : a.left.base x ∈ L.U (i 0)` using `h (by trivial)`. Establish `hx' : (snd (Over.mk x0) A).left.base ((vtfQ A a).left.base x) ∈ L.U (i 0)`. Establish `e : ((vtfQ A a).left ≫ (snd (Over.mk x0) A).left).base x = a.left.base x`. Rewrite using `[vtfQ_snd]`.
+
+Express the relevant statement in the definitionally equal form `((vtfQ A a).left ≫ (snd (Over.mk x0) A).left).base x ∈ L.U (i 0)`. Rewrite using `[e]`. Conclude with `hx`. Use `Set.mem_iInter.mpr fun k => ?_` and prove the remaining obligations. Rewrite using `[Fin.fin_one_eq_zero k]`.
+
+Conclude with `hx'`.
+-/
 theorem vtf_chart (k : ℤ) (a : Over.mk x0 ⟶ A) (i : Fin 1 → L.ι) (h : ⊤ ≤ a.left ⁻¹ᵁ L.U (i 0)) :
     ⊤ ≤ (vtfQ A a).left ⁻¹ᵁ (LPow A L k (Over.mk x0)).U i := by
   intro x _
@@ -97,6 +133,9 @@ theorem vtf_chart (k : ℤ) (a : Over.mk x0 ⟶ A) (i : Fin 1 → L.ι) (h : ⊤
   rw [Fin.fin_one_eq_zero k]
   exact hx'
 
+/- English proof (translation)
+Use `delta LPow LB.LinComb at h ⊢`. Simplify using `only at h ⊢`. Rewrite using `[Fin.prod_univ_one, vtf_valU p h]`. Use `congr 1`. Conclude with `(vtf_val_res p _ h _).trans (vtf_val_pullU p (snd (Over.mk x0) A).left _ (L.g (i 0) (i' 0)))`.
+-/
 theorem vtf_val_g {k : ℤ} (p : Sp ℂ ⟶ (Over.mk x0 ⊗ A).left) (i i' : Fin 1 → L.ι)
     (h : ⊤ ≤ p ⁻¹ᵁ ((LPow A L k (Over.mk x0)).U i ⊓ (LPow A L k (Over.mk x0)).U i')) :
     valAt' p _ ((LPow A L k (Over.mk x0)).g i i').val =
@@ -107,6 +146,13 @@ theorem vtf_val_g {k : ℤ} (p : Sp ℂ ⟶ (Over.mk x0 ⊗ A).left) (i i' : Fin
   congr 1
   exact (vtf_val_res p _ h _).trans (vtf_val_pullU p (snd (Over.mk x0) A).left _ (L.g (i 0) (i' 0)))
 
+/- English proof (translation)
+Establish `hjj : ⊤ ≤ a.left ⁻¹ᵁ (L.U j' ⊓ L.U j)` using `fun q hq => ⟨hj' hq, hj hq⟩`. Establish `hp : ⊤ ≤ (vtfQ A a).left ⁻¹ᵁ ((LPow A L k (Over.mk x0)).U (fun _ => j') ⊓ (LPow A L k (Over.mk x0)).U (fun _ => j))` using `fun q hq => ⟨vtf_chart A L k a _ hj' hq, vtf_chart A L k a _ hj hq⟩`. Establish `e` using `congrArg (valAt' (vtfQ A a).left _) (F.compat (fun _ => j') (fun _ => j))`. Rewrite `e` using `[valAt'_mul]`. Establish `e1 : valAt' (vtfQ A a).left _ (((Over.mk x0 ⊗ A).left.presheaf.map (homOfLE (inf_le_left : (LPow A L k (Over.mk x0)).U (fun _ => j') ⊓ (LPow A L k (Over.mk x0)).U (fun _ => j) ≤ _)).op).hom (F.f (fun _ => j'))) = valAt' (vtfQ A a).left _ (F.f (fun _ => j'))`.
+
+Conclude with `valAt'_res _ _ hp _`. Establish `e2 : valAt' (vtfQ A a).left _ (((Over.mk x0 ⊗ A).left.presheaf.map (homOfLE (inf_le_right : (LPow A L k (Over.mk x0)).U (fun _ => j') ⊓ (LPow A L k (Over.mk x0)).U (fun _ => j) ≤ _)).op).hom (F.f (fun _ => j))) = valAt' (vtfQ A a).left _ (F.f (fun _ => j))`. Conclude with `valAt'_res _ _ hp _`. Rewrite `e` using `[e1, e2, vtf_val_g A L _ _ _ hp, vtfQ_snd, h]`. Rewrite using `[e, hfr j' j hjj, mul_zpow]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem vtf_read {k : ℤ} (F : LB.Sec (LPow A L k (Over.mk x0))) (a : Over.mk x0 ⟶ A) (fr : L.ι → ℂ)
     (hfr : ∀ j j', ⊤ ≤ a.left ⁻¹ᵁ (L.U j ⊓ L.U j') → fr j = valAt' a.left _ (L.g j j' : Γ(A.left, L.U j ⊓ L.U j')) * fr j')
     (j j' : L.ι) (hj : ⊤ ≤ a.left ⁻¹ᵁ L.U j) (hj' : ⊤ ≤ a.left ⁻¹ᵁ L.U j') (θ : ℂ)
@@ -130,6 +176,11 @@ theorem vtf_read {k : ℤ} (F : LB.Sec (LPow A L k (Over.mk x0))) (a : Over.mk x
   rw [e, hfr j' j hjj, mul_zpow]
   ring
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation. Conclude with `(valAt'_res p (chart_le_zero A L m j) hp _).symm`. Use `_ = valAt' p (LB.wchart L ![(snd (Over.mk x0) A).left, m.left] j) ((show Γ((Over.mk x0 ⊗ A).left, LB.wchart L ![(snd (Over.mk x0) A).left, m.left] j) from (α.s j).val) * ((Over.mk x0 ⊗ A).left.presheaf.map (homOfLE (chart_le_pull A L ψ m hm j)).op).hom ((ψ.left.app _).hom (s.f (f …`. Use `_ = _ := by`. Rewrite using `[valAt'_mul]`.
+
+Use `congrArg₂ (· * ·) rfl ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Conclude with `valAt'_res p (chart_le_pull A L ψ m hm j) hp _`. Use `_ = _ := by exact valAt'_comp p ψ.left _ _`.
+-/
 theorem vtf_twist {a b : ℤ} {ψ : Over.mk x0 ⊗ A ⟶ Over.mk x0 ⊗ A} {m : Over.mk x0 ⊗ A ⟶ A}
     {hm : ψ ≫ snd (Over.mk x0) A = m}
     {α : LB.Gen (LB.LinComb L (K := Fin 2) ![(snd (Over.mk x0) A).left, m.left] ![a, -b])}

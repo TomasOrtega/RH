@@ -11,6 +11,9 @@ open GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization GlobalTheory.Hec
 noncomputable section
 namespace GlobalTheory.HeckeTwo.TermDecay
 
+/- English proof (translation)
+Unfold `qZ`. Establish `h1 : Continuous fun t : ℝ => ((t : ℂ) + (y : ℂ) * I) ^ (-a)` using `(by fun_prop : Continuous fun t : ℝ => (t : ℂ) + (y : ℂ) * I).zpow₀ (-a) fun t => Or.inl (GlobalTheory.HeckeTwo.TermSmooth.u_ne hy t)`. Establish `h2 : Continuous fun t : ℝ => (((t ^ 2 + y ^ 2 : ℝ) : ℂ)) ^ (-σ - (b : ℂ))` using `(by fun_prop : Continuous fun t : ℝ => (((t ^ 2 + y ^ 2 : ℝ) : ℂ))).cpow continuous_const fun t => Complex.ofReal_mem_slitPlane.2 (by positivity)`. Conclude with `(h1.mul h2).mul continuous_const`.
+-/
 theorem continuous_qZ (σ : ℂ) (a : ℤ) (b m : ℕ) {y : ℝ} (hy : y ≠ 0) : Continuous (qZ σ a b m y) := by
   unfold qZ
   have h1 : Continuous fun t : ℝ => ((t : ℂ) + (y : ℂ) * I) ^ (-a) :=
@@ -21,6 +24,11 @@ theorem continuous_qZ (σ : ℂ) (a : ℤ) (b m : ℕ) {y : ℝ} (hy : y ≠ 0) 
       fun t => Complex.ofReal_mem_slitPlane.2 (by positivity)
   exact (h1.mul h2).mul continuous_const
 
+/- English proof (translation)
+Establish `hQ : 0 < t ^ 2 + y ^ 2` using `by positivity`. Establish `hnu : ‖(t : ℂ) + (y : ℂ) * I‖ = Real.sqrt (t ^ 2 + y ^ 2)`. Rewrite using `[← Complex.normSq_add_mul_I, Complex.norm_def]`. Unfold `qZ`. Rewrite using `[norm_mul, norm_mul, norm_zpow, hnu, Complex.norm_cpow_eq_rpow_re_of_pos hQ, norm_pow, Complex.norm_real, Real.norm_eq_abs, Real.sqrt_eq_rpow, ← Real.rpow_intCast, ← Real.rpow_mul hQ.le, ← Real.rpow_add hQ]`.
+
+Use `congr 2`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem norm_qZ (σ : ℂ) (a : ℤ) (b m : ℕ) {y : ℝ} (hy : y ≠ 0) (t : ℝ) :
     ‖qZ σ a b m y t‖ = (t ^ 2 + y ^ 2) ^ (-((a : ℝ) / 2 + b + σ.re)) * |y| ^ m := by
   have hQ : 0 < t ^ 2 + y ^ 2 := by positivity
@@ -34,6 +42,15 @@ theorem norm_qZ (σ : ℂ) (a : ℤ) (b m : ℕ) {y : ℝ} (hy : y ≠ 0) (t : �
   simp
   ring
 
+/- English proof (translation)
+Introduce `σ hσ a b m hab y hy`. Establish `hσ' : -1 / 2 < σ.re` using `hσ`. Use `set e : ℝ := (a : ℝ) / 2 + b + σ.re with he`. Establish `hab' : (2 : ℝ) ≤ a + 2 * b` using `by exact_mod_cast hab`. Establish `he1 : 1 / 2 < e` using `by rw [he]; linarith`.
+
+Use `set κ := min 1 (y ^ 2) with hκ`. Establish `hκ0 : 0 < κ` using `lt_min one_pos (by positivity)`. Use `(((integrable_rpow_neg_one_add_norm_sq (E := ℝ) (r := 2 * e) (by simp; linarith)).const_mul (κ ^ (-e) * |y| ^ m))).mono' (continuous_qZ σ a b m hy).aestronglyMeasurable (MeasureTheory.ae_of_all _ fun t => ?_)` and prove the remaining obligations. Rewrite using `[norm_qZ σ a b m hy t]`. Establish `hQk : κ * (1 + ‖t‖ ^ 2) ≤ t ^ 2 + y ^ 2`.
+
+Rewrite using `[Real.norm_eq_abs, sq_abs]`. Establish `h1 : κ ≤ 1` using `min_le_left _ _`. Establish `h2 : κ ≤ y ^ 2` using `min_le_right _ _`. Use polynomial arithmetic with `[sq_nonneg t]`. Establish `hA : (t ^ 2 + y ^ 2) ^ (-e) ≤ κ ^ (-e) * (1 + ‖t‖ ^ 2) ^ (-(2 * e) / 2)`.
+
+Rewrite using `[show -(2 * e) / 2 = -e by ring, ← Real.mul_rpow hκ0.le (by positivity)]`. Conclude with `Real.rpow_le_rpow_of_nonpos (by positivity) hQk (by linarith)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem integrable_qZ : ∀ σ ∈ halfPlane, ∀ (a : ℤ) (b m : ℕ), 2 ≤ a + 2 * b → ∀ y : ℝ, y ≠ 0 →
     MeasureTheory.Integrable (qZ σ a b m y) := by
   intro σ hσ a b m hab y hy

@@ -14,6 +14,33 @@ open AutomorphicForm
 
 variable {K : Type*} [Field K] [NumberField K]
 
+/- English proof (translation)
+Use `set F := GroundTheory.Global.fundamentalSet K`. Use `set A : (ι → K) → ι → 𝔸[K] := fun l i => algebraMap K 𝔸[K] (l i)`. Establish `hex : ∀ N : ℕ, ∃ l : ι → K, ∀ i, ord i < N → S (A l + y) i ∈ F`. Introduce `N`. Proceed by induction on `N with`.
+
+Consider the case `zero => exact ⟨0, fun i h => absurd h (Nat.not_lt_zero _)⟩`. Consider the case `succ N ih`. Take `⟨l, hl⟩` from `ih`. Use `choose c hc _ using fun i => GroundTheory.Global.existsUnique_sub_mem_fundamentalSet K (S (A l + y) i)`. Use `set l' : ι → K := fun i => if ord i = N then l i - c i else l i`.
+
+Establish `hagree : ∀ i j, ord j < ord i → ord i ≤ N → l' j = l j`. Introduce `i j hj hi`. Simplify using `only [l', if_neg (show ord j ≠ N by omega)]`. Use `⟨l', fun i hi => ?_⟩` and prove the remaining obligations. Establish `hsi : s i (A l' + y) = s i (A l + y)` using `hs i _ _ fun j hj => by`.
+
+Simplify using `only [A, Pi.add_apply, hagree i j hj (by omega)]`. Rewrite using `[hS, hsi]`. Distinguish the cases in `hN : ord i = N`. Simplify using `only [A, Pi.add_apply, l', if_pos hN, map_sub]`. Use `hc i` as an intermediate fact.
+
+Rewrite `this` using `[hS]`. Use `this using 1` and compare the differences between its conclusion and the goal. Simplify using `only [A, Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [A, Pi.add_apply, l', if_neg hN]`.
+
+Use `hl i (by omega)` as an intermediate fact. Rewrite `this` using `[hS]`. Then use the resulting hypothesis. Take `⟨N, hN⟩ : ∃ N, ∀ i, ord i < N` from `⟨Finset.univ.sup ord + 1, fun i => Nat.lt_succ_of_le (Finset.le_sup (Finset.mem_univ i))⟩`. Take `⟨l, hl⟩` from `hex N`. Use `⟨⟨A l, l, rfl⟩, fun i _ => hl i (hN i), ?_⟩` and prove the remaining obligations.
+
+Introduce and unpack `⟨_, m, rfl⟩ hm`. Establish `key : ∀ M i, ord i < M → m i = l i`. Introduce `M`. Proceed by induction on `M with`. Consider the case `zero => intro i h`.
+
+Conclude with `absurd h (Nat.not_lt_zero _)`. Consider the case `succ M ih`. Introduce `i hi`. Establish `hsi : s i (A m + y) = s i (A l + y)` using `hs i _ _ fun j hj => by`. Simplify using `only [A, Pi.add_apply, ih j (by omega)]`.
+
+Establish `h1` using `hm i (mem_univ i)`. Establish `h2` using `hl i (hN i)`. Express the relevant statement in the definitionally equal form `S ((fun i => algebraMap K 𝔸[K] (m i)) + y) i ∈ F at h1`. Rewrite `h1`, `h2` using `[hS]`. Rewrite `h1` using `[show ((fun i => algebraMap K 𝔸[K] (m i)) + y) = A m + y from rfl, hsi]`.
+
+Take `⟨c, -, hcu⟩` from `GroundTheory.Global.existsUnique_sub_mem_fundamentalSet K (y i + s i (A l + y))`. Establish `e1 : -m i = -l i`. Establish `a1` using `hcu (-m i) (by`. Simplify using `only [A, Pi.add_apply] at h1`. Use `h1 using 1` and compare the differences between its conclusion and the goal.
+
+Rewrite using `[map_neg]`. Use the proof step `ring)`. Establish `a2` using `hcu (-l i) (by`. Simplify using `only [A, Pi.add_apply] at h2`. Use `h2 using 1` and compare the differences between its conclusion and the goal.
+
+Rewrite using `[map_neg]`. Use the proof step `ring)`. Rewrite using `[a1, a2]`. Conclude with `neg_injective e1`. Use `Subtype.ext (funext fun i => ?_)` and prove the remaining obligations.
+
+Use `show algebraMap K 𝔸[K] (m i) = algebraMap K 𝔸[K] (l i)`. Rewrite using `[key N i (hN i)]`.
+-/
 theorem existsUnique_triangular {ι : Type*} [Fintype ι] (ord : ι → ℕ)
     {S : (ι → 𝔸[K]) → (ι → 𝔸[K])} (s : ι → (ι → 𝔸[K]) → 𝔸[K]) (hS : ∀ z i, S z i = z i + s i z)
     (hs : ∀ i z z', (∀ j, ord j < ord i → z j = z' j) → s i z = s i z') (y : ι → 𝔸[K]) :
@@ -86,6 +113,9 @@ section Shear
 
 variable {k : ℕ} (B : LowPos n k → 𝔸[K])
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[blockEntry_apply]`. Use `split_ifs with h`. Both sides reduce to the same expression. Conclude with `(hX i j h).symm`.
+-/
 theorem blockEntry_eq_of_vanishing {X : Matrix (Fin n) (Fin n) 𝔸[K]}
     (hX : ∀ i j : Fin n, ¬ ((i : ℕ) < k ∧ k ≤ (j : ℕ)) → X i j = 0) :
     blockEntry (fun u : UPos n k => X u.1.1 u.1.2) = X := by
@@ -95,10 +125,20 @@ theorem blockEntry_eq_of_vanishing {X : Matrix (Fin n) (Fin n) 𝔸[K]}
   · rfl
   · exact (hX i j h).symm
 
+/- English proof (translation)
+Rewrite using `[uMat_apply, if_neg (fun h => by subst h; omega), dif_neg (fun h => by rw [Fin.lt_def] at h; omega)]`.
+-/
 theorem uMat_extLow_apply_of_lt (i j : Fin n) (hj : (j : ℕ) < k) (hi : k ≤ (i : ℕ)) :
     uMat (extLow B) i j = 0 := by
   rw [uMat_apply, if_neg (fun h => by subst h; omega), dif_neg (fun h => by rw [Fin.lt_def] at h; omega)]
 
+/- English proof (translation)
+Use `letI : Invertible (uMat (extLow B)) := Units.invertible (uGL (extLow B))`. Establish `hT : (uMat (extLow B)).BlockTriangular (fun c : Fin n => if (c : ℕ) < k then 0 else 1)`. Introduce `a b hab`. Distinguish the cases in `ha : (a : ℕ) < k`. Apply the tactic sequence `simp only [ha, if_true] at hab split_ifs at hab <;> omega`.
+
+Distinguish the cases in `hb : (b : ℕ) < k`. Conclude with `uMat_extLow_apply_of_lt B a b hb (by omega)`. Simplify using `only [ha, hb, if_false] at hab`. Use linear arithmetic over natural numbers and integers. Establish `hTi` using `Matrix.blockTriangular_inv_of_blockTriangular hT`.
+
+Rewrite using `[Matrix.coe_units_inv, coe_uGL]`. Conclude with `hTi (by simp only; rw [if_pos hj, if_neg (by omega)]; norm_num)`.
+-/
 theorem uMat_extLow_inv_apply_of_lt (i j : Fin n) (hj : (j : ℕ) < k) (hi : k ≤ (i : ℕ)) :
     (((uGL (extLow B))⁻¹ : GL (Fin n) 𝔸[K]) : Matrix (Fin n) (Fin n) 𝔸[K]) i j = 0 := by
   letI : Invertible (uMat (extLow B)) := Units.invertible (uGL (extLow B))
@@ -115,6 +155,11 @@ theorem uMat_extLow_inv_apply_of_lt (i j : Fin n) (hj : (j : ℕ) < k) (hi : k �
   rw [Matrix.coe_units_inv, coe_uGL]
   exact hTi (by simp only; rw [if_pos hj, if_neg (by omega)]; norm_num)
 
+/- English proof (translation)
+Introduce `i j hij`. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun c _ => ?_` and prove the remaining obligations. Rewrite using `[blockEntry_apply]`. Use `split_ifs with h`.
+
+Rewrite using `[hM c j (by omega) h.2, mul_zero]`. Rewrite using `[zero_mul]`.
+-/
 theorem blockEntry_mul_vanishing {M : Matrix (Fin n) (Fin n) 𝔸[K]}
     (hM : ∀ i j : Fin n, (j : ℕ) < k → k ≤ (i : ℕ) → M i j = 0) (A : UPos n k → 𝔸[K]) :
     ∀ i j : Fin n, ¬ ((i : ℕ) < k ∧ k ≤ (j : ℕ)) → (blockEntry A * M) i j = 0 := by
@@ -152,6 +197,15 @@ section Shear2
 
 variable {k : ℕ} (B : LowPos n k → 𝔸[K])
 
+/- English proof (translation)
+Rewrite using `[unipMatrix, Matrix.add_mul, Matrix.one_mul]`. Use extensionality with `i j`. Establish `hv` using `blockEntry_mul_vanishing (uMat_extLow_apply_of_lt B) A i j`. Rewrite using `[Matrix.add_apply, uMat_apply, uMat_apply]`. Distinguish the cases in `hij : i = j`.
+
+Substitute `hij` using the available equality. Rewrite using `[if_pos rfl, if_pos rfl, hv (by omega), add_zero]`. Rewrite using `[if_neg hij, if_neg hij]`. Distinguish the cases in `hlt : i < j`. Rewrite using `[dif_pos hlt, dif_pos hlt, Pi.add_apply, extU]`.
+
+Use `congr 1`. Use `split_ifs with h`. Both sides reduce to the same expression. Conclude with `hv h`. Rewrite using `[dif_neg hlt, dif_neg hlt, zero_add]`.
+
+Conclude with `hv (fun h => hlt (by rw [Fin.lt_def]; omega))`.
+-/
 theorem unipMatrix_mul_uMat_extLow (A : UPos n k → 𝔸[K]) :
     unipMatrix A * uMat (extLow B) = uMat (extLow B + extU (shear B A)) := by
   rw [unipMatrix, Matrix.add_mul, Matrix.one_mul]
@@ -171,6 +225,9 @@ theorem unipMatrix_mul_uMat_extLow (A : UPos n k → 𝔸[K]) :
     · rw [dif_neg hlt, dif_neg hlt, zero_add]
       exact hv (fun h => hlt (by rw [Fin.lt_def]; omega))
 
+/- English proof (translation)
+Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Simplify using `only [blockEntry_apply]`. Use `split_ifs`. Conclude with `continuous_apply _`. Conclude with `continuous_const`.
+-/
 theorem continuous_blockEntry :
     Continuous (blockEntry (n := n) (r := k) (R := 𝔸[K])) := by
   refine continuous_pi fun i => continuous_pi fun j => ?_
@@ -179,14 +236,31 @@ theorem continuous_blockEntry :
   · exact continuous_apply _
   · exact continuous_const
 
+/- English proof (translation)
+The claim follows from `continuous_pi fun u => (continuous_apply u.1.2).comp ((continuous_apply u.1.1).comp (continuous_blockEntry.matrix_mul continuous_const))`.
+-/
 theorem continuous_shear : Continuous (shear B) :=
   continuous_pi fun u => (continuous_apply u.1.2).comp ((continuous_apply u.1.1).comp
     (continuous_blockEntry.matrix_mul continuous_const))
 
+/- English proof (translation)
+The claim follows from `continuous_pi fun u => (continuous_apply u.1.2).comp ((continuous_apply u.1.1).comp (continuous_blockEntry.matrix_mul continuous_const))`.
+-/
 theorem continuous_shear_symm : Continuous (shear B).symm :=
   continuous_pi fun u => (continuous_apply u.1.2).comp ((continuous_apply u.1.1).comp
     (continuous_blockEntry.matrix_mul continuous_const))
 
+/- English proof (translation)
+Establish `himg : (shear B).symm '' vecDomain K (UPos n k) = (shear B) ⁻¹' vecDomain K (UPos n k)`. Use extensionality with `A`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨Z, hZ, rfl⟩`. Simplify using `using hZ`.
+
+Introduce `h`. Conclude with `⟨shear B A, h, by simp⟩`. Rewrite using `[himg]`. Use `IsAddFundamentalDomain.mk' ((measurableSet_vecDomain.preimage (continuous_shear B).measurable).nullMeasurableSet) fun y => ?_` and prove the remaining obligations. Apply the tactic sequence `refine existsUnique_triangular (fun u : UPos n k => u.1.2.val) (fun u z => ∑ c ∈ Finset.univ.erase u.1.2, blockEntry z u.1.1 c * uMat (extLow B) c u.1.2) (fun z u => ?_) (fun u z z' hzz' => ?_) y`.
+
+Apply the tactic sequence `show (blockEntry z * uMat (extLow B)) u.1.1 u.1.2 = _`. Rewrite using `[Matrix.mul_apply, ← Finset.add_sum_erase _ _ (Finset.mem_univ u.1.2), blockEntry_apply, dif_pos u.2, uMat_apply, if_pos rfl, mul_one]`. Use `Finset.sum_congr rfl fun c hc => ?_` and prove the remaining obligations. Distinguish the cases in `hcu : c < u.1.2`. Rewrite using `[blockEntry_apply, blockEntry_apply] split_ifs with h`.
+
+Rewrite using `[hzz' ⟨(u.1.1, c), h⟩ (by rw [Fin.lt_def] at hcu; exact hcu)]`. Both sides reduce to the same expression. Establish `hne : c ≠ u.1.2` using `Finset.ne_of_mem_erase hc`. Establish `: uMat (extLow B) c u.1.2 = 0`. Rewrite using `[uMat_apply, if_neg hne, dif_neg (fun h => hcu (by`.
+
+Rewrite `h`, the goal using `[Fin.lt_def]`. Use `Fin.val_injective.ne hne` as an intermediate fact. Use the proof step `omega))]`. Rewrite using `[this, mul_zero, mul_zero]`.
+-/
 theorem isAddFundamentalDomain_shear_symm :
     IsAddFundamentalDomain (vecLattice K (UPos n k)) ((shear B).symm '' vecDomain K (UPos n k))
       (vecMeasure K (UPos n k)) := by
@@ -219,6 +293,11 @@ theorem isAddFundamentalDomain_shear_symm :
           rw [Fin.lt_def] at h ⊢; have := Fin.val_injective.ne hne; omega))]
       rw [this, mul_zero, mul_zero]
 
+/- English proof (translation)
+Establish `hrepr : ∀ A, uGL (extLow B + extU A) = unipGL ((shear B).symm A) * uGL (extLow B)`. Introduce `A`. Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[Units.val_mul, coe_unipGL, coe_uGL, coe_uGL, unipMatrix_mul_uMat_extLow, AddEquiv.apply_symm_apply]`. Repeatedly rewrite using `[hrepr, mul_assoc]`.
+
+Rewrite using `[setIntegral_comp_addEquiv (shear B).symm (continuous_shear_symm B) (continuous_shear B) (isAddFundamentalDomain_shear_symm B) (f := fun A => ϕ (unipGL A * (uGL (extLow B) * g))) fun ξ hξ x => hϕ.unipGL_vadd _ ⟨ξ, hξ⟩ x]`. Both sides reduce to the same expression.
+-/
 theorem setIntegral_uGL_extLow_extU {ϕ : AdelicGLn.AdelicGL K n → ℂ} (hϕ : IsLeftInvariant ϕ)
     (g : AdelicGLn.AdelicGL K n) :
     ∫ A in vecDomain K (UPos n k), ϕ (uGL (extLow B + extU A) * g) ∂vecMeasure K (UPos n k) =
@@ -236,6 +315,9 @@ theorem setIntegral_uGL_extLow_extU {ϕ : AdelicGLn.AdelicGL K n → ℂ} (hϕ :
 
 end Shear2
 
+/- English proof (translation)
+Rewrite using `[vecCoeff_zero_eq_setIntegral_low hc hk g]`. Use `(setIntegral_congr_fun measurableSet_vecDomain fun B _ => ?_).trans (integral_zero _ _)` and prove the remaining obligations. Rewrite using `[setIntegral_uGL_extLow_extU B hl g, hcusp k hk0 hk, mul_zero]`.
+-/
 theorem vecCoeff_zero_of_isCuspidal {ϕ : AdelicGLn.AdelicGL K n → ℂ} (hc : Continuous ϕ)
     (hl : IsLeftInvariant ϕ) (hcusp : IsCuspidal ϕ) {k : ℕ} (hk0 : 0 < k) (hk : k < n)
     (g : AdelicGLn.AdelicGL K n) :

@@ -22,6 +22,29 @@ namespace GlobalTheory.Pass
 set_option maxHeartbeats 4000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+Introduce and unpack `⟨_hCI, _hCen, hDeg, hType, hPotD, hPotDu, hJD, hJDu, hLift, hSub, hCont, hLocD, hLocDu, hHf, hRes, hGlob⟩`. Introduce `D P HW F CT h5 h12 hIne hT hLOC hRbar hN5g hDZ hG14 hG5 hG6 hTB hBK hBC hLGC hFont htie0 hChi`. Take `⟨hDJ, hPDR, hPT, hBr, hIE⟩` from `GlobalTheory.Closing.closing_at_record D`. Introduce `i k k' _hkk' hlk r ρ hr hdec eta s S sg U hs _hlog hCT _hsg hHost hSQ hsFin hSha π hπ Xs hπXs hTL`. Establish `hπZ : π ∈ D.nd.Z i` using `(D.Z_tie i π).2 ((D.Zgood_tie i π).1 hπ).1`.
+
+Establish `hHG : HG D.nd D.naut i` using `GlobalTheory.EigenProjector.HG_of_mem_Zgood D i π hπ`. Establish `hdecπ` using `hdec π hπZ`. Establish `hTLGC : TypeLGC P` using `hType D P hDZ htie0 hBC hLGC h5`. Establish `hPH : PairedCharacterCondition.tiePH (D` using `D) := D.loc_tie`. Establish `hl2 : D.nd.l i ≠ 2` using `hlk ▸ Formalism.L2.Pj.g_ne_two D k`.
+
+Establish `hloc : ∀ w (hw : w ∈ placesOver D.host.E (D.nd.l i)), HfChar i w hw ∧ LocBoundP i w hw r Xs (WpO D.nd i ρ π) (2 * D.R.r * eMax D CT eta) ∧ ∀ c ∈ Finset.Icc 1 D.R.t, LocBoundP i w hw r Xs (chiRatO D.nd i c) (2 * 1 * eMax D CT eta)`. Introduce `w hw`. Establish `hdeg1` using `(hDeg D hBr i k hlk).2 w hw`. Establish `hPot : PotFam i w hw (fun x : ↥Xs => rTwO D.nd i r x) (D.R.nV + 1)` using `hPotD D P hTLGC hFont htie0 hBr hPH hChi hIE h12 hPT hIne i k hlk r ρ hr π hπZ hdecπ Xs hπXs hTL w hw`. Establish `hCT' : CT * ((s + S) * (D.R.nV + 1) ^ 2 + (D.R.nV + 1) ^ 3) < D.nd.l i` using `hlk ▸ hCT`.
+
+Establish `hH : eta + D.R.t + 1 < s + S` using `by omega`. Establish `hsub` using `hSub D i r ρ hr π hdecπ Xs hπXs`. Establish `key : ∀ (kk : ℕ) (M : GE D.nd →* Matrix (Fin kk) (Fin kk) (D.nd.O i)), SubTw i r Xs M → LocBoundP i w hw r Xs M (2 * kk * eMax D CT eta)`. Introduce `kk M hM`. Consider the cases of `hsw : sg w`.
+
+Establish `hPotDu'` using `hPotDu D hPT i r hr Xs w hw _ hPot`. Establish `hJ` using `hJDu D hDJ hPDR i r hr eta s S sg U hs hHost Xs w hw _ hsw hPot`. Establish `hL` using `hLift D CT hT hFont i w hw hdeg1 (↥Xs) (fun x => rDuO D.nd i r x) (fun x => (hCont D i r hr x).2) eta (s + S) hH hCT' hPotDu' hJ`. Conclude with `hLocDu D hLOC hBK hFont hPDR i r hr Xs w hw hdeg1 _ _ hPot hL kk M hM`. Establish `hJ` using `hJD D i r eta s S sg U hs hHost Xs w hw hsw`.
+
+Establish `hL` using `hLift D CT hT hFont i w hw hdeg1 (↥Xs) (fun x => rTwO D.nd i r x) (fun x => (hCont D i r hr x).1) eta (s + S) hH hCT' hPot hJ`. Conclude with `hLocD D hLOC hBK hFont hPDR i r hr Xs w hw hdeg1 _ _ hPot hL kk M hM`. Conclude with `⟨hHf D P HW F hTB hIE i k hlk hl2 w hw hdeg1, key _ _ hsub.1, fun c hc => key _ _ (hsub.2 c hc)⟩`. Establish `hG1 : TruncatedSeriesCountingIdentities.admG1 (D` using `D) i r := by`. Introduce `g kk`.
+
+Take `⟨f, hf⟩` from `(hG14 i r hr).1 g kk`. Establish `e : (fun x : D.nd.X i => ((rO D.nd i r x g).charpolyRev).coeff kk) = (f : D.nd.X i → D.nd.O i)`. Use function extensionality and compare the values at `fun x => (hf x).symm`. Rewrite using `[e]`. Conclude with `f.2`.
+
+Establish `hG4 : TruncatedSeriesCountingIdentities.admG4 (D` using `D) i r := by`. Introduce `x v hl hS hQ g hg`. Conclude with `(hG14 i r hr).2.2.2 x v hl hS hQ (D.nd.plOm.1 v) (D.nd.plOm.2 v) g hg`. Take `⟨S0, hS0, -⟩` from `((hN5g i k hlk hHG r ρ hr).2 π hπZ hdecπ).1 hπZ`. Establish `hG` using `hGlob D i r ρ π Xs (2 * D.R.r * eMax D CT eta) (2 * 1 * eMax D CT eta) hr hG1 (hRes D hRbar hG14 i r ρ hr π hπ hdecπ) hG4 (galois_condition_five_of D i r hG5 hHG hr) (GlobalTheory.TameDesign.main D i).2 (galois_condition_six_of D i r hG6 hHG hr) hdecπ (coefficient_compatibility_o …`.
+
+Establish `hcard : (placesOver D.host.E (D.nd.l i)).ncard = 2 * D.R.f` using `(hDeg D hBr i k hlk).1`. Establish `hnat : (placesOver D.host.E (D.nd.l i)).ncard * (2 * D.R.r * eMax D CT eta + D.R.t * (2 * 1 * eMax D CT eta)) = D.R.f * (2 * ((2 * D.R.r + D.R.t * 2) * (CT * ((D.R.nV + 1) * ((D.R.nV + 1) ^ 2 / 4) + (eta + D.R.t + 1) * ((D.R.nV + 1) + (D.R.nV + 1) ^ 2 / 4)))))`. Rewrite using `[hcard]`. Unfold `eMax`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite `hG` using `[hnat]`. Establish `hrn : D.R.r ≤ D.R.nV` using `by unfold Ranks.nV; omega`. Establish `hr2 : 2 ≤ D.R.r` using `hRbar.1`. Use `⟨D.R.nV + 1, (D.R.nV + 1) ^ 2 / 4, by omega, le_refl _, ?_, Nat.mul_div_le _ _, ?_⟩` and prove the remaining obligations. Establish `h9 : 9 ≤ (D.R.nV + 1) ^ 2` using `by nlinarith`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hG'` using `(Rat.cast_le (K := ℝ)).2 hG`. Move the coercions through the operations in `at hG' ⊢`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem cutBound_of_steps : StepsNoCut → ∀ (D : D7) (P : Pend D) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (CT : ℕ), SumRepresentations.adm5 D → ElementDenominator.adm12 D → TieInePoly D → admT (D := D) CT → LocalPushoutProposition (D := D) → ResidualAbsIrreducible (D := D) → TypePrimeChoiceLemmas (D := D) → admDZ P → GaloisFamilyConditions (D := D) → admG5 (D := D) → admG6 (D := D) → admTB (D := D) HW F → admBK (D := D) → admBC (D := D) → LocalGlobalCompatibilityAlt (D := D) → FontaineAtPlacesOverL (D := D) → SumRepresentations.tie0 D → tieChi (D := D) → CongruenceAtTypePrimes (D := D) CT fun i k ρ eta => ∀ π ∈ D.nd.Zgood i, ∀ Xs : Set (D.nd.X i), π ∈ Xs → TypeLocus P i k Xs → LocalCongruenceBound CT eta i ρ π (vccCut i Xs π) := by
   rintro ⟨_hCI, _hCen, hDeg, hType, hPotD, hPotDu, hJD, hJDu, hLift, hSub, hCont, hLocD, hLocDu, hHf, hRes, hGlob⟩
   intro D P HW F CT h5 h12 hIne hT hLOC hRbar hN5g hDZ hG14 hG5 hG6 hTB hBK hBC hLGC hFont htie0 hChi

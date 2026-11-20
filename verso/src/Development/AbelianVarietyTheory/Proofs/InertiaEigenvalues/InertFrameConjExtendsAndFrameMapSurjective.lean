@@ -15,6 +15,9 @@ namespace GlobalTheory.InertFrameConj
 
 open Matrix
 
+/- English proof (translation)
+Unfold `Formalism.UG.cT`. Rewrite using `[diagonal_map (map_zero σ), diagonal_transpose, diagonal_mul_diagonal]`.
+-/
 theorem cT_diagonal_mul {K : Type} [Field K] {n : ℕ} (σ : K →+* K) (d : Fin n → K) :
     Formalism.UG.cT σ (diagonal d) * diagonal d = diagonal fun j => σ (d j) * d j := by
   unfold Formalism.UG.cT
@@ -38,6 +41,11 @@ def dg {K : Type} [Field K] {n : ℕ} (i : Fin n) (t : Kˣ) : GL (Fin n) K where
     · subst h; simp
     · simp [Function.update_of_ne h]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `Formalism.UG.cT σ (diagonal _) * diagonal _ = _`. Rewrite using `[cT_diagonal_mul]`. Use `congr 1`. Use extensionality with `j`. Distinguish the cases in `h : j = i`.
+
+Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Function.update_of_ne h]`.
+-/
 theorem cT_dg {K : Type} [Field K] {n : ℕ} (σ : K →+* K) (i : Fin n) (t : Kˣ) :
     Formalism.UG.cT σ (dg i t).val * (dg i t).val = diagonal (Function.update 1 i (σ t * t)) := by
   change Formalism.UG.cT σ (diagonal _) * diagonal _ = _
@@ -48,12 +56,20 @@ theorem cT_dg {K : Type} [Field K] {n : ℕ} (σ : K →+* K) (i : Fin n) (t : K
   · subst h; simp
   · simp [Function.update_of_ne h]
 
+/- English proof (translation)
+Use `congrFun (congrFun h i) i` as an intermediate fact. Rewrite `this` using `[cT_dg]`. Simplify using `using this`.
+-/
 theorem eq_of_cT_dg {K : Type} [Field K] {n : ℕ} (σ : K →+* K) (i : Fin n) (t : Kˣ)
     (h : Formalism.UG.cT σ (dg i t).val * (dg i t).val = 1) : σ t * t = 1 := by
   have := congrFun (congrFun h i) i
   rw [cT_dg] at this
   simpa using this
 
+/- English proof (translation)
+Use `show Formalism.UG.cT σ (dg i t).val * 1 * (dg i t).val = 1`. Rewrite using `[Matrix.mul_one, cT_dg, h, ← diagonal_one]`. Use `congr 1`. Use extensionality with `j`. Distinguish the cases in `hj : j = i`.
+
+Substitute `hj` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Function.update_of_ne hj]`.
+-/
 theorem dg_mem {K : Type} [Field K] {n : ℕ} (σ : K →+* K) (i : Fin n) (t : Kˣ) (h : σ t * t = 1) :
     dg i t ∈ Formalism.UG.UJ σ (1 : Matrix (Fin n) (Fin n) K) := by
   show Formalism.UG.cT σ (dg i t).val * 1 * (dg i t).val = 1
@@ -64,6 +80,13 @@ theorem dg_mem {K : Type} [Field K] {n : ℕ} (σ : K →+* K) (i : Fin n) (t : 
   · subst hj; simp
   · simp [Function.update_of_ne hj]
 
+/- English proof (translation)
+Establish `e1 : Formalism.UG.cT σ (b⁻¹).val * Formalism.UG.cT σ b.val = 1`. Rewrite using `[← Formalism.UG.cT_mul, Units.mul_inv, Formalism.UG.cT_one]`. Establish `e2 : b.val * (b⁻¹).val = 1` using `Units.mul_inv b`. Substitute `hb` using the available equality. Simplify using `only [Units.val_mul, Formalism.UG.cT_mul] at h`.
+
+Establish `h' : Formalism.UG.cT σ b.val * (Formalism.UG.cT σ g.val * g.val) * b.val = Formalism.UG.cT σ b.val * b.val`. Rewrite using `[← h]`. Simplify using `only [Matrix.mul_assoc]`. Use `congr 2`. Rewrite using `[← Matrix.mul_assoc (Formalism.UG.cT σ (b⁻¹).val), e1, Matrix.one_mul, ← Matrix.mul_assoc b.val, e2, Matrix.one_mul]`.
+
+Establish `h''` using `congrArg (fun M => Formalism.UG.cT σ (b⁻¹).val * M * (b⁻¹).val) h'`. Simplify using `only [Matrix.mul_assoc] at h''`. Rewrite `h''` using `[e2, Matrix.mul_one, ← Matrix.mul_assoc (Formalism.UG.cT σ (b⁻¹).val), e1, Matrix.one_mul, ← Matrix.mul_assoc, e1, Matrix.one_mul]`. Then use the resulting hypothesis.
+-/
 theorem cT_mul_self_of_frame {K : Type} [Field K] {n : ℕ} (σ : K →+* K) (b g : GL (Fin n) K) (J : Matrix (Fin n) (Fin n) K)
     (hb : Formalism.UG.cT σ b.val * b.val = J)
     (h : Formalism.UG.cT σ (b⁻¹ * g * b).val * J * (b⁻¹ * g * b).val = J) : Formalism.UG.cT σ g.val * g.val = 1 := by
@@ -82,6 +105,9 @@ theorem cT_mul_self_of_frame {K : Type} [Field K] {n : ℕ} (σ : K →+* K) (b 
   rwa [e2, Matrix.mul_one, ← Matrix.mul_assoc (Formalism.UG.cT σ (b⁻¹).val), e1, Matrix.one_mul, ← Matrix.mul_assoc,
     e1, Matrix.one_mul] at h''
 
+/- English proof (translation)
+Rewrite `h2` using `[map_add, map_add, map_one]`. Establish `h3 : σ Y + Y = σ Y' + Y'` using `by linear_combination h2 - h1`. Establish `h4 : σ Y * (Y - Y') = Y' * (Y - Y')` using `by linear_combination h1 - Y' * h3`. Conclude with `mul_right_cancel₀ (sub_ne_zero.2 hne) h4`.
+-/
 theorem eq_of_norms {K : Type} [Field K] (σ : K →+* K) (Y Y' : K) (hne : Y ≠ Y') (h1 : σ Y * Y = σ Y' * Y')
     (h2 : σ (Y + 1) * (Y + 1) = σ (Y' + 1) * (Y' + 1)) : σ Y = Y' := by
   rw [map_add, map_add, map_one] at h2
@@ -93,6 +119,41 @@ end GlobalTheory.InertFrameConj
 
 open GlobalTheory.InertFrameConj GlobalTheory.SplitPts in
 
+/- English proof (translation)
+Introduce `L _ _ _ n hn v w _ Dv b _ hb p hp`. Establish `i0 : Fin n` using `⟨0, hn⟩`. Establish `hu : ∀ x : locU n w, Formalism.UG.cT Dv.σw (cLoc w x.1).val * (cLoc w x.1).val = 1`. Introduce `x`. Use `cT_mul_self_of_frame Dv.σw b (cLoc w x.1) _ hb ?_` and prove the remaining obligations.
+
+Establish `h : Formalism.UG.cT Dv.σw (p x).val.val * Formalism.UG.antiJ (w.adicCompletion L) n * (p x).val.val = Formalism.UG.antiJ (w.adicCompletion L) n` using `(p x).2`. Rewrite `h` using `[hp x]`. Conclude with `h`. Establish `hdg : ∀ (t : (w.adicCompletion L)ˣ) (x : locU n w), cLoc w x.1 = dg i0 t → Dv.σw t * t = 1`. Introduce `t x hx`.
+
+Use `hu x` as an intermediate fact. Rewrite `this` using `[hx]`. Conclude with `eq_of_cT_dg Dv.σw i0 t this`. Establish `hinj` using `(algebraMap L (w.adicCompletion L)).injective`. Distinguish the cases in `hsp : IsSplitAt w`.
+
+It suffices to derive a contradiction. Establish `h2 : (2 : w.adicCompletion L) ≠ 0`. Rewrite using `[show (2 : w.adicCompletion L) = algebraMap L _ 2 from (map_ofNat _ 2).symm]`. Conclude with `(map_ne_zero _).2 two_ne_zero`. Establish `h` using `hdg (Units.mk0 2 h2) (locPt hsp (dg i0 (Units.mk0 2 h2))) (cLoc_locPt hsp _)`.
+
+Rewrite `h` using `[Units.val_mk0, map_ofNat]`. Establish `h4 : algebraMap L (w.adicCompletion L) 4 = algebraMap L _ 1`. Rewrite using `[map_one, ← h, map_ofNat]`. Evaluate the numerical expressions. Use `hinj h4` as an intermediate fact.
+
+Evaluate the numerical expressions using `at this`. Establish `hcs : conjSrc (conjE L) w = w`. Assume the negation of the conclusion as `hne`. Conclude with `hsp ⟨_, hne, (GlobalTheory.Mem.Chr.under_eq_iff_conjPl (IsCMField.complexConj L) (Algebra.IsQuadraticExtension.finrank_eq_two _ _) (IsCMField.complexConj_ne_one L) w _).2 (Or.inr (conjPl_self_conjSrc w))⟩`. Choose the witnesses or unpack the hypotheses as in `⟨s, hs, hsv⟩ : ∃ s : w.adicCompletion L →+* w.adicCompletion L, (∀ k : L, s (algebraMap L _ k) = algebraMap L _ (IsCMField.complexConj L k)) ∧ ∀ x, Valued.v (s x) = Valued.v x := by`.
+
+Establish `key : ∀ (u : HeightOneSpectrum (𝓞 L)) (_ : u = w) (f : u.adicCompletion L →+* w.adicCompletion L), (∀ k : L, f (algebraMap L _ k) = algebraMap L _ (conjE L k)) → (∀ x, Valued.v (f x) = Valued.v x) → ∃ s : w.adicCompletion L →+* w.adicCompletion L, (∀ k : L, s (algebraMap L _ k) = …`. Introduce and unpack `u rfl f h1 h2`. Conclude with `⟨f, h1, h2⟩`. Conclude with `key _ hcs _ (conjLoc_spec (conjE L) w).2.1 (conjLoc_spec (conjE L) w).2.2`. Take `⟨e, he⟩` from `GlobalTheory.DefU.Inert.locU_equiv L n w s hs hsv`.
+
+Establish `hpair : ∀ y : L, y ≠ IsCMField.complexConj L y → Dv.σw (algebraMap L _ y) * algebraMap L _ y = Dv.σw (algebraMap L _ (IsCMField.complexConj L y)) * algebraMap L _ (IsCMField.complexConj L y)`. Introduce `y hy`. Establish `hy0 : y ≠ 0` using `fun h => hy (by rw [h, map_zero])`. Establish `hc0 : IsCMField.complexConj L y ≠ 0` using `fun h => hy0 (by`. Simplify using `using congrArg (IsCMField.complexConj L) h)`.
+
+Establish `hY : algebraMap L (w.adicCompletion L) y ≠ 0` using `(map_ne_zero _).2 hy0`. Establish `hY' : algebraMap L (w.adicCompletion L) (IsCMField.complexConj L y) ≠ 0` using `(map_ne_zero _).2 hc0`. Use `set z : (w.adicCompletion L)ˣ := Units.mk0 (algebraMap L _ y / algebraMap L _ (IsCMField.complexConj L y)) (div_ne_zero hY hY') with hz`. Establish `hsz : s z * z = 1`. Rewrite using `[hz, Units.val_mk0, map_div₀, hs, hs, IsCMField.complexConj_apply_apply]`.
+
+Clear the denominators using the available nonvanishing facts. Establish `hmem` using `dg_mem s i0 z hsz`. Establish `h` using `hdg z (e.symm ⟨dg i0 z, hmem⟩) (by rw [← he, e.apply_symm_apply])`. Rewrite `h` using `[hz, Units.val_mk0, map_div₀]`. Establish `hσ0 : Dv.σw (algebraMap L _ (IsCMField.complexConj L y)) ≠ 0` using `(map_ne_zero _).2 hY'`.
+
+Clear denominators, using `at h` for the nonvanishing conditions. Take the linear combination `h`. Establish `hext : ∀ x : L, Dv.σw (algebraMap L _ x) = algebraMap L _ (IsCMField.complexConj L x)`. Establish `hone : ∀ y : L, y ≠ IsCMField.complexConj L y → Dv.σw (algebraMap L _ y) = algebraMap L _ (IsCMField.complexConj L y)`. Introduce `y hy`.
+
+Use `eq_of_norms Dv.σw _ _ (fun h => hy (hinj h)) (hpair y hy) ?_` and prove the remaining obligations. Establish `hy1 : y + 1 ≠ IsCMField.complexConj L (y + 1)`. Rewrite using `[map_add, map_one]`. Conclude with `fun h => hy (add_right_cancel h)`. Use `hpair (y + 1) hy1` as an intermediate fact.
+
+Simplify `this` using `only [map_add, map_one]`. Choose the witnesses or unpack the hypotheses as in `⟨t, ht⟩ : ∃ t : L, t ≠ IsCMField.complexConj L t := by`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Conclude with `IsCMField.complexConj_ne_one L (AlgEquiv.ext fun t => (hc t).symm)`.
+
+Introduce `x`. Distinguish the cases in `hx : x = IsCMField.complexConj L x`. Establish `hxt : x + t ≠ IsCMField.complexConj L (x + t)`. Rewrite using `[map_add, ← hx]`. Conclude with `fun h => ht (add_left_cancel h)`.
+
+Establish `h1` using `hone _ hxt`. Rewrite `h1` using `[map_add, map_add, map_add, map_add, hone t ht, ← hx]`. Rewrite using `[← hx]`. Conclude with `add_right_cancel h1`. Conclude with `hone x hx`.
+
+Use `⟨hext, ?_⟩` and prove the remaining obligations. Take `⟨e', he'⟩` from `GlobalTheory.DefU.Inert.locU_equiv L n w Dv.σw hext Dv.unram.2.1`. Establish `hb1 : Formalism.UG.cT Dv.σw b.1 * 1 * b.1 = Formalism.UG.antiJ _ n` using `by rwa [Matrix.mul_one]`. Introduce `g`. Set `P` to `e'.trans (GlobalTheory.InertSatake.conjEquiv Dv.σw b hb1)`.
+
+Establish `hP : ((P (P.symm g) : Formalism.UG.GU Dv.σw n) : GL (Fin n) (w.adicCompletion L)) = b⁻¹ * cLoc w (P.symm g).1 * b`. Express the relevant statement in the definitionally equal form `b⁻¹ * (e' _ : GL (Fin n) _) * b = _`. Rewrite using `[he']`. Use `⟨P.symm g, Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[hp, ← hP, P.apply_symm_apply]`.
+-/
 theorem GlobalTheory.InertFrameConj.conj_and_surjective : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ), 0 < n → ∀ (v : HeightOneSpectrum (𝓞 (maximalRealSubfield L))) (w : HeightOneSpectrum (𝓞 L)), NG.OverPl w v → ∀ (Dv : InertDatum L n v w) (b : GL (Fin n) (w.adicCompletion L)), b ∈ GlobalTheory.LFun.KGL w n → Formalism.UG.cT Dv.σw b.val * b.val = Formalism.UG.antiJ (w.adicCompletion L) n → ∀ p : locU n w →* Formalism.UG.GU Dv.σw n, (∀ x, (p x).val = b⁻¹ * cLoc w x.val * b) → (∀ x : L, Dv.σw (algebraMap L _ x) = algebraMap L _ (IsCMField.complexConj L x)) ∧ Function.Surjective p := by
   intro L _ _ _ n hn v w _ Dv b _ hb p hp
   have i0 : Fin n := ⟨0, hn⟩

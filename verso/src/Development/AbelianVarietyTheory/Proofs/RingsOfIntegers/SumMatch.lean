@@ -14,6 +14,11 @@ open scoped CategoryTheory.Obj
 
 namespace GlobalTheory.PullExpLoc
 
+/- English proof (translation)
+Establish `e₁ : ∑ β ∈ S'', F β * T β = ∑ β ∈ S'' ∪ S.image g, F β * T β` using `Finset.sum_subset Finset.subset_union_left fun β _ hβ => by rw [h'' β hβ, zero_mul]`. Establish `e₂ : ∑ β ∈ S.image g, F β * T β = ∑ β ∈ S'' ∪ S.image g, F β * T β` using `Finset.sum_subset Finset.subset_union_right fun β _ hβ => by`. Distinguish the cases in `hx : ∃ χ, β = g χ`. Take `⟨χ, rfl⟩` from `hx`. Rewrite using `[hF, h χ fun hχ => hβ (Finset.mem_image_of_mem g hχ), zero_mul, zero_mul]`.
+
+Rewrite using `[hoff β fun χ e => hx ⟨χ, e⟩, zero_mul]`. Rewrite using `[e₁, ← e₂, Finset.sum_image fun x _ y _ e => hg e, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun χ _ => ?_` and prove the remaining obligations. Rewrite using `[hF, ← hT]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sum_match {Γ : Type} [CommRing Γ] {K : Type} (S S'' : Finset K) (g : K → K) (hg : Function.Injective g)
     (F T A T' ρ : K → Γ) (ξ : Γ) (hF : ∀ χ, F (g χ) = A χ * (ξ * ρ χ)) (hT : ∀ χ, T (g χ) * ρ χ = T' χ)
     (hoff : ∀ β, (∀ χ, β ≠ g χ) → F β = 0) (h'' : ∀ β ∉ S'', F β = 0) (h : ∀ χ ∉ S, A χ = 0) :
@@ -32,6 +37,11 @@ theorem sum_match {Γ : Type} [CommRing Γ] {K : Type} (S S'' : Finset K) (g : K
   rw [hF, ← hT]
   ring
 
+/- English proof (translation)
+Establish `H` using `Geo.Tor.val_corr hJ (TLinPf.tLin_of hGF R I O D A G U ιD ιA ιG hlin e a u hu hu0 χ) r`. Establish `E : (U.gt e).pG ≫ lift (toUnit D.toPre.P.A ≫ D.toPre.c χ) (𝟙 D.toPre.P.A) = lift (toUnit _ ≫ D.toPre.c χ) (U.gt e).pG`. Rewrite using `[comp_lift, Category.comp_id, ← Category.assoc, comp_toUnit]`. Establish `E' : (r ≫ pGl U e) ≫ (lift (toUnit D.toPre.P.A ≫ D.toPre.c χ) (𝟙 D.toPre.P.A)).left = r ≫ (lift (toUnit _ ≫ D.toPre.c χ) (U.gt e).pG).left` using `(Category.assoc _ _ _).trans (congrArg (fun q => r ≫ q.left) E)`. Use `Eq.trans ?_ (H.trans (Geo.Tor.val_pull hJ _ _ r))` and prove the remaining obligations.
+
+Use `Eq.trans ?_ (Geo.Tor.val_mul hJ _ _ r).symm` and prove the remaining obligations. Use `congrArg _ ?_` and prove the remaining obligations. Use `(Geo.Tor.val_pull hJ _ _ _).trans (Eq.trans ?_ (Geo.Tor.val_pull hJ _ _ r).symm)` and prove the remaining obligations. Rewrite using `[E']`.
+-/
 theorem tG_lin (hGF : GlobalFnsSt) {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {O : Type} [Ring O] [StarRing O]
     {D : DegData R I} [Module O D.toPre.X] {A : PolAV (Spec (CommRingCat.of (FractionRing R)))}
     {G : Over (Spec (CommRingCat.of R))} [GrpObj G] [IsCommMonObj G] (U : UnifPre I D A G)
@@ -58,6 +68,13 @@ theorem tG_lin (hGF : GlobalFnsSt) {R : Type} [CommRing R] [IsDomain R] {I : Ide
   refine (Geo.Tor.val_pull hJ _ _ _).trans (Eq.trans ?_ (Geo.Tor.val_pull hJ _ _ r).symm)
   rw [E']
 
+/- English proof (translation)
+Introduce `hGF V _ _ _ E _ _ _ H t P a N hN hN0 X uR huR huR0 e k σ'' τ f'' f h'' hf hrel Z r z J hJ jL jL' hL hL'`. Use `letI := H.starRing`. Take `⟨S'', hS''⟩` from `expandsAt_val P.U.toUnifPre e (k * N) σ'' f'' h''`. Take `⟨S, hS⟩` from `expandsAt_val P.U.toUnifPre e k τ f hf`. Take `⟨a₁, a₂⟩` from `hS'' Z r z J hJ`.
+
+Take `⟨b₁, b₂⟩` from `hS Z (r ≫ ((Over.pullback (thick V (maximalIdeal V) e)).map (t.act.act a)).left) z J hJ`. Establish `hp : (r ≫ ((Over.pullback (thick V (maximalIdeal V) e)).map (t.act.act a)).left) ≫ pGl P.U.toUnifPre e = (r ≫ pGl P.U.toUnifPre e) ≫ (P.oD.onB.act a).left` using `(Category.assoc _ _ _).trans ((congrArg (fun q => r ≫ q) (pG_act P.U.toUnifPre P.lin e a)).trans (Category.assoc _ _ _).symm)`. Use `(a₂ jL hL).trans (Eq.trans ?_ (congrArg _ (b₂ jL' hL')).symm)` and prove the remaining obligations. Use `sum_match S S'' (fun χ => star a • χ) (fun _ _ h => smul_star_inj a N hN hN0 h) _ _ _ _ (fun χ => (Geo.Tor.val (LB.pullGen P.D.toPre.P.L _ _ uR (lift (toUnit P.D.toPre.P.A ≫ P.D.toPre.c χ) (𝟙 P.D.toPre.P.A)).left) (r ≫ pGl P.U.toUnifPre e) z J).val) _ (fun χ => ?_) (fun χ => ?_) …` and prove the remaining obligations. Rewrite using `[hp]`.
+
+Conclude with `(hrel.1 χ Z _ z J hJ).trans (congrArg _ (Units.val_mul _ _))`. Conclude with `(Units.val_mul _ _).symm.trans (congrArg Units.val (tG_lin hGF P.U.toUnifPre P.lin e a uR huR huR0 χ r z J hJ))`. Conclude with `(congrArg (Geo.Tor.gs _ z _) (hrel.2 β hβ _)).trans (gs_zero _ z _ (hJ.mem _ _))`.
+-/
 theorem main : GlobalFnsSt → ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] (E : Type) [Field E] [NumberField E] [NumberField.IsCMField E] (H : Geo.Tor.Host E) (t : Geo.Tor.SAB H (Spec (CommRingCat.of V))) (P : Geo.Tor.PELUnif (maximalIdeal V) t) (a : NumberField.RingOfIntegers E) (N : ℕ), (letI := H.starRing; a * star a = (N : NumberField.RingOfIntegers E)) → 0 < N → letI := H.starRing;  ∀ (X : LB.Gen (LB.LinComb P.D.toPre.P.L (K := Fin 2) ![𝟙 P.D.toPre.P.A.left, (P.oD.onB.act a).left] ![((1 * N : ℕ) : ℤ), -((1 : ℕ) : ℤ)])), ∀ uR : LB.Gen (LB.LinComb P.D.toPre.P.L (rosatiφ P.D.toPre.P.A (P.oD.onB.act (star a)) (P.oD.onB.act a)) rosatiε), uR.IsGen → LB.Gen.Corr P.D.toPre.P.L _ _ _ _ (LB.pullGen P.D.toPre.P.L _ _ uR (zero2 P.D.toPre.P.A)) (LB.oneGen P.D.toPre.P.L) → ∀ (e k : ℕ) (σ'' : H0 P.U.LG.L (k * N)) (τ : H0 P.U.LG.L k) (f'' : ∀ α : P.D.toPre.X, P.D.toPre.SecB (k * N) α) (f : ∀ α : P.D.toPre.X, P.D.toPre.SecB k α), P.U.ExpandsAt e (k * N) σ'' f'' → P.U.ExpandsAt e k τ f → ((∀ (χ : P.D.toPre.X) (Z : Scheme.{0}) (r : Z ⟶ P.D.toPre.P.A.left) (z : Z) (J), Geo.Tor.Good P.D.toPre.P.L z J → Geo.Tor.sval (f'' (star a • χ)) r z J = Geo.Tor.sval (f χ) (r ≫ (P.oD.onB.act a).left) z J * (Geo.Tor.val X r z J ^ k * Geo.Tor.val (LB.pullGen P.D.toPre.P.L _ _ uR (lift (toUnit P.D.toPre.P.A ≫ P.D.toPre.c χ) (𝟙 P.D.toPre.P.A)).left) r z J).val) ∧ ∀ β : P.D.toPre.X, (∀ χ, β ≠ star a • χ) → ∀ j, (f'' β).f j = 0) → (∀ (Z : Scheme.{0}) (r : Z ⟶ (thickObj V (maximalIdeal V) e t.G).left) (z : Z) (J), Geo.Tor.Good P.D.toPre.P.L z J → ∀ jL jL', (r ≫ fGl (maximalIdeal V) t.G e) z ∈ P.U.LG.L.U jL → ((r ≫ ((Over.pullback (thick V (maximalIdeal V) e)).map (t.act.act a)).left) ≫ fGl (maximalIdeal V) t.G e) z ∈ P.U.LG.L.U jL' → (wv P.U.toUnifPre e r z (J (r ≫ pGl P.U.toUnifPre e)) jL ^ (k * N)).val * sv P.U.toUnifPre (k * N) σ'' (r ≫ fGl (maximalIdeal V) t.G e) z jL = (Geo.Tor.val X (r ≫ pGl P.U.toUnifPre e) z J ^ k).val * ((wv P.U.toUnifPre e (r ≫ ((Over.pullback (thick V (maximalIdeal V) e)).map (t.act.act a)).left) z (J ((r ≫ ((Over.pullback (thick V (maximalIdeal V) e)).map (t.act.act a)).left) ≫ pGl P.U.toUnifPre e)) jL' ^ k).val * sv P.U.toUnifPre k τ ((r ≫ ((Over.pullback (thick V (maximalIdeal V) e)).map (t.act.act a)).left) ≫ fGl (maximalIdeal V) t.G e) z jL')) := by
   intro hGF V _ _ _ E _ _ _ H t P a N hN hN0 X uR huR huR0 e k σ'' τ f'' f h'' hf hrel Z r z J hJ jL jL' hL hL'
   letI := H.starRing

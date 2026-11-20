@@ -2,6 +2,15 @@ import Mathlib
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `ι _ E _ _ F _ _ T W hW`. Use `hW` as an intermediate fact. Set `T' : MultilinearMap ℂ (fun i => W i) F` to `T.compLinearMap (fun i => (W i).subtype)`. Establish `hset : {f | ∃ v : ∀ i, E i, (∀ i, v i ∈ W i) ∧ f = T v} = Set.range T'`. Use extensionality with `f`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨v, hv, rfl⟩`. Conclude with `⟨fun i => ⟨v i, hv i⟩, rfl⟩`. Introduce and unpack `⟨w, rfl⟩`. Conclude with `⟨fun i => (w i : E i), fun i => (w i).2, rfl⟩`.
+
+Establish `hle : Submodule.span ℂ (Set.range T') ≤ LinearMap.range (PiTensorProduct.lift T')`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨w, rfl⟩`. Conclude with `⟨PiTensorProduct.tprod ℂ w, by simp⟩`. Rewrite using `[hset]`.
+
+Conclude with `Submodule.finiteDimensional_of_le hle`.
+-/
 theorem finiteDimensional_span_multilinear_values :
     ∀ {ι : Type} [Fintype ι] (E : ι → Type) [∀ i, AddCommGroup (E i)] [∀ i, Module ℂ (E i)]
       (F : Type) [AddCommGroup F] [Module ℂ F] (T : MultilinearMap ℂ E F)

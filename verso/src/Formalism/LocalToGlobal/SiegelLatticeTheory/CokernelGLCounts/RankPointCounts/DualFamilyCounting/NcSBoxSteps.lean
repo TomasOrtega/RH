@@ -15,11 +15,19 @@ open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.SG.S
 open Formalism.L2.SG.Pf.NcS.BoxVolSk
 open scoped TensorProduct
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ n a d b x`. Establish `: FiniteDimensional F E` using `Module.Finite.of_restrictScalars_finite ℚ F E`. Conclude with `PI.VolStabS.AdmissibleCompactSupport.eventually_mem_latV b x`.
+-/
 theorem finite_integral_holds : FinInt := by
   intro F E _ _ _ _ _ n a d b x
   have : FiniteDimensional F E := Module.Finite.of_restrictScalars_finite ℚ F E
   exact PI.VolStabS.AdmissibleCompactSupport.eventually_mem_latV b x
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ n a C hC`. Establish `: FiniteDimensional F E` using `Module.Finite.of_restrictScalars_finite ℚ F E`. Set `b` to `Module.finBasis F E`. Establish `e : {x : Fin a → Fin n → Af F ⊗[F] E | ∀ v, projV v x ∈ C v} = ⋂ v, projV v ⁻¹' C v`. Use extensionality with `x`.
+
+Simplify using the standard rewrite rules. Rewrite using `[e]`. Conclude with `MeasurableSet.iInter fun v => (PI.VolStabS.TopoMeas.continuous_projV b v).measurable (hC v)`.
+-/
 theorem box_measurable_holds : BoxMeas := by
   intro F E _ _ _ _ _ n a C hC
   have : FiniteDimensional F E := Module.Finite.of_restrictScalars_finite ℚ F E
@@ -30,6 +38,15 @@ theorem box_measurable_holds : BoxMeas := by
   exact MeasurableSet.iInter fun v =>
     (PI.VolStabS.TopoMeas.continuous_projV b v).measurable (hC v)
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ n J a T`. Establish `: FiniteDimensional F E` using `Module.Finite.of_restrictScalars_finite ℚ F E`. Use `⟨?_, fun y hy => ?_, fun x hx v => ?_⟩` and prove the remaining obligations. Establish `: T2Space (Af F ⊗[F] E)` using `PI.VolStabS.RestrProdG.t2_tensor_product (Af F)`. Establish `: T2Space (Matrix (Fin a) (Fin a) (Af F ⊗[F] E))` using `inferInstanceAs (T2Space (Fin a → Fin a → Af F ⊗[F] E))`.
+
+Conclude with `(isClosed_singleton.preimage (PI.VolStabS.continuous_gramR (Af F) σ J)).isOpen_compl.measurableSet`. Use function extensionality and compare the values at `i j`. Establish `h` using `congrArg (Algebra.TensorProduct.map (sndA F) (AlgHom.id F E)) (congrFun (congrFun hy i) j)`. Rewrite `h` using `[PI.VolStabS.RestrProdG.map_gramR, Matrix.map_apply, PI.VolStabS.RestrProdG.map_inclR]`. Rewrite using `[Matrix.map_apply]`.
+
+Conclude with `h`. Use function extensionality and compare the values at `i j`. Establish `h` using `congrArg (Algebra.TensorProduct.map (evalV F v) (AlgHom.id F E)) (congrFun (congrFun hx i) j)`. Rewrite `h` using `[PI.VolStabS.RestrProdG.map_gramR, Matrix.map_apply, PI.VolStabS.RestrProdG.map_inclR]`. Rewrite using `[Matrix.map_apply]`.
+
+Conclude with `h`.
+-/
 theorem gram_measurable_holds : GramMeas := by
   intro F E _ _ _ _ _ σ n J a T
   have : FiniteDimensional F E := Module.Finite.of_restrictScalars_finite ℚ F E
@@ -54,6 +71,27 @@ theorem gram_measurable_holds : GramMeas := by
     rw [Matrix.map_apply]
     exact h
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ n J a μ ν fib t hfib hne`. Establish `: FiniteDimensional F E` using `Module.Finite.of_restrictScalars_finite ℚ F E`. Set `b` to `Module.finBasis F E`. Use `set V := Fin a → Fin n → Ainf F ⊗[F] E`. Use `set U : Set V := {X | LinearIndependent (Ainf F ⊗[F] E) X} with hUdef`.
+
+Establish `hUo : IsOpen U` using `PI.VolStabS.TensAllW.isOpen_linIndep b (Ainf F) (PI.VolStabS.isOpen_units_Ainf F) (PI.VolStabS.lip_ainf F)`. Establish `: LocallyCompactSpace (Ainf F ⊗[F] E)` using `PI.AdicCompletionValuation.locallyCompactSpace_tens (Ainf F)`. Establish `: T2Space (Ainf F ⊗[F] E)` using `PI.VolStabS.RestrProdG.t2_tensor_product (Ainf F)`. Establish `: SecondCountableTopology (Ainf F ⊗[F] E)` using `PI.VolStabS.secondCountable_tens (Ainf F)`. Establish `hcU : fib t Uᶜ = 0` using `measure_mono_null (Set.compl_subset_compl.2 Set.inter_subset_right) (hfib.1 t)`.
+
+Establish `hUpos : 0 < fib t U`. Break down `eq_or_ne (fib t U) 0 with h | h` into its components or cases. It suffices to derive a contradiction. Apply `hne` to reduce the goal to its premises. Rewrite using `[← Measure.measure_univ_eq_zero]`.
+
+Use `measure_union_null h hcU` as an intermediate fact. Rewrite `this` using `[Set.union_compl_self]`. Then use the resulting hypothesis. Conclude with `pos_iff_ne_zero.2 h`. Establish `: LocallyCompactSpace U` using `hUo.locallyCompactSpace`. Establish `: SigmaCompactSpace U` using `sigmaCompactSpace_of_locallyCompact_secondCountable`.
+
+Establish `hUeq : U = ⋃ m, Subtype.val '' compactCovering U m`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Take `⟨m, hm⟩` from `Set.mem_iUnion.1 ((iUnion_compactCovering U).symm ▸ Set.mem_univ (⟨x, hx⟩ : U))`.
+
+Conclude with `Set.mem_iUnion.2 ⟨m, ⟨⟨x, hx⟩, hm, rfl⟩⟩`. Introduce `hx`. Take `⟨m, y, _, rfl⟩` from `Set.mem_iUnion.1 hx`. Conclude with `y.2`. Choose the witnesses or unpack the hypotheses as in `⟨m, hm⟩ : ∃ m, 0 < fib t (Subtype.val '' compactCovering U m) := by`.
+
+Assume the negation of the conclusion as `hcon`. Simplify using `only [not_exists, not_lt] at hcon`. Establish `: fib t U = 0`. Rewrite using `[hUeq]`. Conclude with `measure_iUnion_null fun m => nonpos_iff_eq_zero.1 (hcon m)`.
+
+Conclude with `hUpos.ne' this`. Use `set K : Set V := Subtype.val '' compactCovering U m`. Establish `hK : IsCompact K` using `(isCompact_compactCovering U m).image continuous_subtype_val`. Establish `hKU : K ⊆ U` using `by rintro _ ⟨y, _, rfl⟩; exact y.2`. Take `⟨f, hf1, hfc, hfU, hf01⟩` from `exists_continuousMap_one_of_isCompact_subset_isOpen hK hUo hKU`.
+
+Establish `hint : Integrable f (fib t)` using `((hfib.2.2 f f.continuous hfc hfU).1 t (Set.mem_univ _))`. Use `⟨f, f.continuous, hfc, fun x => (hf01 x).1, hint, ?_⟩` and prove the remaining obligations. Rewrite using `[integral_pos_iff_support_of_nonneg (fun x => (hf01 x).1) hint]`. Use `lt_of_lt_of_le hm (measure_mono fun x hx => ?_)` and prove the remaining obligations. Rewrite using `[Function.mem_support, hf1 hx]`.
+
+Conclude with `one_ne_zero`.
+-/
 theorem positivity_test_holds : PosTest := by
   intro F E _ _ _ _ _ σ n J a μ ν fib t hfib hne
   classical

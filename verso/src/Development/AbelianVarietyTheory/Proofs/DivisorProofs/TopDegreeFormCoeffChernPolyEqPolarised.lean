@@ -12,16 +12,29 @@ noncomputable section
 
 namespace GlobalTheory.GoodTop
 
+/- English proof (translation)
+Simplify using `only [topCoeff, MvPolynomial.coeff_sum, Finset.mul_sum]`. Conclude with `Finset.sum_comm`.
+-/
 theorem topCoeff_finsum {n : ℕ} {ι : Type} (s : Finset ι) (f : ι → MvPolynomial (Fin n × Fin n) ℂ) :
     topCoeff (∑ i ∈ s, f i) = ∑ i ∈ s, topCoeff (f i) := by
   simp only [topCoeff, MvPolynomial.coeff_sum, Finset.mul_sum]
   exact Finset.sum_comm
 
+/- English proof (translation)
+Simplify using `only [topCoeff, MvPolynomial.coeff_C_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun _ _ => by ring`.
+-/
 theorem topCoeff_const_mul {n : ℕ} (a : ℂ) (P : MvPolynomial (Fin n × Fin n) ℂ) :
     topCoeff (MvPolynomial.C a * P) = a * topCoeff P := by
   simp only [topCoeff, MvPolynomial.coeff_C_mul, Finset.mul_sum]
   exact Finset.sum_congr rfl fun _ _ => by ring
 
+/- English proof (translation)
+Introduce `n r _ _ G v`. Establish `hn : (n.factorial : ℂ) ≠ 0` using `by exact_mod_cast n.factorial_ne_zero`. Establish `key` using `GlobalTheory.T.factorial_mul_coeff_charpolyRev_neg_eq_sum (curvPoly G v) n`. Establish `h1 : (n.factorial : ℂ) * topCoeff (chernPoly G v n) = ∑ p : Fin n → r, ∑ π : Equiv.Perm (Fin n), ∑ u : Equiv.Perm (Fin n), ((Equiv.Perm.sign π : ℤ) : ℂ) * ((Equiv.Perm.sign u : ℤ) : ℂ) * (Matrix.of fun i b => curvAt G v (u i) b (p i) (p (π i))).det`. Rewrite using `[← topCoeff_const_mul, map_natCast, chernPoly, key, topCoeff_finsum]`.
+
+Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[topCoeff_finsum]`. Use `Finset.sum_congr rfl fun π _ => ?_` and prove the remaining obligations. Rewrite using `[← map_intCast (MvPolynomial.C : ℂ →+* MvPolynomial (Fin n × Fin n) ℂ), topCoeff_const_mul]`. Establish `hp : (∏ i, curvPoly G v (p i) (p (π i))) = ∏ i, ∑ a, ∑ b, MvPolynomial.C (curv G v (coordVec a) (coordVec b) (p i) (p (π i))) * MvPolynomial.X (a, b)`.
+
+Simplify using `[curvPoly]`. Rewrite using `[hp, GlobalTheory.T.topDegreeFormCoeff_prod_oneOneForms, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun u _ => ?_` and prove the remaining obligations. Simplify using `only [curvAt, mul_assoc]`. Rewrite using `[mixTop, ← h1, ← mul_assoc, inv_mul_cancel₀ hn, one_mul]`.
+-/
 theorem topCoeff_chernPoly_eq_mixTop : ∀ {n : ℕ} {r : Type} [Fintype r] [DecidableEq r] (G : V n → Matrix r r ℂ) (v : V n),
     topCoeff (chernPoly G v n) = mixTop fun _ => curvAt G v := by
   intro n r _ _ G v

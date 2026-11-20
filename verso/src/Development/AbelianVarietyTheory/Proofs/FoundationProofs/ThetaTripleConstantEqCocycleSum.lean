@@ -7,16 +7,37 @@ open scoped BigOperators
 
 namespace GlobalTheory.TripleConstant
 
+/- English proof (translation)
+Simplify using `only [Wd, U, Finset.mul_sum, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`.
+-/
 theorem Wd_mul_sum (D : D7) (T : Tor D) {N N' : ℕ} (y : VC D N N') (c : ℂ) {ι : Type} (s : Finset ι)
     (G : ι → VC D N N' → ℂ) (v : VC D N N') :
     Wd D T y (fun z => c * ∑ i ∈ s, G i z) v = c * ∑ i ∈ s, Wd D T y (G i) v := by
   simp only [Wd, U, Finset.mul_sum, Finset.sum_mul]
   exact Finset.sum_congr rfl fun i _ => by ring
 
+/- English proof (translation)
+Rewrite using `[← AddSubgroup.mem_addSubgroupOf, ← QuotientAddGroup.eq_zero_iff, QuotientAddGroup.out_eq']`.
+-/
 theorem out_mem_iff {V : Type} [AddCommGroup V] (A B : AddSubgroup V) (q : B ⧸ A.addSubgroupOf B) :
     ((Quotient.out q : B) : V) ∈ A ↔ q = 0 := by
   rw [← AddSubgroup.mem_addSubgroupOf, ← QuotientAddGroup.eq_zero_iff, QuotientAddGroup.out_eq']
 
+/- English proof (translation)
+Introduce `D T N N' A₁ A₂ A₃ e μ h`. Take `⟨h1, h2, h3, n12, n23, n13, he, he0, -, hI⟩` from `h`. Use `haveI f12 : Fintype (A₂ ⧸ A₁.addSubgroupOf A₂) := AddSubgroup.fintypeOfIndexNeZero n12`. Use `haveI f23 : Fintype (A₃ ⧸ A₂.addSubgroupOf A₃) := AddSubgroup.fintypeOfIndexNeZero n23`. Use `haveI f13 : Fintype (A₃ ⧸ A₁.addSubgroupOf A₃) := AddSubgroup.fintypeOfIndexNeZero n13`.
+
+Rewrite `hI` using `[h3.Iop_eq A₂, h2.Iop_eq A₁, h3.Iop_eq A₁]`. Simplify using `only [finsum_eq_sum_of_fintype] at hI ⊢`. Establish `p12 : 0 < Real.sqrt ((A₁.addSubgroupOf A₂).index : ℝ)` using `Real.sqrt_pos.2 (Nat.cast_pos.2 (Nat.pos_of_ne_zero n12))`. Establish `p23 : 0 < Real.sqrt ((A₂.addSubgroupOf A₃).index : ℝ)` using `Real.sqrt_pos.2 (Nat.cast_pos.2 (Nat.pos_of_ne_zero n23))`. Establish `p13 : 0 < Real.sqrt ((A₁.addSubgroupOf A₃).index : ℝ)` using `Real.sqrt_pos.2 (Nat.cast_pos.2 (Nat.pos_of_ne_zero n13))`.
+
+Generalize the expression as in `Real.sqrt ((A₁.addSubgroupOf A₂).index : ℝ) = s12 at *`. Generalize the expression as in `Real.sqrt ((A₂.addSubgroupOf A₃).index : ℝ) = s23 at *`. Generalize the expression as in `Real.sqrt ((A₁.addSubgroupOf A₃).index : ℝ) = s13 at *`. Establish `key` using `GlobalTheory.T.thetaTranslate_combination_coef_eq_zero D T N N' A₁ h1 e he he0 (((A₃ ⧸ A₂.addSubgroupOf A₃) × (A₂ ⧸ A₁.addSubgroupOf A₂)) ⊕ (A₃ ⧸ A₁.addSubgroupOf A₃)) (Sum.elim (fun p => (s23 : ℂ)⁻¹ * (s12 : ℂ)⁻¹ * bc D T ((Quotient.out p.1 : A₃) : VC D N N') ((Quotient.out p.2 …`. Introduce `v`.
+
+Establish `hv` using `congrFun hI v`. Simplify using `only [Wd_mul_sum, Wd_Wd, Pi.smul_apply, smul_eq_mul] at hv`. Simplify using `only [Finset.mul_sum] at hv`. Simplify using `only [Fintype.sum_sum_type, Sum.elim_inl, Sum.elim_inr, Fintype.sum_prod_type, neg_mul, Finset.sum_neg_distrib, mul_assoc]`. Rewrite using `[hv]`.
+
+Use the proof step `ring)`. Simplify using `only [Fintype.sum_sum_type, Sum.elim_inl, Sum.elim_inr, out_mem_iff, Finset.sum_ite_eq', Finset.mem_univ, if_true] at key`. Use `⟨s23 * s12 / s13, by positivity, ?_⟩` and prove the remaining obligations. Establish `q12 : (s12 : ℂ) ≠ 0` using `by exact_mod_cast p12.ne'`. Establish `q23 : (s23 : ℂ) ≠ 0` using `by exact_mod_cast p23.ne'`.
+
+Establish `q13 : (s13 : ℂ) ≠ 0` using `by exact_mod_cast p13.ne'`. Establish `k2` using `congrArg (fun t => (s23 : ℂ) * s12 * t) (add_neg_eq_zero.1 key)`. Simplify using `only [Finset.mul_sum] at k2`. Establish `: μ * ((s23 * s12 / s13 : ℝ) : ℂ) = (s23 : ℂ) * s12 * (μ * (s13 : ℂ)⁻¹)` using `by push_cast; ring`. Rewrite using `[this, ← k2]`.
+
+Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Distinguish the cases in `hp : ((Quotient.out p.1 : A₃) : VC D N N') + ((Quotient.out p.2 : A₂) : VC D N N') ∈ A₁`. Simplify using `only [hp, if_true]`. Clear the denominators using the available nonvanishing facts. Simplify using `only [hp, if_false, mul_zero]`.
+-/
 theorem mu_form : ∀ (D : D7) (T : Tor D) (N N' : ℕ) (A₁ A₂ A₃ : AddSubgroup (VC D N N')) (e : VC D N N' → ℂ) (μ : ℂ), Trip D T A₁ A₂ A₃ e μ → ∃ r : ℝ, 0 < r ∧ μ * (r : ℂ) = ∑ᶠ p : (A₃ ⧸ A₂.addSubgroupOf A₃) × (A₂ ⧸ A₁.addSubgroupOf A₂), (if ((Quotient.out p.1 : A₃) : VC D N N') + ((Quotient.out p.2 : A₂) : VC D N N') ∈ A₁ then bc D T ((Quotient.out p.1 : A₃) : VC D N N') ((Quotient.out p.2 : A₂) : VC D N N') else 0) := by
   intro D T N N' A₁ A₂ A₃ e μ h
   obtain ⟨h1, h2, h3, n12, n23, n13, he, he0, -, hI⟩ := h

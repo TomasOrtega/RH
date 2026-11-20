@@ -21,6 +21,23 @@ section Free
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {r : ℕ}
 end Free
+/- English proof (translation)
+Introduce `hP hH hD hS hF`. Use `Closed.imp (Closed.and (_root_.GlobalTheory.T.eta_bound_length_unit_alt hS) (Closed.and (_root_.GlobalTheory.T.bergman_kernel_thin_part_estimate_alt hP hH hD hS hF) (_root_.GlobalTheory.T.exp_neg_B_le_bergOn_of_la1sq_bound hP hH hD hS hF))) ?_` and prove the remaining obligations. Introduce and unpack `eps Fm CH - ⟨⟨C₁, c₁, h₁⟩, ⟨_, -, h₂⟩, ⟨C₃, c₃, h₃⟩⟩`. Take `⟨x0, h⟩` from `h₁.and (h₂.and h₃)`. Use `⟨C₁ + C₃, add_nonneg c₁ c₃, x0, fun x hx hle ι p hp i hi Y hY u1 hu => ?_⟩` and prove the remaining obligations.
+
+Take `⟨h₁, h₂, h₃⟩` from `h x hx hle ι p hp`. Take `⟨a1, a2, a3, a4⟩` from `h₁ i hi Y hY`. Take `⟨B, b1, b2, b3⟩` from `h₃ i hi Y hY u1 hu`. Establish `hb : 1 ≤ (Fm.L x ι).sc.b` using `Real.one_le_exp (Real.rpow_nonneg (by linarith [(Fm.L x ι).sc.one_lt_alt]) _)`. Take `⟨r1, r2⟩` from `a4 1 le_rfl (by push_cast; exact one_le_pow₀ hb)`.
+
+Use `⟨_ + B, add_nonneg a2 b1, by rw [mul_add, add_mul]; exact add_le_add a3 b2, fun Z xs f hs hf σ hσ y hy => ?_⟩` and prove the remaining obligations. Establish `d` using `GlobalTheory.T.normSq_thetaConstant_spanning_classes_le_exp _ _ _ _ _ _ σ _ (Y.U σ) (xiR (Fm.D x ι)) hσ (hY.1.unf σ hσ) 5 (by decide) (by norm_num) xs f hs hf _ _ _ _ r1 (Or.inr a1) ⟨y.1, y.2.1⟩ y.2.2`. Establish `e2` using `h₂ i hi Y hY u1 hu Z σ hσ y hy`. Establish `e3` using `b3 Z σ hσ y hy`. Establish `e4` using `r2 (((Y.U σ).X y.1).firstMinimumSq y.2.1)`.
+
+Establish `ha` using `homN_nonneg (Y.U σ) (xiR (Fm.D x ι)) (wtZ 0 (2 * ((dat p i).p + (dat p i).q))) (f ^ 2) ⟨y.1, y.2.1⟩`. Unfold `ReciprocityTheory.ChartRestriction.G.I2.phiFD Data.la1 at d`. Unfold `Data.la1 at e2`. Simplify using `only at d`. Generalize the expression as in `homN (Y.U σ) (xiR (Fm.D x ι)) (wtZ 0 (2 * ((dat p i).p + (dat p i).q))) (f ^ 2) ⟨y.1, y.2.1⟩ = a at d ha ⊢`.
+
+Generalize the expression as in `bergOn (Y.U σ) ((Fm.D x ι).sp.W ((i : ℕ) + 1)) (Y.dict σ) Z (wtOf (dat p i) u1 0) y = G at e2 e3 ⊢`. Generalize the expression as in `GlobalTheory.EtaAn.p16 (Fm.D x ι).host.E (Fm.D x ι).R.r ((Fm.D x ι).host.g 0 * (Fm.D x ι).host.g 1) (Fm.D x ι).R.m 5 1 = P at d a2 ⊢`. Generalize the expression as in `hφ : 2 * (ReciprocityTheory.ChartRestriction.G.I2.PT.f (Fm.D x ι).host.E : ℝ) / (ReciprocityTheory.ChartRestriction.G.I2.PT.rd (Fm.D x ι).host.E ^ 2 * Real.sqrt (((Y.U σ).X y.1).firstMinimumSq y.2.1) ^ 2) = φ at d e2`. Establish `φ0 : 0 ≤ φ` using `by rw [← hφ]; positivity`. Establish `key : ∀ s t : ℝ, a ≤ Real.exp s → 3 * s ≤ P + B + t → ENNReal.ofReal (Real.exp t) ≤ G → ENNReal.ofReal a ^ 3 ≤ ENNReal.ofReal (Real.exp (P + B)) * G` using `fun s t h1 h2 h3 => by`.
+
+Use `le_trans ?_ (mul_le_mul_right h3 _)` and prove the remaining obligations. Rewrite using `[← ENNReal.ofReal_pow ha, ← ENNReal.ofReal_mul (Real.exp_pos _).le, ← Real.exp_add]`. Use `ENNReal.ofReal_le_ofReal ((pow_le_pow_left₀ ha h1 3).trans ?_)` and prove the remaining obligations. Rewrite using `[← Real.exp_nat_mul]`. Conclude with `Real.exp_le_exp.2 (by exact_mod_cast h2)`.
+
+Apply the tactic sequence `have d0 : a ≤ Real.exp (P / 625) := d.trans (Real.exp_le_exp.2 (by split_ifs <;> push_cast <;> linarith))`. Use `⟨d0.trans (Real.exp_le_exp.2 (by linarith)), ?_⟩` and prove the remaining obligations. Break down `lt_or_ge ((Y.d.l₂.M : ℝ) * ((Y.U σ).X y.1).firstMinimumSq y.2.1) (Fm.L x ι).sc.b with h | h` into its components or cases. Rewrite `d` using `[if_pos (e4 h)]`. Conclude with `key _ _ d (by push_cast; linarith) (e2 h)`.
+
+Conclude with `key _ _ d0 (by linarith) (e3 h)`.
+-/
 theorem theta_function_le_bergman_kernel_alt : _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → HypothesesH → _root_.GlobalTheory.CovTop.DeepGoodness → _root_.GlobalTheory.CovTop.SizeCondition → _root_.GlobalTheory.CovTop.FlatDegreeCondition → _root_.GlobalTheory.CovTop.CoversCondition fun Fm x _ ι p i Y PP C =>
     ∀ u1, Quo p i PP u1 → ∃ β : ℝ, 0 ≤ β ∧ lenT p i PP * β ≤ C * unitE p ∧ ∀ (Z : Comp Y.d.Xo₂ Y.d.c₂)
       (xs : Fin ((dat p i).p + (dat p i).q) → LatMod (dat p i) (5 ^ 4)) (f : Rul Y.d.Xo₂ Y.d.c₂),
@@ -72,6 +89,23 @@ theorem theta_function_le_bergman_kernel_alt : _root_.GlobalTheory.CovTop.Publis
     exact key _ _ d (by push_cast; linarith) (e2 h)
   · exact key _ _ d0 (by linarith) (e3 h)
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Introduce `hP hH hD hS hF`. Use `Closed.imp (Closed.and (_root_.GlobalTheory.CovHt.KeySection.theta_function_le_bergman_kernel_alt hP hH hD hS hF) (Closed.and hF (Closed.and hS (Closed.and (_root_.GlobalTheory.CovTop.Sizes.hostN_alt 1) _root_.GlobalTheory.CovTop.WtShape.wtN_z)))) ?_` and prove the remaining obligations. Introduce and unpack `eps Fm CH - ⟨⟨C₁, c₁, h₁⟩, ⟨_, -, h₂⟩, ⟨_, -, h₃⟩, ⟨_, -, h₄⟩, ⟨_, -, h₅⟩⟩`. Take `⟨x0, h⟩` from `h₁.and (h₂.and (h₃.and (h₄.and h₅)))`. Use `⟨C₁ + 10, by linarith, x0, fun x hx hle ι p hp i hi Y hY u1 hu => ?_⟩` and prove the remaining obligations.
+
+Take `⟨h₁, h₂, h₃, h₄, h₅⟩` from `h x hx hle ι p hp`. Take `⟨β, b1, b2, b3⟩` from `h₁ i hi Y hY u1 hu`. Establish `hN` using `h₄ i`. Establish `hW` using `h₅ i`. Establish `hL` using `GlobalTheory.LawsDeep.laws_deep _ p.T _ Y _ _ p.fw.laws ⟨by omega, by omega⟩ hY.1`.
+
+Establish `hM : 5 ^ 4 ∣ Y.d.l₂.M`. Rewrite using `[hY.1.lev.1.2.1, hY.1.pd]`. Conclude with `((pow_dvd_pow_of_dvd (by norm_num : 5 ∣ 15) 4).trans (pow_dvd_pow 15 (GlobalTheory.ThetaSteep.four_le_expL hN.big.2.1))).mul_left _`. Establish `hL1 : 1 ≤ (Fm.L x ι).sc.L` using `by linarith [hN.big.2.1]`. Establish `hf : (1 : ℝ) ≤ (Fm.D x ι).R.f` using `by exact_mod_cast le_trans (by norm_num) hN.f8`.
+
+Establish `hr : (1 : ℝ) ≤ (Fm.D x ι).R.r` using `by exact_mod_cast hW.sig.2.2 ▸ hL.pos`. Establish `hPP : 0 ≤ (Fm.parT x hx ι).PP` using `le_trans (by positivity) hN.ppLow`. Establish `hT : lenT p i (Fm.parT x hx ι).PP * (Fm.parT x hx ι).PP ≤ unitE p`. Establish `hD : (1 : ℝ) ≤ dimFlag (dat p i)`. Rewrite using `[hW.dim]`.
+
+Establish `m2` using `(Fm.D x ι).R.two_le_m`. Establish `k3` using `(Fm.D x ι).R.m_add_three_le_k`. Establish `f8` using `hN.f8`. Conclude with `Nat.mul_pos (by omega) (Nat.choose_pos (by unfold Ranks.r; omega))` after adjusting the coercions. Use `le_trans ?_ (hW.what₂.2.trans (h₃ i).2.1)` and prove the remaining obligations.
+
+Rewrite using `[mul_comm, mul_assoc _ _ (Fm.L x ι).sc.L]`. Conclude with `le_mul_of_one_le_right (by positivity) (one_le_mul_of_one_le_of_one_le (one_le_pow₀ hD) hL1)`. Establish `hu0 : 0 ≤ (lenT p i (Fm.parT x hx ι).PP : ℝ) * β` using `by positivity`. Use `⟨β / 2 + 10 * (Fm.parT x hx ι).PP, by positivity, by linarith, fun Z => ?_⟩` and prove the remaining obligations. Take `⟨S, hS⟩` from `exists_twist (h₂ i hi Y hY) Z (hasPts Y.U hL.pos hL.good hL.unf Z) (12 * (((dat p i).p + (dat p i).q : ℕ) : ℤ))`.
+
+Take `⟨θ, e, t, k1, k2, k3, k4⟩` from `exists_section Y.U (xiR (Fm.D x ι)) (fun _ => (Fm.D x ι).sp.W ((i : ℕ) + 1)) Y.dict hL hM Z S u1 β _ (b3 Z)`. Use `⟨θ, e, t, k1, fun la T io e₀ ho y hy _ => k2 la T io e₀ ho y hy, k3, ?_⟩` and prove the remaining obligations. Establish `hc` using `twist_cost_le hf hr hL1 (Nat.cast_nonneg (dat p i).p) (Nat.cast_nonneg (dat p i).q) (by exact_mod_cast hW.sig.2.2) hW.om hN.ppLow`. Rewrite using `[k4, hS, ← Nat.card_eq_fintype_card, hW.card, hW.sig.2.2]`. Use `push_cast`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem cover_height_section_bound_alt : _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → HypothesesH → _root_.GlobalTheory.CovTop.DeepGoodness → _root_.GlobalTheory.CovTop.SizeCondition → _root_.GlobalTheory.CovTop.FlatDegreeCondition → (_root_.GlobalTheory.CovTop.CoversCondition fun Fm x _ ι p i Y PP C => ∀ u1, Quo p i PP u1 → ∃ cc : ℝ, 0 ≤ cc ∧ lenT p i PP * cc ≤ C * unitE p ∧ ∀ Z : Comp Y.d.Xo₂ Y.d.c₂, ∃ (θ : Rul Y.d.Xo₂ Y.d.c₂) (e : HeightOneSpectrum (𝓞 Y.d.c₂.F) →₀ ℝ) (t : (Y.d.c₂.F →+* ℂ) → ℝ), Carries Y.U Z u1 (uPrime (dat p i) u1) θ ∧ (∀ (la : HeightOneSpectrum (𝓞 Y.d.c₂.F)) (T : CDVR) (io : Y.d.c₂.F →+* T.Fr) (e₀ : ℕ), OverLa la T.V io e₀ → ∀ y : IntFr Y.d.Xo₂ Y.d.c₂ T io, y.IsAlg → (∃ (G' : WTZ (Fm.D x ι).host.E), ∃ f ∈ cuspOn Y.U Z G', evI y f ≠ 0) → ∀ φ : ℝ, GlobalTheory.SlopeRec.HasPhi y φ → ((8 / 2500 * φ / e₀ - 8 * e la : ℝ) : EReal) ≤ nval T.V e₀ (evI y θ)) ∧ InfBd Y.U (xiR (Fm.D x ι)) (fun _ => (Fm.D x ι).sp.W ((i : ℕ) + 1)) Y.dict Z (wtOf (dat p i) u1 0) (wtOf (dat p i) ((8 : ℤ) • (u1 - uPrime (dat p i) u1)) 0) 8 θ t ∧ cost e t ≤ cc) := by
   intro hP hH hD hS hF
   refine Closed.imp (Closed.and (_root_.GlobalTheory.CovHt.KeySection.theta_function_le_bergman_kernel_alt hP hH hD hS hF) (Closed.and hF (Closed.and hS
@@ -120,6 +154,9 @@ end
 section
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Pj Formalism.BasicNotions.TH Formalism.L2.Theta ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.FD GlobalTheory.AllWt GlobalTheory.CompHt GlobalTheory.CovTop GlobalTheory.BigTop GlobalTheory.CovHt
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.CovHt.KeySection.cover_height_section_bound_alt | exact _root_.GlobalTheory.CovHt.KeySection.cover_height_section_bound_alt | (intros; apply _root_.GlobalTheory.CovHt.KeySection.cover_height_section_bound_alt <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_section_bounded_by_bergman_kernel_alt : _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → HypothesesH → _root_.GlobalTheory.CovTop.DeepGoodness → _root_.GlobalTheory.CovTop.SizeCondition → _root_.GlobalTheory.CovTop.FlatDegreeCondition → (_root_.GlobalTheory.CovTop.CoversCondition fun Fm x _ ι p i Y PP C => ∀ u1, Quo p i PP u1 → ∃ cc : ℝ, 0 ≤ cc ∧ lenT p i PP * cc ≤ C * unitE p ∧ ∀ Z : Comp Y.d.Xo₂ Y.d.c₂, ∃ (θ : Rul Y.d.Xo₂ Y.d.c₂) (e : HeightOneSpectrum (𝓞 Y.d.c₂.F) →₀ ℝ) (t : (Y.d.c₂.F →+* ℂ) → ℝ), Carries Y.U Z u1 (uPrime (dat p i) u1) θ ∧ (∀ (la : HeightOneSpectrum (𝓞 Y.d.c₂.F)) (T : CDVR) (io : Y.d.c₂.F →+* T.Fr) (e₀ : ℕ), OverLa la T.V io e₀ → ∀ y : IntFr Y.d.Xo₂ Y.d.c₂ T io, y.IsAlg → (∃ (G' : WTZ (Fm.D x ι).host.E), ∃ f ∈ cuspOn Y.U Z G', evI y f ≠ 0) → ∀ φ : ℝ, GlobalTheory.SlopeRec.HasPhi y φ → ((8 / 2500 * φ / e₀ - 8 * e la : ℝ) : EReal) ≤ nval T.V e₀ (evI y θ)) ∧ InfBd Y.U (xiR (Fm.D x ι)) (fun _ => (Fm.D x ι).sp.W ((i : ℕ) + 1)) Y.dict Z (wtOf (dat p i) u1 0) (wtOf (dat p i) ((8 : ℤ) • (u1 - uPrime (dat p i) u1)) 0) 8 θ t ∧ cost e t ≤ cc) := by
   first | exact @_root_.GlobalTheory.CovHt.KeySection.cover_height_section_bound_alt | exact _root_.GlobalTheory.CovHt.KeySection.cover_height_section_bound_alt | (intros; apply _root_.GlobalTheory.CovHt.KeySection.cover_height_section_bound_alt <;> assumption)
 end

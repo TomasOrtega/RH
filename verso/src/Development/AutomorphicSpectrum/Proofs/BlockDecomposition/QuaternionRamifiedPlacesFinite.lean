@@ -8,6 +8,9 @@ open scoped TensorProduct Quaternion
 
 namespace GlobalTheory.CompanionTheory.PlaneSA
 
+/- English proof (translation)
+Use `⟨⟨x, y, 1, 0⟩, ?_, fun hq => ?_⟩` and prove the remaining obligations. Simplify using `only [qn]`. Rewrite using `[← h]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `one_ne_zero (congrArg QuaternionAlgebra.imJ hq : (1 : K) = 0)`.
+-/
 theorem exists_isotropic_of_sq_sub_mul_sq {F K : Type} [Field F] [Field K] [Algebra F K] {d β : F} {x y : K}
     (h : x ^ 2 - algebraMap F K d * y ^ 2 = algebraMap F K β) :
     ∃ q : Q d β K, qn q = 0 ∧ q ≠ 0 := by
@@ -17,6 +20,11 @@ theorem exists_isotropic_of_sq_sub_mul_sq {F K : Type} [Field F] [Field K] [Alge
     ring
   · exact one_ne_zero (congrArg QuaternionAlgebra.imJ hq : (1 : K) = 0)
 
+/- English proof (translation)
+Establish `hB` using `GroundTheory.Automorphic.eventually_exists_sq_sub_mul_sq hd hβ`. Rewrite `hB` using `[Filter.eventually_cofinite]`. Use `((Set.finite_univ (α := InfinitePlace F)).image Sum.inl |>.union (hB.image Sum.inr)).subset ?_` and prove the remaining obligations. Introduce and unpack `(w | v) hu`. Conclude with `Or.inl ⟨w, Set.mem_univ _, rfl⟩`.
+
+Use `Or.inr ⟨v, ?_, rfl⟩` and prove the remaining obligations. Introduce and unpack `⟨x, y, hxy⟩`. Take `⟨q, hq0, hq⟩` from `exists_isotropic_of_sq_sub_mul_sq (F := F) (K := Kp (Sum.inr v : Pl F)) (d := d) (β := β) (x := x) (y := y) hxy`. Conclude with `hq (hu q hq0)`.
+-/
 theorem finite_anisotropic_places {F : Type} [Field F] [NumberField F] (d β : F)
     (hd : ∀ r : F, r ^ 2 ≠ d) (hβ : β ≠ 0) :
     {u : Pl F | ∀ x : Q d β (Kp u), qn x = 0 → x = 0}.Finite := by

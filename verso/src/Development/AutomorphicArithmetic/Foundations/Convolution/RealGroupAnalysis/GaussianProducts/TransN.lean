@@ -6,6 +6,9 @@ open Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual GlobalTheory.CuspR
 open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.G
 open scoped Classical ENNReal nonZeroDivisors
 
+/- English proof (translation)
+Establish `hd : Matrix.GeneralLinearGroup.det (nE D u) = 1`. Conclude with `Units.ext (nU (D.mkE (u 0) (u 1))).2`. Simplify using `only [nu, map_mul, hd, one_mul]`.
+-/
 private theorem nu_nE {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (D : Dat F E) (u : Fin 2 → A F) (h : GL (Fin 2) (A E)) :
     nu F (nE D u * h) = nu F h := by
@@ -13,10 +16,18 @@ private theorem nu_nE {F E : Type} [Field F] [NumberField F] [Field E] [NumberFi
     exact Units.ext (nU (D.mkE (u 0) (u 1))).2
   simp only [nu, map_mul, hd, one_mul]
 
+/- English proof (translation)
+Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [cD]`.
+-/
 private theorem cD_unit {F : Type} [Field F] [NumberField F] (g : G1 F) : cD (1 : (A F)ˣ) g = g := by
   ext i j
   fin_cases i <;> fin_cases j <;> simp [cD]
 
+/- English proof (translation)
+Establish `hn : nu F (nE D u) = 1`. Use `nu_nE D u 1` as an intermediate fact. Rewrite `this` using `[mul_one]`. Rewrite using `[this]`. Simplify using `[nu]`.
+
+Establish `hc` using `W.comm (nE D u) g`. Rewrite `hc` using `[hn, cD_unit]`. Rewrite using `[map_mul, Module.End.mul_apply]`. Conclude with `(LinearMap.congr_fun hc (W.L h φ)).symm`.
+-/
 private theorem om_L {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     [IsTotallyReal F] [IsTotallyComplex E] {D : Dat F E} (W : Weil D)
     (u : Fin 2 → A F) (h : GL (Fin 2) (A E)) (φ : S4 F) (g : G1 F) :
@@ -31,6 +42,19 @@ private theorem om_L {F E : Type} [Field F] [NumberField F] [Field E] [NumberFie
   rw [map_mul, Module.End.mul_apply]
   exact (LinearMap.congr_fun hc (W.L h φ)).symm
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ _ D W M f φ h u`. Establish `hH : St.Hat W` using `hatSt F E D W`. Establish `hnu` using `nu_nE D u h`. Prove the components needed by the constructor for the conclusion. Unfold `T0`.
+
+Use `setIntegral_congr_fun M.meas fun g _ => ?_` and prove the remaining obligations. Establish `hrow : ThRow 0 0 (W.Om g (W.L (nE D u * h) φ)).1 = ThRow 0 0 (W.Om g (W.L h φ)).1`. Rewrite using `[om_L]`. Unfold `ThRow`. Use `tsum_congr fun ξ => ?_` and prove the remaining obligations.
+
+Use `hH.nE (u 0) (u 1) (W.Om g (W.L h φ)) 0 (rt (ξ 0)) (rt (ξ 1))` as an intermediate fact. Simplify `this` using `[nE, zero_mul, neg_zero, ψ]`. Simplify using `only [hnu, hrow]`. Introduce `ξ`. Establish `hpt : ∀ g, wx W f φ (nE D u * h) ξ g = chi D.δ ξ u * wx W f φ h ξ g`.
+
+Introduce `g`. Unfold `wx`. Rewrite using `[hnu, om_L]`. Use `hH.nE (u 0) (u 1) (W.Om g (W.L h φ)) 1 (rt (ξ 0)) (rt (ξ 1))` as an intermediate fact. Establish `e : hat (W.L (nE D u) (W.Om g (W.L h φ))).1 (pt ξ) = chi D.δ ξ u * hat (W.Om g (W.L h φ)).1 (pt ξ)`.
+
+Simplify `this` using `only [one_mul, chi, pt, nE]`. Rewrite using `[e]`. Expand and normalize the polynomial expressions, which then agree. Unfold `Wx Meas.I0`. Rewrite using `[← integral_const_mul]`.
+
+Use `integral_congr_ae (Filter.Eventually.of_forall fun p => ?_)` and prove the remaining obligations. Simplify using `only [iw, hpt]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem UpperTheory.ConvolutionTheory.R2.G.transN :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E] (D : Dat F E) (W : Weil D) (M : Meas F) (f : GL (Fin 2) (A F) → ℂ) (φ : S4 F) (h : GL (Fin 2) (A E)) (u : Fin 2 → A F), T0 W M f φ (nE D u * h) = T0 W M f φ h ∧
     ∀ ξ, Wx W M f φ (nE D u * h) ξ = chi D.δ ξ u * Wx W M f φ h ξ := by

@@ -12,6 +12,21 @@ open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G Recip
 
 namespace GlobalTheory.CurveDegZero
 
+/- English proof (translation)
+Introduce `H k _ X p D hX k' _ _ _ ρ hρ M hk' h x hh hx hx0`. Use `hX.isIntegral` as an intermediate fact. Take `⟨W, j, _, _, rfl⟩` from `exists_isClosedImmersion_genericPoint x`. Establish `hc1 : CharZero (X.residueField (j (genericPoint W)))` using `hx.1`. Establish `hcW : CharZero (W.residueField (genericPoint W))` using `(RingHom.charZero_iff (j.residueFieldMap (genericPoint W)).hom.injective).1 hc1`.
+
+Establish `hc : CharZero Γ(W, ⊤)` using `(W.Γevaluation (genericPoint W)).hom.charZero`. Establish `hr : Set.range j = closure {j (genericPoint W)}`. Establish `h₁` using `(genericPoint_spec W).image j.continuous`. Rewrite `h₁` using `[Set.image_univ, j.isClosedEmbedding.isClosed_range.closure_eq]`. Conclude with `h₁.def.symm`.
+
+Establish `hd : topologicalKrullDim W = ((0 : ℕ) + 1 : ℕ)` using `(topologicalKrullDim_eq_of_isEmbedding j.isClosedEmbedding.isEmbedding hr).symm.trans hx.2`. Establish `hW : IsArithVar (j ≫ p) 0` using `hX.of_isClosedImmersion j hc hd`. Establish `hgen : ρ (j (genericPoint W)) = genericPoint (Sp k')` using `SmallSecHeight.eq_genericPoint hk' (ρ.residueFieldMap (j (genericPoint W))).hom.charZero`. Establish `hd' : topologicalKrullDim (closure ({ρ (j (genericPoint W))} : Set (Sp k'))) = ((0 : ℕ) + 1 : ℕ)`. Rewrite using `[hgen, (genericPoint_spec (Sp k')).def]`.
+
+Conclude with `(IsHomeomorph.topologicalKrullDim_eq _ (Homeomorph.Set.univ _).isHomeomorph).trans hk'.dim_eq`. Establish `hNF : NumberField (W.residueField (genericPoint W))` using `SmallSecHeight.numberField hW hcW`. Establish `hm : ρ.residueDegree (j (genericPoint W)) ≠ 0`. Establish `e : (j ≫ ρ).residueDegree (genericPoint W) = ρ.residueDegree (j (genericPoint W))`. Rewrite using `[GlobalTheory.CurveDegreesCompare.residueDegree_comp, GlobalTheory.Published.residueDegree_of_isClosedImmersion j, mul_one]`.
+
+Rewrite using `[← e, PullbackFinitePoint.residueDegree_ne_zero_iff_finite]`. Establish `: CharZero ((Sp k').residueField ((j ≫ ρ) (genericPoint W)))` using `((j ≫ ρ).residueFieldMap (genericPoint W)).hom.charZero`. Use `letI := ((j ≫ ρ).residueFieldMap (genericPoint W)).hom.toAlgebra`. Express the relevant statement in the definitionally equal form `Module.Finite _ _`. Conclude with `Module.Finite.of_restrictScalars_finite ℚ _ _`.
+
+Take `⟨h₀, hh₀, -⟩` from `H.existsUnique hk' M`. Establish `e` using `H.height_pull hk' hX ρ hρ hh₀ hh j hc hd hd' hm`. Rewrite `e` using `[hx0, eq_comm, mul_eq_zero]`. Use `⟨h₀, hh₀, ?_⟩` and prove the remaining obligations. Rewrite using `[← hgen]`.
+
+Conclude with `e.resolve_left (by exact_mod_cast hm)`.
+-/
 theorem isSelfInter_zero : GlobalTheory.Published.CycleHeights → ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) (D : ℕ), IsArithVar p D →
     ∀ (k' : Type) [CommRing k'] [IsDomain k'] [Algebra k k'] (ρ : X ⟶ Sp k') (hρ : ρ ≫ spMap (algebraMap k k') = p)
     (M : HermLB (spMap (algebraMap k k'))), IsArithVar (spMap (algebraMap k k')) 0 →

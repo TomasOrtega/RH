@@ -10,6 +10,15 @@ open GlobalTheory GlobalTheory.QCoh GlobalTheory.CechPic GlobalTheory.Vert Globa
 
 namespace GlobalTheory.DomThird
 
+/- English proof (translation)
+Introduce `O _ _ _ p _ _ _ B B₁ B₂ f₁ f₂ e₁ e₂`. Take `⟨Z, h₁, h₂, w, hc⟩` from `GlobalTheory.T.model_product_closed_immersion O B B₁ B₂ f₁ f₂`. Establish `hd` using `GlobalTheory.T.relative_dim_closed_immersion_product O B B₁ B₂ Z f₁ f₂ h₁ h₂ w hc`. Take `⟨Z', n, hn, n0⟩` from `GlobalTheory.T.exists_normalization_relative_dim_zero O Z`. Establish `l₁` using `f₁.relDim_le`.
+
+Establish `l₂` using `f₂.relDim_le`. Establish `l₃` using `h₁.relDim_le`. Establish `l₄` using `n.relDim_le`. Simplify using `only [GlobalTheory.Vert.Model.Hom.relDim] at e₁ e₂ n0 ⊢`. Use `⟨Z', n.comp h₁, n.comp h₂, hn, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `Z'.relDim - B₁.relDim = 0`. Use linear arithmetic over natural numbers and integers. Express the relevant statement in the definitionally equal form `Z'.relDim - B₂.relDim = 0`. Use linear arithmetic over natural numbers and integers. Express the relevant statement in the definitionally equal form `(n.f ≫ h₁.f) ≫ f₁.f = (n.f ≫ h₂.f) ≫ f₂.f`.
+
+Rewrite using `[Category.assoc, Category.assoc, w]`.
+-/
 theorem exists_normal_dominating : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (p : ℕ) [Fact p.Prime] [CharZero O] [CharP (ResidueField O) p] (B B₁ B₂ : GlobalTheory.Vert.Model O) (f₁ : GlobalTheory.Vert.Model.Hom B₁ B) (f₂ : GlobalTheory.Vert.Model.Hom B₂ B), f₁.relDim = 0 → f₂.relDim = 0 → ∃ (B₃ : GlobalTheory.Vert.Model O) (h₁ : GlobalTheory.Vert.Model.Hom B₃ B₁) (h₂ : GlobalTheory.Vert.Model.Hom B₃ B₂), GlobalTheory.IsNormalScheme B₃.X ∧ h₁.relDim = 0 ∧ h₂.relDim = 0 ∧ h₁.f ≫ f₁.f = h₂.f ≫ f₂.f := by
   intro O _ _ _ p _ _ _ B B₁ B₂ f₁ f₂ e₁ e₂
   obtain ⟨Z, h₁, h₂, w, hc⟩ := GlobalTheory.T.model_product_closed_immersion O B B₁ B₂ f₁ f₂

@@ -9,6 +9,9 @@ open GlobalTheory.AboveL
 
 namespace GlobalTheory.AboveL
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ _ _ _ _ h h'` and use `CG.HasSat.unique h h'`.
+-/
 theorem cg_hasSat_unique : ∀ (K : Type) [Field K] [NumberField K] [IsTotallyComplex K] (a : ℕ) (π : CG K a) (w : HeightOneSpectrum (𝓞 K)) (B B' : Multiset ℂˣ), π.HasSat w B → π.HasSat w B' → B = B' :=
   fun _ _ _ _ _ _ _ _ _ h h' => CG.HasSat.unique h h'
 

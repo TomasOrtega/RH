@@ -12,12 +12,20 @@ noncomputable section
 
 namespace ChartLowerBlockBound
 
+/- English proof (translation)
+Simplify using `[PeriodChartData.period, Matrix.add_apply, Matrix.sum_apply, Matrix.smul_apply, Matrix.map_apply, T.support _ i l (Or.inl h)]`.
+-/
 theorem period_apply_of_le (D : PeriodChartData) (T : ToricBlock D) (z : Fin D.n → ℂ)
     (ℓ : Fin D.a → ℂ) (i l : Fin D.g) (h : T.r ≤ i.val) :
     D.period z ℓ i l = D.τ0 z i l := by
   simp [PeriodChartData.period, Matrix.add_apply, Matrix.sum_apply, Matrix.smul_apply,
     Matrix.map_apply, T.support _ i l (Or.inl h)]
 
+/- English proof (translation)
+Establish `hc : IsCompact (Prod.fst '' D.K)` using `D.isCompact_K.image continuous_fst`. Establish `hsub : Prod.fst '' D.K ⊆ D.U`. Introduce and unpack `_ ⟨p, hp, rfl⟩`. Conclude with `(D.K_subset hp).1`. Establish `hcont : ContinuousOn (fun z => D.τ0 z i l) (Prod.fst '' D.K)` using `((D.τ0_analytic i l).continuousOn).mono hsub`.
+
+Take `⟨C, hC⟩` from `hc.exists_bound_of_continuousOn hcont`. Conclude with `⟨C, fun p hp => hC p.1 ⟨p, hp, rfl⟩⟩`.
+-/
 theorem entry_bound (D : PeriodChartData) (i l : Fin D.g) :
     ∃ C : ℝ, ∀ p ∈ D.K, ‖D.τ0 p.1 i l‖ ≤ C := by
   have hc : IsCompact (Prod.fst '' D.K) := D.isCompact_K.image continuous_fst
@@ -31,6 +39,13 @@ theorem entry_bound (D : PeriodChartData) (i l : Fin D.g) :
 
 end ChartLowerBlockBound
 
+/- English proof (translation)
+Introduce `D T`. Use `choose C hC using ChartLowerBlockBound.entry_bound D`. Use `⟨1 + ∑ i, ∑ l, |C i l|, ?_, ?_⟩` and prove the remaining obligations. Establish `: 0 ≤ ∑ i, ∑ l, |C i l|` using `Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => abs_nonneg _`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Introduce `p hp ℓ i l hi`. Rewrite using `[ChartLowerBlockBound.period_apply_of_le D T p.1 ℓ i l hi]`. Establish `h1 : |C i l| ≤ ∑ l', |C i l'|` using `Finset.single_le_sum (f := fun l' => |C i l'|) (fun _ _ => abs_nonneg _) (Finset.mem_univ l)`. Establish `h2 : ∑ l', |C i l'| ≤ ∑ i', ∑ l', |C i' l'|` using `Finset.single_le_sum (f := fun i' => ∑ l', |C i' l'|) (fun _ _ => Finset.sum_nonneg fun _ _ => abs_nonneg _) (Finset.mem_univ i)`. Establish `h3` using `hC i l p hp`.
+
+Establish `h4` using `le_abs_self (C i l)`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem ChartLowerBlockBound.proof : ChartLowerBlockBound.Statement := by
   intro D T
   choose C hC using ChartLowerBlockBound.entry_bound D

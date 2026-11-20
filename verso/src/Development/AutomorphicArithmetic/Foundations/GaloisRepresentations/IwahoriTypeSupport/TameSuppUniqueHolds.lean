@@ -15,8 +15,14 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Iwaho
 
 namespace UpperTheory.Gal.TypesAndIwahori
 
+/- English proof (translation)
+The claim follows from `suppOfType_of loc_holds (typeToIw finTri)`.
+-/
 theorem suppOfType_holds : SuppOfType := suppOfType_of loc_holds (typeToIw finTri)
 
+/- English proof (translation)
+The claim follows from `topB_of (jacOfType loc_holds) grpFacts (jacProd loc_holds)`.
+-/
 theorem topB_holds : TopB := topB_of (jacOfType loc_holds) grpFacts (jacProd loc_holds)
 
 end UpperTheory.Gal.TypesAndIwahori

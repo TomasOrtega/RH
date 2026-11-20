@@ -9,6 +9,31 @@ open UpperTheory.Gal.Int.Geo (Lv IsTrans Integ KS Mem FEt KSEx KSNice)
 open scoped TensorProduct
 universe u
 
+/- English proof (translation)
+Introduce `hG p _ D G L R _ _ gb S s N o k _ t I hI u hu`. Establish `hNpos : 0 < (N : ℕ)`. Use `N.2.1` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hNcop : (N : ℕ).Coprime p` using `N.2.2`.
+
+Establish `hu1 : u ∈ L.KN 1` using `UpperTheory.Gal.Int.Geo.KN_anti (one_dvd _) hu`. Establish `hui1 : u⁻¹ ∈ L.KN 1` using `inv_mem hu1`. Take `⟨g, hg⟩` from `hG p D G L u⁻¹ hui1`. Take `⟨J, hJ⟩` from `UpperTheory.exists_gTateIso_twist_of_similitude I g`. Establish `intU` using `UpperTheory.Gal.Int.Geo.integ_of_mem hu1`.
+
+Establish `intUi` using `UpperTheory.Gal.Int.Geo.integ_of_mem hui1`. Unfold `UpperTheory.Gal.Int.Geo.Integ at intU intUi`. Establish `hcong : L.CongOne (N : ℕ) u⁻¹`. Unfold `GlobalTheory.LKGeo.Link.KN at hu`. Simplify using `only [Subgroup.mem_mk, Submonoid.mem_mk, Subsemigroup.mem_mk, Set.mem_setOf_eq] at hu`.
+
+Conclude with `hu.2`. Unfold `GlobalTheory.LKGeo.Link.CongOne at hcong`. Establish `inv_act : ∀ v, L.actG u⁻¹ (L.actG u v) = v`. Introduce `v`. Rewrite using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]`.
+
+Establish `act_inv : ∀ v, L.actG u (L.actG u⁻¹ v) = v`. Introduce `v`. Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`. Use `⟨J, ?_, ?_⟩` and prove the remaining obligations. Unfold `UpperTheory.Gal.G3.Ind at hI ⊢`.
+
+Introduce `y`. Rewrite using `[hI y, hJ _ hNpos y]`. Use `symm`. Use `(HeckeRestrict.ev_eq_iff I _ hNpos (g.f N y) y).mpr ?_` and prove the remaining obligations. Take `⟨w, hw, hgw⟩` from `hg N hNpos hNcop y`.
+
+Take `⟨w', hw', hcw⟩` from `hcong (inAf D y) (GlobalTheory.HeckeApprox.inAf_mem D y)`. Apply `LatDiv.eq_nsmul_of_inAf_eq_nsmul p D _ N hNpos hNcop (w' - w) (sub_mem hw' hw)` to reduce the goal to its premises. Establish `e` using `hgw.symm.trans hcw`. Rewrite using `[show inAf D (g.f N y - y) = inAf D (g.f N y) - inAf D y from GlobalTheory.HeckeApprox.inAf_sub D _ _, smul_sub]`. Combine the equalities or inequalities in the displayed calculation.
+
+Unfold `UpperTheory.Gal.G3.Rel`. Introduce `n hn hnp x y`. Rewrite using `[Category.comp_id, hJ n hn y]`. Use `(HeckeRestrict.ev_eq_iff I n hn x (g.f n y)).trans ?_` and prove the remaining obligations. Take `⟨w, hw, hgw⟩` from `hg n hn hnp y`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz⟩`. Use `⟨L.actG u (inAf D z - w), intU _ (sub_mem (GlobalTheory.HeckeApprox.inAf_mem D z) hw), ?_⟩` and prove the remaining obligations. Establish `h1` using `GlobalTheory.HeckeApprox.inAf_add D (g.f n y) (n • z)`. Establish `h2` using `GlobalTheory.HeckeApprox.inAf_nsmul D n z`.
+
+Establish `hx : inAf D x = inAf D (g.f n y) + n • inAf D z` using `(congrArg (inAf D) (eq_add_of_sub_eq' hz)).trans (h1.trans (congrArg (inAf D (g.f n y) + ·) h2))`. Establish `e1 : inAf D (g.f n y) = L.actG u⁻¹ (inAf D y) - n • w`. Rewrite using `[hgw]`. Normalize the expressions using the abelian group laws. Rewrite using `[hx, e1, map_add, map_sub, map_nsmul, map_nsmul, act_inv, map_sub, smul_sub]`.
+
+Normalize the expressions using the abelian group laws. Introduce and unpack `⟨v, hv, hxv⟩`. Apply `LatDiv.eq_nsmul_of_inAf_eq_nsmul p D _ n hn hnp (w + L.actG u⁻¹ v) (add_mem hw (intUi _ hv))` to reduce the goal to its premises. Establish `hx : inAf D x = L.actG u⁻¹ (inAf D y) + n • L.actG u⁻¹ v`. Rewrite using `[← map_nsmul, ← map_add, ← hxv, inv_act]`.
+
+Use `(GlobalTheory.HeckeApprox.inAf_sub D x (g.f n y)).trans ?_` and prove the remaining obligations. Rewrite using `[hx, hgw, smul_add]`. Normalize the expressions using the abelian group laws.
+-/
 theorem UpperTheory.Gal.G3.pTateTwist :
     GSimOf → TateTwist := by
   intro hG p _ D G L R _ _ gb S s N o k _ t I hI u hu

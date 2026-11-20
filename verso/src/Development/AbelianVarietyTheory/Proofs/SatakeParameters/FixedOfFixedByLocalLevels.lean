@@ -24,6 +24,11 @@ open GlobalTheory.Cong.AdaptLev
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {a : ℕ}
 
+/- English proof (translation)
+Establish `hinf : cInf x = 1` using `MonoidHom.mem_ker.1 hx`. Use `Subtype.ext (ga_ext ?_ ?_)` and prove the remaining obligations. Conclude with `hinf.trans (map_one _).symm`. Rewrite using `[Subgroup.coe_one, map_one]`. Use `Units.ext (Matrix.ext fun i j => FiniteAdeleRing.ext (R := 𝓞 E) E fun u => ?_)` and prove the remaining obligations.
+
+Use `congrArg (fun g : GL (Fin a) (u.adicCompletion E) => g.val i j) (h u)` as an intermediate fact. Simplify using `only [Units.val_one, Matrix.one_apply] at this`. Use `this.trans ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs with hij <;> simp [hij]`.
+-/
 theorem eq_one_of_forall_cLoc {x : UA E a} (hx : x ∈ finU E a) (h : ∀ u, cLoc u x = 1) : x = 1 := by
   have hinf : cInf x = 1 := MonoidHom.mem_ker.1 hx
   refine Subtype.ext (ga_ext ?_ ?_)
@@ -35,6 +40,13 @@ theorem eq_one_of_forall_cLoc {x : UA E a} (hx : x ∈ finU E a) (h : ∀ u, cLo
     refine this.trans ?_
     split_ifs with hij <;> simp [hij]
 
+/- English proof (translation)
+Establish `e' : ∀ k : finU E a, k ∈ (GroundTheory.Automorphic.AdelicGLn.integralFiniteGL E a).comap (GlobalTheory.BCT.GlobLev.finPart E a) ↔ ∀ u, cLoc u k.1 ∈ GlobalTheory.LFun.KGL u a`. Introduce `k`. Rewrite using `[Subgroup.mem_comap, GroundTheory.Automorphic.AdelicGLn.mem_integralFiniteGL_iff, ← map_inv]`. Simplify using `only [GlobalTheory.BCT.GlobLev.mem_KGL_iff_val, ← map_inv, GroundTheory.Global.mem_integralFiniteAdeles]`. Conclude with `⟨fun h u => ⟨fun i j => h.1 i j u, fun i j => h.2 i j u⟩, fun h => ⟨fun i j u => (h u).1 i j, fun i j u => (h u).2 i j⟩⟩`.
+
+Establish `e : {k : finU E a | ∀ u, cLoc u k.1 ∈ GlobalTheory.LFun.KGL u a} = ((GroundTheory.Automorphic.AdelicGLn.integralFiniteGL E a).comap (GlobalTheory.BCT.GlobLev.finPart E a) : Set (finU E a))`. Use extensionality with `k`. Conclude with `(e' k).symm`. Establish `hO : IsOpen ((GroundTheory.Automorphic.AdelicGLn.integralFiniteGL E a).comap (GlobalTheory.BCT.GlobLev.finPart E a) : Set (finU E a))` using `(GroundTheory.Automorphic.AdelicGLn.isOpen_integralFiniteGL E a).preimage GlobalTheory.BCT.GlobLev.continuous_finPart`. Rewrite using `[e]`.
+
+Use `IsCompact.of_isClosed_subset (GlobalTheory.BCT.GlobLev.isClosedEmbedding_finU.isCompact_preimage ((GroundTheory.Automorphic.AdelicGLn.isCompact_integralFiniteGL E a).image GlobalTheory.BCT.GlobLev.continuous_finGL_ad)) (Subgroup.isClosed_of_isOpen _ hO) fun x hx => ⟨GlobalTheory. …` and prove the remaining obligations. Establish `h1 : Matrix.GeneralLinearGroup.map (pInf E) ((x : UA E a) : GA E a) = 1` using `x.2`. Conclude with `ga_ext (by rw [pInf_finGL, h1]) (by rw [pFin_finGL]; rfl)`.
+-/
 theorem isCompact_integral :
     IsCompact {k : finU E a | ∀ u, cLoc u k.1 ∈ GlobalTheory.LFun.KGL u a} := by
   have e' : ∀ k : finU E a, k ∈ (GroundTheory.Automorphic.AdelicGLn.integralFiniteGL E a).comap
@@ -59,6 +71,15 @@ theorem isCompact_integral :
   have h1 : Matrix.GeneralLinearGroup.map (pInf E) ((x : UA E a) : GA E a) = 1 := x.2
   exact ga_ext (by rw [pInf_finGL, h1]) (by rw [pFin_finGL]; rfl)
 
+/- English proof (translation)
+Use `haveI : ∀ u : HeightOneSpectrum (𝓞 E), T2Space (GL (Fin a) (u.adicCompletion E)) := fun u => Units.isEmbedding_embedProduct.t2Space`. Establish `hc` using `(isCompact_integral (E := E) (a := a)).diff hφ.level`. Establish `hcov : {k : finU E a | ∀ u, cLoc u k.1 ∈ GlobalTheory.LFun.KGL u a} \ {k : finU E a | RU E a k φ = φ} ⊆ ⋃ u, {k : finU E a | cLoc u k.1 ≠ 1}`. Introduce and unpack `k ⟨-, hk⟩`. Simplify using `only [Set.mem_iUnion, Set.mem_setOf_eq]`.
+
+Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Apply `hk` to reduce the goal to its premises. Use `show RU E a k.1 φ = φ`. Rewrite using `[eq_one_of_forall_cLoc k.2 hne, map_one]`.
+
+Both sides reduce to the same expression. Take `⟨t, ht⟩` from `hc.elim_finite_subcover _ (fun u => isOpen_ne_fun ((GlobalTheory.BCT.GlobLev.continuous_cLoc u).comp continuous_subtype_val) continuous_const) hcov`. Use `⟨t, fun k hk hint h1 => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Use `ht (show (⟨k, hk⟩ : finU E a) ∈ _ from ⟨hint, hne⟩)` as an intermediate fact.
+
+Simplify using `only [Set.mem_iUnion, Set.mem_setOf_eq] at this`. Take `⟨u, hu, hne'⟩` from `this`. Conclude with `hne' (h1 u hu)`.
+-/
 theorem exists_finite_fix {φ : UA E a → ℂ} (hφ : IsAutFormU φ) :
     ∃ t : Finset (HeightOneSpectrum (𝓞 E)), ∀ k ∈ finU E a, (∀ u, cLoc u k ∈ GlobalTheory.LFun.KGL u a) →
       (∀ u ∈ t, cLoc u k = 1) → RU E a k φ = φ := by
@@ -84,6 +105,9 @@ theorem exists_finite_fix {φ : UA E a → ℂ} (hφ : IsAutFormU φ) :
   obtain ⟨u, hu, hne'⟩ := this
   exact hne' (h1 u hu)
 
+/- English proof (translation)
+Introduce `u hu`. Distinguish the cases in `hq : IsSplitAt q`. Conclude with `GlobalTheory.Cong.LevelExt.one_of_cLoc hq z h u hu`. Rewrite using `[eq_of_not_apart_of_not_split hq hu]`. Conclude with `h`.
+-/
 theorem one_of_cLoc_eq_one {q : HeightOneSpectrum (𝓞 E)} {z : UA E a} (h : cLoc q z = 1) :
     ∀ u, ¬ Apart u q → cLoc u z = 1 := by
   intro u hu
@@ -92,6 +116,19 @@ theorem one_of_cLoc_eq_one {q : HeightOneSpectrum (𝓞 E)} {z : UA E a} (h : cL
   · rw [eq_of_not_apart_of_not_split hq hu]
     exact h
 
+/- English proof (translation)
+Proceed by induction on `Q using Finset.induction_on with`. Consider the case `empty`. Introduce `x hx h1 _`. Conclude with `hS x hx (fun u => (h1 u (by simp)).2) (fun u hu => (h1 u (by simp)).1 hu)`. Consider the case `@insert q Q hqQ ih`.
+
+Introduce `x hx h1 h2`. Take `⟨y, hyl, hyφ, hyq⟩` from `h2 q (Finset.mem_insert_self q Q)`. Establish `hyf : y ∈ finU E a` using `((GlobalTheory.Cong.LevelExt.mem_locU_iff y).1 hyl).1`. Establish `hya : ∀ u, Apart u q → cLoc u y = 1` using `((GlobalTheory.Cong.LevelExt.mem_locU_iff y).1 hyl).2`. Establish `hq1 : cLoc q (y⁻¹ * x) = 1` using `by rw [map_mul, map_inv, hyq, inv_mul_cancel]`.
+
+Establish `hfib : ∀ u, ¬ Apart u q → cLoc u (y⁻¹ * x) = 1` using `one_of_cLoc_eq_one hq1`. Establish `happ : ∀ u, Apart u q → cLoc u (y⁻¹ * x) = cLoc u x` using `fun u hu => by`. Rewrite using `[map_mul, map_inv, hya u hu, inv_one, one_mul]`. Establish `key : RU E a (y⁻¹ * x) φ = φ`. Use `ih (y⁻¹ * x) (mul_mem (inv_mem hyf) hx) (fun u hu => ?_) (fun q' hq' => ?_)` and prove the remaining obligations.
+
+Distinguish the cases in `huq : Apart u q`. Rewrite using `[happ u huq]`. Conclude with `h1 u (fun p hp => by`. Break down `Finset.mem_insert.1 hp with rfl | hp` into its components or cases. Conclude with `huq`.
+
+Conclude with `hu p hp)`. Rewrite using `[hfib u huq]`. Conclude with `⟨fun _ => rfl, Subgroup.one_mem _⟩`. Distinguish the cases in `hqq : Apart q' q`. Take `⟨y', hy'l, hy'φ, hy'q⟩` from `h2 q' (Finset.mem_insert_of_mem hq')`.
+
+Conclude with `⟨y', hy'l, hy'φ, hy'q.trans (happ q' hqq).symm⟩`. Conclude with `⟨1, Subgroup.one_mem _, by rw [map_one]; rfl, by rw [map_one, hfib q' hqq]⟩`. Establish `hxe : x = y * (y⁻¹ * x)` using `by rw [mul_inv_cancel_left]`. Rewrite using `[hxe, map_mul, Module.End.mul_apply, key, hyφ]`.
+-/
 theorem peel (φ : UA E a → ℂ) (S : Set (HeightOneSpectrum (𝓞 E)))
     (hS : ∀ k ∈ finU E a, (∀ u, cLoc u k ∈ GlobalTheory.LFun.KGL u a) → (∀ u ∈ S, cLoc u k = 1) → RU E a k φ = φ)
     (Q : Finset (HeightOneSpectrum (𝓞 E))) :
@@ -132,6 +169,17 @@ end GlobalTheory.Cong.AdaptLevFix
 
 open GlobalTheory.Cong.AdaptLevFix in
 
+/- English proof (translation)
+Introduce `E _ _ _ a w₀ H hHle _ _ _ hcof φ hφ hfix x hx`. Take `⟨t, ht⟩` from `exists_finite_fix hφ`. Establish `hT : {w | ¬ H w = intU a w}.Finite` using `Filter.eventually_cofinite.1 hcof`. Set `Q : Finset (HeightOneSpectrum (𝓞 E))` to `(t ∪ hT.toFinset).filter (fun w => Apart w w₀)`. Take `⟨hxf, hx1, hxH⟩` from `mem_levelOf.1 hx`.
+
+Use `peel φ (t : Set _) (fun k hk hi h1 => ht k hk hi h1) Q x hxf (fun u hu => ?_) (fun q hq => ?_)` and prove the remaining obligations. Distinguish the cases in `hu0 : Apart u w₀`. Establish `huQ : u ∉ Q` using `fun h => hu u h rfl`. Establish `hut : u ∉ t` using `fun h => huQ (Finset.mem_filter.2 ⟨Finset.mem_union_left _ h, hu0⟩)`. Establish `huT : H u = intU a u`.
+
+Assume the negation of the conclusion as `h`. Conclude with `huQ (Finset.mem_filter.2 ⟨Finset.mem_union_right _ (hT.mem_toFinset.2 h), hu0⟩)`. Take `⟨y, hy, hyx⟩` from `hxH u hu0`. Rewrite `hy` using `[huT]`. Use `⟨fun h => absurd h hut, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← hyx]`. Conclude with `(mem_intU.1 hy).2 u (fun h => h rfl)`. Rewrite using `[hx1 u hu0]`. Conclude with `⟨fun _ => rfl, Subgroup.one_mem _⟩`. Establish `hq0 : Apart q w₀` using `(Finset.mem_filter.1 hq).2`.
+
+Take `⟨y, hy, hyx⟩` from `hxH q hq0`. Conclude with `⟨y, hHle q hy, hfix q hq0 y hy, hyx⟩`.
+-/
 theorem GlobalTheory.Cong.AdaptLev.fixed_of_levelOf : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (a : ℕ) (w₀ : HeightOneSpectrum (𝓞 E)) (H : HeightOneSpectrum (𝓞 E) → Subgroup (UA E a)), (∀ w, H w ≤ locU a w) → (∀ w u, ¬ Apart w u → H w = H u) → (∀ w, IsCompact (H w : Set (UA E a))) → (∀ w, IsOpen (((H w).subgroupOf (locU a w)) : Set (locU a w))) → (∀ᶠ w in Filter.cofinite, H w = GlobalTheory.Cong.AdaptLev.intU a w) → ∀ φ : UA E a → ℂ, IsAutFormU φ → (∀ w, Apart w w₀ → ∀ x ∈ H w, RU E a x φ = φ) → ∀ x ∈ GlobalTheory.Cong.AdaptLev.levelOf a w₀ H, RU E a x φ = φ := by
   intro E _ _ _ a w₀ H hHle _ _ _ hcof φ hφ hfix x hx
   classical

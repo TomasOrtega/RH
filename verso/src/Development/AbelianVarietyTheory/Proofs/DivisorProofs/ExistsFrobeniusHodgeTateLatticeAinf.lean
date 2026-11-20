@@ -13,11 +13,17 @@ namespace GlobalTheory.PDivLat.Frob
 variable {p : ℕ} [Fact p.Prime] {O : Type} [CommRing O] [Fact ¬IsUnit (p : O)]
   [IsAdicComplete (Ideal.span {(p : O)}) O]
 
+/- English proof (translation)
+Use extensionality with `n`. Rewrite using `[WittVector.coeff_frobenius_charP, phiInv, WittVector.map_coeff]`. Conclude with `frobeniusEquiv_symm_pow_p _ p _`.
+-/
 theorem frob_phiInv (a : Ainf p O) : WittVector.frobenius (phiInv p O a) = a := by
   ext n
   rw [WittVector.coeff_frobenius_charP, phiInv, WittVector.map_coeff]
   exact frobeniusEquiv_symm_pow_p _ p _
 
+/- English proof (translation)
+Use extensionality with `n`. Simplify using `only [phiInv, ofPadic, RingHom.coe_comp, Function.comp_apply, WittVector.map_coeff]`. Conclude with `RingHom.congr_fun (RingHom.ext_zmod (((_root_.frobeniusEquiv (PreTilt O p) p).symm : PreTilt O p →+* PreTilt O p).comp (ZMod.castHom (dvd_refl p) (PreTilt O p))) (ZMod.castHom (dvd_refl p) (PreTilt O p))) _`.
+-/
 theorem phiInv_ofPadic' (c : ℤ_[p]) : phiInv p O (ofPadic p O c) = ofPadic p O c := by
   ext n
   simp only [phiInv, ofPadic, RingHom.coe_comp, Function.comp_apply, WittVector.map_coeff]
@@ -25,6 +31,9 @@ theorem phiInv_ofPadic' (c : ℤ_[p]) : phiInv p O (ofPadic p O c) = ofPadic p O
     (((_root_.frobeniusEquiv (PreTilt O p) p).symm : PreTilt O p →+* PreTilt O p).comp
       (ZMod.castHom (dvd_refl p) (PreTilt O p))) (ZMod.castHom (dvd_refl p) (PreTilt O p))) _
 
+/- English proof (translation)
+Use `conv_lhs => rw [← phiInv_ofPadic' c]`. Conclude with `frob_phiInv _`.
+-/
 theorem frob_ofPadic (c : ℤ_[p]) :
     WittVector.frobenius (ofPadic p O c) = ofPadic p O c := by
   conv_lhs => rw [← phiInv_ofPadic' c]
@@ -60,6 +69,15 @@ end GlobalTheory.PDivLat.Frob
 
 open GlobalTheory.PDivLat.Frob in
 
+/- English proof (translation)
+Introduce `p _ C _ _ _ v O _ _ _ _ _ hv ε hε`. Take `⟨-, -, -, h0, hs, hphi⟩` from `GlobalTheory.T.ainfGhostThetaFrobIter_values_xi_mu_padic p C v O hv ε hε`. Use `⟨fun G => frobLatt G, fun G y t => rfl, fun G m => ?_⟩` and prove the remaining obligations. Use `⟨⟨xiPhiInvT ε G m.1, fun n => ?_⟩, ?_⟩` and prove the remaining obligations. Consider the cases of `n with`.
+
+Consider the case `zero => exact ⟨0, fun t => by show ghost p O 0 (xi ε * phiInv p O (m.1 t)) = _`. Rewrite using `[ghost_mul, h0, zero_mul, LinearMap.zero_apply]⟩`. Consider the case `succ k`. Take `⟨x, hx⟩` from `m.2 k`. Conclude with `⟨(p : O) • x, fun t => by show ghost p O (k + 1) (xi ε * phiInv p O (m.1 t)) = _`.
+
+Rewrite using `[ghost_mul, hs, hphi, hx, LinearMap.smul_apply, smul_eq_mul]⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `t show WittVector.frobenius (xi ε * phiInv p O (m.1 t)) = _`. Rewrite using `[map_mul, frob_phiInv]`.
+
+Both sides reduce to the same expression.
+-/
 theorem GlobalTheory.PDivLat.exists_frobenius_latt : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] [IsDomain O], v.Integers O → ∀ (ε : PreTilt O p) (hε : IsPrimitiveSystem ε), ∃ φ : ∀ G : PDivGroup p O, latt G →ₛₗ[(WittVector.frobenius : Ainf p O →+* Ainf p O)] latt G, (∀ G y t, (φ G y).1 t = WittVector.frobenius (y.1 t)) ∧ ∀ G m, ∃ n, φ G n = (WittVector.frobenius (xi ε) : Ainf p O) • m := by
   intro p _ C _ _ _ v O _ _ _ _ _ hv ε hε
   obtain ⟨-, -, -, h0, hs, hphi⟩ := GlobalTheory.T.ainfGhostThetaFrobIter_values_xi_mu_padic p C v O hv ε hε

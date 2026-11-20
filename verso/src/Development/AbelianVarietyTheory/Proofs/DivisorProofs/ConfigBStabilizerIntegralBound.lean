@@ -20,6 +20,17 @@ namespace GlobalTheory.ConeMeasSmall
 
 open GlobalTheory.HeisSchA GlobalTheory.Published.Metaplectic GlobalTheory.ConeMeasV
 
+/- English proof (translation)
+Set `p : Seminorm ℂ (SchwartzMap V ℂ)` to `(normSeminorm ℂ ℂ).comp T.toLinearMap`. Establish `hp : Continuous p` using `continuous_norm.comp T.continuous`. Take `⟨q₁, M₁, hq₁, hb₁⟩` from `GlobalTheory.PhaseLipschitz.seminorm_smulLeft_eChar_sub_le V p hp`. Take `⟨q₂, M₂, -, hb₂⟩` from `GlobalTheory.SchwartzTranslateLip.translate_sub_le V p hp`. Take `⟨q₃, M₃, -, hb₃⟩` from `GlobalTheory.SchwartzTranslateLip.translate_sub_le V q₁ hq₁`.
+
+Rewrite using `[tendsto_iff_norm_sub_tendsto_zero]`. Establish `hLn : Tendsto (fun i => ‖L i‖) 𝓕 (𝓝 0)` using `by simpa using hL.norm`. Establish `hkn : Tendsto (fun i => |k i|) 𝓕 (𝓝 0)` using `by simpa using hk.abs`. Establish `han : Tendsto (fun i => ‖a i‖) 𝓕 (𝓝 0)` using `by simpa using ha.norm`. Establish `lim : Tendsto (fun i => (‖L i‖ + |k i|) * (1 + ‖L i‖) ^ M₁ * (‖a i‖ * (1 + ‖a i‖) ^ M₃ * q₃ f + q₁ f) + ‖a i‖ * (1 + ‖a i‖) ^ M₂ * q₂ f) 𝓕 (𝓝 0)`.
+
+Use `(((hLn.add hkn).mul ((hLn.const_add 1).pow M₁)).mul (((han.mul ((han.const_add 1).pow M₃)).mul_const (q₃ f)).add_const (q₁ f))).add ((han.mul ((han.const_add 1).pow M₂)).mul_const (q₂ f))` as an intermediate fact. Simplify using `using this`. Use `squeeze_zero (fun _ => norm_nonneg _) (fun i => ?_) lim` and prove the remaining obligations. Use `set g := SchwartzMap.compSubConstCLM ℂ (-(a i)) f with hg`. Establish `h1` using `map_add_le_add p (SchwartzMap.smulLeftCLM ℂ (fun y => eChar (L i y + k i)) g - g) (g - f)`.
+
+Rewrite `h1` using `[sub_add_sub_cancel]`. Rewrite using `[← map_sub]`. Use `le_trans h1 (add_le_add ((hb₁ _ _ g).trans ?_) (hb₂ _ f))` and prove the remaining obligations. Establish `h2` using `map_add_le_add q₁ (g - f) f`. Rewrite `h2` using `[sub_add_cancel]`.
+
+Establish `h3` using `hb₃ (a i) f`. Use `gcongr`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem tendsto_heis {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] (T : SchwartzMap V ℂ →L[ℂ] ℂ)
     (f : SchwartzMap V ℂ) {ι : Type} {𝓕 : Filter ι} {L : ι → V →L[ℝ] ℝ} {k : ι → ℝ} {a : ι → V}
     (hL : Tendsto L 𝓕 (𝓝 0)) (hk : Tendsto k 𝓕 (𝓝 0)) (ha : Tendsto a 𝓕 (𝓝 0)) :
@@ -52,6 +63,17 @@ theorem tendsto_heis {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] (T : 
   gcongr
   linarith
 
+/- English proof (translation)
+Establish `hK : IsCompact (tsupport g)` using `hg.2.isCompact`. Establish `key : ∀ᶠ w : (κ → R) × (κ → R) × R in 𝓝 0, ∀ z ∈ tsupport g, χ (z ⬝ᵥ w.1 + w.2.2) = 1 ∧ g (z + w.2.1) = g z ∧ g (z - w.2.1) = g z`. Use `hK.eventually_forall_of_forall_eventually fun z₀ _ => ?_` and prove the remaining obligations. Establish `c1 : IsLocallyConstant fun p : ((κ → R) × (κ → R) × R) × (κ → R) => χ (p.2 ⬝ᵥ p.1.1 + p.1.2.2)` using `hχ.comp_continuous ((continuous_snd.dotProduct (by fun_prop)).add (by fun_prop))`. Establish `c2 : IsLocallyConstant fun p : ((κ → R) × (κ → R) × R) × (κ → R) => g (p.2 + p.1.2.1)` using `hg.1.comp_continuous (by fun_prop)`.
+
+Establish `c3 : IsLocallyConstant fun p : ((κ → R) × (κ → R) × R) × (κ → R) => g (p.2 - p.1.2.1)` using `hg.1.comp_continuous (by fun_prop)`. Establish `c4 : IsLocallyConstant fun p : ((κ → R) × (κ → R) × R) × (κ → R) => g p.2` using `hg.1.comp_continuous (by fun_prop)`. Use `filter_upwards [c1.eventually_eq (0, z₀), c2.eventually_eq (0, z₀), c3.eventually_eq (0, z₀), c4.eventually_eq (0, z₀)] with p h1 h2 h3 h4`. Use `⟨by simpa using h1, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[h2, h4]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[h3, h4]`. Simplify using the standard rewrite rules. Use `filter_upwards [key] with w hw z`. Distinguish the cases in `hz : z ∈ tsupport g`.
+
+Rewrite using `[(hw z hz).1, (hw z hz).2.1, one_mul]`. Establish `h0 : g z = 0` using `image_eq_zero_of_notMem_tsupport hz`. Establish `h1 : g (z + w.2.1) = 0`. Assume the negation of the conclusion as `h`. Use `(hw _ (subset_tsupport _ h)).2.2` as an intermediate fact.
+
+Rewrite `this` using `[add_sub_cancel_right, h0]`. Conclude with `h this.symm`. Rewrite using `[h1, h0, mul_zero]`.
+-/
 theorem eventually_fixed {R : Type} [CommRing R] [TopologicalSpace R] [IsTopologicalRing R] {κ : Type} [Fintype κ]
     (χ : AddChar R ℂ) (hχ : IsLocallyConstant χ) {g : (κ → R) → ℂ} (hg : g ∈ SB (κ → R)) :
     ∀ᶠ w : (κ → R) × (κ → R) × R in 𝓝 0, ∀ z, χ (z ⬝ᵥ w.1 + w.2.2) * g (z + w.2.1) = g z := by
@@ -87,11 +109,30 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 
 def qA : AF F →+* mixedEmbedding.mixedSpace F := (InfiniteAdeleRing.ringEquiv_mixedSpace F).toRingHom.comp p1
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.Core.Rk.RapidInt.continuous_toMixed F).comp continuous_fst`.
+-/
 theorem continuous_qA : Continuous (qA (F := F)) :=
   (GlobalTheory.Core.Rk.RapidInt.continuous_toMixed F).comp continuous_fst
 
+/- English proof (translation)
+The claim follows from `continuous_snd`.
+-/
 theorem continuous_p2 : Continuous (p2 (F := F)) := continuous_snd
 
+/- English proof (translation)
+Set `q` to `qA (F := F)`. Set `h : AF F` to `⅟(2 : AF F) * (w.1 ⬝ᵥ w.2)`. Set `c : κ → mixedEmbedding.mixedSpace F` to `fun i => q (w.2 i)`. Set `t : κ → mixedEmbedding.mixedSpace F` to `fun i => q (w.1 i)`. Set `k : ℝ` to `Algebra.trace ℝ (mixedEmbedding.mixedSpace F) (q h)`.
+
+Set `d : κ → FiniteAdeleRing (𝓞 F) F` to `fun i => p2 (w.2 i)`. Set `s : κ → FiniteAdeleRing (𝓞 F) F` to `fun i => p2 (w.1 i)`. Use function extensionality and compare the values at `x`. Set `y : κ → mixedEmbedding.mixedSpace F` to `fun i => q (x i)`. Set `z : κ → FiniteAdeleRing (𝓞 F) F` to `fun i => p2 (x i)`.
+
+Establish `h1 : (fun i => q ((x + w.1) i)) = y + t` using `funext fun i => map_add q (x i) (w.1 i)`. Establish `h2 : (fun i => p2 ((x + w.1) i)) = z + s` using `funext fun i => map_add p2 (x i) (w.1 i)`. Establish `h3 : ψ (x ⬝ᵥ w.2 + h) = eChar ((-trL c) y + -k) * finChar ψ (z ⬝ᵥ d + p2 h)`. Rewrite using `[map_eq_mul ψ, hψ.2.2 _ (at_mk _)]`. Use `congr 1`.
+
+Establish `e1 : evI F (GlobalTheory.HeisSchA.mk (p1 (x ⬝ᵥ w.2 + h)) 0) = y ⬝ᵥ c + q h`. Express the relevant statement in the definitionally equal form `q (x ⬝ᵥ w.2 + h) = _`. Rewrite using `[map_add, RingHom.map_dotProduct]`. Both sides reduce to the same expression. Rewrite using `[e1, map_add, eChar_apply, ContinuousLinearMap.neg_apply, trL_apply]`.
+
+Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[map_add, RingHom.map_dotProduct]`. Both sides reduce to the same expression.
+
+Express the relevant statement in the definitionally equal form `ψ (x ⬝ᵥ w.2 + h) * (f (fun i => q ((x + w.1) i)) * g (fun i => p2 ((x + w.1) i))) = archS f c t k y * (finChar ψ (z ⬝ᵥ d + p2 h) * g (z + s))`. Rewrite using `[h1, h2, h3, archS_apply]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem schr_pureA_eq {κ : Type} [Fintype κ] {ψ : AddChar (AF F) ℂ} (hψ : IsStd ψ) (w : (κ → AF F) × (κ → AF F))
     (f : SInf F κ) (g : (κ → FiniteAdeleRing (𝓞 F) F) → ℂ) :
     schr ψ w (pureA F f g) = pureA F
@@ -130,6 +171,9 @@ theorem schr_pureA_eq {κ : Type} [Fintype κ] {ψ : AddChar (AF F) ℂ} (hψ : 
   ring
 
 open scoped Classical in
+/- English proof (translation)
+Set `A : (κ → mixedEmbedding.mixedSpace F) →ₗ[ℝ] (κ → mixedEmbedding.mixedSpace F) →L[ℝ] ℝ` to `{ toFun := trL map_add' := fun c c' => by ext y; simp only [trL_apply, dotProduct_add, map_add, ContinuousLinearMap.add_apply] map_smul' := fun r c => by`. Use extensionality with `y`. Simplify using `only [trL_apply, dotProduct_smul, map_smul, ContinuousLinearMap.smul_apply, RingHom.id_apply] }`. Conclude with `A.continuous_of_finiteDimensional`.
+-/
 theorem continuous_trL {κ : Type} [Fintype κ] :
     Continuous (trL : (κ → mixedEmbedding.mixedSpace F) → (κ → mixedEmbedding.mixedSpace F) →L[ℝ] ℝ) := by
   let A : (κ → mixedEmbedding.mixedSpace F) →ₗ[ℝ] (κ → mixedEmbedding.mixedSpace F) →L[ℝ] ℝ :=
@@ -139,6 +183,17 @@ theorem continuous_trL {κ : Type} [Fintype κ] :
         ext y; simp only [trL_apply, dotProduct_smul, map_smul, ContinuousLinearMap.smul_apply, RingHom.id_apply] }
   exact A.continuous_of_finiteDimensional
 
+/- English proof (translation)
+Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `zero => simpa using tendsto_const_nhds`. Consider the case `add Φ Ψ _ _ h1 h2 => simpa only [map_add] using h1.add h2`. Consider the case `smul c Φ _ h => simpa only [map_smul] using h.const_smul c`. Consider the case `mem Φ h`.
+
+Take `⟨f, g, hg, rfl⟩` from `h`. Take `⟨T, hT⟩` from `hl g hg`. Establish `hh : Continuous fun w : (κ → AF F) × (κ → AF F) => ⅟(2 : AF F) * (w.1 ⬝ᵥ w.2)` using `continuous_const.mul (continuous_fst.dotProduct continuous_snd)`. Establish `cfin : Continuous fun w : (κ → AF F) × (κ → AF F) => ((fun i => p2 (w.2 i), fun i => p2 (w.1 i), p2 (⅟(2 : AF F) * (w.1 ⬝ᵥ w.2))) : (κ → FiniteAdeleRing (𝓞 F) F) × (κ → FiniteAdeleRing (𝓞 F) F) × FiniteAdeleRing (𝓞 F) F)` using `(continuous_pi fun i => continuous_p2.comp ((continuous_apply i).comp continuous_snd)).prodMk ((continuous_pi fun i => continuous_p2.comp ((continuous_apply i).comp continuous_fst)).prodMk (continuous_p2.comp hh))`. Establish `hfin` using `(cfin.tendsto' 0 0 (by`.
+
+Use `Prod.ext (funext fun i => map_zero _) (Prod.ext (funext fun i => map_zero _) ?_)` and prove the remaining obligations. Use the proof step `simp)).eventually (eventually_fixed (finChar ψ) (finChar_isLocallyConstant ψ hψ.1) hg)`. Establish `c1 : Continuous fun w : (κ → AF F) × (κ → AF F) => fun i => qA (w.1 i)` using `continuous_pi fun i => continuous_qA.comp ((continuous_apply i).comp continuous_fst)`. Establish `c2 : Continuous fun w : (κ → AF F) × (κ → AF F) => -trL fun i => qA (w.2 i)` using `(continuous_trL.comp (continuous_pi fun i => continuous_qA.comp ((continuous_apply i).comp continuous_snd))).neg`. Establish `c3 : Continuous fun w : (κ → AF F) × (κ → AF F) => -Algebra.trace ℝ (mixedEmbedding.mixedSpace F) (qA (⅟(2 : AF F) * (w.1 ⬝ᵥ w.2)))` using `((Algebra.trace ℝ (mixedEmbedding.mixedSpace F)).continuous_of_finiteDimensional.comp (continuous_qA.comp hh)).neg`.
+
+Use `tendsto_heis T f (c2.tendsto' 0 0 (by ext y; simp [trL_apply, dotProduct])) (c3.tendsto' 0 0 (by simp)) (c1.tendsto' 0 0 (funext fun i => map_zero _))` as an intermediate fact. Rewrite using `[hT]`. Use `this.congr' (hfin.mono fun w hw => ?_)` and prove the remaining obligations. Establish `e : finS ψ g (fun i => p2 (w.2 i)) (fun i => p2 (w.1 i)) (p2 (⅟(2 : AF F) * (w.1 ⬝ᵥ w.2))) = g` using `funext hw`. Use `show _ = l (schr ψ w (pureA F f g))`.
+
+Rewrite using `[schr_pureA_eq hψ, e, hT]`. Both sides reduce to the same expression.
+-/
 theorem tendsto_schr_zero {κ : Type} [Fintype κ] {ψ : AddChar (AF F) ℂ} (hψ : IsStd ψ)
     {l : ((κ → AF F) → ℂ) →ₗ[ℂ] ℂ} (hl : l ∈ (adeleClass F).adm κ) {Φ : (κ → AF F) → ℂ} (hΦ : Φ ∈ schA F κ) :
     Tendsto (fun w => l (schrLin ψ w Φ)) (𝓝 0) (𝓝 (l Φ)) := by
@@ -177,6 +232,15 @@ theorem tendsto_schr_zero {κ : Type} [Fintype κ] {ψ : AddChar (AF F) ℂ} (h�
     rw [schr_pureA_eq hψ, e, hT]
     rfl
 
+/- English proof (translation)
+Use `continuous_iff_continuousAt.2 fun w₀ => ?_` and prove the remaining obligations. Establish `h1` using `tendsto_schr_zero hψ (comp_schr_mem_adm hψ w₀ hl) hΦ`. Set `c : (κ → AF F) × (κ → AF F) → ℂ` to `fun u => ψ (⅟(2 : AF F) * (u.1 ⬝ᵥ w₀.2 + w₀.1 ⬝ᵥ u.2) - w₀.1 ⬝ᵥ u.2)`. Establish `hc : Continuous c` using `hψ.1.comp ((continuous_const.mul ((continuous_fst.dotProduct continuous_const).add (continuous_const.dotProduct continuous_snd))).sub (continuous_const.dotProduct continuous_snd))`. Establish `e : ∀ u, schr ψ (w₀ + u) Φ = c u • schr ψ w₀ (schr ψ u Φ)` using `fun u => funext fun x => by`.
+
+Simplify using `only [schr, c, Pi.smul_apply, smul_eq_mul, Prod.fst_add, Prod.snd_add, ← mul_assoc, ← AddChar.map_add_eq_mul, add_assoc, add_dotProduct, dotProduct_add]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree. Establish `h2` using `(hc.tendsto' 0 1 (by simp [c])).mul h1`. Establish `h3 : Tendsto (fun w => w - w₀) (𝓝 w₀) (𝓝 0)` using `(continuous_sub_right w₀).tendsto' _ _ (sub_self _)`.
+
+Establish `h4` using `h2.comp h3`. Rewrite `h4` using `[one_mul]`. Use `h4.congr fun w => ?_` and prove the remaining obligations. Use `e (w - w₀)` as an intermediate fact. Rewrite `this` using `[add_sub_cancel]`.
+
+Rewrite using `[this, map_smul]`. Both sides reduce to the same expression.
+-/
 theorem continuous_schr {κ : Type} [Fintype κ] {ψ : AddChar (AF F) ℂ} (hψ : IsStd ψ)
     {l : ((κ → AF F) → ℂ) →ₗ[ℂ] ℂ} (hl : l ∈ (adeleClass F).adm κ) {Φ : (κ → AF F) → ℂ} (hΦ : Φ ∈ schA F κ) :
     Continuous fun w => l (schr ψ w Φ) := by
@@ -200,13 +264,24 @@ theorem continuous_schr {κ : Type} [Fintype κ] {ψ : AddChar (AF F) ℂ} (hψ 
   rw [this, map_smul]
   rfl
 
+/- English proof (translation)
+The claim follows from `TopologicalSpace.metrizableSpace_of_t3_secondCountable G`.
+-/
 theorem metrizable_group (G : Type) [Group G] [TopologicalSpace G] (_ : IsTopologicalGroup G) (_ : T2Space G)
     (_ : SecondCountableTopology G) : TopologicalSpace.MetrizableSpace G :=
   TopologicalSpace.metrizableSpace_of_t3_secondCountable G
 
+/- English proof (translation)
+The claim follows from `inferInstance`.
+-/
 theorem sfinite_restrict {X : Type} [MeasurableSpace X] (μ : Measure X) (_ : SigmaFinite μ) (s : Set X) :
     SFinite (μ.restrict s) := inferInstance
 
+/- English proof (translation)
+Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `haveI : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) _`. Use `haveI := GlobalTheory.AdelicUnitaryTop.secondCountable_adele F`. Use `haveI := GlobalTheory.AdelicUnitaryTop.t2Space_adeleRing_numberField F`. Take `⟨e⟩` from `GlobalTheory.AdelicUnitaryTop.nonempty_homeomorph (F := F) (E := E) (AF F)`.
+
+Use `haveI : SecondCountableTopology (AE F E) := e.secondCountableTopology`. Use `haveI : T2Space (AE F E) := e.isEmbedding.t2Space`. Use `haveI : SecondCountableTopology (AE F E)ᵐᵒᵖ := MulOpposite.opHomeomorph.symm.secondCountableTopology`. Use `haveI : SecondCountableTopology (AE F E)ˣ := Units.isEmbedding_embedProduct.secondCountableTopology`. Conclude with `⟨inferInstance, TopologicalSpace.metrizableSpace_of_t3_secondCountable _⟩`.
+-/
 theorem idele_top : SecondCountableTopology (AE F E)ˣ ∧ TopologicalSpace.MetrizableSpace (AE F E)ˣ := by
   haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E
   haveI : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) _
@@ -219,6 +294,25 @@ theorem idele_top : SecondCountableTopology (AE F E)ˣ ∧ TopologicalSpace.Metr
   haveI : SecondCountableTopology (AE F E)ˣ := Units.isEmbedding_embedProduct.secondCountableTopology
   exact ⟨inferInstance, TopologicalSpace.metrizableSpace_of_t3_secondCountable _⟩
 
+/- English proof (translation)
+Introduce `_ F E _ _ _ _ _ σ B a b G G₁ H H' _ e' hE K μK μ _ _ _ X om om' om₁ om₁' hT hT₁ Φ' hΦ h`. Establish `hM` using `hT.geo.hM'`. Establish `hM₁` using `hT₁.geo.hM'`. Establish `hψ` using `hT.base.std`. Establish `hS` using `IsUWeilPair.isUSplitting hT.weil'`.
+
+Establish `hS₁` using `IsUWeilPair.isUSplitting hT₁.weil'`. Take `⟨l₀, hl₀, hl₀eq⟩` from `GlobalTheory.ThetaAdmitted.exists_admitted_form_eq_adelicThetaDistribution_alt F (Fin b × Fin (a + b))`. Establish `hΦA` using `polData_le_schA hM hΦ.1`. Take `⟨t1, t2, t3, t4⟩` from `GlobalTheory.UnitaryAdelicTop.lcsc_UA F E σ _ G.V'.J`. Take `⟨u1, u2, u3, u4⟩` from `GlobalTheory.UnitaryAdelicTop.lcsc_UA F E σ _ G₁.V'.J`.
+
+Take `⟨v1, v2⟩` from `idele_top (F := F) (E := E)`. Use `haveI : BorelSpace (UA σ G.V'.J) := ⟨rfl⟩`. Use `haveI : BorelSpace (UA σ G₁.V'.J) := ⟨rfl⟩`. Use `haveI : BorelSpace (AE F E)ˣ := ⟨rfl⟩`. Use `haveI : TopologicalSpace.MetrizableSpace (UA σ G.V'.J) := metrizable_group _ t1 t4 t3`.
+
+Use `haveI : TopologicalSpace.MetrizableSpace (UA σ G₁.V'.J) := metrizable_group _ u1 u4 u3`. Use `haveI := hM₁.haar`. Use `haveI : SigmaCompactSpace (UA σ G₁.V'.J) := sigmaCompactSpace_of_locallyCompact_secondCountable`. Use `haveI : SFinite (G₁.M'.μ.restrict G₁.M'.dom) := sfinite_restrict _ (Measure.IsHaarMeasure.sigmaFinite _) _`. Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`.
+
+Use `haveI : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) _`. Use `haveI : IsModuleTopology (AF F) (Matrix (Fin (b + 2)) (Fin (a + (b + 2))) (AE F E)) := inferInstanceAs (IsModuleTopology (AF F) (Fin (b + 2) → Fin (a + (b + 2)) → AE F E))`. Establish `hco : Continuous G.M'.co.e` using `IsModuleTopology.continuous_of_linearMap G.M'.co.e.toLinearMap`. Establish `hcA : Continuous (cA σ)` using `IsModuleTopology.continuous_of_linearMap (cA σ).toLinearMap`. Establish `hsh : Continuous (shiftB σ H H')`.
+
+Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Conclude with `(hcA.comp Units.continuous_val).mul continuous_const`. Set `u : UA σ G₁.V'.J → UA σ G.V'.J → (AE F E)ˣ → ℂ` to `fun g k l => l₀ (om₁' (g, 1) (e' (schr B.ψ (G.M'.co.e (shiftB σ H H' l)) (om' (k, h) Φ'))))`. Establish `hmem : ∀ k l, e' (schr B.ψ (G.M'.co.e (shiftB σ H H' l)) (om' (k, h) Φ')) ∈ schA F _` using `fun k l => hE.maps _ (GlobalTheory.ConeMeasV.schr_mem_schA hψ _ (hS.pres _ _ hΦA))`. Establish `hadm : ∀ g, (l₀ ∘ₗ om₁' (g, 1)) ∘ₗ e' ∈ (adeleClass F).adm _` using `fun g => comp_ev_mem_adm hM hM₁ hE (hS₁.adm _ _ hl₀)`.
+
+Establish `cg : ∀ k l, Continuous fun g => u g k l` using `fun k l => (hS₁.cont _ hl₀ _ (hmem k l)).comp (continuous_id.prodMk continuous_const)`. Establish `ck : ∀ g l, Continuous fun k => u g k l` using `fun g l => (hS.cont _ (comp_schr_mem_adm hψ (G.M'.co.e (shiftB σ H H' l)) (hadm g)) _ hΦA).comp (continuous_id.prodMk continuous_const)`. Establish `cl : ∀ g k, Continuous (u g k)` using `fun g k => (continuous_schr hψ (hadm g) (hS.pres (k, h) _ hΦA)).comp (hco.comp hsh)`. Establish `m1 : ∀ g, Measurable (Function.uncurry (u g))` using `fun g => measurable_uncurry_of_continuous_of_measurable (ck g) fun k => (cl g k).measurable`. Establish `m2 : Measurable (Function.uncurry fun g (p : UA σ G.V'.J × (AE F E)ˣ) => u g p.1 p.2)` using `measurable_uncurry_of_continuous_of_measurable (fun p => cg p.1 p.2) m1`.
+
+Establish `m3 : Measurable fun x : (K × (AE F E)ˣ) × UA σ G₁.V'.J => u x.2 x.1.1.1 x.1.2` using `m2.comp (measurable_snd.prodMk ((measurable_subtype_coe.comp (measurable_fst.comp measurable_fst)).prodMk (measurable_snd.comp measurable_fst)))`. Establish `m4` using `m3.stronglyMeasurable.integral_prod_right' (ν := G₁.M'.μ.restrict G₁.M'.dom)`. Use `StronglyMeasurable.aestronglyMeasurable ?_` and prove the remaining obligations. Use `cast (congrArg StronglyMeasurable (funext fun p => ?_)) m4` and prove the remaining obligations. Use `congrArg (integral (G₁.M'.μ.restrict G₁.M'.dom)) (funext fun g => ?_)` and prove the remaining obligations.
+
+Conclude with `(hl₀eq _ (hS₁.pres _ _ (hmem _ _)))`.
+-/
 theorem coneIntegrand_aestronglyMeasurable : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a b : ℕ)
     (G : Geo σ a (b + 2)) (G₁ : Geo σ a b) (H : Plane E (b + 2) b) (H' : Plane E (a + (b + 2)) (a + b)), CfgB B G G₁ H H' →
     ∀ e', IsEv B G.M' G₁.M' H.ι H'.ι (isoB H H') e' → ∀ (K : Subgroup (UA σ G.V'.J)) (μK : Measure K) (μ : Measure (AE F E)ˣ),

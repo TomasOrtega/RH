@@ -27,18 +27,31 @@ def stab (ρ : Representation ℂ G V) (v : V) : Subgroup G where
 
 def orb (ρ : Representation ℂ G V) (v : V) : Submodule ℂ V := Submodule.span ℂ (Set.range fun g => ρ g v)
 
+/- English proof (translation)
+Introduce `g w hw`. Use `(Submodule.span_le (p := (orb ρ v).comap (ρ g))).2 ?_ hw` and prove the remaining obligations. Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `Submodule.subset_span ⟨g * x, by simp⟩`.
+-/
 theorem orb_stable (ρ : Representation ℂ G V) (v : V) : ∀ g, ∀ w ∈ orb ρ v, ρ g w ∈ orb ρ v := by
   intro g w hw
   refine (Submodule.span_le (p := (orb ρ v).comap (ρ g))).2 ?_ hw
   rintro _ ⟨x, rfl⟩
   exact Submodule.subset_span ⟨g * x, by simp⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h k hk => by simpa using h ⟨k, hk⟩, fun h k => by simpa using h k.1 k.2⟩`.
+-/
 theorem mem_fixed {ρ : Representation ℂ G V} {K : Subgroup G} {v : V} : v ∈ fixed ρ K ↔ ∀ k ∈ K, ρ k v = v :=
   ⟨fun h k hk => by simpa using h ⟨k, hk⟩, fun h k => by simpa using h k.1 k.2⟩
 
 def av (ρ : Representation ℂ G V) (K K' : Subgroup G) [Fintype (K ⧸ K'.subgroupOf K)] (v : V) : V :=
   ∑ q : K ⧸ K'.subgroupOf K, ρ (q.out : K) v
 
+/- English proof (translation)
+Introduce `k hk`. Unfold `av`. Rewrite using `[map_sum]`. Use `Fintype.sum_equiv (MulAction.toPerm (⟨k, hk⟩ : K)) _ _ fun q => ?_` and prove the remaining obligations. Establish `h1 : ((((⟨k, hk⟩ : K) • q).out : K) : K ⧸ K'.subgroupOf K) = ((⟨k, hk⟩ * q.out : K) : K ⧸ K'.subgroupOf K)`.
+
+Rewrite using `[QuotientGroup.out_eq', ← smul_eq_mul, MulAction.Quotient.mk_smul_out]`. Establish `h2 : ρ _ v = v` using `hv (Subgroup.mem_subgroupOf.1 (QuotientGroup.eq.1 h1))`. Rewrite using `[MulAction.toPerm_apply]`. Use `conv_rhs => rw [← h2]`. Rewrite using `[← Module.End.mul_apply, ← map_mul, ← Module.End.mul_apply, ← map_mul]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem av_fixed (ρ : Representation ℂ G V) (K K' : Subgroup G) [Fintype (K ⧸ K'.subgroupOf K)] {v : V}
     (hv : K' ≤ stab ρ v) : ∀ k ∈ K, ρ k (av ρ K K' v) = av ρ K K' v := by
   intro k hk
@@ -53,6 +66,9 @@ theorem av_fixed (ρ : Representation ℂ G V) (K K' : Subgroup G) [Fintype (K �
   rw [← Module.End.mul_apply, ← map_mul, ← Module.End.mul_apply, ← map_mul]
   simp
 
+/- English proof (translation)
+Unfold `av`. Rewrite using `[Finset.sum_congr rfl fun q _ => hv _ (q.out).2, Finset.sum_const, Finset.card_univ, Nat.cast_smul_eq_nsmul]`.
+-/
 theorem av_of_fixed (ρ : Representation ℂ G V) (K K' : Subgroup G) [Fintype (K ⧸ K'.subgroupOf K)] {v : V}
     (hv : ∀ k ∈ K, ρ k v = v) : av ρ K K' v = (Fintype.card (K ⧸ K'.subgroupOf K) : ℂ) • v := by
   unfold av
@@ -65,11 +81,25 @@ section Top
 variable {G V W : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [AddCommGroup V] [Module ℂ V]
   [AddCommGroup W] [Module ℂ W]
 
+/- English proof (translation)
+Use `haveI : CompactSpace K := isCompact_iff_compactSpace.1 c`. Conclude with `Subgroup.quotient_finite_of_isOpen _ (Subgroup.subgroupOf_isOpen K K' o)`.
+-/
 theorem finite_quot {K K' : Subgroup G} (c : IsCompact (K : Set G)) (o : IsOpen (K' : Set G)) :
     Finite (K ⧸ K'.subgroupOf K) := by
   haveI : CompactSpace K := isCompact_iff_compactSpace.1 c
   exact Subgroup.quotient_finite_of_isOpen _ (Subgroup.subgroupOf_isOpen K K' o)
 
+/- English proof (translation)
+Establish `key : ∀ w ∈ Submodule.span ℂ S, ∃ K₀ : Subgroup G, IsOpen (K₀ : Set G) ∧ ∀ K' ≤ K₀, ∀ [Fintype (K ⧸ K'.subgroupOf K)], av ρ K K' w ∈ W₀`. Introduce `w hw`. Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem s hs => exact hS s hs`. Consider the case `zero => exact ⟨⊤, isOpen_univ, fun K' _ _ => by simp [av]⟩`.
+
+Consider the case `add x y _ _ hx hy`. Take `⟨K₁, o₁, h₁⟩` from `hx`. Take `⟨K₂, o₂, h₂⟩` from `hy`. Use `⟨K₁ ⊓ K₂, o₁.inter o₂, fun K' h _ => ?_⟩` and prove the remaining obligations. Use `add_mem (h₁ K' (h.trans inf_le_left)) (h₂ K' (h.trans inf_le_right))` as an intermediate fact.
+
+Simplify `this` using `[av, Finset.sum_add_distrib]`. Consider the case `smul a x _ hx`. Take `⟨K₁, o₁, h₁⟩` from `hx`. Use `⟨K₁, o₁, fun K' h _ => ?_⟩` and prove the remaining obligations. Use `W₀.smul_mem a (h₁ K' h)` as an intermediate fact.
+
+Simplify `this` using `[av, Finset.smul_sum]`. Take `⟨K₀, o, h⟩` from `key w hw`. Use `haveI := finite_quot c o`. Use `letI := Fintype.ofFinite (K ⧸ K₀.subgroupOf K)`. Establish `h1` using `h K₀ le_rfl`.
+
+Rewrite `h1` using `[av_of_fixed ρ K K₀ hfix]`. Conclude with `(Submodule.smul_mem_iff _ (Nat.cast_ne_zero.2 Fintype.card_ne_zero)).1 h1`.
+-/
 theorem mem_of_span (ρ : Representation ℂ G V) {K : Subgroup G} (c : IsCompact (K : Set G)) (S : Set V) (W₀ : Submodule ℂ V)
     (hS : ∀ s ∈ S, ∃ K₀ : Subgroup G, IsOpen (K₀ : Set G) ∧ ∀ K' ≤ K₀, ∀ [Fintype (K ⧸ K'.subgroupOf K)], av ρ K K' s ∈ W₀)
     {w : V} (hw : w ∈ Submodule.span ℂ S) (hfix : ∀ k ∈ K, ρ k w = w) : w ∈ W₀ := by
@@ -97,6 +127,21 @@ theorem mem_of_span (ρ : Representation ℂ G V) {K : Subgroup G} (c : IsCompac
   rw [av_of_fixed ρ K K₀ hfix] at h1
   exact (Submodule.smul_mem_iff _ (Nat.cast_ne_zero.2 Fintype.card_ne_zero)).1 h1
 
+/- English proof (translation)
+Rewrite `hf` using `[iSup_subtype', Submodule.mem_iSup_iff_exists_finset]`. Take `⟨s, hs⟩` from `hf`. Establish `hT : ∀ (T : {T : V →ₗ[ℂ] W // ∀ g, T ∘ₗ π g = ρ g ∘ₗ T}) g v, ρ g (T.1 v) = T.1 (π g v)` using `fun T g v => (LinearMap.congr_fun (T.2 g) v).symm`. Set `S : Set W` to `{w | ∃ T ∈ s, ∃ v, w = T.1 v}`. Establish `h1 : f ∈ Submodule.span ℂ S`.
+
+Use `(iSup₂_le fun T hT' => ?_ : _ ≤ Submodule.span ℂ S) hs` and prove the remaining obligations. Introduce and unpack `_ ⟨v, rfl⟩`. Conclude with `Submodule.subset_span ⟨T, hT', v, rfl⟩`. Establish `h2 : orb ρ f ≤ Submodule.span ℂ S`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨g, rfl⟩`. Use `(Submodule.span_le (p := (Submodule.span ℂ S).comap (ρ g))).2 ?_ h1` and prove the remaining obligations. Introduce and unpack `_ ⟨T, hT', v, rfl⟩`. Conclude with `Submodule.subset_span ⟨T, hT', _, hT T g v⟩`. Use `⟨fun w => ?_, fun K o c => ?_⟩` and prove the remaining obligations.
+
+Establish `h3 : Submodule.span ℂ S ≤ smoothPart ρ`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨T, -, v, rfl⟩`. Use `Subgroup.isOpen_mono (H₁ := stab π v) (H₂ := stab ρ (T.1 v)) (fun g hg => ?_) (hπ.1 v)` and prove the remaining obligations. Use `show ρ g (T.1 v) = T.1 v`.
+
+Rewrite using `[hT, show π g v = v from hg]`. Establish `h4 : IsOpen {g | ρ g w.1 = w.1}` using `h3 (h2 w.2)`. Use `h4 using 3` and compare the differences between its conclusion and the goal. Conclude with `Subtype.ext_iff`. Use `haveI := hπ.2 K o c`.
+
+Set `W₀ : Submodule ℂ W` to `⨆ T : s, (fixed π K).map T.1.1`. Establish `h3 : (fixed (sub ρ (orb ρ f) (orb_stable ρ f)) K).map (orb ρ f).subtype ≤ W₀`. Introduce and unpack `_ ⟨w, hw, rfl⟩`. Use `mem_of_span ρ c S W₀ ?_ (h2 w.2) fun k hk => congrArg Subtype.val (mem_fixed.1 hw k hk)` and prove the remaining obligations. Introduce and unpack `_ ⟨T, hT', v, rfl⟩`.
+
+Use `⟨stab π v, hπ.1 v, fun K' h _ => Submodule.mem_iSup_of_mem (⟨T, hT'⟩ : s) ⟨av π K K' v, ?_, ?_⟩⟩` and prove the remaining obligations. Conclude with `mem_fixed.2 (av_fixed π K K' h)`. Simplify using `[av, hT]`. Use `haveI := Submodule.finiteDimensional_of_le h3`. Conclude with `(Submodule.equivMapOfInjective _ (Submodule.injective_subtype _) _).symm.finiteDimensional`.
+-/
 theorem isAdmissible_orb (π : Representation ℂ G V) (ρ : Representation ℂ G W) (hπ : IsAdmissible π) (f : W)
     (hf : f ∈ ⨆ (T : V →ₗ[ℂ] W) (_ : ∀ g, T ∘ₗ π g = ρ g ∘ₗ T), LinearMap.range T) :
     IsAdmissible (sub ρ (orb ρ f) (orb_stable ρ f)) := by
@@ -137,6 +182,15 @@ theorem isAdmissible_orb (π : Representation ℂ G V) (ρ : Representation ℂ 
     haveI := Submodule.finiteDimensional_of_le h3
     exact (Submodule.equivMapOfInjective _ (Submodule.injective_subtype _) _).symm.finiteDimensional
 
+/- English proof (translation)
+Use `⟨fun v => ?_, fun K o c => ?_⟩` and prove the remaining obligations. Establish `h : IsOpen {g | ind P σ g v.1 = v.1}` using `v.2`. Use `h using 3` and compare the differences between its conclusion and the goal. Conclude with `Subtype.ext_iff`. Take `⟨t, -, ht⟩` from `hC.elim_nhds_subcover (fun x => (fun y => x⁻¹ * y) ⁻¹' (K : Set G)) fun x _ => (o.preimage (by fun_prop)).mem_nhds (by simp)`.
+
+Set `ev : fixed (smInd P σ) K →ₗ[ℂ] (t → W)` to `{ toFun := fun f x => f.1.1.1 x map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl }`. Use `FiniteDimensional.of_injective ev ((injective_iff_map_eq_zero ev).2 fun f hf => ?_)` and prove the remaining obligations. Use extensionality with `x`. Take `⟨p, w, hw, rfl⟩` from `hPC x`. Take `⟨y, hy, hk⟩` from `Set.mem_iUnion₂.1 (ht hw)`.
+
+Establish `h1 : f.1.1.1 (y * (y⁻¹ * w)) = f.1.1.1 y` using `congrArg (fun φ : smoothPart (ind P σ) => φ.1.1 y) (mem_fixed.1 f.2 _ hk)`. Establish `h2 : f.1.1.1 y = 0` using `congrFun hf ⟨y, hy⟩`. Rewrite `h1` using `[mul_inv_cancel_left, h2]`. Establish `h3` using `f.1.1.2 p w`. Rewrite `h3` using `[h1, map_zero]`.
+
+Conclude with `h3`.
+-/
 theorem isAdmissible_smInd [FiniteDimensional ℂ W] (P : Subgroup G) (σ : Representation ℂ P W) {C : Set G} (hC : IsCompact C)
     (hPC : ∀ x : G, ∃ p : P, ∃ w ∈ C, x = p * w) : IsAdmissible (smInd P σ) := by
   refine ⟨fun v => ?_, fun K o c => ?_⟩
@@ -163,6 +217,19 @@ theorem isAdmissible_smInd [FiniteDimensional ℂ W] (P : Subgroup G) (σ : Repr
 
 end Top
 
+/- English proof (translation)
+Use `choose A hAf hAD hA using hgen`. Use `haveI : ∀ j, Finite (A j) := fun j => hAf j`. Establish `hc : ∀ j (a : A j), IsCompact ((K₂ ⊓ stab ω₂ a.1 : Subgroup G₂) : Set G₂)` using `fun j a => c₂.inter_right ((stab ω₂ a.1).isClosed_of_isOpen (sm2 j _ (hAD j _ a.2)))`. Use `haveI : ∀ j (a : A j), FiniteDimensional ℂ (fixed π (K₂ ⊓ stab ω₂ a.1)) := fun j a => hπ.2 _ (o₂.inter (sm2 j _ (hAD j _ a.2))) (hc j a)`. Set `W₀ : Submodule ℂ X` to `⨆ j, ⨆ a : A j, (fixed π (K₂ ⊓ stab ω₂ a.1)).map (b.flip a.1)`.
+
+Establish `h1 : ∀ j (a : A j) u, b u a.1 ∈ W₀`. Introduce `j a u`. Use `haveI := finite_quot (K' := stab π u) (hc j a) (hπ.1 u)`. Use `letI := Fintype.ofFinite ((K₂ ⊓ stab ω₂ a.1 : Subgroup G₂) ⧸ (stab π u).subgroupOf (K₂ ⊓ stab ω₂ a.1))`. Establish `h2 : b (av π (K₂ ⊓ stab ω₂ a.1) (stab π u) u) a.1 ∈ W₀` using `Submodule.mem_iSup_of_mem j (Submodule.mem_iSup_of_mem a ⟨_, mem_fixed.2 (av_fixed π _ _ le_rfl), rfl⟩)`.
+
+Establish `h3 : ∀ k ∈ K₂ ⊓ stab ω₂ a.1, b (π k u) a.1 = b u a.1` using `fun k hk => by`. Rewrite using `[← eq2 k u, show ω₂ k a.1 = a.1 from hk.2]`. Rewrite `h2` using `[av, map_sum, LinearMap.sum_apply, Finset.sum_congr rfl fun q _ => h3 _ (q.out).2, Finset.sum_const, ← Nat.cast_smul_eq_nsmul ℂ, Finset.card_univ]`. Conclude with `(Submodule.smul_mem_iff _ (Nat.cast_ne_zero.2 Fintype.card_ne_zero)).1 h2`. Use `⟨W₀, inferInstance, fun φ hφ hfix => mem_of_span ζ c _ W₀ ?_ hφ hfix⟩` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨j, u, Ψ, hΨ, rfl⟩`. Use `⟨stab ω₁ Ψ, sm1 j Ψ hΨ, fun K' h _ => ?_⟩` and prove the remaining obligations. Establish `h4 : av ζ K K' (b u Ψ) = b u (av ω₁ K K' Ψ)` using `by simp only [av, eq1, map_sum]`. Rewrite using `[h4]`. Use `(Submodule.span_le (p := W₀.comap (b u))).2 ?_ (hA j _ (Submodule.sum_mem _ fun q _ => hD j _ _ hΨ) (av_fixed ω₁ K K' h))` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨a, ha, g, rfl⟩`. Establish `h5` using `eq2 g (π g⁻¹ u) a`. Rewrite `h5` using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`. Use `show b u (ω₂ g a) ∈ W₀`. Rewrite using `[h5]`.
+
+Conclude with `h1 j ⟨a, ha⟩ _`.
+-/
 theorem exists_finiteDimensional {G₁ G₂ V S X J : Type} [Group G₁] [TopologicalSpace G₁] [IsTopologicalGroup G₁]
     [Group G₂] [TopologicalSpace G₂] [IsTopologicalGroup G₂] [AddCommGroup V] [Module ℂ V] [AddCommGroup S] [Module ℂ S]
     [AddCommGroup X] [Module ℂ X] [Finite J]

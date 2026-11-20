@@ -11,6 +11,11 @@ variable {E : Type} [Field E] [NumberField E] [NumberField.IsCMField E]
 
 variable {r : ℕ} (X : Data E r)
 
+/- English proof (translation)
+Take `⟨q, rfl⟩` from `Nat.exists_eq_add_of_le hp`. Rewrite using `[Fin.sum_univ_add]`. Establish `h2 : ∑ j : Fin q, (if ((Fin.natAdd p j : Fin (p + q)) : ℕ) < p then f (Fin.natAdd p j) else 0) = 0` using `Finset.sum_eq_zero fun j _ => by simp`. Rewrite using `[h2, add_zero]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Simplify using `only [Fin.coe_castAdd, i.isLt, if_true]`. Both sides reduce to the same expression.
+-/
 private theorem sum_castLE_lemma {M : Type*} [AddCommMonoid M] (n p : ℕ) (hp : p ≤ n)
     (f : Fin n → M) :
     ∑ i : Fin p, f (Fin.castLE hp i) = ∑ a : Fin n, if (a : ℕ) < p then f a else 0 := by
@@ -23,6 +28,11 @@ private theorem sum_castLE_lemma {M : Type*} [AddCommMonoid M] (n p : ℕ) (hp :
   simp only [Fin.coe_castAdd, i.isLt, if_true]
   rfl
 
+/- English proof (translation)
+Substitute `h` using the available equality. Rewrite using `[Fin.sum_univ_add]`. Establish `h1 : ∑ i : Fin p, (if p ≤ ((Fin.castAdd m i : Fin (p + m)) : ℕ) then f (Fin.castAdd m i) else 0) = 0` using `Finset.sum_eq_zero fun i _ => by simp [i.isLt]`. Rewrite using `[h1, zero_add]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Simplify using `only [Fin.coe_natAdd, Nat.le_add_right, if_true]`. Both sides reduce to the same expression.
+-/
 private theorem sum_fin_offset_eq {M : Type*} [AddCommMonoid M] (n p m : ℕ) (h : p + m = n)
     (f : Fin n → M) :
     ∑ j : Fin m, f ⟨p + (j : ℕ), by have := j.isLt; omega⟩ =
@@ -36,6 +46,69 @@ private theorem sum_fin_offset_eq {M : Type*} [AddCommMonoid M] (n p m : ℕ) (h
   simp only [Fin.coe_natAdd, Nat.le_add_right, if_true]
   rfl
 
+/- English proof (translation)
+Take `⟨q, rfl⟩` from `Nat.exists_eq_add_of_le hp`. Establish `sgL : ∀ i : Fin p, ((sgn p ((Fin.castAdd q i : Fin (p + q)) : ℕ) : ℝ) : ℂ) = 1` using `fun i => by`. Simplify using `[sgn, i.isLt]`. Establish `sgR : ∀ j : Fin q, ((sgn p ((Fin.natAdd p j : Fin (p + q)) : ℕ) : ℝ) : ℂ) = -1` using `fun j => by`. Simplify using `[sgn]`.
+
+Establish `zero_of : ∀ (m : ℕ) (γ : Fin m → ℂ), ∑ j, γ j * conj (γ j) = 0 → γ = 0`. Introduce `m γ h`. Establish `h' : ∑ j, Complex.normSq (γ j) = 0`. Establish `: ((∑ j, Complex.normSq (γ j) : ℝ) : ℂ) = 0`. Use `push_cast`.
+
+Simplify `h` using `[Complex.mul_conj]`. Conclude with `this` after adjusting the coercions. Use function extensionality and compare the values at `j`. Establish `hj` using `(Finset.sum_eq_zero_iff_of_nonneg (fun j _ => Complex.normSq_nonneg (γ j))).mp h' j (Finset.mem_univ j)`. Simplify using `using hj`.
+
+Establish `hiso2 : ∑ i : Fin p, d (Fin.castAdd q i) * conj (d (Fin.castAdd q i)) = ∑ j : Fin q, d (Fin.natAdd p j) * conj (d (Fin.natAdd p j))`. Rewrite `hiso` using `[Fin.sum_univ_add]`. Simplify using `only [sgL, sgR, mul_one, mul_neg_one, Finset.sum_neg_distrib] at hiso`. Take the linear combination `hiso`. Establish `hαne : (fun i : Fin p => d (Fin.castAdd q i)) ≠ 0`.
+
+Introduce `h0`. Establish `hA : ∀ i, d (Fin.castAdd q i) = 0` using `fun i => congrFun h0 i`. Establish `hB` using `zero_of q (fun j => d (Fin.natAdd p j)) (by simpa [hA] using hiso2.symm)`. Apply `hd` to reduce the goal to its premises. Use function extensionality and compare the values at `a`.
+
+Proceed by induction on `a using Fin.addCases with`. Consider the case `left i => simpa using hA i`. Consider the case `right j => simpa using congrFun hB j`. Establish `hβne : (fun j : Fin q => d (Fin.natAdd p j)) ≠ 0`. Introduce `h0`.
+
+Establish `hB : ∀ j, d (Fin.natAdd p j) = 0` using `fun j => congrFun h0 j`. Establish `hA` using `zero_of p (fun i => d (Fin.castAdd q i)) (by simpa [hB] using hiso2)`. Apply `hd` to reduce the goal to its premises. Use function extensionality and compare the values at `a`. Proceed by induction on `a using Fin.addCases with`.
+
+Consider the case `left i => simpa using congrFun hA i`. Consider the case `right j => simpa using hB j`. Establish `hp1 : 1 ≤ p`. Break down `Nat.eq_zero_or_pos p with h | h` into its components or cases. Substitute `h` using the available equality.
+
+Conclude with `(hαne (funext fun i => Fin.elim0 i)).elim`. Conclude with `h`. Establish `hq1 : 1 ≤ q`. Break down `Nat.eq_zero_or_pos q with h | h` into its components or cases. Substitute `h` using the available equality.
+
+Conclude with `(hβne (funext fun j => Fin.elim0 j)).elim`. Conclude with `h`. Take `⟨gp, gpO, gpA, gpS⟩` from `onb_perp p hp1 (fun i => d (Fin.castAdd q i)) hαne`. Take `⟨gq, gqO, gqA, gqS⟩` from `onb_perp q hq1 (fun j => d (Fin.natAdd p j)) hβne`. Set `F : Fin (p + q - 2) → Fin (p + q) → ℂ` to `fun k a => if hk : (k : ℕ) < p - 1 then Fin.addCases (motive := fun _ => ℂ) (fun i => gp ⟨k, hk⟩ i) (fun _ => 0) a else Fin.addCases (motive := fun _ => ℂ) (fun _ => 0) (fun j => gq ⟨k - (p - 1), by have := k.isLt; omega⟩ j) a`.
+
+Establish `FL : ∀ k i, F k (Fin.castAdd q i) = if hk : (k : ℕ) < p - 1 then gp ⟨k, hk⟩ i else 0`. Introduce `k i`. Simplify using `only [F]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `FR : ∀ k j, F k (Fin.natAdd p j) = if hk : (k : ℕ) < p - 1 then 0 else gq ⟨k - (p - 1), by have` using `k.isLt; omega⟩ j := by`.
+
+Introduce `k j`. Simplify using `only [F]`. Apply the tactic sequence `split_ifs <;> simp`. Use `⟨F, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `k l`.
+
+Rewrite using `[Fin.sum_univ_add]`. Simplify using `only [FL, FR]`. Apply the tactic sequence `by_cases hk : (k : ℕ) < p - 1 <;> by_cases hl : (l : ℕ) < p - 1`. Simplify using `only [dif_pos hk, dif_pos hl, map_zero, mul_zero, Finset.sum_const_zero, add_zero]`. Rewrite using `[gpO]`.
+
+Distinguish the cases in `hkl : k = l`. Substitute `hkl` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[if_neg hkl, if_neg]`. Introduce `h`.
+
+Establish `h'` using `congrArg Fin.val h`. Conclude with `hkl (Fin.ext h')`. Simplify using `only [dif_pos hk, dif_neg hl, map_zero, mul_zero, zero_mul, Finset.sum_const_zero, add_zero]`. Rewrite using `[if_neg]`. Introduce and unpack `rfl`.
+
+Conclude with `hl hk`. Simplify using `only [dif_neg hk, dif_pos hl, map_zero, mul_zero, zero_mul, Finset.sum_const_zero, add_zero]`. Rewrite using `[if_neg]`. Introduce and unpack `rfl`. Conclude with `hk hl`.
+
+Simplify using `only [dif_neg hk, dif_neg hl, map_zero, zero_mul, Finset.sum_const_zero, zero_add]`. Rewrite using `[gqO]`. Distinguish the cases in `hkl : k = l`. Substitute `hkl` using the available equality. Simplify using the standard rewrite rules.
+
+Rewrite using `[if_neg hkl, if_neg]`. Introduce `h`. Apply `hkl` to reduce the goal to its premises. Apply `Fin.ext` to reduce the goal to its premises. Use `congrArg Fin.val h` as an intermediate fact.
+
+Simplify using `only at this`. Use linear arithmetic over natural numbers and integers. Introduce `k a`. Proceed by induction on `a using Fin.addCases with`. Consider the case `left i`.
+
+Rewrite using `[sgL i, FL]`. Apply the tactic sequence `by_cases hk : (k : ℕ) < p - 1 <;> simp [hk]`. Consider the case `right j`. Rewrite using `[sgR j, FR]`. Apply the tactic sequence `by_cases hk : (k : ℕ) < p - 1 <;> simp [hk]`.
+
+Introduce `k`. Rewrite using `[Fin.sum_univ_add]`. Simplify using `only [FL, FR]`. Distinguish the cases in `hk : (k : ℕ) < p - 1`. Simplify using `only [dif_pos hk, zero_mul, Finset.sum_const_zero, add_zero]`.
+
+Conclude with `gpA ⟨k, hk⟩`. Simplify using `only [dif_neg hk, zero_mul, Finset.sum_const_zero, zero_add]`. Conclude with `gqA _`. Introduce `c h1 h2`. Rewrite `h1`, `h2` using `[Fin.sum_univ_add]`.
+
+Simplify using `only [sgL, sgR, mul_one, mul_neg_one, Finset.sum_neg_distrib] at h2`. Establish `hL : ∑ i : Fin p, c (Fin.castAdd q i) * conj (d (Fin.castAdd q i)) = 0`. Take the linear combination `(h1 + h2) / 2`. Establish `hR : ∑ j : Fin q, c (Fin.natAdd p j) * conj (d (Fin.natAdd p j)) = 0`. Take the linear combination `(h1 - h2) / 2`.
+
+Take `⟨μ1, hμ1⟩` from `(Submodule.mem_span_range_iff_exists_fun ℂ).mp (gpS (fun i => c (Fin.castAdd q i)) hL)`. Take `⟨μ2, hμ2⟩` from `(Submodule.mem_span_range_iff_exists_fun ℂ).mp (gqS (fun j => c (Fin.natAdd p j)) hR)`. Take `⟨μ, hμL, hμR⟩ : ∃ μ : Fin (p + q - 2) → ℂ, (∀ (k : Fin (p + q - 2)) (hk : (k : ℕ) < p - 1), μ k = μ1 ⟨k, hk⟩) ∧ (∀ (k : Fin (p + q - 2)) (hk : ¬ (k : ℕ) < p - 1), μ k = μ2 ⟨k - (p - 1), by have` from `k.isLt; omega⟩) := ⟨fun k => if hk : (k : ℕ) < p - 1 then μ1 ⟨k, hk⟩ else μ2 ⟨k - (p - 1), by have := k.isLt; omega⟩, fun k hk => dif_pos hk, fun k hk => dif_neg hk⟩`. Use `(Submodule.mem_span_range_iff_exists_fun ℂ).mpr ⟨μ, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `a`.
+
+Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Proceed by induction on `a using Fin.addCases with`. Consider the case `left i`. Establish `e1` using `congrFun hμ1 i`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul] at e1`.
+
+Establish `hle : p - 1 ≤ p + q - 2` using `by omega`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Distinguish the cases in `hk : (k : ℕ) < p - 1`. Rewrite using `[if_pos hk]`.
+
+Rewrite using `[if_neg hk, FL, dif_neg hk, mul_zero]`. Use `_ = ∑ k' : Fin (p - 1), μ (Fin.castLE hle k') * F (Fin.castLE hle k') (Fin.castAdd q i) := (sum_castLE_lemma (p + q - 2) (p - 1) hle (fun k => μ k * F k (Fin.castAdd q i))).symm`. Use `_ = ∑ k' : Fin (p - 1), μ1 k' * gp k' i := by`. Use `Finset.sum_congr rfl fun k' _ => ?_` and prove the remaining obligations. Establish `hk : ((Fin.castLE hle k' : Fin (p + q - 2)) : ℕ) < p - 1` using `k'.isLt`.
+
+Rewrite using `[hμL _ hk, FL, dif_pos hk]`. Both sides reduce to the same expression. Use `_ = c (Fin.castAdd q i) := e1`. Consider the case `right j`. Establish `e2` using `congrFun hμ2 j`.
+
+Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul] at e2`. Establish `hpm : p - 1 + (q - 1) = p + q - 2` using `by omega`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Distinguish the cases in `hk : (k : ℕ) < p - 1`.
+
+Rewrite using `[if_neg (by omega), FR, dif_pos hk, mul_zero]`. Rewrite using `[if_pos (by omega)]`. Use `_ = ∑ j' : Fin (q - 1), μ ⟨p - 1 + (j' : ℕ), by have := j'.isLt; omega⟩ * F ⟨p - 1 + (j' : ℕ), by have := j'.isLt; omega⟩ (Fin.natAdd p j) := (sum_fin_offset_eq (p + q - 2) (p - 1) (q - 1) hpm (fun k => μ k * F k (Fin.natAdd p j))).symm`. Use `_ = ∑ j' : Fin (q - 1), μ2 j' * gq j' j := by`. Use `Finset.sum_congr rfl fun j' _ => ?_` and prove the remaining obligations.
+
+Establish `hk : ¬ (((⟨p - 1 + (j' : ℕ), by have` using `j'.isLt; omega⟩ : Fin (p + q - 2)) : ℕ) < p - 1) := by simp`. Rewrite using `[hμR _ hk, FR, dif_neg hk]`. Simplify using the standard rewrite rules. Use `_ = c (Fin.natAdd p j) := e2`.
+-/
 private theorem sgn_eigen_perp_span_spec (n p : ℕ) (hp : p ≤ n) (d : Fin n → ℂ) (hd : d ≠ 0)
     (hiso : ∑ a, d a * conj (d a) * ((sgn p (a : ℕ) : ℝ) : ℂ) = 0) :
     ∃ F : Fin (n - 2) → Fin n → ℂ,
@@ -225,6 +298,59 @@ private theorem sgn_eigen_perp_span_spec (n p : ℕ) (hp : p ≤ n) (d : Fin n �
             simp
         _ = c (Fin.natAdd p j) := e2
 
+/- English proof (translation)
+Establish `hsg : ∀ a : Fin r, ((sgn X.p0 (a : ℕ) : ℝ) : ℂ) * ((sgn X.p0 (a : ℕ) : ℝ) : ℂ) = 1`. Introduce `a`. Unfold `sgn`. Apply the tactic sequence `split_ifs <;> norm_num`. Take `⟨d, hexp⟩ : ∃ d : Fin r → ℂ, Data.emb τ.1 ξ = ∑ a : Fin r, d a • col (mat x0 τ) a` from `⟨_, expand X hx0 ho τ (Data.emb τ.1 ξ)⟩`.
+
+Establish `hw0 : hermC τ.1 X.Gm (Data.emb τ.1 ξ) (Data.emb τ.1 ξ) = 0`. Establish `h : hermC τ.1 X.Gm (Data.emb τ.1 ξ) (Data.emb τ.1 ξ) = τ.1 (herm X.Gm ξ ξ)`. Simplify using `only [hermC, herm, Data.emb, map_sum, map_mul, emb_cc]`. Rewrite using `[h, hiso, map_zero]`. Establish `hd0 : d ≠ 0`.
+
+Introduce and unpack `rfl`. Apply `hξ0` to reduce the goal to its premises. Use function extensionality and compare the values at `a`. Establish `h1 : Data.emb τ.1 ξ a = 0`. Rewrite using `[hexp]`.
+
+Simplify using the standard rewrite rules. Apply `τ.1.injective` to reduce the goal to its premises. Simplify `h1` using `[Data.emb]`. Establish `hisod : ∑ a : Fin r, d a * conj (d a) * ((sgn X.p0 (a : ℕ) : ℝ) : ℂ) = 0`. Rewrite using `[← comb_comb X ho τ d d, ← hexp, hw0]`.
+
+Take `⟨F, hO, hS, hA, hSp⟩` from `sgn_eigen_perp_span_spec r X.p0 X.p0_le d hd0 hisod`. Establish `hH : ∀ c : Fin r → ℂ, hermC τ.1 X.Gm (∑ a : Fin r, c a • col (mat x0 τ) a) (Data.emb τ.1 ξ) = ∑ a : Fin r, c a * conj (d a) * ((sgn X.p0 (a : ℕ) : ℝ) : ℂ)`. Introduce `c`. Rewrite using `[hexp]`. Conclude with `comb_comb X ho τ c d`.
+
+Establish `hP : ∀ c : Fin r → ℂ, X.ppos z0 τ (∑ a : Fin r, c a • col (mat x0 τ) a) = ∑ a : Fin r, (if (a : ℕ) < X.p0 then c a else 0) • col (mat x0 τ) a`. Introduce `c`. Rewrite using `[FrameDegreeData.ppos_sameFlag X hz hx0 hflag τ, ppos_ortho X hx0 ho τ]`. Simplify using `only [comb_col X ho τ]`. Use `(sum_castLE_lemma r X.p0 X.p0_le (fun (a : Fin r) => (c a * ((sgn X.p0 (a : ℕ) : ℝ) : ℂ)) • col (mat x0 τ) a)).trans ?_` and prove the remaining obligations.
+
+Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases h : (a : ℕ) < X.p0 <;> simp [h, sgn]`. Establish `hJ : ∀ c : Fin r → ℂ, I • ((2 : ℂ) • X.ppos z0 τ (∑ a : Fin r, c a • col (mat x0 τ) a) - ∑ a : Fin r, c a • col (mat x0 τ) a) = ∑ a : Fin r, (I * ((sgn X.p0 (a : ℕ) : ℝ) : ℂ) * c a) • col (mat x0 τ) a`. Introduce `c`. Rewrite using `[hP, Finset.smul_sum, ← Finset.sum_sub_distrib, Finset.smul_sum]`.
+
+Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul, ← sub_smul, smul_smul]`. Use `congr 1`. Apply the tactic sequence `by_cases h : (a : ℕ) < X.p0 <;> simp [h, sgn] <;> ring`. Establish `hpos : ∀ v : Fin r → ℂ, X.posPart z0 τ v = (hermC τ.1 X.Gm (X.ppos z0 τ v) v).re`.
+
+Introduce `v`. Simplify using `only [Data.posPart, Data.ppos, hermC_sum_left, hermC_smul_left]`. Use `congr 1`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[hermC_conj τ.1 X.Gm_herm v]`. Establish `hmaj : ∀ C : Fin r → ℂ, X.maj z0 τ (∑ a : Fin r, C a • col (mat x0 τ) a) = (∑ a : Fin r, C a * conj (C a)).re`. Introduce `C`.
+
+Establish `h2 : (2 : ℂ) * ∑ a : Fin r, (if (a : ℕ) < X.p0 then C a else 0) * conj (C a) * ((sgn X.p0 (a : ℕ) : ℝ) : ℂ) - ∑ a : Fin r, C a * conj (C a) * ((sgn X.p0 (a : ℕ) : ℝ) : ℂ) = ∑ a : Fin r, C a * conj (C a)`. Rewrite using `[Finset.mul_sum, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases h : (a : ℕ) < X.p0 <;> simp [h, sgn] <;> ring`. Rewrite using `[Data.maj, hpos, hP, comb_comb X ho τ, comb_comb X ho τ, ← h2]`.
+
+Simplify using `only [Complex.sub_re, Complex.mul_re, Complex.re_ofNat, Complex.im_ofNat]`. Expand and normalize the polynomial expressions, which then agree. Establish `hnorm : ∀ c : Fin (r - 2) → ℂ, ∑ a : Fin r, (∑ k, c k * F k a) * conj (∑ k, c k * F k a) = ((∑ k, ‖c k‖ ^ 2 : ℝ) : ℂ)`. Introduce `c`. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [map_sum, map_mul, Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations.
+
+Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Use `_ = ∑ k, c k * conj (c k) := by`. Simplify using `only [hO, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Use `_ = ((∑ k, ‖c k‖ ^ 2 : ℝ) : ℂ) := by`.
+
+Use `push_cast`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Use `push_cast`. Both sides reduce to the same expression.
+
+Establish `hmix : ∀ c : Fin (r - 2) → ℂ, ∑ k, c k • ∑ a : Fin r, F k a • col (mat x0 τ) a = ∑ a : Fin r, (∑ k, c k * F k a) • col (mat x0 τ) a`. Introduce `c`. Simplify using `only [Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [Finset.sum_smul]`.
+
+Use `⟨fun k => ∑ a : Fin r, F k a • col (mat x0 τ) a, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `k`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hH]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun a _ => by linear_combination conj (d a) * hS k a`. Use `_ = 0 := by rw [hA k, mul_zero]`. Rewrite using `[hJ (F k), hH]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun a _ => by`. Take the linear combination `(I * F k a * conj (d a)) * hsg a`. Use `_ = 0 := by rw [hA k, mul_zero]`. Introduce `k`.
+
+Rewrite using `[hJ (F k), Finset.smul_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul]`. Use `congr 1`. Establish `hSk` using `hS k a`.
+
+Distinguish the cases in `hk : (k : ℕ) < X.p0 - 1`. Rewrite `hSk`, the goal using `[if_pos hk]`. Take the linear combination `I * hSk`. Rewrite `hSk`, the goal using `[if_neg hk]`. Take the linear combination `I * hSk`.
+
+Introduce `k l`. Rewrite using `[comb_comb X ho τ]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun a _ => by linear_combination conj (F l a) * hS k a`.
+
+Use `_ = _ := by`. Rewrite using `[hO k l]`. Apply the tactic sequence `split_ifs <;> simp`. Introduce `c`. Rewrite using `[hmix, hmaj, hnorm, Complex.ofReal_re]`.
+
+Introduce `v h1 h2`. Take `⟨C, rfl⟩ : ∃ C : Fin r → ℂ, v = ∑ a : Fin r, C a • col (mat x0 τ) a` from `⟨_, expand X hx0 ho τ v⟩`. Rewrite `h1` using `[hH]`. Rewrite `h2` using `[hJ C, hH]`. Establish `h2' : ∑ a : Fin r, C a * conj (d a) = 0`.
+
+Establish `e : ∑ a : Fin r, I * ((sgn X.p0 (a : ℕ) : ℝ) : ℂ) * C a * conj (d a) * ((sgn X.p0 (a : ℕ) : ℝ) : ℂ) = I * ∑ a : Fin r, C a * conj (d a)`. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun a _ => by`. Take the linear combination `(I * C a * conj (d a)) * hsg a`. Rewrite `h2` using `[e]`.
+
+Conclude with `(mul_eq_zero.mp h2).resolve_left Complex.I_ne_zero`. Take `⟨μ, hμ⟩` from `(Submodule.mem_span_range_iff_exists_fun ℂ).mp (hSp C h2' h1)`. Use `(Submodule.mem_span_range_iff_exists_fun ℂ).mpr ⟨μ, ?_⟩` and prove the remaining obligations. Rewrite using `[hmix, ← hμ]`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`.
+-/
 theorem ubasis_at (ξ : Fin r → E) (z0 x0 : Frame X.Ψ r) (hξ0 : ξ ≠ 0) (hiso : herm X.Gm ξ ξ = 0)
     (hz : z0 ∈ X.dom) (hx0 : x0 ∈ X.dom) (ho : X.IsOrtho x0) (hflag : X.SameFlag z0 x0) (τ : X.Ψ) :
     ∃ fτ : Fin (r - 2) → Fin r → ℂ,

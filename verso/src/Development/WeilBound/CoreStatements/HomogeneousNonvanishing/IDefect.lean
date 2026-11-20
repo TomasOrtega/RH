@@ -16,6 +16,9 @@ attribute [local instance] MvPolynomial.weightedGradedAlgebra
 
 def wt : (Σ k, ι k) → K → ℤ := fun p => Pi.single p.1 1
 
+/- English proof (translation)
+Rewrite using `[Finsupp.weight_apply, Finsupp.sum_fintype _ _ (by intro; simp), Finset.sum_apply, Fintype.sum_sigma, Finset.sum_eq_single k]`. Simplify using `[wt]`. Introduce `b _ hb`. Simplify using `[wt, Pi.single_eq_of_ne hb.symm]`. Simplify using the standard rewrite rules.
+-/
 theorem weight_wt (m : (Σ k, ι k) →₀ ℕ) (k : K) :
     Finsupp.weight (wt (ι := ι)) m k = ((∑ i, m ⟨k, i⟩ : ℕ) : ℤ) := by
   rw [Finsupp.weight_apply, Finsupp.sum_fintype _ _ (by intro; simp), Finset.sum_apply, Fintype.sum_sigma,
@@ -25,6 +28,9 @@ theorem weight_wt (m : (Σ k, ι k) →₀ ℕ) (k : K) :
     simp [wt, Pi.single_eq_of_ne hb.symm]
   · simp
 
+/- English proof (translation)
+Rewrite using `[mem_weightedHomogeneousSubmodule]`. Introduce `d hd`. Use function extensionality and compare the values at `k`. Rewrite using `[weight_wt, h d (mem_support_iff.mpr hd) k]`.
+-/
 theorem mem_of_homog {s : MRing ι} {a : K → ℕ} (h : IsMultiHomog s a) :
     s ∈ weightedHomogeneousSubmodule ℤ (wt (ι := ι)) (fun k => (a k : ℤ)) := by
   rw [mem_weightedHomogeneousSubmodule]
@@ -32,6 +38,13 @@ theorem mem_of_homog {s : MRing ι} {a : K → ℕ} (h : IsMultiHomog s a) :
   funext k
   rw [weight_wt, h d (mem_support_iff.mpr hd) k]
 
+/- English proof (translation)
+Rewrite `h` using `[mem_weightedHomogeneousSubmodule]`. Distinguish the cases in `hs : s = 0`. Simplify using `[hs, evC]`. Take `⟨m₀, hm₀⟩` from `ne_zero_iff.mp hs`. Establish `h1 : ∀ k, d k = ((∑ i, m₀ ⟨k, i⟩ : ℕ) : ℤ)` using `fun k => by rw [← h hm₀, weight_wt]`.
+
+Establish `h2 : IsMultiHomog s fun k => ∑ i, m₀ ⟨k, i⟩`. Introduce `m hm k`. Use `weight_wt m k` as an intermediate fact. Rewrite `this` using `[h (mem_support_iff.mp hm), h1]`. Conclude with `this.symm` after adjusting the coercions.
+
+Simplify using `only [h1, zpow_natCast]`. Conclude with `eval_smul_homog s _ h2 c z`.
+-/
 theorem evC_smul {s : MRing ι} {d : K → ℤ} (h : s ∈ weightedHomogeneousSubmodule ℤ (wt (ι := ι)) d) (c : K → ℂ)
     (z : (Σ k, ι k) → ℂ) : evC (fun p => c p.1 * z p) s = (∏ k, c k ^ d k) * evC z s := by
   rw [mem_weightedHomogeneousSubmodule] at h
@@ -47,6 +60,9 @@ theorem evC_smul {s : MRing ι} {d : K → ℤ} (h : s ∈ weightedHomogeneousSu
   simp only [h1, zpow_natCast]
   exact eval_smul_homog s _ h2 c z
 
+/- English proof (translation)
+Take `⟨S, hS, rfl⟩` from `h`. Use `Ideal.homogeneous_span _ S fun x hx => ?_` and prove the remaining obligations. Take `⟨a, ha⟩` from `hS x hx`. Conclude with `⟨_, mem_of_homog ha⟩`.
+-/
 theorem homog_ideal {P : Ideal (MRing ι)} (h : IsMultiHomogIdeal P) :
     P.IsHomogeneous (weightedHomogeneousSubmodule ℤ (wt (ι := ι))) := by
   obtain ⟨S, hS, rfl⟩ := h
@@ -54,6 +70,13 @@ theorem homog_ideal {P : Ideal (MRing ι)} (h : IsMultiHomogIdeal P) :
   obtain ⟨a, ha⟩ := hS x hx
   exact ⟨_, mem_of_homog ha⟩
 
+/- English proof (translation)
+Use `set 𝒜 := weightedHomogeneousSubmodule ℤ (wt (ι := ι)) with h𝒜`. Establish `h1 : ∃ d, evC z (DirectSum.decompose 𝒜 u d : MRing ι) ≠ 0`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Apply `hu` to reduce the goal to its premises.
+
+Rewrite using `[← DirectSum.sum_support_decompose 𝒜 u]`. Unfold `evC at hc ⊢`. Rewrite using `[map_sum, map_sum]`. Conclude with `Finset.sum_eq_zero fun d _ => hc d`. Take `⟨d, hd⟩` from `h1`.
+
+Use `⟨_, _, d, (DirectSum.decompose 𝒜 u d).2, (DirectSum.decompose 𝒜 v (d + (fun k => (α k : ℤ)) - fun k => (γ k : ℤ))).2, ?_, hd⟩` and prove the remaining obligations. Establish `h2` using `homog_ideal hP (d + fun k => (α k : ℤ)) h`. Rewrite using `[← DirectSum.coe_decompose_mul_add_of_right_mem 𝒜 (mem_of_homog hf), ← DirectSum.coe_decompose_mul_add_of_right_mem 𝒜 (mem_of_homog hg), sub_add_cancel]`. Rewrite `h2` using `[DirectSum.decompose_sub]`. Conclude with `h2`.
+-/
 theorem exists_homog_pair {P : Ideal (MRing ι)} (hP : IsMultiHomogIdeal P) {f g u v : MRing ι} {α γ : K → ℕ}
     (hf : IsMultiHomog f α) (hg : IsMultiHomog g γ) (h : u * f - v * g ∈ P) {z : (Σ k, ι k) → ℂ}
     (hu : evC z u ≠ 0) : ∃ (u' v' : MRing ι) (d : K → ℤ), u' ∈ weightedHomogeneousSubmodule ℤ (wt (ι := ι)) d ∧
@@ -79,6 +102,9 @@ theorem exists_homog_pair {P : Ideal (MRing ι)} (hP : IsMultiHomogIdeal P) {f g
   exact h2
 
 omit [DecidableEq K] in
+/- English proof (translation)
+Set `φ : MRing ι →+* ℂ` to `(eval z).comp (map (Int.castRingHom ℂ))`. Conclude with `h.2.2 (RingHom.ker φ) (RingHom.ker_isPrime φ) (fun s hs => hz.2 s hs) fun k => by`. Take `⟨i, hi⟩` from `hz.1 k`. Conclude with `⟨i, by simpa [φ, RingHom.mem_ker] using hi⟩`.
+-/
 theorem exists_pair {P : Ideal (MRing ι)} {f g : MRing ι} (h : UnitRatio P f g) {z : (Σ k, ι k) → ℂ}
     (hz : z ∈ mcPts P) : ∃ u v : MRing ι, evC z u ≠ 0 ∧ evC z v ≠ 0 ∧ u * f - v * g ∈ P := by
   let φ : MRing ι →+* ℂ := (eval z).comp (map (Int.castRingHom ℂ))
@@ -87,6 +113,13 @@ theorem exists_pair {P : Ideal (MRing ι)} {f g : MRing ι} (h : UnitRatio P f g
     exact ⟨i, by simpa [φ, RingHom.mem_ker] using hi⟩
 
 omit [DecidableEq K] in
+/- English proof (translation)
+Establish `h1 : (u * v' - u' * v) * g ∈ P`. Use `P.sub_mem (P.mul_mem_left u' h) (P.mul_mem_left u h')` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Establish `h2` using `hz.2 _ ((hP.mem_or_mem h1).resolve_right hg)`.
+
+Rewrite using `[← norm_div, ← norm_div]`. Use `congr 1`. Unfold `evC at *`. Simplify using `only [map_sub, map_mul] at h2`. Clear the denominators using the available nonvanishing facts.
+
+Take the linear combination `-h2`.
+-/
 theorem ratio_eq {P : Ideal (MRing ι)} (hP : P.IsPrime) {f g u v u' v' : MRing ι} (hg : g ∉ P)
     (h : u * f - v * g ∈ P) (h' : u' * f - v' * g ∈ P) {z : (Σ k, ι k) → ℂ} (hz : z ∈ mcPts P)
     (hu : evC z u ≠ 0) (hu' : evC z u' ≠ 0) : ‖evC z v‖ / ‖evC z u‖ = ‖evC z v'‖ / ‖evC z u'‖ := by
@@ -105,6 +138,29 @@ theorem ratio_eq {P : Ideal (MRing ι)} (hP : P.IsPrime) {f g u v u' v' : MRing 
 end IDef
 
 open IDef HolomorphicMinorCharts in
+/- English proof (translation)
+Introduce `K _ ι _ P J e R A B f g hP hI hA hB`. Take `⟨⟨α, γ, hf, hg, hdeg⟩, hU⟩` from `hI`. Set `w : ((Σ k, ι k) → ℂ) → ℝ` to `fun z => if h : ∃ q : MRing ι × MRing ι, q.1 * f - q.2 * g ∈ P ∧ evC z q.1 ≠ 0 then Real.log (‖evC z h.choose.2‖ / ‖evC z h.choose.1‖ * B.h z / A.h z) else 0`. Establish `hw : IsDefectOn P (mcPts P) f g A B w`. Introduce `z hz u v h hu`.
+
+Establish `hex : ∃ q : MRing ι × MRing ι, q.1 * f - q.2 * g ∈ P ∧ evC z q.1 ≠ 0` using `⟨(u, v), h, hu⟩`. Simplify using `only [w, dif_pos hex]`. Rewrite using `[ratio_eq hP.1 hU.2.1 hex.choose_spec.1 h hz hex.choose_spec.2 hu]`. Establish `hinv : ∀ z ∈ mcPts P, ∀ z', SameOrbit z z' → w z = w z'`. Introduce `z hz z' hzz`.
+
+Establish `hz' : z' ∈ mcPts P` using `mem_mcPts_of_sameOrbit hP.2.1 (so_symm hzz) hz`. Take `⟨u₀, v₀, hu₀, -, h₀⟩` from `exists_pair hU hz'`. Take `⟨u, v, d, hu, hv, h, hu'⟩` from `exists_homog_pair hP.2.1 hf hg h₀ hu₀`. Take `⟨c, hc, rfl⟩` from `hzz`. Establish `hn : ∀ n : K → ℤ, (∏ k, c k ^ n k) ≠ 0` using `fun n => Finset.prod_ne_zero_iff.mpr fun k _ => zpow_ne_zero _ (hc k)`.
+
+Establish `hn' : ∀ n : K → ℤ, (∏ k, ‖c k‖ ^ n k) ≠ 0` using `fun n => Finset.prod_ne_zero_iff.mpr fun k _ => zpow_ne_zero _ (norm_ne_zero_iff.mpr (hc k))`. Rewrite using `[hw _ hz u v h (by rw [evC_smul hu]; exact mul_ne_zero (hn d) hu'), hw _ hz' u v h hu', evC_smul hu, evC_smul hv, A.smul c z' hc, B.smul c z' hc]`. Use `congr 1`. Simplify using `only [norm_mul, norm_prod, norm_zpow]`. Establish `key : (∏ k, ‖c k‖ ^ (d + (fun k => (α k : ℤ)) - fun k => (γ k : ℤ)) k) * ∏ k, ‖c k‖ ^ B.a k = (∏ k, ‖c k‖ ^ d k) * ∏ k, ‖c k‖ ^ A.a k`.
+
+Rewrite using `[← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← zpow_add₀ (norm_ne_zero_iff.mpr (hc k)), ← zpow_add₀ (norm_ne_zero_iff.mpr (hc k))]`. Use `congr 1`. Use `hdeg k` as an intermediate fact.
+
+Simplify using `only [Pi.sub_apply, Pi.add_apply]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1` using `hn' d`. Establish `h2` using `hn' A.a`. Establish `h3` using `(A.pos z' hz'.1).ne'`.
+
+Establish `h4` using `norm_ne_zero_iff.mpr hu'`. Clear the denominators using the available nonvanishing facts. Take the linear combination `‖evC z' v‖ * B.h z' * key`. Use `⟨w, hw, hinv, fun j y hy => ContDiffAt.contDiffWithinAt ?_⟩` and prove the remaining obligations. Use `set x := (R.A.chart j).symm y with hx`.
+
+Establish `hO` using `((R.A.chart j).isOpen_inter_preimage_symm (R.isOpen_U x)).mem_nhds ⟨hy.1, R.mem_U x⟩`. Establish `hz` using `R.mem x x (R.mem_U x)`. Take `⟨u, v, hu, hv, h⟩` from `exists_pair hU hz`. Establish `hl : ContDiffAt ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun y => R.lift x ((R.A.chart j).symm y)) y` using `(contDiffOn_lift R x j).contDiffAt hO`. Establish `hev : ∀ s : MRing ι, ContDiffAt ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun y => evC (R.lift x ((R.A.chart j).symm y)) s) y` using `fun s => ContDiffAt.comp (g := fun z => evC z s) y (((AnalyticOnNhd.eval_mvPolynomial (map (Int.castRingHom ℂ) s)) _ trivial).contDiffAt.restrict_scalars ℝ) hl`.
+
+Establish `hNZ : IsOpen {z : (Σ k, ι k) → ℂ | ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0}`. Rewrite using `[Set.setOf_forall]`. Use `isOpen_iInter_of_finite fun k => ?_` and prove the remaining obligations. Rewrite using `[Set.setOf_exists]`. Conclude with `isOpen_iUnion fun i => isOpen_ne_fun (continuous_apply _) continuous_const`.
+
+Establish `hh : ∀ C : HermLine ι, IsSmoothHerm C → ContDiffAt ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun y => C.h (R.lift x ((R.A.chart j).symm y))) y` using `fun C hC => ContDiffAt.comp (g := C.h) y (ContDiffOn.contDiffAt hC (hNZ.mem_nhds hz.1)) hl`. Establish `hA0` using `(A.pos _ hz.1).ne'`. Establish `hB0` using `(B.pos _ hz.1).ne'`. Establish `hu0` using `norm_ne_zero_iff.mpr hu`. Establish `hv0` using `norm_ne_zero_iff.mpr hv`.
+
+Use `ContDiffAt.congr_of_eventuallyEq ((((((hev v).norm ℂ hv).div ((hev u).norm ℂ hu) hu0).mul (hh B hB)).div (hh A hA) hA0).log (div_ne_zero (mul_ne_zero (div_ne_zero hv0 hu0) hB0) hA0)) ?_` and prove the remaining obligations. Use `filter_upwards [hO, (hev u).continuousAt.eventually_ne hu] with y' h1 h2`. Simplify using `only [Function.comp_apply]`. Rewrite using `[hinv _ (R.mem _ _ (R.mem_U _)) _ (R.compat _ x _ ⟨R.mem_U _, h1.2⟩)]`. Conclude with `hw _ (R.mem x _ h1.2) u v h h2`.
+-/
 theorem i_defect : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (P J : Ideal (MRing ι)) (e : ℕ) (R : AnLogRes P J e) (A B : HermLine ι) (f g : MRing ι), IsMultiProjPrime P → IsLineIso P A.a B.a f g → IsSmoothHerm A → IsSmoothHerm B → ∃ w : ((Σ k, ι k) → ℂ) → ℝ, IsDefectOn P (mcPts P) f g A B w ∧ (∀ z ∈ mcPts P, ∀ z', SameOrbit z z' → w z = w z') ∧ R.A.Smooth (fun x => w (R.lift x x)) := by
   intro K _ ι _ P J e R A B f g hP hI hA hB
   classical

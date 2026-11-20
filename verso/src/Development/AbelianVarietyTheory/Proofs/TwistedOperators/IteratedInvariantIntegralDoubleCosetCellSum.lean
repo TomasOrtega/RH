@@ -14,6 +14,11 @@ namespace GlobalTheory.RowVal
 
 open GlobalTheory.CellInt
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨r, hr, a, ha, k, hk, rfl⟩`. Rewrite `ha` using `[Subgroup.mem_bot]`. Substitute `ha` using the available equality. Conclude with `⟨r, hr, k, hk, by simp⟩`.
+
+Introduce and unpack `⟨r, hr, k, hk, rfl⟩`. Conclude with `⟨r, hr, 1, Subgroup.one_mem _, k, hk, by simp⟩`.
+-/
 theorem cellBot_iff {G : Type} [Group G] {R K : Subgroup G} {b x : G} :
     (∃ r ∈ R, ∃ a ∈ (⊥ : Subgroup G), ∃ k ∈ K, x = r * a * b * k) ↔ ∃ r ∈ R, ∃ k ∈ K, x = r * b * k := by
   constructor
@@ -24,11 +29,53 @@ theorem cellBot_iff {G : Type} [Group G] {R K : Subgroup G} {b x : G} :
   · rintro ⟨r, hr, k, hk, rfl⟩
     exact ⟨r, hr, 1, Subgroup.one_mem _, k, hk, by simp⟩
 
+/- English proof (translation)
+Simplify using `only [cellWt, cellSet, measureReal_def, mul_assoc]`.
+-/
 theorem cellWt_eq {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [MeasurableSpace G] [BorelSpace G]
     (R K : Subgroup G) (ρ : Measure R) (μ : Measure G) (b : G) :
     cellWt ρ μ K b = (((μ (K : Set G)).toReal / (ρ (cellSet R K b b)).toReal : ℝ) : ℂ) := by
   simp only [cellWt, cellSet, measureReal_def, mul_assoc]
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil`. Introduce `X S b q h hb hd _ hs`. Simplify using `only [NIter, List.map_nil, List.prod_nil, one_mul]`. Establish `hbh : ∀ β ∈ S, b β = h` using `fun β hβ => funext fun i => hb β hβ i (by simp)`.
+
+Establish `hsub : ∀ β ∈ S, ∀ β' ∈ S, β = β'` using `fun β hβ β' hβ' => hd β hβ β' hβ' (fun i hi => by simp at hi)`. Distinguish the cases in `hq : q h = 0`. Rewrite using `[hq]`. Conclude with `Finset.sum_eq_zero fun β hβ => by rw [hbh β hβ, hq]`. Take `⟨β, hβ, -⟩` from `hs h (fun _ _ => rfl) hq`.
+
+Rewrite using `[Finset.sum_eq_single β (fun β' hβ' hne => absurd (hsub β' hβ' β hβ) hne) (fun h' => absurd hβ h'), hbh β hβ]`. Consider the case `cons i l' ih`. Introduce `X S b q h hb hd hq hs`. Take `⟨hi, hl'⟩` from `List.nodup_cons.1 hl`. Take `⟨hcl, hkc, hko, hρ, hρi, hμ, hμr⟩` from `hyp i (by simp)`.
+
+Establish `hyp' : ∀ j ∈ l', _` using `fun j hj => hyp j (List.mem_cons_of_mem _ hj)`. Establish `hq' : BiInv R K l' q` using `fun j hj => hq j (List.mem_cons_of_mem _ hj)`. Establish `hne : ∀ j ∈ l', j ≠ i` using `fun j hj hji => hi (hji ▸ hj)`. Use `set Wt' : X → ℂ := fun β => (l'.map fun j => cellWt (ρ j) (μ j) (K j) (b β j)).prod with hWt'`. Establish `qinv : ∀ β g, g ∈ dcos (R i) (K i) (b β i) → q (Function.update (b β) i g) = q (b β)`.
+
+Introduce and unpack `β g ⟨r, hr, k, hk, rfl⟩`. Establish `h1` using `(hq i (by simp) (b β)).1 r hr`. Establish `h2` using `(hq i (by simp) (Function.update (b β) i (r * b β i))).2 k hk`. Simplify using `only [Function.update_self, Function.update_idem] at h2`. Rewrite using `[h2, h1]`.
+
+Use `⟨fun g => ∑ β ∈ S, Wt' β * q (b β) * (if g ∈ dcos (R i) (K i) (b β i) then 1 else 0), ?_, ?_⟩` and prove the remaining obligations. Use `haveI := hρ`. Use `haveI := hρi`. Use `haveI := hμ`. Establish `hS` using `quotient_integral_finset_sum S (fun β g => Wt' β * q (b β) * (if g ∈ dcos (R i) (K i) (b β i) then (1 : ℂ) else 0)) (fun β => Wt' β * q (b β) * (((μ i (K i : Set (H i))).toReal / (ρ i (cellSet (R i) (K i) (b β i) (b β i))).toReal : ℝ) : ℂ)) (fun β _ => by`.
+
+Use `(isQuotientIntegral_indicator_doubleCoset (R i) (K i) hcl hkc hko (ρ i) (μ i) (b β i)).smul (Wt' β * q (b β))` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `g`. Simplify using `[smul_eq_mul])`. Use `hS using 1` and compare the differences between its conclusion and the goal.
+
+Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `β _`. Rewrite using `[List.map_cons, List.prod_cons, cellWt_eq (R i)]`. Expand and normalize the polynomial expressions, which then agree. Introduce `g`.
+
+Establish `key` using `ih hl' hyp' X (S.filter fun β => g ∈ dcos (R i) (K i) (b β i)) (fun β => Function.update (b β) i g) q (Function.update h i g) ?base ?dist hq' ?supp`. Use `key using 1` and compare the differences between its conclusion and the goal. Rewrite using `[Finset.sum_filter]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `β _`.
+
+Use `split_ifs with hg`. Establish `e : (l'.map fun j => cellWt (ρ j) (μ j) (K j) (Function.update (b β) i g j)).prod = Wt' β`. Rewrite using `[hWt']`. Use `congr 1`. Apply `List.map_congr_left` to reduce the goal to its premises.
+
+Introduce `j hj`. Rewrite using `[Function.update_of_ne (hne j hj)]`. Rewrite using `[e, qinv β g hg, mul_one]`. Simplify using the standard rewrite rules. Use `case base =>`.
+
+Introduce `β hβ j hj`. Distinguish the cases in `hji : j = i`. Substitute `hji` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[Function.update_of_ne hji, Function.update_of_ne hji]`.
+
+Conclude with `hb β (Finset.mem_filter.1 hβ).1 j (by simp [hji, hj])`. Use `case dist =>`. Introduce `β hβ β' hβ' hc`. Take `⟨hβS, hgβ⟩` from `Finset.mem_filter.1 hβ`. Take `⟨hβS', hgβ'⟩` from `Finset.mem_filter.1 hβ'`.
+
+Use `hd β hβS β' hβS' ?_` and prove the remaining obligations. Introduce `j hj`. Break down `List.mem_cons.1 hj with rfl | hj'` into its components or cases. Rewrite using `[cellBot_iff]`. Establish `e1` using `dcos_eq_of_mem hgβ`.
+
+Establish `e2` using `dcos_eq_of_mem hgβ'`. Establish `hm : b β' j ∈ dcos (R j) (K j) (b β' j)` using `⟨1, Subgroup.one_mem _, 1, Subgroup.one_mem _, by simp⟩`. Rewrite `hm` using `[← e2, e1]`. Conclude with `hm`. Take `⟨r, hr, a, ha, k, hk, e⟩` from `hc j hj'`.
+
+Use `⟨r, hr, a, ha, k, hk, ?_⟩` and prove the remaining obligations. Simplify `e` using `[Function.update_of_ne (hne j hj')]`. Use `case supp =>`. Introduce `g' hg' hq0`. Establish `hgi : g' i = g` using `by simpa using hg' i hi`.
+
+Take `⟨β, hβ, hc⟩` from `hs g' (fun j hj => by`. Establish `hji : j ≠ i` using `fun e => hj (e ▸ List.mem_cons_self ..)`. Use `hg' j (fun hj' => hj (List.mem_cons_of_mem _ hj'))` as an intermediate fact. Rewrite using `[Function.update_of_ne hji] at this) hq0` and apply the resulting hypothesis. Use `⟨β, Finset.mem_filter.2 ⟨hβ, ?_⟩, ?_⟩` and prove the remaining obligations.
+
+Use `hc i (by simp)` as an intermediate fact. Rewrite `this` using `[cellBot_iff, hgi]`. Conclude with `this`. Introduce `j hj`. Take `⟨r, hr, a, ha, k, hk, e⟩` from `hc j (List.mem_cons_of_mem _ hj)`.
+
+Use `⟨r, hr, a, ha, k, hk, ?_⟩` and prove the remaining obligations. Simplify `e` using `[Function.update_of_ne (hne j hj)]`.
+-/
 theorem niter_cellSum_at (ι : Type) [DecidableEq ι] (H : ι → Type) [∀ i, Group (H i)] [∀ i, TopologicalSpace (H i)]
     [∀ i, IsTopologicalGroup (H i)] [∀ i, MeasurableSpace (H i)] [∀ i, BorelSpace (H i)]
     (R K : ∀ i, Subgroup (H i)) (ρ : ∀ i, Measure (R i)) (μ : ∀ i, Measure (H i)) (l : List ι) (hl : l.Nodup)
@@ -133,6 +180,9 @@ theorem niter_cellSum_at (ι : Type) [DecidableEq ι] (H : ι → Type) [∀ i, 
           refine ⟨r, hr, a, ha, k, hk, ?_⟩
           simpa [Function.update_of_ne (hne j hj)] using e
 
+/- English proof (translation)
+Introduce `ι _ H _ _ _ _ _ _ _ _ R K l hl ρ μ hyp X S b q hb hd hq hs`. Conclude with `niter_cellSum_at ι H R K ρ μ l hl hyp X S b q 1 (fun β hβ i hi => by simpa using hb β hβ i hi) hd hq (fun g hg => hs g (fun i hi => by simpa using hg i hi))`.
+-/
 theorem niter_cellSum : ∀ (ι : Type) [DecidableEq ι] (H : ι → Type) [∀ i, Group (H i)] [∀ i, TopologicalSpace (H i)] [∀ i, IsTopologicalGroup (H i)] [∀ i, SecondCountableTopology (H i)] [∀ i, LocallyCompactSpace (H i)] [∀ i, T2Space (H i)] [∀ i, MeasurableSpace (H i)] [∀ i, BorelSpace (H i)] (R K : ∀ i, Subgroup (H i)) (l : List ι), l.Nodup → ∀ (ρ : ∀ i, Measure (R i)) (μ : ∀ i, Measure (H i)), (∀ i ∈ l, IsClosed (R i : Set (H i)) ∧ IsCompact (K i : Set (H i)) ∧ IsOpen (K i : Set (H i)) ∧ (ρ i).IsHaarMeasure ∧ (ρ i).IsInvInvariant ∧ (μ i).IsHaarMeasure ∧ (μ i).IsMulRightInvariant) → ∀ (X : Type) (S : Finset X) (b : X → ∀ i, H i) (q : (∀ i, H i) → ℂ), (∀ β ∈ S, ∀ i, i ∉ l → b β i = 1) → (∀ β ∈ S, ∀ β' ∈ S, InCells (fun _ => ⊥) R K l (b β) (b β') → β = β') → BiInv R K l q → (∀ h, (∀ i, i ∉ l → h i = 1) → q h ≠ 0 → ∃ β ∈ S, InCells (fun _ => ⊥) R K l (b β) h) → NIter ρ μ q l 1 (∑ β ∈ S, (l.map fun i => cellWt (ρ i) (μ i) (K i) (b β i)).prod * q (b β)) := by
   intro ι _ H _ _ _ _ _ _ _ _ R K l hl ρ μ hyp X S b q hb hd hq hs
   exact niter_cellSum_at ι H R K ρ μ l hl hyp X S b q 1 (fun β hβ i hi => by simpa using hb β hβ i hi) hd hq

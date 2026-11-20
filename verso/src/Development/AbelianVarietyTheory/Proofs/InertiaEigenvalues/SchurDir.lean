@@ -23,6 +23,9 @@ def thetaZ {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ} (
       ((fun j => algebraMap E (Ad E) (ξ.1 j)) ᵥ* g.val)) *
     ((((ideleModule E (GeneralLinearGroup.det g) : ℝ) ^ (x : ℝ) : ℝ)) : ℂ) ∂μ
 
+/- English proof (translation)
+Simplify using `[eulD]`.
+-/
 example (x : ℝ) : eulD (I := Empty) (fun _ => 2) (n := 1) (fun _ _ => 1) x = 1 := by simp [eulD]
 
 end GlobalTheory.RSPole

@@ -105,6 +105,9 @@ open Classical in
 def smoothExt (P : Ideal (MRing ι)) (f : ((Σ k, ι k) → ℂ) → ℝ) : ((Σ k, ι k) → ℂ) → ℝ :=
   if h : ∃ F, IsSmoothExt P f F then h.choose else fun _ => 0
 
+/- English proof (translation)
+Unfold `smoothExt`. Use `split_ifs with h`. Conclude with `h.choose_spec.2.1 c z hc`. Both sides reduce to the same expression.
+-/
 theorem smoothExt_torus (P : Ideal (MRing ι)) (f : ((Σ k, ι k) → ℂ) → ℝ) (c : K → ℂ)
     (hc : ∀ k, c k ≠ 0) (z : (Σ k, ι k) → ℂ) : smoothExt P f (torusSmul c z) = smoothExt P f z := by
   classical

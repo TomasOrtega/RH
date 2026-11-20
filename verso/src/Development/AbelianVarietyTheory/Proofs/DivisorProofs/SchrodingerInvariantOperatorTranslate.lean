@@ -4,6 +4,15 @@ open scoped SchwartzMap
 
 namespace GlobalTheory.ArchUniq
 
+/- English proof (translation)
+Use `set c := Complex.exp (-(2 * Real.pi * Complex.I) * ((s * omega P w u : ℝ) : ℂ)) with hcdef`. Establish `hc : c ≠ 0` using `Complex.exp_ne_zero _`. Establish `pt : ∀ y, g₁ y = c * schrF P (s • u) (⇑g) y`. Introduce `y`. Rewrite using `[hg₁]`.
+
+Simplify using `only [schrF, hh₁, hg]`. Rewrite using `[show y + w.1 + (s • u).1 = y + (s • u).1 + w.1 by abel]`. Simplify using `only [hcdef, ← mul_assoc, ← Complex.exp_add]`. Use `congr 2`. Simplify using `only [Prod.smul_fst, Prod.smul_snd, hP.addL, hP.smulL, hP.smulR, omega]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hk : ⇑(c⁻¹ • g₁) = schrF P (s • u) ⇑g`. Use function extensionality and compare the values at `y`. Rewrite using `[SchwartzMap.smul_apply, pt y, smul_eq_mul, inv_mul_cancel_left₀ hc]`.
+
+Establish `hT'` using `hT s g (c⁻¹ • g₁) hk`. Establish `e : g₁ = c • (c⁻¹ • g₁)` using `by rw [smul_smul, mul_inv_cancel₀ hc, one_smul]`. Rewrite using `[e, map_smul, hT']`.
+-/
 theorem commute_line_invariance {V V₁ : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V]
     [NormedAddCommGroup V₁] [NormedSpace ℝ V₁] (P : V → V → ℝ) (hP : IsPairing P)
     (T : 𝓢(V, ℂ) →L[ℂ] 𝓢(V₁, ℂ)) (u : V × V)
@@ -30,6 +39,9 @@ theorem commute_line_invariance {V V₁ : Type} [NormedAddCommGroup V] [NormedSp
   have e : g₁ = c • (c⁻¹ • g₁) := by rw [smul_smul, mul_inv_cancel₀ hc, one_smul]
   rw [e, map_smul, hT']
 
+/- English proof (translation)
+Introduce `P hP T u hT w s h h₁ g g₁` and use `commute_line_invariance P hP T u hT w s h h₁ g g₁`.
+-/
 theorem commute_line_invariance_target : ∀ {V V₁ : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V] [NormedAddCommGroup V₁] [NormedSpace ℝ V₁] (P : V → V → ℝ), GlobalTheory.ArchUniq.IsPairing P → ∀ (T : 𝓢(V, ℂ) →L[ℂ] 𝓢(V₁, ℂ)) (u : V × V), (∀ (s : ℝ) (f g : 𝓢(V, ℂ)), ⇑g = GlobalTheory.ArchUniq.schrF P (s • u) ⇑f → T g = T f) → ∀ (w : V × V) (s : ℝ) (h h₁ g g₁ : 𝓢(V, ℂ)), ⇑h₁ = GlobalTheory.ArchUniq.schrF P (s • u) ⇑h → ⇑g = GlobalTheory.ArchUniq.schrF P w ⇑h → ⇑g₁ = GlobalTheory.ArchUniq.schrF P w ⇑h₁ → T g₁ = Complex.exp (-(2 * Real.pi * Complex.I) * ((s * GlobalTheory.ArchUniq.omega P w u : ℝ) : ℂ)) • T g :=
   fun P hP T u hT w s h h₁ g g₁ => commute_line_invariance P hP T u hT w s h h₁ g g₁
 

@@ -21,6 +21,23 @@ set_option autoImplicit false
 
 namespace GlobalTheory.ShFam.Hor.LogCh
 
+/- English proof (translation)
+Introduce `n a g r K lam hK hlam hB`. Establish `hne : (fun k : Fin n => if (k : ℕ) < a then (-1 : ℂ) else 0) ∈ logDom n a`. Introduce `k`. Apply the tactic sequence `by_cases h : (k : ℕ) < a <;> simp [h]`. Take `⟨hOpen, -, hAn, hMaps⟩` from `GlobalTheory.logDom_chart_props n a`.
+
+Establish `hmem : ∀ s ∈ logDom n a, ∀ j, lam s j ∈ K (logExp a s)`. Introduce `s hs j`. Use `((hB s hs).2.2 _).2 ⟨Pi.single j 1, ?_⟩` and prove the remaining obligations. Simplify using `[Pi.single_apply]`. Establish `hreal : ∀ s ∈ logDom n a, LinearIndependent ℝ (lam s)`.
+
+Introduce `s hs`. Take `⟨hli, hsp, hK'⟩` from `hB s hs`. Establish `hspanK : Submodule.span ℝ (K (logExp a s)) = ⊤`. Rewrite using `[eq_top_iff, ← hsp]`. Conclude with `Submodule.span_mono (by rintro _ ⟨j, rfl⟩; exact hmem s hs j)`.
+
+Conclude with `(GlobalTheory.LatReal.isRealBasis_of_isLatFam n g r (Metric.ball 0 1) K (logExp a s) (lam s) hK (hMaps hs) hspanK hli hK').1`. Use `⟨?_, hreal, ?_⟩` and prove the remaining obligations. Use `set s₀ := (fun k : Fin n => if (k : ℕ) < a then (-1 : ℂ) else 0)`. Establish `hli` using `hreal s₀ hne`. Establish `hsp` using `(hB s₀ hne).2.1`.
+
+Establish `h1` using `linearIndependent_iff_card_eq_finrank_span.1 hli`. Rewrite `h1` using `[Set.finrank, hsp, finrank_top, Fintype.card_fin]`. Rewrite using `[h1, Module.finrank_pi_fintype]`. Simplify using `[Complex.finrank_real_complex, mul_comm]`. Introduce `j k`.
+
+Establish `hF` using `IsLatFam.pullback_analytic n n g (Metric.ball 0 1) (logDom n a) K (logExp a) hK hOpen (fun s _ => hAn s) hMaps`. Introduce `s₀ hs₀`. Establish `hnhds : logDom n a ∈ 𝓝 s₀` using `hOpen.mem_nhds hs₀`. Take `⟨ζ, hζ0, hζa, hev⟩` from `hF.2.2.2 s₀ hs₀ (lam s₀ j) (hmem s₀ hs₀ j)`. Establish `hc : ContinuousAt (fun s => (s, lam s j)) s₀` using `continuousAt_id.prodMk ((continuous_apply j).continuousAt.comp (hlam.continuousAt hnhds))`.
+
+Establish `hev' : ∀ᶠ s in 𝓝 s₀, (lam s j ∈ K (logExp a s) ↔ lam s j = ζ s)`. Use `hc.tendsto.eventually hev` as an intermediate fact. Simplify `this` using `[hζ0]`. Establish `heq : (fun s => lam s j) =ᶠ[𝓝 s₀] ζ` using `by filter_upwards [hev', hnhds] with s h1 h2`. Conclude with `h1.1 (hmem s h2 j)`.
+
+Establish `hd : DifferentiableAt ℂ (fun s => lam s j) s₀` using `hζa.differentiableAt.congr_of_eventuallyEq heq`. Conclude with `(differentiableAt_pi.1 hd k).differentiableWithinAt`.
+-/
 theorem latBasis_logCover_real_holo : ∀ (n a g r : ℕ) (K : (Fin n → ℂ) → Set (Fin g → ℂ)) (lam : (Fin n → ℂ) → Fin r → Fin g → ℂ), IsLatFam (Metric.ball 0 1) K → ContinuousOn lam (logDom n a) → (∀ s ∈ logDom n a, LinearIndependent ℤ (lam s) ∧ Submodule.span ℝ (Set.range (lam s)) = ⊤ ∧ ∀ w, w ∈ K (logExp a s) ↔ ∃ m : Fin r → ℤ, w = ∑ j, m j • lam s j) → r = 2 * g ∧ (∀ s ∈ logDom n a, LinearIndependent ℝ (lam s)) ∧ ∀ (j : Fin r) (k : Fin g), DifferentiableOn ℂ (fun s => lam s j k) (logDom n a) := by
   intro n a g r K lam hK hlam hB
 

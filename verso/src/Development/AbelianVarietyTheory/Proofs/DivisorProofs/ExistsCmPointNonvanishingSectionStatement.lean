@@ -22,6 +22,9 @@ open GlobalTheory.HSApp
 set_option synthInstance.maxHeartbeats 400000
 open GlobalTheory.LamT (CMPt)
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CovDetect.exists_good_cmPt_frame_ne_zero | exact GlobalTheory.CovDetect.exists_good_cmPt_frame_ne_zero | (intros; apply GlobalTheory.CovDetect.exists_good_cmPt_frame_ne_zero <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_cm_point_nonvanishing_section : GlobalTheory.CovTop.Hypotheses2 → ∀ (D : D7) (T : Core D) (j : ℕ) (Y : Deep T j) (e : ℕ) (o : ℝ), Y.Good e o →
     2 < Module.finrank ℚ D.host.E / 2 → ∀ la : GlobalTheory.AllWt.Weight (T.Q.Dw j), GapGe 1 la →
     ∀ [StarRing (𝓞 D.host.E)], (∀ a : 𝓞 D.host.E, star a = T.Q.H.bar a) →

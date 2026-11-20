@@ -7,6 +7,9 @@ open scoped ComplexConjugate BigOperators Topology
 
 namespace GlobalTheory.MomOne.TaylorRead
 
+/- English proof (translation)
+Use extensionality with `n`. Use `iteratedDeriv_add (n := n) (x := (0 : ℂ)) hF.contDiffAt hG.contDiffAt` as an intermediate fact. Simplify using `only [tay, coeff_mk, map_add]`. Rewrite using `[← add_div, ← this]`. Both sides reduce to the same expression.
+-/
 theorem tay_add {F G : ℂ → ℂ} (hF : AnalyticAt ℂ F 0) (hG : AnalyticAt ℂ G 0) :
     tay (fun z => F z + G z) = tay F + tay G := by
   ext n
@@ -15,6 +18,13 @@ theorem tay_add {F G : ℂ → ℂ} (hF : AnalyticAt ℂ F 0) (hG : AnalyticAt �
   rw [← add_div, ← this]
   rfl
 
+/- English proof (translation)
+Use extensionality with `n`. Use `iteratedDeriv_mul (n := n) (x := (0 : ℂ)) hF.contDiffAt hG.contDiffAt` as an intermediate fact. Simplify using `only [tay, coeff_mk, coeff_mul]`. Rewrite using `[Finset.Nat.sum_antidiagonal_eq_sum_range_succ (fun i j => iteratedDeriv i F 0 / (i.factorial : ℂ) * (iteratedDeriv j G 0 / (j.factorial : ℂ)))]`. Express the relevant statement in the definitionally equal form `iteratedDeriv n (F * G) 0 / _ = _`.
+
+Rewrite using `[this, Finset.sum_div]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Establish `hi' : i ≤ n` using `Nat.lt_succ_iff.mp (Finset.mem_range.mp hi)`. Establish `h` using `Nat.choose_mul_factorial_mul_factorial hi'`. Establish `h1 : (i.factorial : ℂ) ≠ 0` using `by exact_mod_cast i.factorial_ne_zero`.
+
+Establish `h2 : ((n - i).factorial : ℂ) ≠ 0` using `by exact_mod_cast (n - i).factorial_ne_zero`. Establish `h3 : (n.choose i : ℂ) ≠ 0` using `by exact_mod_cast (Nat.choose_pos hi').ne'`. Rewrite using `[← h]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem tay_mul {F G : ℂ → ℂ} (hF : AnalyticAt ℂ F 0) (hG : AnalyticAt ℂ G 0) :
     tay (fun z => F z * G z) = tay F * tay G := by
   ext n
@@ -34,11 +44,21 @@ theorem tay_mul {F G : ℂ → ℂ} (hF : AnalyticAt ℂ F 0) (hG : AnalyticAt �
   push_cast
   field_simp
 
+/- English proof (translation)
+Use extensionality with `n`. Simplify using `only [tay, coeff_mk]`. Rewrite using `[h.iteratedDeriv_eq n]`.
+-/
 theorem tay_congr {F G : ℂ → ℂ} (h : F =ᶠ[𝓝 0] G) : tay F = tay G := by
   ext n
   simp only [tay, coeff_mk]
   rw [h.iteratedDeriv_eq n]
 
+/- English proof (translation)
+Establish `hd : ∀ n, iteratedDeriv n F 0 = iteratedDeriv n G 0`. Introduce `n`. Establish `h1 : (n.factorial : ℂ) ≠ 0` using `by exact_mod_cast n.factorial_ne_zero`. Use `congrArg (coeff n) h` as an intermediate fact. Simplify using `only [tay, coeff_mk] at this`.
+
+Conclude with `(div_left_inj' h1).mp this`. Establish `hs : AnalyticAt ℂ (F - G) 0` using `hF.sub hG`. Establish `htop : analyticOrderAt (F - G) 0 = ⊤`. Rewrite using `[ENat.eq_top_iff_forall_ge]`. Introduce `n`.
+
+Rewrite using `[natCast_le_analyticOrderAt_iff_iteratedDeriv_eq_zero hs]`. Introduce `i _`. Rewrite using `[iteratedDeriv_sub hF.contDiffAt hG.contDiffAt, hd, sub_self]`. Use `filter_upwards [analyticOrderAt_eq_top.mp htop] with z hz`. Conclude with `sub_eq_zero.mp hz`.
+-/
 theorem eventuallyEq_of_tay_eq {F G : ℂ → ℂ} (hF : AnalyticAt ℂ F 0) (hG : AnalyticAt ℂ G 0)
     (h : tay F = tay G) : F =ᶠ[𝓝 0] G := by
   have hd : ∀ n, iteratedDeriv n F 0 = iteratedDeriv n G 0 := by
@@ -57,6 +77,9 @@ theorem eventuallyEq_of_tay_eq {F G : ℂ → ℂ} (hF : AnalyticAt ℂ F 0) (hG
   filter_upwards [analyticOrderAt_eq_top.mp htop] with z hz
   exact sub_eq_zero.mp hz
 
+/- English proof (translation)
+Use extensionality with `n`. Simplify using `only [tay, coeff_mk, iteratedDeriv_const, coeff_C]`. Use `split_ifs with h`. Simplify using `[h]`. Simplify using the standard rewrite rules.
+-/
 theorem tay_const (c : ℂ) : tay (fun _ => c) = C c := by
   ext n
   simp only [tay, coeff_mk, iteratedDeriv_const, coeff_C]
@@ -64,6 +87,11 @@ theorem tay_const (c : ℂ) : tay (fun _ => c) = C c := by
   · simp [h]
   · simp
 
+/- English proof (translation)
+Use extensionality with `n`. Establish `h1 : (n.factorial : ℂ) ≠ 0` using `by exact_mod_cast n.factorial_ne_zero`. Establish `h2 : ((n : ℂ) + 1) ≠ 0` using `by exact_mod_cast n.succ_ne_zero`. Simplify using `only [coeff_derivative, tay, coeff_mk, iteratedDeriv_succ', Nat.factorial_succ]`. Use `push_cast`.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem derivative_tay (F : ℂ → ℂ) : derivative ℂ (tay F) = tay (deriv F) := by
   ext n
   have h1 : (n.factorial : ℂ) ≠ 0 := by exact_mod_cast n.factorial_ne_zero
@@ -72,6 +100,11 @@ theorem derivative_tay (F : ℂ → ℂ) : derivative ℂ (tay F) = tay (deriv F
   push_cast
   field_simp
 
+/- English proof (translation)
+Use extensionality with `n`. Break down `n with _ | n` into its components or cases. Simplify using `[tay]`. Establish `: deriv (fun z : ℂ => z) = fun _ => 1` using `by ext; simp`. Simplify using `only [tay, coeff_mk, iteratedDeriv_succ', this, iteratedDeriv_const, coeff_X]`.
+
+Apply the tactic sequence `rcases n with _ | n <;> simp`.
+-/
 theorem tay_id : tay (fun z => z) = X := by
   ext n
   rcases n with _ | n
@@ -80,6 +113,11 @@ theorem tay_id : tay (fun z => z) = X := by
     simp only [tay, coeff_mk, iteratedDeriv_succ', this, iteratedDeriv_const, coeff_X]
     rcases n with _ | n <;> simp
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Use extensionality with `x`. Rewrite using `[iteratedDeriv_succ, ih, deriv_const_mul_field, deriv_comp_mul_left, iteratedDeriv_succ, smul_eq_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem iteratedDeriv_comp_mul (F : ℂ → ℂ) (α : ℂ) (n : ℕ) :
     iteratedDeriv n (fun z => F (α * z)) = fun x => α ^ n * iteratedDeriv n F (α * x) := by
   induction n with
@@ -90,11 +128,17 @@ theorem iteratedDeriv_comp_mul (F : ℂ → ℂ) (α : ℂ) (n : ℕ) :
       smul_eq_mul]
     ring
 
+/- English proof (translation)
+Use extensionality with `n`. Simplify using `only [tay, coeff_mk, coeff_rescale, iteratedDeriv_comp_mul, mul_zero]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem tay_comp_mul (F : ℂ → ℂ) (α : ℂ) : tay (fun z => F (α * z)) = rescale α (tay F) := by
   ext n
   simp only [tay, coeff_mk, coeff_rescale, iteratedDeriv_comp_mul, mul_zero]
   ring
 
+/- English proof (translation)
+Rewrite using `[← coeff_zero_eq_constantCoeff_apply, coeff_subst' (HasSubst.of_constantCoeff_zero' hℓ), finsum_eq_single _ 0]`. Simplify using the standard rewrite rules. Introduce `d hd`. Simplify using `[hℓ, hd]`.
+-/
 theorem constantCoeff_subst_of {R : Type*} [CommRing R] {ℓ : R⟦X⟧} (hℓ : constantCoeff ℓ = 0)
     (f : R⟦X⟧) : constantCoeff (f.subst ℓ : R⟦X⟧) = constantCoeff f := by
   rw [← coeff_zero_eq_constantCoeff_apply, coeff_subst' (HasSubst.of_constantCoeff_zero' hℓ),
@@ -103,6 +147,9 @@ theorem constantCoeff_subst_of {R : Type*} [CommRing R] {ℓ : R⟦X⟧} (hℓ :
   · intro d hd
     simp [hℓ, hd]
 
+/- English proof (translation)
+Establish `hu : IsUnit (coeff 1 ℓ)` using `h1.isUnit`. Establish `key : ∀ f : R⟦X⟧, PowerSeries.subst (R` using `R) (S := R) (substInvOfIsUnit ℓ hu) (PowerSeries.subst (R := R) (S := R) ℓ f) = f := by`. Introduce `f`. Rewrite using `[subst_comp_subst_apply (HasSubst.of_constantCoeff_zero' hℓ) (HasSubst.substInvOfIsUnit ℓ hu), subst_substInvOfIsUnit_right ℓ hℓ hu, X_subst]`. Rewrite using `[← key f, h, key g]`.
+-/
 theorem subst_injective_of {R : Type*} [Field R] {ℓ : R⟦X⟧} (hℓ : constantCoeff ℓ = 0)
     (h1 : coeff 1 ℓ ≠ 0) {f g : R⟦X⟧} (h : (f.subst ℓ : R⟦X⟧) = g.subst ℓ) : f = g := by
   have hu : IsUnit (coeff 1 ℓ) := h1.isUnit
@@ -112,6 +159,23 @@ theorem subst_injective_of {R : Type*} [Field R] {ℓ : R⟦X⟧} (hℓ : consta
       subst_substInvOfIsUnit_right ℓ hℓ hu, X_subst]
   rw [← key f, h, key g]
 
+/- English proof (translation)
+Introduce `q _ ι ℓ hℓ`. Establish `hs : HasSubst ℓ` using `HasSubst.of_constantCoeff_zero' hℓ`. Use `⟨fun F G hF hG => ⟨?_, ?_, ?_, ?_⟩, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [hat]`. Rewrite using `[tay_add hF hG, map_add, subst_add hs]`.
+
+Simplify using `only [hat]`. Rewrite using `[tay_mul hF hG, map_mul, subst_mul hs]`. Introduce `h`. Establish `: F =ᶠ[𝓝 0] G` using `(hF.frequently_eq_iff_eventually_eq hG).mp h.frequently`. Simplify using `only [hat]`.
+
+Rewrite using `[tay_congr this]`. Introduce `h1 h`. Apply `eventuallyEq_of_tay_eq hF hG` to reduce the goal to its premises. Conclude with `PowerSeries.map_injective (ι : ℂ →+* ℂ_[q]) ι.injective (subst_injective_of hℓ h1 h)`. Introduce `c`.
+
+Simplify using `only [hat]`. Rewrite using `[tay_const, map_C, subst_C]`. Both sides reduce to the same expression. Simplify using `only [hat]`. Rewrite using `[tay_id, map_X, subst_X hs]`.
+
+Introduce `F`. Simplify using `only [hat]`. Rewrite using `[constantCoeff_subst_of hℓ, ← coeff_zero_eq_constantCoeff_apply, coeff_map]`. Simplify using `[tay]`. Introduce `F _`.
+
+Simplify using `only [hat]`. Rewrite using `[derivative_subst hs, mul_comm, ← derivative_tay]`. Use `congr 2`. Use extensionality with `n`. Simplify using `[coeff_derivative]`.
+
+Introduce `F α _`. Simplify using `only [hat]`. Establish `e : PowerSeries.map (ι : ℂ →+* ℂ_[q]) (rescale α (tay F)) = rescale (ι α) (PowerSeries.map (ι : ℂ →+* ℂ_[q]) (tay F))`. Use extensionality with `n`. Simplify using `[coeff_rescale]`.
+
+Rewrite using `[tay_comp_mul, e, rescale_eq_subst, subst_comp_subst_apply (HasSubst.smul_X' _) hs, subst_smul hs, subst_X hs, smul_eq_C_mul]`. Introduce `F h hh`. Simplify using `only [hat]`. Rewrite using `[subst_comp_subst_apply hs (HasSubst.of_constantCoeff_zero' hh)]`.
+-/
 theorem hat_laws : ∀ (q : ℕ) [Fact q.Prime] (ι : ℂ ≃+* ℂ_[q]) (ℓ : ℂ_[q]⟦X⟧), constantCoeff ℓ = 0 → (∀ F G : ℂ → ℂ, AnalyticAt ℂ F 0 → AnalyticAt ℂ G 0 → hat ι ℓ (fun z => F z + G z) = hat ι ℓ F + hat ι ℓ G ∧ hat ι ℓ (fun z => F z * G z) = hat ι ℓ F * hat ι ℓ G ∧ ((∀ᶠ z in 𝓝[≠] (0 : ℂ), F z = G z) → hat ι ℓ F = hat ι ℓ G) ∧ (coeff 1 ℓ ≠ 0 → hat ι ℓ F = hat ι ℓ G → F =ᶠ[𝓝 0] G)) ∧ (∀ c : ℂ, hat ι ℓ (fun _ => c) = C (ι c)) ∧ hat ι ℓ (fun z => z) = ℓ ∧ (∀ F : ℂ → ℂ, constantCoeff (hat ι ℓ F) = ι (F 0)) ∧ (∀ F : ℂ → ℂ, AnalyticAt ℂ F 0 → derivative ℂ_[q] (hat ι ℓ F) = derivative ℂ_[q] ℓ * hat ι ℓ (deriv F)) ∧ (∀ (F : ℂ → ℂ) (α : ℂ), AnalyticAt ℂ F 0 → hat ι ℓ (fun z => F (α * z)) = hat ι (C (ι α) * ℓ) F) ∧ ∀ (F : ℂ → ℂ) (h : ℂ_[q]⟦X⟧), constantCoeff h = 0 → (hat ι ℓ F).subst h = hat ι (ℓ.subst h) F := by
   intro q _ ι ℓ hℓ
   have hs : HasSubst ℓ := HasSubst.of_constantCoeff_zero' hℓ

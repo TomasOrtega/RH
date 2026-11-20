@@ -6,6 +6,11 @@ namespace GlobalTheory
 
 namespace ConjIdeal
 
+/- English proof (translation)
+Set `b` to `Module.Free.chooseBasis ℤ X`. Establish `hd : ∀ i, (M : ℤ) ∣ b.repr v i` using `fun i => by`. Use `h ((Int.castAddHom (ZMod M)).comp (b.coord i).toAddMonoidHom)` as an intermediate fact. Simplify `this` using `[ZMod.intCast_zmod_eq_zero_iff_dvd]`. Use `⟨b.repr.symm ((b.repr v).mapRange (fun n => n / (M : ℤ)) (by simp)), ?_⟩` and prove the remaining obligations.
+
+Apply `b.repr.injective` to reduce the goal to its premises. Use extensionality with `i`. Simplify using `[Int.mul_ediv_cancel' (hd i)]`.
+-/
 theorem exists_eq_nsmul_of_forall_zmod {X : Type*} [AddCommGroup X] [Module.Free ℤ X] (M : ℕ) (v : X)
     (h : ∀ t : X →+ ZMod M, t v = 0) : ∃ z : X, v = M • z := by
   classical
@@ -18,6 +23,11 @@ theorem exists_eq_nsmul_of_forall_zmod {X : Type*} [AddCommGroup X] [Module.Free
   ext i
   simp [Int.mul_ediv_cancel' (hd i)]
 
+/- English proof (translation)
+Use `haveI : NeZero M := ⟨hM⟩`. Use `exists_eq_nsmul_of_forall_zmod M v fun t => ?_` and prove the remaining obligations. Establish `h1` using `h ((AddChar.zmodChar M hζ.pow_eq_one).compAddMonoidHom t) fun x => by`. Rewrite using `[← AddChar.map_nsmul_eq_pow]`. Simplify using the standard rewrite rules.
+
+Rewrite `h1` using `[AddChar.compAddMonoidHom_apply, AddChar.zmodChar_apply, hζ.pow_eq_one_iff_dvd]`. Rewrite using `[← ZMod.val_eq_zero]`. Conclude with `Nat.eq_zero_of_dvd_of_lt h1 (ZMod.val_lt _)`.
+-/
 theorem exists_eq_nsmul_of_forall_addChar {X : Type*} [AddCommGroup X] [Module.Free ℤ X] {M : ℕ}
     (hM : M ≠ 0) {C : Type*} [CommMonoid C] {ζ : C} (hζ : IsPrimitiveRoot ζ M) (v : X)
     (h : ∀ t : AddChar X C, (∀ x, t x ^ M = 1) → t v = 1) : ∃ z : X, v = M • z := by
@@ -32,6 +42,11 @@ theorem exists_eq_nsmul_of_forall_addChar {X : Type*} [AddCommGroup X] [Module.F
 
 variable {O : Type*} [CommRing O]
 
+/- English proof (translation)
+Take `⟨i, hi, j, hj, hij⟩` from `Submodule.mem_sup.mp ((Ideal.eq_top_iff_one _).mp hsup)`. Take `⟨z₁, hz₁⟩` from `h₁ j hj y`. Take `⟨z₂, hz₂⟩` from `h₂ (bar i) (Ideal.mem_map_of_mem bar hi) y`. Rewrite `hz₂` using `[hbar]`. Use `⟨z₂ + z₁, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[smul_add, ← hz₁, ← hz₂, map_smul, ← add_smul, hij, one_smul]`.
+-/
 theorem dvd_of_dvd_conj (bar : O ≃+* O) (hbar : ∀ a, bar (bar a) = a) (I : Ideal O)
     (hsup : I ⊔ I.map bar = ⊤) (M : ℕ) {X Y : Type*} [AddCommGroup X] [Module O X] [AddCommGroup Y]
     [Module O Y] (d : X →ₗ[O] Y)
@@ -44,6 +59,9 @@ theorem dvd_of_dvd_conj (bar : O ≃+* O) (hbar : ∀ a, bar (bar a) = a) (I : I
   refine ⟨z₂ + z₁, ?_⟩
   rw [smul_add, ← hz₁, ← hz₂, map_smul, ← add_smul, hij, one_smul]
 
+/- English proof (translation)
+The claim follows from `dvd_of_dvd_conj bar hbar I hsup M d h₁ (fun x hx y => exists_eq_nsmul_of_forall_zmod M _ fun t => h₂ t x hx y) y`.
+-/
 theorem dvd_of_zmod (bar : O ≃+* O) (hbar : ∀ a, bar (bar a) = a) (I : Ideal O)
     (hsup : I ⊔ I.map bar = ⊤) (M : ℕ) {X Y : Type*} [AddCommGroup X] [Module O X] [AddCommGroup Y]
     [Module O Y] [Module.Free ℤ Y] (d : X →ₗ[O] Y)
@@ -53,6 +71,9 @@ theorem dvd_of_zmod (bar : O ≃+* O) (hbar : ∀ a, bar (bar a) = a) (I : Ideal
   dvd_of_dvd_conj bar hbar I hsup M d h₁
     (fun x hx y => exists_eq_nsmul_of_forall_zmod M _ fun t => h₂ t x hx y) y
 
+/- English proof (translation)
+The claim follows from `dvd_of_dvd_conj bar hbar I hsup M d h₁ (fun x hx y => exists_eq_nsmul_of_forall_addChar hM hζ _ fun t ht => h₂ t ht x hx y) y`.
+-/
 theorem dvd_of_addChar (bar : O ≃+* O) (hbar : ∀ a, bar (bar a) = a) (I : Ideal O)
     (hsup : I ⊔ I.map bar = ⊤) {M : ℕ} (hM : M ≠ 0) {C : Type*} [CommMonoid C] {ζ : C}
     (hζ : IsPrimitiveRoot ζ M) {X Y : Type*} [AddCommGroup X] [Module O X] [AddCommGroup Y]
@@ -63,6 +84,13 @@ theorem dvd_of_addChar (bar : O ≃+* O) (hbar : ∀ a, bar (bar a) = a) (I : Id
   dvd_of_dvd_conj bar hbar I hsup M d h₁
     (fun x hx y => exists_eq_nsmul_of_forall_addChar hM hζ _ fun t ht => h₂ t ht x hx y) y
 
+/- English proof (translation)
+Take `⟨z, hz⟩` from `dvd_of_addChar bar hbar I hsup hM hζ ((e₁.trans e₂.symm).toLinearMap - LinearMap.id) (fun x hx y => by`. Take `⟨z, hz⟩` from `h₁ x hx y`. Use `⟨-e₂.symm z, ?_⟩` and prove the remaining obligations. Establish `h : e₁ (x • y) = e₂ (x • y) - M • z` using `by rw [hz]; abel`. Simplify using `only [LinearMap.sub_apply, LinearEquiv.coe_coe, LinearEquiv.trans_apply, LinearMap.id_apply]`.
+
+Rewrite using `[h, map_sub, map_nsmul, e₂.symm_apply_apply, smul_neg]`. Use the proof step `abel) (fun t ht x hx y => by`. Establish `h` using `h₂ t ht x hx (e₁ y)`. Rewrite `h` using `[e₁.symm_apply_apply]`. Simplify using `only [LinearMap.sub_apply, LinearEquiv.coe_coe, LinearEquiv.trans_apply, LinearMap.id_apply]`.
+
+Rewrite using `[smul_sub, sub_eq_add_neg, AddChar.map_add_eq_mul, ← h, ← AddChar.map_add_eq_mul, add_neg_cancel, AddChar.map_zero_eq_one]) y`. Use `⟨z, ?_⟩` and prove the remaining obligations. Rewrite using `[← hz]`. Simplify using the standard rewrite rules.
+-/
 theorem trans_symm_congr_one (bar : O ≃+* O) (hbar : ∀ a, bar (bar a) = a) (I : Ideal O)
     (hsup : I ⊔ I.map bar = ⊤) {M : ℕ} (hM : M ≠ 0) {C : Type*} [CommMonoid C] {ζ : C}
     (hζ : IsPrimitiveRoot ζ M) {X Y : Type*} [AddCommGroup X] [Module O X] [AddCommGroup Y]
@@ -88,6 +116,25 @@ theorem trans_symm_congr_one (bar : O ≃+* O) (hbar : ∀ a, bar (bar a) = a) (
   rw [← hz]
   simp
 
+/- English proof (translation)
+Take `⟨i, hi, j, hj, hij⟩` from `Submodule.mem_sup.mp ((Ideal.eq_top_iff_one _).mp hsup)`. Establish `tors : ∀ (f : G →* G) y, y ^ M = 1 → f y ^ M = 1` using `fun f y hy => by`. Rewrite using `[← map_pow, hy, map_one]`. Establish `act_zero : ∀ y, act 0 y = 1` using `fun y => by`. Use `act_add 0 0 y` as an intermediate fact.
+
+Rewrite `this` using `[add_zero]`. Conclude with `left_eq_mul.mp this`. Establish `act_nat : ∀ (n : ℕ) y, act (n : O) y = y ^ n` using `fun n y => by`. Proceed by induction on `n with`. Consider the case `zero => simpa using act_zero y`.
+
+Consider the case `succ n ih => rw [Nat.cast_succ, act_add, ih, act_one, pow_succ]`. Establish `e_one : ∀ y, y ^ M = 1 → e 1 y = 1` using `fun y hy => by`. Use `e_mul 1 1 y (one_pow _) (one_pow _) hy` as an intermediate fact. Rewrite `this` using `[mul_one]`. Conclude with `left_eq_mul.mp this`.
+
+Establish `e_one' : ∀ y, y ^ M = 1 → e y 1 = 1` using `fun y hy => by`. Use `e_adj 0 y 1 hy (one_pow _)` as an intermediate fact. Rewrite `this` using `[act_zero, map_one, e_one 1 (one_pow _)]`. Conclude with `this.symm`. Establish `split : ∀ w y, w ^ M = 1 → y ^ M = 1 → e w y = e w (act i y) * e w (act j y)` using `fun w y hw hy => by`.
+
+Establish `h1 : w = act (bar.symm i) w * act (bar.symm j) w`. Rewrite using `[← act_add, ← map_add, hij, map_one, act_one]`. Use `conv_lhs => rw [h1]`. Rewrite using `[e_mul _ _ _ (tors _ _ hw) (tors _ _ hw) hy, e_adj _ _ _ hw hy, e_adj _ _ _ hw hy, bar.apply_symm_apply, bar.apply_symm_apply]`. Establish `hm : (θ x * x⁻¹) ^ M = 1` using `by rw [mul_pow, tors θ x hx, inv_pow, hx, inv_one, mul_one]`.
+
+Establish `hu : act i x ^ M = 1` using `tors _ _ hx`. Establish `hw : θ (act i x) = act i (θ x * x⁻¹) * act i x`. Rewrite using `[← map_mul, θ_act _ _ hx, inv_mul_cancel_right]`. Establish `key : act i (θ x * x⁻¹) = 1`. Use `e_nondeg _ (tors _ _ hm) fun y hy => ?_` and prove the remaining obligations.
+
+Rewrite using `[split _ _ (tors _ _ hm) hy]`. Establish `hA : e (act i (θ x * x⁻¹)) (act i y) = 1`. Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.mp (hIJ (Ideal.mul_mem_mul hi (Ideal.mem_map_of_mem bar hi)))`. Rewrite using `[e_adj _ _ _ hm (tors _ _ hy), ← act_mul, mul_comm (bar i), ← hc, act_mul, act_nat, hy, map_one, e_one' _ hm]`. Establish `hB : e (act i (θ x * x⁻¹)) (act j y) = 1`.
+
+Establish `hv : act j y ^ M = 1` using `tors _ _ hy`. Establish `h` using `θ_iso _ _ hu hv`. Rewrite `h` using `[θ_fix j hj y hy, hw, e_mul _ _ _ (tors _ _ hm) hu hv]`. Conclude with `mul_eq_right.mp h`. Rewrite using `[hA, hB, mul_one]`.
+
+Establish `hx' : x = act i x * act j x` using `by rw [← act_add, hij, act_one]`. Use `conv_lhs => rw [hx']`. Rewrite using `[map_mul, hw, key, one_mul, θ_fix j hj x hx, ← hx']`.
+-/
 theorem fix_torsion_of_fix_conj (bar : O ≃+* O) (I : Ideal O) (hsup : I ⊔ I.map bar = ⊤) (M : ℕ)
     (hIJ : I * I.map bar ≤ Ideal.span {(M : O)}) {G A : Type*} [CommGroup G] [CommGroup A]
     (act : O → G →* G) (act_one : ∀ x, act 1 x = x)
@@ -148,6 +195,15 @@ theorem fix_torsion_of_fix_conj (bar : O ≃+* O) (I : Ideal O) (hsup : I ⊔ I.
   conv_lhs => rw [hx']
   rw [map_mul, hw, key, one_mul, θ_fix j hj x hx, ← hx']
 
+/- English proof (translation)
+Establish `tors : ∀ (f : G →* G) y, y ^ M = 1 → f y ^ M = 1` using `fun f y hy => by`. Rewrite using `[← map_pow, hy, map_one]`. Set `e : G → G → A` to `fun x y => if h : ∃ c, R x y c then h.choose else 1`. Establish `he : ∀ x y, x ^ M = 1 → y ^ M = 1 → R x y (e x y)` using `fun x y hx hy => by`. Establish `h : ∃ c, R x y c` using `(R_ex x y hx hy).exists`.
+
+Simplify using `only [e, dif_pos h]`. Conclude with `h.choose_spec`. Establish `hu : ∀ x y c, x ^ M = 1 → y ^ M = 1 → R x y c → e x y = c` using `fun x y c hx hy h => (R_ex x y hx hy).unique (he x y hx hy) h`. Use `fix_torsion_of_fix_conj bar I hsup M hIJ act act_one act_add act_mul e ?_ ?_ ?_ θ θ_act ?_ θ_fix x hx` and prove the remaining obligations. Introduce `x x' y hx hx' hy`.
+
+Conclude with `hu _ _ _ (by rw [mul_pow, hx, hx', mul_one]) hy (R_mul _ _ _ _ _ hx hx' hy (he _ _ hx hy) (he _ _ hx' hy))`. Introduce `x hx h`. Conclude with `R_nondeg x hx fun y hy => h y hy ▸ he x y hx hy`. Introduce `a x y hx hy`. Conclude with `hu _ _ _ (tors _ _ hx) hy (R_adj _ _ _ _ hx hy (he _ _ hx (tors _ _ hy)))`.
+
+Introduce `x y hx hy`. Conclude with `hu _ _ _ (tors _ _ hx) (tors _ _ hy) (θ_iso _ _ _ hx hy (he _ _ hx hy))`.
+-/
 theorem fix_torsion_of_fix_conj_rel (bar : O ≃+* O) (I : Ideal O) (hsup : I ⊔ I.map bar = ⊤) (M : ℕ)
     (hIJ : I * I.map bar ≤ Ideal.span {(M : O)}) {G A : Type*} [CommGroup G] [CommGroup A]
     (act : O → G →* G) (act_one : ∀ x, act 1 x = x)
@@ -185,6 +241,9 @@ theorem fix_torsion_of_fix_conj_rel (bar : O ≃+* O) (I : Ideal O) (hsup : I �
   · intro x y hx hy
     exact hu _ _ _ (tors _ _ hx) (tors _ _ hy) (θ_iso _ _ _ hx hy (he _ _ hx hy))
 
+/- English proof (translation)
+The claim follows from `MonoidHom.ext fun x => fix_torsion_of_fix_conj bar I hsup M hIJ act act_one act_add act_mul e (fun x x' y _ _ _ => e_mul x x' y) (fun x _ h => e_nondeg x fun y => h y (hN y)) (fun a x y _ _ => e_adj a x y) θ (fun a x _ => θ_act a x) (fun x y _ _ => θ_iso x y) (fun a ha y _ => θ_f …`.
+-/
 theorem eq_id_of_fix_conj_mul (bar : O ≃+* O) (I : Ideal O) (hsup : I ⊔ I.map bar = ⊤) (M : ℕ)
     (hIJ : I * I.map bar ≤ Ideal.span {(M : O)}) {N A : Type*} [CommGroup N] [CommGroup A]
     (hN : ∀ x : N, x ^ M = 1) (act : O → N →* N) (act_one : ∀ x, act 1 x = x)
@@ -201,6 +260,9 @@ theorem eq_id_of_fix_conj_mul (bar : O ≃+* O) (I : Ideal O) (hsup : I ⊔ I.ma
     (fun a x y _ _ => e_adj a x y) θ (fun a x _ => θ_act a x) (fun x y _ _ => θ_iso x y)
     (fun a ha y _ => θ_fix a ha y) x (hN x)
 
+/- English proof (translation)
+Establish `h` using `eq_id_of_fix_conj_mul bar I hsup M hIJ (N := Multiplicative N) (A := Multiplicative A) (fun x => hN x.toAdd) (fun a => AddMonoidHom.toMultiplicative (DistribSMul.toAddMonoidHom N a)) (fun x => one_smul O x.toAdd) (fun a b x => add_smul a b x.toAdd) (fun a b x => mul_smul a b x.to …`. Use extensionality with `x`. Conclude with `DFunLike.congr_fun h (Multiplicative.ofAdd x)`.
+-/
 theorem eq_id_of_fix_conj (bar : O ≃+* O) (I : Ideal O) (hsup : I ⊔ I.map bar = ⊤) (M : ℕ)
     (hIJ : I * I.map bar ≤ Ideal.span {(M : O)}) {N A : Type*} [AddCommGroup N] [Module O N]
     [AddCommGroup A] (hN : ∀ x : N, M • x = 0)
@@ -221,6 +283,9 @@ theorem eq_id_of_fix_conj (bar : O ≃+* O) (I : Ideal O) (hsup : I ⊔ I.map ba
   ext x
   exact DFunLike.congr_fun h (Multiplicative.ofAdd x)
 
+/- English proof (translation)
+Use `⟨fun X _ _ _ d h₁ h₂ y => dvd_of_zmod bar hbar I hsup M d h₁ h₂ y, fun N A _ _ _ hN e hnd hadj θ hiso hfix => ?_⟩` and prove the remaining obligations. Establish `h` using `eq_id_of_fix_conj bar I hsup M hIJ.le hN (fun x y => e x y) (fun x x' y => by simp) (fun x h => hnd x (AddMonoidHom.ext h)) hadj θ.toLinearMap hiso hfix`. Conclude with `LinearEquiv.toLinearMap_injective h`.
+-/
 theorem level_rigidity (bar : O ≃+* O) (hbar : ∀ a, bar (bar a) = a) (I : Ideal O)
     (hsup : I ⊔ I.map bar = ⊤) (M : ℕ) (hIJ : I * I.map bar = Ideal.span {(M : O)}) :
     (∀ (X : Type) [AddCommGroup X] [Module O X] [Module.Free ℤ X] (d : X →ₗ[O] X),

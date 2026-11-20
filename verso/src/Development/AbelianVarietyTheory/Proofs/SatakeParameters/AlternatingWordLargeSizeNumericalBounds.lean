@@ -5,6 +5,9 @@ open GlobalTheory.HTW Formalism.BasicNotions Formalism.FrobeniusOrbits
 
 namespace GlobalTheory
 
+/- English proof (translation)
+The claim follows from `|M - B| ≤ η → |b - B| ≤ η → (M + S) / 2 ≤ b ∧ 2 * ((M + S + η) * (2 * l - 1) / ((l : ℝ) - 1) ^ 2 + 3 + (Real.logb l (2 * (M + S + η)) + 1)) + η + 1 ≤ b := by intro l B η S M b hl hB hη hS hBS hM hb have hl' : (11:ℝ) ≤ l := by exact_mod_cast hl rw [abs_le] at hM hb obtain ⟨hM1, hM …`.
+-/
 theorem alternatingWord_numerical_bounds :
     ∀ (l : ℕ) (B η S M b : ℝ), 11 ≤ l → 100 ≤ B → 0 ≤ η → 0 ≤ S → 2 * η + S ≤ B / 10 →
       |M - B| ≤ η → |b - B| ≤ η → (M + S) / 2 ≤ b ∧

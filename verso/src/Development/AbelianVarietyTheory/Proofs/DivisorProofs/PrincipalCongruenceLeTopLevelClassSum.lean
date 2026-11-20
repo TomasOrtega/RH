@@ -16,6 +16,13 @@ namespace GlobalTheory.LevTopCong
 
 open GlobalTheory.SplitFlip GlobalTheory.SplitWeil GlobalTheory.RootEx
 
+/- English proof (translation)
+Introduce `x hx`. Use `⟨1, one_mem _, ?_⟩` and prove the remaining obligations. Rewrite using `[one_mul, conjLevel, Subgroup.map_equiv_eq_comap_symm', Subgroup.mem_comap]`. Use `⟨(g (G.m, j))⁻¹ * (toFrame hs hj).symm (embX _ x) * g (G.m, j), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hJ]`.
+
+Establish `e : toFrame hs hj ((g (G.m, j))⁻¹ * (toFrame hs hj).symm (embX _ x) * g (G.m, j)) = embX _ x`. Rewrite using `[map_mul, map_mul, map_inv, MulEquiv.apply_symm_apply, mul_assoc, ← hc, ← mul_assoc, inv_mul_cancel, one_mul]`. Conclude with `OneCosetProof.mem_KO_of_frameGL _ (by`. Use `GlobalTheory.TwistVertex.embX_mem_KO (c := G.m - 1 - j) hx` as an intermediate fact. Rewrite `this` using `[← e]`.
+
+Conclude with `this)`. Simplify using `[mul_assoc]`.
+-/
 theorem KO_le_symPr {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {G : Grid k} (hs : 1 ≤ G.s) (J : G.Level) (g : G.VertexGroup) {j : ℕ} (hj : j < G.m)
     (hJ : J (G.m, j) = KO k _)
@@ -41,6 +48,11 @@ namespace GlobalTheory.LevTopCong
 
 open GlobalTheory.SplitWeil GlobalTheory.RootEx
 
+/- English proof (translation)
+Use `Units.ext ?_` and prove the remaining obligations. Establish `e : (diagonal fun i => ((Sum.elim (fun _ => (1 : kˣ)) d i : kˣ) : k)) = fromBlocks (1 : Matrix (Fin n) (Fin n) k) 0 0 (diagonal fun p => (d p : k))`. Apply the tactic sequence `ext (i | i) (j | j) <;> simp [Matrix.diagonal_apply, Matrix.one_apply]`. Establish `hx : (embX c x).val = fromBlocks x.val 0 0 1` using `rfl`. Rewrite using `[Units.val_mul, Units.val_mul, GlobalTheory.SplitFlip.diagGL_val, e, hx, fromBlocks_multiply, fromBlocks_multiply]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem diag_comm_embX {k : Type} [Field k] {n : ℕ} {c : ℕ} (d : Fin c → kˣ) (x : GL (Fin n) k) :
     GlobalTheory.SplitFlip.diagGL (Sum.elim (fun _ => (1 : kˣ)) d) * embX c x =
       embX c x * GlobalTheory.SplitFlip.diagGL (Sum.elim (fun _ => (1 : kˣ)) d) := by
@@ -58,6 +70,11 @@ namespace GlobalTheory.LevTopCong
 
 open GlobalTheory.SplitWeil GlobalTheory.RootEx
 
+/- English proof (translation)
+Use `KO_le_symPr hs J _ hj (hJ j hj0 hj) fun x => ?_` and prove the remaining obligations. Take `rfl : β = fun i : Fin (G.m - 2) => DoubleCoset.mk _ _ (stair G ϖ e (i + 1))` from `funext hβ`. Distinguish the cases in `h2 : j + 2 ≤ G.m`. Rewrite using `[through_elt _ h2, toFrame_stair]`. Conclude with `diag_comm_embX _ _`.
+
+Take `⟨i, rfl⟩ : ∃ i, j = i + 1` from `⟨j - 1, by omega⟩`. Establish `e1 : (Reps.through hs J (stair G ϖ e)).elt (fun i : Fin (G.m - 2) => DoubleCoset.mk _ _ (stair G ϖ e (i + 1))) (G.m, i + 1) = 1`. Rewrite using `[Reps.elt, onColumn_apply]`. Simplify using `[show ¬ i < G.m - 2 by omega]`. Rewrite using `[e1, map_one, one_mul, mul_one]`.
+-/
 theorem KO_le_pr_stair {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     [MeasurableSpace k] [BorelSpace k] {G : GlobalTheory.SplitFlip.Grid k} (hs : 1 ≤ G.s) (J : G.Level)
     (hJ : ∀ j, 0 < j → j < G.m → J (G.m, j) = KO k _) (ϖ : kˣ) (e : ℕ) (β : Cosets hs J)
@@ -78,6 +95,17 @@ end GlobalTheory.LevTopCong
 
 open GlobalTheory.SplitWeil in
 
+/- English proof (translation)
+Take `⟨CF0, hB⟩` from `GlobalTheory.RowVal.oneAt`. Use `⟨CF0, fun CF hCF ε => ?_⟩` and prove the remaining obligations. Take `⟨x₀, hx⟩` from `hB ε CF hCF`. Use `⟨x₀, fun D large₂ hε hx0 Γ _ _ Pl0 T A Ks _ _ _ R F s ch hch hsc _ Φ β hβ j => ?_⟩` and prove the remaining obligations. Establish `hone` using `hx D large₂ hε hx0 Γ Pl0 T A Ks R F s ch hch hsc A.μ0 Φ β hβ`.
+
+Establish `hL : R.toLevCh.Is A.μ0` using `s.core.lev`. Establish `hQ : R.Q A.μ0 = ∅` using `Formalism.IndefR.FWT.Q_base_empty R hL`. Take `⟨j, hj⟩` from `j`. Consider the cases of `j with`. Consider the case `zero => exact le_rfl`.
+
+Consider the case `succ j`. Introduce `g hg`. Establish `hfr` using `ch.S.βp_is (j + 1) hj.le`. Establish `hSt : g ∈ St (ch.S.βp (j + 1))` using `(GlobalTheory.LevSplit.mem_St_iff _ _ hfr g).2 (GlobalTheory.CongMember.stab_of_mem_congLev hg)`. Use `Subgroup.mem_inf.2 ⟨Subgroup.mem_iInf.2 fun w => ?_, Subgroup.mem_iInf.2 fun w' => Subgroup.mem_iInf.2 fun _ => LevRowSucc.KO_of_St rfl _ _ hSt⟩` and prove the remaining obligations.
+
+Establish `hw0 : w.1 ∈ ch.G.pl.W0`. Establish `h2` using `w.2`. Simplify using `only [locPl, Finset.mem_union] at h2`. Break down `h2 with h2 | h2` into its components or cases. Conclude with `h2`.
+
+Establish `h4 : (w : Pl D.host.E) ∈ R.Q A.μ0` using `h2`. Rewrite `h4` using `[hQ]`. Conclude with `absurd h4 (Finset.notMem_empty _)`. Use `GlobalTheory.LevTopCong.KO_le_pr_stair one_le_sLen _ (fun i hi0 hi => GlobalTheory.RowVal.givenLevel_inner _ _ _ _ (by change 1 ≤ D.R.m; omega) hi0) _ _ (β w) (hone w hw0) j.succ_pos hj ?_` and prove the remaining obligations. Conclude with `LevRowSucc.KO_of_St _ _ _ hSt`.
+-/
 theorem GlobalTheory.LevTopCong.congLev_le_levTop : ∃ CF0 : ℝ, ∀ CF : ℝ, CF0 ≤ CF → ∀ ε : ℝ, ∃ x₀ : ℝ, ∀ (D : D7) (large₂ : SizeData₂ D), large₂.sc.eps = ε → x₀ ≤ large₂.sc.x → ∀ (Γ : Type) [Group Γ] [Fintype Γ] (Pl0 T : Type) (A : FamIn D.what₂.LL Γ Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), HidaSetting large₂ R F → ∀ ch : Choice R, ch.Is → ch.AtScale CF large₂.sc.b → ch.FieldOK → ∀ (Φ : ch.G.Datum), ∀ β ∈ ch.S.supp A.μ0 Φ, ∀ j : Fin D.R.m, congLev D.sp.cm (ch.G.V (.top j)).gram (ch.G.Λ (.top j)) ch.G.modul ≤ ch.S.levTop A.μ0 Φ β j j.2 := by
   obtain ⟨CF0, hB⟩ := GlobalTheory.RowVal.oneAt
   refine ⟨CF0, fun CF hCF ε => ?_⟩

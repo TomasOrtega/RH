@@ -14,6 +14,11 @@ section Alg
 variable {M : Type*} [NormedAddCommGroup M] [InnerProductSpace ℂ M] {ε : Fin n → Bool}
   {E : Fin n → Fin n → Module.End ℂ M} {V : Submodule ℂ M}
 
+/- English proof (translation)
+Take `⟨-, hVk, hirr, -⟩` from `hV`. Establish `hst : IsKStableSub ε E (V ⊓ X)` using `fun a b hab v hv => ⟨hVk a b hab v hv.1, hX a b v hv.2⟩`. Establish `hVX : V ≤ X`. Break down `hirr (V ⊓ X) inf_le_left hst with h | h` into its components or cases. Establish `hx : x ∈ V ⊓ X` using `⟨hxV, hxX⟩`.
+
+Rewrite `hx` using `[h]`. Conclude with `absurd ((Submodule.mem_bot ℂ).1 hx) hx0`. Conclude with `inf_eq_left.1 h`. Unfold `genSub`. Conclude with `sInf_le ⟨hVX, hX⟩`.
+-/
 theorem schA_genSub_le {Λ : Fin n → ℝ} (hV : IsKIrrHW ε E Λ V) (X : Submodule ℂ M)
     (hX : ∀ a b, ∀ x ∈ X, E a b x ∈ X) {x : M} (hxV : x ∈ V) (hxX : x ∈ X) (hx0 : x ≠ 0) :
     genSub E V ≤ X := by
@@ -28,6 +33,19 @@ theorem schA_genSub_le {Λ : Fin n → ℝ} (hV : IsKIrrHW ε E Λ V) (X : Submo
   unfold genSub
   exact sInf_le ⟨hVX, hX⟩
 
+/- English proof (translation)
+Take `⟨m, hm⟩` from `exists_layer_of_mem_genSub hE hVk (hT hy₀)`. Establish `hVle : ∀ k, V ≤ layer ε E V k`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => exact le_rfl`.
+
+Consider the case `succ k ih => show V ≤ layer ε E V k ⊔ ⨆ (a : Fin n) (b : Fin n) (_ : ε a ≠ ε b), (layer ε E V k).map (E a b)`. Conclude with `ih.trans le_sup_left`. Use `set F : Submodule ℂ M := T ⊓ layer ε E V m with hF`. Use `haveI : FiniteDimensional ℂ (layer ε E V m) := finiteDimensional_layer hVf m`. Use `haveI : FiniteDimensional ℂ F := Submodule.finiteDimensional_of_le inf_le_right`.
+
+Establish `hFk : IsKStableSub ε E F` using `fun a b hab v hv => ⟨hTk a b hab v hv.1, layer_kStable hE hVk m a b hab v hv.2⟩`. Set `ℓ : F →L[ℂ] ℂ` to `LinearMap.toContinuousLinearMap (f.comp F.subtype)`. Use `set u' : F := (InnerProductSpace.toDual ℂ F).symm ℓ with hu'`. Establish `hrep : ∀ y ∈ F, inner ℂ (u' : M) y = f y`. Introduce `y hy`.
+
+Establish `h1` using `InnerProductSpace.toDual_symm_apply (𝕜 := ℂ) (E := F) (x := ⟨y, hy⟩) (y := ℓ)`. Rewrite `h1` using `[← hu']`. Conclude with `h1`. Establish `hzero : ∀ z ∈ F, (∀ y ∈ F, inner ℂ z y = 0) → z = 0` using `fun z hz h => inner_self_eq_zero.mp (h z hz)`. Use `⟨u', u'.2.1, ⟨?_, ?_⟩, hrep y₀ ⟨hy₀, hm⟩, fun v hv => hrep v ⟨hv.1, hVle m hv.2⟩⟩` and prove the remaining obligations.
+
+Introduce `a`. Establish `hsa : adjSign ε a a = 1` using `if_pos rfl`. Establish `hmem : E a a u' - (μ a : ℂ) • (u' : M) ∈ F` using `F.sub_mem (hFk a a rfl _ u'.2) (F.smul_mem _ u'.2)`. Establish `h0` using `hzero _ hmem (fun y hy => by`. Rewrite using `[inner_sub_left, inner_smul_left, hU a a, hsa, one_mul, hrep _ (hFk a a rfl y hy), hrep y hy, hfd a y hy.1, Complex.conj_ofReal, sub_self])`.
+
+Conclude with `sub_eq_zero.mp h0`. Introduce `a b hab hεab`. Establish `hmem : E a b u' ∈ F` using `hFk a b hεab _ u'.2`. Conclude with `hzero _ hmem (fun y hy => by`. Rewrite using `[hU a b, hrep _ (hFk b a hεab.symm y hy), hfl a b hab hεab y hy.1, mul_zero])`.
+-/
 theorem schA_riesz (hE : IsGlRep E) (hU : IsInfUnitary ε E) (hVf : FiniteDimensional ℂ V)
     (hVk : IsKStableSub ε E V) (T : Submodule ℂ M) (hT : T ≤ genSub E V)
     (hTk : IsKStableSub ε E T) (f : M →ₗ[ℂ] ℂ) (μ : Fin n → ℝ)
@@ -70,6 +88,9 @@ theorem schA_riesz (hE : IsGlRep E) (hU : IsInfUnitary ε E) (hVf : FiniteDimens
     exact hzero _ hmem (fun y hy => by
       rw [hU a b, hrep _ (hFk b a hεab.symm y hy), hfl a b hab hεab y hy.1, mul_zero])
 
+/- English proof (translation)
+Unfold `adjSign`. Apply the tactic sequence `split_ifs <;> norm_num`.
+-/
 theorem schA_adjSign_sq (ε : Fin n → Bool) (a b : Fin n) : adjSign ε a b * adjSign ε a b = 1 := by
   unfold adjSign
   split_ifs <;> norm_num

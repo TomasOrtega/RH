@@ -5,6 +5,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.LiteratureResults.
 
 namespace PositivityTheory.KB
 
+/- English proof (translation)
+Introduce `V _ _ U hU hUc q ω hω y hy`. Conclude with `StokesSlices.asm StokesSlices.subAlt StokesSlices.subHyp StokesSlices.subSlice U hU hUc q ω hω y hy`.
+-/
 theorem sStokes_of : SStokes := by
   intro V _ _ U hU hUc q ω hω y hy
   exact StokesSlices.asm StokesSlices.subAlt StokesSlices.subHyp StokesSlices.subSlice U hU hUc q ω hω y hy

@@ -23,6 +23,9 @@ def homMk {F G : X.Modules} (φ : ∀ U : X.Opens, Γ(F, U) →ₗ[Γ(X, U)] Γ(
         exact hφ i.unop s }
     (fun U r m => (φ U.unop).map_smul r m)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem homMk_app {F G : X.Modules} (φ : ∀ U : X.Opens, Γ(F, U) →ₗ[Γ(X, U)] Γ(G, U))
     (hφ : ∀ {U V : X.Opens} (i : V ⟶ U) (s : Γ(F, U)),
       φ V (F.presheaf.map i.op s) = G.presheaf.map i.op (φ U s)) (U : X.Opens) (s : Γ(F, U)) :
@@ -39,6 +42,9 @@ def presheafAb : TopCat.Presheaf Ab.{u} X where
       map_zero' := rfl
       map_add' := fun _ _ => rfl }
 
+/- English proof (translation)
+Rewrite using `[TopCat.Presheaf.isSheaf_iff_isSheaf_comp (forget Ab.{u})]`. Conclude with `TopCat.Presheaf.toTypes_isSheaf X E`.
+-/
 theorem isSheaf_presheafAb : (presheafAb E).IsSheaf := by
   rw [TopCat.Presheaf.isSheaf_iff_isSheaf_comp (forget Ab.{u})]
   exact TopCat.Presheaf.toTypes_isSheaf X E
@@ -62,16 +68,31 @@ def fam {U : X.Opens} (s : Γ(pi E, U)) : ∀ x : U, E x := s
 
 def mk {U : X.Opens} (s : ∀ x : U, E x) : Γ(pi E, U) := s
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem fam_mk {U : X.Opens} (s : ∀ x : U, E x) : fam (mk s) = s := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem fam_smul {U : X.Opens} (r : Γ(X, U)) (s : Γ(pi E, U)) (x : U) :
     fam (r • s) x = X.presheaf.germ U x.1 x.2 r • fam s x := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem fam_add {U : X.Opens} (s t : Γ(pi E, U)) (x : U) :
     fam (s + t) x = fam s x + fam t x := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem fam_zero {U : X.Opens} (x : U) : fam (0 : Γ(pi E, U)) x = 0 := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem fam_res {U V : X.Opens} (i : V ⟶ U) (s : Γ(pi E, U)) (x : V) :
     fam ((pi E).presheaf.map i.op s) x = fam s ⟨x.1, i.le x.2⟩ := rfl
 
@@ -84,6 +105,9 @@ def piMap (L : ∀ x, E x →ₗ[X.presheaf.stalk x] E' x) : pi E ⟶ pi E' :=
       map_smul' := fun r s => funext fun x => (L x.1).map_smul _ _ })
     fun _ _ => rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem fam_piMap_app (L : ∀ x, E x →ₗ[X.presheaf.stalk x] E' x) {U : X.Opens}
     (s : Γ(pi E, U)) (x : U) : fam ((piMap L).app U s) x = L x.1 (fam s x) := rfl
 
@@ -96,6 +120,9 @@ def germs (F : X.Modules) : F ⟶ pi (fun x => (F.presheaf.stalk x : Type u)) :=
       map_smul' := fun r s => funext fun x => QCoh.germ_smul F x.1 x.2 r s })
     fun i s => funext fun x => F.presheaf.germ_res_apply i x.1 x.2 s
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem fam_germs_app (F : X.Modules) {U : X.Opens} (s : Γ(F, U)) (x : U) :
     fam ((germs F).app U s) x = F.presheaf.germ U x.1 x.2 s := rfl
 
@@ -124,10 +151,16 @@ instance (x : X) : Module (X.presheaf.stalk x) (tensorStalk f M x) :=
 def oneTmul (x : X) (m : (M.presheaf.stalk (f x) : Type u)) : tensorStalk f M x :=
   (1 : X.presheaf.stalk x) ⊗ₜ[Y.presheaf.stalk (f x)] m
 
+/- English proof (translation)
+The claim follows from `TensorProduct.tmul_add _ _ _`.
+-/
 theorem oneTmul_add (x : X) (m n : (M.presheaf.stalk (f x) : Type u)) :
     oneTmul f M x (m + n) = oneTmul f M x m + oneTmul f M x n :=
   TensorProduct.tmul_add _ _ _
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(1 : X.presheaf.stalk x) ⊗ₜ[Y.presheaf.stalk (f x)] (a • m) = (algebraMap (Y.presheaf.stalk (f x)) (X.presheaf.stalk x) a) • ((1 : X.presheaf.stalk x) ⊗ₜ[Y.presheaf.stalk (f x)] m)`. Rewrite using `[algebraMap_smul, TensorProduct.tmul_smul]`.
+-/
 theorem oneTmul_smul (x : X) (a : Y.presheaf.stalk (f x)) (m : (M.presheaf.stalk (f x) : Type u)) :
     oneTmul f M x (a • m) = f.stalkMap x a • oneTmul f M x m := by
   change (1 : X.presheaf.stalk x) ⊗ₜ[Y.presheaf.stalk (f x)] (a • m) =
@@ -135,11 +168,17 @@ theorem oneTmul_smul (x : X) (a : Y.presheaf.stalk (f x)) (m : (M.presheaf.stalk
       ((1 : X.presheaf.stalk x) ⊗ₜ[Y.presheaf.stalk (f x)] m)
   rw [algebraMap_smul, TensorProduct.tmul_smul]
 
+/- English proof (translation)
+Rewrite using `[QCoh.germ_smul, oneTmul_smul, Scheme.Hom.germ_stalkMap_apply]`.
+-/
 theorem oneTmul_germ_smul {V : Y.Opens} (r : Γ(Y, V)) (s : Γ(M, V)) (x : X) (hx : f x ∈ V) :
     oneTmul f M x (M.presheaf.germ V (f x) hx (r • s)) =
       X.presheaf.germ (f ⁻¹ᵁ V) x hx (f.app V r) • oneTmul f M x (M.presheaf.germ V (f x) hx s) := by
   rw [QCoh.germ_smul, oneTmul_smul, Scheme.Hom.germ_stalkMap_apply]
 
+/- English proof (translation)
+Rewrite using `[M.presheaf.germ_res_apply]`.
+-/
 theorem oneTmul_germ_res {U V : Y.Opens} (i : V ⟶ U) (s : Γ(M, U)) (x : X) (hx : f x ∈ V) :
     oneTmul f M x (M.presheaf.germ V (f x) hx (M.presheaf.map i.op s)) =
       oneTmul f M x (M.presheaf.germ U (f x) (i.le hx) s) := by
@@ -165,6 +204,9 @@ def stalkUnit (x : X) : (M.presheaf.stalk (f x) : Type u) →+
       ((Scheme.Modules.pullbackPushforwardAdjunction f).unit.app M).mapPresheaf ≫
     TopCat.Presheaf.stalkPushforward Ab.{u} f.base ((Scheme.Modules.pullback f).obj M).presheaf x).hom
 
+/- English proof (translation)
+Establish `e1` using `QCoh.stalkFunctor_map_germ ((Scheme.Modules.pullbackPushforwardAdjunction f).unit.app M) (f x) hx s`. Establish `h'` using `congr(ConcreteCategory.hom $(TopCat.Presheaf.stalkPushforward_germ Ab.{u} f.base ((Scheme.Modules.pullback f).obj M).presheaf V x hx) (((Scheme.Modules.pullbackPushforwardAdjunction f).unit.app M).app V s))`. Use `Eq.trans ?_ h'` and prove the remaining obligations. Conclude with `congrArg (TopCat.Presheaf.stalkPushforward Ab.{u} f.base _ x).hom e1`.
+-/
 theorem stalkUnit_germ (x : X) {V : Y.Opens} (hx : f x ∈ V) (s : Γ(M, V)) :
     stalkUnit f M x (M.presheaf.germ V (f x) hx s) =
       ((Scheme.Modules.pullback f).obj M).presheaf.germ (f ⁻¹ᵁ V) x hx
@@ -176,6 +218,9 @@ theorem stalkUnit_germ (x : X) {V : Y.Opens} (hx : f x ∈ V) (s : Γ(M, V)) :
   refine Eq.trans ?_ h'
   exact congrArg (TopCat.Presheaf.stalkPushforward Ab.{u} f.base _ x).hom e1
 
+/- English proof (translation)
+Take `⟨U, hU, r, rfl⟩` from `Y.presheaf.exists_germ_eq a`. Take `⟨V, hV, s, rfl⟩` from `M.presheaf.exists_germ_eq m`. Establish `hx : f x ∈ U ⊓ V` using `⟨hU, hV⟩`. Rewrite using `[← Y.presheaf.germ_res_apply (homOfLE (inf_le_left : U ⊓ V ≤ U)) (f x) hx, ← M.presheaf.germ_res_apply (homOfLE (inf_le_right : U ⊓ V ≤ V)) (f x) hx, ← QCoh.germ_smul, stalkUnit_germ, stalkUnit_germ, Scheme.Hom.germ_stalkMap_apply]`. Conclude with `(congrArg _ (Scheme.Modules.Hom.app_smul _ _ _)).trans (QCoh.germ_smul _ _ _ _ _)`.
+-/
 theorem stalkUnit_smul (x : X) (a : Y.presheaf.stalk (f x)) (m : (M.presheaf.stalk (f x) : Type u)) :
     stalkUnit f M x (a • m) = f.stalkMap x a • stalkUnit f M x m := by
   obtain ⟨U, hU, r, rfl⟩ := Y.presheaf.exists_germ_eq a

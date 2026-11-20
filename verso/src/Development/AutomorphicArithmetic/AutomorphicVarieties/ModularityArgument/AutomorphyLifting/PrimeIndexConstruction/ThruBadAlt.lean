@@ -10,6 +10,11 @@ attribute [-instance] Formalism.DoubleCosetMeasures.instMeasGL
 
 namespace UpperTheory.V.Z.Win.Birth
 
+/- English proof (translation)
+Establish `hb : Function.Bijective (Algebra.linearMap (v.adicCompletion K) (w.1.adicCompletion M))` using `⟨(completionMap v w.1).injective, hs⟩`. Establish `h1 : Module.finrank (v.adicCompletion K) (w.1.adicCompletion M) = 1`. Rewrite using `[← (LinearEquiv.ofBijective _ hb).finrank_eq, Module.finrank_self]`. Take `⟨y, hy⟩` from `hs (x : w.1.adicCompletion M)`. Use `Units.ext ?_` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `completionMap v w.1 (Algebra.norm (v.adicCompletion K) (x : w.1.adicCompletion M)) = x`. Rewrite using `[← hy]`. Establish `h2 : Algebra.norm (v.adicCompletion K) (completionMap v w.1 y) = y ^ Module.finrank (v.adicCompletion K) (w.1.adicCompletion M)` using `Algebra.norm_algebraMap y`. Rewrite using `[h2, h1, pow_one]`.
+-/
 private theorem map_nm {K M : Type} [Field K] [NumberField K] [Field M] [NumberField M] [Algebra K M]
     {v : HeightOneSpectrum (𝓞 K)} (w : PlacesOver M v) (hs : Function.Surjective (completionMap v w.1))
     (x : (w.1.adicCompletion M)ˣ) : Units.map (completionMap v w.1).toMonoidHom (nm w x) = x := by
@@ -25,6 +30,11 @@ private theorem map_nm {K M : Type} [Field K] [NumberField K] [Field M] [NumberF
     Algebra.norm_algebraMap y
   rw [h2, h1, pow_one]
 
+/- English proof (translation)
+Establish `hc : Continuous (Units.map (completionMap v w.1).toMonoidHom)` using `Continuous.units_map _ (continuous_completionMap v w.1)`. Use `⟨(ζ.comp (Units.map (completionMap v w.1).toMonoidHom))⁻¹, ?_, fun x _ => ?_⟩` and prove the remaining obligations. Establish `he : (((ζ.comp (Units.map (completionMap v w.1).toMonoidHom))⁻¹).ker : Set (v.adicCompletion K)ˣ) = Units.map (completionMap v w.1).toMonoidHom ⁻¹' (ζ.ker : Set _)`. Use extensionality with `y`. Simplify using `[MonoidHom.mem_ker]`.
+
+Express the relevant statement in the definitionally equal form `IsOpen _`. Rewrite using `[he]`. Conclude with `hζ.preimage hc`. Express the relevant statement in the definitionally equal form `ζ x * (ζ (Units.map (completionMap v w.1).toMonoidHom (nm w x)))⁻¹ = 1`. Rewrite using `[map_nm w hs x, mul_inv_cancel]`.
+-/
 private theorem thru_split {K M : Type} [Field K] [NumberField K] [Field M] [NumberField M] [Algebra K M]
     {v : HeightOneSpectrum (𝓞 K)} (w : PlacesOver M v) (hs : Function.Surjective (completionMap v w.1))
     (ζ : (w.1.adicCompletion M)ˣ →* ℂˣ) (hζ : IsSmoothChar ζ) :
@@ -45,6 +55,11 @@ private theorem thru_split {K M : Type} [Field K] [NumberField K] [Field M] [Num
 end UpperTheory.V.Z.Win.Birth
 
 open UpperTheory.V.Z.Win.Birth in
+/- English proof (translation)
+Introduce `K M _ _ _ _ _ _ _ _ π hbad v w s hs ζ hζ hmem`. Distinguish the cases in `hsp : UpperTheory.ConvolutionTheory.GM.Split M v`. Conclude with `thru_split w (hsp w) ζ hζ`. Establish `hw : w.1.under (𝓞 K) = v` using `HeightOneSpectrum.ext w.2.over.symm`. Take `⟨B, hB⟩` from `(hbad v hsp).2 w.1 hw`.
+
+Take `⟨μ, hμ, e⟩` from `(suppFacts M 2 (by norm_num) π w.1).2.2.2.1 s B hs hB _ hmem`. Take `rfl : ζ = μ` from `IrrGL.ofChar_inj.1 e`. Conclude with `⟨1, isSmoothChar_one, by simpa using hμ⟩`.
+-/
 theorem UpperTheory.V.Z.Win.Birth.thruBad :
     UpperTheory.V.Z.Win.Birth.ThruBad := by
   intro K M _ _ _ _ _ _ _ _ π hbad v w s hs ζ hζ hmem

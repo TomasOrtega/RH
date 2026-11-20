@@ -20,6 +20,9 @@ section General
 
 variable {F E A ι : Type} [Field F] [Field E] [Algebra F E] [CommRing A] [Algebra F A] [FiniteDimensional F E]
 
+/- English proof (translation)
+Rewrite using `[Algebra.trace_apply, Algebra.trace_apply, ← LinearMap.trace_baseChange]`. Use `congr 1`. Use extensionality with `y`. Simplify using the standard rewrite rules.
+-/
 theorem trace_one_tmul (z : E) :
     Algebra.trace A (A ⊗[F] E) (1 ⊗ₜ z) = algebraMap F A (Algebra.trace F E z) := by
   rw [Algebra.trace_apply, Algebra.trace_apply, ← LinearMap.trace_baseChange]
@@ -27,6 +30,9 @@ theorem trace_one_tmul (z : E) :
   ext y
   simp
 
+/- English proof (translation)
+Use `conv_rhs => rw [← (Algebra.TensorProduct.basis A ε).sum_repr a, ← (Algebra.TensorProduct.basis A ε.traceDual).sum_repr b, Finset.sum_mul_sum]`. Simplify using `only [map_sum, smul_mul_smul_comm, map_smul, Algebra.TensorProduct.basis_apply, Algebra.TensorProduct.tmul_mul_tmul, mul_one, trace_one_tmul, Module.Basis.trace_mul_traceDual, smul_eq_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Apply the tactic sequence `rw [Finset.sum_eq_single i] <;> simp +contextual [eq_comm]`.
+-/
 theorem sum_repr_dual [Algebra.IsSeparable F E] [Fintype ι] [DecidableEq ι] (ε : Module.Basis ι F E) (a b : A ⊗[F] E) :
     ∑ k, (Algebra.TensorProduct.basis A ε).repr a k * (Algebra.TensorProduct.basis A ε.traceDual).repr b k =
       Algebra.trace A (A ⊗[F] E) (a * b) := by
@@ -41,23 +47,35 @@ end General
 
 variable {D : D7} {m n d : ℕ}
 
+/- English proof (translation)
+Rewrite using `[← map_cAl, ← map_cAl]`. Use function extensionality and compare the values at `i j`. Conclude with `map_smul (cAl D) a (x i j)`.
+-/
 theorem cj_smul (a : AF D.host.F) (x : Mx D m n) : cj (a • x) = a • cj x := by
   rw [← map_cAl, ← map_cAl]
   funext i j
   exact map_smul (cAl D) a (x i j)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i j`. Apply the tactic sequence `obtain ⟨j | j, rfl⟩ := finSumFinEquiv.surjective j <;>`. Simplify using `[cat, -finSumFinEquiv_apply_left, -finSumFinEquiv_apply_right]`.
+-/
 theorem cat_add {R : Type} [Add R] (p y p' y' : Matrix (Fin m) (Fin n) R) :
     cat (p + p') (y + y') = cat p y + cat p' y' := by
   funext i j
   obtain ⟨j | j, rfl⟩ := finSumFinEquiv.surjective j <;>
     simp [cat, -finSumFinEquiv_apply_left, -finSumFinEquiv_apply_right]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i j`. Apply the tactic sequence `obtain ⟨j | j, rfl⟩ := finSumFinEquiv.surjective j <;>`. Simplify using `[cat, -finSumFinEquiv_apply_left, -finSumFinEquiv_apply_right]`.
+-/
 theorem cat_smul {S R : Type} [SMul S R] (a : S) (p y : Matrix (Fin m) (Fin n) R) :
     cat (a • p) (a • y) = a • cat p y := by
   funext i j
   obtain ⟨j | j, rfl⟩ := finSumFinEquiv.surjective j <;>
     simp [cat, -finSumFinEquiv_apply_left, -finSumFinEquiv_apply_right]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i j`. Apply the tactic sequence `obtain ⟨j | j, rfl⟩ := finSumFinEquiv.surjective j <;>`. Simplify using `[cat, -finSumFinEquiv_apply_left, -finSumFinEquiv_apply_right]`.
+-/
 theorem cat_map {S R : Type} (f : R → S) (p y : Matrix (Fin m) (Fin n) R) :
     (cat p y).map f = cat (p.map f) (y.map f) := by
   funext i j
@@ -77,6 +95,9 @@ def ptEquiv (T : GL (Fin (n + n)) D.host.E) (m : ℕ) : (Mx D m n × Mx D m n) �
       obtain ⟨q, x, h⟩ := exists_pt T u
       exact ⟨(q, x), h.symm⟩⟩
 
+/- English proof (translation)
+The claim follows from `(ptEquiv T m).symm_apply_eq.2 rfl`.
+-/
 theorem ptEquiv_symm (T : GL (Fin (n + n)) D.host.E) (q x : Mx D m n) : (ptEquiv T m).symm (pt T q x) = (q, x) :=
   (ptEquiv T m).symm_apply_eq.2 rfl
 
@@ -98,11 +119,19 @@ def coEquiv (V : HSp D) (T : GL (Fin (n + n)) D.host.E) (ε : Module.Basis (Fin 
   (ptEquiv T V.rank).symm ≪≫ₗ LinearEquiv.prodComm _ _ _ ≪≫ₗ
     (coordL ε V.rank n).prodCongr (gramEquiv V n ≪≫ₗ coordL ε.traceDual V.rank n)
 
+/- English proof (translation)
+Rewrite using `[coEquiv, LinearEquiv.trans_apply, LinearEquiv.trans_apply, ptEquiv_symm]`. Both sides reduce to the same expression.
+-/
 theorem coEquiv_pt (V : HSp D) (T : GL (Fin (n + n)) D.host.E) (ε : Module.Basis (Fin d) D.host.F D.host.E)
     (q x : Mx D V.rank n) : coEquiv V T ε (pt T q x) = (coord ε x, coord ε.traceDual (cj (-(gA V ⬝ q)))) := by
   rw [coEquiv, LinearEquiv.trans_apply, LinearEquiv.trans_apply, ptEquiv_symm]
   rfl
 
+/- English proof (translation)
+Establish `h : Matrix.trace (adj x ⬝ y : Mx D n n) = ∑ i, ∑ j, cA D (x i j) * y i j`. Rewrite using `[Finset.sum_comm]`. Both sides reduce to the same expression. Rewrite using `[h, StdUnn.trA, map_sum, dotProduct, Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_sum, Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `(sum_repr_dual ε (x i j) (cA D (y i j))).trans ?_` and prove the remaining obligations. Use `Eq.trans ?_ (trA_cA _)` and prove the remaining obligations. Rewrite using `[map_mul (cA D), cA_cA]`.
+-/
 theorem coord_dot (ε : Module.Basis (Fin d) D.host.F D.host.E) (x y : Mx D m n) :
     coord ε x ⬝ᵥ coord ε.traceDual (cj y) = StdUnn.trA (Matrix.trace (adj x ⬝ y : Mx D n n)) := by
   have h : Matrix.trace (adj x ⬝ y : Mx D n n) = ∑ i, ∑ j, cA D (x i j) * y i j := by
@@ -115,17 +144,28 @@ theorem coord_dot (ε : Module.Basis (Fin d) D.host.F D.host.E) (x y : Mx D m n)
   refine Eq.trans ?_ (trA_cA _)
   rw [map_mul (cA D), cA_cA]
 
+/- English proof (translation)
+Rewrite using `[coord_dot, Matrix.mul_neg, Matrix.trace_neg, StdUnn.trA, map_neg]`. Both sides reduce to the same expression.
+-/
 theorem coord_dot_gram (V : HSp D) (ε : Module.Basis (Fin d) D.host.F D.host.E) (x q : Mx D V.rank n) :
     coord ε x ⬝ᵥ coord ε.traceDual (cj (-(gA V ⬝ q))) = -StdUnn.trA (Matrix.trace (StdUnn.inner V x q)) := by
   rw [coord_dot, Matrix.mul_neg, Matrix.trace_neg, StdUnn.trA, map_neg]
   rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `p`. Use `show (Algebra.TensorProduct.basis (AF D.host.F) ε).repr (1 ⊗ₜ γ p.1 p.2.1) p.2.2 = _`. Rewrite using `[Algebra.TensorProduct.basis_repr_tmul, one_smul, Finsupp.mapRange_apply]`.
+-/
 theorem coord_rat (ε : Module.Basis (Fin d) D.host.F D.host.E) (γ : Matrix (Fin m) (Fin n) D.host.E) :
     coord ε (rat γ : Mx D m n) = fun p => algebraMap D.host.F (AF D.host.F) (ε.repr (γ p.1 p.2.1) p.2.2) := by
   funext p
   show (Algebra.TensorProduct.basis (AF D.host.F) ε).repr (1 ⊗ₜ γ p.1 p.2.1) p.2.2 = _
   rw [Algebra.TensorProduct.basis_repr_tmul, one_smul, Finsupp.mapRange_apply]
 
+/- English proof (translation)
+Take `⟨p, y, h⟩` from `exists_cat (u * (T⁻¹).1ᵀ)`. Use `⟨p.map D.sp.cm.sig, y.map D.sp.cm.sig, ?_⟩` and prove the remaining obligations. Establish `h1 : u = cat p y * T.1ᵀ`. Rewrite using `[← h, Matrix.mul_assoc, ← Matrix.transpose_mul, T.mul_inv, Matrix.transpose_one, Matrix.mul_one]`. Rewrite using `[pt, ← cj_rat, ← cj_rat, cj_cj, cj_cj, h1, rat_mul, rat, cat_map]`.
+
+Both sides reduce to the same expression.
+-/
 theorem exists_pt_rat (T : GL (Fin (n + n)) D.host.E) (u : Matrix (Fin m) (Fin (n + n)) D.host.E) :
     ∃ q x : Matrix (Fin m) (Fin n) D.host.E, (rat u : Mx D m (n + n)) = pt T (rat q) (rat x) := by
   obtain ⟨p, y, h⟩ := exists_cat (u * (T⁻¹).1ᵀ)
@@ -135,6 +175,9 @@ theorem exists_pt_rat (T : GL (Fin (n + n)) D.host.E) (u : Matrix (Fin m) (Fin (
   rw [pt, ← cj_rat, ← cj_rat, cj_cj, cj_cj, h1, rat_mul, rat, cat_map]
   rfl
 
+/- English proof (translation)
+Take `⟨q, x, rfl⟩` from `exists_pt T w`. Take `⟨q', x', rfl⟩` from `exists_pt T w'`. Rewrite using `[symp_pt V hG, coEquiv_pt, coEquiv_pt]`. Simplify using `only`. Rewrite using `[coord_dot_gram, coord_dot_gram, trA_inner_comm V q x', neg_sub_neg]`.
+-/
 theorem coEquiv_form (V : HSp D) {J₂ : Matrix (Fin (n + n)) (Fin (n + n)) D.host.E} {T : GL (Fin (n + n)) D.host.E}
     (hG : T.1ᵀ * J₂ * T.1.map D.sp.cm.sig = GlobalTheory.StdUnn.Jst D n) (ε : Module.Basis (Fin d) D.host.F D.host.E)
     (w w' : Mx D V.rank (n + n)) :
@@ -150,6 +193,9 @@ def co (V : HSp D) {J₂ : Matrix (Fin (n + n)) (Fin (n + n)) D.host.E} {T : GL 
     (hG : T.1ᵀ * J₂ * T.1.map D.sp.cm.sig = GlobalTheory.StdUnn.Jst D n) (ε : Module.Basis (Fin d) D.host.F D.host.E) :
     Dbx V J₂ d := ⟨coEquiv V T ε, coEquiv_form V hG ε⟩
 
+/- English proof (translation)
+Take `⟨q, x, h⟩` from `exists_pt_rat T u`. Establish `h1 : coEquiv V T ε (rat u) = (coord ε (rat x), coord ε.traceDual (rat ((-(V.gram * q)).map D.sp.cm.sig)))`. Rewrite using `[h, coEquiv_pt, gA, ← rat_mul, ← rat_neg, cj_rat]`. Rewrite `h1` using `[coord_rat, coord_rat]`. Conclude with `⟨_, _, h1⟩`.
+-/
 theorem coEquiv_rat (V : HSp D) (T : GL (Fin (n + n)) D.host.E) (ε : Module.Basis (Fin d) D.host.F D.host.E)
     (u : Matrix (Fin V.rank) (Fin (n + n)) D.host.E) : ∃ y z : Fin V.rank × Fin n × Fin d → D.host.F,
     coEquiv V T ε (rat u) =
@@ -161,6 +207,13 @@ theorem coEquiv_rat (V : HSp D) (T : GL (Fin (n + n)) D.host.E) (ε : Module.Bas
   rw [coord_rat, coord_rat] at h1
   exact ⟨_, _, h1⟩
 
+/- English proof (translation)
+Use `⟨co V hG ε, ⟨coEquiv_rat V T ε, fun u hu => ?_, fun u hu => ?_⟩, fun q x => ?_⟩` and prove the remaining obligations. Take `⟨q, x, rfl⟩` from `exists_pt T u`. Take `rfl` from `(pt_diag_iff hT q x).1 hu`. Conclude with `(congrArg Prod.fst (coEquiv_pt V T ε q 0)).trans (coord_zero ε)`. Take `⟨q, x, rfl⟩` from `exists_pt T u`.
+
+Take `rfl` from `(pt_anti_iff hT q x).1 hu`. Use `(congrArg Prod.snd (coEquiv_pt V T ε 0 x)).trans ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_zero, neg_zero, cj_zero]`. Conclude with `coord_zero _`. Use `⟨congrArg Prod.fst (coEquiv_pt V T ε q x), fun x' => ?_⟩` and prove the remaining obligations.
+
+Conclude with `(congrArg (fun p => coord ε x' ⬝ᵥ Prod.snd p) (coEquiv_pt V T ε q x)).trans (coord_dot_gram V ε x' q)`.
+-/
 theorem exists_adapted (D : D7) (n : ℕ) (V : HSp D) (J : Matrix (Fin n) (Fin n) D.host.E)
     (J₂ : Matrix (Fin (n + n)) (Fin (n + n)) D.host.E) (T : GL (Fin (n + n)) D.host.E)
     (hT : IsWittBasis D.sp.cm.sig J 1 T) (hG : T.1ᵀ * J₂ * T.1.map D.sp.cm.sig = GlobalTheory.StdUnn.Jst D n)

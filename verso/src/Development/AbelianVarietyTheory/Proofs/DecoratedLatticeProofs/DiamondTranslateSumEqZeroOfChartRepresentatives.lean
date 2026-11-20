@@ -18,6 +18,15 @@ noncomputable section
 
 namespace GlobalTheory.AdForm.DiaReduce
 
+/- English proof (translation)
+Set `K : Subgroup G` to `χ.ker.map U.subtype`. Establish `hK : ∀ g, (∃ h : g ∈ U, χ ⟨_, h⟩ = 1) → g ∈ K` using `fun g ⟨h, h'⟩ => ⟨⟨g, h⟩, h', rfl⟩`. Establish `hP : (J.map f).prod ∈ K` using `K.list_prod_mem fun g hg => by`. Take `⟨i, -, rfl⟩` from `List.mem_map.1 hg`. Conclude with `hK _ (h1 i)`.
+
+Establish `hP' : (J.map f).prod ∈ K.comap (MulAut.conj x⁻¹).toMonoidHom` using `Subgroup.list_prod_mem _ fun g hg => by`. Take `⟨i, -, rfl⟩` from `List.mem_map.1 hg`. Use `hK _ (h2 i)` as an intermediate fact. Simplify using `using this`. Establish `hP'' : x⁻¹ * (J.map f).prod * x ∈ K` using `by simpa using hP'`.
+
+Take `⟨m, hm, hm'⟩` from `K.mul_mem hP'' (K.inv_mem hP)`. Establish `hm1 : χ m = 1` using `hm`. Establish `hm2 : m.1 = x⁻¹ * (J.map f).prod * x * (J.map f).prod⁻¹` using `hm'`. Use `⟨m * κ, ?_, by rw [map_mul, hm1, one_mul]⟩` and prove the remaining obligations. Rewrite using `[Subgroup.coe_mul, hm2, hκ, mul_assoc, ← hc]`.
+
+Use `group`.
+-/
 theorem conj_level {G ι : Type*} [Group G] (U : Subgroup G) (χ : U →* ℂˣ) (J : List ι) (f : ι → G) (x κ' : G) (κ : U)
     (hκ : κ.1 = (J.map f).prod * κ') (hc : x * κ' = κ' * x)
     (h1 : ∀ i, ∃ h : f i ∈ U, χ ⟨_, h⟩ = 1) (h2 : ∀ i, ∃ h : x⁻¹ * f i * x ∈ U, χ ⟨_, h⟩ = 1) :
@@ -41,6 +50,13 @@ theorem conj_level {G ι : Type*} [Group G] (U : Subgroup G) (χ : U →* ℂˣ)
 
 variable {D : D7}
 
+/- English proof (translation)
+Introduce `a ha`. Rewrite `ha` using `[GinfC, MonoidHom.mem_ker]`. Rewrite using `[grpOff, GlobalTheory.FinPl.LocProd.mem_congGrp_entries]`. Introduce `i j`. Establish `h2 : finPart D (Formalism.L2.Theta.mt V a i j) = (1 : Matrix (Fin V.rank) (Fin V.rank) _) i j` using `congrArg (fun x : GL (Fin V.rank) _ => x.1 i j) ha`.
+
+Rewrite using `[idOff, Ideal.mem_iInf]`. Introduce `w`. Rewrite using `[RingHom.mem_ker, Matrix.sub_apply, GlobalTheory.FinPl.compAt, RingHom.comp_apply, RingHom.map_sub, h2]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality.
+
+Rewrite using `[Matrix.one_apply_eq, Matrix.one_apply_eq, RingHom.map_one, sub_self, RingHom.map_zero]`. Rewrite using `[Matrix.one_apply_ne hij, Matrix.one_apply_ne hij, RingHom.map_zero, sub_self, RingHom.map_zero]`.
+-/
 theorem real_le_off (V : HSp D) (P : Pl D → Prop) : GinfC V ≤ grpOff V P := by
   intro a ha
   rw [GinfC, MonoidHom.mem_ker] at ha
@@ -56,6 +72,9 @@ theorem real_le_off (V : HSp D) (P : Pl D → Prop) : GinfC V ≤ grpOff V P := 
     rw [Matrix.one_apply_eq, Matrix.one_apply_eq, RingHom.map_one, sub_self, RingHom.map_zero]
   · rw [Matrix.one_apply_ne hij, Matrix.one_apply_ne hij, RingHom.map_zero, sub_self, RingHom.map_zero]
 
+/- English proof (translation)
+Apply `GlobalTheory.FinPl.LocProd.congGrp_mono` to reduce the goal to its premises. Introduce `a ha`. Simplify using `only [idOff, Submodule.mem_iInf, RingHom.mem_ker, Subtype.forall] at ha ⊢`. Conclude with `fun w hw => ha w (h w hw)`.
+-/
 theorem grpOff_anti (V : HSp D) {P P' : Pl D → Prop} (h : ∀ w, P' w → P w) : grpOff V P ≤ grpOff V P' := by
   apply GlobalTheory.FinPl.LocProd.congGrp_mono
   intro a ha
@@ -66,6 +85,13 @@ end GlobalTheory.AdForm.DiaReduce
 
 open GlobalTheory.AdForm.DiaReduce in
 
+/- English proof (translation)
+Set `eY : (I.chain l u a).Y i ≃ Formalism.L2.Forms.Fr (I.rec7 l Z) i hi` to `{ toFun := fun y => ⟨y.1, y.2⟩, invFun := fun z => ⟨z.1, z.2⟩, left_inv := fun _ => rfl, right_inv := fun _ => rfl }`. Establish `hV` using `GlobalTheory.Mem.Col2.TC.val_tied I hok hpins l Z u a i hi (A.bad i) (Ch i) (A.chOf i) (A.K i hi) eY ⟨A.kb i, hA.reads i hi⟩ (fun _ => rfl)`. Establish `hF` using `(hV.Fi φ).1 hφ`. Establish `laws` using `GlobalTheory.AdForm.RdLaw.rdS_laws (I.rec7 l Z) θ hθ ((I.rec7 l Z).sp.X i) (B.R.N i) (rankN (I.rec7 l Z) i hi) (gramN (I.rec7 l Z) i hi) rfl (B.T u) (I.rec7 l Z).R.f (A.bad i) (A.K i hi β).lev {c // A.chOf i c = β} (A.K i hi β).y (A.K i hi β).y_bij _ (fun c z => φ c.1 ⟨z.1, z.2⟩) …`. Take `⟨hL, hK, hR, -⟩` from `laws`.
+
+Set `z` to `GlobalTheory.AdForm.Model.trFr θ ((I.rec7 l Z).sp.X i) (rankN (I.rec7 l Z) i hi) k (eY y)`. Use `⟨eY.symm z, fun γ hγ g κ => ?_⟩` and prove the remaining obligations. Take `⟨hκf, κ', hκ'⟩` from `(hA.U i hi β κ.1).1 κ.2`. Establish `hchi` using `hA.chi i hi β κ κ' hκ'`. Establish `e1` using `hL γ hγ (g * k * κ.1)`.
+
+Establish `e2` using `hK κ.1 hκf κ' hκ' (g * k)`. Establish `e3` using `hR k hk z (fun τ => rfl) g`. Conclude with `e1.trans (e2.trans (congrArg₂ (· * ·) (congrArg (fun x : ℂˣ => (x : ℂ)) hchi.symm) e3))`.
+-/
 theorem GlobalTheory.AdForm.DiaReduce.rd_laws {B : Base} {X : PreX B.toPre} (I : TC B X) (hok : I.Ok) (hpins : TC.Pins B X) (l : I.Laws)
     (Z : TC.Later B (I.cols l)) (u : B.Word) (a : I.ι) (Ch : ℕ → Type) (A : TwDat I l Z u a Ch) (hA : A.Is)
     (θ : InfFam (I.rec7 l Z)) (hθ : IsInfFam θ) (i : ℕ) (hi : i ≤ B.R.m) (φ) (hφ : φ ∈ (I.fm l u a).Fi i) (β : Ch i)
@@ -92,6 +118,19 @@ theorem GlobalTheory.AdForm.DiaReduce.rd_laws {B : Base} {X : PreX B.toPre} (I :
 
 open GlobalTheory.AdForm.DiaReduce in
 
+/- English proof (translation)
+Introduce `B X I hok hpins l Z u a Ch A hA θ hθ k _ _ _ _ ι p β Q L hS j hj φ hφ i v _ g hg b y h0 x`. Establish `hinj` using `GlobalTheory.AdForm.StdT.places_injective I hok hpins l Z u p β Q L hS`. Take `⟨e, -⟩` from `hS.1`. Use `haveI : Finite ι := Finite.of_equiv _ e.symm`. Use `haveI : Fintype ι := Fintype.ofFinite ι`.
+
+Take `⟨hst, hdec⟩` from `GlobalTheory.T.twistLevelStabiliserAtLevelPrime_proof I hok hpins l Z u a Ch A hA k ι p β Q L hS (Finset.univ.toList) (Finset.nodup_toList _) (fun i => Finset.mem_toList.2 (Finset.mem_univ i)) j hj b`. Take `⟨γ, hγ, c, r, hr, κ, hκ, rfl⟩` from `(GlobalTheory.T.chartLevels_reps_represent_unitaryDoubleCosets I hok hpins l Z u a Ch A hA j hj b).1.dec x`. Take `⟨g', hg', κ', hκ', hκe⟩` from `hdec κ hκ`. Take `⟨y', hy'⟩` from `rd_laws I hok hpins l Z u a Ch A hA θ hθ j hj φ hφ b y r hr`. Establish `hAt : ∀ i' t, (β j i').gl t ∈ grpAt ((I.rec7 l Z).sp.X j) (· = (p i').v)` using `fun i' t => GlobalTheory.FinPl.FrameLat.gl_mem_grpAt (β j i') t`.
+
+Establish `hcomm` using `((GlobalTheory.FinPl.localComponents (I.rec7 l Z) (· = (p i).v)).2 ((I.rec7 l Z).sp.X j)).2.1`. Establish `key : ∀ s, A.rd θ j hj b φ y (γ * (A.h j b c * r) * κ * (β j i).gl (g s)) = (A.chi j b ⟨κ, hκ⟩ : ℂ) * A.rd θ j hj b φ y' (A.h j b c * (β j i).gl (g s))`. Introduce `s`. Take `⟨κ'', h1, h2⟩` from `conj_level (A.U j b) (A.chi j b) Finset.univ.toList (fun i' => (β j i').gl (g' i')) ((β j i).gl (g s)) κ' ⟨κ, hκ⟩ hκe (hcomm _ (hAt i _) _ (grpOff_anti _ (fun w hw => ⟨i, hw⟩) hκ')) (fun i' => hst i' _ (hg' i')) (fun i' => by`. Distinguish the cases in `hi : i' = i`.
+
+Substitute `hi` using the available equality. Rewrite using `[← map_inv, ← map_mul, ← map_mul]`. Use `hst i' _ ?_` and prove the remaining obligations. Rewrite using `[mul_smul, mul_smul, hg, smul_comm (g' i') s, hg', ← hg, inv_smul_smul]`. Establish `hc` using `hcomm _ (hAt i (g s)) _ (GlobalTheory.FinPl.LocProd.grpAt_le_grpOff' _ _ _ (fun w hw hw' => hi (hinj (hw.symm.trans hw'))) (hAt i' (g' i')))`.
+
+Rewrite using `[mul_assoc, ← hc, inv_mul_cancel_left]`. Conclude with `hst i' _ (hg' i'))`. Establish `hc` using `hcomm _ (hAt i (g s)) r (real_le_off _ _ hr)`. Establish `h1' : κ * (β j i).gl (g s) = (β j i).gl (g s) * κ''.1` using `h1`. Establish `e1 : γ * (A.h j b c * r) * κ * (β j i).gl (g s) = γ * (A.h j b c * (β j i).gl (g s) * r * κ''.1)`.
+
+Rewrite using `[mul_assoc, h1', mul_assoc (A.h j b c), hc]`. Simplify using `only [mul_assoc]`. Rewrite using `[e1, hy' γ hγ, h2]`. Simplify using `only [key]`. Rewrite using `[← mul_finsum' _ _ (Set.toFinite _), h0, mul_zero]`.
+-/
 theorem GlobalTheory.AdForm.diaSum_eq_zero_of_reps : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)) (u : B.Word) (a : I.ι) (Ch : ℕ → Type) (A : TwDat I l Z u a Ch), A.Is → ∀ θ, IsInfFam θ → ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (ι : Type)
     (p : ι → SplitPt (I.rec7 l Z) k) (β : ∀ j i, Frame (p i) ((I.rec7 l Z).sp.X j) (Fin ((I.rec7 l Z).sp.X j).rank))
     (Q : ∀ j, ι → Pair k (Fin ((I.rec7 l Z).sp.X j).rank)) (L : ∀ j, Lat ((I.rec7 l Z).sp.X j)),

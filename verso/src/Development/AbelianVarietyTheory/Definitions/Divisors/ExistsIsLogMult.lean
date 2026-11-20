@@ -22,14 +22,23 @@ abbrev fnPull (s : Y ⟶ X) [IsDominant s] : X.functionFieldˣ →* Y.functionFi
 def pullCart (s : Y ⟶ X) [IsDominant s] (D : CartierDiv X) : CartierDiv Y :=
   (GlobalTheory.Cartier.exists_pullback_cartierDiv X Y s D).choose
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.Cartier.exists_pullback_cartierDiv X Y s D).choose_spec.2 y g h`.
+-/
 theorem isEqn_pullCart (s : Y ⟶ X) [IsDominant s] {D : CartierDiv X} {y : Y} {g : X.functionFieldˣ}
     (h : D.IsEqn (s y) g) : (pullCart s D).IsEqn y (fnPull s g) :=
   (GlobalTheory.Cartier.exists_pullback_cartierDiv X Y s D).choose_spec.2 y g h
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.Cartier.exists_pullback_cartierDiv X Y s D).choose_spec.1`.
+-/
 theorem toPic_pullCart (s : Y ⟶ X) [IsDominant s] (D : CartierDiv X) :
     toPic (pullCart s D) = CechPic.pull s (toPic D) :=
   (GlobalTheory.Cartier.exists_pullback_cartierDiv X Y s D).choose_spec.1
 
+/- English proof (translation)
+The claim follows from `CartierDiv.ext_of_isEqn fun y => have ⟨g, hg⟩ := D.exists_isEqn (s y) have ⟨g', hg'⟩ := E.exists_isEqn (s y) ⟨_, isEqn_pullCart s (hg.add hg'), (map_mul (fnPull s) g g').symm ▸ (isEqn_pullCart s hg).add (isEqn_pullCart s hg')⟩`.
+-/
 theorem pullCart_add (s : Y ⟶ X) [IsDominant s] (D E : CartierDiv X) :
     pullCart s (D + E) = pullCart s D + pullCart s E :=
   CartierDiv.ext_of_isEqn fun y =>
@@ -71,6 +80,9 @@ structure IsLogMult (p : X ⟶ Sp k) (n : ℕ) (Δ : X → ℚ) (η : RatForms p
 
   eqn : ∀ x g, G.IsEqn x g → IsLogEqn p Δ η x m g
 
+/- English proof (translation)
+The claim follows from `have ⟨η, h₁, h₂⟩ := h; ⟨η, h₁, hm, h₂⟩`.
+-/
 theorem IsLogCanonicalMultiple.exists_isLogMult {p : X ⟶ Sp k} {n : ℕ} {Δ : X → ℚ} {m : ℕ}
     {G : CartierDiv X} (h : IsLogCanonicalMultiple p n Δ m G) (hm : 0 < m) :
     ∃ η, IsLogMult p n Δ η m G :=
@@ -86,6 +98,9 @@ def IsMultIdeal (p : X ⟶ Sp k) (n : ℕ) (η : RatForms p n) (m : ℕ) (G : Ca
     ∀ (x : X) (hx : x ∈ U.1) (u : X.functionFieldˣ),
       (u : X.functionField) = fnOf U.1 (gen_mem hx) f → InMultAt p n η m G x u
 
+/- English proof (translation)
+The claim follows from `Scheme.IdealSheafData.ext (funext fun U => Ideal.ext fun f => (h U f).trans (h' U f).symm)`.
+-/
 theorem IsMultIdeal.unique {p : X ⟶ Sp k} {n : ℕ} {η : RatForms p n} {m : ℕ} {G : CartierDiv X}
     {J J' : X.IdealSheafData} (h : IsMultIdeal p n η m G J) (h' : IsMultIdeal p n η m G J') :
     J = J' :=

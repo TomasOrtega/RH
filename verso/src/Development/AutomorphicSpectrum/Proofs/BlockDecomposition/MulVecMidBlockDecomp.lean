@@ -6,6 +6,11 @@ open scoped TensorProduct
 
 namespace GlobalTheory.CompanionTheory.BZPsiPG
 
+/- English proof (translation)
+Use `⟨fun r => ((q : GL (Fin (i + t)) k) : Matrix (Fin (i + t)) (Fin (i + t)) k).mulVec (GlobalTheory.CompanionTheory.BZPsiPG.midV k i t v) (Fin.castAdd t r), ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.CompanionTheory.BZPsiPG.topV_add_midV]`. Use function extensionality and compare the values at `r`. Use `Fin.addCases (fun a => ?_) (fun b => ?_) r` and prove the remaining obligations. Rewrite using `[Fin.append_left]`.
+
+Rewrite using `[Fin.append_right]`. Simplify using `only [Matrix.mulVec, dotProduct, Fin.sum_univ_add, GlobalTheory.CompanionTheory.BZPsiPG.midV, Fin.append_left, Fin.append_right, Pi.zero_apply, mul_zero, Finset.sum_const_zero, zero_add]`. Both sides reduce to the same expression.
+-/
 theorem qp_mulVec_midV_exists_top (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (i t : ℕ) (q : Qp k i t) (v : Fin t → k) :
     ∃ x : Fin i → k, ((q : GL (Fin (i + t)) k) : Matrix (Fin (i + t)) (Fin (i + t)) k).mulVec (midV k i t v) =

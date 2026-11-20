@@ -16,6 +16,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts}
   {Y : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y cX} {Csz : ℝ}
 set_option maxHeartbeats 1600000 in
+/- English proof (translation)
+The claim follows from `hs eser := he host := p.host hF := p.hF core := (GlobalTheory.OneMapBridge.heckeChoiceClauses_of_weakCharacterisation_at_face D _ _ _ _ _ _ p.R p.F p.charW hp.exAt).1 mu_off := p.charW.tup.mu_off mu_used := p.charW.tup.mu_used mu_ne := p.charW.tup.mu_ne mu_conj := p.charW.tup.mu_ …`.
+-/
 theorem setting_of_size_alt (p : PtAt ex Csz) (hp : p.PointConditions') (hs : GlobalTheory.IndefiniteRowSideFullHecke.LevelPlusSubgroup.SizeRows L) (he : GlobalTheory.GLq.ESerTie D) :
     HidaSetting L p.R.toRealDat p.F.lv2 where
   size := hs
@@ -38,6 +41,9 @@ theorem setting_of_size_alt (p : PtAt ex Csz) (hp : p.PointConditions') (hs : Gl
   betaX := p.betaStd.2
 end GlobalTheory.BigTop.Fun.SetFromSize
 namespace GlobalTheory.BigTop.Fun
+/- English proof (translation)
+The claim follows from `h.imp fun _ _ _ a => _root_.GlobalTheory.BigTop.Fun.evPt_mono a fun _ _ _ p hp b he => _root_.GlobalTheory.BigTop.Fun.SetFromSize.setting_of_size_alt p hp b he`.
+-/
 theorem setAt_of_sizeAt_alt (h : _root_.GlobalTheory.BigTop.Fun.SizeAtAlt) : _root_.GlobalTheory.BigTop.Fun.SettingAtPoint :=
   h.imp fun _ _ _ a => _root_.GlobalTheory.BigTop.Fun.evPt_mono a fun _ _ _ p hp b he => _root_.GlobalTheory.BigTop.Fun.SetFromSize.setting_of_size_alt p hp b he
 end GlobalTheory.BigTop.Fun

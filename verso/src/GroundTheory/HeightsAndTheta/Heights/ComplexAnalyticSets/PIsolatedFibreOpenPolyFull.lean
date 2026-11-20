@@ -7,6 +7,9 @@ set_option maxSynthPendingDepth 1
 
 namespace GroundTheory.Heights₂.Heights
 
+/- English proof (translation)
+The claim follows from `IsolatedFibreOpenPoly.proof (IndefiniteRowSideFullHecke.ComplexSets.IsolatedFibreOpenOfGeneric.proof (IndefiniteRowSideFullHecke.ComplexSets.GenericProjectionFinite.equiv.mp ComplexSets.GenericProjectionFinite.full) IndefiniteRowSideFullHecke.ComplexSets.FiniteMapOpen.full)`.
+-/
 theorem IsolatedFibreOpenPoly.full : IsolatedFibreOpenPoly.Statement :=
   IsolatedFibreOpenPoly.proof
     (IndefiniteRowSideFullHecke.ComplexSets.IsolatedFibreOpenOfGeneric.proof

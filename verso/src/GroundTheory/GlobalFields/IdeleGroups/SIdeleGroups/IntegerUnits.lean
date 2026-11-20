@@ -14,6 +14,9 @@ namespace IdeleGroup
 
 omit [NumberField K] in
 
+/- English proof (translation)
+Rewrite `hx`, the goal using `[mem_standardOpenSubgroup_iff_ord]`. Introduce `w`. Rewrite using `[ord_smul]`. Conclude with `hx _`.
+-/
 theorem smul_mem_standardOpenSubgroup (σ : L ≃ₐ[K] L) {x : IdeleGroup L}
     (hx : x ∈ standardOpenSubgroup L) : σ • x ∈ standardOpenSubgroup L := by
   rw [mem_standardOpenSubgroup_iff_ord] at hx ⊢
@@ -31,6 +34,9 @@ def integerUnitsAboveIncl :
 
 omit [NumberField K] in
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_integerUnitsAboveIncl_apply
     (z : (w : PlacesOver L v) → (w.1.adicCompletionIntegers L)ˣ) (w : PlacesOver L v) :
     ((integerUnitsAboveIncl v z w : (w.1.adicCompletion L)ˣ) : w.1.adicCompletion L) =
@@ -38,6 +44,9 @@ theorem coe_integerUnitsAboveIncl_apply
   rfl
 
 omit [NumberField K] in
+/- English proof (translation)
+The claim follows from `fun _ _ h ↦ funext fun w ↦ Units.ext (Subtype.ext (congrArg (fun y ↦ ((y w : (w.1.adicCompletion L)ˣ) : w.1.adicCompletion L)) h))`.
+-/
 theorem integerUnitsAboveIncl_injective :
     Function.Injective (integerUnitsAboveIncl (L := L) v) := fun _ _ h ↦
   funext fun w ↦ Units.ext (Subtype.ext (congrArg (fun y ↦ ((y w : (w.1.adicCompletion L)ˣ) :
@@ -45,6 +54,11 @@ theorem integerUnitsAboveIncl_injective :
 
 omit [NumberField K] in
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, rfl⟩ w`. Conclude with `⟨(z w : w.1.adicCompletionIntegers L).2, (((z w)⁻¹ : (w.1.adicCompletionIntegers L)ˣ) : w.1.adicCompletionIntegers L).2⟩`. Introduce `h`. Use `⟨fun w ↦ ⟨⟨y w, (h w).1⟩, ⟨((y w)⁻¹ : (w.1.adicCompletion L)ˣ), (h w).2⟩, Subtype.ext (y w).mul_inv, Subtype.ext (y w).inv_mul⟩, ?_⟩` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `w`. Conclude with `Units.ext rfl`.
+-/
 theorem mem_range_integerUnitsAboveIncl_iff (y : (w : PlacesOver L v) → (w.1.adicCompletion L)ˣ) :
     y ∈ (integerUnitsAboveIncl v).range ↔ ∀ w : PlacesOver L v,
       (y w : w.1.adicCompletion L) ∈ w.1.adicCompletionIntegers L ∧
@@ -59,6 +73,11 @@ theorem mem_range_integerUnitsAboveIncl_iff (y : (w : PlacesOver L v) → (w.1.a
     funext w
     exact Units.ext rfl
 
+/- English proof (translation)
+Use `(mem_standardOpenSubgroup L).2 fun w ↦ ?_` and prove the remaining obligations. Rewrite using `[← map_inv]`. Distinguish the cases in `h : w.asIdeal.LiesOver v.asIdeal`. Rewrite using `[coe_finiteEmbedAbove_snd v _ ⟨w, h⟩, coe_finiteEmbedAbove_snd v _ ⟨w, h⟩]`. Conclude with `⟨(z ⟨w, h⟩ : w.adicCompletionIntegers L).2, (((z ⟨w, h⟩)⁻¹ : (w.adicCompletionIntegers L)ˣ) : w.adicCompletionIntegers L).2⟩`.
+
+Rewrite using `[coe_finiteEmbedAbove_snd_of_not v _ h, coe_finiteEmbedAbove_snd_of_not v _ h]`. Conclude with `⟨(w.adicCompletionIntegers L).one_mem, (w.adicCompletionIntegers L).one_mem⟩`.
+-/
 theorem finiteEmbedAbove_integerUnitsAboveIncl_mem
     (z : (w : PlacesOver L v) → (w.1.adicCompletionIntegers L)ˣ) :
     finiteEmbedAbove v (integerUnitsAboveIncl v z) ∈ standardOpenSubgroup L := by
@@ -80,6 +99,9 @@ def integerUnitsAboveSmul (σ : L ≃ₐ[K] L)
 instance : SMul (L ≃ₐ[K] L) ((w : PlacesOver L v) → (w.1.adicCompletionIntegers L)ˣ) :=
   ⟨integerUnitsAboveSmul v⟩
 
+/- English proof (translation)
+The claim follows from `funext fun _ ↦ Units.ext rfl`.
+-/
 theorem integerUnitsAboveIncl_smul (σ : L ≃ₐ[K] L)
     (z : (w : PlacesOver L v) → (w.1.adicCompletionIntegers L)ˣ) :
     integerUnitsAboveIncl v (σ • z) = σ • integerUnitsAboveIncl v z :=
@@ -90,6 +112,9 @@ instance integerUnitsAboveAction :
   (integerUnitsAboveIncl_injective v).mulDistribMulAction (integerUnitsAboveIncl v)
     (integerUnitsAboveIncl_smul v)
 
+/- English proof (translation)
+Rewrite using `[← coe_integerUnitsAboveIncl_apply, integerUnitsAboveIncl_smul, finiteUnitsAbove_smul_apply, coe_integerUnitsAboveIncl_apply]`.
+-/
 theorem integerUnitsAbove_smul_apply (σ : L ≃ₐ[K] L)
     (z : (w : PlacesOver L v) → (w.1.adicCompletionIntegers L)ˣ) (w : PlacesOver L v) :
     ((((σ • z) (σ • w) : ((σ • w).1.adicCompletionIntegers L)ˣ) :

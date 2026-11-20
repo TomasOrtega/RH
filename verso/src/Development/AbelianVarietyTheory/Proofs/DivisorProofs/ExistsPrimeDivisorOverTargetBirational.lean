@@ -13,6 +13,19 @@ noncomputable section
 
 namespace GlobalTheory.Discrepancy
 
+/- English proof (translation)
+Introduce `k _ X Y _ _ p s _ hb E'`. Establish `e` using `GlobalTheory.EtaleKlt.functionFieldMap_comp_constFn p s`. Establish `hc : ∀ a, Cartier.constFn p a ∈ E'.ring.comap (functionFieldMap s)` using `fun a => by show functionFieldMap s (Cartier.constFn p a) ∈ E'.ring`. Rewrite using `[← RingHom.comp_apply, e]`. Conclude with `E'.const_mem a`.
+
+Set `ψ : E'.ring.comap (functionFieldMap s) →+* E'.ring` to `(functionFieldMap s).restrict _ E'.ring fun _ hx => hx`. Establish `hψb : Function.Bijective ψ`. Use `⟨fun x y h => Subtype.ext (hb.1 (congrArg Subtype.val h)), fun y => ?_⟩` and prove the remaining obligations. Take `⟨x, hx⟩` from `hb.2 (y : Y.functionField)`. Conclude with `⟨⟨x, show functionFieldMap s x ∈ E'.ring from hx ▸ y.2⟩, Subtype.ext hx⟩`.
+
+Set `eq : E'.ring.comap (functionFieldMap s) ≃+* E'.ring` to `RingEquiv.ofBijective ψ hψb`. Establish `hdvr : IsDiscreteValuationRing (E'.ring.comap (functionFieldMap s))` using `IsDiscreteValuationRing.RingEquivClass.isDiscreteValuationRing eq.symm`. Establish `hcomp : eq.symm.toRingHom.comp ((Cartier.constFn (s ≫ p)).codRestrict E'.ring E'.const_mem) = (Cartier.constFn p).codRestrict _ hc`. Use `RingHom.ext fun a => eq.injective ?_` and prove the remaining obligations. Rewrite using `[RingHom.comp_apply]`.
+
+Use `erw [RingEquiv.apply_symm_apply]`. Conclude with `Subtype.ext (RingHom.congr_fun e a).symm`. Establish `hess : ((Cartier.constFn p).codRestrict _ hc).EssFiniteType`. Rewrite using `[← hcomp]`. Establish `h1` using `E'.essFiniteType`.
+
+Use `letI := ((Cartier.constFn (s ≫ p)).codRestrict E'.ring E'.const_mem).toAlgebra`. Use `letI := (eq.symm.toRingHom.comp ((Cartier.constFn (s ≫ p)).codRestrict E'.ring E'.const_mem)).toAlgebra`. Use `haveI : Algebra.EssFiniteType k E'.ring := h1`. Set `f : E'.ring →ₐ[k] E'.ring.comap (functionFieldMap s)` to `{ eq.symm.toRingHom with commutes' := fun _ => rfl }`. Conclude with `Algebra.EssFiniteType.of_surjective f eq.symm.surjective`.
+
+Conclude with `⟨⟨E'.ring.comap (functionFieldMap s), hc, hdvr, hess⟩, fun _ => Iff.rfl⟩`.
+-/
 theorem DivOver.exists_over_of_bijective : ∀ (k : Type) [Field k] (X Y : Scheme.{0}) [IsIntegral X] [IsIntegral Y] (p : X ⟶ Sp k) (s : Y ⟶ X) [IsDominant s], Function.Bijective (functionFieldMap s) → ∀ E' : DivOver (s ≫ p), ∃ E : DivOver p, DivOver.Over s E' E := by
   intro k _ X Y _ _ p s _ hb E'
   have e := GlobalTheory.EtaleKlt.functionFieldMap_comp_constFn p s

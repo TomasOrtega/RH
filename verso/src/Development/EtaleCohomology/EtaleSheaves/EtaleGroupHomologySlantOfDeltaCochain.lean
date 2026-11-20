@@ -41,27 +41,50 @@ def DeltaCo : Prop := ∀ (R : Type) [CommRing R] (Γ : Type) [Group Γ] (X : Sc
 section
 variable (R : Type) [CommRing R] {Γ : Type} [Group Γ] (X : Scheme.{0}) {m : ℕ}
 
+/- English proof (translation)
+The claim follows from `Finsupp.sum_zero_index`.
+-/
 theorem slantHom_zero : slantHom R X (0 : (Fin m → Γ) →₀ R) = 0 := Finsupp.sum_zero_index
 
+/- English proof (translation)
+The claim follows from `Finsupp.sum_single_index (zero_smul (ULift.{1} R) _)`.
+-/
 theorem slantHom_single (g : Fin m → Γ) (r : R) :
     slantHom R X (Finsupp.single g r) = (ULift.up r : ULift.{1} R) • (free R).map (grpPt X g) :=
   Finsupp.sum_single_index (zero_smul (ULift.{1} R) _)
 
+/- English proof (translation)
+The claim follows from `Finsupp.sum_add_index' (fun _ => zero_smul (ULift.{1} R) _) (fun _ r s => add_smul (ULift.up r : ULift.{1} R) (ULift.up s) _)`.
+-/
 theorem slantHom_add (c c' : (Fin m → Γ) →₀ R) : slantHom R X (c + c') = slantHom R X c + slantHom R X c' :=
   Finsupp.sum_add_index' (fun _ => zero_smul (ULift.{1} R) _)
     (fun _ r s => add_smul (ULift.up r : ULift.{1} R) (ULift.up s) _)
 
+/- English proof (translation)
+Unfold `slantV`. Rewrite using `[slantHom_add]`. Use `erw [Preadditive.add_comp, Preadditive.comp_add]`.
+-/
 theorem slantV_add (c c' : (Fin m → Γ) →₀ R) : slantV R X (c + c') = slantV R X c + slantV R X c' := by
   unfold slantV
   rw [slantHom_add]
   erw [Preadditive.add_comp, Preadditive.comp_add]
 
+/- English proof (translation)
+The claim follows from `Cochain.single_v _ _ _`.
+-/
 theorem slantCo_v (c : (Fin m → Γ) →₀ R) : (slantCo R X c).v 0 (-(m : ℤ)) (zero_add _) = slantV R X c :=
   Cochain.single_v _ _ _
 
+/- English proof (translation)
+The claim follows from `Cochain.single_v_eq_zero _ _ _ _ _ hp`.
+-/
 theorem slantCo_v_ne (c : (Fin m → Γ) →₀ R) (p p' : ℤ) (h : p + -(m : ℤ) = p') (hp : p ≠ 0) :
     (slantCo R X c).v p p' h = 0 := Cochain.single_v_eq_zero _ _ _ _ _ hp
 
+/- English proof (translation)
+Use extensionality with `p p' h : 1`. Distinguish the cases in `hp : p = 0`. Substitute `hp` using the available equality. Take `rfl : p' = -(m : ℤ)` from `by omega`. Rewrite using `[Cochain.add_v, slantCo_v, slantCo_v, slantCo_v, slantV_add]`.
+
+Rewrite using `[Cochain.add_v, slantCo_v_ne _ _ _ _ _ _ hp, slantCo_v_ne _ _ _ _ _ _ hp, slantCo_v_ne _ _ _ _ _ _ hp, add_zero]`.
+-/
 theorem slantCo_add (c c' : (Fin m → Γ) →₀ R) : slantCo R X (c + c') = slantCo R X c + slantCo R X c' := by
   ext p p' h : 1
   by_cases hp : p = 0
@@ -70,11 +93,23 @@ theorem slantCo_add (c c' : (Fin m → Γ) →₀ R) : slantCo R X (c + c') = sl
     rw [Cochain.add_v, slantCo_v, slantCo_v, slantCo_v, slantV_add]
   · rw [Cochain.add_v, slantCo_v_ne _ _ _ _ _ _ hp, slantCo_v_ne _ _ _ _ _ _ hp, slantCo_v_ne _ _ _ _ _ _ hp, add_zero]
 
+/- English proof (translation)
+Establish `h` using `slantCo_add R X (0 : (Fin m → Γ) →₀ R) 0`. Rewrite `h` using `[add_zero]`. Conclude with `left_eq_add.1 h`.
+-/
 theorem slantCo_zero : slantCo R X (0 : (Fin m → Γ) →₀ R) = 0 := by
   have h := slantCo_add R X (0 : (Fin m → Γ) →₀ R) 0
   rw [add_zero] at h
   exact left_eq_add.1 h
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Use extensionality with `p p' h : 1`. Distinguish the cases in `hp : p = 0`. Substitute `hp` using the available equality.
+
+Take `rfl : p' = -(m : ℤ)` from `by omega`. Rewrite using `[slantCo_v]`. Conclude with `h2`. Rewrite using `[slantCo_v_ne _ _ _ _ _ _ hp]`. Conclude with `h1 p p' h hp`.
+
+Introduce `h`. Use `⟨fun p p' hh hp => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[h]`. Conclude with `slantCo_v_ne _ _ _ _ _ _ hp`. Rewrite using `[h]`.
+
+Conclude with `slantCo_v _ _ _`.
+-/
 theorem isSlant_iff (c : (Fin m → Γ) →₀ R) (z) : IsSlant R X c z ↔ z.1 = slantCo R X c := by
   constructor
   · rintro ⟨h1, h2⟩
@@ -91,6 +126,13 @@ theorem isSlant_iff (c : (Fin m → Γ) →₀ R) (z) : IsSlant R X c z ↔ z.1 
 
 end
 
+/- English proof (translation)
+Consider the cases of `m with`. Consider the case `zero => exact (h R Γ X).1 _`. Consider the case `succ m`. Establish `h1` using `(h R Γ X).2 m (groupHomology.iCycles (Rep.trivial R Γ R) (m + 1) c)`. Establish `h2 : bd R (groupHomology.iCycles (Rep.trivial R Γ R) (m + 1) c) = 0`.
+
+Establish `h3` using `ConcreteCategory.congr_hom ((groupHomology.inhomogeneousChains (Rep.trivial R Γ R)).iCycles_d (m + 1) m) c`. Rewrite `h3` using `[groupHomology.inhomogeneousChains.d_def]`. Conclude with `h3`. Rewrite `h1` using `[h2, slantCo_zero]`. Establish `h4 : ∀ k : ℤ, k = -(m : ℤ) → δ (-((m + 1 : ℕ) : ℤ)) k (slantCo R X (groupHomology.iCycles (Rep.trivial R Γ R) (m + 1) c)) = 0`.
+
+Introduce and unpack `_ rfl`. Conclude with `h1`. Conclude with `h4 _ (by omega)`.
+-/
 theorem closed (h : DeltaCo) (R : Type) [CommRing R] (Γ : Type) [Group Γ] (X : Scheme.{0}) (m : ℕ)
     (c : groupHomology.cycles (Rep.trivial R Γ R) m) :
     δ (-(m : ℤ)) (-(m : ℤ) + 1) (slantCo R X (groupHomology.iCycles (Rep.trivial R Γ R) m c)) = 0 := by
@@ -109,6 +151,11 @@ theorem closed (h : DeltaCo) (R : Type) [CommRing R] (Γ : Type) [Group Γ] (X :
       rintro _ rfl; exact h1
     exact h4 _ (by omega)
 
+/- English proof (translation)
+Establish `e : (ShortComplex.mk _ _ ((groupHomology.inhomogeneousChains (Rep.trivial R Γ R)).toCycles_comp_homologyπ (m + 1) m)).Exact` using `ShortComplex.exact_of_g_is_cokernel _ ((groupHomology.inhomogeneousChains (Rep.trivial R Γ R)).homologyIsCokernel (m + 1) m (by simp))`. Take `⟨b, hb⟩` from `(ShortComplex.moduleCat_exact_iff _).1 e c hc`. Use `⟨b, ?_⟩` and prove the remaining obligations. Establish `h3` using `ConcreteCategory.congr_hom ((groupHomology.inhomogeneousChains (Rep.trivial R Γ R)).toCycles_i (m + 1) m) b`. Rewrite `h3` using `[groupHomology.inhomogeneousChains.d_def]`.
+
+Rewrite using `[← hb]`. Conclude with `h3.symm`.
+-/
 theorem exists_bd (R : Type) [CommRing R] (Γ : Type) [Group Γ] (m : ℕ)
     (c : groupHomology.cycles (Rep.trivial R Γ R) m) (hc : groupHomology.π (Rep.trivial R Γ R) m c = 0) :
     ∃ b, bd R b = groupHomology.iCycles (Rep.trivial R Γ R) m c := by
@@ -123,6 +170,9 @@ theorem exists_bd (R : Type) [CommRing R] (Γ : Type) [Group Γ] (m : ℕ)
   rw [← hb]
   exact h3.symm
 
+/- English proof (translation)
+Use extensionality with `x`. Take `⟨x, rfl⟩` from `x.mk_surjective`. Rewrite using `[AddMonoidHom.add_apply, cpre_mk, cpre_mk, cpre_mk, ← CohomologyClass.mk_add]`. Use `congr 1`. Conclude with `Cocycle.ext (Cochain.add_comp _ _ _ h)`.
+-/
 theorem cpre_add {C : Type*} [Category C] [Preadditive C] {K L : CochainComplex C ℤ} {m : ℤ} (a a' : Cocycle K L m)
     (M : CochainComplex C ℤ) (n k : ℤ) (h : m + n = k) : cpre (a + a') M n k h = cpre a M n k h + cpre a' M n k h := by
   ext x
@@ -131,6 +181,9 @@ theorem cpre_add {C : Type*} [Category C] [Preadditive C] {K L : CochainComplex 
   congr 1
   exact Cocycle.ext (Cochain.add_comp _ _ _ h)
 
+/- English proof (translation)
+Use extensionality with `x`. Take `⟨x, rfl⟩` from `x.mk_surjective`. Establish `h1 : cpost K x m k h (CohomologyClass.mk a) = 0`. Rewrite using `[(CohomologyClass.mk_eq_zero_iff a).2 ⟨m', hm, w, hw⟩, map_zero]`. Conclude with `h1`.
+-/
 theorem cpre_eq_zero {C : Type*} [Category C] [Preadditive C] {K L : CochainComplex C ℤ} {m m' : ℤ} (a : Cocycle K L m)
     (hm : m' + 1 = m) (w : Cochain K L m') (hw : δ m' m w = a.1)
     (M : CochainComplex C ℤ) (n k : ℤ) (h : m + n = k) : cpre a M n k h = 0 := by
@@ -140,6 +193,17 @@ theorem cpre_eq_zero {C : Type*} [Category C] [Preadditive C] {K L : CochainComp
     rw [(CohomologyClass.mk_eq_zero_iff a).2 ⟨m', hm, w, hw⟩, map_zero]
   exact h1
 
+/- English proof (translation)
+Introduce `R _ Γ _ X m`. Set `z : groupHomology.cycles (Rep.trivial R Γ R) m → Cocycle ((chains R).obj (sch.obj X)) ((chains R).obj (BX Γ X)) (-(m : ℤ))` to `fun c => Cocycle.mk _ _ rfl (closed h R Γ X m c)`. Use `⟨fun c => ⟨z c, (isSlant_iff R X _ _).2 rfl⟩, fun F n => ?_⟩` and prove the remaining obligations. Establish `hex : ∃ S, IsSlantMap R Γ X F m n S`. Set `T : groupHomology.cycles (Rep.trivial R Γ R) m →+ H R (BX Γ X) F (m + n) →+ H R (sch.obj X) F n` to `AddMonoidHom.mk' (fun c => HK.pre R (z c) F (m + n) n (by ring)) (fun c c' => by`.
+
+Establish `: z (c + c') = z c + z c'` using `Cocycle.ext (by`. Express the relevant statement in the definitionally equal form `slantCo R X (groupHomology.iCycles (Rep.trivial R Γ R) m (c + c')) = slantCo R X _ + slantCo R X _`. Rewrite using `[map_add]`. Conclude with `slantCo_add R X _ _)`. Rewrite using `[this]`.
+
+Conclude with `cpre_add _ _ _ _ _ _)`. Establish `hs : Function.Surjective (groupHomology.π (Rep.trivial R Γ R) m).hom.toAddMonoidHom` using `(ModuleCat.epi_iff_surjective (groupHomology.π (Rep.trivial R Γ R) m)).1 (inferInstanceAs (Epi ((groupHomology.inhomogeneousChains (Rep.trivial R Γ R)).homologyπ m)))`. Establish `hk : (groupHomology.π (Rep.trivial R Γ R) m).hom.toAddMonoidHom.ker ≤ T.ker`. Introduce `c hc`. Take `⟨b, hb⟩` from `exists_bd R Γ m c hc`.
+
+Use `cpre_eq_zero (z c) (m' := -((m + 1 : ℕ) : ℤ)) (by omega) (slantCo R X b) ?_ _ _ _ _` and prove the remaining obligations. Rewrite using `[(h R Γ X).2 m b, hb]`. Both sides reduce to the same expression. Use `⟨AddMonoidHom.liftOfSurjective _ hs ⟨T, hk⟩, fun c z' hz' => ?_⟩` and prove the remaining obligations. Establish `e : z' = z c` using `Cocycle.ext ((isSlant_iff R X _ _).1 hz')`.
+
+Rewrite using `[e]`. Conclude with `AddMonoidHom.liftOfRightInverse_comp_apply _ _ _ ⟨T, hk⟩ c`. Unfold `slantR`. Rewrite using `[dif_pos hex]`. Conclude with `hex.choose_spec`.
+-/
 theorem etale_group_homology_slant_of_delta_cochain (h : DeltaCo) : D3 := by
   intro R _ Γ _ X m
   let z : groupHomology.cycles (Rep.trivial R Γ R) m → Cocycle ((chains R).obj (sch.obj X)) ((chains R).obj (BX Γ X)) (-(m : ℤ)) :=
@@ -168,6 +232,9 @@ theorem etale_group_homology_slant_of_delta_cochain (h : DeltaCo) : D3 := by
   rw [dif_pos hex]
   exact hex.choose_spec
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _` and use `etale_group_homology_slant_of_delta_cochain h`.
+-/
 theorem goal_of (h : DeltaCo) : LateralTheory.E.EtaleChapterDThree :=
   fun _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ => etale_group_homology_slant_of_delta_cochain h
 

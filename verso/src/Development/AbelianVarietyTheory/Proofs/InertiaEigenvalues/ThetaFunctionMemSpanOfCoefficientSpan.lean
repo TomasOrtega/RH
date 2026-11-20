@@ -19,18 +19,30 @@ namespace GlobalTheory.DownLift.SplitCoef.Decomp
 
 variable {D : D7}
 
+/- English proof (translation)
+Rewrite using `[← GlobalTheory.SplitScalar.heisL_apply, map_sub]`. Both sides reduce to the same expression.
+-/
 theorem heisO_lin_sub (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (x : WO S T) (f g : WO S T → ℂ) :
     heisO ψ S T x (f - g) = heisO ψ S T x f - heisO ψ S T x g := by
   rw [← GlobalTheory.SplitScalar.heisL_apply, map_sub]; rfl
 
+/- English proof (translation)
+Rewrite using `[← GlobalTheory.SplitScalar.heisL_apply, map_add]`. Both sides reduce to the same expression.
+-/
 theorem heisO_lin_add (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (x : WO S T) (f g : WO S T → ℂ) :
     heisO ψ S T x (f + g) = heisO ψ S T x f + heisO ψ S T x g := by
   rw [← GlobalTheory.SplitScalar.heisL_apply, map_add]; rfl
 
+/- English proof (translation)
+Rewrite using `[← GlobalTheory.SplitScalar.heisL_apply, map_zero]`.
+-/
 theorem heisO_lin_zero (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (x : WO S T) :
     heisO ψ S T x (0 : WO S T → ℂ) = 0 := by
   rw [← GlobalTheory.SplitScalar.heisL_apply, map_zero]
 
+/- English proof (translation)
+Proceed by induction on `hφ using Submodule.span_induction with`. Consider the case `mem x hx => exact h𝒯 x hx`. Consider the case `zero => exact h0`. Consider the case `add x y _ _ hx hy => exact theta_add hx hy`. Consider the case `smul c x _ hx => exact theta_smul c hx`.
+-/
 theorem theta_of_mem_span {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {𝒯 : Set (WO S T → ℂ)}
     (h0 : IsThetaFunO ψ S T 0) (h𝒯 : ∀ φ ∈ 𝒯, IsThetaFunO ψ S T φ) {φ : WO S T → ℂ} (hφ : φ ∈ Submodule.span ℂ 𝒯) : IsThetaFunO ψ S T φ := by
   induction hφ using Submodule.span_induction with
@@ -39,6 +51,31 @@ theorem theta_of_mem_span {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {𝒯 :
   | add x y _ _ hx hy => exact theta_add hx hy
   | smul c x _ hx => exact theta_smul c hx
 
+/- English proof (translation)
+Set `K : Submodule ℂ (WO S T → ℂ)` to `Submodule.span ℂ {h | ∃ u g, IsHalf (cA D a) u ∧ IsThetaFunO ψ S T g ∧ h = heisO ψ S T u g - g}`. Establish `inv_iff : ∀ ℓ : (WO S T → ℂ) →ₗ[ℂ] ℂ, InvForm ψ S T a ℓ ↔ K ≤ LinearMap.ker ℓ`. Introduce `ℓ`. Prove the components needed by the constructor for the conclusion. Introduce `hℓ`.
+
+Rewrite using `[Submodule.span_le]`. Introduce and unpack `h ⟨u, g, hu, hg, rfl⟩`. Simplify using `[LinearMap.mem_ker, map_sub, hℓ u hu g hg]`. Introduce `hle u hu g hg`. Use `hle (Submodule.subset_span ⟨u, g, hu, hg, rfl⟩)` as an intermediate fact.
+
+Rewrite `this` using `[LinearMap.mem_ker, map_sub, sub_eq_zero]`. Conclude with `this`. Establish `inv_comp : ∀ μ : ((WO S T → ℂ) ⧸ K) →ₗ[ℂ] ℂ, InvForm ψ S T a (μ ∘ₗ K.mkQ)`. Introduce `μ`. Rewrite using `[inv_iff]`.
+
+Introduce `h hh`. Simplify using `[LinearMap.mem_ker, (Submodule.Quotient.mk_eq_zero K).2 hh]`. Set `Fq : WO S T → (WO S T → ℂ) ⧸ K` to `fun x => K.mkQ (heisO ψ S T x f)`. Set `A : (WO S T → ℂ) →ₗ[ℂ] (WO S T → ℂ) ⧸ K` to `∑ x₁ ∈ X, (LinearMap.proj x₁ : (WO S T → ℂ) →ₗ[ℂ] ℂ).smulRight (Fq x₁)`. Establish `hA : ∀ c, A c = ∑ x₁ ∈ X, c x₁ • Fq x₁`.
+
+Introduce `c`. Simplify using `[A, LinearMap.sum_apply]`. Take `⟨p, hp⟩` from `LinearMap.exists_leftInverse_of_injective (LinearMap.range A).subtype (Submodule.ker_subtype _)`. Take `⟨g, hg⟩` from `LinearMap.exists_rightInverse_of_surjective A.rangeRestrict (LinearMap.range_rangeRestrict A)`. Set `s` to `g ∘ₗ p`.
+
+Establish `hs : ∀ q ∈ LinearMap.range A, A (s q) = q`. Introduce `q hq`. Establish `h1 : p q = ⟨q, hq⟩`. Use `LinearMap.congr_fun hp ⟨q, hq⟩` as an intermediate fact. Simplify using `using this`.
+
+Establish `h2` using `LinearMap.congr_fun hg (p q)`. Simplify using `only [LinearMap.comp_apply, LinearMap.id_apply] at h2`. Establish `h3 : A (g (p q)) = ((A.rangeRestrict (g (p q)) : LinearMap.range A) : (WO S T → ℂ) ⧸ K)` using `rfl`. Simplify using `only [s, LinearMap.comp_apply]`. Rewrite using `[h3, h2, h1]`.
+
+Use `⟨fun x₁ => (LinearMap.proj x₁ ∘ₗ s) ∘ₗ K.mkQ, fun x₁ => inv_comp _, ?_⟩` and prove the remaining obligations. Introduce `ℓ hℓ x hx`. Establish `hle` using `(inv_iff ℓ).1 hℓ`. Establish `hmem : Fq x ∈ LinearMap.range A`. Break down `hX x hx with h0 | ⟨x₁, hx₁, he⟩` into its components or cases.
+
+Establish `: Fq x = 0`. Rewrite using `[← Module.forall_dual_apply_eq_zero_iff ℂ]`. Introduce `μ`. Conclude with `h0 (μ ∘ₗ K.mkQ) (inv_comp μ)`. Rewrite using `[this]`.
+
+Conclude with `Submodule.zero_mem _`. Use `⟨Pi.single x₁ 1, ?_⟩` and prove the remaining obligations. Rewrite using `[hA, Finset.sum_eq_single x₁]`. Simplify using `[Fq, he]`. Introduce `b _ hb`.
+
+Simplify using `[Pi.single_apply, hb]`. Introduce `h`. Conclude with `absurd hx₁ h`. Establish `key` using `congrArg (K.liftQ ℓ hle) (hs _ hmem)`. Rewrite `key` using `[hA, map_sum]`.
+
+Simplify using `only [map_smul, smul_eq_mul] at key`. Establish `hb : ∀ y, K.liftQ ℓ hle (Fq y) = ℓ (heisO ψ S T y f)` using `fun y => rfl`. Simplify using `only [hb] at key`. Rewrite using `[← key]`. Both sides reduce to the same expression.
+-/
 theorem exists_decomp (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (a : AE D) (f : WO S T → ℂ) (X : Finset (WO S T))
     (hX : ∀ x, IsHalf a x → (∀ ℓ, InvForm ψ S T a ℓ → ℓ (heisO ψ S T x f) = 0) ∨
       ∃ x₁ ∈ X, heisO ψ S T x f = heisO ψ S T x₁ f) :
@@ -109,6 +146,19 @@ theorem exists_decomp (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (a : AE D) 
   rw [← key]
   rfl
 
+/- English proof (translation)
+Introduce `D ψ S T hψ a ha f hf 𝒢 𝒯 h𝒯 h𝒢 hcoef`. Take `⟨-, -, X, hXh, hX⟩` from `GlobalTheory.T.thetaCoefficient_isSchwartzBruhat_uniform_split D ψ S T hψ (GlobalTheory.PlaceModel.latFrame S) (GlobalTheory.PlaceModel.latFrame T) (GlobalTheory.PlaceModel.isSelfDualC_latFrame S) (GlobalTheory.PlaceModel.isSelfDualC_latFrame T) a ha f hf`. Take `⟨L, hLinv, hL⟩` from `exists_decomp ψ S T a f X hX`. Establish `hspan : ∀ Ψ ∈ Submodule.span ℂ 𝒢, ∀ x₁, IsHalf a x₁ → ∃ φ ∈ Submodule.span ℂ 𝒯, ∀ ℓ, InvForm ψ S T a ℓ → ∀ x, IsHalf a x → ℓ (heisO ψ S T x φ) = Ψ x * ℓ (heisO ψ S T x₁ f)`. Introduce `Ψ hΨ x₁ hx₁`.
+
+Proceed by induction on `hΨ using Submodule.span_induction with`. Consider the case `mem Ψ hΨ => exact h𝒢 Ψ hΨ x₁ hx₁`. Consider the case `zero => exact ⟨0, Submodule.zero_mem _, fun ℓ _ x _ => by simp [heisO_lin_zero]⟩`. Consider the case `add Ψ₁ Ψ₂ _ _ h1 h2`. Take `⟨φ₁, m1, e1⟩` from `h1`.
+
+Take `⟨φ₂, m2, e2⟩` from `h2`. Use `⟨φ₁ + φ₂, add_mem m1 m2, fun ℓ hℓ x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[heisO_lin_add, map_add, e1 ℓ hℓ x hx, e2 ℓ hℓ x hx, Pi.add_apply, add_mul]`. Consider the case `smul c Ψ _ h`. Take `⟨φ, m, e⟩` from `h`.
+
+Use `⟨c • φ, Submodule.smul_mem _ c m, fun ℓ hℓ x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.SplitScalar.heisO_smul, map_smul, e ℓ hℓ x hx, Pi.smul_apply, smul_eq_mul, smul_eq_mul, mul_assoc]`. Establish `hφ : ∀ x₁ ∈ X, ∃ φ ∈ Submodule.span ℂ 𝒯, ∀ ℓ, InvForm ψ S T a ℓ → ∀ x, IsHalf a x → ℓ (heisO ψ S T x φ) = coef ψ S T a (L x₁) f x * ℓ (heisO ψ S T x₁ f)` using `fun x₁ hx₁ => hspan _ (hcoef _ (hLinv x₁)) x₁ (hXh x₁ hx₁)`. Use `choose! φ hφm hφe using hφ`. Establish `hsum : (∑ x₁ ∈ X, φ x₁) ∈ Submodule.span ℂ 𝒯` using `Submodule.sum_mem _ hφm`.
+
+Establish `h0 : IsThetaFunO ψ S T 0` using `by simpa using theta_sub hf hf`. Establish `hzero` using `GlobalTheory.T.splitPlace_invariantForms_separate_thetaFunctions D ψ S T hψ a ha (f - ∑ x₁ ∈ X, φ x₁) (theta_sub hf (theta_of_mem_span h0 h𝒯 hsum)) (by`. Introduce `ℓ hℓ x hx`. Rewrite using `[heisO_lin_sub, GlobalTheory.SplitScalar.heisO_sum, map_sub, map_sum, hL ℓ hℓ x hx, sub_eq_zero]`. Use `Finset.sum_congr rfl fun x₁ hx₁ => ?_` and prove the remaining obligations.
+
+Rewrite using `[hφe x₁ hx₁ ℓ hℓ x hx, coef, if_pos hx])`. Rewrite `hzero` using `[sub_eq_zero]`. Conclude with `hzero ▸ hsum`.
+-/
 theorem mem_span_of_coef_mem_span : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D), IsStdChar D ψ (-1) → ∀ a : AE D, IsSplitIdem D a → ∀ f : WO S T → ℂ, IsThetaFunO ψ S T f → ∀ 𝒢 𝒯 : Set (WO S T → ℂ), (∀ φ ∈ 𝒯, IsThetaFunO ψ S T φ) → (∀ Ψ ∈ 𝒢, ∀ x₁, IsHalf a x₁ → ∃ φ ∈ Submodule.span ℂ 𝒯, ∀ ℓ, InvForm ψ S T a ℓ → ∀ x, IsHalf a x → ℓ (heisO ψ S T x φ) = Ψ x * ℓ (heisO ψ S T x₁ f)) → (∀ ℓ, InvForm ψ S T a ℓ → coef ψ S T a ℓ f ∈ Submodule.span ℂ 𝒢) → f ∈ Submodule.span ℂ 𝒯 := by
   intro D ψ S T hψ a ha f hf 𝒢 𝒯 h𝒯 h𝒢 hcoef
   obtain ⟨-, -, X, hXh, hX⟩ := GlobalTheory.T.thetaCoefficient_isSchwartzBruhat_uniform_split D ψ S T hψ (GlobalTheory.PlaceModel.latFrame S) (GlobalTheory.PlaceModel.latFrame T)

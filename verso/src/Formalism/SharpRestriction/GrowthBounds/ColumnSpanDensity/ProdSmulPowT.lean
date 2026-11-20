@@ -34,11 +34,17 @@ section Abs
 
 variable {A K : Type} [CommRing A] [Field K] [Algebra A K] {n' k n : ℕ} (TT : Finset (Fin n'))
 
+/- English proof (translation)
+Simplify using `only [MvPolynomial.smul_eq_C_mul, Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, map_pow]`.
+-/
 theorem prodSmulPowT {σ ι : Type} [Fintype ι] (c : K) (w : ι → MvPolynomial σ K) :
     ∏ s, (c • w s) = c ^ Fintype.card ι • ∏ s, w s := by
   simp only [MvPolynomial.smul_eq_C_mul, Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ,
     map_pow]
 
+/- English proof (translation)
+Rewrite using `[Fintype.prod_prod_type]`. Use `Finset.prod_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[map_prod]`. Conclude with `Finset.prod_congr rfl fun b _ => (MvPolynomial.rename_rename (R := K) (fun v : Fin k × Fin n => (b, v)) (fun v : Bool × (Fin k × Fin n) => ((s, v.1), v.2)) (F (s, b))).symm`.
+-/
 theorem genRegroupT (F : TT × Bool → MvPolynomial (Fin k × Fin n) K) :
     ∏ x, blockEmb K x (F x) =
       ∏ s : TT, rename (fun v : Bool × (Fin k × Fin n) => ((s, v.1), v.2)) (∏ b, blockEmb K b (F (s, b))) := by
@@ -49,6 +55,11 @@ theorem genRegroupT (F : TT × Bool → MvPolynomial (Fin k × Fin n) K) :
     (MvPolynomial.rename_rename (R := K) (fun v : Fin k × Fin n => (b, v))
       (fun v : Bool × (Fin k × Fin n) => ((s, v.1), v.2)) (F (s, b))).symm
 
+/- English proof (translation)
+Use `symm`. Rewrite using `[← Finset.prod_subset (Finset.subset_univ TT)]`. Rewrite using `[← Finset.prod_coe_sort TT]`. Use `Finset.prod_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[dif_pos s.2]`.
+
+Both sides reduce to the same expression. Introduce `s _ hs`. Rewrite using `[dif_neg hs, map_one]`.
+-/
 theorem prodTopsT (G : TT → MvPolynomial (Fin k × Fin n) K) :
     ∏ s : TT, rename (fun v => (s.val, v)) (G s) =
       ∏ s : Fin n', blockEmb K s (if h : s ∈ TT then G ⟨s, h⟩ else 1) := by
@@ -61,6 +72,23 @@ theorem prodTopsT (G : TT → MvPolynomial (Fin k × Fin n) K) :
   · intro s _ hs
     rw [dif_neg hs, map_one]
 
+/- English proof (translation)
+Establish `hcomm : ∀ (a : A) (z : MvPolynomial ((TT × Bool) × (Fin k × Fin n)) K), c ^ TT.card • a • z = a • c ^ TT.card • z` using `fun a z => by`. Rewrite using `[← algebraMap_smul K a z, smul_smul, mul_comm, ← smul_smul, algebraMap_smul]`. Introduce `y hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx`.
+
+Take `⟨F, hF, rfl⟩` from `hx`. Set `a' : Fin n' → A` to `fun s => if h : s ∈ TT then 1 else Classical.choose (h0 s h (F s) (hF s))`. Set `P : Fin n' → MvPolynomial (Fin k × Fin n) K` to `fun s => if s ∈ TT then F s else 1`. Establish `hP : ∀ s, s ∉ TT → P s = 1` using `fun s hs => if_neg hs`. Establish `hPF : ∀ s : TT, P s.val = F s.val` using `fun s => if_pos s.2`.
+
+Establish `hterm : ∀ s, blockEmb K s (F s) = MvPolynomial.C (algebraMap A K (a' s)) * rename (fun v : Fin k × Fin n => (s, v)) (P s)`. Introduce `s`. Distinguish the cases in `h : s ∈ TT`. Simplify using `[a', P, h, blockEmb]`. Establish `e` using `Classical.choose_spec (h0 s h (F s) (hF s))`.
+
+Simplify using `only [a', P, dif_neg h, if_neg h, map_one, mul_one]`. Use `conv_lhs => rw [e]`. Conclude with `MvPolynomial.rename_C _ _`. Establish `hy : ∏ s, blockEmb K s (F s) = (∏ s, a' s) • ∏ s, rename (fun v : Fin k × Fin n => (s, v)) (P s)`. Rewrite using `[Finset.prod_congr rfl fun s _ => hterm s, Finset.prod_mul_distrib, Algebra.smul_def, MvPolynomial.algebraMap_apply]`.
+
+Simplify using `only [map_prod]`. Establish `hmem` using `hK2 A K TT (Fin k × Fin n) N2 (fun s => c • i s (P s.val)) (fun s => by`. Simplify using `only [hPF s]`. Conclude with `h1 s (F s.val) (hF s.val))`. Establish `hc : ∀ w : TT → MvPolynomial ((TT × Bool) × (Fin k × Fin n)) K, c ^ TT.card • ∏ s, w s = ∏ s, c • w s` using `fun w => by`.
+
+Rewrite using `[prodSmulPowT, Fintype.card_coe]`. Rewrite using `[hy, LinearMap.map_smul_of_tower, hcomm]`. Use `Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Rewrite using `[hIO P hP, hc]`. Simplify using `only [map_smul] at hmem`.
+
+Conclude with `hmem`. Consider the case `zero`. Rewrite using `[map_zero, smul_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add x y _ _ ihx ihy`.
+
+Rewrite using `[map_add, smul_add]`. Conclude with `Submodule.add_mem _ ihx ihy`. Consider the case `smul a x _ ih`. Rewrite using `[LinearMap.map_smul_of_tower, hcomm]`. Conclude with `Submodule.smul_mem _ a ih`.
+-/
 theorem ioMem (hK2 : RegroupP) (i : TT → MvPolynomial (Fin k × Fin n) K →ₗ[K] MvPolynomial (Bool × (Fin k × Fin n)) K)
     (IO : MvPolynomial (Fin n' × (Fin k × Fin n)) K →ₗ[K] MvPolynomial ((TT × Bool) × (Fin k × Fin n)) K)
     (hIO : ∀ P : Fin n' → MvPolynomial (Fin k × Fin n) K, (∀ s, s ∉ TT → P s = 1) →
@@ -120,6 +148,19 @@ theorem ioMem (hK2 : RegroupP) (i : TT → MvPolynomial (Fin k × Fin n) K →�
     rw [LinearMap.map_smul_of_tower, hcomm]
     exact Submodule.smul_mem _ a ih
 
+/- English proof (translation)
+Establish `hcomm : ∀ (a : A) (z : MvPolynomial (Fin n' × (Fin k × Fin n)) K), c ^ TT.card • a • z = a • c ^ TT.card • z` using `fun a z => by`. Rewrite using `[← algebraMap_smul K a z, smul_smul, mul_comm, ← smul_smul, algebraMap_smul]`. Establish `hc : ∀ w : TT → MvPolynomial (Fin n' × (Fin k × Fin n)) K, c ^ TT.card • ∏ s, w s = ∏ s, c • w s` using `fun w => by`. Rewrite using `[prodSmulPowT, Fintype.card_coe]`. Introduce `x hx`.
+
+Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨F, hF, rfl⟩` from `hx`. Establish `ht` using `prodTopsT TT (fun s => c • pr s (∏ b, blockEmb K b (F (s, b))))`. Simplify using `only [map_smul] at ht`.
+
+Rewrite using `[genRegroupT, hPR, hc, ht]`. Use `Submodule.subset_span ⟨fun s => if h : s ∈ TT then c • pr ⟨s, h⟩ (∏ b, blockEmb K b (F (⟨s, h⟩, b))) else 1, fun s => ?_, rfl⟩` and prove the remaining obligations. Simplify using `only`. Distinguish the cases in `h : s ∈ TT`. Rewrite using `[dif_pos h]`.
+
+Conclude with `h1 ⟨s, h⟩ _ (Submodule.subset_span ⟨fun b => F (⟨s, h⟩, b), fun b => hF _, rfl⟩)`. Rewrite using `[dif_neg h]`. Conclude with `h0 s h`. Consider the case `zero`. Rewrite using `[map_zero, smul_zero]`.
+
+Conclude with `Submodule.zero_mem _`. Consider the case `add x y _ _ ihx ihy`. Rewrite using `[map_add, smul_add]`. Conclude with `Submodule.add_mem _ ihx ihy`. Consider the case `smul a x _ ih`.
+
+Rewrite using `[LinearMap.map_smul_of_tower, hcomm]`. Conclude with `Submodule.smul_mem _ a ih`.
+-/
 theorem prMem (pr : TT → MvPolynomial (Bool × (Fin k × Fin n)) K →ₗ[K] MvPolynomial (Fin k × Fin n) K)
     (PR : MvPolynomial ((TT × Bool) × (Fin k × Fin n)) K →ₗ[K] MvPolynomial (Fin n' × (Fin k × Fin n)) K)
     (hPR : ∀ Y : TT → MvPolynomial (Bool × (Fin k × Fin n)) K,

@@ -8,6 +8,11 @@ open Formalism.BasicNotions Formalism.BasicNotions.Loc
 
 namespace GlobalTheory.Per
 
+/- English proof (translation)
+Use `Perfection.teichmuller_spec (I := Ideal.span {(p : O)}) fun n => ?_` and prove the remaining obligations. Take `⟨y, hy⟩` from `Ideal.Quotient.mk_surjective (I := Ideal.span {(p : O)}) (PreTilt.coeff n x)`. Use `⟨σ y, (h x n y hy.symm).symm, ?_⟩` and prove the remaining obligations. Establish `h1` using `(Perfection.teichmuller_sModEq (I := Ideal.span {(p : O)}) (x := x) hy).symm`. Rewrite `h1`, the goal using `[SModEq.sub_mem, Ideal.span_singleton_pow, Ideal.mem_span_singleton]`.
+
+Establish `h2` using `map_dvd σ h1`. Rewrite `h2` using `[map_pow, map_natCast, map_sub, map_pow]`. Conclude with `h2`.
+-/
 theorem untilt_natural {O : Type} [CommRing O] {p : ℕ} [Fact p.Prime] [Fact ¬IsUnit (p : O)]
     [IsAdicComplete (Ideal.span {(p : O)}) O] (σ : O →+* O) (τ : PreTilt O p →+* PreTilt O p)
     (h : ∀ (x : PreTilt O p) (n : ℕ) (y : O),
@@ -23,6 +28,11 @@ theorem untilt_natural {O : Type} [CommRing O] {p : ℕ} [Fact p.Prime] [Fact ¬
   rw [map_pow, map_natCast, map_sub, map_pow] at h2
   exact h2
 
+/- English proof (translation)
+Use `(IsHausdorff.eq_iff_smodEq (I := Ideal.span {(p : O)})).2 fun n => ?_` and prove the remaining obligations. Rewrite using `[smul_eq_mul, Ideal.mul_top, SModEq.sub_mem, ← Ideal.Quotient.eq]`. Establish `key` using `WittVector.eq_of_apply_teichmuller_eq ((Ideal.Quotient.mk (Ideal.span {(p : O)} ^ n)).comp ((WittVector.fontaineTheta O p).comp (WittVector.map τ))) ((Ideal.Quotient.mk (Ideal.span {(p : O)} ^ n)).comp (σ.comp (WittVector.fontaineTheta O p))) ⟨n, by`. Rewrite using `[← map_natCast (Ideal.Quotient.mk (Ideal.span {(p : O)} ^ n)), ← map_pow, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Ideal.pow_mem_pow (Ideal.mem_span_singleton_self _) n⟩`.
+
+Use the proof step `(fun x => by`. Simplify using `only [RingHom.comp_apply, WittVector.map_teichmuller, WittVector.fontaineTheta_teichmuller, untilt_natural σ τ h])`. Conclude with `RingHom.congr_fun key a`.
+-/
 theorem fontaineTheta_natural {O : Type} [CommRing O] {p : ℕ} [Fact p.Prime] [Fact ¬IsUnit (p : O)]
     [IsAdicComplete (Ideal.span {(p : O)}) O] (σ : O →+* O) (τ : PreTilt O p →+* PreTilt O p)
     (h : ∀ (x : PreTilt O p) (n : ℕ) (y : O),

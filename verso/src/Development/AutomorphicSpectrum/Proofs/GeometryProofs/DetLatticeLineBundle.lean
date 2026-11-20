@@ -17,6 +17,11 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.Ar.Cusp.DetLine
 
+/- English proof (translation)
+Use extensionality with `i k`. Establish `h : ∑ k', (T' k' k - (T * A) k' k) • b₀ k' = 0`. Simplify using `only [sub_smul, Finset.sum_sub_distrib, Matrix.mul_apply, Finset.sum_smul, ← hT']`. Rewrite using `[sub_eq_zero, hA k, Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[hT j, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul, _root_.mul_comm]`. Conclude with `sub_eq_zero.1 (Fintype.linearIndependent_iff.1 hb₀ _ h i)`.
+-/
 theorem matrix_eq_mul {Ω E : Type} [Field Ω] [AddCommGroup E] [Module Ω E] {r : ℕ} {b₀ c b : Fin r → E}
     {T T' A : Matrix (Fin r) (Fin r) Ω} (hb₀ : LinearIndependent Ω b₀)
     (hT : ∀ k, c k = ∑ k', T k' k • b₀ k') (hT' : ∀ k, b k = ∑ k', T' k' k • b₀ k')
@@ -33,6 +38,11 @@ theorem matrix_eq_mul {Ω E : Type} [Field Ω] [AddCommGroup E] [Module Ω E] {r
 
 variable {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) ⟶ X} {E : Type} [AddCommGroup E] [Module Ω E]
 
+/- English proof (translation)
+Establish `hmem : ∀ k, b k ∈ Submodule.span (regAt ξ q) (Set.range c)` using `fun k => by`. Rewrite using `[← hc.2, hb.2]`. Conclude with `Submodule.subset_span ⟨k, rfl⟩`. Use `choose a ha using fun k => (Submodule.mem_span_range_iff_exists_fun (regAt ξ q)).1 (hmem k)`. Set `M : Matrix (Fin r) (Fin r) (regAt ξ q)` to `Matrix.of fun i k => a k i`.
+
+Establish `hM : T' = T * (regAt ξ q).subtype.mapMatrix M` using `matrix_eq_mul hb₀ hT hT' fun k => (ha k).symm`. Use `Submodule.mem_span_singleton.2 ⟨M.det, ?_⟩` and prove the remaining obligations. Rewrite using `[hM, Matrix.det_mul, ← RingHom.map_det, _root_.mul_comm]`. Both sides reduce to the same expression.
+-/
 theorem det_mem_span (L : Lat ξ E) {r : ℕ} {b₀ c b : Fin r → E} {q : Cpt ξ} {T T' : Matrix (Fin r) (Fin r) Ω}
     (hb₀ : LinearIndependent Ω b₀) (hc : L.IsFrameAt c q) (hb : L.IsFrameAt b q)
     (hT : ∀ k, c k = ∑ k', T k' k • b₀ k') (hT' : ∀ k, b k = ∑ k', T' k' k • b₀ k') :
@@ -48,6 +58,21 @@ theorem det_mem_span (L : Lat ξ E) {r : ℕ} {b₀ c b : Fin r → E} {q : Cpt 
   rw [hM, Matrix.det_mul, ← RingHom.map_det, _root_.mul_comm]
   rfl
 
+/- English proof (translation)
+Introduce `X Ω _ ξ E _ _ L r V b₀ hb₀ hsp hL p _`. Take `⟨U, hU, c, hc, hf⟩` from `hL p trivial`. Establish `hcV : ∀ k, c k ∈ Submodule.span Ω (Set.range b₀)` using `fun k => by`. Rewrite using `[hsp, ← hc]`. Conclude with `Submodule.subset_span ⟨k, rfl⟩`.
+
+Establish `hbV : ∀ k, b₀ k ∈ Submodule.span Ω (Set.range c)` using `fun k => by`. Rewrite using `[hc, ← hsp]`. Conclude with `Submodule.subset_span ⟨k, rfl⟩`. Use `choose a ha using fun k => (Submodule.mem_span_range_iff_exists_fun Ω).1 (hcV k)`. Use `choose s hs using fun k => (Submodule.mem_span_range_iff_exists_fun Ω).1 (hbV k)`.
+
+Set `T : Matrix (Fin r) (Fin r) Ω` to `Matrix.of fun i k => a k i`. Set `S : Matrix (Fin r) (Fin r) Ω` to `Matrix.of fun i k => s k i`. Establish `hT : ∀ k, c k = ∑ k', T k' k • b₀ k'` using `fun k => (ha k).symm`. Establish `hTS : (1 : Matrix (Fin r) (Fin r) Ω) = T * S` using `matrix_eq_mul hb₀ hT (fun k => by simp [Matrix.one_apply, ite_smul]) fun k => (hs k).symm`. Establish `ht : T.det ≠ 0` using `fun h => by`.
+
+Use `congrArg Matrix.det hTS` as an intermediate fact. Rewrite `this` using `[Matrix.det_one, Matrix.det_mul, h, zero_mul]`. Conclude with `one_ne_zero this`. Use `⟨U, hU, fun _ => T.det, ?_, fun q _ hq => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Use `eq_top_iff.2 fun x _ => ?_` and prove the remaining obligations.
+
+Establish `hx : x = (x * T.det⁻¹) • T.det`. Rewrite using `[smul_eq_mul, _root_.mul_assoc, inv_mul_cancel₀ ht, _root_.mul_one]`. Rewrite using `[hx]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨0, rfl⟩)`. Conclude with `linearIndependent_unique_iff.2 ht`.
+
+Establish `hr : Set.range (fun _ : Fin 1 => T.det) = {T.det}` using `Set.range_const`. Rewrite using `[hr]`. Use `le_antisymm (Submodule.span_le.2 ?_) (Submodule.span_mono ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨b, T', hfr, hT', rfl⟩`. Conclude with `det_mem_span L hb₀ (hf q trivial hq) hfr hT hT'`.
+
+Introduce and unpack `_ rfl`. Conclude with `⟨c, T, hf q trivial hq, hT, rfl⟩`.
+-/
 theorem isVB_detLat : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Sp Ω ⟶ X) (E : Type) [AddCommGroup E] [Module Ω E]
     (L : Lat ξ E) (r : ℕ) (V : Submodule Ω E) (b₀ : Fin r → E), LinearIndependent Ω b₀ →
     Submodule.span Ω (Set.range b₀) = V → L.IsVB r V → (Cusp.detLat L b₀).IsVB 1 ⊤ := by

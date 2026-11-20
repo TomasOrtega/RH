@@ -13,12 +13,22 @@ open MvPolynomial NumberField ReciprocityTheory.ChartRestriction.G.Geo Reciproci
 
 namespace GlobalTheory.CompanionTheory.Ar.Flat
 
+/- English proof (translation)
+Consider the cases of `A`. Consider the cases of `B`. Simplify the hypotheses and the goal together.
+-/
 theorem hermLine_eq_of_a_h {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {A B : HermLine ι}
     (ha : A.a = B.a) (hh : A.h = B.h) : A = B := by
   cases A
   cases B
   simp_all
 
+/- English proof (translation)
+Proceed by induction on `m, hm using Nat.le_induction with`. Consider the case `base => exact ⟨B, hB, by simp, by simp, by simp⟩`. Consider the case `succ m hm ih`. Take `⟨C, hC, ha, hh, hi⟩` from `ih`. Use `⟨C.tensor B, ContDiffOn.mul hC hB, fun k => ?_, fun z => ?_, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [HermLine.tensor, Pi.add_apply, ha]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [HermLine.tensor, hh, pow_succ]`. Rewrite using `[hI.2.1 W n L C B hW hL hC hB, hi]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_tensorPow_last {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
     {I : Ideal (MRing ι) → (n : ℕ) → (Fin n → HermLine ι) → ℝ} (hI : IsIntersectionFamily I)
     {W : Ideal (MRing ι)} {n : ℕ} {L : Fin n → HermLine ι} (hW : IsArithVar W (n + 1))
@@ -38,12 +48,34 @@ theorem exists_tensorPow_last {K : Type} [Fintype K] {ι : K → Type} [∀ k, F
       push_cast
       ring
 
+/- English proof (translation)
+Introduce `W' h1 h2 h3`. Take `⟨a, b, ha, hb, hab⟩` from `h W' h1 (hPW.trans h2) h3`. Conclude with `⟨a, b, ha, hb, hPW hab⟩`.
+-/
 theorem IsUnitSec.mono {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {P W : Ideal (MRing ι)}
     {f g : MRing ι} (h : IsUnitSec P f g) (hPW : P ≤ W) : IsUnitSec W f g := by
   intro W' h1 h2 h3
   obtain ⟨a, b, ha, hb, hab⟩ := h W' h1 (hPW.trans h2) h3
   exact ⟨a, b, ha, hb, hPW hab⟩
 
+/- English proof (translation)
+Introduce `K _ ι _ Ω _ F _ _ y φ I W n L A S d u hI hP hY hPW hW hL hA hu`. Establish `hnu : ∀ (c : K → ℂ) z, (∀ k, c k ≠ 0) → (fun z => -u z) (fun p => c p.1 * z p) = (fun z => -u z) z` using `fun c z hc => by simp only [hu.inv c z hc]`. Use `set B : HermLine ι := A.tensor (HermLine.ofWeight (fun z => -u z) hnu) with hBdef`. Establish `hBh : ∀ z, B.h z = A.h z * Real.exp (u z)` using `fun z => by`. Simplify using `[hBdef, HermLine.tensor, HermLine.ofWeight]`.
+
+Establish `hBa : ∀ k, B.a k = A.a k` using `fun k => by`. Simplify using `[hBdef, HermLine.tensor, HermLine.ofWeight]`. Establish `hexp : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun z => Real.exp (u z)) {z | ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0}` using `Real.contDiff_exp.comp_contDiffOn hu.smooth`. Establish `hB : IsSmoothHerm B`. Establish `e : B.h = fun z => A.h z * Real.exp (u z)` using `funext hBh`.
+
+Unfold `IsSmoothHerm`. Rewrite using `[e]`. Conclude with `ContDiffOn.mul hA hexp`. Establish `hBA : B.tensor (HermLine.ofWeight u hu.inv) = A`. Use `hermLine_eq_of_a_h ?_ ?_` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `k`. Simplify using `[HermLine.tensor, HermLine.ofWeight, hBa]`. Use function extensionality and compare the values at `z`. Establish `: (B.tensor (HermLine.ofWeight u hu.inv)).h z = B.h z * Real.exp (-u z)` using `rfl`. Rewrite using `[this, hBh, mul_assoc, ← Real.exp_add]`.
+
+Simplify using the standard rewrite rules. Establish `hchange : I W (n + 1) (Fin.snoc L A) = I W (n + 1) (Fin.snoc L B) - ptsIntegral W (pot L) u`. Use `metricChange K ι I hI W n L B u hu.inv hW hL hB hu.smooth` as an intermediate fact. Rewrite `this` using `[hBA]`. Then use the resulting hypothesis. Take `⟨C, hC, hCa, hCh, hCI⟩` from `exists_tensorPow_last hI hW hL hB (m := S.M) S.M_pos`.
+
+Take `⟨f', g', df', dg', hf', hg', hdeg, hfW, hgW, -, hun, hnorm⟩` from `GlobalTheory.T.flat_herm_unit_section_avoid K ι Ω F y φ A S d W hY hP hA hW.2.1 hPW`. Establish `hunW` using `IsUnitSec.mono hun hPW`. Take `⟨c1, c2, c3⟩` from `GlobalTheory.T.unit_section_divisor_eq K ι W f' g' hunW`. Establish `hvert` using `GlobalTheory.T.vertical_statement_holds K ι I hI W n L C f' g' hW hL hC ⟨df', dg', hf', hg', hfW, hgW, fun k => by rw [hdeg k, hCa k, hBa k]⟩ (fun W' _ => by rw [c1]) (fun W' _ hm => c2 W' hm) (fun z hz => by`. Establish `hzP : z ∈ mcPts (mCoordIdeal y)` using `⟨hz.1, fun f hf => hz.2 f (hPW hf)⟩`.
+
+Take `⟨σ, hσ, -⟩` from `GlobalTheory.T.complex_point_existsUnique_embedding K ι Ω F y φ hY z hzP`. Establish `hz1 : u z = Real.log (S.κ σ)` using `(hu.near σ z hσ).self_of_nhds`. Establish `hn` using `hnorm σ z hσ`. Establish `hCz : C.h z = (S.κ σ * A.h z) ^ S.M`. Rewrite using `[hCh, hBh, hz1, Real.exp_log (S.κ_pos σ), mul_comm]`.
+
+Rewrite using `[hCz, mul_comm]`. Conclude with `hn)`. Establish `hzero : I W (n + 1) (Fin.snoc L B) = 0`. Establish `h0 : (S.M : ℝ) * I W (n + 1) (Fin.snoc L B) = 0`. Rewrite using `[← hCI, hvert, c3 n L, sub_self]`.
+
+Establish `hM : (S.M : ℝ) ≠ 0` using `by exact_mod_cast S.M_pos.ne'`. Conclude with `(mul_eq_zero.mp h0).resolve_left hM`. Rewrite using `[hchange, hzero, zero_sub]`.
+-/
 theorem FlatHerm.inter_eq_neg_integral : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Ω : Type)
     [Field Ω] (F : Type) [Field F] [NumberField F] (y : (Σ k, ι k) → Ω) (φ : F →+* Ω)
     (I : Ideal (MRing ι) → (n : ℕ) → (Fin n → HermLine ι) → ℝ) (W : Ideal (MRing ι)) (n : ℕ)

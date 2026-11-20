@@ -10,12 +10,20 @@ namespace GlobalTheory.CompanionTheory.SW.UnitProdAlg
 
 variable {F : Type} [Field F] [NumberField F]
 
+/- English proof (translation)
+Use `h.1` as an intermediate fact. Rewrite `this` using `[Filter.eventually_cofinite]`. Conclude with `this`.
+-/
 theorem mulSupport_finite {a : ℝ≥0} {c : HeightOneSpectrum (𝓞 F) → ℝ≥0} (h : IsUnitProd a c) :
     (Function.mulSupport c).Finite := by
   have := h.1
   rw [Filter.eventually_cofinite] at this
   exact this
 
+/- English proof (translation)
+Establish `hfin` using `mulSupport_finite h`. Use `⟨h.1.mono fun v hv => by simp [hv], ?_⟩` and prove the remaining obligations. Establish `hsub : Function.mulSupport (fun v => f (c v)) ⊆ (hfin.toFinset : Set _)`. Introduce `v hv`. Simplify using `only [Function.mem_mulSupport] at hv`.
+
+Simplify using `only [Set.Finite.coe_toFinset, Function.mem_mulSupport]`. Introduce `h1`. Conclude with `hv (by simp [h1])`. Rewrite using `[finprod_eq_prod_of_mulSupport_subset _ hsub, ← map_prod, ← map_mul, ← finprod_eq_prod_of_mulSupport_subset c (by simp), h.2, map_one]`.
+-/
 theorem map_hom (f : ℝ≥0 →* ℝ≥0) {a : ℝ≥0} {c : HeightOneSpectrum (𝓞 F) → ℝ≥0}
     (h : IsUnitProd a c) : IsUnitProd (f a) (fun v => f (c v)) := by
   have hfin := mulSupport_finite h
@@ -34,6 +42,9 @@ def sqrtHom : ℝ≥0 →* ℝ≥0 where
   map_one' := NNReal.sqrt_one
   map_mul' := NNReal.sqrt_mul
 
+/- English proof (translation)
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `filter_upwards [h.1, k.1] with v h1 h2`. Simplify using `[h1, h2]`. Rewrite using `[finprod_mul_distrib (mulSupport_finite h) (mulSupport_finite k), mul_mul_mul_comm, h.2, k.2, one_mul]`.
+-/
 theorem mul {a b : ℝ≥0} {c e : HeightOneSpectrum (𝓞 F) → ℝ≥0}
     (h : IsUnitProd a c) (k : IsUnitProd b e) : IsUnitProd (a * b) (fun v => c v * e v) := by
   refine ⟨?_, ?_⟩
@@ -42,10 +53,16 @@ theorem mul {a b : ℝ≥0} {c e : HeightOneSpectrum (𝓞 F) → ℝ≥0}
   · rw [finprod_mul_distrib (mulSupport_finite h) (mulSupport_finite k), mul_mul_mul_comm,
       h.2, k.2, one_mul]
 
+/- English proof (translation)
+Introduce and unpack `rfl`. Simplify using `using h.2`.
+-/
 theorem ne_zero {a : ℝ≥0} {c : HeightOneSpectrum (𝓞 F) → ℝ≥0} (h : IsUnitProd a c) : a ≠ 0 := by
   rintro rfl
   simpa using h.2
 
+/- English proof (translation)
+Introduce `hv`. Establish `h2` using `h.2`. Rewrite `h2` using `[finprod_eq_zero c v hv (mulSupport_finite h)]`. Simplify using `at h2`.
+-/
 theorem family_ne_zero {a : ℝ≥0} {c : HeightOneSpectrum (𝓞 F) → ℝ≥0} (h : IsUnitProd a c)
     (v : HeightOneSpectrum (𝓞 F)) : c v ≠ 0 := by
   intro hv
@@ -53,10 +70,20 @@ theorem family_ne_zero {a : ℝ≥0} {c : HeightOneSpectrum (𝓞 F) → ℝ≥0
   rw [finprod_eq_zero c v hv (mulSupport_finite h)] at h2
   simp at h2
 
+/- English proof (translation)
+The claim follows from `map_hom (invMonoidWithZeroHom (G₀ := ℝ≥0) : ℝ≥0 →* ℝ≥0) h`.
+-/
 theorem inv {a : ℝ≥0} {c : HeightOneSpectrum (𝓞 F) → ℝ≥0} (h : IsUnitProd a c) :
     IsUnitProd a⁻¹ (fun v => (c v)⁻¹) :=
   map_hom (invMonoidWithZeroHom (G₀ := ℝ≥0) : ℝ≥0 →* ℝ≥0) h
 
+/- English proof (translation)
+Introduce `F _ _ a b c e h k`. Use `⟨ne_zero h, family_ne_zero h, mul h k, inv h, ?_, map_hom sqrtHom h, fun n => map_hom (powMonoidHom n) h, (mulSupport_finite h).toFinset, fun S hS => ?_⟩` and prove the remaining obligations. Simplify `mul h (inv k)` using `only [div_eq_mul_inv]`. Establish `hsub : Function.mulSupport c ⊆ (S : Set _)`. Introduce `v hv`.
+
+Conclude with `hS ((mulSupport_finite h).mem_toFinset.2 hv)`. Use `⟨fun v hv => ?_, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Conclude with `hv (hsub hne)`. Rewrite using `[← finprod_eq_prod_of_mulSupport_subset c hsub]`.
+
+Conclude with `h.2`.
+-/
 theorem main : ∀ (F : Type) [Field F] [NumberField F] (a b : ℝ≥0)
     (c e : HeightOneSpectrum (𝓞 F) → ℝ≥0), IsUnitProd a c → IsUnitProd b e →
     a ≠ 0 ∧ (∀ v, c v ≠ 0) ∧ IsUnitProd (a * b) (fun v => c v * e v) ∧

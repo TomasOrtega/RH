@@ -17,6 +17,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.LiftEquivariance
 
+/- English proof (translation)
+Introduce `g y`. Establish `i1 : ∀ u v, inner ℂ (ρ g u) (ρ g v) = inner ℂ u v` using `fun u v => (LinearIsometry.mk (ρ g) (hρ g)).inner_map_map u v`. Establish `i2 : ∀ u v, inner ℂ (ρ' g u) (ρ' g v) = inner ℂ u v` using `fun u v => (LinearIsometry.mk (ρ' g) (hρ' g)).inner_map_map u v`. Use `ext_inner_left ℂ fun x => ?_` and prove the remaining obligations. Establish `e : x = ρ g (ρ g⁻¹ x)`.
+
+Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`. Rewrite using `[e, i1, LinearMap.adjoint_inner_right, LinearMap.adjoint_inner_right, hf g, i2]`.
+-/
 theorem commutes_adjoint {G E E' : Type} [Group G] [NormedAddCommGroup E] [InnerProductSpace ℂ E] [FiniteDimensional ℂ E]
     [NormedAddCommGroup E'] [InnerProductSpace ℂ E'] [FiniteDimensional ℂ E']
     (ρ : Representation ℂ G E) (ρ' : Representation ℂ G E') (hρ : ∀ g x, ‖ρ g x‖ = ‖x‖) (hρ' : ∀ g x, ‖ρ' g x‖ = ‖x‖)
@@ -35,6 +40,11 @@ section Generic
 
 variable {Γ Gf W G : Type} [Group Γ] [Group Gf] [Group G] [NormedAddCommGroup W] [InnerProductSpace ℂ W]
 
+/- English proof (translation)
+Establish `e` using `hF 1 (h * κ) ⟨_, hk⟩`. Establish `e1 : ι 1 * (h * κ) * ((κ⁻¹ * κ' : l.Q) : Gf) = h * κ'` using `by simp [mul_assoc]`. Establish `e2 : l.χ ⟨_, hk⟩ = (l.ch κ)⁻¹ * l.ch κ'`. Rewrite using `[← l.ch_J, ← map_inv, ← map_mul]`. Simplify using `only at e`.
+
+Rewrite `e` using `[e1, e2, map_one, Module.End.one_apply]`. Rewrite using `[e, smul_smul, ← Units.val_mul, mul_comm (l.ch κ)⁻¹, inv_mul_cancel_left]`.
+-/
 theorem translate_indep (ι : Γ →* Gf) (ρ : Γ →* Module.End ℂ W) (l : Bridge.LevDatG Gf) {F : Gf → W}
     (hF : F ∈ Bridge.AdForms ι ρ l.J l.χ) (κ κ' : l.Q) (hk : ((κ⁻¹ * κ' : l.Q) : Gf) ∈ l.J) (h : Gf) :
     (((l.ch κ')⁻¹ : ℂˣ) : ℂ) • F (h * κ') = (((l.ch κ)⁻¹ : ℂˣ) : ℂ) • F (h * κ) := by
@@ -46,6 +56,17 @@ theorem translate_indep (ι : Γ →* Gf) (ρ : Γ →* Module.End ℂ W) (l : B
   rw [e1, e2, map_one, Module.End.one_apply] at e
   rw [e, smul_smul, ← Units.val_mul, mul_comm (l.ch κ)⁻¹, inv_mul_cancel_left]
 
+/- English proof (translation)
+Use `choose s hs using hs`. Use `choose T hT hn using hT`. Establish `key : ∀ κ x h, M.e (T (s (red κ)) x) h = (((l.ch κ)⁻¹ : ℂˣ) : ℂ) • M.e x (h * κ)` using `fun κ x h => by`. Rewrite using `[hT, ← Units.val_inv_eq_inv_val]`. Conclude with `translate_indep ι ρ l (hM x) κ _ (hker _ (by rw [map_mul, map_inv, hs, inv_mul_cancel])) h`.
+
+Set `L : G → M.H →ₗ[ℂ] M.H` to `fun g => { toFun := T (s g) map_add' := fun x y => hinj (funext fun h => by`. Rewrite using `[map_add, Pi.add_apply, hT, hT, hT, map_add, Pi.add_apply, smul_add])`. Use the proof step `map_smul' := fun a x => hinj (funext fun h => by`. Rewrite using `[map_smul, Pi.smul_apply, hT, hT, map_smul, Pi.smul_apply, smul_comm]`. Use the proof step `rfl) }`.
+
+Use `⟨{ toFun := L, map_one' := ?_, map_mul' := fun g g' => ?_ }, fun g x => hn _ x, key⟩` and prove the remaining obligations. Use extensionality with `x`. Use `hinj (funext fun h => ?_)` and prove the remaining obligations. Use `key 1 x h` as an intermediate fact. Rewrite `this` using `[map_one]`.
+
+Conclude with `this.trans (by simp)`. Use extensionality with `x`. Use `hinj (funext fun h => ?_)` and prove the remaining obligations. Use `key (s g * s g') x h` as an intermediate fact. Rewrite `this` using `[map_mul, hs, hs]`.
+
+Use `this.trans ?_` and prove the remaining obligations. Use `show _ = M.e (T (s g) (T (s g') x)) h`. Rewrite using `[hT, hT, smul_smul, map_mul, Subgroup.coe_mul, mul_assoc]`. Simplify using `[mul_comm]`.
+-/
 theorem exists_rep (ι : Γ →* Gf) (ρ : Γ →* Module.End ℂ W) (l : Bridge.LevDatG Gf) (M : HMod (Gf → W))
     (hinj : Function.Injective M.e) (hM : ∀ x, M.e x ∈ Bridge.AdForms ι ρ l.J l.χ)
     (hT : ∀ (κ : l.Q) (x : M.H), ∃ x' : M.H, (∀ h, M.e x' h = ((l.ch κ : ℂˣ) : ℂ)⁻¹ • M.e x (h * κ)) ∧ ‖x'‖ = ‖x‖)
@@ -82,17 +103,26 @@ end Generic
 
 variable {D : D7}
 
+/- English proof (translation)
+Establish `h1 : Formalism.UG.bc (swapAE D) x.1 ∈ lev D.sp.cm V.gram β (flagL L)` using `h`. Conclude with `h1.1`.
+-/
 theorem mem_parLev {V : HSp D} {β : GL (Fin V.rank) (Lev.EAf D)} {L : LevDat D.host.E ℂ V.rank} {x : Bridge.Gf V}
     (h : x ∈ (levEnv V β L).Q) : Formalism.UG.bc (swapAE D) x.1 ∈ parLev D.sp.cm V.gram β L := by
   have h1 : Formalism.UG.bc (swapAE D) x.1 ∈ lev D.sp.cm V.gram β (flagL L) := h
   exact h1.1
 
+/- English proof (translation)
+Establish `h2 : rTup β L (Formalism.UG.bc (swapAE D) x.1) ∈ (⊥ : Subgroup (G0 L.Pg L.r))` using `Subgroup.mem_bot.2 h1`. Establish `h3 : Formalism.UG.bc (swapAE D) x.1 ∈ lev D.sp.cm V.gram β (flag1L L)` using `⟨mem_parLev h, h2⟩`. Conclude with `h3`.
+-/
 theorem mem_J {V : HSp D} {β : GL (Fin V.rank) (Lev.EAf D)} {L : LevDat D.host.E ℂ V.rank} {x : Bridge.Gf V}
     (h : x ∈ (levEnv V β L).Q) (h1 : rTup β L (Formalism.UG.bc (swapAE D) x.1) = 1) : x ∈ (levEnv V β L).J := by
   have h2 : rTup β L (Formalism.UG.bc (swapAE D) x.1) ∈ (⊥ : Subgroup (G0 L.Pg L.r)) := Subgroup.mem_bot.2 h1
   have h3 : Formalism.UG.bc (swapAE D) x.1 ∈ lev D.sp.cm V.gram β (flag1L L) := ⟨mem_parLev h, h2⟩
   exact h3
 
+/- English proof (translation)
+Rewrite using `[Subgroup.coe_mul, map_mul]`. Conclude with `rTup_mul (mem_parLev hx) (mem_parLev hy)`.
+-/
 theorem rTup_bc_mul {V : HSp D} {β : GL (Fin V.rank) (Lev.EAf D)} {L : LevDat D.host.E ℂ V.rank} {x y : Bridge.Gf V}
     (hx : x ∈ (levEnv V β L).Q) (hy : y ∈ (levEnv V β L).Q) :
     rTup β L (Formalism.UG.bc (swapAE D) (x * y).1) =
@@ -104,9 +134,17 @@ def redHom (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (L : LevDat D.host.E �
     (levEnv V β L).Q →* G0 L.Pg L.r :=
   MonoidHom.mk' (fun κ => rTup β L (Formalism.UG.bc (swapAE D) κ.1.1)) fun a b => rTup_bc_mul a.2 b.2
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem redHom_eq {V : HSp D} {β : GL (Fin V.rank) (Lev.EAf D)} {L : LevDat D.host.E ℂ V.rank} {κ : (levEnv V β L).Q}
     {g₀ : G0 L.Pg L.r} : LiftsTo V β L κ g₀ ↔ redHom V β L κ = g₀ := Iff.rfl
 
+/- English proof (translation)
+Establish `hred : ∀ κ g, LiftsTo V β L κ (eG g) → (eG.symm.toMonoidHom.comp (redHom V β L)) κ = g` using `fun κ g h => eG.symm_apply_eq.2 (redHom_eq.1 h)`. Establish `h1 : ∀ x, M.e x ∈ Bridge.AdForms (W` using `c.W) (Bridge.ratF V) (c.ρ.comp (GQ V).subtype) (levEnv V β L).J (levEnv V β L).χ := fun x => hM.2.1.le ⟨x, rfl⟩`. Establish `h2` using `ClassSumTranslate.translate_model (W := c.W) (Bridge.ratF V) (c.ρ.comp (GQ V).subtype) (levEnv V β L) (fun γ u v => hc.2.1 _ u v) (ClassSumTranslate.levEnv_normal V β L) (fun q => ClassSumTranslate.norm_levFn V β L _) hy M hM`. Establish `h3 : Function.Surjective (eG.symm.toMonoidHom.comp (redHom V β L))` using `fun g => (hs g).imp fun κ h => hred κ g h`. Establish `h4 : ∀ κ, (eG.symm.toMonoidHom.comp (redHom V β L)) κ = 1 → (κ : Bridge.Gf V) ∈ (levEnv V β L).J` using `fun κ h => mem_J κ.2 (redHom_eq.2 (eG.symm.injective (h.trans (map_one eG.symm).symm)))`.
+
+Use `(exists_rep (W := c.W) (Bridge.ratF V) (c.ρ.comp (GQ V).subtype) (levEnv V β L) M hM.1 h1 h2 _ h3 h4).imp fun π hπ => ⟨hπ.1, fun g x => ⟨hs g, fun κ hκ h => ?_⟩⟩` and prove the remaining obligations. Conclude with `(congrArg (fun g' => M.e (π g' x) h) (hred κ g hκ)).symm.trans (hπ.2 κ x h)`.
+-/
 theorem exists_transRep (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (L : LevDat D.host.E ℂ V.rank) (c : CoefA V) (hc : c.Is)
     (M : HMod (Bridge.Gf V → c.W)) {I : Type} [Fintype I] (y : I → Bridge.Gf V)
     (hy : Bridge.IsReps (Bridge.ratF V) (levEnv V β L).J y)
@@ -127,6 +165,9 @@ theorem exists_transRep (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (L : LevD
     fun π hπ => ⟨hπ.1, fun g x => ⟨hs g, fun κ hκ h => ?_⟩⟩
   exact (congrArg (fun g' => M.e (π g' x) h) (hred κ g hκ)).symm.trans (hπ.2 κ x h)
 
+/- English proof (translation)
+Take `⟨_, g, rfl⟩` from `x`. Take `⟨a, ha, k, hk, rfl⟩` from `h g`. Use `⟨k, hk, Subtype.ext ?_⟩` and prove the remaining obligations. Use `show f k = f (a * k)`. Rewrite using `[map_mul, MonoidHom.mem_ker.1 ha, one_mul]`.
+-/
 theorem exists_rangeRestrict_eq {G H : Type} [Group G] [Group H] (f : G →* H) (K : Subgroup G)
     (h : ∀ g, ∃ a ∈ f.ker, ∃ k ∈ K, g = a * k) (x : f.range) : ∃ k ∈ K, f.rangeRestrict k = x := by
   obtain ⟨_, g, rfl⟩ := x
@@ -135,12 +176,23 @@ theorem exists_rangeRestrict_eq {G H : Type} [Group G] [Group H] (f : G →* H) 
   show f k = f (a * k)
   rw [map_mul, MonoidHom.mem_ker.1 ha, one_mul]
 
+/- English proof (translation)
+The claim follows from `exists_rangeRestrict_eq (finHom V) (GfC V) (GlobalTheory.UnitarySplit.real_finite_split D V).1 x`.
+-/
 theorem exists_fin_lift (V : HSp D) (x : Bridge.Gf V) : ∃ k ∈ GfC V, (finHom V).rangeRestrict k = x :=
   exists_rangeRestrict_eq (finHom V) (GfC V) (GlobalTheory.UnitarySplit.real_finite_split D V).1 x
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ch_eq {V : HSp D} {β : GL (Fin V.rank) (Lev.EAf D)} {L : LevDat D.host.E ℂ V.rank} (q : (levEnv V β L).Q) :
     (levEnv V β L).ch q = levFn β (flagL L) (Formalism.UG.bc (swapAE D) q.1.1) := rfl
 
+/- English proof (translation)
+Use `h.1.elim fun q hl => (exists_fin_lift V q.1).imp fun k hk => ?_` and prove the remaining obligations. Establish `e0 : finHom V k = q.1.1` using `congrArg Subtype.val hk.2`. Establish `e1 : finE V k = Formalism.UG.bc (swapAE D) q.1.1` using `(finE_eq V k).trans (congrArg (Formalism.UG.bc (swapAE D)) e0)`. Establish `hl1 : rTup β L (Formalism.UG.bc (swapAE D) q.1.1) = g₀` using `hl`. Establish `hc : levChi V β (flagL L) k = (((levEnv V β L).ch q : ℂˣ) : ℂ)` using `congrArg Units.val ((congrArg (levFn β (flagL L)) e1).trans (ch_eq q).symm)`.
+
+Establish `hp : finE V k ∈ parLev D.sp.cm V.gram β L` using `e1.symm ▸ mem_parLev q.2`. Use `⟨⟨hk.1, hp, (congrArg (rTup β L) e1).trans hl1⟩, fun x => (h.2 q hl x).trans ?_⟩` and prove the remaining obligations. Conclude with `congrArg₂ (fun (a : ℂ) (z : Bridge.Gf V) => a • F (x * z)) ((Units.val_inv_eq_inv_val _).trans (congrArg (·⁻¹) hc.symm)) hk.2.symm`.
+-/
 theorem exists_adelic_lift {V : HSp D} {β : GL (Fin V.rank) (Lev.EAf D)} {L : LevDat D.host.E ℂ V.rank}
     {W : Type} [NormedAddCommGroup W] [InnerProductSpace ℂ W] {g₀ : G0 L.Pg L.r} {F F' : Bridge.Gf V → W}
     (h : IsTranslate V β L g₀ F F') :

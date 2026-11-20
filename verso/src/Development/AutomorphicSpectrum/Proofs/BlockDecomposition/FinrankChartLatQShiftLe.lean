@@ -10,6 +10,19 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.Cha
 
 namespace GlobalTheory.CompanionTheory.ChartSections
 
+/- English proof (translation)
+Introduce `K _ ι _ Ω _ _ y b e M hy he hfd`. Use `choose j hj using hy`. Establish `hu0 : (∏ k, y ⟨k, j k⟩ ^ (M - e k)) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun k _ => pow_ne_zero _ (hj k)`. Establish `hmem : ∀ s ∈ chartLatQ y (b + fun k => (e k : ℤ)) 1, s * ∏ k, y ⟨k, j k⟩ ^ (M - e k) ∈ chartLatQ y (b + fun _ => (M : ℤ)) 1`. Introduce `s hs c hc`.
+
+Establish `h1 : s * ∏ k, y ⟨k, c k⟩ ^ (-(((1 : ℕ) : ℤ) * (b + fun k => (e k : ℤ) : K → ℤ) k)) ∈ chartRingQ y c` using `hs c hc`. Establish `hq : ∀ k, y ⟨k, j k⟩ / y ⟨k, c k⟩ ∈ chartRingQ y c` using `fun k => Algebra.subset_adjoin ⟨⟨k, j k⟩, rfl⟩`. Establish `h2 : ∏ k, (y ⟨k, j k⟩ / y ⟨k, c k⟩) ^ (M - e k) ∈ chartRingQ y c` using `prod_mem fun k _ => pow_mem (hq k) _`. Establish `heq : s * (∏ k, y ⟨k, j k⟩ ^ (M - e k)) * ∏ k, y ⟨k, c k⟩ ^ (-(((1 : ℕ) : ℤ) * (b + fun _ => (M : ℤ) : K → ℤ) k)) = (s * ∏ k, y ⟨k, c k⟩ ^ (-(((1 : ℕ) : ℤ) * (b + fun k => (e k : ℤ) : K → ℤ) k))) * ∏ k, (y ⟨k, j k⟩ / y ⟨k, c k⟩) ^ (M - e k)`. Rewrite using `[mul_assoc, mul_assoc, ← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]`.
+
+Use `congr 1`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Establish `hck` using `hc k`. Establish `hek` using `he k`. Establish `hz : y ⟨k, c k⟩ ^ (-(((1 : ℕ) : ℤ) * (b + fun _ => (M : ℤ) : K → ℤ) k)) = y ⟨k, c k⟩ ^ (-(((1 : ℕ) : ℤ) * (b + fun k => (e k : ℤ) : K → ℤ) k)) * (y ⟨k, c k⟩ ^ (M - e k))⁻¹`.
+
+Rewrite using `[← zpow_natCast, ← zpow_neg, ← zpow_add₀ hck]`. Use `congr 1`. Simplify using `only [Pi.add_apply, Nat.cast_one, one_mul]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hz, div_pow, div_eq_mul_inv]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `show s * (∏ k, y ⟨k, j k⟩ ^ (M - e k)) * ∏ k, y ⟨k, c k⟩ ^ (-(((1 : ℕ) : ℤ) * (b + fun _ => (M : ℤ) : K → ℤ) k)) ∈ chartRingQ y c`. Rewrite using `[heq]`. Conclude with `mul_mem h1 h2`. Set `f : chartLatQ y (b + fun k => (e k : ℤ)) 1 →ₗ[ℚ] chartLatQ y (b + fun _ => (M : ℤ)) 1` to `{ toFun := fun s => ⟨s.1 * ∏ k, y ⟨k, j k⟩ ^ (M - e k), hmem s.1 s.2⟩ map_add' := fun s t => Subtype.ext (add_mul _ _ _) map_smul' := fun r s => Subtype.ext (smul_mul_assoc _ _ _) }`.
+
+Use `LinearMap.finrank_le_finrank_of_injective (f := f) fun s t hst => ?_` and prove the remaining obligations. Conclude with `Subtype.ext (mul_right_cancel₀ hu0 (congrArg Subtype.val hst))`.
+-/
 theorem finrank_chartLatQ_shift_le : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Ω : Type) [Field Ω]
     [CharZero Ω] (y : (Σ k, ι k) → Ω) (b : K → ℤ) (e : K → ℕ) (M : ℕ), (∀ k, ∃ i, y ⟨k, i⟩ ≠ 0) → (∀ k, e k ≤ M) →
     FiniteDimensional ℚ (chartLatQ y (b + fun _ => (M : ℤ)) 1) →

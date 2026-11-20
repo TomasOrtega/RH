@@ -37,6 +37,9 @@ def tau : GG p →* GG p where
           = sgnU p * y.2.unop * (sgnU p * sgnU p) * x.2.unop * sgnU p := by rw [hs]; group
         _ = _ := by group
 
+/- English proof (translation)
+Establish `hs : sgnU p * sgnU p = 1` using `Units.ext (Formalism.L2.SG.Pf.FibQ.permSign_mul_self₂ p)`. Use `ext1`. Both sides reduce to the same expression. Apply `MulOpposite.unop_injective show sgnU p * (sgnU p * x.2.unop * sgnU p) * sgnU p = x.2.unop` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem tau_tau (x : GG p) : tau p (tau p x) = x := by
   have hs : sgnU p * sgnU p = 1 := Units.ext (Formalism.L2.SG.Pf.FibQ.permSign_mul_self₂ p)
   ext1

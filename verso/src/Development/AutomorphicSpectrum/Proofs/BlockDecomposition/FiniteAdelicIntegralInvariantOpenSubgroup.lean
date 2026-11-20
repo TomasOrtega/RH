@@ -23,6 +23,13 @@ namespace GlobalTheory.CompanionTheory.SiegelND.Integ.Period
 def HasCO (G : Type) [AddGroup G] [TopologicalSpace G] : Prop :=
   ∀ W ∈ 𝓝 (0 : G), ∃ P : AddSubgroup G, IsOpen (P : Set G) ∧ IsCompact (P : Set G) ∧ (P : Set G) ⊆ W
 
+/- English proof (translation)
+Introduce `W hW`. Rewrite `hW` using `[nhds_pi]`. Take `⟨I, t, ht, hsub⟩` from `Filter.mem_pi'.1 hW`. Use `choose P hPo hPc hPW using fun i => h i (t i) (ht i)`. Establish `hcoe : ((AddSubgroup.pi Set.univ P : AddSubgroup (∀ i, G i)) : Set (∀ i, G i)) = Set.univ.pi fun i => (P i : Set (G i))`.
+
+Use extensionality with `x`. Simplify using `[AddSubgroup.mem_pi]`. Use `⟨AddSubgroup.pi Set.univ P, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hcoe]`. Conclude with `isOpen_set_pi Set.finite_univ fun i _ => hPo i`.
+
+Rewrite using `[hcoe]`. Conclude with `isCompact_univ_pi hPc`. Introduce `x hx`. Rewrite `hx` using `[hcoe]`. Conclude with `hsub fun i _ => hPW i (hx i (Set.mem_univ i))`.
+-/
 theorem HasCO.pi {ι : Type} [Finite ι] {G : ι → Type} [∀ i, AddGroup (G i)]
     [∀ i, TopologicalSpace (G i)] (h : ∀ i, HasCO (G i)) : HasCO (∀ i, G i) := by
   intro W hW
@@ -42,6 +49,17 @@ theorem HasCO.pi {ι : Type} [Finite ι] {G : ι → Type} [∀ i, AddGroup (G i
     rw [hcoe] at hx
     exact hsub fun i _ => hPW i (hx i (Set.mem_univ i))
 
+/- English proof (translation)
+Introduce `W hW`. Set `e : G ≃ₜ H` to `hf.homeomorph f`. Establish `he : ∀ x, e x = f x` using `fun _ => rfl`. Establish `h0 : e.symm 0 = 0`. Apply `e.injective` to reduce the goal to its premises.
+
+Rewrite using `[e.apply_symm_apply, he, map_zero]`. Establish `hW' : e.symm ⁻¹' W ∈ 𝓝 (0 : H)`. Apply `e.symm.continuous.continuousAt.preimage_mem_nhds` to reduce the goal to its premises. Rewrite using `[h0]` and apply the resulting hypothesis. Take `⟨P, hPo, hPc, hPW⟩` from `h _ hW'`.
+
+Use `⟨P.comap f, hPo.preimage hf.continuous, ?_, ?_⟩` and prove the remaining obligations. Establish `: ((P.comap f : AddSubgroup G) : Set G) = e.symm '' (P : Set H)`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`.
+
+Conclude with `⟨e x, hx, by simp⟩`. Introduce and unpack `⟨y, hy, rfl⟩`. Express the relevant statement in the definitionally equal form `f (e.symm y) ∈ P`. Rewrite using `[← he]`. Simplify using `using hy`.
+
+Rewrite using `[this]`. Conclude with `hPc.image e.symm.continuous`. Introduce `x hx`. Establish `h1 : e.symm (e x) ∈ W` using `hPW (by rw [he]; exact hx)`. Rewrite `h1` using `[e.symm_apply_apply]`. Then use the resulting hypothesis.
+-/
 theorem HasCO.comap {G H : Type} [AddGroup G] [TopologicalSpace G] [AddGroup H] [TopologicalSpace H]
     (h : HasCO H) (f : G →+ H) (hf : IsHomeomorph f) : HasCO G := by
   intro W hW
@@ -70,6 +88,11 @@ theorem HasCO.comap {G H : Type} [AddGroup G] [TopologicalSpace G] [AddGroup H] 
     have h1 : e.symm (e x) ∈ W := hPW (by rw [he]; exact hx)
     rwa [e.symm_apply_apply] at h1
 
+/- English proof (translation)
+Introduce `W hW`. Take `⟨W', hW', hsub⟩` from `mem_nhds_subtype (S : Set G) 0 W |>.1 hW`. Take `⟨P, hPo, hPc, hPW⟩` from `h W' hW'`. Use `⟨P.comap S.subtype, hPo.preimage continuous_subtype_val, ?_, ?_⟩` and prove the remaining obligations. Establish `hemb : Topology.IsClosedEmbedding (Subtype.val : S → G)` using `hS.isClosedEmbedding_subtypeVal`.
+
+Conclude with `hemb.isCompact_preimage hPc`. Introduce `x hx`. Conclude with `hsub (hPW hx)`.
+-/
 theorem HasCO.sub {G : Type} [AddGroup G] [TopologicalSpace G] (h : HasCO G) (S : AddSubgroup G)
     (hS : IsClosed (S : Set G)) : HasCO S := by
   intro W hW
@@ -81,6 +104,9 @@ theorem HasCO.sub {G : Type} [AddGroup G] [TopologicalSpace G] (h : HasCO G) (S 
   · intro x hx
     exact hsub (hPW hx)
 
+/- English proof (translation)
+Apply the tactic sequence `apply _root_.UpperTheory.Reformulated.B.EqOneOfPowNear.eq_one_of_pow_near <;> assumption`.
+-/
 theorem small_pow {z : ℂ} (h : ∀ k : ℕ, ‖z ^ k - 1‖ < 1 / 2) : z = 1 :=
   by apply _root_.UpperTheory.Reformulated.B.EqOneOfPowNear.eq_one_of_pow_near <;> assumption
 
@@ -89,6 +115,17 @@ end GlobalTheory.CompanionTheory.SiegelND.Integ.Period
 namespace GlobalTheory.CompanionTheory.SiegelND.Integ.Period
 
 open GlobalTheory.CompanionTheory.SW.Core in
+/- English proof (translation)
+Take `⟨h1, h2, h3, hOc, hOo, -, -, hB, -, hNo⟩` from `GlobalTheory.T.mem_Oh_iff_and_nat_mul_properties F`. Establish `hadd : ∀ x ∈ Oh F, ∀ y ∈ Oh F, x + y ∈ Oh F` using `fun x hx y hy v => add_mem (hx v) (hy v)`. Establish `hneg : ∀ x ∈ Oh F, -x ∈ Oh F` using `fun x hx v => neg_mem (hx v)`. Establish `hz : (0 : Af F) ∈ Oh F` using `fun v => zero_mem _`. Introduce `W hW`.
+
+Take `⟨N, hN, hNW⟩` from `hB W hW`. Set `P : AddSubgroup (Af F)` to `{ carrier := {x | ∃ y ∈ Oh F, x = (N : Af F) * y} zero_mem' := ⟨0, hz, by simp⟩ add_mem' := by`. Introduce and unpack `_ _ ⟨x, hx, rfl⟩ ⟨y, hy, rfl⟩`. Conclude with `⟨x + y, hadd x hx y hy, by ring⟩`. Use the proof step `neg_mem' := by`.
+
+Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `⟨-x, hneg x hx, by ring⟩ }`. Use `⟨P, hNo N hN, ?_, ?_⟩` and prove the remaining obligations. Establish `: (P : Set (Af F)) = (fun y => (N : Af F) * y) '' Oh F`. Use extensionality with `x`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Conclude with `⟨y, hy, rfl⟩`. Introduce and unpack `⟨y, hy, rfl⟩`. Conclude with `⟨y, hy, rfl⟩`.
+
+Rewrite using `[this]`. Conclude with `hOc.image (continuous_const.mul continuous_id)`. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Conclude with `hNW y hy`.
+-/
 theorem hasCO_Af (F : Type) [Field F] [NumberField F] : HasCO (Af F) := by
   obtain ⟨h1, h2, h3, hOc, hOo, -, -, hB, -, hNo⟩ := GlobalTheory.T.mem_Oh_iff_and_nat_mul_properties F
   have hadd : ∀ x ∈ Oh F, ∀ y ∈ Oh F, x + y ∈ Oh F := fun x hx y hy v =>
@@ -119,6 +156,9 @@ theorem hasCO_Af (F : Type) [Field F] [NumberField F] : HasCO (Af F) := by
   · rintro _ ⟨y, hy, rfl⟩
     exact hNW y hy
 
+/- English proof (translation)
+Establish `: pairA F 0 (x + y) = pairA F 0 x + pairA F 0 y` using `Prod.ext (show (0 : Ainf F) = 0 + 0 by simp) rfl`. Simplify using `only [psiFin]`. Rewrite using `[this, AddChar.map_add_eq_mul]`.
+-/
 theorem psiFin_add (F : Type) [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ) (x y : Af F) :
     psiFin F ψ (x + y) = psiFin F ψ x * psiFin F ψ y := by
   have : pairA F 0 (x + y) = pairA F 0 x + pairA F 0 y :=
@@ -126,6 +166,15 @@ theorem psiFin_add (F : Type) [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ
   simp only [psiFin]
   rw [this, AddChar.map_add_eq_mul]
 
+/- English proof (translation)
+Establish `hc : Continuous (psiFin F ψ)`. Establish `: Continuous fun y : Af F => pairA F 0 y` using `continuous_const.prodMk continuous_id`. Conclude with `hψ.1.comp this`. Establish `h0 : psiFin F ψ 0 = 1`. Establish `: pairA F 0 (0 : Af F) = 0` using `rfl`.
+
+Simplify using `[psiFin, this]`. Establish `hB : {y | ‖psiFin F ψ y - 1‖ < 1 / 2} ∈ 𝓝 (0 : Af F)`. Establish `: IsOpen {y | ‖psiFin F ψ y - 1‖ < 1 / 2}` using `isOpen_lt ((hc.sub continuous_const).norm) continuous_const`. Conclude with `this.mem_nhds (by simp [h0])`. Take `⟨P, hPo, -, hPB⟩` from `hasCO_Af F _ hB`.
+
+Use `⟨P, hPo, fun y hy => small_pow fun k => ?_⟩` and prove the remaining obligations. Establish `hk : psiFin F ψ (k • y) = psiFin F ψ y ^ k`. Proceed by induction on `k with`. Consider the case `zero`. Simplify using `using h0`.
+
+Consider the case `succ k ih`. Rewrite using `[succ_nsmul, psiFin_add, ih, pow_succ]`. Rewrite using `[← hk]`. Conclude with `hPB (P.nsmul_mem hy k)`.
+-/
 theorem psiFin_trivial (F : Type) [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ)
     (hψ : IsCharAF F ψ) : ∃ V : AddSubgroup (Af F), IsOpen (V : Set (Af F)) ∧
       ∀ y ∈ V, psiFin F ψ y = 1 := by
@@ -150,6 +199,15 @@ theorem psiFin_trivial (F : Type) [Field F] [NumberField F] (ψ : AddChar (AF F)
   rw [← hk]
   exact hPB (P.nsmul_mem hy k)
 
+/- English proof (translation)
+Take `⟨a1, a2, a3, -, -, -, -, -, -, -⟩` from `GlobalTheory.T.mem_Oh_iff_and_nat_mul_properties F`. Use `haveI : LocallyCompactSpace (Af F) := a1`. Use `haveI : SecondCountableTopology (Af F) := a2`. Use `haveI : T2Space (Af F) := a3`. Take `⟨-, -, -, -, -, -, hh, -, hcl, -⟩` from `GlobalTheory.T.tensor_locally_compact_ring F E σ hσ (Af F)`.
+
+Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Set `b` to `Module.finBasis F E`. Set `c : (Af F ⊗[F] E) →+ (Fin (Module.finrank F E) → Af F)` to `{ toFun := fun y k => (Algebra.TensorProduct.basis (Af F) b).repr y k map_zero' := by`. Use function extensionality and compare the values at `k`. Simplify using the standard rewrite rules.
+
+Use the proof step `map_add' := by`. Introduce `x y`. Use function extensionality and compare the values at `k`. Simplify using `}`. Establish `hT : HasCO (Af F ⊗[F] E)` using `HasCO.comap (HasCO.pi fun _ => hasCO_Af F) c (hh _ b)`.
+
+Establish `hM : HasCO (Matrix (Fin n) (Fin n) (Af F ⊗[F] E))` using `HasCO.pi (G := fun _ : Fin n => Fin n → Af F ⊗[F] E) fun _ => HasCO.pi fun _ => hT`. Conclude with `hM.sub _ (hcl n)`.
+-/
 theorem hasCO_herm (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (hσ : IsCMExt F E σ) (n : ℕ) : HasCO (HermR (Af F) σ n) := by
   obtain ⟨a1, a2, a3, -, -, -, -, -, -, -⟩ := GlobalTheory.T.mem_Oh_iff_and_nat_mul_properties F
@@ -178,6 +236,11 @@ end GlobalTheory.CompanionTheory.SiegelND.Integ.Period
 
 namespace GlobalTheory.CompanionTheory.SiegelND.Integ.Period
 
+/- English proof (translation)
+Establish `hsub : ({0} : Set H) ×ˢ K ⊆ (fun p : H × Y => ph p.1 p.2) ⁻¹' V`. Introduce and unpack `⟨u, X⟩ ⟨hu, -⟩`. Establish `hu0 : u = 0` using `hu`. Substitute `hu0` using the available equality. Conclude with `h0 X`.
+
+Take `⟨W, W', hWo, -, h0W, hKW, hWW⟩` from `generalized_tube_lemma isCompact_singleton hK (hV.preimage hph) hsub`. Conclude with `⟨W, hWo.mem_nhds (h0W rfl), fun u hu X hX => hWW (Set.mk_mem_prod hu (hKW hX))⟩`.
+-/
 theorem tube_zero {H Y A : Type} [AddGroup H] [TopologicalSpace H] [TopologicalSpace Y]
     [TopologicalSpace A] (ph : H → Y → A) (hph : Continuous fun p : H × Y => ph p.1 p.2)
     {V : Set A} (hV : IsOpen V) (h0 : ∀ X, ph 0 X ∈ V) {K : Set Y} (hK : IsCompact K) :
@@ -193,6 +256,19 @@ theorem tube_zero {H Y A : Type} [AddGroup H] [TopologicalSpace H] [TopologicalS
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hσ M J n ψ hψ μ _ Q hQ`. Take `⟨a1, a2, a3, -, -, -, -, -, -, -⟩` from `GlobalTheory.T.mem_Oh_iff_and_nat_mul_properties F`. Use `haveI : LocallyCompactSpace (Af F) := a1`. Use `haveI : SecondCountableTopology (Af F) := a2`. Use `haveI : T2Space (Af F) := a3`.
+
+Take `⟨t1, -, -, -, -, htr, -, -, -, hG⟩` from `GlobalTheory.T.tensor_locally_compact_ring F E σ hσ (Af F)`. Use `haveI : IsTopologicalRing (Af F ⊗[F] E) := t1`. Take `⟨V, hVo, hV⟩` from `psiFin_trivial F ψ hψ`. Set `ph : HermR (Af F) σ n → (Fin n → Fin M → Af F ⊗[F] E) → Af F` to `fun u X => algebraMap F (Af F) (1 / 2) * Algebra.trace (Af F) (Af F ⊗[F] E) (Matrix.trace ((u : Matrix (Fin n) (Fin n) (Af F ⊗[F] E)) * gramR (Af F) σ J X))`. Establish `hph : Continuous fun p : HermR (Af F) σ n × (Fin n → Fin M → Af F ⊗[F] E) => ph p.1 p.2`.
+
+Use `continuous_const.mul (htr.comp (Continuous.matrix_trace (Continuous.matrix_mul ?_ ?_)))` and prove the remaining obligations. Conclude with `continuous_subtype_val.comp continuous_fst`. Conclude with `(hG n M J).comp continuous_snd`. Establish `hK : IsCompact (tsupport Q)` using `hQ.2`. Establish `h0 : ∀ X, ph 0 X ∈ (V : Set (Af F))` using `fun X => by`.
+
+Simplify using `[ph, V.zero_mem]`. Take `⟨W, hW0, hWW⟩` from `tube_zero ph hph hVo h0 hK`. Take `⟨U, hUo, hUc, hUW⟩` from `hasCO_herm F E σ hσ n W hW0`. Use `⟨U, hUo, hUc, fun b u hu => ?_⟩` and prove the remaining obligations. Unfold `starLoc`.
+
+Use `MeasureTheory.integral_congr_ae (Filter.Eventually.of_forall fun X => ?_)` and prove the remaining obligations. Distinguish the cases in `hX : X ∈ tsupport Q`. Establish `hsplit : ph (b + u) X = ph b X + ph u X`. Simplify using `only [ph, AddSubgroup.coe_add, add_mul, Matrix.trace_add, map_add, mul_add]`. Establish `hm : ph u X ∈ V` using `hWW u (hUW (SetLike.mem_coe.2 hu)) X hX`.
+
+Establish `h1 : psiFin F ψ (ph u X) = 1` using `hV (ph u X) hm`. Express the relevant statement in the definitionally equal form `Q X * psiFin F ψ (ph (b + u) X) = Q X * psiFin F ψ (ph b X)`. Rewrite using `[hsplit, psiFin_add, h1, mul_one]`. Establish `hq : Q X = 0` using `image_eq_zero_of_notMem_tsupport hX`. Simplify using `[hq]`.
+-/
 theorem starLoc_periodic : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E),
     IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E) (n : ℕ) (ψ : AddChar (AF F) ℂ), IsCharAF F ψ →
     ∀ μ : Measure (Fin n → Fin M → Af F ⊗[F] E), μ.IsAddHaarMeasure →

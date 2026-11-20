@@ -9,6 +9,9 @@ open GroundTheory.Global
 
 variable {F : Type} [Field F] [NumberField F]
 
+/- English proof (translation)
+Establish `hn` using `GlobalTheory.CompanionTheory.AdeleAnn.norm_eq_one χ hc hF`. Set `χ' : AddChar (AdeleRing (𝓞 F) F) Circle` to `{ toFun := fun y => ⟨χ y, mem_sphere_zero_iff_norm.2 (hn y)⟩ map_zero_eq_one' := Circle.ext (by simp) map_add_eq_mul' := fun a b => Circle.ext (χ.map_add_eq_mul a b) }`. Establish `hχ' : Continuous χ'` using `hc.subtype_mk _`. Take `⟨ξ, hξ, -⟩` from `GroundTheory.Global.existsUnique_eq_adelicChar_mul χ' hχ' fun k => Circle.ext (hF k)`. Conclude with `⟨ξ, fun x => congrArg (fun c : Circle => (c : ℂ)) (hξ x)⟩`.
+-/
 theorem exists_eq_adelicChar_mul (χ : AddChar (AdeleRing (𝓞 F) F) ℂ) (hc : Continuous χ)
     (hF : ∀ a : F, χ (algebraMap F (AdeleRing (𝓞 F) F) a) = 1) :
     ∃ ξ : F, ∀ x, χ x = (adelicChar F (algebraMap F (AdeleRing (𝓞 F) F) ξ * x) : ℂ) := by

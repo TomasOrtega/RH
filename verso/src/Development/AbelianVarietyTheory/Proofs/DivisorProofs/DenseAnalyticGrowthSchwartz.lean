@@ -5,6 +5,19 @@ open MeasureTheory
 
 namespace GlobalTheory.ExpTypeDense
 
+/- English proof (translation)
+Establish `key` using `Real.pow_mul_norm_iteratedFDeriv_fourier_le (f := (h : E → ℂ)) (K := (j : ℕ∞)) (N := 0) (h.smooth 0) (fun k n _ _ => SchwartzMap.integrable_pow_mul_iteratedFDeriv volume h k n) le_rfl le_rfl w`. Simplify using `only [pow_zero, one_mul, mul_one] at key`. Establish `hI : ∀ p ∈ Finset.range (j + 1) ×ˢ Finset.range (0 + 1), ∫ v, ‖v‖ ^ p.1 * ‖iteratedFDeriv ℝ p.2 h v‖ ≤ R ^ j * ∫ v, ‖h v‖`. Introduce `p hp`. Simplify using `only [Finset.mem_product, Finset.mem_range, zero_add, Nat.lt_one_iff] at hp`.
+
+Take `⟨a, b⟩` from `p`. Take `⟨hp1, hp2⟩` from `hp`. Simplify using `only at hp1 hp2 ⊢`. Substitute `hp2` using the available equality. Rewrite using `[← integral_const_mul]`.
+
+Use `integral_mono_of_nonneg (Filter.Eventually.of_forall fun v => by positivity) (h.integrable.norm.const_mul _) (Filter.Eventually.of_forall fun v => ?_)` and prove the remaining obligations. Simplify using `only [norm_iteratedFDeriv_zero]`. Distinguish the cases in `hv : h v = 0`. Simplify using `[hv]`. Establish `hb : v ∈ Metric.closedBall (0 : E) R` using `hs (subset_tsupport _ hv)`.
+
+Rewrite `hb` using `[Metric.mem_closedBall, dist_zero_right]`. Use `gcongr`. Combine the equalities or inequalities in the displayed calculation. Establish `hsum` using `Finset.sum_le_sum hI`. Rewrite `hsum` using `[Finset.sum_const, Finset.card_product, Finset.card_range, Finset.card_range, nsmul_eq_mul]`.
+
+Establish `hI0 : 0 ≤ ∫ v, ‖h v‖` using `integral_nonneg fun v => norm_nonneg _`. Establish `hj : ((j + 1 : ℕ) : ℝ) ≤ 2 ^ j` using `by exact_mod_cast (Nat.lt_two_pow_self : j < 2 ^ j)`. Establish `hR0 : 0 ≤ R` using `by linarith`. Combine the equalities or inequalities in the displayed calculation. Simplify using `using hj`.
+
+Use `_ = (∫ v, ‖h v‖) * (4 * Real.pi * R) ^ j := by`. Rewrite using `[show (4 : ℝ) * Real.pi * R = 2 * (2 * Real.pi * R) by ring, mul_pow 2 (2 * Real.pi * R), mul_pow (2 * Real.pi)]; ring`.
+-/
 theorem norm_iteratedFDeriv_fourier_le {E : Type} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
     [FiniteDimensional ℝ E] [MeasurableSpace E] [BorelSpace E]
     (h : 𝓢(E, ℂ)) {R : ℝ} (hR : 1 ≤ R) (hs : tsupport h ⊆ Metric.closedBall 0 R) (j : ℕ) (w : E) :
@@ -45,6 +58,9 @@ theorem norm_iteratedFDeriv_fourier_le {E : Type} [NormedAddCommGroup E] [InnerP
     _ = (∫ v, ‖h v‖) * (4 * Real.pi * R) ^ j := by
         rw [show (4 : ℝ) * Real.pi * R = 2 * (2 * Real.pi * R) by ring, mul_pow 2 (2 * Real.pi * R), mul_pow (2 * Real.pi)]; ring
 
+/- English proof (translation)
+Rewrite using `[T.iteratedFDeriv_comp_right hf y le_rfl]`. Use `(ContinuousMultilinearMap.norm_compContinuousLinearMap_le _ _).trans ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+-/
 theorem norm_iteratedFDeriv_comp_le {V E : Type} [NormedAddCommGroup V] [NormedSpace ℝ V]
     [NormedAddCommGroup E] [NormedSpace ℝ E] (T : V →L[ℝ] E) {f : E → ℂ} {j : ℕ}
     (hf : ContDiff ℝ j f) (y : V) :
@@ -57,6 +73,19 @@ end GlobalTheory.ExpTypeDense
 
 namespace GlobalTheory.ExpTypeDense
 
+/- English proof (translation)
+Introduce `hc V _ _ _`. Set `T : V ≃L[ℝ] EuclideanSpace ℝ (Fin (Module.finrank ℝ V))` to `toEuclidean`. Set `C` to `SchwartzMap.compCLMOfContinuousLinearEquiv ℂ (F := ℂ) T`. Set `Ci` to `SchwartzMap.compCLMOfContinuousLinearEquiv ℂ (F := ℂ) T.symm`. Set `Fe` to `SchwartzMap.fourierTransformCLE ℂ (E := 𝓢(EuclideanSpace ℝ (Fin (Module.finrank ℝ V)), ℂ))`.
+
+Set `Φ : 𝓢(EuclideanSpace ℝ (Fin (Module.finrank ℝ V)), ℂ) →L[ℂ] 𝓢(V, ℂ)` to `C.comp (Fe : 𝓢(EuclideanSpace ℝ (Fin (Module.finrank ℝ V)), ℂ) →L[ℂ] _)`. Establish `hsurj : Function.Surjective Φ`. Introduce `ψ`. Use `⟨Fe.symm (Ci ψ), ?_⟩` and prove the remaining obligations. Use extensionality with `y`.
+
+Simplify using `[Φ, C, Ci]`. Use `(hsurj.denseRange.dense_image Φ.continuous (hc _)).mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨h, hh, rfl⟩`. Take `⟨R, hR⟩` from `hh.isCompact.isBounded.subset_closedBall 0`. Use `⟨∫ v, ‖h v‖, 4 * Real.pi * max R 1 * ‖(T : V →L[ℝ] EuclideanSpace ℝ (Fin (Module.finrank ℝ V)))‖, fun j y => ?_⟩` and prove the remaining obligations.
+
+Establish `e : ⇑(Φ h) = (𝓕 (h : EuclideanSpace ℝ (Fin (Module.finrank ℝ V)) → ℂ)) ∘ (T : V →L[ℝ] EuclideanSpace ℝ (Fin (Module.finrank ℝ V)))`. Use function extensionality and compare the values at `y`. Simplify using `only [Φ, C, ContinuousLinearMap.comp_apply, SchwartzMap.compCLMOfContinuousLinearEquiv_apply, Function.comp_apply, ContinuousLinearEquiv.coe_coe]`. Both sides reduce to the same expression. Establish `hsm : ContDiff ℝ j (𝓕 (h : EuclideanSpace ℝ (Fin (Module.finrank ℝ V)) → ℂ))` using `(𝓕 h).smooth j`.
+
+Establish `hI0 : 0 ≤ ∫ v, ‖h v‖` using `integral_nonneg fun v => norm_nonneg _`. Rewrite using `[e]`. Use `(norm_iteratedFDeriv_comp_le _ hsm y).trans ?_` and prove the remaining obligations. Rewrite using `[mul_pow, ← mul_assoc]`. Use `gcongr`.
+
+Conclude with `norm_iteratedFDeriv_fourier_le h (le_max_right R 1) (hR.trans (Metric.closedBall_subset_closedBall (le_max_left R 1))) j _`.
+-/
 theorem dense_expType :
     (∀ (W : Type) [NormedAddCommGroup W] [NormedSpace ℝ W] [FiniteDimensional ℝ W],
       Dense {φ : SchwartzMap W ℂ | HasCompactSupport (⇑φ)}) →

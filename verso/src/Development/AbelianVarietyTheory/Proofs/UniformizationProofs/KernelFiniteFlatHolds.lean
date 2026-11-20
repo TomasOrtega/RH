@@ -20,6 +20,9 @@ open CategoryTheory CategoryTheory.Limits MonoidalCategory CartesianMonoidalCate
 open scoped CategoryTheory.Obj in
 attribute [local instance] Over.cartesianMonoidalCategory in
 
+/- English proof (translation)
+The claim follows from `_root_.GlobalTheory.KernelFlat.kernelFiniteFlat _root_.GlobalTheory.abelianSchemeLaws_all.1`.
+-/
 theorem _root_.GlobalTheory.kernelFiniteFlat_holds : _root_.GlobalTheory.Published.KernelFiniteFlatSt :=
   _root_.GlobalTheory.KernelFlat.kernelFiniteFlat _root_.GlobalTheory.abelianSchemeLaws_all.1
 

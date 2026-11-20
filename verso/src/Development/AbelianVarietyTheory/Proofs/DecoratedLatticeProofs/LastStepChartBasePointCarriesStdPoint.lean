@@ -29,6 +29,11 @@ open GlobalTheory.SeeSaw GlobalTheory.Unf
 
 namespace GlobalTheory.Mem.Col2.TopBase
 
+/- English proof (translation)
+Unfold `ColIn.Q Formalism.L2.Col.QE at hP`. Use `split_ifs at hP with h`. Take `⟨w, -, rfl⟩` from `Finset.mem_image.1 hP`. Use `congr 1`. Conclude with `HeightOneSpectrum.ext (hI.sel_ok w)`.
+
+Simplify using `at hP`.
+-/
 theorem sel_under_of_mem_QE {B : Base} {X : PreX B.toPre} (I : TC B X) (hI : I.Ok) {b : I.ι}
     {P : HeightOneSpectrum (𝓞 B.fields.E)} (hP : P ∈ I.Q b) : I.sel (P.under (𝓞 B.fields.F)) = P := by
   unfold ColIn.Q Formalism.L2.Col.QE at hP
@@ -38,6 +43,19 @@ theorem sel_under_of_mem_QE {B : Base} {X : PreX B.toPre} (I : TC B X) (hI : I.O
     exact HeightOneSpectrum.ext (hI.sel_ok w)
   · simp at hP
 
+/- English proof (translation)
+Introduce `B X I hI hP l Z u a C chOf Lb U chi y st k hR hTop β`. Establish `hPr` using `(base_fields_primes_ok B X).2.1`. Use `haveI : NeZero (B.R.N B.R.m - 1) := ⟨by`. Rewrite using `[Formalism.L2.Col.rank_X'_eq]`. Establish `h1` using `B.R.two_le_m`.
+
+Establish `h2 : 1 ≤ B.R.t` using `B.R.t_odd.pos`. Establish `h3 : 2 ≤ B.R.m * B.R.t` using `le_trans h1 (Nat.le_mul_of_pos_right _ h2)`. Use the proof step `omega⟩`. Use `⟨⟨_, GlobalTheory.Mem.Col2.TopPtModel.topPt_base I l Z (hTop β)⟩, fun P hP hPa => ?_⟩` and prove the remaining obligations. Take `⟨b, hb⟩` from `(ColIn.mem_SQ I).1 hP`.
+
+Establish `hq` using `(TwistPrimes.twist_primes_away I hI).2 u b P hb`. Establish `hsP` using `sel_under_of_mem_QE I hI hb`. Use `GlobalTheory.Mem.Col2.TopPtModel.adAt_of_prV P (hR.k_off β _ ?_ ?_ (Or.inr ?_))` and prove the remaining obligations. Conclude with `GlobalTheory.Mem.Col2.ChEx.T_notMem_qv I hI hPr u b ⟨P, hb⟩`. Introduce and unpack `⟨P', hP', hv⟩`.
+
+Establish `hsP'` using `sel_under_of_mem_QE I hI hP'`. Apply `hPa` to reduce the goal to its premises. Establish `e : P' = P` using `by rw [← hsP', ← hsP]; exact congrArg I.sel hv`. Conclude with `e ▸ hP'`. Introduce `j hj`.
+
+Establish `hv : P.under (𝓞 B.host.F) ∈ Formalism.L2.Col.plUnder B.fields.F (B.primes X).vGs`. Use `(Formalism.L2.Col.plUnder_vGs B.sp.cm hPr _).2 ?_` and prove the remaining obligations. Use `fin_cases j`. Conclude with `Or.inl hj`. Conclude with `Or.inr hj`.
+
+Take `⟨w, hw, hov⟩` from `hv`. Establish `hovP : Formalism.L2.Col.IsOver (P.under (𝓞 B.host.F)) P` using `rfl`. Break down `Formalism.L2.Col.rll_over_cases B.sp.cm hovP hov with e | e` into its components or cases. Conclude with `hq.1.2.1 (e ▸ hw)`. Conclude with `hq.1.2.2.2.1 (e ▸ hw)`.
+-/
 theorem topBase_ok : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)) (u : B.Word) (a : I.ι) {C : Type} (chOf : (I.stp u a B.R.m).Cl → C) (Lb : C → Submodule (𝓞 B.host.E) (Fin (B.R.N B.R.m) → B.host.E)) (U : C → Subgroup (TC.GA B (B.R.N B.R.m))) (chi : ∀ β, U β →* ℂˣ) (y : (I.stp u a B.R.m).Cl → TC.GA B (B.R.N B.R.m)) (st : ∀ c, (I.stp u a B.R.m).Stab c → GL (Fin (B.R.N B.R.m)) B.host.E) (k : C → TC.GA B (B.R.N B.R.m)), I.Reads u a B.R.m chOf Lb U chi y st k → (∀ β, I.TopPt l Z u a (k β)) → ∀ β, (∃ q : Formalism.L2.Col.ChPt (Pr := B.primes X) (R := B.R) I.sel (I.tup a) u B.R.m, TC.PtOf (k β) q) ∧ ∀ P ∈ I.SQ, P ∉ I.Q a → (k β).1.map (adAt B.host.F P) = 1 := by
   intro B X I hI hP l Z u a C chOf Lb U chi y st k hR hTop β
   have hPr := (base_fields_primes_ok B X).2.1

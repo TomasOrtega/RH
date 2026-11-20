@@ -11,12 +11,18 @@ namespace LevelTowerAlt.Reg
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Introduce `z hz y hy`. Establish `h1 : ∀ᶠ x in 𝓝[U] (g z), φ x < y` using `h _ hz y hy`. Conclude with `(hg.continuousWithinAt.tendsto_nhdsWithin (Set.mapsTo_preimage g U)).eventually h1`.
+-/
 theorem usc_comp {U : Set (Fin n → ℂ)} {φ : (Fin n → ℂ) → ℝ} (h : UpperSemicontinuousOn φ U)
     {g : (Fin n → ℂ) → Fin n → ℂ} (hg : Continuous g) : UpperSemicontinuousOn (fun t => φ (g t)) (g ⁻¹' U) := by
   intro z hz y hy
   have h1 : ∀ᶠ x in 𝓝[U] (g z), φ x < y := h _ hz y hy
   exact (hg.continuousWithinAt.tendsto_nhdsWithin (Set.mapsTo_preimage g U)).eventually h1
 
+/- English proof (translation)
+Use `⟨usc_comp h.1 (by fun_prop), fun z w hd => ?_⟩` and prove the remaining obligations. Establish `e : ∀ ζ : ℂ, t₀ + c • (z + ζ • w) = t₀ + c • z + ζ • (c • w)` using `fun ζ => by`. Rewrite using `[smul_add, smul_comm c ζ, add_assoc]`. Simplify using `only [e]`. Conclude with `h.2 _ _ fun ζ hζ => e ζ ▸ hd ζ hζ`.
+-/
 theorem isPsh_aff {U : Set (Fin n → ℂ)} {φ : (Fin n → ℂ) → ℝ} (h : IsPsh U φ) (t₀ : Fin n → ℂ) (c : ℂ) :
     IsPsh ((fun t => t₀ + c • t) ⁻¹' U) fun t => φ (t₀ + c • t) := by
   refine ⟨usc_comp h.1 (by fun_prop), fun z w hd => ?_⟩
@@ -25,6 +31,15 @@ theorem isPsh_aff {U : Set (Fin n → ℂ)} {φ : (Fin n → ℂ) → ℝ} (h : 
   simp only [e]
   exact h.2 _ _ fun ζ hζ => e ζ ▸ hd ζ hζ
 
+/- English proof (translation)
+Use `⟨usc_comp h.1 continuous_star, fun z w hd => ?_⟩` and prove the remaining obligations. Establish `e : ∀ ζ : ℂ, star (z + ζ • w) = star z + star ζ • star w` using `fun ζ => by rw [star_add, star_smul]`. Take `⟨h1, h2⟩` from `h.2 (star z) (star w) fun ζ hζ => by`. Use `hd (star ζ) (by rwa [norm_star])` as an intermediate fact. Rewrite `this` using `[Set.mem_preimage, e, star_star]`. Then use the resulting hypothesis.
+
+Establish `hc : ∀ θ : ℝ, star (circleMap 0 1 θ) = circleMap 0 1 (2 * Real.pi - θ)` using `fun θ => by`. Rewrite using `[sub_eq_add_neg, add_comm, periodic_circleMap]`. Simplify using `[circleMap, ← Complex.exp_conj]`. Use `⟨?_, h2.trans_eq ?_⟩` and prove the remaining obligations. Unfold `CircleIntegrable at h1 ⊢`.
+
+Simplify using `only [e, hc]`. Use `(h1.comp_sub_left (2 * Real.pi)).symm` as an intermediate fact. Simplify using `using this`. Unfold `Real.circleAverage`. Simplify using `only [e, hc]`.
+
+Rewrite using `[intervalIntegral.integral_comp_sub_left (fun θ => φ (star z + circleMap 0 1 θ • star w))]`. Simplify using the standard rewrite rules.
+-/
 theorem isPsh_star {U : Set (Fin n → ℂ)} {φ : (Fin n → ℂ) → ℝ} (h : IsPsh U φ) :
     IsPsh (star ⁻¹' U) fun t => φ (star t) := by
   refine ⟨usc_comp h.1 continuous_star, fun z w hd => ?_⟩
@@ -48,6 +63,9 @@ theorem isPsh_star {U : Set (Fin n → ℂ)} {φ : (Fin n → ℂ) → ℝ} (h :
 variable {K : Type} [Fintype K] {J : K → Type} [∀ k, Fintype (J k)] {P : Ideal (MRing J)}
   {Bd : Set ((Σ k, J k) → ℂ)} (χ : SncChart P n Bd)
 
+/- English proof (translation)
+Use `le_add_of_nonneg_right (Finset.sum_nonneg fun i _ => ?_)` and prove the remaining obligations. Use `split_ifs`. Rewrite using `[one_div, Real.log_inv, neg_nonneg]`. Conclude with `Real.log_nonpos (by positivity) (pow_le_one₀ (norm_nonneg _) ((norm_le_pi_norm t i).trans ht.le))`. Conclude with `le_rfl`.
+-/
 theorem exp_le_logR {t : Fin n → ℂ} (ht : ‖t‖ < 1) : Real.exp 1 ≤ χ.logR t := by
   refine le_add_of_nonneg_right (Finset.sum_nonneg fun i _ => ?_)
   split_ifs
@@ -55,6 +73,43 @@ theorem exp_le_logR {t : Fin n → ℂ} (ht : ‖t‖ < 1) : Real.exp 1 ≤ χ.l
     exact Real.log_nonpos (by positivity) (pow_le_one₀ (norm_nonneg _) ((norm_le_pi_norm t i).trans ht.le))
   · exact le_rfl
 
+/- English proof (translation)
+Use `set O := {t | t ∈ ball (0 : Fin n → ℂ) 1 ∧ χ.γ t ∉ Bd} with hOdef`. Establish `hLn : ∀ t, ‖L t‖ ≤ ‖t‖` using `fun t => (pi_norm_le_iff_of_nonneg (norm_nonneg _)).2 fun i => (hL t i).trans_le (norm_le_pi_norm t i)`. Establish `hεn : ‖(ε : ℂ)‖ = ε` using `by rw [Complex.norm_real, Real.norm_of_nonneg hε.le]`. Establish `hT : ∀ t, ‖(ε : ℂ) • L t‖ ≤ ε * ‖t‖` using `fun t => by`. Rewrite using `[norm_smul, hεn]`.
+
+Conclude with `mul_le_mul_of_nonneg_left (hLn t) hε.le`. Establish `hTi : ∀ t i, ‖((ε : ℂ) • L t) i‖ = ε * ‖t i‖` using `fun t i => by`. Rewrite using `[Pi.smul_apply, norm_smul, hεn, hL]`. Establish `hlow : ∀ t : Fin n → ℂ, ‖t‖ < 1 → ∀ i, t₀ i ≠ 0 → ε ≤ ‖(t₀ + (ε : ℂ) • L t) i‖` using `fun t ht i hi => by`. Establish `h1` using `hsep i hi`.
+
+Establish `h2` using `hTi t i`. Establish `h3` using `norm_sub_le ((t₀ + (ε : ℂ) • L t) i) (((ε : ℂ) • L t) i)`. Rewrite `h3` using `[Pi.add_apply, add_sub_cancel_right]`. Rewrite using `[Pi.add_apply]`. Use polynomial arithmetic with `[norm_le_pi_norm t i]`.
+
+Establish `hball : ∀ t : Fin n → ℂ, ‖t‖ < 1 → ‖t₀ + (ε : ℂ) • L t‖ < 1` using `fun t ht => by`. Use `norm_add_le t₀ ((ε : ℂ) • L t)` as an intermediate fact. Use polynomial arithmetic with `[hT t, norm_nonneg t]`. Establish `hmap : ∀ t ∈ ball (0 : Fin n → ℂ) 1 \ coordDiv S, t₀ + (ε : ℂ) • L t ∈ O`. Introduce and unpack `t ⟨ht, htS⟩`.
+
+Rewrite `ht` using `[mem_ball_zero_iff]`. Establish `hb'` using `mem_ball_zero_iff.2 (hball t ht)`. Use `⟨hb', fun h => ?_⟩` and prove the remaining obligations. Take `⟨i, hi, h0⟩` from `(χ.boundary _ hb').1 h`. Distinguish the cases in `h1 : t₀ i = 0`.
+
+Use `htS ⟨i, (hS i).2 ⟨hi, h1⟩, ?_⟩` and prove the remaining obligations. Establish `h2` using `hTi t i`. Rewrite `h0` using `[Pi.add_apply, h1, zero_add]`. Rewrite `h2` using `[h0, norm_zero]`. Conclude with `norm_eq_zero.1 ((mul_eq_zero.1 h2.symm).resolve_left hε.ne')`.
+
+Use `hlow t ht i h1` as an intermediate fact. Rewrite `this` using `[h0, norm_zero]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hV : IsOpen (ball (0 : Fin n → ℂ) 1 \ coordDiv S)` using `isOpen_ball.sdiff (ReciprocityTheory.AnForm.A.PlurisubharmonicExtension.coordDiv_closed _)`. Establish `heq : Set.EqOn (fun t => F (t₀ + (ε : ℂ) • L t)) (fun y => q y + p y) (ball 0 1 \ coordDiv S)` using `fun t ht => (hu t ht.1 (hmap t ht).2).symm`.
+
+Establish `hσ : ContDiff ℝ ∞ fun t => t₀ + (ε : ℂ) • L t` using `contDiff_const.add (L.contDiff.const_smul _)`. Use `⟨(hFs.comp hσ.contDiffOn hmap).congr fun t ht => (heq ht).symm, GroundTheory.Heights₂.Heights.Regular.isPsh_congr heq ?_, C + |Q|, n * Real.log (1 / ε ^ 2), by positivity, fun t ht ρ hρ => ?_⟩` and prove the remaining obligations. Establish `h` using `hLp _ _ (isPsh_aff hFp t₀ ε)`. Conclude with `⟨h.1.mono hmap, fun z w hd => h.2 z w fun ζ hζ => hmap _ (hd ζ hζ)⟩`. Establish `ht1 : ‖t‖ < 1` using `mem_ball_zero_iff.1 ht.1`.
+
+Use `set s := t₀ + (ε : ℂ) • L t with hs`. Establish `hsO : s ∈ O` using `hmap t ht`. Take `⟨b1, b2, b3⟩` from `hb s hsO (by`. Rewrite using `[hs, add_sub_cancel_left]`. Use polynomial arithmetic with `[hT t, norm_nonneg t])`.
+
+Establish `hRe` using `exp_le_logR χ (hball t ht1)`. Establish `hRρ : χ.logR s ≤ ρ`. Use `le_trans ?_ hρ` and prove the remaining obligations. Establish `hl0 : 0 ≤ Real.log (1 / ε ^ 2)` using `Real.log_nonneg (by`. Rewrite using `[le_div_iff₀ (by positivity)]; nlinarith)`.
+
+Establish `: ∑ i : Fin n, (if (i : ℕ) < χ.a then Real.log (1 / ‖s i‖ ^ 2) else 0) ≤ ∑ i : Fin n, (Real.log (1 / ε ^ 2) + if i ∈ S then Real.log (‖t i‖ ^ 2)⁻¹ else 0)`. Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations. Distinguish the cases in `hi : (i : ℕ) < χ.a`. Distinguish the cases in `h1 : t₀ i = 0`. Establish `hiS` using `(hS i).2 ⟨hi, h1⟩`.
+
+Establish `hti : ‖t i‖ ≠ 0` using `norm_ne_zero_iff.2 fun h => ht.2 ⟨i, hiS, h⟩`. Rewrite using `[if_pos hi, if_pos hiS, hs, Pi.add_apply, h1, zero_add, hTi, ← Real.log_mul (by positivity) (by positivity)]`. Use `le_of_eq (congrArg _ ?_)` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts. Rewrite using `[if_pos hi, if_neg fun h => h1 ((hS i).1 h).2, add_zero]`.
+
+Establish `h2` using `hlow t ht1 i h1`. Establish `h3 : 0 < ‖s i‖` using `hε.trans_le h2`. Conclude with `Real.log_le_log (by positivity) (one_div_le_one_div_of_le (by positivity) (pow_le_pow_left₀ hε.le h2 2))`. Rewrite using `[if_neg hi, if_neg fun h => hi ((hS i).1 h).1, add_zero]`. Conclude with `hl0`.
+
+Rewrite `this` using `[Finset.sum_add_distrib, Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul, Finset.sum_ite_mem, Finset.univ_inter]`. Unfold `SncChart.logR`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `he1 : (1 : ℝ) ≤ Real.exp 1` using `Real.one_le_exp zero_le_one`. Establish `hl1 : 1 ≤ Real.log ρ`.
+
+Rewrite using `[Real.le_log_iff_exp_le (by linarith)]; linarith`. Establish `hl2 : Real.log (χ.logR s) ≤ Real.log ρ` using `Real.log_le_log (by linarith) hRρ`. Establish `hqt` using `abs_le.1 ((hq t ht.1).trans (le_abs_self Q))`. Establish `hut : q t + p t = F s` using `hu t ht.1 hsO.2`. Use `⟨by linarith, by nlinarith [abs_nonneg Q], ?_⟩` and prove the remaining obligations.
+
+Establish `hFd : HasFDerivAt F (fderiv ℝ F s) s` using `((hFs.contDiffAt (hO.mem_nhds hsO)).differentiableAt (by simp)).hasFDerivAt`. Establish `hσd : HasFDerivAt (fun t => t₀ + (ε : ℂ) • L t) ((ε : ℂ) • L) t` using `(L.hasFDerivAt.const_smul (ε : ℂ)).const_add t₀`. Establish `hd : HasFDerivAt (fun y => q y + p y) ((fderiv ℝ F s).comp ((ε : ℂ) • L)) t` using `(hFd.comp t hσd).congr_of_eventuallyEq (by filter_upwards [hV.mem_nhds ht] with y hy using (heq hy).symm)`. Rewrite using `[hd.fderiv]`. Establish `hn : ‖(fderiv ℝ F s).comp ((ε : ℂ) • L)‖ ≤ ‖fderiv ℝ F s‖`.
+
+Use `ContinuousLinearMap.opNorm_le_bound _ (norm_nonneg _) fun v => ?_` and prove the remaining obligations. Use `((fderiv ℝ F s).le_opNorm _).trans (mul_le_mul_of_nonneg_left ?_ (norm_nonneg _))` and prove the remaining obligations. Use `(hT v).trans ?_` and prove the remaining obligations. Use polynomial arithmetic with `[norm_nonneg v]`. Use `hn.trans (b3.trans ?_)` and prove the remaining obligations.
+
+Establish `hp : χ.logR s ^ C ≤ ρ ^ (C + |Q|)` using `(Real.rpow_le_rpow (by linarith) hRρ hC.le).trans (Real.rpow_le_rpow_of_exponent_le (by linarith) (le_add_of_nonneg_right (abs_nonneg Q)))`. Establish `hρ0 : 0 ≤ χ.logR s` using `by linarith`. Establish `hρ1 : 0 ≤ ρ` using `by linarith`. Establish `hC' : C ≤ C + |Q|` using `le_add_of_nonneg_right (abs_nonneg Q)`. Conclude with `mul_le_mul (mul_le_mul hC' hp (Real.rpow_nonneg hρ0 _) (by positivity)) (Real.exp_le_exp.2 (by linarith)) (Real.exp_pos _).le (by positivity)`.
+-/
 theorem piece {F : (Fin n → ℂ) → ℝ} (hO : IsOpen {t | t ∈ ball (0 : Fin n → ℂ) 1 ∧ χ.γ t ∉ Bd})
     (hFs : ContDiffOn ℝ ∞ F {t | t ∈ ball (0 : Fin n → ℂ) 1 ∧ χ.γ t ∉ Bd})
     (hFp : IsPsh {t | t ∈ ball (0 : Fin n → ℂ) 1 ∧ χ.γ t ∉ Bd} F) {t₀ : Fin n → ℂ} {ε C Q : ℝ}

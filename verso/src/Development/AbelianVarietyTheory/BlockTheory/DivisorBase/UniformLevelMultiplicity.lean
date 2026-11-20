@@ -170,11 +170,20 @@ def RowForms : Prop :=
 
 def Row : Prop := RowGeo ∧ RowForms
 
+/- English proof (translation)
+Introduce `_` and use `rfl`.
+-/
 example (D : D7) : Side D D.what₂.embLL := fun _ => rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example (w : WeightFamilies.Wt D j) (s : T.Q.c.F →+* ℂ) (f : T.R j) :
     rdK T j w s (T.cE j s) f = T.phiJ j s (wtA w) f := rfl
 
+/- English proof (translation)
+The claim follows from `Set.ext h`.
+-/
 example (V : HSp D) (N : ℕ) (Kf : Subgroup (GA D V)) (h : IsLevelK V N Kf) : (Kf : Set (GA D V)) = levSet V N :=
   Set.ext h
 

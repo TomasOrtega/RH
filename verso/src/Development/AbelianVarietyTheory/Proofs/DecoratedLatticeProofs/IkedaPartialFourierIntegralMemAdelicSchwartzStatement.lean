@@ -19,5 +19,8 @@ open GlobalTheory.Mem.AutSpace (SmFun)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.RegSch.IkSchwartz.ikS_mem_schwartzA | exact GlobalTheory.RegSch.IkSchwartz.ikS_mem_schwartzA | (intros; apply GlobalTheory.RegSch.IkSchwartz.ikS_mem_schwartzA <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.ikedaPartialFourierIntegral_mem_adelicSchwartz : ∀ (D : D7), ∀ θ : InfFam D, IsInfFam θ → ∀ (T T' : HSp D) (t n : ℕ) (d : HypDec T T' t) (μ : Measure (Mx D t n)) (𝓕 : Set (Mx D t n)), IsCovolOne (ratMx D t n) μ 𝓕 → ∀ Φ ∈ schwartzA θ T.rank n, ikS d μ Φ ∈ schwartzA θ T'.rank n := by
   first | exact @GlobalTheory.RegSch.IkSchwartz.ikS_mem_schwartzA | exact GlobalTheory.RegSch.IkSchwartz.ikS_mem_schwartzA | (intros; apply GlobalTheory.RegSch.IkSchwartz.ikS_mem_schwartzA <;> assumption)

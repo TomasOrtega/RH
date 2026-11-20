@@ -17,12 +17,27 @@ namespace PositivityTheory.SiegelWeilFormula.Afc
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 omit [NumberField E] in
+/- English proof (translation)
+Use extensionality with `i j`. Both sides reduce to the same expression.
+-/
 theorem incM_mapc {p q : Type} (X : Matrix p q E) : (incM F X).map (cA σ) = incM F (X.map σ) := by
   ext i j; rfl
 
 omit [NumberField E] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem incM_tr {p q : Type} (X : Matrix p q E) : (incM F X)ᵀ = incM F Xᵀ := rfl
 
+/- English proof (translation)
+Establish `h1 : M * (∑ j, Matrix.single L.i₀ (L.em j) (u j)) = 0`. Use extensionality with `r s`. Simplify using `only [Matrix.mul_apply, Matrix.sum_apply, Matrix.single_apply, Matrix.zero_apply]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Distinguish the cases in `hk : L.i₀ = k`.
+
+Substitute `hk` using the available equality. Simplify using `[(h0 r).2]`. Simplify using `[hk]`. Establish `h2 : ((∑ j, Matrix.single L.i₀ (L.em j) (u j)).map (cA σ))ᵀ * M = 0`. Use extensionality with `r s`.
+
+Simplify using `only [Matrix.mul_apply, Matrix.sum_apply, Matrix.single_apply, Matrix.zero_apply, Matrix.transpose_apply, Matrix.map_apply]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Distinguish the cases in `hk : L.i₀ = k`. Substitute `hk` using the available equality. Simplify using `[(h0 s).1]`.
+
+Simplify using `[hk]`. Rewrite using `[Matrix.map_add _ (map_add _), Matrix.map_one _ (map_zero _) (map_one _), Matrix.transpose_add, Matrix.transpose_one, Matrix.add_mul, Matrix.one_mul, h2, add_zero, Matrix.mul_add, Matrix.mul_one, h1, add_zero]`.
+-/
 theorem cong_unip {d : SD σ} (L : LD d) (M : Matrix (Fin d.n) (Fin d.n) (AE F E))
     (h0 : ∀ i, M L.i₀ i = 0 ∧ M i L.i₀ = 0) (u : Fin L.n → AE F E) :
     ((1 + ∑ j, Matrix.single L.i₀ (L.em j) (u j)).map (cA σ))ᵀ * M * (1 + ∑ j, Matrix.single L.i₀ (L.em j) (u j)) = M := by
@@ -44,6 +59,27 @@ theorem cong_unip {d : SD σ} (L : LD d) (M : Matrix (Fin d.n) (Fin d.n) (AE F E
   rw [Matrix.map_add _ (map_add _), Matrix.map_one _ (map_zero _) (map_one _), Matrix.transpose_add,
     Matrix.transpose_one, Matrix.add_mul, Matrix.one_mul, h2, add_zero, Matrix.mul_add, Matrix.mul_one, h1, add_zero]
 
+/- English proof (translation)
+Establish `hσ` using `sigma_sigma_of_good d.ok.good`. Establish `hb : IsFrame2 σ d.Y d.b` using `d.ok.frame`. Establish `hψ : ∀ z : F, d.B.ψ (algebraMap F (AF F) z) = 1` using `d.ok.good.std.2.1`. Establish `hcc : ∀ z, cA σ (cA σ z) = z` using `GlobalTheory.EisBL.DoubledUnipotentRadical.cA_cA σ hσ`. Take `⟨v, rfl⟩` from `(mem_ratV_iff L u).1 hu`.
+
+Take `⟨a', ha'⟩` from `hU.1 (GlobalTheory.ThK.incV F v)`. Use `set N0 : Matrix (Fin d.n) (Fin d.n) E := ∑ j, Matrix.single L.i₀ (L.em j) (v j) with hN0`. Establish `hne : ∀ j, L.em j ≠ L.i₀` using `fun j => (L.rng (L.em j)).2 ⟨j, rfl⟩`. Establish `hN2 : N0 * N0 = 0`. Rewrite using `[hN0, Finset.sum_mul]`.
+
+Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_eq_zero fun j' _ => ?_` and prove the remaining obligations. Use extensionality with `r s`. Simplify using `only [Matrix.mul_apply, Matrix.single_apply, Matrix.zero_apply]`.
+
+Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Distinguish the cases in `hk : L.i₀ = k`. Substitute `hk` using the available equality. Simplify using `[hne j]`. Simplify using `[hk]`.
+
+Set `a : GL (Fin d.n) E` to `⟨1 + N0, 1 - N0, by`. Rewrite using `[mul_sub, mul_one, add_mul, one_mul, hN2, add_zero, add_sub_cancel_right], by`. Rewrite using `[mul_add, mul_one, sub_mul, one_mul, hN2, sub_zero, sub_add_cancel]⟩`. Take `⟨g, hg, hgf⟩` from `levi_ex hσ hb a`. Establish `hA : (1 + ∑ j, Matrix.single L.i₀ (L.em j) (GlobalTheory.ThK.incV F v j)) = incM F (1 + N0)`.
+
+Use extensionality with `r s`. Simplify using `[hN0, incM, Matrix.sum_apply, Matrix.single_apply, GlobalTheory.ThK.incV, Matrix.one_apply, apply_ite]`. Rewrite `ha'` using `[hA]`. Establish `hgu : uM (GlobalTheory.ThK.incV F v) = g`. Apply `inFrame_injective d.b` to reduce the goal to its premises.
+
+Rewrite using `[ha', hgf]`. Establish `r1` using `(blk_rel hb _ ha').1`. Establish `r2` using `(blk_rel hb _ hgf).1`. Establish `r1'` using `(Matrix.mul_eq_one_comm_of_equiv (Equiv.refl _)).1 r1`. Establish `e1 : a'.map (cA σ) = (incM F (((a⁻¹).1)ᵀ.map σ)).map (cA σ)`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[r2, Matrix.mul_one]`. Use `_ = (a'.map (cA σ) * (incM F (a.1))ᵀ) * (incM F (((a⁻¹).1)ᵀ.map σ)).map (cA σ) := by rw [Matrix.mul_assoc]`. Use `_ = _ := by rw [r1', Matrix.one_mul]`. Establish `e2 : a' = incM F (((a⁻¹).1)ᵀ.map σ)`.
+
+Use `congrArg (fun M => M.map (cA σ)) e1` as an intermediate fact. Simplify `this` using `[Matrix.map_map, Function.comp_def, hcc]`. Rewrite using `[e2]`. Establish `hgm : uM (GlobalTheory.ThK.incV F v) ∈ rat2 σ d.Y` using `hgu ▸ hg`. Use `fc_levi hσ hb hψ hc _ hgm ha' T T ?_ φ hφ x` and prove the remaining obligations.
+
+Rewrite using `[← hA]`. Conclude with `cong_unip L T.1.1 hs.1 _`.
+-/
 theorem fc_U {d : SD σ} (L : LD d) {nb : nA σ d.Y d.b → d.G} {lam : Measure (nA σ d.Y d.b)} {𝓖 : Set (nA σ d.Y d.b)}
     (hc : CoefData (σ := σ) (Y := d.Y) d.b nb lam 𝓖) {uM : (Fin L.n → AE F E) → d.G}
     {ν : Measure (Fin L.n → AE F E)} {𝓤 : Set (Fin L.n → AE F E)} (hU : L.UData uM ν 𝓤) (T : nF σ d.Y d.b)
@@ -98,10 +134,16 @@ theorem fc_U {d : SD σ} (L : LD d) {nb : nA σ d.Y d.b → d.G} {lam : Measure 
   exact cong_unip L T.1.1 hs.1 _
 
 omit [NumberField E] in
+/- English proof (translation)
+The claim follows from `Matrix.map_mul (f := (σ : E →+* E))`.
+-/
 theorem mapσ_mul' {p q r : Type} [Fintype q] (X : Matrix p q E) (Z : Matrix q r E) :
     (X * Z).map σ = X.map σ * Z.map σ :=
   Matrix.map_mul (f := (σ : E →+* E))
 
+/- English proof (translation)
+Establish `h' : (incM F T0)ᵀ = -((((ε : ℤ) : AE F E)) • (incM F T0).map (cA σ))` using `h`. Use `congrFun (congrFun h' i) j` as an intermediate fact. Simplify using `only [Matrix.transpose_apply, incM, Matrix.map_apply, Matrix.neg_apply, Matrix.smul_apply, smul_eq_mul] at this`. Apply `kfour.inclR_injective (F := F)` to reduce the goal to its premises. Rewrite using `[this, map_neg, map_mul, map_intCast, GlobalTheory.EisBL.DoubledUnipotentRadical.cA_inclR]`.
+-/
 theorem nCond_rat {n : ℕ} {ε : ℤˣ} (T0 : Matrix (Fin n) (Fin n) E) (h : incM F T0 ∈ nCond σ n ε) (i j : Fin n) :
     T0 j i = -(((ε : ℤ) : E) * σ (T0 i j)) := by
   have h' : (incM F T0)ᵀ = -((((ε : ℤ) : AE F E)) • (incM F T0).map (cA σ)) := h
@@ -110,6 +152,29 @@ theorem nCond_rat {n : ℕ} {ε : ℤˣ} (T0 : Matrix (Fin n) (Fin n) E) (h : in
   apply kfour.inclR_injective (F := F)
   rw [this, map_neg, map_mul, map_intCast, GlobalTheory.EisBL.DoubledUnipotentRadical.cA_inclR]
 
+/- English proof (translation)
+Establish `hσ` using `sigma_sigma_of_good d.ok.good`. Establish `hb : IsFrame2 σ d.Y d.b` using `d.ok.frame`. Establish `hψ : ∀ z : F, d.B.ψ (algebraMap F (AF F) z) = 1` using `d.ok.good.std.2.1`. Take `⟨ε, hε⟩` from `hb.1`. Take `⟨ε', hε'⟩` from `L.ok.frame.1`.
+
+Establish `hee` using `eps_eq L hε hε'`. Take `⟨T0, hT0⟩` from `(mem_nF_iff T.1).1 T.2`. Establish `hC : incM F T0 ∈ nCond σ d.n ε` using `hT0 ▸ (mem_nA_iff hσ hε T.1.1).1 T.1.2`. Establish `hdet : T0.det = 0`. Establish `h1 : T.1.1.det = 0` using `not_not.1 hT`.
+
+Rewrite `h1` using `[hT0, incM, ← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Conclude with `kfour.inclR_injective (F := F) (h1.trans (map_zero _).symm)`. Take `⟨v, hv0, hTv⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 hdet`. Take `⟨a', ha'⟩` from `exists_gl_col v hv0 L.i₀`. Take `⟨γ, hγ, hγf⟩` from `levi_ex hσ hb a'⁻¹`.
+
+Use `set M0 : Matrix (Fin d.n) (Fin d.n) E := (a'.1.map σ)ᵀ * T0 * a'.1 with hM0`. Establish `hMc : incM F M0 = ((incM F a'.1).map (cA σ))ᵀ * incM F T0 * incM F a'.1`. Rewrite using `[incM_mapc, incM_tr, hM0, incM_mul', incM_mul']`. Establish `hM0C : incM F M0 ∈ nCond σ d.n ε` using `hMc ▸ cong_nCond hσ _ _ hC`. Establish `hM0A : incM F M0 ∈ nA σ d.Y d.b` using `(mem_nA_iff hσ hε _).2 hM0C`.
+
+Set `T₀ : nF σ d.Y d.b` to `⟨⟨incM F M0, hM0A⟩, (mem_nF_iff _).2 ⟨M0, rfl⟩⟩`. Establish `hsubC : (incM F M0).submatrix L.em L.em ∈ nCond σ L.n ε'` using `hee ▸ sub_nCond L.em _ hM0C`. Set `T' : nF σ L.Y L.b` to `⟨⟨(incM F M0).submatrix L.em L.em, (mem_nA_iff hσ hε' _).2 hsubC⟩, (mem_nF_iff _).2 ⟨M0.submatrix L.em L.em, rfl⟩⟩`. Establish `hcol : ∀ k, M0 k L.i₀ = 0` using `fun k => by`. Establish `e1 : M0 k L.i₀ = (((a'.1.map σ)ᵀ * T0) *ᵥ v) k`.
+
+Simplify using `only [hM0, Matrix.mul_apply, Matrix.mulVec, dotProduct, ha']`. Rewrite using `[e1, ← Matrix.mulVec_mulVec, hTv, Matrix.mulVec_zero, Pi.zero_apply]`. Establish `hrow : ∀ k, M0 L.i₀ k = 0` using `fun k => by`. Establish `e0 : ∀ l, ∑ p, σ (v p) * T0 p l = 0` using `fun l => by`. Establish `h1` using `congrArg σ (congrFun hTv l)`.
+
+Simplify using `only [Matrix.mulVec, dotProduct, map_sum, map_mul, Pi.zero_apply, map_zero] at h1`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum, ← Finset.sum_neg_distrib]`. Conclude with `Finset.sum_congr rfl fun p _ => by ring`. Use `_ = 0 := by rw [h1, mul_zero, neg_zero]`.
+
+Simplify using `only [hM0, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, ha']`. Simplify using `only [e0, zero_mul, Finset.sum_const_zero]`. Use `⟨γ, hγ, T₀, T', ⟨fun i => ⟨?_, ?_⟩, rfl⟩, fun φ _ hφ x => ?_⟩` and prove the remaining obligations. Use `show inclR (F := F) (AF F) (M0 L.i₀ i) = 0`. Rewrite using `[hrow, map_zero]`.
+
+Use `show inclR (F := F) (AF F) (M0 i L.i₀) = 0`. Rewrite using `[hcol, map_zero]`. Use `(fc_levi hσ hb hψ hc γ hγ hγf T₀ T ?_ φ hφ x).symm` and prove the remaining obligations. Use `show ((incM F (a'⁻¹).1).map (cA σ))ᵀ * incM F M0 * incM F (a'⁻¹).1 = T.1.1`. Rewrite using `[hT0, incM_mapc, incM_tr, ← incM_mul', ← incM_mul', hM0]`.
+
+Use `congr 1`. Establish `ha : a'.1 * (a'⁻¹).1 = 1` using `by rw [← Units.val_mul, mul_inv_cancel, Units.val_one]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mapσ_mul', Matrix.transpose_mul]`. Simplify using `only [Matrix.mul_assoc]`.
+
+Use `_ = T0 := by rw [ha, Matrix.map_one _ (map_zero _) (map_one _), Matrix.transpose_one, Matrix.one_mul, Matrix.mul_one]`.
+-/
 theorem fc_deg {d : SD σ} (L : LD d) {nb : nA σ d.Y d.b → d.G} {lam : Measure (nA σ d.Y d.b)} {𝓖 : Set (nA σ d.Y d.b)}
     (hc : CoefData (σ := σ) (Y := d.Y) d.b nb lam 𝓖) (T : nF σ d.Y d.b) (hT : ¬ IsND T) :
     ∃ γ ∈ rat2 σ d.Y, ∃ T₀ T', L.IsSub T₀ T' ∧ ∀ φ : d.G → ℂ, Continuous φ →
@@ -171,6 +236,9 @@ theorem fc_deg {d : SD σ} (L : LD d) {nb : nA σ d.Y d.b → d.G} {lam : Measur
         simp only [Matrix.mul_assoc]
     _ = T0 := by rw [ha, Matrix.map_one _ (map_zero _) (map_one _), Matrix.transpose_one, Matrix.one_mul, Matrix.mul_one]
 
+/- English proof (translation)
+Introduce `_ _F _E _ _ _ _ _ _σ d L _nb _lam _𝓖 hc` and use `⟨fun T hT => fc_deg L hc T hT, fun _uM _ν _𝓤 hU T T' hs φ _ hφ u hu x => fc_U L hc hU T T' hs φ hφ u hu x⟩`.
+-/
 theorem fcConj_of : AuxiliaryPrimeFunction → FcConj := fun _ _F _E _ _ _ _ _ _σ d L _nb _lam _𝓖 hc =>
   ⟨fun T hT => fc_deg L hc T hT, fun _uM _ν _𝓤 hU T T' hs φ _ hφ u hu x => fc_U L hc hU T T' hs φ hφ u hu x⟩
 

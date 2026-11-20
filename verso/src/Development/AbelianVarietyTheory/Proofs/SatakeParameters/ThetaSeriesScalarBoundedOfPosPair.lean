@@ -19,6 +19,25 @@ namespace GlobalTheory.TwV.Xc
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Introduce `D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X _ std t J S hD hS hPos hPair`. Take `⟨hmm, -, -, -⟩` from `GlobalTheory.TwV.DelB.sysS_ranks S`. Take `⟨hp5, -, hIn, -, -, -, hχ, -, -⟩` from `S.curve`. Establish `hp2 : D.what₂.places.resChar w ≠ 2` using `by omega`. Introduce `j hj L0 hL0 La' hLa'`.
+
+Establish `hj' : j < D.R.m` using `hmm ▸ hj`. Establish `hL0lat : ((sysS H X std).Pj j).IsLatTup L0.2` using `Formalism.L2.G.Pend.repOf_lat _ S.hfin j L0 hL0`. Take `⟨hAdm, -, -, -, -, -, -, -⟩` from `hPair j hj L0 La' hL0lat hLa'`. Take `⟨hN, hN', hsd, hsd'⟩` from `hAdm`. Take `⟨ha, -, hu⟩` from `chi_alg_unit_inert D _ S.lam t.χ hχ hp2 hIn _ (GlobalTheory.T.determinantIdeal_normOne_char_unitary_smul D t.χ hχ _ _ hN hsd).1`.
+
+Take `⟨ha', -, hu'⟩` from `chi_alg_unit_inert D _ S.lam t.χ hχ hp2 hIn _ (GlobalTheory.T.determinantIdeal_normOne_char_unitary_smul D t.χ hχ _ _ hN' hsd').1`. Take `⟨hU0, hord0⟩` from `GlobalTheory.T.lattice_det_mem_U1_and_ordA_eq_neg_len S hD hS j hj'.le L0 hL0lat`. Take `⟨hU1, hord1⟩` from `GlobalTheory.T.lattice_det_mem_U1_and_ordA_eq_neg_len S hD hS (j + 1) hj' La' hLa'`. Establish `hfill` using `GlobalTheory.T.systemWeights_eq_shifted_character_exponents S hD hS j hj' La'.1`. Establish `hm1` using `S.law.mu_alg j hj' _ hU1`.
+
+Establish `hm0` using `S.law.mu_alg j hj' _ hU0`. Establish `hn1` using `GlobalTheory.T.norm_lambdaCharacter_normOne_idele_eq_p_pow S hD hS hPos j hj' hfill _ hU1`. Establish `hn0` using `GlobalTheory.T.norm_lambdaCharacter_normOne_idele_eq_p_pow S hD hS hPos j hj' hfill _ hU0`. Establish `hcf : Base.chiFac t.χ _ _ ((J.fd std).kerN j L0) ((J.fd std).kerN (j + 1) La') ∈ TaylorLogMetric.Qbar`. Unfold `Base.chiFac`.
+
+Conclude with `TaylorLogMetric.Qbar.mul_mem (qbar_zpow_mem ha _) (qbar_zpow_mem ha' _)`. Establish `hcfn : ‖TaylorLogMetric.lamC S.lam (Base.chiFac t.χ _ _ ((J.fd std).kerN j L0) ((J.fd std).kerN (j + 1) La'))‖ = 1`. Unfold `Base.chiFac`. Rewrite using `[lamC_mul_mem S.lam (qbar_zpow_mem ha _) (qbar_zpow_mem ha' _), lamC_zpow_mem S.lam ha, lamC_zpow_mem S.lam ha', norm_mul, norm_zpow, norm_zpow, hu, hu', one_zpow, one_zpow, mul_one]`. Establish `hmr : S.muT (j + 1) ((J.fd std).dt (j + 1) La') * (S.muT (j + 1) ((J.fd std).dt j L0))⁻¹ ∈ TaylorLogMetric.Qbar` using `TaylorLogMetric.Qbar.mul_mem hm1 (TaylorLogMetric.Qbar.inv_mem hm0)`.
+
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Unfold `KG.scalG`. Conclude with `TaylorLogMetric.Qbar.mul_mem (TaylorLogMetric.Qbar.mul_mem (TaylorLogMetric.Qbar.mul_mem hmr (TaylorLogMetric.Qbar.inv_mem hcf)) (qbar_zpow_mem ha _)) (qbar_zpow_mem ha' _)`. Establish `hexp : TaylorLogMetric.lamC S.lam (KG.scalG (J.fd std) t.χ S.muT j L0 La') = TaylorLogMetric.lamC S.lam (S.muT (j + 1) ((J.fd std).dt (j + 1) La') * (S.muT (j + 1) ((J.fd std).dt j L0))⁻¹) * (TaylorLogMetric.lamC S.lam (Base.chiFac t.χ _ _ ((J.fd std).kerN j L0) ((J.fd std).kerN …`. Unfold `KG.scalG`.
+
+Rewrite using `[lamC_mul_mem S.lam (TaylorLogMetric.Qbar.mul_mem (TaylorLogMetric.Qbar.mul_mem hmr (TaylorLogMetric.Qbar.inv_mem hcf)) (qbar_zpow_mem ha _)) (qbar_zpow_mem ha' _), lamC_mul_mem S.lam (TaylorLogMetric.Qbar.mul_mem hmr (TaylorLogMetric.Qbar.inv_mem hcf)) (qbar_zpow_mem ha _), lamC …`. Establish `hp0 : ‖((D.what₂.places.resChar w : ℕ) : ℂ_[D.what₂.places.resChar w])‖ ≠ 0`. Rewrite using `[norm_ne_zero_iff]`. Conclude with `(Fact.out : (D.what₂.places.resChar w).Prime).ne_zero` after adjusting the coercions. Establish `hB' : ‖((D.what₂.places.resChar w : ℕ) : ℂ_[D.what₂.places.resChar w]) ^ KG.expG (sysS H X std) j L0 La' * TaylorLogMetric.lamC S.lam (S.muT (j + 1) ((J.fd std).dt (j + 1) La') * (S.muT (j + 1) ((J.fd std).dt j L0))⁻¹)‖ = 1`.
+
+Rewrite using `[lamC_mul_mem S.lam hm1 (TaylorLogMetric.Qbar.inv_mem hm0), lamC_inv_mem S.lam hm0, norm_mul, norm_mul, norm_inv, norm_zpow, hn1, hn0, ← zpow_neg, ← mul_assoc, ← zpow_add₀ hp0, ← zpow_add₀ hp0]`. Use `zpow_zero (‖((D.what₂.places.resChar w : ℕ) : ℂ_[D.what₂.places.resChar w])‖) using 2` and compare the differences between its conclusion and the goal. Simplify using `only [hord1, hord0, KG.expG, ← Finset.sum_neg_distrib, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_eq_zero fun v _ => by ring`. Rewrite using `[hexp]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_assoc, ← mul_assoc, ← mul_assoc, norm_mul, norm_mul, norm_mul, norm_inv, norm_zpow, norm_zpow, hcfn, hu, hu', one_zpow, one_zpow, inv_one, mul_one, mul_one, mul_one]`. Use `_ = 1 := hB'`. Use `_ ≤ 1 := le_rfl`.
+-/
 theorem scal_of_pos_pair : Sites (fun {D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X} [Fact (D.what₂.places.resChar w).Prime] {std t J} S =>
     S.Pos → S.Pair → S.Scal) := by
   intro D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X _ std t J S hD hS hPos hPair

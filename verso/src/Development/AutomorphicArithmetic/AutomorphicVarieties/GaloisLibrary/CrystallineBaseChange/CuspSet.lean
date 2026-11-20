@@ -10,17 +10,29 @@ namespace UpperTheory.V.Br.CuspStabilizer
 section Aff
 variable {R S : Type} [CommRing R] [CommRing S]
 
+/- English proof (translation)
+Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> simp [aff, Matrix.mul_apply, Fin.sum_univ_succ]`.
+-/
 private theorem aff_mul (y y' : Rˣ) (x x' : R) : aff y x * aff y' x' = aff (y * y') (y * x' + x) := by
   ext i j; fin_cases i <;> fin_cases j <;> simp [aff, Matrix.mul_apply, Fin.sum_univ_succ]
 
+/- English proof (translation)
+Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> simp [aff]`.
+-/
 private theorem aff_one : aff (1 : Rˣ) (0 : R) = 1 := by
   ext i j; fin_cases i <;> fin_cases j <;> simp [aff]
 
+/- English proof (translation)
+Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `(1 : Matrix (Fin 2) (Fin 2) S) i j - s ((1 : Matrix (Fin 2) (Fin 2) R) i j) + s (aff y x i j) = _`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [aff, corner]`.
+-/
 private theorem corner_aff (s : R →ₙ+* S) (y : Rˣ) (x : R) : cornerGL 2 s (aff y x) = aff (Units.map (corner s) y) (s x) := by
   ext i j
   change (1 : Matrix (Fin 2) (Fin 2) S) i j - s ((1 : Matrix (Fin 2) (Fin 2) R) i j) + s (aff y x i j) = _
   fin_cases i <;> fin_cases j <;> simp [aff, corner]
 
+/- English proof (translation)
+Use `Units.continuous_iff.2 ⟨continuous_matrix fun i j => ?_, continuous_matrix fun i j => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [aff] <;> fun_prop`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [aff] <;> fun_prop`.
+-/
 private theorem continuous_aff [TopologicalSpace R] [IsTopologicalRing R] : Continuous fun y : Rˣ => aff y (0 : R) := by
   refine Units.continuous_iff.2 ⟨continuous_matrix fun i j => ?_, continuous_matrix fun i j => ?_⟩
   · fin_cases i <;> fin_cases j <;> simp [aff] <;> fun_prop
@@ -44,6 +56,13 @@ private noncomputable def eps (s : InfinitePlace F → ℤˣ) : TR.Kinf F 2 :=
     fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_succ, Matrix.star_apply]
     rcases Int.units_eq_one_or (s v) with h | h <;> simp [h]⟩
 
+/- English proof (translation)
+Establish `hn : ‖(⟨a, b⟩ : ℂ)‖ = 1`. Rewrite using `[Complex.norm_def, Complex.normSq_mk, h1, Real.sqrt_one]`. Establish `h0 : (⟨a, b⟩ : ℂ) ≠ 0` using `fun h => by simp [h] at hn`. Establish `ha : a = Real.cos (Complex.arg ⟨a, b⟩)` using `by rw [Complex.cos_arg h0, hn, div_one]`. Establish `hb : b = Real.sin (Complex.arg ⟨a, b⟩)` using `by rw [Complex.sin_arg, hn, div_one]`.
+
+Establish `hc : c = -((a * d - b * c) * b)` using `by linear_combination (-c) * h1 + a * h2`. Establish `hd : d = (a * d - b * c) * a` using `by linear_combination (-d) * h1 + b * h2`. Establish `hs : (a * d - b * c) * (a * d - b * c) = 1`. Take the linear combination `(c * c + d * d) * h1 + h3 - (a * c + b * d) * h2`. Break down `mul_self_eq_one_iff.1 hs with h | h` into its components or cases.
+
+Conclude with `⟨1, _, ha, hb, by rw [← hb]; simpa [h] using hc, by rw [← ha]; simpa [h] using hd⟩`. Conclude with `⟨-1, _, ha, hb, by rw [← hb]; simpa [h] using hc, by rw [← ha]; simpa [h] using hd⟩`.
+-/
 private theorem real_dec {a b c d : ℝ} (h1 : a * a + b * b = 1) (h2 : a * c + b * d = 0) (h3 : c * c + d * d = 1) :
     ∃ (s : ℤˣ) (t : ℝ), a = Real.cos t ∧ b = Real.sin t ∧ c = -((s : ℤ) * Real.sin t) ∧ d = (s : ℤ) * Real.cos t := by
   have hn : ‖(⟨a, b⟩ : ℂ)‖ = 1 := by
@@ -60,6 +79,11 @@ private theorem real_dec {a b c d : ℝ} (h1 : a * a + b * b = 1) (h2 : a * c + 
   · exact ⟨-1, _, ha, hb, by rw [← hb]; simpa [h] using hc, by rw [← ha]; simpa [h] using hd⟩
 
 omit [NumberField F] in
+/- English proof (translation)
+Establish `h` using `Matrix.mem_unitaryGroup_iff.1 x.2`. Establish `e : ∀ i j v, x.1 i 0 v * x.1 j 0 v + x.1 i 1 v * x.1 j 1 v = (1 : Matrix (Fin 2) (Fin 2) (TR.Rinf F)) i j v` using `fun i j v => by`. Rewrite using `[← h]`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_succ, Matrix.star_apply]`. Use `choose s θ h1 h2 h3 h4 using fun v => real_dec (a := x.1 0 0 v) (b := x.1 0 1 v) (c := x.1 1 0 v) (d := x.1 1 1 v) (by simpa using e 0 0 v) (by simpa using e 0 1 v) (by simpa using e 1 1 v)`.
+
+Use `⟨s, θ, ?_⟩` and prove the remaining obligations. Use extensionality with `i j v`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [rot, eps, Matrix.mul_apply, Fin.sum_univ_succ, h1, h2, h3, h4]`.
+-/
 private theorem dec (x : TR.Kinf F 2) : ∃ s θ, x = eps s * rot θ := by
   have h := Matrix.mem_unitaryGroup_iff.1 x.2
   have e : ∀ i j v, x.1 i 0 v * x.1 j 0 v + x.1 i 1 v * x.1 j 1 v = (1 : Matrix (Fin 2) (Fin 2) (TR.Rinf F)) i j v := fun i j v => by
@@ -78,11 +102,27 @@ private def stab (M : ℕ) (g : GA F 2) : Subgroup (Ideles F) where
   mul_mem' := fun {a b} ha hb Z hZ t => by rw [← mul_assoc, hb Z hZ, ha Z hZ]
   inv_mem' := fun {a} ha Z hZ t => by rw [← ha Z hZ, inv_mul_cancel_right]
 
+/- English proof (translation)
+Introduce `Z hZ t` and use `⟨fun h => by simpa only [mul_inv_cancel_right] using h2 Z hZ _ h, h1 Z hZ t⟩`.
+-/
 private theorem mem_stab {M : ℕ} {g : GA F 2} {u : Ideles F}
     (h1 : ∀ Z : Set (GA F 2), Moves M Z → ∀ t, aff t 0 * g ∈ Z → aff (t * u) 0 * g ∈ Z)
     (h2 : ∀ Z : Set (GA F 2), Moves M Z → ∀ t, aff t 0 * g ∈ Z → aff (t * u⁻¹) 0 * g ∈ Z) : u ∈ stab M g :=
   fun Z hZ t => ⟨fun h => by simpa only [mul_inv_cancel_right] using h2 Z hZ _ h, h1 Z hZ t⟩
 
+/- English proof (translation)
+Establish `am : ∀ t u : Ideles F, aff (t * u) (0 : Ad F) = aff u 0 * aff t 0` using `fun t u => by rw [aff_mul, mul_comm]; simp`. Establish `h1 : ∀ a : Fˣ, ∀ Z : Set (GA F 2), Moves M Z → ∀ t, aff t 0 * g ∈ Z → aff (t * diagUnits F a) 0 * g ∈ Z` using `fun a Z hZ t h => by rw [am, mul_assoc]; exact hZ.rat a _ h`. Establish `h2 : ∀ y : (TR.Rinf F)ˣ, (∀ v, 0 < y.val v) → ∀ Z : Set (GA F 2), Moves M Z → ∀ t, aff t 0 * g ∈ Z → aff (t * TR.infId F y) 0 * g ∈ Z` using `fun y hy Z hZ t h => by`. Use `hZ.pos y hy _ h` as an intermediate fact. Rewrite `this` using `[TR.infGL, corner_aff, map_zero]`.
+
+Rewrite using `[am, mul_assoc]`. Conclude with `this`. Use `set k := Matrix.GeneralLinearGroup.map (pFin F) g with hk`. Establish `h3 : ∀ u : (Af F)ˣ, k⁻¹ * aff u 0 * k ∈ KLev F 2 M → ∀ Z : Set (GA F 2), Moves M Z → ∀ t, aff t 0 * g ∈ Z → aff (t * finId F u) 0 * g ∈ Z` using `fun u hu Z hZ t h => by`. Establish `e : aff (finId F u) 0 * g = g * finGL F 2 (k⁻¹ * aff u 0 * k)`.
+
+Establish `: aff (finId F u) 0 = finGL F 2 (aff u 0)` using `by rw [finGL, corner_aff, map_zero]; rfl`. Rewrite using `[this]`. Conclude with `TR.ga_ext (by simp) (by simp [k, mul_assoc])`. Rewrite using `[mul_comm t, am, mul_assoc, e, ← mul_assoc]`. Conclude with `hZ.lev _ hu _ h`.
+
+Use `(UpperTheory.ray_class_group_finite F (stab M g) (fun a => mem_stab (h1 a) ?_) (fun y hy => mem_stab (h2 y hy) ?_) ?_).2` and prove the remaining obligations. Rewrite using `[← map_inv]`. Conclude with `h1 _`. Rewrite using `[← map_inv]`. Use `h2 _ fun v => ?_` and prove the remaining obligations.
+
+Establish `h : y.val v * (y⁻¹).val v = 1` using `congrFun y.mul_inv v`. Conclude with `(mul_pos_iff_of_pos_left (hy v)).1 (h ▸ one_pos)`. Establish `h4` using `((isOpen_KLev (F := F) (n := 2) hM).preimage (f := fun u : (Af F)ˣ => k⁻¹ * aff u 0 * k) ((continuous_const.mul continuous_aff).mul continuous_const)).mem_nhds (x := 1) (by simp [aff_one]) filter_upwards [h4] with u hu`. Use `mem_stab (h3 u hu) ?_` and prove the remaining obligations. Rewrite using `[← map_inv]`.
+
+Use `h3 _ ?_` and prove the remaining obligations. Establish `e : aff u⁻¹ (0 : Af F) = (aff u 0)⁻¹` using `eq_inv_of_mul_eq_one_left (by rw [aff_mul]; simp [aff_one])`. Use `(KLev F 2 M).inv_mem hu` as an intermediate fact. Rewrite using `[e]`. Simplify `this` using `only [mul_inv_rev, inv_inv, mul_assoc]`.
+-/
 private theorem stab_fin {M : ℕ} (hM : 1 ≤ M) (g : GA F 2) : (stab M g).FiniteIndex := by
   have am : ∀ t u : Ideles F, aff (t * u) (0 : Ad F) = aff u 0 * aff t 0 := fun t u => by rw [aff_mul, mul_comm]; simp
   have h1 : ∀ a : Fˣ, ∀ Z : Set (GA F 2), Moves M Z → ∀ t, aff t 0 * g ∈ Z → aff (t * diagUnits F a) 0 * g ∈ Z :=
@@ -121,6 +161,17 @@ private theorem stab_fin {M : ℕ} (hM : 1 ≤ M) (g : GA F 2) : (stab M g).Fini
 end UpperTheory.V.Br.CuspStabilizer
 
 open UpperTheory.V.Br.CuspStabilizer in
+/- English proof (translation)
+Introduce `F _ _ _ M hM`. Use `haveI : CompactSpace (KLev F 2 1) := isCompact_iff_compactSpace.1 (isCompact_KLev le_rfl)`. Use `haveI : Finite (KLev F 2 1 ⧸ (KLev F 2 M).subgroupOf (KLev F 2 1)) := Subgroup.quotient_finite_of_isOpen _ ((isOpen_KLev hM).preimage continuous_subtype_val)`. Set `b : (InfinitePlace F → ℤˣ) × (KLev F 2 1 ⧸ (KLev F 2 M).subgroupOf (KLev F 2 1)) → GA F 2` to `fun p => TR.infGL F 2 (Unitary.toUnits (eps p.1)) * finGL F 2 p.2.out.1`. Use `haveI : ∀ g : GA F 2, (stab M g).FiniteIndex := stab_fin hM`.
+
+Use `⟨⋃ p, Set.range fun q : Ideles F ⧸ stab M (b p) => aff q.out 0 * b p, Set.finite_iUnion fun p => Set.finite_range _, fun Z hS hZ => Set.eq_univ_of_forall fun g => ?_⟩` and prove the remaining obligations. Establish `h1 : ∀ p t, aff t 0 * b p ∈ Z` using `fun p t => by`. Take `⟨h, hh⟩` from `QuotientGroup.mk_out_eq_mul (stab M (b p)) t`. Use `(h.2 Z hZ t).1 ?_` and prove the remaining obligations. Rewrite using `[← hh]`.
+
+Conclude with `hS (Set.mem_iUnion.2 ⟨p, _, rfl⟩)`. Take `⟨z, y, x, r, u, hu, rfl⟩` from `UpperTheory.V.Br.iwasawaA F g`. Take `⟨s, θ, rfl⟩` from `dec r`. Take `⟨h, hh⟩` from `QuotientGroup.mk_out_eq_mul ((KLev F 2 M).subgroupOf (KLev F 2 1)) ⟨u, hu⟩`. Establish `h2` using `hZ.lev _ ((KLev F 2 M).inv_mem h.2) _ (h1 (s, QuotientGroup.mk ⟨u, hu⟩) y)`.
+
+Establish `h3` using `hZ.cent z _ (hZ.unip x _ (hZ.rot θ (Unitary.toUnits (rot θ)) rfl _ h2))`. Establish `e1 : aff y x = aff 1 x * aff y 0` using `by rw [aff_mul]; simp`. Use `h3 using 1` and compare the differences between its conclusion and the goal. Simplify using `only [b, hh, e1, mul_assoc, map_mul, Subgroup.coe_mul, map_inv]`. Rewrite using `[TR.infGL_comm]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem UpperTheory.V.Br.cuspSet :
     UpperTheory.V.Br.CuspSet := by
   intro F _ _ _ M hM

@@ -7,6 +7,17 @@ open GlobalTheory.FinPl (Lat idAt idOff intAt grpAt grpOff MxAt latV latA InK Mo
 open scoped nonZeroDivisors ContDiff
 open GlobalTheory.AscFin
 
+/- English proof (translation)
+Establish `hd0 : ((d : D.host.F)) ≠ 0`. Introduce `h`. Apply `hd` to reduce the goal to its premises. Establish `: d = 0` using `by exact_mod_cast h`. Rewrite using `[this]`.
+
+Conclude with `v.asIdeal.zero_mem`. Establish `hval : v.valuation D.host.F (d : D.host.F) = 1`. Rewrite using `[HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.intValuation_eq_one_iff]`. Conclude with `hd`. Use `⟨α * algebraMap D.host.F (Af D.host.F) (d : D.host.F)⁻¹, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `w`. Rewrite using `[map_mul, AlgHom.commutes]`. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Use `(HeightOneSpectrum.adicCompletionIntegers D.host.F w).mul_mem _ _ (hα w) ?_` and prove the remaining obligations.
+
+Establish `hv : Valued.v (algebraMap D.host.F (HeightOneSpectrum.adicCompletion D.host.F w) (d : D.host.F)⁻¹) = w.valuation D.host.F (d : D.host.F)⁻¹` using `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' w _`. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers]`. Use `le_of_eq ?_` and prove the remaining obligations. Use `hv.trans ?_` and prove the remaining obligations. Rewrite using `[map_inv₀, hval, inv_one]`.
+
+Rewrite using `[hsupp w hw, zero_mul]`. Conclude with `(HeightOneSpectrum.adicCompletionIntegers D.host.F w).zero_mem`. Introduce `w hw`. Rewrite using `[map_mul, hsupp w hw, zero_mul]`. Rewrite using `[mul_assoc, ← map_mul, inv_mul_cancel₀ hd0, map_one, mul_one]`.
+-/
 theorem GlobalTheory.intAf_div_prime_to_place (D : D7) (v : GlobalTheory.FinPl.Pl D) (d : 𝓞 D.host.F) (hd : d ∉ v.asIdeal)
     (α : Af D.host.F) (hα : α ∈ intAf D.host.F) (hsupp : ∀ w, ¬ w = v → evalV D.host.F w α = 0) :
     ∃ α' ∈ intAf D.host.F, (∀ w, ¬ w = v → evalV D.host.F w α' = 0) ∧
@@ -38,5 +49,8 @@ theorem GlobalTheory.intAf_div_prime_to_place (D : D7) (v : GlobalTheory.FinPl.P
     rw [map_mul, hsupp w hw, zero_mul]
   · rw [mul_assoc, ← map_mul, inv_mul_cancel₀ hd0, map_one, mul_one]
 
+/- English proof (translation)
+Introduce `D v d hd α hα hs` and use `GlobalTheory.intAf_div_prime_to_place D v d hd α hα hs`.
+-/
 theorem GlobalTheory.intAf_div_prime_to_place' : ∀ (D : D7) (v : GlobalTheory.FinPl.Pl D) (d : 𝓞 D.host.F), d ∉ v.asIdeal → ∀ α ∈ intAf D.host.F, (∀ w, ¬ w = v → evalV D.host.F w α = 0) → ∃ α' ∈ intAf D.host.F, (∀ w, ¬ w = v → evalV D.host.F w α' = 0) ∧ α = α' * algebraMap D.host.F (Af D.host.F) (d : D.host.F) :=
   fun D v d hd α hα hs => GlobalTheory.intAf_div_prime_to_place D v d hd α hα hs

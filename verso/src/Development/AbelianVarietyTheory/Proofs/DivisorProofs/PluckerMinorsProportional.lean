@@ -4,6 +4,11 @@ open Matrix
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Take `⟨A, B, C, D, rfl⟩ : ∃ A B C D, X = fromBlocks A B C D` from `⟨_, _, _, _, (fromBlocks_toBlocks X).symm⟩`. Take `⟨A', B', C', D', rfl⟩ : ∃ A B C D, Y = fromBlocks A B C D` from `⟨_, _, _, _, (fromBlocks_toBlocks Y).symm⟩`. Rewrite `h` using `[fromBlocks_multiply, ← fromBlocks_one, fromBlocks_inj]`. Take `⟨-, h12, -, h22⟩` from `h`. Establish `key : fromBlocks A B C D * fromBlocks (1 : Matrix m m K) B' 0 D' = fromBlocks A 0 C 1`.
+
+Rewrite using `[fromBlocks_multiply, h12, h22]`. Simplify using the standard rewrite rules. Use `congrArg Matrix.det key` as an intermediate fact. Rewrite `this` using `[det_mul, det_fromBlocks_zero₂₁, det_fromBlocks_zero₁₂]`. Simplify using `using this`.
+-/
 theorem det_mul_det_toBlocks₂₂_of_mul_eq_one {K : Type} [Field K] {m n : Type} [Fintype m] [Fintype n]
     [DecidableEq m] [DecidableEq n] (X Y : Matrix (m ⊕ n) (m ⊕ n) K) (h : X * Y = 1) :
     X.det * Y.toBlocks₂₂.det = X.toBlocks₁₁.det := by
@@ -20,6 +25,33 @@ theorem det_mul_det_toBlocks₂₂_of_mul_eq_one {K : Type} [Field K] {m n : Typ
   rw [det_mul, det_fromBlocks_zero₂₁, det_fromBlocks_zero₁₂] at this
   simpa using this
 
+/- English proof (translation)
+Take `⟨π₀, hπ₀⟩` from `h₀`. Take `⟨π₁, hπ₁⟩` from `h₁`. Use `set M : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) K := fromRows α ((1 : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) K).submatrix (π₀ ∘ Sum.inr) id) with hMdef`. Establish `hMπ₀ : (M.submatrix id π₀).det = (α.submatrix id (π₀ ∘ Sum.inl)).det`. Rewrite using `[← fromBlocks_toBlocks (M.submatrix id π₀)]`.
+
+Establish `h21 : (M.submatrix id π₀).toBlocks₂₁ = 0`. Use extensionality with `i j`. Simplify using `[M, toBlocks₂₁, one_apply]`. Establish `h22 : (M.submatrix id π₀).toBlocks₂₂ = 1`. Use extensionality with `i j`.
+
+Simplify using `[M, toBlocks₂₂, one_apply]`. Rewrite using `[h21, h22, det_fromBlocks_zero₂₁]`. Simplify using `only [det_one, mul_one]`. Both sides reduce to the same expression. Establish `hMdet : M.det ≠ 0`.
+
+Introduce `h`. Apply `hπ₀` to reduce the goal to its premises. Rewrite using `[← hMπ₀, det_permute', h, mul_zero]`. Establish `hMu : IsUnit M.det` using `isUnit_iff_ne_zero.mpr hMdet`. Use `set N := M⁻¹ with hN`.
+
+Use `set g : Matrix (Fin q) (Fin q) K := β.submatrix id (π₀ ∘ Sum.inr) with hg`. Establish `hD : ∀ π : Equiv.Perm (Fin p ⊕ Fin q), ((Equiv.Perm.sign π : ℤ) : K) * M.det * (N.submatrix (π ∘ Sum.inr) Sum.inr).det = (α.submatrix id (π ∘ Sum.inl)).det`. Introduce `π`. Establish `hXY : M.submatrix id π * N.submatrix π id = 1`. Rewrite using `[submatrix_mul_equiv, hN, mul_nonsing_inv _ hMu, submatrix_id_id]`.
+
+Use `det_mul_det_toBlocks₂₂_of_mul_eq_one _ _ hXY` as an intermediate fact. Rewrite `this` using `[det_permute']`. Apply the tactic sequence `convert this using 2 <;> rfl`. Establish `hβ : ∀ π : Equiv.Perm (Fin p ⊕ Fin q), β.submatrix id (π ∘ Sum.inr) = g * (N.submatrix (π ∘ Sum.inr) Sum.inr).transpose`. Introduce `π`.
+
+Establish `hT : β.transpose = N * (M * β.transpose)`. Rewrite using `[← Matrix.mul_assoc, hN, nonsing_inv_mul _ hMu, Matrix.one_mul]`. Use extensionality with `k m`. Use `congrFun (congrFun hT (π (Sum.inr m))) k` as an intermediate fact. Rewrite `this` using `[transpose_apply]`.
+
+Simplify using `only [submatrix_apply, id, Function.comp_apply, mul_apply, transpose_apply]`. Rewrite using `[this, mul_apply, Fintype.sum_sum_type]`. Establish `h0 : ∀ l, (M * β.transpose) (Sum.inl l) k = 0`. Introduce `l`. Use `congrFun (congrFun hαβ l) k` as an intermediate fact.
+
+Simplify `this` using `[M, mul_apply]`. Establish `h1 : ∀ k', (M * β.transpose) (Sum.inr k') k = g k k'`. Introduce `k'`. Simplify using `[M, g, mul_apply, one_apply]`. Simplify using `only [h0, h1, mul_zero, Finset.sum_const_zero, zero_add]`.
+
+Use `Finset.sum_congr rfl fun k' _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`. Establish `hdetβ : ∀ π : Equiv.Perm (Fin p ⊕ Fin q), (β.submatrix id (π ∘ Sum.inr)).det = g.det * (N.submatrix (π ∘ Sum.inr) Sum.inr).det`. Introduce `π`. Rewrite using `[hβ π, det_mul, det_transpose]`.
+
+Establish `hg0 : g.det ≠ 0`. Introduce `h`. Apply `hπ₁` to reduce the goal to its premises. Rewrite using `[hdetβ, h, zero_mul]`. Use `⟨M.det / g.det, fun π => ?_⟩` and prove the remaining obligations.
+
+Establish `hs : ((Equiv.Perm.sign π : ℤ) : K) * ((Equiv.Perm.sign π : ℤ) : K) = 1`. Rewrite using `[← Int.cast_mul, ← Units.val_mul, Int.units_mul_self]`. Simplify using the standard rewrite rules. Establish `hc : M.det / g.det * (g.det * (N.submatrix (π ∘ Sum.inr) Sum.inr).det) = M.det * (N.submatrix (π ∘ Sum.inr) Sum.inr).det`. Clear the denominators using the available nonvanishing facts.
+
+Rewrite using `[← hD π, hdetβ π, hc]`. Take the linear combination `(M.det * (N.submatrix (π ∘ Sum.inr) Sum.inr).det) * hs`.
+-/
 theorem jacobi_complementary_minors {K : Type} [Field K] {p q : ℕ}
     (α : Matrix (Fin p) (Fin p ⊕ Fin q) K) (β : Matrix (Fin q) (Fin p ⊕ Fin q) K)
     (hαβ : α * β.transpose = 0)

@@ -13,6 +13,13 @@ open NumberField IsDedekindDomain MeasureTheory in
 open scoped TensorProduct InnerProductSpace in
 attribute [local instance] _root_.Formalism.BasicNotions.Host.cmStar in
 
+/- English proof (translation)
+Introduce `G H S Sinf Ds Dt _ _ _ _ _ _ _ _ _ ν 𝓕 th pt It CCs CCt io hio hker k k' a a' hth hinv F F' u hF' hu`. Use `sub_eq_zero.mp (hker (io F' - u) fun φ v => ?_)` and prove the remaining obligations. Use function extensionality and compare the values at `g`. Simplify using `only [Submodule.coe_sub, LinearMap.sub_apply, Pi.sub_apply, Pi.zero_apply]`. Rewrite using `[sub_eq_zero, ← hio.eq F' φ v g, hu, ← hio.eq F φ v (g * k)]`.
+
+Unfold `_root_.Formalism.IndefR.Lift.liftInt`. Rewrite using `[← hinv F φ v (g * k), ← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `h`. Rewrite using `[hF', show a * (th (g * k) (h * k') (pt φ) * (F : Ds →ₗ[ℂ] (H → ℂ)) v (h * k')) = (a * th (g * k) (h * k') (pt φ)) * (F : Ds →ₗ[ℂ] (H → ℂ)) v (h * k') from (_root_.mul_assoc _ _ _).symm, hth]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem _root_.GlobalTheory.thetaLift_translate_of_kernel_fixed : ∀ {G H S Sinf Ds Dt : Type} [Group G] [Group H]
     [MeasurableSpace H] [AddCommGroup Sinf] [Module ℂ Sinf] [AddCommGroup Ds] [Module ℂ Ds]
     [AddCommGroup Dt] [Module ℂ Dt] (ν : Measure H) (𝓕 : Set H) (th : G → H → S → ℂ) (pt : Sinf → S)

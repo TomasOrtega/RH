@@ -13,6 +13,19 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.BottomGrid
 
+/- English proof (translation)
+Introduce `D _ T L μ0 hL sc G W M _`. Establish `hY : (⟨Yc D 0, L.ΛY 0⟩ : LSp D).IsV (Node.rank D (.grid 0 0)) (Node.neg D.R.m (.grid 0 0))` using `node_isV G hL (X := .grid 0 0) ⟨Nat.zero_le _, Nat.zero_le _⟩`. Establish `hP` using `G.sp.P_is 0 (Nat.zero_le _)`. Use `⟨hY.sd, hP.sd, G.sp.lat0, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `show zv G.sp.dec0 ∈ (G.sp.P 0).lat`.
+
+Rewrite using `[G.sp.lat0]`. Use `⟨0, Submodule.zero_mem _, fun _ => 1, fun p => ?_, ?_⟩` and prove the remaining obligations. Conclude with `(FractionalIdeal.mem_one_iff _).2 ⟨1, by simp⟩`. Use function extensionality and compare the values at `i`. Simplify using `[zv, Matrix.mulVec, dotProduct]`.
+
+Introduce `k hk hfin`. Establish `h1 : Lev.finE (Yc D 0) k ∈ congLev D.sp.cm (Yc D 0).gram (L.ΛY 0) G.modul`. Use `GlobalTheory.T.congruence_level_of_embedding G.sp.dec0 (L.ΛY 0) (fun _ => 1) G.modul k ?_` and prove the remaining obligations. Establish `e : G.Λ (.core 0) = G.sp.dec0.lat (L.ΛY 0) (fun _ => 1)` using `G.sp.lat0`. Use `hfin` as an intermediate fact.
+
+Unfold `GridData.levCong at this`. Rewrite `this` using `[e]`. Conclude with `this`. Establish `h2` using `GlobalTheory.T.unitaryLatticeCongruence_mem_conjugateIdeal_inf (Yc D 0) (L.ΛY 0) hY.sd _ _ h1`. Conclude with `Subgroup.mem_inf.2 ⟨hk, congLev_mono (GlobalTheory.T.modulus_inf_conj_le_span_typePrimes_product G) h2⟩`.
+
+Simplify `hY.rank` using `[Node.rank, rankV]`. Simplify `hP.rank` using `[Node.rank, rankP, nRk]`. Introduce `A τ`. Rewrite using `[GlobalTheory.T.card_negativeSigns_diagonalFrame_eq_signature _ hY.sigOK A τ, hY.sig]`. Simplify using `only [Node.neg, Nat.sub_zero]`.
+
+Conclude with `Nat.div_le_self _ _`.
+-/
 theorem bottom : All fun {D} _ {L} _ {G} _ _ => IsSelfDualC (Yc D 0) (L.ΛY 0) ∧ IsSelfDualC (G.V (.core 0)) (G.Λ (.core 0)) ∧ G.Λ (.core 0) = G.sp.dec0.lat (L.ΛY 0) (fun _ => 1) ∧ zv G.sp.dec0 ∈ G.Λ (.core 0) ∧ (∀ k ∈ GfC (Yc D 0), Lev.finE (G.V (.core 0)) (stabilizerEmbedding G.sp.dec0 k) ∈ G.levCong (.core 0) → k ∈ levRow L) ∧ (Yc D 0).rank = D.R.r ∧ (G.V (.core 0)).rank = D.R.r + 1 ∧ ∀ (A : Fr (Yc D 0)) τ, (Finset.univ.filter fun a => A.ε τ a = false).card ≤ D.R.m := by
   intro D _ T L μ0 hL sc G W M _
   have hY : (⟨Yc D 0, L.ΛY 0⟩ : LSp D).IsV (Node.rank D (.grid 0 0)) (Node.neg D.R.m (.grid 0 0)) :=

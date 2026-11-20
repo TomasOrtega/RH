@@ -12,6 +12,13 @@ open PositivityTheory.Rg.Tf.Core PositivityTheory.Rg.Tf.Adel PositivityTheory.Rg
 open scoped ENNReal NumberField.AdeleRing InnerProductSpace ComplexConjugate
 open UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial
 
+/- English proof (translation)
+Establish `key : Measure.sum (fun i => ν.map (f i)) = ENNReal.ofReal c • m.map g`. Use `Measure.ext_of_lintegral _ fun φ hφ => ?_` and prove the remaining obligations. Rewrite using `[lintegral_sum_measure, lintegral_smul_measure, lintegral_map hφ hg, smul_eq_mul, ← H φ hφ, lintegral_tsum (f := fun i y => φ (f i y)) fun i => (hφ.comp (hf i)).aemeasurable]`. Conclude with `tsum_congr fun i => lintegral_map hφ (hf i)`. Establish `h1 : Integrable h (m.map g)` using `(integrable_map_measure hh.aestronglyMeasurable hg.aemeasurable).2 hi`.
+
+Establish `h2 : Integrable h (Measure.sum fun i => ν.map (f i))`. Rewrite using `[key]`. Conclude with `h1.smul_measure ENNReal.ofReal_ne_top`. Establish `h3 : ∑' i, ∫⁻ y, ‖h (f i y)‖ₑ ∂ν ≠ ∞`. Use `h2.2.ne` as an intermediate fact.
+
+Rewrite `this` using `[lintegral_sum_measure]`. Rewrite `this` using `[tsum_congr fun i => lintegral_map hh.enorm (hf i)]`. Then use the resulting hypothesis. Rewrite using `[integral_tsum (f := fun i y => h (f i y)) (fun i => (hh.comp (hf i)).aestronglyMeasurable) h3, ← integral_map hg.aemeasurable hh.aestronglyMeasurable, ← tsum_congr fun i => integral_map (hf i).aemeasurable hh.aestronglyMeasurable, ← integral_sum_measure h2, key, integral_smul_me …`.
+-/
 private theorem bochner_of_lintegral {ι Y P Q : Type*} [Countable ι] [MeasurableSpace Y] [MeasurableSpace P]
     [MeasurableSpace Q] (ν : Measure Y) (m : Measure P) (f : ι → Y → Q) (g : P → Q) (hf : ∀ i, Measurable (f i))
     (hg : Measurable g) (c : ℝ) (hc : 0 ≤ c)
@@ -36,6 +43,17 @@ private theorem bochner_of_lintegral {ι Y P Q : Type*} [Countable ι] [Measurab
     ← tsum_congr fun i => integral_map (hf i).aemeasurable hh.aestronglyMeasurable,
     ← integral_sum_measure h2, key, integral_smul_measure, ENNReal.toReal_ofReal hc, Complex.real_smul]
 
+/- English proof (translation)
+Introduce `K _ _ μ _ μ₂ _ κ _`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `swap`. Rewrite using `[volN, Measure.real, unipMeasure_unipFundamentalDomain]`. Simplify using the standard rewrite rules.
+
+Establish `hle : PK K ≤ Gam K (2 + 2)` using `Subgroup.map_subtype_le _`. Use `haveI : DiscreteTopology (PK K) := DiscreteTopology.of_subset (s := (Gam K (2 + 2) : Set (G1 K (2 + 2)))) (inferInstanceAs (DiscreteTopology (Gam K (2 + 2)))) hle`. Take `⟨E, hE, hEu⟩` from `exists_fundamentalDomain (PK K)`. Take `⟨c, hc, hI⟩` from `iwaInt μ μ₂ κ`. Establish `hL : ∀ Ψ : G1 K (2 + 2) → ℝ≥0∞, Measurable Ψ → (∀ γ ∈ PK K, ∀ g, Ψ (γ * g) = Ψ g) → ∫⁻ y, ∑' q : Cos K, Ψ ((q.out : G1 K (2 + 2)) * y) ∂fd μ = ENNReal.ofReal c * ∫⁻ p, Ψ (pt p) ∂parM μ₂ κ`.
+
+Introduce `Ψ hΨ hinv`. Rewrite using `[tower μ E hE hEu Ψ hΨ hinv, ← coordUnf μ₂ κ E hE hEu Ψ hΨ hinv, ← hI _ (hΨ.indicator hE), lintegral_indicator hE]`. Use `⟨c, hc, hL, fun Ψ hΨ hinv hint => ?_⟩` and prove the remaining obligations. Establish `hpt : Measurable (pt (K` using `K)) := by haveI : OpensMeasurableSpace (G1 K 2 × ℝ) := inferInstance haveI : OpensMeasurableSpace (G1 K 2 × G1 K 2 × ℝ) := inferInstance`. Establish `h1` using `((blkLaws (K := K)).2.2.2.1).measurable`.
+
+Establish `h2 : Measurable (unipOne K (2 + 2) 2)` using `(continuous_unipOne 2).measurable`. Establish `h3 : Measurable fun p : Par K => (p.1, p.2.1, p.2.2.1)` using `measurable_fst.prodMk (measurable_snd.fst.prodMk measurable_snd.snd.fst)`. Conclude with `((h2.comp measurable_snd.snd.snd.snd).mul (h1.comp h3)).mul (measurable_subtype_coe.comp measurable_snd.snd.snd.fst)`. Establish `hmk : Measurable (mk (PK K))` using `measurable_quotient_mk''`. Set `h : RightCosetSpace (PK K) → ℂ` to `Quotient.lift Ψ fun a b hab => by`.
+
+Take `⟨γ, hγ⟩` from `MulAction.orbitRel_apply.1 hab`. Rewrite using `[← hγ]`. Conclude with `hinv γ γ.2 b`. Establish `hh : Measurable h` using `measurable_from_quotient.2 hΨ`. Conclude with `bochner_of_lintegral (fd μ) (parM μ₂ κ) (fun (q : Cos K) y => mk (PK K) ((q.out : G1 K (2 + 2)) * y)) (fun p => mk (PK K) (pt p)) (fun q => hmk.comp (measurable_const_mul _)) (hmk.comp hpt) c hc.le (fun φ hφ => hL (fun g => φ (mk (PK K) g)) (hφ.comp hmk) fun γ hγ g => by simp onl …`.
+-/
 theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.unf :
     ∀ {K : Type} [Field K] [NumberField K] (μ : Measure (G1 K (2 + 2))) [μ.IsHaarMeasure] (μ₂ : Measure (G1 K 2)) [μ₂.IsHaarMeasure] (κ : Measure (KG K (2 + 2))) [κ.IsHaarMeasure], (∃ c, Unf μ μ₂ κ c) ∧ 0 < volN K := by
   intro K _ _ μ _ μ₂ _ κ _

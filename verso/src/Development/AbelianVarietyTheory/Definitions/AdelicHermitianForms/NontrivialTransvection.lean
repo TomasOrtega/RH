@@ -6,6 +6,9 @@ namespace GlobalTheory.UTrans.Model
 open GlobalTheory.UTrans
 variable {R : Type} [CommRing R] {n : ℕ}
 
+/- English proof (translation)
+Rewrite using `[tv, Matrix.add_mulVec, Matrix.one_mulVec]`. Use extensionality with `a`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, Matrix.mulVec, dotProduct, Matrix.of_apply, hf, Finset.mul_sum, Finset.sum_mul]`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun e _ => by ring`.
+-/
 theorem tv_mulVec (σ : R →+* R) (G : Matrix (Fin n) (Fin n) R) (x v : Fin n → R) (t : R) :
     (tv σ G x t).mulVec v = v + (t * hf σ G v x) • x := by
   rw [tv, Matrix.add_mulVec, Matrix.one_mulVec]
@@ -15,12 +18,18 @@ theorem tv_mulVec (σ : R →+* R) (G : Matrix (Fin n) (Fin n) R) (x v : Fin n �
   congr 1
   exact Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun e _ => by ring
 
+/- English proof (translation)
+Simplify using `only [hf, Pi.add_apply, Pi.smul_apply, smul_eq_mul, add_mul, Finset.sum_add_distrib, Finset.mul_sum]`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => by ring`.
+-/
 theorem hf_add_smul_left (σ : R →+* R) (G : Matrix (Fin n) (Fin n) R) (v x y : Fin n → R) (c : R) :
     hf σ G (v + c • x) y = hf σ G v y + c * hf σ G x y := by
   simp only [hf, Pi.add_apply, Pi.smul_apply, smul_eq_mul, add_mul, Finset.sum_add_distrib, Finset.mul_sum]
   congr 1
   exact Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => by ring
 
+/- English proof (translation)
+Simplify using `only [hf, Pi.add_apply, Pi.smul_apply, smul_eq_mul, map_add, map_mul, mul_add, Finset.sum_add_distrib, Finset.mul_sum]`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => by ring`.
+-/
 theorem hf_add_smul_right (σ : R →+* R) (G : Matrix (Fin n) (Fin n) R) (v x y : Fin n → R) (c : R) :
     hf σ G y (v + c • x) = hf σ G y v + σ c * hf σ G y x := by
   simp only [hf, Pi.add_apply, Pi.smul_apply, smul_eq_mul, map_add, map_mul, mul_add,
@@ -28,12 +37,18 @@ theorem hf_add_smul_right (σ : R →+* R) (G : Matrix (Fin n) (Fin n) R) (v x y
   congr 1
   exact Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => by ring
 
+/- English proof (translation)
+Simplify using `only [hf, map_sum, map_mul, hσ, hG]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => by ring`.
+-/
 theorem hf_conj (σ : R →+* R) (G : Matrix (Fin n) (Fin n) R) (hσ : ∀ a, σ (σ a) = a)
     (hG : ∀ a b, σ (G a b) = G b a) (x y : Fin n → R) : σ (hf σ G x y) = hf σ G y x := by
   simp only [hf, map_sum, map_mul, hσ, hG]
   rw [Finset.sum_comm]
   exact Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => by ring
 
+/- English proof (translation)
+Introduce `v w`. Rewrite using `[tv_mulVec, tv_mulVec, hf_add_smul_left, hf_add_smul_right, hf_add_smul_right, map_mul, hf_conj σ G hσ hG w x]`. Take the linear combination `(hf σ G v x * hf σ G x w) * h`.
+-/
 theorem isU_tv (σ : R →+* R) (G : Matrix (Fin n) (Fin n) R) (hσ : ∀ a, σ (σ a) = a)
     (hG : ∀ a b, σ (G a b) = G b a) (x : Fin n → R) (t : R)
     (h : t + σ t + t * σ t * hf σ G x x = 0) : IsU σ G (tv σ G x t) := by
@@ -42,6 +57,11 @@ theorem isU_tv (σ : R →+* R) (G : Matrix (Fin n) (Fin n) R) (hσ : ∀ a, σ 
     hf_conj σ G hσ hG w x]
   linear_combination (hf σ G v x * hf σ G x w) * h
 
+/- English proof (translation)
+Proceed by induction on `hm using Submonoid.closure_induction with`. Consider the case `mem m hm`. Take `⟨x, t, hx, ht, rfl⟩` from `hm`. Conclude with `isU_tv σ G hσ hG x t (by rw [hx, mul_zero, add_zero]; exact ht)`. Consider the case `one => intro v w`.
+
+Simplify using `only [Matrix.one_mulVec]`. Consider the case `mul p q _ _ hp hq`. Introduce `v w`. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hp, hq]`.
+-/
 theorem isU_of_mem_tvGen (σ : R →+* R) (G : Matrix (Fin n) (Fin n) R) (hσ : ∀ a, σ (σ a) = a)
     (hG : ∀ a b, σ (G a b) = G b a) {m} (hm : m ∈ TvGen σ G) : IsU σ G m := by
   induction hm using Submonoid.closure_induction with
@@ -53,6 +73,13 @@ theorem isU_of_mem_tvGen (σ : R →+* R) (G : Matrix (Fin n) (Fin n) R) (hσ : 
     intro v w
     rw [← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hp, hq]
 
+/- English proof (translation)
+Establish `e : tv σ G x t = (1 : Matrix (Fin n) (Fin n) R) + Matrix.replicateCol (Fin 1) x * Matrix.replicateRow (Fin 1) (fun b : Fin n => t * ∑ e : Fin n, G b e * σ (x e))`. Unfold `tv`. Use `congr 1`. Use extensionality with `a b`. Simplify using `[Matrix.mul_apply, Matrix.replicateCol_apply, Matrix.replicateRow_apply]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Use `(Matrix.det_one_add_replicateCol_mul_replicateRow (ι := Fin 1) x _).trans ?_` and prove the remaining obligations. Simplify using `only [dotProduct, hf, Finset.mul_sum, Finset.sum_mul]`. Use `congr 1`.
+
+Conclude with `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => by ring`.
+-/
 theorem det_tv (σ : R →+* R) (G : Matrix (Fin n) (Fin n) R) (x : Fin n → R) (t : R) :
     (tv σ G x t).det = 1 + t * hf σ G x x := by
   have e : tv σ G x t = (1 : Matrix (Fin n) (Fin n) R) + Matrix.replicateCol (Fin 1) x *
@@ -68,6 +95,11 @@ theorem det_tv (σ : R →+* R) (G : Matrix (Fin n) (Fin n) R) (x : Fin n → R)
   congr 1
   exact Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => by ring
 
+/- English proof (translation)
+Proceed by induction on `hm using Submonoid.closure_induction with`. Consider the case `mem m hm`. Take `⟨x, t, hx, _, rfl⟩` from `hm`. Rewrite using `[det_tv, hx, mul_zero, add_zero]`. Consider the case `one => exact Matrix.det_one`.
+
+Consider the case `mul p q _ _ hp hq => rw [Matrix.det_mul, hp, hq, mul_one]`.
+-/
 theorem det_of_mem_tvGen (σ : R →+* R) (G : Matrix (Fin n) (Fin n) R) {m} (hm : m ∈ TvGen σ G) : m.det = 1 := by
   induction hm using Submonoid.closure_induction with
   | mem m hm =>
@@ -76,6 +108,9 @@ theorem det_of_mem_tvGen (σ : R →+* R) (G : Matrix (Fin n) (Fin n) R) {m} (hm
   | one => exact Matrix.det_one
   | mul p q _ _ hp hq => rw [Matrix.det_mul, hp, hq, mul_one]
 
+/- English proof (translation)
+Apply `Submonoid.subset_closure` to reduce the goal to its premises. Use `⟨![1, 0], Complex.I, ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `[hf, Fin.sum_univ_two]`. Simplify using `[Complex.conj_I]`. Apply the tactic sequence `ext a b fin_cases a <;> fin_cases b <;> simp [tv, Fin.sum_univ_two]`.
+-/
 theorem nontrivial_transvection :
     !![1, Complex.I; 0, 1] ∈ TvGen (starRingEnd ℂ) !![0, 1; 1, 0] := by
   apply Submonoid.subset_closure
@@ -85,6 +120,13 @@ theorem nontrivial_transvection :
   · ext a b
     fin_cases a <;> fin_cases b <;> simp [tv, Fin.sum_univ_two]
 
+/- English proof (translation)
+Establish `hI : ∀ v : Fin 2 → ℂ, (!![Complex.I, 0; 0, Complex.I]).mulVec v = Complex.I • v`. Introduce `v`. Use extensionality with `i`. Apply the tactic sequence `fin_cases i <;> simp [Matrix.mulVec, dotProduct, Fin.sum_univ_two]`. Use `⟨fun v w => ?_, fun hm => ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [hf, hI, Pi.smul_apply, smul_eq_mul, map_mul, Complex.conj_I]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Take the linear combination `(-(v a * !![(0 : ℂ), 1; 1, 0] a b * (starRingEnd ℂ) (w b))) * Complex.I_sq`. Establish `hd` using `det_of_mem_tvGen _ _ hm`. Rewrite `hd` using `[Matrix.det_fin_two_of]`.
+
+Evaluate the numerical expressions using `[Complex.ext_iff] at hd`.
+-/
 theorem not_mem_tvGen :
     IsU (starRingEnd ℂ) !![0, 1; 1, 0] !![Complex.I, 0; 0, Complex.I] ∧
     !![Complex.I, 0; 0, Complex.I] ∉ TvGen (starRingEnd ℂ) !![0, 1; 1, 0] := by
@@ -100,6 +142,9 @@ theorem not_mem_tvGen :
     rw [Matrix.det_fin_two_of] at hd
     norm_num [Complex.ext_iff] at hd
 
+/- English proof (translation)
+Introduce `h`. Establish `h1` using `h ![0, 1] ![0, 1]`. Evaluate the numerical expressions using `[hf, Matrix.mulVec, dotProduct, Fin.sum_univ_two] at h1`.
+-/
 theorem not_isU : ¬ IsU (starRingEnd ℂ) !![0, 1; 1, 0] !![1, 1; 0, 1] := by
   intro h
   have h1 := h ![0, 1] ![0, 1]

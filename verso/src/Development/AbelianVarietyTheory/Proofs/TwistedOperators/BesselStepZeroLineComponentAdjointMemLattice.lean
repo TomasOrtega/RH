@@ -20,6 +20,13 @@ noncomputable def mulL {k m n : ℕ} (A : Mx D k m) : Mx D m n →+ Mx D k n whe
   map_zero' := Matrix.mul_zero _
   map_add' y y' := Matrix.mul_add _ _ _
 
+/- English proof (translation)
+It suffices to establish `h : latO S B LS LB P ≤ (latO S T LS LT P).comap (mulL (rat M : Mx D T.rank B.rank)) from h hy`. Use `(AddSubgroup.closure_le _).2 ?_` and prove the remaining obligations. Introduce and unpack `w ⟨α, hα, hαP, a, ha, s, hs, t, ht, rfl⟩`. Use `AddSubgroup.subset_closure ⟨α, hα, hαP, a, ha, s, hs, M *ᵥ t, hM t ht, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`.
+
+Simplify using `only [mulL, AddMonoidHom.coe_mk, ZeroHom.coe_mk, Matrix.mul_apply, Matrix.of_apply, rat, Matrix.map_apply, incA, inclR, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, Algebra.TensorProduct.includeRight_apply, Algebra.TensorProduct.tmul_mul_tmul, one_mul, Matrix.mulVec, dotProduct, Fin …`. Rewrite using `[← TensorProduct.tmul_sum]`. Use `congr 1`. Simplify using `only [Finset.mul_sum, Finset.sum_mul]`. Use `first`.
+
+Consider the case `exact Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun k _ => by ring`. Consider the case `(rw [Finset.sum_comm]; exact Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun k _ => by ring)`.
+-/
 theorem rat_mul_mem_latO {S B T : HSp D} (M : Matrix (Fin T.rank) (Fin B.rank) D.host.E)
     {LS : Set (Fin S.rank → D.host.E)} {LB : Set (Fin B.rank → D.host.E)} {LT : Set (Fin T.rank → D.host.E)}
     {P : GlobalTheory.FinPl.Pl D → Prop} (hM : ∀ t ∈ LB, M *ᵥ t ∈ LT) {y : WO S B} (hy : y ∈ latO S B LS LB P) :
@@ -45,6 +52,11 @@ namespace GlobalTheory.LineZero
 
 variable {D : D7}
 
+/- English proof (translation)
+Use `(AddSubgroup.closure_le _).2 ?_` and prove the remaining obligations. Introduce and unpack `w ⟨α, hα, hαP, a, ha, s, hs, t, ht, rfl⟩`. Establish `e : (Matrix.of fun i j => pairA D.host.F 0 α ⊗ₜ[D.host.F] (a * t i * ∑ k, star (s k) * S.gram k j) : WO S T) = -(Matrix.of fun i j => pairA D.host.F 0 α ⊗ₜ[D.host.F] (a * t i * ∑ k, star (s k) * (negSp S).gram k j))`. Use extensionality with `i j`. Simplify using `only [Matrix.of_apply, Matrix.neg_apply, negSp_gram, Matrix.neg_apply, mul_neg, Finset.sum_neg_distrib, TensorProduct.tmul_neg, neg_neg]`.
+
+Rewrite using `[e]`. Conclude with `neg_mem (AddSubgroup.subset_closure ⟨α, hα, hαP, a, ha, s, hs, t, ht, rfl⟩)`.
+-/
 theorem latO_le_negSp {S T : HSp D} {LS : Set (Fin S.rank → D.host.E)} {LT : Set (Fin T.rank → D.host.E)}
     {P : GlobalTheory.FinPl.Pl D → Prop} : latO S T LS LT P ≤ latO (negSp S) T LS LT P := by
   refine (AddSubgroup.closure_le _).2 ?_
@@ -57,6 +69,11 @@ theorem latO_le_negSp {S T : HSp D} {LS : Set (Fin S.rank → D.host.E)} {LT : S
   rw [e]
   exact neg_mem (AddSubgroup.subset_closure ⟨α, hα, hαP, a, ha, s, hs, t, ht, rfl⟩)
 
+/- English proof (translation)
+It suffices to establish `h : hatMx N ≤ (hatMx N').comap (mulL (rat A : Mx D k m)) from h hy`. Use `(AddSubgroup.closure_le _).2 ?_` and prove the remaining obligations. Introduce and unpack `w ⟨α, hα, x, hx, rfl⟩`. Use `AddSubgroup.subset_closure ⟨α, hα, A * x, hA x hx, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`.
+
+Simplify using `only [mulL, AddMonoidHom.coe_mk, ZeroHom.coe_mk, Matrix.mul_apply, Matrix.of_apply, rat, Matrix.map_apply, incA, inclR, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, Algebra.TensorProduct.includeRight_apply, Algebra.TensorProduct.tmul_mul_tmul, one_mul]`. Rewrite using `[← TensorProduct.tmul_sum]`.
+-/
 theorem rat_mul_mem_hatMx {k m n : ℕ} (A : Matrix (Fin k) (Fin m) D.host.E)
     {N : Submodule (𝓞 D.host.E) (Matrix (Fin m) (Fin n) D.host.E)} {N' : Submodule (𝓞 D.host.E) (Matrix (Fin k) (Fin n) D.host.E)}
     (hA : ∀ x ∈ N, A * x ∈ N') {y : Mx D m n} (hy : y ∈ hatMx N) : (rat A : Mx D k m) * y ∈ hatMx N' := by
@@ -70,6 +87,11 @@ theorem rat_mul_mem_hatMx {k m n : ℕ} (A : Matrix (Fin k) (Fin m) D.host.E)
     one_mul]
   rw [← TensorProduct.tmul_sum]
 
+/- English proof (translation)
+Use `Submodule.smul_induction_on hx (fun r hr y hy => ?_) (fun _ _ hy hy' => ?_)` and prove the remaining obligations. Rewrite using `[Matrix.mul_smul]`. Use `Submodule.smul_mem_smul hr fun z hz => ?_` and prove the remaining obligations. Rewrite using `[← Matrix.mulVec_mulVec]`. Conclude with `hA _ (hy z hz)`.
+
+Rewrite using `[Matrix.mul_add]`. Conclude with `add_mem hy hy'`.
+-/
 theorem mul_mem_smul_homLat {k m n : ℕ} (A : Matrix (Fin k) (Fin m) D.host.E) {Λ : Submodule (𝓞 D.host.E) (Fin n → D.host.E)}
     {Λ' : Submodule (𝓞 D.host.E) (Fin m → D.host.E)} {Λ'' : Submodule (𝓞 D.host.E) (Fin k → D.host.E)}
     (hA : ∀ t ∈ Λ', A *ᵥ t ∈ Λ'') (I : Ideal (𝓞 D.host.E)) {x : Matrix (Fin m) (Fin n) D.host.E}
@@ -86,6 +108,17 @@ end GlobalTheory.LineZero
 
 open GlobalTheory.LineZero in
 
+/- English proof (translation)
+Introduce `D hq T L μ0 hL sc G W M hM F hF h u hu`. Establish `h1` using `GlobalTheory.T.besselFirstStep_adjointLineComponent_mem_latO D hq T L μ0 hL sc G W M hM F hF h u hu`. Establish `h2` using `GlobalTheory.T.star_adjoint_mem_hat_lattice D hq T L μ0 hL sc G W M hM F hF h u hu`. Establish `hz : ∀ t ∈ Submodule.span (𝓞 D.host.E) {F.ζ 0}, F.oz.iB *ᵥ t ∈ G.Λ (.core 0)`. Introduce `t ht`.
+
+Take `⟨c, rfl⟩` from `Submodule.mem_span_singleton.1 ht`. Rewrite using `[Matrix.mulVec_smul, hF.zB]`. Use `Submodule.smul_mem _ c ?_` and prove the remaining obligations. Use `show _ ∈ (G.sp.P 0).lat`. Rewrite using `[G.sp.lat0]`.
+
+Use `⟨0, zero_mem _, fun _ => 1, fun _ => FractionalIdeal.one_mem_one _, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Simplify using `[Matrix.mulVec, dotProduct]`. Use `show _ ∈ (latCore G 0).comap _`. Rewrite using `[AddSubgroup.mem_comap]`.
+
+Simplify using `only [AddEquiv.toAddMonoidHom_eq_coe, AddMonoidHom.coe_comp, AddMonoidHom.coe_coe, Function.comp_apply, AddMonoidHom.inr_apply]`. Rewrite using `[GlobalTheory.MixModel.OrthDec.resT_symm_apply, Matrix.mul_zero, zero_add (F.oz.jB * _)]`. Use `⟨?_, fun e he => ?_⟩` and prove the remaining obligations. Conclude with `latO_le_negSp (rat_mul_mem_latO F.oz.iB hz h1)`. Rewrite using `[← Matrix.mul_smul]`.
+
+Conclude with `rat_mul_mem_hatMx F.oz.iB (fun x hx => mul_mem_smul_homLat F.oz.iB hz _ hx) (h2 e he)`.
+-/
 theorem GlobalTheory.LineZero.adj_mem_lineLat : OnStd fun {D} _ _ {sc} {G} W F => ∀ (h : 2 * 0 + 2 ≤ D.R.m), ∀ u ∈ (pcBF W F 0 h).Γ₀, incA D D.host.xi0⁻¹ • GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule.starAdj _ _ (((F.oB 0 h).resS (G.V (.core (2 * 0 + 1))) u).2) ∈ lineLat F 0 := by
   intro D hq T L μ0 hL sc G W M hM F hF h u hu
   have h1 := GlobalTheory.T.besselFirstStep_adjointLineComponent_mem_latO D hq T L μ0 hL sc G W M hM F hF h u hu

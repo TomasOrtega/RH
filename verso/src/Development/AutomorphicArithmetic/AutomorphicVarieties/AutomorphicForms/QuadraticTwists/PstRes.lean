@@ -4,6 +4,15 @@ open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.Conjuga
 open GlobalTheory.CuspRep GlobalTheory.WeilDeligne GlobalTheory.Pst GlobalTheory.LocLanglands GlobalTheory.HeckeGal GlobalTheory.LocGL GlobalTheory.GalOfCusp UpperTheory.V UpperTheory.V.Af UpperTheory.V.Published
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
+/- English proof (translation)
+Introduce `F K Ω _ _ _ _ _ _ _ _ _ _ _ l _ A O _ _ _ Bw Bw' hK hj hL n r hr`. Take `⟨Kw', j', jE', jd', e', ec', esc', ecomm', LL0', hs', eO', h1', h2', h3'⟩` from `Bw'`. Simplify using `only at hK hj hL`. Substitute `hK hj hL` using the available equality. Take `⟨LL', r', ⟨hle, hmap⟩, hpst⟩` from `hr`.
+
+Use `⟨LL', r'.comp (e'.trans Bw.e.symm).toMonoidHom, ⟨hle, ?_⟩, ?_⟩` and prove the remaining obligations. Use `MonoidHom.ext fun g => ?_` and prove the remaining obligations. Establish `h1` using `DFunLike.congr_fun hmap (Bw.e.symm (e' g))`. Establish `h2 : ((Bw.e.symm (e' g) : ↥(Dec (F` using `F) A)) : Ω ≃ₐ[F] Ω) = AlgEquiv.restrictScalarsHom F (g : Ω ≃ₐ[K] Ω) := by`. Use `AlgEquiv.ext fun x => Bw.j.injective ?_` and prove the remaining obligations.
+
+Rewrite using `[← Bw.e_comm, MulEquiv.apply_symm_apply, ecomm']`. Both sides reduce to the same expression. Use `h1.trans ?_` and prove the remaining obligations. Conclude with `congrArg r h2`. Use `hpst using 1` and compare the differences between its conclusion and the goal.
+
+Use `MonoidHom.ext fun g => ?_` and prove the remaining obligations. Simplify using `[LocBridge.repE]`.
+-/
 theorem UpperTheory.V.Af.Cq.pstRes :
     ∀ (F K Ω : Type) [Field F] [NumberField F] [Field K] [NumberField K] [Field Ω] [Algebra F K] [Algebra F Ω] [Algebra K Ω] [IsScalarTower F K Ω] [IsAlgClosure F Ω] [IsAlgClosure K Ω] (l : ℕ) [Fact l.Prime] (A : ValuationSubring Ω) (O : Type) [CommRing O] [Algebra ℤ_[l] O] [TopologicalSpace O] (Bw : LocBridge l F Ω (Dec (F := F) A) O) (Bw' : LocBridge l K Ω (Dec (F := K) A) O),
         Bw'.Kw = Bw.Kw → Bw'.j = Bw.j → Bw'.LL = Bw.LL → ∀ (n : ℕ) (r : G F Ω →* GL (Fin n) (Qbar l)), IsPstAt (Loc.PP l) Bw (r.comp (Dec (F := F) A).subtype) →

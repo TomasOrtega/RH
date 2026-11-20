@@ -8,19 +8,31 @@ section Scal
 
 variable {B K : Type} [CommRing B] [CommRing K] {n : ℕ} (g : B →+* K) (v : Fin n → K)
 
+/- English proof (translation)
+Use extensionality with `k`. Simplify using `[Matrix.algebraMap_eq_diagonal, Matrix.mulVec_diagonal]`.
+-/
 theorem algebraMap_map_mulVec (x : B) :
     (algebraMap B (Matrix (Fin n) (Fin n) B) x).map g *ᵥ v = g x • v := by
   ext k
   simp [Matrix.algebraMap_eq_diagonal, Matrix.mulVec_diagonal]
 
+/- English proof (translation)
+Rewrite using `[Matrix.map_mul, ← Matrix.mulVec_mulVec, hY, Matrix.mulVec_smul, hX, smul_smul, mul_comm]`.
+-/
 theorem map_mul_mulVec_of_scal {X Y : Matrix (Fin n) (Fin n) B} {c d : K}
     (hX : X.map g *ᵥ v = c • v) (hY : Y.map g *ᵥ v = d • v) : (X * Y).map g *ᵥ v = (c * d) • v := by
   rw [Matrix.map_mul, ← Matrix.mulVec_mulVec, hY, Matrix.mulVec_smul, hX, smul_smul, mul_comm]
 
+/- English proof (translation)
+Rewrite using `[Matrix.map_sub _ (map_sub g), Matrix.sub_mulVec, hX, hY, sub_smul]`.
+-/
 theorem map_sub_mulVec_of_scal {X Y : Matrix (Fin n) (Fin n) B} {c d : K}
     (hX : X.map g *ᵥ v = c • v) (hY : Y.map g *ᵥ v = d • v) : (X - Y).map g *ᵥ v = (c - d) • v := by
   rw [Matrix.map_sub _ (map_sub g), Matrix.sub_mulVec, hX, hY, sub_smul]
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, Matrix.map_add _ (map_add g), Matrix.add_mulVec, h a (Finset.mem_insert_self _ _), ih (fun x hx => h x (Finset.mem_insert_of_mem hx)), add_smul]`.
+-/
 theorem map_sum_mulVec_of_scal {ι : Type*} (s : Finset ι) (X : ι → Matrix (Fin n) (Fin n) B) (c : ι → K)
     (h : ∀ x ∈ s, (X x).map g *ᵥ v = c x • v) : (∑ x ∈ s, X x).map g *ᵥ v = (∑ x ∈ s, c x) • v := by
   classical
@@ -30,6 +42,9 @@ theorem map_sum_mulVec_of_scal {ι : Type*} (s : Finset ι) (X : ι → Matrix (
     rw [Finset.sum_insert ha, Finset.sum_insert ha, Matrix.map_add _ (map_add g), Matrix.add_mulVec,
       h a (Finset.mem_insert_self _ _), ih (fun x hx => h x (Finset.mem_insert_of_mem hx)), add_smul]
 
+/- English proof (translation)
+Proceed by induction on `L with`. Consider the case `nil => rw [List.prod_nil, Matrix.map_one _ (map_zero g) (map_one g), Matrix.one_mulVec]`. Consider the case `cons X L ih`. Rewrite using `[List.prod_cons, Matrix.map_mul, ← Matrix.mulVec_mulVec, ih (fun Y hY => h Y (List.mem_cons_of_mem _ hY)), h X (by simp)]`.
+-/
 theorem map_list_prod_mulVec_of_fix (L : List (Matrix (Fin n) (Fin n) B))
     (h : ∀ X ∈ L, X.map g *ᵥ v = v) : L.prod.map g *ᵥ v = v := by
   induction L with
@@ -40,6 +55,17 @@ theorem map_list_prod_mulVec_of_fix (L : List (Matrix (Fin n) (Fin n) B))
 
 end Scal
 
+/- English proof (translation)
+Introduce `p _ D R _ b B _ βB n M K _ g i v hv`. Establish `hα : ∀ j, j ≠ i → (alphaMat b βB M i j).map g *ᵥ v = v`. Introduce `j hj`. Establish `hij : i ≠ j` using `fun h => hj h.symm`. Unfold `alphaMat`.
+
+Rewrite using `[Finsupp.sum, map_sum_mulVec_of_scal g v _ _ (fun x => g (βB (comaxC b i j x)) * (g (βB (b.t i x)) - g (βB (b.t j x)))) (fun x _ => map_mul_mulVec_of_scal g v (algebraMap_map_mulVec g v _) (map_sub_mulVec_of_scal g v (hv x) (algebraMap_map_mulVec g v _)))]`. Establish `hs` using `congrArg (fun y => g (βB y)) (comaxC_spec b hij)`. Simplify using `only [Finsupp.sum, map_sum, map_mul, map_sub, map_one] at hs`. Rewrite using `[hs, one_smul]`. Establish `hlast` using `map_mul_mulVec_of_scal g v (algebraMap_map_mulVec g v (βB (uInv b))) (map_sub_mulVec_of_scal g v (hv D.ω) (algebraMap_map_mulVec g v (βB ((D.tr : R) - b.ρ))))`.
+
+Establish `h1 : g (βB (uInv b)) * (g (βB (b.t i D.ω)) - g (βB ((D.tr : R) - b.ρ))) = 1`. Establish `hu` using `congrArg (fun y => g (βB y)) (uInv_mul b)`. Simplify using `only [map_mul, map_sub, map_one, map_intCast, map_ofNat] at hu ⊢`. Rewrite using `[b.t_ω]`. Take the linear combination `hu`.
+
+Rewrite `hlast` using `[h1, one_smul]`. Unfold `projMat`. Rewrite using `[Matrix.map_mul, ← Matrix.mulVec_mulVec, hlast]`. Use `map_list_prod_mulVec_of_fix g v _ ?_` and prove the remaining obligations. Introduce `X hX`.
+
+Rewrite `hX` using `[List.mem_ofFn]`. Take `⟨j, rfl⟩` from `hX`. Use `split_ifs with h`. Rewrite using `[Matrix.map_one _ (map_zero g) (map_one g), Matrix.one_mulVec]`. Conclude with `hα j h`.
+-/
 theorem projMat_map_mulVec_of_eig : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [CommRing R] (b : Base D R) (B : Type) [CommRing B]
     (βB : R →+* B) (n : ℕ) (M : 𝓞 D.F →+* Matrix (Fin n) (Fin n) B) (K : Type) [CommRing K] (g : B →+* K)
     (i : Fin D.a) (v : Fin n → K), (∀ c : 𝓞 D.F, (M c).map g *ᵥ v = g (βB (b.t i c)) • v) →

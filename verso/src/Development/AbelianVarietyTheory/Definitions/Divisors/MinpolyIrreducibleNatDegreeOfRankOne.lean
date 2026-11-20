@@ -24,10 +24,16 @@ def CxCountIrr : Prop :=
     ∀ (K' : Subgroup (Gr G 1)) (f' : Gr G 1 → ℂ), IsTest (sigG G 1) (KHT p G.m G.n 1 G.Fw) K' f' →
       cxTotal G v wt L.K.toSubgroup f K' f' = fullSumIrr G wt L.K.toSubgroup f 1 K' f'
 
+/- English proof (translation)
+Simplify using `[cxTotal, cxSum, cxSumAt, fullSumIrr, Pair.term, Pair.termAt, pointSum]`.
+-/
 example (G : HTGroup p) (v wt Kf K' f') :
     cxTotal G v wt Kf (fun _ => 0) K' f' = fullSumIrr G wt Kf (fun _ => 0) 1 K' f' := by
   simp [cxTotal, cxSum, cxSumAt, fullSumIrr, Pair.term, Pair.termAt, pointSum]
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ _ hf` and use `absurd rfl hf`.
+-/
 example (G : HTGroup p) : SeesIrr G (fun _ => 0) := fun _ _ _ _ _ _ hf => absurd rfl hf
 
 end GlobalTheory.LKCx

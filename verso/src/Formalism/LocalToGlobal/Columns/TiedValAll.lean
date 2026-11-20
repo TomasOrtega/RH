@@ -32,11 +32,20 @@ def valuationAgreementConcrete : CF.ValTied (D := d.colRec a) u (atTTied a hH u)
     (Val.dilT (Pr := d.Pr) d.W d.lev d.sp.cm d.hX d.hPr d.σ₀ d.star_cx u i (colDia (X := d.X) (Pr := d.Pr) d.R u i) (hP u i)
       (tieEV d.sp.cm d.hX d.hPr u) (tieEV_over d.sp.cm d.hX d.hPr u) (valCrd a hS hH u i hi))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem stepValTied_eY : (valuationAgreementConcrete a hS hH hP u i hi).eY = valEY (Pr := d.Pr) d.W d.lev d.σ₀ u i (valCrd a hS hH u i hi) := rfl
 
+/- English proof (translation)
+The claim follows from `normTie a hS hH hP u i hi _ (valuationAgreementConcrete a hS hH hP u i hi) rfl`.
+-/
 theorem stepNormTie : CF.NormTie (valuationAgreementConcrete a hS hH hP u i hi) :=
   normTie a hS hH hP u i hi _ (valuationAgreementConcrete a hS hH hP u i hi) rfl
 
+/- English proof (translation)
+The claim follows from `bwTie_of a hS hH hP u i hi (valuationAgreementConcrete a hS hH hP u i hi) rfl (Val.bw (Pr := d.Pr) d.W d.lev d.sp.cm d.hX d.hPr d.σ₀ d.star_cx u i d.what₂.places d.plEq hH.val_eq (valCrd a hS hH u i hi) (atTTied a hH u).Pv (fun _ => Ideal.mk_ker))`.
+-/
 theorem stepBwTie : CF.BwTie (atTTied a hH u) (valuationAgreementConcrete a hS hH hP u i hi) :=
   bwTie_of a hS hH hP u i hi (valuationAgreementConcrete a hS hH hP u i hi) rfl
     (Val.bw (Pr := d.Pr) d.W d.lev d.sp.cm d.hX d.hPr d.σ₀ d.star_cx u i d.what₂.places d.plEq hH.val_eq (valCrd a hS hH u i hi)

@@ -11,6 +11,11 @@ noncomputable section
 
 namespace FibreIntegralInvariant
 
+/- English proof (translation)
+Use `conv_lhs => rw [φ.as_sum]`. Use `conv_rhs => rw [φ.as_sum]`. Simplify using `only [map_sum, eval_monomial, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun d hd => ?_` and prove the remaining obligations. Establish `hdeg : ∑ i ∈ d.support, d i = n`.
+
+Use `h (mem_support_iff.mp hd)` as an intermediate fact. Simplify `this` using `[Finsupp.weight_apply, Finsupp.sum]`. Simplify using `only [Finsupp.prod, Pi.smul_apply, smul_eq_mul, mul_pow, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum, hdeg]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem eval_smul_of_isHomogeneous {σ : Type*} {φ : MvPolynomial σ ℝ} {n : ℕ}
     (h : φ.IsHomogeneous n) (s : ℝ) (x : σ → ℝ) : eval (s • x) φ = s ^ n * eval x φ := by
   classical
@@ -25,6 +30,13 @@ theorem eval_smul_of_isHomogeneous {σ : Type*} {φ : MvPolynomial σ ℝ} {n : 
     Finset.prod_pow_eq_pow_sum, hdeg]
   ring
 
+/- English proof (translation)
+Unfold `gKernel`. Use `IsHomogeneous.sum _ _ _ fun j hj => ?_` and prove the remaining obligations. Establish `hj : j < k` using `Finset.mem_range.mp hj`. Use `IsHomogeneous.sub ?_ ?_` and prove the remaining obligations. Use `(isHomogeneous_X_pow (R := ℝ) (0 : Fin 2) (2 * j + 1)).mul (isHomogeneous_X_pow (R := ℝ) (1 : Fin 2) (2 * k - 1 - 2 * j))` as an intermediate fact.
+
+Establish `e : 2 * j + 1 + (2 * k - 1 - 2 * j) = 2 * k` using `by omega`. Rewrite `this` using `[e]`. Conclude with `this`. Use `(isHomogeneous_X_pow (R := ℝ) (0 : Fin 2) (2 * j)).mul (isHomogeneous_X_pow (R := ℝ) (1 : Fin 2) (2 * k - 2 * j))` as an intermediate fact. Establish `e : 2 * j + (2 * k - 2 * j) = 2 * k` using `by omega`.
+
+Rewrite `this` using `[e]`. Conclude with `this`.
+-/
 theorem gKernel_isHomogeneous (k : ℕ) : (gKernel ℝ k).IsHomogeneous (2 * k) := by
   unfold gKernel
   refine IsHomogeneous.sum _ _ _ fun j hj => ?_
@@ -41,11 +53,17 @@ theorem gKernel_isHomogeneous (k : ℕ) : (gKernel ℝ k).IsHomogeneous (2 * k) 
     rw [e] at this
     exact this
 
+/- English proof (translation)
+Use `((gKernel_isHomogeneous k).pderiv (i := 1)).pderiv (i := 0)` as an intermediate fact. Rewrite `this` using `[Nat.sub_sub]`. Conclude with `this`.
+-/
 theorem gMixed_isHomogeneous (k : ℕ) : (gMixed k).IsHomogeneous (2 * k - 2) := by
   have := ((gKernel_isHomogeneous k).pderiv (i := 1)).pderiv (i := 0)
   rw [Nat.sub_sub] at this
   exact this
 
+/- English proof (translation)
+Simplify using `[gMixed, gKernel, Derivation.leibniz, Derivation.leibniz_pow, pderiv_X]`. Rewrite using `[← map_ofNat (C : ℝ →+* MvPolynomial (Fin 2) ℝ) 2, pderiv_C]`.
+-/
 theorem gMixed_one : gMixed 1 = 1 := by
   simp [gMixed, gKernel, Derivation.leibniz, Derivation.leibniz_pow, pderiv_X]
   rw [← map_ofNat (C : ℝ →+* MvPolynomial (Fin 2) ℝ) 2, pderiv_C]
@@ -53,9 +71,15 @@ theorem gMixed_one : gMixed 1 = 1 := by
 def sphereMap (R : E3 ≃ₗᵢ[ℝ] E3) (n : Sphere2) : Sphere2 :=
   ⟨R n, by simp⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem sphereMap_coe (R : E3 ≃ₗᵢ[ℝ] E3) (n : Sphere2) :
     (sphereMap R n : E3) = R n := rfl
 
+/- English proof (translation)
+The claim follows from `(R.continuous.comp continuous_subtype_val).subtype_mk _`.
+-/
 theorem continuous_sphereMap (R : E3 ≃ₗᵢ[ℝ] E3) : Continuous (sphereMap R) :=
   (R.continuous.comp continuous_subtype_val).subtype_mk _
 
@@ -67,6 +91,19 @@ def sphereHomeo (R : E3 ≃ₗᵢ[ℝ] E3) : Sphere2 ≃ₜ Sphere2 where
   continuous_toFun := continuous_sphereMap R
   continuous_invFun := continuous_sphereMap R.symm
 
+/- English proof (translation)
+Establish `hm : Measurable (sphereMap R)` using `(continuous_sphereMap R).measurable`. Use extensionality with `s hs`. Rewrite using `[Measure.map_apply hm hs, Measure.toSphere_apply' volume (hm hs), Measure.toSphere_apply' volume hs]`. Use `congr 1`. Establish `himg : ((↑) '' (sphereMap R ⁻¹' s) : Set E3) = R ⁻¹' ((↑) '' s)`.
+
+Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨n, hn, rfl⟩`. Conclude with `⟨sphereMap R n, hn, rfl⟩`. Introduce and unpack `⟨m, hm', hx⟩`.
+
+Establish `hxs : x ∈ Metric.sphere (0 : E3) 1`. Establish `h2` using `m.2`. Rewrite `h2` using `[hx, mem_sphere_zero_iff_norm, LinearIsometryEquiv.norm_map]`. Conclude with `mem_sphere_zero_iff_norm.mpr h2`. Use `⟨⟨x, hxs⟩, ?_, rfl⟩` and prove the remaining obligations.
+
+Establish `hme : sphereMap R ⟨x, hxs⟩ = m` using `Subtype.ext hx.symm`. Simplify `hm'` using `[Set.mem_preimage, hme]`. Establish `hsmul : (Set.Ioo (0 : ℝ) 1 • (R ⁻¹' ((↑) '' s)) : Set E3) = R ⁻¹' (Set.Ioo (0 : ℝ) 1 • ((↑) '' s))`. Use extensionality with `x`. Simplify using `only [Set.mem_preimage, Set.mem_smul]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, hc, y, hy, rfl⟩`. Conclude with `⟨c, hc, R y, hy, by simp⟩`. Introduce and unpack `⟨c, hc, y, hy, hxy⟩`. Use `⟨c, hc, R.symm y, by simpa using hy, ?_⟩` and prove the remaining obligations.
+
+Apply `R.injective` to reduce the goal to its premises. Simplify using `[hxy]`. Rewrite using `[himg, hsmul]`. Conclude with `(LinearIsometryEquiv.measurePreserving R).measure_preimage_equiv (f := R.toMeasurableEquiv) _`.
+-/
 theorem toSphere_map (R : E3 ≃ₗᵢ[ℝ] E3) :
     ((volume : Measure E3).toSphere).map (sphereMap R) = (volume : Measure E3).toSphere := by
   have hm : Measurable (sphereMap R) := (continuous_sphereMap R).measurable
@@ -103,19 +140,33 @@ theorem toSphere_map (R : E3 ≃ₗᵢ[ℝ] E3) :
 
 instance : IsProbabilityMeasure sphereMeasure := ⟨sphereMeasure_univ⟩
 
+/- English proof (translation)
+Use `⟨(continuous_sphereMap R).measurable, ?_⟩` and prove the remaining obligations. Rewrite using `[sphereMeasure, Measure.map_smul, toSphere_map]`.
+-/
 theorem measurePreserving_sphereMap (R : E3 ≃ₗᵢ[ℝ] E3) :
     MeasurePreserving (sphereMap R) sphereMeasure sphereMeasure := by
   refine ⟨(continuous_sphereMap R).measurable, ?_⟩
   rw [sphereMeasure, Measure.map_smul, toSphere_map]
 
+/- English proof (translation)
+The claim follows from `(measurePreserving_sphereMap R).prod (measurePreserving_sphereMap R)`.
+-/
 theorem measurePreserving_pair (R : E3 ≃ₗᵢ[ℝ] E3) :
     MeasurePreserving (Prod.map (sphereMap R) (sphereMap R)) pairMeasure pairMeasure :=
   (measurePreserving_sphereMap R).prod (measurePreserving_sphereMap R)
 
+/- English proof (translation)
+The claim follows from `((sphereHomeo R).prodCongr (sphereHomeo R)).measurableEmbedding`.
+-/
 theorem measurableEmbedding_pair (R : E3 ≃ₗᵢ[ℝ] E3) :
     MeasurableEmbedding (Prod.map (sphereMap R) (sphereMap R)) :=
   ((sphereHomeo R).prodCongr (sphereHomeo R)).measurableEmbedding
 
+/- English proof (translation)
+Distinguish the cases in `ha : a = 0`. Conclude with `⟨LinearIsometryEquiv.refl ℝ E3, by simp [ha]⟩`. Establish `hn : ‖a‖ ≠ 0` using `norm_ne_zero_iff.mpr ha`. Establish `hu : ‖(EuclideanSpace.single 2 1 : E3)‖ = ‖‖a‖⁻¹ • a‖`. Rewrite using `[norm_smul, norm_inv, norm_norm, inv_mul_cancel₀ hn]`.
+
+Simplify using the standard rewrite rules. Use `⟨Submodule.reflection (ℝ ∙ ((EuclideanSpace.single 2 1 : E3) - ‖a‖⁻¹ • a))ᗮ, ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.reflection_sub hu, smul_smul, mul_inv_cancel₀ hn, one_smul]`.
+-/
 theorem exists_isometry (a : E3) :
     ∃ R : E3 ≃ₗᵢ[ℝ] E3, a = ‖a‖ • R (EuclideanSpace.single 2 1) := by
   by_cases ha : a = 0
@@ -127,6 +178,15 @@ theorem exists_isometry (a : E3) :
     refine ⟨Submodule.reflection (ℝ ∙ ((EuclideanSpace.single 2 1 : E3) - ‖a‖⁻¹ • a))ᗮ, ?_⟩
     rw [Submodule.reflection_sub hu, smul_smul, mul_inv_cancel₀ hn, one_smul]
 
+/- English proof (translation)
+Apply the tactic sequence `obtain ⟨R, hR⟩ := exists_isometry a`. Establish `key : ∀ n : Sphere2, ⟪a, R (n : E3)⟫_ℝ = ‖a‖ * height n`. Introduce `n`. Use `conv_lhs => rw [hR]`. Rewrite using `[real_inner_smul_left, LinearIsometryEquiv.inner_map_map]`.
+
+Simplify using `[height, EuclideanSpace.inner_single_left]`. Establish `hvec : ∀ x y : ℝ, ![‖a‖ * x, ‖a‖ * y] = ‖a‖ • ![x, y]`. Introduce `x y`. Use extensionality with `i`. Apply the tactic sequence `fin_cases i <;> simp`.
+
+Rewrite using `[← (measurePreserving_pair R).integral_comp (measurableEmbedding_pair R)]`. Simplify using `only [Prod.map_fst, Prod.map_snd, sphereMap_coe, LinearIsometryEquiv.inner_map_map, key, hvec, eval_smul_of_isHomogeneous (gMixed_isHomogeneous k)]`. Establish `hpow : ⟪a, a⟫_ℝ ^ (k - 1) = ‖a‖ ^ (2 * k - 2)`. Rewrite using `[real_inner_self_eq_norm_sq, ← pow_mul]`. Use `congr 1`.
+
+Use linear arithmetic over natural numbers and integers. Rewrite using `[hpow, fibreConstant, ← integral_mul_const]`. Use `congr 1`. Use extensionality with `p`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem mean_eq (k : ℕ) (a : E3) :
     ∫ p, kernelL ⟪(p.1 : E3), (p.2 : E3)⟫_ℝ *
         eval ![⟪a, (p.1 : E3)⟫_ℝ, ⟪a, (p.2 : E3)⟫_ℝ] (gMixed k) ∂pairMeasure =
@@ -163,10 +223,16 @@ def fibreQ (k : ℕ) : MvPolynomial (Fin 3) (Sphere2 × Sphere2 → ℝ) :=
       X i * C (fun p : Sphere2 × Sphere2 => ((if r = 0 then p.1 else p.2 : Sphere2) : E3) i))
     (gMixed k)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem fibrePoly_eq (k : ℕ) : fibrePoly k = ∑ μ ∈ (fibreQ k).support,
     monomial μ (∫ p, kernelL ⟪(p.1 : E3), (p.2 : E3)⟫_ℝ * coeff μ (fibreQ k) p ∂pairMeasure) :=
   rfl
 
+/- English proof (translation)
+Rewrite using `[← AlgHom.comp_apply, comp_aeval, fibreQ]`. Use `congrArg (fun x => aeval x (gMixed k)) ?_` and prove the remaining obligations. Use function extensionality and compare the values at `r`. Simplify using `[map_sum, mapAlgHom_apply, map_X, map_C]`. Both sides reduce to the same expression.
+-/
 theorem fibreQ_eq_map (k : ℕ) : fibreQ k = mapAlgHom (ContinuousMap.coeFnAlgHom (R := ℝ))
     (aeval (fun r : Fin 2 => ∑ i : Fin 3, X i * C (coordC r i)) (gMixed k)) := by
   rw [← AlgHom.comp_apply, comp_aeval, fibreQ]
@@ -175,10 +241,16 @@ theorem fibreQ_eq_map (k : ℕ) : fibreQ k = mapAlgHom (ContinuousMap.coeFnAlgHo
   simp [map_sum, mapAlgHom_apply, map_X, map_C]
   rfl
 
+/- English proof (translation)
+Rewrite using `[fibreQ_eq_map, mapAlgHom_apply, coeff_map]`. Conclude with `(coeff μ (aeval (fun r : Fin 2 => ∑ i : Fin 3, X i * C (coordC r i)) (gMixed k))).continuous`.
+-/
 theorem continuous_coeff (k : ℕ) (μ : Fin 3 →₀ ℕ) : Continuous (coeff μ (fibreQ k)) := by
   rw [fibreQ_eq_map, mapAlgHom_apply, coeff_map]
   exact (coeff μ (aeval (fun r : Fin 2 => ∑ i : Fin 3, X i * C (coordC r i)) (gMixed k))).continuous
 
+/- English proof (translation)
+Set `f' : C(Sphere2 × Sphere2, ℝ)` to `⟨f, hf⟩`. Conclude with `hint.mul_bdd (c := ‖f'‖) hf.aestronglyMeasurable (Filter.Eventually.of_forall fun p => f'.norm_coe_le_norm p)`.
+-/
 theorem integrable_term
     (hint : Integrable (fun p : Sphere2 × Sphere2 => kernelL ⟪(p.1 : E3), (p.2 : E3)⟫_ℝ)
       pairMeasure) (f : Sphere2 × Sphere2 → ℝ) (hf : Continuous f) :
@@ -187,6 +259,11 @@ theorem integrable_term
   exact hint.mul_bdd (c := ‖f'‖) hf.aestronglyMeasurable
     (Filter.Eventually.of_forall fun p => f'.norm_coe_le_norm p)
 
+/- English proof (translation)
+Establish `h1 : fibreConstant 1 ≠ 0`. Introduce `h`. Use `h0.2.1` as an intermediate fact. Rewrite `this` using `[h]`. Evaluate the numerical expressions using `at this`.
+
+Assume the negation of the conclusion as `hni`. Apply `h1` to reduce the goal to its premises. Rewrite using `[fibreConstant, gMixed_one]`. Simplify using `only [map_one, mul_one]`. Conclude with `integral_undef hni`.
+-/
 theorem integrable_kernel (h0 : FibreConstantClosedForm.Statement) :
     Integrable (fun p : Sphere2 × Sphere2 => kernelL ⟪(p.1 : E3), (p.2 : E3)⟫_ℝ) pairMeasure := by
   have h1 : fibreConstant 1 ≠ 0 := by
@@ -200,6 +277,11 @@ theorem integrable_kernel (h0 : FibreConstantClosedForm.Statement) :
   simp only [map_one, mul_one]
   exact integral_undef hni
 
+/- English proof (translation)
+Rewrite using `[fibreQ, ← coe_eval₂Hom, map_aeval]`. Establish `hc : (eval₂Hom (Pi.evalRingHom (fun _ : Sphere2 × Sphere2 => ℝ) p) a).comp (algebraMap ℝ _) = RingHom.id ℝ`. Use extensionality with `c`. Simplify using the standard rewrite rules. Rewrite using `[hc]`.
+
+Express the relevant statement in the definitionally equal form `eval _ (gMixed k) = eval _ (gMixed k)`. Use `congrArg (fun v => eval v (gMixed k)) ?_` and prove the remaining obligations. Use function extensionality and compare the values at `r`. Apply the tactic sequence `fin_cases r <;> simp [PiLp.inner_apply, mul_comm]`.
+-/
 theorem eval_fibreQ (k : ℕ) (a : Fin 3 → ℝ) (p : Sphere2 × Sphere2) :
     eval₂ (Pi.evalRingHom (fun _ : Sphere2 × Sphere2 => ℝ) p) a (fibreQ k) =
       eval ![⟪WithLp.toLp 2 a, (p.1 : E3)⟫_ℝ, ⟪WithLp.toLp 2 a, (p.2 : E3)⟫_ℝ] (gMixed k) := by
@@ -214,6 +296,15 @@ theorem eval_fibreQ (k : ℕ) (a : Fin 3 → ℝ) (p : Sphere2 × Sphere2) :
   funext r
   fin_cases r <;> simp [PiLp.inner_apply, mul_comm]
 
+/- English proof (translation)
+Establish `hint` using `integrable_kernel h0`. Apply `MvPolynomial.funext` to reduce the goal to its premises. Introduce `a`. Establish `hmean` using `mean_eq k (WithLp.toLp 2 a)`. Establish `haa : ⟪(WithLp.toLp 2 a : E3), WithLp.toLp 2 a⟫_ℝ = ∑ i, a i ^ 2`.
+
+Rewrite using `[real_inner_self_eq_norm_sq, EuclideanSpace.norm_sq_eq]`. Simplify using `[sq_abs]`. Rewrite `hmean` using `[haa]`. Simplify using `only [map_mul, map_pow, map_sum, eval_C, eval_X]`. Rewrite using `[← hmean, fibrePoly_eq, map_sum]`.
+
+Simplify using `only [eval_monomial]`. Repeatedly rewrite using `[← integral_mul_const]`. Rewrite using `[← integral_finsetSum _ (fun μ _ => (integrable_term hint _ (continuous_coeff k μ)).mul_const _)]`. Use `congr 1`. Use function extensionality and compare the values at `p`.
+
+Rewrite using `[← eval_fibreQ, eval₂_eq, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun μ _ => ?_` and prove the remaining obligations. Simplify using `[Finsupp.prod]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem fibrePoly_eq_C (h0 : FibreConstantClosedForm.Statement) (k : ℕ) :
     fibrePoly k = C (fibreConstant k) * (∑ i, X i ^ 2) ^ (k - 1) := by
   have hint := integrable_kernel h0
@@ -237,6 +328,9 @@ theorem fibrePoly_eq_C (h0 : FibreConstantClosedForm.Statement) (k : ℕ) :
   simp [Finsupp.prod]
   ring
 
+/- English proof (translation)
+Use `⟨mean_eq, fun k B _ _ a => ?_⟩` and prove the remaining obligations. Rewrite using `[fibrePoly_eq_C h0 k]`. Simplify using `[map_mul, map_pow, map_sum, aeval_X]`.
+-/
 theorem proof (h0 : FibreConstantClosedForm.Statement) : FibreIntegralInvariant.Statement := by
   refine ⟨mean_eq, fun k B _ _ a => ?_⟩
   rw [fibrePoly_eq_C h0 k]

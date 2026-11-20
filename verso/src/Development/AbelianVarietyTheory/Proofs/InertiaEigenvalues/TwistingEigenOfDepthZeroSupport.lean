@@ -21,6 +21,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.TypeR
 
 namespace GlobalTheory.TypePrimesFinished
 
+/- English proof (translation)
+Introduce `hC hP hW hS hL`. Use `GlobalTheory.HeightCounting.Up.Model.AtMem.imp (GlobalTheory.HeightCounting.Up.Model.AtMem.and (GlobalTheory.T.depth_zero_eigen_span_admissible hC hP hW hS hL) (GlobalTheory.HeightCounting.Up.Model.AtMem.and (GlobalTheory.T.exists_local_langlands_place_datum hP hL) (GlobalTheory. …` and prove the remaining obligations. Introduce `K B f T w Z Wt p0 t nch n c h`. Take `⟨⟨h1, h2⟩, ⟨P, _⟩, h4⟩` from `h`. Conclude with `⟨h1, h2, GlobalTheory.T.inertia_polynomial_compatible hL (w.D Z) P, h4⟩`.
+-/
 theorem main : GlobalTheory.HeightCounting.HtCard → PrN → GlobalTheory.Published.DepthZeroWild → GlobalTheory.Published.DepthZeroSupport → ∀ hL : GlobalTheory.Published.LocalLanglandsGL, AtMem hL fun _ _ _ _ w Z _ _ _ _ _ _ => (PairedCharacterCondition.tieChi (D := w.D Z) ∧ (∃ Q : PairedCharacterCondition.Pend (w.D Z), PairedCharacterCondition.admDZ Q ∧ GlobalTheory.Pass.EigSpan Q) ∧ GlobalTheory.Pass.TieInePoly (w.D Z) ∧ GlobalTheory.TypeLeaf.SerLoc (w.D Z)) := by
   intro hC hP hW hS hL
   refine GlobalTheory.HeightCounting.Up.Model.AtMem.imp

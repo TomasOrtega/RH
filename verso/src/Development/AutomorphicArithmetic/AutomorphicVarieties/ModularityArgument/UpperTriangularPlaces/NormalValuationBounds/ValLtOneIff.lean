@@ -12,6 +12,9 @@ section Place
 
 variable {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω]
 
+/- English proof (translation)
+Distinguish the cases in `hx : x = 0`. Simplify using `[hx]`. Establish `h0 : 0 < A.valuation x` using `zero_lt_iff.2 ((_root_.map_ne_zero _).2 hx)`. Rewrite using `[← A.valuation_le_one_iff, map_inv₀, not_le, one_lt_inv₀ h0]`. Simplify using `[hx]`.
+-/
 private theorem val_lt_one_iff (A : ValuationSubring Ω) (x : Ω) : A.valuation x < 1 ↔ x = 0 ∨ x⁻¹ ∉ A := by
   by_cases hx : x = 0
   · simp [hx]
@@ -19,17 +22,30 @@ private theorem val_lt_one_iff (A : ValuationSubring Ω) (x : Ω) : A.valuation 
     rw [← A.valuation_le_one_iff, map_inv₀, not_le, one_lt_inv₀ h0]
     simp [hx]
 
+/- English proof (translation)
+Use extensionality with `x`. Rewrite using `[ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem, ← hg]`. Simplify using `[AlgEquiv.smul_def]`.
+-/
 private theorem smul_place {A B : ValuationSubring Ω} {g : G F Ω} (hg : ∀ x, g x ∈ A ↔ x ∈ B) : g • B = A := by
   ext x
   rw [ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem, ← hg]
   simp [AlgEquiv.smul_def]
 
+/- English proof (translation)
+Establish `e` using `smul_place hg`. Rewrite `hs`, the goal using `[mem_Dec]`. Rewrite using `[mul_smul, mul_smul, e, hs, ← e, inv_smul_smul]`.
+-/
 private theorem conj_dec {A B : ValuationSubring Ω} {g : G F Ω} (hg : ∀ x, g x ∈ A ↔ x ∈ B) {s : G F Ω}
     (hs : s ∈ Dec (F := F) A) : g⁻¹ * s * g ∈ Dec (F := F) B := by
   have e := smul_place hg
   rw [mem_Dec] at hs ⊢
   rw [mul_smul, mul_smul, e, hs, ← e, inv_smul_smul]
 
+/- English proof (translation)
+Use `⟨conj_dec hg (Ine_le_Dec A hs), fun x hx => ?_⟩` and prove the remaining obligations. Establish `h1` using `hs.2 (g x) ((A.valuation_le_one_iff _).2 ((hg x).2 ((B.valuation_le_one_iff _).1 hx)))`. Establish `e : (g⁻¹ * s * g) x - x = g⁻¹ (s (g x) - g x)`. Rewrite using `[map_sub]`. Simplify using `[AlgEquiv.mul_apply]`.
+
+Rewrite using `[e]`. Rewrite `h1`, the goal using `[val_lt_one_iff]`. Break down `h1 with h1 | h1` into its components or cases. Use `left`. Rewrite using `[h1, map_zero]`.
+
+Use `right`. Introduce `h2`. Apply `h1` to reduce the goal to its premises. Rewrite `h2` using `[← map_inv₀, ← hg]`. Simplify using `using h2`.
+-/
 private theorem conj_ine {A B : ValuationSubring Ω} {g : G F Ω} (hg : ∀ x, g x ∈ A ↔ x ∈ B) {s : G F Ω}
     (hs : s ∈ Ine (F := F) A) : g⁻¹ * s * g ∈ Ine (F := F) B := by
   refine ⟨conj_dec hg (Ine_le_Dec A hs), fun x hx => ?_⟩
@@ -51,6 +67,11 @@ end Place
 
 section Mat
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single i]`. Introduce `b _ hb`. Break down `lt_or_gt_of_ne hb with h | h` into its components or cases. Rewrite using `[hX i b h, zero_mul]`. Rewrite using `[hY b i h, mul_zero]`.
+
+Simplify using the standard rewrite rules.
+-/
 private theorem up_diag {K : Type} [CommRing K] {X Y : M4 K} (hX : IsUp X) (hY : IsUp Y) (i : Fin 4) :
     (X * Y) i i = X i i * Y i i := by
   rw [Matrix.mul_apply, Finset.sum_eq_single i]
@@ -60,6 +81,11 @@ private theorem up_diag {K : Type} [CommRing K] {X Y : M4 K} (hX : IsUp X) (hY :
     · rw [hY b i h, mul_zero]
   · simp
 
+/- English proof (translation)
+Introduce `i j hij`. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun b _ => ?_` and prove the remaining obligations. Break down `lt_or_ge b i with h | h` into its components or cases. Rewrite using `[hX i b h, zero_mul]`.
+
+Rewrite using `[hY b j (lt_of_lt_of_le hij h), mul_zero]`.
+-/
 private theorem up_mul {K : Type} [CommRing K] {X Y : M4 K} (hX : IsUp X) (hY : IsUp Y) : IsUp (X * Y) := by
   intro i j hij
   rw [Matrix.mul_apply]
@@ -68,15 +94,32 @@ private theorem up_mul {K : Type} [CommRing K] {X Y : M4 K} (hX : IsUp X) (hY : 
   · rw [hX i b h, zero_mul]
   · rw [hY b j (lt_of_lt_of_le hij h), mul_zero]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[adj_apply, map_zsmul]`.
+-/
 private theorem adj_map {R R' : Type} [CommRing R] [CommRing R'] (f : R →+* R') (X : M4 R) :
     adj (X.map f) = (adj X).map f := by
   ext i j
   simp [adj_apply, map_zsmul]
 
+/- English proof (translation)
+Rewrite using `[adj_map, Matrix.map_mul, Matrix.map_mul]`.
+-/
 private theorem conj_map {R R' : Type} [CommRing R] [CommRing R'] (f : R →+* R') (n x : M4 R) :
     adj (n.map f) * x.map f * n.map f = (adj n * x * n).map f := by
   rw [adj_map, Matrix.map_mul, Matrix.map_mul]
 
+/- English proof (translation)
+Establish `hn' : P.n v * adj (P.n v) = 1` using `mul_eq_one_comm.1 hn`. Establish `hgg : P.r g * P.r g⁻¹ = 1` using `by rw [← map_mul, mul_inv_cancel, map_one]`. Establish `hgg' : P.r g⁻¹ * P.r g = 1` using `by rw [← map_mul, inv_mul_cancel, map_one]`. Set `u : GL (Fin 4) K` to `⟨adj (P.n v) * P.r g⁻¹, P.r g * P.n v, by rw [mul_assoc, ← mul_assoc (P.r g⁻¹), hgg', one_mul, hn], by rw [mul_assoc, ← mul_assoc (P.n v), hn', one_mul, hgg]⟩`. Establish `hu : ∀ s : Γ, ((u * ρ s * u⁻¹ : GL (Fin 4) K) : M4 K) = adj (P.n v) * P.r (g⁻¹ * s * g) * P.n v` using `fun s => by show adj (P.n v) * P.r g⁻¹ * (ρ s : M4 K) * (P.r g * P.n v) = _`.
+
+Rewrite using `[hρ, map_mul, map_mul]`. Simplify using `only [mul_assoc]`. Set `d : Fin 4 → H →* K` to `fun i => { toFun := fun s => adj (P.n v) * P.r (g⁻¹ * s * g) * P.n v |>.diag i map_one' := by`. Simplify using `[Matrix.diag, hn]`. Use the proof step `map_mul' := fun a b => by`.
+
+Establish `e : adj (P.n v) * P.r (g⁻¹ * ((a * b : H) : Γ) * g) * P.n v = (adj (P.n v) * P.r (g⁻¹ * a * g) * P.n v) * (adj (P.n v) * P.r (g⁻¹ * b * g) * P.n v)`. Rewrite using `[← hu, ← hu, ← hu, ← Units.val_mul]`. Use `congr 1`. Simplify using `only [Subgroup.coe_mul, map_mul]`. Use `group`.
+
+Simplify using `only [Matrix.diag_apply]`. Rewrite using `[e, up_diag (hup a) (hup b)] }`. Use `⟨fun i => (d i).toHomUnits, ⟨u, fun s => ?_⟩, fun i s => rfl⟩` and prove the remaining obligations. Establish `e` using `hu (s : Γ)`. Use `⟨fun i j hij => ?_, fun i => ?_⟩` and prove the remaining obligations.
+
+Use `hup s i j hij` as an intermediate fact. Rewrite `this` using `[← e]`. Simplify using `using this`. Establish `: ((u * ρ s * u⁻¹ : GL (Fin 4) K) : M4 K) i i = d i s` using `by rw [e]; rfl`. Simplify using `using this`.
+-/
 private theorem flag_abs {Γ K ι : Type} [Group Γ] [Field K] (ρ : Γ →* GL (Fin 4) K) (P : PD ι Γ K) (v : ι) (g : Γ)
     (H : Subgroup Γ) (hρ : ∀ s, (ρ s : M4 K) = P.r s) (hn : adj (P.n v) * P.n v = 1)
     (hup : ∀ s : H, IsUp (adj (P.n v) * P.r (g⁻¹ * s * g) * P.n v)) :
@@ -115,21 +158,53 @@ private theorem flag_abs {Γ K ι : Type} [Group Γ] [Field K] (ρ : Γ →* GL 
 
 end Mat
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h`. Establish `h1 : IsUnit x` using `by simpa using h`. Conclude with `(h1.map (res Λ R)).ne_zero hx`.
+-/
 private theorem mem_max_of_res {Λ R : Type} [CommRing Λ] [IsLocalRing Λ] [CommRing R] [Algebra Λ R] [IsCO Λ R] {x : R}
     (hx : res Λ R x = 0) : x ∈ maximalIdeal R := by
   by_contra h
   have h1 : IsUnit x := by simpa using h
   exact (h1.map (res Λ R)).ne_zero hx
 
+/- English proof (translation)
+Use `show (adj ((P.n v).map f) * (P.r s).map f * (P.n v).map f) i i = _`. Rewrite using `[conj_map]`. Both sides reduce to the same expression.
+-/
 private theorem psi_map {ι Γ R R' : Type} [Group Γ] [CommRing R] [CommRing R'] (f : R →+* R') (P : PD ι Γ R) (v : ι)
     (i : Fin 4) (s : Γ) : (P.map f).ψ v i s = f (P.ψ v i s) := by
   show (adj ((P.n v).map f) * (P.r s).map f * (P.n v).map f) i i = _
   rw [conj_map]
   rfl
 
+/- English proof (translation)
+Rewrite using `[map_mul, map_mul, map_inv, mul_comm (f g)⁻¹, mul_assoc, inv_mul_cancel, mul_one]`.
+-/
 private theorem comm_conj {Γ C : Type} [Group Γ] [CommGroup C] (f : Γ →* C) (g s : Γ) : f (g⁻¹ * s * g) = f s := by
   rw [map_mul, map_mul, map_inv, mul_comm (f g)⁻¹, mul_assoc, inv_mul_cancel, mul_one]
 
+/- English proof (translation)
+Introduce `Ω _ _ _ l _ c D T c' h X y hW r hr A hA`. Take `⟨v₀, ⟨g, hg₀⟩, -⟩` from `T.cover A hA`. It suffices to establish `key : ∀ v : (T.fr ∅).ι, (∀ x, g x ∈ A ↔ x ∈ T.pl v) → ∃ κ, OrdAt T r A κ from key v₀ hg₀`. Introduce `v hg`. Establish `hconj : ∀ s : ↥(Dec (F` using `T.F) A), g⁻¹ * (s : G T.F Ω) * g ∈ Dec (F := T.F) (T.pl v) := fun s => conj_dec hg s.2`.
+
+Establish `hn : adj ((X.P.map (y : X.A →+* PadicAlgCl l)).n v) * (X.P.map (y : X.A →+* PadicAlgCl l)).n v = 1`. Establish `h1 : adj (X.P.n v) * X.P.n v = 1`. Use `(X.pair.low v).1` as an intermediate fact. Rewrite `this` using `[IsGSp, one_smul]`. Conclude with `this`.
+
+Use `show adj ((X.P.n v).map _) * (X.P.n v).map _ = 1`. Rewrite using `[adj_map, ← Matrix.map_mul, h1]`. Simplify using the standard rewrite rules. Establish `hup : ∀ s : ↥(Dec (F` using `T.F) A), IsUp (adj ((X.P.map (y : X.A →+* PadicAlgCl l)).n v) * (X.P.map (y : X.A →+* PadicAlgCl l)).r (g⁻¹ * (s : G T.F Ω) * g) * (X.P.map (y : X.A →+* PadicAlgCl l)).n v) := fun s i j hij => by show (adj ((X.P.n v).map (y : X.A →+* PadicAlgCl l)) * (X.P.r (g⁻¹ * (s : G T.F Ω) * …`. Rewrite using `[conj_map, Matrix.map_apply, X.pair.flag v _ (hconj s) i j hij, map_zero]`.
+
+Take `⟨κ, hf, hκ⟩` from `flag_abs (r.toHomUnits.comp (resQ T.F)) (X.P.map (y : X.A →+* PadicAlgCl l)) v g (Dec (F := T.F) A) (fun s => by rw [← hr]; rfl) hn hup`. Use `⟨κ, hf, fun i s => ?_, ?_⟩` and prove the remaining obligations. Establish `hm` using `X.ψ_map v i _ (hconj s)`. Establish `hd` using `X.ψ_red v i _ (hconj s)`. Set `yB : X.B →ₐ[c'.O] PadicAlgCl l` to `y.comp (IsScalarTower.toAlgHom c'.O X.B X.A)`.
+
+Set `z : c.O` to `((chi D T.pr i (resQ T.F (g⁻¹ * (s : G T.F Ω) * g)) : c.Oˣ) : c.O)`. Establish `hb : X.ψ v i (g⁻¹ * (s : G T.F Ω) * g) - algebraMap c'.O X.B (inc h z) ∈ maximalIdeal X.B`. Apply `mem_max_of_res (Λ := c'.O)` to reduce the goal to its premises. Rewrite using `[map_sub, hd, AlgHom.commutes, sub_eq_zero]`. Both sides reduce to the same expression.
+
+Take `⟨-, a, a1, -, ha⟩` from `(coPt c' X.B).1 yB`. Establish `hb' : X.ψ v i (g⁻¹ * (s : G T.F Ω) * g) - algebraMap c'.O X.B (inc h z) ∈ maximalIdeal X.B ^ 1`. Rewrite using `[pow_one]`. Conclude with `hb`. Establish `h2` using `ha 1 _ hb'`.
+
+Establish `e : yB (X.ψ v i (g⁻¹ * (s : G T.F Ω) * g) - algebraMap c'.O X.B (inc h z)) = (κ i s : PadicAlgCl l) - (z : PadicAlgCl l)`. Rewrite using `[map_sub, AlgHom.commutes, hκ, psi_map, ← hm]`. Both sides reduce to the same expression. Rewrite `h2` using `[e, pow_one]`. Establish `e2 : z = ((chi D T.pr i (resQ T.F s) : c.Oˣ) : c.O)`.
+
+Conclude with `congrArg Units.val (comm_conj ((chi D T.pr i).comp (resQ T.F)) g (s : G T.F Ω))`. Rewrite using `[← e2]`. Conclude with `lt_of_le_of_lt h2 a1`. Take `⟨U, hU, hw⟩` from `hW`. Use `⟨U.comap (MulAut.conj g⁻¹).toMonoidHom, hU.preimage ?_, fun i s hs => ?_⟩` and prove the remaining obligations.
+
+Use `show Continuous fun s : G T.F Ω => g⁻¹ * s * g⁻¹⁻¹`. Conclude with `(continuous_const.mul continuous_id).mul continuous_const`. Establish `h1 : g⁻¹ * (s : G T.F Ω) * g ∈ U`. Use `hs.1` as an intermediate fact. Simplify `this` using `[Subgroup.mem_comap]`.
+
+Establish `h2` using `hw v i _ ⟨h1, conj_ine hg hs.2⟩`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_pow_eq_pow_val, hκ]`. Use `Eq.trans h2 ?_` and prove the remaining obligations. Use `show ((cycBar T.F Ω l (g⁻¹ * (s : G T.F Ω) * g) ^ (2 * (D.wts4 i : ℤ)) : (PadicAlgCl l)ˣ) : PadicAlgCl l) = _`.
+
+Rewrite using `[comm_conj]`.
+-/
 theorem flagF : FlagF := by
   intro Ω _ _ _ l _ c D T c' h X y hW r hr A hA
   obtain ⟨v₀, ⟨g, hg₀⟩, -⟩ := T.cover A hA

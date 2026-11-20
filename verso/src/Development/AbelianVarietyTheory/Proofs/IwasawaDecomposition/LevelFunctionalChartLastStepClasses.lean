@@ -13,6 +13,11 @@ section Generic
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E]
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `only [reL, Submodule.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Conclude with `hy`.
+
+Introduce `hx`. Conclude with `⟨x, hx, rfl⟩`.
+-/
 theorem reL_refl {a : ℕ} (L : Submodule (𝓞 E) (Fin a → E)) : reL (rfl : a = a) L = L := by
   ext x
   simp only [reL, Submodule.mem_map]
@@ -22,10 +27,20 @@ theorem reL_refl {a : ℕ} (L : Submodule (𝓞 E) (Fin a → E)) : reL (rfl : a
   · intro hx
     exact ⟨x, hx, rfl⟩
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[reGL]`.
+-/
 theorem reGL_refl {a : ℕ} (R : Type) [CommRing R] (g : GL (Fin a) R) : reGL (rfl : a = a) R g = g := by
   ext i j
   simp [reGL]
 
+/- English proof (translation)
+Substitute `h` using the available equality. Take `rfl : J = S.gram` from `by rw [hJ]; ext i j; simp`. Take `rfl : Lb' = Lb` from `hL.trans (reL_refl Lb)`. Take `rfl : y' = fun c => (y c).1` from `funext fun c => (hy c).trans (reGL_refl _ _)`. Use `⟨⟨fT, fun c z t ht => ?_⟩⟩` and prove the remaining obligations.
+
+Establish `ht' : ((bc (prV (E` using `E) w) (y c).1)⁻¹).1 *ᵥ (fun a => inclE (F := F) (w.adicCompletion F) (reV (rfl : S.rank = S.rank) E (Formalism.L2.Herm.crd S z.1) a)) = t.1 := by`. Establish `e : (fun a => inclE (F` using `F) (w.adicCompletion F) (reV (rfl : S.rank = S.rank) E (Formalism.L2.Herm.crd S z.1) a)) = fun a => inclE (F := F) (w.adicCompletion F) (Formalism.L2.Herm.crd S z.1 a) := rfl`. Rewrite using `[e, ← ht, Matrix.mulVec_mulVec]`. Simplify using the standard rewrite rules. Establish `hz : ((bc (prV (E` using `E) w) (y c).1)⁻¹).1 *ᵥ (fun a => inclE (F := F) (w.adicCompletion F) (reV (rfl : S.rank = S.rank) E (Formalism.L2.Herm.crd S z.1) a)) ∈ latS (F := F) (w.adicCompletion F) (intV E w) (Submodule.span (𝓞 E) (dualSet (hc.sig : E →+* E) S.gram Lb')) := by`.
+
+Rewrite using `[ht']`. Conclude with `t.2`. Rewrite using `[hfv c z hz]`. Conclude with `congrArg fT (Subtype.ext ht')`.
+-/
 theorem fvTie_of_coords (hc : CMData F E) (S : HSpace E) {cls : Type}
     (y : cls → Formalism.L2.Herm.UAf hc S) (lat : cls → Submodule (𝓞 E) S.V)
     (w : HeightOneSpectrum (𝓞 F)) (k : Type) [AddCommGroup k]
@@ -63,6 +78,9 @@ theorem fvTie_of_coords (hc : CMData F E) (S : HSpace E) {cls : Type}
   rw [hfv c z hz]
   exact congrArg fT (Subtype.ext ht')
 
+/- English proof (translation)
+Substitute `h` using the available equality. Establish `e : (G.reindex (finCongr (rfl : a = a)) (finCongr (rfl : a = a))) = G` using `by ext i j; simp`. Rewrite using `[e]`. Both sides reduce to the same expression.
+-/
 theorem hform_reindex {a b : ℕ} (h : a = b) (σ : E →+* E) (G : Matrix (Fin a) (Fin a) E) (x y : Fin a → E) :
     hform σ (G.reindex (finCongr h) (finCongr h)) (reV h E x) (reV h E y) = hform σ G x y := by
   subst h
@@ -71,6 +89,13 @@ theorem hform_reindex {a b : ℕ} (h : a = b) (σ : E →+* E) (G : Matrix (Fin 
 
 end Generic
 
+/- English proof (translation)
+Use `Submodule.subset_span ?_` and prove the remaining obligations. Introduce `x hx`. Take `⟨x0, hx0, rfl⟩` from `hx`. Establish `h1 : (D.sp.X i).hT x0 z.1 ∈ (1 : Submodule (𝓞 D.host.E) D.host.E)`. Use `z.2` as an intermediate fact.
+
+Simplify using `only [Formalism.L2.Herm.Ld, Formalism.HermitianLatticesTheory.dual, Formalism.E.hdual, Submodule.mem_iInf] at this`. Conclude with `this x0 hx0`. Rewrite `h1` using `[Formalism.L2.Herm.hT_crd D.sp.cm]`. Establish `h2` using `hform_reindex (rankN D i hi) (D.sp.cm.sig : D.host.E →+* D.host.E) (D.sp.X i).gram (Formalism.L2.Herm.crd _ x0) (Formalism.L2.Herm.crd _ z.1)`. Take `⟨r, hr⟩` from `Submodule.mem_one.1 h1`.
+
+Conclude with `⟨r, hr.trans h2.symm⟩`.
+-/
 theorem crdN_mem_Ld {D : D7} (u : D.what₂.Word) (i : ℕ) (hi : i ≤ D.R.m) (c : (D.mem u).C.cls i)
     (z : Formalism.L2.Herm.Ld D u i c) : crdN D i hi z.1 ∈ Ld D u i hi c := by
   refine Submodule.subset_span ?_
@@ -88,6 +113,13 @@ theorem crdN_mem_Ld {D : D7} (u : D.what₂.Word) (i : ℕ) (hi : i ≤ D.R.m) (
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Take `rfl : β = chM H u` from `@Subsingleton.elim _ (@Unique.instSubsingleton _ (H.Ch_m u).some) _ _`. Establish `key : ∀ w, w = ((F u).atT.eV v).1 → Nonempty (Formalism.L2.Herm.FvTie D.sp.cm (D.sp.X D.R.m) (H.lev u D.R.m h1 le_rfl (chM H u)).Lb (H.cls u D.R.m h1 le_rfl (chM H u)).y (fun c => D.clsLat u D.R.m c.1) w ((D.mem u).A.Fv v) (fun c z => (D.fm u).fv D.R.m v c.1 ((A u).pr D.R.m v c.1 …`. Introduce `w hw`. Substitute `hw` using the available equality. Establish `hc` using `hH.carM u`.
+
+Use `fvTie_of_coords D.sp.cm (D.sp.X D.R.m) _ _ _ _ _ _ (rankN D D.R.m le_rfl) (gramN D D.R.m le_rfl) rfl ((F u).cls D.R.m le_rfl (Or.inr rfl)).lev.Lb hc.Lb_eq (fun c => (((F u).cls D.R.m le_rfl (Or.inr rfl)).y c.1).1) (fun c => hc.y_eq c.1) (((F u).fMe D.R.m le_rfl (Or.inr rfl) v).to …` and prove the remaining obligations. Introduce `c z hz`. Establish `hz'` using `crdN_mem_Ld u D.R.m le_rfl c.1 z`. Establish `e1` using `(F u).fv D.R.m le_rfl (Or.inr rfl) v c.1 ⟨_, hz'⟩ hz`. Establish `e2` using `hT.pr u D.R.m le_rfl v c.1 z ⟨_, hz'⟩ rfl`.
+
+Conclude with `(congrArg (fun p => (D.fm u).fv D.R.m v c.1 p) e2.symm).trans e1`. Conclude with `key _ (by rw [hH.eV u])`.
+-/
 theorem fvTie_top {D : D7} (H : Formalism.L2.Herm.HermColsCh D) (F : ∀ u, FormsTiedSym D u (H.Ch u) (H.chOf u))
     (A : ∀ u, Formalism.L2.Herm.AtT D u (H.vT u) (H.Fv u)) (hH : CarH H F) (hT : CarT H F A) (u : D.what₂.Word)
     (h1 : 1 ≤ D.R.m) (v : (D.mem u).A.vT) (β : H.Ch u D.R.m) :
@@ -116,6 +148,9 @@ theorem fvTie_top {D : D7} (H : Formalism.L2.Herm.HermColsCh D) (F : ∀ u, Form
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Introduce `B X I _ _ l Z H F A _ hH hT u h1 v β`. Conclude with `fvTie_top H F A hH hT u h1 v β`.
+-/
 theorem fvTie_chart_top : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)), ∀ (H : Formalism.L2.Herm.HermColsCh (I.rec7 l Z)) (F : ∀ u, FormsTiedSym (I.rec7 l Z) u (H.Ch u) (H.chOf u)) (A : ∀ u, Formalism.L2.Herm.AtT (I.rec7 l Z) u (H.vT u) (H.Fv u)), (∀ u, I.StdF l Z u (F u) ∧ I.StdLvC l Z u (F u)) → CarH H F → CarT H F A → ∀ u (h1 : 1 ≤ (I.rec7 l Z).R.m) (v : ((I.rec7 l Z).mem u).A.vT) (β : H.Ch u (I.rec7 l Z).R.m), Nonempty (Formalism.L2.Herm.FvTie (I.rec7 l Z).sp.cm ((I.rec7 l Z).sp.X (I.rec7 l Z).R.m) (H.lev u (I.rec7 l Z).R.m h1 le_rfl β).Lb (H.cls u (I.rec7 l Z).R.m h1 le_rfl β).y (fun c => (I.rec7 l Z).clsLat u (I.rec7 l Z).R.m c.1) (H.vT u v).1 (((I.rec7 l Z).mem u).A.Fv v) (fun c z => ((I.rec7 l Z).fm u).fv (I.rec7 l Z).R.m v c.1 ((A u).pr (I.rec7 l Z).R.m v c.1 z))) := by
   intro B X I _ _ l Z H F A _ hH hT u h1 v β
   exact fvTie_top H F A hH hT u h1 v β

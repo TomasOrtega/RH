@@ -120,6 +120,9 @@ def PolyRadialSOfCut : Prop :=
   SSn.Rep.ThtFacts → Transfer → DatumConst → KapLine → FibStable → AlgSS → CorePoly → PhaseInv → PhaseExtract → TWNe →
     PolyRadialS
 
+/- English proof (translation)
+Introduce `hT hTr hD hK hF hA hC hP hE hW` and use `hTr hT (h0 hD hK hF hA hC hP hE hW)`.
+-/
 theorem polynomialRadial_of_base (h0 : PolynomialRadialAtSectionOfPhaseInvariance) : PolyRadialSOfCut :=
   fun hT hTr hD hK hF hA hC hP hE hW => hTr hT (h0 hD hK hF hA hC hP hE hW)
 

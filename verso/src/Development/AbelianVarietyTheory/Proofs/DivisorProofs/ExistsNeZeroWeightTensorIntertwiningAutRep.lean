@@ -11,6 +11,27 @@ noncomputable section
 
 namespace GlobalTheory.BCT.TrKer
 
+/- English proof (translation)
+Introduce `E _ _ _ n lam π hπ hW`. Set `π' : GlobalTheory.DefU.AutSub E n` to `⟨π, hπ⟩`. Set `s : ∀ v : InfinitePlace E, embU n v.embedding →* UA E n` to `fun v => (embU n v.embedding).subtype`. Set `σ : ∀ v : InfinitePlace E, Representation ℂ (embU n v.embedding) (nablaSq ℂ n (lam v))` to `fun v => (GlobalTheory.Branching.sqRep ℂ n (lam v)).comp ((cEmb v.embedding).comp (embU n v.embedding).subtype)`. Establish `hirr : ∀ v, (σ v).IsIrreducible` using `fun v => by`.
+
+Take `⟨e, he⟩` from `GlobalTheory.T.archimedeanUnitaryPoints_equiv_unitaryGroup E n v.embedding`. Take `⟨h1, h2⟩` from `(CuspRep.isIrreducible_iff _).1 (GlobalTheory.Branching.isIrreducible_smallRep_unitary n (lam v))`. Use `(CuspRep.isIrreducible_iff _).2 ⟨h1, fun S hS => h2 S fun g w hw => ?_⟩` and prove the remaining obligations. Take `⟨x, rfl⟩` from `e.surjective g`. Use `hS x w hw` as an intermediate fact.
+
+Express the relevant statement in the definitionally equal form `GlobalTheory.Branching.sqRep ℂ n (lam v) (cEmb v.embedding (x : UA E n)) w ∈ S at this`. Express the relevant statement in the definitionally equal form `GlobalTheory.Branching.sqRep ℂ n (lam v) (GlobalTheory.Branching.unitaryIncl n (e x)) w ∈ S`. Rewrite using `[he]` and apply the resulting hypothesis. Establish `hcomm : ∀ u v, u ≠ v → ∀ a b, Commute (s u a) (s v b)` using `fun u v huv a b => GlobalTheory.T.commute_unitaryArchimedeanPoints_distinct_places E n u.embedding v.embedding (by rwa [InfinitePlace.mk_embedding, InfinitePlace.mk_embedding]) _ a.2 _ b.2`. Establish `hspan : ∀ v, (⨆ f : (σ v).IntertwiningMap (π'.rep.comp (s v)), LinearMap.range f.toLinearMap) = ⊤` using `fun v => GlobalTheory.T.iSup_range_weightMaps_eq_top_definiteUnitary E n π' v.embedding (lam v) (hW v)`.
+
+Use `haveI : Nontrivial π'.V := Submodule.nontrivial_iff_ne_bot.2 π'.isAut.ne_bot`. Take `⟨F, hF0, hF⟩` from `GlobalTheory.T.exists_multilinearMap_of_isotypic_commuting_subgroups (InfinitePlace E) (UA E n) π'.V (fun v => embU n v.embedding) (fun v => nablaSq ℂ n (lam v)) π'.rep s σ inferInstance hirr hcomm hspan`. Set `T : Wsp lam →ₗ[ℂ] (UA E n → ℂ)` to `π.subtype ∘ₗ PiTensorProduct.lift F`. Establish `hT : ∀ u, T (PiTensorProduct.tprod ℂ u) = (F u).1` using `fun u => by`. Simplify using `only [T, LinearMap.comp_apply, PiTensorProduct.lift.tprod]`.
+
+Both sides reduce to the same expression. Choose the witnesses or unpack the hypotheses as in `⟨u0, hu0⟩ : ∃ u, F u ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hF0 (MultilinearMap.ext h)`.
+
+Use `⟨T, fun h => hu0 ?_, fun w => (PiTensorProduct.lift F w).2, fun x hx w => ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[← hT, h]`. Both sides reduce to the same expression. Take `⟨y, hy, hyc, hprod⟩` from `GlobalTheory.T.definiteUnitaryInfinitePoint_eq_list_prod_placeParts E n x hx`.
+
+Set `y' : ∀ v : InfinitePlace E, embU n v.embedding` to `fun v => ⟨y v, hy v⟩`. Establish `key : ∀ u, T (wInf lam x (PiTensorProduct.tprod ℂ u)) = RU E n x (T (PiTensorProduct.tprod ℂ u))`. Introduce `u`. Establish `h1` using `GlobalTheory.DefU.prod_list_apply_multilinear π'.rep s σ F hF y' u Finset.univ.toList (Finset.nodup_toList _)`. Establish `h2 : (Finset.univ.toList.map fun v => s v (y' v)).prod = x` using `hprod`.
+
+Rewrite `h1` using `[h2]`. Simplify using `only [Finset.mem_toList, Finset.mem_univ, if_true] at h1`. Establish `h3 : wInf lam x (PiTensorProduct.tprod ℂ u) = PiTensorProduct.tprod ℂ (fun v => σ v (y' v) (u v))`. Express the relevant statement in the definitionally equal form `PiTensorProduct.map _ _ = _`. Rewrite using `[PiTensorProduct.map_tprod]`.
+
+Use `congrArg _ (funext fun v => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = GlobalTheory.Branching.sqRep ℂ n (lam v) (cEmb v.embedding (y v)) (u v)`. Rewrite using `[hyc v]`. Rewrite using `[h3, hT, hT, ← h1]`. Both sides reduce to the same expression.
+
+Establish `hext : T ∘ₗ wInf lam x = RU E n x ∘ₗ T` using `PiTensorProduct.ext (MultilinearMap.ext fun u => by`. Simplify using `only [LinearMap.compMultilinearMap_apply, LinearMap.comp_apply]`. Conclude with `key u)`. Conclude with `LinearMap.congr_fun hext w`.
+-/
 theorem exists_ne_zero_wsp_intertwining : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ)
     (lam : InfinitePlace E → DomWeight n) (π : Submodule ℂ (UA E n → ℂ)), IsAutRepU π →
     (∀ v : InfinitePlace E, HasWeightAt π v.embedding (lam v)) →

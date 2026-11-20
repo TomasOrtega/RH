@@ -21,12 +21,34 @@ namespace GlobalTheory.RationalFrame
 
 open NumberField Formalism.L2.SG.PoincareInHH
 
+/- English proof (translation)
+Unfold `hJ`. Simplify using `only [mulVec_add, mulVec_sum, mulVec_smul, dotProduct_add, dotProduct_sum, dotProduct_smul, smul_eq_mul]`.
+-/
 theorem hJ_lin {n : ℕ} (ε : Fin n → Bool) {ι : Type*} [Fintype ι] (x : Fin n → ℂ) (g : ι → ℂ)
     (y : ι → Fin n → ℂ) (c : ℂ) (w : Fin n → ℂ) :
     hJ ε x (∑ i, g i • y i + c • w) = ∑ i, g i * hJ ε x (y i) + c * hJ ε x w := by
   unfold hJ
   simp only [mulVec_add, mulVec_sum, mulVec_smul, dotProduct_add, dotProduct_sum, dotProduct_smul, smul_eq_mul]
 
+/- English proof (translation)
+Establish `hfr : Formalism.L2.SG.RealObj.frm X u 1 v = Formalism.L2.SG.RealObj.fam (fun a => rv X.B.I v (X.eR a)) (rv X.B.I v (X.zR u))`. Use function extensionality and compare the values at `a`. Simplify using `[Formalism.L2.SG.RealObj.frm, Formalism.L2.SG.RealObj.famSc]`. Establish `hze : ∀ a, hJ (X.B.I.ε v) (rv X.B.I v (X.zR u)) (rv X.B.I v (X.eR a)) = 0`. Introduce `a`.
+
+Use `(Cut.hJ_crd X v _ _).trans ?_` and prove the remaining obligations. Establish `h` using `(VS D).herm.eq (X.eX a) (X.zu u)`. Rewrite `h` using `[(X.zu_orth u a).1]`. Rewrite using `[← h]`. Simplify using the standard rewrite rules.
+
+Establish `hzz : hJ (X.B.I.ε v) (rv X.B.I v (X.zR u)) (rv X.B.I v (X.zR u)) ≠ 0`. Rewrite using `[HidaSetting.zR, Cut.hJ_crd X v, X.zu_norm]`. Simplify using `only [map_neg, map_natCast, neg_ne_zero, Nat.cast_ne_zero]`. Conclude with `((D.mem u).A.T_prime).ne_zero`. Establish `hfe : ∀ j a, hJ (X.B.I.ε v) (rv X.B.I v (X.fR j)) (rv X.B.I v (X.eR a)) = if a = j then 1 else 0`.
+
+Introduce `j a`. Use `(Cut.hJ_crd X v _ _).trans ?_` and prove the remaining obligations. Rewrite using `[Cut.hT_f_e X]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `hfz : ∀ j, hJ (X.B.I.ε v) (rv X.B.I v (X.fR j)) (rv X.B.I v (X.zR u)) = 0`.
+
+Introduce `j`. Use `(Cut.hJ_crd X v _ _).trans ?_` and prove the remaining obligations. Rewrite using `[(X.zu_orth u j).2]`. Simplify using the standard rewrite rules. Rewrite using `[hfr, Fintype.linearIndependent_iff]`.
+
+Introduce `g hg`. Rewrite `hg` using `[Fin.sum_univ_castSucc]`. Simplify using `only [Formalism.L2.SG.RealObj.fam, Fin.snoc_castSucc, Fin.snoc_last] at hg`. Establish `hlast : g (Fin.last _) = 0`. Establish `h` using `congrArg (hJ (X.B.I.ε v) (rv X.B.I v (X.zR u))) hg`.
+
+Rewrite `h` using `[hJ_lin]`. Simplify using `only [hze, mul_zero, Finset.sum_const_zero, zero_add] at h`. Unfold `hJ at h`. Simplify using `only [mulVec_zero, dotProduct_zero] at h`. Conclude with `(mul_eq_zero.1 h).resolve_right hzz`.
+
+Introduce `i`. Use `Fin.lastCases hlast (fun j => ?_) i` and prove the remaining obligations. Establish `h` using `congrArg (hJ (X.B.I.ε v) (rv X.B.I v (X.fR j))) hg`. Rewrite `h` using `[hJ_lin, hfz]`. Simplify using `only [hfe, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true, add_zero] at h`.
+
+Unfold `hJ at h`. Simplify using `only [mulVec_zero, dotProduct_zero] at h`. Conclude with `h`.
+-/
 theorem frame_linearIndependent (D : D7) (X : HidaSetting D) (u : D.what₂.Word) (v : InfinitePlace X.B.I.F) :
     LinearIndependent ℂ (Formalism.L2.SG.RealObj.frm X u 1 v) := by
   have hfr : Formalism.L2.SG.RealObj.frm X u 1 v = Formalism.L2.SG.RealObj.fam (fun a => rv X.B.I v (X.eR a))

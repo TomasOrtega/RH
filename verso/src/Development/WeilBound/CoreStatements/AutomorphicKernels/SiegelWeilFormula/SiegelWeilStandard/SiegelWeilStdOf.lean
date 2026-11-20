@@ -34,21 +34,44 @@ open GlobalTheory.ThK.Dbl PositivityTheory.Rg.Sw
 
 namespace PositivityTheory.SiegelWeilFormula.Fin
 
+/- English proof (translation)
+The claim follows from `Tpar.tTheta_of (tweyl.tthetaComm TBij.tBij)`.
+-/
 theorem tTheta : TTheta := Tpar.tTheta_of (tweyl.tthetaComm TBij.tBij)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨TBij.tBij, Tpar.tPar, hW, tTheta, Tauto.thetaAuto GlobalTheory.T.siegel_set_unitary Tpar.tPar tTheta⟩`.
+-/
 theorem tAll_of (hW : TWeyl) : TAll := ⟨TBij.tBij, Tpar.tPar, hW, tTheta, Tauto.thetaAuto GlobalTheory.T.siegel_set_unitary Tpar.tPar tTheta⟩
 
+/- English proof (translation)
+The claim follows from `Tauto.thetaCoef GlobalTheory.T.siegel_set_unitary TBij.tBij Tpar.tPar tTheta`.
+-/
 theorem thetaCoef : ThetaCoef := Tauto.thetaCoef GlobalTheory.T.siegel_set_unitary TBij.tBij Tpar.tPar tTheta
 
+/- English proof (translation)
+The claim follows from `Gen.whitGenLtOf SwLocFin.locFin2 Gunr.unrWhit (GReal.realWhit_of WR.wr) GFac.factorX PositivityTheory.PfSWUS.HMass.siegelDensitiesLowA`.
+-/
 theorem whitGenLt : Gen.WhitGenLt :=
   Gen.whitGenLtOf SwLocFin.locFin2 Gunr.unrWhit (GReal.realWhit_of WR.wr) GFac.factorX PositivityTheory.PfSWUS.HMass.siegelDensitiesLowA
 
+/- English proof (translation)
+The claim follows from `Gen.whitGenEqOf SwLocFin.locFinX Gunr.unrWhitX (GReal.realWhitEq_of WR.wr) GFac.factorX Gen.lOrd PositivityTheory.Rg.Base1.densEq`.
+-/
 theorem whitGenEq : Gen.WhitGenEq :=
   Gen.whitGenEqOf SwLocFin.locFinX Gunr.unrWhitX (GReal.realWhitEq_of WR.wr) GFac.factorX Gen.lOrd PositivityTheory.Rg.Base1.densEq
 
+/- English proof (translation)
+The claim follows from `Gen.whitGenLowOf SwLocFin.locFinX Gunr.unrWhitX (GReal.realLow_of SP.wrOrd) GFac.factorX Gen.lOrd`.
+-/
 theorem whitGenLow : Gen.WhitGenLow :=
   Gen.whitGenLowOf SwLocFin.locFinX Gunr.unrWhitX (GReal.realLow_of SP.wrOrd) GFac.factorX Gen.lOrd
 
+/- English proof (translation)
+Establish `hA : AuxiliaryPrimeFunction` using `kfour.auxEx`. Establish `hF : FockMem` using `KFock.fockMem`. Establish `hLo : LocOpEx` using `locOpEx_of_tAll hT`. Establish `hGS : GSplit` using `KSplit.gSplit_of hF (KAway.awayAct_of_tAll hT)`. Establish `hVK : VacK` using `Avac.vacK_of hT hF hLo hLI (KAway.finAct_of_tAll hT)`.
+
+Establish `hW : WhitK` using `KWhit.whitK_of hT hA Krd.rdEx hF hKP Khead.secK kunf.unfold whitGenLt thetaCoef kfour.lamBd hPK`. Establish `hWE : WhitEq` using `KWhit.whitEq_of hT hA Krd.rdEx hF hKP Khead.secK kunf.unfold Aeis.eisWk whitGenEq thetaCoef kfour.lamBd hPK`. Establish `hWL : WhitLow` using `KWhit.whitLow_of hVK hT hA hF Khead.secK kunf.unfold Aeis.eisWk whitGenLow thetaCoef kfour.lamBd hPK`. Establish `hSt : Step` using `AStep.stepOf hH Holtb.holT hT thetaCoef hA kfour.coefEx hF (KFock.liftEx hT.1) hLo hLI hGS hPK Khead.secK Aeis.eisWk kfour.lamBd (KSing.lamSing_of kfour.coefEx kfour.fourierZero Krd.denseW hA) kfour.fourierZero kunf.unfold hWL hVK (Avac.iwaQ_of' hT) hCT Afc.uEx (Afc.fcConj_of hA) …`. Conclude with `Atop.siegelWeilStd_of AbsSt.absThm hT thetaCoef hLo hLI hGS (KSplit.gIinv_of hT hF) hGD hKP hPK kunf.unfold hW hWE AbsSt.vacuum_generates_polynomials hLD hVK hSt`.
+-/
 theorem siegelWeilStd_of (hT : TAll) (hLI : LocInst) (hGD : GIdil) (hKP : KFinPoly) (hPK : PolyKFin) (hLD : LDEx)
     (hCT : CTSplit) (hH : HolLead) : SiegelWeilStd := by
   have hA : AuxiliaryPrimeFunction := kfour.auxEx

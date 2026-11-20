@@ -19,6 +19,11 @@ def dualPick {m : Type} [DecidableEq m] (g : m → k) : m → k := by
   classical
   exact if h : ∃ i, g i ≠ 0 then Pi.single h.choose (g h.choose)⁻¹ else 0
 
+/- English proof (translation)
+Establish `h : ∃ i, g i ≠ 0`. Assume the negation of the conclusion as `h'`. Use `push_neg at h'`. Conclude with `hg (funext h')`. Unfold `dualPick`.
+
+Rewrite using `[dif_pos h]`. Simplify using `only [single_dotProduct]`. Conclude with `inv_mul_cancel₀ h.choose_spec`.
+-/
 theorem dualPick_dot {m : Type} [Fintype m] [DecidableEq m] (g : m → k) (hg : g ≠ 0) : dualPick g ⬝ᵥ g = 1 := by
   classical
   have h : ∃ i, g i ≠ 0 := by

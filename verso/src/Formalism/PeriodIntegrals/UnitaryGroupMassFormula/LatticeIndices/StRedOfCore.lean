@@ -21,6 +21,11 @@ section Loc
 
 variable {D : D7} (X : HidaSetting D) (p : TypX X)
 
+/- English proof (translation)
+Establish `hJ` using `X.B.I.J_herm`. Unfold `Formalism.UG.IsHerm at hJ`. Use extensionality with `i j`. Establish `h1` using `congrFun (congrFun hJ i) j`. Simplify using `only [Formalism.UG.cT, Matrix.transpose_apply, Matrix.map_apply] at h1 ⊢`.
+
+Simplify using `only [JR, Matrix.map_apply, sigR, inclR, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, Algebra.TensorProduct.includeRight_apply, Algebra.TensorProduct.map_tmul, AlgHom.id_apply]`. Rewrite using `[← h1]`. Both sides reduce to the same expression.
+-/
 theorem herm_JR : Formalism.UG.cT (sigR (FpX X p) X.B.I.cm.sig) (JR (FpX X p) X.B.I.J) = JR (FpX X p) X.B.I.J := by
   have hJ := X.B.I.J_herm
   unfold Formalism.UG.IsHerm at hJ
@@ -32,6 +37,11 @@ theorem herm_JR : Formalism.UG.cT (sigR (FpX X p) X.B.I.cm.sig) (JR (FpX X p) X.
   rw [← h1]
   rfl
 
+/- English proof (translation)
+Establish `h1 : (JR (F` using `X.B.I.F) (FpX X p) X.B.I.J).det = inclR (F := X.B.I.F) (FpX X p) X.B.I.J.det := by`. Unfold `JR`. Rewrite using `[RingHom.map_det]`. Both sides reduce to the same expression. Rewrite using `[h1]`.
+
+Conclude with `(isUnit_iff_ne_zero.mpr X.B.I.J_det).map _`.
+-/
 theorem unit_JR : IsUnit (JR (F := X.B.I.F) (FpX X p) X.B.I.J).det := by
   have h1 : (JR (F := X.B.I.F) (FpX X p) X.B.I.J).det = inclR (F := X.B.I.F) (FpX X p) X.B.I.J.det := by
     unfold JR
@@ -42,6 +52,21 @@ theorem unit_JR : IsUnit (JR (F := X.B.I.F) (FpX X p) X.B.I.J).det := by
 
 end Loc
 
+/- English proof (translation)
+Introduce `D X p θ hθ P hP K hK`. Take `⟨hKB, hSU⟩` from `hC (FpX X p) (TpX X p) (p.1.adicCompletionIntegers X.B.I.F) (Fin X.B.I.n) θ (sigR (FpX X p) X.B.I.cm.sig) (JR (FpX X p) X.B.I.J) P hθ (herm_JR X p) (unit_JR X p)`. Establish `hLat : ∀ x, x ∈ latLoc (E` using `X.B.I.E) p.1 (X.B.I.L : Set (Fin X.B.I.n → X.B.I.E)) ↔ x ∈ MassDataIdxCore.Lat (p.1.adicCompletionIntegers X.B.I.F) θ (JR (FpX X p) X.B.I.J) P := hP`. Set `m : K →* GL (Fin X.B.I.n) (TpX X p)` to `(HR (FpX X p) X.B.I.cm.sig X.B.I.J).subtype.comp K.subtype`. Establish `hmem : ∀ h : K, HA.mat (FpX X p) X.B.I.cm.sig X.B.I.J (h : HAp X p) ∈ Kloc (E` using `X.B.I.E) p.1 (X.B.I.L : Set (Fin X.B.I.n → X.B.I.E)) := by`.
+
+Introduce `h`. Establish `: (h : HAp X p) ∈ (K : Set (HAp X p))` using `h.2`. Rewrite `this` using `[hK]`. Conclude with `this`. Establish `hKl : ∀ h x, x ∈ MassDataIdxCore.Lat (p.1.adicCompletionIntegers X.B.I.F) θ (JR (FpX X p) X.B.I.J) P ↔ ((m h : GL (Fin X.B.I.n) (TpX X p)) : Matrix _ _ (TpX X p)) *ᵥ x ∈ MassDataIdxCore.Lat (p.1.adicCompletionIntegers X.B.I.F) θ (JR (FpX X p) X.B.I.J) P`.
+
+Introduce `h x`. Rewrite using `[← hLat, ← hLat]`. Conclude with `hmem h x`. Establish `hon : ∀ g : GL (Fin X.B.I.n) (TpX X p), g ∈ Formalism.UG.UJ (sigR (FpX X p) X.B.I.cm.sig) (JR (FpX X p) X.B.I.J) → (∀ x, x ∈ MassDataIdxCore.Lat (p.1.adicCompletionIntegers X.B.I.F) θ (JR (FpX X p) X.B.I.J) P ↔ (g : Matrix _ _ (TpX X p)) *ᵥ x ∈ MassDataIdxCore.Lat (p.1.adicComple …`. Introduce `g hg hgs`.
+
+Set `x0 : HAp X p` to `⟨g, hg⟩`. Establish `hin : x0 ∈ K`. Rewrite using `[← SetLike.mem_coe, hK]`. Use `show g ∈ Kloc (E := X.B.I.E) p.1 (X.B.I.L : Set (Fin X.B.I.n → X.B.I.E))`. Introduce `x`.
+
+Rewrite using `[hLat, hLat]`. Conclude with `hgs x`. Conclude with `⟨⟨_, hin⟩, rfl⟩`. Take `⟨ψ, hψ, hker⟩` from `MassDataIdxCore.latGL_gen (p.1.adicCompletionIntegers X.B.I.F) θ (sigR (FpX X p) X.B.I.cm.sig) (JR (FpX X p) X.B.I.J) P hKB hSU ((gOf p : ℕ) : Op X p) m (fun h => (h : HAp X p).2) hKl hon`. Use `MassDataIdxCore.reindex_gl (idxEquiv X) _ _ ψ hψ (fun h => ?_)` and prove the remaining obligations.
+
+Rewrite using `[hker h]`. Establish `hsm : ∀ z : Fin X.B.I.n → TpX X p, (((gOf p : ℕ) : Op X p) : FpX X p) • z = ((gOf p : ℕ) : Op X p) • z` using `fun z => rfl`. Prove the components needed by the constructor for the conclusion. Introduce `H0`. Use `⟨(hmem h), fun y hy => ?_⟩` and prove the remaining obligations.
+
+Take `⟨z, hz, hz'⟩` from `H0 y ((hLat y).1 hy)`. Conclude with `⟨z, (hLat z).2 hz, by rw [← hsm]; exact hz'⟩`. Introduce and unpack `⟨-, H0⟩ y hy`. Take `⟨z, hz, hz'⟩` from `H0 y ((hLat y).2 hy)`. Conclude with `⟨z, (hLat z).1 hz, by rw [hsm]; exact hz'⟩`.
+-/
 theorem latCore_of (hC : CoreAll) : LatCore := by
   intro D X p θ hθ P hP K hK
   obtain ⟨hKB, hSU⟩ := hC (FpX X p) (TpX X p) (p.1.adicCompletionIntegers X.B.I.F) (Fin X.B.I.n) θ
@@ -91,6 +116,9 @@ theorem latCore_of (hC : CoreAll) : LatCore := by
     obtain ⟨z, hz, hz'⟩ := H0 y ((hLat y).2 hy)
     exact ⟨z, (hLat z).1 hz, by rw [hsm]; exact hz'⟩
 
+/- English proof (translation)
+The claim follows from `stRed_of_parts X p hR hS (latCore_of hC)`.
+-/
 theorem stRed_of_core {D : D7} (X : HidaSetting D) (p : TypX X) (hR : StResZ X p) (hS : StSplitLat X p)
     (hC : CoreAll) : StRed X p := stRed_of_parts X p hR hS (latCore_of hC)
 

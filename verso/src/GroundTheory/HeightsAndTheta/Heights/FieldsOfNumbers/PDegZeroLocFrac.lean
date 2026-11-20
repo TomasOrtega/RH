@@ -11,6 +11,23 @@ noncomputable section
 
 universe u
 
+/- English proof (translation)
+Introduce `F _ K _ _ ι _ P hP 𝒲 h𝒲 h𝒲P`. Use `hP.isPrime` as an intermediate fact. Introduce `x hx`. Set `E : IntermediateField F (FractionRing (MRing ι F ⧸ P))` to `{ carrier := {x | ∃ y ∈ degZeroLoc P 𝒲, ∃ z ∈ degZeroLoc P 𝒲, z ≠ 0 ∧ x = y / z} mul_mem' := by`. Introduce and unpack `_ _ ⟨y₁, hy₁, z₁, hz₁, hz₁0, rfl⟩ ⟨y₂, hy₂, z₂, hz₂, hz₂0, rfl⟩`.
+
+Conclude with `⟨y₁ * y₂, Subalgebra.mul_mem _ hy₁ hy₂, z₁ * z₂, Subalgebra.mul_mem _ hz₁ hz₂, mul_ne_zero hz₁0 hz₂0, by rw [div_mul_div_comm]⟩`. Use the proof step `add_mem' := by`. Introduce and unpack `_ _ ⟨y₁, hy₁, z₁, hz₁, hz₁0, rfl⟩ ⟨y₂, hy₂, z₂, hz₂, hz₂0, rfl⟩`. Conclude with `⟨y₁ * z₂ + z₁ * y₂, Subalgebra.add_mem _ (Subalgebra.mul_mem _ hy₁ hz₂) (Subalgebra.mul_mem _ hz₁ hy₂), z₁ * z₂, Subalgebra.mul_mem _ hz₁ hz₂, mul_ne_zero hz₁0 hz₂0, by rw [div_add_div _ _ hz₁0 hz₂0]⟩`. Use the proof step `algebraMap_mem' := fun c => ⟨algebraMap F _ c, Subalgebra.algebraMap_mem _ c, 1, Subalgebra.one_mem _, one_ne_zero, (div_one _).symm⟩`.
+
+Use the proof step `inv_mem' := by`. Introduce and unpack `_ ⟨y, hy, z, hz, hz0, rfl⟩`. Distinguish the cases in `hy0 : y = 0`. Conclude with `⟨0, Subalgebra.zero_mem _, 1, Subalgebra.one_mem _, one_ne_zero, by simp [hy0]⟩`. Conclude with `⟨z, hz, y, hy, hy0, by rw [inv_div]⟩ }`.
+
+It suffices to establish `hle : homFracDegZero P ≤ E from hle hx`. Unfold `homFracDegZero`. Rewrite using `[IntermediateField.adjoin_le_iff]`. Introduce and unpack `_ ⟨b, f, g, hf, hg, hgP, rfl⟩`. Take `⟨e, h, hh, hbe, hhS⟩` from `exists_form_avoid_primes (insert P h𝒲.toFinset) (fun W hW => by`.
+
+Break down `Finset.mem_insert.mp hW with rfl | hW` into its components or cases. Conclude with `⟨hP.isPrime, hP.multiHomog, hP.relevant⟩`. Establish `hW'` using `h𝒲P W (h𝒲.mem_toFinset.mp hW)`. Conclude with `⟨hW'.isPrime, hW'.multiHomog, hW'.relevant⟩) b`. Establish `hhP : h ∉ P` using `hhS P (Finset.mem_insert_self _ _)`.
+
+Establish `hh𝒲 : ∀ W ∈ 𝒲, h ∉ W` using `fun W hW => hhS W (Finset.mem_insert_of_mem (h𝒲.mem_toFinset.mpr hW))`. Take `⟨m, hm, hmP⟩` from `exists_form_not_mem_of_isRelevant (H := P) hP.relevant (e - b)`. Establish `hfm : IsMultiHomog (f * m) e`. Use `IsWeightedHomogeneous.mul hf hm` as an intermediate fact. Rewrite `this` using `[add_tsub_cancel_of_le hbe]`. Then use the resulting hypothesis.
+
+Establish `hgm : IsMultiHomog (g * m) e`. Use `IsWeightedHomogeneous.mul hg hm` as an intermediate fact. Rewrite `this` using `[add_tsub_cancel_of_le hbe]`. Then use the resulting hypothesis. Establish `hq0 : ∀ a : MRing ι F, a ∉ P → algebraMap (MRing ι F ⧸ P) (FractionRing (MRing ι F ⧸ P)) (Ideal.Quotient.mk P a) ≠ 0` using `fun a ha => by`. Rewrite using `[Ne, IsFractionRing.to_map_eq_zero_iff, Ideal.Quotient.eq_zero_iff_mem]`.
+
+Conclude with `ha`. Use `⟨_, div_mem_degZeroLoc P 𝒲 hfm hh hhP hh𝒲, _, div_mem_degZeroLoc P 𝒲 hgm hh hhP hh𝒲, div_ne_zero (hq0 _ fun h' => (hP.isPrime.mem_or_mem h').elim hgP hmP) (hq0 _ hhP), ?_⟩` and prove the remaining obligations. Simplify using `only [map_mul]`. Rewrite using `[div_div_div_cancel_right₀ (hq0 _ hhP), mul_div_mul_right _ _ (hq0 _ hmP)]`.
+-/
 theorem DegZeroLocFrac.proof : DegZeroLocFrac.Statement.{u} := by
   intro F _ K _ _ ι _ P hP 𝒲 h𝒲 h𝒲P
   have := hP.isPrime

@@ -17,6 +17,19 @@ open GlobalTheory.TorusExt
 
 attribute [local instance] gtGroup
 
+/- English proof (translation)
+Introduce `h1 h2 E _ _ _ H _ D l c O _ β _ _ b a Λ k hk`. Take `⟨hadd, hsurj, -⟩` from `GlobalTheory.T.analyticDictionaryExp_additive_surjective_linear h1 h2 E H D l c O β b a Λ`. Take `⟨hker, hio, -⟩` from `GlobalTheory.T.analyticDictionaryExp_kernel_iota_torusPoints E H D l c O β b a Λ`. Establish `hB` using `a.bimult`. Set `ex : Λ.A.V →+ Out.GtPtF a.D₀ ℂ` to `AddMonoidHom.mk' Λ.ex0 fun z z' => (isAdd_iff_eq _ _ _).1 (hadd z z')`.
+
+Establish `hex : ∀ z, Λ.ex0 z = ex z` using `fun _ => rfl`. Establish `hio' : ∀ la : Λ.A.La, ex (Λ.A.P0 la) = iota hB ℂ (Λ.ε la.y)` using `fun la => (isIota_iff_eq hB _ _).1 (hio la)`. Establish `hk0 : (k : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 (by omega)`. Establish `hf : (algebraMap (FractionRing ℂ) ℂ).comp (algebraMap (FractionRing ℂ) (FractionRing ℂ)) = algebraMap (FractionRing ℂ) ℂ` using `RingHom.ext fun _ => rfl`. Establish `hkk : ∀ v : Λ.A.V, (k : ℂ)⁻¹ • k • v = v` using `fun v => by`.
+
+Rewrite using `[← Nat.cast_smul_eq_nsmul ℂ, inv_smul_smul₀ hk0]`. Establish `hkk' : ∀ v : Λ.A.V, k • (k : ℂ)⁻¹ • v = v` using `fun v => by`. Rewrite using `[← Nat.cast_smul_eq_nsmul ℂ, smul_inv_smul₀ hk0]`. Use `⟨fun p => ?_, fun p la e hrep => ?_⟩` and prove the remaining obligations. Take `⟨q, -, huniq⟩` from `existsUnique_qkExt hB _ hf p`.
+
+Take `⟨z, hz⟩` from `hsurj q.g`. Set `l0 : Λ.A.La` to `AnArc.La.mk (Λ.ε.symm q.y) 0 0`. Establish `hl0 : Λ.ε l0.y = q.y` using `Λ.ε.apply_symm_apply _`. Establish `hzero : (Λ.ex0 (k • z - Λ.A.P0 l0)).IsZero`. Rewrite using `[isZero_iff_eq, hex, map_sub, map_nsmul, ← hex z, hz, qk_nsmul hB, hio', hl0, sub_self]`.
+
+Take `⟨l1, hl1, hl1'⟩` from `(hker _).1 hzero`. Use `⟨l1 + l0, fun q' hq' => ?_⟩` and prove the remaining obligations. Take `rfl` from `huniq q' hq'`. Use `⟨by rw [AnArc.La.add_y, hl1, zero_add, hl0], ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, ← hl1', sub_add_cancel, hkk, hz]`.
+
+Use `⟨qkMk hB (Λ.ε (la + k • e).y) (Λ.ex0 ((k : ℂ)⁻¹ • Λ.A.P0 (la + k • e))) (by rw [hex, ← map_nsmul, hkk', hio']), rfl, rfl, fun q' hq' => ?_⟩` and prove the remaining obligations. Take `⟨hy, hg⟩` from `hrep q' hq'`. Use `equiv_symm hB ((equiv_iff hB _ _).2 ⟨Λ.ε e.y, ?_, ?_⟩)` and prove the remaining obligations. Rewrite using `[qkMk_y, hy, AnArc.La.add_y, AnArc.La.nsmul_y, map_add, map_nsmul]`. Rewrite using `[qkMk_g, hg, hex, hex, map_add, map_nsmul, smul_add, hkk, map_add, hio']`.
+-/
 theorem exists_rep_and_shift : Out.Laws → Out.Laws2 → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) [StarRing (𝓞 E)] (D : Datum H) (l : Level H) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) [Algebra (FractionRing ℂ) ℂ] [IsScalarTower ℂ (FractionRing ℂ) ℂ] (b : O →+* ℂ) (a : ArcIn D l β ℂ b) (Λ : GtAn a) (k : ℕ), 1 ≤ k → (∀ p, ∃ la, Λ.Rep k p la) ∧ ∀ p la e, Λ.Rep k p la → ∃ q : Out.QkPt a.D₀ ℂ k, q.y = Λ.ε (la + k • e).y ∧ q.g = Λ.ex0 ((k : ℂ)⁻¹ • Λ.A.P0 (la + k • e)) ∧ ∀ q', QkExt (algebraMap _ ℂ) p q' → Out.QkPt.Equiv a.D₀ ℂ q q' := by
   intro h1 h2 E _ _ _ H _ D l c O _ β _ _ b a Λ k hk
   obtain ⟨hadd, hsurj, -⟩ := GlobalTheory.T.analyticDictionaryExp_additive_surjective_linear h1 h2 E H D l c O β b a Λ

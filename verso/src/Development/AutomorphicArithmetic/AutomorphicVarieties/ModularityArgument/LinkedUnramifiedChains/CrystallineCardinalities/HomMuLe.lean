@@ -13,9 +13,15 @@ private def ZcA {D N : Type} [Group D] [TopologicalSpace D] [AddCommGroup N] (ρ
   neg_mem' := fun {a} ha => ⟨ha.1.neg, fun s t => by
     simp only [Pi.neg_apply, ha.2 s t, map_neg]; abel⟩
 
+/- English proof (translation)
+The claim follows from `Nat.card_coe_set_eq (Zc ρ)`.
+-/
 private theorem card_ZcA {D N : Type} [Group D] [TopologicalSpace D] [AddCommGroup N] (ρ : Representation ℤ D N) :
     Nat.card (ZcA ρ) = (Zc ρ).ncard := Nat.card_coe_set_eq (Zc ρ)
 
+/- English proof (translation)
+Rewrite using `[← AddSubgroup.index_mul_card f.range, ← AddSubgroup.index_mul_card f.ker, AddSubgroup.index_ker]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem idx_mul {A B : Type} [AddCommGroup A] [AddCommGroup B] (f : A →+ B) :
     f.range.index * Nat.card A = Nat.card B * Nat.card f.ker := by
   rw [← AddSubgroup.index_mul_card f.range, ← AddSubgroup.index_mul_card f.ker, AddSubgroup.index_ker]
@@ -29,6 +35,11 @@ private def ZcQ {D N : Type} [Group D] [TopologicalSpace D] [AddCommGroup N] (ρ
   map_zero' := by ext s; rfl
   map_add' a b := by ext s; rfl
 
+/- English proof (translation)
+Establish `hm : ∀ z : (ZcQ ρ N' h).ker, ∀ s, z.1.1 s ∈ N'` using `fun z s => by`. Establish `h1 : ZcQ ρ N' h z.1 = 0` using `z.2`. Establish `h2 : N'.mkQ (z.1.1 s) = 0` using `congrFun (congrArg Subtype.val h1) s`. Conclude with `(Submodule.Quotient.mk_eq_zero N').1 h2`. Use `haveI : Finite (Zc (ρ.subrepresentation N' h)) := hf`.
+
+Rewrite using `[← Nat.card_coe_set_eq]`. Use `Nat.card_le_card_of_injective (fun z => ⟨fun s => ⟨z.1.1 s, hm z s⟩, IsLocallyConstant.desc _ (Subtype.val) z.1.2.1 Subtype.val_injective, fun s t => Subtype.ext (z.1.2.2 s t)⟩) ?_` and prove the remaining obligations. Introduce `a b hab`. Use extensionality with `s`. Conclude with `congrArg Subtype.val (congrFun (congrArg Subtype.val hab) s)`.
+-/
 private theorem ker_le {D N : Type} [Group D] [TopologicalSpace D] [AddCommGroup N] (ρ : Representation ℤ D N)
     (N' : Submodule ℤ N) (h : ∀ s, N' ≤ N'.comap (ρ s)) (hf : (Zc (ρ.subrepresentation N' h)).Finite) :
     Nat.card (ZcQ ρ N' h).ker ≤ (Zc (ρ.subrepresentation N' h)).ncard := by
@@ -44,6 +55,11 @@ private theorem ker_le {D N : Type} [Group D] [TopologicalSpace D] [AddCommGroup
   ext s
   exact congrArg Subtype.val (congrFun (congrArg Subtype.val hab) s)
 
+/- English proof (translation)
+Use `haveI : NeZero (l ^ k) := ⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩`. Use `haveI : Finite (N →+ ZMod (l ^ k)) := Finite.of_injective _ DFunLike.coe_injective`. Use `⟨Set.ncard_le_ncard_of_injOn (fun f => f.comp N'.mkQ.toAddMonoidHom) (fun f hf s x => hf s (N'.mkQ x)) ?_, ?_⟩` and prove the remaining obligations. Introduce `a _ b _ hab`. Use extensionality with `x`.
+
+Take `⟨y, rfl⟩` from `N'.mkQ_surjective x`. Conclude with `DFunLike.congr_fun hab y`. Conclude with `(Set.ncard_pos).2 ⟨0, fun s x => by simp⟩`.
+-/
 private theorem homMu_le {D N : Type} [Group D] [AddCommGroup N] [Finite N] (l : ℕ) [Fact l.Prime] (k : ℕ) (ε : D →* ℤ_[l]ˣ)
     (ρ : Representation ℤ D N) (N' : Submodule ℤ N) (h : ∀ s, N' ≤ N'.comap (ρ s)) :
     (HomMu l k ε (ρ.quotient N' h)).ncard ≤ (HomMu l k ε ρ).ncard ∧ 0 < (HomMu l k ε ρ).ncard := by
@@ -58,6 +74,25 @@ private theorem homMu_le {D N : Type} [Group D] [AddCommGroup N] [Finite N] (l :
 
 end UpperTheory.V.Z.J
 
+/- English proof (translation)
+Introduce `l _ D _ _ _ ε d k hk hLE N _ _ ρ hN hρ N' h C hC z hz hz'`. Use `haveI : Finite (N ⧸ N') := Finite.of_surjective _ N'.mkQ_surjective`. Take `⟨-, e1⟩` from `hLE k hk N ρ hN hρ`. Take `⟨f2, e2⟩` from `hLE k hk N' (ρ.subrepresentation N' h) (fun x => Subtype.ext (hN x.1)) (Subgroup.isOpen_mono (H₁ := ρ.ker) (fun s hs => by`. Establish `h1 : ρ s = 1` using `hs`.
+
+Use `LinearMap.ext fun x => Subtype.ext ?_` and prove the remaining obligations. Use `show ρ s x.1 = x.1`. Rewrite using `[h1]`. Use the proof step `rfl) hρ)`. Take `⟨f3, e3⟩` from `hLE k hk (N ⧸ N') (ρ.quotient N' h) (fun x => by`.
+
+Take `⟨y, rfl⟩` from `N'.mkQ_surjective x`. Rewrite using `[← map_nsmul, hN, map_zero])`. Use the proof step `(Subgroup.isOpen_mono (H₁ := ρ.ker) (fun s hs => by`. Establish `h1 : ρ s = 1` using `hs`. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations.
+
+Take `⟨y, rfl⟩` from `N'.mkQ_surjective x`. Use `show N'.mkQ (ρ s y) = N'.mkQ y`. Rewrite using `[h1]`. Use the proof step `rfl) hρ)`. Establish `e4` using `idx_mul (ZcQ ρ N' h)`.
+
+Rewrite `e4` using `[card_ZcA, card_ZcA, e1, e3]`. Establish `e5` using `ker_le ρ N' h f2`. Rewrite `e5` using `[e2]`. Take `⟨e6, e7⟩` from `homMu_le l k ε ρ N' h`. Establish `e8 : Nat.card N = Nat.card N' * Nat.card (N ⧸ N')` using `Submodule.card_eq_card_quotient_mul_card N'`.
+
+Establish `hpos : 0 < Nat.card N ^ (1 + d) * (HomMu l k ε ρ).ncard` using `Nat.mul_pos (pow_pos Nat.card_pos _) e7`. Establish `hle : (ZcQ ρ N' h).range.index ≤ C`. Use `Nat.le_of_mul_le_mul_right ?_ hpos` and prove the remaining obligations. Rewrite using `[e4]`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `haveI : Finite (ZcA (ρ.quotient N' h)) := f3`. Establish `hne : (ZcQ ρ N' h).range.index ≠ 0` using `AddSubgroup.index_ne_zero_of_finite`. Take `⟨c, hc⟩` from `Nat.dvd_factorial (Nat.pos_of_ne_zero hne) hle`. Set `w : ZcA (ρ.quotient N' h)` to `⟨fun s => N'.mkQ (z s), hz.comp N'.mkQ, fun s t => by show N'.mkQ (z (s * t)) = N'.mkQ (z s + ρ s (z t))`. Use `(Submodule.Quotient.eq N').2 ?_` and prove the remaining obligations.
+
+Rewrite using `[← sub_sub]`. Conclude with `hz' s t⟩`. Establish `hw : C.factorial • w ∈ (ZcQ ρ N' h).range`. Rewrite using `[hc, mul_comm, mul_smul]`. Conclude with `AddSubgroup.nsmul_mem _ (AddSubgroup.nsmul_index_mem _ w) c`.
+
+Take `⟨y, hy⟩` from `hw`. Use `⟨y.1, y.2, fun s => (Submodule.Quotient.eq N').1 ?_⟩` and prove the remaining obligations. Establish `h2 : N'.mkQ (y.1 s) = C.factorial • N'.mkQ (z s)` using `congrFun (congrArg Subtype.val hy) s`. Rewrite `h2` using `[← map_nsmul]`. Conclude with `h2`.
+-/
 theorem UpperTheory.V.Z.J.lift :
     ∀ (l : ℕ) [Fact l.Prime] (D : Type) [Group D] [TopologicalSpace D] [IsTopologicalGroup D] (ε : D →* ℤ_[l]ˣ) (d k : ℕ), 0 < k → LE l D ε d → ∀ (N : Type) [AddCommGroup N] [Finite N] (ρ : Representation ℤ D N), (∀ x : N, l ^ k • x = 0) → IsOpen (ρ.ker : Set D) → ∀ (N' : Submodule ℤ N) (h : ∀ s, N' ≤ N'.comap (ρ s)) (C : ℕ), (HomMu l k ε (ρ.subrepresentation N' h)).ncard ≤ C → ∀ z : D → N, IsLocallyConstant z → (∀ s s', z (s * s') - z s - ρ s (z s') ∈ N') → ∃ y ∈ Zc ρ, ∀ s, y s - C.factorial • z s ∈ N' := by
   intro l _ D _ _ _ ε d k hk hLE N _ _ ρ hN hρ N' h C hC z hz hz'

@@ -23,6 +23,23 @@ namespace GlobalTheory.HeatMod.TorField
 open TrivSqZeroExt (inl inr)
 open ReciprocityTheory.ChartRestriction.G.Semi.Rosenlicht (coord coord_comp)
 
+/- English proof (translation)
+Introduce `R _ _ Q O _ _ _ oa Y p hp hq`. Establish `hmono : ∀ {T : Over (Sp R)} (a b : T ⟶ splitTorus (Sp R) (RayEv.Chr Q)), a ≫ Y.i = b ≫ Y.i → a = b` using `fun a b h => Y.isKernel.hom_ext h (toUnit_unique _ _)`. Establish `hw : p ≫ Y.q = toUnit _ ≫ η[Q.P.A]` using `by rw [hq, Hom.one_def]`. Set `t` to `Y.isKernel.lift p (toUnit _) hw`. Establish `ht : t ≫ Y.i = p` using `Y.isKernel.lift_fst _ _ _`.
+
+Use `Y.i_linear.isMonHom` as an intermediate fact. Establish `htan : Chart.spMap (Chart.fstD R) ≫ t = 1` using `hmono _ _ (by`. Rewrite using `[Category.assoc, ht, MonObj.one_comp]`. Conclude with `(Chart.isTan_iff p).2 hp)`. Set `a : RayEv.Chr Q → DualNumber R` to `fun χ => (Scheme.ΓSpecIso (CommRingCat.of (DualNumber R))).hom.hom ((coord t).hom (AddMonoidAlgebra.single χ 1))`.
+
+Establish `hfst : ∀ χ, (a χ).fst = 1` using `fun χ => by`. Establish `e` using `congrArg (fun f => (coord f).hom (AddMonoidAlgebra.single χ 1)) htan`. Simplify using `only at e`. Rewrite `e` using `[coord_comp, Diag.coord_one, CommRingCat.hom_comp, RingHom.comp_apply, Chart.spMap_left]`. Establish `nat` using `Scheme.ΓSpecIso_naturality (CommRingCat.ofHom (Chart.fstD R).toRingHom)`.
+
+Establish `k` using `congrArg (fun f => f.hom ((coord t).hom (AddMonoidAlgebra.single χ 1))) nat`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply] at k`. Rewrite `k` using `[e, map_one]`. Conclude with `k.symm`. Establish `h0 : a 0 = 1` using `by show (Scheme.ΓSpecIso _).hom.hom ((coord t).hom (AddMonoidAlgebra.single 0 1)) = 1`.
+
+Rewrite using `[Diag.coord_single_zero, map_one]`. Establish `hadd : ∀ x y, a (x + y) = a x * a y` using `fun x y => by show (Scheme.ΓSpecIso _).hom.hom ((coord t).hom (AddMonoidAlgebra.single (x + y) 1)) = _`. Rewrite using `[Diag.coord_single_add, map_mul]`. Establish `hform : ∀ χ, a χ = 1 + inr (a χ).snd` using `fun χ => by`. Use `ext`.
+
+Rewrite using `[hfst χ]`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Set `ℓ : Q.X →+ R` to `{ toFun := fun χ => (a χ).snd map_zero' := (congrArg TrivSqZeroExt.snd h0).trans TrivSqZeroExt.snd_one map_add' := fun x y => (congrArg TrivSqZeroExt.snd (hadd x y)).trans (by`. Rewrite using `[hform x, hform y]`.
+
+Simplify using `only [mul_add, add_mul, _root_.one_mul, _root_.mul_one, TrivSqZeroExt.inr_mul_inr, add_zero, TrivSqZeroExt.snd_add, TrivSqZeroExt.snd_one, TrivSqZeroExt.snd_inr, zero_add]) }`. Use `⟨ℓ, ?_⟩` and prove the remaining obligations. Rewrite using `[← ht]`. Use `congrArg (· ≫ Y.i) (Diag.hom_ext fun χ => ?_)` and prove the remaining obligations. Rewrite using `[torTan, Diag.coord_ofChar]`.
+
+Use `show _ = (Scheme.ΓSpecIso (CommRingCat.of (DualNumber R))).inv.hom (1 + inr (a χ).snd)`. Rewrite using `[← hform χ]`. Use `show _ = (Scheme.ΓSpecIso (CommRingCat.of (DualNumber R))).inv.hom ((Scheme.ΓSpecIso (CommRingCat.of (DualNumber R))).hom.hom ((coord t).hom (AddMonoidAlgebra.single χ 1)))`. Rewrite using `[← CommRingCat.comp_apply, Iso.hom_inv_id, CommRingCat.id_apply]`.
+-/
 theorem exists_torTan_of_q : ∀ (R : Type) [CommRing R] [IsDomain R] (Q : DegPre R) (O : Type) [CommRing O] [StarRing O] [Module O Q.X] (oa : Q.OAct O) (Y : Ray oa) (p : epsR R ⟶ Y.H), IsTangent p → p ≫ Y.q = 1 → ∃ ℓ : Q.X →+ R, p = GlobalTheory.HeatMod.TorField.torTan ℓ ≫ Y.i := by
   intro R _ _ Q O _ _ _ oa Y p hp hq
   have hmono : ∀ {T : Over (Sp R)} (a b : T ⟶ splitTorus (Sp R) (RayEv.Chr Q)), a ≫ Y.i = b ≫ Y.i → a = b :=

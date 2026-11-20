@@ -17,6 +17,15 @@ section Gen
 variable {E : Type} [Field E] [NumberField E] [StarRing E] (V : HSpace E) (δ : E) (hδ : star δ = -δ) (hδ0 : δ ≠ 0)
 
 include hδ hδ0 in
+/- English proof (translation)
+Take `⟨y, hy, hy0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hne`. Assume the negation of the conclusion as `hall`. Use `push_neg at hall`. Choose the witnesses or unpack the hypotheses as in `⟨z, hz, hz0⟩ : ∃ z ∈ W, V.hT y z ≠ 0 := by`. Assume the negation of the conclusion as `h`.
+
+Use `push_neg at h`. Conclude with `hy0 (hW y hy h)`. Establish `q0 : V.hT (y + z) (y + z) = V.hT y y + V.hT y z + V.hT z y + V.hT z z`. Simplify using `only [map_add, LinearMap.add_apply]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `q1 : V.hT (y + δ • z) (y + δ • z) = V.hT y y + δ * V.hT y z + star δ * V.hT z y + star δ * δ * V.hT z z`. Simplify using `only [map_add, map_smulₛₗ, LinearMap.add_apply, LinearMap.smul_apply, map_smul, smul_eq_mul, starRingEnd_apply, RingHom.id_apply]`. Expand and normalize the polynomial expressions, which then agree. Establish `s : V.hT z y = star (V.hT y z)` using `(V.herm.eq y z).symm`. Rewrite `q0` using `[hall (y + z) (W.add_mem hy hz), hall y hy, hall z hz, s]`.
+
+Rewrite `q1` using `[hall (y + δ • z) (W.add_mem hy (W.smul_mem δ hz)), hall y hy, hall z hz, s, hδ]`. Establish `h2 : δ * (V.hT y z - star (V.hT y z)) = 0` using `by linear_combination -q1`. Establish `h3` using `(mul_eq_zero.1 h2).resolve_left hδ0`. Establish `h4 : (2 : E) * V.hT y z = 0` using `by linear_combination -q0 + h3`. Conclude with `hz0 ((mul_eq_zero.1 h4).resolve_left two_ne_zero)`.
+-/
 theorem aniso_ex (W : Submodule E V.V) (hW : ∀ y ∈ W, (∀ z ∈ W, V.hT y z = 0) → y = 0) (hne : W ≠ ⊥) :
     ∃ x ∈ W, V.hT x x ≠ 0 := by
   obtain ⟨y, hy, hy0⟩ := Submodule.exists_mem_ne_zero_of_ne_bot hne
@@ -41,6 +50,23 @@ theorem aniso_ex (W : Submodule E V.V) (hW : ∀ y ∈ W, (∀ z ∈ W, V.hT y z
   exact hz0 ((mul_eq_zero.1 h4).resolve_left two_ne_zero)
 
 include hδ hδ0 in
+/- English proof (translation)
+Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => exact fun _ _ _ => ⟨Fin.elim0, fun i => i.elim0, fun i => i.elim0, fun i => i.elim0⟩`. Consider the case `succ n ih`. Introduce `W hn hW`.
+
+Take `⟨x, hx, hxx⟩` from `aniso_ex V δ hδ hδ0 W hW (fun h => by rw [h, finrank_bot] at hn; omega)`. Set `W' : Submodule E V.V` to `W ⊓ LinearMap.ker (V.hT x)`. Establish `hdec : ∀ w ∈ W, ∃ c : E, w - c • x ∈ W'` using `fun w hw => ⟨V.hT x w / V.hT x x, W.sub_mem hw (W.smul_mem _ hx), by show V.hT x (w - (V.hT x w / V.hT x x) • x) = 0`. Rewrite using `[map_sub, map_smul, smul_eq_mul, div_mul_cancel₀ _ hxx, sub_self]⟩`. Establish `hr : Module.finrank E W' = n`.
+
+Establish `h1` using `Submodule.finrank_sup_add_finrank_inf_eq (Submodule.span E {x}) W'`. Establish `h2 : Submodule.span E {x} ⊔ W' = W` using `le_antisymm (sup_le ((Submodule.span_singleton_le_iff_mem _ _).2 hx) inf_le_left) fun w hw => by`. Take `⟨c, hc⟩` from `hdec w hw`. Use `Submodule.add_mem_sup (Submodule.smul_mem _ c (Submodule.mem_span_singleton_self x)) hc` as an intermediate fact. Rewrite `this` using `[add_sub_cancel]`. Then use the resulting hypothesis.
+
+Establish `h3 : Submodule.span E {x} ⊓ W' = ⊥`. Rewrite using `[eq_bot_iff]`. Introduce and unpack `y ⟨hy1, -, hy2⟩`. Take `⟨c, rfl⟩` from `Submodule.mem_span_singleton.1 hy1`. Establish `: c * V.hT x x = 0`.
+
+Establish `h5 : V.hT x (c • x) = 0` using `hy2`. Rewrite `h5` using `[map_smul, smul_eq_mul]`. Then use the resulting hypothesis. Rewrite using `[(mul_eq_zero.1 this).resolve_right hxx, zero_smul]`. Conclude with `zero_mem _`. Establish `hx0 : x ≠ 0` using `fun h => hxx (by simp [h])`.
+
+Rewrite `h1` using `[h2, h3, finrank_bot, finrank_span_singleton hx0]`. Use linear arithmetic over natural numbers and integers. Take `⟨v, a, b, c⟩` from `ih W' hr fun y hy hz => hW y hy.1 fun w hw => by`. Take `⟨c, hc⟩` from `hdec w hw`. Establish `e : w = c • x + (w - c • x)` using `by abel`.
+
+Rewrite using `[e, map_add, map_smul, hz _ hc, add_zero, smul_eq_mul]`. Establish `: V.hT y x = 0` using `by rw [← V.herm.eq]; rw [show V.hT x y = 0 from hy.2, map_zero]`. Rewrite using `[this, mul_zero]`. Use `⟨Fin.cons x v, fun i => Fin.cases hx (fun i => (a i).1) i, fun i j hij => ?_, fun i => Fin.cases hxx (fun i => c i) i⟩` and prove the remaining obligations. Use `Fin.cases (Fin.cases (fun h => absurd rfl h) (fun j _ => ?_) j) (fun i => Fin.cases (fun _ => ?_) (fun j h => b i j fun e => h (by rw [e])) j) i hij` and prove the remaining obligations.
+
+Conclude with `(a j).2`. Use `show V.hT (v i) x = 0`. Rewrite using `[← V.herm.eq, show V.hT x (v i) = 0 from (a i).2, map_zero]`.
+-/
 theorem orth_ex : ∀ (n : ℕ) (W : Submodule E V.V), Module.finrank E W = n →
     (∀ y ∈ W, (∀ z ∈ W, V.hT y z = 0) → y = 0) →
     ∃ v : Fin n → V.V, (∀ i, v i ∈ W) ∧ (∀ i j, i ≠ j → V.hT (v i) (v j) = 0) ∧ ∀ i, V.hT (v i) (v i) ≠ 0 := by
@@ -86,6 +112,9 @@ theorem orth_ex : ∀ (n : ℕ) (W : Submodule E V.V), Module.finrank E W = n �
     · show V.hT (v i) x = 0
       rw [← V.herm.eq, show V.hT x (v i) = 0 from (a i).2, map_zero]
 
+/- English proof (translation)
+Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg j`. Establish `e` using `congrArg (V.hT (v j)) hg`. Rewrite `e` using `[map_sum, map_zero, Finset.sum_eq_single j (fun i _ h => by rw [map_smul, h1 j i (Ne.symm h), smul_zero]) (fun h => absurd (Finset.mem_univ j) h), map_smul, smul_eq_mul]`. Conclude with `(mul_eq_zero.1 e).resolve_right (h2 j)`.
+-/
 theorem orth_indep {n : ℕ} (v : Fin n → V.V) (h1 : ∀ i j, i ≠ j → V.hT (v i) (v j) = 0) (h2 : ∀ i, V.hT (v i) (v i) ≠ 0) :
     LinearIndependent E v := by
   rw [Fintype.linearIndependent_iff]
@@ -95,6 +124,17 @@ theorem orth_indep {n : ℕ} (v : Fin n → V.V) (h1 : ∀ i j, i ≠ j → V.hT
     (fun h => absurd (Finset.mem_univ j) h), map_smul, smul_eq_mul] at e
   exact (mul_eq_zero.1 e).resolve_right (h2 j)
 
+/- English proof (translation)
+Set `e1 : Fin (Finset.univ.filter fun i => ε i = true).card ≃ {a // ε a = true}` to `(Fintype.equivFinOfCardEq (by rw [Fintype.card_subtype])).symm`. Set `e2 : Fin (Finset.univ.filter fun i => ε i = false).card ≃ {a // ¬ ε a = true}` to `(Fintype.equivFinOfCardEq (by rw [Fintype.card_subtype]; congr 1; ext a; simp)).symm`. Set `e : Fin _ ⊕ Fin _ ≃ Fin n` to `(Equiv.sumCongr e1 e2).trans (Equiv.sumCompl fun a => ε a = true)`. Establish `hJm : (Matrix.diagonal fun i => if ε i then (1 : ℂ) else -1).submatrix e e = Formalism.UG.Jpq (Finset.univ.filter fun i => ε i = true).card (Finset.univ.filter fun i => ε i = false).card`. Rewrite using `[Matrix.submatrix_diagonal_equiv]`.
+
+Use extensionality with `a b`. Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b`. Establish `: ε (e (Sum.inl a)) = true` using `(e1 a).2`. Simplify using `[Formalism.UG.Jpq, Matrix.diagonal_apply, Matrix.one_apply, this]`. Simplify using `[Formalism.UG.Jpq]`.
+
+Simplify using `[Formalism.UG.Jpq]`. Establish `: ε (e (Sum.inr a)) = false` using `Bool.eq_false_iff.2 (e2 a).2`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Simplify using `[Formalism.UG.Jpq, this]`.
+
+Simplify using `[Formalism.UG.Jpq, Matrix.one_apply, hab]`. Establish `hU : IsUnit (Q.submatrix e e)`. Rewrite using `[Matrix.isUnit_iff_isUnit_det, Matrix.det_submatrix_equiv_self]`. Conclude with `(Matrix.isUnit_iff_isUnit_det Q).1 hQ`. Use `⟨e.symm, hU.unit, ?_⟩` and prove the remaining obligations.
+
+Use `show Formalism.UG.cT (starRingEnd ℂ) (Q.submatrix e e) * J.reindex e.symm e.symm * Q.submatrix e e = _`. Rewrite using `[Formalism.UG.P.cT_conj_eq, ← hJm, ← h, Matrix.conjTranspose_submatrix]`. Simplify using `only [Matrix.reindex_apply, Equiv.symm_symm]`. Rewrite using `[Matrix.submatrix_mul_equiv, Matrix.submatrix_mul_equiv]`.
+-/
 theorem sig_of_diag {n : ℕ} (J : Matrix (Fin n) (Fin n) ℂ) (ε : Fin n → Bool) (Q : Matrix (Fin n) (Fin n) ℂ) (hQ : IsUnit Q)
     (h : Qᴴ * J * Q = Matrix.diagonal fun i => if ε i then 1 else -1) :
     Formalism.UG.HasSignature J (Finset.univ.filter fun i => ε i = true).card (Finset.univ.filter fun i => ε i = false).card := by
@@ -126,6 +166,11 @@ theorem sig_of_diag {n : ℕ} (J : Matrix (Fin n) (Fin n) ℂ) (ε : Fin n → B
   simp only [Matrix.reindex_apply, Equiv.symm_symm]
   rw [Matrix.submatrix_mul_equiv, Matrix.submatrix_mul_equiv]
 
+/- English proof (translation)
+Establish `hq` using `Real.mul_self_sqrt (abs_nonneg l)`. Establish `h0 : Real.sqrt |l| ≠ 0` using `Real.sqrt_ne_zero'.2 (abs_pos.2 hl)`. Establish `e : (Real.sqrt |l|)⁻¹ * (l * (Real.sqrt |l|)⁻¹) = l / (Real.sqrt |l| * Real.sqrt |l|)` using `by field_simp`. Rewrite using `[e, hq]`. Use `split_ifs with hp`.
+
+Rewrite using `[abs_of_pos hp, div_self hl]`. Rewrite using `[abs_of_neg (lt_of_le_of_ne (not_lt.1 hp) hl), div_neg, div_self hl]`.
+-/
 theorem neg_one_smul_cancel (l : ℝ) (hl : l ≠ 0) : (Real.sqrt |l|)⁻¹ * (l * (Real.sqrt |l|)⁻¹) = if 0 < l then 1 else -1 := by
   have hq := Real.mul_self_sqrt (abs_nonneg l)
   have h0 : Real.sqrt |l| ≠ 0 := Real.sqrt_ne_zero'.2 (abs_pos.2 hl)
@@ -135,17 +180,26 @@ theorem neg_one_smul_cancel (l : ℝ) (hl : l ≠ 0) : (Real.sqrt |l|)⁻¹ * (l
   · rw [abs_of_pos hp, div_self hl]
   · rw [abs_of_neg (lt_of_le_of_ne (not_lt.1 hp) hl), div_neg, div_self hl]
 
+/- English proof (translation)
+Establish `hq` using `Real.mul_self_sqrt (abs_nonneg l)`. Use `split_ifs with hp`. Rewrite using `[one_mul, hq, abs_of_pos hp]`. Rewrite using `[neg_one_mul, mul_neg, hq, abs_of_neg (lt_of_le_of_ne (not_lt.1 hp) hl), neg_neg]`.
+-/
 theorem sqrt_abs_mul_sign_sqrt_abs (l : ℝ) (hl : l ≠ 0) : Real.sqrt |l| * ((if 0 < l then 1 else -1) * Real.sqrt |l|) = l := by
   have hq := Real.mul_self_sqrt (abs_nonneg l)
   split_ifs with hp
   · rw [one_mul, hq, abs_of_pos hp]
   · rw [neg_one_mul, mul_neg, hq, abs_of_neg (lt_of_le_of_ne (not_lt.1 hp) hl), neg_neg]
 
+/- English proof (translation)
+Rewrite using `[Complex.star_def, Complex.conj_ofReal, ← Complex.ofReal_mul, ← Complex.ofReal_mul, mul_assoc, neg_one_smul_cancel l hl]`. Apply the tactic sequence `by_cases hp : 0 < l <;> simp [hp]`.
+-/
 theorem inv_sqrt_abs_conj_eq_sign (l : ℝ) (hl : l ≠ 0) : star (((Real.sqrt |l|)⁻¹ : ℝ) : ℂ) * (l : ℂ) * (((Real.sqrt |l|)⁻¹ : ℝ) : ℂ) =
     if decide (0 < l) = true then 1 else -1 := by
   rw [Complex.star_def, Complex.conj_ofReal, ← Complex.ofReal_mul, ← Complex.ofReal_mul, mul_assoc, neg_one_smul_cancel l hl]
   by_cases hp : 0 < l <;> simp [hp]
 
+/- English proof (translation)
+Rewrite using `[Complex.star_def, Complex.conj_ofReal]`. Use `conv_lhs => rw [← sqrt_abs_mul_sign_sqrt_abs l hl]`. Apply the tactic sequence `by_cases hp : 0 < l <;> simp only [hp, decide_true, decide_false, if_true, if_false, Bool.false_eq_true] <;> push_cast <;> ring`.
+-/
 theorem real_eq_sqrt_sign_sqrt (l : ℝ) (hl : l ≠ 0) : (l : ℂ) = star ((Real.sqrt |l| : ℝ) : ℂ) * (if decide (0 < l) = true then 1 else -1) *
     ((Real.sqrt |l| : ℝ) : ℂ) := by
   rw [Complex.star_def, Complex.conj_ofReal]
@@ -156,11 +210,17 @@ end Gen
 
 variable {D : D7}
 
+/- English proof (translation)
+Apply `D.host.φ₀.injective` to reduce the goal to its premises. Establish `h : D.host.φ₀ D.host.sqrtMinusD = Complex.I * (Real.sqrt D.host.d : ℂ)` using `D.host.φ₀_mem`. Rewrite using `[emb_star, map_neg, h, map_mul, Complex.conj_I, Complex.conj_ofReal, neg_mul]`.
+-/
 theorem sd_star (D : D7) : star D.host.sqrtMinusD = -D.host.sqrtMinusD := by
   apply D.host.φ₀.injective
   have h : D.host.φ₀ D.host.sqrtMinusD = Complex.I * (Real.sqrt D.host.d : ℂ) := D.host.φ₀_mem
   rw [emb_star, map_neg, h, map_mul, Complex.conj_I, Complex.conj_ofReal, neg_mul]
 
+/- English proof (translation)
+Introduce `h0`. Establish `h : D.host.φ₀ D.host.sqrtMinusD = Complex.I * (Real.sqrt D.host.d : ℂ)` using `D.host.φ₀_mem`. Rewrite `h` using `[h0, map_zero]`. Conclude with `mul_ne_zero Complex.I_ne_zero (Complex.ofReal_ne_zero.2 (Real.sqrt_pos.2 (Nat.cast_pos.2 (Nat.pos_of_ne_zero D.host.hyp.2.1.ne_zero))).ne') h.symm`.
+-/
 theorem sd_ne (D : D7) : D.host.sqrtMinusD ≠ 0 := by
   intro h0
   have h : D.host.φ₀ D.host.sqrtMinusD = Complex.I * (Real.sqrt D.host.d : ℂ) := D.host.φ₀_mem
@@ -168,6 +228,9 @@ theorem sd_ne (D : D7) : D.host.sqrtMinusD ≠ 0 := by
   exact mul_ne_zero Complex.I_ne_zero (Complex.ofReal_ne_zero.2
     (Real.sqrt_pos.2 (Nat.cast_pos.2 (Nat.pos_of_ne_zero D.host.hyp.2.1.ne_zero))).ne') h.symm
 
+/- English proof (translation)
+Take `⟨v, -, b, c⟩` from `orth_ex V D.host.sqrtMinusD (sd_star D) (sd_ne D) V.rank ⊤ (by rw [finrank_top, V.rank_eq]) fun y _ h => V.nondeg.1 y fun z => h z trivial`. Conclude with `⟨v, orth_indep V v b c, b, c⟩`.
+-/
 theorem orth_basis (V : HSp D) : ∃ v : Fin V.rank → V.V, LinearIndependent D.host.E v ∧
     (∀ i j, i ≠ j → V.hT (v i) (v j) = 0) ∧ ∀ i, V.hT (v i) (v i) ≠ 0 := by
   obtain ⟨v, -, b, c⟩ := orth_ex V D.host.sqrtMinusD (sd_star D) (sd_ne D) V.rank ⊤
@@ -176,10 +239,16 @@ theorem orth_basis (V : HSp D) : ∃ v : Fin V.rank → V.V, LinearIndependent D
 
 def basC (V : HSp D) : Matrix (Fin V.rank) (Fin V.rank) D.host.E := fun i k => V.frame.repr ((orth_basis V).choose k) i
 
+/- English proof (translation)
+Rewrite using `[← Matrix.isUnit_iff_isUnit_det, ← Matrix.linearIndependent_cols_iff_isUnit]`. Conclude with `(orth_basis V).choose_spec.1.map' V.frame.equivFun.toLinearMap (LinearEquiv.ker _)`.
+-/
 theorem basC_unit (V : HSp D) : IsUnit (basC V).det := by
   rw [← Matrix.isUnit_iff_isUnit_det, ← Matrix.linearIndependent_cols_iff_isUnit]
   exact (orth_basis V).choose_spec.1.map' V.frame.equivFun.toLinearMap (LinearEquiv.ker _)
 
+/- English proof (translation)
+Use `conv_lhs => rw [← V.frame.sum_repr x, ← V.frame.sum_repr y]`. Simplify using `only [map_sum, map_smulₛₗ, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul, starRingEnd_apply, RingHom.id_apply, HSpace.gram, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => by ring`.
+-/
 theorem ob_coord (V : HSp D) (x y : V.V) :
     V.hT x y = ∑ i, ∑ j, star (V.frame.repr x i) * V.gram i j * V.frame.repr y j := by
   conv_lhs => rw [← V.frame.sum_repr x, ← V.frame.sum_repr y]
@@ -188,6 +257,9 @@ theorem ob_coord (V : HSp D) (x y : V.V) :
   rw [Finset.sum_comm]
   exact Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => by ring
 
+/- English proof (translation)
+Rewrite using `[ob_coord, Matrix.mul_apply, Finset.sum_comm]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply, Finset.sum_mul]`. Both sides reduce to the same expression.
+-/
 theorem basC_gram (V : HSp D) (i j : Fin V.rank) :
     (Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) (basC V) * V.gram * basC V) i j =
       V.hT ((orth_basis V).choose i) ((orth_basis V).choose j) := by
@@ -196,6 +268,9 @@ theorem basC_gram (V : HSp D) (i j : Fin V.rank) :
   rw [Matrix.mul_apply, Finset.sum_mul]
   rfl
 
+/- English proof (translation)
+Rewrite using `[basC_gram]`. Conclude with `(orth_basis V).choose_spec.2.1 i j h`.
+-/
 theorem basC_orth (V : HSp D) (i j : Fin V.rank) (h : i ≠ j) :
     (Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) (basC V) * V.gram * basC V) i j = 0 := by
   rw [basC_gram]
@@ -203,6 +278,9 @@ theorem basC_orth (V : HSp D) (i j : Fin V.rank) (h : i ≠ j) :
 
 def lenAt (V : HSp D) (τ : D.what₂.Tau) (i : Fin V.rank) : ℝ := (tauE D τ (V.hT ((orth_basis V).choose i) ((orth_basis V).choose i))).re
 
+/- English proof (translation)
+Establish `h : starRingEnd ℂ (tauE D τ (V.hT ((orth_basis V).choose i) ((orth_basis V).choose i))) = tauE D τ (V.hT ((orth_basis V).choose i) ((orth_basis V).choose i))`. Rewrite using `[← emb_star]`. Conclude with `congrArg (tauE D τ) (V.herm.eq _ _)`. Conclude with `Complex.conj_eq_iff_re.1 h`.
+-/
 theorem lenAt_eq (V : HSp D) (τ : D.what₂.Tau) (i : Fin V.rank) :
     (lenAt V τ i : ℂ) = tauE D τ (V.hT ((orth_basis V).choose i) ((orth_basis V).choose i)) := by
   have h : starRingEnd ℂ (tauE D τ (V.hT ((orth_basis V).choose i) ((orth_basis V).choose i))) =
@@ -211,11 +289,21 @@ theorem lenAt_eq (V : HSp D) (τ : D.what₂.Tau) (i : Fin V.rank) :
     exact congrArg (tauE D τ) (V.herm.eq _ _)
   exact Complex.conj_eq_iff_re.1 h
 
+/- English proof (translation)
+Introduce `h` and use `by have := lenAt_eq V τ i rw [h, Complex.ofReal_zero, eq_comm, map_eq_zero] at this exact (orth_basis V).choose_spec.2.2 i this`.
+-/
 theorem lenAt_ne (V : HSp D) (τ : D.what₂.Tau) (i : Fin V.rank) : lenAt V τ i ≠ 0 := fun h => by
   have := lenAt_eq V τ i
   rw [h, Complex.ofReal_zero, eq_comm, map_eq_zero] at this
   exact (orth_basis V).choose_spec.2.2 i this
 
+/- English proof (translation)
+Use extensionality with `i j`. Establish `e : ((basC V).map (tauE D τ))ᴴ * gramAt D V τ * (basC V).map (tauE D τ) = (Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) (basC V) * V.gram * basC V).map (tauE D τ)`. Rewrite using `[Matrix.map_mul, Matrix.map_mul]`. Use `congr 2`. Use extensionality with `a b`.
+
+Use `show starRingEnd ℂ (tauE D τ (basC V b a)) = tauE D τ (star (basC V b a))`. Conclude with `(emb_star _ _).symm`. Rewrite using `[e, Matrix.map_apply, Matrix.diagonal_apply]`. Use `split_ifs with h`. Substitute `h` using the available equality.
+
+Rewrite using `[basC_gram, lenAt_eq]`. Rewrite using `[basC_orth V i j h, map_zero]`.
+-/
 theorem gram_basC (V : HSp D) (τ : D.what₂.Tau) :
     ((basC V).map (tauE D τ))ᴴ * gramAt D V τ * (basC V).map (tauE D τ) =
       Matrix.diagonal fun i => (lenAt V τ i : ℂ) := by
@@ -232,6 +320,17 @@ theorem gram_basC (V : HSp D) (τ : D.what₂.Tau) :
   · subst h; rw [basC_gram, lenAt_eq]
   · rw [basC_orth V i j h, map_zero]
 
+/- English proof (translation)
+Set `ε : Fin V.rank → Bool` to `fun i => decide (0 < lenAt V τ i)`. Set `P` to `(basC V).map (tauE D τ)`. Establish `hP : IsUnit P`. Rewrite using `[Matrix.isUnit_iff_isUnit_det]`. Establish `: P.det = tauE D τ (basC V).det` using `((tauE D τ).map_det _).symm`.
+
+Rewrite using `[this]`. Conclude with `(basC_unit V).map _`. Set `s : Fin V.rank → ℂ` to `fun i => ((Real.sqrt |lenAt V τ i|)⁻¹ : ℝ)`. Establish `hs : ∀ i, s i ≠ 0` using `fun i => Complex.ofReal_ne_zero.2 (inv_ne_zero (Real.sqrt_ne_zero'.2 (abs_pos.2 (lenAt_ne V τ i))))`. Establish `key : (P * Matrix.diagonal s)ᴴ * gramAt D V τ * (P * Matrix.diagonal s) = Matrix.diagonal fun i => if ε i then 1 else -1`.
+
+Rewrite using `[Matrix.conjTranspose_mul, Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc (gramAt D V τ), ← Matrix.mul_assoc Pᴴ, ← Matrix.mul_assoc Pᴴ, gram_basC, Matrix.diagonal_conjTranspose, Matrix.diagonal_mul_diagonal, Matrix.diagonal_mul_diagonal]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Use `show star (s i) * ((lenAt V τ i : ℂ) * s i) = _`. Rewrite using `[← mul_assoc]`.
+
+Conclude with `inv_sqrt_abs_conj_eq_sign _ (lenAt_ne V τ i)`. Establish `h1 : Formalism.UG.HasSignature (gramAt D V τ) (Finset.univ.filter fun i => ε i = true).card (Finset.univ.filter fun i => ε i = false).card`. Conclude with `sig_of_diag _ ε (P * Matrix.diagonal s) (hP.mul (Matrix.isUnit_diagonal.2 (Pi.isUnit_iff.2 fun i => (hs i).isUnit))) key`. Establish `h2` using `Formalism.UG.P.signature_unique _ (gramAt D V τ) _ _ _ _ h1 (hV (tauE D τ))`. Use `⟨(congrArg Finset.card (Finset.filter_congr fun i _ => ?_)).trans h2.1, (congrArg Finset.card (Finset.filter_congr fun i _ => ?_)).trans h2.2⟩` and prove the remaining obligations.
+
+Simplify using `[ε]`. Simplify using `[ε]`.
+-/
 theorem sig_count (V : HSp D) (hV : V.SigOK) (τ : D.what₂.Tau) :
     (Finset.univ.filter fun i => 0 < lenAt V τ i).card = (V.sig (tauE D τ)).1 ∧
     (Finset.univ.filter fun i => ¬ 0 < lenAt V τ i).card = (V.sig (tauE D τ)).2 := by
@@ -264,6 +363,15 @@ theorem sig_count (V : HSp D) (hV : V.SigOK) (τ : D.what₂.Tau) :
   · simp [ε]
   · simp [ε]
 
+/- English proof (translation)
+Set `e1 : Fin p ≃ {a // ε a = true}` to `(Fintype.equivFinOfCardEq (by rw [Fintype.card_subtype, hp])).symm`. Set `e2 : Fin q ≃ {a // ¬ ε a = true}` to `(Fintype.equivFinOfCardEq (by rw [Fintype.card_subtype, ← hq]; congr 1; ext a; simp)).symm`. Set `e : Fin p ⊕ Fin q ≃ Fin n` to `(Equiv.sumCongr e1 e2).trans (Equiv.sumCompl fun a => ε a = true)`. Use `⟨e, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.submatrix_diagonal_equiv]`.
+
+Use extensionality with `a b`. Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b`. Establish `: ε (e (Sum.inl a)) = true` using `(e1 a).2`. Simplify using `[Formalism.UG.Jpq, Matrix.diagonal_apply, Matrix.one_apply, this]`. Simplify using `[Formalism.UG.Jpq]`.
+
+Simplify using `[Formalism.UG.Jpq]`. Establish `: ε (e (Sum.inr a)) = false` using `Bool.eq_false_iff.2 (e2 a).2`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Simplify using `[Formalism.UG.Jpq, this]`.
+
+Simplify using `[Formalism.UG.Jpq, Matrix.one_apply, hab]`.
+-/
 theorem diag_sig {n p q : ℕ} (ε : Fin n → Bool) (hp : (Finset.univ.filter fun i => ε i = true).card = p)
     (hq : (Finset.univ.filter fun i => ε i = false).card = q) : ∃ e : Fin p ⊕ Fin q ≃ Fin n,
     (Matrix.diagonal fun i => if ε i then (1 : ℂ) else -1).submatrix e e = Formalism.UG.Jpq p q := by
@@ -285,6 +393,23 @@ theorem diag_sig {n p q : ℕ} (ε : Fin n → Bool) (hp : (Finset.univ.filter f
     · subst hab; simp [Formalism.UG.Jpq, this]
     · simp [Formalism.UG.Jpq, Matrix.one_apply, hab]
 
+/- English proof (translation)
+Set `ε : Fin V.rank → Bool` to `fun i => decide (0 < lenAt V τ i)`. Take `⟨c1, c2⟩` from `sig_count V hV τ`. Take `⟨e, he⟩` from `diag_sig (p := (V.sig (tauE D τ)).1) (q := (V.sig (tauE D τ)).2) ε (by rw [← c1]; congr 1; ext i; simp [ε]) (by rw [← c2]; congr 1; ext i; simp [ε])`. Set `P` to `(basC V).map (tauE D τ)`. Establish `hP : IsUnit P.det`.
+
+Establish `: P.det = tauE D τ (basC V).det` using `((tauE D τ).map_det _).symm`. Rewrite using `[this]`. Conclude with `(basC_unit V).map _`. Set `s : Fin V.rank → ℂ` to `fun i => (Real.sqrt |lenAt V τ i| : ℝ)`. Set `R` to `Matrix.diagonal s * P⁻¹`.
+
+Establish `key : Rᴴ * (Matrix.diagonal fun i => if ε i then (1 : ℂ) else -1) * R = gramAt D V τ`. Establish `g` using `gram_basC V τ`. Establish `e1 : Matrix.diagonal (fun i => (lenAt V τ i : ℂ)) = (Matrix.diagonal s)ᴴ * (Matrix.diagonal fun i => if ε i then (1 : ℂ) else -1) * Matrix.diagonal s`. Rewrite using `[Matrix.diagonal_conjTranspose, Matrix.diagonal_mul_diagonal, Matrix.diagonal_mul_diagonal]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `i`. Conclude with `real_eq_sqrt_sign_sqrt _ (lenAt_ne V τ i)`. Rewrite `g` using `[e1]`. Establish `hPi : P * P⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hP`. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [R, Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = (P⁻¹)ᴴ * (Pᴴ * gramAt D V τ * P) * P⁻¹ := by rw [g]`. Use `_ = (P * P⁻¹)ᴴ * gramAt D V τ * (P * P⁻¹) := by simp only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = _ := by rw [hPi]; simp`. Use `⟨R.submatrix e id, ?_, fun a i j hi hj => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← he, Matrix.conjTranspose_submatrix, Matrix.submatrix_mul_equiv, Matrix.submatrix_mul_equiv, Matrix.submatrix_id_id]`. Conclude with `key`. Establish `hRP : R * P = Matrix.diagonal s` using `by rw [Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hP, Matrix.mul_one]`. Establish `ee : (R.submatrix e id * P) = (R * P).submatrix e id`. Use extensionality with `x y`.
+
+Simplify using `[Matrix.mul_apply]`. Rewrite `hi`, `hj` using `[ee, hRP]`. Simplify using `only [Matrix.submatrix_apply, id, Matrix.diagonal_apply] at hi hj`. Use `split_ifs at hi hj with h1 h2`. Conclude with `h1.symm.trans h2`.
+
+Conclude with `absurd rfl hj`. Conclude with `absurd rfl hi`. Conclude with `absurd rfl hi`.
+-/
 theorem cpt_bas_ex (V : HSp D) (hV : V.SigOK) (τ : D.what₂.Tau) :
     ∃ A : Matrix (Fin (V.sig (tauE D τ)).1 ⊕ Fin (V.sig (tauE D τ)).2) (Fin V.rank) ℂ,
       Aᴴ * Formalism.UG.Jpq (V.sig (tauE D τ)).1 (V.sig (tauE D τ)).2 * A = gramAt D V τ ∧

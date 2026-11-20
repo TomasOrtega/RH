@@ -12,10 +12,16 @@ section Ops
 
 variable {N : Type*}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i n`. Simplify using `[Vpow]`.
+-/
 theorem Vpow_zero (x : ℕ → N → C) : Vpow 0 x = x := by
   funext i n
   simp [Vpow]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i n`. Simplify using `only [Vpow]`. Apply the tactic sequence `split_ifs <;> first | rfl | omega | (congr 1; omega)`.
+-/
 theorem Vpow_succ (s : ℕ) (x : ℕ → N → C) : Vpow (s + 1) x = Vpow 1 (Vpow s x) := by
   funext i n
   simp only [Vpow]
@@ -27,11 +33,19 @@ namespace Cart
 
 variable (X : Cart V d I J)
 
+/- English proof (translation)
+Proceed by induction on `s with`. Consider the case `zero => rw [Vpow_zero]`. Conclude with `hx`. Consider the case `succ s ih => rw [Vpow_succ]`. Conclude with `X.V_mem _ ih`.
+-/
 theorem Vpow_mem (s : ℕ) {x : ℕ → I ⊕ J → C} (hx : x ∈ X.Ty) : Vpow s x ∈ X.Ty := by
   induction s with
   | zero => rw [Vpow_zero]; exact hx
   | succ s ih => rw [Vpow_succ]; exact X.V_mem _ ih
 
+/- English proof (translation)
+Introduce `i`. Proceed by induction on `i with`. Consider the case `zero`. Introduce `x hx n`. Simplify using `using X.t2 x hx 0 (fun j hj => absurd hj (Nat.not_lt_zero j)) n`.
+
+Consider the case `succ i ih`. Introduce `x hx n`. Use `(ih _ (X.F_mem x hx) n).of_l_mul` as an intermediate fact. Conclude with `this.mono (by push_cast; linarith)`.
+-/
 theorem bound0 : ∀ (i : ℕ) (x : ℕ → I ⊕ J → C), x ∈ X.Ty → ∀ n, V.Ge (-(i : ℝ)) (x i n) := by
   intro i
   induction i with
@@ -50,6 +64,13 @@ section Std
 
 variable [DecidableEq I]
 
+/- English proof (translation)
+Establish `hu : ∀ c, V.Ge 0 ((Pi.single b (1 : C) : I → C) c)`. Introduce `c`. Distinguish the cases in `hc : c = b`. Substitute `hc` using the available equality. Simplify using `using (VF.Ge.one (V := V))`.
+
+Simplify `(VF.Ge.zero (V := V) 0)` using `[Pi.single_apply, hc]`. Establish `hty : ∀ c, X.ty (Sum.inl c) ≠ X.ty (Sum.inl b) → (Pi.single b (1 : C) : I → C) c = 0`. Introduce `c hc`. Establish `: c ≠ b` using `fun h => hc (h ▸ rfl)`. Simplify using `[Pi.single_apply, this]`.
+
+Take `⟨x, hx, h0, h1⟩` from `X.t4 _ _ hu hty`. Conclude with `⟨x, hx, h0, h1⟩`.
+-/
 theorem exists_std (b : I) : ∃ x, X.IsCurve (X.ty (Sum.inl b)) (Pi.single b 1) x := by
   have hu : ∀ c, V.Ge 0 ((Pi.single b (1 : C) : I → C) c) := by
     intro c
@@ -66,6 +87,9 @@ theorem exists_std (b : I) : ∃ x, X.IsCurve (X.ty (Sum.inl b)) (Pi.single b 1)
 
 def std (b : I) : ℕ → I ⊕ J → C := Classical.choose (X.exists_std b)
 
+/- English proof (translation)
+The claim follows from `Classical.choose_spec (X.exists_std b)`.
+-/
 theorem std_spec (b : I) : X.IsCurve (X.ty (Sum.inl b)) (Pi.single b 1) (X.std b) :=
   Classical.choose_spec (X.exists_std b)
 
@@ -74,16 +98,27 @@ variable [Fintype I]
 def lift (h : I ⊕ J → C) : ℕ → I ⊕ J → C :=
   (∑ b, teich V.l (h (Sum.inl b)) (X.std b)) + const0 (Sum.elim 0 (fun j => h (Sum.inr j)))
 
+/- English proof (translation)
+Unfold `lift`. Conclude with `X.Ty.add_mem (X.Ty.sum_mem fun b _ => X.teich_mem _ (hh _) _ (X.std_spec b).1) (X.t3 _ fun j => hh _)`.
+-/
 theorem lift_mem {h : I ⊕ J → C} (hh : ∀ n, V.Ge 0 (h n)) : X.lift h ∈ X.Ty := by
   unfold lift
   exact X.Ty.add_mem (X.Ty.sum_mem fun b _ => X.teich_mem _ (hh _) _ (X.std_spec b).1)
     (X.t3 _ fun j => hh _)
 
+/- English proof (translation)
+Simplify using `only [lift, Pi.add_apply, Finset.sum_apply, teich]`.
+-/
 theorem lift_apply (h : I ⊕ J → C) (i : ℕ) (n : I ⊕ J) : X.lift h i n =
     (∑ b, h (Sum.inl b) ^ (V.l ^ i) * X.std b i n) +
       const0 (Sum.elim 0 (fun j => h (Sum.inr j))) i n := by
   simp only [lift, Pi.add_apply, Finset.sum_apply, teich]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `n`. Rewrite using `[lift_apply]`. Simplify using `only [pow_zero, pow_one, (X.std_spec _).2.1, const0, if_pos rfl]`. Consider the cases of `n with`. Consider the case `inl b' => simp [Pi.single_apply]`.
+
+Consider the case `inr j => simp`.
+-/
 theorem lift_zero (h : I ⊕ J → C) : X.lift h 0 = h := by
   funext n
   rw [lift_apply]
@@ -92,6 +127,19 @@ theorem lift_zero (h : I ⊕ J → C) : X.lift h 0 = h := by
   | inl b' => simp [Pi.single_apply]
   | inr j => simp
 
+/- English proof (translation)
+Introduce `i`. Proceed by induction on `i with`. Consider the case `zero`. Introduce `s x hx hz n`. Simplify using `using X.t2 x hx s hz n`.
+
+Consider the case `succ i ih`. Introduce `s x hx hz n`. Establish `hint : ∀ m, V.Ge 0 (x s m)` using `X.t2 x hx s hz`. Establish `hL` using `X.lift_mem hint`. Establish `hx' : x - Vpow s (X.lift (x s)) ∈ X.Ty` using `X.Ty.sub_mem hx (X.Vpow_mem s hL)`.
+
+Establish `hz' : ∀ j < s + 1, (x - Vpow s (X.lift (x s))) j = 0`. Introduce `j hj`. Use function extensionality and compare the values at `m`. Simplify using `only [Pi.sub_apply, Pi.zero_apply, Vpow]`. Break down `lt_or_eq_of_le (Nat.lt_succ_iff.mp hj) with h | h` into its components or cases.
+
+Rewrite using `[if_pos h, hz j h]`. Simplify using the standard rewrite rules. Substitute `h` using the available equality. Rewrite using `[if_neg (lt_irrefl _), Nat.sub_self, X.lift_zero, sub_self]`. Establish `h1` using `ih (s + 1) _ hx' hz' n`.
+
+Establish `h2` using `X.bound0 (i + 1) _ hL n`. Establish `hsplit : x (s + (i + 1)) n = (x - Vpow s (X.lift (x s))) (s + 1 + i) n + X.lift (x s) (i + 1) n`. Simplify using `only [Pi.sub_apply, Vpow]`. Rewrite using `[if_neg (by omega), show s + 1 + i - s = i + 1 by omega, show s + 1 + i = s + (i + 1) by omega]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[hsplit]`. Conclude with `(h1.mono (by push_cast; linarith)).add h2`.
+-/
 theorem boundS : ∀ (i s : ℕ) (x : ℕ → I ⊕ J → C), x ∈ X.Ty → (∀ j < s, x j = 0) →
     ∀ n, V.Ge (-(i : ℝ)) (x (s + i) n) := by
   intro i
@@ -127,6 +175,9 @@ def rem (x : ℕ → I ⊕ J → C) : ℕ → (ℕ → I ⊕ J → C)
   | 0 => x
   | s + 1 => rem x s - Vpow s (X.lift (rem x s s))
 
+/- English proof (translation)
+Proceed by induction on `s with`. Consider the case `zero => simp [rem]`. Consider the case `succ s ih => show X.rem x s - Vpow s (X.lift (X.rem x s s)) = _`. Rewrite using `[Finset.sum_range_succ, sub_add_eq_sub_sub, ← ih]`.
+-/
 theorem rem_eq (x : ℕ → I ⊕ J → C) (s : ℕ) :
     X.rem x s = x - ∑ s' ∈ range s, Vpow s' (X.lift (X.rem x s' s')) := by
   induction s with
@@ -146,6 +197,15 @@ def c0' (_X : Cart V d I J) (x : ℕ → I ⊕ J → C) : J → C := fun j => (V
 
 variable {X}
 
+/- English proof (translation)
+Establish `hx` using `h.1.1`. Establish `hF` using `X.F_mem _ hx`. Establish `hζ : ∀ j, V.Ge 0 ((V.l : C) * x 1 (Sum.inr j))` using `fun j => by`. Use `X.t2 _ hF 0 (fun _ h => absurd h (Nat.not_lt_zero _)) (Sum.inr j)` as an intermediate fact. Conclude with `this`.
+
+Establish `hw : Fs V.l x - const0 (Sum.elim 0 (fun j => (V.l : C) * x 1 (Sum.inr j))) ∈ X.Ty` using `X.Ty.sub_mem hF (X.t3 _ hζ)`. Establish `hw0 : ∀ j < 1, (Fs V.l x - const0 (Sum.elim 0 (fun j => (V.l : C) * x 1 (Sum.inr j))) : ℕ → I ⊕ J → C) j = 0`. Introduce `j hj`. Take `rfl : j = 0` from `by omega`. Use function extensionality and compare the values at `m`.
+
+Consider the cases of `m with`. Consider the case `inl c => simp [Fs, const0, h.2 c]`. Consider the case `inr k => simp [Fs, const0]`. Establish `hb` using `X.boundS i 1 _ hw hw0 n`. Establish `he : (Fs V.l x - const0 (Sum.elim 0 (fun j => (V.l : C) * x 1 (Sum.inr j))) : ℕ → I ⊕ J → C) (1 + i) n = (V.l : C) * x (i + 2) n`.
+
+Simplify using `only [Pi.sub_apply, Fs, const0]`. Rewrite using `[if_neg (by omega), sub_zero, show 1 + i + 1 = i + 2 by omega]`. Rewrite `hb` using `[he]`. Conclude with `hb.of_l_mul.mono (by linarith)`.
+-/
 theorem Good.bound [DecidableEq I] [Fintype I] {a : ZMod d} {u : I → C} {x : ℕ → I ⊕ J → C}
     (h : X.Good a u x) (i : ℕ) (n : I ⊕ J) : V.Ge (-((i : ℝ) + 1)) (x (i + 2) n) := by
   have hx := h.1.1
@@ -172,17 +232,30 @@ theorem Good.bound [DecidableEq I] [Fintype I] {a : ZMod d} {u : I → C} {x : �
   rw [he] at hb
   exact hb.of_l_mul.mono (by linarith)
 
+/- English proof (translation)
+Use `X.t2 _ (X.F_mem _ h.1.1) 0 (fun i hi => absurd hi (Nat.not_lt_zero i)) n` as an intermediate fact. Establish `h2 : V.Ge 0 ((V.l : C) * x 1 n)` using `this`. Conclude with `h2.of_l_mul.mono (by norm_num)`.
+-/
 theorem Good.bound_one {a : ZMod d} {u : I → C} {x : ℕ → I ⊕ J → C}
     (h : X.Good a u x) (n : I ⊕ J) : V.Ge (-1) (x 1 n) := by
   have := X.t2 _ (X.F_mem _ h.1.1) 0 (fun i hi => absurd hi (Nat.not_lt_zero i)) n
   have h2 : V.Ge 0 ((V.l : C) * x 1 n) := this
   exact h2.of_l_mul.mono (by norm_num)
 
+/- English proof (translation)
+Use `X.t2 _ (X.F_mem _ h.1.1) 0 (fun i hi => absurd hi (Nat.not_lt_zero i)) (Sum.inr j)` as an intermediate fact. Conclude with `this`.
+-/
 theorem Good.c0'_int {a : ZMod d} {u : I → C} {x : ℕ → I ⊕ J → C}
     (h : X.Good a u x) (j : J) : V.Ge 0 (X.c0' x j) := by
   have := X.t2 _ (X.F_mem _ h.1.1) 0 (fun i hi => absurd hi (Nat.not_lt_zero i)) (Sum.inr j)
   exact this
 
+/- English proof (translation)
+Use `And.intro (And.intro ?_ (And.intro ?_ ?_)) ?_` and prove the remaining obligations. Conclude with `X.Ty.sum_mem fun k hk => X.teich_mem _ (hco k hk) _ (h k hk).1.1`. Use function extensionality and compare the values at `n`. Simplify using `only [Finset.sum_apply, teich, pow_zero, pow_one]`. Combine the equalities or inequalities in the displayed calculation.
+
+Introduce `i n hn`. Simplify using `only [Finset.sum_apply, teich]`. Conclude with `Finset.sum_eq_zero fun k hk => by rw [(h k hk).1.2.2 i n hn, mul_zero]`. Introduce `c`. Simplify using `only [Finset.sum_apply, teich]`.
+
+Conclude with `Finset.sum_eq_zero fun k hk => by rw [(h k hk).2 c, mul_zero]`.
+-/
 theorem Good.comb {ι : Type*} (s : Finset ι) {a : ZMod d} {u : ι → I → C}
     {x : ι → ℕ → I ⊕ J → C} {co : ι → C} (hco : ∀ k ∈ s, V.Ge 0 (co k))
     (h : ∀ k ∈ s, X.Good a (u k) (x k)) :
@@ -201,16 +274,31 @@ theorem Good.comb {ι : Type*} (s : Finset ι) {a : ZMod d} {u : ι → I → C}
     simp only [Finset.sum_apply, teich]
     exact Finset.sum_eq_zero fun k hk => by rw [(h k hk).2 c, mul_zero]
 
+/- English proof (translation)
+Simplify using `only [V2, Finset.sum_apply, teich, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun k _ => by ring`.
+-/
 theorem scaledSecond_sum {ι : Type*} (s : Finset ι) (x : ι → ℕ → I ⊕ J → C) (co : ι → C) (b : I) :
     X.V2 (∑ k ∈ s, teich V.l (co k) (x k)) b = ∑ k ∈ s, co k ^ (V.l ^ 2) * X.V2 (x k) b := by
   simp only [V2, Finset.sum_apply, teich, Finset.mul_sum]
   exact Finset.sum_congr rfl fun k _ => by ring
 
+/- English proof (translation)
+Simplify using `only [c0', Finset.sum_apply, teich, pow_one, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun k _ => by ring`.
+-/
 theorem c0'_comb {ι : Type*} (s : Finset ι) (x : ι → ℕ → I ⊕ J → C) (co : ι → C) (j : J) :
     X.c0' (∑ k ∈ s, teich V.l (co k) (x k)) j = ∑ k ∈ s, co k ^ V.l * X.c0' (x k) j := by
   simp only [c0', Finset.sum_apply, teich, pow_one, Finset.mul_sum]
   exact Finset.sum_congr rfl fun k _ => by ring
 
+/- English proof (translation)
+Establish `hz : x - x' ∈ X.Ty` using `X.Ty.sub_mem h.1.1 h'.1.1`. Establish `hz0 : (x - x') 0 = 0` using `by rw [Pi.sub_apply, h.1.2.1, h'.1.2.1, sub_self]`. Establish `hγ : ∀ j, V.Ge 0 (x 1 (Sum.inr j) - x' 1 (Sum.inr j))` using `fun j => by`. Use `X.t2 _ hz 1 (fun i hi => by rw [show i = 0 by omega]; exact hz0) (Sum.inr j)` as an intermediate fact. Simplify using `using this`.
+
+Establish `hw : (x - x') - Vpow 1 (const0 (Sum.elim 0 (fun j => x 1 (Sum.inr j) - x' 1 (Sum.inr j)))) ∈ X.Ty` using `X.Ty.sub_mem hz (X.V_mem _ (X.t3 _ hγ))`. Establish `hw0 : ∀ i < 2, ((x - x') - Vpow 1 (const0 (Sum.elim 0 (fun j => x 1 (Sum.inr j) - x' 1 (Sum.inr j)))) : ℕ → I ⊕ J → C) i = 0`. Introduce `i hi`. Use function extensionality and compare the values at `m`. Use `interval_cases i`.
+
+Simplify using `[Vpow, h.1.2.1, h'.1.2.1]`. Consider the cases of `m with`. Consider the case `inl c => simp [Vpow, const0, h.2 c, h'.2 c]`. Consider the case `inr j => simp [Vpow, const0]`. Establish `hw2` using `X.t2 _ hw 2 hw0 n`.
+
+Simplify `hw2` using `[Vpow, const0]`.
+-/
 theorem Good.wd {a : ZMod d} {u : I → C} {x x' : ℕ → I ⊕ J → C}
     (h : X.Good a u x) (h' : X.Good a u x') (n : I ⊕ J) : V.Ge 0 (x 2 n - x' 2 n) := by
   have hz : x - x' ∈ X.Ty := X.Ty.sub_mem h.1.1 h'.1.1

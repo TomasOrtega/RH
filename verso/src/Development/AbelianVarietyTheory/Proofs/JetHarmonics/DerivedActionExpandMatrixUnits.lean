@@ -9,6 +9,11 @@ open scoped InnerProductSpace ENNReal
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `hd : IsUnit Q.det` using `(Matrix.isUnit_iff_isUnit_det Q).1 hQ`. Establish `h1 : Q⁻¹ * Q = 1` using `Matrix.nonsing_inv_mul Q hd`. Establish `h2 : ∑ a, ∑ b, (Q * Y * Q⁻¹) a b • (Q⁻¹ * Matrix.single a b (1 : ℂ) * Q) = Q⁻¹ * (∑ a, ∑ b, Matrix.single a b ((Q * Y * Q⁻¹) a b)) * Q`. Simplify using `only [Matrix.mul_sum, Matrix.sum_mul]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[← Matrix.smul_mul, ← Matrix.mul_smul, Matrix.smul_single, smul_eq_mul, mul_one]`. Rewrite using `[h2, ← Matrix.matrix_eq_sum_single]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem conj_expand_units {n : ℕ} (Q Y : Matrix (Fin n) (Fin n) ℂ) (hQ : IsUnit Q) :
     Y = ∑ a, ∑ b, (Q * Y * Q⁻¹) a b • (Q⁻¹ * Matrix.single a b (1 : ℂ) * Q) := by
   have hd : IsUnit Q.det := (Matrix.isUnit_iff_isUnit_det Q).1 hQ
@@ -22,6 +27,11 @@ theorem conj_expand_units {n : ℕ} (Q Y : Matrix (Fin n) (Fin n) ℂ) (hQ : IsU
   calc Y = (Q⁻¹ * Q) * Y * (Q⁻¹ * Q) := by rw [h1]; simp
     _ = _ := by simp only [Matrix.mul_assoc]
 
+/- English proof (translation)
+Establish `hd : IsUnit Q.det` using `(Matrix.isUnit_iff_isUnit_det Q).1 hQ`. Establish `h1 : Q * Q⁻¹ = 1` using `Matrix.mul_nonsing_inv Q hd`. Establish `: (Q⁻¹ * Matrix.single a b (1 : ℂ) * Q) * (Q⁻¹ * Matrix.single c d (1 : ℂ) * Q) = Q⁻¹ * (Matrix.single a b (1 : ℂ) * (Q * Q⁻¹) * Matrix.single c d (1 : ℂ)) * Q`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[this, h1, Matrix.mul_one]`.
+
+Distinguish the cases in `h : b = c`. Substitute `h` using the available equality. Simplify using `[Matrix.single_mul_single_same]`. Simplify using `[h, Matrix.single_mul_single_of_ne _ _ _ _ h]`.
+-/
 theorem conj_units_mul {n : ℕ} (Q : Matrix (Fin n) (Fin n) ℂ) (hQ : IsUnit Q) (a b c d : Fin n) :
     (Q⁻¹ * Matrix.single a b (1 : ℂ) * Q) * (Q⁻¹ * Matrix.single c d (1 : ℂ) * Q)
       = (if b = c then (1 : ℂ) else 0) • (Q⁻¹ * Matrix.single a d (1 : ℂ) * Q) := by
@@ -36,6 +46,19 @@ theorem conj_units_mul {n : ℕ} (Q : Matrix (Fin n) (Fin n) ℂ) (hQ : IsUnit Q
     simp [Matrix.single_mul_single_same]
   · simp [h, Matrix.single_mul_single_of_ne _ _ _ _ h]
 
+/- English proof (translation)
+Introduce `hK k r ε mu R hR Q E hQ hE`. Take `⟨-, -, hlin, hX, hbr, -⟩` from `GlobalTheory.T.complexifiedDerivedAction_lieHom_gramAdjoint hK k r ε mu R hR`. Establish `hL : ∀ v : R.smSub, ∃ L : Mx k r →ₗ[ℂ] R.H, ∀ Y, L Y = R.dC Y v`. Introduce `v`. Establish `hv : (v : R.H) ∈ R.sm` using `v.2`.
+
+Establish `h0 : R.dC 0 v = 0`. Use `hlin 0 0 1 v hv` as an intermediate fact. Simplify using `using this`. Use `⟨{ toFun := fun Y => R.dC Y v, map_add' := ?_, map_smul' := ?_ }, fun _ => rfl⟩` and prove the remaining obligations. Introduce `Y Z`.
+
+Simplify using `using hlin Y Z 1 v hv`. Introduce `a Y`. Simplify `hlin Y 0 a v hv` using `[h0]`. Establish `hexp : ∀ Y (v : R.smSub), R.dC Y v = ∑ a, ∑ b, (Q * Y * Q⁻¹) a b • ((E a b v : R.smSub) : R.H)`. Introduce `Y v`.
+
+Take `⟨L, hLv⟩` from `hL v`. Rewrite using `[← hLv]`. Use `conv_lhs => rw [conj_expand_units Q Y hQ]`. Simplify using `only [map_sum, map_smul]`. Simplify using `only [hLv, hE _ _ v]`.
+
+Use `⟨?_, hexp, fun X hXl v => ?_⟩` and prove the remaining obligations. Introduce `a b c d`. Use extensionality with `v`. Take `⟨L, hLv⟩` from `hL v`. Use `hbr (Q⁻¹ * Matrix.single a b (1 : ℂ) * Q) (Q⁻¹ * Matrix.single c d (1 : ℂ) * Q) v v.2` as an intermediate fact.
+
+Rewrite `this` using `[conj_units_mul Q hQ, conj_units_mul Q hQ, ← hLv (_ - _), map_sub, map_smul, map_smul, hLv, hLv, ← hE, ← hE, ← hE, ← hE, ← hE, ← hE]`. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply, Submodule.coe_sub]`. Rewrite using `[this]`. Apply the tactic sequence `congr 1 <;> split_ifs <;> simp_all`. Rewrite using `[← hX X hXl v v.2, hexp]`.
+-/
 theorem dC_expand_units : PI.KFinSmooth → ∀ (k r : ℕ) (ε : Fin (2 * r + k + 1) → Bool) (mu : Fin (2 * r + k + 1) → ℝ) (R : Rep k r), R.IsDS ε mu → ∀ (Q : Mx k r) (E : (Fin (2 * r + k + 1) → Fin (2 * r + k + 1) → Module.End ℂ R.smSub)), IsUnit Q → R.IsE Q E → Formalism.REAL.GlRel E ∧ (∀ Y (v : R.smSub), R.dC Y v = ∑ a, ∑ b, (Q * Y * Q⁻¹) a b • ((E a b v : R.smSub) : R.H)) ∧ ∀ X, PI.UpqRep.InLieHpk k r X → ∀ v : R.smSub, PI.UpqRep.dsig (k := k) (r := r) R.σ X v = ∑ a, ∑ b, (Q * X * Q⁻¹) a b • ((E a b v : R.smSub) : R.H) := by
   intro hK k r ε mu R hR Q E hQ hE
   obtain ⟨-, -, hlin, hX, hbr, -⟩ := GlobalTheory.T.complexifiedDerivedAction_lieHom_gramAdjoint hK k r ε mu R hR

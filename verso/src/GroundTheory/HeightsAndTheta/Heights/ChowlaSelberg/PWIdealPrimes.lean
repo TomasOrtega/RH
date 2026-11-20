@@ -8,10 +8,38 @@ open NumberField GroundTheory.Global.Quadratic
 
 variable {K : Type} [Field K] [NumberField K] [Algebra.IsQuadraticExtension ℚ K]
 
+/- English proof (translation)
+Rewrite using `[Ideal.absNorm_span_natCast, RingOfIntegers.rank, Algebra.IsQuadraticExtension.finrank_eq_two]`.
+-/
 theorem absNorm_span_natCast_quadratic (n : ℕ) :
     Ideal.absNorm (Ideal.span {(n : 𝓞 K)}) = n ^ 2 := by
   rw [Ideal.absNorm_span_natCast, RingOfIntegers.rank, Algebra.IsQuadraticExtension.finrank_eq_two]
 
+/- English proof (translation)
+Use `set p := Ideal.absNorm 𝔭 with hp`. Establish `h𝔭top : 𝔭 ≠ ⊤` using `h𝔭.ne_top`. Establish `hconj : ∀ x ∈ 𝔭, conjRing K x ∈ 𝔭`. Introduce `x hx`. Establish `hx2 : x ^ 2 ∈ Ideal.span {(p : 𝓞 K)}`.
+
+Rewrite using `[← h2]`. Conclude with `Ideal.pow_mem_pow hx 2`. Take `⟨y, hy⟩` from `Ideal.mem_span_singleton'.1 hx2`. Establish `hp𝔭 : (p : 𝓞 K) ∈ 𝔭`. Establish `: (p : 𝓞 K) ∈ 𝔭 ^ 2`.
+
+Rewrite using `[h2]`. Conclude with `Ideal.mem_span_singleton_self _`. Conclude with `Ideal.pow_le_self two_ne_zero this`. Establish `hsq : (conjRing K x) ^ 2 ∈ 𝔭`. Establish `e : (conjRing K x) ^ 2 = conjRing K y * (p : 𝓞 K)`.
+
+Rewrite using `[← map_pow, ← hy, map_mul, map_natCast]`. Rewrite using `[e]`. Conclude with `Ideal.mul_mem_left _ _ hp𝔭`. Conclude with `h𝔭.mem_of_pow_mem 2 hsq`. Establish `hres : ∀ x : 𝓞 K, ∃ n : ℤ, x - n ∈ 𝔭`.
+
+Introduce `x`. Establish `hcard : Nat.card (𝓞 K ⧸ 𝔭) = p`. Rewrite using `[hp, Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Establish `: Fact (Nat.card (𝓞 K ⧸ 𝔭)).Prime` using `⟨hcard ▸ hN⟩`. Establish `h1 : (1 : 𝓞 K ⧸ 𝔭) ≠ 0`.
+
+Rewrite using `[ne_eq, ← map_one (Ideal.Quotient.mk 𝔭), Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `fun h ↦ h𝔭top ((Ideal.eq_top_iff_one _).2 h)`. Establish `htop : AddSubgroup.zmultiples (1 : 𝓞 K ⧸ 𝔭) = ⊤`. Break down `AddSubgroup.eq_bot_or_eq_top_of_prime_card (AddSubgroup.zmultiples (1 : 𝓞 K ⧸ 𝔭)) with h | h` into its components or cases. It suffices to derive a contradiction.
+
+Apply `h1` to reduce the goal to its premises. Establish `: (1 : 𝓞 K ⧸ 𝔭) ∈ AddSubgroup.zmultiples (1 : 𝓞 K ⧸ 𝔭)` using `AddSubgroup.mem_zmultiples 1`. Rewrite `this` using `[h]`. Conclude with `(AddSubgroup.mem_bot).1 this`. Conclude with `h`.
+
+Establish `hx : Ideal.Quotient.mk 𝔭 x ∈ AddSubgroup.zmultiples (1 : 𝓞 K ⧸ 𝔭)`. Rewrite using `[htop]`. Discharge the goal by the elementary cases of `trivial`. Take `⟨n, hn⟩` from `AddSubgroup.mem_zmultiples_iff.1 hx`. Use `⟨n, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_sub, ← hn, map_intCast, zsmul_one, sub_self]`. Establish `hsub : ∀ x : 𝓞 K, conjRing K x - x ∈ 𝔭`. Introduce `x`. Take `⟨n, hn⟩` from `hres x`. Establish `hc` using `hconj _ hn`.
+
+Rewrite `hc` using `[map_sub, map_intCast]`. Use `𝔭.sub_mem hc hn` as an intermediate fact. Rewrite `this` using `[sub_sub_sub_cancel_right]`. Then use the resulting hypothesis. Establish `hδ : sqrtDiscr K ∈ 𝔭`. Establish `e : sqrtDiscr K = intBasis K 0 * (conjRing K (intBasis K 1) - intBasis K 1) - intBasis K 1 * (conjRing K (intBasis K 0) - intBasis K 0)`.
+
+Rewrite using `[sqrtDiscr]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `𝔭.sub_mem (𝔭.mul_mem_left _ (hsub _)) (𝔭.mul_mem_left _ (hsub _))`. Establish `hnormsq : Ideal.absNorm (Ideal.span {sqrtDiscr K}) ^ 2 = d ^ 2`.
+
+Rewrite using `[← map_pow, Ideal.span_singleton_pow, sqrtDiscr_sq', hdisc, Int.cast_neg, Int.cast_natCast, Ideal.span_singleton_neg, absNorm_span_natCast_quadratic]`. Establish `hnorm : Ideal.absNorm (Ideal.span {sqrtDiscr K}) = d` using `Nat.pow_left_injective two_ne_zero hnormsq`. Establish `hmax : (Ideal.span {sqrtDiscr K}).IsMaximal` using `(Ideal.isPrime_of_irreducible_absNorm (hnorm ▸ hd)).isMaximal (by rw [ne_eq, Ideal.span_singleton_eq_bot]; exact sqrtDiscr_ne_zero K)`. Conclude with `(hmax.eq_of_le h𝔭top ((Ideal.span_singleton_le_iff_mem _).2 hδ)).symm`.
+-/
 theorem ramified_eq_span_sqrtDiscr {d : ℕ} (hd : d.Prime) (hdisc : discr K = -(d : ℤ))
     (𝔭 : Ideal (𝓞 K)) [h𝔭 : 𝔭.IsPrime] (hN : (Ideal.absNorm 𝔭).Prime)
     (h2 : 𝔭 ^ 2 = Ideal.span {((Ideal.absNorm 𝔭 : ℕ) : 𝓞 K)}) :
@@ -83,6 +111,19 @@ theorem ramified_eq_span_sqrtDiscr {d : ℕ} (hd : d.Prime) (hdisc : discr K = -
       (by rw [ne_eq, Ideal.span_singleton_eq_bot]; exact sqrtDiscr_ne_zero K)
   exact (hmax.eq_of_le h𝔭top ((Ideal.span_singleton_le_iff_mem _).2 hδ)).symm
 
+/- English proof (translation)
+Establish `: 𝔭.IsMaximal` using `h𝔭.isMaximal h0`. Take `⟨p, k, hk, hpmem, hpp, hNk⟩` from `Ideal.exists_prime_and_absNorm_eq_pow 𝔭`. Establish `hle : Ideal.span {(p : 𝓞 K)} ≤ 𝔭` using `(Ideal.span_singleton_le_iff_mem _).2 hpmem`. Establish `hdvdN : p ^ k ∣ p ^ 2`. Rewrite using `[← hNk, ← absNorm_span_natCast_quadratic (K := K)]`.
+
+Conclude with `Ideal.absNorm_dvd_absNorm_of_le hle`. Establish `hk2 : k ≤ 2` using `(Nat.pow_dvd_pow_iff_le_right hpp.one_lt).1 hdvdN`. Take `⟨𝔮, h𝔮⟩ : 𝔭 ∣ Ideal.span {(p : 𝓞 K)}` from `Ideal.dvd_iff_le.2 hle`. Establish `hN𝔮 : Ideal.absNorm 𝔭 * Ideal.absNorm 𝔮 = p ^ 2`. Rewrite using `[← map_mul, ← h𝔮, absNorm_span_natCast_quadratic]`.
+
+Establish `hp0 : 0 < p` using `hpp.pos`. Use `interval_cases k`. Rewrite `hN𝔮` using `[hNk, pow_one, sq]`. Establish `hq : Ideal.absNorm 𝔮 = p` using `Nat.eq_of_mul_eq_mul_left hp0 hN𝔮`. Establish `h𝔮p : 𝔮.IsPrime` using `Ideal.isPrime_of_irreducible_absNorm (hq ▸ hpp)`.
+
+Distinguish the cases in `he : 𝔮 = 𝔭`. Use `left`. Use `⟨sqrtDiscr K, ramified_eq_span_sqrtDiscr hd hdisc 𝔭 (by rw [hNk, pow_one]; exact hpp) ?_⟩` and prove the remaining obligations. Rewrite using `[hNk, pow_one, sq, h𝔮, he]`. Use `right`.
+
+Conclude with `⟨p, hpp, by rw [hNk, pow_one], 𝔮, h𝔮p, hq, h𝔮.symm, he⟩`. Rewrite `hN𝔮` using `[hNk]`. Establish `hq : Ideal.absNorm 𝔮 = 1`. Establish `h' : p ^ 2 * Ideal.absNorm 𝔮 = p ^ 2 * 1` using `by rw [mul_one]; exact hN𝔮`. Conclude with `Nat.eq_of_mul_eq_mul_left (pow_pos hp0 2) h'`.
+
+Rewrite `hq` using `[Ideal.absNorm_eq_one_iff]`. Use `left`. Conclude with `⟨p, by rw [h𝔮, hq, Ideal.mul_top]⟩`.
+-/
 theorem prime_cases {d : ℕ} (hd : d.Prime) (hdisc : discr K = -(d : ℤ))
     (𝔭 : Ideal (𝓞 K)) [h𝔭 : 𝔭.IsPrime] (h0 : 𝔭 ≠ ⊥) :
     (∃ a : 𝓞 K, 𝔭 = Ideal.span {a}) ∨

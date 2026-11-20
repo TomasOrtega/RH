@@ -13,8 +13,20 @@ def coprS (g : R) : Submonoid R where
   one_mem' := ⟨isCoprime_one_left, one_ne_zero⟩
   mul_mem' := fun {_ _} ha hb => ⟨IsCoprime.mul_left ha.1 hb.1, mul_ne_zero ha.2 hb.2⟩
 
+/- English proof (translation)
+Introduce `_ hs` and use `mem_nonZeroDivisors_of_ne_zero hs.2`.
+-/
 theorem coprS_le (g : R) : coprS g ≤ R⁰ := fun _ hs => mem_nonZeroDivisors_of_ne_zero hs.2
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hgP`. Establish `hmax : P.IsMaximal` using `hP.isMaximal hP0`. Establish `htop : P ⊔ Ideal.span {g} = ⊤`. Assume the negation of the conclusion as `h`. Establish `e` using `hmax.eq_of_le h le_sup_left`.
+
+Apply `hgP` to reduce the goal to its premises. Rewrite using `[e]`. Conclude with `Ideal.mem_sup_right (Ideal.mem_span_singleton_self g)`. Take `⟨a, ha, c, hc, hac⟩` from `Submodule.mem_sup.1 (htop ▸ Submodule.mem_top : (1 : R) ∈ P ⊔ Ideal.span {g})`. Take `⟨d, rfl⟩` from `Ideal.mem_span_singleton'.1 hc`.
+
+Take `⟨p, hp, hp0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hP0`. Distinguish the cases in `ha0 : a = 0`. Substitute `ha0` using the available equality. Establish `hco : IsCoprime p g` using `⟨0, d, by simpa using hac⟩`. Conclude with `Set.disjoint_left.1 hd ⟨hco, hp0⟩ hp`.
+
+Establish `hco : IsCoprime a g` using `⟨1, d, by rw [one_mul]; exact hac⟩`. Conclude with `Set.disjoint_left.1 hd ⟨hco, ha0⟩ ha`.
+-/
 theorem mem_of_disjoint (g : R) {P : Ideal R} (hP : P.IsPrime) (hP0 : P ≠ ⊥)
     (hd : Disjoint (coprS g : Set R) (P : Set R)) : g ∈ P := by
   by_contra hgP
@@ -35,6 +47,11 @@ theorem mem_of_disjoint (g : R) {P : Ideal R} (hP : P.IsPrime) (hP0 : P ≠ ⊥)
   · have hco : IsCoprime a g := ⟨1, d, by rw [one_mul]; exact hac⟩
     exact Set.disjoint_left.1 hd ⟨hco, ha0⟩ ha
 
+/- English proof (translation)
+Establish `hI : Ideal.span {g} ≠ 0`. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `hg`. Use `((Ideal.finite_factors hI).image (fun v => v.asIdeal)).insert ⊥ |>.subset ?_` and prove the remaining obligations. Introduce and unpack `P ⟨hP, hd⟩`.
+
+Distinguish the cases in `hP0 : P = ⊥`. Conclude with `Or.inl hP0`. Use `Or.inr ⟨⟨P, hP, hP0⟩, ?_, rfl⟩ show P ∣ Ideal.span {g}` and prove the remaining obligations. Rewrite using `[Ideal.dvd_iff_le, Ideal.span_le, Set.singleton_subset_iff]`. Conclude with `mem_of_disjoint g hP hP0 hd`.
+-/
 theorem primes_finite (g : R) (hg : g ≠ 0) :
     {P : Ideal R | P.IsPrime ∧ Disjoint (coprS g : Set R) (P : Set R)}.Finite := by
   have hI : Ideal.span {g} ≠ 0 := by
@@ -50,6 +67,53 @@ theorem primes_finite (g : R) (hg : g ≠ 0) :
 
 variable {K : Type*} [Field K] [Algebra R K] [IsFractionRing R K]
 
+/- English proof (translation)
+Use `set S := coprS g with hSdef`. Set `A` to `Localization.subalgebra.ofField K S (coprS_le g)`. Establish `: IsDedekindDomain A` using `IsLocalization.isDedekindDomain R (coprS_le g) A`. Establish `: IsFractionRing A K` using `IsFractionRing.isFractionRing_of_isDomain_of_isLocalization S A K`. Establish `: IsPrincipalIdealRing A`.
+
+Use `IsPrincipalIdealRing.of_finite_primes ?_` and prove the remaining obligations. Use `((primes_finite g hg).preimage (IsLocalization.orderEmbedding S A).injective.injOn).subset ?_` and prove the remaining obligations. Introduce `J hJ`. Conclude with `(IsLocalization.isPrime_iff_isPrime_disjoint S A J).1 hJ`. Set `M : Submodule A (Fin n → K)` to `Submodule.span A (L : Set (Fin n → K))`.
+
+Establish `: Module.Finite A M`. Take `⟨s, hs⟩` from `hL`. Establish `e : M = Submodule.span A (s : Set (Fin n → K))` using `by show Submodule.span A (L : Set (Fin n → K)) = _`. Rewrite using `[← hs, Submodule.span_span_of_tower]`. Rewrite using `[Module.Finite.iff_fg, e]`.
+
+Conclude with `⟨s, rfl⟩`. Establish `: Module.IsTorsionFree A M`. Use `⟨fun r hr x y hxy => Subtype.ext ?_⟩` and prove the remaining obligations. Establish `hr0 : (r : K) ≠ 0`. Introduce `h`.
+
+Conclude with `hr.ne_zero (Subtype.ext (by simpa using h))`. Establish `h` using `congrArg (fun z : M => (z : Fin n → K)) hxy`. Simplify using `only [Submodule.coe_smul, Subalgebra.smul_def] at h`. Conclude with `smul_right_injective _ hr0 h`. Establish `: Module.Free A M` using `Module.free_of_finite_type_torsion_free'`.
+
+Set `ι` to `Module.Free.ChooseBasisIndex A M`. Set `b : Module.Basis ι A M` to `Module.Free.chooseBasis A M`. Establish `hcard : Fintype.card ι ≤ n`. Establish `hli : LinearIndependent A (fun i => (b i : Fin n → K))` using `b.linearIndependent.map' M.subtype (Submodule.ker_subtype M)`. Establish `hK` using `(LinearIndependent.iff_fractionRing A K).1 hli`.
+
+Simplify using `using hK.fintype_card_le_finrank`. Establish `hden : ∀ v ∈ M, ∃ s ∈ S, algebraMap R K s • v ∈ L`. Introduce `v hv`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx => exact ⟨1, S.one_mem, by simpa using hx⟩`.
+
+Consider the case `zero => exact ⟨1, S.one_mem, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨s, hs, hsx⟩` from `hx`. Take `⟨t, ht, hty⟩` from `hy`. Use `⟨s * t, S.mul_mem hs ht, ?_⟩` and prove the remaining obligations.
+
+Establish `e : algebraMap R K (s * t) • (x + y) = t • (algebraMap R K s • x) + s • (algebraMap R K t • y)`. Rewrite using `[smul_add, ← algebraMap_smul K t (algebraMap R K s • x), ← algebraMap_smul K s (algebraMap R K t • y), smul_smul, smul_smul, ← map_mul, ← map_mul, mul_comm t s]`. Rewrite using `[e]`. Conclude with `L.add_mem (L.smul_mem t hsx) (L.smul_mem s hty)`. Consider the case `smul a x _ hx`.
+
+Take `⟨s, hs, hsx⟩` from `hx`. Take `⟨⟨r, t⟩, hrt⟩` from `IsLocalization.mk'_surjective S a`. Use `⟨t * s, S.mul_mem t.2 hs, ?_⟩` and prove the remaining obligations. Establish `ha : (a : K) * algebraMap R K t = algebraMap R K r`. Rewrite using `[← hrt]`.
+
+Establish `h2 : ((IsLocalization.mk' A r t * algebraMap R A t : A) : K) = ((algebraMap R A r : A) : K)` using `congrArg Subtype.val (IsLocalization.mk'_spec A r t)`. Rewrite `h2` using `[Subalgebra.coe_mul, Subalgebra.coe_algebraMap, Subalgebra.coe_algebraMap]`. Conclude with `h2`. Establish `e : algebraMap R K (t * s) • (a • x) = r • (algebraMap R K s • x)`. Rewrite using `[Subalgebra.smul_def, smul_smul, ← algebraMap_smul K r, smul_smul, map_mul, ← ha]`.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `L.smul_mem r hsx`. Use `choose sd hsd hsdL using fun i => hden (b i : Fin n → K) (b i).2`.
+
+Use `set s : R := ∏ i, sd i with hs`. Establish `hsS : s ∈ S` using `S.prod_mem fun i _ => hsd i`. Set `ℓ : ι → (Fin n → K)` to `fun i => algebraMap R K s • (b i : Fin n → K)`. Establish `hℓ : ∀ i, ℓ i ∈ L`. Introduce `i`.
+
+Take `⟨c, hc⟩ : sd i ∣ s` from `Finset.dvd_prod_of_mem _ (Finset.mem_univ i)`. Establish `e : ℓ i = c • (algebraMap R K (sd i) • (b i : Fin n → K))` using `by show algebraMap R K s • (b i : Fin n → K) = _`. Rewrite using `[hc, ← algebraMap_smul K c, smul_smul, ← map_mul, mul_comm c (sd i)]`. Rewrite using `[e]`. Conclude with `L.smul_mem c (hsdL i)`.
+
+Establish `hx : ∀ x ∈ L, ∃ (a : ι → R) (w : Fin n → K), w ∈ L ∧ x = ∑ i, a i • ℓ i + g • w`. Introduce `x hxL`. Establish `hxM : x ∈ M` using `Submodule.subset_span hxL`. Use `set c := b.repr ⟨x, hxM⟩ with hc`. Take `⟨t, ht⟩` from `IsLocalization.exist_integer_multiples S Finset.univ (fun i => c i)`.
+
+Use `choose r hr using fun i => ht i (Finset.mem_univ i)`. Establish `hsum : x = ∑ i, (c i : K) • (b i : Fin n → K)`. Use `congrArg (fun z : M => (z : Fin n → K)) (b.sum_repr ⟨x, hxM⟩)` as an intermediate fact. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul, Subalgebra.smul_def] at this`. Rewrite `this` using `[← hc]`.
+
+Conclude with `this.symm`. Establish `hri : ∀ i, algebraMap R K (r i) = algebraMap R K (t : R) * (c i : K)`. Introduce `i`. Establish `h2 : ((algebraMap R A (r i) : A) : K) = (((t : R) • c i : A) : K)` using `congrArg Subtype.val (hr i)`. Rewrite `h2` using `[Subalgebra.coe_algebraMap, Algebra.smul_def, Subalgebra.coe_mul, Subalgebra.coe_algebraMap]`.
+
+Conclude with `h2`. Use `set u : R := (t : R) * s with hu_def`. Establish `hux : algebraMap R K u • x = ∑ i, r i • ℓ i`. Rewrite using `[hsum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Use `show _ = r i • (algebraMap R K s • (b i : Fin n → K))`. Rewrite using `[← algebraMap_smul K (r i), smul_smul, smul_smul, hri, hu_def, map_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `hu : u ∈ S` using `S.mul_mem t.2 hsS`.
+
+Take `⟨α, β, hαβ⟩` from `hu.1`. Use `⟨fun i => α * r i, β • x, L.smul_mem β hxL, ?_⟩` and prove the remaining obligations. Establish `h1 : algebraMap R K α * algebraMap R K u + algebraMap R K g * algebraMap R K β = 1`. Rewrite using `[← map_mul, ← map_mul, ← map_add, mul_comm g β, hαβ, map_one]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[h1, one_smul]`. Use `_ = α • (algebraMap R K u • x) + g • (β • x) := by`. Rewrite using `[add_smul, ← smul_smul, ← smul_smul, algebraMap_smul K α, algebraMap_smul K g, algebraMap_smul K β]`. Use `_ = _ := by`. Rewrite using `[hux, Finset.smul_sum]`.
+
+Simplify using `only [smul_smul]`. Set `e` to `Fintype.equivFin ι`. Use `⟨Fintype.card ι, fun j => ℓ (e.symm j), hcard, fun j => hℓ _, fun x hxL => ?_⟩` and prove the remaining obligations. Take `⟨a, w, hw, hxw⟩` from `hx x hxL`. Use `⟨fun j => a (e.symm j), w, hw, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hxw]`. Use `congr 1`. Conclude with `(Equiv.sum_comp e.symm (fun i => a i • ℓ i)).symm`.
+-/
 theorem gen_mod (g : R) (hg : g ≠ 0) {n : ℕ} (L : Submodule R (Fin n → K)) (hL : L.FG) :
     ∃ (m : ℕ) (ℓ : Fin m → (Fin n → K)), m ≤ n ∧ (∀ j, ℓ j ∈ L) ∧
       ∀ x ∈ L, ∃ (a : Fin m → R) (w : Fin n → K), w ∈ L ∧ x = ∑ j, a j • ℓ j + g • w := by

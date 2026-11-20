@@ -13,6 +13,25 @@ namespace GlobalTheory.HSAmp
 
 open GlobalTheory.VolBr.NuEq in
 
+/- English proof (translation)
+Introduce `k _ X _ p P a b σ y i j hi hj`. Establish `hi₀ : y ∈ ptsIn p σ (P.L.B.U (pick (P.L.φ σ).isLB y))` using `mem_pick _ y`. Establish `hj₀ : y ∈ ptsIn p σ (P.A.B.U (pick (P.A.φ σ).isLB y))` using `mem_pick _ y`. Establish `hii` using `mem_ptsIn_inf.2 ⟨hi, hi₀⟩`. Establish `hjj` using `mem_ptsIn_inf.2 ⟨hj, hj₀⟩`.
+
+Establish `gi` using `gen_mem (mem_ptsIn.1 hii)`. Establish `gj` using `gen_mem (mem_ptsIn.1 hjj)`. Establish `uG` using `unitAt_fnOf (mem_ptsIn.1 hii) gi (P.L.B.g i (pick (P.L.φ σ).isLB y))`. Establish `uG'` using `unitAt_fnOf (mem_ptsIn.1 hjj) gj (P.A.B.g j (pick (P.A.φ σ).isLB y))`. Establish `uGa` using `unitAt_zpow uG a`.
+
+Establish `uGb` using `unitAt_zpow uG' b`. Establish `eG` using `ratVal_fnOf hii gi (P.L.B.g i (pick (P.L.φ σ).isLB y) : Γ(X, _))`. Establish `eG'` using `ratVal_fnOf hjj gj (P.A.B.g j (pick (P.A.φ σ).isLB y) : Γ(X, _))`. Establish `hL : CxPts.gv p σ P.L.B i (pick (P.L.φ σ).isLB y) y ≠ 0`. Rewrite using `[CxPts.gv, ← eG]`.
+
+Conclude with `ratVal_ne_zero uG`. Establish `hA : CxPts.gv p σ P.A.B j (pick (P.A.φ σ).isLB y) y ≠ 0`. Rewrite using `[CxPts.gv, ← eG']`. Conclude with `ratVal_ne_zero uG'`. Use `set gL := CxPts.gv p σ P.L.B i (pick (P.L.φ σ).isLB y) y with hgL`.
+
+Use `set gA := CxPts.gv p σ P.A.B j (pick (P.A.φ σ).isLB y) y with hgA`. Establish `hG : gL ^ a * gA ^ b ≠ 0` using `mul_ne_zero (zpow_ne_zero _ hL) (zpow_ne_zero _ hA)`. Establish `hGn : (‖gL ^ a * gA ^ b‖ : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 (norm_ne_zero_iff.2 hG)`. Use `⟨(‖gL ^ a * gA ^ b‖ : ℂ) / (gL ^ a * gA ^ b), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[norm_div, Complex.norm_real, norm_norm, div_self (norm_ne_zero_iff.2 hG)]`.
+
+Introduce `f hf`. Establish `hreg : RegAt (under y) (P.loc a b f (pick (P.L.φ σ).isLB y) (pick (P.A.φ σ).isLB y))` using `hf _ _ _ (mem_ptsIn.1 hi₀) (mem_ptsIn.1 hj₀)`. Establish `hloc : P.loc a b f i j = ((fnOf _ gi (P.L.B.g i (pick (P.L.φ σ).isLB y) : Γ(X, _))) ^ a * (fnOf _ gj (P.A.B.g j (pick (P.A.φ σ).isLB y) : Γ(X, _))) ^ b) * P.loc a b f (pick (P.L.φ σ).isLB y) (pick (P.A.φ σ).isLB y)`. Simplify using `only [Pair.loc]`. Rewrite using `[P.hr i _ gi, P.hr' j _ gj, mul_zpow, mul_zpow]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hrv : ratVal (P.loc a b f i j) y = gL ^ a * gA ^ b * ratVal (P.loc a b f (pick (P.L.φ σ).isLB y) (pick (P.A.φ σ).isLB y)) y`. Rewrite using `[hloc, ratVal_mul (uGa.mul uGb).regAt hreg, ratVal_mul uGa.regAt uGb.regAt, ratVal_zpow' uG, ratVal_zpow' uG', eG, eG']`. Both sides reduce to the same expression. Establish `c0 : 0 < ‖gL‖` using `norm_pos_iff.2 hL`.
+
+Establish `c0' : 0 < ‖gA‖` using `norm_pos_iff.2 hA`. Establish `hexp : Real.exp (-(a * (P.L.φ σ).φ i y + b * (P.A.φ σ).φ j y) / 2) = ‖gL ^ a * gA ^ b‖⁻¹ * Real.exp (-(a * (P.L.φ σ).φ (pick (P.L.φ σ).isLB y) y + b * (P.A.φ σ).φ (pick (P.A.φ σ).isLB y) y) / 2)`. Rewrite using `[(P.L.φ σ).trans i _ y hi hi₀, (P.A.φ σ).trans j _ y hj hj₀, norm_mul, norm_zpow, norm_zpow, ← Real.rpow_intCast, ← Real.rpow_intCast, Real.rpow_def_of_pos c0, Real.rpow_def_of_pos c0', Real.log_pow, Real.log_pow, ← hgL, ← hgA, ← Real.exp_add, ← Real.exp_neg, ← Real.exp_add]`. Use `congr 1`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[val, hrv, hexp]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem val_frame : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (P : Pair p), ∀ (a b : ℤ) (σ : k →+* ℂ) (y : CxPts p σ) i j, y ∈ ptsIn p σ (P.L.B.U i) → y ∈ ptsIn p σ (P.A.B.U j) → ∃ θ : ℂ, ‖θ‖ = 1 ∧ ∀ f ∈ P.H a b, val P a b σ y f = θ * (ratVal (P.loc a b f i j) y * (Real.exp (-(a * (P.L.φ σ).φ i y + b * (P.A.φ σ).φ j y) / 2) : ℝ)) := by
   intro k _ X _ p P a b σ y i j hi hj
   have hi₀ : y ∈ ptsIn p σ (P.L.B.U (pick (P.L.φ σ).isLB y)) := mem_pick _ y

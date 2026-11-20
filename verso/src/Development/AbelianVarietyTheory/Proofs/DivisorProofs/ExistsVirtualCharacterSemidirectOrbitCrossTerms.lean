@@ -12,6 +12,11 @@ variable {G Γ : Type} [Group G] [Group Γ] [Fintype Γ]
 def crossTerm (φ : Γ →* MulAut G) (a b : G → ℂ) (S : Finset Γ) (g : G) : ℂ :=
   ∏ t : Γ, if t ∈ S then a (φ t⁻¹ g) else b (φ t⁻¹ g)
 
+/- English proof (translation)
+Unfold `crossTerm`. Use `Fintype.prod_equiv (Equiv.mulLeft u) _ _ fun t => ?_` and prove the remaining obligations. Establish `hm : u * t ∈ u • S ↔ t ∈ S` using `by rw [← smul_eq_mul]; exact Finset.smul_mem_smul_finset_iff u`. Establish `hφ : ∀ x : G, φ (u * t)⁻¹ x = φ t⁻¹ (φ u⁻¹ x)` using `fun x => by`. Rewrite using `[mul_inv_rev, map_mul, MulAut.mul_apply]`.
+
+Simplify using `only [Equiv.coe_mulLeft, hm, hφ]`.
+-/
 theorem crossTerm_shift (φ : Γ →* MulAut G) (a b : G → ℂ) (S : Finset Γ) (u : Γ) (g : G) :
     crossTerm φ a b S (φ u⁻¹ g) = crossTerm φ a b (u • S) g := by
   unfold crossTerm
@@ -21,9 +26,19 @@ theorem crossTerm_shift (φ : Γ →* MulAut G) (a b : G → ℂ) (S : Finset Γ
     rw [mul_inv_rev, map_mul, MulAut.mul_apply]
   simp only [Equiv.coe_mulLeft, hm, hφ]
 
+/- English proof (translation)
+The claim follows from `Fintype.prod_equiv (Equiv.inv Γ) _ _ fun t => by simp`.
+-/
 theorem prod_inv_reindex (f : Γ → ℂ) : ∏ t : Γ, f t = ∏ t : Γ, f t⁻¹ :=
   Fintype.prod_equiv (Equiv.inv Γ) _ _ fun t => by simp
 
+/- English proof (translation)
+Rewrite using `[prod_inv_reindex, Finset.prod_add, Finset.powerset_univ]`. Use `Finset.sum_congr rfl fun S _ => ?_` and prove the remaining obligations. Unfold `crossTerm`. Rewrite using `[Finset.prod_ite]`. Use `congr 1`.
+
+Use `congr 1`. Use extensionality with `t`. Simplify using the standard rewrite rules. Use `congr 1`. Use extensionality with `t`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem prod_add_eq_sum (φ : Γ →* MulAut G) (a b : G → ℂ) (g : G) :
     ∏ t : Γ, (a (φ t g) + b (φ t g)) = ∑ S : Finset Γ, crossTerm φ a b S g := by
   rw [prod_inv_reindex, Finset.prod_add, Finset.powerset_univ]
@@ -34,18 +49,33 @@ theorem prod_add_eq_sum (φ : Γ →* MulAut G) (a b : G → ℂ) (g : G) :
   · congr 1; ext t; simp
   · congr 1; ext t; simp
 
+/- English proof (translation)
+Unfold `crossTerm`. Rewrite using `[prod_inv_reindex (fun t => a (φ t g))]`. Simplify using the standard rewrite rules.
+-/
 theorem crossTerm_univ (φ : Γ →* MulAut G) (a b : G → ℂ) (g : G) :
     crossTerm φ a b Finset.univ g = ∏ t : Γ, a (φ t g) := by
   unfold crossTerm
   rw [prod_inv_reindex (fun t => a (φ t g))]
   simp
 
+/- English proof (translation)
+Unfold `crossTerm`. Rewrite using `[prod_inv_reindex (fun t => b (φ t g))]`. Simplify using the standard rewrite rules.
+-/
 theorem crossTerm_empty (φ : Γ →* MulAut G) (a b : G → ℂ) (g : G) :
     crossTerm φ a b ∅ g = ∏ t : Γ, b (φ t g) := by
   unfold crossTerm
   rw [prod_inv_reindex (fun t => b (φ t g))]
   simp
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Use `haveI : Fact (Nat.card Γ).Prime := ⟨hp⟩`. Establish `htop : Subgroup.zpowers w = ⊤` using `zpowers_eq_top_of_prime_card rfl hne`. Establish `hst : MulAction.stabilizer Γ S = ⊤`. Rewrite using `[eq_top_iff, ← htop, Subgroup.zpowers_le]`.
+
+Conclude with `hw`. Take `⟨t, ht⟩` from `Finset.nonempty_iff_ne_empty.2 h0`. Apply `h1` to reduce the goal to its premises. Use extensionality with `v`. Simplify using `only [Finset.mem_univ, iff_true]`.
+
+Establish `hv : (v * t⁻¹) • S = S`. Establish `: v * t⁻¹ ∈ MulAction.stabilizer Γ S` using `by rw [hst]; trivial`. Conclude with `this`. Rewrite using `[← hv]`. Use `Finset.smul_mem_smul_finset (a := v * t⁻¹) ht` as an intermediate fact.
+
+Rewrite `this` using `[smul_eq_mul, inv_mul_cancel_right]`. Then use the resulting hypothesis.
+-/
 theorem eq_one_of_smul_eq (hp : (Nat.card Γ).Prime) {S : Finset Γ} {w : Γ} (hw : w • S = S)
     (h0 : S ≠ ∅) (h1 : S ≠ Finset.univ) : w = 1 := by
   by_contra hne
@@ -64,6 +94,11 @@ theorem eq_one_of_smul_eq (hp : (Nat.card Γ).Prime) {S : Finset Γ} {w : Γ} (h
   have := Finset.smul_mem_smul_finset (a := v * t⁻¹) ht
   rwa [smul_eq_mul, inv_mul_cancel_right] at this
 
+/- English proof (translation)
+Establish `h2 : u • S = Finset.univ ↔ S = Finset.univ`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `congrArg (fun T : Finset Γ => u⁻¹ • T) h` as an intermediate fact. Simplify `this` using `[inv_smul_smul, Finset.smul_finset_univ]`.
+
+Introduce `h`. Rewrite using `[h, Finset.smul_finset_univ]`. Rewrite using `[Ne, Ne, Finset.smul_finset_eq_empty, h2]`.
+-/
 theorem smul_ne_empty_univ {S : Finset Γ} (u : Γ) :
     (u • S ≠ ∅ ∧ u • S ≠ Finset.univ) ↔ (S ≠ ∅ ∧ S ≠ Finset.univ) := by
   have h2 : u • S = Finset.univ ↔ S = Finset.univ := by
@@ -79,6 +114,17 @@ end GlobalTheory.CrossOrbit
 namespace GlobalTheory.CrossOrbit
 variable {G Γ : Type} [Group G] [Group Γ] [Fintype Γ]
 
+/- English proof (translation)
+Rewrite using `[← (MulAction.selfEquivSigmaOrbits Γ (Finset Γ)).symm.sum_comp, Fintype.sum_sigma]`. Establish `key : ∀ q (y : MulAction.orbit Γ (Quotient.out q)), (MulAction.selfEquivSigmaOrbits Γ (Finset Γ)).symm ⟨q, y⟩ = (y : Finset Γ)` using `fun q y => rfl`. Simplify using `only [key]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Use `split_ifs with hP`.
+
+Use `symm`. Use `Fintype.sum_bijective (fun u : Γ => (⟨u • q.out, MulAction.mem_orbit _ _⟩ : MulAction.orbit Γ q.out)) ⟨?_, ?_⟩ _ _ ?_` and prove the remaining obligations. Introduce `u v huv`. Establish `h : u • q.out = v • q.out` using `congrArg Subtype.val huv`. Establish `: (v⁻¹ * u) • q.out = q.out` using `by rw [mul_smul, h, inv_smul_smul]`.
+
+Use `eq_one_of_smul_eq hp this hP.1 hP.2` as an intermediate fact. Rewrite `this` using `[inv_mul_eq_one]`. Conclude with `this.symm`. Introduce and unpack `⟨x, hx⟩`. Take `⟨u, rfl⟩` from `MulAction.mem_orbit_iff.1 hx`.
+
+Conclude with `⟨u, rfl⟩`. Introduce `u`. Rewrite using `[if_pos ((smul_ne_empty_univ u).2 hP)]`. Use `Finset.sum_eq_zero fun y _ => ?_` and prove the remaining obligations. Take `⟨y, hy⟩` from `y`.
+
+Take `⟨u, rfl⟩` from `MulAction.mem_orbit_iff.1 hy`. Rewrite using `[if_neg]`. Rewrite using `[smul_ne_empty_univ u]` and apply the resulting hypothesis.
+-/
 theorem sum_orbits (hp : (Nat.card Γ).Prime) (F : Finset Γ → ℂ) :
     ∑ S : Finset Γ, (if S ≠ ∅ ∧ S ≠ Finset.univ then F S else 0) =
       ∑ q : MulAction.orbitRel.Quotient Γ (Finset Γ),
@@ -114,18 +160,30 @@ variable {G Γ : Type} [Group G] [Group Γ]
 def sdEquiv (φ : Γ →* MulAut G) : G ⋊[φ] Γ ≃ G × Γ :=
   ⟨fun x => (x.left, x.right), fun p => ⟨p.1, p.2⟩, fun _ => rfl, fun _ => rfl⟩
 
+/- English proof (translation)
+Rewrite using `[range_inl_eq_ker_rightHom, MonoidHom.mem_ker, rightHom_eq_right]`.
+-/
 theorem mem_range_inl_iff (φ : Γ →* MulAut G) (y : G ⋊[φ] Γ) :
     y ∈ (inl : G →* G ⋊[φ] Γ).range ↔ y.right = 1 := by
   rw [range_inl_eq_ker_rightHom, MonoidHom.mem_ker, rightHom_eq_right]
 
+/- English proof (translation)
+Simplify using `[map_mul, map_inv, mul_assoc]`.
+-/
 theorem conj_inl_left (φ : Γ →* MulAut G) (x : G ⋊[φ] Γ) (g : G) :
     (x⁻¹ * inl g * x).left = (φ x.right⁻¹ x.left)⁻¹ * φ x.right⁻¹ g * φ x.right⁻¹ x.left := by
   simp [map_mul, map_inv, mul_assoc]
 
+/- English proof (translation)
+Simplify using the standard rewrite rules.
+-/
 theorem conj_inl_right (φ : Γ →* MulAut G) (x : G ⋊[φ] Γ) (g : G) :
     (x⁻¹ * inl g * x).right = 1 := by
   simp
 
+/- English proof (translation)
+Simplify using the standard rewrite rules.
+-/
 theorem conj_off_right (φ : Γ →* MulAut G) (x : G ⋊[φ] Γ) (δ : G) (s : Γ) :
     (x⁻¹ * (inl δ * inr s) * x).right = x.right⁻¹ * s * x.right := by
   simp
@@ -138,6 +196,9 @@ variable {G Γ : Type} [Group G] [Group Γ]
 def inlEquiv (φ : Γ →* MulAut G) : G ≃* (inl : G →* G ⋊[φ] Γ).range :=
   MonoidHom.ofInjective inl_injective
 
+/- English proof (translation)
+Rewrite using `[MulEquiv.symm_apply_eq]`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `h` using `(mem_range_inl_iff φ y.1).1 y.2`. Use `show y.1 = inl y.1.left`. Conclude with `SemidirectProduct.ext (by simp) (by simp [h])`.
+-/
 theorem inlEquiv_symm_apply (φ : Γ →* MulAut G) (y : (inl : G →* G ⋊[φ] Γ).range) :
     (inlEquiv φ).symm y = (y : G ⋊[φ] Γ).left := by
   rw [MulEquiv.symm_apply_eq]
@@ -146,6 +207,13 @@ theorem inlEquiv_symm_apply (φ : Γ →* MulAut G) (y : (inl : G →* G ⋊[φ]
   show y.1 = inl y.1.left
   exact SemidirectProduct.ext (by simp) (by simp [h])
 
+/- English proof (translation)
+Unfold `ind`. Establish `: ∀ x : G ⋊[φ] Γ, ext0 (inl : G →* G ⋊[φ] Γ).range ψ (x⁻¹ * (inl δ * inr s) * x) = 0`. Introduce `x`. Unfold `ext0`. Rewrite using `[dif_neg]`.
+
+Rewrite using `[mem_range_inl_iff, conj_off_right]`. Introduce `h`. Apply `hs` to reduce the goal to its premises. Use `congrArg (fun y => x.right * y * x.right⁻¹) h` as an intermediate fact. Simplify `this` using `[mul_assoc]`.
+
+Simplify using `[this]`.
+-/
 theorem ind_off (φ : Γ →* MulAut G) (ψ : (inl : G →* G ⋊[φ] Γ).range → ℂ) (δ : G) {s : Γ} (hs : s ≠ 1) :
     ind (inl : G →* G ⋊[φ] Γ).range ψ (inl δ * inr s) = 0 := by
   unfold ind
@@ -160,6 +228,17 @@ theorem ind_off (φ : Γ →* MulAut G) (ψ : (inl : G →* G ⋊[φ] Γ).range 
     simpa [mul_assoc] using this
   simp [this]
 
+/- English proof (translation)
+Use `letI : Fintype (G ⋊[φ] Γ) := Fintype.ofEquiv _ (sdEquiv φ).symm`. Unfold `ind`. Establish `hterm : ∀ x : G ⋊[φ] Γ, ext0 (inl : G →* G ⋊[φ] Γ).range (fun n => c ((inlEquiv φ).symm n)) (x⁻¹ * inl g * x) = c (φ x.right⁻¹ g)`. Introduce `x`. Unfold `ext0`.
+
+Rewrite using `[dif_pos ((mem_range_inl_iff φ _).2 (conj_inl_right φ x g))]`. Simplify using `only`. Rewrite using `[inlEquiv_symm_apply]`. Use `show c ((x⁻¹ * inl g * x).left) = _`. Rewrite using `[conj_inl_left]`.
+
+Conclude with `hc _ _`. Simplify using `only [hterm]`. Rewrite using `[finsum_eq_sum_of_fintype, ← (sdEquiv φ).symm.sum_comp, Fintype.sum_prod_type]`. Establish `hr : ∀ (h : G) (u : Γ), ((sdEquiv φ).symm (h, u)).right = u` using `fun _ _ => rfl`. Simplify using `only [hr]`.
+
+Rewrite using `[Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`. Establish `hN : Nat.card (inl : G →* G ⋊[φ] Γ).range = Fintype.card G`. Rewrite using `[← Nat.card_eq_fintype_card]`. Conclude with `(Nat.card_congr (inlEquiv φ).toEquiv).symm`. Rewrite using `[hN]`.
+
+Establish `: (Fintype.card G : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 Fintype.card_ne_zero`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem ind_inl (φ : Γ →* MulAut G) [Fintype G] [Fintype Γ] (c : G → ℂ)
     (hc : ∀ g x : G, c (x⁻¹ * g * x) = c g) (g : G) :
     ind (inl : G →* G ⋊[φ] Γ).range (fun n => c ((inlEquiv φ).symm n)) (inl g) =
@@ -191,6 +270,13 @@ end GlobalTheory.CrossOrbit
 
 namespace GlobalTheory.CrossOrbit
 
+/- English proof (translation)
+Establish `hV` using `virt_mul_comap_conj_ind_linear G`. Establish `heq : crossTerm φ a b S = ∏ t : Γ, (fun g => if t ∈ S then a (φ t⁻¹ g) else b (φ t⁻¹ g))`. Use function extensionality and compare the values at `g`. Rewrite using `[Finset.prod_apply]`. Both sides reduce to the same expression.
+
+Rewrite using `[heq]`. Use `Finset.prod_induction _ (· ∈ Virt ℂ ℂ G) (fun x y hx hy => hV.1 x hx y hy) ?_ ?_` and prove the remaining obligations. Conclude with `isChar_mem_virt_complex (isChar_one ℂ ℂ G)`. Introduce `t _`. Distinguish the cases in `ht : t ∈ S`.
+
+Simplify using `only [ht, if_true]`. Conclude with `hV.2.1 a ha G (φ t⁻¹).toMonoidHom`. Simplify using `only [ht, if_false]`. Conclude with `hV.2.1 b hb G (φ t⁻¹).toMonoidHom`.
+-/
 theorem virt_crossTerm {G Γ : Type} [Group G] [Group Γ] [Fintype Γ] [Finite G] (φ : Γ →* MulAut G)
     {a b : G → ℂ} (ha : a ∈ Virt ℂ ℂ G) (hb : b ∈ Virt ℂ ℂ G) (S : Finset Γ) :
     crossTerm φ a b S ∈ Virt ℂ ℂ G := by
@@ -205,6 +291,23 @@ theorem virt_crossTerm {G Γ : Type} [Group G] [Group Γ] [Fintype Γ] [Finite G
     · simp only [ht, if_true]; exact hV.2.1 a ha G (φ t⁻¹).toMonoidHom
     · simp only [ht, if_false]; exact hV.2.1 b hb G (φ t⁻¹).toMonoidHom
 
+/- English proof (translation)
+Introduce `G Γ _ _ _ _ φ s hp hs a b ha hb`. Use `letI : Fintype G := Fintype.ofFinite G`. Use `haveI : Finite (G ⋊[φ] Γ) := Finite.of_equiv _ (sdEquiv φ).symm`. Establish `hVG` using `virt_mul_comap_conj_ind_linear G`. Establish `hVS` using `virt_mul_comap_conj_ind_linear (G ⋊[φ] Γ)`.
+
+Use `⟨∑ q : MulAction.orbitRel.Quotient Γ (Finset Γ), if q.out ≠ ∅ ∧ q.out ≠ Finset.univ then ind (inl : G →* G ⋊[φ] Γ).range (fun n => crossTerm φ a b q.out ((inlEquiv φ).symm n)) else 0, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `AddSubgroup.sum_mem _ fun q _ => ?_ split_ifs` and prove the remaining obligations. Conclude with `hVS.2.2.2.1 _ _ (hVG.2.1 _ (virt_crossTerm φ ha hb _) _ (inlEquiv φ).symm.toMonoidHom)`. Conclude with `zero_mem _`. Introduce `g`.
+
+Rewrite using `[Finset.sum_apply]`. Establish `hq : ∀ q : MulAction.orbitRel.Quotient Γ (Finset Γ), (if q.out ≠ ∅ ∧ q.out ≠ Finset.univ then ind (inl : G →* G ⋊[φ] Γ).range (fun n => crossTerm φ a b q.out ((inlEquiv φ).symm n)) else 0) (inl g) = if q.out ≠ ∅ ∧ q.out ≠ Finset.univ then ∑ u : Γ, crossTerm φ a b (u • q.out) g el …`. Introduce `q`. Use `split_ifs`. Rewrite using `[ind_inl φ _ (hVG.2.2.1 _ (virt_crossTerm φ ha hb _))]`.
+
+Conclude with `Finset.sum_congr rfl fun u _ => crossTerm_shift φ a b _ u g`. Both sides reduce to the same expression. Simplify using `only [hq]`. Rewrite using `[← sum_orbits hp (fun S => crossTerm φ a b S g), prod_add_eq_sum, ← crossTerm_univ φ a b g, ← crossTerm_empty φ a b g, eq_sub_iff_add_eq, eq_sub_iff_add_eq]`. Establish `hne : (∅ : Finset Γ) ≠ Finset.univ` using `Finset.univ_nonempty.ne_empty.symm`.
+
+Establish `hsplit : ∀ S : Finset Γ, crossTerm φ a b S g = (if S ≠ ∅ ∧ S ≠ Finset.univ then crossTerm φ a b S g else 0) + (if S = ∅ then crossTerm φ a b S g else 0) + (if S = Finset.univ then crossTerm φ a b S g else 0)`. Introduce `S`. Distinguish the cases in `h1 : S = ∅`. Substitute `h1` using the available equality. Simplify using `[hne]`.
+
+Distinguish the cases in `h2 : S = Finset.univ`. Substitute `h2` using the available equality. Simplify using `[hne.symm]`. Simplify using `[h1, h2]`. Use `conv_rhs => rw [Finset.sum_congr rfl fun S _ => hsplit S]`.
+
+Rewrite using `[Finset.sum_add_distrib, Finset.sum_add_distrib, Finset.sum_ite_eq', Finset.sum_ite_eq']`. Simplify using the standard rewrite rules. Introduce `δ`. Rewrite using `[Finset.sum_apply]`. Use `Finset.sum_eq_zero fun q _ => ?_` and prove the remaining obligations.
+
+Use `split_ifs`. Conclude with `ind_off φ _ δ hs`. Both sides reduce to the same expression.
+-/
 theorem cross_terms_induced : ∀ (G Γ : Type) [Group G] [Finite G] [Group Γ] [Fintype Γ] (φ : Γ →* MulAut G) (s : Γ), (Nat.card Γ).Prime → s ≠ 1 → ∀ a b : G → ℂ, a ∈ Virt ℂ ℂ G → b ∈ Virt ℂ ℂ G → ∃ Z ∈ Virt ℂ ℂ (G ⋊[φ] Γ), (∀ g, Z (inl g) = ∏ t : Γ, (a (φ t g) + b (φ t g)) - ∏ t : Γ, a (φ t g) - ∏ t : Γ, b (φ t g)) ∧ ∀ δ, Z (inl δ * inr s) = 0 := by
   intro G Γ _ _ _ _ φ s hp hs a b ha hb
   letI : Fintype G := Fintype.ofFinite G

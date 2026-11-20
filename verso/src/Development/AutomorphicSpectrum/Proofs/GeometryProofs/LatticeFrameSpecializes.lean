@@ -10,6 +10,35 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.Ar.LieFrameIndep
 
+/- English proof (translation)
+Substitute `hP` using the available equality. Establish `hbm : ∀ k, b k ∈ Submodule.span A (Set.range b)` using `fun k => Submodule.subset_span ⟨k, rfl⟩`. Set `v : Fin g → EC` to `fun k => ev ⟨b k, hbm k⟩`. Establish `hcomb : ∀ {J : Type} [Fintype J] (f : J → Fin g) (t : J → A) (he : ∑ i, t i • b (f i) ∈ Submodule.span A (Set.range b)), ev ⟨∑ i, t i • b (f i), he⟩ = ∑ i, ρ (t i) • v (f i)`. Introduce `J _ f t he`.
+
+Establish `: (⟨∑ i, t i • b (f i), he⟩ : Submodule.span A (Set.range b)) = ∑ i, t i • (⟨b (f i), hbm _⟩ : Submodule.span A (Set.range b))`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using the standard rewrite rules. Rewrite using `[this, map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => hsm _ _`.
+
+Establish `hvspan : ⊤ ≤ Submodule.span C (Set.range v)`. Rewrite using `[← hspan]`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨⟨e, he⟩, rfl⟩`. Take `⟨t, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun A).1 he`.
+
+Use `hcomb (fun i => i) t he` as an intermediate fact. Rewrite using `[this]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Establish `hv : LinearIndependent C v` using `linearIndependent_of_top_le_span_of_card_eq_finrank hvspan (by simp [hfin])`. Establish `hvS : LinearIndependent C (fun k : S => v k)` using `hv.comp _ Subtype.val_injective`.
+
+Establish `himg : b '' S = Set.range (fun k : S => b k)`. Use extensionality with `y`. Simplify using the standard rewrite rules. Rewrite `hL` using `[himg]`. Establish `hcm : ∀ i, c i ∈ Submodule.span A (Set.range fun k : S => b k)` using `fun i => by`.
+
+Rewrite using `[hL]`. Conclude with `Submodule.subset_span ⟨i, rfl⟩`. Establish `hbS : ∀ k : S, b k ∈ Submodule.span A (Set.range c)` using `fun k => by`. Rewrite using `[← hL]`. Conclude with `Submodule.subset_span ⟨k, rfl⟩`.
+
+Use `choose a ha using fun i => (Submodule.mem_span_range_iff_exists_fun A).1 (hcm i)`. Use `choose d hd using fun k => (Submodule.mem_span_range_iff_exists_fun A).1 (hbS k)`. Establish `hdelta : ∀ i j, ∑ k, a i k * d k j = if i = j then 1 else 0`. Introduce `i j`. Establish `hexp : ∑ j, (∑ k, a i k * d k j) • c j = c i` using `by conv_rhs => rw [← ha i]`.
+
+Simplify using `only [← hd, Finset.smul_sum, Finset.sum_smul, mul_smul]`. Conclude with `Finset.sum_comm`. Establish `hz : ∑ j, (((∑ k, a i k * d k j : A) : Ω) - if i = j then 1 else 0) • c j = 0`. Simplify using `only [sub_smul, Finset.sum_sub_distrib, ite_smul, one_smul, zero_smul, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Rewrite using `[sub_eq_zero]`.
+
+Conclude with `hexp`. Use `Fintype.linearIndependent_iff.1 hc _ hz j` as an intermediate fact. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite `this` using `[sub_eq_zero]`. Rewrite using `[this]`.
+
+Apply the tactic sequence `split_ifs <;> simp`. Establish `hwexp : ∀ i, w i = ∑ k : S, ρ (a i k) • v k`. Introduce `i`. Take `⟨he, hev⟩` from `hw i`. Rewrite using `[← hev]`.
+
+Establish `hmem : ∑ k : S, a i k • b k ∈ Submodule.span A (Set.range b)`. Rewrite using `[ha i]`. Conclude with `he`. Rewrite using `[← hcomb (fun k : S => (k : Fin g)) (a i) hmem]`. Use `congr 2`.
+
+Conclude with `(ha i).symm`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `l hl j`. Establish `hk : ∀ k : S, ∑ i, l i * ρ (a i k) = 0`. Use `Fintype.linearIndependent_iff.1 hvS _ ?_` and prove the remaining obligations.
+
+Rewrite using `[← hl]`. Simplify using `only [hwexp, Finset.smul_sum, Finset.sum_smul, mul_smul]`. Conclude with `Finset.sum_comm`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [hdelta]`.
+
+Simplify using `[apply_ite ρ]`. Use `_ = ∑ k : S, (∑ i, l i * ρ (a i k)) * ρ (d k j) := by`. Simplify using `only [map_sum, map_mul, Finset.mul_sum, Finset.sum_mul, _root_.mul_assoc]`. Conclude with `Finset.sum_comm`. Use `_ = 0 := by simp [hk]`.
+-/
 theorem linearIndependent_values {Ω C E EC : Type} [Field Ω] [Field C] [AddCommGroup E] [Module Ω E]
     [AddCommGroup EC] [Module C EC] (A : Subring Ω) (ρ : A →+* C) (P : Submodule A E) (ev : P →+ EC)
     (hsm : ∀ (a : A) (e : P), ev (a • e) = ρ a • ev e) (hspan : Submodule.span C (Set.range ev) = ⊤)
@@ -96,6 +125,17 @@ theorem linearIndependent_values {Ω C E EC : Type} [Field Ω] [Field C] [AddCom
 
 open GlobalTheory.CompanionTheory.Ar.LieVB in
 
+/- English proof (translation)
+Take `⟨R, _, x, hx, F, _, _, MR, n', b', hp⟩` from `exists_chart G (centre z)`. Establish `hgen : genPt ξ ∈ x.opensRange` using `h.mem_open x.opensRange.isOpen hp`. Take `⟨φ, hφ⟩` from `exists_lift x ξ hgen`. Take `⟨a, ha⟩` from `exists_lift x z hp`. Take `⟨_, B, -, -⟩` from `basis_tr φ x ξ hφ MR M b'`.
+
+Take `⟨_, BC, -, -⟩` from `basis_tr a x z ha MR N b'`. Establish `hC : Module.finrank C EC = n'`. Rewrite using `[Module.finrank_eq_card_basis BC, Fintype.card_fin]`. Establish `hΩ : Module.finrank Ω E = n'`. Rewrite using `[Module.finrank_eq_card_basis B, Fintype.card_fin]`.
+
+Use `haveI : Module.Finite Ω E := Module.Finite.of_basis B`. Take `⟨U, hU, b₂, hsp, hfr⟩` from `(lieLat_isVB_of_smooth X Ω ξ G E M hξ inferInstance).1 ⟨centre z, h⟩ (Set.mem_univ _)`. Establish `h₂` using `(hfr ⟨centre z, h⟩ (Set.mem_univ _) hU).2`. Establish `hspan : ⊤ ≤ Submodule.span Ω (Set.range b)`. Rewrite using `[← hsp]`.
+
+Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Establish `hk : b₂ k ∈ Submodule.span (regAt ξ ⟨centre z, h⟩) (Set.range b)`. Rewrite using `[← hb.2, h₂]`. Conclude with `Submodule.subset_span ⟨k, rfl⟩`.
+
+Conclude with `(Submodule.span_le_restrictScalars (regAt ξ ⟨centre z, h⟩) Ω (Set.range b)) hk`. Establish `hg : Module.finrank Ω E = g`. Rewrite using `[Module.finrank_eq_card_basis (Module.Basis.mk hb.1 hspan), Fintype.card_fin]`. Rewrite using `[hC, ← hΩ, hg]`.
+-/
 theorem finrank_eq_of_isFrameAt {X : Scheme.{0}} {G : Over X} [GrpObj G] [IsCommMonObj G] [Smooth G.hom] {Ω : Type}
     [Field Ω] {ξ : Sp Ω ⟶ X} {E : Type} [AddCommGroup E] [Module Ω E] (M : LieModel G ξ E) {C : Type} [Field C]
     {z : Sp C ⟶ X} (h : genPt ξ ⤳ centre z) {EC : Type} [AddCommGroup EC] [Module C EC] (N : LieModel G z EC)
@@ -132,6 +172,11 @@ namespace GlobalTheory.CompanionTheory.Ar
 
 open GlobalTheory.CompanionTheory.Ar.LieFrameIndep in
 
+/- English proof (translation)
+Introduce `X G _ _ _ Ω _ ξ E _ _ M C _ z h EC _ _ N g n b S c L w hξ hb hLb hLc hw`. Take `⟨ev, h1, h2, h3⟩` from `GlobalTheory.T.lie_lattice_eval_at_local_ring X G Ω ξ E M C z h EC N hξ inferInstance`. Set `e : X.presheaf.stalk (centre z) ≃+* regAt ξ ⟨centre z, h⟩` to `RingEquiv.ofBijective (genMap ξ ⟨centre z, h⟩).rangeRestrict ⟨fun s t est => hξ.inj ⟨centre z, h⟩ (congrArg Subtype.val est), RingHom.rangeRestrict_surjective _⟩`. Set `ρ : regAt ξ ⟨centre z, h⟩ →+* C` to `(Scheme.stalkClosedPointTo z).hom.comp (e.symm : regAt ξ ⟨centre z, h⟩ →+* X.presheaf.stalk (centre z))`. Establish `hρ : ∀ a : regAt ξ ⟨centre z, h⟩, ValAt ξ z (a : Ω) (ρ a)` using `fun a => ⟨h, e.symm a, congrArg Subtype.val (e.apply_symm_apply a), rfl⟩`.
+
+Use `linearIndependent_values (regAt ξ ⟨centre z, h⟩) ρ (M.lat ⟨centre z, h⟩) ev (fun a x => h2 a _ x (hρ a)) h3 b hb.2 (finrank_eq_of_isFrameAt M h N b hξ hb) S c hLc.1 ?_ w fun i => (h1 _ _).1 (hw i)` and prove the remaining obligations. Rewrite using `[← hLb, hLc.2]`.
+-/
 theorem values_frame_sublattice_linearIndependent : ∀ (X : Scheme.{0}) (G : Over X) [GrpObj G] [IsCommMonObj G] [Smooth G.hom] (Ω : Type) [Field Ω] (ξ : Sp Ω ⟶ X) (E : Type) [AddCommGroup E] [Module Ω E] (M : LieModel G ξ E) (C : Type) [Field C] (z : Sp C ⟶ X) (h : genPt ξ ⤳ centre z) (EC : Type) [AddCommGroup EC] [Module C EC] (N : LieModel G z EC) (g n : ℕ) (b : Fin g → E) (S : Finset (Fin g)) (c : Fin n → E) (L : Lat ξ E) (w : Fin n → EC), IsCptGen ξ → M.lat.IsFrameAt b ⟨centre z, h⟩ → L ⟨centre z, h⟩ = Submodule.span (regAt ξ ⟨centre z, h⟩) (b '' S) → L.IsFrameAt c ⟨centre z, h⟩ → (∀ i, M.ValAt z (c i) (N.pt (w i))) → LinearIndependent C w := by
   intro X G _ _ _ Ω _ ξ E _ _ M C _ z h EC _ _ N g n b S c L w hξ hb hLb hLc hw
   obtain ⟨ev, h1, h2, h3⟩ := GlobalTheory.T.lie_lattice_eval_at_local_ring X G Ω ξ E M C z h EC N hξ inferInstance

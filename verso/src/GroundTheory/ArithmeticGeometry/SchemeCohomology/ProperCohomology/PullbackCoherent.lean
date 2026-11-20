@@ -11,6 +11,15 @@ universe u
 
 noncomputable section
 
+/- English proof (translation)
+Take `⟨s, hs⟩` from `Module.Finite.fg_top (R := R') (M := M')`. Use `⟨⟨s.image e.symm, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff]`. Introduce `m _`. Establish `key : ∀ x ∈ Submodule.span R' (s : Set M'), e.symm x ∈ Submodule.span R ((s.image e.symm : Finset M) : Set M)`.
+
+Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy => exact Submodule.subset_span (by simp only [Finset.coe_image]; exact ⟨y, hy, rfl⟩)`. Consider the case `zero => simp`. Consider the case `add y z _ _ hy hz => rw [map_add]`.
+
+Conclude with `add_mem hy hz`. Consider the case `smul r' y _ hy`. Take `⟨r, rfl⟩` from `hσ r'`. Establish `: e.symm (σ r • y) = r • e.symm y`. Apply `e.injective` to reduce the goal to its premises.
+
+Rewrite using `[he, AddEquiv.apply_symm_apply, AddEquiv.apply_symm_apply]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ hy`. Simplify using `using key (e m) (hs ▸ Submodule.mem_top)`.
+-/
 lemma finite_of_semilinear {R R' M M' : Type*} [CommRing R] [CommRing R'] [AddCommGroup M]
     [Module R M] [AddCommGroup M'] [Module R' M'] (σ : R →+* R') (hσ : Function.Surjective σ)
     (e : M ≃+ M') (he : ∀ (r : R) (m : M), e (r • m) = σ r • e m) [Module.Finite R' M'] :
@@ -40,6 +49,13 @@ section Affine
 
 variable {T U : Scheme.{u}}
 
+/- English proof (translation)
+Take `⟨φ, hφ⟩ : ∃ φ, Spec.map φ = T.isoSpec.inv ≫ g ≫ U.isoSpec.hom` from `⟨Spec.preimage _, Spec.map_preimage _⟩`. Establish `hg : g = T.isoSpec.hom ≫ Spec.map φ ≫ U.isoSpec.inv` using `by simp [hφ]`. Rewrite using `[hg]`. Set `N₁` to `(Scheme.Modules.pullback U.isoSpec.inv).obj N`. Establish `: N₁.IsQuasicoherent` using `Etale.isQuasicoherent_pullback_of_isIso _ N`.
+
+Establish `: IsIso N₁.fromTildeΓ` using `(isQuasicoherent_iff_isIso_fromTildeΓ N₁).mp inferInstance`. Set `N₂` to `(Scheme.Modules.pullback (Spec.map φ)).obj N₁`. Establish `: N₂.IsQuasicoherent` using `(isQuasicoherent_iff_isIso_fromTildeΓ N₂).mpr (Etale.isIso_fromTildeΓ_pullback φ N₁)`. Establish `: ((Scheme.Modules.pullback T.isoSpec.hom).obj N₂).IsQuasicoherent` using `Etale.isQuasicoherent_pullback_of_isIso _ N₂`. Set `e : (Scheme.Modules.pullback T.isoSpec.hom).obj N₂ ≅ (Scheme.Modules.pullback (T.isoSpec.hom ≫ Spec.map φ ≫ U.isoSpec.inv)).obj N` to `(Scheme.Modules.pullback T.isoSpec.hom).mapIso ((Scheme.Modules.pullbackComp (Spec.map φ) U.isoSpec.inv).app N) ≪≫ (Scheme.Modules.pullbackComp T.isoSpec.hom (Spec.map φ ≫ U.isoSpec.inv)).app N`.
+
+Conclude with `(SheafOfModules.isQuasicoherent T.ringCatSheaf).prop_of_iso e inferInstance`.
+-/
 theorem isQuasicoherent_pullback_of_isAffine (g : T ⟶ U) [IsAffine T] [IsAffine U]
     (N : U.Modules) [N.IsQuasicoherent] : ((Scheme.Modules.pullback g).obj N).IsQuasicoherent := by
   obtain ⟨φ, hφ⟩ : ∃ φ, Spec.map φ = T.isoSpec.inv ≫ g ≫ U.isoSpec.hom :=
@@ -61,6 +77,17 @@ theorem isQuasicoherent_pullback_of_isAffine (g : T ⟶ U) [IsAffine T] [IsAffin
       (Scheme.Modules.pullbackComp T.isoSpec.hom (Spec.map φ ≫ U.isoSpec.inv)).app N
   exact (SheafOfModules.isQuasicoherent T.ringCatSheaf).prop_of_iso e inferInstance
 
+/- English proof (translation)
+Take `⟨s, hs⟩` from `Module.Finite.fg_top (R := Γ(U, ⊤)) (M := Γ(N, ⊤))`. Set `P` to `Γ((Scheme.Modules.pullback g).obj N, ⊤)`. Set `L : Submodule Γ(T, ⊤) P` to `Submodule.span Γ(T, ⊤) ((s.image (Etale.pullbackSection g N) : Finset P) : Set P)`. Establish `hmem : ∀ n : Γ(N, ⊤), Etale.pullbackSection g N n ∈ L`. Introduce `n`.
+
+Establish `hn : n ∈ Submodule.span Γ(U, ⊤) (s : Set Γ(N, ⊤))` using `hs ▸ Submodule.mem_top`. Proceed by induction on `hn using Submodule.span_induction with`. Consider the case `mem x hx`. Conclude with `Submodule.subset_span (by simp only [Finset.coe_image]; exact ⟨x, hx, rfl⟩)`. Consider the case `zero => rw [map_zero]`.
+
+Conclude with `L.zero_mem`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `L.add_mem hx hy`. Consider the case `smul r x _ hx => rw [Etale.pullbackSection_smul]`. Conclude with `L.smul_mem _ hx`.
+
+Establish `hL : L = ⊤`. Take `⟨ψ', -, huniq⟩` from `Etale.existsUnique_pullbackSection g N (P ⧸ L) 0 (fun a n => by simp)`. Establish `h0 : (0 : P →ₗ[Γ(T, ⊤)] (P ⧸ L)) = ψ'` using `huniq 0 (fun n => by simp)`. Establish `h1 : L.mkQ = ψ'` using `huniq L.mkQ (fun n => by`. Simplify using `using (Submodule.Quotient.mk_eq_zero L).2 (hmem n))`.
+
+Rewrite using `[eq_top_iff]`. Introduce `q _`. Use `LinearMap.congr_fun (h1.trans h0.symm) q` as an intermediate fact. Conclude with `(Submodule.Quotient.mk_eq_zero L).1 this`. Conclude with `⟨⟨s.image (Etale.pullbackSection g N), hL⟩⟩`.
+-/
 theorem finite_pullback_of_isAffine (g : T ⟶ U) [IsAffine T] [IsAffine U] (N : U.Modules)
     [N.IsQuasicoherent] [Module.Finite Γ(U, ⊤) Γ(N, ⊤)] :
     Module.Finite Γ(T, ⊤) Γ((Scheme.Modules.pullback g).obj N, ⊤) := by
@@ -96,6 +123,9 @@ section Pullback
 
 variable {X Y : Scheme.{u}}
 
+/- English proof (translation)
+Use `finite_of_semilinear (U.ι.appIso ⊤).inv.hom (ConcreteCategory.bijective_of_isIso (U.ι.appIso ⊤).inv).2 (F.restrictAppIso U.ι ⊤).addCommGroupIsoToAddEquiv fun r m => ?_` and prove the remaining obligations. Establish `hs` using `congrArg (fun φ : Γ(F.restrict U.ι, ⊤) ⟶ Γ(F, U.ι ''ᵁ ⊤) => φ m) (Scheme.Modules.smul_restrictAppIso_hom U.ι F ⊤ r)`. Conclude with `hs`.
+-/
 lemma finite_restrict_top (F : X.Modules) (U : X.Opens)
     [Module.Finite Γ(X, U.ι ''ᵁ ⊤) Γ(F, U.ι ''ᵁ ⊤)] :
     Module.Finite Γ(U, ⊤) Γ(F.restrict U.ι, ⊤) := by
@@ -106,6 +136,9 @@ lemma finite_restrict_top (F : X.Modules) (U : X.Opens)
     (Scheme.Modules.smul_restrictAppIso_hom U.ι F ⊤ r)
   exact hs
 
+/- English proof (translation)
+Use `finite_of_semilinear (U.ι.appIso ⊤).hom.hom (ConcreteCategory.bijective_of_isIso (U.ι.appIso ⊤).hom).2 (F.restrictAppIso U.ι ⊤).addCommGroupIsoToAddEquiv.symm fun r m => ?_` and prove the remaining obligations. Establish `hs` using `congrArg (fun φ : Γ(F, U.ι ''ᵁ ⊤) ⟶ Γ(F.restrict U.ι, ⊤) => φ m) (Scheme.Modules.smul_restrictAppIso_inv U.ι F ⊤ r)`. Conclude with `hs`.
+-/
 lemma finite_of_finite_restrict_top (F : X.Modules) (U : X.Opens)
     [Module.Finite Γ(U, ⊤) Γ(F.restrict U.ι, ⊤)] :
     Module.Finite Γ(X, U.ι ''ᵁ ⊤) Γ(F, U.ι ''ᵁ ⊤) := by
@@ -116,6 +149,9 @@ lemma finite_of_finite_restrict_top (F : X.Modules) (U : X.Opens)
     (Scheme.Modules.smul_restrictAppIso_inv U.ι F ⊤ r)
   exact hs
 
+/- English proof (translation)
+Establish `: IsAffine V` using `hV`. Set `e : (M.restrict V.ι).restrict hV.isoSpec.inv ≅ M.restrict hV.fromSpec` to `((Scheme.Modules.restrictFunctorComp hV.isoSpec.inv V.ι).app M).symm ≪≫ (Scheme.Modules.restrictFunctorCongr hV.isoSpec_inv_ι).app M`. Establish `h2 : ((M.restrict V.ι).restrict hV.isoSpec.inv).IsQuasicoherent` using `Scheme.Modules.isQuasicoherent_restrictFunctor _ _`. Conclude with `(SheafOfModules.isQuasicoherent (Spec Γ(Y, V)).ringCatSheaf).prop_of_iso e h2`.
+-/
 lemma isQuasicoherent_restrict_fromSpec (M : Y.Modules) {V : Y.Opens} (hV : IsAffineOpen V)
     (h : (M.restrict V.ι).IsQuasicoherent) : (M.restrict hV.fromSpec).IsQuasicoherent := by
   have : IsAffine V := hV
@@ -126,6 +162,9 @@ lemma isQuasicoherent_restrict_fromSpec (M : Y.Modules) {V : Y.Opens} (hV : IsAf
     Scheme.Modules.isQuasicoherent_restrictFunctor _ _
   exact (SheafOfModules.isQuasicoherent (Spec Γ(Y, V)).ringCatSheaf).prop_of_iso e h2
 
+/- English proof (translation)
+The claim follows from `isQuasicoherent_of_restrict M V hcov fun i => nonempty_presentation_restrict M (hV i) (isQuasicoherent_restrict_fromSpec M (hV i) (h i))`.
+-/
 lemma isQuasicoherent_of_restrict_affine (M : Y.Modules) {ι : Type u} (V : ι → Y.Opens)
     (hV : ∀ i, IsAffineOpen (V i)) (hcov : iSup V = ⊤)
     (h : ∀ i, (M.restrict (V i).ι).IsQuasicoherent) : M.IsQuasicoherent :=
@@ -143,6 +182,9 @@ def restrictPullbackIso (ψ : Y ⟶ X) (F : X.Modules) (U : X.Opens) (V : Y.Open
     (Scheme.Modules.pullback (ψ.resLE U V h)).mapIso
       ((Scheme.Modules.restrictFunctorIsoPullback U.ι).app F).symm
 
+/- English proof (translation)
+The claim follows from `Module.Finite.equiv { toFun := e.hom.app W invFun := e.inv.app W map_add' := map_add _ map_smul' := Scheme.Modules.Hom.app_smul e.hom left_inv := fun x => by rw [← ConcreteCategory.comp_apply, ← Scheme.Modules.Hom.comp_app, e.hom_inv_id]; rfl right_inv := fun x => by rw [← Concre …`.
+-/
 lemma finite_of_iso_app {Z : Scheme.{u}} {M N : Z.Modules} (e : M ≅ N) (W : Z.Opens)
     [Module.Finite Γ(Z, W) Γ(M, W)] : Module.Finite Γ(Z, W) Γ(N, W) :=
   Module.Finite.equiv
@@ -155,6 +197,19 @@ lemma finite_of_iso_app {Z : Scheme.{u}} {M N : Z.Modules} (e : M ≅ N) (W : Z.
       right_inv := fun x => by
         rw [← ConcreteCategory.comp_apply, ← Scheme.Modules.Hom.comp_app, e.inv_hom_id]; rfl }
 
+/- English proof (translation)
+Use `hF.1` as an intermediate fact. Set `ι` to `{p : X.affineOpens × Y.affineOpens // p.2.1 ≤ ψ ⁻¹ᵁ p.1.1}`. Set `Vo : ι → Y.Opens` to `fun i => i.1.2.1`. Establish `hcov : iSup Vo = ⊤`. Rewrite using `[eq_top_iff]`.
+
+Introduce `y _`. Take `⟨_, ⟨U₀, hU₀, rfl⟩, hyU, -⟩` from `X.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ (ψ.base y)) isOpen_univ`. Take `⟨_, ⟨V₀, hV₀, rfl⟩, hyV, hVU⟩` from `Y.isBasis_affineOpens.exists_subset_of_mem_open (show y ∈ ψ ⁻¹ᵁ U₀ from hyU) (ψ ⁻¹ᵁ U₀).isOpen`. Conclude with `Opens.mem_iSup.2 ⟨⟨(⟨U₀, hU₀⟩, ⟨V₀, hV₀⟩), hVU⟩, hyV⟩`. Set `F'` to `(Scheme.Modules.pullback ψ).obj F`.
+
+Establish `hloc : ∀ i : ι, (F'.restrict (Vo i).ι).IsQuasicoherent ∧ Module.Finite Γ(Vo i, ⊤) Γ(F'.restrict (Vo i).ι, ⊤)`. Introduce `i`. Establish `hU` using `i.1.1.2`. Establish `hV` using `i.1.2.2`. Establish `: IsAffine i.1.1.1` using `hU`.
+
+Establish `: IsAffine i.1.2.1` using `hV`. Establish `hfin : Module.Finite Γ(X, i.1.1.1.ι ''ᵁ ⊤) Γ(F, i.1.1.1.ι ''ᵁ ⊤)` using `hF.2 _ ((isAffineOpen_top _).image_of_isOpenImmersion _)`. Establish `: Module.Finite Γ(i.1.1.1, ⊤) Γ(F.restrict i.1.1.1.ι, ⊤)` using `finite_restrict_top F _`. Set `e` to `restrictPullbackIso ψ F i.1.1.1 i.1.2.1 i.2`. Use `isQuasicoherent_pullback_of_isAffine (ψ.resLE _ _ i.2) (F.restrict i.1.1.1.ι)` as an intermediate fact.
+
+Use `finite_pullback_of_isAffine (ψ.resLE _ _ i.2) (F.restrict i.1.1.1.ι)` as an intermediate fact. Conclude with `⟨(SheafOfModules.isQuasicoherent (Vo i).toScheme.ringCatSheaf).prop_of_iso e.symm inferInstance, finite_of_iso_app e.symm ⊤⟩`. Establish `: F'.IsQuasicoherent` using `isQuasicoherent_of_restrict_affine F' Vo (fun i => i.1.2.2) hcov fun i => (hloc i).1`. Use `isCoherent_of_affineCover F' (fun i => (Vo i).ι ''ᵁ ⊤) (fun i => (isAffineOpen_top _).image_of_isOpenImmersion _) ?_ fun i => ?_` and prove the remaining obligations. Simplify using `only [Scheme.Opens.ι_image_top]`.
+
+Conclude with `hcov`. Establish `: IsAffine (Vo i)` using `i.1.2.2`. Use `(hloc i).2` as an intermediate fact. Conclude with `finite_of_finite_restrict_top F' (Vo i)`.
+-/
 theorem isCoherent_pullback (ψ : Y ⟶ X) {F : X.Modules} (hF : IsCoherent F) :
     IsCoherent ((Scheme.Modules.pullback ψ).obj F) := by
   have := hF.1
@@ -201,6 +256,13 @@ section Support
 
 variable {X : Scheme.{u}}
 
+/- English proof (translation)
+Use `hF.1` as an intermediate fact. Set `I` to `annihilatorIdealSheaf F hF`. Use `⟨I, support_annihilatorIdealSheaf_subset F hF hT hFT, (Scheme.Modules.pullback I.subschemeι).obj F, isCoherent_pullback _ hF, ?_⟩` and prove the remaining obligations. Set `adj` to `Scheme.Modules.pullbackPushforwardAdjunction I.subschemeι`. Establish `: IsClosedImmersion (I.subschemeι ∣_ ⊤)` using `inferInstance`.
+
+Establish `: IsIso (adj.unit.app F)`. Use `isIso_of_bijective_app _ fun V => ?_` and prove the remaining obligations. Use `bijective_unit_app_of_le I.subschemeι F ⊤ (fun V hV _ a ha m => ?_) V le_top` and prove the remaining obligations. Establish `hker : a ∈ RingHom.ker (I.subschemeι.app V).hom` using `ha`. Rewrite `hker` using `[I.ker_subschemeι_app ⟨V, hV⟩]`.
+
+Conclude with `mem_annihilatorIdeal.1 hker m`. Conclude with `⟨(asIso (adj.unit.app F)).symm⟩`.
+-/
 theorem exists_pushforward_iso_of_supportedIn (F : X.Modules) (hF : IsCoherent F) {T : Set X}
     (hT : IsClosed T) (hFT : Scheme.Modules.SupportedIn F T) :
     ∃ I : X.IdealSheafData, (I.support : Set X) ⊆ T ∧ ∃ G : I.subscheme.Modules, IsCoherent G ∧

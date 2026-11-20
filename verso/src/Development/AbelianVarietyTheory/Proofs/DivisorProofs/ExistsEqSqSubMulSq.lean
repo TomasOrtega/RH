@@ -5,6 +5,17 @@ open IsLocalRing IsDedekindDomain IsDedekindDomain.HeightOneSpectrum
 
 namespace GlobalTheory.OddLocalNormEtale
 
+/- English proof (translation)
+Introduce `L _ _ _ _ v hv m m' d d' hm hd im im' id id'`. Take `⟨hH, hF⟩` from `GlobalTheory.IntAdicHensel.henselianLocalRing_and_finite_residueField v`. Use `letI : Algebra (v.adicCompletionIntegers ℚ) (v.adicCompletion ℚ ⊗[ℚ] L) := ((algebraMap (v.adicCompletion ℚ) (v.adicCompletion ℚ ⊗[ℚ] L)).comp (v.adicCompletionIntegers ℚ).subtype).toAlgebra`. Establish `key : ∀ x : v.adicCompletion ℚ ⊗[ℚ] L, (∃ f : Polynomial (v.adicCompletion ℚ), f.Monic ∧ (∀ i, f.coeff i ∈ v.adicCompletionIntegers ℚ) ∧ Polynomial.aeval x f = 0) → IsIntegral (v.adicCompletionIntegers ℚ) x`. Introduce and unpack `x ⟨f, hf, hc, hx⟩`.
+
+Take `⟨g, hg, -, hgm⟩` from `Polynomial.lifts_and_natDegree_eq_and_monic (f := (v.adicCompletionIntegers ℚ).subtype) ((Polynomial.lifts_iff_coeff_lifts f).2 fun n => ⟨⟨_, hc n⟩, rfl⟩) hf`. Use `⟨g, hgm, ?_⟩` and prove the remaining obligations. Rewrite `hx` using `[← hg, Polynomial.aeval_def, Polynomial.eval₂_map]`. Conclude with `hx`. Establish `h2 : (2 : ℤ) ∉ v.asIdeal` using `fun h => hv ((PrincipalIdealRing.isMaximal_of_irreducible Int.prime_two.irreducible).eq_of_le v.isPrime.ne_top ((Ideal.span_singleton_le_iff_mem _).2 h)).symm`.
+
+Establish `h2u : IsUnit (2 : v.adicCompletionIntegers ℚ)`. Rewrite using `[adicCompletionIntegers.isUnit_iff_valued_eq_one]`. Establish `h` using `valuedAdicCompletion_eq_valuation' v (2 : ℚ)`. Establish `h' : v.valuation ℚ (2 : ℚ) = 1`. Use `(valuation_eq_one_iff_notMem v (K := ℚ) (r := (2 : ℤ))).2 h2` as an intermediate fact.
+
+Simplify using `using this`. Rewrite `h` using `[h']`. Rewrite using `[← h]`. Use `congr 1`. Conclude with `(map_ofNat (algebraMap ℚ (v.adicCompletion ℚ)) 2).symm`.
+
+Conclude with `GlobalTheory.OddLocalNorm.exists_eq_of_isIntegral (v.adicCompletionIntegers ℚ) h2u hm hd (key _ im) (key _ im') (key _ id) (key _ id')`.
+-/
 theorem exists_eq_sq_sub_mul_sq : ∀ (L : Type) [CommRing L] [IsReduced L] [Algebra ℚ L] [FiniteDimensional ℚ L] (v : IsDedekindDomain.HeightOneSpectrum ℤ), v.asIdeal ≠ Ideal.span {2} →
     ∀ m m' d d' : v.adicCompletion ℚ ⊗[ℚ] L, m * m' = 1 → d * d' = 1 →
     (∃ f : Polynomial (v.adicCompletion ℚ), f.Monic ∧ (∀ i, f.coeff i ∈ v.adicCompletionIntegers ℚ) ∧ Polynomial.aeval m f = 0) → (∃ f : Polynomial (v.adicCompletion ℚ), f.Monic ∧ (∀ i, f.coeff i ∈ v.adicCompletionIntegers ℚ) ∧ Polynomial.aeval m' f = 0) → (∃ f : Polynomial (v.adicCompletion ℚ), f.Monic ∧ (∀ i, f.coeff i ∈ v.adicCompletionIntegers ℚ) ∧ Polynomial.aeval d f = 0) → (∃ f : Polynomial (v.adicCompletion ℚ), f.Monic ∧ (∀ i, f.coeff i ∈ v.adicCompletionIntegers ℚ) ∧ Polynomial.aeval d' f = 0) →

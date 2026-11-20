@@ -19,6 +19,13 @@ open GlobalTheory.RowEvalHH
 variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m}
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
 
+/- English proof (translation)
+Rewrite using `[@norm_sq_eq_re_inner ℂ, MeasureTheory.L2.inner_def]`. Establish `h1 : (fun a => ⟪(hf.toLp f : L2X X) a, (hf.toLp f : L2X X) a⟫_ℂ) = fun a => (((‖(hf.toLp f : L2X X) a‖ ^ 2 : ℝ)) : ℂ)`. Use function extensionality and compare the values at `a`. Rewrite using `[inner_self_eq_norm_sq_to_K]`. Use `push_cast`.
+
+Both sides reduce to the same expression. Rewrite using `[h1, integral_complex_ofReal]`. Simplify using `only [RCLike.re_to_complex, Complex.ofReal_re]`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hf.coeFn_toLp] with a ha`.
+
+Rewrite using `[ha]`.
+-/
 theorem norm_sq_toLp_eq {X : Formalism.L2.SG.HidaSetting.HidaSetting D} {f : X.B.I.GA → ℂ} (hf : MemLp f 2 (muX X)) :
     ‖(hf.toLp f : L2X X)‖ ^ 2 = ∫ x, ‖f x‖ ^ 2 ∂(muX X) := by
   rw [@norm_sq_eq_re_inner ℂ, MeasureTheory.L2.inner_def]
@@ -37,6 +44,9 @@ def phi (R : RealDat D A Ks) (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (h 
   fun x => ev (MP R) (vecOf R X c y) S
     (@HMul.hMul (GA D (Yc D 0)) (GA D (Yc D 0)) (GA D (Yc D 0)) _ ((iotaX X h).symm x) t)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `σ`. Distinguish the cases in `hσ : σ = τ`. Substitute `hσ` using the available equality. Simplify using `[vecOf]`. Simplify using `[vecOf, Function.update_of_ne hσ]`.
+-/
 theorem vecOf_update [DecidableEq D.what₂.Tau] (R : RealDat D A Ks) (X : Formalism.L2.SG.HidaSetting.HidaSetting D)
     (c : ∀ τ, (MP R).H τ ≃ₗᵢ⋆[ℂ] X.B.H (X.pl.symm τ)) (y : ∀ τ, Wsub R X c τ) (τ : D.what₂.Tau)
     (z : Wsub R X c τ) :
@@ -48,6 +58,9 @@ theorem vecOf_update [DecidableEq D.what₂.Tau] (R : RealDat D A Ks) (X : Forma
     simp [vecOf]
   · simp [vecOf, Function.update_of_ne hσ]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `only [phi, ev_apply, vecOf_update, Pi.add_apply]`. Establish `e : (⟨(c τ).symm ((z₁ + z₂ : Wsub R X c τ) : X.B.H (X.pl.symm τ)), symm_mem_sm R X c τ (z₁ + z₂)⟩ : (MP R).sm τ) = ⟨(c τ).symm (z₁ : X.B.H (X.pl.symm τ)), symm_mem_sm R X c τ z₁⟩ + ⟨(c τ).symm (z₂ : X.B.H (X.pl.symm τ)), symm_mem_sm R X c τ z₂⟩` using `Subtype.ext (by simp)`. Rewrite using `[e, S.map_update_add]`. Both sides reduce to the same expression.
+-/
 theorem phi_add [DecidableEq D.what₂.Tau] (R : RealDat D A Ks) (X : Formalism.L2.SG.HidaSetting.HidaSetting D)
     (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D) (t : GA D (Yc D 0))
     (c : ∀ τ, (MP R).H τ ≃ₗᵢ⋆[ℂ] X.B.H (X.pl.symm τ)) (S : MMap (MP R)) (y : ∀ τ, Wsub R X c τ)
@@ -63,6 +76,9 @@ theorem phi_add [DecidableEq D.what₂.Tau] (R : RealDat D A Ks) (X : Formalism.
   rw [e, S.map_update_add]
   rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `only [phi, ev_apply, vecOf_update, Pi.smul_apply]`. Establish `e : (⟨(c τ).symm ((a • z : Wsub R X c τ) : X.B.H (X.pl.symm τ)), symm_mem_sm R X c τ (a • z)⟩ : (MP R).sm τ) = (starRingEnd ℂ a) • ⟨(c τ).symm (z : X.B.H (X.pl.symm τ)), symm_mem_sm R X c τ z⟩` using `Subtype.ext (by simp [LinearIsometryEquiv.map_smulₛₗ])`. Rewrite using `[e, S.map_update_smul]`. Both sides reduce to the same expression.
+-/
 theorem phi_smul [DecidableEq D.what₂.Tau] (R : RealDat D A Ks) (X : Formalism.L2.SG.HidaSetting.HidaSetting D)
     (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D) (t : GA D (Yc D 0))
     (c : ∀ τ, (MP R).H τ ≃ₗᵢ⋆[ℂ] X.B.H (X.pl.symm τ)) (S : MMap (MP R)) (y : ∀ τ, Wsub R X c τ)
@@ -86,6 +102,25 @@ open GlobalTheory.RowEvalHH
 variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m}
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
 
+/- English proof (translation)
+Distinguish the cases in `h0 : ∃ τ, (y τ : X.B.H (X.pl.symm τ)) = 0`. Take `⟨τ, hτ⟩` from `h0`. Establish `hv : vecOf R X c y τ = 0` using `Subtype.ext (by simp [vecOf, hτ])`. Establish `hz : phi R X h t c S y = 0`. Use function extensionality and compare the values at `x`.
+
+Simplify using `only [phi, ev_apply, S.map_coord_zero τ hv]`. Both sides reduce to the same expression. Establish `hp : ∏ σ, ‖(y σ : X.B.H (X.pl.symm σ))‖ ^ 2 = 0` using `Finset.prod_eq_zero (Finset.mem_univ τ) (by simp [hτ])`. Rewrite using `[hz, hp]`. Use `⟨MeasureTheory.MemLp.zero, ?_⟩` and prove the remaining obligations.
+
+Simplify using the standard rewrite rules. Use `push_neg at h0`. Establish `hn : ∀ τ, ‖((c τ).symm (y τ : X.B.H (X.pl.symm τ)) : (MP R).H τ)‖ = ‖(y τ : X.B.H (X.pl.symm τ))‖` using `fun τ => LinearIsometryEquiv.norm_map _ _`. Establish `hpos : ∀ τ, 0 < ‖(y τ : X.B.H (X.pl.symm τ))‖` using `fun τ => norm_pos_iff.2 (h0 τ)`. Set `u : (MP R).Vec` to `fun τ => ((‖(y τ : X.B.H (X.pl.symm τ))‖⁻¹ : ℝ) : ℂ) • vecOf R X c y τ`.
+
+Establish `hu : ∀ τ, ‖(u τ : (MP R).H τ)‖ = 1`. Introduce `τ`. Simplify using `only [u, Submodule.coe_smul, norm_smul, Complex.norm_real, Real.norm_eq_abs]`. Use `show |‖(y τ : X.B.H (X.pl.symm τ))‖⁻¹| * ‖((c τ).symm (y τ : X.B.H (X.pl.symm τ)) : (MP R).H τ)‖ = 1`. Rewrite using `[hn, abs_of_pos (inv_pos.2 (hpos τ)), inv_mul_cancel₀ (hpos τ).ne']`.
+
+Establish `hvec : vecOf R X c y = fun τ => ((‖(y τ : X.B.H (X.pl.symm τ))‖ : ℝ) : ℂ) • u τ`. Use function extensionality and compare the values at `τ`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [u, Submodule.coe_smul, smul_smul]`. Rewrite using `[← Complex.ofReal_mul, mul_inv_cancel₀ (hpos τ).ne', Complex.ofReal_one, one_smul]`.
+
+Use `set a : ℂ := ∏ τ, ((‖(y τ : X.B.H (X.pl.symm τ))‖ : ℝ) : ℂ) with ha`. Establish `hphi : phi R X h t c S y = fun x => a * ev (MP R) u S (@HMul.hMul (GA D (Yc D 0)) (GA D (Yc D 0)) (GA D (Yc D 0)) _ ((iotaX X h).symm x) t)`. Use function extensionality and compare the values at `x`. Simplify using `only [phi, ev_apply]`. Rewrite using `[hvec, S.map_smul_univ]`.
+
+Both sides reduce to the same expression. Take `⟨hm, hi⟩` from `hK u hu`. Establish `hna : ‖a‖ = ∏ τ, ‖(y τ : X.B.H (X.pl.symm τ))‖`. Rewrite using `[ha, norm_prod]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (norm_nonneg _)]`. Rewrite using `[hphi]`. Use `⟨hm.const_mul a, ?_⟩` and prove the remaining obligations. Simplify using `only [norm_mul, mul_pow]`. Rewrite using `[integral_const_mul, hi, hna, Finset.prod_pow]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem phi_memLp_integral (R : RealDat D A Ks) (X : Formalism.L2.SG.HidaSetting.HidaSetting D)
     (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D) (t : GA D (Yc D 0))
     (c : ∀ τ, (MP R).H τ ≃ₗᵢ⋆[ℂ] X.B.H (X.pl.symm τ)) (S : MMap (MP R)) (K : ℝ)
@@ -142,6 +177,19 @@ theorem phi_memLp_integral (R : RealDat D A Ks) (X : Formalism.L2.SG.HidaSetting
     rw [integral_const_mul, hi, hna, Finset.prod_pow]
     ring
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T A Ks _ _ _ R F X h hL hG hM t c ht S hS`. Take `⟨c0, -, hc0⟩` from `GlobalTheory.EvalNormTransfer.evalTranslate_norm R F X h hL hG hM t ht`. Use `set K : ℝ := c0 * (ipM (MP R) R.ν0 R.fd0 S S).re with hKdef`. Establish `hK : ∀ v₀ : (MP R).Vec, (∀ τ, ‖(v₀ τ : (MP R).H τ)‖ = 1) → MemLp (fun x => ev (MP R) v₀ S (@HMul.hMul (GA D (Yc D 0)) (GA D (Yc D 0)) (GA D (Yc D 0)) _ ((iotaX X h).symm x) t)) 2 (muX X) ∧ ∫ x, ‖ev (MP R) v₀ S (@HMul.hMul (GA D (Yc D 0)) (GA D (Yc D 0)) (GA D (Yc D 0)) _ ((iotaX …` using `fun v₀ hv => ⟨(hc0 v₀ hv S hS).1, (hc0 v₀ hv S hS).2.1⟩`. Establish `hmem : ∀ y, MemLp (phi R X h t c S y) 2 (muX X)` using `fun y => (phi_memLp_integral R X h t c S K hK y).1`.
+
+Set `L : (∀ τ, Wsub R X c τ) → L2X X` to `fun y => (hmem y).toLp (phi R X h t c S y)`. Establish `hL_add : ∀ [DecidableEq D.what₂.Tau] (y : ∀ τ, Wsub R X c τ) (τ : D.what₂.Tau) (z₁ z₂ : Wsub R X c τ), L (Function.update y τ (z₁ + z₂)) = L (Function.update y τ z₁) + L (Function.update y τ z₂)`. Introduce `_ y τ z₁ z₂`. Rewrite using `[← MemLp.toLp_add]`. Conclude with `MemLp.toLp_congr _ _ (Filter.Eventually.of_forall fun x => congrFun (phi_add R X h t c S y τ z₁ z₂) x)`.
+
+Establish `hL_smul : ∀ [DecidableEq D.what₂.Tau] (y : ∀ τ, Wsub R X c τ) (τ : D.what₂.Tau) (a : ℂ) (z : Wsub R X c τ), L (Function.update y τ (a • z)) = (starRingEnd ℂ a) • L (Function.update y τ z)`. Introduce `_ y τ a z`. Rewrite using `[← MemLp.toLp_const_smul]`. Conclude with `MemLp.toLp_congr _ _ (Filter.Eventually.of_forall fun x => congrFun (phi_smul R X h t c S y τ a z) x)`. Set `f : MultilinearMap ℂ (fun τ => ↥(Wsub R X c τ)) (L2X X)` to `{ toFun := fun y => conjL (muX X) (L y) map_update_add' := fun y τ z₁ z₂ => by`.
+
+Rewrite using `[hL_add, map_add]`. Use the proof step `map_update_smul' := fun y τ a z => by`. Rewrite using `[hL_smul, LinearIsometryEquiv.map_smulₛₗ, starRingEnd_self_apply] }`. Use `⟨f, K, fun y => ?_, fun y => ?_⟩` and prove the remaining obligations. Use `show conjL (muX X) (L y) = evF R X h t c S y`.
+
+Unfold `evF`. Use `split`. Both sides reduce to the same expression. Conclude with `absurd (hmem y) ‹_›`. Use `show ‖conjL (muX X) (L y)‖ ^ 2 = _`.
+
+Rewrite using `[LinearIsometryEquiv.norm_map, norm_sq_toLp_eq]`. Conclude with `(phi_memLp_integral R X h t c S K hK y).2`.
+-/
 theorem evF_multilinear_norm : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A) (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D), R.toLevCh.Is A.μ0 → R.IsGrp F → R.IsModels → ∀ (t : GA D (Yc D 0)) (c : ∀ τ, (MP R).H τ ≃ₗᵢ⋆[ℂ] X.B.H (X.pl.symm τ)), t ∈ GfC (Yc D 0) → ∀ S ∈ EP R F, ∃ (f : MultilinearMap ℂ (fun τ => ↥(GlobalTheory.RowEvalHH.Wsub R X c τ)) (L2X X)) (K : ℝ), (∀ y, f y = GlobalTheory.RowEvalHH.evF R X h t c S y) ∧ ∀ y, ‖f y‖ ^ 2 = K * ∏ τ, ‖(y τ : X.B.H (X.pl.symm τ))‖ ^ 2 := by
   classical
   intro D G _ _ Pl0 T A Ks _ _ _ R F X h hL hG hM t c ht S hS

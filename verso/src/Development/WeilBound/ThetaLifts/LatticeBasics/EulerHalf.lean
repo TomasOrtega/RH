@@ -8,6 +8,19 @@ namespace GlobalTheory.ThK.Dbl
 
 open NumberField IsDedekindDomain GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 
+/- English proof (translation)
+Set `x : ι → ℂ → ℂ` to `fun v z => -(c v * (q v : ℂ) ^ (-(2 * z + (k + 1 : ℕ))))`. Establish `h1 : ∀ v, (1 : ℝ) ≤ q v` using `fun v => by exact_mod_cast one_le_two.trans (hq v)`. Establish `hx : ∀ v z (t : ℝ), t ≤ 2 * z.re + 1 → ‖x v z‖ ≤ (q v : ℝ) ^ (-t)` using `fun v z t ht => by`. Rewrite using `[norm_neg, norm_mul, Complex.norm_natCast_cpow_of_pos (two_pos.trans_le (hq v))]`. Use `(mul_le_of_le_one_left (by positivity) (hc v)).trans (Real.rpow_le_rpow_of_exponent_le (h1 v) ?_)` and prove the remaining obligations.
+
+Establish `: (0 : ℝ) ≤ k` using `k.cast_nonneg`. Simplify using `only [Complex.neg_re, Complex.add_re, Complex.natCast_re, Complex.mul_re, Complex.re_ofNat, Complex.im_ofNat]`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hh : ∀ v z, 0 < z.re → ‖x v z‖ ≤ 1 / 2` using `fun v z hz => by`.
+
+Use `(hx v z 1 (by linarith)).trans ?_` and prove the remaining obligations. Rewrite using `[Real.rpow_neg_one, one_div]`. Conclude with `inv_anti₀ two_pos (by exact_mod_cast hq v)`. Establish `hb : ∀ v z (t : ℝ), 0 < z.re → t ≤ 2 * z.re + 1 → ‖Complex.log (1 + x v z)‖ ≤ 3 / 2 * (q v : ℝ) ^ (-t)` using `fun v z t hz ht => (Complex.norm_log_one_add_half_le_self (hh v z hz)).trans (by gcongr; exact hx v z t ht)`. Establish `hsl : ∀ v z, 0 < z.re → 1 + x v z ∈ Complex.slitPlane` using `fun v z hz => Complex.mem_slitPlane_of_norm_lt_one ((hh v z hz).trans_lt (by norm_num))`.
+
+Use `⟨fun z => Complex.exp (-∑' v, Complex.log (1 + x v z)), fun z hz => ?_, fun z hz => ⟨Complex.exp_ne_zero _, ?_⟩⟩` and prove the remaining obligations. Establish `hz' : 0 < z.re` using `hz`. Establish `ho : IsOpen {w : ℂ | z.re / 2 < w.re}` using `isOpen_lt continuous_const Complex.continuous_re`. Use `Complex.differentiableOn_tsum_of_summable_norm (F := fun v w => Complex.log (1 + x v w)) ((hs (z.re + 1) (by linarith)).mul_left (3 / 2)) (fun v w hw => ?_) ho fun v w (hw : z.re / 2 < w.re) => hb v w _ (by linarith) (by linarith)` as an intermediate fact. Conclude with `(this.differentiableAt (ho.mem_nhds (show z.re / 2 < z.re by linarith))).neg.cexp.differentiableWithinAt`.
+
+Establish `hw' : z.re / 2 < w.re` using `hw`. Establish `hw0 : 0 < w.re` using `by linarith`. Use `(DifferentiableAt.clog (f := fun w => 1 + x v w) ?_ (hsl v w hw0)).differentiableWithinAt` and prove the remaining obligations. Establish `: (q v : ℂ) ≠ 0` using `by exact_mod_cast (two_pos.trans_le (hq v)).ne'`. Conclude with `(((by fun_prop : DifferentiableAt ℂ (fun z : ℂ => -(2 * z + (k + 1 : ℕ))) w).const_cpow (Or.inl this)).const_mul _).neg.const_add _`.
+
+Use `(Summable.of_norm_bounded ((hs (2 * z.re + 1) (by linarith)).mul_left (3 / 2)) fun v => hb v z _ hz le_rfl).hasSum.neg.cexp` as an intermediate fact. Use `this using 2 with v` and compare the differences between its conclusion and the goal. Rewrite using `[Function.comp, Complex.exp_neg, Complex.exp_log (Complex.slitPlane_ne_zero (hsl v z hz)), sub_eq_add_neg]`.
+-/
 theorem euler_half {ι : Type} (q : ι → ℕ) (hq : ∀ v, 2 ≤ q v) (hs : ∀ s : ℝ, 1 < s → Summable fun v => (q v : ℝ) ^ (-s))
     (c : ι → ℂ) (hc : ∀ v, ‖c v‖ ≤ 1) (k : ℕ) : ∃ d : ℂ → ℂ, DifferentiableOn ℂ d {z | 0 < z.re} ∧ ∀ z : ℂ, 0 < z.re →
       d z ≠ 0 ∧ HasProd (fun v => (1 - c v * (q v : ℂ) ^ (-(2 * z + (k + 1 : ℕ))))⁻¹) (d z) := by
@@ -47,6 +60,9 @@ theorem euler_half {ι : Type} (q : ι → ℕ) (hq : ∀ v, 2 ≤ q v) (hs : �
     rw [Function.comp, Complex.exp_neg, Complex.exp_log (Complex.slitPlane_ne_zero (hsl v z hz)), sub_eq_add_neg]
 
 open Classical in
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ n T`. Apply the tactic sequence `choose d h1 h2 using fun i => euler_half (ι := {v : Pl F // v ∉ T}) (fun v => Ideal.absNorm v.1.asIdeal) (fun v => NumberField.HeightOneSpectrum.one_lt_absNorm v.1) (fun s hs => (ReciprocityTheory.Cheb.summable_absNorm_rpow_ideal F hs).comp_injective (HeightOneSpectrum.asIdeal_in …`. Conclude with `⟨fun z => ∏ i ∈ Finset.range n, d i z, DifferentiableOn.fun_finsetProd fun i _ => h1 i, fun z hz => ⟨Finset.prod_ne_zero_iff.2 fun i _ => (h2 i z hz).1, hasProd_prod fun i _ => (h2 i z hz).2⟩⟩`.
+-/
 theorem dProd : DProd := by
   intro F E _ _ _ _ _ n T
   choose d h1 h2 using fun i => euler_half (ι := {v : Pl F // v ∉ T}) (fun v => Ideal.absNorm v.1.asIdeal)

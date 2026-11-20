@@ -21,6 +21,13 @@ noncomputable def VarBranch.restrictInto {n k : ℕ} {I : Ideal (MvPolynomial (F
   map_zero := c.map_zero
   mapsTo := fun t ht ↦ h t (Metric.ball_subset_ball (min_le_left _ _) ht)
 
+/- English proof (translation)
+Establish `key : ∀ f ∈ J, ∀ᶠ t in 𝓝 (0 : Fin 1 → ℂ), eval (c.toFun t) f = 0`. Introduce `f hf`. Establish `h0` using `analyticOrderAt_eq_top.1 (h f hf)`. Establish `ht : Tendsto (fun t : Fin 1 → ℂ ↦ t 0) (𝓝 0) (𝓝 0)` using `(continuous_apply 0).tendsto' _ _ rfl`. Use `filter_upwards [ht.eventually h0] with t ht`.
+
+Establish `: (fun _ : Fin 1 ↦ t 0) = t` using `funext fun i ↦ by rw [Subsingleton.elim i 0]`. Rewrite `ht` using `[this]`. Then use the resulting hypothesis. Take `⟨s, hs⟩` from `(IsNoetherian.noetherian J : J.FG)`. Use `filter_upwards [(s.eventually_all).2 fun g hg ↦ key g (hs ▸ Submodule.subset_span hg)] with t ht f hf`. Establish `hle : Ideal.span (s : Set (MvPolynomial (Fin n) ℂ)) ≤ RingHom.ker (eval (c.toFun t))` using `Ideal.span_le.2 fun g hg ↦ ht g hg`.
+
+Establish `hf' : f ∈ Ideal.span (s : Set (MvPolynomial (Fin n) ℂ))`. Rewrite using `[Ideal.span, hs]`. Conclude with `hf`. Conclude with `hle hf'`.
+-/
 theorem VarBranch.eventually_mem_zeroSet {n : ℕ} {I : Ideal (MvPolynomial (Fin n) ℂ)} {q : Fin n → ℂ}
     (J : Ideal (MvPolynomial (Fin n) ℂ)) (c : VarBranch I 1 q) (h : ∀ f ∈ J, branchOrder c f = ⊤) :
     ∀ᶠ t in 𝓝 (0 : Fin 1 → ℂ), c.toFun t ∈ zeroSet J := by
@@ -40,6 +47,21 @@ theorem VarBranch.eventually_mem_zeroSet {n : ℕ} {I : Ideal (MvPolynomial (Fin
     exact hf
   exact hle hf'
 
+/- English proof (translation)
+Introduce `n I q c c' _ hdim hord`. Take `⟨J, hJmin, hJdim, hev⟩` from `hC n I q c hdim`. Establish `hJ : J.IsPrime` using `hJmin.1.1`. Establish `htop : ∀ f ∈ J, branchOrder c f = ⊤` using `fun f hf ↦ by`. Use `analyticOrderAt_eq_top.2 ?_` and prove the remaining obligations.
+
+Establish `hι : Tendsto (fun τ : ℂ ↦ (fun _ : Fin 1 ↦ τ)) (𝓝 0) (𝓝 0)` using `(continuous_pi fun _ ↦ continuous_id).tendsto' _ _ rfl`. Use `filter_upwards [hι.eventually hev] with τ hτ using hτ f hf`. Establish `hev'` using `c'.eventually_mem_zeroSet J fun f hf ↦ (hord f).symm.trans (htop f hf)`. Take `⟨ε, hε, hεJ⟩` from `Metric.eventually_nhds_iff_ball.1 hev`. Take `⟨ε', hε', hεJ'⟩` from `Metric.eventually_nhds_iff_ball.1 hev'`.
+
+Set `γ` to `c.restrictInto J ε hε hεJ`. Set `γ'` to `c'.restrictInto J ε' hε' hεJ'`. Take `⟨M⟩` from `IndefiniteRowSideFullHecke.ComplexSets.NormalModelExists.proof n J hJ`. Take `⟨Γ, hΓd, hΓ, -⟩` from `hL n 1 J q M γ hJ hJdim`. Take `⟨Γ', hΓ'd, hΓ', hΓ'o⟩` from `hL n 1 J q M γ' hJ hJdim`.
+
+Establish `hw : Γ 0 = Γ' 0` using `hO n J q M γ γ' Γ Γ' hJ hJdim hΓd hΓ hΓ'd hΓ' hord`. Take `⟨U, hUo, hU⟩` from `hΓ'o _ subset_rfl Metric.isOpen_ball`. Establish `h0 : (0 : Fin 1 → ℂ) ∈ Metric.ball 0 γ.radius` using `Metric.mem_ball_self γ.radius_pos`. Establish `hΓ0U : Γ 0 ∈ U`. Rewrite using `[hw]`.
+
+Conclude with `(hU ▸ Set.mem_image_of_mem Γ' (Metric.mem_ball_self γ'.radius_pos)).2`. Establish `hcont : ContinuousAt Γ 0` using `hΓd.continuousOn.continuousAt (Metric.ball_mem_nhds 0 γ.radius_pos)`. Establish `hnear : ∀ᶠ τ in 𝓝[≠] (0 : Fin 1 → ℂ), τ ≠ 0 ∧ τ ∈ Metric.ball 0 γ.radius ∧ Γ τ ∈ U` using `by filter_upwards [self_mem_nhdsWithin, nhdsWithin_le_nhds (Metric.ball_mem_nhds 0 γ.radius_pos), nhdsWithin_le_nhds (hcont.preimage_mem_nhds (hUo.mem_nhds hΓ0U))] with τ h1 h2 h3 using ⟨h1, h2, h3⟩`. Take `⟨τ, hτ0, hτ, hτU⟩` from `hnear.exists`. Take `⟨τ', hτ', hτ'eq⟩ : Γ τ ∈ Γ' '' Metric.ball 0 γ'.radius` from `hU ▸ ⟨(hΓ τ hτ).1, hτU⟩`.
+
+Establish `hτc : τ ∈ Metric.ball 0 c.radius` using `Metric.ball_subset_ball (min_le_right _ _) hτ`. Use `⟨c.toFun τ, ⟨⟨τ, hτc, rfl⟩, ⟨τ', Metric.ball_subset_ball (min_le_right _ _) hτ', ?_⟩⟩, fun hq ↦ hτ0 ?_⟩` and prove the remaining obligations. Establish `e1` using `(hΓ' τ' hτ').2`. Establish `e2` using `(hΓ τ hτ).2`. Rewrite `e1` using `[hτ'eq]`.
+
+Conclude with `e1.symm.trans e2`. Conclude with `c.injOn hτc (Metric.mem_ball_self c.radius_pos) (hq.trans c.map_zero.symm)`.
+-/
 theorem SameOrderBranchesMeet.proof (hC : BranchInCurveComponent.Statement) (hO : SameOrdersLiftCentre.Statement)
     (hL : IndefiniteRowSideFullHecke.ComplexSets.BranchLift.Statement) : SameOrderBranchesMeet.Statement := by
   intro n I q c c' _ hdim hord

@@ -18,6 +18,9 @@ open GlobalTheory.BigTop GlobalTheory.BigOn GlobalTheory.OntoChain GlobalTheory.
 
 namespace GlobalTheory.BigOn
 
+/- English proof (translation)
+Introduce `_ hT hS hB hE`. Establish `hP : PageSt` using `GlobalTheory.T.page_estimate_statement`. Establish `hG : GeoSt` using `GlobalTheory.T.geometric_from_page_estimate hP`. Conclude with `GlobalTheory.T.surjectivity_from_all_estimates GlobalTheory.T.runs_estimate_statement GlobalTheory.T.rational_estimate_statement hG (GlobalTheory.T.rank_at_places_from_comparison GlobalTheory.T.maximum_estimate_statement hG GlobalTheory.T.comparison_off_type_places) hT hS hB hE h …`.
+-/
 theorem ontoX_of_twist_shares_exp : ExportSt → TwistSt → ShareSt → BadSt → ExpSt → OntoX := by
   intro _ hT hS hB hE
   have hP : PageSt := GlobalTheory.T.page_estimate_statement

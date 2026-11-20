@@ -18,6 +18,9 @@ namespace GlobalTheory.ArcCM.EtaInt
 
 open GlobalTheory.CM.IntCoord (sc)
 
+/- English proof (translation)
+Use `Over.OverMorphism.ext ((spMap_comp_spMap _ _).trans ?_)` and prove the remaining obligations. Use `show spMap _ = spMap _`. Use `congr 1`. Use `RingHom.ext fun x => ?_` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp [epsScaleR, _root_.mul_assoc]`.
+-/
 theorem sc_mul {S : Type} [CommRing S] (s t : S) : sc s ≫ sc t = sc (s * t) := by
   refine Over.OverMorphism.ext ((spMap_comp_spMap _ _).trans ?_)
   show spMap _ = spMap _
@@ -25,6 +28,9 @@ theorem sc_mul {S : Type} [CommRing S] (s t : S) : sc s ≫ sc t = sc (s * t) :=
   refine RingHom.ext fun x => ?_
   ext <;> simp [epsScaleR, _root_.mul_assoc]
 
+/- English proof (translation)
+Use `(spMap_comp_spMap _ _).trans ?_` and prove the remaining obligations. Use `congr 1`. Use `RingHom.ext fun x => ?_` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp [dualMap]`.
+-/
 theorem dual_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap (dualMap g) ≫ spMap (dualMap f) = spMap (dualMap (g.comp f)) := by
   refine (spMap_comp_spMap _ _).trans ?_
@@ -32,6 +38,9 @@ theorem dual_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A �
   refine RingHom.ext fun x => ?_
   ext <;> simp [dualMap]
 
+/- English proof (translation)
+Use `show (spMap (epsScaleR (f a)) ≫ v'.left) ≫ φ = spMap (dualMap f) ≫ spMap (epsScaleR a) ≫ v.left`. Rewrite using `[Category.assoc, h, ← Category.assoc, ← Category.assoc]`. Conclude with `congrArg (· ≫ v.left) (LieCombBaseChange.dualMap_epsScale f a).symm`.
+-/
 theorem sc_over {A B : Type} [CommRing A] [CommRing B] {f : A →+* B} {G : Over (Sp A)} {G' : Over (Sp B)}
     {φ : G'.left ⟶ G.left} {v : epsR A ⟶ G} {v' : epsR B ⟶ G'} (h : v'.left ≫ φ = spMap (dualMap f) ≫ v.left) (a : A) :
     (sc (f a) ≫ v').left ≫ φ = spMap (dualMap f) ≫ (sc a ≫ v).left := by
@@ -39,6 +48,11 @@ theorem sc_over {A B : Type} [CommRing A] [CommRing B] {f : A →+* B} {G : Over
   rw [Category.assoc, h, ← Category.assoc, ← Category.assoc]
   exact congrArg (· ≫ v.left) (LieCombBaseChange.dualMap_epsScale f a).symm
 
+/- English proof (translation)
+Rewrite `hu`, `hw` using `[CM.IntCoord.isLieComb_iff]`. Establish `e` using `map_list_prod (preHom (G := G) (sc a)) (List.ofFn fun i => sc (c i) ≫ v i)`. Rewrite `e` using `[List.map_ofFn, ← hu]`. Use `hw.trans (Eq.trans ?_ e.symm)` and prove the remaining obligations. Use `congr 2`.
+
+Use function extensionality and compare the values at `i`. Use `show sc (a * c i) ≫ v i = sc a ≫ sc (c i) ≫ v i`. Rewrite using `[← Category.assoc, sc_mul]`.
+-/
 theorem eq_sc_of_isLieComb {S : Type} [CommRing S] {G : Over (Sp S)} [GrpObj G] {n : ℕ} {v : Fin n → (epsR S ⟶ G)}
     {c : Fin n → S} {a : S} {u w : epsR S ⟶ G} (hu : IsLieComb c v u) (hw : IsLieComb (a • c) v w) : w = sc a ≫ u := by
   rw [CM.IntCoord.isLieComb_iff] at hu hw
@@ -50,6 +64,9 @@ theorem eq_sc_of_isLieComb {S : Type} [CommRing S] {G : Over (Sp S)} [GrpObj G] 
   show sc (a * c i) ≫ v i = sc a ≫ sc (c i) ≫ v i
   rw [← Category.assoc, sc_mul]
 
+/- English proof (translation)
+Use `show _ ≫ spMap (epsScaleR a) ≫ v.left = _`. Rewrite using `[← Category.assoc, spMap_comp_spMap]`. Use `Eq.trans (congrArg (fun q => spMap q ≫ v.left) (RingHom.ext fun x => ?_)) h` and prove the remaining obligations. Simplify using `[epsScaleR]`.
+-/
 theorem isTangent_sc {S : Type} [CommRing S] {G : Over (Sp S)} [GrpObj G] {v : epsR S ⟶ G} (h : IsTangent v) (a : S) :
     IsTangent (sc a ≫ v) := by
   show _ ≫ spMap (epsScaleR a) ≫ v.left = _
@@ -57,6 +74,11 @@ theorem isTangent_sc {S : Type} [CommRing S] {G : Over (Sp S)} [GrpObj G] {v : e
   refine Eq.trans (congrArg (fun q => spMap q ≫ v.left) (RingHom.ext fun x => ?_)) h
   simp [epsScaleR]
 
+/- English proof (translation)
+Establish `gp` using `pull_grp p`. Set `U : Over.mk ((𝟙_ (Over (Sp B))).hom ≫ spMap f) ⟶ 𝟙_ (Over (Sp A))` to `toUnit _`. Establish `hU : U.left = spMap f` using `((Category.comp_id _).symm.trans (Over.w U)).trans (Category.id_comp _)`. Establish `e : pushHom gp _ (D'.c y) = preHom U (D.c (p.xe y))` using `Over.OverMorphism.ext ((p.c_pr y).trans (congrArg (· ≫ (D.c (p.xe y)).left) hU.symm))`. Establish `e' : pushHom gp _ (D'.c y ^ n) = pushHom gp _ 1`.
+
+Rewrite using `[map_pow, e, ← map_pow, h, map_one, map_one]`. Conclude with `Over.OverMorphism.ext (gp.1.hom_ext (congrArg (fun q => q.left) e') ((Over.w _).trans (Over.w _).symm))`.
+-/
 theorem c_pow_of_pull {A B : Type} [CommRing A] [IsDomain A] [CommRing B] [IsDomain B] {f : A →+* B}
     {D : Out.DegPre A} {D' : Out.DegPre B} (p : Out.IsPullDeg f D D') {n : ℕ} (h : ∀ y, D.c y ^ n = 1) (y : D'.X) :
     D'.c y ^ n = 1 := by
@@ -69,6 +91,15 @@ theorem c_pow_of_pull {A B : Type} [CommRing A] [IsDomain A] [CommRing B] [IsDom
     rw [map_pow, e, ← map_pow, h, map_one, map_one]
   exact Over.OverMorphism.ext (gp.1.hom_ext (congrArg (fun q => q.left) e') ((Over.w _).trans (Over.w _).symm))
 
+/- English proof (translation)
+Take `⟨sV, hV⟩` from `GlobalTheory.ArcCM.exists_isSplit hK V DV n hn hc`. Take `⟨sF, hF⟩` from `GlobalTheory.ArcCM.exists_isSplit hK F DF n hn (c_pow_of_pull pw hc)`. Take `rfl : e = sB _ (sc a ≫ u)` from `TorsionPairTest.isPull_unique he (hs.2.2 _ _ (sc a) u)`. Take `⟨h₁, h₂⟩` from `GlobalTheory.SplitBC.split_baseChange hK V F j DV DF pw n sV sF hj hV hF v _ h`. Use `⟨_, _, _, h₁ hv, h₂, (GlobalTheory.SplitBC.split_baseChange hK K F io DK DF pK n sB sF hio hs hF _ _ (sc_over hu₁ a)).2, ![sF _ (sc (x * io a) ≫ u₁)], ![sF _ 1, sF _ (sc (x * io a) ≫ u₁)], fun i => ?_, ?_, fun i => ?_, rfl⟩` and prove the remaining obligations.
+
+Take `rfl : i = 0` from `Subsingleton.elim _ _`. Use `hF.2.2 _ _ (sc x) (sc (io a) ≫ u₁)` as an intermediate fact. Rewrite `this` using `[← Category.assoc, sc_mul]`. Conclude with `this`. Use `hF.2.1 (epsR F) 1 1` as an intermediate fact.
+
+Rewrite `this` using `[_root_.mul_one]`. Conclude with `TanPart.isZero_of_isAdd this`. Take `rfl : i = 0` from `Subsingleton.elim _ _`. Use `hF.2.1 (epsR F) 1 (sc (x * io a) ≫ u₁)` as an intermediate fact. Rewrite `this` using `[_root_.one_mul]`.
+
+Conclude with `this`.
+-/
 theorem lift_through_split (hK : Known) {K V F : Type} [CommRing K] [IsDomain K] [IsNoetherianRing K] [CommRing V]
     [IsDomain V] [IsNoetherianRing V] [CommRing F] [IsDomain F] [IsNoetherianRing F] {io : K →+* F} {j : V →+* F}
     (hio : Function.Injective io) (hj : Function.Injective j) {DK : Out.DegPre K} {DV : Out.DegPre V} {DF : Out.DegPre F}
@@ -97,6 +128,13 @@ theorem lift_through_split (hK : Known) {K V F : Type} [CommRing K] [IsDomain K]
     rw [_root_.one_mul] at this
     exact this
 
+/- English proof (translation)
+Establish `h1 : w.valuation K (s : K) = 1` using `(w.valuation_eq_one_iff_notMem (K := K)).2 hs`. Establish `h0 : (s : K) ≠ 0` using `fun e => by rw [e, map_zero] at h1; exact zero_ne_one h1`. Establish `h2` using `ho.2 (s : K)`. Rewrite `h2` using `[vLa, h1, vV]`. Establish `h3 : valV Tv.V (io (s : K)) ≠ 0` using `valV_ne_zero ((map_ne_zero io).2 h0)`.
+
+Establish `h4 : valV Tv.V (io (s : K)) = 1`. Rewrite using `[← WithZero.exp_log h3]`. Simplify using `only [WithZero.log_one, neg_zero, mul_zero, neg_eq_zero] at h2`. Rewrite using `[h2, WithZero.exp_zero]`. Rewrite `h4` using `[← hρ]`.
+
+Establish `h5` using `((IsDiscreteValuationRing.maximalIdeal Tv.V).valuation_eq_one_iff_notMem (K := Tv.Fr)).1 h4`. Assume the negation of the conclusion as `hu`. Conclude with `h5 hu`.
+-/
 theorem isUnit_of_notMem {K : Type} [Field K] [NumberField K] {w : HeightOneSpectrum (𝓞 K)} {Tv : CDVR}
     {io : K →+* Tv.Fr} {ρ : 𝓞 K →+* Tv.V} (ho : OverLa w Tv.V io 1)
     (hρ : ∀ x, algebraMap Tv.V Tv.Fr (ρ x) = io (x : K)) {s : 𝓞 K} (hs : s ∉ w.asIdeal) : IsUnit (ρ s) := by
@@ -114,6 +152,9 @@ theorem isUnit_of_notMem {K : Type} [Field K] [NumberField K] {w : HeightOneSpec
   by_contra hu
   exact h5 hu
 
+/- English proof (translation)
+Use `Over.OverMorphism.ext (hB.1.1.hom_ext ?_ ((Over.w _).trans (Over.w _).symm))` and prove the remaining obligations. Unfold `LamLetters.IsLetter at h h'`. Apply the tactic sequence `rcases hs : L.src k with q | q <;> rw [hs] at h h' <;> exact h.trans h'.symm`.
+-/
 theorem letter_unique {E : Type} [Field E] [NumberField E] [IsCMField E] [StarRing (𝓞 E)]
     {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {l : Level H} {c : Coeff l} {nΨ n' : ℕ} {o : LamObj c nΨ n'} (L : LamLetters o)
     (hB : IsFibreOf o.B o.xB (gmap o.K₁) o.φB) {k : Fin o.xB.P.g} {u u' : epsR o.K₁ ⟶ o.xB.P.A} (h : L.IsLetter k u)
@@ -122,6 +163,13 @@ theorem letter_unique {E : Type} [Field E] [NumberField E] [IsCMField E] [StarRi
   unfold LamLetters.IsLetter at h h'
   rcases hs : L.src k with q | q <;> rw [hs] at h h' <;> exact h.trans h'.symm
 
+/- English proof (translation)
+Establish `hB` using `ho.2.2.2.1`. Take `⟨M, hM, -⟩` from `ho.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2 p`. Establish `hf` using `(isFibreOf_iff_isPolFibre _ _ (algebraMap (𝓞 o.K₁) o.K₁) o.B o.xB o.φB).1 hB`. Take `⟨s, hs, hm⟩` from `(isModelAt_integral_iff_mem_lieLat _ o.B o.xB o.φB hf p M hM _).1 (letter_integral_of_isLocGen E H l c nΨ n' f o La ho L hL p M hM k cl hcl)`. Take `⟨t, ht, w, hw, hc⟩` from `((CM.integral_tangent_coordinates _ o.B _).2.2.2.2.1 _).1 hm`.
+
+Take `⟨u', hu', hU⟩` from `hL.2.2.1 k`. Take `rfl` from `letter_unique L hB hu hu'`. Establish `e : s • cl • L.U k = ((s : o.K₁) * cl) • L.U k`. Rewrite using `[mul_smul]`. Conclude with `(algebraMap_smul o.K₁ s _).symm`.
+
+Establish `hc' : IsLieComb (((s : o.K₁) * cl) • L.U k) o.xB.v w` using `e ▸ hc`. Conclude with `⟨s, t, hs, ht, eq_sc_of_isLieComb hU hc' ▸ hw⟩`.
+-/
 theorem letter_integral {E : Type} [Field E] [NumberField E] [IsCMField E] [StarRing (𝓞 E)]
     {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {l : Level H} {c : Coeff l} {nΨ n' f : ℕ} {o : LamObj c nΨ n'} {La : ℝ}
     (ho : LamObjGood o f La) {L : LamLetters o} (hL : L.IsGood) (p : HeightOneSpectrum (𝓞 o.K₁)) {k : Fin o.xB.P.g}
@@ -148,6 +196,19 @@ namespace GlobalTheory.ArcCM
 open EtaInt
 open GlobalTheory.CM.IntCoord (sc)
 
+/- English proof (translation)
+Introduce `hK E _ _ _ H Dw l Xo c K₁ _ _ _ d n' La c₁ s w Tv io Wl M ρ ψ ho hρ hψ hsq hτ τ k m cl hk hcl`. Use `letI := H.starRing`. Take `⟨u, hu, he⟩` from `s.eta τ k m hk`. Establish `hcl' : IsLocGen w cl (s.L.ℓ m).I`. Establish `: s.line τ k = s.L.ℓ m` using `by unfold CMIn.line; rw [hk]; rfl`.
+
+Conclude with `this ▸ hcl`. Take `⟨r, t, hr, ht, hrt⟩` from `letter_integral s.good s.L_good w hcl' hu`. Take `⟨r', hr'⟩` from `(isUnit_of_notMem ho hρ hr).exists_left_inv`. Take `⟨v, hv, -⟩` from `existsUnique_isVecOver hψ.2.1.1 t`. Take `⟨u₁, hu₁, -⟩` from `existsUnique_isVecOver (pull_grp M.pK).1 u`.
+
+Take `⟨v₁, hv₁, -⟩` from `existsUnique_isVecOver (pull_grp M.pw).1 v`. Establish `hu₁' : u₁.left ≫ prj M.pK = spMap (dualMap io) ≫ u.left` using `hu₁`. Establish `hv₁' : v₁.left ≫ prj M.pw = spMap (dualMap (algebraMap Tv.V Tv.Fr)) ≫ v.left` using `hv₁`. Establish `hv' : v.left ≫ ψ = spMap (dualMap ρ) ≫ t.left` using `hv`. Establish `hrt' : (sc ((r : K₁) * cl) ≫ u).left ≫ s.φB = spMap (dualMap (algebraMap (𝓞 K₁) K₁)) ≫ t.left` using `hrt`.
+
+Establish `hring : (algebraMap Tv.V Tv.Fr).comp ρ = io.comp (algebraMap (𝓞 K₁) K₁)` using `RingHom.ext hρ`. Establish `e₁ : v₁ = sc (io ((r : K₁) * cl)) ≫ u₁`. Use `Over.OverMorphism.ext (((pull_grp M.pw).1.paste_horiz hψ.2.1.1).hom_ext ?_ ((Over.w _).trans (Over.w _).symm))` and prove the remaining obligations. Use `show v₁.left ≫ prj M.pw ≫ ψ = (sc (io ((r : K₁) * cl)) ≫ u₁).left ≫ prj M.pw ≫ ψ`. Establish `a₁ : v₁.left ≫ prj M.pw ≫ ψ = spMap (dualMap ((algebraMap Tv.V Tv.Fr).comp ρ)) ≫ t.left`.
+
+Rewrite using `[← Category.assoc, hv₁', Category.assoc, hv', ← Category.assoc, dual_comp]`. Establish `a₂ : (sc (io ((r : K₁) * cl)) ≫ u₁).left ≫ prj M.pK ≫ s.φB = spMap (dualMap (io.comp (algebraMap (𝓞 K₁) K₁))) ≫ t.left`. Rewrite using `[← Category.assoc, sc_over hu₁', Category.assoc, hrt', ← Category.assoc, dual_comp]`. Rewrite using `[a₁, hsq, a₂, hring]`. Establish `hn : (n' : K₁) ≠ 0` using `Nat.cast_ne_zero.2 s.n_pos.ne'`.
+
+Use `lift_through_split hK io.injective (IsFractionRing.injective Tv.V Tv.Fr) M.pK M.pw s.n_pos hτ.1 s.split he (isTangent_sc (hv.isTangent hψ.2.1 ht) r') hu₁' _ ?_` and prove the remaining obligations. Establish `e₂ : io ((n' : K₁) * cl) * io (n' : K₁)⁻¹ = algebraMap Tv.V Tv.Fr r' * io ((r : K₁) * cl)`. Rewrite using `[← map_mul, mul_right_comm, mul_inv_cancel₀ hn, _root_.one_mul, map_mul, ← hρ, ← _root_.mul_assoc, ← map_mul, hr', map_one, _root_.one_mul]`. Rewrite using `[e₂, ← sc_mul, Category.assoc, ← e₁]`. Conclude with `sc_over hv₁' r'`.
+-/
 theorem abelian_letter_integral : Known → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (K₁ : Type) [Field K₁] [NumberField K₁] [Algebra c.F K₁] (d : ArcDatum Xo c K₁) (n' : ℕ) (La c₁ : ℝ) (s : CMIn d.a d.e d.th d.jj n' La c₁) (w : HeightOneSpectrum (𝓞 K₁)) (Tv : CDVR) (io : K₁ →+* Tv.Fr) (Wl : ValuationSubring ℂ) (M : IntModel d Tv io Wl) (ρ : 𝓞 K₁ →+* Tv.V) (ψ : M.aw.D₀.P.A.left ⟶ s.B.A.left), OverLa w Tv.V io 1 → (∀ x, algebraMap Tv.V Tv.Fr (ρ x) = io (x : K₁)) → IsPolFibre ρ s.B M.aw.D₀.P ψ → prj M.pw ≫ ψ = prj M.pK ≫ s.φB → TauCan M.aw.D₀ n' → ∀ (τ : E →+* ℂ) (k : Fin (Dw.mult τ)) (m : Fin d.a.D₀.P.g) (cl : K₁), s.kind τ k = some m → IsLocGen w cl (s.line τ k).I → ∃ (ν : Out.GtPt M.aw.D₀ (epsR Tv.V)) (ν₁ e₂ : Out.GtPt M.aK.D₀ (epsR Tv.Fr)), GtTanR ν ∧ LetBC M.pw ν ν₁ ∧ LetBC M.pK (d.e τ k) e₂ ∧ GtComb ![io ((n' : K₁) * cl)] ![e₂] ν₁ := by
   intro hK E _ _ _ H Dw l Xo c K₁ _ _ _ d n' La c₁ s w Tv io Wl M ρ ψ ho hρ hψ hsq hτ τ k m cl hk hcl
   letI := H.starRing

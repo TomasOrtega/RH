@@ -20,6 +20,13 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp LL O : Type} [Field Qp] [
 def refInt : Representation O G (↥Γ.T₀.L.T × (Fin t → O)) :=
   Γ.W₀.prod (piRep fun c : Fin t => Γ.Wchi (c.val + 1))
 
+/- English proof (translation)
+Set `p : (↥Γ.T₀.L.T × (Fin t → O)) →ₗ[O] (QuotSMulTop Γ.lam ↥Γ.T₀.L.T × (Fin t → QuotSMulTop Γ.lam O))` to `(Submodule.mkQ _).prodMap ((Submodule.mkQ _).compLeft (Fin t))`. Establish `hp : ∀ x, p x = (Submodule.Quotient.mk x.1, fun c => Submodule.Quotient.mk (x.2 c))` using `fun _ => rfl`. Use `StdAdm.exists_modRep_equiv _ _ _ p ?_ ?_ (fun _ _ => rfl)` and prove the remaining obligations. Introduce and unpack `⟨a, b⟩`. Take `⟨a, rfl⟩` from `Submodule.Quotient.mk_surjective _ a`.
+
+Use `choose b' hb' using fun c => Submodule.Quotient.mk_surjective _ (b c)`. Conclude with `⟨(a, b'), Prod.ext rfl (funext hb')⟩`. Introduce `x`. Rewrite using `[hp, Prod.ext_iff, funext_iff]`. Simplify using `only [Prod.fst_zero, Prod.snd_zero, Pi.zero_apply, Submodule.Quotient.mk_eq_zero, Submodule.mem_smul_pointwise_iff_exists, Submodule.mem_top, true_and]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨a, ha⟩, hb⟩ choose b hb using hb`. Conclude with `⟨(a, b), Prod.ext ha (funext hb)⟩`. Introduce and unpack `⟨y, rfl⟩`. Conclude with `⟨⟨_, rfl⟩, fun c => ⟨_, rfl⟩⟩`.
+-/
 theorem exists_refInt_equiv :
     ∃ e : QuotSMulTop Γ.lam (↥Γ.T₀.L.T × (Fin t → O)) ≃ₗ[O]
       (QuotSMulTop Γ.lam ↥Γ.T₀.L.T × (Fin t → QuotSMulTop Γ.lam O)),
@@ -44,6 +51,9 @@ theorem exists_refInt_equiv :
     · rintro ⟨y, rfl⟩
       exact ⟨⟨_, rfl⟩, fun c => ⟨_, rfl⟩⟩
 
+/- English proof (translation)
+Establish `h : refInt Γ t g = (Γ.W₀ g).prodMap (Matrix.toLin' (Matrix.diagonal fun c : Fin t => (Γ.chi (c.val + 1) g : O)))`. Use `LinearMap.ext fun x => Prod.ext rfl (funext fun c => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(Γ.chi (c.val + 1) g : O) • x.2 c = Matrix.mulVec _ x.2 c`. Rewrite using `[Matrix.mulVec_diagonal, smul_eq_mul]`. Rewrite using `[h, LinearMap.charpoly_prodMap, Matrix.charpoly_toLin', Matrix.charpoly_diagonal]`.
+-/
 theorem charpoly_refInt [Nontrivial O] [Module.Free O ↥Γ.T₀.L.T] [Module.Finite O ↥Γ.T₀.L.T] (g : G) :
     LinearMap.charpoly (refInt Γ t g) =
       LinearMap.charpoly (Γ.W₀ g) * ∏ c : Fin t, (X - C (Γ.chi (c.val + 1) g : O)) := by
@@ -54,6 +64,13 @@ theorem charpoly_refInt [Nontrivial O] [Module.Free O ↥Γ.T₀.L.T] [Module.Fi
     rw [Matrix.mulVec_diagonal, smul_eq_mul]
   rw [h, LinearMap.charpoly_prodMap, Matrix.charpoly_toLin', Matrix.charpoly_diagonal]
 
+/- English proof (translation)
+Use `L.free` as an intermediate fact. Use `Γ.T₀.L.free` as an intermediate fact. Establish `: Module.Finite O L.T` using `Module.Finite.iff_fg.2 L.fg`. Establish `: Module.Finite O Γ.T₀.L.T` using `Module.Finite.iff_fg.2 Γ.T₀.L.fg`. Take `⟨e, he⟩` from `exists_refInt_equiv Γ t`.
+
+Establish `h1 : SameSS (modRep (latRep L) Γ.lam) (Γ.refRep t) ↔ SameSS (modRep (latRep L) Γ.lam) (modRep (refInt Γ t) Γ.lam)` using `⟨fun h => StdAdm.sameSS_of_equiv h e.symm fun g x => by`. Rewrite using `[LinearEquiv.symm_apply_eq, he, LinearEquiv.apply_symm_apply],`. Use `fun h => StdAdm.sameSS_of_equiv h e he⟩`. Rewrite using `[h1, GlobalTheory.RedCharpoly.sameSS_modRep_iff _ _ _ (PrincipalIdealRing.isMaximal_of_irreducible hlam)]`. Use `forall_congr' fun g => forall_congr' fun j => exists_congr fun y => ?_` and prove the remaining obligations.
+
+Establish `h2 : ∏ c : Fin t, (X - C (algebraMap O LL (Γ.chi (c.val + 1) g))) = (∏ c : Fin t, (X - C (Γ.chi (c.val + 1) g : O))).map (algebraMap O LL)`. Simplify using `[Polynomial.map_prod]`. Rewrite using `[GlobalTheory.RedCharpoly.charpoly_lattice L, GlobalTheory.RedCharpoly.charpoly_lattice Γ.T₀.L, h2, ← Polynomial.map_mul, ← Polynomial.map_sub, Polynomial.coeff_map, charpoly_refInt]`. Conclude with `(IsFractionRing.injective O LL).eq_iff.symm`.
+-/
 theorem sameSS_refRep_iff [IsDomain O] [IsDiscreteValuationRing O] [IsFractionRing O LL]
     (hlam : Irreducible Γ.lam) {V : Type} [AddCommGroup V] [Module LL V] [Module O V] [IsScalarTower O LL V]
     [FiniteDimensional LL V] {ρ : Representation LL G V} (L : Lattice (O := O) ρ) :
@@ -83,6 +100,9 @@ end Ref
 
 variable {l : ℕ} [Fact l.Prime] {P : LocPrime l} (S : TopSit P)
 
+/- English proof (translation)
+Take `⟨⟨_, h1, h2⟩, -, -, h3, -⟩` from `GlobalTheory.LocalIntegers.goodO_integers l S.LL`. Establish `hlam : Irreducible S.Γ.lam` using `S.hyp.1.2.2.2.2.2`. Conclude with `and_congr_right fun _ => ⟨fun h => (sameSS_refRep_iff S.Γ S.D.t hlam T.L).1 (h T.L), fun h L => (sameSS_refRep_iff S.Γ S.D.t hlam L).2 h⟩`.
+-/
 theorem full_iff (T : LocLat S.G ℚ_[l] ↥S.LL.1 S.O) :
     Full (P.PD S.K) S.emb S.Γ S.D.t S.D.Ut T ↔ CrysWith (P.PD S.K) S.emb T.ρ S.D.Ut ∧ ∀ g j, ∃ y : S.O,
       (LinearMap.charpoly (T.ρ g) - LinearMap.charpoly (S.Γ.T₀.ρ g) *
@@ -93,18 +113,41 @@ theorem full_iff (T : LocLat S.G ℚ_[l] ↥S.LL.1 S.O) :
   exact and_congr_right fun _ => ⟨fun h => (sameSS_refRep_iff S.Γ S.D.t hlam T.L).1 (h T.L),
     fun h L => (sameSS_refRep_iff S.Γ S.D.t hlam L).2 h⟩
 
+/- English proof (translation)
+Take `⟨n, rfl⟩` from `PadicInt.ideal_eq_span_pow_p hI`. Rewrite using `[← PadicInt.ker_toZModPow]`. Conclude with `Finite.of_injective _ (RingHom.kerLift_injective (PadicInt.toZModPow n))`.
+-/
 theorem hasFiniteQuotients_padicInt : Ring.HasFiniteQuotients ℤ_[l] where
   finiteQuotient {I} hI := by
     obtain ⟨n, rfl⟩ := PadicInt.ideal_eq_span_pow_p hI
     rw [← PadicInt.ker_toZModPow]
     exact Finite.of_injective _ (RingHom.kerLift_injective (PadicInt.toZModPow n))
 
+/- English proof (translation)
+Use `hasFiniteQuotients_padicInt (l := l)` as an intermediate fact. Establish `: FiniteDimensional ℚ_[l] ↥LL.1` using `LL.2`. Establish `: Module.Finite ℤ_[l] ↥(OL LL)` using `IsIntegralClosure.finite ℤ_[l] ℚ_[l] ↥LL.1 (integralClosure ℤ_[l] ↥LL.1)`. Conclude with `Ring.HasFiniteQuotients.of_module_finite ℤ_[l] _`.
+-/
 theorem hasFiniteQuotients_OL (LL : FinExt l) : Ring.HasFiniteQuotients ↥(OL LL) := by
   have := hasFiniteQuotients_padicInt (l := l)
   have : FiniteDimensional ℚ_[l] ↥LL.1 := LL.2
   have : Module.Finite ℤ_[l] ↥(OL LL) := IsIntegralClosure.finite ℤ_[l] ℚ_[l] ↥LL.1 (integralClosure ℤ_[l] ↥LL.1)
   exact Ring.HasFiniteQuotients.of_module_finite ℤ_[l] _
 
+/- English proof (translation)
+Establish `: Module.Finite O L₁.T` using `Module.Finite.iff_fg.2 L₁.fg`. Establish `: Module.Finite O M` using `Module.Finite.of_surjective p hp`. Establish `h1 : ∀ x : V, ∃ a : nonZeroDivisors O, (a : O) • x ∈ L₂.T`. Introduce `x`. Establish `hx : x ∈ Submodule.span LL (L₂.T : Set V)` using `by rw [L₂.span]; trivial`.
+
+Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx => exact ⟨1, by simpa using hx⟩`. Consider the case `zero => exact ⟨1, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨a, ha⟩` from `hx`.
+
+Take `⟨b, hb⟩` from `hy`. Use `⟨a * b, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add, Submonoid.coe_mul]`. Use `L₂.T.add_mem ?_ ?_` and prove the remaining obligations. Rewrite using `[mul_comm, mul_smul]`.
+
+Conclude with `L₂.T.smul_mem _ ha`. Rewrite using `[mul_smul]`. Conclude with `L₂.T.smul_mem _ hb`. Consider the case `smul c x _ hx`. Take `⟨a, ha⟩` from `hx`.
+
+Take `⟨⟨y, b⟩, hb⟩` from `IsLocalization.surj (nonZeroDivisors O) c`. Use `⟨a * b, ?_⟩` and prove the remaining obligations. Establish `: ((a * b : nonZeroDivisors O) : O) • c • x = y • ((a : O) • x)`. Rewrite using `[Submonoid.coe_mul, mul_smul, smul_comm y, ← algebraMap_smul LL (b : O), smul_smul, mul_comm, hb, algebraMap_smul]`. Rewrite using `[this]`.
+
+Conclude with `L₂.T.smul_mem _ ha`. Establish `ht : Module.IsTorsion O M`. Introduce `m`. Take `⟨x, rfl⟩` from `hp m`. Take `⟨a, ha⟩` from `h1 x`.
+
+Conclude with `⟨a, by rw [Submonoid.smul_def, ← map_smul]; exact hk _ ha⟩`. Take `⟨r, hr, hr0⟩` from `Submodule.annihilator_top_inter_nonZeroDivisors ht`. Establish `: Finite (O ⧸ Ideal.span {r})` using `Ring.HasFiniteQuotients.finiteQuotient (by rw [Ne, Ideal.span_singleton_eq_bot]; exact nonZeroDivisors.ne_zero hr0)`. Establish `hb : Ideal.span {r} • (⊤ : Submodule O M) = ⊥` using `Submodule.le_annihilator_iff.1 ((Ideal.span_singleton_le_iff_mem _).2 hr)`. Establish `: Finite (M ⧸ Ideal.span {r} • (⊤ : Submodule O M))` using `Submodule.finite_quotient_smul _ Module.Finite.fg_top`.
+
+Conclude with `Finite.of_equiv _ (Submodule.quotEquivOfEqBot _ hb).toEquiv`.
+-/
 theorem finite_of_lattices {G LL O V M : Type} [Group G] [Field LL] [CommRing O] [IsDomain O] [Algebra O LL]
     [IsFractionRing O LL] [Ring.HasFiniteQuotients O] [AddCommGroup V] [Module LL V] [Module O V]
     [IsScalarTower O LL V] [AddCommGroup M] [Module O M] {ρ : Representation LL G V}
@@ -151,6 +194,9 @@ theorem finite_of_lattices {G LL O V M : Type} [Group G] [Field LL] [CommRing O]
 
 attribute [local instance 10000] GRep.modO LocLat.modO GRep.towO LocLat.towO Submodule.module
 
+/- English proof (translation)
+Take `⟨⟨_, h1, h2⟩, -, -, h3, h4⟩` from `GlobalTheory.LocalIntegers.goodO_integers l S.LL`. Use `GlobalTheory.BlochKatoIntegralScalars.compactSpace_GK S.K` as an intermediate fact. Conclude with `GlobalTheory.CrysExt.exists_lattice h4 A.ρ A.cont`.
+-/
 theorem nonempty_lattice (A : GRep S.G ℚ_[l] ↥S.LL.1 S.O) : Nonempty (Lattice (O := S.O) A.ρ) := by
   obtain ⟨⟨_, h1, h2⟩, -, -, h3, h4⟩ := GlobalTheory.LocalIntegers.goodO_integers l S.LL
   have := GlobalTheory.BlochKatoIntegralScalars.compactSpace_GK S.K
@@ -175,6 +221,9 @@ def ofLoc (T : LocLat S.G ℚ_[l] ↥S.LL.1 S.O) : GRep S.G ℚ_[l] ↥S.LL.1 S.
   ρ := T.ρ
   cont := T.cont
 
+/- English proof (translation)
+Rewrite using `[full_iff, CrysWith, and_assoc]`. Simplify using `only [HasJumps, hj]`. Both sides reduce to the same expression.
+-/
 theorem full_iff_polyFull {jT : ZMod S.n → ℤ → ℤ} (hj : ∀ i a, ((S.D.Ut i).count a : ℤ) = jT i a)
     (T : LocLat S.G ℚ_[l] ↥S.LL.1 S.O) :
     Full (P.PD S.K) S.emb S.Γ S.D.t S.D.Ut T ↔ PolyFull S jT (ofLoc S T) := by
@@ -184,6 +233,11 @@ theorem full_iff_polyFull {jT : ZMod S.n → ℤ → ℤ} (hj : ∀ i a, ((S.D.U
 
 set_option synthInstance.maxHeartbeats 200000 in
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, μ, T, ⟨F, hF, e, he⟩, L₂, p, h1, h2, h3, h4⟩`. Conclude with `⟨μ, fun j => ofLoc S (F j), ofLoc S T, e, T.L, L₂, p, fun j => (full_iff_polyFull S hj _).1 (hF j), he, h1, h2, h3, h4⟩`. Introduce and unpack `⟨μ, F, A, e, L₁, L₂, p, hF, he, h1, h2, h3, h4⟩`. Take `⟨⟨_, -, h6⟩, -⟩` from `GlobalTheory.LocalIntegers.goodO_integers l S.LL`.
+
+Use `hasFiniteQuotients_OL S.LL` as an intermediate fact. Conclude with `⟨finite_of_lattices L₁ L₂ p h2 fun x => (h4 x).2, μ, toLoc S A L₁, ⟨fun j => toLoc S (F j) (nonempty_lattice S (F j)).some, fun j => (full_iff_polyFull S hj _).2 (hF j), e, he⟩, L₂, p, h1, h2, h3, h4⟩`.
+-/
 theorem admissibleModule_iff_lattice_quotients {jT : ZMod S.n → ℤ → ℤ} (hj : ∀ i a, ((S.D.Ut i).count a : ℤ) = jT i a)
     {M : Type} [AddCommGroup M] [Module S.O M] (π : Representation S.O S.G M) :
     S.admitted π ↔ ∃ (μ : ℕ) (F : Fin μ → GRep S.G ℚ_[l] ↥S.LL.1 S.O) (A : GRep S.G ℚ_[l] ↥S.LL.1 S.O)

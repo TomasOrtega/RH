@@ -14,6 +14,15 @@ section Helpers
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
 
+/- English proof (translation)
+Set `L : H →ₗᵢ[ℂ] H` to `⟨U.toLinearMap, hU⟩`. Set `f : S →ₗ[ℂ] S` to `{ toFun := fun x => ⟨U x, hS x x.2⟩ map_add' := by intro x y; ext; simp map_smul' := by intro c x; ext; simp }`. Establish `hinj : Function.Injective f`. Introduce `a b hab`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Apply `L.injective` to reduce the goal to its premises. Conclude with `congrArg Subtype.val hab`. Establish `hsurj` using `LinearMap.injective_iff_surjective.mp hinj`. Rewrite `hv`, the goal using `[Submodule.mem_orthogonal]`. Introduce `u hu`.
+
+Take `⟨s, hs⟩` from `hsurj ⟨u, hu⟩`. Establish `hsu : U (s : H) = u` using `congrArg Subtype.val hs`. Rewrite using `[← hsu]`. Establish `key : inner ℂ (U (s : H)) (U v) = inner ℂ (s : H) v` using `L.inner_map_map (s : H) v`. Rewrite using `[key]`.
+
+Conclude with `hv _ s.2`.
+-/
 theorem kfin_mapsTo_orth (U : H →L[ℂ] H) (hU : ∀ x, ‖U x‖ = ‖x‖) (S : Submodule ℂ H)
     [FiniteDimensional ℂ S] (hS : ∀ x ∈ S, U x ∈ S) {v : H} (hv : v ∈ Sᗮ) : U v ∈ Sᗮ := by
   let L : H →ₗᵢ[ℂ] H := ⟨U.toLinearMap, hU⟩
@@ -36,6 +45,11 @@ theorem kfin_mapsTo_orth (U : H →L[ℂ] H) (hU : ∀ x, ‖U x‖ = ‖x‖) (
   rw [key]
   exact hv _ s.2
 
+/- English proof (translation)
+Apply `Submodule.eq_starProjection_of_mem_of_inner_eq_zero` to reduce the goal to its premises. Conclude with `hS _ (Submodule.starProjection_apply_mem S w)`. Introduce `x hx`. Establish `hmem : w - S.starProjection w ∈ Sᗮ` using `Submodule.sub_starProjection_mem_orthogonal w`. Establish `h2` using `kfin_mapsTo_orth U hU S hS hmem`.
+
+Rewrite `h2` using `[map_sub]`. Conclude with `Submodule.inner_left_of_mem_orthogonal hx h2`.
+-/
 theorem kfin_starProj_comm (U : H →L[ℂ] H) (hU : ∀ x, ‖U x‖ = ‖x‖) (S : Submodule ℂ H)
     [FiniteDimensional ℂ S] [S.HasOrthogonalProjection] (hS : ∀ x ∈ S, U x ∈ S) (w : H) :
     S.starProjection (U w) = U (S.starProjection w) := by
@@ -49,6 +63,13 @@ theorem kfin_starProj_comm (U : H →L[ℂ] H) (hU : ∀ x, ‖U x‖ = ‖x‖)
 
 end Helpers
 
+/- English proof (translation)
+Unfold `Kset`. Rewrite using `[Set.mem_setOf_eq]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mem_unitaryGroup_iff, Matrix.star_eq_conjTranspose, Matrix.diagonal_conjTranspose, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `a`. Rewrite using `[Pi.star_apply, Complex.star_def, Complex.mul_conj, Complex.normSq_eq_norm_sq, Complex.norm_exp_ofReal_mul_I]`. Evaluate the numerical expressions. Unfold `Jm`. Rewrite using `[Matrix.diagonal_mul_diagonal, Matrix.diagonal_mul_diagonal]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `a`. Conclude with `mul_comm _ _`.
+-/
 theorem kfin_diag_mem_Kset (ε : Fin n → Bool) (θ : Fin n → ℝ) :
     Matrix.diagonal (fun a => Complex.exp ((θ a : ℂ) * Complex.I)) ∈ Kset ε := by
   unfold Kset
@@ -72,6 +93,17 @@ section Wt
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] {ε : Fin n → Bool}
   {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)}
 
+/- English proof (translation)
+Choose the witnesses or unpack the hypotheses as in `⟨a, ha⟩ : ∃ a, μ a ≠ ν a := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hne (funext h)`. Establish `hd : ν a - μ a ≠ 0` using `sub_ne_zero.mpr (Ne.symm ha)`.
+
+Use `set c : ℝ := Real.pi / (ν a - μ a) with hc`. Establish `hπ : (ν a - μ a) * c = Real.pi` using `by rw [hc]; field_simp`. Set `θ : Fin n → ℝ` to `fun b => if b = a then c else 0`. Establish `hs : ∀ f : Fin n → ℝ, ∑ b, f b * θ b = f a * c`. Introduce `f`.
+
+Simplify using `only [θ, mul_ite, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Take `⟨h1, h2⟩` from `kfin_diag_mem_Kset (n := n) ε θ`. Establish `hK : Matrix.diagonal (fun b => Complex.exp ((θ b : ℂ) * Complex.I)) ∈ Formalism.REAL.Kset ε` using `kfin_diag_mem_Kset ε θ`. Establish `hU : Matrix.diagonal (fun b => Complex.exp ((θ b : ℂ) * Complex.I)) ∈ UJset ε` using `by show _ * Jm ε * _ = Jm ε`. Rewrite using `[Matrix.mul_assoc, ← h2, ← Matrix.mul_assoc, ← Matrix.star_eq_conjTranspose, (Matrix.mem_unitaryGroup_iff').mp h1, Matrix.one_mul]`.
+
+Take `⟨-, hiso, -⟩` from `hσ`. Set `L : H →ₗᵢ[ℂ] H` to `⟨(σ (Matrix.diagonal (fun b => Complex.exp ((θ b : ℂ) * Complex.I)))).toLinearMap, hiso _ hU⟩`. Establish `hinner : inner ℂ (σ (Matrix.diagonal (fun b => Complex.exp ((θ b : ℂ) * Complex.I))) v) (σ (Matrix.diagonal (fun b => Complex.exp ((θ b : ℂ) * Complex.I))) w) = inner ℂ v w` using `L.inner_map_map v w`. Rewrite `hinner` using `[hv θ hK, hw θ hK, inner_smul_left, inner_smul_right, hs μ, hs ν, ← Complex.exp_conj, map_mul, Complex.conj_ofReal, Complex.conj_I, ← mul_assoc, ← Complex.exp_add]`. Establish `hexp : ((μ a * c : ℝ) : ℂ) * -Complex.I + ((ν a * c : ℝ) : ℂ) * Complex.I = (Real.pi : ℂ) * Complex.I`.
+
+Rewrite using `[← hπ]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hinner` using `[hexp, Complex.exp_pi_mul_I]`. Take the linear combination `(-1 / 2 : ℂ) * hinner`.
+-/
 theorem kfin_wt_orth (hσ : IsURepOn (UJset ε) σ) {μ ν : Fin n → ℝ} {v w : H}
     (hv : Formalism.MainNotions.S.IsWtOn (Formalism.REAL.Kset ε) σ μ v) (hw : Formalism.MainNotions.S.IsWtOn (Formalism.REAL.Kset ε) σ ν w)
     (hne : μ ≠ ν) : inner ℂ v w = 0 := by
@@ -108,6 +140,13 @@ theorem kfin_wt_orth (hσ : IsURepOn (UJset ε) σ) {μ ν : Fin n → ℝ} {v w
   rw [hexp, Complex.exp_pi_mul_I] at hinner
   linear_combination (-1 / 2 : ℂ) * hinner
 
+/- English proof (translation)
+Establish `hc : ∀ μ : {μ : Fin n → ℝ | ∃ s ∈ S, s ≠ 0 ∧ Formalism.MainNotions.S.IsWtOn (Formalism.REAL.Kset ε) σ μ s}, ∃ s ∈ S, s ≠ 0 ∧ Formalism.MainNotions.S.IsWtOn (Formalism.REAL.Kset ε) σ (μ : Fin n → ℝ) s` using `fun μ => μ.2`. Use `choose f hfS hf0 hfw using hc`. Set `g : {μ : Fin n → ℝ | ∃ s ∈ S, s ≠ 0 ∧ Formalism.MainNotions.S.IsWtOn (Formalism.REAL.Kset ε) σ μ s} → S` to `fun μ => ⟨f μ, hfS μ⟩`. Establish `hli : LinearIndependent ℂ (S.subtype ∘ g)`. Apply `linearIndependent_of_ne_zero_of_inner_eq_zero` to reduce the goal to its premises.
+
+Introduce `i`. Conclude with `hf0 i`. Introduce `i j hij`. Conclude with `kfin_wt_orth hσ (hfw i) (hfw j) (fun h => hij (Subtype.ext h))`. Establish `hfin` using `(LinearIndependent.of_comp S.subtype hli).finite`.
+
+Conclude with `Set.finite_coe_iff.mp hfin`.
+-/
 theorem kfin_wts_finite (hσ : IsURepOn (UJset ε) σ) (S : Submodule ℂ H) [FiniteDimensional ℂ S] :
     {μ : Fin n → ℝ | ∃ s ∈ S, s ≠ 0 ∧ Formalism.MainNotions.S.IsWtOn (Formalism.REAL.Kset ε) σ μ s}.Finite := by
   classical
@@ -133,6 +172,63 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] {ε : Fin 
   {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {D : Submodule ℂ H}
   {E : Fin n → Fin n → Module.End ℂ D} {V : Submodule ℂ D}
 
+/- English proof (translation)
+Establish `hE` using `hD.glRep`. Establish `hU : IsInfUnitary ε E` using `isInfUnitary_of_isDerivedOn hσ hD`. Establish `hUK : IsKUnitary ε E` using `isKUnitary_of_isInfUnitary hU`. Use `haveI : CompleteSpace S := FiniteDimensional.complete ℂ S`. Use `set Lm : Submodule ℂ D := layer ε E V m with hLm`.
+
+Establish `hLmf : FiniteDimensional ℂ Lm` using `finiteDimensional_layer hVf m`. Use `haveI : CompleteSpace Lm := FiniteDimensional.complete ℂ Lm`. Use `set Fm : Submodule ℂ H := Lm.map D.subtype with hFm`. Establish `hFmf : FiniteDimensional ℂ Fm` using `Module.Finite.map Lm D.subtype`. Use `haveI : CompleteSpace Fm := FiniteDimensional.complete ℂ Fm`.
+
+Introduce `x hx`. Assume the negation of the conclusion as `hxF`. Take `⟨y, hy⟩ : ∃ y, y = x - Fm.starProjection x` from `⟨_, rfl⟩`. Establish `hy0 : y ≠ 0`. Introduce `h`.
+
+Apply `hxF` to reduce the goal to its premises. Rewrite using `[← Submodule.starProjection_eq_self_iff]`. Rewrite `h` using `[hy]`. Conclude with `(sub_eq_zero.1 h).symm`. Establish `hyF : y ∈ Fmᗮ` using `hy ▸ Fm.sub_starProjection_mem_orthogonal x`.
+
+Establish `hFcl : Fm ≤ closGen E V` using `(Submodule.map_mono (layer_le_genSub m)).trans (Submodule.le_topologicalClosure _)`. Establish `hycl : y ∈ ((genSub E V).map D.subtype).topologicalClosure`. Rewrite using `[hy]`. Conclude with `Submodule.sub_mem _ (hS hx) (hFcl (Fm.starProjection_apply_mem x))`. Choose the witnesses or unpack the hypotheses as in `⟨z0, hz0M, hz0⟩ : ∃ z0 : D, z0 ∈ genSub E V ∧ inner ℂ (z0 : H) y ≠ 0 := by`.
+
+Assume the negation of the conclusion as `hno`. Use `push_neg at hno`. Establish `hyo : y ∈ ((genSub E V).map D.subtype)ᗮ`. Rewrite using `[Submodule.mem_orthogonal]`. Introduce and unpack `u ⟨z1, hz1, rfl⟩`.
+
+Conclude with `hno z1 hz1`. Rewrite `hyo` using `[← Submodule.orthogonal_closure]`. Use `(Submodule.inf_orthogonal_eq_bot _).le ⟨hycl, hyo⟩` as an intermediate fact. Conclude with `hy0 ((Submodule.mem_bot ℂ).1 this)`. Take `⟨l0, hl0⟩` from `exists_layer_of_mem_genSub hE hVk hz0M`.
+
+Establish `hLlf : FiniteDimensional ℂ (layer ε E V (max l0 m))` using `finiteDimensional_layer hVf _`. Take `⟨GD, hGD⟩ : ∃ GD : Submodule ℂ D, GD = layer ε E V (max l0 m) ⊓ Lmᗮ` from `⟨_, rfl⟩`. Take `⟨z', hz'⟩ : ∃ z' : D, z' = z0 - Lm.starProjection z0` from `⟨_, rfl⟩`. Establish `hz'GD : z' ∈ GD`. Rewrite using `[hGD, hz']`.
+
+Conclude with `⟨Submodule.sub_mem _ (layer_mono (le_max_left l0 m) hl0) (layer_mono (le_max_right l0 m) (Lm.starProjection_apply_mem z0)), Lm.sub_starProjection_mem_orthogonal z0⟩`. Establish `hz'Lm : z' ∈ Lmᗮ`. Rewrite `hz'GD` using `[hGD]`. Conclude with `hz'GD.2`. Establish `hz'x : inner ℂ (z' : H) x ≠ 0`.
+
+Establish `e1 : inner ℂ (z' : H) (Fm.starProjection x) = 0`. Take `⟨f, hf, hfx⟩` from `Submodule.mem_map.1 (Fm.starProjection_apply_mem x)`. Rewrite using `[← hfx]`. Use `(Submodule.mem_orthogonal' _ _).1 hz'Lm f hf` as an intermediate fact. Rewrite `this` using `[Submodule.coe_inner]`.
+
+Conclude with `this`. Establish `e2 : inner ℂ ((Lm.starProjection z0 : D) : H) y = 0` using `(Submodule.mem_orthogonal _ _).1 hyF _ (Submodule.mem_map_of_mem (Lm.starProjection_apply_mem z0))`. Establish `e3 : inner ℂ (z' : H) x = inner ℂ (z' : H) y + inner ℂ (z' : H) (Fm.starProjection x)`. Rewrite using `[← inner_add_right, hy, sub_add_cancel]`. Establish `e4 : inner ℂ (z' : H) y = inner ℂ (z0 : H) y`.
+
+Rewrite using `[hz', Submodule.coe_sub, inner_sub_left, e2, sub_zero]`. Rewrite using `[e3, e1, add_zero, e4]`. Conclude with `hz0`. Establish `hLmk` using `layer_kStable hE hVk m`. Establish `hGDk : IsKStableSub ε E GD`.
+
+Rewrite using `[hGD]`. Introduce `a b hab v hv`. Use `⟨layer_kStable hE hVk _ a b hab v hv.1, ?_⟩` and prove the remaining obligations. Use `(Submodule.mem_orthogonal' _ _).2 fun u hu => ?_` and prove the remaining obligations. Rewrite using `[hUK a b hab v u]`.
+
+Conclude with `(Submodule.mem_orthogonal' _ _).1 hv.2 _ (hLmk b a hab.symm u hu)`. Establish `hGDf : FiniteDimensional ℂ GD`. Rewrite using `[hGD]`. Conclude with `Submodule.finiteDimensional_of_le inf_le_left`. Establish `hGDL : GD ≤ layer ε E V (max l0 m)` using `by rw [hGD]; exact inf_le_left`.
+
+Establish `hGDo : GD ≤ Lmᗮ` using `by rw [hGD]; exact inf_le_right`. Establish `hGDK` using `kStable_of_isKStableSub hσ hD GD hGDf hGDk`. Take `⟨G0, hG0⟩ : ∃ G0 : Submodule ℂ D, G0 = GD ⊓ (Sᗮ).comap D.subtype` from `⟨_, rfl⟩`. Establish `hG0GD : G0 ≤ GD` using `by rw [hG0]; exact inf_le_left`. Establish `hG0S : ∀ v ∈ G0, (v : H) ∈ Sᗮ`.
+
+Introduce `v hv`. Rewrite `hv` using `[hG0]`. Conclude with `hv.2`. Establish `hG0mem : ∀ v ∈ GD, (v : H) ∈ Sᗮ → v ∈ G0`. Introduce `v hv hvS`.
+
+Rewrite using `[hG0]`. Conclude with `⟨hv, hvS⟩`. Establish `hG0f : FiniteDimensional ℂ G0` using `Submodule.finiteDimensional_of_le hG0GD`. Use `haveI : CompleteSpace G0 := FiniteDimensional.complete ℂ G0`. Establish `hG0K : ∀ k ∈ Kset ε, ∀ v ∈ G0, ∃ w ∈ G0, (w : H) = σ k v`.
+
+Introduce `k hk v hv`. Take `⟨w, hw, hwv⟩` from `hGDK k hk v (hG0GD hv)`. Use `⟨w, hG0mem w hw ?_, hwv⟩` and prove the remaining obligations. Rewrite using `[hwv]`. Conclude with `kfin_mapsTo_orth (σ k) (hσ.2.1 k (closure_inUJ_of_mem_Kset hk)) S (hSK k hk) (hG0S v hv)`.
+
+Establish `hG0k : IsKStableSub ε E G0` using `isKStableSub_of_kStable hσ hD G0 hG0f hG0K`. Take `⟨G1, hG1⟩ : ∃ G1 : Submodule ℂ D, G1 = GD ⊓ G0ᗮ` from `⟨_, rfl⟩`. Establish `hG1f : FiniteDimensional ℂ G1`. Rewrite using `[hG1]`. Conclude with `Submodule.finiteDimensional_of_le inf_le_left`.
+
+Establish `hG1k : IsKStableSub ε E G1`. Rewrite using `[hG1]`. Introduce `a b hab v hv`. Use `⟨hGDk a b hab v hv.1, ?_⟩` and prove the remaining obligations. Use `(Submodule.mem_orthogonal' _ _).2 fun u hu => ?_` and prove the remaining obligations.
+
+Rewrite using `[hUK a b hab v u]`. Conclude with `(Submodule.mem_orthogonal' _ _).1 hv.2 _ (hG0k b a hab.symm u hu)`. Establish `hG1ne : G1 ≠ ⊥`. Introduce `hbot`. Establish `hbb1 : z' - G0.starProjection z' ∈ G1`.
+
+Rewrite using `[hG1]`. Conclude with `⟨Submodule.sub_mem _ hz'GD (hG0GD (G0.starProjection_apply_mem z')), G0.sub_starProjection_mem_orthogonal z'⟩`. Rewrite `hbb1` using `[hbot]`. Establish `hbb0 : z' - G0.starProjection z' = 0` using `(Submodule.mem_bot ℂ).1 hbb1`. Establish `hz'G0 : z' ∈ G0`.
+
+Rewrite using `[sub_eq_zero.1 hbb0]`. Conclude with `G0.starProjection_apply_mem z'`. Conclude with `hz'x ((Submodule.mem_orthogonal' _ _).1 (hG0S z' hz'G0) x hx)`. Take `⟨w, hwG1, hw0, μ, hμ⟩` from `exists_khw hE hUK hG1f hG1k hG1ne`. Establish `hwGD : w ∈ GD`.
+
+Rewrite `hwG1` using `[hG1]`. Conclude with `hwG1.1`. Establish `hwG0o : w ∈ G0ᗮ`. Rewrite `hwG1` using `[hG1]`. Conclude with `hwG1.2`.
+
+Establish `hwM : w ∈ genSub E V` using `layer_le_genSub _ (hGDL hwGD)`. Establish `hwS : ∃ s ∈ S, s ≠ 0 ∧ Formalism.MainNotions.S.IsWtOn (Formalism.REAL.Kset ε) σ μ s`. Use `⟨S.starProjection (w : H), S.starProjection_apply_mem _, ?_, ?_⟩` and prove the remaining obligations. Introduce `h0`. Establish `hwSo : (w : H) ∈ Sᗮ`.
+
+Use `S.sub_starProjection_mem_orthogonal (w : H)` as an intermediate fact. Rewrite `this` using `[h0, sub_zero]`. Then use the resulting hypothesis. Use `(Submodule.mem_orthogonal' _ _).1 hwG0o w (hG0mem w hwGD hwSo)` as an intermediate fact. Conclude with `hw0 ((inner_self_eq_zero (𝕜 := ℂ)).1 this)`. Introduce `θ hθ`.
+
+Establish `hθK : Matrix.diagonal (fun a => Complex.exp ((θ a : ℂ) * Complex.I)) ∈ Kset ε`. Rewrite using `[← mir_Kset_eq]`. Conclude with `hθ`. Establish `hwt` using `(isWtOn_iff hσ hD w μ).2 hμ.1`. Rewrite using `[← kfin_starProj_comm _ (hσ.2.1 _ (closure_inUJ_of_mem_Kset hθK)) S (hSK _ hθK), hwt θ hθ, map_smul]`.
+
+Establish `hwm` using `hm μ w hwM hμ hwS`. Use `(Submodule.mem_orthogonal' _ _).1 (hGDo hwGD) w hwm` as an intermediate fact. Conclude with `hw0 ((inner_self_eq_zero (𝕜 := ℂ)).1 this)`.
+-/
 theorem kfin_key (hσ : IsURepOn (UJset ε) σ) (hD : IsDerivedOn ε σ D E)
     (hVf : FiniteDimensional ℂ V) (hVk : IsKStableSub ε E V)
     (S : Submodule ℂ H) (hS : S ≤ closGen E V) [FiniteDimensional ℂ S]
@@ -293,6 +389,11 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteS
   {lam : Fin n → ℝ} {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {D : Submodule ℂ H}
   {E : Fin n → Fin n → Module.End ℂ D} {V : Submodule ℂ D}
 
+/- English proof (translation)
+Establish `hE` using `hD.glRep`. Establish `hU : IsInfUnitary ε E` using `isInfUnitary_of_isDerivedOn hσ hD`. Use `haveI := hSf`. Establish `hWf` using `kfin_wts_finite (ε := ε) hσ S`. Use `choose kf hkf using fun μ => khw_mem_layer hE hU hV hc hgap μ`.
+
+Use `(kfin_key hσ hD hV.1 hV.2.1 S hS hSK (hWf.toFinset.sup kf) ?_).trans (Submodule.map_mono (layer_le_genSub _))` and prove the remaining obligations. Introduce `μ w hw hμ hμS`. Conclude with `layer_mono (Finset.le_sup (hWf.mem_toFinset.2 hμS)) (hkf μ w hw hμ)`.
+-/
 theorem data_kfin_le (hgap : StdGap ε lam) (hσ : IsURepOn (UJset ε) σ) (hD : IsDerivedOn ε σ D E)
     (hV : IsKIrrHW ε E (lowK ε lam) V) (hc : ∀ v ∈ V, casimir E v = (casVal lam : ℂ) • v)
     (hVK : ∀ k ∈ Kset ε, ∀ v ∈ V, ∃ w ∈ V, (w : H) = σ k v) (S : Submodule ℂ H) (hS : S ≤ closGen E V) (hSf : FiniteDimensional ℂ S)

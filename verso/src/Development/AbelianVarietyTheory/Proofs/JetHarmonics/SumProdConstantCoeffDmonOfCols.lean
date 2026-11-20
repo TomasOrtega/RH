@@ -9,15 +9,24 @@ open MvPowerSeries ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ Reciprocity
 
 namespace GlobalTheory.SymbolCols
 
+/- English proof (translation)
+Simplify using `[colM]`.
+-/
 theorem colM_apply {ι : Type} [Finite ι] {n : ℕ} (m : ι × Fin n →₀ ℕ) (b : Fin n) (l : ι) :
     colM m b l = m (l, b) := by
   simp [colM]
 
+/- English proof (translation)
+Simplify using `only [Finsupp.degree_eq_sum, colM_apply]`. Rewrite using `[Fintype.sum_prod_type, Finset.sum_comm]`.
+-/
 theorem sum_degree_colM {ι : Type} [Fintype ι] {n : ℕ} (m : ι × Fin n →₀ ℕ) :
     ∑ b, (colM m b).degree = m.degree := by
   simp only [Finsupp.degree_eq_sum, colM_apply]
   rw [Fintype.sum_prod_type, Finset.sum_comm]
 
+/- English proof (translation)
+Rewrite using `[coeff_mul, coeff_mul]`. Use `Finset.sum_congr rfl fun p hp => ?_` and prove the remaining obligations. Establish `hp' : p.1 + p.2 = mo` using `Finset.HasAntidiagonal.mem_antidiagonal.1 hp`. Establish `hd : p.1.degree + p.2.degree = mo.degree` using `by rw [← hp', map_add]`. Rewrite using `[h p.1 (by omega)]`.
+-/
 theorem coeff_mul_congr {k σ : Type} [CommRing k] (N : ℕ) (f g E : MvPowerSeries σ k)
     (h : ∀ mo : σ →₀ ℕ, mo.degree ≤ N → coeff mo f = coeff mo g)
     (mo : σ →₀ ℕ) (hmo : mo.degree ≤ N) : coeff mo (f * E) = coeff mo (g * E) := by
@@ -28,6 +37,13 @@ theorem coeff_mul_congr {k σ : Type} [CommRing k] (N : ℕ) (f g E : MvPowerSer
   have hd : p.1.degree + p.2.degree = mo.degree := by rw [← hp', map_add]
   rw [h p.1 (by omega)]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Establish `hle : ∀ b, (colM a b).degree ≤ (colM m b).degree` using `fun b => by`. Assume the negation of the conclusion as `h`. Use `hcon b (by omega)` as an intermediate fact.
+
+Rewrite `h` using `[this]`. Conclude with `h le_rfl`. Establish `hs : ∑ b, (colM a b).degree = ∑ b, (colM m b).degree`. Rewrite using `[sum_degree_colM, sum_degree_colM, hdeg]`. Establish `heq` using `(Finset.sum_eq_sum_iff_of_le fun b _ => hle b).1 hs`.
+
+Use `hne (Finsupp.ext fun ⟨l, b⟩ => ?_)` and prove the remaining obligations. Rewrite using `[← colM_apply, ← colM_apply, hcon b (heq b (Finset.mem_univ b)).ge]`.
+-/
 theorem exists_col {ι : Type} [Fintype ι] {n : ℕ} (m a : ι × Fin n →₀ ℕ)
     (hdeg : m.degree = a.degree) (hne : m ≠ a) :
     ∃ b, (colM m b).degree ≤ (colM a b).degree ∧ colM m b ≠ colM a b := by
@@ -50,6 +66,17 @@ namespace GlobalTheory
 
 open SymbolCols in
 
+/- English proof (translation)
+Introduce `R k _ _ φ d G ι _ _ n u lam α al P g E hP hpair hg`. Establish `hdeg : ∀ mo ∈ P.support, mo.degree = al.degree` using `fun mo hmo => by`. Use `hP (MvPolynomial.mem_support_iff.1 hmo)` as an intermediate fact. Rewrite using `[← this, Finsupp.degree_eq_weight_one]`. Both sides reduce to the same expression.
+
+Establish `hval : ∀ mo ∈ P.support, ∀ b, (colM mo b).degree ≤ (colM al b).degree → constantCoeff (DmonOf (G.mapF φ) u (colM mo b) (g b * E b)) = if colM mo b = colM al b then (∏ l, ((al (l, b)).factorial : k) * α l ^ al (l, b)) * constantCoeff (E b) else 0`. Introduce `mo hmo b hb`. Establish `hle : (colM mo b).degree ≤ al.degree`. Rewrite using `[← hdeg mo hmo, ← sum_degree_colM]`. Conclude with `Finset.single_le_sum (f := fun b => (colM mo b).degree) (fun _ _ => Nat.zero_le _) (Finset.mem_univ b)`.
+
+Rewrite using `[constantCoeff_DmonOf_congr_jet k d (G.mapF φ) ι u (colM mo b) _ _ (fun m hm => coeff_mul_congr al.degree _ _ (E b) (hg b) m (hm.trans hle))]`. Use `constantCoeff_dmonOf_prod_linear R k φ d G ι u (lam b) α (colM al b) (colM mo b) (E b) (fun l l' hl hl' => hpair b l l' (by rwa [colM_apply] at hl) ⟨mo, hmo, by rwa [colM_apply] at hl'⟩) hb` as an intermediate fact. Simplify `this` using `only [colM_apply]`. Rewrite using `[Finset.sum_eq_single al]`. Distinguish the cases in `hal : al ∈ P.support`.
+
+Use `congr 1`. Conclude with `Finset.prod_congr rfl fun b _ => by rw [hval al hal b le_rfl, if_pos rfl]`. Rewrite using `[MvPolynomial.notMem_support_iff.1 hal, zero_mul, zero_mul]`. Introduce `mo hmo hne`. Take `⟨b, hb, hb'⟩` from `exists_col mo al (hdeg mo hmo) hne`.
+
+Rewrite using `[Finset.prod_eq_zero (Finset.mem_univ b) (by rw [hval mo hmo b hb, if_neg hb']), mul_zero]`. Introduce `hal`. Rewrite using `[MvPolynomial.notMem_support_iff.1 hal, zero_mul]`.
+-/
 theorem sum_prod_constantCoeff_dmonOf_cols :
     ∀ (R k : Type) [CommRing R] [CommRing k] (φ : R →+* k) (d : ℕ) (G : FGLaw R d) (ι : Type) [Fintype ι] [DecidableEq ι] (n : ℕ) (u : ι → Fin d → k) (lam : Fin n → ι → Fin d → k) (α : ι → k) (al : ι × Fin n →₀ ℕ) (P : MvPolynomial (ι × Fin n) k) (g E : Fin n → PS k 1 d), P.IsHomogeneous al.degree → (∀ b l l', al (l, b) ≠ 0 → (∃ mo ∈ P.support, mo (l', b) ≠ 0) → ∑ i, lam b l i * u l' i = if l = l' then α l else 0) → (∀ b (mo : Fin 1 × Fin d →₀ ℕ), mo.degree ≤ al.degree → coeff mo (g b) = coeff mo (∏ l, (∑ i, C (lam b l i) * (X ((0 : Fin 1), i) : PS k 1 d)) ^ al (l, b))) → ∑ mo ∈ P.support, P.coeff mo * ∏ b, constantCoeff (DmonOf (G.mapF φ) u (colM mo b) (g b * E b)) = P.coeff al * ∏ b, ((∏ l, ((al (l, b)).factorial : k) * α l ^ al (l, b)) * constantCoeff (E b)) := by
   intro R k _ _ φ d G ι _ _ n u lam α al P g E hP hpair hg

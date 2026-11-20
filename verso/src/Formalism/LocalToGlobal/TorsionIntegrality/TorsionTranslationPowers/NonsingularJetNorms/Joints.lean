@@ -18,6 +18,9 @@ open Formalism.L2.Th1.D (phFF thetaS)
 open Formalism.InvariantFactorPaths.G7 (lgF)
 open Formalism.L2.Th1.CM (MaximalUnramifiedExtension)
 
+/- English proof (translation)
+Use extensionality with `n`. Simplify using `only [lgF, PowerSeries.coeff_map, PowerSeries.coeff_mk, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem map_lgF' {K K' : Type} [Field K] [Field K'] (φ : K →+* K') (p : ℕ) :
     PowerSeries.map φ (lgF K p) = lgF K' p := by
   ext n
@@ -25,12 +28,18 @@ theorem map_lgF' {K K' : Type} [Field K] [Field K'] (φ : K →+* K') (p : ℕ) 
   refine Finset.sum_congr rfl fun j _ => ?_
   split_ifs <;> simp
 
+/- English proof (translation)
+Rewrite using `[← PowerSeries.coeff_zero_eq_constantCoeff_apply]`. Unfold `Formalism.L2.Th1.B.lU`. Rewrite using `[PowerSeries.coeff_mk, zero_add, Formalism.InvariantFactorPaths.G7.FormalGroupLaws.coeff_one_lgF l hl]`.
+-/
 theorem cc_lU {K : Type} [Field K] [CharZero K] {l : ℕ} (hl : 2 ≤ l) :
     PowerSeries.constantCoeff (Formalism.L2.Th1.B.lU (lgF K l)) = 1 := by
   rw [← PowerSeries.coeff_zero_eq_constantCoeff_apply]
   unfold Formalism.L2.Th1.B.lU
   rw [PowerSeries.coeff_mk, zero_add, Formalism.InvariantFactorPaths.G7.FormalGroupLaws.coeff_one_lgF l hl]
 
+/- English proof (translation)
+Unfold `phFF`. Rewrite using `[map_sub, map_add, map_neg, Formalism.L2.Th1.B.Map.map_psubst' φ (Formalism.L2.Th1.D.FAux.cc_arg hl ε), Formalism.L2.Th1.B.Map.map_sigS, Formalism.L2.Th1.D.CurveNormEndomorphisms.wpReg_eq, (Formalism.L2.Th1.F.seriesMap _ _ φ g2 g3 0 0).2.2.1, ← Formalism.L2.Th1.D.CurveNormEndomor …`.
+-/
 theorem map_phFF {K K' : Type} [Field K] [CharZero K] [Field K'] [CharZero K'] (φ : K →+* K')
     {l : ℕ} (hl : 2 ≤ l) (g2 g3 s2 ε : K) :
     PowerSeries.map φ (phFF l g2 g3 s2 ε) = phFF l (φ g2) (φ g3) (φ s2) (φ ε) := by
@@ -41,6 +50,19 @@ theorem map_phFF {K K' : Type} [Field K] [CharZero K] [Field K'] [CharZero K'] (
     map_mul, map_mul, map_pow, map_mul, PowerSeries.map_C, PowerSeries.map_C, map_lgF',
     Formalism.L2.Th1.B.Map.map_fLog' φ (cc_lU hl), Formalism.L2.Th1.B.Map.map_lU, map_lgF', map_div₀, map_ofNat]
 
+/- English proof (translation)
+Establish `hp : l.Prime` using `Fact.out`. Establish `hθ' : ∀ n, ‖coeff n (thetaS l (ι L.g₂) (ι L.g₃) (ε : ℂ_[l]))‖ ≤ 1`. Introduce `n`. Use `Formalism.L2.Th1.D.FAux.thetaS_map (MaximalUnramifiedExtension l).subtype hp.two_le g2 g3 ε` as an intermediate fact. Establish `e : thetaS l (ι L.g₂) (ι L.g₃) (ε : ℂ_[l]) = PowerSeries.map (MaximalUnramifiedExtension l).subtype (thetaS l g2 g3 ε)`.
+
+Rewrite using `[this, ← h2, ← h3]`. Both sides reduce to the same expression. Rewrite using `[e, PowerSeries.coeff_map]`. Conclude with `hθ n`. Use `⟨_, hV l L ι hl2 hW (ε : ℂ_[l]) hε hθ' ω₀ hω hω2 s N hN hlN hs, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_phFF (MaximalUnramifiedExtension l).subtype hp.two_le]`. Express the relevant statement in the definitionally equal form `(Formalism.L2.Th1.B.fExp (-(phFF l (g2 : ℂ_[l]) (g3 : ℂ_[l]) (s2 : ℂ_[l]) (ε : ℂ_[l])))) * _ = _`. Rewrite using `[h2, h3, hs2, ← mul_assoc, ← Formalism.L2.Th1.B.fExp_add (by rw [map_neg]; exact neg_eq_zero.2 (Formalism.L2.Th1.D.FAux.cc_phFF hp.two_le _ _ _ _)) (Formalism.L2.Th1.D.FAux.cc_phFF hp.two_le _ _ _ _), neg_add_cancel]`. Establish `: Formalism.L2.Th1.B.fExp (0 : PowerSeries ℂ_[l]) = 1`. Establish `h` using `Formalism.L2.Th1.B.fExp_add (K := ℂ_[l]) (ι := Unit) (f := 0) (g := 0) (map_zero _) (map_zero _)`.
+
+Rewrite `h` using `[add_zero]`. Establish `hc : MvPowerSeries.constantCoeff (Formalism.L2.Th1.B.fExp (0 : MvPowerSeries Unit ℂ_[l])) = 1`. Unfold `Formalism.L2.Th1.B.fExp`. Rewrite using `[PowerSeries.constantCoeff_subst (PowerSeries.HasSubst.of_constantCoeff_zero (map_zero _))]`. Rewrite using `[finsum_eq_single _ 0 (fun n hn => by simp [hn])]`.
+
+Simplify using the standard rewrite rules. Establish `hne : Formalism.L2.Th1.B.fExp (0 : MvPowerSeries Unit ℂ_[l]) ≠ 0`. Introduce `h0`. Rewrite `hc` using `[h0, map_zero]`. Conclude with `zero_ne_one hc`.
+
+Conclude with `(mul_left_cancel₀ hne (h.symm.trans (mul_one _).symm))`. Rewrite using `[this, one_mul]`.
+-/
 theorem joint (hV : VIntegral) (l : ℕ) [Fact l.Prime] (L : PeriodPair) (ι : ℂ ≃+* ℂ_[l]) (hl2 : l ≠ 2)
     (hW : IntCurve (curveL l L ι)) (g2 g3 s2 ε : MaximalUnramifiedExtension l) (h2 : (g2 : ℂ_[l]) = ι L.g₂)
     (h3 : (g3 : ℂ_[l]) = ι L.g₃) (hs2 : (s2 : ℂ_[l]) = ι (Formalism.L2.Th1.F.s2 L)) (hε : ‖ε‖ = 1)
@@ -84,10 +106,22 @@ open Formalism.L2.Th1
 
 variable {l : ℕ} [Fact l.Prime] {L : PeriodPair} {ι : ℂ ≃+* ℂ_[l]} {W : WeierstrassCurve ℂ_[l]}
 
+/- English proof (translation)
+Unfold `phW B.phW`. Rewrite using `[weierstrass_series_eq_transported l L ι W hU]`.
+-/
 theorem phW_eq (hU : Unif l L ι W) : phW l L ι W = B.phW W (ι (F.s2 L)) := by
   unfold phW B.phW
   rw [weierstrass_series_eq_transported l L ι W hU]
 
+/- English proof (translation)
+Establish `hl0` using `AnaSysW.lg0 l W`. Establish `hs` using `AnaSysW.lgS l W`. Establish `he : B.e1W W (px W (ptW l L ι W (ω₀ / 2))) = ι (L.weierstrassP (ω₀ / 2))`. Rewrite using `[AnaSysW.px_ptW hU _ hω2]`. Unfold `B.e1W AnaSysW.xc`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hk : B.kapW W (px W (ptW l L ι W (ω₀ / 2))) = ι (3 * L.weierstrassP (ω₀ / 2) ^ 2 - L.g₂ / 4)`. Unfold `B.kapW`. Rewrite using `[he, hU.1, map_sub, map_mul, map_pow, map_div₀, map_ofNat, map_ofNat]`. Unfold `inW B.evenSigmaLogAtTwoTorsion B.phE`.
+
+Rewrite using `[F.taylorTh0 L ω₀ hω hω2, map_mul, B.Map.map_sigma1, B.Map.map_wOf, B.Map.map_fExp' _ (by simp), he, hk, weierstrass_series_eq_transported l L ι W hU, PowerSeries.subst_mul hs]`. Unfold `B.sigma1`. Establish `hc : ∀ a : PowerSeries ℂ_[l], constantCoeff a = 0 → PowerSeries.subst (A.logSer W) (B.fExp a) = B.fExp (PowerSeries.subst (A.logSer W) a)` using `fun a ha => (D.Pair.ps_comp (τ := Unit) hl0 ha _).symm`. Rewrite using `[hc _ (B.Map.cc_sig1S _ _ _), hc _ (by simp)]`. Rewrite using `[← B.fExp_add (D.Pair.cc_ps hl0 (B.Map.cc_sig1S _ _ _)) (D.Pair.cc_ps hl0 (by simp))]`.
+
+Use `congr 1`. Rewrite using `[map_neg, map_mul, map_pow, PowerSeries.map_X, PowerSeries.map_C, map_div₀, map_ofNat, ← PowerSeries.coe_substAlgHom hs, map_neg, map_mul, map_pow, PowerSeries.coe_substAlgHom hs, PowerSeries.subst_X hs, PowerSeries.subst_C, neg_add, neg_neg]`. Both sides reduce to the same expression.
+-/
 theorem series_even_theta_half_period (hU : Unif l L ι W) (ω₀ : ℂ) (hω : ω₀ ∈ L.lattice) (hω2 : ω₀ / 2 ∉ L.lattice) :
     inW l ι W (F.th0 L (ω₀ / 2)) =
       B.fExp (-(B.evenSigmaLogAtTwoTorsion W (ι (F.s2 L)) (px W (ptW l L ι W (ω₀ / 2))))) := by
@@ -116,6 +150,9 @@ theorem series_even_theta_half_period (hU : Unif l L ι W) (ω₀ : ℂ) (hω : 
     PowerSeries.subst_X hs, PowerSeries.subst_C, neg_add, neg_neg]
   rfl
 
+/- English proof (translation)
+Introduce `l _ L ι hW t N h1 h2 h3 h4` and use `h l L ι (curveL l L ι) ⟨(A.shortInv _ _ _).2.1, (A.shortInv _ _ _).2.2.1⟩ hW t N h1 h2 h3 h4`.
+-/
 theorem back (h : AnalyticTransW) : AnalyticTrans := fun l _ L ι hW t N h1 h2 h3 h4 =>
   h l L ι (curveL l L ι) ⟨(A.shortInv _ _ _).2.1, (A.shortInv _ _ _).2.2.1⟩ hW t N h1 h2 h3 h4
 
@@ -125,9 +162,18 @@ end Formalism.L2.Th1.E.Joints
 
 namespace Formalism.L2.Th1.E
 
+/- English proof (translation)
+Introduce `l _ L ι hl2 hW g2 g3 s2 ε h2 h3 hs2 hε hθ ω₀ hω hω2 s N hN hlN hs` and use `Joints.joint v_integral_nonsingular_jet_norms l L ι hl2 hW g2 g3 s2 ε h2 h3 hs2 hε hθ ω₀ hω hω2 s N hN hlN hs`.
+-/
 theorem joint_integrality : VJoint := fun l _ L ι hl2 hW g2 g3 s2 ε h2 h3 hs2 hε hθ ω₀ hω hω2 s N hN hlN hs =>
   Joints.joint v_integral_nonsingular_jet_norms l L ι hl2 hW g2 g3 s2 ε h2 h3 hs2 hε hθ ω₀ hω hω2 s N hN hlN hs
+/- English proof (translation)
+Introduce `_ _ _ _ _ hU` and use `Joints.phW_eq hU`.
+-/
 theorem phi_model_eq : PhWEq := fun _ _ _ _ _ hU => Joints.phW_eq hU
+/- English proof (translation)
+Introduce `_ _ _ _ _ hU ω₀ hω hω2` and use `Joints.series_even_theta_half_period hU ω₀ hω hω2`.
+-/
 theorem even_theta_half_period_in_model : InWTh0 := fun _ _ _ _ _ hU ω₀ hω hω2 => Joints.series_even_theta_half_period hU ω₀ hω hω2
 
 end Formalism.L2.Th1.E

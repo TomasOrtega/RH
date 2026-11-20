@@ -8,6 +8,17 @@ open Classical
 
 namespace GlobalTheory.FlagPush
 
+/- English proof (translation)
+Introduce `F _ X Y φ f hf W hW`. Use `haveI : IsDominant (W.Z.fromSpecStalk (genericPoint W.Z)) := ⟨by`. Rewrite using `[DenseRange, dense_iff_closure_eq]`. Use `Set.eq_univ_of_univ_subset ?_` and prove the remaining obligations. Rewrite using `[← (genericPoint_spec W.Z).def]`.
+
+Conclude with `closure_mono (Set.singleton_subset_iff.2 ⟨_, Scheme.fromSpecStalk_closedPoint⟩)⟩`. Use `haveI : IsSeparated X.str := (ratOf X).sep`. Establish `hs : f ≫ X.str = Y.str` using `hf.inducedModelMorphism_comp_structureMap`. Use `ext_of_isDominant_of_isSeparated X.str ?_ (W.Z.fromSpecStalk (genericPoint W.Z)) ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(W.p₁ ≫ f) ≫ X.str = (W.p₂ ≫ f) ≫ X.str`.
+
+Rewrite using `[Category.assoc, Category.assoc, hs, W.str_eq]`. Establish `e₁` using `specMap_functionFieldMap W.p₁`. Establish `e₂` using `specMap_functionFieldMap W.p₂`. Establish `hφ : (functionFieldMap W.p₁).comp φ.toRingHom = (functionFieldMap W.p₂).comp φ.toRingHom` using `RingHom.ext hW`. Establish `key : ∀ (α : Y.Fn →+* W.Z.functionField), Spec.map (CommRingCat.ofHom α) ≫ genericFieldPoint Y.X ≫ f = Spec.map (CommRingCat.ofHom (α.comp φ.toRingHom)) ≫ (ratOf X).pt`.
+
+Introduce `α`. Establish `hf' : genericFieldPoint Y.X ≫ f = spMap φ.toRingHom ≫ (ratOf X).pt` using `hf`. Rewrite using `[hf', CommRingCat.ofHom_comp, Spec.map_comp, Category.assoc]`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `genericFieldPoint W.Z ≫ W.p₁ ≫ f = genericFieldPoint W.Z ≫ W.p₂ ≫ f`.
+
+Rewrite using `[← Category.assoc, ← e₁, Category.assoc, ← Category.assoc (genericFieldPoint W.Z), ← e₂, Category.assoc, key, key, hφ]`.
+-/
 theorem Dbl.p_comp_eq_of_isHom : ∀ (F : Type) [Field F] (X Y : Var F) (φ : X.Fn →ₐ[F] Y.Fn) (f : Y.X ⟶ X.X), (ratOf X).IsHom (ratOf Y) φ f → ∀ W : Dbl Y, (∀ u : X.Fn, W.α₁ (φ u) = W.α₂ (φ u)) → W.p₁ ≫ f = W.p₂ ≫ f := by
   intro F _ X Y φ f hf W hW
   haveI : IsDominant (W.Z.fromSpecStalk (genericPoint W.Z)) := ⟨by

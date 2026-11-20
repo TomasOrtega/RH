@@ -18,6 +18,15 @@ noncomputable section
 
 namespace GlobalTheory.RealMult.Obj
 
+/- English proof (translation)
+Introduce `F _ _ 𝔠 S S' X b A' _ _ φ hg φ₂ hsq c hc`. Use `haveI : IsProper X.A.hom := X.ab.proper`. Establish `hP : IsPullback φ A'.hom X.A.hom b` using `hg.1`. Use `haveI : IsProper A'.hom := MorphismProperty.of_isPullback (P := @IsProper) hP inferInstance`. Establish `hM` using `pull_isLB (X.isLB c) (lift (𝟙 X.A) (𝟙 X.A)).left`.
+
+Establish `h1 : Out.RelAmple A' (((X.P c).pull (lift (𝟙 X.A) (𝟙 X.A)).left).pull φ)` using `GlobalTheory.AmpleBaseChange.relAmple_of_isPullback hM (X.pos c hc) hP`. Establish `hL` using `pull_isLB (pull_isLB (X.isLB c) φ₂) (lift (𝟙 A') (𝟙 A')).left`. Establish `hM'` using `pull_isLB hM φ`. Establish `key : (lift (𝟙 A') (𝟙 A')).left ≫ φ₂ = φ ≫ (lift (𝟙 X.A) (𝟙 X.A)).left`. Apply `pullback.hom_ext` to reduce the goal to its premises.
+
+Use `show ((lift (𝟙 A') (𝟙 A')).left ≫ φ₂) ≫ (fst X.A X.A).left = (φ ≫ (lift (𝟙 X.A) (𝟙 X.A)).left) ≫ (fst X.A X.A).left`. Rewrite using `[Category.assoc, hsq.1, ← Category.assoc, ← Over.comp_left, lift_fst, Category.assoc, ← Over.comp_left, lift_fst, Over.id_left, Over.id_left, Category.id_comp, Category.comp_id]`. Use `show ((lift (𝟙 A') (𝟙 A')).left ≫ φ₂) ≫ (snd X.A X.A).left = (φ ≫ (lift (𝟙 X.A) (𝟙 X.A)).left) ≫ (snd X.A X.A).left`. Rewrite using `[Category.assoc, hsq.2, ← Category.assoc, ← Over.comp_left, lift_snd, Category.assoc, ← Over.comp_left, lift_snd, Over.id_left, Over.id_left, Category.id_comp, Category.comp_id]`. Use `GlobalTheory.PosDefAmple.relAmple_of_nsmul hL hM' (N := 1) le_rfl ?_ h1` and prove the remaining obligations.
+
+Rewrite using `[one_smul]`. Use `show GlobalTheory.CechPic.pull _ (GlobalTheory.CechPic.pull _ (GlobalTheory.CechPic.cls _ (X.isLB c))) = GlobalTheory.CechPic.pull _ (GlobalTheory.CechPic.pull _ (GlobalTheory.CechPic.cls _ (X.isLB c)))`. Rewrite using `[← GlobalTheory.CechPic.pull_comp, ← GlobalTheory.CechPic.pull_comp, key]`.
+-/
 theorem relAmple_diag_of_isGrpPullback : ∀ {F : Type} [Field F] [NumberField F] {𝔠 : FracId F} {S S' : Scheme.{0}} (X : Obj F 𝔠 S) (b : S' ⟶ S) (A' : Over S') [GrpObj A'] [IsCommMonObj A']
     (φ : A'.left ⟶ X.A.left), IsGrpPullback A' X.A b φ → ∀ (φ₂ : (G2 A').left ⟶ (G2 X.A).left), IsSquare φ φ₂ →
     ∀ c : 𝔠.elt, IsTotPos (c : F) → Out.RelAmple A' (((X.P c).pull φ₂).pull (lift (𝟙 A') (𝟙 A')).left) := by

@@ -13,12 +13,36 @@ open scoped Real SchwartzMap ComplexConjugate
 
 namespace GlobalTheory.CompanionTheory.Hypotheses₂.GaussCurve
 
+/- English proof (translation)
+Rewrite using `[@norm_sq_eq_re_inner ℂ, MeasureTheory.L2.inner_def, ← integral_re (MeasureTheory.L2.integrable_inner (𝕜 := ℂ) f f)]`. Repeatedly rewrite using `[inner_self_eq_norm_sq]`.
+-/
 theorem lp_two_norm_sq {E : Type*} [MeasurableSpace E] {μ : Measure E} (f : Lp ℂ 2 μ) :
     ‖f‖ ^ 2 = ∫ x, ‖f x‖ ^ 2 ∂μ := by
   rw [@norm_sq_eq_re_inner ℂ, MeasureTheory.L2.inner_def,
     ← integral_re (MeasureTheory.L2.integrable_inner (𝕜 := ℂ) f f)]
   simp_rw [inner_self_eq_norm_sq]
 
+/- English proof (translation)
+Rewrite using `[hasDerivAt_iff_tendsto_slope_zero]`. Use `set d : ℝ → E → ℂ := fun s x => (s⁻¹ : ℝ) • (f (t₀ + s) x - f t₀ x) - f' t₀ x with hd_def`. Establish `hD : ∀ s : ℝ, ((s⁻¹ • (F (t₀ + s) - F t₀) - G : Lp ℂ 2 μ) : E → ℂ) =ᵐ[μ] d s`. Introduce `s`. Use `filter_upwards [Lp.coeFn_sub (s⁻¹ • (F (t₀ + s) - F t₀)) G, Lp.coeFn_smul s⁻¹ (F (t₀ + s) - F t₀), Lp.coeFn_sub (F (t₀ + s)) (F t₀), hF (t₀ + s), hF t₀, hG] with x h1 h2 h3 h4 h5 h6`.
+
+Simplify using `only [hd_def, h1, Pi.sub_apply, h2, Pi.smul_apply, h3, h4, h5, h6]`. Establish `hsq : ∀ s : ℝ, ‖s⁻¹ • (F (t₀ + s) - F t₀) - G‖ ^ 2 = ∫ x, ‖d s x‖ ^ 2 ∂μ`. Introduce `s`. Rewrite using `[lp_two_norm_sq]`. Conclude with `integral_congr_ae ((hD s).mono fun x hx => by simp only [hx])`.
+
+Establish `hlim : Tendsto (fun s : ℝ => ∫ x, ‖d s x‖ ^ 2 ∂μ) (𝓝[≠] 0) (𝓝 (∫ _x, (0 : ℝ) ∂μ))`. Use `tendsto_integral_filter_of_dominated_convergence (fun x => (2 * b x) ^ 2) ?_ ?_ ?_ ?_` and prove the remaining obligations. Conclude with `Eventually.of_forall fun s => (((Lp.aestronglyMeasurable _).congr (hD s)).norm.pow 2)`. Establish `hs : ∀ᶠ s : ℝ in 𝓝[≠] 0, s ≠ 0 ∧ |s| < δ`. Establish `h1 : ∀ᶠ s : ℝ in 𝓝[≠] 0, s ≠ 0` using `eventually_mem_nhdsWithin`.
+
+Establish `h2 : ∀ᶠ s : ℝ in 𝓝[≠] 0, |s| < δ`. Use `nhdsWithin_le_nhds ?_` and prove the remaining obligations. Establish `: ∀ᶠ s : ℝ in 𝓝 0, s ∈ Metric.ball (0 : ℝ) δ` using `Metric.ball_mem_nhds _ hδ`. Conclude with `this.mono fun s hs => by simpa using hs`. Conclude with `h1.and h2`.
+
+Use `hs.mono fun s hs => Eventually.of_forall fun x => ?_` and prove the remaining obligations. Take `⟨hs0, hsδ⟩` from `hs`. Establish `hmem : t₀ + s ∈ Metric.ball t₀ δ` using `by simpa [Metric.mem_ball, dist_eq_norm] using hsδ`. Establish `h0 : t₀ ∈ Metric.ball t₀ δ` using `Metric.mem_ball_self hδ`. Establish `hmv : ‖f (t₀ + s) x - f t₀ x‖ ≤ b x * ‖(t₀ + s) - t₀‖` using `(convex_ball t₀ δ).norm_image_sub_le_of_norm_hasDerivWithin_le (f := fun r => f r x) (f' := fun r => f' r x) (fun r hr => (hd x r hr).hasDerivWithinAt) (fun r hr => hbd x r hr) h0 hmem`.
+
+Establish `hb0 : 0 ≤ b x` using `(norm_nonneg _).trans (hbd x t₀ h0)`. Establish `hq : ‖(s⁻¹ : ℝ) • (f (t₀ + s) x - f t₀ x)‖ ≤ b x`. Rewrite using `[norm_smul, norm_inv]`. Establish `hn : 0 < ‖s‖` using `norm_pos_iff.2 hs0`. Rewrite `hmv` using `[add_sub_cancel_left]`.
+
+Rewrite using `[inv_mul_le_iff₀ hn]`. Combine the linear relations using `[mul_comm (b x) ‖s‖]`. Establish `hdn : ‖d s x‖ ≤ 2 * b x`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Real.norm_of_nonneg (by positivity)]`.
+
+Conclude with `pow_le_pow_left₀ (norm_nonneg _) hdn 2`. Use `(memLp_two_iff_integrable_sq hb.1).1 hb` as an intermediate fact. Simplify `this.const_mul (2 ^ 2)` using `[mul_pow]`. Use `Eventually.of_forall fun x => ?_` and prove the remaining obligations. Establish `h1` using `hasDerivAt_iff_tendsto_slope_zero.1 (hd x t₀ (Metric.mem_ball_self hδ))`.
+
+Establish `h2 : Tendsto (fun s : ℝ => d s x) (𝓝[≠] 0) (𝓝 (f' t₀ x - f' t₀ x))` using `h1.sub tendsto_const_nhds`. Establish `h3` using `(h2.norm).pow 2`. Simplify using `using h3`. Establish `hlim0 : Tendsto (fun s : ℝ => ‖s⁻¹ • (F (t₀ + s) - F t₀) - G‖ ^ 2) (𝓝[≠] 0) (𝓝 0)`. Simplify using `only [hsq]`.
+
+Simplify using `using hlim`. Rewrite using `[tendsto_iff_norm_sub_tendsto_zero]`. Establish `h4` using `(Real.continuous_sqrt.tendsto 0).comp hlim0`. Simplify `h4` using `[Function.comp_def, Real.sqrt_sq (norm_nonneg _)]`.
+-/
 theorem hasDerivAt_Lp_of_dominated {E : Type*} [MeasurableSpace E] {μ : Measure E}
     (F : ℝ → Lp ℂ 2 μ) (G : Lp ℂ 2 μ) (f f' : ℝ → E → ℂ) (b : E → ℝ) (t₀ δ : ℝ) (hδ : 0 < δ)
     (hF : ∀ t, F t =ᵐ[μ] f t) (hG : G =ᵐ[μ] f' t₀) (hb : MemLp b 2 μ)

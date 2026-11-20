@@ -18,6 +18,21 @@ local instance (priority := high) measTupU {F : Type} [Field F] [NumberField F] 
 
 local instance borelTupU {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] : BorelSpace (κ → AF F) := ⟨rfl⟩
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ d ν hν Λ hΛ hinv`. Establish `hψ : IsStd d.B.ψ` using `d.ok.good.std`. Take `⟨τ, S0, S0', C, hop, hT⟩` from `Tunit.T_chart d`. Distinguish the cases in `hC : C = 0`. Use `⟨0, fun Φ hΦ => ?_⟩` and prove the remaining obligations.
+
+Establish `h0 : d.T Φ = 0` using `funext fun X => by rw [hT Φ hΦ X, hC, zero_mul]; rfl`. Rewrite using `[(TBij.tBij F E σ d).2.2 Φ hΦ h0, map_zero, zero_mul]`. Establish `rhoS : ∀ w, ∀ φ ∈ schA F d.κ, S0 (d.dd.rho d.B.ψ w φ) = schr d.B.ψ (c0 d τ w) (S0 φ)`. Introduce `w φ hφ`. Simplify using `only [Darboux.rho]`.
+
+Rewrite using `[hop.Heisenberg₂ _ _ hφ, LinearEquiv.symm_apply_apply]`. Establish `rhoS' : ∀ w, ∀ φ ∈ schA F d.κ, S0' (schr d.B.ψ (c0 d τ w) φ) = d.dd.rho d.B.ψ w (S0' φ)`. Introduce `w φ hφ`. Establish `h1` using `rhoS w (S0' φ) (hop.pres' φ hφ)`. Rewrite `h1` using `[hop.right φ hφ]`.
+
+Establish `hm : d.dd.rho d.B.ψ w (S0' φ) ∈ schA F d.κ` using `GlobalTheory.HeisSchA.schr_mem_schA d.B.ψ hψ _ _ (hop.pres' φ hφ)`. Rewrite using `[← h1, hop.left _ hm]`. Take `⟨hμ, hint⟩` from `map_haar d τ ν hν`. Take `⟨c, hc⟩` from `translation_invariant_functional_haar d.B.ψ hψ d.κ (ν.map (cmap d τ)) hμ (Λ ∘ₗ S0') (hop.adm' Λ hΛ) (by`. Introduce `a φ hφ`.
+
+Establish `e0` using `coordinates_frame d τ (cinv d τ a)`. Establish `ea : (fun k => d.crd (cinv d τ a) (τ k)) = a` using `cmap_cinv d τ a`. Rewrite `e0` using `[ea]`. Rewrite using `[← schr_zero_right, ← e0, LinearMap.comp_apply, LinearMap.comp_apply, rhoS' _ φ hφ]`. Conclude with `hinv _ _ (hop.pres' φ hφ))`.
+
+Use `⟨c / C, fun Φ hΦ => ?_⟩` and prove the remaining obligations. Establish `h1` using `hc (S0 Φ) (hop.pres Φ hΦ)`. Rewrite `h1` using `[LinearMap.comp_apply, hop.left Φ hΦ]`. Rewrite using `[h1, ← hint]`. Establish `e2 : ∫ Z, d.T Φ Z ∂ν = C * ∫ Z, S0 Φ (cmap d τ Z) ∂ν`.
+
+Rewrite using `[← integral_const_mul]`. Conclude with `integral_congr_ae (Filter.Eventually.of_forall fun Z => hT Φ hΦ Z)`. Rewrite using `[e2]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem uniq : Uniq := by
   classical
   intro F E _ _ _ _ _ σ d ν hν Λ hΛ hinv

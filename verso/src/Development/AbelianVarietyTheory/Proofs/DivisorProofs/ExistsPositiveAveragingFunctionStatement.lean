@@ -4,6 +4,9 @@ import Mathlib
 open MeasureTheory
 open scoped NNReal ENNReal
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.bruhat_weight_exists | exact GlobalTheory.bruhat_weight_exists | (intros; apply GlobalTheory.bruhat_weight_exists <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_positive_averaging_function : ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [LocallyCompactSpace G]
     [SecondCountableTopology G] [T2Space G] [MeasurableSpace G] [BorelSpace G] (P K : Subgroup G) (μP : Measure P),
     IsClosed (P : Set G) → IsCompact (K : Set G) → μP.IsHaarMeasure → (∀ g : G, ∃ p ∈ P, ∃ k ∈ K, g = p * k) →

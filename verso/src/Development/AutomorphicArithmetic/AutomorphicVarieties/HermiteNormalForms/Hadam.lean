@@ -3,6 +3,19 @@ import Mathlib
 open Matrix
 open scoped ComplexOrder
 
+/- English proof (translation)
+Introduce `N G hG hdiag`. Establish `hH : G.IsHermitian` using `hG.1`. Establish `hnn : ∀ i, 0 ≤ hH.eigenvalues i` using `fun i => hG.eigenvalues_nonneg i`. Establish `hdet : G.det = ((∏ i, hH.eigenvalues i : ℝ) : ℂ)`. Rewrite using `[hH.det_eq_prod_eigenvalues]`.
+
+Use `push_cast`. Both sides reduce to the same expression. Establish `htr : ∑ i, hH.eigenvalues i ≤ N`. Establish `h2 : (G.trace).re = ∑ i, hH.eigenvalues i`. Rewrite using `[hH.trace_eq_sum_eigenvalues, Complex.re_sum]`.
+
+Simplify using the standard rewrite rules. Establish `h3 : (G.trace).re ≤ N`. Rewrite using `[Matrix.trace, Complex.re_sum]`. Combine the equalities or inequalities in the displayed calculation. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hp0 : 0 ≤ ∏ i, hH.eigenvalues i` using `Finset.prod_nonneg fun i _ => hnn i`. Establish `hp1 : ∏ i, hH.eigenvalues i ≤ 1`. Combine the equalities or inequalities in the displayed calculation. Combine the linear relations using `[Real.add_one_le_exp (hH.eigenvalues i - 1)]`. Use `_ = Real.exp (∑ i, (hH.eigenvalues i - 1)) := (Real.exp_sum _ _).symm`.
+
+Use `_ ≤ 1 := by`. Rewrite using `[Real.exp_le_one_iff, Finset.sum_sub_distrib]`. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[hdet]`.
+
+Simplify using `only [Complex.ofReal_re, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg hp0]`. Conclude with `⟨hp0, hp1, trivial⟩`.
+-/
 theorem UpperTheory.V.KT.hadam :
     ∀ (N : ℕ) (G : Matrix (Fin N) (Fin N) ℂ), G.PosSemidef → (∀ a, (G a a).re ≤ 1) →
     0 ≤ G.det.re ∧ G.det.re ≤ 1 ∧ ‖G.det‖ = G.det.re := by

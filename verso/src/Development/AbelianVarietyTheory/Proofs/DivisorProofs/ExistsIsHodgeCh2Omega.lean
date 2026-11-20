@@ -9,6 +9,11 @@ open CategoryTheory AlgebraicGeometry TopologicalSpace
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GlobalTheory GlobalTheory.CxPts GlobalTheory.VB
 
+/- English proof (translation)
+Introduce `hA k _ X p _ hreg hX P`. Take `⟨h, H⟩` from `GlobalTheory.PPAS.exists_isDualRiemann k X p P Real.pi Real.pi_pos`. Establish `hn` using `GlobalTheory.PPAS.isCInfNorm_of_isHodge P H`. Take `⟨a, ha⟩` from `hn.exists_isCh2Deg hA hreg hX`. Use `⟨h, H, hn, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[GlobalTheory.PPAS.IsHodge.ch2Omega_eq (P := P) H ha]`. Conclude with `ha`. Conclude with `(GlobalTheory.ChernDegree.first_chern_integral_eq_degree k X p hX _ _ h hn).2`.
+-/
 theorem GlobalTheory.PPAS.exists_isHodge_ch2Omega : GlobalTheory.Published.ArCalc → ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) [IsIntegral X], (∀ (Y : Scheme.{0}) (q : Y ⟶ Sp k) [IsIntegral Y], IsArithVar q 1 → Nonempty (RegCover q)) → IsArithVar p 1 → ∀ P : PPAS X, ∃ h : VMetric p (LieVB.omega P.A) P.g, P.IsHodge h ∧ h.IsCInfNorm ∧ h.IsCh2Deg (P.ch2Omega p) ∧ h.first_chern_integral = P.degOmega p := by
   intro hA k _ X p _ hreg hX P
   obtain ⟨h, H⟩ := GlobalTheory.PPAS.exists_isDualRiemann k X p P Real.pi Real.pi_pos

@@ -16,6 +16,19 @@ local infixl:70 " ⬝ " => HMul.hMul
 
 variable {D : D7}
 
+/- English proof (translation)
+Use `set X : Mx D r V.rank := (adj D C * V.gram).map (incA D) with hXdef`. Establish `hM : (adj D C * V.gram)ᴴ = V.gram * C`. Rewrite using `[Matrix.conjTranspose_mul, GlobalTheory.MixModel.gram_conjTranspose]`. Use `show V.gram * (Cᴴ)ᴴ = V.gram * C`. Rewrite using `[Matrix.conjTranspose_conjTranspose]`.
+
+Establish `hX0 : X ⬝ GlobalTheory.MixModel.giA V ⬝ GlobalTheory.MixModel.adj X = 0`. Establish `e : GlobalTheory.MixModel.adj X = GlobalTheory.MixModel.rat (V.gram * C)`. Rewrite using `[hXdef, ← hM]`. Both sides reduce to the same expression. Rewrite using `[e, hXdef]`.
+
+Use `show GlobalTheory.MixModel.rat (adj D C * V.gram) ⬝ GlobalTheory.MixModel.rat V.gram⁻¹ ⬝ GlobalTheory.MixModel.rat (V.gram * C) = 0`. Rewrite using `[← GlobalTheory.MixModel.rat_mul, ← GlobalTheory.MixModel.rat_mul]`. Establish `: adj D C * V.gram * V.gram⁻¹ * (V.gram * C) = adj D C * V.gram * C`. Rewrite using `[Matrix.mul_assoc (adj D C * V.gram), ← Matrix.mul_assoc V.gram⁻¹, Matrix.nonsing_inv_mul _ (GlobalTheory.MixModel.gram_isUnit_det V), Matrix.one_mul]`. Rewrite using `[this]`.
+
+Conclude with `(congrArg GlobalTheory.MixModel.rat hC.2.2).trans GlobalTheory.MixModel.rat_zero`. Rewrite using `[GlobalTheory.MixModel.symplOH_eq, GlobalTheory.MixModel.hO_eq_trace]`. Establish `e2 : isoPart V W C b = b ⬝ X` using `rfl`. Establish `e3 : isoPart V W C a = a ⬝ X` using `rfl`. Rewrite using `[e2, e3, GlobalTheory.MixModel.adj_mul]`.
+
+Establish `e4 : GlobalTheory.MixModel.giA V ⬝ (GlobalTheory.MixModel.adj X ⬝ GlobalTheory.MixModel.adj a ⬝ (GlobalTheory.MixModel.gA W ⬝ (b ⬝ X))) = (GlobalTheory.MixModel.giA V ⬝ GlobalTheory.MixModel.adj X ⬝ GlobalTheory.MixModel.adj a ⬝ GlobalTheory.MixModel.gA W ⬝ b) ⬝ X`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[e4, Matrix.trace_mul_comm]`. Establish `e5 : X ⬝ (GlobalTheory.MixModel.giA V ⬝ GlobalTheory.MixModel.adj X ⬝ GlobalTheory.MixModel.adj a ⬝ GlobalTheory.MixModel.gA W ⬝ b) = (X ⬝ GlobalTheory.MixModel.giA V ⬝ GlobalTheory.MixModel.adj X) ⬝ (GlobalTheory.MixModel.adj a ⬝ GlobalTheory.MixModel.gA W ⬝ b)`. Simplify using `only [Matrix.mul_assoc]`.
+
+Rewrite using `[e5, hX0, Matrix.zero_mul, Matrix.trace_zero, map_zero]`.
+-/
 theorem symplOH_isoPart_isoPart (V W : HSp D) {r : ℕ} (C : Matrix (Fin V.rank) (Fin r) D.host.E) (hC : IsIsoFrame V C)
     (b a : Mx D W.rank r) : symplOH V W (isoPart V W C b) (isoPart V W C a) = 0 := by
   set X : Mx D r V.rank := (adj D C * V.gram).map (incA D) with hXdef
@@ -47,11 +60,17 @@ theorem symplOH_isoPart_isoPart (V W : HSp D) {r : ℕ} (C : Matrix (Fin V.rank)
     simp only [Matrix.mul_assoc]
   rw [e5, hX0, Matrix.zero_mul, Matrix.trace_zero, map_zero]
 
+/- English proof (translation)
+Unfold `symplOH`. Rewrite using `[← add_mul, ← map_add]`. Evaluate the numerical expressions.
+-/
 theorem symplO_eq_add (S T : HSp D) (x y : WO S T) : symplO S T x y = symplOH S T x y + symplOH S T x y := by
   unfold symplOH
   rw [← add_mul, ← map_add]
   norm_num
 
+/- English proof (translation)
+Simplify using `only [heisO]`. Rewrite using `[← mul_assoc, ← mul_assoc, ← AddChar.map_add_eq_mul, ← AddChar.map_add_eq_mul, add_right_comm a u v]`. Use `congr 2`. Rewrite using `[GlobalTheory.FinTranslate.symplOH_add_left, GlobalTheory.FinTranslate.symplOH_add_left, hav, symplO_eq_add, GlobalTheory.FinTranslate.symplOH_skew S T v u]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem heisO_heisO_apply (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (G : WO S T → ℂ) (u v a : WO S T)
     (hav : symplOH S T a v = 0) :
     heisO ψ S T u (heisO ψ S T v G) a =
@@ -67,6 +86,19 @@ end GlobalTheory.MixedTermTranslate
 
 namespace GlobalTheory.MixedTermTranslate
 
+/- English proof (translation)
+Introduce `D V V' W r C C' B hs ψ _ μ 𝓨 hμ G hG y κ`. Establish `hμ' : IsCovolOne (GlobalTheory.MixModel.ratMx D W.rank r) μ 𝓨` using `hμ`. Establish `hmid : midPart V V' W B 0 = 0` using `by show HMul.hMul (0 : Matrix (Fin W.rank) (Fin V'.rank) (AE D)) _ = 0`. Conclude with `Matrix.zero_mul _`. Establish `iso` using `symplOH_isoPart_isoPart V W C hs.frame`.
+
+Take `⟨u, hu⟩ : ∃ u, u = isoPart V W C' (Matrix.map y (incA D))` from `⟨_, rfl⟩`. Establish `hterm : ∀ F : WO V W → ℂ, term ψ V V' W C C' B μ 𝓨 F y = ∫ s in 𝓨, heisO ψ V W u F (isoPart V W C s) ∂μ`. Introduce `F`. Use `show ∫ s in 𝓨, heisO ψ V W _ F (isoPart V W C s + midPart V V' W B 0) ∂μ = _`. Rewrite using `[hmid, hu]`.
+
+Simplify using `only [add_zero]`. Set `Ψ : Mx D W.rank r → ℂ` to `fun s => ψ (symplOH V W (isoPart V W C s) u) * G (isoPart V W C s + u)`. Establish `hper : ∀ γ ∈ GlobalTheory.MixModel.ratMx D W.rank r, ∀ s, Ψ (γ + s) = Ψ s`. Introduce and unpack `_ ⟨q₀, rfl⟩ s`. Establish `e3 : (incA D).toAddMonoidHom.mapMatrix q₀ = q₀.map (incA D)` using `rfl`.
+
+Simplify using `only [Ψ]`. Rewrite using `[e3, GlobalTheory.TwistEquiRat.isoPart_add, add_assoc (isoPart V W C (q₀.map (incA D))), ← GlobalTheory.TwistEquiRat.ratW_eq_isoPart V W C q₀, hG.quasi, GlobalTheory.TwistEquiRat.ratW_eq_isoPart V W C q₀, GlobalTheory.FinTranslate.symplOH_add_left, GlobalTheory.FinTranslate.sympl …`. Establish `h1 : ψ (symplOH V W (isoPart V W C (q₀.map (incA D))) u) * ψ (-(symplOH V W (isoPart V W C (q₀.map (incA D))) u)) = 1`. Rewrite using `[← AddChar.map_add_eq_mul, add_neg_cancel, AddChar.map_zero_eq_one]`. Take the linear combination `(ψ (symplOH V W (isoPart V W C s) u) * G (isoPart V W C s + u)) * h1`.
+
+Establish `hph : phase ψ V W C C' y κ = ψ (symplO V W u (isoPart V W C κ))` using `by rw [hu]; rfl`. Establish `key : ∀ s, heisO ψ V W u (heisO ψ V W (isoPart V W C κ) G) (isoPart V W C s) = phase ψ V W C C' y κ * Ψ (s + κ)`. Introduce `s`. Rewrite using `[heisO_heisO_apply ψ V W G u _ _ (iso s κ), hph]`. Use `show _ = _ * (ψ (symplOH V W (isoPart V W C (s + κ)) u) * G (isoPart V W C (s + κ) + u))`.
+
+Rewrite using `[GlobalTheory.TwistEquiRat.isoPart_add]`. Rewrite using `[hterm, hterm]`. Simplify using `only [key]`. Rewrite using `[integral_const_mul, GlobalTheory.MixModel.covolOne_integral_add hμ' Ψ hper κ]`. Both sides reduce to the same expression.
+-/
 theorem term_heisO_isoPart : ∀ (D : D7) (V V' W : HSp D) (r : ℕ) (C C' : Matrix (Fin V.rank) (Fin r) D.host.E) (B : Matrix (Fin V.rank) (Fin V'.rank) D.host.E), IsIsoSplit V V' C B → ∀ ψ : AddChar (AF D.host.F) ℂ, IsStdChar D ψ (-1) → ∀ (μ : Measure (Mx D W.rank r)) (𝓨 : Set (Mx D W.rank r)), IsCovolOne (ratMx D W.rank r) μ 𝓨 → ∀ G : WO V W → ℂ, IsThetaFunO ψ V W G → ∀ (y : Matrix (Fin W.rank) (Fin r) D.host.E) (κ : Mx D W.rank r), term ψ V V' W C C' B μ 𝓨 (heisO ψ V W (isoPart V W C κ) G) y = phase ψ V W C C' y κ * term ψ V V' W C C' B μ 𝓨 G y := by
   intro D V V' W r C C' B hs ψ _ μ 𝓨 hμ G hG y κ
   have hμ' : IsCovolOne (GlobalTheory.MixModel.ratMx D W.rank r) μ 𝓨 := hμ

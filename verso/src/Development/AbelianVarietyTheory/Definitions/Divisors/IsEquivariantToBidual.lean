@@ -31,9 +31,15 @@ def eigenQuotMap {φ : F ⟶ G} (h : IsEquivariant ρ ρ' φ) : eigenQuot ρ σ 
   eigenDesc (φ ≫ eigenπ ρ' σ) fun a => by
     rw [← Category.assoc, h a, Category.assoc, act_eigenπ, Linear.comp_smul]
 
+/- English proof (translation)
+The claim follows from `eigenπ_desc _ _ _ _`.
+-/
 @[reassoc (attr := simp)] theorem eigenπ_eigenQuotMap {φ : F ⟶ G} (h : IsEquivariant ρ ρ' φ) :
     eigenπ ρ σ ≫ eigenQuotMap σ h = φ ≫ eigenπ ρ' σ := eigenπ_desc _ _ _ _
 
+/- English proof (translation)
+Introduce `a` and use `by rw [Iso.comp_inv_eq, Category.assoc, h a, Iso.inv_hom_id_assoc]`.
+-/
 theorem isEquivariant_inv {φ : F ≅ G} (h : IsEquivariant ρ ρ' φ.hom) :
     IsEquivariant ρ' ρ φ.inv := fun a => by
   rw [Iso.comp_inv_eq, Category.assoc, h a, Iso.inv_hom_id_assoc]
@@ -53,6 +59,9 @@ theorem isEquivariant_inv {φ : F ≅ G} (h : IsEquivariant ρ ρ' φ.hom) :
 
 variable (ρ)
 
+/- English proof (translation)
+Use `eigenι_act (ρ.comp c) σ (c a)` as an intermediate fact. Rewrite `this` using `[act, RingHom.comp_apply, hc]`. Then use the resulting hypothesis.
+-/
 theorem eigenι_comp_act {c : O →+* O} (hc : Function.Involutive c) (a : O) :
     eigenι (ρ.comp c) σ ≫ act ρ a = σ.comp c a • eigenι (ρ.comp c) σ := by
   have := eigenι_act (ρ.comp c) σ (c a)
@@ -69,6 +78,9 @@ def eigenConjIso {c : O →+* O} (hc : Function.Involutive c) :
   inv_hom_id := by
     rw [← cancel_mono (eigenι _ _), Category.assoc, eigenLift_ι, eigenLift_ι, Category.id_comp]
 
+/- English proof (translation)
+The claim follows from `eigenLift_ι ρ _ _ (eigenι_comp_act ρ σ hc)`.
+-/
 @[reassoc (attr := simp)] theorem eigenConjIso_hom_ι {c : O →+* O} (hc : Function.Involutive c) :
     (eigenConjIso ρ σ hc).hom ≫ eigenι _ _ = eigenι _ _ :=
   eigenLift_ι ρ _ _ (eigenι_comp_act ρ σ hc)
@@ -84,13 +96,22 @@ def eigenQuotConjIso {c : O →+* O} (hc : Function.Involutive c) :
   hom_inv_id := by rw [← cancel_epi (eigenπ _ _)]; simp
   inv_hom_id := by rw [← cancel_epi (eigenπ _ _)]; simp
 
+/- English proof (translation)
+Simplify using `only [eigenQuotConjIso, eigenπ_desc]`.
+-/
 @[reassoc (attr := simp)] theorem eigenπ_eigenQuotConjIso_hom {c : O →+* O}
     (hc : Function.Involutive c) : eigenπ _ _ ≫ (eigenQuotConjIso ρ σ hc).hom = eigenπ _ _ := by
   simp only [eigenQuotConjIso, eigenπ_desc]
 
+/- English proof (translation)
+The claim follows from `(smulHom_comp φ a).symm`.
+-/
 theorem smul_eq_smulHom_comp (a : Γ(X, ⊤)) (φ : F ⟶ G) : a • φ = smulHom F a ≫ φ :=
   (smulHom_comp φ a).symm
 
+/- English proof (translation)
+Rewrite using `[smul_eq_smulHom_comp, dualMap_comp, dualMap_smulHom]`. Both sides reduce to the same expression.
+-/
 theorem dualMap_smul (a : Γ(X, ⊤)) (φ : F ⟶ G) : dualMap (a • φ) = a • dualMap φ := by
   rw [smul_eq_smulHom_comp, dualMap_comp, dualMap_smulHom]
   rfl
@@ -123,10 +144,16 @@ instance isIso_dualQuotHom : IsIso (dualQuotHom ρ σ) := by
 
 def dualQuotIso : dual (eigenQuot ρ σ) ≅ eigen (dualAct ρ) σ := asIso (dualQuotHom ρ σ)
 
+/- English proof (translation)
+Simplify using `only [dualQuotIso, asIso_hom, dualQuotHom, eigenLift_ι]`.
+-/
 @[reassoc (attr := simp)] theorem dualQuotIso_hom_ι :
     (dualQuotIso ρ σ).hom ≫ eigenι _ _ = dualMap (eigenπ ρ σ) := by
   simp only [dualQuotIso, asIso_hom, dualQuotHom, eigenLift_ι]
 
+/- English proof (translation)
+Introduce `a` and use `toBidual_naturality_dualSheafTranspose (act ρ a)`.
+-/
 theorem isEquivariant_toBidual : IsEquivariant ρ (dualAct (dualAct ρ)) (cartierDualToBidual F) := fun a =>
   toBidual_naturality_dualSheafTranspose (act ρ a)
 
@@ -147,10 +174,16 @@ def pullbackQuotIso (f : Y ⟶ X) : eigenQuot (pullAct ρ f) (f.appTop.hom.comp 
       ← Adjunction.homEquiv_naturality_left_symm, eigenπ_desc, Equiv.symm_apply_apply, eigenπ_desc,
       Category.comp_id]
 
+/- English proof (translation)
+Simplify using `only [pullbackQuotIso, eigenπ_desc]`.
+-/
 @[reassoc (attr := simp)] theorem eigenπ_pullbackQuotIso_hom (f : Y ⟶ X) :
     eigenπ _ _ ≫ (pullbackQuotIso ρ σ f).hom = (Scheme.Modules.pullback f).map (eigenπ ρ σ) := by
   simp only [pullbackQuotIso, eigenπ_desc]
 
+/- English proof (translation)
+Use extensionality with `V s`. Use `congr($((he.basis le_top).ext (f₁ := QCoh.appLinear φ V) (f₂ := QCoh.appLinear ψ V) fun i => ?_) s)` and prove the remaining obligations. Rewrite using `[IsFrame.basis_apply]`. Conclude with `(app_resM φ _ _).trans ((congrArg _ (h i)).trans (app_resM ψ _ _).symm)`.
+-/
 theorem hom_ext_of_isFrame {κ : Type} [Fintype κ] {e : κ → Γ(F, ⊤)} (he : IsFrame e)
     {φ ψ : F ⟶ G} (h : ∀ i, φ.app ⊤ (e i) = ψ.app ⊤ (e i)) : φ = ψ := by
   ext V s
@@ -161,6 +194,9 @@ theorem hom_ext_of_isFrame {κ : Type} [Fintype κ] {e : κ → Γ(F, ⊤)} (he 
 
 end Eigen
 
+/- English proof (translation)
+Substitute `hπ hε` using the available equality. Conclude with `IsChart.isFrame_d he ⟨isAffineOpen_top _, isAffineOpen_top _, le_top, le_top⟩ ε (Scheme.ΓSpecIso R).inv.hom (Scheme.ΓSpecIso A).inv.hom (IsPushout.of_vert_isIso (g := (Scheme.ΓSpecIso R).inv) (inl := (Scheme.ΓSpecIso A).inv) ⟨Scheme.ΓSpecIso_inv_naturality _⟩) (fun x => congr($(S …`.
+-/
 theorem isFrame_d_Spec {R A : CommRingCat.{0}} [Algebra R A] (ε : A →ₐ[R] R)
     {π : Spec A ⟶ Spec R} {e : Spec R ⟶ Spec A} (he : e ≫ π = 𝟙 _)
     (hπ : π = Spec.map (CommRingCat.ofHom (algebraMap R A)))

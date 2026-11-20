@@ -11,6 +11,11 @@ open NumberField Formalism.BasicNotions Classical Formalism.MainNotions Formalis
 
 namespace GlobalTheory.MomN
 
+/- English proof (translation)
+Establish `h1 : ContDiff ℂ ⊤ F` using `contDiffOn_univ.1 (hF.contDiffOn uniqueDiffOn_univ)`. Set `f : V →ₗ[ℂ] ℂ` to `{ toFun := fun z => H z x map_add' := fun a b => by simp map_smul' := fun c a => by simp }`. Establish `hl : ContDiff ℂ ⊤ (fun z => H z x)` using `(LinearMap.toContinuousLinearMap f).contDiff`. Establish `h2 : ContDiff ℂ ⊤ (fun z => F (z + x))` using `h1.comp (contDiff_id.add contDiff_const)`. Establish `h3 : ContDiff ℂ ⊤ (fun z => Complex.exp (-(Real.pi : ℂ) * H z x - (Real.pi : ℂ) * H x x / 2))` using `((contDiff_const.mul hl).sub contDiff_const).cexp`.
+
+Conclude with `h2.mul h3`.
+-/
 theorem contDiff_opU_of_analytic {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] [FiniteDimensional ℂ V]
     (H : Formalism.L2.Th1.H.Sesq V) (x : V) {F : V → ℂ} (hF : AnalyticOnNhd ℂ F Set.univ) :
     ContDiff ℂ ⊤ (Formalism.L2.Th1.H.opU H x F) := by
@@ -25,6 +30,21 @@ theorem contDiff_opU_of_analytic {V : Type} [NormedAddCommGroup V] [NormedSpace 
     ((contDiff_const.mul hl).sub contDiff_const).cexp
   exact h2.mul h3
 
+/- English proof (translation)
+Introduce `D cc δ B hcc hδ q _ hq2 hsplit hcop ι δ₀ θ Ω hP N N' s hs`. Establish `hS` using `B.stdOK hcc hδ`. Establish `han : AnalyticOnNhd ℂ B.thMM Set.univ` using `(B.thMM_spec hS).1.1`. Establish `hLat : La D B.tor (StandardLatticesGL3.stdL D N) (StandardLatticesGL3.stdL D N') = powLat B.lamM N N'` using `B.lat0OK N N'`. Establish `hA : area (lamOf D cc δ) = Formalism.L2.Th1.F.area B.L` using `B.areaOK`.
+
+Use `set G : Fin N' → Fin N → (D.what₂.Tau → ℂ) → ℂ := fun i j => Formalism.L2.Th1.H.opU (Formalism.L2.Th1.H.matH (hOne B.L D.what₂.Tau)) (fun τ => s τ i j) B.thMM with hG`. Apply the tactic sequence `have hU : U D B.tor s (B.thZero N N') = fun z => ∏ i, ∏ j, G i j (entry D.what₂.Tau N N' i j z) := by`. Use function extensionality and compare the values at `z`. Rewrite using `[U_eq]`. Use `show Formalism.L2.Th1.H.opU (formV (area (lamOf D cc δ)) D.what₂.Tau N N') s (tensPow B.thMM N N') z = _`.
+
+Rewrite using `[hA, opU_tensPow]`. Both sides reduce to the same expression. Establish `hGc : ∀ i j, ContDiff ℂ ⊤ (G i j)` using `fun i j => contDiff_opU_of_analytic _ _ han`. Apply the tactic sequence `have hEc : ∀ i j, ContDiff ℂ ⊤ (fun z : VC D N N' => G i j (entry D.what₂.Tau N N' i j z)) := fun i j => (hGc i j).comp (entry D.what₂.Tau N N' i j).contDiff`. Take `⟨n, -, hnq, hns⟩` from `hs`.
+
+Rewrite `hns` using `[hLat]`. Apply the tactic sequence `have hF : ∀ i j, LatInt ι (Ω / ι δ₀) (La D B.tor (StandardLatticesGL3.stdL D N) (StandardLatticesGL3.stdL D N')) (fun z => G i j (entry D.what₂.Tau N N' i j z)) := by`. Introduce `i j`. Establish `hm : LatInt ι (Ω / ι δ₀) B.lamM (G i j)`. Use `GlobalTheory.T.cmTheta_baseVector_translates_integral D cc δ B hcc hδ q hq2 hsplit hcop ι δ₀ θ Ω hP (fun τ => s τ i j) n hnq ?_` and prove the remaining obligations.
+
+Use `hns i j` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `τ`. Simplify using `[nsmul_eq_mul]`. Apply the tactic sequence `refine GlobalTheory.T.latticeJetsAreBoundedMoments_pullback q ι (D.what₂.Tau → ℂ) (VC D N N') (Ω / ι δ₀) B.lamM (La D B.tor (StandardLatticesGL3.stdL D N) (StandardLatticesGL3.stdL D N')) (entry D.what₂.Tau N N' i j) (G i j) (hGc i j) ?_ hm`.
+
+Introduce `x hx`. Rewrite `hx` using `[hLat]`. Conclude with `⟨1, Nat.coprime_one_left q, by rw [one_smul]; exact hx i j⟩`. Rewrite using `[hU]`. Apply the tactic sequence `refine (GlobalTheory.T.latticeJetsAreBoundedMoments_prod_and_sum q ι (VC D N N') (Ω / ι δ₀) (La D B.tor (StandardLatticesGL3.stdL D N) (StandardLatticesGL3.stdL D N'))).1 (Fin N') (fun i z => ∏ j, G i j (entry D.what₂.Tau N N' i j z)) (fun i => ?_) (fun i => ?_)`.
+
+Conclude with `contDiff_prod fun j _ => hEc i j`. Apply the tactic sequence `exact (GlobalTheory.T.latticeJetsAreBoundedMoments_prod_and_sum q ι (VC D N N') (Ω / ι δ₀) (La D B.tor (StandardLatticesGL3.stdL D N) (StandardLatticesGL3.stdL D N'))).1 (Fin N) (fun j z => G i j (entry D.what₂.Tau N N' i j z)) (hEc i) (hF i)`.
+-/
 theorem latInt_U_thZero : ∀ (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (B : Base D cc δ), IsCurveIdeal D cc → IsDiscriminantTwelfthRootOfIdealLattice D cc δ → ∀ (q : ℕ) [Fact q.Prime], q ≠ 2 → jacobiSym (-(D.host.d : ℤ)) q = 1 → Nat.Coprime (Ideal.absNorm cc) q → ∀ (ι : ℂ ≃+* ℂ_[q]) (δ₀ : ℂ) (θ : ℂ → ℂ) (Ω : ℂ_[q]), Per D.host.d ι δ₀ θ Ω → ∀ (N N' : ℕ) (s : VC D N N'), TorsPrime D q (La D B.tor (StandardLatticesGL3.stdL D N) (StandardLatticesGL3.stdL D N')) s → LatInt ι (Ω / ι δ₀) (La D B.tor (StandardLatticesGL3.stdL D N) (StandardLatticesGL3.stdL D N')) (U D B.tor s (B.thZero N N')) := by
   intro D cc δ B hcc hδ q _ hq2 hsplit hcop ι δ₀ θ Ω hP N N' s hs
   have hS := B.stdOK hcc hδ

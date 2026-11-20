@@ -11,6 +11,13 @@ namespace Formalism.MainNotions.N.Ln34.UniversalLiftFrames
 
 open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.BasicNotions.Loc Module Formalism.MainNotions.N.Ln34 Formalism.MainNotions.ElementDenominator Formalism.MainNotions.ElementDenominator.CongruenceModules PowerSeries
 
+/- English proof (translation)
+Establish `hs : ((HW l).W K 1 LL hG).s = 1` using `(HW l).W_s K 1 LL hG`. Establish `hpl : ((D.loc l).PD K).p = l` using `(D.loc l).PD_p K`. Establish `hz : IsPrimitiveRoot ζ ((D.loc l).PD K).p`. Rewrite using `[hpl]`. Conclude with `framepf_pt_prim D HW hG c ζ τ hpt`.
+
+Take `⟨hQ0, hQ1⟩` from `framepf_Q_at ((HW l).W K 1 LL hG) hs c ζ hz`. Take `⟨-, -, -, p4, -⟩` from `hA l K 1 LL hG`. Establish `hone : ∃ j : ℕ, IsPrimitiveRoot (1 : ↥LL.1) (((D.loc l).PD K).p ^ j)` using `⟨0, by simp⟩`. Establish `hπ1 : ∀ i, PowerSeries.constantCoeff (((HW l).W K 1 LL hG).lev i 1 letπ) = 0` using `fun i => by`. Rewrite using `[CrystallineExponents.cc_lev_pi _ i 1 hone, sub_self]`.
+
+Establish `hX : ((HW l).W K 1 LL hG).X = letπ` using `by simp [LocWach.X, hs]`. Use `⟨hT, ⟨1, by simpa using hz⟩, hz.pow_eq_one, hQ0, hQ1, fun x k hk => ?_, fun x hx => ((HW l).W K 1 LL hG).N_φ T x hx⟩` and prove the remaining obligations. Conclude with `(((p4 T hT).1 (c - 1) 1 ⟨0, one_pow _⟩ (by rw [hX]; exact hπ1 _)).1 x k).2 hk`.
+-/
 theorem u1r2_pt (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.loc D.locA HW F)
     (hA : adm1 D HW F Cm) {l : ℕ} [Fact l.Prime] (K LL : FinExt l) (hG : Good K 1 LL)
     (T : LocLat ↥(GK K) ℚ_[l] ↥LL.1 ↥(OL LL)) (hT : IsCrys ((D.loc l).PD K) T.ρ)
@@ -32,6 +39,15 @@ theorem u1r2_pt (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : Cmp
     fun x hx => ((HW l).W K 1 LL hG).N_φ T x hx⟩
   exact (((p4 T hT).1 (c - 1) 1 ⟨0, one_pow _⟩ (by rw [hX]; exact hπ1 _)).1 x k).2 hk
 
+/- English proof (translation)
+Establish `hs : ((HW l).W K 1 LL hG).s = 1` using `(HW l).W_s K 1 LL hG`. Establish `hpl : ((D.loc l).PD K).p = l` using `(D.loc l).PD_p K`. Establish `hp2 : ((D.loc l).PD K).p ≠ 2` using `by rw [hpl]; exact hl`. Establish `p9` using `(hA l K 1 LL hG).2.2.2.2.2.2.2.2.1`. Establish `h92` using `(p9 T hT hs hp2).2.1`.
+
+Take `⟨π₀, E₀, -, hm⟩` from `h92`. Take `⟨⟨r, b, hbΔ, hbu, hbe⟩, -⟩` from `hm`. Establish `hw` using `hp9.2.2.1`. Take `⟨w₁, hw₁⟩` from `hw`. Establish `hs1 : 1 ≤ sK l K` using `DescentValuation.u3downPf_sK_pos hl K LL hG`.
+
+Establish `hBL` using `MQ.basis_L ((HW l).W K 1 LL hG) T π' (sK l K) hs1 w₁ hw₁ hp9.2.1 b hbΔ hbu hbe c`. Take `⟨bL⟩` from `hBL`. Establish `hsurj : ∀ k, ∃ y : ((HW l).W K 1 LL hG).DD T, ∃ hy : y ∈ NcS ((HW l).W K 1 LL hG) T (c - 1), bL k = mkL ((HW l).W K 1 LL hG) T π' c y hy`. Introduce `k`. Establish `hq` using `Submodule.Quotient.mk_surjective _ (bL k)`.
+
+Take `⟨⟨y, hy⟩, hyk⟩` from `hq`. Conclude with `⟨y, hy, hyk.symm⟩`. Use `choose rep hrep hbr using hsurj`. Conclude with `⟨r, bL, rep, hrep, hbr⟩`.
+-/
 theorem u1r2_basis (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.loc D.locA HW F)
     (hA : adm1 D HW F Cm) {l : ℕ} [Fact l.Prime] (hl : l ≠ 2) (K LL : FinExt l) (hG : Good K 1 LL)
     (π' : LetA ↥(OL LL) (finrank ℚ_[l] ↥(K0 K))) (E : ZMod (finrank ℚ_[l] ↥(K0 K)) → Polynomial ↥(OL LL))

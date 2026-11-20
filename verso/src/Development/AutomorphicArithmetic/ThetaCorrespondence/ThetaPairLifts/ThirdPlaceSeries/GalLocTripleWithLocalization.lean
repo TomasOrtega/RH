@@ -32,6 +32,9 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.TypeRec.factG
 namespace GlobalTheory.GalLoc
 set_option maxHeartbeats 4000000 in
+/- English proof (translation)
+Take `⟨Rw', hR, Bs', -⟩` from `GlobalTheory.T.twist_second_step_kept_with_localisations D cf Rw low Pq S hl eig θ Bs L ψ hψ`. Establish `hg` using `_root_.GlobalTheory.GalAway.galoisReps_of_cgTrue_alt_alt hL hP.what₂.fin hP.what₂.gal _ T cg`. Establish `hm` using `GlobalTheory.T.stableGoodForms_meet_generic_type hP.greenC _ exT grp`. Establish `hs` using `GlobalTheory.T.good_part_eigensystem_is_triple_eigensystem _ _ _ _ _ _ _ _ _ Bs' nf hm cm fa`. Conclude with `_root_.GlobalTheory.T.side_eigen_export_alt hP.what₂.cheb hP.what₂.art _ _ _ _ _ _ _ _ _ Bs' Sb hSb ks chiT grp chr val roots hstar (eT Rw' hR) eO (rp Rw' hR) (rt Rw' hR) hg hs`.
+-/
 theorem galLoc_triple_with_localization_alt (hP : _root_.GlobalTheory.HeightCounting.Up.PublishedInputsThirdLayerAlt) (hL : _root_.UpperTheory.Zero.LLC.RecTExists) {D : D7} {cf : CharFrame D} {Rw : RowSide D} {low : Finset ℕ}
     {Pq : HeightOneSpectrum (𝓞 (maximalRealSubfield D.host.E)) → PlE D.host} {S : RatDat D.ntw}
     {hl : ∀ j, ℕ → PlE D.host → Module.End D.what₂.LL (S.WL j)} {eig : ℕ → D.what₂.FT → ℕ → PlE D.host → ↥D.LL0}
@@ -62,6 +65,21 @@ theorem galLoc_triple_with_localization_alt (hP : _root_.GlobalTheory.HeightCoun
 end GlobalTheory.GalLoc
 namespace GlobalTheory.GalLoc
 set_option maxHeartbeats 4000000 in
+/- English proof (translation)
+Establish `hT` using `_root_.GlobalTheory.T.non_galois_residual_ties hP hL`. Use `_root_.GlobalTheory.GalLoc.atMem_mono (_root_.GlobalTheory.GalLoc.atMem_and' hE (_root_.GlobalTheory.GalLoc.atMem_and' hF (_root_.GlobalTheory.GalLoc.atMem_and' hR (_root_.GlobalTheory.GalLoc.atMem_and' hC hT)))) ?_` and prove the remaining obligations. Introduce `K B f T w Z Wt p0 t nch n xd c hN H`. Take `⟨⟨Sb, hSb, eT, eO⟩, ⟨val, roots, hstar⟩, rp, ⟨cm, fa⟩, rt⟩` from `H`. Take `⟨e⟩` from `hN`.
+
+Establish `eq` using `c.a.nt.eq`. Establish `pk` using `c.a.nt.pack`. Set `L` to `c.a.nt.L`. Establish `hψ : ∃ ψ : (withLoc L).nd.Loc → NC.HC (withLoc L).host.E, ∀ a, NC.ReadC (withLoc L).nd.plOm.1 ((withLoc L).ntw.psiL a) (NC.iotaC (withLoc L) a) (ψ a) 0`. Establish `h0 : ∃ ψ : (w.D Z).nd.Loc → NC.HC (w.D Z).host.E, ∀ a, NC.ReadC (w.D Z).nd.plOm.1 ((w.D Z).ntw.psiL a) (NC.iotaC (w.D Z) a) (ψ a) 0` using `⟨c.a.all.chiD.psi, c.a.all.chi.psi⟩`.
+
+Conclude with `eq ▸ h0`. Take `⟨ψ, hψ⟩` from `hψ`. Establish `cast2 : ∀ P : (D : D7) → CharFrame D → Prop, P (w.D Z) (TC.cf w.I w.l Z) → P (withLoc L) (cfL L c.a.nt.cf)` using `fun P h => cast (congrArg (fun x : (Σ (D₁ : D7) (c₁ : CharFrame D₁) (C₁ : NChoice D₁), TupTied D₁ c₁ C₁) => P x.1 x.2.1) pk) h`. Establish `chr : Nonempty (CharSide (withLoc L) (cfL L c.a.nt.cf))` using `cast2 (fun D cf => Nonempty (CharSide D cf)) ⟨{ c.a.chrN with }⟩`. Take `⟨chr⟩` from `chr`.
+
+Establish `val' : ValLL0 (withLoc L) (cfL L c.a.nt.cf)` using `cast2 (fun D cf => ValLL0 D cf) val`. Establish `roots' : ∀ (k : Fin 2) (z : ℂ), z ^ ((withLoc L).host.g k * ((withLoc L).host.g k - 1)) = 1 → z ∈ (embLL0 (withLoc L)).fieldRange` using `eq ▸ roots`. Establish `star' : ∀ x : (withLoc L).LL0, star (x : (withLoc L).what₂.LL) ∈ (withLoc L).LL0` using `eq ▸ hstar`. Establish `grp : Nonempty (GrpSide (withLoc L))`. Establish `g0 : Nonempty (GrpSide (w.D Z))`.
+
+Set `Ty` to `c.a.all.types`. Conclude with `⟨⟨Ty.tA, Ty.tκ, Ty.teichC_def, Ty.ζ, Ty.ζ_gen, Ty.O, Ty.eSer_def, Ty.kv, Ty.tg_tame, Ty.O_equiv, Ty.O_tw⟩⟩`. Conclude with `eq ▸ g0`. Take `⟨grp⟩` from `grp`. Establish `rp' : ∀ Rw : RowSide (withLoc L), HEq Rw.locR c.a.nt.A.row.locR → GlobalTheory.TwInputs.RowParam (withLoc L) Rw` using `eq ▸ rp`.
+
+Establish `rt' : ∀ Rw : RowSide (withLoc L), HEq Rw.locR c.a.nt.A.row.locR → _root_.GlobalTheory.EigTie.ResTiedAlt (withLoc L) Rw` using `eq ▸ rt`. Establish `cm' : GlobalTheory.TwInputs.CommAll (withLoc L)` using `eq ▸ cm`. Establish `fa' : GlobalTheory.TwInputs.FullAll (withLoc L)` using `eq ▸ fa`. Establish `exT : NExpTied (withLoc L)` using `eq ▸ c.a.all.exp`. Establish `nf : GlobalTheory.TwInputs.NoFormsOff (withLoc L)`.
+
+Establish `h0 : GlobalTheory.TwInputs.NoFormsOff (w.D Z)` using `fun i j hj b => e.ser.off i j b fun h => hj (Finset.mem_Icc.2 h)`. Conclude with `eq ▸ h0`. Rewrite using `[eq]`. Conclude with `_root_.GlobalTheory.GalLoc.galLoc_triple_with_localization_alt hP hL c.a.nt.Bs L ψ hψ Sb hSb c.a.ratIn.ks c.a.nt.A.chiT grp chr val' roots' star' { c.a.nt.A.wdT with } { c.a.nt.cg with } eT eO rp' rt' nf exT cm' fa'`.
+-/
 theorem galLoc_triple_at_place_alt (hP : _root_.GlobalTheory.HeightCounting.Up.PublishedInputsThirdLayerAlt) (hS : SerN) (hL : _root_.UpperTheory.Zero.LLC.RecTExists)
     (hE : _root_.GlobalTheory.HeightCounting.Up.MemberAtLayerPoint hL fun _ _ _ _ w Z _ _ t nch n c => ∃ Sb : Finset (PlE c.a.nt.D.host), (∀ i, Sb ⊆ (withLoc c.a.nt.L).ntw.S0 i) ∧ (∀ Rw : RowSide (withLoc c.a.nt.L), HEq Rw.locR c.a.nt.A.row.locR → GlobalTheory.TwInputs.EigTrue (withLoc c.a.nt.L) (cfL c.a.nt.L c.a.nt.cf) Rw Sb c.a.nt.eig) ∧ GlobalTheory.TwInputs.EigOcc (withLoc c.a.nt.L) ({ c.a.nt.S with } : RatDat (withLoc c.a.nt.L).ntw) c.a.nt.θ c.a.nt.hL Sb c.a.nt.eig)
     (hF : _root_.GlobalTheory.HeightCounting.Up.MemberAtLayerPoint hL fun _ _ _ _ w Z _ _ t nch n c => ValLL0 (w.D Z) (TC.cf w.I w.l Z) ∧ (∀ (k : Fin 2) (z : ℂ), z ^ ((w.D Z).host.g k * ((w.D Z).host.g k - 1)) = 1 → z ∈ (embLL0 (w.D Z)).fieldRange) ∧ (∀ x : (w.D Z).LL0, star (x : (w.D Z).what₂.LL) ∈ (w.D Z).LL0))
@@ -112,6 +130,11 @@ theorem galLoc_triple_at_place_alt (hP : _root_.GlobalTheory.HeightCounting.Up.P
 end GlobalTheory.GalLoc
 namespace GlobalTheory.GalLoc
 set_option maxHeartbeats 4000000 in
+/- English proof (translation)
+Introduce `hP hS hL`. Establish `htr : _root_.GlobalTheory.HeightCounting.Up.MemberAtLayerPoint hL fun _ _ _ _ w Z _ _ t nch n c => _root_.GlobalTheory.Triple.IsGaloisTriple (w.D Z)` using `_root_.GlobalTheory.GalLoc.galLoc_triple_at_place_alt hP hS hL (_root_.GlobalTheory.T.eigTrue_and_eigOcc_withLoc hP hS hL) (_root_.GlobalTheory.T.valLL0_roots_of_unity_mem_star_closed_at_members hP hS hL) (_root_.GlobalTheory.T.local_param_at_member_of_serN hP hS hL) (_root_.Glob …`. Use `(GlobalTheory.T.eventually_sizes_congruences_hostFacts_columnChoices.inter htr).imp fun K _ _ _ _ H => ?_` and prove the remaining obligations. Use `(H.1.inter H.2).imp fun B f T _ H => ?_` and prove the remaining obligations. Introduce `hK w Z Wt p0 t nch n xd c hE hX hC`.
+
+Take `⟨e⟩` from `hE`. Establish `hs` using `H.1 hK T w Z`. Conclude with `_root_.GlobalTheory.TwInputs.JoinModel.exists_galSide_of_rank_ge_hundred e (H.2 hK w Z Wt p0 t nch n xd c ⟨e⟩ hX hC) hs.1 hs.2.1`.
+-/
 theorem galois_side_at_place_alt : _root_.GlobalTheory.HeightCounting.Up.PublishedInputsThirdLayerAlt → SerN → ∀ hL : _root_.UpperTheory.Zero.LLC.RecTExists, _root_.GlobalTheory.HeightCounting.Up.MemberAtLayerPoint hL fun _ _ _ _ w Z _ _ t nch n c =>
     ∃ G : _root_.GlobalTheory.TwInputs.GalSideAlt (w.st Z).toD7, G.cf = (TC.cf w.I w.l Z) ∧ G.lam.C = (TC.cf w.I w.l Z) ∧
       Nonempty (_root_.GlobalTheory.HeightCounting.CGTrueT hL _ G.wd) := by
@@ -130,6 +153,9 @@ section
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.L2 Formalism.L2.Host Formalism.L2.NT Formalism.IndefR.NX NumberField IsDedekindDomain GlobalTheory.Mem GlobalTheory.Mem.Col2 GlobalTheory.Mem.Top GlobalTheory.Mem.Top.GroupRetwisting GlobalTheory.Mem.Top.Bl GlobalTheory.Mem.R3 GlobalTheory.Mem.R3.Rw GlobalTheory.HeightCounting GlobalTheory.HeightCounting.Up
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.TypeRec.factG
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.GalLoc.galois_side_at_place_alt | exact _root_.GlobalTheory.GalLoc.galois_side_at_place_alt | (intros; apply _root_.GlobalTheory.GalLoc.galois_side_at_place_alt <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_galSide_cf_eq_cgTrue_at_members : _root_.GlobalTheory.HeightCounting.Up.PublishedInputsThirdLayerAlt → SerN → ∀ hL : _root_.UpperTheory.Zero.LLC.RecTExists, _root_.GlobalTheory.HeightCounting.Up.MemberAtLayerPoint hL fun _ _ _ _ w Z _ _ t nch n c => ∃ G : _root_.GlobalTheory.TwInputs.GalSideAlt (w.st Z).toD7, G.cf = (TC.cf w.I w.l Z) ∧ G.lam.C = (TC.cf w.I w.l Z) ∧ Nonempty (_root_.GlobalTheory.HeightCounting.CGTrueT hL _ G.wd) := by
   first | exact @_root_.GlobalTheory.GalLoc.galois_side_at_place_alt | exact _root_.GlobalTheory.GalLoc.galois_side_at_place_alt | (intros; apply _root_.GlobalTheory.GalLoc.galois_side_at_place_alt <;> assumption)
 end

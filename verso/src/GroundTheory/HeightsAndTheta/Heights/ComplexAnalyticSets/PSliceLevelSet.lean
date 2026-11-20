@@ -19,6 +19,9 @@ def moll (k : ℕ) : ContDiffBump (0 : ℝ) :=
     have : (0 : ℝ) < ((k : ℝ) + 1)⁻¹ := by positivity
     linarith⟩
 
+/- English proof (translation)
+Use `show Tendsto (fun k : ℕ => ((k : ℝ) + 1)⁻¹) atTop (𝓝 0)`. Use `tendsto_one_div_add_atTop_nhds_zero_nat (𝕜 := ℝ)` as an intermediate fact. Simplify `this` using `only [one_div]`.
+-/
 theorem tendsto_moll_rOut : Tendsto (fun k => (moll k).rOut) atTop (𝓝 0) := by
   show Tendsto (fun k : ℕ => ((k : ℝ) + 1)⁻¹) atTop (𝓝 0)
   have := tendsto_one_div_add_atTop_nhds_zero_nat (𝕜 := ℝ)
@@ -27,14 +30,23 @@ theorem tendsto_moll_rOut : Tendsto (fun k => (moll k).rOut) atTop (𝓝 0) := b
 def smooth (a : ℝ → ℝ) (k : ℕ) : ℝ → ℝ :=
   convolution ((moll k).normed volume) a (ContinuousLinearMap.lsmul ℝ ℝ) volume
 
+/- English proof (translation)
+The claim follows from `(moll k).hasCompactSupport_normed.contDiff_convolution_left (ContinuousLinearMap.lsmul ℝ ℝ) (moll k).contDiff_normed ha.locallyIntegrable`.
+-/
 theorem contDiff_smooth {a : ℝ → ℝ} (ha : Continuous a) (k : ℕ) : ContDiff ℝ ∞ (smooth a k) :=
   (moll k).hasCompactSupport_normed.contDiff_convolution_left (ContinuousLinearMap.lsmul ℝ ℝ)
     (moll k).contDiff_normed ha.locallyIntegrable
 
+/- English proof (translation)
+The claim follows from `(moll k).hasCompactSupport_normed.convolution (ContinuousLinearMap.lsmul ℝ ℝ) has`.
+-/
 theorem hasCompactSupport_smooth {a : ℝ → ℝ} (has : HasCompactSupport a) (k : ℕ) :
     HasCompactSupport (smooth a k) :=
   (moll k).hasCompactSupport_normed.convolution (ContinuousLinearMap.lsmul ℝ ℝ) has
 
+/- English proof (translation)
+Unfold `smooth`. Rewrite using `[convolution_def]`. Conclude with `integral_nonneg fun u => by`. Simplify using `only [ContinuousLinearMap.lsmul_apply, smul_eq_mul]`. Conclude with `mul_nonneg ((moll k).nonneg_normed u) (ha0 _)`.
+-/
 theorem smooth_nonneg {a : ℝ → ℝ} (ha0 : ∀ r, 0 ≤ a r) (k : ℕ) (r : ℝ) : 0 ≤ smooth a k r := by
   unfold smooth
   rw [convolution_def]
@@ -42,6 +54,9 @@ theorem smooth_nonneg {a : ℝ → ℝ} (ha0 : ∀ r, 0 ≤ a r) (k : ℕ) (r : 
     simp only [ContinuousLinearMap.lsmul_apply, smul_eq_mul]
     exact mul_nonneg ((moll k).nonneg_normed u) (ha0 _)
 
+/- English proof (translation)
+Unfold `smooth`. Rewrite using `[integral_convolution (ContinuousLinearMap.lsmul ℝ ℝ) ((moll k).continuous_normed.integrable_of_hasCompactSupport (moll k).hasCompactSupport_normed) (ha.integrable_of_hasCompactSupport has), (moll k).integral_normed]`. Simplify using the standard rewrite rules.
+-/
 theorem integral_smooth {a : ℝ → ℝ} (ha : Continuous a) (has : HasCompactSupport a) (k : ℕ) :
     ∫ r, smooth a k r = ∫ r, a r := by
   unfold smooth
@@ -50,10 +65,16 @@ theorem integral_smooth {a : ℝ → ℝ} (ha : Continuous a) (has : HasCompactS
     (ha.integrable_of_hasCompactSupport has), (moll k).integral_normed]
   simp
 
+/- English proof (translation)
+The claim follows from `ContDiffBump.convolution_tendsto_right_of_continuous tendsto_moll_rOut ha r`.
+-/
 theorem tendsto_smooth {a : ℝ → ℝ} (ha : Continuous a) (r : ℝ) :
     Tendsto (fun k => smooth a k r) atTop (𝓝 (a r)) :=
   ContDiffBump.convolution_tendsto_right_of_continuous tendsto_moll_rOut ha r
 
+/- English proof (translation)
+Unfold `sheetSum`. Use `finsum_nonneg fun x => finsum_nonneg fun _ => ?_` and prove the remaining obligations. Use `split_ifs`. Conclude with `abs_nonneg _`. Conclude with `le_rfl`.
+-/
 theorem sheetSum_abs_nonneg {n d : ℕ} {I : Ideal (MvPolynomial (Fin n) ℂ)} {A : Matrix (Fin d) (Fin n) ℂ}
     (F : (Fin n → ℂ) → ((Fin d → ℂ) → Fin n → ℂ) → ℝ) (y : Fin d → ℂ) :
     0 ≤ sheetSum I A (fun x s => |F x s|) y := by
@@ -63,6 +84,19 @@ theorem sheetSum_abs_nonneg {n d : ℕ} {I : Ideal (MvPolynomial (Fin n) ℂ)} {
   · exact abs_nonneg _
   · exact le_rfl
 
+/- English proof (translation)
+Use `set S : ℕ → (Fin d → ℂ) → ℝ := fun k y => sheetSum I A (fun x s => |w k (T x) * K x s y|) y with hS`. Use `set S' : (Fin d → ℂ) → ℝ := fun y => sheetSum I A (fun x s => |a (T x) * K x s y|) y with hS'`. Establish `hlim : ∀ y, Tendsto (fun k => S k y) atTop (𝓝 (S' y))`. Introduce `y`. Simplify using `only [hS, hS', CutOffDominated.sheetSum_eq_sum _ (hfin y)]`.
+
+Use `tendsto_finsetSum _ fun x _ => ?_` and prove the remaining obligations. Distinguish the cases in `hx : ∃ s, IsSheetAt I A x s`. Simplify using `only [dif_pos hx]`. Conclude with `((hw _).mul_const _).abs`. Simplify using `only [dif_neg hx]`.
+
+Conclude with `tendsto_const_nhds`. Establish `hS0 : ∀ k y, 0 ≤ S k y` using `fun k y => sheetSum_abs_nonneg _ y`. Establish `hS'0 : ∀ y, 0 ≤ S' y` using `fun y => sheetSum_abs_nonneg _ y`. Establish `hmeas : AEStronglyMeasurable S' volume` using `aestronglyMeasurable_of_tendsto_ae atTop (fun k => (hint k).1) (ae_of_all _ hlim)`. Establish `hlint : ∫⁻ y, ENNReal.ofReal (S' y) ≤ ENNReal.ofReal C`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `lintegral_congr fun y => ?_` and prove the remaining obligations. Conclude with `((ENNReal.continuous_ofReal.tendsto _).comp (hlim y)).liminf_eq.symm`. Use `_ ≤ liminf (fun k => ∫⁻ y, ENNReal.ofReal (S k y)) atTop := lintegral_liminf_le' fun k => (hint k).1.aemeasurable.ennreal_ofReal`. Use `_ ≤ ENNReal.ofReal C := by`.
+
+Use `liminf_le_of_frequently_le' (Eventually.frequently (Eventually.of_forall fun k => ?_))` and prove the remaining obligations. Rewrite using `[← ofReal_integral_eq_lintegral_ofReal (hint k) (ae_of_all _ (hS0 k))]`. Conclude with `ENNReal.ofReal_le_ofReal (hle k)`. Use `⟨⟨hmeas, ?_⟩, ?_⟩` and prove the remaining obligations. Unfold `HasFiniteIntegral`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[integral_eq_lintegral_of_nonneg_ae (ae_of_all _ hS'0) hmeas]`. Conclude with `ENNReal.toReal_le_of_le_ofReal hC hlint`.
+-/
 theorem fatou {n d : ℕ} {I : Ideal (MvPolynomial (Fin n) ℂ)} {A : Matrix (Fin d) (Fin n) ℂ}
     (hfin : ∀ y, (fibre I A y).Finite)
     (K : (Fin n → ℂ) → ((Fin d → ℂ) → Fin n → ℂ) → (Fin d → ℂ) → ℝ) (T : (Fin n → ℂ) → ℝ)
@@ -108,6 +142,13 @@ theorem fatou {n d : ℕ} {I : Ideal (MvPolynomial (Fin n) ℂ)} {A : Matrix (Fi
 
 end SliceLevelSet
 
+/- English proof (translation)
+Introduce `n e h W g ℓ A ψ hW hg hℓ hA hψ hψs`. Use `set a : ℝ → ℝ := fun r => |ψ r| with ha_def`. Establish `ha : Continuous a` using `hψ.abs`. Establish `has : HasCompactSupport a` using `hψs.comp_left (g := fun r : ℝ => |r|) abs_zero`. Establish `ha0 : ∀ r, 0 ≤ a r` using `fun r => abs_nonneg _`.
+
+Establish `hM0 : 0 ≤ ∫ y, chartAbsDens (W ⊔ Ideal.span {linForm ℓ - 1}) A (fun _ => 1) (fun _ x => Real.log (h.dualNorm x)) y` using `integral_nonneg fun y => SliceLevelSet.sheetSum_abs_nonneg _ y`. Establish `hC : 0 ≤ (∫ y, chartAbsDens (W ⊔ Ideal.span {linForm ℓ - 1}) A (fun _ => 1) (fun _ x => Real.log (h.dualNorm x)) y) * ∫ r, a r` using `mul_nonneg hM0 (integral_nonneg ha0)`. Establish `hk` using `fun k => h₁ n e h W g ℓ A (SliceLevelSet.smooth a k) hW hg hℓ hA (SliceLevelSet.contDiff_smooth ha k) (SliceLevelSet.hasCompactSupport_smooth has k) (SliceLevelSet.smooth_nonneg ha0 k)`. Establish `habs : ∀ k, ∫ r, |SliceLevelSet.smooth a k r| = ∫ r, a r` using `fun k => by`. Rewrite using `[← SliceLevelSet.integral_smooth ha has k]`.
+
+Conclude with `integral_congr_ae (ae_of_all _ fun r => abs_of_nonneg (SliceLevelSet.smooth_nonneg ha0 k r))`. Establish `key` using `SliceLevelSet.fatou (IndefiniteRowSideFullHecke.ComplexSets.fibre_finite hA) (fun x s y => gradDens (fun _ : Fin e => (fun x => Real.log (h.dualNorm x)) ∘ s) ((fun x => Real.log (h.dualNorm x)) ∘ s) ((fun x => Real.log (h.dualNorm x)) ∘ s) y) (fun x => Real.log (h.dualNorm x)) (S …`. Establish `hfun : ∀ (x : Fin n → ℂ) (c : ℝ), |a (Real.log (h.dualNorm x)) * c| = |ψ (Real.log (h.dualNorm x)) * c|` using `fun x c => by simp only [ha_def, abs_mul, abs_abs]`. Simplify using `only [hfun] at key`. Conclude with `key`.
+-/
 theorem SliceLevelSet.proof (h₁ : SliceLevelSetSmooth.Statement) : SliceLevelSet.Statement := by
   intro n e h W g ℓ A ψ hW hg hℓ hA hψ hψs
   set a : ℝ → ℝ := fun r => |ψ r| with ha_def

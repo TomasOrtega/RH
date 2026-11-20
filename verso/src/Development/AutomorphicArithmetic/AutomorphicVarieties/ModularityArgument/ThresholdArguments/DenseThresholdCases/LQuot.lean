@@ -15,12 +15,20 @@ namespace UpperTheory.V.Z.Win.T2
 variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
   {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w}
   {rc : IrrGL (w.adicCompletion E) → WD h}
+/- English proof (translation)
+The claim follows from `(H.langlands [Δ] x hx.isL).trans (WD.lpSum_zero _)`.
+-/
 private theorem segmentV {a : Weil h →* (w.adicCompletion E)ˣ} {ha : IsLocalArtin h a} {ε : EpsFamily A}
     (H : LawsV a ha ε rc) {Δ : Segment (w.adicCompletion E)} {x : IrrGL (w.adicCompletion E)}
     (hx : IsLSeg Δ x.rep) :
     rc x = ((rc Δ.first).lpTw (((Δ.len : ℝ) - 1) / 2)).lpChar (WD.lpSp h Δ.len) :=
   (H.langlands [Δ] x hx.isL).trans (WD.lpSum_zero _)
 end UpperTheory.V.Z.Win.T2
+/- English proof (translation)
+Introduce `E Ω i₁ i₂ i₃ i₄ i₅ A w h rc hrc 𝔪 s N δ hδ hd π hπ`. Establish `h1 : IsL 𝔪 (GlobalTheory.LocLanglands.cls π).rep` using `IsL.of_equiv ⟨s, δ, hd, hδ, hπ⟩ (equivRep π)`. Take `⟨Δ, ⟨hm, -⟩, hΔ⟩` from `hδ`. Take `⟨a, ha, ε, H⟩` from `_root_.UpperTheory.V.Z.Win.toV' hrc`. Simplify using `only [fun i => UpperTheory.V.Z.Win.T2.segmentV H (hΔ i)]`.
+
+Rewrite using `[H.langlands (List.ofFn Δ) (GlobalTheory.LocLanglands.cls π) (by rwa [← Fin.univ_val_map, hm]), List.map_ofFn]`. Both sides reduce to the same expression.
+-/
 theorem UpperTheory.V.Z.Win.T2.lQuot_alt :
     _root_.GlobalTheory.LocLanglands.IsRec.langlandsQuotient_s_ty := by
   intro E Ω i₁ i₂ i₃ i₄ i₅ A w h rc hrc 𝔪 s N δ hδ hd π hπ

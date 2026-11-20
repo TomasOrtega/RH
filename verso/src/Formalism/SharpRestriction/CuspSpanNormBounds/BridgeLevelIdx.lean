@@ -18,14 +18,23 @@ def LevelGen (g : ℕ) : Prop :=
 
 variable {I}
 
+/- English proof (translation)
+The claim follows from `I.Lf.smul_mem a hz`.
+-/
 theorem lf_csmul (a : IntAf I.F I.E) {z : Fin I.n → I.E ⊗[I.F] Af I.F} (hz : z ∈ I.Lf) :
     (a : I.E ⊗[I.F] Af I.F) • z ∈ I.Lf :=
   I.Lf.smul_mem a hz
 
+/- English proof (translation)
+The claim follows from `(hx y).1 hy`.
+-/
 theorem kset_mulVec {x : I.Gf} (hx : x ∈ I.Kset) {y : Fin I.n → I.E ⊗[I.F] Af I.F} (hy : y ∈ I.Lf) :
     I.fmat x *ᵥ y ∈ I.Lf :=
   (hx y).1 hy
 
+/- English proof (translation)
+Establish `h : x⁻¹ ∈ I.Kset` using `by show ((x⁻¹ : I.Gf) : GL (Fin I.n) (I.E ⊗[I.F] Af I.F)) ∈ Formalism.UG.stabGL I.Lf`. Rewrite using `[Subgroup.coe_inv]`. Conclude with `(Formalism.UG.stabGL I.Lf).inv_mem hx`. Conclude with `(h y).1 hy`.
+-/
 theorem kset_inv_mulVec {x : I.Gf} (hx : x ∈ I.Kset) {y : Fin I.n → I.E ⊗[I.F] Af I.F} (hy : y ∈ I.Lf) :
     I.fmat x⁻¹ *ᵥ y ∈ I.Lf := by
   have h : x⁻¹ ∈ I.Kset := by
@@ -34,11 +43,27 @@ theorem kset_inv_mulVec {x : I.Gf} (hx : x ∈ I.Kset) {y : Fin I.n → I.E ⊗[
     exact (Formalism.UG.stabGL I.Lf).inv_mem hx
   exact (h y).1 hy
 
+/- English proof (translation)
+Use `show ((x⁻¹ * x' : I.Gf) : GL (Fin I.n) (I.E ⊗[I.F] Af I.F)) ∈ Formalism.UG.stabGL I.Lf`. Rewrite using `[Subgroup.coe_mul, Subgroup.coe_inv]`. Conclude with `(Formalism.UG.stabGL I.Lf).mul_mem ((Formalism.UG.stabGL I.Lf).inv_mem hx) hx'`.
+-/
 theorem kset_mul {x x' : I.Gf} (hx : x ∈ I.Kset) (hx' : x' ∈ I.Kset) : x⁻¹ * x' ∈ I.Kset := by
   show ((x⁻¹ * x' : I.Gf) : GL (Fin I.n) (I.E ⊗[I.F] Af I.F)) ∈ Formalism.UG.stabGL I.Lf
   rw [Subgroup.coe_mul, Subgroup.coe_inv]
   exact (Formalism.UG.stabGL I.Lf).mul_mem ((Formalism.UG.stabGL I.Lf).inv_mem hx) hx'
 
+/- English proof (translation)
+Use `⟨kset_mul hx hx', fun y hy => ?_⟩` and prove the remaining obligations. Use `set D := I.fmat x' - I.fmat x with hD`. Establish `hDy : ∃ w ∈ I.Lf, D *ᵥ y = (g : I.E ⊗[I.F] Af I.F) • w`. Take `⟨a, z, hz, rfl⟩` from `hgen y hy`. Establish `hsum : ∀ s : Finset (Fin m), ∃ w ∈ I.Lf, D *ᵥ (∑ j ∈ s, (a j : I.E ⊗[I.F] Af I.F) • l j) = (g : I.E ⊗[I.F] Af I.F) • w`.
+
+Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact ⟨0, I.Lf.zero_mem, by simp⟩`. Consider the case `insert j s hj ih`. Take `⟨w, hw, e⟩` from `ih`.
+
+Take `⟨w', hw', e'⟩` from `hd j`. Use `⟨(a j : I.E ⊗[I.F] Af I.F) • w' + w, I.Lf.add_mem (lf_csmul _ hw') hw, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.sum_insert hj, Matrix.mulVec_add, Matrix.mulVec_smul, e, e', smul_add, smul_comm]`. Take `⟨w, hw, e⟩` from `hsum Finset.univ`. Use `⟨w + D *ᵥ z, I.Lf.add_mem hw ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hD, Matrix.sub_mulVec]`. Conclude with `I.Lf.sub_mem (kset_mulVec hx' hz) (kset_mulVec hx hz)`. Rewrite using `[Matrix.mulVec_add, e, Matrix.mulVec_smul, smul_add]`. Take `⟨w, hw, e⟩` from `hDy`. Use `⟨I.fmat x⁻¹ *ᵥ w, kset_inv_mulVec hx hw, ?_⟩` and prove the remaining obligations.
+
+Establish `hm : I.fmat (x⁻¹ * x') - 1 = I.fmat x⁻¹ * D`. Establish `h1 : I.fmat (x⁻¹ * x') = I.fmat x⁻¹ * I.fmat x'`. Simplify using `only [AutInst.fmat, Subgroup.coe_mul, Units.val_mul]`. Establish `h2 : I.fmat x⁻¹ * I.fmat x = 1`. Simplify using `only [AutInst.fmat, Subgroup.coe_inv, Units.inv_mul]`.
+
+Rewrite using `[hD, Matrix.mul_sub, h1, h2]`. Rewrite using `[hm, ← Matrix.mulVec_mulVec, e, Matrix.mulVec_smul]`.
+-/
 theorem kg_of_gen {g : ℕ} {m : ℕ} {l : Fin m → (Fin I.n → I.E ⊗[I.F] Af I.F)}
     (hgen : ∀ y ∈ I.Lf, ∃ (a : Fin m → IntAf I.F I.E) (z : Fin I.n → I.E ⊗[I.F] Af I.F), z ∈ I.Lf ∧
       y = ∑ j, (a j : I.E ⊗[I.F] Af I.F) • l j + (g : I.E ⊗[I.F] Af I.F) • z)
@@ -75,6 +100,15 @@ theorem kg_of_gen {g : ℕ} {m : ℕ} {l : Fin m → (Fin I.n → I.E ⊗[I.F] A
     rw [hD, Matrix.mul_sub, h1, h2]
   rw [hm, ← Matrix.mulVec_mulVec, e, Matrix.mulVec_smul]
 
+/- English proof (translation)
+Take `⟨m, l, S, hm, hS, hl, hgen, hrep⟩` from `hG`. Take `⟨s0, hs0, -⟩` from `hrep 0 I.Lf.zero_mem`. Set `r : (Fin I.n → I.E ⊗[I.F] Af I.F) → S` to `fun v => if h : v ∈ I.Lf then ⟨(hrep v h).choose, (hrep v h).choose_spec.1⟩ else ⟨s0, hs0⟩`. Establish `hr : ∀ v ∈ I.Lf, ∃ z ∈ I.Lf, v = (r v : Fin I.n → I.E ⊗[I.F] Af I.F) + (g : I.E ⊗[I.F] Af I.F) • z`. Introduce `v hv`.
+
+Simplify using `only [r, dif_pos hv]`. Conclude with `(hrep v hv).choose_spec.2`. Use `⟨Fin m → S, inferInstance, fun x j => r (I.fmat x *ᵥ l j), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Fintype.card_fun, Fintype.card_fin, Fintype.card_coe]`. Combine the equalities or inequalities in the displayed calculation.
+
+Introduce `x hx x' hx' hρ`. Use `kg_of_gen hgen hx hx' fun j => ?_` and prove the remaining obligations. Establish `e : r (I.fmat x *ᵥ l j) = r (I.fmat x' *ᵥ l j)` using `congrFun hρ j`. Take `⟨z, hz, ez⟩` from `hr _ (kset_mulVec hx (hl j))`. Take `⟨z', hz', ez'⟩` from `hr _ (kset_mulVec hx' (hl j))`.
+
+Use `⟨z' - z, I.Lf.sub_mem hz' hz, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.sub_mulVec, ez, ez', e, smul_sub]`. Normalize the expressions using the abelian group laws.
+-/
 theorem card_reduction {g : ℕ} (hg : 1 ≤ g) (hG : LevelGen I g) :
     ∃ (α : Type) (_ : Fintype α) (ρ : I.Gf → α), Fintype.card α ≤ g ^ (2 * I.n ^ 2 * I.f) ∧
       ∀ x ∈ I.Kset, ∀ x' ∈ I.Kset, ρ x = ρ x' → x⁻¹ * x' ∈ I.Kg g := by
@@ -101,6 +135,15 @@ theorem card_reduction {g : ℕ} (hg : 1 ≤ g) (hG : LevelGen I g) :
     rw [Matrix.sub_mulVec, ez, ez', e, smul_sub]
     abel
 
+/- English proof (translation)
+Take `⟨α, _, ρ, hcard, hρ⟩` from `card_reduction hg hG`. Set `rp : α → I.Gf` to `fun a => if h : ∃ x ∈ I.Kset, ρ x = a then h.choose else 1`. Establish `hcov : I.Kset ⊆ ⋃ a, (fun h => rp a * h) '' I.Kg g`. Introduce `x hx`. Establish `hex : ∃ x₀ ∈ I.Kset, ρ x₀ = ρ x` using `⟨x, hx, rfl⟩`.
+
+Use `Set.mem_iUnion.2 ⟨ρ x, (rp (ρ x))⁻¹ * x, ?_, by simp⟩` and prove the remaining obligations. Establish `e : rp (ρ x) = hex.choose` using `by simp only [rp, dif_pos hex]`. Rewrite using `[e]`. Conclude with `hρ _ hex.choose_spec.1 x hx hex.choose_spec.2`. Establish `hone : ∀ a, μf ((fun h => rp a * h) '' I.Kg g) = μf (I.Kg g)`.
+
+Introduce `a`. Rewrite using `[Set.image_mul_left]`. Conclude with `measure_preimage_mul μf _ _`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [hone, Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`.
+
+Use `_ ≤ _ := by gcongr`.
+-/
 theorem levelIdx_holds (μf : Measure I.Gf) [μf.IsMulLeftInvariant] {g : ℕ} (hg : 1 ≤ g) (hG : LevelGen I g) :
     μf I.Kset ≤ ((g ^ (2 * I.n ^ 2 * I.f) : ℕ) : ℝ≥0∞) * μf (I.Kg g) := by
   classical

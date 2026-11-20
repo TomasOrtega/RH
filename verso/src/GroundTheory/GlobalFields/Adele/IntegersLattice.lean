@@ -5,6 +5,13 @@ namespace GroundTheory.Global
 open NumberField NumberField.InfinitePlace NumberField.InfinitePlace.Completion
 open scoped NumberField.AdeleRing
 
+/- English proof (translation)
+Rewrite using `[discreteTopology_iff_isOpen_singleton_zero]`. Use `hU.preimage continuous_subtype_val` and compare the differences between its conclusion and the goal. Use extensionality with `⟨x, hx⟩`. Simplify using `only [Set.mem_singleton_iff, Set.mem_preimage]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h`. Establish `hx0 : x = 0` using `by simpa using congrArg Subtype.val h`. Rewrite using `[hx0]`. Conclude with `h0`. Introduce `h`.
+
+Conclude with `Subtype.ext (hH x hx h)`.
+-/
 theorem discreteTopology_of_isOpen_of_forall_mem {G : Type*} [AddGroup G] [TopologicalSpace G]
     [IsTopologicalAddGroup G] (H : AddSubgroup G) (U : Set G) (hU : IsOpen U) (h0 : (0 : G) ∈ U)
     (hH : ∀ x ∈ H, x ∈ U → x = 0) : DiscreteTopology H := by
@@ -34,19 +41,31 @@ noncomputable def homeomorphMixedSpace : K∞ ≃ₜ mixedEmbedding.mixedSpace K
         (Homeomorph.piCongrLeft (Y := fun _ => ℂ)
           (Equiv.subtypeEquivRight fun _ => not_isReal_iff_isComplex))))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem homeomorphMixedSpace_apply (x : K∞) :
     homeomorphMixedSpace K x = InfiniteAdeleRing.ringEquiv_mixedSpace K x := rfl
 
+/- English proof (translation)
+Rewrite using `[homeomorphMixedSpace_apply, InfiniteAdeleRing.mixedEmbedding_eq_algebraMap_comp]`.
+-/
 theorem homeomorphMixedSpace_algebraMap (k : K) :
     homeomorphMixedSpace K (algebraMap K K∞ k) = mixedEmbedding K k := by
   rw [homeomorphMixedSpace_apply, InfiniteAdeleRing.mixedEmbedding_eq_algebraMap_comp]
 
+/- English proof (translation)
+Simplify using `only [homeomorphMixedSpace_apply, map_sub]`.
+-/
 theorem homeomorphMixedSpace_sub (x y : K∞) :
     homeomorphMixedSpace K (x - y) = homeomorphMixedSpace K x - homeomorphMixedSpace K y := by
   simp only [homeomorphMixedSpace_apply, map_sub]
 
 variable [NumberField K]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hz`. Take `⟨w⟩` from `(inferInstance : Nonempty (InfinitePlace K))`. Conclude with `(one_le_of_lt_one hz fun w' _ => h w').not_gt (h w)`.
+-/
 theorem eq_zero_of_forall_infinitePlace_lt_one (z : 𝓞 K) (h : ∀ w : InfinitePlace K, w z < 1) :
     z = 0 := by
   by_contra hz
@@ -54,6 +73,9 @@ theorem eq_zero_of_forall_infinitePlace_lt_one (z : 𝓞 K) (h : ∀ w : Infinit
   exact (one_le_of_lt_one hz fun w' _ => h w').not_gt (h w)
 
 omit [NumberField K] in
+/- English proof (translation)
+Simplify using `[InfiniteAdeleRing.algebraMap_apply, WithAbs.norm_toAbs_eq]`. Both sides reduce to the same expression.
+-/
 theorem norm_algebraMap_apply (k : K) (w : InfinitePlace K) :
     ‖algebraMap K K∞ k w‖ = w k := by
   simp [InfiniteAdeleRing.algebraMap_apply, WithAbs.norm_toAbs_eq]
@@ -67,11 +89,29 @@ open scoped Classical
 noncomputable def fundamentalSetInfinite : Set K∞ :=
   homeomorphMixedSpace K ⁻¹' ZSpan.fundamentalDomain (mixedEmbedding.latticeBasis K)
 
+/- English proof (translation)
+Rewrite using `[fundamentalSetInfinite, ← Homeomorph.preimage_closure, Homeomorph.isCompact_preimage]`. Conclude with `(ZSpan.fundamentalDomain_isBounded _).isCompact_closure`.
+-/
 theorem isCompact_closure_fundamentalSetInfinite :
     IsCompact (closure (fundamentalSetInfinite K)) := by
   rw [fundamentalSetInfinite, ← Homeomorph.preimage_closure, Homeomorph.isCompact_preimage]
   exact (ZSpan.fundamentalDomain_isBounded _).isCompact_closure
 
+/- English proof (translation)
+Use `set b := mixedEmbedding.latticeBasis K`. Establish `hmem : ∀ z : 𝓞 K, mixedEmbedding K (z : K) ∈ Submodule.span ℤ (Set.range b)`. Introduce `z`. Rewrite using `[mixedEmbedding.mem_span_latticeBasis]`. Conclude with `⟨z, rfl⟩`.
+
+Establish `himg : ∀ z : 𝓞 K, homeomorphMixedSpace K (x - algebraMap (𝓞 K) K∞ z) = homeomorphMixedSpace K x - mixedEmbedding K (z : K)`. Introduce `z`. Rewrite using `[homeomorphMixedSpace_sub, IsScalarTower.algebraMap_apply (𝓞 K) K K∞, homeomorphMixedSpace_algebraMap]`. Establish `hinj : Function.Injective fun z : 𝓞 K => mixedEmbedding K (z : K)` using `(mixedEmbedding K).injective.comp RingOfIntegers.coe_injective`. Choose the witnesses or unpack the hypotheses as in `⟨z, hz⟩ : ∃ z : 𝓞 K, mixedEmbedding K (z : K) = (ZSpan.floor b (homeomorphMixedSpace K x) : mixedEmbedding.mixedSpace K) := by`.
+
+Use `(ZSpan.floor b (homeomorphMixedSpace K x)).2` as an intermediate fact. Rewrite `this` using `[mixedEmbedding.mem_span_latticeBasis]`. Take `⟨z, hz⟩` from `this`. Conclude with `⟨z, hz⟩`. Use `⟨z, ?_, fun z' hz' => ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `homeomorphMixedSpace K (x - algebraMap (𝓞 K) K∞ z) ∈ ZSpan.fundamentalDomain b`. Rewrite using `[himg, hz]`. Conclude with `ZSpan.fract_mem_fundamentalDomain b _`. Use `replace hz' : homeomorphMixedSpace K (x - algebraMap (𝓞 K) K∞ z') ∈ ZSpan.fundamentalDomain b := hz'`. Rewrite `hz'` using `[himg]`.
+
+Establish `h1 : homeomorphMixedSpace K x - mixedEmbedding K (z : K) ∈ ZSpan.fundamentalDomain b`. Rewrite using `[hz]`. Conclude with `ZSpan.fract_mem_fundamentalDomain b _`. Rewrite `h1`, `hz'` using `[← ZSpan.fract_eq_self]`. Establish `heq : ZSpan.fract b (homeomorphMixedSpace K x - mixedEmbedding K (z' : K)) = ZSpan.fract b (homeomorphMixedSpace K x - mixedEmbedding K (z : K))`.
+
+Rewrite using `[ZSpan.fract_eq_fract]`. Establish `: -(homeomorphMixedSpace K x - mixedEmbedding K (z' : K)) + (homeomorphMixedSpace K x - mixedEmbedding K (z : K)) = mixedEmbedding K (z' : K) - mixedEmbedding K (z : K)` using `by abel`. Rewrite using `[this]`. Conclude with `Submodule.sub_mem _ (hmem z') (hmem z)`. Rewrite `heq` using `[hz', h1]`.
+
+Conclude with `hinj (sub_right_injective heq)`.
+-/
 theorem existsUnique_sub_mem_fundamentalSetInfinite (x : K∞) :
     ∃! z : 𝓞 K, x - algebraMap (𝓞 K) K∞ z ∈ fundamentalSetInfinite K := by
   set b := mixedEmbedding.latticeBasis K

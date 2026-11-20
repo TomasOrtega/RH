@@ -16,10 +16,22 @@ namespace GlobalTheory.ConjScalarProof
 variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m}
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks} {F : Face D A}
 
+/- English proof (translation)
+The claim follows from `LinearIsometry.inner_map_map ⟨R.gW i σ g, GlobalTheory.gW_norm_eq R hC.models.HW hC.models.gW hC.models.νW i σ g⟩ x y`.
+-/
 theorem inner_gW (hC : GlobalTheory.Hk3.Core R F) (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ) (g : G) (x y : (R.HW i σ).H) :
     ⟪R.gW i σ g x, R.gW i σ g y⟫_ℂ = ⟪x, y⟫_ℂ :=
   LinearIsometry.inner_map_map ⟨R.gW i σ g, GlobalTheory.gW_norm_eq R hC.models.HW hC.models.gW hC.models.νW i σ g⟩ x y
 
+/- English proof (translation)
+Establish `hc : ∀ g, starRingEnd ℂ (RealDat.eC (A` using `A) σ g) = RealDat.eC (A := A) σ g⁻¹ := by`. Introduce `g`. Unfold `RealDat.eC`. Rewrite using `[coeff_idemOf, coeff_idemOf, map_sum, map_sum, map_sum]`. Use `Finset.sum_congr rfl fun χ hχ => ?_` and prove the remaining obligations.
+
+Establish `h1` using `(hX χ hχ).map_inv σ 1`. Establish `h2` using `(hX χ hχ).map_inv σ g⁻¹`. Rewrite `h1` using `[inv_one]`. Simplify using `only [map_mul, map_div₀, map_natCast]`. Rewrite using `[h2, ← h1]`.
+
+Use `symm`. Rewrite using `[LinearMap.eq_adjoint_iff]`. Introduce `x y`. Unfold `GlobalTheory.LiftLower.projH`. Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply, sum_inner, inner_sum, inner_smul_left, inner_smul_right, hc]`.
+
+Use `Finset.sum_nbij' (fun g => g⁻¹) (fun g => g⁻¹) (by simp) (by simp) (by simp) (by simp) fun g _ => ?_` and prove the remaining obligations. Rewrite using `[← inner_gW hC i σ g⁻¹, ← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]`.
+-/
 theorem adjoint_projH (hC : GlobalTheory.Hk3.Core R F) (hX : ∀ χ ∈ A.X, IsAbsIrrChar χ) (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ) :
     LinearMap.adjoint (GlobalTheory.LiftLower.projH R i σ) = GlobalTheory.LiftLower.projH R i σ := by
   have hc : ∀ g, starRingEnd ℂ (RealDat.eC (A := A) σ g) = RealDat.eC (A := A) σ g⁻¹ := by
@@ -40,6 +52,13 @@ theorem adjoint_projH (hC : GlobalTheory.Hk3.Core R F) (hX : ∀ χ ∈ A.X, IsA
   refine Finset.sum_nbij' (fun g => g⁻¹) (fun g => g⁻¹) (by simp) (by simp) (by simp) (by simp) fun g _ => ?_
   rw [← inner_gW hC i σ g⁻¹, ← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]
 
+/- English proof (translation)
+Establish `h1 : ∀ g, ∑ a, RealDat.eC (A` using `A) σ a * RealDat.eC (A := A) σ (a⁻¹ * g) = RealDat.eC (A := A) σ g := by`. Introduce `g`. Unfold `RealDat.eC`. Use `conv_rhs => rw [← idemOf_mul_self A.X hX]`. Rewrite using `[MonoidAlgebra.coeff_mul_apply_left, Finsupp.sum_fintype _ _ (by simp), map_sum]`.
+
+Simplify using `only [map_mul]`. Unfold `GlobalTheory.LiftLower.projH`. Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply, map_sum, map_smul, Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Use `conv_rhs => rw [Finset.sum_congr rfl fun g _ => by rw [← h1 g, Finset.sum_smul]]`.
+
+Rewrite using `[Finset.sum_comm (f := fun g a => (RealDat.eC (A := A) σ a * RealDat.eC (A := A) σ (a⁻¹ * g)) • R.gW i σ g x)]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Use `Finset.sum_nbij' (fun g => a * g) (fun g => a⁻¹ * g) (by simp) (by simp) (by simp) (by simp) fun g _ => ?_` and prove the remaining obligations. Rewrite using `[inv_mul_cancel_left, map_mul, Module.End.mul_apply, mul_comm]`.
+-/
 theorem projH_projH (hX : ∀ χ ∈ A.X, IsAbsIrrChar χ) (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ) (x : (R.HW i σ).H) :
     GlobalTheory.LiftLower.projH R i σ (GlobalTheory.LiftLower.projH R i σ x) = GlobalTheory.LiftLower.projH R i σ x := by
   classical
@@ -58,6 +77,9 @@ theorem projH_projH (hX : ∀ χ ∈ A.X, IsAbsIrrChar χ) (i : Fin D.R.m) (σ :
   refine Finset.sum_nbij' (fun g => a * g) (fun g => a⁻¹ * g) (by simp) (by simp) (by simp) (by simp) fun g _ => ?_
   rw [inv_mul_cancel_left, map_mul, Module.End.mul_apply, mul_comm]
 
+/- English proof (translation)
+Use `hinj (funext fun u => ?_)` and prove the remaining obligations. Establish `e : c.ext (H.e z) (GlobalTheory.AdelicScalar.finLift V u) = c.ext (H.e z') (GlobalTheory.AdelicScalar.finLift V u)` using `ext_inner_right ℂ fun w => h _ w`. Conclude with `(GlobalTheory.AdelicScalar.ext_finLift c hc (H.e z) u).symm.trans (e.trans (GlobalTheory.AdelicScalar.ext_finLift c hc (H.e z') u))`.
+-/
 theorem eq_of_ext {V : HSp D} {c : CoefA V} (hc : c.Is) {H : HMod (Bridge.Gf V → c.W)} (hinj : Function.Injective H.e) {z z' : H.H}
     (h : ∀ x w, inner ℂ (c.ext (H.e z) x) w = inner ℂ (c.ext (H.e z') x) w) : z = z' := by
   refine hinj (funext fun u => ?_)
@@ -71,6 +93,37 @@ namespace GlobalTheory.ConjScalarProof
 set_option maxHeartbeats 1000000 in
 open GlobalTheory.LiftLower in
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T0 A Ks _ _ _ R F hCore hX hSL hIPF hFC hFZ hRC`. Introduce `gramR c0R c0L hT i σ hσ μ' η' c c₁ H j th hD ev`. Establish `hμ` using `hD.1`. Establish `hη` using `hD.2.1`. Establish `hf` using `hD.2.2.1`.
+
+Establish `hL` using `hD.2.2.2`. Establish `hL2` using `(GlobalTheory.GalLift.isConjLift_iff R i σ μ' η' c H th).1 hL`. Take `⟨ω, hL3⟩` from `hL2`. Take `⟨f₀, f, B, io, thP, hL4⟩` from `hL3`. Establish `hLD` using `hL4.1`.
+
+Establish `hP` using `hL4.2`. Establish `h38` using `GlobalTheory.T.adelicLiftDatum_of_conjugate_liftDatum R F hCore gramR c0R c0L hT i σ c c₁ H j hσ hf μ' η' hμ hη ω f₀ f B io thP hLD`. Take `⟨s, m, h39⟩` from `h38`. Establish `hC` using `h39.1`. Establish `hν` using `h39.2.1`.
+
+Establish `hy` using `h39.2.2.1`. Establish `hH` using `h39.2.2.2`. Establish `hth` using `hLD.2.2.2`. Establish `hio` using `hC.2.2.2.2.2.2.2.2.2.2`. Establish `hc : c.Is` using `hC.2.2.2.2.2.2.2.2.2.1`.
+
+Establish `hv0` using `hio.2.2`. Set `v` to `hv0.choose`. Establish `hv : ∀ ρ, ‖((v ρ : (R.MW i σ).sm ρ) : (R.MW i σ).H ρ)‖ = 1` using `hv0.choose_spec.choose_spec.1`. Set `K : ℂ` to `∏ ρ, ((dimK _ _ (kapAt (Wc D i) σ ρ) : ℚ) : ℂ)`. Establish `hKdef : K = ∏ ρ, ((dimK _ _ (kapAt (Wc D i) σ ρ) : ℚ) : ℂ)` using `rfl`.
+
+Establish `hK0 : K ≠ 0`. Rewrite using `[hKdef, Finset.prod_ne_zero_iff]`. Introduce `ρ _`. Establish `h1` using `GlobalTheory.AdelicScalar.one_le_dimK i σ ρ`. Conclude with `(show (dimK _ _ (kapAt (Wc D i) σ ρ) : ℚ) ≠ 0 by positivity)` after adjusting the coercions.
+
+Establish `hKc : starRingEnd ℂ K = K`. Rewrite using `[hKdef, map_prod]`. Conclude with `Finset.prod_congr rfl fun ρ _ => map_ratCast _ _`. Establish `hadj : ∀ (y : (R.HW i σ).H) (h : GA D (Vc D i)) (w : c.W), inner ℂ (c.ext (H.e (LinearMap.adjoint th y)) h) w = K * GlobalTheory.AdelicScalar.upLift R i ω (GlobalTheory.IndefiniteRowSideFullHecke.TwistedLevelValues.ptAt R i σ B f (io (PiTensorProduct.tprod ℂ v) w)) ((R.HW i σ).e …` using `GlobalTheory.T.adjoint_conjugateThetaLift_eq_vectorValuedLift R F hX hSL hIPF hFC hFZ hRC i σ s m μ' η' ω B f₀ f c io H hC hν hy hH v hv thP th hth hP`. Establish `hpp : ∀ y, projH R i σ (projH R i σ y) = projH R i σ y` using `projH_projH hX i σ`.
+
+Establish `hsa : LinearMap.adjoint (projH R i σ) = projH R i σ` using `adjoint_projH hCore hX i σ`. Establish `hinj : Function.Injective H.e` using `hH.1`. Establish `hadjP : ∀ y, LinearMap.adjoint th (projH R i σ y) = LinearMap.adjoint th y` using `fun y => eq_of_ext (V := Vc D i) (c := c) (H := H) hc hinj fun x w => (hadj (projH R i σ y) x w).trans ((congrArg (fun z => K * GlobalTheory.AdelicScalar.upLift R i ω (GlobalTheory.IndefiniteRowSideFullHecke.TwistedLevelValues.ptAt R i σ B f (io (PiTensorProduct.tprod ℂ v) w)) (( …`. Establish `hfix : ∀ u, projH R i σ (th u) = th u` using `fun u => ext_inner_right ℂ fun y => (LinearMap.adjoint_inner_right (projH R i σ) (th u) y).symm.trans ((congrArg (fun A => inner ℂ (th u) (A y)) hsa).trans ((LinearMap.adjoint_inner_right th u (projH R i σ y)).symm.trans ((congrArg (inner ℂ u) (hadjP y)).trans (LinearMap.adjoint_ …`. Establish `hW : ∀ y, (R.HW i σ).e y ∈ R.Wall i σ` using `fun y => GlobalTheory.AdelicScalar.HMod_mem (hCore.models.HW i σ) y`.
+
+Establish `hz : ∀ y h w, inner ℂ (c.ext (H.e (K⁻¹ • LinearMap.adjoint th y)) h) w = GlobalTheory.AdelicScalar.upLift R i ω (GlobalTheory.IndefiniteRowSideFullHecke.TwistedLevelValues.ptAt R i σ B f (io (PiTensorProduct.tprod ℂ v) w)) ((R.HW i σ).e (projH R i σ y) fun ρ => v ρ) h`. Introduce `y h w`. Establish `e1 : c.ext (H.e (K⁻¹ • LinearMap.adjoint th y)) = K⁻¹ • c.ext (H.e (LinearMap.adjoint th y))` using `(congrArg c.ext (H.e.map_smul K⁻¹ _)).trans (c.ext.map_smul K⁻¹ _)`. Establish `e2 : starRingEnd ℂ K⁻¹ = K⁻¹` using `by simp only [map_inv₀, hKc]`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hG` using `GlobalTheory.T.exists_scalar_innerProductFormula_unitCoefficient R F hX hSL hIPF hFC hFZ hRC i σ s m μ' η' ω B f₀ f c io H hC hν hy hH v hv ev`. Set `C` to `hG.choose`. Establish `hC2` using `hG.choose_spec`. Set `b` to `stdOrthonormalBasis ℂ c.W`. Establish `key : ∀ u, th u ∈ partH R i σ ev → ∀ y₂, inner ℂ (LinearMap.adjoint th (th u)) (LinearMap.adjoint th y₂) = (K * K * ((Module.finrank ℂ c.W : ℂ) * C)) * inner ℂ (th u) y₂`.
+
+Introduce `u hu y₂`. Establish `e1` using `GlobalTheory.T.classSum_inner_eq_sum_vectorThetaLifts R F hX hSL hIPF hFC hFZ hRC i σ s m μ' η' ω B f₀ f c io H hC hν hy hH v hv _ (hW (projH R i σ (th u))) _ (hW (projH R i σ y₂)) _ _ (hz (th u)) (hz y₂) b`. Establish `hu' : projH R i σ (th u) ∈ partH R i σ ev` using `(hfix u).symm ▸ hu`. Establish `e2 : inner ℂ (projH R i σ (th u)) (projH R i σ y₂) = inner ℂ (th u) y₂` using `(congrArg (fun z => inner ℂ z (projH R i σ y₂)) (hfix u)).trans ((congrArg (fun A => inner ℂ (th u) (A y₂)) hsa.symm).trans ((LinearMap.adjoint_inner_right (projH R i σ) (th u) y₂).trans (congrArg (fun z => inner ℂ z y₂) (hfix u))))`. Establish `e4 : inner ℂ (K⁻¹ • LinearMap.adjoint th (th u)) (K⁻¹ • LinearMap.adjoint th y₂) = (Module.finrank ℂ c.W : ℂ) * (C * inner ℂ (th u) y₂)`.
+
+Use `e1.trans ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_congr rfl fun k _ => hC2 _ hu' (projH R i σ y₂) (b k) (b.orthonormal.1 k), e2, Finset.sum_const, Finset.card_fin, nsmul_eq_mul]`. Establish `e3 : ∀ y, LinearMap.adjoint th y = K • (K⁻¹ • LinearMap.adjoint th y)` using `fun y => (smul_inv_smul₀ hK0 _).symm`. Combine the equalities or inequalities in the displayed calculation. Use `⟨(K * K * ((Module.finrank ℂ c.W : ℂ) * C)).re, fun u hu => ?_⟩` and prove the remaining obligations.
+
+Distinguish the cases in `h0 : th u = 0`. Simplify using `only [h0, map_zero, smul_zero]`. Establish `hre : (((K * K * ((Module.finrank ℂ c.W : ℂ) * C)).re : ℝ) : ℂ) = (K * K * ((Module.finrank ℂ c.W : ℂ) * C))`. Establish `e0 : ((‖LinearMap.adjoint th (th u)‖ : ℝ) : ℂ) ^ 2 = (K * K * ((Module.finrank ℂ c.W : ℂ) * C)) * ((‖th u‖ : ℝ) : ℂ) ^ 2` using `(inner_self_eq_norm_sq_to_K (𝕜 := ℂ) (LinearMap.adjoint th (th u))).symm.trans ((key u hu (th u)).trans (congrArg (fun z => (K * K * ((Module.finrank ℂ c.W : ℂ) * C)) * z) (inner_self_eq_norm_sq_to_K (𝕜 := ℂ) (th u))))`. Establish `hn : ((‖th u‖ : ℝ) : ℂ) ^ 2 ≠ 0` using `pow_ne_zero 2 (by exact_mod_cast norm_ne_zero_iff.2 h0)`.
+
+Establish `e' : (K * K * ((Module.finrank ℂ c.W : ℂ) * C)) = ((‖LinearMap.adjoint th (th u)‖ ^ 2 / ‖th u‖ ^ 2 : ℝ) : ℂ)`. Use `push_cast`. Rewrite using `[eq_div_iff hn]`. Conclude with `e0.symm`. Conclude with `(congrArg (fun z : ℂ => ((z.re : ℝ) : ℂ)) e').trans ((congrArg (fun r : ℝ => (r : ℂ)) (Complex.ofReal_re _)).trans e'.symm)`.
+
+Use `ext_inner_right ℂ fun y => ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem conjScalarAt_of_sourceLevelLaw_fock_zeta : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), GlobalTheory.Hk3.Core R F → (∀ χ ∈ A.X, IsAbsIrrChar χ) → GlobalTheory.LiftRows.SourceLevelLawC R F → GlobalTheory.LiftRows.InnerProductFormulaC R F → GlobalTheory.LiftRows.FockCoefficientC R F → GlobalTheory.LiftRows.FiniteZetaL R F → GlobalTheory.LiftRows.RealLowestKTypeCoeffSquareIntegrable R → GlobalTheory.ConjScalar.ConjScalarAt R := by
   intro D G _ _ Pl0 T0 A Ks _ _ _ R F hCore hX hSL hIPF hFC hFZ hRC
   intro gramR c0R c0L hT i σ hσ μ' η' c c₁ H j th hD ev

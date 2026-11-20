@@ -6,6 +6,15 @@ open MvPolynomial Filter Topology GlobalTheory.CompanionTheory.Ar.Top
 
 namespace GlobalTheory.CompanionTheory.Ar.Top
 
+/- English proof (translation)
+Introduce `Ψ _ _ N lam`. Establish `hf : flagDeg lam = ((dimFl Ψ N).factorial : ℝ) * ∏ τ, ∏ i : Fin N, ∏ k : Fin N, (if i < k then (lam τ i - lam τ k) / ((k : ℝ) - (i : ℝ)) else 1)` using `Formalism.DegreeFormula.flagDegFormula_statement Ψ N lam`. Establish `hD : (0 : ℝ) < ((dimFl Ψ N).factorial : ℝ)` using `by exact_mod_cast Nat.factorial_pos _`. Establish `hki : ∀ i k : Fin N, i < k → (0 : ℝ) < (k : ℝ) - (i : ℝ)`. Introduce `i k h`.
+
+Establish `h' : ((i : ℕ) : ℝ) < ((k : ℕ) : ℝ)` using `by exact_mod_cast h`. Conclude with `sub_pos.mpr h'`. Use `⟨hf, fun hr => ?_, fun hd => ?_⟩` and prove the remaining obligations. Rewrite using `[hf]`. Use `mul_pos hD (Finset.prod_pos fun τ _ => Finset.prod_pos fun i _ => Finset.prod_pos fun k _ => ?_)` and prove the remaining obligations.
+
+Use `split_ifs with h`. Conclude with `div_pos (sub_pos.mpr (hr τ i k h)) (hki i k h)`. Conclude with `one_pos`. Rewrite using `[hf]`. Use `mul_nonneg hD.le (Finset.prod_nonneg fun τ _ => Finset.prod_nonneg fun i _ => Finset.prod_nonneg fun k _ => ?_)` and prove the remaining obligations.
+
+Use `split_ifs with h`. Conclude with `div_nonneg (sub_nonneg.mpr (hd τ i k h.le)) (hki i k h).le`. Conclude with `zero_le_one`.
+-/
 theorem flagDeg_eq_weyl : ∀ (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N : ℕ) (lam : Wt Ψ N), flagDeg lam = ((dimFl Ψ N).factorial : ℝ) * ∏ τ, ∏ i : Fin N, ∏ k : Fin N, (if i < k then (lam τ i - lam τ k) / ((k : ℝ) - (i : ℝ)) else 1) ∧ (RegDominant lam → 0 < flagDeg lam) ∧ (Dominant lam → 0 ≤ flagDeg lam) := by
   intro Ψ _ _ N lam
   have hf : flagDeg lam = ((dimFl Ψ N).factorial : ℝ) *

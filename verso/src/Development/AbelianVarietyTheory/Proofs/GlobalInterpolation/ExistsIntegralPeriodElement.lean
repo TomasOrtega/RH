@@ -20,6 +20,11 @@ open NumberField Formalism.BasicNotions Formalism.MainNotions.TaylorLogMetric Gl
 noncomputable section
 namespace GlobalTheory.IntegralX
 
+/- English proof (translation)
+Establish `a12 : 4 * (e1 ^ 2 + e1 * e2 + e2 ^ 2) = g` using `mul_left_cancel₀ (sub_ne_zero.2 h12) (by linear_combination r1 - r2)`. Establish `a13 : 4 * (e1 ^ 2 + e1 * e3 + e3 ^ 2) = g` using `mul_left_cancel₀ (sub_ne_zero.2 h13) (by linear_combination r1 - r3)`. Establish `s : e1 + e2 + e3 = 0`. Establish `: (e2 - e3) * (e1 + e2 + e3) = (e2 - e3) * 0` using `by linear_combination (a12 - a13) / 4`. Conclude with `mul_left_cancel₀ (sub_ne_zero.2 h23) this`.
+
+Take `rfl : e3 = -e1 - e2` from `by linear_combination s`. Apply the tactic sequence `refine ⟨?_, ?_, ?_⟩ <;> linear_combination a12`.
+-/
 lemma cubic_alg {e1 e2 e3 g h : ℂ} (h12 : e1 ≠ e2) (h13 : e1 ≠ e3) (h23 : e2 ≠ e3)
     (r1 : 4 * e1 ^ 3 - g * e1 - h = 0) (r2 : 4 * e2 ^ 3 - g * e2 - h = 0)
     (r3 : 4 * e3 ^ 3 - g * e3 - h = 0) :
@@ -35,6 +40,11 @@ lemma cubic_alg {e1 e2 e3 g h : ℂ} (h12 : e1 ≠ e2) (h13 : e1 ≠ e3) (h23 : 
   obtain rfl : e3 = -e1 - e2 := by linear_combination s
   refine ⟨?_, ?_, ?_⟩ <;> linear_combination a12
 
+/- English proof (translation)
+Establish `e1` using `L.derivWeierstrassP_add_coe (-t) ⟨2 * t, h2⟩`. Rewrite `e1` using `[L.derivWeierstrassP_neg]`. Establish `e2 : -t + 2 * t = t` using `by ring`. Simplify using `only [e2] at e1`. Establish `e3 : L.derivWeierstrassP t = 0` using `by linear_combination e1 / 2`.
+
+Rewrite using `[← L.derivWeierstrassP_sq t ht, e3]`. Simplify using the standard rewrite rules.
+-/
 lemma half_root (L : PeriodPair) {t : ℂ} (h2 : 2 * t ∈ L.lattice) (ht : t ∉ L.lattice) :
     4 * L.weierstrassP t ^ 3 - L.g₂ * L.weierstrassP t - L.g₃ = 0 := by
   have e1 := L.derivWeierstrassP_add_coe (-t) ⟨2 * t, h2⟩
@@ -45,6 +55,21 @@ lemma half_root (L : PeriodPair) {t : ℂ} (h2 : 2 * t ∈ L.lattice) (ht : t �
   rw [← L.derivWeierstrassP_sq t ht, e3]
   simp
 
+/- English proof (translation)
+Introduce `τ hd hj`. Take `⟨d1, d2, d3⟩` from `hd`. Unfold `ThetaConstantWeber.JacobiProduct at hj`. Establish `hη : ModularForm.eta (τ : ℂ) ≠ 0` using `ModularForm.eta_ne_zero τ.2`. Establish `hp : (Real.pi : ℂ) ≠ 0` using `by exact_mod_cast Real.pi_ne_zero`.
+
+Establish `hprod : ThetaConstantWeber.thetaConst 0 0 τ * ThetaConstantWeber.thetaConst 0 1 τ * ThetaConstantWeber.thetaConst 1 0 τ ≠ 0`. Rewrite using `[hj]`. Conclude with `mul_ne_zero two_ne_zero (pow_ne_zero _ hη)`. Establish `t0 : ThetaConstantWeber.thetaConst 0 0 τ ≠ 0` using `fun h => hprod (by simp [h])`. Establish `t1 : ThetaConstantWeber.thetaConst 0 1 τ ≠ 0` using `fun h => hprod (by simp [h])`.
+
+Establish `t2 : ThetaConstantWeber.thetaConst 1 0 τ ≠ 0` using `fun h => hprod (by simp [h])`. Take `⟨n1, n2, n3⟩` from `ThetaConstantWeber.halfPeriods_notMem τ`. Establish `mem : ∀ p q : ℤ, ((p : ℂ) * (τ : ℂ) + q) ∈ (GlobalTheory.periodPairOfTau τ).lattice` using `fun p q => by`. Rewrite using `[GlobalTheory.mem_lattice_periodPairOfTau]`. Conclude with `⟨p, q, by ring⟩`.
+
+Establish `r1` using `half_root (GlobalTheory.periodPairOfTau τ) (t := 1 / 2) (by simpa using mem 0 1) n1`. Establish `r2` using `half_root (GlobalTheory.periodPairOfTau τ) (t := (τ : ℂ) / 2) (by`. Use `mem 1 0` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use `push_cast`.
+
+Use the proof step `ring) n2`. Establish `r3` using `half_root (GlobalTheory.periodPairOfTau τ) (t := (1 + (τ : ℂ)) / 2) (by`. Use `mem 1 1` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use `push_cast`.
+
+Use the proof step `ring) n3`. Use `cubic_alg (e1 := ThetaConstantWeber.wp τ (1 / 2)) (e2 := ThetaConstantWeber.wp τ ((τ : ℂ) / 2)) (e3 := ThetaConstantWeber.wp τ ((1 + (τ : ℂ)) / 2)) (h := (GlobalTheory.periodPairOfTau τ).g₃) ?_ ?_ ?_ r1 r2 r3` and prove the remaining obligations. Rewrite using `[← sub_ne_zero, d1]`. Conclude with `mul_ne_zero (pow_ne_zero _ hp) (pow_ne_zero _ t0)`. Rewrite using `[← sub_ne_zero, d2]`.
+
+Conclude with `mul_ne_zero (pow_ne_zero _ hp) (pow_ne_zero _ t1)`. Introduce `h`. Establish `h' : ThetaConstantWeber.wp τ ((1 + (τ : ℂ)) / 2) - ThetaConstantWeber.wp τ ((τ : ℂ) / 2) = 0` using `by rw [h]; ring`. Rewrite `h'` using `[d3]`. Conclude with `mul_ne_zero (pow_ne_zero _ hp) (pow_ne_zero _ t2) h'`.
+-/
 theorem cubic : ∀ τ : UpperHalfPlane, ThetaConstantWeber.HalfPeriodDiff τ → ThetaConstantWeber.JacobiProduct τ →
     12 * ThetaConstantWeber.wp τ (1 / 2) ^ 2 - (GlobalTheory.periodPairOfTau τ).g₂ =
         4 * (ThetaConstantWeber.wp τ (1 / 2) - ThetaConstantWeber.wp τ ((τ : ℂ) / 2)) * (ThetaConstantWeber.wp τ (1 / 2) - ThetaConstantWeber.wp τ ((1 + (τ : ℂ)) / 2)) ∧
@@ -89,6 +114,17 @@ theorem cubic : ∀ τ : UpperHalfPlane, ThetaConstantWeber.HalfPeriodDiff τ �
     rw [d3] at h'
     exact mul_ne_zero (pow_ne_zero _ hp) (pow_ne_zero _ t2) h'
 
+/- English proof (translation)
+Introduce `Λ ω₁ τ hω hP`. Establish `H` using `GlobalTheory.isHomothetic_scalePeriods (GlobalTheory.periodPairOfTau τ) ω₁ hω`. Establish `hmem : ∀ z, z ∈ Λ ↔ z ∈ (GlobalTheory.scalePeriods (GlobalTheory.periodPairOfTau τ) ω₁ hω).lattice`. Introduce `z`. Establish `hz : ω₁ * (z / ω₁) = z` using `by field_simp`.
+
+Rewrite using `[hP z, ← hz, H (z / ω₁), hz, GlobalTheory.mem_lattice_periodPairOfTau]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨m, n, rfl⟩`. Conclude with `⟨n, m, by field_simp; ring⟩`. Introduce and unpack `⟨m, n, h⟩`.
+
+Use `⟨n, m, ?_⟩` and prove the remaining obligations. Rewrite using `[← hz, ← h]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨e2, e3, -, -, hw, -⟩` from `GlobalTheory.LatticeInvariants.invariants_dictionary _ Λ hmem`. Use `⟨by rw [e2, H.g₂_eq]; field_simp, by rw [e3, H.g₃_eq]; field_simp, fun z hz => ?_⟩` and prove the remaining obligations.
+
+Establish `hz' : ω₁ * (z / ω₁) = z` using `by field_simp`. Rewrite using `[(hw z hz).1]`. Establish `h` using `H.weierstrassP_mul (z / ω₁)`. Rewrite `h` using `[hz']`. Rewrite using `[h]`.
+
+Unfold `ThetaConstantWeber.wp`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem scaling : ∀ (Λ : AddSubgroup ℂ) (ω₁ : ℂ) (τ : UpperHalfPlane), ω₁ ≠ 0 →
     JacobiThetaHalfCharacteristic.IsPeriodLattice Λ ω₁ (τ : ℂ) →
     g2 Λ = (GlobalTheory.periodPairOfTau τ).g₂ / ω₁ ^ 4 ∧ g3 Λ = (GlobalTheory.periodPairOfTau τ).g₃ / ω₁ ^ 6 ∧
@@ -116,12 +152,18 @@ theorem scaling : ∀ (Λ : AddSubgroup ℂ) (ω₁ : ℂ) (τ : UpperHalfPlane)
   unfold ThetaConstantWeber.wp
   field_simp
 
+/- English proof (translation)
+Simplify using `only [JacobiThetaHalfCharacteristic.thetaChar, ThetaConstantWeber.thetaConst, zero_add]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma thetaChar_zero (a b : Fin 2) (τ : UpperHalfPlane) :
     JacobiThetaHalfCharacteristic.thetaChar a b 0 (τ : ℂ) = ThetaConstantWeber.thetaConst (a : ℕ) (b : ℕ) τ := by
   simp only [JacobiThetaHalfCharacteristic.thetaChar, ThetaConstantWeber.thetaConst, zero_add]
   congr 2
   ring
 
+/- English proof (translation)
+Establish `h : (((p : ℂ) + (q : ℂ) * (τ : ℂ))) ∈ (GlobalTheory.periodPairOfTau τ).lattice`. Rewrite using `[GlobalTheory.mem_lattice_periodPairOfTau]`. Conclude with `⟨q, p, by ring⟩`. Conclude with `(GlobalTheory.periodPairOfTau τ).weierstrassP_add_coe z ⟨_, h⟩`.
+-/
 lemma wp_shift (τ : UpperHalfPlane) (z : ℂ) (p q : ℤ) :
     ThetaConstantWeber.wp τ (z + ((p : ℂ) + (q : ℂ) * (τ : ℂ))) = ThetaConstantWeber.wp τ z := by
   have h : (((p : ℂ) + (q : ℂ) * (τ : ℂ))) ∈ (GlobalTheory.periodPairOfTau τ).lattice := by
@@ -129,6 +171,13 @@ lemma wp_shift (τ : UpperHalfPlane) (z : ℂ) (p q : ℤ) :
     exact ⟨q, p, by ring⟩
   exact (GlobalTheory.periodPairOfTau τ).weierstrassP_add_coe z ⟨_, h⟩
 
+/- English proof (translation)
+Apply the tactic sequence `have hσ4 : σ ^ 4 = 1 := by rcases hσ with rfl | rfl <;> norm_num`. Establish `hk : Y ^ 3 * (σ * (C / η) ^ 12) = 1`. Establish `h1 : Y ^ 3 * (σ * (C / η) ^ 12) = σ ^ 4 * (A * B * C) ^ 12 * P ^ 12 / (W ^ 12 * η ^ 12)`. Rewrite using `[hY]`. Clear the denominators using the available nonvanishing facts.
+
+Establish `h2 : σ ^ 4 * (A * B * C) ^ 12 * P ^ 12 / (W ^ 12 * η ^ 12) = (2 * P / W) ^ 12 * η ^ 24`. Rewrite using `[hσ4, hABC]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[h1, h2, hD]`. Establish `hY0 : Y ≠ 0`.
+
+Introduce and unpack `rfl`. Simplify using `at hk`. Use `⟨hY0, ?_⟩` and prove the remaining obligations. Rewrite using `[div_eq_iff (pow_ne_zero _ hY0)]`. Take the linear combination `-hk`.
+-/
 lemma alg {A B C η W P Y σ : ℂ} (hW : W ≠ 0) (hη : η ≠ 0) (hσ : σ = 1 ∨ σ = -1)
     (hABC : A * B * C = 2 * η ^ 3) (hD : (2 * P / W) ^ 12 * η ^ 24 = 1)
     (hY : Y = σ * (P ^ 4 * A ^ 4 * B ^ 4) / W ^ 4) :
@@ -149,6 +198,9 @@ lemma alg {A B C η W P Y σ : ℂ} (hW : W ≠ 0) (hη : η ≠ 0) (hσ : σ = 
   rw [div_eq_iff (pow_ne_zero _ hY0)]
   linear_combination -hk
 
+/- English proof (translation)
+Take `⟨m, n, h⟩` from `(hΛ _).1 h2`. Use `⟨m, n, ?_⟩` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts. Take the linear combination `h`.
+-/
 lemma half_coords {Λ : AddSubgroup ℂ} {ω₁ : ℂ} {τ : UpperHalfPlane} {t : ℂ} (hω : ω₁ ≠ 0)
     (hΛ : JacobiThetaHalfCharacteristic.IsPeriodLattice Λ ω₁ (τ : ℂ)) (h2 : 2 * t ∈ Λ) :
     ∃ m n : ℤ, t / ω₁ = ((m : ℂ) + (n : ℂ) * (τ : ℂ)) / 2 := by
@@ -157,6 +209,9 @@ lemma half_coords {Λ : AddSubgroup ℂ} {ω₁ : ℂ} {τ : UpperHalfPlane} {t 
   field_simp
   linear_combination h
 
+/- English proof (translation)
+Establish `e : Λ = PeriodLatticeAgreement.latt ω₁ (τ : ℂ)`. Use extensionality with `w`. Rewrite using `[hΛ w, PeriodLatticeAgreement.mem_latt]`. Rewrite using `[← hL.1 ω₁ τ hω, ← e, hd]`.
+-/
 lemma discr_eta (hL : PeriodLatticeAgreement.LatticePeriodEta) {Λ : AddSubgroup ℂ} {ω₁ : ℂ} {τ : UpperHalfPlane}
     (hω : ω₁ ≠ 0) (hΛ : JacobiThetaHalfCharacteristic.IsPeriodLattice Λ ω₁ (τ : ℂ)) (hd : discr Λ = 1) :
     (2 * (Real.pi : ℂ) / ω₁) ^ 12 * ModularForm.eta (τ : ℂ) ^ 24 = 1 := by
@@ -165,6 +220,29 @@ lemma discr_eta (hL : PeriodLatticeAgreement.LatticePeriodEta) {Λ : AddSubgroup
     rw [hΛ w, PeriodLatticeAgreement.mem_latt]
   rw [← hL.1 ω₁ τ hω, ← e, hd]
 
+/- English proof (translation)
+Take `⟨hdiff, hjac, -, -⟩` from `hT τ`. Take `⟨c1, c2, c3⟩` from `cubic τ hdiff hjac`. Take `⟨d1, d2, d3⟩` from `hdiff`. Take `⟨hg2, -, hwp⟩` from `scaling Λ ω₁ τ hω hΛ`. Take `⟨m, n, hmn⟩` from `half_coords hω hΛ h2`.
+
+Establish `hη : ModularForm.eta (τ : ℂ) ≠ 0` using `ModularForm.eta_ne_zero τ.2`. Establish `hD` using `discr_eta hL hω hΛ hd`. Establish `hpar` using `(GlobalTheory.T.thetaChar_half_period_eq_zero_iff_odd_add_odd_add τ hjac m n a b hab).1 (by rw [← hmn]; exact hz)`. Rewrite using `[hg2, hwp t ht, hmn, thetaChar_zero]`. Unfold `ThetaConstantWeber.JacobiProduct at hjac`.
+
+Establish `hY : ∀ e g : ℂ, (12 * (e / ω₁ ^ 2) ^ 2 - g / ω₁ ^ 4) / 4 = (12 * e ^ 2 - g) / 4 / ω₁ ^ 4`. Introduce `e g`. Clear the denominators using the available nonvanishing facts. Rewrite using `[hY]`. Establish `key : ∀ (A B C Y σ : ℂ), (σ = 1 ∨ σ = -1) → A * B * C = 2 * ModularForm.eta (τ : ℂ) ^ 3 → Y = σ * ((Real.pi : ℂ) ^ 4 * A ^ 4 * B ^ 4) → Y / ω₁ ^ 4 ≠ 0 ∧ ∃ s : ℂ, (s = 1 ∨ s = -1) ∧ 1 / (Y / ω₁ ^ 4) ^ 3 = s * (C / ModularForm.eta (τ : ℂ)) ^ 12` using `fun A B C Y σ hσ hABC hY' => by`.
+
+Establish `h` using `alg hω hη hσ hABC hD (Y := Y / ω₁ ^ 4) (by rw [hY'])`. Conclude with `⟨h.1, σ, hσ, h.2⟩`. Take `⟨⟨p, hp⟩, ⟨q, hq⟩⟩` from `hpar`. Establish `hcases : (a = 0 ∧ b = 0) ∨ (a = 0 ∧ b = 1) ∨ (a = 1 ∧ b = 0)`. Unfold `JacobiThetaHalfCharacteristic.IsEvenChar at hab`.
+
+Apply the tactic sequence `fin_cases a <;> fin_cases b <;> simp_all`. Break down `hcases with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩` into its components or cases. Establish `hm : m = 2 * p + 1` using `by simpa using hp`. Establish `hn : n = 2 * q + 1` using `by simpa using hq`. Establish `e : ((m : ℂ) + (n : ℂ) * (τ : ℂ)) / 2 = (1 + (τ : ℂ)) / 2 + ((p : ℂ) + (q : ℂ) * (τ : ℂ))`.
+
+Rewrite using `[hm, hn]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, wp_shift]`. Use `key (ThetaConstantWeber.thetaConst 0 1 τ) (ThetaConstantWeber.thetaConst 1 0 τ) (ThetaConstantWeber.thetaConst 0 0 τ) _ (-1) (Or.inr rfl) (by linear_combination hjac) ?_` and prove the remaining obligations.
+
+Rewrite using `[c3]`. Take the linear combination `(-(ThetaConstantWeber.wp τ ((1 + (τ : ℂ)) / 2) - ThetaConstantWeber.wp τ ((τ : ℂ) / 2))) * d2 + (-(Real.pi : ℂ) ^ 2 * ThetaConstantWeber.thetaConst 0 1 τ ^ 4) * d3`. Establish `hm : m = 2 * p` using `by simp at hp; omega`. Establish `hn : n = 2 * q + 1` using `by simpa using hq`. Establish `e : ((m : ℂ) + (n : ℂ) * (τ : ℂ)) / 2 = (τ : ℂ) / 2 + ((p : ℂ) + (q : ℂ) * (τ : ℂ))`.
+
+Rewrite using `[hm, hn]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, wp_shift]`. Use `key (ThetaConstantWeber.thetaConst 0 0 τ) (ThetaConstantWeber.thetaConst 1 0 τ) (ThetaConstantWeber.thetaConst 0 1 τ) _ 1 (Or.inl rfl) (by linear_combination hjac) ?_` and prove the remaining obligations.
+
+Rewrite using `[c2]`. Take the linear combination `(-(ThetaConstantWeber.wp τ ((τ : ℂ) / 2) - ThetaConstantWeber.wp τ ((1 + (τ : ℂ)) / 2))) * d1 + ((Real.pi : ℂ) ^ 2 * ThetaConstantWeber.thetaConst 0 0 τ ^ 4) * d3`. Establish `hm : m = 2 * p + 1` using `by simpa using hp`. Establish `hn : n = 2 * q` using `by simp at hq; omega`. Establish `e : ((m : ℂ) + (n : ℂ) * (τ : ℂ)) / 2 = 1 / 2 + ((p : ℂ) + (q : ℂ) * (τ : ℂ))`.
+
+Rewrite using `[hm, hn]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, wp_shift]`. Use `key (ThetaConstantWeber.thetaConst 0 0 τ) (ThetaConstantWeber.thetaConst 0 1 τ) (ThetaConstantWeber.thetaConst 1 0 τ) _ 1 (Or.inl rfl) (by linear_combination hjac) ?_` and prove the remaining obligations.
+
+Rewrite using `[c1]`. Take the linear combination `(ThetaConstantWeber.wp τ (1 / 2) - ThetaConstantWeber.wp τ ((1 + (τ : ℂ)) / 2)) * d1 + ((Real.pi : ℂ) ^ 2 * ThetaConstantWeber.thetaConst 0 0 τ ^ 4) * d2`.
+-/
 theorem modulus (hL : PeriodLatticeAgreement.LatticePeriodEta) (hT : ThetaConstantWeber.ThetaWeberStatement)
     (Λ : AddSubgroup ℂ) (ω₁ : ℂ) (τ : UpperHalfPlane) (t : ℂ) (hω : ω₁ ≠ 0)
     (hΛ : JacobiThetaHalfCharacteristic.IsPeriodLattice Λ ω₁ (τ : ℂ)) (hd : discr Λ = 1) (h2 : 2 * t ∈ Λ) (ht : t ∉ Λ)
@@ -231,6 +309,23 @@ theorem modulus (hL : PeriodLatticeAgreement.LatticePeriodEta) (hT : ThetaConsta
     linear_combination (ThetaConstantWeber.wp τ (1 / 2) - ThetaConstantWeber.wp τ ((1 + (τ : ℂ)) / 2)) * d1 +
       ((Real.pi : ℂ) ^ 2 * ThetaConstantWeber.thetaConst 0 0 τ ^ 4) * d2
 
+/- English proof (translation)
+Take `⟨-, -, hW, hC⟩` from `hT τ`. Take `⟨hg2, hg3, -⟩` from `scaling Λ ω₁ τ hω hΛ`. Establish `hjj : ThetaConstantWeber.jLat τ = 1728 * g2 Λ ^ 3`. Establish `hdd : (GlobalTheory.periodPairOfTau τ).g₂ ^ 3 - 27 * (GlobalTheory.periodPairOfTau τ).g₃ ^ 2 = ω₁ ^ 12`. Establish `h` using `hd`.
+
+Rewrite `h` using `[Formalism.MainNotions.TaylorLogMetric.discr, hg2, hg3]`. Clear denominators, using `at h` for the nonvanishing conditions. Take the linear combination `h`. Rewrite using `[ThetaConstantWeber.jLat_eq, hdd, hg2]`. Clear the denominators using the available nonvanishing facts.
+
+Take `⟨p0, p1, p2⟩` from `hW.pow_twelve`. Establish `root : ∀ x : ℂ, (x = ThetaConstantWeber.weberF τ ^ 24 ∨ x = -ThetaConstantWeber.weberF₁ τ ^ 24 ∨ x = -ThetaConstantWeber.weberF₂ τ ^ 24) → IsIntegral ℤ x`. Introduce `x hx`. Establish `h` using `congrArg (Polynomial.eval x) hC`. Simplify using `only [Polynomial.eval_sub, Polynomial.eval_mul, Polynomial.eval_pow, Polynomial.eval_X, Polynomial.eval_C] at h`.
+
+Establish `h0 : (x - 16) ^ 3 - ThetaConstantWeber.jLat τ * x = 0`. Rewrite using `[h]`. Apply the tactic sequence `rcases hx with rfl | rfl | rfl <;> simp`. Use `(Formalism.HermitianLattices.IntegralLatticeDensity.weber_function_root x (ThetaConstantWeber.jLat τ) 16 (Or.inl rfl) (hjj ▸ hj) ?_).1` and prove the remaining obligations. Use `push_cast`.
+
+Take the linear combination `h0`. Establish `hx : IsIntegral ℤ ((JacobiThetaHalfCharacteristic.thetaChar a b 0 (τ : ℂ) / ModularForm.eta (τ : ℂ)) ^ 12)`. Rewrite using `[thetaChar_zero]`. Establish `hcases : (a = 0 ∧ b = 0) ∨ (a = 0 ∧ b = 1) ∨ (a = 1 ∧ b = 0)`. Unfold `JacobiThetaHalfCharacteristic.IsEvenChar at hab`.
+
+Apply the tactic sequence `fin_cases a <;> fin_cases b <;> simp_all`. Break down `hcases with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩` into its components or cases. Conclude with `p0 ▸ root _ (Or.inl rfl)`. Use `(root _ (Or.inr (Or.inl rfl))).neg` as an intermediate fact. Rewrite `this` using `[neg_neg]`.
+
+Conclude with `p1 ▸ this`. Use `(root _ (Or.inr (Or.inr rfl))).neg` as an intermediate fact. Rewrite `this` using `[neg_neg]`. Conclude with `p2 ▸ this`. Break down `hs with rfl | rfl` into its components or cases.
+
+Simplify using `using hx`. Simplify using `using hx.neg`.
+-/
 theorem integral (hT : ThetaConstantWeber.ThetaWeberStatement) (Λ : AddSubgroup ℂ) (ω₁ : ℂ) (τ : UpperHalfPlane)
     (hω : ω₁ ≠ 0) (hΛ : JacobiThetaHalfCharacteristic.IsPeriodLattice Λ ω₁ (τ : ℂ)) (hd : discr Λ = 1)
     (hj : IsIntegral ℤ (1728 * g2 Λ ^ 3)) (a b : Fin 2) (hab : JacobiThetaHalfCharacteristic.IsEvenChar a b) (s : ℂ)
@@ -276,6 +371,13 @@ theorem integral (hT : ThetaConstantWeber.ThetaWeberStatement) (Λ : AddSubgroup
   · simpa using hx
   · simpa using hx.neg
 
+/- English proof (translation)
+Take `⟨m, n, hmn⟩` from `half_coords hω hΛ h2`. Rewrite using `[show t / ω₁ = _ from hmn]`. Apply the tactic sequence `rcases Int.even_or_odd m with hm | hm <;> rcases Int.even_or_odd n with hn | hn`. It suffices to derive a contradiction. Take `⟨p, rfl⟩` from `hm`.
+
+Take `⟨q, rfl⟩` from `hn`. Use `ht ((hΛ t).2 ⟨p, q, ?_⟩)` and prove the remaining obligations. Establish `: t = ω₁ * (t / ω₁)` using `by field_simp`. Rewrite using `[this, hmn]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Conclude with `⟨0, 1, by simp [JacobiThetaHalfCharacteristic.IsEvenChar], (GlobalTheory.T.thetaChar_half_period_eq_zero_iff_odd_add_odd_add τ hj m n 0 1 (by simp [JacobiThetaHalfCharacteristic.IsEvenChar])).2 ⟨by simpa using hm.add_one, by simpa using hn⟩⟩`. Conclude with `⟨1, 0, by simp [JacobiThetaHalfCharacteristic.IsEvenChar], (GlobalTheory.T.thetaChar_half_period_eq_zero_iff_odd_add_odd_add τ hj m n 1 0 (by simp [JacobiThetaHalfCharacteristic.IsEvenChar])).2 ⟨by simpa using hm, by simpa using hn.add_one⟩⟩`. Conclude with `⟨0, 0, by simp [JacobiThetaHalfCharacteristic.IsEvenChar], (GlobalTheory.T.thetaChar_half_period_eq_zero_iff_odd_add_odd_add τ hj m n 0 0 (by simp [JacobiThetaHalfCharacteristic.IsEvenChar])).2 ⟨by simpa using hm, by simpa using hn⟩⟩`.
+-/
 theorem exists_char {Λ : AddSubgroup ℂ} {ω₁ : ℂ} {τ : UpperHalfPlane} {t : ℂ} (hω : ω₁ ≠ 0)
     (hΛ : JacobiThetaHalfCharacteristic.IsPeriodLattice Λ ω₁ (τ : ℂ)) (hj : ThetaConstantWeber.JacobiProduct τ) (h2 : 2 * t ∈ Λ)
     (ht : t ∉ Λ) : ∃ a b : Fin 2, JacobiThetaHalfCharacteristic.IsEvenChar a b ∧ JacobiThetaHalfCharacteristic.thetaChar a b (t / ω₁) (τ : ℂ) = 0 := by
@@ -297,6 +399,23 @@ theorem exists_char {Λ : AddSubgroup ℂ} {ω₁ : ℂ} {τ : UpperHalfPlane} {
   · exact ⟨0, 0, by simp [JacobiThetaHalfCharacteristic.IsEvenChar], (GlobalTheory.T.thetaChar_half_period_eq_zero_iff_odd_add_odd_add τ hj m n 0 0 (by simp [JacobiThetaHalfCharacteristic.IsEvenChar])).2
       ⟨by simpa using hm, by simpa using hn⟩⟩
 
+/- English proof (translation)
+Introduce `_ hL hT D hJ cc δ M _ t hS`. Take `⟨e, g, hg, hval, hρ⟩` from `GlobalTheory.T.halfPeriod_weierstrassValue_mem_conj D cc δ M t hS`. Establish `crv : Formalism.MainNotions.StandardLatticesGL3.Crv D cc δ` using `⟨hS.1, hS.2.1⟩`. Establish `hYρ : ∀ ρ : M →ₐ[ℚ] ℂ, ρ ((12 * e ^ 2 - g) / 4) = (12 * Formalism.MainNotions.StandardLatticesGL3.wpF (lamConj M ρ (lamOf D cc δ)) (t ρ) ^ 2 - g2 (lamConj M ρ (lamOf D cc δ))) / 4`. Introduce `ρ`.
+
+Take `⟨-, h2, -, h4⟩` from `hρ ρ`. Rewrite using `[h2, h4]`. Simplify using `only [map_div₀, map_sub, map_mul, map_pow, map_ofNat]`. Take `⟨d0, -, n0, -⟩` from `hρ M.val`. Establish `h20` using `(hS.2.2.2 M.val).1`.
+
+Establish `hY0 : (((12 * e ^ 2 - g) / 4 : M) : ℂ) = (12 * Formalism.MainNotions.StandardLatticesGL3.wpF (lamOf D cc δ) (t M.val) ^ 2 - g2 (lamOf D cc δ)) / 4`. Establish `h` using `hYρ M.val`. Rewrite `h` using `[hval]`. Conclude with `h`. Rewrite `d0`, `n0`, `h20` using `[hval]`.
+
+Take `⟨L, hLL⟩` from `(GlobalTheory.ThetaConj.isLat_lamOf crv).exists_periodPair`. Take `⟨ω, τ, hω, hτ⟩` from `GlobalTheory.exists_lattice_eq_mul_tau L`. Establish `hP : JacobiThetaHalfCharacteristic.IsPeriodLattice (lamOf D cc δ) ω (τ : ℂ)` using `fun x => by`. Rewrite using `[hLL, hτ]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨m, n, rfl⟩`. Conclude with `⟨n, m, by ring⟩`. Introduce and unpack `⟨m, n, rfl⟩`. Conclude with `⟨n, m, by ring⟩`. Take `⟨a, b, hab, hz⟩` from `exists_char hω hP (hT τ).2.1 h20 n0`.
+
+Take `⟨hne, s, hs, hX⟩` from `modulus hL hT _ ω τ _ hω hP d0 h20 n0 a b hab hz`. Rewrite `hne`, `hX` using `[← hY0]`. Establish `hYne : ((12 * e ^ 2 - g) / 4 : M) ≠ 0` using `fun h => hne (by rw [h]; simp)`. Use `⟨1 / ((12 * e ^ 2 - g) / 4) ^ 3, one_div_ne_zero (pow_ne_zero _ hYne), ?_, ?_⟩` and prove the remaining obligations. Establish `e1 : ((1 / ((12 * e ^ 2 - g) / 4) ^ 3 : M) : ℂ) = 1 / (((12 * e ^ 2 - g) / 4 : M) : ℂ) ^ 3`.
+
+Use `push_cast`. Both sides reduce to the same expression. Rewrite using `[e1, hX]`. Conclude with `integral hT _ ω τ hω hP d0 (hJ cc δ hS.1 hS.2.1) a b hab s hs`. Introduce `ρ ω₁ τ' hω₁ hτ' hP' a' b' hab' hz'`.
+
+Take `⟨dρ, -, nρ, -⟩` from `hρ ρ`. Take `⟨-, s', hs', hX'⟩` from `modulus hL hT _ ω₁ ⟨τ', hτ'⟩ (t ρ) hω₁ hP' dρ (hS.2.2.2 ρ).1 nρ a' b' hab' hz'`. Rewrite using `[map_div₀, map_one, map_pow, hYρ, hX']`. Apply the tactic sequence `have hs1 : ‖s'‖ = 1 := by rcases hs' with rfl | rfl <;> simp`. Rewrite using `[norm_mul, hs1, one_mul, norm_pow, norm_div]`.
+-/
 theorem exists_integral_theta_ratio : EquidistributedConjugates.ConjugatesEquidistributed → PeriodLatticeAgreement.LatticePeriodEta → ThetaConstantWeber.ThetaWeberStatement →
     ∀ (D : D7), Formalism.MainNotions.GL3Theta.admJ D → ∀ (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (M : IntermediateField ℚ ℂ)
       [FiniteDimensional ℚ M] (t : (M →ₐ[ℚ] ℂ) → ℂ), SignedLogMeans.HidaSetting D cc δ M t →

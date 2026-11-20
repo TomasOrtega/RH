@@ -13,6 +13,13 @@ variable {k r : ℕ}
 def NC (k r : ℕ) (g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) : Prop :=
   ∀ i j : Fin (2 * r + k + 1), j.val ≤ r + k → min j.val r ≤ i.val → g i j = if i = j then 1 else 0
 
+/- English proof (translation)
+Simplify using `only [Nset, Set.mem_setOf_eq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hU, h2, h3⟩`. Use `⟨hU, fun i j hj hi => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hjr : j.val < r`.
+
+Establish `hej : eI k r ⟨j.val, hjr⟩ = j` using `Fin.ext (by simp [eI])`. Establish `h` using `h2 ⟨j.val, hjr⟩ i (by rw [min_eq_left hjr.le] at hi; exact hi)`. Rewrite `h` using `[hej]`. Then use the resulting hypothesis. Use `push_neg at hjr`. Conclude with `h3 i j hjr hj (by rwa [min_eq_right hjr] at hi)`.
+
+Introduce and unpack `⟨hU, hN⟩`. Use `⟨hU, fun a i hai => ?_, fun i j hj1 hj2 hi => ?_⟩` and prove the remaining obligations. Establish `hv : (eI k r a).val = a.val` using `by simp [eI]`. Conclude with `hN i (eI k r a) (by rw [hv]; omega) (by rw [hv, min_eq_left a.isLt.le]; exact hai)`. Conclude with `hN i j hj2 (by rw [min_eq_right hj1]; exact hi)`.
+-/
 lemma mem_Nset_iff (g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) :
     g ∈ Nset k r ↔ g ∈ UH (Hpk k r) ∧ NC k r g := by
   simp only [Nset, Set.mem_setOf_eq]
@@ -31,10 +38,20 @@ lemma mem_Nset_iff (g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) 
       exact hN i (eI k r a) (by rw [hv]; omega) (by rw [hv, min_eq_left a.isLt.le]; exact hai)
     · exact hN i j hj2 (by rw [min_eq_right hj1]; exact hi)
 
+/- English proof (translation)
+Introduce `i j _ _`. Rewrite using `[Matrix.one_apply]`.
+-/
 lemma nc_one : NC k r (1 : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) := by
   intro i j _ _
   rw [Matrix.one_apply]
 
+/- English proof (translation)
+Introduce `i j hj hi`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single j]`. Rewrite using `[hb j j hj (min_le_left _ _), if_pos rfl, mul_one]`. Conclude with `ha i j hj hi`. Introduce `l _ hlj`.
+
+Distinguish the cases in `hl : min j.val r ≤ l.val`. Rewrite using `[hb l j hj hl, if_neg hlj, mul_zero]`. Use `push_neg at hl`. Establish `hlr : l.val < r` using `lt_of_lt_of_le hl (min_le_right _ _)`. Establish `h` using `ha i l (by omega) (by rw [min_eq_left hlr.le]; omega)`.
+
+Rewrite using `[h, if_neg (by intro h'; rw [h'] at hi; omega), zero_mul]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ j) h`.
+-/
 lemma nc_mul {a b : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     (ha : NC k r a) (hb : NC k r b) : NC k r (a * b) := by
   intro i j hj hi
@@ -51,6 +68,13 @@ lemma nc_mul {a b : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
   · intro h
     exact absurd (Finset.mem_univ j) h
 
+/- English proof (translation)
+Introduce `i j hj hi`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single j]`. Rewrite using `[ha j j hj (min_le_left _ _), if_pos rfl, mul_one]`. Conclude with `hx i j hj hi`. Introduce `l _ hlj`.
+
+Distinguish the cases in `hl : min j.val r ≤ l.val`. Rewrite using `[ha l j hj hl, if_neg hlj, mul_zero]`. Use `push_neg at hl`. Establish `hlr : l.val < r` using `lt_of_lt_of_le hl (min_le_right _ _)`. Establish `h` using `hx i l (by omega) (by rw [min_eq_left hlr.le]; omega)`.
+
+Rewrite using `[h, if_neg (by intro h'; rw [h'] at hi; omega), zero_mul]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ j) h`.
+-/
 private lemma mul_apply_eq_ite_of_lower_block_scalar {a : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} (ha : NC k r a) (c : ℂ)
     {x : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     (hx : ∀ i j : Fin (2 * r + k + 1), j.val ≤ r + k → min j.val r ≤ i.val →
@@ -71,6 +95,25 @@ private lemma mul_apply_eq_ite_of_lower_block_scalar {a : Matrix (Fin (2 * r + k
   · intro h
     exact absurd (Finset.mem_univ j) h
 
+/- English proof (translation)
+Establish `hfix` using `mul_apply_eq_ite_of_lower_block_scalar (k := k) (r := r) (a := a) ha`. Set `V : Submodule ℂ (Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ)` to `{ carrier := {x | ∀ i j : Fin (2 * r + k + 1), j.val ≤ r + k → min j.val r ≤ i.val → x i j = if i = j then x 0 0 else 0} add_mem' := by`. Introduce `x y hx hy i j hj hi`. Simplify using `only [Set.mem_setOf_eq] at hx hy`. Rewrite using `[Matrix.add_apply, hx i j hj hi, hy i j hj hi, Matrix.add_apply]`.
+
+Apply the tactic sequence `split_ifs <;> simp`. Use the proof step `zero_mem' := by`. Introduce `i j _ _`. Simplify using the standard rewrite rules. Use the proof step `smul_mem' := by`.
+
+Introduce `c x hx i j hj hi`. Simplify using `only [Set.mem_setOf_eq] at hx`. Rewrite using `[Matrix.smul_apply, hx i j hj hi, Matrix.smul_apply]`. Apply the tactic sequence `split_ifs <;> simp }`. Establish `hV : ∀ x ∈ V, LinearMap.mulRight ℂ a x ∈ V`.
+
+Introduce `x hx i j hj hi`. Establish `h00 : (x * a) 0 0 = x 0 0`. Rewrite using `[hfix (x 0 0) hx 0 0 (by simp) (by simp), if_pos rfl]`. Use `show (x * a) i j = if i = j then (x * a) 0 0 else 0`. Rewrite using `[h00]`.
+
+Conclude with `hfix (x 0 0) hx i j hj hi`. Set `f : V →ₗ[ℂ] V` to `(LinearMap.mulRight ℂ a).restrict hV`. Establish `hinj : Function.Injective f`. Introduce `x y hxy`. Establish `h1 : (x : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) * a = y * a` using `congrArg Subtype.val hxy`.
+
+Establish `h2` using `congrArg (· * a⁻¹) h1`. Simplify using `only [Matrix.mul_assoc, mul_inv_UH hU, Matrix.mul_one] at h2`. Conclude with `Subtype.ext h2`. Establish `hsurj` using `LinearMap.injective_iff_surjective.1 hinj`. Establish `h1V : (1 : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) ∈ V`.
+
+Introduce `i j _ _`. Simplify using `[Matrix.one_apply]`. Take `⟨x, hx⟩` from `hsurj ⟨1, h1V⟩`. Establish `hxa : (x : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) * a = 1` using `congrArg Subtype.val hx`. Establish `hxinv : (x : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) = a⁻¹`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hc : (x : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) 0 0 = 1`. Establish `h` using `hfix ((x : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) 0 0) x.2 0 0 (by simp) (by simp)`. Rewrite `h` using `[hxa, if_pos rfl, Matrix.one_apply_eq]`. Conclude with `h.symm`.
+
+Introduce `i j hj hi`. Rewrite using `[← hxinv]`. Establish `h` using `x.2 i j hj hi`. Rewrite `h` using `[hc]`. Conclude with `h`.
+-/
 lemma nc_inv {a : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     (hU : a ∈ UH (Hpk k r)) (ha : NC k r a) : NC k r a⁻¹ := by
   have hfix := mul_apply_eq_ite_of_lower_block_scalar (k := k) (r := r) (a := a) ha
@@ -124,6 +167,11 @@ lemma nc_inv {a : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
   rw [hc] at h
   exact h
 
+/- English proof (translation)
+Introduce `k r`. Use `⟨(mem_Nset_iff 1).2 ⟨one_mem_UH, nc_one⟩, fun a ha b hb => ?_, fun a ha => ?_⟩` and prove the remaining obligations. Take `⟨haU, haN⟩` from `(mem_Nset_iff a).1 ha`. Take `⟨hbU, hbN⟩` from `(mem_Nset_iff b).1 hb`. Conclude with `(mem_Nset_iff _).2 ⟨mul_mem_UH haU hbU, nc_mul haN hbN⟩`.
+
+Take `⟨haU, haN⟩` from `(mem_Nset_iff a).1 ha`. Conclude with `(mem_Nset_iff _).2 ⟨inv_mem_UH haU, nc_inv haU haN⟩`.
+-/
 theorem nilpotent_subgroup : NGroup := by
   intro k r
   refine ⟨(mem_Nset_iff 1).2 ⟨one_mem_UH, nc_one⟩, fun a ha b hb => ?_, fun a ha => ?_⟩
@@ -133,9 +181,25 @@ theorem nilpotent_subgroup : NGroup := by
   · obtain ⟨haU, haN⟩ := (mem_Nset_iff a).1 ha
     exact (mem_Nset_iff _).2 ⟨inv_mem_UH haU, nc_inv haU haN⟩
 
+/- English proof (translation)
+The claim follows from `Matrix.nonsing_inv_nonsing_inv a (Matrix.isUnit_det_of_right_inverse (mul_inv_UH hU))`.
+-/
 lemma inv_inv_UH {a : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} (hU : a ∈ UH (Hpk k r)) :
     a⁻¹⁻¹ = a := Matrix.nonsing_inv_nonsing_inv a (Matrix.isUnit_det_of_right_inverse (mul_inv_UH hU))
 
+/- English proof (translation)
+Take `⟨hU, hN⟩` from `(mem_Nset_iff n).1 hn`. Distinguish the cases in `hj : j.val ≤ r + k`. Conclude with `hN i j hj (le_trans (min_le_left _ _) hij)`. Use `push_neg at hj`. Establish `hinv : NC k r n⁻¹` using `nc_inv hU hN`.
+
+Establish `hvj : (piI k r j).val = 2 * r + k - j.val`. Rewrite using `[piI_val, if_neg (by omega)]`. Establish `hvi : (piI k r i).val = 2 * r + k - i.val`. Rewrite using `[piI_val, if_neg (by omega)]`. Establish `h1` using `hinv (piI k r j) (piI k r i) (by omega) (by rw [hvi, hvj, min_eq_left (by omega)]; omega)`.
+
+Rewrite `h1` using `[inv_eq_UH hU, Hpk_mul_mul_Hpk_apply, piI_piI, piI_piI, conjTranspose_apply]`. Establish `he1 : epsI k r (piI k r j) = 1`. Simplify using `only [epsI]; rw [if_neg (by omega)]`. Establish `he2 : epsI k r (piI k r i) = 1`. Simplify using `only [epsI]; rw [if_neg (by omega)]`.
+
+Rewrite `h1` using `[he1, he2, one_mul, mul_one]`. Establish `h2` using `congrArg star h1`. Rewrite `h2` using `[star_star]`. Rewrite using `[h2]`. Distinguish the cases in `hij' : i = j`.
+
+Substitute `hij'` using the available equality. Simplify using the standard rewrite rules. Establish `hne : piI k r j ≠ piI k r i`. Introduce `h`. Establish `h'` using `congrArg (piI k r) h`.
+
+Rewrite `h'` using `[piI_piI, piI_piI]`. Conclude with `hij' h'.symm`. Rewrite using `[if_neg hne, if_neg hij', star_zero]`.
+-/
 lemma n_ut {n : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} (hn : n ∈ Nset k r)
     (i j : Fin (2 * r + k + 1)) (hij : j.val ≤ i.val) : n i j = if i = j then 1 else 0 := by
   obtain ⟨hU, hN⟩ := (mem_Nset_iff n).1 hn

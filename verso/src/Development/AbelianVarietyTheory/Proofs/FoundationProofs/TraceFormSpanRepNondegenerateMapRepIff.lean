@@ -9,6 +9,15 @@ section TraceFormSpan
 
 variable {ι K L : Type} [Field K] [Field L] [Algebra K L] {a : ℕ}
 
+/- English proof (translation)
+Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨g, rfl⟩` from `hy`. Conclude with `Submodule.subset_span ⟨g, rfl⟩`. Consider the case `zero`.
+
+Rewrite using `[Matrix.map_zero _ (map_zero _)]`. Conclude with `Submodule.zero_mem _`. Consider the case `add y z _ _ hy hz`. Rewrite using `[Matrix.map_add _ (map_add _)]`. Conclude with `Submodule.add_mem _ hy hz`.
+
+Consider the case `smul c y _ hy`. Establish `: (c • y).map (algebraMap K L) = algebraMap K L c • y.map (algebraMap K L)`. Use extensionality with `i j`. Simplify using the standard rewrite rules. Rewrite using `[this]`.
+
+Conclude with `Submodule.smul_mem _ _ hy`.
+-/
 theorem map_mem_span_map_of_mem_span (A : ι → Matrix (Fin a) (Fin a) K)
     {x : Matrix (Fin a) (Fin a) K} (hx : x ∈ Submodule.span K (Set.range A)) :
     x.map (algebraMap K L) ∈
@@ -29,6 +38,17 @@ theorem map_mem_span_map_of_mem_span (A : ι → Matrix (Fin a) (Fin a) K)
     rw [this]
     exact Submodule.smul_mem _ _ hy
 
+/- English proof (translation)
+Proceed by induction on `hy using Submodule.span_induction generalizing φ with`. Consider the case `mem y hy`. Take `⟨g, rfl⟩` from `hy`. Establish `: ((A g).map (algebraMap K L)).map φ = φ 1 • A g`. Use extensionality with `i j`.
+
+Simplify using `only [Matrix.map_apply, Matrix.smul_apply, smul_eq_mul]`. Rewrite using `[Algebra.algebraMap_eq_smul_one, map_smul, smul_eq_mul, mul_comm]`. Use `beta_reduce`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨g, rfl⟩)`.
+
+Consider the case `zero`. Rewrite using `[Matrix.map_zero _ (map_zero _)]`. Conclude with `Submodule.zero_mem _`. Consider the case `add y z _ _ hy hz`. Rewrite using `[Matrix.map_add _ (map_add _)]`.
+
+Conclude with `Submodule.add_mem _ (hy φ) (hz φ)`. Consider the case `smul c y _ hy`. Establish `: (c • y).map φ = y.map (φ ∘ₗ LinearMap.mulLeft K c)`. Use extensionality with `i j`. Simplify using the standard rewrite rules.
+
+Rewrite using `[this]`. Conclude with `hy _`.
+-/
 theorem map_linearForm_mem_span_of_mem_span_map (A : ι → Matrix (Fin a) (Fin a) K)
     {y : Matrix (Fin a) (Fin a) L}
     (hy : y ∈ Submodule.span L (Set.range fun g => (A g).map (algebraMap K L)))
@@ -55,6 +75,9 @@ theorem map_linearForm_mem_span_of_mem_span_map (A : ι → Matrix (Fin a) (Fin 
     rw [this]
     exact hy _
 
+/- English proof (translation)
+Simplify using `only [Matrix.trace, Matrix.diag_apply, Matrix.mul_apply, map_sum, Matrix.map_apply]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm (y i j), ← Algebra.smul_def, map_smul, smul_eq_mul, mul_comm]`.
+-/
 theorem trace_map_linearForm_mul (φ : L →ₗ[K] K) (y : Matrix (Fin a) (Fin a) L)
     (m : Matrix (Fin a) (Fin a) K) :
     (y.map φ * m).trace = φ ((y * m.map (algebraMap K L)).trace) := by
@@ -62,6 +85,13 @@ theorem trace_map_linearForm_mul (φ : L →ₗ[K] K) (y : Matrix (Fin a) (Fin a
   refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_
   rw [mul_comm (y i j), ← Algebra.smul_def, map_smul, smul_eq_mul, mul_comm]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h x hx htr`. Establish `h0` using `h _ (map_mem_span_map_of_mem_span A hx) fun g => by`. Rewrite using `[← Matrix.map_mul, ← AddMonoidHom.map_trace, htr g, map_zero]`. Use extensionality with `i j`.
+
+Use `congrFun (congrFun h0 i) j` as an intermediate fact. Simplify using `using this`. Introduce `h y hy htr`. Use extensionality with `i j`. Use `(Module.forall_dual_apply_eq_zero_iff K _).1 fun φ => ?_` and prove the remaining obligations.
+
+Establish `h0` using `h _ (map_linearForm_mem_span_of_mem_span_map A hy φ) fun g => by`. Rewrite using `[trace_map_linearForm_mul, htr g, map_zero]`. Simplify using `using congrFun (congrFun h0 i) j`.
+-/
 theorem traceForm_span_nondegenerate_map_iff (A : ι → Matrix (Fin a) (Fin a) K) :
     (∀ x ∈ Submodule.span L (Set.range fun g => (A g).map (algebraMap K L)),
       (∀ g, (x * (A g).map (algebraMap K L)).trace = 0) → x = 0) ↔
@@ -82,6 +112,9 @@ theorem traceForm_span_nondegenerate_map_iff (A : ι → Matrix (Fin a) (Fin a) 
 
 end TraceFormSpan
 
+/- English proof (translation)
+Introduce `Γ K L _ _ _ f a ρ`. Use `letI := f.toAlgebra`. Conclude with `traceForm_span_nondegenerate_map_iff (L := L) (fun g => ((ρ g : GL (Fin a) K) : Matrix (Fin a) (Fin a) K))`.
+-/
 theorem traceForm_span_rep_nondegenerate_mapRep_iff :
     ∀ (Γ K L : Type) [Group Γ] [Field K] [Field L] (f : K →+* L) (a : ℕ) (ρ : Γ →* GL (Fin a) K), (∀ x ∈ Submodule.span L (Set.range fun g => ((mapRep f ρ g : GL (Fin a) L) : Matrix (Fin a) (Fin a) L)), (∀ g, (x * ((mapRep f ρ g : GL (Fin a) L) : Matrix (Fin a) (Fin a) L)).trace = 0) → x = 0) ↔ (∀ x ∈ Submodule.span K (Set.range fun g => ((ρ g : GL (Fin a) K) : Matrix (Fin a) (Fin a) K)), (∀ g, (x * ((ρ g : GL (Fin a) K) : Matrix (Fin a) (Fin a) K)).trace = 0) → x = 0) := by
   intro Γ K L _ _ _ f a ρ

@@ -16,6 +16,13 @@ namespace GlobalTheory.MixedCross
 
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor
 
+/- English proof (translation)
+Move the coercions through the operations in `at h₁ h₂`. Establish `e₁` using `congrArg (· ^ m₁) h₁`. Establish `e₂` using `congrArg (· ^ m₂) h₂`. Simplify using `only [mul_pow, ← pow_mul] at e₁ e₂`. Establish `a₁ : k₁ * N * m₁ = m₁ * k₁ * N` using `by ring`.
+
+Establish `a₂ : k₂ * N * m₂ = m₁ * k₁ * N` using `by rw [hm]; ring`. Establish `b₁ : k₁ * m₁ = m₁ * k₁` using `by ring`. Establish `b₂ : k₂ * m₂ = m₁ * k₁` using `by rw [hm]; ring`. Rewrite `e₁` using `[a₁, b₁]`. Rewrite `e₂` using `[a₂, b₂]`.
+
+Establish `hu : IsUnit ((W : Γ) ^ (m₁ * k₁ * N))` using `W.isUnit.pow _`. Apply `hu.mul_left_cancel` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem cross_pow {Γ : Type} [CommRing Γ] (W W' X : Γˣ) {k₁ k₂ m₁ m₂ N : ℕ} (hm : m₁ * k₁ = m₂ * k₂)
     (s₁ t₁ s₂ t₂ : Γ)
     (h₁ : (W ^ (k₁ * N)).val * s₁ = (X ^ k₁).val * ((W' ^ k₁).val * t₁))
@@ -39,10 +46,26 @@ theorem cross_pow {Γ : Type} [CommRing Γ] (W W' X : Γˣ) {k₁ k₂ m₁ m₂
     _ = ((W : Γ) ^ (m₁ * k₁ * N) * s₂ ^ m₂) * t₁ ^ m₁ := by rw [e₂]; ring
     _ = (W : Γ) ^ (m₁ * k₁ * N) * (s₂ ^ m₂ * t₁ ^ m₁) := by ring
 
+/- English proof (translation)
+Simplify using `only [gs, dif_pos h, map_sub]`.
+-/
 theorem gs_sub' {X Z : Scheme.{0}} (r : Z ⟶ X) (z : Z) (U : X.Opens) (h : r z ∈ U) (a b : Γ(X, U)) :
     gs r z U (a - b) = gs r z U a - gs r z U b := by
   simp only [gs, dif_pos h, map_sub]
 
+/- English proof (translation)
+Unfold `sval fGl at h`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible V`. Establish `hN : (LB.LinComb L φ ε).IsLB` using `linComb_isLB L hL φ ε`. Use `sub_eq_zero.mp (hB V G (LB.LinComb L φ ε) hN (subSec s s') ϖ hϖ (fun i e => ?_) j)` and prove the remaining obligations. Consider the cases of `e with`.
+
+Consider the case `zero => simp`. Consider the case `succ e`. Establish `hv : ∀ i', ((fstG (maximalIdeal V) e G).left.app ((LB.LinComb L φ ε).U i')).hom ((subSec s s').f i') = 0`. Introduce `i'`. Apply `fn_ext` to reduce the goal to its premises.
+
+Introduce `z hz`. Establish `hz' : (fstG (maximalIdeal V) e G).left z ∈ LB.wchart L φ i'` using `hz`. Take `⟨J, hJ, -⟩` from `exists_good L hL z (K := Empty) Empty.elim Empty.elim (fun a => a.elim) (fun a => a.elim)`. Establish `hm` using `hJ.mem φ (fstG (maximalIdeal V) e G).left`. Establish `h1` using `h e z J hJ`.
+
+Rewrite using `[gs_eq (𝟙 _) z _ hz 0, map_zero, map_zero, gs_pull (𝟙 _) _ z ((LB.LinComb L φ ε).U i') hz', Category.id_comp]`. Use `show gs (fstG (maximalIdeal V) e G).left z (LB.wchart L φ i') (s.f i' - s'.f i') = 0`. Use `(gs_sub' _ z (LB.wchart L φ i') hz' (s.f i') (s'.f i')).trans (sub_eq_zero.mpr ?_)` and prove the remaining obligations. Rewrite using `[sec_trans s _ z hz' hm, sec_trans s' _ z hz' hm, h1]`. Take `⟨τ, hτ⟩` from `(GlobalTheory.ThickDiv.main V ϖ hϖ G (LB.LinComb L φ ε) (subSec s s') e).1 hv`.
+
+Unfold `SecIsMul at hτ`. Rewrite using `[hτ i]`. Use `Ideal.mul_mem_right _ _ ?_` and prove the remaining obligations. Establish `hc : resTop ((LB.LinComb L φ ε).U i) (scal G.hom (ϖ ^ (e + 1))) = ((G.left.presheaf.map (homOfLE le_top).op).hom ((G.hom.app ⊤).hom ((Scheme.ΓSpecIso (CommRingCat.of V)).inv.hom ϖ))) ^ (e + 1)`. Simplify using `only [resTop, scal, map_pow]`.
+
+Both sides reduce to the same expression. Rewrite using `[hc]`. Conclude with `Ideal.pow_mem_pow (Ideal.mem_span_singleton_self _) _`.
+-/
 theorem sec_eq_of_thick (hB : lemmaBSt.{0}) {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V]
     (G : Over (Spec (CommRingCat.of V))) [GrpObj G] [IsCommMonObj G]
     [Smooth G.hom] [IsSeparated G.hom] [QuasiCompact G.hom] [GeometricallyConnected G.hom]
@@ -84,6 +107,27 @@ theorem sec_eq_of_thick (hB : lemmaBSt.{0}) {V : Type} [CommRing V] [IsDomain V]
     rw [hc]
     exact Ideal.pow_mem_pow (Ideal.mem_span_singleton_self _) _
 
+/- English proof (translation)
+Introduce `hB V _ _ _ E _ _ _ H t P a N haN hN X k₁ k₂ m₁ m₂ hm σ₁ τ₁ σ₂ τ₂ h₁ h₂`. Establish `: Smooth t.G.hom` using `t.semi.smooth`. Establish `: IsSeparated t.G.hom` using `t.semi.separated`. Establish `: QuasiCompact t.G.hom` using `t.semi.quasiCompact`. Establish `: GeometricallyConnected t.G.hom` using `t.semi.geomConnected`.
+
+Establish `hL : P.U.LG.L.IsLB` using `P.U.LG.isLB`. Establish `hD : P.D.toPre.P.L.IsLB` using `P.D.toPre.P.isLB`. Establish `eA : ∀ (Z : Scheme.{0}) (r : Z ⟶ t.G.left) (y : Z) (J : (Z ⟶ t.G.left) → P.U.LG.L.ι), Good P.U.LG.L y J → sval (H1.SectionArithmetic.mulSec (H1.SectionArithmetic.powSec (fun _ : Fin m₁ => σ₁)) (H1.SectionArithmetic.pullSec (H1.SectionArithmetic.powSec (fun _ : Fin m₂ => τ₂)) (t.a …`. Introduce `Z r y J hJ`. Rewrite using `[H1.SectionArithmetic.sval_mulSec _ _ r y hJ, H1.SectionArithmetic.sval_pullSec _ _ r y hJ, H1.SectionArithmetic.sval_powSec _ r y hJ, H1.SectionArithmetic.sval_powSec _ _ y hJ]`.
+
+Simplify using `[Finset.prod_const]`. Establish `eB : ∀ (Z : Scheme.{0}) (r : Z ⟶ t.G.left) (y : Z) (J : (Z ⟶ t.G.left) → P.U.LG.L.ι), Good P.U.LG.L y J → sval (H1.SectionArithmetic.mulSec (H1.SectionArithmetic.powSec (fun _ : Fin m₂ => σ₂)) (H1.SectionArithmetic.pullSec (H1.SectionArithmetic.powSec (fun _ : Fin m₁ => τ₁)) (t.a …`. Introduce `Z r y J hJ`. Rewrite using `[H1.SectionArithmetic.sval_mulSec _ _ r y hJ, H1.SectionArithmetic.sval_pullSec _ _ r y hJ, H1.SectionArithmetic.sval_powSec _ r y hJ, H1.SectionArithmetic.sval_powSec _ _ y hJ]`. Simplify using `[Finset.prod_const]`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨B', hB'⟩ : ∃ B' : type_of% (H1.SectionArithmetic.mulSec (H1.SectionArithmetic.powSec (fun _ : Fin m₁ => σ₁)) (H1.SectionArithmetic.pullSec (H1.SectionArithmetic.powSec (fun _ : Fin m₂ => τ₂)) (t.act.act a).left)), ∀ (Z : Scheme.{0}) (r : Z ⟶ t.G.left) (z : Z) (J : (Z ⟶ t.G.left) …`. Use `exists_sec hL ?_ _` and prove the remaining obligations. Introduce `U _ h`. Simplify using `only [Fintype.prod_sum_type, Finset.prod_const, Finset.card_univ, Fintype.card_prod, Fintype.card_fin, Sum.elim_inl, Sum.elim_inr, Category.comp_id]`. Establish `hz : (m₁ : ℤ) * k₁ = m₂ * k₂` using `by exact_mod_cast hm`.
+
+Simplify using `only [← zpow_natCast, ← zpow_mul]`. Use `congr 2`. Use `push_cast`. Take the linear combination `(-(N : ℤ)) * hz`. Use `push_cast`.
+
+Take the linear combination `hz`. Establish `hthick : ∀ (e : ℕ) (z : (thickObj V (maximalIdeal V) e t.G).left) (J : ((thickObj V (maximalIdeal V) e t.G).left ⟶ t.G.left) → P.U.LG.L.ι), Good P.U.LG.L z J → sval (H1.SectionArithmetic.mulSec (H1.SectionArithmetic.powSec (fun _ : Fin m₁ => σ₁)) (H1.SectionArithmetic.pullSec (H1 …`. Introduce `e z J hJ`. Rewrite using `[hB' _ _ z J hJ, eA _ _ z J hJ, eB _ _ z J hJ]`. Take `⟨JD, hJD, -⟩` from `exists_good P.D.toPre.P.L hD z (K := Empty) Empty.elim Empty.elim (fun a => a.elim) (fun a => a.elim)`.
+
+Establish `m1 : (𝟙 _ ≫ fGl (maximalIdeal V) t.G e) z ∈ P.U.LG.L.U (J (fGl (maximalIdeal V) t.G e ≫ 𝟙 t.G.left))`. Simplify using `using hJ (fGl (maximalIdeal V) t.G e ≫ 𝟙 t.G.left)`. Establish `m2 : ((𝟙 _ ≫ ((Over.pullback (thick V (maximalIdeal V) e)).map (t.act.act a)).left) ≫ fGl (maximalIdeal V) t.G e) z ∈ P.U.LG.L.U (J ((fGl (maximalIdeal V) t.G e ≫ (t.act.act a).left) ≫ 𝟙 t.G.left))`. Establish `hz` using `hJ ((fGl (maximalIdeal V) t.G e ≫ (t.act.act a).left) ≫ 𝟙 t.G.left)`. Establish `eq : (𝟙 _ ≫ ((Over.pullback (thick V (maximalIdeal V) e)).map (t.act.act a)).left) ≫ fGl (maximalIdeal V) t.G e = (fGl (maximalIdeal V) t.G e ≫ (t.act.act a).left) ≫ 𝟙 t.G.left`.
+
+Rewrite using `[Category.id_comp, Category.comp_id]`. Conclude with `fstG_act _ _ _`. Rewrite using `[eq]`. Conclude with `hz`. Establish `c` using `cross_pow _ _ _ hm _ _ _ _ (h₁ e _ (𝟙 _) z JD hJD _ _ m1 m2) (h₂ e _ (𝟙 _) z JD hJD _ _ m1 m2)`.
+
+Unfold `sv at c`. Simplify using `only [Category.id_comp, fGl, fstG_act] at c`. Unfold `sval`. Simplify using `only [fGl]`. Conclude with `c`.
+
+Introduce `Z r y J hJ`. Rewrite using `[← eA Z r y J hJ, ← eB Z r y J hJ, ← hB' Z r y J hJ]`. Establish `hAB` using `sec_eq_of_thick hB t.G hL _ B' hthick`. Unfold `sval`. Rewrite using `[hAB]`.
+-/
 theorem main : lemmaBSt.{0} → ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] (E : Type) [Field E] [NumberField E] [NumberField.IsCMField E] (H : Geo.Tor.Host E) (t : Geo.Tor.SAB H (Spec (CommRingCat.of V))) (P : Geo.Tor.PELUnif (maximalIdeal V) t) (a : NumberField.RingOfIntegers E) (N : ℕ), (letI := H.starRing; a * star a = (N : NumberField.RingOfIntegers E)) → 0 < N → letI := H.starRing;  ∀ (X : LB.Gen (LB.LinComb P.D.toPre.P.L (K := Fin 2) ![𝟙 P.D.toPre.P.A.left, (P.oD.onB.act a).left] ![((1 * N : ℕ) : ℤ), -((1 : ℕ) : ℤ)])) (k₁ k₂ m₁ m₂ : ℕ), m₁ * k₁ = m₂ * k₂ → ∀ (σ₁ : H0 P.U.LG.L (k₁ * N)) (τ₁ : H0 P.U.LG.L k₁) (σ₂ : H0 P.U.LG.L (k₂ * N)) (τ₂ : H0 P.U.LG.L k₂), (∀ e : ℕ, (∀ (Z : Scheme.{0}) (r : Z ⟶ (thickObj V (maximalIdeal V) e t.G).left) (z : Z) (J), Geo.Tor.Good P.D.toPre.P.L z J → ∀ jL jL', (r ≫ fGl (maximalIdeal V) t.G e) z ∈ P.U.LG.L.U jL → ((r ≫ ((Over.pullback (thick V (maximalIdeal V) e)).map (t.act.act a)).left) ≫ fGl (maximalIdeal V) t.G e) z ∈ P.U.LG.L.U jL' → (wv P.U.toUnifPre e r z (J (r ≫ pGl P.U.toUnifPre e)) jL ^ (k₁ * N)).val * sv P.U.toUnifPre (k₁ * N) σ₁ (r ≫ fGl (maximalIdeal V) t.G e) z jL = (Geo.Tor.val X (r ≫ pGl P.U.toUnifPre e) z J ^ k₁).val * ((wv P.U.toUnifPre e (r ≫ ((Over.pullback (thick V (maximalIdeal V) e)).map (t.act.act a)).left) z (J ((r ≫ ((Over.pullback (thick V (maximalIdeal V) e)).map (t.act.act a)).left) ≫ pGl P.U.toUnifPre e)) jL' ^ k₁).val * sv P.U.toUnifPre k₁ τ₁ ((r ≫ ((Over.pullback (thick V (maximalIdeal V) e)).map (t.act.act a)).left) ≫ fGl (maximalIdeal V) t.G e) z jL'))) → (∀ e : ℕ, (∀ (Z : Scheme.{0}) (r : Z ⟶ (thickObj V (maximalIdeal V) e t.G).left) (z : Z) (J), Geo.Tor.Good P.D.toPre.P.L z J → ∀ jL jL', (r ≫ fGl (maximalIdeal V) t.G e) z ∈ P.U.LG.L.U jL → ((r ≫ ((Over.pullback (thick V (maximalIdeal V) e)).map (t.act.act a)).left) ≫ fGl (maximalIdeal V) t.G e) z ∈ P.U.LG.L.U jL' → (wv P.U.toUnifPre e r z (J (r ≫ pGl P.U.toUnifPre e)) jL ^ (k₂ * N)).val * sv P.U.toUnifPre (k₂ * N) σ₂ (r ≫ fGl (maximalIdeal V) t.G e) z jL = (Geo.Tor.val X (r ≫ pGl P.U.toUnifPre e) z J ^ k₂).val * ((wv P.U.toUnifPre e (r ≫ ((Over.pullback (thick V (maximalIdeal V) e)).map (t.act.act a)).left) z (J ((r ≫ ((Over.pullback (thick V (maximalIdeal V) e)).map (t.act.act a)).left) ≫ pGl P.U.toUnifPre e)) jL' ^ k₂).val * sv P.U.toUnifPre k₂ τ₂ ((r ≫ ((Over.pullback (thick V (maximalIdeal V) e)).map (t.act.act a)).left) ≫ fGl (maximalIdeal V) t.G e) z jL'))) → ∀ (Z : Scheme.{0}) (r : Z ⟶ t.G.left) (y : Z) (J), Geo.Tor.Good P.U.LG.L y J → Geo.Tor.sval σ₁ r y J ^ m₁ * Geo.Tor.sval τ₂ (r ≫ (t.act.act a).left) y J ^ m₂ = Geo.Tor.sval σ₂ r y J ^ m₂ * Geo.Tor.sval τ₁ (r ≫ (t.act.act a).left) y J ^ m₁ := by
   intro hB V _ _ _ E _ _ _ H t P a N haN hN X k₁ k₂ m₁ m₂ hm σ₁ τ₁ σ₂ τ₂ h₁ h₂
   classical

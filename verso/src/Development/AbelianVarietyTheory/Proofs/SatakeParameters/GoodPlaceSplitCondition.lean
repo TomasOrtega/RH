@@ -12,6 +12,15 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace GlobalTheory.ValInert
 
+/- English proof (translation)
+Introduce `x y hxy`. Establish `hw : Ideal.map (algebraMap (𝓞 D.host.F) (𝓞 D.host.E)) (w.under (𝓞 D.host.F)).asIdeal = w.asIdeal` using `hI`. Set `σ : 𝓞 D.host.E →+* 𝓞 D.host.E` to `RingOfIntegers.mapRingHom (D.host.conj : D.host.E →+* D.host.E)`. Establish `hσ : ∀ z : 𝓞 D.host.E, ((σ z : 𝓞 D.host.E) : D.host.E) = D.host.conj (z : D.host.E)` using `fun z => rfl`. Establish `key : w.asIdeal ≤ Ideal.comap σ w.asIdeal` using `by conv_lhs => rw [← hw]`.
+
+Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `s hs`. Rewrite using `[Ideal.mem_comap, Ideal.mem_comap]`. Establish `e : σ (algebraMap _ _ s) = algebraMap (𝓞 D.host.F) (𝓞 D.host.E) s`. Apply `RingOfIntegers.ext` to reduce the goal to its premises.
+
+Rewrite using `[hσ]`. Establish `hm : ((algebraMap (𝓞 D.host.F) (𝓞 D.host.E) s : 𝓞 D.host.E) : D.host.E) ∈ D.host.F` using `by show ((s : D.host.F) : D.host.E) ∈ D.host.F`. Conclude with `(s : D.host.F).2`. Conclude with `(GlobalTheory.DesignBC.mem_F_iff D _).1 hm`. Rewrite using `[e, ← hw]`.
+
+Conclude with `Ideal.mem_map_of_mem _ hs`. Establish `hy : y = σ x` using `RingOfIntegers.ext (hxy.trans (hσ x).symm)`. Establish `hx : x = σ y` using `RingOfIntegers.ext (by rw [hσ, hxy, GlobalTheory.DesignBC.conj_conj])`. Conclude with `⟨fun h => hy ▸ key h, fun h => hx ▸ key h⟩`.
+-/
 theorem conjSelf (D : D7) (w : HeightOneSpectrum (𝓞 D.host.E))
     (hI : Formalism.UG.IsInertAt D.host.F D.host.E (w.under (𝓞 D.host.F)) w) : IsConjPl D.host w w := by
   intro x y hxy
@@ -36,18 +45,47 @@ theorem conjSelf (D : D7) (w : HeightOneSpectrum (𝓞 D.host.E))
   have hx : x = σ y := RingOfIntegers.ext (by rw [hσ, hxy, GlobalTheory.DesignBC.conj_conj])
   exact ⟨fun h => hy ▸ key h, fun h => hx ▸ key h⟩
 
+/- English proof (translation)
+Introduce and unpack `⟨x, hx, hy⟩`. Take `⟨y, hy'⟩ : ∃ y : 𝓞 D.host.E, (y : D.host.E) = D.host.conj (x : D.host.E)` from `⟨RingOfIntegers.mapRingHom (D.host.conj : D.host.E →+* D.host.E) x, rfl⟩`. Conclude with `hy y hy' ((h x y hy').1 hx)`.
+-/
 theorem notSplit (D : D7) (w : HeightOneSpectrum (𝓞 D.host.E)) (h : IsConjPl D.host w w) : ¬ IsSplitPl D.host w := by
   rintro ⟨x, hx, hy⟩
   obtain ⟨y, hy'⟩ : ∃ y : 𝓞 D.host.E, (y : D.host.E) = D.host.conj (x : D.host.E) :=
     ⟨RingOfIntegers.mapRingHom (D.host.conj : D.host.E →+* D.host.E) x, rfl⟩
   exact hy y hy' ((h x y hy').1 hx)
 
+/- English proof (translation)
+Substitute `h` using the available equality. Consider the cases of `h'`. Both sides reduce to the same expression.
+-/
 theorem xi_eq {D : D7} {nch : NChoice D} {C C' : CharFrame D} (h : C = C') (T : TupTied D C nch) (T' : TupTied D C' nch)
     (h' : HEq T T') : T.xi = T'.xi := by
   subst h
   cases h'
   rfl
 
+/- English proof (translation)
+Introduce `_ hL D P X _ _ _ _ i hμ j hj w hG hI c hc`. Establish `hcw` using `conjSelf D w hI`. Establish `hLv : X.R.toLevCh.Is X.A.μ0` using `X.recR.base.lev`. Take `⟨hg, -, -⟩` from `(GlobalTheory.GoodPrimes.good_primes X.R X.F hLv).2.1 _ w hG`. Establish `hm0 : (X.R.C.mu0 j).UnrAt w` using `(X.R.C.isMu0 j).unr w fun k hk => hg (by`.
+
+Establish `hk' : ((D.host.g k : ℕ) : 𝓞 D.host.E) ∈ w.asIdeal` using `hk`. Rewrite using `[Nat.cast_mul]`. Use `fin_cases k`. Conclude with `Ideal.mul_mem_right _ _ hk'`. Conclude with `Ideal.mul_mem_left _ _ hk')`.
+
+Establish `hxu : (X.R.xiH (X.tupT (D.nd.mu i))).UnrAt w`. Assume the negation of the conclusion as `h`. Break down `(hLv.Q_ram _ w).1 h with h | ⟨PP, h, hc⟩` into its components or cases. Conclude with `(hG w (Or.inr h)).1 rfl`. Conclude with `(hG PP (Or.inr h)).2 hc`.
+
+Establish `hxi : X.R.xiH (X.tupT (D.nd.mu i)) = P.tp.xi (D.nd.mu i)`. Rewrite using `[X.recR.tupXi _ hμ, xi_eq X.cfEq X.Tp P.tp X.tpEq]`. Establish `hmu : (P.chr.e1 (D.naut.muC i)).1 = X.R.C.mu0 j * X.R.xiH (X.tupT (D.nd.mu i))`. Rewrite using `[P.chr.muC i j hj, hxi, X.cfEq]`. Both sides reduce to the same expression.
+
+Establish `hu : D.naut.unr (D.naut.locG (D.naut.muC i) w)` using `(P.chr.unr_iff _ w).2 (by rw [hmu]; exact hm0.mul hxu)`. Take `⟨a, ha⟩` from `Multiset.card_eq_one.mp ((D.naut.frobEig_card _ hu).trans (D.naut.locG_dim _ w))`. Establish `haa : a = a⁻¹`. Establish `e` using `(D.naut.csd_unr (D.naut.muC i) w w (D.naut.muC_csd i) hcw hu).2`. Rewrite `e` using `[ha, Multiset.map_singleton]`.
+
+Conclude with `Multiset.singleton_inj.1 e`. Establish `hns` using `notSplit D w hcw`. Establish `heu` using `(D.naut.etaTinv_def w).1`. Establish `hee : D.naut.frobEig (D.naut.locG D.naut.etaTinv w) = {(-1 : ℂ)⁻¹}`. Rewrite using `[(D.naut.etaTinv_def w).2, D.naut.etaT_inert w hns, Multiset.map_singleton]`.
+
+Establish `hc1 : c = a * (-1 : ℂ)⁻¹`. Rewrite `hc` using `[D.naut.locG_tw, D.naut.frobEig_char _ _ _ hu heu (D.naut.locG_dim _ w) hee, ha, Multiset.map_singleton]`. Conclude with `(Multiset.singleton_inj.1 hc).symm`. Establish `hcc : c = c⁻¹`. Establish `h1 : (-1 : ℂ)⁻¹ = -1` using `by norm_num`.
+
+Rewrite using `[hc1, mul_inv, inv_inv, ← haa, h1]`. Establish `hte : (P.chr.e1 (D.naut.tw (D.naut.muC i) D.naut.etaTinv)).1 = X.R.C.mu0 j * X.R.xiH (X.tupT (D.nd.mu i)) * X.R.C.eta⁻¹`. Rewrite using `[P.chr.tw, hmu, P.chr.etaTinv, X.cfEq]`. Establish `hut : (P.chr.e1 (D.naut.tw (D.naut.muC i) D.naut.etaTinv)).1.UnrAt w` using `(P.chr.unr_iff _ w).1 (by rw [D.naut.locG_tw]; exact D.naut.unr_char _ _ (D.naut.locG_dim _ w) hu heu)`. Establish `hc2` using `P.chr.frob _ w hut`.
+
+Rewrite `hc2` using `[hc]`. Establish `hc3 : c = (((X.R.C.mu0 j).val w * (X.R.xiH (X.tupT (D.nd.mu i))).val w * (X.R.C.eta.val w)⁻¹ : ℂˣ) : ℂ)⁻¹`. Rewrite using `[Multiset.singleton_inj.1 hc2, hte]`. Simplify using the standard rewrite rules. Establish `hv : GlobalTheory.DownLift.valV X.R j (X.tupT (D.nd.mu i)) w = (X.R.C.mu0 j).val w * (X.R.xiH (X.tupT (D.nd.mu i))).val w * (X.R.C.eta.val w)⁻¹`.
+
+Rewrite using `[← GlobalTheory.LFun.val_eq_of_chrEq (hLv.mu0 j) w, ← GlobalTheory.LFun.val_eq_of_chrEq (hLv.xi _) w, ← GlobalTheory.LFun.val_eq_of_chrEq hLv.eta w]`. Use `first`. Consider the case `rfl`. Consider the case `(simp only [GlobalTheory.DownLift.valV, GlobalTheory.DownLift.chiV, Formalism.IndefR.Lift.chrTh, Formalism.IndefR.Links.LevCh.mu, Formalism.IndefR.Lift.tup, GlobalTheory.LFun.val, GlobalTheory.LFun.locChar]; ext; simp)`. Consider the case `(unfold GlobalTheory.DownLift.valV GlobalTheory.DownLift.chiV Formalism.IndefR.Lift.chrTh Formalism.IndefR.Links.LevCh.mu Formalism.IndefR.Lift.tup GlobalTheory.LFun.val GlobalTheory.LFun.locChar; simp)`.
+
+Rewrite using `[hv, hcc, hc3, inv_inv]`.
+-/
 theorem val_inert : GlobalTheory.Published.AutomorphicFormsFiniteGL → ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (D : D7) (P : Pin hL D), ∀ (X : GlobalTheory.NJoin.RealAt D P.cf P.C P.tp) (_ : GlobalTheory.NJoin.Agree X P.M P.rep), Formalism.MainNotions.SumRepresentations.Conclusion41 D → Formalism.MainNotions.SumRepresentations.adm7 D → Formalism.MainNotions.SumRepresentations.tieLab D → ∀ (i : D.nd.Loc) (hμ : Formalism.IndefR.RecTie.Used0 D (D.nd.mu i)) (j : Fin D.R.m) (hj : j.1 + 1 = D.nd.j i) (w : HeightOneSpectrum (𝓞 D.host.E)), GlobalTheory.Hk3.Good X.R (X.tupT (D.nd.mu i)) w → Formalism.UG.IsInertAt D.host.F D.host.E (w.under (𝓞 D.host.F)) w → ∀ c : ℂ, D.naut.frobEig (D.naut.locG (D.naut.tw (D.naut.muC i) D.naut.etaTinv) w) = {c} → c = (GlobalTheory.DownLift.valV X.R j (X.tupT (D.nd.mu i)) w : ℂ) := by
   intro _ hL D P X _ _ _ _ i hμ j hj w hG hI c hc
   have hcw := conjSelf D w hI

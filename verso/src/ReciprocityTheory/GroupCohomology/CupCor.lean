@@ -15,6 +15,51 @@ universe u
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Unfold `CupCorStatement`. Introduce `R _ G _ _ _ M N P U _ b bU cup cupU corM corP hU hβ hcup hcupU hcorM hcorP p q x y`. Take `⟨⟨a, ha⟩, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Take `⟨⟨c, hc⟩, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Establish `ha' : (M.resSub U).coch.d p a = 0` using `LinearMap.mem_ker.mp ha`.
+
+Establish `hc' : N.coch.d q c = 0` using `LinearMap.mem_ker.mp hc`. Take `⟨eM, hMh, hM1, -⟩` from `homogIso_holds.{u} R U (M.resSub U)`. Take `⟨eN, hNh, hN1, -⟩` from `homogIso_holds.{u} R G N`. Take `⟨eP, hPh, hP1, -⟩` from `homogIso_holds.{u} R G P`. Establish `hAM : (eM p a).1 = CCA.homz (M.resSub U).rho p a.1` using `funext fun z => hM1 p a z`.
+
+Establish `hAmemU : CCA.homz (M.resSub U).rho p a.1 ∈ hcoch (M.resSub U) U p`. Rewrite using `[← hAM]`. Conclude with `(eM p a).2`. Establish `hA : (fun z : Fin (p + 1) → G => CCA.homz (M.resSub U).rho p a.1 (fun i => retr U (z i))) ∈ hcoch (M.resSub U) G p` using `CCA.retr_pull_mem (U := U) (hU := hU) (n := p) (F := CCA.homz (M.resSub U).rho p a.1) (hF := hAmemU)`. Establish `hA0 : hd p (fun z : Fin (p + 1) → G => CCA.homz (M.resSub U).rho p a.1 (fun i => retr U (z i))) = 0`.
+
+Establish `h` using `hMh p a`. Rewrite `h` using `[ha', map_zero]`. Use function extensionality and compare the values at `z`. Establish `h2` using `congrFun h (fun i => retr U (z i))`. Rewrite using `[← hAM]`.
+
+Conclude with `h2.symm`. Establish `hFcE : (eN q c).1 = CCA.homz N.rho q c.1` using `funext fun z => hN1 q c z`. Establish `hFcN : CCA.homz N.rho q c.1 ∈ hcoch N G q`. Rewrite using `[← hFcE]`. Conclude with `(eN q c).2`.
+
+Establish `hFc0 : hd q (CCA.homz N.rho q c.1) = 0`. Establish `h` using `hNh q c`. Rewrite `h` using `[hc', map_zero]`. Rewrite using `[← hFcE]`. Conclude with `h.symm`.
+
+Take `⟨FcA, hFcA⟩ : ∃ F : (HomogeneousCochainIso.hcx (N.resSub U) G).X q, F.1 = CCA.homz N.rho q c.1` from `⟨⟨CCA.homz N.rho q c.1, CCA.res_mem (U := U) (n := q) (F := CCA.homz N.rho q c.1) (hF := hFcN)⟩, rfl⟩`. Establish `hcont : Continuous (fun g : G => ((retr U g : U) : G))` using `continuous_subtype_val.comp (CCA.continuous_retr (U := U) hU)`. Establish `hequiv : ∀ (v : U) (g : G), ((retr U (v • g) : U) : G) = v • ((retr U g : U) : G)`. Introduce `v g`. Use `show ((retr U ((v : G) * g) : U) : G) = (v : G) * ((retr U g : U) : G)`.
+
+Rewrite using `[CCA.retr_mul, Subgroup.coe_mul]`. Establish `hpr` using `prism_holds.{u} R U (N.resSub U) G G (HomogeneousCochainIso.hcx (N.resSub U) G) (HomogeneousCochainIso.hcx (N.resSub U) G) (fun n => LinearEquiv.refl R _) (fun n => LinearEquiv.refl R _) (fun n F => rfl) (fun n F => rfl)`. Take `⟨φ, hφ⟩` from `hpr.1 (fun g => ((retr U g : U) : G)) hcont hequiv`. Establish `huq` using `hpr.2 (fun g => ((retr U g : U) : G)) id φ (Cx.Hom.id _) hcont continuous_id hequiv (fun _ _ => rfl) hφ (fun _ _ _ => rfl) q`. Establish `h0 : (HomogeneousCochainIso.hcx (N.resSub U) G).d q FcA = 0`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Use `show hd q FcA.1 = 0`. Rewrite using `[hFcA]`. Conclude with `hFc0`. Establish `h1 : (HomogeneousCochainIso.hcx (N.resSub U) G).d q (φ.f q FcA) = 0`.
+
+Rewrite using `[← φ.comm, h0, map_zero]`. Establish `hcls : (HomogeneousCochainIso.hcx (N.resSub U) G).cls q (φ.f q FcA) h1 = (HomogeneousCochainIso.hcx (N.resSub U) G).cls q FcA h0` using `congrArg (fun t => t ((HomogeneousCochainIso.hcx (N.resSub U) G).cls q FcA h0)) huq`. Establish `hB : φ.f q FcA - FcA ∈ (HomogeneousCochainIso.hcx (N.resSub U) G).B q` using `(Submodule.Quotient.eq (((HomogeneousCochainIso.hcx (N.resSub U) G).B q).comap ((HomogeneousCochainIso.hcx (N.resSub U) G).Z q).subtype)).mp hcls`. Establish `hFr' : (φ.f q FcA).1 = fun z => CCA.homz N.rho q c.1 (fun i => ((retr U (z i) : U) : G))`. Use function extensionality and compare the values at `z`.
+
+Conclude with `(hφ q FcA z).trans (congrFun hFcA _)`. Establish `hrc : (N.resSub U).coch.d q ((Pair.res N U.subtype continuous_subtype_val).hom.f q c) = 0`. Rewrite using `[← (Pair.res N U.subtype continuous_subtype_val).hom.comm, hc', map_zero]`. Take `⟨z1, hz1, hz1e, hz1c⟩` from `hcupU p q a _ ha' hrc`. Establish `hca : M.coch.d p (corM.f p a) = 0` using `by rw [← corM.comm, ha', map_zero]`.
+
+Take `⟨z2, hz2, hz2e, hz2c⟩` from `hcup p q (corM.f p a) c hca hc'`. Establish `hzz : P.coch.d (p + q) (corP.f (p + q) z1) = 0` using `by rw [← corP.comm, hz1, map_zero]`. Establish `hmem1 : CCA.hcup b.β p q (fun z : Fin (p + 1) → G => CCA.homz (M.resSub U).rho p a.1 (fun i => retr U (z i))) (φ.f q FcA).1 ∈ hcoch (P.resSub U) G (p + q)`. Establish `h` using `CCA.hcup_mem (b := bU) (p := p) (q := q) (hF := hA) (hF' := (φ.f q FcA).2)`. Rewrite `h` using `[hβ]`.
+
+Conclude with `h`. Establish `hmem2 : CCA.hcup b.β p q (fun z : Fin (p + 1) → G => CCA.homz (M.resSub U).rho p a.1 (fun i => retr U (z i))) (CCA.homz N.rho q c.1) ∈ hcoch (P.resSub U) G (p + q)`. Establish `h` using `CCA.hcup_mem (b := bU) (p := p) (q := q) (hF := hA) (hF' := CCA.res_mem (U := U) (n := q) (F := CCA.homz N.rho q c.1) (hF := hFcN))`. Rewrite `h` using `[hβ]`. Conclude with `h`.
+
+Establish `hD1 : (eP (p + q) (corP.f (p + q) z1)).1 = CCA.normF P U (p + q) (CCA.hcup b.β p q (fun z : Fin (p + 1) → G => CCA.homz (M.resSub U).rho p a.1 (fun i => retr U (z i))) (φ.f q FcA).1)`. Use `CCA.homog_eq (e := eP) (h1 := hP1) (n := p + q) (f := corP.f (p + q) z1) (hF := CCA.normF_mem (M := P) (U := U) (n := p + q) (hF := hmem1)) (hf := fun g => ?_)` and prove the remaining obligations. Rewrite using `[hcorP (p + q) z1, hz1e, hFr']`. Conclude with `CCA.cor_cup_eq (b := b) (bU := bU) (hb := hβ) (p := p) (q := q) (f := a.1) (f' := c.1) (g := g)`. Establish `hD2 : (eP (p + q) z2).1 = CCA.normF P U (p + q) (CCA.hcup b.β p q (fun z : Fin (p + 1) → G => CCA.homz (M.resSub U).rho p a.1 (fun i => retr U (z i))) (CCA.homz N.rho q c.1))`.
+
+Use `CCA.homog_eq (e := eP) (h1 := hP1) (n := p + q) (f := z2) (hF := CCA.normF_mem (M := P) (U := U) (n := p + q) (hF := hmem2)) (hf := fun g => ?_)` and prove the remaining obligations. Rewrite using `[hz2e, hcorM p a]`. Conclude with `CCA.cup_cor_eq (U := U) (b := b) (p := p) (q := q) (f := a.1) (f' := c.1) (g := g)`. Establish `key : P.coch.cls (p + q) (corP.f (p + q) z1) hzz = P.coch.cls (p + q) z2 hz2`. Apply `(Submodule.Quotient.eq (p := _)).mpr` to reduce the goal to its premises.
+
+Use `show corP.f (p + q) z1 - z2 ∈ P.coch.B (p + q)`. Consider the cases of `q with`. Consider the case `zero`. Establish `hz : φ.f 0 FcA = FcA` using `sub_eq_zero.mp ((Submodule.mem_bot (R := R)).mp hB)`. Establish `hD : corP.f (p + 0) z1 - z2 = 0`.
+
+Apply `(eP (p + 0)).injective` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[map_sub, map_zero, Submodule.coe_sub, Submodule.coe_zero, hD1, hD2, hz, hFcA, sub_self]`. Rewrite using `[hD]`. Conclude with `Submodule.zero_mem _`.
+
+Consider the case `succ q'`. Take `⟨w, hw⟩` from `LinearMap.mem_range.mp hB`. Establish `hwv : hd q' w.1 = (φ.f (q' + 1) FcA).1 - FcA.1` using `congrArg Subtype.val hw`. Rewrite `hwv` using `[hFcA]`. Establish `hh` using `CCA.hd_hcup b.β p q' _ w.1 hA0`.
+
+Establish `hWmem : ((-1 : ℤ) ^ p • CCA.normF P U (p + q') (CCA.hcup b.β p q' (fun z : Fin (p + 1) → G => CCA.homz (M.resSub U).rho p a.1 (fun i => retr U (z i))) w.1)) ∈ hcoch P G (p + q')`. Use `zsmul_mem (CCA.normF_mem (M := P) (U := U) (n := p + q') (hF := ?_)) _` and prove the remaining obligations. Establish `h` using `CCA.hcup_mem (b := bU) (p := p) (q := q') (hF := hA) (hF' := w.2)`. Rewrite `h` using `[hβ]`. Conclude with `h`.
+
+Use `show corP.f (p + (q' + 1)) z1 - z2 ∈ LinearMap.range (P.coch.d (p + q'))`. Use `LinearMap.mem_range.mpr ⟨(eP (p + q')).symm ⟨_, hWmem⟩, ?_⟩` and prove the remaining obligations. Apply `(eP (p + (q' + 1))).injective` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Use `(hPh (p + q') _).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[LinearEquiv.apply_symm_apply, map_sub, Submodule.coe_sub, hD1, hD2]`. Conclude with `calc hd (p + q') ((-1 : ℤ) ^ p • CCA.normF P U (p + q') (CCA.hcup b.β p q' (fun z : Fin (p + 1) → G => CCA.homz (M.resSub U).rho p a.1 (fun i => retr U (z i))) w.1)) = (-1 : ℤ) ^ p • hd (p + q') (CCA.normF P U (p + q') (CCA.hcup b.β p q' (fun z : Fin (p + 1) → G => CCA.homz (M.re …`. Rewrite using `[CCA.normF_zsmul, smul_smul, ← mul_pow, neg_one_mul, neg_neg, one_pow, one_smul]`. Use `_ = CCA.normF P U (p + q' + 1) (CCA.hcup b.β p (q' + 1) (fun z : Fin (p + 1) → G => CCA.homz (M.resSub U).rho p a.1 (fun i => retr U (z i))) (Sub.sub (α := (Fin (q' + 1 + 1) → G) → N.V) (φ.f (q' + 1) FcA).1 (CCA.homz N.rho (q' + 1) c.1))) := congrArg (fun F => CCA.normF P U (p + …`. Use `_ = _ := (congrArg (CCA.normF P U (p + q' + 1)) (CCA.hcup_sub_right b.β p (q' + 1) (fun z : Fin (p + 1) → G => CCA.homz (M.resSub U).rho p a.1 (fun i => retr U (z i))) (φ.f (q' + 1) FcA).1 (CCA.homz N.rho (q' + 1) c.1))).trans (CCA.normF_sub (M := P) (U := U) (n := p + q' + 1) _ …`.
+
+Establish `L : cupU p q ((M.resSub U).coch.cls p a ha') ((Pair.res N U.subtype continuous_subtype_val).hom.H q (N.coch.cls q c hc')) = (P.resSub U).coch.cls (p + q) z1 hz1` using `hz1c`. Establish `Rr : cup p q (corM.H p ((M.resSub U).coch.cls p a ha')) (N.coch.cls q c hc') = P.coch.cls (p + q) z2 hz2` using `hz2c`. Conclude with `(congrArg (corP.H (p + q)) L).trans (key.trans Rr.symm)`.
+-/
 theorem cupCor_holds : CupCorStatement.{u} := by
   unfold CupCorStatement
   intro R _ G _ _ _ M N P U _ b bU cup cupU corM corP hU hβ hcup hcupU hcorM hcorP p q x y

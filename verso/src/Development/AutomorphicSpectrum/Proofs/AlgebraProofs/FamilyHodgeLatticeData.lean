@@ -12,6 +12,17 @@ namespace GlobalTheory.CompanionTheory.Ar.Flat
 
 open GlobalTheory.CompanionTheory.Ar.Conj.Fam GlobalTheory.CompanionTheory.Ar.Crv.Inhab
 
+/- English proof (translation)
+Establish `hs : ∀ w : (Fin d → K) × (Fin d → K), w ∈ stdH C d i ↔ ∀ j, w.1 j ∈ (C.v i).valuationSubring.toSubring ∧ w.2 j ∈ (C.v i).valuationSubring.toSubring`. Introduce `w`. Rewrite using `[mem_stdH]`. Conclude with `⟨fun h j => ⟨h.1 j, h.2 j⟩, fun h => ⟨fun j => (h j).1, fun j => (h j).2⟩⟩`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hy`. Take `⟨w, hw, rfl⟩` from `(mem_imLat C).1 hy`. Conclude with `Submodule.subset_span ⟨w, (hs w).1 hw, rfl⟩`. Introduce `hy`. Proceed by induction on `hy using Submodule.span_induction with`.
+
+Consider the case `mem x hx`. Take `⟨w, hw, rfl⟩` from `hx`. Conclude with `(mem_imLat C).2 ⟨w, (hs w).2 hw, rfl⟩`. Consider the case `zero => exact zero_mem _`. Consider the case `add x z _ _ hx hz => exact add_mem hx hz`.
+
+Consider the case `smul a x _ hx`. Take `⟨w, hw, rfl⟩` from `(mem_imLat C).1 hx`. Use `(mem_imLat C).2 ⟨(a : K) • w, (hs _).2 fun j => ?_, ?_⟩` and prove the remaining obligations. Conclude with `⟨Subring.mul_mem _ a.2 ((hs w).1 hw j).1, Subring.mul_mem _ a.2 ((hs w).1 hw j).2⟩`. Rewrite using `[map_smul]`.
+
+Both sides reduce to the same expression.
+-/
 theorem mem_imLat_iff_stdLat {K : Type} [Field K] (C : ACurve K) {d : ℕ} (i : C.I)
     (T : ((Fin d → K) × (Fin d → K)) →ₗ[K] (Fin d → K) × (Fin d → K)) (y : (Fin d → K) × (Fin d → K)) :
     y ∈ imLat C i T ↔ y ∈ stdLat (C.v i).valuationSubring.toSubring T := by
@@ -38,6 +49,17 @@ theorem mem_imLat_iff_stdLat {K : Type} [Field K] (C : ACurve K) {d : ℕ} (i : 
       · rw [map_smul]
         rfl
 
+/- English proof (translation)
+Introduce `K _ C p _ _ d O _ _ F hI`. Take `⟨ρ, hρ⟩` from `GlobalTheory.T.formal_group_action_ring_hom K d O F.B`. Take `⟨⟨ρH, hρH⟩, -, -⟩` from `GlobalTheory.T.formal_hermitian_action_pairing K d O F.B`. Establish `iso` using `fun i => GlobalTheory.T.formal_isomorphism_transport K d O F.B (F.BK i) (F.φ i) (F.ψ i) (F.lam i) (F.iso i)`. Establish `h₁` using `fun i => (iso i).1`.
+
+Establish `h₂` using `fun i => (iso i).2.1`. Establish `hT` using `fun i => (iso i).2.2.1`. Establish `hc` using `fun i => (iso i).2.2.2.2.1`. Establish `good : ∀ i, (∀ a b, C.v i (lin (F.φ i) 1 a b) ≤ 1 ∧ C.v i (lin (F.ψ i) 1 a b) ≤ 1 ∧ C.v i (bil (F.lam i) 1 1 a b) ≤ 1) → IntM C i (lin (F.φ i) 1) ∧ IntM C i (lin (F.ψ i) 1) ∧ IntM C i (bil (F.lam i) 1 1)` using `fun i h => ⟨fun a b => (h a b).1, fun a b => (h a b).2.1, fun a b => (h a b).2.2⟩`. Establish `hiso` using `fun i => GlobalTheory.T.alpha_beta_isomorphism_transport K p d O F.B (F.BK i) (F.φ i) (F.ψ i) (F.lam i) (F.iso i)`.
+
+Use `⟨{ lie := fun i => colLat C i (lin (F.φ i) 1) H := fun i => imLat C i (transH (F.φ i) (F.ψ i) (F.lam i)) lie_bun := isBun_colLat C _ _ h₁ h₂ (F.ae.subset fun i hi h => hi ?_) H_bun := isBun_imLat C _ hT (F.ae.subset fun i hi h => hi ?_) ρ := ρ ρH := ρH ρH_hom := fun a i x hx => ? …` and prove the remaining obligations. Conclude with `⟨(good i h).1, (good i h).2.1⟩`. Take `⟨g₁, g₂, g₃⟩` from `good i h`. Conclude with `imLat_transH_eq C (h₁ i) (h₂ i) g₁ g₂ g₃`. Take `⟨w, hw, rfl⟩` from `(mem_imLat C).1 hx`.
+
+Rewrite using `[hρH]`. Use `(mem_imLat C).2 ⟨rhoH (F.BK i) a w, rhoH_mem_stdH C i (F.Bi i) (F.BK i) (F.mapK i) a hw, ?_⟩` and prove the remaining obligations. Conclude with `(LinearMap.congr_fun (hc i a) w).symm`. Rewrite using `[hρH, rhoH_fst, hρ]`. Rewrite using `[hρH, rhoH_inr, hρ]`.
+
+Rewrite using `[hρ, hρH]`. Conclude with `GlobalTheory.T.alpha_equivariant_frobenius K p d O F.B a u`. Rewrite using `[hρ, hρH]`. Conclude with `GlobalTheory.T.beta_equivariant_frobenius K p d O F.B a y`.
+-/
 theorem family_conj_H_eq : ∀ (K : Type) [Field K] (C : ACurve K) (p : ℕ) [Fact p.Prime] [CharP K p]
     (d : ℕ) (O : Type) [CommRing O] [StarRing O] (F : Family C p d O), Nonempty C.I →
     ∃ D : ConjData C p O d, (∀ a, D.ρH a = rhoH F.B a) ∧
@@ -85,6 +107,9 @@ theorem family_conj_H_eq : ∀ (K : Type) [Field K] (C : ACurve K) (p : ℕ) [Fa
   · rw [hρ, hρH]
     exact GlobalTheory.T.beta_equivariant_frobenius K p d O F.B a y
 
+/- English proof (translation)
+Introduce `K _ C p _ _ d O _ _ F hI`. Take `⟨D, h₁, h₂⟩` from `family_conj_H_eq K C p d O F hI`. Use `⟨D, h₁, fun i y => ?_⟩` and prove the remaining obligations. Rewrite using `[h₂ i]`. Conclude with `mem_imLat_iff_stdLat C i _ y`.
+-/
 theorem family_conj_H_lattices : ∀ (K : Type) [Field K] (C : ACurve K) (p : ℕ) [Fact p.Prime] [CharP K p] (d : ℕ) (O : Type) [CommRing O] [StarRing O] (F : Family C p d O), Nonempty C.I → ∃ D : ConjData C p O d, (∀ a, D.ρH a = rhoH F.B a) ∧ ∀ i y, y ∈ D.H i ↔ y ∈ stdLat (C.v i).valuationSubring.toSubring (transH (F.φ i) (F.ψ i) (F.lam i)) := by
   intro K _ C p _ _ d O _ _ F hI
   obtain ⟨D, h₁, h₂⟩ := family_conj_H_eq K C p d O F hI

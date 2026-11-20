@@ -14,5 +14,8 @@ set_option synthInstance.maxHeartbeats 400000
 open GlobalTheory.LevelSeries
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.IdemFlip.idemSum_sub_and_flip | exact GlobalTheory.IdemFlip.idemSum_sub_and_flip | (intros; apply GlobalTheory.IdemFlip.idemSum_sub_and_flip <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_idempotentSum_subset_and_conjugate_flip : ∀ (D : D7) (e : AE D) (P T : Finset (Formalism.L2.DIV.Pl D.host.E)), IsIdemSum e P → T ⊆ P → (∃ eT : AE D, IsIdemSum eT T) ∧ ∃ e' : AE D, IsIdemSum e' ((P \ T) ∪ T.image Formalism.L2.DIV.conjPl) := by
   first | exact @GlobalTheory.IdemFlip.idemSum_sub_and_flip | exact GlobalTheory.IdemFlip.idemSum_sub_and_flip | (intros; apply GlobalTheory.IdemFlip.idemSum_sub_and_flip <;> assumption)

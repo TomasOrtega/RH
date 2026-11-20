@@ -14,6 +14,11 @@ namespace GlobalTheory.Poinc.Sep.GalVal
 
 open GlobalTheory.Points GlobalTheory.ZH
 
+/- English proof (translation)
+Establish `h : ⊤ ≤ X.fromSpecStalk x ⁻¹ᵁ U` using `fun w _ => by`. Establish `: X.fromSpecStalk x w ∈ Set.range (X.fromSpecStalk x)` using `⟨w, rfl⟩`. Rewrite `this` using `[Scheme.range_fromSpecStalk]`. Conclude with `Specializes.mem_open (x := X.fromSpecStalk x w) this U.isOpen hU`. Establish `e : (X.fromSpecStalk x).appLE U ⊤ h = X.presheaf.germ U x hU ≫ (Scheme.ΓSpecIso _).inv`.
+
+Rewrite using `[Scheme.Hom.appLE, Scheme.fromSpecStalk_app hU, Category.assoc, Category.assoc, ← Functor.map_comp]`. Conclude with `congrArg (_ ≫ ·) ((congrArg (_ ≫ ·) ((Spec (X.presheaf.stalk x)).presheaf.map_id _)).trans (Category.comp_id _))`. Use `(valR_appLE (spMap ψ) (X.fromSpecStalk x) h (le_preimage_top _) a).symm.trans ?_` and prove the remaining obligations. Rewrite using `[e]`. Conclude with `valR_specMap (CommRingCat.ofHom ψ) _`.
+-/
 theorem valR_spMap_fromSpecStalk {X : Scheme.{0}} {x : X} {C : Type} [CommRing C] (ψ : X.presheaf.stalk x →+* C)
     {U : X.Opens} (hU : x ∈ U) (a : Γ(X, U)) :
     valR (spMap ψ ≫ X.fromSpecStalk x) U a = ψ (X.presheaf.germ U x hU a) := by
@@ -28,17 +33,28 @@ theorem valR_spMap_fromSpecStalk {X : Scheme.{0}} {x : X} {C : Type} [CommRing C
   rw [e]
   exact valR_specMap (CommRingCat.ofHom ψ) _
 
+/- English proof (translation)
+Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem jK_spMap {V' : Type} [CommRing V'] [IsDomain V'] {X : Scheme.{0}} (z : X) (ev : X.presheaf.stalk z →+* V') :
     jK V' ≫ spMap ev = spMap ((algebraMap V' (FractionRing V')).comp ev) := by
   rw [← Spec.map_comp]; rfl
 
 variable {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] {M : RatModel o Ω}
 
+/- English proof (translation)
+Establish `: (jK V' ≫ spMap ev ≫ M.Z.fromSpecStalk z) w ∈ Set.range (M.Z.fromSpecStalk z)` using `⟨_, rfl⟩`. Rewrite `this` using `[Scheme.range_fromSpecStalk]`. Then use the resulting hypothesis.
+-/
 theorem specializes_jK {V' : Type} [CommRing V'] [IsDomain V'] {z : M.Z} (ev : M.Z.presheaf.stalk z →+* V')
     (w : Sp (FractionRing V')) : (jK V' ≫ spMap ev ≫ M.Z.fromSpecStalk z) w ⤳ z := by
   have : (jK V' ≫ spMap ev ≫ M.Z.fromSpecStalk z) w ∈ Set.range (M.Z.fromSpecStalk z) := ⟨_, rfl⟩
   rwa [Scheme.range_fromSpecStalk] at this
 
+/- English proof (translation)
+Take `⟨U, hz, f, rfl⟩` from `M.Z.presheaf.germ_exist x`. Establish `hr : Set.range (jK V' ≫ spMap ev ≫ M.Z.fromSpecStalk z) ⊆ U`. Introduce and unpack `_ ⟨w, rfl⟩`. Conclude with `(specializes_jK ev w).mem_open U.isOpen hz`. Rewrite using `[RatModel.val_eq hr (RatModel.stalkHom_germ hz f).symm]`.
+
+Use `show valR _ U f = _`. Rewrite using `[← Category.assoc, jK_spMap, valR_spMap_fromSpecStalk _ hz]`. Both sides reduce to the same expression.
+-/
 theorem val_stalkHom {V' : Type} [CommRing V'] [IsDomain V'] {z : M.Z} (ev : M.Z.presheaf.stalk z →+* V')
     (x : M.Z.presheaf.stalk z) :
     M.val (jK V' ≫ spMap ev ≫ M.Z.fromSpecStalk z) (M.stalkHom z x) = algebraMap V' (FractionRing V') (ev x) := by
@@ -57,6 +73,17 @@ namespace GlobalTheory.Poinc.Sep.GalVal
 open GlobalTheory.Points GlobalTheory.ZH
 variable {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] {M : RatModel o Ω}
 
+/- English proof (translation)
+Take `⟨U, f, hPU, rfl⟩` from `ha`. Take `⟨V, hV, hzV, -⟩` from `exists_isAffineOpen_mem_and_subset (U := ⊤) (x := z) trivial`. Establish `hPV : P ∈ V` using `hs.mem_open V.isOpen hzV`. Take `⟨g, hgU, hPg⟩` from `hV.exists_basicOpen_le (V := U) ⟨P, hPU⟩ hPV`. Establish `hg : ((M.Z.basicOpen g : M.Z.Opens) : Set M.Z).Nonempty` using `⟨P, hPg⟩`.
+
+Establish `hne : (V : Set M.Z).Nonempty` using `⟨z, hzV⟩`. Use `hV.isLocalization_basicOpen g` as an intermediate fact. Take `⟨n, b, hb⟩` from `IsLocalization.Away.surj g (resG M.Z hgU f)`. Establish `h1` using `congrArg (M.res _ hg) hb`. Establish `h2 : ∀ t : Γ(M.Z, V), M.res _ hg (algebraMap Γ(M.Z, V) Γ(M.Z, M.Z.basicOpen g) t) = M.res V hne t` using `fun t => M.res_resG (M.Z.basicOpen_le g) hg t`.
+
+Rewrite `h1` using `[map_mul, map_pow, h2, h2, RatModel.res_resG, RatModel.res_apply, ← map_pow, RatModel.res_apply, RatModel.res_apply]`. Use `⟨M.Z.presheaf.germ V z hzV b, M.Z.presheaf.germ V z hzV (g ^ n), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[RatModel.stalkHom_germ, RatModel.stalkHom_germ]`. Conclude with `h1`. Rewrite using `[RatModel.stalkHom_germ]`.
+
+Use `⟨RatModel.valF_mem_O hPV _, (RatModel.isUnit_valF_iff hPV _).2 ?_⟩` and prove the remaining obligations. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Rewrite using `[pow_zero, Scheme.basicOpen_of_isUnit _ isUnit_one]`. Discharge the goal by the elementary cases of `trivial`. Rewrite using `[Scheme.basicOpen_pow _ _ hn]`.
+
+Conclude with `hPg`.
+-/
 theorem exists_mul_eq_stalkHom {P z : M.Z} (hs : P ⤳ z) {a : Ω} (ha : a ∈ M.O P) :
     ∃ x d : M.Z.presheaf.stalk z, a * M.stalkHom z d = M.stalkHom z x ∧
       ∃ hd : M.stalkHom z d ∈ M.O P, IsUnit (⟨_, hd⟩ : M.O P) := by
@@ -86,6 +113,17 @@ end GlobalTheory.Poinc.Sep.GalVal
 namespace GlobalTheory.Poinc.Sep
 open GlobalTheory.Points GlobalTheory.ZH GalVal
 
+/- English proof (translation)
+Introduce `g n F W Z i X₁ act 𝔗 z₂ V' _ _ ev₂ ev₂' σ h1 h2 hr hr' a`. Establish `ha` using `hr' a a.2`. Take `⟨x, d, hxd, hd, hu⟩` from `exists_mul_eq_stalkHom (specializes_jK ev₂' _) ha`. Take `⟨x', hx'⟩` from `h2 x`. Take `⟨d', hd'⟩` from `h2 d`.
+
+Establish `ex` using `h1 x x' hx'`. Establish `ed` using `h1 d d' hd'`. Establish `hsp'` using `RatModel.specializes_of_range_eq (RatModel.range_eq_singleton (jK V' ≫ spMap ev₂' ≫ 𝔗.X₂.M.Z.fromSpecStalk z₂) (IsLocalRing.closedPoint _))`. Establish `hsp` using `RatModel.specializes_of_range_eq (RatModel.range_eq_singleton (jK V' ≫ spMap ev₂ ≫ 𝔗.X₂.M.Z.fromSpecStalk z₂) (IsLocalRing.closedPoint _))`. Establish `e1` using `RatModel.val_mul hsp' ha hd`.
+
+Rewrite `e1` using `[hxd, val_stalkHom, val_stalkHom]`. Establish `hne` using `(RatModel.val_ne_zero_iff (RatModel.range_eq_singleton _ _) ⟨_, hd⟩).2 hu`. Rewrite `hne` using `[val_stalkHom]`. Establish `hb` using `hr _ (𝔗.sR σ a).2`. Establish `hd''` using `RatModel.O_le_of_specializes (specializes_jK ev₂ (IsLocalRing.closedPoint _)) (𝔗.X₂.M.stalkEquiv z₂ d').2`.
+
+Establish `e2` using `RatModel.val_mul hsp hb hd''`. Establish `key : σ (a : 𝔗.X₂.Ω₁) * 𝔗.X₂.M.stalkHom z₂ d' = 𝔗.X₂.M.stalkHom z₂ x'`. Rewrite using `[hd', hx', ← map_mul, hxd]`. Rewrite `e2` using `[RatModel.coe_stalkEquiv, 𝔗.sR_eq, key, val_stalkHom, val_stalkHom, ← ed, ← ex]`. Rewrite using `[𝔗.sR_eq]`.
+
+Conclude with `mul_right_cancel₀ hne (e1.symm.trans e2)`.
+-/
 theorem val_galois_conj : ∀ {g n : ℕ} {F : SFam g n (zetaAway n)} {W : Matrix (Fin 8) (Fin 8) ℤ} {Z : Scheme.{0}} {i : F.X ⟶ Z} {X₁ : Setup F W i} {act : Matrix (Fin 8) (Fin 8) ℤ → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)} (𝔗 : Tower X₁ act) {z₂ : 𝔗.X₂.M.Z} {V' : Type} [CommRing V'] [IsDomain V'] (ev₂ ev₂' : 𝔗.X₂.M.Z.presheaf.stalk z₂ →+* V') (σ : 𝔗.X₂.Ω₁ ≃ₐ[X₁.Ω₁] 𝔗.X₂.Ω₁), (∀ x x', 𝔗.X₂.M.stalkHom z₂ x' = σ (𝔗.X₂.M.stalkHom z₂ x) → ev₂' x = ev₂ x') → (∀ x, ∃ x', 𝔗.X₂.M.stalkHom z₂ x' = σ (𝔗.X₂.M.stalkHom z₂ x)) → RegAt 𝔗.X₂ z₂ ev₂ → RegAt 𝔗.X₂ z₂ ev₂' → ∀ a : 𝔗.X₂.S.R, 𝔗.X₂.M.val (jK V' ≫ spMap ev₂' ≫ 𝔗.X₂.M.Z.fromSpecStalk z₂) a = 𝔗.X₂.M.val (jK V' ≫ spMap ev₂ ≫ 𝔗.X₂.M.Z.fromSpecStalk z₂) (𝔗.sR σ a) := by
   intro g n F W Z i X₁ act 𝔗 z₂ V' _ _ ev₂ ev₂' σ h1 h2 hr hr' a
   have ha := hr' a a.2

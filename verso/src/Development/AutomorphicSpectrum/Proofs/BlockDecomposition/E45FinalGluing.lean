@@ -32,6 +32,29 @@ open PositivityTheory.Rg.BcB.E PositivityTheory.Rg.BcB.SpectralAccumulation
 
 namespace GlobalTheory.CompanionTheory.EGlue
 
+/- English proof (translation)
+Introduce `hE3 hSep hLim hGraft hTw hTr hLV hAD hUn hInf E _ _ _ a b W₁ W₂ hW₁ hW₂`. Take `⟨Ωs₁, hΩs₁, S₁⟩` from `hFS hSep E a W₁ hW₁`. Take `⟨Ωs₂, hΩs₂, S₂⟩` from `hFS hSep E b W₂ hW₂`. Take `⟨Ωf₁, hΩf₁, X₁⟩` from `hLL hLim hTw E a Ωs₁ hΩs₁`. Take `⟨Ωf₂, hΩf₂, X₂⟩` from `hLL hLim hTw E b Ωs₂ hΩs₂`.
+
+Use `⟨Ωf₁, Ωf₂, hΩf₁, hΩf₂, fun K₁ K₂ hK₁ hK₂ => ?_⟩` and prove the remaining obligations. Take `⟨Θs₁, hΘs₁, F₁⟩` from `S₁ K₁ hK₁`. Take `⟨Θs₂, hΘs₂, F₂⟩` from `S₂ K₂ hK₂`. Take `⟨Θf₁, hΘf₁, P₁⟩` from `X₁ Θs₁ hΘs₁`. Take `⟨Θf₂, hΘf₂, P₂⟩` from `X₂ Θs₂ hΘs₂`.
+
+Use `⟨Θf₁, Θf₂, hΘf₁, hΘf₂, ?_⟩` and prove the remaining obligations. Introduce `D ι _ M m₁ m₂ n₁ n₂ C lam lam₀ f hC hRep hcont hne hL hWL hTy hs1 hs2 ha1 ha2 hi1 hi2 heig hconv hR1 hR2 hgap hlam`. Establish `hfar : ∀ᶠ k in atTop, ∀ τ, MClose (1 / 8) (m₁ k τ) (n₁ τ) ∧ MClose (1 / 8) (m₂ k τ) (n₂ τ)` using `Filter.eventually_all.2 fun τ => hconv τ (1 / 8) (by norm_num)`. Take `⟨k₀, hk₀⟩` from `eventually_atTop.1 hfar`. Establish `h3` using `fun k => hE3 E a b D ι M (f k) K₁ K₂ W₁ W₂ (m₁ k) (m₂ k) hK₁ hK₂ hW₁ hW₂ (hcont k) (hL k) (hWL k) (hTy k) (hs1 k) (hs2 k) (ha1 k) (ha2 k) (hi1 k) (hi2 k)`.
+
+Establish `hone` using `fun k => hOS E a b ι K₁ K₂ W₁ W₂ Θs₁ Θs₂ Ωs₁ Ωs₂ (f (k + k₀)) (m₁ (k + k₀)) (m₂ (k + k₀)) hW₁ hW₂ F₁ F₂ (hne _) (hTy _) (hs1 _) (hs2 _) (h3 _).2.2.1 (h3 _).2.2.2.1 (h3 _).2.2.2.2.1 (h3 _).2.2.2.2.2.1 (h3 _).2.2.2.2.2.2.1 (h3 _).2.2.2.2.2.2.2.1 (h3 _).2.2.2.2.2.2.2.2.1 (h3 _).2.2. …`. Use `choose t₁ t₂ G ψ₁ ψ₂ hr₁ hr₂ hg₁ hg₂ hl₁ hl₂ hG0 hGm hGt hGe hp₁ hp₁0 hc₁ hp₂ hp₂0 hc₂ using hone`. Establish `hB : ∀ n : (E →+* ℂ) → Multiset ℂ, ∃ B : ℝ, ∀ τ, ∀ y ∈ n τ, ‖y‖ ≤ B` using `fun n => by classical`. Take `⟨B, hB⟩` from `((Finset.univ.biUnion fun τ => (n τ).toFinset).image norm).finite_toSet.bddAbove`. Use `⟨B, fun τ y hy => hB ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [Finset.coe_image, Set.mem_image, Finset.mem_coe, Finset.mem_biUnion, Finset.mem_univ, true_and, Multiset.mem_toFinset]`. Conclude with `⟨y, ⟨τ, hy⟩, rfl⟩`. Take `⟨B₁, hB₁⟩` from `hB n₁`. Take `⟨B₂, hB₂⟩` from `hB n₂`. Take `⟨φ₁, t₁', s₁, hφ₁, hC₁, hs₁R, hs₁G, hs₁L, hD₁, hI₁, hE₁⟩` from `hFL hTr hGraft hInf E Θs₁ Θf₁ Ωs₁ Ωf₁ a t₁ ψ₁ (fun k => m₁ (k + k₀)) n₁ (B₁ + 1 / 8) P₁ hRep hr₁ hg₁ hl₁ hp₁ hp₁0 hc₁ (fun k τ => hMC.1 _ _ _ _ (hk₀ (k + k₀) (by omega) τ).1 (hB₁ τ)) (fun τ ε hε => ((tendsto_add_atTop_nat k₀).eventually (hconv τ ε hε)).mono fun _ h => h.1)`.
+
+Take `⟨φ₂, t₂', s₂, hφ₂, hC₂, hs₂R, hs₂G, hs₂L, hD₂, hI₂, hE₂⟩` from `hFL hTr hGraft hInf E Θs₂ Θf₂ Ωs₂ Ωf₂ b (fun k => t₂ (φ₁ k)) (fun k => ψ₂ (φ₁ k)) (fun k => m₂ (φ₁ k + k₀)) n₂ (B₂ + 1 / 8) P₂ hRep (fun k => hr₂ _) (fun k => hg₂ _) (fun k => hl₂ _) (fun k => hp₂ _) (fun k => hp₂0 _) (fun k => hc₂ _) (fun k τ => hMC.1 _ _ _ _ (hk₀ (φ₁ k + k₀) (b …`. Establish `hstab : ∀ {N : ℕ} {t : Tr E N}, t.Good → IsStable t.space` using `fun h => hTr E _ _ (disc_stable (good_disc h))`. Establish `hG'` using `fun k => hPE E a b ι K₁ K₂ W₁ W₂ (t₁ (φ₁ (φ₂ k))).space (t₁' (φ₂ k)).space (t₂ (φ₁ (φ₂ k))).space (t₂' k).space (G (φ₁ (φ₂ k))) hW₁ hW₂ (hstab (hg₁ _)) (hstab (hg₂ _)) (hE₁ _) (hE₂ _) (hG0 _) (hGm _) (hGt _)`. Use `choose G' hG'0 hG'm hG't hG'e using hG'`. Establish `hCC₁` using `(hCS E a _ _).1 (hCC E a _ _ φ₂ hC₁ hφ₂)`.
+
+Establish `hCC₂` using `(hCS E b _ _).1 hC₂`. Take `⟨F, hF0, hFm, hFt, hFe⟩` from `hLV hAD E a b ι (fun k => t₁' (φ₂ k)) t₂' s₁ s₂ K₁ K₂ W₁ W₂ C (fun k => lam (φ₁ (φ₂ k) + k₀)) lam₀ G' hK₁ hK₂ hW₁ hW₂ hC hs₁G hs₂G (fun k => hD₁ _) hD₂ hCC₁.1 hCC₂.1 hCC₁.2 hCC₂.2 hG'0 hG'm hG't (fun k h hh => hG'e k h _ (hGe _ h _ (heig _ h hh))) (fun h hh => (hlam h hh).comp (( …`. Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, F i ≠ 0 := by`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`.
+
+Conclude with `hF0 (funext hcon)`. Choose the witnesses or unpack the hypotheses as in `⟨x, hx⟩ : ∃ x, F i x ≠ 0 := by`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Conclude with `hi (funext hcon)`.
+
+Establish `hsl` using `hPS E a b _ _ (F i) (hFm i)`. Establish `hn₁ : sl₁ (F i) x.2 ≠ 0` using `fun h => hx (by`. Use `congrFun (hsl.1 x.2).2 x.1` as an intermediate fact. Rewrite `this` using `[h]`. Conclude with `this.symm)`.
+
+Establish `hn₂ : sl₂ (F i) x.1 ≠ 0` using `fun h => hx (by`. Use `congrFun (hsl.2 x.1).2 x.2` as an intermediate fact. Rewrite `this` using `[h]`. Conclude with `this.symm)`. Establish `hb₁ : s₁.space ≠ ⊥` using `fun h => hn₁ (by simpa [h] using (hsl.1 x.2).1)`.
+
+Establish `hb₂ : s₂.space ≠ ⊥` using `fun h => hn₂ (by simpa [h] using (hsl.2 x.1).1)`. Conclude with `⟨s₁, s₂, F, hs₁G, hs₂G, hUn E a s₁ n₁ hs₁G hb₁ hI₁ hR1, hUn E b s₂ n₂ hs₂G hb₂ hI₂ hR2, hs₁L, hs₂L, hI₁, hI₂, hF0, hFm, hFt, hFe⟩`.
+-/
 theorem eFinalGlue_of (hCS : ConvStrip) (hCC : ConvComp) (hFS : FactorStep) (hLL : LimLists) (hOS : OneStep)
     (hFL : FactorLim) (hMC : MCloseFacts) (hPE : PairEmb) (hPS : PairSlices) (hST : SliceType) : InfinitesimalCharacterGlue := by
   intro hE3 hSep hLim hGraft hTw hTr hLV hAD hUn hInf E _ _ _ a b W₁ W₂ hW₁ hW₂
@@ -109,6 +132,9 @@ theorem eFinalGlue_of (hCS : ConvStrip) (hCC : ConvComp) (hFS : FactorStep) (hLL
   exact ⟨s₁, s₂, F, hs₁G, hs₂G, hUn E a s₁ n₁ hs₁G hb₁ hI₁ hR1, hUn E b s₂ n₂ hs₂G hb₂ hI₂ hR2, hs₁L, hs₂L,
     hI₁, hI₂, hF0, hFm, hFt, hFe⟩
 
+/- English proof (translation)
+The claim follows from `have hPS := GlobalTheory.T.pair_slices have hP1 := GlobalTheory.T.pair_first_step hPS have hP2 := GlobalTheory.T.pair_second_step hPS have hCE := GlobalTheory.T.capacity_equivalence have hDI := GlobalTheory.T.discrete_infimum have hTI := GlobalTheory.T.topological_infimum have hI …`.
+-/
 theorem eFinalGlue : PositivityTheory.Rg.BcB.SpectralAccumulation.InfinitesimalCharacterGlue :=
   have hPS := GlobalTheory.T.pair_slices
   have hP1 := GlobalTheory.T.pair_first_step hPS

@@ -13,5 +13,8 @@ open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)
 open ReciprocityTheory.AnForm.M ReciprocityTheory.AnForm.R
 open GlobalTheory GlobalTheory.Cartier GlobalTheory.CxPts GlobalTheory.Points GlobalTheory.CechPic GlobalTheory.ChartGlue GlobalTheory.Mix
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.Mix.tendsto_integral_log_add_inv | exact GlobalTheory.Mix.tendsto_integral_log_add_inv | (intros; apply GlobalTheory.Mix.tendsto_integral_log_add_inv <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.tendsto_integral_log_add_inv_succ : ∀ (T : Type) [MeasurableSpace T] (μ : Measure T) [IsFiniteMeasure μ] (w : T → ℝ) (C : ℝ), Measurable w → (∀ x, 0 ≤ w x ∧ w x ≤ C) → (∀ᵐ x ∂μ, 0 < w x) → Integrable (fun x => Real.log (w x) / 2) μ → Tendsto (fun n : ℕ => ∫ x, Real.log (w x + 1 / ((n : ℝ) + 1)) ∂μ) atTop (𝓝 (2 * ∫ x, Real.log (w x) / 2 ∂μ)) := by
   first | exact @GlobalTheory.Mix.tendsto_integral_log_add_inv | exact GlobalTheory.Mix.tendsto_integral_log_add_inv | (intros; apply GlobalTheory.Mix.tendsto_integral_log_add_inv <;> assumption)

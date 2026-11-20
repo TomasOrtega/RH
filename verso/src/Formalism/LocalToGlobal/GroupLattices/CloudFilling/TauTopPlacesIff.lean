@@ -31,22 +31,52 @@ def LatticeCompatibleAt {D : D7} {L : SizeData₂ D} (X : Inst D L) {p : ℕ} (G
       ∀ j ∈ SizeData₂.lifts D,
         (Fl.w (vOf t0) j s : ℝ) = fillG X (bL L) j (false, t0 + s.val • hP D p)
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem latTied_iff {D : D7} {L : SizeData₂ D} (hT : GatTies D) (X : Inst D L) (Y : LatInst D) :
     LatTied hT X Y ↔ ∀ u (w : D.what₂.places.Pl) (hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)),
       LatticeCompatibleAt X (D.gat u w hg) (hT.gat_pos u w hg) (Y.vOf u w hg) (Y.Fl u w hg) := Iff.rfl
 
 def rRec {D : D7} (L : SizeData₂ D) (p : ℕ) : ℕ := if (p : ℝ) < L.sc.p0 D.R.k then rG L.sc else 1
 
+/- English proof (translation)
+Rewrite using `[← Formalism.MainNotions.Inhab.plGG_false, Formalism.MainNotions.Inhab.plGG_top_iff]`. Conclude with `⟨fun h => h.2, fun h => ⟨rfl, h⟩⟩`.
+-/
 theorem tau_top_places_iff (D : D7) (t : HH D) : D.R.tau1 t ∈ D.host.topPlaces ↔ t ∈ D.host.TT := by
   rw [← Formalism.MainNotions.Inhab.plGG_false, Formalism.MainNotions.Inhab.plGG_top_iff]
   exact ⟨fun h => h.2, fun h => ⟨rfl, h⟩⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem tau_coe_val (φ : Formalism.HC.Frame) (t : φ.A) : ((tau1P φ t : φ.Psi) : φ.GG) = φ.tau1 t := rfl
 
 variable {p : ℕ} {W Qq O Kf : Type} [CommRing W] [IsDomain W] [IsDiscreteValuationRing W] [Field Qq]
   [Algebra W Qq] [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field Kf] [Algebra O Kf]
   {ι : Qq →+* Kf} {σ : Qq ≃+* Qq} {j : W →+* O} {w : O}
 
+/- English proof (translation)
+Substitute `hr` using the available equality. Use `⟨rfl, rfl, cRec_le L, rfl, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[reps_instRec L K Ce hc]`. Conclude with `vOfH_injOn _ _`. Introduce `v s t ht`.
+
+Establish `ht' : ((posG (zH D.R.toFrame (hP D p)) ⟨v, s⟩ : D.R.Psi) : D.R.GG) = D.R.tau2 t`. Establish `h0 : ((D.eTau (D.eTau.symm (posG (zH D.R.toFrame (hP D p)) ⟨v, s⟩)) : D.R.Psi) : D.R.GG) = D.R.tau2 t` using `ht`. Rewrite `h0` using `[Equiv.apply_symm_apply]`. Then use the resulting hypothesis. Use `⟨fun hs => ?_, fun jj hj => ?_⟩` and prove the remaining obligations. Establish `h1 : ((posG (zH D.R.toFrame (hP D p)) ⟨v, s⟩ : D.R.Psi) : D.R.GG) ∈ D.host.topPlaces` using `(Finset.mem_filter.1 hs).2`.
+
+Rewrite `h1` using `[ht', ← Formalism.MainNotions.Inhab.plGG_true, Formalism.MainNotions.Inhab.plGG_top_iff]`. Conclude with `Bool.noConfusion h1.1`. Use `show ((wRec D u (posG (zH D.R.toFrame (hP D p)) ⟨v, s⟩) jj : ℤ) : ℝ) = _`. Rewrite using `[wRec_eq D u _ jj hj]`. Unfold `fillG`.
+
+Rewrite using `[instRec_fill L K Ce jj hj (D.eTau.symm (posG (zH D.R.toFrame (hP D p)) ⟨v, s⟩)) (true, t) (by rw [Equiv.apply_symm_apply, ht', Formalism.MainNotions.Inhab.plGG_true])]`. Introduce `t0 ht0`. Establish `ht0' : t0 ∈ Set.range (bsH D.R.toFrame (hP D p))`. Rewrite using `[← reps_instRec L K Ce hc]`. Conclude with `ht0`.
+
+Take `⟨x, rfl⟩` from `ht0'`. Use `⟨orderOf_zH _ _, fun s => ?_⟩` and prove the remaining obligations. Establish `hpos : posG (zH D.R.toFrame (hP D p)) ⟨vOfH D.R.toFrame (hP D p) (bsH D.R.toFrame (hP D p) x), s⟩ = tau1P D.R.toFrame (bsH D.R.toFrame (hP D p) x + s.val • hP D p)`. Rewrite using `[posG_vOfH, bsH_idem]`. Establish `hmem : (s ∈ (fillsRec D u (D.R.iota (hP D p)) hS (rRec L p) Lc I ψ y e (cRec L) (cloudBound L P u)).TT (vOfH D.R.toFrame (hP D p) (bsH D.R.toFrame (hP D p) x))) ↔ bsH D.R.toFrame (hP D p) x + s.val • hP D p ∈ D.host.TT`.
+
+Rewrite using `[← tau_top_places_iff]`. Use `show s ∈ Finset.univ.filter _ ↔ _`. Rewrite using `[Finset.mem_filter, hpos]`. Conclude with `⟨fun h => h.2, fun h => ⟨Finset.mem_univ _, h⟩⟩`. Establish `ha : (fillsRec D u (D.R.iota (hP D p)) hS (rRec L p) Lc I ψ y e (cRec L) (cloudBound L P u)).a (vOfH D.R.toFrame (hP D p) (bsH D.R.toFrame (hP D p) x)) s = aL L (bsH D.R.toFrame (hP D p) x + s.val • hP D p)` using `by show (if ((posG (zH D.R.toFrame (hP D p)) _ : D.R.Psi) : D.R.GG) ∈ D.host.topPlaces then lamRec D u (posG (zH D.R.toFrame (hP D p)) _) 0 else 0) = _`.
+
+Rewrite using `[hpos, tau_coe_val]`. Unfold `aL`. Distinguish the cases in `ht : bsH D.R.toFrame (hP D p) x + s.val • hP D p ∈ D.host.TT`. Rewrite using `[if_pos ((tau_top_places_iff D _).2 ht), dif_pos ht]`. Conclude with `(lamRec_top L u _ ⟨_, ht⟩ rfl).1`.
+
+Rewrite using `[if_neg (fun h => ht ((tau_top_places_iff D _).1 h)), dif_neg ht]`. Establish `hb : (fillsRec D u (D.R.iota (hP D p)) hS (rRec L p) Lc I ψ y e (cRec L) (cloudBound L P u)).b (vOfH D.R.toFrame (hP D p) (bsH D.R.toFrame (hP D p) x)) s = bL L (bsH D.R.toFrame (hP D p) x + s.val • hP D p)` using `by show (if ((posG (zH D.R.toFrame (hP D p)) _ : D.R.Psi) : D.R.GG) ∈ D.host.topPlaces then -lamRec D u (posG (zH D.R.toFrame (hP D p)) _) (Fin.last _) else 0) = _`. Rewrite using `[hpos, tau_coe_val]`. Unfold `bL`. Distinguish the cases in `ht : bsH D.R.toFrame (hP D p) x + s.val • hP D p ∈ D.host.TT`.
+
+Rewrite using `[if_pos ((tau_top_places_iff D _).2 ht), dif_pos ht, (lamRec_top L u _ ⟨_, ht⟩ rfl).2, neg_neg]`. Rewrite using `[if_neg (fun h => ht ((tau_top_places_iff D _).1 h)), dif_neg ht]`. Use `⟨?_, hmem, fun _ => ⟨ha, hb⟩, fun jj hj => ?_⟩` and prove the remaining obligations. Use `show ((D.eTau (D.eTau.symm (posG (zH D.R.toFrame (hP D p)) _)) : D.R.Psi) : D.R.GG) = _`. Rewrite using `[Equiv.apply_symm_apply, hpos]`.
+
+Both sides reduce to the same expression. Use `show ((wRec D u (posG (zH D.R.toFrame (hP D p)) _) jj : ℤ) : ℝ) = _`. Rewrite using `[hpos, wRec_eq D u _ jj hj, instRec_fillG L K Ce jj hj]`.
+-/
 theorem latTiedAt_rec {D : D7} (L : SizeData₂ D) (P : ParameterChoice' D L) (K : Consts) (Ce : ℝ) (u : D.what₂.Word)
     (hc : IsResidueClassZero D p) (hS : HidaSetting p (orderOf (zH D.R.toFrame (hP D p))) W Qq O Kf ι σ j w) (r : ℕ) (hr : r = rRec L p)
     (Lc : ColLevel D.R D.host.F D.host.E D.sp D.host.g (D.mem u).C (D.mem u).A (D.clsLat u))

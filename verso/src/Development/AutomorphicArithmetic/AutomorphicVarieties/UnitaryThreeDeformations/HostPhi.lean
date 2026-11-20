@@ -3,6 +3,21 @@ import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.Po
 
 open Matrix IsLocalRing ReciprocityTheory.Gal UpperTheory.V.HV UpperTheory.V.U3 UpperTheory.V.Alg UpperTheory.V.UnitaryThreeInertia
 
+/- English proof (translation)
+Rewrite using `[totallyDisconnectedSpace_iff_connectedComponent_one]`. Use `Set.eq_singleton_iff_unique_mem.mpr ⟨mem_connectedComponent, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Proceed by induction on `x using QuotientGroup.induction_on with`. Consider the case `H g`.
+
+Assume the negation of the conclusion as `hg`. Establish `hgN : g ∉ N` using `fun h => hg ((QuotientGroup.eq_one_iff g).mpr h)`. Establish `hcl` using `ProfiniteGrp.closedSubgroup_eq_sInf_open (G := G) ⟨N, hN⟩`. Establish `hnot : g ∉ sInf {K : Subgroup G | IsOpen (K : Set G) ∧ ((⟨N, hN⟩ : ClosedSubgroup G) : Subgroup G) ≤ K}`. Rewrite using `[← hcl]`.
+
+Conclude with `hgN`. Rewrite `hnot` using `[Subgroup.mem_sInf]`. Use `push_neg at hnot`. Take `⟨K, ⟨hKo, hNK⟩, hgK⟩` from `hnot`. Establish `hNK' : N ≤ K` using `hNK`.
+
+Establish `hpre : (QuotientGroup.mk : G → G ⧸ N) ⁻¹' ((QuotientGroup.mk : G → G ⧸ N) '' (K : Set G)) = K`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨k, hk, hky⟩`. Establish `h1 : k⁻¹ * y ∈ N` using `QuotientGroup.eq.mp hky`.
+
+Simplify using `using K.mul_mem hk (hNK' h1)`. Introduce `hy`. Conclude with `⟨y, hy, rfl⟩`. Establish `hclo : IsClopen ((QuotientGroup.mk : G → G ⧸ N) '' (K : Set G))`. Rewrite using `[← (QuotientGroup.isQuotientMap_mk N).isClopen_preimage, hpre]`.
+
+Conclude with `⟨K.isClosed_of_isOpen hKo, hKo⟩`. Establish `hsub` using `hclo.connectedComponent_subset (x := 1) ⟨1, K.one_mem, rfl⟩`. Take `⟨k, hk, hkg⟩` from `hsub hx`. Apply `hgK` to reduce the goal to its premises. Establish `h2 : k⁻¹ * g ∈ N` using `QuotientGroup.eq.mp hkg`.
+
+Simplify using `using K.mul_mem hk (hNK' h2)`.
+-/
 private theorem totDisc_quot {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [CompactSpace G]
     [TotallyDisconnectedSpace G] (N : Subgroup G) [N.Normal] (hN : IsClosed (N : Set G)) :
     TotallyDisconnectedSpace (G ⧸ N) := by
@@ -44,9 +59,17 @@ private def permR (R : Type) [CommRing R] {Γ : Type} [Group Γ] (H : Subgroup �
   map_one' := by ext f x; simp
   map_mul' g h := by ext f x; simp [mul_smul]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem permR_apply (R : Type) [CommRing R] {Γ : Type} [Group Γ] (H : Subgroup Γ) (g : Γ) (f : Γ ⧸ H → R)
     (x : Γ ⧸ H) : permR R H g f x = f (g⁻¹ • x) := rfl
 
+/- English proof (translation)
+Establish `h1 : (QuotientGroup.mk (g⁻¹ * x.out) : Γ ⧸ H) = QuotientGroup.mk ((g⁻¹ • x).out)`. Rewrite using `[QuotientGroup.out_eq']`. Use `conv_rhs => rw [← QuotientGroup.out_eq' x]`. Rewrite using `[MulAction.Quotient.smul_mk, smul_eq_mul]`. Establish `h2` using `QuotientGroup.eq.mp h1`.
+
+Simplify `h2` using `[_root_.mul_inv_rev, mul_assoc]`.
+-/
 private theorem sec_mem {Γ : Type} [Group Γ] (H : Subgroup Γ) (g : Γ) (x : Γ ⧸ H) :
     (x.out)⁻¹ * g * (g⁻¹ • x).out ∈ H := by
   have h1 : (QuotientGroup.mk (g⁻¹ * x.out) : Γ ⧸ H) = QuotientGroup.mk ((g⁻¹ • x).out) := by
@@ -56,6 +79,51 @@ private theorem sec_mem {Γ : Type} [Group Γ] (H : Subgroup Γ) (g : Γ) (x : �
   have h2 := QuotientGroup.eq.mp h1
   simpa [_root_.mul_inv_rev, mul_assoc] using h2
 
+/- English proof (translation)
+Unfold `PhiCond`. Introduce `H hH`. Use `haveI : DiscreteTopology (Γ ⧸ H) := by`. Apply `discreteTopology_iff_isOpen_singleton.mpr` to reduce the goal to its premises. Introduce `x`.
+
+Proceed by induction on `x using QuotientGroup.induction_on with`. Consider the case `H g`. Rewrite using `[← (QuotientGroup.isQuotientMap_mk H).isOpen_preimage]`. Establish `hpre : (QuotientGroup.mk : Γ → Γ ⧸ H) ⁻¹' {(g : Γ ⧸ H)} = (fun y => g⁻¹ * y) ⁻¹' (H : Set Γ)`. Use extensionality with `y`.
+
+Simplify using `only [Set.mem_preimage, Set.mem_singleton_iff, SetLike.mem_coe]`. Rewrite using `[QuotientGroup.eq, ← H.inv_mem_iff]`. Simplify using `[_root_.mul_inv_rev]`. Rewrite using `[hpre]`. Conclude with `hH.preimage (continuous_const.mul continuous_id)`.
+
+Use `haveI : Finite (Γ ⧸ H) := finite_of_compact_of_discrete`. Establish `hcont : ReciprocityTheory.Gal.ContAction (permR (ZMod n) H)`. Unfold `ReciprocityTheory.Gal.ContAction`. Apply `continuous_prod_of_discrete_right.mpr` to reduce the goal to its premises. Introduce `m`.
+
+Apply `continuous_pi` to reduce the goal to its premises. Introduce `x`. Simplify using `only [permR_apply]`. Conclude with `(continuous_of_discreteTopology (f := m)).comp (continuous_inv.smul continuous_const)`. Use `haveI := h (Γ ⧸ H → ZMod n) (permR (ZMod n) H) hcont`.
+
+Set `cf : (H →* Multiplicative (ZMod n)) → Γ → Γ ⧸ H → ZMod n` to `fun φ g x => Multiplicative.toAdd (φ ⟨(x.out)⁻¹ * g * (g⁻¹ • x).out, sec_mem H g x⟩)`. Establish `hcoc : ∀ (φ : H →* Multiplicative (ZMod n)) (g k : Γ), cf φ (g * k) = cf φ g + permR (ZMod n) H g (cf φ k)`. Introduce `φ g k`. Use function extensionality and compare the values at `x`. Simplify using `only [cf, permR_apply, Pi.add_apply]`.
+
+Rewrite using `[← toAdd_mul, ← map_mul]`. Use `congrArg (fun y => Multiplicative.toAdd (φ y)) ?_` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [Subgroup.coe_mul]`. Rewrite using `[_root_.mul_inv_rev, mul_smul]`.
+
+Use `group`. Establish `hcont_c : ∀ φ : H →* Multiplicative (ZMod n), IsOpen (φ.ker : Set H) → Continuous (cf φ)`. Introduce `φ hφ`. Establish `hK : IsOpen (Subtype.val '' (φ.ker : Set H) : Set Γ)` using `hH.isOpenMap_subtype_val _ hφ`. Set `U : Set Γ` to `⋂ y : Γ ⧸ H, (fun u => (y.out)⁻¹ * u * y.out) ⁻¹' (Subtype.val '' (φ.ker : Set H))`.
+
+Establish `hUo : IsOpen U` using `isOpen_iInter_of_finite (fun y => hK.preimage ((continuous_const.mul continuous_id).mul continuous_const))`. Establish `h1U : (1 : Γ) ∈ U`. Simplify using `only [U, Set.mem_iInter, Set.mem_preimage]`. Introduce `y`. Conclude with `⟨1, φ.ker.one_mem, by simp⟩`.
+
+Establish `hzero : ∀ u ∈ U, cf φ u = 0`. Introduce `u hu`. Use function extensionality and compare the values at `y`. Take `⟨k, hk, hkv⟩` from `Set.mem_iInter.mp hu y`. Establish `hkv' : (k : Γ) = (y.out)⁻¹ * u * y.out` using `hkv`.
+
+Establish `hmem : (y.out)⁻¹ * u * y.out ∈ H`. Rewrite using `[← hkv']`. Conclude with `k.2`. Establish `huy : u • y = y` using `by conv_rhs => rw [← QuotientGroup.out_eq' y] conv_lhs => rw [← QuotientGroup.out_eq' y]`. Rewrite using `[MulAction.Quotient.smul_mk, smul_eq_mul, QuotientGroup.eq]`.
+
+Use `H.inv_mem hmem` as an intermediate fact. Simplify `this` using `[_root_.mul_inv_rev, mul_assoc]`. Establish `hy : u⁻¹ • y = y` using `inv_smul_eq_iff.mpr huy.symm`. Establish `hel : (⟨(y.out)⁻¹ * u * (u⁻¹ • y).out, sec_mem H u y⟩ : H) = k`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Simplify using `only`. Rewrite using `[hy]`. Conclude with `hkv'.symm`. Simplify using `only [cf, Pi.zero_apply]`. Rewrite using `[hel, φ.mem_ker.mp hk, toAdd_one]`.
+
+Rewrite using `[continuous_iff_continuousAt]`. Introduce `g`. Establish `hnb : (fun g' => g⁻¹ * g') ⁻¹' U ∈ nhds g` using `(hUo.preimage (continuous_const.mul continuous_id)).mem_nhds (by simpa using h1U)`. Use `(continuousAt_const : ContinuousAt (fun _ : Γ => cf φ g) g).congr ?_` and prove the remaining obligations. Use `filter_upwards [hnb] with g' hg'`.
+
+Establish `h2` using `hcoc φ g (g⁻¹ * g')`. Rewrite `h2` using `[mul_inv_cancel_left, hzero _ hg', map_zero, add_zero]`. Conclude with `h2.symm`. Set `Φ : {φ : H →* Multiplicative (ZMod n) // IsOpen (φ.ker : Set H)} → H1 (permR (ZMod n) H)` to `fun φ => Submodule.Quotient.mk (⟨cf φ.1, by unfold Z1; exact ⟨hcont_c φ.1 φ.2, hcoc φ.1⟩⟩ : Z1 (permR (ZMod n) H))`. Establish `hinj : Function.Injective Φ`.
+
+Introduce and unpack `⟨φ, hφ⟩ ⟨ψ, hψ⟩ heq`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [Φ] at heq`. Rewrite `heq` using `[Submodule.Quotient.eq, Submodule.mem_comap]`. Unfold `B1 at heq`.
+
+Take `⟨m, hm⟩` from `LinearMap.mem_range.mp heq`. Use extensionality with `k`. Establish `ho : ((QuotientGroup.mk (1 : Γ) : Γ ⧸ H).out) ∈ H`. Establish `h0 : (QuotientGroup.mk ((QuotientGroup.mk (1 : Γ) : Γ ⧸ H).out) : Γ ⧸ H) = QuotientGroup.mk 1` using `QuotientGroup.out_eq' _`. Use `QuotientGroup.eq.mp h0` as an intermediate fact.
+
+Simplify using `using this`. Use `set o := ((QuotientGroup.mk (1 : Γ) : Γ ⧸ H).out) with ho_def`. Establish `hhH : o * (k : Γ) * o⁻¹ ∈ H` using `H.mul_mem (H.mul_mem ho k.2) (H.inv_mem ho)`. Establish `hx₀ : (o * (k : Γ) * o⁻¹)⁻¹ • (QuotientGroup.mk (1 : Γ) : Γ ⧸ H) = QuotientGroup.mk 1`. Rewrite using `[MulAction.Quotient.smul_mk, smul_eq_mul, mul_one, QuotientGroup.eq]`.
+
+Simplify using `using hhH`. Establish `hk' : (⟨((QuotientGroup.mk (1 : Γ) : Γ ⧸ H).out)⁻¹ * (o * (k : Γ) * o⁻¹) * ((o * (k : Γ) * o⁻¹)⁻¹ • (QuotientGroup.mk (1 : Γ) : Γ ⧸ H)).out, sec_mem H _ _⟩ : H) = k`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only`. Rewrite using `[hx₀, ← ho_def]`.
+
+Use `group`. Establish `hev` using `congrFun (congrFun hm (o * (k : Γ) * o⁻¹)) (QuotientGroup.mk 1)`. Unfold `ReciprocityTheory.Gal.d0 at hev`. Simplify using `only [LinearMap.pi_apply, LinearMap.sub_apply, LinearMap.id_apply, Pi.sub_apply, permR_apply, Submodule.coe_sub, Submodule.subtype_apply] at hev`. Rewrite `hev` using `[hx₀, sub_self]`.
+
+Simplify using `only [cf] at hev`. Rewrite `hev` using `[hk']`. Establish `hfin : Multiplicative.toAdd (φ k) - Multiplicative.toAdd (ψ k) = (0 : ZMod n)` using `hev.symm`. Establish `h4 : Multiplicative.toAdd (φ k) = Multiplicative.toAdd (ψ k)` using `sub_eq_zero.mp hfin`. Conclude with `Multiplicative.toAdd.injective h4`.
+
+Conclude with `Finite.of_injective Φ hinj`.
+-/
 private theorem phi_condition_of_finite_cohomology {Γ : Type} [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] [CompactSpace Γ] (n : ℕ)
     [NeZero n]
     (h : ∀ (M : Type) [AddCommGroup M] [Module (ZMod n) M] [TopologicalSpace M] [DiscreteTopology M] [Finite M]
@@ -179,6 +247,19 @@ private theorem phi_condition_of_finite_cohomology {Γ : Type} [Group Γ] [Topol
     exact Multiplicative.toAdd.injective h4
   exact Finite.of_injective Φ hinj
 
+/- English proof (translation)
+Introduce `hGF Ω _ _ _ l _ c N _ e ψ o₁ _hD S A F hF`. Use `haveI : NeZero l := ⟨(Fact.out : l.Prime).ne_zero⟩`. Establish `hT2 : T2Space (Gam Ω S)` using `by haveI : IsClosed (NS Ω (↑S : Set Pl) : Set (Formalism.ConjugateSelfDual.G ℚ Ω)) := isClosed_NS (F := ℚ) Ω _`. Unfold `Gam`. Use `infer_instance`.
+
+Establish `hTD : TotallyDisconnectedSpace (Gam Ω S)`. Unfold `Gam`. Conclude with `totDisc_quot _ (isClosed_NS (F := ℚ) Ω _)`. Establish `hCA : ReciprocityTheory.Gal.ContainsAbove (F` using `ℚ) S l := by`. Unfold `ReciprocityTheory.Gal.ContainsAbove`.
+
+Introduce `v hv`. Apply `(hF.mem v).mpr` to reduce the goal to its premises. Rewrite using `[Nat.cast_mul]`. Conclude with `Ideal.mul_mem_right _ _ hv`. Unfold `GlobalFiniteness at hGF`.
+
+Establish `key : ∀ k : ℕ, k = l ^ 1 → ∀ (M : Type) [AddCommGroup M] [Module (ZMod k) M] [TopologicalSpace M] [DiscreteTopology M] [Finite M] (ρ : Representation (ZMod k) (Gam Ω S) M), ReciprocityTheory.Gal.ContAction ρ → Finite (H1 ρ)`. Introduce `k hk`. Substitute `hk` using the available equality. Introduce `M _ _ _ _ _ ρ hρ`. Establish `hGFa` using `hGF ℚ Ω l 1 M S ρ`.
+
+Unfold `ReciprocityTheory.Gal.GlobalFinitenessAt at hGFa`. Conclude with `(hGFa Nat.one_pos hCA hρ).2.1`. Establish `hPhi : PhiCond (Gam Ω S) l`. Apply `phi_condition_of_finite_cohomology l` to reduce the goal to its premises. Introduce `M _ _ _ _ _ ρ hρ`.
+
+Conclude with `key l (pow_one l).symm M ρ hρ`. Conclude with `⟨hPhi, inferInstance, hT2, hTD, inferInstance, inferInstance, inferInstance⟩`.
+-/
 theorem UpperTheory.V.UnitaryThreeInertia.hostFrame_phi :
     GlobalFiniteness → ∀ (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] (c : Coef l) {N : ℕ} [NeZero N] (e : ℕ) (ψ : DirichletCharacter c.O N) (o₁ : ℕ), HostData l e ψ o₁ →
     ∀ (S : Finset Pl) (A : S → ValuationSubring Ω) (F : Frame c.O (Formalism.ConjugateSelfDual.G ℚ Ω) (Gam Ω S) S), IsHostFrame Ω c e ψ S A F →

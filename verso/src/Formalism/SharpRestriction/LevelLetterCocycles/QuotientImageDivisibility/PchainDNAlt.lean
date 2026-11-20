@@ -25,10 +25,16 @@ def Xd (i : ZMod n) (k : ℕ) : Submodule O (W.DD T) :=
     (Formalism.MainNotions.RamifiedCoefficientChains.S9.PhiPullΔ W T i).map
       ((Formalism.MainNotions.LiftingTheory.qp W ^ k) • (LinearMap.id : W.DD T →ₗ[O] W.DD T))
 
+/- English proof (translation)
+Establish `h : x ∈ W.N T ∧ Formalism.MainNotions.CrystallineLiftingInputs.DL W T i x` using `hx`. Conclude with `h.1`.
+-/
 theorem NDl_N {i : ZMod n} {x : W.DD T} (hx : x ∈ Formalism.MainNotions.RamifiedCoefficientChains.S9.NDl W T i) : x ∈ W.N T := by
   have h : x ∈ W.N T ∧ Formalism.MainNotions.CrystallineLiftingInputs.DL W T i x := hx
   exact h.1
 
+/- English proof (translation)
+Establish `h : x ∈ W.N T ∧ Formalism.MainNotions.CrystallineLiftingInputs.DL W T i x` using `hx`. Conclude with `h.2`.
+-/
 theorem NDl_DL {i : ZMod n} {x : W.DD T} (hx : x ∈ Formalism.MainNotions.RamifiedCoefficientChains.S9.NDl W T i) :
     Formalism.MainNotions.CrystallineLiftingInputs.DL W T i x := by
   have h : x ∈ W.N T ∧ Formalism.MainNotions.CrystallineLiftingInputs.DL W T i x := hx
@@ -47,9 +53,19 @@ def Kc (i : ZMod n) : Submodule O ↥(Formalism.MainNotions.RamifiedCoefficientC
     rw [cmpD_osmul W T o (NDl_N W T z.2), show Formalism.MainNotions.ArcLiftingSetup.cmpD W T (z : W.DD T) = 0 from hz,
       smul_zero]
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_Kc {i : ZMod n} (z : ↥(Formalism.MainNotions.RamifiedCoefficientChains.S9.NDl W T i)) :
     z ∈ Kc W T i ↔ Formalism.MainNotions.ArcLiftingSetup.cmpD W T (z : W.DD T) = 0 := Iff.rfl
 
+/- English proof (translation)
+Introduce `z hz`. Take `⟨y, hyN, hyΔ, hzy⟩` from `ker_NDl W T i h3 hmod hR z.2 hz`. Rewrite `hzy` using `[pow_one]`. Establish `hzl : (letE i : LetA O n) • (z : W.DD T) = z` using `(NDl_DL W T z.2).1`. Establish `hE` using `Formalism.MainNotions.LiftingTheory.idempotent_mem_invariants W i`.
+
+Establish `hyE : (letE i : LetA O n) • y ∈ W.NΔ T` using `Formalism.MainNotions.UnusedSlot80.SatW.smul_mem_NΔ W T hE ⟨hyN, hyΔ⟩`. Use `Submodule.mem_sup_left (Submodule.mem_map.2 ⟨(letE i : LetA O n) • y, ?_, ?_⟩)` and prove the remaining obligations. Conclude with `⟨hyE.1, by rw [smul_smul, letE_sq], hyE.2⟩`. Simplify using `only [LinearMap.smul_apply, LinearMap.id_apply]`. Rewrite using `[aself_comm W T, ← hzy, hzl]`.
+
+Both sides reduce to the same expression.
+-/
 theorem Kc_le [IsDomain O] (i : ZMod n) (k : ℕ) (h3 : Formalism.MainNotions.DeltaInvariantLattices.p3 W T)
     (hmod : Formalism.MainNotions.DeltaInvariantLattices.wachModuleOverLetters W T W.π₀) (hR : Formalism.MainNotions.UnusedSlot80.ToolsR.RingP W) :
     Kc W T i ≤ (Xd W T i k).comap (Formalism.MainNotions.RamifiedCoefficientChains.S9.NDl W T i).subtype := by
@@ -66,6 +82,31 @@ theorem Kc_le [IsDomain O] (i : ZMod n) (k : ℕ) (h3 : Formalism.MainNotions.De
     rw [aself_comm W T, ← hzy, hzl]
     rfl
 
+/- English proof (translation)
+Use `set X := (Xd W T i k).comap (Formalism.MainNotions.RamifiedCoefficientChains.S9.NDl W T i).subtype with hXdef`. Use `set Y := (Xd W T i k ⊔ Submodule.span O (↑s : Set (W.DD T))).comap (Formalism.MainNotions.RamifiedCoefficientChains.S9.NDl W T i).subtype with hYdef`. Establish `hXY : X ≤ Y` using `Submodule.comap_mono le_sup_left`. Establish `hKY : K ≤ Y` using `hK.trans hXY`. Establish `hlen : Module.length O ((↥(Formalism.MainNotions.RamifiedCoefficientChains.S9.NDl W T i) ⧸ K) ⧸ Y.map K.mkQ) ≤ (L : ℕ∞)`.
+
+Rewrite using `[(Submodule.quotientQuotientEquivQuotient K Y hKY).length_eq]`. Conclude with `hL`. Establish `h1` using `pstep_len (m := m) (c := cc) A ψ (Y.map K.mkQ) L kO hlen hkO hLc`. Use `set A₁ := kerSub A ψ (Y.map K.mkQ) with hA₁def`. Establish `hA₁ : A₁ ≤ A` using `kerSub_le A ψ _`.
+
+Use `set ψ₁ : ↥A₁ →ₗ[O] ↥(Formalism.MainNotions.RamifiedCoefficientChains.S9.NDl W T i) ⧸ K := ψ.comp (Submodule.inclusion hA₁)`. Use `set sN : Finset ↥(Formalism.MainNotions.RamifiedCoefficientChains.S9.NDl W T i) := s.subtype (· ∈ Formalism.MainNotions.RamifiedCoefficientChains.S9.NDl W T i)`. Use `set s' := sN.image K.mkQ`. Establish `hcard : s'.card ≤ m`. Use `Finset.card_image_le.trans (le_trans ?_ hs)` and prove the remaining obligations.
+
+Rewrite using `[Finset.card_subtype]`. Conclude with `Finset.card_filter_le _ _`. Establish `hspan : Submodule.span O (↑s : Set (W.DD T)) = (Submodule.span O (↑sN : Set ↥(Formalism.MainNotions.RamifiedCoefficientChains.S9.NDl W T i))).map (Formalism.MainNotions.RamifiedCoefficientChains.S9.NDl W T i).subtype`. Rewrite using `[Submodule.map_span]`. Use `congr 1`.
+
+Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce `hy`. Conclude with `⟨⟨y, hsN hy⟩, Finset.mem_subtype.2 hy, rfl⟩`. Introduce and unpack `⟨z, hz, rfl⟩`.
+
+Conclude with `Finset.mem_subtype.1 hz`. Establish `hY : Y ≤ X ⊔ Submodule.span O (↑sN : Set ↥(Formalism.MainNotions.RamifiedCoefficientChains.S9.NDl W T i))`. Introduce `z hz`. Establish `hz' : (z : W.DD T) ∈ Xd W T i k ⊔ Submodule.span O (↑s : Set (W.DD T))` using `hz`. Take `⟨x, hx, t, ht, hxt⟩` from `Submodule.mem_sup.1 hz'`.
+
+Rewrite `ht` using `[hspan]`. Take `⟨t', ht', rfl⟩` from `Submodule.mem_map.1 ht`. Establish `hxN : x ∈ Formalism.MainNotions.RamifiedCoefficientChains.S9.NDl W T i`. Establish `e : x = (z : W.DD T) - (t' : W.DD T)` using `by rw [← hxt]; simp`. Rewrite using `[e]`.
+
+Conclude with `(Formalism.MainNotions.RamifiedCoefficientChains.S9.NDl W T i).sub_mem z.2 t'.2`. Use `Submodule.mem_sup.2 ⟨⟨x, hxN⟩, hx, t', ht', Subtype.ext ?_⟩` and prove the remaining obligations. Simplify using `using hxt`. Establish `hgen : ∀ a, ψ₁ a ∈ X.map K.mkQ ⊔ Submodule.span O (↑s' : Set _)`. Introduce `a`.
+
+Establish `ha : ψ ⟨(a : FF), hA₁ a.2⟩ ∈ Y.map K.mkQ` using `(mem_kerSub_coe A ψ _ ⟨a, hA₁ a.2⟩).1 a.2`. Establish `hle : Y.map K.mkQ ≤ X.map K.mkQ ⊔ Submodule.span O (↑s' : Set _)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Submodule.map_span, Finset.coe_image]`. Conclude with `hle ha`.
+
+Establish `h2` using `pstep_gen (lenO := lenOl PD (O := O)) (m := m) (c := cc) A₁ ψ₁ (X.map K.mkQ) s' hcard hgen`. Establish `heq : kerSub A₁ ψ₁ (X.map K.mkQ) = kerSub A ψ (X.map K.mkQ)`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`.
+
+Take `⟨hx1, hx2⟩` from `(mem_kerSub A₁ ψ₁ _ x).1 hx`. Conclude with `(mem_kerSub A ψ _ x).2 ⟨hA₁ hx1, hx2⟩`. Introduce `hx`. Take `⟨hx1, hx2⟩` from `(mem_kerSub A ψ _ x).1 hx`. Establish `hx1' : x ∈ A₁` using `(mem_kerSub A ψ _ x).2 ⟨hx1, Submodule.map_mono hXY hx2⟩`.
+
+Conclude with `(mem_kerSub A₁ ψ₁ _ x).2 ⟨hx1', hx2⟩`. Rewrite `h2` using `[heq]`. Conclude with `(pchain_of_len h1).trans (pchain_of_gen h2)`.
+-/
 theorem pchain_DN (i : ZMod n) (k : ℕ) {m : ℕ} {cc : ℝ} {FF : Type} [AddCommGroup FF]
     [Module O FF] (K : Submodule O ↥(Formalism.MainNotions.RamifiedCoefficientChains.S9.NDl W T i))
     (hK : K ≤ (Xd W T i k).comap (Formalism.MainNotions.RamifiedCoefficientChains.S9.NDl W T i).subtype) (s : Finset (W.DD T))

@@ -22,6 +22,9 @@ variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] [NormedSpace ℝ
 
 omit [NormedSpace ℂ E] [IsScalarTower ℝ ℂ E] in
 
+/- English proof (translation)
+Use `ContDiffAt.fderiv (f := fun (q : ℝ × E) (x : E) => f (q.1, x)) (g := Prod.snd) ?_ contDiffAt_snd hjk` and prove the remaining obligations. Conclude with `ContDiffAt.comp (g := f) (f := fun r : (ℝ × E) × E => (r.1.1, r.2)) (p, p.2) h (contDiffAt_fst.fst.prodMk contDiffAt_snd)`.
+-/
 theorem contDiffAt_partial {f : ℝ × E → ℂ} {p : ℝ × E} (h : ContDiffAt ℝ k f p)
     (hjk : j + 1 ≤ k) :
     ContDiffAt ℝ j (fun q : ℝ × E => fderiv ℝ (fun x => f (q.1, x)) q.2) p := by
@@ -30,6 +33,9 @@ theorem contDiffAt_partial {f : ℝ × E → ℂ} {p : ℝ × E} (h : ContDiffAt
   exact ContDiffAt.comp (g := f) (f := fun r : (ℝ × E) × E => (r.1.1, r.2)) (p, p.2) h
     (contDiffAt_fst.fst.prodMk contDiffAt_snd)
 
+/- English proof (translation)
+Introduce `a b` and use `by have h1 := contDiffAt_partial (h a b) hjk simp only [mdel_apply, del_apply] exact ((h1.clm_apply contDiffAt_const).sub ((h1.clm_apply contDiffAt_const).const_smul Complex.I)).const_smul (1 / 2 : ℂ)`.
+-/
 theorem mContDiffAt_mdel {A : ℝ × E → Matrix (Fin m) (Fin m) ℂ} {p : ℝ × E}
     (h : MContDiffAt k A p) (hjk : j + 1 ≤ k) (ξ : E) :
     MContDiffAt j (fun q : ℝ × E => mdel (fun x => A (q.1, x)) q.2 ξ) p := fun a b => by
@@ -38,6 +44,9 @@ theorem mContDiffAt_mdel {A : ℝ × E → Matrix (Fin m) (Fin m) ℂ} {p : ℝ 
   exact ((h1.clm_apply contDiffAt_const).sub
     ((h1.clm_apply contDiffAt_const).const_smul Complex.I)).const_smul (1 / 2 : ℂ)
 
+/- English proof (translation)
+Introduce `a b` and use `by have h1 := contDiffAt_partial (h a b) hjk simp only [mdbar_apply, dbar_apply] exact ((h1.clm_apply contDiffAt_const).add ((h1.clm_apply contDiffAt_const).const_smul Complex.I)).const_smul (1 / 2 : ℂ)`.
+-/
 theorem mContDiffAt_mdbar {A : ℝ × E → Matrix (Fin m) (Fin m) ℂ} {p : ℝ × E}
     (h : MContDiffAt k A p) (hjk : j + 1 ≤ k) (ξ : E) :
     MContDiffAt j (fun q : ℝ × E => mdbar (fun x => A (q.1, x)) q.2 ξ) p := fun a b => by
@@ -46,6 +55,9 @@ theorem mContDiffAt_mdbar {A : ℝ × E → Matrix (Fin m) (Fin m) ℂ} {p : ℝ
   exact ((h1.clm_apply contDiffAt_const).add
     ((h1.clm_apply contDiffAt_const).const_smul Complex.I)).const_smul (1 / 2 : ℂ)
 
+/- English proof (translation)
+Establish `h1 : MContDiffAt 1 (fun q : ℝ × E => conn (fun x => A (q.1, x)) q.2 ξ) (c₀, u)` using `((h.of_le one_le_two).transpose.inv (by rwa [det_transpose])).mul (mContDiffAt_mdel h (by norm_num) ξ).transpose`. Establish `h2 : MContDiffAt 0 (fun q : ℝ × E => curv (fun x => A (q.1, x)) q.2 ξ η) (c₀, u)` using `(mContDiffAt_mdbar h1 (by norm_num) η).neg`. Use `tendsto_pi_nhds.2 fun a => tendsto_pi_nhds.2 fun b => ?_` and prove the remaining obligations. Conclude with `ContinuousAt.comp (f := fun c : ℝ => (c, u)) (h2 a b).continuousAt (continuousAt_id.prodMk continuousAt_const)`.
+-/
 theorem tendsto_curv {A : ℝ × E → Matrix (Fin m) (Fin m) ℂ} {c₀ : ℝ} {u : E}
     (h : MContDiffAt 2 A (c₀, u)) (hu : IsUnit (A (c₀, u)).det) (ξ η : E) :
     Tendsto (fun c : ℝ => curv (fun x => A (c, x)) u ξ η) (𝓝 c₀)
@@ -61,6 +73,11 @@ theorem tendsto_curv {A : ℝ × E → Matrix (Fin m) (Fin m) ℂ} {c₀ : ℝ} 
 
 omit [NormedSpace ℂ E] [IsScalarTower ℝ ℂ E] in
 
+/- English proof (translation)
+Establish `hs : ContDiffAt ℝ 2 (fun q : ℝ × E => 1 / (1 + q.1 * ρ q.2)) (0, u)` using `contDiffAt_const.div (contDiffAt_const.add (contDiffAt_fst.mul (ContDiffAt.comp (g := ρ) (f := Prod.snd) (0, u) hρ contDiffAt_snd))) (by simp)`. Establish `hA' : MContDiffAt 2 (fun q : ℝ × E => A q.2) (0, u)` using `fun a b => ContDiffAt.comp (g := fun x => A x a b) (f := Prod.snd) (0, u) (hA a b) contDiffAt_snd`. Establish `hB' : MContDiffAt 2 (fun q : ℝ × E => B q.2) (0, u)` using `fun a b => ContDiffAt.comp (g := fun x => B x a b) (f := Prod.snd) (0, u) (hB a b) contDiffAt_snd`. Establish `hc : ContDiffAt ℝ 2 (fun q : ℝ × E => ((1 / (1 + q.1 * ρ q.2) : ℝ) : ℂ)) (0, u)` using `Complex.ofRealCLM.contDiff.contDiffAt.comp _ hs`. Establish `hc' : ContDiffAt ℝ 2 (fun q : ℝ × E => ((1 - 1 / (1 + q.1 * ρ q.2) : ℝ) : ℂ)) (0, u)` using `Complex.ofRealCLM.contDiff.contDiffAt.comp _ (contDiffAt_const.sub hs)`.
+
+Unfold `GlobalTheory.GradedNorm.mix`. Conclude with `(MContDiffAt.smul hc' hA').add (MContDiffAt.smul hc hB')`.
+-/
 theorem mContDiffAt_mix {A B : E → Matrix (Fin m) (Fin m) ℂ} {ρ : E → ℝ} {u : E}
     (hA : MContDiffAt 2 A u) (hB : MContDiffAt 2 B u) (hρ : ContDiffAt ℝ 2 ρ u) :
     MContDiffAt 2 (fun q : ℝ × E => GlobalTheory.GradedNorm.mix (1 / (1 + q.1 * ρ q.2)) (A q.2) (B q.2))
@@ -81,15 +98,28 @@ theorem mContDiffAt_mix {A B : E → Matrix (Fin m) (Fin m) ℂ} {ρ : E → ℝ
 
 end Param
 
+/- English proof (translation)
+Simplify using `[GlobalTheory.GradedNorm.mix]`.
+-/
 theorem mix_zero {m : ℕ} (r : ℝ) (A B : Matrix (Fin m) (Fin m) ℂ) :
     GlobalTheory.GradedNorm.mix (1 / (1 + 0 * r)) A B = B := by
   simp [GlobalTheory.GradedNorm.mix]
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.HermFrame.dualGram, GlobalTheory.HermFrame.dualGram, ← transpose_nonsing_inv, transpose_transpose, nonsing_inv_nonsing_inv _ h]`.
+-/
 theorem dualGram_dualGram {m : ℕ} {A : Matrix (Fin m) (Fin m) ℂ} (h : IsUnit A.det) :
     GlobalTheory.HermFrame.dualGram (GlobalTheory.HermFrame.dualGram A) = A := by
   rw [GlobalTheory.HermFrame.dualGram, GlobalTheory.HermFrame.dualGram, ← transpose_nonsing_inv,
     transpose_transpose, nonsing_inv_nonsing_inv _ h]
 
+/- English proof (translation)
+Introduce `n m H₀ H ρ u h0 h1 hρ u0 u1 ξ η`. Establish `h0' : MContDiffAt 2 H₀ u` using `h0`. Establish `h1' : MContDiffAt 2 H u` using `h1`. Prove the components needed by the constructor for the conclusion. Use `tendsto_curv (mContDiffAt_mix h0' h1' hρ) (by simpa only [mix_zero] using u1) ξ η` as an intermediate fact.
+
+Simplify `this` using `only [mix_zero]`. Establish `hm` using `mContDiffAt_mix (A := fun v => GlobalTheory.HermFrame.dualGram (H₀ v)) (B := fun v => GlobalTheory.HermFrame.dualGram (H v)) (h0'.inv u0).transpose (h1'.inv u1).transpose hρ`. Establish `hd : IsUnit (GlobalTheory.HermFrame.dualGram (H u)).det`. Rewrite using `[GlobalTheory.HermFrame.dualGram, det_transpose]`. Conclude with `isUnit_nonsing_inv_det _ u1`.
+
+Use `tendsto_curv (A := fun q : ℝ × V n => GlobalTheory.HermFrame.dualGram (GlobalTheory.GradedNorm.mix (1 / (1 + q.1 * ρ q.2)) (GlobalTheory.HermFrame.dualGram (H₀ q.2)) (GlobalTheory.HermFrame.dualGram (H q.2)))) (hm.inv (by simpa only [mix_zero] using hd)).transpose (by simpa only …` as an intermediate fact. Simplify using `only [mix_zero] at this`. Rewrite `this` using `[curv_congr (H' := H) ((h1'.eventually_isUnit u1).mono fun x hx => dualGram_dualGram hx)]`. Then use the resulting hypothesis.
+-/
 theorem tendsto_curv_mix : ∀ {n m : ℕ} (H₀ H : V n → Matrix (Fin m) (Fin m) ℂ) (ρ : V n → ℝ) (u : V n),
     (∀ i k, ContDiffAt ℝ 2 (fun v => H₀ v i k) u) → (∀ i k, ContDiffAt ℝ 2 (fun v => H v i k) u) →
     ContDiffAt ℝ 2 ρ u → IsUnit (H₀ u).det → IsUnit (H u).det → ∀ ξ η : V n,

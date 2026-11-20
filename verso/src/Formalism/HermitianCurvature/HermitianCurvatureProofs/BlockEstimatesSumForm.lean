@@ -8,6 +8,11 @@ namespace Formalism.FourierDecayAlt.P.BaseGramNonnegativity
 
 open Formalism.FourierDecayAlt.crystallineComparison Formalism.FourierDecayAlt.TB
 
+/- English proof (translation)
+Establish `H` using `(Matrix.PosSemidef.hadamard hκ hG).re_dotProduct_nonneg (fun _ => (1 : ℂ))`. Simplify using `only [dotProduct, Matrix.mulVec, Matrix.hadamard_apply, Matrix.of_apply, Pi.star_apply, star_one, one_mul, mul_one, RCLike.re_to_complex] at H`. Use `H using 2` and compare the differences between its conclusion and the goal. Rewrite using `[← Finset.sum_coe_sort Y]`. Use `Finset.sum_congr rfl (fun h _ => ?_)` and prove the remaining obligations.
+
+Rewrite using `[← Finset.sum_coe_sort Y]`.
+-/
 theorem sum_re_nonneg {α : Type} (Y : Finset α) (κ G : α → α → ℂ) (hκ : PSDOn Y κ) (hG : PSDOn Y G) :
     0 ≤ (∑ h ∈ Y, ∑ h' ∈ Y, κ h h' * G h h').re := by
   have H := (Matrix.PosSemidef.hadamard hκ hG).re_dotProduct_nonneg (fun _ => (1 : ℂ))
@@ -20,14 +25,23 @@ theorem sum_re_nonneg {α : Type} (Y : Finset α) (κ G : α → α → ℂ) (h�
 
 variable {E W : Type} [Field E] (D : Data E W)
 
+/- English proof (translation)
+Simplify using `only [Data.N0, sub_mul, Finset.sum_sub_distrib, Complex.sub_re, sub_div]`.
+-/
 theorem baseGram_sub (ε : ℝ) (k : ℕ) (w : W) (Y : Finset (Pt E)) (κ κ' : Pt E → Pt E → ℂ) :
     D.N0 ε k w Y (fun h h' => κ' h h' - κ h h') = D.N0 ε k w Y κ' - D.N0 ε k w Y κ := by
   simp only [Data.N0, sub_mul, Finset.sum_sub_distrib, Complex.sub_re, sub_div]
 
+/- English proof (translation)
+Simplify using `only [Data.N0, mul_assoc, ← Finset.mul_sum, Complex.re_ofReal_mul, mul_div_assoc]`.
+-/
 theorem baseGram_smul (ε : ℝ) (k : ℕ) (w : W) (Y : Finset (Pt E)) (r : ℝ) (κ : Pt E → Pt E → ℂ) :
     D.N0 ε k w Y (fun h h' => (r : ℂ) * κ h h') = r * D.N0 ε k w Y κ := by
   simp only [Data.N0, mul_assoc, ← Finset.mul_sum, Complex.re_ofReal_mul, mul_div_assoc]
 
+/- English proof (translation)
+Simplify using `only [Data.N0, Finset.sum_mul, ← Finset.sum_div, ← Complex.re_sum]`. Use `congr 2`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem baseGram_sum (ε : ℝ) (k : ℕ) (w : W) (Y : Finset (Pt E)) {ι : Type} (T : Finset ι)
     (κ : ι → Pt E → Pt E → ℂ) :
     D.N0 ε k w Y (fun h h' => ∑ t ∈ T, κ t h h') = ∑ t ∈ T, D.N0 ε k w Y (κ t) := by
@@ -37,10 +51,16 @@ theorem baseGram_sum (ε : ℝ) (k : ℕ) (w : W) (Y : Finset (Pt E)) {ι : Type
         Finset.sum_congr rfl (fun h _ => Finset.sum_comm)
     _ = _ := Finset.sum_comm
 
+/- English proof (translation)
+The claim follows from `div_nonneg (sum_re_nonneg Y κ _ hκ (hG ε hε k w Y)) (hW w).le`.
+-/
 theorem baseGram_nonneg (hG : D.GramPSD) (hW : D.WordsPos) {ε : ℝ} (hε : 0 < ε) (k : ℕ) (w : W)
     (Y : Finset (Pt E)) (κ : Pt E → Pt E → ℂ) (hκ : PSDOn Y κ) : 0 ≤ D.N0 ε k w Y κ :=
   div_nonneg (sum_re_nonneg Y κ _ hκ (hG ε hε k w Y)) (hW w).le
 
+/- English proof (translation)
+Introduce `E W _ D hG hW ε hε k w Y κ κ' hκ hκκ'`. Use `⟨baseGram_nonneg D hG hW hε k w Y κ hκ, ?_⟩` and prove the remaining obligations. Use `baseGram_nonneg D hG hW hε k w Y _ hκκ'` as an intermediate fact. Rewrite `this` using `[baseGram_sub]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem baseGramMonotone' : BaseGramMonotone := by
   intro E W _ D hG hW ε hε k w Y κ κ' hκ hκκ'
   refine ⟨baseGram_nonneg D hG hW hε k w Y κ hκ, ?_⟩
@@ -48,6 +68,17 @@ theorem baseGramMonotone' : BaseGramMonotone := by
   rw [baseGram_sub] at this
   linarith
 
+/- English proof (translation)
+Introduce `E W _ D hG hW ε hε k Y T0 Th KK e Ws θ Mv Bmax Lhs he hMv hθ hTh hsum hL hB`. Establish `key : ∀ w', ∑ t₀ ∈ T0, D.N0 ε k w' Y (Th t₀) ≤ (1 + e) * D.N0 ε k w' Y KK`. Introduce `w'`. Establish `h` using `baseGram_nonneg D hG hW hε k w' Y _ hsum`. Establish `h2` using `baseGram_sub D ε k w' Y (fun h h' => ∑ t₀ ∈ T0, Th t₀ h h') (fun h h' => ((1 + e : ℝ) : ℂ) * KK h h')`.
+
+Establish `h3 : (fun h h' => (1 + (e : ℂ)) * KK h h' - ∑ t₀ ∈ T0, Th t₀ h h') = (fun h h' => ((1 + e : ℝ) : ℂ) * KK h h' - ∑ t₀ ∈ T0, Th t₀ h h')` using `by push_cast; rfl`. Rewrite `h` using `[h3, h2, baseGram_smul, baseGram_sum]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hθ0` using `hθ.1`. Prove the components needed by the constructor for the conclusion.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Finset.mul_sum]`. Use `congr 1`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [Finset.mul_sum]`.
+
+Use `_ ≤ Mv * ∑ w' ∈ Ws, θ w' * ((1 + e) * D.N0 ε k w' Y KK) := by`. Apply `mul_le_mul_of_nonneg_left _ hMv` to reduce the goal to its premises. Conclude with `Finset.sum_le_sum (fun w' _ => mul_le_mul_of_nonneg_left (key w') (hθ0 w'))`. Use `_ = (1 + e) * Mv * ∑ w' ∈ Ws, θ w' * D.N0 ε k w' Y KK := by`. Simplify using `only [Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl (fun _ _ => by ring)` and prove the remaining obligations. Apply `mul_le_mul_of_nonneg_left _ (mul_nonneg (by linarith) hMv)` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem corT_ok : CorT := by
   intro E W _ D hG hW ε hε k Y T0 Th KK e Ws θ Mv Bmax Lhs he hMv hθ hTh hsum hL hB
   have key : ∀ w', ∑ t₀ ∈ T0, D.N0 ε k w' Y (Th t₀) ≤ (1 + e) * D.N0 ε k w' Y KK := by
@@ -78,11 +109,23 @@ theorem corT_ok : CorT := by
           Finset.sum_le_sum (fun w' hw' => mul_le_mul_of_nonneg_left (hB w' hw') (hθ0 w'))
       _ = Bmax := by rw [← Finset.sum_mul, hθ.2.2, one_mul]
 
+/- English proof (translation)
+Introduce `x hx`. Simplify using `only [Data.Wb, Finset.mem_filter] at hx ⊢`. Conclude with `⟨hx.1, hx.2.trans h⟩`.
+-/
 theorem Wb_mono {n m : ℕ} (h : n ≤ m) : D.Wb n ⊆ D.Wb m := by
   intro x hx
   simp only [Data.Wb, Finset.mem_filter] at hx ⊢
   exact ⟨hx.1, hx.2.trans h⟩
 
+/- English proof (translation)
+Introduce `E W _ D C₄ hG hW hSF ε hε i s hs hsi hir w hw hcnt hvol`. Take `⟨Mv, hMv, θ, hθ, hb⟩` from `hSF ε hε i s hs hsi hir w hw hcnt hvol`. Establish `hsub : D.Wb (D.cnt w + s * D.K) ⊆ D.Wb (D.cnt w + (s + 1) * D.K)` using `Wb_mono D (by nlinarith)`. Establish `hext : ∀ g : W → ℝ, ∑ w' ∈ D.Wb (D.cnt w + (s + 1) * D.K), θ w' * g w' = ∑ w' ∈ D.Wb (D.cnt w + s * D.K), θ w' * g w'`. Introduce `g`.
+
+Use `symm`. Use `Finset.sum_subset hsub (fun x _ hx => ?_)` and prove the remaining obligations. Rewrite using `[hθ.2.1 x hx, zero_mul]`. Use `⟨θ, ⟨hθ.1, fun a ha => hθ.2.1 a (fun h => ha (hsub h)), ?_⟩, ?_⟩` and prove the remaining obligations. Use `hext (fun _ => 1)` as an intermediate fact.
+
+Simplify using `only [mul_one] at this`. Rewrite using `[this, hθ.2.2]`. Introduce `Y hY κ hκ t₀ S hS`. Establish `h` using `hb Y hY κ hκ t₀ S hS`. Rewrite using `[hext]`.
+
+Establish `hX : 0 ≤ ∑ w' ∈ D.Wb (D.cnt w + s * D.K), θ w' * D.N0 ε (i - s) w' Y κ` using `Finset.sum_nonneg (fun w' _ => mul_nonneg (hθ.1 w') (baseGram_nonneg D hG hW hε _ _ Y κ hκ))`. Conclude with `h.trans (mul_le_mul_of_nonneg_right hMv hX)`.
+-/
 theorem estBlockOfSumForm_ok : EstBlockOfSumForm := by
   intro E W _ D C₄ hG hW hSF ε hε i s hs hsi hir w hw hcnt hvol
   obtain ⟨Mv, hMv, θ, hθ, hb⟩ := hSF ε hε i s hs hsi hir w hw hcnt hvol
@@ -107,7 +150,16 @@ theorem estBlockOfSumForm_ok : EstBlockOfSumForm := by
 
 end Formalism.FourierDecayAlt.P.BaseGramNonnegativity
 
+/- English proof (translation)
+The claim follows from `Formalism.FourierDecayAlt.P.BaseGramNonnegativity.baseGramMonotone'`.
+-/
 theorem Formalism.FourierDecayAlt.P.baseGramMonotone : Formalism.FourierDecayAlt.crystallineComparison.BaseGramMonotone := Formalism.FourierDecayAlt.P.BaseGramNonnegativity.baseGramMonotone'
+/- English proof (translation)
+The claim follows from `Formalism.FourierDecayAlt.P.BaseGramNonnegativity.corT_ok`.
+-/
 theorem Formalism.FourierDecayAlt.P.cosetSumBound : Formalism.FourierDecayAlt.crystallineComparison.CorT := Formalism.FourierDecayAlt.P.BaseGramNonnegativity.corT_ok
+/- English proof (translation)
+The claim follows from `Formalism.FourierDecayAlt.P.BaseGramNonnegativity.estBlockOfSumForm_ok`.
+-/
 theorem Formalism.FourierDecayAlt.P.blockEstimateOfCosetSum : Formalism.FourierDecayAlt.crystallineComparison.EstBlockOfSumForm :=
   Formalism.FourierDecayAlt.P.BaseGramNonnegativity.estBlockOfSumForm_ok

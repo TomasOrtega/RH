@@ -21,9 +21,17 @@ variable {S : Scheme.{0}} {A B : Over S} [GrpObj A] [GrpObj B]
 
 omit [GrpObj A] [GrpObj B] in
 
+/- English proof (translation)
+Apply the tactic sequence `fin_cases i <;> simp [prj]`.
+-/
 theorem one_comp_prj {G : Over S} [GrpObj G] {Y : Over S} (i : Fin 4) : (1 : Y ⟶ G4 G) ≫ prj G i = 1 := by
   fin_cases i <;> simp [prj]
 
+/- English proof (translation)
+Establish `e1 : ∀ {Y : Over S} (t : Y ⟶ B), evc hD.isLB (1 : Y ⟶ A) t = 0` using `fun t => IsAdditive.evc_one hD.isLB hD.additive t`. Establish `e2 : ∀ {Y : Over S} (a : Y ⟶ A), evc hD.isLB a (1 : Y ⟶ B) = 0` using `fun a => evc_one_right hD.isLB hD.zero a`. Establish `o1 : ∀ {Y : Over S} (i : Fin 4) (f : A ⊗ B ⟶ A) [IsMonHom f], (1 : Y ⟶ G4 (A ⊗ B)) ≫ prj _ i ≫ f = 1`. Introduce `Y i f _`. Rewrite using `[← Category.assoc, one_comp_prj, MonObj.one_comp]`.
+
+Establish `o2 : ∀ {Y : Over S} (i : Fin 4) (f : A ⊗ B ⟶ B) [IsMonHom f], (1 : Y ⟶ G4 (A ⊗ B)) ≫ prj _ i ≫ f = 1`. Introduce `Y i f _`. Rewrite using `[← Category.assoc, one_comp_prj, MonObj.one_comp]`. Apply the tactic sequence `constructor <;>`. Simplify using `only [zc, zcPair, map_add, map_sum, map_nsmul, map_zsmul, pull_evc, lift_fst_assoc, lift_snd_assoc, Category.id_comp, o1, o2, e1, e2, smul_zero, add_zero, zero_add, Finset.sum_const_zero]`.
+-/
 theorem zc_rigid {P : LB (A ⊗ B).left} (hD : IsDual A B P) (l : A ⟶ B) [IsMonHom l] (mu : B ⟶ A) [IsMonHom mu]
     (α : Matrix (Fin 4) (Fin 4) ℤ) :
     pull (lift (1 : G4 (A ⊗ B) ⟶ G4 (A ⊗ B)) (𝟙 _)).left (zc hD.isLB l mu α) = 0 ∧

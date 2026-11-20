@@ -14,6 +14,11 @@ noncomputable def UpperTheory.Reformulated.B.TotalDegreeLinear.sub :
           fun (y : ι × B) ↦
           ∑ j : ι, (MvPolynomial.C : ℂ → MvPolynomial (ι × A ⊕ ι × B) ℂ) (h y.1 j) * MvPolynomial.X (Sum.inr (j, y.2)))
 
+/- English proof (translation)
+Rewrite using `[MvPolynomial.aeval_def, MvPolynomial.eval₂_eq]`. Use `(MvPolynomial.totalDegree_finset_sum _ _).trans (Finset.sup_le fun d hd => ?_)` and prove the remaining obligations. Use `(MvPolynomial.totalDegree_mul _ _).trans ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.algebraMap_eq, MvPolynomial.totalDegree_C, zero_add]`. Use `(MvPolynomial.totalDegree_finset_prod _ _).trans ?_` and prove the remaining obligations.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 private lemma UpperTheory.Reformulated.B.TotalDegreeLinear.totalDegree_aeval_le {σ τ : Type}
     (f : σ → MvPolynomial τ ℂ) (hf : ∀ i, (f i).totalDegree ≤ 1) (p : MvPolynomial σ ℂ) :
     (MvPolynomial.aeval f p).totalDegree ≤ p.totalDegree := by
@@ -27,6 +32,9 @@ private lemma UpperTheory.Reformulated.B.TotalDegreeLinear.totalDegree_aeval_le 
         (MvPolynomial.totalDegree_pow _ _).trans (by simpa using Nat.mul_le_mul_left (d i) (hf i))
     _ ≤ p.totalDegree := MvPolynomial.le_totalDegree hd
 
+/- English proof (translation)
+Use `(MvPolynomial.totalDegree_finset_sum _ _).trans (Finset.sup_le fun j _ => ?_)` and prove the remaining obligations. Use `(MvPolynomial.totalDegree_mul _ _).trans ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.totalDegree_C, zero_add]`. Conclude with `(MvPolynomial.totalDegree_X _).le`.
+-/
 private lemma UpperTheory.Reformulated.B.TotalDegreeLinear.totalDegree_linear_le {ι τ : Type} [Fintype ι]
     (c : ι → ℂ) (v : ι → τ) :
     (∑ j : ι, (MvPolynomial.C (c j) : MvPolynomial τ ℂ) * MvPolynomial.X (v j)).totalDegree ≤ 1 := by
@@ -35,6 +43,9 @@ private lemma UpperTheory.Reformulated.B.TotalDegreeLinear.totalDegree_linear_le
   rw [MvPolynomial.totalDegree_C, zero_add]
   exact (MvPolynomial.totalDegree_X _).le
 
+/- English proof (translation)
+Introduce `ι A B _ g h p`. Use `UpperTheory.Reformulated.B.TotalDegreeLinear.totalDegree_aeval_le _ ?_ p` and prove the remaining obligations. Introduce and unpack `(x | y)`. Conclude with `UpperTheory.Reformulated.B.TotalDegreeLinear.totalDegree_linear_le _ _`. Conclude with `UpperTheory.Reformulated.B.TotalDegreeLinear.totalDegree_linear_le _ _`.
+-/
 theorem UpperTheory.Reformulated.B.TotalDegreeLinear.main :
     ∀ {ι A B : Type} [inst : Fintype ι] (g h : Matrix ι ι ℂ) (p : UpperTheory.Reformulated.B.TotalDegreeLinear.PV ι A B),
       MvPolynomial.totalDegree ((UpperTheory.Reformulated.B.TotalDegreeLinear.sub g h : UpperTheory.Reformulated.B.TotalDegreeLinear.PV ι A B → UpperTheory.Reformulated.B.TotalDegreeLinear.PV ι A B) p) ≤

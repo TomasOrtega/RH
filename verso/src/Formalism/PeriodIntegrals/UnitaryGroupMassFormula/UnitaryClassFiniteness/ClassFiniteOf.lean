@@ -62,6 +62,13 @@ def LamG (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E) (L : Set 
     rw [this, Matrix.mulVec_neg]
     exact neg_mem hx
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ σ M J L hst hτ hsig hL1 hL2`. Take `⟨D, T, c0, hD, hT, hc0, hbd⟩` from `hA F E σ M J L hst hτ hsig hL1 hL2`. Establish `hσ : ∀ (τ : E →+* ℂ) (a : E), τ ((σ : E →+* E) a) = starRingEnd ℂ (τ a)`. Introduce `τ a`. Express the relevant statement in the definitionally equal form `τ (σ a) = _`.
+
+Rewrite using `[hst a]`. Conclude with `hτ τ a`. Take `⟨S, hSf, hS'⟩` from `hB E (σ : E →+* E) M J D T c0 hσ (fun τ => hS M _ (hsig τ)) hD hT hc0`. Use `⟨S, hSf, fun h => ?_⟩` and prove the remaining obligations. Take `⟨b1, b2, b3, b4⟩` from `hbd h`.
+
+Take `⟨s, hs, g, hg⟩` from `hS' (LamG σ J L h) b1 b2 b3 b4`. Conclude with `⟨s, hs, g, hg⟩`.
+-/
 theorem classFinite_of (hS : SigPos) (hA : AdelBounds) (hB : LatFin) : ClassFinite := by
   intro F E _ _ _ _ _ _ σ M J L hst hτ hsig hL1 hL2
   obtain ⟨D, T, c0, hD, hT, hc0, hbd⟩ := hA F E σ M J L hst hτ hsig hL1 hL2

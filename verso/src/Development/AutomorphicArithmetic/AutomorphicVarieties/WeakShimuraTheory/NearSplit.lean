@@ -180,6 +180,9 @@ namespace Tower
 
 variable {D : Raw Ω c} (T : Tower D)
 
+/- English proof (translation)
+The claim follows from `T.hL ▸ le_sup_left`.
+-/
 theorem F_le : T.F ≤ T.L := T.hL ▸ le_sup_left
 
 abbrev d : ℕ := Module.finrank ℚ T.F

@@ -20,10 +20,16 @@ open CategoryTheory AlgebraicGeometry
 
 namespace FunctorialResolution.EmbeddedResolution
 
+/- English proof (translation)
+The claim follows from `smoothPullbackHasLocalAmbientEmbedding_of_hasGraphChart hsm smoothPullbackHasGraphChart`.
+-/
 theorem smoothPullbackHasLocalAmbientEmbedding_of_affineSpaceIsSmooth (hsm : AffineSpaceIsSmooth.{u}) :
     SmoothPullbackHasLocalAmbientEmbedding.{u} :=
   smoothPullbackHasLocalAmbientEmbedding_of_hasGraphChart hsm smoothPullbackHasGraphChart
 
+/- English proof (translation)
+Establish `key` using `isCompatibleWithOpenImmersions_toAffineResolutionRule (embeddedResolutionRuleOfPrincipalization A hw) (affineSpacePresentedSelection hemb hsncE hsm) (isIndependentOfPresentedEmbedding_embeddedResolutionRule A hAlg hw hsm hcmp) (embeddedResolutionRule_isCompatibleWithSmoothAmbient …`. Rewrite `key` using `[affineSpacePresentedSelection_selection, toAffineResolutionRule_embeddedResolutionRuleOfPrincipalization A hw hemb hsncE hsm hex]`. Conclude with `key`.
+-/
 theorem isCompatibleWithOpenImmersions_affineResolutionRuleOfPrincipalization_of_smoothPullbackHasLocalAmbientEmbedding
     (A : PrincipalizationAlgorithm.{u})
     (hAlg : IsFunctorialPrincipalization A) (hw : TransitionsAreBlowupsForEmbeddings A)
@@ -40,6 +46,9 @@ theorem isCompatibleWithOpenImmersions_affineResolutionRuleOfPrincipalization_of
     toAffineResolutionRule_embeddedResolutionRuleOfPrincipalization A hw hemb hsncE hsm hex] at key
   exact key
 
+/- English proof (translation)
+Establish `key` using `isCompatibleWithEtaleCovers_toAffineResolutionRule (embeddedResolutionRuleOfPrincipalization A hw) (affineSpacePresentedSelection hemb hsncE hsm) (isIndependentOfPresentedEmbedding_embeddedResolutionRule A hAlg hw hsm hcmp) (embeddedResolutionRule_isCompatibleWithSmoothAmbientMap …`. Rewrite `key` using `[affineSpacePresentedSelection_selection, toAffineResolutionRule_embeddedResolutionRuleOfPrincipalization A hw hemb hsncE hsm hex]`. Conclude with `key`.
+-/
 theorem isCompatibleWithEtaleCovers_affineResolutionRuleOfPrincipalization_of_smoothPullbackHasLocalAmbientEmbedding
     (A : PrincipalizationAlgorithm.{u})
     (hAlg : IsFunctorialPrincipalization A) (hw : TransitionsAreBlowupsForEmbeddings A)
@@ -56,6 +65,9 @@ theorem isCompatibleWithEtaleCovers_affineResolutionRuleOfPrincipalization_of_sm
     toAffineResolutionRule_embeddedResolutionRuleOfPrincipalization A hw hemb hsncE hsm hex] at key
   exact key
 
+/- English proof (translation)
+The claim follows from `isCompatibleWithOpenImmersions_affineResolutionRuleOfPrincipalization_of_smoothPullbackHasLocalAmbientEmbedding A hAlg hw hemb hsncE hsm hex hcmp (smoothPullbackHasLocalAmbientEmbedding_of_affineSpaceIsSmooth hsm)`.
+-/
 theorem isCompatibleWithOpenImmersions_affineResolutionRuleOfPrincipalization (A : PrincipalizationAlgorithm.{u})
     (hAlg : IsFunctorialPrincipalization A) (hw : TransitionsAreBlowupsForEmbeddings A)
     (hemb : AffineEmbedsIntoAffineSpace.{u}) (hsncE : NilIsStrictNormalCrossingsOnAffineSpace.{u})
@@ -65,6 +77,9 @@ theorem isCompatibleWithOpenImmersions_affineResolutionRuleOfPrincipalization (A
   isCompatibleWithOpenImmersions_affineResolutionRuleOfPrincipalization_of_smoothPullbackHasLocalAmbientEmbedding A hAlg hw hemb hsncE
     hsm hex hcmp (smoothPullbackHasLocalAmbientEmbedding_of_affineSpaceIsSmooth hsm)
 
+/- English proof (translation)
+The claim follows from `isCompatibleWithEtaleCovers_affineResolutionRuleOfPrincipalization_of_smoothPullbackHasLocalAmbientEmbedding A hAlg hw hemb hsncE hsm hex hcmp (smoothPullbackHasLocalAmbientEmbedding_of_affineSpaceIsSmooth hsm)`.
+-/
 theorem isCompatibleWithEtaleCovers_affineResolutionRuleOfPrincipalization (A : PrincipalizationAlgorithm.{u})
     (hAlg : IsFunctorialPrincipalization A) (hw : TransitionsAreBlowupsForEmbeddings A)
     (hemb : AffineEmbedsIntoAffineSpace.{u}) (hsncE : NilIsStrictNormalCrossingsOnAffineSpace.{u})
@@ -74,6 +89,9 @@ theorem isCompatibleWithEtaleCovers_affineResolutionRuleOfPrincipalization (A : 
   isCompatibleWithEtaleCovers_affineResolutionRuleOfPrincipalization_of_smoothPullbackHasLocalAmbientEmbedding A hAlg hw hemb hsncE
     hsm hex hcmp (smoothPullbackHasLocalAmbientEmbedding_of_affineSpaceIsSmooth hsm)
 
+/- English proof (translation)
+Establish `key` using `isCompatibleWithFieldBaseChange_toAffineResolutionRule (embeddedResolutionRuleOfPrincipalization A hw) (affineSpacePresentedSelection hemb hsncE hsm) (isIndependentOfPresentedEmbedding_embeddedResolutionRule A hAlg hw hsm hcmp) (embeddedResolutionRule_isCompatibleWithFieldBaseCha …`. Rewrite `key` using `[affineSpacePresentedSelection_selection, toAffineResolutionRule_embeddedResolutionRuleOfPrincipalization A hw hemb hsncE hsm hex]`. Conclude with `key`.
+-/
 theorem isCompatibleWithFieldBaseChange_affineResolutionRuleOfPrincipalization (A : PrincipalizationAlgorithm.{u})
     (hAlg : IsFunctorialPrincipalization A) (hw : TransitionsAreBlowupsForEmbeddings A)
     (hemb : AffineEmbedsIntoAffineSpace.{u}) (hsncE : NilIsStrictNormalCrossingsOnAffineSpace.{u})
@@ -88,6 +106,9 @@ theorem isCompatibleWithFieldBaseChange_affineResolutionRuleOfPrincipalization (
     toAffineResolutionRule_embeddedResolutionRuleOfPrincipalization A hw hemb hsncE hsm hex] at key
   exact key
 
+/- English proof (translation)
+Establish `key` using `isPullbackBlowupSequence_presentedSelection_of_smooth (embeddedResolutionRuleOfPrincipalization A hw) (affineSpacePresentedSelection hemb hsncE hsm) (isIndependentOfPresentedEmbedding_embeddedResolutionRule A hAlg hw hsm hcmp) (embeddedResolutionRule_isCompatibleWithSmoothAmbient …`. Rewrite `key` using `[affineSpacePresentedSelection_selection]`. Rewrite using `[← toAffineResolutionRule_embeddedResolutionRuleOfPrincipalization A hw hemb hsncE hsm hex, EmbeddedResolutionRule.toAffineResolutionRule_apply, EmbeddedResolutionRule.toAffineResolutionRule_apply]`. Conclude with `key`.
+-/
 theorem isPullbackBlowupSequence_affineResolutionRuleOfPrincipalization_of_smooth (A : PrincipalizationAlgorithm.{u})
     (hAlg : IsFunctorialPrincipalization A) (hw : TransitionsAreBlowupsForEmbeddings A)
     (hemb : AffineEmbedsIntoAffineSpace.{u}) (hsncE : NilIsStrictNormalCrossingsOnAffineSpace.{u})

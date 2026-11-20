@@ -111,13 +111,25 @@ end Record
 
 section Examples
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example {R : Ranks} (H : Formalism.BasicNotions.Host R) (g : R.Psi) (x : H.E) : phi H g x = (starRingEnd ℂ) (embPsi H g x) := rfl
 
+/- English proof (translation)
+The claim follows from `Dvd.intro_left _ rfl`.
+-/
 example {R : Ranks} (H : Formalism.BasicNotions.Host R) (w0 : HeightOneSpectrum (𝓞 H.E)) : (below w0).asIdeal ∣ cond0 H w0 := Dvd.intro_left _ rfl
 
+/- English proof (translation)
+The claim follows from `inv_mul_cancel_right _ _`.
+-/
 example {D : D7} (Z : LamDat D) (l : ℕ) (j a : Fin D.R.m) : Z.lam0 l j a * Z.chi a = Z.C.mu0 j * Z.C.delAt l :=
   inv_mul_cancel_right _ _
 
+/- English proof (translation)
+Establish `h` using `hZ.big j a g`. Establish `h1 : ((BlochKatoReduction.Gen.NFun D.R : ℤ) + 1 - Z.c a g) ≤ ⌊eExp D j g⌋` using `Int.le_floor.2 (by push_cast; linarith)`. Establish `h2 : (s : ℤ) ≤ (BlochKatoReduction.Gen.NFun D.R : ℤ) + 1` using `by exact_mod_cast hs`. Conclude with `Int.toNat_of_nonneg (by omega)`.
+-/
 example {D : D7} (Z : LamDat D) (hZ : Z.Ok) (j a : Fin D.R.m) (s : ℕ) (hs : s ≤ BlochKatoReduction.Gen.NFun D.R + 1) (g : D.R.Psi) :
     (Z.kap j a s g : ℤ) = ⌊eExp D j g⌋ + Z.c a g - s := by
   have h := hZ.big j a g

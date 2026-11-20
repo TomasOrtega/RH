@@ -7,12 +7,26 @@ namespace GlobalTheory.ParahoricLowerBlock
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Rewrite using `[IsLocalRing.residue_eq_zero_iff, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, (Valuation.integer.integers (valuation k)).isUnit_iff_valuation_eq_one]`. Conclude with `⟨fun h => lt_of_le_of_ne x.2 h, fun h => h.ne⟩`.
+-/
 theorem residue_eq_zero_iff_val (x : 𝒪[k]) :
     IsLocalRing.residue 𝒪[k] x = 0 ↔ valuation k (algebraMap 𝒪[k] k x) < 1 := by
   rw [IsLocalRing.residue_eq_zero_iff, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff,
     (Valuation.integer.integers (valuation k)).isUnit_iff_valuation_eq_one]
   exact ⟨fun h => lt_of_le_of_ne x.2 h, fun h => h.ne⟩
 
+/- English proof (translation)
+Take `⟨⟨h, rfl⟩, hlow⟩` from `mem_parahoric.1 hj`. Use `set f := IsLocalRing.residue 𝒪[k]`. Use `set Hb := f.mapMatrix h.val`. Use `set Gb := f.mapMatrix (h⁻¹).val`. Establish `hz : Hb.toBlocks₂₁ = 0`.
+
+Use extensionality with `i j'`. Conclude with `(residue_eq_zero_iff_val _).2 (hlow i j')`. Establish `hHG : Hb * Gb = 1`. Simplify using `only [Hb, Gb, ← map_mul, Units.mul_inv, map_one]`. Establish `h22 : Hb.toBlocks₂₂ * Gb.toBlocks₂₂ = 1`.
+
+Use `congrArg Matrix.toBlocks₂₂ hHG` as an intermediate fact. Rewrite `this` using `[← fromBlocks_toBlocks Hb, ← fromBlocks_toBlocks Gb, fromBlocks_multiply, hz]`. Establish `e : (1 : Matrix (A ⊕ D) (A ⊕ D) 𝓀[k]).toBlocks₂₂ = 1`. Use extensionality with `a b`. Simplify using `[toBlocks₂₂, Matrix.one_apply]`.
+
+Simplify `this` using `[e]`. Use `⟨h.val.toBlocks₂₂.det, (h⁻¹).val.toBlocks₂₂.det, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[RingHom.map_det]`. Both sides reduce to the same expression. Rewrite using `[RingHom.map_det, ← map_inv]`.
+
+Both sides reduce to the same expression. Rewrite using `[map_mul, RingHom.map_det, RingHom.map_det, ← det_mul]`. Conclude with `(congrArg det h22).trans det_one`.
+-/
 theorem lower_block_det (A D : Type) [Fintype A] [DecidableEq A] [Fintype D] [DecidableEq D]
     (j : GL (A ⊕ D) k) (hj : j ∈ parahoric k A D) :
     ∃ a b : 𝒪[k], (j : Matrix (A ⊕ D) (A ⊕ D) k).toBlocks₂₂.det = algebraMap 𝒪[k] k a ∧
@@ -43,6 +57,15 @@ end GlobalTheory.ParahoricLowerBlock
 
 namespace GlobalTheory.ParahoricLowerBlock
 
+/- English proof (translation)
+Introduce `k _ _ _ _ A D _ _ _ _ ξ hξ j hj`. Take `⟨a, b, ha, hb, hab⟩` from `lower_block_det A D j hj`. Establish `ha0 : a ≠ 0`. Introduce and unpack `rfl`. Rewrite `hab` using `[zero_mul, map_zero]`.
+
+Conclude with `zero_ne_one hab`. Use `⟨?_, fun d d' hd hd' => ?_⟩` and prove the remaining obligations. Rewrite using `[ha]`. Conclude with `(map_ne_zero_iff _ (FaithfulSMul.algebraMap_injective 𝒪[k] k)).2 ha0`. Establish `hv : valuation k (((d * d' : kˣ) : k) - 1) < 1`.
+
+Establish `e : ((d * d' : kˣ) : k) - 1 = algebraMap 𝒪[k] k (a * b - 1)`. Rewrite using `[Units.val_mul, hd, hd', ha, hb, map_sub, map_mul, map_one]`. Rewrite using `[e, ← residue_eq_zero_iff_val, map_sub, hab, map_one, sub_self]`. Use `hξ (d * d') hv` as an intermediate fact. Rewrite `this` using `[map_mul]`.
+
+Use `congrArg Units.val this` as an intermediate fact. Simplify using `using this`.
+-/
 theorem lower_block_tame : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (A D : Type) [Fintype A] [DecidableEq A] [Fintype D] [DecidableEq D] (ξ : kˣ →* ℂˣ), IsTame ξ →
   ∀ j ∈ parahoric k A D, (j : Matrix (A ⊕ D) (A ⊕ D) k).toBlocks₂₂.det ≠ 0 ∧
     ∀ d d' : kˣ, (d : k) = (j : Matrix (A ⊕ D) (A ⊕ D) k).toBlocks₂₂.det →

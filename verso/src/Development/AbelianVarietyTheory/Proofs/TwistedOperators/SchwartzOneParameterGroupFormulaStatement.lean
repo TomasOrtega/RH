@@ -5,6 +5,9 @@ import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.Re
 
 open scoped Matrix
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.MetaplecticScalarDeriv.main | exact GlobalTheory.MetaplecticScalarDeriv.main | (intros; apply GlobalTheory.MetaplecticScalarDeriv.main <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.schwartz_one_parameter_group_formula : GlobalTheory.FunPr.Hypotheses₂ → ∀ (l : Type) [Fintype l] [DecidableEq l]
     (Z : Matrix (l ⊕ l) (l ⊕ l) ℝ), Z ∈ LieAlgebra.Symplectic.sp l ℝ →
     ∀ T : ℝ → GlobalTheory.RealWeil.Sch l →ₗ[ℂ] GlobalTheory.RealWeil.Sch l, T 0 = LinearMap.id → (∀ s t, T (s + t) = T s ∘ₗ T t) →

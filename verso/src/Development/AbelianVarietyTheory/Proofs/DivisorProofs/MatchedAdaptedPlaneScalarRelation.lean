@@ -16,6 +16,9 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace GlobalTheory.ThKLiftVLowerGen
 
+/- English proof (translation)
+Introduce `hKP F E _ _ _ _ _ σ B a a' G X om om' R Rf hM d₁ W₁ H' i₀ i₁ hH' c Φ hΦ Φ' hΦ' hct hdec Φ₁ hΦ₁ μ 𝓕 hμ h𝓕 d₂ H hH V₁ M₁ e hV₁ hM₁ hev g`. Establish `hS₁ : Φ₁ ∈ schA F (Fin a × Fin (a + a'))` using `GlobalTheory.ThK.SqIntCont.polData_le_schA hM.triple.geo.hM hΦ₁`. Assume the negation of the conclusion as `hne`. Take `⟨ν₀, β₀, ℓ, ψv, Bf, s1, u1, s2, u2, hnr, hℓ, hψc, hψ1, hBf, h1, h2, h3⟩` from `GlobalTheory.T.matched_orbital_integral_asymptotic_bound hKP F E σ B a a' G X om om' R Rf hM c Φ hΦ Φ' hΦ' hdec d₂ H hH V₁ M₁ e hV₁ hM₁ hev μ 𝓕 hμ h𝓕 g Φ₁ hS₁ hne`. Conclude with `hBf (GlobalTheory.T.frobenius_unitary_char_unique (Fv F B.v₁) a a' ν₀ β₀ (unifAt B.v₁) (GlobalTheory.SplitFlip.exists_isUnif (k := Fv F B.v₁)).choose_spec s1 u1 s2 u2 hnr ℓ hℓ ψv hψc hψ1 Bf h1 h2 h3)`.
+-/
 theorem lower : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a a' : ℕ)
     (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W) (R : RealMaps F a a') (Rf : FinMaps F a a'),
     IsMatched B G X om om' R Rf →

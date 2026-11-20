@@ -15,6 +15,9 @@ open GlobalTheory.Core.Rk.IP
 namespace GlobalTheory.Core.Rk.IP
 variable {D : D7} (A : HSp D) (L : Lat A) (a : GL (Fin A.rank) (AE D))
 
+/- English proof (translation)
+Use `haveI : Submodule.IsLattice D.host.E L := hL.1`. Establish `hI` using `GlobalTheory.T.adelicIwasawa_doubledGroup_selfDualLattice D A L a hL ha`. Rewrite using `[hgtL, hI.hgtAd_eq (isCMExt_host D)]`. Simplify using `only [io, proj_ioH, projArch_ioH, map_one]`.
+-/
 theorem hgtL_eq_prod (hL : IsSelfDualC A L) (ha : IsMaj A a) (g : GA D A) : hgtL A L a g = (∏ w, hgtArch D.sp.cm.sig (dblSp A).gram w (Formalism.UG.bc (compInf _ _ w) a)
       (ioH _ D.sp.cm.sig (gram_hdbl A) (projArch D.sp.cm.sig A.gram w g, 1))) *
       ∏ᶠ v, hgtFin D.sp.cm.sig (dblSp A).gram L v (ioH _ D.sp.cm.sig (gram_hdbl A) (proj D.sp.cm.sig A.gram v g, 1)) := by
@@ -23,6 +26,11 @@ theorem hgtL_eq_prod (hL : IsSelfDualC A L) (ha : IsMaj A a) (g : GA D A) : hgtL
   rw [hgtL, hI.hgtAd_eq (isCMExt_host D)]
   simp only [io, proj_ioH, projArch_ioH, map_one]
 
+/- English proof (translation)
+Use `haveI : Submodule.IsLattice D.host.E L := hL.1`. Set `H : Subgroup (GA D A)` to `⨅ (v) (_ : v ∉ Sf), (stabLoc D.sp.cm.sig A.gram L v).comap (proj D.sp.cm.sig A.gram v)`. Establish `hH : (H : Set (GA D A)) = openOff A L Sf`. Use extensionality with `g`. Simplify using `[H, openOff, Subgroup.mem_iInf, Subgroup.mem_comap]`.
+
+Rewrite using `[← hH]`. Use `Subgroup.isOpen_mono (H₁ := levelOpen D.sp.cm.sig A.gram L) (fun g hg => ?_) (isOpen_levelOpen _ _ _)` and prove the remaining obligations. Simplify using `only [H, Subgroup.mem_iInf, Subgroup.mem_comap]`. Conclude with `fun v _ => (mem_levelOpen.1 hg) v`.
+-/
 theorem isOpen_openOff (hL : IsSelfDualC A L) (Sf : Finset (FinPl D)) : IsOpen (openOff A L Sf) := by
   haveI : Submodule.IsLattice D.host.E L := hL.1
   let H : Subgroup (GA D A) := ⨅ (v) (_ : v ∉ Sf), (stabLoc D.sp.cm.sig A.gram L v).comap (proj D.sp.cm.sig A.gram v)
@@ -34,6 +42,9 @@ theorem isOpen_openOff (hL : IsSelfDualC A L) (Sf : Finset (FinPl D)) : IsOpen (
   simp only [H, Subgroup.mem_iInf, Subgroup.mem_comap]
   exact fun v _ => (mem_levelOpen.1 hg) v
 
+/- English proof (translation)
+Use `haveI : Submodule.IsLattice D.host.E L := hL.1`. Use `haveI := t2Space_adeleRing' (F := D.host.F)`. Establish `hI` using `GlobalTheory.T.adelicIwasawa_doubledGroup_selfDualLattice D A L a hL ha`. Use `show Continuous fun g => hgtAd D.sp.cm.sig (dblSp A).gram L a (io A (g, 1))`. Conclude with `(hI.continuous_hgtH continuous_absE (isCompact_KAd (isCMExt_host D))).comp ((continuous_io A).comp (continuous_id.prodMk continuous_const))`.
+-/
 theorem continuous_hgtL (hL : IsSelfDualC A L) (ha : IsMaj A a) : Continuous (hgtL A L a) := by
   haveI : Submodule.IsLattice D.host.E L := hL.1
   haveI := t2Space_adeleRing' (F := D.host.F)
@@ -42,6 +53,11 @@ theorem continuous_hgtL (hL : IsSelfDualC A L) (ha : IsMaj A a) : Continuous (hg
   exact (hI.continuous_hgtH continuous_absE (isCompact_KAd (isCMExt_host D))).comp
     ((continuous_io A).comp (continuous_id.prodMk continuous_const))
 
+/- English proof (translation)
+Rewrite using `[hgtL_eq_prod A L a hL ha g]`. Use `mul_le_one' (Finset.prod_le_one' fun w _ => ?_) ?_` and prove the remaining obligations. Use `GlobalTheory.T.doublingHeightAtRealPlace_le_one D A a ha w (projArch D.sp.cm.sig A.gram w g)` as an intermediate fact. Simplify `this` using `[GlobalTheory.IndefiniteRowSideFullHecke.SphericalVolumeLift.hgtW]`. Distinguish the cases in `hf : (Function.mulSupport fun v => hgtFin D.sp.cm.sig (dblSp A).gram L v (ioH _ D.sp.cm.sig (gram_hdbl A) (proj D.sp.cm.sig A.gram v g, 1))).Finite`.
+
+Rewrite using `[finprod_eq_prod _ hf]`. Conclude with `Finset.prod_le_one' fun v _ => GlobalTheory.T.siegelHeightFinitePlace_doublingEmbedding_le_one D A L hL v _`. Rewrite using `[finprod_of_infinite_mulSupport hf]`.
+-/
 theorem hgtL_le_one (hL : IsSelfDualC A L) (ha : IsMaj A a) (g : GA D A) : hgtL A L a g ≤ 1 := by
   rw [hgtL_eq_prod A L a hL ha g]
   refine mul_le_one' (Finset.prod_le_one' fun w _ => ?_) ?_
@@ -53,6 +69,11 @@ theorem hgtL_le_one (hL : IsSelfDualC A L) (ha : IsMaj A a) (g : GA D A) : hgtL 
       exact Finset.prod_le_one' fun v _ => GlobalTheory.T.siegelHeightFinitePlace_doublingEmbedding_le_one D A L hL v _
     · rw [finprod_of_infinite_mulSupport hf]
 
+/- English proof (translation)
+Use `haveI : Submodule.IsLattice D.host.E L := hL.1`. Rewrite using `[hgtL_eq_prod A L a hL ha g]`. Establish `hsub : (Function.mulSupport fun v => hgtFin D.sp.cm.sig (dblSp A).gram L v (ioH _ D.sp.cm.sig (gram_hdbl A) (proj D.sp.cm.sig A.gram v g, 1))) ⊆ (Sf : Set (FinPl D))`. Introduce `v hv`. Assume the negation of the conclusion as `hvS`.
+
+Conclude with `hv (hgtH_of_mem (continuous_absEv v) (isCompact_KFin v) ((ioH_mem_KFin (gram_hdbl A)).2 ⟨hg v hvS, one_mem _⟩))`. Rewrite using `[finprod_eq_prod_of_mulSupport_subset _ hsub]`. Use `push_cast`. Both sides reduce to the same expression.
+-/
 theorem hgtL_eq_prod_off (hL : IsSelfDualC A L) (ha : IsMaj A a) (Sf : Finset (FinPl D)) (g : GA D A)
     (hg : g ∈ openOff A L Sf) : (hgtL A L a g : ℝ) = (∏ w, GlobalTheory.IndefiniteRowSideFullHecke.SphericalVolumeLift.hgtW A a w (projArch D.sp.cm.sig A.gram w g)) *
       ∏ v ∈ Sf, GlobalTheory.IndefiniteRowSideFullHecke.SphericalVolumeLift.hgtV A L v (proj D.sp.cm.sig A.gram v g) := by
@@ -68,6 +89,9 @@ theorem hgtL_eq_prod_off (hL : IsSelfDualC A L) (ha : IsMaj A a) (Sf : Finset (F
   push_cast
   rfl
 
+/- English proof (translation)
+Introduce `D A L a hL ha`. Conclude with `⟨continuous_hgtL A L a hL ha, fun g => ⟨hgtH_pos _, hgtL_le_one A L a hL ha g⟩, fun Sf => ⟨isOpen_openOff A L hL Sf, fun g hg => hgtL_eq_prod_off A L a hL ha Sf g hg⟩⟩`.
+-/
 theorem hgtL_props : ∀ (D : D7) (A : HSp D) (L : Lat A) (a : GL (Fin A.rank) (AE D)), IsSelfDualC A L → IsMaj A a → Continuous (hgtL A L a) ∧ (∀ g, 0 < hgtL A L a g ∧ hgtL A L a g ≤ 1) ∧ ∀ (Sf : Finset (FinPl D)), IsOpen (openOff A L Sf) ∧ ∀ g ∈ openOff A L Sf, (hgtL A L a g : ℝ) = (∏ w, GlobalTheory.IndefiniteRowSideFullHecke.SphericalVolumeLift.hgtW A a w (projArch D.sp.cm.sig A.gram w g)) * ∏ v ∈ Sf, GlobalTheory.IndefiniteRowSideFullHecke.SphericalVolumeLift.hgtV A L v (proj D.sp.cm.sig A.gram v g) := by
   intro D A L a hL ha
   exact ⟨continuous_hgtL A L a hL ha, fun g => ⟨hgtH_pos _, hgtL_le_one A L a hL ha g⟩,

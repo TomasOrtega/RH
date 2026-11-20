@@ -6,6 +6,9 @@ namespace GlobalTheory.NeatLevel
 
 variable {R : Type} [CommRing R] {M : Type} [AddCommGroup M] [Module R M]
 
+/- English proof (translation)
+Proceed by induction on `k generalizing y with`. Consider the case `zero => simp`. Consider the case `succ k ih => rw [pow_succ, pow_succ, Module.End.mul_apply, Module.End.mul_apply, ih, hST]`.
+-/
 lemma val_pow_apply (W : Submodule R M) (S : Module.End R W) (T : Module.End R M)
     (hST : ∀ y : W, ((S y : W) : M) = T y) (k : ℕ) (y : W) :
     (((S ^ k) y : W) : M) = (T ^ k) y := by
@@ -15,6 +18,51 @@ lemma val_pow_apply (W : Submodule R M) (S : Module.End R W) (T : Module.End R M
 
 end GlobalTheory.NeatLevel
 
+/- English proof (translation)
+Introduce `E _ _ La Λ Q _ _ _ _ _ _ J n N m g₁ g₂ I₁ I₂ ev ψ θ F gM hfin htf hn hnJ hev hevs hψ hψs hFθ hθ hN hFN hg₁ hg₂ hg hI₁ hI₂ hgI₁ hgI₂ hJI₁ hJI₂ hu₁ hu₂`. Establish `hevJ : ∀ c : 𝓞 E, c ∈ J → ∀ a, c • ev a = 0`. Introduce `c hc a`. Rewrite using `[← map_smul, hev]`. Conclude with `Submodule.smul_mem_smul hc trivial`.
+
+Establish `hevψ : ∀ a, ∃ μ, ψ μ = ev a`. Introduce `a`. Apply `hψs` to reduce the goal to its premises. Rewrite using `[← Nat.cast_smul_eq_nsmul (𝓞 E)]`. Conclude with `hevJ _ hnJ a`.
+
+Use `set G := F ^ (N - 1) with hGdef`. Establish `hGF : G * F = 1`. Rewrite using `[hGdef, ← pow_succ, Nat.sub_add_cancel hN, hFN]`. Establish `hFG : F * G = 1`. Rewrite using `[hGdef, ← pow_succ', Nat.sub_add_cancel hN, hFN]`.
+
+Establish `hFGl : ∀ l, F (G l) = l` using `fun l => by`. Rewrite using `[← Module.End.mul_apply, hFG, Module.End.one_apply]`. Establish `hGFl : ∀ l, G (F l) = l` using `fun l => by`. Rewrite using `[← Module.End.mul_apply, hGF, Module.End.one_apply]`. Establish `hkey : ∀ (l : Λ) (a : La), ψ l = ev a → ψ (G l) = ev (gM a)`.
+
+Introduce `l a hla`. Take `⟨μ, hμ⟩` from `hevψ (gM a)`. Establish `h1 : ψ (F (μ - G l)) = 0`. Rewrite using `[map_sub, map_sub, hFθ, hμ, hθ, hFGl, hla, sub_self]`. Take `⟨b', hb'⟩` from `(hψ _).1 h1`.
+
+Establish `h2 : μ - G l = n • G b'`. Rewrite using `[← map_nsmul, ← hb', hGFl]`. Establish `h3 : ψ (μ - G l) = 0` using `(hψ _).2 ⟨G b', h2⟩`. Rewrite `h3` using `[map_sub, sub_eq_zero]`. Rewrite using `[← h3, hμ]`.
+
+Set `W : Submodule (𝓞 E) Λ` to `(LinearMap.range ev).comap ψ`. Establish `hGW : ∀ l ∈ W, G l ∈ W`. Introduce and unpack `l ⟨a, ha⟩`. Conclude with `⟨gM a, (hkey l a ha.symm).symm⟩`. Take `⟨J', hJ'⟩ : J ∣ Ideal.span {(n : 𝓞 E)}` from `Ideal.dvd_iff_le.2 ((Ideal.span_singleton_le_iff_mem _).2 hnJ)`.
+
+Establish `hJ'W : ∀ c' : 𝓞 E, c' ∈ J' → ∀ l, c' • l ∈ W`. Introduce `c' hc' l`. Take `⟨a, ha⟩` from `hevs (ψ (c' • l)) (by`. Introduce `c hc`. Establish `hcc : c * c' ∈ Ideal.span {(n : 𝓞 E)}` using `by rw [hJ']; exact Ideal.mul_mem_mul hc hc'`.
+
+Take `⟨r, hr⟩` from `Ideal.mem_span_singleton'.1 hcc`. Rewrite using `[← map_smul, smul_smul, ← hr, mul_comm, mul_smul, Nat.cast_smul_eq_nsmul]`. Conclude with `(hψ _).2 ⟨_, rfl⟩)`. Conclude with `⟨a, ha⟩`. Establish `hnW : ∀ I : Ideal (𝓞 E), J ≤ I → ∀ l : Λ, n • l ∈ I • W`.
+
+Introduce `I hJI l`. Establish `h1 : (n : 𝓞 E) • l ∈ (J * J') • (⊤ : Submodule (𝓞 E) Λ)` using `Submodule.smul_mem_smul (by rw [← hJ']; exact Ideal.mem_span_singleton_self _) trivial`. Rewrite `h1` using `[Submodule.mul_smul, Nat.cast_smul_eq_nsmul]`. Conclude with `Submodule.smul_mono hJI (Submodule.smul_le.2 fun c' hc' l _ => hJ'W c' hc' l) h1`. Establish `hpow : ∀ k (l : Λ) (a : La), ψ l = ev a → ψ (((G - 1 : Module.End (𝓞 E) Λ) ^ k) l) = ev (((gM - 1 : Module.End (𝓞 E) La) ^ k) a)`.
+
+Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro l a h`. Simplify using `using h`. Consider the case `succ k ih`.
+
+Introduce `l a h`. Rewrite using `[pow_succ, pow_succ, Module.End.mul_apply, Module.End.mul_apply]`. Apply `ih` to reduce the goal to its premises. Simplify using `[map_sub, hkey l a h, h]`. Establish `hunipW : ∀ I : Ideal (𝓞 E), J ≤ I → (∀ x, ((gM - 1) ^ m) x ∈ I • (⊤ : Submodule (𝓞 E) La)) → ∀ l ∈ W, ((G - 1) ^ m) l ∈ I • W`.
+
+Introduce and unpack `I hJI hu l ⟨a, ha⟩`. Establish `hx` using `hpow m l a ha.symm`. Establish `hmem : ev (((gM - 1) ^ m) a) ∈ (I • W).map ψ`. Establish `h1 : ev (((gM - 1) ^ m) a) ∈ (I • (⊤ : Submodule (𝓞 E) La)).map ev` using `⟨_, hu a, rfl⟩`. Rewrite `h1` using `[Submodule.map_smul'', Submodule.map_top]`.
+
+Rewrite using `[Submodule.map_smul'']`. Use `Submodule.smul_mono le_rfl ?_ h1` and prove the remaining obligations. Introduce and unpack `_ ⟨b, rfl⟩`. Take `⟨μ, hμ⟩` from `hevψ b`. Conclude with `⟨μ, ⟨b, hμ.symm⟩, hμ⟩`.
+
+Take `⟨z, hz, hzx⟩` from `hmem`. Establish `hd : ψ (((G - 1) ^ m) l - z) = 0` using `by rw [map_sub, hzx, hx, sub_self]`. Take `⟨b', hb'⟩` from `(hψ _).1 hd`. Establish `: ((G - 1) ^ m) l = z + n • b'` using `by rw [← hb']; abel`. Rewrite using `[this]`.
+
+Conclude with `Submodule.add_mem _ hz (hnW I hJI b')`. Use `haveI := hfin`. Use `haveI := htf`. Set `Gr : Module.End (𝓞 E) W` to `G.restrict hGW`. Establish `hGr : ∀ y : W, ((Gr y : W) : Λ) = G y` using `fun y => rfl`.
+
+Establish `hGr1 : ∀ y : W, (((Gr - 1) y : W) : Λ) = (G - 1) y` using `fun y => rfl`. Establish `hGN : G ^ N = 1`. Rewrite using `[hGdef, ← pow_mul, mul_comm, pow_mul, hFN, one_pow]`. Establish `hGrN : Gr ^ N = 1`. Apply `LinearMap.ext` to reduce the goal to its premises.
+
+Introduce `y`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[GlobalTheory.NeatLevel.val_pow_apply W Gr G hGr, hGN]`. Both sides reduce to the same expression. Establish `hsub : ∀ I : Ideal (𝓞 E), J ≤ I → (∀ x, ((gM - 1) ^ m) x ∈ I • (⊤ : Submodule (𝓞 E) La)) → ∀ y : W, ((Gr - 1) ^ m) y ∈ I • (⊤ : Submodule (𝓞 E) W)`.
+
+Introduce `I hJI hu y`. Establish `h1 : ((((Gr - 1) ^ m) y : W) : Λ) ∈ (I • (⊤ : Submodule (𝓞 E) W)).map W.subtype`. Rewrite using `[Submodule.map_smul'', Submodule.map_subtype_top, GlobalTheory.NeatLevel.val_pow_apply W (Gr - 1) (G - 1) hGr1]`. Conclude with `hunipW I hJI hu y y.2`. Take `⟨z, hz, hzy⟩` from `h1`.
+
+Establish `hzz : z = ((Gr - 1) ^ m) y` using `Subtype.ext hzy`. Rewrite using `[← hzz]` and apply the resulting hypothesis. Establish `hGr1' : Gr = 1` using `GlobalTheory.eq_one_of_finite_order_unipotent_mod_two_primes E W Gr N m g₁ g₂ I₁ I₂ hN hGrN hg₁ hg₂ hg hI₁ hI₂ hgI₁ hgI₂ (hsub I₁ hJI₁ hu₁) (hsub I₂ hJI₂ hu₂)`. Introduce `a`. Take `⟨l, hl⟩` from `hevψ a`.
+
+Establish `hlW : l ∈ W` using `⟨a, hl.symm⟩`. Establish `hGl : G l = l`. Use `congrArg (fun T : Module.End (𝓞 E) W => ((T ⟨l, hlW⟩ : W) : Λ)) hGr1'` as an intermediate fact. Conclude with `(hGr ⟨l, hlW⟩).symm.trans (by simpa using this)`. Establish `h` using `hkey l a hl`.
+
+Rewrite `h` using `[hGl, hl]`. Rewrite using `[← hev, map_sub, ← h, sub_self]`.
+-/
 theorem GlobalTheory.sub_mem_smul_top_of_neat_level : ∀ (E : Type) [Field E] [NumberField E] (La Λ Q : Type) [AddCommGroup La] [Module (𝓞 E) La] [AddCommGroup Λ] [Module (𝓞 E) Λ] [AddCommGroup Q] [Module (𝓞 E) Q] (J : Ideal (𝓞 E)) (n N m g₁ g₂ : ℕ) (I₁ I₂ : Ideal (𝓞 E)) (ev : La →ₗ[𝓞 E] Q) (ψ : Λ →ₗ[𝓞 E] Q) (θ : Q →ₗ[𝓞 E] Q) (F : Λ →ₗ[𝓞 E] Λ) (gM : La →ₗ[𝓞 E] La), Module.Finite (𝓞 E) Λ → Module.IsTorsionFree (𝓞 E) Λ → 0 < n → (n : 𝓞 E) ∈ J → (∀ a, ev a = 0 ↔ a ∈ J • (⊤ : Submodule (𝓞 E) La)) → (∀ q : Q, (∀ c ∈ J, c • q = 0) → ∃ a, ev a = q) → (∀ b, ψ b = 0 ↔ ∃ b', b = n • b') → (∀ q : Q, n • q = 0 → ∃ b, ψ b = q) → (∀ b, ψ (F b) = θ (ψ b)) → (∀ a, θ (ev (gM a)) = ev a) → 0 < N → F ^ N = 1 → g₁.Prime → g₂.Prime → g₁ ≠ g₂ → I₁ ≠ ⊤ → I₂ ≠ ⊤ → (g₁ : 𝓞 E) ∈ I₁ → (g₂ : 𝓞 E) ∈ I₂ → J ≤ I₁ → J ≤ I₂ → (∀ x, ((gM - 1) ^ m) x ∈ I₁ • (⊤ : Submodule (𝓞 E) La)) → (∀ x, ((gM - 1) ^ m) x ∈ I₂ • (⊤ : Submodule (𝓞 E) La)) → ∀ a, gM a - a ∈ J • (⊤ : Submodule (𝓞 E) La) := by
 
   intro E _ _ La Λ Q _ _ _ _ _ _ J n N m g₁ g₂ I₁ I₂ ev ψ θ F gM hfin htf hn hnJ hev hevs hψ hψs hFθ hθ hN hFN hg₁ hg₂ hg hI₁ hI₂ hgI₁ hgI₂ hJI₁ hJI₂ hu₁ hu₂

@@ -3,10 +3,36 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws
 
+/- English proof (translation)
+Apply the tactic sequence `rcases Int.units_eq_one_or u with rfl | rfl <;> rcases Int.units_eq_one_or v with rfl | rfl <;>`. Simplify the hypotheses and the goal together.
+-/
 private theorem int_units_mul_neg_one_eq_of_ne (u v : ℤˣ) (h : u ≠ v) : u * -1 = v := by
   rcases Int.units_eq_one_or u with rfl | rfl <;> rcases Int.units_eq_one_or v with rfl | rfl <;>
     simp_all
 
+/- English proof (translation)
+Introduce `Ω _ _ _ l _ c D hD X g s₁ s₂ s₃`. Take `⟨huniq, -, -, -, hout⟩` from `away D hD`. Establish `hφ` using `X.hφ`. Establish `hη` using `X.hη`. Establish `hη'` using `X.hη'`.
+
+Establish `pp₃` using `hφ.prime`. Establish `pp` using `hη.prime`. Establish `pp'` using `hη'.prime`. Establish `n₃ : X.p₃ ∉ D.S` using `hφ.nm`. Establish `n₁ : X.p ∉ D.S` using `fun h => hη.nm (Finset.mem_insert_of_mem h)`.
+
+Establish `n₂ : X.p' ∉ D.S` using `fun h => hη'.nm (Finset.mem_insert_of_mem (Finset.mem_insert_of_mem h))`. Establish `d₃ : X.p ≠ X.p₃` using `fun h => hη.nm (h ▸ Finset.mem_insert_self _ _)`. Establish `d₃' : X.p' ≠ X.p₃` using `fun h => hη'.nm (h ▸ Finset.mem_insert_of_mem (Finset.mem_insert_self _ _))`. Establish `d' : X.p' ≠ X.p` using `fun h => hη'.nm (h ▸ Finset.mem_insert_self _ _)`. Establish `kill : ∀ q, Nat.Prime q → q ∉ D.S → ∀ t ∈ Ine (D.pl q), D.Psi t = 1 ∧ D.ξ t = 1 ∧ D.om t = 1 ∧ X.κ t = 1`.
+
+Introduce `q hq hqS t ht`. Take `⟨haw, hk⟩` from `hout (D.pl q) q hq hqS (hD.pl_over q hq)`. Take `⟨a1, a2, a3⟩` from `hk t ht`. Conclude with `⟨a1, a2, a3, MonoidHom.mem_ker.1 (X.kap.unrS (D.pl q) haw ht)⟩`. Establish `off : ∀ q r, Nat.Prime q → Nat.Prime r → q ≠ r → ¬ (D.pl q).valuation (r : Ω) < 1`.
+
+Introduce `q r hq hr hqr hv`. Conclude with `hqr (huniq (D.pl q) q r hq hr (hD.pl_over q hq) hv)`. Take `⟨h₃, m₃, e₃⟩` from `hφ.ram (D.pl X.p₃) (hD.pl_over _ pp₃)`. Take `⟨h₁, m₁, e₁⟩` from `hη.ram (D.pl X.p) (hD.pl_over _ pp)`. Take `⟨h₂, m₂, e₂⟩` from `hη'.ram (D.pl X.p') (hD.pl_over _ pp')`.
+
+Establish `a₃ : X.η h₃ = 1` using `MonoidHom.mem_ker.1 (hη.unr _ (off _ _ pp₃ pp d₃.symm) m₃)`. Establish `b₃ : X.η' h₃ = 1` using `MonoidHom.mem_ker.1 (hη'.unr _ (off _ _ pp₃ pp' d₃'.symm) m₃)`. Establish `a₁ : X.φ h₁ = 1` using `MonoidHom.mem_ker.1 (hφ.unr _ (off _ _ pp pp₃ d₃) m₁)`. Establish `b₁ : X.η' h₁ = 1` using `MonoidHom.mem_ker.1 (hη'.unr _ (off _ _ pp pp' d'.symm) m₁)`. Establish `a₂ : X.φ h₂ = 1` using `MonoidHom.mem_ker.1 (hφ.unr _ (off _ _ pp' pp₃ d₃') m₂)`.
+
+Establish `b₂ : X.η h₂ = 1` using `MonoidHom.mem_ker.1 (hη.unr _ (off _ _ pp' pp d') m₂)`. Take `⟨k₃, k₃', k₃'', k₃'''⟩` from `kill _ pp₃ n₃ h₃ m₃`. Take `⟨k₁, k₁', k₁'', k₁'''⟩` from `kill _ pp n₁ h₁ m₁`. Take `⟨k₂, k₂', k₂'', k₂'''⟩` from `kill _ pp' n₂ h₂ m₂`. Choose the witnesses or unpack the hypotheses as in `⟨t₃, f₃, u₃, v₃, w₃, x₃, y₃, z₃⟩ : ∃ t, X.φ (g * t) = s₁ ∧ X.η t = 1 ∧ X.η' t = 1 ∧ D.Psi t = 1 ∧ D.ξ t = 1 ∧ D.om t = 1 ∧ X.κ t = 1 := by`.
+
+Distinguish the cases in `hc : X.φ g = s₁`. Conclude with `⟨1, by simpa using hc, by simp, by simp, by simp, by simp, by simp, by simp⟩`. Conclude with `⟨h₃, by rw [map_mul, e₃]; exact int_units_mul_neg_one_eq_of_ne _ _ hc, a₃, b₃, k₃, k₃', k₃'', k₃'''⟩`. Choose the witnesses or unpack the hypotheses as in `⟨t₁, f₁, u₁, v₁, w₁, x₁, y₁, z₁⟩ : ∃ t, X.η (g * t₃ * t) = s₂ ∧ X.φ t = 1 ∧ X.η' t = 1 ∧ D.Psi t = 1 ∧ D.ξ t = 1 ∧ D.om t = 1 ∧ X.κ t = 1 := by`. Distinguish the cases in `hc : X.η (g * t₃) = s₂`.
+
+Conclude with `⟨1, by simpa using hc, by simp, by simp, by simp, by simp, by simp, by simp⟩`. Conclude with `⟨h₁, by rw [map_mul, e₁]; exact int_units_mul_neg_one_eq_of_ne _ _ hc, a₁, b₁, k₁, k₁', k₁'', k₁'''⟩`. Choose the witnesses or unpack the hypotheses as in `⟨t₂, f₂, u₂, v₂, w₂, x₂, y₂, z₂⟩ : ∃ t, X.η' (g * t₃ * t₁ * t) = s₃ ∧ X.φ t = 1 ∧ X.η t = 1 ∧ D.Psi t = 1 ∧ D.ξ t = 1 ∧ D.om t = 1 ∧ X.κ t = 1 := by`. Distinguish the cases in `hc : X.η' (g * t₃ * t₁) = s₃`. Conclude with `⟨1, by simpa using hc, by simp, by simp, by simp, by simp, by simp, by simp⟩`.
+
+Conclude with `⟨h₂, by rw [map_mul, e₂]; exact int_units_mul_neg_one_eq_of_ne _ _ hc, a₂, b₂, k₂, k₂', k₂'', k₂'''⟩`. Use `⟨g * t₃ * t₁ * t₂, ?_, ?_, f₂, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, f₃, u₁, u₂, mul_one, mul_one]`. Rewrite using `[map_mul, f₁, v₂, mul_one]`. Simplify using `[map_mul, w₃, w₁, w₂]`.
+
+Simplify using `[map_mul, x₃, x₁, x₂]`. Simplify using `[map_mul, y₃, y₁, y₂]`. Simplify using `[map_mul, z₃, z₁, z₂]`.
+-/
 theorem UpperTheory.V.Ws.adj2 :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} (D : Raw Ω c), D.Good → ∀ (X : Set2 D) (g : G ℚ Ω) (s₁ s₂ s₃ : ℤˣ), ∃ g', X.φ g' = s₁ ∧ X.η g' = s₂ ∧ X.η' g' = s₃ ∧ D.Psi g' = D.Psi g ∧ D.ξ g' = D.ξ g ∧ D.om g' = D.om g ∧ X.κ g' = X.κ g := by
   intro Ω _ _ _ l _ c D hD X g s₁ s₂ s₃

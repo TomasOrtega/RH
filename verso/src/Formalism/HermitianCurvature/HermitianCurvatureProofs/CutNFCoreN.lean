@@ -21,6 +21,11 @@ section aux
 
 variable {P : M.Par}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `π`. Rewrite using `[Finset.sum_apply]`. Unfold `MA.actA`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun π' _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Finset.sum_apply]`. Conclude with `map_sum (a π π').1 (fun c => g c π') s`. Use `_ = ∑ c ∈ s, ∑ π', (a π π').1 (g c π') := Finset.sum_comm`.
+-/
 theorem nf_actA_fsum (a : MA.A P (MA.DQ P)) {κ : Type} (s : Finset κ) (g : κ → M.Ty P → MA.SmQ P.r P.TT) :
     MA.actA P a (∑ k ∈ s, g k) = ∑ k ∈ s, MA.actA P a (g k) := by
   funext π
@@ -32,6 +37,9 @@ theorem nf_actA_fsum (a : MA.A P (MA.DQ P)) {κ : Type} (s : Finset κ) (g : κ 
         exact map_sum (a π π').1 (fun c => g c π') s
     _ = ∑ c ∈ s, ∑ π', (a π π').1 (g c π') := Finset.sum_comm
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation. Conclude with `norm_sum_le _ _`. Use `_ ≤ s.card * ∑ k ∈ s, ‖a k‖ ^ 2 := sq_sum_le_card_mul_sum_sq`.
+-/
 theorem nf_norm_sum_sq {E : Type*} [SeminormedAddCommGroup E] {κ : Type*} (s : Finset κ) (a : κ → E) :
     ‖∑ k ∈ s, a k‖ ^ 2 ≤ s.card * ∑ k ∈ s, ‖a k‖ ^ 2 := by
   calc ‖∑ k ∈ s, a k‖ ^ 2 ≤ (∑ k ∈ s, ‖a k‖) ^ 2 := by
@@ -39,6 +47,11 @@ theorem nf_norm_sum_sq {E : Type*} [SeminormedAddCommGroup E] {κ : Type*} (s : 
         exact norm_sum_le _ _
     _ ≤ s.card * ∑ k ∈ s, ‖a k‖ ^ 2 := sq_sum_le_card_mul_sum_sq
 
+/- English proof (translation)
+Break down `le_total G 1 with h | h` into its components or cases. Establish `h1 : G ^ a ≤ 1` using `pow_le_one₀ hG h`. Establish `h2 : 0 ≤ G ^ (2 * N)` using `pow_nonneg hG _`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1 : G ^ a ≤ G ^ (2 * N)` using `pow_le_pow_right₀ h (by omega)`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem nf_pow_le (G : ℝ) (hG : 0 ≤ G) {a N : ℕ} (ha : a ≤ N) : G ^ a ≤ 1 + G ^ (2 * N) := by
   rcases le_total G 1 with h | h
   · have h1 : G ^ a ≤ 1 := pow_le_one₀ hG h

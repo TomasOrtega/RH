@@ -20,6 +20,39 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.WeilCount
 open NumberField IsDedekindDomain Matrix
 
+/- English proof (translation)
+Establish `hev : ∀ j : Fin n, Continuous fun M : Matrix (Fin n) (Fin 1) (Af F ⊗[F] E) => M j 0` using `fun j => (continuous_apply 0).comp (continuous_apply j)`. Establish `hC : IsCompact ((⋃ j, (fun M : Matrix (Fin n) (Fin 1) (Af F ⊗[F] E) => M j 0) '' L) ∪ Set.range fun p : ι × Fin n => (1 : Af F) ⊗ₜ[F] R p.1 p.2)` using `(isCompact_iUnion fun j => hL.image (hev j)).union (Set.finite_range _).isCompact`. Take `⟨d, hd, hden⟩` from `GlobalTheory.T.compact_adelic_denominator F E _ hC`. Take `⟨K₀, hK₀, hco⟩` from `GlobalTheory.T.integer_coordinates_bound τ hτ`. Establish `hint : ∀ ξ : Matrix (Fin n) (Fin 1) E, ξ.map (fun x => (1 : Af F) ⊗ₜ[F] x) ∈ L → ∀ i, ∃ y : 𝓞 E, ((d * d : ℕ) : E) * (R * ξ) i 0 = y`.
+
+Introduce `ξ hξ i`. Use `choose y₁ hy₁ using fun j => hden (R i j) (Or.inr ⟨(i, j), rfl⟩)`. Use `choose y₂ hy₂ using fun j => hden (ξ j 0) (Or.inl (Set.mem_iUnion.2 ⟨j, _, hξ, rfl⟩))`. Use `⟨∑ j, y₁ j * y₂ j, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply, Finset.mul_sum, RingOfIntegers.coe_eq_algebraMap, map_sum]`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, ← RingOfIntegers.coe_eq_algebraMap, ← RingOfIntegers.coe_eq_algebraMap, ← hy₁ j, ← hy₂ j]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hdd : (0 : ℝ) < ((d * d : ℕ) : ℝ)` using `by exact_mod_cast Nat.mul_pos hd hd`.
+
+Establish `hddE : ((d * d : ℕ) : E) ≠ 0` using `by exact_mod_cast (Nat.mul_pos hd hd).ne'`. Use `set D₀ : ℝ := ((d * d : ℕ) : ℝ) with hD₀`. Use `⟨2 * (K₀ * D₀), by positivity, fun s hs U hU hb N hN => ?_⟩` and prove the remaining obligations. Set `e : Matrix (Fin n) (Fin 1) E → ι → 𝓞 E` to `fun ξ i => if h : ∃ y : 𝓞 E, ((d * d : ℕ) : E) * (R * ξ) i 0 = y then h.choose else 0`. Establish `he : ∀ ξ : Matrix (Fin n) (Fin 1) E, ξ.map (fun x => (1 : Af F) ⊗ₜ[F] x) ∈ L → ∀ i, ((e ξ i : 𝓞 E) : E) = ((d * d : ℕ) : E) * (R * ξ) i 0` using `fun ξ hξ i => by`.
+
+Establish `h` using `hint ξ hξ i`. Simplify using `only [e, dif_pos h]`. Conclude with `h.choose_spec.symm`. Set `κ` to `Module.Free.ChooseBasisIndex ℤ (𝓞 E)`. Set `m : Matrix (Fin n) (Fin 1) E → ι × κ → ℤ` to `fun ξ p => (RingOfIntegers.basis E).repr (e ξ p.1) p.2`.
+
+Set `b : ι × κ → ℝ` to `fun p => K₀ * D₀ * s p.1`. Establish `hbp : ∀ p, 0 < b p` using `fun p => mul_pos (by positivity) (hs p.1)`. Set `h : Matrix (Fin n) (Fin 1) E → ℝ≥0∞` to `fun ξ => ENNReal.ofReal (((1 + U ξ) ^ N)⁻¹ * Set.indicator L (fun _ => (1 : ℝ)) (ξ.map (fun x => (1 : Af F) ⊗ₜ[F] x)))`. Establish `hsupp : ∀ ξ, h ξ ≠ 0 → ξ.map (fun x => (1 : Af F) ⊗ₜ[F] x) ∈ L` using `fun ξ h0 => by`. Assume the negation of the conclusion as `hn`.
+
+Conclude with `h0 (by simp [h, Set.indicator_of_notMem hn])`. Establish `hinj : Set.InjOn m {ξ | h ξ ≠ 0}`. Introduce `ξ hξ ξ' hξ' hm`. Establish `hξ1` using `hsupp ξ hξ`. Establish `hξ2` using `hsupp ξ' hξ'`.
+
+Establish `h1 : ∀ i, e ξ i = e ξ' i` using `fun i => (RingOfIntegers.basis E).ext_elem fun k => congrFun hm (i, k)`. Establish `h2 : R * ξ = R * ξ'`. Use extensionality with `i j`. Take `rfl : j = 0` from `Subsingleton.elim _ _`. Use `congrArg (fun y : 𝓞 E => (y : E)) (h1 i)` as an intermediate fact.
+
+Simplify using `only [he ξ hξ1 i, he ξ' hξ2 i] at this`. Conclude with `mul_left_cancel₀ hddE this`. Combine the equalities or inequalities in the displayed calculation. Establish `hh : ∀ ξ, h ξ ≤ ∏ p, ENNReal.ofReal (((1 + |(m ξ p : ℝ)| / b p) ^ 2)⁻¹)`. Introduce `ξ`.
+
+Distinguish the cases in `hξ : ξ.map (fun x => (1 : Af F) ⊗ₜ[F] x) ∈ L`. Rewrite using `[← ENNReal.ofReal_prod_of_nonneg fun p _ => by positivity]`. Use `ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations. Rewrite using `[Set.indicator_of_mem hξ, mul_one]`. Establish `h1 : ∀ p, ((1 + U ξ) ^ 2)⁻¹ ≤ ((1 + |(m ξ p : ℝ)| / b p) ^ 2)⁻¹` using `fun p => by`.
+
+Establish `hUp` using `hU ξ`. Establish `h2 : |(m ξ p : ℝ)| ≤ K₀ * (D₀ * (s p.1 * U ξ))`. Use `hco (e ξ p.1) _ (fun ρ => ?_) p.2` and prove the remaining obligations. Rewrite using `[he ξ hξ p.1, map_mul, norm_mul, map_natCast, Complex.norm_natCast]`. Conclude with `mul_le_mul_of_nonneg_left (hb ξ hξ ρ p.1) hdd.le`.
+
+Establish `h3 : |(m ξ p : ℝ)| / b p ≤ U ξ`. Rewrite using `[div_le_iff₀ (hbp p)]`. Combine the equalities or inequalities in the displayed calculation. Establish `h4 : 0 ≤ |(m ξ p : ℝ)| / b p` using `div_nonneg (abs_nonneg _) (hbp p).le`. Use `inv_anti₀ (by positivity) (pow_le_pow_left₀ (by positivity) (by linarith) 2)` and prove the remaining obligations.
+
+Establish `hcard : Fintype.card (ι × κ) = Fintype.card ι * Module.finrank ℚ E`. Rewrite using `[Fintype.card_prod, ← RingOfIntegers.rank, Module.finrank_eq_card_chooseBasisIndex]`. Establish `h5 : ((1 + U ξ) ^ N)⁻¹ ≤ ∏ _p : ι × κ, ((1 + U ξ) ^ 2)⁻¹`. Establish `hUp` using `hU ξ`. Rewrite using `[Finset.prod_const, Finset.card_univ, hcard, inv_pow, ← pow_mul]`.
+
+Use `inv_anti₀ (by positivity) (pow_le_pow_right₀ (by linarith) ?_)` and prove the remaining obligations. Conclude with `hN`. Conclude with `h5.trans (Finset.prod_le_prod (fun _ _ => by positivity) fun p _ => h1 p)`. Simplify using `[h, Set.indicator_of_notMem hξ]`. Use `(GlobalTheory.T.lattice_sum_decay_bound m b hbp h hinj hh).trans (le_of_eq ?_)` and prove the remaining obligations.
+
+Rewrite using `[← ENNReal.ofReal_prod_of_nonneg fun p _ => by have := hbp p; positivity]`. Use `congr 1`. Rewrite using `[Fintype.prod_prod_type]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `hc : ∀ y : κ, 1 + 2 * b (i, y) = 1 + 2 * (K₀ * D₀) * s i` using `fun y => by simp only [b]; ring`.
+
+Simplify using `only [hc, Finset.prod_const, Finset.card_univ]`. Rewrite using `[← RingOfIntegers.rank, Module.finrank_eq_card_chooseBasisIndex]`.
+-/
 theorem lattice_sum {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {I : Type} [Fintype I] (τ : I → (E →+* ℂ)) (hτ : Function.Surjective fun i => InfinitePlace.mk (τ i))
     {n : ℕ} {ι : Type} [Fintype ι] (R : Matrix ι (Fin n) E) (R' : Matrix (Fin n) ι E) (hR : R' * R = 1)
@@ -120,6 +153,53 @@ theorem lattice_sum {F E : Type} [Field F] [NumberField F] [Field E] [NumberFiel
   simp only [hc, Finset.prod_const, Finset.card_univ]
   rw [← RingOfIntegers.rank, Module.finrank_eq_card_chooseBasisIndex]
 
+/- English proof (translation)
+Introduce `D θ hθ V r Xf Yf hW c hc L hL`. Establish `hCM` using `GlobalTheory.AdelicU.isCMExt_host D`. Establish `hf2 : Module.finrank ℚ D.host.E = 2 * Module.finrank ℚ D.host.F` using `by haveI : Module.Finite D.host.F D.host.E := Module.Finite.of_restrictScalars_finite ℚ _ _`. Rewrite using `[← Module.finrank_mul_finrank ℚ D.host.F D.host.E, hCM.2.2.1, mul_comm]`. Use `set Rx := Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) Xf * V.gram with hRx`.
+
+Use `set Ry := Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) Yf * V.gram with hRy`. Use `set Q := 1 - Xf * Ry - Yf * Rx with hQ`. Set `R : Matrix (Fin r ⊕ Fin r ⊕ Fin V.rank) (Fin V.rank) D.host.E` to `Matrix.fromRows Ry (Matrix.fromRows Rx Q)`. Set `R' : Matrix (Fin V.rank) (Fin r ⊕ Fin r ⊕ Fin V.rank) D.host.E` to `Matrix.fromCols Xf (Matrix.fromCols Yf 1)`. Establish `hR : R' * R = 1`.
+
+Simplify using `only [R, R', Matrix.fromCols_mul_fromRows, hQ, Matrix.one_mul]`. Normalize the expressions using the abelian group laws. Take `⟨K, hK, hsum⟩` from `lattice_sum (F := D.host.F) (tauE D) (GlobalTheory.CMTypePlaces.mk_tauE_bijective D).2 R R' hR L hL`. Use `set Cn : ℝ := 1 + ∑ ρ, ∑ i, ∑ j, ‖tauE D ρ (R i j)‖ with hCn`. Establish `hCn1 : 1 ≤ Cn`.
+
+Establish `: 0 ≤ ∑ ρ, ∑ i, ∑ j, ‖tauE D ρ (R i j)‖` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hCn0 : 0 < Cn` using `by linarith`. Establish `hrow : ∀ ρ i, ∑ j, ‖tauE D ρ (R i j)‖ ≤ Cn` using `fun ρ i => by`. Establish `h1 : ∑ j, ‖tauE D ρ (R i j)‖ ≤ ∑ i, ∑ j, ‖tauE D ρ (R i j)‖` using `Finset.single_le_sum (f := fun i => ∑ j, ‖tauE D ρ (R i j)‖) (fun _ _ => by positivity) (Finset.mem_univ i)`.
+
+Establish `h2 : ∑ i, ∑ j, ‖tauE D ρ (R i j)‖ ≤ ∑ ρ, ∑ i, ∑ j, ‖tauE D ρ (R i j)‖` using `Finset.single_le_sum (f := fun ρ => ∑ i, ∑ j, ‖tauE D ρ (R i j)‖) (fun _ _ => by positivity) (Finset.mem_univ ρ)`. Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨2 * (Fintype.card (Fin r ⊕ Fin r ⊕ Fin V.rank) * Module.finrank ℚ D.host.E), fun N hN => ?_⟩` and prove the remaining obligations. Use `set c₀ : ℝ := min 1 c ^ r with hc₀`. Establish `hc₀p : 0 < c₀` using `pow_pos (lt_min one_pos hc) _`.
+
+Use `set A₁ : ℝ := c₀⁻¹ + K * Cn with hA₁`. Use `set A₂ : ℝ := 1 + K * Cn * c₀⁻¹ with hA₂`. Use `set A₃ : ℝ := 1 + K * Cn with hA₃`. Establish `hA₁p : 0 < A₁` using `by positivity`. Establish `hA₂p : 0 < A₂` using `by positivity`.
+
+Establish `hA₃p : 0 < A₃` using `by positivity`. Use `set f := Module.finrank ℚ D.host.E with hf`. Use `⟨(∏ _i : Fin r, A₁ ^ f) * (∏ _i : Fin r, A₂ ^ f) * ∏ _j : Fin V.rank, A₃ ^ f, fun t ht a ha => ?_⟩` and prove the remaining obligations. Establish `ht0 : ∀ i, 0 < t i` using `ht.1`. Establish `htc : ∀ i, c₀ ≤ t i` using `GlobalTheory.SiegelHt.cone_low hc ht`.
+
+Set `U : Matrix (Fin V.rank) (Fin 1) D.host.E → ℝ` to `fun ξ => ‖fun τ i => compAt θ τ (invPt V a ξ) i 0‖`. Set `s : Fin r ⊕ Fin r ⊕ Fin V.rank → ℝ` to `Sum.elim (fun i => Cn * t i) (Sum.elim (fun i => Cn * (t i)⁻¹) fun _ => Cn)`. Establish `hs : ∀ i, 0 < s i`. Introduce and unpack `(i | i | i)`. Conclude with `mul_pos hCn0 (ht0 i)`.
+
+Conclude with `mul_pos hCn0 (inv_pos.2 (ht0 i))`. Conclude with `hCn0`. Establish `hU : ∀ ξ, 0 ≤ U ξ` using `fun ξ => norm_nonneg _`. Establish `hcoord` using `GlobalTheory.T.inverse_point_torus_scaling D θ hθ V Xf Yf hW t ht0 a ha`. Establish `hent : ∀ ξ ρ j, ‖compAt θ ρ (invPt V a ξ) j 0‖ ≤ U ξ` using `fun ξ ρ j => (norm_le_pi_norm (fun i => compAt θ ρ (invPt V a ξ) i 0) j).trans (norm_le_pi_norm (fun τ i => compAt θ τ (invPt V a ξ) i 0) ρ)`.
+
+Establish `hmul : ∀ ξ ρ i, ‖((R.map (tauE D ρ)) * compAt θ ρ (invPt V a ξ)) i 0‖ ≤ Cn * U ξ` using `fun ξ ρ i => by`. Rewrite using `[Matrix.mul_apply]`. Use `(norm_sum_le _ _).trans ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[norm_mul, Matrix.map_apply]`.
+
+Conclude with `mul_le_mul_of_nonneg_left (hent ξ ρ j) (norm_nonneg _)`. Use `_ = (∑ j, ‖tauE D ρ (R i j)‖) * U ξ := (Finset.sum_mul _ _ _).symm`. Use `_ ≤ Cn * U ξ := mul_le_mul_of_nonneg_right (hrow ρ i) (hU ξ)`. Establish `hb : ∀ ξ, ξ.map (fun x => (1 : Af D.host.F) ⊗ₜ[D.host.F] x) ∈ L → ∀ ρ i, ‖tauE D ρ ((R * ξ) i 0)‖ ≤ s i * U ξ`. Introduce `ξ _ ρ i`.
+
+Take `⟨-, h⟩` from `hcoord ξ`. Take `⟨h1, h2, h3⟩` from `h ρ`. Break down `i with i | i | i` into its components or cases. Establish `e` using `congrFun (congrFun h1 i) 0`. Establish `e2 : (R.map (tauE D ρ) * compAt θ ρ (invPt V a ξ)) (Sum.inl i) 0 = (Ry.map (tauE D ρ) * compAt θ ρ (invPt V a ξ)) i 0` using `rfl`.
+
+Establish `e3 : (R * ξ) (Sum.inl i) 0 = (Ry * ξ) i 0` using `rfl`. Establish `h4` using `hmul ξ ρ (Sum.inl i)`. Rewrite `h4` using `[e2, e, Matrix.diagonal_mul, Matrix.map_apply, norm_mul, norm_inv, Complex.norm_real, Real.norm_of_nonneg (ht0 i).le]`. Rewrite using `[e3]`. Use `show _ ≤ Cn * t i * U ξ`.
+
+Use `ht0 i` as an intermediate fact. Rewrite `h4` using `[inv_mul_le_iff₀ this]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `e` using `congrFun (congrFun h2 i) 0`. Establish `e2 : (R.map (tauE D ρ) * compAt θ ρ (invPt V a ξ)) (Sum.inr (Sum.inl i)) 0 = (Rx.map (tauE D ρ) * compAt θ ρ (invPt V a ξ)) i 0` using `rfl`.
+
+Establish `e3 : (R * ξ) (Sum.inr (Sum.inl i)) 0 = (Rx * ξ) i 0` using `rfl`. Establish `h4` using `hmul ξ ρ (Sum.inr (Sum.inl i))`. Rewrite `h4` using `[e2, e, Matrix.diagonal_mul, Matrix.map_apply, norm_mul, Complex.norm_real, Real.norm_of_nonneg (ht0 i).le]`. Rewrite using `[e3]`. Use `show _ ≤ Cn * (t i)⁻¹ * U ξ`.
+
+Use `ht0 i` as an intermediate fact. Rewrite using `[mul_comm Cn, mul_assoc, inv_mul_eq_div, le_div_iff₀ this, mul_comm]`. Conclude with `h4`. Establish `e` using `congrFun (congrFun h3 i) 0`. Establish `e2 : (R.map (tauE D ρ) * compAt θ ρ (invPt V a ξ)) (Sum.inr (Sum.inr i)) 0 = (Q.map (tauE D ρ) * compAt θ ρ (invPt V a ξ)) i 0` using `rfl`.
+
+Establish `e3 : (R * ξ) (Sum.inr (Sum.inr i)) 0 = (Q * ξ) i 0` using `rfl`. Establish `h4` using `hmul ξ ρ (Sum.inr (Sum.inr i))`. Rewrite `h4` using `[e2, e, Matrix.map_apply]`. Rewrite using `[e3]`. Conclude with `h4`.
+
+Establish `main` using `hsum s hs U hU hb N hN`. Establish `hsame : ∀ ξ : Matrix (Fin V.rank) (Fin 1) D.host.E, (invPt V a ξ).map (finPart D) = ξ.map (fun x => (1 : Af D.host.F) ⊗ₜ[D.host.F] x)` using `fun ξ => (hcoord ξ).1`. Simplify using `only [hsame]`. Use `main.trans (ENNReal.ofReal_le_ofReal ?_)` and prove the remaining obligations. Rewrite using `[← hf2, Fintype.prod_sum_type, Fintype.prod_sum_type]`.
+
+Simplify using `only [s, Sum.elim_inl, Sum.elim_inr]`. Establish `h1 : ∀ i, (1 + K * (Cn * t i)) ^ f ≤ A₁ ^ f * t i ^ f` using `fun i => by`. Rewrite using `[← mul_pow]`. Use `pow_le_pow_left₀ (by have := ht0 i; positivity) ?_ _` and prove the remaining obligations. Establish `: 1 ≤ c₀⁻¹ * t i`.
+
+Rewrite using `[inv_mul_eq_div, one_le_div hc₀p]`. Conclude with `htc i`. Rewrite using `[hA₁]`. Use the polynomial consequences of the given equalities and inequalities. Establish `h2 : ∀ i, (1 + K * (Cn * (t i)⁻¹)) ^ f ≤ A₂ ^ f` using `fun i => by`.
+
+Use `pow_le_pow_left₀ (by have := ht0 i; positivity) ?_ _` and prove the remaining obligations. Establish `: (t i)⁻¹ ≤ c₀⁻¹` using `inv_anti₀ hc₀p (htc i)`. Establish `hKC : 0 < K * Cn` using `by positivity`. Rewrite using `[hA₂]`. Use the polynomial consequences of the given equalities and inequalities.
+
+Combine the equalities or inequalities in the displayed calculation. Use `mul_le_mul (Finset.prod_le_prod (fun i _ => by have := ht0 i; positivity) fun i _ => h1 i) ?_ (by` and prove the remaining obligations. Use `mul_nonneg (Finset.prod_nonneg fun i _ => by have := ht0 i; positivity) (Finset.prod_nonneg fun i _ => by positivity)) (Finset.prod_nonneg fun i _ => by have := ht0 i; positivity)` and prove the remaining obligations. Use `mul_le_mul_of_nonneg_right (Finset.prod_le_prod (fun i _ => by have := ht0 i; positivity) fun i _ => h2 i) (Finset.prod_nonneg fun i _ => by positivity)` and prove the remaining obligations. Use `_ = (∏ _i : Fin r, A₁ ^ f) * (∏ _i : Fin r, A₂ ^ f) * (∏ _j : Fin V.rank, A₃ ^ f) * ∏ i, t i ^ f := by`.
+
+Rewrite using `[Finset.prod_mul_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem count_main : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → ∀ (V : HSp D) {r : ℕ} (Xf Yf : Matrix (Fin V.rank) (Fin r) D.host.E), GlobalTheory.SiegelSet.IsWittFrame D.sp.cm.sig V.gram Xf Yf → ∀ {c : ℝ}, 0 < c → ∀ (L : Set (Matrix (Fin V.rank) (Fin 1) (Af D.host.F ⊗[D.host.F] D.host.E))), IsCompact L → ∃ N₀ : ℕ, ∀ N, N₀ ≤ N → ∃ C : ℝ, ∀ t ∈ GlobalTheory.SiegelSet.cone r c, ∀ a : GA D V, GlobalTheory.SiegelSet.IsTorusElt D.sp.cm.sig V.gram Xf Yf t a → ∑' ξ : Matrix (Fin V.rank) (Fin 1) D.host.E, ENNReal.ofReal (((1 + ‖fun τ i => compAt θ τ (invPt V a ξ) i 0‖) ^ N)⁻¹ * Set.indicator L (fun _ => (1 : ℝ)) ((invPt V a ξ).map (finPart D))) ≤ ENNReal.ofReal (C * ∏ i, t i ^ (2 * Module.finrank ℚ D.host.F)) := by
   intro D θ hθ V r Xf Yf hW c hc L hL
   have hCM := GlobalTheory.AdelicU.isCMExt_host D

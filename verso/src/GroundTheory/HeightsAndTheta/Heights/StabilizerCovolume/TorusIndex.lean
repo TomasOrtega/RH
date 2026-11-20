@@ -44,6 +44,11 @@ namespace Gauss
 
 open Gauss
 
+/- English proof (translation)
+Establish `hcc : (ι.comp (cc : Em →+* Em)) ζ = -ι ζ`. Rewrite using `[RingHom.comp_apply]`. Express the relevant statement in the definitionally equal form `ι (cc ζ) = -ι ζ`. Rewrite using `[cc_ζ, map_neg]`. Apply the tactic sequence `rcases emb_ζ σ with h | h <;> rcases emb_ζ ι with h0 | h0`.
+
+Conclude with `⟨RingHom.id _, ringHom_ext (by rw [RingHom.comp_id, h, h0])⟩`. Conclude with `⟨_, ringHom_ext (by rw [hcc, h, h0, neg_neg])⟩`. Conclude with `⟨_, ringHom_ext (by rw [hcc, h, h0])⟩`. Conclude with `⟨RingHom.id _, ringHom_ext (by rw [RingHom.comp_id, h, h0])⟩`.
+-/
 theorem split (ι σ : Em →+* ℂ) : ∃ t : Em →+* Em, ι.comp t = σ := by
   have hcc : (ι.comp (cc : Em →+* Em)) ζ = -ι ζ := by
     rw [RingHom.comp_apply]
@@ -61,11 +66,19 @@ def isoLine : Submodule (𝓞 Em) (Fin 2 → Em) := Submodule.span (𝓞 Em) {is
 
 def isoFam : Fin 1 → Fin 2 → Em := fun _ => isoVec
 
+/- English proof (translation)
+Use `show Submodule.span (𝓞 Em) (Set.range fun _ : Fin 1 => isoVec) = isoLine`. Rewrite using `[Set.range_const]`. Both sides reduce to the same expression.
+-/
 theorem span_isoFam : Submodule.span (𝓞 Em) (Set.range isoFam) = isoLine := by
   show Submodule.span (𝓞 Em) (Set.range fun _ : Fin 1 => isoVec) = isoLine
   rw [Set.range_const]
   rfl
 
+/- English proof (translation)
+Use `⟨le_rfl, fun _ => Submodule.subset_span rfl, ?_, ?_⟩` and prove the remaining obligations. Use `linearIndependent_unique_iff.2 ?_` and prove the remaining obligations. Introduce `h`. Use `congrFun h 0` as an intermediate fact. Simplify using `[isoFam, isoVec] at this`.
+
+Rewrite using `[span_isoFam, AddSubgroup.relIndex_self]`. Conclude with `one_ne_zero`.
+-/
 theorem isoFam_nz : IsNzFamily isoLine 1 isoFam := by
   refine ⟨le_rfl, fun _ => Submodule.subset_span rfl, ?_, ?_⟩
   · refine linearIndependent_unique_iff.2 ?_
@@ -77,6 +90,9 @@ theorem isoFam_nz : IsNzFamily isoLine 1 isoFam := by
 
 end Gauss
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Gauss.split Gauss.φ₀, Gauss.isoFam_nz⟩`.
+-/
 example : (∀ σ : Gauss.Em →+* ℂ, ∃ t : Gauss.Em →+* Gauss.Em, Gauss.φ₀.comp t = σ) ∧
     IsNzFamily Gauss.isoLine 1 Gauss.isoFam :=
   ⟨Gauss.split Gauss.φ₀, Gauss.isoFam_nz⟩

@@ -14,6 +14,9 @@ section Val
 
 variable {K : Type} [Field K] {Z : Scheme.{0}} [IsIntegral Z] (y : Sp K ⟶ Z)
 
+/- English proof (translation)
+Establish `h : RegAt (below y) (algebraMap _ Z.functionField a)` using `⟨a, rfl⟩`. Rewrite using `[TrueGeo.valAt, dif_pos h]`. Use `congr 1`. Conclude with `IsFractionRing.injective (Z.presheaf.stalk (below y)) Z.functionField h.choose_spec`.
+-/
 theorem valAt_algebraMap (a : Z.presheaf.stalk (below y)) :
     TrueGeo.valAt y (algebraMap _ Z.functionField a) = (Scheme.stalkClosedPointTo y).hom a := by
   have h : RegAt (below y) (algebraMap _ Z.functionField a) := ⟨a, rfl⟩
@@ -21,12 +24,18 @@ theorem valAt_algebraMap (a : Z.presheaf.stalk (below y)) :
   congr 1
   exact IsFractionRing.injective (Z.presheaf.stalk (below y)) Z.functionField h.choose_spec
 
+/- English proof (translation)
+Take `⟨a, rfl⟩` from `hf`. Take `⟨b, rfl⟩` from `hg`. Rewrite using `[← map_mul, valAt_algebraMap, valAt_algebraMap, valAt_algebraMap, map_mul]`.
+-/
 theorem valAt_mul {f g : Z.functionField} (hf : RegAt (below y) f) (hg : RegAt (below y) g) :
     TrueGeo.valAt y (f * g) = TrueGeo.valAt y f * TrueGeo.valAt y g := by
   obtain ⟨a, rfl⟩ := hf
   obtain ⟨b, rfl⟩ := hg
   rw [← map_mul, valAt_algebraMap, valAt_algebraMap, valAt_algebraMap, map_mul]
 
+/- English proof (translation)
+Take `⟨a, ha, rfl⟩` from `hf`. Rewrite using `[valAt_algebraMap]`. Conclude with `(ha.map _).ne_zero`.
+-/
 theorem valAt_ne_zero {f : Z.functionField} (hf : UnitAt (below y) f) : TrueGeo.valAt y f ≠ 0 := by
   obtain ⟨a, ha, rfl⟩ := hf
   rw [valAt_algebraMap]
@@ -34,11 +43,17 @@ theorem valAt_ne_zero {f : Z.functionField} (hf : UnitAt (below y) f) : TrueGeo.
 
 omit [IsIntegral Z] in
 
+/- English proof (translation)
+Introduce `x _` and use `by have : x = IsLocalRing.closedPoint K := Subsingleton.elim (α := PrimeSpectrum K) _ _ rw [this] exact hy`.
+-/
 theorem top_le_of_below {U : Z.Opens} (hy : below y ∈ U) : ⊤ ≤ y ⁻¹ᵁ U := fun x _ => by
   have : x = IsLocalRing.closedPoint K := Subsingleton.elim (α := PrimeSpectrum K) _ _
   rw [this]
   exact hy
 
+/- English proof (translation)
+Rewrite using `[← algebraMap_germ hy, valAt_algebraMap, valR, dif_pos (top_le_of_below y hy)]`. Use `congrArg (fun φ => φ.hom a) (Scheme.germ_stalkClosedPointTo y U hy)` as an intermediate fact. Conclude with `this`.
+-/
 theorem valAt_fnOf {U : Z.Opens} (hy : below y ∈ U) (h : genericPoint Z ∈ U) (a : Γ(Z, U)) :
     TrueGeo.valAt y (fnOf U h a) = valR y U a := by
   rw [← algebraMap_germ hy, valAt_algebraMap, valR, dif_pos (top_le_of_below y hy)]
@@ -47,6 +62,9 @@ theorem valAt_fnOf {U : Z.Opens} (hy : below y ∈ U) (h : genericPoint Z ∈ U)
 
 end Val
 
+/- English proof (translation)
+Rewrite using `[← valR_appLE (spMap φ) x h le_top, valR, dif_pos (show ⊤ ≤ spMap φ ⁻¹ᵁ ⊤ from le_top), valR, dif_pos h]`. Use `congrArg (fun ψ => ψ.hom ((x.appLE U ⊤ h).hom a)) (Scheme.ΓSpecIso_naturality (CommRingCat.ofHom φ))` as an intermediate fact. Use `Eq.trans ?_ this` and prove the remaining obligations. Conclude with `congrArg (fun ψ => (Scheme.ΓSpecIso (CommRingCat.of K)).hom.hom (ψ.hom ((x.appLE U ⊤ h).hom a))) (Scheme.Hom.appLE_eq_app (spMap φ) (U := ⊤))`.
+-/
 theorem valR_spMap_comp {R K : Type} [CommRing R] [CommRing K] (φ : R →+* K) {X : Scheme.{0}}
     (x : Sp R ⟶ X) {U : X.Opens} (h : ⊤ ≤ x ⁻¹ᵁ U) (a : Γ(X, U)) :
     valR (spMap φ ≫ x) U a = φ (valR x U a) := by
@@ -57,6 +75,25 @@ theorem valR_spMap_comp {R K : Type} [CommRing R] [CommRing K] (φ : R →+* K) 
   exact congrArg (fun ψ => (Scheme.ΓSpecIso (CommRingCat.of K)).hom.hom (ψ.hom ((x.appLE U ⊤ h).hom a)))
     (Scheme.Hom.appLE_eq_app (spMap φ) (U := ⊤))
 
+/- English proof (translation)
+Introduce `F _ _ C Y A M L hn hc ⟨_, r, h, hinf, hfin⟩ s hs`. Establish `hD : (((1 : ℕ+) : ℕ) • A.D) = A.D` using `one_nsmul _`. Establish `hval {K : Type} [Field K] (y : Sp K ⟶ Y.X) (i : (L.B.pull M.j).ι) (hi : ⊤ ≤ y ⁻¹ᵁ (L.B.pull M.j).U i) : valR y _ ((Cartier.secPull s M.j).f i) = valR (y ≫ M.j) _ (s.f (i PUnit.unit))` using `valR_appLE y M.j (LB.pull_U M.j i).le hi _`. Use `⟨h.rat (Cartier.secPull s M.j), ⟨?_, fun σ y => ?_, fun v e y => ?_⟩, fun x => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `h.rat (Cartier.secPull s M.j) ^ (A.n : ℕ) ∈ Y.H0 (1 • A.D)`.
+
+Rewrite using `[show (A.n : ℕ) = 1 from congrArg _ hn, pow_one]`. Conclude with `Var.mem_riemannRochSpace_iff_regularAt_everywhere.2 (mem_sections.1 (h.rat_mem _))`. Take `⟨i, hi⟩` from `exists_chart h.isLB (under y)`. Establish `hy' : (y.1 ≫ M.j) ≫ M.p = spMap (σ.comp (algebraMap (𝓞 F) F))`. Rewrite using `[Category.assoc, M.pb.w, ← Category.assoc, y.2, ← Spec.map_comp]`.
+
+Both sides reduce to the same expression. Establish `h1` using `hinf σ y ⟨_, hy'⟩ i _ rfl hi (mem_sections.1 (h.rat_mem (Cartier.secPull s M.j)) _)`. Establish `hi' : (⟨_, hy'⟩ : CxPts M.p _) ∈ ptsIn M.p _ (L.B.U (i PUnit.unit))` using `mem_ptsIn.2 ((LB.pull_U M.j i).le hi)`. Establish `h2` using `hs _ ⟨_, hy'⟩`. Rewrite `h2` using `[(L.φ _).nsq_eq (secVal_mem s) hi']`.
+
+Rewrite `h1` using `[h.rat_mul _ i (gen_mem hi), ratVal_fnOf (mem_ptsIn.2 hi), ev, hval y.1 i (mem_ptsIn.2 hi), hc]`. Use `replace h2 := h1.trans_le h2`. Establish `h3 : (0 : ℝ) ≤ _` using `h1.ge.trans' (by positivity)`. Simplify using `only [Pi.zero_apply, mul_zero, neg_zero, Real.exp_zero, one_mul] at h2 h3`. Unfold `Adl.nrmInf`.
+
+Rewrite using `[hc, hn]`. Simplify using `only [Pi.zero_apply, mul_zero, neg_zero, Real.exp_zero, one_mul, PNat.one_coe, pow_one]`. Conclude with `Real.rpow_le_one h3 h2 (by positivity)`. Take `⟨yt, hyt, hU⟩` from `GlobalTheory.T.valuative_extension_point F Y M v e y`. Take `⟨j, hj⟩` from `exists_chart L.isLB (yt (IsLocalRing.closedPoint e.O))`.
+
+Take `⟨hU1, hU2⟩` from `hU _ hj`. Set `i : (L.B.pull M.j).ι` to `fun _ => j`. Establish `hi : below y.1 ∈ (L.B.pull M.j).U i` using `(LB.pull_U M.j i).ge hU2`. Establish `h1` using `hfin v e y yt i hyt hU1`. Establish `he : A.D.IsEqn (below y.1) (eqn A.D (below y.1))` using `(A.D.exists_isEqn _).choose_spec`.
+
+Establish `hr : A.D.IsEqn (below y.1) (r i)` using `hD ▸ h.isEqn i _ hi`. Establish `hu` using `he.iff_unitAt.1 hr`. Establish `hreg : RegAt (below y.1) (h.rat (Cartier.secPull s M.j) * (eqn A.D (below y.1) : Y.Fn))` using `he.regularAt_iff.1 ((congrArg (fun D => CartierDiv.RegularAt D _ _) hD).mp (mem_sections.1 (h.rat_mem (Cartier.secPull s M.j)) _))`. Simplify using `only [PNat.one_coe, pow_one, Nat.cast_one, one_mul, Pi.zero_apply, mul_zero, sub_zero, Units.val_mul, Units.val_inv_eq_inv_val] at h1`. Rewrite `h1` using `[← div_eq_inv_mul]`.
+
+Unfold `Adl.nrmFin`. Rewrite using `[hn, h1]`. Simplify using `only [PNat.one_coe, pow_one, Nat.cast_one, one_mul, div_one, Real.rpow_one]`. Rewrite using `[Real.exp_log (e.w.pos (valAt_ne_zero _ hu)), ← map_mul]`. Use `(congrArg e.w (valAt_mul _ hreg hu.regAt)).ge.trans ?_` and prove the remaining obligations.
+
+Rewrite using `[← mul_eqn_eq, h.rat_mul _ i (gen_mem hi), valAt_fnOf _ hi, hval _ i (top_le_of_below _ hi), ← hyt, valR_spMap_comp _ _ hU1]`. Conclude with `(e.mem_O _).1 (Subtype.prop _)`. Use `(congrArg (fun D => CartierDiv.GeneratesAt D _ _) hD).symm.to_iff.trans ?_` and prove the remaining obligations. Rewrite using `[h.generatesAt_rat_iff, Cartier.nonzeroLocus_secPull]`. Both sides reduce to the same expression.
+-/
 theorem exists_small_of_smallSec : ∀ (F : Type) [Field F] [NumberField F] (C : CxSt F) (Y : Var F) (A : Adl C Y) (M : TrueGeo.Model Y) (L : HermLB M.p), A.n = 1 → A.ci = 0 → A.Induced M L 1 0 → ∀ s ∈ L.smallSec, ∃ f ∈ A.small 1, ∀ x : Y.X, A.D.GeneratesAt x f ↔ M.j x ∈ ReciprocityTheory.ChartRestriction.G.Out.nonzeroLocus s := by
   intro F _ _ C Y A M L hn hc ⟨_, r, h, hinf, hfin⟩ s hs
   have hD : (((1 : ℕ+) : ℕ) • A.D) = A.D := one_nsmul _

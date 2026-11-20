@@ -22,12 +22,22 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 
 private noncomputable abbrev th (σ : E ≃ₐ[F] E) (n : ℕ) : Monoid.End (AdelicGLn.AdelicGL E n) := mapGL n (galAd σ)
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero => rfl`. Consider the case `succ m ih => rw [pow_succ_apply']`. Conclude with `(UpperTheory.heightOff_mapGL_galAd F E σ n q _).trans ih`.
+-/
 private theorem ht_pow (σ : E ≃ₐ[F] E) (n : ℕ) (q : HeightOneSpectrum (𝓞 F)) (y : AdelicGLn.AdelicGL E n) (m : ℕ) :
     heightOff q ((th σ n ^ m) y) = heightOff q y := by
   induction m with
   | zero => rfl
   | succ m ih => rw [pow_succ_apply']; exact (UpperTheory.heightOff_mapGL_galAd F E σ n q _).trans ih
 
+/- English proof (translation)
+Take `⟨h1, h2, h3⟩` from `UpperTheory.one_le_heightOff_and_submultiplicative F E n q`. Establish `hK` using `AutomorphicForm.one_le_heightConst (K := E) (n := n)`. Proceed by induction on `m with`. Consider the case `zero => rw [twNorm_zero, h2, pow_zero]`. Consider the case `succ m ih`.
+
+Rewrite using `[twNorm_succ]`. Use `(h3 _ _).trans ?_` and prove the remaining obligations. Rewrite using `[ht_pow, pow_succ]`. Establish `a1` using `h1 y`. Establish `a2` using `h1 (twNorm (th σ n) m y)`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem ht_norm (σ : E ≃ₐ[F] E) (n : ℕ) (q : HeightOneSpectrum (𝓞 F)) (y : AdelicGLn.AdelicGL E n) {Y : ℝ}
     (hy : heightOff q y ≤ Y) (m : ℕ) :
     heightOff q (twNorm (th σ n) m y) ≤ (AutomorphicForm.heightConst E n * Y) ^ m := by
@@ -44,6 +54,13 @@ private theorem ht_norm (σ : E ≃ₐ[F] E) (n : ℕ) (q : HeightOneSpectrum (�
     calc _ = heightOff q (twNorm (th σ n) m y) * (AutomorphicForm.heightConst E n * heightOff q y) := by ring
       _ ≤ _ := mul_le_mul ih (mul_le_mul_of_nonneg_left hy (by linarith)) (by positivity) (by linarith)
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero => intro w' h`. Rewrite `h` using `[pow_zero, one_smul]`. Substitute `h` using the available equality. Conclude with `hy`.
+
+Consider the case `succ m ih`. Introduce `w' h`. Rewrite `h` using `[pow_succ', mul_smul]`. Substitute `h` using the available equality. Rewrite using `[pow_succ_apply']`.
+
+Conclude with `UpperTheory.finAt_mapGL_galAd_mem_iwahori F E σ n _ _ (ih _ rfl)`.
+-/
 private theorem iw_pow (σ : E ≃ₐ[F] E) (n : ℕ) (w : HeightOneSpectrum (𝓞 E)) (y : AdelicGLn.AdelicGL E n)
     (hy : finAt w y ∈ GLnLocal.iwahori (w.adicCompletion E) n) (m : ℕ) :
     ∀ w' : HeightOneSpectrum (𝓞 E), w' = (σ ^ m) • w →
@@ -57,6 +74,13 @@ private theorem iw_pow (σ : E ≃ₐ[F] E) (n : ℕ) (w : HeightOneSpectrum (�
     rw [pow_succ_apply']
     exact UpperTheory.finAt_mapGL_galAd_mem_iwahori F E σ n _ _ (ih _ rfl)
 
+/- English proof (translation)
+Establish `hord : orderOf σ = Module.finrank F E`. Rewrite using `[orderOf_eq_card_of_forall_mem_zpowers hσ, IsGalois.card_aut_eq_finrank]`. Proceed by induction on `m with`. Consider the case `zero => exact ⟨1, one_mem _, by rw [twNorm_succ, twNorm_zero, one_mul, mul_one]; rfl⟩`. Consider the case `succ m ih`.
+
+Take `⟨i, hi, e⟩` from `ih (by omega)`. Establish `hne : (σ ^ (m + 1))⁻¹ • w₀ ≠ w₀` using `fun h => by`. Establish `h1` using `UpperTheory.eq_one_of_smul_place_eq_of_completionMap_surjective F E q w₀ hs _ h`. Rewrite `h1` using `[inv_eq_one]`. Conclude with `pow_ne_one_of_lt_orderOf (by omega) (by omega) h1`.
+
+Establish `h2` using `iw_pow σ n _ y (hy _ hne) (m + 1) w₀.1 (by rw [coe_smul_placesOver, smul_inv_smul])`. Conclude with `⟨i * _, mul_mem hi h2, by rw [twNorm_succ, finAt_mul, e, mul_assoc]⟩`.
+-/
 private theorem norm_at [IsGalois F E] (σ : E ≃ₐ[F] E) (hσ : ∀ τ : E ≃ₐ[F] E, τ ∈ Subgroup.zpowers σ) (n : ℕ)
     (q : HeightOneSpectrum (𝓞 F)) (w₀ : PlacesOver E q) (hs : Function.Surjective (completionMap q w₀.1))
     (y : AdelicGLn.AdelicGL E n)
@@ -76,6 +100,17 @@ private theorem norm_at [IsGalois F E] (σ : E ≃ₐ[F] E) (hσ : ∀ τ : E �
     have h2 := iw_pow σ n _ y (hy _ hne) (m + 1) w₀.1 (by rw [coe_smul_placesOver, smul_inv_smul])
     exact ⟨i * _, mul_mem hi h2, by rw [twNorm_succ, finAt_mul, e, mul_assoc]⟩
 
+/- English proof (translation)
+Take `⟨c1, c2⟩` from `UpperTheory.charpoly_local_adelic_conj_diagonal_eq E n γ x`. Establish `h2 : (0 : ℝ) < 2 ^ j` using `by positivity`. Establish `h21 : (1 : ℝ) ≤ 2 ^ j` using `one_le_pow₀ (by norm_num)`. Rewrite `hs` using `[coeff_map, coeff_map]`. Establish `hne : algebraMap F E (p.coeff 0) ≠ 0`.
+
+Introduce `h0`. Take `⟨r, hr⟩` from `hd`. Establish `h1` using `congrArg (fun s : E[X] => s.coeff 0) hr`. Simplify using `only [mul_coeff_zero, coeff_map, h0, zero_mul] at h1`. Establish `h3` using `Matrix.det_eq_sign_charpoly_coeff (γ : Matrix (Fin n) (Fin n) E)`.
+
+Rewrite `h3` using `[h1, mul_zero]`. Conclude with `(Matrix.isUnits_det_units γ).ne_zero h3`. Establish `hs' : ‖algebraMap E (w₀.1.adicCompletion E) (algebraMap F E (p.coeff 0))‖ ≤ (2 ^ j : ℝ)⁻¹`. Rewrite using `[← one_div, le_div_iff₀ h2]`. Conclude with `hs`.
+
+Establish `key` using `UpperTheory.one_le_mul_heightConst_heightOff_pow_of_small_at_place F E n q w₀ (x⁻¹ * AdelicGLn.diagonal E n γ * x) _ _ hne (fun w => by`. Use `UpperTheory.norm_coeff_zero_dvd_charpoly_le_infinitePlace E w n _ _ (AutomorphicForm.one_le_locHeight _) (AutomorphicForm.norm_apply_le_locHeight (infAt w (x⁻¹ * AdelicGLn.diagonal E n γ * x))) ((p.map (algebraMap F E)).map (algebraMap E w.Completion)) ((hp.map _).map _) (by rw [ …` as an intermediate fact. Rewrite using `[coeff_map, coeff_map] at this)` and apply the resulting hypothesis. Use the proof step `(fun w => by`. Use `UpperTheory.norm_coeff_zero_dvd_charpoly_le_adicCompletion E w n _ _ (AutomorphicForm.one_le_locHeight _) (AutomorphicForm.norm_apply_le_locHeight (finAt w (x⁻¹ * AdelicGLn.diagonal E n γ * x))) ((p.map (algebraMap F E)).map (algebraMap E (w.adicCompletion E))) ((hp.map _).map _) …` as an intermediate fact.
+
+Rewrite using `[coeff_map, coeff_map] at this)` and apply the resulting hypothesis. Use the proof step `(fun w => UpperTheory.norm_algebraMap_base_le_one_of_placesOver F E q w₀ w _ (hs'.trans (inv_le_one_of_one_le₀ h21))) hs'`. Rewrite `key` using `[← div_eq_inv_mul, one_le_div h2]`. Then use the resulting hypothesis.
+-/
 private theorem small_false (n : ℕ) (q : HeightOneSpectrum (𝓞 F)) (w₀ : PlacesOver E q) (γ : GL (Fin n) E)
     (x : AdelicGLn.AdelicGL E n) (p : F[X]) (hp : p.Monic)
     (hd : p.map (algebraMap F E) ∣ (γ : Matrix (Fin n) (Fin n) E).charpoly) (j : ℕ)
@@ -111,6 +146,23 @@ private theorem small_false (n : ℕ) (q : HeightOneSpectrum (𝓞 F)) (w₀ : P
     (fun w => UpperTheory.norm_algebraMap_base_le_one_of_placesOver F E q w₀ w _ (hs'.trans (inv_le_one_of_one_le₀ h21))) hs'
   rwa [← div_eq_inv_mul, one_le_div h2] at key
 
+/- English proof (translation)
+Establish `hK` using `AutomorphicForm.one_le_heightConst (K := E) (n := n)`. Take `⟨P, hP⟩` from `charpoly_normGL_lifts σ hσ δ`. Establish `hPm : P.Monic`. Use `Polynomial.monic_of_injective (algebraMap F E).injective ?_` and prove the remaining obligations. Rewrite using `[hP]`.
+
+Conclude with `Matrix.charpoly_monic _`. Establish `hPd : P.natDegree = n`. Rewrite using `[← natDegree_map_eq_of_injective (algebraMap F E).injective P, hP, Matrix.charpoly_natDegree_eq_dim, Fintype.card_fin]`. Use `⟨P, ?_, hP⟩` and prove the remaining obligations. Establish `hN : twNorm (th σ n) (Module.finrank F E) y = x⁻¹ * AdelicGLn.diagonal E n (normGL σ δ) * x`.
+
+Rewrite using `[hy]`. Conclude with `UpperTheory.twNorm_conj_diagonal_eq_conj_normGL F E σ n δ x`. Establish `hH` using `ht_norm σ n q y hht (Module.finrank F E)`. Rewrite `hH` using `[hN]`. Establish `hbad : ∀ p : F[X], p.Monic → p ∣ P → ¬ ‖((p.map (algebraMap F E)).map (algebraMap E (w₀.1.adicCompletion E))).coeff 0‖ * 2 ^ j ≤ 1`.
+
+Introduce `p hp hd h`. Establish `h1` using `small_false n q w₀ (normGL σ δ) x p hp (by rw [← hP]; exact Polynomial.map_dvd _ hd) j h`. Establish `h0` using `(UpperTheory.one_le_heightOff_and_submultiplicative F E n q).1 (x⁻¹ * AdelicGLn.diagonal E n (normGL σ δ) * x)`. Establish `h2` using `pow_le_pow_left₀ (by positivity) (mul_le_mul_of_nonneg_left hH (by linarith : 0 ≤ AutomorphicForm.heightConst E n)) n`. Establish `h3 : (AutomorphicForm.heightConst E n * (AutomorphicForm.heightConst E n * Y) ^ Module.finrank F E) ^ n = (AutomorphicForm.heightConst E n * AutomorphicForm.heightConst E n ^ Module.finrank F E) ^ n * Y ^ (Module.finrank F E * n)`.
+
+Rewrite using `[pow_mul, ← mul_pow, mul_pow _ Y, mul_assoc]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hl0 : 0 < Module.finrank F E` using `Module.finrank_pos`. Take `⟨i, hi, hNi⟩` from `norm_at σ hσ n q w₀ (hs w₀) y hoth (Module.finrank F E - 1) (by omega)`. Rewrite `hNi` using `[show Module.finrank F E - 1 + 1 = Module.finrank F E by omega, hN, hab, mul_assoc _ b i]`.
+
+Establish `hc` using `(UpperTheory.charpoly_local_adelic_conj_diagonal_eq E n (normGL σ δ) x).1 w₀.1`. Rewrite `hc` using `[hNi, ← hP]`. Rewrite using `[hPm.irreducible_iff_natDegree]`. Use `⟨fun h => by rw [h, natDegree_one] at hPd; omega, fun p₁ p₂ h₁ h₂ h12 => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hcon`.
+
+Establish `hd12 : p₁.natDegree + p₂.natDegree = n` using `by rw [← h12, h₁.natDegree_mul h₂] at hPd; exact hPd`. Establish `hinj : ∀ p : F[X], ((p.map (algebraMap F E)).map (algebraMap E (w₀.1.adicCompletion E))).natDegree = p.natDegree` using `fun p => by`. Rewrite using `[natDegree_map_eq_of_injective (RingHom.injective _), natDegree_map_eq_of_injective (RingHom.injective _)]`. Establish `hp1 : 0 < p₁.natDegree`. Conclude with `Nat.pos_of_ne_zero fun h => hcon (Or.inl h)`.
+
+Establish `hp2 : 0 < p₂.natDegree`. Conclude with `Nat.pos_of_ne_zero fun h => hcon (Or.inr h)`. Break down `UpperTheory.norm_coeff_zero_factor_charpoly_iwahori_diagPow_le hA E w₀.1 n ν hν hsum hJ j hj0 a ha (b * i) (mul_mem hb hi) ((p₁.map (algebraMap F E)).map (algebraMap E _)) ((p₂.map (algebraMap F E)).map (algebraMap E _)) ((h₁.map _).map _) ((h₂.map _).map _) (by rw [hinj]; exact …` into its components or cases. Conclude with `hbad p₁ h₁ ⟨p₂, h12.symm⟩ h`. Conclude with `hbad p₂ h₂ ⟨p₁, by rw [mul_comm, h12]⟩ h`.
+-/
 private theorem core [IsGalois F E] (hA : A1) (σ : E ≃ₐ[F] E) (hσ : ∀ τ : E ≃ₐ[F] E, τ ∈ Subgroup.zpowers σ) (n : ℕ) (hn : 0 < n)
     (q : HeightOneSpectrum (𝓞 F)) (w₀ : PlacesOver E q) (hs : ∀ w : PlacesOver E q, Function.Surjective (completionMap q w.1))
     (ν : Fin n → ℤ) (hν : Function.Injective ν) (hsum : ∑ i, ν i = 0)
@@ -174,6 +226,13 @@ private theorem core [IsGalois F E] (hA : A1) (σ : E ≃ₐ[F] E) (hσ : ∀ τ
 
 end
 
+/- English proof (translation)
+Introduce `hA _ F E _ _ _ _ _ _ σ hσ n hn`. Establish `hK` using `AutomorphicForm.one_le_heightConst (K := E) (n := n)`. Use `⟨(AutomorphicForm.heightConst E n * AutomorphicForm.heightConst E n ^ Module.finrank F E) ^ n, Module.finrank F E * n, ?_⟩` and prove the remaining obligations. Introduce `q w₀ hs ν hν hsum hJ j Y hY hj f hf δ x y hy hfy`. Take `⟨hht, ⟨a, ha, b, hb, hab⟩, hoth⟩` from `hf y hfy`.
+
+Establish `hj0 : 0 < j`. Break down `Nat.eq_zero_or_pos j with rfl | h` into its components or cases. It suffices to derive a contradiction. Establish `h1 : 1 ≤ (AutomorphicForm.heightConst E n * AutomorphicForm.heightConst E n ^ Module.finrank F E) ^ n * Y ^ (Module.finrank F E * n)` using `one_le_mul_of_one_le_of_one_le (one_le_pow₀ (one_le_mul_of_one_le_of_one_le hK (one_le_pow₀ hK))) (one_le_pow₀ hY)`. Rewrite `hj` using `[pow_zero]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `h`. Conclude with `core hA σ hσ n hn q w₀ hs ν hν hsum hJ j hj0 Y hY hj δ _ _ hy hht a b ha hb hab hoth`.
+-/
 theorem UpperTheory.ConvolutionTheory.G.firstGeometricCondition_of_properties :
     A1 → N5 → EllipticityFromProductFormula := by
   intro hA _ F E _ _ _ _ _ _ σ hσ n hn

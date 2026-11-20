@@ -18,6 +18,11 @@ noncomputable local instance clmNACG : NormedAddCommGroup (B.Mat k r →L[ℝ] E
 noncomputable local instance clmNS : NormedSpace ℝ (B.Mat k r →L[ℝ] E) :=
   ContinuousLinearMap.toNormedSpace
 
+/- English proof (translation)
+Apply the tactic sequence `have h1 : ContDiffOn ℝ 1 (fun y => fderiv ℝ f' y) U := hc.fderiv_of_isOpen hU (by first | norm_num | rfl | simp)`. Establish `hd : DifferentiableAt ℝ (fderiv ℝ f') g` using `(h1.differentiableOn one_ne_zero).differentiableAt (hU.mem_nhds hg)`. Establish `hA : DifferentiableAt ℝ (fun y => A y) g` using `A.differentiableAt`. Use `⟨hd.clm_apply hA, fun V => ?_⟩` and prove the remaining obligations. Establish `key` using `(hd.hasFDerivAt.clm_apply A.hasFDerivAt).fderiv`.
+
+Conclude with `(congrArg (fun L => L V) key).trans rfl`.
+-/
 lemma fderiv_apply_lin {f' : B.Mat k r → E} {U : Set (B.Mat k r)} (hU : IsOpen U)
     (hc : ContDiffOn ℝ 2 f' U) {g : B.Mat k r} (hg : g ∈ U) (A : B.Mat k r →L[ℝ] B.Mat k r) :
     DifferentiableAt ℝ (fun y => fderiv ℝ f' y (A y)) g ∧
@@ -32,6 +37,15 @@ lemma fderiv_apply_lin {f' : B.Mat k r → E} {U : Set (B.Mat k r)} (hU : IsOpen
   have key := (hd.hasFDerivAt.clm_apply A.hasFDerivAt).fderiv
   exact (congrArg (fun L => L V) key).trans rfl
 
+/- English proof (translation)
+Establish `hdx : ∀ (x : Bool × B.Mat k r), B.inLie k r x.2 → ∀ {f f' : B.Mat k r → E} {U : Set (B.Mat k r)}, IsOpen U → (∀ y ∈ U, y ∈ B.GV k r → f y = f' y) → ∀ y ∈ U, y ∈ B.GV k r → DifferentiableAt ℝ f' y → Dx x f y = fderiv ℝ f' y (dirL x y)`. Introduce `x hx f f' U hU hff y hyU hy hd`. Rewrite using `[Dx_eq, dirL_apply]`. Conclude with `(Dx_hasDerivAt hx hU hyU hy hd hff).deriv`. Take `⟨U, h', hU, hgU, hc, heq⟩` from `hh g hg`.
+
+Establish `hc2 : ContDiffOn ℝ 2 h' U` using `by exact_mod_cast hc`. Establish `hdiff : ∀ y ∈ U, DifferentiableAt ℝ h' y` using `fun y hy => (hc2.differentiableOn (by norm_num)).differentiableAt (hU.mem_nhds hy)`. Take `⟨hdL, hfL⟩` from `fderiv_apply_lin hU hc2 hgU (dirL (true, Y))`. Take `⟨hdR, hfR⟩` from `fderiv_apply_lin hU hc2 hgU (dirL (false, X))`. Establish `e1 : Dx (false, X) (Dx (true, Y) h) g = Dx (false, X) (fun y => fderiv ℝ h' y (dirL (true, Y) y)) g` using `Dx_congr_loc (x := (false, X)) hX hU (fun y hy hyU => hdx (true, Y) hY hU heq y hyU hy (hdiff y hyU)) g hg hgU`.
+
+Establish `e2 : Dx (true, Y) (Dx (false, X) h) g = Dx (true, Y) (fun y => fderiv ℝ h' y (dirL (false, X) y)) g` using `Dx_congr_loc (x := (true, Y)) hY hU (fun y hy hyU => hdx (false, X) hX hU heq y hyU hy (hdiff y hyU)) g hg hgU`. Rewrite using `[e1, e2, hdx (false, X) hX hU (fun _ _ _ => rfl) g hgU hg hdL, hdx (true, Y) hY hU (fun _ _ _ => rfl) g hgU hg hdR, hfL, hfR]`. Establish `hsymm : IsSymmSndFDerivAt ℝ h' g` using `(hc2.contDiffAt (hU.mem_nhds hgU)).isSymmSndFDerivAt (by simp)`. Rewrite using `[show dirL (true, Y) (dirL (false, X) g) = dirL (false, X) (dirL (true, Y) g) by`. Simplify using `[dirL_apply, dirv, mul_assoc]]`.
+
+Use `congr 1`. Conclude with `hsymm _ _`.
+-/
 lemma swap1 {X Y : B.Mat k r} (hX : B.inLie k r X) (hY : B.inLie k r Y) {h : B.Mat k r → E}
     (hh : B.CkOn 2 (B.GV k r) h) {g : B.Mat k r} (hg : g ∈ B.GV k r) :
     Dx (false, X) (Dx (true, Y) h) g = Dx (true, Y) (Dx (false, X) h) g := by
@@ -64,28 +78,46 @@ lemma swap1 {X Y : B.Mat k r} (hX : B.inLie k r X) (hY : B.inLie k r Y) {h : B.M
   congr 1
   exact hsymm _ _
 
+/- English proof (translation)
+Conclude with `Formalism.FourierDecayAlt.P.BetaSesquilinearity.CkOn_Dw hw (Formalism.FourierDecayAlt.P.BetaSesquilinearity.sCkOn_mono (by exact_mod_cast hmn) hf)`.
+-/
 lemma ckDw {w : List (Bool × B.Mat k r)} (hw : ∀ x ∈ w, B.inLie k r x.2) {f : B.Mat k r → E} {m n : ℕ}
     (hf : B.CkOn (n : ℕ∞) (B.GV k r) f) (hmn : m + w.length ≤ n) : B.CkOn (m : ℕ∞) (B.GV k r) (Dw w f) := by
   exact Formalism.FourierDecayAlt.P.BetaSesquilinearity.CkOn_Dw hw (Formalism.FourierDecayAlt.P.BetaSesquilinearity.sCkOn_mono (by exact_mod_cast hmn) hf)
 
+/- English proof (translation)
+Simplify using `[wL]`.
+-/
 lemma len_wL (u : List (B.Mat k r)) : (wL u).length = u.length := by
   simp [wL]
 
+/- English proof (translation)
+Simplify using `[wR]`.
+-/
 lemma len_wR (v : List (B.Mat k r)) : (wR v).length = v.length := by
   simp [wR]
 
+/- English proof (translation)
+Introduce `x hx`. Simplify using `only [wL, List.mem_map] at hx`. Take `⟨X, hX, rfl⟩` from `hx`. Conclude with `hu X hX`.
+-/
 lemma lie_wL {u : List (B.Mat k r)} (hu : ∀ X ∈ u, B.inLie k r X) : ∀ x ∈ wL u, B.inLie k r x.2 := by
   intro x hx
   simp only [wL, List.mem_map] at hx
   obtain ⟨X, hX, rfl⟩ := hx
   exact hu X hX
 
+/- English proof (translation)
+Introduce `x hx`. Simplify using `only [wR, List.mem_map] at hx`. Take `⟨X, hX, rfl⟩` from `hx`. Conclude with `hv X hX`.
+-/
 lemma lie_wR {v : List (B.Mat k r)} (hv : ∀ X ∈ v, B.inLie k r X) : ∀ x ∈ wR v, B.inLie k r x.2 := by
   intro x hx
   simp only [wR, List.mem_map] at hx
   obtain ⟨X, hX, rfl⟩ := hx
   exact hv X hX
 
+/- English proof (translation)
+The claim follows from `| [], _, _, _, _, _ => rfl | Y :: u, hu, h, hh, g, hg => by have hY : B.inLie k r Y := hu Y (by simp) have hu' : ∀ Z ∈ u, B.inLie k r Z := fun Z hZ => hu Z (by simp [hZ]) show Dx (false, X) (Dx (true, Y) (Dw (wL u) h)) g = Dx (true, Y) (Dw (wL u) (Dx (false, X) h)) g have h2 : B. …`.
+-/
 lemma moveR {X : B.Mat k r} (hX : B.inLie k r X) : ∀ (u : List (B.Mat k r)), (∀ Y ∈ u, B.inLie k r Y) →
     ∀ {h : B.Mat k r → E}, B.CkOn ((u.length + 1 : ℕ) : ℕ∞) (B.GV k r) h →
     ∀ g ∈ B.GV k r, Dx (false, X) (Dw (wL u) h) g = Dw (wL u) (Dx (false, X) h) g
@@ -101,6 +133,9 @@ lemma moveR {X : B.Mat k r} (hX : B.inLie k r X) : ∀ (u : List (B.Mat k r)), (
       sCkOn_mono (by exact_mod_cast (by simp : u.length + 1 ≤ (Y :: u).length + 1)) hh
     exact Dx_congr (x := (true, Y)) hY (moveR hX u hu' hh') g hg
 
+/- English proof (translation)
+The claim follows from `| [], _, _, _, _ => rfl | X :: w, hw, hm, g, hg => by have hX : B.inLie k r X := hw X (by simp) have hw' : ∀ Z ∈ w, B.inLie k r Z := fun Z hZ => hw Z (by simp [hZ]) have hm' : u.length + v.length + w.length ≤ m := by simp at hm; omega have e1 : ∀ F : B.Mat k r → E, Formalism.REAL …`.
+-/
 lemma rightRegularAction_list_dLR_eq_append {f : B.Mat k r → E} {m : ℕ} (hf : B.CkOn (m : ℕ∞) (B.GV k r) f) (u v : List (B.Mat k r))
     (hu : ∀ X ∈ u, B.inLie k r X) (hv : ∀ X ∈ v, B.inLie k r X) :
     ∀ w : List (B.Mat k r), (∀ X ∈ w, B.inLie k r X) → u.length + v.length + w.length ≤ m →
@@ -129,6 +164,9 @@ end PI.UnitaryGroupMassFormula.UsCost.GrothendieckCommutativity
 
 namespace PI.UnitaryGroupMassFormula.UsCost
 
+/- English proof (translation)
+Unfold `CommLR`. Introduce `k r E _ _ f m hf u v w hu hv hw hlen g hg`. Conclude with `GrothendieckCommutativity.rightRegularAction_list_dLR_eq_append hf u v hu hv w hw hlen g hg`.
+-/
 theorem commLR : CommLR := by
   unfold CommLR
   intro k r E _ _ f m hf u v w hu hv hw hlen g hg

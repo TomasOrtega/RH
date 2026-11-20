@@ -16,6 +16,29 @@ noncomputable section
 
 namespace GlobalTheory.ArchBij
 
+/- English proof (translation)
+Introduce `F _ _ κ _ e ei ev hSB hfix he hbij hne`. Establish `hstdSB : ∀ v, stdInd F κ v ∈ SB (κ → Fv F v)` using `fun v => GlobalTheory.StdVacuum.indicator_mem_SB v`. Establish `hstd0 : ∀ v, stdInd F κ v ≠ 0`. Introduce `v h0`. Establish `h` using `congrFun h0 0`.
+
+Establish `hm : (0 : κ → Fv F v) ∈ {x : κ → Fv F v | ∀ i, x i ∈ v.adicCompletionIntegers F}` using `fun i => zero_mem (v.adicCompletionIntegers F)`. Simplify using `only [stdInd, Set.indicator_of_mem hm, Pi.one_apply, Pi.zero_apply] at h`. Conclude with `one_ne_zero h`. Prove the components needed by the constructor for the conclusion. Use `(injective_iff_map_eq_zero ei).2 fun f hf => ?_` and prove the remaining obligations.
+
+Establish `hmem : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f (stdInd F κ) ∈ schA F κ` using `GlobalTheory.TensUniq.pure_mem_schA f (stdInd F κ) hstdSB (Filter.Eventually.of_forall fun _ => rfl)`. Establish `h1 : e (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f (stdInd F κ)) = e 0`. Rewrite using `[he f (stdInd F κ) hstdSB (Filter.Eventually.of_forall fun _ => rfl), hf, map_zero]`. Use function extensionality and compare the values at `x`. Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure]`.
+
+Establish `h2 : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f (stdInd F κ) = 0` using `hbij.injOn hmem (schA F κ).zero_mem h1`. Conclude with `GlobalTheory.EvInj.eq_zero_of_pure_eq_zero f (stdInd F κ) hstd0 (Filter.Eventually.of_forall fun _ => rfl) h2`. Introduce `h`. Set `Φ₁ : ∀ v : Pl F, (κ → Fv F v) → ℂ` to `fun w => ev w (stdInd F κ w)`. Establish `hΦ₁SB : ∀ v, Φ₁ v ∈ SB (κ → Fv F v)` using `fun v => hSB v _ (hstdSB v)`.
+
+Establish `hΦ₁std : ∀ᶠ v in Filter.cofinite, Φ₁ v = Set.indicator {x | ∀ i, x i ∈ v.adicCompletionIntegers F} 1` using `hfix`. Establish `h₁ : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure h Φ₁ ∈ schA F κ` using `GlobalTheory.TensUniq.pure_mem_schA h Φ₁ hΦ₁SB hΦ₁std`. Take `⟨Ψ, hΨ, heΨ⟩` from `hbij.surjOn h₁`. Take `⟨T, m, f, φ, hφSB, hφstd, hsum⟩` from `GlobalTheory.SchADecomp.exists_sum_pure F κ Ψ hΨ`. Establish `hvac : ∀ i, ∀ᶠ v in Filter.cofinite, φ i v = stdInd F κ v` using `fun i => T.eventually_cofinite_notMem.mono fun v hT => hφstd i v hT`.
+
+Establish `hid : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure h Φ₁ = ∑ i, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (ei (f i)) fun v => ev v (φ i v)`. Rewrite using `[← heΨ, hsum, map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => he (f i) (φ i) (hφSB i) (hvac i)`. Take `⟨y, hy⟩` from `GlobalTheory.ArchSurj.exists_point_ne_zero Φ₁ hne hΦ₁std`. Use `set c : ℂ := ∏ᶠ v, Φ₁ v (fun j => y j v) with hc`.
+
+Establish `hc0 : c ≠ 0` using `finprod_induction (fun a : ℂ => a ≠ 0) one_ne_zero (fun _ _ => mul_ne_zero) hy`. Use `set cs : Fin m → ℂ := fun i => ∏ᶠ v, ev v (φ i v) (fun j => y j v) with hcs`. Use `⟨∑ i, (cs i / c) • f i, ?_⟩` and prove the remaining obligations. Use `DFunLike.ext _ _ fun x => ?_` and prove the remaining obligations. Set `a : κ → AF F` to `fun j => ((InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (x j), y j)`.
+
+Establish `hI : (fun j => evI F (a j)) = x`. Use function extensionality and compare the values at `j`. Conclude with `(InfiniteAdeleRing.ringEquiv_mixedSpace F).apply_symm_apply (x j)`. Establish `hx : h x * c = ∑ i, ei (f i) x * cs i`. Use `congrFun hid a` as an intermediate fact.
+
+Rewrite `this` using `[Finset.sum_apply]`. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure, hI] at this`. Conclude with `this`. Rewrite using `[map_sum]`. Establish `hs : (∑ i, ei ((cs i / c) • f i)) x = ∑ i, (cs i / c) * ei (f i) x`.
+
+Rewrite using `[SchwartzMap.sum_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul]`. Both sides reduce to the same expression. Rewrite using `[hs]`.
+
+Apply `mul_right_cancel₀ hc0` to reduce the goal to its premises. Rewrite using `[hx, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts.
+-/
 theorem bijective_arch : ∀ {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] (e : ((κ → AF F) → ℂ) →ₗ[ℂ] ((κ → AF F) → ℂ)) (ei : SInf F κ →L[ℂ] SInf F κ)
     (ev : ∀ v : Pl F, ((κ → Fv F v) → ℂ) →ₗ[ℂ] (κ → Fv F v) → ℂ),
     (∀ v, ∀ φ ∈ SB (κ → Fv F v), ev v φ ∈ SB (κ → Fv F v)) →

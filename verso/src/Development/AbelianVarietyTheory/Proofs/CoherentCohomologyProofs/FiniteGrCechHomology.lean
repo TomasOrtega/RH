@@ -8,6 +8,9 @@ open CategoryTheory CategoryTheory.Limits DirectSum MvPolynomial TensorProduct G
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `ι _ _ R _ _ M _ _ _ _ ℳ _ _ hM n p`. Establish `h₀ : Module.Finite R (ℳ n)` using `finite_piece_of_polyGradedSMul ι R M ℳ hM n`. Establish `h₁ : Module.Finite R ((grCube ι ℳ n).obj ∅)` using `Module.Finite.equiv (homLocEmptyEquiv ι ℳ n)`. Conclude with `finite_cechHomology_of_finite_cubeHomology ι R (grCube ι ℳ n) h₁ (GlobalTheory.T.finite_homology_cubeComplex_gradedModule ι R M ℳ hM n) p`.
+-/
 theorem finite_grCech_homology : ∀ (ι : Type) [LinearOrder ι] [Fintype ι] (R : Type) [CommRing R]
     [IsNoetherianRing R] (M : Type) [AddCommGroup M] [Module R M] [Module (MvPolynomial ι R) M]
     [IsScalarTower R (MvPolynomial ι R) M] (ℳ : ℤ → Submodule R M) [PolyGradedSMul ι ℳ]

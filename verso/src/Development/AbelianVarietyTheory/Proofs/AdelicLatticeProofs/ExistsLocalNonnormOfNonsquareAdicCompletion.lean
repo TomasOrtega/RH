@@ -11,6 +11,15 @@ namespace GlobalTheory.QNorm
 
 open NumberField IsDedekindDomain in
 open scoped WithZero in
+/- English proof (translation)
+Establish `hpq : p ≠ 0 ∨ q ≠ 0`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Rewrite `h` using `[hc.1, hc.2]`. Simplify using `only [ne_eq, OfNat.ofNat_ne_zero, not_false_eq_true, zero_pow, mul_zero, sub_self, mul_eq_zero, pow_eq_zero_iff] at h`.
+
+The claim follows by propositional logic. Take `⟨n, hn⟩` from `hΔ p q hpq`. Rewrite `hn` using `[← h, map_mul, map_pow]`. Establish `hws : w s = WithZero.exp (w s).log` using `(WithZero.exp_log ((Valuation.ne_zero_iff w).mpr hs)).symm`. Rewrite `hn` using `[hws, ← WithZero.exp_nsmul]`.
+
+Use `⟨n - (w s).log, ?_⟩` and prove the remaining obligations. Establish `key : w y = WithZero.exp (2 * n) * WithZero.exp (-(2 • (w s).log))`. Rewrite using `[← hn, mul_assoc, ← WithZero.exp_add, add_neg_cancel, WithZero.exp_zero, mul_one]`. Rewrite using `[key, ← WithZero.exp_add]`. Use `congr 1`.
+
+Rewrite using `[nsmul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem exists_even_valuation_of_mul_sq_eq_norm {K : Type} [Field K]
     (w : Valuation K (WithZero (Multiplicative ℤ))) (Δ y s p q : K)
     (hΔ : _root_.GlobalTheory.QNorm.EvenNorms w Δ) (hs : s ≠ 0) (hy : y ≠ 0)
@@ -38,6 +47,19 @@ private theorem exists_even_valuation_of_mul_sq_eq_norm {K : Type} [Field K]
 
 open NumberField IsDedekindDomain in
 open scoped WithZero in
+/- English proof (translation)
+Introduce and unpack `⟨a, b, hab⟩`. Establish `main : ∀ e : K, e ^ 2 = c ^ 2 → a + e ≠ 0 → False`. Introduce `e he hs`. Establish `hc2 : y = e ^ 2 - δ * Δ * d ^ 2` using `by rw [he]; exact hc`. Take `⟨n, hn⟩` from `exists_even_valuation_of_mul_sq_eq_norm w Δ y (a + e) (a * e + y) (δ * b * d) hΔ hs hy (by linear_combination (e ^ 2 - y) * hab + δ * b ^ 2 * hc2)`.
+
+Conclude with `hodd n hn`. Distinguish the cases in `h1 : a + c = 0`. Distinguish the cases in `h2 : a + -c = 0`. Establish `hca : c = -a` using `by linear_combination h1`. Establish `hb : δ * b ^ 2 = δ * (Δ * d ^ 2)`.
+
+Rewrite `hc` using `[hca]`. Take the linear combination `hab - hc`. Establish `hb' : b ^ 2 = Δ * d ^ 2` using `mul_left_cancel₀ hδ hb`. Distinguish the cases in `hd : d = 0`. Rewrite `hb'` using `[hd]`.
+
+Establish `hb0 : b = 0` using `by simpa using hb'`. Rewrite `hab` using `[hb0]`. Take `⟨n, hn⟩` from `exists_even_valuation_of_mul_sq_eq_norm w Δ y 1 a 0 hΔ one_ne_zero hy (by rw [hab]; ring)`. Conclude with `hodd n hn`. Take `⟨n, hn⟩` from `hΔ (b / d) 1 (Or.inr one_ne_zero)`.
+
+Establish `hz : (b / d) ^ 2 - Δ * 1 ^ 2 = 0`. Rewrite using `[div_pow, hb']`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite `hn` using `[hz, map_zero]`.
+
+Conclude with `WithZero.exp_ne_zero hn.symm`. Conclude with `main (-c) (by ring) h2`. Conclude with `main c rfl h1`.
+-/
 private theorem not_norm_of_odd_valuation_of_norm_mul {K : Type} [Field K]
     (w : Valuation K (WithZero (Multiplicative ℤ))) (δ Δ y c d : K) (hδ : δ ≠ 0)
     (hΔ : _root_.GlobalTheory.QNorm.EvenNorms w Δ) (hy : y ≠ 0)
@@ -77,6 +99,27 @@ private theorem not_norm_of_odd_valuation_of_norm_mul {K : Type} [Field K]
 open NumberField IsDedekindDomain in
 open scoped WithZero in
 
+/- English proof (translation)
+Introduce `F _ _ v δ hδ hns`. Take `⟨c, hc0, hcases⟩` from `_root_.GlobalTheory.QNorm.exists_normal_form_of_not_isSquare F v δ hδ hns`. Establish `hδ' : δ * c ^ 2 ≠ 0` using `mul_ne_zero hδ (pow_ne_zero 2 hc0)`. It suffices to establish `h : ∃ x : v.adicCompletion F, x ≠ 0 ∧ ¬ ∃ a b : v.adicCompletion F, x = a ^ 2 - δ * c ^ 2 * b ^ 2 by`. Take `⟨x, hx0, hx⟩` from `h`.
+
+Use `⟨x, hx0, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨a, b, hab⟩`. Use `hx ⟨a, b / c, ?_⟩` and prove the remaining obligations. Rewrite using `[hab]`. Clear the denominators using the available nonvanishing facts.
+
+Take `⟨Δ, hΔ, hΔ1, hΔ4⟩` from `_root_.GlobalTheory.QNorm.exists_evenNorms_unit F v`. Establish `hΔ0 : Δ ≠ 0`. Introduce `h`. Rewrite `hΔ1` using `[h, map_zero]`. Conclude with `zero_ne_one hΔ1`.
+
+Break down `hcases with ⟨n, hn⟩ | ⟨h1, h4, n, hn⟩ | hE` into its components or cases. Use `⟨-(δ * c ^ 2 * Δ), neg_ne_zero.mpr (mul_ne_zero hδ' hΔ0), not_norm_of_odd_valuation_of_norm_mul Valued.v (δ * c ^ 2) Δ _ 0 1 hδ' hΔ (neg_ne_zero.mpr (mul_ne_zero hδ' hΔ0)) ?_ (by ring)⟩` and prove the remaining obligations. Introduce `m hm`. Rewrite `hm` using `[Valuation.map_neg, map_mul, hn, hΔ1, mul_one, WithZero.exp_inj]`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hy : (1 : v.adicCompletion F) - δ * c ^ 2 * Δ = -((δ * c ^ 2 - 1) + δ * c ^ 2 * (Δ - 1))`. Expand and normalize the polynomial expressions, which then agree. Establish `hwy : Valued.v ((1 : v.adicCompletion F) - δ * c ^ 2 * Δ) = WithZero.exp (2 * n + 1)`. Rewrite using `[hy, Valuation.map_neg, Valuation.map_add_eq_of_lt_left _ (by rw [map_mul, h1, one_mul]; exact lt_of_le_of_lt hΔ4 h4), hn]`. Establish `hy0 : (1 : v.adicCompletion F) - δ * c ^ 2 * Δ ≠ 0`.
+
+Introduce `h`. Rewrite `hwy` using `[h, map_zero]`. Conclude with `WithZero.exp_ne_zero hwy.symm`. Use `⟨_, hy0, not_norm_of_odd_valuation_of_norm_mul Valued.v (δ * c ^ 2) Δ _ 1 1 hδ' hΔ hy0 ?_ (by ring)⟩` and prove the remaining obligations. Introduce `m hm`.
+
+Rewrite `hm` using `[hwy, WithZero.exp_inj]`. Use linear arithmetic over natural numbers and integers. Take `⟨⟨π, -, hπ⟩, -⟩` from `_root_.GlobalTheory.QNorm.exists_uniformizer_and_residue_representatives F v`. Establish `hx0 : algebraMap F (v.adicCompletion F) π ≠ 0`. Introduce `h`.
+
+Rewrite `hπ` using `[h, map_zero]`. Conclude with `WithZero.exp_ne_zero hπ.symm`. Use `⟨_, hx0, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨a, b, hab⟩`. Establish `hab' : a ≠ 0 ∨ b ≠ 0`.
+
+Assume the negation of the conclusion as `h`. Use `push_neg at h`. Rewrite `hab` using `[h.1, h.2]`. Apply `hx0` to reduce the goal to its premises. Rewrite using `[hab]`.
+
+Expand and normalize the polynomial expressions, which then agree. Take `⟨m, hm⟩` from `hE a b hab'`. Rewrite `hm` using `[← hab, hπ, WithZero.exp_inj]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem _root_.GlobalTheory.QNorm.exists_local_nonnorm : ∀ (F : Type) [Field F] [NumberField F]
     (v : HeightOneSpectrum (𝓞 F)) (δ : v.adicCompletion F), δ ≠ 0 → ¬ IsSquare δ →
     ∃ x : v.adicCompletion F, x ≠ 0 ∧ ¬ ∃ a b : v.adicCompletion F, x = a ^ 2 - δ * b ^ 2 := by

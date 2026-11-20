@@ -6,6 +6,15 @@ open NumberField Classical Formalism.BasicNotions Formalism.MainNotions Formalis
 open scoped BigOperators
 
 open GlobalTheory.NormSum.Term in
+/- English proof (translation)
+Introduce `D hI S dl hL cc hcc δ t0 hC ht a b r l _ lam β hb hloc n hn hsp C hC0 G hG mon`. Substitute `hcc` using the available equality. Take `⟨k, c, s, hs, hr, hF⟩` from `hG.out`. Establish `hp : l.Prime` using `Fact.out`. Establish `hp0 : (0 : ℝ) < l` using `by exact_mod_cast hp.pos`.
+
+Establish `hN` using `norm_natCast_inv l hn.ne'`. Apply the tactic sequence `have he0 : 0 ≤ (if l = D.host.d then (l : ℝ) ^ (((mon.degree : ℕ) : ℝ) / 4) else 1) := by split_ifs <;> positivity`. Establish `hmon : (MvPolynomial.monomial mon 1 : MvPolynomial (GL3Theta.Idx D a b) ℂ) = MvPolynomial.map (Int.castRingHom ℂ) (MvPolynomial.monomial mon 1)`. Rewrite using `[MvPolynomial.map_monomial, map_one (Int.castRingHom ℂ)]`. Establish `hcol` using `rpow_collect hp0 (l = D.host.d) mon.degree 0 (dl l) (padicValNat l n : ℝ)`.
+
+Rewrite `hcol` using `[pow_zero, one_mul, Nat.cast_zero, zero_mul, add_zero]`. Rewrite using `[← hcol, mul_left_comm, hmon, hF]`. Use `bd_applyAt0 (lam := lam) D (by positivity) _ _ (MvPolynomial.isHomogeneous_monomial _ rfl) fun f => ?_` and prove the remaining obligations. Use `bd_coord D (by positivity) (by positivity) (tor0 D ⊤ δ) (fun _ _ => rfl) (YYl D (stdL D a) (stdL D b)) (hL.2.2.2.2 l lam a b) _ (fun y hy => ?_) f` and prove the remaining obligations. Rewrite using `[iteratedFDeriv_comb _ (fun i => (c i : ℂ)) (fun i => U D (tor0 D ⊤ δ) (s i) (pullB D (tor0 D ⊤ δ) β (GL3Theta.th0 (lamOf D ⊤ δ) t0))) fun i => contDiff_U_pullB D _ β _ (differentiable_evenTheta D ⊤ δ t0 hC) (s i) _]`.
+
+Use `Bd.sum (by positivity) _ _ fun i _ => ?_` and prove the remaining obligations. Use `(Bd.coe (hr i)).mul ?_` and prove the remaining obligations. Use `GlobalTheory.T.jets_torsion_translates_cm_theta_product D hI l lam ⊤ δ hC (by simp) t0 ht a b _ β hb hloc (s i) n hn (hs i) hsp _ y hy` as an intermediate fact. Rewrite `this` using `[hN]`. Conclude with `this`.
+-/
 theorem UpperTheory.WildA.cmbJet :
     ∀ (D : D7), Inp D → ∀ (S : Finset ℕ) (dl : ℕ → ℝ), Letters D S dl → ∀ (cc : Ideal (𝓞 D.host.K)), cc = ⊤ → ∀ (δ t0 : ℂ), Crv D cc δ →
       GL3Theta.IsTwoTorsionPointUnkilled D (lamOf D cc δ) t0 → ∀ (a b r : ℕ) (l : ℕ) [Fact l.Prime] (lam : Qbar →+* ℂ_[l])

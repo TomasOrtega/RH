@@ -7,6 +7,23 @@ open scoped NNReal
 
 namespace GlobalTheory.AlmostEt
 
+/- English proof (translation)
+Take `⟨n, a, b, c, hs, hc⟩` from `hU (v e) he1`. Establish `hid` using `GlobalTheory.T.sum_mul_cosetRepresentativeTrace_eq L v G U n a b c hs 1 (one_mem _)`. Simplify using `only [mul_one] at hid`. Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, v e < v (cosetTrace U (b i)) := by`. Assume the negation of the conclusion as `h`.
+
+Use `push_neg at h`. Establish `: v (∑ i, a i * cosetTrace U (b i)) ≤ v e`. Apply `v.map_sum_le` to reduce the goal to its premises. Introduce `i _`. Rewrite using `[v.map_mul]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite `this` using `[hid]`. Conclude with `absurd hc (not_lt.mpr this)`. Use `set t := cosetTrace U (b i) with ht`. Establish `hfix` using `GlobalTheory.AlmostEt.cosetTrace_fixed_props L v G hv U (b i) (hs.b_mem i)`.
+
+Establish `ht0 : t ≠ 0`. Introduce `h0`. Rewrite `hi` using `[h0, v.map_zero]`. Conclude with `absurd hi (not_lt.mpr zero_le)`. Establish `hvt0 : v t ≠ 0` using `by rwa [Ne, Valuation.zero_iff]`.
+
+Establish `hq : ∀ g : G, g • (e / t) = e / t`. Introduce `g`. Rewrite using `[smul_div₀', he g, hfix.1 g]`. Use `⟨e / t * b i, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `hb` using `hs.b_mem i`.
+
+Introduce `m`. Rewrite using `[smul_mul', hb m]`. Use `congr 1`. Conclude with `hq (m : G)`. Rewrite using `[v.map_mul, map_div₀]`.
+
+Combine the equalities or inequalities in the displayed calculation. Apply `mul_le_mul' _ (hs.b_le i)` to reduce the goal to its premises. Rewrite using `[div_le_one₀ (pos_iff_ne_zero.mpr hvt0)]`. Conclude with `hi.le`. Use `_ = 1 := one_mul 1`.
+
+Rewrite using `[hfix.2.2 (e / t) hq, div_mul_cancel₀ e ht0]`.
+-/
 theorem exists_integer_coset_trace_eq (L : Type) [Field L] (v : Valuation L ℝ≥0) (G : Type) [Group G]
     [MulSemiringAction G L] (hv : ∀ (g : G) (x : L), v (g • x) = v x) (U : Subgroup G)
     [Fintype (G ⧸ U)] (hU : AlmostSep v U) (e : L) (he : ∀ g : G, g • e = e) (he1 : v e < 1) :
@@ -50,6 +67,9 @@ theorem exists_integer_coset_trace_eq (L : Type) [Field L] (v : Valuation L ℝ�
       _ = 1 := one_mul 1
   · rw [hfix.2.2 (e / t) hq, div_mul_cancel₀ e ht0]
 
+/- English proof (translation)
+Introduce `L _ v G _ _ hv U _ hU e he he1` and use `exists_integer_coset_trace_eq L v G hv U hU e he he1`.
+-/
 theorem exists_integer_coset_trace_eq' : ∀ (L : Type) [Field L] (v : Valuation L ℝ≥0) (G : Type) [Group G] [MulSemiringAction G L], (∀ (g : G) (x : L), v (g • x) = v x) → ∀ (U : Subgroup G) [Fintype (G ⧸ U)], AlmostSep v U → ∀ e : L, (∀ g : G, g • e = e) → v e < 1 → ∃ y ∈ Fix L U, v y ≤ 1 ∧ cosetTrace U y = e :=
   fun L _ v G _ _ hv U _ hU e he he1 => exists_integer_coset_trace_eq L v G hv U hU e he he1
 

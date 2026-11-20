@@ -20,6 +20,9 @@ def QuadBC2 : Prop :=
     Module.finrank F E = 2 → ∀ π : TR.CuspSub F 2, π.IsRegAlg →
       (∃ η : HChar F, IsQuadCharOf E η ∧ IsoTwist π η) ∨ ∃ P : CuspSub E 2, IsBC π P
 
+/- English proof (translation)
+Introduce `F Ω _ _ _ _ _ _ l _ ι a _` and use `h F Ω l ι a`.
+-/
 theorem galoisRepRankTwoReal_of (h : GaloisRepReal) : GaloisRepRankTwoReal := fun F Ω _ _ _ _ _ _ l _ ι a _ => h F Ω l ι a
 
 end UpperTheory.V.Z.Bc

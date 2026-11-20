@@ -8,6 +8,45 @@ open MeasureTheory NumberField NumberField.mixedEmbedding
 
 namespace Formalism.L2.SG.NGCut.SplitEmbedding
 
+/- English proof (translation)
+Use `set cj : ι → Prop := fun i => φ i ≠ (σ i).1.embedding`. Establish `hψ : MeasurePreserving (phiMap σ cj (K` using `K)) volume volume := phiMap_mp σ cj`. Establish `hψe : ∀ a : K, phiMap σ cj (mixedEmbedding K a) = fun i => φ i a`. Introduce `a`. Use function extensionality and compare the values at `i`.
+
+Simplify using `only [phiMap, mixedEmbedding_apply_isComplex]`. Distinguish the cases in `hi : cj i`. Rewrite using `[if_pos hi]`. Break down `hφ i with h | h` into its components or cases. Conclude with `absurd h hi`.
+
+Rewrite using `[h, ComplexEmbedding.conjugate_coe_eq]`. Rewrite using `[if_neg hi]`. Establish `: φ i = (σ i).1.embedding` using `not_not.1 hi`. Rewrite using `[this]`. Use `set emb : K →+ mixedSpace K := (mixedEmbedding K).toAddMonoidHom`.
+
+Establish `hinj : Function.Injective emb` using `mixedEmbedding_injective K`. Use `set Λm := Λ.map emb`. Use `set G := phiMap σ cj (K := K) ⁻¹' (s⁻¹ • F)`. Establish `hGm : MeasurableSet G` using `hψ.measurable (hF.const_smul₀ (s⁻¹))`. Establish `hmem : ∀ y : ι → ℂ, y ∈ s⁻¹ • F ↔ s • y ∈ F`.
+
+Introduce `y`. Rewrite using `[Set.mem_smul_set_iff_inv_smul_mem₀ (inv_ne_zero hs), inv_inv]`. Establish `hsm : ∀ a : K, ∀ x : mixedSpace K, s • phiMap σ cj (emb a + x) = (fun i => (s : ℂ) * φ i a) + s • phiMap σ cj x`. Introduce `a x`. Rewrite using `[phiMap_add, smul_add, show emb a = mixedEmbedding K a from rfl, hψe]`.
+
+Use function extensionality and compare the values at `i`. Simplify using `[Complex.real_smul]`. Establish `hdG : ∀ x, ∃! b : Λm, (b : mixedSpace K) + x ∈ G`. Introduce `x`. Take `⟨a, ha, hu⟩` from `hFd (s • phiMap σ cj x)`.
+
+Use `⟨⟨emb a, AddSubgroup.mem_map_of_mem emb a.2⟩, ?_, ?_⟩` and prove the remaining obligations. Use `show phiMap σ cj (emb a + x) ∈ s⁻¹ • F`. Rewrite using `[hmem, hsm]`. Conclude with `ha`. Introduce and unpack `⟨b, hb⟩ hbG`.
+
+Take `⟨a', ha', rfl⟩` from `AddSubgroup.mem_map.1 hb`. Establish `h1 : (fun i => (s : ℂ) * φ i (⟨a', ha'⟩ : Λ)) + s • phiMap σ cj x ∈ F`. Establish `: phiMap σ cj (emb a' + x) ∈ s⁻¹ • F` using `hbG`. Rewrite `this` using `[hmem, hsm]`. Conclude with `this`.
+
+Use `hu ⟨a', ha'⟩ h1` as an intermediate fact. Apply `Subtype.ext` to reduce the goal to its premises. Use `show emb a' = emb a`. Rewrite using `[show a' = (a : K) from congrArg Subtype.val this]`. Use `set L := (idealLattice K I).toAddSubgroup`.
+
+Establish `hL : L = (((I : FractionalIdeal (nonZeroDivisors (𝓞 K)) K) : Submodule (𝓞 K) K).toAddSubgroup).map emb`. Use extensionality with `x`. Simplify using `only [L, Submodule.mem_toAddSubgroup, mem_idealLattice, AddSubgroup.mem_map]`. Both sides reduce to the same expression. Establish `hle : Λm ≤ L`.
+
+Rewrite using `[hL]`. Conclude with `AddSubgroup.map_mono (fun a ha => hΛ a ha)`. Establish `hk' : Λm.relIndex L = k`. Rewrite using `[hL, AddSubgroup.relIndex_map_map_of_injective _ _ hinj, hk]`. Establish `hcount : Countable L`.
+
+Establish `b` using `Module.Free.chooseBasis ℤ (idealLattice K I)`. Conclude with `(Module.Free.chooseBasis ℤ (idealLattice K I)).equivFun.injective.countable`. Use `set b := Module.Free.chooseBasis ℤ (idealLattice K I)`. Use `set b' := Module.Basis.ofZLatticeBasis ℝ (idealLattice K I) b`. Use `set FL := ZSpan.fundamentalDomain b'`.
+
+Establish `hFLm : MeasurableSet FL` using `ZSpan.fundamentalDomain_measurableSet b'`. Establish `hspan` using `Module.Basis.ofZLatticeBasis_span ℝ (idealLattice K I) b`. Establish `hdL : ∀ x, ∃! l : L, (l : mixedSpace K) + x ∈ FL`. Introduce `x`. Take `⟨v, hv, hu⟩` from `ZSpan.exist_unique_vadd_mem_fundamentalDomain b' x`.
+
+Establish `hvL : (v : mixedSpace K) ∈ idealLattice K I` using `(congrArg (fun S : Submodule ℤ (mixedSpace K) => (v : mixedSpace K) ∈ S) hspan).mp v.2`. Use `⟨⟨v, hvL⟩, hv, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨l, hl⟩ hlF`. Establish `hl' : l ∈ Submodule.span ℤ (Set.range b')` using `(congrArg (fun S : Submodule ℤ (mixedSpace K) => l ∈ S) hspan).mpr hl`. Establish `h3` using `hu ⟨l, hl'⟩ hlF`.
+
+Establish `h2 : l = (v : mixedSpace K)` using `by rw [← h3]`. Conclude with `Subtype.ext h2`. Establish `hidx` using `fund_index (volume : Measure (mixedSpace K)) L Λm hle k hk' hk0 FL G hFLm hGm hdL hdG`. Establish `hfd` using `ZLattice.isAddFundamentalDomain b (volume : Measure (mixedSpace K))`. Establish `hcov` using `ZLattice.covolume_eq_measure_fundamentalDomain (idealLattice K I) volume hfd`.
+
+Rewrite `hcov` using `[covolume_idealLattice]`. Establish `hfin : volume FL ≠ ⊤` using `(ZSpan.fundamentalDomain_isBounded b').measure_lt_top.ne`. Establish `hFLv : volume FL = ENNReal.ofReal ((FractionalIdeal.absNorm (I : FractionalIdeal (nonZeroDivisors (𝓞 K)) K) : ℝ) * 2⁻¹ ^ InfinitePlace.nrComplexPlaces K * √|(discr K : ℝ)|)`. Rewrite using `[hcov, measureReal_def, ENNReal.ofReal_toReal hfin]`. Establish `hr2 : InfinitePlace.nrComplexPlaces K = Fintype.card ι`.
+
+Rewrite using `[InfinitePlace.nrComplexPlaces, Fintype.card_congr σ.symm]`. Establish `hGv : volume G = volume (s⁻¹ • F)` using `hψ.measure_preimage (hF.const_smul₀ (s⁻¹)).nullMeasurableSet`. Establish `hscale : volume F = ENNReal.ofReal |s ^ Module.finrank ℝ (ι → ℂ)| * volume (s⁻¹ • F)` using `by conv_lhs => rw [← smul_inv_smul₀ hs F]`. Conclude with `Measure.addHaar_smul volume s (s⁻¹ • F)`. Establish `hdim : Module.finrank ℝ (ι → ℂ) = 2 * Fintype.card ι`.
+
+Rewrite using `[Module.finrank_pi_fintype]`. Simplify using `[Complex.finrank_real_complex, mul_comm]`. Rewrite using `[hscale, ← hGv, hidx, hFLv, hr2, hdim]`. Rewrite using `[← ENNReal.ofReal_natCast k, ← ENNReal.ofReal_mul (Nat.cast_nonneg _), ← ENNReal.ofReal_mul (abs_nonneg _)]`. Use `congr 1`.
+
+Rewrite using `[abs_pow]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem idealCovol (K : Type) [Field K] [NumberField K] [IsEmpty {w : InfinitePlace K // w.IsReal}]
     (ι : Type) [Fintype ι] (φ : ι → (K →+* ℂ)) (σ : ι ≃ {w : InfinitePlace K // w.IsComplex})
     (hφ : ∀ i, φ i = (σ i).1.embedding ∨ φ i = ComplexEmbedding.conjugate (σ i).1.embedding)

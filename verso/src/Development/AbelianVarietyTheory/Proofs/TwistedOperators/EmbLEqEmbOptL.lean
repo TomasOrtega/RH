@@ -16,12 +16,21 @@ def embOptL {m N : ℕ} (e : Option (Fin m) ≃ Fin N) (X : Matrix (Fin m) (Fin 
     | some i, some j => X i j
     | _, _ => 0
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem embH_eq_embOpt {n : ℕ} (e : Option (Fin n) ≃ Fin (n + 1)) (h : Matrix (Fin n) (Fin n) ℂ) :
     GlobalTheory.SepReal.embH e h = embOpt e h := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem embL_eq_embOptL {n : ℕ} (e : Option (Fin n) ≃ Fin (n + 1)) (X : Matrix (Fin n) (Fin n) ℂ) :
     GlobalTheory.SepReal.embL e X = embOptL e X := rfl
 
+/- English proof (translation)
+Use extensionality with `a b`. Take `⟨a, rfl⟩` from `e.surjective a`. Take `⟨b, rfl⟩` from `e.surjective b`. Apply the tactic sequence `cases a <;> cases b <;> simp [embOpt, Matrix.one_apply]`.
+-/
 theorem embOpt_one {m N : ℕ} (e : Option (Fin m) ≃ Fin N) : embOpt e 1 = 1 := by
   ext a b
   obtain ⟨a, rfl⟩ := e.surjective a

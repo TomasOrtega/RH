@@ -9,6 +9,9 @@ set_option synthInstance.maxHeartbeats 200000
 
 section
 open UpperTheory.V.Z.J.D
+/- English proof (translation)
+Introduce `hV N L Ω _ _ _ _ _ _ n hn π w A h τ hτ χ hχ hT`. Take `⟨rc, hrc⟩` from `UpperTheory.Zero.LLC.recTExists L Ω A w h`. Conclude with `hV N L Ω n hn π w A h τ hτ χ hχ rc (UpperTheory.V.Z.Win.toV' hrc) (hT rc hrc)`.
+-/
 theorem UpperTheory.V.Z.J.D.type_pst_of_type_v :
     _root_.UpperTheory.V.Z.J.D.TypeVAlt → _root_.UpperTheory.V.Z.J.D.PotentiallySemistableType := by
   intro hV N L Ω _ _ _ _ _ _ n hn π w A h τ hτ χ hχ hT

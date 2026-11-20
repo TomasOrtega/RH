@@ -12,12 +12,20 @@ open NumberField IsDedekindDomain
 
 instance instFactExamplePrime : Fact T0.Prime := ⟨examplePrime_prime⟩
 
+/- English proof (translation)
+Use `g_split_of H0 (fun k => ?_)` and prove the remaining obligations. Use `fin_cases k`. Use `show 413718278401 % (2 ^ (2 + 2) * 571 * 599) = 1`. Evaluate the numerical expressions. Use `show 603339156001 % (2 ^ (2 + 2) * 571 * 599) = 1`.
+
+Evaluate the numerical expressions.
+-/
 theorem exampleHost_type_primes_split : ∀ k, (placesOver H0.E (H0.g k)).ncard = Module.finrank ℚ H0.E := by
   refine g_split_of H0 (fun k => ?_)
   fin_cases k
   · show 413718278401 % (2 ^ (2 + 2) * 571 * 599) = 1; norm_num
   · show 603339156001 % (2 ^ (2 + 2) * 571 * 599) = 1; norm_num
 
+/- English proof (translation)
+Introduce `k` and use `by fin_cases k · show 413718278401 % (2 ^ (2 + 2) * 571 * 599) = 1; norm_num · show 603339156001 % (2 ^ (2 + 2) * 571 * 599) = 1; norm_num bb := BB_disj0 jac := fun k => by fin_cases k · exact ⟨by show (413718278401 : ℕ) ≠ 2; norm_num, by show jacobiSym (-599) 413718278401 = 1; n …`.
+-/
 theorem exampleHost_typeHypothesis : THyp H0 where
   cond := fun k => by
     fin_cases k
@@ -29,9 +37,15 @@ theorem exampleHost_typeHypothesis : THyp H0 where
     · exact ⟨by show (413718278401 : ℕ) ≠ 2; norm_num, by show jacobiSym (-599) 413718278401 = 1; norm_num⟩
     · exact ⟨by show (603339156001 : ℕ) ≠ 2; norm_num, by show jacobiSym (-599) 603339156001 = 1; norm_num⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨by show T0 ≠ 751; norm_num [T0], by show T0 ≠ 991; norm_num [T0]⟩`.
+-/
 theorem examplePrime_ne_split_primes : T0 ≠ H0.pde ∧ T0 ≠ H0.pde' :=
   ⟨by show T0 ≠ 751; norm_num [T0], by show T0 ≠ 991; norm_num [T0]⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨placesOver_ncard_of_split_inj H0 exampleRanks_h_injective 751 (hp := ⟨by norm_num⟩) (by show ¬ (751 : ℕ) ∣ 2 ^ (2 + 2) * 571 * 599; norm_num) (by show jacobiSym (-571) 751 = 1; norm_num) (by show jacobiSym (-599) 751 = 1; norm_num) (Or.inr (by show ((751 : ℕ) : ZMod 16) = -1; de …`.
+-/
 theorem exampleHost_split_prime_split : (placesOver H0.E H0.pde).ncard = Module.finrank ℚ H0.E ∧
     (placesOver H0.E H0.pde').ncard = Module.finrank ℚ H0.E :=
   ⟨placesOver_ncard_of_split_inj H0 exampleRanks_h_injective 751 (hp := ⟨by norm_num⟩)
@@ -46,10 +60,19 @@ theorem exampleHost_split_prime_split : (placesOver H0.E H0.pde).ncard = Module.
 def exampleRecord (G : LocalGap H0) : D7 :=
   exampleRecordOfData H0 T0 exampleHost_type_primes_split exampleHost_typeHypothesis examplePrime_mem_levelPrimes examplePrime_ne_split_primes π0O π0_mem_K π0_norm π0_cong G
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨exampleRecord G⟩`.
+-/
 theorem nonempty_D7_of_localGap (G : LocalGap H0) : Nonempty D7 := ⟨exampleRecord G⟩
 
+/- English proof (translation)
+Introduce `⟨G⟩` and use `nonempty_D7_of_localGap G`.
+-/
 theorem record_nonempty_of_localGap : Nonempty (LocalGap H0) → Nonempty D7 := fun ⟨G⟩ => nonempty_D7_of_localGap G
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun ⟨D⟩ => ⟨LocalGap.localGapOfRecord D H0⟩, record_nonempty_of_localGap⟩`.
+-/
 theorem record_nonempty_iff_localGap : Nonempty D7 ↔ Nonempty (LocalGap H0) :=
   ⟨fun ⟨D⟩ => ⟨LocalGap.localGapOfRecord D H0⟩, record_nonempty_of_localGap⟩
 
@@ -75,9 +98,15 @@ def exampleSizeData (G : LocalGap H0) : SizeData₂ (exampleRecord G) :=
         intro j; fin_cases j <;> simp [hc0, hcE] <;> norm_num
       exact this j)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨exampleRecord G, exampleSizeData G, rfl⟩`.
+-/
 theorem exists_sizeData_sc_eq_sc0 (G : LocalGap H0) : ∃ D : D7, ∃ L : SizeData₂ D, L.sc = sc0 :=
   ⟨exampleRecord G, exampleSizeData G, rfl⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨divXExample (exampleRecord G) rfl (fun _ => inferInstanceAs (Subsingleton Z0))⟩`.
+-/
 theorem divX_nonempty (G : LocalGap H0) : Nonempty (DivX (exampleRecord G)) :=
   ⟨divXExample (exampleRecord G) rfl (fun _ => inferInstanceAs (Subsingleton Z0))⟩
 

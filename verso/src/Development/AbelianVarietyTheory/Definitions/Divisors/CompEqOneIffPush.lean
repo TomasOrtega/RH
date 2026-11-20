@@ -40,8 +40,14 @@ structure IsIsogDeg (f : A ⟶ A') (d : ℕ) : Prop where
 def KilledBy (ρ : RingAct A O) (𝔴 : Ideal O) {T : Over S} (x : T ⟶ A) : Prop :=
   ∀ a ∈ 𝔴, x ≫ ρ.act a = 1
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨inferInstance, fun _ => by simp⟩`.
+-/
 theorem IsLin.id (ρ : RingAct A O) : IsLin ρ ρ (𝟙 A) := ⟨inferInstance, fun _ => by simp⟩
 
+/- English proof (translation)
+Use `hf.hom` as an intermediate fact. Use `hg.hom` as an intermediate fact. Conclude with `⟨inferInstance, fun a => by rw [← Category.assoc, hf.comm, Category.assoc, hg.comm, Category.assoc]⟩`.
+-/
 theorem IsLin.comp {ρ : RingAct A O} {ρ' : RingAct A' O} {ρ'' : RingAct A'' O} {f : A ⟶ A'} {g : A' ⟶ A''}
     (hf : IsLin ρ ρ' f) (hg : IsLin ρ' ρ'' g) : IsLin ρ ρ'' (f ≫ g) := by
   have := hf.hom
@@ -50,12 +56,22 @@ theorem IsLin.comp {ρ : RingAct A O} {ρ' : RingAct A' O} {ρ'' : RingAct A'' O
 
 omit [GrpObj A] [IsCommMonObj A] [GrpObj A'] [IsCommMonObj A'] in
 
+/- English proof (translation)
+Establish `: IsIso f.left` using `inferInstanceAs (IsIso ((Over.forget S).map f))`. Conclude with `⟨inferInstance, inferInstance, inferInstance, congrFun (Scheme.Hom.finrank_eq_one_of_isIso _)⟩`.
+-/
 theorem IsIsogDeg.of_isIso (f : A ⟶ A') [IsIso f] : IsIsogDeg f 1 := by
   have : IsIso f.left := inferInstanceAs (IsIso ((Over.forget S).map f))
   exact ⟨inferInstance, inferInstance, inferInstance, congrFun (Scheme.Hom.finrank_eq_one_of_isIso _)⟩
 
 omit [GrpObj A] [IsCommMonObj A] [GrpObj A'] [IsCommMonObj A'] [GrpObj A''] [IsCommMonObj A''] in
 
+/- English proof (translation)
+Use `hf.fin` as an intermediate fact. Use `hf.flat` as an intermediate fact. Use `hf.surj` as an intermediate fact. Use `hg.fin` as an intermediate fact. Use `hg.flat` as an intermediate fact.
+
+Use `hg.surj` as an intermediate fact. Use `⟨?_, ?_, ?_, fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[Over.comp_left]`. Use `infer_instance`. Rewrite using `[Over.comp_left]`.
+
+Use `infer_instance`. Rewrite using `[Over.comp_left]`. Use `infer_instance`. Rewrite using `[Over.comp_left, FinrankComp.finrank_comp_of_const _ _ d hf.rank, hg.rank]`.
+-/
 theorem IsIsogDeg.comp {f : A ⟶ A'} {g : A' ⟶ A''} {d e : ℕ} (hf : IsIsogDeg f d) (hg : IsIsogDeg g e) :
     IsIsogDeg (f ≫ g) (d * e) := by
   have := hf.fin; have := hf.flat; have := hf.surj
@@ -68,6 +84,9 @@ theorem IsIsogDeg.comp {f : A ⟶ A'} {g : A' ⟶ A''} {d e : ℕ} (hf : IsIsogD
 
 omit [GrpObj A] [IsCommMonObj A] [GrpObj A'] [IsCommMonObj A'] in
 
+/- English proof (translation)
+Use `hf.flat` as an intermediate fact. Use `hf.surj` as an intermediate fact. Establish `: Epi f.left` using `Flat.epi_of_flat_of_surjective _`. Conclude with `Over.epi_of_epi_left f`.
+-/
 theorem IsIsogDeg.epi {f : A ⟶ A'} {d : ℕ} (hf : IsIsogDeg f d) : Epi f := by
   have := hf.flat; have := hf.surj
   have : Epi f.left := Flat.epi_of_flat_of_surjective _
@@ -75,6 +94,9 @@ theorem IsIsogDeg.epi {f : A ⟶ A'} {d : ℕ} (hf : IsIsogDeg f d) : Epi f := b
 
 omit [GrpObj A] [IsCommMonObj A] [GrpObj A'] [IsCommMonObj A'] in
 
+/- English proof (translation)
+Use `hf.fin` as an intermediate fact. Use `hf.flat` as an intermediate fact. Conclude with `⟨MorphismProperty.of_isPullback (P := @IsFinite) H hf.fin, MorphismProperty.of_isPullback (P := @Flat) H hf.flat, MorphismProperty.of_isPullback (P := @Surjective) H hf.surj, fun y => (Scheme.Hom.finrank_of_isPullback _ _ _ _ H y).trans (hf.rank _)⟩`.
+-/
 theorem IsIsogDeg.of_isPullback {C C' : Over S'} {f : A ⟶ A'} {g : C ⟶ C'} {d : ℕ} (hf : IsIsogDeg f d)
     {u : C.left ⟶ A.left} {v : C'.left ⟶ A'.left} (H : IsPullback u g.left f.left v) : IsIsogDeg g d := by
   have := hf.fin; have := hf.flat
@@ -87,10 +109,20 @@ abbrev ker (f : A ⟶ A') : Over S := pullback f η[A']
 
 omit [GrpObj A] [IsCommMonObj A] [IsCommMonObj A'] in
 
+/- English proof (translation)
+Rewrite using `[toUnit_unique (toUnit _) (pullback.snd f η[A'])]`. Conclude with `hf.of_isPullback ((IsPullback.of_hasPullback f η[A']).map (Over.forget S))`.
+-/
 theorem IsIsogDeg.ker {f : A ⟶ A'} {d : ℕ} (hf : IsIsogDeg f d) : IsIsogDeg (toUnit (ker f)) d := by
   rw [toUnit_unique (toUnit _) (pullback.snd f η[A'])]
   exact hf.of_isPullback ((IsPullback.of_hasPullback f η[A']).map (Over.forget S))
 
+/- English proof (translation)
+Use `⟨fun h a ha => h a (Ideal.subset_span ha), fun h a ha => ?_⟩` and prove the remaining obligations. Establish `hadd : ∀ a b, x ≫ ρ.act (a + b) = (x ≫ ρ.act a) * (x ≫ ρ.act b)` using `fun a b => by`. Rewrite using `[ρ.map_add]`. Conclude with `MonObj.comp_mul x _ _`. Proceed by induction on `ha using Submodule.span_induction with`.
+
+Consider the case `mem a ha => exact h a ha`. Consider the case `zero`. Use `hadd 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`. Conclude with `left_eq_mul.1 this`.
+
+Consider the case `add a b _ _ ha hb => rw [hadd, ha, hb, _root_.mul_one]`. Consider the case `smul c a _ ha`. Use `ρ.hom c` as an intermediate fact. Rewrite using `[smul_eq_mul, ρ.map_mul, ← Category.assoc, ha, MonObj.one_comp]`.
+-/
 theorem killedBy_span (ρ : RingAct A O) (s : Set O) {T : Over S} (x : T ⟶ A) :
     KilledBy ρ (Ideal.span s) x ↔ ∀ a ∈ s, x ≫ ρ.act a = 1 := by
   refine ⟨fun h a ha => h a (Ideal.subset_span ha), fun h a ha => ?_⟩
@@ -116,6 +148,9 @@ def actPull (ρ : RingAct A O) (f : S' ⟶ S) : RingAct ((Over.pullback f).obj A
     rw [ρ.map_add]
     exact map_mul (Over.pullback f).homMonoidHom (ρ.act a) (ρ.act b)
 
+/- English proof (translation)
+Use `h.hom` as an intermediate fact. Use `⟨inferInstance, fun a => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(Over.pullback f).map _ ≫ _ = _ ≫ (Over.pullback f).map _`. Rewrite using `[← Functor.map_comp, ← Functor.map_comp, h.comm]`.
+-/
 theorem IsLin.pull {ρ : RingAct A O} {ρ' : RingAct A' O} {g : A ⟶ A'} (h : IsLin ρ ρ' g) (f : S' ⟶ S) :
     IsLin (actPull ρ f) (actPull ρ' f) ((Over.pullback f).map g) := by
   have := h.hom
@@ -123,6 +158,9 @@ theorem IsLin.pull {ρ : RingAct A O} {ρ' : RingAct A' O} {g : A ⟶ A'} (h : I
   change (Over.pullback f).map _ ≫ _ = _ ≫ (Over.pullback f).map _
   rw [← Functor.map_comp, ← Functor.map_comp, h.comm]
 
+/- English proof (translation)
+Establish `e : pushHom hv T (x ≫ g') = pushHom hu T x ≫ g` using `Over.OverMorphism.ext (by`. Express the relevant statement in the definitionally equal form `(x.left ≫ g'.left) ≫ v = (x.left ≫ u) ≫ g.left`. Rewrite using `[Category.assoc, hg, Category.assoc])`. Establish `inj : Function.Injective (pushHom hv T)` using `fun y z h => Over.OverMorphism.ext (hv.1.hom_ext (congrArg (fun q => q.left) h) (by rw [Over.w, Over.w]))`. Rewrite using `[← e, map_eq_one_iff _ inj]`.
+-/
 theorem comp_eq_one_iff_push {C C' : Over S'} [GrpObj C] [GrpObj C'] {f : S' ⟶ S} {u : C.left ⟶ A.left}
     {v : C'.left ⟶ A'.left} (hu : IsGrpPullback C A f u) (hv : IsGrpPullback C' A' f v) {g : A ⟶ A'} {g' : C ⟶ C'}
     (hg : g'.left ≫ v = u ≫ g.left) {T : Over S'} (x : T ⟶ C) :
@@ -163,16 +201,27 @@ namespace Chain
 
 variable {ρ : RingAct A O} {𝔴 : Ideal O} {d n : ℕ} (C : Chain ρ 𝔴 d n)
 
+/- English proof (translation)
+Proceed by induction on `i using Fin.induction with`. Consider the case `zero => exact C.π_zero_lin`. Consider the case `succ i ih => rw [C.π_succ]`. Conclude with `ih.comp (C.φ_lin i)`.
+-/
 theorem π_lin (i : Fin (n + 1)) : IsLin ρ (C.act i) (C.π i) := by
   induction i using Fin.induction with
   | zero => exact C.π_zero_lin
   | succ i ih => rw [C.π_succ]; exact ih.comp (C.φ_lin i)
 
+/- English proof (translation)
+Proceed by induction on `i using Fin.induction with`. Consider the case `zero => have := C.π_zero_iso`. Conclude with `IsIsogDeg.of_isIso _`. Consider the case `succ i ih => rw [C.π_succ, Fin.val_succ, pow_succ]`. Conclude with `ih.comp (C.φ_deg i)`.
+-/
 theorem π_deg (i : Fin (n + 1)) : IsIsogDeg (C.π i) (d ^ (i : ℕ)) := by
   induction i using Fin.induction with
   | zero => have := C.π_zero_iso; exact IsIsogDeg.of_isIso _
   | succ i ih => rw [C.π_succ, Fin.val_succ, pow_succ]; exact ih.comp (C.φ_deg i)
 
+/- English proof (translation)
+Proceed by induction on `j using Fin.induction with`. Consider the case `zero => obtain rfl := Fin.le_zero_iff.1 hij`. Conclude with `h`. Consider the case `succ j ih`. Break down `hij.eq_or_lt with rfl | hlt` into its components or cases.
+
+Conclude with `h`. Use `(C.φ_lin j).hom` as an intermediate fact. Rewrite using `[C.π_succ, ← Category.assoc, ih (Fin.le_castSucc_iff.2 hlt), MonObj.one_comp]`.
+-/
 theorem ker_mono {T : Over S} (x : T ⟶ A) {i j : Fin (n + 1)} (hij : i ≤ j) (h : x ≫ C.π i = 1) :
     x ≫ C.π j = 1 := by
   induction j using Fin.induction with
@@ -183,9 +232,17 @@ theorem ker_mono {T : Over S} (x : T ⟶ A) {i j : Fin (n + 1)} (hij : i ≤ j) 
     · have := (C.φ_lin j).hom
       rw [C.π_succ, ← Category.assoc, ih (Fin.le_castSucc_iff.2 hlt), MonObj.one_comp]
 
+/- English proof (translation)
+The claim follows from `(C.ker_last T x).1 (C.ker_mono x (Fin.le_last i) h)`.
+-/
 theorem killedBy_of_π {T : Over S} (x : T ⟶ A) {i : Fin (n + 1)} (h : x ≫ C.π i = 1) : KilledBy ρ 𝔴 x :=
   (C.ker_last T x).1 (C.ker_mono x (Fin.le_last i) h)
 
+/- English proof (translation)
+Introduce `a ha`. Establish `hp` using `(C.π_deg i.castSucc).of_isPullback ((IsPullback.of_hasPullback (C.π i.castSucc) y).map (Over.forget S))`. Use `hp.epi` as an intermediate fact. Use `(C.π_lin i.castSucc).hom` as an intermediate fact. Establish `h1 : pullback.fst (C.π i.castSucc) y ≫ C.π i.succ = 1`.
+
+Rewrite using `[C.π_succ, ← Category.assoc, pullback.condition, Category.assoc, h, MonObj.comp_one]`. Rewrite using `[← cancel_epi (pullback.snd (C.π i.castSucc) y), ← Category.assoc, ← pullback.condition, Category.assoc, ← (C.π_lin i.castSucc).comm, ← Category.assoc, C.killedBy_of_π _ h1 a ha, MonObj.one_comp, MonObj.comp_one]`.
+-/
 theorem killedBy_of_φ (i : Fin n) {T : Over S} (y : T ⟶ C.B i.castSucc) (h : y ≫ C.φ i = 1) :
     KilledBy (C.act _) 𝔴 y := by
   intro a ha
@@ -198,6 +255,13 @@ theorem killedBy_of_φ (i : Fin n) {T : Over S} (y : T ⟶ C.B i.castSucc) (h : 
   rw [← cancel_epi (pullback.snd (C.π i.castSucc) y), ← Category.assoc, ← pullback.condition, Category.assoc,
     ← (C.π_lin i.castSucc).comm, ← Category.assoc, C.killedBy_of_π _ h1 a ha, MonObj.one_comp, MonObj.comp_one]
 
+/- English proof (translation)
+Establish `h` using `C.π_deg i`. Use `h.fin` as an intermediate fact. Use `h.flat` as an intermediate fact. Use `h.surj` as an intermediate fact. Use `h.epi` as an intermediate fact.
+
+Use `(C.π_lin i).hom` as an intermediate fact. Use `ρ.hom a` as an intermediate fact. Take `⟨g, hg⟩` from `AbelianQuotient.exists_desc (C.π i) (ρ.act a) fun W x y e => by`. Establish `h1 : (x / y) ≫ C.π i = 1` using `by rw [GrpObj.div_comp, e, div_self']`. Establish `h2` using `C.killedBy_of_π _ h1 a ha`.
+
+Rewrite `h2` using `[GrpObj.div_comp, div_eq_one]`. Then use the resulting hypothesis. Conclude with `⟨g, hg, fun g' hg' => by rw [← cancel_epi (C.π i), hg, hg']⟩`.
+-/
 theorem existsUnique_close (i : Fin (n + 1)) {a : O} (ha : a ∈ 𝔴) :
     ∃! g : C.B i ⟶ A, C.π i ≫ g = ρ.act a := by
   have h := C.π_deg i
@@ -210,6 +274,13 @@ theorem existsUnique_close (i : Fin (n + 1)) {a : O} (ha : a ∈ 𝔴) :
     rwa [GrpObj.div_comp, div_eq_one] at h2
   exact ⟨g, hg, fun g' hg' => by rw [← cancel_epi (C.π i), hg, hg']⟩
 
+/- English proof (translation)
+Take `⟨g, hg, -⟩` from `C.existsUnique_close (Fin.last n) (a := ϖ) (h𝔴 ▸ Ideal.subset_span rfl)`. Use `hϖ.fin` as an intermediate fact. Use `hϖ.flat` as an intermediate fact. Use `hϖ.surj` as an intermediate fact. Use `hϖ.epi` as an intermediate fact.
+
+Use `(C.π_deg (Fin.last n)).epi` as an intermediate fact. Use `(C.π_lin (Fin.last n)).hom` as an intermediate fact. Use `ρ.hom ϖ` as an intermediate fact. Take `⟨g', hg'⟩` from `AbelianQuotient.exists_desc (ρ.act ϖ) (C.π (Fin.last n)) fun W x y e => by`. Establish `h1 : (x / y) ≫ ρ.act ϖ = 1` using `by rw [GrpObj.div_comp, e, div_self']`.
+
+Establish `h2` using `(C.ker_last W _).2 (h𝔴 ▸ (killedBy_span ρ {ϖ} _).2 fun a ha => by rw [ha]; exact h1)`. Rewrite `h2` using `[GrpObj.div_comp, div_eq_one]`. Then use the resulting hypothesis. Conclude with `⟨⟨g, g', by rw [← cancel_epi (C.π (Fin.last n)), ← Category.assoc, hg, hg', Category.comp_id], by rw [← cancel_epi (ρ.act ϖ), ← Category.assoc, hg', hg, Category.comp_id]⟩, hg⟩`.
+-/
 theorem exists_iso_last {ϖ : O} (h𝔴 : 𝔴 = Ideal.span {ϖ}) {e : ℕ} (hϖ : IsIsogDeg (ρ.act ϖ) e) :
     ∃ g : C.B (Fin.last n) ≅ A, C.π (Fin.last n) ≫ g.hom = ρ.act ϖ := by
   obtain ⟨g, hg, -⟩ := C.existsUnique_close (Fin.last n) (a := ϖ) (h𝔴 ▸ Ideal.subset_span rfl)
@@ -278,6 +349,9 @@ namespace ChainMap
 variable {A' : Over S'} [GrpObj A'] [IsCommMonObj A'] {ρ' : RingAct A' O} {ρ : RingAct A O}
   {𝔴 : Ideal O} {d n : ℕ} {C' : Chain ρ' 𝔴 d n} {C : Chain ρ 𝔴 d n} {f : S' ⟶ S} {u : A'.left ⟶ A.left}
 
+/- English proof (translation)
+Establish `h` using `C'.π_deg i.castSucc`. Use `h.flat` as an intermediate fact. Use `h.surj` as an intermediate fact. Establish `: Epi (C'.π i.castSucc).left` using `Flat.epi_of_flat_of_surjective _`. Rewrite using `[← cancel_epi (C'.π i.castSucc).left, ← Category.assoc, ← Over.comp_left, ← C'.π_succ, m.π_comm, ← Category.assoc, m.π_comm, Category.assoc, ← Over.comp_left, ← C.π_succ]`.
+-/
 theorem φ_comm (m : ChainMap C' C f u) (i : Fin n) :
     (C'.φ i).left ≫ m.ψ i.succ = m.ψ i.castSucc ≫ (C.φ i).left := by
   have h := C'.π_deg i.castSucc
@@ -322,6 +396,11 @@ def comp {S'' : Scheme.{0}} {A'' : Over S''} [GrpObj A''] [IsCommMonObj A''] {ρ
 
 end ChainMap
 
+/- English proof (translation)
+Establish `hp` using `isGrpPullback_pullback A f`. Take `⟨e, he, he'⟩` from `grpPullback_iso hu hp`. Establish `hl : IsLin ρ' (actPull ρ f) e.hom` using `⟨he, fun a => Over.OverMorphism.ext (hp.1.hom_ext (by`. Establish `h : ((actPull ρ f).act a).left ≫ pullback.fst A.hom f = pullback.fst A.hom f ≫ (ρ.act a).left` using `pullback.lift_fst _ _ _`. Rewrite using `[Over.comp_left, Over.comp_left, Category.assoc, Category.assoc, he', h, ← Category.assoc, he', hact])`.
+
+Use the proof step `(by rw [Over.w, Over.w]))⟩`. Set `m` to `ChainMap.pull C f`. Conclude with `⟨(C.pull f).transport e hl, ⟨⟨m.ψ, m.cart, m.act, fun i => by`. Express the relevant statement in the definitionally equal form `(e.hom.left ≫ ((C.pull f).π i).left) ≫ m.ψ i = _`. Rewrite using `[Category.assoc, m.π_comm, ← Category.assoc, he']⟩⟩⟩`.
+-/
 theorem Chain.exists_pull {A' : Over S'} [GrpObj A'] [IsCommMonObj A'] {ρ' : RingAct A' O} {ρ : RingAct A O}
     {𝔴 : Ideal O} {d n : ℕ} (C : Chain ρ 𝔴 d n) {f : S' ⟶ S} {u : A'.left ⟶ A.left} (hu : IsGrpPullback A' A f u)
     (hact : ∀ a, (ρ'.act a).left ≫ u = u ≫ (ρ.act a).left) :
@@ -352,9 +431,15 @@ def powChain (hA : IsAbelianScheme A) (ρ : RingAct A O) (a : O) (ha : ∀ b, a 
   π_succ i := by rw [← ρ.map_mul, Fin.val_succ, Fin.val_castSucc, pow_succ']
   ker_last T x := by simp [killedBy_span]
 
+/- English proof (translation)
+The claim follows from `(C.π_deg (Fin.last n)).ker`.
+-/
 example {ρ : RingAct A O} {𝔴 : Ideal O} {d n : ℕ} (C : Chain ρ 𝔴 d n) :
     IsIsogDeg (toUnit (ker (C.π (Fin.last n)))) (d ^ n) := (C.π_deg (Fin.last n)).ker
 
+/- English proof (translation)
+Use `C.π_zero_iso` as an intermediate fact. Use `C.π_zero_lin.hom` as an intermediate fact. Establish `h1 : x ≫ C.π 0 = 1` using `(C.ker_last T x).2 h`. Rewrite using `[← cancel_mono (C.π 0), h1, MonObj.one_comp]`.
+-/
 example {ρ : RingAct A O} {𝔴 : Ideal O} {d : ℕ} (C : Chain ρ 𝔴 d 0) {T : Over S} (x : T ⟶ A)
     (h : KilledBy ρ 𝔴 x) : x = 1 := by
   have := C.π_zero_iso

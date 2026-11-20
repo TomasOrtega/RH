@@ -36,6 +36,9 @@ open GlobalTheory.IndefiniteRowSideFullHecke.ModerateGrowthSchwartz (schwartzA)
 
 namespace GlobalTheory.CompanionTheory.SiegelWeil
 
+/- English proof (translation)
+Introduce `D ψ A B χ ω hω f hf ν 𝓖 hν`. Rewrite using `[GlobalTheory.Core.Rk.IP.swSection_eq_swSec A B ν 𝓖 ω f]`. Conclude with `(GlobalTheory.Core.Rk.IP.swSec_integrable_continuous D ψ A B χ ω hω ν 𝓖 hν f hf).2`.
+-/
 theorem swSection_continuous : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (A B : HSp D) (χ : (AE D)ˣ →* Circle)
     (ω : GA D (dblSp A) × GA D B →* Module.End ℂ (WO (dblSp A) B → ℂ)), IsWeilDatumO ψ (dblSp A) B 1 χ ω →
     ∀ (f : WO (dblSp A) B → ℂ), IsThetaFunO ψ (dblSp A) B f →

@@ -13,6 +13,9 @@ section Germs
 
 variable {X Y Y' Z : Scheme.{0}}
 
+/- English proof (translation)
+Rewrite using `[← gs_pull r ψ z V hV b]`. Establish `h1 : r z ∈ ψ ⁻¹ᵁ V` using `hV`. Simplify using `only [gs, dif_pos hV, dif_pos h1]`. Conclude with `(Scheme.Hom.germ_stalkMap_apply r (ψ ⁻¹ᵁ V) z h1 _).symm`.
+-/
 theorem gs_comp_stalk (r : Z ⟶ Y) (ψ : Y ⟶ X) (z : Z) (V : X.Opens) (hV : ψ (r z) ∈ V) (b : Γ(X, V)) :
     gs (r ≫ ψ) z V b = (r.stalkMap z).hom (gs ψ (r z) V b) := by
   rw [← gs_pull r ψ z V hV b]
@@ -20,6 +23,11 @@ theorem gs_comp_stalk (r : Z ⟶ Y) (ψ : Y ⟶ X) (z : Z) (V : X.Opens) (hV : �
   simp only [gs, dif_pos hV, dif_pos h1]
   exact (Scheme.Hom.germ_stalkMap_apply r (ψ ⁻¹ᵁ V) z h1 _).symm
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[← gs_unit r z U hU a, ← gs_unit (r ≫ ψ) z V (by simpa using hV) b]`. Establish `e1` using `gs_comp_stalk r (𝟙 Y) z U (by simpa using hU) a.val`. Establish `e2` using `gs_comp_stalk r ψ z V hV b.val`. Rewrite `e1` using `[Category.comp_id]`.
+
+Rewrite using `[e1, e2, gs_unit (𝟙 Y) (r z) U (by simpa using hU) a, gs_unit ψ (r z) V hV b, h]`.
+-/
 theorem gm_of_id (r : Z ⟶ Y) (ψ : Y ⟶ X) (z : Z) {U : Y.Opens} {V : X.Opens} (hU : r z ∈ U)
     (hV : ψ (r z) ∈ V) (a : Γ(Y, U)ˣ) (b : Γ(X, V)ˣ) (h : gm (𝟙 Y) (r z) U a = gm ψ (r z) V b) :
     gm r z U a = gm (r ≫ ψ) z V b := by
@@ -30,6 +38,9 @@ theorem gm_of_id (r : Z ⟶ Y) (ψ : Y ⟶ X) (z : Z) {U : Y.Opens} {V : X.Opens
   rw [Category.comp_id] at e1
   rw [e1, e2, gs_unit (𝟙 Y) (r z) U (by simpa using hU) a, gs_unit ψ (r z) V hV b, h]
 
+/- English proof (translation)
+Establish `e1` using `gs_comp_stalk r (𝟙 Y) z U (by simpa using hU) a`. Establish `e2` using `gs_comp_stalk r ψ z V hV b`. Rewrite `e1` using `[Category.comp_id]`. Rewrite using `[e1, e2, h]`.
+-/
 theorem gs_of_id (r : Z ⟶ Y) (ψ : Y ⟶ X) (z : Z) {U : Y.Opens} {V : X.Opens} (hU : r z ∈ U)
     (hV : ψ (r z) ∈ V) (a : Γ(Y, U)) (b : Γ(X, V)) (h : gs (𝟙 Y) (r z) U a = gs ψ (r z) V b) :
     gs r z U a = gs (r ≫ ψ) z V b := by
@@ -72,6 +83,11 @@ def PullOf.pull {L : LB X} {ψ : Y ⟶ X} {A : LB Y} (pA : PullOf L ψ A) (F : Y
       (V := L.U (pA.c (J PUnit.unit)) ⊓ L.U (pA.c (J' PUnit.unit))) F ψ y ⟨m1, m2⟩
       ⟨(pA.mem _ _).1 m1, (pA.mem _ _).1 m2⟩ _ _ (pA.g (F y) _ _ m1 m2)
 
+/- English proof (translation)
+Substitute `e` using the available equality. Introduce `y hy`. Establish `h1` using `(pA'.mem i y).1 hy`. Use `show h y ∈ A.U (pA.d (pA'.c i))`. Rewrite using `[pA.mem, pA.cd]`.
+
+Simplify using `using h1`.
+-/
 theorem PullOf.cp_le {L : LB X} {ψ : Y ⟶ X} {ψ' : Y' ⟶ X} {A : LB Y} {A' : LB Y'} (pA : PullOf L ψ A)
     (pA' : PullOf L ψ' A') (h : Y' ⟶ Y) (e : h ≫ ψ = ψ') (i : A'.ι) :
     A'.U i ≤ h ⁻¹ᵁ A.U (pA.d (pA'.c i)) := by
@@ -99,6 +115,11 @@ def PullOf.cp {L : LB X} {ψ : Y ⟶ X} {ψ' : Y' ⟶ X} {A : LB Y} {A' : LB Y'}
     exact (gm_of_id (U := A.U (pA.d (pA'.c i)) ⊓ A.U (pA.d (pA'.c j)))
       (V := L.U (pA'.c i) ⊓ L.U (pA'.c j)) h ψ y ⟨hi', hj'⟩ ⟨hi2, hj2⟩ _ _ hg).symm
 
+/- English proof (translation)
+Introduce `y hy`. Establish `hy' : ∀ k, (φ' k).base y ∈ (L.U (j k) : Set X)` using `Set.mem_iInter.1 hy`. Use `Set.mem_iInter.2 fun k => ?_` and prove the remaining obligations. Establish `h2` using `hy' k`. Rewrite `h2` using `[← e k]`.
+
+Simplify using `using h2`.
+-/
 theorem cpSame_le {K : Type} [Fintype K] (L : LB X) (φ : K → (Y ⟶ X)) (φ' : K → (Y' ⟶ X)) (h : Y' ⟶ Y)
     (e : ∀ k, h ≫ φ k = φ' k) (j : K → L.ι) : LB.wchart L φ' j ≤ h ⁻¹ᵁ LB.wchart L φ j := by
   intro y hy
@@ -128,6 +149,9 @@ def secCP {A' : LB Y'} {A : LB Y} {h : Y' ⟶ Y} (a : ChartPull A' A h) (s : LB.
       gs_unit (𝟙 Y') y _ hy, a.g y i j hy.1 hy.2]
     exact gs_compat s h y (a.le i hy.1) (a.le j hy.2)
 
+/- English proof (translation)
+The claim follows from `(gs_res r z (a.le i) hz _).trans (gs_pull r h z _ (a.le i hz) _)`.
+-/
 theorem gs_secCP {A' : LB Y'} {A : LB Y} {h : Y' ⟶ Y} (a : ChartPull A' A h) (s : LB.Sec A) (r : Z ⟶ Y') (z : Z)
     (i : A'.ι) (hz : r z ∈ A'.U i) :
     gs r z (A'.U i) ((secCP a s).f i) = gs (r ≫ h) z (A.U (a.idx i)) (s.f (a.idx i)) :=
@@ -175,12 +199,21 @@ def sabM (hC : ReciprocityTheory.ChartRestriction.G.Out.CubePullSt) {S S' : Sche
   have P := hC S S' t.G _ (cubeMapOf h) t.PP t.cub
   ⟨cubeMapOf h, h, rfl, fun a => pullback.lift_fst _ _ _, P.choose_spec.choose_spec.1.choose_spec⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem sabT_L (hC : ReciprocityTheory.ChartRestriction.G.Out.CubePullSt) {S S' : Scheme.{0}} (f : S' ⟶ S) (t : SAB H S) :
     (sabT hC f t).PP.L = t.PP.L.pull (pullback.fst t.G.hom f) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem sabM_φ (hC : ReciprocityTheory.ChartRestriction.G.Out.CubePullSt) {S S' : Scheme.{0}} (f : S' ⟶ S) (t : SAB H S) :
     (sabM hC f t).φ = pullback.fst t.G.hom f := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem sabT_hom (hC : ReciprocityTheory.ChartRestriction.G.Out.CubePullSt) {S S' : Scheme.{0}} (f : S' ⟶ S) (t : SAB H S) :
     (sabT hC f t).G.hom = pullback.snd t.G.hom f := rfl
 

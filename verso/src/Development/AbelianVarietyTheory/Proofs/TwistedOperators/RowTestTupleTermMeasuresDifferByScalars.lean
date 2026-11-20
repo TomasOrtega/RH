@@ -20,6 +20,9 @@ namespace GlobalTheory.TermScales
 
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc}
 
+/- English proof (translation)
+Use `conv_rhs => rw [← GlobalTheory.AutMult.toInf_mul_toFin g]`. Establish `hx : Lev.finE V (GlobalTheory.AutMult.toInf V g : GA D V) = 1`. Simplify using `only [Lev.finE, MonoidHom.comp_apply]`. Rewrite using `[show finHom V (GlobalTheory.AutMult.toInf V g : GA D V) = 1 from (GlobalTheory.AutMult.toInf V g).2, map_one]`. Rewrite using `[map_mul, hx, one_mul]`.
+-/
 theorem finE_toFin' (V : HSp D) (g : GA D V) : Lev.finE V (GlobalTheory.AutMult.toFin V g : GA D V) = Lev.finE V g := by
   conv_rhs => rw [← GlobalTheory.AutMult.toInf_mul_toFin g]
   have hx : Lev.finE V (GlobalTheory.AutMult.toInf V g : GA D V) = 1 := by
@@ -27,6 +30,11 @@ theorem finE_toFin' (V : HSp D) (g : GA D V) : Lev.finE V (GlobalTheory.AutMult.
     rw [show finHom V (GlobalTheory.AutMult.toInf V g : GA D V) = 1 from (GlobalTheory.AutMult.toInf V g).2, map_one]
   rw [map_mul, hx, one_mul]
 
+/- English proof (translation)
+Establish `hK' : ∀ g : GA D (G.V X), Lev.finE (G.V X) g ∈ K ↔ Lev.finE (G.V X) g ∈ K'`. Introduce `g`. Rewrite using `[← finE_toFin' (G.V X) g]`. Conclude with `hK (GlobalTheory.AutMult.toFin (G.V X) g)`. Unfold `Vol.IsAt at h ⊢`.
+
+Use `split_ifs at h ⊢`. Simplify `h` using `only [IsMeasDef, Lev.IsMeasLevDef, Lev.IsMeasLevW, hK']`. Simplify `h` using `only [Lev.IsMeasFD, Lev.IsMeasLev, Lev.IsMeasLevW, hK']`.
+-/
 theorem isAt_congr (M : Vol G) (X : Node) {K K' : Subgroup (GL (Fin (G.V X).rank) (Lev.EAf D))}
     (hK : ∀ k : FinPt G X, finG (G.V X) k ∈ K ↔ finG (G.V X) k ∈ K') (h : M.IsAt X K) : M.IsAt X K' := by
   have hK' : ∀ g : GA D (G.V X), Lev.finE (G.V X) g ∈ K ↔ Lev.finE (G.V X) g ∈ K' := by
@@ -38,6 +46,9 @@ theorem isAt_congr (M : Vol G) (X : Node) {K K' : Subgroup (GL (Fin (G.V X).rank
   · simpa only [IsMeasDef, Lev.IsMeasLevDef, Lev.IsMeasLevW, hK'] using h
   · simpa only [Lev.IsMeasFD, Lev.IsMeasLev, Lev.IsMeasLevW, hK'] using h
 
+/- English proof (translation)
+Unfold `Vol.IsAt at h`. Use `split_ifs at h`. Conclude with `h.1.1`. Conclude with `h.1.1`.
+-/
 theorem isHaar_of_isAt (M : Vol G) (X : Node) {K : Subgroup (GL (Fin (G.V X).rank) (Lev.EAf D))} (h : M.IsAt X K) :
     (M.ν X).IsHaarMeasure := by
   unfold Vol.IsAt at h
@@ -49,6 +60,27 @@ end GlobalTheory.TermScales
 
 open GlobalTheory.TermScales in
 
+/- English proof (translation)
+Use `big_mono ?_ (Big.and GlobalTheory.T.rowTest_lastColumn_level_iff_gridVertexLevelVolumeOne GlobalTheory.T.rowTest_topLevel_last_iff_gridVertexLevelVolumeOne)` and prove the remaining obligations. Introduce `D Γ _ _ Pl0 T A Ks _ _ _ R ch hch`. Take `⟨hrow, htop⟩` from `hch`. Introduce `t Φ β M M' hM hM'`. Establish `hdef : ∀ X : Node, DefNode D.R.m X → X ≠ .top D.R.m → Node.InRange D.R.m X`.
+
+Introduce `X hX _`. Break down `X with ⟨i, j⟩ | i | j` into its components or cases. Conclude with `⟨hX.1, hX.2.le⟩`. Conclude with `hX.elim`. Conclude with `hX`.
+
+Establish `hM'at : ∀ X : Node, DefNode D.R.m X → X ≠ .top D.R.m → ∃ K, M'.IsAt X K`. Introduce `X hX hne`. Break down `X with ⟨i, j⟩ | i | j` into its components or cases. Take `⟨hi, rfl⟩` from `hX`. Conclude with `⟨_, hM'.2 i hi⟩`.
+
+Conclude with `hX.elim`. Establish `hj : j < D.R.m` using `lt_of_le_of_ne hX (fun e => hne (by rw [e]))`. Conclude with `⟨_, hM'.1 j hj⟩`. Establish `key : ∀ X : Node, ∃ c : ℝ≥0, (DefNode D.R.m X → X ≠ .top D.R.m → M.ν X = c • M'.ν X) ∧ (DefNode D.R.m X → X ≠ .top D.R.m → (∀ j ∈ idx D, X ≠ .top j) → c = 1)`. Introduce `X`.
+
+Distinguish the cases in `hX : DefNode D.R.m X ∧ X ≠ .top D.R.m ∧ ∀ j ∈ idx D, X ≠ .top j`. Take `⟨hd, hne, hidx⟩` from `hX`. Use `⟨1, fun _ _ => ?_, fun _ _ _ => rfl⟩` and prove the remaining obligations. Rewrite using `[one_smul]`. Establish `hMX` using `hM.vtx X (hdef X hd hne)`.
+
+Break down `X with ⟨i, j⟩ | i | j` into its components or cases. Take `⟨hi, rfl⟩` from `hd`. Conclude with `GlobalTheory.HaarNorm.vol_nu_eq_of_isAt M M' _ _ hMX (isAt_congr M' _ (hrow t i hi) (hM'.2 i hi))`. Conclude with `hd.elim`. Establish `hj : j < D.R.m` using `lt_of_le_of_ne hd (fun e => hne (by rw [e]))`.
+
+Establish `hj' : j ∉ idx D` using `fun hm => hidx j hm rfl`. Simplify using `only [idx, List.mem_range'_1] at hj'`. Break down `Nat.eq_zero_or_pos j with rfl | hpos` into its components or cases. Conclude with `GlobalTheory.HaarNorm.vol_nu_eq_of_isAt M M' _ _ hMX (hM'.1 0 hj)`. Establish `e : j = D.R.m - 1` using `by omega`.
+
+Establish `h2 : 2 ≤ D.R.m` using `by omega`. Substitute `e` using the available equality. Conclude with `GlobalTheory.HaarNorm.vol_nu_eq_of_isAt M M' _ _ hMX (isAt_congr M' _ (htop t Φ β hj h2) (hM'.1 _ hj))`. Distinguish the cases in `hX' : DefNode D.R.m X ∧ X ≠ .top D.R.m`. Take `⟨hd, hne⟩` from `hX'`.
+
+Take `⟨i1, i2, i3, i4, i5, -, -⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D (ch.G.V X)`. Take `⟨K', hK'⟩` from `hM'at X hd hne`. Use `haveI := isHaar_of_isAt M X (hM.vtx X (hdef X hd hne))`. Use `haveI := isHaar_of_isAt M' X hK'`. Conclude with `⟨Measure.haarScalarFactor (M.ν X) (M'.ν X), fun _ _ => Measure.isMulLeftInvariant_eq_smul _ _, fun h1 h2 h3 => (hX ⟨h1, h2, h3⟩).elim⟩`.
+
+Conclude with `⟨1, fun h1 h2 => (hX' ⟨h1, h2⟩).elim, fun h1 h2 _ => (hX' ⟨h1, h2⟩).elim⟩`. Use `choose x hx using key`. Conclude with `⟨x, fun X h1 h2 => (hx X).1 h1 h2, fun X h1 h2 h3 => (hx X).2 h1 h2 h3⟩`.
+-/
 theorem GlobalTheory.TermScales.exists_scales : Big fun {D} _ _ _ _ _ _ _ _ _ _ _ ch => ∀ t Φ β (M M' : Vol ch.G), M.Is t → IsTermVol t ch.S.toGridChoice Φ β M' →
     ∃ x : Node → ℝ≥0, Scales M M' x ∧
       ∀ X : Node, DefNode D.R.m X → X ≠ .top D.R.m → (∀ j ∈ idx D, X ≠ .top j) → x X = 1 := by

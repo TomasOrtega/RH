@@ -44,6 +44,19 @@ private def slashEquiv (N : ℕ) (x : ZMod N) (a b c d : ℤ) (hdet : a * d - b 
     · show (m * d - n * c) * b + (-(m * b) + n * a) * d = n
       linear_combination n * hdet
 
+/- English proof (translation)
+Introduce `N k _ _ a γ hγ`. Establish `hdet : γ 0 0 * γ 1 1 - γ 0 1 * γ 1 0 = 1`. Use `γ.2` as an intermediate fact. Rewrite `this` using `[Matrix.det_fin_two]`. Conclude with `this`.
+
+Establish `hc : ((γ 1 0 : ℤ) : ZMod N) = 0` using `Gamma0_mem.mp hγ`. Use extensionality with `z`. Rewrite using `[ModularForm.SL_slash_apply]`. Establish `hden : denom (Matrix.SpecialLinearGroup.toGL ((Matrix.SpecialLinearGroup.map (Int.castRingHom ℝ)) γ)) (z : ℂ) = (γ 1 0 : ℂ) * z + (γ 1 1 : ℂ)`. Simplify using `[denom]`.
+
+Establish `hsm : ((γ • z : ℍ) : ℂ) = ((γ 0 0 : ℂ) * z + (γ 0 1 : ℂ)) / ((γ 1 0 : ℂ) * z + (γ 1 1 : ℂ))`. Rewrite using `[UpperHalfPlane.coe_specialLinearGroup_apply]`. Simplify using the standard rewrite rules. Establish `hne : (γ 1 0 : ℂ) * z + (γ 1 1 : ℂ) ≠ 0`. Rewrite using `[← hden]`.
+
+Conclude with `denom_ne_zero _ z`. Establish `key : ((γ 0 0 : ℂ) * z + (γ 0 1 : ℂ)) / ((γ 1 0 : ℂ) * z + (γ 1 1 : ℂ)) * ((γ 1 0 : ℂ) * z + (γ 1 1 : ℂ)) = (γ 0 0 : ℂ) * z + (γ 0 1 : ℂ)` using `div_mul_cancel₀ _ hne`. Rewrite using `[hden]`. Unfold `eisFun`. Rewrite using `[hsm, mul_assoc, ← tsum_mul_right]`.
+
+Rewrite using `[← (slashEquiv N a (γ 0 0) (γ 0 1) (γ 1 0) (γ 1 1) hdet hc).tsum_eq]`. Use `congr 1`. Use `congr 1`. Use function extensionality and compare the values at `v`. Rewrite using `[← mul_zpow]`.
+
+Use `congr 1`. Simplify using `only [slashEquiv, Equiv.coe_fn_mk]`. Use `push_cast`. Take the linear combination `((v : ℤ × ℤ).1 : ℂ) * key`.
+-/
 theorem eisSlash : EisSlash := by
   intro N k _ _ a γ hγ
   have hdet : γ 0 0 * γ 1 1 - γ 0 1 * γ 1 0 = 1 := by

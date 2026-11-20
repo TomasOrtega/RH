@@ -55,6 +55,9 @@ def qpair : (↥LA.T ⧸ I) →ₗ[O] (↥LA'.T ⧸ I') →ₗ[O] (LL ⧸ L1.T) 
       show (Submodule.Quotient.mk (s * m (t : A.V) (t' : A'.V)) : LL ⧸ L1.T) = 0
       exact (Submodule.Quotient.mk_eq_zero _).2 (hsI' t t.2 t' ht')))
 
+/- English proof (translation)
+Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Use `show (Submodule.Quotient.mk (s * m (A.ρ g (x : A.V)) (A'.ρ g (y : A'.V))) : LL ⧸ L1.T) = Submodule.Quotient.mk (charRep (cycLL PD LL) g (s * m (x : A.V) (y : A'.V)))`. Rewrite using `[hm, mul_left_comm]`. Both sides reduce to the same expression.
+-/
 theorem qpair_equiv (hI : StableSub LA I) (hI' : StableSub LA' I')
     (hm : ∀ g x y, m (A.ρ g x) (A'.ρ g y) = ((cycLL PD LL g : LLˣ) : LL) * m x y) (g : G)
     (x : ↥LA.T ⧸ I) (y : ↥LA'.T ⧸ I') :
@@ -71,6 +74,11 @@ def zq (hI' : StableSub LA' I') (c : G → ↥LA.T ⧸ I) (c' : G → ↥LA'.T �
     G × G → LL ⧸ L1.T :=
   fun x => qpair m L1 I I' s hsI hsI' (c x.1) (actQ LA' I' hI' x.1 (c' x.2))
 
+/- English proof (translation)
+Take `⟨g, h⟩` from `x`. Establish `e1` using `(Submodule.Quotient.mk_surjective I (c g)).choose_spec`. Establish `e2` using `(Submodule.Quotient.mk_surjective I' (c' h)).choose_spec`. Use `show qpair m L1 I I' s hsI hsI' (c g) (actQ LA' I' hI' g (c' h)) = _`. Use `conv_lhs => rw [← e1, ← e2]`.
+
+Both sides reduce to the same expression.
+-/
 theorem zq_eq (hI' : StableSub LA' I') (c : G → ↥LA.T ⧸ I) (c' : G → ↥LA'.T ⧸ I') (x : G × G) :
     zq m L1 I I' s hsI hsI' hI' c c' x = Submodule.Quotient.mk
       (s * m (Formalism.MainNotions.LocalSituation.liftQ LA I (c x.1)) (A'.ρ x.1 (Formalism.MainNotions.LocalSituation.liftQ LA' I' (c' x.2)))) := by
@@ -81,6 +89,11 @@ theorem zq_eq (hI' : StableSub LA' I') (c : G → ↥LA.T ⧸ I) (c' : G → ↥
   conv_lhs => rw [← e1, ← e2]
   rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Take `⟨g, h, k⟩` from `x`. Use `show repD L1 g (zq m L1 I I' s hsI hsI' hI' c c' (h, k)) - zq m L1 I I' s hsI hsI' hI' c c' (g * h, k) + zq m L1 I I' s hsI hsI' hI' c c' (g, h * k) - zq m L1 I I' s hsI hsI' hI' c c' (g, h) = 0`. Simplify using `only [zq]`. Rewrite using `[← qpair_equiv m L1 I I' s hsI hsI' hI hI' hm, hc.2 g h, hc'.2 h k, GlobalTheory.TateFin.actQ_mul]`.
+
+Simplify using `only [map_add, LinearMap.add_apply]`. Normalize the expressions using the abelian group laws.
+-/
 theorem cup_cocycle_d2_eq_zero (hI : StableSub LA I) (hI' : StableSub LA' I')
     (hm : ∀ g x y, m (A.ρ g x) (A'.ρ g y) = ((cycLL PD LL g : LLˣ) : LL) * m x y)
     {c : G → ↥LA.T ⧸ I} {c' : G → ↥LA'.T ⧸ I'} (hc : c ∈ quotientCocycles LA I hI) (hc' : c' ∈ quotientCocycles LA' I' hI') :
@@ -94,6 +107,11 @@ theorem cup_cocycle_d2_eq_zero (hI : StableSub LA I) (hI' : StableSub LA' I')
   simp only [map_add, LinearMap.add_apply]
   abel
 
+/- English proof (translation)
+Rewrite using `[IsLocallyConstant.iff_exists_open]`. Introduce and unpack `⟨g₀, h₀⟩`. Take `⟨U₂, hU₂, hh₀, hc⟩` from `(IsLocallyConstant.iff_exists_open _).1 hc' h₀`. Take `⟨U₁, hU₁, hg₀, ha⟩` from `(IsLocallyConstant.iff_exists_open _).1 (hlc' (c' h₀)) g₀`. Use `⟨U₁ ×ˢ U₂, hU₁.prod hU₂, ⟨hg₀, hh₀⟩, ?_⟩` and prove the remaining obligations.
+
+Introduce and unpack `⟨g, h⟩ ⟨hg, hh⟩`. Use `show actQ LA' I' hI' g (c' h) = actQ LA' I' hI' g₀ (c' h₀)`. Rewrite using `[hc h hh]`. Conclude with `ha g hg`.
+-/
 theorem lc_act (hI' : StableSub LA' I') (hlc' : ∀ y, IsLocallyConstant fun g => actQ LA' I' hI' g y)
     (c' : G → ↥LA'.T ⧸ I') (hc' : IsLocallyConstant c') :
     IsLocallyConstant fun x : G × G => actQ LA' I' hI' x.1 (c' x.2) := by
@@ -107,6 +125,9 @@ theorem lc_act (hI' : StableSub LA' I') (hlc' : ∀ y, IsLocallyConstant fun g =
   rw [hc h hh]
   exact ha g hg
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨(hc.1.comp_continuous continuous_fst).comp₂ (lc_act I' hI' hlc' c' hc'.1) (fun a b => qpair m L1 I I' s hsI hsI' a b), fun _ => Submodule.mem_top⟩, LinearMap.mem_ker.2 (cup_cocycle_d2_eq_zero m L1 I I' s hsI hsI' hI hI' hm hc hc')⟩`.
+-/
 theorem cup_cocycle_mem_Z2 (hI : StableSub LA I) (hI' : StableSub LA' I')
     (hm : ∀ g x y, m (A.ρ g x) (A'.ρ g y) = ((cycLL PD LL g : LLˣ) : LL) * m x y)
     (hlc' : ∀ y, IsLocallyConstant fun g => actQ LA' I' hI' g y)
@@ -116,6 +137,11 @@ theorem cup_cocycle_mem_Z2 (hI : StableSub LA I) (hI' : StableSub LA' I')
       (fun a b => qpair m L1 I I' s hsI hsI' a b), fun _ => Submodule.mem_top⟩,
     LinearMap.mem_ker.2 (cup_cocycle_d2_eq_zero m L1 I I' s hsI hsI' hI hI' hm hc hc')⟩
 
+/- English proof (translation)
+Take `⟨x, hx⟩` from `hcB`. Establish `hcg : ∀ g, c g = actQ LA I hI g x - x` using `fun g => (congrFun hx g).symm`. Use `⟨fun h => qpair m L1 I I' s hsI hsI' x (c' h), ⟨hc'.1.comp _, fun _ => Submodule.mem_top⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `p`. Take `⟨g, h⟩` from `p`.
+
+Use `show repD L1 g (qpair m L1 I I' s hsI hsI' x (c' h)) - qpair m L1 I I' s hsI hsI' x (c' (g * h)) + qpair m L1 I I' s hsI hsI' x (c' g) = qpair m L1 I I' s hsI hsI' (c g) (actQ LA' I' hI' g (c' h))`. Rewrite using `[hcg, ← qpair_equiv m L1 I I' s hsI hsI' hI hI' hm, hc'.2 g h]`. Simplify using `only [map_add, map_sub, LinearMap.sub_apply]`. Normalize the expressions using the abelian group laws.
+-/
 theorem cup_coboundary_left_mem_B2 (hI : StableSub LA I) (hI' : StableSub LA' I')
     (hm : ∀ g x y, m (A.ρ g x) (A'.ρ g y) = ((cycLL PD LL g : LLˣ) : LL) * m x y)
     {c : G → ↥LA.T ⧸ I} {c' : G → ↥LA'.T ⧸ I'} (hcB : c ∈ BQ LA I hI) (hc' : c' ∈ quotientCocycles LA' I' hI') :
@@ -133,6 +159,11 @@ theorem cup_coboundary_left_mem_B2 (hI : StableSub LA I) (hI' : StableSub LA' I'
   simp only [map_add, map_sub, LinearMap.sub_apply]
   abel
 
+/- English proof (translation)
+Take `⟨y, hy⟩` from `hcB`. Establish `hcg : ∀ h, c' h = actQ LA' I' hI' h y - y` using `fun h => (congrFun hy h).symm`. Use `⟨fun g => -qpair m L1 I I' s hsI hsI' (c g) (actQ LA' I' hI' g y), ⟨hc.1.comp₂ (hlc' y) (fun a b => -qpair m L1 I I' s hsI hsI' a b), fun _ => Submodule.mem_top⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `p`. Take `⟨g, h⟩` from `p`.
+
+Use `show repD L1 g (-qpair m L1 I I' s hsI hsI' (c h) (actQ LA' I' hI' h y)) - -qpair m L1 I I' s hsI hsI' (c (g * h)) (actQ LA' I' hI' (g * h) y) + -qpair m L1 I I' s hsI hsI' (c g) (actQ LA' I' hI' g y) = qpair m L1 I I' s hsI hsI' (c g) (actQ LA' I' hI' g (c' h))`. Rewrite using `[hcg, map_neg, ← qpair_equiv m L1 I I' s hsI hsI' hI hI' hm, hc.2 g h, GlobalTheory.TateFin.actQ_mul]`. Simplify using `only [map_add, map_sub, LinearMap.add_apply]`. Normalize the expressions using the abelian group laws.
+-/
 theorem cup_coboundary_right_mem_B2 (hI : StableSub LA I) (hI' : StableSub LA' I')
     (hm : ∀ g x y, m (A.ρ g x) (A'.ρ g y) = ((cycLL PD LL g : LLˣ) : LL) * m x y)
     (hlc' : ∀ y, IsLocallyConstant fun g => actQ LA' I' hI' g y)
@@ -205,6 +236,15 @@ def cupH2Level : ↥(quotientCocycles LA' I' hI') →ₗ[O] ↥(quotientCocycles
 
 include hsI hsI' hm hlc' in
 
+/- English proof (translation)
+Use `⟨(LinearMap.liftQ₂ _ _ (cupH2Level m L1 I I' s hsI hsI' hI hI' hm hlc') ?_ ?_).compr₂ e.toLinearMap, fun c c' => ?_⟩` and prove the remaining obligations. Introduce `c' hc'`. Use `LinearMap.mem_ker.2 (LinearMap.ext fun c => ?_)` and prove the remaining obligations. Use `show (Submodule.Quotient.mk _ : ReciprocityTheory.Def.H2 (repD L1) (⊤ : Submodule O (LL ⧸ L1.T))) = 0`. Rewrite using `[Submodule.Quotient.mk_eq_zero]`.
+
+Conclude with `cup_coboundary_right_mem_B2 m L1 I I' s hsI hsI' hI hI' hm hlc' c.2 hc'`. Introduce `c hc`. Use `LinearMap.mem_ker.2 (LinearMap.ext fun c' => ?_)` and prove the remaining obligations. Use `show (Submodule.Quotient.mk _ : ReciprocityTheory.Def.H2 (repD L1) (⊤ : Submodule O (LL ⧸ L1.T))) = 0`. Rewrite using `[Submodule.Quotient.mk_eq_zero]`.
+
+Conclude with `cup_coboundary_left_mem_B2 m L1 I I' s hsI hsI' hI hI' hm hc c'.2`. Use `show e (Submodule.Quotient.mk ⟨zq m L1 I I' s hsI hsI' hI' c.1 c'.1, _⟩) = 0 ↔ _`. Rewrite using `[LinearEquiv.map_eq_zero_iff, Submodule.Quotient.mk_eq_zero]`. Use `show zq m L1 I I' s hsI hsI' hI' c.1 c'.1 ∈ ReciprocityTheory.Def.B2 (repD L1) ⊤ ↔ _`. Unfold `CobO`.
+
+Rewrite using `[funext (zq_eq m L1 I I' s hsI hsI' hI' c.1 c'.1)]`.
+-/
 theorem exists_level_pairing {S : Submodule O LL}
     (e : ReciprocityTheory.Def.H2 (repD L1) (⊤ : Submodule O (LL ⧸ L1.T)) ≃ₗ[O] (LL ⧸ S)) :
     ∃ β : QuotientCohomology LA' I' hI' →ₗ[O] QuotientCohomology LA I hI →ₗ[O] (LL ⧸ S),
@@ -232,6 +272,9 @@ theorem exists_level_pairing {S : Submodule O LL}
 
 omit [TopologicalSpace LL] in
 
+/- English proof (translation)
+Unfold `CobO at *`. Establish `h2` using `(ReciprocityTheory.Def.B2 (repD L1) ⊤).smul_mem a h`. Use `h2 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`. Rewrite using `[Pi.smul_apply, ← Submodule.Quotient.mk_smul, Algebra.smul_def]`.
+-/
 theorem cobO_smul (a : O) {z : G × G → LL} (h : CobO PD L1 z) :
     CobO PD L1 (fun x => algebraMap O LL a * z x) := by
   unfold CobO at *
@@ -242,6 +285,9 @@ theorem cobO_smul (a : O) {z : G × G → LL} (h : CobO PD L1 z) :
 
 end Gen2
 
+/- English proof (translation)
+Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Take `⟨n, u, hu⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible ha hϖ`. Use `⟨ϖ, n, u, hϖ, by rw [hu, Ideal.span_singleton_mul_left_unit u.isUnit], ?_⟩` and prove the remaining obligations. Establish `hu0 : algebraMap O LL (u : O) ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective O LL)).2 u.ne_zero`. Rewrite using `[hu, map_mul, map_pow, mul_inv, ← mul_assoc, mul_inv_cancel₀ hu0, one_mul, inv_pow]`.
+-/
 theorem exists_level_pow {LL O : Type} [Field LL] [CommRing O] [IsDomain O]
     [IsDiscreteValuationRing O] [Algebra O LL] [IsFractionRing O LL] {a : O} (ha : a ≠ 0) :
     ∃ (ϖ : O) (n : ℕ) (u : O), Irreducible ϖ ∧ Ideal.span {a} = Ideal.span {ϖ ^ n} ∧
@@ -266,6 +312,11 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
 
 open Formalism.MainNotions.BlochKatoDuality.Br in
 
+/- English proof (translation)
+Use `(cobO_congr PD L1 _ _ fun x => ?_).1 h1` and prove the remaining obligations. Take `⟨g, k⟩` from `x`. Establish `hw : Formalism.MainNotions.LocalSituation.liftQ LA' I' (c' k) ∈ LA'.T` using `(Submodule.Quotient.mk_surjective I' (c' k)).choose.2`. Rewrite using `[cup_lift PD hd L1 hL1 _ _ g k (d.2.2 g (Set.mem_univ g)) (s • Formalism.MainNotions.LocalSituation.liftQ LA' I' (c' k)) rfl]`. Rewrite using `[map_smul, map_smul, smul_eq_mul, Submodule.Quotient.eq, ← mul_sub, ← LinearMap.sub_apply, ← map_sub]`.
+
+Establish `e0` using `(Submodule.Quotient.mk_surjective I (redT LA I d g)).choose_spec`. Establish `e1` using `(Submodule.Quotient.eq I).1 (e0.trans (rfl : redT LA I d g = Submodule.Quotient.mk (evT LA g d)))`. Establish `h2` using `hsI _ e1 _ (LA'.stable g _ hw)`. Rewrite `h2` using `[Submodule.coe_sub]`. Conclude with `h2`.
+-/
 theorem cobO_red [IsTopologicalRing LL] [IsDomain O] [IsDiscreteValuationRing O] [IsFractionRing O LL]
     (L1 : Lattice (O := O) (charRep (cycLL PD LL)))
     (hL1 : L1.T = LinearMap.range (Algebra.linearMap O LL))
@@ -293,6 +344,11 @@ theorem cobO_red [IsTopologicalRing LL] [IsDomain O] [IsDiscreteValuationRing O]
   rw [Submodule.coe_sub] at h2
   exact h2
 
+/- English proof (translation)
+Use `(exists_level_pairing m L1 I I' s hsI hsI' hI hI' hd.1.1 hlc' e).elim fun β hβ => ?_` and prove the remaining obligations. Use `⟨β, fun c hc => ?_, fun d h c' hb => ?_⟩` and prove the remaining obligations. Use `(Submodule.Quotient.mk_surjective _ c).elim fun c₀ hc₀ => ?_` and prove the remaining obligations. Substitute `hc₀` using the available equality. Conclude with `(Submodule.Quotient.mk_eq_zero _).2 (nondeg c₀.1 c₀.2 fun c' hc' => (hβ c₀ ⟨c', hc'⟩).1 (hc _))`.
+
+Conclude with `cobO_red L1 hL1 hd I I' s hsI d c'.1 ((hβ ⟨_, h⟩ c').1 hb)`.
+-/
 theorem level_pairing_abstract [IsTopologicalRing LL] [IsDomain O] [IsDiscreteValuationRing O]
     [IsFractionRing O LL]
     (L1 : Lattice (O := O) (charRep (cycLL PD LL)))
@@ -323,6 +379,11 @@ theorem level_pairing_abstract [IsTopologicalRing LL] [IsDomain O] [IsDiscreteVa
       (nondeg c₀.1 c₀.2 fun c' hc' => (hβ c₀ ⟨c', hc'⟩).1 (hc _))
   · exact cobO_red L1 hL1 hd I I' s hsI d c'.1 ((hβ ⟨_, h⟩ c').1 hb)
 
+/- English proof (translation)
+Substitute `hJJ` using the available equality. Introduce `c hc H`. Use `hnd hI hI' c hc fun c' hc' => ?_` and prove the remaining obligations. Establish `h3` using `cobO_smul L1 u (H c' hc')`. Simplify using `only [hst, mul_assoc]`.
+
+Simplify `h3` using `only [mul_assoc]`.
+-/
 theorem nondeg_transfer
     (L1 : Lattice (O := O) (charRep (cycLL PD LL)))
     {A A' : GRep G Qp LL O} {LA : Lattice (O := O) A.ρ} {LA' : Lattice (O := O) A'.ρ}
@@ -345,6 +406,19 @@ theorem nondeg_transfer
   simp only [hst, mul_assoc]
   simpa only [mul_assoc] using h3
 
+/- English proof (translation)
+Take `⟨⟨hO, hDVR, hFr⟩, -, -, htr, hopen⟩` from `hG`. Use `haveI := hO`. Use `haveI := hDVR`. Use `haveI := hFr`. Use `haveI := htr`.
+
+Establish `hlm : algebraMap O LL ((l : ℕ) : O) = ((l : ℕ) : LL)` using `map_natCast _ _`. Establish `hl0 : ((l : ℕ) : O) ≠ 0` using `fun h => hlL (by rw [← hlm, h, map_zero])`. Establish `hsinv : (algebraMap O LL ((l : ℕ) : O))⁻¹ ^ r = (((l : ℕ) : LL) ^ r)⁻¹`. Rewrite using `[hlm, inv_pow]`. Establish `hTT : ∀ x ∈ LA.T, ∀ y ∈ LA'.T, m x y ∈ L1.T` using `fun x hx y hy => by`.
+
+Take `⟨a, ha⟩` from `(hd.2 y).1 hy x hx`. Rewrite using `[hL1, ha]`. Conclude with `⟨a, rfl⟩`. Establish `hsI : ∀ t ∈ (Ideal.span {((l : ℕ) : O) ^ r} • ⊤ : Submodule O ↥LA.T), ∀ y ∈ LA'.T, (((l : ℕ) : LL) ^ r)⁻¹ * m (t : A.V) y ∈ L1.T`. Introduce `t ht y hy`.
+
+Establish `h1` using `(GlobalTheory.TateFin.mem_pow_smul_top (LL := LL) LA.T hl0 r t).1 ht`. Rewrite `h1` using `[hsinv]`. Establish `h2` using `hTT _ h1 y hy`. Rewrite `h2` using `[map_smul, LinearMap.smul_apply, smul_eq_mul]`. Then use the resulting hypothesis. Establish `hsI' : ∀ x ∈ LA.T, ∀ t ∈ (Ideal.span {((l : ℕ) : O) ^ r} • ⊤ : Submodule O ↥LA'.T), (((l : ℕ) : LL) ^ r)⁻¹ * m x (t : A'.V) ∈ L1.T`.
+
+Introduce `x hx t ht`. Establish `h1` using `(GlobalTheory.TateFin.mem_pow_smul_top (LL := LL) LA'.T hl0 r t).1 ht`. Rewrite `h1` using `[hsinv]`. Establish `h2` using `hTT x hx _ h1`. Rewrite `h2` using `[map_smul, smul_eq_mul]`. Then use the resulting hypothesis.
+
+Establish `hlc'` using `fun y => GlobalTheory.TateFin.actQ_locallyConstant hopen A' LA' hl0 r hI' y`. Use `(exists_level_pow (LL := LL) (pow_ne_zero r hl0)).elim fun ϖ h1 => h1.elim fun n h2 => h2.elim fun u h3 => ?_` and prove the remaining obligations. Establish `hsu` using `h3.2.2`. Rewrite `hsu` using `[map_pow, hlm]`. Conclude with `level_pairing_abstract L1 hL1 hd _ _ _ hsI hsI' hI hI' hlc' (e0.some.trans (Submodule.quotEquivOfEq _ _ hL1)) (nondeg_transfer L1 m _ _ h3.2.1 _ _ u hsu (hnd ϖ h3.1 n) hI hI')`.
+-/
 theorem level_pairing_of (hG : GoodO (Qp := Qp) LL O)
     (L1 : Lattice (O := O) (charRep (cycLL PD LL)))
     (hL1 : L1.T = LinearMap.range (Algebra.linearMap O LL))
@@ -405,6 +479,11 @@ theorem level_pairing_of (hG : GoodO (Qp := Qp) LL O)
 
 end Gen3
 
+/- English proof (translation)
+Introduce `hT l _ P K LL _ _ _ O _ _ hG L1 hL1 A A' LA LA' m hd r hI hI'`. Establish `hlQ : ((l : ℕ) : ℚ_[l]) ≠ 0` using `Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero`. Establish `hlL : ((l : ℕ) : LL) ≠ 0`. Rewrite using `[← map_natCast (algebraMap ℚ_[l] LL)]`. Conclude with `(map_ne_zero _).2 hlQ`.
+
+Conclude with `level_pairing_of hG L1 hL1 A A' LA LA' m hd (GlobalTheory.TateTop.tateH2_of_duality_loc hT l P K LL O hG L1 hL1) (fun ϖ hϖ n hJ hJ' => (GlobalTheory.TateFin.tate_pairing_nondegenerate hT l P K LL O hG L1 hL1 A A' LA LA' m hd ϖ hϖ n hJ hJ').1) l hlL r hI hI'`.
+-/
 theorem tate_pairing_level : Formalism.GaloisCohomology.LocalTateDualityK → ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (K : FinExt l) (LL : Type) [Field LL] [Algebra ℚ_[l] LL] [TopologicalSpace LL] (O : Type) [CommRing O] [Algebra O LL], GoodO (Qp := ℚ_[l]) LL O → ∀ L1 : Lattice (O := O) (charRep (cycLL (P.PD K) LL)), L1.T = LinearMap.range (Algebra.linearMap O LL) → ∀ (A A' : GRep ↥(GK K) ℚ_[l] LL O) (LA : Lattice (O := O) A.ρ) (LA' : Lattice (O := O) A'.ρ) (m : A.V →ₗ[LL] A'.V →ₗ[LL] LL), IsDualLat1 (P.PD K) LA LA' m → ∀ (r : ℕ) (hI : StableSub LA (Ideal.span {((l : ℕ) : O) ^ r} • ⊤ : Submodule O ↥LA.T)) (hI' : StableSub LA' (Ideal.span {((l : ℕ) : O) ^ r} • ⊤ : Submodule O ↥LA'.T)), ∃ β : QuotientCohomology LA' _ hI' →ₗ[O] QuotientCohomology LA _ hI →ₗ[O] (LL ⧸ LinearMap.range (Algebra.linearMap O LL)), (∀ c, (∀ y, β y c = 0) → c = 0) ∧ ∀ (d : ↥(latticeCocycles LA)) (h : redT LA _ d ∈ quotientCocycles LA _ hI) (c' : ↥(quotientCocycles LA' _ hI')), β (Submodule.Quotient.mk c') (Submodule.Quotient.mk ⟨redT LA _ d, h⟩) = 0 → CobO (P.PD K) L1 (cupLD LA' m (d : ↥(GK K) → A.V) (fun g => (Submodule.Quotient.mk ((((l : ℕ) : LL) ^ r)⁻¹ • Formalism.MainNotions.LocalSituation.liftQ LA' _ ((c' : ↥(GK K) → ↥LA'.T ⧸ (Ideal.span {((l : ℕ) : O) ^ r} • ⊤ : Submodule O ↥LA'.T)) g)) : A'.V ⧸ LA'.T))) := by
   intro hT l _ P K LL _ _ _ O _ _ hG L1 hL1 A A' LA LA' m hd r hI hI'
   have hlQ : ((l : ℕ) : ℚ_[l]) ≠ 0 := Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero

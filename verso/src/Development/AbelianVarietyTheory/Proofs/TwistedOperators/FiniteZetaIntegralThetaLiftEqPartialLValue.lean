@@ -38,18 +38,30 @@ namespace GlobalTheory.FinZeta
 
 variable {D : D7}
 
+/- English proof (translation)
+Rewrite using `[funext hf, ha]` and apply the resulting hypothesis.
+-/
 theorem hasSum_of_eq {ι M : Type} [NormedAddCommGroup M] {f g : ι → M} {a b : M} (h : HasSum f a) (hf : ∀ i, g i = f i)
     (ha : b = a) : HasSum g b := by
   rwa [funext hf, ha]
 
+/- English proof (translation)
+Simplify using `only [l2, Formalism.IndefR.Lift.pet, Pi.smul_apply, smul_eq_mul, mul_assoc, integral_const_mul]`.
+-/
 theorem l2_smul_left {X : Type} [MeasurableSpace X] (μ : Measure X) (𝓕 : Set X) (c : ℂ) (f g : X → ℂ) :
     l2 μ 𝓕 (c • f) g = c * l2 μ 𝓕 f g := by
   simp only [l2, Formalism.IndefR.Lift.pet, Pi.smul_apply, smul_eq_mul, mul_assoc, integral_const_mul]
 
+/- English proof (translation)
+Simplify using `only [l2, Formalism.IndefR.Lift.pet, nrm2, Complex.mul_conj, Complex.normSq_eq_norm_sq, integral_complex_ofReal]`.
+-/
 theorem l2_self_eq_setIntegral_norm_sq {a b : ℕ} (μ : Measure (Mx D a b)) (𝓕 : Set (Mx D a b)) (f : Mx D a b → ℂ) :
     l2 μ 𝓕 f f = (nrm2 μ 𝓕 f : ℂ) := by
   simp only [l2, Formalism.IndefR.Lift.pet, nrm2, Complex.mul_conj, Complex.normSq_eq_norm_sq, integral_complex_ofReal]
 
+/- English proof (translation)
+Proceed by induction on `hU using Submodule.span_induction with`. Consider the case `mem U h => exact ⟨⟨(h.aut x).cont, (h.aut x).left, GlobalTheory.CuspDecay.bounded_of_cuspForm hP hθ (h.aut x) (h.cusp x)⟩, h.lev x⟩`. Consider the case `zero => exact ⟨zero_mem _, fun _ _ _ => by simp⟩`. Consider the case `add a b _ _ ha hb => exact ⟨add_mem ha.1 hb.1, fun k hk g => by simp [ha.2 k hk, hb.2 k hk, mul_add]⟩`. Consider the case `smul c a _ ha => exact ⟨(bddAut V).smul_mem c ha.1, fun k hk g => by simp [ha.2 k hk, mul_left_comm]⟩`.
+-/
 theorem mult_values (hP : GlobalTheory.Published.CuspRapidDecay) {V : HSp D} {S : D.what₂.Tau → SPar} {θ : InfFam D} (hθ : IsInfFam θ)
     {M : DSModel V S} {J : Set (GA D V)} {χ : GA D V → ℂ} {U : MMap M} (hU : U ∈ Mult θ M J χ) (x : M.Vec) :
     U x ∈ bddAut V ∧ ∀ k ∈ J, ∀ g, U x (g * k) = χ k * U x g := by
@@ -59,6 +71,9 @@ theorem mult_values (hP : GlobalTheory.Published.CuspRapidDecay) {V : HSp D} {S 
   | add a b _ _ ha hb => exact ⟨add_mem ha.1 hb.1, fun k hk g => by simp [ha.2 k hk, hb.2 k hk, mul_add]⟩
   | smul c a _ ha => exact ⟨(bddAut V).smul_mem c ha.1, fun k hk g => by simp [ha.2 k hk, mul_left_comm]⟩
 
+/- English proof (translation)
+Establish `h1` using `hU.2`. Simplify using `only [SetLike.mem_coe, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, sub_eq_zero] at h1`. Conclude with `congrArg (fun T : MMap M => T x) (h1 w d R h)`.
+-/
 theorem part_eigen {V : HSp D} {S : D.what₂.Tau → SPar} {θ : InfFam D} {M : DSModel V S} {J : Set (GA D V)} {χ : GA D V → ℂ}
     {Sb : Finset (HeightOneSpectrum (𝓞 D.host.F))} {c : HeightOneSpectrum (𝓞 D.host.E) → List ℤ → ℂ} {U : MMap M}
     (hU : U ∈ partFull θ M J χ Sb c) (x : M.Vec) (w d R) (h : Hecke₂ V J χ Sb w d R) :
@@ -67,6 +82,9 @@ theorem part_eigen {V : HSp D} {S : D.what₂.Tau → SPar} {θ : InfFam D} {M :
   simp only [SetLike.mem_coe, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, sub_eq_zero] at h1
   exact congrArg (fun T : MMap M => T x) (h1 w d R h)
 
+/- English proof (translation)
+Break down `hx with ⟨hv, e, he, hx⟩ | ⟨hw, c, ϖ, e, α, hU, he, hx, hB⟩` into its components or cases. Conclude with `Or.inl ⟨hv, e, he, IsSatVecGL.of_map f (fun g y => hf _ y) hi hx⟩`. Conclude with `Or.inr ⟨hw, c, ϖ, e, α, hU, he, IsSatVecU.of_map hU f (fun g y => hf _ y) hi hx, hB⟩`.
+-/
 theorem isParamVec_sub {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n : ℕ}
     {J : Matrix (Fin n) (Fin n) E} {L : Submodule (𝓞 E) (Fin n → E)} {v : HeightOneSpectrum (𝓞 F)} {w : HeightOneSpectrum (𝓞 E)}
     {h : w.under (𝓞 F) = v} {X Y : Type} [AddCommGroup X] [Module ℂ X] [AddCommGroup Y] [Module ℂ Y]
@@ -89,6 +107,31 @@ def satur (V : HSp D) (J : Subgroup (GA D V)) (S : Finset (HeightOneSpectrum (�
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Take `⟨hun, hℓ⟩` from `GlobalTheory.T.boundedAutomorphicRightTranslation_unitarisable_bounded D T`. Take `⟨ℓ, hℓ, hbd⟩` from `hℓ ν 𝓕 hν h𝓕 F₂`. Take `⟨C, hC⟩` from `hbd F₁`. Establish `hC0 : 0 ≤ C` using `(norm_nonneg _).trans (hC 1)`. Use `choose φ hφ hφ' using fun v : {v : HeightOneSpectrum (𝓞 D.host.F) // v ∉ Sb} => GlobalTheory.T.weilMatrixCoefficient_vacua_unramifiedPlace D ψ S T χS χT om hW μ 𝓧 hμ v.1 fun w h => hu w (h ▸ v.2)`.
+
+Rewrite `hφ` using `[rS]`. Take `⟨A, hA, hA'⟩` from `GlobalTheory.T.localZetaSums_absolutely_convergent_uniform hG D T rT (val χS) (norm_val χS) Sb φ hφ`. Set `co : GA D T → ℂ` to `fun g => l2 μ 𝓧 (om (1, g) f) f`. Set `Ψ : GA D T → ℂ` to `fun g => co g * starRingEnd ℂ (ℓ (bddRep T g F₁))`. Establish `hmul : ∀ g k : GA D T, om (1, g * k) f = om (1, g) (om (1, k) f)` using `fun g k => by`.
+
+Rewrite using `[← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, one_mul]`. Establish `co1 : ∀ g, ∀ k ∈ J, co (g * k) = χ k * co g` using `fun g k hk => by`. Simplify using `only [co, hmul, hlaw k hk, map_smul, l2_smul_left]`. Establish `F1 : ∀ k ∈ J, bddRep T k F₁ = χ k • F₁` using `fun k hk => Subtype.ext (funext fun g => hlev k hk g)`. Establish `Ψ1 : ∀ g, ∀ k ∈ J, Ψ (g * k) = Ψ g` using `fun g k hk => by`.
+
+Establish `h1 : χ k * starRingEnd ℂ (χ k) = 1` using `by rw [Complex.mul_conj, Complex.normSq_eq_norm_sq, hχ k hk]; simp`. Simplify using `only [Ψ, co1 g k hk, map_mul, Module.End.mul_apply, F1 k hk, map_smul, smul_eq_mul]`. Take the linear combination `(co g * starRingEnd ℂ (ℓ (bddRep T g F₁))) * h1`. Establish `co2 : ∀ (v : {v : HeightOneSpectrum (𝓞 D.host.F) // v ∉ Sb}) g, projV T v.1 g = 1 → ∀ a, co (g * embV T v.1 a) = φ v a * co g` using `fun v g hg a => by`. Simplify using `only [co]`.
+
+Rewrite using `[← (commute_emb D.sp.cm.sig T.gram a hg).eq, hmul]`. Conclude with `hφ' v a _ _ (GlobalTheory.T.weilOperator_keeps_latticeVacuum_of_trivialAt D ψ S T χS χT om hW v.1 g hg f (hvac v.1 v.2)) (hvac v.1 v.2)`. Establish `hJH : J ≤ satur T J Sb` using `fun k hk => ⟨hJf hk, k, hk, fun _ _ => rfl⟩`. Establish `key` using `GlobalTheory.T.hasSum_cosets_eulerProduct_alt (fun v : {v : HeightOneSpectrum (𝓞 D.host.F) // v ∉ Sb} => embV T v.1) (fun v => projV T v.1) (fun v => Kv T v.1) J (satur T J Sb) hJH (fun v a => proj_emb_self _ _ _ _) (fun u v h a => proj_emb_ne _ _ (fun e => h (Subtype.ext e)) a) …`. Rewrite using `[map_one]`.
+
+Conclude with `proj_emb_ne _ _ (fun e : u = v.1 => v.2 (e ▸ hu')) a⟩)`. Use the proof step `(fun v a g hg => commute_emb _ _ a hg)`. Use the proof step `(fun g hg => (hJ g hg.1).trans ⟨fun h v => h.2 v.1 v.2, fun h => ⟨hg.2, fun v hv => h ⟨v, hv⟩⟩⟩)`. Use the proof step `(fun g _ => (hfin g).preimage Subtype.val_injective.injOn)`. Use `Ψ (fun g => C * ‖co g‖) _ A _ (fun g _ => Ψ1 g) (fun g _ k hk => by rw [co1 g k hk, norm_mul, hχ k hk, one_mul])`.
+
+Use the proof step `(fun g _ => by`. Simplify using `only [Ψ, norm_mul, RCLike.norm_conj]`. Rewrite using `[mul_comm]`. Conclude with `mul_le_mul_of_nonneg_right (hC g) (norm_nonneg _))`. Use the proof step `(fun v g _ hg => by`.
+
+Establish `h1` using `GlobalTheory.T.hasSum_localSphericalZeta_unramified hG D T rT χS (rS ▸ hW.resS) v.1 (fun w h => (hu w (h ▸ v.2)).1) (φ v) (hφ v) _ ((bddRep T).comp (embV T v.1)) (by`. Take `⟨b, b1, b2, b3⟩` from `hun`. Conclude with `⟨b, b1, b2, fun g => b3 _⟩) F₁ B`. Use the proof step `(fun w h => ⟨isParamVec_sub (bddAut T).subtype (fun _ _ => rfl) Subtype.val_injective (hB v.1 v.2 w h), (hb w (show w.under (𝓞 D.host.F) ∉ (Sb : Set _) from h ▸ v.2)).2⟩) (ℓ ∘ₗ bddRep T g)`. Use the proof step `⟨C, fun a => by`.
+
+Use `hC (g * embV T v.1 a)` as an intermediate fact. Rewrite using `[map_mul] at this⟩` and apply the resulting hypothesis. Use `hasSum_of_eq (h1.mul_left (co g)) (fun a => ?_) ?_` and prove the remaining obligations. Simplify using `only [Ψ, co2 v g hg, map_mul, Module.End.mul_apply, LinearMap.comp_apply, MonoidHom.comp_apply]`. Expand and normalize the polynomial expressions, which then agree.
+
+Simplify using `only [Ψ, LinearMap.comp_apply] ring)`. Use the proof step `(fun v g _ hg => by`. Use `hasSum_of_eq ((hA' v).mul_right (C * ‖co g‖)) (fun a => ?_) rfl` and prove the remaining obligations. Rewrite using `[co2 v g hg, norm_mul]`. Use the proof step `ring)`.
+
+Use `hA (GlobalTheory.T.hasProd_localTwistedLFactor_div_unitaryLocalFactor D Sb B χS hc)`. Establish `fin` using `GlobalTheory.T.hasSum_cosets_smaller_level_relIndex_mul_alt K J (satur T J Sb) (GfC T) hKJ hJH (fun g hg => hg.1) hidx Ψ _ (fun g hg hg' => by simp only [Ψ, co, hvan g hg hg', zero_mul]) (fun g _ => Ψ1 g) key`. Use `hasSum_of_eq fin (fun y => ?_) ?_` and prove the remaining obligations. Simplify using `only [Ψ, co, hℓ, coe_bddRep, FinCos.rep]`. Establish `: ((1, 1) : GA D S × GA D T) = 1` using `rfl`.
+
+Simplify using `only [Ψ, co, this, map_one, Module.End.one_apply, l2_self_eq_setIntegral_norm_sq, hℓ]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem zeta_sum (hG : GlobalTheory.Published.UnramifiedDoublingGL) {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {χS χT : (AE D)ˣ →* Circle}
     {om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)} (hW : IsWeilDatumO ψ S T χS χT om) (rS : S.rank = D.R.nV)
     (rT : T.rank = D.R.r) {μ : Measure (WO S T)} {𝓧 : Set (WO S T)} (hμ : IsCovolOne (ratL T S) μ 𝓧)
@@ -174,6 +217,25 @@ theorem zeta_sum (hG : GlobalTheory.Published.UnramifiedDoublingGL) {ψ : AddCha
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `hP _ hG D G _ _ Pl0 T A Ks _ _ _ R F i t σ s P cμ cη m ω BW f₀ f c io hd μ 𝓧 hμ ev hne`. Take `⟨hft, hvac⟩` from `GlobalTheory.T.levelVector_finiteDatum_isTheta_vacuum_off R F i t σ s P cμ cη m ω BW f₀ f c io hd`. Establish `hlaw` using `GlobalTheory.T.finiteLevelDatumVector_transforms_by_levelCharacter R F i t σ s P cμ cη m ω BW f₀ f c io hd`. Take `⟨hC, -, -, -, hch, hW, -, hf, -⟩` from `hd`. Take `⟨-, e, he, hΘ⟩` from `isLevelVec_iff.1 hf`.
+
+Establish `rV : (Vc D i).rank = D.R.nV` using `D.sp.V_rank _ (Nat.le_add_left _ _) i.2`. Establish `rW : (Wc D i).rank = D.R.r` using `D.sp.W_rank _ (Nat.le_add_left _ _) i.2`. Establish `sdV` using `GlobalTheory.SDFrameLattice.isSelfDualC_of_isSDFrame D _ _ _ _ (hC.lev.βV i)`. Establish `sdW` using `GlobalTheory.SDFrameLattice.isSelfDualC_of_isSDFrame D _ _ _ _ (hC.lev.βW i)`. Take `⟨a, bV⟩` from `hC.lev.βV i`.
+
+Take `⟨b, bW⟩` from `hC.lev.βW i`. Rewrite `bV`, `bW` using `[one_pow]`. Take `⟨hs, hJ, hfin, hχ⟩` from `GlobalTheory.T.datumLevel_hyperspecial_off_finite_places D (Wc D i) (R.βW i) (R.ΛW i) (R.datWp i P) (finS R t) bW fun PP h => Finset.mem_image_of_mem _ (Finset.mem_union_left _ (h.resolve_right (Finset.notMem_empty _)))`. Take `⟨hKJ, hidx, hidx'⟩` from `GlobalTheory.T.principalLevel_relIndex_liftLevel_eq_card D T R.toLevCh A.μ0 hC.lev _ e he Finset.subset_union_left i P`. Establish `hu` using `(GlobalTheory.T.conjugatedThetaCharacters_restriction_ramification R hC.lev i t s cμ cη m hch).2.2`.
+
+Establish `hvan : ∀ g ∈ GfC (Wc D i), g ∉ satur (Wc D i) (levG _ (R.βW i) (R.datWp i P)) (finS R t) → l2 μ 𝓧 (ω (1, g) f) f = 0` using `fun g hg hg' => by`. Use `GlobalTheory.T.thetaTranslate_orthogonal_of_support_moved_off D _ _ _ _ _ ω hW _ _ sdV sdW _ e he f₀ _ f (GlobalTheory.T.levelFiniteDatum_isSchwartzBruhat_half D _ _ _ _ _ _ _ _ _ _ e sdV sdW bV.1 bW.1 he) hΘ hft μ 𝓧 hμ g hg fun x hx => by_contra fun hx' => hg' ⟨hg, ?_⟩` and prove the remaining obligations. Take `⟨k, hk, h⟩` from `GlobalTheory.T.mem_level_of_levelDatum_ne_zero_translate D _ _ _ _ _ _ _ _ _ e sdW bW.1 (by rw [rV, rW]; exact Nat.le_add_right _ _) rfl he (fun PP => Finset.mem_union) g hg x hx hx'`. Use `⟨k, hk, fun v hv => ?_⟩` and prove the remaining obligations. Take `⟨PP, hPP, rfl⟩` from `Finset.mem_image.1 hv`.
+
+Conclude with `h PP hPP`. Take `⟨x, hx, hx0⟩` from `(Submodule.ne_bot_iff _).1 hne`. Establish `hU0 : (R.HW i σ).e x ≠ 0` using `fun h => hx0 ((hC.models.HW i σ).1 (h.trans (map_zero _).symm))`. Choose the witnesses or unpack the hypotheses as in `⟨v₀, hv₀⟩ : ∃ v₀, (R.HW i σ).e x v₀ ≠ 0 := by`. Assume the negation of the conclusion as `h`.
+
+Use `push_neg at h`. Conclude with `hU0 (MultilinearMap.ext h)`. Take `⟨m1, m2⟩` from `mult_values hP hC.models.inf hx.1 v₀`. Take `⟨B, hB, hb⟩` from `GlobalTheory.T.exists_satake_parameters_bounded_eigenfunction D (Wc D i) _ _ (finS R t) hs _ m1 hv₀ m2 ev (part_eigen hx v₀)`. Establish `hsys` using `(isParamFunV_iff_of_mem_partFull hs hx hv₀ B).1 hB`.
+
+Rewrite `hb` using `[rW]`. Establish `hconv` using `hb.converges_twist_val cμ (s := (1 + (D.R.t : ℂ)) / 2) (by`. Establish `h5 : (D.R.r : ℝ) + 5 ≤ D.R.t` using `by exact_mod_cast D.R.rank_add_five_le`. Establish `: ((1 + (D.R.t : ℂ)) / 2).re = (1 + (D.R.t : ℝ)) / 2`. Rewrite using `[show (1 + (D.R.t : ℂ)) / 2 = (((1 + (D.R.t : ℝ)) / 2 : ℝ) : ℂ) by push_cast; rfl, Complex.ofReal_re]`.
+
+Rewrite using `[this]`. Use the proof step `linarith)`. Use `⟨B, rW ▸ hsys, fun w hw => (hb w (offS_iff.1 hw)).2, hconv, fun U₁ h₁ U₂ h₂ v₁ v₂ => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h0 : U₁ v₁ = 0`. Establish `: ∀ g, rTr (Wc D i) g 0 = 0` using `fun _ => rfl`.
+
+Simplify using `only [h0, this, petW, l2, Formalism.IndefR.Lift.pet, Pi.zero_apply, zero_mul, integral_zero, map_zero, mul_zero]`. Conclude with `hasSum_zero`. Take `⟨n1, n2⟩` from `mult_values hP hC.models.inf h₁.1 v₁`. Rewrite using `[← hidx]`. Conclude with `zeta_sum hG hW rV rW hμ hu hKJ (hidx ▸ hidx') (fun k hk => hk.1) hJ hfin hχ hvac hlaw hvan (hC.models.νW i).1.1 (hC.models.νW i).2 ⟨_, n1⟩ ⟨_, (mult_values hP hC.models.inf h₂ v₂).1⟩ n2 ((isParamFunV_iff_of_mem_partFull hs h₁ h0 B).2 hsys) hb hconv`.
+-/
 theorem finiteZetaL : GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.BernsteinZelevinskyFiniteness → GlobalTheory.Published.UnramifiedDoublingGL →
     ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks]
       [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), FiniteZetaL R F := by

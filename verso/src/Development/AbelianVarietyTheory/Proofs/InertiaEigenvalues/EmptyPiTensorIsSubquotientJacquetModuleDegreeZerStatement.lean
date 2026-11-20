@@ -12,6 +12,9 @@ import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ParabolicInducti
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SchurAdmissibleAlt
 open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil GlobalTheory.LocGL ValuativeRel
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.piTensor_isSubquotient_jac_degZero | exact GlobalTheory.piTensor_isSubquotient_jac_degZero | (intros; apply GlobalTheory.piTensor_isSubquotient_jac_degZero <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.emptyPiTensor_isSubquotient_jacquetModule_degreeZero : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (N : ℕ), N = 0 → ∀ (V : Type) [AddCommGroup V] [Module ℂ V] [Nontrivial V]
     (π : Representation ℂ (GL (Fin N) k) V) (d : Fin 0 → ℕ) (X : Fin 0 → Type) [∀ a, AddCommGroup (X a)]

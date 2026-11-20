@@ -19,16 +19,25 @@ open TrivSqZeroExt
 
 variable {W : Type} [CommRing W]
 
+/- English proof (translation)
+Use `IsLocalRing.of_isUnit_or_isUnit_one_sub_self fun a => ?_` and prove the remaining obligations. Simplify using `only [TrivSqZeroExt.isUnit_iff_isUnit_fst, TrivSqZeroExt.fst_sub, TrivSqZeroExt.fst_one]`. Conclude with `IsLocalRing.isUnit_or_isUnit_one_sub_self a.fst`.
+-/
 theorem dual_isLocalRing [IsLocalRing W] : IsLocalRing (DualNumber W) := by
   refine IsLocalRing.of_isUnit_or_isUnit_one_sub_self fun a => ?_
   simp only [TrivSqZeroExt.isUnit_iff_isUnit_fst, TrivSqZeroExt.fst_sub, TrivSqZeroExt.fst_one]
   exact IsLocalRing.isUnit_or_isUnit_one_sub_self a.fst
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun a ha => TrivSqZeroExt.isUnit_iff_isUnit_fst.2 ha⟩`.
+-/
 theorem fstHom_isLocalHom : IsLocalHom (TrivSqZeroExt.fstHom W W W).toRingHom :=
   ⟨fun a ha => TrivSqZeroExt.isUnit_iff_isUnit_fst.2 ha⟩
 
 abbrev red (W : Type) [CommRing W] : Sp W ⟶ Sp (DualNumber W) := spMap (TrivSqZeroExt.fstHom W W W).toRingHom
 
+/- English proof (translation)
+Use `letI := dual_isLocalRing (W := W)`. Use `haveI := fstHom_isLocalHom (W := W)`. Rewrite using `[Spec.map_base]`. Conclude with `IsLocalRing.comap_closedPoint _`.
+-/
 theorem red_closedPoint [IsLocalRing W] :
     letI := dual_isLocalRing (W := W)
     (red W).base (IsLocalRing.closedPoint W) = IsLocalRing.closedPoint (DualNumber W) := by
@@ -37,6 +46,9 @@ theorem red_closedPoint [IsLocalRing W] :
   rw [Spec.map_base]
   exact IsLocalRing.comap_closedPoint _
 
+/- English proof (translation)
+Use `letI := dual_isLocalRing (W := W)`. Rewrite using `[Scheme.preimage_eq_top_of_closedPoint_mem y (U := U) ?_]`. Use `h (show IsLocalRing.closedPoint W ∈ (⊤ : (Sp W).Opens) from trivial)` as an intermediate fact. Rewrite using `[← red_closedPoint]`. Conclude with `this`.
+-/
 theorem top_le_of_red [IsLocalRing W] {X : Scheme.{0}} (y : Sp (DualNumber W) ⟶ X) (U : X.Opens)
     (h : ⊤ ≤ (red W ≫ y) ⁻¹ᵁ U) : ⊤ ≤ y ⁻¹ᵁ U := by
   letI := dual_isLocalRing (W := W)
@@ -45,6 +57,11 @@ theorem top_le_of_red [IsLocalRing W] {X : Scheme.{0}} (y : Sp (DualNumber W) �
   rw [← red_closedPoint]
   exact this
 
+/- English proof (translation)
+Establish `h' : ⊤ ≤ (red W ≫ y) ⁻¹ᵁ U`. Rewrite using `[Scheme.Hom.comp_preimage]`. Conclude with `fun p _ => h trivial`. Unfold `valR`. Rewrite using `[dif_pos h, dif_pos h', ← Scheme.Hom.appLE_comp_appLE (red W) y U ⊤ ⊤ h le_top]`.
+
+Establish `n` using `congrArg (fun q => q.hom ((y.appLE U ⊤ h).hom f)) (Scheme.ΓSpecIso_naturality (CommRingCat.ofHom (TrivSqZeroExt.fstHom W W W).toRingHom))`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_ofHom] at n`. Rewrite using `[CommRingCat.hom_comp, RingHom.comp_apply]`. Rewrite using `[show (red W).appLE ⊤ ⊤ le_top = (red W).appTop from (Scheme.Hom.app_eq_appLE _).symm]`. Conclude with `n.symm`.
+-/
 theorem valR_fst {X : Scheme.{0}} (y : Sp (DualNumber W) ⟶ X) (U : X.Opens) (h : ⊤ ≤ y ⁻¹ᵁ U) (f : Γ(X, U)) :
     (valR y U f).fst = valR (red W ≫ y) U f := by
   have h' : ⊤ ≤ (red W ≫ y) ⁻¹ᵁ U := by
@@ -66,14 +83,23 @@ open TrivSqZeroExt
 
 variable {W : Type} [CommRing W]
 
+/- English proof (translation)
+Rewrite using `[epsLift, ← Over.comp_left, lift_fst]`. Both sides reduce to the same expression.
+-/
 theorem epsLift_fst {A : Over (Sp W)} [GrpObj A] (u : epsR W ⟶ A) :
     epsLift u ≫ (fst (baseOver (Sp W)) A).left = (epsR W).hom := by
   rw [epsLift, ← Over.comp_left, lift_fst]; rfl
 
+/- English proof (translation)
+Rewrite using `[epsLift, ← Over.comp_left, lift_snd]`.
+-/
 theorem epsLift_snd {A : Over (Sp W)} [GrpObj A] (u : epsR W ⟶ A) :
     epsLift u ≫ (snd (baseOver (Sp W)) A).left = u.left := by
   rw [epsLift, ← Over.comp_left, lift_snd]
 
+/- English proof (translation)
+Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, Category.assoc, ← Over.fst_left, epsLift_fst, epsLift_fst]`. Rewrite using `[Category.assoc, Category.assoc, ← Over.snd_left, epsLift_snd, epsLift_snd]`. Conclude with `hv.trans hv'.symm`.
+-/
 theorem red_epsLift {A : Over (Sp W)} [GrpObj A] (v v' : epsR W ⟶ A) (hv : IsTangent v) (hv' : IsTangent v') :
     red W ≫ epsLift v = red W ≫ epsLift v' := by
   apply pullback.hom_ext
@@ -81,12 +107,28 @@ theorem red_epsLift {A : Over (Sp W)} [GrpObj A] (v v' : epsR W ⟶ A) (hv : IsT
   · rw [Category.assoc, Category.assoc, ← Over.snd_left, epsLift_snd, epsLift_snd]
     exact hv.trans hv'.symm
 
+/- English proof (translation)
+Rewrite using `[Category.assoc, epsLift_snd, Category.id_comp]`. Conclude with `hv`.
+-/
 theorem red_epsLift_snd {A : Over (Sp W)} [GrpObj A] (v : epsR W ⟶ A) (hv : IsTangent v) :
     (red W ≫ epsLift v) ≫ (snd (baseOver (Sp W)) A).left = 𝟙 (Sp W) ≫ eSec A := by
   rw [Category.assoc, epsLift_snd, Category.id_comp]
   exact hv
 
 open Classical in
+/- English proof (translation)
+Establish `hL` using `P.isLB`. Take `⟨i₀, hi₀⟩` from `exists_chart hL ((eSec P.A : Sp W ⟶ P.A.left).base (IsLocalRing.closedPoint W))`. Establish `htop : ⊤ ≤ (𝟙 (Sp W) ≫ eSec P.A) ⁻¹ᵁ P.L.U i₀`. Rewrite using `[Category.id_comp, Scheme.preimage_eq_top_of_closedPoint_mem (eSec P.A : Sp W ⟶ P.A.left) hi₀]`. Establish `hρt : ⊤ ≤ (𝟙 (Sp W)) ⁻¹ᵁ ((P.L.pull (eSec P.A)).U fun _ => i₀)` using `fun p _ => Set.mem_iInter.2 fun _ => by`.
+
+Use `htop (show p ∈ (⊤ : (Sp W).Opens) from trivial)` as an intermediate fact. Conclude with `this`. Use `set u := valR (𝟙 (Sp W)) ((P.L.pull (eSec P.A)).U fun _ => i₀) (ρ.s fun _ => i₀).val with hu_def`. Establish `hu : IsUnit u`. Rewrite using `[hu_def, valR, dif_pos hρt]`.
+
+Conclude with `((ρ.s _).isUnit.map _).map _`. Use `set ui := Ring.inverse (u ^ k)`. Establish `hui : u ^ k * ui = 1` using `Ring.mul_inverse_cancel _ (hu.pow k)`. Establish `hch : ∀ j, ⊤ ≤ (epsLift (v j)) ⁻¹ᵁ ((LPow P.A P.L (k : ℤ) (Over.mk (𝟙 (Sp W)))).U fun _ => i₀)` using `fun j => top_le_of_red _ _ fun p _ => Set.mem_iInter.2 fun _ => by`. Use `htop (show p ∈ (⊤ : (Sp W).Opens) from trivial)` as an intermediate fact.
+
+Rewrite `this` using `[← red_epsLift_snd (v j) (hv j)]`. Conclude with `this`. Use `⟨i₀, 0, fun i => if hn : Nonempty (Fin g) then ui * (valR (epsLift (v hn.some)) ((LPow P.A P.L (k : ℤ) (Over.mk (𝟙 (Sp W)))).U fun _ => i₀) ((t i).f fun _ => i₀)).fst else 0, fun i j => ui * (valR (epsLift (v j)) ((LPow P.A P.L (k : ℤ) (Over.mk (𝟙 (Sp W)))).U fun _ => i₀) ((t i). …` and prove the remaining obligations. Establish `hn : Nonempty (Fin g)` using `⟨j⟩`. Simplify using `only [dif_pos hn]`.
+
+Establish `hf : (valR (epsLift (v hn.some)) ((LPow P.A P.L (k : ℤ) (Over.mk (𝟙 (Sp W)))).U fun _ => i₀) ((t i).f fun _ => i₀)).fst = (valR (epsLift (v j)) ((LPow P.A P.L (k : ℤ) (Over.mk (𝟙 (Sp W)))).U fun _ => i₀) ((t i).f fun _ => i₀)).fst`. Rewrite using `[valR_fst _ _ (hch _), valR_fst _ _ (hch _), red_epsLift _ _ (hv _) (hv j)]`. Rewrite using `[hf]`. Use `ext`. Simplify using `only [TrivSqZeroExt.fst_mul, TrivSqZeroExt.fst_inl, TrivSqZeroExt.fst_add, TrivSqZeroExt.fst_inr, add_zero]`.
+
+Rewrite using `[← _root_.mul_assoc, hui, _root_.one_mul]`. Simplify using `only [TrivSqZeroExt.snd_mul, TrivSqZeroExt.fst_inl, TrivSqZeroExt.snd_inl, TrivSqZeroExt.fst_add, TrivSqZeroExt.snd_add, TrivSqZeroExt.fst_inr, TrivSqZeroExt.snd_inr, add_zero, Pi.zero_apply, zero_mul, smul_eq_mul, MulOpposite.smul_eq_mul_unop, zero_add, MulOpposite.unop_op]`. Rewrite using `[← _root_.mul_assoc, hui, _root_.one_mul]`.
+-/
 theorem exists_jets [IsLocalRing W] (P : PolAV (Sp W)) (ρ : LB.Gen (P.L.pull (eSec P.A))) (k : ℕ) {I : Type}
     (t : I → LB.Sec (LPow P.A P.L (k : ℤ) (Over.mk (𝟙 (Sp W))))) {g : ℕ} (v : Fin g → (epsR W ⟶ P.A))
     (hv : ∀ j, IsTangent (v j)) :
@@ -140,6 +182,19 @@ namespace GlobalTheory.MBLow.JetEx
 
 variable {W : Type} [CommRing W]
 
+/- English proof (translation)
+Establish `hLaw : Laws` using `GlobalTheory.abelianSchemeLaws_all.1`. Establish `hL` using `P.isLB`. Set `T : Over (Sp W)` to `Over.mk (𝟙 (Sp W))`. Establish `hu : IsUnit ((m ^ 2 : ℕ) : Γ(Sp W, ⊤))`. Set `e` to `(Scheme.ΓSpecIso (CommRingCat.of W)).commRingCatIsoToRingEquiv.symm`.
+
+Rewrite using `[← map_natCast e]`. Conclude with `(by rw [Nat.cast_pow]; exact hmu.pow 2 : IsUnit ((m ^ 2 : ℕ) : W)).map e`. Take `⟨hex, -⟩` from `hLaw.symLift _ P (m ^ 2) hm.pow hu T x hx`. Take `⟨V, hV, θ₀, hθ₀⟩` from `hex (IsLocalRing.closedPoint W)`. Establish `hVt : V = ⊤` using `Scheme.preimage_eq_top_of_closedPoint_mem (𝟙 (Sp W)) hV`.
+
+Substitute `hVt` using the available equality. Set `h : T ⟶ overRes (T` to `T) ⊤ := Over.homMk T.left.topIso.inv (by show T.left.topIso.inv ≫ (⊤ : T.left.Opens).ι ≫ T.hom = T.hom`. Rewrite using `[← Category.assoc, Scheme.toIso_inv_ι, Category.id_comp])`. Establish `hh : h ≫ overResι (T` using `T) ⊤ = 𝟙 T := Over.OverMorphism.ext T.left.toIso_inv_ι`. Take `⟨θ, hθ⟩` from `GlobalLift.exists_symLift_pull hL h hθ₀`.
+
+Rewrite `hθ` using `[← Category.assoc, hh, Category.id_comp]`. Take `⟨α₀, hα₀⟩` from `hLaw.mulPull _ P m`. Establish `e₁ : (snd T P.A).left ≫ (mulA P.A m).left = (snd T P.A ^ m).left`. Rewrite using `[← Over.comp_left, MonObj.comp_pow, Category.comp_id]`. Take `⟨α₁, hα₁, -⟩` from `exists_gen hL (φ' := ![(snd T P.A).left, (snd T P.A ^ m).left]) (ε' := ![((m ^ 2 : ℕ) : ℤ), -((1 : ℕ) : ℤ)]) (fun U _ f => by`.
+
+Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `fin_cases i`. Conclude with `congrArg₂ (fun q n => f q ^ n) (Category.comp_id _) (Nat.cast_pow m 2).symm`. Conclude with `congrArg (fun q => f q ^ (-1 : ℤ)) e₁)`. Use the proof step `(LB.pullGen P.L ![𝟙 P.A.left, (mulA P.A m).left] ![(m : ℤ) ^ 2, -1] α₀ (snd T P.A).left)`.
+
+Use the proof step `(DVR.pullGen_isGen _ _ _ _ hα₀ _)`. Take `⟨α, hα, hn⟩` from `GlobalTheory.NormTheta.exists_normalised hL hρ m _ _ (((m ^ 2 : ℕ) : ℤ) - 1) (by simp) α₁ hα₁`. Take `⟨s₁, hs₁⟩` from `ThetaPtExist.exists_isTwistPull hL (mulT P.A T m) (snd T P.A ^ m) (lift_snd _ _) ((m ^ 2 : ℕ) : ℤ) ((1 : ℕ) : ℤ) α hα th`. Take `⟨t, ht⟩` from `ThetaPtExist.exists_isTwistPull hL (translT P.A θ.pt) (translPt P.A θ.pt) (lift_snd _ _) ((m ^ 2 : ℕ) : ℤ) ((m ^ 2 : ℕ) : ℤ) θ.φ θ.isGen s₁`. Conclude with `⟨θ, t, hθ, α, s₁, hα, hn, hs₁, ht⟩`.
+-/
 theorem exists_symLift_tr [IsNoetherianRing W] [IsLocalRing W] (P : PolAV (Sp W)) (ρ : LB.Gen (P.L.pull (eSec P.A)))
     (hρ : ρ.IsGen) (m : ℕ) (hm : Odd m) (hmu : IsUnit (m : W))
     (th : LB.Sec (LPow P.A P.L ((1 : ℕ) : ℤ) (Over.mk (𝟙 (Sp W))))) (x : Over.mk (𝟙 (Sp W)) ⟶ P.A)
@@ -187,6 +242,9 @@ end GlobalTheory.MBLow.JetEx
 
 namespace GlobalTheory.MBLow
 
+/- English proof (translation)
+Introduce `W _ _ _ _ x g hg m hm hmu I pt hpt`. Use `choose U t hUt using fun i => JetEx.exists_symLift_tr x.P x.rig x.rig_gen m hm hmu (TrSec.thSec x.P x.th) (pt i) (hpt i)`. Take `⟨i₀, c, ϑ, J, htop, hval⟩` from `JetEx.exists_jets x.P x.rig (m ^ 2) t (fun j => x.v (j.cast hg.symm)) (fun j => x.basis.1 _)`. Conclude with `⟨ϑ, J, TrSec.thSec x.P x.th, TrSec.projectionPullbackSectionBaseProduct_isInverseImage x.P x.th, U, t, i₀, c, fun i => hUt i, htop, hval⟩`.
+-/
 theorem exists_thJet_local : ∀ (W : Type) [CommRing W] [IsDomain W] [IsNoetherianRing W] [IsLocalRing W] (x : KeyIn W)
     (g : ℕ) (hg : x.P.g = g) (m : ℕ), Odd m → IsUnit (m : W) → ∀ (I : Type) (pt : I → (baseOver (Sp W) ⟶ x.P.A)),
     (∀ i, pt i ^ (m ^ 2) = 1) → ∃ ϑ J, ThJet x hg m pt ϑ J := by

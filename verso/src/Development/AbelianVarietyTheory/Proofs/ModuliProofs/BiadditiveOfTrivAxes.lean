@@ -31,6 +31,9 @@ section Tools
 
 variable {X Y : Scheme.{0}} {K K' : Type} [Fintype K] [Fintype K'] {L : LB X}
 
+/- English proof (translation)
+Take `⟨t, ht⟩` from `H`. Take `⟨t', ht', -⟩` from `exists_gen hL (φ' := φ') (ε' := ε') h t ht`. Conclude with `⟨t', ht'⟩`.
+-/
 theorem triv_of_formal (hL : L.IsLB) {φ : K → (Y ⟶ X)} {ε : K → ℤ} {φ' : K' → (Y ⟶ X)} {ε' : K' → ℤ}
     (H : Triv (LB.LinComb L φ ε))
     (h : ∀ (U : Type) [CommGroup U] (k : (Y ⟶ X) → U), ∏ i, k (φ i) ^ ε i = ∏ i, k (φ' i) ^ ε' i) :
@@ -39,6 +42,9 @@ theorem triv_of_formal (hL : L.IsLB) {φ : K → (Y ⟶ X)} {ε : K → ℤ} {φ
   obtain ⟨t', ht', -⟩ := exists_gen hL (φ' := φ') (ε' := ε') h t ht
   exact ⟨t', ht'⟩
 
+/- English proof (translation)
+Take `⟨t, ht⟩` from `H`. Take `⟨t', ht'⟩` from `H'`. Conclude with `⟨_, DVR.mulGen_isGen _ _ _ _ _ _ _ ht ht'⟩`.
+-/
 theorem triv_mul {φ : K → (Y ⟶ X)} {ε : K → ℤ} {φ' : K' → (Y ⟶ X)} {ε' : K' → ℤ}
     (H : Triv (LB.LinComb L φ ε)) (H' : Triv (LB.LinComb L φ' ε')) :
     Triv (LB.LinComb L (K := K ⊕ K') (Sum.elim φ φ') (Sum.elim ε ε')) := by
@@ -46,11 +52,17 @@ theorem triv_mul {φ : K → (Y ⟶ X)} {ε : K → ℤ} {φ' : K' → (Y ⟶ X)
   obtain ⟨t', ht'⟩ := H'
   exact ⟨_, DVR.mulGen_isGen _ _ _ _ _ _ _ ht ht'⟩
 
+/- English proof (translation)
+Take `⟨t, ht⟩` from `H`. Conclude with `⟨_, DVR.invGen_isGen _ _ _ _ ht⟩`.
+-/
 theorem triv_inv {φ : K → (Y ⟶ X)} {ε : K → ℤ} (H : Triv (LB.LinComb L φ ε)) :
     Triv (LB.LinComb L φ (fun k => - ε k)) := by
   obtain ⟨t, ht⟩ := H
   exact ⟨_, DVR.invGen_isGen _ _ _ _ ht⟩
 
+/- English proof (translation)
+Take `⟨t, ht⟩` from `H`. Conclude with `⟨_, DVR.pullGen_isGen _ _ _ t ht r⟩`.
+-/
 theorem triv_pull_comp {f : Y ⟶ X} (H : Triv (L.pull f)) {Z : Scheme.{0}} (r : Z ⟶ Y) :
     Triv (L.pull (r ≫ f)) := by
   obtain ⟨t, ht⟩ := H
@@ -62,6 +74,29 @@ section Cube
 
 variable {S : Scheme.{0}} {A : Over S} [GrpObj A]
 
+/- English proof (translation)
+Use `hA.geomConnected` as an intermediate fact. Establish `H` using `fibTriv_clopen M φ ε (x3 A 2).left (fun R _ j => by`. Take `⟨q, hq, q₀, q₁⟩` from `exists_cube_chart A j`. Establish `hB` using `isAb_baseChange hA (j ≫ A.hom)`. Establish `one` using `one_left_fst (A := A) (j ≫ A.hom)`.
+
+Establish `pB : IsProjBy ((Over.pullback (j ≫ A.hom)).obj A).hom` using `(AmpleBaseChange.isProjBy_smooth_isProper_geometricallyIntegral S A H₀ hA hH hamp R (j ≫ A.hom) _ _ _ (IsPullback.of_hasPullback _ _)).1`. Set `B` to `(Over.pullback (j ≫ A.hom)).obj A`. Establish `: Smooth B.hom` using `hB.smooth`. Establish `: IsProper B.hom` using `hB.proper`. Establish `: GeometricallyConnected B.hom` using `hB.geomConnected`.
+
+Establish `sm : Smooth (B ⊗ B).hom`. Express the relevant statement in the definitionally equal form `Smooth (pullback.fst B.hom B.hom ≫ B.hom)`. Use `infer_instance`. Establish `pr : IsProper (B ⊗ B).hom`. Express the relevant statement in the definitionally equal form `IsProper (pullback.fst B.hom B.hom ≫ B.hom)`.
+
+Use `infer_instance`. Establish `gc : GeometricallyConnected (B ⊗ B).hom`. Express the relevant statement in the definitionally equal form `GeometricallyConnected (pullback.fst B.hom B.hom ≫ B.hom)`. Conclude with `GeometricallyConnected.comp _ _`. Establish `hN : (LB.LinComb M (fun k => q ≫ φ k) ε).IsLB` using `DVR.linComb_isLB _ hM _ _`.
+
+Establish `pf` using `GlobalTheory.T.nonempty_perfectSectionsComplex_of_smooth_proj R _ _ sm (isProjBy_tensor R B B pB pB)`. Use `⟨_, q, (B ⊗ B).hom, hq, TrivLocus.isClosed_trivLocus R _ _ _ hN (pf _ hN) (pf _ (isLB_pw hN _)) pr (forall_geometricallyIntegral_of_smooth_of_geometricallyConnected _ _ _ sm gc), fun F _ g Z π f' => CubeOpen.triv_basicOpen_of_triv_fibre hG Seesaw.seesaw (SmallExtLift.exists_gen_o …` and prove the remaining obligations. Rewrite using `[triv_pull_comp_iff]`. Use `face _ 1 (B.hom ≫ j ≫ A.hom) ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, q₁, ← Category.assoc, ← Over.comp_left, lift_snd]`.
+
+Conclude with `one B`. Rewrite using `[triv_pull_comp_iff]`. Use `face _ 0 (B.hom ≫ j ≫ A.hom) ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, q₀, ← Category.assoc, ← Over.comp_left, lift_fst]`. Conclude with `one B)`.
+
+Establish `hclopen : IsClopen (fibTriv M φ ε (x3 A 2).left)` using `⟨H.2, by rw [H.1.antisymm (locTriv_subset _ _ _ _)]; exact isOpen_locTriv _ _ _ _⟩`. Establish `all : ∀ t, t ∈ fibTriv M φ ε (x3 A 2).left` using `fun t => by`. Establish `hr : Set.range (S.fromSpecResidueField (A.hom t)) = {A.hom t}` using `Scheme.range_fromSpecResidueField _`. Take `⟨y, hy⟩` from `hr.ge rfl`. Set `g` to `S.fromSpecResidueField (A.hom t) ≫ η[A].left`.
+
+Establish `gw : g ≫ A.hom = S.fromSpecResidueField (A.hom t)`. Rewrite using `[Category.assoc, Over.w]`. Conclude with `Category.comp_id _`. Use `(A.hom.isConnected_preimage_singleton (A.hom t)).isPreconnected.subset_isClopen hclopen ⟨g y, (congrArg (fun m : Spec (S.residueField (A.hom t)) ⟶ S => m y) gw).trans hy, ?_⟩ rfl` and prove the remaining obligations. Conclude with `⟨S.residueField (A.hom t), inferInstance, g, _, _, _, ⟨y, rfl⟩, IsPullback.of_hasPullback (x3 A 2).left g, face _ 2 (pullback.snd _ g ≫ S.fromSpecResidueField (A.hom t)) (pullback.condition.trans (Category.assoc _ _ _).symm)⟩`.
+
+Set `e : A ⟶ G3 A` to `lift 1 (lift 1 (𝟙 _))`. Establish `e₀ : e ≫ x3 A 0 = 1` using `by simp [e, x3]`. Establish `e₂ : e ≫ x3 A 2 = 𝟙 _` using `by simp [e, x3]`. Use `triv_of_local hM φ ε (x3 A 2).left e.left (congrArg (fun q => q.left) e₂) (fun Z b => formal _ (b ≫ A.hom) ?_) (fun V => ?_) (fun s => H.1 (all s))` and prove the remaining obligations. Rewrite using `[Category.assoc, ← Over.comp_left, e₀, Category.assoc]`.
+
+Both sides reduce to the same expression. Take `⟨q, hq, -⟩` from `exists_cube_chart A V.ι`. Establish `hB` using `isAb_baseChange hA (V.ι ≫ A.hom)`. Use `⟨_, q, _, hq, ?_⟩` and prove the remaining obligations. Rewrite using `[← Over.w (snd _ _)]`.
+
+Conclude with `surj_comp (surj_snd hG hB _) (hG _ _ hB).2`.
+-/
 theorem triv_of_faces (hG : Out.GlobalFnsSt) (hA : IsAbelianScheme A) {H₀ : LB A.left} (hH : H₀.IsLB)
     (hamp : Out.RelAmple A H₀) {X : Scheme.{0}} {M : LB X} (hM : M.IsLB) {K : Type} [Fintype K]
     (φ : K → ((G3 A).left ⟶ X)) (ε : K → ℤ)
@@ -137,6 +172,9 @@ variable {B : Over S} (F : A ⊗ A ⟶ B)
 def fourPts {T : Over S} (x x' y : T ⟶ A) : Fin 4 → (T.left ⟶ B.left) :=
   ![(lift (x * x') y ≫ F).left, (lift x y ≫ F).left, (lift x' y ≫ F).left, (lift 1 y ≫ F).left]
 
+/- English proof (translation)
+Apply the tactic sequence `fin_cases i <;>`. Simplify using `only [fourPts, Fin.zero_eta, Fin.mk_one, Fin.reduceFinMk, Matrix.cons_val]`. Rewrite using `[← Over.comp_left, ← Category.assoc, comp_lift]`. Apply the tactic sequence `try simp only [MonObj.comp_mul, MonObj.comp_one]`.
+-/
 theorem comp_fourPts {T T' : Over S} (r : T' ⟶ T) (x x' y : T ⟶ A) (i : Fin 4) :
     r.left ≫ fourPts F x x' y i = fourPts F (r ≫ x) (r ≫ x') (r ≫ y) i := by
   fin_cases i <;>
@@ -144,6 +182,11 @@ theorem comp_fourPts {T T' : Over S} (r : T' ⟶ T) (x x' y : T ⟶ A) (i : Fin 
     rw [← Over.comp_left, ← Category.assoc, comp_lift]
     try simp only [MonObj.comp_mul, MonObj.comp_one]
 
+/- English proof (translation)
+Establish `hb : b = r ≫ (G3 A).hom`. Use `congrArg (· ≫ A.hom) h` as an intermediate fact. Simplify using `only [Category.assoc, Over.w] at this`. Conclude with `(this.trans (Category.comp_id _)).symm`. Use `⟨Over.homMk r rfl, rfl, ?_⟩` and prove the remaining obligations.
+
+Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[Hom.one_def]`. Conclude with `h.trans (by rw [hb]; rfl)`.
+-/
 theorem exists_over {Z : Scheme.{0}} (r : Z ⟶ (G3 A).left) (i : Fin 3) (b : Z ⟶ S)
     (h : r ≫ (x3 A i).left = b ≫ η[A].left) :
     ∃ x : Over.mk (r ≫ (G3 A).hom) ⟶ G3 A, x.left = r ∧ x ≫ x3 A i = 1 := by
@@ -156,6 +199,9 @@ theorem exists_over {Z : Scheme.{0}} (r : Z ⟶ (G3 A).left) (i : Fin 3) (b : Z 
   rw [Hom.one_def]
   exact h.trans (by rw [hb]; rfl)
 
+/- English proof (translation)
+Break down `h with rfl | rfl` into its components or cases. Simplify using `[Fin.prod_univ_four, fourPts, -Over.comp_left]`. Simplify using `[Fin.prod_univ_four, fourPts, -Over.comp_left, mul_comm]`.
+-/
 theorem prod_fourPts {T : Over S} {x x' : T ⟶ A} (y : T ⟶ A) (h : x = 1 ∨ x' = 1)
     (U : Type) [CommGroup U] (k : (T.left ⟶ B.left) → U) :
     ∏ i, k (fourPts F x x' y i) ^ (![1, -1, -1, 1] : Fin 4 → ℤ) i = 1 := by
@@ -163,6 +209,21 @@ theorem prod_fourPts {T : Over S} {x x' : T ⟶ A} (y : T ⟶ A) (h : x = 1 ∨ 
   · simp [Fin.prod_univ_four, fourPts, -Over.comp_left]
   · simp [Fin.prod_univ_four, fourPts, -Over.comp_left, mul_comm]
 
+/- English proof (translation)
+Establish `a₁ : ∀ {T : Over S} (y : T ⟶ A), Triv (M.pull (lift 1 y ≫ F).left)` using `fun y => by`. Use `triv_pull_comp h₁ y.left` as an intermediate fact. Rewrite `this` using `[← Over.comp_left, ← Category.assoc, comp_lift, MonObj.comp_one, Category.comp_id]`. Then use the resulting hypothesis. Establish `a₂ : ∀ {T : Over S} (y : T ⟶ A), Triv (M.pull (lift y 1 ≫ F).left)` using `fun y => by`. Use `triv_pull_comp h₂ y.left` as an intermediate fact.
+
+Rewrite `this` using `[← Over.comp_left, ← Category.assoc, comp_lift, MonObj.comp_one, Category.comp_id]`. Then use the resulting hypothesis. Establish `formal : ∀ {Z : Scheme.{0}} (r : Z ⟶ (G3 A).left) (i : Fin 3) (b : Z ⟶ S), i = 0 ∨ i = 1 → r ≫ (x3 A i).left = b ≫ η[A].left → ∀ (U : Type) [CommGroup U] (k : (Z ⟶ B.left) → U), ∏ i, k (r ≫ fourPts F (x3 A 0) (x3 A 1) (x3 A 2) i) ^ (![1, -1, -1, 1] : Fin 4 → ℤ) i = 1`. Introduce `Z r i b hi h U _ k`. Take `⟨w, hw, h'⟩` from `exists_over r i b h`. Use `prod_fourPts F (x := w ≫ x3 A 0) (x' := w ≫ x3 A 1) (w ≫ x3 A 2) (hi.imp (fun e => e ▸ h') (fun e => e ▸ h')) U k` as an intermediate fact.
+
+Simplify using `only [← comp_fourPts, hw] at this`. Conclude with `this`. Establish `cube` using `triv_of_faces hG hA hH hamp hM (fourPts F (x3 A 0) (x3 A 1) (x3 A 2)) ![1, -1, -1, 1] (fun r i b h => by`. Distinguish the cases in `hi : i = 0 ∨ i = 1`. Conclude with `trivAt_of_formal hM r (formal r i b hi h)`.
+
+Take `rfl : i = 2` from `by omega`. Take `⟨w, hw, h'⟩` from `exists_over r 2 b h`. Establish `e : (fun k => r ≫ fourPts F (x3 A 0) (x3 A 1) (x3 A 2) k) = fourPts F (w ≫ x3 A 0) (w ≫ x3 A 1) 1` using `funext fun k => by`. Rewrite using `[← h', ← comp_fourPts, hw]`. Unfold `TrivAt`.
+
+Rewrite using `[e]`. Use `triv_of_formal hM (triv_mul (triv_mul (a₂ (w ≫ x3 A 0 * w ≫ x3 A 1)) (triv_inv (a₂ (w ≫ x3 A 0)))) (triv_mul (triv_inv (a₂ (w ≫ x3 A 1))) (a₂ (T := Over.mk (r ≫ (G3 A).hom)) 1))) fun U _ k => ?_` and prove the remaining obligations. Simplify using `[Fin.prod_univ_four, fourPts, -Over.comp_left, Fintype.prod_sum_type, _root_.mul_assoc])`. Use the proof step `(fun r b h => formal r 0 b (Or.inl rfl) h)`. Establish `c₀ : TrivAt M (fourPts F (x3 A 0) (x3 A 1) (x3 A 2)) ![1, -1, -1, 1] (lift x (lift x' y)).left`.
+
+Take `⟨t, ht⟩` from `cube`. Conclude with `⟨_, DVR.pullGen_isGen _ _ _ t ht _⟩`. Establish `e : (fun k => (lift x (lift x' y)).left ≫ fourPts F (x3 A 0) (x3 A 1) (x3 A 2) k) = fourPts F x x' y` using `funext fun k => by`. Rewrite using `[comp_fourPts]`. Simplify using `[x3]`.
+
+Unfold `TrivAt at c₀`. Rewrite `c₀` using `[e]`. Use `triv_of_formal hM (triv_mul c₀ (triv_inv (a₁ y))) fun U _ k => ?_` and prove the remaining obligations. Simplify using `[Fin.prod_univ_four, Fin.prod_univ_three, fourPts, -Over.comp_left, Fintype.prod_sum_type]`.
+-/
 theorem triv_add (hG : Out.GlobalFnsSt) (hA : IsAbelianScheme A) {H₀ : LB A.left} (hH : H₀.IsLB)
     (hamp : Out.RelAmple A H₀) {M : LB B.left} (hM : M.IsLB)
     (h₁ : Triv (M.pull (lift (1 : A ⟶ A) (𝟙 A) ≫ F).left))
@@ -213,6 +274,11 @@ theorem triv_add (hG : Out.GlobalFnsSt) (hA : IsAbelianScheme A) {H₀ : LB A.le
 
 end Cube
 
+/- English proof (translation)
+Introduce `hG S A _ _ H₀ hA hH hamp Pb hP h₁ h₂ T x x' y`. Prove the components needed by the constructor for the conclusion. Use `triv_add (𝟙 (A ⊗ A)) hG hA hH hamp hP (by rw [Category.comp_id]; exact h₁) (by rw [Category.comp_id]; exact h₂) x x' y` as an intermediate fact. Simplify using `only [Category.comp_id] at this`. Conclude with `this`.
+
+Establish `sw : ∀ {T : Over S} (a b : T ⟶ A), lift a b ≫ lift (snd A A) (fst A A) = lift b a` using `fun a b => by`. Rewrite using `[comp_lift, lift_snd, lift_fst]`. Use `triv_add (lift (snd A A) (fst A A)) hG hA hH hamp hP (by rw [sw]; exact h₂) (by rw [sw]; exact h₁) x x' y` as an intermediate fact. Simplify using `only [sw] at this`. Conclude with `this`.
+-/
 theorem biadditive_of_triv_axes :
     Out.GlobalFnsSt → ∀ (S : Scheme.{0}) (A : Over S) [GrpObj A] [IsCommMonObj A] (H₀ : LB A.left), IsAbelianScheme A → H₀.IsLB → Out.RelAmple A H₀ → ∀ (Pb : LB (G2 A).left), Pb.IsLB → (∃ t : (Pb.pull (lift (1 : A ⟶ A) (𝟙 A)).left).Gen, t.IsGen) → (∃ t : (Pb.pull (lift (𝟙 A) (1 : A ⟶ A)).left).Gen, t.IsGen) → ∀ (T : Over S) (x x' y : T ⟶ A), (∃ t : (LB.LinComb Pb (K := Fin 3) ![(lift (x * x') y).left, (lift x y).left, (lift x' y).left] ![1, -1, -1]).Gen, t.IsGen) ∧ ∃ t : (LB.LinComb Pb (K := Fin 3) ![(lift y (x * x')).left, (lift y x).left, (lift y x').left] ![1, -1, -1]).Gen, t.IsGen := by
   intro hG S A _ _ H₀ hA hH hamp Pb hP h₁ h₂ T x x' y

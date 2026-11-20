@@ -22,6 +22,11 @@ namespace GlobalTheory.LogCanonicalReflexive
 
 variable {k : Type} [CommRing k] {Y : Scheme.{0}} {p : Y ⟶ Sp k}
 
+/- English proof (translation)
+Rewrite using `[← sub_eq_zero]`. Use `eq_zero_of_basicOpen_eq_bot (a - b) ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Take `⟨z, hz', hz⟩` from `hd.inter_open_nonempty _ (Y.basicOpen (a - b)).isOpen (Set.nonempty_iff_ne_empty.2 fun e => hne (Opens.ext e))`. Establish `hm` using `Y.basicOpen_le _ hz'`.
+
+Establish `hu : IsUnit (ger z hm (a - b))` using `(Y.mem_basicOpen _ z hm).1 hz'`. Rewrite `hu` using `[map_sub, h z hm hz, sub_self]`. Conclude with `not_isUnit_zero hu`.
+-/
 theorem fun_eq_of_dense [IsReduced Y] {O : Y.Opens} (hd : Dense (O : Set Y)) {W : Y.Opens} {a b : Γ(Y, W)}
     (h : ∀ z (hz : z ∈ W), z ∈ O → ger z hz a = ger z hz b) : a = b := by
   rw [← sub_eq_zero]
@@ -34,6 +39,11 @@ theorem fun_eq_of_dense [IsReduced Y] {O : Y.Opens} (hd : Dense (O : Set Y)) {W 
   rw [map_sub, h z hm hz, sub_self] at hu
   exact not_isUnit_zero hu
 
+/- English proof (translation)
+Take `⟨g, hg⟩` from `H0.exists_of_germs (p := p) (O := ⊤) hB V c (fun _ => le_top) hc (fun y _ => cover y) u fun z s s' h h' => by`. Establish `hW : V s ⊓ V s' ≤ B.U (c s) ⊓ B.U (c s')` using `fun x hx => ⟨hc s hx.1, hc s' hx.2⟩`. Establish `e : resG Y (inf_le_left : V s ⊓ V s' ≤ V s) (u s) = resG Y hW (B.g (c s) (c s')).val * resG Y (inf_le_right : V s ⊓ V s' ≤ V s') (u s')` using `fun_eq_of_dense hd fun x hx hxO => by`. Rewrite using `[map_mul, ger_resG, ger_resG, ger_resG, hu s x _ hxO, hu s' x _ hxO, ← val_tr B x (hW hx)]`. Conclude with `H0.germ_change _ _ x hxO _ _ f`.
+
+Establish `e'` using `congrArg (ger z (show z ∈ V s ⊓ V s' from ⟨h, h'⟩)) e`. Rewrite `e'` using `[map_mul, ger_resG, ger_resG, ger_resG, ← val_tr B z (hW ⟨h, h'⟩)]`. Then use the resulting hypothesis. Use `⟨g, fun s z h => hg s z h, H0.ext_germ fun y hy => ?_⟩` and prove the remaining obligations. Take `⟨s, hs⟩` from `cover y`. Conclude with `⟨c s, hc s hs, by rw [H0.germ_restr, hg s y hs, hu s y hs hy]⟩`.
+-/
 theorem glue_of_dense [IsReduced Y] {O : Y.Opens} (hd : Dense (O : Set Y)) {B : LB Y} (hB : B.IsLB)
     {ι : Type} (V : ι → Y.Opens) (c : ι → B.ι) (hc : ∀ s, V s ≤ B.U (c s)) (cover : ∀ y, ∃ s, y ∈ V s)
     (u : ∀ s, Γ(Y, V s)) (f : H0 p B O)
@@ -54,6 +64,23 @@ theorem glue_of_dense [IsReduced Y] {O : Y.Opens} (hd : Dense (O : Set Y)) {B : 
   obtain ⟨s, hs⟩ := cover y
   exact ⟨c s, hc s hs, by rw [H0.germ_restr, hg s y hs, hu s y hs hy]⟩
 
+/- English proof (translation)
+Use `choose V hyV τ ha hb hc t u ht hu _ htu using hω`. Establish `hU (y : Y) (hy : y ∉ O) : IsUnit (u y hy)` using `Y.toRingedSpace.isUnit_of_isUnit_germ _ _ fun z hz => hu y hy z hz`. Set `w (y : Y) (hy : y ∉ O) : Γ(Y, V y hy)` to `t y hy * (hU y hy).unit⁻¹.val * resG Y (le_inf le_top (hc y hy) : V y hy ≤ ⊤ ⊓ N.U (C.c (τ y hy))) (G.loc (C.c (τ y hy)))`. Establish `hw (y : Y) (hy : y ∉ O) (z : Y) (hz : z ∈ V y hy) : ger z hz (w y hy) = ger z hz (t y hy) * ger z hz (hU y hy).unit⁻¹.val * H0.germ (C.c (τ y hy)) z (memTop z) (hc y hy hz) G`. Simplify using `only [w, map_mul, ger_resG]`.
+
+Both sides reduce to the same expression. Set `VV : C.τ ⊕ {y : Y // y ∉ O} → Y.Opens` to `fun s => match s with`. Consider the case `.inl i => O ⊓ B.U (C.b i)`. Consider the case `.inr y => V y.1 y.2`. Set `cc : C.τ ⊕ {y : Y // y ∉ O} → B.ι` to `fun s => match s with`.
+
+Consider the case `.inl i => C.b i`. Consider the case `.inr y => C.b (τ y.1 y.2)`. Establish `hcc : ∀ s, VV s ≤ B.U (cc s)` using `fun s => match s with`. Consider the case `.inl _ => inf_le_right`. Consider the case `.inr y => hb y.1 y.2`.
+
+Set `uu : ∀ s, Γ(Y, VV s)` to `fun s => match s with`. Consider the case `.inl i => f.loc (C.b i)`. Consider the case `.inr y => w y.1 y.2`. Establish `cover : ∀ y, ∃ s, y ∈ VV s` using `fun y => by`. Distinguish the cases in `hy : y ∈ O`.
+
+Take `⟨i, -, hi, -⟩` from `C.cover y`. Conclude with `⟨.inl i, hy, hi⟩`. Conclude with `⟨.inr ⟨y, hy⟩, hyV y hy⟩`. Establish `huu : ∀ s z (h : z ∈ VV s) (hz : z ∈ O), ger z h (uu s) = H0.germ (cc s) z hz (hcc s h) f`. Introduce and unpack `(i | ⟨y, hy⟩) z h hz`.
+
+Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `ger z h (w y hy) = H0.germ (C.b (τ y hy)) z hz (hb y hy h) f`. Establish `e2 : ger z h (u y hy) * ger z h (hU y hy).unit⁻¹.val = 1`. Rewrite using `[← map_mul, IsUnit.mul_val_inv, map_one]`. Establish `e1` using `htu y hy z h hz`.
+
+Rewrite using `[hw, ← H0.germ_restr le_top _ z hz, hG, C.germ_mul ω f (τ y hy) z hz (ha y hy h) (hb y hy h)]`. Take the linear combination `(ger z h (hU y hy).unit⁻¹.val * H0.germ (C.b (τ y hy)) z hz (hb y hy h) f) * e1 + H0.germ (C.b (τ y hy)) z hz (hb y hy h) f * e2`. Take `⟨g, hg, hgf⟩` from `glue_of_dense hd C.isLB₂ VV cc hcc cover uu f huu`. Use `⟨g, fun y hy i hi => ?_, hgf⟩` and prove the remaining obligations. Establish `e : H0.germ (C.b (τ y hy)) y (memTop y) (hb y hy (hyV y hy)) g = ger y (hyV y hy) (w y hy)` using `hg (.inr ⟨y, hy⟩) y (hyV y hy)`.
+
+Rewrite using `[H0.germ_change i (C.b (τ y hy)) y (memTop y) hi (hb y hy (hyV y hy)), e, hw, mul_assoc]`. Use `Ideal.mul_mem_left _ _ (Ideal.mul_mem_right _ _ ?_)` and prove the remaining obligations. Conclude with `(IsLocalRing.mem_maximalIdeal _).2 fun hu' => hy ((ht y hy y (hyV y hy)).1 hu')`.
+-/
 theorem extends_vanishing_of_mul [IsReduced Y] {O : Y.Opens} (hd : Dense (O : Set Y)) {P B N : LB Y}
     (C : ProdChart P B N) (ω : H0 p P O) (hω : SimplePoleAlong O C ω) (G : H0 p N ⊤) (f : H0 p B O)
     (hG : H0.restr le_top G = C.mul ω f) :

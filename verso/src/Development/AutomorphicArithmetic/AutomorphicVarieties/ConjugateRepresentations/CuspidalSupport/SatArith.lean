@@ -6,15 +6,33 @@ open UpperTheory.V.Af.Fin (emb e1 e2 blk Bdd)
 open GlobalTheory.PRep (fixed)
 open scoped TensorProduct
 
+/- English proof (translation)
+Simplify using `[Multiset.esymm]`.
+-/
 private theorem es_zero (A : Multiset ℂ) : A.esymm 0 = 1 := by simp [Multiset.esymm]
 
+/- English proof (translation)
+Simplify using `[Multiset.esymm, Multiset.powersetCard_cons, Multiset.sum_map_mul_left]`.
+-/
 private theorem es_cons (a : ℂ) (A : Multiset ℂ) (k : ℕ) :
     (a ::ₘ A).esymm (k + 1) = A.esymm (k + 1) + a * A.esymm k := by
   simp [Multiset.esymm, Multiset.powersetCard_cons, Multiset.sum_map_mul_left]
 
+/- English proof (translation)
+Simplify using `[Multiset.esymm, Multiset.powersetCard_eq_empty k h]`.
+-/
 private theorem es_big (A : Multiset ℂ) {k : ℕ} (h : A.card < k) : A.esymm k = 0 := by
   simp [Multiset.esymm, Multiset.powersetCard_eq_empty k h]
 
+/- English proof (translation)
+Proceed by induction on `A using Multiset.induction_on generalizing j with`. Consider the case `empty`. Rewrite using `[Finset.sum_eq_single (0, j)]`. Simplify using `[es_zero]`. Introduce and unpack `⟨i, k⟩ hp hne`.
+
+Establish `: 0 < i`. Break down `Nat.eq_zero_or_pos i with rfl | h` into its components or cases. Simplify using `at hp`. Simplify using `[hp] at hne`. Conclude with `h`.
+
+Rewrite using `[es_big 0 (by simpa using this), zero_mul]`. Simplify using the standard rewrite rules. Consider the case `cons a A ih`. Consider the cases of `j with`. Consider the case `zero => simp [es_zero]`.
+
+Consider the case `succ j`. Rewrite using `[Multiset.cons_add, es_cons, ih, ih, Finset.Nat.sum_antidiagonal_succ, Finset.Nat.sum_antidiagonal_succ]`. Simplify using `only [es_cons, es_zero, add_mul, Finset.sum_add_distrib, Finset.mul_sum, mul_assoc, add_assoc]`.
+-/
 private theorem es_add (A C : Multiset ℂ) (j : ℕ) :
     (A + C).esymm j = ∑ p ∈ Finset.HasAntidiagonal.antidiagonal j, A.esymm p.1 * C.esymm p.2 := by
   induction A using Multiset.induction_on generalizing j with
@@ -35,6 +53,13 @@ private theorem es_add (A C : Multiset ℂ) (j : ℕ) :
       rw [Multiset.cons_add, es_cons, ih, ih, Finset.Nat.sum_antidiagonal_succ, Finset.Nat.sum_antidiagonal_succ]
       simp only [es_cons, es_zero, add_mul, Finset.sum_add_distrib, Finset.mul_sum, mul_assoc, add_assoc]
 
+/- English proof (translation)
+Rewrite using `[es_add, ← Finset.sum_filter]`. Use `symm`. Use `Finset.sum_of_injOn (fun p => ((p.1 : ℕ), (p.2 : ℕ))) ?_ ?_ ?_ fun _ _ => rfl` and prove the remaining obligations. Introduce and unpack `⟨a, b⟩ - ⟨c, d⟩ - h`. Simplify using `only [Prod.mk.injEq] at h`.
+
+Conclude with `Prod.ext (Fin.ext h.1) (Fin.ext h.2)`. Introduce `p hp`. Simplify using `using hp`. Introduce and unpack `⟨i, k⟩ hp hn`. Distinguish the cases in `hi : r < i`.
+
+Rewrite using `[es_big A (hA ▸ hi), zero_mul]`. Distinguish the cases in `hk : s < k`. Rewrite using `[es_big C (hC ▸ hk), mul_zero]`. Conclude with `absurd ⟨(⟨i, by omega⟩, ⟨k, by omega⟩), by simpa using hp, rfl⟩ hn`.
+-/
 private theorem es_add_fin (A C : Multiset ℂ) {r s : ℕ} (hA : A.card = r) (hC : C.card = s) (j : ℕ) :
     (A + C).esymm j =
       ∑ p : Fin (r + 1) × Fin (s + 1), if (p.1 : ℕ) + p.2 = j then A.esymm p.1 * C.esymm p.2 else 0 := by
@@ -53,11 +78,23 @@ private theorem es_add_fin (A C : Multiset ℂ) {r s : ℕ} (hA : A.card = r) (h
     · rw [es_big C (hC ▸ hk), mul_zero]
     exact absurd ⟨(⟨i, by omega⟩, ⟨k, by omega⟩), by simpa using hp, rfl⟩ hn
 
+/- English proof (translation)
+Rewrite using `[← smul_eq_mul, Multiset.pow_smul_esymm]`. Simplify using `[Multiset.map_map, mul_comm]`.
+-/
 private theorem es_scale (A : Multiset ℂˣ) (c : ℂˣ) (k : ℕ) :
     ((A.map (· * c)).map fun b : ℂˣ => (b : ℂ)).esymm k = (c : ℂ) ^ k * (A.map fun b : ℂˣ => (b : ℂ)).esymm k := by
   rw [← smul_eq_mul, Multiset.pow_smul_esymm]
   simp [Multiset.map_map, mul_comm]
 
+/- English proof (translation)
+Introduce `q r s hq B B₁ B₂ hB h₁ h₂ h α β hα hβ`. Use `eq_of_satEig_eq hq hB (by simp [h₁, h₂]) fun j hj => ?_` and prove the remaining obligations. Rewrite using `[← h j hj, satEig, Multiset.map_add, es_add_fin (r := r) (s := s) _ _ (by simpa using h₁) (by simpa using h₂), Finset.mul_sum]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Unfold `coef`.
+
+Use `split_ifs with hp`. Use `swap`. Simplify using the standard rewrite rules. Establish `hq' : (q : ℂ) ≠ 0` using `by exact_mod_cast hq`. Establish `hk : (p.2 : ℕ) ≤ s` using `Nat.lt_succ_iff.1 p.2.2`.
+
+Establish `key : (q : ℂ) ^ ((p.1 : ℕ) * (s - p.2)) * (q : ℂ) ^ ((((p.1 : ℕ) : ℂ) * ((r : ℂ) - (p.1 : ℕ))) / 2) * (q : ℂ) ^ ((((p.2 : ℕ) : ℂ) * ((s : ℂ) - (p.2 : ℕ))) / 2) = (q : ℂ) ^ (((j : ℂ) * (((r + s : ℕ) : ℂ) - j)) / 2) * (α : ℂ) ^ (p.1 : ℕ) * (β : ℂ) ^ (p.2 : ℕ)`. Rewrite using `[hα, hβ, ← Complex.cpow_nat_mul, ← Complex.cpow_nat_mul, ← Complex.cpow_natCast, ← Complex.cpow_add _ _ hq', ← Complex.cpow_add _ _ hq', ← Complex.cpow_add _ _ hq', ← Complex.cpow_add _ _ hq', ← hp]`. Use `congr 1`. Move the coercions through the operations in `[hk]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[es_scale, es_scale, satEig, satEig]`. Take the linear combination `((B₁.map fun b : ℂˣ => (b : ℂ)).esymm p.1 * (B₂.map fun b : ℂˣ => (b : ℂ)).esymm p.2) * key`.
+-/
 theorem UpperTheory.V.Cj.S.satArith :
     UpperTheory.V.Cj.S.SatArith := by
   intro q r s hq B B₁ B₂ hB h₁ h₂ h α β hα hβ

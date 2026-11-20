@@ -1,6 +1,13 @@
 import Mathlib
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.TwoWeightEqOneAddRoot
 
+/- English proof (translation)
+Introduce `E _ _ _ H`. Establish `h` using `H.sqrt_neg_disc_sq`. Establish `hd : (0 : ℝ) < H.d` using `by exact_mod_cast H.d_prime.pos`. Establish `h1` using `congrArg Complex.re h`. Establish `h2` using `congrArg Complex.im h`.
+
+Simplify using `[sq] at h1 h2`. Establish `hre : H.rt0.re = 0`. Assume the negation of the conclusion as `hne`. Establish `him : H.rt0.im = 0` using `mul_left_cancel₀ hne (by linarith)`. Rewrite `h1` using `[him]`.
+
+Use polynomial arithmetic with `[mul_self_nonneg H.rt0.re]`. Apply the tactic sequence `apply Complex.ext <;> simp [hre]`.
+-/
 theorem UpperTheory.Reformulated.B.Ga10.rt0_conj_neg_ne_zero :
     ∀ {E : Type} [inst : Field E] [inst_1 : NumberField E]
     [inst_2 : NumberField.IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E),

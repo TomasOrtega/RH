@@ -4,6 +4,15 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 open GlobalTheory.WeilDeligne GlobalTheory.Pst GlobalTheory.GalOfCusp TensorProduct Module
 open UpperTheory.Gal.crystallineComparison
 
+/- English proof (translation)
+Take `⟨-, -, -, hmap, -⟩` from `hco F L B a`. Take `⟨-, -, -, hmap', hbij⟩` from `hco F L B 1`. Use `set D : Matrix (Fin a) (Fin a) (L ⊗[F] B) := Matrix.of fun i k => co (x k) i with hD`. Establish `hM : D = A.map (algebraMap L (L ⊗[F] B)) * D.map (onR L s)`. Use extensionality with `i k`.
+
+Establish `h1` using `congrFun (hmap T A hT s (x k)) i`. Rewrite `h1` using `[hfix k]`. Simplify `h1` using `[D, Matrix.mul_apply, Matrix.mulVec, dotProduct]`. Establish `key : D.det = algebraMap L (L ⊗[F] B) A.det * onR L s D.det` using `by conv_lhs => rw [hM]`. Rewrite using `[Matrix.det_mul, RingHom.map_det, RingHom.map_det]`.
+
+Both sides reduce to the same expression. Apply `hbij.1` to reduce the goal to its premises. Establish `h1` using `congrFun (hmap' T' A' hT' s y) 0`. Establish `h3 : A' 0 0 = A.det` using `by rw [← hdet, Matrix.det_fin_one]`. Use `show co _ 0 = co y 0`.
+
+Rewrite using `[h1, hy]`. Use `conv_rhs => rw [key]`. Simplify using `[Matrix.mulVec, dotProduct, h3, hy]`.
+-/
 private theorem step_fix (hco : CoFacts) {F L B : Type} [Field F] [Field L] [Algebra F L] [CommRing B] [Algebra F B] {a : ℕ}
     (x : Fin a → (Fin a → L) ⊗[F] B) (y : (Fin 1 → L) ⊗[F] B)
     (hy : co y 0 = Matrix.det (Matrix.of fun i k => co (x k) i))
@@ -32,6 +41,13 @@ private theorem step_fix (hco : CoFacts) {F L B : Type} [Field F] [Field L] [Alg
   conv_rhs => rw [key]
   simp [Matrix.mulVec, dotProduct, h3, hy]
 
+/- English proof (translation)
+Establish `hs : ∀ s : Finset (Fin a), ∃ K' : FinExt l, ∀ k ∈ s, ∀ g : ↥(GK K), (g : GQ l) ∈ GK K' → stRep P ρ g (x k : V ⊗[ℚ_[l]] Bst P) = x k`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact ⟨K, by simp⟩`. Consider the case `insert k s hk ih`.
+
+Take `⟨K₁, h₁⟩` from `ih`. Take `⟨K₂, h₂⟩` from `(mem_Dpst P ρ).mp (x k).2`. Use `⟨supExt K₁ K₂, fun k' hk' g hg => ?_⟩` and prove the remaining obligations. Break down `Finset.mem_insert.mp hk' with rfl | hk'` into its components or cases. Conclude with `h₂ g (GK_le (K' := supExt K₁ K₂) le_sup_right hg)`.
+
+Conclude with `h₁ k' hk' g (GK_le (K' := supExt K₁ K₂) le_sup_left hg)`. Take `⟨K', h⟩` from `hs Finset.univ`. Conclude with `⟨K', fun k => h k (Finset.mem_univ k)⟩`.
+-/
 private theorem one_ext {l : ℕ} [Fact l.Prime] (P : LocPrime l) {K LL : FinExt l} {V : Type} [AddCommGroup V] [Module ↥LL.1 V]
     [Module ℚ_[l] V] [IsScalarTower ℚ_[l] ↥LL.1 V] (ρ : Representation ↥LL.1 ↥(GK K) V) {a : ℕ} (x : Fin a → ↥(Dpst P ρ)) :
     ∃ K' : FinExt l, ∀ k, ∀ g : ↥(GK K), (g : GQ l) ∈ GK K' → stRep P ρ g (x k : V ⊗[ℚ_[l]] Bst P) = x k := by
@@ -50,6 +66,9 @@ private theorem one_ext {l : ℕ} [Fact l.Prime] (P : LocPrime l) {K LL : FinExt
   obtain ⟨K', h⟩ := hs Finset.univ
   exact ⟨K', fun k => h k (Finset.mem_univ k)⟩
 
+/- English proof (translation)
+Introduce `hco l _ P K LL a ρ ρ' A A' hA hA' hdet x`. Take `⟨K', hK'⟩` from `one_ext P ρ x`. Take `⟨y, hy⟩` from `(hco ℚ_[l] ↥LL.1 (Bst P) 1).2.2.2.2.2 (Matrix.det (Matrix.of fun i k => co (x k : (Fin a → ↥LL.1) ⊗[ℚ_[l]] Bst P) i))`. Conclude with `⟨⟨y, (mem_Dpst P ρ').mpr ⟨K', fun g hg => step_fix hco (fun k => (x k : (Fin a → ↥LL.1) ⊗[ℚ_[l]] Bst P)) y hy (ρ g) (A g) (hA g) (ρ' g) (A' g) (hA' g) (hdet g) (actSt P (g : GQ l)) fun k => hK' k g hg⟩⟩, hy⟩`.
+-/
 theorem UpperTheory.Gal.crystallineComparison.detMem_of :
     CoFacts → DetMem := by
   intro hco l _ P K LL a ρ ρ' A A' hA hA' hdet x

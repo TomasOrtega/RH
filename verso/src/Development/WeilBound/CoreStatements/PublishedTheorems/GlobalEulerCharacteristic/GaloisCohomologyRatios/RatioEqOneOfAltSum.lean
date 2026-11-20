@@ -10,6 +10,11 @@ local notation "ℚ̄" => AlgebraicClosure ℚ
 
 variable {K : FiniteSubfield} {S : Set (HeightOneSpectrum (𝓞 K.1))} {ℓ : ℕ} [Fact ℓ.Prime]
 
+/- English proof (translation)
+Use `push_cast`. Rewrite using `[Finset.prod_pow_eq_pow_sum, ← pow_mul, div_eq_one_iff_eq (pow_ne_zero _ hl0), div_mul_eq_mul_div, div_eq_iff (pow_ne_zero _ hl0), ← pow_add, ← pow_add, ← pow_add]`. Use `congr 1`. Establish `h' : ((a0 + a2 + m * c : ℕ) : ℤ) = ((∑ v, b v + a1 : ℕ) : ℤ)`. Use `push_cast`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `h'` after adjusting the coercions.
+-/
 theorem pow_ratio_eq_one {ι : Type*} [Fintype ι] (ℓ : ℕ) (hl0 : (ℓ : ℚ) ≠ 0) (a0 a1 a2 m c : ℕ) (b : ι → ℕ)
     (h : (a0 : ℤ) - a1 + a2 = ∑ v, (b v : ℤ) - c * m) :
     ((ℓ ^ a0 : ℕ) : ℚ) * ((ℓ ^ a2 : ℕ) : ℚ) / ((ℓ ^ a1 : ℕ) : ℚ) * ((ℓ ^ m : ℕ) : ℚ) ^ c /
@@ -25,6 +30,17 @@ theorem pow_ratio_eq_one {ι : Type*} [Fintype ι] (ℓ : ℕ) (hl0 : (ℓ : ℚ
 
 open scoped Classical in
 
+/- English proof (translation)
+Establish `hlp : ℓ.Prime` using `Fact.out`. Establish `: Finite (zmodRepOfTorsion ℓ M hMl)` using `‹Finite M›`. Establish `: Module.Finite (ZMod ℓ) (zmodRepOfTorsion ℓ M hMl)` using `Module.Finite.of_finite`. Establish `hcardM : Nat.card M = ℓ ^ Module.finrank (ZMod ℓ) (zmodRepOfTorsion ℓ M hMl)` using `natCard_eq_pow_finrank_zmod ℓ (zmodRepOfTorsion ℓ M hMl)`. Establish `hS : ∀ v : HeightOneSpectrum (𝓞 K.1), ((Nat.card M : ℕ) : 𝓞 K.1) ∈ v.asIdeal → v ∈ S`.
+
+Introduce `v hv`. Assume the negation of the conclusion as `hvS`. Apply `hℓS v hvS` to reduce the goal to its premises. Rewrite `hv` using `[hcardM, Nat.cast_pow]`. Conclude with `v.isPrime.mem_of_pow_mem _ hv`.
+
+Establish `hcard : ∀ i ≤ 2, Nat.card (cohomology M i) = ℓ ^ Module.finrank (ZMod ℓ) (cohomology (zmodRepOfTorsion ℓ M hMl) i)` using `fun i hi => by`. Use `finite_cohomology_gs K S M hS i hi` as an intermediate fact. Establish `: Finite (cohomology (zmodRepOfTorsion ℓ M hMl) i)` using `Finite.of_equiv _ (cohomologyZModEquiv ℓ M hMl i).toEquiv`. Rewrite using `[Nat.card_congr (cohomologyZModEquiv ℓ M hMl i).toEquiv, natCard_eq_pow_finrank_zmod ℓ]`. Establish `hreal : ∀ v, gsRealH0Card S M ιr v = ℓ ^ Module.finrank (ZMod ℓ) (cohomology (Rep.res (gsRealFamily S ιr v).toMonoidHom (zmodRepOfTorsion ℓ M hMl)) 0)` using `fun v => by`.
+
+Use `gsReal_finite_cohomology S ιr M v 0 (by norm_num)` as an intermediate fact. Set `e` to `cohomologyAddEquivOfEquiv (A := Rep.res (gsRealFamily S ιr v).toMonoidHom M) (A' := Rep.res (gsRealFamily S ιr v).toMonoidHom (zmodRepOfTorsion ℓ M hMl)) (zmodRepOfTorsionEquiv ℓ M hMl) (fun _ _ => rfl) 0`. Establish `: Finite (cohomology (Rep.res (gsRealFamily S ιr v).toMonoidHom (zmodRepOfTorsion ℓ M hMl)) 0)` using `Finite.of_equiv _ e.toEquiv`. Conclude with `(Nat.card_congr e.toEquiv).trans (natCard_eq_pow_finrank_zmod ℓ _)`. Establish `hl0 : (ℓ : ℚ) ≠ 0` using `by exact_mod_cast hlp.ne_zero`.
+
+Unfold `gsEulerRatio`. Rewrite using `[eulerChar_eq, hcard 0 (by norm_num), hcard 1 (by norm_num), hcard 2 (by norm_num), hcardM, Finset.prod_congr rfl (fun v _ => by rw [hreal v])]`. Conclude with `pow_ratio_eq_one ℓ hl0 _ _ _ _ _ _ h`.
+-/
 theorem ratio_eq_one_of_altSum [Finite S] (hℓS : ∀ v ∉ S, ((ℓ : ℕ) : 𝓞 K.1) ∉ v.asIdeal)
     (ιr : ∀ v : {v : InfinitePlace K.1 // v.IsReal}, ℚ̄ →ₐ[K.1] AlgebraicClosure v.1.Completion)
     (M : Rep.{0} (ULift.{0} ℤ) (galUnramifiedOutside K.1 ℚ̄ S)) [IsDiscreteRep M] [Finite M]

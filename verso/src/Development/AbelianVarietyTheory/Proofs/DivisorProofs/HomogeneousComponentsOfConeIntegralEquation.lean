@@ -3,6 +3,17 @@ open MvPolynomial
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Proceed by induction on `p using MvPolynomial.induction_on' with`. Consider the case `monomial u a`. Establish `hprod : (u.prod fun i k => (Polynomial.C (w i) * Polynomial.X : Polynomial K) ^ k) = Polynomial.C (u.prod fun i k => w i ^ k) * Polynomial.X ^ (Finsupp.degree u)`. Simplify using `only [Finsupp.prod, mul_pow, Finset.prod_mul_distrib, map_prod, map_pow, Finset.prod_pow_eq_pow_sum, Finsupp.degree_apply]`. Establish `hcomp : homogeneousComponent d (monomial u a) = if Finsupp.degree u = d then monomial u a else 0`.
+
+Use extensionality with `v`. Rewrite using `[coeff_homogeneousComponent]`. Distinguish the cases in `hd : Finsupp.degree u = d`. Distinguish the cases in `hv : u = v`. Substitute `hv` using the available equality.
+
+Simplify using `[hd]`. Simplify using `[coeff_monomial, hv, hd]`. Distinguish the cases in `hv : u = v`. Substitute `hv` using the available equality. Simplify using `[hd]`.
+
+Simplify using `[coeff_monomial, hv, hd]`. Rewrite using `[eval₂_monomial, hprod, hcomp, ← mul_assoc, RingHom.comp_apply, ← map_mul, Polynomial.coeff_C_mul_X_pow]`. Distinguish the cases in `h : Finsupp.degree u = d`. Substitute `h` using the available equality. Simplify using `[eval₂_monomial]`.
+
+Establish `h' : d ≠ Finsupp.degree u` using `fun e => h e.symm`. Simplify using `[h, h']`. Consider the case `add p q hp hq`. Simplify using `only [eval₂_add, Polynomial.coeff_add, map_add, hp, hq]`.
+-/
 theorem coeff_eval₂_C_mul_X {F K : Type} [Field F] [Field K] (φ : F →+* K) {r : ℕ} (w : Fin r → K)
     (p : MvPolynomial (Fin r) F) (d : ℕ) :
     (MvPolynomial.eval₂ (Polynomial.C.comp φ) (fun i => Polynomial.C (w i) * Polynomial.X) p).coeff d
@@ -34,6 +45,13 @@ theorem coeff_eval₂_C_mul_X {F K : Type} [Field F] [Field K] (φ : F →+* K) 
   | add p q hp hq =>
     simp only [eval₂_add, Polynomial.coeff_add, map_add, hp, hq]
 
+/- English proof (translation)
+Use `⟨fun k => homogeneousComponent (e * (m - k)) (b k), fun k => homogeneousComponent_isHomogeneous _ _, ?_⟩` and prove the remaining obligations. Establish `hc` using `congrArg (fun P : Polynomial K => P.coeff (e * m)) h`. Simplify using `only [Polynomial.coeff_add, Polynomial.finsetSum_coeff, Polynomial.coeff_zero] at hc`. Establish `hpow : ∀ n : ℕ, (Polynomial.C τ * Polynomial.X ^ e) ^ n = Polynomial.C (τ ^ n) * Polynomial.X ^ (e * n)`. Introduce `n`.
+
+Rewrite using `[mul_pow, ← pow_mul, map_pow]`. Establish `hterm : ∀ k : Fin m, (MvPolynomial.eval₂ (Polynomial.C.comp φ) (fun i => Polynomial.C (w i) * Polynomial.X) (b k) * (Polynomial.C τ * Polynomial.X ^ e) ^ (k : ℕ)).coeff (e * m) = MvPolynomial.eval₂ φ w (homogeneousComponent (e * (m - k)) (b k)) * τ ^ (k : ℕ)`. Introduce `k`. Establish `hle : e * (k : ℕ) ≤ e * m` using `Nat.mul_le_mul_left e k.is_lt.le`. Rewrite using `[hpow, ← mul_assoc, Polynomial.coeff_mul_X_pow', if_pos hle, Polynomial.coeff_mul_C, ← Nat.mul_sub, coeff_eval₂_C_mul_X]`.
+
+Rewrite `hc` using `[hpow, Polynomial.coeff_C_mul_X_pow, if_pos rfl]`. Simplify `hc` using `only [hterm]`.
+-/
 theorem homogeneous_components_of_integral_equation (F K : Type) [Field F] [Field K] (φ : F →+* K)
     (r e m : ℕ) (w : Fin r → K) (τ : K) (b : Fin m → MvPolynomial (Fin r) F)
     (h : (Polynomial.C τ * Polynomial.X ^ e) ^ m + ∑ k, MvPolynomial.eval₂ (Polynomial.C.comp φ)

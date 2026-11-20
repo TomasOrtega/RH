@@ -17,6 +17,11 @@ variable {N : ℕ}
 
 open scoped MatrixOrder in
 
+/- English proof (translation)
+Break down `Nat.eq_zero_or_pos N with rfl | hN` into its components or cases. Conclude with `⟨1, one_pos, by rw [Subsingleton.elim (_ - _) 0]; exact PosSemidef.zero⟩`. Use `haveI : Nonempty (Fin N) := ⟨⟨0, hN⟩⟩`. Take `⟨r, hr, hle⟩` from `(CFC.exists_pos_algebraMap_le_iff (A := Matrix (Fin N) (Fin N) ℂ) hY.isStrictlyPositive.isSelfAdjoint).2 fun x hx => hY.isStrictlyPositive.spectrum_pos hx`. Use `⟨r, hr, ?_⟩` and prove the remaining obligations.
+
+Use `Matrix.le_iff.mp hle` as an intermediate fact. Rewrite `this` using `[Algebra.algebraMap_eq_smul_one, ← Complex.coe_smul]`. Then use the resulting hypothesis.
+-/
 theorem exists_sub_posSemidef {Y : Matrix (Fin N) (Fin N) ℂ} (hY : Y.PosDef) :
     ∃ δ : ℝ, 0 < δ ∧ (Y - (δ : ℂ) • (1 : Matrix (Fin N) (Fin N) ℂ)).PosSemidef := by
   rcases Nat.eq_zero_or_pos N with rfl | hN
@@ -28,6 +33,11 @@ theorem exists_sub_posSemidef {Y : Matrix (Fin N) (Fin N) ℂ} (hY : Y.PosDef) :
   have := Matrix.le_iff.mp hle
   rwa [Algebra.algebraMap_eq_smul_one, ← Complex.coe_smul] at this
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.PosSemidefShiftByScalar.main`. Consider the case `exact _root_.GlobalTheory.PosSemidefShiftByScalar.main`. Consider the case `(apply _root_.GlobalTheory.PosSemidefShiftByScalar.main <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.PosSemidefShiftByScalar.main <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.PosSemidefShiftByScalar.main <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.PosSemidefShiftByScalar.main ..)`.
+-/
 theorem exists_mem_HnGe {E : Type} [Field E] (Ψ : Finset (E →+* ℂ)) {Z : CM Ψ N N}
     (hZ : Z ∈ Hn Ψ N) : ∃ δ : ℝ, 0 < δ ∧ Z ∈ HnGe Ψ N δ := by
   first
@@ -38,6 +48,21 @@ theorem exists_mem_HnGe {E : Type} [Field E] (Ψ : Finset (E →+* ℂ)) {Z : CM
   | (intros; apply @_root_.GlobalTheory.PosSemidefShiftByScalar.main <;> first | assumption | infer_instance)
   | (intros; exact _root_.GlobalTheory.PosSemidefShiftByScalar.main ..)
 
+/- English proof (translation)
+Establish `e0 : (C * Z + D) * Cᴴ - C * (C * Z + D)ᴴ = C * (Z - Zᴴ) * Cᴴ`. Rewrite using `[conjTranspose_add, conjTranspose_mul, Matrix.add_mul, h]`. Use `noncomm_ring`. Generalize the expression as in `C * Z + D = Q at e0 hQ`. Establish `hi : Q⁻¹ * Q = 1` using `nonsing_inv_mul Q (Ne.isUnit hQ)`.
+
+Establish `hi' : Qᴴ * (Q⁻¹)ᴴ = 1` using `by rw [← conjTranspose_mul, hi, conjTranspose_one]`. Establish `e1 : (Q⁻¹ * C) * (Z - Zᴴ) * (Q⁻¹ * C)ᴴ = (Q⁻¹ * C)ᴴ - Q⁻¹ * C`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = (Q⁻¹ * Q) * (Cᴴ * (Q⁻¹)ᴴ) - Q⁻¹ * C * (Qᴴ * (Q⁻¹)ᴴ) := by rw [← e0]; noncomm_ring`.
+
+Use `_ = _ := by rw [hi, hi', conjTranspose_mul, Matrix.one_mul, Matrix.mul_one]`. Generalize the expression as in `Q⁻¹ * C = S at e1`. Establish `key : δ * ∑ k, ‖S i k‖ ^ 2 ≤ ‖S i i‖`. Establish `h1` using `(hZ.mul_mul_conjTranspose_same S).diag_nonneg (i := i)`. Rewrite `h1` using `[Matrix.mul_sub, Matrix.sub_mul, imH, Matrix.mul_smul, Matrix.smul_mul, e1, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_one]`.
+
+Establish `h2 : (S * Sᴴ) i i = ((∑ k, ‖S i k‖ ^ 2 : ℝ) : ℂ)`. Simplify using `[Matrix.mul_apply, Complex.mul_conj']`. Establish `h3 : (2 * I)⁻¹ * (conj (S i i) - S i i) = ((-(S i i).im : ℝ) : ℂ)`. Rewrite using `[← neg_sub, Complex.sub_conj]`. Use `push_cast`.
+
+Clear the denominators using the available nonvanishing facts. Simplify using `only [Matrix.sub_apply, Matrix.smul_apply, smul_eq_mul, h2, conjTranspose_apply, Complex.star_def, h3] at h1`. Establish `h4 : (0 : ℝ) ≤ -(S i i).im - δ * ∑ k, ‖S i k‖ ^ 2` using `by exact_mod_cast h1`. Establish `h5` using `(abs_le.1 (Complex.abs_im_le_norm (S i i))).1`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hs : ∀ k, δ * ‖S i k‖ ^ 2 ≤ ‖S i i‖` using `fun k => le_trans (mul_le_mul_of_nonneg_left (Finset.single_le_sum (f := fun k => ‖S i k‖ ^ 2) (fun _ _ => sq_nonneg _) (Finset.mem_univ k)) hδ.le) key`. Establish `a1 : δ * ‖S i i‖ ≤ 1`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Establish `: 0 < ‖S i i‖` using `by by_contra h0; nlinarith [norm_nonneg (S i i)]`.
+
+Use polynomial arithmetic with `[hs i]`. Rewrite using `[← one_div, le_div_iff₀ hδ]`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Use polynomial arithmetic with `[hs j, mul_le_mul_of_nonneg_left (hs j) hδ.le]`.
+-/
 theorem entry_bound {C D Z : Matrix (Fin N) (Fin N) ℂ} {δ : ℝ} (hδ : 0 < δ)
     (h : D * Cᴴ = C * Dᴴ) (hQ : (C * Z + D).det ≠ 0)
     (hZ : (imH Z - (δ : ℂ) • (1 : Matrix (Fin N) (Fin N) ℂ)).PosSemidef) (i j : Fin N) :
@@ -83,6 +108,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] (Ψ : Finset (E →+
 
 omit [NumberField E] [IsCMField E] in
 
+/- English proof (translation)
+Unfold `hFac`. Establish `h : ∀ (τ : Ψ) (k : Fin n), (0 : CM Ψ n N) τ k = 0` using `fun _ _ => rfl`. Simplify using `only [h, zero_dotProduct]`. Simplify using the standard rewrite rules.
+-/
 theorem hFac_zero (γ : M2 E N) (Z : CM Ψ N N) :
     hFac Ψ γ Z (0 : CM Ψ n N) 0 = ∏ τ : Ψ, (hDen Ψ γ Z τ).det ^ n := by
   unfold hFac
@@ -90,6 +118,15 @@ theorem hFac_zero (γ : M2 E N) (Z : CM Ψ N N) :
   simp only [h, zero_dotProduct]
   simp
 
+/- English proof (translation)
+Take `⟨δ, hδ, hZ'⟩` from `exists_mem_HnGe Ψ hZ`. Use `⟨∏ τ : Ψ, Real.exp (‖2 * (π : ℂ) * I‖ * ∑ k, ∑ a, ‖z' τ k a‖ * ∑ b, δ⁻¹ * ‖z τ k b‖), fun γ hγ => ?_⟩` and prove the remaining obligations. Rewrite using `[hFac_zero, hFac, Finset.prod_mul_distrib, mul_inv, norm_mul, mul_comm]`. Use `mul_le_mul_of_nonneg_right ?_ (norm_nonneg _)` and prove the remaining obligations. Rewrite using `[← Finset.prod_inv_distrib, norm_prod]`.
+
+Use `Finset.prod_le_prod (fun _ _ => norm_nonneg _) fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[← Complex.exp_neg]`. Use `(Complex.norm_exp_le_exp_norm _).trans (Real.exp_le_exp.2 ?_)` and prove the remaining obligations. Rewrite using `[norm_neg, norm_mul]`. Use `mul_le_mul_of_nonneg_left ?_ (norm_nonneg _)` and prove the remaining obligations.
+
+Establish `hb` using `entry_bound hδ (HermComp.row_rel _ (HAct.map_mem τ.1 hγ)).2 (((unitary_act_halfSpace E Ψ N γ hγ).2 Z hZ).1 τ).1 (hZ' τ)`. Use `norm_sum_le_of_le _ fun k _ => norm_sum_le_of_le _ fun a _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`. Use `mul_le_mul_of_nonneg_left ?_ (norm_nonneg _)` and prove the remaining obligations. Rewrite using `[Matrix.mulVec, dotProduct]`.
+
+Use `norm_sum_le_of_le _ fun b _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_mul_of_nonneg_right (hb a b) (norm_nonneg _)`.
+-/
 theorem hFac_inv_bound {Z : CM Ψ N N} (hZ : Z ∈ Hn Ψ N) (z z' : CM Ψ n N) :
     ∃ K : ℝ, ∀ γ ∈ UU E N,
       ‖(hFac Ψ γ Z z z')⁻¹‖ ≤ K * ‖(hFac Ψ γ Z (0 : CM Ψ n N) 0)⁻¹‖ := by
@@ -116,6 +153,9 @@ theorem hFac_inv_bound {Z : CM Ψ N N} (hZ : Z ∈ Hn Ψ N) (z z' : CM Ψ n N) :
 
 omit [NumberField E] [IsCMField E] in
 
+/- English proof (translation)
+Unfold `botSpan`. Rewrite using `[Submodule.map_span, ← Set.range_comp]`. Both sides reduce to the same expression.
+-/
 theorem botSpan_mul (g γ : M2 E N) : botSpan (g * γ) = (botSpan g).map γ.vecMulLinear := by
   unfold botSpan
   rw [Submodule.map_span, ← Set.range_comp]
@@ -125,6 +165,9 @@ noncomputable def lagMul {γ : M2 E N} (hγ : γ ∈ UU E N) (U : Lag E N) : Lag
   ⟨U.1.map γ.vecMulLinear, U.2.choose * γ, HAct.mul_mem hγ U.2.choose_spec.1, by
     rw [botSpan_mul, U.2.choose_spec.2]⟩
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(U.1.map γ.vecMulLinear).map γ'.vecMulLinear = U.1`. Rewrite using `[← U.2.choose_spec.2, ← botSpan_mul, ← botSpan_mul, Matrix.mul_assoc, h, Matrix.mul_one]`.
+-/
 theorem lagMul_lagMul {γ γ' : M2 E N} (hγ : γ ∈ UU E N) (hγ' : γ' ∈ UU E N) (h : γ * γ' = 1)
     (U : Lag E N) : lagMul hγ' (lagMul hγ U) = U := by
   apply Subtype.ext
@@ -140,6 +183,21 @@ end GlobalTheory.SW.EisTrans
 
 open GlobalTheory.SW.EisTrans in
 
+/- English proof (translation)
+Introduce `E _ _ _ Ψ hΨ n N hn hN`. Establish `hs : ∀ φ : Matrix (Fin n) (Fin N) E → ℂ, IsSB φ → ∀ Z ∈ Hn Ψ N, ∀ z z', Summable fun U : Lag E N => ‖eisTerm Ψ U.2.choose φ Z z z'‖`. Introduce and unpack `φ ⟨R, hR, hφ⟩ Z hZ z z'`. Take `⟨δ, hδ, hZ'⟩` from `exists_mem_HnGe Ψ hZ`. Take `⟨B, hB⟩` from `(GlobalTheory.T.schwartzBruhatInnerProduct_self_nonneg_bounds E _ _ R φ hR hφ).2.2.2.2.1`.
+
+Take `⟨C, hC⟩` from `GlobalTheory.T.hermitianTheta_eisenstein_converge_bounded E Ψ hΨ n N hn hN R δ hR hδ`. Take `⟨K, hK⟩` from `hFac_inv_bound Ψ hZ z z'`. Use `Summable.of_nonneg_of_le (fun _ => norm_nonneg _) (fun U => ?_) ((hC φ hφ B hB Z hZ').1.mul_left K)` and prove the remaining obligations. Rewrite using `[eisTerm, eisTerm, norm_mul, norm_mul, mul_left_comm]`. Conclude with `mul_le_mul_of_nonneg_left (hK _ U.2.choose_spec.1) (norm_nonneg _)`.
+
+Introduce `φ hφ Z hZ`. Use `⟨hs φ hφ Z hZ, fun γ hγ => ?_, fun ψ hψ z z' => ?_, fun c z z' => ?_⟩` and prove the remaining obligations. Unfold `eis`. Rewrite using `[← (lagEquiv hγ).tsum_eq (fun U => eisTerm Ψ U.2.choose φ Z 0 0), ← tsum_mul_left]`. Use `tsum_congr fun U => ?_` and prove the remaining obligations.
+
+Establish `hg` using `U.2.choose_spec.1`. Rewrite using `[(GlobalTheory.T.hermitianWeilAction_siegelParabolic_explicit E Ψ hΨ n N hn φ hφ).2 _ (lagEquiv hγ U).2.choose_spec.1 _ (HAct.mul_mem hγ hg) (by`. Rewrite using `[(lagEquiv hγ U).2.choose_spec.2, botSpan_mul, U.2.choose_spec.2]`. Use the proof step `rfl) Z hZ]`. Establish `ha` using `(unitary_act_halfSpace E Ψ N γ hγ).2 Z hZ`.
+
+Establish `h0 : hFac Ψ γ Z (0 : CM Ψ n N) 0 ≠ 0`. Rewrite using `[hFac_zero]`. Conclude with `Finset.prod_ne_zero_iff.2 fun τ _ => pow_ne_zero _ (ha.1 τ).1`. Establish `h1 : hFac Ψ (U.2.choose * γ) Z (0 : CM Ψ n N) 0 = hFac Ψ U.2.choose (hAct Ψ γ Z) (0 : CM Ψ n N) 0 * hFac Ψ γ Z (0 : CM Ψ n N) 0`. Simplify using `only [hFac_zero, (ha.2.2.2 _ hg).2.1, det_mul, mul_pow, Finset.prod_mul_distrib]`.
+
+Rewrite using `[eisTerm, eisTerm, h1, (GlobalTheory.T.hermitianWeilAction_unitaryGroup_testFunctions E Ψ hΨ n N hn γ hγ φ hφ).2.2.2.2.2.1 _ hg, mul_inv]`. Clear the denominators using the available nonvanishing facts. Unfold `eis`. Rewrite using `[← (hs φ hφ Z hZ z z').of_norm.tsum_add (hs ψ hψ Z hZ z z').of_norm]`. Use `tsum_congr fun U => ?_` and prove the remaining obligations.
+
+Rewrite using `[eisTerm, eisTerm, eisTerm, ((GlobalTheory.T.hermitianWeilAction_unitaryGroup_testFunctions E Ψ hΨ n N hn _ U.2.choose_spec.1 φ hφ).2.2.2.1 ψ hψ).2, Pi.add_apply, add_mul]`. Unfold `eis`. Rewrite using `[← tsum_mul_left]`. Use `tsum_congr fun U => ?_` and prove the remaining obligations. Rewrite using `[eisTerm, eisTerm, (GlobalTheory.T.hermitianWeilAction_unitaryGroup_testFunctions E Ψ hΨ n N hn _ U.2.choose_spec.1 φ hφ).2.2.2.2.1 c, Pi.smul_apply, smul_eq_mul, mul_assoc]`.
+-/
 theorem GlobalTheory.SW.eis_automorphy_linear : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (Ψ : Finset (E →+* ℂ)), IsType Ψ → ∀ (n N : ℕ), Even n → 4 * N < n → ∀ φ : Matrix (Fin n) (Fin N) E → ℂ, IsSB φ → ∀ Z ∈ Hn Ψ N, (∀ z z', Summable fun U : Lag E N => ‖eisTerm Ψ U.2.choose φ Z z z'‖) ∧ (∀ γ ∈ UU E N, eis Ψ (weil Ψ γ φ) (hAct Ψ γ Z) 0 0 = hFac Ψ γ Z (0 : CM Ψ n N) 0 * eis Ψ φ Z 0 0) ∧ (∀ ψ, IsSB ψ → ∀ z z', eis Ψ (φ + ψ) Z z z' = eis Ψ φ Z z z' + eis Ψ ψ Z z z') ∧ ∀ (c : ℂ) z z', eis Ψ (c • φ) Z z z' = c * eis Ψ φ Z z z' := by
   intro E _ _ _ Ψ hΨ n N hn hN
   have hs : ∀ φ : Matrix (Fin n) (Fin N) E → ℂ, IsSB φ → ∀ Z ∈ Hn Ψ N, ∀ z z',

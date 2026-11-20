@@ -16,6 +16,41 @@ namespace GlobalTheory.Core.Mi.LatMatch
 
 open GlobalTheory.LatPair in
 
+/- English proof (translation)
+Establish `hq` using `GlobalTheory.LevelUnfold.mul_inv_q q`. Establish `hint : ∀ x ∈ Λ, (q.1 : k) * (m * x (Sum.inr 0)) ∈ 𝒪[k]` using `fun x hx => by`. Simplify using `using (h2 1).2 (one_mem _) x hx`. Establish `hqi : q.inv ∉ 𝒪[k]` using `fun h => q.2.not_isUnit (IsUnit.of_mul_eq_one ⟨_, h⟩ (Subtype.ext hq))`. Choose the witnesses or unpack the hypotheses as in `⟨e, he, he1⟩ : ∃ e ∈ Λ, (q.1 : k) * (m * e (Sum.inr 0)) = 1 := by`.
+
+Establish `h` using `mt (h2 q.inv).1 hqi`. Use `push Not at h`. Take `⟨x, hx, hx'⟩` from `h`. Establish `hu : IsUnit (⟨_, hint x hx⟩ : 𝒪[k])`. Rewrite using `[← IsLocalRing.notMem_maximalIdeal, q.mem_max_iff]`.
+
+Introduce and unpack `⟨c, hc⟩`. Establish `hc' : (q.1 : k) * (m * x (Sum.inr 0)) = (q.1 : k) * c` using `congrArg Subtype.val hc`. Apply `hx'` to reduce the goal to its premises. Rewrite using `[hc', ← mul_assoc, mul_comm q.inv, hq, one_mul]`. Conclude with `c.2`.
+
+Take `⟨c, hc⟩` from `hu.exists_left_inv`. Establish `hc' : (c : k) * ((q.1 : k) * (m * x (Sum.inr 0))) = 1` using `congrArg Subtype.val hc`. Use `⟨c • x, Λ.smul_mem c hx, ?_⟩` and prove the remaining obligations. Rewrite using `[← hc']`. Express the relevant statement in the definitionally equal form `_ * (m * ((c : k) * _)) = _`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hsplit : ∀ x : n ⊕ Fin 1 → k, x = inX k n 1 (x ∘ Sum.inl) + (Sum.elim 0 (fun _ => x (Sum.inr 0)) : n ⊕ Fin 1 → k)` using `fun x => by`. Use extensionality with `(j | j)`. Simplify using `[inX]`. Take `rfl : j = 0` from `Subsingleton.elim _ _`.
+
+Simplify using `[inX]`. Set `L : Submodule 𝒪[k] (n → k)` to `Λ.comap (inX k n 1)`. Establish `hL : ∀ x : n ⊕ Fin 1 → k, m * x (Sum.inr 0) ∈ 𝒪[k] → (x ∈ Λ ↔ x ∘ Sum.inl ∈ L)` using `fun x hx => by conv_lhs => rw [hsplit x]`. Conclude with `Λ.add_mem_iff_left ((h1 _).2 hx)`. Establish `key : ∀ (x : n ⊕ Fin 1 → k) (s : 𝒪[k]), (q.1 : k) * (m * x (Sum.inr 0)) = s → (x ∈ Λ ↔ x ∘ Sum.inl - s • (e ∘ Sum.inl) ∈ L)` using `fun x s hs => by`.
+
+Rewrite using `[← Λ.sub_mem_iff_left (Λ.smul_mem s he)]`. Use `hL (x - s • e) ?_` and prove the remaining obligations. Establish `h0 : (q.1 : k) * (m * (x - s • e) (Sum.inr 0)) = 0`. Express the relevant statement in the definitionally equal form `(q.1 : k) * (m * (x _ - (s : k) * e _)) = 0`. Take the linear combination `hs - (s : k) * he1`.
+
+Rewrite using `[(mul_eq_zero.1 h0).resolve_left q.ne_zero]`. Conclude with `zero_mem _`. Establish `hqe : q.1 • (e ∘ Sum.inl) ∈ L`. Use `(hL (q.1 • e) ?_).1 (Λ.smul_mem _ he)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `m * ((q.1 : k) * e _) ∈ _`.
+
+Rewrite using `[mul_left_comm, he1]`. Conclude with `one_mem _`. Establish `hlat : L.IsLattice k`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `Submodule.fg_of_fg_map_injective (inX k n 1) (fun x y h => ?_) (hΛ.fg.of_le (Submodule.map_comap_le _ _))` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `j`. Conclude with `congrFun h (Sum.inl j)`. Rewrite using `[eq_top_iff]`. Introduce `y _`. Establish `hle : Submodule.span k (Λ : Set (n ⊕ Fin 1 → k)) ≤ (Submodule.span k (L : Set (n → k))).comap (LinearMap.funLeft k k Sum.inl)`.
+
+Use `Submodule.span_le.2 fun x hx => ?_` and prove the remaining obligations. Establish `h3` using `(key x ⟨_, hint x hx⟩ rfl).1 hx`. Establish `h4 : e ∘ Sum.inl ∈ Submodule.span k (L : Set (n → k))`. Rewrite using `[← q.inv_smul_smul (e ∘ Sum.inl)]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span hqe)`.
+
+Establish `h5` using `add_mem (Submodule.subset_span (R := k) (s := (L : Set (n → k))) h3) (Submodule.smul_mem _ ((q.1 : k) * (m * x (Sum.inr 0))) h4)`. Establish `h6 : ∀ a b : n → k, a - (⟨_, hint x hx⟩ : 𝒪[k]) • b + ((q.1 : k) * (m * x (Sum.inr 0))) • b = a` using `fun a b => sub_add_cancel a _`. Rewrite `h5` using `[h6]`. Conclude with `h5`. Conclude with `hle (x := Sum.elim y 0) (by rw [hΛ.span_eq_top]; trivial)`.
+
+Establish `hglue : IsGlue L (e ∘ Sum.inl)`. Use `(isGlue_iff q).2 ⟨hlat, fun h => hqi ?_, hqe⟩` and prove the remaining obligations. Establish `h3 : (Sum.elim 0 (fun _ => e (Sum.inr 0)) : n ⊕ Fin 1 → k) ∈ Λ`. Rewrite using `[← Λ.add_mem_iff_right (show inX k n 1 (e ∘ Sum.inl) ∈ Λ from h), ← hsplit]`. Conclude with `he`.
+
+Establish `h4 : q.inv = m * e (Sum.inr 0)`. Rewrite using `[← mul_one q.inv, ← he1, ← mul_assoc, mul_comm q.inv, hq, one_mul]`. Rewrite using `[h4]`. Conclude with `(h1 _).1 h3`. Take `⟨P, hk, hv⟩` from `hglue.exists_pair`.
+
+Establish `hd : e ∘ Sum.inl - P.vec ∈ L` using `hk ▸ Pair.sub_vec_mem hv`. Establish `hvec : ∀ (y : n → k) (s : 𝒪[k]), y - s • (e ∘ Sum.inl) ∈ L ↔ y - s • P.vec ∈ L` using `fun y s => by`. Rewrite using `[← L.add_mem_iff_left (L.smul_mem s hd), smul_sub, sub_add_sub_cancel]`. Use `⟨P, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.LevelUnfold.mem_gluedS, hk]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hx`. Use `⟨⟨_, hint x hx⟩, (hvec _ _).1 ((key x _ rfl).1 hx), fun i => ⟨fun _ => ?_, fun hi => absurd hi (by omega)⟩⟩` and prove the remaining obligations. Take `rfl : i = 0` from `Subsingleton.elim _ _`. Express the relevant statement in the definitionally equal form `m * x _ = q.inv * ((q.1 : k) * _)`.
+
+Rewrite using `[← mul_assoc, mul_comm q.inv, hq, one_mul]`. Introduce and unpack `⟨s, hs, hs'⟩`. Establish `h3 : m * x (Sum.inr 0) = q.inv * s` using `(hs' 0).1 rfl`. Use `(key x s ?_).2 ((hvec _ _).2 hs)` and prove the remaining obligations. Rewrite using `[h3, ← mul_assoc, hq, one_mul]`.
+-/
 theorem exists_pair_of_line {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n : Type}
     (Λ : Submodule 𝒪[k] (n ⊕ Fin 1 → k)) (hΛ : Λ.IsLattice k) (q : Unif k) (m : k)
     (h1 : ∀ t : k, (Sum.elim 0 (fun _ => t) : n ⊕ Fin 1 → k) ∈ Λ ↔ m * t ∈ 𝒪[k])
@@ -119,6 +154,9 @@ open GlobalTheory.FinPl.FrameLat GlobalTheory.SeeSaw.CoreGlue
 
 variable {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (p : SplitPt D k)
 
+/- English proof (translation)
+Establish `he : p.pr p.e = 1` using `by rw [← sec_one, p.pr_sec]`. Establish `h0 : p.e * cA D (p.sec c) = 0`. Rewrite using `[← cA_cA p.e, ← map_mul, ← e_mul_sec p c, ← mul_assoc, cAe_mul_e, zero_mul, map_zero]`. Establish `h1` using `congrArg p.pr h0`. Rewrite `h1` using `[RingHom.map_mul, he, one_mul, RingHom.map_zero]`. Then use the resulting hypothesis.
+-/
 theorem pr_cA_sec (c : k) : p.pr (cA D (p.sec c)) = 0 := by
   have he : p.pr p.e = 1 := by rw [← sec_one, p.pr_sec]
   have h0 : p.e * cA D (p.sec c) = 0 := by
@@ -126,16 +164,42 @@ theorem pr_cA_sec (c : k) : p.pr (cA D (p.sec c)) = 0 := by
   have h1 := congrArg p.pr h0
   rwa [RingHom.map_mul, he, one_mul, RingHom.map_zero] at h1
 
+/- English proof (translation)
+Rewrite using `[mul_comm, sec_mul_right, mem_intAt_iff p (sec_mem_idAt p _), pr_cA_sec, p.pr_sec, and_iff_left (zero_mem _), mul_comm]`.
+-/
 theorem mul_sec_mem_intAt_iff (a : AE D) (t : k) : a * p.sec t ∈ intAt D (· = p.v) ↔ p.pr a * t ∈ 𝒪[k] := by
   rw [mul_comm, sec_mul_right, mem_intAt_iff p (sec_mem_idAt p _), pr_cA_sec, p.pr_sec, and_iff_left (zero_mem _), mul_comm]
 
+/- English proof (translation)
+Rewrite using `[← sec_mul_right, RingHom.map_mul, cA_cA]`.
+-/
 theorem cA_sec_mul (a : AE D) (t : k) : cA D (p.sec t) * a = cA D (p.sec (t * p.pr (cA D a))) := by
   rw [← sec_mul_right, RingHom.map_mul, cA_cA]
 
+/- English proof (translation)
+Rewrite using `[mul_comm, cA_sec_mul, mem_intAt_iff p (csec_mem_idAt _), pr_cA_sec, cA_cA, p.pr_sec, and_iff_right (zero_mem _), mul_comm]`.
+-/
 theorem mul_cA_sec_mem_intAt_iff (a : AE D) (t : k) :
     a * cA D (p.sec t) ∈ intAt D (· = p.v) ↔ p.pr (cA D a) * t ∈ 𝒪[k] := by
   rw [mul_comm, cA_sec_mul, mem_intAt_iff p (csec_mem_idAt _), pr_cA_sec, cA_cA, p.pr_sec, and_iff_right (zero_mem _), mul_comm]
 
+/- English proof (translation)
+Introduce `D k _ _ _ _ p S A L o ζ n _ _ β β₀ M μ T q hs hM hμ hline hnorm hT`. Establish `hb : p.pr (incA D (star μ)) ≠ 0` using `(map_ne_zero (p.pr.comp (incA D))).2 (star_ne_zero.2 hμ)`. Use `exists_pair_of_line (latW β₀ hM) ?_ q (p.pr (incA D μ)) (fun t => ?_) (fun s => ?_)` and prove the remaining obligations. Take `⟨Λ, h1, h2, -⟩` from `exists_lat D k p S _ β₀ M hM`. Rewrite using `[show latW β₀ hM = Λ from Submodule.ext fun x => (h2 x).symm]` and apply the resulting hypothesis.
+
+Use `Iff.trans ?_ ((hline _ (sec_mem_idAt p t)).trans (mul_sec_mem_intAt_iff p _ t))` and prove the remaining obligations. Establish `h2 : (fun i => p.sec ((β₀.b *ᵥ (Sum.elim 0 (fun _ => t) : n ⊕ Fin 1 → k)) i)) = p.sec t • ratV (vecB o ζ)`. Use function extensionality and compare the values at `i`. Rewrite using `[Pi.smul_apply, smul_eq_mul, sec_mul_right, hs]`. Use `congr 1`.
+
+Simplify using `[mulVec, dotProduct, Fintype.sum_sum_type, mul_comm]`. Rewrite using `[← h2]`. Both sides reduce to the same expression. Take `⟨s', rfl⟩ : ∃ s', s = p.pr (incA D (star μ)) * s'` from `⟨_, (mul_inv_cancel_left₀ hb s).symm⟩`. Use `Iff.trans ?_ ((hline _ (csec_mem_idAt (p := p) s')).trans (mul_cA_sec_mem_intAt_iff p _ s'))` and prove the remaining obligations.
+
+Establish `h2 : cA D (p.sec s') • ratV (vecB o ζ) = fun i => cA D (p.sec (s' * p.pr (incA D (star (vecB o ζ i)))))` using `funext fun i => cA_sec_mul p _ s'`. Rewrite using `[h2]`. Use `Iff.trans ?_ (csec_mem_iff hM _).symm` and prove the remaining obligations. Establish `h3 : ∀ x : n ⊕ Fin 1 → k, s' * (p.pr (incA D (star ζ ⬝ᵥ L.gram *ᵥ ζ)) * x (Sum.inr 0)) ∈ 𝒪[k] ↔ p.pr (incA D (star μ)) * s' * ((q.1 : k) * (p.pr (incA D μ) * x (Sum.inr 0))) ∈ 𝒪[k]` using `fun x => by`. Rewrite using `[Valuation.mem_integer_iff, Valuation.mem_integer_iff, hnorm, RingHom.map_neg, RingHom.map_neg, RingHom.map_mul, RingHom.map_mul, RingHom.map_mul, RingHom.map_mul]`.
+
+Generalize the expression as in `p.pr (incA D (T : D.host.E)) = a at hT`. Generalize the expression as in `p.pr (incA D μ) = b`. Generalize the expression as in `p.pr (incA D (star μ)) = c`. Establish `h4 : valuation k (s' * (-(b * c * a) * x (Sum.inr 0))) = valuation k (c * s' * ((q.1 : k) * (b * x (Sum.inr 0))))`. Simplify using `only [Valuation.map_mul, Valuation.map_neg, hT]`.
+
+The two sides agree by associativity and commutativity. Rewrite using `[h4]`. Prove the components needed by the constructor for the conclusion. Introduce `h x hx`. Establish `hx' : x = β₀.b *ᵥ (β₀.b' *ᵥ x)` using `by rw [mulVec_mulVec, β₀.bb', one_mulVec]`.
+
+Rewrite `hx`, the goal using `[hx']`. Rewrite using `[pair_sumFrame o ζ hs, h3]`. Conclude with `h _ hx`. Introduce `h x hx`. Rewrite using `[← h3, ← pair_sumFrame o ζ hs]`.
+
+Conclude with `h _ hx`.
+-/
 theorem exists_gluedW : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (p : SplitPt D k) (S A L : HSp D) (o : OrthDec S A L) (ζ : Fin L.rank → D.host.E) (n : Type) [Fintype n] [DecidableEq n] (β : GlobalTheory.FinPl.Frame p A n) (β₀ : GlobalTheory.FinPl.Frame p S (n ⊕ Fin 1)) (M : Lat S) (μ : D.host.E) (T : ℕ) (q : GlobalTheory.LatPair.Unif k), IsSumFrame o ζ β β₀ → IsSelfDualC S M → μ ≠ 0 → LineAt (vecB o ζ) μ M p.v → star ζ ⬝ᵥ L.gram *ᵥ ζ = -(μ * star μ * (T : D.host.E)) → valuation k (p.pr (incA D (T : D.host.E))) = valuation k ((q.1 : 𝒪[k]) : k) → ∃ P : GlobalTheory.LatPair.Pair k n, GluedW β₀ M q (p.pr (incA D μ)) P := by
   intro D k _ _ _ _ p S A L o ζ n _ _ β β₀ M μ T q hs hM hμ hline hnorm hT
   have hb : p.pr (incA D (star μ)) ≠ 0 := (map_ne_zero (p.pr.comp (incA D))).2 (star_ne_zero.2 hμ)

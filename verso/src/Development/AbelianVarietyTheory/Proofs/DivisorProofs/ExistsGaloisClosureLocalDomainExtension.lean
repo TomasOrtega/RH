@@ -14,6 +14,11 @@ open GlobalTheory.Mum
 
 namespace GlobalTheory.GalClosure
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.GaloisEmbeddingExistence.exists_galois_embedding`. Consider the case `exact _root_.GlobalTheory.GaloisEmbeddingExistence.exists_galois_embedding`. Consider the case `(apply _root_.GlobalTheory.GaloisEmbeddingExistence.exists_galois_embedding <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.GaloisEmbeddingExistence.exists_galois_embedding <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.GaloisEmbeddingExistence.exists_galois_embedding <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.GaloisEmbeddingExistence.exists_galois_embedding ..)`.
+-/
 theorem exists_galois_embedding (R R' : Type) [CommRing R] [IsDomain R] [CharZero R] [CommRing R'] [IsDomain R']
     [Algebra R R'] [Module.Finite R R'] (hinj : Function.Injective (algebraMap R R')) :
     ∃ L : IntermediateField (FractionRing R) (AlgebraicClosure (FractionRing R)),
@@ -31,6 +36,23 @@ end GlobalTheory.GalClosure
 
 namespace GlobalTheory.GalClosure
 
+/- English proof (translation)
+Use `set K := FractionRing R`. Use `set B := integralClosure R L`. Use `haveI : IsFractionRing B L := integralClosure.isFractionRing_of_finite_extension K L`. Establish `hRL : ∀ r : R, algebraMap B L (algebraMap R B r) = algebraMap K L (algebraMap R K r)` using `fun r => by`. Rewrite using `[← IsScalarTower.algebraMap_apply R K L]`.
+
+Both sides reduce to the same expression. Establish `hfix : ∀ τ : Gal (algebraMap R B), ∀ k : K, IsFractionRing.ringEquivOfRingEquiv (K` using `L) (L := L) τ.1 (algebraMap K L k) = algebraMap K L k := by`. Introduce `τ k`. Establish `h` using `IsLocalization.ringHom_ext (M := nonZeroDivisors R) (S := K) (j := (IsFractionRing.ringEquivOfRingEquiv (K := L) (L := L) τ.1).toRingHom.comp (algebraMap K L)) (k := algebraMap K L) (by`. Use extensionality with `r`.
+
+Simplify using `only [RingHom.comp_apply, RingEquiv.toRingHom_eq_coe, RingEquiv.coe_toRingHom]`. Rewrite using `[← hRL, IsFractionRing.ringEquivOfRingEquiv_algebraMap, τ.2 r])`. Conclude with `congrArg (fun f => f k) h`. Set `toAut : Gal (algebraMap R B) → (L ≃ₐ[K] L)` to `fun τ => AlgEquiv.ofRingEquiv (hfix τ)`. Establish `htoAut : ∀ τ b, toAut τ (algebraMap B L b) = algebraMap B L (τ.1 b)` using `fun τ b => IsFractionRing.ringEquivOfRingEquiv_algebraMap _ b`.
+
+Use `⟨Finite.of_injective toAut fun τ τ' h => Subtype.ext (RingEquiv.ext fun b => ?_), fun x hx => ?_⟩` and prove the remaining obligations. Apply `IsFractionRing.injective B L` to reduce the goal to its premises. Rewrite using `[← htoAut, ← htoAut, h]`. Establish `hg : ∀ g : L ≃ₐ[K] L, g (x : L) = x`. Introduce `g`.
+
+Set `gR : L →ₐ[R] L` to `(g : L →ₐ[K] L).restrictScalars R`. Set `gR' : L →ₐ[R] L` to `(g.symm : L →ₐ[K] L).restrictScalars R`. Set `τ : B ≃+* B` to `{ toFun := fun b => ⟨g b, (mem_integralClosure_iff R L).2 ((b.2 : IsIntegral R (b : L)).map gR)⟩ invFun := fun b => ⟨g.symm b, (mem_integralClosure_iff R L).2 ((b.2 : IsIntegral R (b : L)).map gR')⟩ left_inv := fun b => Subtype.ext (g.symm_apply_apply (b : L)) right_inv := fun b …`. Establish `hτ : τ ∈ Gal (algebraMap R B)` using `fun r => Subtype.ext (by show g ((algebraMap R B r : B) : L) = ((algebraMap R B r : B) : L)`. Establish `e : ((algebraMap R B r : B) : L) = algebraMap K L (algebraMap R K r)` using `hRL r`.
+
+Rewrite using `[e, AlgEquiv.commutes])`. Conclude with `congrArg Subtype.val (hx τ hτ)`. Take `⟨k, hk⟩` from `IntermediateField.mem_bot.1 ((IsGalois.mem_bot_iff_fixed (F := K) (x : L)).2 hg)`. Establish `hint : IsIntegral R k`. Establish `h1 : IsIntegral R (algebraMap K L k)` using `hk ▸ (x.2 : IsIntegral R (x : L))`.
+
+Conclude with `(isIntegral_algHom_iff (IsScalarTower.toAlgHom R K L) (algebraMap K L).injective).1 h1`. Take `⟨r, hr⟩` from `IsIntegrallyClosed.isIntegral_iff.1 hint`. Use `⟨r, Subtype.ext ?_⟩` and prove the remaining obligations. Use `hRL r` as an intermediate fact. Rewrite `this` using `[hr, hk]`.
+
+Conclude with `this`.
+-/
 theorem isGal_integralClosure_of_tower (R : Type) [CommRing R] [IsDomain R] [IsIntegrallyClosed R] (L : Type) [Field L]
     [Algebra (FractionRing R) L] [FiniteDimensional (FractionRing R) L] [IsGalois (FractionRing R) L] [Algebra R L]
     [IsScalarTower R (FractionRing R) L] :
@@ -86,6 +108,15 @@ end GlobalTheory.GalClosure
 
 namespace GlobalTheory.GalClosure
 
+/- English proof (translation)
+Introduce `R R' _ _ _ _ _ _ ρ hR hρ`. Take `⟨⟨hRn, -, hRic, hRc⟩, hR0⟩` from `hR`. Take `⟨-, hinj, hfin⟩` from `hρ`. Use `letI : Algebra R R' := ρ.toAlgebra`. Use `haveI : Module.Finite R R' := hfin`.
+
+Take `⟨L, hLf, hLg, j, hj⟩` from `exists_galois_embedding R R' hinj`. Use `set B := integralClosure R L`. Take `⟨hBfin, hBloc, hBn, hBic, -⟩` from `GlobalTheory.integralClosure_finite_local_of_isAdicComplete R hRc L`. Establish `hmem : ∀ x : R', j x ∈ B` using `fun x => (Algebra.IsIntegral.isIntegral (R := R) x).map j`. Set `jB : R' →ₐ[R] B` to `j.codRestrict B hmem`.
+
+Set `σ : R' →+* B` to `jB.toRingHom`. Establish `hcomp : σ.comp ρ = algebraMap R B` using `RingHom.ext fun r => jB.commutes r`. Establish `hadm : AdmBase B (maximalIdeal B)` using `⟨hBn, inferInstance, hBic, GlobalTheory.CompleteFiniteExtension.isAdicComplete_of_finite_local R B⟩`. Establish `hσinj : Function.Injective σ` using `fun a b h => hj (congrArg (fun y : B => (y : L)) h)`. Establish `hcfin : (σ.comp ρ).Finite` using `hcomp ▸ RingHom.finite_algebraMap.2 hBfin`.
+
+Establish `hσfin : σ.Finite` using `RingHom.Finite.of_comp_finite hcfin`. Use `⟨B, inferInstance, inferInstance, hBloc, σ, ⟨hadm, hσinj, hσfin⟩, RingHom.IsIntegral.isLocalHom hσfin.to_isIntegral hσinj, ⟨hadm, hσinj.comp hinj, hcfin⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hcomp]`. Conclude with `isGal_integralClosure_of_tower R L`.
+-/
 theorem exists_galois_finExt_isLocalHom : ∀ (R R' : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [CommRing R'] [IsDomain R']
     [IsLocalRing R'] (ρ : R →+* R'), Base R → FinExt ρ → ∃ (R'' : Type) (_ : CommRing R'') (_ : IsDomain R'')
     (_ : IsLocalRing R'') (σ : R' →+* R''), FinExt σ ∧ IsLocalHom σ ∧ FinExt (σ.comp ρ) ∧ IsGal (σ.comp ρ) := by

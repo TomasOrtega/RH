@@ -7,10 +7,30 @@ open private exists_symmetric_X_isUnit_det_add_mul_of_symplectic from Mathlib.Li
 
 namespace GlobalTheory.SW
 
+/- English proof (translation)
+Simplify using `[SymplecticGroup.fromBlocks_mem_iff, hX.eq]`.
+-/
 theorem unip_mem_symplecticGroup {ι : Type} [Fintype ι] [DecidableEq ι] {X : Matrix ι ι ℚ}
     (hX : X.IsSymm) : (fromBlocks 1 X 0 1 : Matrix (ι ⊕ ι) (ι ⊕ ι) ℚ) ∈ symplecticGroup ι ℚ := by
   simp [SymplecticGroup.fromBlocks_mem_iff, hX.eq]
 
+/- English proof (translation)
+Introduce `ι _ _ σ hσ`. Take `⟨A, B, C, D, rfl⟩ : ∃ A B C D, σ = fromBlocks A B C D` from `⟨_, _, _, _, σ.fromBlocks_toBlocks.symm⟩`. Take `⟨X, hX, hu⟩` from `exists_symmetric_X_isUnit_det_add_mul_of_symplectic hσ`. Establish `hb` using `(SymplecticGroup.fromBlocks_mem_iff.1 hσ).1`. Establish `h1 : (A + X * C)ᵀ * C = Cᵀ * (A + X * C)`.
+
+Rewrite using `[transpose_add, transpose_mul, hX.eq, add_mul, mul_add, hb, Matrix.mul_assoc]`. Generalize the expression as in `hc : A + X * C = c at hu h1`. Establish `hcT : IsUnit cᵀ.det` using `by rwa [det_transpose]`. Establish `hY : (C * c⁻¹).IsSymm`. Unfold `Matrix.IsSymm`.
+
+Rewrite using `[transpose_mul, transpose_nonsing_inv]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, mul_nonsing_inv _ hu, Matrix.mul_one]`. Use `_ = C * c⁻¹ := by rw [← h1, nonsing_inv_mul_cancel_left _ _ hcT]`. Establish `hY' : C * c⁻¹ * c = C` using `nonsing_inv_mul_cancel_right _ _ hu`.
+
+Generalize the expression as in `C * c⁻¹ = Y at hY hY'`. Establish `hJ` using `SymplecticGroup.J_mem ι ℚ`. Use `⟨fromBlocks 1 (-X) 0 1, unip_mem_symplecticGroup hX.neg, fromBlocks 1 (-Y) 0 1, unip_mem_symplecticGroup hY.neg, J ι ℚ * fromBlocks 1 Y 0 1 * J ι ℚ * fromBlocks 1 X 0 1 * fromBlocks A B C D, mul_mem (mul_mem (mul_mem (mul_mem hJ (unip_mem_symplecticGroup hY)) hJ) (unip_mem_symple …` and prove the remaining obligations. Rewrite using `[Matrix.mul_assoc _ _ (fromBlocks A B C D), fromBlocks_multiply]`. Simplify using `only [Matrix.one_mul, hc]`.
+
+Simplify using `[J, fromBlocks_multiply, hY']`. Establish `e1 : (fromBlocks 1 (-Y) 0 1 : Matrix (ι ⊕ ι) (ι ⊕ ι) ℚ) * fromBlocks 1 Y 0 1 = 1`. Simplify using `[fromBlocks_multiply]`. Establish `e2 : (fromBlocks 1 (-X) 0 1 : Matrix (ι ⊕ ι) (ι ⊕ ι) ℚ) * fromBlocks 1 X 0 1 = 1`. Simplify using `[fromBlocks_multiply]`.
+
+Establish `e3` using `J_squared ι ℚ`. Generalize the expression as in `(fromBlocks 1 (-Y) 0 1 : Matrix (ι ⊕ ι) (ι ⊕ ι) ℚ) = y' at e1 ⊢`. Generalize the expression as in `(fromBlocks 1 Y 0 1 : Matrix (ι ⊕ ι) (ι ⊕ ι) ℚ) = y at e1 ⊢`. Generalize the expression as in `(fromBlocks 1 (-X) 0 1 : Matrix (ι ⊕ ι) (ι ⊕ ι) ℚ) = x' at e2 ⊢`. Generalize the expression as in `(fromBlocks 1 X 0 1 : Matrix (ι ⊕ ι) (ι ⊕ ι) ℚ) = x at e2 ⊢`.
+
+Generalize the expression as in `fromBlocks A B C D = s`. Generalize the expression as in `J ι ℚ = j at e3 ⊢`. Establish `e4 : ∀ m, j * (j * m) = -m` using `fun m => by rw [← mul_assoc, e3, neg_one_mul]`. Establish `e5 : ∀ m, y' * (y * m) = m` using `fun m => by rw [← mul_assoc, e1, one_mul]`. Establish `e6 : ∀ m, x' * (x * m) = m` using `fun m => by rw [← mul_assoc, e2, one_mul]`.
+
+Simplify using `only [mul_assoc, e4, mul_neg, e5, neg_neg, e6]`.
+-/
 theorem symplectic_eq_parabolic_J_parabolic_J_parabolic :
     ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (σ : Matrix (ι ⊕ ι) (ι ⊕ ι) ℚ), σ ∈ Matrix.symplecticGroup ι ℚ → ∃ p₁ ∈ Matrix.symplecticGroup ι ℚ, ∃ p₂ ∈ Matrix.symplecticGroup ι ℚ, ∃ p₃ ∈ Matrix.symplecticGroup ι ℚ, p₁.toBlocks₂₁ = 0 ∧ p₂.toBlocks₂₁ = 0 ∧ p₃.toBlocks₂₁ = 0 ∧ σ = p₁ * Matrix.J ι ℚ * p₂ * Matrix.J ι ℚ * p₃ := by
   intro ι _ _ σ hσ

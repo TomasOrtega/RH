@@ -11,22 +11,52 @@ namespace UpperTheory.V.Z.Int
 section
 variable {l : ℕ} [Fact l.Prime] (ι : Qbar l ≃+* ℂ)
 
+/- English proof (translation)
+Simplify using `[nu]`.
+-/
 private theorem nu_mul (x y : ℂ) : nu ι (x * y) = nu ι x * nu ι y := by simp [nu]
+/- English proof (translation)
+Simplify using `[nu]`.
+-/
 private theorem nu_one : nu ι 1 = 1 := by simp [nu]
+/- English proof (translation)
+Simplify using `[nu]`.
+-/
 private theorem nu_zero : nu ι 0 = 0 := by simp [nu]
+/- English proof (translation)
+The claim follows from `norm_nonneg _`.
+-/
 private theorem nu_nonneg (x : ℂ) : 0 ≤ nu ι x := norm_nonneg _
+/- English proof (translation)
+Simplify `hx` using `[nu]`.
+-/
 private theorem nu_pos {x : ℂ} (hx : x ≠ 0) : 0 < nu ι x := by
   simpa [nu] using hx
+/- English proof (translation)
+Simplify using `[nu]`.
+-/
 private theorem nu_neg (x : ℂ) : nu ι (-x) = nu ι x := by simp [nu]
+/- English proof (translation)
+Simplify `IsUltrametricDist.norm_add_le_max (ι.symm x) (ι.symm y)` using `[nu]`.
+-/
 private theorem nu_add_le (x y : ℂ) : nu ι (x + y) ≤ max (nu ι x) (nu ι y) := by
   simpa [nu] using IsUltrametricDist.norm_add_le_max (ι.symm x) (ι.symm y)
+/- English proof (translation)
+Unfold `nu`. Rewrite using `[map_sum]`. Conclude with `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg hC h`.
+-/
 private theorem nu_sum_le {α : Type} (s : Finset α) (f : α → ℂ) {C : ℝ} (hC : 0 ≤ C)
     (h : ∀ i ∈ s, nu ι (f i) ≤ C) : nu ι (∑ i ∈ s, f i) ≤ C := by
   unfold nu
   rw [map_sum]
   exact IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg hC h
+/- English proof (translation)
+Simplify using `[nu, map_zpow₀, norm_zpow]`.
+-/
 private theorem nu_zpow (x : ℂ) (k : ℤ) : nu ι (x ^ k) = nu ι x ^ k := by
   simp [nu, map_zpow₀, norm_zpow]
+/- English proof (translation)
+Simplify using `[nu, map_prod, norm_prod]`.
+-/
 private theorem nu_prod {α : Type} (s : Finset α) (f : α → ℂ) :
     nu ι (∏ i ∈ s, f i) = ∏ i ∈ s, nu ι (f i) := by
   simp [nu, map_prod, norm_prod]
@@ -41,12 +71,18 @@ private def ball : Subring ℂ where
   zero_mem' := by simp [nu_zero]
   neg_mem' {a} ha := by simpa [nu_neg] using ha
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih => rw [Finset.prod_insert ha, Finset.sum_insert ha, ih, zpow_add₀ hp]`.
+-/
 private theorem prod_zpow_sum {α : Type} {p : ℝ} (hp : p ≠ 0) (s : Finset α) (f : α → ℤ) :
     ∏ i ∈ s, p ^ f i = p ^ ∑ i ∈ s, f i := by
   induction s using Finset.induction_on with
   | empty => simp
   | insert a s ha ih => rw [Finset.prod_insert ha, Finset.sum_insert ha, ih, zpow_add₀ hp]
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_apply]`. Use `nu_sum_le ι _ _ hX fun m _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_diagonal, nu_mul, nu_mul]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem mat_bound {κ : Type} [Fintype κ] [DecidableEq κ] (A B : Matrix κ κ ℂ) (c : κ → ℂ) {X : ℝ}
     (hX : 0 ≤ X) (hA : ∀ i j, nu ι (A i j) ≤ 1) (hB : ∀ i j, nu ι (B i j) ≤ 1)
     (hc : ∀ m, nu ι (c m) ≤ X) (i j : κ) : nu ι ((A * diagonal c * B) i j) ≤ X := by
@@ -58,6 +94,11 @@ private theorem mat_bound {κ : Type} [Fintype κ] [DecidableEq κ] (A B : Matri
           (by simpa using hX)
     _ = X := by ring
 
+/- English proof (translation)
+Establish `h0 : 0 ≤ c * c * Y` using `by positivity`. Rewrite using `[Matrix.mul_apply]`. Use `nu_sum_le ι _ _ h0 fun y _ => ?_` and prove the remaining obligations. Rewrite using `[nu_mul, Matrix.mul_apply]`. Establish `h1 : nu ι (∑ x, P i x * M x y) ≤ c * Y` using `nu_sum_le ι _ _ (by positivity) fun x _ => by`.
+
+Rewrite using `[nu_mul]`. Conclude with `mul_le_mul (hP _ _) (hM _ _) (nu_nonneg ι _) hc`. Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem mat_bound' {κ δ : Type} [Fintype κ] (P : Matrix δ κ ℂ) (M : Matrix κ κ ℂ) (Q : Matrix κ δ ℂ)
     {c Y : ℝ} (hc : 0 ≤ c) (hY : 0 ≤ Y) (hP : ∀ i j, nu ι (P i j) ≤ c) (hQ : ∀ i j, nu ι (Q i j) ≤ c)
     (hM : ∀ i j, nu ι (M i j) ≤ Y) (i j : δ) : nu ι ((P * M * Q) i j) ≤ c * c * Y := by
@@ -71,6 +112,11 @@ private theorem mat_bound' {κ δ : Type} [Fintype κ] (P : Matrix δ κ ℂ) (M
   calc _ ≤ (c * Y) * c := mul_le_mul h1 (hQ _ _) (nu_nonneg ι _) (by positivity)
     _ = c * c * Y := by ring
 
+/- English proof (translation)
+Take `⟨k, rfl⟩` from `Formalism.UG.P.cartan_mem_of_entries (ball ι) h h1 h2`. Take `⟨x, hx⟩` from `hb 1 one_ne_zero k (fun _ _ => one_dvd _) i j`. Rewrite using `[LinearMap.toMatrix_apply]`. Establish `e : Formalism.UG.bc (n` using `Fin n) (ball ι).subtype k = GeneralLinearGroup.map (algebraMap (ball ι) ℂ) k := by ext; rfl`. Rewrite using `[e, hx]`.
+
+Establish `m1 : ((if i = j then 1 else 0 : ℂ)) ∈ ball ι` using `by split_ifs exacts [(ball ι).one_mem, (ball ι).zero_mem]`. Conclude with `(ball ι).add_mem m1 (SetLike.coe_mem (1 * x))`.
+-/
 private theorem entries_le_one {n : ℕ} (lam : DomWeight n) {κ : Type} [Fintype κ] [DecidableEq κ]
     (b : Module.Basis κ ℂ (nablaSq ℂ n lam))
     (hb : ∀ c : ball ι, c ≠ 0 → ∀ g : GL (Fin n) (ball ι), (∀ i j, c ∣ (g.val - 1) i j) → ∀ i j, ∃ x,
@@ -98,6 +144,11 @@ variable {l : ℕ} [Fact l.Prime] (ι : Qbar l ≃+* ℂ) {E : Type} [Field E] [
 private noncomputable def dg {n : ℕ} (ϖ : (u.adicCompletion E)ˣ) (a : Fin n → ℤ) : GL (Fin n) (u.adicCompletion E) :=
   diagGL _ n fun i => ϖ ^ a i
 
+/- English proof (translation)
+Use `inv_eq_of_mul_eq_one_right (Units.ext ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `diagonal _ * diagonal _ = (1 : Matrix _ _ _)`. Rewrite using `[diagonal_mul_diagonal, ← diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+
+Express the relevant statement in the definitionally equal form `((ϖ ^ a i * ϖ ^ (-a i) : (u.adicCompletion E)ˣ) : u.adicCompletion E) = 1`. Rewrite using `[← _root_.zpow_add]`. Simplify using the standard rewrite rules.
+-/
 private theorem dg_inv {n : ℕ} (ϖ : (u.adicCompletion E)ˣ) (a : Fin n → ℤ) : (dg ϖ a)⁻¹ = dg ϖ (-a) := by
   refine inv_eq_of_mul_eq_one_right (Units.ext ?_)
   change diagonal _ * diagonal _ = (1 : Matrix _ _ _)
@@ -108,6 +159,11 @@ private theorem dg_inv {n : ℕ} (ϖ : (u.adicCompletion E)ˣ) (a : Fin n → �
   rw [← _root_.zpow_add]
   simp
 
+/- English proof (translation)
+Establish `h0 : x ≠ 0`. Introduce and unpack `rfl`. Simplify using `at hx`. Establish `h1` using `hψ x hx.le`. Establish `h2` using `hψ x⁻¹ (by rw [map_inv₀, hx, inv_one])`.
+
+Establish `h3 : nu ι (ψ x) * nu ι (ψ x⁻¹) = 1`. Rewrite using `[← nu_mul, ← map_mul, mul_inv_cancel₀ h0, map_one, nu_one]`. Use `le_antisymm h1 ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem nu_unit (hψ : ∀ x, Valued.v x ≤ 1 → nu ι (ψ x) ≤ 1) {x : u.adicCompletion E}
     (hx : Valued.v x = 1) : nu ι (ψ x) = 1 := by
   have h0 : x ≠ 0 := by
@@ -122,6 +178,17 @@ private theorem nu_unit (hψ : ∀ x, Valued.v x ≤ 1 → nu ι (ψ x) ≤ 1) {
     _ ≤ nu ι (ψ x) * 1 := mul_le_mul_of_nonneg_left h2 (nu_nonneg ι _)
     _ = _ := mul_one _
 
+/- English proof (translation)
+Establish `hKm : ∀ k ∈ Formalism.UG.GLint (Fin n) (Formalism.UG.Ov E u), ∀ i j, nu ι (LinearMap.toMatrix b b (GlobalTheory.Branching.sqRep ℂ n lam (GeneralLinearGroup.map ψ k)) i j) ≤ 1`. Introduce `k hk`. Use `hK _ (fun i j => hψ _ (Formalism.UG.P.cartan_entries_of_mem _ k hk i j)) fun i j => ?_` and prove the remaining obligations. Rewrite using `[← map_inv]`. Conclude with `hψ _ (Formalism.UG.P.cartan_entries_of_mem _ _ (inv_mem hk) i j)`.
+
+Establish `hp : nu ι (ψ ϖ) ≠ 0` using `(nu_pos ι ((map_ne_zero ψ).2 ϖ.ne_zero)).ne'`. Set `c : κ → ℂ` to `fun m => ∏ i, ψ ((ϖ ^ a i : (u.adicCompletion E)ˣ) : u.adicCompletion E) ^ μ m i`. Establish `hDm : LinearMap.toMatrix b b (GlobalTheory.Branching.sqRep ℂ n lam (GeneralLinearGroup.map ψ (dg ϖ a))) = diagonal c`. Use extensionality with `p q`. Rewrite using `[LinearMap.toMatrix_apply, hD _ (fun i => ψ ((ϖ ^ a i : (u.adicCompletion E)ˣ) : u.adicCompletion E)) ?_ q]`.
+
+Rewrite using `[map_smul, b.repr_self, Finsupp.smul_apply, Finsupp.single_apply]`. Distinguish the cases in `h : p = q`. Substitute `h` using the available equality. Simplify using `[c]`. Simplify using `[h, Ne.symm h]`.
+
+Use extensionality with `r s`. Simplify using `[dg, diagGL, diagonal_apply, apply_ite ψ]`. Establish `hT : ∀ x y : GL (Fin n) ℂ, LinearMap.toMatrix b b (GlobalTheory.Branching.sqRep ℂ n lam (x * y)) = LinearMap.toMatrix b b (GlobalTheory.Branching.sqRep ℂ n lam x) * LinearMap.toMatrix b b (GlobalTheory.Branching.sqRep ℂ n lam y)` using `fun x y => by rw [map_mul, Module.End.mul_eq_comp, LinearMap.toMatrix_comp b b b]`. Rewrite using `[(GeneralLinearGroup.map ψ).map_mul, (GeneralLinearGroup.map ψ).map_mul, hT, hT, hDm]`. Use `mat_bound ι _ _ c hX (hKm k₁ h₁) (hKm k₂ h₂) (fun m => ?_) i j` and prove the remaining obligations.
+
+Establish `e : ∀ i, nu ι (ψ ((ϖ ^ a i : (u.adicCompletion E)ˣ) : u.adicCompletion E) ^ μ m i) = nu ι (ψ ϖ) ^ (a i * μ m i)` using `fun i => by`. Rewrite using `[nu_zpow, Units.val_zpow_eq_zpow_val, map_zpow₀, nu_zpow, _root_.zpow_mul]`. Simplify using `only [c, nu_prod, e, prod_zpow_sum hp]`. Conclude with `hc m`.
+-/
 private theorem side {n : ℕ} (lam : DomWeight n) {κ : Type} [Fintype κ] [DecidableEq κ]
     (b : Module.Basis κ ℂ (nablaSq ℂ n lam)) (μ : κ → Fin n → ℤ)
     (hK : ∀ h : GL (Fin n) ℂ, (∀ i j, h.val i j ∈ ball ι) → (∀ i j, (h⁻¹).val i j ∈ ball ι) → ∀ i j,
@@ -164,6 +231,25 @@ private theorem side {n : ℕ} (lam : DomWeight n) {κ : Type} [Fintype κ] [Dec
   simp only [c, nu_prod, e, prod_zpow_sum hp]
   exact hc m
 
+/- English proof (translation)
+Establish `hlt : Valued.v (ϖ : u.adicCompletion E) < 1` using `Formalism.UG.P.cartan_unif_lt_one E u _ hϖ`. Take `⟨a, ha, k₁, hk₁, k₂, hk₂, e⟩` from `Formalism.UG.Final.CartanDecomp E u n ϖ hlt.le hϖ g`. Establish `e' : g = k₁ * dg ϖ a * k₂` using `Units.ext (by`. Rewrite using `[e]`. Simplify using `only [Units.val_mul]`.
+
+Use `congr 2`. Unfold `Formalism.UG.diagPow`. Use `congr 1`. Use function extensionality and compare the values at `i`. Conclude with `(Units.val_zpow_eq_zpow_val _ _).symm)`.
+
+Establish `hdet : ∀ k ∈ Formalism.UG.GLint (Fin n) (Formalism.UG.Ov E u), nu ι (ψ k.val.det) = 1` using `fun k hk => nu_unit ι ψ hψ (Formalism.UG.P.cartan_val_det _ Valued.v (Formalism.UG.P.cartan_mem_Ov E u) k hk)`. Establish `hp : nu ι (ψ ϖ) ≠ 0` using `(nu_pos ι ((map_ne_zero ψ).2 ϖ.ne_zero)).ne'`. Use `⟨a, ha, fun i => ?_, ?_, ⟨k₁, hk₁, k₂, hk₂, e'⟩, ?_⟩` and prove the remaining obligations. Establish `h1 : k₁⁻¹ * g * k₂⁻¹ = dg ϖ a` using `by rw [e']; group`. Establish `h2 : ((k₁⁻¹ * g * k₂⁻¹).val i i) ∈ Formalism.UG.Ov E u`.
+
+Simplify using `only [Units.val_mul, Matrix.mul_apply]`. Use `Subring.sum_mem _ fun y _ => Subring.mul_mem _ (Subring.sum_mem _ fun x _ => Subring.mul_mem _ (Formalism.UG.P.cartan_entries_of_mem _ _ (inv_mem hk₁) _ _) (hg _ _)) (Formalism.UG.P.cartan_entries_of_mem _ _ (inv_mem hk₂) _ _)` and prove the remaining obligations. Rewrite `h2` using `[h1]`. Establish `h3 : Valued.v ((ϖ : u.adicCompletion E) ^ a i) ≤ 1`. Establish `: (dg ϖ a).val i i = (ϖ : u.adicCompletion E) ^ a i`.
+
+Simplify using `[dg, diagGL, Units.val_zpow_eq_zpow_val]`. Rewrite using `[← this]`. Conclude with `h2`. Rewrite `h3` using `[map_zpow₀]`. Conclude with `(zpow_le_one_iff_right_of_lt_one₀ (zero_lt_iff.2 ((Valuation.ne_zero_iff _).2 ϖ.ne_zero)) hlt).1 h3`.
+
+Establish `h1 : g.val.det = k₁.val.det * (∏ i, ((ϖ ^ a i : (u.adicCompletion E)ˣ) : u.adicCompletion E)) * k₂.val.det`. Rewrite using `[e']`. Simplify using `only [Units.val_mul, Matrix.det_mul]`. Use `congr 2`. Conclude with `det_diagonal`.
+
+Rewrite using `[h1, map_mul, map_mul, nu_mul, nu_mul, hdet k₁ hk₁, hdet k₂ hk₂, one_mul, mul_one, map_prod, nu_prod, ← prod_zpow_sum hp]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Units.val_zpow_eq_zpow_val, map_zpow₀, nu_zpow]`. Take `⟨S₁, h₁, e₁⟩` from `Formalism.UG.P.cartan_perm_glint (Formalism.UG.Ov E u) (Fin.revPerm (n := n)).symm`. Take `⟨S₂, h₂, e₂⟩` from `Formalism.UG.P.cartan_perm_glint (Formalism.UG.Ov E u) (Fin.revPerm (n := n))`.
+
+Establish `h3 : dg ϖ a = S₁ * dg ϖ (a ∘ Fin.rev) * S₂` using `Units.ext (by`. Simplify using `only [Units.val_mul]`. Rewrite using `[e₁, e₂]`. Conclude with `Formalism.UG.P.cartan_diag_perm (fun i => ((ϖ ^ a i : (u.adicCompletion E)ˣ) : u.adicCompletion E)) Fin.revPerm)`. Use `⟨k₁ * S₁, mul_mem hk₁ h₁, S₂ * k₂, mul_mem h₂ hk₂, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[e', h3]`. Use `group`.
+-/
 private theorem decomp (hψ : ∀ x, Valued.v x ≤ 1 → nu ι (ψ x) ≤ 1) {n : ℕ} (ϖ : (u.adicCompletion E)ˣ)
     (hϖ : Formalism.UG.IsUnifV E u ϖ) (g : GL (Fin n) (u.adicCompletion E)) (hg : ∀ i j, Valued.v (g.val i j) ≤ 1) :
     ∃ a : Fin n → ℤ, Antitone a ∧ (∀ i, 0 ≤ a i) ∧ nu ι (ψ g.val.det) = nu ι (ψ ϖ) ^ ∑ i, a i ∧
@@ -222,6 +308,27 @@ end
 
 end UpperTheory.V.Z.Int
 
+/- English proof (translation)
+Introduce `l _ ι E _ _ u ψ hψ n lam d e`. Take `⟨κ, _, _, k0, b, μ, h1, -, h3, h4, h5, -⟩` from `UpperTheory.V.Hi.sqBasis (ball ι) ℂ Subtype.val_injective n lam`. Establish `hK` using `entries_le_one ι lam b h1`. Set `P` to `e.toMatrix b`. Set `Q` to `b.toMatrix e`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨c, hc, hP, hQ⟩ : ∃ c : ℝ, 0 ≤ c ∧ (∀ i j, nu ι (P i j) ≤ c) ∧ ∀ i j, nu ι (Q i j) ≤ c := by`. Establish `s1 : 0 ≤ ∑ i, ∑ j, nu ι (P i j)` using `Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => nu_nonneg ι _`. Establish `s2 : 0 ≤ ∑ i, ∑ j, nu ι (Q i j)` using `Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => nu_nonneg ι _`. Use `⟨(∑ i, ∑ j, nu ι (P i j)) + ∑ i, ∑ j, nu ι (Q i j), add_nonneg s1 s2, fun i j => ?_, fun i j => ?_⟩` and prove the remaining obligations. Establish `t1 : nu ι (P i j) ≤ ∑ j, nu ι (P i j)` using `Finset.single_le_sum (f := fun j => nu ι (P i j)) (fun _ _ => nu_nonneg ι _) (Finset.mem_univ j)`.
+
+Establish `t2 : ∑ j, nu ι (P i j) ≤ ∑ i, ∑ j, nu ι (P i j)` using `Finset.single_le_sum (f := fun i => ∑ j, nu ι (P i j)) (fun _ _ => Finset.sum_nonneg fun _ _ => nu_nonneg ι _) (Finset.mem_univ i)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `t1 : nu ι (Q i j) ≤ ∑ j, nu ι (Q i j)` using `Finset.single_le_sum (f := fun j => nu ι (Q i j)) (fun _ _ => nu_nonneg ι _) (Finset.mem_univ j)`. Establish `t2 : ∑ j, nu ι (Q i j) ≤ ∑ i, ∑ j, nu ι (Q i j)` using `Finset.single_le_sum (f := fun i => ∑ j, nu ι (Q i j)) (fun _ _ => Finset.sum_nonneg fun _ _ => nu_nonneg ι _) (Finset.mem_univ i)`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hM : ∀ f : nablaSq ℂ n lam →ₗ[ℂ] nablaSq ℂ n lam, LinearMap.toMatrix e e f = P * LinearMap.toMatrix b b f * Q` using `fun f => (basis_toMatrix_mul_linearMap_toMatrix_mul_basis_toMatrix e b e b f).symm`. Use `⟨c * c, by positivity, fun lo hi hlh g hg i j => ?_⟩` and prove the remaining obligations. Take `⟨ϖ0, hϖ0⟩ : ∃ p, Formalism.UG.IsUnifV E u p` from `u.valuedAdicCompletion_surjective E _`. Set `ϖ : (u.adicCompletion E)ˣ` to `Units.mk0 ϖ0 (Formalism.UG.P.cartan_unif_ne_zero E u ϖ0 hϖ0)`. Take `⟨a, ha, ha0, hdet, ⟨k₁, hk₁, k₂, hk₂, e₁⟩, ⟨k₃, hk₃, k₄, hk₄, e₂⟩⟩` from `decomp ι ψ hψ ϖ hϖ0 g hg`.
+
+Establish `hp0 : 0 < nu ι (ψ ϖ)` using `nu_pos ι ((map_ne_zero ψ).2 ϖ.ne_zero)`. Establish `hp1 : nu ι (ψ ϖ) ≤ 1` using `hψ _ (Formalism.UG.P.cartan_unif_lt_one E u _ hϖ0).le`. Establish `hmono : ∀ x y : ℤ, x ≤ y → nu ι (ψ ϖ) ^ y ≤ nu ι (ψ ϖ) ^ x` using `fun x y h => zpow_le_zpow_right_of_le_one₀ hp0 hp1 h`. Rewrite using `[hdet, ← _root_.zpow_mul, ← _root_.zpow_mul]`. Prove the components needed by the constructor for the conclusion.
+
+Establish `B` using `side ι ψ lam b μ hK h3 hψ ϖ a hk₁ hk₂ (X := nu ι (ψ ϖ) ^ ((∑ i, a i) * lo)) (zpow_nonneg hp0.le _) (fun m => hmono _ _ (by`. Use `le_trans ?_ (h5 m a ha)` and prove the remaining obligations. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_le_sum fun r _ => ?_` and prove the remaining obligations. Rewrite using `[h4]`.
+
+Conclude with `mul_le_mul_of_nonneg_left (hlh _).1 (ha0 r)))`. Rewrite `B` using `[← e₁]`. Rewrite using `[hM]`. Conclude with `mat_bound' ι P _ Q hc (zpow_nonneg hp0.le _) hP hQ B i j`. Establish `hinv : g⁻¹ = k₄⁻¹ * dg ϖ (-(a ∘ Fin.rev)) * k₃⁻¹`.
+
+Rewrite using `[e₂, ← dg_inv]`. Use `group`. Establish `hanti : Antitone (-(a ∘ Fin.rev))` using `fun r s hrs => neg_le_neg (ha (Fin.rev_le_rev.mpr hrs))`. Establish `B` using `side ι ψ lam b μ hK h3 hψ ϖ (-(a ∘ Fin.rev)) (inv_mem hk₄) (inv_mem hk₃) (X := nu ι (ψ ϖ) ^ ((∑ i, a i) * -hi)) (zpow_nonneg hp0.le _) (fun m => hmono _ _ (by`. Use `le_trans ?_ (h5 m _ hanti)` and prove the remaining obligations.
+
+Rewrite using `[← Equiv.sum_comp Fin.revPerm a, Finset.sum_mul]`. Use `Finset.sum_le_sum fun r _ => ?_` and prove the remaining obligations. Rewrite using `[h4]`. Use `mul_le_mul_of_nonneg_left (hlh r.rev).2 (ha0 r.rev)` as an intermediate fact. Simplify using `only [Fin.revPerm_apply, Pi.neg_apply, Function.comp_apply]`.
+
+Use the proof step `linarith))`. Rewrite `B` using `[← hinv]`. Rewrite using `[hM]`. Conclude with `mat_bound' ι P _ Q hc (zpow_nonneg hp0.le _) hP hQ B i j`.
+-/
 theorem UpperTheory.V.Z.Int.repBound :
     UpperTheory.V.Z.Int.RepBound := by
   intro l _ ι E _ _ u ψ hψ n lam d e

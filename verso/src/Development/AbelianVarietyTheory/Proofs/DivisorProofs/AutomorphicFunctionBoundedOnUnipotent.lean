@@ -14,6 +14,15 @@ namespace GlobalTheory.ThK.UnipBound
 
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B d d₁ W W₁ H' i₀ i₁ r s hB hW hH' f hf hinv h`. Take `⟨R, hR⟩` from `GlobalTheory.T.unipotent_bounded_height_reduction F E σ B d d₁ W W₁ H' i₀ i₁ r s hB hW hH'`. Use `haveI : FiniteDimensional F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `haveI : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) _`. Use `haveI : T2Space (AF F) := GlobalTheory.AdelicUnitaryTop.t2Space_adeleRing_numberField F`.
+
+Take `⟨e₀⟩` from `GlobalTheory.AdelicUnitaryTop.nonempty_homeomorph (F := F) (E := E) (AF F)`. Use `haveI : T2Space (AE F E) := e₀.isEmbedding.t2Space`. Establish `hcA : Continuous (cA σ)` using `IsModuleTopology.continuous_of_linearMap (cA σ).toLinearMap`. Establish `hc : IsClosed (UG (cA σ) (incM F W.J) : Set (GL (Fin d) (AE F E)))`. Establish `hv : Continuous fun g : GL (Fin d) (AE F E) => (g : Matrix (Fin d) (Fin d) (AE F E))` using `Units.continuous_val`.
+
+Conclude with `isClosed_eq (((hv.matrix_transpose.matrix_mul continuous_const).matrix_mul (hv.matrix_map hcA))) continuous_const`. Establish `hK : IsCompact {g : UA σ W.J | ht g ≤ R}` using `hc.isClosedEmbedding_subtypeVal.isCompact_preimage (isCompact_heightGL_le F R)`. Establish `hcont : Continuous fun g : UA σ W.J => f (g * h)` using `hf.comp (continuous_id.mul continuous_const)`. Take `⟨C, hC⟩` from `hK.exists_bound_of_continuousOn hcont.continuousOn`. Use `⟨C, fun u hu => ?_⟩` and prove the remaining obligations.
+
+Take `⟨γ, hγ, hγR⟩` from `hR u hu`. Establish `e : f (u * h) = f ((γ * u) * h)` using `by rw [mul_assoc, hinv γ hγ.1]`. Rewrite using `[e]`. Conclude with `hC (γ * u) hγR`.
+-/
 theorem bounded_on_unip : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (d d₁ : ℕ) (W : Spc F E d) (W₁ : Spc F E d₁) (H' : Plane E d d₁) (i₀ i₁ r s : ℕ), B.IsGood σ → W.IsSkew σ B r s → H'.IsAdapted σ B W W₁ i₀ i₁ →
     ∀ f : UA σ W.J → ℂ, Continuous f → (∀ γ ∈ ratU σ W.J, ∀ h, f (γ * h) = f h) → ∀ h, ∃ C : ℝ, ∀ u ∈ unip σ W H', ‖f (u * h)‖ ≤ C := by
   intro F E _ _ _ _ _ σ B d d₁ W W₁ H' i₀ i₁ r s hB hW hH' f hf hinv h

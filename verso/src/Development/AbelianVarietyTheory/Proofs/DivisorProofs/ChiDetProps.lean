@@ -12,6 +12,21 @@ open GlobalTheory.Doubling
 
 namespace GlobalTheory.ChiDetFun
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ n W χ hχ`. Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `haveI : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) _`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Establish `hdet : Continuous (fun h : UA σ W.J => Matrix.GeneralLinearGroup.det h.1)`.
+
+Rewrite using `[Units.continuous_iff]`. Prove the components needed by the constructor for the conclusion. Use `show Continuous fun h : UA σ W.J => ((h.1 : GL (Fin n) (AE F E)) : Matrix (Fin n) (Fin n) (AE F E)).det`. Conclude with `(Units.continuous_val.comp continuous_subtype_val).matrix_det`. Use `show Continuous fun h : UA σ W.J => (((h.1 : GL (Fin n) (AE F E))⁻¹ : GL (Fin n) (AE F E)) : Matrix (Fin n) (Fin n) (AE F E)).det`.
+
+Conclude with `(Units.continuous_coe_inv.comp continuous_subtype_val).matrix_det`. Establish `hinv : Continuous fun z : Circle => (((z⁻¹ : Circle)) : ℂ)`. Establish `: (fun z : Circle => (((z⁻¹ : Circle)) : ℂ)) = fun z : Circle => ((z : ℂ))⁻¹`. Use function extensionality and compare the values at `z`. Conclude with `Circle.coe_inv z`.
+
+Rewrite using `[this]`. Conclude with `Continuous.inv₀ continuous_subtype_val (fun z => Circle.coe_ne_zero z)`. Conclude with `hinv.comp (hχ.1.comp hdet)`. Introduce `h`. Conclude with `Circle.norm_coe _`.
+
+Introduce `γ hγ h`. Unfold `ratU at hγ`. Rewrite `hγ` using `[Subgroup.mem_subgroupOf]`. Take `⟨g, hg⟩` from `hγ`. Establish `h1 : Matrix.GeneralLinearGroup.det (γ * h).1 = Matrix.GeneralLinearGroup.det (γ : GL (Fin n) (AE F E)) * Matrix.GeneralLinearGroup.det h.1`.
+
+Rewrite using `[Subgroup.coe_mul, map_mul]`. Establish `h2 : Matrix.GeneralLinearGroup.det (γ : GL (Fin n) (AE F E)) = Units.map (inclR (AF F) : E →+* AE F E).toMonoidHom (Matrix.GeneralLinearGroup.det g)`. Rewrite using `[← hg]`. Use `ext`. Simplify using `[Matrix.GeneralLinearGroup.map, RingHom.map_det]`.
+
+Rewrite using `[h1, map_mul, h2, hχ.2, one_mul]`.
+-/
 theorem chiDet_props : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ) (W : Spc F E n)
     (χ : Chr F E), IsHecke F E χ →
     Continuous (fun h : UA σ W.J => (((χ (Matrix.GeneralLinearGroup.det h.1))⁻¹ : Circle) : ℂ)) ∧

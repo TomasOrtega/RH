@@ -23,6 +23,17 @@ open GlobalTheory.ArchRec
 
 namespace GlobalTheory.ArchRec.FockCoef
 
+/- English proof (translation)
+Establish `hA : AnalyticOnNhd ℝ (f 0) Set.univ` using `fun a _ => GlobalTheory.OrbitAnalytic.analyticAt_of_bound f hf C r hr hM a`. Establish `hloc : f 0 =ᶠ[nhds 0] 0` using `by filter_upwards [Metric.ball_mem_nhds (0 : ℝ) hr] with z hz`. Establish `hz' : |z| < r` using `by simpa [Real.dist_eq] using hz`. Establish `hρ0 : 0 ≤ |z| / r` using `div_nonneg (abs_nonneg z) hr.le`. Establish `hρ1 : |z| / r < 1` using `(div_lt_one hr).mpr hz'`.
+
+Establish `hb : ∀ N : ℕ, ‖f 0 z‖ ≤ C * (((N + 1 : ℕ) : ℝ) * (|z| / r) ^ (N + 1))`. Introduce `N`. Establish `h` using `GlobalTheory.OrbitAnalytic.taylor_bound f hf 0 z N (C * ((N + 1).factorial : ℝ) / r ^ (N + 1)) (hM (N + 1))`. Simplify using `only [h0, smul_zero, Finset.sum_const_zero, sub_zero, zero_add] at h`. Use `h.trans (le_of_eq ?_)` and prove the remaining obligations.
+
+Establish `hN : (N.factorial : ℝ) ≠ 0` using `by positivity`. Establish `hr' : r ≠ 0` using `hr.ne'`. Rewrite using `[Nat.factorial_succ, div_pow]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+
+Establish `hlim : Filter.Tendsto (fun N : ℕ => C * (((N + 1 : ℕ) : ℝ) * (|z| / r) ^ (N + 1))) Filter.atTop (nhds 0)`. Use `(tendsto_self_mul_const_pow_of_lt_one hρ0 hρ1).comp (Filter.tendsto_add_atTop_nat 1)` as an intermediate fact. Simplify using `using this.const_mul C`. Establish `h1` using `ge_of_tendsto' hlim hb`. Establish `h2` using `norm_le_zero_iff.mp h1`.
+
+Simplify using `using h2`. Use `hA.eqOn_zero_of_preconnected_of_eventuallyEq_zero isPreconnected_univ (Set.mem_univ 0) hloc (Set.mem_univ t)` as an intermediate fact. Simplify using `using this`.
+-/
 theorem chain_eq_zero (f : ℕ → ℝ → ℂ) (hf : ∀ k t, HasDerivAt (f k) (f (k + 1) t) t) (C r : ℝ) (hr : 0 < r)
     (hM : ∀ k t, ‖f k t‖ ≤ C * (k.factorial : ℝ) / r ^ k) (h0 : ∀ k, f k 0 = 0) (t : ℝ) : f 0 t = 0 := by
   have hA : AnalyticOnNhd ℝ (f 0) Set.univ := fun a _ =>
@@ -51,6 +62,27 @@ theorem chain_eq_zero (f : ℕ → ℝ → ℂ) (hf : ∀ k t, HasDerivAt (f k) 
   have := hA.eqOn_zero_of_preconnected_of_eventuallyEq_zero isPreconnected_univ (Set.mem_univ 0) hloc (Set.mem_univ t)
   simpa using this
 
+/- English proof (translation)
+Establish `step : ∀ g : T.G, (∀ u, D g u = 0) → ∀ Y ∈ upq p q, ∀ t : ℝ, ∀ u, D (g * T.expt (t • Y)) u = 0`. Introduce `g hg Y hY t u`. Take `⟨C, r, hr, hCr⟩` from `hb Y hY u`. Establish `hadd` using `T.expt_add Y hY`. Use `chain_eq_zero (fun k s => D (g * T.expt (s • Y)) ((a Y)^[k] u)) ?_ C r hr (fun k s => hCr k _) ?_ t` and prove the remaining obligations.
+
+Introduce `k s`. Establish `h1` using `hder Y hY (g * T.expt (s • Y)) ((a Y)^[k] u)`. Establish `h1' : HasDerivAt (fun x : ℝ => D (g * T.expt (s • Y) * T.expt (x • Y)) ((a Y)^[k] u)) (D (g * T.expt (s • Y)) (a Y ((a Y)^[k] u))) (s - s)`. Rewrite using `[sub_self]`. Conclude with `h1`.
+
+Establish `h2` using `h1'.comp_sub_const s s`. Establish `hfun : (fun x : ℝ => D (g * T.expt (x • Y)) ((a Y)^[k] u)) = fun x => D (g * T.expt (s • Y) * T.expt ((x - s) • Y)) ((a Y)^[k] u)`. Use function extensionality and compare the values at `x`. Establish `hx : s + (x - s) = x` using `by ring`. Rewrite using `[mul_assoc, ← hadd, hx]`.
+
+Use `show HasDerivAt (fun x : ℝ => D (g * T.expt (x • Y)) ((a Y)^[k] u)) (D (g * T.expt (s • Y)) ((a Y)^[k + 1] u)) s`. Rewrite using `[hfun, Function.iterate_succ_apply']`. Conclude with `h2`. Introduce `k show D (g * T.expt ((0 : ℝ) • Y)) ((a Y)^[k] u) = 0`. Rewrite using `[zero_smul, T.expt_zero, mul_one]`.
+
+Conclude with `hg _`. Establish `hinv : ∀ Y ∈ upq p q, (T.expt Y)⁻¹ = T.expt ((-1 : ℝ) • Y)`. Introduce `Y hY`. Use `T.expt_add Y hY 1 (-1)` as an intermediate fact. Rewrite `this` using `[show ((1 : ℝ) + -1) = 0 by norm_num, zero_smul, T.expt_zero, one_smul]`.
+
+Conclude with `(eq_inv_of_mul_eq_one_right this.symm).symm`. Establish `hP : ∀ x ∈ Submonoid.closure (T.expt '' upq p q ∪ (T.expt '' upq p q)⁻¹), ∀ g : T.G, (∀ u, D g u = 0) → ∀ u, D (g * x) u = 0`. Introduce `x hx`. Proceed by induction on `hx using Submonoid.closure_induction with`. Consider the case `mem x hx`.
+
+Introduce `g hg u`. Break down `hx with ⟨Y, hY, rfl⟩ | hx` into its components or cases. Simplify using `using step g hg Y hY 1 u`. Rewrite `hx` using `[Set.mem_inv]`. Take `⟨Y, hY, hYx⟩` from `hx`.
+
+Establish `hx' : x = T.expt ((-1 : ℝ) • Y)` using `by rw [← hinv Y hY, hYx, inv_inv]`. Rewrite using `[hx']`. Conclude with `step g hg Y hY (-1) u`. Consider the case `one => intro g hg u`. Simplify using `using hg u`.
+
+Consider the case `mul x y _ _ hx hy`. Introduce `g hg u`. Rewrite using `[← mul_assoc]`. Conclude with `hy _ (hx g hg) u`. Establish `hg : g ∈ Submonoid.closure (T.expt '' upq p q ∪ (T.expt '' upq p q)⁻¹)`.
+
+Rewrite using `[← Subgroup.closure_toSubmonoid, hgen]`. Simplify using the standard rewrite rules. Introduce `u`. Simplify using `using hP g hg 1 h1 u`.
+-/
 theorem family_eq_zero {p q : ℕ} (T : GrpData p q) (hgen : Subgroup.closure (T.expt '' upq p q) = ⊤) {V : Type}
     (D : T.G → V → ℂ) (a : Mat p q → V → V)
     (hder : ∀ Y ∈ upq p q, ∀ g u, HasDerivAt (fun t : ℝ => D (g * T.expt (t • Y)) u) (D g (a Y u)) 0)
@@ -114,25 +146,45 @@ section Phi
 
 variable {p q n : ℕ} {G fr : Mn n} {ε : Fin n → Bool} (br : Bool) {e : Ix p q ≃ Fin n}
 
+/- English proof (translation)
+Apply the tactic sequence `cases br <;> simp [phi, plainMat, barMat, Matrix.submatrix_mul_equiv, Matrix.map_mul]`.
+-/
 theorem phi_mul (X Y : Mat p q) : phi br e (X * Y) = phi br e X * phi br e Y := by
   cases br <;> simp [phi, plainMat, barMat, Matrix.submatrix_mul_equiv, Matrix.map_mul]
 
+/- English proof (translation)
+Use extensionality with `i j`. Apply the tactic sequence `cases br <;> simp [phi, plainMat, barMat, Matrix.one_apply]`.
+-/
 theorem phi_one : phi br e (1 : Mat p q) = 1 := by
   ext i j
   cases br <;> simp [phi, plainMat, barMat, Matrix.one_apply]
 
+/- English proof (translation)
+Use extensionality with `i j`. Apply the tactic sequence `cases br <;> simp [phi, plainMat, barMat]`.
+-/
 theorem phi_add (X Y : Mat p q) : phi br e (X + Y) = phi br e X + phi br e Y := by
   ext i j
   cases br <;> simp [phi, plainMat, barMat]
 
+/- English proof (translation)
+Use extensionality with `i j`. Apply the tactic sequence `cases br <;> simp [phi, plainMat, barMat]`.
+-/
 theorem phi_zero : phi br e (0 : Mat p q) = 0 := by
   ext i j
   cases br <;> simp [phi, plainMat, barMat]
 
+/- English proof (translation)
+Use extensionality with `i j`. Apply the tactic sequence `cases br <;> simp [phi, plainMat, barMat, Matrix.conjTranspose_apply]`.
+-/
 theorem phi_star (X : Mat p q) : phi br e Xᴴ = (phi br e X)ᴴ := by
   ext i j
   cases br <;> simp [phi, plainMat, barMat, Matrix.conjTranspose_apply]
 
+/- English proof (translation)
+Use extensionality with `i j`. Take `⟨a, rfl⟩` from `e.surjective i`. Take `⟨b, rfl⟩` from `e.surjective j`. Establish `hs' : ∀ a, ε (e a) = a.isLeft` using `hs`. Apply the tactic sequence `cases br <;> rcases a with a | a <;> rcases b with b | b <;>`.
+
+Simplify using `[phi, plainMat, barMat, TH.Jm, Formalism.UG.Jpq, Formalism.REAL.Jm, hs', Matrix.diagonal_apply, Matrix.one_apply, apply_ite (starRingEnd ℂ)]`. Apply the tactic sequence `all_goals split_ifs <;> simp`.
+-/
 theorem phi_Jm (hs : SignCompat ε e) : phi br e (TH.Jm p q) = Formalism.REAL.Jm ε := by
   ext i j
   obtain ⟨a, rfl⟩ := e.surjective i
@@ -142,11 +194,19 @@ theorem phi_Jm (hs : SignCompat ε e) : phi br e (TH.Jm p q) = Formalism.REAL.Jm
     simp [phi, plainMat, barMat, TH.Jm, Formalism.UG.Jpq, Formalism.REAL.Jm, hs', Matrix.diagonal_apply, Matrix.one_apply, apply_ite (starRingEnd ℂ)]
   all_goals split_ifs <;> simp
 
+/- English proof (translation)
+Use extensionality with `i j`. Apply the tactic sequence `cases br <;> simp [phi, plainMat, barMat, Complex.real_smul, Complex.conj_ofReal]`.
+-/
 private theorem smul_phi {p q n : ℕ} (br : Bool) (e : Ix p q ≃ Fin n) (Y : Mat p q) (t : ℝ) :
     t • phi br e Y = phi br e (t • Y) := by
   ext i j
   cases br <;> simp [phi, plainMat, barMat, Complex.real_smul, Complex.conj_ofReal]
 
+/- English proof (translation)
+Set `C : Mat p q ≃L[ℂ] Mn n` to `(Matrix.reindexLinearEquiv ℂ ℂ e e).toContinuousLinearEquiv`. Set `A` to `Matrix.reindexAlgEquiv ℂ ℂ e`. Establish `hC : ∀ X, Matrix.reindex e e X = C X` using `fun X => rfl`. Establish `hA : ∀ X, C X = A X` using `fun X => rfl`. Rewrite using `[NormedSpace.exp_eq_tsum (𝕂 := ℂ), NormedSpace.exp_eq_tsum (𝕂 := ℂ)]`.
+
+Simplify using `only [hC]`. Rewrite using `[C.map_tsum]`. Use `congr 1`. Use function extensionality and compare the values at `k`. Rewrite using `[hA, hA, map_smul, map_pow]`.
+-/
 private theorem exp_reindex_twisted_operators {p q n : ℕ} (e : Ix p q ≃ Fin n) (M : Mat p q) :
     NormedSpace.exp (Matrix.reindex e e M) = Matrix.reindex e e (NormedSpace.exp M) := by
   let C : Mat p q ≃L[ℂ] Mn n := (Matrix.reindexLinearEquiv ℂ ℂ e e).toContinuousLinearEquiv
@@ -160,6 +220,9 @@ private theorem exp_reindex_twisted_operators {p q n : ℕ} (e : Ix p q ≃ Fin 
   funext k
   rw [hA, hA, map_smul, map_pow]
 
+/- English proof (translation)
+Establish `h : ∀ X : Mat p q, X.map (starRingEnd ℂ) = Xᴴᵀ` using `fun X => by`. Use extensionality with `i j`. Simplify using `[Matrix.conjTranspose_apply]`. Rewrite using `[h, h, Matrix.exp_transpose, Matrix.exp_conjTranspose]`.
+-/
 private theorem exp_map_starRingEnd {p q : ℕ} (M : Mat p q) :
     NormedSpace.exp (M.map (starRingEnd ℂ)) = (NormedSpace.exp M).map (starRingEnd ℂ) := by
   have h : ∀ X : Mat p q, X.map (starRingEnd ℂ) = Xᴴᵀ := fun X => by
@@ -167,12 +230,18 @@ private theorem exp_map_starRingEnd {p q : ℕ} (M : Mat p q) :
     simp [Matrix.conjTranspose_apply]
   rw [h, h, Matrix.exp_transpose, Matrix.exp_conjTranspose]
 
+/- English proof (translation)
+Rewrite using `[smul_phi]`. Apply the tactic sequence `cases br <;> simp only [phi, plainMat, barMat, Bool.false_eq_true, ↓reduceIte]`. Conclude with `exp_reindex_twisted_operators e _`. Rewrite using `[exp_reindex_twisted_operators, exp_map_starRingEnd]`.
+-/
 theorem phi_exp (Y : Mat p q) (t : ℝ) : NormedSpace.exp (t • phi br e Y) = phi br e (NormedSpace.exp (t • Y)) := by
   rw [smul_phi]
   cases br <;> simp only [phi, plainMat, barMat, Bool.false_eq_true, ↓reduceIte]
   · exact exp_reindex_twisted_operators e _
   · rw [exp_reindex_twisted_operators, exp_map_starRingEnd]
 
+/- English proof (translation)
+Establish `hd` using `(Matrix.isUnit_iff_isUnit_det fr).mp hfr`. Rewrite using `[phiFr, phiFr, phiFr, phi_mul, show fr⁻¹ * phi br e X * fr * (fr⁻¹ * phi br e Y * fr) = fr⁻¹ * phi br e X * (fr * fr⁻¹) * phi br e Y * fr by`. Simplify using `only [Matrix.mul_assoc],`. Use the proof step `Matrix.mul_nonsing_inv _ hd, Matrix.mul_one]`. Simplify using `only [Matrix.mul_assoc]`.
+-/
 theorem phiFr_mul (hfr : IsUnit fr) (X Y : Mat p q) : phiFr fr br e (X * Y) = phiFr fr br e X * phiFr fr br e Y := by
   have hd := (Matrix.isUnit_iff_isUnit_det fr).mp hfr
   rw [phiFr, phiFr, phiFr, phi_mul,
@@ -181,16 +250,29 @@ theorem phiFr_mul (hfr : IsUnit fr) (X Y : Mat p q) : phiFr fr br e (X * Y) = ph
     Matrix.mul_nonsing_inv _ hd, Matrix.mul_one]
   simp only [Matrix.mul_assoc]
 
+/- English proof (translation)
+Establish `hd` using `(Matrix.isUnit_iff_isUnit_det fr).mp hfr`. Rewrite using `[phiFr, phi_one, Matrix.mul_one, Matrix.nonsing_inv_mul _ hd]`.
+-/
 theorem phiFr_one (hfr : IsUnit fr) : phiFr fr br e (1 : Mat p q) = 1 := by
   have hd := (Matrix.isUnit_iff_isUnit_det fr).mp hfr
   rw [phiFr, phi_one, Matrix.mul_one, Matrix.nonsing_inv_mul _ hd]
 
+/- English proof (translation)
+Rewrite using `[phiFr, phiFr, ← phi_exp, show t • (fr⁻¹ * phi br e Y * fr) = fr⁻¹ * (t • phi br e Y) * fr by`. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul]]`. Conclude with `Matrix.exp_conj' fr _ hfr`.
+-/
 theorem phiFr_exp (hfr : IsUnit fr) (Y : Mat p q) (t : ℝ) :
     NormedSpace.exp (t • phiFr fr br e Y) = phiFr fr br e (NormedSpace.exp (t • Y)) := by
   rw [phiFr, phiFr, ← phi_exp, show t • (fr⁻¹ * phi br e Y * fr) = fr⁻¹ * (t • phi br e Y) * fr by
     rw [Matrix.mul_smul, Matrix.smul_mul]]
   exact Matrix.exp_conj' fr _ hfr
 
+/- English proof (translation)
+Establish `hd` using `(Matrix.isUnit_iff_isUnit_det fr).mp hfr`. Establish `key : (phi br e g)ᴴ * Formalism.REAL.Jm ε * phi br e g = Formalism.REAL.Jm ε`. Rewrite using `[← phi_star, ← phi_Jm br hs, ← phi_mul, ← phi_mul, hg]`. Use `show (phiFr fr br e g)ᴴ * G * phiFr fr br e g = G`. Substitute `hG` using the available equality.
+
+Establish `h1 : (fr⁻¹)ᴴ * frᴴ = 1`. Rewrite using `[← Matrix.conjTranspose_mul, Matrix.mul_nonsing_inv _ hd, Matrix.conjTranspose_one]`. Establish `h2 : fr * fr⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hd`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [phiFr, Matrix.conjTranspose_mul, Matrix.mul_assoc]`.
+
+Use `_ = frᴴ * Formalism.REAL.Jm ε * fr := by rw [h1, h2, Matrix.mul_one, Matrix.mul_one, key]`.
+-/
 theorem phiFr_mem (hfr : IsUnit fr) (hG : frᴴ * Formalism.REAL.Jm ε * fr = G) (hs : SignCompat ε e) {g : Mat p q}
     (hg : gᴴ * TH.Jm p q * g = TH.Jm p q) : phiFr fr br e g ∈ Formalism.QuantumDeterminants.UH G := by
   have hd := (Matrix.isUnit_iff_isUnit_det fr).mp hfr
@@ -206,6 +288,13 @@ theorem phiFr_mem (hfr : IsUnit fr) (hG : frᴴ * Formalism.REAL.Jm ε * fr = G)
         simp only [phiFr, Matrix.conjTranspose_mul, Matrix.mul_assoc]
     _ = frᴴ * Formalism.REAL.Jm ε * fr := by rw [h1, h2, Matrix.mul_one, Matrix.mul_one, key]
 
+/- English proof (translation)
+Establish `hd` using `(Matrix.isUnit_iff_isUnit_det fr).mp hfr`. Establish `hY' : Yᴴ * TH.Jm p q + TH.Jm p q * Y = 0` using `hY`. Establish `key : (phi br e Y)ᴴ * Formalism.REAL.Jm ε + Formalism.REAL.Jm ε * phi br e Y = 0`. Rewrite using `[← phi_star, ← phi_Jm br hs, ← phi_mul, ← phi_mul, ← phi_add, hY', phi_zero]`. Substitute `hG` using the available equality.
+
+Establish `h1 : (fr⁻¹)ᴴ * frᴴ = 1`. Rewrite using `[← Matrix.conjTranspose_mul, Matrix.mul_nonsing_inv _ hd, Matrix.conjTranspose_one]`. Establish `h2 : fr * fr⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hd`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [phiFr, Matrix.conjTranspose_mul, Matrix.mul_add, Matrix.add_mul, Matrix.mul_assoc]`.
+
+Use `_ = 0 := by rw [h1, h2, Matrix.mul_one, Matrix.mul_one, key, Matrix.mul_zero, Matrix.zero_mul]`.
+-/
 theorem phiFr_lie (hfr : IsUnit fr) (hG : frᴴ * Formalism.REAL.Jm ε * fr = G) (hs : SignCompat ε e) {Y : Mat p q}
     (hY : Y ∈ upq p q) : (phiFr fr br e Y)ᴴ * G + G * phiFr fr br e Y = 0 := by
   have hd := (Matrix.isUnit_iff_isUnit_det fr).mp hfr
@@ -228,6 +317,15 @@ section Fock
 variable {p q r s : ℕ} {T₀ : GrpData (p * r + q * s) (p * s + q * r)} {T₁ : GrpData p q} {T₂ : GrpData r s}
   (F : FockData T₀ T₁ T₂)
 
+/- English proof (translation)
+Establish `hm : ∀ R : Pol p q r s, F.ι R = ∑ v ∈ R.support, R.coeff v • F.ι (MvPolynomial.monomial v 1)`. Introduce `R`. Use `conv_lhs => rw [R.as_sum]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[← map_smul, MvPolynomial.smul_monomial, smul_eq_mul, mul_one]`. Rewrite using `[hm P, hm Q, sum_inner]`. Simplify using `only [inner_sum, inner_smul_left, inner_smul_right, F.fockIP, mul_ite, mul_zero]`. Unfold `fockIp`. Rewrite using `[Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl fun α _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_ite_eq']`. Use `split_ifs with h`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[MvPolynomial.notMem_support_iff.mp h]`. Simplify using the standard rewrite rules.
+-/
 theorem inner_fock (P Q : Pol p q r s) : ⟪F.ι Q, F.ι P⟫_ℂ = fockIp P Q := by
   have hm : ∀ R : Pol p q r s, F.ι R = ∑ v ∈ R.support, R.coeff v • F.ι (MvPolynomial.monomial v 1) := by
     intro R
@@ -254,11 +352,31 @@ section Hilbert
 variable {ι Z : Type} {n : ℕ} {G : Mn n} {A : Mn n → (Z → ℂ) → (Z → ℂ)} {pt : MvPolynomial ι ℂ → (Z → ℂ)}
   {ip : (Z → ℂ) → (Z → ℂ) → ℂ} {Θ : Submodule ℂ (Z → ℂ)}
 
+/- English proof (translation)
+Establish `h0` using `h.ip_lin 1 0 Θ.zero_mem 0 Θ.zero_mem E hE`. Simplify using `only [one_smul, add_zero, one_mul] at h0`. Take the linear combination `(-1 : ℂ) * h0`.
+-/
 theorem ip_zero (h : L2UnitaryRepresentationData G A pt ip Θ) {E : Z → ℂ} (hE : E ∈ Θ) : ip 0 E = 0 := by
   have h0 := h.ip_lin 1 0 Θ.zero_mem 0 Θ.zero_mem E hE
   simp only [one_smul, add_zero, one_mul] at h0
   linear_combination (-1 : ℂ) * h0
 
+/- English proof (translation)
+Establish `hl : ∀ (z : ℂ), ∀ X ∈ Θ, ∀ Y ∈ Θ, ∀ W ∈ Θ, ip (z • X + Y) W = z * ip X W + ip Y W` using `h.ip_lin`. Establish `hs : ∀ X ∈ Θ, ∀ Y ∈ Θ, ip Y X = conj (ip X Y)` using `h.ip_symm`. Establish `hz : ∀ W ∈ Θ, ip 0 W = 0` using `fun W hW => ip_zero h hW`. Establish `hsm : ∀ (z : ℂ), ∀ X ∈ Θ, ∀ W ∈ Θ, ip (z • X) W = z * ip X W`. Introduce `z X hX W hW`.
+
+Use `hl z X hX 0 Θ.zero_mem W hW` as an intermediate fact. Rewrite `this` using `[add_zero, hz W hW, add_zero]`. Then use the resulting hypothesis. Establish `hpos : ∀ X ∈ Θ, 0 ≤ (ip X X).re`. Introduce `X hX`. Distinguish the cases in `h0 : X = 0`.
+
+Substitute `h0` using the available equality. Rewrite using `[hz 0 Θ.zero_mem]`. Simplify using the standard rewrite rules. Conclude with `(h.ip_pos X hX h0).le`. Establish `hre : ∀ X ∈ Θ, (ip X X).im = 0`.
+
+Introduce `X hX`. Use `congrArg Complex.im (hs X hX X hX)` as an intermediate fact. Simplify using `only [Complex.conj_im] at this`. Combine the linear equalities and inequalities to obtain the conclusion. Distinguish the cases in `hE0 : E = 0`.
+
+Substitute `hE0` using the available equality. Establish `hc : ip F 0 = 0` using `by rw [hs 0 Θ.zero_mem F hF, hz F hF, map_zero]`. Rewrite using `[hc]`. Simplify using `using mul_nonneg (hpos F hF) (hpos 0 Θ.zero_mem)`. Establish `hbpos : 0 < (ip E E).re` using `h.ip_pos E hE hE0`.
+
+Establish `hX : (ip E E) • F + (-ip F E) • E ∈ Θ` using `Θ.add_mem (Θ.smul_mem _ hF) (Θ.smul_mem _ hE)`. Establish `hexp : ∀ W ∈ Θ, ip ((ip E E) • F + (-ip F E) • E) W = ip E E * ip F W + (-ip F E) * ip E W` using `fun W hW => by rw [hl _ F hF _ (Θ.smul_mem _ hE) W hW, hsm _ E hE W hW]`. Establish `key` using `hexp _ hX`. Rewrite `key` using `[hs _ hX F hF, hs _ hX E hE, hexp F hF, hexp E hE, hs F hF E hE]`. Establish `hre'` using `hpos _ hX`.
+
+Rewrite `hre'` using `[key]`. Establish `haim` using `hre F hF`. Establish `hbim` using `hre E hE`. Simplify using `only [Complex.add_re, Complex.mul_re, Complex.conj_re, Complex.conj_im, Complex.add_im, Complex.mul_im, Complex.neg_re, Complex.neg_im, haim, hbim, mul_zero, zero_mul, sub_zero, add_zero] at hre'`. Rewrite using `[Complex.sq_norm, Complex.normSq_apply]`.
+
+Use polynomial arithmetic with `[hbpos, hre']`.
+-/
 theorem ip_sq_le (h : L2UnitaryRepresentationData G A pt ip Θ) {F E : Z → ℂ} (hF : F ∈ Θ) (hE : E ∈ Θ) :
     ‖ip F E‖ ^ 2 ≤ (ip F F).re * (ip E E).re := by
   have hl : ∀ (z : ℂ), ∀ X ∈ Θ, ∀ Y ∈ Θ, ∀ W ∈ Θ, ip (z • X + Y) W = z * ip X W + ip Y W := h.ip_lin
@@ -300,6 +418,13 @@ theorem ip_sq_le (h : L2UnitaryRepresentationData G A pt ip Θ) {F E : Z → ℂ
     rw [Complex.sq_norm, Complex.normSq_apply]
     nlinarith [hbpos, hre']
 
+/- English proof (translation)
+Take `⟨-, hder, -⟩` from `GlobalTheory.FockEmbExp.fock_derived p q r s T₀ T₁ T₂ F`. Establish `hmul : ∀ s t : ℝ, F.π (T₁.expt ((s + t) • Y), 1) = F.π (T₁.expt (s • Y), 1) * F.π (T₁.expt (t • Y), 1)`. Introduce `s t`. Rewrite using `[T₁.expt_add Y hY, ← map_mul, Prod.mk_mul_mk, mul_one]`. Establish `h1' : HasDerivAt (fun x : ℝ => F.π (T₁.expt (x • Y), 1) (F.ι w)) (F.ι (fockAct1 p q r s Y w)) (t - t)`.
+
+Rewrite using `[sub_self]`. Conclude with `hder Y hY w`. Establish `h2` using `((F.π (T₁.expt (t • Y), 1)).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt t (h1'.comp_sub_const t t)`. Establish `hfun : (fun x : ℝ => F.π (T₁.expt (x • Y), 1) (F.ι w)) = fun x => F.π (T₁.expt (t • Y), 1) (F.π (T₁.expt ((x - t) • Y), 1) (F.ι w))`. Use function extensionality and compare the values at `x`.
+
+Establish `hx : t + (x - t) = x` using `by ring`. Rewrite using `[← ContinuousLinearMap.mul_apply, ← hmul, hx]`. Rewrite using `[hfun]`. Conclude with `h2`.
+-/
 private theorem hasDerivAt_fockData_expt_smul {p q r s : ℕ} {T₀ : GrpData (p * r + q * s) (p * s + q * r)} {T₁ : GrpData p q}
     {T₂ : GrpData r s} (F : FockData T₀ T₁ T₂) {Y : Mat p q} (hY : Y ∈ upq p q) (w : Pol p q r s) (t : ℝ) :
     HasDerivAt (fun x : ℝ => F.π (T₁.expt (x • Y), 1) (F.ι w))
@@ -322,6 +447,65 @@ private theorem hasDerivAt_fockData_expt_smul {p q r s : ℕ} {T₀ : GrpData (p
 
 end Hilbert
 
+/- English proof (translation)
+Introduce `p q r s n T₀ T₁ T₂ F ι Z G fr ε br e A pt ip Θ κ c m N hpq hfr hG hs hm hS hL hF`. Establish `hip : ∀ P Q, ip (pt P) (pt Q) = (N : ℂ) * ⟪F.ι (κ Q), F.ι (κ P)⟫_ℂ` using `fun P Q => by`. Rewrite using `[hF.2, ← inner_fock F]`. Use `⟨hF.1, hip, ?_⟩` and prove the remaining obligations. Introduce `g P Q`.
+
+Take `⟨hgen, -⟩` from `GlobalTheory.CoverExp.closure_expt_eq_top_and_cartan p q hpq T₁`. Establish `hUJ : ∀ x : T₁.G, ((T₁.cov x : GL (Ix p q) ℂ) : Mat p q)ᴴ * TH.Jm p q * ((T₁.cov x : GL (Ix p q) ℂ) : Mat p q) = TH.Jm p q`. Introduce `x`. Establish `h : Formalism.UG.cT (starRingEnd ℂ) ((T₁.cov x : GL (Ix p q) ℂ) : Mat p q) * Formalism.UG.Jpq p q * ((T₁.cov x : GL (Ix p q) ℂ) : Mat p q) = Formalism.UG.Jpq p q` using `T₁.cov_mem x`. Establish `hc : Formalism.UG.cT (starRingEnd ℂ) ((T₁.cov x : GL (Ix p q) ℂ) : Mat p q) = ((T₁.cov x : GL (Ix p q) ℂ) : Mat p q)ᴴ`.
+
+Unfold `Formalism.UG.cT`. Use extensionality with `i j`. Simplify using `[Matrix.conjTranspose_apply]`. Rewrite `h` using `[hc]`. Unfold `TH.Jm`.
+
+Conclude with `h`. Establish `hmemU : ∀ x : T₁.G, phiFr fr br e ((T₁.cov x : GL (Ix p q) ℂ) : Mat p q) ∈ Formalism.QuantumDeterminants.UH G` using `fun x => phiFr_mem br hfr hG hs (hUJ x)`. Establish `hmC : (m : ℂ) = 2 * (c : ℂ)`. Use `congrArg (fun y : ℚ => (y : ℂ)) hm` as an intermediate fact. Move the coercions through the operations in `at this`.
+
+Conclude with `this`. Set `aY : Mat p q → MvPolynomial ι ℂ → MvPolynomial ι ℂ` to `fun Y P' => κ.symm (fockAct1 p q r s Y (κ P') + ((c : ℂ) * Y.trace) • κ P')`. Set `D : T₁.G → MvPolynomial ι ℂ → ℂ` to `fun x P' => ip (A (phiFr fr br e ((T₁.cov x : GL (Ix p q) ℂ) : Mat p q)) (pt P')) (pt Q) - (N : ℂ) * ((T₁.sq x : ℂˣ) : ℂ) ^ m * ⟪F.ι (κ Q), F.π (x, 1) (F.ι (κ P'))⟫_ℂ`. Establish `h1 : ∀ P', D 1 P' = 0`. Introduce `P'`.
+
+Simplify using `only [D, map_one, Units.val_one, phiFr_one br hfr, hL.one _ (hL.mem P'), _root_.one_zpow, mul_one]`. Rewrite using `[show ((1 : T₁.G), (1 : T₂.G)) = 1 from rfl, map_one, ContinuousLinearMap.one_apply, hip, sub_self]`. Establish `hder : ∀ Y ∈ upq p q, ∀ x P', HasDerivAt (fun t : ℝ => D (x * T₁.expt (t • Y)) P') (D x (aY Y P')) 0`. Introduce `Y hY x P'`. Establish `hYt : ∀ t : ℝ, t • Y ∈ upq p q` using `fun t => GlobalTheory.FockEmbExp.smul_mem hY t`.
+
+Establish `hhU` using `hmemU x`. Establish `hh'U` using `hmemU x⁻¹`. Establish `hhh' : phiFr fr br e ((T₁.cov x : GL (Ix p q) ℂ) : Mat p q) * phiFr fr br e ((T₁.cov x⁻¹ : GL (Ix p q) ℂ) : Mat p q) = 1`. Rewrite using `[← phiFr_mul br hfr, ← Units.val_mul, ← map_mul, mul_inv_cancel, map_one, Units.val_one, phiFr_one br hfr]`. Establish `hEΘ : A (phiFr fr br e ((T₁.cov x⁻¹ : GL (Ix p q) ℂ) : Mat p q)) (pt Q) ∈ Θ` using `hL.stable _ hh'U _ (hL.mem Q)`.
+
+Establish `hQ : A (phiFr fr br e ((T₁.cov x : GL (Ix p q) ℂ) : Mat p q)) (A (phiFr fr br e ((T₁.cov x⁻¹ : GL (Ix p q) ℂ) : Mat p q)) (pt Q)) = pt Q`. Rewrite using `[← hL.mul _ hhU _ hh'U _ (hL.mem Q), hhh', hL.one _ (hL.mem Q)]`. Establish `hXlie` using `phiFr_lie br hfr hG hs hY`. Establish `hκ : κ (aY Y P') = fockAct1 p q r s Y (κ P') + ((c : ℂ) * Y.trace) • κ P'`. Simplify using `only [aY, LinearEquiv.apply_symm_apply]`.
+
+Establish `hpol : GlobalTheory.IndefiniteRowSideFullHecke.ThetaSourceAction.PolDer A pt (phiFr fr br e Y) P' (aY Y P')` using `(hS.der Y hY P' (aY Y P')).mpr hκ`. Establish `hexpU : ∀ t : ℝ, NormedSpace.exp (t • phiFr fr br e Y) ∈ Formalism.QuantumDeterminants.UH G`. Introduce `t`. Rewrite using `[phiFr_exp br hfr Y t, ← T₁.expt_cov _ (hYt t)]`. Conclude with `hmemU _`.
+
+Establish `hfun1 : ∀ t : ℝ, ip (A (phiFr fr br e ((T₁.cov (x * T₁.expt (t • Y)) : GL (Ix p q) ℂ) : Mat p q)) (pt P')) (pt Q) = ip (A (NormedSpace.exp (t • phiFr fr br e Y)) (pt P')) (A (phiFr fr br e ((T₁.cov x⁻¹ : GL (Ix p q) ℂ) : Mat p q)) (pt Q))`. Introduce `t`. Rewrite using `[map_mul, Units.val_mul, T₁.expt_cov _ (hYt t), phiFr_mul br hfr, ← phiFr_exp br hfr Y t, hL.mul _ hhU _ (hexpU t) _ (hL.mem P')]`. Use `conv_lhs => rw [← hQ]`. Rewrite using `[hL.unit _ hhU _ (hL.stable _ (hexpU t) _ (hL.mem P')) _ hEΘ]`.
+
+Establish `hfun2 : ∀ t : ℝ, (N : ℂ) * ((T₁.sq (x * T₁.expt (t • Y)) : ℂˣ) : ℂ) ^ m * ⟪F.ι (κ Q), F.π (x * T₁.expt (t • Y), 1) (F.ι (κ P'))⟫_ℂ = (N : ℂ) * ((T₁.sq x : ℂˣ) : ℂ) ^ m * (Complex.exp (↑t * ((c : ℂ) * Y.trace)) * ⟪F.ι (κ Q), F.π (x, 1) (F.π (T₁.expt (t • Y), 1) (F.ι (κ P')))⟫_ℂ)`. Introduce `t`. Rewrite using `[map_mul, Units.val_mul, GlobalTheory.CoverExp.sq_expt T₁ (hYt t), mul_zpow, ← Complex.exp_int_mul, show ((x * T₁.expt (t • Y), (1 : T₂.G))) = (x, 1) * (T₁.expt (t • Y), 1) by simp, map_mul, ContinuousLinearMap.mul_apply, Matrix.trace_smul, Complex.real_smul, hmC]`. Put the polynomial expressions in normal form. Establish `hD : (fun t : ℝ => D (x * T₁.expt (t • Y)) P') = fun t : ℝ => ip (A (NormedSpace.exp (t • phiFr fr br e Y)) (pt P')) (A (phiFr fr br e ((T₁.cov x⁻¹ : GL (Ix p q) ℂ) : Mat p q)) (pt Q)) - (N : ℂ) * ((T₁.sq x : ℂˣ) : ℂ) ^ m * (Complex.exp (↑t * ((c : ℂ) * Y.trace)) * ⟪F.ι (κ Q), F. …`.
+
+Use function extensionality and compare the values at `t`. Simplify using `only [D]`. Rewrite using `[hfun1 t, hfun2 t]`. Establish `hexp : HasDerivAt (fun t : ℝ => Complex.exp (↑t * ((c : ℂ) * Y.trace))) (Complex.exp (↑(0 : ℝ) * ((c : ℂ) * Y.trace)) * (1 * ((c : ℂ) * Y.trace))) 0` using `((hasDerivAt_id' (0 : ℝ)).ofReal_comp.mul_const ((c : ℂ) * Y.trace)).cexp`. Establish `hin` using `(hasDerivAt_const (0 : ℝ) (F.ι (κ Q))).inner ℂ (((F.π (x, 1)).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt (0 : ℝ) (hasDerivAt_fockData_expt_smul F hY (κ P') 0))`.
+
+Establish `hd` using `(hL.der _ hXlie P' (aY Y P') hpol _ hEΘ).sub ((hexp.mul hin).const_mul ((N : ℂ) * ((T₁.sq x : ℂˣ) : ℂ) ^ m))`. Rewrite using `[hD]`. Use `hd.congr_deriv ?_` and prove the remaining obligations. Rewrite using `[← hL.unit _ hhU _ (hL.mem _) _ hEΘ, hQ]`. Simplify using `only [D, hκ, map_add, map_smul, inner_add_right, inner_smul_right, inner_zero_left, Function.comp_apply, ContinuousLinearMap.coe_restrictScalars', zero_smul, T₁.expt_zero, Prod.mk_one_one, map_one, ContinuousLinearMap.one_apply, Complex.ofReal_zero, zero_mul, Complex.exp_zero, on …`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hb : ∀ Y ∈ upq p q, ∀ P', ∃ C r : ℝ, 0 < r ∧ ∀ k x, ‖D x ((aY Y)^[k] P')‖ ≤ C * (k.factorial : ℝ) / r ^ k`. Introduce `Y hY P'`. Establish `hiter : ∀ k, κ ((aY Y)^[k] P') = (fun w => fockAct1 p q r s Y w + ((c : ℂ) * Y.trace) • w)^[k] (κ P')`. Introduce `k`.
+
+Proceed by induction on `k with`. Consider the case `zero => rfl`. Consider the case `succ k ih`. Rewrite using `[Function.iterate_succ_apply', Function.iterate_succ_apply', ← ih]`. Simplify using `only [aY, LinearEquiv.apply_symm_apply]`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨C, ρ, hρ, hC⟩ : ∃ C ρ : ℝ, 0 < ρ ∧ ∀ k, ‖F.ι ((fun w => fockAct1 p q r s Y w + ((c : ℂ) * Y.trace) • w)^[k] (κ P'))‖ ≤ C * (k.factorial : ℝ) / ρ ^ k := by`. Set `f : ℕ → ℝ → F.H` to `fun k t => Complex.exp (↑t * ((c : ℂ) * Y.trace)) • F.π (T₁.expt (t • Y), 1) (F.ι ((fun w => fockAct1 p q r s Y w + ((c : ℂ) * Y.trace) • w)^[k] (κ P')))`. Establish `hf : ∀ k t, HasDerivAt (f k) (f (k + 1) t) t`. Introduce `k t`. Establish `hexp : HasDerivAt (fun t : ℝ => Complex.exp (↑t * ((c : ℂ) * Y.trace))) (Complex.exp (↑t * ((c : ℂ) * Y.trace)) * (1 * ((c : ℂ) * Y.trace))) t` using `((hasDerivAt_id' t).ofReal_comp.mul_const ((c : ℂ) * Y.trace)).cexp`.
+
+Establish `h` using `hexp.smul (hasDerivAt_fockData_expt_smul F hY ((fun w => fockAct1 p q r s Y w + ((c : ℂ) * Y.trace) • w)^[k] (κ P')) t)`. Use `h.congr_deriv ?_` and prove the remaining obligations. Simplify using `only [f, Function.iterate_succ_apply', map_add, map_smul, smul_add, smul_smul, one_mul]`. Establish `hA : AnalyticAt ℝ (f 0) 0`. Establish `h` using `(GlobalTheory.FockAlg.analyticOnNhd_orbit_pol p q r s T₀ T₁ T₂ F _ (GlobalTheory.FockEmbExp.left_mem hY r s) (κ P')).1 0 (Set.mem_univ _)`.
+
+Establish `hfun : (fun t : ℝ => F.π (T₁.expt (t • Y), 1) (F.ι (κ P'))) = fun t : ℝ => F.Om (T₀.expt (t • Matrix.reindex (lineEquiv p q r s) (lineEquiv p q r s) (Matrix.kroneckerMap (· * ·) Y (1 : Mat r s)))) (F.ι (κ P'))`. Use function extensionality and compare the values at `t`. Rewrite using `[← GlobalTheory.FockEmbExp.emb_expt_left F hY t]`. Both sides reduce to the same expression. Establish `hexpA : AnalyticAt ℝ (fun t : ℝ => Complex.exp (↑t * ((c : ℂ) * Y.trace))) 0`.
+
+Establish `h1 : AnalyticAt ℝ (fun t : ℝ => ((t : ℂ) * ((c : ℂ) * Y.trace))) 0` using `(Complex.ofRealCLM.analyticAt 0).mul analyticAt_const`. Conclude with `(analyticAt_cexp.restrictScalars).comp h1`. Establish `h2 : AnalyticAt ℝ (fun t : ℝ => F.π (T₁.expt (t • Y), 1) (F.ι (κ P'))) 0`. Rewrite using `[hfun]`. Conclude with `h`.
+
+Conclude with `hexpA.smul h2`. Take `⟨C, ρ, hρ, hb0⟩` from `GlobalTheory.OrbitAnalytic.bound_of_analyticAt f hf 0 hA`. Use `⟨C, ρ, hρ, fun k => ?_⟩` and prove the remaining obligations. Establish `h0 : f k 0 = F.ι ((fun w => fockAct1 p q r s Y w + ((c : ℂ) * Y.trace) • w)^[k] (κ P'))`. Simplify using `only [f, Complex.ofReal_zero, zero_mul, Complex.exp_zero, one_smul, zero_smul, T₁.expt_zero, Prod.mk_one_one, map_one, ContinuousLinearMap.one_apply]`.
+
+Rewrite using `[← h0]`. Conclude with `hb0 k`. Establish `hsq : ∀ x : T₁.G, ‖((T₁.sq x : ℂˣ) : ℂ)‖ = 1`. Introduce `x`. Establish `hdet : ‖(((T₁.cov x : GL (Ix p q) ℂ) : Mat p q)).det‖ = 1`.
+
+Establish `h` using `congrArg Matrix.det (hUJ x)`. Rewrite `h` using `[Matrix.det_mul, Matrix.det_mul, Matrix.det_conjTranspose]`. Establish `hJ : (TH.Jm p q).det ≠ 0`. Unfold `TH.Jm Formalism.UG.Jpq`. Rewrite using `[Matrix.det_fromBlocks_zero₂₁]`.
+
+Simplify using `[Matrix.det_neg]`. Establish `h2 : star (((T₁.cov x : GL (Ix p q) ℂ) : Mat p q)).det * (((T₁.cov x : GL (Ix p q) ℂ) : Mat p q)).det = 1` using `mul_right_cancel₀ hJ (by linear_combination h)`. Rewrite `h2` using `[Complex.star_def, Complex.conj_mul']`. Establish `h3 : ‖(((T₁.cov x : GL (Ix p q) ℂ) : Mat p q)).det‖ ^ 2 = 1` using `by exact_mod_cast h2`. Establish `h4` using `norm_nonneg (((T₁.cov x : GL (Ix p q) ℂ) : Mat p q)).det`.
+
+Use the polynomial consequences of the given equalities and inequalities. Establish `h3` using `congrArg (‖·‖) (T₁.sq_sq x)`. Simplify using `only [norm_pow, hdet] at h3`. Establish `h4` using `norm_nonneg ((T₁.sq x : ℂˣ) : ℂ)`. Use the polynomial consequences of the given equalities and inequalities.
+
+Establish `hre : ∀ P'' : MvPolynomial ι ℂ, (ip (pt P'') (pt P'')).re = N * ‖F.ι (κ P'')‖ ^ 2`. Introduce `P''`. Rewrite using `[hip, Complex.re_ofReal_mul]`. Use `congr 1`. Conclude with `inner_self_eq_norm_sq (𝕜 := ℂ) (F.ι (κ P''))`.
+
+Establish `hN` using `hF.1`. Use `⟨2 * N * ‖F.ι (κ Q)‖ * C, ρ, hρ, fun k x => ?_⟩` and prove the remaining obligations. Establish `hι : ‖F.ι (κ ((aY Y)^[k] P'))‖ ≤ C * (k.factorial : ℝ) / ρ ^ k`. Rewrite using `[hiter]`. Conclude with `hC k`.
+
+Establish `t1 : ‖ip (A (phiFr fr br e ((T₁.cov x : GL (Ix p q) ℂ) : Mat p q)) (pt ((aY Y)^[k] P'))) (pt Q)‖ ≤ N * ‖F.ι (κ ((aY Y)^[k] P'))‖ * ‖F.ι (κ Q)‖`. Establish `hcs` using `ip_sq_le hL (hL.stable _ (hmemU x) _ (hL.mem ((aY Y)^[k] P'))) (hL.mem Q)`. Rewrite `hcs` using `[hL.unit _ (hmemU x) _ (hL.mem _) _ (hL.mem _), hre, hre]`. Establish `hnn : 0 ≤ N * ‖F.ι (κ ((aY Y)^[k] P'))‖ * ‖F.ι (κ Q)‖` using `mul_nonneg (mul_nonneg hN.le (norm_nonneg _)) (norm_nonneg _)`. Use polynomial arithmetic with `[norm_nonneg (ip (A (phiFr fr br e ((T₁.cov x : GL (Ix p q) ℂ) : Mat p q)) (pt ((aY Y)^[k] P'))) (pt Q))]`.
+
+Establish `t2 : ‖(N : ℂ) * ((T₁.sq x : ℂˣ) : ℂ) ^ m * ⟪F.ι (κ Q), F.π (x, 1) (F.ι (κ ((aY Y)^[k] P')))⟫_ℂ‖ ≤ N * (‖F.ι (κ Q)‖ * ‖F.ι (κ ((aY Y)^[k] P'))‖)`. Rewrite using `[norm_mul, norm_mul, norm_zpow, hsq, _root_.one_zpow, mul_one, Complex.norm_real, Real.norm_of_nonneg hN.le]`. Use `mul_le_mul_of_nonneg_left ((norm_inner_le_norm _ _).trans (le_of_eq ?_)) hN.le` and prove the remaining obligations. Rewrite using `[show F.π (x, 1) = F.Om (F.emb (x, 1)) from rfl, F.isom]`. Use `show ‖ip (A (phiFr fr br e ((T₁.cov x : GL (Ix p q) ℂ) : Mat p q)) (pt ((aY Y)^[k] P'))) (pt Q) - (N : ℂ) * ((T₁.sq x : ℂˣ) : ℂ) ^ m * ⟪F.ι (κ Q), F.π (x, 1) (F.ι (κ ((aY Y)^[k] P')))⟫_ℂ‖ ≤ _`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `family_eq_zero T₁ hgen D aY hder hb h1 g P` as an intermediate fact. Conclude with `sub_eq_zero.mp this`.
+-/
 theorem coef_of_side : ∀ (p q r s n : ℕ) (T₀ : GrpData (p * r + q * s) (p * s + q * r)) (T₁ : GrpData p q) (T₂ : GrpData r s) (F : FockData T₀ T₁ T₂) (ι Z : Type) (G fr : Mn n) (ε : Fin n → Bool) (br : Bool) (e : Ix p q ≃ Fin n) (A : Mn n → (Z → ℂ) → (Z → ℂ)) (pt : MvPolynomial ι ℂ → (Z → ℂ)) (ip : (Z → ℂ) → (Z → ℂ) → ℂ) (Θ : Submodule ℂ (Z → ℂ)) (κ : MvPolynomial ι ℂ ≃ₗ[ℂ] Pol p q r s) (c : ℚ) (m : ℤ) (N : ℝ), 1 ≤ p + q → IsUnit fr → frᴴ * Formalism.REAL.Jm ε * fr = G → SignCompat ε e → (m : ℚ) = 2 * c → Side A pt κ (phiFr fr br e) c (fockAct1 p q r s) → L2UnitaryRepresentationData G A pt ip Θ → Fischer pt ip κ N → Coef F A pt ip κ (phiFr fr br e) m N := by
   intro p q r s n T₀ T₁ T₂ F ι Z G fr ε br e A pt ip Θ κ c m N hpq hfr hG hs hm hS hL hF
   have hip : ∀ P Q, ip (pt P) (pt Q) = (N : ℂ) * ⟪F.ι (κ Q), F.ι (κ P)⟫_ℂ := fun P Q => by

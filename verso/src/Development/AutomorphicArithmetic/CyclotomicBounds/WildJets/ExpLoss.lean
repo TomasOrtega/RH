@@ -13,6 +13,13 @@ open IsDedekindDomain NumberField Matrix GlobalTheory.ChiGrid GlobalTheory.FunOb
 open Formalism.DivisionValues (vw lw)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Introduce `D S h B hE`. Establish `e : (fun w : PlL D => (vw w ((GlobalTheory.SumSize.TopInt.primeUnder w : ℕ) : D.what₂.LL) : ℝ) * h (GlobalTheory.SumSize.TopInt.primeUnder w)) = Formalism.PairingDivisionLocalBalance.wt (K` using `D.what₂.LL) S h := by`. Use function extensionality and compare the values at `w`. Rewrite using `[hE.wt_eq (TopInt.primeUnder_prime w) w (TopInt.primeUnder_mem w), mul_comm]`. Rewrite using `[e]`.
+
+Use `⟨hE.wt_size.1, ?_, hE.wt_size.2⟩` and prove the remaining obligations. Establish `hf : ∀ l : ℕ, {w : PlL D | vw w (l : D.what₂.LL) ≠ 0}.Finite` using `fun l => by`. Establish `hf` using `FractionalIdeal.finite_factors (K := D.what₂.LL) (FractionalIdeal.spanSingleton (nonZeroDivisors (𝓞 D.what₂.LL)) (l : D.what₂.LL))`. Rewrite `hf` using `[Filter.eventually_cofinite]`. Conclude with `hf`.
+
+Use `(S.finite_toSet.biUnion fun l _ => hf l).subset fun w hw => ?_` and prove the remaining obligations. Take `⟨l, hl, h0⟩` from `Finset.exists_ne_zero_of_sum_ne_zero hw`. Use `Set.mem_biUnion (Finset.mem_coe.2 hl) fun h1 => h0 ?_` and prove the remaining obligations. Rewrite using `[h1]`. Simplify using the standard rewrite rules.
+-/
 theorem UpperTheory.WildA.expLoss :
     ∀ (D : D7) (S : Finset ℕ) (h : ℕ → ℝ) (B : ℝ), GlobalTheory.NormSum.Exponents S h B →
       Loss (fun w : PlL D => (vw w ((GlobalTheory.SumSize.TopInt.primeUnder w : ℕ) : D.what₂.LL) : ℝ) * h (GlobalTheory.SumSize.TopInt.primeUnder w)) B := by

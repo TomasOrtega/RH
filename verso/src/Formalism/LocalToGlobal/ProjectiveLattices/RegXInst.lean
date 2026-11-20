@@ -12,6 +12,9 @@ variable {D : D7} {T : Top D} (h : LawsP T) (j : ℕ) (hj : InR D j)
 
 include h hj in
 
+/- English proof (translation)
+Break down `y with ⟨q, S, io, e, ho, z, hz, η, hη, rfl⟩` into its components or cases. Take `⟨η', hη'⟩` from `T.G.liesTotal h.points_condition h.bc66 hj la S io e ho z hz`. Conclude with `⟨PtV.mk la ho z hz η' hη', fun _ => rfl⟩`.
+-/
 theorem pt_realise (la : HeightOneSpectrum (𝓞 T.Q.c.F))
     (y : PtV (T.Q.Xo j) T.Q.c (algCls _ _) Unit (fun _ _ _ _ => True) la) :
     ∃ y' : T.PtA j la, ∀ f, vAtV y' f = vAtV y f := by
@@ -19,6 +22,11 @@ theorem pt_realise (la : HeightOneSpectrum (𝓞 T.Q.c.F))
   obtain ⟨η', hη'⟩ := T.G.liesTotal h.points_condition h.bc66 hj la S io e ho z hz
   exact ⟨PtV.mk la ho z hz η' hη', fun _ => rfl⟩
 
+/- English proof (translation)
+Introduce `w F hF la y'`. Rewrite using `[extAll_vAt_inc]`. Use `(h.reg j hj).int (dom_wtA w) (cutR_le T.C j w F.2) ?_ la y'.1 y'.2` and prove the remaining obligations. Introduce and unpack `la' _ ⟨y, rfl⟩`. Take `⟨y', hy'⟩` from `pt_realise h j hj la' y`.
+
+Use `hF la' y'` as an intermediate fact. Rewrite `this` using `[recPJ_vAt_inc, hy']`. Conclude with `this`.
+-/
 theorem regularity_R1_extended_points : RegularityR1 (recPJ h j hj) (extAll h j hj) := by
   intro w F hF la y'
   rw [extAll_vAt_inc]
@@ -29,6 +37,9 @@ theorem regularity_R1_extended_points : RegularityR1 (recPJ h j hj) (extAll h j 
   rw [recPJ_vAt_inc, hy'] at this
   exact this
 
+/- English proof (translation)
+Establish `hb : v ≠ ⊥` using `fun hb => by simp [hb] at h0`. Use `conv_rhs => rw [← EReal.coe_toReal ht hb]`. Use `push_cast`. Both sides reduce to the same expression.
+-/
 theorem ereal_lin (a c : ℝ) (v : EReal) (h0 : 0 ≤ v) (ht : v ≠ ⊤) :
     (((a + c * v.toReal : ℝ)) : EReal) = (a : EReal) + (c : EReal) * v := by
   have hb : v ≠ ⊥ := fun hb => by simp [hb] at h0
@@ -36,6 +47,21 @@ theorem ereal_lin (a c : ℝ) (v : EReal) (h0 : 0 ≤ v) (ht : v ≠ ⊤) :
   push_cast
   rfl
 
+/- English proof (translation)
+Establish `hv : ∀ la (y : (recPJ h j hj).Pt la) w (F : (recB h.toLawsCore).Cusp j w), (recPJ h j hj).vAt la y ((recPJ h j hj).inc w F) = vAtV y F.1` using `fun la y w F => recPJ_vAt_inc h j hj la y w F`. Establish `ev : ∀ la (y : (extAll h j hj).Pt' la) w (F : (recB h.toLawsCore).Cusp j w), (extAll h j hj).vAt' la y ((recPJ h j hj).inc w F) = y.1 F.1` using `fun la y w F => extAll_vAt_inc h j hj la y w F`. Prove the components needed by the constructor for the conclusion. Introduce `wL wE n gens et nus c hc hNZ hX la y'`. Establish `hR` using `(h.reg j hj).1.2 ⟨(wtA wL, wL.n), dom_wtA wL⟩ ⟨(wtA wE, wE.n), dom_wtA wE⟩ n (fun k => ⟨(gens k).1, cutR_le T.C j wL (gens k).2⟩) ⟨et.1, cutR_le T.C j wE et.2⟩ nus c hc hNZ (by`.
+
+Introduce and unpack `la' ⟨_, ⟨y, rfl⟩⟩`. Take `⟨y0, hy0⟩` from `pt_realise h j hj la' y`. Establish `hx` using `hX la' y0`. Establish `eet : (recPJ h j hj).vAt la' y0 ((recPJ h j hj).inc wE et) = vAtV y et.1` using `(hv la' y0 wE et).trans (hy0 _)`. Establish `egs : (⨅ k, (recPJ h j hj).vAt la' y0 ((recPJ h j hj).inc wL (gens k))) = ⨅ k, vAtV y (gens k).1` using `iInf_congr fun k => (hv la' y0 wL (gens k)).trans (hy0 _)`.
+
+Establish `h0 : 0 ≤ vAtV y et.1` using `le_of_le_of_eq hx.1 eet`. Use `show 0 ≤ vAtV y et.1 ∧ (vAtV y et.1 ≠ ⊤ → (⨅ k, vAtV y (gens k).1) ≤ (nus la' : EReal) + (c : EReal) * vAtV y et.1)`. Use `⟨h0, fun hne => ?_⟩` and prove the remaining obligations. Establish `hne' : (recPJ h j hj).vAt la' y0 ((recPJ h j hj).inc wE et) ≠ ⊤` using `by rw [eet]; exact hne`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[eet]`. Conclude with `ereal_lin _ _ _ h0 hne)`. Take `⟨h1, h2⟩` from `hR.1 la ⟨y'.1, y'.2⟩`. Establish `eet : (extAll h j hj).vAt' la y' ((recPJ h j hj).inc wE et) = y'.1 et.1` using `ev la y' wE et`. Establish `egs : (⨅ k, (extAll h j hj).vAt' la y' ((recPJ h j hj).inc wL (gens k))) = ⨅ k, y'.1 (gens k).1` using `iInf_congr fun k => ev la y' wL (gens k)`.
+
+Establish `h1' : 0 ≤ y'.1 et.1` using `h1`. Use `⟨le_of_le_of_eq h1' eet.symm, fun hne => ?_⟩` and prove the remaining obligations. Establish `hne' : y'.1 et.1 ≠ ⊤` using `by rw [← eet]; exact hne`. Combine the equalities or inequalities in the displayed calculation. Introduce `wL n gens nus hNZ hX la y'`.
+
+Establish `hR` using `(h.reg j hj).2 (wtA wL) wL.n (dom_wtA wL) n (fun k => (gens k).1) (fun k => cutR_le T.C j wL (gens k).2) hNZ nus (by`. Introduce and unpack `la' _ ⟨y, rfl⟩`. Take `⟨y0, hy0⟩` from `pt_realise h j hj la' y`. Establish `egs : (⨅ k, (recPJ h j hj).vAt la' y0 ((recPJ h j hj).inc wL (gens k))) = ⨅ k, vAtV y (gens k).1` using `iInf_congr fun k => (hv la' y0 wL (gens k)).trans (hy0 _)`. Conclude with `le_of_eq_of_le egs.symm (hX la' y0)) la y'.1 y'.2`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem regularity_R2_extended_points :
     RegularityR2 (recPJ h j hj) (extAll h j hj)
       (fun {wL} {n} gens => NoCommonZero (T.Q.Xo j) T.Q.c fun i => (gens i).1) := by

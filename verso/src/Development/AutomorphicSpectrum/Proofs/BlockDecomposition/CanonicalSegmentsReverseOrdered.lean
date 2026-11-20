@@ -7,6 +7,9 @@ open GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.SmGL GlobalTheory.Loc
 
 namespace GlobalTheory.CompanionTheory.Canon
 
+/- English proof (translation)
+Introduce `hc i j hij hp` and use `(hc.1 i j hij).1 hp.2`.
+-/
 theorem isRevOrdered_of_isCanon {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] {h : ℕ} (Γ : Fin h → Segment k) : IsCanon Γ → IsRevOrdered Γ :=
   fun hc i j hij hp => (hc.1 i j hij).1 hp.2

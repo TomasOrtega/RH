@@ -5,6 +5,21 @@ namespace ReciprocityTheory.ChartRestriction.G.FD.PackingSeparation
 open NumberField InfinitePlace Module MeasureTheory Metric TraceIntegralBasis IntegralTraceNormBounds
 open scoped Classical
 
+/- English proof (translation)
+Use `set d := finrank ℝ W`. Establish `hdisj : (S : Set W).PairwiseDisjoint fun p => ball p (1 / 2)`. Introduce `p hp q hq hpq`. Rewrite using `[Function.onFun, Set.disjoint_left]`. Introduce `z hzp hzq`.
+
+Rewrite `hzp`, `hzq` using `[mem_ball, dist_eq_norm]`. Establish `h1` using `hsep p hp q hq hpq`. Establish `h2 : ‖p - q‖ ≤ ‖z - p‖ + ‖z - q‖`. Combine the equalities or inequalities in the displayed calculation. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hsub : (⋃ p ∈ S, ball p (1 / 2)) ⊆ ball (0 : W) (R + 1 / 2)`. Introduce `z hz`. Simplify using `only [Set.mem_iUnion, mem_ball, dist_eq_norm] at hz`. Take `⟨p, hp, hzp⟩` from `hz`. Rewrite using `[mem_ball, dist_eq_norm, sub_zero]`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `h` using `measure_mono (μ := μ) hsub`. Rewrite `h` using `[measure_biUnion_finset hdisj (fun _ _ => measurableSet_ball)]`. Simplify using `only [Measure.addHaar_ball μ _ (by norm_num : (0 : ℝ) ≤ 1 / 2), Measure.addHaar_ball μ _ (by positivity : (0 : ℝ) ≤ R + 1 / 2), Finset.sum_const, nsmul_eq_mul] at h`. Rewrite `h` using `[← mul_assoc]`.
+
+Establish `hc0 : μ (ball 0 1) ≠ 0` using `(measure_ball_pos μ 0 one_pos).ne'`. Establish `hctop : μ (ball 0 1) ≠ ⊤` using `measure_ball_lt_top.ne`. Establish `h2` using `(ENNReal.mul_le_mul_iff_left hc0 hctop).mp h`. Rewrite `h2` using `[← ENNReal.ofReal_natCast, ← ENNReal.ofReal_mul (by positivity), ENNReal.ofReal_le_ofReal_iff (by positivity)]`. Establish `h3 : (S.card : ℝ) = (S.card : ℝ) * (1 / 2) ^ d * 2 ^ d`.
+
+Rewrite using `[mul_assoc, ← mul_pow]`. Evaluate the numerical expressions. Rewrite using `[h3]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_pow]`.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem pack {W : Type*} [NormedAddCommGroup W] [NormedSpace ℝ W] [MeasurableSpace W]
     [BorelSpace W] [FiniteDimensional ℝ W] [Nontrivial W] (μ : Measure W) [μ.IsAddHaarMeasure]
     (S : Finset W) (R : ℝ) (hR : 0 ≤ R) (hS : ∀ p ∈ S, ‖p‖ ≤ R)
@@ -55,6 +70,11 @@ theorem pack {W : Type*} [NormedAddCommGroup W] [NormedSpace ℝ W] [MeasurableS
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
+/- English proof (translation)
+Establish `h` using `Algebra.coe_norm_int γ`. Establish `hne : Algebra.norm ℤ γ ≠ 0`. Introduce `h0`. Rewrite `h` using `[h0, Int.cast_zero]`. Conclude with `(Algebra.norm_ne_zero_iff.mpr (by exact_mod_cast hγ : (γ : E) ≠ 0)) h.symm`.
+
+Rewrite using `[← h]`. Use `Int.one_le_abs hne` as an intermediate fact. Use `push_cast`. Conclude with `this` after adjusting the coercions.
+-/
 lemma one_le_abs_norm (γ : 𝓞 E) (hγ : γ ≠ 0) : 1 ≤ |(Algebra.norm ℚ (γ : E) : ℝ)| := by
   have h := Algebra.coe_norm_int γ
   have hne : Algebra.norm ℤ γ ≠ 0 := by
@@ -66,6 +86,13 @@ lemma one_le_abs_norm (γ : 𝓞 E) (hγ : γ ≠ 0) : 1 ≤ |(Algebra.norm ℚ 
   push_cast
   exact_mod_cast this
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hcon`. Simplify using `only [not_exists, not_le] at hcon`. Take `⟨w0⟩` from `(inferInstance : Nonempty (InfinitePlace E))`. Use `set w1 : CP E := ⟨w0, IsTotallyComplex.isComplex w0⟩`. Establish `h` using `prod_norm (E := E) (γ : E)`.
+
+Rewrite `h` using `[← Finset.mul_prod_erase Finset.univ _ (Finset.mem_univ w1)]`. Establish `hle : ∏ w ∈ Finset.univ.erase w1, ‖w.1.embedding (γ : E)‖ ^ 2 ≤ 1` using `Finset.prod_le_one (fun _ _ => by positivity) (fun w _ => pow_le_one₀ (norm_nonneg _) (hcon w).le)`. Establish `hlt : ‖w1.1.embedding (γ : E)‖ ^ 2 < 1` using `pow_lt_one₀ (norm_nonneg _) (hcon w1) two_ne_zero`. Use `one_le_abs_norm γ hγ` as an intermediate fact. Rewrite `this` using `[← h]`.
+
+Use polynomial arithmetic with `[mul_le_of_le_one_right (sq_nonneg ‖w1.1.embedding (γ : E)‖) hle]`.
+-/
 lemma sep (γ : 𝓞 E) (hγ : γ ≠ 0) : ∃ w : CP E, 1 ≤ ‖w.1.embedding (γ : E)‖ := by
   by_contra hcon
   simp only [not_exists, not_le] at hcon
@@ -81,6 +108,21 @@ lemma sep (γ : 𝓞 E) (hγ : γ ≠ 0) : ∃ w : CP E, 1 ≤ ‖w.1.embedding 
   rw [← h] at this
   nlinarith [mul_le_of_le_one_right (sq_nonneg ‖w1.1.embedding (γ : E)‖) hle]
 
+/- English proof (translation)
+Use `set T := {α : 𝓞 E | ∀ τ : E →+* ℂ, ‖τ (α : E)‖ ≤ R}`. Establish `hT : T.Finite`. Establish `h` using `Embeddings.finite_of_norm_le E ℂ R`. Use `(h.preimage (Set.injOn_of_injective RingOfIntegers.coe_injective)).subset ?_` and prove the remaining obligations. Introduce `α hα`.
+
+Conclude with `⟨α.isIntegral_coe, hα⟩`. Use `⟨hT, ?_⟩` and prove the remaining obligations. Set `p : 𝓞 E → (CP E → ℂ)` to `fun α w => w.1.embedding (α : E)`. Establish `hpinj : Function.Injective p`. Introduce `α β h`.
+
+Take `⟨w0⟩` from `(inferInstance : Nonempty (InfinitePlace E))`. Use `congrFun h ⟨w0, IsTotallyComplex.isComplex w0⟩` as an intermediate fact. Conclude with `RingOfIntegers.coe_injective (w0.embedding.injective this)`. Establish `hd : finrank ℝ (CP E → ℂ) = 2 * fdeg E`. Rewrite using `[Module.finrank_pi_fintype]`.
+
+Simplify using `[Complex.finrank_real_complex, (card_CP (E := E)).1, mul_comm]`. Establish `hcard : T.ncard = (hT.toFinset.image p).card`. Rewrite using `[Finset.card_image_of_injective _ hpinj, Set.ncard_eq_toFinset_card _ hT]`. Take `⟨w0⟩` from `(inferInstance : Nonempty (InfinitePlace E))`. Establish `: Nonempty (CP E)` using `⟨⟨w0, IsTotallyComplex.isComplex w0⟩⟩`.
+
+Rewrite using `[hcard, ← hd]`. Use `pack volume _ R hR ?_ ?_` and prove the remaining obligations. Introduce `q hq`. Take `⟨α, hα, rfl⟩` from `Finset.mem_image.mp hq`. Rewrite `hα` using `[Set.Finite.mem_toFinset]`.
+
+Conclude with `(pi_norm_le_iff_of_nonneg hR).mpr fun w => hα _`. Introduce `q hq q' hq' hne`. Take `⟨α, -, rfl⟩` from `Finset.mem_image.mp hq`. Take `⟨β, -, rfl⟩` from `Finset.mem_image.mp hq'`. Establish `hαβ : α - β ≠ 0` using `sub_ne_zero.mpr fun h => hne (by rw [h])`.
+
+Take `⟨w, hw⟩` from `sep (α - β) hαβ`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem count (R : ℝ) (hR : 0 ≤ R) :
     {α : 𝓞 E | ∀ τ : E →+* ℂ, ‖τ (α : E)‖ ≤ R}.Finite ∧
       ({α : 𝓞 E | ∀ τ : E →+* ℂ, ‖τ (α : E)‖ ≤ R}.ncard : ℝ) ≤ (1 + 2 * R) ^ (2 * fdeg E) := by

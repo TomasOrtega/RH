@@ -7,6 +7,11 @@ open UpperTheory.HF
 open NumberField Ideal Formalism.HC Formalism.FrobeniusOrbits
 open scoped Pointwise
 
+/- English proof (translation)
+Establish `hq` using `H.q_prime`. Establish `hQd : H.QS * H.d ≠ 0` using `Nat.mul_ne_zero H.QS_ne_zero H.d_prime.ne_zero`. Establish `hnd : ¬ H.q ∣ H.QS * H.d` using `fun h => hq.one_lt.ne' (Nat.Coprime.eq_one_of_dvd (Nat.Coprime.symm H.coprime_QSd_q) h)`. Establish `hN : H.condN = H.QS * H.d * H.q` using `by show H.QS * H.q * H.d = H.QS * H.d * H.q`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hfac : H.condN.factorization H.q = 1`. Rewrite using `[hN, Nat.factorization_mul hQd hq.ne_zero, Finsupp.add_apply, Nat.factorization_eq_zero_of_not_dvd hnd, hq.factorization_self]`. Rewrite using `[hfac, pow_one, hN]`. Conclude with `Nat.mul_div_cancel _ hq.pos`.
+-/
 private theorem ordCompl_q {φ : Frame} (H : HostRaw φ) : ordCompl[H.q] H.condN = H.QS * H.d := by
   have hq := H.q_prime
   have hQd : H.QS * H.d ≠ 0 := Nat.mul_ne_zero H.QS_ne_zero H.d_prime.ne_zero
@@ -21,9 +26,21 @@ private theorem ordCompl_q {φ : Frame} (H : HostRaw φ) : ordCompl[H.q] H.condN
   rw [hfac, pow_one, hN]
   exact Nat.mul_div_cancel _ hq.pos
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨H.q, by unfold HostRaw.condN; ring⟩`.
+-/
 private theorem QSd_dvd {φ : Frame} (H : HostRaw φ) : H.QS * H.d ∣ H.condN :=
   ⟨H.q, by unfold HostRaw.condN; ring⟩
 
+/- English proof (translation)
+Use `haveI : Fact (Nat.Prime H.q) := ⟨H.q_prime⟩`. Establish `hN : H.condN = H.QS * H.d * H.q` using `by show H.QS * H.q * H.d = H.QS * H.d * H.q`. Expand and normalize the polynomial expressions, which then agree. Use `haveI : NeZero H.condN := ⟨by`. Rewrite using `[hN]`.
+
+Conclude with `Nat.mul_ne_zero (Nat.mul_ne_zero H.QS_ne_zero H.d_prime.ne_zero) H.q_prime.ne_zero⟩`. Set `f : H.unitsOne (H.QS * H.d) →* ZMod H.q` to `(Units.coeHom (ZMod H.q)).comp ((ZMod.unitsMap H.q_dvd_condN).comp (Subgroup.subtype _))`. Use `isCyclic_of_injective_ringHom f ?_` and prove the remaining obligations. Introduce `a b hab`. Establish `ha` using `(H.mem_unitsOne (QSd_dvd H) a).1 a.2`.
+
+Establish `hb` using `(H.mem_unitsOne (QSd_dvd H) b).1 b.2`. Establish `hq : ((a : (ZMod H.condN)ˣ) : ZMod H.condN).val ≡ ((b : (ZMod H.condN)ˣ) : ZMod H.condN).val [MOD H.q]`. Simplify using `only [f, MonoidHom.coe_comp, Function.comp_apply, Units.coeHom_apply, Subgroup.coe_subtype, ZMod.unitsMap_val] at hab`. Rewrite using `[← ZMod.natCast_eq_natCast_iff, ZMod.natCast_val, ZMod.natCast_val]`. Conclude with `hab`.
+
+Establish `hm` using `(Nat.modEq_and_modEq_iff_modEq_mul H.coprime_QSd_q).1 ⟨ha.trans hb.symm, hq⟩`. Rewrite `hm` using `[← hN]`. Use `Nat.ModEq.eq_of_lt_of_lt hm (ZMod.val_lt _) (ZMod.val_lt _)` as an intermediate fact. Conclude with `Subtype.ext (Units.ext (ZMod.val_injective _ this))`.
+-/
 private theorem cyc_unitsOne {φ : Frame} (H : HostRaw φ) : IsCyclic (H.unitsOne (H.QS * H.d)) := by
   haveI : Fact (Nat.Prime H.q) := ⟨H.q_prime⟩
   have hN : H.condN = H.QS * H.d * H.q := by
@@ -48,6 +65,13 @@ private theorem cyc_unitsOne {φ : Frame} (H : HostRaw φ) : IsCyclic (H.unitsOn
   have := Nat.ModEq.eq_of_lt_of_lt hm (ZMod.val_lt _) (ZMod.val_lt _)
   exact Subtype.ext (Units.ext (ZMod.val_injective _ this))
 
+/- English proof (translation)
+Use `show Nat.card (H.inertG H.q) ∣ 2`. Use `show Nat.card (H.imgOne (H.condN / H.q ^ H.condN.factorization H.q)) ∣ 2`. Rewrite using `[ordCompl_q H]`. Use `show Nat.card (Subgroup.map H.art (H.unitsOne (H.QS * H.d))) ∣ 2`. Use `haveI := cyc_unitsOne H`.
+
+Use `haveI : IsCyclic (Subgroup.map H.art (H.unitsOne (H.QS * H.d))) := isCyclic_of_surjective (H.art.subgroupMap _) (H.art.subgroupMap_surjective _)`. Rewrite using `[← IsCyclic.exponent_eq_card]`. Apply `Monoid.exponent_dvd_of_forall_pow_eq_one` to reduce the goal to its premises. Introduce and unpack `⟨g, hg⟩`. Take `⟨u, hu, rfl⟩` from `Subgroup.mem_map.1 hg`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [SubmonoidClass.coe_pow, OneMemClass.coe_one]`. Conclude with `H.art_q u ((H.mem_unitsOne (QSd_dvd H) u).1 hu)`.
+-/
 private theorem el_q_dvd {φ : Frame} (H : HostRaw φ) : H.el H.q ∣ 2 := by
   show Nat.card (H.inertG H.q) ∣ 2
   show Nat.card (H.imgOne (H.condN / H.q ^ H.condN.factorization H.q)) ∣ 2
@@ -64,6 +88,19 @@ private theorem el_q_dvd {φ : Frame} (H : HostRaw φ) : H.el H.q ∣ 2 := by
   simp only [SubmonoidClass.coe_pow, OneMemClass.coe_one]
   exact H.art_q u ((H.mem_unitsOne (QSd_dvd H) u).1 hu)
 
+/- English proof (translation)
+Introduce `h1`. Establish `hq` using `H.q_prime`. Establish `hbot : H.inertG H.q = ⊥` using `Subgroup.card_eq_one.1 h1`. Take `⟨p, hp1, hp2⟩` from `Nat.chineseRemainder H.coprime_QSd_q 1 (H.q - 1)`. Establish `hN : H.condN = H.QS * H.d * H.q` using `by show H.QS * H.q * H.d = H.QS * H.d * H.q`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hcq : Nat.Coprime p H.q`. Rewrite using `[Nat.Coprime, Nat.ModEq.gcd_eq hp2, Nat.gcd_comm, ← Nat.Coprime, hq.coprime_iff_not_dvd]`. Conclude with `Nat.not_dvd_of_pos_of_lt (by have := hq.two_le; omega) (by have := hq.two_le; omega)`. Establish `hcQd : Nat.Coprime p (H.QS * H.d)`.
+
+Rewrite using `[Nat.Coprime, Nat.ModEq.gcd_eq hp1, Nat.gcd_one_left]`. Establish `hcop : Nat.Coprime p H.condN`. Rewrite using `[hN]`. Conclude with `Nat.Coprime.mul_right hcQd hcq`. Use `set u := ZMod.unitOfCoprime p hcop`.
+
+Establish `hu : (u : ZMod H.condN).val ≡ p [MOD H.condN]` using `H.val_unitOfCoprime hcop`. Establish `hmem : H.art u ∈ H.inertG H.q`. Use `(H.mem_inertG H.q _).2 ⟨u, ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[ordCompl_q H]`. Conclude with `(hu.of_dvd (QSd_dvd H)).trans hp1`.
+
+Rewrite `hmem` using `[hbot, Subgroup.mem_bot]`. Establish `hJ` using `h u`. Rewrite `hJ` using `[hmem, jacobi_congr ((hu.of_dvd H.q_dvd_condN).trans hp2)]`. Establish `hc : ((H.q - 1 : ℕ) : ℤ) = -1 + (H.q : ℤ) * 1`. Move the coercions through the operations in `[Nat.cast_sub hq.one_le]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite `hJ` using `[hc, jacobiSym.mod_left, Int.add_mul_emod_self_left, ← jacobiSym.mod_left, jacobiSym.at_neg_one (hq.odd_of_ne_two H.q_ne_two), ZMod.χ₄_nat_three_mod_four H.q_mod_four]`. Simplify using `at hJ`.
+-/
 private theorem el_q_ne_one {φ : Frame} (H : HostRaw φ) (h : H.PsQ) : H.el H.q ≠ 1 := by
   intro h1
   have hq := H.q_prime
@@ -96,6 +133,17 @@ private theorem el_q_ne_one {φ : Frame} (H : HostRaw φ) (h : H.PsQ) : H.el H.q
     jacobiSym.at_neg_one (hq.odd_of_ne_two H.q_ne_two), ZMod.χ₄_nat_three_mod_four H.q_mod_four] at hJ
   simp at hJ
 
+/- English proof (translation)
+Introduce `φ H`. Establish `hq` using `H.q_prime`. Establish `h2` using `el_q_dvd H.toHostRaw`. Establish `hndvd : ¬ H.q ∣ H.el H.q` using `fun h => H.q_ne_two ((Nat.prime_dvd_prime_iff_eq hq Nat.prime_two).1 (h.trans h2))`. Establish `htw` using `vd_tame_wild H hq`.
+
+Establish `hram` using `mem_ram H hq`. Establish `hs : H.sl H.q = 1` using `htw.2.2 hndvd`. Use `⟨Nat.le_of_dvd two_pos h2, hs, fun hmem => ?_, fun hmem => ?_, fun hP => ?_⟩` and prove the remaining obligations. Establish `hel : H.el H.q = 2`. Break down `(Nat.dvd_prime Nat.prime_two).1 h2 with h | h` into its components or cases.
+
+Conclude with `absurd h (hram.1.1 hmem)`. Conclude with `h`. Use `⟨hel, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[htw.1 hndvd, hel]`. Evaluate the numerical expressions.
+
+Establish `hpos` using `(condE_spec H.toHostRaw).2.1`. Establish `hdvd : H.q ∣ H.condE` using `hram.2.1.1 hmem`. Establish `hle : H.condE.factorization H.q ≤ 1`. Establish `h : max 1 (H.condE.factorization H.q) = 1` using `hs`. Conclude with `max_eq_left_iff.1 h`.
+
+Conclude with `le_antisymm hle ((hq.dvd_iff_one_le_factorization hpos.ne').1 hdvd)`. Assume the negation of the conclusion as `h`. Conclude with `hmem (hram.2.2.1.2 h)`. Conclude with `hram.1.2 (el_q_ne_one H.toHostRaw hP)`.
+-/
 theorem UpperTheory.HF.inert_q :
     ∀ {φ : Frame} (H : HostAx φ), H.el H.q ≤ 2 ∧ H.sl H.q = 1 ∧ (H.q ∈ H.ram → H.el H.q = 2 ∧ H.vdH H.q = 1 / 2 ∧ H.condE.factorization H.q = 1) ∧ (H.q ∉ H.ram → H.vdH H.q = 0) ∧ (H.PsQ → H.q ∈ H.ram) := by
   intro φ H

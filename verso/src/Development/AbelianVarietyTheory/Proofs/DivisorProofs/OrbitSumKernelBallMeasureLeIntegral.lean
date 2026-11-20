@@ -15,6 +15,15 @@ open ReciprocityTheory.ChartRestriction.G.AR.Up.PoinPf
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
+/- English proof (translation)
+Establish `hw0 : (r : ℝ) * ‖w‖ ≤ 1` using `by nlinarith [norm_nonneg w]`. Establish `hp : X.p0 ≤ r` using `X.p0_le`. Establish `key` using `(GlobalTheory.T.det_near_one_matrix_norm_bounds X.p0 ((Gw X w τ).submatrix (Fin.castLE X.p0_le) (Fin.castLE X.p0_le)) (3 * ‖w‖) (fun i j => ?_) ?_).1`. Unfold `lminor`. Use `le_trans ?_ key` and prove the remaining obligations.
+
+Conclude with `pow_le_pow_of_le_one (by norm_num) (by norm_num) hp`. Establish `hJ : Jd X (Fin.castLE X.p0_le i) (Fin.castLE X.p0_le j) = (1 : Matrix (Fin X.p0) (Fin X.p0) ℂ) i j`. Simplify using `only [Jd, Matrix.diagonal_apply, Matrix.one_apply, Fin.castLE_inj]`. Use `split_ifs with h`. Substitute `h` using the available equality.
+
+Simplify using `[sgn, i.isLt]`. Both sides reduce to the same expression. Rewrite using `[Matrix.submatrix_apply, ← hJ]`. Conclude with `GlobalTheory.T.gramChart_sub_form_entry_le E r X w τ _ _ hw0`. Establish `: (X.p0 : ℝ) ≤ r` using `by exact_mod_cast hp`.
+
+Use polynomial arithmetic with `[norm_nonneg w]`.
+-/
 theorem norm_lminor_Gw_ge (X : Data E r) (w : V (nd X)) (τ : X.Ψ) (hw : 3 * (r : ℝ) * ‖w‖ ≤ 1 / 2) :
     (1 / 2 : ℝ) ^ r ≤ ‖lminor (Gw X w τ) (i0 X)‖ := by
   have hw0 : (r : ℝ) * ‖w‖ ≤ 1 := by nlinarith [norm_nonneg w]
@@ -34,6 +43,23 @@ theorem norm_lminor_Gw_ge (X : Data E r) (w : V (nd X)) (τ : X.Ψ) (hw : 3 * (r
   · have : (X.p0 : ℝ) ≤ r := by exact_mod_cast hp
     nlinarith [norm_nonneg w]
 
+/- English proof (translation)
+Establish `hr1 : (1 : ℝ) ≤ r` using `by exact_mod_cast hr`. Establish `hrw : 100 * (r : ℝ) ^ 2 * ‖w‖ ≤ 1`. Rewrite using `[le_div_iff₀ (by positivity)] at hw; linarith`. Establish `hp : (X.p0 : ℝ) ≤ r` using `by exact_mod_cast X.p0_le`. Establish `hw3 : 3 * (r : ℝ) * ‖w‖ ≤ 1 / 2` using `by nlinarith [norm_nonneg w]`.
+
+Establish `hterm : ∀ τ : X.Ψ, -(Real.log ‖dmin X.Gm (cpt X x w) τ (i0 X)‖ - 2 * Real.log ‖lminor (gM X x0 (cpt X x w) τ) (i0 X)‖) ≤ -(Real.log ‖dmin X.Gm x τ (i0 X)‖ - 2 * Real.log ‖lminor (gM X x0 x τ) (i0 X)‖) + 3 * r * Real.log 2`. Introduce `τ`. Establish `hd1 : ‖dmin X.Gm x τ (i0 X)‖ = 1` using `norm_dmin_orth' X hx τ _`. Establish `hA : -Real.log ‖dmin X.Gm (cpt X x w) τ (i0 X)‖ ≤ r * Real.log 2`. Rewrite using `[dmin_cpt_orth X hx]`.
+
+Establish `h1` using `norm_lminor_Gw_ge X w τ hw3`. Establish `h2 : Real.log ((1 / 2 : ℝ) ^ r) ≤ Real.log ‖lminor (Gw X w τ) (i0 X)‖` using `Real.log_le_log (by positivity) h1`. Rewrite `h2` using `[Real.log_pow, one_div, Real.log_inv]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hM22` using `(sumBd_weight (Mq_isUpq X hx0 hx τ)).1`.
+
+Establish `hnorm : ∀ y, ‖lminor (gM X x0 y τ) (i0 X)‖ = ‖(Mq X x0 y τ).toBlocks₂₂.det‖` using `fun y => by`. Rewrite using `[det_lowerBlock_eq_conj_minor, Complex.norm_conj]`. Both sides reduce to the same expression. Apply the tactic sequence `have hPP := GlobalTheory.T.det_near_one_matrix_norm_bounds X.p0 (((Mq X x0 x τ).toBlocks₂₂)⁻¹ * (Mq X x0 x τ).toBlocks₂₁ * (Nw X w τ).toBlocks₁₂ + (Nw X w τ).toBlocks₂₂) (((r : ℝ) + 1) * ‖w‖) (fun i j => pert_entry X hx0 hx w τ i j) (by nlinarith [norm_nonneg w])`. Establish `hP` using `hPP.2`.
+
+Establish `h0 : 0 < ‖(((Mq X x0 x τ).toBlocks₂₂)⁻¹ * (Mq X x0 x τ).toBlocks₂₁ * (Nw X w τ).toBlocks₁₂ + (Nw X w τ).toBlocks₂₂).det‖` using `lt_of_lt_of_le (by positivity) hPP.1`. Establish `hpos : 0 < ‖(Mq X x0 x τ).toBlocks₂₂.det‖` using `norm_pos_iff.2 hM22`. Establish `hB : Real.log ‖lminor (gM X x0 (cpt X x w) τ) (i0 X)‖ ≤ Real.log ‖lminor (gM X x0 x τ) (i0 X)‖ + r * Real.log 2`. Rewrite using `[hnorm, hnorm, Mq_cpt', det_split _ _ hM22, norm_mul]`. Rewrite using `[Real.log_mul hpos.ne' h0.ne']`.
+
+Establish `h2 : Real.log ‖(((Mq X x0 x τ).toBlocks₂₂)⁻¹ * (Mq X x0 x τ).toBlocks₂₁ * (Nw X w τ).toBlocks₁₂ + (Nw X w τ).toBlocks₂₂).det‖ ≤ X.p0 * Real.log 2`. Rewrite using `[← Real.log_pow]`. Conclude with `Real.log_le_log h0 hP`. Establish `hl2 : 0 ≤ Real.log 2` using `Real.log_nonneg (by norm_num)`. Use the polynomial consequences of the given equalities and inequalities.
+
+Rewrite using `[hd1, Real.log_one]`. Combine the linear equalities and inequalities to obtain the conclusion. Unfold `rhY`. Rewrite using `[← Finset.sum_neg_distrib, ← Finset.sum_neg_distrib]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[Finset.sum_add_distrib, Finset.sum_const, Finset.card_univ, Fintype.card_coe, nsmul_eq_mul]`.
+-/
 theorem rhY_cpt_le (X : Data E r) {x0 x : Frame X.Ψ r} (hx0 : IsOrth X x0) (hx : IsOrth X x)
     (hr : 0 < r) (w : V (nd X)) (hw : ‖w‖ ≤ 1 / (100 * (r : ℝ) ^ 2)) :
     rhY X x0 (cpt X x w) ≤ rhY X x0 x + X.Ψ.card * (3 * r * Real.log 2) := by
@@ -92,6 +118,23 @@ open ReciprocityTheory.ChartRestriction.G.AR.Up.PoinPf
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
+/- English proof (translation)
+Use `FundSetPf.countable_GL (E := E) (r := r)` as an intermediate fact. Establish `hS` using `GlobalTheory.Unfold.measurableSet_satFrames X hx hA hAO`. Establish `hc : Measurable (cpt X x)` using `(FundSetPf.cont_cpt X x).measurable`. Set `χ : X.Γ → Frame X.Ψ r → ℝ≥0∞` to `fun γ => ((fun u => lact (γ.1)⁻¹ u) ⁻¹' GlobalTheory.Unfold.satFrames X x A).indicator φ`. Establish `hχm : ∀ γ, Measurable (χ γ)` using `fun γ => hφ.indicator ((GlobalTheory.Unfold.continuous_lact X _).measurable hS)`.
+
+Establish `hχB : ∀ γ, ∀ u ∈ X.dom, ∀ b ∈ Bor X.Ψ r, χ γ (rmul u b) = χ γ u`. Introduce `γ u hu b hb`. Simplify using `only [χ, Set.indicator, Set.mem_preimage, FundSetPf.lact_rmul, GlobalTheory.Unfold.rmul_mem_satFrames_iff X x A _ hb, hφB u hu b hb]`. Establish `hterm : ∀ γ : X.Γ, ∫⁻ z in A, φ (lact γ.1 (cpt X x z)) ∂muF X x = ∫⁻ z, χ γ (cpt X x z) ∂muF X x`. Introduce `γ`.
+
+Rewrite using `[measInv_holds r X x (lact γ.1 x) hx (GlobalTheory.Unfold.isOrth_lact X hx γ.2) (χ γ) (hχm γ) (hχB γ), GlobalTheory.Unfold.muF_lact X x γ.2, ← lintegral_indicator hA]`. Use `lintegral_congr fun z => ?_` and prove the remaining obligations. Simplify using `only [χ, Set.indicator, Set.mem_preimage, GlobalTheory.Unfold.cpt_lact, FundSetPf.lact_inv, GlobalTheory.Unfold.cpt_mem_satFrames_iff X hx]`. Establish `huniq : ∀ (u : Frame X.Ψ r) (γ γ' : X.Γ), lact (γ.1)⁻¹ u ∈ GlobalTheory.Unfold.satFrames X x A → lact (γ'.1)⁻¹ u ∈ GlobalTheory.Unfold.satFrames X x A → γ = γ'`. Introduce `u γ γ' hm hm'`.
+
+Take `⟨z, hz, b, hb, h⟩` from `hm`. Take `⟨z', hz', b', hb', h'⟩` from `hm'`. Establish `hδ : (γ'.1)⁻¹ * γ.1 ∈ X.Γ` using `X.Γ.mul_mem (X.Γ.inv_mem γ'.2) γ.2`. Establish `e1 : lact ((γ'.1)⁻¹ * γ.1) (rmul (cpt X x z) b) = rmul (cpt X x z') b'`. Rewrite using `[← h, ← h', ← FundSetPf.lact_mul, mul_assoc, mul_inv_cancel, mul_one]`.
+
+Establish `e2 : lact ((γ'.1)⁻¹ * γ.1) (cpt X x z) = rmul (cpt X x z') (rmul b' (ExtFPf.invF X b))`. Rewrite using `[← ExtFPf.rmul_assoc, ← e1, ← FundSetPf.lact_rmul, ExtFPf.rmul_assoc, ExtFPf.rmul_invF X hb, ExtFPf.rmul_oneF]`. Establish `h1` using `hinj _ hδ z hz z' hz' _ (ExtFPf.mul_mem X hb' (ExtFPf.invF_mem X hb)) e2`. Conclude with `Subtype.ext (inv_mul_eq_one.mp h1).symm`. Establish `hpt : ∀ u, ∑' γ : X.Γ, χ γ u ≤ φ u`.
+
+Introduce `u`. Distinguish the cases in `hT : ∃ γ : X.Γ, lact (γ.1)⁻¹ u ∈ GlobalTheory.Unfold.satFrames X x A`. Take `⟨γ0, hγ0⟩` from `hT`. Rewrite using `[tsum_eq_single γ0]`. Conclude with `Set.indicator_le_self _ _ u`.
+
+Introduce `γ hne`. Conclude with `Set.indicator_of_notMem (s := (fun u => lact (γ.1)⁻¹ u) ⁻¹' GlobalTheory.Unfold.satFrames X x A) (fun hm => hne (huniq u γ γ0 hm hγ0)) φ`. Use `push_neg at hT`. Establish `h0 : ∀ γ : X.Γ, χ γ u = 0` using `fun γ => Set.indicator_of_notMem (s := (fun u => lact (γ.1)⁻¹ u) ⁻¹' GlobalTheory.Unfold.satFrames X x A) (hT γ) φ`. Simplify using `[h0]`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem lintegral_orbit_le (X : Data E r) {x y : Frame X.Ψ r} (hx : IsOrth X x) (hy : IsOrth X y)
     {A : Set (V (nd X))} (hA : MeasurableSet A) (hAO : A ⊆ OmF X x) {φ : Frame X.Ψ r → ℝ≥0∞}
     (hφ : Measurable φ) (hφB : ∀ u ∈ X.dom, ∀ b ∈ Bor X.Ψ r, φ (rmul u b) = φ u)
@@ -159,6 +202,19 @@ namespace GlobalTheory.BallSum
 
 open ReciprocityTheory.ChartRestriction.G.AR.Up.PoinPf
 
+/- English proof (translation)
+Establish `hl : Real.log 2 ≤ 1`. Use `Real.log_le_sub_one_of_pos (show (0 : ℝ) < 2 by norm_num); linarith` as an intermediate fact. Establish `hl0 : 0 ≤ Real.log 2` using `Real.log_nonneg (by norm_num)`. Break down `Nat.eq_zero_or_pos f with hf | hf` into its components or cases. Substitute `hf` using the available equality.
+
+Simplify using the standard rewrite rules. Break down `Nat.eq_zero_or_pos r with hr | hr` into its components or cases. Substitute `hr` using the available equality. Simplify using the standard rewrite rules. Establish `hf1 : (1 : ℝ) ≤ f` using `by exact_mod_cast hf`.
+
+Establish `hr1 : (1 : ℝ) ≤ r` using `by exact_mod_cast hr`. Use `set a : ℝ := (f : ℝ) * r with ha`. Establish `ha1 : 1 ≤ a` using `by nlinarith`. Establish `h3 : a ^ 3 ≤ a ^ 8` using `pow_le_pow_right₀ ha1 (by norm_num)`. Establish `h1 : a ≤ a ^ 8`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hfr : (f : ℝ) ^ 2 * (r : ℝ) ^ 3 ≤ a ^ 3`. Rewrite using `[ha, mul_pow]`. Establish `: (f : ℝ) ^ 2 ≤ (f : ℝ) ^ 3` using `pow_le_pow_right₀ hf1 (by norm_num)`. Conclude with `mul_le_mul_of_nonneg_right this (by positivity)`.
+
+Establish `hx : (4 * (f : ℝ) * (r : ℝ) ^ 2 + 1) * ((f : ℝ) * (3 * (r : ℝ) * Real.log 2)) ≤ (4 * (f : ℝ) * (r : ℝ) ^ 2 + 1) * ((f : ℝ) * (3 * (r : ℝ)))`. Establish `h` using `mul_le_mul_of_nonneg_left hl (show 0 ≤ 3 * (r : ℝ) by positivity)`. Use `mul_le_mul_of_nonneg_left (mul_le_mul_of_nonneg_left ?_ (by positivity)) (by positivity)` and prove the remaining obligations. Combine the linear equalities and inequalities to obtain the conclusion. Establish `he : (4 * (f : ℝ) * (r : ℝ) ^ 2 + 1) * ((f : ℝ) * (3 * (r : ℝ))) = 12 * ((f : ℝ) ^ 2 * (r : ℝ) ^ 3) + 3 * a` using `by rw [ha]; ring`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem const_le (f r : ℕ) : (4 * (f : ℝ) * (r : ℝ) ^ 2 + 1) * ((f : ℝ) * (3 * (r : ℝ) * Real.log 2)) ≤
     15 * ((f : ℝ) * r) ^ 8 := by
   have hl : Real.log 2 ≤ 1 := by
@@ -189,6 +245,27 @@ theorem const_le (f r : ℕ) : (4 * (f : ℝ) * (r : ℝ) ^ 2 + 1) * ((f : ℝ) 
       12 * ((f : ℝ) ^ 2 * (r : ℝ) ^ 3) + 3 * a := by rw [ha]; ring
   linarith
 
+/- English proof (translation)
+Use `⟨15, by norm_num, ?_⟩` and prove the remaining obligations. Introduce `E _ _ _ r X x y hp0 hp0r hx hy hinj`. Use `haveI := FundSetPf.countable_GL (E := E) (r := r)`. Establish `hr : 0 < r` using `by omega`. Use `set s : ℝ := 4 * (X.Ψ.card : ℝ) * (r : ℝ) ^ 2 + 1 with hs`.
+
+Establish `hs0 : 0 ≤ s` using `by positivity`. Use `set ρ : ℝ := 1 / (100 * (r : ℝ) ^ 2) with hρ`. Use `set A : Set (V (nd X)) := Metric.ball (0 : V (nd X)) ρ ∩ OmF X x with hAdef`. Use `set K : ℝ := (X.Ψ.card : ℝ) * (3 * r * Real.log 2) with hK`. Use `set k : ℝ≥0∞ := ENNReal.ofReal (Real.exp (s * K)) with hk`.
+
+Use `set φ : Frame X.Ψ r → ℝ≥0∞ := fun u => ENNReal.ofReal (kaY X y s u) with hφdef`. Establish `hφm : Measurable φ` using `ENNReal.measurable_ofReal.comp (meas_kaY X y s)`. Establish `hφB : ∀ u ∈ X.dom, ∀ b ∈ Bor X.Ψ r, φ (rmul u b) = φ u` using `fun u hu b hb => by`. Simplify using `only [hφdef, kaY_rmul X hy hu hb]`. Use `set G : Frame X.Ψ r → ℝ≥0∞ := fun u => ∑' δ : X.Γ, φ (lact δ.1 u) with hGdef`.
+
+Establish `hsym : ∑' γ : X.Γ, ENNReal.ofReal (kaY X x s (lact γ.1 y)) = G x`. Simplify using `only [hGdef]`. Rewrite using `[← (Equiv.inv X.Γ).tsum_eq (fun δ : X.Γ => φ (lact δ.1 x))]`. Use `tsum_congr fun γ => ?_` and prove the remaining obligations. Establish `hγi : (γ.1)⁻¹ ∈ X.Γ` using `X.Γ.inv_mem γ.2`.
+
+Use `show ENNReal.ofReal (kaY X x s (lact γ.1 y)) = ENNReal.ofReal (kaY X y s (lact (γ.1)⁻¹ x))`. Rewrite using `[GlobalTheory.PoinSumBound.kaY_eq_exp X hx (orth_mem_dom X (GlobalTheory.Unfold.isOrth_lact X hy γ.2)), GlobalTheory.PoinSumBound.kaY_eq_exp X hy (orth_mem_dom X (GlobalTheory.Unfold.isOrth_lact X hx hγi)), GlobalTheory.Up.rhX_lact (X.Γ_stab _ γ.2), GlobalTheory.OrbitSum.rhX_symm …`. Establish `hHar : ∀ w ∈ A, G x ≤ k * G (cpt X x w)`. Introduce `w hw`. Simplify using `only [hGdef]`.
+
+Rewrite using `[← ENNReal.tsum_mul_left]`. Use `ENNReal.tsum_le_tsum fun δ => ?_` and prove the remaining obligations. Establish `ho` using `GlobalTheory.Unfold.isOrth_lact X hx δ.2`. Establish `hwn : ‖w‖ ≤ ρ` using `(mem_ball_zero_iff.1 hw.1).le`. Establish `h` using `GlobalTheory.BallSum.rhY_cpt_le X hy ho hr w hwn`.
+
+Use `show ENNReal.ofReal (kaY X y s (lact δ.1 x)) ≤ k * ENNReal.ofReal (kaY X y s (lact δ.1 (cpt X x w)))`. Rewrite using `[← GlobalTheory.Unfold.cpt_lact, hk, ← ENNReal.ofReal_mul (Real.exp_pos _).le]`. Use `ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations. Unfold `kaY`. Rewrite using `[← Real.exp_add]`.
+
+Use `Real.exp_le_exp.2 ?_` and prove the remaining obligations. Use `mul_le_mul_of_nonneg_left h hs0` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hAm : MeasurableSet A` using `measurableSet_ball.inter (OntoB.isOpen_OmF X x).measurableSet`. Establish `h1 : muF X x A * G x ≤ k * ∫⁻ z in A, G (cpt X x z) ∂muF X x`.
+
+Rewrite using `[mul_comm, ← setLIntegral_const, ← lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`. Conclude with `setLIntegral_mono' hAm fun z hz => hHar z hz`. Establish `h2 : ∫⁻ z in A, G (cpt X x z) ∂muF X x ≤ ∫⁻ z, φ (cpt X y z) ∂muF X y` using `lintegral_orbit_le X hx hy hAm Set.inter_subset_right hφm hφB fun γ hγ z hz z' hz' b hb e => hinj γ hγ z z' (mem_ball_zero_iff.1 hz.1).le (mem_ball_zero_iff.1 hz'.1).le b hb e`. Establish `h3 : ∫⁻ z, φ (cpt X y z) ∂muF X y = ∫⁻ z, ENNReal.ofReal (kaF X y s z) ∂muF X y`. Simplify using `only [hφdef, kaY_cpt X hy]`.
+
+Establish `hkC : k ≤ ENNReal.ofReal (Real.exp (15 * ((X.Ψ.card : ℝ) * r) ^ 8))` using `ENNReal.ofReal_le_ofReal (Real.exp_le_exp.2 (const_le X.Ψ.card r))`. Rewrite using `[hsym]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem ballSum_le : ∃ C : ℝ, 0 ≤ C ∧ ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : ReciprocityTheory.ChartRestriction.G.FD.Data E r) (x y : ReciprocityTheory.ChartRestriction.G.FD.Frame X.Ψ r), 0 < X.p0 → X.p0 < r → ReciprocityTheory.ChartRestriction.G.AR.Up.IsOrth X x → ReciprocityTheory.ChartRestriction.G.AR.Up.IsOrth X y → (∀ γ ∈ X.Γ, ∀ z z' : ReciprocityTheory.L2DbarEstimates.V (ReciprocityTheory.ChartRestriction.G.AR.Inst.nd X), ‖z‖ ≤ 1 / (100 * (r : ℝ) ^ 2) → ‖z'‖ ≤ 1 / (100 * (r : ℝ) ^ 2) → ∀ b ∈ Bor X.Ψ r, lact γ (ReciprocityTheory.ChartRestriction.G.AR.Inst.cpt X x z) = rmul (ReciprocityTheory.ChartRestriction.G.AR.Inst.cpt X x z') b → γ = 1) → ReciprocityTheory.ChartRestriction.G.AR.Up.muF X x (Metric.ball (0 : ReciprocityTheory.L2DbarEstimates.V (ReciprocityTheory.ChartRestriction.G.AR.Inst.nd X)) (1 / (100 * (r : ℝ) ^ 2)) ∩ ReciprocityTheory.ChartRestriction.G.AR.Up.OmF X x) * ∑' γ : X.Γ, ENNReal.ofReal (ReciprocityTheory.ChartRestriction.G.AR.Up.PoinPf.kaY X x (4 * (X.Ψ.card : ℝ) * (r : ℝ) ^ 2 + 1) (lact γ.1 y)) ≤ ENNReal.ofReal (Real.exp (C * ((X.Ψ.card : ℝ) * r) ^ 8)) * ∫⁻ z, ENNReal.ofReal (ReciprocityTheory.ChartRestriction.G.AR.Up.kaF X y (4 * (X.Ψ.card : ℝ) * (r : ℝ) ^ 2 + 1) z) ∂(ReciprocityTheory.ChartRestriction.G.AR.Up.muF X y) := by
   refine ⟨15, by norm_num, ?_⟩
   intro E _ _ _ r X x y hp0 hp0r hx hy hinj

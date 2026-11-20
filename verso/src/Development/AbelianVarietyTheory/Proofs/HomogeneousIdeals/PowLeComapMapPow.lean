@@ -4,10 +4,18 @@ universe u_1 u_2
 
 namespace GlobalTheory.PowerExtensionEvaluation
 
+/- English proof (translation)
+The claim follows from `Ideal.map_le_iff_le_comap.mp (le_of_eq (Ideal.map_pow f I n))`.
+-/
 theorem pow_le_comap_map_pow {A : Type u_1} {B : Type u_2} [CommRing A] [CommRing B]
     (I : Ideal A) (f : A →+* B) (n : ℕ) : I ^ n ≤ ((I.map f) ^ n).comap f :=
   Ideal.map_le_iff_le_comap.mp (le_of_eq (Ideal.map_pow f I n))
 
+/- English proof (translation)
+Take `⟨s, rfl⟩` from `AdicCompletion.mk_surjective I A x`. Rewrite using `[AdicCompletion.evalₐ_mk, AdicCompletion.evalₐ_mk]`. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk (I ^ m) (s.val n) = Ideal.Quotient.mk (I ^ m) (s.val m)`. Rewrite using `[Ideal.Quotient.eq]`. Establish `h` using `s.property hle`.
+
+Rewrite `h` using `[SModEq.sub_mem]`. Establish `h2 : s.val m - s.val n ∈ I ^ m` using `by simpa [smul_eq_mul, Ideal.mul_top] using h`. Establish `h3` using `(I ^ m).neg_mem h2`. Rewrite `h3` using `[neg_sub]`. Then use the resulting hypothesis.
+-/
 theorem factorPow_evalₐ {A : Type u_1} [CommRing A] (I : Ideal A) {m n : ℕ} (hle : m ≤ n)
     (x : AdicCompletion I A) :
     Ideal.Quotient.factorPow I hle (AdicCompletion.evalₐ I n x) = AdicCompletion.evalₐ I m x := by
@@ -21,6 +29,15 @@ theorem factorPow_evalₐ {A : Type u_1} [CommRing A] (I : Ideal A) {m n : ℕ} 
   have h3 := (I ^ m).neg_mem h2
   rwa [neg_sub] at h3
 
+/- English proof (translation)
+Set `F : (n : ℕ) → AdicCompletion I A →+* B ⧸ (Ideal.map f I) ^ n` to `fun n => (Ideal.quotientMap ((Ideal.map f I) ^ n) f (pow_le_comap_map_pow I f n)).comp (AdicCompletion.evalₐ I n : AdicCompletion I A →+* A ⧸ I ^ n)`. Establish `hF : ∀ {m n : ℕ} (hle : m ≤ n), (Ideal.Quotient.factorPow (Ideal.map f I) hle).comp (F n) = F m`. Introduce `m n hle`. Use extensionality with `x`. Take `⟨a, ha⟩` from `Ideal.Quotient.mk_surjective (AdicCompletion.evalₐ I n x)`.
+
+Establish `hm : AdicCompletion.evalₐ I m x = Ideal.Quotient.mk (I ^ m) a`. Rewrite using `[← factorPow_evalₐ I hle x, ← ha]`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `Ideal.Quotient.factorPow (Ideal.map f I) hle (Ideal.quotientMap _ f (pow_le_comap_map_pow I f n) (AdicCompletion.evalₐ I n x)) = Ideal.quotientMap _ f (pow_le_comap_map_pow I f m) (AdicCompletion.evalₐ I m x)`. Rewrite using `[← ha, hm, Ideal.quotientMap_mk, Ideal.quotientMap_mk]`.
+
+Both sides reduce to the same expression. Use `⟨IsAdicComplete.liftRingHom (Ideal.map f I) F hF, ?_⟩` and prove the remaining obligations. Apply `DFunLike.coe_injective` to reduce the goal to its premises. Apply `IsHausdorff.funext' (Ideal.map f I)` to reduce the goal to its premises. Introduce `n a`.
+
+Rewrite using `[RingHom.coe_comp, Function.comp_apply, IsAdicComplete.mk_liftRingHom]`. Express the relevant statement in the definitionally equal form `Ideal.quotientMap _ f (pow_le_comap_map_pow I f n) (AdicCompletion.evalₐ I n (AdicCompletion.of I A a)) = _`. Rewrite using `[AdicCompletion.evalₐ_of, Ideal.quotientMap_mk]`.
+-/
 theorem exists_extension {A : Type u_1} {B : Type u_2} [CommRing A] [CommRing B]
     (I : Ideal A) (f : A →+* B) [IsAdicComplete (Ideal.map f I) B] :
     ∃ g : AdicCompletion I A →+* B, g.comp (algebraMap A (AdicCompletion I A)) = f := by

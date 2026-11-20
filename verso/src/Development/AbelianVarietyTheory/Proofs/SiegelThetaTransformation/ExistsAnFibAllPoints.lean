@@ -23,6 +23,11 @@ open GlobalTheory.Dict GlobalTheory.Phase GlobalTheory.IndefiniteRowSideFullHeck
 
 namespace GlobalTheory.Dict
 
+/- English proof (translation)
+Take `⟨h1, h2, h3, -, -⟩` from `h`. Consider the cases of `X'`. Consider the cases of `X`. Simplify using `only at h1 h2 h3`. Substitute `h1 h2 h3` using the available equality.
+
+Both sides reduce to the same expression.
+-/
 theorem perFr_castFr_of_sameSp {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} {X' X : Data E r}
     (h : SameSp X' X) (x : Frame X'.Ψ r) (v : Fin r → E) (τ : E →+* ℂ) (i : ℕ) :
     Formalism.L2.PjFree.perFr X' x v τ i = Formalism.L2.PjFree.perFr X (castFr h.psi x) v τ i := by
@@ -33,6 +38,17 @@ theorem perFr_castFr_of_sameSp {E : Type} [Field E] [NumberField E] [IsCMField E
   subst h1 h2 h3
   rfl
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c h1 n hn`. Take `⟨ξ, hξ, hξ0, hneg⟩` from `GlobalTheory.SpanInhab.exists_imag_neg H`. Take `⟨Gm, φ, hφ⟩` from `GlobalTheory.exists_herm_coord_of_datum E H Dw (-ξ) (by rw [show cc (-ξ) = -cc ξ by simp [cc], hξ]) (neg_ne_zero.2 hξ0) _ rfl`. Establish `hσ : Formalism.L2.PjFree.GoodEmb c c.F.val.toRingHom` using `rfl`. Generalize the expression as in `c.F.val.toRingHom = σ at hσ`.
+
+Take `⟨U, hU, -, ⟨k₀⟩, -, hG, -⟩` from `GlobalTheory.FrameUnif.exists_unf_hasPrinc E H Dw l Xo c σ _ ξ Gm φ h1 hσ hξ hneg hφ`. Take `⟨W⟩` from `nonempty_uw hU`. Establish `huw` using `GlobalTheory.Dict.uw_lattice E H Dw l Xo c σ _ U hσ hU h1 W`. Establish `hsame : ∀ k, SameSp (U.X k) (U.X k₀)` using `fun k => ⟨Finset.ext fun τ => ((hU.2.1 k).2 τ).trans ((hU.2.1 k₀).2 τ).symm, (hG k).1.trans (hG k₀).1.symm, (hU.2.1 k).1.trans (hU.2.1 k₀).1.symm, (hG k).2.trans (hG k₀).2.symm, by rw [(huw k).1, (huw k₀).1, (hG k).2, (hG k₀).2]⟩`. Establish `hdom : Formalism.L2.Pj.Dom (fun _ : (E →+* ℂ) × ℕ => 0) n` using `⟨fun _ => antitone_const, hn⟩`.
+
+Use `choose Dc hDe using fun k => GlobalTheory.Dict.exists_dic E H Dw l c σ _ W.g n (U.X k) (fun _ => 0) W.e hσ rfl (hU.2.1 k).1 (hU.2.1 k).2 (huw k).2.1 hdom`. Establish `hper : ∀ k x v j, pv (U.X k) (Dc k).idx x v j = Formalism.L2.PjFree.perFr (U.X k) x v (relab c σ (W.e j).1) (W.e j).2` using `fun k x v j => by`. Rewrite using `[(Dc k).per_eq, (hDe k).1]`. Establish `hty : ∀ k j, rowType (U.X k) ((Dc k).idx j) = relab c σ (W.e j).1` using `fun k j => by`. Rewrite using `[(Dc k).ty_eq, (hDe k).1]`.
+
+Use `⟨σ, _, W.g, U.X k₀, (Dc k₀).bas, (Dc k₀).idx, W.e, (Dc k₀).hr, (Dc k₀).eL, (Dc k₀).sympl, rfl, fun ℓ => ?_, hty k₀, fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[(Dc k₀).dir_eq, (hDe k₀).1]`. Set `_ : Algebra c.F ℂ` to `σ.toAlgebra`. Take `⟨k, x, t, hx, ht⟩` from `(GlobalTheory.FrameNorm.exists_unitFr_frBor E H Dw l Xo c σ _ U hσ hU).2 y`. Take `⟨A, -⟩` from `GlobalTheory.Dict.uw_anFib E H Dw l Xo c σ _ U hσ hU h1 W k (Dc k).bas (Dc k).idx (Dc k).sympl (hper k) (hty k) x hx`.
+
+Take `⟨e1, -, e2, A', -⟩` from `GlobalTheory.Dict.anFib_move E H Dw l Xo c _ W.g (U.X k) (U.X k₀) (hsame k) (Dc k).bas (Dc k).idx (Dc k₀).bas (Dc k₀).idx W.e x.1 (U.X k).Λ (unC U k x) A 1 (Dc k).sympl (Dc k₀).sympl x.2 (huw k).2.1 (by simp [IsUn]) (fun v => funext fun j => by rw [hper, hper, perFr_castFr_of_sam …`. Conclude with `⟨unC U k x, t, _, _, ht, e1, e2, ⟨A'⟩⟩`.
+-/
 theorem exists_anFib_all_points : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l), 1 ≤ Dw.p + Dw.q → ∀ n : ℕ, Even n → ∃ s : c.F →+* ℂ, letI : Algebra c.F ℂ := s.toAlgebra; ∃ (r g : ℕ) (X : Data E r) (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ) (idx : Fin g ≃ X.Ψ × Fin r) (e : Fin g ≃ Lt1 Dw) (hr : X.p0 + Dw.p = r) (eL : LtN Dw n ≃ Harm.Var X.Ψ Dw.p X.p0 (Fin n)), IsSympl X bas ∧ r = Dw.p + Dw.q ∧ (∀ ℓ, letterDir X hr idx (eL ℓ) = Pi.single ℓ.2.2 (Pi.single (e.symm ⟨ℓ.1, ℓ.2.1⟩) 1)) ∧ (∀ j, rowType X (idx j) = relab c s (e j).1) ∧ ∀ y : FrPt Xo c ℂ, ∃ (y₀ : FrPt Xo c ℂ) (t : Ix Dw → ℂˣ) (x : Frame X.Ψ r) (L : Lt E r), FrBor t y₀ y ∧ x ∈ X.dom ∧ SelfD X L ∧ Nonempty (AnFib X bas idx e x L y₀) := by
   intro E _ _ _ H Dw l Xo c h1 n hn
   obtain ⟨ξ, hξ, hξ0, hneg⟩ := GlobalTheory.SpanInhab.exists_imag_neg H

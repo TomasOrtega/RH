@@ -20,6 +20,9 @@ def wtQ (j : ℕ) (hj : j ≤ R.m) (i : Fin (R.N j)) : ℚ :=
   if h : i.1 < R.k then hcToWeightQ P.u ⟨i.1, h⟩
   else -wG R (P.e ⟨(i.1 - R.k) / (R.t + 1), R.blk_lt hj i h⟩) ((i.1 - R.k) / (R.t + 1) + 1)
 
+/- English proof (translation)
+Distinguish the cases in `h : i.1 < R.k`. Simplify using `only [wtQ, wtN, dif_pos h]`. Establish `hb : blkN R i.1 < R.m` using `R.blk_lt hj i h`. Rewrite using `[wtQ, wtN, dif_neg h, dif_neg h, dif_pos hb]`. Both sides reduce to the same expression.
+-/
 theorem wtQ_eq_wtN (j : ℕ) (hj : j ≤ R.m) (i : Fin (R.N j)) : wtQ P j hj i = wtN P i.1 := by
   by_cases h : i.1 < R.k
   · simp only [wtQ, wtN, dif_pos h]
@@ -27,6 +30,13 @@ theorem wtQ_eq_wtN (j : ℕ) (hj : j ≤ R.m) (i : Fin (R.N j)) : wtQ P j hj i =
     rw [wtQ, wtN, dif_neg h, dif_neg h, dif_pos hb]
     rfl
 
+/- English proof (translation)
+Establish `hi' : i < R.k - 1` using `by omega`. Establish `h1 : P.v ⟨i, hi'⟩ < P.u ⟨i, by omega⟩` using `P.u_gt_v ⟨i, hi'⟩`. Establish `h2 : P.u ⟨i + 1, hi⟩ < P.v ⟨i, hi'⟩` using `P.v_gt_u ⟨i, hi'⟩`. Take `⟨a, ha⟩` from `P.u_half ⟨i + 1, hi⟩`. Take `⟨c, hc⟩` from `P.u_half ⟨i, by omega⟩`.
+
+Take `⟨b, hb⟩` from `P.v_int ⟨i, hi'⟩`. Rewrite `h1` using `[hb, hc]`. Rewrite `h2` using `[hb, ha]`. Rewrite using `[ha, hc]`. Establish `e1 : (a : ℚ) < b` using `by linarith`.
+
+Establish `e2 : (b : ℚ) < c + 1` using `by linarith`. Establish `f1 : a < b` using `by exact_mod_cast e1`. Establish `f2 : b < c + 1` using `by exact_mod_cast e2`. Establish `f3 : ((a : ℚ) + 1) ≤ c` using `by exact_mod_cast (show a + 1 ≤ c by omega)`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem u_step (i : ℕ) (hi : i + 1 < R.k) : P.u ⟨i + 1, hi⟩ + 1 ≤ P.u ⟨i, by omega⟩ := by
   have hi' : i < R.k - 1 := by omega
   have h1 : P.v ⟨i, hi'⟩ < P.u ⟨i, by omega⟩ := P.u_gt_v ⟨i, hi'⟩
@@ -44,11 +54,19 @@ theorem u_step (i : ℕ) (hi : i + 1 < R.k) : P.u ⟨i + 1, hi⟩ + 1 ≤ P.u �
   have f3 : ((a : ℚ) + 1) ≤ c := by exact_mod_cast (show a + 1 ≤ c by omega)
   linarith
 
+/- English proof (translation)
+Unfold `wtN`. Rewrite using `[dif_neg hn, dif_pos hb]`.
+-/
 private theorem wtN_eq_neg_wG_blkN (n : ℕ) (hn : ¬ n < R.k) (hb : blkN R n < R.m) :
     wtN P n = -wG R (P.e ⟨blkN R n, hb⟩) (blkN R n + 1) := by
   unfold wtN
   rw [dif_neg hn, dif_pos hb]
 
+/- English proof (translation)
+Break down `h with rfl | rfl` into its components or cases. Conclude with `le_rfl`. Establish `h1 : ((R.t : ℚ) + 3) / 2 ≤ P.e ⟨c + 1, hc'⟩ - P.b ⟨c + 1, hc'⟩` using `P.gap_be ⟨c + 1, hc'⟩`. Establish `h2 : ((R.t : ℚ) + 3) / 2 ≤ P.b ⟨c + 1, hc'⟩ - P.e ⟨c, hc⟩` using `P.gap_eb ⟨c, hc⟩ hc'`. Simplify using `only [wG]`.
+
+Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 private theorem neg_wG_le_of_adjacent_blocks (c c' : ℕ) (hc : c < R.m) (hc' : c' < R.m) (h : c' = c ∨ c' = c + 1) :
     -wG R (P.e ⟨c', hc'⟩) (c' + 1) ≤ -wG R (P.e ⟨c, hc⟩) (c + 1) := by
   rcases h with rfl | rfl
@@ -59,6 +77,27 @@ private theorem neg_wG_le_of_adjacent_blocks (c c' : ℕ) (hc : c < R.m) (hc' : 
     push_cast
     linarith
 
+/- English proof (translation)
+Distinguish the cases in `hn0 : n < R.k`. Distinguish the cases in `hA : n + 1 < R.k`. Establish `hs` using `u_step P n hA`. Unfold `wtN`. Rewrite using `[dif_pos hA, dif_pos hn0]`.
+
+Simplify using `only [hcToWeightQ, rhoVec, Fin.val_mk]`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hk : n + 1 = R.k` using `by omega`. Establish `hm0 : 0 < R.m` using `by have := R.two_le_m; omega`.
+
+Establish `hb : blkN R (n + 1) < R.m`. Unfold `blkN`. Rewrite using `[show n + 1 - R.k = 0 by omega, Nat.zero_div]`. Conclude with `hm0`. Establish `hb0 : blkN R (n + 1) = 0`.
+
+Unfold `blkN`. Rewrite using `[show n + 1 - R.k = 0 by omega, Nat.zero_div]`. Rewrite using `[wtN_eq_neg_wG_blkN P (n + 1) hA hb]`. Establish `he : P.e ⟨blkN R (n + 1), hb⟩ = P.e ⟨0, hm0⟩`. Use `congr 1`.
+
+Conclude with `Fin.ext hb0`. Rewrite using `[he, hb0]`. Establish `hnk : (⟨R.k - 1, by omega⟩ : Fin R.k) = ⟨n, hn0⟩` using `Fin.ext (by show R.k - 1 = n; omega)`. Establish `h1` using `P.u_last_gt (by omega) hm0`. Rewrite `h1` using `[hnk]`.
+
+Establish `h2 : ((R.t : ℚ) + 3) / 2 ≤ P.e ⟨0, hm0⟩ - P.b ⟨0, hm0⟩` using `P.gap_be ⟨0, hm0⟩`. Establish `hnq : (n : ℚ) + 1 = R.k` using `by exact_mod_cast hk`. Unfold `wtN`. Rewrite using `[dif_pos hn0]`. Simplify using `only [wG, hcToWeightQ, rhoVec, Fin.val_mk]`.
+
+Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hmn : n + 1 - R.k < R.m * (R.t + 1)`. Unfold `Ranks.N at hn`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hb1 : blkN R (n + 1) < R.m`. Unfold `blkN`. Conclude with `(Nat.div_lt_iff_lt_mul (Nat.succ_pos _)).mpr hmn`. Establish `hle : blkN R n ≤ blkN R (n + 1)` using `Nat.div_le_div_right (by omega)`. Establish `hb0 : blkN R n < R.m` using `lt_of_le_of_lt hle hb1`.
+
+Establish `hor : blkN R (n + 1) = blkN R n ∨ blkN R (n + 1) = blkN R n + 1`. Unfold `blkN`. Rewrite using `[show n + 1 - R.k = (n - R.k) + 1 by omega, Nat.succ_div]`. Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[wtN_eq_neg_wG_blkN P (n + 1) (by omega) hb1, wtN_eq_neg_wG_blkN P n hn0 hb0]`.
+
+Conclude with `neg_wG_le_of_adjacent_blocks P _ _ hb0 hb1 hor`.
+-/
 theorem wtN_step (n : ℕ) (hn : n + 1 < R.N R.m) : wtN P (n + 1) ≤ wtN P n := by
   by_cases hn0 : n < R.k
   · by_cases hA : n + 1 < R.k
@@ -107,6 +146,11 @@ theorem wtN_step (n : ℕ) (hn : n + 1 < R.N R.m) : wtN P (n + 1) ≤ wtN P n :=
     rw [wtN_eq_neg_wG_blkN P (n + 1) (by omega) hb1, wtN_eq_neg_wG_blkN P n hn0 hb0]
     exact neg_wG_le_of_adjacent_blocks P _ _ hb0 hb1 hor
 
+/- English proof (translation)
+Use `revert hn'`. Proceed by induction on `n', h using Nat.le_induction with`. Consider the case `base => intro _`. Conclude with `le_rfl`. Consider the case `succ q hq ih`.
+
+Introduce `hq'`. Conclude with `le_trans (wtN_step P q hq') (ih (by omega))`.
+-/
 theorem wtN_anti {n n' : ℕ} (h : n ≤ n') (hn' : n' < R.N R.m) : wtN P n' ≤ wtN P n := by
   revert hn'
   induction n', h using Nat.le_induction with
@@ -115,15 +159,30 @@ theorem wtN_anti {n n' : ℕ} (h : n ≤ n') (hn' : n' < R.N R.m) : wtN P n' ≤
     intro hq'
     exact le_trans (wtN_step P q hq') (ih (by omega))
 
+/- English proof (translation)
+Unfold `Ranks.N`. Conclude with `Nat.add_le_add_left (Nat.mul_le_mul_right _ hj) _`.
+-/
 theorem N_mono {j : ℕ} (hj : j ≤ R.m) : R.N j ≤ R.N R.m := by
   unfold Ranks.N
   exact Nat.add_le_add_left (Nat.mul_le_mul_right _ hj) _
 
+/- English proof (translation)
+Introduce `a b hab`. Rewrite using `[wtQ_eq_wtN, wtQ_eq_wtN]`. Conclude with `wtN_anti P hab (lt_of_lt_of_le b.2 (N_mono hj))`.
+-/
 theorem wtQ_anti (j : ℕ) (hj : j ≤ R.m) : Antitone (wtQ P j hj) := by
   intro a b hab
   rw [wtQ_eq_wtN, wtQ_eq_wtN]
   exact wtN_anti P hab (lt_of_lt_of_le b.2 (N_mono hj))
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `R.k_even`. Take `⟨c, hc⟩` from `R.t_odd`. Establish `hk : (R.k : ℚ) = a + a` using `by exact_mod_cast ha`. Establish `ht : (R.t : ℚ) = 2 * c + 1` using `by exact_mod_cast hc`. Distinguish the cases in `h : i.1 < R.k`.
+
+Take `⟨z, hz⟩` from `P.u_half ⟨i.1, h⟩`. Use `⟨z + 1 - a + i.1, ?_⟩` and prove the remaining obligations. Rewrite using `[wtQ, dif_pos h]`. Simplify using `only [hcToWeightQ, rhoVec, Fin.val_mk, hz]`. Rewrite using `[hk]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Take `⟨z, hz⟩` from `P.e_int ⟨(i.1 - R.k) / (R.t + 1), R.blk_lt hj i h⟩`. Use `⟨-z + a + (2 * (((i.1 - R.k) / (R.t + 1) : ℕ) : ℤ) + 1) * (c + 1), ?_⟩` and prove the remaining obligations. Rewrite using `[wtQ, dif_neg h]`.
+
+Simplify using `only [wG, hz]`. Generalize the expression as in `(i.1 - R.k) / (R.t + 1) = B`. Rewrite using `[hk, ht]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem wtQ_int (j : ℕ) (hj : j ≤ R.m) (i : Fin (R.N j)) : ∃ z : ℤ, wtQ P j hj i = z := by
   obtain ⟨a, ha⟩ := R.k_even
   obtain ⟨c, hc⟩ := R.t_odd
@@ -150,6 +209,9 @@ def lamOf (j : ℕ) : DomWeight (R.N j) :=
   if hj : j ≤ R.m then ⟨fun i => ⌊wtQ P j hj i⌋, fun _ _ hii => Int.floor_mono (wtQ_anti P j hj hii)⟩
   else ⟨fun _ => 0, fun _ _ _ => le_rfl⟩
 
+/- English proof (translation)
+Take `⟨z, hz⟩` from `wtQ_int P j hj i`. Simplify using `only [lamOf, dif_pos hj, hz, Int.floor_intCast]`.
+-/
 theorem lamOf_eq (j : ℕ) (hj : j ≤ R.m) (i : Fin (R.N j)) : ((lamOf P j).w i : ℚ) = wtQ P j hj i := by
   obtain ⟨z, hz⟩ := wtQ_int P j hj i
   simp only [lamOf, dif_pos hj, hz, Int.floor_intCast]
@@ -169,6 +231,11 @@ instance fmZeroHLat_sub (K : Type) [Field K] [NumberField K] [StarRing K] :
 instance fmZeroHLat_empty (K : Type) [Field K] [NumberField K] [StarRing K] :
     IsEmpty (fmZeroHLat K).ι := inferInstanceAs (IsEmpty (Fin 0))
 
+/- English proof (translation)
+Unfold `HLat.Good`. Use `⟨fun v => ?_, ?_, Subsingleton.elim _ _⟩` and prove the remaining obligations. Rewrite using `[Matrix.det_isEmpty]`. Conclude with `isUnit_one`. Rewrite using `[Subsingleton.elim (fmZeroHLat K).L ⊥]`.
+
+Conclude with `Submodule.fg_bot`.
+-/
 theorem fmZeroHLat_good (K : Type) [Field K] [NumberField K] [StarRing K] : (fmZeroHLat K).Good := by
   unfold HLat.Good
   refine ⟨fun v => ?_, ?_, Subsingleton.elim _ _⟩
@@ -177,6 +244,9 @@ theorem fmZeroHLat_good (K : Type) [Field K] [NumberField K] [StarRing K] : (fmZ
   · rw [Subsingleton.elim (fmZeroHLat K).L ⊥]
     exact Submodule.fg_bot
 
+/- English proof (translation)
+Unfold `Formalism.HermitianLatticesTheory.majAt`. Conclude with `Fintype.sum_empty _`.
+-/
 theorem fmZeroHLat_maj (K : Type) [Field K] [NumberField K] [StarRing K] (v : InfinitePlace K)
     (x y : (fmZeroHLat K).V) :
     Formalism.HermitianLatticesTheory.majAt (fmZeroHLat K).b (fmZeroHLat K).X v x y = 0 := by
@@ -254,6 +324,9 @@ end Forms
 def gxExample (LL : Type) [Field LL] [NumberField LL] (Tau : Type) : GlobalExtra LL Tau :=
   ⟨fun _ _ => 1, fun _ _ => one_pos, fun _ => 1, fun _ => one_pos⟩
 
+/- English proof (translation)
+Rewrite using `[h]`. Simplify using the standard rewrite rules.
+-/
 theorem dGam_le_example {R : Ranks} {Tau : Type} [Fintype Tau] {hc : Tau → HCParam R}
     (C : ColumnChain R Tau hc) (h : C.DGam = 1) :
     Real.log (C.DGam : ℝ) ≤ 0 * R.f * R.N R.m * Real.log ((R.f : ℝ) * R.N R.m) := by

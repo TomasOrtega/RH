@@ -8,5 +8,8 @@ open GlobalTheory.ChainOnto GlobalTheory.ChainNS
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ChainNS.chainNS_holds | exact GlobalTheory.ChainNS.chainNS_holds | (intros; apply GlobalTheory.ChainNS.chainNS_holds <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.chain_each_step_splitPlace_without_excludedParams : ∀ D : D7, ChainNS D := by
   first | exact @GlobalTheory.ChainNS.chainNS_holds | exact GlobalTheory.ChainNS.chainNS_holds | (intros; apply GlobalTheory.ChainNS.chainNS_holds <;> assumption)

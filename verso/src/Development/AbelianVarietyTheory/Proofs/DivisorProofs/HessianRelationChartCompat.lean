@@ -9,6 +9,15 @@ namespace GlobalTheory.Mean4O.CoverInt
 
 set_option autoImplicit false
 
+/- English proof (translation)
+Introduce `F _ _ Y V e M I ε π L P hR σ hπ c c' hcc w hw hwc`. Rewrite using `[AlgChart.chernDens, hR σ c' w hw _ (mem_pick _ w), potDens, ← hcc w hw hwc]`. Use `congr 3`. Apply `ReciprocityTheory.L2DbarEstimates.Y.cmpb_cHess_congr` to reduce the goal to its premises. Establish `ho : IsOpen (c'.e.target ∩ c'.e.symm ⁻¹' ((π σ) ⁻¹' ((I.pt (ε σ)) ⁻¹' c.e.source)))` using `c'.e.continuousOn_symm.isOpen_inter_preimage c'.e.open_target (c.e.open_source.preimage (I.pt (ε σ)).continuous |>.preimage hπ)`.
+
+Establish `hm : c'.e w ∈ c'.e.target ∩ c'.e.symm ⁻¹' ((π σ) ⁻¹' ((I.pt (ε σ)) ⁻¹' c.e.source))`. Use `⟨c'.e.map_source hw, ?_⟩` and prove the remaining obligations. Simplify using `only [Set.mem_preimage, c'.e.left_inv hw]`. Conclude with `hwc`. Use `filter_upwards [ho.mem_nhds hm] with v hv`.
+
+Establish `hs : c'.e.symm v ∈ c'.e.source` using `c'.e.map_target hv.1`. Establish `hv' : v = c.e (I.pt _ (π σ (c'.e.symm v)))`. Rewrite using `[← hcc _ hs hv.2, c'.e.right_inv hv.1]`. Establish `key : c.e.symm v = I.pt _ (π σ (c'.e.symm v))` using `by conv_lhs => rw [hv']`. Conclude with `c.e.left_inv hv.2`.
+
+Rewrite using `[key, Homeomorph.symm_apply_apply]`.
+-/
 theorem chernDens_eq_potDens : ∀ (F : Type) [Field F] [NumberField F] (Y : Var F) (V : Cover Y) (e : ℕ) (M : Man e) (I : ManIs M Y) (ε : (𝓞 F →+* ℂ) → Fin (M.n + 1)) (π : ∀ σ, CxPts V.p σ → M.X (ε σ)) (L : HermLB V.p) (P : M.Pot), HessRel ε π L P → ∀ σ, Continuous (π σ) → ∀ (c : AlgChart Y.str (I.ε (ε σ)) e) (c' : AlgChart V.p σ e), (∀ w ∈ c'.e.source, I.pt _ (π σ w) ∈ c.e.source → c'.e w = c.e (I.pt _ (π σ w))) → ∀ w ∈ c'.e.source, I.pt _ (π σ w) ∈ c.e.source → c'.chernDens (L.φ σ) w = potDens I (P (ε σ)) c (π σ w) := by
   intro F _ _ Y V e M I ε π L P hR σ hπ c c' hcc w hw hwc
   rw [AlgChart.chernDens, hR σ c' w hw _ (mem_pick _ w), potDens, ← hcc w hw hwc]

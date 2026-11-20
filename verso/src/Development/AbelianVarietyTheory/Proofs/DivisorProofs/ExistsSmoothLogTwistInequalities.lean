@@ -9,6 +9,15 @@ open scoped ENNReal ContDiff
 
 namespace GlobalTheory.OTY
 
+/- English proof (translation)
+Establish `he0 : 0 < e` using `by linarith`. Establish `hD : 0 < b * e + a ^ 2` using `by positivity`. Use `⟨by positivity, ?_, by positivity, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[div_le_one he0]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Rewrite using `[div_pow]`. Apply `div_le_div_of_nonneg_right _ (by positivity)` to reduce the goal to its premises. Establish `: 0 < b * e` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `e1 : (1 - (a / e) ^ 2 / ((b * e + a ^ 2) / e ^ 2)) * e⁻¹ = 1 / (e + a ^ 2 / b)`.
+
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : 1 / (1 + M) / 8 = 1 / (8 * (1 + M))`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e1, e2]`.
+
+Conclude with `one_div_le_one_div_of_le (by positivity) h`.
+-/
 private lemma twist_estimate_first (a b e M : ℝ) (ha : 0 ≤ a) (ha2 : a ≤ 2) (he : 2 ≤ e) (hb : 0 < b)
     (hM : 0 ≤ M) (h : e + a ^ 2 / b ≤ 8 * (1 + M)) :
     0 ≤ a / e ∧ a / e ≤ 1 ∧ 0 < (b * e + a ^ 2) / e ^ 2 ∧ (a / e) ^ 2 ≤ (b * e + a ^ 2) / e ^ 2 ∧
@@ -29,6 +38,17 @@ private lemma twist_estimate_first (a b e M : ℝ) (ha : 0 ≤ a) (ha2 : a ≤ 2
     rw [e1, e2]
     exact one_div_le_one_div_of_le (by positivity) h
 
+/- English proof (translation)
+Establish `he0 : 0 < e` using `by linarith`. Establish `hb0 : 0 < b` using `by linarith`. Establish `hD : 0 < b * e + a ^ 2` using `by positivity`. Establish `hbe : 3 / 16 * e ≤ b * e` using `mul_le_mul_of_nonneg_right hb he0.le`. Establish `ha4 : a ^ 2 ≤ 4` using `by nlinarith`.
+
+Establish `ha0 : 0 ≤ a ^ 2` using `by positivity`. Prove the components needed by the constructor for the conclusion. Establish `e1 : e⁻¹ / ((b * e + a ^ 2) / e ^ 2) = e / (b * e + a ^ 2)`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e1, div_le_iff₀ hD]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `e1 : (a / e) ^ 2 / ((b * e + a ^ 2) / e ^ 2) = a ^ 2 / (b * e + a ^ 2)`. Clear the denominators using the available nonvanishing facts. Establish `h1 : a ^ 2 / (b * e + a ^ 2) ≤ 1 / 10`. Rewrite using `[div_le_iff₀ hD]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `e2 : 1 / (1 + m ^ 2) / 8 = 1 / 2 * (4 * (1 + m ^ 2))⁻¹`. Clear the denominators using the available nonvanishing facts. Evaluate the numerical expressions. Establish `h2 : (4 * (1 + m ^ 2))⁻¹ ≤ e⁻¹`.
+
+Apply `inv_anti₀ he0` to reduce the goal to its premises. Use polynomial arithmetic with `[sq_nonneg (m - 1 / 4)]`. Rewrite using `[e1, e2]`. Apply `mul_le_mul (by linarith) h2 (by positivity) (by linarith)` to reduce the goal to its premises.
+-/
 private lemma twist_estimate_second (a b e m : ℝ) (ha : 0 ≤ a) (ha2 : a ≤ 2) (he : 300 ≤ e) (hb : 3 / 16 ≤ b)
     (h : e ≤ 2 + 2 * m) :
     e⁻¹ / ((b * e + a ^ 2) / e ^ 2) ≤ 16 / 3 ∧
@@ -57,6 +77,37 @@ private lemma twist_estimate_second (a b e m : ℝ) (ha : 0 ≤ a) (ha2 : a ≤ 
     rw [e1, e2]
     apply mul_le_mul (by linarith) h2 (by positivity) (by linarith)
 
+/- English proof (translation)
+Introduce `T hT`. Take `⟨η, η1, η2, hs, hd, hp, hw⟩` from `GlobalTheory.T.exists_concaveTwist_eta_inequalities T hT`. Use `set κ : ℝ → ℝ := fun x => Real.smoothTransition (2 - 16 * x) * (-Real.log (η (-x))) with hκ`. Establish `hloc : ∀ x : ℝ, x < 1 / 16 → κ x = -Real.log (η (-x))`. Introduce `x hx`.
+
+Simplify using `only [hκ]`. Rewrite using `[Real.smoothTransition.one_of_one_le (by linarith), one_mul]`. Establish `hη : ∀ x : ℝ, x < 1 / 16 → HasDerivAt (fun x => η (-x)) (-η1 (-x)) x`. Introduce `x hx`. Establish `h` using `(hd (-x) (by linarith)).2.1`.
+
+Establish `h'` using `HasDerivAt.comp x (h₂ := η) (h := fun x : ℝ => -x) h (hasDerivAt_neg x)`. Simplify `h'` using `[Function.comp_def]`. Establish `hη1 : ∀ x : ℝ, x < 1 / 16 → HasDerivAt (fun x => η1 (-x)) (-η2 (-x)) x`. Introduce `x hx`. Establish `h` using `(hd (-x) (by linarith)).2.2`.
+
+Establish `h'` using `HasDerivAt.comp x (h₂ := η1) (h := fun x : ℝ => -x) h (hasDerivAt_neg x)`. Simplify `h'` using `[Function.comp_def]`. Establish `hd1 : ∀ x : ℝ, x < 1 / 16 → deriv κ x = η1 (-x) / η (-x)`. Introduce `x hx`. Establish `hev : κ =ᶠ[𝓝 x] fun x => -Real.log (η (-x))` using `by filter_upwards [Iio_mem_nhds hx] with y hy using hloc y hy`.
+
+Rewrite using `[hev.deriv_eq]`. Establish `h` using `((hη x hx).log (hd (-x) (by linarith)).1.ne').neg`. Establish `h2 : HasDerivAt (fun x => -Real.log (η (-x))) (-(-η1 (-x) / η (-x))) x` using `h`. Rewrite using `[h2.deriv]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hd2 : ∀ x : ℝ, x < 1 / 16 → deriv (deriv κ) x = ((-η2 (-x)) * η (-x) + η1 (-x) ^ 2) / η (-x) ^ 2`. Introduce `x hx`. Establish `hev : deriv κ =ᶠ[𝓝 x] fun x => η1 (-x) / η (-x)` using `by filter_upwards [Iio_mem_nhds hx] with y hy using hd1 y hy`. Rewrite using `[hev.deriv_eq]`. Establish `h2 : HasDerivAt (fun x => η1 (-x) / η (-x)) _ x` using `(hη1 x hx).div (hη x hx) (hd (-x) (by linarith)).1.ne'`.
+
+Rewrite using `[h2.deriv]`. Expand and normalize the polynomial expressions, which then agree. Establish `hexp : ∀ x : ℝ, x < 1 / 16 → Real.exp (κ x) = (η (-x))⁻¹`. Introduce `x hx`. Rewrite using `[hloc x hx, Real.exp_neg, Real.exp_log (hd (-x) (by linarith)).1]`.
+
+Establish `hwT : ∀ x : ℝ, x ≤ 0 → wT T x = 1 / (1 + (min (-x) (T + 1)) ^ 2)`. Introduce `x hx`. Unfold `wT`. Use `congr 2`. Break down `le_total (-x) (T + 1) with h | h` into its components or cases.
+
+Rewrite using `[min_eq_left h, min_eq_left (by nlinarith)]; ring`. Rewrite using `[min_eq_right h, min_eq_right (by nlinarith)]`. Use `⟨κ, ?_, ⟨Real.log (2 * T + 4), ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[contDiff_iff_contDiffAt]`. Introduce `x`.
+
+Distinguish the cases in `hx : x < 1 / 4`. Establish `h1 : ContDiffAt ℝ ∞ η (-x)` using `hs.contDiffAt (Ioi_mem_nhds (by linarith))`. Establish `h2 : ContDiffAt ℝ ∞ (fun x : ℝ => η (-x)) x` using `ContDiffAt.comp x (g := η) (f := fun x : ℝ => -x) h1 contDiff_neg.contDiffAt`. Establish `h3` using `(h2.log (hd (-x) (by linarith)).1.ne').neg`. Establish `h4 : ContDiff ℝ ∞ (fun x : ℝ => Real.smoothTransition (2 - 16 * x))` using `Real.smoothTransition.contDiff.comp (by fun_prop)`.
+
+Conclude with `h4.contDiffAt.mul h3`. Establish `hev : κ =ᶠ[𝓝 x] fun _ => 0` using `by filter_upwards [Ioi_mem_nhds (show (1 / 8 : ℝ) < x by linarith)] with y hy`. Establish `hy' : (1 / 8 : ℝ) < y` using `hy`. Simplify using `only [hκ]`. Rewrite using `[Real.smoothTransition.zero_of_nonpos (by linarith), zero_mul]`.
+
+Conclude with `contDiffAt_const.congr_of_eventuallyEq hev`. Introduce `x hx`. Take `⟨-, -, h2, -, h3, -⟩` from `hp (-x) (by linarith)`. Rewrite using `[hloc x (by linarith), abs_neg, abs_of_nonneg (Real.log_nonneg (by linarith))]`. Apply `Real.log_le_log (by linarith)` to reduce the goal to its premises.
+
+Use `min_le_right (-x) (T + 1)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `x hx`. Establish `hx' : x < 1 / 16` using `by linarith`. Take `⟨h0, h1, h2, h3, -, h5⟩` from `hp (-x) (by linarith)`.
+
+Rewrite using `[hd1 x hx', hd2 x hx', hexp x hx', hwT x hx]`. Conclude with `twist_estimate_first _ _ _ _ h0 h1 h2 (by linarith) (sq_nonneg _) h5`. Introduce `x hx1 hx2`. Establish `hx : x ≤ 0` using `by linarith`. Establish `hx' : x < 1 / 16` using `by linarith`.
+
+Take `⟨h0, h1, -, -, h4, -⟩` from `hp (-x) (by linarith)`. Take `⟨h6, h7⟩` from `hw (-x) (by linarith) (by linarith)`. Rewrite using `[hd2 x hx', hd1 x hx', hexp x hx', hwT x hx]`. Conclude with `twist_estimate_second _ _ _ _ h0 h1 (by linarith) h6 h4`.
+-/
 theorem exists_log_twist : ∀ T : ℝ, 300 ≤ T → ∃ κ : ℝ → ℝ, ContDiff ℝ ∞ κ ∧ (∃ C : ℝ, ∀ x, x ≤ 0 → |κ x| ≤ C) ∧ (∀ x, x ≤ 0 → 0 ≤ deriv κ x ∧ deriv κ x ≤ 1 ∧ 0 < deriv (deriv κ) x ∧ deriv κ x ^ 2 ≤ deriv (deriv κ) x ∧ wT T x / 8 ≤ (1 - deriv κ x ^ 2 / deriv (deriv κ) x) * Real.exp (κ x)) ∧ (∀ x, -T - 1 ≤ x → x ≤ -T + 1 → Real.exp (κ x) / deriv (deriv κ) x ≤ 16 / 3 ∧ wT T x / 8 ≤ (1 - 5 * (deriv κ x ^ 2 / deriv (deriv κ) x)) * Real.exp (κ x)) := by
   intro T hT
   obtain ⟨η, η1, η2, hs, hd, hp, hw⟩ := GlobalTheory.T.exists_concaveTwist_eta_inequalities T hT

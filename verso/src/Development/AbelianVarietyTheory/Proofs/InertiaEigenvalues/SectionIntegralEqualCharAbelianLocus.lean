@@ -30,6 +30,23 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 
 namespace GlobalTheory.EqCharGood
 
+/- English proof (translation)
+Set `A : Matrix (Fin r) (Fin r) V` to `u.submatrix ix id`. Establish `hlow : A.BlockTriangular OrderDual.toDual` using `fun i j hij => hc.1 i j hij`. Establish `hdet : A.det = 1`. Rewrite using `[Matrix.det_of_lowerTriangular A hlow]`. Conclude with `Finset.prod_eq_one fun i _ => hc.2 i`.
+
+Establish `hAu : IsUnit A.det` using `hdet ▸ isUnit_one`. Establish `hAK : IsUnit (A.map φ).det`. Establish `e : (A.map φ).det = φ A.det` using `(RingHom.map_det φ A).symm`. Rewrite using `[e, hdet, map_one]`. Conclude with `isUnit_one`.
+
+Establish `hinjA : ∀ v w : Fin r → V, A.mulVec v = A.mulVec w → v = w` using `fun v w hvw => by`. Use `congrArg (A⁻¹).mulVec hvw` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ hAu, Matrix.one_mulVec, Matrix.one_mulVec]`. Then use the resulting hypothesis. Establish `hinjAK : ∀ v w : Fin r → K, (A.map φ).mulVec v = (A.map φ).mulVec w → v = w` using `fun v w hvw => by`. Use `congrArg ((A.map φ)⁻¹).mulVec hvw` as an intermediate fact.
+
+Rewrite `this` using `[Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ hAK, Matrix.one_mulVec, Matrix.one_mulVec]`. Then use the resulting hypothesis. Establish `hrow : ∀ (v : Fin r → V), A.mulVec v = fun i => u.mulVec v (ix i)` using `fun v => rfl`. Set `a : Fin r → V` to `A⁻¹.mulVec (fun i => cv (ix i))`. Establish `ha : A.mulVec a = fun i => cv (ix i)`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ hAu, Matrix.one_mulVec]`.
+
+Establish `hmap : ∀ (M : Matrix (Fin n) (Fin r) V) (v : Fin r → V), (M.map φ).mulVec (fun i => φ (v i)) = fun i => φ (M.mulVec v i)` using `fun M v => by`. Use function extensionality and compare the values at `i`. Conclude with `(RingHom.map_mulVec φ M v i).symm`. Establish `haK : (fun i => φ (a i)) = aK`. Use `hinjAK _ _ ?_` and prove the remaining obligations.
+
+Establish `e1 : (A.map φ).mulVec (fun i => φ (a i)) = fun i => φ (cv (ix i))`. Use function extensionality and compare the values at `i`. Conclude with `(congrFun (hmap u a) (ix i)).trans (congrArg φ (congrFun ha i))`. Rewrite using `[e1]`. Use function extensionality and compare the values at `i`.
+
+Conclude with `(congrFun h (ix i)).symm`. Use `⟨a, ?_, fun a' ha' => hinjA _ _ ((hrow a').trans ((funext fun i => congrFun ha' (ix i)).trans ha.symm))⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Apply `hφ` to reduce the goal to its premises. Use `congrFun (hmap u a) i` as an intermediate fact.
+
+Rewrite `this` using `[haK, h]`. Conclude with `this.symm`.
+-/
 theorem existsUnique_mulVec_of_inCell {V K : Type} [CommRing V] [CommRing K] (φ : V →+* K)
     (hφ : Function.Injective φ) {n r : ℕ} (ix : Fin r ↪ Fin n) (u : Matrix (Fin n) (Fin r) V)
     (hc : GlobalTheory.Reg.InCell ix u) (cv : Fin n → V) (aK : Fin r → K)
@@ -80,6 +97,45 @@ namespace GlobalTheory.EqCharGood
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c a n f hf la Y hP T io hio y hy`. Take `⟨hE, -, -⟩` from `GlobalTheory.Reg.evLaws_genFr_atlas E H Dw l Xo c`. Establish `hS` using `GlobalTheory.abelianSchemeLaws_all.2.secTwist`. Establish `hinj : Function.Injective (algebraMap T.V T.Fr)` using `IsFractionRing.injective T.V T.Fr`. Take `⟨k, hk⟩` from `exists_factor T io hio`.
+
+Take `⟨y', z, h1, h2, h3, h4⟩` from `hy`. Establish `hs : y' ≫ Y.s = spMap (k.comp (la.valuation c.F).valuationSubring.subtype)`. Establish `e1 : spMap (algebraMap T.V T.Fr) ≫ (y' ≫ Y.s) = spMap (algebraMap T.V T.Fr) ≫ spMap (k.comp (la.valuation c.F).valuationSubring.subtype)`. Rewrite using `[← Category.assoc, ← h3, Category.assoc, GlobalTheory.TraitDataIntrinsic.j_s, ← Category.assoc, h2, sp_comp, sp_comp, ← RingHom.comp_assoc, hk]`. Take `⟨φ, hφ⟩ : ∃ φ : (la.valuation c.F).valuationSubring →+* T.V, y' ≫ Y.s = spMap φ` from `⟨(Spec.preimage (y' ≫ Y.s)).hom, by simp [spMap]⟩`.
+
+Rewrite `e1` using `[hφ, sp_comp, sp_comp]`. Rewrite using `[hφ]`. Use `congr 1`. Establish `e2` using `CommRingCat.hom_ext_iff.1 (Spec.map_injective e1)`. Conclude with `RingHom.ext fun x => hinj (RingHom.congr_fun e2 x)`.
+
+Set `_ : Algebra c.F T.V` to `k.toAlgebra`. Set `_ : Algebra c.F T.Fr` to `io.toAlgebra`. Take `⟨zV, hzV1, hzV2⟩` from `exists_lift Y y' k hs h4`. Take `⟨J, _, M, hM⟩` from `GlobalTheory.Reg.exists_finite_mchart_cover E H Dw l Xo c (la.valuation c.F).valuationSubring _ Y hP`. Take `⟨j, hj⟩` from `hM (y' (IsLocalRing.closedPoint T.V))`.
+
+Take `⟨-, -, h3'⟩` from `GlobalTheory.ModelPoints.model_points_charts E H Dw l Xo c _ _ Y`. Take `⟨-, -, -, h4'⟩` from `h3' (M j).U (M j).hU`. Take `⟨f₀, hf₀, -⟩` from `h4' T.V y' hj`. Take `⟨ΛV⟩` from `GlobalTheory.Reg.MChart.nonempty_lift E H Dw l Xo c _ _ Y (M j) T.V f₀ zV hzV2 (hzV1.trans hf₀.symm)`. Establish `hzj : z ≫ Y.j = spMap ((algebraMap T.V T.Fr).comp f₀) ≫ (M j).hU.fromSpec`.
+
+Rewrite using `[h3, ← hf₀, ← Category.assoc, sp_comp]`. Establish `hK` using `GlobalTheory.Reg.MChart.nonempty_lift E H Dw l Xo c _ _ Y (M j) T.Fr _ z h2 hzj`. Rewrite `hK` using `[h1]`. Take `⟨ΛK⟩` from `hK`. Take `⟨g, hg, hgi⟩` from `GlobalTheory.Reg.MChart.Lift.exists_coordinates E H Dw l Xo c _ _ Y (M j) T.Fr _ y.1 ΛK`.
+
+Set `W : ValuationSubring T.Fr` to `(valV T.V).valuationSubring`. Establish `hW : ∀ x, x ∈ W → InV T x` using `fun x h => IsDiscreteValuationRing.exists_lift_of_le_one (A := T.V) (K := T.Fr) h`. Use `choose ix u b huW hu0 hu1 hbt hbd hgub using fun τ => GlobalTheory.exists_integral_pivot_decomposition T.Fr W _ _ (g τ) (hgi τ)`. Use `choose u₀' hu₀' using fun τ i j => hW _ (huW τ i j)`. Set `u₀ : ∀ τ : E →+* ℂ, Matrix (Fin (M j).n) (Fin (Dw.mult τ)) T.V` to `fun τ => Matrix.of fun i j' => u₀' τ i j'`.
+
+Establish `hu₀ : ∀ τ i j', algebraMap T.V T.Fr (u₀ τ i j') = u τ i j'` using `hu₀'`. Establish `hcell : ∀ τ, GlobalTheory.Reg.InCell (ix τ) (u₀ τ)` using `fun τ => ⟨fun i j hij => hinj (by rw [hu₀, map_zero]; exact hu0 τ i j hij), fun i => hinj (by rw [hu₀, map_one]; exact hu1 τ i)⟩`. Establish `heigMap : ∀ τ (cv : Fin (M j).n → T.V), (M j).Eig ((algebraMap T.V T.Fr).comp f₀) τ (fun i => algebraMap T.V T.Fr (cv i)) ↔ (M j).Eig f₀ τ cv`. Introduce `τ cv`. Use `forall_congr' fun a' => ?_` and prove the remaining obligations.
+
+Establish `key : ∀ i, algebraMap T.V T.Fr ((((M j).ρ a').map f₀).mulVec cv i) = ((((M j).ρ a').map ((algebraMap T.V T.Fr).comp f₀)).mulVec (fun i => algebraMap T.V T.Fr (cv i))) i` using `fun i => by rw [RingHom.map_mulVec]; rfl`. Establish `key2 : ∀ i, algebraMap T.V T.Fr ((algebraMap c.F T.V (embK c τ a') • cv) i) = (algebraMap c.F T.Fr (embK c τ a') • fun i => algebraMap T.V T.Fr (cv i)) i` using `fun i => by`. Simplify using `only [Pi.smul_apply, smul_eq_mul, map_mul]`. Conclude with `congrArg (· * _) (RingHom.congr_fun hk _)`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h`. Use function extensionality and compare the values at `i`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[key, key2]`. Conclude with `congrFun h i`.
+
+Introduce `h`. Use function extensionality and compare the values at `i`. Rewrite using `[← key, ← key2, h]`. Establish `humap : ∀ τ, (u₀ τ).map (algebraMap T.V T.Fr) = u τ` using `fun τ => Matrix.ext fun i j' => hu₀ τ i j'`. Establish `heigK : ∀ τ i, (M j).Eig ((algebraMap T.V T.Fr).comp f₀) τ (fun j' => u τ j' i)`.
+
+Introduce `τ i a'`. Establish `hgc : ∀ i, (M j).Eig ((algebraMap T.V T.Fr).comp f₀) τ (fun j' => g τ j' i)` using `fun i => (GlobalTheory.Reg.isEigAt_iff_eig E H Dw l Xo c _ _ Y (M j) T.Fr _ y.1.x ΛK τ _ _ (hg τ i)).mp (y.1.eig τ i)`. Establish `hG` using `(GlobalTheory.Reg.CellChart.mul_eq_smul_iff_cols (((M j).ρ a').map ((algebraMap T.V T.Fr).comp f₀)) (algebraMap c.F T.Fr (embK c τ a')) (g τ)).mpr fun i => hgc i a'`. Establish `hd : IsUnit (b τ).det`. Rewrite using `[Matrix.det_of_upperTriangular (hbt τ)]`.
+
+Conclude with `(Finset.prod_ne_zero_iff.mpr fun i _ => hbd τ i).isUnit`. Establish `hU : ((M j).ρ a').map ((algebraMap T.V T.Fr).comp f₀) * u τ = algebraMap c.F T.Fr (embK c τ a') • u τ`. Establish `e : u τ = g τ * (b τ)⁻¹` using `by rw [hgub τ, Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hd, Matrix.mul_one]`. Rewrite using `[e, ← Matrix.mul_assoc, hG, Matrix.smul_mul]`. Conclude with `(GlobalTheory.Reg.CellChart.mul_eq_smul_iff_cols _ _ _).mp hU i`.
+
+Establish `heigV : ∀ τ i, (M j).Eig f₀ τ (fun j' => u₀ τ j' i)` using `fun τ i => (heigMap τ _).mp (by simpa only [hu₀] using heigK τ i)`. Take `⟨hv1, hv2, hv3⟩` from `GlobalTheory.Reg.vec_bijective E H Dw l Xo c _ _ Y (M j) T.Fr _ y.1.x ΛK`. Establish `hbasis : ∀ τ cv, (M j).Eig f₀ τ cv → ∃! a, (u₀ τ).mulVec a = cv`. Introduce `τ cv hcv`. Establish `hcvK` using `(heigMap τ cv).mpr hcv`.
+
+Take `⟨w, hw, -⟩` from `hv1 (fun i => algebraMap T.V T.Fr (cv i))`. Establish `htan` using `hv2 _ _ hw`. Establish `heig` using `(GlobalTheory.Reg.isEigAt_iff_eig E H Dw l Xo c _ _ Y (M j) T.Fr _ y.1.x ΛK τ _ _ hw).mpr hcvK`. Take `⟨a0, ha0, -⟩` from `y.1.basis τ w htan heig`. Establish `hv` using `(GlobalTheory.T.isCombAt_iff_coordinate_combination E H Dw l Xo c _ _ Y (M j) T.Fr _ y.1.x ΛK _ (fun i j' => g τ j' i) (y.1.u τ) a0 w (hg τ)).mp ha0`.
+
+Establish `heq : (∑ i, a0 i • fun j' => g τ j' i) = fun i => algebraMap T.V T.Fr (cv i)` using `(hv3 w htan).unique hv hw`. Use `GlobalTheory.EqCharGood.existsUnique_mulVec_of_inCell (algebraMap T.V T.Fr) hinj (ix τ) (u₀ τ) (hcell τ) cv ((b τ).mulVec a0) ?_` and prove the remaining obligations. Rewrite using `[humap, Matrix.mulVec_mulVec, ← hgub τ, ← heq]`. Use function extensionality and compare the values at `j'`. Simplify using `[Matrix.mulVec, dotProduct, Finset.sum_apply, mul_comm]`.
+
+Take `⟨yV, -, hyV⟩` from `GlobalTheory.Reg.exists_frPt_tie hS E H Dw l Xo c _ _ Y (M j) T.V f₀ _ ΛV u₀ heigV hbasis`. Set `φ : T.V →ₐ[c.F] T.Fr` to `⟨algebraMap T.V T.Fr, fun x => RingHom.congr_fun hk x⟩`. Take `⟨zK, hzK⟩` from `hE.bc _ _ φ yV`. Establish `htK` using `GlobalTheory.Reg.MChart.tie_baseChange E H Dw l Xo c _ _ Y (M j) T.V T.Fr f₀ φ u₀ yV zK hyV hzK`. Establish `hint : Integral T io zK` using `GlobalTheory.Reg.tie_integral hS E H Dw l Xo c _ _ Y (M j) hP T io f₀ ix u₀ hcell zK (GlobalTheory.Reg.CellChart.tie_congr htK (fun _ => rfl) (fun _ _ _ => rfl))`.
+
+Establish `htu : (M j).Comparison₂ ((algebraMap T.V T.Fr).comp f₀) u zK` using `GlobalTheory.Reg.CellChart.tie_congr htK (fun _ => rfl) (fun τ i j' => hu₀ τ i j')`. Take `⟨t, ht⟩` from `GlobalTheory.Reg.frBor_of_tie E H Dw l Xo c _ _ Y (M j) T.Fr _ y.1 zK ΛK u b (GlobalTheory.Reg.CellChart.lift_point_unique htu.choose ΛK) (fun τ => ⟨hbt τ, hbd τ⟩) (by rw [show (fun τ => u τ * b τ) = g from funext fun τ => (hgub τ).symm]; exact hg) htu`. Use `show InV T (evI y f)`. Rewrite using `[inV_of_frBor hf y ⟨zK, hE.test _ zK, hint⟩ t ht]`. Use `show InV T (evR Xo c f zK)`.
+
+Rewrite using `[(GlobalTheory.ArcQ.evR_natural_weight_scaling E H Dw l Xo c hE a n f hf T.V).1 T.Fr φ yV zK hzK]`. Conclude with `⟨_, rfl⟩`.
+-/
 theorem inV_of_extIn_eqChar : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ) (f : Rul Xo c), f ∈ sec Xo c a n → ∀ (la : HeightOneSpectrum (𝓞 c.F)) (Y : Model Xo c (la.valuation c.F).valuationSubring.subtype), PushInvertible Y.t.G Y.t.PP.L → ∀ (T : CDVR) (io : c.F →+* T.Fr), (∀ k : c.F, io k ∈ (algebraMap T.V T.Fr).range) → ∀ y : IntFr Xo c T io, (letI := io.toAlgebra; ExtIn Y (abLocus Y.t.G) T io y.1.x) → evI y f ∈ (algebraMap T.V T.Fr).range := by
   intro E _ _ _ H Dw l Xo c a n f hf la Y hP T io hio y hy
   classical

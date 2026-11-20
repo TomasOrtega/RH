@@ -21,6 +21,9 @@ variable (ι) in
 
 abbrev Mono (a : K → ℕ) : Type := {μ : (Σ k, ι k) → ℕ // ∀ k, ∑ i, μ ⟨k, i⟩ = a k}
 
+/- English proof (translation)
+Take `⟨k, i⟩` from `p`. Rewrite using `[← μ.2 k]`. Conclude with `Finset.single_le_sum (f := fun i => μ.1 ⟨k, i⟩) (fun _ _ => Nat.zero_le _) (Finset.mem_univ i)`.
+-/
 theorem Mono.le {a : K → ℕ} (μ : Mono ι a) (p : Σ k, ι k) : μ.1 p ≤ a p.1 := by
   obtain ⟨k, i⟩ := p
   rw [← μ.2 k]
@@ -35,10 +38,16 @@ def monVal (y : (Σ k, ι k) → Ω) (μ : (Σ k, ι k) → ℕ) : Ω := ∏ p, 
 
 def monPoly (μ : (Σ k, ι k) → ℕ) : MRing ι := monomial (Finsupp.equivFunOnFinite.symm μ) 1
 
+/- English proof (translation)
+Rewrite using `[monPoly, aeval_monomial, map_one, one_mul, Finsupp.prod_fintype _ _ (fun _ => pow_zero _)]`. Both sides reduce to the same expression.
+-/
 theorem aeval_monPoly (y : (Σ k, ι k) → Ω) (μ : (Σ k, ι k) → ℕ) : aeval y (monPoly μ) = monVal y μ := by
   rw [monPoly, aeval_monomial, map_one, one_mul, Finsupp.prod_fintype _ _ (fun _ => pow_zero _)]
   rfl
 
+/- English proof (translation)
+Introduce `m hm k`. Use `support_monomial_subset hm` as an intermediate fact. Rewrite `this` using `[Finset.mem_singleton]`. Substitute `this` using the available equality. Simplify using `using μ.2 k`.
+-/
 theorem homog_monPoly {a : K → ℕ} (μ : Mono ι a) : IsMultiHomog (monPoly μ.1) a := by
   intro m hm k
   have := support_monomial_subset hm
@@ -46,6 +55,9 @@ theorem homog_monPoly {a : K → ℕ} (μ : Mono ι a) : IsMultiHomog (monPoly �
   subst this
   simpa using μ.2 k
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using SectionBounded.homog_one (ι := ι)`. Consider the case `insert j s hj ih`. Rewrite using `[Finset.prod_insert hj, Finset.sum_insert hj]`. Conclude with `SectionBounded.homog_mul (h j (Finset.mem_insert_self _ _)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))`.
+-/
 theorem homog_prod {J : Type} (s : Finset J) (f : J → MRing ι) (d : J → K → ℕ)
     (h : ∀ j ∈ s, IsMultiHomog (f j) (d j)) : IsMultiHomog (∏ j ∈ s, f j) (∑ j ∈ s, d j) := by
   classical
@@ -56,6 +68,11 @@ theorem homog_prod {J : Type} (s : Finset J) (f : J → MRing ι) (d : J → K �
     exact SectionBounded.homog_mul (h j (Finset.mem_insert_self _ _))
       (ih fun i hi => h i (Finset.mem_insert_of_mem hi))
 
+/- English proof (translation)
+Rewrite using `[f.as_sum, map_sum]`. Use `SectionBounded.homog_sum _ fun m hm => ?_` and prove the remaining obligations. Rewrite using `[bind₁_monomial]`. Use `SectionBounded.homog_congr (SectionBounded.homog_mul (SectionBounded.homog_C _) (homog_prod _ _ _ fun j _ => SectionBounded.homog_pow (hφ j) (m j))) fun k => ?_` and prove the remaining obligations. Establish `hdeg : ∑ j ∈ m.support, m j = n`.
+
+Use `hf (mem_support_iff.mp hm)` as an intermediate fact. Simplify `this` using `[Finsupp.weight_apply, Finsupp.sum]`. Rewrite using `[← hdeg, Finset.sum_mul]`. Simplify using `[Finset.sum_apply]`.
+-/
 theorem homog_bind₁ {a : K → ℕ} {N : ℕ} (φ : Fin (N + 1) → MRing ι) (hφ : ∀ j, IsMultiHomog (φ j) a)
     {f : MvPolynomial (Fin (N + 1)) ℤ} {n : ℕ} (hf : f.IsHomogeneous n) :
     IsMultiHomog (bind₁ φ f) (fun k => n * a k) := by
@@ -75,12 +92,20 @@ variable [DecidableEq K] [∀ k, DecidableEq (ι k)]
 def swap (μ : (Σ k, ι k) → ℕ) (q p : Σ k, ι k) : (Σ k, ι k) → ℕ :=
   fun r => μ r + (if p = r then 1 else 0) - (if q = r then 1 else 0)
 
+/- English proof (translation)
+Distinguish the cases in `h : k = k'`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h]`.
+-/
 theorem sum_boole_block (k : K) (i₀ : ι k) (k' : K) :
     ∑ i : ι k', (if (⟨k, i₀⟩ : Σ k, ι k) = ⟨k', i⟩ then 1 else 0) = if k = k' then 1 else 0 := by
   by_cases h : k = k'
   · subst h; simp
   · simp [h]
 
+/- English proof (translation)
+Unfold `swap`. Rewrite using `[Finset.sum_tsub_distrib, Finset.sum_add_distrib, μ.2 k', sum_boole_block, sum_boole_block, Nat.add_sub_cancel]`. Introduce `i' _`. Distinguish the cases in `hq : (⟨k, i₀⟩ : Σ k, ι k) = ⟨k', i'⟩`. Consider the cases of `hq`.
+
+Rewrite using `[if_pos rfl]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[if_neg hq]`. Conclude with `Nat.zero_le _`.
+-/
 theorem swap_mem {a : K → ℕ} (μ : Mono ι a) (k : K) (i₀ i : ι k) (h : μ.1 ⟨k, i₀⟩ ≠ 0) (k' : K) :
     ∑ i', swap μ.1 ⟨k, i₀⟩ ⟨k, i⟩ ⟨k', i'⟩ = a k' := by
   unfold swap
@@ -94,6 +119,13 @@ theorem swap_mem {a : K → ℕ} (μ : Mono ι a) (k : K) (i₀ i : ι k) (h : �
   · rw [if_neg hq]
     exact Nat.zero_le _
 
+/- English proof (translation)
+Establish `hq : ∏ r, y r ^ (if q = r then 1 else 0) = y q` using `by simp`. Establish `hp : ∏ r, y r ^ (if p = r then 1 else 0) = y p` using `by simp`. Rewrite using `[← hq, ← hp, monVal, monVal, ← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun r _ => ?_` and prove the remaining obligations. Rewrite using `[← pow_add, ← pow_add, swap, Nat.sub_add_cancel]`.
+
+Distinguish the cases in `h1 : q = r`. Substitute `h1` using the available equality. Rewrite using `[if_pos rfl]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[if_neg h1]`.
+
+Conclude with `Nat.zero_le _`.
+-/
 theorem monVal_swap (y : (Σ k, ι k) → Ω) (μ : (Σ k, ι k) → ℕ) (q p : Σ k, ι k) (h : μ q ≠ 0) :
     monVal y (swap μ q p) * y q = monVal y μ * y p := by
   have hq : ∏ r, y r ^ (if q = r then 1 else 0) = y q := by simp
@@ -111,6 +143,9 @@ theorem monVal_swap (y : (Σ k, ι k) → Ω) (μ : (Σ k, ι k) → ℕ) (q p :
 def pure (c : ∀ k, ι k) (a : K → ℕ) : Mono ι a :=
   ⟨fun r => if c r.1 = r.2 then a r.1 else 0, fun k => by simp⟩
 
+/- English proof (translation)
+Rewrite using `[monVal, Fintype.prod_sigma]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `[pure, pow_ite]`.
+-/
 theorem monVal_pure (y : (Σ k, ι k) → Ω) (c : ∀ k, ι k) (a : K → ℕ) :
     monVal y (pure c a).1 = ∏ k, y ⟨k, c k⟩ ^ a k := by
   rw [monVal, Fintype.prod_sigma]
@@ -120,6 +155,17 @@ theorem monVal_pure (y : (Σ k, ι k) → Ω) (c : ∀ k, ι k) (a : K → ℕ) 
 def svPt (y : (Σ k, ι k) → Ω) {a : K → ℕ} {N : ℕ} (e : Mono ι a ≃ Fin (N + 1)) : Fin (N + 1) → Ω :=
   fun j => monVal y (e.symm j).1
 
+/- English proof (translation)
+Rewrite using `[Kleiman.SubSystem.secs, Submodule.mem_iInf]`. Introduce `I`. Take `⟨j, hj⟩` from `I.2.1`. Establish `hzj : monVal y (e.symm j).1 ≠ 0` using `(Kleiman.mem_support (svPt y e)).mp (I.2.2 hj)`. Establish `hex : ∀ k, ∃ i, (e.symm j).1 ⟨k, i⟩ ≠ 0` using `fun k => by`.
+
+Establish `h0 : ∑ i, (e.symm j).1 ⟨k, i⟩ ≠ 0` using `by rw [(e.symm j).2 k]; exact Nat.one_le_iff_ne_zero.mp (ha k)`. Take `⟨i, -, hi⟩` from `Finset.exists_ne_zero_of_sum_ne_zero h0`. Conclude with `⟨i, hi⟩`. Use `choose c hc using hex`. Establish `hyc : ∀ k, y ⟨k, c k⟩ ≠ 0` using `fun k h0 => hzj (Finset.prod_eq_zero (Finset.mem_univ ⟨k, c k⟩) (by rw [h0, zero_pow (hc k)]))`.
+
+Establish `hle : chartRingZ y c ≤ Kleiman.chartRing ℤ (svPt y e) I`. Rewrite using `[chartRingZ, Algebra.adjoin_le_iff]`. Introduce and unpack `_ ⟨⟨k, i⟩, rfl⟩`. Use `⟨X (e ⟨swap (e.symm j).1 ⟨k, c k⟩ ⟨k, i⟩, swap_mem (e.symm j) k (c k) i (hc k)⟩), X j, 1, Kleiman.X_mem_monos hj, isHomogeneous_X _ _, isHomogeneous_X _ _, ?_⟩` and prove the remaining obligations. Simplify using `only [aeval_X, svPt, Equiv.symm_apply_apply]`.
+
+Rewrite using `[div_eq_div_iff (hyc k) hzj, monVal_swap y _ _ _ (hc k), mul_comm]`. Establish `hj0 : svPt y e (e (pure c a)) ^ τ ∈ Kleiman.twistMod ℤ (svPt y e) (τ : ℤ) I` using `Submodule.subset_span ⟨X (e (pure c a)) ^ τ, 1, 0, τ, one_mem _, isHomogeneous_X_pow _ _, isHomogeneous_one _ _, by simp, by simp⟩`. Establish `hmem` using `Submodule.smul_mem _ (⟨_, hle (hs c hyc)⟩ : Kleiman.chartRing ℤ (svPt y e) I) hj0`. Rewrite using `[Submodule.restrictScalars_mem]`. Express the relevant statement in the definitionally equal form `s ∈ Kleiman.twistMod ℤ (svPt y e) (τ : ℤ) I`.
+
+Use `hmem using 1` and compare the differences between its conclusion and the goal. Express the relevant statement in the definitionally equal form `s = (s * ∏ k, y ⟨k, c k⟩ ^ (-((τ : ℤ) * (a k : ℤ)))) * _`. Rewrite using `[svPt, Equiv.symm_apply_apply, monVal_pure, ← Finset.prod_pow, mul_assoc, ← Finset.prod_mul_distrib, Finset.prod_eq_one, mul_one]`. Introduce `k _`. Rewrite using `[← pow_mul, zpow_neg, show (τ : ℤ) * (a k : ℤ) = ((a k * τ : ℕ) : ℤ) by push_cast; ring, zpow_natCast, inv_mul_cancel₀ (pow_ne_zero _ (hyc k))]`.
+-/
 theorem chartLat_le_secs (y : (Σ k, ι k) → Ω) {a : K → ℕ} (ha : ∀ k, 1 ≤ a k) {N : ℕ}
     (e : Mono ι a ≃ Fin (N + 1)) (τ : ℕ) {s : Ω} (hs : s ∈ chartLat y (fun k => (a k : ℤ)) τ) :
     s ∈ (Kleiman.twistSys ℤ (svPt y e) (τ : ℤ)).secs := by
@@ -155,6 +201,11 @@ theorem chartLat_le_secs (y : (Σ k, ι k) → Ω) {a : K → ℕ} (ha : ∀ k, 
   rw [← pow_mul, zpow_neg, show (τ : ℤ) * (a k : ℤ) = ((a k * τ : ℕ) : ℤ) by push_cast; ring, zpow_natCast,
     inv_mul_cancel₀ (pow_ne_zero _ (hyc k))]
 
+/- English proof (translation)
+Establish `hle : (Kleiman.coordGraded ℤ (svPt y e)).piece (τ : ℤ) ≤ Submodule.span ℤ {s | ∃ g : MRing ι, IsMultiHomog g (fun k => τ * a k) ∧ aeval y g = s}`. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨f, n, hf, hn, rfl⟩`. Take `rfl : n = τ` from `by exact_mod_cast hn`. Use `Submodule.subset_span ⟨bind₁ (fun j => monPoly (e.symm j).1) f, homog_bind₁ _ (fun j => homog_monPoly (e.symm j)) hf, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[aeval_bind₁]`. Simplify using `only [aeval_monPoly]`. Both sides reduce to the same expression. Conclude with `hle hs`.
+-/
 theorem piece_le_secM (y : (Σ k, ι k) → Ω) {a : K → ℕ} {N : ℕ} (e : Mono ι a ≃ Fin (N + 1)) (τ : ℕ) {s : Ω}
     (hs : s ∈ (Kleiman.coordGraded ℤ (svPt y e)).piece (τ : ℤ)) : s ∈ secM y (fun k => τ * a k) := by
   have hle : (Kleiman.coordGraded ℤ (svPt y e)).piece (τ : ℤ) ≤
@@ -173,6 +224,13 @@ end SecEqProof
 
 open SecEqProof in
 
+/- English proof (translation)
+Introduce `K _ ι _ Ω _ y a ha hy`. Use `choose c hc using hy`. Choose the witnesses or unpack the hypotheses as in `⟨N, ⟨e⟩⟩ : ∃ N, Nonempty (Mono ι a ≃ Fin (N + 1)) := by`. Establish `: Nonempty (Mono ι a)` using `⟨pure c a⟩`. Conclude with `⟨Nat.card (Mono ι a) - 1, ⟨(Finite.equivFin _).trans (finCongr (Nat.sub_add_cancel Nat.card_pos).symm)⟩⟩`.
+
+Establish `hz : svPt y e ≠ 0` using `fun h => by`. Establish `h1` using `congrFun h (e (pure c a))`. Simplify using `only [svPt, Equiv.symm_apply_apply, monVal_pure, Pi.zero_apply] at h1`. Conclude with `Finset.prod_ne_zero_iff.mpr (fun k _ => pow_ne_zero _ (hc k)) h1`. Take `⟨τ₀, hτ₀⟩` from `Filter.eventually_atTop.mp (Kleiman.TwistSections.full ℤ Ω N (svPt y e) hz)`.
+
+Use `⟨τ₀, fun τ hτ => le_antisymm (fun s hs => ?_) (UpperNormalisation.secM_le_chartLat y _ τ fun k => by push_cast; ring)⟩` and prove the remaining obligations. Conclude with `piece_le_secM y e τ ((hτ₀ τ hτ) ▸ chartLat_le_secs y ha e τ hs)`.
+-/
 theorem SecEq.proof : SecEq.Statement := by
   intro K _ ι _ Ω _ y a ha hy
   classical

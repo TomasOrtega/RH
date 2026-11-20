@@ -7,10 +7,18 @@ open PositivityTheory.Rg.SwEis
 
 namespace GlobalTheory.CompanionTheory.PolyDenominator
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.GaloisBoundFirst.main B hB hz a`.
+-/
 theorem exists_pow_mul (B : ℂ → ℂ) (hB : Differentiable ℂ B) (hz : ∃ z, B z ≠ 0) (a : ℂ) :
     ∃ (k : ℕ) (v : ℂ → ℂ), Differentiable ℂ v ∧ v a ≠ 0 ∧ ∀ z, B z = (z - a) ^ k * v z :=
   _root_.UpperTheory.Reformulated.B.GaloisBoundFirst.main B hB hz a
 
+/- English proof (translation)
+Take `⟨z₀, hz₀⟩` from `hz`. Establish `han : AnalyticOnNhd ℂ B univ` using `fun x _ => hB.analyticAt x`. Assume the negation of the conclusion as `hinf`. Establish `hinf' : ({z | z ∈ Q ∧ B z = 0} : Set ℂ).Infinite` using `hinf`. Take `⟨x, hxQ, hacc⟩` from `hinf'.exists_accPt_of_subset_isCompact hQ (fun z hz => hz.1)`.
+
+Establish `hfreq : ∃ᶠ z in 𝓝[≠] x, B z = 0` using `(accPt_iff_frequently_nhdsNE.1 hacc).mono fun z hz => hz.2`. Conclude with `hz₀ (han.eqOn_zero_of_preconnected_of_frequently_eq_zero isPreconnected_univ (mem_univ x) hfreq (mem_univ z₀))`.
+-/
 theorem finite_zeros (B : ℂ → ℂ) (hB : Differentiable ℂ B) (hz : ∃ z, B z ≠ 0) {Q : Set ℂ} (hQ : IsCompact Q) :
     {z | z ∈ Q ∧ B z = 0}.Finite := by
   obtain ⟨z₀, hz₀⟩ := hz
@@ -23,6 +31,15 @@ theorem finite_zeros (B : ℂ → ℂ) (hB : Differentiable ℂ B) (hz : ∃ z, 
   exact hz₀ (han.eqOn_zero_of_preconnected_of_frequently_eq_zero isPreconnected_univ
     (mem_univ x) hfreq (mem_univ z₀))
 
+/- English proof (translation)
+Proceed by induction on `F using Finset.induction_on with`. Consider the case `empty`. Introduce `B hB _ hF`. Use `⟨1, B, one_ne_zero, hB, fun z => by simp, fun z hz h0 => ?_⟩` and prove the remaining obligations. Simplify using `using hF z hz h0`.
+
+Consider the case `insert a F _ ih`. Introduce `B hB hz hF`. Take `⟨k, v, hv, hva, hBv⟩` from `exists_pow_mul B hB hz a`. Take `⟨d, u, hd, hu, hvu, huQ⟩` from `ih v hv ⟨a, hva⟩ (by`. Introduce `z hzQ h0`.
+
+Establish `hza : z ≠ a` using `fun h => hva (h ▸ h0)`. Establish `hBz : B z = 0` using `by rw [hBv, h0, mul_zero]`. Conclude with `(Finset.mem_insert.1 (hF z hzQ hBz)).resolve_left hza)`. Use `⟨(Polynomial.X - Polynomial.C a) ^ k * d, u, mul_ne_zero (pow_ne_zero _ (Polynomial.X_sub_C_ne_zero a)) hd, hu, fun z => ?_, huQ⟩` and prove the remaining obligations. Rewrite using `[hBv, hvu]`.
+
+Simplify using `[mul_assoc]`.
+-/
 theorem factor_of_finset {Q : Set ℂ} (F : Finset ℂ) :
     ∀ B : ℂ → ℂ, Differentiable ℂ B → (∃ z, B z ≠ 0) → (∀ z ∈ Q, B z = 0 → z ∈ F) →
       ∃ (d : Polynomial ℂ) (u : ℂ → ℂ), d ≠ 0 ∧ Differentiable ℂ u ∧
@@ -46,11 +63,47 @@ theorem factor_of_finset {Q : Set ℂ} (F : Finset ℂ) :
     rw [hBv, hvu]
     simp [mul_assoc]
 
+/- English proof (translation)
+The claim follows from `factor_of_finset (finite_zeros A hA hz hQ).toFinset A hA hz fun z hzQ h0 => by simpa using And.intro hzQ h0`.
+-/
 theorem exists_poly_factor (A : ℂ → ℂ) (hA : Differentiable ℂ A) (hz : ∃ z, A z ≠ 0) {Q : Set ℂ} (hQ : IsCompact Q) :
     ∃ (d : Polynomial ℂ) (u : ℂ → ℂ), d ≠ 0 ∧ Differentiable ℂ u ∧
       (∀ z, A z = d.eval z * u z) ∧ ∀ z ∈ Q, u z ≠ 0 :=
   factor_of_finset (finite_zeros A hA hz hQ).toFinset A hA hz fun z hzQ h0 => by simpa using And.intro hzQ h0
 
+/- English proof (translation)
+Introduce `X I _ T e H A R hA hAne hHd hHc hHe hed hec heT s₀`. Take `⟨a, ha⟩ : ∃ a : ℝ, a = min s₀.re R - 1` from `⟨_, rfl⟩`. Take `⟨c, hc⟩ : ∃ c : ℝ, c = s₀.im` from `⟨_, rfl⟩`. Establish `hQ : IsCompact (Icc a (R + 1) ×ℂ Icc (c - 1) (c + 1))` using `isCompact_Icc.reProdIm isCompact_Icc`. Take `⟨d, u, hd, hu, hAu, huQ⟩` from `exists_poly_factor A hA hAne hQ`.
+
+Set `P : Set ℂ` to `{z | R < z.re}`. Set `W : Set ℂ` to `{z | a < z.re ∧ z.re < R + 1 ∧ c - 1 < z.im ∧ z.im < c + 1}`. Set `U : Set ℂ` to `P ∪ {z | a < z.re ∧ c - 1 < z.im ∧ z.im < c + 1}`. Establish `hPo : IsOpen P` using `isOpen_lt continuous_const Complex.continuous_re`. Establish `hWo : IsOpen W` using `(isOpen_lt continuous_const Complex.continuous_re).inter ((isOpen_lt Complex.continuous_re continuous_const).inter ((isOpen_lt continuous_const Complex.continuous_im).inter (isOpen_lt Complex.continuous_im continuous_const)))`.
+
+Establish `hUo : IsOpen U` using `hPo.union ((isOpen_lt continuous_const Complex.continuous_re).inter ((isOpen_lt continuous_const Complex.continuous_im).inter (isOpen_lt Complex.continuous_im continuous_const)))`. Establish `hWQ : ∀ z ∈ W, u z ≠ 0` using `fun z hz => huQ z (Complex.mem_reProdIm.2 ⟨⟨hz.1.le, hz.2.1.le⟩, ⟨hz.2.2.1.le, hz.2.2.2.le⟩⟩)`. Establish `hUPW : ∀ z ∈ U, z ∈ P ∨ z ∈ W`. Introduce and unpack `z (h | ⟨h1, h2, h3⟩)`. Conclude with `Or.inl h`.
+
+Distinguish the cases in `h : R < z.re`. Conclude with `Or.inl h`. Conclude with `Or.inr ⟨h1, by linarith [not_lt.1 h], h2, h3⟩`. Set `E : ℂ → X → ℂ` to `fun z x => if R < z.re then d.eval z * e z x else H z x / u z`. Establish `hEP : ∀ z, R < z.re → ∀ x, E z x = d.eval z * e z x` using `fun z h x => by simp [E, h]`.
+
+Establish `hEW : ∀ z ∈ W, ∀ x, E z x = H z x / u z`. Introduce `z hz x`. Distinguish the cases in `h : R < z.re`. Establish `h0` using `hWQ z hz`. Rewrite using `[hEP z h, hHe z h, hAu z]`.
+
+Clear the denominators using the available nonvanishing facts. Simplify using `[E, h]`. Establish `hHT : ∀ i x z, H z (T i x) = H z x`. Introduce `i x z`. Establish `h1 : AnalyticOnNhd ℂ (H · (T i x)) univ` using `fun w _ => (hHd (T i x)).analyticAt w`.
+
+Establish `h2 : AnalyticOnNhd ℂ (H · x) univ` using `fun w _ => (hHd x).analyticAt w`. Establish `hmem : ((R + 1 : ℝ) : ℂ) ∈ P` using `by simp [P]`. Establish `h3 : (H · (T i x)) =ᶠ[𝓝 ((R + 1 : ℝ) : ℂ)] (H · x)` using `by filter_upwards [hPo.mem_nhds hmem] with w hw`. Rewrite using `[hHe w hw, hHe w hw, heT]`. Conclude with `congrFun (h1.eq_of_eventuallyEq h2 h3) z`.
+
+Use `⟨U, d, E, hUo, ⟨⟨R, subset_union_left⟩, ?_⟩, ?_, hd, ?_, ?_, ?_, fun z hz x => hEP z hz x⟩` and prove the remaining obligations. Introduce and unpack `s (h | ⟨h1, h2, h3⟩) t ht`. Use `left`. Simplify using `only [P, mem_setOf_eq, Complex.add_re, Complex.ofReal_re]`. Conclude with `lt_add_of_lt_of_nonneg h ht`.
+
+Use `right`. Simplify using `only [mem_setOf_eq, Complex.add_re, Complex.add_im, Complex.ofReal_re, Complex.ofReal_im, add_zero]`. Conclude with `⟨lt_add_of_lt_of_nonneg h1 ht, h2, h3⟩`. Distinguish the cases in `h : R < s₀.re`. Conclude with `Or.inl h`.
+
+Use `Or.inr ⟨?_, ?_, ?_⟩` and prove the remaining obligations. Use `min_le_left s₀.re R` as an intermediate fact. Rewrite using `[ha]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[hc]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[hc]`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `x z hz`. Break down `hUPW z hz with h | h` into its components or cases.
+
+Establish `h1 : DifferentiableAt ℂ (fun w => d.eval w * e w x) z` using `(d.differentiable z).mul ((hed x z h).differentiableAt (hPo.mem_nhds h))`. Use `(h1.congr_of_eventuallyEq ?_).differentiableWithinAt` and prove the remaining obligations. Use `filter_upwards [hPo.mem_nhds h] with w hw using hEP w hw x`. Establish `h1 : DifferentiableAt ℂ (fun w => H w x / u w) z` using `(hHd x z).div (hu z) (hWQ z h)`. Use `(h1.congr_of_eventuallyEq ?_).differentiableWithinAt` and prove the remaining obligations.
+
+Use `filter_upwards [hWo.mem_nhds h] with w hw using hEW w hw x`. Establish `hc1 : ContinuousOn (fun y : ℂ × X => d.eval y.1 * e y.1 y.2) (P ×ˢ univ)` using `(d.continuous.comp continuous_fst).continuousOn.mul hec`. Establish `hc2 : ContinuousOn (fun y : ℂ × X => H y.1 y.2 / u y.1) (W ×ˢ univ)` using `hHc.continuousOn.div (hu.continuous.comp continuous_fst).continuousOn fun y hy => hWQ y.1 hy.1`. Introduce and unpack `⟨z, x⟩ ⟨hz, -⟩`. Break down `hUPW z hz with h | h` into its components or cases.
+
+Establish `ho : IsOpen (P ×ˢ (univ : Set X))` using `hPo.prod isOpen_univ`. Establish `hmem : (z, x) ∈ P ×ˢ (univ : Set X)` using `⟨h, mem_univ x⟩`. Establish `: ContinuousOn (fun y : ℂ × X => E y.1 y.2) (P ×ˢ univ)` using `hc1.congr fun y hy => hEP y.1 hy.1 y.2`. Conclude with `(this.continuousAt (ho.mem_nhds hmem)).continuousWithinAt`. Establish `ho : IsOpen (W ×ˢ (univ : Set X))` using `hWo.prod isOpen_univ`.
+
+Establish `hmem : (z, x) ∈ W ×ˢ (univ : Set X)` using `⟨h, mem_univ x⟩`. Establish `: ContinuousOn (fun y : ℂ × X => E y.1 y.2) (W ×ˢ univ)` using `hc2.congr fun y hy => hEW y.1 hy.1 y.2`. Conclude with `(this.continuousAt (ho.mem_nhds hmem)).continuousWithinAt`. Introduce `z hz i x`. Break down `hUPW z hz with h | h` into its components or cases.
+
+Rewrite using `[hEP z h, hEP z h, heT]`. Rewrite using `[hEW z h, hEW z h, hHT]`.
+-/
 theorem glue : Glue := by
   classical
   intro X I _ T e H A R hA hAne hHd hHc hHe hed hec heT s₀

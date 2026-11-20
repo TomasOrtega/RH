@@ -3,6 +3,15 @@ import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.MemRange
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `avoid : ∀ (Q : Ideal R) [Q.IsPrime], Q.height = 1 → ∀ x : R, x ≠ 0 → x ∈ Q → (∀ j ∈ J, Prime (π j) → ¬ π j ∣ x) → ∀ j ∈ J, π j ∉ Q`. Introduce `Q hQ h1 x hx hxQ hnd j hj hjQ`. Break down `hπ j hj with hu | hp` into its components or cases. Conclude with `hQ.ne_top (Ideal.eq_top_of_isUnit_mem Q hjQ hu)`. Establish `hmin` using `mem_minimalPrimes_span_singleton_of_height_eq_one h1 hp.ne_zero hjQ`.
+
+Establish `hsp : (Ideal.span {π j}).IsPrime` using `(Ideal.span_singleton_prime hp.ne_zero).mpr hp`. Establish `hle : Q ≤ Ideal.span {π j}` using `hmin.2 ⟨hsp, le_refl _⟩ ((Ideal.span_singleton_le_iff_mem Q).mpr hjQ)`. Conclude with `hnd j hj hp (Ideal.mem_span_singleton.mp (hle hxQ))`. Establish `hba : b ∣ a` using `dvd_of_forall_height_eq_one hb fun Q _ h1 hbQ => by`. Take `⟨c, d, hc, hd, e⟩` from `h Q inferInstance h1 (avoid Q h1 b hb hbQ fun j hj hp => (hdiv j hj hp).2)`.
+
+Conclude with `⟨d, hd, c, by rw [mul_comm d a, e]⟩`. Establish `hab : a ∣ b` using `dvd_of_forall_height_eq_one ha fun Q _ h1 haQ => by`. Take `⟨c, d, hc, hd, e⟩` from `h Q inferInstance h1 (avoid Q h1 a ha haQ fun j hj hp => (hdiv j hj hp).1)`. Conclude with `⟨c, hc, d, by rw [mul_comm c b, ← e]⟩`. Take `⟨u, hu⟩` from `associated_of_dvd_dvd hba hab`.
+
+Conclude with `⟨u, by rw [← hu, mul_comm]⟩`.
+-/
 theorem exists_unit_eq_mul_of_height_one_avoiding (R : Type) [CommRing R] [IsDomain R]
     [IsNoetherianRing R] [IsIntegrallyClosed R] {n : ℕ} (π : Fin n → R) (J : Finset (Fin n))
     (a b : R) (ha : a ≠ 0) (hb : b ≠ 0) (hπ : ∀ j ∈ J, IsUnit (π j) ∨ Prime (π j))
@@ -32,6 +41,9 @@ theorem exists_unit_eq_mul_of_height_one_avoiding (R : Type) [CommRing R] [IsDom
   obtain ⟨u, hu⟩ := associated_of_dvd_dvd hba hab
   exact ⟨u, by rw [← hu, mul_comm]⟩
 
+/- English proof (translation)
+The claim follows from `@exists_unit_eq_mul_of_height_one_avoiding`.
+-/
 example : ∀ (R : Type) [CommRing R] [IsDomain R] [IsNoetherianRing R] [IsIntegrallyClosed R]
     {n : ℕ} (π : Fin n → R) (J : Finset (Fin n)) (a b : R), a ≠ 0 → b ≠ 0 →
     (∀ j ∈ J, IsUnit (π j) ∨ Prime (π j)) → (∀ j ∈ J, Prime (π j) → ¬ π j ∣ a ∧ ¬ π j ∣ b) →

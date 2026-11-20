@@ -61,6 +61,13 @@ def WdetDegStatement : Prop :=
       Nonempty (LinearMap.range (Matrix.mulVecLin (H.ρL (e w))) ≃ₗ[R] (Fin d → R)) →
       HasLen v R (xMod H e π w) X → X ≤ v (algebraMap R C cp) ^ d
 
+/- English proof (translation)
+Introduce `p _ g C _ _ _ v R _ _ _ O _ _ σ cp hS H m e π he hσ h1 h2 h3 h4 w hw cw cwb hcw hcwb`. Take `⟨d, X, hd, hX, hXe⟩` from `hW1 p g C v R O σ cp hS H m e π he hσ h1 h2 h3 h4 w hw cw cwb hcw hcwb`. Establish `hle` using `hW2 p g C v R O σ cp hS H m e π he hσ h1 h2 h3 h4 w hw d X hd hX`. Establish `hcp : v (algebraMap R C cp) ≠ 0`. Introduce `h0`.
+
+Establish `h5` using `hS.cp_val`. Rewrite `h5` using `[h0, zero_pow (Nat.sub_pos_of_lt (Fact.out : p.Prime).one_lt).ne']`. Conclude with `hS.p_ne h5.symm`. Establish `hpos : 0 < v (algebraMap R C cp) ^ d` using `pow_pos (pos_iff_ne_zero.mpr hcp) d`. Establish `h6 : v (algebraMap R C cp) ^ d * cwb ≤ v (algebraMap R C cp) ^ d * cw`.
+
+Rewrite using `[← hXe]`. Conclude with `mul_le_mul_of_nonneg_right hle zero_le`. Conclude with `le_of_mul_le_mul_left h6 hpos`.
+-/
 theorem cokernelLengthComparison_of (hW1 : WdetLenStatement) (hW2 : WdetDegStatement) : CokernelLengthComparisonStatement := by
   intro p _ g C _ _ _ v R _ _ _ O _ _ σ cp hS H m e π he hσ h1 h2 h3 h4 w hw cw cwb hcw hcwb
   obtain ⟨d, X, hd, hX, hXe⟩ :=

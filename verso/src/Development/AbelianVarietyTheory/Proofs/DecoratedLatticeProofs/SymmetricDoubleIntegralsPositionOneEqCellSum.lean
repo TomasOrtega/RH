@@ -26,6 +26,9 @@ section Scale
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k]
   [BorelSpace k]
 
+/- English proof (translation)
+Take `⟨F, hF, hf, hz⟩` from `h`. Use `⟨F, hF, hf, ?_⟩` and prove the remaining obligations. Rewrite using `[integral_smul_measure, hz, Complex.real_smul]`.
+-/
 theorem isQuotInt_smul_measure {n : Type} [Fintype n] [DecidableEq n] {c : ℕ} {ν : Measure k} {μX : Measure (GL n k)}
     {μG : Measure (GL (n ⊕ Fin c) k)} {p : ℕ} {f : GL (n ⊕ Fin c) k → ℂ} {z : ℂ} (a : ℝ≥0∞)
     (h : IsQuotInt ν μX μG p f z) : IsQuotInt ν μX (a • μG) p f ((a.toReal : ℂ) * z) := by
@@ -33,6 +36,11 @@ theorem isQuotInt_smul_measure {n : Type} [Fintype n] [DecidableEq n] {c : ℕ} 
   refine ⟨F, hF, hf, ?_⟩
   rw [integral_smul_measure, hz, Complex.real_smul]
 
+/- English proof (translation)
+Take `⟨F, hF, hf, hz⟩` from `h`. Use `⟨fun x => b * F x, (SB _).smul_mem b hF, fun x => ?_, ?_⟩` and prove the remaining obligations. Simplify using `only`. Rewrite using `[hf x, ← integral_const_mul]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `g`. Conclude with `(integral_const_mul _ _).symm`. Rewrite using `[hz, integral_const_mul]`.
+-/
 theorem isQuotInt_const_mul {n : Type} [Fintype n] [DecidableEq n] {c : ℕ} {ν : Measure k} {μX : Measure (GL n k)}
     {μG : Measure (GL (n ⊕ Fin c) k)} {p : ℕ} {f : GL (n ⊕ Fin c) k → ℂ} {z : ℂ} (b : ℂ)
     (h : IsQuotInt ν μX μG p f z) : IsQuotInt ν μX μG p (fun x => b * f x) (b * z) := by
@@ -45,11 +53,19 @@ theorem isQuotInt_const_mul {n : Type} [Fintype n] [DecidableEq n] {c : ℕ} {ν
     exact (integral_const_mul _ _).symm
   · rw [hz, integral_const_mul]
 
+/- English proof (translation)
+Unfold `app`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem app_smul {X V : Type} [TopologicalSpace X] [AddCommGroup V] [Module ℂ V] (b : ℂ) (l : SB X →ₗ[ℂ] V)
     (f : X → ℂ) : app (b • l) f = b • app l f := by
   unfold app
   split_ifs <;> simp
 
+/- English proof (translation)
+Take `⟨w, hw, hz⟩` from `h`. Use `⟨fun x => (b.toReal : ℂ) • w x, fun x Ψ => ?_, ?_⟩` and prove the remaining obligations. Conclude with `isQuotInt_smul_measure b (hw x Ψ)`. Use `isQuotInt_smul_measure a (isQuotInt_const_mul (b.toReal : ℂ) hz)` as an intermediate fact. Use `this using 2 with x` and compare the differences between its conclusion and the goal.
+
+Rewrite using `[app_smul, smul_eq_mul]`.
+-/
 theorem oneDbl_smul {n₀ n₁ n₂ : Type} [Fintype n₀] [DecidableEq n₀] [Fintype n₁] [DecidableEq n₁] [Fintype n₂]
     [DecidableEq n₂] {c : ℕ} {A : Type} [AddCommGroup A] [Module ℂ A] {ψ : AddChar k Circle} {ν : Measure k}
     {m₁ : Measure (GL n₁ k)} {G₁ : Measure (GL (n₁ ⊕ Fin (c + 1)) k)} {m₂ : Measure (GL n₂ k)}
@@ -66,6 +82,11 @@ theorem oneDbl_smul {n₀ n₁ n₂ : Type} [Fintype n₀] [DecidableEq n₀] [F
     convert this using 2 with x
     rw [app_smul, smul_eq_mul]
 
+/- English proof (translation)
+Use `haveI : BorelSpace (GL Y k) := GlobalTheory.SplitFlip.borel_GL`. Establish `hc : IsCompact (KO k Y : Set (GL Y k))` using `GlobalTheory.SplitFlip.isCompact_KO`. Use `haveI : CompactSpace (KO k Y) := isCompact_iff_compactSpace.1 hc`. Establish `ho : IsOpen ((J.subgroupOf (KO k Y) : Subgroup (KO k Y)) : Set (KO k Y))` using `hJ.1.preimage continuous_subtype_val`. Use `haveI : Finite (KO k Y ⧸ J.subgroupOf (KO k Y)) := Subgroup.quotient_finite_of_isOpen _ ho`.
+
+Use `haveI : (J.subgroupOf (KO k Y)).FiniteIndex := Subgroup.finiteIndex_of_finite_quotient`. Use `⟨?_, Subgroup.FiniteIndex.index_ne_zero⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.IndexVolume.relIndex_mul_measure_subgroup J (KO k Y) hle hJ.1.measurableSet G, hK]`.
+-/
 theorem relIndex_mul_measure_KO {Y : Type} [Fintype Y] [DecidableEq Y] (G : Measure (GL Y k)) [G.IsHaarMeasure]
     (hK : G (KO k Y) = 1) (J : Subgroup (GL Y k)) (hJ : IsCO J) (hle : J ≤ KO k Y) :
     (J.relIndex (KO k Y) : ℝ≥0∞) * G J = 1 ∧ J.relIndex (KO k Y) ≠ 0 := by
@@ -79,6 +100,11 @@ theorem relIndex_mul_measure_KO {Y : Type} [Fintype Y] [DecidableEq Y] (G : Meas
   refine ⟨?_, Subgroup.FiniteIndex.index_ne_zero⟩
   rw [GlobalTheory.IndexVolume.relIndex_mul_measure_subgroup J (KO k Y) hle hJ.1.measurableSet G, hK]
 
+/- English proof (translation)
+Establish `h` using `GlobalTheory.T.rootExchangeUnipotentHaar_integralPoints_eq_one k n c 1 le_rfl hc ν hν`. Establish `e : (((stabLat (1 : GL (n ⊕ Fin c) k)).subgroupOf (N k n c 1) : Subgroup (N k n c 1)) : Set (N k n c 1)) = {u : N k n c 1 | (u : GL (n ⊕ Fin c) k) ∈ KO k (n ⊕ Fin c)}`. Use extensionality with `u`. Simplify using `[Subgroup.mem_subgroupOf, mem_stabLat]`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum.rescale`.
+
+Rewrite using `[e, h, inv_one, one_smul]`.
+-/
 theorem rescale_one_eq {n : Type} [Fintype n] [DecidableEq n] {c : ℕ} (hc : 1 ≤ c) {ν : Measure k} (hν : IsUnitVol ν)
     (m : Measure (GL n k)) : GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum.rescale ν (1 : GL (n ⊕ Fin c) k) m = m := by
   have h := GlobalTheory.T.rootExchangeUnipotentHaar_integralPoints_eq_one k n c 1 le_rfl hc ν hν
@@ -93,6 +119,31 @@ end Scale
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Introduce `k _ _ _ _ _ _ n₀ n₁ n₂ _ _ _ _ _ _ c ρ hcρ ψ hψ hcond ν hν μ₁ μ₂ ho₁ ho₂ m₁ G₁ m₂ G₂ hm₁ hG₁ hm₂ hG₂ hK₁ hK₂ L₀ L₁ L₂ hco₁ hco₂ hle₁ hle₂ A _ _ τ hτ T hT F hF P₁ P₂ hty₁ hty₂ α A₁ A₂ hcov₁ hcov₂ e₀ he₀ e₂ he₂ z hz`. Use `haveI := hm₁`. Use `haveI := hG₁`. Use `haveI := hm₂`. Use `haveI := hG₂`.
+
+Establish `hne : ψ ≠ 1` using `hcond.ne_one`. Establish `hsd : IsSelfDual ψ ν` using `((GlobalTheory.SplitWeil.selfDual_measure k ψ hψ hne).2.1 hcond ν).1 hν`. Take `⟨⟨ρ₀, hρ₀⟩, hsm⟩` from `GlobalTheory.PosOne.isSrc_exists_isSmoothRep k (n₀ ⊕ Fin (c + 1 + 1)) (n₁ ⊕ Fin (c + 1)) μ₁ ho₁`. Establish `hsm₀` using `hsm ρ₀ hρ₀`. Establish `hcomb : ∀ f : GL (n₀ ⊕ Fin (c + 1 + 1)) k → ℂ, comb (e₀.mapDomain (· * α⁻¹)) (fun g => f (g * α)) = comb e₀ f`.
+
+Introduce `f`. Unfold `comb`. Rewrite using `[Finsupp.sum_mapDomain_index (fun _ => zero_mul _) (fun _ _ _ => add_mul _ _ _)]`. Simplify using `only [inv_mul_cancel_right]`. Establish `hsrc : SrcComb ψ ν (ρ + 1) ρ₀ (ρ₀ α P₁) (e₀.mapDomain (· * α⁻¹))`.
+
+Introduce `L hL`. Establish `hP : ∀ j : L₀.J, ρ₀ (j : GL (n₀ ⊕ Fin (c + 1 + 1)) k) P₁ = (L₀.lam j : ℂ) • P₁` using `fun j => Subtype.ext ((hρ₀ _ _).trans (hty₁.1 j))`. Rewrite using `[he₀ _ ρ₀ hsm₀ L hL P₁ hP, ← hcomb]`. Use `congr 1`. Use function extensionality and compare the values at `g`.
+
+Rewrite using `[map_mul, Module.End.mul_apply]`. Establish `hsym : ∀ g ∈ (e₀.mapDomain (· * α⁻¹)).support, SymDbl ψ ν m₁ G₁ m₂ G₂ μ₁ μ₂ ρ τ T F (om μ₁ g 1 (ρ₀ α P₁).1) P₂.1 (z (g * α))`. Introduce `g hg`. Rewrite `hg` using `[Finsupp.mapDomain_support_of_injective (mul_left_injective α⁻¹)]`. Take `⟨a, ha, rfl⟩` from `Finset.mem_image.1 hg`.
+
+Establish `e : om μ₁ (a * α⁻¹) 1 (ρ₀ α P₁).1 = om μ₁ (a * α⁻¹ * α) 1 P₁.1`. Rewrite using `[← hρ₀, ← hρ₀, map_mul ρ₀ (a * α⁻¹) α, Module.End.mul_apply]`. Rewrite using `[e]`. Simplify `hz a ha` using `only [inv_mul_cancel_right]`. Establish `h1` using `GlobalTheory.T.positionOne_of_symmetricDoubleIntegral_finite k n₀ n₁ n₂ c ρ hcρ ψ hψ hne ν hsd μ₁ μ₂ ho₁ ho₂ m₁ G₁ m₂ G₂ A τ hτ T hT F ρ₀ hρ₀ (ρ₀ α P₁) P₂ (e₀.mapDomain (· * α⁻¹)) hsrc (fun g => z (g * α)) hsym`.
+
+Rewrite `h1` using `[hcomb, hρ₀]`. Take `⟨hi₁, hn₁⟩` from `relIndex_mul_measure_KO G₁ hK₁ L₁.J hco₁ hle₁`. Take `⟨hi₂, hn₂⟩` from `relIndex_mul_measure_KO G₂ hK₂ L₂.J hco₂ hle₂`. Use `set r₁ : ℝ≥0∞ := (L₁.J.relIndex (KO k (n₁ ⊕ Fin (c + 1))) : ℝ≥0∞) with hr₁`. Use `set r₂ : ℝ≥0∞ := (L₂.J.relIndex (KO k (n₂ ⊕ Fin c)) : ℝ≥0∞) with hr₂`.
+
+Use `haveI : (r₁ • G₁).IsHaarMeasure := Measure.IsHaarMeasure.smul G₁ (by simpa [hr₁] using hn₁) (by simp [hr₁])`. Use `haveI : (r₂ • G₂).IsHaarMeasure := Measure.IsHaarMeasure.smul G₂ (by simpa [hr₂] using hn₂) (by simp [hr₂])`. Establish `h2` using `oneDbl_smul r₁ r₂ h1`. Establish `hc : 1 ≤ c` using `by omega`. Rewrite `h2` using `[← rescale_one_eq (n := n₁) (c := c + 1) (by omega) hν m₁, ← rescale_one_eq (n := n₂) hc hν m₂]`.
+
+Establish `h3` using `(GlobalTheory.PosOne.oneDbl_iff_sum k n₀ n₁ n₂ c ρ hcρ ψ hψ hcond ν hν μ₁ μ₂ ho₁ ho₂ m₁ (r₁ • G₁) m₂ (r₂ • G₂) L₁ L₂ hco₁ hco₂ (by rw [Measure.smul_apply, smul_eq_mul, hi₁]) (by rw [Measure.smul_apply, smul_eq_mul, hi₂]) 1 1 A τ hτ T hT F hF P₁ P₂ hty₁.2 hty₂ α A₁ A₂ hcov₁ hcov₂ …`. Establish `hex : ∀ γ ∈ A₁, ∀ β ∈ A₂, toOne ν τ ρ (fun v => app (app T (xi ψ ν μ₁ P₁.1 L₁.J 1 α γ)) (xi ψ ν μ₂ P₂.1 L₂.J 1 γ β) v) (τ β F) = comb (e₂ β) fun b => app (app T (xi ψ ν μ₁ P₁.1 L₁.J 1 α γ)) (xi ψ ν μ₂ P₂.1 L₂.J 1 γ β) (τ b F)`. Introduce `γ _ β hβ`. Use `he₂ β hβ A τ hτ _ ?_ F hF` and prove the remaining obligations. Introduce `g hg v`.
+
+Unfold `app`. Use `split_ifs with h₁ h₂`. Conclude with `(hT.1 _).1 _ g hg v`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+
+Establish `hr : ((r₁.toReal : ℂ) * (r₂.toReal : ℂ)) = ((L₁.J.relIndex (KO k _) : ℂ) * (L₂.J.relIndex (KO k _) : ℂ))`. Simplify using `[hr₁, hr₂]`. Establish `hr0 : ((L₁.J.relIndex (KO k (n₁ ⊕ Fin (c + 1))) : ℂ) * (L₂.J.relIndex (KO k (n₂ ⊕ Fin c)) : ℂ)) ≠ 0` using `mul_ne_zero (Nat.cast_ne_zero.2 hn₁) (Nat.cast_ne_zero.2 hn₂)`. Rewrite `h3` using `[← mul_assoc, hr]`. Rewrite using `[eq_inv_mul_iff_mul_eq₀ hr0, h3]`.
+
+Use `Finset.sum_congr rfl fun γ hγ => Finset.sum_congr rfl fun β hβ => ?_` and prove the remaining obligations. Rewrite using `[hex γ hγ β hβ]`.
+-/
 theorem comb_eq_sum_cells : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k]
     (n₀ n₁ n₂ : Type) [Fintype n₀] [DecidableEq n₀] [Fintype n₁] [DecidableEq n₁] [Fintype n₂] [DecidableEq n₂] (c ρ : ℕ),
     c + 1 = 2 * ρ → ∀ (ψ : AddChar k Circle), Continuous ψ → HasConductor ψ 1 → ∀ (ν : Measure k), IsUnitVol ν →

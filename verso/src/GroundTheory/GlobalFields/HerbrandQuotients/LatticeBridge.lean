@@ -11,14 +11,23 @@ open scoped TensorProduct
 
 variable {G : Type*} [Group G] [Fintype G]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cyclicHerbrand_eq_cycHerbrand {M : Type*} [AddCommGroup M] (ρ : Representation ℤ G M)
     (σ : G) : cyclicHerbrand ρ σ = cycHerbrand ρ σ :=
   rfl
 
+/- English proof (translation)
+The claim follows from `cyclicHerbrand_trivial_int σ`.
+-/
 theorem cycHerbrand_trivial_int (σ : G) :
     cycHerbrand (Representation.trivial ℤ G ℤ) σ = Fintype.card G :=
   cyclicHerbrand_trivial_int σ
 
+/- English proof (translation)
+The claim follows from `cyclicHerbrand_eq_of_real_equiv ρ ρ' σ e he`.
+-/
 theorem cycHerbrand_eq_of_real_equiv {M M' : Type*} [AddCommGroup M] [Module.Finite ℤ M]
     [Module.Free ℤ M] [AddCommGroup M'] [Module.Finite ℤ M'] [Module.Free ℤ M']
     (ρ : Representation ℤ G M) (ρ' : Representation ℤ G M') (σ : G)

@@ -22,6 +22,11 @@ section One
 
 variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [MeasurableSpace G] [BorelSpace G] {Γ : Subgroup G}
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation. Take `⟨γ, h1, h2⟩` from `hc u`. Conclude with `Set.mem_iUnion.2 ⟨⟨γ, h1⟩⁻¹, Set.mem_smul_set_iff_inv_smul_mem.2 (by simpa using h2), hu⟩`. Use `_ ≤ ∑' γ : Γ, μ (γ • C ∩ 𝓕) := measure_iUnion_le _`. Use `_ = μ C := (h.measure_eq_tsum C).symm`.
+
+Use `_ < ⊤ := hC.measure_lt_top`.
+-/
 theorem fd_fin [Countable Γ] {C : Set G} (hC : IsCompact C) [T2Space G] (hc : ∀ u, ∃ γ ∈ Γ, γ * u ∈ C) (μ : Measure G)
     [μ.IsHaarMeasure] {𝓕 : Set G} (h : IsFundamentalDomain Γ 𝓕 μ) : μ 𝓕 < ⊤ := by
   calc μ 𝓕 ≤ μ (⋃ γ : Γ, γ • C ∩ 𝓕) := measure_mono fun u hu => by
@@ -34,6 +39,13 @@ theorem fd_fin [Countable Γ] {C : Set G} (hC : IsCompact C) [T2Space G] (hc : �
 variable [LocallyCompactSpace G] [SecondCountableTopology G] [T2Space G]
 
 omit [T2Space G] in
+/- English proof (translation)
+Use `⟨fun g => ?_⟩` and prove the remaining obligations. Establish `e` using `Measure.isMulLeftInvariant_eq_smul (μ.map (· * g)) μ`. Use `set c := Measure.haarScalarFactor (μ.map (· * g)) μ`. Establish `q : Measure.QuasiMeasurePreserving (· * g) μ μ` using `⟨measurable_mul_const g, by rw [e]; exact Measure.smul_absolutelyContinuous⟩`. Establish `h2 : IsFundamentalDomain Γ ((Equiv.mulRight g) ⁻¹' 𝓕) μ` using `h.preimage_of_equiv q Function.bijective_id fun γ x => by`.
+
+Express the relevant statement in the definitionally equal form `_ * x * g = _ * (x * g)`. Rewrite using `[mul_assoc]`. Both sides reduce to the same expression. Establish `h3 : μ ((· * g) ⁻¹' 𝓕) = μ 𝓕` using `h2.measure_eq h`. Rewrite `h3` using `[← Measure.map_apply (measurable_mul_const g) hm, e, Measure.smul_apply, ENNReal.smul_def, smul_eq_mul]`.
+
+Establish `h4 : (c : ℝ≥0∞) = 1` using `(ENNReal.mul_left_inj (h.measure_ne_zero (NeZero.ne μ)) hf.ne).1 (h3.trans (one_mul _).symm)`. Rewrite using `[e, ENNReal.coe_eq_one.1 h4, one_smul]`.
+-/
 theorem right_of_fd [Countable Γ] (μ : Measure G) [μ.IsHaarMeasure] {𝓕 : Set G}
     (hm : MeasurableSet 𝓕) (h : IsFundamentalDomain Γ 𝓕 μ) (hf : μ 𝓕 < ⊤) : μ.IsMulRightInvariant := by
   refine ⟨fun g => ?_⟩
@@ -50,6 +62,11 @@ theorem right_of_fd [Countable Γ] (μ : Measure G) [μ.IsHaarMeasure] {𝓕 : S
   have h4 : (c : ℝ≥0∞) = 1 := (ENNReal.mul_left_inj (h.measure_ne_zero (NeZero.ne μ)) hf.ne).1 (h3.trans (one_mul _).symm)
   rw [e, ENNReal.coe_eq_one.1 h4, one_smul]
 
+/- English proof (translation)
+Use `L.cnt` as an intermediate fact. Use `L.disc` as an intermediate fact. Take `⟨C, hC, hc⟩` from `L.cov`. Take `⟨𝓕, hm, h⟩` from `GlobalTheory.FundDomDiscrete.exists_measurable_section Γ`. Establish `h' : IsFundamentalDomain Γ 𝓕 μ` using `.mk' hm.nullMeasurableSet h`.
+
+Conclude with `right_of_fd μ hm h' (fd_fin hC hc μ h')`.
+-/
 theorem Lat.right (L : Lat Γ) (μ : Measure G) [μ.IsHaarMeasure] : μ.IsMulRightInvariant := by
   have := L.cnt
   have := L.disc
@@ -58,6 +75,11 @@ theorem Lat.right (L : Lat Γ) (μ : Measure G) [μ.IsHaarMeasure] : μ.IsMulRig
   have h' : IsFundamentalDomain Γ 𝓕 μ := .mk' hm.nullMeasurableSet h
   exact right_of_fd μ hm h' (fd_fin hC hc μ h')
 
+/- English proof (translation)
+Use `L.cnt` as an intermediate fact. Use `L.disc` as an intermediate fact. Take `⟨C, hC, hc⟩` from `L.cov`. Take `⟨𝓕, hm, h⟩` from `GlobalTheory.FundDomDiscrete.exists_measurable_section Γ`. Set `μ : Measure G` to `Measure.haar`.
+
+Establish `h' : IsFundamentalDomain Γ 𝓕 μ` using `.mk' hm.nullMeasurableSet h`. Establish `h0` using `h'.measure_ne_zero (NeZero.ne μ)`. Establish `h1` using `(fd_fin hC hc μ h').ne`. Conclude with `⟨(μ 𝓕)⁻¹ • μ, 𝓕, Measure.IsHaarMeasure.smul μ (ENNReal.inv_ne_zero.2 h1) (ENNReal.inv_ne_top.2 h0), hm, h, by rw [Measure.smul_apply, smul_eq_mul, ENNReal.inv_mul_cancel h0 h1]⟩`.
+-/
 theorem Lat.pair (L : Lat Γ) : ∃ (μ : Measure G) (𝓕 : Set G), μ.IsHaarMeasure ∧ MeasurableSet 𝓕 ∧
     (∀ x, ∃! γ : Γ, γ • x ∈ 𝓕) ∧ μ 𝓕 = 1 := by
   have := L.cnt
@@ -72,6 +94,11 @@ theorem Lat.pair (L : Lat Γ) : ∃ (μ : Measure G) (𝓕 : Set G), μ.IsHaarMe
     by rw [Measure.smul_apply, smul_eq_mul, ENNReal.inv_mul_cancel h0 h1]⟩
 
 omit [T2Space G] in
+/- English proof (translation)
+Establish `e` using `Measure.isMulLeftInvariant_eq_smul μ μ'`. Use `set c := Measure.haarScalarFactor μ μ'`. Establish `h2 : IsFundamentalDomain Γ 𝓕' μ` using `h'.mono (by rw [e]; exact Measure.smul_absolutelyContinuous)`. Establish `h3` using `h.measure_eq h2`. Rewrite `h3` using `[h1, e, Measure.smul_apply, h1', ENNReal.smul_def, smul_eq_mul, mul_one]`.
+
+Establish `h4 : μ = μ'` using `by rw [e, ENNReal.coe_eq_one.1 h3.symm, one_smul]`. Substitute `h4` using the available equality. Conclude with `h.setIntegral_eq h2 fun γ x => hf γ γ.2 x`.
+-/
 theorem int_indep [Countable Γ] {μ μ' : Measure G} [μ.IsHaarMeasure] [μ'.IsHaarMeasure] {𝓕 𝓕' : Set G}
     (h : IsFundamentalDomain Γ 𝓕 μ) (h' : IsFundamentalDomain Γ 𝓕' μ') (h1 : μ 𝓕 = 1) (h1' : μ' 𝓕' = 1) {f : G → ℂ}
     (hf : ∀ γ ∈ Γ, ∀ x, f (γ * x) = f x) : ∫ u in 𝓕, f u ∂μ = ∫ u in 𝓕', f u ∂μ' := by
@@ -86,24 +113,44 @@ theorem int_indep [Countable Γ] {μ μ' : Measure G} [μ.IsHaarMeasure] [μ'.Is
 
 variable {H : Type} [Group H] {ι : G →* H} {f c c' : H → ℂ}
 
+/- English proof (translation)
+Use `L.cnt` as an intermediate fact. Take `⟨μ, 𝓕, h1, h2, h3, h4⟩` from `L.pair`. Conclude with `⟨fun h => ∫ u in 𝓕, f (ι u * h) ∂μ, fun μ' 𝓕' a b d h => int_indep (.mk' h2.nullMeasurableSet h3) b h4 d fun γ hγ x => by rw [map_mul, mul_assoc, hf γ hγ]⟩`.
+-/
 theorem Lat.isAv_ex (L : Lat Γ) (hf : ∀ γ ∈ Γ, ∀ x, f (ι γ * x) = f x) : ∃ c, IsAv Γ ι f c := by
   have := L.cnt
   obtain ⟨μ, 𝓕, h1, h2, h3, h4⟩ := L.pair
   exact ⟨fun h => ∫ u in 𝓕, f (ι u * h) ∂μ, fun μ' 𝓕' a b d h =>
     int_indep (.mk' h2.nullMeasurableSet h3) b h4 d fun γ hγ x => by rw [map_mul, mul_assoc, hf γ hγ]⟩
 
+/- English proof (translation)
+Use `L.cnt` as an intermediate fact. Take `⟨μ, 𝓕, h1, h2, h3, h4⟩` from `L.pair`. Use function extensionality and compare the values at `x`. Rewrite using `[h μ 𝓕 h1 (.mk' h2.nullMeasurableSet h3) h4, h' μ 𝓕 h1 (.mk' h2.nullMeasurableSet h3) h4]`.
+-/
 theorem Lat.isAv_uniq (L : Lat Γ) {ι : G → H} (h : IsAv Γ ι f c) (h' : IsAv Γ ι f c') : c = c' := by
   have := L.cnt
   obtain ⟨μ, 𝓕, h1, h2, h3, h4⟩ := L.pair
   funext x
   rw [h μ 𝓕 h1 (.mk' h2.nullMeasurableSet h3) h4, h' μ 𝓕 h1 (.mk' h2.nullMeasurableSet h3) h4]
 
+/- English proof (translation)
+Use `L.cnt` as an intermediate fact. Take `⟨μ, 𝓕, h1, h2, h3, h4⟩` from `L.pair`. Conclude with `⟨μ.restrict 𝓕, ⟨by simpa using h4⟩, fun ι f c h => h μ 𝓕 h1 (.mk' h2.nullMeasurableSet h3) h4⟩`.
+-/
 theorem Lat.isAv_prob (L : Lat Γ) : ∃ lam : Measure G, IsProbabilityMeasure lam ∧
     ∀ (ι : G → H) (f c : H → ℂ), IsAv Γ ι f c → ∀ h, c h = ∫ u, f (ι u * h) ∂lam := by
   have := L.cnt
   obtain ⟨μ, 𝓕, h1, h2, h3, h4⟩ := L.pair
   exact ⟨μ.restrict 𝓕, ⟨by simpa using h4⟩, fun ι f c h => h μ 𝓕 h1 (.mk' h2.nullMeasurableSet h3) h4⟩
 
+/- English proof (translation)
+Use `L.cnt` as an intermediate fact. Take `⟨μ, 𝓕, h1, h2, h3, h4⟩` from `L.pair`. Establish `hm : MeasurableEmbedding e` using `e.toHomeomorph.measurableEmbedding`. Establish `h5 : ∀ y, ∃! g : Γ, g • y ∈ e ⁻¹' 𝓕` using `fun y => by`. Take `⟨g, a, b⟩` from `h3 (e y)`.
+
+Use `⟨⟨e.symm g, (he _).1 (by simpa using g.2)⟩, by simpa [Subgroup.smul_def] using a, fun g' hg' => ?_⟩` and prove the remaining obligations. Use `b ⟨e g', (he _).2 g'.2⟩ (by simpa [Subgroup.smul_def] using hg')` as an intermediate fact. Conclude with `Subtype.ext (by simp [← this])`. Establish `hm' : Measurable e.symm` using `e.symm.continuous.measurable`. Establish `h6 : μ.map e.symm (e ⁻¹' 𝓕) = 1`.
+
+Rewrite using `[Measure.map_apply hm' (hm.measurable h2), ← h4]`. Use `congr 1`. Use extensionality with `y`. Simplify using the standard rewrite rules. Rewrite using `[h (μ.map e.symm) (e ⁻¹' 𝓕) inferInstance (.mk' (hm.measurable h2).nullMeasurableSet h5) h6, h μ 𝓕 h1 (.mk' h2.nullMeasurableSet h3) h4, (show MeasurableEmbedding e.symm from e.symm.toHomeomorph.measurableEmbedding).setIntegral_map]`.
+
+Use `congr 1`. Use `congr 1`. Use extensionality with `y`. Simplify using the standard rewrite rules. Use function extensionality and compare the values at `y`.
+
+Rewrite using `[← mul_assoc, hγ, mul_assoc, hf, e.apply_symm_apply]`.
+-/
 theorem IsAv.conj (L : Lat Γ) (h : IsAv Γ ι f c) (e : G ≃ₜ* G) (he : ∀ x, e x ∈ Γ ↔ x ∈ Γ) {γ : H}
     (hγ : ∀ u, ι u * γ = γ * ι (e u)) (hf : ∀ x, f (γ * x) = f x) (x : H) : c (γ * x) = c x := by
   have := L.cnt
@@ -128,6 +175,11 @@ theorem IsAv.conj (L : Lat Γ) (h : IsAv Γ ι f c) (e : G ≃ₜ* G) (he : ∀ 
   · funext y
     rw [← mul_assoc, hγ, mul_assoc, hf, e.apply_symm_apply]
 
+/- English proof (translation)
+Take `⟨C, hC, hcov⟩` from `L.cov`. Take `⟨M, hM⟩` from `((hC.image hι).mul hK).exists_bound_of_continuousOn hc.continuousOn`. Use `⟨M, fun u x hx => ?_⟩` and prove the remaining obligations. Take `⟨γ, h1, h2⟩` from `hcov u`. Rewrite using `[← hf γ h1, ← mul_assoc, ← map_mul]`.
+
+Conclude with `hM _ (Set.mul_mem_mul ⟨_, h2, rfl⟩ hx)`.
+-/
 theorem Lat.bound [TopologicalSpace H] [IsTopologicalGroup H] (L : Lat Γ) (hι : Continuous ι) (hc : Continuous f)
     (hf : ∀ γ ∈ Γ, ∀ x, f (ι γ * x) = f x) {K : Set H} (hK : IsCompact K) : ∃ M, ∀ u, ∀ x ∈ K, ‖f (ι u * x)‖ ≤ M := by
   obtain ⟨C, hC, hcov⟩ := L.cov
@@ -137,6 +189,11 @@ theorem Lat.bound [TopologicalSpace H] [IsTopologicalGroup H] (L : Lat Γ) (hι 
   rw [← hf γ h1, ← mul_assoc, ← map_mul]
   exact hM _ (Set.mul_mem_mul ⟨_, h2, rfl⟩ hx)
 
+/- English proof (translation)
+Take `⟨lam, hl, h2⟩` from `L.isAv_prob (H := H)`. Rewrite using `[funext (h2 ι f c h)]`. Use `continuous_iff_continuousAt.2 fun x => ?_` and prove the remaining obligations. Take `⟨K, hK, hx⟩` from `exists_compact_mem_nhds x`. Take `⟨M, hM⟩` from `L.bound hι hc hf hK`.
+
+Conclude with `continuousAt_of_dominated (bound := fun _ => M) (.of_forall fun y => Continuous.aestronglyMeasurable (by fun_prop)) (Filter.eventually_of_mem hx fun y hy => .of_forall fun u => hM u y hy) (integrable_const M) (.of_forall fun u => Continuous.continuousAt (by fun_prop))`.
+-/
 theorem IsAv.cont [TopologicalSpace H] [IsTopologicalGroup H] [LocallyCompactSpace H] [FirstCountableTopology H] (L : Lat Γ)
     (h : IsAv Γ ι f c) (hι : Continuous ι) (hc : Continuous f) (hf : ∀ γ ∈ Γ, ∀ x, f (ι γ * x) = f x) : Continuous c := by
   obtain ⟨lam, hl, h2⟩ := L.isAv_prob (H := H)
@@ -169,17 +226,28 @@ section Two
 variable {S A B : Type} [Group S] [Group A] [Group B] [TopologicalSpace S] [TopologicalSpace A] [TopologicalSpace B]
   {Γ : Subgroup S} {ΓA : Subgroup A} {ΓB : Subgroup B} {j : A →* S} {ι : B →* S} {p : S → A} {π : S →* B}
 
+/- English proof (translation)
+Use `h.dec (j a * s)` as an intermediate fact. Rewrite `this` using `[map_mul, h.πj, one_mul]`. Use `h.inj (mul_right_cancel (b := ι (π s)) ?_)` and prove the remaining obligations. Rewrite using `[this, map_mul, mul_assoc, h.dec]`.
+-/
 theorem Semi.p_mul (h : Semi Γ ΓA ΓB j ι p π) (a : A) (s : S) : p (j a * s) = a * p s := by
   have := h.dec (j a * s)
   rw [map_mul, h.πj, one_mul] at this
   refine h.inj (mul_right_cancel (b := ι (π s)) ?_)
   rw [this, map_mul, mul_assoc, h.dec]
 
+/- English proof (translation)
+Use `h.dec (ι b)` as an intermediate fact. Rewrite `this` using `[h.πι]`. Conclude with `h.inj (by simpa using this)`.
+-/
 theorem Semi.p_ι (h : Semi Γ ΓA ΓB j ι p π) (b : B) : p (ι b) = 1 := by
   have := h.dec (ι b)
   rw [h.πι] at this
   exact h.inj (by simpa using this)
 
+/- English proof (translation)
+Take `⟨CA, a1, a2⟩` from `LA.cov`. Take `⟨CB, b1, b2⟩` from `LB.cov`. Use `⟨hc, hd, _, (a1.image h.cj).mul (b1.image h.cι), fun s => ?_⟩` and prove the remaining obligations. Take `⟨β, h1, h2⟩` from `b2 (π s)`. Take `⟨α, h3, h4⟩` from `a2 (p (ι β * s))`.
+
+Use `⟨j α * ι β, mul_mem ((h.hA _).2 h3) (h.hB _ h1), ?_⟩` and prove the remaining obligations. Rewrite using `[← h.dec (j α * ι β * s)]`. Use `Set.mul_mem_mul ⟨_, ?_, rfl⟩ ⟨_, ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[mul_assoc, h.p_mul]` and apply the resulting hypothesis. Rewrite using `[map_mul, map_mul, h.πj, h.πι, one_mul]` and apply the resulting hypothesis.
+-/
 theorem Semi.lat [IsTopologicalGroup S] (h : Semi Γ ΓA ΓB j ι p π) (LA : Lat ΓA) (LB : Lat ΓB) (hc : Countable Γ)
     (hd : DiscreteTopology Γ) : Lat Γ := by
   obtain ⟨CA, a1, a2⟩ := LA.cov
@@ -198,6 +266,33 @@ variable [IsTopologicalGroup S] [IsTopologicalGroup A] [IsTopologicalGroup B] [M
   [LocallyCompactSpace B] [SecondCountableTopology S] [SecondCountableTopology A] [SecondCountableTopology B]
   [T2Space S] [T2Space A] [T2Space B]
 
+/- English proof (translation)
+Use `L.cnt` as an intermediate fact. Use `LA.cnt` as an intermediate fact. Use `LB.cnt` as an intermediate fact. Take `⟨μA, 𝓐, a1, a2, a3, a4⟩` from `LA.pair`. Take `⟨μB, 𝓑, b1, b2, b3, b4⟩` from `LB.pair`.
+
+Use `LA.right μA` as an intermediate fact. Use `LB.right μB` as an intermediate fact. Establish `cj` using `h.cj`. Establish `cι` using `h.cι`. Establish `cp` using `h.cp`.
+
+Establish `cπ` using `h.cπ`. Set `e : B × A ≃ₜ S` to `{ toFun := fun x => j x.2 * ι x.1 invFun := fun s => (π s, p s) left_inv := fun x => by simp [h.πj, h.πι, h.p_mul, h.p_ι] right_inv := h.dec continuous_toFun := by fun_prop continuous_invFun := by fun_prop }`. Establish `hm` using `e.measurableEmbedding`. Set `ν : Measure S` to `(μB.prod μA).map e`. Establish `: ν.IsMulRightInvariant` using `⟨fun s => by`.
+
+Establish `m1 : MeasurePreserving (fun x : B × A => (x.1 * π s, x.2 * p (ι x.1 * j (p s) * (ι x.1)⁻¹))) (μB.prod μA) (μB.prod μA)` using `(measurePreserving_mul_right μB (π s)).skew_product (g := fun b a => a * p (ι b * j (p s) * (ι b)⁻¹)) (Continuous.measurable (by fun_prop)) (.of_forall fun b => map_mul_right_eq_self μA _)`. Rewrite using `[Measure.map_map (measurable_mul_const s) hm.measurable]`. Use `conv_rhs => rw [show ν = (μB.prod μA).map e from rfl, ← m1.map_eq, Measure.map_map hm.measurable m1.measurable]`. Use `congr 1`. Use function extensionality and compare the values at `x`.
+
+Establish `e1` using `h.dec (ι x.1 * j (p s) * (ι x.1)⁻¹)`. Rewrite `e1` using `[map_mul π, map_mul π, map_inv, h.πj, mul_one, mul_inv_cancel, map_one, mul_one]`. Express the relevant statement in the definitionally equal form `j x.2 * ι x.1 * s = j (x.2 * _) * ι (x.1 * π s)`. Rewrite using `[map_mul, map_mul, e1]`. Use `conv_lhs => rw [← h.dec s]`.
+
+Use the proof step `group⟩`. Establish `: IsFiniteMeasureOnCompacts ν` using `Measure.IsFiniteMeasureOnCompacts.map _ e`. Establish `: ν.IsOpenPosMeasure` using `e.continuous.isOpenPosMeasure_map e.surjective`. Establish `hinv : ν.inv.IsHaarMeasure` using `{}`. Use `L.right ν.inv` as an intermediate fact.
+
+Establish `: ν.IsMulLeftInvariant` using `by rw [← Measure.inv_inv ν]; infer_instance`. Establish `hν : ν.IsHaarMeasure` using `{}`. Establish `hF : MeasurableSet (e.symm ⁻¹' 𝓑 ×ˢ 𝓐)` using `e.symm.continuous.measurable (b2.prod a2)`. Establish `hpre : e ⁻¹' (e.symm ⁻¹' 𝓑 ×ˢ 𝓐) = 𝓑 ×ˢ 𝓐` using `by ext x; simp`. Establish `hfd : IsFundamentalDomain Γ (e.symm ⁻¹' 𝓑 ×ˢ 𝓐) ν` using `.mk' hF.nullMeasurableSet fun s => by`.
+
+Take `⟨β, h3, h4⟩` from `b3 (π s)`. Take `⟨α, h5, h6⟩` from `a3 (p (ι β * s))`. Use `⟨⟨j α * ι β, mul_mem ((h.hA _).2 α.2) (h.hB _ β.2)⟩, ⟨?_, ?_⟩, fun γ hγ => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `π (j α * ι β * s) ∈ 𝓑`. Rewrite using `[map_mul, map_mul, h.πj, h.πι, one_mul]` and apply the resulting hypothesis.
+
+Express the relevant statement in the definitionally equal form `p (j α * ι β * s) ∈ 𝓐`. Rewrite using `[mul_assoc, h.p_mul]` and apply the resulting hypothesis. Establish `e1` using `congrArg Subtype.val (h4 ⟨π γ, h.hπ _ γ.2⟩ (by`. Establish `: π (γ * s) ∈ 𝓑` using `hγ.1`. Rewrite using `[map_mul] at this))` and apply the resulting hypothesis.
+
+Establish `e2 : j (p γ) * ι β = γ` using `by rw [← e1]; exact h.dec _`. Establish `e3` using `congrArg Subtype.val (h6 ⟨p γ, (h.hA _).1 (by`. Rewrite using `[eq_mul_inv_of_mul_eq e2]; exact mul_mem γ.2 (inv_mem (h.hB _ β.2)))⟩ (by`. Establish `: p (γ * s) ∈ 𝓐` using `hγ.2`. Rewrite using `[← e2, mul_assoc, h.p_mul] at this))` and apply the resulting hypothesis.
+
+Conclude with `Subtype.ext (by rw [← e2]; exact congrArg (fun z => j z * ι β) e3)`. Establish `hν1 : ν (e.symm ⁻¹' 𝓑 ×ˢ 𝓐) = 1`. Rewrite using `[Measure.map_apply hm.measurable hF, hpre, Measure.prod_prod, a4, b4, mul_one]`. Introduce `μ 𝓕 c1 c2 c3 x`. Take `⟨M, hM⟩` from `L.bound hi hc hf (isCompact_singleton (x := x))`.
+
+Rewrite using `[int_indep c2 hfd c3 hν1 (f := fun u => f (inc u * x)) fun γ hγ y => by rw [map_mul, mul_assoc, hf γ hγ], hm.setIntegral_map, hpre, setIntegral_prod, h2 μB 𝓑 b1 (.mk' b2.nullMeasurableSet b3) b4]`. Use `congr 1`. Use function extensionality and compare the values at `b`. Rewrite using `[h1 μA 𝓐 a1 (.mk' a2.nullMeasurableSet a3) a4]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `a`. Rewrite using `[← mul_assoc, ← map_mul]`. Both sides reduce to the same expression. Conclude with `Measure.integrableOn_of_bounded (M := M) (by rw [Measure.prod_prod, a4, b4]; simp) (Continuous.aestronglyMeasurable (by fun_prop)) (.of_forall fun y => hM _ _ rfl)`.
+-/
 theorem Semi.stage (h : Semi Γ ΓA ΓB j ι p π) (L : Lat Γ) (LA : Lat ΓA) (LB : Lat ΓB) {G : Type} [Group G]
     [TopologicalSpace G] [IsTopologicalGroup G] {inc : S →* G} (hi : Continuous inc) {f cA c : G → ℂ} (hc : Continuous f)
     (hf : ∀ γ ∈ Γ, ∀ x, f (inc γ * x) = f x) (h1 : IsAv ΓA (fun a => inc (j a)) f cA) (h2 : IsAv ΓB (fun b => inc (ι b)) cA c) :

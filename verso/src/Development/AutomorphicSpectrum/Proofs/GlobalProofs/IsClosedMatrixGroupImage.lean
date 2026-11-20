@@ -29,16 +29,27 @@ def blk (e : n ⊕ n ≃ Fin m) : Matrix n n ℂ × Matrix n n ℂ →+* Matrix 
     rw [h]
     rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem blk_apply (e : n ⊕ n ≃ Fin m) (a b : Matrix n n ℂ) :
     blk e (a, b) = Matrix.reindex e e (Matrix.fromBlocks a 0 0 b) := rfl
 
 def unblk (e : n ⊕ n ≃ Fin m) (g : Matrix (Fin m) (Fin m) ℂ) : Matrix n n ℂ × Matrix n n ℂ :=
   ((Matrix.reindex e.symm e.symm g).toBlocks₁₁, (Matrix.reindex e.symm e.symm g).toBlocks₂₂)
 
+/- English proof (translation)
+Apply the tactic sequence `ext i j <;> simp [unblk, blk, Matrix.toBlocks₁₁, Matrix.toBlocks₂₂]`.
+-/
 theorem unblk_blk (e : n ⊕ n ≃ Fin m) (p : Matrix n n ℂ × Matrix n n ℂ) :
     unblk e (blk e p) = p := by
   ext i j <;> simp [unblk, blk, Matrix.toBlocks₁₁, Matrix.toBlocks₂₂]
 
+/- English proof (translation)
+Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Continuous fun p : Matrix n n ℂ × Matrix n n ℂ => Matrix.fromBlocks p.1 0 0 p.2 (e.symm i) (e.symm j)`. Apply the tactic sequence `rcases e.symm i with a | a <;> rcases e.symm j with b | b <;> simp only [Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₁₂, Matrix.fromBlocks_apply₂₁, Matrix.fromBlocks_apply₂₂]`. Conclude with `(continuous_apply_apply a b).comp continuous_fst`. Conclude with `continuous_const`.
+
+Conclude with `continuous_const`. Conclude with `(continuous_apply_apply a b).comp continuous_snd`.
+-/
 theorem continuous_blk (e : n ⊕ n ≃ Fin m) : Continuous (blk e) := by
   refine continuous_matrix fun i j => ?_
   change Continuous fun p : Matrix n n ℂ × Matrix n n ℂ =>
@@ -49,15 +60,24 @@ theorem continuous_blk (e : n ⊕ n ≃ Fin m) : Continuous (blk e) := by
   · exact continuous_const
   · exact (continuous_apply_apply a b).comp continuous_snd
 
+/- English proof (translation)
+Use `Continuous.prodMk (continuous_matrix fun i j => ?_) (continuous_matrix fun i j => ?_)` and prove the remaining obligations. Conclude with `continuous_apply_apply _ _`. Conclude with `continuous_apply_apply _ _`.
+-/
 theorem continuous_unblk (e : n ⊕ n ≃ Fin m) : Continuous (unblk e) := by
   refine Continuous.prodMk (continuous_matrix fun i j => ?_) (continuous_matrix fun i j => ?_)
   · exact continuous_apply_apply _ _
   · exact continuous_apply_apply _ _
 
+/- English proof (translation)
+The claim follows from `Function.LeftInverse.isClosedEmbedding (f := unblk e) (unblk_blk e) (continuous_unblk e) (continuous_blk e)`.
+-/
 theorem isClosedEmbedding_blk (e : n ⊕ n ≃ Fin m) : Topology.IsClosedEmbedding (blk e) :=
   Function.LeftInverse.isClosedEmbedding (f := unblk e) (unblk_blk e) (continuous_unblk e)
     (continuous_blk e)
 
+/- English proof (translation)
+Use `letI : NormedAlgebra ℚ (Matrix n n ℂ) := NormedAlgebra.restrictScalars ℚ ℝ (Matrix n n ℂ)`. Rewrite using `[← NormedSpace.map_exp (blk e) (continuous_blk e) (a, b)]`. Use `congr 1`. Conclude with `Prod.ext (Prod.fst_exp _) (Prod.snd_exp _)`.
+-/
 theorem exp_blk (e : n ⊕ n ≃ Fin m) (a b : Matrix n n ℂ) :
     NormedSpace.exp (blk e (a, b)) = blk e (NormedSpace.exp a, NormedSpace.exp b) := by
   letI : NormedAlgebra ℚ (Matrix n n ℂ) := NormedAlgebra.restrictScalars ℚ ℝ (Matrix n n ℂ)
@@ -74,9 +94,15 @@ def jHom (e : n ⊕ n ≃ Fin m) : (Matrix n n ℂ)ˣ →* Matrix (Fin m) (Fin m
     rw [← map_mul]
     simp [Matrix.transpose_mul]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem jHom_apply (e : n ⊕ n ≃ Fin m) (u : (Matrix n n ℂ)ˣ) :
     jHom e u = blk e ((u : Matrix n n ℂ), (((u⁻¹ : (Matrix n n ℂ)ˣ) : Matrix n n ℂ))ᵀ) := rfl
 
+/- English proof (translation)
+Establish `h1 : Topology.IsClosedEmbedding (fun p : Matrix n n ℂ × (Matrix n n ℂ)ᵐᵒᵖ => (p.1, (MulOpposite.unop p.2)ᵀ))` using `Function.LeftInverse.isClosedEmbedding (f := fun p : Matrix n n ℂ × Matrix n n ℂ => (p.1, MulOpposite.op p.2ᵀ)) (fun p => by simp) (continuous_fst.prodMk (MulOpposite.continuous_op.comp continuous_snd.matrix_transpose)) (continuous_fst.prodMk ((MulOpposite.continuous_unop.comp co …`. Conclude with `(isClosedEmbedding_blk e).comp (h1.comp Units.isClosedEmbedding_embedProduct)`.
+-/
 theorem isClosedEmbedding_jHom (e : n ⊕ n ≃ Fin m) : Topology.IsClosedEmbedding (jHom e) := by
   have h1 : Topology.IsClosedEmbedding
       (fun p : Matrix n n ℂ × (Matrix n n ℂ)ᵐᵒᵖ => (p.1, (MulOpposite.unop p.2)ᵀ)) :=
@@ -99,16 +125,30 @@ def dLin (e : n ⊕ n ≃ Fin m) : Matrix n n ℂ →ₗ[ℝ] Matrix (Fin m) (Fi
       Matrix.smul_apply]
     rcases e.symm i with a | a <;> rcases e.symm j with b | b <;> simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem dLin_apply (e : n ⊕ n ≃ Fin m) (X : Matrix n n ℂ) : dLin e X = blk e (X, -Xᵀ) := rfl
 
+/- English proof (translation)
+The claim follows from `(continuous_blk e).comp (continuous_id.prodMk continuous_id.matrix_transpose.neg)`.
+-/
 theorem continuous_dLin (e : n ⊕ n ≃ Fin m) : Continuous (dLin e) :=
   (continuous_blk e).comp (continuous_id.prodMk continuous_id.matrix_transpose.neg)
 
+/- English proof (translation)
+Rewrite using `[dLin_apply, exp_blk, jHom_apply, coe_expUnit, coe_expUnit_inv, ← Matrix.transpose_neg, Matrix.exp_transpose]`.
+-/
 theorem exp_dLin (e : n ⊕ n ≃ Fin m) (X : Matrix n n ℂ) :
     NormedSpace.exp (dLin e X) = jHom e (expUnit ℝ (Matrix n n ℂ) X) := by
   rw [dLin_apply, exp_blk, jHom_apply, coe_expUnit, coe_expUnit_inv, ← Matrix.transpose_neg,
     Matrix.exp_transpose]
 
+/- English proof (translation)
+Use `⟨(isClosedEmbedding_jHom e).isClosedMap _ hH, ⟨1, H.one_mem, map_one _⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨u, hu, rfl⟩ _ ⟨v, hv, rfl⟩`. Conclude with `⟨u * v, H.mul_mem hu hv, map_mul _ _ _⟩`. Introduce and unpack `_ ⟨u, hu, rfl⟩`. Use `⟨jHom e u⁻¹, ⟨u⁻¹, H.inv_mem hu, rfl⟩, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← map_mul, inv_mul_cancel, map_one]`. Rewrite using `[← map_mul, mul_inv_cancel, map_one]`.
+-/
 theorem isClosedMatrixGroup_image (e : n ⊕ n ≃ Fin m) (H : Subgroup (Matrix n n ℂ)ˣ)
     (hH : IsClosed (H : Set (Matrix n n ℂ)ˣ)) :
     SmoothVectors.IsClosedMatrixGroup (jHom e '' (H : Set (Matrix n n ℂ)ˣ)) := by
@@ -120,6 +160,23 @@ theorem isClosedMatrixGroup_image (e : n ⊕ n ≃ Fin m) (H : Subgroup (Matrix 
     · rw [← map_mul, inv_mul_cancel, map_one]
     · rw [← map_mul, mul_inv_cancel, map_one]
 
+/- English proof (translation)
+Set `e : n ⊕ n ≃ Fin (Fintype.card (n ⊕ n))` to `Fintype.equivFin _`. Establish `hJ` using `isClosedMatrixGroup_image e H hH`. Take `⟨S, hS⟩` from `GlobalTheory.CompanionTheory.MatrixLie.exists_submodule_eq_lieAlg _ _ hJ`. Establish `hsm : ∀ (t : ℝ) (Z : Matrix (Fin (Fintype.card (n ⊕ n))) (Fin (Fintype.card (n ⊕ n))) ℂ), (t : ℂ) • Z = t • Z`. Introduce `t Z`.
+
+Use extensionality with `a b`. Simplify using the standard rewrite rules. Establish `hS' : ∀ X, X ∈ S ↔ ∀ t : ℝ, NormedSpace.exp (t • X) ∈ jHom e '' (H : Set (Matrix n n ℂ)ˣ)`. Introduce `X`. Establish `h2 : X ∈ S ↔ X ∈ SmoothVectors.lieAlg (jHom e '' (H : Set (Matrix n n ℂ)ˣ))`.
+
+Rewrite using `[← hS]`. Conclude with `Iff.rfl`. Rewrite using `[h2]`. Use `forall_congr' fun t => ?_` and prove the remaining obligations. Rewrite using `[hsm]`.
+
+Establish `hinj` using `(isClosedEmbedding_jHom e).injective`. Establish `hmem : ∀ X, NormedSpace.exp (dLin e X) ∈ jHom e '' (H : Set (Matrix n n ℂ)ˣ) → expUnit ℝ (Matrix n n ℂ) X ∈ H`. Introduce `X hX`. Rewrite `hX` using `[exp_dLin]`. Take `⟨u, hu, hue⟩` from `hX`.
+
+Rewrite using `[← hinj hue]` and apply the resulting hypothesis. Use `⟨S.comap (dLin e), fun X hX => hmem X ?_, ?_⟩` and prove the remaining obligations. Simplify using `using (hS' _).1 hX 1`. Use `set 𝔢 := expPartialHomeomorph ℝ (Matrix n n ℂ) with h𝔢 set 𝔣 := expPartialHomeomorph ℝ (Matrix (Fin (Fintype.card (n ⊕ n))) (Fin (Fintype.card (n ⊕ n))) ℂ) with h𝔣`. Establish `hev` using `GlobalTheory.CompanionTheory.ClosedSubgroup.eventually_exp_of_mem hJ.1 hJ.2.1 hJ.2.2.1 hJ.2.2.2 hS' (𝔣.open_source.mem_nhds (zero_mem_expPartialHomeomorph_source ℝ _))`.
+
+Take `⟨V, hV, hVo, h1V⟩` from `eventually_nhds_iff.1 hev`. Establish `hcD` using `continuous_dLin e`. Establish `hcE : Continuous fun X => NormedSpace.exp (dLin e X)` using `(contDiff_exp ℝ _ (n := 0)).continuous.comp hcD`. Use `⟨𝔢.source ∩ (dLin e ⁻¹' 𝔣.source ∩ (fun X => NormedSpace.exp (dLin e X)) ⁻¹' V), 𝔢.open_source.inter ((𝔣.open_source.preimage hcD).inter (hVo.preimage hcE)), ⟨zero_mem_expPartialHomeomorph_source ℝ _, ?_, ?_⟩, Set.inter_subset_left, ?_⟩` and prove the remaining obligations. Simplify using `using zero_mem_expPartialHomeomorph_source ℝ (Matrix (Fin (Fintype.card (n ⊕ n))) (Fin (Fintype.card (n ⊕ n))) ℂ)`.
+
+Simplify using `using h1V`. Introduce and unpack `X ⟨-, hXs, hXV⟩ hXH`. Take `⟨Y, hYS, hYs, hYe⟩` from `hV _ hXV ⟨_, hXH, (exp_dLin e X).symm⟩`. Establish `hDY : dLin e X = Y` using `𝔣.injOn hXs hYs hYe.symm`. Express the relevant statement in the definitionally equal form `dLin e X ∈ S`.
+
+Rewrite using `[hDY]` and apply the resulting hypothesis.
+-/
 theorem exists_isExpLieAlgebra {n : Type} [Fintype n] [DecidableEq n]
     (H : Subgroup (Matrix n n ℂ)ˣ) (hH : IsClosed (H : Set (Matrix n n ℂ)ˣ)) :
     ∃ 𝔤 : Submodule ℝ (Matrix n n ℂ), IsExpLieAlgebra H 𝔤 := by

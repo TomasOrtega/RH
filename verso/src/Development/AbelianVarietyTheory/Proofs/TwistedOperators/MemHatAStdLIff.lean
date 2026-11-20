@@ -27,6 +27,13 @@ variable {D : D7}
 def embInf (D : D7) : Ainf D.host.F ⊗[D.host.F] D.host.E →ₗ[D.host.F] AE D :=
   TensorProduct.map (LinearMap.inl D.host.F (Ainf D.host.F) (Af D.host.F)) LinearMap.id
 
+/- English proof (translation)
+Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add a b ha hb`. Rewrite using `[map_add, map_add, map_add, map_add]`. Use `conv_rhs => rw [← ha, ← hb]`.
+
+Normalize the expressions using the abelian group laws. Consider the case `tmul a e`. Establish `e1 : embInf D (Formalism.L2.Theta.infPart D (a ⊗ₜ[D.host.F] e)) = (pairA D.host.F (fstA D.host.F a) 0) ⊗ₜ[D.host.F] e` using `rfl`. Establish `e2 : GlobalTheory.TensLatMove.emb D (Formalism.L2.Theta.finPart D (a ⊗ₜ[D.host.F] e)) = (pairA D.host.F 0 (sndA D.host.F a)) ⊗ₜ[D.host.F] e` using `rfl`. Rewrite using `[e1, e2, ← TensorProduct.add_tmul]`.
+
+Use `congr 1`. Conclude with `Prod.ext (add_zero _) (zero_add _)`.
+-/
 theorem embInf_add_emb (w : AE D) :
     embInf D (Formalism.L2.Theta.infPart D w) + GlobalTheory.TensLatMove.emb D (Formalism.L2.Theta.finPart D w) = w := by
   induction w using TensorProduct.induction_on with
@@ -44,11 +51,17 @@ theorem embInf_add_emb (w : AE D) :
     congr 1
     exact Prod.ext (add_zero _) (zero_add _)
 
+/- English proof (translation)
+Use `embInf_add_emb w` as an intermediate fact. Rewrite `this` using `[h, map_zero, zero_add]`. Then use the resulting hypothesis.
+-/
 theorem emb_finPart (w : AE D) (h : Formalism.L2.Theta.infPart D w = 0) :
     GlobalTheory.TensLatMove.emb D (Formalism.L2.Theta.finPart D w) = w := by
   have := embInf_add_emb w
   rwa [h, map_zero, zero_add] at this
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.LevSplit.latHat_iff L _`.
+-/
 theorem col_iff {S T : HSp D} (L : Lt D.host.E T.rank) (x : WO S T) (k : Fin S.rank) :
     (fun c => Formalism.L2.Theta.finPart D (x c k)) ∈ hatV L ↔
       (fun c => toEAf D (x c k)) ∈ Formalism.L2.Herm.hatL (F := D.host.F) L :=
@@ -59,10 +72,26 @@ def colHom (S T : HSp D) (k : Fin S.rank) : WO S T →+ (Fin T.rank → AfE D) w
   map_zero' := by funext c; simp
   map_add' x y := by funext c; simp
 
+/- English proof (translation)
+The claim follows from `AddSubgroup.subset_closure ⟨1, GlobalTheory.TensLatMove.intAf_one, Pi.single k 1, Submodule.subset_span ⟨k, rfl⟩, rfl⟩`.
+-/
 theorem toAf_single_mem (n : ℕ) (k : Fin n) : toAf (Pi.single k (1 : D.host.E)) ∈ hatV (stdL D.host.E n) :=
   AddSubgroup.subset_closure ⟨1, GlobalTheory.TensLatMove.intAf_one, Pi.single k 1,
     Submodule.subset_span ⟨k, rfl⟩, rfl⟩
 
+/- English proof (translation)
+Introduce `D S T L x hx`. Prove the components needed by the constructor for the conclusion. Introduce `hmem k`. Rewrite using `[← col_iff]`. Establish `hle : hatA S T (tens (stdL D.host.E S.rank) L) ≤ (hatV L).comap (colHom S T k)`.
+
+Rewrite using `[hatA, AddSubgroup.closure_le]`. Introduce and unpack `_ ⟨α, hα, y, hy, rfl⟩`. Conclude with `AddSubgroup.subset_closure ⟨α, hα, y k, (GlobalTheory.SW.TensLat.mem_tens_stdL L y).1 hy k, rfl⟩`. Conclude with `hle hmem`. Introduce `h`.
+
+Establish `hu : ∀ k, (fun c => Formalism.L2.Theta.finPart D (x c k)) ∈ hatV L` using `fun k => (col_iff L x k).2 (h k)`. Establish `e : x = ∑ k, GlobalTheory.TensLatMove.outer S T (toAf (Pi.single k 1)) (fun c => Formalism.L2.Theta.finPart D (x c k))`. Use extensionality with `c k'`. Establish `hc : Formalism.L2.Theta.infPart D (x c k') = 0`. Use `congrFun (congrFun hx c) k'` as an intermediate fact.
+
+Simplify using `using this`. Rewrite using `[Matrix.sum_apply]`. Simplify using `only [GlobalTheory.TensLatMove.outer, Matrix.of_apply, toAf]`. Rewrite using `[← map_sum, Finset.sum_eq_single k']`. Rewrite using `[Pi.single_eq_same, ← Algebra.TensorProduct.one_def, mul_one]`.
+
+Conclude with `(emb_finPart _ hc).symm`. Introduce `j _ hj`. Rewrite using `[Pi.single_eq_of_ne (Ne.symm hj), TensorProduct.tmul_zero, mul_zero]`. Introduce `h'`. Conclude with `absurd (Finset.mem_univ k') h'`.
+
+Rewrite using `[e]`. Conclude with `sum_mem fun k _ => GlobalTheory.TensLatMove.outer_mem S T _ L _ (toAf_single_mem _ k) _ (hu k)`.
+-/
 theorem mem_hatA_stdL_iff : ∀ (D : D7) (S T : HSp D) (L : Lt D.host.E T.rank) (x : WO S T), IsFinPt x → (x ∈ hatA S T (tens (stdL D.host.E S.rank) L) ↔ ∀ k : Fin S.rank, (fun c => toEAf D (x c k)) ∈ Formalism.L2.Herm.hatL (F := D.host.F) L) := by
   intro D S T L x hx
   constructor

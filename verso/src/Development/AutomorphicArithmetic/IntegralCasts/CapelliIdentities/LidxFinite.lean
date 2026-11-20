@@ -1,5 +1,10 @@
 import Mathlib
 
+/- English proof (translation)
+Introduce and unpack `R _ W _ _ S L x y ⟨s, hs, hx⟩ ⟨t, ht, hy⟩`. Use `⟨s * t, S.mul_mem hs ht, ?_⟩` and prove the remaining obligations. Establish `e : (s * t) • (x + y) = t • (s • x) + s • (t • y)`. Simplify using `only [smul_add, smul_smul, mul_comm]`. Rewrite using `[e]`.
+
+Conclude with `L.add_mem (L.smul_mem _ hx) (L.smul_mem _ hy)`.
+-/
 theorem UpperTheory.Reformulated.B.Yzb2.aux1.{u_1, u_2} :
     ∀ {R : Type u_2} [inst : CommRing R] {W : Type u_1} [inst_1 : AddCommGroup W] [inst_2 : _root_.Module R W]
       (S : Submonoid R) (L : Submodule R W) {x y : W},
@@ -11,12 +16,18 @@ theorem UpperTheory.Reformulated.B.Yzb2.aux1.{u_1, u_2} :
   rw [e]
   exact L.add_mem (L.smul_mem _ hx) (L.smul_mem _ hy)
 
+/- English proof (translation)
+Introduce `R _ W _ _ S L`. Conclude with `⟨1, S.one_mem, by simp⟩`.
+-/
 theorem UpperTheory.Reformulated.B.Yzb2.aux2.{u_1, u_2} :
     ∀ {R : Type u_1} [inst : CommRing R] {W : Type u_2} [inst_1 : AddCommGroup W] [inst_2 : _root_.Module R W]
       (S : Submonoid R) (L : Submodule R W), ∃ s ∈ S, s • (0 : W) ∈ L := by
   intro R _ W _ _ S L
   exact ⟨1, S.one_mem, by simp⟩
 
+/- English proof (translation)
+Introduce and unpack `R _ W _ _ S L r x ⟨s, hs, hx⟩`. Use `⟨s, hs, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_comm]`. Conclude with `L.smul_mem _ hx`.
+-/
 theorem UpperTheory.Reformulated.B.Yzb2.aux3.{u_1, u_2} :
     ∀ {R : Type u_2} [inst : CommRing R] {W : Type u_1} [inst_1 : AddCommGroup W] [inst_2 : _root_.Module R W]
       (S : Submonoid R) (L : Submodule R W) (r : R) {x : W},
@@ -68,6 +79,15 @@ noncomputable def UpperTheory.Reformulated.B.Yzb2.lidx.{u_1, u_3} :
         (A B : Submodule R V) ↦
       (↑(UpperTheory.Reformulated.B.Yzb2.locLen p A (A ⊓ B)) : ℤ) - (↑(UpperTheory.Reformulated.B.Yzb2.locLen p B (A ⊓ B)) : ℤ)
 
+/- English proof (translation)
+Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty`. Use `⟨1, one_ne_zero, fun x hx => ?_⟩` and prove the remaining obligations. Establish `: x = 0` using `by simpa using hx`. Simplify using `[this]`.
+
+Consider the case `insert a T _ ih`. Take `⟨t, ht, htT⟩` from `ih (fun x hx => h x (Finset.mem_insert_of_mem hx))`. Take `⟨s, hs, hsa⟩` from `h a (Finset.mem_insert_self a T)`. Use `⟨s * t, mul_ne_zero hs ht, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite `hx` using `[Finset.coe_insert, Submodule.mem_span_insert]`.
+
+Take `⟨c, z, hz, rfl⟩` from `hx`. Establish `e : (s * t) • (c • a + z) = (t * c) • (s • a) + s • (t • z)`. Simplify using `only [smul_add, smul_smul]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[e]`. Conclude with `B.add_mem (B.smul_mem _ hsa) (B.smul_mem _ (htT z hz))`.
+-/
 private theorem UpperTheory.Reformulated.B.Yzb2.common_mul {R V : Type*} [CommRing R] [IsDomain R] [AddCommGroup V]
     [_root_.Module R V] (B : Submodule R V) (T : Finset V)
     (h : ∀ x ∈ T, ∃ s : R, s ≠ 0 ∧ s • x ∈ B) :
@@ -91,6 +111,11 @@ private theorem UpperTheory.Reformulated.B.Yzb2.common_mul {R V : Type*} [CommRi
     rw [e]
     exact B.add_mem (B.smul_mem _ hsa) (B.smul_mem _ (htT z hz))
 
+/- English proof (translation)
+Establish `top : Submodule.comap (UpperTheory.Reformulated.B.Yzb2.localization₂ p X).subtype (UpperTheory.Reformulated.B.Yzb2.localization₂ p Y) = ⊤`. Rewrite using `[eq_top_iff]`. Introduce and unpack `⟨y, v, hv, hy⟩ -`. Use `⟨u * v, p.primeCompl.mul_mem hu hv, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_smul]`.
+
+Conclude with `h _ hy`. Establish `: Subsingleton (↥(UpperTheory.Reformulated.B.Yzb2.localization₂ p X) ⧸ Submodule.comap (UpperTheory.Reformulated.B.Yzb2.localization₂ p X).subtype (UpperTheory.Reformulated.B.Yzb2.localization₂ p Y))` using `Submodule.Quotient.subsingleton_iff.mpr top`. Simplify using `only [UpperTheory.Reformulated.B.Yzb2.locLen, Module.length_eq_zero, ENat.toNat_zero]`.
+-/
 private theorem UpperTheory.Reformulated.B.Yzb2.locLen_eq_zero {R V : Type*} [CommRing R] [AddCommGroup V]
     [_root_.Module R V] (p : Ideal R) [p.IsPrime] (X Y : Submodule R V) (u : R) (hu : u ∉ p)
     (h : ∀ x ∈ X, u • x ∈ Y) : UpperTheory.Reformulated.B.Yzb2.locLen p X Y = 0 := by
@@ -105,6 +130,15 @@ private theorem UpperTheory.Reformulated.B.Yzb2.locLen_eq_zero {R V : Type*} [Co
     Submodule.Quotient.subsingleton_iff.mpr top
   simp only [UpperTheory.Reformulated.B.Yzb2.locLen, Module.length_eq_zero, ENat.toNat_zero]
 
+/- English proof (translation)
+Introduce `K V _ _ _ _ A B hA hB hAB hBA`. Take `⟨TA, rfl⟩` from `id hA`. Take `⟨TB, rfl⟩` from `id hB`. Take `⟨s, hs, hsA⟩` from `UpperTheory.Reformulated.B.Yzb2.common_mul _ TA (fun x hx => hAB x (Submodule.subset_span hx))`. Take `⟨t, ht, htB⟩` from `UpperTheory.Reformulated.B.Yzb2.common_mul _ TB (fun x hx => hBA x (Submodule.subset_span hx))`.
+
+Establish `hst : Ideal.span {s * t} ≠ ⊥`. Rewrite using `[Ne, Ideal.span_singleton_eq_bot]`. Conclude with `mul_ne_zero hs ht`. Use `(Ideal.finite_factors hst).subset fun w hw => ?_` and prove the remaining obligations. Rewrite `hw`, the goal using `[Set.mem_setOf_eq]`.
+
+Rewrite using `[Ideal.dvd_span_singleton]`. Assume the negation of the conclusion as `hmem`. Apply `hw` to reduce the goal to its premises. Establish `hsw : s ∉ w.asIdeal` using `fun h => hmem (Ideal.mul_mem_right _ _ h)`. Establish `htw : t ∉ w.asIdeal` using `fun h => hmem (Ideal.mul_mem_left _ _ h)`.
+
+Establish `h1` using `UpperTheory.Reformulated.B.Yzb2.locLen_eq_zero w.asIdeal _ (Submodule.span _ (TA : Set V) ⊓ Submodule.span _ (TB : Set V)) s hsw (fun x hx => ⟨Submodule.smul_mem _ _ hx, hsA x hx⟩)`. Establish `h2` using `UpperTheory.Reformulated.B.Yzb2.locLen_eq_zero w.asIdeal _ (Submodule.span _ (TA : Set V) ⊓ Submodule.span _ (TB : Set V)) t htw (fun x hx => ⟨htB x hx, Submodule.smul_mem _ _ hx⟩)`. Simplify using `only [UpperTheory.Reformulated.B.Yzb2.lidx, h1, h2, Nat.cast_zero, sub_zero]`.
+-/
 theorem UpperTheory.Reformulated.B.Yzb2.lidx_finite :
     ∀ {K V : Type} [inst : Field K] [NumberField K] [inst_2 : AddCommGroup V]
       [inst_3 : _root_.Module (NumberField.RingOfIntegers K) V] (A B : Submodule (NumberField.RingOfIntegers K) V),

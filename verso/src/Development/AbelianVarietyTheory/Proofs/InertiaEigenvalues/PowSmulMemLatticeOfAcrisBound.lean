@@ -19,10 +19,16 @@ variable {l : ℕ} [hl : Fact l.Prime] {O : Type} [CommRing O] [Algebra ℤ_[l] 
 def cfO {R : Type} [CommRing R] [Algebra ℤ_[l] R] (f : O →ₗ[ℤ_[l]] ℤ_[l]) : O ⊗[ℤ_[l]] R →ₗ[ℤ_[l]] R :=
   (TensorProduct.lid ℤ_[l] R).toLinearMap ∘ₗ TensorProduct.map f LinearMap.id
 
+/- English proof (translation)
+Simplify using `[cfO]`.
+-/
 theorem cfO_tmul {R : Type} [CommRing R] [Algebra ℤ_[l] R] (f : O →ₗ[ℤ_[l]] ℤ_[l]) (o : O) (r : R) :
     cfO f (o ⊗ₜ[ℤ_[l]] r) = f o • r := by
   simp [cfO]
 
+/- English proof (translation)
+Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => rw [mul_add, map_add, map_add, hx, hy, mul_add]`. Consider the case `tmul o r => rw [Algebra.TensorProduct.tmul_mul_tmul, one_mul, cfO_tmul, cfO_tmul, mul_smul_comm]`.
+-/
 theorem cfO_mul {R : Type} [CommRing R] [Algebra ℤ_[l] R] (f : O →ₗ[ℤ_[l]] ℤ_[l]) (β : R)
     (y : O ⊗[ℤ_[l]] R) : cfO f (((1 : O) ⊗ₜ[ℤ_[l]] β) * y) = β * cfO f y := by
   induction y using TensorProduct.induction_on with
@@ -30,6 +36,9 @@ theorem cfO_mul {R : Type} [CommRing R] [Algebra ℤ_[l] R] (f : O →ₗ[ℤ_[l
   | add x y hx hy => rw [mul_add, map_add, map_add, hx, hy, mul_add]
   | tmul o r => rw [Algebra.TensorProduct.tmul_mul_tmul, one_mul, cfO_tmul, cfO_tmul, mul_smul_comm]
 
+/- English proof (translation)
+Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul o r => rw [Algebra.TensorProduct.map_tmul, AlgHom.id_apply, cfO_tmul, cfO_tmul, map_smul]`.
+-/
 theorem cfO_map {R R' : Type} [CommRing R] [Algebra ℤ_[l] R] [CommRing R'] [Algebra ℤ_[l] R']
     (f : O →ₗ[ℤ_[l]] ℤ_[l]) (φ : R →ₐ[ℤ_[l]] R') (y : O ⊗[ℤ_[l]] R) :
     cfO f (Algebra.TensorProduct.map (AlgHom.id O O) φ y) = φ (cfO f y) := by
@@ -38,10 +47,16 @@ theorem cfO_map {R R' : Type} [CommRing R] [Algebra ℤ_[l] R] [CommRing R'] [Al
   | add x y hx hy => simp only [map_add, hx, hy]
   | tmul o r => rw [Algebra.TensorProduct.map_tmul, AlgHom.id_apply, cfO_tmul, cfO_tmul, map_smul]
 
+/- English proof (translation)
+Rewrite using `[Nat.cast_smul_eq_nsmul, map_nsmul, nsmul_eq_mul]`.
+-/
 theorem cfO_natCast_smul {R : Type} [CommRing R] [Algebra ℤ_[l] R] (f : O →ₗ[ℤ_[l]] ℤ_[l]) (m : ℕ)
     (y : O ⊗[ℤ_[l]] R) : cfO f ((m : O) • y) = (m : R) * cfO f y := by
   rw [Nat.cast_smul_eq_nsmul, map_nsmul, nsmul_eq_mul]
 
+/- English proof (translation)
+Rewrite using `[Algebra.TensorProduct.one_def, TensorProduct.smul_tmul', smul_eq_mul, mul_one, cfO_tmul, Algebra.smul_def, mul_one]`.
+-/
 theorem cfO_smul_one {R : Type} [CommRing R] [Algebra ℤ_[l] R] (f : O →ₗ[ℤ_[l]] ℤ_[l]) (o : O) :
     cfO f (o • (1 : O ⊗[ℤ_[l]] R)) = algebraMap ℤ_[l] R (f o) := by
   rw [Algebra.TensorProduct.one_def, TensorProduct.smul_tmul', smul_eq_mul, mul_one, cfO_tmul,
@@ -54,10 +69,16 @@ def cfT {R : Type} [CommRing R] [Algebra O R] (T : LocLat G Qp LL O) (g : ↥T.L
     TW R T →ₗ[O] R :=
   (TensorProduct.rid O R).toLinearMap ∘ₗ TensorProduct.map LinearMap.id g
 
+/- English proof (translation)
+Simplify using `[cfT]`.
+-/
 theorem cfT_tmul {R : Type} [CommRing R] [Algebra O R] (T : LocLat G Qp LL O) (g : ↥T.L.T →ₗ[O] O)
     (s : R) (t : ↥T.L.T) : cfT T g (s ⊗ₜ[O] t) = g t • s := by
   simp [cfT]
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul s t => rw [TWincl, TensorProduct.map_tmul, AlgHom.toLinearMap_apply, LinearMap.id_apply, cfT_tmul, cfT_tmul, map_smul]`.
+-/
 theorem cfT_incl {R R' : Type} [CommRing R] [Algebra O R] [CommRing R'] [Algebra O R']
     (T : LocLat G Qp LL O) (g : ↥T.L.T →ₗ[O] O) (φ : R →ₐ[O] R') (z : TW R T) :
     cfT T g (TWincl φ T z) = φ (cfT T g z) := by
@@ -67,6 +88,9 @@ theorem cfT_incl {R R' : Type} [CommRing R] [Algebra O R] [CommRing R'] [Algebra
   | tmul s t => rw [TWincl, TensorProduct.map_tmul, AlgHom.toLinearMap_apply, LinearMap.id_apply,
       cfT_tmul, cfT_tmul, map_smul]
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => rw [smul_add, map_add, map_add, hx, hy, mul_add]`. Consider the case `tmul s t => rw [TensorProduct.smul_tmul', cfT_tmul, cfT_tmul, smul_eq_mul, mul_smul_comm]`.
+-/
 theorem cfT_smul {R : Type} [CommRing R] [Algebra O R] (T : LocLat G Qp LL O) (g : ↥T.L.T →ₗ[O] O)
     (r : R) (z : TW R T) : cfT T g (r • z) = r * cfT T g z := by
   induction z using TensorProduct.induction_on with
@@ -84,6 +108,9 @@ variable {l : ℕ} [hl : Fact l.Prime] {O K : Type} [CommRing O] [Algebra ℤ_[l
   [Module.Finite ℤ_[l] O] [NormedField K] [IsUltrametricDist K] [Algebra O K] [IsUnitBall O K]
   [NormedAlgebra ℚ_[l] K]
 
+/- English proof (translation)
+Establish `e : ∀ w : TW (OB l O) T, ((l : O) ^ c) • w = ((l : OB l O) ^ c) • w`. Introduce `w`. Rewrite using `[← algebraMap_smul (OB l O) ((l : O) ^ c) w, map_pow, map_natCast]`. Rewrite `h` using `[e, e]`. Conclude with `(isUnit_l_OB.pow c).smul_left_cancel.1 h`.
+-/
 theorem smul_cancel (T : LocLat (Gl l) ℚ_[l] K O) (c : ℕ) {u v : TW (OB l O) T}
     (h : ((l : O) ^ c) • u = ((l : O) ^ c) • v) : u = v := by
   have e : ∀ w : TW (OB l O) T, ((l : O) ^ c) • w = ((l : OB l O) ^ c) • w := by
@@ -92,10 +119,16 @@ theorem smul_cancel (T : LocLat (Gl l) ℚ_[l] K O) (c : ℕ) {u v : TW (OB l O)
   rw [e, e] at h
   exact (isUnit_l_OB.pow c).smul_left_cancel.1 h
 
+/- English proof (translation)
+Rewrite using `[AlgHom.commutes, AlgHom.commutes]`.
+-/
 theorem toB_algebraMap (q : ℤ_[l]) :
     acrisToBcris l (ainfToAcris l (algebraMap ℤ_[l] (Ainf l) q)) = algebraMap ℤ_[l] (Per.Bcris l) q := by
   rw [AlgHom.commutes, AlgHom.commutes]
 
+/- English proof (translation)
+Establish `h1 : (l - 1) * n < (l - 1) * (c + v + 1)`. Rewrite using `[mul_add, mul_one]`. Use linear arithmetic over natural numbers and integers. Conclude with `Nat.lt_succ_iff.1 (Nat.lt_of_mul_lt_mul_left h1)`.
+-/
 theorem le_of_bound {n c v j : ℕ} (hj : 2 * j < l - 1) (h : (l - 1) * n ≤ (l - 1) * (c + v) + 2 * j) :
     n ≤ c + v := by
   have h1 : (l - 1) * n < (l - 1) * (c + v + 1) := by
@@ -106,6 +139,27 @@ end GlobalTheory.BKGal.Count
 
 namespace GlobalTheory.BKGal.Count
 
+/- English proof (translation)
+Introduce `l _ O K _ _ _ _ _ _ _ _ _ T hl2 ε hε j n c hj u x w h1 h2`. Set `bO` to `Module.Free.chooseBasis ℤ_[l] O`. Set `bT` to `latBasis T`. Establish `hr0 : toB l O ((1 : O) ⊗ₜ[ℤ_[l]] muOf ε) = (1 : O) ⊗ₜ[ℤ_[l]] acrisToBcris l (ainfToAcris l (muOf ε))`. Simplify using `only [toB, toOB, toOCr, AlgHom.comp_apply, Algebra.TensorProduct.map_tmul, AlgHom.id_apply]`.
+
+Establish `hr : toB l O ((1 : O) ⊗ₜ[ℤ_[l]] muOf ε ^ j) = (1 : O) ⊗ₜ[ℤ_[l]] (acrisToBcris l (ainfToAcris l (muOf ε)) ^ j)`. Rewrite using `[map_pow, hr0, Algebra.TensorProduct.tmul_pow, one_pow]`. Establish `hlO : ∀ m : ℕ, (l : O) ^ m = ((l ^ m : ℕ) : O)` using `fun m => by push_cast; rfl`. Establish `key : ∀ k i, (l : ℤ_[l]) ^ (n - c) ∣ bO.coord k (bT.coord i x)`. Introduce `k i`.
+
+Distinguish the cases in `ha : bO.coord k (bT.coord i x) = 0`. Rewrite using `[ha]`. Conclude with `dvd_zero _`. Establish `e1` using `congrArg (fun z => cfO (bO.coord k) (cfT T (bT.coord i) z)) h1`. Establish `e2` using `congrArg (fun z => cfO (bO.coord k) (cfT T (bT.coord i) z)) h2`.
+
+Rewrite `e1` using `[hlO, map_smul, cfO_natCast_smul, cfT_tmul, cfO_smul_one]`. Rewrite `e2` using `[hr, cfT_smul, cfO_mul, hlO, map_smul, cfO_natCast_smul, cfT_incl, toOB, cfO_map]`. Use `set U := cfO (bO.coord k) (cfT T (bT.coord i) u)`. Use `set a := bO.coord k (bT.coord i x)`. Use `set W' := cfO (bO.coord k) (cfT T (bT.coord i) w)`.
+
+Establish `e3 : acrisToBcris l ((l : Per.Acris l) ^ n * W') = acrisToBcris l (ainfToAcris l (muOf ε ^ j * algebraMap ℤ_[l] (Ainf l) ((l : ℤ_[l]) ^ c * a)))`. Rewrite using `[map_mul, map_mul, ← e2, map_pow, map_natCast, map_mul, toB_algebraMap, map_mul, ← e1]`. Use `push_cast`. Simplify using `only [map_pow]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `e4` using `GlobalTheory.MemLoc.PhiInj.algebraMap_acris_bcris_injective l e3`. Establish `hne : (l : ℤ_[l]) ^ c * a ≠ 0` using `mul_ne_zero (pow_ne_zero _ (Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero)) ha`. Establish `hb` using `GlobalTheory.T.valuation_bound_of_primePow_dvd_mu_pow_acris l hl2 ε hε j n ((l : ℤ_[l]) ^ c * a) hne ⟨W', e4.symm⟩`. Rewrite `hb` using `[PadicInt.valuation_p_pow_mul c a ha]`. Establish `hv : n - c ≤ a.valuation` using `by have := le_of_bound hj hb; omega`.
+
+Conclude with `Ideal.mem_span_singleton.1 ((PadicInt.mem_span_pow_iff_le_valuation a ha (n - c)).2 hv)`. Use `choose q hq using key`. Set `x' : ↥T.L.T` to `bT.equivFun.symm fun i => bO.equivFun.symm fun k => q k i`. Establish `hx' : (l : O) ^ (n - c) • x' = x`. Apply `bT.equivFun.injective` to reduce the goal to its premises.
+
+Use function extensionality and compare the values at `i`. Rewrite using `[map_smul, Pi.smul_apply, LinearEquiv.apply_symm_apply, smul_eq_mul]`. Apply `bO.equivFun.injective` to reduce the goal to its premises. Use function extensionality and compare the values at `k`. Rewrite using `[show (l : O) ^ (n - c) = algebraMap ℤ_[l] O ((l : ℤ_[l]) ^ (n - c)) by rw [map_pow, map_natCast], ← Algebra.smul_def, map_smul, LinearEquiv.apply_symm_apply, Pi.smul_apply, smul_eq_mul, Module.Basis.equivFun_apply, Module.Basis.equivFun_apply, ← hq k i]`.
+
+Both sides reduce to the same expression. Use `⟨(l : O) ^ (c + (n - c) - n) • x', smul_cancel T (n - c) ?_⟩` and prove the remaining obligations. Establish `e5 : (l : O) ^ (n - c) • ((l : O) ^ c • u) = (l : O) ^ (c + (n - c) - n) • ((l : O) ^ n • u)`. Rewrite using `[smul_smul, smul_smul, ← pow_add, ← pow_add]`. Use `congr 2`.
+
+Use linear arithmetic over natural numbers and integers. Rewrite using `[e5, h1, ← hx', TensorProduct.tmul_smul, TensorProduct.tmul_smul, smul_smul, smul_smul, mul_comm]`.
+-/
 theorem count : ∀ (l : ℕ) [Fact l.Prime] (O K : Type) [CommRing O] [Algebra ℤ_[l] O] [Module.Free ℤ_[l] O]
     [Module.Finite ℤ_[l] O] [NormedField K] [IsUltrametricDist K] [Algebra O K] [IsUnitBall O K]
     [NormedAlgebra ℚ_[l] K] (T : LocLat (Gl l) ℚ_[l] K O), l ≠ 2 → ∀ ε : OCb l, IsEps ε → ∀ (j n c : ℕ),

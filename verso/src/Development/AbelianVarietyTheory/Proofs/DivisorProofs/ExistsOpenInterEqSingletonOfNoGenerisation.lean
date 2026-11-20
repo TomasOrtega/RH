@@ -7,6 +7,23 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)
 open GlobalTheory GlobalTheory.CechPic GlobalTheory.Cartier GlobalTheory.TopForm GlobalTheory.QCoh GlobalTheory.Discrepancy GlobalTheory.PairStep
 
+/- English proof (translation)
+Introduce `X _ T x hT hx hxT hgen`. Take `⟨S, hSf, hScl, hSirr, hTS⟩` from `TopologicalSpace.NoetherianSpace.exists_finite_set_isClosed_irreducible hT`. Set `S' : Set (Set X)` to `{t | t ∈ S ∧ x ∉ t}`. Establish `hS'f : S'.Finite` using `hSf.subset (fun t ht => ht.1)`. Establish `hcl : IsClosed (⋃₀ S')`.
+
+Rewrite using `[Set.sUnion_eq_biUnion]`. Conclude with `hS'f.isClosed_biUnion (fun t ht => hScl t ht.1)`. Use `⟨⟨(⋃₀ S')ᶜ, hcl.isOpen_compl⟩, ?_, ?_⟩` and prove the remaining obligations. Use `show x ∈ (⋃₀ S')ᶜ`. Introduce and unpack `⟨t, ht, hxt⟩`.
+
+Conclude with `ht.2 hxt`. Introduce `y hy`. Establish `hy' : y ∈ (⋃₀ S')ᶜ` using `hy`. Prove the components needed by the constructor for the conclusion. Introduce `hyT`.
+
+Rewrite `hyT` using `[hTS]`. Take `⟨t, htS, hyt⟩` from `hyT`. Distinguish the cases in `hxt : x ∈ t`. Establish `hirr` using `hSirr t htS`. Establish `hclt` using `hScl t htS`.
+
+Take `⟨η, hηg⟩` from `QuasiSober.sober hirr hclt`. Establish `hgp : closure ({η} : Set X) = t` using `hηg.def`. Establish `hη : η ∈ t`. Rewrite using `[← hgp]`. Conclude with `subset_closure rfl`.
+
+Establish `hηT : η ∈ T`. Rewrite using `[hTS]`. Conclude with `⟨t, htS, hη⟩`. Establish `hsp : η ⤳ x`. Rewrite using `[specializes_iff_mem_closure, hgp]`.
+
+Conclude with `hxt`. Establish `heq` using `hgen _ hηT hsp`. Rewrite `hgp` using `[heq, hx.closure_eq]`. Rewrite `hyt` using `[← hgp]`. Conclude with `hyt`.
+
+Conclude with `absurd (Set.mem_sUnion.mpr ⟨t, (⟨htS, hxt⟩ : t ∈ S'), hyt⟩) hy'`. Introduce and unpack `rfl`. Conclude with `hxT`.
+-/
 theorem GlobalTheory.exists_open_inter_eq_singleton_of_no_generisation :
     ∀ (X : Scheme.{0}) [AlgebraicGeometry.IsNoetherian X] (T : Set X) (x : X), IsClosed T → IsClosed ({x} : Set X) → x ∈ T → (∀ z ∈ T, z ⤳ x → z = x) → ∃ U : X.Opens, x ∈ U ∧ ∀ y ∈ U, y ∈ T ↔ y = x := by
   intro X _ T x hT hx hxT hgen

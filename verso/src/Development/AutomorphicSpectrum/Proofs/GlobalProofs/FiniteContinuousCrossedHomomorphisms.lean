@@ -12,9 +12,15 @@ section Algebra
 variable {k G V : Type} [CommRing k] [Group G] [AddCommGroup V] [Module k V]
   {ρ : Representation k G V} {f : G → V}
 
+/- English proof (translation)
+Simplify using `using hf 1 1`.
+-/
 theorem cocycle_map_one (hf : ∀ g h : G, f (g * h) = f g + ρ g (f h)) : f 1 = 0 := by
   simpa using hf 1 1
 
+/- English proof (translation)
+Establish `h` using `hf a⁻¹ a`. Rewrite `h` using `[inv_mul_cancel, cocycle_map_one hf]`. Conclude with `eq_neg_of_add_eq_zero_left h.symm`.
+-/
 theorem cocycle_map_inv (hf : ∀ g h : G, f (g * h) = f g + ρ g (f h)) (a : G) :
     f a⁻¹ = -ρ a⁻¹ (f a) := by
   have h := hf a⁻¹ a
@@ -37,21 +43,35 @@ def cocycleKer (ρ : Representation k G V) (f : G → V)
     refine ⟨h1, ?_⟩
     rw [cocycle_map_inv hf, ha', map_zero, neg_zero]
 
+/- English proof (translation)
+Conclude with `Iff.rfl`.
+-/
 theorem mem_cocycleKer (hf : ∀ g h : G, f (g * h) = f g + ρ g (f h)) (g : G) :
     g ∈ cocycleKer ρ f hf ↔ ρ g = 1 ∧ f g = 0 := by
   exact Iff.rfl
 
+/- English proof (translation)
+Establish `hc'` using `((mem_cocycleKer hf c).1 hc).2`. Rewrite using `[hf, hc', map_zero, add_zero]`.
+-/
 theorem cocycle_mul_mem (hf : ∀ g h : G, f (g * h) = f g + ρ g (f h)) (g : G) {c : G}
     (hc : c ∈ cocycleKer ρ f hf) : f (g * c) = f g := by
   have hc' := ((mem_cocycleKer hf c).1 hc).2
   rw [hf, hc', map_zero, add_zero]
 
+/- English proof (translation)
+Use `(mem_cocycleKer hf _).2 ⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, ← h2, ← map_mul, inv_mul_cancel, map_one]`. Rewrite using `[hf, cocycle_map_inv hf, h1, neg_add_cancel]`.
+-/
 theorem inv_mul_mem_cocycleKer (hf : ∀ g h : G, f (g * h) = f g + ρ g (f h)) {a b : G}
     (h1 : f a = f b) (h2 : ρ a = ρ b) : a⁻¹ * b ∈ cocycleKer ρ f hf := by
   refine (mem_cocycleKer hf _).2 ⟨?_, ?_⟩
   · rw [map_mul, ← h2, ← map_mul, inv_mul_cancel, map_one]
   · rw [hf, cocycle_map_inv hf, h1, neg_add_cancel]
 
+/- English proof (translation)
+Introduce `q₁ q₂ h`. Simplify using `only [Prod.mk.injEq] at h`. Take `⟨h1, h2⟩` from `h`. Establish `h2' : ρ q₁.out = ρ q₂.out` using `LinearMap.coe_injective h2`. Rewrite using `[← QuotientGroup.out_eq' q₁, ← QuotientGroup.out_eq' q₂, QuotientGroup.eq]`.
+
+Conclude with `inv_mul_mem_cocycleKer hf h1 h2'`.
+-/
 theorem injective_out_cocycleKer (hf : ∀ g h : G, f (g * h) = f g + ρ g (f h)) :
     Function.Injective fun q : G ⧸ cocycleKer ρ f hf =>
       ((f q.out, ⇑(ρ q.out)) : V × (V → V)) := by
@@ -62,6 +82,9 @@ theorem injective_out_cocycleKer (hf : ∀ g h : G, f (g * h) = f g + ρ g (f h)
   rw [← QuotientGroup.out_eq' q₁, ← QuotientGroup.out_eq' q₂, QuotientGroup.eq]
   exact inv_mul_mem_cocycleKer hf h1 h2'
 
+/- English proof (translation)
+Establish `hinj` using `injective_out_cocycleKer hf`. Use `haveI : Finite (G ⧸ cocycleKer ρ f hf) := Finite.of_injective _ hinj`. Conclude with `⟨Subgroup.index_ne_zero_of_finite, Nat.card_le_card_of_injective _ hinj⟩`.
+-/
 theorem index_cocycleKer [Finite V] (hf : ∀ g h : G, f (g * h) = f g + ρ g (f h)) :
     (cocycleKer ρ f hf).index ≠ 0 ∧
       (cocycleKer ρ f hf).index ≤ Nat.card (V × (V → V)) := by
@@ -69,6 +92,11 @@ theorem index_cocycleKer [Finite V] (hf : ∀ g h : G, f (g * h) = f g + ρ g (f
   haveI : Finite (G ⧸ cocycleKer ρ f hf) := Finite.of_injective _ hinj
   exact ⟨Subgroup.index_ne_zero_of_finite, Nat.card_le_card_of_injective _ hinj⟩
 
+/- English proof (translation)
+Use `haveI : Finite (G ⧸ H) := Nat.finite_of_card_ne_zero hH`. Use `(Set.finite_range (fun φ : G ⧸ H → V => φ ∘ (QuotientGroup.mk : G → G ⧸ H))).subset ?_` and prove the remaining obligations. Introduce `f₀ hf₀`. Simplify using `only [Set.mem_ofPred_eq] at hf₀`. Use `⟨fun q => f₀ q.out, ?_⟩` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `g`. Take `⟨c, hc⟩` from `QuotientGroup.mk_out_eq_mul H g`. Simplify using `only [Function.comp_apply]`. Rewrite using `[hc]`. Conclude with `hf₀ g c c.2`.
+-/
 theorem finite_right_invariant [Finite V] (H : Subgroup G) (hH : H.index ≠ 0) :
     {f : G → V | ∀ g, ∀ c ∈ H, f (g * c) = f g}.Finite := by
   haveI : Finite (G ⧸ H) := Nat.finite_of_card_ne_zero hH
@@ -84,6 +112,11 @@ theorem finite_right_invariant [Finite V] (H : Subgroup G) (hH : H.index ≠ 0) 
 
 end Algebra
 
+/- English proof (translation)
+Establish `hU : IsOpen ((⋂ v : A.V, (stabilizer A.ρ v : Set G)) ∩ {g | f g = 0})` using `(isOpen_iInter_of_finite fun v => IsDiscreteRep.isOpen_stabilizer v).inter (hlc.isOpen_fiber 0)`. Apply `Subgroup.isOpen_of_mem_nhds (g := 1)` to reduce the goal to its premises. Use `Filter.mem_of_superset (hU.mem_nhds ⟨Set.mem_iInter.2 fun v => ?_, cocycle_map_one hf⟩) ?_` and prove the remaining obligations. Rewrite using `[SetLike.mem_coe, mem_stabilizer, map_one]`. Both sides reduce to the same expression.
+
+Introduce and unpack `g ⟨hg1, hg2⟩`. Use `⟨LinearMap.ext fun v => ?_, hg2⟩` and prove the remaining obligations. Conclude with `(mem_stabilizer A.ρ v g).1 (Set.mem_iInter.1 hg1 v)`.
+-/
 theorem isOpen_cocycleKer {k G : Type} [CommRing k] [Group G] [TopologicalSpace G]
     [IsTopologicalGroup G] (A : Rep.{0} k G) [IsDiscreteRep A] [Finite A.V] {f : G → A.V}
     (hlc : IsLocallyConstant f) (hf : ∀ g h : G, f (g * h) = f g + A.ρ g (f h)) :
@@ -98,6 +131,9 @@ theorem isOpen_cocycleKer {k G : Type} [CommRing k] [Group G] [TopologicalSpace 
     refine ⟨LinearMap.ext fun v => ?_, hg2⟩
     exact (mem_stabilizer A.ρ v g).1 (Set.mem_iInter.1 hg1 v)
 
+/- English proof (translation)
+Introduce `k G _ _ _ _ A _ hV hN`. Use `((hN (Nat.card (A.V × (A.V → A.V)))).biUnion (fun H hH => finite_right_invariant H hH.2.1)).subset ?_` and prove the remaining obligations. Introduce and unpack `f ⟨hlc, hf⟩`. Simplify using `only [Set.mem_iUnion, Set.mem_ofPred_eq]`. Conclude with `⟨cocycleKer A.ρ f hf, ⟨isOpen_cocycleKer A hlc hf, index_cocycleKer hf⟩, fun g c hc => cocycle_mul_mem hf g hc⟩`.
+-/
 theorem finite_cocycles : ∀ (k G : Type) [CommRing k] [Group G] [TopologicalSpace G]
     [IsTopologicalGroup G] (A : Rep.{0} k G) [IsDiscreteRep A], Finite A.V →
     (∀ N : ℕ, {H : Subgroup G | IsOpen (H : Set G) ∧ H.index ≠ 0 ∧ H.index ≤ N}.Finite) →

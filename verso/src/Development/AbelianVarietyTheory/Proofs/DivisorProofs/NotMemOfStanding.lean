@@ -28,6 +28,11 @@ section Generic
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
   {n d : ℕ} {X : Spc F E n} {Y : Spc F E d} {M : Model σ X Y} {ψ : AddChar (AF F) ℂ} {v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F}
 
+/- English proof (translation)
+Substitute `hB hB'` using the available equality. Use `⟨(bijOn_funLeft Θ).comp h.1, fun u hu φ hφ φ₁ h₁ ha z => ?_, fun u hu φ hφ φ₁ h₁ ha x hx => ?_⟩` and prove the remaining obligations. Take `⟨z, rfl⟩` from `Θ.surjective z`. Rewrite using `[← hco, ← hΘ]`. Simplify using `only [LinearMap.comp_apply, LinearMap.funLeft_apply, Homeomorph.symm_apply_apply]`.
+
+Conclude with `h.2.1 u hu φ hφ φ₁ h₁ ha z`. Rewrite using `[← hco]`. Simplify using `only [LinearMap.comp_apply, LinearMap.funLeft_apply, Homeomorph.symm_apply_apply]`. Conclude with `h.2.2 u hu φ hφ φ₁ h₁ ha x hx`.
+-/
 theorem isLagrModel_chart {A A' B B' : Set (Matrix (Fin n) (Fin d) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.AE F E))} {Z Z' : Type} [TopologicalSpace Z] [Add Z]
     [TopologicalSpace Z'] [Add Z'] {co : _ → Z} {co' : _ → Z'} {ι} (h : IsLagrModel M ψ v A A' co ι) (Θ : Z ≃ₜ Z')
     (hΘ : ∀ x y, Θ (x + y) = Θ x + Θ y) (hB : B = A) (hB' : B' = A') (hco : ∀ u, Θ (co u) = co' u) :
@@ -49,12 +54,20 @@ section Local
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
   {A A' C : Type} [Fintype A] [DecidableEq A] [Fintype A'] [DecidableEq A'] [Fintype C] [DecidableEq C]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `h`. Simplify using `only [smallP, smallF, Pi.smul_apply, smul_eq_mul, mul_assoc, integral_const_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem smallP_smul [MeasurableSpace k] [BorelSpace k] (μ : Measure (GL A' k)) (σ : A ⊕ A' ≃ C) (ν α : kˣ →* ℂˣ) (c : ℂ)
     (Ψ : Matrix A' C k → ℂ) : smallP μ σ ν α (c • Ψ) = c • smallP μ σ ν α Ψ := by
   funext h
   simp only [smallP, smallF, Pi.smul_apply, smul_eq_mul, mul_assoc, integral_const_mul]
   ring
 
+/- English proof (translation)
+Take `⟨h0, h1⟩` from `haar_ne_zero_ne_top (haarVol (KO k A')) ho hK`. Establish `e : (haarVol (KO k A') J)⁻¹ • haarVol (KO k A') = haarVol J` using `by haveI : ((haarVol (KO k A') J)⁻¹ • haarVol (KO k A')).IsHaarMeasure := Measure.IsHaarMeasure.smul _ (ENNReal.inv_ne_zero.2 h1) (ENNReal.inv_ne_top.2 h0)`. Conclude with `eq_haarVol _ ho hK (by simp [ENNReal.inv_mul_cancel h0 h1])`. Use `⟨ENNReal.toReal_ne_zero.2 ⟨h0, h1⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `h`.
+
+Rewrite using `[← e]`. Simplify using `only [smallP, smallF, integral_smul_measure, Pi.smul_apply, smul_eq_mul, Complex.real_smul, ENNReal.toReal_inv, Measure.real, Complex.ofReal_inv]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem smallP_haarVol [MeasurableSpace k] [BorelSpace k] {J : Subgroup (GL A' k)} (ho : IsOpen (J : Set (GL A' k)))
     (hK : J ≤ KO k A') (σ : A ⊕ A' ≃ C) (ν α : kˣ →* ℂˣ) (Ψ : Matrix A' C k → ℂ) :
     (haarVol (KO k A')).real J ≠ 0 ∧
@@ -71,6 +84,13 @@ theorem smallP_haarVol [MeasurableSpace k] [BorelSpace k] {J : Subgroup (GL A' k
     Measure.real, Complex.ofReal_inv]
   ring
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Use `(depthSpace (A := A) ϖ 0 (stdLat k C)).smul_mem c (hasDepth_indicator hϖ 0 (stdLat k C))` as an intermediate fact. Establish `e : {Z : Matrix A C k | ∀ r s, Z r s ∈ (ValuativeRel.valuation k).integer} = (matLat A (GlobalTheory.SplitFlip.stdLat k C) : Set _)` using `Set.ext fun Z => mem_matLat_stdLat.symm`. Rewrite using `[e]`. Conclude with `this`.
+
+Use `haveI : Subsingleton (Res k 0) := Ideal.Quotient.subsingleton_iff.2 (by simp) haveI : Unique (A → P → Res k 0) := ⟨⟨0⟩, fun _ => Subsingleton.elim _ _⟩`. Rewrite using `[fourierSum_apply, if_pos (by simp), Fintype.sum_unique, Pi.smul_apply, Set.indicator_of_mem]`. Simplify using `[pairCols]`. Introduce `r s`. Simplify using `only [setCols, Matrix.of_apply]`.
+
+Use `split_ifs`. Conclude with `liftRes_mem _ _ _`. Conclude with `zero_mem _`.
+-/
 theorem fourierSum_ind (ψ : AddChar k Circle) {ϖ : kˣ} (hϖ : IsUnif ϖ) (P : Finset C) (c : ℂ) :
     IsNatDatum ϖ 0 (c • Set.indicator {Z : Matrix A C k | ∀ r s, Z r s ∈ (ValuativeRel.valuation k).integer} (1 : Matrix A C k → ℂ)) ∧
     fourierSum ψ ϖ 0 P (c • Set.indicator {Z : Matrix A C k | ∀ r s, Z r s ∈ (ValuativeRel.valuation k).integer} 1) 0 = c := by
@@ -94,6 +114,9 @@ end Local
 
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : GlobalTheory.ChiGrid.Consts} {G : GridData L sc} {μ₀ : T}
 
+/- English proof (translation)
+Introduce `hmem` and use `hst.2 w hw (by have e : ((D.host.QS * D.host.q * D.host.d * Ideal.absNorm D.host.ccK : ℕ) : 𝓞 D.host.E) = (D.host.d : 𝓞 D.host.E) * ((D.host.QS * D.host.q * Ideal.absNorm D.host.ccK : ℕ) : 𝓞 D.host.E) := by push_cast; ring rw [e]; exact Ideal.mul_mem_left _ _ hmem)`.
+-/
 theorem notMem_of_standing {t : T} (hst : SquareStanding G t) {w : Pl D.host.E} (hw : w ∈ locPl G t) :
     ((D.host.QS * D.host.q * Ideal.absNorm D.host.ccK : ℕ) : 𝓞 D.host.E) ∉ w.asIdeal := fun hmem => hst.2 w hw (by
   have e : ((D.host.QS * D.host.q * D.host.d * Ideal.absNorm D.host.ccK : ℕ) : 𝓞 D.host.E) =
@@ -102,6 +125,31 @@ theorem notMem_of_standing {t : T} (hst : SquareStanding G t) {w : Pl D.host.E} 
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Use `set v := w.under (𝓞 D.host.F) with hv`. Use `letI := GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.measFv v`. Use `haveI := GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.borelFv v`. Establish `hT` using `hm.triple`. Establish `hvT : v ∈ X.T` using `(hti.1.2.2.1 v).2 ⟨w, hw, rfl⟩`.
+
+Set `v' : Bs.P` to `⟨v, hT.chars.sub hvT⟩`. Establish `hτ : splitPrime (Bs.τ v') = w` using `hti.1.2.2.2 v' w hw rfl`. Take `⟨ιA, ιB, hA, hB, -, -, hz⟩` from `hm.fin.zeta v' hvT`. Take `⟨jj, j1, j2, j3, j4⟩` from `GlobalTheory.T.exists_placeIso_reading_components_characters hL W t i j X h.α h.β (Bs.τ v') w hτ`. Set `C0 : GL (Fin ((spW G i j).rank + (spW₁ G i j).rank)) (Kw w)` to `⟨basCols B e w, GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.blk e (loc w (B.β i (j + 1)))⁻¹.val (-(loc w (B.β (i + 1) j))⁻¹.val), by rw [basCols, GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.blk_mul, neg_mul_neg, Units.mul_inv, Units.mul_inv, GlobalTh …`.
+
+Set `cj` to `GeneralLinearGroup.map (jj : Fv D.host.F v →+* Kw w) (Γ.W.bas v)`. Establish `hcc : (Γ.W.bas v).val.map jj * (cj⁻¹ * C0).val = basCols B e w` using `congrArg Units.val (mul_inv_cancel_left cj C0)`. Generalize the expression as in `cj⁻¹ * C0 = cc at hcc`. Take `⟨g, hg, cA', lA⟩` from `GlobalTheory.T.exists_mixed_chart_through_W_coordinate hL W B t i j M hst e Bs Γ X om om' h hT hti.1 v' w hτ jj j1 j2 cc hcc`. Take `⟨g', cB, lB⟩` from `GlobalTheory.T.square_standing_triple_theta_first hL W B t i j M hst e Bs Γ X om om' h hT hti v' w hτ jj j1 j2 cc hcc`.
+
+Establish `hb` using `notMem_of_standing hst hw`. Establish `hS` using `(Good.isGood_of_notMem hL W hw hb).square i i.2 j j.2`. Establish `hξ : (xiAt w)⁻¹ ≠ 0` using `inv_ne_zero ((_root_.map_ne_zero _).2 GlobalTheory.ChiGrid.cmHost_imaginaryGenerator_ne_zero)`. Establish `dW : Γ.W.J.det ≠ 0` using `h.JWW ▸ det_skewGram_ne _ _ e`. Establish `dV : Γ.V.J.det ≠ 0` using `by rw [h.JW, one_smul]; exact GlobalTheory.RouteCoords.gram_det_ne _`.
+
+Establish `dV' : Γ.V'.J.det ≠ 0`. Rewrite using `[h.JW₁, det_smul]`. Conclude with `mul_ne_zero (pow_ne_zero _ (neg_ne_zero.2 one_ne_zero)) (GlobalTheory.RouteCoords.gram_det_ne _)`. Establish `hstd : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsStd W.ψ` using `h.ψ ▸ hT.base.std`. Rewrite `hA`, `hB` using `[h.ψ]`.
+
+Take `⟨ι, i1, i2⟩` from `exists_mixed (M := Γ.M) (ψ := W.ψ) hS.unif hS.cond j2 hξ j4 (h := invT cc) cA' hA.bij (fun u hu h0 φ hφ φ₁ h₁ ha => (GlobalTheory.T.heisenbergOperator_isotropic_translation_char_split hT.base.cm Γ.V Γ.W hT.geo.hV.herm hT.geo.hW.skew dV dW Γ.M W.ψ hstd _ _ _ u hu h0 φ hφ φ₁ h₁ ha) …`. Take `⟨ι', k1, k2⟩` from `exists_mixed (M := Γ.M') (ψ := W.ψ) hS.unif hS.inv.cond j2 hξ (χ := fun x => psiLoc W.ψ v (-x)) (fun x => by rw [j4, AddChar.inv_apply, map_neg, mul_neg]) cB hB.bij (fun u hu h0 φ hφ φ₁ h₁ ha => (GlobalTheory.T.heisenbergOperator_isotropic_translation_char_split hT.base.cm Γ.V' Γ …`. Rewrite using `[GlobalTheory.T.tensorSymplecticForm_at_split_finite_place hT.base.cm Γ.V' Γ.W hT.geo.hV'.herm hT.geo.hW.skew W.ψ (Bs.τ v') (Γ.V'.bas v) (Γ.W.bas v) x u hx hu, neg_sub]`. Use `haveI := isHaarMeasure_haarVol (k := Kw w) (n := Fin (spW₁ G i j).rank) isOpen_KO le_rfl`. Use `haveI := isHaarMeasure_haarVol (k := Fv D.host.F v) (n := Fin (spW₁ G i j).rank) isOpen_KO le_rfl`.
+
+Take `⟨l₂, hl₂, z₂⟩` from `GlobalTheory.T.zetaIdentity_persists_row_column_changes (Kw w) _ _ (rankW G t i j w) _ _ _ _ (finCongr (rankW₁ G t i j w)) (colsEq t e w) finSumFinEquiv (stdSplit ((locGrid G t w).rank_square i j)) (haarVol (KO (Kw w) _)) (haarVol (KO (Kw w) _)) (unifAt w) ((locGrid G t w).nu i j …`. Take `⟨l₁, hl₁, z₁⟩` from `GlobalTheory.T.zetaIdentity_transport_localFieldIso (Fv D.host.F v) (Kw w) jj j2 (spW G i j).rank (Fin (spW₁ G i j).rank) _ finSumFinEquiv (haarVol (KO _ _)) (haarVol (KO _ _)) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.unifAt v) (unifAt w) (exists_isUnif (k := Fv …`. Take `⟨ΘA, hΘA⟩` from `exists_homeo jj (finCongr (rankW G t i j w)) (colsEq t e w) g (invT cc) j2.1 j2.2.1`. Take `⟨ΘB, hΘB⟩` from `exists_homeo jj (finCongr (rankW₁ G t i j w)) (colsEq t e w) g' cc j2.1 j2.2.1`. Establish `hfA` using `GlobalTheory.T.splitPlace_halves_eq_linear_model_lagrangians (Bs.τ v') w hτ (e.symm.trans finSumFinEquiv).symm _ (GlobalTheory.RouteCoords.gram_det_ne (GlobalTheory.Grid.sgn true (spW G i j)))`.
+
+Establish `hfB` using `GlobalTheory.T.splitPlace_halves_eq_linear_model_lagrangians (Bs.τ v') w hτ (e.symm.trans finSumFinEquiv).symm _ (GlobalTheory.RouteCoords.gram_det_ne (spW₁ G i j))`. Establish `eA : ∀ φ Z, (LinearMap.funLeft ℂ ℂ ΘA.symm ∘ₗ ιA) φ (ΘA Z) = ιA φ Z` using `fun φ Z => congrArg (ιA φ) (ΘA.symm_apply_apply Z)`. Establish `eB : ∀ φ Z, (LinearMap.funLeft ℂ ℂ ΘB.symm ∘ₗ ιB) φ (ΘB Z) = ιB φ Z` using `fun φ Z => congrArg (ιB φ) (ΘB.symm_apply_apply Z)`. Use `⟨LinearMap.funLeft ℂ ℂ ΘA.symm ∘ₗ ιA, ι, LinearMap.funLeft ℂ ℂ ΘB.symm ∘ₗ ιB, ι', l₁ * l₂, mul_ne_zero hl₁ hl₂, isLagrModel_chart (isLagrModel_of_isLin hA) ΘA (fun x y => by rw [hΘA, hΘA, hΘA, chart_add]) (Set.ext fun u => (hfA u).1) (Set.ext fun u => (hfA u).2) fun u => (hΘA _). …` and prove the remaining obligations. Take `⟨Z, rfl⟩` from `ΘA.surjective S`.
+
+Rewrite using `[eA, i2 φ hφ m hm, hΘA]`. Take `⟨Z, rfl⟩` from `ΘB.surjective S`. Rewrite using `[eB, k2 φ hφ m hm, hΘB, inv_inv]`. Establish `e6 : chrW X.α (Bs.τ v') = chrW X.ν (Bs.τ v') * chrW X.β (Bs.τ v')`. Use extensionality with `x`.
+
+Simplify using `[chrW, GlobalTheory.LFun.locChar, Chars.ν]`. Rewrite using `[← map_smul]`. Use `(hz φ hφ _ (Submodule.smul_mem _ _ hφ')).2 ?_` and prove the remaining obligations. Rewrite using `[e6]`. Rewrite `hc` using `[zetaA, zetaB, ← smallP_smul]`.
+
+Use `z₁ _ _ (z₂ _ _ hc)` as an intermediate fact. Use `this using 2` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `Z`. Rewrite using `[← eA, hΘA]`. Both sides reduce to the same expression.
+
+Use function extensionality and compare the values at `Y`. Rewrite using `[map_smul, Pi.smul_apply, ← eB, hΘB, smul_eq_mul, mul_assoc, mul_assoc]`. Both sides reduce to the same expression.
+-/
 theorem local_charts (hL : L.Is μ₀) (W : G.Weil) (B : Frames G) (t : T) (i j : Fin D.R.m) (M : Vol G) (hst : SquareStanding G t)
     {e : Num G i j} {Bs : Base D.host.F D.host.E} {Γ : GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.Geo G i j} {X : Chars D.host.F D.host.E}
     {om : Rep D.sp.cm.sig Γ.V Γ.W} {om' : Rep D.sp.cm.sig Γ.V' Γ.W} (h : IsTripleOf W M t i j e Bs Γ X) {R Rf}
@@ -194,6 +242,11 @@ theorem local_charts (hL : L.Is μ₀) (W : G.Weil) (B : Frames G) (t : T) (i j 
       rw [map_smul, Pi.smul_apply, ← eB, hΘB, smul_eq_mul, mul_assoc, mul_assoc]
       rfl
 
+/- English proof (translation)
+Establish `hS` using `(Good.isGood_of_notMem hL W hw (notMem_of_standing hst hw)).square i i.2 j j.2`. Establish `h1` using `GivenAdm.givenLevel_open hL hw ((i : ℕ), (j : ℕ))`. Establish `h2` using `isOpen_map_invT h1.1 h1.2`. Use `haveI hμ := isHaarMeasure_haarVol h2.1 h2.2`. Establish `key` using `smallP_haarVol h2.1 h2.2 (stdSplit ((locGrid G t w).rank_square i j)) ((locGrid G t w).nu i j) ((locGrid G t w).nu i j * 1)`.
+
+Use `⟨(key 0).1, fun n Φ hn hΦ => ?_⟩` and prove the remaining obligations. Rewrite using `[flipAt, squareFlip, GlobalTheory.T.partialFourierSum_inverse_of_latticeDepth _ _ _ _ _ _ _ hS.unif hS.inv.cond _ (by`. Rewrite using `[← latA_blockLat, ← Grid.alpha_div_beta]`. Conclude with `GlobalTheory.FrameDepth.hasDepth_phiA _ _ _ _ _ (hμ := hμ) _ _ _ _ _ _ hS.unif (hS.one_le.trans hn) (LocTensor.condLE_mono hS.unif hn hS.condν) (GlobalTheory.SplitFlip.FourierDepth.hasDepth_fourierSum hS.unif hS.cond n _ hΦ))]`. Conclude with `(GlobalTheory.T.primitiveFrameDatum_zetaIntegral_eq_smaller (Kw w) _ _ _ _ _ _ 1 _ n _ _ hS.unif).trans (key _).2`.
+-/
 theorem zeta_flip (hL : L.Is μ₀) (W : G.Weil) {t : T} (i j : Fin D.R.m) (hst : SquareStanding G t) {w : Pl D.host.E}
     (hw : w ∈ locPl G t) : levVol G t i j w ≠ 0 ∧ ∀ n Φ, depthAt G w ≤ n → IsNatDatum (unifAt w) n Φ →
       zetaA G t i j w (fourierSum (psiAt W w)⁻¹ (unifAt w) n (Assignment.one.block _ _)ᶜ (flipAt W t i j w n Φ)) =
@@ -211,6 +264,17 @@ theorem zeta_flip (hL : L.Is μ₀) (W : G.Weil) {t : T} (i j : Fin D.R.m) (hst 
       (GlobalTheory.SplitFlip.FourierDepth.hasDepth_fourierSum hS.unif hS.cond n _ hΦ))]
   exact (GlobalTheory.T.primitiveFrameDatum_zetaIntegral_eq_smaller (Kw w) _ _ _ _ _ _ 1 _ n _ _ hS.unif).trans (key _).2
 
+/- English proof (translation)
+Establish `H : ∀ w : Pl D.host.E, ∃ x : (Kw w)ˣ, ∀ t, w ∈ locPl G t → ValuativeRel.valuation (Kw w) (x : Kw w) = 1 ∧ zetaA G t i j w (locFst B t X w) = (((locGrid G t w).nu i j x : ℂˣ) : ℂ) • zetaB G t i j w (locSnd B t X w)` using `fun w => by`. Distinguish the cases in `hex : ∃ t, w ∈ locPl G t`. Use `swap`. Conclude with `⟨1, fun t ht => absurd ⟨t, ht⟩ hex⟩`. Take `⟨t₀, ht₀⟩` from `hex`.
+
+Take `⟨a1, a2, a3⟩` from `GlobalTheory.T.grid_frame_local_compact_membership hL B t₀ i j X (hst t₀) hA hA' hX w ht₀`. Take `⟨x, hx, hz⟩` from `GlobalTheory.T.bigZetaIntegral_eq_smul_smallZetaIntegral_of_integralChange (Kw w) _ _ _ _ (ordX G t₀ i j w) (stdSplit ((locGrid G t₀ w).rank_square i j)) finSumFinEquiv _ _ _ a1 a2 a3`. Conclude with `⟨x, fun t _ => ⟨hx, hz (unifAt w) ((locGrid G t w).nu i j) 1 _ _ (GlobalTheory.T.zetaIntegral_standardPair_first_eq_second (Kw w) ((locGrid G t w).nu i j) 1 (unifAt w) (X.c t w) _ _ (isUnif_unifAt w))⟩⟩`. Use `choose x hx using H`. Use `⟨x, fun t w hw => ?_⟩` and prove the remaining obligations.
+
+Establish `hS` using `(Good.isGood_of_notMem hL W hw (notMem_of_standing (hst t) hw)).square i i.2 j j.2`. Take `⟨s1, s2⟩` from `GlobalTheory.T.standardPair_mem_schwartzBruhat_of_conductorExponentLE (Kw w) ((locGrid G t w).nu i j) (unifAt w) _ (X.c t w) ((locGrid G t w).rank (i + 1, j + 1)) ((locGrid G t w).rank (i, j)) hS.unif (by rw [← Grid.alpha_div_beta]; exact hS.condν)`. Take `⟨ΘA, hΘA⟩` from `exists_homeo (RingEquiv.refl (Kw w)) (Equiv.refl _) (ordX G t i j w) (chA B t X w) (invT (chX B t X w)) continuous_id continuous_id`. Take `⟨ΘB, hΘB⟩` from `exists_homeo (RingEquiv.refl (Kw w)) (Equiv.refl _) (ordX G t i j w) (chB B t X w) (chX B t X w) continuous_id continuous_id`. Use `⟨(hx w t hw).1, ?_, ?_, (hx w t hw).2⟩` and prove the remaining obligations.
+
+Establish `: locFst B t X w = GlobalTheory.StdPairCone.stdA ((locGrid G t w).nu i j) (unifAt w) (X.c t w) _ _ ∘ ΘA`. Use function extensionality and compare the values at `fun Z => by rw [Function.comp_apply, hΘA]; rfl`. Rewrite using `[this]`. Conclude with `⟨s1.1.comp_continuous ΘA.continuous, s1.2.comp_homeomorph ΘA⟩`. Establish `: locSnd B t X w = GlobalTheory.StdPairCone.stdB ((locGrid G t w).nu i j) (unifAt w) (X.c t w) _ _ ∘ ΘB`.
+
+Use function extensionality and compare the values at `fun Z => by rw [Function.comp_apply, hΘB]; rfl`. Rewrite using `[this]`. Conclude with `⟨s2.1.comp_continuous ΘB.continuous, s2.2.comp_homeomorph ΘB⟩`.
+-/
 theorem zeta_std (hL : L.Is μ₀) (W : G.Weil) (B : Frames G) {i j : Fin D.R.m} (X : TriG G i j) (hst : ∀ t, SquareStanding G t)
     (hA : IsFrame X.rA.β (G.Λ (.grid (i + 1) (j + 1)))) (hA' : IsFrame X.rA'.β (G.Λ (.grid i j))) (hX : IsFrame X.rW.β (latX G i j)) :
     ∃ x : ∀ w : Pl D.host.E, (Kw w)ˣ, ∀ t, ∀ w ∈ locPl G t, ValuativeRel.valuation (Kw w) (x w : Kw w) = 1 ∧

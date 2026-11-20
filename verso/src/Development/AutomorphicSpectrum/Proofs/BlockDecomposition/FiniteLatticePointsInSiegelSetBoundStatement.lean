@@ -25,6 +25,9 @@ open Matrix
 open scoped Pointwise
 open GlobalTheory.SiegelSet GlobalTheory.CompanionTheory.RegInt
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.TorusCount.torus_count | exact GlobalTheory.CompanionTheory.TorusCount.torus_count | (intros; apply GlobalTheory.CompanionTheory.TorusCount.torus_count <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.finite_lattice_points_in_siegel_set_bound : ∀ (D : D7) (V : HSp D) (r : ℕ) (X Y : Matrix (Fin V.rank) (Fin r) D.host.E),
     IsWittFrame D.sp.cm.sig V.gram X Y → ∀ c : ℝ, 0 < c → ∀ C : Set (GA D V), IsCompact C →
     ∃ (A : ℕ) (B : ℝ), ∀ t ∈ cone r c, ∀ a : GA D V, IsTorusElt D.sp.cm.sig V.gram X Y t a →

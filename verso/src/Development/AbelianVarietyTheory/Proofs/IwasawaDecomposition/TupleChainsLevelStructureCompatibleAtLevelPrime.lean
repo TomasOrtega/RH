@@ -14,6 +14,9 @@ namespace GlobalTheory.Mem.Col2.TC
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Substitute `hlat hres` using the available equality. Take `⟨L, hL⟩` from `GlobalTheory.Mem.Col2.TC.exists_level_projections I hOk hP l Z u a i hi`. Establish `hK' : I.ReadsK l Z u a i hi chOf K` using `hK`. Take `⟨fMe, hf, -⟩` from `GlobalTheory.Mem.Col2.LevFun.fvTieG I hOk hP l Z u a i hi bad Ch chOf K eV L hK' hV hL (fun β v h t t' e => hkill β v h t t' e)`. Conclude with `⟨L, hL, ⟨fMe, hf⟩, GlobalTheory.Mem.Col2.UpChart.upNatTie I hOk hP l Z u a i hi bad Ch chOf K eY eV L hK' hY hV hL, GlobalTheory.DnMove.dnNatTieG_cols I hOk hP l Z u a i hi bad Ch chOf K eY eV L hK' hY hV hL⟩`.
+-/
 theorem exists_lvTied_of_std {B : Base} {X : PreX B.toPre} (I : TC B X) (hOk : I.Ok) (hP : TC.Pins B X) (l : I.Laws) (Z : TC.Later B (I.cols l))
     (u : B.Word) (a : I.ι) (i : ℕ) (hi : i ≤ B.R.m) (bad : Set (HeightOneSpectrum (𝓞 (I.rec7 l Z).host.F))) (Ch : Type)
     (chOf : (I.stp u a i).Cl → Ch)
@@ -91,6 +94,21 @@ noncomputable def lvSameMu0 {B : Base} {X : PreX B.toPre} (I : TC B X) (l : I.La
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Introduce `B X I hOk hP l Z l0 inQ H F T J W hF hW`. Establish `hY : ∀ u μ i hm y, (twYS T F u μ i hm y).1 = y.1`. Introduce `u μ i hm y`. Unfold `twYS`. Rewrite using `[hW.eY u μ i hm]`.
+
+Simplify using `only [Equiv.trans_apply, Equiv.refl_symm, Equiv.refl_apply]`. Unfold `eYS`. Use `split_ifs with h`. Conclude with `(hF u).1.eY i hm h y`. Establish `e : (I.rec7 l Z).R.m = B.R.m` using `rfl`.
+
+Conclude with `(hF u).1.eYC i (by omega) (by omega) y`. Establish `hV : ∀ u μ v, ((W.atT u μ).eV (F u).atT v).1 = v.1.under (𝓞 B.host.F)`. Introduce `u μ v`. Unfold `TwAtT.eV`. Rewrite using `[hW.eVT u μ]`.
+
+Conclude with `(hF u).1.eV v`. Establish `hres : ∀ u μ, (W.atT u μ).res (F u).atT = I.resT l u μ` using `fun u μ =>`. Use function extensionality and compare the values at `fun v => RingHom.ext fun r => hW.eFv u μ v r`. Establish `key` using `fun u μ (hμ : μ ≠ (I.rec7 l Z).what₂.mu0) i (h1 : 1 ≤ i) (hm : i ≤ (I.rec7 l Z).R.m) => exists_lvTied_of_std I hOk hP l Z u μ i hm _ _ (T.chOf u μ i) (T.lat u μ i) (hW.lat u μ i) ((W.atT u μ).res (F u).atT) (hres u μ) (W.ch u μ hμ i h1 hm) (twYS T F u μ i hm) ((W.atT u μ).eV (F u …`. Use `choose L hL using key`.
+
+Use `⟨⟨⟨L, fun u μ hμ i h1 hm => (hL u μ hμ i h1 hm).2.1.choose, fun u μ hμ i h1 hm => (hL u μ hμ i h1 hm).2.1.choose_spec, fun u μ hμ i h1 hm => (hL u μ hμ i h1 hm).2.2.1, fun u μ hμ i h1 hm => (hL u μ hμ i h1 hm).2.2.2, ?_⟩, fun u μ hμ i h1 hm => (hL u μ hμ i h1 hm).1⟩, ⟨⟨?_, ?_⟩⟩⟩` and prove the remaining obligations. Introduce `u μ hμ i h1 hm`. Rewrite using `[hres u μ, hW.lat u μ i]`. Conclude with `GlobalTheory.Mem.Col2.TC.bw_tie I hOk hP l Z u μ i hm (twYS T F u μ i hm) (hY u μ i hm)`. Introduce `u μ`.
+
+Rewrite using `[hW.eCls0 u μ, hW.eY u μ 0 (Nat.zero_le _)]`. Use `(GlobalTheory.Mem.Col2.TC.StepZero.lvSame_zero I hOk hP l Z l0 u μ (W.atT u μ) (hW.eVT u μ) fun v r => ?_).some` and prove the remaining obligations. Establish `h` using `hW.eFv u μ v r`. Simplify using `only [TwAtT.res, RingHom.comp_apply, (hF u).1.res] at h`. Conclude with `h`.
+
+Introduce `u i hi`. Use `lvSameMu0 I l Z l0 u i hi (W.atT u _) (hW.eVT u _) fun v r => ?_` and prove the remaining obligations. Establish `h` using `hW.eFv u (I.rec7 l Z).what₂.mu0 v r`. Simplify using `only [TwAtT.res, RingHom.comp_apply, (hF u).1.res] at h`. Conclude with `h`.
+-/
 theorem tw_lv_tied_and_same : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)), ∀ (l0 : I.Law0 l) (inQ : I.ι → HeightOneSpectrum (𝓞 (I.rec7 l Z).host.F) → Prop) (H : Formalism.L2.Herm.HermColsCh (I.rec7 l Z)) (F : ∀ u, FormsTiedSym (I.rec7 l Z) u (H.Ch u) (H.chOf u)) (T : Formalism.L2.Herm.TwChTied (I.rec7 l Z) inQ) (J : Formalism.L2.Herm.TwChJointS T H) (W : TwFormsTiedS (I.rec7 l Z) (I.tw l l0 Z) T J F), (∀ u, I.StdF l Z u (F u) ∧ I.StdLvC l Z u (F u)) → I.StdW l Z l0 W → (∃ Lv : SymmetricTwistedLevelData W, I.StdLv l Z l0 Lv) ∧ Nonempty (TwLvSameS W) := by
   intro B X I hOk hP l Z l0 inQ H F T J W hF hW
   have hY : ∀ u μ i hm y, (twYS T F u μ i hm y).1 = y.1 := by

@@ -19,6 +19,11 @@ namespace Cover
 
 variable {F : Type} [Field F] [NumberField F] {Y : Var F} (V : Cover Y)
 
+/- English proof (translation)
+Take `⟨hη, e⟩` from `GlobalTheory.T.cover_function_field_map_eq V`. Rewrite using `[e]`. Take `⟨U, hx, s, rfl⟩` from `h.exists_fnOf`. Establish `hy : x ∈ V.π ⁻¹ᵁ U` using `hx`. Rewrite using `[SmallSec.fnMap_fnOf V.π hη _ (gen_mem hy)]`.
+
+Conclude with `regAt_fnOf hy _ _`.
+-/
 theorem regAt_φ {x : V.G} {f : Y.Fn} (h : RegAt (V.π x) f) : RegAt x (V.φ f) := by
   obtain ⟨hη, e⟩ := GlobalTheory.T.cover_function_field_map_eq V
   rw [e]
@@ -27,17 +32,26 @@ theorem regAt_φ {x : V.G} {f : Y.Fn} (h : RegAt (V.π x) f) : RegAt x (V.φ f) 
   rw [SmallSec.fnMap_fnOf V.π hη _ (gen_mem hy)]
   exact regAt_fnOf hy _ _
 
+/- English proof (translation)
+Establish `h0 : f ≠ 0` using `h.ne_zero`. Rewrite using `[unitAt_iff ((map_ne_zero V.φ).2 h0), ← map_inv₀]`. Conclude with `⟨V.regAt_φ h.regAt, V.regAt_φ h.inv.regAt⟩`.
+-/
 theorem unitAt_φ {x : V.G} {f : Y.Fn} (h : UnitAt (V.π x) f) : UnitAt x (V.φ f) := by
   have h0 : f ≠ 0 := h.ne_zero
   rw [unitAt_iff ((map_ne_zero V.φ).2 h0), ← map_inv₀]
   exact ⟨V.regAt_φ h.regAt, V.regAt_φ h.inv.regAt⟩
 
+/- English proof (translation)
+Take `⟨hη, e⟩` from `GlobalTheory.T.cover_function_field_map_eq V`. Rewrite using `[e]`. Conclude with `SmallSec.valAt_fnMap V.π hη z h`.
+-/
 theorem valAt_φ {K : Type} [Field K] (z : Sp K ⟶ V.G) {f : Y.Fn} (h : RegAt (V.π (below z)) f) :
     valAt z (V.φ f) = valAt (z ≫ V.π) f := by
   obtain ⟨hη, e⟩ := GlobalTheory.T.cover_function_field_map_eq V
   rw [e]
   exact SmallSec.valAt_fnMap V.π hη z h
 
+/- English proof (translation)
+Establish `hu : V.π (below z.1) = under y` using `by show _ = y.1 _`. Rewrite using `[e]`. Both sides reduce to the same expression. Rewrite `h` using `[← hu]`. Rewrite using `[SmallSec.ratVal_eq_valAt z (V.regAt_φ h), V.valAt_φ z.1 h, ← e, SmallSec.ratVal_eq_valAt y (hu ▸ h)]`.
+-/
 theorem ratVal_φ {σ : F →+* ℂ} (z : CxPts (V.π ≫ Y.str) σ) (y : Pts Y σ) (e : y.1 = z.1 ≫ V.π) {f : Y.Fn}
     (h : RegAt (under y) f) : ratVal (V.φ f) z = ratVal f y := by
   have hu : V.π (below z.1) = under y := by
@@ -47,6 +61,9 @@ theorem ratVal_φ {σ : F →+* ℂ} (z : CxPts (V.π ≫ Y.str) σ) (y : Pts Y 
   rw [← hu] at h
   rw [SmallSec.ratVal_eq_valAt z (V.regAt_φ h), V.valAt_φ z.1 h, ← e, SmallSec.ratVal_eq_valAt y (hu ▸ h)]
 
+/- English proof (translation)
+Establish `h1 : D'.IsEqn x (eqn D x)⁻¹` using `hD ▸ (Base.isEqn_eqn D x).neg`. Establish `h2` using `(Base.isEqn_eqn D' x).iff_unitAt.1 h1`. Use `h2 using 1` and compare the differences between its conclusion and the goal. Simplify using `only [genAt, Units.val_inv_eq_inv_val, div_eq_mul_inv]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem unitAt_genAt_mul_genAt {D D' : Y.Dv} (hD : D' = -D) (x : Y.X) : UnitAt x (genAt D' x * genAt D x) := by
   have h1 : D'.IsEqn x (eqn D x)⁻¹ := hD ▸ (Base.isEqn_eqn D x).neg
   have h2 := (Base.isEqn_eqn D' x).iff_unitAt.1 h1
@@ -54,6 +71,43 @@ theorem unitAt_genAt_mul_genAt {D D' : Y.Dv} (hD : D' = -D) (x : Y.X) : UnitAt x
   simp only [genAt, Units.val_inv_eq_inv_val, div_eq_mul_inv]
   ring
 
+/- English proof (translation)
+Take `⟨r, hr, hun, hcx, hfin⟩` from `h`. Establish `hu` using `unitAt_genAt_mul_genAt hD`. Establish `key : ∀ (i : (L.B.pull V.j).ι) (x : V.G), x ∈ (L.B.pull V.j).U i → V.φ (genAt A'.D (V.π x)) ^ 1 * (((r i)⁻¹ : V.G.functionFieldˣ) : V.G.functionField) = V.φ (genAt A'.D (V.π x) * genAt A.D (V.π x)) * (V.φ (genAt A.D (V.π x)) ^ 1 * r i)⁻¹`. Introduce `i x _`. Establish `h0 : V.φ (genAt A.D (V.π x)) ≠ 0` using `(map_ne_zero _).2 (Units.ne_zero _)`.
+
+Establish `h0' : ((r i : V.G.functionFieldˣ) : V.G.functionField) ≠ 0` using `Units.ne_zero _`. Rewrite using `[map_mul, Units.val_inv_eq_inv_val]`. Clear the denominators using the available nonvanishing facts. Establish `hunit : ∀ (i : (L.B.pull V.j).ι) (x : V.G), x ∈ (L.B.pull V.j).U i → UnitAt x (V.φ (genAt A'.D (V.π x)) ^ 1 * (((r i)⁻¹ : V.G.functionFieldˣ) : V.G.functionField))`. Introduce `i x hx`.
+
+Rewrite using `[key i x hx]`. Conclude with `(V.unitAt_φ (hu (V.π x))).mul (hun i x hx).inv`. Use `⟨fun i => (r i)⁻¹, ?_, hunit, ?_, ?_⟩` and prove the remaining obligations. Introduce `i j hij`. Establish `e` using `hr i j hij`.
+
+Establish `e' : fnOf _ hij (((CechPic.dual L.B).pull V.j).g i j).val = (fnOf _ hij ((L.B.pull V.j).g i j).val)⁻¹` using `(congrArg (fun u : Γ(V.G, (L.B.pull V.j).U i ⊓ (L.B.pull V.j).U j)ˣ => fnOf _ hij u.val) (GlobalTheory.LineNorm.Neg.pull_dual_g L.B V.j i j)).trans (map_units_inv _ _)`. Use `Eq.trans ?_ (congrArg (· * _) e').symm` and prove the remaining obligations. Rewrite using `[Units.val_inv_eq_inv_val, Units.val_inv_eq_inv_val, e, mul_inv]`. Both sides reduce to the same expression. Introduce `σ z y y' i e1 e2 hi`.
+
+Establish `H` using `hcx σ z y y' i e1 e2 hi`. Simplify using `only [hc, hc', Pi.zero_apply, mul_zero, neg_zero, Real.exp_zero, one_mul, pow_one] at H ⊢`. Rewrite using `[show (L.dual.φ _).φ (i PUnit.unit) y' = -((L.φ _).φ (i PUnit.unit) y') from rfl]`. Establish `hπ : V.π (under z) = under y` using `by show _ = y.1 _`. Rewrite using `[e1]`.
+
+Both sides reduce to the same expression. Establish `hx : under z ∈ (L.B.pull V.j).U i` using `hi`. Establish `hU1` using `hunit i _ hx`. Establish `hU2` using `hun i _ hx`. Rewrite `hU1`, `hU2` using `[hπ]`.
+
+Simplify using `only [pow_one] at hU1 hU2`. Use `set g := genAt A.D (under y) with hg`. Use `set g' := genAt A'.D (under y) with hg'`. Establish `hg0 : g ≠ 0` using `Units.ne_zero _`. Establish `hg0' : g' ≠ 0` using `Units.ne_zero _`.
+
+Establish `k1` using `hm σ y g (generatesAt_genAt A.D _)`. Establish `hinv : g⁻¹ = (g' * g)⁻¹ * g'` using `by field_simp`. Establish `k2 : C.pn Y σ A'.D (A'.m σ) (C.cx Y σ g⁻¹) y = ‖ratVal (g' * g)⁻¹ y‖ ^ 2 * C.pn Y σ A'.D (A'.m σ) (C.cx Y σ g') y`. Rewrite using `[hinv]`. Conclude with `C.pn_mul Y σ A'.D (A'.m σ) _ _ y (hu _).inv.regAt (generatesAt_genAt A'.D _).regularAt`.
+
+Establish `k3 : ratVal (g' * g)⁻¹ y * ratVal (g' * g) y = 1`. Rewrite using `[← ratVal_mul (hu _).inv.regAt (hu _).regAt, inv_mul_cancel₀ (hu _).ne_zero, Base.ratVal_one]`. Establish `k4 : ratVal (V.φ g' * (((r i)⁻¹ : V.G.functionFieldˣ) : V.G.functionField)) z * ratVal (V.φ g * (r i : V.G.functionField)) z = ratVal (g' * g) y`. Rewrite using `[← ratVal_mul hU1.regAt hU2.regAt, ← V.ratVal_φ z y e1 (hu _).regAt]`. Use `congr 1`.
+
+Establish `h0 : V.φ g ≠ 0` using `(map_ne_zero _).2 hg0`. Establish `h0' : ((r i : V.G.functionFieldˣ) : V.G.functionField) ≠ 0` using `Units.ne_zero _`. Rewrite using `[map_mul, Units.val_inv_eq_inv_val, mul_mul_mul_comm, inv_mul_cancel₀ h0', mul_one]`. Establish `k3' : ‖ratVal (g' * g)⁻¹ y‖ ^ 2 * ‖ratVal (g' * g) y‖ ^ 2 = 1`. Rewrite using `[← mul_pow, ← norm_mul, k3, norm_one, one_pow]`.
+
+Establish `k4' : ‖ratVal (V.φ g' * (((r i)⁻¹ : V.G.functionFieldˣ) : V.G.functionField)) z‖ ^ 2 * ‖ratVal (V.φ g * (r i : V.G.functionField)) z‖ ^ 2 = ‖ratVal (g' * g) y‖ ^ 2`. Rewrite using `[← mul_pow, ← norm_mul, k4]`. Rewrite `k1` using `[k2]`. Establish `hE : Real.exp (-(L.φ _).φ (i PUnit.unit) y') * Real.exp (-(-(L.φ _).φ (i PUnit.unit) y')) = 1`. Rewrite using `[← Real.exp_add]`.
+
+Simplify using the standard rewrite rules. Use `set P := C.pn Y σ A.D (A.m σ) (C.cx Y σ g) y`. Use `set Q := C.pn Y σ A'.D (A'.m σ) (C.cx Y σ g') y`. Use `set c2 := ‖ratVal (g' * g) y‖ ^ 2`. Use `set a2 := ‖ratVal (V.φ g' * (((r i)⁻¹ : V.G.functionFieldˣ) : V.G.functionField)) z‖ ^ 2`.
+
+Use `set b2 := ‖ratVal (V.φ g * (r i : V.G.functionField)) z‖ ^ 2`. Use `set ep := Real.exp (-(-(L.φ _).φ (i PUnit.unit) y'))`. Establish `hP : P ≠ 0` using `left_ne_zero_of_mul_eq_one k1`. Use `mul_left_cancel₀ hP ?_` and prove the remaining obligations. Take the linear combination `c2 * k1 - (P * Q) * k3' - (a2 * ep) * H - (a2 * b2) * hE - k4'`.
+
+Introduce `v e y z yt i e1 e2 hi`. Establish `H` using `hfin v e y z yt i e1 e2 hi`. Establish `hmem : below z ∈ (L.B.pull V.j).U i`. Establish `h1 : (z ≫ V.j) (IsLocalRing.closedPoint _) ∈ L.B.U (i PUnit.unit)`. Rewrite using `[← e2]`.
+
+Conclude with `hi (Set.mem_univ _)`. Conclude with `Set.mem_iInter.2 fun _ => h1`. Establish `hπ : V.π (below z) = below y.1`. Rewrite using `[← e1]`. Both sides reduce to the same expression.
+
+Establish `hU1` using `hunit i _ hmem`. Establish `hU2` using `hun i _ hmem`. Rewrite `hU1`, `hU2` using `[hπ]`. Simplify using `only [pow_one, Nat.cast_one, one_mul] at hU1 hU2 H ⊢`. Establish `h0 : V.φ (genAt A.D (below y.1)) ≠ 0` using `(map_ne_zero _).2 (Units.ne_zero _)`.
+
+Establish `e3 : V.φ (genAt A'.D (below y.1)) * (((r i)⁻¹ : V.G.functionFieldˣ) : V.G.functionField) = V.φ (genAt A'.D (below y.1) * genAt A.D (below y.1)) * (V.φ (genAt A.D (below y.1)) * (r i : V.G.functionField))⁻¹`. Rewrite using `[map_mul, Units.val_inv_eq_inv_val, mul_inv, ← mul_assoc, mul_assoc (V.φ (genAt A'.D (below y.1))), mul_inv_cancel₀ h0, mul_one]`. Establish `hu' : UnitAt (V.π (below z)) (genAt A'.D (below y.1) * genAt A.D (below y.1))`. Rewrite using `[hπ]`. Conclude with `hu _`.
+
+Establish `hφu : UnitAt (below z) (V.φ (genAt A'.D (below y.1) * genAt A.D (below y.1)))` using `V.unitAt_φ hu'`. Establish `n1 : e.w (valAt y.1 (genAt A'.D (below y.1) * genAt A.D (below y.1))) ≠ 0` using `(AbsoluteValue.ne_zero_iff e.w).2 (SmallSec.valAt_ne_zero (hu _))`. Establish `n2 : e.w (valAt z (V.φ (genAt A.D (below y.1)) * (r i : V.G.functionField))) ≠ 0` using `(AbsoluteValue.ne_zero_iff e.w).2 (SmallSec.valAt_ne_zero hU2)`. Rewrite using `[e3, SmallSec.valAt_mul hφu.regAt hU2.inv.regAt, GlobalTheory.LineNorm.Neg.valAt_inv hU2, V.valAt_φ z hu'.regAt, e1, map_mul, map_inv₀, Real.log_mul n1 (inv_ne_zero n2), Real.log_inv, ← H, hlg]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem induces_dual {C : CxSt F} (A A' : Adl C Y) (L : HermLB V.p)
     (hD : A'.D = -A.D) (hc : A.ci = 0) (hc' : A'.ci = 0)
     (hm : ∀ σ (y : Pts Y σ) (f : Y.Fn), A.D.GeneratesAt (under y) f →
@@ -168,6 +222,27 @@ theorem induces_dual {C : CxSt F} (A A' : Adl C Y) (L : HermLB V.p)
 
 end Cover
 
+/- English proof (translation)
+Introduce `D O hdr P c W Q hQ x`. Establish `hp : O.S.Dw.p = O.j` using `O.S.p_eq`. Establish `hpq : O.S.Dw.p + O.S.Dw.q = O.N` using `O.S.rank_eq`. Establish `hτ : O.S.Dw.mult (DV.tauEmb D x.1) = O.j` using `GlobalTheory.LocM.Check.mult_tau (S := O.S) x.1`. Establish `hcj : O.S.Dw.mult (conjEmb (DV.tauEmb D x.1)) + O.j = O.N` using `GlobalTheory.LocM.Check.mult_conj (S := O.S) x.1`.
+
+Establish `hx2 : (x.2 : ℕ) < O.N` using `x.2.2`. Unfold `LatModel.root Setup.root0 rootSym`. Distinguish the cases in `h : (x.2 : ℕ) < O.j`. Rewrite using `[if_pos h, if_pos (show (x.2 : ℕ) < O.S.Dw.p by omega)]`. Use `W.line_spec Q hQ _ ?_` and prove the remaining obligations.
+
+Simplify using `[letterOf, hτ, h]`. Rewrite using `[if_neg h, if_neg (by omega), show O.S.Dw.p + O.S.Dw.q - 1 - (x.2 : ℕ) = O.N - 1 - x.2 by omega] set st : ((D.host.E →+* ℂ) × ℕ) ⊕ ℕ := .inl (conjEmb (DV.tauEmb D x.1), O.N - 1 - (x.2 : ℕ)) with hst`. Establish `hs : (letterOf O.S.Dw st).isSome`. Establish `: O.N - 1 - (x.2 : ℕ) < O.S.Dw.mult (conjEmb (DV.tauEmb D x.1))` using `by omega`. Simplify using `[hst, letterOf, this]`.
+
+Establish `hL` using `W.line_spec Q hQ st hs`. Establish `hex : ∀ m : ℤ, expo O.S.Dw (Finsupp.single (ArIn.ind Q, none, st) m) = m • expo O.S.Dw (Finsupp.single (ArIn.ind Q, none, st) 1)`. Introduce `m`. Use function extensionality and compare the values at `y`. Simplify using `only [expo_single, Pi.smul_apply, smul_eq_mul]`.
+
+Apply the tactic sequence `split_ifs <;> simp`. Establish `hex0 : O.ex x = expo O.S.Dw (Finsupp.single (ArIn.ind Q, none, st) (-1))`. Unfold `Setup.ex rootEx rootSym`. Rewrite using `[if_neg (show ¬ ((x.2 : ℕ) < O.S.Dw.p) by omega), show O.S.Dw.p + O.S.Dw.q - 1 - (x.2 : ℕ) = O.N - 1 - x.2 by omega]`. Use function extensionality and compare the values at `y`.
+
+Simplify using `only [expo_single, hst]`. Establish `hD : ∀ n : Letter O.S.Dw → ℤ, divOf (O.Φ.C c) (-n) = -divOf (O.Φ.C c) n`. Introduce `n`. Simplify using `[divOf, neg_smul, Finset.sum_neg_distrib]`. Establish `gen : ∀ n₁ n₂ : Letter O.S.Dw → ℤ, n₁ = -O.ex x → n₂ = O.ex x → ∀ σ (y : Pts (O.var c) σ) (f : (O.var c).Fn), (divOf (O.Φ.C c) n₁).GeneratesAt (under y) f → (cxSt _).pn _ σ _ (O.met.h0 c σ n₁) ((cxSt _).cx _ σ f) y * (cxSt _).pn _ σ _ (O.met.h0 c σ n₂) ((cxSt _).cx _ σ f⁻¹) y = 1`.
+
+Introduce and unpack `n₁ n₂ rfl rfl σ y f hf`. Establish `hf0 : f ≠ 0` using `hf.ne_zero`. Establish `h1 : (divOf (O.Φ.C c) (O.ex x)).GeneratesAt (under y) f⁻¹`. Establish `h2 : (-divOf (O.Φ.C c) (O.ex x)).GeneratesAt (under y) ((((Units.mk0 f hf0)⁻¹ : (O.var c).Fnˣ)) : (O.var c).Fn)⁻¹`. Rewrite using `[← hD]`.
+
+Simplify using `using hf`. Establish `h3` using `(CartierDiv.isEqn_iff_generatesAt_inv.2 h2).neg`. Rewrite `h3` using `[neg_neg, inv_inv]`. Simplify using `using CartierDiv.isEqn_iff_generatesAt_inv.1 h3`. Use `hdr c σ x y f⁻¹ h1` as an intermediate fact.
+
+Rewrite `this` using `[inv_inv, mul_comm]`. Conclude with `this`. Use `W.V.induces_dual _ _ _ ?_ rfl rfl ?_ ?_ hL` and prove the remaining obligations. Use `show divOf _ _ = -divOf _ _`. Rewrite using `[hex (-1), neg_one_smul, hD]`.
+
+Introduce `σ y f hf`. Conclude with `gen _ _ (by rw [hex0, hex (-1), neg_one_smul, neg_neg]) hex0.symm σ y f hf`. Introduce `v e y`. Conclude with `GlobalTheory.T.lgOf_single_neg_one_eq_neg (O.Φ.C c) (ArIn.ind Q, none, st) v e y`.
+-/
 theorem Setup.induces_root0 : ∀ (D : D7) (O : Setup D), O.DualRef → ∀ (P : Finset ℕ) (c : O.s.Comp) (W : O.LatModel P c)
     (Q : Finset ℕ), Q ⊆ P → ∀ x : DV.Rt D.what₂.Tau O.N, W.V.Induces (O.root0 c Q x) (W.root Q x) 1 := by
   intro D O hdr P c W Q hQ x

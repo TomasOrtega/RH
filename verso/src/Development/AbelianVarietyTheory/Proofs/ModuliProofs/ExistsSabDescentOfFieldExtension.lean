@@ -49,6 +49,15 @@ variable {O' : Type} [CommRing O'] {β' : O' →+* c.F} (Y : Model Xo c β) (Y' 
 
 end Dominates
 
+/- English proof (translation)
+Take `⟨⟨_, _⟩, -, hfr⟩` from `hβ`. Use `letI := β.toAlgebra`. Use `letI := b.toAlgebra`. Establish `hb' : ∀ x, β' (b x) = β x` using `fun x => congrArg (fun f : O →+* F => f x) hb`. Establish `hinj : Function.Injective β` using `IsFractionRing.injective O F`.
+
+Establish `: IsDomain O'` using `hβ'.isDomain β'`. Establish `: FaithfulSMul O O'` using `(faithfulSMul_iff_algebraMap_injective O O').2 fun x y h => hinj (by rw [← hb', ← hb']; exact congrArg β' h)`. Establish `: Module.Flat O O'` using `inferInstance`. Establish `: Algebra.IsEpi O O'` using `(Algebra.isEpi_iff_forall_one_tmul_eq O O').2 fun x => by`. Take `⟨y, a, ha, hx⟩` from `IsFractionRing.div_surjective (A := O) (β' x)`.
+
+Establish `ha0 : β a ≠ 0` using `fun h => nonZeroDivisors.ne_zero ha (hinj (h.trans (map_zero _).symm))`. Establish `e : a • x = y • (1 : O')` using `hβ' (by`. Express the relevant statement in the definitionally equal form `β' (b a * x) = β' (b y * 1)`. Rewrite using `[_root_.mul_one, map_mul, hb', hb', ← hx]`. Conclude with `mul_div_cancel₀ _ ha0)`.
+
+Use `Module.Flat.isSMulRegular_of_nonZeroDivisors (M := TensorProduct O O' O') ha ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `a • _ = a • _`. Rewrite using `[← TensorProduct.tmul_smul, TensorProduct.smul_tmul', e, TensorProduct.smul_tmul]`. Establish `: Epi (CommRingCat.ofHom b)` using `CommRingCat.epi_iff_epi.2 this`. Conclude with `inferInstanceAs (Mono (Scheme.Spec.map (CommRingCat.ofHom b).op))`.
+-/
 theorem mono_spMap_of_overring {O O' F : Type} [CommRing O] [CommRing O'] [Field F] {β : O →+* F} {β' : O' →+* F}
     (hβ : IsDedFrac β) (hβ' : Function.Injective β') (b : O →+* O') (hb : β'.comp b = β) : Mono (spMap b) := by
   obtain ⟨⟨_, _⟩, -, hfr⟩ := hβ
@@ -77,6 +86,11 @@ section Dense
 
 variable (Y : Model Xo c β)
 
+/- English proof (translation)
+Take `⟨⟨_, _⟩, -, hfr⟩` from `h`. Use `letI := β.toAlgebra`. Take `⟨h₁, -, h₂, h₃⟩` from `GlobalTheory.genericPart_dense_proOpen O c.F Y.X _ Y.s Y.jQ Y.flat Y.proj Y.jQ_open Y.jQ_dense`. Establish `: ∀ x : Y.X, _root_.IsReduced (Y.X.presheaf.stalk x)` using `fun x ↦`. Use `(Y.normal x).1` as an intermediate fact.
+
+Use `inferInstance`. Conclude with `⟨h₁, isReduced_of_isReduced_stalk Y.X, h₂, h₃⟩`.
+-/
 theorem densePart (h : IsDedFrac β) : IsLocallyNoetherian Y.X ∧ IsReduced Y.X ∧ Y.X.IsSeparated ∧
     IsPreimmersion Y.j ∧ Flat Y.j ∧ IsDominant Y.j ∧ QuasiCompact Y.j := by
   obtain ⟨⟨_, _⟩, -, hfr⟩ := h
@@ -88,10 +102,20 @@ theorem densePart (h : IsDedFrac β) : IsLocallyNoetherian Y.X ∧ IsReduced Y.X
     inferInstance
   exact ⟨h₁, isReduced_of_isReduced_stalk Y.X, h₂, h₃⟩
 
+/- English proof (translation)
+Take `⟨-, _, _, -, -, _, -⟩` from `densePart Y h`. Conclude with `ext_of_isDominant Y.j e`.
+-/
 theorem hom_ext_j (h : IsDedFrac β) {f g : Y.X ⟶ Y.X} (e : Y.j ≫ f = Y.j ≫ g) : f = g := by
   obtain ⟨-, _, _, -, -, _, -⟩ := densePart Y h
   exact ext_of_isDominant Y.j e
 
+/- English proof (translation)
+Take `⟨-, _, _, h₁, h₂, h₃, h₄⟩` from `densePart Y h`. Use `Y.t.semi.smooth` as an intermediate fact. Use `Y.t.semi.separated` as an intermediate fact. Establish `: IsReduced Y.t.G.left` using `GlobalTheory.isReduced_of_smooth_of_isReduced Y.t.G.hom`. Establish `: Y.t.G.left.IsSeparated` using `⟨by rw [← terminal.comp_from Y.t.G.hom]; infer_instance⟩`.
+
+Use `(GlobalTheory.densePart_basic _ _ Y.j h₁ h₂ h₃ h₄).2.2.2 _ Y.t.G.hom inferInstance` as an intermediate fact. Establish `p : IsPullback Y.m.φ Y.oF.t.G.hom Y.t.G.hom Y.j` using `Y.m.cart.1`. Establish `: IsDominant Y.m.φ`. Rewrite using `[← p.isoPullback_hom_fst]`. Use `infer_instance`.
+
+Conclude with `ext_of_isDominant Y.m.φ e`.
+-/
 theorem hom_ext_φ (h : IsDedFrac β) {f g : Y.t.G.left ⟶ Y.t.G.left} (e : Y.m.φ ≫ f = Y.m.φ ≫ g) : f = g := by
   obtain ⟨-, _, _, h₁, h₂, h₃, h₄⟩ := densePart Y h
   have := Y.t.semi.smooth
@@ -119,6 +143,9 @@ section Algebra
 
 open IndefiniteRowSideFullHecke.LevelActionTransitions
 
+/- English proof (translation)
+Use `D.proj` as an intermediate fact. Take `⟨f, hf⟩` from `Module.projective_lifting_property (nLa D n).mkQ (u ∘ₗ (nLa D n).mkQ) (nLa D n).mkQ_surjective`. Conclude with `⟨f, fun a => (LinearMap.congr_fun hf a).symm⟩`.
+-/
 theorem exists_lift (n : ℕ+) (u : LaMod D n →ₗ[𝓞 E] LaMod D n) :
     ∃ f : D.La →ₗ[𝓞 E] D.La, ∀ a, u (cls D n a) = cls D n (f a) := by
   have := D.proj
@@ -133,6 +160,9 @@ open IndefiniteRowSideFullHecke.LevelActionTransitions (KMax Sends FixesLevel mo
 
 variable (Y : Model Xo c β)
 
+/- English proof (translation)
+The claim follows from `have := Xo.smooth have : Smooth Xo.s := SmoothOfRelativeDimension.smooth D.dim Xo.s have h := isReduced_isNormalScheme_isLocallyNoetherian_of_smooth_over_field _ _ (pullback.snd Xo.s (spMap (IntermediateField.inclusion c.le).toRingHom)) inferInstance ⟨h.1, h.2.2⟩`.
+-/
 theorem isReduced_XF (Xo : Moduli D l) (c : Coeff l) : IsReduced (Xo.XF c) ∧ IsLocallyNoetherian (Xo.XF c) :=
   have := Xo.smooth
   have : Smooth Xo.s := SmoothOfRelativeDimension.smooth D.dim Xo.s
@@ -140,10 +170,20 @@ theorem isReduced_XF (Xo : Moduli D l) (c : Coeff l) : IsReduced (Xo.XF c) ∧ I
     (pullback.snd Xo.s (spMap (IntermediateField.inclusion c.le).toRingHom)) inferInstance
   ⟨h.1, h.2.2⟩
 
+/- English proof (translation)
+Rewrite using `[pullback.condition, ← Category.assoc, hr]`.
+-/
 theorem comp_over {r : Xo.XF c ⟶ Xo.XF c} (hr : r ≫ pullback.snd _ _ = pullback.snd _ _) :
     r ≫ pullback.fst _ _ ≫ Xo.s = pullback.fst _ _ ≫ Xo.s := by
   rw [pullback.condition, ← Category.assoc, hr]
 
+/- English proof (translation)
+Set `o` to `objOfSABMap Y.oF ν`. Establish `e₁ : ∀ a, (o.eta a).left ≫ ν.φ = r ≫ (Y.oF.eta a).left` using `(objMapOfSABMap Y.oF ν).eta`. Establish `e₂ : ∀ a, (o.etaA a).left ≫ ν.φ = r ≫ (Y.oF.etaA a).left` using `(objMapOfSABMap Y.oF ν).etaA`. Establish `e₁' : ∀ a, (o.eta a).left ≫ ν'.φ = r' ≫ (Y.oF.eta a).left` using `fun a => by`. Take `⟨x, h, h'⟩` from `hM a`.
+
+Take `rfl` from `sec_eq_secPull ν h`. Conclude with `h'`. Establish `e₂' : ∀ a, (o.etaA a).left ≫ ν'.φ = r' ≫ (Y.oF.etaA a).left` using `fun a => by`. Take `⟨x, h, h'⟩` from `hA a`. Take `rfl` from `sec_eq_secPull ν h`.
+
+Conclude with `h'`. Establish `key : ∀ {q : Xo.XF c ⟶ Xo.XF c} (n : SABMap o.t Y.oF.t q), (∀ a, (o.eta a).left ≫ n.φ = q ≫ (Y.oF.eta a).left) → (∀ a, (o.etaA a).left ≫ n.φ = q ≫ (Y.oF.etaA a).left) → Nonempty (ObjMap o Xo.univ (q ≫ pullback.fst _ _))` using `fun n h₁ h₂ => (ObjComp.objMap_comp Y.m0 (⟨n, h₁, h₂⟩ : ObjMap o Y.oF _)).nonempty`. Establish `hf : r ≫ pullback.fst _ _ = r' ≫ pullback.fst _ _` using `(Xo.rep _ _ (isReduced_XF Xo c).1 o).unique ⟨Category.assoc _ _ _, key ν e₁ e₂⟩ ⟨by rw [Category.assoc, comp_over hr', comp_over hr], key ν' e₁' e₂'⟩`. Take `rfl : r = r'` from `pullback.hom_ext hf (hr.trans hr'.symm)`. Conclude with `⟨rfl, obj_rigid_closed abelianSchemeLaws_all.1 E H D l _ _ _ _ _ _ _ _ Y.oF o r (Or.inl (isReduced_XF Xo c).1) ν ν' fun a => ⟨_, e₁ a, e₁' a⟩⟩`.
+-/
 theorem move_unique {r r' : Xo.XF c ⟶ Xo.XF c} (ν : SABMap Y.oF.t Y.oF.t r) (ν' : SABMap Y.oF.t Y.oF.t r')
     (hr : r ≫ pullback.snd _ _ = pullback.snd _ _) (hr' : r' ≫ pullback.snd _ _ = pullback.snd _ _)
     (hM : ∀ a, ∃ x : 𝟙_ (Over (Xo.XF c)) ⟶ Y.oF.t.G,
@@ -178,6 +218,9 @@ def Moves (k : KMax D) (r : Xo.XF c ⟶ Xo.XF c) (ν : SABMap Y.oF.t Y.oF.t r) :
 
 variable {Y}
 
+/- English proof (translation)
+The claim follows from `move_unique Y ν ν' h.1 h'.1 (fun a => (exists_sends l k a).elim fun b hb => ⟨_, (h.2 a b hb).1, (h'.2 a b hb).1⟩) (fun a => (exists_sends l k a).elim fun b hb => ⟨_, (h.2 a b hb).2, (h'.2 a b hb).2⟩)`.
+-/
 theorem Moves.unique {k : KMax D} {r r' : Xo.XF c ⟶ Xo.XF c} {ν : SABMap Y.oF.t Y.oF.t r}
     {ν' : SABMap Y.oF.t Y.oF.t r'} (h : Moves Y k r ν) (h' : Moves Y k r' ν') : r = r' ∧ ν.φ = ν'.φ :=
   move_unique Y ν ν' h.1 h'.1
@@ -199,6 +242,13 @@ def DescendsTo (Y : Model Xo c β) {XK : Scheme.{0}} (GK : Over XK) [GrpObj GK] 
     IsGrpPullback GQ Y.t.G (pullback.fst _ _) φ₁ ∧ IsGrpPullback GQ GK e φ₂ ∧
     ψ ≫ φ₁ = Y.m.φ ∧ ψ ≫ GQ.hom = Y.oF.t.G.hom ≫ Y.jQ ∧ ψ ≫ φ₂ = Y.m0.toSABMap.φ ≫ φK
 
+/- English proof (translation)
+Take `⟨-, -, hfr⟩` from `hβ`. Set `` to `β.toAlgebra`. Establish `hb : IsPreimmersion (spMap β)` using `IsPreimmersion.of_isLocalization (R := CommRingCat.of O) (S := c.F) (nonZeroDivisors O)`. Establish `hbf : Flat (spMap β)`. Rewrite using `[Flat.SpecMap_iff]`.
+
+Conclude with `RingHom.flat_algebraMap_iff.mpr (IsLocalization.flat c.F (nonZeroDivisors O))`. Establish `: IsPreimmersion (pullback.fst Y.s (spMap β))` using `MorphismProperty.of_isPullback (P := @IsPreimmersion) (IsPullback.of_hasPullback _ _).flip hb`. Use `SchemeWords.isProper_of_isProjOver Y.proj` as an intermediate fact. Use `⟨fun x => ?_, LocallyOfFiniteType.isLocallyNoetherian (pullback.snd Y.s (spMap β))⟩` and prove the remaining obligations. Use `isIso_stalkMap_of_flat_of_surjectiveOnStalks (pullback.fst Y.s (spMap β)) x` as an intermediate fact.
+
+Establish `i` using `(asIso ((pullback.fst Y.s (spMap β)).stalkMap x)).commRingCatIsoToRingEquiv`. Take `⟨_, _⟩` from `Y.normal (pullback.fst Y.s (spMap β) x)`. Conclude with `⟨i.symm.toMulEquiv.isDomain _, IsIntegrallyClosed.of_equiv i⟩`.
+-/
 theorem normal_genericFibre (Y : Model Xo c β) (hβ : IsDedFrac β) :
     Geo.Tor.IsNormalScheme (pullback Y.s (spMap β)) ∧ IsLocallyNoetherian (pullback Y.s (spMap β)) := by
   obtain ⟨-, -, hfr⟩ := hβ
@@ -217,6 +267,9 @@ theorem normal_genericFibre (Y : Model Xo c β) (hβ : IsDedFrac β) :
   obtain ⟨_, _⟩ := Y.normal (pullback.fst Y.s (spMap β) x)
   exact ⟨i.symm.toMulEquiv.isDomain _, IsIntegrallyClosed.of_equiv i⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(CoeffRings.coeff_isDedFrac E H l c).1, fun p W hp hW => ((CoeffRings.coeff_isDedFrac E H l c).2.2.2 p W hp hW).1⟩`.
+-/
 theorem isDedFrac_in_use (c : Coeff l) : IsDedFrac (algebraMap (𝓞 c.F) c.F) ∧
     ∀ (p : ℕ) (W : ValuationSubring ℂ), p.Prime → (p : ℂ) ∈ W.nonunits → IsDedFrac (c.V W).subtype :=
   ⟨(CoeffRings.coeff_isDedFrac E H l c).1, fun p W hp hW => ((CoeffRings.coeff_isDedFrac E H l c).2.2.2 p W hp hW).1⟩

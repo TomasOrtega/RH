@@ -3,6 +3,9 @@ import Formalism.HermitianCurvature.HermitianCurvatureProofs.ProperDomP
 
 namespace Formalism.FourierDecayAlt.P
 
+/- English proof (translation)
+The claim follows from `PartialBesselWordSmoothness.wordSmooth_of proper_left_variables_domain`.
+-/
 theorem word_smooth_partial_bessel : CutHB.WordSmooth := PartialBesselWordSmoothness.wordSmooth_of proper_left_variables_domain
 
 end Formalism.FourierDecayAlt.P

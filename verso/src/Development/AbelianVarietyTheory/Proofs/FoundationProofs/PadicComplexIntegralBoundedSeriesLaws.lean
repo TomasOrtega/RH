@@ -12,15 +12,26 @@ namespace GlobalTheory.EvenTheta.SerRing
 
 variable {K : Type*} [NormedField K] [IsUltrametricDist K]
 
+/- English proof (translation)
+Use `IsUltrametricDist.norm_add_le_max x (-y)` as an intermediate fact. Rewrite `this` using `[norm_neg, ← sub_eq_add_neg]`. Then use the resulting hypothesis.
+-/
 theorem norm_sub_le_max' (x y : K) : ‖x - y‖ ≤ max ‖x‖ ‖y‖ := by
   have := IsUltrametricDist.norm_add_le_max x (-y)
   rwa [norm_neg, ← sub_eq_add_neg] at this
 
+/- English proof (translation)
+Use `finsum_induction (p := fun x => ‖x‖ ≤ B) (by simpa using hB) (fun x y hx hy => ?_) h` and prove the remaining obligations. Conclude with `(IsUltrametricDist.norm_add_le_max x y).trans (max_le hx hy)`.
+-/
 theorem norm_finsum_le {ι : Type*} (F : ι → K) {B : ℝ} (hB : 0 ≤ B) (h : ∀ i, ‖F i‖ ≤ B) :
     ‖∑ᶠ i, F i‖ ≤ B := by
   refine finsum_induction (p := fun x => ‖x‖ ≤ B) (by simpa using hB) (fun x y hx hy => ?_) h
   exact (IsUltrametricDist.norm_add_le_max x y).trans (max_le hx hy)
 
+/- English proof (translation)
+Establish `hA : 0 ≤ A` using `(norm_nonneg _).trans (hf 0)`. Establish `hB : 0 ≤ B` using `(norm_nonneg _).trans (hg 0)`. Rewrite using `[PowerSeries.coeff_mul]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (mul_nonneg hA hB) fun x _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`.
+
+Conclude with `mul_le_mul (hf _) (hg _) (norm_nonneg _) hA`.
+-/
 theorem norm_coeff_mul_le (f g : PowerSeries K) (A B : ℝ) (hf : ∀ n, ‖PowerSeries.coeff n f‖ ≤ A)
     (hg : ∀ n, ‖PowerSeries.coeff n g‖ ≤ B) (n : ℕ) : ‖PowerSeries.coeff n (f * g)‖ ≤ A * B := by
   have hA : 0 ≤ A := (norm_nonneg _).trans (hf 0)
@@ -30,28 +41,50 @@ theorem norm_coeff_mul_le (f g : PowerSeries K) (A B : ℝ) (hf : ∀ n, ‖Powe
   rw [norm_mul]
   exact mul_le_mul (hf _) (hg _) (norm_nonneg _) hA
 
+/- English proof (translation)
+Rewrite using `[map_add]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le_max (hf n) (hg n))`.
+-/
 theorem norm_coeff_add_le (f g : PowerSeries K) (A B : ℝ) (hf : ∀ n, ‖PowerSeries.coeff n f‖ ≤ A)
     (hg : ∀ n, ‖PowerSeries.coeff n g‖ ≤ B) (n : ℕ) : ‖PowerSeries.coeff n (f + g)‖ ≤ max A B := by
   rw [map_add]
   exact (IsUltrametricDist.norm_add_le_max _ _).trans (max_le_max (hf n) (hg n))
 
+/- English proof (translation)
+Rewrite using `[map_sub]`. Conclude with `(norm_sub_le_max' _ _).trans (max_le_max (hf n) (hg n))`.
+-/
 theorem norm_coeff_sub_le (f g : PowerSeries K) (A B : ℝ) (hf : ∀ n, ‖PowerSeries.coeff n f‖ ≤ A)
     (hg : ∀ n, ‖PowerSeries.coeff n g‖ ≤ B) (n : ℕ) : ‖PowerSeries.coeff n (f - g)‖ ≤ max A B := by
   rw [map_sub]
   exact (norm_sub_le_max' _ _).trans (max_le_max (hf n) (hg n))
 
+/- English proof (translation)
+Rewrite using `[PowerSeries.coeff_C]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem norm_coeff_C_le (c : K) (n : ℕ) : ‖PowerSeries.coeff n (PowerSeries.C c)‖ ≤ ‖c‖ := by
   rw [PowerSeries.coeff_C]
   split_ifs <;> simp
 
+/- English proof (translation)
+Introduce `n` and use `by simpa using norm_coeff_mul_le f g 1 1 hf hg n`.
+-/
 theorem intSer_mul {f g : PowerSeries K} (hf : IntSer f) (hg : IntSer g) : IntSer (f * g) := fun n => by
   simpa using norm_coeff_mul_le f g 1 1 hf hg n
 
+/- English proof (translation)
+Proceed by induction on `d with`. Consider the case `zero => intro n`. Simplify using `using norm_coeff_C_le (1 : K) n`. Consider the case `succ d ih => rw [pow_succ]`. Conclude with `intSer_mul ih hf`.
+-/
 theorem intSer_pow {f : PowerSeries K} (hf : IntSer f) (d : ℕ) : IntSer (f ^ d) := by
   induction d with
   | zero => intro n; simpa using norm_coeff_C_le (1 : K) n
   | succ d ih => rw [pow_succ]; exact intSer_mul ih hf
 
+/- English proof (translation)
+Introduce `n`. Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Rewrite using `[PowerSeries.coeff_inv]`. Use `split_ifs with hn`.
+
+Simplify using `[h0]`. Rewrite using `[norm_mul, norm_neg, norm_inv, h0, inv_one, one_mul]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one fun x _ => ?_` and prove the remaining obligations. Use `split_ifs with hx`. Rewrite using `[norm_mul]`.
+
+Conclude with `mul_le_one₀ (hf _) (norm_nonneg _) (ih _ hx)`. Simplify using the standard rewrite rules.
+-/
 theorem intSer_inv {f : PowerSeries K} (hf : IntSer f) (h0 : ‖PowerSeries.constantCoeff f‖ = 1) :
     IntSer f⁻¹ := by
   intro n
@@ -67,6 +100,9 @@ theorem intSer_inv {f : PowerSeries K} (hf : IntSer f) (h0 : ‖PowerSeries.cons
         exact mul_le_one₀ (hf _) (norm_nonneg _) (ih _ hx)
       · simp
 
+/- English proof (translation)
+Establish `hB : 0 ≤ B` using `(norm_nonneg _).trans (hf 0)`. Rewrite using `[PowerSeries.coeff_subst' (PowerSeries.HasSubst.of_constantCoeff_zero' h0)]`. Use `norm_finsum_le _ hB fun d => ?_` and prove the remaining obligations. Rewrite using `[smul_eq_mul, norm_mul]`. Simplify using `using mul_le_mul (hf d) (intSer_pow hh d n) (norm_nonneg _) hB`.
+-/
 theorem norm_coeff_subst_le (f h : PowerSeries K) (B : ℝ) (hf : ∀ n, ‖PowerSeries.coeff n f‖ ≤ B)
     (hh : IntSer h) (h0 : PowerSeries.constantCoeff h = 0) (n : ℕ) :
     ‖PowerSeries.coeff n (PowerSeries.subst h f : PowerSeries K)‖ ≤ B := by
@@ -76,6 +112,9 @@ theorem norm_coeff_subst_le (f h : PowerSeries K) (B : ℝ) (hf : ∀ n, ‖Powe
   rw [smul_eq_mul, norm_mul]
   simpa using mul_le_mul (hf d) (intSer_pow hh d n) (norm_nonneg _) hB
 
+/- English proof (translation)
+Introduce `p _`. Use `⟨fun f g hf hg => ⟨fun n => ?_, fun n => ?_, intSer_mul hf hg⟩, fun f g ⟨A, hf⟩ ⟨B, hg⟩ => ⟨⟨_, norm_coeff_add_le f g A B hf hg⟩, ⟨_, norm_coeff_sub_le f g A B hf hg⟩, ⟨_, norm_coeff_mul_le f g A B hf hg⟩⟩, fun c => ⟨⟨_, norm_coeff_C_le c⟩, fun hc n => (norm_coeff_C_le c n).trans …` and prove the remaining obligations. Simplify using `using norm_coeff_add_le f g 1 1 hf hg n`. Simplify using `using norm_coeff_sub_le f g 1 1 hf hg n`. Apply the tactic sequence `rw [PowerSeries.coeff_X] split_ifs <;> simp`.
+-/
 theorem series_ring_laws : ∀ (p : ℕ) [Fact p.Prime], (∀ f g : PowerSeries ℂ_[p], IntSer f → IntSer g → IntSer (f + g) ∧ IntSer (f - g) ∧ IntSer (f * g)) ∧ (∀ f g : PowerSeries ℂ_[p], BddSer f → BddSer g → BddSer (f + g) ∧ BddSer (f - g) ∧ BddSer (f * g)) ∧ (∀ c : ℂ_[p], BddSer (PowerSeries.C c) ∧ (‖c‖ ≤ 1 → IntSer (PowerSeries.C c))) ∧ IntSer (PowerSeries.X : PowerSeries ℂ_[p]) ∧ (∀ f : PowerSeries ℂ_[p], IntSer f → ‖PowerSeries.constantCoeff f‖ = 1 → IntSer f⁻¹) ∧ (∀ (f h : PowerSeries ℂ_[p]) (B : ℝ), (∀ n, ‖PowerSeries.coeff n f‖ ≤ B) → IntSer h → PowerSeries.constantCoeff h = 0 → ∀ n, ‖PowerSeries.coeff n (PowerSeries.subst h f : PowerSeries ℂ_[p])‖ ≤ B) ∧ ∀ (f g : PowerSeries ℂ_[p]) (A B : ℝ), (∀ n, ‖PowerSeries.coeff n f‖ ≤ A) → (∀ n, ‖PowerSeries.coeff n g‖ ≤ B) → ∀ n, ‖PowerSeries.coeff n (f * g)‖ ≤ A * B := by
   intro p _
   refine ⟨fun f g hf hg => ⟨fun n => ?_, fun n => ?_, intSer_mul hf hg⟩,

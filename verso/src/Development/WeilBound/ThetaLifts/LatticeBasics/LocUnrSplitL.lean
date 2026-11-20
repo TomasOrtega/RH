@@ -18,6 +18,23 @@ local notation "𝟘" => (0 : Matrix (Fin n) (Fin n) k)
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {O : Subring k} {ϖ : kˣ}
   {nrm : AbsoluteValue k ℝ} {q n : ℕ}
 
+/- English proof (translation)
+Establish `hq : (0 : ℝ) < q` using `by exact_mod_cast zero_lt_one.trans (GlobalTheory.CompanionTheory.QL.NormalisedValue.main h).1`. Establish `hϖ : A ϖ ≠ 0` using `left_ne_zero_of_mul_eq_one (b := A ϖ⁻¹) (by rw [← map_mul, mul_inv_cancel, map_one])`. Set `a : Fin n → ℝ` to `fun i => ((n : ℝ) - 1) / 2 - (i : ℕ)`. Establish `e : ∀ i : Fin n, (q : ℝ) ^ a i * (q : ℝ) ^ (((n : ℝ) - 1) / 2 - 0) = (q : ℝ) ^ (n - 1 - i : ℕ)` using `fun i => by`. Use `i.2` as an intermediate fact.
+
+Rewrite using `[← Real.rpow_add hq, ← Real.rpow_natCast, Nat.cast_sub (by omega), Nat.cast_sub (by omega)]`. Use `congr 1`. Simplify using `only [a]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `GlobalTheory.CompanionTheory.ZetaSph.zeta_spherical h (fun i x => if hx : x = 0 then 0 else A (Units.mk0 x hx) * (nrm x ^ (-a i) : ℝ)) (fun i => A ϖ * ((q : ℝ) ^ a i : ℝ)) ⟨fun i => mul_ne_zero hϖ (by exact_mod_cast (Real.rpow_pos_of_pos hq _).ne'), fun i x m hx => ?_⟩ (fun g => …` as an intermediate fact. Simplify using `only [Real.rpow_zero, Complex.ofReal_one, mul_one] at this`. Use `⟨this.1, this.2.trans ?_⟩` and prove the remaining obligations. Rewrite using `[← Finset.prod_range_reflect, ← Fin.prod_univ_eq_prod_range fun i => (1 - A ϖ * (q : ℂ) ^ (n - 1 - i))⁻¹]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[mul_assoc, ← Complex.ofReal_mul, e]`. Simplify using the standard rewrite rules. Establish `h0 : x ≠ 0` using `fun h0 => by rw [h0, map_zero] at hx; exact (zpow_pos hq _).ne hx`. Establish `: A (Units.mk0 x h0 * (ϖ ^ m)⁻¹) = 1` using `hA _ (by`. Simplify using `only [Units.val_mul, Units.val_mk0, Units.val_inv_eq_inv_val, Units.val_zpow_eq_zpow_val, map_mul, map_inv₀, map_zpow₀, hx, h.nrm_pi, _root_.inv_zpow', ne_eq]`.
+
+Conclude with `mul_inv_cancel₀ (zpow_pos hq _).ne')`. Rewrite `this` using `[map_mul, map_inv, map_zpow, mul_inv_eq_one₀ (zpow_ne_zero _ hϖ)]`. Use `beta_reduce`. Rewrite using `[dif_neg h0, this, mul_zpow, hx, ← Complex.ofReal_zpow, ← Real.rpow_intCast, ← Real.rpow_intCast, ← Real.rpow_mul hq.le, ← Real.rpow_mul hq.le]`. Use `congr 3`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hd : b.1.det = ∏ i, b.1 i i` using `det_of_upperTriangular hb`. Establish `h0 : ∀ i, b.1 i i ≠ 0` using `fun i => Finset.prod_ne_zero_iff.1 (hd.symm.trans_ne b.det_ne_zero) i (Finset.mem_univ _)`. Establish `: GeneralLinearGroup.det b = ∏ i, Units.mk0 _ (h0 i)` using `Units.ext (by simp [hd])`.
+
+Use `beta_reduce`. Rewrite using `[map_mul, map_mul, hA (GeneralLinearGroup.det κ) ((GlobalTheory.CompanionTheory.QLDet.mem_GLint_iff h n κ).1 hκ).2, mul_one, this, map_prod]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[dif_neg (h0 i), mul_assoc, ← Complex.ofReal_mul, ← Real.rpow_add (nrm.pos (h0 i))]`. Simplify using `[a]`.
+
+Rewrite using `[norm_mul, Complex.norm_real, Real.norm_of_nonneg (Real.rpow_nonneg hq.le _), mul_assoc, e]`. Conclude with `hb _ (by have := i.2; omega)`.
+-/
 theorem zeta (h : LF O (ϖ : k) nrm q) {A : kˣ →* ℂ} (hA : ∀ u : kˣ, nrm u = 1 → A u = 1)
     (hb : ∀ i < n, ‖A ϖ‖ * (q : ℝ) ^ i < 1) (κ : Measure (GL (Fin n) k)) [hκ : κ.IsMulLeftInvariant]
     (h1 : κ (GLint O n : Set (GL (Fin n) k)) = 1) :
@@ -63,6 +80,23 @@ theorem zeta (h : LF O (ϖ : k) nrm q) {A : kˣ →* ℂ} (hA : ∀ u : kˣ, nrm
 
 def IsGcd (O : Subring k) (g t : GL (Fin n) k) : Prop := ∀ a, a ∈ Mint O n ∧ g⁻¹ * a ∈ Mint O n ↔ t⁻¹ * a ∈ Mint O n
 
+/- English proof (translation)
+Take `⟨-, -, _, _, _, hM, -⟩` from `GlobalTheory.CompanionTheory.QLTop.gl_topology h n`. Take `⟨-, _⟩` from `(GlobalTheory.CompanionTheory.QL.HaarGL.exists_haar_unimodular h n).2 μ inferInstance`. Take `⟨iA, zA⟩` from `zeta h hA bA μ h1`. Take `⟨iB, zB⟩` from `zeta h hB bB μ h1`. Take `⟨-, zC⟩` from `zeta h (A := A * B) (fun u hu => by simp [hA u hu, hB u hu]) bC μ h1`.
+
+Rewrite `zA`, `zB`, `zC` using `[← integral_indicator hM.measurableSet]`. Rewrite `iA`, `iB` using `[← integrable_indicator_iff hM.measurableSet]`. Use `set a := (Mint O n).indicator fun g => A (GeneralLinearGroup.det g)`. Use `set b := (Mint O n).indicator fun g => B (GeneralLinearGroup.det g)`. Use `set Z := ∏ i ∈ Finset.range n, (1 - (A * B) ϖ * (q : ℂ) ^ i)⁻¹`.
+
+Establish `hZ : Z ≠ 0` using `Finset.prod_ne_zero_iff.2 fun i hi => inv_ne_zero (sub_ne_zero.2 fun e => by`. Use `bC i (Finset.mem_range.1 hi)` as an intermediate fact. Rewrite `this` using `[← Complex.norm_natCast q, ← norm_pow, ← norm_mul, ← e, norm_one]`. Conclude with `this.false)`. Establish `key : ∀ g, ∫ x, a x * b (g⁻¹ * x) ∂μ = φ g * Z` using `fun g => by`.
+
+Take `⟨t, ht, e⟩` from `hφ g`. Rewrite using `[← zC, ← integral_mul_left_eq_self _ t, ← integral_const_mul]`. Use `congr 1`. Use extensionality with `x`. Use `ht (t * x)` as an intermediate fact.
+
+Rewrite `this` using `[inv_mul_cancel_left]`. Distinguish the cases in `hx : x ∈ Mint O n`. Take `⟨h2, h3⟩` from `this.2 hx`. Simplify using `only [a, b, Set.indicator_of_mem, hx, h2, h3, e, map_mul, MonoidHom.mul_apply]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[Set.indicator_of_notMem hx, mul_zero]`. Distinguish the cases in `h2 : t * x ∈ Mint O n`. Rewrite using `[show b _ = 0 from Set.indicator_of_notMem (fun h3 => hx (this.1 ⟨h2, h3⟩)) _, mul_zero]`. Rewrite using `[show a _ = 0 from Set.indicator_of_notMem h2 _, zero_mul]`. Set `e : GL (Fin n) k × GL (Fin n) k ≃ᵐ GL (Fin n) k × GL (Fin n) k` to `MeasurableEquiv.shearMulRight _`.
+
+Establish `he : MeasurePreserving e (μ.prod μ) (μ.prod μ)` using `measurePreserving_prod_mul μ μ`. Set `H : GL (Fin n) k × GL (Fin n) k → ℂ` to `fun z => a z.1 * b (z.2⁻¹ * z.1)`. Establish `hH : H ∘ e = fun z => a z.1 * b z.2⁻¹` using `by ext z; simp [H, e, MeasurableEquiv.shearMulRight]`. Establish `iH : Integrable H (μ.prod μ)` using `(he.integrable_comp_emb e.measurableEmbedding).1 (hH ▸ iA.mul_prod iB.comp_inv)`. Establish `i2 : Integrable (fun g => φ g * Z) μ` using `by simpa only [H, key] using iH.integral_prod_right`.
+
+Use `⟨(integrable_mul_const_iff hZ.isUnit _).1 i2, ?_⟩` and prove the remaining obligations. Rewrite using `[← integral_mul_const, ← zA, ← zB, ← integral_inv_eq_self b, ← integral_prod_mul, ← hH]`. Use `Eq.trans ?_ (he.integral_comp' H).symm` and prove the remaining obligations. Rewrite using `[integral_prod_symm _ iH]`. Simplify using `only [H, key]`.
+-/
 theorem doubling (h : LF O (ϖ : k) nrm q) {A B : kˣ →* ℂ} (hA : ∀ u : kˣ, nrm u = 1 → A u = 1)
     (hB : ∀ u : kˣ, nrm u = 1 → B u = 1) (bA : ∀ i < n, ‖A ϖ‖ * (q : ℝ) ^ i < 1) (bB : ∀ i < n, ‖B ϖ‖ * (q : ℝ) ^ i < 1)
     (bC : ∀ i < n, ‖(A * B) ϖ‖ * (q : ℝ) ^ i < 1) (μ : Measure (GL (Fin n) k)) [μ.IsHaarMeasure]
@@ -110,6 +144,25 @@ theorem doubling (h : LF O (ϖ : k) nrm q) {A B : kˣ →* ℂ} (hA : ∀ u : k�
   rw [integral_prod_symm _ iH]
   simp only [H, key]
 
+/- English proof (translation)
+Set `r` to `(reindexAlgEquiv k k (finSumFinEquiv (m := n) (n := n))).toMulEquiv`. Set `N : GL (Fin n ⊕ Fin n) k` to `⟨fromBlocks g.1 0 (-g.1) 1, fromBlocks (g⁻¹).1 0 1 1, by simp [fromBlocks_multiply], by simp [fromBlocks_multiply]⟩`. Take `⟨b', hb, κ', hκ, e⟩` from `GlobalTheory.CompanionTheory.QL.Iwasawa.exists_upper_mul_int h _ (Units.mapEquiv r N)`. Set `b` to `(Units.mapEquiv r).symm b'`. Set `c` to `(Units.mapEquiv r).symm κ'`.
+
+Establish `e' : N = b * c` using `by rw [← map_mul, ← e, MulEquiv.symm_apply_apply]`. Establish `c1 : ∀ i j, c.1 i j ∈ O` using `fun i j => hκ.1 _ _`. Establish `c2 : ∀ i j, (c⁻¹).1 i j ∈ O` using `fun i j => hκ.2 _ _`. Establish `b0 : b.1.toBlocks₂₁ = 0` using `Matrix.ext fun i j => hb (show finSumFinEquiv (.inl j) < finSumFinEquiv (.inr i) by`. Simplify using `[Fin.lt_def]`.
+
+Use the proof step `omega)`. Establish `bb : b.1 = fromBlocks b.1.toBlocks₁₁ b.1.toBlocks₁₂ 0 b.1.toBlocks₂₂` using `by rw [← b0, fromBlocks_toBlocks]`. Establish `ht : b.1.toBlocks₁₁.det ≠ 0` using `left_ne_zero_of_mul (b := b.1.toBlocks₂₂.det) (by rw [← det_fromBlocks_zero₂₁, ← bb]; exact GeneralLinearGroup.det_ne_zero b)`. Set `t : GL (Fin n) k` to `GeneralLinearGroup.mkOfDetNeZero _ ht`. Establish `key : (c⁻¹).1 * fromRows 𝟙 𝟘 = fromRows ((g⁻¹).1 * t.1) t.1`.
+
+Rewrite using `[show c⁻¹ = N⁻¹ * b by rw [e']; group, Units.val_mul, Matrix.mul_assoc, bb, fromBlocks_mul_fromRows]`. Conclude with `(fromBlocks_mul_fromRows _ _ _ _ _ _).trans (by simp; rfl)`. Set `C : GL (Fin n ⊕ Fin n) k` to `⟨fromBlocks 1 0 1 1, fromBlocks 1 0 (-1) 1, by simp [fromBlocks_multiply], by simp [fromBlocks_multiply]⟩`. Establish `o : ∀ i j : Fin n, (1 : Matrix (Fin n) (Fin n) k) i j ∈ O` using `fun i j => by`. Rewrite using `[one_apply]`.
+
+Use `split_ifs`. Use `exacts [O.one_mem, O.zero_mem]`. Establish `mul : ∀ {α β γ : Type} [Fintype β] (x : Matrix α β k) (y : Matrix β γ k), (∀ i j, x i j ∈ O) → (∀ i j, y i j ∈ O) → ∀ i j, (x * y) i j ∈ O` using `fun x y hx hy i j => O.sum_mem fun l _ => O.mul_mem (hx i l) (hy l j)`. Use `⟨t, C * c, mul _ _ ?_ c1, ?_, fun a => ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `(i | i) (j | j)`.
+
+Use `exacts [o i j, O.zero_mem, o i j, o i j]`. Rewrite using `[_root_.mul_inv_rev]`. Use `mul _ _ c2 ?_` and prove the remaining obligations. Introduce and unpack `(i | i) (j | j)`. Use `exacts [o i j, O.zero_mem, O.neg_mem (o i j), o i j]`.
+
+Establish `k2 : (c⁻¹).1 * fromRows (t⁻¹ * a).1 𝟘 = fromRows (g⁻¹ * a).1 a.1`. Use `congrArg (· * (t⁻¹ * a).1) key` as an intermediate fact. Simplify `this` using `only [Matrix.mul_assoc, fromRows_mul, Matrix.one_mul, Matrix.zero_mul, Units.val_mul, Units.mul_inv_cancel_left]`. Use `⟨fun ⟨h1, h2⟩ i j => ?_, fun h1 => ?_⟩` and prove the remaining obligations. Use `mul c.1 (fromRows (g⁻¹ * a).1 a.1) c1 (by rintro (i | i) j; exacts [h2 i j, h1 i j]) (.inl i) j` as an intermediate fact.
+
+Rewrite `this` using `[← k2, ← Matrix.mul_assoc, Units.mul_inv, Matrix.one_mul]`. Then use the resulting hypothesis. Use `mul _ (fromRows (t⁻¹ * a).1 𝟘) c2 (by rintro (i | i) j; exacts [h1 i j, O.zero_mem])` as an intermediate fact. Rewrite `this` using `[k2]`. Conclude with `⟨fun i j => this (.inr i) j, fun i j => this (.inl i) j⟩`. Rewrite using `[_root_.mul_inv_rev, Units.val_mul, Matrix.mul_assoc, ← key]`.
+
+Use `congr 1`. Conclude with `(fromBlocks_mul_fromRows _ _ _ _ _ _).trans (by simp)`.
+-/
 theorem exists_frame (h : LF O (ϖ : k) nrm q) (g : GL (Fin n) k) : ∃ (t : GL (Fin n) k) (κ : GL (Fin n ⊕ Fin n) k),
     (∀ i j, κ.1 i j ∈ O) ∧ (∀ i j, (κ⁻¹).1 i j ∈ O) ∧ IsGcd O g t ∧
       (κ⁻¹).1 * fromRows 𝟙 𝟙 = fromRows ((g⁻¹).1 * t.1) t.1 := by
@@ -157,6 +210,21 @@ theorem exists_frame (h : LF O (ϖ : k) nrm q) (g : GL (Fin n) k) : ∃ (t : GL 
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 
+/- English proof (translation)
+Take `⟨A, B, C, D, e⟩ : ∃ A B C D, p.1 = fromBlocks A B C D` from `⟨_, _, _, _, (fromBlocks_toBlocks _).symm⟩`. Rewrite `h` using `[e, fromBlocks_mul_fromRows, fromRows_mul]`. Simplify using `only [Matrix.mul_one, Matrix.one_mul, fromRows_ext_iff] at h`. Establish `hA : A = t.1 - B` using `eq_sub_of_add_eq h.1`. Establish `hC : C = t.1 - D` using `eq_sub_of_add_eq h.2`.
+
+Establish `d : p.1.det = t.1.det * (D - B).det`. Establish `: p.1 * fromBlocks 𝟙 𝟘 𝟙 𝟙 = fromBlocks 𝟙 𝟘 𝟙 𝟙 * fromBlocks t.1 B 0 (D - B)`. Simplify using `[e, fromBlocks_multiply, hA, hC]`. Simplify `congrArg det this` using `[det_fromBlocks_zero₂₁, det_fromBlocks_zero₁₂]`. Establish `hs : (D - B)ᵀ.det ≠ 0`.
+
+Rewrite using `[det_transpose]`. Conclude with `right_ne_zero_of_mul (d.symm.trans_ne (GeneralLinearGroup.det_ne_zero p))`. Set `s` to `GeneralLinearGroup.mkOfDetNeZero _ hs`. Establish `k1 : p.1ᵀ * fromRows 𝟙 (-𝟙) = fromRows 𝟙 (-𝟙) * s.1`. Rewrite using `[e, fromBlocks_transpose, fromBlocks_mul_fromRows, fromRows_mul, hA, hC]`.
+
+Express the relevant statement in the definitionally equal form `_ = fromRows (𝟙 * (D - B)ᵀ) (-𝟙 * (D - B)ᵀ)`. Apply the tactic sequence `congr 1 <;> simp [transpose_sub] <;> abel`. Establish `k2 : (p⁻¹).1ᵀ * fromRows 𝟙 (-𝟙) = fromRows 𝟙 (-𝟙) * (s⁻¹).1`. Use `congrArg (fun x => (p⁻¹).1ᵀ * x * (s⁻¹).1) k1` as an intermediate fact. Simplify using `only [← Matrix.mul_assoc, ← transpose_mul, Units.mul_inv, transpose_one, Matrix.one_mul] at this`.
+
+Rewrite using `[this, Matrix.mul_assoc, Units.mul_inv, Matrix.mul_one]`. Establish `k3 : J₂.1 * fromRows 𝟙 𝟙 = fromRows 𝟙 (-𝟙) * J.1` using `by rw [hJ, fromBlocks_mul_fromRows, fromRows_mul]; simp`. Use `⟨J⁻¹ * s⁻¹ * J, ?_, Units.ext ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_assoc, k3, ← Matrix.mul_assoc, Matrix.mul_assoc (J₂⁻¹).1, k2, Units.val_mul, Units.val_mul, ← Matrix.mul_assoc, ← Matrix.mul_assoc, ← Matrix.mul_assoc]`. Use `congr 2`.
+
+Use `congrArg (fun x => (J₂⁻¹).1 * x * (J⁻¹).1) k3` as an intermediate fact. Simplify using `only [← Matrix.mul_assoc, Units.inv_mul, Matrix.one_mul] at this`. Rewrite using `[this, Matrix.mul_assoc, Units.mul_inv, Matrix.mul_one]`. Use `GeneralLinearGroup.det_ne_zero t` as an intermediate fact. Use `GeneralLinearGroup.det_ne_zero J` as an intermediate fact.
+
+Rewrite `hs` using `[det_transpose]`. Simplify using `only [map_mul, map_inv, Units.val_mul, Units.val_inv_eq_inv_val, GeneralLinearGroup.val_det_apply, d]`. Rewrite using `[show s.1.det = (D - B).det from det_transpose _]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem exists_dual (J : GL (Fin n) k) {p J₂ : GL (Fin n ⊕ Fin n) k} (hJ : J₂.1 = fromBlocks J.1 0 0 (-J.1)) {t : GL (Fin n) k}
     (h : p.1 * fromRows 𝟙 𝟙 = fromRows 𝟙 𝟙 * t.1) : ∃ t' : GL (Fin n) k,
       (J₂⁻¹).1 * (p⁻¹).1ᵀ * J₂.1 * fromRows 𝟙 𝟙 = fromRows 𝟙 𝟙 * t'.1 ∧

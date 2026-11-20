@@ -11,6 +11,19 @@ open scoped ContDiff ComplexOrder Classical
 
 namespace GlobalTheory.MixDens
 
+/- English proof (translation)
+Introduce `d A M hA hM`. Establish `hf : ∀ f : Fin (d + 1) → ℂ, (∑ j, ∑ l, f j * M j l * starRingEnd ℂ (f l)).re = 0`. Introduce `f`. Simplify using `using hM ((WithLp.equiv 2 (Fin (d + 1) → ℂ)).symm f)`. Establish `hq : ∀ (a b : ℂ) (j l : Fin (d + 1)), (∑ k, ∑ m, (Pi.single j a + Pi.single l b : Fin (d + 1) → ℂ) k * M k m * starRingEnd ℂ ((Pi.single j a + Pi.single l b : Fin (d + 1) → ℂ) m)) = a * M j j * starRingEnd ℂ a + a * M j l * starRingEnd ℂ b + b * M l j * starRingEnd ℂ a + b * M l …`.
+
+Introduce `a b j l`. Simplify using `only [Pi.add_apply, map_add, add_mul, mul_add, Finset.sum_add_distrib]`. Simplify using `[Pi.single_apply, apply_ite (starRingEnd ℂ), mul_ite, ite_mul, Finset.sum_ite_eq', Finset.sum_ite_eq]`. Expand and normalize the polynomial expressions, which then agree. Establish `h0 : ∀ j, (M j j).re = 0`.
+
+Introduce `j`. Use `hf (Pi.single j 1 + Pi.single j 0)` as an intermediate fact. Rewrite `this` using `[hq]`. Simplify using `using this`. Establish `hskew : Mᴴ = -M`.
+
+Use extensionality with `j l`. Establish `h1` using `hf (Pi.single j 1 + Pi.single l 1)`. Establish `h2` using `hf (Pi.single j 1 + Pi.single l Complex.I)`. Rewrite `h1`, `h2` using `[hq]`. Simplify using `[Complex.mul_re, Complex.conj_re, Complex.conj_im, h0 j, h0 l] at h1 h2`.
+
+Apply the tactic sequence `apply Complex.ext <;> simp [Matrix.conjTranspose_apply] <;> linarith`. Establish `hH : A.adjugateᴴ = A.adjugate`. Rewrite using `[adjugate_conjTranspose, hA.eq]`. Establish `ht : starRingEnd ℂ (A.adjugate * M).trace = -(A.adjugate * M).trace`. Rewrite using `[← Complex.star_def, ← Matrix.trace_conjTranspose, conjTranspose_mul, hH, hskew, Matrix.neg_mul, trace_neg, trace_mul_comm]`.
+
+Establish `hre : (A.adjugate * M).trace.re = 0`. Use `congrArg Complex.re ht` as an intermediate fact. Simplify using `at this`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[mix, hre, mul_zero]`.
+-/
 theorem mix_eq_zero_of_re_form_eq_zero : ∀ (d : ℕ) (A M : Matrix (Fin (d + 1)) (Fin (d + 1)) ℂ), A.IsHermitian → (∀ ξ : V (d + 1), (∑ j, ∑ l, ξ j * M j l * starRingEnd ℂ (ξ l)).re = 0) → mix d A M = 0 := by
   intro d A M hA hM
   have hf : ∀ f : Fin (d + 1) → ℂ, (∑ j, ∑ l, f j * M j l * starRingEnd ℂ (f l)).re = 0 := by

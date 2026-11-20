@@ -11,6 +11,35 @@ namespace GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets
 
 open MvPolynomial Topology
 
+/- English proof (translation)
+Introduce `n k J p M γ hJ hdim`. Use `set Δ := Metric.ball (0 : Fin k → ℂ) γ.radius with hΔ`. Establish `hγd : DifferentiableOn ℂ γ.toFun Δ` using `γ.differentiableOn`. Establish `hγZ : ∀ τ ∈ Δ, γ.toFun τ ∈ zeroSetIn J` using `fun τ hτ => γ.mapsTo hτ`. Use `choose a b hbJ hab using M.birational`.
+
+Establish `hpoly : ∀ q : MvPolynomial (Fin n) ℂ, Differentiable ℂ (fun z : Fin n → ℂ => eval z q)`. Introduce `q`. Proceed by induction on `q using MvPolynomial.induction_on with`. Consider the case `C c => simp`. Consider the case `add p q hp hq`.
+
+Simplify using `only [eval_add]`. Conclude with `hp.add hq`. Consider the case `mul_X p i hp`. Simplify using `only [eval_mul, eval_X]`. Conclude with `hp.mul (differentiable_apply i)`.
+
+Establish `hcomp : ∀ q, DifferentiableOn ℂ (fun τ => eval (γ.toFun τ) q) Δ` using `fun q => (hpoly q).comp_differentiableOn hγd`. Use `set g : (Fin k → ℂ) → ℂ := fun τ => eval (γ.toFun τ) (∏ i, b i) with hg`. Establish `hBJ : (∏ i, b i) ∉ J` using `fun h => by`. Take `⟨i, -, hi⟩` from `(Ideal.IsPrime.prod_mem_iff (hp := hJ)).1 h`. Conclude with `hbJ i hi`.
+
+Establish `hgne : ∀ V, IsOpen V → V ⊆ Δ → V.Nonempty → ∃ t ∈ V, g t ≠ 0` using `fun V hV hVΔ hne => hB n k J _ V γ.toFun hJ hdim hBJ hV hne (hγd.mono hVΔ) (γ.injOn.mono hVΔ) fun τ hτ => hγZ τ (hVΔ hτ)`. Establish `hbne : ∀ τ, g τ ≠ 0 → ∀ i, eval (γ.toFun τ) (b i) ≠ 0` using `fun τ hτ i h => hτ (by simp only [hg, map_prod]; exact Finset.prod_eq_zero (Finset.mem_univ i) h)`. Use `set f : Fin M.m → (Fin k → ℂ) → ℂ := fun i τ => eval (γ.toFun τ) (a i) / eval (γ.toFun τ) (b i)`. Establish `hgraph : ∀ τ ∈ Δ, g τ ≠ 0 → (Sum.elim (γ.toFun τ) fun i => f i τ) ∈ zeroSetIn M.ideal` using `fun τ hτ hgτ => M.graph_mem_zeroSetIn a b hab _ (hγZ τ hτ) (hbne τ hgτ)`. Establish `hfd : ∀ i, DifferentiableOn ℂ (f i) (Δ ∩ {t | g t ≠ 0})` using `fun i τ hτ => by`.
+
+Establish `h1` using `(hcomp (a i) τ hτ.1).mono (Set.inter_subset_left (t := {t | g t ≠ 0}))`. Establish `h2` using `(hcomp (b i) τ hτ.1).mono (Set.inter_subset_left (t := {t | g t ≠ 0}))`. Use `show DifferentiableWithinAt ℂ (fun τ => eval (γ.toFun τ) (a i) / eval (γ.toFun τ) (b i)) _ τ`. Simplify using `only [div_eq_mul_inv]`. Conclude with `h1.mul (h2.inv (hbne τ hτ.2 i))`.
+
+Establish `hbdd : ∀ i, ∀ τ ∈ Δ, ∃ N ∈ 𝓝 τ, Bornology.IsBounded (f i '' (N ∩ Δ ∩ {t | g t ≠ 0}))`. Introduce `i τ hτ`. Take `⟨ε, hε, hεΔ⟩` from `Metric.isOpen_iff.1 Metric.isOpen_ball τ hτ`. Establish `hsub : Metric.closedBall τ (ε / 2) ⊆ Δ` using `(Metric.closedBall_subset_ball (by linarith)).trans hεΔ`. Establish `hK : Bornology.IsBounded (γ.toFun '' Metric.closedBall τ (ε / 2))` using `((isCompact_closedBall τ (ε / 2)).image_of_continuousOn (hγd.continuousOn.mono hsub)).isBounded`.
+
+Take `⟨C, hC⟩` from `isBounded_iff_forall_norm_le.1 (hP n J M _ hK)`. Use `⟨Metric.closedBall τ (ε / 2), Metric.closedBall_mem_nhds τ (by linarith), isBounded_iff_forall_norm_le.2 ⟨C, ?_⟩⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨t, ⟨⟨ht, htΔ⟩, hgt⟩, rfl⟩`. Establish `hw` using `hC _ ⟨hgraph t htΔ hgt, ⟨t, ht, rfl⟩⟩`. Conclude with `(norm_le_pi_norm (Sum.elim (γ.toFun t) fun i => f i t) (Sum.inr i)).trans hw`.
+
+Use `choose F hFd hFeq using fun i => hR k Δ g (f i) Metric.isOpen_ball ((hpoly _).comp_differentiableOn hγd) hgne (hfd i) (hbdd i)`. Use `set Γ : (Fin k → ℂ) → Fin n ⊕ Fin M.m → ℂ := fun τ => Sum.elim (γ.toFun τ) fun i => F i τ with hΓ`. Establish `hΓd : DifferentiableOn ℂ Γ Δ`. Use `differentiableOn_pi.2 fun s => ?_` and prove the remaining obligations. Break down `s with j | i` into its components or cases.
+
+Simplify `differentiableOn_pi.1 hγd j` using `[hΓ]`. Simplify `hFd i` using `[hΓ]`. Establish `hdense : Δ ⊆ closure (Δ ∩ {t | g t ≠ 0})`. Introduce `τ hτ`. Rewrite using `[mem_closure_iff]`.
+
+Introduce `o ho hτo`. Take `⟨t, ⟨hto, htΔ⟩, hgt⟩` from `hgne (o ∩ Δ) (ho.inter Metric.isOpen_ball) Set.inter_subset_right ⟨τ, hτo, hτ⟩`. Conclude with `⟨t, hto, htΔ, hgt⟩`. Establish `hΓZ : ∀ τ ∈ Δ, Γ τ ∈ zeroSetIn M.ideal`. Introduce `τ hτ q hq`.
+
+Establish `heq : Set.EqOn (fun t => eval (Γ t) q) (fun _ => (0 : ℂ)) (Δ ∩ {t | g t ≠ 0})`. Introduce `t ht`. Establish `hΓt : Γ t = Sum.elim (γ.toFun t) fun i => f i t`. Simplify using `only [hΓ]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `i`. Conclude with `hFeq i ht`. Simplify using `only [hΓt]`. Conclude with `hgraph t ht.1 ht.2 q hq`. Conclude with `heq.of_subset_closure ((MvPolynomial.continuous_eval q).comp_continuousOn hΓd.continuousOn) continuousOn_const Set.inter_subset_left hdense hτ`.
+
+Establish `hΓinj : Set.InjOn Γ Δ` using `fun s hs t ht hst => γ.injOn hs ht (by`. Use `congrArg firstCoords hst` as an intermediate fact. Conclude with `this)`. Use `⟨Γ, hΓd, fun τ hτ => ⟨hΓZ τ hτ, rfl⟩, fun V hV hVo => ?_⟩` and prove the remaining obligations. Conclude with `hO n k J M V Γ hJ hdim hVo (hΓd.mono hV) (hΓinj.mono hV) fun τ hτ => hΓZ τ (hV hτ)`.
+-/
 theorem BranchLift.proof (hR : RiemannExtensionAnalytic.Statement)
     (hB : BranchOffHypersurface.Statement) (hO : NormalModelOpenMapping.Statement)
     (hP : NormalModelProper.Statement) : BranchLift.Statement := by

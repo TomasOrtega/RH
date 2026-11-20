@@ -8,6 +8,9 @@ open scoped CategoryTheory.Obj
 open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.CompanionTheory.Ar
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.LieFinGlue.dual_glue | exact GlobalTheory.CompanionTheory.Ar.LieFinGlue.dual_glue | (intros; apply GlobalTheory.CompanionTheory.Ar.LieFinGlue.dual_glue <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.dual_number_points_glue : ∀ (X : Scheme.{0}) (R : Type) [CommRing R] (J : Type) [Finite J] (f : J → R), Ideal.span (Set.range f) = ⊤ →
   (∀ a b : Sp R ⟶ X, (∀ i, spMap (algebraMap R (Localization.Away (f i))) ≫ a = spMap (algebraMap R (Localization.Away (f i))) ≫ b) → a = b) ∧
   (∀ a b : Sp (DualNumber R) ⟶ X,

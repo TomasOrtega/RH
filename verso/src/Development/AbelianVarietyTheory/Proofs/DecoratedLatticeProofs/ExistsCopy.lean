@@ -14,6 +14,9 @@ section Gen
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.L2.Col Formalism.L2.DIV Formalism.UG Formalism.L2.Forms GlobalTheory.Mem GlobalTheory.Mem.Col2 GlobalTheory.Mem.Col2.TypeLev Matrix
 open scoped TensorProduct
 
+/- English proof (translation)
+Rewrite using `[chiSymF_apply, chiSymF_apply, chiSym, chiSym, MonoidHom.mul_apply, MonoidHom.mul_apply, Units.val_mul, Units.val_mul, map_mul]`. Both sides reduce to the same expression.
+-/
 theorem chiSymF_map {κ K : Type} [CommRing κ] [Field K] (emb : K →+* ℂ) (ψ : AddChar κ K) (n k rS : ℕ) (M : HPsymF κ n k rS) :
     ((chiSymF ((emb : K →* ℂ).compAddChar ψ) n k rS M : ℂˣ) : ℂ) = emb ((chiSymF ψ n k rS M : Kˣ) : K) := by
   rw [chiSymF_apply, chiSymF_apply, chiSym, chiSym, MonoidHom.mul_apply, MonoidHom.mul_apply, Units.val_mul, Units.val_mul, map_mul]
@@ -21,6 +24,29 @@ theorem chiSymF_map {κ K : Type} [CommRing κ] [Field K] (emb : K →+* ℂ) (�
 
 variable {F E K : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E] [Field K]
 
+/- English proof (translation)
+Substitute `e hJ' hJ` using the available equality. Take `rfl : g = y` from `Units.ext (Matrix.ext hgy)`. Establish `e0 : g ∈ lev hc 1 1 ⟨r, h', t, s, SG, ∅, P', cg, xq⟩ ↔ g ∈ lev hc 1 1 (parDat h t s P χ)`. Rewrite using `[mem_lev, mem_lev, mem_parLev, mem_parLev]`. Use `and_congr Iff.rfl ((hH _).trans ⟨fun h w _ => h w, fun h w => h w (Set.mem_univ w)⟩)` and prove the remaining obligations.
+
+Establish `hred : ∀ (hz : g ∈ St (1 : GL (Fin n') (E ⊗[F] Formalism.L2.Herm.Af F))) (w : Pl E), redFn 1 w g = redAt 1 w ⟨g, hz⟩` using `fun hz w => extendOne_of_mem _ hz`. Establish `hU : g ∈ S.U → g ∈ UAd hc n' ∧ g ∈ St (1 : GL (Fin n') (E ⊗[F] Formalism.L2.Herm.Af F))` using `fun hy => by`. Take `⟨h1, h2⟩` from `(S.U_eq g).1 hy`. Use `⟨h1, rll_St_of_loc n' g fun v => ⟨_, rll_put_mem_St n' v ?_, rll_put_self n' v _⟩⟩` and prove the remaining obligations. Use `(S.Uloc_lev v (h2 v)).2` as an intermediate fact.
+
+Rewrite `this` using `[hL]`. Conclude with `this`. Establish `e1 : g ∈ levU hc n' ∅ SG (parFam h t s P χ).grp ↔ g ∈ S.U`. Rewrite using `[mem_levU_iff]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨h1, h2, -, h4⟩`. Conclude with `(hR g h2 h1 fun v hv => absurd (Set.mem_univ v) hv).1.2 fun w => hred h2 w.1 ▸ h4 w (Set.mem_univ w)`. Introduce `hy`. Take `⟨h1, h2⟩` from `hU hy`. Use `⟨h1, h2, fun P hP => absurd hP (Finset.notMem_empty P), fun w _ => ?_⟩` and prove the remaining obligations.
+
+Use `(hR g h2 h1 fun v hv => absurd (Set.mem_univ v) hv).1.1 hy w` as an intermediate fact. Rewrite `this` using `[← hred h2]`. Then use the resulting hypothesis. Use `⟨by rw [e0, ← levU_parFam_eq_lev hc h ht hn, e1], fun hy => ?_⟩` and prove the remaining obligations. Take `⟨h1, h2⟩` from `hU hy`. Establish `h3` using `e1.2 hy`.
+
+Establish `h4 : g ∈ lev hc 1 1 (parDat h t s P χ)` using `levU_parFam_eq_lev hc h ht hn P χ ▸ h3`. Establish `h5` using `e0.2 h4`. Take `⟨r1, r2⟩` from `hR g h2 h1 fun v hv => absurd (Set.mem_univ v) hv`. Establish `a1 : ((levFn 1 ⟨r, h', t, s, SG, ∅, P', cg, xq⟩ g : ℂˣ) : ℂ) = emb ((levFn 1 (parDat h t s P χ) g : Kˣ) : K)`. Unfold `levFn`.
+
+Rewrite using `[extendOne_of_mem _ h5.2, extendOne_of_mem _ h4.2]`. Simplify using `only [Units.val_mul, Units.coe_prod, map_mul, map_prod]`. Use `congr 1`. Use `congr 1`. Rewrite using `[hchi _ fun w => h4.2 w (Set.mem_univ w)]`.
+
+Use `rld_ofLocal_chi (fun w => (P w).H) (fun w => (P w).lam) ⟨_, h4.2⟩` as an intermediate fact. Use `Eq.trans ?_ (congrArg (fun x : Kˣ => emb (x : K)) this).symm` and prove the remaining obligations. Simplify using `only [Units.coe_prod, map_prod]`. Both sides reduce to the same expression. Use `show ∏ PP ∈ SG, _ = ∏ PP ∈ SG, _`.
+
+Use `Finset.prod_congr rfl fun w hw => ?_` and prove the remaining obligations. Use `show ∏ c ∈ Finset.range s, _ = ∏ c ∈ Finset.range s, _`. Use `Finset.prod_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[rld_parDat_cg h P χ c ⟨w, hw⟩]`. Conclude with `hcg c ⟨w, hw⟩ _`.
+
+Establish `a2` using `levChr_parFam_eq_levChar hc h ht hn P χ g h3 h4`. Rewrite `a2` using `[levChar_apply]`. Rewrite using `[a1, ← a2, r2 hy (r1.1 hy)]`. Use `show emb ((piChar (fun w => (parFam h t s P χ w).H) (fun w => (parFam h t s P χ w).lam) (levRed hc n' ∅ SG _ ⟨g, h3⟩) : Kˣ) : K) = _`. Rewrite using `[piChar_apply, Units.coe_prod, map_prod, star_prod]`.
+
+Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Establish `: Finite (𝓞 E ⧸ w.1.asIdeal)` using `Ideal.finiteQuotientOfFreeOfNeBot _ w.1.ne_bot`. Establish `b1` using `((emb.toMonoidHom.comp ((Units.coeHom K).comp (parFam h t s P χ w).lam)).isOfFinOrder (isOfFinOrder_of_finite ⟨_, r1.1 hy w⟩)).norm_eq_one`. Use `Eq.trans ?_ ((congrArg star (Complex.inv_eq_conj b1)).trans (Complex.conj_conj _)).symm` and prove the remaining obligations. Conclude with `congrArg (fun x => emb (((parFam h t s P χ w).lam x : Kˣ) : K)) (Subtype.ext ((levRed_apply hc n' ∅ SG _ ⟨g, h3⟩ w).trans (hred h2 w.1)))`.
+-/
 theorem lev_iff (hc : CMData F E) {n n' : ℕ} (e : n' = n) [NeZero n] {J' : Matrix (Fin n') (Fin n') E} {J : Matrix (Fin n) (Fin n) E}
     (hJ' : J' = 1) (hJ : J = 1) {T f : ℕ} {bad : Set (HeightOneSpectrum (𝓞 F))} (S : StepLevel F E hc.sig J T f bad)
     (hL : S.Lb = Formalism.L2.Col.stdLat E n) {r t s : ℕ} (h : r ≤ n) (h' : r ≤ n') (ht : 0 < t) (hn : n = r + s * t) {SG : Finset (Pl E)}
@@ -94,6 +120,9 @@ theorem lev_iff (hc : CMData F E) {n n' : ℕ} (e : n' = n) [NeZero n] {J' : Mat
   exact congrArg (fun x => emb (((parFam h t s P χ w).lam x : Kˣ) : K))
     (Subtype.ext ((levRed_apply hc n' ∅ SG _ ⟨g, h3⟩ w).trans (hred h2 w.1)))
 
+/- English proof (translation)
+Substitute `e` using the available equality. Conclude with `⟨g, fun _ _ => rfl⟩`.
+-/
 theorem exists_copy {A : Type} [CommRing A] {n n' : ℕ} (e : n' = n) (g : GL (Fin n') A) :
     ∃ y : GL (Fin n) A, ∀ i j, g.1 i j = y.1 (finCongr e i) (finCongr e j) := by
   subst e
@@ -102,6 +131,9 @@ theorem exists_copy {A : Type} [CommRing A] {n n' : ℕ} (e : n' = n) (g : GL (F
 attribute [local instance] GlobalTheory.Mem.Col2.starE Formalism.BasicNotions.Host.cmStar in
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+The claim follows from `haveI : IsEmpty (I.Q I.mu0) := by rw [I.twistPrimes_reference_tuple_eq_empty]; infer_instance rdLev_of_reads (X := B.fields) (hc := B.sp.cm) (bad := Set.univ) (rowTyG I.Ch I.Ps) (levQX B.R I.sel (I.tup I.mu0)) B.embLL (U := U) (chi := chi) (y := y c) (k := 1) (p := ((I.stX I.mu0) …`.
+-/
 theorem rd_all {B : Base} {X : PreX B.toPre} (I : TC B X) [NeZero (B.R.N B.R.m - 1)] {Lb U chi y lat st}
     (h : I.ReadsP I.mu0 Lb U chi y lat st) (c : (I.stX I.mu0).Cl) :
     RdLev (E := B.fields.E) B.sp.cm U chi Set.univ (rowTyG I.Ch I.Ps) B.embLL :=
@@ -121,6 +153,23 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Introduce `B X I l Z w v c hc top hb hs`. Take `⟨hr, ξ, hL⟩` from `hs.lev`. Establish `hL' : top.L = _` using `hL`. Establish `hK` using `(w.std v).what₂`. Take `⟨-, gP, -, -⟩` from `GlobalTheory.Mem.Col2.TC.spaces_in_coordinates I w.ok w.pins l Z`.
+
+Establish `gX : (I.rec7 l Z).sp.X'.gram = 1`. Use `congrArg (Matrix.reindex (finCongr (rankP (I.rec7 l Z))) (finCongr (rankP (I.rec7 l Z)))).symm gP` as an intermediate fact. Rewrite `this` using `[gramP, Equiv.symm_apply_apply]`. Rewrite using `[this, Matrix.reindex_symm, Matrix.reindex_apply, Matrix.submatrix_one_equiv]`. Take `⟨c', -⟩` from `(w.C.forms v).clsP.y_bij.2 (Quotient.mk'' 1)`.
+
+Use `haveI : NeZero (B.R.N B.R.m - 1) := ⟨by`. Use `Formalism.L2.Col.rank_X'_eq B.R` as an intermediate fact. Use `B.R.m_add_three_le_k` as an intermediate fact. Unfold `Ranks.r at *`. Use the proof step `omega⟩`.
+
+Establish `hR` using `rd_all I hK c'`. Establish `hLb : (w.C.forms v).clsP.lev.Lb = Formalism.L2.Col.stdLat B.fields.E (B.R.N B.R.m - 1)`. Use extensionality with `x`. Use `(hK.lb x).trans (Iff.trans ?_ (Formalism.L2.Col.mem_stdLat x).symm)` and prove the remaining obligations. Conclude with `forall_congr' fun j => ⟨fun ⟨r, h, _⟩ => ⟨r, h.symm⟩, fun ⟨r, h⟩ => ⟨r, h.symm, fun _ => one_dvd _⟩⟩`.
+
+Take `⟨θ, ψ, μ, η, Pg, P, chi⟩` from `c`. Take `⟨-, -, hPg, -, -, hchi, hP⟩` from `hc`. Simplify using `only at hPg hchi hP hL'`. Substitute `hPg hP` using the available equality. Establish `key` using `@lev_iff B.fields.F B.fields.E B.fields.K _ _ _ _ (GlobalTheory.Mem.Col2.starE B) _ _ B.sp.cm (B.R.N B.R.m - 1) _ (rankP (I.rec7 l Z)) _ _ _ gX gP _ _ _ (w.C.forms v).clsP.lev hLb B.R.r B.R.t B.R.m (Formalism.L2.Col.r_le_X' B.R) hr (Formalism.L2.Col.t_pos B.R) (Formalism.L2.Col.r …`.
+
+Use `(congrArg Units.val (symLevel_chi (D := I.rec7 l Z) g)).trans ?_` and prove the remaining obligations. Rewrite using `[Units.coe_prod]`. Use `Finset.prod_congr rfl fun PP _ => ?_` and prove the remaining obligations. Establish `e : psiC I PP.1 = (B.embLL : B.LL →* ℂ).compAddChar (I.Ch.psi0 PP)` using `congrArg _ (dif_pos PP.2)`. Rewrite using `[e]`.
+
+Conclude with `chiSymF_map _ _ _ _ _ _)`. Use the proof step `(fun i PP a => by`. Establish `e : Formalism.L2.Col.chiP I.Ch PP.1 = Formalism.L2.Col.chiAt I.Ch PP` using `dif_pos PP.2`. Use `(congrArg (fun f : (Formalism.L2.DIV.kP PP.1)ˣ →* ℂˣ => ((f a : ℂˣ) : ℂ)) (hchi i PP.1)).trans ?_` and prove the remaining obligations. Use `show B.embLL ((Formalism.L2.Col.chiP I.Ch PP.1 i a : B.LLˣ) : B.LL) = _`.
+
+Rewrite using `[e])`. Rewrite using `[hb, hL']`. Use `⟨fun h => ⟨fun hh => ?_, fun ⟨κ, h1, h2⟩ => ⟨h1, (key _ κ.1 h2).1.2 κ.2⟩⟩, fun h κ hκ => (key _ κ.1 hκ.2).2 κ.2⟩` and prove the remaining obligations. Take `⟨y, hy⟩` from `exists_copy (rankP (I.rec7 l Z)) (Lev.finE (I.rec7 l Z).sp.X' h)`. Conclude with `⟨⟨y, (key _ y hy).1.1 hh.2⟩, hh.1, hy⟩`.
+-/
 theorem topLev_std : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X) (l : I.Laws) (Z : TC.Later B (I.cols l)) (w : World I l Z) (v : B.Word), ∀ c, IsComOf I l Z c → ∀ top : StAt (I.rec7 l Z).sp.X', top.β = 1 → top.st.Is c B.R.m → GlobalTheory.Core.Rk.Top.TopLev (w.C.forms v).clsP (levS _ top.β top.L) (Lev.levChi _ top.β top.L) := by
   intro B X I l Z w v c hc top hb hs
   obtain ⟨hr, ξ, hL⟩ := hs.lev

@@ -17,23 +17,46 @@ variable {E : Type} [Field E] [NumberField E]
 
 def IntE (x : E) : Prop := ∃ o : 𝓞 E, (o : E) = x
 
+/- English proof (translation)
+Take `⟨a, rfl⟩` from `hx`. Take `⟨b, rfl⟩` from `hy`. Conclude with `⟨a + b, map_add (algebraMap (𝓞 E) E) a b⟩`.
+-/
 theorem IntE.add {x y : E} (hx : IntE x) (hy : IntE y) : IntE (x + y) := by
   obtain ⟨a, rfl⟩ := hx
   obtain ⟨b, rfl⟩ := hy
   exact ⟨a + b, map_add (algebraMap (𝓞 E) E) a b⟩
+/- English proof (translation)
+Take `⟨a, rfl⟩` from `hx`. Take `⟨b, rfl⟩` from `hy`. Conclude with `⟨a * b, map_mul (algebraMap (𝓞 E) E) a b⟩`.
+-/
 theorem IntE.mul {x y : E} (hx : IntE x) (hy : IntE y) : IntE (x * y) := by
   obtain ⟨a, rfl⟩ := hx
   obtain ⟨b, rfl⟩ := hy
   exact ⟨a * b, map_mul (algebraMap (𝓞 E) E) a b⟩
+/- English proof (translation)
+Take `⟨a, rfl⟩` from `hx`. Conclude with `⟨-a, map_neg (algebraMap (𝓞 E) E) a⟩`.
+-/
 theorem IntE.neg {x : E} (hx : IntE x) : IntE (-x) := by
   obtain ⟨a, rfl⟩ := hx
   exact ⟨-a, map_neg (algebraMap (𝓞 E) E) a⟩
+/- English proof (translation)
+Take `⟨a, rfl⟩` from `hx`. Take `⟨b, rfl⟩` from `hy`. Conclude with `⟨a - b, map_sub (algebraMap (𝓞 E) E) a b⟩`.
+-/
 theorem IntE.sub {x y : E} (hx : IntE x) (hy : IntE y) : IntE (x - y) := by
   obtain ⟨a, rfl⟩ := hx
   obtain ⟨b, rfl⟩ := hy
   exact ⟨a - b, map_sub (algebraMap (𝓞 E) E) a b⟩
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨n, map_natCast (algebraMap (𝓞 E) E) n⟩`.
+-/
 theorem IntE.nat (n : ℕ) : IntE (n : E) := ⟨n, map_natCast (algebraMap (𝓞 E) E) n⟩
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨0, map_zero (algebraMap (𝓞 E) E)⟩`.
+-/
 theorem IntE.zero : IntE (0 : E) := ⟨0, map_zero (algebraMap (𝓞 E) E)⟩
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Rewrite using `[Finset.sum_empty]`. Conclude with `IntE.zero`. Consider the case `@insert a s ha ih`.
+
+Rewrite using `[Finset.sum_insert ha]`. Conclude with `IntE.add (h a (Finset.mem_insert_self a s)) (ih (fun i hi => h i (Finset.mem_insert_of_mem hi)))`.
+-/
 theorem IntE.sum {ι : Type*} (s : Finset ι) (g : ι → E) (h : ∀ i ∈ s, IntE (g i)) : IntE (∑ i ∈ s, g i) := by
   induction s using Finset.induction_on with
   | empty =>
@@ -51,12 +74,87 @@ variable {E : Type} [Field E] [NumberField E] [StarRing E] {S : HSpace E} {r : �
 
 def piL (e f : Fin r → S.V) : S.V →ₗ[E] S.V := LinearMap.id - ∑ c, (S.hT (f c)).smulRight (e c)
 
+/- English proof (translation)
+Simplify using `[piL, LinearMap.smulRight_apply]`.
+-/
 theorem piL_apply (e f : Fin r → S.V) (x : S.V) : piL e f x = x - ∑ c, S.hT (f c) x • e c := by
   simp [piL, LinearMap.smulRight_apply]
 
+/- English proof (translation)
+Conclude with `S.herm.eq x y`.
+-/
 theorem herm_star (x y : S.V) : star (S.hT x y) = S.hT y x := by
   exact S.herm.eq x y
 
+/- English proof (translation)
+Use `set e := F.fl.e with he_def`. Establish `hee : ∀ a b, S.hT (e a) (e b) = 0` using `F.fl.e_iso`. Establish `hfe : ∀ a b, S.hT (f a) (e b) = if a = b then 1 else 0` using `fun a b => by`. Rewrite using `[← herm_star, hef b a]`. Distinguish the cases in `h : b = a`.
+
+Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h, Ne.symm h]`. Establish `hpi_e : ∀ a x, S.hT (e a) (piL e f x) = S.hT (e a) x` using `fun a x => by`. Simplify using `[piL_apply, map_sub, map_sum, hee]`.
+
+Establish `hpi_f : ∀ a x, S.hT (f a) (piL e f x) = 0` using `fun a x => by`. Simplify using `[piL_apply, map_sub, map_sum, hfe]`. Establish `hmemE : ∀ (x : E) (w : S.V), IntE x → w ∈ Λ → x • w ∈ Λ`. Introduce and unpack `x w ⟨o, rfl⟩ hw`. Use `show (algebraMap (𝓞 E) E o) • w ∈ Λ`.
+
+Rewrite using `[algebraMap_smul]`. Conclude with `Λ.smul_mem o hw`. Establish `hnat : ∀ (k : ℕ) (w : S.V), w ∈ Λ → (k : E) • w ∈ Λ` using `fun k w hw => hmemE _ w (IntE.nat k) hw`. Use `choose lam hlam hδeq using hδ`. Set `P : Fin (r + 1) → S.V` to `fun b => (nd : E) • piL e f (lam b)`.
+
+Establish `hP : ∀ b, P b ∈ Λ`. Introduce `b`. Establish `: P b = (nd : E) • lam b - ∑ c, ((nd : E) * S.hT (f c) (lam b)) • e c`. Simplify using `only [P, piL_apply, smul_sub, Finset.smul_sum, smul_smul]`. Rewrite using `[this]`.
+
+Use `Λ.sub_mem (hnat nd _ (hlam b)) (Λ.sum_mem fun c _ => hmemE _ _ (hfint _ (hlam b) c) (he c))` and prove the remaining obligations. Set `δ : Fin (r + 1) → S.V` to `fun b => frame y2 b - frame y1 b`. Set `ρ : Fin (r + 1) → S.V` to `fun b => piL e f (δ b)`. Establish `hδe : ∀ c b, S.hT (e c) (δ b) = 0` using `fun c b => by simp [δ, map_sub, hβ1, hβ2]`. Establish `hρe : ∀ c b, S.hT (e c) (ρ b) = 0` using `fun c b => by simp only [ρ, hpi_e, hδe]`.
+
+Establish `hρsum : ∑ b, v b • ρ b = 0`. Establish `: ∑ b, v b • ρ b = piL e f (∑ b, v b • frame y2 b) - piL e f (∑ b, v b • frame y1 b)`. Simplify using `only [ρ, δ, map_sum, map_smul, map_sub, smul_sub, Finset.sum_sub_distrib]`. Rewrite using `[this, ← hι, sub_self]`. Take `⟨qo, hqo⟩ : ∃ qo : Fin (r + 1) → Fin r → 𝓞 E, ∀ b c, (qo b c : E) = (nQ : E) * Q b c` from `⟨fun b c => (hQint b c).choose, fun b c => (hQint b c).choose_spec⟩`.
+
+Set `a' : Fin r → S.V` to `fun c => ∑ b, (qo b c : E) • P b`. Set `a : Fin r → S.V` to `fun c => ∑ b, Q b c • ρ b`. Establish `ha' : ∀ c, a' c ∈ Λ` using `fun c => Λ.sum_mem fun b _ => hmemE _ _ ⟨qo b c, rfl⟩ (hP b)`. Establish `haa' : ∀ c, a c = ((nd * nQ : ℕ) : E) • a' c`. Introduce `c`.
+
+Simplify using `only [a, a', ρ, P, Finset.smul_sum, smul_smul]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[show δ b = (((nd * nQ) ^ 2 : ℕ) : E) • lam b from hδeq b, map_smul, smul_smul, hqo]`. Use `congr 1`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `ha : ∀ c, a c ∈ Λ` using `fun c => by rw [haa']; exact hnat _ _ (ha' c)`. Establish `hea : ∀ c d, S.hT (e c) (a d) = 0` using `fun c d => by simp [a, map_sum, hρe]`. Set `s : Matrix (Fin r) (Fin r) E` to `fun c d => if c < d then -S.hT (a c) (a d) else if c = d then -((θ : E) * S.hT (a c) (a c)) else 0`. Establish `hs : ∀ c d, s c d + star (s d c) = -S.hT (a c) (a d)`.
+
+Introduce `c d`. Break down `lt_trichotomy c d with h | h | h` into its components or cases. Simplify using `[s, h, not_lt.2 h.le, h.ne']`. Substitute `h` using the available equality. Establish `hh : star (S.hT (a c) (a c)) = S.hT (a c) (a c)` using `herm_star _ _`.
+
+Simplify using `only [s, lt_irrefl, if_false, if_true, star_neg, star_mul', hh]`. Take the linear combination `(-(S.hT (a c) (a c))) * hθ`. Simplify using `[s, h, not_lt.2 h.le, h.ne, h.ne', herm_star]`. Establish `haa : ∀ c d, S.hT (a c) (a d) = (((nd * nQ) ^ 2 : ℕ) : E) * S.hT (a' c) (a' d)`. Introduce `c d`.
+
+Rewrite using `[haa', haa', map_smul, LinearMap.map_smulₛₗ, LinearMap.smul_apply]`. Simplify using `only [starRingEnd_apply, star_natCast, smul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Set `s' : Matrix (Fin r) (Fin r) E` to `fun c d => if c < d then -S.hT (a' c) (a' d) else if c = d then -((θ : E) * S.hT (a' c) (a' c)) else 0`.
+
+Establish `hss' : ∀ c d, s c d = (((nd * nQ) ^ 2 : ℕ) : E) * s' c d`. Introduce `c d`. Simplify using `only [s, s', haa]`. Apply the tactic sequence `split_ifs <;> ring`. Establish `hs'int : ∀ c d, IntE (s' c d)`.
+
+Introduce `c d`. Simplify using `only [s']`. Use `split_ifs`. Conclude with `(IntE.neg (hint _ (ha' c) _ (ha' d)))`. Conclude with `IntE.neg (IntE.mul (show IntE (θ : E) from ⟨θ, rfl⟩) (hint _ (ha' c) _ (ha' c)))`.
+
+Conclude with `IntE.zero`. Establish `hsint : ∀ c d, ∃ o : 𝓞 E, (o : E) = s c d` using `fun c d => by`. Rewrite using `[hss']`. Conclude with `(IntE.nat _).mul (hs'int c d)`. Take `⟨n1, hn1, hn1act⟩` from `hH E S r T Λ F a s hint he ha hea hsint hs`.
+
+Simplify using `only [← he_def] at hn1act`. Establish `hiso1 : ∀ x y, S.hT (n1 x) (n1 y) = S.hT x y` using `hn1.1.1`. Establish `hn1e : ∀ c, n1 (e c) = e c`. Introduce `c`. Rewrite using `[hn1act, heisFun]`.
+
+Establish `: ∀ c', S.hT (a c') (e c) = 0` using `fun c' => by rw [← herm_star, hea]; simp`. Simplify using `[hee, this]`. Establish `hrow : ∀ c b, S.hT (e c) (n1 (frame y1 b)) = β c b` using `fun c b => by`. Rewrite using `[← hn1e c, hiso1, hβ1]`. Establish `hsum_a : ∀ b, ∑ c, S.hT (e c) (frame y1 b) • a c = ρ b`.
+
+Introduce `b`. Simplify using `only [a, hβ1, Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Establish `: ∀ d, ∑ c, (β c b * Q d c) • ρ d = ((Q * β) d b) • ρ d` using `fun d => by`. Rewrite using `[← Finset.sum_smul, Matrix.mul_apply]`.
+
+Use `congr 1`. Conclude with `Finset.sum_congr rfl fun c _ => mul_comm _ _`. Simplify using `only [this, hQβ, sub_smul, Finset.sum_sub_distrib, ite_smul, one_smul, zero_smul, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Establish `h2 : ∑ d, (v d * l b) • ρ d = l b • ∑ d, v d • ρ d`. Rewrite using `[Finset.smul_sum]`.
+
+Conclude with `Finset.sum_congr rfl fun d _ => by rw [smul_smul, mul_comm]`. Rewrite using `[h2, hρsum, smul_zero, sub_zero]`. Set `x' : Matrix (Fin r) (Fin (r + 1)) E` to `fun c b => S.hT (f c) (δ b) + S.hT (a c) (frame y1 b) - ∑ d, s c d * β d b`. Establish `hk : ∀ b, frame y2 b = n1 (frame y1 b) + ∑ c, x' c b • e c`. Introduce `b`.
+
+Establish `hy2 : frame y2 b = frame y1 b + ρ b + ∑ c, S.hT (f c) (δ b) • e c`. Simplify using `only [ρ, piL_apply, δ]`. Normalize the expressions using the abelian group laws. Rewrite using `[hn1act, heisFun, hsum_a, hy2]`. Simplify using `only [x', add_smul, sub_smul, Finset.sum_add_distrib, Finset.sum_sub_distrib, Finset.sum_smul, hβ1]`.
+
+Normalize the expressions using the abelian group laws. Establish `hcol : ∀ d a0, S.hT (n1 (frame y1 a0)) (e d) = star (β d a0)` using `fun d a0 => by`. Rewrite using `[← herm_star, hrow]`. Establish `hid : ∀ a0 b, ∑ c, (star (β c a0) * x' c b + star (x' c a0) * β c b) = 0`. Introduce `a0 b`.
+
+Establish `h` using `hgram a0 b`. Rewrite `h` using `[hk a0, hk b, ← hiso1 (frame y1 a0) (frame y1 b)]`. Simplify using `only [map_add, LinearMap.add_apply, map_sum, LinearMap.sum_apply, LinearMap.map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, hee, mul_zero, Finset.sum_const_zero, add_zero, hrow, hcol, starRingEnd_apply] at h`. Rewrite using `[Finset.sum_add_distrib]`. Establish `e1 : ∑ c, star (β c a0) * x' c b = ∑ c, x' c b * star (β c a0)` using `Finset.sum_congr rfl fun _ _ => mul_comm _ _`.
+
+Rewrite using `[e1]`. Take the linear combination `h`. Take `⟨hskew, hfact⟩` from `hSk E r β x' Q v l hind hβQ hv hQβ hid`. Establish `hfd : ∀ c b, S.hT (f c) (δ b) = (((nd * nQ) ^ 2 : ℕ) : E) * S.hT (f c) (lam b)` using `fun c b => by show S.hT (f c) (frame y2 b - frame y1 b) = _`. Rewrite using `[hδeq b, map_smul, smul_eq_mul]`.
+
+Establish `hac : ∀ c b, S.hT (a c) (frame y1 b) = ((nd * nQ : ℕ) : E) * S.hT (a' c) (frame y1 b)` using `fun c b => by`. Rewrite using `[haa', LinearMap.map_smulₛₗ, LinearMap.smul_apply, starRingEnd_apply, star_natCast, smul_eq_mul]`. Set `w : Matrix (Fin r) (Fin (r + 1)) E` to `fun c b => ((nd * nQ : ℕ) : E) * ((nd : E) * S.hT (f c) (lam b)) + (nd : E) * S.hT (a' c) (frame y1 b) - ∑ d, ((nd ^ 2 * nQ : ℕ) : E) * s' c d * β d b`. Establish `hw : ∀ c b, IntE (w c b)`. Introduce `c b`.
+
+Use `((IntE.nat _).mul (hfint _ (hlam b) c)).add ((IntE.nat _).mul (hint _ (ha' c) _ (hy1 b))) |>.sub (IntE.sum _ _ fun d _ => ((IntE.nat _).mul (hs'int c d)).mul ?_)` and prove the remaining obligations. Rewrite using `[← hβ1]`. Conclude with `hint _ (he d) _ (hy1 b)`. Establish `hxw : ∀ c b, x' c b = (nQ : E) * w c b`. Introduce `c b`.
+
+Simplify using `only [x', w, hfd, hac, hss']`. Establish `hsum : ∑ x, (((nd * nQ) ^ 2 : ℕ) : E) * s' c x * β x b = (nQ : E) * ∑ d, ((nd ^ 2 * nQ : ℕ) : E) * s' c d * β d b`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hsum]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hSint : ∀ c d, ∃ o : 𝓞 E, (o : E) = (x' * Q) c d`.
+
+Introduce `c d`. Establish `: (x' * Q) c d = ∑ b, w c b * ((nQ : E) * Q b d)`. Rewrite using `[Matrix.mul_apply]`. Conclude with `Finset.sum_congr rfl fun b _ => by rw [hxw]; ring`. Rewrite using `[this]`.
+
+Conclude with `IntE.sum _ _ fun b _ => (hw c b).mul (hQint b d)`. Take `⟨n2, hn2, hn2act⟩` from `hH E S r T Λ F 0 (x' * Q) hint he (fun _ => Λ.zero_mem) (by simp) hSint (by intro c d; simp [hskew c d])`. Simplify using `only [← he_def] at hn2act`. Establish `hfin2 : ∀ b, n2 (n1 (frame y1 b)) = frame y2 b`. Introduce `b`.
+
+Rewrite using `[hn2act, heisFun, hk b]`. Simplify using `only [Pi.zero_apply, smul_zero, Finset.sum_const_zero, map_zero, LinearMap.zero_apply, zero_smul, add_zero, sub_zero, hrow]`. Use `congr 1`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_smul]`.
+
+Use `congr 1`. Use `conv_rhs => rw [hfact]`. Rewrite using `[Matrix.mul_apply]`. Use `⟨n2 * n1, PI.DCRelEquiv.UnitaryGroupMassFormula.nlam_mul hn2 hn1, 1, one_mem_NLam Λ y1, fun b => ?_, ?_⟩` and prove the remaining obligations. Simplify using `[hfin2]`.
+
+Rewrite using `[hzt2, hzt1]`. Simplify using `[hfin2]`.
+-/
 theorem related_gen (hH : HeisOp) (hSk : SkewSolve) {T T' : E} (Λ : Submodule (𝓞 E) S.V) (F : LFlag S r T)
     (f : Fin r → S.V)
     (hint : ∀ x ∈ Λ, ∀ y ∈ Λ, ∃ o : 𝓞 E, (o : E) = S.hT x y)

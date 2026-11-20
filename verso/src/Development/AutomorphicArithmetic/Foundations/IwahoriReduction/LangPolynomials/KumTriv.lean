@@ -1,6 +1,15 @@
 import Development.AutomorphicArithmetic.Foundations.IwahoriReduction.LangPolynomials.FixedIntegersIsUnitOfNotMemPrimeSpan
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.MainNotions.N GlobalTheory.GalOfCusp UpperTheory.V UpperTheory.V.Af UpperTheory.V.HV GlobalTheory.Ord2 GlobalTheory.KZ GlobalTheory.Col UpperTheory.Kd.C7
 
+/- English proof (translation)
+Introduce `l _ _ Ω _ _ _ A _ ζ hζ m n hnm u hu h`. Establish `hp : l.Prime` using `Fact.out`. Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ`. Use `haveI : CharZero Ω := algebraRat.charZero Ω`. Use `haveI : ∀ i, HasEnoughRootsOfUnity Ω (l ^ i) := fun i => by haveI : NeZero (l ^ i) := ⟨pow_ne_zero _ hp.ne_zero⟩`.
+
+Conclude with `⟨⟨ζ i, (hζ i).1⟩, inferInstance⟩`. Establish `hpos : 0 < l ^ n` using `pow_pos hp.pos n`. Take `⟨v, hv⟩` from `IsAlgClosed.exists_pow_nat_eq u hpos`. Use `⟨v, hv, fun s hs => ?_⟩` and prove the remaining obligations. Take `⟨w, hw, hsw⟩` from `h s hs`.
+
+Rewrite `hsw` using `[ZMod.val_zero, pow_zero, one_mul]`. Establish `hw0 : w ≠ 0`. Introduce and unpack `rfl`. Conclude with `hu (by rw [← hw, zero_pow hpos.ne'])`. Establish `h1 : (v / w) ^ (l ^ n) = 1` using `by rw [div_pow, hv, hw, div_self hu]`.
+
+Establish `hc : cycMod ℚ Ω l m s = 1` using `(Subgroup.mem_inf.1 hs).2`. Establish `h2 : s (v / w) = v / w` using `fix_of_cycMod hnm hc h1`. Establish `e : v = v / w * w` using `by field_simp`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem UpperTheory.Kd.C7.pKumTriv :
     UpperTheory.Kd.C7.SKumTriv := by
   intro l _ _ Ω _ _ _ A _ ζ hζ m n hnm u hu h

@@ -15,6 +15,11 @@ open GlobalTheory.Mum
 
 namespace GlobalTheory.Mum
 
+/- English proof (translation)
+Introduce `R _ _ _ hR D A G _ _ hG U a a' h h' hE b hb`. Take `⟨N, hN, S, hS, hnd⟩` from `GlobalTheory.T.mumford_thickening_endomorphism_maps_sections R hR D A G hG U a a' h h' hE b hb`. Take `⟨φ, hφ, hgen⟩` from `GlobalTheory.T.exists_genericFibreHom_of_formalSectionRatios R hR D A G hG U a a' h h' hE b hb N S hN hS hnd`. Use `hR.1.1` as an intermediate fact. Use `hR.1.2.2.1` as an intermediate fact.
+
+Take `⟨g, hg, hgφ⟩` from `GlobalTheory.T.semiAbelian_genericFibre_hom_extends_normal_noetherian R G hG φ hφ`. Conclude with `⟨g, hg, GlobalTheory.T.thickening_eq_of_generic_section_ratios R hR D A G hG U a a' h h' hE b hb N S hS hnd φ hgen g hg hgφ⟩`.
+-/
 theorem formalEnd_algebraic : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (D : DegData R (maximalIdeal R)) (A : PolAV (Sp (FractionRing R))) (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ U : Unif (maximalIdeal R) D A G, ∀ (a a' : D.toPre.P.A ⟶ D.toPre.P.A) (h h' : D.toPre.X →+ D.toPre.X), EndData D.toPre a a' h h' → ∀ b, FormalEnd U.toUnifPre a h' b → ∃ g : G ⟶ G, IsMonHom g ∧ ∀ e, (Over.pullback (thick R (maximalIdeal R) e)).map g = b e := by
   intro R _ _ _ hR D A G _ _ hG U a a' h h' hE b hb
   obtain ⟨N, hN, S, hS, hnd⟩ := GlobalTheory.T.mumford_thickening_endomorphism_maps_sections R hR D A G hG U a a' h h' hE b hb

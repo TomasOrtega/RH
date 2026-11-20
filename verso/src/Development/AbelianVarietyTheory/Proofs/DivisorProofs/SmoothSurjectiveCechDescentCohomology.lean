@@ -8,6 +8,9 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 
 namespace GlobalTheory.EtC
 
+/- English proof (translation)
+Introduce `R _ Y X f _ _ F n`. Use `haveI : QuasiIso ((chains R).map (cechAug f)) := GlobalTheory.T.chains_cechNerve_quasiIso_of_smooth_surjective R f`. Conclude with `GlobalTheory.T.quasiIso_hypercohomology_bijective R ((chains R).map (cechAug f)) F n`.
+-/
 theorem smooth_surjective_cech_descent_cohomology : A2 := by
   intro R _ Y X f _ _ F n
   haveI : QuasiIso ((chains R).map (cechAug f)) := GlobalTheory.T.chains_cechNerve_quasiIso_of_smooth_surjective R f

@@ -15,6 +15,11 @@ namespace GlobalTheory.BaseScalar
 variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m}
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks)
 
+/- English proof (translation)
+Rewrite using `[Finset.eq_empty_iff_forall_notMem]`. Introduce `PP hPP`. Use `(h.Q_ram A.μ0 PP).2 (Or.inl hPP) ?_` and prove the remaining obligations. Rewrite using `[h.xi_base]`. Introduce `x _`.
+
+Both sides reduce to the same expression.
+-/
 theorem Q_base (h : R.toLevCh.Is A.μ0) : R.Q A.μ0 = ∅ := by
   rw [Finset.eq_empty_iff_forall_notMem]
   intro PP hPP
@@ -23,6 +28,11 @@ theorem Q_base (h : R.toLevCh.Is A.μ0) : R.Q A.μ0 = ∅ := by
   intro x _
   rfl
 
+/- English proof (translation)
+Establish `e : GlobalTheory.IndefiniteRowSideFullHecke.TwistedLevelValues.finS R A.μ0 = GlobalTheory.IndefiniteRowSideFullHecke.AdelicScalarSectionLift.finS R`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.TwistedLevelValues.finS GlobalTheory.IndefiniteRowSideFullHecke.AdelicScalarSectionLift.finS`. Rewrite using `[Q_base R h]`. Use `congr 1`. Use `ext`.
+
+Simplify using the standard rewrite rules. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.TwistedLevelValues.typePart GlobalTheory.IndefiniteRowSideFullHecke.AdelicScalarSectionLift.cuspPart`. Rewrite using `[e]`.
+-/
 theorem typePart_base (h : R.toLevCh.Is A.μ0) (i : Fin D.R.m) (c : HeightOneSpectrum (𝓞 D.host.E) → List ℤ → ℂ) :
     GlobalTheory.IndefiniteRowSideFullHecke.TwistedLevelValues.typePart R i (sg0 D A) A.μ0 R.triv c =
       (GlobalTheory.IndefiniteRowSideFullHecke.AdelicScalarSectionLift.cuspPart R i c).comap (R.HW i (sg0 D A)).e := by
@@ -35,6 +45,9 @@ theorem typePart_base (h : R.toLevCh.Is A.μ0) (i : Fin D.R.m) (c : HeightOneSpe
   unfold GlobalTheory.IndefiniteRowSideFullHecke.TwistedLevelValues.typePart GlobalTheory.IndefiniteRowSideFullHecke.AdelicScalarSectionLift.cuspPart
   rw [e]
 
+/- English proof (translation)
+Substitute `hr` using the available equality. Use `⟨(LinearEquiv.ofInjective _ hinj).symm.toLinearMap ∘ₗ f.codRestrict _ hm, fun x => ?_⟩` and prove the remaining obligations. Use `congrArg Subtype.val ((LinearEquiv.ofInjective _ hinj).apply_symm_apply ⟨f x, hm x⟩)` as an intermediate fact. Rewrite `this` using `[LinearEquiv.ofInjective_apply]`. Then use the resulting hypothesis.
+-/
 theorem exists_factor {X Y Z : Type} [AddCommGroup X] [Module ℂ X] [AddCommGroup Y] [Module ℂ Y] [AddCommGroup Z] [Module ℂ Z]
     (e : Y →ₗ[ℂ] Z) (f : X →ₗ[ℂ] Z) (V : Submodule ℂ Z) (hinj : Function.Injective e) (hr : LinearMap.range e = V)
     (hm : ∀ x, f x ∈ V) : ∃ th : X →ₗ[ℂ] Y, ∀ x, e (th x) = f x := by
@@ -43,11 +56,17 @@ theorem exists_factor {X Y Z : Type} [AddCommGroup X] [Module ℂ X] [AddCommGro
   have := congrArg Subtype.val ((LinearEquiv.ofInjective _ hinj).apply_symm_apply ⟨f x, hm x⟩)
   rwa [LinearEquiv.ofInjective_apply] at this
 
+/- English proof (translation)
+The claim follows from `exists_factor (R.HW i (sg0 D A)).e (R.thF i t) (R.Wall i (sg0 D A)) (h.models.HW i (sg0 D A)).1 (h.models.HW i (sg0 D A)).2.1 (h.thP.thF_mem i t)`.
+-/
 theorem exists_lift {F : Face D A} (h : R.Char F) (i : Fin D.R.m) (t : T0) :
     ∃ th : (R.HV i t).H →ₗ[ℂ] (R.HW i (sg0 D A)).H, ∀ x, (R.HW i (sg0 D A)).e (th x) = R.thF i t x :=
   exists_factor (R.HW i (sg0 D A)).e (R.thF i t) (R.Wall i (sg0 D A)) (h.models.HW i (sg0 D A)).1
     (h.models.HW i (sg0 D A)).2.1 (h.thP.thF_mem i t)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.integ (φ.rangeRestrict x) e g, h.eq (φ.rangeRestrict x) e g⟩`.
+-/
 theorem integrableOn_of_isThetaLift {G' H' S' Sinf TK Tau X : Type} [MeasurableSpace H'] [AddCommGroup Sinf] [Module ℂ Sinf] [AddCommGroup TK]
     [Module ℂ TK] [AddCommGroup Tau] [Module ℂ Tau] [AddCommGroup X] [Module ℂ X] {ν : Measure H'} {𝓕 : Set H'}
     {th : G' → H' → S' → ℂ} {pt : Sinf → S'} {io : TK →ₗ[ℂ] Tau →ₗ[ℂ] Sinf} {φ : X →ₗ[ℂ] (H' → Tau)}
@@ -57,6 +76,9 @@ theorem integrableOn_of_isThetaLift {G' H' S' Sinf TK Tau X : Type} [MeasurableS
       thP (φ.rangeRestrict x) e g = Lift.thetaPInt ν 𝓕 th pt io (φ x) e g :=
   ⟨h.integ (φ.rangeRestrict x) e g, h.eq (φ.rangeRestrict x) e g⟩
 
+/- English proof (translation)
+Unfold `GlobalTheory.IndefiniteRowSideFullHecke.TwistedLevelValues.adjLev`. Establish `: Nat.card (R.triv).H = 1` using `Subgroup.card_bot`. Rewrite using `[this]`. Simplify using the standard rewrite rules.
+-/
 theorem adjLev_triv {X Y : Type} [NormedAddCommGroup X] [InnerProductSpace ℂ X]
     [FiniteDimensional ℂ X] [NormedAddCommGroup Y] [InnerProductSpace ℂ Y] [FiniteDimensional ℂ Y] (th : X →ₗ[ℂ] Y) :
     GlobalTheory.IndefiniteRowSideFullHecke.TwistedLevelValues.adjLev (D := D) R.triv th = LinearMap.adjoint th := by

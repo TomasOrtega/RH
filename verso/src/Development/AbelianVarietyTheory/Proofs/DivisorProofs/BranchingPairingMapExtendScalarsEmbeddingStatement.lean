@@ -16,6 +16,9 @@ open Formalism.DivisionValues (vw lw)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.BrPairF.brPairF_map_descent | exact GlobalTheory.BrPairF.brPairF_map_descent | (intros; apply GlobalTheory.BrPairF.brPairF_map_descent <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.branchingPairing_map_extendScalars_embedding : ∀ {K ι : Type} [Field K] [CharZero K] [Fintype ι] (φ : K →+* ℂ) {n N : ℕ} (hN : N = n + 1)
     (Λ : ι → DomWeight N) (σ : ι → DomWeight n) (u : VV K Λ) (v : VV K fun τ => (σ τ).dual),
     φ (GlobalTheory.BrPairF.brPairF σ hN Λ u v) =

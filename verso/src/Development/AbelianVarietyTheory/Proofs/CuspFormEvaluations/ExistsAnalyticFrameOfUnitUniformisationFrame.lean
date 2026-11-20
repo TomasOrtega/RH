@@ -17,6 +17,17 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.AnVal
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c σ r U k x W Wu`. Set `_ : Algebra c.F ℂ` to `σ.toAlgebra`. Establish `hAH : AHFrame W.F (W.ik k) W.Pm Wu.Hm Wu.χl Wu.fr`. Use `⟨Wu.herm, Wu.pos, Wu.c1, Wu.c2, Wu.c3, Wu.c4, ?_, Wu.c6⟩` and prove the remaining obligations. Introduce `j hj`.
+
+Rewrite using `[← W.pt]`. Conclude with `Wu.c5 j hj`. Take `⟨Φ, hO, hH, hχ, hfr, hlin, hlev⟩` from `GlobalTheory.T.analyticFrame_of_appellHumbertFramePeriodFamily E H Dw l Xo c (U.un k x) W.g (fun j => relab c σ (W.e j).1) W.e _ W.F (W.ik k) W.Pm Wu.Hm Wu.χl Wu.fr W.per W.pt hAH (fun ℓ => W.der ℓ.1 ℓ.2)`. Establish `hRd : ∀ kk F θ, Φ.toAnFr.Rd kk F θ ↔ IsFrRd W Wu kk F θ`. Introduce `kk F θ`.
+
+Unfold `AnFr.Rd IsFrRd`. Prove the components needed by the constructor for the conclusion. Introduce `h j z pt h1 h2 h3`. Rewrite `h1`, `h3` using `[← hO.1 z]`. Rewrite using `[← hfr]`.
+
+Conclude with `h j z pt h1 h2 h3`. Introduce `h j z pt h1 h2 h3`. Rewrite `h1`, `h3` using `[hO.1 z]`. Rewrite using `[hfr]`. Conclude with `h j z pt h1 h2 h3`.
+
+Use `⟨Φ, hO, hH, hχ, hfr, ?_, hRd, hlin, hlev⟩` and prove the remaining obligations. Use `(hRd _ _ _).2 ?_` and prove the remaining obligations. Introduce `j z pt h1 h2 h3`. Rewrite using `[zpow_one]`. Conclude with `Wu.c7 j z pt h1 h2 h3`.
+-/
 theorem exists_anPt_of_unitAt : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (r : ℕ) (U : Unf Xo c σ r) (k : U.Comp) (x : (U.X k).dom) (W : UnfAt U k x) (Wu : UnitAt W), letI : Algebra c.F ℂ := σ.toAlgebra; ∃ Φ : AnPt (Xo := Xo) (c := c) (U.un k x) W.g (fun j => relab c σ (W.e j).1) W.e, Φ.OfFam W.F (W.ik k) W.Pm ∧ Φ.Hm = Wu.Hm ∧ Φ.χ = Wu.χl ∧ Φ.fr = Wu.fr ∧ Φ.toAnFr.Rd 1 (U.un k x).s Wu.θ ∧ (∀ kk F θ, Φ.toAnFr.Rd kk F θ ↔ IsFrRd W Wu kk F θ) ∧ (∀ (α : 𝓞 E) a, W.Pm (W.F.t (W.ik k) (α • a)) = tyAct (fun j => relab c σ (W.e j).1) α (W.Pm (W.F.t (W.ik k) a))) ∧ ∀ a ∈ Mfr l • (⊤ : Submodule (𝓞 E) Dw.La), levPt Xo (U.un k x).x a = Φ.e ((l.M : ℂ)⁻¹ • W.Pm (W.F.t (W.ik k) a)) := by
   intro E _ _ _ H Dw l Xo c σ r U k x W Wu
   let _ : Algebra c.F ℂ := σ.toAlgebra

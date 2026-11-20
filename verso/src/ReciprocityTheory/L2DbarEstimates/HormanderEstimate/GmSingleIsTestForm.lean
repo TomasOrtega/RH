@@ -13,6 +13,13 @@ section helpers
 
 variable {M : Type*} [TopologicalSpace M]
 
+/- English proof (translation)
+Rewrite using `[continuous_iff_continuousAt]`. Introduce `x`. Take `⟨e, hx, he⟩` from `hz x`. Establish `hc : IsChart n z e` using `fun y _ => congrFun he y`. Establish `h` using `(hph e hc).continuousOn.continuousAt (e.open_target.mem_nhds (e.map_source hx))`.
+
+Establish `h2` using `h.comp (e.continuousAt hx)`. Establish `h3 : ContinuousAt (fun y => (ph y : ℂ)) x`. Use `h2.congr ?_` and prove the remaining obligations. Use `filter_upwards [e.open_source.mem_nhds hx] with y hy`. Simplify using `[e.left_inv hy]`.
+
+Simplify `Complex.continuous_re.continuousAt.comp h3` using `[Function.comp_def]`.
+-/
 theorem gm_cont_of_smoothR (n : ℕ) (z : M → V n) (hz : IsLocalHomeomorph z) (ph : M → ℝ)
     (hph : SmoothR n z ph) : Continuous ph := by
   rw [continuous_iff_continuousAt]
@@ -27,6 +34,9 @@ theorem gm_cont_of_smoothR (n : ℕ) (z : M → V n) (hz : IsLocalHomeomorph z) 
     simp [e.left_inv hy]
   simpa [Function.comp_def] using Complex.continuous_re.continuousAt.comp h3
 
+/- English proof (translation)
+Use `first`. Consider the case `exact WithTop.coe_le_coe.2 le_top`. Consider the case `exact_mod_cast le_top`. Consider the case `(norm_cast; exact le_top)`. Consider the case `simp`.
+-/
 private lemma natCast_le_coe_infty (k : ℕ) : (k : ℕ∞ω) ≤ ((⊤ : ℕ∞) : ℕ∞ω) := by
   first
     | exact WithTop.coe_le_coe.2 le_top
@@ -34,6 +44,13 @@ private lemma natCast_le_coe_infty (k : ℕ) : (k : ℕ∞ω) ≤ ((⊤ : ℕ∞
     | (norm_cast; exact le_top)
     | simp
 
+/- English proof (translation)
+Introduce `e he`. Establish `h` using `hph e he`. Establish `hre : ContDiffOn ℝ ∞ (fun w => ph (e.symm w)) e.target`. Use `Complex.reCLM.contDiff.comp_contDiffOn h` as an intermediate fact. Simplify `this` using `[Function.comp_def]`.
+
+Establish `hmul : ContDiffOn ℝ ∞ (fun w => s * ph (e.symm w)) e.target` using `contDiffOn_const.mul hre`. Establish `hrexp : ContDiffOn ℝ ∞ (fun w => Real.exp (s * ph (e.symm w))) e.target` using `Real.contDiff_exp.comp_contDiffOn hmul`. Establish `hexp : ContDiffOn ℝ ∞ (fun w => (Real.exp (s * ph (e.symm w)) : ℂ)) e.target`. Use `Complex.ofRealCLM.contDiff.comp_contDiffOn hrexp` as an intermediate fact. Simplify `this` using `[Function.comp_def]`.
+
+Conclude with `hexp.of_le (natCast_le_coe_infty k)`.
+-/
 theorem gm_exp_ck (n : ℕ) (z : M → V n) (ph : M → ℝ) (hph : SmoothR n z ph) (s : ℝ) (k : ℕ) :
     Ck n z k (fun y => (Real.exp (s * ph y) : ℂ)) := by
   intro e he
@@ -49,6 +66,11 @@ theorem gm_exp_ck (n : ℕ) (z : M → V n) (ph : M → ℝ) (hph : SmoothR n z 
     simpa [Function.comp_def] using this
   exact hexp.of_le (natCast_le_coe_infty k)
 
+/- English proof (translation)
+Use `first`. Consider the case `exact continuous_pi hf`. Consider the case `exact (PiLp.continuous_toLp 2 _).comp (continuous_pi hf)`. Consider the case `(have h1 : Continuous (fun x => WithLp.ofLp (f x)) := continuous_pi hf`. Simplify using `using (PiLp.continuous_toLp 2 _).comp h1)`.
+
+Consider the case `fun_prop`.
+-/
 theorem gm_form_continuous {n : ℕ} (f : M → V n) (hf : ∀ k, Continuous fun x => f x k) :
     Continuous f := by
   first
@@ -58,6 +80,11 @@ theorem gm_form_continuous {n : ℕ} (f : M → V n) (hf : ∀ k, Continuous fun
        simpa using (PiLp.continuous_toLp 2 _).comp h1)
     | fun_prop
 
+/- English proof (translation)
+Use `HasCompactSupport.intro' (K := ⋃ k, tsupport (fun x => f x k)) (isCompact_iUnion fun k => hf k) (isClosed_iUnion_of_finite fun k => isClosed_tsupport _) ?_` and prove the remaining obligations. Introduce `x hx`. Simplify using `only [mem_iUnion, not_exists] at hx`. Use extensionality with `k`. Use `first`.
+
+Consider the case `simpa using image_eq_zero_of_notMem_tsupport (hx k)`. Consider the case `simpa using image_eq_zero_of_nmem_tsupport (hx k)`.
+-/
 theorem gm_form_hcs {n : ℕ} (f : M → V n) (hf : ∀ k, HasCompactSupport (fun x => f x k)) :
     HasCompactSupport f := by
   refine HasCompactSupport.intro' (K := ⋃ k, tsupport (fun x => f x k))
@@ -101,6 +128,27 @@ def gmTestForms (n : ℕ) (z : M → V n) : Submodule ℂ (M → V n) where
         funext x; simp
       rw [e]; exact HasCompactSupport.mul_left (hf k).2
 
+/- English proof (translation)
+Rewrite using `[continuous_iff_continuousAt]`. Introduce `x0`. Take `⟨e0, hx0, he0⟩` from `hz x0`. Establish `hc0 : IsChart n z e0` using `fun y _ => congrFun he0 y`. Establish `hloc : ∀ x ∈ e0.source, d n z j g x = wd n j (g ∘ e0.symm) (z x)`.
+
+Introduce `x hx`. Unfold `d`. Establish `hex : ∃ e : OpenPartialHomeomorph M (V n), IsChart n z e ∧ x ∈ e.source` using `⟨e0, hc0, hx⟩`. Rewrite using `[dif_pos hex]`. Use `set e := Classical.choose hex with he_def`.
+
+Establish `he : IsChart n z e ∧ x ∈ e.source` using `Classical.choose_spec hex`. Establish `hzx : z x = e x` using `he.1 he.2`. Establish `hT : Tendsto e.symm (𝓝 (z x)) (𝓝 x)`. Use `(e.continuousAt_symm (e.map_source he.2)).tendsto` as an intermediate fact. Rewrite `this` using `[e.left_inv he.2, ← hzx]`. Then use the resulting hypothesis.
+
+Establish `hev : (g ∘ e.symm) =ᶠ[𝓝 (z x)] (g ∘ e0.symm)`. Establish `h1 : ∀ᶠ w in 𝓝 (z x), e.symm w ∈ e0.source` using `hT.eventually (e0.open_source.mem_nhds hx)`. Establish `h2 : ∀ᶠ w in 𝓝 (z x), w ∈ e.target`. Rewrite using `[hzx]`. Conclude with `e.open_target.mem_nhds (e.map_source he.2)`.
+
+Use `filter_upwards [h1, h2] with w hw1 hw2`. Establish `h3 : z (e.symm w) = w`. Rewrite using `[he.1 (e.map_target hw2), e.right_inv hw2]`. Establish `h4 : e0 (e.symm w) = w`. Rewrite using `[← hc0 hw1, h3]`.
+
+Establish `h5 : e.symm w = e0.symm w`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Function.comp_apply, h5]`. Unfold `wd`. Rewrite using `[hev.fderiv_eq (𝕜 := ℝ)]`.
+
+Establish `hcont : ContinuousAt (fun x => wd n j (g ∘ e0.symm) (z x)) x0`. Establish `hG : ContinuousOn (fun y => fderiv ℝ (g ∘ e0.symm) y) e0.target` using `by first`. Consider the case `exact (hg e0 hc0).continuousOn_fderiv_of_isOpen e0.open_target (by norm_num)`. Consider the case `exact (hg e0 hc0).continuousOn_fderiv_of_isOpen e0.open_target (by simp)`. Establish `hzc : ContinuousAt z x0`.
+
+Rewrite using `[he0]`. Conclude with `e0.continuousAt hx0`. Establish `hmem : z x0 ∈ e0.target`. Rewrite using `[he0]`. Conclude with `e0.map_source hx0`.
+
+Establish `hGz : ContinuousAt (fun x => fderiv ℝ (g ∘ e0.symm) (z x)) x0` using `(hG.continuousAt (e0.open_target.mem_nhds hmem)).comp hzc`. Unfold `wd`. Establish `hb1` using `hGz.clm_apply (continuousAt_const : ContinuousAt (fun _ : M => bas n j) x0)`. Establish `hb2` using `hGz.clm_apply (continuousAt_const : ContinuousAt (fun _ : M => Complex.I • bas n j) x0)`. Conclude with `(hb1.sub (continuousAt_const.mul hb2)).div_const 2`.
+
+Use `hcont.congr ?_` and prove the remaining obligations. Use `filter_upwards [e0.open_source.mem_nhds hx0] with x hx`. Conclude with `(hloc x hx).symm`.
+-/
 private lemma continuous_d_of_ck_two {n : ℕ} {z : M → V n} (hz : IsLocalHomeomorph z) {g : M → ℂ}
     (hg : Ck n z 2 g) (j : Fin n) : Continuous (d n z j g) := by
   rw [continuous_iff_continuousAt]
@@ -156,6 +204,11 @@ private lemma continuous_d_of_ck_two {n : ℕ} {z : M → V n} (hz : IsLocalHome
   filter_upwards [e0.open_source.mem_nhds hx0] with x hx
   exact (hloc x hx).symm
 
+/- English proof (translation)
+Establish `hE1 : Ck n z 2 (fun y => (Real.exp (-ph y) : ℂ))`. Simplify `gm_exp_ck n z ph hph (-1) 2` using `[neg_one_mul]`. Establish `hph'` using `gm_cont_of_smoothR n z hz ph hph`. Establish `hsum : Continuous (fun x => ∑ j, d n z j (fun y => (Real.exp (-ph y) : ℂ) * f y j) x)` using `continuous_finset_sum _ fun j _ => continuous_d_of_ck_two hz (Ck.mul n z 2 _ _ hE1 (hf j).1) j`. Establish `hE : Continuous (fun x => (Real.exp (ph x) : ℂ))` using `Complex.continuous_ofReal.comp (Real.continuous_exp.comp hph')`.
+
+Conclude with `(hE.mul hsum).neg`.
+-/
 theorem gm_tstar_cont (n : ℕ) (z : M → V n) (hz : IsLocalHomeomorph z) (ph : M → ℝ)
     (hph : SmoothR n z ph) (f : M → V n) (hf : IsTestForm n z f) :
     Continuous (tstar n z ph ph f) := by
@@ -168,6 +221,15 @@ theorem gm_tstar_cont (n : ℕ) (z : M → V n) (hz : IsLocalHomeomorph z) (ph :
     Complex.continuous_ofReal.comp (Real.continuous_exp.comp hph')
   exact (hE.mul hsum).neg
 
+/- English proof (translation)
+Unfold `d`. Use `split_ifs with h`. Use `set e := Classical.choose h with he_def`. Establish `he : IsChart n z e ∧ x ∈ e.source` using `Classical.choose_spec h`. Establish `hU : g =ᶠ[𝓝 x] 0` using `by first`.
+
+Consider the case `exact notMem_tsupport_iff_eventuallyEq.1 hx`. Consider the case `exact not_mem_tsupport_iff_eventuallyEq.1 hx`. Establish `hT : Tendsto e.symm (𝓝 (e x)) (𝓝 x)`. Use `(e.continuousAt_symm (e.map_source he.2)).tendsto` as an intermediate fact. Rewrite `this` using `[e.left_inv he.2]`. Then use the resulting hypothesis.
+
+Establish `hev : (g ∘ e.symm) =ᶠ[𝓝 (z x)] fun _ => 0`. Rewrite using `[he.1 he.2]`. Conclude with `hT.eventually hU`. Establish `hfd : fderiv ℝ (g ∘ e.symm) (z x) = 0`. Rewrite using `[hev.fderiv_eq]`.
+
+Conclude with `fderiv_const_apply _`. Simplify using `only [wd, hfd, ContinuousLinearMap.zero_apply, mul_zero, sub_zero, zero_div]`. Both sides reduce to the same expression.
+-/
 private lemma d_eq_zero_of_not_mem_tsupport {n : ℕ} {z : M → V n} {g : M → ℂ} {x : M} (j : Fin n)
     (hx : x ∉ tsupport g) : d n z j g x = 0 := by
   unfold d
@@ -190,6 +252,13 @@ private lemma d_eq_zero_of_not_mem_tsupport {n : ℕ} {z : M → V n} {g : M →
     simp only [wd, hfd, ContinuousLinearMap.zero_apply, mul_zero, sub_zero, zero_div]
   · rfl
 
+/- English proof (translation)
+Use `HasCompactSupport.intro' (K := ⋃ k, tsupport (fun x => f x k)) (isCompact_iUnion fun k => (hf k).2) (isClosed_iUnion_of_finite fun k => isClosed_tsupport _) ?_` and prove the remaining obligations. Introduce `x hx`. Simplify using `only [mem_iUnion, not_exists] at hx`. Establish `hzero : ∀ j, d n z j (fun y => (Real.exp (-ph y) : ℂ) * f y j) x = 0`. Introduce `j`.
+
+Apply `d_eq_zero_of_not_mem_tsupport` to reduce the goal to its premises. Introduce `hmem`. Establish `hsub : Function.support (fun y => (Real.exp (-ph y) : ℂ) * f y j) ⊆ Function.support (fun y => f y j)` using `fun y hy hy0 => hy (by simp [hy0])`. Conclude with `hx j (closure_mono hsub hmem)`. Simplify using `only [tstar]`.
+
+Rewrite using `[Finset.sum_eq_zero (fun j _ => hzero j)]`. Simplify using the standard rewrite rules.
+-/
 theorem gm_tstar_hcs (n : ℕ) (z : M → V n) (ph : M → ℝ) (f : M → V n) (hf : IsTestForm n z f) :
     HasCompactSupport (tstar n z ph ph f) := by
   refine HasCompactSupport.intro' (K := ⋃ k, tsupport (fun x => f x k))
@@ -207,6 +276,11 @@ theorem gm_tstar_hcs (n : ℕ) (z : M → V n) (ph : M → ℝ) (f : M → V n) 
   rw [Finset.sum_eq_zero (fun j _ => hzero j)]
   simp
 
+/- English proof (translation)
+Introduce `e he`. Use `(h e he).of_le ?_` and prove the remaining obligations. Use `first`. Consider the case `norm_num`. Consider the case `exact_mod_cast (show (1 : ℕ) ≤ 2 by norm_num)`.
+
+Consider the case `exact WithTop.coe_le_coe.2 (by norm_num)`.
+-/
 private lemma ck_one_of_ck_two {n : ℕ} {z : M → V n} {f : M → ℂ} (h : Ck n z 2 f) : Ck n z 1 f := by
   intro e he
   refine (h e he).of_le ?_
@@ -215,6 +289,13 @@ private lemma ck_one_of_ck_two {n : ℕ} {z : M → V n} {f : M → ℂ} (h : Ck
     | exact_mod_cast (show (1 : ℕ) ≤ 2 by norm_num)
     | exact WithTop.coe_le_coe.2 (by norm_num)
 
+/- English proof (translation)
+Establish `hE : Ck n z 1 (fun y => (Real.exp (-ph y) : ℂ))`. Simplify `gm_exp_ck n z ph hph (-1) 1` using `[neg_one_mul]`. Establish `key : ∀ j, d n z j (fun y => (Real.exp (-ph y) : ℂ) * (f + g) y j) x = d n z j (fun y => (Real.exp (-ph y) : ℂ) * f y j) x + d n z j (fun y => (Real.exp (-ph y) : ℂ) * g y j) x`. Introduce `j`. Establish `hf1 : Ck n z 1 (fun y => (Real.exp (-ph y) : ℂ) * f y j)` using `Ck.mul n z 1 _ _ hE (ck_one_of_ck_two (hf j).1)`.
+
+Establish `hg1 : Ck n z 1 (fun y => (Real.exp (-ph y) : ℂ) * g y j)` using `Ck.mul n z 1 _ _ hE (ck_one_of_ck_two (hg j).1)`. Rewrite using `[← d_add n z _ _ hf1 hg1 j x]`. Use `congr 1`. Use function extensionality and compare the values at `y`. Simplify using `[mul_add]`.
+
+Simplify using `only [tstar, key, Finset.sum_add_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem gm_tstar_add (n : ℕ) (z : M → V n) (ph : M → ℝ) (hph : SmoothR n z ph)
     (f g : M → V n) (hf : IsTestForm n z f) (hg : IsTestForm n z g) (x : M) :
     tstar n z ph ph (f + g) x = tstar n z ph ph f x + tstar n z ph ph g x := by
@@ -235,6 +316,13 @@ theorem gm_tstar_add (n : ℕ) (z : M → V n) (ph : M → ℝ) (hph : SmoothR n
   simp only [tstar, key, Finset.sum_add_distrib]
   ring
 
+/- English proof (translation)
+Establish `hE : Ck n z 1 (fun y => (Real.exp (-ph y) : ℂ))`. Simplify `gm_exp_ck n z ph hph (-1) 1` using `[neg_one_mul]`. Establish `key : ∀ j, d n z j (fun y => (Real.exp (-ph y) : ℂ) * (c • f) y j) x = c * d n z j (fun y => (Real.exp (-ph y) : ℂ) * f y j) x`. Introduce `j`. Rewrite using `[← d_const_mul n z c _ (Ck.mul n z 1 _ _ hE (ck_one_of_ck_two (hf j).1)) j x]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `y`. Use `first`. Consider the case `simp [mul_left_comm]`. Consider the case `(simp <;> ring)`.
+
+Simplify using `only [tstar, key, ← Finset.mul_sum]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem gm_tstar_smul (n : ℕ) (z : M → V n) (ph : M → ℝ) (hph : SmoothR n z ph)
     (c : ℂ) (f : M → V n) (hf : IsTestForm n z f) (x : M) :
     tstar n z ph ph (c • f) x = c * tstar n z ph ph f x := by
@@ -258,6 +346,9 @@ section meas
 
 variable {M : Type*} [TopologicalSpace M] [MeasurableSpace M]
 
+/- English proof (translation)
+Establish `hm : Measurable (fun x => ENNReal.ofReal (Real.exp (-ph x)))` using `ENNReal.measurable_ofReal.comp (Real.measurable_exp.comp hph.neg)`. Rewrite using `[wvol, lintegral_withDensity_eq_lintegral_mul_non_measurable _ hm (Eventually.of_forall fun _ => ENNReal.ofReal_lt_top)]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Rewrite using `[Pi.mul_apply, ← ofReal_norm_eq_enorm, ENNReal.ofReal_rpow_of_nonneg (norm_nonneg _) (by norm_num), Real.rpow_two, ← ENNReal.ofReal_mul (Real.exp_pos _).le, mul_comm]`.
+-/
 theorem gm_lintegral_wvol {E : Type*} [NormedAddCommGroup E] (n : ℕ) (z : M → V n) (ph : M → ℝ)
     (hph : Measurable ph) (g : M → E) :
     ∫⁻ x, ‖g x‖ₑ ^ (2:ℝ) ∂wvol n z ph =
@@ -271,6 +362,11 @@ theorem gm_lintegral_wvol {E : Type*} [NormedAddCommGroup E] (n : ℕ) (z : M �
   rw [Pi.mul_apply, ← ofReal_norm_eq_enorm, ENNReal.ofReal_rpow_of_nonneg (norm_nonneg _) (by norm_num),
     Real.rpow_two, ← ENNReal.ofReal_mul (Real.exp_pos _).le, mul_comm]
 
+/- English proof (translation)
+Use `first`. Consider the case `(simp only [MemLp, hg, true_and]`. Rewrite using `[eLpNorm_lt_top_iff_lintegral_rpow_enorm_lt_top two_ne_zero ENNReal.ofNat_ne_top]`. Use the proof step `simp)`. Consider the case `(rw [MemLp, and_iff_right hg, eLpNorm_eq_lintegral_rpow_enorm two_ne_zero ENNReal.ofNat_ne_top]`.
+
+Simplify using `only [ENNReal.toReal_ofNat]`. Rewrite using `[ENNReal.rpow_lt_top_iff_of_pos (by norm_num)])`.
+-/
 theorem gm_memLp_two_iff {E : Type*} [NormedAddCommGroup E] {μ : Measure M} (g : M → E)
     (hg : AEStronglyMeasurable g μ) :
     MemLp g 2 μ ↔ ∫⁻ x, ‖g x‖ₑ ^ (2:ℝ) ∂μ < ⊤ := by
@@ -282,6 +378,9 @@ theorem gm_memLp_two_iff {E : Type*} [NormedAddCommGroup E] {μ : Measure M} (g 
        simp only [ENNReal.toReal_ofNat]
        rw [ENNReal.rpow_lt_top_iff_of_pos (by norm_num)])
 
+/- English proof (translation)
+Rewrite using `[Lp.norm_def, ENNReal.ofReal_pow ENNReal.toReal_nonneg, ENNReal.ofReal_toReal (Lp.eLpNorm_ne_top u), eLpNorm_eq_lintegral_rpow_enorm two_ne_zero ENNReal.ofNat_ne_top, ← ENNReal.rpow_natCast, ← ENNReal.rpow_mul]`. Evaluate the numerical expressions.
+-/
 theorem gm_norm_sq {E : Type*} [NormedAddCommGroup E] {μ : Measure M} (u : Lp E 2 μ) :
     ENNReal.ofReal (‖u‖ ^ 2) = ∫⁻ x, ‖u x‖ₑ ^ (2:ℝ) ∂μ := by
   rw [Lp.norm_def, ENNReal.ofReal_pow ENNReal.toReal_nonneg, ENNReal.ofReal_toReal (Lp.eLpNorm_ne_top u),
@@ -289,6 +388,11 @@ theorem gm_norm_sq {E : Type*} [NormedAddCommGroup E] {μ : Measure M} (u : Lp E
     ← ENNReal.rpow_mul]
   norm_num
 
+/- English proof (translation)
+Establish `hm : Measurable (fun x => ENNReal.ofReal (Real.exp (-ph x)))` using `ENNReal.measurable_ofReal.comp (Real.measurable_exp.comp hph.neg)`. Establish `hlt : ∀ᵐ x ∂vol n z, ENNReal.ofReal (Real.exp (-ph x)) < ⊤` using `Eventually.of_forall fun _ => ENNReal.ofReal_lt_top`. Establish `hfun : (fun x => (ENNReal.ofReal (Real.exp (-ph x))).toReal • G x) = fun x => (Real.exp (-ph x) : ℂ) * G x`. Use function extensionality and compare the values at `x`. Rewrite using `[ENNReal.toReal_ofReal (Real.exp_pos _).le, Complex.real_smul]`.
+
+Use `⟨?_, fun h => ?_⟩` and prove the remaining obligations. Rewrite using `[wvol, integral_withDensity_eq_integral_toReal_smul hm hlt, hfun]`. Rewrite `h` using `[wvol, integrable_withDensity_iff_integrable_smul' hm hlt, hfun]`. Conclude with `h`.
+-/
 theorem gm_integral_wvol (n : ℕ) (z : M → V n) (ph : M → ℝ) (hph : Measurable ph)
     (G : M → ℂ) :
     ∫ x, G x ∂wvol n z ph = ∫ x, (Real.exp (-ph x) : ℂ) * G x ∂vol n z ∧
@@ -306,6 +410,15 @@ theorem gm_integral_wvol (n : ℕ) (z : M → V n) (ph : M → ℝ) (hph : Measu
   · rw [wvol, integrable_withDensity_iff_integrable_smul' hm hlt, hfun] at h
     exact h
 
+/- English proof (translation)
+Establish `hpt : ∀ x, ⟪u x, g x⟫_ℂ = conj (u x) * g x`. Introduce `x`. Use `first`. Consider the case `exact RCLike.inner_apply _ _`. Consider the case `(simp [RCLike.inner_apply]; ring)`.
+
+Consider the case `(simp; ring)`. Establish `hint : Integrable (fun x => conj (u x) * g x) (wvol n z ph)`. Use `(L2.integrable_inner (𝕜 := ℂ) u (hg.toLp g)).congr ?_` and prove the remaining obligations. Use `filter_upwards [hg.coeFn_toLp] with x hx`. Rewrite using `[hx, hpt]`.
+
+Establish `hinner : ⟪u, hg.toLp g⟫_ℂ = ∫ x, conj (u x) * g x ∂wvol n z ph`. Rewrite using `[L2.inner_def]`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hg.coeFn_toLp] with x hx`. Rewrite using `[hx, hpt]`.
+
+Take `⟨h1, h2⟩` from `gm_integral_wvol n z ph hph (fun x => conj (u x) * g x)`. Conclude with `⟨hinner.trans h1, h2 hint⟩`.
+-/
 theorem gm_inner_toLp (n : ℕ) (z : M → V n) (ph : M → ℝ) (hph : Measurable ph)
     (u : Lp ℂ 2 (wvol n z ph)) (g : M → ℂ) (hg : MemLp g 2 (wvol n z ph)) :
     ⟪u, hg.toLp g⟫_ℂ = ∫ x, (Real.exp (-ph x) : ℂ) * (conj (u x) * g x) ∂vol n z ∧
@@ -335,12 +448,20 @@ section maps
 variable {M : Type*} [TopologicalSpace M] [T2Space M] [SecondCountableTopology M]
   [MeasurableSpace M] [BorelSpace M]
 
+/- English proof (translation)
+Use `first`. Consider the case `exact ht.mono fun x hx h0 => hx (h x h0)`. Consider the case `exact ht.mono' (closure_mono fun x hx h0 => hx (h x h0))`.
+-/
 theorem gm_hcs_of {E F : Type*} [Zero E] [Zero F] (t : M → E) (G : M → F) (ht : HasCompactSupport t)
     (h : ∀ x, t x = 0 → G x = 0) : HasCompactSupport G := by
   first
     | exact ht.mono fun x hx h0 => hx (h x h0)
     | exact ht.mono' (closure_mono fun x hx h0 => hx (h x h0))
 
+/- English proof (translation)
+Use `haveI := vol_isFiniteMeasureOnCompacts n z hz`. Establish `hc : Continuous (tstar n z ph ph f)` using `gm_tstar_cont n z hz ph hph f hf`. Establish `hs` using `gm_tstar_hcs n z ph f hf`. Establish `hph'` using `gm_cont_of_smoothR n z hz ph hph`. Rewrite using `[gm_memLp_two_iff _ hc.aestronglyMeasurable, gm_lintegral_wvol n z ph hph'.measurable]`.
+
+Establish `hG : Continuous (fun x => ‖tstar n z ph ph f x‖ ^ 2 * Real.exp (-ph x))` using `(hc.norm.pow 2).mul (Real.continuous_exp.comp hph'.neg)`. Establish `hGs : HasCompactSupport (fun x => ‖tstar n z ph ph f x‖ ^ 2 * Real.exp (-ph x))` using `gm_hcs_of _ _ hs fun x hx => by simp [hx]`. Conclude with `(hG.integrable_of_hasCompactSupport hGs (μ := vol n z)).lintegral_lt_top`.
+-/
 theorem gm_memLp_tstar (n : ℕ) (z : M → V n) (hz : IsLocalHomeomorph z) (ph : M → ℝ)
     (hph : SmoothR n z ph) (f : M → V n) (hf : IsTestForm n z f) :
     MemLp (tstar n z ph ph f) 2 (wvol n z ph) := by
@@ -355,6 +476,11 @@ theorem gm_memLp_tstar (n : ℕ) (z : M → V n) (hz : IsLocalHomeomorph z) (ph 
     gm_hcs_of _ _ hs fun x hx => by simp [hx]
   exact (hG.integrable_of_hasCompactSupport hGs (μ := vol n z)).lintegral_lt_top
 
+/- English proof (translation)
+Rewrite using `[continuous_iff_continuousAt]`. Introduce `x`. Take `⟨e, hx, he⟩` from `hz x`. Establish `hc : IsChart n z e` using `fun y _ => congrFun he y`. Establish `h` using `(hg e hc).continuousOn.continuousAt (e.open_target.mem_nhds (e.map_source hx))`.
+
+Establish `h2` using `h.comp (e.continuousAt hx)`. Use `h2.congr ?_` and prove the remaining obligations. Use `filter_upwards [e.open_source.mem_nhds hx] with y hy`. Simplify using `[e.left_inv hy]`.
+-/
 private lemma continuous_of_ck {n : ℕ} {z : M → V n} (hz : IsLocalHomeomorph z) {k : ℕ} {g : M → ℂ}
     (hg : Ck n z k g) : Continuous g := by
   rw [continuous_iff_continuousAt]
@@ -367,6 +493,11 @@ private lemma continuous_of_ck {n : ℕ} {z : M → V n} (hz : IsLocalHomeomorph
   filter_upwards [e.open_source.mem_nhds hx] with y hy
   simp [e.left_inv hy]
 
+/- English proof (translation)
+Use `haveI := vol_isFiniteMeasureOnCompacts n z hz`. Establish `hfc : Continuous f` using `gm_form_continuous f fun k => continuous_of_ck hz (hf k).1`. Establish `hfs : HasCompactSupport f` using `gm_form_hcs f fun k => (hf k).2`. Establish `hph' : Continuous ph` using `gm_cont_of_smoothR n z hz ph hph`. Establish `hcont : Continuous (fun x => ⟪v x, f x⟫_ℂ * (Real.exp (-ph x) : ℂ))`.
+
+Establish `h1 : Continuous (fun x => ⟪v x, f x⟫_ℂ)` using `hv.inner hfc`. Establish `h2 : Continuous (fun x => (Real.exp (-ph x) : ℂ))` using `Complex.continuous_ofReal.comp (Real.continuous_exp.comp hph'.neg)`. Conclude with `h1.mul h2`. Conclude with `hcont.integrable_of_hasCompactSupport (gm_hcs_of f _ hfs fun x hx => by simp [hx])`.
+-/
 theorem gm_ipV_integrable (n : ℕ) (z : M → V n) (hz : IsLocalHomeomorph z) (ph : M → ℝ)
     (hph : SmoothR n z ph) (v : M → V n) (hv : Continuous v) (f : M → V n)
     (hf : IsTestForm n z f) :
@@ -382,6 +513,9 @@ theorem gm_ipV_integrable (n : ℕ) (z : M → V n) (hz : IsLocalHomeomorph z) (
     exact h1.mul h2
   exact hcont.integrable_of_hasCompactSupport (gm_hcs_of f _ hfs fun x hx => by simp [hx])
 
+/- English proof (translation)
+Establish `h1` using `gm_ipV_integrable n z hz ph hph v hv f hf`. Establish `h2` using `gm_ipV_integrable n z hz ph hph v hv g hg`. Simplify using `only [ipV, Pi.add_apply, inner_add_right, add_mul]`. Conclude with `integral_add h1 h2`.
+-/
 theorem gm_ipV_add (n : ℕ) (z : M → V n) (hz : IsLocalHomeomorph z) (ph : M → ℝ)
     (hph : SmoothR n z ph) (v : M → V n) (hv : Continuous v) (f g : M → V n)
     (hf : IsTestForm n z f) (hg : IsTestForm n z g) :
@@ -391,6 +525,9 @@ theorem gm_ipV_add (n : ℕ) (z : M → V n) (hz : IsLocalHomeomorph z) (ph : M 
   simp only [ipV, Pi.add_apply, inner_add_right, add_mul]
   exact integral_add h1 h2
 
+/- English proof (translation)
+Simplify using `only [ipV, Pi.smul_apply, inner_smul_right, mul_assoc]`. Use `first`. Consider the case `exact integral_const_mul c _`. Consider the case `exact integral_mul_left c _`.
+-/
 theorem gm_ipV_smul (n : ℕ) (z : M → V n) (ph : M → ℝ) (v : M → V n) (c : ℂ) (f : M → V n) :
     ipV n z v (c • f) ph = c * ipV n z v f ph := by
   simp only [ipV, Pi.smul_apply, inner_smul_right, mul_assoc]
@@ -420,6 +557,15 @@ def gmEll (n : ℕ) (z : M → V n) (hz : IsLocalHomeomorph z) (ph : M → ℝ)
 def gmSingle {n : ℕ} (ph : M → ℝ) (φ : M → ℂ) (j : Fin n) : M → V n :=
   fun y => EuclideanSpace.single j ((Real.exp (ph y) : ℂ) * conj (φ y))
 
+/- English proof (translation)
+Introduce `k`. Establish `hE : Ck n z 2 (fun y => (Real.exp (ph y) : ℂ))`. Simplify using `using gm_exp_ck n z ph hph 1 2`. Establish `hc : Ck n z 2 (fun y => conj (φ y))`. Introduce `e he`.
+
+Establish `h` using `(hφ.1 e he).of_le (natCast_le_coe_infty 2)`. Use `Complex.conjCLE.contDiff.comp_contDiffOn h` as an intermediate fact. Simplify `this` using `[Function.comp_def]`. Distinguish the cases in `hk : k = j`. Substitute `hk` using the available equality.
+
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Simplify `Ck.mul n z 2 _ _ hE hc` using `[gmSingle]`. Conclude with `gm_hcs_of _ _ hφ.2 fun x hx => by simp [gmSingle, hx]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Simplify `Ck.const n z 2 0` using `[gmSingle, hk]`.
+
+Conclude with `gm_hcs_of _ _ hφ.2 fun x _ => by simp [gmSingle, hk]`.
+-/
 theorem gm_single_isTestForm (n : ℕ) (z : M → V n) (ph : M → ℝ) (hph : SmoothR n z ph)
     (φ : M → ℂ) (hφ : IsTest n z φ) (j : Fin n) : IsTestForm n z (gmSingle ph φ j) := by
   intro k
@@ -439,6 +585,13 @@ theorem gm_single_isTestForm (n : ℕ) (z : M → V n) (ph : M → ℝ) (hph : S
     · simpa [gmSingle, hk] using Ck.const n z 2 0
     · exact gm_hcs_of _ _ hφ.2 fun x _ => by simp [gmSingle, hk]
 
+/- English proof (translation)
+Unfold `d db`. Use `split_ifs with h`. Use `set e := Classical.choose h with he_def`. Establish `hc : (fun y => conj (φ y)) ∘ e.symm = Complex.conjCLE ∘ (φ ∘ e.symm)`. Use function extensionality and compare the values at `w`.
+
+Simplify using the standard rewrite rules. Simplify using `only [wd, wdb]`. Rewrite using `[hc, Complex.conjCLE.comp_fderiv]`. Simplify using `only [ContinuousLinearMap.comp_apply, ContinuousLinearEquiv.coe_coe, Complex.conjCLE_apply, map_div₀, map_add, map_mul, Complex.conj_I, map_ofNat]`. Expand and normalize the polynomial expressions, which then agree.
+
+Simplify using the standard rewrite rules.
+-/
 private lemma d_conj_eq_conj_db {n : ℕ} {z : M → V n} (φ : M → ℂ) (j : Fin n) (x : M) :
     d n z j (fun y => conj (φ y)) x = conj (db n z j φ x) := by
   unfold d db
@@ -454,6 +607,17 @@ private lemma d_conj_eq_conj_db {n : ℕ} {z : M → V n} (φ : M → ℂ) (j : 
     ring
   · simp
 
+/- English proof (translation)
+Establish `hfun : ∀ k, (fun y => (Real.exp (-ph y) : ℂ) * gmSingle ph φ j y k) = fun y => if k = j then conj (φ y) else 0`. Introduce `k`. Use function extensionality and compare the values at `y`. Distinguish the cases in `hk : k = j`. Substitute `hk` using the available equality.
+
+Establish `hE : (Real.exp (-ph y) : ℂ) * (Real.exp (ph y) : ℂ) = 1`. Rewrite using `[← Complex.ofReal_mul, ← Real.exp_add, neg_add_cancel, Real.exp_zero, Complex.ofReal_one]`. Simplify using `only [gmSingle, EuclideanSpace.single_apply, eq_self_iff_true, if_true, ← mul_assoc, hE, one_mul]`. Simplify using `[gmSingle, hk]`. Establish `hd : ∀ k, d n z k (fun y => (Real.exp (-ph y) : ℂ) * gmSingle ph φ j y k) x = if k = j then conj (db n z j φ x) else 0`.
+
+Introduce `k`. Rewrite using `[hfun k]`. Distinguish the cases in `hk : k = j`. Substitute `hk` using the available equality. Simplify using `only [eq_self_iff_true, if_true]`.
+
+Conclude with `d_conj_eq_conj_db φ k x`. Simplify using `only [hk, if_false]`. Apply `d_eq_zero_of_not_mem_tsupport` to reduce the goal to its premises. Use `first`. Consider the case `simp`.
+
+Consider the case `(rw [show (fun _ : M => (0 : ℂ)) = 0 from rfl, tsupport_zero]; simp)`. Simplify using `only [tstar, hd, Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
+-/
 theorem gm_tstar_single (n : ℕ) (z : M → V n) (ph : M → ℝ) (φ : M → ℂ) (j : Fin n) (x : M) :
     tstar n z ph ph (gmSingle ph φ j) x = -((Real.exp (ph x) : ℂ) * conj (db n z j φ x)) := by
   have hfun : ∀ k, (fun y => (Real.exp (-ph y) : ℂ) * gmSingle ph φ j y k) =
@@ -482,6 +646,13 @@ theorem gm_tstar_single (n : ℕ) (z : M → V n) (ph : M → ℝ) (φ : M → �
         | (rw [show (fun _ : M => (0 : ℂ)) = 0 from rfl, tsupport_zero]; simp)
   simp only [tstar, hd, Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ, if_true]
 
+/- English proof (translation)
+Simplify using `only [ipV, dbarF, gmSingle, EuclideanSpace.inner_single_right]`. Rewrite using `[← integral_conj]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Establish `hE : (Real.exp (ph x) : ℂ) * (Real.exp (-ph x) : ℂ) = 1`.
+
+Rewrite using `[← Complex.ofReal_mul, ← Real.exp_add, add_neg_cancel, Real.exp_zero, Complex.ofReal_one]`. Use `first`. Consider the case `(simp only [PiLp.toLp_apply, map_mul]`. Take the linear combination `(conj (db n z j F0 x) * conj (φ x)) * hE)`. Consider the case `(simp only [map_mul]`.
+
+Take the linear combination `(conj (db n z j F0 x) * conj (φ x)) * hE)`.
+-/
 theorem gm_ipV_single (n : ℕ) (z : M → V n) (ph : M → ℝ) (F0 φ : M → ℂ) (j : Fin n) :
     ipV n z (dbarF n z F0) (gmSingle ph φ j) ph = conj (∫ x, db n z j F0 x * φ x ∂vol n z) := by
   simp only [ipV, dbarF, gmSingle, EuclideanSpace.inner_single_right]
@@ -503,6 +674,27 @@ section loc
 variable {M : Type*} [TopologicalSpace M] [T2Space M] [SecondCountableTopology M]
   [MeasurableSpace M] [BorelSpace M]
 
+/- English proof (translation)
+Use `haveI := vol_isFiniteMeasureOnCompacts n z hz`. Establish `hph'` using `gm_cont_of_smoothR n z hz ph hph`. Establish `hm : Measurable (fun x => ENNReal.ofReal (Real.exp (-ph x)))` using `ENNReal.measurable_ofReal.comp (Real.measurable_exp.comp hph'.measurable.neg)`. Establish `hne : ∀ᵐ x ∂vol n z, ENNReal.ofReal (Real.exp (-ph x)) ≠ 0` using `Eventually.of_forall fun x => (ENNReal.ofReal_pos.2 (Real.exp_pos _)).ne'`. Establish `hac : vol n z ≪ wvol n z ph`.
+
+Rewrite using `[wvol]`. Use `first`. Consider the case `exact withDensity_absolutelyContinuous' hm.aemeasurable hne`. Consider the case `exact withDensity_absolutelyContinuous' hm hne`. Establish `hu : AEStronglyMeasurable (fun x => u x) (vol n z)` using `(Lp.aestronglyMeasurable u).mono_ac hac`.
+
+Establish `hmeas : AEStronglyMeasurable (fun x => F0 x - u x) (vol n z)` using `hF0.aestronglyMeasurable.sub hu`. Use `⟨hmeas, fun C hC => ?_⟩` and prove the remaining obligations. Take `⟨B, hB⟩` from `hC.exists_bound_of_continuousOn hF0.continuousOn`. Take `⟨M0, hM0⟩` from `hC.exists_bound_of_continuousOn hph'.continuousOn`. Establish `hCfin : vol n z C < ⊤` using `hC.measure_lt_top`.
+
+Use `haveI : IsFiniteMeasure ((vol n z).restrict C) := by first`. Consider the case `exact isFiniteMeasure_restrict.2 hCfin.ne`. Consider the case `exact ⟨by rw [Measure.restrict_apply_univ]; exact hCfin⟩`. Establish `hF0C : MemLp F0 2 ((vol n z).restrict C)` using `MemLp.of_bound hF0.aestronglyMeasurable.restrict B ((ae_restrict_iff' hC.measurableSet).2 (Eventually.of_forall hB))`. Establish `hfin : ∫⁻ x, ‖u x‖ₑ ^ (2:ℝ) ∂wvol n z ph < ⊤`.
+
+Rewrite using `[← gm_norm_sq u]`. Conclude with `ENNReal.ofReal_lt_top`. Establish `hw : ∫⁻ x, ‖u x‖ₑ ^ (2:ℝ) ∂wvol n z ph = ∫⁻ x, ENNReal.ofReal (Real.exp (-ph x)) * ‖u x‖ₑ ^ (2:ℝ) ∂vol n z` using `lintegral_withDensity_eq_lintegral_mul_non_measurable _ hm (Eventually.of_forall fun _ => ENNReal.ofReal_lt_top) _`. Establish `hsetle : ∫⁻ x in C, ENNReal.ofReal (Real.exp M0) * (ENNReal.ofReal (Real.exp (-ph x)) * ‖u x‖ₑ ^ (2:ℝ)) ∂vol n z ≤ ∫⁻ x, ENNReal.ofReal (Real.exp M0) * (ENNReal.ofReal (Real.exp (-ph x)) * ‖u x‖ₑ ^ (2:ℝ)) ∂vol n z` using `by first`. Consider the case `exact setLIntegral_le_lintegral _ _`.
+
+Consider the case `exact lintegral_mono' Measure.restrict_le_self le_rfl`. Establish `huC : MemLp (fun x => u x) 2 ((vol n z).restrict C)`. Rewrite using `[gm_memLp_two_iff _ hu.restrict]`. Combine the equalities or inequalities in the displayed calculation. Use `lintegral_mono_ae ((ae_restrict_iff' hC.measurableSet).2 (Eventually.of_forall fun x hx => ?_))` and prove the remaining obligations.
+
+Establish `hle : ph x ≤ M0` using `le_trans (le_abs_self _) (by simpa [Real.norm_eq_abs] using hM0 x hx)`. Establish `h1 : (1 : ℝ≥0∞) ≤ ENNReal.ofReal (Real.exp M0) * ENNReal.ofReal (Real.exp (-ph x))`. Rewrite using `[← ENNReal.ofReal_mul (Real.exp_pos _).le, ← Real.exp_add, ← ENNReal.ofReal_one]`. Conclude with `ENNReal.ofReal_le_ofReal (Real.one_le_exp (by linarith))`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `_ ≤ ∫⁻ x, ENNReal.ofReal (Real.exp M0) * (ENNReal.ofReal (Real.exp (-ph x)) * ‖u x‖ₑ ^ (2:ℝ)) ∂vol n z := hsetle`. Use `_ = ENNReal.ofReal (Real.exp M0) * ∫⁻ x, ‖u x‖ₑ ^ (2:ℝ) ∂wvol n z ph := by`. Rewrite using `[lintegral_const_mul' _ _ ENNReal.ofReal_ne_top, hw]`. Use `_ < ⊤ := ENNReal.mul_lt_top ENNReal.ofReal_lt_top hfin`. Establish `hsub` using `hF0C.sub huC`.
+
+Rewrite `hsub` using `[gm_memLp_two_iff _ hsub.1]`. Establish `e2 : ∀ x, ‖F0 x - u x‖ₑ ^ (2:ℝ) = ‖F0 x - u x‖ₑ ^ 2`. Introduce `x`. Use `first`. Consider the case `exact ENNReal.rpow_two _`.
+
+Consider the case `exact_mod_cast ENNReal.rpow_natCast _ 2`. Simplify `hsub` using `[e2]`.
+-/
 theorem locL2_sub_weightedL2 (n : ℕ) (z : M → V n) (hz : IsLocalHomeomorph z) (ph : M → ℝ)
     (hph : SmoothR n z ph) (F0 : M → ℂ) (hF0 : Continuous F0) (u : Lp ℂ 2 (wvol n z ph)) :
     LocalL2Isometry (vol n z) (fun x => F0 x - u x) := by

@@ -194,9 +194,15 @@ def LevelGroup : Prop :=
 
 def NormAndLevel : Prop := IdeleNormScale ∧ LevelGroup
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨by simp, by simp⟩`.
+-/
 example (K : Type) [Field K] [NumberField K] : IsNormScale (1 : (Adelic K)ˣ) 1 :=
   ⟨by simp, by simp⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example (E : Type) [Field E] [NumberField E] {W : Type} [AddCommGroup W] [Module ℚ W]
     (ξ₀ : E) (h : W →ₗ[ℚ] W →ₗ[ℚ] E) (x y : W) :
     traceForm E ξ₀ h x y = Algebra.trace ℚ E (ξ₀ * h x y) := rfl

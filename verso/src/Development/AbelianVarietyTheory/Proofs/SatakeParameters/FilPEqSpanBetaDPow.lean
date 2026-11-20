@@ -8,6 +8,11 @@ open scoped Formalism.Per
 
 namespace GlobalTheory.Pst.StLat
 
+/- English proof (translation)
+Introduce `l _ Co ϖ hb n`. Establish `he` using `core_isEps l Co`. Take `⟨hfil, -, -, -⟩` from `filtration_eq_xi_pow l Co.ε he`. Take `⟨-, -, -, -, hdom, -, hk⟩` from `thetaP_facts l`. Use `haveI := hdom`.
+
+Establish `hass : Associated (algebraMap (Per.Ainf l) (Per.AinfP l) (xi Co.ε)) (beta ϖ)` using `Ideal.span_singleton_eq_span_singleton.1 ((hk Co.ε he).symm.trans hb)`. Establish `hD : Associated (aDp l (xi Co.ε) ^ n) (betaD ϖ ^ n)` using `(hass.map (algebraMap (Per.AinfP l) (Per.BdRp l))).pow_pow`. Use extensionality with `y`. Rewrite using `[hfil, Ideal.mem_span_singleton]`. Conclude with `hD.dvd_iff_dvd_left`.
+-/
 theorem filtration_eq_span_pow : ∀ (l : ℕ) [Fact l.Prime] (Co : Core l) (ϖ : Per.Fl l), Per.kerP l = Ideal.span {beta ϖ} →
   ∀ n : ℕ, Per.FilP l n = Ideal.span {betaD ϖ ^ n} := by
   intro l _ Co ϖ hb n

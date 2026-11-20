@@ -25,6 +25,11 @@ open Formalism.IndefR.Mult Matrix Formalism.MainNotions.S GlobalTheory.SmoothGlo
 
 variable {D : D7}
 
+/- English proof (translation)
+Take `⟨v, h1, ℓ, hℓ, ⟨S, C, hS, h2, h3, B, hB, hc⟩, h4⟩` from `hasTypeAll_iff.1 h`. Use `hasTypeAll_iff.2 ⟨v, h1, fun i => c • ℓ i, fun i => GlobalTheory.MultMem.sobCont_smul c (hℓ i), ⟨S, fun i => ‖c‖ * C i, hS, fun i w hw => ?_, fun S' hS' => ?_, B, hB, hc⟩, fun g hg => ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply, smul_eq_mul, norm_mul, mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left (h2 i w hw) (norm_nonneg c)`. Simplify `(h3 S' hS').mul_left ‖c‖` using `only [mul_assoc]`.
+
+Simplify `(h4 g hg).mul_left c` using `only [LinearMap.smul_apply, smul_eq_mul]`.
+-/
 theorem hasTypeAll_const_mul {n : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     {σ : Mx n → (H →L[ℂ] H)} {Lie Gs : Set (Mx n)} {f : Mx n → ℂ} (c : ℂ) (h : HasTypeAll Lie Gs σ f) :
     HasTypeAll Lie Gs σ fun g => c * f g := by
@@ -40,10 +45,20 @@ def TypedBy (θ : InfFam D) {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSMode
   ∀ x, HasTypeAll (lieOf (gramAt D V τ)) (Formalism.QuantumDeterminants.UH (gramAt D V τ)) (fun g => M.σ τ (M.fr τ * g * (M.fr τ)⁻¹))
     fun g => φ (x * atTau θ V τ g)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨M.H τ, _, _, M.σ τ, M.lam τ, M.ε τ, M.fr τ, M.enum τ, M.ds τ, M.fr_unit τ, M.fr_gram τ, fun x => hasTypeAll_iff.1 (h x)⟩`.
+-/
 theorem isTypeAt_of_typedBy (θ : InfFam D) {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSModel V S) (τ : D.what₂.Tau)
     {φ : GA D V → ℂ} (h : TypedBy θ M τ φ) : IsTypeAt θ V τ (S τ) φ :=
   ⟨M.H τ, _, _, M.σ τ, M.lam τ, M.ε τ, M.fr τ, M.enum τ, M.ds τ, M.fr_unit τ, M.fr_gram τ, fun x => hasTypeAll_iff.1 (h x)⟩
 
+/- English proof (translation)
+Establish `hD` using `M.ds τ`. Use `haveI : CompleteSpace (M.H τ) := hD.1`. Establish `hσ : Std (M.ε τ) (M.σ τ)` using `std_of_isDS hHC hD`. Introduce `x`. Take `⟨ℓ, hℓ, hℓv⟩` from `hT.cont τ v x`.
+
+Establish `hu : SmoothVec (lieAt V τ) (fun g => M.σ τ (M.fr τ * g * (M.fr τ)⁻¹)) (v τ : M.H τ)` using `GlobalTheory.SmVecModel.smoothVec_to_conj (M.fr_unit τ) (M.fr_gram τ) ((GlobalTheory.SmVecModel.mem_sm_iff M τ _).1 (v τ).2)`. Use `GlobalTheory.CuspValueType.hasTypeAll_single hσ (M.fr_unit τ) (M.fr_gram τ) hu hℓ fun g hg => ?_` and prove the remaining obligations. Establish `h1` using `hT.equiv τ g hg v ⟨M.rep τ g (v τ), GlobalTheory.ConjMult.rep_mem_sm M τ hg (v τ).2⟩ rfl`. Establish `h2` using `hℓv ⟨M.rep τ g (v τ), GlobalTheory.ConjMult.rep_mem_sm M τ hg (v τ).2⟩`. Use `show ℓ (M.rep τ g (v τ)) = _`.
+
+Rewrite using `[h2, h1]`. Both sides reduce to the same expression.
+-/
 theorem typedBy_value (θ : InfFam D) (hHC : GlobalTheory.Published.HarishChandraModules) {V : HSp D} {Sp : D.what₂.Tau → SPar}
     (M : DSModel V Sp) {J : Set (GA D V)} {χ : GA D V → ℂ} {T : MMap M} (hT : IsMultMap θ M J χ T) (v : M.Vec)
     (τ : D.what₂.Tau) : TypedBy θ M τ (T v) := by
@@ -61,6 +76,17 @@ theorem typedBy_value (θ : InfFam D) (hHC : GlobalTheory.Published.HarishChandr
   rw [h2, h1]
   rfl
 
+/- English proof (translation)
+Take `⟨M', c, hc⟩` from `GlobalTheory.ConjDS.exists_conjModel M`. Take `⟨hsm, hmult⟩` from `GlobalTheory.ConjMult.conj_mult θ M M' c hc`. Take `⟨T', hT'm, hT'⟩` from `hmult J χ T hT`. Establish `hT''` using `(GlobalTheory.MultMem.mem_mult_iff D θ V _ M' J _ T').1 hT'm`. Use `isTypeAt_of_typedBy θ M' τ ?_` and prove the remaining obligations.
+
+Proceed by induction on `z using PiTensorProduct.induction_on with`. Consider the case `smul_tprod r f`. Set `f' : M'.Vec` to `fun ρ => ⟨(c ρ).symm (f ρ), (hsm ρ _).2 (by simp)⟩`. Establish `e : (fun g => star (PiTensorProduct.lift T (r • PiTensorProduct.tprod ℂ f) g)) = fun g => star r * T' f' g`. Use function extensionality and compare the values at `g`.
+
+Rewrite using `[hT' f' f (fun ρ => by simp [f']) g, map_smul, PiTensorProduct.lift.tprod, Pi.smul_apply, smul_eq_mul, star_mul']`. Rewrite using `[e]`. Introduce `x`. Conclude with `hasTypeAll_const_mul (star r) (typedBy_value θ hHC M' hT'' f' τ x)`. Consider the case `add a b ha hb`.
+
+Introduce `x`. Establish `e : (fun g => star (PiTensorProduct.lift T (a + b) (x * atTau θ V τ g))) = fun g => star (PiTensorProduct.lift T a (x * atTau θ V τ g)) + star (PiTensorProduct.lift T b (x * atTau θ V τ g))`. Use function extensionality and compare the values at `g`. Rewrite using `[map_add, Pi.add_apply, star_add]`. Rewrite using `[e]`.
+
+Conclude with `(ha x).add (hb x)`.
+-/
 theorem star_lift_isTypeAt (θ : InfFam D) (hHC : GlobalTheory.Published.HarishChandraModules) {V : HSp D} {S : D.what₂.Tau → SPar}
     (M : DSModel V S) {J : Set (GA D V)} {χ : GA D V → ℂ} {T : MMap M} (hT : T ∈ Mult θ M J χ) (z : SmT M)
     (τ : D.what₂.Tau) : IsTypeAt θ V τ (dualPar (S τ)) fun g => star (PiTensorProduct.lift T z g) := by
@@ -95,6 +121,11 @@ open Formalism.IndefR.Mult
 
 variable {D : D7}
 
+/- English proof (translation)
+Proceed by induction on `z using PiTensorProduct.induction_on with`. Consider the case `smul_tprod r f`. Rewrite using `[map_smul, PiTensorProduct.lift.tprod]`. Conclude with `GlobalTheory.MultMem.isCuspFun_smul r (hT.cusp f)`. Consider the case `add a b ha hb`.
+
+Rewrite using `[map_add]`. Conclude with `GlobalTheory.MultMem.isCuspFun_add (GlobalTheory.EndCusp.isAutFunSm_lift hT a).toIsAutFun (GlobalTheory.EndCusp.isAutFunSm_lift hT b).toIsAutFun ha hb`.
+-/
 theorem isCuspFun_lift {θ : InfFam D} {V : HSp D} {S : D.what₂.Tau → SPar} {M : DSModel V S} {J : Set (GA D V)}
     {χ : GA D V → ℂ} {T : MMap M} (hT : IsMultMap θ M J χ T) (z : SmT M) : IsCuspFun V (PiTensorProduct.lift T z) := by
   induction z using PiTensorProduct.induction_on with
@@ -108,6 +139,13 @@ theorem isCuspFun_lift {θ : InfFam D} {V : HSp D} {S : D.what₂.Tau → SPar} 
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `hP _`. Use `⟨0, fun ε CF _ => ⟨0, fun D large₂ _ _ Γ _ _ Pl0 T A Ks _ _ _ R F hS ch hch _ => ?_⟩⟩` and prove the remaining obligations. Introduce `t y`. Establish `hθ : ch.W.θ = R.θ` using `hch.toIsBase.weil.θ`. Establish `hT` using `GlobalTheory.ProjectedLift.thDn_mem R t y`.
+
+Establish `hT'` using `(GlobalTheory.MultMem.mem_mult_iff D R.θ _ _ (R.MY 0) _ _ _).1 hT`. Establish `hu : ch.cv.lift t y = PiTensorProduct.lift (PiTensorProduct.lift.symm (R.thDn t y)) ch.cv.w`. Rewrite using `[LinearEquiv.apply_symm_apply, ch.cv.thDn_w hS.core.chain]`. Rewrite using `[hθ, hu]`. Use `⟨GlobalTheory.EndCusp.isAutFunSm_lift hT' _, isCuspFun_lift hT' _, fun τ => ?_⟩` and prove the remaining obligations.
+
+Establish `h` using `star_lift_isTypeAt R.θ hP.harishChandraModules (R.MY 0) hT ch.cv.w τ`. Rewrite using `[show Node.par D ch.sc.cGap (.grid 0 0) τ = (Ptw D).Dpar 0 τ from parV_zero D _ (Nat.zero_le _) τ]`. Simplify using `only [parB, dualPar_dualPar, Nat.zero_min] at h`. Conclude with `h`.
+-/
 theorem lift_isCuspListed : GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.IndefiniteRowSideFullHecke.CuspAlongSmoothLifts.LiftsCuspidal → GlobalTheory.RowClaim.Big fun {_} _ _ _ _ {T} _ _ _ _ _ {R} ch => ∀ (t : T) (y : (R.HX t).H), IsCuspListed (G := ch.G) ch.W.θ (.grid 0 0) (ch.cv.lift t y) := by
   intro hP _
   refine ⟨0, fun ε CF _ => ⟨0, fun D large₂ _ _ Γ _ _ Pl0 T A Ks _ _ _ R F hS ch hch _ => ?_⟩⟩

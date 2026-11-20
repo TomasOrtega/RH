@@ -7,10 +7,28 @@ open GlobalTheory.Sieg GlobalTheory.QFam
 
 namespace GlobalTheory.Sieg
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> simp [act, ModularGroup.S, Fin.sum_univ_two]`.
+-/
 theorem act_S (x : Fin 2 → ℚ) : act x ModularGroup.S = ![x 1, -x 0] := by
   funext i
   fin_cases i <;> simp [act, ModularGroup.S, Fin.sum_univ_two]
 
+/- English proof (translation)
+Introduce `c x τ h`. Take `⟨hc, hc6, hx⟩` from `h`. Use `set z : ℂ := (x 1 : ℂ) * (τ : ℂ) - (x 0 : ℂ) with hz`. Establish `hτ : (τ : ℂ) ≠ 0` using `τ.ne_zero`. Establish `h1 : pt x (ModularGroup.S • τ) = z / (τ : ℂ)`.
+
+Rewrite using `[pt, UpperHalfPlane.modular_S_smul, hz]`. Simplify using `only [UpperHalfPlane.coe_mk]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : pt (act x ModularGroup.S) τ = z`.
+
+Rewrite using `[act_S, pt, hz]`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish `hnot : ∀ m n : ℤ, (c : ℂ) * z ≠ (m : ℂ) * (τ : ℂ) + n`. Introduce `m n heq`.
+
+Apply `hx` to reduce the goal to its premises. Establish `him` using `congrArg Complex.im heq`. Establish `hre` using `congrArg Complex.re heq`. Simplify using `[hz, mul_sub] at him hre`. Establish `hpos : 0 < τ.im` using `τ.im_pos`.
+
+Establish `e1 : (c : ℝ) * (x 1 : ℝ) = m`. Establish `: ((c : ℝ) * (x 1 : ℝ) - m) * τ.im = 0` using `by linarith`. Break down `mul_eq_zero.mp this with h | h` into its components or cases. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `absurd h hpos.ne'`.
+
+Establish `e0 : (c : ℝ) * (x 0 : ℝ) = ((-n : ℤ) : ℝ)`. Rewrite `hre` using `[← mul_assoc, e1]`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨⟨-n, ?_⟩, ⟨m, ?_⟩⟩` and prove the remaining obligations.
+
+Conclude with `e0.symm` after adjusting the coercions. Conclude with `e1.symm` after adjusting the coercions. Unfold `sg`. Rewrite using `[h1, h2]`. Conclude with `GlobalTheory.T.smoothedThetaQProduct_modularS_transform c τ z hc hc6 hnot`.
+-/
 theorem sg_S : ∀ (c : ℕ) (x : Fin 2 → ℚ) (τ : ℍ), admitted c x →
     sg c x (ModularGroup.S • τ) = sg c (act x ModularGroup.S) τ := by
   intro c x τ h

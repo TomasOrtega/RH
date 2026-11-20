@@ -226,6 +226,11 @@ def Flip : Prop := ∀ D : D7, FlipAt D
 
 section Basic₂
 
+/- English proof (translation)
+Establish `h : (Oh D).toAddSubgroup.map (AddMonoidHom.mulLeft (toEAf D ((1 : (AE D)ˣ) : AE D))) = (Oh D).toAddSubgroup`. Use extensionality with `x`. Simplify using the standard rewrite rules. Unfold `absF Datum.volRel`. Rewrite using `[h, inf_idem, AddSubgroup.addSubgroupOf_self]`.
+
+Establish `: Nat.card ((Oh D).toAddSubgroup ⧸ (⊤ : AddSubgroup (Oh D).toAddSubgroup)) = 1` using `AddSubgroup.index_top`. Rewrite using `[this]`. Simplify using the standard rewrite rules.
+-/
 theorem absF_one : absF (1 : (AE D)ˣ) = 1 := by
   have h : (Oh D).toAddSubgroup.map (AddMonoidHom.mulLeft (toEAf D ((1 : (AE D)ˣ) : AE D))) = (Oh D).toAddSubgroup := by
     ext x; simp
@@ -234,6 +239,9 @@ theorem absF_one : absF (1 : (AE D)ˣ) = 1 := by
   have : Nat.card ((Oh D).toAddSubgroup ⧸ (⊤ : AddSubgroup (Oh D).toAddSubgroup)) = 1 := AddSubgroup.index_top
   rw [this]; simp
 
+/- English proof (translation)
+Establish `h2` using `congrArg (fun z => φ (e * e * z)) h`. Simplify using `only [mul_zero, map_zero, mul_add, Finset.mul_sum, map_add, map_sum] at h2`. Rewrite using `[← h2]`. Apply the tactic sequence `congr 1 <;> refine Finset.sum_congr rfl fun i _ => ?_ <;> rw [← map_mul] <;> congr 1 <;> ring`.
+-/
 theorem sum_divisible_eq_sum_mul {A B : Type} [CommRing A] [CommRing B] (φ : A →+* B) (e : A) {p q : ℕ} (u v : Fin p → A) (u' v' : Fin q → A)
     (h : ∑ i, u i * v i + ∑ i, u' i * v' i = 0) : ∑ i, φ (e * u i) * φ (e * v i) + ∑ i, φ (e * u' i) * φ (e * v' i) = 0 := by
   have h2 := congrArg (fun z => φ (e * e * z)) h
@@ -241,6 +249,11 @@ theorem sum_divisible_eq_sum_mul {A B : Type} [CommRing A] [CommRing B] (φ : A 
   rw [← h2]
   congr 1 <;> refine Finset.sum_congr rfl fun i _ => ?_ <;> rw [← map_mul] <;> congr 1 <;> ring
 
+/- English proof (translation)
+Use extensionality with `q p`. Establish `h1 : (h.1 * (h⁻¹).1) (Fin.cast hd (Fin.natAdd a q)) (Fin.cast hd (Fin.castAdd a' p)) = 0`. Rewrite using `[Units.mul_inv, Matrix.one_apply_ne]`. Introduce `H`. Use `congrArg Fin.val H` as an intermediate fact.
+
+Simplify using `at this`. Use linear arithmetic over natural numbers and integers. Rewrite `h1` using `[Matrix.mul_apply, Fin.sum_univ_add]`. Conclude with `sum_divisible_eq_sum_mul (toEAf D) e _ _ _ _ h1`.
+-/
 theorem rowBlocks_mul_colBlocks (e : AE D) {a a' d₁ d₂ : ℕ} (hd : a + a' = d₁ + d₂) (h : GL (Fin (d₁ + d₂)) (AE D)) :
     yLeft e hd h * xTop e hd h + yRight e hd h * xBot e hd h = 0 := by
   ext q p
@@ -256,10 +269,16 @@ theorem rowBlocks_mul_colBlocks (e : AE D) {a a' d₁ d₂ : ℕ} (hd : a + a' =
 variable {G₀ : Type} [Group G₀] [Fintype G₀] {Pl0 T : Type} {A : FamIn D.what₂.LL G₀ Pl0 T D.R.m}
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks} {G : GridDat R}
 
+/- English proof (translation)
+The claim follows from `Finset.prod_ne_zero_iff.2 fun i hi => Finset.prod_ne_zero_iff.2 fun j hj => (h t i j (Finset.mem_range.1 hi) (Finset.mem_range.1 hj)).1`.
+-/
 theorem cTot_ne_zero {c : T → ℕ → ℕ → ℂ} (h : IsSqConst G c) (t : T) : cTot D c t ≠ 0 :=
   Finset.prod_ne_zero_iff.2 fun i hi => Finset.prod_ne_zero_iff.2 fun j hj =>
     (h t i j (Finset.mem_range.1 hi) (Finset.mem_range.1 hj)).1
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => rfl`. Consider the case `succ n ih => show rowVec G t i P n ∘ₗ _ = rowVec G t' i P n ∘ₗ _`. Rewrite using `[ih, G.th_It t t']`.
+-/
 theorem rowVec_tuple (t t' : T) (i : ℕ) (P : ∀ j, Pol (G.V i j) (G.V i (j + 1))) (n : ℕ) : rowVec G t i P n = rowVec G t' i P n := by
   induction n with
   | zero => rfl
@@ -267,6 +286,9 @@ theorem rowVec_tuple (t t' : T) (i : ℕ) (P : ∀ j, Pol (G.V i j) (G.V i (j + 
     show rowVec G t i P n ∘ₗ _ = rowVec G t' i P n ∘ₗ _
     rw [ih, G.th_It t t']
 
+/- English proof (translation)
+The claim follows from `((h.X t n j hn hj _ hf).int_eq _ _ _).symm`.
+-/
 theorem colLift_succ_int (h : G.IsLifts) (t : T) {j n : ℕ} (hj : j ≤ D.R.m) (hn : n < D.R.m) (f : ∀ i, DX G i j)
     (hf : IsFinVec R.ψ R.θ true (G.V (n + 1) j) (G.V n j) (f n)) (P : ∀ i, Pol (G.V (i + 1) j) (G.V i j)) (F : G.CV 0 j)
     (v : SmT (G.V 0 j).M) :

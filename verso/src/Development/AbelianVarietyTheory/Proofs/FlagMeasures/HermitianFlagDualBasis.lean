@@ -12,6 +12,9 @@ section Alg
 variable {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [CommRing R] [Algebra F R]
   (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E)
 
+/- English proof (translation)
+Simplify using `[sigR, inclR]`.
+-/
 theorem sigR_inclR (e : E) : sigR R σ (inclR R e) = inclR R (σ e) := by
   simp [sigR, inclR]
 
@@ -23,24 +26,45 @@ def hRight (x : Fin n → R ⊗[F] E) : (Fin n → R ⊗[F] E) →ₗ[R ⊗[F] E
     simp only [hR, Formalism.UG.hform, Pi.smul_apply, smul_eq_mul, RingHom.id_apply, Finset.mul_sum]
     exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem hRight_apply (x y : Fin n → R ⊗[F] E) : hRight R σ J x y = hR R σ J x y := rfl
 
+/- English proof (translation)
+The claim follows from `(hRight R σ J x).map_add y z`.
+-/
 theorem hR_add_right (x y z : Fin n → R ⊗[F] E) :
     hR R σ J x (y + z) = hR R σ J x y + hR R σ J x z := (hRight R σ J x).map_add y z
 
+/- English proof (translation)
+The claim follows from `(hRight R σ J x).map_sub y z`.
+-/
 theorem hR_sub_right (x y z : Fin n → R ⊗[F] E) :
     hR R σ J x (y - z) = hR R σ J x y - hR R σ J x z := (hRight R σ J x).map_sub y z
 
+/- English proof (translation)
+The claim follows from `(hRight R σ J x).map_smul c y`.
+-/
 theorem hR_smul_right (x y : Fin n → R ⊗[F] E) (c : R ⊗[F] E) :
     hR R σ J x (c • y) = c * hR R σ J x y := (hRight R σ J x).map_smul c y
 
+/- English proof (translation)
+The claim follows from `(hRight R σ J x).map_zero`.
+-/
 theorem hR_zero_right (x : Fin n → R ⊗[F] E) : hR R σ J x 0 = 0 := (hRight R σ J x).map_zero
 
+/- English proof (translation)
+Simplify using `only [hR, hE, Formalism.UG.hform, ratV, JR, Matrix.map_apply, map_sum, map_mul, sigR_inclR, AlgHom.coe_toRingHom, RingHom.coe_coe]`.
+-/
 theorem hR_ratV (x y : Fin n → E) :
     hR R σ J (ratV (F := F) R x) (ratV (F := F) R y) = inclR R (hE σ J x y) := by
   simp only [hR, hE, Formalism.UG.hform, ratV, JR, Matrix.map_apply, map_sum, map_mul, sigR_inclR,
     AlgHom.coe_toRingHom, RingHom.coe_coe]
 
+/- English proof (translation)
+Simplify using `only [hE, Formalism.UG.hform, map_sum, map_mul, AlgHom.coe_toRingHom, RingHom.coe_coe, hσ]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[hJ.1 b a]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hE_symm (hσ : ∀ x, σ (σ x) = x) (hJ : IsHermND σ J) (x y : Fin n → E) :
     hE σ J y x = σ (hE σ J x y) := by
   simp only [hE, Formalism.UG.hform, map_sum, map_mul, AlgHom.coe_toRingHom, RingHom.coe_coe, hσ]
@@ -51,6 +75,11 @@ theorem hE_symm (hσ : ∀ x, σ (σ x) = x) (hJ : IsHermND σ J) (x y : Fin n �
 
 variable {R σ J}
 
+/- English proof (translation)
+Proceed by induction on `c using Fin.lastCases with`. Consider the case `last`. Rewrite using `[F0, Fin.snoc_last, hP.2.2.2.2.1 a, if_neg (Fin.castSucc_lt_last a).ne']`. Consider the case `cast c`. Rewrite using `[F0, Fin.snoc_castSucc, hE_symm σ J hσ hJ, hP.2.2.1 c a]`.
+
+Distinguish the cases in `h : c = a`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[if_neg h, if_neg (fun e => h (Fin.castSucc_injective _ e)), map_zero]`.
+-/
 theorem hermitian_flag_dual_basis (hσ : ∀ x, σ (σ x) = x) (hJ : IsHermND σ J) {r : ℕ} {P : Frame E n r} {T : F}
     (hP : P.IsStd σ J T) (a : Fin r) (c : Fin (r + 1)) :
     hE σ J (P.f a) (F0 P c) = if c = a.castSucc then 1 else 0 := by
@@ -63,12 +92,18 @@ theorem hermitian_flag_dual_basis (hσ : ∀ x, σ (σ x) = x) (hJ : IsHermND σ
     · subst h; simp
     · rw [if_neg h, if_neg (fun e => h (Fin.castSucc_injective _ e)), map_zero]
 
+/- English proof (translation)
+Rewrite using `[hR_ratV, hermitian_flag_dual_basis hσ hJ hP a c]`. Apply the tactic sequence `split_ifs <;> simp only [map_one, map_zero]`.
+-/
 theorem pairR (hσ : ∀ x, σ (σ x) = x) (hJ : IsHermND σ J) {r : ℕ} {P : Frame E n r} {T : F}
     (hP : P.IsStd σ J T) (a : Fin r) (c : Fin (r + 1)) :
     hR R σ J (ratV (F := F) R (P.f a)) (ratV (F := F) R (F0 P c)) = if c = a.castSucc then 1 else 0 := by
   rw [hR_ratV, hermitian_flag_dual_basis hσ hJ hP a c]
   split_ifs <;> simp only [map_one, map_zero]
 
+/- English proof (translation)
+Rewrite using `[← hRight_apply, map_sum]`. Simplify using `only [map_smul, hRight_apply, pairR hσ hJ hP, smul_eq_mul, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
+-/
 theorem pair_sum (hσ : ∀ x, σ (σ x) = x) (hJ : IsHermND σ J) {r : ℕ} {P : Frame E n r} {T : F}
     (hP : P.IsStd σ J T) (a : Fin r) (c : Fin (r + 1) → R ⊗[F] E) :
     hR R σ J (ratV (F := F) R (P.f a)) (∑ b, c b • ratV (F := F) R (F0 P b)) = c a.castSucc := by
@@ -76,6 +111,17 @@ theorem pair_sum (hσ : ∀ x, σ (σ x) = x) (hJ : IsHermND σ J) {r : ℕ} {P 
   simp only [map_smul, hRight_apply, pairR hσ hJ hP, smul_eq_mul, mul_ite, mul_one, mul_zero,
     Finset.sum_ite_eq', Finset.mem_univ, if_true]
 
+/- English proof (translation)
+Unfold `spanR at hw`. Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨c, hc, rfl⟩` from `hx`. Establish `hc' : c < b` using `hc`.
+
+Use `symm`. Rewrite using `[Finset.sum_eq_single c]`. Rewrite using `[dif_pos hc', pairR hσ hJ hP, Fin.castSucc_castLT, if_pos rfl, one_smul]`. Introduce `a _ hac split_ifs with h`. Rewrite using `[pairR hσ hJ hP, Fin.castSucc_castLT, if_neg (fun e => hac e.symm), zero_smul]`.
+
+Rewrite using `[zero_smul]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ c) h`. Consider the case `zero`. Use `symm`.
+
+Use `Finset.sum_eq_zero fun a _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp [hR_zero_right]`. Consider the case `add x y _ _ hx hy => conv_lhs => rw [hx, hy]`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+
+Apply the tactic sequence `split_ifs <;> simp [hR_add_right, add_smul]`. Consider the case `smul c x _ hx => conv_lhs => rw [hx]`. Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp [hR_smul_right, smul_smul]`.
+-/
 theorem expand (hσ : ∀ x, σ (σ x) = x) (hJ : IsHermND σ J) {r : ℕ} {P : Frame E n r} {T : F}
     (hP : P.IsStd σ J T) (b : Fin (r + 1)) (w : Fin n → R ⊗[F] E)
     (hw : w ∈ spanR (F := F) R (F0 P) {a | a < b}) :
@@ -111,6 +157,11 @@ theorem expand (hσ : ∀ x, σ (σ x) = x) (hJ : IsHermND σ J) {r : ℕ} {P : 
 
 end Alg
 
+/- English proof (translation)
+Establish `key : ∀ a, (if a = b then (1 : A) else if h : a < b then y a h else 0) • G a = (if h : a < b then y a h else 0) • G a + (if a = b then G a else 0)`. Introduce `a`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Simplify using the standard rewrite rules.
+
+Simplify using `[hab]`. Simplify using `only [key, Finset.sum_add_distrib, Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
+-/
 theorem combine {A M : Type} [CommRing A] [AddCommGroup M] [Module A M] {r : ℕ} (b : Fin (r + 1))
     (G : Fin (r + 1) → M) (y : ∀ a : Fin (r + 1), a < b → A) :
     (∑ a, (if h : a < b then y a h else 0) • G a) + G b =
@@ -123,12 +174,28 @@ theorem combine {A M : Type} [CommRing A] [AddCommGroup M] [Module A M] {r : ℕ
     · simp [hab]
   simp only [key, Finset.sum_add_distrib, Finset.sum_ite_eq', Finset.mem_univ, if_true]
 
+/- English proof (translation)
+Set `τ : E →+* ℂ` to `(IsAlgClosed.lift (R := ℚ) (M := ℂ) (S := E)).toRingHom`. Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[hσ.2.2.2 τ, hσ.2.2.2 τ, star_star]`.
+-/
 theorem sigma_sigma {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (hσ : IsCMExt F E σ) (x : E) : σ (σ x) = x := by
   let τ : E →+* ℂ := (IsAlgClosed.lift (R := ℚ) (M := ℂ) (S := E)).toRingHom
   apply τ.injective
   rw [hσ.2.2.2 τ, hσ.2.2.2 τ, star_star]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hσ n J hJ v r P T hP`. Establish `hss : ∀ x, σ (σ x) = x` using `sigma_sigma σ hσ`. Use `haveI : IsTopologicalRing (Fv F v ⊗[F] E) := IsModuleTopology.isTopologicalRing (Fv F v) _`. Establish `ha : ∀ p : {p : Fin (r + 1) × Fin (r + 1) // p.1 < p.2}, (p.1.1 : ℕ) < r` using `fun p => lt_of_lt_of_le p.2 (Fin.le_last _)`. Use `⟨fun s p => hR (Fv F v) σ J (ratV (F := F) (Fv F v) (P.f (p.1.1.castLT (ha p)))) (lin (Fv F v) σ J (s : HA (Fv F v) σ J) (ratV (F := F) (Fv F v) (F0 P p.1.2))), ?_, ?_⟩` and prove the remaining obligations.
+
+Use `continuous_pi fun p => ?_` and prove the remaining obligations. Establish `hM : Continuous fun s : Ssub (Fv F v) σ J P => ((HA.mat (Fv F v) σ J (s : HA (Fv F v) σ J) : GL (Fin n) (Fv F v ⊗[F] E)) : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E))` using `Units.continuous_val.comp (continuous_subtype_val.comp continuous_subtype_val)`. Establish `hMij : ∀ i j, Continuous fun s : Ssub (Fv F v) σ J P => ((HA.mat (Fv F v) σ J (s : HA (Fv F v) σ J) : GL (Fin n) (Fv F v ⊗[F] E)) : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)) i j` using `fun i j => (continuous_apply j).comp ((continuous_apply i).comp hM)`. Simplify using `only [hR, Formalism.UG.hform, lin, Matrix.mulVecLin_apply, Matrix.mulVec, dotProduct]`. Conclude with `continuous_finset_sum _ fun i _ => continuous_finset_sum _ fun j _ => continuous_const.mul (continuous_finset_sum _ fun k _ => (hMij j k).mul continuous_const)`.
+
+Introduce `s x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl b`. Establish `hU : lin (Fv F v) σ J (s : HA (Fv F v) σ J) (ratV (F` using `F) (Fv F v) (F0 P b)) - ratV (F := F) (Fv F v) (F0 P b) ∈ spanR (F := F) (Fv F v) (F0 P) {a | a < b} := s.2 b`. Establish `e1` using `sub_eq_iff_eq_add.mp (expand hss hJ hP b _ hU)`.
+
+Use `e1.trans ((combine b _ _).trans ?_)` and prove the remaining obligations. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Use `congr 1`. Use `split_ifs with h1 h2`. Both sides reduce to the same expression.
+
+Rewrite using `[hR_sub_right, pairR hss hJ hP, Fin.castSucc_castLT, if_neg h2.ne', sub_zero]`. Both sides reduce to the same expression. Introduce `H`. Use function extensionality and compare the values at `p`. Take `⟨⟨a, b⟩, h⟩` from `p`.
+
+Use `symm`. Use `show hR (Fv F v) σ J (ratV (F := F) (Fv F v) (P.f (a.castLT (lt_of_lt_of_le h (Fin.le_last b))))) (lin (Fv F v) σ J (s : HA (Fv F v) σ J) (ratV (F := F) (Fv F v) (F0 P b))) = x ⟨(a, b), h⟩`. Rewrite using `[H b, pair_sum hss hJ hP, Fin.castSucc_castLT, if_neg h.ne, dif_pos h]`.
+-/
 theorem exists_coeff : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J → ∀ (v : HeightOneSpectrum (𝓞 F)), ∀ (r : ℕ) (P : Frame E n r) (T : F), P.IsStd σ J T → ∃ ν : Ssub (Fv F v) σ J P → ({p : Fin (r + 1) × Fin (r + 1) // p.1 < p.2} → Fv F v ⊗[F] E), Continuous ν ∧ ∀ (s : Ssub (Fv F v) σ J P) (x : {p : Fin (r + 1) × Fin (r + 1) // p.1 < p.2} → Fv F v ⊗[F] E), x = ν s ↔ ∀ b, lin (Fv F v) σ J (s : HA (Fv F v) σ J) (ratV (F := F) (Fv F v) (F0 P b)) = ∑ a : Fin (r + 1), (if a = b then 1 else if h : a < b then x ⟨(a, b), h⟩ else 0 : Fv F v ⊗[F] E) • ratV (F := F) (Fv F v) (F0 P a) := by
   intro F E _ _ _ _ _ σ hσ n J hJ v r P T hP
   have hss : ∀ x, σ (σ x) = x := sigma_sigma σ hσ

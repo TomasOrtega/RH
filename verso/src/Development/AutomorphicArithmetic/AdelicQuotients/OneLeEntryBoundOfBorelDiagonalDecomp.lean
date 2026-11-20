@@ -6,6 +6,21 @@ open GroundTheory.Automorphic GroundTheory.Automorphic.Reduction GroundTheory.Gl
 open PositivityTheory.Rg.Tf.Core PositivityTheory.Rg.Tf.Loc PositivityTheory.Rg.Tf.Geo
 open scoped NumberField.AdeleRing
 
+/- English proof (translation)
+Establish `hinv : (((diagUnits n d)⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) = Matrix.diagonal fun i => (((d i)⁻¹ : Eˣ) : E)`. Rewrite using `[← map_inv, coe_diagUnits]`. Both sides reduce to the same expression. Establish `e : ((b * diagUnits n d * m * (diagUnits n d)⁻¹ * b' : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) j i = ∑ q, ∑ p, (b : Matrix (Fin n) (Fin n) E) j p * ((d p : Eˣ) : E) * (m : Matrix (Fin n) (Fin n) E) p q * (((d q)⁻¹ : Eˣ) : E) * (b' : Matrix (Fin n) (Fin n) E) q i`. Rewrite using `[Units.val_mul, Units.val_mul, Units.val_mul, Units.val_mul, hinv, coe_diagUnits, Matrix.mul_apply]`.
+
+Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_diagonal, Matrix.mul_apply, Finset.sum_mul, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun p _ => by rw [Matrix.mul_diagonal]`. Establish `hL : 0 ≤ AutomorphicForm.locHeight b * AutomorphicForm.locHeight m * AutomorphicForm.locHeight b'`. Establish `h1` using `AutomorphicForm.locHeight_pos b`.
+
+Establish `h2` using `AutomorphicForm.locHeight_pos m`. Establish `h3` using `AutomorphicForm.locHeight_pos b'`. Check the signs of the components of the expression. Establish `term : ∀ p q : Fin n, ‖(b : Matrix (Fin n) (Fin n) E) j p * ((d p : Eˣ) : E) * (m : Matrix (Fin n) (Fin n) E) p q * (((d q)⁻¹ : Eˣ) : E) * (b' : Matrix (Fin n) (Fin n) E) q i‖ ≤ ε * (AutomorphicForm.locHeight b * AutomorphicForm.locHeight m * AutomorphicForm.locHeight b')`. Introduce `p q`.
+
+Distinguish the cases in `h1 : p < j`. Rewrite using `[hb j p h1]`. Simplify using `using mul_nonneg hε.le hL`. Distinguish the cases in `h2 : i < q`. Rewrite using `[hb' q i h2]`.
+
+Simplify using `using mul_nonneg hε.le hL`. Establish `hp : r ≤ (p : ℕ)` using `hj.trans (Fin.not_lt.1 h1)`. Establish `hq : (q : ℕ) < r` using `lt_of_le_of_lt (Fin.not_lt.1 h2) hi`. Establish `hratio` using `hr q p hq hp`. Establish `hq0` using `hρ q`.
+
+Establish `e2 : ‖(b : Matrix (Fin n) (Fin n) E) j p * ((d p : Eˣ) : E) * (m : Matrix (Fin n) (Fin n) E) p q * (((d q)⁻¹ : Eˣ) : E) * (b' : Matrix (Fin n) (Fin n) E) q i‖ = ρ p / ρ q * (‖(b : Matrix (Fin n) (Fin n) E) j p‖ * ‖(m : Matrix (Fin n) (Fin n) E) p q‖ * ‖(b' : Matrix (Fin n) (Fin n …`. Rewrite using `[norm_mul, norm_mul, norm_mul, norm_mul, Units.val_inv_eq_inv_val, norm_inv, hd, hd]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e2]`. Use `mul_le_mul hratio ?_ (by positivity) hε.le` and prove the remaining obligations.
+
+Conclude with `mul_le_mul (mul_le_mul (AutomorphicForm.norm_apply_le_locHeight b j p) (AutomorphicForm.norm_apply_le_locHeight m p q) (norm_nonneg _) (AutomorphicForm.locHeight_pos b).le) (AutomorphicForm.norm_apply_le_locHeight b' q i) (norm_nonneg _) (mul_nonneg (AutomorphicForm.locHeight_pos …`. Rewrite using `[e]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem entry_le {E : Type*} [NormedField E] {n : ℕ} (b m b' : GL (Fin n) E)
     (d : Fin n → Eˣ) (ρ : Fin n → ℝ) (hd : ∀ i, ‖((d i : Eˣ) : E)‖ = ρ i) (hρ : ∀ i, 0 < ρ i)
     (hb : ∀ p q : Fin n, q < p → (b : Matrix (Fin n) (Fin n) E) p q = 0)
@@ -70,6 +85,27 @@ private theorem entry_le {E : Type*} [NormedField E] {n : ℕ} (b m b' : GL (Fin
           (norm_sum_le _ _).trans (Finset.sum_le_sum fun p _ => term p q))
     _ = _ := by simp; ring
 
+/- English proof (translation)
+Introduce `K _ _ n δ b b' m hb hb' ρ hρ r ε hε hr hδ i j hi hj hc`. Establish `hfin : ∀ v : HeightOneSpectrum (𝓞 K), finAt v (diagUnits n (fun i => posIdele (K` using `K) (ρ i) (hρ i))) = 1 := by`. Introduce `v`. Use `Units.ext (Matrix.ext fun p q => ?_)` and prove the remaining obligations. Rewrite using `[finAt_apply, coe_diagUnits, Matrix.diagonal_apply, Units.val_one, Matrix.one_apply]`.
+
+Use `split_ifs with h`. Substitute `h` using the available equality. Conclude with `posIdele_finite (K := K) (ρ p) (hρ p) v`. Both sides reduce to the same expression. Establish `hv : ∀ v : HeightOneSpectrum (𝓞 K), ‖(((δ : Matrix (Fin n) (Fin n) K) j i : K) : v.adicCompletion K)‖ ≤ AutomorphicForm.locHeight (finAt v (b * m * b'))`.
+
+Introduce `v`. Establish `h1 : finAt v (AdelicGLn.diagonal K n δ) = finAt v (b * m * b')`. Rewrite using `[hδ]`. Simplify using `only [finAt_mul, finAt_inv, hfin, mul_one, inv_one]`. Establish `h2` using `AutomorphicForm.norm_apply_le_locHeight (finAt v (b * m * b')) j i`.
+
+Rewrite `h2` using `[← h1, finAt_apply, AdelicGLn.diagonal_apply]`. Rewrite `h2` using `[h1]`. Conclude with `h2`. Establish `hw : ∀ w : InfinitePlace K, ‖(((δ : Matrix (Fin n) (Fin n) K) j i : K) : w.Completion)‖ ≤ (n : ℝ) ^ 2 * ε * (AutomorphicForm.locHeight (infAt w b) * AutomorphicForm.locHeight (infAt w m) * AutomorphicForm.locHeight (infAt w b'))`. Introduce `w`.
+
+Establish `h1 : infAt w (AdelicGLn.diagonal K n δ) = infAt w b * diagUnits n (fun i => posRealToUnits w ⟨ρ i ^ w.mult, pow_pos (hρ i) _⟩) * infAt w m * (diagUnits n (fun i => posRealToUnits w ⟨ρ i ^ w.mult, pow_pos (hρ i) _⟩))⁻¹ * infAt w b'`. Rewrite using `[hδ]`. Simplify using `only [infAt_mul, infAt_inv, infAt_diagUnits_posIdele]`. Establish `h2` using `entry_le (infAt w b) (infAt w m) (infAt w b') (fun i => posRealToUnits w ⟨ρ i ^ w.mult, pow_pos (hρ i) _⟩) ρ (fun i => norm_posRealToUnits w (hρ i)) hρ (fun p q h => by rw [infAt_apply, mem_adelicBorel.1 hb h]; rfl) (fun p q h => by rw [infAt_apply, mem_adelicBorel.1 hb' h]; rfl) …`. Rewrite `h2` using `[← h1, infAt_apply, AdelicGLn.diagonal_apply]`.
+
+Conclude with `h2`. Establish `hN : 0 ≤ (n : ℝ) ^ 2 * ε` using `by positivity`. Establish `pb` using `AutomorphicForm.height_pos b`. Establish `pm` using `AutomorphicForm.height_pos m`. Establish `pb'` using `AutomorphicForm.height_pos b'`.
+
+Establish `hC` using `AutomorphicForm.one_le_heightConst (K := K) (n := n)`. Establish `inf_le : ∀ g : AdelicGLn.AdelicGL K n, ∏ w : InfinitePlace K, AutomorphicForm.locHeight (infAt w g) ^ w.mult ≤ AutomorphicForm.height g` using `fun g => le_mul_of_one_le_right (zero_le_one.trans (AutomorphicForm.one_le_prod_locHeight g)) (AutomorphicForm.one_le_finprod_locHeight g)`. Establish `hI : ∏ w : InfinitePlace K, ‖(((δ : Matrix (Fin n) (Fin n) K) j i : K) : w.Completion)‖ ^ w.mult ≤ ((n : ℝ) ^ 2 * ε) ^ Module.finrank ℚ K * (AutomorphicForm.height b * AutomorphicForm.height m * AutomorphicForm.height b')`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← InfinitePlace.sum_mult_eq (K := K), ← Finset.prod_pow_eq_pow_sum]`.
+
+Simplify using `only [mul_pow, Finset.prod_mul_distrib]`. Use `_ ≤ _ := by`. Use `mul_le_mul_of_nonneg_left ?_ (pow_nonneg hN _)` and prove the remaining obligations. Establish `q1` using `zero_le_one.trans (AutomorphicForm.one_le_prod_locHeight b)`. Establish `q2` using `zero_le_one.trans (AutomorphicForm.one_le_prod_locHeight m)`.
+
+Establish `q3` using `zero_le_one.trans (AutomorphicForm.one_le_prod_locHeight b')`. Conclude with `mul_le_mul (mul_le_mul (inf_le b) (inf_le m) q2 pb.le) (inf_le b') q3 (by positivity)`. Establish `hF : ∏ᶠ v : HeightOneSpectrum (𝓞 K), ‖(((δ : Matrix (Fin n) (Fin n) K) j i : K) : v.adicCompletion K)‖ ≤ AutomorphicForm.heightConst K n ^ 2 * (AutomorphicForm.height b * AutomorphicForm.height m * AutomorphicForm.height b')`. Combine the equalities or inequalities in the displayed calculation. Use `mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left (AutomorphicForm.height_mul_le _ _) (zero_le_one.trans hC)) pb'.le` and prove the remaining obligations.
+
+Use `_ = _ := by ring`. Establish `hC0 : 0 < AutomorphicForm.heightConst K n` using `zero_lt_one.trans_le hC`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem UpperTheory.one_le_entry_bound_of_borel_diagonal_decomp :
     ∀ (K : Type) [Field K] [NumberField K] (n : ℕ) (δ : GL (Fin n) K) (b b' m : AdelicGLn.AdelicGL K n),
           b ∈ (adelicBorel : Subgroup (AdelicGLn.AdelicGL K n)) → b' ∈ (adelicBorel : Subgroup (AdelicGLn.AdelicGL K n)) →

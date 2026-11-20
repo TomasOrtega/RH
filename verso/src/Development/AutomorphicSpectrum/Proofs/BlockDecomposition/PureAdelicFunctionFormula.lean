@@ -10,6 +10,11 @@ namespace GlobalTheory.CompanionTheory.BasePsi
 
 variable {F : Type} [Field F] [NumberField F]
 
+/- English proof (translation)
+Unfold `rv`. Rewrite using `[tsum_eq_single 0]`. Establish `h : (s ∈ v.adicCompletionIntegers F) ↔ Valued.v s ≤ 1` using `HeightOneSpectrum.mem_adicCompletionIntegers (R := 𝓞 F) F v`. Simplify using `[h]`. Introduce `i hi`.
+
+Simplify using `[hi]`.
+-/
 theorem rv_zero_apply (v : HeightOneSpectrum (𝓞 F)) (s : Fv F v) :
     rv v 0 s = if s ≠ 0 ∧ s ∈ v.adicCompletionIntegers F then 1 else 0 := by
   unfold rv
@@ -20,14 +25,27 @@ theorem rv_zero_apply (v : HeightOneSpectrum (𝓞 F)) (s : Fv F v) :
   · intro i hi
     simp [hi]
 
+/- English proof (translation)
+Rewrite using `[rv_zero_apply, if_pos ⟨h0, hs⟩]`.
+-/
 theorem rv_zero_of_mem (v : HeightOneSpectrum (𝓞 F)) {s : Fv F v} (h0 : s ≠ 0)
     (hs : s ∈ v.adicCompletionIntegers F) : rv v 0 s = 1 := by
   rw [rv_zero_apply, if_pos ⟨h0, hs⟩]
 
+/- English proof (translation)
+Rewrite using `[rv_zero_apply, if_neg fun h => hs h.2]`.
+-/
 theorem rv_zero_of_not_mem (v : HeightOneSpectrum (𝓞 F)) {s : Fv F v}
     (hs : s ∉ v.adicCompletionIntegers F) : rv v 0 s = 0 := by
   rw [rv_zero_apply, if_neg fun h => hs h.2]
 
+/- English proof (translation)
+Establish `hne : ∀ v : HeightOneSpectrum (𝓞 F), (a : AF F).2 v ≠ 0` using `fun v => IdeleGroup.finite_ne_zero a v`. Unfold `PositivityTheory.Rg.Base1.pure`. Use `split_ifs with h`. Rewrite using `[finprod_eq_one_of_forall_eq_one (fun v : {v // v ∉ S} => rv_zero_of_mem v.1 (hne v.1) (h v.1 v.2)), mul_one]`. Use `push_neg at h`.
+
+Take `⟨v, hvS, hv⟩` from `h`. Establish `hfin : (Function.mulSupport fun v : {v // v ∉ S} => rv v.1 0 ((a : AF F).2 v.1)).Finite`. Establish `hco : ∀ᶠ v : HeightOneSpectrum (𝓞 F) in cofinite, (a : AF F).2 v ∈ v.adicCompletionIntegers F` using `(a : AF F).2.2`. Use `Set.Finite.subset (Set.Finite.preimage Subtype.val_injective.injOn hco) ?_` and prove the remaining obligations. Introduce `w hw`.
+
+Assume the negation of the conclusion as `hmem`. Conclude with `hw (rv_zero_of_mem w.1 (hne w.1) (not_not.1 hmem))`. Rewrite using `[finprod_eq_zero _ (⟨v, hvS⟩ : {v // v ∉ S}) (rv_zero_of_not_mem v hv) hfin, mul_zero, ENNReal.ofReal_zero]`.
+-/
 theorem pure_rv_zero_apply (S : Finset (HeightOneSpectrum (𝓞 F))) (G : Ainf F → ℝ)
     (g : ∀ v : HeightOneSpectrum (𝓞 F), Fv F v → ℝ) (a : (AF F)ˣ) :
     PositivityTheory.Rg.Base1.pure S G g (fun v => rv v 0) a =

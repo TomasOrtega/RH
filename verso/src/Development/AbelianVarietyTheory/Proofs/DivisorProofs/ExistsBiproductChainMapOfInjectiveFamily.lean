@@ -9,12 +9,20 @@ namespace GlobalTheory.BiprodPush
 
 variable {R : Type} [CommRing R]
 
+/- English proof (translation)
+Take `⟨x, rfl⟩` from `x.mk_surjective`. Simplify using `only [cpush, cpost_mk]`. Use `congr 1`.
+-/
 theorem cpush_comp (K : Cx R) {I J M : Cx R} (f : I ⟶ J) (g : J ⟶ M) (n : ℤ) (x : CohomologyClass K I n) :
     cpush K (f ≫ g) n x = cpush K g n (cpush K f n x) := by
   obtain ⟨x, rfl⟩ := x.mk_surjective
   simp only [cpush, cpost_mk]
   congr 1
 
+/- English proof (translation)
+Take `⟨x, rfl⟩` from `x.mk_surjective`. Simplify using `only [cpush, cpost_mk]`. Rewrite using `[← CohomologyClass.mk_add]`. Use `congr 1`. Use `ext1`.
+
+Simplify using `[zcomp, Cochain.ofHom_add, Cochain.comp_add]`.
+-/
 theorem cpush_add (K : Cx R) {I J : Cx R} (f g : I ⟶ J) (n : ℤ) (x : CohomologyClass K I n) :
     cpush K (f + g) n x = cpush K f n x + cpush K g n x := by
   obtain ⟨x, rfl⟩ := x.mk_surjective
@@ -24,6 +32,11 @@ theorem cpush_add (K : Cx R) {I J : Cx R} (f g : I ⟶ J) (n : ℤ) (x : Cohomol
   ext1
   simp [zcomp, Cochain.ofHom_add, Cochain.comp_add]
 
+/- English proof (translation)
+Take `⟨x, rfl⟩` from `x.mk_surjective`. Simplify using `only [cpush, cpost_mk]`. Rewrite using `[← CohomologyClass.mk_zero]`. Use `congr 1`. Use `ext1`.
+
+Simplify using `[zcomp, Cochain.ofHom_zero]`.
+-/
 theorem cpush_zero (K : Cx R) {I J : Cx R} (n : ℤ) (x : CohomologyClass K I n) :
     cpush K (0 : I ⟶ J) n x = 0 := by
   obtain ⟨x, rfl⟩ := x.mk_surjective
@@ -33,6 +46,9 @@ theorem cpush_zero (K : Cx R) {I J : Cx R} (n : ℤ) (x : CohomologyClass K I n)
   ext1
   simp [zcomp, Cochain.ofHom_zero]
 
+/- English proof (translation)
+Take `⟨x, rfl⟩` from `x.mk_surjective`. Simplify using `only [cpush, cpost_mk]`. Use `congr 1`. Use `ext1`. Simplify using `[zcomp]`.
+-/
 theorem cpush_id (K : Cx R) {I : Cx R} (n : ℤ) (x : CohomologyClass K I n) :
     cpush K (𝟙 I) n x = x := by
   obtain ⟨x, rfl⟩ := x.mk_surjective
@@ -46,6 +62,9 @@ def cpushHom (K : Cx R) (I J : Cx R) (n : ℤ) (x : CohomologyClass K I n) : (I 
   map_zero' := cpush_zero K n x
   map_add' f g := cpush_add K f g n x
 
+/- English proof (translation)
+The claim follows from `map_sum (cpushHom K I J n x) f s`.
+-/
 theorem cpush_sum (K : Cx R) {I J : Cx R} {ι : Type} (s : Finset ι) (f : ι → (I ⟶ J)) (n : ℤ) (x : CohomologyClass K I n) :
     cpush K (∑ j ∈ s, f j) n x = ∑ j ∈ s, cpush K (f j) n x :=
   map_sum (cpushHom K I J n x) f s
@@ -58,12 +77,30 @@ noncomputable section
 
 namespace GlobalTheory.BiprodPush
 
+/- English proof (translation)
+Use `⟨fun {A B} g m _ => ⟨∑ j, Injective.factorThru (g ≫ p j) m ≫ i j, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[Preadditive.comp_sum]`. Repeatedly rewrite using `[← Category.assoc, Injective.comp_factorThru, Category.assoc, ← Preadditive.comp_sum, h, Category.comp_id]`.
+-/
 theorem injective_of_retracts {C : Type*} [Category C] [Preadditive C] {ι : Type} [Fintype ι] {X : C} (Y : ι → C)
     [∀ j, Injective (Y j)] (p : ∀ j, X ⟶ Y j) (i : ∀ j, Y j ⟶ X) (h : ∑ j, p j ≫ i j = 𝟙 X) : Injective X := by
   refine ⟨fun {A B} g m _ => ⟨∑ j, Injective.factorThru (g ≫ p j) m ≫ i j, ?_⟩⟩
   rw [Preadditive.comp_sum]
   simp_rw [← Category.assoc, Injective.comp_factorThru, Category.assoc, ← Preadditive.comp_sum, h, Category.comp_id]
 
+/- English proof (translation)
+Introduce `R _ ι _ L C g m hL hI`. Use `haveI : HasFiniteBiproducts (Cx R) := HasFiniteBiproducts.of_hasFiniteProducts`. Establish `htot : ∀ n, ∑ j, (biproduct.π L j).f n ≫ (biproduct.ι L j).f n = 𝟙 ((⨁ L).X n)`. Introduce `n`. Use `(HomologicalComplex.eval _ (ComplexShape.up ℤ) n).map_sum (fun j => biproduct.π L j ≫ biproduct.ι L j) Finset.univ` as an intermediate fact.
+
+Rewrite `this` using `[biproduct.total]`. Simplify using `only [Functor.map_id, Functor.map_comp, HomologicalComplex.eval_map] at this`. Conclude with `this.symm`. Use `⟨⨁ L, biproduct.desc g, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[CochainComplex.isStrictlyGE_iff]`.
+
+Introduce `i hi`. Rewrite using `[IsZero.iff_id_eq_zero, ← htot i]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Establish `: IsZero ((L j).X i)` using `(L j).isZero_of_isStrictlyGE m i hi`. Rewrite using `[show (biproduct.π L j).f i = 0 from this.eq_of_tgt _ _, zero_comp]`.
+
+Introduce `n`. Conclude with `injective_of_retracts (fun j => (L j).X n) (fun j => (biproduct.π L j).f n) (fun j => (biproduct.ι L j).f n) (htot n)`. Introduce `K n`. Use `⟨{ toFun := fun a => ∑ j, cpush K (biproduct.ι L j) n (a j) invFun := fun b j => cpush K (biproduct.π L j) n b left_inv := ?_ right_inv := ?_ }, ?_⟩` and prove the remaining obligations. Introduce `a`.
+
+Use function extensionality and compare the values at `k`. Simplify using `only [map_sum, ← cpush_comp]`. Rewrite using `[Finset.sum_eq_single k]`. Rewrite using `[biproduct.ι_π_self, cpush_id]`. Introduce `j _ hj`.
+
+Rewrite using `[biproduct.ι_π_ne _ hj, cpush_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ k) h`. Introduce `b`. Simplify using `only [← cpush_comp]`.
+
+Rewrite using `[← cpush_sum, biproduct.total, cpush_id]`. Introduce `a`. Express the relevant statement in the definitionally equal form `cpush K (biproduct.desc g) n (∑ j, cpush K (biproduct.ι L j) n (a j)) = _`. Rewrite using `[map_sum]`. Simplify using `only [← cpush_comp, biproduct.ι_desc]`.
+-/
 theorem biproduct_push : ∀ (R : Type) [CommRing R] {ι : Type} [Fintype ι] (L : ι → Cx R) (C : Cx R) (g : ∀ j, L j ⟶ C) (m : ℤ), (∀ j, (L j).IsStrictlyGE m) → (∀ j n, CategoryTheory.Injective ((L j).X n)) → ∃ (D : Cx R) (f : D ⟶ C), D.IsStrictlyGE m ∧ (∀ n, CategoryTheory.Injective (D.X n)) ∧ ∀ (K : Cx R) (n : ℤ), ∃ e : (∀ j, CohomologyClass K (L j) n) ≃ CohomologyClass K D n, ∀ a, cpush K f n (e a) = ∑ j, cpush K (g j) n (a j) := by
   intro R _ ι _ L C g m hL hI
   classical

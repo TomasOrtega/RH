@@ -6,6 +6,29 @@ open scoped ENNReal NNReal Matrix
 
 namespace GlobalTheory.CompanionTheory.SW.PeriodisedMean
 
+/- English proof (translation)
+Introduce `N _ _ _ _ _ _ _ _ ν _ Γ _ 𝓕N h𝓕 hfin V _ _ _ _ _ _ _ _ dA _ Λ _ D hD hD1 l hlc hlmul hlsurj hlΓ f hf`. Take `⟨-, hR, -⟩` from `GlobalTheory.CompanionTheory.SW.LatticeUnimod.unimodular_of_isFundamentalDomain N Γ ν 𝓕N h𝓕 hfin`. Establish `hlm : Measurable l` using `hlc.measurable`. Use `set Ft : V → ℝ≥0∞ := fun x => ∑' a : Λ, f ((a : V) + x) with hFt`. Establish `hFtm : Measurable Ft` using `Measurable.tsum fun a => hf.comp (measurable_const.add measurable_id)`.
+
+Establish `hper : ∀ b ∈ Λ, ∀ x, Ft (x + b) = Ft x`. Introduce `b hb x`. Simplify using `only [hFt]`. Rewrite using `[← (Equiv.addRight (⟨b, hb⟩ : Λ)).tsum_eq (fun a : Λ => f ((a : V) + x))]`. Use `tsum_congr fun a => ?_` and prove the remaining obligations.
+
+Simplify using `only [Equiv.coe_addRight, AddSubgroup.coe_add]`. Use `congr 1`. Normalize the expressions using the abelian group laws. Use `set h : N → ℝ≥0∞ := fun m => Ft (l m⁻¹) with hh`. Establish `hinv : ∀ γ ∈ Γ, ∀ m, h (γ * m) = h m`.
+
+Introduce `γ hγ m`. Simplify using `only [hh]`. Rewrite using `[mul_inv_rev, hlmul]`. Conclude with `hper _ (hlΓ _ (Γ.inv_mem hγ)) _`. Establish `hshift : ∀ n₀ : N, ∫⁻ m in 𝓕N, h (m * n₀) ∂ν = ∫⁻ m in 𝓕N, h m ∂ν`.
+
+Introduce `n₀`. Establish `hF : IsFundamentalDomain Γ ((· * n₀⁻¹) ⁻¹' 𝓕N) ν` using `h𝓕.preimage_of_equiv (quasiMeasurePreserving_mul_right ν n₀⁻¹) (e := id) Function.bijective_id (fun γ x => by simp [Subgroup.smul_def, smul_eq_mul, mul_assoc])`. Establish `hmp : MeasurePreserving (· * n₀) ν ν` using `measurePreserving_mul_right ν n₀`. Establish `hemb : MeasurableEmbedding (· * n₀ : N → N)` using `(MeasurableEquiv.mulRight n₀).measurableEmbedding`. Establish `e1` using `hmp.setLIntegral_comp_preimage_emb hemb h ((· * n₀⁻¹) ⁻¹' 𝓕N)`.
+
+Establish `e2 : (· * n₀ : N → N) ⁻¹' ((· * n₀⁻¹) ⁻¹' 𝓕N) = 𝓕N`. Use extensionality with `x`. Simplify using the standard rewrite rules. Rewrite `e1` using `[e2]`. Rewrite using `[e1]`.
+
+Conclude with `hF.setLIntegral_eq h𝓕 h (fun γ x => hinv γ γ.2 x)`. Establish `hT : ∀ x, ∫⁻ m in 𝓕N, Ft (x + l m⁻¹) ∂ν = ∫⁻ m in 𝓕N, h m ∂ν`. Introduce `x`. Take `⟨y, rfl⟩` from `hlsurj x`. Rewrite using `[← hshift y⁻¹]`.
+
+Use `lintegral_congr fun m => ?_` and prove the remaining obligations. Simplify using `only [hh]`. Rewrite using `[mul_inv_rev, inv_inv, hlmul]`. Establish `hfold : ∀ c : V, ∫⁻ x in D, Ft (x + c) ∂dA = ∫⁻ x, f x ∂dA`. Introduce `c`.
+
+Establish `e0 : ∫⁻ x, f (x + c) ∂dA = ∫⁻ x, f x ∂dA` using `lintegral_add_right_eq_self f c`. Establish `e3 : ∫⁻ x in D, ∑' a : Λ, f ((a +ᵥ x) + c) ∂dA = ∑' a : Λ, ∫⁻ x in D, f ((a +ᵥ x) + c) ∂dA` using `lintegral_tsum fun a => (hf.comp ((measurable_const_vadd a).add_const c)).aemeasurable`. Rewrite using `[← e0, hD.lintegral_eq_tsum'' (fun x => f (x + c)), ← e3]`. Use `lintegral_congr fun x => ?_` and prove the remaining obligations. Simplify using `only [hFt]`.
+
+Use `tsum_congr fun a => ?_` and prove the remaining obligations. Simplify using `[AddSubgroup.vadd_def, vadd_eq_add, add_assoc]`. Establish `hswapm : Measurable (Function.uncurry fun (x : V) (m : N) => Ft (x + l m⁻¹))` using `hFtm.comp (measurable_fst.add (hlm.comp measurable_snd.inv))`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[setLIntegral_const, hD1, mul_one]`.
+
+Use `_ = ∫⁻ x in D, ∫⁻ m in 𝓕N, Ft (x + l m⁻¹) ∂ν ∂dA := lintegral_congr fun x => (hT x).symm`. Use `_ = ∫⁻ m in 𝓕N, ∫⁻ x in D, Ft (x + l m⁻¹) ∂dA ∂ν := lintegral_lintegral_swap hswapm.aemeasurable`. Use `_ = ∫⁻ _m in 𝓕N, (∫⁻ x, f x ∂dA) ∂ν := lintegral_congr fun m => hfold _`. Use `_ = ν 𝓕N * ∫⁻ x, f x ∂dA := by`. Rewrite using `[setLIntegral_const, mul_comm]`.
+-/
 theorem setLIntegral_tsum_comp_inv_eq : ∀ (N : Type) [Group N] [TopologicalSpace N] [IsTopologicalGroup N] [LocallyCompactSpace N] [SecondCountableTopology N] [T2Space N] [MeasurableSpace N] [BorelSpace N] (ν : Measure N) [ν.IsHaarMeasure] (Γ : Subgroup N) [Countable Γ] (𝓕N : Set N), IsFundamentalDomain Γ 𝓕N ν → ν 𝓕N < ⊤ → ∀ (V : Type) [AddCommGroup V] [TopologicalSpace V] [IsTopologicalAddGroup V] [LocallyCompactSpace V] [SecondCountableTopology V] [T2Space V] [MeasurableSpace V] [BorelSpace V] (dA : Measure V) [dA.IsAddHaarMeasure] (Λ : AddSubgroup V) [Countable Λ] (D : Set V), IsAddFundamentalDomain Λ D dA → dA D = 1 → ∀ l : N → V, Continuous l → (∀ x y, l (x * y) = l x + l y) → Function.Surjective l → (∀ γ ∈ Γ, l γ ∈ Λ) → ∀ f : V → ℝ≥0∞, Measurable f → ∫⁻ m in 𝓕N, ∑' a : Λ, f ((a : V) + l m⁻¹) ∂ν = ν 𝓕N * ∫⁻ x, f x ∂dA := by
   intro N _ _ _ _ _ _ _ _ ν _ Γ _ 𝓕N h𝓕 hfin V _ _ _ _ _ _ _ _ dA _ Λ _ D hD hD1 l hlc hlmul hlsurj hlΓ f hf
   obtain ⟨-, hR, -⟩ :=

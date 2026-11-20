@@ -12,19 +12,33 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 noncomputable section
 namespace GlobalTheory.ZM.Model
 
+/- English proof (translation)
+Unfold `IsE8`. Rewrite using `[w8_add_transpose_eq_e8]`. Conclude with `⟨e8_posDef, e8_det_eq_one⟩`.
+-/
 theorem isE8_W8 : IsE8 W8 := by
   unfold IsE8
   rw [w8_add_transpose_eq_e8]
   exact ⟨e8_posDef, e8_det_eq_one⟩
 
+/- English proof (translation)
+Introduce and unpack `⟨-, h⟩`. Rewrite `h` using `[Matrix.transpose_one, ← two_smul ℤ, Matrix.det_smul]`. Simplify using `at h`.
+-/
 theorem not_isE8_one : ¬ IsE8 1 := by
   rintro ⟨-, h⟩
   rw [Matrix.transpose_one, ← two_smul ℤ, Matrix.det_smul] at h
   simp at h
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨inferInstance, inferInstance, RingHom.injective_int _⟩`.
+-/
 theorem arBase_int : ArBase (Int.castRingHom ℂ) :=
   ⟨inferInstance, inferInstance, RingHom.injective_int _⟩
 
+/- English proof (translation)
+Introduce and unpack `⟨-, h, -⟩`. Use `haveI : CharZero K := em.charZero`. Use `haveI := h`. Use `haveI := ReciprocityTheory.AnForm.R.IntegerToRational.isJacobsonRing_int`. Use `haveI : Module.Finite ℤ K := finite_of_finite_type_of_isJacobsonRing ℤ K`.
+
+Establish `hi : Algebra.IsIntegral ℤ K` using `inferInstance`. Use `(Algebra.IsIntegral.isField_iff_isField (R := ℤ) (S := K) (RingHom.injective_int _)).2 (Field.toIsField K)` as an intermediate fact. Conclude with `Int.not_isField this`.
+-/
 theorem not_arBase_field {K : Type} [Field K] (em : K →+* ℂ) : ¬ ArBase em := by
   rintro ⟨-, h, -⟩
   haveI : CharZero K := em.charZero
@@ -41,6 +55,15 @@ variable {F : Type} [Field F] [NumberField F] (φ : F →+* ℂ) {n : ℕ} (hn :
 def awayEmb : Localization.Away (n : 𝓞 F) →+* ℂ :=
   IsLocalization.Away.lift (n : 𝓞 F) (g := φ.comp (algebraMap (𝓞 F) F)) (by simpa using hn)
 
+/- English proof (translation)
+Establish `hn' : (n : 𝓞 F) ≠ 0` using `by exact_mod_cast hn`. Establish `hM : Submonoid.powers (n : 𝓞 F) ≤ nonZeroDivisors (𝓞 F)` using `powers_le_nonZeroDivisors_of_noZeroDivisors hn'`. Use `haveI : IsDomain (Localization.Away (n : 𝓞 F)) := IsLocalization.isDomain_localization hM`. Use `⟨IsLocalization.isDedekindDomain (𝓞 F) hM _, ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : Algebra.FiniteType ℤ (𝓞 F)` using `inferInstance`.
+
+Establish `h2 : Algebra.FiniteType (𝓞 F) (Localization.Away (n : 𝓞 F))` using `inferInstance`. Use `h1.trans h2` and compare the differences between its conclusion and the goal. Both sides reduce to the same expression. Conclude with `Subsingleton.elim _ _`. Unfold `awayEmb IsLocalization.Away.lift`.
+
+Rewrite using `[IsLocalization.lift_injective_iff]`. Introduce `x y`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[IsLocalization.injective _ hM h]`.
+
+Introduce `h`. Establish `: x = y` using `(φ.injective.comp (RingOfIntegers.coe_injective)) h`. Rewrite using `[this]`.
+-/
 theorem arBase_away : ArBase (awayEmb φ hn) := by
   have hn' : (n : 𝓞 F) ≠ 0 := by exact_mod_cast hn
   have hM : Submonoid.powers (n : 𝓞 F) ≤ nonZeroDivisors (𝓞 F) := powers_le_nonZeroDivisors_of_noZeroDivisors hn'
@@ -80,9 +103,20 @@ variable (h : ℕ)
 
 def halves (g : ℕ) : Fin g ⊕ Fin g ≃ Fin (2 * g) := finSumFinEquiv.trans (finCongr (two_mul g).symm)
 
+/- English proof (translation)
+Simplify using `[halves]`.
+-/
 theorem halves_inl (g : ℕ) (a : Fin g) : (halves g (.inl a) : ℕ) = a := by simp [halves]
+/- English proof (translation)
+Simplify using `[halves, add_comm]`.
+-/
 theorem halves_inr (g : ℕ) (a : Fin g) : (halves g (.inr a) : ℕ) = g + a := by simp [halves, add_comm]
 
+/- English proof (translation)
+Take `⟨i, rfl⟩` from `(halves g).surjective i`. Take `⟨j, rfl⟩` from `(halves g).surjective j`. Unfold `Out.stdSymp`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j <;>`. Simplify using `only [Pi.single_apply, (halves g).injective.eq_iff, halves_inl, halves_inr, Sum.inl.injEq, Sum.inr.injEq, reduceCtorEq, if_false, mul_zero, zero_mul, sub_zero, zero_sub, ite_mul, one_mul, Finset.sum_neg_distrib, Finset.sum_ite_eq', Finset.mem_univ, if_true, Finset.sum_const_zero]`.
+
+Apply the tactic sequence `all_goals try simp only [Fin.ext_iff]`. Use `i.2` as an intermediate fact. Use `j.2` as an intermediate fact. Apply the tactic sequence `split_ifs <;> omega`.
+-/
 theorem sum_halves (g : ℕ) (i j : Fin (2 * g)) :
     ∑ a : Fin g, ((Pi.single i 1 : Fin (2 * g) → ℤ) (halves g (.inl a)) * (Pi.single j 1 : Fin (2 * g) → ℤ) (halves g (.inr a)) -
       (Pi.single i 1 : Fin (2 * g) → ℤ) (halves g (.inr a)) * (Pi.single j 1 : Fin (2 * g) → ℤ) (halves g (.inl a))) =
@@ -128,10 +162,24 @@ def sharpBas : (Fin (2 * (8 * h)) → ℤ) ≃ₗ[ℤ] (Fin 8 → (Fin h ⊕ Fin
       simp only [← Finset.sum_mul, ← Matrix.mul_apply, e8inv_mul_e8, Matrix.one_apply, ite_mul, one_mul, zero_mul,
         Finset.sum_ite_eq, Finset.mem_univ, if_true]
 
+/- English proof (translation)
+Establish `: E8.mulVec (E8inv.mulVec y) = y` using `by rw [Matrix.mulVec_mulVec, e8_mul_e8inv, Matrix.one_mulVec]`. Conclude with `congrFun this u`.
+-/
 theorem dual_sum (y : Fin 8 → ℤ) (u : Fin 8) : ∑ v, E8 u v * ∑ w, E8inv v w * y w = y u := by
   have : E8.mulVec (E8inv.mulVec y) = y := by rw [Matrix.mulVec_mulVec, e8_mul_e8inv, Matrix.one_mulVec]
   exact congrFun this u
 
+/- English proof (translation)
+Establish `hs : ∀ u v, E8 u v = E8 v u` using `fun u v => congrFun (congrFun e8_transpose v) u`. Rewrite using `[← finProdFinEquiv.sum_comp, Fintype.sum_prod_type]`. Establish `key : ∀ (A B : Fin 8 → Fin h → ℤ), ∑ u, ∑ v, ∑ i, E8 u v * (A u i * ∑ w, E8inv v w * B w i) = ∑ u, ∑ i, A u i * B u i`. Introduce `A B`. Use `Finset.sum_congr rfl fun u _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← dual_sum (fun w => B w i) u, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun v _ => by ring`. Establish `k1` using `key (fun u i => x (halves _ (.inl (finProdFinEquiv (u, i))))) (fun u i => x' (halves _ (.inr (finProdFinEquiv (u, i)))))`.
+
+Establish `k2` using `key (fun u i => x' (halves _ (.inl (finProdFinEquiv (u, i))))) (fun u i => x (halves _ (.inr (finProdFinEquiv (u, i)))))`. Rewrite `k2` using `[Finset.sum_comm]`. Simplify using `only [Finset.sum_sub_distrib]`. Rewrite using `[← k1, show (∑ u, ∑ i, x (halves _ (.inr (finProdFinEquiv (u, i)))) * x' (halves _ (.inl (finProdFinEquiv (u, i))))) = ∑ u, ∑ i, x' (halves _ (.inl (finProdFinEquiv (u, i)))) * x (halves _ (.inr (finProdFinEquiv (u, i)))) from by`. Simplify using `only [mul_comm], ← k2, ← Finset.sum_sub_distrib]`.
+
+Use `Finset.sum_congr rfl fun u _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_sub_distrib, omegaStd, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[hs v u]`. Simplify using `only [sharpBas, LinearEquiv.coe_mk, LinearMap.coe_mk, AddHom.coe_mk, Sum.elim_inl, Sum.elim_inr]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sharp_form (x x' : Fin (2 * (8 * h)) → ℤ) :
     ∑ u, ∑ v, E8 u v * omegaStd (sharpBas h x u) (sharpBas h x' v) =
       ∑ a : Fin (8 * h), (x (halves _ (.inl a)) * x' (halves _ (.inr a)) - x (halves _ (.inr a)) * x' (halves _ (.inl a))) := by
@@ -160,16 +208,25 @@ theorem sharp_form (x x' : Fin (2 * (8 * h)) → ℤ) :
   simp only [sharpBas, LinearEquiv.coe_mk, LinearMap.coe_mk, AddHom.coe_mk, Sum.elim_inl, Sum.elim_inr]
   ring
 
+/- English proof (translation)
+Introduce `i j`. Rewrite using `[w8_add_transpose_eq_e8, sharp_form, sum_halves]`.
+-/
 theorem isSharpBasis_sharpBas : IsSharpBasis W8 (sharpBas h) := by
   intro i j
   rw [w8_add_transpose_eq_e8, sharp_form, sum_halves]
 
 end Basis
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨W8, isE8_W8, fun h => ⟨sharpBas h, isSharpBasis_sharpBas h⟩⟩`.
+-/
 theorem exists_isE8_isSharpBasis : ∃ W : Matrix (Fin 8) (Fin 8) ℤ, IsE8 W ∧ ∀ h : ℕ,
     ∃ bas : (Fin (2 * (8 * h)) → ℤ) ≃ₗ[ℤ] (Fin 8 → (Fin h ⊕ Fin h → ℤ)), IsSharpBasis W bas :=
   ⟨W8, isE8_W8, fun h => ⟨sharpBas h, isSharpBasis_sharpBas h⟩⟩
 
+/- English proof (translation)
+Use `bas.finrank_eq` as an intermediate fact. Simplify using `[Module.finrank_pi_fintype] at this`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem eq_eight_mul {g h : ℕ} (bas : (Fin (2 * g) → ℤ) ≃ₗ[ℤ] (Fin 8 → (Fin h ⊕ Fin h → ℤ))) : g = 8 * h := by
   have := bas.finrank_eq
   simp [Module.finrank_pi_fintype] at this
@@ -179,6 +236,9 @@ section Use
 open AlgebraicGeometry CategoryTheory MonObj
 variable {o : Type} [CommRing o] {S : Scheme.{0}} {g k : ℕ} {J : Type} {b : TBase o k} {s : S ⟶ Sp o}
 
+/- English proof (translation)
+Take `⟨φ, hφ, -, h, -⟩` from `ht`. Rewrite using `[← cancel_epi φ.hom, MonObj.comp_mul, ← h, ← h, ← MonObj.mul_comp, ← τ.act.add, hw, τ.act.one]`. Simplify using the standard rewrite rules.
+-/
 theorem act_mul_act_of_isPEL {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {a : J → 𝓞 E}
     {bas : (Fin (2 * g) → ℤ) ≃ₗ[ℤ] D.La} {ρ : o} {t : TObj g k J b s} {τ : SAB H S} (ht : IsPEL D a bas ρ t τ)
     {w w' : J} (hw : a w + a w' = 1) : t.act w * t.act w' = 𝟙 t.A := by
@@ -186,6 +246,9 @@ theorem act_mul_act_of_isPEL {E : Type} [Field E] [NumberField E] [IsCMField E] 
   rw [← cancel_epi φ.hom, MonObj.comp_mul, ← h, ← h, ← MonObj.mul_comp, ← τ.act.add, hw, τ.act.one]
   simp
 
+/- English proof (translation)
+Take `⟨pr, -, hu, -, h, -⟩` from `ht`. Use `(hu t.A pr).unique (fun u => ?_) (fun u => by simp)` and prove the remaining obligations. Apply the tactic sequence `rw [h, hj, List.prod_ofFn, Finset.prod_eq_single u] <;> simp +contextual [Matrix.one_apply, eq_comm]`.
+-/
 theorem act_one_of_isSharp {h : ℕ} {W : Matrix (Fin 8) (Fin 8) ℤ} {a : J → Matrix (Fin 8) (Fin 8) ℤ}
     {bas : (Fin (2 * g) → ℤ) ≃ₗ[ℤ] (Fin 8 → (Fin h ⊕ Fin h → ℤ))} {t : TObj g k J b s} {c : SiegPre h k (b.ζ : o) s}
     (ht : IsSharp W a bas t c) {j : J} (hj : a j = 1) : t.act j = 𝟙 t.A := by
@@ -200,6 +263,13 @@ open ReciprocityTheory.ChartRestriction.G.Semi Out.Inh
 open scoped CategoryTheory.Obj
 variable {o : Type} [CommRing o] {S : Scheme.{0}} {k : ℕ} {J : Type}
 
+/- English proof (translation)
+Substitute `hh hh'` using the available equality. Introduce `j j'`. Take `rfl : j = fun _ _ => PUnit.unit` from `rfl`. Take `rfl : j' = fun _ _ => PUnit.unit` from `rfl`. Introduce `_ _ _`.
+
+Establish `e1 : ∀ (V W : Y.Opens) (h1 : V ≤ W) (U U' : Y.Opens) (h2 : W ≤ U) (h3 : W ≤ U') (u : Γ(Y, U)ˣ) (v : Γ(Y, U')ˣ), res h1 (res h2 u * res h3 v) = res (h1.trans h2) u * res (h1.trans h3) v` using `by intros; rw [map_mul, ZH.RealModel.res_res, ZH.RealModel.res_res]`. Use `(e1 _ _ _ _ _ _ _ _ _).trans (Eq.trans ?_ (e1 _ _ _ _ _ _ _ _ _).symm)` and prove the remaining obligations. Use `Eq.trans ?_ (congrArg₂ (· * ·) (e1 _ _ _ _ _ _ _ _ _) ((congrArg _ (hc _)).trans (ZH.RealModel.res_one _))).symm` and prove the remaining obligations. Rewrite using `[_root_.mul_one, _root_.mul_comm]`. Use `congrArg₂ (· * ·) ?_ ?_` and prove the remaining obligations.
+
+Conclude with `(ZH.RealModel.res_res _ _ _)`. Conclude with `(ZH.RealModel.res_res _ _ _).symm`.
+-/
 theorem corr_comm_pull {X X' Y : Scheme.{0}} (f : X ⟶ X') {K : Type} [Fintype K] (φ φ' : K → (Y ⟶ X)) (ε : K → ℤ)
     (a : LB.Gen (LB.LinComb ((trivLB X').pull f) φ ε)) (b : LB.Gen (LB.LinComb ((trivLB X').pull f) φ' ε)) (h h' : Y ⟶ Y)
     (hh : h = 𝟙 Y) (hh' : h' = 𝟙 Y)
@@ -221,9 +291,17 @@ theorem corr_comm_pull {X X' Y : Scheme.{0}} (f : X ⟶ X') {K : Type} [Fintype 
   · exact (ZH.RealModel.res_res _ _ _)
   · exact (ZH.RealModel.res_res _ _ _).symm
 
+/- English proof (translation)
+Introduce `i j`. Rewrite using `[hL, _root_.one_mul]`. Conclude with `(map_one _).trans (map_one _).symm`.
+-/
 theorem isGen_one {X : Scheme.{0}} (L : LB X) (hL : ∀ i j, L.g i j = 1) : (⟨fun _ => 1⟩ : L.Gen).IsGen := by
   intro i j; rw [hL, _root_.one_mul]; exact (map_one _).trans (map_one _).symm
 
+/- English proof (translation)
+Introduce `p`. Use `⟨⊤, trivial, ⟨⟨_, _, isGen_one _ (linComb_g_one _ (linComb_triv_g _ _) _ _)⟩, ⟨_, _, isGen_one _ (linComb_g_one _ (linComb_triv_g _ _) _ _)⟩, rfl, rfl⟩, ?_⟩` and prove the remaining obligations. Introduce `θx θy _ _`. Establish `hc : Out.unitRes (T` using `T) ⊤ 1 = 1 := map_one _`. Rewrite using `[hc]`.
+
+Conclude with `corr_comm_pull _ _ _ _ _ _ _ _ (ZH.RealModel.translT_id S _) (ZH.RealModel.translT_id S _) _ (fun j => (congrArg _ (map_one _)).trans (ZH.RealModel.res_one _))`.
+-/
 theorem weil_pull_zero {X : Scheme.{0}} (f : (𝟙_ (Over S)).left ⟶ X) (n : ℤ) {T : Over S} (x y : T ⟶ 𝟙_ (Over S)) :
     Out.WeilIs (𝟙_ (Over S)) ((trivLB X).pull f) n x y 1 := by
   intro p
@@ -235,6 +313,19 @@ theorem weil_pull_zero {X : Scheme.{0}} (f : (𝟙_ (Over S)).left ⟶ X) (n : �
   exact corr_comm_pull _ _ _ _ _ _ _ _ (ZH.RealModel.translT_id S _) (ZH.RealModel.translT_id S _) _
     (fun j => (congrArg _ (map_one _)).trans (ZH.RealModel.res_one _))
 
+/- English proof (translation)
+Introduce `U hU`. Use `haveI : IsIso (𝟙_ (Over S)).hom := by show IsIso (𝟙 S); infer_instance`. Set `Y` to `((𝟙_ (Over S)).hom ⁻¹ᵁ U).toScheme`. Establish `hp : ∀ i j, (Out.powOver (𝟙_ (Over S)) M U 1).g i j = 1` using `fun i j => by`. Conclude with `linComb_g_one M hg _ _ i j`.
+
+Set `s0 : LB.Sec (Out.powOver (𝟙_ (Over S)) M U 1)` to `⟨fun _ => 1, by`. Introduce `i j`. Rewrite using `[hp, Units.val_one, _root_.one_mul]`. Repeat the step `erw [map_one]` while it applies. Apply the tactic sequence `all_goals rfl⟩`.
+
+Establish `hD : Out.nonzeroLocus s0 = ⊤`. Apply `top_unique` to reduce the goal to its premises. Introduce `x _`. Simplify using `only [Out.nonzeroLocus, s0, Scheme.basicOpen_one]`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨fun _ => i₀, Set.mem_iInter.2 fun _ => by show _ ∈ M.U i₀`.
+
+Rewrite using `[hi₀]`. Use the proof step `trivial⟩`. Use `⟨1, le_rfl, 0, fun _ => s0, by simp only [iSup_const]; exact hD, fun _ => ⟨?_, fun _ => 1, ?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hD]`. Establish `: IsAffine Y` using `hU`.
+
+Conclude with `isAffineOpen_top Y`. Introduce `j k erw [map_one]`. Apply the tactic sequence `(try erw [map_one])`. Apply the tactic sequence `(try erw [map_one])`. Conclude with `(_root_.mul_one _).symm`.
+
+Introduce `p`. Take `⟨a, rfl⟩` from `surj_appLE ((𝟙_ (Over S)).hom ∣_ U) _ hD le_top p`. Conclude with `⟨MvPolynomial.C a, MvPolynomial.eval₂Hom_C _ _ _⟩`.
+-/
 theorem relAmple_unit (M : LB (𝟙_ (Over S)).left) (hg : ∀ i j, M.g i j = 1) (i₀ : M.ι) (hi₀ : M.U i₀ = ⊤) :
     Out.RelAmple (𝟙_ (Over S)) M := by
   intro U hU
@@ -280,20 +371,38 @@ def zeroSieg (ζ : o) (s : S ⟶ Sp o) : SiegPre 0 k ζ s where
       have : unitOn (z ^ (2 * omegaStd a b)) = 1 := by simp [omegaStd, unitOn]
       rw [this]; exact weil_pull_zero _ _ _ _⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ => 𝟙 _, fun _ => inferInstanceAs (IsMonHom (𝟙 (𝟙_ (Over S)))), fun T y => ⟨toUnit T, fun _ => toUnit_unique _ _, fun _ _ => toUnit_unique _ _⟩, lbIso_of_g _ _ (fun _ _ => rfl) (linComb_triv_g _ _), fun _ _ => toUnit_unique _ _, fun i => i.elim0⟩`.
+-/
 theorem isSharp_zero (W : Matrix (Fin 8) (Fin 8) ℤ) (a : J → Matrix (Fin 8) (Fin 8) ℤ) (bas) (b : TBase o k) (s : S ⟶ Sp o) :
     IsSharp W a bas (zeroObj J b s) (zeroSieg (b.ζ : o) s) :=
   ⟨fun _ => 𝟙 _, fun _ => inferInstanceAs (IsMonHom (𝟙 (𝟙_ (Over S)))),
     fun T y => ⟨toUnit T, fun _ => toUnit_unique _ _, fun _ _ => toUnit_unique _ _⟩,
     lbIso_of_g _ _ (fun _ _ => rfl) (linComb_triv_g _ _), fun _ _ => toUnit_unique _ _, fun i => i.elim0⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨relAmple_unit _ (linComb_triv_g _ _) (fun _ => PUnit.unit) (ZH.RealModel.wchart_triv _ _), fun _ _ _ => toUnit_unique _ _⟩`.
+-/
 theorem zeroSieg_principal (ζ : o) (s : S ⟶ Sp o) : (zeroSieg (k := k) ζ s).Principal :=
   ⟨relAmple_unit _ (linComb_triv_g _ _) (fun _ => PUnit.unit) (ZH.RealModel.wchart_triv _ _),
     fun _ _ _ => toUnit_unique _ _⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨_, zeroSieg_principal _ _, isSharp_zero W a bas b _⟩`.
+-/
 theorem sharpClass_zero (W : Matrix (Fin 8) (Fin 8) ℤ) (a : J → Matrix (Fin 8) (Fin 8) ℤ) (bas) (b : TBase o k) (em : o →+* ℂ) :
     SharpClass (h := 0) W a bas em (zeroObj J b (spMap em)) :=
   ⟨_, zeroSieg_principal _ _, isSharp_zero W a bas b _⟩
 
+/- English proof (translation)
+Use `⟨Iso.refl _, inferInstanceAs (IsMonHom (𝟙 (𝟙_ (Over S)))), lbIso_of_g _ _ (fun _ _ => rfl) (linComb_triv_g _ _), fun _ => toUnit_unique _ _, fun K _ _ _ x β _ => ⟨fun τ => ?_, ?_⟩⟩` and prove the remaining obligations. Establish `: LieMult (Models.Inhab.zeroTriple H S).act x τ 0` using `⟨fun i => i.elim0, fun i => i.elim0, fun w _ => ⟨fun i => i.elim0, ⟨fun i => i.elim0, fun i => i.elim0, toUnit_unique _ _⟩, fun _ _ => Subsingleton.elim _ _⟩⟩`. Conclude with `⟨fun _ => this, fun _ => this⟩`. Use `⟨⟨fun n => Units.mk0 (β (Complex.exp (2 * Real.pi * Complex.I / n))) (by simp), fun n hn => ?_, fun n m hn hm => ?_, fun _ _ => toUnit _, fun _ _ _ => toUnit_unique _ _, fun _ _ _ => toUnit_unique _ _, fun _ _ _ => ⟨fun _ => ⟨PUnit.unit, rfl⟩, fun _ => toUnit_unique _ _⟩, fun _ _ …` and prove the remaining obligations. Rewrite using `[← IsPrimitiveRoot.coe_units_iff]`.
+
+Conclude with `(Complex.isPrimitiveRoot_exp n hn.ne').map_of_injective β.injective`. Use `ext`. Simplify using `only [Units.val_pow_eq_pow_val, Units.val_mk0, ← map_pow, ← Complex.exp_nat_mul]`. Use `congr 2`. Establish `: (m : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hm.ne'`.
+
+Use `push_cast`. Clear the denominators using the available nonvanishing facts. Establish `: ∀ z : Kˣ, unitOn (z ^ (Test.zeroDatum H).EF u v) = 1` using `fun z => by show unitOn (z ^ (0 : ℤ)) = 1`. Simplify using `[unitOn]`. Rewrite using `[this]`.
+
+Conclude with `ZH.RealModel.weil_zero S _ _ _`.
+-/
 theorem isPEL_zero {E : Type} [Field E] [NumberField E] [IsCMField E] (H : Host E) (a : J → 𝓞 E) (bas) (ρ : ℂ) (hk : k ≠ 0)
     (s : S ⟶ Sp ℂ) : IsPEL (Test.zeroDatum H) a bas ρ (zeroObj J (baseC k hk) s) (Models.Inhab.zeroTriple H S) := by
   refine ⟨Iso.refl _, inferInstanceAs (IsMonHom (𝟙 (𝟙_ (Over S)))), lbIso_of_g _ _ (fun _ _ => rfl) (linComb_triv_g _ _),
@@ -321,10 +430,22 @@ theorem isPEL_zero {E : Type} [Field E] [NumberField E] [IsCMField E] (H : Host 
       rw [this]
       exact ZH.RealModel.weil_zero S _ _ _
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨_, isPEL_zero H a bas ρ hk _⟩`.
+-/
 theorem pelClass_zero {E : Type} [Field E] [NumberField E] [IsCMField E] (H : Host E) (a : J → 𝓞 E) (bas) (ρ : ℂ) (hk : k ≠ 0) :
     PELClass (Test.zeroDatum H) a bas ρ (RingHom.id ℂ) (zeroObj J (baseC k hk) _) :=
   ⟨_, isPEL_zero H a bas ρ hk _⟩
 
+/- English proof (translation)
+Take `⟨τ, φ, hφ, -, hact, h⟩` from `ht`. Take `⟨-, I, -, hI⟩` from `h ℂ (𝟙 _) em (Category.id_comp _)`. Establish `hI' : ∀ i, I.ev k (bas (Pi.single i 1)) ≫ φ.hom = t.pt i` using `fun i => (hI i).trans (Category.id_comp _)`. Use `haveI := t.ab.comm`. Set `f : D.La →+ Additive (Out.baseOver (Sp ℂ) ⟶ t.A)` to `AddMonoidHom.mk' (fun v => Additive.ofMul (I.ev k v ≫ φ.hom)) fun u v => by`.
+
+Rewrite using `[I.add, MonObj.mul_comp]`. Both sides reduce to the same expression. Establish `e : a j • bas (Pi.single i 1) = ∑ i', bas.symm (a j • bas (Pi.single i 1)) i' • bas (Pi.single i' 1)`. Simplify using `only [← map_zsmul, ← map_sum]`. Rewrite using `[← LinearEquiv.symm_apply_eq]`.
+
+Use extensionality with `l`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Use `congrArg f e` as an intermediate fact. Rewrite `this` using `[map_sum]`. Simplify using `only [map_zsmul] at this`.
+
+Rewrite using `[List.prod_ofFn, ← hI' i, Category.assoc, ← hact, ← Category.assoc]`. Use `(congrArg (· ≫ φ.hom) (I.lin k (a j) _).symm).trans ((congrArg Additive.toMul this).trans ?_)` and prove the remaining obligations. Rewrite using `[toMul_sum]`. Conclude with `Finset.prod_congr rfl fun l _ => by rw [← hI' l]; rfl`.
+-/
 theorem pt_act_of_pelClass {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {g : ℕ}
     {a : J → 𝓞 E} {bas : (Fin (2 * g) → ℤ) ≃ₗ[ℤ] D.La} {ρ : o} {b : TBase o k} {em : o →+* ℂ} {t : TObj g k J b (spMap em)}
     (ht : PELClass D a bas ρ em t) (j : J) (i : Fin (2 * g)) :
@@ -349,6 +470,13 @@ theorem pt_act_of_pelClass {E : Type} [Field E] [NumberField E] [IsCMField E] {H
   rw [toMul_sum]
   exact Finset.prod_congr rfl fun l _ => by rw [← hI' l]; rfl
 
+/- English proof (translation)
+Take `⟨pr, -, hu, -, h, -⟩` from `ht`. Use `(hu t.A fun u => t.act l ≫ pr u).unique (fun u => ?_) (fun u => rfl)` and prove the remaining obligations. Set `f : (t.A ⟶ c.A) →* (t.A ⟶ c.A)` to `MonoidHom.mk' (fun y => t.act j ≫ y) fun _ _ => MonObj.comp_mul _ _ _`. Establish `hf : ∀ y, t.act j ≫ y = f y` using `fun _ => rfl`. Rewrite using `[Category.assoc, h j', hf, h l, List.prod_ofFn, List.prod_ofFn, map_prod]`.
+
+Simplify using `only [map_zpow]`. Simplify using `only [← hf, h j, List.prod_ofFn, ← Finset.prod_zpow, ← zpow_mul, hl, Matrix.mul_apply]`. Rewrite using `[Finset.prod_comm]`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Use `map_prod (zpowersHom _ (pr v)) (fun x => Multiplicative.ofAdd (a j' u x * a j x v)) Finset.univ` as an intermediate fact.
+
+Rewrite `this` using `[← ofAdd_sum]`. Simplify using `only [zpowersHom_apply, toAdd_ofAdd] at this`. Rewrite using `[this]`. Conclude with `Finset.prod_congr rfl fun x _ => by rw [_root_.mul_comm]`.
+-/
 theorem act_comp_of_isSharp {h g : ℕ} {W : Matrix (Fin 8) (Fin 8) ℤ} {a : J → Matrix (Fin 8) (Fin 8) ℤ} {b : TBase o k}
     {s : S ⟶ Sp o} {bas : (Fin (2 * g) → ℤ) ≃ₗ[ℤ] (Fin 8 → (Fin h ⊕ Fin h → ℤ))} {t : TObj g k J b s}
     {c : SiegPre h k (b.ζ : o) s} (ht : IsSharp W a bas t c) {j j' l : J} (hl : a l = a j' * a j) :

@@ -135,6 +135,19 @@ def SelfDual {V : Type} [AddCommGroup V] [TopologicalSpace V] [MeasurableSpace V
     Integrable (fun y => ∫ x, Φ x * χ x y ∂μ) μ →
       ∀ z, ∫ y, (∫ x, Φ x * χ x y ∂μ) * χ y z ∂μ = Φ (-z)
 
+/- English proof (translation)
+Use `hμ.1` as an intermediate fact. Use `hν.1` as an intermediate fact. Establish `e : ν = Measure.addHaarScalarFactor ν μ • μ` using `Measure.isAddLeftInvariant_eq_smul ν μ`. Use `set c : NNReal := Measure.addHaarScalarFactor ν μ with hcdef`. Establish `hT : ∀ y, ∫ x, Φ x * χ x y ∂ν = (c : ℂ) * ∫ x, Φ x * χ x y ∂μ`.
+
+Introduce `y`. Rewrite using `[e, integral_smul_nnreal_measure, NNReal.smul_def, Complex.real_smul]`. Establish `h1` using `hμ.2 Φ hc hs hI z`. Establish `hI' : Integrable (fun y => ∫ x, Φ x * χ x y ∂ν) ν`. Simplify using `only [hT]`.
+
+Rewrite using `[e]`. Conclude with `(hI.const_mul (c : ℂ)).smul_measure_nnreal`. Establish `h2` using `hν.2 Φ hc hs hI' z`. Simplify using `only [hT] at h2`. Rewrite `h2` using `[e, integral_smul_nnreal_measure, NNReal.smul_def, Complex.real_smul]`.
+
+Establish `h3 : ∫ y, ((c : ℂ) * ∫ x, Φ x * χ x y ∂μ) * χ y z ∂μ = (c : ℂ) * ∫ y, (∫ x, Φ x * χ x y ∂μ) * χ y z ∂μ`. Rewrite using `[← integral_const_mul]`. Conclude with `integral_congr_ae (ae_of_all _ fun y => by ring)`. Rewrite `h2` using `[h3, h1, ← mul_assoc]`. Establish `h4 : ((c : ℂ)) * (c : ℂ) = 1` using `mul_right_cancel₀ hz (by rw [h2, one_mul])`.
+
+Establish `h5 : c * c = 1` using `by exact_mod_cast h4`. Establish `h6 : c = 1`. Establish `: (c : ℝ) * c = 1` using `by exact_mod_cast h5`. Establish `h7 : (c : ℝ) = 1` using `by nlinarith [c.coe_nonneg]`. Conclude with `h7` after adjusting the coercions.
+
+Rewrite using `[e, h6, one_smul]`.
+-/
 theorem SelfDual.eq_of_test {V : Type} [AddCommGroup V] [TopologicalSpace V]
     [IsTopologicalAddGroup V] [LocallyCompactSpace V] [SecondCountableTopology V]
     [MeasurableSpace V] [BorelSpace V] {μ ν : Measure V} {χ : V → V → ℂ}
@@ -298,6 +311,9 @@ section More
 
 variable {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [CommRing R] [Algebra F R]
 
+/- English proof (translation)
+Introduce `a b`. Simplify using `[sigR, inclR, Matrix.map_apply, hT a b]`.
+-/
 theorem map_mem_HermR (σ : E →ₐ[F] E) {n : ℕ} (T : Matrix (Fin n) (Fin n) E)
     (hT : ∀ a b, σ (T b a) = T a b) : T.map (inclR R) ∈ HermR R σ n := by
   intro a b

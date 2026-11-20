@@ -12,6 +12,19 @@ open Formalism.FourierDecayAlt Formalism.REAL Formalism.QuantumDeterminants Form
 
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
+/- English proof (translation)
+Take `⟨δ, hδ, hG, hsupp⟩` from `isCutG_div hχ hε`. Take `⟨C, hC⟩` from `Formalism.FourierDecayAlt.P.corollary_u1_truncated_alt k 0 ρ Wp Wq z z' 0 0 (idOp k (0 + ρ) Wp Wq) bumpOne (fun x => χ (x / ε)) (δ * ε) (inDD_idOp k ρ Wp Wq) isCutC_bumpOne hG mm mm A₀ (by simp)`. Use `⟨δ * ε, max C 0, by positivity, le_max_right _ _, fun f c hc => ?_⟩` and prove the remaining obligations. Establish `hc0 : 0 ≤ c` using `Formalism.FourierDecayAlt.P.JCx2.pd_ccle_nonneg hc`. Establish `hS` using `hC f c hc`.
+
+Establish `hF : B.opApply (idOp k (0 + ρ) Wp Wq) (U.cutDG k 0 ρ z z' bumpOne (fun x => χ (x / ε)) f) = fun g => ((χ (Gf k (0 + ρ) z z' g / ε) : ℝ) : ℂ) • f g`. Rewrite using `[opApply_idOp]`. Use function extensionality and compare the values at `g`. Simplify using `[U.cutDG, U.DjU, bumpOne_one]`. Rewrite `hS` using `[hF]`.
+
+Take `⟨hck, -, hbd⟩` from `hS`. Use `⟨Formalism.FourierDecayAlt.P.JCx2.pd_ccle_mono_c (Formalism.FourierDecayAlt.P.compactly_supported_monotone k (0 + ρ) _ (A₀ - ((0 : ℕ) : ℝ) - ((0 : ℕ) : ℝ) * ((0 : ℕ) : ℝ) - 2 * (((0 + ρ : ℕ) : ℝ) + 1) * ((mm + 0 : ℕ) : ℝ)) A (C * c) mm _ ?_ ⟨hck, ?_⟩) (mul_le_mul_of_nonneg_right …` and prove the remaining obligations. Move the coercions through the operations in `at hA ⊢`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `u v hu hv hl g hg`.
+
+Use `hbd u v ?_ ?_ hl g hg` and prove the remaining obligations. Introduce `X hX`. Conclude with `⟨⟨(hu X hX).1, fun i b hb => absurd hb (Nat.not_lt_zero _)⟩, (hu X hX).2⟩`. Introduce `X hX`. Conclude with `⟨⟨(hv X hX).1, fun i b hb => absurd hb (Nat.not_lt_zero _)⟩, (hv X hX).2⟩`.
+
+Introduce `g hg hne`. Establish `h1 : χ (Gf k (0 + ρ) z z' g / ε) ≠ 0`. Introduce `h0`. Apply `hne` to reduce the goal to its premises. Simplify using `[h0]`.
+
+Establish `h2` using `hsupp _ h1`. Rewrite `h2` using `[le_div_iff₀ hε]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem lev0Q {k ρ : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq]
     (z z' : Fin (2 * (0 + ρ) + k + 1) → ℂ) (χ : ℝ → ℝ) (hχ : C6.IsCut0 χ) (ε : ℝ) (hε : 0 < ε)
@@ -53,6 +66,29 @@ def xs {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ
     (a : Wd.Ix (Fin w.length)) : B.Mat k (r - i) → (Wq →L[ℂ] Wp) :=
   D.castF hc (D.sliceAt k r T.base.z T.base.z' (D.uwG k r T.base.z T.base.z' (D.cutF T.base χ h ε) i hi w a) p)
 
+/- English proof (translation)
+Take `⟨Cp, hCp0, hL⟩` from `levQ`. Use `⟨max 150 (16 * Cp), by positivity, ?_⟩` and prove the remaining obligations. Introduce `Cc hCc k r Wp Wq _ _ _ _ _ _ T χ A₀ N P0 hPk hPr hk2 hχ hA₀ ε hε i hi w hw p hc hp a`. Break down `Nat.eq_zero_or_pos i with h0 | h1` into its components or cases. Substitute `h0` using the available equality.
+
+Choose the witnesses or unpack the hypotheses as in `rfl : p = [] := by`. Consider the cases of `p with`. Consider the case `nil => rfl`. Consider the case `cons b p`. It suffices to derive a contradiction.
+
+Establish `h1` using `(hp.1 b (by simp)).1`. Establish `h2` using `hp.2`. Simplify using `[D.ptSize] at h2`. Use linear arithmetic over natural numbers and integers. Establish `hfun : ∀ h : B.Mat k r → (Wq →L[ℂ] Wp), xs T χ ε 0 hi w [] hc h a = (if a = Wd.e1 then D.cutF T.base χ h ε else 0)`.
+
+Introduce `h`. Use function extensionality and compare the values at `γ`. Establish `hcm : D.castM (k` using `k) (a := r - 0) (b := r - D.ptSize []) hc γ = γ := by`. Use extensionality with `i j`. Both sides reduce to the same expression.
+
+Simplify using `only [xs, D.castF]`. Rewrite using `[hcm, Formalism.FourierDecayAlt.P.Dx1.SN.sliceAt_nil k r _ _ T.base.z_mem T.base.z'_mem, Formalism.FourierDecayAlt.P.Dx1.LZ.uwG_zero]`. Take `⟨ρ, rfl⟩ : ∃ ρ, r = 0 + ρ` from `⟨r, (zero_add r).symm⟩`. Establish `hb` using `Formalism.FourierDecayAlt.P.JCTx6.Link.budget0 (0 + ρ) k N hk2 A₀ Cc (le_trans (le_max_left _ _) hCc) hA₀`. Take `⟨ε', C, hε', hC0, hQ⟩` from `lev0Q (Wp := Wp) (Wq := Wq) T.base.z T.base.z' χ hχ ε hε A₀ (P5.Auser P0 N + 1) (P5.mmUser P0 N) (by`.
+
+Simplify using `only [P5.Auser, P5.mmUser, P5.nV, hPk, hPr]`. Use `push_cast`. Move the coercions through the operations in `at hb`. Use the proof step `linarith)`. Establish `hmmM : P5.mmUser P0 N ≤ 3 * (11 * (N * (2 * (0 + ρ) + k + 1) ^ 2 + (2 * (0 + ρ) + k + 1) ^ 3) + 5)`.
+
+Take `⟨-, -, b3, -, -⟩` from `Formalism.FourierDecayAlt.P.JCTx6.Link2.budgetAs (0 + ρ) k N 0 0 hk2 (Nat.zero_le _) (Nat.zero_le _)`. Establish `: P5.mmUser P0 N = 5 + 3 * ((0 + ρ) + 1) * (N + 2) * (2 * (0 + ρ) + k + 1) + N * (0 + ρ)`. Simplify using `only [P5.mmUser, P5.nV, hPk, hPr]`. Use linear arithmetic over natural numbers and integers. Use `⟨ε', C, hε', hC0, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `h c _ hcl`. Establish `hc0 : 0 ≤ c` using `Formalism.FourierDecayAlt.P.JCx2.pd_ccle_nonneg hcl`. Rewrite using `[hfun h]`. Distinguish the cases in `ha : a = Wd.e1`. Rewrite using `[if_pos ha]`.
+
+Take `⟨q1, q2⟩` from `hQ h c (Formalism.FourierDecayAlt.P.BetaSesquilinearity.CCle_mono_m hmmM hcl)`. Conclude with `⟨⟨q1.1, ⟨_, q1⟩, q2⟩, q1⟩`. Rewrite using `[if_neg ha]`. Establish `hz : B.CCle (P5.Auser P0 N + 1) (P5.mmUser P0 N) (0 : B.Mat k (0 + ρ - 0) → (Wq →L[ℂ] Wp)) (C * c)` using `Formalism.FourierDecayAlt.P.JCx2.pd_ccle_mono_c Formalism.FourierDecayAlt.P.BetaSesquilinearity.CCle_zero (mul_nonneg hC0 hc0)`. Conclude with `⟨⟨hz.1, ⟨_, hz⟩, fun g _ hne => (hne rfl).elim⟩, hz⟩`.
+
+Introduce `h₁ h₂ c₁ c₂ _ _ _ _ γ _`. Rewrite using `[hfun h₁, hfun h₂, hfun (fun g => h₁ g - h₂ g)]`. Distinguish the cases in `ha : a = Wd.e1`. Simplify using `only [if_pos ha, D.cutF, smul_sub]`. Simplify using `only [if_neg ha, Pi.zero_apply, sub_zero]`.
+
+Take `⟨ε', K, hε', hK, hQ1, hQ2⟩` from `hL Cc (le_trans (le_max_right _ _) hCc) k r Wp Wq T χ A₀ N P0 hPk hPr hk2 hχ hA₀ ε hε i hi h1 w hw p hc hp a`. Conclude with `⟨ε', K, hε', hK, hQ1, hQ2⟩`.
+-/
 theorem sliceQ : ∃ Cs : ℝ, 0 ≤ Cs ∧ ∀ Cc : ℝ, Cs ≤ Cc →
     ∀ (k r : ℕ) (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]
@@ -126,15 +162,38 @@ theorem sliceQ : ∃ Cs : ℝ, 0 ≤ Cs ∧ ∀ Cc : ℝ, Cs ≤ Cc →
       hA₀ ε hε i hi h1 w hw p hc hp a
     exact ⟨ε', K, hε', hK, hQ1, hQ2⟩
 
+/- English proof (translation)
+Unfold `P5.Auser`. Establish `: (L : ℝ) ≤ N` using `by exact_mod_cast h`. Use `gcongr`.
+-/
 theorem auser_mono (P0 : M.Par) {L N : ℕ} (h : L ≤ N) : P5.Auser P0 L ≤ P5.Auser P0 N := by
   unfold P5.Auser
   have : (L : ℝ) ≤ N := by exact_mod_cast h
   gcongr
 
+/- English proof (translation)
+Unfold `P5.mmUser`. Use `gcongr`.
+-/
 theorem mmUser_mono (P0 : M.Par) {L N : ℕ} (h : L ≤ N) : P5.mmUser P0 L ≤ P5.mmUser P0 N := by
   unfold P5.mmUser
   gcongr
 
+/- English proof (translation)
+Establish `hAu : P5.Auser P0 w.length + 1 ≤ P5.Auser P0 N + 1` using `by linarith [auser_mono P0 hw]`. Establish `hmu : P5.mmUser P0 w.length ≤ P5.mmUser P0 N` using `mmUser_mono P0 hw`. Establish `hS` using `Formalism.FourierDecayAlt.P.level_form_sesquilinear_moderate Wp Wq P0 T s j w (P5.Auser P0 N + 1) (P5.mmUser P0 N) ε₀ hε₀ hAu hmu`. Take `⟨Cf, hCf0, hCf⟩` from `Formalism.FourierDecayAlt.P.JCx4.formLev_bound_mm P0 T s j w (P5.Auser P0 N + 1 + 1) (by linarith)`. Establish `hmm5 : 5 + (2 * (P0.r - (j : ℕ)) + P0.k + 1) * w.length ≤ P5.mmUser P0 N`.
+
+Use `Formalism.FourierDecayAlt.P.JCx2.pd_thr_mm P0 j N (P5.mmUser P0 N) le_rfl` as an intermediate fact. Establish `h2 : (2 * (P0.r - (j : ℕ)) + P0.k + 1) * w.length ≤ (2 * (P0.r - (j : ℕ)) + P0.k + 1) * N` using `Nat.mul_le_mul_left _ hw`. Use linear arithmetic over natural numbers and integers. Establish `h5 : 5 ≤ P5.mmUser P0 N` using `by unfold P5.mmUser; omega`. Establish `hu : ∀ (u : Wd.Ix (Fin w.length) → B.Mat P0.k (P0.r - j) → (Wq →L[ℂ] Wp)) (cu : ℝ), (∀ e, B.CCle (P5.Auser P0 N + 1) (P5.mmUser P0 N) (u e) cu) → ∀ e, B.CCle (P5.Auser P0 N + 1 + 1 - 1) (5 + (2 * (P0.r - (j : ℕ)) + P0.k + 1) * w.length) (u e) cu`.
+
+Introduce `u cu h e`. Conclude with `Formalism.FourierDecayAlt.P.BetaSesquilinearity.CCle_mono_A (by linarith) (Formalism.FourierDecayAlt.P.BetaSesquilinearity.CCle_mono_m hmm5 (h e))`. Establish `hv : ∀ (u : Wd.Ix (Fin w.length) → B.Mat P0.k (P0.r - j) → (Wq →L[ℂ] Wp)) (cu : ℝ), (∀ e, B.CCle (P5.Auser P0 N + 1) (P5.mmUser P0 N) (u e) cu) → ∀ e, B.CCle (P5.Auser P0 N + 1 + 1 - 1 - 2 * (w.length : ℝ)) 5 (u e) cu`. Introduce `u cu h e`. Establish `hw0 : (0 : ℝ) ≤ w.length` using `Nat.cast_nonneg _`.
+
+Conclude with `Formalism.FourierDecayAlt.P.BetaSesquilinearity.CCle_mono_A (by linarith) (Formalism.FourierDecayAlt.P.BetaSesquilinearity.CCle_mono_m h5 (h e))`. Establish `key : ∀ n, D.formLev T s j w (xn n) (yn n) - D.formLev T s j w x y = D.formLev T s j w (xn n - x) (yn n) + D.formLev T s j w x (yn n - y)`. Introduce `n`. Establish `e1 : xn n = x + (1 : ℂ) • (xn n - x)` using `by simp`. Establish `e2 : yn n = y + (1 : ℂ) • (yn n - y)` using `by simp`.
+
+Establish `s1` using `(hS x (xn n - x) (yn n) 1 (fun e => (hx e).1) (fun e => (hdx n e).1) (fun e => (hyn n e).1)).1`. Establish `s2` using `(hS y (yn n - y) x 1 (fun e => (hy e).1) (fun e => (hdy n e).1) (fun e => (hx e).1)).2`. Rewrite `s1` using `[← e1]`. Rewrite `s2` using `[← e2]`. Rewrite using `[s1, s2]`.
+
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish `hbd : ∀ n, ‖D.formLev T s j w (xn n) (yn n) - D.formLev T s j w x y‖ ≤ 2 * Cf * Bd * dn n`. Introduce `n`. Rewrite using `[key n]`.
+
+Establish `b1` using `hCf (xn n - x) (yn n) (dn n) Bd (hu _ _ fun e => (hdx n e).2) (hv _ _ fun e => (hyn n e).2)`. Establish `b2` using `hCf x (yn n - y) Bd (dn n) (hu _ _ fun e => (hx e).2) (hv _ _ fun e => (hdy n e).2)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[tendsto_iff_norm_sub_tendsto_zero]`. Establish `hlim : Tendsto (fun n => 2 * Cf * Bd * dn n) atTop (𝓝 0)`.
+
+Simplify using `using hdn.const_mul (2 * Cf * Bd)`. Conclude with `squeeze_zero (fun n => norm_nonneg _) hbd hlim`.
+-/
 theorem formLev_limit {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
     [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] (P0 : M.Par)
     (T : D.LevTower P0.k P0.r Wp Wq) (s : ℂ) (j : Fin (P0.r + 1)) (w : List C.Letter) (N : ℕ) (hw : w.length ≤ N)

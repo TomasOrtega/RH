@@ -5,6 +5,15 @@ open CategoryTheory AlgebraicGeometry
 
 namespace GlobalTheory.StabFlat
 
+/- English proof (translation)
+Establish `h₁ : I ≤ RingHom.ker (j.stalkMap h).hom` using `(hI (H.presheaf.stalk h) (j.stalkMap h).hom).1 ⟨H.fromSpecStalk h, (Scheme.SpecMap_stalkMap_fromSpecStalk j).symm⟩`. Establish `: Nontrivial (X.presheaf.stalk (j h) ⧸ I)` using `Ideal.Quotient.nontrivial_iff.2 (ne_top_of_le_ne_top (RingHom.ker_ne_top _) h₁)`. Establish `: IsLocalRing (X.presheaf.stalk (j h) ⧸ I)` using `IsLocalRing.of_surjective' (Ideal.Quotient.mk I) Ideal.Quotient.mk_surjective`. Take `⟨y, hy⟩` from `(hI (X.presheaf.stalk (j h) ⧸ I) (Ideal.Quotient.mk I)).2 Ideal.mk_ker.ge`. Establish `hl : IsLocalHom (Ideal.Quotient.mk I)` using `IsLocalHom.of_surjective _ Ideal.Quotient.mk_surjective`.
+
+Establish `e : y (IsLocalRing.closedPoint _) = h`. Apply `j.isClosedEmbedding.injective` to reduce the goal to its premises. Use `(congrArg (fun q => q (IsLocalRing.closedPoint _)) hy).trans ?_` and prove the remaining obligations. Conclude with `(congrArg (X.fromSpecStalk (j h)) (IsLocalRing.comap_closedPoint (Ideal.Quotient.mk I))).trans Scheme.fromSpecStalk_closedPoint`. Set `ψ` to `H.presheaf.stalkSpecializes (specializes_of_eq e) ≫ Scheme.stalkClosedPointTo y`.
+
+Establish `hψ : j.stalkMap h ≫ ψ = CommRingCat.ofHom (Ideal.Quotient.mk I)`. Apply `Spec.map_injective` to reduce the goal to its premises. Rewrite using `[← cancel_mono (X.fromSpecStalk (j h)), ← hy, Spec.map_comp, Category.assoc, Scheme.SpecMap_stalkMap_fromSpecStalk, Spec.map_comp, Category.assoc, Scheme.SpecMap_stalkSpecializes_fromSpecStalk_assoc, Scheme.Spec_stalkClosedPointTo_fromSpecStalk_assoc]`. Establish `hψ' : ∀ a, ψ.hom ((j.stalkMap h).hom a) = Ideal.Quotient.mk I a` using `fun a => congrArg (fun q => q.hom a) hψ`. Use `le_antisymm h₁ fun a ha => Ideal.Quotient.eq_zero_iff_mem.1 ?_` and prove the remaining obligations.
+
+Rewrite using `[← hψ', RingHom.mem_ker.1 ha, map_zero]`.
+-/
 theorem eq_ker_stalkMap_of_points {X H : Scheme.{0}} (j : H ⟶ X) [IsClosedImmersion j] (h : H)
     (I : Ideal (X.presheaf.stalk (j h)))
     (hI : ∀ (R : Type) [CommRing R] [IsLocalRing R] (φ : X.presheaf.stalk (j h) →+* R),
@@ -34,6 +43,19 @@ theorem eq_ker_stalkMap_of_points {X H : Scheme.{0}} (j : H ⟶ X) [IsClosedImme
   refine le_antisymm h₁ fun a ha => Ideal.Quotient.eq_zero_iff_mem.1 ?_
   rw [← hψ', RingHom.mem_ker.1 ha, map_zero]
 
+/- English proof (translation)
+Introduce `V _ _ X H f j hj hfin hI`. Use `Flat.of_stalkMap _ fun h' => ?_` and prove the remaining obligations. Choose the witnesses or unpack the hypotheses as in `⟨h, hh, hc⟩ : ∃ h : H, h' ⤳ h ∧ (j ≫ f) h = IsLocalRing.closedPoint V := by`. Establish `hcl : IsClosed ((j ≫ f) '' closure {h'})` using `(j ≫ f).isClosedMap _ isClosed_closure`. Establish `hm : IsLocalRing.closedPoint V ∈ (j ≫ f) '' closure {h'}` using `(IsLocalRing.specializes_closedPoint ((j ≫ f) h')).mem_closed hcl ⟨h', subset_closure rfl, rfl⟩`.
+
+Take `⟨h, hh, e⟩` from `hm`. Conclude with `⟨h, specializes_iff_mem_closure.2 hh, e⟩`. Use `UnramifiedEndFlat.flat_stalkMap_of_specializes _ hh ?_` and prove the remaining obligations. Take `⟨σ, hσ⟩` from `Spec.map_surjective (X.fromSpecStalk (j h) ≫ f)`. Establish `hloc : IsLocalHom σ.hom`.
+
+Use `(IsLocalRing.isLocalHom_iff_comap_closedPoint σ.hom).2 ?_` and prove the remaining obligations. Use `(congrArg (fun q => q (IsLocalRing.closedPoint _)) hσ).trans ?_` and prove the remaining obligations. Conclude with `(congrArg f Scheme.fromSpecStalk_closedPoint).trans hc`. Take `⟨I, hr, hI⟩` from `hI h σ.hom hσ.symm hloc`. Take `rfl` from `eq_ker_stalkMap_of_points j h I hI`.
+
+Establish `fl : (σ ≫ j.stalkMap h).hom.Flat` using `hr.comp (RingHom.Flat.of_bijective (f := (RingHom.quotientKerEquivOfSurjective (j.stalkMap_surjective h)).toRingHom) (RingHom.quotientKerEquivOfSurjective (j.stalkMap_surjective h)).bijective)`. Establish `e : σ ≫ j.stalkMap h = StructureSheaf.toStalk V ((j ≫ f) h) ≫ (j ≫ f).stalkMap h`. Apply `Spec.map_injective` to reduce the goal to its premises. Use `Eq.trans ?_ (Spec.map_comp _ _).symm` and prove the remaining obligations. Use `Eq.trans ?_ (congrArg (_ ≫ ·) (Spec.fromSpecStalk_eq' (CommRingCat.of V) ((j ≫ f) h)))` and prove the remaining obligations.
+
+Rewrite using `[Spec.map_comp, hσ, Scheme.SpecMap_stalkMap_fromSpecStalk_assoc]`. Conclude with `(Scheme.SpecMap_stalkMap_fromSpecStalk (j ≫ f)).symm`. Set `S` to `(Spec (CommRingCat.of V)).presheaf.stalk ((j ≫ f) h)`. Use `letI : Algebra V S := StructureSheaf.stalkAlgebra V ((j ≫ f) h)`. Establish `: ((j ≫ f) h).asIdeal.IsPrime` using `PrimeSpectrum.isPrime (R := V) _`.
+
+Establish `: IsLocalization.AtPrime S ((j ≫ f) h).asIdeal` using `StructureSheaf.IsLocalization.to_stalk V _`. Use `letI : Algebra V (H.presheaf.stalk h) := (σ ≫ j.stalkMap h).hom.toAlgebra`. Use `letI : Algebra S (H.presheaf.stalk h) := ((j ≫ f).stalkMap h).hom.toAlgebra`. Establish `: IsScalarTower V S (H.presheaf.stalk h)` using `IsScalarTower.of_algebraMap_eq' (congrArg (·.hom) e)`. Conclude with `(Module.flat_iff_of_isLocalization S ((j ≫ f) h).asIdeal.primeCompl (H.presheaf.stalk h)).2 fl`.
+-/
 theorem flat_of_isFinite_of_ideals : ∀ (V : Type) [CommRing V] [IsLocalRing V] (X H : Scheme.{0}) (f : X ⟶ Spec (CommRingCat.of V)) (j : H ⟶ X), IsClosedImmersion j → IsFinite (j ≫ f) → (∀ (h : H) (σ : V →+* X.presheaf.stalk (j h)), X.fromSpecStalk (j h) ≫ f = Spec.map (CommRingCat.ofHom σ) → IsLocalHom σ → ∃ I : Ideal (X.presheaf.stalk (j h)), ((Ideal.Quotient.mk I).comp σ).Flat ∧ ∀ (R : Type) [CommRing R] [IsLocalRing R] (φ : X.presheaf.stalk (j h) →+* R), (∃ y : Spec (CommRingCat.of R) ⟶ H, y ≫ j = Spec.map (CommRingCat.ofHom φ) ≫ X.fromSpecStalk (j h)) ↔ I ≤ RingHom.ker φ) → Flat (j ≫ f) := by
   intro V _ _ X H f j hj hfin hI
   refine Flat.of_stalkMap _ fun h' => ?_

@@ -32,6 +32,13 @@ def formFrame {K : Type} [Field K] [NumberField K] {n : ℕ} (H : Matrix (Fin n)
     Matrix (Fin n) (Fin n) ℂ :=
   (CFC.sqrt (H.map v.embedding))⁻¹
 
+/- English proof (translation)
+Unfold `formFrame`. Generalize the expression as in `H.map v.embedding = A at h`. Establish `h0 : 0 ≤ A` using `h.posSemidef.nonneg`. Establish `h1 : CFC.sqrt A * CFC.sqrt A = A` using `CFC.sqrt_mul_sqrt_self A h0`. Establish `hd : IsUnit (CFC.sqrt A).det`.
+
+Establish `: IsUnit A.det` using `(Matrix.isUnit_iff_isUnit_det A).1 h.isUnit`. Rewrite `this` using `[← h1, Matrix.det_mul]`. Conclude with `isUnit_of_mul_isUnit_left this`. Establish `hh : (CFC.sqrt A).conjTranspose = CFC.sqrt A` using `(Matrix.nonneg_iff_posSemidef.1 (CFC.sqrt_nonneg A)).isHermitian`. Use `⟨Matrix.isUnit_nonsing_inv_det _ hd, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Matrix.nonsing_inv_nonsing_inv _ hd, hh, h1]`.
+-/
 theorem formFrame_spec {K : Type} [Field K] [NumberField K] {n : ℕ} (H : Matrix (Fin n) (Fin n) K)
     (v : InfinitePlace K) (h : (H.map v.embedding).PosDef) :
     IsUnit (formFrame H v).det ∧
@@ -68,6 +75,11 @@ open Classical in
 
 def occurring (Df : DefSide Bs) : Finset Bs.Ix := Finset.univ.filter fun p => Df.Qp Bs.μ0 p ≠ ⊥
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Establish `hall : ∀ p, Df.Qp Bs.μ0 p = ⊥`. Introduce `p`. Assume the negation of the conclusion as `h`. Conclude with `hne ⟨p, by simp [occurring, h]⟩`.
+
+Establish `htop` using `hW.Qp_top`. Simplify using `only [hall, iSup_bot] at htop`. Establish `: Nonempty (Fin (Df.dQ Bs.μ0))` using `⟨⟨0, hp⟩⟩`. Conclude with `bot_ne_top htop`.
+-/
 theorem occurring_nonempty (hW : Df.WF) (hp : Df.Pos) : (occurring Df).Nonempty := by
   by_contra hne
   have hall : ∀ p, Df.Qp Bs.μ0 p = ⊥ := by
@@ -127,12 +139,18 @@ def InfinitePlaces (C : ℝ) [IsTotallyComplex K] (hW : Df.WF) (S : IndefRows Df
   (TestMap Df XM vm → Factors S.toIndefData vm Ψ → NormComparison hW S XM vm Ψ) ∧
     MeanBounds C hW S XM vm E S0 e k t x ε
 
+/- English proof (translation)
+Use `Finset.le_inf' _ _ fun p hp => h p ?_` and prove the remaining obligations. Simplify `hp` using `[occurring]`.
+-/
 theorem le_lamMin (hW : Df.WF) (S : IndefRows Df) (v : InfinitePlace K) (c : ℝ)
     (h : ∀ p, Df.Qp Bs.μ0 p ≠ ⊥ → c ≤ ∑ j, Real.log (S.lam j Bs.μ0 p v)) : c ≤ lamMin hW S v := by
   classical
   refine Finset.le_inf' _ _ fun p hp => h p ?_
   simpa [occurring] using hp
 
+/- English proof (translation)
+Establish `hr : 0 < rootDiscr E` using `Real.rpow_pos_of_pos (by exact_mod_cast abs_pos.2 (discr_ne_zero E)) _`. Establish `hb : 0 < numB x ε` using `Real.exp_pos _`. Rewrite using `[numLa, Real.log_mul (mul_pos hx hb).ne' hr.ne', Real.log_mul hx.ne' hb.ne', numB, Real.log_exp]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem numLa_eq (E : Type) [Field E] [NumberField E] {x : ℝ} (ε : ℝ) (hx : 0 < x) :
     numLa E x ε = numL x ε + Real.log x + Real.log (rootDiscr E) := by
   have hr : 0 < rootDiscr E := Real.rpow_pos_of_pos (by exact_mod_cast abs_pos.2 (discr_ne_zero E)) _
@@ -140,6 +158,9 @@ theorem numLa_eq (E : Type) [Field E] [NumberField E] {x : ℝ} (ε : ℝ) (hx :
   rw [numLa, Real.log_mul (mul_pos hx hb).ne' hr.ne', Real.log_mul hx.ne' hb.ne', numB, Real.log_exp]
   ring
 
+/- English proof (translation)
+Evaluate the decidable proposition.
+-/
 example : numN 6 2 3 = 6 + 2 * (3 + ((6 + 2 - 1) + 6) + 1) := by decide
 
 end GlobalTheory.IndefiniteRowSideFullHecke.InfinitePlaceDepthSums

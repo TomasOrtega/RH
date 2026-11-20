@@ -17,6 +17,9 @@ open GlobalTheory.ZM.NearBuild
 noncomputable section
 namespace GlobalTheory.ZM.FamOf
 
+/- English proof (translation)
+The claim follows from `Spec.map_id _`.
+-/
 theorem spMap_id (R : Type) [CommRing R] : spMap (RingHom.id R) = 𝟙 (Sp R) := Spec.map_id _
 
 section Unit
@@ -24,26 +27,44 @@ variable {S : Scheme.{0}} (A : Over S)
 
 def unitInv : A ⟶ Over.mk (𝟙 S) ⊗ A := lift (Over.homMk A.hom (by simp)) (𝟙 A)
 
+/- English proof (translation)
+Rewrite using `[← Over.comp_left, unitInv, lift_snd]`. Both sides reduce to the same expression.
+-/
 theorem unitInv_snd : (unitInv A).left ≫ (snd (Over.mk (𝟙 S)) A).left = 𝟙 _ := by
   rw [← Over.comp_left, unitInv, lift_snd]; rfl
 
+/- English proof (translation)
+The claim follows from `Over.mkIdTerminal.hom_ext f f'`.
+-/
 theorem to_base_ext {T : Over S} (f f' : T ⟶ Over.mk (𝟙 S)) : f = f' :=
   Over.mkIdTerminal.hom_ext f f'
 
+/- English proof (translation)
+Rewrite using `[← Over.comp_left]`. Establish `: snd (Over.mk (𝟙 S)) A ≫ unitInv A = 𝟙 _` using `CartesianMonoidalCategory.hom_ext _ _ (to_base_ext _ _) (by simp [unitInv])`. Rewrite using `[this]`. Both sides reduce to the same expression.
+-/
 theorem snd_unitInv : (snd (Over.mk (𝟙 S)) A).left ≫ (unitInv A).left = 𝟙 _ := by
   rw [← Over.comp_left]
   have : snd (Over.mk (𝟙 S)) A ≫ unitInv A = 𝟙 _ :=
     CartesianMonoidalCategory.hom_ext _ _ (to_base_ext _ _) (by simp [unitInv])
   rw [this]; rfl
 
+/- English proof (translation)
+Rewrite using `[← Over.comp_left, unitInv, lift_fst]`. Both sides reduce to the same expression.
+-/
 theorem unitInv_fst : (unitInv A).left ≫ (fst (Over.mk (𝟙 S)) A).left = A.hom := by
   rw [← Over.comp_left, unitInv, lift_fst]; rfl
 
+/- English proof (translation)
+Rewrite using `[← Over.comp_left]`. Use `congr 1`. Conclude with `CartesianMonoidalCategory.hom_ext _ _ (to_base_ext _ _) (by simp [unitInv])`.
+-/
 theorem pt_unitInv (z : Over.mk (𝟙 S) ⟶ A) : z.left ≫ (unitInv A).left = (lift (𝟙 (Over.mk (𝟙 S))) z).left := by
   rw [← Over.comp_left]
   congr 1
   exact CartesianMonoidalCategory.hom_ext _ _ (to_base_ext _ _) (by simp [unitInv])
 
+/- English proof (translation)
+Use `haveI : IsIso (unitInv A).left := ⟨_, unitInv_snd A, snd_unitInv A⟩`. Conclude with `IsPullback.of_horiz_isIso ⟨by rw [unitInv_fst, Category.comp_id]⟩`.
+-/
 theorem isPullback_unitInv : IsPullback (unitInv A).left A.hom (fst (Over.mk (𝟙 S)) A).left (𝟙 S) := by
   haveI : IsIso (unitInv A).left := ⟨_, unitInv_snd A, snd_unitInv A⟩
   exact IsPullback.of_horiz_isIso ⟨by rw [unitInv_fst, Category.comp_id]⟩
@@ -66,6 +87,9 @@ def chartPullUnit (L : LB A.left) (k : ℕ) (a : ℤ) (ha : a = k) :
 
 end Unit
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `hP.2.1 T β y w hy hc`. Conclude with `(hP.2.2 T β w h1 h2).unique ⟨hy, hc⟩ ⟨hy', hc'⟩`.
+-/
 theorem pt_unique {R σ : Type} [CommRing R] {I : Ideal (MvPolynomial σ R)} {Z : Scheme.{0}} {s : Z ⟶ Sp R}
     {M : LB Z} {th : σ → M.Sec} (hP : ProjRep I s M th) {T : Type} [CommRing T] {β : R →+* T} {y y' : Sp T ⟶ Z}
     {w : σ → T} (hy : y ≫ s = spMap β) (hy' : y' ≫ s = spMap β) (hc : SecCoord M th y w) (hc' : SecCoord M th y' w) :
@@ -73,6 +97,13 @@ theorem pt_unique {R σ : Type} [CommRing R] {I : Ideal (MvPolynomial σ R)} {Z 
   obtain ⟨h1, h2⟩ := hP.2.1 T β y w hy hc
   exact (hP.2.2 T β w h1 h2).unique ⟨hy, hc⟩ ⟨hy', hc'⟩
 
+/- English proof (translation)
+Use `⟨(unitInv A).left ≫ φ₀, ?_, fun T _ y w => ?_, ?_, fun z w hz => ?_⟩` and prove the remaining obligations. Use `(isPullback_unitInv A).paste_horiz h1` as an intermediate fact. Rewrite `this` using `[Category.id_comp]`. Then use the resulting hypothesis. Establish `e : (snd (Over.mk (𝟙 (Sp K))) A).left ≫ (unitInv A).left ≫ φ₀ = φ₀`. Rewrite using `[← Category.assoc, snd_unitInv, Category.id_comp]`.
+
+Rewrite using `[e]`. Conclude with `h3 T y w`. Conclude with `LBIso.chartPull (chartPullUnit A L k a ha) (chartPullSame M _ _ _ (unitInv A).left fun _ => rfl) h2`. Establish `e : z.left ≫ (unitInv A).left ≫ φ₀ = (lift (𝟙 (Over.mk (𝟙 (Sp K)))) z).left ≫ φ₀`. Rewrite using `[← Category.assoc, pt_unitInv]`.
+
+Rewrite using `[e]`. Conclude with `(h3 K _ w).1 hz`.
+-/
 theorem fibre_of_unit {R K σ : Type} [CommRing R] [CommRing K] {x : R →+* K} {Z : Scheme.{0}} {s : Z ⟶ Sp R} {M : LB Z}
     {th : σ → M.Sec} (A : Over (Sp K)) (L : LB A.left) (k : ℕ) (a : ℤ) (ha : a = k)
     (th' : σ → (Out.LPow A L a (Over.mk (𝟙 (Sp K)))).Sec) (φ₀ : (Over.mk (𝟙 (Sp K)) ⊗ A).left ⟶ Z)
@@ -99,6 +130,11 @@ theorem fibre_of_unit {R K σ : Type} [CommRing R] [CommRing K] {x : R →+* K} 
     rw [e]
     exact (h3 K _ w).1 hz
 
+/- English proof (translation)
+Establish `hF : ∀ F ∈ I, MvPolynomial.eval₂ (RingHom.id R) p F = 0`. Introduce `F hF`. Use `hd _ fun q hq _ => ?_` and prove the remaining obligations. Take `⟨K, _, x, y, hx, hy, hc⟩` from `h q hq`. Establish `h1` using `(hP.2.1 K x y _ hy hc).2 F hF`.
+
+Rewrite using `[← hx, RingHom.mem_ker, MvPolynomial.eval₂_comp_left, RingHom.comp_id]`. Conclude with `h1`. Take `⟨y, ⟨hy, hc⟩, -⟩` from `hP.2.2 R (RingHom.id R) p hu hF`. Conclude with `⟨Over.homMk y (hy.trans (spMap_id R)), hc⟩`.
+-/
 theorem exists_section {R σ : Type} [CommRing R] {I : Ideal (MvPolynomial σ R)} {Z : Over (Sp R)}
     {M : LB Z.left} {th : σ → M.Sec} (hP : ProjRep I Z.hom M th) (p : σ → R) {P : Set (Ideal R)} (hd : DenseP P)
     (hu : Ideal.span (Set.range p) = ⊤)
@@ -115,6 +151,15 @@ theorem exists_section {R σ : Type} [CommRing R] {I : Ideal (MvPolynomial σ R)
   obtain ⟨y, ⟨hy, hc⟩, -⟩ := hP.2.2 R (RingHom.id R) p hu hF
   exact ⟨Over.homMk y (hy.trans (spMap_id R)), hc⟩
 
+/- English proof (translation)
+Introduce `o _ g N' J b Mat κ R _ _ β v m p Hh hh Q d Z M th hd hfib hu hZ hflat hφ`. Establish `key : ∀ (K : Type) [Field K] [IsAlgClosed K] (x : R →+* K) (s : Sp K ⟶ Sp o) (t' : TObj g (N' ^ 2) J b s), Good b Mat κ β v x t' → ∃ φ : t'.A.left ⟶ Z.left, IsPullback φ t'.A.hom Z.hom (spMap x) ∧ (∃ σ, t'.Emb m (Over.mk (𝟙 _)) σ ∧ ∀ (T : Type) [CommRing T] (y : Sp T ⟶ (Over.mk ( …`. Introduce `K _ _ x s t' ht`. Take `⟨σ, I, hE, hP, hI, hc, hs⟩` from `hfib K x s t' ht`. Take `⟨φ₀, a1, a2, a3⟩` from `hφ K x I _ _ _ σ hI hc hP`.
+
+Take `⟨φ, b1, b2, b3, b4⟩` from `fibre_of_unit t'.A t'.L (m ^ 2) _ (Nat.cast_pow m 2).symm σ φ₀ a1 a2 a3`. Use `⟨φ, b1, ⟨σ, hE, b2⟩, b3, fun h => ⟨?_, b4 _ _ (hs h)⟩⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, b1.w, ← Category.assoc, Over.w]`. Conclude with `Category.id_comp _`. Establish `hsc : ∀ h, ∃ sc : Out.baseOver (Sp R) ⟶ Z, SecCoord M th sc.left (p h)` using `fun h => exists_section hZ (p h) hd (hu h) (by`.
+
+Introduce `q hq`. Take `⟨K, _, _, x, s, t', hx, ht⟩` from `mem_objPrimes.1 hq`. Take `⟨φ, -, -, -, h4⟩` from `key K x s t' ht`. Conclude with `⟨K, inferInstance, x, _, hx, h4 h⟩)`. Use `choose sc hsc using hsc`.
+
+Use `⟨sc, ⟨_, p, hZ, hsc⟩, hflat, fun K _ _ x s t' ht => ?_⟩` and prove the remaining obligations. Take `⟨φ, h1, h2, h3, h4⟩` from `key K x s t' ht`. Use `⟨φ, h1, h2, h3, fun h => pt_unique hZ (h4 h).1 ?_ (h4 h).2 ((Coord.secCoord_bc_scale_unique _ M _ th R _ _ hZ.1 (hsc h)).1 K x)⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, Over.w]`. Conclude with `Category.comp_id _`.
+-/
 theorem exists_sections_fam : ∀ (o : Type) [CommRing o] (g N' : ℕ) (J : Type) (b : TBase o (N' ^ 2)) (Mat : J → Matrix (Fin (2 * g)) (Fin (2 * g)) ℤ) (κ : ℕ) (R : Type) [CommRing R] [IsReduced R] (β : o →+* R) (v : Ix g (N' ^ 2) → R) (m : ℕ) (p : Ix g (N' ^ 2) → Ix g (N' ^ 2) → R) (Hh : Type) (hh : Hh → Ix g (N' ^ 2)) (Q : Polynomial ℚ) (d : ℕ) (Z : Over (Sp R)) (M : LB Z.left) (th : Ix g (N' ^ 2) → M.Sec), DenseP (objPrimes b Mat κ β v) → FibData b Mat κ β v m p hh Q d → (∀ h, Ideal.span (Set.range (p h)) = ⊤) → ProjRep (vanIdeal d (fun h i => p (hh h) i)) Z.hom M th → Flat Z.hom → (∀ (K : Type) [Field K] (x : R →+* K) (I : Ideal (MvPolynomial (Ix g (N' ^ 2)) K)) (X : Scheme.{0}) (s : X ⟶ Sp K) (M' : LB X) (th' : Ix g (N' ^ 2) → M'.Sec), (∀ F ∈ I, ∀ e, MvPolynomial.homogeneousComponent e F ∈ I) → CutBy I Q d (fun h i => x (p (hh h) i)) → ProjRep I s M' th' → ∃ φ : X ⟶ Z.left, IsPullback φ s Z.hom (spMap x) ∧ LBIso M' (M.pull φ) ∧ ∀ (T : Type) [CommRing T] (y : Sp T ⟶ X) (w : Ix g (N' ^ 2) → T), SecCoord M' th' y w ↔ SecCoord M th (y ≫ φ) w) → ∃ sc, Fam b Mat κ β v m M th sc := by
   intro o _ g N' J b Mat κ R _ _ β v m p Hh hh Q d Z M th hd hfib hu hZ hflat hφ
   have key : ∀ (K : Type) [Field K] [IsAlgClosed K] (x : R →+* K) (s : Sp K ⟶ Sp o) (t' : TObj g (N' ^ 2) J b s),

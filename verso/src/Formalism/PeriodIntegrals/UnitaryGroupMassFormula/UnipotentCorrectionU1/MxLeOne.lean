@@ -14,6 +14,11 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 open Formalism.FourierDecayAlt.P.BetaSesquilinearity
 
+/- English proof (translation)
+Use `show ‖Matrix.of.symm X‖ ≤ 1`. Rewrite using `[pi_norm_le_iff_of_nonneg zero_le_one]`. Introduce `i`. Rewrite using `[pi_norm_le_iff_of_nonneg zero_le_one]`. Introduce `j`.
+
+Conclude with `h.2 i j`.
+-/
 theorem mx_le_one {k r : ℕ} {X : B.Mat k r} (h : B.unitLie k r X) : mx X ≤ 1 := by
   show ‖Matrix.of.symm X‖ ≤ 1
   rw [pi_norm_le_iff_of_nonneg zero_le_one]
@@ -22,6 +27,27 @@ theorem mx_le_one {k r : ℕ} {X : B.Mat k r} (h : B.unitLie k r X) : mx X ≤ 1
   intro j
   exact h.2 i j
 
+/- English proof (translation)
+Introduce `w`. Proceed by induction on `w with`. Consider the case `nil => intro _; exact ⟨1, by simp, fun g => by simp [Dw]⟩`. Consider the case `cons x w ih`. Introduce `hw`.
+
+Take `⟨K, hK, hD⟩` from `ih fun y hy => hw y (by simp [hy])`. Take `⟨hxP, hxm⟩` from `hw x (by simp)`. Take `⟨c₁, c₂, hc₁, hc₂, hcur⟩` from `h1 k j ρ x.2 hxP`. Establish `hderiv : ∀ (c D : ℂ), HasDerivAt (fun t : ℝ => Complex.exp ((t : ℂ) * c) * D) (c * D) 0`. Introduce `c D`.
+
+Establish `h0 : HasDerivAt (fun t : ℝ => (t : ℂ) * c) (1 * c) 0` using `(hasDerivAt_id (0 : ℝ)).ofReal_comp.mul_const c`. Use `(h0.cexp).mul_const D` as an intermediate fact. Simplify using `using this`. Establish `hj : (0 : ℝ) ≤ j` using `Nat.cast_nonneg _`. Take `⟨b, X⟩` from `x`.
+
+Consider the cases of `b`. Use `⟨c₁ * K, ?_, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[norm_mul, List.length_cons, pow_succ']`. Conclude with `mul_le_mul (hc₁.trans (mul_le_of_le_one_right hj hxm)) hK (norm_nonneg _) hj`. Establish `e : Dw ((false, X) :: w) (DjU k j ρ) = Dx (false, X) (fun g => K • DjU k j ρ g)` using `by show Dx (false, X) (Dw w (DjU k j ρ)) = _`.
+
+Use `congr 1`. Use function extensionality and compare the values at `g`. Rewrite using `[hD g, smul_eq_mul]`. Rewrite using `[e, Dx_smul]`. Use `show K • Dx (false, X) (DjU k j ρ) g = _`.
+
+Rewrite using `[Dx_eq]`. Establish `e2 : (fun t : ℝ => DjU k j ρ (crv (false, X) g t)) = fun t : ℝ => Complex.exp ((t : ℂ) * c₁) * DjU k j ρ g`. Use function extensionality and compare the values at `t`. Conclude with `(hcur g t).1`. Simplify using `only [e2, (hderiv c₁ _).deriv, smul_eq_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `⟨c₂ * K, ?_, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[norm_mul, List.length_cons, pow_succ']`. Conclude with `mul_le_mul (hc₂.trans (mul_le_of_le_one_right hj hxm)) hK (norm_nonneg _) hj`. Establish `e : Dw ((true, X) :: w) (DjU k j ρ) = Dx (true, X) (fun g => K • DjU k j ρ g)` using `by show Dx (true, X) (Dw w (DjU k j ρ)) = _`.
+
+Use `congr 1`. Use function extensionality and compare the values at `g`. Rewrite using `[hD g, smul_eq_mul]`. Rewrite using `[e, Dx_smul]`. Use `show K • Dx (true, X) (DjU k j ρ) g = _`.
+
+Rewrite using `[Dx_eq]`. Establish `e2 : (fun t : ℝ => DjU k j ρ (crv (true, X) g t)) = fun t : ℝ => Complex.exp ((t : ℂ) * c₂) * DjU k j ρ g`. Use function extensionality and compare the values at `t`. Conclude with `(hcur g t).2`. Simplify using `only [e2, (hderiv c₂ _).deriv, smul_eq_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem dw_dj (h1 : DjCurve) (k j ρ : ℕ) : ∀ w : List (Bool × B.Mat k (j + ρ)),
     (∀ x ∈ w, inLieP k j ρ x.2 ∧ mx x.2 ≤ 1) →
     ∃ K : ℂ, ‖K‖ ≤ (j : ℝ) ^ w.length ∧ ∀ g, Dw w (DjU k j ρ) g = K * DjU k j ρ g := by
@@ -71,6 +97,21 @@ theorem dw_dj (h1 : DjCurve) (k j ρ : ℕ) : ∀ w : List (Bool × B.Mat k (j +
         simp only [e2, (hderiv c₂ _).deriv, smul_eq_mul]
         ring
 
+/- English proof (translation)
+Introduce `k j ρ χ n hχ`. Take `⟨hcD, hB⟩` from `h2 k (j + ρ) j (DjU k j ρ) (h3 k j ρ)`. Take `⟨CP, hCP⟩` from `hB n`. Use `⟨hχ.1.comp hcD, ?_⟩` and prove the remaining obligations. Take `⟨R, hR⟩` from `(hχ.2.1 : IsCompact (tsupport χ)).isBounded.exists_norm_le`.
+
+Use `h4 k (j + ρ) (DjU k j ρ) χ (costP k j ρ) n (|CP| + (max 1 (j : ℝ)) ^ n * |R|) hcD hχ.1 hχ.2.1 ?_` and prove the remaining obligations. Introduce `u v hu hv hl hne g hg hgs`. Establish `hg1` using `gN_ge_one hg`. Establish `hS0 : (0 : ℝ) ≤ ((((u ++ v).map (costP k j ρ)).sum : ℕ) : ℝ)` using `Nat.cast_nonneg _`. Establish `hA : 0 ≤ |CP|` using `abs_nonneg _`.
+
+Establish `hBn : 0 ≤ (max 1 (j : ℝ)) ^ n * |R|` using `by positivity`. Distinguish the cases in `hall : ∀ X ∈ u ++ v, inLieP k j ρ X`. Establish `hw : ∀ x ∈ wL u ++ wR v, inLieP k j ρ x.2 ∧ mx x.2 ≤ 1`. Introduce `x hx`. Simplify using `only [wL, wR, List.mem_append, List.mem_map] at hx`.
+
+Break down `hx with ⟨X, hX, rfl⟩ | ⟨X, hX, rfl⟩` into its components or cases. Conclude with `⟨hall X (List.mem_append_left _ hX), mx_le_one (hu X hX)⟩`. Conclude with `⟨hall X (List.mem_append_right _ hX), mx_le_one (hv X hX)⟩`. Take `⟨K, hK, hD⟩` from `dw_dj h1 k j ρ _ hw`. Rewrite using `[dLR_eq, hD g, norm_mul]`.
+
+Establish `hlen : (wL u ++ wR v).length ≤ n` using `by rw [len_LR]; exact hl`. Establish `hK' : ‖K‖ ≤ (max 1 (j : ℝ)) ^ n` using `hK.trans ((pow_le_pow_left₀ (Nat.cast_nonneg _) (le_max_right _ _) _).trans (pow_le_pow_right₀ (le_max_left _ _) hlen))`. Establish `hDR : ‖DjU k j ρ g‖ ≤ |R|` using `(hR _ hgs).trans (le_abs_self _)`. Establish `h1' : 1 ≤ B.gN g ^ ((((u ++ v).map (costP k j ρ)).sum : ℕ) : ℝ)` using `Real.one_le_rpow hg1 hS0`. Combine the equalities or inequalities in the displayed calculation.
+
+Choose the witnesses or unpack the hypotheses as in `⟨X, hX, hXP⟩ : ∃ X ∈ u ++ v, ¬ inLieP k j ρ X := by`. Assume the negation of the conclusion as `hc; exact hall (fun X hX => by by_contra h; exact hc ⟨X, hX, h⟩)`. Establish `hcX : costP k j ρ X = j` using `by simp [costP, hXP]`. Establish `hjS : (j : ℝ) ≤ ((((u ++ v).map (costP k j ρ)).sum : ℕ) : ℝ)`. Use `List.le_sum_of_mem (List.mem_map_of_mem (f := costP k j ρ) hX)` as an intermediate fact.
+
+Rewrite `this` using `[hcX]`. Conclude with `this` after adjusting the coercions. Establish `hb` using `hCP u v hu hv hl g hg`. Simplify using `only [List.map_const', List.sum_replicate, smul_eq_mul, mul_zero, Nat.cast_zero, add_zero] at hb`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem djWB_of (h1 : DjCurve) (h2 : PolyB) (h3 : DjPoly) (h4 : CompC) : DjWB := by
   intro k j ρ χ n hχ
   obtain ⟨hcD, hB⟩ := h2 k (j + ρ) j (DjU k j ρ) (h3 k j ρ)

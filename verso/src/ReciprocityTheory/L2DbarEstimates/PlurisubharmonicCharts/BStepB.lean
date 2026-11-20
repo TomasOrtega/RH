@@ -16,6 +16,11 @@ variable {n : ℕ} {Y : Type u} [TopologicalSpace Y] [T2Space Y] [SecondCountabl
   (A : WeightedAtlas n Y ι La) {L : La} {N : ℕ} {w : Fin N → ι → Y → ℂ} {w0 : ι → Y → ℂ}
   {s : Fin n → ι → Y → ℂ} {De : MvPolynomial (Fin n) ℂ}
 
+/- English proof (translation)
+Rewrite using `[holo_flat_iff A hD hF (fun y => a (A.pick y) y / b (A.pick y) y)]`. Introduce `i`. Establish `hne : ∀ v ∈ (A.chart i).target ∩ (A.chart i).symm ⁻¹' A.Mset w0 s De, (b i ∘ (A.chart i).symm) v ≠ 0` using `fun v hv => bsA_ne_of_tr A hb.2 hv.2 ((A.chart i).map_target hv.1) (A.mem_pick _) (hb0 _ hv.2)`. Establish `h3` using `(ha.1 i).mul ((hb.1 i).inv hne)`. Use `h3.congr fun v hv => ?_` and prove the remaining obligations.
+
+Simplify using `only [Function.comp_apply, Pi.mul_apply, Pi.inv_apply]`. Rewrite using `[← div_eq_mul_inv]`. Conclude with `bsA_tr_ratio A ha.2 hb.2 hv.2 (A.mem_pick _) ((A.chart i).map_target hv.1)`.
+-/
 theorem bsB_holo_ratio (hD : A.D0 L w w0 s) (hF : A.Flat w0 s De) {la : La} {a b : ι → Y → ℂ}
     (ha : A.IsSecOn la (A.Mset w0 s De) a) (hb : A.IsSecOn la (A.Mset w0 s De) b)
     (hb0 : ∀ y ∈ A.Mset w0 s De, b (A.pick y) y ≠ 0) :
@@ -32,6 +37,9 @@ theorem bsB_holo_ratio (hD : A.D0 L w w0 s) (hF : A.Flat w0 s De) {la : La} {a b
   rw [← div_eq_mul_inv]
   exact bsA_tr_ratio A ha.2 hb.2 hv.2 (A.mem_pick _) ((A.chart i).map_target hv.1)
 
+/- English proof (translation)
+Take `⟨Q, hQ⟩` from `hX`. Introduce `h0`. Apply `hx.2` to reduce the goal to its premises. Rewrite using `[hQ, MvPolynomial.eval_mul, MvPolynomial.eval_X, h0, zero_mul]`.
+-/
 theorem bsB_z_ne {x : Y} (hx : x ∈ A.Mset w0 s De) {i0 : Fin n}
     (hX : MvPolynomial.X i0 ∣ De) : A.zmap w0 s x i0 ≠ 0 := by
   obtain ⟨Q, hQ⟩ := hX
@@ -39,6 +47,11 @@ theorem bsB_z_ne {x : Y} (hx : x ∈ A.Mset w0 s De) {i0 : Fin n}
   apply hx.2
   rw [hQ, MvPolynomial.eval_mul, MvPolynomial.eval_X, h0, zero_mul]
 
+/- English proof (translation)
+Establish `hg : ∀ k, Holo n (flatStein A hD hF).z (fun y : A.Mset w0 s De => w k (A.pick (y : Y)) y / w0 (A.pick (y : Y)) y)` using `fun k => bsB_holo_ratio A hD hF (bsA_isSecOn_mono A (hD.sec_w k) (Set.subset_univ _)) (bsA_isSecOn_mono A hD.isSection_denom (Set.subset_univ _)) fun y hy => hy.1`. Establish `hpos : ∀ x : A.Mset w0 s De, 0 < ∑ i : Fin 0, Real.exp ((Fin.elim0 i : A.Mset w0 s De → ℝ) x) + ∑ k, ‖w k (A.pick (x : Y)) x / w0 (A.pick (x : Y)) x‖ ^ 2`. Introduce `x`. Take `⟨k, hk⟩` from `hD.no_common_zero x`. Simplify using `only [Finset.univ_eq_empty, Finset.sum_empty, zero_add]`.
+
+Use `lt_of_lt_of_le ?_ (Finset.single_le_sum (fun j _ => by positivity) (Finset.mem_univ k))` and prove the remaining obligations. Establish `: w k (A.pick (x : Y)) x / w0 (A.pick (x : Y)) x ≠ 0` using `div_ne_zero hk x.2.1`. Check the signs of the components of the expression. Establish `h` using `hLSE (A.Mset w0 s De) (flatStein A hD hF).z (flatStein A hD hF).isLocalHomeomorph 0 N (fun i => Fin.elim0 i) (fun k y => w k (A.pick (y : Y)) y / w0 (A.pick (y : Y)) y) (fun i => Fin.elim0 i) (fun i => Fin.elim0 i) hg hpos`. Simplify using `using h`.
+-/
 theorem bsB_lambda (hD : A.D0 L w w0 s) (hF : A.Flat w0 s De) (hLSE : LSEAll.{u} n) :
     SmoothR n (flatStein A hD hF).z (fun x : A.Mset w0 s De =>
       Real.log (∑ k, ‖w k (A.pick (x : Y)) x / w0 (A.pick (x : Y)) x‖ ^ 2)) ∧
@@ -75,6 +88,9 @@ def bsPsiC (A : WeightedAtlas n Y ι La) (w0 : ι → Y → ℂ) (s : Fin n → 
   A.ph (mu0 - A.kap) i y + Real.log (‖(σ i y)⁻¹‖ ^ 2) +
     Real.log (‖(jz A w0 s i y).det‖ ^ 2)
 
+/- English proof (translation)
+Establish `h1 : ContDiffAt ℂ ∞ f p` using `(contDiffOn_of_differentiableOn n f O hO hf p hp).contDiffAt (hO.mem_nhds hp)`. Establish `h2 : ContDiffAt ℝ ∞ (fun v => ‖f v‖ ^ 2) p` using `(h1.restrict_scalars ℝ).norm_sq ℂ`. Conclude with `h2.log (by positivity)`.
+-/
 theorem bsB_logsq {f : V n → ℂ} {p : V n} {O : Set (V n)} (hO : IsOpen O) (hp : p ∈ O)
     (hf : DifferentiableOn ℂ f O) (hne : f p ≠ 0) :
     ContDiffAt ℝ ∞ (fun v => Real.log (‖f v‖ ^ 2)) p := by
@@ -83,6 +99,11 @@ theorem bsB_logsq {f : V n → ℂ} {p : V n} {O : Set (V n)} (hO : IsOpen O) (h
   have h2 : ContDiffAt ℝ ∞ (fun v => ‖f v‖ ^ 2) p := (h1.restrict_scalars ℝ).norm_sq ℂ
   exact h2.log (by positivity)
 
+/- English proof (translation)
+Establish `hp` using `A.mem_pick y`. Establish `hσi : σ i y ≠ 0` using `bsA_ne_of_tr A hσ.1.2 hy hi hp (hσ.2 y hy)`. Establish `hg : A.g A.kap (A.pick y) i y ≠ 0` using `A.g_ne _ _ _ y hp hi`. Establish `hdet : (jz A w0 s i y).det ≠ 0` using `jz_det_ne A hD hF y hy i hi`. Unfold `bsPsi bsPsiC`.
+
+Rewrite using `[bsA_nsq_chart A hσ.1.2 hy hi, jz_det_trans A hD hF y hy (A.pick y) i hp hi, bsA_ph_sub A mu0 A.kap hi, A.ph_trans A.kap (A.pick y) i y hp hi]`. Rewrite using `[Real.log_mul (by positivity) (Real.exp_ne_zero _), Real.log_exp, norm_mul, mul_pow, Real.log_mul (by positivity) (by positivity), norm_inv, inv_pow, Real.log_inv]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem bsB_psi_chart (hD : A.D0 L w w0 s) (hF : A.Flat w0 s De)
     (hσ : A.IsFrameOn mu0 (A.Mset w0 s De) σ) {y : Y} (hy : y ∈ A.Mset w0 s De) {i : ι}
     (hi : y ∈ (A.chart i).source) : bsPsi A w0 s mu0 σ y = bsPsiC A w0 s mu0 σ i y := by
@@ -97,18 +118,30 @@ theorem bsB_psi_chart (hD : A.D0 L w w0 s) (hF : A.Flat w0 s De)
     Real.log_mul (by positivity) (by positivity), norm_inv, inv_pow, Real.log_inv]
   ring
 
+/- English proof (translation)
+The claim follows from `(A.chart i).isOpen_inter_preimage_symm (isOpen_Mset A hD)`.
+-/
 theorem bsB_O_open (hD : A.D0 L w w0 s) (i : ι) :
     IsOpen ((A.chart i).target ∩ (A.chart i).symm ⁻¹' A.Mset w0 s De) :=
   (A.chart i).isOpen_inter_preimage_symm (isOpen_Mset A hD)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(A.chart i).map_source hi, by simpa [(A.chart i).left_inv hi] using hx⟩`.
+-/
 theorem bsB_O_mem {x : Y} (hx : x ∈ A.Mset w0 s De) {i : ι} (hi : x ∈ (A.chart i).source) :
     A.chart i x ∈ (A.chart i).target ∩ (A.chart i).symm ⁻¹' A.Mset w0 s De :=
   ⟨(A.chart i).map_source hi, by simpa [(A.chart i).left_inv hi] using hx⟩
 
+/- English proof (translation)
+Unfold `jz`. Rewrite using `[(A.chart i).right_inv hv]`.
+-/
 theorem bsB_jz_eq {i : ι} {v : V n} (hv : v ∈ (A.chart i).target) :
     jz A w0 s i ((A.chart i).symm v) = fderiv ℂ (A.zLoc w0 s i) v := by
   unfold jz; rw [(A.chart i).right_inv hv]
 
+/- English proof (translation)
+Use `filter_upwards [differentiableAt_det_jz A hD hF x hx i hi, (A.chart i).open_target.mem_nhds ((A.chart i).map_source hi)] with v h1 h2`. Use `h1.congr_of_eventuallyEq ?_` and prove the remaining obligations. Use `filter_upwards [(A.chart i).open_target.mem_nhds h2] with v' hv'`. Simplify using `[bsB_jz_eq A hv']`.
+-/
 theorem bsB_det_diff (hD : A.D0 L w w0 s) (hF : A.Flat w0 s De) {x : Y}
     (hx : x ∈ A.Mset w0 s De) {i : ι} (hi : x ∈ (A.chart i).source) :
     ∀ᶠ v in 𝓝 (A.chart i x),
@@ -119,6 +152,9 @@ theorem bsB_det_diff (hD : A.D0 L w w0 s) (hF : A.Flat w0 s De) {x : Y}
   filter_upwards [(A.chart i).open_target.mem_nhds h2] with v' hv'
   simp [bsB_jz_eq A hv']
 
+/- English proof (translation)
+Establish `h` using `(hσ.1.1 i).inv (fun v hv => bsA_ne_of_tr A hσ.1.2 hv.2 ((A.chart i).map_target hv.1) (A.mem_pick _) (hσ.2 _ hv.2))`. Conclude with `h.congr fun v _ => rfl`.
+-/
 theorem bsB_inv_diffOn (hσ : A.IsFrameOn mu0 (A.Mset w0 s De) σ) (i : ι) :
     DifferentiableOn ℂ ((fun y => (σ i y)⁻¹) ∘ (A.chart i).symm)
       ((A.chart i).target ∩ (A.chart i).symm ⁻¹' A.Mset w0 s De) := by
@@ -126,6 +162,15 @@ theorem bsB_inv_diffOn (hσ : A.IsFrameOn mu0 (A.Mset w0 s De) σ) (i : ι) :
     bsA_ne_of_tr A hσ.1.2 hv.2 ((A.chart i).map_target hv.1) (A.mem_pick _) (hσ.2 _ hv.2))
   exact h.congr fun v _ => rfl
 
+/- English proof (translation)
+Establish `hO` using `bsB_O_open A (De := De) hD i`. Establish `hxO` using `bsB_O_mem A hx hi`. Use `⟨(A.smooth_ph _ i).contDiffAt ((A.chart i).open_target.mem_nhds hxO.1), ?_, ?_⟩` and prove the remaining obligations. Establish `hne : ((fun y => (σ i y)⁻¹) ∘ (A.chart i).symm) (A.chart i x) ≠ 0`. Simplify using `only [Function.comp_apply, (A.chart i).left_inv hi]`.
+
+Conclude with `inv_ne_zero (bsA_ne_of_tr A hσ.1.2 hx hi (A.mem_pick x) (hσ.2 x hx))`. Conclude with `bsB_logsq hO hxO (bsB_inv_diffOn A hσ i) hne`. Establish `hc : ContDiffAt ℂ ∞ ((fun y => (jz A w0 s i y).det) ∘ (A.chart i).symm) (A.chart i x)`. Use `(contDiffAt_det_jz A hD hF x hx i hi).congr_of_eventuallyEq ?_` and prove the remaining obligations. Use `filter_upwards [(A.chart i).open_target.mem_nhds hxO.1] with v hv`.
+
+Simplify using `[bsB_jz_eq A hv]`. Establish `h2 : ContDiffAt ℝ ∞ (fun v => ‖((fun y => (jz A w0 s i y).det) ∘ (A.chart i).symm) v‖ ^ 2) (A.chart i x)` using `(hc.restrict_scalars ℝ).norm_sq ℂ`. Establish `hne : ((fun y => (jz A w0 s i y).det) ∘ (A.chart i).symm) (A.chart i x) ≠ 0`. Simplify using `only [Function.comp_apply, (A.chart i).left_inv hi]`. Conclude with `jz_det_ne A hD hF x hx i hi`.
+
+Conclude with `h2.log (by positivity)`.
+-/
 theorem bsB_psiC_smooth (hD : A.D0 L w w0 s) (hF : A.Flat w0 s De)
     (hσ : A.IsFrameOn mu0 (A.Mset w0 s De) σ) {x : Y} (hx : x ∈ A.Mset w0 s De) {i : ι}
     (hi : x ∈ (A.chart i).source) :
@@ -157,6 +202,9 @@ section Ph0
 
 variable {mu0 : La} {σ : ι → Y → ℂ}
 
+/- English proof (translation)
+Use `filter_upwards [(isOpen_Mset A hD).mem_nhds hx, (A.chart i).open_source.mem_nhds hi] with y h1 h2`. Conclude with `bsB_psi_chart A hD hF hσ h1 h2`.
+-/
 theorem bsB_psi_evEq (hD : A.D0 L w w0 s) (hF : A.Flat w0 s De)
     (hσ : A.IsFrameOn mu0 (A.Mset w0 s De) σ) {x : Y} (hx : x ∈ A.Mset w0 s De) {i : ι}
     (hi : x ∈ (A.chart i).source) : bsPsi A w0 s mu0 σ =ᶠ[𝓝 x] bsPsiC A w0 s mu0 σ i := by
@@ -164,6 +212,11 @@ theorem bsB_psi_evEq (hD : A.D0 L w w0 s) (hF : A.Flat w0 s De)
     with y h1 h2
   exact bsB_psi_chart A hD hF hσ h1 h2
 
+/- English proof (translation)
+Take `⟨h1, h2, h3⟩` from `bsB_psiC_smooth A hD hF hσ hx hi`. Establish `hC : ContDiffAt ℝ ∞ (bsPsiC A w0 s mu0 σ i ∘ (A.chart i).symm) (A.chart i x)` using `(h1.add h2).add h3`. Use `hC.congr_of_eventuallyEq ?_` and prove the remaining obligations. Establish `ht : Tendsto (A.chart i).symm (𝓝 (A.chart i x)) (𝓝 x)`. Use `(A.chart i).continuousAt_symm ((A.chart i).map_source hi)` as an intermediate fact.
+
+Rewrite `this` using `[ContinuousAt, (A.chart i).left_inv hi]`. Then use the resulting hypothesis. Conclude with `(bsB_psi_evEq A hD hF hσ hx hi).comp_tendsto ht`.
+-/
 theorem bsB_psi_smoothAt (hD : A.D0 L w w0 s) (hF : A.Flat w0 s De)
     (hσ : A.IsFrameOn mu0 (A.Mset w0 s De) σ) {x : Y} (hx : x ∈ A.Mset w0 s De) {i : ι}
     (hi : x ∈ (A.chart i).source) :
@@ -177,6 +230,15 @@ theorem bsB_psi_smoothAt (hD : A.D0 L w w0 s) (hF : A.Flat w0 s De)
     rwa [ContinuousAt, (A.chart i).left_inv hi] at this
   exact (bsB_psi_evEq A hD hF hσ hx hi).comp_tendsto ht
 
+/- English proof (translation)
+Take `⟨h1, h2, h3⟩` from `bsB_psiC_smooth A hD hF hσ hx hi`. Establish `hle : (2 : WithTop ℕ∞) ≤ ((⊤ : ℕ∞) : WithTop ℕ∞)` using `WithTop.coe_le_coe.mpr le_top`. Establish `hO` using `bsB_O_open A (De := De) hD i`. Establish `hxO` using `bsB_O_mem A hx hi`. Rewrite using `[leviAt_congr A i _ _ x hi (bsB_psi_evEq A hD hF hσ hx hi)]`.
+
+Establish `e1 : bsPsiC A w0 s mu0 σ i = fun y => (fun y => A.ph (mu0 - A.kap) i y + Real.log (‖(σ i y)⁻¹‖ ^ 2)) y + Real.log (‖(jz A w0 s i y).det‖ ^ 2)` using `rfl`. Establish `E1` using `leviAt_add A i (fun y => A.ph (mu0 - A.kap) i y + Real.log (‖(σ i y)⁻¹‖ ^ 2)) (fun y => Real.log (‖(jz A w0 s i y).det‖ ^ 2)) x ((h1.add h2).of_le hle) (h3.of_le hle) ξ`. Establish `E2` using `leviAt_add A i (A.ph (mu0 - A.kap) i) (fun y => Real.log (‖(σ i y)⁻¹‖ ^ 2)) x (h1.of_le hle) (h2.of_le hle) ξ`. Establish `hσx : σ i x ≠ 0` using `bsA_ne_of_tr A hσ.1.2 hx hi (A.mem_pick x) (hσ.2 x hx)`. Establish `E3` using `leviAt_log_normSq A i (fun y => (σ i y)⁻¹) x hi (by filter_upwards [hO.mem_nhds hxO] with v hv`.
+
+Conclude with `(bsB_inv_diffOn A hσ i).differentiableAt (hO.mem_nhds hv)) (inv_ne_zero hσx) ξ`. Establish `E4` using `leviAt_log_normSq A i (fun y => (jz A w0 s i y).det) x hi (bsB_det_diff A hD hF hx hi) (jz_det_ne A hD hF x hx i hi) ξ`. Establish `E5` using `hpos i x hi ξ`. Simplify using `only [add_zero] at E5`. Rewrite using `[e1]`.
+
+Use `beta_reduce at E1 E2 E3 E4 ⊢`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem bsB_psi_levi (hD : A.D0 L w w0 s) (hF : A.Flat w0 s De)
     (hσ : A.IsFrameOn mu0 (A.Mset w0 s De) σ) (hpos : A.Pos (mu0 - A.kap) (fun _ => 0))
     {x : Y} (hx : x ∈ A.Mset w0 s De) {i : ι} (hi : x ∈ (A.chart i).source) (ξ : Fin n → ℂ) :
@@ -208,6 +270,13 @@ def bsPh0 (A : WeightedAtlas n Y ι La) (w : Fin N → ι → Y → ℂ) (w0 : �
     (s : Fin n → ι → Y → ℂ) (mu0 : La) (σ : ι → Y → ℂ) (y : Y) : ℝ :=
   bsPsi A w0 s mu0 σ y + 1 / 2 * Real.log (∑ k, ‖w k (A.pick y) y / w0 (A.pick y) y‖ ^ 2)
 
+/- English proof (translation)
+Take `⟨hΛs, hΛl⟩` from `bsB_lambda A hD hF hLSE`. Establish `hΨs : SmoothR n (flatStein A hD hF).z (fun x : A.Mset w0 s De => bsPsi A w0 s mu0 σ x)` using `smoothR_flat A hD hF _ fun x hx => ⟨A.pick x, A.mem_pick x, bsB_psi_smoothAt A hD hF hσ hx (A.mem_pick x)⟩`. Establish `hΨl : LeviNonneg n (flatStein A hD hF).z (fun x : A.Mset w0 s De => bsPsi A w0 s mu0 σ x)` using `leviNonneg_flat A hD hF _ fun x hx => ⟨A.pick x, A.mem_pick x, bsB_psi_smoothAt A hD hF hσ hx (A.mem_pick x), bsB_psi_levi A hD hF hσ hpos hx (A.mem_pick x)⟩`. Establish `hcs : SmoothR n (flatStein A hD hF).z (fun _ : A.Mset w0 s De => (1 / 2 : ℝ))` using `ReciprocityTheory.L2DbarEstimates.Smooth.const n _ ((1 / 2 : ℝ) : ℂ)`. Establish `hHs` using `SmoothR.mul n _ _ _ hcs hΛs`.
+
+Use `⟨SmoothR.add n _ _ _ hΨs hHs, fun x ξ => ?_⟩` and prove the remaining obligations. Establish `e` using `levi_add n (flatStein A hD hF).z _ _ (SmoothR.ckR n _ 2 _ hΨs) (SmoothR.ckR n _ 2 _ hHs) x ξ`. Establish `e2` using `levi_const_mul n (flatStein A hD hF).z (1 / 2) _ (SmoothR.ckR n _ 2 _ hΛs) x ξ`. Unfold `bsPh0`. Rewrite using `[e, Complex.add_re, e2, Complex.re_ofReal_mul]`.
+
+Establish `h1` using `hΨl x ξ`. Establish `h2` using `hΛl x ξ`. Check the signs of the components of the expression.
+-/
 theorem smooth_leviNonneg_frameWeight (hD : A.D0 L w w0 s) (hF : A.Flat w0 s De) (hLSE : LSEAll.{u} n)
     (hσ : A.IsFrameOn mu0 (A.Mset w0 s De) σ) (hpos : A.Pos (mu0 - A.kap) (fun _ => 0)) :
     SmoothR n (flatStein A hD hF).z (fun x : A.Mset w0 s De => bsPh0 A w w0 s mu0 σ x) ∧

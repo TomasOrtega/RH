@@ -7,6 +7,19 @@ namespace Formalism.RepresentationBoundsCohomology.TorsionBoundCyclotomic
 
 open Polynomial
 
+/- English proof (translation)
+Introduce `ℓ _ w m hm h2 hw U i A P ⟨hS, ⟨hIR1, hIR2⟩, hT4, ⟨_, hT3⟩, htf, hHT⟩ y ⟨k, hk⟩`. Establish `hkill : aeval P.gm ((X - 1) * Rpoly ℓ w U i) = 0`. Take `⟨q, hq⟩` from `(htpoly ℓ w U i).1`. Rewrite using `[hq, map_mul, hHT, zero_mul]`. Establish `h1 : P.res ((ℓ : ℤ_[ℓ]) • P.lam y) = 0` using `by rw [map_smul]; exact hT4 _`.
+
+Take `⟨a, x, hax⟩` from `(hIR1 _).1 h1`. Establish `h3 : P.infm (((ℓ : ℤ_[ℓ]) ^ k) • a) + P.infX (((ℓ : ℤ_[ℓ]) ^ k) • x) = 0`. Rewrite using `[map_smul, map_smul, ← smul_add, ← hax, smul_comm, ← map_smul, hk, map_zero, smul_zero]`. Take `⟨⟨a', ha'⟩, _⟩` from `(hIR2 _ _).1 h3`. Take `⟨a'', ha''⟩` from `eigen ℓ w m hm h2 hw U i P.Wm P.gm htf hkill k a a' ha'`.
+
+Take `⟨x'', hx''⟩` from `hT3 x`. Establish `h4 : P.infm (((ℓ : ℤ_[ℓ]) ^ (max 1 (rI ℓ m U i))) • a) + P.infX (((ℓ : ℤ_[ℓ]) ^ (max 1 (rI ℓ m U i))) • x) = 0`. Apply `(hIR2 _ _).2` to reduce the goal to its premises. Prove the components needed by the constructor for the conclusion. Use `⟨((ℓ : ℤ_[ℓ]) ^ (max 1 (rI ℓ m U i) - rI ℓ m U i)) • a'', ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_smul, ← smul_sub, ← ha'', smul_smul, ← pow_add, Nat.sub_add_cancel (le_max_right _ _)]`. Use `⟨((ℓ : ℤ_[ℓ]) ^ (max 1 (rI ℓ m U i) - 1)) • x'', ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, ← smul_sub, ← hx'', smul_smul, ← pow_succ, Nat.sub_add_cancel (le_max_left _ _)]`. Establish `h5 : ((ℓ : ℤ_[ℓ]) ^ (max 1 (rI ℓ m U i) + 1)) • P.lam y = 0`. Rewrite using `[pow_succ, mul_smul, hax, smul_add, ← map_smul, ← map_smul]`.
+
+Conclude with `h4`. Establish `h6` using `congrArg P.io h5`. Rewrite `h6` using `[map_smul, hS, map_zero, smul_smul, ← pow_succ]`. Establish `h7 : 2 + max 1 (rI ℓ m U i) = max 1 (rI ℓ m U i) + 1 + 1` using `by ring`. Rewrite using `[h7]`.
+
+Conclude with `h6`.
+-/
 theorem piece : StatPiece := by
   intro ℓ _ w m hm h2 hw U i A P ⟨hS, ⟨hIR1, hIR2⟩, hT4, ⟨_, hT3⟩, htf, hHT⟩ y ⟨k, hk⟩
   have hkill : aeval P.gm ((X - 1) * Rpoly ℓ w U i) = 0 := by
@@ -33,6 +46,9 @@ theorem piece : StatPiece := by
   have h7 : 2 + max 1 (rI ℓ m U i) = max 1 (rI ℓ m U i) + 1 + 1 := by ring
   rw [h7]; exact h6
 
+/- English proof (translation)
+Introduce `ℓ _ w m hm h2 hw U a n d D hd hP ⟨h0, hex⟩ hT5 hcr`. Establish `hGr : ∀ k, TorsKilled ℓ (D.Gr k) (2 + max 1 (rI ℓ m U (a + k)))` using `fun k => piece ℓ w m hm h2 hw U (a + k) (D.Gr k) (D.piece k) (hP k)`. Establish `hm'` using `devSum ℓ (fun k => D.Hm k) (fun k => D.Gr k) D.f D.p _ h0 hex hT5 hGr n`. Rewrite `hm'` using `[← reindex]`. Conclude with `cores ℓ D.HK (D.Hm n) D.res D.cor d _ hd hcr hm'`.
+-/
 theorem ll : StatLL := by
   intro ℓ _ w m hm h2 hw U a n d D hd hP ⟨h0, hex⟩ hT5 hcr
   have hGr : ∀ k, TorsKilled ℓ (D.Gr k) (2 + max 1 (rI ℓ m U (a + k))) :=
@@ -41,6 +57,17 @@ theorem ll : StatLL := by
   rw [← reindex] at hm'
   exact cores ℓ D.HK (D.Hm n) D.res D.cor d _ hd hcr hm'
 
+/- English proof (translation)
+Introduce `ℓ _ w m hm h2 hw U h0U hne D hP hUn hFl hLES ⟨hInv1, hInv2⟩ x`. Establish `hA` using `piece ℓ w m hm h2 hw U 0 D.A D.piece hP`. Establish `hr : rI ℓ m U 0 = ∑ u ∈ U, (m + padicValInt ℓ u)`. Unfold `rI`. Rewrite using `[Finset.erase_eq_of_notMem h0U]`.
+
+Simplify using the standard rewrite rules. Establish `hr1 : 1 ≤ rI ℓ m U 0`. Rewrite using `[hr]`. Take `⟨u, hu⟩` from `hne`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hc : 2 + max 1 (rI ℓ m U 0) = c0 ℓ m U` using `by unfold c0; rw [max_eq_right hr1, hr]`. Rewrite `hA` using `[hc]`. Take `⟨_, _, _, ⟨hT3inj, _⟩, htf, hHT⟩` from `hP`. Establish `hW0 : ∀ z : D.H0WeightInvariants, z = 0` using `fun z => hInv1 z (eigenInj ℓ w m hm h2 hw U 0 h0U D.piece.Wm D.piece.gm htf hHT _ (hInv2 z).1) (hT3inj _ (hInv2 z).2)`. Take `⟨r, hr'⟩` from `hUn x`.
+
+Set `x' : Submodule.torsionBy ℤ_[ℓ] D.M ((ℓ : ℤ_[ℓ]) ^ r)` to `⟨x, by rw [Submodule.mem_torsionBy_iff]; exact hr'⟩`. Establish `hx0 : ((ℓ : ℤ_[ℓ]) ^ r) • x' = 0` using `Subtype.ext hr'`. Establish `h1 : ((ℓ : ℤ_[ℓ]) ^ c0 ℓ m U) • D.dl r (D.emb r x') = 0` using `hA _ ⟨r, by rw [← map_smul, ← map_smul, hx0, map_zero, map_zero]⟩`. Establish `h2' : D.dl r (D.emb r (((ℓ : ℤ_[ℓ]) ^ c0 ℓ m U) • x')) = 0` using `by rw [map_smul, map_smul]; exact h1`. Take `⟨z, hz⟩` from `(hLES r _).1 h2'`.
+
+Rewrite `hz` using `[hW0 z, map_zero]`. Establish `h3 : ((ℓ : ℤ_[ℓ]) ^ c0 ℓ m U) • x' = 0` using `hFl r (by rw [← hz, map_zero])`. Conclude with `congrArg Subtype.val h3`.
+-/
 theorem h0 : InvariantsKilledByPower := by
   intro ℓ _ w m hm h2 hw U h0U hne D hP hUn hFl hLES ⟨hInv1, hInv2⟩ x
   have hA := piece ℓ w m hm h2 hw U 0 D.A D.piece hP
@@ -69,6 +96,21 @@ theorem h0 : InvariantsKilledByPower := by
   have h3 : ((ℓ : ℤ_[ℓ]) ^ c0 ℓ m U) • x' = 0 := hFl r (by rw [← hz, map_zero])
   exact congrArg Subtype.val h3
 
+/- English proof (translation)
+Introduce `ℓ _ s m e d U D hd ⟨c1, c2, c3, c4, c5, c6, c7⟩ ⟨e1, e2, e3⟩ hdR hLL hH2 hK3 hF3 hR ⟨hcr, hcf⟩`. Establish `hℓ : ℓ.Prime` using `Fact.out`. Establish `hle` using `(cTBTable ℓ hℓ s m e (padicValNat ℓ d) U).2`. Generalize the expression as in `cTB ℓ s m e (padicValNat ℓ d) U = N at hle ⊢`. Generalize the expression as in `cLL ℓ m U 0 ((e : ℤ) + 1) (ℓ ^ (m - s)) = c at hle hLL`.
+
+Unfold `TBData.tateDualityKillsH2 at hH2`. Generalize the expression as in `s + padicValNat ℓ (e + 1) = t at hle hH2`. Take `⟨z, hz⟩` from `(e1 (((ℓ : ℤ_[ℓ]) ^ t) • D.f1 D.y)).1 (by rw [map_smul]; exact hH2 _)`. Establish `h1 : ((ℓ : ℤ_[ℓ]) ^ c) • D.iY D.y = 0` using `hLL _ hdR`. Establish `h2 : D.qL (((ℓ : ℤ_[ℓ]) ^ c) • D.iZ z) = 0`.
+
+Rewrite using `[map_smul, c2, hz, map_smul, c1, smul_comm, ← map_smul, h1, map_zero, smul_zero]`. Take `⟨w, hw⟩` from `(e2 _).1 h2`. Establish `h3 : D.bW w = ((ℓ : ℤ_[ℓ]) ^ c) • D.ex (D.jZ z)` using `by rw [← c4, hw, map_smul, c3]`. Take `⟨x, hx⟩` from `(e3 (((ℓ : ℤ_[ℓ]) ^ cPrime ℓ s e) • w)).1 (by rw [map_smul]; exact hK3 _)`. Establish `h4 : ((ℓ : ℤ_[ℓ]) ^ (cPrime ℓ s e + 1 + s + ceilE ℓ e)) • D.bW w ∈ D.La0`.
+
+Establish `h` using `hF3 x`. Rewrite `h` using `[hx, map_smul, smul_smul, ← pow_add]`. Establish `hexp : cPrime ℓ s e + 1 + s + ceilE ℓ e = 1 + s + ceilE ℓ e + cPrime ℓ s e` using `by ring`. Rewrite using `[hexp]`. Conclude with `h`.
+
+Take `⟨z1, hz1⟩` from `hR (D.bW w) _ (aTB ℓ s e) h4 ((aCount ℓ hℓ s e).2.1).symm`. Establish `h5 : D.ex (((ℓ : ℤ_[ℓ]) ^ (aTB ℓ s e + c)) • D.jZ z - D.jW z1) = 0`. Rewrite using `[map_sub, map_smul, ← hz1, h3, smul_smul, ← pow_add, sub_self]`. Establish `h6` using `hcf _ h5`. Establish `h6' : D.pr (((ℓ : ℤ_[ℓ]) ^ (aTB ℓ s e + c)) • D.jZ z - D.jW z1) = ((ℓ : ℤ_[ℓ]) ^ (aTB ℓ s e + c + t)) • D.res D.yK`.
+
+Rewrite using `[map_sub, c5, sub_zero, map_smul, ← c6, hz, map_smul, ← c7, smul_smul, ← pow_add]`. Rewrite `h6` using `[h6', map_smul, hcr, smul_comm]`. Establish `h8` using `index_smul_mem D.HfK d hd _ h6`. Take `⟨j, hj⟩` from `Nat.exists_eq_add_of_le hle`. Establish `h9 : ((ℓ : ℤ_[ℓ]) ^ N) • D.yK = ((ℓ : ℤ_[ℓ]) ^ j) • (((ℓ : ℤ_[ℓ]) ^ padicValNat ℓ d) • (((ℓ : ℤ_[ℓ]) ^ (aTB ℓ s e + c + t)) • D.yK))`.
+
+Rewrite using `[smul_smul, smul_smul, ← pow_add, ← pow_add, hj]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h9]`. Conclude with `D.HfK.smul_mem _ h8`.
+-/
 theorem tb : StatTB := by
   intro ℓ _ s m e d U D hd ⟨c1, c2, c3, c4, c5, c6, c7⟩ ⟨e1, e2, e3⟩ hdR hLL hH2 hK3 hF3 hR ⟨hcr, hcf⟩
   have hℓ : ℓ.Prime := Fact.out

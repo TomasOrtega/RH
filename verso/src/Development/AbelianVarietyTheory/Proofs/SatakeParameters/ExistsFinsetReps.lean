@@ -7,6 +7,11 @@ import Formalism.LocalToGlobal.BesselHermitianTheta.LemmasWeil
 
 namespace GlobalTheory.FinsetConjugateRepresentatives
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz, rfl⟩`. Establish `: g⁻¹ * (MulAut.conj g).toMonoidHom z * g = z`. Simplify using `[mul_assoc]`. Rewrite using `[this]`.
+
+Conclude with `hz`. Introduce `h`. Use `⟨g⁻¹ * y * g, h, ?_⟩` and prove the remaining obligations. Simplify using `[mul_assoc]`.
+-/
 theorem mem_map_conj {G : Type} [Group G] (K : Subgroup G) (g y : G) :
     y ∈ K.map (MulAut.conj g).toMonoidHom ↔ g⁻¹ * y * g ∈ K := by
   constructor
@@ -19,6 +24,15 @@ theorem mem_map_conj {G : Type} [Group G] (K : Subgroup G) (g y : G) :
     refine ⟨g⁻¹ * y * g, h, ?_⟩
     simp [mul_assoc]
 
+/- English proof (translation)
+Introduce `G _ K hK g`. Use `set H : Subgroup K := (K.map (MulAut.conj g).toMonoidHom).subgroupOf K with hH`. Establish `hidx : H.index ≠ 0` using `hK g`. Use `haveI : Finite (K ⧸ H) := Nat.finite_of_card_ne_zero hidx`. Use `haveI : Fintype (K ⧸ H) := Fintype.ofFinite _`.
+
+Establish `key : ∀ (q : K ⧸ H) (a : K) (b : G), b ∈ K → ((((q.out : K) : G) * g)⁻¹ * ((a : G) * g * b) ∈ K ↔ q = (a : K ⧸ H))`. Introduce `q a b hb`. Establish `e : (((q.out : K) : G) * g)⁻¹ * ((a : G) * g * b) = (g⁻¹ * (((q.out)⁻¹ * a : K) : G) * g) * b`. Simplify using `[mul_assoc]`. Rewrite using `[e, K.mul_mem_cancel_right hb, ← mem_map_conj, ← Subgroup.mem_subgroupOf, ← hH, ← QuotientGroup.eq, QuotientGroup.out_eq']`.
+
+Use `⟨Finset.univ.image (fun q : K ⧸ H => ((q.out : K) : G) * g), ?_, ?_⟩` and prove the remaining obligations. Introduce `γ hγ`. Take `⟨q, -, rfl⟩` from `Finset.mem_image.mp hγ`. Conclude with `⟨_, (q.out).2, 1, K.one_mem, by simp⟩`. Introduce and unpack `x ⟨k₁, hk₁, k₂, hk₂, rfl⟩`.
+
+Use `⟨((((⟨k₁, hk₁⟩ : K) : K ⧸ H).out : K) : G) * g, ⟨Finset.mem_image.mpr ⟨_, Finset.mem_univ _, rfl⟩, (key _ ⟨k₁, hk₁⟩ k₂ hk₂).mpr rfl⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `γ ⟨hγ, hx⟩`. Take `⟨q, -, rfl⟩` from `Finset.mem_image.mp hγ`. Rewrite using `[(key q ⟨k₁, hk₁⟩ k₂ hk₂).mp hx]`.
+-/
 theorem exists_finset_reps : ∀ {G : Type} [inst : Group G] {K : Subgroup G},
     Formalism.UG.IsCommensurated K → ∀ (g : G), ∃ (R : Finset G),
       (∀ γ ∈ R, ∃ k₁ ∈ K, ∃ k₂ ∈ K, γ = k₁ * g * k₂) ∧

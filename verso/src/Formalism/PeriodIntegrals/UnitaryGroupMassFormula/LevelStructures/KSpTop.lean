@@ -9,22 +9,34 @@ namespace MassDataLevelSSteps
 open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.SG.Sub Formalism.L2.SG.Measures Formalism.L2.SG.TypedSets MeasureTheory NumberField
   IsDedekindDomain Formalism.BasicNotions Formalism.L2.SG.HidaSetting Formalism.L2.SG.AdBridge
 
+/- English proof (translation)
+The claim follows from `Module.Finite.of_restrictScalars_finite ℚ F E`.
+-/
 theorem finiteDimensional_of_numberField (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E]
     [Algebra F E] : FiniteDimensional F E :=
   Module.Finite.of_restrictScalars_finite ℚ F E
 
+/- English proof (translation)
+Introduce `D X w p`. Use `finiteDimensional_of_numberField X.B.I.F X.B.I.E` as an intermediate fact. Conclude with `(LatTop.isClosed_Ssub p.1 X.B.I.cm.sig X.B.I.J (frameOf X w)).isClosedEmbedding_subtypeVal.isCompact_preimage (LatTop.isCompact_Kv p.1 X.B.I.L X.B.I.L_span X.B.I.L_fg X.B.I.cm.sig X.B.I.J)`.
+-/
 theorem kSpCompact_holds : KSpCompact := by
   intro D X w p
   have := finiteDimensional_of_numberField X.B.I.F X.B.I.E
   exact (LatTop.isClosed_Ssub p.1 X.B.I.cm.sig X.B.I.J (frameOf X w)).isClosedEmbedding_subtypeVal.isCompact_preimage
     (LatTop.isCompact_Kv p.1 X.B.I.L X.B.I.L_span X.B.I.L_fg X.B.I.cm.sig X.B.I.J)
 
+/- English proof (translation)
+Introduce `D X w p`. Use `finiteDimensional_of_numberField X.B.I.F X.B.I.E` as an intermediate fact. Conclude with `(LatTop.isOpen_Kv p.1 X.B.I.L X.B.I.L_span X.B.I.L_fg X.B.I.cm.sig X.B.I.J).preimage continuous_subtype_val`.
+-/
 theorem kSpOpen_holds : KSpOpen := by
   intro D X w p
   have := finiteDimensional_of_numberField X.B.I.F X.B.I.E
   exact (LatTop.isOpen_Kv p.1 X.B.I.L X.B.I.L_span X.B.I.L_fg X.B.I.cm.sig X.B.I.J).preimage
     continuous_subtype_val
 
+/- English proof (translation)
+The claim follows from `typedNe_of kSpCompact_holds kSpOpen_holds`.
+-/
 theorem typedNe_holds : TypedNe := typedNe_of kSpCompact_holds kSpOpen_holds
 
 end MassDataLevelSSteps

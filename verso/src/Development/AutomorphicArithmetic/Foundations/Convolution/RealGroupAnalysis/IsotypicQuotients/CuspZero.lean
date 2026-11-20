@@ -7,6 +7,13 @@ open Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual GlobalTheory.CuspR
 open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.Pp
 
 open GroundTheory.Automorphic GroundTheory.Automorphic.AutomorphicForm in
+/- English proof (translation)
+Introduce `F _ _ _ π f hf`. Take `⟨φ, rfl⟩` from `Fb.mem_range_ofCusp.2 (π.cusp f hf)`. Use `⟨⟨φ.2.1.continuous, (π.cusp _ hf).1.left⟩, fun g => ?_⟩` and prove the remaining obligations. Use `letI : Unique (UPos 2 1) := ⟨⟨⟨(0, 1), by decide⟩⟩, by decide⟩`. Rewrite using `[← int_one (ι := UPos 2 1), ← φ.2.2 1 one_pos one_lt_two g]`.
+
+Use `integral_congr_ae (Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Establish `: gl (nU (x default)) = unipGL x`. Use `Units.ext ?_` and prove the remaining obligations. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [vn, unipMatrix, blockEntry_apply]`.
+
+Both sides reduce to the same expression. Simplify using `only [this]`. Both sides reduce to the same expression.
+-/
 theorem UpperTheory.ConvolutionTheory.R2.Pp.cuspZero :
     ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F], UpperTheory.ConvolutionTheory.R2.Pp.CuspZero F := by
   intro F _ _ _ π f hf

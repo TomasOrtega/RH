@@ -31,6 +31,15 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 attribute [local instance] GlobalTheory.TypeRec.factG
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 namespace UpperTheory.One.M
+/- English proof (translation)
+Introduce `hL D T I`. Take `⟨rc, hrc⟩` from `_root_.GlobalTheory.TypeRec.Model.exists_isRc_alt hL T I`. Use `⟨rc, hrc, fun k v n π hπ => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `first | (have hOpn := UpperTheory.One.M.opn _ (_root_.GlobalTheory.CuspRep.ParLawsT.isRecT_locRecT hL (D.nd.plOm.2 (D.naut.plGw k v))); obtain ⟨_, _, _, H⟩ := hOpn) | obtain ⟨_, _, _, -, H⟩ := _root_.GlobalTheory.CuspRep.ParLawsT.isRecT_locRecT hL (D.nd.plOm.2 (D.naut.plGw k v))`. Take `⟨σ, e⟩` from `GlobalTheory.TypeRec.Model.exists_pull I k v π hπ`.
+
+Use `⟨?_, fun π' hπ' hg => ?_⟩` and prove the remaining obligations. Rewrite using `[← T.dim, hrc k v n σ π e]`. Conclude with `H.dim _`. Take `⟨σ', e', hσ'⟩` from `GlobalTheory.SerSys.LabDepth.exists_pull D I k v π' hπ' hg`. Establish `hg' : UpperTheory.Zero.LLC.Good (GlobalTheory.LocLanglands.cls σ')` using `haveI := charZero_compl (D.naut.plGw k v) good_cls_of_fixed ⟨_, ⟨D.host.g_prime k⟩, I.i k v, I.cont k v⟩ σ' hσ'`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hr`. Establish `h2` using `congrArg (T.e _) hr`. Rewrite `h2` using `[hrc k v n σ π e, hrc k v n σ' π' e']`. Take `⟨f⟩` from `pull_iso_of_cls_eq I k v σ σ' (_root_.UpperTheory.One.M.LawsM.inj H _ _ hg' h2)`.
+
+Conclude with `⟨e.some ≪≫ f ≪≫ e'.some.symm⟩`. Introduce and unpack `⟨f⟩`. Apply `(T.e _).injective` to reduce the goal to its premises. Rewrite using `[hrc k v n σ π e, hrc k v n σ π' ⟨f.symm ≪≫ e.some⟩]`.
+-/
 theorem exists_isRc_isClassMapD_alt : ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (D : D7) (T : GlobalTheory.RowTie.WDTie D.nd D.naut)
     (I : Ident D), ∃ rc : GlobalTheory.SerSys.Corr D, _root_.GlobalTheory.TypeRec.IsSeriesCorrespondence hL T I rc ∧ ∀ k v, GlobalTheory.SerSys.IsClassMapD D.naut.lpDim (rc k v) := by
   intro hL D T I
@@ -63,6 +72,19 @@ attribute [local instance] GlobalTheory.TypeRec.factG GlobalTheory.LabPin.instCM
 namespace DiscreteGroups.sglob.DzType.Rt
 open GlobalTheory.TypeRec GlobalTheory.LabPin
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
+/- English proof (translation)
+Introduce `hG hZ hDZ hL D T Rw rep L hLab hRow hDep hLT hTame`. Take `⟨I⟩` from `GlobalTheory.T.nonempty_typePlaceCompletionIdent D`. Take `⟨rc, hrc, hcls⟩` from `_root_.UpperTheory.One.M.exists_isRc_isClassMapD_alt hL D T I`. Take `⟨cp, hcomp, hcp⟩` from `_root_.GlobalTheory.T.exists_comp_irrSm_locR_eq_rc hL D T I rc hrc Rw rep hRow hDep`. Establish `hP : DiscreteGroups.sglob.DzType.Rt.LabParamLe D.R.nV D L rc` using `DiscreteGroups.sglob.DzType.Rt.labParamLe_of D L rc hG (_root_.GlobalTheory.T.tame_gen_support_compat_of_is_rc hZ hL D T I rc hrc) (fun k => GlobalTheory.T.depthZeroSupercuspidal_cuspidalModule (D.host.g k)) (fun k v => by`.
+
+Take `⟨κ, hκ⟩` from `hTame k v`. Conclude with `_root_.DiscreteGroups.sglob.DzType.Rt.tame_param_le_of_tame_coupled hDZ hL D T I rc hrc L k v κ hκ)`. Establish `hfix : ∀ σ k v, fixK1 (cp σ k v).ρ ≠ ⊥`. Introduce `σ k v`. Take `⟨s, τ, hsw, hloc, hfx⟩` from `hDep σ k v`.
+
+Establish `hT` using `hRow.1 σ s τ hloc`. Establish `key : ∀ (w : PlE D.host) (hw : w = D.naut.plGw k v) (τ : GlobalTheory.SmGL.IrrRep (GL (Fin D.R.r) (w.adicCompletion D.host.E))), T.e w (Rw.locR σ w) = _root_.GlobalTheory.CuspRep.ParLawsT.locRecT hL (D.nd.plOm.2 w) (GlobalTheory.LocLanglands.cls τ) → GlobalTheory.PRep.fixed τ.ρ ( …`. Introduce `w hw τ hT hfx`. Substitute `hw` using the available equality. Establish `h1` using `hrc k v D.R.r τ (pull I k v τ) ⟨CategoryTheory.Iso.refl _⟩`.
+
+Establish `h2 : rc k v D.R.r (pull I k v τ) = rc k v D.R.r (cp σ k v)`. Rewrite using `[← (hcp σ k v).2]`. Conclude with `(T.e _).injective (h1.trans hT.symm)`. Take `⟨e⟩` from `(((hcls k v) D.R.r (cp σ k v) (hcp σ k v).1).2 (pull I k v τ) (GlobalTheory.TypeRec.Model.irrSm_pull I k v τ) (GlobalTheory.LabPin.principalCongruence_fixed_vector_rational_local_field I k v τ hfx)).1 h2.symm`. Conclude with `GlobalTheory.LabPin.principalCongruenceFixedVectors_ne_bot_of_iso e (GlobalTheory.LabPin.principalCongruence_fixed_vector_rational_local_field I k v τ hfx)`.
+
+Conclude with `key s.w hsw τ hT hfx`. Introduce `σ k v`. Establish `hlab : D.nd.lab k σ v = D.naut.items₂ k (D.naut.plGw k v) (rc k v D.R.r (cp σ k v))`. Rewrite using `[Rw.lab_eq, (hcp σ k v).2]`. Take `⟨h1, h2⟩` from `_root_.DiscreteGroups.sglob.DzType.Rt.labLP_isLabel_and_actK_fix hG hL D T I rc L hrc hLab hLT hP k v (cp σ k v) (hcp σ k v).1 (hfix σ k v)`.
+
+Use `show IsLabel D k (D.nd.lab k σ v) ∧ ∀ s : SplitPlace D.host.E, s.w = D.naut.plGw k v → SerFix (rep σ) s (D.ntypes.eSer k (D.nd.lab k σ v))`. Rewrite using `[hlab]`. Conclude with `⟨h1, fun s hs => GlobalTheory.T.depthZeroIdentity_finiteType_of_typePrimeComponent D I rep cp hcomp σ k v _ h2 s hs⟩`.
+-/
 theorem typeLab_of_local_m_alt : Green → GlobalTheory.Published.ZelevinskyPolynomialRing → _root_.DiscreteGroups.sglob.DzType.DepthZeroInertiaBigAlt → ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (D : D7) (T : GlobalTheory.RowTie.WDTie D.nd D.naut) (Rw : GlobalTheory.HeightCounting.RowSide D) (rep : D.what₂.FT → NG.FinTyp D.host.E D.R.r) (L : ∀ k, LabelDatum (D.host.g k)), GlobalTheory.HeightCounting.LabTrue D T → _root_.GlobalTheory.HeightCounting.RepresentationParametersHold hL D rep (fun σ w => T.e w (Rw.locR σ w)) Rw.satR → GlobalTheory.HeightCounting.RowDepth D rep → GlobalTheory.SerSys.LabTie D L → (∀ k v, ∃ κ : IsLocalRing.ResidueField (D.nd.plOm.1 (D.naut.plGw k v)) ≃+* Formalism.CyclotomicNorms.Fbar (D.host.g k), TameCoupled (D.nd.plOm.1 (D.naut.plGw k v)) κ (D.ntypes.tg k v) (L k).gen) → GlobalTheory.LabPin.TypeLab D rep := by
   intro hG hZ hDZ hL D T Rw rep L hLab hRow hDep hLT hTame
   obtain ⟨I⟩ := GlobalTheory.T.nonempty_typePlaceCompletionIdent D

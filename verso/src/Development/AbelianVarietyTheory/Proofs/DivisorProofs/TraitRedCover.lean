@@ -19,6 +19,13 @@ noncomputable section
 
 namespace GlobalTheory.Mum.SecEmb
 
+/- English proof (translation)
+Establish `e : ∀ j, s.f j = s'.f j` using `fun j => by`. Use `hinj _ (fn_ext fun y hy => ?_)` and prove the remaining obligations. Use `choose J hJ using fun ψ : Y' ⟶ X => exists_chart hL (ψ y)`. Establish `hJ' : Good L y J` using `hJ`. Establish `hy' : (𝟙 Y' ≫ h) y ∈ LB.wchart L φ j` using `hy`.
+
+Establish `m` using `hJ'.mem φ (𝟙 Y' ≫ h)`. Use `(gs_pull (𝟙 Y') h y _ hy _).trans (Eq.trans ?_ (gs_pull (𝟙 Y') h y _ hy _).symm)` and prove the remaining obligations. Conclude with `(sec_trans s _ y hy' m).trans ((congrArg _ (H y J hJ')).trans (sec_trans s' _ y hy' m).symm)`. Consider the cases of `s`. Consider the cases of `s'`.
+
+Reduce the equality to equality of the corresponding arguments. Conclude with `funext e`.
+-/
 theorem sec_eq_of_inj {X Y Y' : Scheme.{0}} {L : LB X} (hL : L.IsLB) {K : Type} [Fintype K] {φ : K → (Y ⟶ X)}
     {ε : K → ℤ} {s s' : LB.Sec (LB.LinComb L φ ε)} {h : Y' ⟶ Y}
     (hinj : ∀ W : Y.Opens, Function.Injective (h.app W).hom)
@@ -40,6 +47,35 @@ end GlobalTheory.Mum.SecEmb
 
 namespace GlobalTheory.Mum.SecEmb
 
+/- English proof (translation)
+Introduce `R _ _ _ _ D C C' Sc h β hπ hpb hiso σ hσ θ₀ hθ₀`. Establish `hL : C.P.L.L.IsLB` using `C.P.L.isLB`. Take `⟨θ₁, hθ₁⟩` from `exists_sec hL (φ := fun _ : Fin 1 => β) (ε := fun _ => ((1 : ℕ) : ℤ)) (φ' := fun _ : PUnit => β) (ε' := fun _ => 1) (fun U _ g => by simp) θ₀`. Take `⟨w, hw⟩` from `hiso`. Use `⟨DVR.secOfIso (u := w) θ₁ hw C'.P.L.isLB (LB.isLB_pull hL β), ?_⟩` and prove the remaining obligations.
+
+Introduce `W _ _ _ hW φ ξ hφ hloc hξ`. Take `⟨W', _, _, _, io, G'', _, β'', σ'', θ'', κ, e, hW', hio, hfin, hG'', hκ, he, hσ'', hθ'', hfib⟩` from `Sc.trait W hW φ (ξ ≫ h) hφ hloc (by rw [Category.assoc, hπ]; exact hξ)`. Take `⟨β', hβ'1, hβ'2⟩ : ∃ β' : G''.left ⟶ C'.G.left, β' ≫ β = β'' ∧ β' ≫ C'.G.hom = G''.hom ≫ spMap io ≫ ξ` from `⟨hpb.1.lift β'' (G''.hom ≫ spMap io ≫ ξ) (by rw [hG''.1.w]; simp), hpb.1.lift_fst _ _ _, hpb.1.lift_snd _ _ _⟩`. Substitute `hβ'1` using the available equality. Establish `hρ : Function.Injective ((algebraMap W' (FractionRing W')).comp (io.comp φ))` using `(IsFractionRing.injective W' (FractionRing W')).comp (hio.comp hφ)`.
+
+Take `⟨ga, -, hga⟩` from `Modif.factor_gp R C.toModif (FractionRing W') _ (jK W' ≫ spMap io ≫ ξ ≫ h) hρ (by`. Rewrite using `[Category.assoc, Category.assoc, Category.assoc, hπ, hξ]`. Simplify using `only [jK, spMap, ← Spec.map_comp]`. Use the proof step `rfl)`. Establish `: Smooth C.G.hom` using `C.semi.smooth`.
+
+Establish `: Flat G''.hom` using `MorphismProperty.of_isPullback (P := @Flat) hG''.1 inferInstance`. Establish `hgen : ∀ (Z : Scheme.{0}) (r : Z ⟶ pullback G''.hom (jK W')), ∃ q : Z ⟶ C.A.A.left, q ≫ C.α = r ≫ pullback.fst G''.hom (jK W') ≫ β' ≫ β` using `fun Z r => by`. Use `⟨C.α_cart.1.lift (r ≫ pullback.fst G''.hom (jK W') ≫ β' ≫ β) (r ≫ pullback.snd G''.hom (jK W') ≫ spMap ga) ?_, C.α_cart.1.lift_fst _ _ _⟩` and prove the remaining obligations. Establish `w₁` using `hG''.1.w`. Simplify using `only [Category.assoc] at w₁ ⊢`.
+
+Rewrite using `[w₁, ← hga, pullback.condition_assoc]`. Establish `key : ∀ {n : ℕ} (a : SecK C.P.L.L (β' ≫ β) n) (b : SecK C.P.L.L β n) (c : SecK C.P.L.L C.α n), Agree C.P.L.L a c → Agree C.P.L.L b c → ∀ (Z : Scheme.{0}) (r : Z ⟶ G''.left) (z : Z) (J), Good C.P.L.L z J → sval a r z J = sval b (r ≫ β') z J`. Introduce `n a b c ha hb`. Establish `e₁ : a = ReciprocityTheory.ChartRestriction.G.H1.SectionArithmetic.pullSec b β'`. Use `sec_eq_of_inj hL (GlobalTheory.ExpInt.generic_app_injective G'') fun y J hJ => ?_` and prove the remaining obligations.
+
+Rewrite using `[ReciprocityTheory.ChartRestriction.G.H1.SectionArithmetic.sval_pullSec _ _ _ _ hJ]`. Take `⟨q, hq⟩` from `hgen _ (𝟙 _)`. Establish `hq' : q ≫ C.α = (𝟙 _ ≫ pullback.fst G''.hom (jK W')) ≫ β' ≫ β` using `by rw [hq]; simp`. Use `(ha _ _ q hq'.symm y J hJ).trans (hb _ _ q ?_ y J hJ).symm` and prove the remaining obligations. Rewrite using `[hq']`.
+
+Simplify using the standard rewrite rules. Introduce `Z r z J hJ`. Rewrite using `[e₁, ReciprocityTheory.ChartRestriction.G.H1.SectionArithmetic.sval_pullSec _ _ _ _ hJ]`. Establish `hv : ∀ i (Z : Scheme.{0}) (r : Z ⟶ G''.left) (z : Z) (J), Good C.P.L.L z J → sval (σ'' i) r z J = sval (σ i) (r ≫ β') z J` using `fun i => key _ _ _ (hσ'' i) (hσ i)`. Establish `hvθ` using `key _ _ _ hθ'' hθ₀`.
+
+Use `⟨W', inferInstance, inferInstance, inferInstance, io, G'', inferInstance, β', κ, e, hW', hio, hfin, IsGrpPullback.cancel hpb (by rw [Category.assoc]; exact hG'') hβ'2, hκ, he, ?_⟩` and prove the remaining obligations. Introduce `Ω _ p p' y hp hy`. Take `⟨⟨hs, hproj⟩, hnz⟩` from `hfib Ω p p' y hp hy`. Establish `hnzi : ∀ (x : Sp Ω) i, p' x ∈ nonzeroLocus (σ'' i) ↔ (p' ≫ β') x ∈ nonzeroLocus (σ i)` using `fun x i => by choose J hJ using fun ψ : Sp Ω ⟶ C.G.left => exists_chart hL (ψ x)`. Rewrite using `[GlobalTheory.TwistZero.mem_nonzeroLocus_iff _ _ _ hJ, GlobalTheory.TwistZero.mem_nonzeroLocus_iff _ _ _ hJ, hv i _ _ _ _ hJ]`.
+
+Establish `ht : ⨆ i, nonzeroLocus (GlobalTheory.secPull (σ i) (p' ≫ β')) = ⊤`. Use `eq_top_iff.2 fun x _ => ?_` and prove the remaining obligations. Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 (hs.ge (Set.mem_univ x))`. Rewrite `hi` using `[GlobalTheory.nonzeroLocus_secPull]`. Use `TopologicalSpace.Opens.mem_iSup.2 ⟨i, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[GlobalTheory.nonzeroLocus_secPull]`. Conclude with `(hnzi x i).1 hi`. Use `⟨⟨ht, ?_⟩, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[← hproj]`. Use `GlobalTheory.ProjSpace.toProj_eq_of_locally hs ht fun x => ?_` and prove the remaining obligations.
+
+Take `⟨c, hc⟩` from `exists_chart hL ((p' ≫ β' ≫ β) x)`. Establish `m₁ : x ∈ (LB.pull (LB.LinComb C.P.L.L (fun _ : Fin 1 => β' ≫ β) (fun _ => (Sc.k : ℤ))) p').U (fun _ => fun _ => c)` using `mem_pull.2 (Set.mem_iInter.2 fun _ => by simpa using hc)`. Establish `m₂ : x ∈ (LB.pull (LB.LinComb C.P.L.L (fun _ : Fin 1 => β) (fun _ => (Sc.k : ℤ))) (p' ≫ β')).U (fun _ => fun _ => c)` using `mem_pull.2 (Set.mem_iInter.2 fun _ => by simpa using hc)`. Use `⟨(LB.pull (LB.LinComb C.P.L.L (fun _ : Fin 1 => β' ≫ β) (fun _ => (Sc.k : ℤ))) p').U (fun _ => fun _ => c) ⊓ (LB.pull (LB.LinComb C.P.L.L (fun _ : Fin 1 => β) (fun _ => (Sc.k : ℤ))) (p' ≫ β')).U (fun _ => fun _ => c), ⟨m₁, m₂⟩, _, inf_le_left, _, inf_le_right, 1, fun j => ?_⟩` and prove the remaining obligations. Rewrite using `[_root_.one_mul]`.
+
+Use `fn_ext fun z hz => ?_` and prove the remaining obligations. Establish `hz' : (p' ≫ β' ≫ β) z ∈ C.P.L.L.U c`. Use `Set.mem_iInter.1 (mem_pull.1 hz.1) 0` as an intermediate fact. Simplify using `using this`. Take `⟨J, hJ, eJ⟩` from `exists_good C.P.L.L hL z (fun _ : PUnit => p' ≫ β' ≫ β) (fun _ => c) (fun _ _ _ => rfl) (fun _ => hz')`.
+
+Rewrite using `[gs_res _ _ _ hz, gs_res _ _ _ hz]`. Use `(GlobalTheory.gs_chartSec (GlobalTheory.chartPullPull _ _) (σ j) (𝟙 _) z _ hz.2).trans (Eq.trans ?_ (GlobalTheory.gs_chartSec (GlobalTheory.chartPullPull _ _) (σ'' j) (𝟙 _) z _ hz.1).symm)` and prove the remaining obligations. Rewrite using `[Category.id_comp, Category.id_comp]`. Conclude with `(sval_of (σ j) (p' ≫ β') z J (fun _ => c) (fun _ => by rw [Category.assoc]; exact eJ ⟨⟩)).symm.trans ((hv j _ _ _ _ hJ).symm.trans (sval_of (σ'' j) p' z J (fun _ => c) (fun _ => eJ ⟨⟩)))`. Establish `h₁` using `hnz x hx choose J hJ using fun ψ : Sp Ω ⟶ C.G.left => exists_chart hL (ψ x)`.
+
+Rewrite `h₁` using `[GlobalTheory.TwistZero.mem_nonzeroLocus_iff _ _ _ hJ, hvθ _ _ _ _ hJ]`. Use `DVR.nonzeroLocus_secOfIso w θ₁ hw C'.P.L.isLB (LB.isLB_pull hL β) ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.TwistZero.mem_nonzeroLocus_iff _ _ _ hJ, hθ₁ _ _ _ _ hJ]`. Conclude with `h₁`.
+-/
 theorem traitRed_cover : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (D : DegData R (maximalIdeal R))
     (C C' : LabCover D) (Sc : Secs C.toModif C.G C.P.L.L C.α) (h : C'.S ⟶ C.S) (β : C'.G.left ⟶ C.G.left),
     h ≫ C.π = C'.π → IsGrpPullback C'.G C.G h β → LBIso C'.P.L.L (C.P.L.L.pull β) →

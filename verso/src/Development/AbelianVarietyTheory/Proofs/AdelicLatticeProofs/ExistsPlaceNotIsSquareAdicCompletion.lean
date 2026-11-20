@@ -9,6 +9,11 @@ open scoped WithZero
 
 namespace GlobalTheory.QNorm
 
+/- English proof (translation)
+Take `⟨r, hr⟩` from `h`. Establish `hr0 : r ≠ 0`. Introduce and unpack `rfl`. Conclude with `hδ ((map_eq_zero φ).1 (by simpa using hr))`. Use `⟨(φ x + 1) / 2, (φ x - 1) / (2 * r), ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hr]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem normSub_eq_top_of_isSquare_image {F L : Type} [Field F] [Field L] [CharZero L]
     (φ : F →+* L) (δ : F) (hδ : δ ≠ 0) (h : IsSquare (φ δ)) (x : Fˣ) : x ∈ normSub φ δ := by
   obtain ⟨r, hr⟩ := h
@@ -20,6 +25,19 @@ theorem normSub_eq_top_of_isSquare_image {F L : Type} [Field F] [Field L] [CharZ
   field_simp
   ring
 
+/- English proof (translation)
+Introduce `F _ _ u S₀ hu hns`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Establish `hle : ∀ S, locNorm F u S₀ ≤ locNorm F u S`. Introduce `S x hx`.
+
+Rewrite `hx`, the goal using `[locNorm, Subgroup.mem_inf]`. Use `⟨?_, hx.2⟩` and prove the remaining obligations. Establish `h1` using `hx.1`. Simplify using `only [Subgroup.mem_iInf] at h1 ⊢`. Introduce `v _`.
+
+Distinguish the cases in `hv : v ∈ S₀`. Conclude with `h1 v hv`. Use `haveI : CharZero (v.adicCompletion F) := charZero_of_injective_algebraMap (algebraMap F (v.adicCompletion F)).injective`. Conclude with `normSub_eq_top_of_isSquare_image _ u hu (hcon v hv) x`. Establish `hidx` using `(GlobalTheory.T.two_pow_le_index_localNormsSqrtExtension F u S₀ hu).1`.
+
+Use `haveI : (locNorm F u S₀).FiniteIndex := ⟨hidx⟩`. Use `haveI : Fintype (Fˣ ⧸ locNorm F u S₀) := Fintype.ofFinite _`. Take `⟨S₁, -, hS₁⟩` from `exists_superset_mem_sUnits F (insert (Units.mk0 u hu) (Finset.univ.image (fun q : Fˣ ⧸ locNorm F u S₀ => q.out))) S₀`. Take `⟨S, hS, hadm⟩` from `exists_admissible_superset_finite_places F S₁`. Establish `hX` using `hS₁ S hS`.
+
+Use `GlobalTheory.T.sUnits_sup_unitsLocalNormsSqrt_ne_top F (Units.mk0 u hu) S hadm (hX _ (Finset.mem_insert_self _ _)) hns ?_` and prove the remaining obligations. Rewrite using `[eq_top_iff]`. Introduce `x _`. Establish `hy : (QuotientGroup.mk x : Fˣ ⧸ locNorm F u S₀).out ∈ sUnits F S` using `hX _ (Finset.mem_insert_of_mem (Finset.mem_image_of_mem _ (Finset.mem_univ _)))`. Establish `hz : ((QuotientGroup.mk x : Fˣ ⧸ locNorm F u S₀).out)⁻¹ * x ∈ locNorm F u S₀`.
+
+Rewrite using `[← QuotientGroup.eq, QuotientGroup.out_eq']`. Establish `hx : x = (QuotientGroup.mk x : Fˣ ⧸ locNorm F u S₀).out * (((QuotientGroup.mk x : Fˣ ⧸ locNorm F u S₀).out)⁻¹ * x)`. Rewrite using `[mul_inv_cancel_left]`. Rewrite using `[hx]`. Conclude with `Subgroup.mul_mem_sup hy (hle S hz)`.
+-/
 theorem exists_not_mem_not_isSquare_completion :
     ∀ (F : Type) [Field F] [NumberField F] (u : F) (S₀ : Finset (HeightOneSpectrum (𝓞 F))), u ≠ 0 → ¬ IsSquare u → ∃ v, v ∉ S₀ ∧ ¬ IsSquare (algebraMap F (v.adicCompletion F) u) := by
   classical

@@ -13,11 +13,17 @@ namespace UpperTheory.Gal.G3.HeckeTraceSheaves
 section Two
 variable {k k' : Type} [CommRing k] [CommRing k'] {φ : k →+* k'}
 
+/- English proof (translation)
+The claim follows from `omegaPullS_toOmega hg j U x`.
+-/
 private theorem omegaPullS_app_toOm {X X' : Scheme.{0}} {s : X ⟶ Sp k} {s' : X' ⟶ Sp k'} {g : X' ⟶ X}
     (hg : g ≫ s = s' ≫ spMap φ) (j : ℕ) (U : X.Opens) (x : OmU s U j) :
     (omegaPullS hg j).app U (toOm s j U x) = toOm s' j (g ⁻¹ᵁ U) (formPullS hg U j x) :=
   omegaPullS_toOmega hg j U x
 
+/- English proof (translation)
+Substitute `w` using the available equality. Establish `h` using `formRes_refl r' (u ⁻¹ᵁ U) (formPullS hu U j x)`. Rewrite using `[h]`.
+-/
 private theorem formRes_formPullS_eq {X Y' : Scheme.{0}} {s : X ⟶ Sp k} {r' : Y' ⟶ Sp k'} {u v : Y' ⟶ X}
     (w : u = v) (hu : u ≫ s = r' ≫ spMap φ) (hv : v ≫ s = r' ≫ spMap φ) (U : X.Opens)
     (hle : v ⁻¹ᵁ U ≤ u ⁻¹ᵁ U) (j : ℕ) (x : OmU s U j) :
@@ -42,6 +48,9 @@ private def mid (he : e ≫ r = r' ≫ spMap φ) (w : e ≫ f = f' ≫ g) (a : �
       (Scheme.Modules.pushforwardCongr w).hom.app _ ≫
         (Scheme.Modules.pushforwardComp f' g).inv.app _
 
+/- English proof (translation)
+Simplify using `[mid]`. Both sides reduce to the same expression.
+-/
 private theorem mid_app (he : e ≫ r = r' ≫ spMap φ) (w : e ≫ f = f' ≫ g) (a : ℕ) (U : X.Opens)
     (hle : f' ⁻¹ᵁ (g ⁻¹ᵁ U) ≤ e ⁻¹ᵁ (f ⁻¹ᵁ U))
     (y : Γ((Scheme.Modules.pushforward f).obj (Omega r a), U)) :
@@ -50,6 +59,11 @@ private theorem mid_app (he : e ≫ r = r' ≫ spMap φ) (w : e ≫ f = f' ≫ g
   simp [mid]
   rfl
 
+/- English proof (translation)
+Establish `hu : (e ≫ f) ≫ s = r' ≫ spMap φ` using `by rw [Category.assoc, hf, he]`. Establish `hu' : (f' ≫ g) ≫ s = r' ≫ spMap φ`. Rewrite using `[Category.assoc, hg, ← Category.assoc, hf']`. Establish `key : formRes r' hle a (formPullS he (f ⁻¹ᵁ U) a (formPull hf U a x)) = formPull hf' (g ⁻¹ᵁ U) a (formPullS hg U a x)` using `((congrArg (formRes r' hle a) (formPullS_formPull hf he hu U a x)).trans (formRes_formPullS_eq w hu hu' U hle a x)).trans (formPull_formPullS hg hf' hu' U a x).symm`. Use `(mid_app he w a U hle _).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[omegaPullS_app_toOm, res_toOm, formPullS_smul, formRes_smul, key]`.
+-/
 private theorem mid_form (hg : g ≫ s = s' ≫ spMap φ) (he : e ≫ r = r' ≫ spMap φ)
     (hf : f ≫ s = r) (hf' : f' ≫ s' = r') (w : e ≫ f = f' ≫ g) (a : ℕ) (U : X.Opens)
     (hle : f' ⁻¹ᵁ (g ⁻¹ᵁ U) ≤ e ⁻¹ᵁ (f ⁻¹ᵁ U)) (b' : Sec r (f ⁻¹ᵁ U)) (x : OmU s U a) :
@@ -66,6 +80,9 @@ private theorem mid_form (hg : g ≫ s = s' ≫ spMap φ) (he : e ≫ r = r' ≫
   refine (mid_app he w a U hle _).trans ?_
   rw [omegaPullS_app_toOm, res_toOm, formPullS_smul, formRes_smul, key]
 
+/- English proof (translation)
+Rewrite using `[Scheme.Modules.Hom.comp_app]`. Express the relevant statement in the definitionally equal form `(omegaPullS hg a).app U ((omegaTrace hf a).app U (toOm r a (f ⁻¹ᵁ U) (b' • formPull hf U a x))) = _`. Rewrite using `[omegaTrace_toOm_smul_formPull hf a hU, omegaPullS_app_toOm, formPullS_smul]`.
+-/
 private theorem sheaf_lhs [IsFinite f] [Etale f] (hg : g ≫ s = s' ≫ spMap φ) (hf : f ≫ s = r)
     (a : ℕ) {U : X.Opens} (hU : IsAffineOpen U) (b' : Sec r (f ⁻¹ᵁ U)) (x : OmU s U a) :
     (omegaTrace hf a ≫ omegaPullS hg a).app U (toOm r a (f ⁻¹ᵁ U) (b' • formPull hf U a x)) =
@@ -75,6 +92,9 @@ private theorem sheaf_lhs [IsFinite f] [Etale f] (hg : g ≫ s = s' ≫ spMap φ
     ((omegaTrace hf a).app U (toOm r a (f ⁻¹ᵁ U) (b' • formPull hf U a x))) = _
   rw [omegaTrace_toOm_smul_formPull hf a hU, omegaPullS_app_toOm, formPullS_smul]
 
+/- English proof (translation)
+Rewrite using `[Scheme.Modules.Hom.comp_app]`. Express the relevant statement in the definitionally equal form `(omegaTrace hf' a).app (g ⁻¹ᵁ U) ((mid he w a).app U (toOm r a (f ⁻¹ᵁ U) (b' • formPull hf U a x))) = _`. Rewrite using `[mid_form hg he hf hf' w a U hle, omegaTrace_toOm_smul_formPull hf' a hV]`.
+-/
 private theorem sheaf_rhs [IsFinite f'] [Etale f'] (hg : g ≫ s = s' ≫ spMap φ)
     (he : e ≫ r = r' ≫ spMap φ) (hf : f ≫ s = r) (hf' : f' ≫ s' = r') (w : e ≫ f = f' ≫ g)
     (a : ℕ) {U : X.Opens} (hV : IsAffineOpen (g ⁻¹ᵁ U))
@@ -88,6 +108,11 @@ private theorem sheaf_rhs [IsFinite f'] [Etale f'] (hg : g ≫ s = s' ≫ spMap 
     (toOm r a (f ⁻¹ᵁ U) (b' • formPull hf U a x))) = _
   rw [mid_form hg he hf hf' w a U hle, omegaTrace_toOm_smul_formPull hf' a hV]
 
+/- English proof (translation)
+Use `hom_ext_affine fun U hU y ↦ ?_` and prove the remaining obligations. Establish `hV : IsAffineOpen (g ⁻¹ᵁ U)` using `hU.preimage g`. Establish `hle : f' ⁻¹ᵁ (g ⁻¹ᵁ U) ≤ e ⁻¹ᵁ (f ⁻¹ᵁ U)`. Rewrite using `[← Scheme.Hom.comp_preimage, ← Scheme.Hom.comp_preimage, w]`. Take `⟨z, rfl⟩` from `toOm_surjective (s := r) (j := a) (hU.preimage f) y`.
+
+Use `formOm_induction (P := fun z ↦ (omegaTrace hf a ≫ omegaPullS hg a).app U (toOm r a (f ⁻¹ᵁ U) z) = (mid he w a ≫ (Scheme.Modules.pushforward g).map (omegaTrace hf' a)).app U (toOm r a (f ⁻¹ᵁ U) z)) hf hU ?_ (fun y z hy hz ↦ ?_) (fun b' x ↦ ?_) z` and prove the remaining obligations. Use `erw [map_zero, map_zero, map_zero]`. Use `erw [map_add, map_add, map_add]`. Conclude with `congrArg₂ (· + ·) hy hz`. Rewrite using `[sheaf_lhs hg hf a hU, sheaf_rhs hg he hf hf' w a hV hle, hT U hU hV hle b']`.
+-/
 private theorem sheaf_id [IsFinite f] [Etale f] [IsFinite f'] [Etale f'] [IsAffineHom g]
     (hg : g ≫ s = s' ≫ spMap φ) (he : e ≫ r = r' ≫ spMap φ) (hf : f ≫ s = r) (hf' : f' ≫ s' = r')
     (w : e ≫ f = f' ≫ g)
@@ -114,6 +139,9 @@ end Sheaf
 
 section Coh
 
+/- English proof (translation)
+Apply `(cohOn.toH' L _ n).injective` to reduce the goal to its premises. Use `(cohOn.toH'_pull hτ Ψ _ _).trans ?_` and prove the remaining obligations. Use `Eq.trans ?_ (cohOn.toH'_pull hρ _ _ x).symm` and prove the remaining obligations. Use `erw [cohOn.toH'_pull hσ Φ, SheafPull.pull_pull]`. Both sides reduce to the same expression.
+-/
 private theorem pull_pull {X Y Z : Scheme.{0}} {R S T : Type} [CommRing R] [CommRing S] [CommRing T]
     [Algebra R Γ(X, ⊤)] [Algebra S Γ(Y, ⊤)] [Algebra T Γ(Z, ⊤)] {σ : R →+* S} {τ : S →+* T}
     {ρ : R →+* T} {u : Y ⟶ X} {v : Z ⟶ Y} {F : X.Modules} {G : Y.Modules} {L : Z.Modules}
@@ -131,6 +159,9 @@ private theorem pull_pull {X Y Z : Scheme.{0}} {R S T : Type} [CommRing R] [Comm
   erw [cohOn.toH'_pull hσ Φ, SheafPull.pull_pull]
   rfl
 
+/- English proof (translation)
+Use extensionality with `U x`. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
+-/
 private theorem comp_pushforwardCongr_rfl_hom_app {X Y : Scheme.{0}} {F : X.Modules} {G : Y.Modules}
     (u : Y ⟶ X) (Φ : F ⟶ (Scheme.Modules.pushforward u).obj G) :
     Φ ≫ (Scheme.Modules.pushforwardCongr (rfl : u = u)).hom.app G = Φ := by
@@ -138,6 +169,9 @@ private theorem comp_pushforwardCongr_rfl_hom_app {X Y : Scheme.{0}} {F : X.Modu
   simp
   rfl
 
+/- English proof (translation)
+Substitute `w` using the available equality. Rewrite using `[comp_pushforwardCongr_rfl_hom_app]`.
+-/
 private theorem pull_congr {X Y : Scheme.{0}} {R S : Type} [CommRing R] [CommRing S]
     [Algebra R Γ(X, ⊤)] [Algebra S Γ(Y, ⊤)] {σ : R →+* S} {F : X.Modules} {G : Y.Modules}
     {u v : Y ⟶ X} (w : u = v)
@@ -154,6 +188,17 @@ end Coh
 end UpperTheory.Gal.G3.HeckeTraceSheaves
 
 open UpperTheory.Gal.G3.HeckeTraceSheaves in
+/- English proof (translation)
+Introduce `hT hP k k' _ _ φ X X' Y Y' s s' g h r r' e he f hf f' hf' w a b _ _ _ _ y`. Use `haveI : IsAffineHom g := hP k k' φ X X' s s' g h`. Establish `hpb : IsPullback e f' f g`. Substitute `hf hf'` using the available equality. Conclude with `IsPullback.of_bot he w h`.
+
+Establish `hid` using `sheaf_id h.w he.w hf hf' w (fun U hU hV hle b => hT k k' s s' g r r' e f f' hpb U hU hV hle b) a`. Use `letI := algΓ s`. Use `letI := algΓ s'`. Use `letI := algΓ r`. Use `letI := algΓ r'`.
+
+Take `⟨z, rfl⟩` from `(coh.pushforwardEquiv k (appTop_algebraMap hf) (Omega r a) b).surjective y`. Express the relevant statement in the definitionally equal form `cohOn.pull (appTop_algebraMapS h.w) (omegaPullS h.w a) _ b (cohOn.map k (omegaTrace hf a) ⊤ b ((coh.pushforwardEquiv k (appTop_algebraMap hf) (Omega r a) b).symm ((coh.pushforwardEquiv k (appTop_algebraMap hf) (Omega r a) b) z))) = cohOn.map k' (omegaTrace hf' a) ⊤ b ((coh.pushfo …`. Rewrite using `[LinearEquiv.symm_apply_apply]`. Use `(cohOn.pull_map (appTop_algebraMapS h.w) (omegaPullS h.w a) (omegaTrace hf a) _ z).trans ?_` and prove the remaining obligations. Rewrite using `[hid]`.
+
+Use `(cohOn.map_pull (appTop_algebraMapS h.w) (mid he.w w a) (omegaTrace hf' a) _ z).symm.trans ?_` and prove the remaining obligations. Use `congr 1`. Rewrite using `[LinearEquiv.eq_symm_apply]`. Establish `hu : (e ≫ f) ≫ s = r' ≫ spMap φ` using `by rw [Category.assoc, hf, he.w]`. Establish `hu' : (f' ≫ g) ≫ s = r' ≫ spMap φ`.
+
+Rewrite using `[Category.assoc, h.w, ← Category.assoc, hf']`. Use `(pull_pull (appTop_algebraMapS h.w) (appTop_algebraMap hf') (appTop_algebraMapS hu') (mid he.w w a) (𝟙 _) b z).trans ?_` and prove the remaining obligations. Use `Eq.trans ?_ (pull_pull (appTop_algebraMap hf) (appTop_algebraMapS he.w) (appTop_algebraMapS hu) (𝟙 _) (omegaPullS he.w a) b z).symm` and prove the remaining obligations. Use `Eq.trans ?_ (pull_congr w (appTop_algebraMapS hu) (appTop_algebraMapS hu') _ b z)` and prove the remaining obligations. Use `congr 1`.
+-/
 theorem UpperTheory.Gal.G3.jHTrace :
     (∀ (k k' : Type) [Field k] [Field k'] {X X' Y Y' : Scheme.{0}} (s : X ⟶ Sp k) (s' : X' ⟶ Sp k') (g : X' ⟶ X) (r : Y ⟶ Sp k) (r' : Y' ⟶ Sp k') (e : Y' ⟶ Y) (f : Y ⟶ X) (f' : Y' ⟶ X') [IsFinite f] [Etale f] [IsFinite f'] [Etale f'], IsPullback e f' f g → ∀ (U : X.Opens) (hU : IsAffineOpen U) (hU' : IsAffineOpen (g ⁻¹ᵁ U)) (hle : f' ⁻¹ᵁ (g ⁻¹ᵁ U) ≤ e ⁻¹ᵁ (f ⁻¹ᵁ U)) (b : Sec r (f ⁻¹ᵁ U)), appSecS s s' g U (secTrace s r hU b) = secTrace s' r' hU' (Sec.res r' hle (appSecS r r' e (f ⁻¹ᵁ U) b))) → PositivityTheory.AutomorphicGaloisHodgeTate.G8.HBC.P_affine → ∀ (k k' : Type) [Field k] [Field k'] (φ : k →+* k') {X X' Y Y' : Scheme.{0}} (s : X ⟶ Sp k) (s' : X' ⟶ Sp k') (g : X' ⟶ X) (h : IsPullback g s' s (spMap φ)) (r : Y ⟶ Sp k) (r' : Y' ⟶ Sp k') (e : Y' ⟶ Y) (he : IsPullback e r' r (spMap φ)) (f : Y ⟶ X) (hf : f ≫ s = r) (f' : Y' ⟶ X') (hf' : f' ≫ s' = r'), e ≫ f = f' ≫ g → ∀ (a b : ℕ) [IsFinite f] [Etale f] [IsFinite f'] [Etale f'] (y : hodgeH r a b), hodgePullS h.w a b (hodgeTrace hf a b y) = hodgeTrace hf' a b (hodgePullS he.w a b y) := by
   intro hT hP k k' _ _ φ X X' Y Y' s s' g h r r' e he f hf f' hf' w a b _ _ _ _ y

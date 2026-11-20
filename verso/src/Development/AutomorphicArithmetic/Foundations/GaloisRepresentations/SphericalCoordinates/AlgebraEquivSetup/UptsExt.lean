@@ -4,6 +4,11 @@ open NumberField IsDedekindDomain Matrix GlobalTheory.UPel.HT GlobalTheory.LKTri
 open UpperTheory.Gal.CertificateRingHomMap (GUf Gam0 AfQ Plc sim mat comp rat lev ZU)
 open scoped TensorProduct
 
+/- English proof (translation)
+Take `⟨⟨g, c⟩, hx⟩` from `x`. Take `⟨⟨g', c'⟩, hy⟩` from `y`. Establish `hx' : (g : R ⊗[ℚ] C) * (starT star R g).unop = algebraMap R (R ⊗[ℚ] C) c` using `hx`. Establish `hy' : (g' : R ⊗[ℚ] C) * (starT star R g').unop = algebraMap R (R ⊗[ℚ] C) c'` using `hy`. Establish `hg : g = g'` using `Units.ext h`.
+
+Substitute `hg` using the available equality. Establish `hinj : Function.Injective (algebraMap R (R ⊗[ℚ] C))` using `fun a b hab => Algebra.TensorProduct.includeLeft_injective (R := ℚ) (S := ℚ) (A := R) (B := C) (algebraMap ℚ C).injective hab`. Establish `hc : c = c'` using `Units.ext (hinj (hx'.symm.trans hy'))`. Substitute `hc` using the available equality. Both sides reduce to the same expression.
+-/
 private theorem upts_ext {C : Type} [Ring C] [Algebra ℚ C] [Nontrivial C] {star : C →+* Cᵐᵒᵖ} {R : Type} [CommRing R] [Algebra ℚ R]
     (x y : UPts star R) (h : (((x : (R ⊗[ℚ] C)ˣ × Rˣ).1 : (R ⊗[ℚ] C)ˣ) : R ⊗[ℚ] C) = ((y : (R ⊗[ℚ] C)ˣ × Rˣ).1 : (R ⊗[ℚ] C)ˣ)) :
     x = y := by
@@ -19,6 +24,15 @@ private theorem upts_ext {C : Type} [Ring C] [Algebra ℚ C] [Nontrivial C] {sta
   subst hc
   rfl
 
+/- English proof (translation)
+Introduce `hT hM hI hJ hQ hS E _ _ _ A n p _ S hn`. Take `⟨T⟩` from `hT p E`. Take `⟨μ, hμ⟩` from `hM (AfP p) E n`. Take `⟨a, ha⟩` from `hI E A n hn`. Take `⟨j, hj1, hj2⟩` from `hJ E A n p S T μ hμ a ha`.
+
+Take `⟨hc, he⟩` from `hQ E A n p S T μ hμ a j hj1`. Use `choose sec hs1 hs2 using hS E A n p S T μ hμ a ha`. Establish `hjs : ∀ h, j (sec h) = h` using `fun h => upts_ext _ _ (μ.injective ((hj1 (sec h)).trans (hs1 h).symm))`. Establish `hmul : ∀ h h', sec (h * h') = sec h * sec h'`. Introduce `h h'`.
+
+Apply `hc` to reduce the goal to its premises. Introduce `w`. Distinguish the cases in `hw : (p : 𝓞 E) ∈ w.asIdeal`. Rewrite using `[map_mul, hs2 _ w hw, hs2 _ w hw, hs2 _ w hw, one_mul]`. Conclude with `(he _ _).1 (by rw [map_mul, hjs, hjs, hjs]) w hw`.
+
+Conclude with `⟨{ T with μ := μ, mu := hμ, a := a, iso := ha, j := j, j_mx := hj1, j_sim := hj2 sec := MonoidHom.mk' sec hmul, j_sec := hjs, sec_p := hs2, j_eq := he }⟩`.
+-/
 theorem UpperTheory.Gal.W2.Seed.pTrEx :
     AdTEx → MuEx → IsoEx' → JEx → JEq → JSurj → TrEx := by
   intro hT hM hI hJ hQ hS E _ _ _ A n p _ S hn

@@ -13,28 +13,50 @@ noncomputable section
 
 variable (D : PeriodChartData)
 
+/- English proof (translation)
+The claim follows from `D.U_subset hz (Fin.castLE D.a_le j)`.
+-/
 theorem cusp_norm_lt {z : Fin D.n → ℂ} (hz : z ∈ D.U) (j : Fin D.a) :
     ‖cuspCoord D.a_le z j‖ < 1 :=
   D.U_subset hz (Fin.castLE D.a_le j)
 
+/- English proof (translation)
+Rewrite using `[Real.log_inv]`. Conclude with `neg_nonneg.mpr (Real.log_nonpos (by positivity) (pow_le_one₀ (norm_nonneg w) hw.le))`.
+-/
 theorem log_inv_sq_nonneg {w : ℂ} (hw : ‖w‖ < 1) : 0 ≤ Real.log (‖w‖ ^ 2)⁻¹ := by
   rw [Real.log_inv]
   exact neg_nonneg.mpr (Real.log_nonpos (by positivity) (pow_le_one₀ (norm_nonneg w) hw.le))
 
+/- English proof (translation)
+Use `Finset.sum_nonneg fun j (_ : j ∈ Finset.univ) => log_inv_sq_nonneg (cusp_norm_lt D hz j)` as an intermediate fact. Simplify using `only [PeriodChartData.radius, chartRadius]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem exp_one_le_radius {z : Fin D.n → ℂ} (hz : z ∈ D.U) : Real.exp 1 ≤ D.radius z := by
   have := Finset.sum_nonneg fun j (_ : j ∈ Finset.univ) => log_inv_sq_nonneg (cusp_norm_lt D hz j)
   simp only [PeriodChartData.radius, chartRadius]
   linarith
 
+/- English proof (translation)
+Use `exp_one_le_radius D hz` as an intermediate fact. Use `Real.add_one_le_exp (1 : ℝ)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem one_le_radius {z : Fin D.n → ℂ} (hz : z ∈ D.U) : 1 ≤ D.radius z := by
   have := exp_one_le_radius D hz
   have := Real.add_one_le_exp (1 : ℝ)
   linarith
 
+/- English proof (translation)
+Rewrite using `[← Real.log_exp 1]`. Conclude with `Real.log_le_log (Real.exp_pos 1) (exp_one_le_radius D hz)`.
+-/
 theorem one_le_log_radius {z : Fin D.n → ℂ} (hz : z ∈ D.U) : 1 ≤ Real.log (D.radius z) := by
   rw [← Real.log_exp 1]
   exact Real.log_le_log (Real.exp_pos 1) (exp_one_le_radius D hz)
 
+/- English proof (translation)
+Establish `hlt` using `cusp_norm_lt D hz j`. Establish `hL : 0 ≤ -Real.log ‖cuspCoord D.a_le z j‖` using `neg_nonneg.mpr (Real.log_nonpos (norm_nonneg _) hlt.le)`. Establish `hterm : Real.log (‖cuspCoord D.a_le z j‖ ^ 2)⁻¹ = 2 * -Real.log ‖cuspCoord D.a_le z j‖`. Rewrite using `[Real.log_inv, Real.log_pow]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hsum : Real.log (‖cuspCoord D.a_le z j‖ ^ 2)⁻¹ ≤ ∑ i, Real.log (‖cuspCoord D.a_le z i‖ ^ 2)⁻¹` using `Finset.single_le_sum (f := fun i => Real.log (‖cuspCoord D.a_le z i‖ ^ 2)⁻¹) (fun i _ => log_inv_sq_nonneg (cusp_norm_lt D hz i)) (Finset.mem_univ j)`. Establish `hpi : (2 * Real.pi)⁻¹ ≤ 1` using `inv_le_one_of_one_le₀ (by linarith [Real.pi_gt_three])`. Establish `he` using `Real.exp_pos 1`. Establish `h1 : cuspTime D.a_le z j = (2 * Real.pi)⁻¹ * -Real.log ‖cuspCoord D.a_le z j‖`.
+
+Rewrite using `[cuspTime, Real.log_inv]`. Establish `h2` using `mul_le_mul_of_nonneg_right hpi hL`. Rewrite using `[h1]`. Simplify using `only [PeriodChartData.radius, chartRadius]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem cuspTime_le_radius {z : Fin D.n → ℂ} (hz : z ∈ D.U) (j : Fin D.a) :
     cuspTime D.a_le z j ≤ D.radius z := by
   have hlt := cusp_norm_lt D hz j
@@ -55,6 +77,11 @@ theorem cuspTime_le_radius {z : Fin D.n → ℂ} (hz : z ∈ D.U) (j : Fin D.a) 
   simp only [PeriodChartData.radius, chartRadius]
   linarith
 
+/- English proof (translation)
+Use extensionality with `j k`. Simplify using `only [transpose_apply, PeriodChartData.Y, chartImag, Matrix.add_apply, map_apply, Matrix.sum_apply, Matrix.smul_apply, smul_eq_mul]`. Rewrite using `[show D.τ0 z k j = D.τ0 z j k from by simpa using congrFun (congrFun (D.τ0_symm z hz) j) k]`. Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[show D.B i k j = D.B i j k from by simpa using (D.B_psd i).isHermitian.apply j k]`.
+-/
 theorem Y_transpose {z : Fin D.n → ℂ} (hz : z ∈ D.U) : (D.Y z)ᵀ = D.Y z := by
   ext j k
   simp only [transpose_apply, PeriodChartData.Y, chartImag, Matrix.add_apply, map_apply,
@@ -64,6 +91,13 @@ theorem Y_transpose {z : Fin D.n → ℂ} (hz : z ∈ D.U) : (D.Y z)ᵀ = D.Y z 
   refine Finset.sum_congr rfl fun i _ => ?_
   rw [show D.B i k j = D.B i j k from by simpa using (D.B_psd i).isHermitian.apply j k]
 
+/- English proof (translation)
+Establish `hcont : ContinuousOn (fun z => entrySum ((D.τ0 z).map Complex.im)) D.U`. Unfold `entrySum`. Use `continuousOn_finsetSum _ fun j _ => continuousOn_finsetSum _ fun k _ => ?_` and prove the remaining obligations. Simplify using `only [map_apply]`. Conclude with `continuous_abs.comp_continuousOn (Complex.continuous_im.comp_continuousOn (D.τ0_analytic j k).continuousOn)`.
+
+Establish `hKc : IsCompact (Prod.fst '' D.K)` using `D.isCompact_K.image continuous_fst`. Establish `hsub : Prod.fst '' D.K ⊆ D.U`. Introduce and unpack `_ ⟨p, hp, rfl⟩`. Conclude with `(D.K_subset hp).1`. Take `⟨M, hM⟩` from `hKc.exists_bound_of_continuousOn (hcont.mono hsub)`.
+
+Use `⟨max M 0, le_max_right _ _, fun p hp => ?_⟩` and prove the remaining obligations. Establish `h` using `hM p.1 ⟨p, hp, rfl⟩`. Rewrite `h` using `[Real.norm_eq_abs]`. Conclude with `(le_abs_self _).trans (h.trans (le_max_left _ _))`.
+-/
 theorem exists_bound_imτ0 : ∃ M : ℝ, 0 ≤ M ∧
     ∀ p ∈ D.K, entrySum ((D.τ0 p.1).map Complex.im) ≤ M := by
   have hcont : ContinuousOn (fun z => entrySum ((D.τ0 z).map Complex.im)) D.U := by
@@ -82,6 +116,17 @@ theorem exists_bound_imτ0 : ∃ M : ℝ, 0 ≤ M ∧
   rw [Real.norm_eq_abs] at h
   exact (le_abs_self _).trans (h.trans (le_max_left _ _))
 
+/- English proof (translation)
+Establish `hr1` using `one_le_radius D hz`. Establish `hxx` using `dot_self_nonneg x`. Establish `hM0 : 0 ≤ M` using `(entrySum_nonneg _).trans hM`. Simplify using `only [PeriodChartData.Y, chartImag]`. Rewrite using `[add_mulVec, dotProduct_add, quad_sum]`.
+
+Establish `h0 : x ⬝ᵥ ((D.τ0 z).map Complex.im *ᵥ x) ≤ M * D.radius z * (x ⬝ᵥ x)`. Establish `h3` using `(le_abs_self _).trans (abs_quad_le ((D.τ0 z).map Complex.im) x)`. Establish `h2 : entrySum ((D.τ0 z).map Complex.im) * (x ⬝ᵥ x) ≤ M * D.radius z * (x ⬝ᵥ x)`. Apply `mul_le_mul_of_nonneg_right _ hxx` to reduce the goal to its premises. Use the polynomial consequences of the given equalities and inequalities.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1 : ∀ j, x ⬝ᵥ ((cuspTime D.a_le z j • D.B j) *ᵥ x) ≤ entrySum (D.B j) * D.radius z * (x ⬝ᵥ x)`. Introduce `j`. Rewrite using `[smul_mulVec, dotProduct_smul, smul_eq_mul]`. Establish `ht1` using `cuspTime_le_radius D hz j`.
+
+Establish `hq` using `(le_abs_self _).trans (abs_quad_le (D.B j) x)`. Establish `hq0` using `quad_nonneg (D.B_psd j) x`. Establish `hr0 : 0 ≤ D.radius z` using `by linarith`. Combine the equalities or inequalities in the displayed calculation. Establish `hsum` using `Finset.sum_le_sum fun j (_ : j ∈ Finset.univ) => h1 j`.
+
+Rewrite `hsum` using `[← Finset.sum_mul, ← Finset.sum_mul]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem quad_Y_le {z : Fin D.n → ℂ} (hz : z ∈ D.U) (M : ℝ)
     (hM : entrySum ((D.τ0 z).map Complex.im) ≤ M) (x : Fin D.g → ℝ) :
     x ⬝ᵥ (D.Y z *ᵥ x) ≤ (M + ∑ j, entrySum (D.B j)) * D.radius z * (x ⬝ᵥ x) := by
@@ -111,6 +156,13 @@ theorem quad_Y_le {z : Fin D.n → ℂ} (hz : z ∈ D.U) (M : ℝ)
   rw [← Finset.sum_mul, ← Finset.sum_mul] at hsum
   linarith
 
+/- English proof (translation)
+Take `⟨M, hM0, hM⟩` from `exists_bound_imτ0 D`. Establish `hβ : 0 ≤ ∑ j, entrySum (D.B j)` using `Finset.sum_nonneg fun j _ => entrySum_nonneg _`. Use `⟨M + ∑ j, entrySum (D.B j) + 1, by positivity, fun p hp => ?_⟩` and prove the remaining obligations. Establish `hz : p.1 ∈ D.U` using `(D.K_subset hp).1`. Establish `hr1` using `one_le_radius D hz`.
+
+Use `posSemidef_of_real ?_ fun x => ?_` and prove the remaining obligations. Rewrite using `[transpose_sub, transpose_smul, transpose_one, Y_transpose D hz]`. Rewrite using `[quad_smul_one_sub]`. Establish `h` using `quad_Y_le D hz M (hM p hp) x`. Establish `hxx` using `dot_self_nonneg x`.
+
+Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem exists_Y_le : ∃ C : ℝ, 0 < C ∧ ∀ p ∈ D.K,
     ((C * D.radius p.1) • (1 : Matrix (Fin D.g) (Fin D.g) ℝ) - D.Y p.1).PosSemidef := by
   obtain ⟨M, hM0, hM⟩ := exists_bound_imτ0 D
@@ -125,6 +177,11 @@ theorem exists_Y_le : ∃ C : ℝ, 0 < C ∧ ∀ p ∈ D.K,
     have hxx := dot_self_nonneg x
     nlinarith
 
+/- English proof (translation)
+Establish `h1` using `LinearMap.finrank_range_add_finrank_ker (Matrix.mulVecLin F)`. Rewrite `h1` using `[Module.finrank_fin_fun]`. Establish `h2 : Module.finrank ℂ (LinearMap.ker F.mulVecLin) = 0`. Unfold `Matrix.rank at h`. Use linear arithmetic over natural numbers and integers.
+
+Establish `h3 : LinearMap.ker F.mulVecLin = ⊥` using `Submodule.finrank_eq_zero.mp h2`. Conclude with `LinearMap.ker_eq_bot.mp h3`.
+-/
 theorem injective_of_rank {g rk : ℕ} (F : Matrix (Fin g) (Fin rk) ℂ) (h : F.rank = rk) :
     Function.Injective F.mulVec := by
   have h1 := LinearMap.finrank_range_add_finrank_ker (Matrix.mulVecLin F)
@@ -134,14 +191,27 @@ theorem injective_of_rank {g rk : ℕ} (F : Matrix (Fin g) (Fin rk) ℂ) (h : F.
   have h3 : LinearMap.ker F.mulVecLin = ⊥ := Submodule.finrank_eq_zero.mp h2
   exact LinearMap.ker_eq_bot.mp h3
 
+/- English proof (translation)
+The claim follows from `PosDef.conjTranspose_mul_self F (injective_of_rank F h)`.
+-/
 theorem gram_posDef {g rk : ℕ} (F : Matrix (Fin g) (Fin rk) ℂ) (h : F.rank = rk) :
     (Fᴴ * F).PosDef :=
   PosDef.conjTranspose_mul_self F (injective_of_rank F h)
 
+/- English proof (translation)
+Rewrite using `[continuousOn_iff_continuous_domRestrict]`. Conclude with `continuous_matrix fun j k => (D.f_analytic j k).continuousOn.domRestrict`.
+-/
 theorem continuousOn_f : ContinuousOn D.f (D.U ×ˢ D.V) := by
   rw [continuousOn_iff_continuous_domRestrict]
   exact continuous_matrix fun j k => (D.f_analytic j k).continuousOn.domRestrict
 
+/- English proof (translation)
+Establish `hc : ContinuousOn (fun p => ((D.f p)ᴴ * D.f p).det.re) D.K`. Establish `h` using `(continuousOn_f D).mono D.K_subset`. Rewrite `h`, the goal using `[continuousOn_iff_continuous_domRestrict]`. Conclude with `Complex.continuous_re.comp (h.matrix_conjTranspose.matrix_mul h).matrix_det`. Establish `hpos : ∀ p ∈ D.K, 0 < ((D.f p)ᴴ * D.f p).det.re` using `fun p hp => MCDet.re_det_pos (gram_posDef _ (D.f_rank p (D.K_subset hp)))`.
+
+Break down `D.K.eq_empty_or_nonempty with hK | hK` into its components or cases. Conclude with `⟨1, 1, one_pos, one_pos, fun p hp => by simp [hK] at hp⟩`. Take `⟨p0, hp0, hmin⟩` from `D.isCompact_K.exists_isMinOn hK hc`. Take `⟨M, hM⟩` from `D.isCompact_K.exists_bound_of_continuousOn hc`. Use `⟨_, max M 1, hpos p0 hp0, by positivity, fun p hp => ⟨hmin hp, ?_⟩⟩` and prove the remaining obligations.
+
+Establish `h` using `hM p hp`. Rewrite `h` using `[Real.norm_eq_abs]`. Conclude with `(le_abs_self _).trans (h.trans (le_max_left _ _))`.
+-/
 theorem exists_gram_bounds : ∃ δ M : ℝ, 0 < δ ∧ 0 < M ∧ ∀ p ∈ D.K,
     δ ≤ ((D.f p)ᴴ * D.f p).det.re ∧ ((D.f p)ᴴ * D.f p).det.re ≤ M := by
   have hc : ContinuousOn (fun p => ((D.f p)ᴴ * D.f p).det.re) D.K := by

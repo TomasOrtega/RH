@@ -19,6 +19,41 @@ namespace GlobalTheory.TChart
 
 set_option backward.isDefEq.respectTransparency false in
 
+/- English proof (translation)
+Introduce `g n φ _ C`. Use `haveI : IsNoetherianRing C.W := C.noeth`. Use `haveI : IsLocalHom C.iw := C.ψ_loc`. Use `set X := (LowChart.powA C.F C.T.r).left with hX`. Use `set π := LowChart.toO C.F C.T.r with hπ`.
+
+Use `set y := C.u (closedPoint C.W) with hy`. Set `φ₀ : X.presheaf.stalk y →+* C.W` to `(Scheme.stalkClosedPointTo C.u).hom`. Set `σ` to `(π.stalkMap y).hom`. Set `L` to `Localization.AtPrime (π y).asIdeal`. Set `e` to `Spec.stalkIso (CommRingCat.of (cycAway n)) (π y)`.
+
+Set `ρ : cycAway n →+* X.presheaf.stalk y` to `σ.comp (e.inv.hom.comp (algebraMap (cycAway n) L))`. Establish `h3 : (Sp (cycAway n)).fromSpecStalk (π y) = Spec.map e.inv ≫ spMap (algebraMap (cycAway n) L)`. Use `(Spec.fromSpecStalk_eq (CommRingCat.of _) (π y)).trans ?_` and prove the remaining obligations. Rewrite using `[spMap, ← Spec.map_comp]`. Conclude with `congrArg Spec.map (Spec.algebraMap_stalkIso_inv (R := CommRingCat.of _) (x := π y)).symm`.
+
+Establish `hb : C.T.b = φ₀.comp ρ`. Establish `h1` using `Scheme.Spec_stalkClosedPointTo_fromSpecStalk C.u`. Establish `h2` using `Scheme.SpecMap_stalkMap_fromSpecStalk π (x := y)`. Establish `key : spMap C.T.b = spMap (φ₀.comp ρ)`. Rewrite using `[← C.u_base, ← h1, Category.assoc, ← h2, h3]`.
+
+Simplify using `only [spMap, ρ, φ₀, σ, CommRingCat.ofHom_comp, Spec.map_comp, CommRingCat.ofHom_hom, Category.assoc]`. Conclude with `congrArg CommRingCat.Hom.hom (Spec.map_injective key)`. Establish `hq : (π y).asIdeal = (maximalIdeal C.W).comap C.T.b`. Establish `: π y = spMap C.T.b (closedPoint C.W)`. Rewrite using `[hy, ← C.u_base, Scheme.Hom.comp_apply]`.
+
+Rewrite using `[this]`. Both sides reduce to the same expression. Use `haveI : IsRegularLocalRing (X.presheaf.stalk y) := LowChart.isRegularLocalRing_stalk C.F y`. Establish `het` using `C.u_et`. Use `haveI hW : IsRegularLocalRing C.W := by`.
+
+Use `letI : Algebra (X.presheaf.stalk y) C.W := φ₀.toAlgebra`. Use `haveI : Module.Flat (X.presheaf.stalk y) C.W := het.1`. Conclude with `GlobalTheory.isRegularLocalRing_of_flat_of_map_eq_maximalIdeal _ _ (maximalIdeal _) het.2.1.symm`. Take `⟨hRreg, hRdom⟩` from `isRegularLocalRing_and_isDomain_of_isComplAt C.W (Fin C.m ⊕ Fin C.N) C.R C.ψ C.compl C.ψ_loc`. Establish `hρspec : spMap ρ = X.fromSpecStalk y ≫ π`.
+
+Rewrite using `[← Scheme.SpecMap_stalkMap_fromSpecStalk π (x := y), h3]`. Simplify using `only [spMap, ρ, σ, CommRingCat.ofHom_comp, Spec.map_comp, CommRingCat.ofHom_hom, Category.assoc]`. Establish `hflatρ : ρ.Flat` using `by haveI := GlobalTheory.SmoothStalkNormal.flat_fromSpecStalk' X y`. Establish `h : Flat (spMap ρ)` using `by rw [hρspec]; infer_instance`. Conclude with `(HasRingHomProperty.Spec_iff (P := @Flat)).1 h`.
+
+Establish `hiwflat : C.iw.Flat` using `(show (algebraMap C.W (MvPolynomial (Fin C.m ⊕ Fin C.N) C.W)).Flat from RingHom.flat_algebraMap_iff.mpr inferInstance).comp C.compl.2.2.1`. Establish `hbeq : C.b = C.iw.comp (φ₀.comp ρ)` using `by rw [← hb]; rfl`. Establish `hbflat : C.b.Flat` using `by rw [hbeq]; exact (hflatρ.comp het.1).comp hiwflat`. Establish `hinj : Function.Injective C.b` using `GlobalTheory.SmoothStalkNormal.injective_of_flat_of_isDomain C.b hbflat`. Establish `hmW : (maximalIdeal C.R).comap C.iw = maximalIdeal C.W` using `IsLocalRing.maximalIdeal_comap C.iw`.
+
+Establish `h𝔮 : (maximalIdeal C.R).comap C.b = (π y).asIdeal`. Rewrite using `[hq, show C.b = C.iw.comp C.T.b from rfl, ← Ideal.comap_comap, hmW]`. Establish `hle : ((maximalIdeal C.R).comap C.b).map C.b ≤ (maximalIdeal C.W).map (C.ψ.comp MvPolynomial.C)`. Rewrite using `[show C.b = C.iw.comp C.T.b from rfl, ← Ideal.map_map]`. Use `Ideal.map_mono (Ideal.map_le_iff_le_comap.2 ?_)` and prove the remaining obligations.
+
+Rewrite using `[← Ideal.comap_comap, hmW]`. Use `⟨hRreg, charZero_of_injective_ringHom hinj, hinj, hbflat, ⟨fun k => C.bd k, fun c hc k => cotangent_indep_of_isComplAt C.W _ C.R C.ψ C.compl C.ψ_loc C.m ⟨Sum.inl, Sum.inl_injective⟩ (fun k => C.bd k) c (sup_le_sup_left hle (maximalIdeal C.R ^ 2) hc) k⟩, ?_⟩` and prove the remaining obligations. Establish `hfib` using `GlobalTheory.FibreRegular.isRegularLocalRing_stalk_quot_maximalIdeal (Sp (cycAway n)) X π y`. Use `set I := (maximalIdeal ((Sp (cycAway n)).presheaf.stalk (π y))).map σ with hIdef`. Establish `hI : I = (π y).asIdeal.map ρ`.
+
+Establish `hsurj : Function.Surjective e.inv.hom` using `e.commRingCatIsoToRingEquiv.symm.surjective`. Establish `hmL : maximalIdeal ((Sp (cycAway n)).presheaf.stalk (π y)) = (maximalIdeal L).map e.inv.hom` using `(IsLocalRing.map_maximalIdeal_of_surjective _ hsurj).symm`. Rewrite using `[hIdef, hmL, ← Localization.AtPrime.map_eq_maximalIdeal, Ideal.map_map, Ideal.map_map]`. Both sides reduce to the same expression. Use `set 𝔭 := I.map φ₀ with h𝔭def`.
+
+Establish `h𝔭 : 𝔭.map C.iw = ((maximalIdeal C.R).comap C.b).map C.b`. Rewrite using `[h𝔭def, hI, Ideal.map_map, Ideal.map_map, RingHom.comp_assoc, ← hbeq, h𝔮]`. Establish `hIm : I ≤ maximalIdeal (X.presheaf.stalk y)` using `Ideal.map_le_iff_le_comap.2 (IsLocalRing.maximalIdeal_comap σ).ge`. Establish `h𝔭m : 𝔭 ≤ maximalIdeal C.W` using `het.2.1 ▸ Ideal.map_mono hIm`. Establish `h𝔭ne : 𝔭 ≠ ⊤` using `ne_top_of_le_ne_top (maximalIdeal.isMaximal _).ne_top h𝔭m`.
+
+Use `haveI : Nontrivial (C.W ⧸ 𝔭) := Ideal.Quotient.nontrivial_iff.2 h𝔭ne`. Use `haveI : IsLocalRing (C.W ⧸ 𝔭) := IsLocalRing.of_surjective' (Ideal.Quotient.mk 𝔭) Ideal.Quotient.mk_surjective`. Establish `hreg𝔭 : IsRegularLocalRing (C.W ⧸ 𝔭)`. Set `χ : (X.presheaf.stalk y ⧸ I) →+* (C.W ⧸ 𝔭)` to `Ideal.quotientMap 𝔭 φ₀ Ideal.le_comap_map`. Establish `hχflat : χ.Flat` using `GlobalTheory.Pat.flat_quotientMap_map φ₀ het.1 I`.
+
+Use `letI : Algebra (X.presheaf.stalk y ⧸ I) (C.W ⧸ 𝔭) := χ.toAlgebra`. Use `haveI : Module.Flat (X.presheaf.stalk y ⧸ I) (C.W ⧸ 𝔭) := hχflat`. Establish `hcomm : (Ideal.Quotient.mk 𝔭).comp φ₀ = χ.comp (Ideal.Quotient.mk I)`. Use extensionality with `a`. Simplify using `[χ]`.
+
+Establish `hmax : maximalIdeal (C.W ⧸ 𝔭) = (maximalIdeal (X.presheaf.stalk y ⧸ I)).map (algebraMap _ _)`. Rewrite using `[← IsLocalRing.map_maximalIdeal_of_surjective (Ideal.Quotient.mk 𝔭) Ideal.Quotient.mk_surjective, ← het.2.1, ← IsLocalRing.map_maximalIdeal_of_surjective (Ideal.Quotient.mk I) Ideal.Quotient.mk_surjective, Ideal.map_map, Ideal.map_map, hcomm]`. Both sides reduce to the same expression. Conclude with `GlobalTheory.isRegularLocalRing_of_flat_of_map_eq_maximalIdeal _ _ _ hmax`. Establish `hfin` using `isRegularLocalRing_quotient_of_isComplAt C.W _ C.R C.ψ C.compl C.ψ_loc 𝔭 h𝔭ne hreg𝔭`.
+
+Rewrite `hfin` using `[show C.ψ.comp MvPolynomial.C = C.iw from rfl, h𝔭]`. Then use the resulting hypothesis.
+-/
 theorem Taut.isRegularLocalRing_and_isRelParam : ∀ (g n : ℕ) (φ : InvFun ℤ), 3 ≤ n → ∀ C : Taut (zetaAway n) g n φ, IsRegularLocalRing C.R ∧ CharZero C.R ∧ Function.Injective C.b ∧ C.b.Flat ∧ IsRelParam C.b C.t ∧ IsRegularLocalRing (C.R ⧸ ((maximalIdeal C.R).comap C.b).map C.b) := by
   intro g n φ _ C
   haveI : IsNoetherianRing C.W := C.noeth

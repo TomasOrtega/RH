@@ -22,6 +22,11 @@ section Hess
 
 variable {D : ℕ}
 
+/- English proof (translation)
+Set `σ : (Fin D → ℂ) ≃L[ℝ] (Fin D → ℂ)` to `starL' ℝ`. Set `T : ((Fin D → ℂ) →L[ℝ] ℝ) ≃L[ℝ] ((Fin D → ℂ) →L[ℝ] ℝ)` to `σ.symm.arrowCongr (ContinuousLinearEquiv.refl ℝ ℝ)`. Establish `h1 : fderiv ℝ (fun y => φ (star y)) = T ∘ ((fderiv ℝ φ) ∘ σ)`. Use function extensionality and compare the values at `y`. Use `σ.comp_right_fderiv (f := φ) (x := y)` as an intermediate fact.
+
+Conclude with `this`. Rewrite using `[h1, T.comp_fderiv, σ.comp_right_fderiv]`. Both sides reduce to the same expression.
+-/
 theorem hess_comp_star (φ : (Fin D → ℂ) → ℝ) (z u v : Fin D → ℂ) :
     fderiv ℝ (fderiv ℝ (fun y => φ (star y))) z u v =
       fderiv ℝ (fderiv ℝ φ) (star z) (star u) (star v) := by
@@ -35,6 +40,13 @@ theorem hess_comp_star (φ : (Fin D → ℂ) → ℝ) (z u v : Fin D → ℂ) :
   rw [h1, T.comp_fderiv, σ.comp_right_fderiv]
   rfl
 
+/- English proof (translation)
+Use extensionality with `i j`. Establish `hs : ∀ i : Fin D, star (Pi.single i 1 : Fin D → ℂ) = Pi.single i 1` using `fun i => by`. Use extensionality with `l`. Distinguish the cases in `h : l = i`. Substitute `h` using the available equality.
+
+Simplify using the standard rewrite rules. Simplify using `[Pi.single_eq_of_ne h]`. Establish `hI : ∀ i : Fin D, star (Complex.I • (Pi.single i 1 : Fin D → ℂ)) = -(Complex.I • (Pi.single i 1 : Fin D → ℂ))` using `fun i => by`. Rewrite using `[star_smul, hs]`. Simplify using the standard rewrite rules.
+
+Simplify using `only [cxHessian, Matrix.map_apply, hess_comp_star, hs, hI, map_neg, ContinuousLinearMap.neg_apply, neg_neg]`. Simplify using `only [map_div₀, map_add, map_mul, Complex.conj_ofReal, Complex.conj_I]`. Establish `h4 : starRingEnd ℂ (4 : ℂ) = 4` using `map_ofNat _ 4`. Simplify using `[h4]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem cxHessian_comp_star (φ : (Fin D → ℂ) → ℝ) (z : Fin D → ℂ) :
     cxHessian (fun y => φ (star y)) z = (cxHessian φ (star z)).map (starRingEnd ℂ) := by
   ext i j
@@ -52,6 +64,11 @@ theorem cxHessian_comp_star (φ : (Fin D → ℂ) → ℝ) (z : Fin D → ℂ) :
   simp [h4]
   ring
 
+/- English proof (translation)
+Simplify using `only [mixedDisc, map_mul, map_sum, map_pow, map_neg, map_one, map_div₀, map_natCast]`. Use `congr 1`. Use `Finset.sum_congr rfl fun S _ => ?_` and prove the remaining obligations. Use `congr 1`. Rewrite using `[RingHom.map_det]`.
+
+Use `congr 1`. Use extensionality with `i j`. Simplify using `[Matrix.sum_apply]`.
+-/
 theorem mixedDisc_map_conj (A : Fin D → Matrix (Fin D) (Fin D) ℂ) :
     mixedDisc (fun k => (A k).map (starRingEnd ℂ)) = starRingEnd ℂ (mixedDisc A) := by
   simp only [mixedDisc, map_mul, map_sum, map_pow, map_neg, map_one, map_div₀, map_natCast]
@@ -63,10 +80,16 @@ theorem mixedDisc_map_conj (A : Fin D → Matrix (Fin D) (Fin D) ℂ) :
   ext i j
   simp [Matrix.sum_apply]
 
+/- English proof (translation)
+Simplify using `only [maDensity, cxHessian_comp_star, mixedDisc_map_conj, Complex.conj_re]`.
+-/
 theorem maDensity_comp_star (φ : Fin D → (Fin D → ℂ) → ℝ) (y : Fin D → ℂ) :
     maDensity (fun j y' => φ j (star y')) y = maDensity φ (star y) := by
   simp only [maDensity, cxHessian_comp_star, mixedDisc_map_conj, Complex.conj_re]
 
+/- English proof (translation)
+Establish `h : MeasurePreserving (starRingEnd ℂ : ℂ → ℂ) volume volume` using `Complex.conjLIE.measurePreserving`. Conclude with `volume_preserving_pi (fun _ => h)`.
+-/
 theorem star_measurePreserving :
     MeasurePreserving (star : (Fin D → ℂ) → (Fin D → ℂ)) volume volume := by
   have h : MeasurePreserving (starRingEnd ℂ : ℂ → ℂ) volume volume :=
@@ -79,6 +102,9 @@ section Pts
 
 variable {K : Type*} [Fintype K] {ι : K → Type*} [∀ k, Fintype (ι k)]
 
+/- English proof (translation)
+Rewrite using `[eval_map, eval_map, eval₂_comp_left]`. Use `congr 1`. Conclude with `Subsingleton.elim _ _`.
+-/
 theorem eval_star (z : (Σ k, ι k) → ℂ) (f : MRing ι) :
     eval (star z) (map (Int.castRingHom ℂ) f) =
       starRingEnd ℂ (eval z (map (Int.castRingHom ℂ) f)) := by
@@ -86,6 +112,9 @@ theorem eval_star (z : (Σ k, ι k) → ℂ) (f : MRing ι) :
   congr 1
   exact Subsingleton.elim _ _
 
+/- English proof (translation)
+Use `⟨fun k => ?_, fun f hf => ?_⟩` and prove the remaining obligations. Take `⟨i, hi⟩` from `hz.1 k`. Conclude with `⟨i, by simpa using hi⟩`. Rewrite using `[eval_star, hz.2 f hf, map_zero]`.
+-/
 theorem star_mem_mcPts {P : Ideal (MRing ι)} {z : (Σ k, ι k) → ℂ} (hz : z ∈ mcPts P) :
     star z ∈ mcPts P := by
   refine ⟨fun k => ?_, fun f hf => ?_⟩
@@ -93,10 +122,16 @@ theorem star_mem_mcPts {P : Ideal (MRing ι)} {z : (Σ k, ι k) → ℂ} (hz : z
     exact ⟨i, by simpa using hi⟩
   · rw [eval_star, hz.2 f hf, map_zero]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[segre, map_prod]`.
+-/
 theorem segre_star (z : (Σ k, ι k) → ℂ) : segre (star z) = star (segre z) := by
   funext i
   simp [segre, map_prod]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Apply the tactic sequence `refine Fin.cases ?_ (fun j => ?_) i <;> simp`.
+-/
 theorem cons_star {e : ℕ} (y : Fin e → ℂ) :
     (Fin.cons 1 (star y) : Fin (e + 1) → ℂ) = star (Fin.cons 1 y) := by
   funext i
@@ -105,11 +140,21 @@ theorem cons_star {e : ℕ} (y : Fin e → ℂ) :
 variable {e : ℕ} {P : Ideal (MRing ι)}
   {Ψ Ψ' : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ)}
 
+/- English proof (translation)
+Take `⟨z, hz, rfl, h⟩` from `hw`. Conclude with `⟨star z, star_mem_mcPts hz, segre_star z, by rw [hΨ, h, cons_star]⟩`.
+-/
 theorem star_mem_fibre (hΨ : ∀ w, Ψ' (star w) = star (Ψ w)) {y : Fin e → ℂ}
     {w : ((k : K) → ι k) → ℂ} (hw : w ∈ fibre P Ψ y) : star w ∈ fibre P Ψ' (star y) := by
   obtain ⟨z, hz, rfl, h⟩ := hw
   exact ⟨star z, star_mem_mcPts hz, segre_star z, by rw [hΨ, h, cons_star]⟩
 
+/- English proof (translation)
+Establish `hD` using `h.hasFDerivAt`. Use `set D := fderiv ℂ γ (star x)`. Set `sE : E →L[ℝ] E` to `(starL' ℝ : E ≃L[ℝ] E)`. Set `sF : F →L[ℝ] F` to `(starL' ℝ : F ≃L[ℝ] F)`. Establish `hs : HasFDerivAt (star : E → E) sE x` using `sE.hasFDerivAt`.
+
+Establish `hr : HasFDerivAt γ (D.restrictScalars ℝ) (star x)` using `hD.restrictScalars ℝ`. Establish `hc : HasFDerivAt (fun y => star (γ (star y))) (sF.comp ((D.restrictScalars ℝ).comp sE)) x` using `HasFDerivAt.comp x (g := (star : F → F)) sF.hasFDerivAt (hr.comp x hs)`. Set `cE : E →SL[starRingEnd ℂ] E` to `((starL ℂ : E ≃L⋆[ℂ] E) : E →SL[starRingEnd ℂ] E)`. Set `cF : F →SL[starRingEnd ℂ] F` to `((starL ℂ : F ≃L⋆[ℂ] F) : F →SL[starRingEnd ℂ] F)`. Set `D' : E →L[ℂ] F` to `cF.comp (D.comp cE)`.
+
+Establish `: HasFDerivAt (fun y => star (γ (star y))) D' x` using `hasFDerivAt_of_restrictScalars ℝ hc (by ext v; rfl)`. Conclude with `this.differentiableAt`.
+-/
 theorem differentiableAt_star_star {E F : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
     [NormedSpace ℝ E] [IsScalarTower ℝ ℂ E] [StarAddMonoid E] [StarModule ℂ E] [StarModule ℝ E]
     [ContinuousStar E] [NormedAddCommGroup F] [NormedSpace ℂ F] [NormedSpace ℝ F]
@@ -132,6 +177,11 @@ theorem differentiableAt_star_star {E F : Type*} [NormedAddCommGroup E] [NormedS
     hasFDerivAt_of_restrictScalars ℝ hc (by ext v; rfl)
   exact this.differentiableAt
 
+/- English proof (translation)
+Use `⟨by simp only [star_star, segre_star, h.1], ?_⟩` and prove the remaining obligations. Establish `ht : Tendsto (star : (Fin e → ℂ) → (Fin e → ℂ)) (𝓝 (star y)) (𝓝 y)`. Use `(continuous_star (R := Fin e → ℂ)).tendsto (star y)` as an intermediate fact. Simplify using `using this`. Use `filter_upwards [ht.eventually h.2] with y' ⟨h1, h2, h3⟩`.
+
+Use `⟨differentiableAt_star_star h1, star_mem_mcPts h2, ?_⟩` and prove the remaining obligations. Rewrite using `[segre_star, hΨ, h3, cons_star, star_star]`.
+-/
 theorem isSheet_star (hΨ : ∀ w, Ψ' (star w) = star (Ψ w)) {y : Fin e → ℂ}
     {w : ((k : K) → ι k) → ℂ} {γ : (Fin e → ℂ) → (Σ k, ι k) → ℂ} (h : IsSheet P Ψ y w γ) :
     IsSheet P Ψ' (star y) (star w) (fun y' => star (γ (star y'))) := by
@@ -143,6 +193,17 @@ theorem isSheet_star (hΨ : ∀ w, Ψ' (star w) = star (Ψ w)) {y : Fin e → �
   refine ⟨differentiableAt_star_star h1, star_mem_mcPts h2, ?_⟩
   rw [segre_star, hΨ, h3, cons_star, star_star]
 
+/- English proof (translation)
+Establish `back : ∀ γ, IsSheet P Ψ' (star y) (star w) γ → IsSheet P Ψ y w (fun y' => star (γ (star y')))` using `fun γ h => by`. Use `isSheet_star hΨ' h` as an intermediate fact. Simplify `this` using `only [star_star]`. Unfold `sheetDensity`. Distinguish the cases in `hex : ∃ γ, IsSheet P Ψ y w γ`.
+
+Establish `hex' : ∃ γ, IsSheet P Ψ' (star y) (star w) γ` using `⟨_, isSheet_star hΨ hex.choose_spec⟩`. Rewrite using `[dif_pos hex, dif_pos hex', hy w _ _ hex.choose_spec (back _ hex'.choose_spec)]`. Use `set γ := hex'.choose with hγ`. Establish `hspec : IsSheet P Ψ' (star y) (star w) γ` using `hex'.choose_spec`. Establish `hz : γ (star y) ∈ mcPts P` using `hspec.2.self_of_nhds.2.1`.
+
+Establish `h1 : logNorm B 1 (star (γ (star (y)))) = logNorm B' 1 (γ (star y))`. Establish `h2 : B'.h (γ (star y)) = B.h (star (γ (star y)))`. Use `hBB _ (star_mem_mcPts hz)` as an intermediate fact. Rewrite `this` using `[star_star]`. Then use the resulting hypothesis. Simplify using `[logNorm, h2]`.
+
+Establish `h3 : maDensity (fun j y' => pot L j (star (γ (star y')))) y = maDensity (fun j y' => pot L j (γ y')) (star y)`. Rewrite using `[← maDensity_comp_star]`. Use `congr 1`. Use function extensionality and compare the values at `j y'`. Simplify using `only [pot]`.
+
+Use `congr 1`. Conclude with `hLc j _`. Rewrite using `[h1, h3]`. Establish `hex' : ¬ ∃ γ, IsSheet P Ψ' (star y) (star w) γ` using `fun ⟨γ, h⟩ => hex ⟨_, back γ h⟩`. Rewrite using `[dif_neg hex, dif_neg hex']`.
+-/
 theorem sheetDensity_star {L : Fin e → HermLine ι} (hLc : ∀ j, IsConjInvariantH (L j))
     {B B' : HermLine ι} (hBB : ∀ z ∈ mcPts P, B'.h (star z) = B.h z)
     (hΨ : ∀ w, Ψ' (star w) = star (Ψ w)) (hΨ' : ∀ w, Ψ (star w) = star (Ψ' w)) {y : Fin e → ℂ}
@@ -183,6 +244,19 @@ theorem sheetDensity_star {L : Fin e → HermLine ι} (hLc : ∀ j, IsConjInvari
 
 end Pts
 
+/- English proof (translation)
+Introduce `K _ ι _ P e Ψ Ψ' L B B' hP hΨ hΨs hLs hLc hBa hBs _ _ hBB`. Establish `hΨ2 : ∀ w, Ψ (star w) = star (Ψ' w)` using `fun w => by`. Use `hΨs (star w)` as an intermediate fact. Rewrite `this` using `[star_star]`. Rewrite using `[this, star_star]`.
+
+Use `⟨fun z hz h0 => ?_, ?_⟩` and prove the remaining obligations. Use `hΨ _ (star_mem_mcPts hz) ?_` and prove the remaining obligations. Rewrite using `[segre_star, hΨ2, h0, star_zero]`. Establish `hsec : IsSectionOn P B 1`. Use `⟨0, fun k => by simp [hBa], fun m hm k => ?_, ?_⟩` and prove the remaining obligations.
+
+Establish `: m = 0`. Use `MvPolynomial.support_one (R := ℤ) (σ := Σ k, ι k)` as an intermediate fact. Rewrite `hm` using `[this]`. Simplify using `using hm`. Simplify using `[this]`.
+
+Conclude with `fun h => hP.2.1.1.ne_top ((Ideal.eq_top_iff_one _).mpr h)`. Establish `hme : MeasurableEmbedding (star : (Fin e → ℂ) → (Fin e → ℂ))` using `(starL' ℝ : (Fin e → ℂ) ≃L[ℝ] (Fin e → ℂ)).toHomeomorph.measurableEmbedding`. Unfold `ptsIntegralAt`. Rewrite using `[← star_measurePreserving.integral_comp hme]`. Use `integral_congr_ae ?_` and prove the remaining obligations.
+
+Use `filter_upwards [sheetIndep K ι P e Ψ L B 1 hP hΨ hLs hBs hsec] with y hy`. Use `symm`. Use `finsum_mem_eq_of_bijOn star ⟨fun w hw => star_mem_fibre hΨs hw, ?_, ?_⟩ fun w _ => sheetDensity_star hLc hBB hΨs hΨ2 hy w` and prove the remaining obligations. Conclude with `star_injective.injOn`. Introduce `w hw`.
+
+Use `⟨star w, ?_, star_star w⟩` and prove the remaining obligations. Use `star_mem_fibre hΨ2 hw` as an intermediate fact. Rewrite `this` using `[star_star]`. Then use the resulting hypothesis.
+-/
 theorem ptsIntegralAt_conj : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (P : Ideal (MRing ι)) (e : ℕ) (Ψ Ψ' : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ)) (L : Fin e → HermLine ι) (B B' : HermLine ι), IsArithVar P (e + 1) → IsGoodProj P Ψ → (∀ w, Ψ' (star w) = star (Ψ w)) → (∀ j, IsSmoothHerm (L j)) → (∀ j, IsConjInvariantH (L j)) → B.a = 0 → IsSmoothHerm B → B'.a = 0 → IsSmoothHerm B' → (∀ z ∈ mcPts P, B'.h (star z) = B.h z) → IsGoodProj P Ψ' ∧ ptsIntegralAt P Ψ' (pot L) (logNorm B' 1) = ptsIntegralAt P Ψ (pot L) (logNorm B 1) := by
   intro K _ ι _ P e Ψ Ψ' L B B' hP hΨ hΨs hLs hLc hBa hBs _ _ hBB
   have hΨ2 : ∀ w, Ψ (star w) = star (Ψ' w) := fun w => by

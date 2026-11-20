@@ -40,21 +40,33 @@ def ExpBij (v : Fin n → (epsR R ⟶ G)) : Prop :=
 
 variable {v : Fin n → (epsR R ⟶ G)}
 
+/- English proof (translation)
+Rewrite using `[res, comp_lieExp]`. Conclude with `lieExp_congr _ (fun i => dualMap_inr _ _) _ _`.
+-/
 theorem res_tanExp (ρ : S →ₐ[R] S') (s : Fin n → S) :
     res ρ (tanExp v s) = tanExp v fun i => ρ (s i) := by
   rw [res, comp_lieExp]
   exact lieExp_congr _ (fun i => dualMap_inr _ _) _ _
 
+/- English proof (translation)
+Rewrite using `[scl, comp_lieExp]`. Conclude with `lieExp_congr _ (fun i => dualScale_inr _ _) _ _`.
+-/
 theorem scl_tanExp (t : S) (s : Fin n → S) :
     scl t (tanExp v s) = tanExp v fun i => s i * t := by
   rw [scl, comp_lieExp]
   exact lieExp_congr _ (fun i => dualScale_inr _ _) _ _
 
+/- English proof (translation)
+Rewrite using `[IsTanOver, comp_lieExp]`. Conclude with `lieExp_eq_one hv _ (fun i => rfl) _`.
+-/
 theorem isTanOver_tanExp (hv : ∀ i, IsTangent (v i)) (s : Fin n → S) :
     IsTanOver (tanExp v s) := by
   rw [IsTanOver, comp_lieExp]
   exact lieExp_eq_one hv _ (fun i => rfl) _
 
+/- English proof (translation)
+Use `⟨fun s s' h => ?_, fun w hw => ?_⟩` and prove the remaining obligations. Conclude with `(hv.2 _ ((isTan_iff _).1 (isTanOver_tanExp hv.1 s))).unique ((isLieComb_iff_lieExp _ _).2 rfl) ((isLieComb_iff_lieExp _ _).2 h)`. Take `⟨c, hc, -⟩` from `hv.2 w ((isTan_iff _).1 hw)`. Conclude with `⟨c, (isLieComb_iff_lieExp _ _).1 hc⟩`.
+-/
 theorem isLieBasisOver_self (hv : IsLieBasis v) : IsLieBasisOver R v := by
   refine ⟨fun s s' h => ?_, fun w hw => ?_⟩
   · exact (hv.2 _ ((isTan_iff _).1 (isTanOver_tanExp hv.1 s))).unique
@@ -64,6 +76,15 @@ theorem isLieBasisOver_self (hv : IsLieBasis v) : IsLieBasisOver R v := by
 
 variable [Smooth G.hom]
 
+/- English proof (translation)
+Use `⟨fun s s' e => ?_, fun w' hw' => ?_⟩` and prove the remaining obligations. Take `⟨N, a, ha⟩` from `hρ.surj_fin (Sum.elim s s')`. Establish `e₁ : res ρ (tanExp v fun i => a (.inl i)) = res ρ (tanExp v fun i => a (.inr i))`. Rewrite using `[res_tanExp, res_tanExp]`. Simplify using `only [← ha, Sum.elim_inl, Sum.elim_inr]`.
+
+Rewrite using `[← scl_tanExp, ← scl_tanExp, e]`. Take `⟨M, hM⟩` from `exists_scl_eq hρ (isTanOver_tanExp hv _) (isTanOver_tanExp hv _) e₁`. Rewrite `hM` using `[scl_tanExp, scl_tanExp]`. Use function extensionality and compare the values at `i`. Establish `e₂` using `congrArg ρ (congrFun (h.1 _ _ hM) i)`.
+
+Simplify using `only [map_mul, map_pow, ← ha, Sum.elim_inl, Sum.elim_inr] at e₂`. Conclude with `(hρ.unit.pow N).mul_right_cancel ((hρ.unit.pow M).mul_right_cancel e₂)`. Take `⟨N, w, hw, e⟩` from `exists_res_eq hρ hw'`. Take `⟨s, rfl⟩` from `h.2 w hw`. Take `⟨t, ht⟩` from `(hρ.unit.pow N).exists_left_inv`.
+
+Use `⟨fun i => ρ (s i) * t, ?_⟩` and prove the remaining obligations. Rewrite using `[← scl_tanExp, ← res_tanExp, e, scl_scl, ht, scl_one]`.
+-/
 theorem IsLieBasisOver.away (hv : ∀ i, IsTangent (v i)) (h : IsLieBasisOver S v)
     {ρ : S →ₐ[R] S'} {g : S} (hρ : IsAway ρ g) : IsLieBasisOver S' v := by
   refine ⟨fun s s' e => ?_, fun w' hw' => ?_⟩
@@ -84,6 +105,35 @@ theorem IsLieBasisOver.away (hv : ∀ i, IsTangent (v i)) (h : IsLieBasisOver S 
     refine ⟨fun i => ρ (s i) * t, ?_⟩
     rw [← scl_tanExp, ← res_tanExp, e, scl_scl, ht, scl_one]
 
+/- English proof (translation)
+Take `⟨B, _, _, j, u, hj, hu⟩` from `hS`. Use `smooth_of_chart j` as an intermediate fact. Take `⟨κ, _, β, τ, hτ⟩` from `exists_ders R B`. Set `E` to `TrivSqZeroExt S (Fin n → S)`. Set `e : Fin n → E` to `fun i => inr (Pi.single i 1)`.
+
+Establish `he : ∀ i j, e i * e j = 0` using `fun i j => TrivSqZeroExt.inr_mul_inr _ _ _`. Take `⟨χ, hχ, hχu⟩` from `exists_chart_of_mem_redKer j ((TrivSqZeroExt.inlAlgHom R S (Fin n → S)).comp u) (by rw [← spMap_comp, Category.assoc, hu, comp_one']) (ker_fst_sq (R := R) (S := S) (Fin n → S)) (lieExp_mem_redKer hv e (fun i => rfl) fun i => he i i)`. Establish `hχu' : ∀ b, (χ b).fst = u b` using `fun b => by`. Simplify `hχu b` using `[RingHom.mem_ker, sub_eq_zero]`. Establish `F : ∀ {T : Type} [CommRing T] [Algebra R T] (θ : S →ₐ[R] T) (c : Fin n → T) (hc : ∀ i k, c i * c k = 0), lieExp v c (fun i => hc i i) = spMap ((vecTo θ c hc).comp χ) ≫ j`.
+
+Introduce `T _ _ θ c hc`. Rewrite using `[← spMap_comp, Category.assoc, ← hχ, comp_lieExp]`. Conclude with `lieExp_congr _ (fun i => (vecTo_single θ c hc i).symm) _ _`. Establish `Finr : ∀ s : Fin n → S, tanExp v s = spMap ((vecTo (inlS R S) (fun i => inr (s i)) (fun _ _ => TrivSqZeroExt.inr_mul_inr _ _ _)).comp χ) ≫ j` using `fun s => F _ _ _`. Establish `ha : ∀ i, ∃ a : Fin n → S, ∀ b, u (τ i b) = ∑ k, (χ b).snd k * a k`.
+
+Introduce `i`. Set `t : κ → DualNumber S` to `fun k => inr (if k = i then 1 else 0)`. Establish `ht : ∀ k l, t k * t l = 0` using `fun _ _ => TrivSqZeroExt.inr_mul_inr _ _ _`. Take `⟨a, ha⟩` from `h.2 (spMap (addDers τ ((inlS R S).comp u) t ht) ≫ j) (by`. Rewrite using `[IsTanOver, ← Category.assoc, spMap_comp, ← hu]`.
+
+Use `congr 2`. Use extensionality with `b`. Simplify using `[addDers_apply, TrivSqZeroExt.fst_sum, t])`. Rewrite `ha` using `[Finr]`. Use `⟨a, fun b => ?_⟩` and prove the remaining obligations.
+
+Use `congrArg TrivSqZeroExt.snd (AlgHom.congr_fun (chart_inj j ha) b)` as an intermediate fact. Simplify `this` using `[addDers_apply, vecTo_apply, TrivSqZeroExt.snd_sum, t, mul_comm]`. Use `choose a ha using ha`. Establish `hX : ∀ b k, (χ b).snd k = ∑ i, u (τ i b) * (χ (β i)).snd k`. Introduce `b k`.
+
+Apply the tactic sequence `have := congrFun (congrArg TrivSqZeroExt.snd (hτ _ χ ((TrivSqZeroExt.inlAlgHom R S (Fin n → S)).comp u) (fun b b' => by ext <;> simp [hχu']) b)) k`. Simplify `this` using `[TrivSqZeroExt.snd_sum, hχu']`. Establish `hδ : ∀ k, (fun l => ∑ i, a i l * (χ (β i)).snd k) = Pi.single k 1`. Introduce `k`. Use `h.1 _ _ ?_` and prove the remaining obligations.
+
+Rewrite using `[Finr, Finr]`. Use `congr 2`. Use `AlgHom.ext fun b => TrivSqZeroExt.ext (by simp [vecTo_apply, TrivSqZeroExt.fst_sum]) ?_` and prove the remaining obligations. Establish `: ∑ l, (χ b).snd l * ∑ i, a i l * (χ (β i)).snd k = (χ b).snd k`. Rewrite using `[hX b k]`.
+
+Simplify using `only [ha, Finset.mul_sum, Finset.sum_mul, mul_assoc]`. Conclude with `Finset.sum_comm`. Simplify `this` using `[vecTo_apply, TrivSqZeroExt.snd_sum, Pi.single_apply, mul_comm]`. Introduce `J hJ`. Use `⟨fun c c' hcJ hcJ' hc hc' hcc => ?_, fun y hy => ?_⟩` and prove the remaining obligations.
+
+Rewrite `hcc` using `[F α c fun i k => mul_eq_zero_of_sq hJ (hcJ i) (hcJ k), F α c' fun i k => mul_eq_zero_of_sq hJ (hcJ' i) (hcJ' k)]`. Establish `e₁ : ∀ b, ∑ k, α ((χ b).snd k) * c k = ∑ k, α ((χ b).snd k) * c' k` using `fun b => by`. Simplify `AlgHom.congr_fun (chart_inj j hcc) b` using `[vecTo_apply]`. Establish `e₂ : ∀ (d : Fin n → A) l, d l = ∑ i, α (a i l) * ∑ k, α ((χ (β i)).snd k) * d k`. Introduce `d l`.
+
+Simplify using `only [Finset.mul_sum, ← mul_assoc, ← map_mul]`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [← Finset.sum_mul, ← map_sum]`. Establish `: ∀ k, ∑ i, a i l * (χ (β i)).snd k = (Pi.single k 1 : Fin n → S) l` using `fun k => congrFun (hδ k) l`. Simplify using `[this, Pi.single_apply, apply_ite]`.
+
+Use function extensionality and compare the values at `l`. Rewrite using `[e₂ c l, e₂ c' l]`. Simplify using `only [e₁]`. Take `⟨φ, rfl, hφ⟩` from `exists_chart_of_mem_redKer j (α.comp u) (by rw [← spMap_comp, Category.assoc, hu, comp_one']) hJ hy`. Set `c : Fin n → A` to `fun k => ∑ i, α (a i k) * (φ (β i) - α (u (β i)))`.
+
+Establish `hcJ : ∀ k, c k ∈ J` using `fun k => sum_mem fun i _ => J.mul_mem_left _ (hφ _)`. Use `⟨c, fun k => mul_eq_zero_of_sq hJ (hcJ k) (hcJ k), hcJ, ?_⟩` and prove the remaining obligations. Rewrite using `[F α c fun i k => mul_eq_zero_of_sq hJ (hcJ i) (hcJ k)]`. Use `congr 2`. Use extensionality with `b`.
+
+Use `hτ A φ (α.comp u) (fun b b' => mul_eq_zero_of_sq hJ (hφ b) (hφ b')) b` as an intermediate fact. Rewrite using `[AlgHom.comp_apply, vecTo_apply, hχu', ← sub_eq_iff_eq_add']`. Use `this.trans ?_` and prove the remaining obligations. Simplify using `only [AlgHom.comp_apply, ha, map_sum, map_mul, c, Finset.mul_sum, Finset.sum_mul, mul_assoc]`. Conclude with `Finset.sum_comm`.
+-/
 theorem expBij_of_unitInChart (hv : ∀ i, IsTangent (v i)) (hS : UnitInChart G S)
     (h : IsLieBasisOver S v) (α : S →ₐ[R] A) : ExpBij A v := by
   obtain ⟨B, _, _, j, u, hj, hu⟩ := hS
@@ -171,6 +221,11 @@ theorem expBij_of_unitInChart (hv : ∀ i, IsTangent (v i)) (hS : UnitInChart G 
       mul_assoc]
     exact Finset.sum_comm
 
+/- English proof (translation)
+Establish `: IsLocalization.Away.awayToAwayRight (S` using `Localization.Away f) (P := Localization.Away (f * g)) f g = a.toRingHom := by`. Apply `IsLocalization.ringHom_ext (Submonoid.powers f)` to reduce the goal to its premises. Use extensionality with `y`. Rewrite using `[RingHom.comp_apply, IsLocalization.Away.awayToAwayRight_eq]`. Conclude with `(AlgHom.congr_fun ha y).symm`.
+
+Rewrite using `[this]`. Both sides reduce to the same expression.
+-/
 theorem awayToAwayRight_eq_of_comp (f g : A)
     (a : Localization.Away f →ₐ[R] Localization.Away (f * g))
     (ha : a.comp (awayHom R f) = awayHom R (f * g)) (x : Localization.Away f) :
@@ -184,6 +239,11 @@ theorem awayToAwayRight_eq_of_comp (f g : A)
   rw [this]
   rfl
 
+/- English proof (translation)
+Establish `: IsLocalization.Away.awayToAwayLeft (S` using `Localization.Away g) (P := Localization.Away (f * g)) g f = b.toRingHom := by`. Apply `IsLocalization.ringHom_ext (Submonoid.powers g)` to reduce the goal to its premises. Use extensionality with `y`. Rewrite using `[RingHom.comp_apply, IsLocalization.Away.awayToAwayLeft_eq]`. Conclude with `(AlgHom.congr_fun hb y).symm`.
+
+Rewrite using `[this]`. Both sides reduce to the same expression.
+-/
 theorem awayToAwayLeft_eq_of_comp (f g : A)
     (b : Localization.Away g →ₐ[R] Localization.Away (f * g))
     (hb : b.comp (awayHom R g) = awayHom R (f * g)) (x : Localization.Away g) :
@@ -198,6 +258,23 @@ theorem awayToAwayLeft_eq_of_comp (f g : A)
   rfl
 
 omit [Smooth G.hom] in
+/- English proof (translation)
+Introduce `J hJ`. Establish `hs' : Ideal.span (Set.range (Subtype.val : s → A)) = ⊤`. Rewrite using `[Subtype.range_coe_subtype]` and apply the resulting hypothesis. Set `q : ∀ f : s, A →ₐ[R] Localization.Away f.1` to `fun f => awayHom R f.1`. Establish `hq : ∀ f : s, IsAway (q f) f.1` using `fun f => isAway_awayHom _`.
+
+Establish `hb` using `fun f : s => h f f.2 _ (q f) (hq f).unit (J.map (q f)) (map_sq hJ _)`. Use `⟨fun c c' hcJ hcJ' hc hc' hcc => funext fun i => ?_, fun y hy => ?_⟩` and prove the remaining obligations. Use `Localization.algebraMap_injective_of_span_eq_top s hs (funext fun f => ?_)` and prove the remaining obligations. Use `congrArg (spMap (q f) ≫ ·) hcc` as an intermediate fact. Simplify using `only [comp_lieExp] at this`.
+
+Conclude with `congrFun ((hb f).1 _ _ (fun i => Ideal.mem_map_of_mem _ (hcJ i)) (fun i => Ideal.mem_map_of_mem _ (hcJ' i)) _ _ this) i`. Use `choose d hd hdJ ed using fun f : s => (hb f).2 _ (comp_mem_redKer hy (q f) fun a ha => Ideal.mem_map_of_mem _ ha)`. Establish `compat : ∀ (i : Fin n) (f g : s), IsLocalization.Away.awayToAwayRight (P` using `Localization.Away (f * g : A)) f.1 g (d f i) = IsLocalization.Away.awayToAwayLeft g.1 f (d g i) := by`. Introduce `i f g`. Set `p` to `awayHom R (f * g : A)`.
+
+Establish `hp : IsAway p (f * g : A)` using `isAway_awayHom _`. Establish `hpf : IsUnit (p f)` using `isUnit_of_mul_isUnit_left (by rw [← map_mul]; exact hp.unit)`. Take `⟨a, ha⟩` from `(hq f).lift p hpf`. Take `⟨b, hb⟩` from `(hq g).lift p (isUnit_of_mul_isUnit_right (by rw [← map_mul]; exact hp.unit))`. Rewrite using `[awayToAwayRight_eq_of_comp f.1 g.1 a ha, awayToAwayLeft_eq_of_comp f.1 g.1 b hb]`.
+
+Establish `e : spMap a ≫ lieExp v (d f) (hd f) = spMap b ≫ lieExp v (d g) (hd g)`. Rewrite using `[← ed, ← ed, ← Category.assoc, ← Category.assoc, spMap_comp, spMap_comp, ha, hb]`. Rewrite `e` using `[comp_lieExp, comp_lieExp]`. Use `congrFun ((h f f.2 _ p hpf (J.map p) (map_sq hJ _)).1 _ _ (fun k => ?_) (fun k => ?_) _ _ e) i` and prove the remaining obligations. Rewrite using `[← ha, ← Ideal.map_mapₐ]`.
+
+Conclude with `Ideal.mem_map_of_mem _ (hdJ f k)`. Rewrite using `[← hb, ← Ideal.map_mapₐ]`. Conclude with `Ideal.mem_map_of_mem _ (hdJ g k)`. Use `choose c hc using fun i => (Localization.existsUnique_algebraMap_eq_of_span_eq_top s hs (fun f => d f i) (compat i)).exists`. Establish `hcJ : ∀ i, c i ∈ J` using `fun i => Submodule.mem_of_span_eq_top_of_smul_pow_mem J s hs _ fun f => (hq f).pow_mul_mem (by`.
+
+Establish `: q f (c i) = d f i` using `hc i f`. Rewrite using `[this]`. Conclude with `hdJ f i)`. Use `⟨c, fun i => mul_eq_zero_of_sq hJ (hcJ i) (hcJ i), hcJ, away_ext hs' q hq fun f => ?_⟩` and prove the remaining obligations. Rewrite using `[ed, comp_lieExp]`.
+
+Conclude with `lieExp_congr _ (fun i => (hc i f).symm) _ _`.
+-/
 theorem expBij_of_span {s : Set A} (hs : Ideal.span s = ⊤)
     (h : ∀ f ∈ s, ∀ (T : Type) [CommRing T] [Algebra R T] (φ : A →ₐ[R] T), IsUnit (φ f) →
       ExpBij T v) : ExpBij A v := by
@@ -250,6 +327,11 @@ theorem expBij_of_span {s : Set A} (hs : Ideal.span s = ⊤)
 
 variable (A) in
 
+/- English proof (translation)
+Use `expBij_of_span (s := Algebra.ofId R A '' {g : R | UnitInChart G (Localization.Away g)}) ?_ ?_` and prove the remaining obligations. Rewrite using `[← Ideal.map_span, span_unitInChart, Ideal.map_top]`. Introduce and unpack `_ ⟨g, hg, rfl⟩ T _ _ φ hφ`. Establish `hρ` using `isAway_awayHom (R := R) g`. Take `⟨α, -⟩` from `hρ.lift (φ.comp (Algebra.ofId R A)) hφ`.
+
+Conclude with `expBij_of_unitInChart hv.1 hg ((isLieBasisOver_self hv).away hv.1 hρ) α`.
+-/
 theorem expBij (hv : IsLieBasis v) : ExpBij A v := by
   refine expBij_of_span
     (s := Algebra.ofId R A '' {g : R | UnitInChart G (Localization.Away g)}) ?_ ?_

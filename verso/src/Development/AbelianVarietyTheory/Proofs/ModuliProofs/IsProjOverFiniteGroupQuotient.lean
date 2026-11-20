@@ -16,6 +16,15 @@ open scoped CategoryTheory.Obj TensorProduct Pointwise
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `hA : IsAmpleLB L`. Use `⟨hL, ⟨?_⟩, ?_⟩` and prove the remaining obligations. Establish `hu : (Set.univ : Set X) = ⋃ i, (Out.nonzeroLocus (σ i) : Set X)`. Rewrite using `[← TopologicalSpace.Opens.coe_iSup, hc]`. Both sides reduce to the same expression.
+
+Rewrite using `[hu]`. Conclude with `isCompact_iUnion fun i => (ha i).isCompact`. Introduce `x`. Establish `hx : x ∈ (⊤ : X.Opens)` using `trivial`. Rewrite `hx` using `[← hc]`.
+
+Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 hx`. Use `⟨1, le_rfl, secToPow (σ i) 1, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[nonzeroLocus_secToPow (σ i) le_rfl]`. Conclude with `hi`. Rewrite using `[nonzeroLocus_secToPow (σ i) le_rfl]`.
+
+Conclude with `ha i`. Conclude with `hA.isProjOver s`.
+-/
 theorem isProjOver_of_isProper_of_affine_cover {R : Type} [CommRing R] {X : Scheme.{0}} (s : X ⟶ Sp R) [IsProper s]
     {L : LB X} (hL : L.IsLB) {n : ℕ} (σ : Fin n → LB.Sec L) (ha : ∀ i, IsAffineOpen (Out.nonzeroLocus (σ i)))
     (hc : ⨆ i, Out.nonzeroLocus (σ i) = ⊤) : IsProjOver s := by
@@ -37,6 +46,13 @@ theorem isProjOver_of_isProper_of_affine_cover {R : Type} [CommRing R] {X : Sche
         exact ha i
   exact hA.isProjOver s
 
+/- English proof (translation)
+Introduce `Γ _ _ X X' ρ π hq R _ _ s' hX`. Establish `hQ : IsAffineQuotient ρ π` using `⟨hq.2.1, hq.1, fun W => (hq.2.2 W).1, fun W f hf => (hq.2.2 W).2 f (by`. Unfold `IsInvariantSection at hf`. Conclude with `fun g _ => (hf g).2)⟩`. Establish `hP : IsProper (π ≫ s')` using `((isProjOver_iff_isProper_and_exists_isAmpleLB _).1 hX).1`.
+
+Establish `hs' : IsProper s'` using `hQ.isProper s'`. Establish `hXs : X.IsSeparated`. Prove the components needed by the constructor for the conclusion. Rewrite using `[show terminal.from X = (π ≫ s') ≫ terminal.from (Sp R) from terminal.hom_ext _ _]`. Use `infer_instance`.
+
+Take `⟨L, n, σ, hL, ha, ho⟩` from `exists_sections_orbit_subset_nonzeroLocus Γ R X (π ≫ s') ρ hX`. Take `⟨L', n', σ', hL', ha', hc'⟩` from `QuotientNorm.exists_affine_cover_of_quotient Γ X X' ρ π hq hXs L n σ hL ha ho`. Conclude with `isProjOver_of_isProper_of_affine_cover s' hL' σ' ha' hc'`.
+-/
 theorem isProjOver_quotient : ∀ (Γ : Type) [Group Γ] [Finite Γ] (X X' : Scheme.{0}) (ρ : Γ →* Aut X) (π : X ⟶ X'), (IsAffineHom π ∧ (∀ g, (ρ g).hom ≫ π = π) ∧ ∀ V : X'.Opens, Function.Injective (π.app V).hom ∧ ∀ f : Γ(X, π ⁻¹ᵁ V), (∀ g (h : π ⁻¹ᵁ V ≤ (ρ g).hom ⁻¹ᵁ (π ⁻¹ᵁ V)), ((ρ g).hom.appLE _ _ h).hom f = f) → f ∈ Set.range (π.app V).hom) → ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (s' : X' ⟶ Sp R), IsProjOver (π ≫ s') → IsProjOver s' := by
   intro Γ _ _ X X' ρ π hq R _ _ s' hX
   have hQ : IsAffineQuotient ρ π :=

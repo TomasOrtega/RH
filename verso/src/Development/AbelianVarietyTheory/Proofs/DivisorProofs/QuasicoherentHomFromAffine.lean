@@ -12,6 +12,9 @@ namespace GlobalTheory.Glue
 
 variable {T : Scheme.{0}} {F G : T.Modules}
 
+/- English proof (translation)
+Introduce `x hx`. Take `⟨W, hW, hxW, hWU⟩` from `(Opens.isBasis_iff_nbhd.mp T.isBasis_affineOpens) hx`. Conclude with `Opens.mem_iSup.2 ⟨⟨W, hW, hWU⟩, hxW⟩`.
+-/
 theorem le_iSup_affine (U : T.Opens) :
     U ≤ ⨆ k : {W : T.Opens // IsAffineOpen W ∧ W ≤ U}, k.1 := by
   intro x hx
@@ -24,6 +27,9 @@ variable (j : ∀ V : T.Opens, IsAffineOpen V → Γ(F, V) →ₗ[Γ(T, V)] Γ(G
 
 include hj in
 
+/- English proof (translation)
+Use `GlobalTheory.Twist.sec_ext_of_cover (fun k : {Z : T.Opens // IsAffineOpen Z ∧ Z ≤ V} => k.1) (fun k => k.2.2) (le_iSup_affine V) fun k => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.Twist.resM_resM, GlobalTheory.Twist.resM_resM, ← hj _ _ hW k.2.1, ← hj _ _ hW' k.2.1, GlobalTheory.Twist.resM_resM, GlobalTheory.Twist.resM_resM]`.
+-/
 theorem agree {U W W' V : T.Opens} (hW : IsAffineOpen W) (hW' : IsAffineOpen W') (hWU : W ≤ U)
     (hW'U : W' ≤ U) (h₁ : V ≤ W) (h₂ : V ≤ W') (s : Γ(F, U)) :
     GlobalTheory.Twist.resM G h₁ (j W hW (GlobalTheory.Twist.resM F hWU s)) =
@@ -34,6 +40,9 @@ theorem agree {U W W' V : T.Opens} (hW : IsAffineOpen W) (hW' : IsAffineOpen W')
     GlobalTheory.Twist.resM_resM, GlobalTheory.Twist.resM_resM]
 
 include hj in
+/- English proof (translation)
+Take `⟨t, ht⟩` from `GlobalTheory.Twist.exists_sec_of_cover (fun k : {Z : T.Opens // IsAffineOpen Z ∧ Z ≤ U} => k.1) (fun k => k.2.2) (le_iSup_affine U) (fun k => j k.1 k.2.1 (GlobalTheory.Twist.resM F k.2.2 s)) fun k l => agree j hj k.2.1 l.2.1 k.2.2 l.2.2 _ _ s`. Conclude with `⟨t, fun W hW hWU => ht ⟨W, hW, hWU⟩⟩`.
+-/
 theorem exists_glue (U : T.Opens) (s : Γ(F, U)) :
     ∃ t : Γ(G, U), ∀ (W : T.Opens) (hW : IsAffineOpen W) (hWU : W ≤ U),
       GlobalTheory.Twist.resM G hWU t = j W hW (GlobalTheory.Twist.resM F hWU s) := by
@@ -45,10 +54,16 @@ theorem exists_glue (U : T.Opens) (s : Γ(F, U)) :
 
 def glue (U : T.Opens) (s : Γ(F, U)) : Γ(G, U) := Classical.choose (exists_glue j hj U s)
 
+/- English proof (translation)
+The claim follows from `Classical.choose_spec (exists_glue j hj U s) W hW hWU`.
+-/
 theorem glue_spec (U : T.Opens) (s : Γ(F, U)) (W : T.Opens) (hW : IsAffineOpen W) (hWU : W ≤ U) :
     GlobalTheory.Twist.resM G hWU (glue j hj U s) = j W hW (GlobalTheory.Twist.resM F hWU s) :=
   Classical.choose_spec (exists_glue j hj U s) W hW hWU
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.Twist.sec_ext_of_cover (fun k : {Z : T.Opens // IsAffineOpen Z ∧ Z ≤ U} => k.1) (fun k => k.2.2) (le_iSup_affine U) fun k => h k.1 k.2.1 k.2.2`.
+-/
 theorem ext_affine {U : T.Opens} {t t' : Γ(G, U)}
     (h : ∀ (W : T.Opens) (_ : IsAffineOpen W) (hWU : W ≤ U),
       GlobalTheory.Twist.resM G hWU t = GlobalTheory.Twist.resM G hWU t') : t = t' :=
@@ -64,6 +79,9 @@ def glueLinear (U : T.Opens) : Γ(F, U) →ₗ[Γ(T, U)] Γ(G, U) where
     rw [RingHom.id_apply, GlobalTheory.Twist.resM_smul, glue_spec j hj _ _ W hW, glue_spec j hj _ _ W hW,
       GlobalTheory.Twist.resM_smul, map_smul]
 
+/- English proof (translation)
+The claim follows from `ext_affine fun W hW hWV => by change GlobalTheory.Twist.resM G hWV (glue j hj V _) = GlobalTheory.Twist.resM G hWV (GlobalTheory.Twist.resM G h (glue j hj U s)) rw [glue_spec j hj V _ W hW hWV, GlobalTheory.Twist.resM_resM, GlobalTheory.Twist.resM_resM, glue_spec j hj U s W hW]`.
+-/
 theorem glueLinear_res {U V : T.Opens} (h : V ≤ U) (s : Γ(F, U)) :
     glueLinear j hj V (GlobalTheory.Twist.resM F h s) = GlobalTheory.Twist.resM G h (glueLinear j hj U s) :=
   ext_affine fun W hW hWV => by
@@ -74,6 +92,9 @@ theorem glueLinear_res {U V : T.Opens} (h : V ≤ U) (s : Γ(F, U)) :
 
 include hj in
 
+/- English proof (translation)
+Use `⟨GlobalTheory.LB.homOfLinear (glueLinear j hj) fun h s => glueLinear_res j hj h s, fun V hV => ?_⟩` and prove the remaining obligations. Use extensionality with `s`. Rewrite using `[GlobalTheory.QCoh.appLinear_apply, GlobalTheory.LB.homOfLinear_app]`. Express the relevant statement in the definitionally equal form `glue j hj V s = j V hV s`. Conclude with `ext_affine fun W hW hWV => by rw [glue_spec j hj V s W hW hWV, hj V W hV hW hWV]`.
+-/
 theorem exists_hom_of_affine :
     ∃ i : F ⟶ G, ∀ (V : T.Opens) (hV : IsAffineOpen V), GlobalTheory.QCoh.appLinear i V = j V hV := by
   refine ⟨GlobalTheory.LB.homOfLinear (glueLinear j hj) fun h s => glueLinear_res j hj h s, fun V hV => ?_⟩
@@ -84,6 +105,9 @@ theorem exists_hom_of_affine :
 
 end GlobalTheory.Glue
 
+/- English proof (translation)
+Introduce `_ _ _ j hj` and use `GlobalTheory.Glue.exists_hom_of_affine j hj`.
+-/
 theorem GlobalTheory.hom_of_affine_compatible : ∀ (T : Scheme.{0}) (F G : T.Modules)
     (j : ∀ V : T.Opens, IsAffineOpen V → Γ(F, V) →ₗ[Γ(T, V)] Γ(G, V)),
     (∀ (V V' : T.Opens) (hV : IsAffineOpen V) (hV' : IsAffineOpen V') (h : V' ≤ V) (s : Γ(F, V)),

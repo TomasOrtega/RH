@@ -16,6 +16,17 @@ noncomputable section
 
 namespace GlobalTheory.GlobProj
 
+/- English proof (translation)
+Establish `hbd : ∀ z, ‖⟪x, R z y⟫_ℂ‖ ≤ ‖x‖ * ‖y‖` using `fun z => by`. Combine the equalities or inequalities in the displayed calculation. Establish `hae : Integrable (fun z : X × Y => a z.1 * e z.2) (μ.prod ν)` using `ha.mul_prod he`. Establish `hint : Integrable (fun z : X × Y => (a z.1 * e z.2) * ⟪x, R z y⟫_ℂ) (μ.prod ν)`. Use `Integrable.mono' (hae.norm.mul_const (‖x‖ * ‖y‖)) (hae.aestronglyMeasurable.mul hm) ?_` and prove the remaining obligations.
+
+Use `ae_of_all _ fun z => ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_mul_of_nonneg_left (hbd z) (norm_nonneg _)`. Rewrite using `[integral_prod _ hint, ContinuousLinearMap.comp_apply, hP]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `g`. Simplify using `only`. Establish `h1 : ⟪x, A g (E y)⟫_ℂ = ∫ k, e k * ⟪x, R (g, k) y⟫_ℂ ∂ν`. Rewrite using `[← ContinuousLinearMap.adjoint_inner_left (A g) (E y) x, hE]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `k`. Rewrite using `[ContinuousLinearMap.adjoint_inner_left, hR, ContinuousLinearMap.mul_apply]`. Rewrite using `[h1, ← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `k`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem weak_integral_prod {X Y H : Type} [MeasurableSpace X] [MeasurableSpace Y]
     [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
     (μ : Measure X) (ν : Measure Y) [SFinite μ] [SFinite ν]
@@ -49,6 +60,13 @@ theorem weak_integral_prod {X Y H : Type} [MeasurableSpace X] [MeasurableSpace Y
   funext k
   ring
 
+/- English proof (translation)
+Take `⟨-, hmul, hnorm, hcont, -⟩` from `GlobalTheory.RightRegFund.rightReg_unitary_continuous B`. Use `haveI : SFinite (muInf B.I) := by unfold muInf; infer_instance`. Establish `hE` using `B.Re_spec`. Establish `key : ∀ x y : B.I.L2 B.μf B.fund, ⟪x, (P.comp B.Re) y⟫_ℂ = ∫ g, (fun z : B.I.GA => a z.1 * B.e z.2) g * ⟪x, B.R g y⟫_ℂ ∂(B.I.muA B.μf)`. Introduce `x y`.
+
+Establish `hm : AEStronglyMeasurable (fun z => ⟪x, B.R z y⟫_ℂ) ((muInf B.I).prod B.μf)` using `(continuous_const.inner (hcont y)).aestronglyMeasurable`. Conclude with `weak_integral_prod (muInf B.I) B.μf B.R (fun g => B.R (g, 1)) (fun k => B.R (1, k)) (fun g k => by rw [← hmul, Prod.mk_mul_mk, mul_one, one_mul]) (fun z v => hnorm z v) a B.e ha hE.1 P B.Re hP.2 hE.2 x y hm`. Establish `hint : Integrable (fun z : B.I.GA => a z.1 * B.e z.2) (B.I.muA B.μf)` using `ha.mul_prod hE.1`. Use `⟨⟨hint, key⟩, fun T hT => ?_⟩` and prove the remaining obligations. Use `ContinuousLinearMap.ext fun y => ext_inner_left ℂ fun x => ?_` and prove the remaining obligations.
+
+Rewrite using `[hT.2, key]`.
+-/
 theorem conv_prod (B : RowsAut) (a : B.I.Ginf → ℂ) (P : B.I.L2 B.μf B.fund →L[ℂ] B.I.L2 B.μf B.fund)
     (ha : Integrable a (muInf B.I)) (hP : IsOpOf (muInf B.I) (fun g => B.R (g, 1)) a P) :
     B.I.IsRConv B.μf B.fund B.R (fun x => a x.1 * B.e x.2) (P.comp B.Re) ∧
@@ -69,6 +87,11 @@ theorem conv_prod (B : RowsAut) (a : B.I.Ginf → ℂ) (P : B.I.L2 B.μf B.fund 
   refine ContinuousLinearMap.ext fun y => ext_inner_left ℂ fun x => ?_
   rw [hT.2, key]
 
+/- English proof (translation)
+Use `ext_inner_left ℂ fun x => ?_` and prove the remaining obligations. Rewrite using `[hP.2 x (E y), ← hE x (P y), hP.2 (E x) y]`. Use `congr 1`. Use function extensionality and compare the values at `g`. Use `congr 1`.
+
+Establish `h` using `congrArg (fun T : L →L[ℂ] L => T y) (hc g)`. Simplify using `only [ContinuousLinearMap.comp_apply] at h`. Rewrite using `[← h, hE]`.
+-/
 theorem comm_of_isOpOf {G L : Type} [MeasurableSpace G] [NormedAddCommGroup L] [InnerProductSpace ℂ L]
     {μ : Measure G} {π : G → (L →L[ℂ] L)} {φ : G → ℂ} {P E : L →L[ℂ] L} (hP : IsOpOf μ π φ P)
     (hE : ∀ x y : L, ⟪E x, y⟫_ℂ = ⟪x, E y⟫_ℂ) (hc : ∀ g, E.comp (π g) = (π g).comp E) (y : L) :
@@ -82,6 +105,27 @@ theorem comm_of_isOpOf {G L : Type} [MeasurableSpace G] [NormedAddCommGroup L] [
   simp only [ContinuousLinearMap.comp_apply] at h
   rw [← h, hE]
 
+/- English proof (translation)
+Establish `hQQ : ∀ y, P (E (P (E y))) = P (E y)` using `fun y => by rw [← hPE, hPP, hEE]`. Establish `hSi : ∀ A ∈ S, ∀ g, A ∘L σ g = π g ∘L A`. Introduce `A hA g`. Take `⟨A₀, hA₀, rfl⟩` from `(hS A).1 hA`. Rewrite using `[ContinuousLinearMap.comp_assoc, hA₀ g, ← ContinuousLinearMap.comp_assoc, hc g, ContinuousLinearMap.comp_assoc]`.
+
+Establish `huniq : ∀ A ∈ S, ∀ A' ∈ S, A w = A' w → A = A'`. Introduce `A hA A' hA' h`. Use `ContinuousLinearMap.ext_on hw ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨g, rfl⟩`. Establish `e1` using `congrArg (fun T : H →L[ℂ] L => T w) (hSi A hA g)`.
+
+Establish `e2` using `congrArg (fun T : H →L[ℂ] L => T w) (hSi A' hA' g)`. Simplify using `only [ContinuousLinearMap.comp_apply] at e1 e2`. Use `show A (σ g w) = A' (σ g w)`. Rewrite using `[e1, e2, h]`. Establish `hfix : ∀ A ∈ S, (P.comp E) (A w) = A w`.
+
+Introduce `A hA`. Take `⟨A₀, hA₀, rfl⟩` from `(hS A).1 hA`. Take `⟨y, hy⟩` from `(hr (A₀ w)).2 ⟨A₀, hA₀, rfl⟩`. Simplify using `only [ContinuousLinearMap.comp_apply]`. Rewrite using `[hEE, hPE, ← hy, hPP]`.
+
+Establish `hex : ∀ y, (P.comp E) y = y → ∃! A, A ∈ S ∧ A w = y`. Introduce `y hy`. Simplify using `only [ContinuousLinearMap.comp_apply] at hy`. Take `⟨io, hio, hyw⟩` from `(hr y).1 ⟨E y, hy⟩`. Establish `hEy : E y = y` using `by rw [← hy, ← hPE, hEE]`.
+
+Establish `hmem : E ∘L io ∈ S` using `(hS _).2 ⟨io, hio, rfl⟩`. Establish `hval : (E ∘L io) w = y` using `by rw [ContinuousLinearMap.comp_apply, ← hyw, hEy]`. Use `⟨E ∘L io, ⟨hmem, hval⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `A ⟨hA, hAw⟩`. Conclude with `huniq A hA _ hmem (by rw [hAw, hval])`.
+
+Use `⟨⟨?_, ?_, rfl⟩, hfix, hex, ?_⟩` and prove the remaining obligations. Use extensionality with `y`. Simplify using `only [ContinuousLinearMap.comp_apply]`. Conclude with `hQQ y`. Introduce `x y`.
+
+Simplify using `only [ContinuousLinearMap.comp_apply]`. Rewrite using `[hPs, hEs, ← hPE]`. Set `f : S →ₗ[ℂ] LinearMap.range ((P.comp E : L →L[ℂ] L) : L →ₗ[ℂ] L)` to `{ toFun := fun A => ⟨(A : H →L[ℂ] L) w, LinearMap.mem_range.2 ⟨(A : H →L[ℂ] L) w, hfix A A.2⟩⟩ map_add' := fun A B => Subtype.ext rfl map_smul' := fun c A => Subtype.ext rfl }`. Establish `hinj : Function.Injective f` using `fun A A' h => Subtype.ext (huniq _ A.2 _ A'.2 (congrArg Subtype.val h))`. Establish `hsurj : Function.Surjective f`.
+
+Introduce and unpack `⟨y, hy⟩`. Take `⟨z, rfl⟩` from `LinearMap.mem_range.1 hy`. Take `⟨A, ⟨hA, hAw⟩, -⟩` from `hex _ (by`. Simplify using `only [ContinuousLinearMap.coe_coe, ContinuousLinearMap.comp_apply]`. Conclude with `hQQ z)`.
+
+Conclude with `⟨⟨A, hA⟩, Subtype.ext hAw⟩`. Conclude with `⟨LinearEquiv.ofBijective f ⟨hinj, hsurj⟩⟩`.
+-/
 theorem abstract_count {G H L : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     [NormedAddCommGroup L] [InnerProductSpace ℂ L]
     (σ : G → (H →L[ℂ] H)) (π : G → (L →L[ℂ] L)) (w : H)
@@ -149,6 +193,33 @@ theorem abstract_count {G H L : Type} [NormedAddCommGroup H] [InnerProductSpace 
       exact ⟨⟨A, hA⟩, Subtype.ext hAw⟩
     exact ⟨LinearEquiv.ofBijective f ⟨hinj, hsurj⟩⟩
 
+/- English proof (translation)
+Introduce `B d hd hint`. Take `⟨hReP, hReC, -⟩` from `GlobalTheory.IdemProj.re_orth_proj B`. Take `⟨hU, -, hF, hnw, hph⟩` from `GlobalTheory.T.completedTensorDiscreteSeries_irreducible_formalDegree B d hd`. Take `⟨h1, hmul, hnorm, hcont, -⟩` from `GlobalTheory.RightRegFund.rightReg_unitary_continuous B`. Use `haveI : (muInf B.I).IsHaarMeasure := by unfold muInf; infer_instance`.
+
+Use `haveI : ∀ v, (muG (B.I.ε v)).IsMulRightInvariant := fun v => ⟨fun g => Formalism.REAL.indefinite_unitary_unimodular _ (B.I.ε v) g⟩`. Use `haveI : (muInf B.I).IsMulRightInvariant := by unfold muInf; infer_instance`. Set `σh : B.I.Ginf →* (B.Hs →L[ℂ] B.Hs)` to `{ toFun := B.σs, map_one' := hU.1, map_mul' := hU.2.1 }`. Set `πh : B.I.Ginf →* (B.I.L2 B.μf B.fund →L[ℂ] B.I.L2 B.μf B.fund)` to `{ toFun := fun g => B.R (g, 1), map_one' := h1 map_mul' := fun a b => by rw [← hmul, Prod.mk_mul_mk, mul_one] }`. Establish `hDne : ((∏ v, d v : ℝ) : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 hF.1.ne'`.
+
+Establish `hsq : ∀ x y : B.Hs, Integrable (fun g => ‖⟪y, σh g x⟫_ℂ‖ ^ 2) (muInf B.I) ∧ ∫ g, ‖⟪y, σh g x⟫_ℂ‖ ^ 2 ∂(muInf B.I) = ‖x‖ ^ 2 * ‖y‖ ^ 2 / (∏ v, d v)`. Introduce `x y`. Take `⟨hi, he⟩` from `hF.2 x y x y`. Establish `hre : ∀ g, RCLike.re (⟪y, B.σs g x⟫_ℂ * star ⟪y, B.σs g x⟫_ℂ) = ‖⟪y, σh g x⟫_ℂ‖ ^ 2`. Introduce `g`.
+
+Rewrite using `[RCLike.star_def, RCLike.mul_conj]`. Use `norm_cast`. Establish `hfun : (fun g => ‖⟪y, σh g x⟫_ℂ‖ ^ 2) = fun g => RCLike.re (⟪y, B.σs g x⟫_ℂ * star ⟪y, B.σs g x⟫_ℂ)` using `funext fun g => (hre g).symm`. Rewrite using `[hfun]`. Use `⟨hi.re, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[integral_re hi, he, inner_self_eq_norm_sq_to_K, inner_self_eq_norm_sq_to_K]`. Establish `hc : ((‖x‖ ^ 2 * ‖y‖ ^ 2 / ∏ v, d v : ℝ) : ℂ) = (‖x‖ : ℂ) ^ 2 * (‖y‖ : ℂ) ^ 2 / ((∏ v, d v : ℝ) : ℂ)` using `by push_cast; ring`. Rewrite using `[← RCLike.ofReal_re (K := ℂ) (‖x‖ ^ 2 * ‖y‖ ^ 2 / ∏ v, d v)]`. Use `congr 1`. Conclude with `hc.symm`.
+
+Establish `hintw : Integrable (fun g => ⟪B.tens B.w, σh g (B.tens B.w)⟫_ℂ) (muInf B.I)`. Use `Integrable.mono' (hint.norm.const_mul (∏ v, d v)⁻¹) (continuous_const.inner (hU.2.2.2 (B.tens B.w))).aestronglyMeasurable (ae_of_all _ fun g => ?_)` and prove the remaining obligations. Use `show ‖⟪B.tens B.w, B.σs g (B.tens B.w)⟫_ℂ‖ ≤ (∏ v, d v)⁻¹ * ‖ph B d g‖`. Rewrite using `[hph g, norm_mul, norm_star, Complex.norm_of_nonneg hF.1.le, ← mul_assoc, inv_mul_cancel₀ hF.1.ne', one_mul]`. Take `⟨-, -, hPA⟩` from `projAbs_holds B.I.Ginf (muInf B.I) B.Hs σh (fun g x => hU.2.2.1 g x) hU.2.2.2 (∏ v, d v) hF.1 hsq (B.tens B.w) hnw hintw`.
+
+Take `⟨⟨P, hP⟩, hPall⟩` from `hPA (B.I.L2 B.μf B.fund) πh (fun g x => hnorm _ x) (fun x => (hcont x).comp (continuous_id.prodMk continuous_const))`. Take `⟨hSP, -, -, hrange⟩` from `hPall P hP`. Establish `hphG : phG (∏ v, d v) σh (B.tens B.w) = ph B d` using `funext fun g => (hph g).symm`. Establish `hPop : IsOpOf (muInf B.I) (fun g => B.R (g, 1)) (ph B d) P`. Use `⟨by rw [← hphG]; exact hP.1, fun x y => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hP.2 x y, hphG]`. Both sides reduce to the same expression. Establish `hPP : ∀ y, P (P y) = P y` using `fun y => by`. Establish `h` using `congrArg (fun T : B.I.L2 B.μf B.fund →L[ℂ] B.I.L2 B.μf B.fund => T y) hSP.isIdempotentElem.eq`. Simplify using `using h`.
+
+Establish `hPs : ∀ x y : B.I.L2 B.μf B.fund, ⟪P x, y⟫_ℂ = ⟪x, P y⟫_ℂ` using `fun x y => by`. Rewrite using `[← ContinuousLinearMap.adjoint_inner_left P y x, hSP.isSelfAdjoint.adjoint_eq]`. Establish `hr : ∀ v, (∃ y, P y = v) ↔ ∃ io : B.Hs →L[ℂ] B.I.L2 B.μf B.fund, (∀ g : B.I.Ginf, io ∘L B.σs g = B.R (g, 1) ∘L io) ∧ v = io (B.tens B.w)` using `fun v => by`. Establish `h` using `Set.ext_iff.1 hrange v`. Simplify using `only [SetLike.mem_coe, LinearMap.mem_range, ContinuousLinearMap.coe_coe, Set.mem_setOf_eq] at h`.
+
+Conclude with `h`. Establish `hS : ∀ A, A ∈ B.I.eHom B.σs B.μf B.fund B.R B.Re ↔ ∃ A₀ : B.Hs →L[ℂ] B.I.L2 B.μf B.fund, (∀ g : B.I.Ginf, A₀ ∘L B.σs g = B.R (g, 1) ∘L A₀) ∧ B.Re ∘L A₀ = A`. Introduce `A`. Simplify using `only [AutInst.eHom, Submodule.mem_map]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨A₀, hA₀, rfl⟩`. Conclude with `⟨A₀, hA₀, rfl⟩`. Introduce and unpack `⟨A₀, hA₀, rfl⟩`. Conclude with `⟨A₀, hA₀, rfl⟩`. Establish `hPE : ∀ y, P (B.Re y) = B.Re (P y)` using `comm_of_isOpOf hPop hReP.2.1 hReC`.
+
+Establish `hEE : ∀ y, B.Re (B.Re y) = B.Re y` using `fun y => congrArg (fun T : B.I.L2 B.μf B.fund →L[ℂ] B.I.L2 B.μf B.fund => T y) hReP.1`. Establish `hwd` using `hF.dense_span_orbit (B.tens B.w) (norm_ne_zero_iff.1 (by rw [hnw]; exact one_ne_zero))`. Establish `hAC` using `abstract_count B.σs (fun g => B.R (g, 1)) (B.tens B.w) hwd P B.Re hPP hPs hEE hReP.2.1 hPE hReC hr _ hS`. Establish `hconv` using `conv_prod B (ph B d) P hint hPop`. Use `⟨hReP, hReC, ⟨P.comp B.Re, hconv.1⟩, fun T hT => ?_⟩` and prove the remaining obligations.
+
+Take `rfl` from `hconv.2 T hT`. Take `⟨h1', h2', h3', ⟨eq⟩⟩` from `hAC`. Use `⟨h1', h2', h3', fun hfd => ?_, (LinearEquiv.finrank_eq eq).symm⟩` and prove the remaining obligations. Use `haveI := hfd`. Conclude with `LinearEquiv.finiteDimensional eq`.
+-/
 theorem globalProj_holds : GlobalProj := by
   intro B d hd hint
   obtain ⟨hReP, hReC, -⟩ := GlobalTheory.IdemProj.re_orth_proj B

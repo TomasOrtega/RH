@@ -13,6 +13,9 @@ namespace ReciprocityTheory.ChartRestriction.DS
 variable {n : ℕ} {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
   {ε : Fin n → Bool} {lam : Fin n → ℝ} {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)}
 
+/- English proof (translation)
+Take `⟨-, -, ⟨-, hnorm, hcont⟩, -⟩` from `hDS`. Take `⟨hw1, -⟩` from `hw`. Use `⟨?_, fun g hg => ?_⟩` and prove the remaining obligations. Conclude with `continuousOn_const.inner (hcont w)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem coef_continuousOn_le_one (hDS : Formalism.MainNotions.S.IsDS ε lam σ) {w : H}
     (hw : Formalism.MainNotions.S.IsLowUnit ε lam σ w) :
     ContinuousOn (fun g => ⟪w, σ g w⟫_ℂ) {g | inUJ ε g} ∧ ∀ g, inUJ ε g → ‖⟪w, σ g w⟫_ℂ‖ ≤ 1 := by
@@ -23,6 +26,15 @@ theorem coef_continuousOn_le_one (hDS : Formalism.MainNotions.S.IsDS ε lam σ) 
   · calc ‖⟪w, σ g w⟫_ℂ‖ ≤ ‖w‖ * ‖σ g w‖ := norm_inner_le_norm _ _
       _ = 1 := by rw [hnorm g hg w, hw1, one_mul]
 
+/- English proof (translation)
+Take `⟨T⟩` from `HW.kType_exists ε lam hlam`. Take `⟨Ψ, hP, hdec⟩` from `exists_isPsiFor S7.psiExists T hlam hgap hq h8`. Establish `hsg : StdGap ε lam` using `⟨hlam.1, h, hgap, hstd⟩`. Take `⟨j, hj, -, hrange, hadj⟩` from `anyF hDS hsg hP`. Take `⟨hw1, hwS⟩` from `hw`.
+
+Rewrite `hwS` using `[← hrange]`. Take `⟨v, rfl⟩` from `hwS`. Establish `hexp : NormedSpace.exp X ∈ UJset ε`. Use `rq_exp_mem ε X hX.1 1` as an intermediate fact. Rewrite `this` using `[Complex.ofReal_one, one_smul]`. Then use the resulting hypothesis.
+
+Establish `hg : S7.toMK k * NormedSpace.exp X ∈ UJset ε` using `rq_UJ_mul (ffa_toMK_mem k) hexp`. Establish `hv1 : ‖v‖ = 1` using `by rw [← hj v]; exact hw1`. Establish `e : ⟪j v, σ (S7.toMK k * NormedSpace.exp X) (j v)⟫_ℂ = ⟪v, Ψ (S7.toMK k * NormedSpace.exp X) v⟫_ℂ`. Rewrite using `[← hadj _ hg, ContinuousLinearMap.comp_apply, ContinuousLinearMap.comp_apply, ContinuousLinearMap.adjoint_inner_right]`. Express the relevant statement in the definitionally equal form `‖⟪j v, σ (S7.toMK k * NormedSpace.exp X) (j v)⟫_ℂ‖ ≤ _`.
+
+Rewrite using `[e]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem coef_dec_of_isDS [CompleteSpace H] (hDS : Formalism.MainNotions.S.IsDS ε lam σ) (hlam : Formalism.QuantumDeterminants.IsHCParam lam)
     {h : ℝ} (hgap : Formalism.QuantumDeterminants.GapAtLeast ε lam h) (hq : 1 ≤ S7.q0 ε) (h8 : 8 * (n : ℝ) * S7.q0 ε < h)
     (hstd : (n : ℝ) * (pOf ε : ℝ) * (qOf ε : ℝ) + 1 < h) {w : H} (hw : Formalism.MainNotions.S.IsLowUnit ε lam σ w)

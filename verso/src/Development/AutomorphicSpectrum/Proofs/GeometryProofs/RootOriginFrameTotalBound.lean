@@ -19,9 +19,17 @@ section Dvr
 variable {V : Type} {K : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [Field K] [Algebra V K]
   [IsFractionRing V K]
 
+/- English proof (translation)
+The claim follows from `HeightOneSpectrum.valuation_le_one _ x`.
+-/
 theorem valV_algebraMap_le_one (x : V) : valV V (algebraMap V K x) ≤ 1 :=
   HeightOneSpectrum.valuation_le_one _ x
 
+/- English proof (translation)
+Take `⟨w, rfl⟩` from `hu`. Establish `h1 : valV V (algebraMap V K (w : V)) ≤ 1` using `valV_algebraMap_le_one _`. Establish `h2 : valV V (algebraMap V K ((w⁻¹ : Vˣ) : V)) ≤ 1` using `valV_algebraMap_le_one _`. Establish `h3 : valV V (algebraMap V K (w : V)) * valV V (algebraMap V K ((w⁻¹ : Vˣ) : V)) = 1`. Rewrite using `[← map_mul, ← map_mul]`.
+
+Simplify using the standard rewrite rules. Establish `h4 : valV V (algebraMap V K (w : V)) = 1`. Use `le_antisymm h1 ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Simplify using `[vV, h4]`.
+-/
 theorem vV_unit {u : V} (hu : IsUnit u) : vV V (algebraMap V K u) = 0 := by
   obtain ⟨w, rfl⟩ := hu
   have h1 : valV V (algebraMap V K (w : V)) ≤ 1 := valV_algebraMap_le_one _
@@ -36,8 +44,16 @@ theorem vV_unit {u : V} (hu : IsUnit u) : vV V (algebraMap V K u) = 0 := by
       _ = _ := mul_one _
   simp [vV, h4]
 
+/- English proof (translation)
+Simplify using `[vV]`.
+-/
 theorem vV_one : vV V (1 : K) = 0 := by simp [vV]
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simp [vV_one]`. Consider the case `succ n ih`. Rewrite using `[pow_succ, vV_mul (pow_ne_zero _ hx) hx, ih]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem vV_pow {x : K} (hx : x ≠ 0) (n : ℕ) : vV V (x ^ n) = n * vV V x := by
   induction n with
   | zero => simp [vV_one]
@@ -46,6 +62,9 @@ theorem vV_pow {x : K} (hx : x ≠ 0) (n : ℕ) : vV V (x ^ n) = n * vV V x := b
     push_cast
     ring
 
+/- English proof (translation)
+Take `⟨u, rfl⟩` from `h`. Establish `inj` using `IsFractionRing.injective V K`. Rewrite using `[map_mul, vV_mul ((map_ne_zero_iff _ inj).2 ha) ((map_ne_zero_iff _ inj).2 u.ne_zero), vV_unit u.isUnit, add_zero]`.
+-/
 theorem vV_associated {a b : V} (h : Associated a b) (ha : a ≠ 0) :
     vV V (algebraMap V K a) = vV V (algebraMap V K b) := by
   obtain ⟨u, rfl⟩ := h
@@ -53,6 +72,9 @@ theorem vV_associated {a b : V} (h : Associated a b) (ha : a ≠ 0) :
   rw [map_mul, vV_mul ((map_ne_zero_iff _ inj).2 ha) ((map_ne_zero_iff _ inj).2 u.ne_zero), vV_unit u.isUnit,
     add_zero]
 
+/- English proof (translation)
+Establish `inj` using `IsFractionRing.injective V K`. Establish `h0 : ζ - 1 ≠ 0` using `sub_ne_zero.2 (hζ.ne_one hp.one_lt)`. Establish `hass : Associated ((ζ - 1) ^ (p - 1)) (p : V)` using `((GroundTheory.Heights₂.Heights.RootsOfUnityValuation.associated_sub_comm ζ 1).pow_pow).trans (GroundTheory.Heights₂.Heights.RootsOfUnityValuation.one_sub_pow_associated hp hζ)`. Rewrite using `[← vV_associated hass (pow_ne_zero _ h0), map_pow, vV_pow ((map_ne_zero_iff _ inj).2 h0)]`.
+-/
 theorem vV_sub_one {p : ℕ} (hp : p.Prime) {ζ : V} (hζ : IsPrimitiveRoot ζ p) :
     ((p - 1 : ℕ) : ℤ) * vV V (algebraMap V K (ζ - 1)) = vV V (algebraMap V K (p : V)) := by
   have inj := IsFractionRing.injective V K
@@ -68,14 +90,23 @@ def realVal : Valuation K NNReal :=
   (valV V).map (WithZeroMulInt.toNNReal (e := 2) two_ne_zero)
     (WithZeroMulInt.toNNReal_strictMono (by norm_num)).monotone
 
+/- English proof (translation)
+Use `(WithZeroMulInt.toNNReal_strictMono (e := 2) (by norm_num)).le_iff_le (a := valV V x) (b := 1)` as an intermediate fact. Simplify `this` using `[realVal]`.
+-/
 theorem realVal_le_one_iff {x : K} : realVal V K x ≤ 1 ↔ valV V x ≤ 1 := by
   have := (WithZeroMulInt.toNNReal_strictMono (e := 2) (by norm_num)).le_iff_le (a := valV V x) (b := 1)
   simpa [realVal] using this
 
+/- English proof (translation)
+Use `(WithZeroMulInt.toNNReal_strictMono (e := 2) (by norm_num)).lt_iff_lt (a := valV V x) (b := 1)` as an intermediate fact. Simplify `this` using `[realVal]`.
+-/
 theorem realVal_lt_one_iff {x : K} : realVal V K x < 1 ↔ valV V x < 1 := by
   have := (WithZeroMulInt.toNNReal_strictMono (e := 2) (by norm_num)).lt_iff_lt (a := valV V x) (b := 1)
   simpa [realVal] using this
 
+/- English proof (translation)
+The claim follows from `IsFractionRing.injective V K map_le_one x := realVal_le_one_iff.2 (valV_algebraMap_le_one x) exists_of_le_one _ h := IsDiscreteValuationRing.exists_lift_of_le_one (realVal_le_one_iff.1 h)`.
+-/
 theorem realVal_integers : (realVal V K).Integers V where
   hom_inj := IsFractionRing.injective V K
   map_le_one x := realVal_le_one_iff.2 (valV_algebraMap_le_one x)
@@ -88,11 +119,21 @@ section Pt
 variable {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) ⟶ X}
   {R : Type} [CommRing R] [IsLocalRing R]
 
+/- English proof (translation)
+Take `⟨s, hs⟩` from `ha`. Conclude with `⟨_, h, s, hs, rfl⟩`.
+-/
 theorem exists_value (z : Spec (CommRingCat.of R) ⟶ X) (h : genPt ξ ⤳ centre z) {a : Ω}
     (ha : a ∈ regAt ξ ⟨centre z, h⟩) : ∃ r : R, ValAt ξ z a r := by
   obtain ⟨s, hs⟩ := ha
   exact ⟨_, h, s, hs, rfl⟩
 
+/- English proof (translation)
+Take `⟨h, s, hs, rfl⟩` from `hv`. Set `φ : X.presheaf.stalk (centre z) →+* R` to `(Scheme.stalkClosedPointTo z).hom`. Establish `e1` using `Polynomial.aeval_algHom_apply (genMap ξ ⟨centre z, h⟩).toIntAlgHom s f`. Establish `e2` using `Polynomial.aeval_algHom_apply φ.toIntAlgHom s f`. Establish `h0 : Polynomial.aeval s f = 0`.
+
+Apply `hg.inj ⟨centre z, h⟩` to reduce the goal to its premises. Rewrite using `[map_zero]`. Establish `: (genMap ξ ⟨centre z, h⟩).toIntAlgHom s = a` using `hs`. Rewrite `e1` using `[this, hf]`. Conclude with `e1.symm`.
+
+Rewrite `e2` using `[h0]`. Conclude with `e2.trans (map_zero φ.toIntAlgHom)`.
+-/
 theorem value_aeval (hg : IsCptGen ξ) {z : Spec (CommRingCat.of R) ⟶ X} {a : Ω} {r : R} (hv : ValAt ξ z a r)
     (f : Polynomial ℤ) (hf : Polynomial.aeval a f = 0) : Polynomial.aeval r f = 0 := by
   obtain ⟨h, s, hs, rfl⟩ := hv
@@ -108,6 +149,11 @@ theorem value_aeval (hg : IsCptGen ξ) {z : Spec (CommRingCat.of R) ⟶ X} {a : 
   rw [h0] at e2
   exact e2.trans (map_zero φ.toIntAlgHom)
 
+/- English proof (translation)
+Take `⟨hn, -, hi⟩` from `hu`. Take `⟨r, hr⟩` from `exists_value z h hi`. Establish `h1` using `value_aeval hg hr (Polynomial.C (n : ℤ) * Polynomial.X - 1) (by`. Simplify using `only [map_sub, map_mul, Polynomial.aeval_C, Polynomial.aeval_X, map_one]`. Simplify using `[hn])`.
+
+Simplify using `only [map_sub, map_mul, Polynomial.aeval_C, Polynomial.aeval_X, map_one] at h1`. Establish `h2 : (n : R) * r = 1` using `by simpa [sub_eq_zero] using h1`. Conclude with `IsUnit.of_mul_eq_one _ h2`.
+-/
 theorem isUnit_of_unitAt (hg : IsCptGen ξ) (z : Spec (CommRingCat.of R) ⟶ X) (h : genPt ξ ⤳ centre z) {n : ℕ}
     (hu : unitAt ξ ⟨centre z, h⟩ (n : Ω)) : IsUnit (n : R) := by
   obtain ⟨hn, -, hi⟩ := hu
@@ -119,6 +165,9 @@ theorem isUnit_of_unitAt (hg : IsCptGen ξ) (z : Spec (CommRingCat.of R) ⟶ X) 
   have h2 : (n : R) * r = 1 := by simpa [sub_eq_zero] using h1
   exact IsUnit.of_mul_eq_one _ h2
 
+/- English proof (translation)
+Rewrite using `[← Polynomial.map_cyclotomic n (algebraMap ℤ S), Polynomial.eval_map_algebraMap]`.
+-/
 theorem aeval_cyclotomic {S : Type} [CommRing S] (n : ℕ) (x : S) :
     Polynomial.aeval x (Polynomial.cyclotomic n ℤ) = (Polynomial.cyclotomic n S).eval x := by
   rw [← Polynomial.map_cyclotomic n (algebraMap ℤ S), Polynomial.eval_map_algebraMap]
@@ -130,6 +179,11 @@ section Abs
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {l : Level H}
   {c : Coeff l}
 
+/- English proof (translation)
+Establish `hres : Formalism.L2.Pj.resCharOf la = p`. Assume the negation of the conclusion as `h`. Use `Formalism.L2.Pj.Crude.crv_not_mem la (fun hd => h ?_) hla` and prove the remaining obligations. Conclude with `(Nat.prime_dvd_prime_iff_eq (Formalism.L2.Pj.Crude.resCharOf_prime la) hp.out).1 hd`. Rewrite using `[← hres]`.
+
+Conclude with `Formalism.L2.Pj.Crude.crv_vLa_char la`.
+-/
 theorem vLa_prime {p : ℕ} [hp : Fact p.Prime] {la : HeightOneSpectrum (𝓞 c.F)} (hla : (p : 𝓞 c.F) ∈ la.asIdeal) :
     vLa la (p : c.F) = ramOverZ la := by
   have hres : Formalism.L2.Pj.resCharOf la = p := by
@@ -139,6 +193,9 @@ theorem vLa_prime {p : ℕ} [hp : Fact p.Prime] {la : HeightOneSpectrum (𝓞 c.
   rw [← hres]
   exact Formalism.L2.Pj.Crude.crv_vLa_char la
 
+/- English proof (translation)
+Establish `h` using `hov.2 (p : c.F)`. Rewrite `h` using `[map_natCast, vLa_prime hla]`. Rewrite using `[map_natCast]` and apply the resulting hypothesis.
+-/
 theorem vV_prime {p : ℕ} [Fact p.Prime] {la : HeightOneSpectrum (𝓞 c.F)} (hla : (p : 𝓞 c.F) ∈ la.asIdeal)
     {T : CDVR} {io : c.F →+* T.Fr} {e : ℕ} (hov : OverLa la T.V io e) :
     vV T.V (algebraMap T.V T.Fr (p : T.V)) = (e : ℤ) * ramOverZ la := by
@@ -146,6 +203,9 @@ theorem vV_prime {p : ℕ} [Fact p.Prime] {la : HeightOneSpectrum (𝓞 c.F)} (h
   rw [map_natCast, vLa_prime hla] at h
   rwa [map_natCast]
 
+/- English proof (translation)
+Establish `he' : (e : ℝ) ≠ 0` using `by exact_mod_cast he.ne'`. Establish `hr' : (ramOverZ la : ℝ) ≠ 0` using `by exact_mod_cast hr.ne'`. Unfold `absT`. Rewrite using `[if_neg hx, h, mul_div_assoc, div_self (mul_ne_zero he' hr'), mul_one]`.
+-/
 theorem absT_of_vV {p : ℕ} (la : HeightOneSpectrum (𝓞 c.F)) (T : CDVR) {e : ℕ} (he : 0 < e)
     (hr : 0 < ramOverZ la) {x : T.Fr} (hx : x ≠ 0) {a : ℝ}
     (h : (vV T.V x : ℝ) = a * ((e : ℝ) * (ramOverZ la : ℝ))) : absT p la T e x = (p : ℝ) ^ (-a) := by
@@ -154,6 +214,21 @@ theorem absT_of_vV {p : ℕ} (la : HeightOneSpectrum (𝓞 c.F)) (T : CDVR) {e :
   unfold absT
   rw [if_neg hx, h, mul_div_assoc, div_self (mul_ne_zero he' hr'), mul_one]
 
+/- English proof (translation)
+Establish `hr` using `FinRd.ram_pos hla`. Establish `he` using `hov.1`. Establish `inj` using `IsFractionRing.injective T.V T.Fr`. Establish `he' : (e : ℝ) ≠ 0` using `by exact_mod_cast he.ne'`. Establish `hr' : (ramOverZ la : ℝ) ≠ 0` using `by exact_mod_cast hr.ne'`.
+
+Establish `hvp` using `vV_prime hla hov`. Establish `hp0 : (p : T.V) ≠ 0` using `Nat.cast_ne_zero.2 hp.out.ne_zero`. Distinguish the cases in `h : p = 2`. Establish `hk : algebraMap T.V T.Fr κz = algebraMap T.V T.Fr (p : T.V) ^ 2`. Rewrite using `[h2 h, ← map_pow, h]`.
+
+Evaluate the numerical expressions. Establish `hne : algebraMap T.V T.Fr (p : T.V) ≠ 0` using `(map_ne_zero_iff _ inj).2 hp0`. Rewrite using `[hk, absT_of_vV la T he hr (pow_ne_zero _ hne) (a := Small.htExp p)]`. Rewrite using `[vV_pow hne, hvp]`. Simplify using `only [Small.htExp, if_pos h]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hz` using `hodd h`. Establish `h1` using `vV_sub_one (K := T.Fr) hp.out hz`. Rewrite `h1` using `[add_sub_cancel_right, hvp]`.
+
+Establish `hk0 : κz ≠ 0` using `fun h0 => hz.ne_one hp.out.one_lt (by rw [h0, zero_add])`. Use `absT_of_vV la T he hr ((map_ne_zero_iff _ inj).2 hk0) ?_` and prove the remaining obligations. Establish `h3 : ((p : ℝ) - 1) ≠ 0`. Establish `: (1 : ℝ) < p` using `by exact_mod_cast hp.out.one_lt`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `h4 : (((p - 1 : ℕ) : ℤ) : ℝ) = (p : ℝ) - 1`. Move the coercions through the operations in `[Nat.cast_sub hp.out.one_lt.le]`. Expand and normalize the polynomial expressions, which then agree. Establish `h5 : ((p : ℝ) - 1) * (vV T.V (algebraMap T.V T.Fr κz) : ℝ) = (e : ℝ) * (ramOverZ la : ℝ)`. Rewrite using `[← h4]`.
+
+Conclude with `h1` after adjusting the coercions. Simplify using `only [Small.htExp, if_neg h]`. Clear the denominators using the available nonvanishing facts. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem absT_kappa {p : ℕ} [hp : Fact p.Prime] {la : HeightOneSpectrum (𝓞 c.F)} (hla : (p : 𝓞 c.F) ∈ la.asIdeal)
     {T : CDVR} {io : c.F →+* T.Fr} {e : ℕ} (hov : OverLa la T.V io e) {κz : T.V} (h2 : p = 2 → κz = 4)
     (hodd : p ≠ 2 → IsPrimitiveRoot (κz + 1) p) :
@@ -201,6 +276,25 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.Ar.Rec.FinRd.Roots.OnLie
 
+/- English proof (translation)
+Introduce `hG E _ _ _ H Dw l Xo c O _ β Y SS RM Sys Fx Or Fr A p _ z ev hz hev hgood la T io e y evT zT t hI zV hRd hOm hpq hpS EC _ _ _ _ MC ρC hAct s σ hσ`. Take `⟨hla, hov, -⟩` from `hI`. Establish `hHT : HT.HTFree Or.𝔐 p` using `hOm p hpS`. Take `⟨κ, hκ, hS⟩` from `GlobalTheory.T.exists_sandwich_of_hodge_tate_free hG.2.2.2.2.2.2.1 E H Dw l Xo c O β Y SS _ _ _ RM.y Or.𝔐 p hpS hpq hHT`. Establish `hgen` using `Or.𝔐.tie.gen`.
+
+Establish `hr` using `FinRd.ram_pos hla`. Establish `hpos : (0 : ℤ) < (e : ℤ) * ramOverZ la`. Establish `h1 : (0 : ℤ) < e` using `by exact_mod_cast hov.1`. Establish `h2 : (0 : ℤ) < ramOverZ la` using `by exact_mod_cast hr`. Conclude with `mul_pos h1 h2`.
+
+Establish `hvp` using `vV_prime hla hov`. Establish `hFib : InFibre Or.𝔐.ξ p ⟨centre zV, Or.𝔐.all _⟩` using `fun hu => by`. Establish `h2` using `vV_unit (K := T.Fr) (isUnit_of_unitAt hgen zV (Or.𝔐.all _) hu)`. Rewrite `h2` using `[hvp]`. Use linear arithmetic over natural numbers and integers.
+
+Take `⟨κz, hκz⟩` from `exists_value zV (Or.𝔐.all _) (hS _ hFib).1`. Establish `: CharZero T.Fr` using `IsFractionRing.charZero T.V`. Establish `hv1 : realVal T.V T.Fr (p : T.Fr) < 1`. Use `realVal_lt_one_iff.2 (lt_of_le_of_ne ?_ fun h1 => ?_)` and prove the remaining obligations. Simplify using `using valV_algebraMap_le_one (K := T.Fr) (p : T.V)`.
+
+Establish `h2 : vV T.V (algebraMap T.V T.Fr (p : T.V)) = 0` using `by simp [vV, h1]`. Rewrite `h2` using `[hvp]`. Use linear arithmetic over natural numbers and integers. Take `⟨h1, h2, -⟩` from `GlobalTheory.T.sandwich_point_over_field_ext E H Dw l Xo c O β Y SS _ _ _ RM.y Or.𝔐 p hpS κ hHT hS T.Fr (realVal T.V T.Fr) T.V realVal_integers hv1 zV EC MC ρC s σ κz hAct hσ hκz`. Use `⟨κz, h1, h2, absT_kappa hla hov (fun h => ?_) (fun h => ?_)⟩` and prove the remaining obligations.
+
+Rewrite `hκ` using `[HT.IsCp, if_pos h]`. Establish `h3` using `value_aeval hgen hκz (Polynomial.X - Polynomial.C 4) (by`. Simplify using `only [map_sub, Polynomial.aeval_X, hκ, map_ofNat, sub_self])`. Simplify using `only [map_sub, Polynomial.aeval_X, map_ofNat] at h3`. Conclude with `sub_eq_zero.1 h3`.
+
+Rewrite `hκ` using `[HT.IsCp, if_neg h]`. Take `⟨ζ, hζ, rfl⟩` from `hκ`. Establish `hp0 : NeZero (p : T.V)` using `⟨Nat.cast_ne_zero.2 (Fact.out : p.Prime).ne_zero⟩`. Establish `h3` using `value_aeval hgen hκz ((Polynomial.cyclotomic p ℤ).comp (Polynomial.X + 1)) (by`. Rewrite using `[Polynomial.aeval_comp]`.
+
+Simplify using `only [map_add, Polynomial.aeval_X, map_one, sub_add_cancel]`. Rewrite using `[aeval_cyclotomic]`. Conclude with `hζ.isRoot_cyclotomic (Fact.out : p.Prime).pos)`. Rewrite `h3` using `[Polynomial.aeval_comp]`. Simplify using `only [map_add, Polynomial.aeval_X, map_one] at h3`.
+
+Rewrite `h3` using `[aeval_cyclotomic]`. Conclude with `Polynomial.isRoot_cyclotomic_iff.1 h3`.
+-/
 theorem lieEig_htDual : Top.Given → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (SS : Finset ℕ) (RM : Top.RootModel (CMType H) (Dw.p + Dw.q)) (Sys : PB.AnSys (Top.dimFl (CMType H) (Dw.p + Dw.q)) (Option (RootIx Dw))) (Fx : FixedData Y Sys) (Or : RootOrigin Y SS RM Fx) (Fr : Small.GenFrame Or) (A : Subring RM.Ω) (p : ℕ) [Fact p.Prime] (z : (Σ k, RM.ι k) → PadicAlgCl p) (ev : A →+* PadicAlgCl p), z ∈ Small.algPts p (mCoordIdeal RM.y) → (∀ x : A, Small.HasVal RM.y 0 (x : RM.Ω) z (ev x)) → FinRd.GoodRing Fr A → ∀ (la : HeightOneSpectrum (𝓞 c.F)) (T : CDVR) (io : c.F →+* T.Fr) (e : ℕ) (y : IntFr Xo c T io) (evT : A →+* T.Fr) (zT : letI := io.toAlgebra; FrPt Xo c T.Fr) (t : Ix Dw → T.Frˣ), FinRd.IsIntPt Fr A ev la T io e y evT zT t → ∀ (zV : Spec (CommRingCat.of T.V) ⟶ Or.𝔐.X), FinRd.Roots.ReadsPt Or.𝔐.ξ A T evT zV → Or.𝔐.OmVB → 0 < Dw.p + Dw.q → p ∈ SS → ∀ (EC : Type) [AddCommGroup EC] [Module T.Fr EC] [Module T.V EC] [IsScalarTower T.V T.Fr EC] (MC : LieModel Or.𝔐.t.G (FinRd.Roots.gen T zV) EC) (ρC : 𝓞 E →+* Module.End T.Fr EC), MC.IsActOf Or.𝔐.t.act.act ρC → ∀ (s : CMType H ⊕ CMType H) (σ : 𝓞 E →+* T.V), (∀ a, GlobalTheory.CompanionTheory.Ar.ValAt Or.𝔐.ξ zV (Or.𝔐.emb s a) (σ a)) → ∃ κz : T.V, FinRd.Roots.lieEig Or MC ρC σ ≤ Or.𝔐.M.fibAt (Or.𝔐.M.htDual Or.𝔐.t.PP.L (p ^ Or.𝔐.R p) Or.𝔐.ρ (Or.𝔐.emb s)) zV MC ∧ (∀ w ∈ Or.𝔐.M.fibAt (Or.𝔐.M.htDual Or.𝔐.t.PP.L (p ^ Or.𝔐.R p) Or.𝔐.ρ (Or.𝔐.emb s)) zV MC, κz • w ∈ FinRd.Roots.lieEig Or MC ρC σ) ∧ FinRd.absT p la T e (algebraMap T.V T.Fr κz) = (p : ℝ) ^ (-Small.htExp p) := by
   intro hG E _ _ _ H Dw l Xo c O _ β Y SS RM Sys Fx Or Fr A p _ z ev hz hev hgood la T io e y evT zT t hI zV hRd
     hOm hpq hpS EC _ _ _ _ MC ρC hAct s σ hσ

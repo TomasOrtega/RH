@@ -21,6 +21,9 @@ namespace GlobalTheory.MixXDblEv
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
   {n d n₁ : ℕ} {X : Spc F E n} {W : Spc F E d} {X₁ : Spc F E n₁}
 
+/- English proof (translation)
+Use `show schr ψ (d'.e w) = schr ψ (M.co.e wᵀ)`. Rewrite using `[← hd', Matrix.transpose_transpose]`.
+-/
 theorem rho_tr (M : Model σ X W) {d' : Darboux (symp (cA σ) (-1) (incM F W.J) (incM F X.J)) (Fin n × Fin d)}
     (hd' : ∀ x, d'.e xᵀ = M.co.e x) (ψ : AddChar (AF F) ℂ) (w : Matrix (Fin d) (Fin n) (AE F E)) :
     d'.rho ψ w = M.co.rho ψ wᵀ := by
@@ -35,6 +38,11 @@ variable {B : Base F E} {M : Model σ X W} {M₁ : Model σ X₁ W} {χX χW : C
     (he : IsEv B M M₁ H.ι 1 {u | ∃ z, u = Matrix.vecMulVec (incV F H.x) z} e)
 include hP hH he
 
+/- English proof (translation)
+Introduce `φ hφ`. Establish `hone : incM F H.ι * z = incM F H.ι * z * (incM F (1 : Matrix (Fin d) (Fin d) E))ᵀ`. Rewrite using `[GlobalTheory.MixedLagrX.incM_one, Matrix.transpose_one, Matrix.mul_one]`. Establish `horth : symp (cA σ) (-1) (incM F X.J) (incM F W.J) (incM F H.ι * z) (Matrix.vecMulVec (incV F H.x) y) = 0`. Rewrite using `[hone]`.
+
+Conclude with `GlobalTheory.MixedLagrX.symp_eq_zero _ _ _ _ (GlobalTheory.MixedLagrX.piece_ix hH z y)`. Rewrite using `[GlobalTheory.UnipEvLaw.rho_add M B.ψ _ _ horth, hone, he.Heisenberg₂ z _ (GlobalTheory.HeisSchA.rho_mem_schA M B.ψ hP.base.std _ _ hφ), he.inv _ ⟨y, rfl⟩ φ hφ]`.
+-/
 theorem law_one (z : Matrix (Fin n₁) (Fin d) (AE F E)) (y : Fin d → AE F E) :
     ∀ φ ∈ schA F (Fin n × Fin d),
       e (M.co.rho B.ψ (incM F H.ι * z + Matrix.vecMulVec (incV F H.x) y) φ) = M₁.co.rho B.ψ z (e φ) := by
@@ -46,6 +54,11 @@ theorem law_one (z : Matrix (Fin n₁) (Fin d) (AE F E)) (y : Fin d → AE F E) 
   rw [GlobalTheory.UnipEvLaw.rho_add M B.ψ _ _ horth, hone,
     he.Heisenberg₂ z _ (GlobalTheory.HeisSchA.rho_mem_schA M B.ψ hP.base.std _ _ hφ), he.inv _ ⟨y, rfl⟩ φ hφ]
 
+/- English proof (translation)
+Introduce `φ hφ`. Establish `hψ : ∀ t, ‖B.ψ t‖ = 1` using `GlobalTheory.StdCharWeilDatum.norm_psi hP.base.std`. Use function extensionality and compare the values at `x'`. Rewrite using `[conjLin_apply]`. Establish `h1 : (fun x => starRingEnd ℂ (M.co.rho B.ψ⁻¹ (incM F H.ι * z + Matrix.vecMulVec (incV F H.x) y) φ x)) = M.co.rho B.ψ (incM F H.ι * z + Matrix.vecMulVec (incV F H.x) y) (fun x => starRingEnd ℂ (φ x))`.
+
+Use function extensionality and compare the values at `fun x => conj_schr_inv B.ψ hψ _ _ _`. Establish `hs : (fun x => starRingEnd ℂ (φ x)) ∈ schA F (Fin n × Fin d)` using `GlobalTheory.SchAConj.star_mem_schA F _ φ hφ`. Rewrite using `[h1, law_one hP hH he z y _ hs]`. Conclude with `conj_schr B.ψ hψ _ _ _`.
+-/
 theorem law_two (z : Matrix (Fin n₁) (Fin d) (AE F E)) (y : Fin d → AE F E) :
     ∀ φ ∈ schA F (Fin n × Fin d),
       conjLin e (M.co.rho B.ψ⁻¹ (incM F H.ι * z + Matrix.vecMulVec (incV F H.x) y) φ) =
@@ -63,6 +76,9 @@ theorem law_two (z : Matrix (Fin n₁) (Fin d) (AE F E)) (y : Fin d → AE F E) 
 
 end Law
 
+/- English proof (translation)
+Use extensionality with `i j`. Apply the tactic sequence `rcases j with j | j <;>`. Simplify using `[dblEmb, Matrix.mul_apply, Matrix.fromBlocks_transpose, Fintype.sum_sum_type, Matrix.vecMulVec_apply, Matrix.fromBlocks]`.
+-/
 theorem dbl_decomp (H : Plane E n n₁) (w : Matrix (Fin d) (Fin n₁ ⊕ Fin n₁) (AE F E)) (z₁ z₂ : Fin d → AE F E) :
     w * (dblEmb (F := F) H.ι)ᵀ + (Matrix.vecMulVec z₁ (Sum.elim (incV F H.x) (0 : Fin n → AE F E)) +
       Matrix.vecMulVec z₂ (Sum.elim (0 : Fin n → AE F E) (incV F H.x))) =
@@ -77,6 +93,23 @@ end GlobalTheory.MixXDblEv
 
 namespace GlobalTheory.MixXDblEv
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP n₁ X₁ H j₀ j₁ M₁ om₁ r₁ s₁ hH hP₁ e he dd omd dd₁ omd₁ hD hD₁`. Establish `hD'` using `hD`. Establish `hD₁'` using `hD₁`. Take `⟨d', hd', hdc, -, -⟩` from `hD'`. Take `⟨d₁', hd₁', hdc₁, -, -⟩` from `hD₁'`.
+
+Establish `hL : IsLocOp e` using `isLocOp_of_isEv hP.good hP₁.good he`. Establish `hL₂ : IsLocOp (conjLin e)` using `GlobalTheory.T.conj_local_operator e hL`. Establish `lawL : ∀ (w₁ : Matrix (Fin d) (Fin n₁) (AE F E)) (z₁ : Fin d → AE F E), ∀ φ ∈ schA F (Fin n × Fin d), e (d'.rho B.ψ (w₁ * (incM F H.ι)ᵀ + Matrix.vecMulVec z₁ (incV F H.x)) φ) = d₁'.rho B.ψ w₁ (e φ)`. Introduce `w₁ z₁ φ hφ`. Rewrite using `[rho_tr M hd', rho_tr M₁ hd₁', Matrix.transpose_add, Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.transpose_vecMulVec]`.
+
+Conclude with `law_one hP hH he _ _ φ hφ`. Establish `lawR : ∀ (w₂ : Matrix (Fin d) (Fin n₁) (AE F E)) (z₂ : Fin d → AE F E), ∀ φ ∈ schA F (Fin n × Fin d), conjLin e (d'.rho B.ψ⁻¹ (w₂ * (incM F H.ι)ᵀ + Matrix.vecMulVec z₂ (incV F H.x)) φ) = d₁'.rho B.ψ⁻¹ w₂ (conjLin e φ)`. Introduce `w₂ z₂ φ hφ`. Rewrite using `[rho_tr M hd', rho_tr M₁ hd₁', Matrix.transpose_add, Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.transpose_vecMulVec]`. Conclude with `law_two hP hH he _ _ φ hφ`.
+
+Take `⟨Φ₀, h₀, hne⟩` from `GlobalTheory.EvSchANe.exists_mem_schA_ne_zero F E σ B n d n₁ d X W X₁ W M M₁ H.ι 1 _ e hP.good hP₁.good he`. Use `⟨partRₗ (conjLin e) ∘ₗ partLₗ e, conjLin e, fun Φ hΦ => ?_, fun φ hφ => ?_, ?_, fun φ₁ _ φ₂ _ => ?_, fun w u hu Φ hΦ => ?_, fun l hl => ?_, fun l hl hinv hl0 => ?_⟩` and prove the remaining obligations. Conclude with `partR_mem (conjLin e) hL₂ _ (partL_mem e hL Φ hΦ)`. Establish `hs : (fun x => starRingEnd ℂ (φ x)) ∈ schA F (Fin n × Fin d)` using `GlobalTheory.SchAConj.star_mem_schA F _ φ hφ`. Conclude with `GlobalTheory.SchAConj.star_mem_schA F _ _ (he.maps _ hs)`.
+
+Establish `hs : (fun x => starRingEnd ℂ (Φ₀ x)) ∈ schA F (Fin n × Fin d)` using `GlobalTheory.SchAConj.star_mem_schA F _ Φ₀ h₀`. Use `⟨fun x => starRingEnd ℂ (Φ₀ x), hs, fun h => hne (funext fun y => ?_)⟩` and prove the remaining obligations. Use `congrFun h y` as an intermediate fact. Simplify `this` using `[conjLin_apply]`. Use function extensionality and compare the values at `y`.
+
+Simplify using `only [LinearMap.comp_apply, partLₗ_apply, partRₗ_apply, partR, partL, boxFun, Sum.elim_comp_inl, Sum.elim_comp_inr]`. Establish `h1 : (fun x => e (fun x' => φ₁ x' * φ₂ x) (y ∘ Sum.inl)) = e φ₁ (y ∘ Sum.inl) • φ₂` using `funext fun x => by`. Rewrite using `[show (fun x' => φ₁ x' * φ₂ x) = φ₂ x • φ₁ from funext fun x' => by simp [mul_comm], map_smul]`. Simplify using `[mul_comm]`. Rewrite using `[h1, map_smul]`.
+
+Both sides reduce to the same expression. Take `⟨z₁, z₂, rfl⟩` from `hu erw [dbl_decomp (F := F) H w z₁ z₂]`. Rewrite using `[rho_dbl _ _ _ _ _ _ hdc]`. Use `conv_rhs => rw [← Matrix.fromCols_toCols w, rho_dbl _ _ _ _ _ _ hdc₁]`. Simplify using `only [LinearMap.comp_apply, partLₗ_apply, partRₗ_apply]`.
+
+Rewrite using `[partL_intertwine e (d'.rho B.ψ (w.toCols₁ * (incM F H.ι)ᵀ + Matrix.vecMulVec z₁ (incV F H.x))) (d₁'.rho B.ψ w.toCols₁) e _ (fun φ hφ => lawL _ _ φ hφ) (fun b => by rw [sliceL_partR_rho]; exact Submodule.smul_mem _ _ (sliceL_mem hΦ _)), partL_partR_rho, partR_partL_rho, partR_int …`. Rewrite using `[← LinearMap.comp_assoc]`. Conclude with `partL_adm e hL _ (partR_adm (conjLin e) hL₂ l hl)`. Conclude with `GlobalTheory.T.seesaw_left_restriction_unipotent F E σ B n d X W M χX χW om r s r' s' hP n₁ X₁ H j₀ j₁ M₁ om₁ r₁ s₁ hH hP₁ e he dd omd dd₁ omd₁ hD hD₁ l hl hinv hl0`.
+-/
 theorem exists_dblEv : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d)
     (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' →
     ∀ (n₁ : ℕ) (X₁ : Spc F E n₁) (H : Plane E n n₁) (j₀ j₁ : ℕ) (M₁ : Model σ X₁ W) (om₁ : Rep σ X₁ W) (r₁ s₁ : ℕ),

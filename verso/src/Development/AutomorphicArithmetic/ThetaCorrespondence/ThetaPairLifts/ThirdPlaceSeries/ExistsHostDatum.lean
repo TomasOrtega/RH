@@ -11,6 +11,13 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.L2 Formalism.L2.Host
 open NumberField IsDedekindDomain
 open scoped nonZeroDivisors
 namespace GlobalTheory.HostDatumExists
+/- English proof (translation)
+Introduce `hA D L hT Gi Gl K Y cX ex T hP B`. Take `⟨M, hM, hO⟩` from `hP.hilb`. Establish `hφ : T.host.fr.ι.comp T.host.fr.j.toRingHom = D.host.φ₀` using `RingHom.ext T.host.fr.phi0`. Establish `hE : IsTotallyComplex D.host.E` using `inferInstance`. Take `⟨nf, h1, h2, h3⟩` from `GlobalTheory.HilbertInClosure.rayField_top_maximal_unramified hA D.host.E T.host.fr.j T.host.fr.ι M (by rw [hφ]; exact hM)`.
+
+Rewrite `h1`, `h3` using `[T.host.fr.range]`. Establish `hS : (⋃ w ∈ {w | D.what₂.muAt w ≠ D.what₂.mu0}, (fun v : HeightOneSpectrum (𝓞 D.host.E) => v.under (𝓞 D.host.K)) '' (ex.nch.Q w : Set (PlE D.host))).Finite` using `hP.fin.biUnion fun w _ => (ex.nch.Q w).finite_toSet.image _`. Use `choose rep hrep hcop hpr using exists_reps D.host.K (fun u => (D.mem u).A.T) (fun u => (D.mem u).A.T_prime.ne_zero) _ hS`. Establish `hgal : IsGalois ℚ T.host.LLQ`. Use `hP.gal` as an intermediate fact.
+
+Conclude with `IsGalois.of_algEquiv (AlgEquiv.ofInjectiveField T.host.jLL.toRatAlgHom)`. Use `⟨{ d3b := B Tu_g := hP.Tu_g Qw_Tu := hP.Qw_Tu clsK := ⟨rep, hrep⟩ clsK_Tu := hcop clsK_Qw := fun w hw v hv c => hpr c _ (Set.mem_biUnion hw ⟨v, hv, rfl⟩) LLgal := hgal HE := qb T.host.fr.ι M HE_fd := inferInstance HE_hilb := ⟨h1, h2, fun L' _ hL hU => @h3 L' {} hL hU⟩ HE_le := le …` and prove the remaining obligations. Take `⟨y, hy⟩` from `hO (T.host.fr.ι x) hx (hi.map T.host.fr.ι.toIntAlgHom)`. Use `((T.what₂.O.range x).1 ⟨y, T.host.fr.ι.injective ?_⟩).1` and prove the remaining obligations. Rewrite using `[T.host.embLL, hy]`.
+-/
 theorem exists_hostDatum_alt : GlobalArtinReciprocity → ∀ (D : D7) (L : SizeData₂ D) (hT : GatTies D) (Gi : G.Inst D L) (Gl : G.LatInst D) (K : G.Consts) (Y : DivX D) (cX : ExtraC) (ex : Extra D L hT Gi Gl K Y cX) (T : _root_.Formalism.L2.TiedDataSAlt ex), HostPins D ex.nch → ∀ B : PlacesOverCommonPrime D.host, ∃ hd : _root_.Formalism.L2.HostDatumWithTies T, hd.d3b = B := by
   intro hA D L hT Gi Gl K Y cX ex T hP B
   obtain ⟨M, hM, hO⟩ := hP.hilb

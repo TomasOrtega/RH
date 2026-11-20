@@ -9,6 +9,29 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 namespace GlobalTheory.CompanionTheory.ModelS
 
+/- English proof (translation)
+Introduce `n V _ _ F1 F2 hfin z hz ev c hev hS x`. Use `set A := Algebra.adjoin ℂ {T : Module.End ℂ V | ∃ a b, T = kF F1 F2 a b} with hA`. Use `set y : V := z x - c • x with hy`. Take `⟨S₁, hfd, hyS₁, hst⟩` from `hfin y`. Establish `hpres : ∀ T ∈ A, ∀ w ∈ S₁, T w ∈ S₁`.
+
+Introduce `T hT`. Proceed by induction on `hT using Algebra.adjoin_induction with`. Consider the case `mem T hT`. Take `⟨a, b, rfl⟩` from `hT`. Conclude with `hst a b`.
+
+Consider the case `algebraMap r`. Introduce `w hw`. Simplify `S₁.smul_mem r hw` using `[Module.algebraMap_end_apply]`. Consider the case `add S T _ _ hS' hT'`. Introduce `w hw`.
+
+Conclude with `S₁.add_mem (hS' w hw) (hT' w hw)`. Consider the case `mul S T _ _ hS' hT'`. Introduce `w hw`. Conclude with `hS' _ (hT' w hw)`. Establish `hcomm : ∀ T ∈ A, z * T = T * z`.
+
+Introduce `T hT`. Proceed by induction on `hT using Algebra.adjoin_induction with`. Consider the case `mem T hT`. Take `⟨a, b, rfl⟩` from `hT`. Establish `h1` using `(hz a b).1`.
+
+Establish `h2` using `(hz a b).2`. Use `show z * (F1 a b + F2 a b) = (F1 a b + F2 a b) * z`. Rewrite using `[mul_add, add_mul, h1, h2]`. Consider the case `algebraMap r => exact (Algebra.commutes r z).symm`. Consider the case `add S T _ _ hS' hT' => rw [mul_add, add_mul, hS', hT']`.
+
+Consider the case `mul S T _ _ hS' hT' => rw [← mul_assoc, hS', mul_assoc, hT', mul_assoc]`. Set `S : Submodule ℂ V` to `(Subalgebra.toSubmodule A).map (LinearMap.applyₗ y)`. Establish `hmem : ∀ w, w ∈ S ↔ ∃ T ∈ A, T y = w`. Introduce `w`. Simplify using `[S, Submodule.mem_map]`.
+
+Establish `hle : S ≤ S₁`. Introduce `w hw`. Take `⟨T, hT, rfl⟩` from `(hmem w).1 hw`. Conclude with `hpres T hT y hyS₁`. Establish `hSfd : FiniteDimensional ℂ S` using `Submodule.finiteDimensional_of_le hle`.
+
+Establish `hSst : ∀ a b, ∀ w ∈ S, kF F1 F2 a b w ∈ S`. Introduce `a b w hw`. Take `⟨T, hT, rfl⟩` from `(hmem w).1 hw`. Use `(hmem _).2 ⟨kF F1 F2 a b * T, A.mul_mem (Algebra.subset_adjoin ⟨a, b, rfl⟩) hT, rfl⟩` and prove the remaining obligations. Establish `hSev : ∀ w ∈ S, ev w = 0`.
+
+Introduce `w hw`. Take `⟨T, hT, rfl⟩` from `(hmem w).1 hw`. Establish `hzT : T (z x) = z (T x)` using `(LinearMap.congr_fun (hcomm T hT) x).symm`. Rewrite using `[hy, map_sub, map_smul, hzT, map_sub, map_smul, hev, smul_eq_mul, sub_self]`. Establish `hyS : y ∈ S` using `(hmem y).2 ⟨1, A.one_mem, rfl⟩`.
+
+Conclude with `sub_eq_zero.1 (hS S hSfd hSst hSev y hyS)`.
+-/
 theorem eq_smul_of_commute_of_ev : ∀ (n : ℕ) (V : Type) [NormedAddCommGroup V] [InnerProductSpace ℂ V] (F1 F2 : Fin n → Fin n → Module.End ℂ V), (∀ x : V, ∃ S : Submodule ℂ V, FiniteDimensional ℂ S ∧ x ∈ S ∧ ∀ a b, ∀ w ∈ S, kF F1 F2 a b w ∈ S) → ∀ (z : Module.End ℂ V), (∀ a b, z * F1 a b = F1 a b * z ∧ z * F2 a b = F2 a b * z) → ∀ (ev : V →ₗ[ℂ] ℂ) (c : ℂ), (∀ v, ev (z v) = c * ev v) → (∀ S : Submodule ℂ V, FiniteDimensional ℂ S → (∀ a b, ∀ w ∈ S, kF F1 F2 a b w ∈ S) → (∀ w ∈ S, ev w = 0) → ∀ w ∈ S, w = 0) → ∀ x : V, z x = c • x := by
   intro n V _ _ F1 F2 hfin z hz ev c hev hS x
   set A := Algebra.adjoin ℂ {T : Module.End ℂ V | ∃ a b, T = kF F1 F2 a b} with hA

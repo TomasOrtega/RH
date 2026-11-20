@@ -11,6 +11,9 @@ open GlobalTheory.MinorFrame
 
 variable {ι : Type} [DecidableEq ι]
 
+/- English proof (translation)
+Use `open scoped Matrix.Norms.Operator in`. Establish `h2` using `((Matrix.entryLinearMap ℝ ℂ i j).toContinuousLinearMap.hasFDerivAt).comp_hasDerivAt 0 (hasDerivAt_exp_smul_const (𝕂 := ℝ) S 0)`. Rewrite `h2` using `[zero_smul, NormedSpace.exp_zero, one_mul]`. Simplify using `only [Complex.coe_smul]`. Conclude with `h2`.
+-/
 theorem hasDerivAt_exp_ofReal_smul_entry {a : ℕ} (S : Matrix (Fin a) (Fin a) ℂ) (i j : Fin a) :
     HasDerivAt (fun h : ℝ => NormedSpace.exp ((h : ℂ) • S) i j) (S i j) 0 := by
   open scoped Matrix.Norms.Operator in
@@ -20,6 +23,9 @@ theorem hasDerivAt_exp_ofReal_smul_entry {a : ℕ} (S : Matrix (Fin a) (Fin a) �
   simp only [Complex.coe_smul]
   exact h2
 
+/- English proof (translation)
+Simplify using `only [colDer_apply, Finset.sum_mul, Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[pderiv_mul]`. Simplify using `only [smul_eq_C_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem colDer_mul_X {d a : ℕ} (τ : ι) (S : Matrix (Fin a) (Fin a) ℂ) (R : Pol ι d a) (v : Var ι d a) :
     colDer τ S (R * X v) = colDer τ S R * X v + R * colDer τ S (X v) := by
   simp only [colDer_apply, Finset.sum_mul, Finset.mul_sum, ← Finset.sum_add_distrib]
@@ -28,6 +34,9 @@ theorem colDer_mul_X {d a : ℕ} (τ : ι) (S : Matrix (Fin a) (Fin a) ℂ) (R :
   simp only [smul_eq_C_mul]
   ring
 
+/- English proof (translation)
+Simplify using `only [coeff_mul_X']`. Use `split_ifs`. Conclude with `hA _`. Conclude with `hasDerivAt_const _ _`.
+-/
 theorem hasDerivAt_coeff_mul_X {σ : Type} {A : ℝ → MvPolynomial σ ℂ} {B : MvPolynomial σ ℂ}
     (hA : ∀ m, HasDerivAt (fun h => coeff m (A h)) (coeff m B) 0) (w : σ) (m : σ →₀ ℕ) :
     HasDerivAt (fun h => coeff m (A h * X w)) (coeff m (B * X w)) 0 := by
@@ -37,6 +46,25 @@ theorem hasDerivAt_coeff_mul_X {σ : Type} {A : ℝ → MvPolynomial σ ℂ} {B 
   · exact hA _
   · exact hasDerivAt_const _ _
 
+/- English proof (translation)
+Establish `hone : ∀ P : Pol ι d a, colSub (g 0) P = P`. Establish `: (colSub (g 0) : Pol ι d a →ₐ[ℂ] Pol ι d a) = AlgHom.id ℂ _`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `y`. Rewrite using `[h0]`.
+
+Simplify using `only [colSub, aeval_X, Pi.one_apply, AlgHom.id_apply]`. Rewrite using `[Finset.sum_eq_single y.2.2]`. Simplify using the standard rewrite rules. Introduce `j _ hj`. Simplify using `[Matrix.one_apply_ne hj]`.
+
+Simplify using the standard rewrite rules. Introduce `P`. Rewrite using `[this, AlgHom.id_apply]`. Proceed by induction on `R using MvPolynomial.induction_on generalizing m with`. Consider the case `C c`.
+
+Establish `h1 : colDer τ S (C c : Pol ι d a) = 0` using `by simp [colDer_apply]`. Simplify using `only [h1, algHom_C, coeff_zero]`. Conclude with `hasDerivAt_const _ _`. Consider the case `add P Q hP hQ`. Simplify using `only [map_add, coeff_add]`.
+
+Conclude with `(hP m).add (hQ m)`. Consider the case `mul_X P v hP`. Establish `e1 : ∀ h, coeff m (colSub (g h) (P * X v)) = ∑ k, g h v.1 k v.2.2 * coeff m (colSub (g h) P * X (v.1, v.2.1, k))`. Introduce `h`. Rewrite using `[map_mul]`.
+
+Use `conv_lhs => rw [show colSub (g h) (X v : Pol ι d a) = ∑ k, C (g h v.1 k v.2.2) * X (v.1, v.2.1, k) by`. Simplify using `[colSub]]`. Rewrite using `[Finset.mul_sum, coeff_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[mul_left_comm, coeff_C_mul]`.
+
+Simplify using `only [e1]`. Establish `hd` using `HasDerivAt.fun_sum (u := Finset.univ) fun k _ => (hg v.1 k v.2.2).fun_mul (hasDerivAt_coeff_mul_X hP (v.1, v.2.1, k) m)`. Use `hd.congr_deriv ?_` and prove the remaining obligations. Rewrite using `[colDer_mul_X, coeff_add, Finset.sum_add_distrib, add_comm]`. Use `congr 1`.
+
+Rewrite using `[h0, Finset.sum_eq_single v.2.2]`. Simplify using the standard rewrite rules. Introduce `j _ hj`. Simplify using `[Matrix.one_apply_ne hj]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[colDer_X, hone]`. Distinguish the cases in `hv : v.1 = τ`. Substitute `hv` using the available equality. Simplify using `only [if_true, Finset.mul_sum, coeff_sum, mul_smul_comm, coeff_smul, smul_eq_mul]`. Simplify using `[hv]`.
+-/
 theorem hasDerivAt_coeff_colSub_of_curve [Fintype ι] {d a : ℕ} (τ : ι) (S : Matrix (Fin a) (Fin a) ℂ)
     (g : ℝ → ι → Matrix (Fin a) (Fin a) ℂ) (h0 : g 0 = 1)
     (hg : ∀ σ i j, HasDerivAt (fun h => g h σ i j) (if σ = τ then S i j else 0) 0)
@@ -90,6 +118,11 @@ theorem hasDerivAt_coeff_colSub_of_curve [Fintype ι] {d a : ℕ} (τ : ι) (S :
         simp only [if_true, Finset.mul_sum, coeff_sum, mul_smul_comm, coeff_smul, smul_eq_mul]
       · simp [hv]
 
+/- English proof (translation)
+Use `hasDerivAt_coeff_colSub_of_curve τ S (fun h => atPl τ (NormedSpace.exp ((h : ℂ) • S))) ?_ ?_ R m` and prove the remaining obligations. Simplify using `only [Complex.ofReal_zero, zero_smul, NormedSpace.exp_zero, atPl]`. Conclude with `Function.update_eq_self τ 1`. Introduce `σ i j`. Distinguish the cases in `h : σ = τ`.
+
+Substitute `h` using the available equality. Simplify using `only [atPl, Function.update_self, if_true]`. Apply the tactic sequence `exact hasDerivAt_exp_ofReal_smul_entry S i j`. Simplify using `only [atPl, Function.update_of_ne h, if_neg h]`. Conclude with `hasDerivAt_const _ _`.
+-/
 theorem hasDerivAt_coeff_colSub_exp {ι : Type} [Fintype ι] [DecidableEq ι] (d a : ℕ) (τ : ι)
     (S : Matrix (Fin a) (Fin a) ℂ) (R : Pol ι d a) (m : Var ι d a →₀ ℕ) :
     HasDerivAt (fun h : ℝ => coeff m (colSub (atPl τ (NormedSpace.exp ((h : ℂ) • S))) R))

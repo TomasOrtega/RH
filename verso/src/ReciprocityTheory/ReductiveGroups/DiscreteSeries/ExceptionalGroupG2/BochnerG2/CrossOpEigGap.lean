@@ -14,6 +14,21 @@ section OneBAux
 variable {M : Type*} [NormedAddCommGroup M] [InnerProductSpace ℂ M] {ε : Fin n → Bool}
   {E : Fin n → Fin n → Module.End ℂ M} {V : Submodule ℂ M} {lam : Fin n → ℝ}
 
+/- English proof (translation)
+Use `set S : Submodule ℂ (Big n 1 M) := Module.End.eigenspace (crossOp ε E 1 0) (θ : ℂ) ⊓ ncV ε V 1 with hSdef`. Use `haveI hfdN : FiniteDimensional ℂ (ncV ε V 1) := ReciprocityTheory.ChartRestriction.DS.finiteDimensional_ncV hV.1 1`. Use `haveI hfd : FiniteDimensional ℂ S := Submodule.finiteDimensional_of_le (inf_le_right : S ≤ ncV ε V 1)`. Establish `hS : ReciprocityTheory.ChartRestriction.DS.IsKStableSub ε (ReciprocityTheory.ChartRestriction.DS.bAct E 1) S`. Introduce `a b hab v hv`.
+
+Rewrite `hv`, the goal using `[Submodule.mem_inf]`. Use `⟨?_, ReciprocityTheory.ChartRestriction.DS.ncV_kStable hV.2.1 1 a b hab v hv.2⟩` and prove the remaining obligations. Rewrite `hv`, the goal using `[Module.End.mem_eigenspace_iff]`. Establish `hc : crossOp ε E 1 0 (ReciprocityTheory.ChartRestriction.DS.bAct E 1 a b v) = ReciprocityTheory.ChartRestriction.DS.bAct E 1 a b (crossOp ε E 1 0 v)` using `LinearMap.congr_fun (ReciprocityTheory.ChartRestriction.DS.crossOp_comm hE 1 0 hab) v`. Rewrite using `[hc, hv.1, map_smul]`.
+
+Establish `hne : S ≠ ⊥`. Introduce `h0`. Apply `hy0` to reduce the goal to its premises. Establish `hyS : y ∈ S` using `hy`. Rewrite `hyS` using `[h0]`.
+
+Conclude with `(Submodule.mem_bot ℂ).1 hyS`. Take `⟨w, hwS, hw0, μ, hμ⟩` from `ReciprocityTheory.ChartRestriction.DS.exists_khw (ReciprocityTheory.ChartRestriction.DS.bAct_isGlRep hE 1) (ReciprocityTheory.ChartRestriction.DS.bAct_isKUnitary hU 1) hfd hS hne`. Establish `hwS'` using `Submodule.mem_inf.1 hwS`. Take `⟨r, s, hrs, hμeq, h2⟩` from `ReciprocityTheory.ChartRestriction.DS.crossOp_khw hE hU hV hwS'.2 hw0 hμ`. Establish `hθw : crossOp ε E 1 0 w = (θ : ℂ) • w` using `Module.End.mem_eigenspace_iff.1 hwS'.1`.
+
+Rewrite `h2` using `[hθw, smul_smul]`. Establish `hc : ((2 : ℂ) * (θ : ℂ)) = ((ReciprocityTheory.ChartRestriction.DS.casValK ε μ - n - ReciprocityTheory.ChartRestriction.DS.casValK ε (ReciprocityTheory.ChartRestriction.DS.lowK ε lam) : ℝ) : ℂ)` using `smul_left_injective ℂ hw0 h2`. Establish `hcR : 2 * θ = ReciprocityTheory.ChartRestriction.DS.casValK ε μ - n - ReciprocityTheory.ChartRestriction.DS.casValK ε (ReciprocityTheory.ChartRestriction.DS.lowK ε lam)`. Conclude with `hc` after adjusting the coercions. Substitute `hμeq` using the available equality.
+
+Establish `hgap` using `ReciprocityTheory.ChartRestriction.DS.G2.gap_gt hrs hbig`. Establish `hn0 : (0 : ℝ) ≤ n` using `Nat.cast_nonneg n`. Establish `hne' : r ≠ s` using `fun h => hrs (congrArg ε h)`. Break down `lt_or_gt_of_ne hne' with hlt | hgt` into its components or cases. Use `left`.
+
+Establish `hp` using `ReciprocityTheory.ChartRestriction.DS.crossVal_pos hmono hh hlt hrs`. Apply the tactic sequence `constructor <;> linarith [hgap.2]`. Use `right`. Establish `hq` using `ReciprocityTheory.ChartRestriction.DS.crossVal_neg hmono hh hgt hrs.symm`. Apply the tactic sequence `constructor <;> linarith`.
+-/
 theorem crossOp_eig_gap (hE : IsGlRep E) (hU : IsInfUnitary ε E) (hV : IsKIrrHW ε E (lowK ε lam) V)
     (hmono : StrictAnti lam) {h : ℝ} (hh : GapAtLeast ε lam h)
     (hbig : 2 * (n : ℝ) < h) {θ : ℝ} {y : Big n 1 M}

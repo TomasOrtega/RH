@@ -9,6 +9,13 @@ open scoped Formalism.Per NNReal
 
 namespace GlobalTheory.BSP
 
+/- English proof (translation)
+Introduce `A B _ _ f hf M _ _ _ _ N _ _ u h`. Take `⟨n, p, s, -, -, hps⟩` from `Module.Finite.exists_comp_eq_id_of_projective A M`. Set `v : M →ₛₗ[f] (Fin n → B)` to `{ toFun := fun x i => f (s x i) map_add' := fun x y => by ext i; simp map_smul' := fun a x => by ext i; simp }`. Take `⟨S, hS, -⟩` from `h _ v`. Rewrite using `[← LinearMap.ker_eq_bot (τ₁₂ := f), LinearMap.ker_eq_bot']`.
+
+Introduce `x hx`. Establish `h1 : v x = 0` using `by rw [← hS, hx, map_zero]`. Establish `h2 : s x = 0`. Use function extensionality and compare the values at `i`. Apply `hf` to reduce the goal to its premises.
+
+Rewrite using `[Pi.zero_apply, map_zero]`. Conclude with `congrFun h1 i`. Establish `h3 : x = p (s x)`. Rewrite using `[← LinearMap.comp_apply, hps, LinearMap.id_apply]`. Rewrite using `[h3, h2, map_zero]`.
+-/
 theorem semiBC_injective_of_injective : ∀ (A B : Type) [CommRing A] [CommRing B] (f : A →+* B),
     Function.Injective f → ∀ (M : Type) [AddCommGroup M] [Module A M] [Module.Finite A M]
     [Module.Projective A M] (N : Type) [AddCommGroup N] [Module B N] (u : M →ₛₗ[f] N),

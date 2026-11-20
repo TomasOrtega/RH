@@ -6,6 +6,9 @@ namespace PositivityTheory.Rg.BcB.F.FBL
 
 def HermInf : Prop := ∀ (n : ℕ) (lam : Fin n → ℤ), PositivityTheory.RgBcC.IsHerm (PositivityTheory.RgBcC.infOf lam)
 
+/- English proof (translation)
+Introduce `n lam`. Use `⟨Equiv.refl _, fun a => ?_⟩` and prove the remaining obligations. Simplify using `only [PositivityTheory.RgBcC.infOf, Equiv.refl_apply, Bool.false_eq_true, if_false, if_true, map_mul, map_add, map_sub, map_div₀, map_one, map_neg, map_intCast, Complex.conj_natCast, map_ofNat]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hermInf_holds : HermInf := by
   intro n lam
   refine ⟨Equiv.refl _, fun a => ?_⟩

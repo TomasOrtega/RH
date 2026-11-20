@@ -6,6 +6,15 @@ open scoped TensorProduct Quaternion
 
 namespace GlobalTheory.CompanionTheory.PlaneSA
 
+/- English proof (translation)
+Introduce `F K _ _ _ d β h2 han b hb hre r hr`. Establish `hz : qn (⟨r, 2 * b.imI, 2 * b.imJ, 2 * b.imK⟩ : Q d β K) = 0`. Simplify using `only [qn] at hb ⊢`. Take the linear combination `hr + 4 * hb`. Establish `h0` using `han _ hz`.
+
+Establish `hI : b.imI = 0`. Use `congrArg QuaternionAlgebra.imI h0` as an intermediate fact. Simplify `this` using `[h2]`. Establish `hJ : b.imJ = 0`. Use `congrArg QuaternionAlgebra.imJ h0` as an intermediate fact.
+
+Simplify `this` using `[h2]`. Establish `hK : b.imK = 0`. Use `congrArg QuaternionAlgebra.imK h0` as an intermediate fact. Simplify `this` using `[h2]`. Apply `hre` to reduce the goal to its premises.
+
+Simplify `hb` using `[qn, hI, hJ, hK]`.
+-/
 theorem anis_trace_sq_sub_four_ne_sq :
     ∀ {F K : Type} [Field F] [Field K] [Algebra F K] (d β : F), (2 : K) ≠ 0 →
       (∀ x : Q d β K, qn x = 0 → x = 0) → ∀ b : Q d β K, qn b = 1 → b.re ^ 2 ≠ 1 →

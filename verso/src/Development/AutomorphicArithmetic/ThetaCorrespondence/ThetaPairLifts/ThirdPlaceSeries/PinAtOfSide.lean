@@ -18,6 +18,19 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.TypeRec.factG
 namespace GlobalTheory.PinLayer
 set_option maxHeartbeats 4000000 in
+/- English proof (translation)
+Break down `a with ⟨nt, all, chr_eq, host, frameN, chrN, chrGal, Pq', Pq_over, pq, jE_eq, mt_eq, Pq_eq, low', split, ratIn, ratIn_hL, ratIn_eig, ratIn_θ, depth⟩` into its components or cases. Take `⟨⟨D0, cf0, jE, A, cg, au, rep, row, low, Pq, S, hLm, eig, θ, Bs, M, C0, tp0, ch, mt, big, L, Sp, Au, ss, heq⟩, pack⟩` from `nt`. Simplify using `only at pack heq hrep labc zeta mt_eq ⊢`. Substitute `heq` using the available equality. Consider the cases of `pack`.
+
+Consider the cases of `hrep`. Take `⟨Hk, hHk⟩` from `_root_.GlobalTheory.FitHecke.heckeOpen_withLoc_alt D0 cf0 jE A low Pq S hLm eig θ Bs M C0 tp0 ch mt hE.star hE.int hE.split hcheb big L Sp Au`. Take `⟨ty⟩` from `_root_.GlobalTheory.HeightCounting.typesOpen_withLoc_alt D0 cf0 jE A low Pq S hLm eig θ Bs M C0 tp0 ch mt hE.star hE.int hE.split hcheb big L Sp Au ss`. Take `⟨tw⟩` from `_root_.GlobalTheory.T.side_multiplicity_character_alt D0 cf0 jE A low Pq S hLm eig θ Bs M C0 tp0 ch mt hE.star hE.int hE.split hcheb big L Sp Au`. Take `⟨Γ, hΓ, -⟩` from `GlobalTheory.T.exists_green_cuspidal_labelling_same_generators hG (withLoc L) (cfL L cf0) { A.grp with } hT zeta`.
+
+Use `⟨{ cf := cfL L cf0, C := chL L C0, tp := tpL L tp0, chr := tw.chrN, val := hval, Q_eq := ?Q, T := { A.wdT with }, lab := A.lab, cg := { cg with }, M := mtL L M, H := Hk, au := ?au, rep := rep, rep_inj := hinj, row := ?row, locW_eq := fun i i' σ w => (Au.locW i σ w).trans (Au.locW …` and prove the remaining obligations. Use `case Q =>`. Introduce `i`. Establish `hm : i ∈ L.X.nd.locs (L.X.nd.j i) (L.X.nd.w i)` using `(L.X.nd.locs_mem _ _ i).2 ⟨rfl, rfl⟩`. Conclude with `(Sp.Q_eq _ _ i hm).trans (Sp.Qc_eq _ _)`.
+
+Use `case au =>`. Introduce `j h1 h2 π s σ h`. Rewrite using `[hHk]`. Conclude with `au j h1 h2 π s σ h`. Use `case row =>`.
+
+Introduce `i`. Use `⟨fun σ s τ h => ?_, fun σ v w hvw Dv hα => ?_⟩` and prove the remaining obligations. Conclude with `(congrArg (A.wdT.e s.w) (Au.locW i σ s.w)).trans (row.1 σ s τ h)`. Take `⟨α, h1, h2⟩` from `row.2 σ v w hvw Dv hα`. Conclude with `⟨α, h1, (Au.satW i σ w).trans h2⟩`.
+
+Use `case lab =>`. Conclude with `GlobalTheory.T.weilDeligneLabels_all_places_of_fixed_and_conj _ _ A.lab labc`. Use `case chiT =>`. Conclude with `A.chiT`.
+-/
 theorem pinAt_of_side_alt {hL : _root_.UpperTheory.Zero.LLC.RecTExists} {D : D7} {cf : CharFrame D} {nch : NChoice D} {tp : TupTied D cf nch}
     (a : _root_.GlobalTheory.Mem.Top.Bl.NAtData hL D cf nch tp) (hG : GlobalTheory.Published.GreenCuspidal) (hT : TypesTrue D.ntypes cf.P cf.W) (hval : ValLL0 D cf)
     (rep' : D.what₂.FT → NG.FinTyp D.host.E D.R.r) (hrep : HEq a.nt.rep rep')

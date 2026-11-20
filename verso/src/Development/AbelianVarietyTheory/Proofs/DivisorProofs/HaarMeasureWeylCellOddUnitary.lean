@@ -26,28 +26,46 @@ def incl (L : Type) [Field L] (e : Fin m ↪ Fin n) : Matrix (Fin n) (Fin m) L :
 def extZero (e : Fin m ↪ Fin n) (X : Matrix (Fin m) (Fin m) L) : Matrix (Fin n) (Fin n) L :=
   incl L e * X * (incl L e).transpose
 
+/- English proof (translation)
+Simplify using `[extZero, incl, Matrix.mul_apply, e.injective.eq_iff]`.
+-/
 theorem extZero_apply (e : Fin m ↪ Fin n) (X : Matrix (Fin m) (Fin m) L) (a b : Fin m) :
     extZero e X (e a) (e b) = X a b := by
   simp [extZero, incl, Matrix.mul_apply, e.injective.eq_iff]
 
+/- English proof (translation)
+Simplify using `[extZero, incl, Matrix.mul_apply, hi]`.
+-/
 theorem extZero_row (e : Fin m ↪ Fin n) (X : Matrix (Fin m) (Fin m) L) {i : Fin n} (hi : ∀ a, i ≠ e a) (j : Fin n) :
     extZero e X i j = 0 := by
   simp [extZero, incl, Matrix.mul_apply, hi]
 
+/- English proof (translation)
+Simplify using `[extZero, incl, Matrix.mul_apply, hj]`.
+-/
 theorem extZero_col (e : Fin m ↪ Fin n) (X : Matrix (Fin m) (Fin m) L) (i : Fin n) {j : Fin n} (hj : ∀ a, j ≠ e a) :
     extZero e X i j = 0 := by
   simp [extZero, incl, Matrix.mul_apply, hj]
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `[incl, Matrix.mul_apply, Matrix.one_apply, e.injective.eq_iff, eq_comm]`.
+-/
 theorem transpose_incl_mul (e : Fin m ↪ Fin n) : (incl L e).transpose * incl L e = 1 := by
   ext a b
   simp [incl, Matrix.mul_apply, Matrix.one_apply, e.injective.eq_iff, eq_comm]
 
+/- English proof (translation)
+Unfold `extZero`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (incl L e).transpose, transpose_incl_mul, Matrix.one_mul]`.
+-/
 theorem extZero_mul (e : Fin m ↪ Fin n) (X Y : Matrix (Fin m) (Fin m) L) :
     extZero e X * extZero e Y = extZero e (X * Y) := by
   unfold extZero
   simp only [Matrix.mul_assoc]
   rw [← Matrix.mul_assoc (incl L e).transpose, transpose_incl_mul, Matrix.one_mul]
 
+/- English proof (translation)
+Unfold `extZero`. Rewrite using `[Matrix.mul_add, Matrix.add_mul]`.
+-/
 theorem extZero_add (e : Fin m ↪ Fin n) (X Y : Matrix (Fin m) (Fin m) L) :
     extZero e (X + Y) = extZero e X + extZero e Y := by
   unfold extZero
@@ -61,11 +79,17 @@ def blockHom (e : Fin m ↪ Fin n) : Matrix (Fin m) (Fin m) L →* Matrix (Fin n
     rw [this, extZero_add, extZero_add, ← extZero_mul]
     noncomm_ring
 
+/- English proof (translation)
+Use `show (1 + extZero e (g - 1) : Matrix (Fin n) (Fin n) L) (e a) (e b) = _`. Simplify using `[extZero_apply, Matrix.one_apply, e.injective.eq_iff]`.
+-/
 theorem blockHom_apply (e : Fin m ↪ Fin n) (g : Matrix (Fin m) (Fin m) L) (a b : Fin m) :
     blockHom e g (e a) (e b) = g a b := by
   show (1 + extZero e (g - 1) : Matrix (Fin n) (Fin n) L) (e a) (e b) = _
   simp [extZero_apply, Matrix.one_apply, e.injective.eq_iff]
 
+/- English proof (translation)
+Use `show (1 + extZero e (g - 1) : Matrix (Fin n) (Fin n) L) i j = _`. Break down `h with h | h` into its components or cases. Rewrite using `[Matrix.add_apply, extZero_row e _ h, add_zero]`. Rewrite using `[Matrix.add_apply, extZero_col e _ _ h, add_zero]`.
+-/
 theorem blockHom_out (e : Fin m ↪ Fin n) (g : Matrix (Fin m) (Fin m) L) {i j : Fin n}
     (h : (∀ a, i ≠ e a) ∨ ∀ a, j ≠ e a) : blockHom e g i j = (1 : Matrix (Fin n) (Fin n) L) i j := by
   show (1 + extZero e (g - 1) : Matrix (Fin n) (Fin n) L) i j = _
@@ -73,6 +97,9 @@ theorem blockHom_out (e : Fin m ↪ Fin n) (g : Matrix (Fin m) (Fin m) L) {i j :
   · rw [Matrix.add_apply, extZero_row e _ h, add_zero]
   · rw [Matrix.add_apply, extZero_col e _ _ h, add_zero]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h`. Use `push_neg at h`. Take `⟨h1, ⟨a, ha⟩, b, hb⟩` from `h`. Conclude with `h1 a b ha hb`.
+-/
 theorem cases_range (e : Fin m ↪ Fin n) (i j : Fin n) :
     (∃ a b, i = e a ∧ j = e b) ∨ (∀ a, i ≠ e a) ∨ ∀ a, j ≠ e a := by
   by_contra h
@@ -80,10 +107,16 @@ theorem cases_range (e : Fin m ↪ Fin n) (i j : Fin n) :
   obtain ⟨h1, ⟨a, ha⟩, b, hb⟩ := h
   exact h1 a b ha hb
 
+/- English proof (translation)
+Introduce `g h hgh` and use `by ext a b rw [← blockHom_apply e g, hgh, blockHom_apply]`.
+-/
 theorem blockHom_injective (e : Fin m ↪ Fin n) : Function.Injective (blockHom (L := L) e) := fun g h hgh => by
   ext a b
   rw [← blockHom_apply e g, hgh, blockHom_apply]
 
+/- English proof (translation)
+Use extensionality with `i j`. Break down `cases_range e i j with ⟨a, b, rfl, rfl⟩ | h` into its components or cases. Rewrite using `[blockHom_apply]`. Both sides reduce to the same expression. Rewrite using `[blockHom_out e _ h, hM i j h]`.
+-/
 theorem blockHom_submatrix (e : Fin m ↪ Fin n) (M : Matrix (Fin n) (Fin n) L)
     (hM : ∀ i j, ((∀ a, i ≠ e a) ∨ ∀ a, j ≠ e a) → M i j = (1 : Matrix (Fin n) (Fin n) L) i j) :
     blockHom e (M.submatrix e e) = M := by
@@ -92,6 +125,11 @@ theorem blockHom_submatrix (e : Fin m ↪ Fin n) (M : Matrix (Fin n) (Fin n) L)
   · rw [blockHom_apply]; rfl
   · rw [blockHom_out e _ h, hM i j h]
 
+/- English proof (translation)
+Use extensionality with `i j`. Break down `cases_range e i j with ⟨a, b, rfl, rfl⟩ | h` into its components or cases. Rewrite using `[blockHom_apply]`. Simplify using `only [adjJ, he, blockHom_apply]`. Establish `h' : (∀ a, j.rev ≠ e a) ∨ ∀ a, i.rev ≠ e a`.
+
+Apply the tactic sequence `refine h.symm.imp (fun h a ha => h a.rev ?_) (fun h a ha => h a.rev ?_) <;> rw [← he, ← ha, Fin.rev_rev]`. Rewrite using `[blockHom_out e _ h, ← adjJ_one σ]`. Simplify using `only [adjJ]`. Rewrite using `[blockHom_out e _ h']`.
+-/
 theorem adjJ_blockHom (σ : L →+* L) (e : Fin m ↪ Fin n) (he : ∀ a, (e a).rev = e a.rev) (g : Matrix (Fin m) (Fin m) L) :
     adjJ σ (blockHom e g) = blockHom e (adjJ σ g) := by
   ext i j
@@ -109,8 +147,16 @@ def three (A : Fin n) (hA : A.rev.val = A.val + 2) : Fin 3 ↪ Fin n :=
     have := congrArg Fin.val h
     exact Fin.ext (by simpa using this)⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem three_val (A : Fin n) (hA : A.rev.val = A.val + 2) (a : Fin 3) : (three A hA a).val = A.val + a.val := rfl
 
+/- English proof (translation)
+Use `a.2` as an intermediate fact. Use `A.2` as an intermediate fact. Rewrite `hA` using `[Fin.val_rev]`. Use `ext`. Simplify using `only [Fin.val_rev, three_val]`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem three_rev (A : Fin n) (hA : A.rev.val = A.val + 2) (a : Fin 3) : (three A hA a).rev = three A hA a.rev := by
   have := a.2
   have := A.2
@@ -119,10 +165,19 @@ theorem three_rev (A : Fin n) (hA : A.rev.val = A.val + 2) (a : Fin 3) : (three 
   simp only [Fin.val_rev, three_val]
   omega
 
+/- English proof (translation)
+The claim follows from `Fin.ext rfl`.
+-/
 theorem three_zero (A : Fin n) (hA : A.rev.val = A.val + 2) : three A hA 0 = A := Fin.ext rfl
 
+/- English proof (translation)
+The claim follows from `Fin.ext hA.symm`.
+-/
 theorem three_two (A : Fin n) (hA : A.rev.val = A.val + 2) : three A hA 2 = A.rev := Fin.ext hA.symm
 
+/- English proof (translation)
+Simplify using `only [Fin.lt_def, ne_eq, Fin.ext_iff, three_val, Fin.forall_fin_succ, hA]`. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
+-/
 theorem three_out (A : Fin n) (hA : A.rev.val = A.val + 2) (i : Fin n) :
     (∀ a, i ≠ three A hA a) ↔ (i < A ∨ A.rev < i) := by
   simp only [Fin.lt_def, ne_eq, Fin.ext_iff, three_val, Fin.forall_fin_succ, hA]
@@ -142,9 +197,15 @@ def blockU (σ : L →+* L) (A : Fin n) (hA : A.rev.val = A.val + 2) : (borelU �
       show blockHom (three A hA) (u.1.1⁻¹).val = adjJ σ (blockHom (three A hA) u.1.1.val)
       rw [adjJ_blockHom σ _ (three_rev A hA), (mem_GU_iff_adjJ σ _).1 u.1.2]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem blockU_val (σ : L →+* L) (A : Fin n) (hA : A.rev.val = A.val + 2) (u : (borelU σ 3).U) :
     ((blockU σ A hA u : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) = blockHom (three A hA) u.1.1.val := rfl
 
+/- English proof (translation)
+Introduce `u w h` and use `Subtype.ext (Subtype.ext (Units.ext (blockHom_injective (three A hA) (by rw [← blockU_val, ← blockU_val, h]))))`.
+-/
 theorem blockU_injective (σ : L →+* L) (A : Fin n) (hA : A.rev.val = A.val + 2) :
     Function.Injective (blockU σ A hA) := fun u w h =>
   Subtype.ext (Subtype.ext (Units.ext (blockHom_injective (three A hA)
@@ -153,6 +214,15 @@ theorem blockU_injective (σ : L →+* L) (A : Fin n) (hA : A.rev.val = A.val + 
 def InBlock {σ : L →+* L} (A : Fin n) (u : GU σ n) : Prop :=
   IsUnipU u ∧ ∀ i j : Fin n, i < j → (i < A ∨ A.rev < j) → ((u : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) i j = 0
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `(mem_borelU_U σ 3 _).1 u.2`. Use `⟨⟨fun i j hij => ?_, fun i => ?_⟩, fun i j hij h => ?_⟩` and prove the remaining obligations. Rewrite using `[blockU_val]`. Break down `cases_range (three A hA) i j with ⟨a, b, rfl, rfl⟩ | h` into its components or cases. Rewrite using `[blockHom_apply]`.
+
+Use `h1 a b ?_` and prove the remaining obligations. Rewrite `hij`, the goal using `[Fin.lt_def]`. Rewrite `hij` using `[three_val, three_val]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[blockHom_out _ _ h, Matrix.one_apply_ne hij.ne']`.
+
+Rewrite using `[blockU_val]`. Distinguish the cases in `h : ∀ a, i ≠ three A hA a`. Rewrite using `[blockHom_out _ _ (Or.inl h), Matrix.one_apply_eq]`. Use `push_neg at h`. Take `⟨a, rfl⟩` from `h`.
+
+Rewrite using `[blockHom_apply]`. Conclude with `h2 a`. Rewrite using `[blockU_val, blockHom_out _ _ (h.imp (fun h => (three_out A hA i).2 (Or.inl h)) fun h => (three_out A hA j).2 (Or.inr h)), Matrix.one_apply_ne hij.ne]`.
+-/
 theorem inBlock_blockU (σ : L →+* L) (A : Fin n) (hA : A.rev.val = A.val + 2) (u : (borelU σ 3).U) :
     InBlock A (blockU σ A hA u) := by
   obtain ⟨h1, h2⟩ := (mem_borelU_U σ 3 _).1 u.2
@@ -175,6 +245,11 @@ theorem inBlock_blockU (σ : L →+* L) (A : Fin n) (hA : A.rev.val = A.val + 2)
   · rw [blockU_val, blockHom_out _ _ (h.imp (fun h => (three_out A hA i).2 (Or.inl h))
       fun h => (three_out A hA j).2 (Or.inr h)), Matrix.one_apply_ne hij.ne]
 
+/- English proof (translation)
+Rewrite `h` using `[three_out, three_out]`. Break down `lt_trichotomy i j with e | rfl | e` into its components or cases. Rewrite using `[Matrix.one_apply_ne e.ne]`. Use `hu.2 i j e ?_` and prove the remaining obligations. Break down `h with (h | h) | h | h` into its components or cases.
+
+Use `exacts [Or.inl h, Or.inr (h.trans e), Or.inl (e.trans h), Or.inr h]`. Rewrite using `[Matrix.one_apply_eq, hu.1.2]`. Rewrite using `[Matrix.one_apply_ne e.ne', hu.1.1 i j e]`.
+-/
 theorem InBlock.out {σ : L →+* L} {A : Fin n} (hA : A.rev.val = A.val + 2) {u : GU σ n} (hu : InBlock A u) (i j : Fin n)
     (h : (∀ a, i ≠ three A hA a) ∨ ∀ a, j ≠ three A hA a) :
     ((u : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) i j = (1 : Matrix (Fin n) (Fin n) L) i j := by
@@ -187,6 +262,13 @@ theorem InBlock.out {σ : L →+* L} {A : Fin n} (hA : A.rev.val = A.val + 2) {u
   · rw [Matrix.one_apply_eq, hu.1.2]
   · rw [Matrix.one_apply_ne e.ne', hu.1.1 i j e]
 
+/- English proof (translation)
+Use `set e := three A hA with he`. Establish `h1` using `blockHom_submatrix e _ (hu.out hA)`. Use `set X := (u.1.val).submatrix e e with hX`. Establish `hinv` using `(mem_GU_iff_adjJ σ _).1 u.2`. Establish `h2 : blockHom e (adjJ σ X) = (u.1⁻¹).val`.
+
+Rewrite using `[← adjJ_blockHom σ e (three_rev A hA), h1, hinv]`. Establish `h3 : X * adjJ σ X = 1` using `blockHom_injective e (by rw [map_mul, map_one, h1, h2, Units.mul_inv])`. Establish `h4 : adjJ σ X * X = 1` using `blockHom_injective e (by rw [map_mul, map_one, h1, h2, Units.inv_mul])`. Set `g : GL (Fin 3) L` to `⟨X, adjJ σ X, h3, h4⟩`. Establish `hg : g ∈ GU σ 3` using `(mem_GU_iff_adjJ σ g).2 rfl`.
+
+Use `⟨⟨⟨g, hg⟩, (mem_borelU_U σ 3 _).2 ⟨fun a b hab => hu.1.1 (e a) (e b) ?_, fun a => hu.1.2 (e a)⟩⟩, Subtype.ext (Units.ext h1)⟩` and prove the remaining obligations. Rewrite `hab`, the goal using `[Fin.lt_def]`. Rewrite using `[he, three_val, three_val]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem exists_blockU {σ : L →+* L} {A : Fin n} (hA : A.rev.val = A.val + 2) {u : GU σ n} (hu : InBlock A u) :
     ∃ w, blockU σ A hA w = u := by
   set e := three A hA with he
@@ -207,12 +289,20 @@ theorem exists_blockU {σ : L →+* L} {A : Fin n} (hA : A.rev.val = A.val + 2) 
 
 def wt (j : ℕ) : Fin 3 → Fin 3 → ℤ := fun a b => if a = 0 ∧ b = 2 then -(j : ℤ) else -((j / 2 : ℕ) : ℤ)
 
+/- English proof (translation)
+Use `⟨fun a b => ?_, fun a b c h1 h2 => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `fin_cases a <;> fin_cases b <;> simp [wt]`. Apply the tactic sequence `fin_cases a <;> fin_cases b <;> fin_cases c <;> simp [wt] at h1 h2 ⊢`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem isWeight_wt (j : ℕ) : IsWeight (wt j) := by
   refine ⟨fun a b => ?_, fun a b c h1 h2 => ?_⟩
   · fin_cases a <;> fin_cases b <;> simp [wt]
   · fin_cases a <;> fin_cases b <;> fin_cases c <;> simp [wt] at h1 h2 ⊢
     omega
 
+/- English proof (translation)
+Use `⟨fun a b h => ?_, fun a b c h1 h2 => ?_, fun a b c h1 h2 => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `fin_cases a <;> fin_cases b <;> simp [wt] at h ⊢ <;> omega`. Apply the tactic sequence `fin_cases a <;> fin_cases b <;> fin_cases c <;> simp [wt] at h1 h2 ⊢`. Use linear arithmetic over natural numbers and integers. Apply the tactic sequence `fin_cases a <;> fin_cases b <;> fin_cases c <;> simp [wt] at h1 h2 ⊢`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem isIdealWeight_wt (j : ℕ) : IsIdealWeight (wt (j + 1)) (wt j) := by
   refine ⟨fun a b h => ?_, fun a b c h1 h2 => ?_, fun a b c h1 h2 => ?_⟩
   · fin_cases a <;> fin_cases b <;> simp [wt] at h ⊢ <;> omega
@@ -221,12 +311,20 @@ theorem isIdealWeight_wt (j : ℕ) : IsIdealWeight (wt (j + 1)) (wt j) := by
   · fin_cases a <;> fin_cases b <;> fin_cases c <;> simp [wt] at h1 h2 ⊢
     omega
 
+/- English proof (translation)
+Rewrite using `[Finset.sum_filter, Fintype.sum_prod_type]`. Simplify using `[Fin.sum_univ_three, wt]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem sum_wt (j : ℕ) : ∑ p ∈ upPairs 3, (wt j p.1 p.2 - wt (j + 1) p.1 p.2).toNat + (j + 2 * (j / 2)) =
     j + 1 + 2 * ((j + 1) / 2) := by
   rw [Finset.sum_filter, Fintype.sum_prod_type]
   simp [Fin.sum_univ_three, wt]
   omega
 
+/- English proof (translation)
+Distinguish the cases in `h0 : x = 0`. Simplify using `[h0]`. Rewrite `h`, the goal using `[v_eq_exp h0]`. Rewrite `h` using `[← WithZero.exp_add, WithZero.exp_le_exp]`. Rewrite using `[WithZero.exp_le_exp]`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem le_exp_half {x : L} {j : ℕ} (h : Valued.v x * Valued.v x ≤ WithZero.exp (j : ℤ)) :
     Valued.v x ≤ WithZero.exp ((j / 2 : ℕ) : ℤ) := by
   by_cases h0 : x = 0
@@ -236,6 +334,21 @@ theorem le_exp_half {x : L} {j : ℕ} (h : Valued.v x * Valued.v x ≤ WithZero.
     rw [WithZero.exp_le_exp]
     omega
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `(mem_borelU_U σ 3 _).1 w.2`. Rewrite using `[mem_unipLat, mem_upLat]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Simplify `h.2 0 2 (by decide)` using `[wt]`.
+
+Introduce `h`. Establish `hinv` using `(mem_GU_iff_adjJ σ _).1 w.1.2`. Establish `hs : Valued.v (σ (w.1.1.val 0 2) + w.1.1.val 0 2) ≤ WithZero.exp (j : ℤ)` using `Valuation.map_add_le _ (by rwa [hσ]) h`. Establish `e1 : (w.1.1.val * adjJ σ w.1.1.val) 0 2 = 0` using `by rw [← hinv, Units.mul_inv]; simp`. Establish `e2 : (adjJ σ w.1.1.val * w.1.1.val) 0 2 = 0` using `by rw [← hinv, Units.inv_mul]; simp`.
+
+Simplify using `only [Matrix.mul_apply, Fin.sum_univ_three, adjJ] at e1 e2`. Establish `r0 : (0 : Fin 3).rev = 2` using `rfl`. Establish `r1 : (1 : Fin 3).rev = 1` using `rfl`. Establish `r2 : (2 : Fin 3).rev = 0` using `rfl`. Simplify using `only [r0, r1, r2, h2, map_one, one_mul, mul_one] at e1 e2`.
+
+Establish `b1 : Valued.v (w.1.1.val 0 1) ≤ WithZero.exp ((j / 2 : ℕ) : ℤ)`. Use `le_exp_half ?_` and prove the remaining obligations. Establish `: σ (w.1.1.val 0 2) + w.1.1.val 0 2 = -(w.1.1.val 0 1 * σ (w.1.1.val 0 1))` using `by linear_combination e1`. Rewrite `hs` using `[this, Valuation.map_neg, map_mul, hσ]`. Then use the resulting hypothesis. Establish `b2 : Valued.v (w.1.1.val 1 2) ≤ WithZero.exp ((j / 2 : ℕ) : ℤ)`.
+
+Use `le_exp_half ?_` and prove the remaining obligations. Establish `: σ (w.1.1.val 0 2) + w.1.1.val 0 2 = -(σ (w.1.1.val 1 2) * w.1.1.val 1 2)` using `by linear_combination e2`. Rewrite `hs` using `[this, Valuation.map_neg, map_mul, hσ]`. Then use the resulting hypothesis. Use `⟨fun a b hab => ?_, fun a b hab => ?_⟩` and prove the remaining obligations. Break down `hab.eq_or_lt with rfl | e` into its components or cases.
+
+Simplify using `[h2]`. Simplify using `[h1 a b e, Matrix.one_apply_ne e.ne']`. Apply the tactic sequence `rw [Matrix.sub_apply, Matrix.one_apply_ne hab.ne, sub_zero] fin_cases a <;> fin_cases b <;> simp at hab`. Simplify `b1` using `[wt]`. Simplify `h` using `[wt]`.
+
+Simplify `b2` using `[wt]`.
+-/
 theorem mem_unipLat_wt {σ : L →+* L} (hσ : ∀ x, Valued.v (σ x) = Valued.v x) (j : ℕ) (w : (borelU σ 3).U) :
     w ∈ unipLat hσ (isWeight_wt j) ↔ Valued.v (w.1.1.val 0 2) ≤ WithZero.exp (j : ℤ) := by
   obtain ⟨h1, h2⟩ := (mem_borelU_U σ 3 _).1 w.2
@@ -278,6 +391,29 @@ end Volume
 
 open Volume in
 
+/- English proof (translation)
+Introduce `L _ _ _ ϖ σ q h n k hk hn y hyK hy _ _ μ _ hμ j`. Establish `hA` using `val_rev_lo_of_last k hk hn`. Establish `hC : ∀ u : GU σ n, u ∈ cellU y ↔ InBlock (lo k) u` using `mem_cellU_last_iff L ϖ σ q h n k hk hn y hyK hy`. Set `φ : (borelU σ 3).U →* cellU y` to `(blockU σ (lo k) hA).codRestrict (cellU y) fun w => (hC _).2 (inBlock_blockU σ _ hA w)`. Establish `hφ : Function.Injective φ` using `fun u w e => blockU_injective σ _ hA (congrArg Subtype.val e)`.
+
+Establish `hc : ∀ w, cornerU k (φ w : GU σ n) = w.1.1.val 0 2` using `fun w => by`. Use `blockHom_apply (three (lo k) hA) w.1.1.val 0 2` as an intermediate fact. Rewrite `this` using `[three_zero, three_two]`. Then use the resulting hypothesis. Set `S : ℕ → Subgroup (cellU y)` to `fun j => (unipLat h.2.1 (isWeight_wt j)).map φ`. Establish `hSe : ∀ j : ℕ, (S j : Set (cellU y)) = shellU k y j` using `fun j => by`.
+
+Use extensionality with `u`. Take `⟨w, hw⟩` from `exists_blockU hA ((hC _).1 u.2)`. Take `rfl : φ w = u` from `Subtype.ext hw`. Use `show φ w ∈ S j ↔ Valued.v (cornerU k (φ w : GU σ n)) ≤ _`. Rewrite using `[hc, ← mem_unipLat_wt h.2.1]`.
+
+Conclude with `Subgroup.mem_map_iff_mem hφ`. Establish `hS0 : S 0 = (KU σ n).subgroupOf (cellU y)`. Use extensionality with `u`. Rewrite using `[Subgroup.mem_subgroupOf, GlobalTheory.SatakeWeyl.mem_KU_iff h.2.1]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨w, hw, rfl⟩ i j show blockHom (three (lo k) hA) w.1.1.val i j ∈ intL L`. Establish `h1 : ∀ {m : ℕ} (a b : Fin m), (1 : Matrix (Fin m) (Fin m) L) a b ∈ intL L` using `fun a b => by`. Rewrite using `[Matrix.one_apply]`. Use `split_ifs`. Use `exacts [one_mem _, zero_mem _]`.
+
+Break down `cases_range (three (lo k) hA) i j with ⟨a, b, rfl, rfl⟩ | e` into its components or cases. Rewrite using `[blockHom_apply, ← sub_add_cancel (w.1.1.val a b) ((1 : Matrix (Fin 3) (Fin 3) L) a b)]`. Use `add_mem ?_ (h1 a b)` and prove the remaining obligations. Break down `le_or_gt b a with e | e` into its components or cases. Rewrite using `[← Matrix.sub_apply, hw.1 a b e]`.
+
+Conclude with `zero_mem _`. Use `hw.2 a b e` as an intermediate fact. Establish `e0 : wt 0 a b = 0` using `by simp [wt]`. Rewrite `this` using `[e0]`. Then use the resulting hypothesis. Rewrite using `[blockHom_out _ _ e]`.
+
+Conclude with `h1 i j`. Introduce `hu`. Rewrite using `[← SetLike.mem_coe, hSe]`. Conclude with `hu _ _`. Establish `hS : ∀ j : ℕ, IsOpen (S j : Set (cellU y))` using `fun j => by`.
+
+Use `Subgroup.isOpen_mono (H₁ := S 0) (fun u hu => ?_) ?_` and prove the remaining obligations. Rewrite `hu`, the goal using `[← SetLike.mem_coe, hSe]`. Conclude with `shellU_mono k y (by omega) hu`. Rewrite using `[hS0]`. Conclude with `(GlobalTheory.LFun.IntPtsUnitary.isOpen_isCompact_KU L ϖ σ q n h).1.preimage continuous_subtype_val`.
+
+Establish `hq : q ≠ 0` using `by have := h.2.2.2.2.2.1; omega`. Proceed by induction on `j with`. Consider the case `zero => rw [← hSe, hS0, hμ]`. Simplify using the standard rewrite rules. Consider the case `succ j ih`.
+
+Establish `e : (S j).relIndex (S (j + 1)) = _` using `(Subgroup.relIndex_map_map_of_injective _ _ hφ).trans (relIndex_unipLat h (isWeight_wt (j + 1)) (isWeight_wt j) (isIdealWeight_wt j))`. Use `haveI : ((S j).subgroupOf (S (j + 1))).FiniteIndex := ⟨ne_of_eq_of_ne e (pow_ne_zero _ hq)⟩`. Use `Formalism.DoubleCosetMeasures.P.GLRed.relIndex_mul_measure (S j) (S (j + 1)) (Subgroup.map_mono fun _ hu => upLat_mono (isIdealWeight_wt j).1 hu) (hS j).measurableSet μ` as an intermediate fact. Rewrite using `[← hSe, ← this, hSe, ih, e, Nat.cast_pow, ← pow_add, sum_wt]`.
+-/
 theorem measure_shellU : ∀ (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] [CompleteSpace L] (ϖ : L)
     (σ : L →+* L) (q : ℕ), IsUnramInv ϖ σ q →
     ∀ (n : ℕ) (k : Fin (n / 2)), ¬ k.val + 1 < n / 2 → ¬ Even n →

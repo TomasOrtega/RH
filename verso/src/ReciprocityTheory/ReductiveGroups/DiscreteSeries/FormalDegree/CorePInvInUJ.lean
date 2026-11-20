@@ -11,6 +11,17 @@ open ReciprocityTheory.ChartRestriction.DS.S7
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Establish `hJ : Jm ε * Jm ε = 1` using `Formalism.REAL.Jm_mul_self ε`. Establish `hJt : (Jm ε)ᴴ = Jm ε` using `Formalism.REAL.Jm_conjTranspose ε`. Establish `hJJ : ∀ X : Matrix (Fin n) (Fin n) ℂ, Jm ε * (Jm ε * X) = X` using `fun X => by`. Rewrite using `[← Matrix.mul_assoc, hJ, Matrix.one_mul]`. Establish `hg' : gᴴ * (Jm ε * g) = Jm ε`.
+
+Unfold `inUJ at hg`. Rewrite using `[← Matrix.mul_assoc]`. Conclude with `hg`. Establish `h1 : Jm ε * gᴴ * Jm ε * g = 1`. Simplify using `only [Matrix.mul_assoc]`.
+
+Rewrite using `[hg', hJ]`. Establish `h2 : g * (Jm ε * gᴴ * Jm ε) = 1` using `by first`. Consider the case `exact mul_eq_one_comm.mp h1`. Consider the case `exact Matrix.mul_eq_one_comm.mp h1`. Consider the case `exact (Matrix.mul_eq_one_comm_of_equiv (Equiv.refl _)).mp h1`.
+
+Establish `h3 : ∀ X : Matrix (Fin n) (Fin n) ℂ, g * (Jm ε * (gᴴ * X)) = Jm ε * X` using `fun X => by`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc, hJJ]`. Use `_ = Jm ε * X := by rw [h2, Matrix.one_mul]`. Use `⟨?_, h1, h2⟩` and prove the remaining obligations.
+
+Unfold `inUJ`. Simplify using `only [Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, hJt, Matrix.mul_assoc, hJJ, h3]`.
+-/
 theorem inv_inUJ {ε : Fin n → Bool} {g : Matrix (Fin n) (Fin n) ℂ} (hg : inUJ ε g) :
     inUJ ε (Jm ε * gᴴ * Jm ε) ∧ (Jm ε * gᴴ * Jm ε) * g = 1 ∧ g * (Jm ε * gᴴ * Jm ε) = 1 := by
   have hJ : Jm ε * Jm ε = 1 := Formalism.REAL.Jm_mul_self ε
@@ -35,6 +46,15 @@ theorem inv_inUJ {ε : Fin n → Bool} {g : Matrix (Fin n) (Fin n) ℂ} (hg : in
   unfold inUJ
   simp only [Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, hJt, Matrix.mul_assoc, hJJ, h3]
 
+/- English proof (translation)
+Take `⟨hh, hhg, hgh⟩` from `inv_inUJ hg`. Use `set h := Jm ε * gᴴ * Jm ε with hdef`. Establish `hleft : ∀ z, actR (ε` using `ε) h (actR g z) = z := fun z => by`. Rewrite using `[← actR_mul hg hh, hgh, actR_one]`. Establish `hright : ∀ z, actR (ε` using `ε) g (actR h z) = z := fun z => by`.
+
+Rewrite using `[← actR_mul hh hg, hhg, actR_one]`. Establish `hmeas : Measurable (actR (ε` using `ε) g) := (JacB.actR_continuous hg).measurable`. Use extensionality with `A hA`. Rewrite using `[Measure.map_apply hmeas hA, withDensity_apply _ hA, withDensity_apply _ (hmeas hA)]`. Establish `himg : actR (ε` using `ε) g '' (actR g ⁻¹' A) = A := Set.image_preimage_eq A (fun y => ⟨actR h y, hright y⟩)`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `lintegral_congr (fun z => ?_)` and prove the remaining obligations. Rewrite using `[← ENNReal.ofReal_mul (abs_nonneg _)]`. Rewrite using `[← jacAll hg z]`. Use `_ = ∫⁻ z in actR g '' (actR g ⁻¹' A), ENNReal.ofReal (Jac z) := (lintegral_image_eq_lintegral_abs_det_fderiv_mul volume (hmeas hA) (fun z _ => (jall_diff hg z).hasFDerivAt.hasFDerivWithinAt) (fun x _ y _ hxy => by rw [← hleft x, hxy, hleft y]) (fun z => ENNReal.ofReal (Jac z))).s …`.
+
+Use `_ = ∫⁻ z in A, ENNReal.ofReal (Jac z) := by rw [himg]`.
+-/
 theorem coreP {ε : Fin n → Bool} {g : Matrix (Fin n) (Fin n) ℂ} (hg : inUJ ε g) :
     Measure.map (actR (ε := ε) g) (volume.withDensity fun z : PCoord ε → ℂ => ENNReal.ofReal (Jac z)) =
       volume.withDensity fun z : PCoord ε → ℂ => ENNReal.ofReal (Jac z) := by

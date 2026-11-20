@@ -18,9 +18,15 @@ open Matrix GlobalTheory.ThKLiftCusp
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mat_mul' {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (g h : UA σ J) :
     mat (g * h) = mat g * mat h := rfl
 
+/- English proof (translation)
+Use `show ((g⁻¹ : UA σ J).1.1) * g.1.1 = 1`. Rewrite using `[← Units.val_mul]`. Use `show (((g⁻¹ * g : UA σ J) : GL (Fin n) (AE F E)) : Matrix (Fin n) (Fin n) (AE F E)) = 1`. Simplify using the standard rewrite rules.
+-/
 theorem mat_inv_mul' {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (g : UA σ J) :
     mat g⁻¹ * mat g = 1 := by
   show ((g⁻¹ : UA σ J).1.1) * g.1.1 = 1
@@ -28,17 +34,29 @@ theorem mat_inv_mul' {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) 
   show (((g⁻¹ * g : UA σ J) : GL (Fin n) (AE F E)) : Matrix (Fin n) (Fin n) (AE F E)) = 1
   simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mat_one' {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} :
     mat (1 : UA σ J) = 1 := rfl
 
+/- English proof (translation)
+Simplify using `only [formA, add_dotProduct]`.
+-/
 theorem formA_add (σ : E →ₐ[F] E) {d : ℕ} (J : Matrix (Fin d) (Fin d) E) (x x' y : Fin d → AE F E) :
     formA σ J (x + x') y = formA σ J x y + formA σ J x' y := by
   simp only [formA, add_dotProduct]
 
+/- English proof (translation)
+Simplify using `only [formA, neg_dotProduct]`.
+-/
 theorem formA_neg (σ : E →ₐ[F] E) {d : ℕ} (J : Matrix (Fin d) (Fin d) E) (x y : Fin d → AE F E) :
     formA σ J (-x) y = -formA σ J x y := by
   simp only [formA, neg_dotProduct]
 
+/- English proof (translation)
+Simplify using `only [formA, zero_dotProduct]`.
+-/
 theorem formA_zero (σ : E →ₐ[F] E) {d : ℕ} (J : Matrix (Fin d) (Fin d) E) (y : Fin d → AE F E) :
     formA σ J 0 y = 0 := by
   simp only [formA, zero_dotProduct]
@@ -90,6 +108,9 @@ def carrierSub {d j : ℕ} (W : Spc F E d) (Y : Matrix (Fin d) (Fin j) E) : Subg
         _ = z + -(incM F Y *ᵥ a) := by rw [← ha]; abel
         _ = z + incM F Y *ᵥ -a := by rw [Matrix.mulVec_neg]
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Conclude with `(Subgroup.closure_le _).2 fun u hu => hu`. Introduce `u hu`. Conclude with `Subgroup.subset_closure hu`.
+-/
 theorem unipSp_eq {d j : ℕ} (W : Spc F E d) (Y : Matrix (Fin d) (Fin j) E) :
     unipSp σ W Y = carrierSub σ W Y := by
   apply le_antisymm
@@ -98,6 +119,25 @@ theorem unipSp_eq {d j : ℕ} (W : Spc F E d) (Y : Matrix (Fin d) (Fin j) E) :
     exact Subgroup.subset_closure hu
 
 variable [T2Space (AE F E)] [IsTopologicalRing (AE F E)] in
+/- English proof (translation)
+Establish `hker : LinearMap.ker (Matrix.mulVecLin Y) = ⊥` using `LinearMap.ker_eq_bot.2 hY`. Take `⟨g, hg⟩` from `LinearMap.exists_leftInverse_of_injective _ hker`. Use `set L := LinearMap.toMatrix' g with hL`. Establish `hLY : L * Y = 1`. Use `congrArg LinearMap.toMatrix' hg` as an intermediate fact.
+
+Rewrite `this` using `[LinearMap.toMatrix'_comp, ← Matrix.toLin'_apply', LinearMap.toMatrix'_toLin', LinearMap.toMatrix'_id]`. Then use the resulting hypothesis. Establish `hLYA : incM F L * incM F Y = 1`. Simplify using `only [incM]`. Rewrite using `[← Matrix.map_mul, hLY, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `hspan : ∀ w : Fin d → AE F E, (∃ a, w = incM F Y *ᵥ a) ↔ (incM F Y * incM F L) *ᵥ w = w`.
+
+Introduce `w`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, rfl⟩`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mul_assoc, hLYA, Matrix.mul_one]`. Introduce `h`.
+
+Conclude with `⟨incM F L *ᵥ w, by rw [Matrix.mulVec_mulVec, h]⟩`. Establish `hm : Continuous fun u : UA σ W.J => mat u` using `Units.continuous_val.comp continuous_subtype_val`. Establish `h1 : IsClosed {u : UA σ W.J | mat u * incM F Y = incM F Y}` using `isClosed_eq (hm.matrix_mul continuous_const) continuous_const`. Establish `hd : ∀ z : Fin d → AE F E, Continuous fun u : UA σ W.J => mat u *ᵥ z - z` using `fun z => (hm.matrix_mulVec continuous_const).sub continuous_const`. Establish `h2 : ∀ z : Fin d → AE F E, IsClosed {u : UA σ W.J | (∀ k, formA σ W.J z (incV F fun i => Y i k) = 0) → ∃ a, mat u *ᵥ z = z + incM F Y *ᵥ a}`.
+
+Introduce `z`. Distinguish the cases in `hz : ∀ k, formA σ W.J z (incV F fun i => Y i k) = 0`. Establish `: {u : UA σ W.J | (∀ k, formA σ W.J z (incV F fun i => Y i k) = 0) → ∃ a, mat u *ᵥ z = z + incM F Y *ᵥ a} = {u | (incM F Y * incM F L) *ᵥ (mat u *ᵥ z - z) = mat u *ᵥ z - z}`. Use extensionality with `u`. Simplify using `only [Set.mem_setOf_eq, ← hspan, sub_eq_iff_eq_add']`.
+
+Conclude with `⟨fun h => h hz, fun h _ => h⟩`. Rewrite using `[this]`. Conclude with `isClosed_eq (continuous_const.matrix_mulVec (hd z)) (hd z)`. Establish `: {u : UA σ W.J | (∀ k, formA σ W.J z (incV F fun i => Y i k) = 0) → ∃ a, mat u *ᵥ z = z + incM F Y *ᵥ a} = Set.univ`. Use extensionality with `u`.
+
+Simplify using `only [Set.mem_setOf_eq, Set.mem_univ, iff_true]`. Conclude with `fun h => absurd h hz`. Rewrite using `[this]`. Conclude with `isClosed_univ`. Establish `h3 : ∀ (z : Fin d → AE F E) (k : Fin j), IsClosed {u : UA σ W.J | formA σ W.J (mat u *ᵥ z - z) (incV F fun i => Y i k) = 0}`.
+
+Introduce `z k`. Use `isClosed_eq ?_ continuous_const` and prove the remaining obligations. Simplify using `only [formA]`. Conclude with `Continuous.dotProduct (hd z) continuous_const`. Establish `: carrierSet σ W Y = {u : UA σ W.J | mat u * incM F Y = incM F Y} ∩ ((⋂ z : Fin d → AE F E, {u : UA σ W.J | (∀ k, formA σ W.J z (incV F fun i => Y i k) = 0) → ∃ a, mat u *ᵥ z = z + incM F Y *ᵥ a}) ∩ ⋂ z : Fin d → AE F E, ⋂ k : Fin j, {u : UA σ W.J | formA σ W.J (mat u *ᵥ z - z) ( …`.
+
+Use extensionality with `u`. Simplify using `only [carrierSet, Set.mem_setOf_eq, Set.mem_inter_iff, Set.mem_iInter]`. Rewrite using `[this]`. Conclude with `h1.inter ((isClosed_iInter h2).inter (isClosed_iInter fun z => isClosed_iInter fun k => h3 z k))`.
+-/
 theorem isClosed_carrierSet {d j : ℕ} (W : Spc F E d) (Y : Matrix (Fin d) (Fin j) E)
     (hY : Function.Injective Y.mulVec) : IsClosed (carrierSet σ W Y) := by
 
@@ -157,6 +197,11 @@ theorem isClosed_carrierSet {d j : ℕ} (W : Spc F E d) (Y : Matrix (Fin d) (Fin
   rw [this]
   exact h1.inter ((isClosed_iInter h2).inter (isClosed_iInter fun z => isClosed_iInter fun k => h3 z k))
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ _ _ d _ _ W _ j Y _ hY _`. Use `haveI := GlobalTheory.AdelicUnitaryTop.t2Space_adeleRing_numberField F`. Use `haveI : FiniteDimensional F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `haveI : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) _`. Take `⟨e⟩` from `GlobalTheory.AdelicUnitaryTop.nonempty_homeomorph (F := F) (E := E) (AF F)`.
+
+Use `haveI : T2Space (AE F E) := e.isEmbedding.t2Space`. Rewrite using `[unipSp_eq]`. Conclude with `isClosed_carrierSet σ W Y hY`.
+-/
 theorem isClosed_unipSp : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ →
     ∀ (B : Base F E) (d r s : ℕ) (W : Spc F E d), W.IsSkew σ B r s →
     ∀ (j : ℕ) (Y : Matrix (Fin d) (Fin j) E), 1 ≤ j → Function.Injective Y.mulVec →

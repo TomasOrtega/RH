@@ -7,6 +7,9 @@ open NumberField MeasureTheory Formalism.MainNotions.GlobalTheoryTheory.GenusMas
 
 namespace GlobalTheory.ThK.ZFinDer
 
+/- English proof (translation)
+Unfold `Model.I theta`. Use `congr 1`. Use function extensionality and compare the values at `g`. Establish `: ((g, h * k) : UA σ X.J × UA σ W.J) = (g, h) * (1, k)` using `by simp`. Rewrite using `[this, map_mul, Module.End.mul_apply]`.
+-/
 theorem I_mul {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     {n d : ℕ} {X : Spc F E n} {W : Spc F E d} (M : Model σ X W) (om : Rep σ X W) (Φ : (Fin n × Fin d → AF F) → ℂ)
     (h k : UA σ W.J) : M.I om Φ (h * k) = M.I om (om (1, k) Φ) h := by
@@ -15,6 +18,15 @@ theorem I_mul {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [
   have : ((g, h * k) : UA σ X.J × UA σ W.J) = (g, h) * (1, k) := by simp
   rw [this, map_mul, Module.End.mul_apply]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hσ B a a' G X om om' hK hT c hc hcc Φ hΦ l hl`. Proceed by induction on `l with`. Consider the case `nil => exact ⟨by simpa using hΦ, by simp⟩`. Consider the case `cons γ l ih`. Take `⟨hP, hE⟩` from `ih (fun γ' h' => hl γ' (List.mem_cons_of_mem _ h'))`.
+
+Establish `hγ` using `hl γ List.mem_cons_self`. Use `⟨by simpa using GlobalTheory.T.theta_integral_real_line_derivative F E σ hσ B a a' G X om om' hK hT c hc hcc _ hP γ hγ, ?_⟩` and prove the remaining obligations. Simplify using `only [List.foldr_cons, List.map_cons]`. Rewrite using `[hE]`. Use function extensionality and compare the values at `x`.
+
+Simplify using `only [lineDer]`. Establish `: (fun t => G.M.I om ((l.map (back hσ G.W.J hc)).foldr (derR om) Φ) ((toGAd hσ G.W.J hc).symm (x * γ t))) = fun t => G.M.I om (om (1, back hσ G.W.J hc γ t) ((l.map (back hσ G.W.J hc)).foldr (derR om) Φ)) ((toGAd hσ G.W.J hc).symm x)`. Use function extensionality and compare the values at `t`. Rewrite using `[map_mul, I_mul]`. Both sides reduce to the same expression.
+
+Rewrite using `[this]`. Conclude with `(GlobalTheory.T.theta_integral_real_line_smooth F E σ hσ B a a' G X om om' hK hT c hc hcc _ hP γ hγ _).deriv`.
+-/
 theorem derivs : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (hσ : ∀ x, σ (σ x) = x) (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E)
     (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), GlobalTheory.ThK.KP → IsTriple B G X om om' →

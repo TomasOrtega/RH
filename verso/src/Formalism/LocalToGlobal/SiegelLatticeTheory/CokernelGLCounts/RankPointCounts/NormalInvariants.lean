@@ -39,6 +39,11 @@ def NormCount : Prop :=
     ∀ S : Finset D.host.E, (∀ x ∈ S, x ∈ J ∧ x * star x = m) →
       (S.card : ℝ) * ((FractionalIdeal.absNorm J : ℚ) : ℝ) ^ 2 ≤ 8 * (D.R.f : ℝ) ^ 2 * |((Algebra.norm ℚ m : ℚ) : ℝ)|
 
+/- English proof (translation)
+Proceed by induction on `f with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Break down `Nat.eq_zero_or_pos n with h | h` into its components or cases. Substitute `h` using the available equality.
+
+Evaluate the numerical expressions. Establish `h1 : 1 ≤ n` using `h`. Rewrite using `[pow_succ 81 n]`. Use polynomial arithmetic with `[ih, h1]`.
+-/
 private theorem eight_mul_sq_le_eightyOne_pow (f : ℕ) : 8 * f ^ 2 ≤ 81 ^ f := by
   induction f with
   | zero => simp
@@ -50,6 +55,11 @@ private theorem eight_mul_sq_le_eightyOne_pow (f : ℕ) : 8 * f ^ 2 ≤ 81 ^ f :
       rw [pow_succ 81 n]
       nlinarith [ih, h1]
 
+/- English proof (translation)
+Establish `h' : ((8 * f ^ 2 : ℕ) : ℝ) ≤ ((81 ^ f : ℕ) : ℝ)` using `by exact_mod_cast eight_mul_sq_le_eightyOne_pow f`. Move the coercions through the operations in `at h'`. Establish `e : (6561 : ℝ) ^ f = (81 : ℝ) ^ f * (81 : ℝ) ^ f`. Rewrite using `[← mul_pow]`. Evaluate the numerical expressions.
+
+Rewrite using `[e]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem nat_bound (f : ℕ) : (64 : ℝ) * (f : ℝ) ^ 4 ≤ 6561 ^ f := by
   have h' : ((8 * f ^ 2 : ℕ) : ℝ) ≤ ((81 ^ f : ℕ) : ℝ) := by exact_mod_cast eight_mul_sq_le_eightyOne_pow f
   push_cast at h'
@@ -60,6 +70,11 @@ theorem nat_bound (f : ℕ) : (64 : ℝ) * (f : ℝ) ^ 4 ≤ 6561 ^ f := by
   calc (64 : ℝ) * (f : ℝ) ^ 4 = (8 * (f : ℝ) ^ 2) * (8 * (f : ℝ) ^ 2) := by ring
     _ ≤ (81 : ℝ) ^ f * (81 : ℝ) ^ f := mul_le_mul h' h' (by positivity) (by positivity)
 
+/- English proof (translation)
+Unfold `Formalism.BasicNotions.Host.rdE`. Apply `Real.one_le_rpow` to reduce the goal to its premises. Establish `h` using `NumberField.discr_ne_zero D.host.E`. Establish `h' : (1 : ℤ) ≤ |discr D.host.E|` using `Int.one_le_abs h`. Conclude with `h'` after adjusting the coercions.
+
+Check the signs of the components of the expression.
+-/
 theorem rd_one_le (D : D7) : 1 ≤ D.host.rdE := by
   unfold Formalism.BasicNotions.Host.rdE
   apply Real.one_le_rpow
@@ -68,6 +83,13 @@ theorem rd_one_le (D : D7) : 1 ≤ D.host.rdE := by
     exact_mod_cast h'
   · positivity
 
+/- English proof (translation)
+Use `haveI : NumberField.IsCMField D.host.E := D.host.isCMField_hostE`. Establish `hfin : Module.finrank ℚ D.host.E = 2 * D.R.f`. Rewrite using `[D.host.der.finrank_E, Formalism.BasicNotions.Ranks.f_eq_ord (R := D.R)]`. Use `first`. Consider the case `ring`.
+
+Consider the case `rfl`. Consider the case `omega`. Consider the case `(simp only [Formalism.BasicNotions.Ranks.ord]; ring)`. Establish `hcard : Fintype.card (InfinitePlace D.host.E) = D.R.f`. Establish `h1` using `NumberField.InfinitePlace.card_eq_nrRealPlaces_add_nrComplexPlaces D.host.E`.
+
+Establish `h2` using `NumberField.InfinitePlace.card_add_two_mul_card_eq_rank D.host.E`. Establish `h3` using `NumberField.IsTotallyComplex.nrRealPlaces_eq_zero D.host.E`. Use linear arithmetic over natural numbers and integers. Unfold `NGPt PG`. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, hcard, inv_pow]`.
+-/
 theorem ngPt_eq {D : D7} (TT : ℕ) (γ : PN.Pts D.host.E D.R.rS) :
     NGPt D.host.rdE TT γ = ((D.host.rdE ^ (2 * D.R.rS * (D.R.rS + 1))) ^ D.R.f)⁻¹ * PG TT γ := by
   haveI : NumberField.IsCMField D.host.E := D.host.isCMField_hostE
@@ -86,6 +108,9 @@ theorem ngPt_eq {D : D7} (TT : ℕ) (γ : PN.Pts D.host.E D.R.rS) :
   unfold NGPt PG
   rw [Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, hcard, inv_pow]
 
+/- English proof (translation)
+Establish `h0 : D.host.rdE ≠ 0` using `ne_of_gt (lt_of_lt_of_le one_pos (rd_one_le D))`. Rewrite using `[inv_pow, ← pow_mul, ← pow_mul]`. Rewrite using `[show 12 * D.R.rS * (D.R.rS + 1) * D.R.f = 2 * D.R.rS * (D.R.rS + 1) * (D.R.f * 6) by ring]`. Conclude with `mul_inv_cancel₀ (pow_ne_zero _ h0)`.
+-/
 theorem rd_cancel (D : D7) :
     D.host.rdE ^ (12 * D.R.rS * (D.R.rS + 1) * D.R.f) *
       (((D.host.rdE ^ (2 * D.R.rS * (D.R.rS + 1))) ^ D.R.f)⁻¹) ^ 6 = 1 := by
@@ -94,6 +119,15 @@ theorem rd_cancel (D : D7) :
   rw [show 12 * D.R.rS * (D.R.rS + 1) * D.R.f = 2 * D.R.rS * (D.R.rS + 1) * (D.R.f * 6) by ring]
   exact mul_inv_cancel₀ (pow_ne_zero _ h0)
 
+/- English proof (translation)
+Establish `hf` using `nat_bound f`. Establish `hT0 : (0 : ℝ) ≤ T` using `by linarith`. Establish `hT0' : (0 : ℝ) ≤ T'` using `by linarith`. Establish `hTT0 : (0 : ℝ) ≤ T * T'` using `mul_nonneg hT0 hT0'`. Establish `hTT : (9 : ℝ) ≤ T * T'` using `by nlinarith`.
+
+Establish `h4 : (6561 : ℝ) ≤ (T * T') ^ 4`. Use `pow_le_pow_left₀ (by norm_num : (0 : ℝ) ≤ 9) hTT 4` as an intermediate fact. Evaluate the numerical expressions using `at this`. Conclude with `this`. Establish `h9 : (6561 : ℝ) ^ f ≤ (T * T') ^ (4 * f)`.
+
+Rewrite using `[pow_mul]`. Conclude with `pow_le_pow_left₀ (by norm_num) h4 f`. Establish `hP : P ^ 4 ≤ P ^ 6` using `pow_le_pow_right₀ hP1 (by norm_num)`. Establish `hB : (0 : ℝ) ≤ 8 * (f : ℝ) ^ 2 * (T ^ (2 * f) * P ^ 2)` using `mul_nonneg (by positivity) (mul_nonneg (pow_nonneg hT0 _) (sq_nonneg _))`. Establish `hA : c1 * c2 ≤ (8 * (f : ℝ) ^ 2 * (T ^ (2 * f) * P ^ 2)) * (8 * (f : ℝ) ^ 2 * (T' ^ (2 * f) * P ^ 2))` using `mul_le_mul hc1 hc2 h2 hB`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_pow]`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ (T * T') ^ (4 * f) * ((T * T') ^ (2 * f) * P ^ 6) := mul_le_mul (hf.trans h9) (mul_le_mul_of_nonneg_left hP (pow_nonneg hTT0 _)) (mul_nonneg (pow_nonneg hTT0 _) (by positivity)) (pow_nonneg hTT0 _)`. Use `_ = (T * T') ^ (6 * f) * P ^ 6 := by ring`.
+-/
 theorem count_bound (f : ℕ) (T T' P c1 c2 : ℝ) (hT1 : 3 ≤ T) (hT2 : 3 ≤ T') (hP1 : 1 ≤ P)
     (hc1 : c1 ≤ 8 * (f : ℝ) ^ 2 * (T ^ (2 * f) * P ^ 2)) (hc2 : c2 ≤ 8 * (f : ℝ) ^ 2 * (T' ^ (2 * f) * P ^ 2))
     (_h1 : 0 ≤ c1) (h2 : 0 ≤ c2) :
@@ -124,6 +158,39 @@ theorem count_bound (f : ℕ) (T T' P c1 c2 : ℝ) (hT1 : 3 ≤ T) (hT2 : 3 ≤ 
           (mul_nonneg (pow_nonneg hTT0 _) (by positivity)) (pow_nonneg hTT0 _)
     _ = (T * T') ^ (6 * f) * P ^ 6 := by ring
 
+/- English proof (translation)
+Introduce `Cg cb Cw cT CT C0`. Take `⟨a₀, b₀, hA2⟩` from `hA Cg cb Cw cT CT C0`. Take `⟨o₀, p₀, hO2⟩` from `hO Cg cb Cw cT CT C0`. Use `⟨max a₀ o₀, max b₀ p₀, fun C' Cl h1 h2 D large₂ X Y u u' hc νL νB ng => ?_⟩` and prove the remaining obligations. Introduce `cl γ S hS`.
+
+Establish `hrd` using `rd_one_le D`. Establish `hv : 2 * D.host.v = D.host.rdE` using `by unfold Host.v; ring`. Establish `hstand` using `hc.2.1`. Use `show (S.card : ℝ) ≤ ((2 * D.host.v) ^ (12 * D.R.rS * (D.R.rS + 1) * D.R.f) * (((Tu D u : ℕ) : ℝ) * ((Tu D u' : ℕ) : ℝ)) ^ (6 * D.R.f)) * NGPt D.host.rdE ((Tu D u : ℕ) * (Tu D u' : ℕ)) γ ^ 6`. Establish `eR : (D.host.rdE ^ (12 * D.R.rS * (D.R.rS + 1) * D.R.f) * (((Tu D u : ℕ) : ℝ) * ((Tu D u' : ℕ) : ℝ)) ^ (6 * D.R.f)) * ((((D.host.rdE ^ (2 * D.R.rS * (D.R.rS + 1))) ^ D.R.f)⁻¹) * PG ((Tu D u : ℕ) * (Tu D u' : ℕ)) γ) ^ 6 = (((Tu D u : ℕ) : ℝ) * ((Tu D u' : ℕ) : ℝ)) ^ (6 * D.R.f) * …`.
+
+Establish `hR` using `rd_cancel D`. Combine the equalities or inequalities in the displayed calculation. Expand and normalize the polynomial expressions, which then agree. Use `_ = _ := by rw [hR, one_mul]`. Rewrite using `[hv, ngPt_eq, eR]`.
+
+Establish `hT1 : (3 : ℝ) ≤ ((Tu D u : ℕ) : ℝ)` using `by exact_mod_cast hstand.2.2.2.1`. Establish `hT2 : (3 : ℝ) ≤ ((Tu D u' : ℕ) : ℝ)` using `by exact_mod_cast hstand.2.2.2.2.1`. Break down `S.eq_empty_or_nonempty with hSe | ⟨ν0, hν0⟩` into its components or cases. Rewrite using `[hSe]`. Simplify using `only [Finset.card_empty, Nat.cast_zero]`.
+
+Use `mul_nonneg (pow_nonneg (by nlinarith) _) ?_` and prove the remaining obligations. Rewrite using `[show PG ((Tu D u : ℕ) * (Tu D u' : ℕ)) γ ^ 6 = (PG ((Tu D u : ℕ) * (Tu D u' : ℕ)) γ ^ 3) ^ 2 by ring]`. Conclude with `sq_nonneg _`. Establish `hocc : ∃ ν, PN.Occ (Y.tO u u') (NOf2 Y u u' νL νB ng) cl γ ν` using `⟨ν0, hS ν0 hν0⟩`. Establish `hIsPt : PN.IsPt (Y.tO u u') (NOf2 Y u u' νL νB ng) γ` using `⟨cl, ν0, hS ν0 hν0⟩`.
+
+Establish `hNG0` using `(hO2 C' Cl (le_trans (le_max_right _ _) h1) (le_trans (le_max_right _ _) h2) D large₂ X Y u u' hc νL νB ng γ hIsPt).1`. Take `⟨J, J', m, m', κ, hJ, hJ', hm, hm', hmem, hinj, hN, hN'⟩` from `hA2 C' Cl (le_trans (le_max_left _ _) h1) (le_trans (le_max_left _ _) h2) D large₂ X Y u u' hc νL νB ng cl γ hocc hNG0`. Establish `hNG` using `hNG0`. Rewrite `hNG` using `[ngPt_eq]`. Establish `hP1 : 1 ≤ PG ((Tu D u : ℕ) * (Tu D u' : ℕ)) γ`.
+
+Establish `hX : 1 ≤ (D.host.rdE ^ (2 * D.R.rS * (D.R.rS + 1))) ^ D.R.f` using `one_le_pow₀ (one_le_pow₀ hrd)`. Establish `hpos : 0 < (D.host.rdE ^ (2 * D.R.rS * (D.R.rS + 1))) ^ D.R.f` using `lt_of_lt_of_le one_pos hX`. Rewrite `hNG` using `[inv_mul_eq_div, le_div_iff₀ hpos, one_mul]`. Combine the linear equalities and inequalities to obtain the conclusion. Set `T1` to `S.image (fun ν => (κ ν).1)`.
+
+Set `T2` to `S.image (fun ν => (κ ν).2)`. Establish `hcard : S.card ≤ T1.card * T2.card`. Combine the equalities or inequalities in the displayed calculation. Introduce `p hp`. Take `⟨ν, hν, rfl⟩` from `Finset.mem_image.1 hp`.
+
+Conclude with `Finset.mem_product.2 ⟨Finset.mem_image_of_mem _ hν, Finset.mem_image_of_mem _ hν⟩)`. Use `_ = T1.card * T2.card := Finset.card_product _ _`. Establish `hB1` using `hB D J m hJ hm T1 (by`. Introduce `x hx`. Take `⟨ν, hν, rfl⟩` from `Finset.mem_image.1 hx`.
+
+Conclude with `⟨(hmem ν (hS ν hν)).1, (hmem ν (hS ν hν)).2.1⟩)`. Establish `hB2` using `hB D J' m' hJ' hm' T2 (by`. Introduce `x hx`. Take `⟨ν, hν, rfl⟩` from `Finset.mem_image.1 hx`. Conclude with `⟨(hmem ν (hS ν hν)).2.2.1, (hmem ν (hS ν hν)).2.2.2⟩)`.
+
+Establish `hJp : 0 < ((FractionalIdeal.absNorm J : ℚ) : ℝ)`. Establish `h0 : FractionalIdeal.absNorm J ≠ 0` using `by rwa [Ne, FractionalIdeal.absNorm_eq_zero_iff]`. Use `lt_of_le_of_ne (FractionalIdeal.absNorm_nonneg J) (Ne.symm h0)` as an intermediate fact. Conclude with `this` after adjusting the coercions. Establish `hJp' : 0 < ((FractionalIdeal.absNorm J' : ℚ) : ℝ)`.
+
+Establish `h0 : FractionalIdeal.absNorm J' ≠ 0` using `by rwa [Ne, FractionalIdeal.absNorm_eq_zero_iff]`. Use `lt_of_le_of_ne (FractionalIdeal.absNorm_nonneg J') (Ne.symm h0)` as an intermediate fact. Conclude with `this` after adjusting the coercions. Generalize the expression as in `PG ((Tu D u : ℕ) * (Tu D u' : ℕ)) γ = P at hN hN' hP1 ⊢`. Generalize the expression as in `((Tu D u : ℕ) : ℝ) = T at hN hT1 ⊢`.
+
+Generalize the expression as in `((Tu D u' : ℕ) : ℝ) = T' at hN' hT2 ⊢`. Generalize the expression as in `((FractionalIdeal.absNorm J : ℚ) : ℝ) = nJ at hB1 hN hJp`. Generalize the expression as in `((FractionalIdeal.absNorm J' : ℚ) : ℝ) = nJ' at hB2 hN' hJp'`. Generalize the expression as in `|((Algebra.norm ℚ m : ℚ) : ℝ)| = nm at hB1 hN`. Generalize the expression as in `|((Algebra.norm ℚ m' : ℚ) : ℝ)| = nm' at hB2 hN'`.
+
+Establish `hc1 : (T1.card : ℝ) ≤ 8 * (D.R.f : ℝ) ^ 2 * (T ^ (2 * D.R.f) * P ^ 2)`. Establish `h` using `hB1.trans (mul_le_mul_of_nonneg_left hN (by positivity))`. Establish `h' : (T1.card : ℝ) * nJ ^ 2 ≤ (8 * (D.R.f : ℝ) ^ 2 * (T ^ (2 * D.R.f) * P ^ 2)) * nJ ^ 2`. Combine the equalities or inequalities in the displayed calculation. Conclude with `le_of_mul_le_mul_right h' (by positivity)`.
+
+Establish `hc2 : (T2.card : ℝ) ≤ 8 * (D.R.f : ℝ) ^ 2 * (T' ^ (2 * D.R.f) * P ^ 2)`. Establish `h` using `hB2.trans (mul_le_mul_of_nonneg_left hN' (by positivity))`. Establish `h' : (T2.card : ℝ) * nJ' ^ 2 ≤ (8 * (D.R.f : ℝ) ^ 2 * (T' ^ (2 * D.R.f) * P ^ 2)) * nJ' ^ 2`. Combine the equalities or inequalities in the displayed calculation. Conclude with `le_of_mul_le_mul_right h' (by positivity)`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem stepNormals_of (hA : NmlInv) (hB : NormCount) (hO : StepNormOne) : StepNormals := by
   intro Cg cb Cw cT CT C0
   obtain ⟨a₀, b₀, hA2⟩ := hA Cg cb Cw cT CT C0
@@ -224,6 +291,13 @@ def NormCountG : Prop :=
       (S.card : ℝ) * ((FractionalIdeal.absNorm J : ℚ) : ℝ) ^ 2 ≤
         2 * (Module.finrank ℚ E : ℝ) ^ 2 * |((Algebra.norm ℚ m : ℚ) : ℝ)|
 
+/- English proof (translation)
+Introduce `D J m hJ hm S hS`. Use `haveI : NumberField.IsCMField D.host.E := D.host.isCMField_hostE`. Establish `hfin : Module.finrank ℚ D.host.E = 2 * D.R.f`. Rewrite using `[D.host.der.finrank_E, Formalism.BasicNotions.Ranks.f_eq_ord (R := D.R)]`. Use `first`.
+
+Consider the case `ring`. Consider the case `rfl`. Consider the case `omega`. Consider the case `(simp only [Formalism.BasicNotions.Ranks.ord]; ring)`. Establish `h1` using `h D.host.E J m hJ hm S (fun x hx => ⟨(hS x hx).1, (hS x hx).2⟩)`.
+
+Establish `hf : (Module.finrank ℚ D.host.E : ℝ) = 2 * (D.R.f : ℝ)` using `by rw [hfin]; push_cast; ring`. Rewrite `h1` using `[hf]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem normCount_of (h : NormCountG) : NormCount := by
   intro D J m hJ hm S hS
   haveI : NumberField.IsCMField D.host.E := D.host.isCMField_hostE

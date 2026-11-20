@@ -8,6 +8,9 @@ open scoped ComplexOrder
 
 namespace GlobalTheory.CompanionTheory.Ar.Fl
 
+/- English proof (translation)
+The claim follows from `@PositivityTheory.Xgf.curve_z_ne_zero`.
+-/
 theorem curve0_z_ne_zero : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (ρ : ℂ) (Z : Curve0 H ρ), Z.z ≠ 0 :=
   @PositivityTheory.Xgf.curve_z_ne_zero
 

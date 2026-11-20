@@ -20,20 +20,32 @@ open Formalism.MainNotions Formalism.MainNotions.N Formalism.MainNotions.N.K For
 
 attribute [local instance 2000] Topo.fracTopology Topo.rTopology
 
+/- English proof (translation)
+Establish `h` using `D.R.m_add_three_le_k`. Use `show 0 < D.R.k + D.R.m - 1`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem r_pos (D : D7) : 0 < D.R.r := by
   have h := D.R.m_add_three_le_k
   show 0 < D.R.k + D.R.m - 1
   omega
 
+/- English proof (translation)
+Rewrite using `[Fintype.card_fin]`. Establish `h` using `D.R.m_add_three_le_k`. Use `show 0 < D.R.k + D.R.m - 1 + D.R.t`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem card_pos (D : D7) : 0 < Fintype.card (Fin D.R.nV) := by
   rw [Fintype.card_fin]
   have h := D.R.m_add_three_le_k
   show 0 < D.R.k + D.R.m - 1 + D.R.t
   omega
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem jN_eq {D : D7} (i : D.nd.Loc) (ρ : D.nd.X i → (GE D.nd →* GL (Fin D.R.r) (D.nd.O i))) (π : D.nd.X i)
     (dc : TruncatedSeriesCountingIdentities.Decl D i) : jN i ρ π dc = KHf.jK i dc ρ π := rfl
 
+/- English proof (translation)
+Conclude with `Subtype.ext (Algebra.smul_def c m.1)`.
+-/
 theorem leftId_alg {O : Type} [CommRing O] {A : Type} [Ring A] [Algebra O A] (x : A) (c : O) (m : LeftId O x) :
     c • m = (algebraMap O A c) • m := by
   exact Subtype.ext (Algebra.smul_def c m.1)
@@ -45,6 +57,9 @@ variable {D : D7} (i : D.nd.Loc) (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV)
   (dc : TruncatedSeriesCountingIdentities.Decl D i) (g0 : GE D.nd) (eB e₁ s : D.nd.X i → MatN D.nd i)
   (Dd : RingData (D.nd.O i) (D.nd.X i) (Fin D.R.nV) (GE D.nd) D.R.t (RepresentationBoundsCohomology.blk D.R))
 
+/- English proof (translation)
+Introduce `l g`. Use `first`. Consider the case `(show Dd.δO * KFin.uCol i dc l g = Dd.δO * KFin.u i dc l g`. Rewrite using `[KFin.u, dif_pos (show ((g : GE D.nd)) ∈ KFin.Γc i dc l from g.2)])`. Consider the case `(simp [KFin.uz, KFin.uzOf, KFin.u, g.2])`.
+-/
 theorem colUz : ∀ l (g : decs D.host.E (Aw i dc) (colIdx i dc l)),
     (((KFin.uz i dc Dd.δO l : decs D.host.E (Aw i dc) (colIdx i dc l) → ↥(Ideal.span {Dd.δO})) g :
       ↥(Ideal.span {Dd.δO})) : D.nd.O i) = Dd.δO * KFin.u i dc l g := by
@@ -54,9 +69,15 @@ theorem colUz : ∀ l (g : decs D.host.E (Aw i dc) (colIdx i dc l)),
      rw [KFin.u, dif_pos (show ((g : GE D.nd)) ∈ KFin.Γc i dc l from g.2)])
   | (simp [KFin.uz, KFin.uzOf, KFin.u, g.2])
 
+/- English proof (translation)
+The claim follows from `KUnr.unrFin i dc Dd.δO hA`.
+-/
 theorem colUnr (hA : EmbeddingTypes.UnramifiedTrivialH1f i dc) : KHf.UnrFin i dc Dd.δO (KFin.uz i dc Dd.δO) :=
   KUnr.unrFin i dc Dd.δO hA
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun l => KFin.u_I i dc l (KUnr.unrHom i dc l), fun l => KFin.u_one i dc l (KUnr.unrHom i dc l)⟩`.
+-/
 theorem column_unramified_character : (∀ l, ∀ g ∈ QS.I i dc (colIdx i dc l), KFin.u i dc l (g : GE D.nd) = 0) ∧
     (∀ l, ∃ g ∈ (decs D.host.E (Aw i dc)) (colIdx i dc l), KFin.u i dc l g = 1) :=
   ⟨fun l => KFin.u_I i dc l (KUnr.unrHom i dc l), fun l => KFin.u_one i dc l (KUnr.unrHom i dc l)⟩
@@ -66,6 +87,9 @@ variable [∀ k, SMulCommClass Dd.R' (D.nd.O i) (blockRestrictedRepresentationTy
 set_option maxHeartbeats 4000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+Introduce `x' _ l`. Establish `hO` using `KOrb.orbC_repE i dc r π g0 eB e₁ s Dd hD hc x' (colIdx i dc l)`. Establish `hdim : KHf.DimLx i dc Dd.r Dd.χ (KHf.jK i dc ρ π) x' l` using `KDim.dimLx_of_font i dc Dd.r Dd.χ ρ π r x' l (card_pos D) (r_pos D) hBK hG2 hFont (KDim.contX_of_orbC i dc Dd.r Dd.χ x' l hO) (hCr x' l) (hNeg x' l) (hFin x' l) (hCrW l) (KOrb.contW_rec i dc r ρ π hDec hc l)`. Rewrite using `[jN_eq]`. Conclude with `KHf.exists_Lx i dc Dd.r Dd.χ (leftId_alg Dd.e₁) (leftId_alg Dd.E) (KHf.jK i dc ρ π) x' l hO hdim`.
+-/
 theorem colLx_of_ringDef
     (hD : RingDef (D.nd.O i) (D.nd.T i) (RepresentationBoundsCohomology.repX D.nd r) π (chiU D.nd i 1) (epsU D.nd i) g0 eB e₁ s Dd)
     (hc : TruncatedSeriesCountingIdentities.FamilyContinuous (D := D) i r) (hBK : TruncatedSeriesCountingIdentities.admBK i) (hG2 : TruncatedSeriesCountingIdentities.admG2 i r ρ π) (hFont : TruncatedSeriesCountingIdentities.FontaineAtPlacesOverL i)

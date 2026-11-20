@@ -13,14 +13,25 @@ namespace GlobalTheory.CompanionTheory.TowFlat
 
 variable {W : Type} [CommRing W]
 
+/- English proof (translation)
+The claim follows from `(Submodule.Quotient.mk_eq_zero ((L.B n).submoduleOf (L.Z n))).1 hz`.
+-/
 theorem mem_B_of_mk {L : Cx.{1} W} {n : ℕ} (z : L.Z n) (hz : (Submodule.Quotient.mk z : L.H n) = 0) :
     z.1 ∈ L.B n :=
   (Submodule.Quotient.mk_eq_zero ((L.B n).submoduleOf (L.Z n))).1 hz
 
+/- English proof (translation)
+The claim follows from `(Submodule.Quotient.mk_eq_zero ((L.B n).submoduleOf (L.Z n))).2 h`.
+-/
 theorem mk_of_mem_B {L : Cx.{1} W} {n : ℕ} (z : L.Z n) (h : z.1 ∈ L.B n) :
     (Submodule.Quotient.mk z : L.H n) = 0 :=
   (Submodule.Quotient.mk_eq_zero ((L.B n).submoduleOf (L.Z n))).2 h
 
+/- English proof (translation)
+Consider the cases of `n with`. Consider the case `zero`. Establish `e : x = 0` using `h`. Rewrite using `[e, map_zero]`. Consider the case `succ n`.
+
+Take `⟨y, rfl⟩` from `h`. Conclude with `L.dd n y`.
+-/
 theorem d_of_B {L : Cx.{1} W} {n : ℕ} {x : L.X n} (h : x ∈ L.B n) : L.d n x = 0 := by
   cases n with
   | zero =>
@@ -38,6 +49,11 @@ section Conn
 
 variable {A B C : Cx.{1} W} {f : Cx.Hom A B (RingHom.id W)} {g : Cx.Hom B C (RingHom.id W)}
 
+/- English proof (translation)
+Consider the cases of `n with`. Consider the case `zero`. Establish `e : z = 0` using `h`. Conclude with `⟨0, Submodule.zero_mem _, by rw [e, map_zero]⟩`. Consider the case `succ n`.
+
+Take `⟨c, rfl⟩` from `h`. Take `⟨b, rfl⟩` from `hS.2.1 n c`. Conclude with `⟨B.d n b, ⟨b, rfl⟩, (g.comm n b).symm⟩`.
+-/
 theorem lift_B (hS : Ses f g) {n : ℕ} {z : C.X n} (h : z ∈ C.B n) : ∃ b ∈ B.B n, g.f n b = z := by
   cases n with
   | zero =>
@@ -52,6 +68,11 @@ def Rel (f : Cx.Hom A B (RingHom.id W)) (g : Cx.Hom B C (RingHom.id W)) (j : ℕ
   ∃ (z : C.Z j) (β : B.X j) (w : A.Z (j + 1)), Submodule.Quotient.mk z = x ∧ Submodule.Quotient.mk w = v ∧
     g.f j β = z.1 ∧ f.f (j + 1) w.1 = B.d j β
 
+/- English proof (translation)
+Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Take `⟨β, hβ⟩` from `hS.2.1 j z.1`. Establish `h0 : g.f (j + 1) (B.d j β) = 0`. Rewrite using `[← g.comm, hβ]`. Conclude with `z.2`.
+
+Take `⟨w, hw⟩` from `(hS.2.2 (j + 1) _).1 h0`. Establish `hd : A.d (j + 1) w = 0`. Apply `hS.1 (j + 2)` to reduce the goal to its premises. Rewrite using `[← f.comm, hw, B.dd, map_zero]`. Conclude with `⟨_, z, β, ⟨w, hd⟩, rfl, rfl, hβ, hw⟩`.
+-/
 theorem rel_total (hS : Ses f g) (j : ℕ) (x : C.H j) : ∃ v, Rel f g j x v := by
   obtain ⟨z, rfl⟩ := Submodule.Quotient.mk_surjective _ x
   obtain ⟨β, hβ⟩ := hS.2.1 j z.1
@@ -64,6 +85,11 @@ theorem rel_total (hS : Ses f g) (j : ℕ) (x : C.H j) : ∃ v, Rel f g j x v :=
     rw [← f.comm, hw, B.dd, map_zero]
   exact ⟨_, z, β, ⟨w, hd⟩, rfl, rfl, hβ, hw⟩
 
+/- English proof (translation)
+Take `⟨z, β, w, rfl, rfl, h1, h2⟩` from `h`. Take `⟨z', β', w', rfl, rfl, h1', h2'⟩` from `h'`. Use `⟨z + z', β + β', w + w', rfl, rfl, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, h1, h1']`. Both sides reduce to the same expression.
+
+Express the relevant statement in the definitionally equal form `f.f (j + 1) (w.1 + w'.1) = _`. Rewrite using `[map_add, map_add, h2, h2']`.
+-/
 theorem rel_add {j : ℕ} {x x' : C.H j} {v v' : A.H (j + 1)} (h : Rel f g j x v) (h' : Rel f g j x' v') :
     Rel f g j (x + x') (v + v') := by
   obtain ⟨z, β, w, rfl, rfl, h1, h2⟩ := h
@@ -73,6 +99,11 @@ theorem rel_add {j : ℕ} {x x' : C.H j} {v v' : A.H (j + 1)} (h : Rel f g j x v
   · change f.f (j + 1) (w.1 + w'.1) = _
     rw [map_add, map_add, h2, h2']
 
+/- English proof (translation)
+Take `⟨z, β, w, rfl, rfl, h1, h2⟩` from `h`. Use `⟨s • z, s • β, s • w, rfl, rfl, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, h1]`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `f.f (j + 1) (s • w.1) = _`.
+
+Simplify using `only [map_smul, h2, RingHom.id_apply]`.
+-/
 theorem rel_smul {j : ℕ} (s : W) {x : C.H j} {v : A.H (j + 1)} (h : Rel f g j x v) :
     Rel f g j (s • x) (s • v) := by
   obtain ⟨z, β, w, rfl, rfl, h1, h2⟩ := h
@@ -81,6 +112,11 @@ theorem rel_smul {j : ℕ} (s : W) {x : C.H j} {v : A.H (j + 1)} (h : Rel f g j 
   · change f.f (j + 1) (s • w.1) = _
     simp only [map_smul, h2, RingHom.id_apply]
 
+/- English proof (translation)
+Take `⟨z, β, w, hz, rfl, h1, h2⟩` from `h`. Take `⟨b, hbB, hb⟩` from `lift_B hS (mem_B_of_mk z hz)`. Establish `h0 : g.f j (β - b) = 0` using `by rw [map_sub, h1, hb, sub_self]`. Take `⟨a, ha⟩` from `(hS.2.2 j _).1 h0`. Establish `e : w.1 = A.d j a`.
+
+Apply `hS.1 (j + 1)` to reduce the goal to its premises. Rewrite using `[h2, ← f.comm, ha, map_sub, d_of_B hbB, sub_zero]`. Conclude with `mk_of_mem_B w ⟨a, e.symm⟩`.
+-/
 theorem rel_zero (hS : Ses f g) {j : ℕ} {v : A.H (j + 1)} (h : Rel f g j 0 v) : v = 0 := by
   obtain ⟨z, β, w, hz, rfl, h1, h2⟩ := h
   obtain ⟨b, hbB, hb⟩ := lift_B hS (mem_B_of_mk z hz)
@@ -91,6 +127,9 @@ theorem rel_zero (hS : Ses f g) {j : ℕ} {v : A.H (j + 1)} (h : Rel f g j 0 v) 
     rw [h2, ← f.comm, ha, map_sub, d_of_B hbB, sub_zero]
   exact mk_of_mem_B w ⟨a, e.symm⟩
 
+/- English proof (translation)
+Establish `h2` using `rel_add h (rel_smul (-1) h')`. Rewrite `h2` using `[neg_one_smul, neg_one_smul, add_neg_cancel]`. Conclude with `add_neg_eq_zero.1 (rel_zero hS h2)`.
+-/
 theorem rel_unique (hS : Ses f g) {j : ℕ} {x : C.H j} {v v' : A.H (j + 1)} (h : Rel f g j x v)
     (h' : Rel f g j x v') : v = v' := by
   have h2 := rel_add h (rel_smul (-1) h')
@@ -104,12 +143,25 @@ def cn (hS : Ses f g) (j : ℕ) : C.H j →ₗ[W] A.H (j + 1) where
   map_smul' s x := rel_unique hS (Classical.choose_spec (rel_total hS j (s • x)))
     (rel_smul s (Classical.choose_spec (rel_total hS j x)))
 
+/- English proof (translation)
+The claim follows from `Classical.choose_spec (rel_total hS j x)`.
+-/
 theorem cn_rel (hS : Ses f g) (j : ℕ) (x : C.H j) : Rel f g j x (cn hS j x) :=
   Classical.choose_spec (rel_total hS j x)
 
+/- English proof (translation)
+The claim follows from `rel_unique hS (cn_rel hS j x) h`.
+-/
 theorem cn_eq (hS : Ses f g) {j : ℕ} {x : C.H j} {v : A.H (j + 1)} (h : Rel f g j x v) : cn hS j x = v :=
   rel_unique hS (cn_rel hS j x) h
 
+/- English proof (translation)
+Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Establish `hb : g.f j z.1 ∈ C.B j` using `mem_B_of_mk (g.mapZ j z) h`. Take `⟨b, hbB, hbg⟩` from `lift_B hS hb`. Establish `h0 : g.f j (z.1 - b) = 0` using `by rw [map_sub, hbg, sub_self]`. Take `⟨a, ha⟩` from `(hS.2.2 j _).1 h0`.
+
+Establish `da : A.d j a = 0`. Apply `hS.1 (j + 1)` to reduce the goal to its premises. Establish `hz : B.d j z.1 = 0` using `z.2`. Rewrite using `[map_zero, ← f.comm, ha, map_sub, d_of_B hbB, hz, sub_zero]`. Use `⟨Submodule.Quotient.mk ⟨a, da⟩, ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk (f.mapZ j ⟨a, da⟩) = Submodule.Quotient.mk z`. Rewrite using `[Submodule.Quotient.eq]`. Express the relevant statement in the definitionally equal form `f.f j a - z.1 ∈ B.B j`. Rewrite using `[ha, sub_sub_cancel_left]`. Conclude with `Submodule.neg_mem _ hbB`.
+-/
 theorem ex_mid (hS : Ses f g) (j : ℕ) (x : B.H j) (h : g.mapH j x = 0) : ∃ y, f.mapH j y = x := by
   obtain ⟨z, rfl⟩ := Submodule.Quotient.mk_surjective _ x
   have hb : g.f j z.1 ∈ C.B j := mem_B_of_mk (g.mapZ j z) h
@@ -127,6 +179,13 @@ theorem ex_mid (hS : Ses f g) (j : ℕ) (x : B.H j) (h : g.mapH j x = 0) : ∃ y
   rw [ha, sub_sub_cancel_left]
   exact Submodule.neg_mem _ hbB
 
+/- English proof (translation)
+Take `⟨z, β, w, rfl, hw, h1, h2⟩` from `cn_rel hS j x`. Rewrite `hw` using `[h]`. Take `⟨a, ha⟩` from `mem_B_of_mk w hw`. Establish `hd : B.d j (β - f.f j a) = 0`. Rewrite using `[map_sub, f.comm, ha, h2, sub_self]`.
+
+Use `⟨Submodule.Quotient.mk ⟨_, hd⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk (g.mapZ j ⟨_, hd⟩) = Submodule.Quotient.mk z`. Use `congr 1`. Use `Subtype.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `g.f j (β - f.f j a) = z.1`.
+
+Rewrite using `[map_sub, h1, (hS.2.2 j _).2 ⟨a, rfl⟩, sub_zero]`.
+-/
 theorem ex_cn (hS : Ses f g) (j : ℕ) (x : C.H j) (h : cn hS j x = 0) : ∃ y, g.mapH j y = x := by
   obtain ⟨z, β, w, rfl, hw, h1, h2⟩ := cn_rel hS j x
   rw [h] at hw
@@ -140,6 +199,11 @@ theorem ex_cn (hS : Ses f g) (j : ℕ) (x : C.H j) (h : cn hS j x = 0) : ∃ y, 
   change g.f j (β - f.f j a) = z.1
   rw [map_sub, h1, (hS.2.2 j _).2 ⟨a, rfl⟩, sub_zero]
 
+/- English proof (translation)
+Take `⟨z, β, w, rfl, hw, h1, h2⟩` from `cn_rel hS j x`. Rewrite using `[← hw]`. Use `cn_eq hS' ⟨γ.mapZ j z, μ.f j β, α.mapZ (j + 1) w, rfl, rfl, ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `g'.f j (μ.f j β) = γ.f j z.1`. Rewrite using `[hg, h1]`.
+
+Express the relevant statement in the definitionally equal form `f'.f (j + 1) (α.f (j + 1) w.1) = _`. Rewrite using `[hf, h2, μ.comm]`.
+-/
 theorem cn_nat {A' B' C' : Cx.{1} W} {f' : Cx.Hom A' B' (RingHom.id W)} {g' : Cx.Hom B' C' (RingHom.id W)}
     (hS : Ses f g) (hS' : Ses f' g') (α : Cx.Hom A A' (RingHom.id W)) (μ : Cx.Hom B B' (RingHom.id W))
     (γ : Cx.Hom C C' (RingHom.id W)) (j : ℕ)
@@ -156,6 +220,19 @@ theorem cn_nat {A' B' C' : Cx.{1} W} {f' : Cx.Hom A' B' (RingHom.id W)} {g' : Cx
 
 end Conn
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Use `(injective_iff_map_eq_zero _).2 fun x hx => ?_` and prove the remaining obligations. Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Establish `hb : φ.f j z.1 ∈ L.B j` using `mem_B_of_mk (φ.mapZ j z) hx`. Use `mk_of_mem_B z ?_` and prove the remaining obligations.
+
+Consider the cases of `j with`. Consider the case `zero`. Establish `e : φ.f 0 z.1 = 0` using `hb`. Establish `e' : z.1 = 0` using `(h 0).1 (by rw [e, map_zero])`. Rewrite using `[e']`.
+
+Conclude with `Submodule.zero_mem _`. Consider the case `succ j`. Take `⟨y, hy⟩` from `hb`. Take `⟨y, rfl⟩` from `(h j).2 y`. Conclude with `⟨y, (h (j + 1)).1 (by rw [← φ.comm, hy])⟩`.
+
+Introduce `x`. Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Take `⟨y, hy⟩` from `(h j).2 z.1`. Establish `hd : K.d j y = 0`. Apply `(h (j + 1)).1` to reduce the goal to its premises.
+
+Establish `hz : L.d j z.1 = 0` using `z.2`. Rewrite using `[map_zero, ← φ.comm, hy, hz]`. Use `⟨Submodule.Quotient.mk ⟨y, hd⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk (φ.mapZ j ⟨y, hd⟩) = Submodule.Quotient.mk z`. Use `congr 1`.
+
+Conclude with `Subtype.ext hy`.
+-/
 theorem mapH_bij {K L : Cx.{1} W} (φ : Cx.Hom K L (RingHom.id W)) (h : ∀ i, Function.Bijective (φ.f i))
     (j : ℕ) : Function.Bijective (φ.mapH j) := by
   constructor
@@ -185,6 +262,9 @@ theorem mapH_bij {K L : Cx.{1} W} (φ : Cx.Hom K L (RingHom.id W)) (h : ∀ i, F
     congr 1
     exact Subtype.ext hy
 
+/- English proof (translation)
+Simplify using `[lpow, LinearMap.mem_range]`.
+-/
 theorem mem_lpow {l : ℕ} {M : Type 1} [AddCommGroup M] [Module W M] {n : ℕ} {x : M} :
     x ∈ lpow (W := W) l M n ↔ ∃ y : M, ((l : W) ^ n) • y = x := by
   simp [lpow, LinearMap.mem_range]
@@ -199,9 +279,19 @@ def mulc (l : ℕ) (K : Cx.{1} W) {a c : ℕ} (h : a ≤ c) (hk : ∀ i (x : K.X
     obtain ⟨x, rfl⟩ := Submodule.Quotient.mk_surjective _ x
     exact (K.d i).map_smul _ x
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mulc_mk (l : ℕ) (K : Cx.{1} W) {a c : ℕ} (h : a ≤ c) (hk : ∀ i (x : K.X i), ((l : W) ^ c) • x = 0)
     (i : ℕ) (x : K.X i) : (mulc l K h hk).f i (Submodule.Quotient.mk x) = ((l : W) ^ (c - a)) • x := rfl
 
+/- English proof (translation)
+Establish `hb : c - a = b` using `by omega`. Use `⟨fun i => (injective_iff_map_eq_zero _).2 fun x hx => ?_, fun i => Submodule.mkQ_surjective _, fun i x => ?_⟩` and prove the remaining obligations. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Rewrite `hx` using `[mulc_mk, hb]`. Conclude with `(Submodule.Quotient.mk_eq_zero _).2 ((hK i).2 a b hc x hx)`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hx`. Take `⟨y, rfl⟩` from `mem_lpow.1 ((Submodule.Quotient.mk_eq_zero _).1 hx)`. Conclude with `⟨Submodule.Quotient.mk y, by rw [mulc_mk, hb]⟩`. Introduce and unpack `⟨y, rfl⟩`.
+
+Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Rewrite using `[mulc_mk, hb]`. Conclude with `(Submodule.Quotient.mk_eq_zero _).2 (mem_lpow.2 ⟨y, rfl⟩)`.
+-/
 theorem ses_flat {l c : ℕ} {K : Cx.{1} W} (hK : FlatL l c K) {a b : ℕ} (hc : a + b = c) (h : a ≤ c)
     (hk : ∀ i (x : K.X i), ((l : W) ^ c) • x = 0) : Ses (mulc l K h hk) (prj l K b) := by
   have hb : c - a = b := by omega
@@ -219,6 +309,19 @@ theorem ses_flat {l c : ℕ} {K : Cx.{1} W} (hK : FlatL l c K) {a b : ℕ} (hc :
       rw [mulc_mk, hb]
       exact (Submodule.Quotient.mk_eq_zero _).2 (mem_lpow.2 ⟨y, rfl⟩)
 
+/- English proof (translation)
+Establish `hb' : c - a = b` using `by omega`. Use `⟨fun i => (injective_iff_map_eq_zero _).2 fun x hx => ?_, fun i x => ?_, fun i x => ?_⟩` and prove the remaining obligations. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Establish `h1 : Submodule.Quotient.mk (((l : W) ^ (c - a)) • y) = (0 : (quo l L c).X i)` using `hx`. Rewrite `h1` using `[hb']`.
+
+Take `⟨t, ht⟩` from `mem_lpow.1 ((Submodule.Quotient.mk_eq_zero _).1 h1)`. Establish `h2 : ((l : W) ^ b) • (y - ((l : W) ^ a) • t) = 0`. Rewrite using `[smul_sub, smul_smul, ← pow_add, Nat.add_comm b a, hc, ht, sub_self]`. Take `⟨s, hs⟩` from `mem_lpow.1 ((hL i).2 (e - b) b (by omega) _ h2)`. Use `(Submodule.Quotient.mk_eq_zero _).2 (mem_lpow.2 ⟨((l : W) ^ (e - b - a)) • s + t, ?_⟩)` and prove the remaining obligations.
+
+Rewrite using `[smul_add, smul_smul, ← pow_add, show a + (e - b - a) = e - b by omega, hs, sub_add_cancel]`. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Conclude with `⟨Submodule.Quotient.mk y, rfl⟩`. Take `⟨t, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hx`. Establish `h1 : Submodule.Quotient.mk t = (0 : (quo l L b).X i)` using `hx`. Take `⟨s, rfl⟩` from `mem_lpow.1 ((Submodule.Quotient.mk_eq_zero _).1 h1)`. Use `⟨Submodule.Quotient.mk s, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk (((l : W) ^ (c - a)) • s) = _`.
+
+Rewrite using `[hb']`. Introduce and unpack `⟨y, hy⟩`. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Establish `h1 : Submodule.Quotient.mk (((l : W) ^ (c - a)) • y) = (Submodule.Quotient.mk t : (quo l L c).X i)` using `hy`. Rewrite `h1` using `[hb']`.
+
+Rewrite using `[← h1]`. Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk (((l : W) ^ b) • y) = (0 : (quo l L b).X i)`. Conclude with `(Submodule.Quotient.mk_eq_zero _).2 (mem_lpow.2 ⟨y, rfl⟩)`.
+-/
 theorem ses_red {l e : ℕ} {L : Cx.{1} W} (hL : FlatL l e L) {a b c : ℕ} (hc : a + b = c) (he : c ≤ e)
     (ha : a ≤ c) (hb : b ≤ c) : Ses (nug l L ha) (redg l L hb) := by
   have hb' : c - a = b := by omega

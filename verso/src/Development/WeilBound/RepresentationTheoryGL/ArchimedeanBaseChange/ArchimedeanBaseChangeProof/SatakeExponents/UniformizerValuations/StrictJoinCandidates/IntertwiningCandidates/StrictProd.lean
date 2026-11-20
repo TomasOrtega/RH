@@ -17,6 +17,15 @@ namespace PositivityTheory.Rg.BcB.F.FX.Bo
 
 open PositivityTheory.Rg.BcB.F PositivityTheory.Rg.BcB.F.RS
 
+/- English proof (translation)
+Introduce `E _ _ _ n P P' hS w`. Take `⟨c, N, h, V, σ, m, pos, disc, loc, inf⟩` from `P`. Take `⟨c', N', h', V', σ', m', pos', disc', loc', inf'⟩` from `P'`. Take `⟨hF, hc, -⟩` from `hS`. Simplify using `only at hc`.
+
+Substitute `hc` using the available equality. Establish `key : ∀ i : Fin c, SIso (E` using `E) ⟨N i, V i⟩ ⟨N' i, V' i⟩ := by`. Introduce `i`. Use `(List.forall₂_iff_get.1 hF).2 i.1 (by simp [parts]) (by simp [parts])` as an intermediate fact. Simplify `this` using `[parts]`.
+
+Establish `hN : N = N'` using `funext fun i => (key i).1`. Substitute `hN` using the available equality. Establish `hσ : ∀ i, Nonempty ((σ i w).ρ.Equiv (σ' i w).ρ)`. Introduce `i`. Take `⟨hNi, hiso⟩` from `key i`.
+
+Establish `hl : IsLocCompGL (V' i) w (σ i w)` using `Bo.LocIso_holds E (N i) (V i) (V' i) hiso w (σ i w) (loc i w)`. Conclude with `GlobalTheory.LocGL.IrrGL.of_eq_of.1 (Bo.LocUniq_holds E (N i) (V' i) (disc' i) w _ _ hl (loc' i w))`. Conclude with `⟨GlobalTheory.LocGL.multiProdEquiv _ fun i => (hσ i).some⟩`.
+-/
 theorem StrictProd_holds : StrictProd := by
   intro E _ _ _ n P P' hS w
   obtain ⟨c, N, h, V, σ, m, pos, disc, loc, inf⟩ := P

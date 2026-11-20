@@ -21,6 +21,11 @@ open GlobalTheory.OneMapRef GlobalTheory.WeilParts GlobalTheory.IndefiniteRowSid
 
 namespace GlobalTheory.GalOne.Facts
 
+/- English proof (translation)
+Take `⟨α, rfl, -⟩` from `hε`. Establish `h3` using `congrArg (infPart D) hx`. Establish `h4 : infPart D (algebraMap (AF D.host.F) (AE D) (pairA D.host.F 0 α)) = 0`. Establish `e2 : fstA D.host.F (pairA D.host.F 0 α) = 0` using `rfl`. Establish `e3` using `Algebra.TensorProduct.map_tmul (fstA D.host.F) (AlgHom.id D.host.F D.host.E) (pairA D.host.F 0 α) 1`.
+
+Rewrite `e3` using `[e2, TensorProduct.zero_tmul]`. Conclude with `e3`. Rewrite `h3` using `[map_mul, h4, zero_mul, map_sub, map_one]`. Conclude with `(sub_eq_zero.1 h3.symm)`.
+-/
 theorem infPart_eq_one {D : D7} {v ε} (hε : IsPlaceIdem D v ε) {x : AE D}
     (hx : algebraMap (AF D.host.F) (AE D) ε * (x - 1) = x - 1) : infPart D x = 1 := by
   obtain ⟨α, rfl, -⟩ := hε
@@ -33,6 +38,9 @@ theorem infPart_eq_one {D : D7} {v ε} (hε : IsPlaceIdem D v ε) {x : AE D}
   rw [map_mul, h4, zero_mul, map_sub, map_one] at h3
   exact (sub_eq_zero.1 h3.symm)
 
+/- English proof (translation)
+Use `D.R.m_add_three_le_k` as an intermediate fact. Establish `hi` using `i.2`. Rewrite using `[rank_Wc i]`. Simplify using `only [Ranks.sigW, Ranks.r]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem sigW_add {D : D7} (i : Fin D.R.m) :
     (D.R.sigW ((i : ℕ) + 1)).1 + (D.R.sigW ((i : ℕ) + 1)).2 = (Wc D i).rank := by
   have := D.R.m_add_three_le_k
@@ -41,6 +49,9 @@ theorem sigW_add {D : D7} (i : Fin D.R.m) :
   simp only [Ranks.sigW, Ranks.r]
   omega
 
+/- English proof (translation)
+Establish `hs : (Wc D i).sig (tauE D ρ) = D.R.sigW ((i : ℕ) + 1)` using `D.sp.W_sigval _ (inR i).1 (inR i).2 _`. Establish `he` using `(R.MW i σ).enum ρ`. Unfold `Links.parAt at he`. Rewrite `he` using `[if_pos (((labels_overK σ).1 hσ).2 ρ)]`. Conclude with `(GlobalTheory.HolDict.isEnum_holPar_kapW _ (rank_Wc i) (by rw [hs]; exact sigW_add i) he a).2`.
+-/
 theorem signs_of_overK {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m}
     {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (i : Fin D.R.m)
     {σ : D.what₂.LL →+* ℂ} (hσ : OverK σ) (ρ : D.what₂.Tau) (a : Fin (Wc D i).rank) :
@@ -51,6 +62,11 @@ theorem signs_of_overK {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type}
   rw [if_pos (((labels_overK σ).1 hσ).2 ρ)] at he
   exact (GlobalTheory.HolDict.isEnum_holPar_kapW _ (rank_Wc i) (by rw [hs]; exact sigW_add i) he a).2
 
+/- English proof (translation)
+Establish `hc` using `chars_of_lift D G Pl0 T0 A Ks R F hR i`. Establish `u1 : UnramAt ε μ'` using `fun x a b c => by`. Establish `h0 : R.mu0 ((i : ℕ) + 1) x * R.xi A.μ0 x = 1` using `(hc.2.2.2 A.μ0 v ε hv).1 x a b c`. Rewrite `h0` using `[hc.2.1, MonoidHom.one_apply, mul_one]`. Conclude with `(hμ.2.2.2.1 x (infPart_eq_one hv.1 a)).elim fun y hy => (circle_eq_one_iff_of_conj D.what₂.embLL σ _ _ y hy.1 hy.2).2 h0`.
+
+Use `⟨u1, fun x a b c => ?_⟩` and prove the remaining obligations. Use `show μ' x * (η' x)⁻¹ = 1`. Rewrite using `[u1 x a b c, hη.2.1 x (infPart_eq_one hv.1 a) b c, inv_one, one_mul]`.
+-/
 theorem unramAt_conj {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m}
     {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A) (hR : R.Char F)
     (i : Fin D.R.m) {σ : D.what₂.LL →+* ℂ} {μ' η' : (AE D)ˣ →* Circle} (hμ : ChiAt R i σ μ') (hη : IsEtaConj σ R.eta η')
@@ -65,6 +81,19 @@ theorem unramAt_conj {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {
   show μ' x * (η' x)⁻¹ = 1
   rw [u1 x a b c, hη.2.1 x (infPart_eq_one hv.1 a) b c, inv_one, one_mul]
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T0 A T _ R F κ v₀ hR tie i O hP σ σ' hσ' hK`. Establish `hin : InR D ((i : ℕ) + 1)` using `inR i`. Establish `hf : (inC O.c').comp O.jL = D.what₂.embLL` using `hP.lift.field`. Establish `e0 : res T D.what₂.embLL = T.σ₀` using `res_embLL T tie.alg_eq tie.laws.pins.2.2.1`. Establish `hj : ∀ x, O.jL (algebraMap T.Q.c.F D.what₂.LL x) = incF T.Q.c O.c' O.hle x` using `fun x => (inC O.c').injective ((RingHom.congr_fun hf _).trans (RingHom.congr_fun e0 x))`.
+
+Establish `hs : res T σ = sOf O σ'` using `RingHom.ext fun x => (RingHom.congr_fun hσ' _).symm.trans (congrArg σ' (hj x))`. Establish `hg : GoodEmb T.Q.c (res T σ)` using `(overK_iff_good T R F κ v₀ hR tie i σ).1 hK`. Establish `hg' : GoodEmb T.Q.c (sOf O σ')` using `hs ▸ hg`. Establish `hsig : ∀ ρ, (Wc D i).sig (tauE D ρ) = D.R.sigW ((i : ℕ) + 1)` using `fun ρ => D.sp.W_sigval _ hin.1 hin.2 _`. Establish `hq` using `(tie.laws.pins.2.2.2 _ hin).2.1`.
+
+Establish `hpq : (D.R.sigW ((i : ℕ) + 1)).1 + (T.Q.Dw ((i : ℕ) + 1)).q = (Wc D i).rank`. Rewrite using `[hq]`. Conclude with `sigW_add i`. Establish `hε : ∀ τ a, (R.MW i σ).ε τ a = decide ((a : ℕ) < (D.R.sigW ((i : ℕ) + 1)).1)` using `fun τ a => by`. Rewrite using `[signs_of_overK R i hK τ a, hsig]`.
+
+Establish `hl` using `(labels_overK σ).1 hK`. Use `⟨hs, hg', hg', signs_of_overK R i hK, FactsLat.isONeg_x0Mat _ hpq hε, FactsLat.cart_eq_cartZ _ hpq hε, ?_, fun ρ => ?_, fun μ' η' hμ hη => ⟨fun hV => ?_, fun v ε hv => unramAt_conj R F hR i hμ hη hv, ?_⟩⟩` and prove the remaining obligations. Establish `h : IsModelBaseFrameFamily (R.MW i σ) (rank_Wc i) (T.x₀ ((i : ℕ) + 1) (res T σ))` using `tie.x0 i σ hg`. Rewrite `h` using `[hs]`. Conclude with `h`.
+
+Use `Eq.trans ?_ (hl.2 ρ)` and prove the remaining obligations. Unfold `relab labE`. Rewrite using `[← embV_eq_embF O.c' O.jL hf, ← hσ']`. Both sides reduce to the same expression. Establish `h : ChiAt R i σ (T.chiW ((i : ℕ) + 1) (res T σ))` using `tie.chiR i σ hg`.
+
+Rewrite `h` using `[hs]`. Rewrite using `[(GlobalTheory.ConjCharUnique.conjChar_unique R F hR i σ).1 _ _ hμ h]`. Conclude with `FactsLat.muVal_cast hV (tie.laws.muVal _ hin _ hg')`. Establish `h` using `GlobalTheory.EtaConjType.resEta_hasInfExp_of_isEtaConj R F hR i σ hK η' hη`. Conclude with `(hypConj_of_chars R F hR i σ hl.1 hl.2).2 μ' η' hμ hη h.1 h.2`.
+-/
 theorem factsAt : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m} (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F) (F : Face D A) (κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)) (v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec), R.Char F → FWTie T R κ v₀ → ∀ (i : Fin D.R.m) (O : OM T R i), Pinned κ v₀ O → ∀ (σ : D.what₂.LL →+* ℂ) (σ' : O.c'.F →+* ℂ), σ'.comp O.jL = σ → OverK σ → FactsAt O σ σ' := by
   intro D G _ _ Pl0 T0 A T _ R F κ v₀ hR tie i O hP σ σ' hσ' hK
   have hin : InR D ((i : ℕ) + 1) := inR i

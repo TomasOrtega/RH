@@ -40,6 +40,9 @@ open Classical in
 def latG {κ : Type} [Fintype κ] [DecidableEq κ] {q : ℕ} (blk : Fin q → Finset κ) (A N m : ℕ) (t : Fin q → ℝ) (ξ : κ → F) : ℝ :=
   if ∀ i, ∃ j ∈ blk i, ξ j ≠ 0 then majI blk A N m t ξ else 0
 
+/- English proof (translation)
+Unfold `majW`. Use `mul_nonneg (pow_nonneg (Finset.prod_nonneg fun i _ => ht i) _) (inv_nonneg.2 (mul_nonneg ?_ ?_))` and prove the remaining obligations. Conclude with `Finset.prod_nonneg fun i _ => pow_nonneg (add_nonneg zero_le_one (mul_nonneg (ht i) (Finset.sum_nonneg fun j _ => Finset.sum_nonneg fun w _ => (apply_nonneg w _)))) _`. Conclude with `pow_nonneg (add_nonneg zero_le_one (Finset.sum_nonneg fun j _ => Finset.sum_nonneg fun w _ => (apply_nonneg w _))) _`.
+-/
 theorem majW_nonneg {κ : Type} [Fintype κ] [DecidableEq κ] {q : ℕ} (blk : Fin q → Finset κ) (A N : ℕ) (t : Fin q → ℝ) (ξ : κ → F)
     (ht : ∀ i, 0 ≤ t i) : 0 ≤ majW blk A N t ξ := by
   unfold majW
@@ -48,12 +51,18 @@ theorem majW_nonneg {κ : Type} [Fintype κ] [DecidableEq κ] {q : ℕ} (blk : F
       (mul_nonneg (ht i) (Finset.sum_nonneg fun j _ => Finset.sum_nonneg fun w _ => (apply_nonneg w _)))) _
   · exact pow_nonneg (add_nonneg zero_le_one (Finset.sum_nonneg fun j _ => Finset.sum_nonneg fun w _ => (apply_nonneg w _))) _
 
+/- English proof (translation)
+Unfold `majI`. Use `split_ifs`. Conclude with `majW_nonneg blk A N t ξ ht`. Conclude with `le_rfl`.
+-/
 theorem majI_nonneg {κ : Type} [Fintype κ] [DecidableEq κ] {q : ℕ} (blk : Fin q → Finset κ) (A N m : ℕ) (t : Fin q → ℝ) (ξ : κ → F)
     (ht : ∀ i, 0 ≤ t i) : 0 ≤ majI blk A N m t ξ := by
   unfold majI; split_ifs
   · exact majW_nonneg blk A N t ξ ht
   · exact le_rfl
 
+/- English proof (translation)
+Unfold `latG`. Use `split_ifs`. Conclude with `majI_nonneg blk A N m t ξ ht`. Conclude with `le_rfl`.
+-/
 theorem latG_nonneg {κ : Type} [Fintype κ] [DecidableEq κ] {q : ℕ} (blk : Fin q → Finset κ) (A N m : ℕ) (t : Fin q → ℝ) (ξ : κ → F)
     (ht : ∀ i, 0 ≤ t i) : 0 ≤ latG blk A N m t ξ := by
   unfold latG; split_ifs

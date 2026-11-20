@@ -15,6 +15,13 @@ variable {k G M : Type} [CommRing k] [Group G] [TopologicalSpace G] [AddCommGrou
 private def cls (L : Submodule k (H1 ρ)) : Set (G → M) :=
   {z | ∃ hz : z ∈ Z1 ρ, (Submodule.Quotient.mk ⟨z, hz⟩ : H1 ρ) ∈ L}
 
+/- English proof (translation)
+Establish `e1 : cls ρ L = Subtype.val '' ((fun z : Z1 ρ => (Submodule.Quotient.mk z : H1 ρ)) ⁻¹' (L : Set (H1 ρ)))`. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hz, h⟩`. Conclude with `⟨⟨z, hz⟩, h, rfl⟩`.
+
+Introduce and unpack `⟨z, h, rfl⟩`. Conclude with `⟨z.2, h⟩`. Establish `e2` using `(Nat.card_congr (QuotientAddGroup.preimageMkEquivAddSubgroupProdSet ((B1 ρ).comap (Z1 ρ).subtype).toAddSubgroup (L : Set (H1 ρ)))).trans (Nat.card_prod _ _)`. Establish `e3 : Nat.card ((B1 ρ).comap (Z1 ρ).subtype) = Nat.card (B1 ρ)` using `Nat.card_congr (Submodule.comapSubtypeEquivOfLe (coboundaries_le_cocycles ρ h)).toEquiv`. Rewrite using `[e1, Set.ncard_image_of_injective _ Subtype.val_injective, ← e3]`.
+
+Conclude with `e2`.
+-/
 private theorem card_cls (h : ContAction ρ) (L : Submodule k (H1 ρ)) :
     (cls ρ L).ncard = Nat.card (B1 ρ) * Nat.card L := by
   have e1 : cls ρ L = Subtype.val '' ((fun z : Z1 ρ => (Submodule.Quotient.mk z : H1 ρ)) ⁻¹' (L : Set (H1 ρ))) := by
@@ -30,6 +37,11 @@ private theorem card_cls (h : ContAction ρ) (L : Submodule k (H1 ρ)) :
   exact e2
 
 omit [TopologicalSpace G] [TopologicalSpace M] [DiscreteTopology M] in
+/- English proof (translation)
+Establish `e : LinearMap.ker (d0 ρ) = H0 ρ`. Use extensionality with `m`. Rewrite using `[LinearMap.mem_ker, funext_iff]`. Conclude with `forall_congr' fun g => sub_eq_zero`. Rewrite using `[← e, Submodule.card_eq_card_quotient_mul_card (LinearMap.ker (d0 ρ)), mul_comm]`.
+
+Use `congr 1`. Conclude with `(Nat.card_congr (d0 ρ).quotKerEquivRange.toEquiv).symm`.
+-/
 private theorem card_coboundaries_mul_card_h0 : Nat.card (B1 ρ) * Nat.card (H0 ρ) = Nat.card M := by
   have e : LinearMap.ker (d0 ρ) = H0 ρ := by
     ext m
@@ -39,6 +51,9 @@ private theorem card_coboundaries_mul_card_h0 : Nat.card (B1 ρ) * Nat.card (H0 
   congr 1
   exact (Nat.card_congr (d0 ρ).quotKerEquivRange.toEquiv).symm
 
+/- English proof (translation)
+Establish `: Finite (B1 ρ)` using `Finite.of_surjective _ (d0 ρ).surjective_rangeRestrict`. Establish `: Finite ((B1 ρ).comap (Z1 ρ).subtype)` using `Finite.of_injective (fun x => (⟨x.1.1, x.2⟩ : B1 ρ)) fun x y h => Subtype.ext (Subtype.ext (Subtype.mk.inj h))`. Conclude with `Finite.of_equiv (H1 ρ × (B1 ρ).comap (Z1 ρ).subtype) (AddSubgroup.addGroupEquivQuotientProdAddSubgroup (s := ((B1 ρ).comap (Z1 ρ).subtype).toAddSubgroup)).symm`.
+-/
 private theorem finite_z1_of_finite_h1 [Finite M] [Finite (H1 ρ)] : Finite (Z1 ρ) := by
   have : Finite (B1 ρ) := Finite.of_surjective _ (d0 ρ).surjective_rangeRestrict
   have : Finite ((B1 ρ).comap (Z1 ρ).subtype) :=
@@ -46,11 +61,19 @@ private theorem finite_z1_of_finite_h1 [Finite M] [Finite (H1 ρ)] : Finite (Z1 
   exact Finite.of_equiv (H1 ρ × (B1 ρ).comap (Z1 ρ).subtype)
     (AddSubgroup.addGroupEquivQuotientProdAddSubgroup (s := ((B1 ρ).comap (Z1 ρ).subtype).toAddSubgroup)).symm
 
+/- English proof (translation)
+The claim follows from `and_congr (IsLocallyConstant.iff_continuous z) (by simp only [← e])`.
+-/
 private theorem zc_iff (τ : Representation ℤ G M) (e : ∀ g m, ρ g m = τ g m) (z : G → M) : z ∈ Zc τ ↔ z ∈ Z1 ρ :=
   and_congr (IsLocallyConstant.iff_continuous z) (by simp only [← e])
 
 end Count
 
+/- English proof (translation)
+Use `⟨((AddSubgroup.toZModSubmodule n N).comap (Z1 ρ).subtype).map (Submodule.mkQ _), ?_⟩` and prove the remaining obligations. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hz, y, hy, e⟩`. Establish `e' : y.1 - z ∈ B1 ρ` using `(Submodule.Quotient.eq ((B1 ρ).comap (Z1 ρ).subtype)).1 e`.
+
+Use `N.sub_mem hy (h1 _ e')` as an intermediate fact. Simplify using `using this`. Introduce `hz`. Conclude with `⟨h2 z hz, ⟨z, _⟩, hz, rfl⟩`.
+-/
 private theorem ex_cls {n : ℕ} {G M : Type} [Group G] [TopologicalSpace G] [AddCommGroup M] [Module (ZMod n) M]
     [TopologicalSpace M] [DiscreteTopology M] (ρ : Representation (ZMod n) G M) (N : AddSubgroup (G → M))
     (h1 : ∀ z ∈ B1 ρ, z ∈ N) (h2 : ∀ z ∈ N, z ∈ Z1 ρ) :
@@ -65,6 +88,19 @@ private theorem ex_cls {n : ℕ} {G M : Type} [Group G] [TopologicalSpace G] [Ad
   · intro hz
     exact ⟨h2 z hz, ⟨z, _⟩, hz, rfl⟩
 
+/- English proof (translation)
+Establish `f` using `finite_z1_of_finite_h1 ρ`. Use `⟨(Set.toFinite (Z1 ρ : Set (Γ → M))).subset fun z hz => (zc_iff ρ τ e z).1 hz, ?_⟩` and prove the remaining obligations. Use `choose L hL using fun w => ex_cls (ρ.comp (ι w)) (Z w) (fun z hz => by`. Take `⟨m, hm⟩` from `(mem_coboundaries1 _ _).1 hz`. Establish `: z = fun s => τ (ι w s) m - m` using `funext fun s => (hm s).trans (by rw [← e]; rfl)`.
+
+Conclude with `this ▸ h2 w m)`. Use the proof step `(fun z hz => (zc_iff _ (τ.comp (ι w)) (fun g m => e _ m) z).1 (h1 w hz))`. Establish `e1 : {z | z ∈ Zc τ ∧ ∀ w, (fun s => z (ι w s)) ∈ Z w} = cls ρ (Sel ρ ι hι L)`. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨hz, hw⟩`. Use `⟨(zc_iff ρ τ e z).1 hz, (mem_Sel _ _ _ _ _).2 fun w => ?_⟩` and prove the remaining obligations. Establish `: z ∘ ι w ∈ cls (ρ.comp (ι w)) (L w)` using `by rw [hL]; exact hw w`. Conclude with `this.2`. Introduce and unpack `⟨hz, hw⟩`.
+
+Use `⟨(zc_iff ρ τ e z).2 hz, fun w => ?_⟩` and prove the remaining obligations. Establish `: z ∘ ι w ∈ cls (ρ.comp (ι w)) (L w)` using `⟨(restrictCocycles1 ρ (ι w) (hι w) ⟨z, hz⟩).2, (mem_Sel _ _ _ _ _).1 hw w⟩`. Rewrite `this` using `[hL]`. Then use the resulting hypothesis. Establish `e4 : ∀ w, Nat.card (Z w) = Nat.card (B1 (ρ.comp (ι w))) * Nat.card (L w)` using `fun w => by`. Rewrite using `[← card_cls _ (h.comp' (hι w)), hL]`.
+
+Both sides reduce to the same expression. Establish `e5 : Nat.card M ^ Fintype.card W = (∏ w, Nat.card (B1 (ρ.comp (ι w)))) * ∏ w, Nat.card (H0 (ρ.comp (ι w)))`. Rewrite using `[← Finset.prod_mul_distrib]`. Simplify using `only [card_coboundaries_mul_card_h0, Finset.prod_const, Finset.card_univ]`. Rewrite using `[e1, card_cls _ h, e5]`.
+
+Simplify using `only [e4, Finset.prod_mul_distrib]`. Establish `e6` using `Nat.mul_le_mul_left (Nat.card (B1 ρ) * ∏ w, Nat.card (B1 (ρ.comp (ι w)))) (gw L)`. Rewrite using `[← card_coboundaries_mul_card_h0 ρ]`. Apply the tactic sequence `convert e6 using 1 <;> ring`.
+-/
 private theorem core {n : ℕ} {Γ M W : Type} [Group Γ] [TopologicalSpace Γ] [AddCommGroup M] [Module (ZMod n) M]
     [TopologicalSpace M] [DiscreteTopology M] [Finite M] [Fintype W] {D : W → Type} [∀ w, Group (D w)]
     [∀ w, TopologicalSpace (D w)] (ρ : Representation (ZMod n) Γ M) (τ : Representation ℤ Γ M) (e : ∀ g m, ρ g m = τ g m)
@@ -106,6 +142,19 @@ private theorem core {n : ℕ} {Γ M W : Type} [Group Γ] [TopologicalSpace Γ] 
   rw [← card_coboundaries_mul_card_h0 ρ]
   convert e6 using 1 <;> ring
 
+/- English proof (translation)
+Establish `hm : ∀ s t, z (s * t) = z s + ρ (p s) (z t)` using `hz.2`. Establish `h1 : z 1 = 0` using `by simpa using hm 1 1`. Set `H : Subgroup Γ'` to `{ carrier := {g | p g = 1 ∧ z g = 0} one_mem' := ⟨map_one p, h1⟩ mul_mem' := fun {a b} ha hb => ⟨by rw [map_mul, ha.1, hb.1, mul_one], by rw [hm, ha.2, hb.2, map_zero, add_zero]⟩ inv_mem' := fun {a} ha => ⟨by rw [map_inv, ha.1, inv_one], by`. Use `hm a⁻¹ a` as an intermediate fact. Rewrite `this` using `[inv_mul_cancel, h1, ha.2, map_zero, add_zero]`.
+
+Conclude with `this.symm⟩ }`. Use `haveI : H.Normal := ⟨fun a ha g => ⟨by simp [ha.1], by`. Rewrite using `[hm, hm, ha.2, map_zero, add_zero, map_mul, ha.1, mul_one, ← hm, mul_inv_cancel, h1]⟩⟩`. Establish `hH : p.ker ≤ H`. Establish `hT' : T ⊆ p.ker`.
+
+Rewrite using `[hT]`. Conclude with `Subgroup.subset_normalClosure.trans (Subgroup.le_topologicalClosure _)`. Rewrite using `[hT]`. Conclude with `Subgroup.topologicalClosure_minimal _ (Subgroup.normalClosure_le_normal fun g hg => ⟨hT' hg, h0 g hg⟩) ((isClosed_singleton.preimage hp).inter (hz.1.isClosed_fiber 0))`. Establish `hy : ∀ g, z (Function.surjInv hs (p g)) = z g` using `fun g => by`.
+
+Establish `: z (g⁻¹ * Function.surjInv hs (p g)) = 0` using `(hH (by rw [MonoidHom.mem_ker, map_mul, Function.surjInv_eq hs, map_inv, inv_mul_cancel])).2`. Use `conv_lhs => rw [← mul_inv_cancel_left g (Function.surjInv hs (p g)), hm, this, map_zero, add_zero]`. Use `⟨fun g => z (Function.surjInv hs g), ⟨fun s => ?_, fun s t => ?_⟩, hy⟩` and prove the remaining obligations. Rewrite using `[← (hp.isClosedMap.isQuotientMap hp hs).isOpen_preimage]`. Use `hz.1 s using 1` and compare the differences between its conclusion and the goal.
+
+Use extensionality with `g`. Simplify using `only [Set.mem_preimage, hy]`. Take `⟨s, rfl⟩` from `hs s`. Take `⟨t, rfl⟩` from `hs t`. Use `beta_reduce`.
+
+Rewrite using `[← map_mul, hy, hy, hy, hm]`.
+-/
 private theorem desc {Γ' Γ N : Type} [Group Γ'] [TopologicalSpace Γ'] [IsTopologicalGroup Γ'] [CompactSpace Γ'] [Group Γ]
     [TopologicalSpace Γ] [T2Space Γ] [AddCommGroup N] (p : Γ' →* Γ) (hp : Continuous p) (hs : Function.Surjective p)
     (ρ : Representation ℤ Γ N) (T : Set Γ') (hT : p.ker = (Subgroup.normalClosure T).topologicalClosure)
@@ -143,6 +192,13 @@ private theorem desc {Γ' Γ N : Type} [Group Γ'] [TopologicalSpace Γ'] [IsTop
     beta_reduce
     rw [← map_mul, hy, hy, hy, hm]
 
+/- English proof (translation)
+Substitute `hH` using the available equality. Establish `hj : Continuous ι.rangeRestrict` using `hc.subtype_mk _`. Establish `hb : Function.Bijective ι.rangeRestrict` using `⟨fun a b h => hi (congrArg Subtype.val h), ι.rangeRestrict_surjective⟩`. Set `r : (ι.range → N) →+ (D → N)` to `{ toFun := fun z s => z (ι.rangeRestrict s), map_zero' := rfl, map_add' := fun _ _ => rfl }`. Use `⟨Z.comap r, fun z hz => ⟨fun s => ?_, fun s t => ?_⟩, h2, ?_, fun z hz => hz⟩` and prove the remaining obligations.
+
+Rewrite using `[← (hj.isClosedMap.isQuotientMap hj hb.2).isOpen_preimage]`. Conclude with `(h1 hz).1 s`. Take `⟨s, rfl⟩` from `hb.2 s`. Take `⟨t, rfl⟩` from `hb.2 t`. Rewrite using `[← map_mul]`.
+
+Conclude with `(h1 hz).2 s t`. Conclude with `(Nat.card_congr (((Equiv.ofBijective _ hb).symm.arrowCongr (Equiv.refl N)).subtypeEquiv fun z => Iff.rfl)).symm`.
+-/
 private theorem tran {D G N : Type} [Group D] [TopologicalSpace D] [CompactSpace D] [Group G] [TopologicalSpace G] [T2Space G]
     [AddCommGroup N] (ι : D →* G) (hc : Continuous ι) (hi : Function.Injective ι) (H : Subgroup G) (hH : ι.range = H)
     (τ : Representation ℤ G N) (Z : AddSubgroup (D → N)) (h1 : (Z : Set (D → N)) ⊆ Zc (τ.comp ι))
@@ -164,6 +220,11 @@ private theorem tran {D G N : Type} [Group D] [TopologicalSpace D] [CompactSpace
     exact (h1 hz).2 s t
   · exact (Nat.card_congr (((Equiv.ofBijective _ hb).symm.arrowCongr (Equiv.refl N)).subtypeEquiv fun z => Iff.rfl)).symm
 
+/- English proof (translation)
+Set `T : Finset W` to `Finset.univ.map ⟨m, hm⟩`. Establish `e1 : ∏ w ∈ T, g w = ∏ v, f v` using `by simp [T, h1]`. Establish `e2 : n ^ Tᶜ.card ≤ ∏ w ∈ Tᶜ, g w` using `Finset.pow_card_le_prod _ _ _ fun w hw => h2 w (by simpa [T] using hw)`. Establish `e3 : T.card = Fintype.card V` using `by simp [T]`. Rewrite `h` using `[← Finset.prod_mul_prod_compl T, ← Finset.card_add_card_compl T, e1, e3, pow_add, ← mul_assoc, ← mul_assoc]`.
+
+Conclude with `Nat.le_of_mul_le_mul_right ((Nat.mul_le_mul_left _ e2).trans h) (Nat.pow_pos hn)`.
+-/
 private theorem numer {V W : Type} [Fintype V] [Fintype W] (m : V → W) (hm : Function.Injective m) (f : V → ℕ) (g : W → ℕ)
     (n x : ℕ) (hn : 0 < n) (h1 : ∀ v, f v = g (m v)) (h2 : ∀ w, w ∉ Set.range m → n ≤ g w)
     (h : n * ∏ w, g w ≤ x * n ^ Fintype.card W) : n * ∏ v, f v ≤ x * n ^ Fintype.card V := by
@@ -185,6 +246,9 @@ private def zrep (n : ℕ) {Γ M : Type} [Group Γ] [AddCommGroup M] [Module (ZM
     change ρ (g * h) m = ρ g (ρ h m)
     simp
 
+/- English proof (translation)
+Use `(IsLocallyConstant.iff_exists_open _).2 fun g => ⟨(fun x => g⁻¹ * x) ⁻¹' (ρ.ker : Set Γ), h.preimage (continuous_const.mul continuous_id), by simp, fun x hx => ?_⟩` and prove the remaining obligations. Establish `: ρ (g⁻¹ * x) = 1` using `hx`. Rewrite using `[← mul_inv_cancel_left g x, map_mul, this, mul_one]`.
+-/
 private theorem lc_orb {Γ M : Type} [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] [AddCommGroup M]
     (ρ : Representation ℤ Γ M) (h : IsOpen (ρ.ker : Set Γ)) (m : M) : IsLocallyConstant fun g => ρ g m := by
   refine (IsLocallyConstant.iff_exists_open _).2 fun g => ⟨(fun x => g⁻¹ * x) ⁻¹' (ρ.ker : Set Γ),
@@ -192,6 +256,21 @@ private theorem lc_orb {Γ M : Type} [Group Γ] [TopologicalSpace Γ] [IsTopolog
   have : ρ (g⁻¹ * x) = 1 := hx
   rw [← mul_inv_cancel_left g x, map_mul, this, mul_one]
 
+/- English proof (translation)
+Establish `hp : l.Prime` using `Fact.out`. Use `haveI : NeZero (l ^ k) := ⟨pow_ne_zero _ hp.ne_zero⟩`. Take `⟨_⟩ : Nonempty (Module (ZMod (l ^ k)) N)` from `⟨AddCommGroup.zmodModule hk⟩`. Use `letI : TopologicalSpace N := ⊥`. Use `haveI : DiscreteTopology N := ⟨rfl⟩`.
+
+Set `ρ` to `zrep (l ^ k) τ`. Establish `hρ : ∀ g m, ρ g m = τ g m` using `fun _ _ => rfl`. Establish `hcont : ContAction ρ` using `continuous_prod_of_discrete_right.2 fun m => (lc_orb τ ho m).continuous`. Take `⟨μ, hμ⟩` from `GlobalTheory.Published.PoitouTate.exists_lift_cycMod (F := F) (Ω := Ω) (l := l) (r := k) (S := T) hT`. Establish `hcont' : ContAction (twDual μ ρ)` using `GlobalTheory.DualSide.contAction_twDual (GlobalTheory.Published.PoitouTate.contAction_charRep hμ) hcont`.
+
+Establish `hμε : ∀ g, ((μ g : (ZMod (l ^ k))ˣ) : ZMod (l ^ k)) = PadicInt.toZModPow k ((ε g : ℤ_[l]ˣ) : ℤ_[l])` using `fun g => by`. Take `⟨g, rfl⟩ : ∃ s, toGS Ω _ s = g` from `QuotientGroup.mk_surjective g`. Rewrite using `[hε, ← MonoidHom.comp_apply, hμ]`. Both sides reduce to the same expression. Use `haveI : Finite (TDual (ZMod (l ^ k)) N) := GlobalTheory.DualSide.finite_TDual`.
+
+Use `haveI := (P.gf F Ω l k N T ρ hk0 hT hcont).2.1`. Use `haveI := (P.gf F Ω l k _ T (twDual μ ρ) hk0 hT hcont').2.1`. Establish `harch : archH0Card T ρ c = ∏ w, {x : N | τ (toGS Ω _ (c w)) x = x}.ncard`. Rewrite using `[archH0Card, IsTotallyReal.nrComplexPlaces_eq_zero, pow_zero, mul_one, Finset.filter_true_of_mem fun w _ => IsTotallyReal.isReal w]`. Both sides reduce to the same expression.
+
+Establish `hdual : Nat.card (H0 (twDual μ ρ)) ≤ (HomMu l k ε τ).ncard` using `by haveI : Finite (N →+ ZMod (l ^ k)) := DFunLike.finite _`. Use `Nat.card_le_card_of_injective (β := HomMu l k ε τ) (fun y => ⟨AddMonoidHom.mk' (fun x => y.1 x) (fun a b => map_add (show N →ₗ[ZMod (l ^ k)] ZMod (l ^ k) from y.1) a b), fun s x => ?_⟩) fun a b h => ?_` and prove the remaining obligations. Use `congrArg (fun φ : TDual (ZMod (l ^ k)) N => φ (ρ s x)) (y.2 s) beta_reduce at this` as an intermediate fact. Rewrite `this` using `[twDual_apply, ← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply, hμε]`. Conclude with `this.symm`.
+
+Conclude with `Subtype.ext (TDual.ext fun x => DFunLike.congr_fun (congrArg Subtype.val h) x)`. Use `core ρ τ hρ (locFam T A) (continuous_locFam T A) _ _ hcont (fun L => ?_) Z h1 h2` and prove the remaining obligations. Establish `h` using `P.gw F Ω l k N T ρ hk0 hl hT hcont μ hμ A hA c (fun w _ => hc w) L`. Rewrite using `[← harch]`. Use `le_trans ?_ (h.ge.trans (Nat.mul_le_mul_right _ (Nat.mul_le_mul_right _ (Nat.mul_le_mul_left _ hdual))))` and prove the remaining obligations.
+
+Conclude with `Nat.mul_le_mul_right _ (Nat.le_mul_of_pos_left _ Nat.card_pos)`.
+-/
 private theorem bare (P : GC.Hypotheses₂) (l : ℕ) [Fact l.Prime] (hl : l ≠ 2) {F Ω : Type} [Field F] [NumberField F] [IsTotallyReal F]
     [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (T : Finset (HeightOneSpectrum (𝓞 F))) (hT : ContainsAbove T l)
     (ε : GS Ω (T : Set (HeightOneSpectrum (𝓞 F))) →* ℤ_[l]ˣ) (hε : ∀ g, ε (toGS Ω _ g) = cycZ F Ω l g)
@@ -246,6 +325,29 @@ end Helpers
 
 open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.U3 UpperTheory.V.Fr UpperTheory.V.Z.J Formalism.ConjugateSelfDual ReciprocityTheory.Gal UpperTheory.V
 
+/- English proof (translation)
+Introduce `P l _ κ _ Φ F Ω _ _ _ _ _ S K π ι A pl e c h k hk0 N _ _ ρ hk ho Z h1 h2`. Use `haveI := h.real`. Use `haveI : IsGalois F Ω := IsAlgClosure.isGalois F Ω`. Choose the witnesses or unpack the hypotheses as in `⟨A', hA', hAA⟩ : ∃ A' : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers F) → ValuationSubring Ω, (∀ v, IsPlaceOver (A' v) v) ∧ ∀ v, A' (pl v) = A v := by`. Use `⟨Function.extend pl A fun v => (exists_isPlaceOver Ω v).choose, fun q => ?_, h.loc.inj.extend_apply _ _⟩` and prove the remaining obligations.
+
+Distinguish the cases in `hq : ∃ v, pl v = q`. Take `⟨v, rfl⟩` from `hq`. Rewrite using `[h.loc.inj.extend_apply]`. Conclude with `h.loc.isOver v`. Rewrite using `[Function.extend_apply' _ _ _ hq]`.
+
+Conclude with `(exists_isPlaceOver Ω q).choose_spec`. Take `⟨S', p, hSS, hp, hps, hπ, hker⟩` from `GC.levelS F Ω l S K Φ.Γ π h.g`. Establish `hS' : ContainsAbove S' l` using `fun v hv => hSS (h.g.above v hv)`. Establish `hS : ∀ q, q ∈ S ↔ ∃ v, pl v = q` using `fun q => ⟨fun hq => (h.loc.mem q).2 (h.only q hq), fun hq => h.g.above q ((h.loc.mem q).1 hq)⟩`. Establish `hZ : ∀ q : S', ∃ Z' : AddSubgroup (Dec (F` using `F) (A' q.1) → N), (Z' : Set _) ⊆ Zc ((ρ.comp π).comp (Dec (F := F) (A' q.1)).subtype) ∧ (∀ Y : N, (fun s : Dec (F := F) (A' q.1) => ρ (π s.1) Y - Y) ∈ Z') ∧ (∀ v, pl v = q.1 → Nat.card (Z v) = Nat.card Z' ∧ ∀ z : G F Ω → N, (fun s : Dec (F := F) (A' q.1) => z s.1) ∈ Z' → (fun s = …`.
+
+Introduce and unpack `⟨q, hq'⟩`. Distinguish the cases in `hq : q ∈ S`. Take `⟨v, rfl⟩` from `(hS q).1 hq`. Establish `hl : Φ.loc v = π.comp (ι v)` using `MonoidHom.ext (h.loc_eq v)`. Take `⟨Z', a1, a2, a3⟩` from `tran (ι v) (h.loc.cont v) (h.loc.ι_inj v) (Dec (F := F) (A' (pl v))) (by rw [hAA, h.loc.range]) (ρ.comp π) (Z v) (by have := h1 v; rwa [hl] at this) (by have := h2 v; rwa [hl] at this)`.
+
+Use `⟨Z', a1, a2, fun v' hv => ?_, fun hq' => absurd hq hq'⟩` and prove the remaining obligations. Take `rfl` from `h.loc.inj hv`. Conclude with `a3`. Take `⟨Z', -, a1, a2, a3, a4⟩` from `unrLow F Ω (A' q) q (hA' q) N ((ρ.comp π).comp (Dec (F := F) (A' q)).subtype) (ho.preimage (h.g.cont.comp continuous_subtype_val))`. Conclude with `⟨Z', a1, a2, fun v hv => absurd ((hS q).2 ⟨v, hv⟩) hq, fun _ => ⟨a4, a3⟩⟩`.
+
+Use `choose Z' b1 b2 b3 b4 using hZ`. Substitute `hπ` using the available equality. Take `⟨f, hb⟩` from `bare P l h.g.odd S' hS' (Φ.eps.comp p) h.eps (fun q => A' q.1) (fun q => hA' q.1) (fun w => c (e.symm w)) (fun w => by simpa using h.cc (e.symm w)) k hk0 N (ρ.comp p) hk (ho.preimage hp) Z' b1 b2`. Establish `hinj : Function.Injective fun z : Φ.Γ → N => z ∘ p` using `hps.injective_comp_right`. Establish `hf : (ZL Φ ρ fun v => Z v).Finite` using `Set.Finite.of_finite_image (f.subset (by`.
+
+Introduce and unpack `_ ⟨z, hz, rfl⟩`. Conclude with `⟨hz.1.1.comp_continuous hp, fun s t => by simpa using hz.1.2 (p s) (p t)⟩)) hinj.injOn`. Use `⟨hf, numer (fun v => (⟨pl v, hSS ((hS _).2 ⟨v, rfl⟩)⟩ : S')) (fun a b hab => h.loc.inj (congrArg Subtype.val hab)) _ (fun q => Nat.card (Z' q)) _ _ Nat.card_pos (fun v => (b3 _ v rfl).1) (fun q hq => (b4 q fun hq' => hq (let ⟨v, hv⟩ := (hS _).1 hq'; ⟨v, Subtype.ext hv⟩)).1) (hb.t …` and prove the remaining obligations. Use `Nat.mul_le_mul_right _ (Nat.mul_le_mul (Nat.mul_le_mul ?_ (le_of_eq ?_)) (le_of_eq ?_))` and prove the remaining obligations. Use `le_trans (Set.ncard_le_ncard ?_ (hf.image fun z => z ∘ p)) (Set.ncard_image_le hf)` and prove the remaining obligations.
+
+Introduce and unpack `z ⟨hz, hw⟩`. Take `⟨y, hy, hyz⟩` from `desc p hp hps ρ _ (hker A' hA') z hz (by`. Introduce `x hx`. Take `⟨q, g, hg, rfl⟩` from `Set.mem_iUnion.1 hx`. Take `⟨Y, hY⟩` from `(b4 ⟨q.1, q.2.1⟩ q.2.2).2 _ (hw _)`.
+
+Establish `hg1 : g ∈ (p.comp (toGS Ω _)).ker`. Rewrite using `[h.g.ker]`. Use `Subgroup.le_topologicalClosure _ (Subgroup.subset_normalClosure ?_)` and prove the remaining obligations. Simplify using `only [Set.mem_iUnion]`. Conclude with `⟨q.1, q.2.2, A' q.1, hA' q.1, hg⟩`.
+
+Use `hY ⟨g, Ine_le_Dec _ hg.1⟩ hg.1` as an intermediate fact. Rewrite `this` using `[MonoidHom.mem_ker.1 hg1, map_one, Module.End.one_apply, sub_self]`. Conclude with `this)`. Use `⟨y, ⟨hy, fun v => ?_⟩, funext hyz⟩` and prove the remaining obligations. Use `(b3 ⟨pl v, hSS ((hS _).2 ⟨v, rfl⟩)⟩ v rfl).2 (fun g => z (toGS Ω _ g)) (hw _)` as an intermediate fact.
+
+Simplify `this` using `only [h.loc_eq, MonoidHom.comp_apply, hyz, SetLike.mem_coe]`. Use `congr 1`. Use extensionality with `φ`. Conclude with `(hps.forall (p := fun s => ∀ x, φ (ρ s x) = PadicInt.toZModPow k (Φ.eps s : ℤ_[l]) * φ x)).symm`. Conclude with `Fintype.prod_equiv e.symm _ _ fun w => by rw [h.cw]; rfl`.
+-/
 theorem UpperTheory.V.Z.J.gwlOf :
     GC.Hypotheses₂ → ∀ (l : ℕ) [Fact l.Prime] (κ : Type) [Field κ] (Φ : Frame l κ) (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] S K π ι A pl e c, GC.FLink (F := F) (Ω := Ω) l Φ S K π ι A pl e c → GWL Φ := by
   intro P l _ κ _ Φ F Ω _ _ _ _ _ S K π ι A pl e c h k hk0 N _ _ ρ hk ho Z h1 h2

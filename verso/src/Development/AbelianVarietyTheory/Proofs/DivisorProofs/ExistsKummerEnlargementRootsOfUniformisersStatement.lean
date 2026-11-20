@@ -8,6 +8,9 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PointAtZero
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GoodIffEtaleAt
 open IsLocalRing Polynomial
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | (exact @GlobalTheory.KummerEnlarge.exists_kummer_enlargement) | (exact GlobalTheory.KummerEnlarge.exists_kummer_enlargement) | (intros; apply GlobalTheory.KummerEnlarge.exists_kummer_enlargement <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_kummerEnlargement_rootsOfUniformisers : ∀ (T : Type) [CommRing T] [IsDomain T] [IsLocalRing T], GlobalTheory.LocAcyc.AbsIntClosed T →
     ∀ (q : ℕ), 0 < q → IsUnit (q : T) →
     ∀ (A : Type) [CommRing A] [IsDomain A] [IsLocalRing A] [IsNoetherianRing A] [IsIntegrallyClosed A]

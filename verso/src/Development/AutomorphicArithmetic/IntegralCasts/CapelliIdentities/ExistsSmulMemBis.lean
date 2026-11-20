@@ -2,6 +2,19 @@ import Mathlib
 import Formalism.WeaklyAdmissibleFiltrations.Statement
 import Formalism.SharpRestriction.LevelLetterCocycles.LocCoh
 
+/- English proof (translation)
+Establish `hv : v ∈ Submodule.span LL (T : Set V)` using `h ▸ Submodule.mem_top`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx => exact ⟨1, one_ne_zero, by simpa using hx⟩`. Consider the case `zero => exact ⟨1, one_ne_zero, by simp⟩`. Consider the case `add x y _ _ hx hy`.
+
+Take `⟨a, ha, hax⟩` from `hx`. Take `⟨b, hb, hby⟩` from `hy`. Use `⟨a * b, mul_ne_zero ha hb, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add]`. Use `T.add_mem ?_ ?_` and prove the remaining obligations.
+
+Rewrite using `[mul_comm, mul_smul]`. Conclude with `T.smul_mem _ hax`. Rewrite using `[mul_smul]`. Conclude with `T.smul_mem _ hby`. Consider the case `smul c x _ hx`.
+
+Take `⟨a, ha, hax⟩` from `hx`. Take `⟨⟨n, d⟩, hnd⟩` from `IsLocalization.surj (nonZeroDivisors O) c`. Establish `hd : (d : O) ≠ 0` using `nonZeroDivisors.ne_zero d.2`. Use `⟨(d : O) * a, mul_ne_zero hd ha, ?_⟩` and prove the remaining obligations. Establish `key : ((d : O) * a) • c • x = n • a • x`.
+
+Establish `e : ∀ (r : O) (y : V), r • y = (algebraMap O LL r) • y` using `fun r y => (algebraMap_smul LL r y).symm`. Establish `hnd' : c * algebraMap O LL (d : O) = algebraMap O LL n` using `hnd`. Rewrite using `[e ((d : O) * a), e n, e a, smul_smul, smul_smul, map_mul, ← hnd']`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[key]`. Conclude with `T.smul_mem _ hax`.
+-/
 private lemma exists_ne_zero_smul_mem_of_span_eq_top_alt {O LL V : Type} [CommRing O] [IsDomain O] [Field LL] [Algebra O LL]
     [IsFractionRing O LL] [AddCommGroup V] [Module LL V] [Module O V] [IsScalarTower O LL V]
     (T : Submodule O V) (h : Submodule.span LL (T : Set V) = ⊤) (v : V) :
@@ -33,6 +46,11 @@ private lemma exists_ne_zero_smul_mem_of_span_eq_top_alt {O LL V : Type} [CommRi
     rw [key]
     exact T.smul_mem _ hax
 
+/- English proof (translation)
+Introduce `G _ _ Qp LL O _ _ _ _ _ _ A LA _ _ v`. Use `letI := A.acg`. Use `letI := A.modLL`. Use `letI := A.modO`. Use `haveI := A.towO`.
+
+Take `⟨T, _, _, _, hs⟩` from `LA`. Conclude with `exists_ne_zero_smul_mem_of_span_eq_top_alt T hs v`.
+-/
 theorem UpperTheory.Reformulated.B.ExistsSmulMemBis.exists_smul_mem :
     ∀ {G : Type} [inst : Group.{0} G] [inst_1 : TopologicalSpace.{0} G] {Qp LL O : Type} [inst_2 : Field.{0} Qp]
       [inst_3 : Field.{0} LL]

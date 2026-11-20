@@ -12,6 +12,9 @@ open GlobalTheory.Unf
 
 namespace GlobalTheory.TransvAdelic
 
+/- English proof (translation)
+Introduce `D` and use `(transv_unitary_conj D).1`.
+-/
 theorem transv_unitary : ∀ D : D7, GlobalTheory.IndefiniteRowSideFullHecke.TransvectionAction.TransvUnitary D :=
   fun D => (transv_unitary_conj D).1
 

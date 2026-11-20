@@ -8,6 +8,13 @@ open Formalism.L2.Host UpperTheory.V.Published UpperTheory.CBC
 open scoped Classical
 open UpperTheory.Gal.InertialTypesAlt.G
 
+/- English proof (translation)
+Take `⟨hfd, rfl⟩` from `h`. Use `set B : W →ₗ[ℂ] W := (e : V →ₗ[ℂ] W) ∘ₗ A ∘ₗ (e.symm : W →ₗ[ℂ] V) with hB`. Establish `hr : (LinearMap.range A).map (e : V →ₗ[ℂ] W) = LinearMap.range B`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨_, ⟨x, rfl⟩, rfl⟩`. Conclude with `⟨e x, by simp [hB]⟩`. Introduce and unpack `⟨y, rfl⟩`. Conclude with `⟨A (e.symm y), ⟨_, rfl⟩, by simp [hB]⟩`. Set `f : LinearMap.range A ≃ₗ[ℂ] LinearMap.range B` to `(e.submoduleMap (LinearMap.range A)).trans (LinearEquiv.ofEq _ _ hr)`.
+
+Use `⟨f.finiteDimensional, ?_⟩` and prove the remaining obligations. Rewrite using `[← LinearMap.trace_conj' _ f]`. Use `congr 1`.
+-/
 private theorem hasFinTrace_conj {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
     (e : V ≃ₗ[ℂ] W) {A : V →ₗ[ℂ] V} {c : ℂ} (h : HasFinTrace A c) :
     HasFinTrace ((e : V →ₗ[ℂ] W) ∘ₗ A ∘ₗ (e.symm : W →ₗ[ℂ] V)) c := by
@@ -26,6 +33,13 @@ private theorem hasFinTrace_conj {V W : Type} [AddCommGroup V] [Module ℂ V] [A
   rw [← LinearMap.trace_conj' _ f]
   congr 1
 
+/- English proof (translation)
+Introduce `w l`. Establish `key : (fun g => f g * l (τ₁.ρ g w)) = fun g => f g * χ g * (l ∘ₗ (e : τ.V →ₗ[ℂ] τ₁.V)) (τ.ρ g (e.symm w))`. Use function extensionality and compare the values at `g`. Use `hT g (e.symm w)` as an intermediate fact. Rewrite `this` using `[LinearEquiv.apply_symm_apply]`.
+
+Rewrite using `[← this, map_smul, map_smul, smul_eq_mul]`. Simplify using `[mul_assoc]`. Take `⟨h₁, h₂⟩` from `hA (e.symm w) (l ∘ₗ (e : τ.V →ₗ[ℂ] τ₁.V))`. Rewrite using `[key]`. Use `⟨h₁, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← h₂]`. Simplify using the standard rewrite rules.
+-/
 private theorem isIntegralOp_tw {G : Type} [Group G] [TopologicalSpace G] [MeasurableSpace G] {m : Measure G}
     {χ : G → ℂ} {τ τ₁ : SmIrr G} {e : τ.V ≃ₗ[ℂ] τ₁.V} (hT : TwOf χ τ τ₁ e) {f : G → ℂ} {A : τ.V →ₗ[ℂ] τ.V}
     (hA : IsIntegralOp m τ.ρ (fun g => f g * χ g) A) :
@@ -44,6 +58,11 @@ private theorem isIntegralOp_tw {G : Type} [Group G] [TopologicalSpace G] [Measu
   rw [← h₂]
   simp
 
+/- English proof (translation)
+Introduce `v l`. Establish `key : (fun g => f g * χ g * l (τ.ρ g v)) = fun g => f g * (l ∘ₗ (e.symm : τ₁.V →ₗ[ℂ] τ.V)) (τ₁.ρ g (e v))`. Use function extensionality and compare the values at `g`. Rewrite using `[← hT g v]`. Simplify using `[mul_assoc]`.
+
+Take `⟨h₁, h₂⟩` from `hB (e v) (l ∘ₗ (e.symm : τ₁.V →ₗ[ℂ] τ.V))`. Rewrite using `[key]`. Use `⟨h₁, ?_⟩` and prove the remaining obligations. Rewrite using `[← h₂]`. Simplify using the standard rewrite rules.
+-/
 private theorem isIntegralOp_untw {G : Type} [Group G] [TopologicalSpace G] [MeasurableSpace G] {m : Measure G}
     {χ : G → ℂ} {τ τ₁ : SmIrr G} {e : τ.V ≃ₗ[ℂ] τ₁.V} (hT : TwOf χ τ τ₁ e) {f : G → ℂ} {B : τ₁.V →ₗ[ℂ] τ₁.V}
     (hB : IsIntegralOp m τ₁.ρ f B) :
@@ -60,6 +79,15 @@ private theorem isIntegralOp_untw {G : Type} [Group G] [TopologicalSpace G] [Mea
   rw [← h₂]
   simp
 
+/- English proof (translation)
+Introduce `G _ _ _ m χ τ τ₁ e hT f z`. Use `⟨⟨?_, ?_⟩, fun I => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨A, hA, hF⟩`. Conclude with `⟨_, isIntegralOp_tw hT hA, hasFinTrace_conj e hF⟩`. Introduce and unpack `⟨B, hB, hF⟩`.
+
+Conclude with `⟨_, isIntegralOp_untw hT hB, hasFinTrace_conj e.symm hF⟩`. Introduce and unpack `⟨A, hA, hF⟩`. Use `⟨_, isIntegralOp_tw hT hA, ?_⟩` and prove the remaining obligations. Use `hasFinTrace_conj e hF using 1` and compare the differences between its conclusion and the goal. Use extensionality with `x`.
+
+Simplify using the standard rewrite rules. Introduce and unpack `⟨B, hB, hF⟩`. Use `⟨_, isIntegralOp_untw hT hB, ?_⟩` and prove the remaining obligations. Use `hasFinTrace_conj e.symm hF using 1` and compare the differences between its conclusion and the goal. Use extensionality with `x`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem UpperTheory.Gal.InertialTypesAlt.G.trTw :
     UpperTheory.Gal.InertialTypesAlt.G.TrTw := by
   intro G _ _ _ m χ τ τ₁ e hT f z

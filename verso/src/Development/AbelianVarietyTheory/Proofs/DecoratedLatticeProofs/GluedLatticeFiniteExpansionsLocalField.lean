@@ -12,6 +12,9 @@ namespace GlobalTheory.GluedExp
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n n' : Type}
 
+/- English proof (translation)
+Rewrite using `[Module.natCard_eq_pow_finrank (K := 𝓀[k]), Subspace.dual_finrank_eq, ← Module.natCard_eq_pow_finrank, Red.card_eq]`.
+-/
 theorem card_dual (L : Submodule 𝒪[k] (n → k)) [Fintype n] [L.IsLattice k] :
     Nat.card (Module.Dual 𝓀[k] (Red L)) = resCard k ^ Fintype.card n := by
   rw [Module.natCard_eq_pow_finrank (K := 𝓀[k]), Subspace.dual_finrank_eq, ← Module.natCard_eq_pow_finrank,
@@ -19,6 +22,17 @@ theorem card_dual (L : Submodule 𝒪[k] (n → k)) [Fintype n] [L.IsLattice k] 
 
 open Classical in
 
+/- English proof (translation)
+Use `letI := Fintype.ofFinite (Module.Dual 𝓀[k] (Red L))`. Rewrite using `[finsum_eq_sum_of_fintype]`. Use `split_ifs with hz`. Substitute `hz` using the available equality. Simplify using `only [map_zero, neg_zero, AddChar.map_zero_eq_one, Finset.sum_const, Finset.card_univ, nsmul_eq_mul, mul_one]`.
+
+Rewrite using `[Fintype.card_eq_nat_card, card_dual]`. Use `push_cast`. Both sides reduce to the same expression. Choose the witnesses or unpack the hypotheses as in `⟨f₁, hf₁⟩ : ∃ f₁ : Module.Dual 𝓀[k] (Red L), f₁ z ≠ 0 := by`. Assume the negation of the conclusion as `h`.
+
+Use `push_neg at h`. Conclude with `hz ((Module.forall_dual_apply_eq_zero_iff 𝓀[k] z).1 h)`. Choose the witnesses or unpack the hypotheses as in `⟨a, ha⟩ : ∃ a, χ a ≠ 1 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`.
+
+Conclude with `hχ (by ext a; rw [h a, AddChar.one_apply])`. Use `set g : Module.Dual 𝓀[k] (Red L) := (-(a * (f₁ z)⁻¹)) • f₁`. Establish `hg : g z = -a` using `by simp [g, hf₁]`. Use `set S := ∑ f : Module.Dual 𝓀[k] (Red L), χ (-f z)`. Establish `hS : S = χ a * S` using `by conv_lhs => rw [show S = ∑ f : Module.Dual 𝓀[k] (Red L), χ (-(f + g) z) from (Fintype.sum_equiv (Equiv.addRight g) _ _ fun _ => rfl).symm]`.
+
+Simplify using `only [LinearMap.add_apply, hg, neg_add, neg_neg, AddChar.map_add_eq_mul, S, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun _ _ => mul_comm _ _`. Establish `: (1 - χ a) * S = 0` using `by rw [sub_mul, one_mul, ← hS, sub_self]`. Conclude with `(mul_eq_zero.1 this).resolve_left (sub_ne_zero.2 (Ne.symm ha))`.
+-/
 theorem finsum_char (χ : AddChar 𝓀[k] ℂ) (hχ : χ ≠ 1) (L : Submodule 𝒪[k] (n → k)) [Fintype n] [L.IsLattice k]
     (z : Red L) : ∑ᶠ f : Module.Dual 𝓀[k] (Red L), χ (-f z) =
       if z = 0 then ((resCard k : ℂ) ^ Fintype.card n) else 0 := by
@@ -58,6 +72,9 @@ namespace GlobalTheory.GluedExp
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n n' : Type}
   [Fintype n] [Fintype n']
 
+/- English proof (translation)
+Establish `h : Nat.card (Module.Dual 𝓀[k] (Red L)) ≠ 0` using `Nat.card_pos.ne'`. Rewrite `h` using `[card_dual]`. Conclude with `h` after adjusting the coercions.
+-/
 theorem card_ne_zero (L : Submodule 𝒪[k] (n → k)) [L.IsLattice k] : ((resCard k : ℂ) ^ Fintype.card n) ≠ 0 := by
   have h : Nat.card (Module.Dual 𝓀[k] (Red L)) ≠ 0 := Nat.card_pos.ne'
   rw [card_dual] at h
@@ -65,6 +82,9 @@ theorem card_ne_zero (L : Submodule 𝒪[k] (n → k)) [L.IsLattice k] : ((resCa
 
 omit [Fintype n] in
 
+/- English proof (translation)
+Use extensionality with `i (j | j)`. Both sides reduce to the same expression. Use `fin_cases j`. Both sides reduce to the same expression.
+-/
 theorem withCol_split (x : Matrix n (n' ⊕ Fin 1) k) :
     withCol (x.submatrix id Sum.inl) (fun i => x i (Sum.inr 0)) = x := by
   ext i (j | j)
@@ -76,12 +96,18 @@ def imgE (q : Unif k) (P : Pair k n') {L : Submodule 𝒪[k] (n → k)} {x₀ : 
     (h0 : ∀ z ∈ P.ker, x₀ *ᵥ z ∈ L) : L :=
   ⟨x₀ *ᵥ (q.1 • P.vec), h0 _ (Pair.smul_mem_ker q.mem_max P.hasVal_vec.mem)⟩
 
+/- English proof (translation)
+Rewrite using `[term, dif_pos h0, Units.val_one, one_mul]`. Both sides reduce to the same expression.
+-/
 theorem term_pos (q : Unif k) (χ : AddChar 𝓀[k] ℂ) (P : Pair k n') {L : Submodule 𝒪[k] (n → k)}
     {x₀ : Matrix n n' k} (h0 : ∀ z ∈ P.ker, x₀ *ᵥ z ∈ L) (f : Module.Dual 𝓀[k] (Red L)) :
     term q χ 1 P L f x₀ = χ (-f (Red.mk L (imgE q P h0))) := by
   rw [term, dif_pos h0, Units.val_one, one_mul]
   rfl
 
+/- English proof (translation)
+Rewrite using `[term, dif_neg h0]`.
+-/
 theorem term_neg (q : Unif k) (χ : AddChar 𝓀[k] ℂ) (P : Pair k n') {L : Submodule 𝒪[k] (n → k)}
     {x₀ : Matrix n n' k} (h0 : ¬ ∀ z ∈ P.ker, x₀ *ᵥ z ∈ L) (f : Module.Dual 𝓀[k] (Red L)) :
     term q χ 1 P L f x₀ = 0 := by
@@ -89,6 +115,15 @@ theorem term_neg (q : Unif k) (χ : AddChar 𝓀[k] ℂ) (P : Pair k n') {L : Su
 
 open Classical in
 
+/- English proof (translation)
+Distinguish the cases in `h0 : ∀ z ∈ P.ker, x₀ *ᵥ z ∈ L`. Distinguish the cases in `hy : y ∈ L`. Establish `key : ∀ f : Module.Dual 𝓀[k] (Red L), term q χ 1 P L f x₀ * (if h : y ∈ L then χ (-f (Red.mk L ⟨y, h⟩)) else 0) = χ (-f (Red.mk L (⟨y, hy⟩ + imgE q P h0)))` using `fun f => by`. Rewrite using `[term_pos q χ P h0, dif_pos hy, map_add, map_add, neg_add, AddChar.map_add_eq_mul, mul_comm]`. Rewrite using `[finsum_congr key, finsum_char χ hχ, Red.mk_eq_zero q]`.
+
+Establish `hc : q.inv • ((⟨y, hy⟩ + imgE q P h0 : L) : n → k) = q.inv • y + x₀ *ᵥ P.vec`. Simplify using `only [imgE, Submodule.coe_add, smul_add, mulVec_smul, q.inv_smul_smul]`. Rewrite using `[hc, datum]`. Use `split_ifs with h1 h2 h2`. Conclude with `(inv_mul_cancel₀ (card_ne_zero L)).symm`.
+
+Conclude with `absurd h1.2 h2`. Conclude with `absurd ⟨h0, h2⟩ h1`. Rewrite using `[mul_zero]`. Rewrite using `[datum, if_neg, finsum_eq_zero_of_forall_eq_zero fun f => by rw [dif_neg hy, mul_zero], mul_zero]`. Introduce and unpack `⟨-, h2⟩`.
+
+Apply `hy` to reduce the goal to its premises. Establish `h3` using `sub_mem (L.smul_mem q.1 h2) (h0 _ (Pair.smul_mem_ker q.mem_max P.hasVal_vec.mem))`. Rewrite `h3` using `[smul_add, q.smul_inv_smul, ← mulVec_smul, add_sub_cancel_right]`. Then use the resulting hypothesis. Rewrite using `[datum, if_neg fun h => h0 h.1, finsum_eq_zero_of_forall_eq_zero fun f => by rw [term_neg q χ P h0, zero_mul], mul_zero]`.
+-/
 theorem datum_expand (q : Unif k) (χ : AddChar 𝓀[k] ℂ) (hχ : χ ≠ 1) (L : Submodule 𝒪[k] (n → k)) [L.IsLattice k]
     (P : Pair k n') (x₀ : Matrix n n' k) (y : n → k) :
     datum q P L x₀ y = ((resCard k : ℂ) ^ Fintype.card n)⁻¹ *
@@ -127,6 +162,13 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 
 open Classical in
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Use `conv_lhs => rw [← withCol_split x]`. Rewrite using `[← datum_eq, datum_expand q χ hχ, Pi.smul_apply, smul_eq_mul, Pi.add_apply, Finset.sum_apply, finsum_split]`. Use `congr 2`. Rewrite using `[term_zero, tensCol, vecInd]`.
+
+Distinguish the cases in `hy : (fun i => x i (Sum.inr 0)) ∈ L`. Rewrite using `[dif_pos hy, if_pos hy, LinearMap.zero_apply, neg_zero, AddChar.map_zero_eq_one]`. Rewrite using `[dif_neg hy, if_neg hy]`. Rewrite using `[← finsum_ofDual L (fun Q => tensCol (latInd P.ker Q.ker + mainDatum q χ 1 P Q) (charInd χ Q) x)]`. Use `finsum_congr fun f => ?_` and prove the remaining obligations.
+
+Rewrite using `[term_ne_zero, tensCol, charInd, vecInd, ofDual_lat]`. Distinguish the cases in `hy : (fun i => x i (Sum.inr 0)) ∈ L`. Rewrite using `[dif_pos hy, if_pos hy, mul_one, (ofDual_hasVal L f ⟨_, hy⟩).ev_eq]`. Simplify using `only [dif_neg hy, if_neg hy, mul_zero]`.
+-/
 theorem glued_col (q : Unif k) (χ : AddChar 𝓀[k] ℂ) (hχ : χ ≠ 1) (L : Submodule 𝒪[k] (n → k)) [L.IsLattice k]
     (P : Pair k n') :
     latInd (gluedS q 1 P.ker P.vec) L = ((resCard k : ℂ) ^ Fintype.card n)⁻¹ •
@@ -147,6 +189,17 @@ theorem glued_col (q : Unif k) (χ : AddChar 𝓀[k] ℂ) (hχ : χ ≠ 1) (L : 
     · rw [dif_pos hy, if_pos hy, mul_one, (ofDual_hasVal L f ⟨_, hy⟩).ev_eq]
     · simp only [dif_neg hy, if_neg hy, mul_zero]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x₀`. Establish `hL : latInd P.ker L x₀ + ∑ Q ∈ withLat L, (latInd P.ker Q.ker + mainDatum q χ 1 P Q) x₀ = ∑ᶠ f : Module.Dual 𝓀[k] (Red L), term q χ 1 P L f x₀`. Rewrite using `[finsum_split, term_zero, ← finsum_ofDual L (fun Q => (latInd P.ker Q.ker + mainDatum q χ 1 P Q) x₀)]`. Use `congr 1`. Use `finsum_congr fun f => ?_` and prove the remaining obligations.
+
+Rewrite using `[term_ne_zero]`. Rewrite using `[Pi.add_apply, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, hL]`. Distinguish the cases in `h0 : ∀ z ∈ P.ker, x₀ *ᵥ z ∈ L`. Rewrite using `[finsum_congr (term_pos q χ P h0), finsum_char χ hχ, Red.mk_eq_zero q, latInd]`. Establish `he : q.inv • (imgE q P h0 : n → k) = x₀ *ᵥ P.vec`.
+
+Simplify using `only [imgE, mulVec_smul, q.inv_smul_smul]`. Rewrite using `[he]`. Use `split_ifs with h1 h2 h2`. Rewrite using `[mul_one]`. Use `absurd (fun z hz => ?_) h2` and prove the remaining obligations.
+
+Take `⟨s, -, hs⟩` from `(Pair.hasVal_iff P.hasVal_vec).1 (P.hasVal_fn ⟨z, hz⟩)`. Use `add_mem (h0 _ hs) (L.smul_mem s h1)` as an intermediate fact. Rewrite `this` using `[mulVec_sub, mulVec_smul, sub_add_cancel]`. Then use the resulting hypothesis. Conclude with `absurd (h2 _ P.hasVal_vec.mem) h1`. Rewrite using `[mul_zero]`.
+
+Rewrite using `[finsum_eq_zero_of_forall_eq_zero (term_neg q χ P h0), latInd, if_neg (fun h => h0 fun z hz => h z (P.ker_le hz)), mul_zero]`.
+-/
 theorem glued_sum (q : Unif k) (χ : AddChar 𝓀[k] ℂ) (hχ : χ ≠ 1) (L : Submodule 𝒪[k] (n → k)) [L.IsLattice k]
     (P : Pair k n') :
     latInd P.ker L + ∑ Q ∈ withLat L, (latInd P.ker Q.ker + mainDatum q χ 1 P Q) =
@@ -179,6 +232,11 @@ theorem glued_sum (q : Unif k) (χ : AddChar 𝓀[k] ℂ) (hχ : χ ≠ 1) (L : 
 omit [Fintype n'] in
 open Classical in
 
+/- English proof (translation)
+Use `if_congr ⟨fun h y => ⟨q.1 * ⟨_, h y y.2⟩, ?_, ?_⟩, fun h y hy => ?_⟩ rfl rfl` and prove the remaining obligations. Rewrite using `[smul_dotProduct]`. Both sides reduce to the same expression. Rewrite using `[map_mul, (residue_eq_zero_iff _).2 q.mem_max, zero_mul, LinearMap.zero_apply]`. Take `⟨s, hs, hr⟩` from `h ⟨y, hy⟩`.
+
+Rewrite `hr` using `[LinearMap.zero_apply]`. Take `⟨t, rfl⟩` from `q.mem_max_iff.1 ((residue_eq_zero_iff s).1 hr)`. Rewrite `hs` using `[smul_dotProduct]`. Establish `: ((t : 𝒪[k]) : k) = η ⬝ᵥ y` using `mul_left_cancel₀ q.ne_zero hs`. Conclude with `this ▸ t.2`.
+-/
 theorem dualInd_eq (q : Unif k) (L : Submodule 𝒪[k] (n → k)) (η : n → k) :
     dualInd L η = if Lifts L (q.1 • η) 0 then 1 else 0 := by
   refine if_congr ⟨fun h y => ⟨q.1 * ⟨_, h y y.2⟩, ?_, ?_⟩, fun h y hy => ?_⟩ rfl rfl
@@ -195,6 +253,9 @@ theorem dualInd_eq (q : Unif k) (L : Submodule 𝒪[k] (n → k)) (η : n → k)
 omit [Fintype n'] in
 open Classical in
 
+/- English proof (translation)
+Establish `h : (ofDual L f).red = f.1` using `dual_ext fun z => rfl`. Use `show cosetInd q L (ofDual L f).red η = _`. Rewrite using `[h, cosetInd_eq]`.
+-/
 theorem cosetInd_pair (q : Unif k) (L : Submodule 𝒪[k] (n → k)) [L.IsLattice k]
     (f : {f : Module.Dual 𝓀[k] (Red L) // f ≠ 0}) (η : n → k) :
     cosetInd q (ofDual L f).lat (ofDual L f).red η = if Lifts L (q.1 • η) f.1 then 1 else 0 := by
@@ -205,6 +266,11 @@ theorem cosetInd_pair (q : Unif k) (L : Submodule 𝒪[k] (n → k)) [L.IsLattic
 omit [Fintype n'] in
 open Classical in
 
+/- English proof (translation)
+Use `split_ifs with h`. Rewrite using `[finsum_eq_single _ (exists_lifts h).choose fun f hf => by`. Rewrite using `[if_neg fun h' => hf (lifts_unique h' (exists_lifts h).choose_spec), mul_zero],`. Use `if_pos (exists_lifts h).choose_spec, mul_one]`. Conclude with `finsum_eq_zero_of_forall_eq_zero fun f => by`.
+
+Rewrite using `[if_neg fun h' => h (inDual_of_lifts h'), mul_zero]`.
+-/
 theorem finsum_lifts (q : Unif k) (L : Submodule 𝒪[k] (n → k)) (η : n → k) (A : Module.Dual 𝓀[k] (Red L) → ℂ) :
     ∑ᶠ f : Module.Dual 𝓀[k] (Red L), A f * (if Lifts L (q.1 • η) f then 1 else 0) =
       if h : InDual L (q.1 • η) then A (exists_lifts h).choose else 0 := by
@@ -218,6 +284,11 @@ theorem finsum_lifts (q : Unif k) (L : Submodule 𝒪[k] (n → k)) (η : n → 
 omit [Fintype n'] in
 open Classical in
 
+/- English proof (translation)
+Establish `hs` using `finsum_lifts q L η (fun _ => 1)`. Rewrite `hs` using `[finsum_split]`. Simplify using `only [one_mul, dite_eq_ite] at hs`. Rewrite using `[Pi.add_apply, Finset.sum_apply, dualInd_eq q, ← finsum_ofDual L (fun Q => cosetInd q Q.lat Q.red η)]`. Simplify using `only [cosetInd_pair]`.
+
+Conclude with `hs`.
+-/
 theorem coset_total (q : Unif k) (L : Submodule 𝒪[k] (n → k)) [L.IsLattice k] (η : n → k) :
     (dualInd L + ∑ Q ∈ withLat L, cosetInd q Q.lat Q.red) η = if InDual L (q.1 • η) then 1 else 0 := by
   have hs := finsum_lifts q L η (fun _ => 1)
@@ -234,6 +305,31 @@ namespace GlobalTheory.GluedExp
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n n' : Type}
   [Fintype n] [Fintype n']
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Use `set x' : Matrix n' n k := x.submatrix Sum.inl id`. Use `set η : n → k := x (Sum.inr 0)`. Set `A : Module.Dual 𝓀[k] (Red L) → ℂ` to `fun f => if ∀ y : L, R.HasVal (x' *ᵥ (y : n → k)) (f (Red.mk L y)) then 1 else 0`. Establish `hR : (tensRow (latInd L R.ker) (dualInd L) + ∑ Q ∈ withLat L, tensRow (phiOne Q R) (cosetInd q Q.lat Q.red)) x = ∑ᶠ f, A f * (if Lifts L (q.1 • η) f then 1 else 0)`.
+
+Rewrite using `[Pi.add_apply, Finset.sum_apply, finsum_split, ← finsum_ofDual L (fun Q => tensRow (phiOne Q R) (cosetInd q Q.lat Q.red) x)]`. Use `congr 1`. Rewrite using `[tensRow, dualInd_eq q]`. Use `congr 1`. Conclude with `if_congr ⟨fun h y => Pair.mem_ker.1 (h y y.2), fun h y hy => Pair.mem_ker.2 (h ⟨y, hy⟩)⟩ rfl rfl`.
+
+Use `finsum_congr fun f => ?_` and prove the remaining obligations. Rewrite using `[tensRow, cosetInd_pair]`. Use `congr 1`. Conclude with `if_congr (maps_iff_hasVal.trans ⟨fun h y => h y _ (ofDual_hasVal L f y), fun h y a ⟨hy, ha⟩ => ha ▸ h ⟨y, hy⟩⟩) rfl rfl`. Establish `hm : ∀ y : n → k, x *ᵥ y ∈ gluedS q 1 R.ker R.vec ↔ ∃ s : 𝒪[k], x' *ᵥ y - s • R.vec ∈ R.ker ∧ η ⬝ᵥ y = q.inv * (s : k)`.
+
+Introduce `y`. Rewrite using `[← gluedLat_one, mem_gluedLat]`. Use `exists_congr fun s => and_congr Iff.rfl ?_` and prove the remaining obligations. Simplify using `[Fin.forall_fin_one]`. Both sides reduce to the same expression.
+
+Establish `hq : ∀ a : k, (q.1 : k) * (q.inv * a) = a` using `fun a => by`. Rewrite using `[Unif.inv, ← mul_assoc, mul_inv_cancel₀ q.ne_zero, one_mul]`. Rewrite using `[hR, finsum_lifts, latInd]`. Distinguish the cases in `hD : InDual L (q.1 • η)`. Rewrite using `[dif_pos hD]`.
+
+Establish `hf₀` using `(exists_lifts hD).choose_spec`. Use `set f₀ := (exists_lifts hD).choose`. Use `if_congr ⟨fun h y => ?_, fun h y hy => ?_⟩ rfl rfl` and prove the remaining obligations. Take `⟨s, hs, hr⟩` from `hf₀ y`. Take `⟨s', h1, h2⟩` from `(hm y).1 (h y y.2)`.
+
+Establish `hss : s' = s` using `Subtype.ext (by`. Rewrite using `[hs, smul_dotProduct, h2]`. Conclude with `(hq _).symm)`. Rewrite using `[← hr, ← hss]`. Conclude with `(Pair.hasVal_iff R.hasVal_vec).2 ⟨s', rfl, h1⟩`.
+
+Take `⟨s, hs, hr⟩` from `hf₀ ⟨y, hy⟩`. Use `(hm y).2 ⟨s, ?_, ?_⟩` and prove the remaining obligations. Establish `h3` using `h ⟨y, hy⟩`. Rewrite `h3` using `[← hr]`. Take `⟨t, ht, hker⟩` from `(Pair.hasVal_iff R.hasVal_vec).1 h3`.
+
+Establish `hts : t - s ∈ maximalIdeal 𝒪[k]` using `(residue_eq_zero_iff _).1 (by rw [map_sub, ht, sub_self])`. Establish `h4` using `add_mem hker (Pair.smul_mem_ker hts R.hasVal_vec.mem)`. Use `h4 using 1` and compare the differences between its conclusion and the goal. Rewrite using `[sub_smul]`. Normalize the expressions using the abelian group laws.
+
+Rewrite `hs` using `[smul_dotProduct]`. Express the relevant statement in the definitionally equal form `(s : k) = (q.1 : k) * (η ⬝ᵥ y) at hs`. Rewrite using `[hs, Unif.inv, ← mul_assoc, inv_mul_cancel₀ q.ne_zero, one_mul]`. Rewrite using `[dif_neg hD, if_neg]`. Introduce `h`.
+
+Apply `hD` to reduce the goal to its premises. Introduce `y hy`. Take `⟨s, -, h2⟩` from `(hm y).1 (h y hy)`. Rewrite using `[smul_dotProduct, h2]`. Express the relevant statement in the definitionally equal form `(q.1 : k) * (q.inv * s) ∈ 𝒪[k]`.
+
+Rewrite using `[hq]`. Conclude with `s.2`.
+-/
 theorem glued_row (q : Unif k) (L : Submodule 𝒪[k] (n → k)) [L.IsLattice k] (R : Pair k n') :
     latInd L (gluedS q 1 R.ker R.vec) = tensRow (latInd L R.ker) (dualInd L) +
       ∑ Q ∈ withLat L, tensRow (phiOne Q R) (cosetInd q Q.lat Q.red) := by
@@ -301,6 +397,9 @@ theorem glued_row (q : Unif k) (L : Submodule 𝒪[k] (n → k)) [L.IsLattice k]
     rw [hq]
     exact s.2
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Rewrite using `[tensRow, latInd, latInd, dualInd, ite_zero_mul_ite_zero, mul_one]`. Conclude with `if_congr ⟨fun h => ⟨fun y hy => (mem_lastKer.1 (h y hy)).1, fun y hy => (mem_lastKer.1 (h y hy)).2⟩, fun h y hy => mem_lastKer.2 ⟨h.1 y hy, h.2 y hy⟩⟩ rfl rfl`.
+-/
 theorem last_ker (L : Submodule 𝒪[k] (n → k)) (L' : Submodule 𝒪[k] (n' → k)) :
     latInd L (lastKer L') = tensRow (latInd L L') (dualInd L) := by
   classical
@@ -309,6 +408,15 @@ theorem last_ker (L : Submodule 𝒪[k] (n → k)) (L' : Submodule 𝒪[k] (n' �
   exact if_congr ⟨fun h => ⟨fun y hy => (mem_lastKer.1 (h y hy)).1, fun y hy => (mem_lastKer.1 (h y hy)).2⟩,
     fun h y hy => mem_lastKer.2 ⟨h.1 y hy, h.2 y hy⟩⟩ rfl rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Rewrite using `[tensRow, coset_total, latInd, latInd, ite_zero_mul_ite_zero, mul_one]`. Establish `hm : ∀ v : n' ⊕ Fin 1 → k, v ∈ (lastPair q L').lat ↔ v ∘ Sum.inl ∈ L' ∧ q.1 • v (Sum.inr 0) ∈ 𝒪[k]` using `fun v => by`. Rewrite using `[Pair.mem_lat_iff]`. Simplify using `only [lastPair_hasVal]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, h, s, hs, -⟩`. Conclude with `⟨h, hs ▸ s.2⟩`. Introduce and unpack `⟨h, hs⟩`. Conclude with `⟨_, h, ⟨_, hs⟩, rfl, rfl⟩`.
+
+Use `if_congr ⟨fun h => ⟨fun y hy => ((hm _).1 (h y hy)).1, fun y hy => ?_⟩, fun h y hy => (hm _).2 ⟨h.1 y hy, ?_⟩⟩ rfl rfl` and prove the remaining obligations. Establish `h1` using `((hm _).1 (h y hy)).2`. Rewrite using `[smul_dotProduct]`. Conclude with `h1`. Establish `h1` using `h.2 y hy`.
+
+Rewrite `h1` using `[smul_dotProduct]`. Conclude with `h1`.
+-/
 theorem last_lat (q : Unif k) (L : Submodule 𝒪[k] (n → k)) [L.IsLattice k] (L' : Submodule 𝒪[k] (n' → k))
     [L'.IsLattice k] :
     latInd L (lastPair q L').lat = tensRow (latInd L L') (dualInd L + ∑ Q ∈ withLat L, cosetInd q Q.lat Q.red) := by
@@ -337,6 +445,9 @@ end GlobalTheory.GluedExp
 
 namespace GlobalTheory.GluedExp
 
+/- English proof (translation)
+Introduce `k _ _ _ _ n n' _ _ _ _ q χ hχ Λ _`. Conclude with `⟨fun P => ⟨glued_col q χ hχ Λ P, glued_sum q χ hχ Λ P⟩, fun R => glued_row q Λ R, fun L _ => ⟨last_ker Λ L, last_lat q Λ L⟩⟩`.
+-/
 theorem finite_expansions : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n n' : Type) [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n'] (q : Unif k) (χ : AddChar 𝓀[k] ℂ), χ ≠ 1 → ∀ (Λ : Submodule 𝒪[k] (n → k)) [Λ.IsLattice k], (∀ P : Pair k n', latInd (gluedS q 1 P.ker P.vec) Λ = ((resCard k : ℂ) ^ Fintype.card n)⁻¹ • (tensCol (latInd P.ker Λ) (vecInd Λ) + ∑ Q ∈ withLat Λ, tensCol (latInd P.ker Q.ker + mainDatum q χ 1 P Q) (charInd χ Q)) ∧ latInd P.ker Λ + ∑ Q ∈ withLat Λ, (latInd P.ker Q.ker + mainDatum q χ 1 P Q) = ((resCard k : ℂ) ^ Fintype.card n) • latInd P.lat Λ) ∧ (∀ R : Pair k n', latInd Λ (gluedS q 1 R.ker R.vec) = tensRow (latInd Λ R.ker) (dualInd Λ) + ∑ Q ∈ withLat Λ, tensRow (phiOne Q R) (cosetInd q Q.lat Q.red)) ∧ ∀ (L : Submodule 𝒪[k] (n' → k)) [L.IsLattice k], latInd Λ (lastKer L) = tensRow (latInd Λ L) (dualInd Λ) ∧ latInd Λ (lastPair q L).lat = tensRow (latInd Λ L) (dualInd Λ + ∑ Q ∈ withLat Λ, cosetInd q Q.lat Q.red) := by
   intro k _ _ _ _ n n' _ _ _ _ q χ hχ Λ _
   exact ⟨fun P => ⟨glued_col q χ hχ Λ P, glued_sum q χ hχ Λ P⟩, fun R => glued_row q Λ R,

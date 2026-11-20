@@ -16,6 +16,31 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 section Form
 variable (σ : E →ₐ[F] E) {nS nT : ℕ} (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E) (ξ : E)
 end Form
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B _ nS nT JS JT _ _ ξ₀ _ _ hψ f hf L hL hL0 k L' hL' hL0' w`. Take `⟨lam, hl, hlam⟩` from `exists_log hψ`. Establish `hi : Continuous (fun v : Fin (k + 1) → ℝ => Fin.init v)` using `continuous_pi fun i => continuous_apply _`. Set `M : (Fin (k + 1) → ℝ) →+ WOF F E nS nT` to `{ toFun := fun v => L' (Fin.init v) + L (v (Fin.last k)) map_zero' := by show L' (Fin.init (0 : Fin (k + 1) → ℝ)) + L ((0 : Fin (k + 1) → ℝ) (Fin.last k)) = 0`. Rewrite using `[show Fin.init (0 : Fin (k + 1) → ℝ) = (0 : Fin k → ℝ) from rfl, Pi.zero_apply, map_zero, map_zero, add_zero]`.
+
+Use the proof step `map_add' := fun u v => by show L' (Fin.init (u + v)) + L (u (Fin.last k) + v (Fin.last k)) = _`. Rewrite using `[show Fin.init (u + v) = Fin.init u + Fin.init v from rfl, map_add, map_add]`. Use `abel }`. Use `haveI : IsModuleTopology (AF F) (AF F ⊗[F] E) := ⟨rfl⟩`. Use `haveI : IsTopologicalRing (AF F ⊗[F] E) := IsModuleTopology.isTopologicalRing (AF F) _`.
+
+Use `haveI : ContinuousAdd (WOF F E nS nT) := inferInstanceAs (ContinuousAdd (Fin nT → Fin nS → AF F ⊗[F] E))`. Establish `hM : Continuous M` using `(hL'.comp hi).add (hL.comp (continuous_apply _))`. Establish `hM0 : ∀ v, (M v).map (finPartF F E) = 0` using `fun v => by show (L' (Fin.init v) + L (v (Fin.last k))).map (finPartF F E) = 0`. Rewrite using `[Matrix.map_add _ (map_add _), hL0', hL0, add_zero]`. Establish `hg : ContDiff ℝ ∞ fun v => f (w + M v)` using `hf.smooth (k + 1) M hM hM0 w`.
+
+Establish `hsnoc : ContDiff ℝ ∞ (fun p : (Fin k → ℝ) × ℝ => (Fin.snoc (α` using `fun _ => ℝ) p.1 p.2 : Fin (k + 1) → ℝ)) := by`. Use `contDiff_pi.2 fun i => ?_` and prove the remaining obligations. Proceed by induction on `i using Fin.lastCases with`. Consider the case `last => simp only [Fin.snoc_last]`. Conclude with `contDiff_snd`.
+
+Consider the case `cast j => simp only [Fin.snoc_castSucc]`. Conclude with `(contDiff_apply ℝ ℝ j).comp contDiff_fst`. Set `h : (Fin k → ℝ) × ℝ → ℂ` to `fun p => f (w + M (Fin.snoc (α := fun _ => ℝ) p.1 p.2))`. Establish `hh : ContDiff ℝ ∞ h` using `hg.comp hsnoc`. Establish `hfe : ∀ x t, f (w + L' x + L t) = h (x, t)`.
+
+Introduce `x t`. Use `show _ = f (w + (L' (Fin.init (Fin.snoc (α := fun _ => ℝ) x t)) + L (Fin.snoc (α := fun _ => ℝ) x t (Fin.last k))))`. Rewrite using `[Fin.init_snoc, Fin.snoc_last, add_assoc]`. Establish `hpsi : ∀ y (t : ℝ), B.ψ (symplOHF σ JS JT ξ₀ y (L t)) = Complex.exp (t * lam (symplOHF σ JS JT ξ₀ y (L 1)))`. Introduce `y t`.
+
+Rewrite using `[hlam _ (snd_symplOHF σ JS JT ξ₀ y _ (hL0 t))]`. Use `congr 1`. Set `φ : ℝ →+ ℂ` to `{ toFun := fun t => lam (symplOHF σ JS JT ξ₀ y (L t)) map_zero' := by rw [map_zero L, symplOHF_zero_right, map_zero] map_add' := fun a b => by rw [map_add L, symplOHF_add_right, map_add] }`. Establish `hφ : Continuous φ` using `hl.comp (continuous_symplOHF σ JS JT ξ₀ continuous_const hL)`. Use `(φ.toRealLinearMap hφ).map_smul t 1` as an intermediate fact.
+
+Rewrite `this` using `[smul_eq_mul, mul_one, Complex.real_smul]`. Conclude with `this`. Establish `hd : ∀ x, HasDerivAt (fun t : ℝ => heisOF σ JS JT ξ₀ B.ψ (L t) f (w + L' x)) (lam (symplOHF σ JS JT ξ₀ (w + L' x) (L 1)) * h (x, 0) + fderiv ℝ h (x, 0) (0, 1)) 0`. Introduce `x`. Establish `e : (fun t : ℝ => heisOF σ JS JT ξ₀ B.ψ (L t) f (w + L' x)) = fun t : ℝ => Complex.exp (t * lam (symplOHF σ JS JT ξ₀ (w + L' x) (L 1))) * h (x, t)`.
+
+Use function extensionality and compare the values at `t`. Use `show B.ψ (symplOHF σ JS JT ξ₀ (w + L' x) (L t)) * f (w + L' x + L t) = _`. Rewrite using `[hpsi, hfe]`. Rewrite using `[e]`. Establish `h0 : HasDerivAt (fun t : ℝ => (t : ℂ) * lam (symplOHF σ JS JT ξ₀ (w + L' x) (L 1))) (lam (symplOHF σ JS JT ξ₀ (w + L' x) (L 1))) 0`.
+
+Simplify using `using (HasDerivAt.ofReal_comp (hasDerivAt_id (0 : ℝ))).mul_const (lam (symplOHF σ JS JT ξ₀ (w + L' x) (L 1)))`. Establish `hp : HasDerivAt (fun t : ℝ => (x, t)) ((0 : Fin k → ℝ), (1 : ℝ)) 0` using `(hasDerivAt_const (0 : ℝ) x).prodMk (hasDerivAt_id 0)`. Establish `h2 : HasDerivAt (fun t : ℝ => h (x, t)) (fderiv ℝ h (x, 0) (0, 1)) 0` using `((hh.differentiable (by simp)).differentiableAt.hasFDerivAt).comp_hasDerivAt (0 : ℝ) hp`. Establish `h3 : HasDerivAt (fun t : ℝ => Complex.exp (t * lam (symplOHF σ JS JT ξ₀ (w + L' x) (L 1))) * h (x, t)) (Complex.exp (((0 : ℝ) : ℂ) * lam (symplOHF σ JS JT ξ₀ (w + L' x) (L 1))) * lam (symplOHF σ JS JT ξ₀ (w + L' x) (L 1)) * h (x, 0) + Complex.exp (((0 : ℝ) : ℂ) * lam (symplOHF σ …` using `h0.cexp.mul h2`. Use `h3.congr_deriv ?_` and prove the remaining obligations.
+
+Simplify using `only [Complex.ofReal_zero, zero_mul, Complex.exp_zero, one_mul]`. Set `φ' : (Fin k → ℝ) →+ ℂ` to `{ toFun := fun x => lam (symplOHF σ JS JT ξ₀ (L' x) (L 1)) map_zero' := by rw [map_zero L', symplOHF_zero_left, map_zero] map_add' := fun a b => by rw [map_add L', symplOHF_add_left, map_add] }`. Establish `hφ' : ContDiff ℝ ∞ φ'` using `(φ'.toRealLinearMap (hl.comp (continuous_symplOHF σ JS JT ξ₀ hL' continuous_const))).contDiff`. Establish `e : (fun x => deriv (fun t : ℝ => heisOF σ JS JT ξ₀ B.ψ (L t) f (w + L' x)) 0) = fun x => (lam (symplOHF σ JS JT ξ₀ w (L 1)) + φ' x) * h (x, 0) + fderiv ℝ h (x, 0) (0, 1)`. Use function extensionality and compare the values at `x`.
+
+Rewrite using `[(hd x).deriv, symplOHF_add_left, map_add]`. Both sides reduce to the same expression. Rewrite using `[e]`. Establish `hin : ContDiff ℝ ∞ (fun x : Fin k → ℝ => (x, (0 : ℝ)))` using `contDiff_id.prodMk contDiff_const`. Conclude with `((contDiff_const.add hφ').mul (hh.comp hin)).add (((hh.fderiv_right (m := ∞) (by simp)).comp hin).clm_apply contDiff_const)`.
+-/
 theorem contDiff_deriv_heisOF_line_k : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
     _root_.UpperTheory.TP.W.GoodK σ B → ∀ (nS nT : ℕ) (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E),
       IsHermND σ JS → IsHermND σ JT → ∀ ξ₀ : E, ξ₀ ≠ 0 → σ ξ₀ = -ξ₀ →

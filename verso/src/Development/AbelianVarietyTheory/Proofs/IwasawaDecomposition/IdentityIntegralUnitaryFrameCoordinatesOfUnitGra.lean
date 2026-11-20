@@ -9,6 +9,9 @@ set_option maxHeartbeats 1000000
 
 namespace GlobalTheory.Mem.R3.LiftBrg
 
+/- English proof (translation)
+Substitute `h` using the available equality. Establish `: castGL (rfl : m = m) x = x`. Use extensionality with `i j`. Both sides reduce to the same expression. Rewrite using `[this]`.
+-/
 theorem castGL_mem_UA_one {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E]
     (hc : CMData F E) {m n : ℕ} (h : m = n) (x : GL (Fin m) (E ⊗[F] Formalism.L2.Herm.Af F)) :
     castGL h x ∈ Formalism.L2.DIV.UA hc (1 : Matrix (Fin n) (Fin n) E) ↔
@@ -19,6 +22,9 @@ theorem castGL_mem_UA_one {F E : Type} [Field F] [NumberField F] [Field E] [Numb
     rfl
   rw [this]
 
+/- English proof (translation)
+Use `⟨⟨1, (map_one _).symm⟩, one_mem _, fun x => ?_, one_mem _, one_mem _, fun PP _ => ?_⟩` and prove the remaining obligations. Rewrite using `[hg, one_mul, inv_one, mul_one]`. Conclude with `(castGL_mem_UA_one X.toD7.sp.cm (rkEq X i) x).symm`. Rewrite using `[one_mul]`. Conclude with `one_mem _`.
+-/
 theorem frameOK_one_of_gram_eq_one (X : Stages) (px : PreX X.B.toPre) (I : Col2.ColIn X.B px) (U : Set I.ι)
     (i : Fin X.toD7.R.m) (t : TupU I U) (hg : (Vc X.toD7 i).gram = 1) : LiftBrg.FrameOK X I U i t 1 1 := by
   refine ⟨⟨1, (map_one _).symm⟩, one_mem _, fun x => ?_, one_mem _, one_mem _, fun PP _ => ?_⟩

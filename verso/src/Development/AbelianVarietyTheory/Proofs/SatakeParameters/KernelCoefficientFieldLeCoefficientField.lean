@@ -8,6 +8,11 @@ attribute [local instance] GlobalTheory.Mem.Col2.starE Formalism.BasicNotions.Ho
 
 namespace GlobalTheory.TwU
 
+/- English proof (translation)
+Introduce `B X I _ _ l Z L hT Gi Gl K Y cX ex t hS y`. Take `⟨hX, hseam⟩` from `And.intro hS.X_eq hS.seam`. Use `clear hS`. Consider the cases of `t`. Simplify using `only at hX hseam y ⊢`.
+
+Substitute `hX` using the available equality. Establish `h` using `eq_of_heq hseam`. Substitute `h` using the available equality. Conclude with `⟨y, rfl⟩`.
+-/
 theorem kerField_le_rec :
     ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)) (L : SizeData₂ (I.rec7 l Z)) (hT : GatTies (I.rec7 l Z)) (Gi : G.Inst (I.rec7 l Z) L) (Gl : G.LatInst (I.rec7 l Z)) (K : G.Consts) (Y : DivX (I.rec7 l Z)) (cX : ExtraC) (ex : Extra (I.rec7 l Z) L hT Gi Gl K Y cX) (t : KerEntTied ex), I.StdKer l Z t → ∀ y : t.X.K, ∃ k : (I.rec7 l Z).what₂.LL, (I.rec7 l Z).what₂.embLL k = t.seam.σ₀ y := by
   intro B X I _ _ l Z L hT Gi Gl K Y cX ex t hS y

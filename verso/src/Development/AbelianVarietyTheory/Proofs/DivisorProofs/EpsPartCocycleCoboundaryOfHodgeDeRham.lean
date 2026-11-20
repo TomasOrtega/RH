@@ -23,6 +23,15 @@ noncomputable section
 
 namespace GlobalTheory.PtExt
 
+/- English proof (translation)
+Introduce `hHDR R _ A B _ _ g hA hB hgA hgB P hP v hv u hu`. Establish `hFree : GlobalTheory.Published.AbelianDeRham.Free` using `(GlobalTheory.T.abelianSchemeDeRham_free_hodgeSequence_baseChange hHDR).1`. Establish `hAB` using `ReciprocityTheory.ChartRestriction.G.Geo.Tor.AbelianSchemeGerms.isAbelianScheme_tensor A B hA hB`. Establish `hgAB : SmoothOfRelativeDimension (g + g) (A ⊗ B).hom` using `AbDual.smooth_prod hgA hgB`. Take `⟨u', hu', k1, c1⟩` from `GlobalTheory.T.pointwise_cocycle_on_cover_extends_up_to_coboundary R (A ⊗ B) P.ι P.U hP.cover u hu`.
+
+Take `⟨f, k2, c2⟩` from `GlobalTheory.T.cocycle_cohomologous_of_de_rham_surjective R (A ⊗ B) (GlobalTheory.T.de_rham_to_h1_structure_surjective_abelian hHDR R (A ⊗ B) (g + g) hAB hgAB) u' hu'`. Establish `hprim : CatCoh.H1.mk _ f ∈ primDR (A ⊗ B)`. Establish `h : AllPrim (dp0 R) (𝟙 _) (A ⊗ B)` using `(hFree R (A ⊗ B) (g + g) hAB hgAB).1`. Rewrite using `[primDR, h]`. Discharge the goal by the elementary cases of `trivial`.
+
+Take `⟨k3, c3⟩` from `GlobalTheory.T.tangentPullback_primitiveCrystallineClass_epsPart_isCob R A B f hprim v`. Use `⟨fun D _ _ x ↦ (k1 (DualNumber D) (ptV v x)).snd + (k2 (DualNumber D) (ptV v x)).snd + k3 D x, ?_⟩` and prove the remaining obligations. Introduce `D _ _ D' _ _ φ x hx`. Establish `e1` using `congrArg TrivSqZeroExt.snd (c1 _ _ (epsHom φ) (ptV v x) (sm_ptV P hv hx))`. Establish `e2` using `congrArg TrivSqZeroExt.snd (c2 _ _ (epsHom φ) (ptV v x) (sm_whole _))`.
+
+Establish `e3` using `c3 D D' φ x (sm_whole _)`. Simplify using `only [Fn1.add, Fn1.neg, Fn1.zero, sndPull, TrivSqZeroExt.snd_add, TrivSqZeroExt.snd_neg, TrivSqZeroExt.snd_sub, spOver_epsHom_ptV, snd_epsHom] at e1 e2 e3 ⊢`. Rewrite using `[map_add, map_add]`. Take the linear combination `e1 + e2 + e3`.
+-/
 theorem sndPull_cohom_zero_of_hodgeDeRham : GlobalTheory.Published.AbelianHodgeDeRham → ∀ (R : Type) [CommRing R] (A B : Over (Sp R)) [GrpObj A] [GrpObj B] (g : ℕ), IsAbelianScheme A → IsAbelianScheme B → SmoothOfRelativeDimension g A.hom → SmoothOfRelativeDimension g B.hom → ∀ P : LB (A ⊗ B).left, P.IsLB → ∀ v : epsR R ⟶ B, IsTangent v → ∀ u : Fn1 (A ⊗ B), IsCoc P.U u → Cohom (chartsA P) (sndPull u v) (Fn1.zero A) := by
   intro hHDR R _ A B _ _ g hA hB hgA hgB P hP v hv u hu
   have hFree : GlobalTheory.Published.AbelianDeRham.Free := (GlobalTheory.T.abelianSchemeDeRham_free_hodgeSequence_baseChange hHDR).1

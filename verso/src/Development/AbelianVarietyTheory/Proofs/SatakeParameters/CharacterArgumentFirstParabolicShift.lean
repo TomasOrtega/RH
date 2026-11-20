@@ -20,6 +20,27 @@ noncomputable section
 
 namespace GlobalTheory.UnfoldLaw
 
+/- English proof (translation)
+Establish `hle : ∀ u u', u' ∈ M₁ → (S.filter fun s => s - u ∈ M).card ≤ (S.filter fun s => s - u' ∈ M).card`. Introduce `u u' hu'`. Establish `hex : ∀ v, ∃ s, v ∈ M₁ → s ∈ S ∧ v - s ∈ M₀` using `fun v => by`. Distinguish the cases in `hv : v ∈ M₁`. Take `⟨s, a, b⟩` from `cov v hv`.
+
+Conclude with `⟨s, fun _ => ⟨a, b⟩⟩`. Conclude with `⟨0, fun h => absurd h hv⟩`. Use `choose ρ hρ using hex`. Establish `key : ∀ s ∈ S.filter fun s => s - u ∈ M, ρ (s - u + u') ∈ S ∧ s - u + u' - ρ (s - u + u') ∈ M₀` using `fun s hs => hρ _ (add_mem (h1 (Finset.mem_filter.1 hs).2) hu')`. Use `Finset.card_le_card_of_injOn (fun s => ρ (s - u + u')) (fun s hs => ?_) fun s hs s' hs' e => ?_` and prove the remaining obligations.
+
+Establish `hs` using `Finset.mem_coe.1 hs`. Use `Finset.mem_coe.2 (Finset.mem_filter.2 ⟨(key s hs).1, ?_⟩)` and prove the remaining obligations. Use `sub_mem (Finset.mem_filter.1 hs).2 (h0 (key s hs).2) using 1` and compare the differences between its conclusion and the goal. Normalize the expressions using the abelian group laws. Establish `hs` using `Finset.mem_coe.1 hs`.
+
+Establish `hs'` using `Finset.mem_coe.1 hs'`. Use `sep s (Finset.mem_filter.1 hs).1 s' (Finset.mem_filter.1 hs').1 ?_` and prove the remaining obligations. Use `sub_mem (key s hs).2 (key s' hs').2` as an intermediate fact. Simplify using `only at e`. Rewrite `this` using `[e]`.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Normalize the expressions using the abelian group laws. Establish `hc : ∀ u ∈ M₁, (S.filter fun s => s - u ∈ M).card = (S.filter fun s => s - 0 ∈ M).card` using `fun u hu => le_antisymm (hle _ _ (zero_mem _)) (hle _ _ hu)`. Establish `hN : (((S.filter fun s => s - 0 ∈ M).card : ℕ) : K) ≠ 0`. Take `⟨s, a, b⟩` from `cov 0 (zero_mem _)`.
+
+Conclude with `Nat.cast_ne_zero.2 (Finset.card_ne_zero.2 ⟨s, Finset.mem_filter.2 ⟨a, by simpa using h0 b⟩⟩)`. Use `mul_left_cancel₀ hN ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum, Finset.mul_sum]`. Establish `e1 : ∀ s, (((S.filter fun s => s - 0 ∈ M).card : ℕ) : K) * f (T s) = ∑ t ∈ S, if t - T s ∈ M then f t else 0`. Introduce `s`.
+
+Establish `: ∀ t ∈ S, (if t - T s ∈ M then f t else 0) = if t - T s ∈ M then f (T s) else 0` using `fun t _ => by split_ifs with h`. Rewrite using `[← inv (T s) _ h, add_sub_cancel]`. Both sides reduce to the same expression. Rewrite using `[Finset.sum_congr rfl this, ← Finset.sum_filter, Finset.sum_const, nsmul_eq_mul]`. Distinguish the cases in `h : f (T s) = 0`.
+
+Simplify using `[h]`. Rewrite using `[hc _ (s1 _ h)]`. Establish `e2 : ∀ t, (((S.filter fun s => s - 0 ∈ M).card : ℕ) : K) * f t = ∑ s ∈ S, if t - T s ∈ M then f t else 0`. Introduce `t`. Take `⟨t, rfl⟩` from `T.surjective t`.
+
+Rewrite using `[← Finset.sum_filter, Finset.sum_const, nsmul_eq_mul]`. Distinguish the cases in `h : f (T t) = 0`. Simplify using `[h]`. Rewrite using `[← hc _ (s2 _ h)]`. Use `congr 3`.
+
+Use `Finset.filter_congr fun s _ => ?_` and prove the remaining obligations. Rewrite using `[hT, ← neg_mem_iff, neg_sub]`. Simplify using `only [e1, e2]`. Conclude with `Finset.sum_comm`.
+-/
 theorem sum_reps_equiv {V K : Type} [AddCommGroup V] [Field K] [CharZero K] {M₀ M M₁ : AddSubgroup V} (S : Finset V)
     (h0 : M₀ ≤ M) (h1 : M ≤ M₁) (sep : ∀ s ∈ S, ∀ s' ∈ S, s - s' ∈ M₀ → s = s') (cov : ∀ v ∈ M₁, ∃ s ∈ S, v - s ∈ M₀)
     (T : V ≃ V) (hT : ∀ s t, T s - T t ∈ M ↔ s - t ∈ M) (f : V → K) (inv : ∀ v, ∀ u ∈ M, f (v + u) = f v)
@@ -81,18 +102,27 @@ section Affine
 
 variable {F : Type} [Field F] {n' c' n c : ℕ}
 
+/- English proof (translation)
+The claim follows from `Proof.unipotentRadicals_act_affine_unfoldingSpaces.hom_ext fun a l => by simp only [Proof.unipotentRadicals_act_affine_unfoldingSpaces.linPart, LinearMap.coe_mk, AddHom.coe_mk, LinearMap.sub_apply, Pi.sub_apply, linearMap_unfolding_apply_single] split_ifs <;> simp`.
+-/
 theorem affineFreeParam_first_sub_eq_linearPart (xj : (Fin n' → F) →ₗ[F] (Fin n → F)) (s t : Loc.FC n' c' n c → F) :
     Loc.xx1 xj s - Loc.xx1 xj t = Proof.unipotentRadicals_act_affine_unfoldingSpaces.linPart 0 (s - t) :=
   Proof.unipotentRadicals_act_affine_unfoldingSpaces.hom_ext fun a l => by
     simp only [Proof.unipotentRadicals_act_affine_unfoldingSpaces.linPart, LinearMap.coe_mk, AddHom.coe_mk, LinearMap.sub_apply, Pi.sub_apply, linearMap_unfolding_apply_single]
     split_ifs <;> simp
 
+/- English proof (translation)
+Simplify using `only [Proof.unipotentRadicals_act_affine_unfoldingSpaces.linPart, LinearMap.coe_mk, AddHom.coe_mk, LinearMap.sub_apply, Pi.sub_apply, linearMap_unfolding_apply_single]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem linPart_single (τ : Loc.FC n' c' n c → F) (s : Fin (n' + c')) (l : Fin (n + c)) :
     Proof.unipotentRadicals_act_affine_unfoldingSpaces.linPart (0 : (Fin n' → F) →ₗ[F] (Fin n → F)) τ (Pi.single s 1) l =
       if hf : Loc.IsFree n' n c l.1 s.1 then τ ⟨(l, s), hf⟩ else 0 := by
   simp only [Proof.unipotentRadicals_act_affine_unfoldingSpaces.linPart, LinearMap.coe_mk, AddHom.coe_mk, LinearMap.sub_apply, Pi.sub_apply, linearMap_unfolding_apply_single]
   split_ifs <;> simp
 
+/- English proof (translation)
+Unfold `Loc.chArg`. Rewrite using `[Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.add_apply, LinearMap.smul_apply, atN_add, atN_smul]`.
+-/
 theorem chArg_add_smul (x y : (Fin (n' + c') → F) →ₗ[F] (Fin (n + c) → F)) (a : F) :
     Loc.chArg (x + a • y) = Loc.chArg x + a * Loc.chArg y := by
   unfold Loc.chArg
@@ -102,6 +132,13 @@ theorem chArg_add_smul (x y : (Fin (n' + c') → F) →ₗ[F] (Fin (n + c) → F
 
 variable {r : (Fin (n + c) → F) ≃ₗ[F] (Fin (n + c) → F)} {g : (Fin n → F) ≃ₗ[F] (Fin n → F)}
 
+/- English proof (translation)
+Take `⟨-, -, h3⟩` from `(Proof.exists_xx1_eq_iff_inX_eN_Ufl_conditions.unfoldingAffineSpace_mem_iff_intrinsic F n' c' n c hc hc' xj (Loc.xx1 xj t)).1 ⟨t, rfl⟩`. Generalize the expression as in `Loc.xx1 xj t = x at h3`. Establish `e : Loc.n1Arg r = ∑ i ∈ Finset.range c, Loc.atN (r (Loc.eN F (n + c) (n + i + 1))) (n + i)`. Take `⟨d, rfl⟩ : ∃ d, c = d + 1` from `⟨c - 1, by omega⟩`. Rewrite using `[Finset.sum_range_succ, Proof.exists_xx1_eq_iff_inX_eN_Ufl_conditions.eN_eq_zero (i := n + d + 1) (by omega), map_zero]`.
+
+Simplify using `[Loc.n1Arg, Loc.atN]`. Rewrite using `[e]`. Unfold `Loc.chArg`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Establish `b3` using `atN_of_R1cond hr (h3 (i + 1))`. Establish `b4 : Loc.atN (Loc.eN F (n + c) (n + (i + 1))) (n + i) = 0` using `Proof.unfoldingCharacterArgument_comp_unipotentRadicals.atN_eN_succ _ _`. Simplify using `only [map_sub, atN_sub, b4] at b3`. Express the relevant statement in the definitionally equal form `Loc.atN (r (x (Loc.eN F (n' + c') (n' + (i + 1))))) (n + i) = Loc.atN (x (Loc.eN F (n' + c') (n' + (i + 1)))) (n + i) + Loc.atN (r (Loc.eN F (n + c) (n + (i + 1)))) (n + i)`. Take the linear combination `b3`.
+-/
 theorem characterArgument_first_parabolic_shift (hc : 1 ≤ c) (hc' : c' = c + 1) (hr : Loc.R1cond F n c r) (xj : (Fin n' → F) →ₗ[F] (Fin n → F))
     (t : Loc.FC n' c' n c → F) : Loc.chArg (r.toLinearMap ∘ₗ Loc.xx1 xj t) = Loc.chArg (Loc.xx1 xj t) + Loc.n1Arg r := by
   obtain ⟨-, -, h3⟩ := (Proof.exists_xx1_eq_iff_inX_eN_Ufl_conditions.unfoldingAffineSpace_mem_iff_intrinsic F n' c' n c hc hc' xj (Loc.xx1 xj t)).1 ⟨t, rfl⟩
@@ -121,6 +158,11 @@ theorem characterArgument_first_parabolic_shift (hc : 1 ≤ c) (hc' : c' = c + 1
     Loc.atN (x (Loc.eN F (n' + c') (n' + (i + 1)))) (n + i) + Loc.atN (r (Loc.eN F (n + c) (n + (i + 1)))) (n + i)
   linear_combination b3
 
+/- English proof (translation)
+Take `⟨y, T, b, h⟩` from `Proof.unipotentRadicals_act_affine_unfoldingSpaces.affine_action Proof.exists_xx1_eq_iff_inX_eN_Ufl_conditions.unfoldingAffineSpace_mem_iff_intrinsic F n' c' n c hc hc' r hr 1 (one_mem _) (g.toLinearMap ∘ₗ xj)`. Take `rfl : y = xj` from `LinearMap.ext fun v => by`. Use `LinearMap.congr_fun (h 0) (Loc.inX F n' c' v)` as an intermediate fact. Express the relevant statement in the definitionally equal form `r (Loc.xx1 y 0 (Loc.inX F n' c' v)) = _ at this`. Rewrite `this` using `[unfoldingAffinePointMap_apply_inclusion, unfoldingAffinePointMap_apply_inclusion, hg]`.
+
+Conclude with `g.injective (inX_injective this)`. Conclude with `⟨T.toEquiv.trans (Equiv.addRight b), h⟩`.
+-/
 theorem exists_move (hc : 1 ≤ c) (hc' : c' = c + 1) (hr : r ∈ Loc.R1 F n c)
     (hg : ∀ x, r (Loc.inX F n c x) = Loc.inX F n c (g x)) (xj : (Fin n' → F) →ₗ[F] (Fin n → F)) :
     ∃ T : (Loc.FC n' c' n c → F) ≃ (Loc.FC n' c' n c → F),
@@ -134,6 +176,19 @@ theorem exists_move (hc : 1 ≤ c) (hc' : c' = c + 1) (hr : r ∈ Loc.R1 F n c)
     exact g.injective (inX_injective this)
   exact ⟨T.toEquiv.trans (Equiv.addRight b), h⟩
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[LinearEquiv.coe_det, LinearEquiv.coe_det, ← LinearMap.det_toMatrix', ← LinearMap.det_toMatrix', ← Matrix.det_submatrix_equiv_self finSumFinEquiv]`. Establish `hX : ∀ (a : Fin n) (l : Fin (n + c)), r (Pi.single (Fin.castAdd c a) 1) l = Loc.inX F n c (g (Pi.single a 1)) l`. Introduce `a l`. Rewrite using `[← hg, ← Proof.exists_xx1_eq_iff_inX_eN_Ufl_conditions.inX_single (Fin.castAdd c a) a.2]`.
+
+Both sides reduce to the same expression. Establish `hD : ∀ a b : Fin c, b ≤ a → r (Pi.single (Fin.natAdd n b) 1) (Fin.natAdd n a) = if a = b then 1 else 0`. Introduce `a b hab`. Use `mem_Ufl.1 (hr.2.2 b.1) (Fin.natAdd n a) (by simpa using hab)` as an intermediate fact. Rewrite `this` using `[Pi.sub_apply, sub_eq_zero, Proof.exists_xx1_eq_iff_inX_eN_Ufl_conditions.eN_eq_single (by omega)]`.
+
+Use `Eq.trans this ?_` and prove the remaining obligations. Simplify using `[Pi.single_apply, Fin.ext_iff]`. Use `set M := (LinearMap.toMatrix' r.toLinearMap).submatrix finSumFinEquiv finSumFinEquiv with hM`. Establish `h21 : M.toBlocks₂₁ = 0`. Use extensionality with `a b`.
+
+Simplify using `[hM, Matrix.toBlocks₂₁, LinearMap.toMatrix'_apply, hX, inX_apply]`. Establish `h11 : M.toBlocks₁₁ = LinearMap.toMatrix' g.toLinearMap`. Use extensionality with `a b`. Simplify using `[hM, Matrix.toBlocks₁₁, LinearMap.toMatrix'_apply, hX, inX_castAdd]`. Establish `h22 : M.toBlocks₂₂.det = 1`.
+
+Rewrite using `[Matrix.det_of_upperTriangular]`. Use `Finset.prod_eq_one fun a _ => ?_` and prove the remaining obligations. Simplify using `[hM, Matrix.toBlocks₂₂, LinearMap.toMatrix'_apply, hD]`. Introduce `a b hab`. Establish `: b < a` using `hab`.
+
+Simplify using `[hM, Matrix.toBlocks₂₂, LinearMap.toMatrix'_apply, hD a b this.le, this.ne']`. Rewrite using `[← Matrix.fromBlocks_toBlocks M, h21, Matrix.det_fromBlocks_zero₂₁, h11, h22, mul_one]`.
+-/
 theorem det_first_parabolic_eq_det_block (hr : Loc.R1cond F n c r) (hg : ∀ x, r (Loc.inX F n c x) = Loc.inX F n c (g x)) :
     LinearEquiv.det r = LinearEquiv.det g := by
   apply Units.ext
@@ -173,6 +228,37 @@ open Proof.NormalFormAtPrime Proof.boxSum_ne_zero_invariant_affineChange
 
 variable {E : Type} [Field E] [NumberField E] {K : Type} [Field K] {P : HeightOneSpectrum (𝓞 E)} {n' c' n c : ℕ}
 
+/- English proof (translation)
+Establish `q0` using `qOf_ne_zero P`. Establish `hqk : ∀ k : ℕ, ∀ z ∈ H, (qOf P : E) ^ k • z ∈ H` using `fun k z hz => by`. Proceed by induction on `k with`. Consider the case `zero => simpa using hz`. Consider the case `succ k ih => rw [pow_succ', mul_smul]`.
+
+Conclude with `hq _ ih`. Take `⟨T, hT⟩` from `exists_move hc hc' hr hg xj`. Establish `hneg : ∀ {u : E}, IntAt P ((qOf P : E) ^ D * u) → IntAt P ((qOf P : E) ^ D * -u)` using `fun h => by`. Simplify using `using IndefiniteRowSideFullHecke.SourceLatticeInvariance.intAt_neg h`. Establish `hpt : ∀ t, integrand psi Psi (g.toLinearMap ∘ₗ xj) (T t) * a = (psi (Loc.n1Arg r))⁻¹ * b * integrand psi Psi xj t`.
+
+Introduce `t`. Unfold `integrand`. Rewrite using `[← hT, mul_right_comm, law]`. Distinguish the cases in `h0 : Psi (Loc.xx1 xj t) = 0`. Simplify using `[h0]`.
+
+Establish `a1` using `hch _ (hs _ h0)`. Establish `a2` using `hch _ ((hH _).2 (hs _ h0))`. Rewrite `a2`, the goal using `[characterArgument_first_parabolic_shift hc hc' hr.1]`. Establish `a3 : IntAt P ((qOf P : E) ^ D * Loc.n1Arg r)`. Use `a2.add (hneg a1) using 1` and compare the differences between its conclusion and the goal.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `a4` using `hpsi.1 _ _ a3 (hneg a3)`. Rewrite `a4` using `[add_neg_cancel, hpsi.2 0 (IndefiniteRowSideFullHecke.SourceLatticeInvariance.intAt_zero P)]`. Rewrite using `[neg_add, hpsi.1 _ _ (hneg a1) (hneg a3), ← eq_inv_of_mul_eq_one_right a4.symm]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hsupp : ∀ y t, integrand psi Psi y t ≠ 0 → t ∈ lat P (Loc.FC n' c' n c) ((qOf P : E) ^ A)` using `fun y t h p => by`. Use `(intHom_iff _).1 (hb _ (hs _ (left_ne_zero_of_mul h))) p.1.2 p.1.1` as an intermediate fact. Rewrite `this` using `[LinearMap.smul_apply, Pi.smul_apply, Proof.unipotentRadicals_act_affine_unfoldingSpaces.unfoldingAffineLinearMap_apply_freeEntry]`. Conclude with `intAt_pow_mono hA this`. Set `M : AddSubgroup (Loc.FC n' c' n c → E)` to `H.comap (((qOf P : E) ^ D)⁻¹ • Proof.unipotentRadicals_act_affine_unfoldingSpaces.linPart (0 : (Fin n' → E) →ₗ[E] (Fin n → E))).toAddMonoidHom`.
+
+Establish `mM : ∀ u, u ∈ M ↔ ((qOf P : E) ^ D)⁻¹ • Proof.unipotentRadicals_act_affine_unfoldingSpaces.linPart (0 : (Fin n' → E) →ₗ[E] (Fin n → E)) u ∈ H` using `fun u => Iff.rfl`. Establish `key` using `sum_reps_equiv (M₀ := lat P (Loc.FC n' c' n c) ((qOf P : E) ^ B)⁻¹) (M := M) (M₁ := lat P (Loc.FC n' c' n c) ((qOf P : E) ^ A)) (Fintype.piFinset fun _ => LocE.valsQ E (qOf P) A B) (fun u hu => by`. Take `⟨k, rfl⟩` from `Nat.exists_eq_add_of_le hB`. Establish `h1 : IntHom P (((qOf P : E) ^ (m + D + k))⁻¹ • Proof.unipotentRadicals_act_affine_unfoldingSpaces.linPart (0 : (Fin n' → E) →ₗ[E] (Fin n → E)) u)` using `(intHom_iff _).2 fun s l => by`. Rewrite using `[LinearMap.smul_apply, Pi.smul_apply, linPart_single, smul_eq_mul]`.
+
+Use `split_ifs`. Conclude with `hu _`. Simplify using `using IndefiniteRowSideFullHecke.SourceLatticeInvariance.intAt_zero P`. Rewrite using `[mM]`. Use `hqk k _ (hb' _ h1) using 1` and compare the differences between its conclusion and the goal.
+
+Rewrite using `[smul_smul, smul_smul]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts. Use the proof step `ring)`. Use the proof step `(fun u hu p => by`.
+
+Use `(intHom_iff _).1 (hb _ (hqk D _ ((mM u).1 hu))) p.1.2 p.1.1` as an intermediate fact. Rewrite `this` using `[smul_inv_smul₀ (pow_ne_zero _ q0), LinearMap.smul_apply, Pi.smul_apply, linPart_single, dif_pos p.2]`. Conclude with `intAt_pow_mono hA this)`. Use the proof step `(fun s hs s' hs' h => funext fun i => (Proof.rationalFractions_represent_primeNormQuotient.valsQ_reps E P hP A B).1 _ (Fintype.mem_piFinset.1 hs i) _ (Fintype.mem_piFinset.1 hs' i) (h i))`. Use the proof step `(fun v hv => by choose s hs hs' using fun i => (Proof.rationalFractions_represent_primeNormQuotient.valsQ_reps E P hP A B).2 (v i) (hv i)`.
+
+Conclude with `⟨s, Fintype.mem_piFinset.2 hs, hs'⟩)`. Use `T (fun s t => by`. Rewrite using `[mM, mM, ← affineFreeParam_first_sub_eq_linearPart (g.toLinearMap ∘ₗ xj), ← affineFreeParam_first_sub_eq_linearPart xj, ← hT, ← hT, ← LinearMap.comp_sub, ← LinearMap.comp_smul, hH])`. Use the proof step `(fun t => integrand psi Psi (g.toLinearMap ∘ₗ xj) t * a)`. Use the proof step `(fun t u hu => by`.
+
+Take `⟨z, hz, e⟩ : ∃ z ∈ H, Loc.xx1 (g.toLinearMap ∘ₗ xj) (t + u) = Loc.xx1 (g.toLinearMap ∘ₗ xj) t + (qOf P : E) ^ D • z` from `⟨_, (mM u).1 hu, by rw [smul_inv_smul₀ (pow_ne_zero _ q0), ← sub_eq_iff_eq_add', affineFreeParam_first_sub_eq_linearPart, add_sub_cancel_left]⟩`. Unfold `integrand`. Rewrite using `[e]`. Generalize the expression as in `Loc.xx1 (g.toLinearMap ∘ₗ xj) t = y`. Establish `e1 : Psi (y + (qOf P : E) ^ D • z) = Psi y`.
+
+Take `⟨d, rfl⟩` from `Nat.exists_eq_add_of_le hD`. Rewrite using `[pow_add, pow_one, mul_smul, hi _ _ (hqk d z hz)]`. Rewrite using `[e1]`. Distinguish the cases in `h0 : Psi y = 0`. Simplify using `[h0]`.
+
+Establish `a1` using `IndefiniteRowSideFullHecke.SourceLatticeInvariance.intAt_neg (hch _ hz)`. Rewrite using `[chArg_add_smul, neg_add, hpsi.1 _ _ (hneg (hch _ (hs _ h0))) (intAt_pow_mul D a1), hpsi.2 _ a1, mul_one])`. Use the proof step `(fun t h => hsupp _ t (left_ne_zero_of_mul h))`. Use the proof step `(fun t h => hsupp xj t (right_ne_zero_of_mul (hpt t ▸ h)))`. Simplify using `only [hpt] at key`.
+
+Rewrite `key` using `[← Finset.mul_sum, ← Finset.sum_mul]`. Unfold `Loc.E1`. Unfold `integrand at key`. Rewrite using `[mul_assoc, ← key]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem unfold_law [CharZero K] (hP : IndefiniteRowSideFullHecke.SourceLatticeInvariance.DegOneUnram P) (hc : 1 ≤ c) (hc' : c' = c + 1) {psi : E → K} {D : ℕ}
     (hD : 1 ≤ D) (hpsi : CharTo P D psi) (H : AddSubgroup ((Fin (n' + c') → E) →ₗ[E] (Fin (n + c) → E)))
     (hq : ∀ z ∈ H, (qOf P : E) • z ∈ H) {m : ℕ} (hb : ∀ z ∈ H, IntHom P ((qOf P : E) ^ m • z))
@@ -268,6 +354,13 @@ theorem unfold_law [CharZero K] (hP : IndefiniteRowSideFullHecke.SourceLatticeIn
   rw [mul_assoc, ← key]
   ring
 
+/- English proof (translation)
+Establish `q0` using `qOf_ne_zero P`. Take `⟨k, hk⟩` from `(Proof.vectors_linearMaps_bounded_denominators_atPrime.bounded_denominators E P N N).1 fun l => (qOf P : E) ^ e l.1`. Take `⟨k', hk'⟩` from `(Proof.vectors_linearMaps_bounded_denominators_atPrime.bounded_denominators E P N N).1 fun l => ((qOf P : E) ^ e l.1)⁻¹`. Use `⟨max k k', fun v hv l => ?_, fun v hv => LastSteps.mem_sclLat.2 fun l => ?_⟩` and prove the remaining obligations. Use `(hk _ (le_max_left k k') l).mul (LastSteps.mem_sclLat.1 hv l) using 1` and compare the differences between its conclusion and the goal.
+
+Use `zpow_ne_zero (e l.1) q0` as an intermediate fact. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Clear the denominators using the available nonvanishing facts. Use `(hk' _ (le_max_right k k') l).mul (hv l) using 1` and compare the differences between its conclusion and the goal. Simplify using `only [Pi.smul_apply, smul_eq_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sclLat_bdd [StarRing E] (N : ℕ) (e : ℕ → ℤ) : ∃ k : ℕ,
     (∀ v ∈ LocE.sclLat P (qOf P) N e, IntV P ((qOf P : E) ^ k • v)) ∧
       ∀ v, IntV P v → (qOf P : E) ^ k • v ∈ LocE.sclLat P (qOf P) N e := by
@@ -294,6 +387,15 @@ def movedHom {a b : ℕ} (L' : Submodule (𝓞 E) (Fin a → E)) (L : Submodule 
     rw [LinearMap.neg_apply, map_neg]
     exact neg_mem (hx v hv)
 
+/- English proof (translation)
+Take `⟨k', a1, a2⟩` from `sclLat_bdd (P := P) a e'`. Take `⟨k, b1, b2⟩` from `sclLat_bdd (P := P) b e`. Take `⟨m1, c1⟩` from `(Proof.vectors_linearMaps_bounded_denominators_atPrime.bounded_denominators E P a a).2 h'.toLinearMap`. Take `⟨m2, c2⟩` from `(Proof.vectors_linearMaps_bounded_denominators_atPrime.bounded_denominators E P a a).2 h'.symm.toLinearMap`. Take `⟨m3, c3⟩` from `(Proof.vectors_linearMaps_bounded_denominators_atPrime.bounded_denominators E P b b).2 h.toLinearMap`.
+
+Take `⟨m4, c4⟩` from `(Proof.vectors_linearMaps_bounded_denominators_atPrime.bounded_denominators E P b b).2 h.symm.toLinearMap`. Use `set j := m1 + m2 + m3 + m4`. Use `⟨k + k' + j + j, fun z hz v hv => ?_, fun z hz v hv => ?_⟩` and prove the remaining obligations. Use `c3 j (by omega) _ (b1 _ (hz _ (a2 _ (c2 j (by omega) v hv)))) using 1` and compare the differences between its conclusion and the goal. Simplify using `only [LinearMap.smul_apply, map_smul, LinearEquiv.coe_coe, LinearEquiv.apply_symm_apply, smul_smul]`.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Use `b2 _ (c4 j (by omega) _ (hz _ (c1 j (by omega) _ (a1 v hv)))) using 1` and compare the differences between its conclusion and the goal. Simplify using `only [LinearMap.smul_apply, map_smul, LinearEquiv.coe_coe, smul_smul]`. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem movedHom_bdd [StarRing E] {a b : ℕ} (e' e : ℕ → ℤ) (h' : (Fin a → E) ≃ₗ[E] (Fin a → E))
     (h : (Fin b → E) ≃ₗ[E] (Fin b → E)) : ∃ m : ℕ,
     (∀ z ∈ movedHom (LocE.sclLat P (qOf P) a e') (LocE.sclLat P (qOf P) b e) h' h, IntHom P ((qOf P : E) ^ m • z)) ∧
@@ -321,6 +423,17 @@ section Chain
 
 variable {X : Fields} {Pr : Primes X} {R : Ranks}
 
+/- English proof (translation)
+Establish `h1 : R.k ≤ R.N i` using `Nat.le_add_right _ _`. Establish `h2 : R.k ≤ R.N (i + 1)` using `Nat.le_add_right _ _`. Establish `h3 : R.r + (i + 1 - 1) * R.t = R.N i + cOf R i`. Unfold `Ranks.r Ranks.N cOf`. Rewrite using `[Nat.add_sub_cancel, mul_add i]`.
+
+Use linear arithmetic over natural numbers and integers. Establish `h4 : R.N i + cOf R i ≤ R.N (i + 1) + cOf R (i + 1)`. Unfold `Ranks.N cOf`. Rewrite using `[add_mul i]`. Use linear arithmetic over natural numbers and integers.
+
+Distinguish the cases in `hP : P ∈ Pr.vGs`. Unfold `PhiAt lamYat`. Simplify using `only [if_pos hP]`. Use `split_ifs`. Use `LastSteps.good_PhiGS (psi0P Ch P) (chiP Ch P) (rS := R.rS) h1 h2 h3 h4` as an intermediate fact.
+
+Conclude with `⟨this.1, this.2.1⟩`. Use `LastSteps.good_PhiG (psi0P Ch P) (chiP Ch P) h1 h2 h3 h4` as an intermediate fact. Conclude with `⟨this.1, this.2.1⟩`. Simplify using `only [IndefiniteRowSideFullHecke.SandwichNormalForm.mem_lamYat hP]`. Unfold `PhiAt`.
+
+Rewrite using `[if_neg hP]`. Conclude with `Proof.twistPrimeDatum_integral_support_and_invariant.phiQ_bdd X.E X.K P _ _ _ _ _ _ _ h1 h2 (by omega) (by omega)`.
+-/
 theorem phiAt_mod (Ch : Chars X Pr R.m) {S : Set ℕ} (mu : Tup X.F X.E X.K S) (sharp : Bool) {i : ℕ} (hi : i + 2 ≤ R.m)
     (P : HeightOneSpectrum (𝓞 X.E)) :
     (∀ x, PhiAt Ch mu sharp i P x ≠ 0 → ∀ v ∈ lamYat (Pr := Pr) (R := R) i P, x v ∈ lamYat (Pr := Pr) (R := R) (i + 1) P) ∧
@@ -350,6 +463,13 @@ theorem phiAt_mod (Ch : Chars X Pr R.m) {S : Set ℕ} (mu : Tup X.F X.E X.K S) (
     rw [if_neg hP]
     exact Proof.twistPrimeDatum_integral_support_and_invariant.phiQ_bdd X.E X.K P _ _ _ _ _ _ _ h1 h2 (by omega) (by omega)
 
+/- English proof (translation)
+Introduce `k hk`. Unfold `Jat at hk`. Distinguish the cases in `hP : P ∈ Pr.vGs`. Unfold `lamYat`. Rewrite `hk`, the goal using `[if_pos hP]`.
+
+Use `split_ifs at hk`. Conclude with `hk.1`. Conclude with `hk.1`. Rewrite `hk` using `[if_neg hP]`. Introduce `v`.
+
+Rewrite using `[IndefiniteRowSideFullHecke.SandwichNormalForm.mem_lamYat hP, IndefiniteRowSideFullHecke.SandwichNormalForm.mem_lamYat hP]`. Conclude with `(mem_stdAt_iff _).symm.trans ((hk.1 v).trans (mem_stdAt_iff _))`.
+-/
 theorem jat_le (sharp : Bool) (j : ℕ) (P : HeightOneSpectrum (𝓞 X.E)) :
     Jat (Pr := Pr) (R := R) sharp j P ≤ stabL X.E _ (lamYat (Pr := Pr) (R := R) j P) := by
   intro k hk
@@ -369,6 +489,19 @@ variable {Ch : Chars X Pr R.m} {sel : HeightOneSpectrum (𝓞 X.F) → HeightOne
   {mu : Tup X.F X.E X.K S} {cst : LocCst X (rowSG Pr sel mu)} {L : ChIdx X Pr R (QE sel (mu : Chr X.F X.E X.K))}
   {G : ChGlob X R.m} {m2 : ℕ}
 
+/- English proof (translation)
+Establish `hm` using `hL.hm`. Establish `hc : cOf R i = cOf R (i + 1) + 1` using `by unfold cOf; omega`. Unfold `Loc.chArg`. Rewrite using `[Finset.mul_sum]`. Use `intAt_sum _ _ fun s hs => ?_` and prove the remaining obligations.
+
+Establish `hs` using `Finset.mem_range.1 hs`. Establish `l1 : R.N (i + 1) + s < R.N (i + 1) + cOf R (i + 1)` using `by omega`. Establish `l2 : R.N i + s + 1 < R.N i + cOf R i` using `by omega`. Unfold `Loc.atN`. Rewrite using `[dif_pos l1, Proof.exists_xx1_eq_iff_inX_eN_Ufl_conditions.eN_eq_single l2]`.
+
+Distinguish the cases in `hP : P.1 ∈ Pr.vGs`. Establish `h1 : ∀ v ∈ lamYat (Pr` using `Pr) (R := R) i P.1, z v ∈ lamYat (Pr := Pr) (R := R) (i + 1) P.1 := fun v hv => by`. Use `(hL.stabG _ be P hP _).2 (hz _ ((inv_mem (hL.stabG _ al P hP) v).2 hv))` as an intermediate fact. Rewrite `this` using `[LinearEquiv.apply_symm_apply, show L.h i al P ((L.h i al P)⁻¹ v) = v from LinearEquiv.apply_symm_apply _ v]`. Then use the resulting hypothesis. Unfold `lamYat at h1`.
+
+Simplify using `only [if_pos hP] at h1`. Establish `h2` using `LastSteps.mem_homS_sclLat.1 h1 ⟨_, l1⟩ ⟨_, l2⟩`. Establish `e : LocE.scE (R.N i) (fun i => i + 1) (R.N i + s + 1) - LocE.scE (R.N (i + 1)) (fun i => i + 1) (R.N (i + 1) + s) = 1`. Unfold `LocE.scE`. Rewrite using `[if_neg (by omega), if_neg (by omega)]`.
+
+Simplify using `only`. Use linear arithmetic over natural numbers and integers. Rewrite `h2` using `[e, zpow_one, mul_comm]`. Rewrite using `[hL.depthG P hP, pow_one]` and apply the resulting hypothesis. Establish `hD` using `hL.depthQ' P hP`.
+
+Establish `hv` using `(IndefiniteRowSideFullHecke.SandwichNormalForm.mem_lamYat (R := R) hP _).2 (intV_single P.1 ⟨_, l2⟩)`. Use `(hL.boundQ _ be P hP _ (hz _ (hL.boundQ _ al P hP _ hv).1)).2` as an intermediate fact. Rewrite `this` using `[LinearEquiv.apply_symm_apply, show ∀ v, L.h i al P ((L.h i al P)⁻¹ v) = v from fun v => LinearEquiv.apply_symm_apply _ v, IndefiniteRowSideFullHecke.SandwichNormalForm.mem_lamYat hP]`. Conclude with `Proof.NormalFormAtPrime.intAt_pow_mono (A := i + 1) (by omega) (this ⟨_, l1⟩)`.
+-/
 theorem chArg_depth (hL : L.Ok Ch sel mu cst G m2) {i : ℕ} (hi : i < m2) (al : L.β i) (be : L.β (i + 1)) (P : rowSG Pr sel mu)
     (z : HomE X.E (R.N i + cOf R i) (R.N (i + 1) + cOf R (i + 1)))
     (hz : z ∈ movedHom (lamYat (Pr := Pr) (R := R) i P.1) (lamYat (Pr := Pr) (R := R) (i + 1) P.1) (L.h i al P) (L.h (i + 1) be P)) :
@@ -406,6 +539,27 @@ theorem chArg_depth (hL : L.Ok Ch sel mu cst G m2) {i : ℕ} (hi : i < m2) (al :
 
 end Chain
 
+/- English proof (translation)
+Introduce `X Pr R Ch sel S mu cst L G m2 hX hPr hsel hg hT hL i hi al be P r g hr hrg x`. Establish `hm` using `hL.hm`. Take `⟨hp, hu⟩` from `(GlobalTheory.T.prime_conditions_selected_set Ch sel mu cst hX hPr hsel hg hT).1 P`. Use `set h' := L.h i al P with hh'`. Use `set h := L.h (i + 1) be P with hh`.
+
+Establish `hk : h⁻¹ * r * h ∈ Jat (Pr` using `Pr) (R := R) cst.sharp (i + 1) P.1 := by`. Use `hr.2` as an intermediate fact. Simplify `this` using `[Subgroup.mem_comap]`. Establish `hdet : LinearEquiv.det (h⁻¹ * r * h) = LinearEquiv.det g`. Rewrite using `[map_mul, map_mul, map_inv, inv_mul_cancel_comm, det_first_parabolic_eq_det_block hr.1.1 hrg]`.
+
+Establish `hlaw : ∀ y, PhiAt Ch mu cst.sharp i P.1 ((h⁻¹ * r * h).toLinearMap ∘ₗ y) * muAt Ch sel mu cst i P ((LinearEquiv.det g : X.Eˣ) : X.E) = lamRow Ch mu cst.sharp (i + 1) P.1 (h⁻¹ * r * h).toLinearMap * PhiAt Ch mu cst.sharp i P.1 y`. Rewrite using `[← hdet]`. Distinguish the cases in `hP : P.1 ∈ Pr.vGs`. Break down `Bool.eq_false_or_eq_true cst.sharp with hs | hs` into its components or cases. Conclude with `GlobalTheory.T.phi_invariance_ramified_place_sharp Ch sel mu cst _ i P (by omega) hp hu hP hs _ hk`.
+
+Conclude with `GlobalTheory.T.phi_invariance_ramified_place_flat Ch sel mu cst _ i P (by omega) hp hu hP hs _ hk`. Conclude with `GlobalTheory.T.phi_invariance_unramified_place Ch sel mu cst _ i P (by omega) hp hu hP _ hk`. Take `⟨m, hb, hb'⟩ : ∃ m : ℕ, (∀ z ∈ movedHom (lamYat (Pr` from `Pr) (R := R) i P.1) (lamYat (Pr := Pr) (R := R) (i + 1) P.1) h' h, IntHom P.1 ((qOf P.1 : X.E) ^ m • z)) ∧ ∀ z, IntHom P.1 z → (qOf P.1 : X.E) ^ m • z ∈ movedHom (lamYat (Pr := Pr) (R := R) i P.1) (lamYat (Pr := Pr) (R := R) (i + 1) P.1) h' h := movedHom_bdd _ _ h' h`. Take `⟨hs, hinv⟩` from `phiAt_mod Ch mu cst.sharp (i := i) (by omega) P.1`. Establish `hmove : ∀ y : HomE X.E (R.N i + cOf R i) (R.N (i + 1) + cOf R (i + 1)), h.symm.toLinearMap ∘ₗ (r.toLinearMap ∘ₗ y) ∘ₗ h'.toLinearMap = (h⁻¹ * r * h).toLinearMap ∘ₗ (h.symm.toLinearMap ∘ₗ y ∘ₗ h'.toLinearMap)` using `fun y => LinearMap.ext fun v => by`.
+
+Express the relevant statement in the definitionally equal form `h.symm (r _) = h.symm (r (h (h.symm _)))`. Rewrite using `[LinearEquiv.apply_symm_apply]`. Both sides reduce to the same expression. Establish `key` using `unfold_law (K := X.K) (P := P.1) ⟨hp, hu⟩ (n' := R.N i) (c' := cOf R i) (n := R.N (i + 1)) (c := cOf R (i + 1)) (by unfold cOf; omega) (by unfold cOf; omega) (hL.cst_ok.D_pos P) ⟨hL.cst_ok.psi_add P, hL.cst_ok.psi_int P⟩ (movedHom (lamYat (Pr := Pr) (R := R) i P.1) (lamYat (Pr := …`. Rewrite using `[LinearMap.smul_apply, map_smul, Nat.cast_smul_eq_nsmul]`.
+
+Conclude with `nsmul_mem (hz v hv) _)`. Use `hb hb' (chArg_depth hL hi al be P) (Psi := omPhi Ch sel mu cst i P h' h)`. Use the proof step `(fun y hy => hs _ (right_ne_zero_of_mul hy))`. Use the proof step `(fun y z hz => by`. Unfold `omPhi Loc.om`.
+
+Rewrite using `[← hinv (h.symm.toLinearMap ∘ₗ y ∘ₗ h'.toLinearMap) (h.symm.toLinearMap ∘ₗ z ∘ₗ h'.toLinearMap) hz, LinearMap.add_comp, LinearMap.comp_add, LinearMap.smul_comp, LinearMap.comp_smul])`. Use the proof step `hr.1 hrg`. Use the proof step `(fun z => forall₂_congr fun v _ => by`. Use `jat_le _ _ _ hk (h.symm (z (h' v)))` as an intermediate fact. Rewrite using `[← this]`.
+
+Conclude with `(LinearMap.congr_fun (hmove z) v) ▸ Iff.rfl)`. Use the proof step `(a := muAt Ch sel mu cst i P ((LinearEquiv.det g : X.Eˣ) : X.E))`. Use the proof step `(b := lamRow Ch mu cst.sharp (i + 1) P.1 (h⁻¹ * r * h).toLinearMap)`. Use the proof step `(fun y => by`. Unfold `omPhi Loc.om`.
+
+Rewrite using `[hmove, mul_assoc, hlaw]`. Use the proof step `ring)`. Use the proof step `(A := cst.A + m) (B := cst.B + (m + cst.D P)) (by omega) (by omega) (((qOf P.1 : X.K) ^ (cst.B + (m + cst.D P)))⁻¹) x`. Establish `hd` using `hL.deep (cst.A + m) (cst.B + (m + cst.D P)) (by omega) (by omega) i hi al be P`. Unfold `XiAt chiInv`.
+
+Rewrite using `[← hd, mul_assoc, mul_left_comm (_ * _)]`. Conclude with `congrArg _ key`.
+-/
 theorem xiAt_law : ∀ {X : Fields} {Pr : Primes X} {R : Ranks} (Ch : Chars X Pr R.m) (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) {S : Set ℕ} (mu : Tup X.F X.E X.K S) (cst : LocCst X (rowSG Pr sel mu)) (L : ChIdx X Pr R (QE sel (mu : Chr X.F X.E X.K))) (G : ChGlob X R.m) (m2 : ℕ), X.Ok → Pr.Ok → IsSel X sel → (∀ i, Pr.g i ∈ S) → (∀ v, Pr.T v ∈ S) → L.Ok Ch sel mu cst G m2 → ∀ i, i < m2 → ∀ (al : L.β i) (be : L.β (i + 1)) (P : rowSG Pr sel mu) (r : AutY X R (i + 1)) (g : Sp X.E (R.N (i + 1)) ≃ₗ[X.E] Sp X.E (R.N (i + 1))), r ∈ Loc.Cbe (Jat (Pr := Pr) cst.sharp (i + 1) P.1) (L.h (i + 1) be P) → (∀ x, r (Loc.inX X.E (R.N (i + 1)) (cOf R (i + 1)) x) = Loc.inX X.E (R.N (i + 1)) (cOf R (i + 1)) (g x)) → ∀ x, XiAt Ch sel mu cst i P (L.h i al P) (L.h (i + 1) be P) (g.toLinearMap ∘ₗ x) * muAt Ch sel mu cst i P ((LinearEquiv.det g : X.Eˣ) : X.E) = chiInv Ch sel mu cst (i + 1) P (L.h (i + 1) be P) r * XiAt Ch sel mu cst i P (L.h i al P) (L.h (i + 1) be P) x := by
   intro X Pr R Ch sel S mu cst L G m2 hX hPr hsel hg hT hL i hi al be P r g hr hrg x
   have hm := hL.hm

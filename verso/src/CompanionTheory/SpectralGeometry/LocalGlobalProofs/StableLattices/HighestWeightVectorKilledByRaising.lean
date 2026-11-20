@@ -12,6 +12,19 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.RgExh
 
+/- English proof (translation)
+Establish `hcase : (q = i.1.1 ∧ k.1 = (p, i.1.2)) ∨ (i.1.2 = p ∧ k.1 = (i.1.1, q))`. Assume the negation of the conclusion as `hn`. Rewrite `hn` using `[not_or]`. Conclude with `hc (by simp only [adC, if_neg hn.1, if_neg hn.2, sub_self])`. Take `⟨h1, h2⟩ : ε i.1.1 = ε i.1.2 ∧ lev i.1.1 < lev i.1.2` from `(mem_filter.1 hi).2`.
+
+Establish `hne : p ≠ q` using `ne_of_lt hpq`. Break down `hcase with ⟨e1, e2⟩ | ⟨e1, e2⟩` into its components or cases. Use `⟨mem_filter.2 ⟨mem_univ _, ?_, ?_⟩, fun e => ?_⟩` and prove the remaining obligations. Rewrite using `[e2]`. Use `show ε p = ε i.1.2`.
+
+Rewrite using `[hε, e1, h1]`. Rewrite using `[e2]`. Use `show lev p < lev i.1.2`. Rewrite using `[hl, e1]`. Conclude with `h2`.
+
+Rewrite `e2` using `[e]`. Conclude with `hne (e1.trans (congrArg Prod.fst e2)).symm`. Use `⟨mem_filter.2 ⟨mem_univ _, ?_, ?_⟩, fun e => ?_⟩` and prove the remaining obligations. Rewrite using `[e2]`. Use `show ε i.1.1 = ε q`.
+
+Rewrite using `[h1, e1, hε]`. Rewrite using `[e2]`. Use `show lev i.1.1 < lev q`. Rewrite using `[← hl, ← e1]`. Conclude with `h2`.
+
+Rewrite `e2` using `[e]`. Conclude with `hne (e1.symm.trans (congrArg Prod.snd e2))`.
+-/
 theorem adC_mem_omU {n : ℕ} {ε : Fin n → Bool} {lev : Fin n → ℕ} {p q : Fin n} (hpq : p < q) (hε : ε p = ε q)
     (hl : lev p = lev q) {i k : Pos n} (hc : adC p q i k ≠ 0) (hi : i ∈ omU ε lev) :
     k ∈ omU ε lev ∧ k ≠ i := by
@@ -31,6 +44,21 @@ theorem adC_mem_omU {n : ℕ} {ε : Fin n → Bool} {lev : Fin n → ℕ} {p q :
     · rw [e2]; show lev i.1.1 < lev q; rw [← hl, ← e1]; exact h2
     · rw [e] at e2; exact hne (e1.symm.trans (congrArg Prod.snd e2))
 
+/- English proof (translation)
+Introduce `n ε lev V _ _ E γ u hu p q hpq hε hl`. Establish `hE : E p q u = 0` using `hu.2 p q hpq hε`. Establish `h1 : lift n (E p q) (Pi.single (omU ε lev) u : Cn n V) = 0`. Use function extensionality and compare the values at `A`. Rewrite using `[CompanionTheory.D.LK.lift_apply]`.
+
+Distinguish the cases in `e : A = omU ε lev`. Substitute `e` using the available equality. Rewrite using `[Pi.single_eq_same]`. Conclude with `hE`. Rewrite using `[Pi.single_eq_of_ne e, map_zero]`.
+
+Both sides reduce to the same expression. Establish `h2 : adL p q (Pi.single (omU ε lev) u : Cn n V) = 0`. Simplify using `only [adL, LinearMap.sum_apply, LinearMap.smul_apply, Module.End.mul_apply]`. Use `Finset.sum_eq_zero fun i _ => Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Distinguish the cases in `hc : adC p q i k = 0`.
+
+Rewrite using `[hc, zero_smul]`. It suffices to establish `h : cre k (ann i (Pi.single (omU ε lev) u : Cn n V)) = 0 by rw [h, smul_zero]`. Use function extensionality and compare the values at `B`. Assume the negation of the conclusion as `h`. Take `⟨-, h3⟩` from `CompanionTheory.D.LK.cre_ne h`.
+
+Take `⟨-, h4⟩` from `CompanionTheory.D.LK.ann_ne h3`. Establish `e : insert i (B.erase k) = omU ε lev`. Assume the negation of the conclusion as `h'`. Conclude with `h4 (Pi.single_eq_of_ne h' _)`. Establish `hi : i ∈ omU ε lev` using `e ▸ mem_insert_self _ _`.
+
+Take `⟨hk, hki⟩` from `adC_mem_omU hpq hε hl hc hi`. Rewrite `hk` using `[← e]`. Break down `mem_insert.1 hk with h5 | h5` into its components or cases. Conclude with `hki h5`. Conclude with `notMem_erase _ _ h5`.
+
+Use `show lift n (E p q) _ + adL p q _ = 0`. Rewrite using `[h1, h2, add_zero]`.
+-/
 theorem lF_single_omU : ∀ (n : ℕ) (ε : Fin n → Bool) (lev : Fin n → ℕ) (V : Type) [AddCommGroup V] [Module ℂ V]
     (E : Fin n → Fin n → Module.End ℂ V) (γ : Fin n → ℝ) (u : V), KHighest ε E γ u →
     ∀ p q : Fin n, p < q → ε p = ε q → lev p = lev q →

@@ -18,6 +18,11 @@ abbrev Qk (L : Submodule (𝓞 K) V) (𝔭 : Ideal (𝓞 F)) (k : ℕ) : Type :=
 
 variable {L : Submodule (𝓞 K) V} {𝔭 : Ideal (𝓞 F)} {e : V}
 
+/- English proof (translation)
+Take `⟨y, i, hi, hyi⟩` from `h𝔭.exists_inv ht`. Use `⟨y * ∑ l ∈ Finset.range k, i ^ l, ?_⟩` and prove the remaining obligations. Establish `h1 : y * t = 1 - i` using `by rw [← hyi]; ring`. Establish `h2 : y * (∑ l ∈ Finset.range k, i ^ l) * t - 1 = -(i ^ k)`. Rewrite using `[mul_right_comm, h1, mul_neg_geom_sum]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h2]`. Conclude with `(Submodule.neg_mem_iff _).mpr (Ideal.pow_mem_pow hi k)`.
+-/
 private theorem exists_mul_sub_one_mem_pow_of_not_mem_maximal (h𝔭 : 𝔭.IsMaximal) {t : 𝓞 F} (ht : t ∉ 𝔭) (k : ℕ) :
     ∃ s : 𝓞 F, s * t - 1 ∈ 𝔭 ^ k := by
   obtain ⟨y, i, hi, hyi⟩ := h𝔭.exists_inv ht
@@ -28,11 +33,19 @@ private theorem exists_mul_sub_one_mem_pow_of_not_mem_maximal (h𝔭 : 𝔭.IsMa
   rw [h2]
   exact (Submodule.neg_mem_iff _).mpr (Ideal.pow_mem_pow hi k)
 
+/- English proof (translation)
+Rewrite using `[extP, ← Ideal.map_pow]`. Conclude with `Ideal.mem_map_of_mem _ ha`.
+-/
 private theorem algebraMap_mem_extP_pow_of_mem_pow {k : ℕ} {a : 𝓞 F} (ha : a ∈ 𝔭 ^ k) :
     algebraMap (𝓞 F) (𝓞 K) a ∈ extP K 𝔭 ^ k := by
   rw [extP, ← Ideal.map_pow]
   exact Ideal.mem_map_of_mem _ ha
 
+/- English proof (translation)
+Take `⟨t, ht, a, hta⟩` from `he.2.2 x x.2`. Take `⟨s, hs⟩` from `exists_mul_sub_one_mem_pow_of_not_mem_maximal h𝔭 ht k`. Use `⟨algebraMap (𝓞 F) (𝓞 K) s * a, ?_⟩` and prove the remaining obligations. Establish `hmem : (algebraMap (𝓞 F) (𝓞 K) (s * t - 1)) • x ∈ ((extP K 𝔭) ^ k • ⊤ : Submodule (𝓞 K) ↥L)` using `Submodule.smul_mem_smul (algebraMap_mem_extP_pow_of_mem_pow hs) Submodule.mem_top`. Establish `hL : (algebraMap (𝓞 F) (𝓞 K) t) • x = a • (⟨e, he.1⟩ : ↥L)` using `Subtype.ext (by rw [Submodule.coe_smul, Submodule.coe_smul]; exact hta)`.
+
+Establish `hx : x = (algebraMap (𝓞 F) (𝓞 K) s * a) • (⟨e, he.1⟩ : ↥L) - (algebraMap (𝓞 F) (𝓞 K) (s * t - 1)) • x`. Rewrite using `[map_sub, map_mul, map_one, sub_smul, one_smul, mul_smul, mul_smul, hL]`. Normalize the expressions using the abelian group laws. Use `conv_lhs => rw [hx]`. Rewrite using `[Submodule.Quotient.mk_sub, (Submodule.Quotient.mk_eq_zero _).mpr hmem, sub_zero, Submodule.Quotient.mk_smul]`.
+-/
 theorem mk_eq_smul (h𝔭 : 𝔭.IsMaximal) (he : IsGen L 𝔭 e) (k : ℕ) (x : ↥L) :
     ∃ a : 𝓞 K, (Submodule.Quotient.mk x : Qk L 𝔭 k) = a • Submodule.Quotient.mk ⟨e, he.1⟩ := by
   obtain ⟨t, ht, a, hta⟩ := he.2.2 x x.2
@@ -51,6 +64,13 @@ theorem mk_eq_smul (h𝔭 : 𝔭.IsMaximal) (he : IsGen L 𝔭 e) (k : ℕ) (x :
   rw [Submodule.Quotient.mk_sub, (Submodule.Quotient.mk_eq_zero _).mpr hmem, sub_zero,
     Submodule.Quotient.mk_smul]
 
+/- English proof (translation)
+Use `Submodule.smul_induction_on (p := fun w : ↥L => ∃ t : 𝓞 F, t ∉ 𝔭 ∧ ∃ c ∈ extP K 𝔭 ^ k, algebraMap (𝓞 F) (𝓞 K) t • (w : V) = c • e) hw ?_ ?_` and prove the remaining obligations. Introduce `r hr n _`. Take `⟨t, ht, a, hta⟩` from `he.2.2 n n.2`. Use `⟨t, ht, r * a, Ideal.mul_mem_right _ _ hr, ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.coe_smul, smul_comm, hta, smul_smul]`.
+
+Introduce and unpack `x y ⟨t1, ht1, c1, hc1, h1⟩ ⟨t2, ht2, c2, hc2, h2⟩`. Use `⟨t1 * t2, fun h => (h𝔭.isPrime.mem_or_mem h).elim ht1 ht2, algebraMap (𝓞 F) (𝓞 K) t2 * c1 + algebraMap (𝓞 F) (𝓞 K) t1 * c2, Ideal.add_mem _ (Ideal.mul_mem_left _ _ hc1) (Ideal.mul_mem_left _ _ hc2), ?_⟩` and prove the remaining obligations. Establish `e1 : algebraMap (𝓞 F) (𝓞 K) (t1 * t2) • (x : V) = algebraMap (𝓞 F) (𝓞 K) t2 • (c1 • e)`. Rewrite using `[map_mul, mul_comm (algebraMap (𝓞 F) (𝓞 K) t1), mul_smul, h1]`. Establish `e2 : algebraMap (𝓞 F) (𝓞 K) (t1 * t2) • (y : V) = algebraMap (𝓞 F) (𝓞 K) t1 • (c2 • e)`.
+
+Rewrite using `[map_mul, mul_smul, h2]`. Rewrite using `[Submodule.coe_add, smul_add, e1, e2, add_smul, mul_smul, mul_smul]`.
+-/
 theorem smul_top_spec (h𝔭 : 𝔭.IsMaximal) (he : IsGen L 𝔭 e) (k : ℕ) {w : ↥L}
     (hw : w ∈ ((extP K 𝔭) ^ k • ⊤ : Submodule (𝓞 K) ↥L)) :
     ∃ t : 𝓞 F, t ∉ 𝔭 ∧ ∃ c ∈ extP K 𝔭 ^ k, algebraMap (𝓞 F) (𝓞 K) t • (w : V) = c • e := by
@@ -71,6 +91,15 @@ theorem smul_top_spec (h𝔭 : 𝔭.IsMaximal) (he : IsGen L 𝔭 e) (k : ℕ) {
       rw [map_mul, mul_smul, h2]
     rw [Submodule.coe_add, smul_add, e1, e2, add_smul, mul_smul, mul_smul]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hb`. Take `⟨t, ht, c, hc, htc⟩` from `smul_top_spec h𝔭 he k hb`. Establish `h1 : (algebraMap (𝓞 F) (𝓞 K) t * b) • e = c • e`. Rewrite `htc` using `[Submodule.coe_smul]`.
+
+Rewrite using `[mul_smul]`. Conclude with `htc`. Establish `h2 : algebraMap (𝓞 F) (𝓞 K) t * b = c`. Rewrite `h1` using `[← algebraMap_smul K _ e, ← algebraMap_smul K c e]`. Conclude with `IsFractionRing.injective (𝓞 K) K (smul_left_injective K he.2.1 h1)`.
+
+Take `⟨s, hs⟩` from `exists_mul_sub_one_mem_pow_of_not_mem_maximal h𝔭 ht k`. Establish `hb' : b = algebraMap (𝓞 F) (𝓞 K) s * c - algebraMap (𝓞 F) (𝓞 K) (s * t - 1) * b`. Rewrite using `[← h2, map_sub, map_mul, map_one]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hb']`.
+
+Conclude with `Ideal.sub_mem _ (Ideal.mul_mem_left _ _ hc) (Ideal.mul_mem_right _ _ (algebraMap_mem_extP_pow_of_mem_pow hs))`. Introduce `hb`. Conclude with `Submodule.smul_mem_smul hb Submodule.mem_top`.
+-/
 theorem smul_gen_mem_iff (h𝔭 : 𝔭.IsMaximal) (he : IsGen L 𝔭 e) (k : ℕ) (b : 𝓞 K) :
     b • (⟨e, he.1⟩ : ↥L) ∈ ((extP K 𝔭) ^ k • ⊤ : Submodule (𝓞 K) ↥L) ↔ b ∈ extP K 𝔭 ^ k := by
   constructor
@@ -92,6 +121,11 @@ theorem smul_gen_mem_iff (h𝔭 : 𝔭.IsMaximal) (he : IsGen L 𝔭 e) (k : ℕ
   · intro hb
     exact Submodule.smul_mem_smul hb Submodule.mem_top
 
+/- English proof (translation)
+Take `⟨y, hy⟩` from `Submodule.Quotient.mk_surjective _ (X (Submodule.Quotient.mk ⟨e, he.1⟩))`. Take `⟨a, ha⟩` from `mk_eq_smul h𝔭 he k y`. Use `⟨a, LinearMap.ext fun z => ?_⟩` and prove the remaining obligations. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ z`. Take `⟨ax, hax⟩` from `mk_eq_smul h𝔭 he k x`.
+
+Rewrite using `[Module.algebraMap_end_apply, hax, map_smul, ← hy, ha, smul_comm]`.
+-/
 theorem end_surj (h𝔭 : 𝔭.IsMaximal) (he : IsGen L 𝔭 e) (k : ℕ)
     (X : Module.End (𝓞 K) (Qk L 𝔭 k)) :
     ∃ b : 𝓞 K, algebraMap (𝓞 K) (Module.End (𝓞 K) (Qk L 𝔭 k)) b = X := by
@@ -102,6 +136,11 @@ theorem end_surj (h𝔭 : 𝔭.IsMaximal) (he : IsGen L 𝔭 e) (k : ℕ)
   obtain ⟨ax, hax⟩ := mk_eq_smul h𝔭 he k x
   rw [Module.algebraMap_end_apply, hax, map_smul, ← hy, ha, smul_comm]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h0`. Use `LinearMap.congr_fun h0 (Submodule.Quotient.mk ⟨e, he.1⟩)` as an intermediate fact. Rewrite `this` using `[Module.algebraMap_end_apply, LinearMap.zero_apply, ← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`. Conclude with `(smul_gen_mem_iff h𝔭 he k b).mp this`.
+
+Introduce `hb`. Use `LinearMap.ext fun z => ?_` and prove the remaining obligations. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ z`. Rewrite using `[Module.algebraMap_end_apply, LinearMap.zero_apply, ← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`. Conclude with `Submodule.smul_mem_smul hb Submodule.mem_top`.
+-/
 theorem end_eq_zero_iff (h𝔭 : 𝔭.IsMaximal) (he : IsGen L 𝔭 e) (k : ℕ) (b : 𝓞 K) :
     algebraMap (𝓞 K) (Module.End (𝓞 K) (Qk L 𝔭 k)) b = 0 ↔ b ∈ extP K 𝔭 ^ k := by
   constructor
@@ -122,10 +161,18 @@ def endHom (h𝔭 : 𝔭.IsMaximal) (he : IsGen L 𝔭 e) (k : ℕ) :
   Ideal.Quotient.lift _ (algebraMap (𝓞 K) (Module.End (𝓞 K) (Qk L 𝔭 k)))
     fun b hb => (end_eq_zero_iff h𝔭 he k b).2 hb
 
+/- English proof (translation)
+The claim follows from `Ideal.Quotient.lift_mk _ _ _`.
+-/
 theorem endHom_mk (h𝔭 : 𝔭.IsMaximal) (he : IsGen L 𝔭 e) (k : ℕ) (b : 𝓞 K) :
     endHom h𝔭 he k (Ideal.Quotient.mk _ b) =
       algebraMap (𝓞 K) (Module.End (𝓞 K) (Qk L 𝔭 k)) b := Ideal.Quotient.lift_mk _ _ _
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `z hz`. Take `⟨b, rfl⟩` from `Ideal.Quotient.mk_surjective z`. Rewrite `hz` using `[endHom_mk, end_eq_zero_iff h𝔭 he k]`.
+
+Conclude with `Ideal.Quotient.eq_zero_iff_mem.mpr hz`. Introduce `X`. Take `⟨b, hb⟩` from `end_surj h𝔭 he k X`. Conclude with `⟨Ideal.Quotient.mk _ b, by rw [endHom_mk, hb]⟩`.
+-/
 theorem endHom_bijective (h𝔭 : 𝔭.IsMaximal) (he : IsGen L 𝔭 e) (k : ℕ) :
     Function.Bijective (endHom h𝔭 he k) := by
   constructor

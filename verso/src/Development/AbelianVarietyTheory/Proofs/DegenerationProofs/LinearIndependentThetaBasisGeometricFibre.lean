@@ -16,6 +16,15 @@ namespace GlobalTheory.ZH.FibreIndep
 
 open GlobalTheory.VVRank GlobalTheory.UnivBasisMove
 
+/- English proof (translation)
+Establish `hne : Nonempty (⊤ : T'.left.Opens)` using `⟨⟨p, trivial⟩⟩`. Establish `hnt : Nontrivial Γ(T'.left, ⊤)` using `Scheme.component_nontrivial T'.left ⊤`. Take `⟨V, hV, b, hb⟩` from `hS S P n hn (T'.hom p)`. Set `l : T' ⟶ overRes (T` to `baseOver S) V := Over.homMk (IsOpenImmersion.lift V.ι T'.hom (by`. Rewrite using `[Scheme.Opens.range_ι]`.
+
+Introduce and unpack `_ ⟨y, rfl⟩`. Rewrite using `[hp y]`. Conclude with `hV)) ((congrArg (_ ≫ ·) (Category.comp_id _)).trans (IsOpenImmersion.lift_fac _ _ _))`. Take `⟨c, -⟩` from `exists_basis P n b hb T' l`. Use `Module.Free.of_basis c` as an intermediate fact.
+
+Use `Module.Finite.of_basis c` as an intermediate fact. Use `linearIndependent_of_top_le_span_of_card_eq_finrank (fun x _ => ?_) (by rw [Module.finrank_eq_card_basis c, Fintype.card_fin, hJ])` and prove the remaining obligations. Use `Submodule.span_le.2 ?_ (LinkMatrix.mem_span_pullM hS P n hn p hp h x)` and prove the remaining obligations. Introduce and unpack `_ ⟨u, rfl⟩`. Take `⟨a, rfl⟩` from `hs u`.
+
+Rewrite using `[map_sum]`. Conclude with `Submodule.sum_mem _ fun i _ => by`. Rewrite using `[LinearMap.map_smulₛₗ]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`.
+-/
 theorem linearIndependent_pullM (hS : SecBaseChangeAnySt) {S : Scheme.{0}} (P : PolAV S) (n : ℕ) (hn : 1 ≤ n)
     {T T' : Over S} [IsAffine T.left] [IsAffine T'.left] (p : T'.left) (hp : ∀ q, q = p) (h : T' ⟶ T)
     {J : Type} [Fintype J] (hJ : Fintype.card J = n ^ P.g) (s : J → SecM P.A P.L n T)
@@ -43,6 +52,17 @@ theorem linearIndependent_pullM (hS : SecBaseChangeAnySt) {S : Scheme.{0}} (P : 
     rw [LinearMap.map_smulₛₗ]
     exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)
 
+/- English proof (translation)
+Introduce `hL o Ω _ _ _ _ S ρ p _ y₀ u w hw t ht`. Establish `hN : 1 ≤ S.N`. Rewrite using `[ρ.N_eq]`. Conclude with `Nat.one_le_pow _ _ (pow_pos ρ.n_prime.pos _)`. Set `T` to `TFK (R := u.V) (PadicAlgCl p)`.
+
+Set `T' : Over (Sp S.R)` to `Over.mk (T.hom ≫ spMap u.yK)`. Establish `: IsAffine T'.left` using `inferInstanceAs (IsAffine (Sp (PadicAlgCl p)))`. Establish `: IsAffine (baseOver (Sp S.R)).left` using `inferInstanceAs (IsAffine (Sp S.R))`. Set `h₀ : T' ⟶ baseOver (Sp S.R)` to `Over.homMk (spMap y₀) (base_eq u)`. Establish `li` using `linearIndependent_pullM hL.2.1.secBaseChangeAny ρ.P S.N hN (T' := T') (IsLocalRing.closedPoint (PadicAlgCl p)) (fun q => Subsingleton.elim (α := PrimeSpectrum (PadicAlgCl p)) _ _) h₀ (J := S.J) (by rw [ρ.g_eq]; exact ρ.card) (fun i => SecM.ofSec ρ.P.A (ρ.s i)) (fun x => by`.
+
+Take `⟨c, hc⟩` from `(ρ.s_basis (SecM.toSec ρ.P.A x)).exists`. Use `⟨c, Subtype.ext (funext fun j => ?_)⟩` and prove the remaining obligations. Rewrite using `[Submodule.coe_sum, Finset.sum_apply]`. Conclude with `hc j)`. Take `⟨E, hE⟩` from `exists_linearEquiv u.cart hw ρ.P.isLB u.A.isLB (S.N : ℤ) T`.
+
+Establish `e : ∀ i, E (pullM ρ.P.A ρ.P.L S.N h₀ (SecM.ofSec ρ.P.A (ρ.s i))) = SecM.ofSec u.A.A (t i)` using `fun i => by`. Establish `r : Rel u.cart (T` using `T) (T₀ := baseOver (Sp S.R)) (spMap y₀) (base_eq u) w (SecM.ofSec u.A.A (t i)) (SecM.ofSec ρ.P.A (ρ.s i)) := ht i`. Establish `r'` using `r.pull (T' := T) (T₀' := T') (𝟙 T.left) (Category.id_comp _) (𝟙 T) h₀ rfl`. Rewrite `r'` using `[pullM_id _ u.A.isLB]`. Conclude with `(hE _).unique_down ρ.P.isLB u.A.isLB r'`.
+
+Establish `li'` using `LinearIndependent.map' (R := Γ(T.left, ⊤)) li E.toLinearMap E.ker`. Conclude with `(funext e : _ = fun i => SecM.ofSec u.A.A (t i)) ▸ li'`.
+-/
 theorem linearIndependent_moved : LL → ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω] (S : ThetaSys o Ω) (ρ : S.Real) (p : ℕ) [Fact p.Prime] (y₀ : S.R →+* PadicAlgCl p) (u : ρ.UTest p y₀) (w : LB.Iso u.A.L (ρ.P.L.pull u.φ)), w.IsGen → ∀ t : S.J → SecA u.A (PadicAlgCl p) S.N, (∀ i, Moved u w (t i) (ρ.s i)) → LinearIndependent Γ((TFK (R := u.V) (PadicAlgCl p)).left, ⊤) (fun i => SecM.ofSec u.A.A (t i)) := by
   intro hL o Ω _ _ _ _ S ρ p _ y₀ u w hw t ht
   have hN : 1 ≤ S.N := by

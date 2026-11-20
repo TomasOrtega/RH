@@ -37,6 +37,11 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {B : Base F E} {n d n₁ d₁ : ℕ} {X : Spc F E n} {W : Spc F E d} {X₁ : Spc F E n₁} {W₁ : Spc F E d₁}
   {M : Model σ X W} {M₁ : Model σ X₁ W₁} {χX χW : Chr F E} {om : Rep σ X W}
 
+/- English proof (translation)
+Establish `hSB : ∀ v, M.vac v ∈ SB _` using `fun v => (hM.vac v).1`. Establish `hpure : pure f M.vac ∈ schA F _` using `GlobalTheory.TensUniq.pure_mem_schA f _ hSB hM.std`. Take `⟨c, hc⟩` from `exists_finPart_ne_zero M.vac (fun v => (hM.vac v).2.1) hM.std`. Use `continuous_of_weak _ (g := fun y => ∏ᶠ v, M.vac v fun i => evalV F v (y i)) (c := c) (hc (fun i => mk 0 (c i)) fun _ => rfl) fun l hl => ?_` and prove the remaining obligations. Establish `hw : IsUWeilPair (cA σ) (adeleClass F) B.ψ (-1) (incM F X.J) (incM F W.J) M.co χX χW om` using `hW`.
+
+Use `((hw.2.2 l hl _ hpure).comp (continuous_subtype_val.prodMk continuous_const : Continuous fun k : KAt K (evI F) => (k.1, (1 : UA σ W.J)))).congr fun k => congrArg l ?_` and prove the remaining obligations. Conclude with `acts_locOpInf (GlobalTheory.ArchLocalityX.acts_arch_left hP F E σ _ _ _ _ M B.ψ _ _ om hB.cm hB.std hW k.1 k.2.2 f) _ ⟨fun x z hz => finPart_add _ x z hz, hpure⟩`.
+-/
 private theorem orb_cont (hP : GlobalTheory.FunPr.Hypotheses₂) (hB : B.IsGood σ) (hM : M.IsGood B.ψ) (hW : M.IsWeil B.ψ χX χW om)
     (K : Subgroup (UA σ X.J)) [CompactSpace (KAt K (evI F))] (f : SInf F (Fin n × Fin d)) :
     Continuous fun k : KAt K (evI F) => locOpInf (om (k.1, 1)) f := by
@@ -52,6 +57,11 @@ private theorem orb_cont (hP : GlobalTheory.FunPr.Hypotheses₂) (hB : B.IsGood 
   exact acts_locOpInf (GlobalTheory.ArchLocalityX.acts_arch_left hP F E σ _ _ _ _ M B.ψ _ _ om hB.cm hB.std hW k.1 k.2.2 f)
     _ ⟨fun x z hz => finPart_add _ x z hz, hpure⟩
 
+/- English proof (translation)
+Use `haveI : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) (AE F E)`. Simplify using `only [(locOpInf_rho_eq hB.std hM _ _).2]`. Use `continuous_archOp hf ?_` and prove the remaining obligations. Set `L` to `M.co.e.toLinearMap ∘ₗ (realAd F 1 • ((LinearMap.toSpanSingleton (AE F E) _ A).restrictScalars (AF F) ∘ₗ (cA σ).toLinearMap))`. Establish `hL : Continuous fun t => M.co.e (partInf F (cA σ (z t) • A))` using `(IsModuleTopology.continuous_of_linearMap L).comp hz`.
+
+Conclude with `(continuous_pi fun i => continuous_qA.comp ((continuous_apply i).comp hL.fst)).prodMk (continuous_pi fun i => continuous_qA.comp ((continuous_apply i).comp hL.snd))`.
+-/
 private theorem shift_cont (hB : B.IsGood σ) (hM : M.IsGood B.ψ) (A : Matrix (Fin n) (Fin d) (AE F E)) {T : Type}
     [TopologicalSpace T] {f : T → SInf F (Fin n × Fin d)} (hf : Continuous f) {z : T → AE F E} (hz : Continuous z) :
     Continuous fun t => locOpInf (M.co.rho B.ψ (partInf F (cA σ (z t) • A))) (f t) := by
@@ -65,6 +75,17 @@ private theorem shift_cont (hB : B.IsGood σ) (hM : M.IsGood B.ψ) (A : Matrix (
   exact (continuous_pi fun i => continuous_qA.comp ((continuous_apply i).comp hL.fst)).prodMk
     (continuous_pi fun i => continuous_qA.comp ((continuous_apply i).comp hL.snd))
 
+/- English proof (translation)
+Establish `hs` using `IsUWeilPair.isUSplitting hW`. Take `⟨l, hl, hlf⟩` from `GlobalTheory.ArchJointCont.exists_adm F T`. Set `g₀` to `GlobalTheory.ArchLocality.intInd (F := F) (Fin n × Fin d)`. Establish `hg₀ : g₀ ∈ SB _` using `GlobalTheory.ArchLocality.intInd_mem _`. Establish `hg₀0 : g₀ 0 = 1`.
+
+Simplify using `only [g₀, GlobalTheory.ArchLocality.intInd]`. Rewrite using `[Set.indicator_of_mem (show (0 : Fin n × Fin d → IsDedekindDomain.FiniteAdeleRing (𝓞 F) F) ∈ Set.pi Set.univ fun _ => (GroundTheory.Global.integralFiniteAdeles (𝓞 F) F : Set (IsDedekindDomain.FiniteAdeleRing (𝓞 F) F)) from fun i _ => zero_mem (GroundTheory.Global.integralFiniteAd …`. Both sides reduce to the same expression. Set `r₀ : (Fin n × Fin d → AF F) → ℂ` to `fun x => g₀ fun i => (x i).2`. Establish `hrr₀ : ∀ x z, At (evI F) z → r₀ (x + z) = r₀ x`.
+
+Introduce `x z hz`. Use `congrArg g₀ (funext fun i => ?_)` and prove the remaining obligations. Use `show (x i).2 + (z i).2 = (x i).2`. Rewrite using `[GlobalTheory.ArchLocality.snd_eq_zero_of_at hz i, add_zero]`. Establish `hR₀ : ∀ f : SInf F (Fin n × Fin d), Rest (evI F) ⇑f r₀` using `fun f => ⟨hrr₀, Submodule.subset_span ⟨f, g₀, hg₀, rfl⟩⟩`.
+
+Take `⟨T', hT'⟩` from `hs.adm (k, 1) l hl g₀ hg₀`. Use `⟨T', fun f => ?_⟩` and prove the remaining obligations. Establish `e1 : om (k, 1) (pureA F ⇑f g₀) = pureA F ⇑(locOpInf (om (k, 1)) f) g₀` using `acts_locOpInf (GlobalTheory.ArchLocalityX.acts_arch_left hP F E σ _ _ _ _ M B.ψ _ _ om hB.cm hB.std hW k hk f) r₀ (hR₀ f)`. Establish `e2` using `hT' f`. Rewrite `e2` using `[LinearMap.comp_apply, e1, hlf, hg₀0, one_mul]`.
+
+Conclude with `e2.symm`.
+-/
 private theorem exists_clm_om (hP : GlobalTheory.FunPr.Hypotheses₂) (hB : B.IsGood σ) (hM : M.IsGood B.ψ) (hW : M.IsWeil B.ψ χX χW om)
     {k : UA σ X.J} (hk : k ∈ UAt σ X (evI F)) (T : SInf F (Fin n × Fin d) →L[ℂ] ℂ) :
     ∃ T' : SInf F (Fin n × Fin d) →L[ℂ] ℂ, ∀ f, T' f = T (locOpInf (om (k, 1)) f) := by
@@ -94,6 +115,11 @@ private theorem exists_clm_om (hP : GlobalTheory.FunPr.Hypotheses₂) (hB : B.Is
   rw [LinearMap.comp_apply, e1, hlf, hg₀0, one_mul] at e2
   exact e2.symm
 
+/- English proof (translation)
+Establish `hS` using `IsUWeilPair.isUSplitting hW`. Establish `hact : actAB (cA σ) ((g, 1) : UA σ X.J × UA σ W.J) (partInf F u) = partInf F (mat g * u)`. Express the relevant statement in the definitionally equal form `mat g * (partInf F u) * (mat (1 : UA σ W.J))ᵀ = _`. Establish `h1 : mat (1 : UA σ W.J) = 1` using `rfl`. Rewrite using `[h1, Matrix.transpose_one, Matrix.mul_one, partInf, partInf, Matrix.mul_smul]`.
+
+Take `⟨r, h0, hr⟩` from `exists_rest_inf F (Fin n × Fin d)`. Use `DFunLike.coe_injective (eq_of_tens_inf h0 (hr f).1 ?_)` and prove the remaining obligations. Establish `h2` using `hS.impl (g, 1) (partInf F u) _ (hr f).2`. Rewrite `h2` using `[hact, (locOpInf_rho M.co hψ u f).1 r (hr _), acts_locOpInf (hex _) r (hr _), acts_locOpInf (hex _) r (hr _), (locOpInf_rho M.co hψ _ _).1 r (hr _)]`. Conclude with `h2.symm`.
+-/
 private theorem om_rho {ψ : AddChar (AF F) ℂ} (hψ : IsStd ψ) (hW : M.IsWeil ψ χX χW om) {g : UA σ X.J}
     (hex : ∀ f : SInf F (Fin n × Fin d), ∃ f₁ : SInf F (Fin n × Fin d), Acts (evI F) (om (g, 1)) f f₁)
     (u : Matrix (Fin n) (Fin d) (AE F E)) (f : SInf F (Fin n × Fin d)) :
@@ -111,6 +137,13 @@ private theorem om_rho {ψ : AddChar (AF F) ℂ} (hψ : IsStd ψ) (hW : M.IsWeil
     (locOpInf_rho M.co hψ _ _).1 r (hr _)] at h2
   exact h2.symm
 
+/- English proof (translation)
+Establish `h0 : partInf F (z - z') = 0`. Use `GlobalTheory.ArchInj.eq_zero_of_at_of_piInf F E σ hcm τ _ (at_partInf _) fun w => ?_` and prove the remaining obligations. Rewrite using `[partInf, piInf, RingHom.comp_apply, compInf_smul]`. Establish `h1 : evInf F w (realAd F 1) = 1`. Establish `h1 : (realAd F 1).1 = 1` using `(InfiniteAdeleRing.ringEquiv_mixedSpace F).injective (by`.
+
+Rewrite using `[map_one]`. Conclude with `evI_realAd_one)`. Conclude with `congrFun h1 w`. Rewrite using `[h1, one_smul, map_sub, map_sub, sub_eq_zero]`. Conclude with `h w`.
+
+Rewrite `h0` using `[partInf, smul_sub, sub_eq_zero]`. Rewrite using `[partInf, partInf, ← smul_assoc, ← smul_assoc, ← map_smul, ← map_smul, h0]`.
+-/
 private theorem partInf_congr (hcm : IsCMExt F E σ) (τ : ∀ w : InfinitePlace F, EmbOver E w) {z z' : AE F E}
     (h : ∀ w, piInf (τ w) z = piInf (τ w) z') (A : Matrix (Fin n) (Fin d) (AE F E)) :
     partInf F (cA σ z • A) = partInf F (cA σ z' • A) := by
@@ -126,6 +159,9 @@ private theorem partInf_congr (hcm : IsCMExt F E σ) (τ : ∀ w : InfinitePlace
   rw [partInf, smul_sub, sub_eq_zero] at h0
   rw [partInf, partInf, ← smul_assoc, ← smul_assoc, ← map_smul, ← map_smul, h0]
 
+/- English proof (translation)
+Establish `hKc : IsCompact (K : Set (UA σ X.J))`. Take `⟨K', _, _, hK', hc, -, -⟩` from `GlobalTheory.StabHaar.stabEx hP F E σ B _ X _ _ hB hX`. Rewrite using `[show K = K' from Subgroup.ext fun g => (hK g).trans (hK' g).symm]` and apply the resulting hypothesis. Conclude with `isCompact_iff_compactSpace.1 (isCompact_KAt hKc _)`.
+-/
 private theorem compact_KAt (hP : GlobalTheory.FunPr.Hypotheses₂) (hB : B.IsGood σ) {r s : ℕ} (hX : X.IsHerm σ B r s)
     {K : Subgroup (UA σ X.J)} (hK : IsStab B K) : CompactSpace (KAt K (evI F)) := by
   have hKc : IsCompact (K : Set (UA σ X.J)) := by
@@ -133,6 +169,11 @@ private theorem compact_KAt (hP : GlobalTheory.FunPr.Hypotheses₂) (hB : B.IsGo
     rwa [show K = K' from Subgroup.ext fun g => (hK g).trans (hK' g).symm]
   exact isCompact_iff_compactSpace.1 (isCompact_KAt hKc _)
 
+/- English proof (translation)
+Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `haveI := GlobalTheory.AdelicUnitaryTop.secondCountable_adele F`. Take `⟨eh⟩` from `GlobalTheory.AdelicUnitaryTop.nonempty_homeomorph (F := F) (E := E) (AF F)`. Use `haveI : SecondCountableTopology (AE F E) := eh.secondCountableTopology`. Use `haveI : SecondCountableTopology (Matrix (Fin n) (Fin n) (AE F E)) := inferInstanceAs (SecondCountableTopology (Fin n → Fin n → AE F E))`.
+
+Use `haveI : SecondCountableTopology (Matrix (Fin n) (Fin n) (AE F E))ᵐᵒᵖ := MulOpposite.opHomeomorph.symm.isEmbedding.secondCountableTopology`. Use `haveI : SecondCountableTopology (Matrix (Fin n) (Fin n) (AE F E))ˣ := Units.isEmbedding_embedProduct.secondCountableTopology`. Use `infer_instance`.
+-/
 private theorem secondCountable_UA (X : Spc F E n) : SecondCountableTopology (UA σ X.J) := by
   haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E
   haveI := GlobalTheory.AdelicUnitaryTop.secondCountable_adele F
@@ -150,11 +191,33 @@ variable {H : Plane E n n₁} {H' : Plane E d d₁} {r s i₀ i₁ j₀ j₁ : �
   {ei : SInf F (Fin n × Fin d) →L[ℂ] SInf F (Fin n₁ × Fin d₁)}
   {ev : ∀ v : Pl F, ((Fin n × Fin d → Fv F v) → ℂ) →ₗ[ℂ] (Fin n₁ × Fin d₁ → Fv F v) → ℂ}
 
+/- English proof (translation)
+Rewrite using `[hL.2.2 f _ (fun v => (hM.vac v).1) (Eventually.of_forall fun _ => rfl)]`. Conclude with `congrArg _ (funext fun v => (hL.2.1 v).1)`.
+-/
 private theorem ev_vac (hM : M.IsGood B.ψ) (hL : IsLocPart M M₁ e ei ev) (f : SInf F (Fin n × Fin d)) :
     e (pure f M.vac) = pure (ei f) M₁.vac := by
   rw [hL.2.2 f _ (fun v => (hM.vac v).1) (Eventually.of_forall fun _ => rfl)]
   exact congrArg _ (funext fun v => (hL.2.1 v).1)
 
+/- English proof (translation)
+Take `⟨_, _, _, _, _⟩` from `idelesAt_facts E (evI F)`. Use `haveI hfin : IsFiniteMeasure μK := ⟨by rw [hμK.2]; exact ENNReal.one_lt_top⟩`. Use `haveI : SFinite μK := @MeasureTheory.instSFiniteOfSigmaFinite _ _ μK (@MeasureTheory.IsFiniteMeasure.toSigmaFinite _ _ μK hfin)`. Use `haveI : BorelSpace (UA σ X.J) := ⟨rfl⟩`. Use `haveI := secondCountable_UA (σ := σ) X`.
+
+Use `haveI := compact_KAt hP hB hX hK`. Use `haveI : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) (AE F E)`. Establish `hI : ∀ f, Continuous fun q : KAt K (evI F) × idelesAt E (evI F) => coneInfInt B M om ei (shiftB σ H H') ν z f q.1.1 q.2.1` using `fun f => by`. Establish `hl : Continuous fun q : KAt K (evI F) × idelesAt E (evI F) => q.2.1` using `continuous_subtype_val.comp continuous_snd`. Conclude with `(((continuous_subtype_val.comp hν).comp hl).mul ((Complex.continuous_ofReal.comp (NNReal.continuous_coe.comp (GlobalTheory.Doubling.continuous_absE.comp hl))).pow z)).smul (ei.continuous.comp (shift_cont hB hM _ ((orb_cont hP hB hM hW K f).comp continuous_fst) (Units.continuous_v …`.
+
+Take `⟨N, hN⟩` from `GlobalTheory.T.integrable_ideles_power_decay F E σ B hB μ hμ z hz`. Establish `hb : ∀ f (a m : ℕ), ∃ w : KAt K (evI F) × idelesAt E (evI F) → ℝ, Integrable w (μK.prod μ) ∧ ∀ q : KAt K (evI F) × idelesAt E (evI F), SchwartzMap.seminorm ℂ a m (coneInfInt B M om ei (shiftB σ H H') ν z f q.1.1 q.2.1) ≤ w q` using `fun f a m => by`. Establish `hΦc` using `orb_cont hP hB hM hW K f`. Take `⟨C, hCb⟩` from `shift_decay hB hX hH hH' hM hM₁ he (ev_vac hM hL) _ (fun p hp => by`. Take `⟨C, hC⟩` from `isCompact_univ.exists_bound_of_continuousOn (hp.comp hΦc).continuousOn`.
+
+Conclude with `⟨C, fun t => (le_abs_self _).trans (hC t trivial)⟩)`. Use the proof step `(SchwartzMap.seminorm ℂ a m) ((schwartz_withSeminorms ℂ _ ℂ).continuous_seminorm (a, m)) N`. Use `⟨_, (integrable_const (μ := μK) C).mul_prod hN, fun q => ?_⟩` and prove the remaining obligations. Establish `h1` using `hCb q.1 q.2.1`. Rewrite using `[coneInfInt, map_smul_eq_mul, norm_mul, Circle.norm_coe, one_mul, norm_pow, Complex.norm_real, Real.norm_eq_abs, NNReal.abs_eq, mul_div_left_comm]`.
+
+Conclude with `mul_le_mul_of_nonneg_left h1 (by positivity)`. Establish `hP1 : ∀ f, Integrable (fun q : KAt K (evI F) × idelesAt E (evI F) => l (coneInfInt B M om ei (shiftB σ H H') ν z f q.1.1 q.2.1)) (μK.prod μ) ∧ l (coneInf B M om ei K μK μ (shiftB σ H H') ν z f) = ∫ q : KAt K (evI F) × idelesAt E (evI F), l (coneInfInt B M om ei (shiftB σ H H') ν …`. Introduce `f`. Use `UpperTheory.schwartz_integral_dominated (μK.prod μ) _ (hI f) (hb f) _ (fun y => ?_) l` and prove the remaining obligations. Rewrite using `[coe_coneInf (hS f), integral_prod]`.
+
+Both sides reduce to the same expression. Take `⟨w, hw, hwb⟩` from `hb f 0 0`. Conclude with `hw.mono' (continuous_eval (hI f) continuous_const).aestronglyMeasurable (Eventually.of_forall fun q => (SchwartzMap.norm_le_seminorm ℂ _ y).trans (hwb q))`. Establish `hT : ∀ q : KAt K (evI F) × idelesAt E (evI F), ∃ T : SInf F (Fin n × Fin d) →L[ℂ] ℂ, ∀ f, T f = l (coneInfInt B M om ei (shiftB σ H H') ν z f q.1.1 q.2.1)` using `fun q => by`. Set `A : SInf F (Fin n × Fin d) →L[ℂ] SInf F (Fin n × Fin d)` to `⟨archOp (archW (M.co.e (partInf F (shiftB σ H H' q.2.1)))), continuous_archOp continuous_id continuous_const⟩`.
+
+Take `⟨T, hT⟩` from `exists_clm_om hP hB hM hW q.1.2.2 (l.comp (((ν q.2.1 : ℂ) * ((absE F E q.2.1 : ℝ) : ℂ) ^ z) • ei.comp A))`. Use `⟨T, fun f => ?_⟩` and prove the remaining obligations. Rewrite using `[hT, coneInfInt, (locOpInf_rho_eq hB.std hM _ _).2]`. Both sides reduce to the same expression. Use `choose T hT using hT`.
+
+Use `haveI := GlobalTheory.T.schwartzMap_barrelledSpace' (Fin n × Fin d → mixedEmbedding.mixedSpace F)`. Take `⟨L, hLf⟩` from `GlobalTheory.ThetaIntAdm.exists_clm_integral (μK.prod μ) T fun f => by`. Simplify `(hP1 f).1` using `only [hT]`. Use `⟨L, fun f => ?_⟩` and prove the remaining obligations. Simplify using `only [hLf, hT]`.
+
+Conclude with `⟨(hP1 f).2, integral_prod _ (hP1 f).1⟩`.
+-/
 private theorem exists_L (hP : GlobalTheory.FunPr.Hypotheses₂) (hB : B.IsGood σ) (hX : X.IsHerm σ B r s)
     (hH : H.IsAdapted σ B X X₁ i₀ i₁) (hH' : H'.IsAdapted σ B W W₁ j₀ j₁) (hM : M.IsGood B.ψ) (hM₁ : M₁.IsGood B.ψ)
     (hW : M.IsWeil B.ψ χX χW om) (he : IsEv B M M₁ H.ι H'.ι (isoB H H') e) (hL : IsLocPart M M₁ e ei ev)
@@ -222,6 +285,11 @@ private theorem exists_L (hP : GlobalTheory.FunPr.Hypotheses₂) (hB : B.IsGood 
 
 open FreeSingleHomotopyEquivDiscreteChains.UpperTheory.Dv.ConeB
 
+/- English proof (translation)
+Establish `hinj : Function.Injective J.mulVecLin`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `x hx`. Assume the negation of the conclusion as `hne`. Use `h.2.2 (star x) (fun h0 => hne (by simpa using congrArg star h0))` as an intermediate fact.
+
+Rewrite `this` using `[star_star, show J *ᵥ x = 0 from hx, dotProduct_zero]`. Simplify using `at this`. Take `⟨x, hx⟩` from `LinearMap.injective_iff_surjective.1 hinj v`. Conclude with `⟨star x, by rw [star_star]; exact hx⟩`.
+-/
 private theorem exists_solve {m : ℕ} {J θ : Matrix (Fin m) (Fin m) ℂ} (h : IsCartan J θ) (v : Fin m → ℂ) :
     ∃ u : Fin m → ℂ, J *ᵥ star u = v := by
   have hinj : Function.Injective J.mulVecLin := by
@@ -234,9 +302,15 @@ private theorem exists_solve {m : ℕ} {J θ : Matrix (Fin m) (Fin m) ℂ} (h : 
   obtain ⟨x, hx⟩ := LinearMap.injective_iff_surjective.1 hinj v
   exact ⟨star x, by rw [star_star]; exact hx⟩
 
+/- English proof (translation)
+The claim follows from `locOpInf_eq fun r _ => by rw [show ((1, 1) : UA σ X.J × UA σ W.J) = 1 from rfl, map_one]; rfl`.
+-/
 private theorem loc_one (f : SInf F (Fin n × Fin d)) : locOpInf (om (1, 1)) f = f :=
   locOpInf_eq fun r _ => by rw [show ((1, 1) : UA σ X.J × UA σ W.J) = 1 from rfl, map_one]; rfl
 
+/- English proof (translation)
+The claim follows from `locOpInf_eq fun r _ => by funext x simp [Darboux.rho, schr]`.
+-/
 private theorem loc_rho_zero (ψ : AddChar (AF F) ℂ) (f : SInf F (Fin n × Fin d)) : locOpInf (M.co.rho ψ 0) f = f :=
   locOpInf_eq fun r _ => by
     funext x
@@ -245,16 +319,29 @@ private theorem loc_rho_zero (ψ : AddChar (AF F) ℂ) (f : SInf F (Fin n × Fin
 private def eta (B : Base F E) (H : Plane E n n₁) (k : UA σ X.J) : Fin n × InfinitePlace F → ℂ :=
   fun p => piInf (B.emb p.2) ((mat k⁻¹ *ᵥ incV F H.x) p.1)
 
+/- English proof (translation)
+Use `haveI : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) (AE F E)`. Establish `hm : Continuous fun g : UA σ X.J => mat g` using `Units.continuous_val.comp continuous_subtype_val`. Use `continuous_pi fun p => (GlobalTheory.Grow.continuous_infEmb_compInf F p.2 (B.emb p.2)).comp ?_` and prove the remaining obligations. Conclude with `(continuous_apply p.1).comp ((hm.comp continuous_inv).matrix_mulVec continuous_const)`.
+-/
 private theorem eta_cont : Continuous (eta (σ := σ) (X := X) B H) := by
   haveI : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) (AE F E)
   have hm : Continuous fun g : UA σ X.J => mat g := Units.continuous_val.comp continuous_subtype_val
   refine continuous_pi fun p => (GlobalTheory.Grow.continuous_infEmb_compInf F p.2 (B.emb p.2)).comp ?_
   exact (continuous_apply p.1).comp ((hm.comp continuous_inv).matrix_mulVec continuous_const)
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `InfinitePlace.Completion.extensionEmbedding w ((1 : AF F).1 w) * τ.1 x = _`. Rewrite using `[show (1 : AF F).1 w = 1 from rfl, map_one, one_mul]`.
+-/
 private theorem piInf_inc (w : InfinitePlace F) (τ : EmbOver E w) (x : E) : piInf τ (inclR (F := F) (AF F) x) = τ.1 x := by
   change InfinitePlace.Completion.extensionEmbedding w ((1 : AF F).1 w) * τ.1 x = _
   rw [show (1 : AF F).1 w = 1 from rfl, map_one, one_mul]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h`. Use `push Not at h`. Establish `hx : H.x = 0`. Use function extensionality and compare the values at `i`. Establish `h1 : mat k *ᵥ (mat k⁻¹ *ᵥ incV F H.x) = incV F H.x`.
+
+Rewrite using `[Matrix.mulVec_mulVec, ← GlobalTheory.StabHaar.mat_mul, mul_inv_cancel, GlobalTheory.StabHaar.mat_one, Matrix.one_mulVec]`. Establish `h2` using `congrArg (piInf (B.emb w)) (congrFun h1 i)`. Rewrite using `[Matrix.mulVec, dotProduct, map_sum, Finset.sum_eq_zero fun j _ => by`. Rewrite `h2` using `[map_mul, show piInf (B.emb w) ((mat k⁻¹ *ᵥ incV F H.x) j) = 0 from h j, mul_zero]]`. Rewrite `h2` using `[incV, piInf_inc]`.
+
+Conclude with `(map_eq_zero _).1 h2.symm`. Use `hH.xy` as an intermediate fact. Rewrite `this` using `[hx, form, zero_dotProduct]`. Conclude with `zero_ne_one this`.
+-/
 private theorem eta_ne (hH : H.IsAdapted σ B X X₁ i₀ i₁) (k : UA σ X.J) (w : InfinitePlace F) :
     ∃ i, eta B H k (i, w) ≠ 0 := by
   by_contra h
@@ -272,6 +359,11 @@ private theorem eta_ne (hH : H.IsAdapted σ B X X₁ i₀ i₁) (k : UA σ X.J) 
   rw [hx, form, zero_dotProduct] at this
   exact zero_ne_one this
 
+/- English proof (translation)
+Use `choose U hU using fun w => exists_solve (hX.cartan w) fun i => v (i, w)`. Use `choose u _ hu using fun i => GlobalTheory.ThK.exists_at_evI_piInf_eq F E σ hB.cm B.emb fun w => U w i`. Use `⟨u, fun k w => ?_⟩` and prove the remaining obligations. Rewrite using `[dotProduct, map_sum, pr]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_mul, mul_comm, ← congrFun (hU w) i]`. Use `congr 1`. Simplify using `only [Matrix.mulVec, dotProduct, map_sum, map_mul, incM, Matrix.map_apply, piInf_inc, GlobalTheory.RealPlaceConj.piInf_cA_eq_star F E σ hB.cm, hu, Pi.star_apply]`.
+-/
 private theorem exists_u (hB : B.IsGood σ) (hX : X.IsHerm σ B r s) (v : Fin n × InfinitePlace F → ℂ) :
     ∃ u : Fin n → AE F E, ∀ (k : UA σ X.J) w, piInf (B.emb w) ((mat k⁻¹ *ᵥ incV F H.x) ⬝ᵥ (incM F X.J *ᵥ fun i => cA σ (u i))) =
       pr v (eta B H k) w := by
@@ -289,11 +381,23 @@ private def phi (B : Base F E) (M : Model σ X W) (om : Rep σ X W) (H : Plane E
     (L : SInf F (Fin n × Fin d) →L[ℂ] ℂ) (f : SInf F (Fin n × Fin d)) (k : UA σ X.J) (z : AE F E) : ℂ :=
   L (locOpInf (M.co.rho B.ψ (partInf F (cA σ z • Matrix.vecMulVec (incV F H.y) (incV F H'.x)))) (locOpInf (om (k, 1)) f))
 
+/- English proof (translation)
+Rewrite using `[phi, phi, partInf_congr hB.cm B.emb h]`.
+-/
 private theorem phi_congr (hB : B.IsGood σ) (L : SInf F (Fin n × Fin d) →L[ℂ] ℂ) (f : SInf F (Fin n × Fin d))
     (k : UA σ X.J) {z z' : AE F E} (h : ∀ w, piInf (B.emb w) z = piInf (B.emb w) z') :
     phi B M om H H' L f k z = phi B M om H H' L f k z' := by
   rw [phi, phi, partInf_congr hB.cm B.emb h]
 
+/- English proof (translation)
+Establish `hΦc` using `orb_cont hP hB hM hW K f`. Take `⟨C, hC⟩` from `shift_decay hB hX hH hH' hM hM₁ he (ev_vac hM hL) _ (fun p hp => by`. Take `⟨C, hC⟩` from `isCompact_univ.exists_bound_of_continuousOn (hp.comp hΦc).continuousOn`. Conclude with `⟨C, fun t => (le_abs_self _).trans (hC t trivial)⟩)`. Use the proof step `((normSeminorm ℂ ℂ).comp l.toLinearMap) (continuous_norm.comp l.continuous) N`.
+
+Use `⟨|C|, fun k c => ?_⟩` and prove the remaining obligations. Establish `hc : Continuous fun c => phi B M om H H' (l.comp ei) f k.1 (j c)` using `(l.comp ei).continuous.comp (shift_cont hB hM _ continuous_const hj)`. Establish `hcl : IsClosed {c : InfinitePlace F → ℂ | ‖phi B M om H H' (l.comp ei) f k.1 (j c)‖ ≤ |C| / (1 + ‖c‖) ^ N}` using `isClosed_le hc.norm (continuous_const.div ((continuous_const.add continuous_norm).pow N) fun c => by positivity)`. Use `closure_minimal (s := {c : InfinitePlace F → ℂ | ∀ w, c w ≠ 0}) (fun c hc0 => ?_) hcl (dense_ne_zero c)` and prove the remaining obligations. Take `⟨t, -, ht⟩` from `GlobalTheory.ThK.exists_unit_at_evI_piInf_eq σ B.emb c hB.cm hc0`.
+
+Express the relevant statement in the definitionally equal form `‖phi B M om H H' (l.comp ei) f k.1 (j c)‖ ≤ _`. Rewrite using `[phi_congr hB _ _ _ (z' := t) fun w => (hjw c w).trans (ht w).symm]`. Use `(hC k t).trans ?_` and prove the remaining obligations. Simplify using `only [ht]`. Establish `h1 : ‖c‖ ≤ ∑ w, ‖c w‖` using `(pi_norm_le_iff_of_nonneg (by positivity)).2 fun w => Finset.single_le_sum (f := fun w => ‖c w‖) (fun _ _ => norm_nonneg _) (Finset.mem_univ w)`.
+
+Use `gcongr`. Conclude with `le_abs_self C`.
+-/
 private theorem phi_decay (hP : GlobalTheory.FunPr.Hypotheses₂) (hB : B.IsGood σ) (hX : X.IsHerm σ B r s)
     (hH : H.IsAdapted σ B X X₁ i₀ i₁) (hH' : H'.IsAdapted σ B W W₁ j₀ j₁) (hM : M.IsGood B.ψ) (hM₁ : M₁.IsGood B.ψ)
     (hW : M.IsWeil B.ψ χX χW om) (he : IsEv B M M₁ H.ι H'.ι (isoB H H') e) (hL : IsLocPart M M₁ e ei ev)
@@ -323,6 +427,9 @@ private theorem phi_decay (hP : GlobalTheory.FunPr.Hypotheses₂) (hB : B.IsGood
   gcongr
   exact le_abs_self C
 
+/- English proof (translation)
+Establish `hex` using `GlobalTheory.ArchLocalityX.acts_arch_left hP F E σ _ _ _ _ M B.ψ _ _ om hB.cm hB.std hW k hk`. Establish `h1 : mat k * (cA σ (t * z) • Matrix.vecMulVec (incV F H.y) (incV F H'.x)) = cA σ z • Matrix.vecMulVec (incV F H.y) (incV F H'.x)`. Rewrite using `[Matrix.mul_smul, Matrix.mul_vecMulVec, hlev.2.1, Matrix.smul_vecMulVec, smul_smul, ← map_mul, mul_comm (t : AE F E), mul_assoc, Units.mul_inv, mul_one]`. Rewrite using `[phi, phi, ← h1, om_rho hB.std hW hex, hc, loc_one]`.
+-/
 private theorem phi_levi (hP : GlobalTheory.FunPr.Hypotheses₂) (hB : B.IsGood σ) (hW : M.IsWeil B.ψ χX χW om)
     (L : SInf F (Fin n × Fin d) →L[ℂ] ℂ) (f : SInf F (Fin n × Fin d)) {k : UA σ X.J} (hk : k ∈ UAt σ X (evI F))
     {t : (AE F E)ˣ} {g₀ : UA σ X₁.J} (hlev : IsLevi (W₁ := X₁) H t g₀ k) {c : ℂ}
@@ -335,6 +442,9 @@ private theorem phi_levi (hP : GlobalTheory.FunPr.Hypotheses₂) (hB : B.IsGood 
       mul_comm (t : AE F E), mul_assoc, Units.mul_inv, mul_one]
   rw [phi, phi, ← h1, om_rho hB.std hW hex, hc, loc_one]
 
+/- English proof (translation)
+Introduce `z hz` and use `by have h0 : ∀ w, piInf (B.emb w) z / (‖piInf (B.emb w) z‖ : ℂ) ≠ 0 := fun w => by have : piInf (B.emb w) z ≠ 0 := (z.isUnit.map (piInf (B.emb w))).ne_zero exact div_ne_zero this (by exact_mod_cast norm_ne_zero_iff.2 this) rw [Chars.ν, MonoidHom.div_apply, Circle.coe_div, h.expα …`.
+-/
 private theorem hasExp_nu {a a' : ℕ} {Xc : Chars F E} (h : Xc.IsGood B a a') :
     HasExp B.emb Xc.ν fun w => B.mα w - B.mβ w := fun z hz => by
   have h0 : ∀ w, piInf (B.emb w) z / (‖piInf (B.emb w) z‖ : ℂ) ≠ 0 := fun w => by
@@ -343,6 +453,15 @@ private theorem hasExp_nu {a a' : ℕ} {Xc : Chars F E} (h : Xc.IsGood B a a') :
   rw [Chars.ν, MonoidHom.div_apply, Circle.coe_div, h.expα z hz, h.expβ z hz, ← Finset.prod_div_distrib]
   exact Finset.prod_congr rfl fun w _ => (zpow_sub₀ (h0 w) _ _).symm
 
+/- English proof (translation)
+Take `⟨τ, hτ, hτw⟩` from `GlobalTheory.ThK.exists_unit_at_evI_piInf_eq σ B.emb t hB.cm ht`. Take `⟨g₀, hg₀, hlev⟩` from `UpperTheory.archimedean_ideles_plane_compat F E σ B _ _ _ _ _ _ _ _ X X₁ H hB hX hX₁ hH k hk τ hτ fun i w => by`. Establish `h1` using `congrFun hsc (i, w)`. Simplify using `only [sc, eta, inv_one, GlobalTheory.StabHaar.mat_one, Matrix.one_mulVec] at h1`. Rewrite using `[hτw, h1]`.
+
+Establish `habs : (absE F E τ : ℝ) = nm t`. Rewrite using `[GlobalTheory.ArchIdeleDecay.absE_of_mem_arch hB.cm B.emb hτ]`. Simplify using `only [hτw, nm]`. Establish `hwt : wt κ ε t = (ν τ : ℂ) * (nm t : ℂ) ^ ε`. Rewrite using `[hexp τ hτ]`.
+
+Simplify using `only [hτw, wt, nm, Finset.prod_mul_distrib, pow_mul, Complex.ofReal_prod, Complex.ofReal_pow, Finset.prod_pow]`. Establish `hn` using `nm_pos ht`. Use `⟨nm t ^ x / nm t ^ ε, by positivity, fun c => ?_⟩` and prove the remaining obligations. Rewrite using `[phi_levi hP hB hW _ f hk.1 hlev (hlaw τ g₀ k hlev hk.1 hg₀), phi_congr hB _ _ _ (z' := j (t * c)) (fun w => by rw [map_mul, hτw, hjw, hjw]; rfl), hwt, fac, habs]`. Establish `hn' : (nm t : ℂ) ≠ 0` using `by exact_mod_cast hn.ne'`.
+
+Rewrite using `[Complex.ofReal_div, Complex.ofReal_pow]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts.
+-/
 private theorem phi_equiv (hP : GlobalTheory.FunPr.Hypotheses₂) (hB : B.IsGood σ) (hX : X.IsHerm σ B r s) {r₁ s₁ : ℕ}
     (hX₁ : X₁.IsHerm σ B r₁ s₁) (hH : H.IsAdapted σ B X X₁ i₀ i₁) (hW : M.IsWeil B.ψ χX χW om)
     (L : SInf F (Fin n × Fin d) →L[ℂ] ℂ) {ν : Chr F E} {κ : InfinitePlace F → ℤ} (hexp : HasExp B.emb ν κ) (x : ℝ) (ε : ℕ)
@@ -372,16 +491,33 @@ private theorem phi_equiv (hP : GlobalTheory.FunPr.Hypotheses₂) (hB : B.IsGood
   congr 1
   field_simp
 
+/- English proof (translation)
+Rewrite using `[phi_congr hB _ _ _ (z' := 0) (fun w => by rw [hz, map_zero]), phi, map_zero, zero_smul, partInf, smul_zero, loc_rho_zero, loc_one]`.
+-/
 private theorem phi_one_zero (hB : B.IsGood σ) (L : SInf F (Fin n × Fin d) →L[ℂ] ℂ) (f : SInf F (Fin n × Fin d))
     {z : AE F E} (hz : ∀ w, piInf (B.emb w) z = 0) : phi B M om H H' L f 1 z = L f := by
   rw [phi_congr hB _ _ _ (z' := 0) (fun w => by rw [hz, map_zero]), phi, map_zero, zero_smul, partInf, smul_zero,
     loc_rho_zero, loc_one]
 
+/- English proof (translation)
+The claim follows from `L.continuous.comp (shift_cont hB hM _ continuous_const hz)`.
+-/
 private theorem phi_cont (hB : B.IsGood σ) (hM : M.IsGood B.ψ) (L : SInf F (Fin n × Fin d) →L[ℂ] ℂ)
     (f : SInf F (Fin n × Fin d)) (k : UA σ X.J) {T : Type} [TopologicalSpace T] {z : T → AE F E} (hz : Continuous z) :
     Continuous fun t => phi B M om H H' L f k (z t) :=
   L.continuous.comp (shift_cont hB hM _ continuous_const hz)
 
+/- English proof (translation)
+Use `haveI hop : μK.IsOpenPosMeasure := hμK.1.toIsOpenPosMeasure`. Use `haveI hfin : IsFiniteMeasure μK := ⟨by rw [hμK.2]; exact ENNReal.one_lt_top⟩`. Use `haveI : BorelSpace (UA σ X.J) := ⟨rfl⟩`. Use `haveI := secondCountable_UA (σ := σ) X`. Use `haveI := compact_KAt hP hB hX hK`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨j, hj, hjw⟩ : ∃ j : (InfinitePlace F → ℂ) → AE F E, Continuous j ∧ ∀ c w, piInf (B.emb w) (j c) = c w := by`. Take `⟨Φ, -, hΦ1, -, -, -, hj, -⟩` from `GlobalTheory.T.adele_ring_infinite_finite_split F E σ B hB.cm`. Conclude with `⟨_, hj, fun c w => by rw [← hΦ1, RingEquiv.apply_symm_apply]⟩`. Take `⟨f₀, hf₀⟩` from `UpperTheory.model_embedding_good_compat F E σ B _ _ _ _ _ _ _ _ M M₁ _ _ _ hB.std hM hM₁ e he ei ev hL l hl`. Establish `hφc : Continuous (Function.uncurry fun (k : KAt K (evI F)) c => phi B M om H H' (l.comp ei) f₀ k.1 (j c))` using `(l.comp ei).continuous.comp (shift_cont hB hM _ ((orb_cont hP hB hM hW K f₀).comp continuous_fst) (hj.comp continuous_snd))`.
+
+Take `⟨v, hv⟩` from `UpperTheory.exists_convolution_nonvanishing_weight μK κ ε hκ (fun k => eta B H k.1) (eta_cont.comp continuous_subtype_val) (fun k w => eta_ne hH k.1 w) _ hφc (phi_decay hP hB hX hH hH' hM hM₁ hW he hL K l f₀ hj hjw) 1 (fun h => hf₀ ((phi_one_zero hB (l.comp ei) f₀ (hjw 0)).symm.t …`. Take `⟨u, hu⟩` from `exists_u (H := H) hB hX v`. Take `⟨c, hc0, hc⟩` from `UpperTheory.idele_integral_character_nonzero F E σ B hB.cm μ hμ ν _ hexp ε`. Use `⟨locOpInf (M.co.rho B.ψ (partInf F (Matrix.vecMulVec u (incV F H'.x)))) f₀, fun key => ?_⟩` and prove the remaining obligations. Use `mul_ne_zero hc0 hv (Eq.trans ?_ key)` and prove the remaining obligations.
+
+Rewrite using `[← integral_const_mul]`. Use `integral_congr_ae (Eventually.of_forall fun k => ?_)` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[← hc (fun s => phi B M om H H' (l.comp ei) f₀ k.1 (j (s + pr v (eta B H k.1)))) (phi_cont hB hM _ f₀ k.1 (z := fun s => j (s + pr v (eta B H k.1))) (hj.comp (continuous_add_const _)))]`. Use `integral_congr_ae (Eventually.of_forall fun y => ?_)` and prove the remaining obligations.
+
+Use `beta_reduce`. Rewrite using `[coneInfInt, map_smul, smul_eq_mul, shiftB, UpperTheory.adapted_plane_hermitian_restrict hP F E σ B _ _ _ _ _ _ _ _ _ _ X W X₁ W₁ M M₁ H H' _ _ om hB hX hH hH' hM hM₁ hW e he ei ev hL k.1 k.2.2]`. Conclude with `congrArg _ (phi_congr hB (l.comp ei) f₀ k.1 fun w => by rw [hjw, map_add, hu]; rfl)`.
+-/
 private theorem exists_ne_zero (hP : GlobalTheory.FunPr.Hypotheses₂) (hB : B.IsGood σ) (hX : X.IsHerm σ B r s) {r₁ s₁ : ℕ}
     (hX₁ : X₁.IsHerm σ B r₁ s₁) (hH : H.IsAdapted σ B X X₁ i₀ i₁) (hH' : H'.IsAdapted σ B W W₁ j₀ j₁)
     (hM : M.IsGood B.ψ) (hM₁ : M₁.IsGood B.ψ) (hW : M.IsWeil B.ψ χX χW om) (he : IsEv B M M₁ H.ι H'.ι (isoB H H') e)
@@ -429,6 +565,15 @@ end GlobalTheory.ConeBArch
 end
 
 open GlobalTheory.ConeBArch FreeSingleHomotopyEquivDiscreteChains.UpperTheory.Dv.ConeB GlobalTheory.ThK.LemF in
+/- English proof (translation)
+Introduce `hKP F E _ _ _ _ _ σ B a b G G₁ H H' X om om' om₁ om₁' hC hT hT₁ e' he ei ev hei hev hloc K hK μK μ hμK hμ l hinv hl`. Establish `hP` using `hKP.base`. Establish `hB` using `hT.base`. Establish `hM` using `hT.geo.hM'`. Establish `hM₁` using `hT₁.geo.hM'`.
+
+Establish `hL : IsLocPart G.M' G₁.M' e' ei ev` using `⟨hei, hev, hloc⟩`. Establish `hν : Continuous X.ν` using `hT.chars.heckeα.1.div' hT.chars.heckeβ.1`. Use `set ε := (a - (b + 2)) / 2 with hε`. Take `⟨L, hLf⟩` from `exists_L hP hB hT.geo.hV' hC.hH hC.hH' hM hM₁ hT.weil' he hL hK hμK hμ hν (z := ε + 1) (by omega) (GlobalTheory.ConeArchB.coneInfFun_schwartz hP B G G₁ H H' hC e' he K hK X om om' om₁ om₁' hT hT₁ ei ev hei hev hloc μK μ hμK hμ) l`. Assume the negation of the conclusion as `hne`.
+
+Use `push Not at hne`. Establish `hL0 : ∀ f, L f = 0` using `fun f => by`. Establish `hD` using `GlobalTheory.T.polynomialFock_dense_archimedeanSchwartz F E σ B _ _ G.V' G.W G.M' _ _ om' _ _ _ _ (GlobalTheory.ThK.Inhab.pairV' hT)`. Conclude with `closure_minimal (s := (G.M'.Pol B.ψ B.emb : Set _)) (t := {f | L f = 0}) (fun g hg => (hLf g).1.symm.trans (hne g hg)) (isClosed_eq L.continuous continuous_const) (hD f)`. Take `⟨f, hf⟩` from `exists_ne_zero hP hB hT.geo.hV' hT₁.geo.hV' hC.hH hC.hH' hM hM₁ hT.weil' he hL hK hμK hμ (hasExp_nu hT.chars) (((a + (b + 2) : ℕ) : ℝ) / 2) ε (fun w => by have := hT.geo.kappa w; push_cast at this ⊢; omega) l hl fun t g₀ g hlev hg hg₀ f => by`.
+
+Rewrite using `[ContinuousLinearMap.comp_apply, ContinuousLinearMap.comp_apply, (GlobalTheory.ThK.EvLawBLeft.infLaw hP F E σ B a b G G₁ H H' hC e' he ei ev hL X om om' om₁ om₁' hT hT₁).2 t g₀ g hlev hg hg₀, map_smul, smul_eq_mul, hinv g₀ hg₀ _ _ (acts_locOpInf (GlobalTheory.ArchLocalityX.acts_a …`. Conclude with `hf ((hLf f).2.symm.trans (hL0 f))`.
+-/
 theorem _root_.GlobalTheory.T.seesaw_triple_config_global_identity : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (a b : ℕ) (G : Geo σ a (b + 2)) (G₁ : Geo σ a b) (H : Plane E (b + 2) b) (H' : Plane E (a + (b + 2)) (a + b))
     (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W) (om₁ : Rep σ G₁.V G₁.W) (om₁' : Rep σ G₁.V' G₁.W),

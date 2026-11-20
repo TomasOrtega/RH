@@ -21,6 +21,11 @@ open Ad3 Ad3.R
 
 namespace GlobalTheory.CompanionTheory.RSZeta
 
+/- English proof (translation)
+Introduce `h`. Establish `h1 : ‖(2 : ℂ) ^ (-s)‖ = 1` using `by rw [← sub_eq_zero.1 h]; simp`. Establish `h2 : ‖(2 : ℂ) ^ (-s)‖ = (2 : ℝ) ^ (-s.re)`. Rewrite using `[show (2 : ℂ) = ((2 : ℝ) : ℂ) by simp, Complex.norm_cpow_eq_rpow_re_of_pos (by norm_num)]`. Simplify using the standard rewrite rules.
+
+Establish `h3 : (2 : ℝ) ^ (-s.re) < 1` using `Real.rpow_lt_one_of_one_lt_of_neg (by norm_num) (by linarith)`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem two_cpow_ne_one {s : ℂ} (hs : 0 < s.re) : (1 : ℂ) - 2 ^ (-s) ≠ 0 := by
   intro h
   have h1 : ‖(2 : ℂ) ^ (-s)‖ = 1 := by rw [← sub_eq_zero.1 h]; simp
@@ -37,6 +42,13 @@ def Ed (μ : Measure G2) (𝓕 : Set G2) (H : G2 → ℂ) (c : HeckeCharacter �
   (1 - 2 ^ (1 - s)) * (Zp μ 𝓕 H c Φ s + Zp μ 𝓕 H c⁻¹ Φ' (1 - s) - Φ 0 * Jh μ 𝓕 H c s)
     + Φ' 0 * 2 ^ (1 - s) * Bd μ 𝓕 H c (s - 1)
 
+/- English proof (translation)
+Establish `hp : ∀ f : ℂ → ℂ, Differentiable ℂ f → Differentiable ℂ fun s => (2 : ℂ) ^ f s` using `fun f hf s => (hf s).const_cpow (Or.inl (by norm_num))`. Establish `e1 : Differentiable ℂ fun s : ℂ => (2 : ℂ) ^ (1 - s)` using `hp _ (by fun_prop)`. Establish `e2 : Differentiable ℂ fun s : ℂ => (2 : ℂ) ^ (-s)` using `hp _ (by fun_prop)`. Establish `e3 : Differentiable ℂ fun s : ℂ => Zp μ 𝓕 H c⁻¹ Φ' (1 - s)` using `h2.comp (by fun_prop)`. Establish `e4 : Differentiable ℂ fun s : ℂ => Bd μ 𝓕 H c (s - 1)` using `h3.comp (by fun_prop)`.
+
+Establish `e5 : DifferentiableOn ℂ (Jh μ 𝓕 H c) {s | 0 < s.re}`. Introduce `s hs`. Use `DifferentiableAt.differentiableWithinAt ?_` and prove the remaining obligations. Conclude with `((h3 s).mul (e2 s)).div ((differentiableAt_const _).sub (e2 s)) (two_cpow_ne_one hs)`. Unfold `Ed`.
+
+Conclude with `(((differentiable_const _).sub e1).differentiableOn.mul ((h1.add e3).differentiableOn.sub ((differentiable_const _).differentiableOn.mul e5))).add (((differentiable_const _).mul e1).mul e4).differentiableOn`.
+-/
 theorem Ed_diff {μ : Measure G2} {𝓕 : Set G2} {H : G2 → ℂ} {c : HeckeCharacter ℚ} {Φ Φ' : (Fin 2 → 𝔸[ℚ]) → ℂ}
     (h1 : Differentiable ℂ (Zp μ 𝓕 H c Φ)) (h2 : Differentiable ℂ (Zp μ 𝓕 H c⁻¹ Φ'))
     (h3 : Differentiable ℂ (Bd μ 𝓕 H c)) : DifferentiableOn ℂ (Ed μ 𝓕 H c Φ Φ') {s | 0 < s.re} := by
@@ -55,6 +67,9 @@ theorem Ed_diff {μ : Measure G2} {𝓕 : Set G2} {H : G2 → ℂ} {c : HeckeCha
     ((h1.add e3).differentiableOn.sub ((differentiable_const _).differentiableOn.mul e5))).add
     (((differentiable_const _).mul e1).mul e4).differentiableOn
 
+/- English proof (translation)
+Establish `n0` using `two_cpow_ne_one (s := s) (by linarith)`. Establish `e : Jh μ 𝓕 H c s = Jl μ 𝓕 H c s` using `by rw [Jh, ← h0, mul_div_assoc, div_self n0, mul_one]`. Rewrite `h1` using `[neg_sub]`. Rewrite using `[Ed, e, hz]`. Take the linear combination `(-Φ' 0) * h1`.
+-/
 theorem Ed_eq {μ : Measure G2} {𝓕 : Set G2} {H : G2 → ℂ} {c : HeckeCharacter ℚ} {Φ Φ' : (Fin 2 → 𝔸[ℚ]) → ℂ} {s : ℂ}
     (hs : 1 < s.re)
     (hz : Zg μ 𝓕 H c Φ s = Zp μ 𝓕 H c Φ s + Zp μ 𝓕 H c⁻¹ Φ' (1 - s) + Φ' 0 * Jl μ 𝓕 H c (s - 1) - Φ 0 * Jl μ 𝓕 H c s)
@@ -67,6 +82,17 @@ theorem Ed_eq {μ : Measure G2} {𝓕 : Set G2} {H : G2 → ℂ} {c : HeckeChara
   rw [Ed, e, hz]
   linear_combination (-Φ' 0) * h1
 
+/- English proof (translation)
+Establish `n0` using `two_cpow_ne_one (s := s) hs.1`. Establish `n1` using `two_cpow_ne_one (s := 1 - s) (by simpa using hs.2)`. Establish `x0 : (2 : ℂ) ^ s ≠ 0` using `by simp`. Establish `x1 : (2 : ℂ) ^ (1 - s) ≠ 0` using `by simp`. Establish `i0 : (2 : ℂ) ^ (-s) = (2 ^ s)⁻¹` using `Complex.cpow_neg _ _`.
+
+Establish `i1 : (2 : ℂ) ^ (-(1 - s)) = (2 ^ (1 - s))⁻¹` using `Complex.cpow_neg _ _`. Rewrite `b1` using `[neg_sub]`. Simplify using `only [Ed, Jh, inv_inv, sub_sub_cancel, show 1 - s - 1 = -s by ring, b0, b1]`. Rewrite `n0`, the goal using `[i0]`. Rewrite `n1`, the goal using `[i1]`.
+
+Generalize the expression as in `(2 : ℂ) ^ s = x at *`. Generalize the expression as in `(2 : ℂ) ^ (1 - s) = y at *`. Generalize the expression as in `Bd μ 𝓕 H c s = A at *`. Generalize the expression as in `Bd μ 𝓕 H c (s - 1) = M at *`. Establish `hx : x - 1 ≠ 0` using `fun h => n0 (by rw [sub_eq_zero.1 h]; simp)`.
+
+Establish `hy : y - 1 ≠ 0` using `fun h => n1 (by rw [sub_eq_zero.1 h]; simp)`. Establish `hx' : 1 - x⁻¹ = (x - 1) / x` using `by field_simp`. Establish `hy' : 1 - y⁻¹ = (y - 1) / y` using `by field_simp`. Rewrite using `[hx', hy']`. Clear the denominators using the available nonvanishing facts.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem Ed_fe {μ : Measure G2} {𝓕 : Set G2} {H : G2 → ℂ} {c : HeckeCharacter ℚ} {Φ Φ' : (Fin 2 → 𝔸[ℚ]) → ℂ} {s : ℂ}
     (hs : Strip s)
     (b0 : Bd μ 𝓕 H c⁻¹ (-s) = 2 ^ (-s) * Bd μ 𝓕 H c s)
@@ -96,6 +122,19 @@ theorem Ed_fe {μ : Measure G2} {𝓕 : Set G2} {H : G2 → ℂ} {c : HeckeChara
 
 end GlobalTheory.CompanionTheory.RSZeta
 
+/- English proof (translation)
+Introduce `hG1 hG3 hG4a μ 𝓕 mK 𝓓 hS H hH Φ hΦ c hc`. Take `⟨hΦ', hΦ'', hrel⟩` from `hG4a Φ hΦ`. Establish `hci : IsOfFinOrder c⁻¹` using `hc.inv`. Establish `hrel' : ∀ g, th (sFA Φ) g + sFA Φ 0 = (((Dt g)⁻¹ : ℝ) : ℂ) * (th Φ (inv2 g) + Φ 0)`. Introduce `g`.
+
+Establish `h` using `hrel (inv2 g)`. Rewrite `h` using `[GlobalTheory.CompanionTheory.RSZeta.det_inverse_twist_involutive, GlobalTheory.CompanionTheory.RSZeta.module_det_inverse_twist, inv_inv]`. Rewrite using `[h, ← mul_assoc, ← Complex.ofReal_mul, inv_mul_cancel₀ (GlobalTheory.CompanionTheory.RSZeta.Dt_pos g).ne']`. Simplify using the standard rewrite rules. Establish `I1` using `GlobalTheory.T.integrableOn_lower_zeta_integrand μ 𝓕 mK 𝓓 H c hG1 hS hH hc`.
+
+Establish `I2` using `GlobalTheory.T.integrableOn_lower_zeta_integrand μ 𝓕 mK 𝓓 H c⁻¹ hG1 hS hH hci`. Establish `d1` using `GlobalTheory.T.differentiable_partial_zeta_integral μ 𝓕 mK 𝓓 H Φ c hG3 hS hH hΦ`. Establish `d2` using `GlobalTheory.T.differentiable_partial_zeta_integral μ 𝓕 mK 𝓓 H (sFA Φ) c⁻¹ hG3 hS hH hΦ'`. Establish `d1'` using `GlobalTheory.T.differentiable_partial_zeta_integral μ 𝓕 mK 𝓓 H Φ c⁻¹⁻¹ hG3 hS hH hΦ`. Establish `d2'` using `GlobalTheory.T.differentiable_partial_zeta_integral μ 𝓕 mK 𝓓 H (sFA Φ) c⁻¹ hG3 hS hH hΦ'`.
+
+Establish `b1` using `GlobalTheory.T.differentiable_boundary_zeta_term μ 𝓕 mK 𝓓 H c hS hH`. Establish `b2` using `GlobalTheory.T.differentiable_boundary_zeta_term μ 𝓕 mK 𝓓 H c⁻¹ hS hH`. Use `⟨GlobalTheory.CompanionTheory.RSZeta.Ed μ 𝓕 H c Φ (sFA Φ), GlobalTheory.CompanionTheory.RSZeta.Ed μ 𝓕 H c⁻¹ (sFA Φ) Φ, GlobalTheory.CompanionTheory.RSZeta.Ed_diff d1 d2 b1, GlobalTheory.CompanionTheory.RSZeta.Ed_diff d2' d1' b2, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `s hs`. Establish `hs1 : 0 < (s - 1).re` using `by simp; linarith`.
+
+Establish `hs0 : 0 < s.re` using `by linarith`. Use `⟨GlobalTheory.CompanionTheory.RSZeta.Ed_eq hs (GlobalTheory.T.global_zeta_integral_functional_equation μ 𝓕 mK 𝓓 H Φ (sFA Φ) c hG1 hG3 hS hH hΦ hΦ' hrel I1 s hs) (GlobalTheory.T.lower_zeta_integral_boundary_relation μ 𝓕 mK 𝓓 H c hG1 hS hH hc s (I1 s hs0)) (GlobalTheory.T.lower_zet …` and prove the remaining obligations. Introduce `s hs`. Conclude with `GlobalTheory.CompanionTheory.RSZeta.Ed_fe hs (GlobalTheory.T.boundary_zeta_term_functional_equation μ 𝓕 mK 𝓓 H c hG1 hS hH hc s) (GlobalTheory.T.boundary_zeta_term_functional_equation μ 𝓕 mK 𝓓 H c hG1 hS hH hc (s - 1))`. Introduce `h1 h0`.
+
+Apply `h1` to reduce the goal to its premises. Establish `: GlobalTheory.CompanionTheory.RSZeta.Bd μ 𝓕 H c 0 = 0`. Simplify `h0` using `[GlobalTheory.CompanionTheory.RSZeta.Bd]`. Simplify using `[GlobalTheory.CompanionTheory.RSZeta.Ed, this]`.
+-/
 theorem GlobalTheory.CompanionTheory.RSZeta.functional_equation : Ad3.R.G1a → Ad3.R.G3 → Ad3.R.AdelicThetaPoissonSummation → Ad3.R.G4 := by
   intro hG1 hG3 hG4a μ 𝓕 mK 𝓓 hS H hH Φ hΦ c hc
   obtain ⟨hΦ', hΦ'', hrel⟩ := hG4a Φ hΦ

@@ -17,6 +17,11 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj Formalism.L2.Pj.QAt GlobalTheory.ArcQ GlobalTheory.Frames
 open GlobalTheory.Reg.ChartInhab GlobalTheory.Reg.LiftUnique
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h Z r z j k hj hk`. Establish `hz : r z ∈ (L.pull F).U (fun _ => j) ⊓ L'.U k` using `⟨mem_pull.2 hj, hk⟩`. Establish `a` using `congrArg (gs r z _) (h (fun _ => j) k)`. Conclude with `(gs_res _ z _ hz _).symm.trans (a.trans ((gs_mul _ z _ hz _ _).trans (congrArg₂ (· * ·) (gs_unit _ z _ hz _) (gs_res _ z _ hz _))))`.
+
+Introduce `h (i : PUnit → L.ι) k`. Conclude with `fn_ext fun p hp => (gs_res _ p _ hp _).trans ((h _ (𝟙 _) p (i PUnit.unit) k (mem_pull.1 hp.1) hp.2).trans (Eq.symm ((gs_mul _ p _ hp _ _).trans (congrArg₂ (· * ·) (gs_unit (𝟙 _) p _ hp _) (gs_res _ p _ hp _)))))`.
+-/
 theorem isoMaps_iff {X X' : Scheme.{0}} {L : LB X} {L' : LB X'} {F : X' ⟶ X} (w : LB.Iso L' (L.pull F))
     (σ : LB.Sec L') (s : LB.Sec (L.pull F)) :
     IsoMaps w σ s ↔ ∀ (Z : Scheme.{0}) (r : Z ⟶ X') (z : Z) (j : L.ι) (k : L'.ι), F (r z) ∈ L.U j → r z ∈ L'.U k →
@@ -47,6 +52,17 @@ section Comparison₂
 variable {V : Type} [CommRing V] {x : Sp V ⟶ Xo.X} {G : SAB H (Sp V)} {B : Scheme.{0}} {t : SAB H B} {f : Sp V ⟶ B}
   (m1 : SABMap G Xo.univ.t x) (m2 : SABMap G t f) (θ : LB.Sec t.PP.L) (s : LB.Sec (PPx x))
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w1, w2, σ, s1, θ2, r1, r2, i1, i2, p, c⟩`. Use `⟨w1, w2, σ, r1, r2, fun Z r z j k hj hk => ?_, fun Z r z j k hj hk => ?_⟩` and prove the remaining obligations. Establish `le : (Xo.univ.t.PP.L.pull m1.φ).U (fun _ => j) ≤ toGx m1 ⁻¹ᵁ (PPx x).U (fun _ => j)` using `fun q hq => le_toGx m1 j (mem_pull.1 hq)`. Use `Eq.trans ?_ ((isoMaps_iff w1 σ s1).1 i1 Z r z j k hj hk)` and prove the remaining obligations.
+
+Rewrite using `[c (toGx m1) (toGx_snd m1) (toGx_fst m1) (fun _ => j) le]`. Conclude with `(gs_appLE (toGx m1) _ _ le r z (mem_pull.2 hj) _).symm`. Establish `le : (t.PP.L.pull m2.φ).U (fun _ => j) ≤ m2.φ ⁻¹ᵁ t.PP.L.U j` using `fun q hq => mem_pull.1 hq`. Use `Eq.trans ?_ ((isoMaps_iff w2 σ θ2).1 i2 Z r z j k hj hk)` and prove the remaining obligations. Rewrite using `[p (fun _ => j) le]`.
+
+Conclude with `(gs_appLE m2.φ _ _ le r z (mem_pull.2 hj) _).symm`. Introduce and unpack `⟨w1, w2, σ, r1, r2, a, b⟩`. Take `⟨s1, hs1⟩` from `thf_secUp ((isGen_iff w1).1 r1.1) Xo.univ.t.PP.isLB G.PP.isLB σ`. Use `⟨w1, w2, σ, s1, thfPull t.PP.L m2.φ θ, r1, r2, (isoMaps_iff w1 σ s1).2 fun Z r z j k hj hk => hs1 Z r z (fun _ => j) k (mem_pull.2 hj) hk, (isoMaps_iff w2 σ _).2 fun Z r z j k hj hk => (gs_appLE m2.φ _ _ _ r z (mem_pull.2 hj) _).trans (b Z r z j k hj hk), fun _ _ => rfl, ?_⟩` and prove the remaining obligations. Introduce `g e₁ e₂ (J : PUnit → Xo.univ.t.PP.L.ι) hJ`.
+
+Establish `eg : g = toGx m1`. Apply `FramedBaseChange.pulledGroup_hom_ext` to reduce the goal to its premises. Rewrite using `[e₁, toGx_snd]`. Rewrite using `[e₂, toGx_fst]`. Substitute `eg` using the available equality.
+
+Use `fn_ext fun p hp => ?_` and prove the remaining obligations. Take `⟨k, hk⟩` from `exists_chart G.PP.isLB p`. Rewrite using `[hs1 _ (𝟙 _) p J k hp hk, gs_appLE _ _ _ hJ (𝟙 _) p hp, a _ (𝟙 _) p _ k (mem_pull.1 hp) hk]`.
+-/
 theorem tie_iff : (∃ (w1 : LB.Iso G.PP.L (Xo.univ.t.PP.L.pull m1.φ)) (w2 : LB.Iso G.PP.L (t.PP.L.pull m2.φ))
       (σ' : LB.Sec G.PP.L) (s1 : LB.Sec (Xo.univ.t.PP.L.pull m1.φ)) (θ2 : LB.Sec (t.PP.L.pull m2.φ)),
       RigIso m1 w1 ∧ RigIso m2 w2 ∧ IsoMaps w1 σ' s1 ∧ IsoMaps w2 σ' θ2 ∧ PullSec m2.φ θ θ2 ∧
@@ -82,6 +98,9 @@ theorem tie_iff : (∃ (w1 : LB.Iso G.PP.L (Xo.univ.t.PP.L.pull m1.φ)) (w2 : LB
     obtain ⟨k, hk⟩ := exists_chart G.PP.isLB p
     rw [hs1 _ (𝟙 _) p J k hp hk, gs_appLE _ _ _ hJ (𝟙 _) p hp, a _ (𝟙 _) p _ k (mem_pull.1 hp) hk]
 
+/- English proof (translation)
+Establish `hp : IsProper G.G.hom` using `MorphismProperty.of_isPullback (P := @IsProper) m1.cart.1 Xo.univ.proper`. Establish `hab : IsAbelianScheme G.G` using `⟨G.semi.comm, G.semi.smooth, hp, G.semi.geomConnected⟩`. Conclude with `GlobalTheory.iso_eq_of_maps_along_section (S := Sp V) (exists_chart G.PP.isLB) (fun y => (exists_chart t.PP.isLB (m2.φ y)).elim fun j hj => ⟨fun _ => j, mem_pull.2 hj⟩) G.G.hom (eSec G.G) (Over.w η[G.G]) (hG _ _ hab).2 h.1 h'.1 h.2 h'.2`.
+-/
 theorem rigIso_unique (hG : Out.GlobalFnsSt) {w w' : LB.Iso G.PP.L (t.PP.L.pull m2.φ)} (m1 : SABMap G Xo.univ.t x)
     (h : RigIso m2 w) (h' : RigIso m2 w') : w = w' := by
   have hp : IsProper G.G.hom := MorphismProperty.of_isPullback (P := @IsProper) m1.cart.1 Xo.univ.proper
@@ -96,6 +115,9 @@ section FirstPower
 
 variable {X : Scheme.{0}} {L : LB X}
 
+/- English proof (translation)
+Establish `le : LB.wchart L (fun _ : Fin 1 => 𝟙 X) (fun _ => k) ≤ L.U k` using `fun y hy => Set.mem_iInter.1 hy 0`. Rewrite using `[h (fun _ => k) le]`. Conclude with `gs_res r z le (Set.mem_iInter.2 fun _ => hp) _`.
+-/
 theorem gs_h0Sec {σ : Out.H0 L 1} {θ : L.Sec} (h : SectionOfLineBundleOne σ θ) {Z : Scheme.{0}} (r : Z ⟶ X) (z : Z) (k : L.ι)
     (hp : r z ∈ L.U k) :
     gs r z (LB.wchart L (fun _ : Fin 1 => 𝟙 X) (fun _ => k)) (σ.f (fun _ => k)) = gs r z (L.U k) (θ.f k) := by
@@ -103,6 +125,13 @@ theorem gs_h0Sec {σ : Out.H0 L 1} {θ : L.Sec} (h : SectionOfLineBundleOne σ �
   rw [h (fun _ => k) le]
   exact gs_res r z le (Set.mem_iInter.2 fun _ => hp) _
 
+/- English proof (translation)
+Establish `le : ∀ k, L.U k ≤ LB.wchart L (fun _ : Fin 1 => 𝟙 X) (fun _ => k)` using `fun k y hy => Set.mem_iInter.2 fun _ => hy`. Use `⟨⟨fun k => resG X (le k) (σ.f (fun _ => k)), fun i j => fn_ext fun y hy => ?_⟩, fun J hJ => ?_⟩` and prove the remaining obligations. Establish `m₁ : (𝟙 X : X ⟶ X) y ∈ LB.wchart L (fun _ : Fin 1 => 𝟙 X) (fun _ => i)` using `le i hy.1`. Establish `m₂ : (𝟙 X : X ⟶ X) y ∈ LB.wchart L (fun _ : Fin 1 => 𝟙 X) (fun _ => j)` using `le j hy.2`. Establish `gg` using `gm_linComb L (K := Fin 1) (fun _ => 𝟙 X) (fun _ => ((1 : ℕ) : ℤ)) (𝟙 X) y _ _ m₁ m₂`.
+
+Rewrite `gg` using `[Fin.prod_univ_one, Nat.cast_one, zpow_one, Category.id_comp]`. Use `(gs_res _ y _ hy _).trans ((gs_res _ y _ hy.1 _).trans ((gs_compat σ (𝟙 X) y m₁ m₂).trans (Eq.symm ((gs_mul _ y _ hy _ _).trans (congrArg₂ (· * ·) ((gs_unit _ y _ hy _).trans (congrArg Units.val gg.symm)) ((gs_res _ y _ hy _).trans (gs_res _ y _ hy.2 _)))))))` and prove the remaining obligations. Take `⟨k, rfl⟩ : ∃ k, J = fun _ => k` from `⟨J 0, funext fun i => congrArg J (Subsingleton.elim i 0)⟩`. Use `fn_ext fun y hy => ?_` and prove the remaining obligations. Establish `hy' : (𝟙 X : X ⟶ X) y ∈ LB.wchart L (fun _ : Fin 1 => 𝟙 X) (fun _ => k)` using `hy`.
+
+Conclude with `((gs_res (𝟙 X) y hJ hy' _).trans (gs_res (𝟙 X) y (le k) (hJ hy') _)).symm`.
+-/
 theorem exists_section_of_h0 (σ : Out.H0 L 1) : ∃ θ : L.Sec, SectionOfLineBundleOne σ θ := by
   have le : ∀ k, L.U k ≤ LB.wchart L (fun _ : Fin 1 => 𝟙 X) (fun _ => k) := fun k y hy =>
     Set.mem_iInter.2 fun _ => hy
@@ -137,6 +166,19 @@ def Thru (w₀ : LB.Iso t₁.PP.L (Xo.univ.t.PP.L.pull n0.φ)) (w₁ : LB.Iso t�
     (gw w₁ (r ≫ m.φ) z j k₁).val * gs (r ≫ toGx m1) z _ (s.f (fun _ => j₀)) =
       (gw w₀ (r ≫ m.φ) z j₀ k₁).val * (gw w₂ (r ≫ m2.φ) z j k).val * gs (r ≫ m2.φ) z _ (θ.f k)
 
+/- English proof (translation)
+Take `⟨wm, rm⟩` from `exists_rigIso m`. Take `⟨W2, R2⟩` from `exists_rigIso m2`. Take `⟨W1, R1, T1⟩` from `cube_rig_comp n0.cm m.cm m1.cm e₁ (by rw [m1.base, m.base, n0.base, hx]) _ _ _ w₀ wm r₀ rm`. Take `⟨N, eN, WN, RN, TN⟩` from `exists_comp_rig n1 m _ rfl r₁ rm`. Take `⟨WN', RN', TN'⟩` from `cube_rig_comp n2.cm m2.cm N.cm (eN.trans e₂) (by rw [N.base, m2.base, n2.base, hu]) _ _ _ w₂ W2 r₂ R2`.
+
+Take `rfl : WN = WN'` from `rigIso_unique N hG m1 RN RN'`. Establish `sq : ∀ (Z : Scheme.{0}) (r : Z ⟶ G.G.left) (z : Z) (j : T.PP.L.ι) (k : t.PP.L.ι) (k₁ : t₁.PP.L.ι) (i : G.PP.L.ι), n1.φ (m.φ (r z)) ∈ T.PP.L.U j → m2.φ (r z) ∈ t.PP.L.U k → m.φ (r z) ∈ t₁.PP.L.U k₁ → r z ∈ G.PP.L.U i → (gw w₁ (r ≫ m.φ) z j k₁).val * (gw wm r z k₁ i).val = (gw w₂ ( …` using `fun Z r z j k k₁ i hj hk hk₁ hi => by`. Rewrite using `[← Units.val_mul, ← Units.val_mul]`. Conclude with `congrArg Units.val ((TN Z r z j k₁ i hj hk₁ hi).symm.trans (TN' Z r z j k i ((congrArg (fun g => g (r z) ∈ T.PP.L.U j) eN).mpr hj) hk hi))`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨W1', W2', σ, R1', R2', a, b⟩ Z r z j k k₁ j₀ hj hk hk₁ hj₀`. Take `rfl : W1 = W1'` from `rigIso_unique m1 hG m1 R1 R1'`. Take `rfl : W2 = W2'` from `rigIso_unique m2 hG m1 R2 R2'`. Take `⟨i, hi⟩` from `exists_chart G.PP.isLB (r z)`. Rewrite using `[a Z r z j₀ i hj₀ hi, b Z r z k i hk hi, T1 Z r z j₀ k₁ i hj₀ hk₁ hi, Units.val_mul]`.
+
+Take the linear combination `(gw w₀ (r ≫ m.φ) z j₀ k₁).val * gs r z _ (σ.f i) * sq Z r z j k k₁ i hj hk hk₁ hi`. Introduce `h`. Take `⟨σ, hσ⟩` from `sec_pull_down ((isGen_iff W2).1 R2.1) t.PP.isLB G.PP.isLB θ`. Use `⟨W1, W2, σ, R1, R2, fun Z r z j₀ i hj₀ hi => ?_, hσ⟩` and prove the remaining obligations. Take `⟨j, hj⟩` from `exists_chart T.PP.isLB (n1.φ (m.φ (r z)))`.
+
+Take `⟨k, hk⟩` from `exists_chart t.PP.isLB (m2.φ (r z))`. Take `⟨k₁, hk₁⟩` from `exists_chart t₁.PP.isLB (m.φ (r z))`. Establish `e` using `h Z r z j k k₁ j₀ hj hk hk₁ hj₀`. Rewrite `e` using `[hσ Z r z k i hk hi]`. Use `(Units.mul_right_inj (gw w₁ (r ≫ m.φ) z j k₁)).1 (e.trans ?_)` and prove the remaining obligations.
+
+Rewrite using `[T1 Z r z j₀ k₁ i hj₀ hk₁ hi, Units.val_mul]`. Take the linear combination `-(gw w₀ (r ≫ m.φ) z j₀ k₁).val * gs r z _ (σ.f i) * sq Z r z j k k₁ i hj hk hk₁ hi`.
+-/
 theorem tie_iff_thru (hG : Out.GlobalFnsSt) (hx : x = u ≫ p) (hu : u ≫ q = f ≫ χ) (e₁ : m1.φ = m.φ ≫ n0.φ)
     (e₂ : m.φ ≫ n1.φ = m2.φ ≫ n2.φ)
     {w₀ : LB.Iso t₁.PP.L (Xo.univ.t.PP.L.pull n0.φ)} {w₁ : LB.Iso t₁.PP.L (T.PP.L.pull n1.φ)}
@@ -188,6 +230,9 @@ def OnOpens (L : RigLB t.G) (g₁ : Gx x ⟶ t₁.G.left) (g₂ : Gx x ⟶ t.G.l
       (g₁.appLE _ _ h₀).hom (w₀.s (fun _ => j₀, k₁)).val * (g₂.appLE _ _ h₂).hom (w₂.s (fun _ => j, k)).val *
         (g₂.appLE _ _ h₃).hom (σ.f (fun _ => k))
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(gs_mul r z U hz _ _).trans (congrArg₂ (· * ·) ((gs_appLE g₁ _ _ h₁ r z hz _).trans (gs_unit (r ≫ g₁) z _ (h₁ hz) _)) (gs_res r z h₄ hz _)), (gs_mul r z U hz _ _).trans (congrArg₂ (· * ·) ((gs_mul r z U hz _ _).trans (congrArg₂ (· * ·) ((gs_appLE g₁ _ _ h₀ r z hz _).trans (gs_un …`.
+-/
 theorem gs_onOpens {g₁ : Gx x ⟶ t₁.G.left} {g₂ : Gx x ⟶ t.G.left}
     {w₀ : LB.Iso t₁.PP.L (Xo.univ.t.PP.L.pull n0.φ)} {w₁ : LB.Iso t₁.PP.L (T.PP.L.pull n1.φ)}
     {w₂ : LB.Iso t.PP.L (T.PP.L.pull n2.φ)} {σ : Out.H0 t.PP.L 1} {θ : LB.Sec t.PP.L} (hσ : SectionOfLineBundleOne σ θ)
@@ -209,6 +254,21 @@ theorem gs_onOpens {g₁ : Gx x ⟶ t₁.G.left} {g₂ : Gx x ⟶ t.G.left}
       ((gs_appLE g₂ _ _ h₂ r z hz _).trans (gs_unit (r ≫ g₂) z _ (h₂ hz) _))))
       ((gs_appLE g₂ _ _ h₃ r z hz _).trans (gs_h0Sec hσ (r ≫ g₂) z k (h₂ hz).2)))⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `a Z r z j k k₁ j₀ hj hk hk₁ hj₀`. Establish `c₁ : (r ≫ toGx m1) ≫ h ≫ m.φ = r ≫ m.φ` using `by rw [Category.assoc, reassoc_of% hg]`. Establish `c₂ : (r ≫ toGx m1) ≫ h ≫ m2.φ = r ≫ m2.φ` using `by rw [Category.assoc, reassoc_of% hg]`. Establish `d₁ : (h ≫ m.φ) ((r ≫ toGx m1) z) = m.φ (r z)` using `congrArg (fun g => g z) c₁`.
+
+Establish `d₂ : (h ≫ m2.φ) ((r ≫ toGx m1) z) = m2.φ (r z)` using `congrArg (fun g => g z) c₂`. Set `U : (Gx x).Opens` to `((h ≫ m.φ) ⁻¹ᵁ (LB.div (Xo.univ.t.PP.L.pull n0.φ) t₁.PP.L).U (fun _ => j₀, k₁) ⊓ (h ≫ m.φ) ⁻¹ᵁ (LB.div (T.PP.L.pull n1.φ) t₁.PP.L).U (fun _ => j, k₁)) ⊓ (((h ≫ m2.φ) ⁻¹ᵁ (LB.div (T.PP.L.pull n2.φ) t.PP.L).U (fun _ => j, k) ⊓ (h ≫ m2.φ) ⁻¹ᵁ LB.wchart t.PP.L (fun _ : Fin 1 => 𝟙 t.G …`. Establish `p₀ : m.φ (r z) ∈ (LB.div (Xo.univ.t.PP.L.pull n0.φ) t₁.PP.L).U (fun _ => j₀, k₁)` using `⟨mem_pull.2 ((congrArg (fun g => g (r z) ∈ Xo.univ.t.PP.L.U j₀) e₁).mp hj₀), hk₁⟩`. Establish `p₁ : m.φ (r z) ∈ (LB.div (T.PP.L.pull n1.φ) t₁.PP.L).U (fun _ => j, k₁)` using `⟨mem_pull.2 hj, hk₁⟩`. Establish `p₂ : m2.φ (r z) ∈ (LB.div (T.PP.L.pull n2.φ) t.PP.L).U (fun _ => j, k)` using `⟨mem_pull.2 ((congrArg (fun g => g (r z) ∈ T.PP.L.U j) e₂).mp hj), hk⟩`.
+
+Establish `p₃ : m2.φ (r z) ∈ LB.wchart t.PP.L (fun _ : Fin 1 => 𝟙 t.G.left) (fun _ => k)` using `Set.mem_iInter.2 fun _ => hk`. Rewrite `p₀`, `p₁` using `[← d₁]`. Rewrite `p₂`, `p₃` using `[← d₂]`. Establish `hz : (r ≫ toGx m1) z ∈ U` using `⟨⟨p₀, p₁⟩, ⟨p₂, p₃⟩, le_toGx m1 j₀ hj₀⟩`. Establish `h₀ : U ≤ _` using `inf_le_left.trans inf_le_left`.
+
+Establish `h₁ : U ≤ _` using `inf_le_left.trans inf_le_right`. Establish `h₂ : U ≤ _` using `inf_le_right.trans (inf_le_left.trans inf_le_left)`. Establish `h₃ : U ≤ _` using `inf_le_right.trans (inf_le_left.trans inf_le_right)`. Establish `h₄ : U ≤ _` using `inf_le_right.trans inf_le_right`. Take `⟨b₁, b₂⟩` from `gs_onOpens n0 n1 n2 (w₀ := w₀) (w₁ := w₁) (w₂ := w₂) hσ s j k k₁ j₀ U h₀ h₁ h₂ h₃ h₄ _ z hz`.
+
+Rewrite `b₁` using `[c₁]`. Rewrite `b₂` using `[c₁, c₂]`. Conclude with `b₁.symm.trans ((congrArg (gs _ z U) (a j k k₁ j₀ U h₀ h₁ h₂ h₃ h₄)).trans b₂)`. Introduce `a j k k₁ j₀ U h₀ h₁ h₂ h₃ h₄`. Use `fn_ext fun y hy => ?_` and prove the remaining obligations.
+
+Take `⟨b₁, b₂⟩` from `gs_onOpens n0 n1 n2 (w₀ := w₀) (w₁ := w₁) (w₂ := w₂) hσ s j k k₁ j₀ U h₀ h₁ h₂ h₃ h₄ (𝟙 _) y hy`. Establish `e` using `a _ h y j k k₁ j₀ (mem_pull.1 (h₁ hy).1) (h₂ hy).2 (h₁ hy).2 ((congrArg (fun g => g y ∈ Xo.univ.t.PP.L.U j₀) hφ).mpr (Set.mem_iInter.1 (h₄ hy) 0))`. Rewrite `e` using `[hg']`. Rewrite `b₁` using `[Category.id_comp]`. Rewrite `b₂` using `[Category.id_comp, Category.id_comp]`.
+
+Conclude with `b₁.trans (e.trans b₂.symm)`.
+-/
 theorem onOpens_iff_thru (e₁ : m1.φ = m.φ ≫ n0.φ) (e₂ : m.φ ≫ n1.φ = m2.φ ≫ n2.φ) {h : Gx x ⟶ G.G.left}
     (hφ : h ≫ m1.φ = (snd (Over.mk x) Xo.univ.t.G).left) (hg : toGx m1 ≫ h = 𝟙 _) (hg' : h ≫ toGx m1 = 𝟙 _)
     {w₀ : LB.Iso t₁.PP.L (Xo.univ.t.PP.L.pull n0.φ)} {w₁ : LB.Iso t₁.PP.L (T.PP.L.pull n1.φ)}
@@ -256,6 +316,15 @@ theorem onOpens_iff_thru (e₁ : m1.φ = m.φ ≫ n0.φ) (e₂ : m.φ ≫ n1.φ 
     rw [Category.id_comp, Category.id_comp] at b₂
     exact b₁.trans (e.trans b₂.symm)
 
+/- English proof (translation)
+Substitute `hL` using the available equality. Take `⟨h, hφ, hh, hg, hg'⟩` from `exists_inv m1`. Establish `a₁ : (h ≫ m.φ) ≫ n0.φ = (snd (Over.mk x) Xo.univ.t.G).left` using `by rw [Category.assoc, ← e₁, hφ]`. Establish `a₂ : (h ≫ m.φ) ≫ t₁.G.hom = (fst (Over.mk x) Xo.univ.t.G).left ≫ u`. Rewrite using `[Category.assoc, m.cart.1.w, ← Category.assoc, hh]`.
+
+Establish `a₃ : (h ≫ m2.φ) ≫ n2.φ = (h ≫ m.φ) ≫ n1.φ` using `by rw [Category.assoc, Category.assoc, e₂]`. Establish `a₄ : (h ≫ m2.φ) ≫ t.G.hom = (fst (Over.mk x) Xo.univ.t.G).left ≫ f`. Rewrite using `[Category.assoc, m2.cart.1.w, ← Category.assoc, hh]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨θ, ⟨σ, θ', hQ, hσ, he⟩, hT⟩`.
+
+Consider the cases of `he`. Take `⟨w₀, r₀⟩` from `exists_rigIso n0`. Take `⟨w₁, r₁⟩` from `exists_rigIso n1`. Take `⟨w₂, r₂⟩` from `exists_rigIso n2`. Conclude with `⟨σ, h ≫ m.φ, h ≫ m2.φ, w₂, w₁, w₀, hQ, a₁, a₂, a₃, a₄, r₂, r₁, r₀, (onOpens_iff_thru m1 m2 n0 n1 n2 m e₁ e₂ hφ hg hg' hσ s).2 ((tie_iff_thru m1 m2 n0 n1 n2 m hG hx hu e₁ e₂ r₀ r₁ r₂ θ s).1 hT)⟩`.
+
+Introduce and unpack `⟨σ, g₁, g₂, w₂, w₁, w₀, hQ, b₁, b₂, b₃, b₄, r₂, r₁, r₀, hO⟩`. Take `rfl : g₁ = h ≫ m.φ` from `n0.cart.1.hom_ext (b₁.trans a₁.symm) (b₂.trans a₂.symm)`. Take `rfl : g₂ = h ≫ m2.φ` from `n2.cart.1.hom_ext (b₃.trans a₃.symm) (b₄.trans a₄.symm)`. Take `⟨θ, hσ⟩` from `exists_section_of_h0 σ`. Conclude with `⟨θ, ⟨σ, θ, hQ, hσ, HEq.rfl⟩, (tie_iff_thru m1 m2 n0 n1 n2 m hG hx hu e₁ e₂ r₀ r₁ r₂ θ s).2 ((onOpens_iff_thru m1 m2 n0 n1 n2 m e₁ e₂ hφ hg hg' hσ s).1 hO)⟩`.
+-/
 theorem tie_iff_onOpens (hG : Out.GlobalFnsSt) (hx : x = u ≫ p) (hu : u ≫ q = f ≫ χ) (e₁ : m1.φ = m.φ ≫ n0.φ)
     (e₂ : m.φ ≫ n1.φ = m2.φ ≫ n2.φ) (L : RigLB t.G) (hL : L = t.PP) (Q : Out.H0 L.L 1 → Prop)
     (s : LB.Sec (PPx x)) :
@@ -300,6 +369,13 @@ namespace GlobalTheory.ArcQ
 open AlgebraicGeometry CategoryTheory CategoryTheory.Limits NumberField CartesianMonoidalCategory
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj GlobalTheory.ArcQ
 
+/- English proof (translation)
+Introduce `hG E _ _ _ H Dw l Xo c O _ β Y A _ _ b a χ W th S _ ι x z t' m1 m2 φ s hj hx φb φ1 φ2`. Substitute `hx` using the available equality. Take `⟨m, e₁⟩` from `sabCancel pullCubCancel E H _ _ _ _ _ _ _ z Y.m0.toSABMap m1`. Take `rfl : φ = m.φ` from `Y.m0.toSABMap.cart.1.hom_ext (φ1.trans e₁) (φb.trans m.cart.1.w.symm)`. Use `Iff.trans ?_ (ThetaAlongCmp.tie_iff_onOpens m1 m2 Y.m0.toSABMap Y.m W.m m hG rfl hj e₁ φ2 W.P.U.LG W.P.bundle (GlobalTheory.IndefiniteRowSideFullHecke.SectionsThroughEpsilonPoints.ThetaId W th) s)` and prove the remaining obligations.
+
+Use `exists_congr fun θ => ?_` and prove the remaining obligations. Rewrite using `[← ThetaAlongCmp.tie_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w1, w2, σ', s1, θ2, ⟨σ, fam, θ', h1, h2, h3, h4⟩, hT⟩`. Conclude with `⟨⟨σ, θ', ⟨fam, h1, h2⟩, h3, h4⟩, w1, w2, σ', s1, θ2, hT⟩`.
+
+Introduce and unpack `⟨⟨σ, θ', ⟨fam, h1, h2⟩, h3, h4⟩, w1, w2, σ', s1, θ2, hT⟩`. Conclude with `⟨w1, w2, σ', s1, θ2, ⟨σ, fam, θ', h1, h2, h3, h4⟩, hT⟩`.
+-/
 theorem thetaClause_iff_thetaAlong : Out.GlobalFnsSt → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (A : Type) [CommRing A] [IsDomain A] (b : O →+* A) (a : ArcIn Dw l β A b) (χ : Sp (PowerSeries A) ⟶ Y.X) (W : Wit Y a χ) (th : a.D₀.P.L.Sec) (S : Type) [CommRing S] (ι : PowerSeries A →+* S) (x : Sp S ⟶ Xo.X) (z : Sp S ⟶ Xo.XF c) (t' : SAB H (Sp S)) (m1 : SABMap t' Xo.univ.t x) (m2 : SABMap t' W.t (spMap ι)) (φ : t'.G.left ⟶ Y.oF.t.G.left) (s : LB.Sec (PPx x)), z ≫ Y.j = spMap ι ≫ χ → z ≫ pullback.fst _ _ = x → φ ≫ Y.oF.t.G.hom = t'.G.hom ≫ z → φ ≫ Y.m0.toSABMap.φ = m1.φ → φ ≫ Y.m.φ = m2.φ ≫ W.m.φ → ((∃ (θ : LB.Sec W.t.PP.L) (w1 : LB.Iso t'.PP.L (Xo.univ.t.PP.L.pull m1.φ)) (w2 : LB.Iso t'.PP.L (W.t.PP.L.pull m2.φ)) (σ' : LB.Sec t'.PP.L) (s1 : LB.Sec (Xo.univ.t.PP.L.pull m1.φ)) (θ2 : LB.Sec (W.t.PP.L.pull m2.φ)), ThetaOf W th θ ∧ RigIso m1 w1 ∧ RigIso m2 w2 ∧ IsoMaps w1 σ' s1 ∧ IsoMaps w2 σ' θ2 ∧ PullSec m2.φ θ θ2 ∧ ∀ g : t'.G.left ⟶ Gx x, g ≫ (snd (Over.mk x) Xo.univ.t.G).left = m1.φ → g ≫ (fst (Over.mk x) Xo.univ.t.G).left = t'.G.hom → ∀ j (h : (Xo.univ.t.PP.L.pull m1.φ).U j ≤ g ⁻¹ᵁ (PPx x).U (fun _ => j PUnit.unit)), s1.f j = (g.appLE _ _ h).hom (s.f (fun _ => j PUnit.unit))) ↔ GlobalTheory.IndefiniteRowSideFullHecke.SectionsThroughEpsilonPoints.ThetaAlong W ι z th s) := by
   intro hG E _ _ _ H Dw l Xo c O _ β Y A _ _ b a χ W th S _ ι x z t' m1 m2 φ s hj hx φb φ1 φ2
   subst hx

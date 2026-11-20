@@ -24,6 +24,9 @@ variable (K Ω L) in
 
 def tower : NormTower K Ω (ringChar 𝓀[K]) := (apfData K Ω L).tower hinf.out
 
+/- English proof (translation)
+The claim follows from `(apfData K Ω L).isTowerFor hinf.out`.
+-/
 theorem isTowerFor : (tower K Ω L).IsTowerFor L := (apfData K Ω L).isTowerFor hinf.out
 
 variable (K Ω L) in
@@ -32,24 +35,42 @@ def equivFam : FieldOfNorms K Ω L ≃ (tower K Ω L).Fam := isTowerFor.equiv _ 
 
 instance instField : Field (FieldOfNorms K Ω L) := (equivFam K Ω L).field
 
+/- English proof (translation)
+The claim follows from `(equivFam K Ω L).apply_symm_apply _`.
+-/
 theorem equivFam_mul (x y : FieldOfNorms K Ω L) :
     equivFam K Ω L (x * y) = equivFam K Ω L x * equivFam K Ω L y :=
   (equivFam K Ω L).apply_symm_apply _
 
+/- English proof (translation)
+The claim follows from `(equivFam K Ω L).apply_symm_apply _`.
+-/
 theorem equivFam_add (x y : FieldOfNorms K Ω L) :
     equivFam K Ω L (x + y) = equivFam K Ω L x + equivFam K Ω L y :=
   (equivFam K Ω L).apply_symm_apply _
 
+/- English proof (translation)
+The claim follows from `(equivFam K Ω L).apply_symm_apply _`.
+-/
 theorem equivFam_sub (x y : FieldOfNorms K Ω L) :
     equivFam K Ω L (x - y) = equivFam K Ω L x - equivFam K Ω L y :=
   (equivFam K Ω L).apply_symm_apply _
 
+/- English proof (translation)
+The claim follows from `(equivFam K Ω L).apply_symm_apply _`.
+-/
 theorem equivFam_zero : equivFam K Ω L (0 : FieldOfNorms K Ω L) = 0 :=
   (equivFam K Ω L).apply_symm_apply _
 
+/- English proof (translation)
+The claim follows from `(equivFam K Ω L).apply_symm_apply _`.
+-/
 theorem equivFam_one : equivFam K Ω L (1 : FieldOfNorms K Ω L) = 1 :=
   (equivFam K Ω L).apply_symm_apply _
 
+/- English proof (translation)
+The claim follows from `(equivFam K Ω L).apply_symm_apply _`.
+-/
 theorem equivFam_natCast (n : ℕ) : equivFam K Ω L (n : FieldOfNorms K Ω L) = n :=
   (equivFam K Ω L).apply_symm_apply _
 
@@ -60,9 +81,17 @@ def ringEquivFam : FieldOfNorms K Ω L ≃+* (tower K Ω L).Fam where
   map_mul' := equivFam_mul
   map_add' := equivFam_add
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem equivFam_val (x : FieldOfNorms K Ω L) (n : ℕ) :
     (equivFam K Ω L x).1 n = x.1 (isTowerFor.finSub n) := rfl
 
+/- English proof (translation)
+Take `⟨n, hn⟩` from `(isTowerFor (L := L)).exists_le E`. Establish `hx : ∀ z : FieldOfNorms K Ω L, z.1 E = relNorm hn ((equivFam K Ω L z).1 n)` using `fun z ↦ by`. Rewrite using `[equivFam_val]`. Conclude with `(z.2.2 E _ hn).symm`. Rewrite using `[hx, hx x, hx y, equivFam_mul, NormTower.Fam.mul_val]`.
+
+Conclude with `relNorm_mul hn ((equivFam K Ω L x).2 n).1 ((equivFam K Ω L y).2 n).1`.
+-/
 theorem mul_val (x y : FieldOfNorms K Ω L) (E : FinSub K Ω L) : (x * y).1 E = x.1 E * y.1 E := by
   obtain ⟨n, hn⟩ := (isTowerFor (L := L)).exists_le E
   have hx : ∀ z : FieldOfNorms K Ω L, z.1 E = relNorm hn ((equivFam K Ω L z).1 n) := fun z ↦ by
@@ -86,6 +115,9 @@ def abv : AbsoluteValue (FieldOfNorms K Ω L) ℝ where
 
 instance instNormedField : NormedField (FieldOfNorms K Ω L) := (abv (K := K) (Ω := Ω) (L := L)).toNormedField
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem norm_def (x : FieldOfNorms K Ω L) : ‖x‖ = ‖equivFam K Ω L x‖ := rfl
 
 variable (K Ω L) in
@@ -112,6 +144,9 @@ instance instLocallyCompactSpace : LocallyCompactSpace (FieldOfNorms K Ω L) :=
 instance instValuativeRel : ValuativeRel (FieldOfNorms K Ω L) :=
   ValuativeRel.ofValuation (NormedField.valuation (K := FieldOfNorms K Ω L))
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `NormedField.valuation x ≤ NormedField.valuation y ↔ _`. Conclude with `NNReal.coe_le_coe`.
+-/
 theorem vle_iff_norm_le (x y : FieldOfNorms K Ω L) : x ≤ᵥ y ↔ ‖x‖ ≤ ‖y‖ := by
   change NormedField.valuation x ≤ NormedField.valuation y ↔ _
   exact NNReal.coe_le_coe

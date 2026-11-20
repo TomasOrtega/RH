@@ -9,21 +9,37 @@ open scoped TensorProduct
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Rewrite using `[Valued.toNormedField.norm_le_one_iff, HeightOneSpectrum.mem_adicCompletionIntegers]`.
+-/
 theorem norm_le_one_iff_mem' (v : HeightOneSpectrum (𝓞 F)) (y : Fv F v) :
     ‖y‖ ≤ 1 ↔ y ∈ v.adicCompletionIntegers F := by
   rw [Valued.toNormedField.norm_le_one_iff, HeightOneSpectrum.mem_adicCompletionIntegers]
 
 omit [NumberField F] [NumberField E] in
+/- English proof (translation)
+Simplify using `[basisSet]`.
+-/
 theorem mem_basisSet_two (σ : E →ₐ[F] E) {d : ℕ} (bs : Module.Basis (Fin d) F E) : (2 : F)⁻¹ ∈ basisSet σ bs := by
   classical
   simp [basisSet]
 
 omit [NumberField F] [NumberField E] in
+/- English proof (translation)
+Unfold `basisSet`. Simplify using the standard rewrite rules.
+-/
 theorem mem_basisSet_one (σ : E →ₐ[F] E) {d : ℕ} (bs : Module.Basis (Fin d) F E) (k : Fin d) :
     bs.repr 1 k ∈ basisSet σ bs := by
   unfold basisSet
   simp
 
+/- English proof (translation)
+Establish `h1` using `hB _ (mem_basisSet_two σ bs)`. Rewrite `h1` using `[map_inv₀, map_ofNat, ← norm_le_one_iff_mem', norm_inv]`. Establish `h2 : ‖(2 : Fv F v)‖ ≤ 1`. Rewrite using `[norm_le_one_iff_mem', show (2 : Fv F v) = 1 + 1 by norm_num]`. Conclude with `add_mem (one_mem _) (one_mem _)`.
+
+Establish `h0 : (2 : Fv F v) ≠ 0`. Rewrite using `[← map_ofNat (algebraMap F (Fv F v)) 2]`. Conclude with `(map_ne_zero_iff _ (algebraMap F (Fv F v)).injective).mpr two_ne_zero`. Establish `hpos : 0 < ‖(2 : Fv F v)‖` using `norm_pos_iff.mpr h0`. Establish `h3` using `(inv_le_one₀ hpos).mp h1`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem two_of {σ : E →ₐ[F] E} {d : ℕ} {bs : Module.Basis (Fin d) F E} {v : HeightOneSpectrum (𝓞 F)}
     (hB : IntAt v (basisSet σ bs)) : ‖(2 : Fv F v)‖ = 1 := by
   have h1 := hB _ (mem_basisSet_two σ bs)
@@ -38,6 +54,9 @@ theorem two_of {σ : E →ₐ[F] E} {d : ℕ} {bs : Module.Basis (Fin d) F E} {v
   have h3 := (inv_le_one₀ hpos).mp h1
   linarith
 
+/- English proof (translation)
+Introduce `k`. Rewrite using `[Algebra.TensorProduct.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply, Algebra.TensorProduct.basis_repr_tmul]`. Simplify using `only [Finsupp.smul_apply, Finsupp.mapRange_apply, smul_eq_mul]`. Conclude with `mul_mem hϖ (hB _ (mem_basisSet_one σ bs k))`.
+-/
 theorem unif_mem_Rv {σ : E →ₐ[F] E} {d : ℕ} {bs : Module.Basis (Fin d) F E} {v : HeightOneSpectrum (𝓞 F)}
     (hB : IntAt v (basisSet σ bs)) {ϖ : Fv F v} (hϖ : ϖ ∈ v.adicCompletionIntegers F) :
     algebraMap (Fv F v) (Fv F v ⊗[F] E) ϖ ∈ Rv bs v := by
@@ -47,6 +66,13 @@ theorem unif_mem_Rv {σ : E →ₐ[F] E} {d : ℕ} {bs : Module.Basis (Fin d) F 
   simp only [Finsupp.smul_apply, Finsupp.mapRange_apply, smul_eq_mul]
   exact mul_mem hϖ (hB _ (mem_basisSet_one σ bs k))
 
+/- English proof (translation)
+Introduce `F E i1 i2 i3 i4 i5 σ hCM d bs v hB`. Take `⟨S, σS, hS, hσS⟩` from `h1 F E σ d bs v hB`. Take `⟨ϖ, hϖ0, hϖ1, hϖd, hϖc⟩` from `h3 F v`. Choose the witnesses or unpack the hypotheses as in `⟨ε, hε⟩ : ∃ ε : ℤ, (ε : ℂ) = eSp E v := by`. Unfold `eSp`.
+
+Use `split_ifs`. Conclude with `⟨-1, by simp⟩`. Conclude with `⟨1, by simp⟩`. Establish `hϖS : algebraMap (Fv F v) (Fv F v ⊗[F] E) (ϖ : Fv F v) ∈ S`. Use `unif_mem_Rv hB ϖ.2` as an intermediate fact.
+
+Rewrite `this` using `[← hS]`. Conclude with `this`. Establish `htr` using `h6 F E σ hCM d bs v hB`. Rewrite `htr` using `[← hS]`. Conclude with `⟨S, σS, ϖ, ε, hϖS, hε, hS, hσS, h2 F E σ hCM v, ϖ.2, hϖ0, hϖ1, h4 F E σ hCM d bs v hB S σS hS hσS ϖ hϖ0 hϖ1 hϖd hϖc hϖS ε hε, two_of hB, htr⟩`.
+-/
 theorem locRingE_of (h1 : RvRing) (h2 : FixedK) (h3 : UnifEx) (h4 : QuadAt) (h6 : TraceDualAt) : LocRingE := by
   intro F E i1 i2 i3 i4 i5 σ hCM d bs v hB
   obtain ⟨S, σS, hS, hσS⟩ := h1 F E σ d bs v hB
@@ -65,6 +91,11 @@ theorem locRingE_of (h1 : RvRing) (h2 : FixedK) (h3 : UnifEx) (h4 : QuadAt) (h6 
   exact ⟨S, σS, ϖ, ε, hϖS, hε, hS, hσS, h2 F E σ hCM v, ϖ.2, hϖ0, hϖ1,
     h4 F E σ hCM d bs v hB S σS hS hσS ϖ hϖ0 hϖ1 hϖd hϖc hϖS ε hε, two_of hB, htr⟩
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hσ M J hJ n T hT hdet d bs ψ hψ`. Use `filter_upwards [h1 F (basisSet σ bs ∪ matSet bs J ∪ matSet bs T), h3 F ψ hψ] with v hv hc`. Establish `hB : IntAt v (basisSet σ bs)` using `fun x hx => hv x (by simp [hx])`. Establish `hMJ : IntAt v (matSet bs J)` using `fun x hx => hv x (by simp [hx])`. Establish `hMT : IntAt v (matSet bs T)` using `fun x hx => hv x (by simp [hx])`.
+
+Take `⟨S, σS, ϖ, ε, hϖ, hε, hcar, hsig, hfix, hϖO, hϖ0, hϖ1, hquad, htwo, htr⟩` from `h4 F E σ hσ d bs v hB`. Take `⟨hJi, hJu⟩` from `h5 F E σ d bs v S σS hcar hsig M J hJ.1 hJ.2 hMJ`. Take `⟨hTi, hTu⟩` from `h5 F E σ d bs v S σS hcar hsig n T hT hdet hMT`. Take `⟨pa, p0, pc⟩` from `h2 F ψ hψ v`. Conclude with `⟨S, σS, ϖ, ε, hε, { carrier := hcar, sig := hsig, fixed := hfix, unif_mem := hϖO, unif_ne := hϖ0, unif_lt := hϖ1, unif_S := hϖ, quad := hquad, two := htwo, trace_dual := htr, J_int := hJi, J_unimod := hJu, T_int := hTi, T_unimod := hTu, psi_add := pa, psi_zero := p0, psi_cont := …`.
+-/
 theorem almostGood_ofE (h1 : FinInt) (h2 : PsiBasic) (h3 : PsiCond) (h4 : LocRingE) (h5 : LocMat) : AlmostGood := by
   classical
   intro F E _ _ _ _ _ σ hσ M J hJ n T hT hdet d bs ψ hψ

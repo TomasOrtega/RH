@@ -7,6 +7,13 @@ open IsLocalRing
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Take `⟨l, hl⟩ : ∃ l : LTSeries (PrimeSpectrum R), l.length = 2` from `Order.le_krullDim_iff.mp (by exact_mod_cast h)`. Set `i0 : Fin l.length` to `⟨0, by omega⟩`. Set `i1 : Fin l.length` to `⟨1, by omega⟩`. Establish `h01 : l i0.succ = l i1.castSucc` using `congrArg l (Fin.ext rfl)`. Establish `s0` using `l.step i0`.
+
+Establish `s1` using `l.step i1`. Rewrite `s0` using `[h01]`. Use `⟨(l i1.castSucc).asIdeal, (l i1.castSucc).isPrime, ?_, ?_⟩` and prove the remaining obligations. Introduce `h0`. Establish `: (l i0.castSucc).asIdeal < (l i1.castSucc).asIdeal` using `s0`.
+
+Rewrite `this` using `[h0]`. Conclude with `not_lt_bot this`. Conclude with `lt_of_lt_of_le (show (l i1.castSucc).asIdeal < (l i1.succ).asIdeal from s1) (le_maximalIdeal (l i1.succ).isPrime.ne_top)`.
+-/
 theorem exists_isPrime_ne_bot_lt_maximalIdeal_of_two_le_ringKrullDim (R : Type) [CommRing R]
     [IsLocalRing R] (h : 2 ≤ ringKrullDim R) :
     ∃ q : Ideal R, q.IsPrime ∧ q ≠ ⊥ ∧ q < maximalIdeal R := by
@@ -32,6 +39,35 @@ namespace GlobalTheory
 
 open Pointwise
 
+/- English proof (translation)
+Introduce `R A _ _ _ _ _ _ _ _ hdim`. Take `⟨hRd, hRic⟩` from `isDomain_and_isIntegrallyClosed_of_isRegularLocalRing R`. Use `haveI : IsNoetherianRing A := isNoetherian_of_tower R inferInstance`. Establish `hinj` using `FaithfulSMul.algebraMap_injective R A`. Take `⟨q, hq, hq0, hqm⟩` from `exists_isPrime_ne_bot_lt_maximalIdeal_of_two_le_ringKrullDim R hdim`.
+
+Establish `hm0 : maximalIdeal R ≠ ⊥` using `(bot_le.trans_lt hqm).ne'`. Take `⟨x, hxm, hx0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hm0`. Establish `hx' : algebraMap R A x ≠ 0` using `(map_ne_zero_iff _ hinj).mpr hx0`. Establish `hreg : IsSMulRegular A x`. Introduce `a b hab`.
+
+Simplify using `only [Algebra.smul_def] at hab`. Conclude with `mul_left_cancel₀ hx' hab`. Establish `hmemx : ∀ a : A, a ∈ x • (⊤ : Submodule R A) ↔ a ∈ Ideal.span {algebraMap R A x}`. Introduce `a`. Rewrite using `[Submodule.mem_smul_pointwise_iff_exists, Ideal.mem_span_singleton']`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨b, -, rfl⟩`. Conclude with `⟨b, by rw [Algebra.smul_def, mul_comm]⟩`. Introduce and unpack `⟨b, rfl⟩`. Conclude with `⟨b, Submodule.mem_top, by rw [Algebra.smul_def, mul_comm]⟩`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨y, hym, hyreg⟩ : ∃ y ∈ maximalIdeal R, IsSMulRegular (QuotSMulTop x A) y := by`. Assume the negation of the conclusion as `hno`. Use `push_neg at hno`. Establish `hfin` using `associatedPrimes.finite R (QuotSMulTop x A)`. Establish `hsub : (maximalIdeal R : Set R) ⊆ ⋃ p ∈ associatedPrimes R (QuotSMulTop x A), (p : Set R)`.
+
+Introduce `y hy`. Rewrite using `[biUnion_associatedPrimes_eq_compl_regular]`. Conclude with `hno y hy`. Take `⟨p, hp, hmp⟩` from `(Ideal.subset_union_prime (s := hfin.toFinset) (f := id) ⊥ ⊥ (fun p hp _ _ => (hfin.mem_toFinset.mp hp).isPrime)).mp (by simpa using hsub)`. Rewrite `hp` using `[hfin.mem_toFinset]`.
+
+Establish `hpm : p = maximalIdeal R` using `(le_antisymm (le_maximalIdeal (hp.isPrime.ne_top)) hmp)`. Rewrite `hp` using `[hpm]`. Take `⟨-, w, hw⟩` from `isAssociatedPrime_iff.mp hp`. Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ w`. Establish `hmz : ∀ a ∈ maximalIdeal R, algebraMap R A a * z ∈ Ideal.span {algebraMap R A x}`.
+
+Introduce `a ha`. Rewrite `ha` using `[hw, Submodule.mem_colon_singleton, Submodule.mem_bot, ← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero, hmemx]`. Simplify `ha` using `[Algebra.smul_def]`. Establish `hz : z ∉ Ideal.span {algebraMap R A x}`. Introduce `hz`.
+
+Apply `(maximalIdeal.isMaximal R).ne_top` to reduce the goal to its premises. Rewrite using `[hw, Ideal.eq_top_iff_one, Submodule.mem_colon_singleton, Submodule.mem_bot, one_smul, Submodule.Quotient.mk_eq_zero, hmemx]`. Conclude with `hz`. Use `set I := Ideal.span {algebraMap R A x}`. Establish `hzq : (Ideal.Quotient.mk I z : A ⧸ I) ≠ 0`.
+
+Rewrite using `[ne_eq, Ideal.Quotient.eq_zero_iff_mem]` and apply the resulting hypothesis. Take `⟨P, hP, hle⟩` from `exists_le_isAssociatedPrime_of_isNoetherianRing A _ hzq`. Use `haveI hPp : P.IsPrime := hP.isPrime`. Establish `hmP : maximalIdeal R ≤ P.comap (algebraMap R A)`. Introduce `a ha`.
+
+Apply `hle` to reduce the goal to its premises. Rewrite using `[Submodule.mem_colon_singleton, Submodule.mem_bot, Algebra.smul_def, Ideal.Quotient.algebraMap_eq, ← map_mul, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hmz a ha`. Establish `hPm : P.comap (algebraMap R A) = maximalIdeal R` using `((maximalIdeal.isMaximal R).eq_of_le (Ideal.comap_isPrime _ P).ne_top hmP).symm`. Use `haveI : P.LiesOver (maximalIdeal R) := ⟨hPm.symm⟩`.
+
+Take `⟨Q, hQP, hQp, hQq⟩` from `Ideal.exists_ideal_lt_liesOver_of_lt (S := A) P hqm`. Establish `h1 : P.height = 1` using `height_eq_one_of_mem_associatedPrimes hx' hP`. Establish `hlt : Q.height < P.height` using `Ideal.height_strict_mono_of_isPrime hQP`. Rewrite `hlt` using `[h1, ENat.lt_one_iff_eq_zero, Ideal.height_eq_zero_iff_eq_bot]`. Apply `hq0` to reduce the goal to its premises.
+
+Rewrite using `[hQq.over, hlt]`. Conclude with `Ideal.comap_bot_of_injective _ hinj`. Use `⟨[x, y], rfl, (fun r hr => by` and prove the remaining obligations. Simplify using `only [List.mem_cons, List.not_mem_nil, or_false] at hr`. Apply the tactic sequence `rcases hr with rfl | rfl <;> assumption), ?_⟩`.
+
+Rewrite using `[IsLocalRing.isRegular_iff_isWeaklyRegular_of_subset_maximalIdeal (fun r hr => by`. Simplify using `only [List.mem_cons, List.not_mem_nil, or_false] at hr`. Apply the tactic sequence `rcases hr with rfl | rfl <;> assumption),`. Use the proof step `RingTheory.Sequence.isWeaklyRegular_cons_iff, RingTheory.Sequence.isWeaklyRegular_cons_iff]`. Conclude with `⟨hreg, hyreg, RingTheory.Sequence.IsWeaklyRegular.nil _ _⟩`.
+-/
 theorem modDepthGE_two_of_isIntegrallyClosed_of_isRegularLocalRing :
     ∀ (R A : Type) [CommRing R] [IsRegularLocalRing R] [CommRing A] [IsDomain A]
       [IsIntegrallyClosed A] [Algebra R A] [Module.Finite R A] [FaithfulSMul R A],

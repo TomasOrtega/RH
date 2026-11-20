@@ -19,6 +19,9 @@ noncomputable def q (l M i : ℕ) : ℚ := (i.factorial : ℚ)⁻¹ * (((l : ℚ
 def S (j : ℕ) : AddSubgroup B :=
   AddSubgroup.closure {b | ∃ (w : W) (i : ℕ), j ≤ i ∧ b = f w * Lat.dpE f ξ l M i}
 
+/- English proof (translation)
+The claim follows from `Subtype.prop (show ↥(Lat.sub f ξ l M) from x)`.
+-/
 theorem ι_mem (x : Lat.A f ξ l M) : Lat.ι f ξ l M x ∈ Lat.sub f ξ l M :=
   Subtype.prop (show ↥(Lat.sub f ξ l M) from x)
 

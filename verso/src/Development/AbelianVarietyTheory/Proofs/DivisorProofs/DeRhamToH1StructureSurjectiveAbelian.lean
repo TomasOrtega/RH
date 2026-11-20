@@ -13,6 +13,13 @@ set_option autoImplicit false
 noncomputable section
 namespace GlobalTheory.PtExt
 
+/- English proof (translation)
+Introduce `hH R _ A _ g hab hdim`. Rewrite using `[Category.comp_id]`. Establish `hsm : Smooth A.hom` using `hab.smooth`. Establish `hsep : IsSeparated A.hom` using `by haveI := hab.proper; infer_instance`. Establish `hqc : QuasiCompact A.hom` using `by haveI := hab.proper; infer_instance`.
+
+Establish `hcmp` using `GlobalTheory.SmoothLift.crystallineSmoothLift_of_relations.bijective_cechDeRhamComparison_degreeOne A.hom hsm hsep hqc`. Establish `hsurj : Function.Surjective (GlobalTheory.CechDR.toHO1 A.hom)` using `(hH R A g hab hdim).2.2.2.2.1.2.2`. Introduce `u`. Take `⟨h, hh⟩` from `hsurj (GlobalTheory.CechDR.cmpO A.hom u)`. Take `⟨c, rfl⟩` from `hcmp.2 h`.
+
+Use `⟨c, GlobalTheory.CechDR.cmpO_injective R A.left A.hom ?_⟩` and prove the remaining obligations. Rewrite using `[← GlobalTheory.CechDR.structureSheaf_comparison_comm, hh]`.
+-/
 theorem toH1O_surjective_of_abelian : GlobalTheory.Published.AbelianHodgeDeRham → ∀ (R : Type) [CommRing R] (A : Over (Sp R)) [GrpObj A] (g : ℕ), IsAbelianScheme A → SmoothOfRelativeDimension g A.hom → Function.Surjective (toH1O (A.hom ≫ 𝟙 _)) := by
   intro hH R _ A _ g hab hdim
   rw [Category.comp_id]

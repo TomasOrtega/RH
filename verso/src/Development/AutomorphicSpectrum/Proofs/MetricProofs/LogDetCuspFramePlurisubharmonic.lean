@@ -21,6 +21,11 @@ namespace GlobalTheory.CompanionTheory.Ar.Cusp.PhiI
 
 open ReciprocityTheory.AnForm.A (IsPsh)
 
+/- English proof (translation)
+Use `⟨hφ.1.add hψ.1, fun z w hd => ?_⟩` and prove the remaining obligations. Take `⟨h1, h2⟩` from `hφ.2 z w hd`. Take `⟨h3, h4⟩` from `hψ.2 z w hd`. Use `⟨h1.add h3, ?_⟩` and prove the remaining obligations. Establish `e` using `Real.circleAverage_fun_add h1 h3`.
+
+Use `show φ z + ψ z ≤ Real.circleAverage (fun ζ : ℂ => φ (z + ζ • w) + ψ (z + ζ • w)) 0 1`. Rewrite using `[e]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem isPsh_add {d : ℕ} {U : Set (Fin d → ℂ)} {φ ψ : (Fin d → ℂ) → ℝ} (hφ : IsPsh U φ) (hψ : IsPsh U ψ) :
     IsPsh U (fun z => φ z + ψ z) := by
   refine ⟨hφ.1.add hψ.1, fun z w hd => ?_⟩
@@ -32,10 +37,18 @@ theorem isPsh_add {d : ℕ} {U : Set (Fin d → ℂ)} {φ ψ : (Fin d → ℂ) �
   rw [e]
   linarith
 
+/- English proof (translation)
+Use `⟨upperSemicontinuousOn_const, fun z w _ => ⟨circleIntegrable_const c 0 1, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[Real.circleAverage_const]`.
+-/
 theorem isPsh_zero {d : ℕ} (U : Set (Fin d → ℂ)) (c : ℝ) : IsPsh U (fun _ => c) := by
   refine ⟨upperSemicontinuousOn_const, fun z w _ => ⟨circleIntegrable_const c 0 1, ?_⟩⟩
   rw [Real.circleAverage_const]
 
+/- English proof (translation)
+Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => simpa using isPsh_zero U 0`. Consider the case `insert a S ha ih`. Use `isPsh_add (h a (Finset.mem_insert_self a S)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))` as an intermediate fact. Use `GroundTheory.Heights₂.Heights.NineStatements.isPsh_congr' (fun z _ => ?_) this` and prove the remaining obligations.
+
+Simplify using `[Finset.sum_insert ha]`.
+-/
 theorem isPsh_sum {d : ℕ} {U : Set (Fin d → ℂ)} {ι : Type} (S : Finset ι) {f : ι → (Fin d → ℂ) → ℝ}
     (h : ∀ i ∈ S, IsPsh U (f i)) : IsPsh U (fun z => ∑ i ∈ S, f i z) := by
   classical
@@ -46,6 +59,11 @@ theorem isPsh_sum {d : ℕ} {U : Set (Fin d → ℂ)} {ι : Type} (S : Finset ι
     refine GroundTheory.Heights₂.Heights.NineStatements.isPsh_congr' (fun z _ => ?_) this
     simp [Finset.sum_insert ha]
 
+/- English proof (translation)
+Establish `e : (fun t => q t (z t)) = fun t => ∑ i, z t i • q t (fun j => if i = j then 1 else 0)`. Use function extensionality and compare the values at `t`. Conclude with `LinearMap.pi_apply_eq_sum_univ (q t) (z t)`. Rewrite using `[e]`. Use `DifferentiableOn.fun_sum fun i _ => ?_` and prove the remaining obligations.
+
+Conclude with `((differentiableOn_pi.1 hz) i).smul (hq _)`.
+-/
 theorem hol_apply {n g g' : ℕ} {V : Set (Fin n → ℂ)} {q : (Fin n → ℂ) → (Fin g → ℂ) →ₗ[ℂ] (Fin g' → ℂ)}
     (hq : ∀ x, DifferentiableOn ℂ (fun t => q t x) V) {z : (Fin n → ℂ) → Fin g → ℂ}
     (hz : DifferentiableOn ℂ z V) : DifferentiableOn ℂ (fun t => q t (z t)) V := by
@@ -59,6 +77,11 @@ theorem hol_apply {n g g' : ℕ} {V : Set (Fin n → ℂ)} {q : (Fin n → ℂ) 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {g : ℕ} {Λ : Type} [AddCommGroup Λ] [Module (𝓞 E) Λ]
   {n : ℕ}
 
+/- English proof (translation)
+Take `⟨N, a, c, h⟩` from `GlobalTheory.T.eigen_component_polynomial_in_action E s`. Establish `e : (fun t => eigComp (R t).B s ((R t).P x)) = fun t => ∑ i, c i • (R t).P (a i • x)`. Use function extensionality and compare the values at `t`. Rewrite using `[h g Λ (R t)]`. Simplify using `only [(R t).act]`.
+
+Rewrite using `[e]`. Conclude with `DifferentiableOn.fun_sum fun i _ => (hP _).const_smul (c i)`.
+-/
 theorem hol_eig {U : Set (Fin n → ℂ)} {R : (Fin n → ℂ) → RiemLat E g Λ} (hP : ∀ x, DifferentiableOn ℂ (fun t => (R t).P x) U)
     (s : 𝓞 E →+* ℂ) (x : Λ) : DifferentiableOn ℂ (fun t => eigComp (R t).B s ((R t).P x)) U := by
   obtain ⟨N, a, c, h⟩ := GlobalTheory.T.eigen_component_polynomial_in_action E s
@@ -69,10 +92,38 @@ theorem hol_eig {U : Set (Fin n → ℂ)} {R : (Fin n → ℂ) → RiemLat E g �
   rw [e]
   exact DifferentiableOn.fun_sum fun i _ => (hP _).const_smul (c i)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun t ht t' ht' => h.1 t (hV ht) t' (hV ht'), fun x => (h.2 x).mono hV⟩`.
+-/
 theorem isHolFam_mono {g' : ℕ} {Λ' : Type} [AddCommGroup Λ'] [Module (𝓞 E) Λ'] {W V : Set (Fin n → ℂ)}
     {R' : (Fin n → ℂ) → RiemLat E g' Λ'} (h : IsHolFam W R') (hV : V ⊆ W) : IsHolFam V R' :=
   ⟨fun t ht t' ht' => h.1 t (hV ht) t' (hV ht'), fun x => (h.2 x).mono hV⟩
 
+/- English proof (translation)
+Take `⟨hr1, hvI, hvli, hvidx⟩` from `hv`. Establish `hv : IsNzFamily I r v` using `⟨hr1, hvI, hvli, hvidx⟩`. Use `set w : Fin r → (Fin n → ℂ) → Fin g → ℂ := fun a t => eigComp (R t).B s ((R t).P (v a)) with hw`. Establish `hwh : ∀ a, DifferentiableOn ℂ (w a) U` using `fun a => hol_eig hHol.2 s (v a)`. Establish `hwl : ∀ t ∈ U, LinearIndependent ℂ fun a => w a t` using `fun t ht => (GlobalTheory.T.isotropic_eigencomponent_conjugate_form E g Λ Unit (R t) I (hiso t ht) s).2 r v hvI hvli`.
+
+Establish `hwe : ∀ t, ∀ a, w a t ∈ eigSp (R t).B s` using `fun t a => ((GlobalTheory.T.riemann_lattice_eigen_projection E g Λ Unit (R t)).2.2.1 s).1 _`. Establish `ht₀U` using `hWU ht₀`. Take `⟨k, J, rfl, hli⟩` from `GlobalTheory.T.exists_extend_linearIndependent_of_span g m r (fun a => w a t₀) (fun i => b i t₀) (hwl _ ht₀U) (hbl _ ht₀U) (fun a => by rw [hbs _ ht₀U]; exact hwe _ a)`. Use `set c : Fin (r + k) → (Fin n → ℂ) → Fin g → ℂ := fun i t => Fin.append (fun a => w a t) (fun j => b (J j) t) i with hc`. Establish `hch : ∀ i, DifferentiableOn ℂ (c i) W`.
+
+Introduce `i`. Use `Fin.addCases (fun a => ?_) (fun j => ?_) i` and prove the remaining obligations. Simplify using `only [hc, Fin.append_left]`. Conclude with `(hwh a).mono hWU`. Simplify using `only [hc, Fin.append_right]`.
+
+Conclude with `(hb _).mono hWU`. Establish `hcs : ∀ t ∈ W, ∀ i, c i t ∈ Submodule.span ℂ (Set.range fun j => b j t)`. Introduce `t ht i`. Use `Fin.addCases (fun a => ?_) (fun j => ?_) i` and prove the remaining obligations. Simplify using `only [hc, Fin.append_left]`.
+
+Rewrite using `[hbs t (hWU ht)]`. Conclude with `hwe t a`. Simplify using `only [hc, Fin.append_right]`. Conclude with `Submodule.subset_span ⟨_, rfl⟩`. Take `⟨V, hVo, ht₀V, hVW, G, hG, hGl⟩` from `GlobalTheory.T.holomorphic_span_coefficients E g Λ n (r + k) W R b c t₀ hW ht₀ (fun i => (hb i).mono hWU) hch (fun t ht => hbl t (hWU ht)) hcs hli`.
+
+Establish `hSc : ∀ t ∈ V, ((R t).gram fun i => c i t).det = ((R t).gram fun a => w a t).det * ((R' t).gram fun j => q t (b (J j) t)).det`. Introduce `t ht`. Establish `htW` using `hVW ht`. Conclude with `GlobalTheory.T.quotient_family_eigen_frame E g g' Λ Λ' (R t) (R' t) (q t) I s r k v (fun j => b (J j) t) (hiso t (hWU htW)) hv (hker t htW) (hcomp t htW) (fun j => by rw [← hbs t (hWU htW)]; exact Submodule.subset_span ⟨_, rfl⟩)`. Establish `hcpos : ∀ t ∈ V, 0 < ((R t).gram fun i => c i t).det.re ∧ ((R t).gram fun i => c i t).det.im = 0` using `fun t ht => (GlobalTheory.T.gram_det_pos_iff_linearIndependent E g Λ (R t) _ _).1 (hGl t ht).1`.
+
+Establish `hwpos : ∀ t ∈ V, 0 < ((R t).gram fun a => w a t).det.re ∧ ((R t).gram fun a => w a t).det.im = 0` using `fun t ht => (GlobalTheory.T.gram_det_pos_iff_linearIndependent E g Λ (R t) _ _).1 (hwl t (hWU (hVW ht)))`. Establish `hul : ∀ t ∈ V, LinearIndependent ℂ fun j => q t (b (J j) t)`. Introduce `t ht`. Use `(GlobalTheory.T.gram_det_pos_iff_linearIndependent E g' Λ' (R' t) _ _).2 fun h0 => ?_` and prove the remaining obligations. Use `hSc t ht` as an intermediate fact.
+
+Rewrite `this` using `[h0, mul_zero]`. Establish `h1` using `(hcpos t ht).1`. Rewrite `h1` using `[this]`. Simplify using `at h1`. Establish `hup : IsPsh V (fun t => Real.log ((R' t).gram fun j => q t (b (J j) t)).det.re)` using `(GlobalTheory.T.holomorphic_family_smooth_entries E g' Λ' Unit n V R' hVo (isHolFam_mono hR' hVW)).2.2 k (fun j t => q t (b (J j) t)) (fun j => hol_apply (fun x => (hq x).mono hVW) (((hb _).mono hWU).mono hVW)) hul`.
+
+Establish `hneg : DifferentiableOn ℂ (fun t => - G t) V` using `hG.neg`. Establish `hfin` using `GroundTheory.Heights₂.Heights.NineStatements.isPsh_add_re_add_const hVo hup hneg 0`. Use `⟨V, hVo, ht₀V, hVW, GroundTheory.Heights₂.Heights.NineStatements.isPsh_congr' (fun t ht => ?_) hfin⟩` and prove the remaining obligations. Establish `e1` using `(hGl t ht).2`. Establish `e2` using `hSc t ht`.
+
+Establish `hc1` using `hcpos t ht`. Establish `hw1` using `hwpos t ht`. Establish `hre : ((R t).gram fun i => c i t).det.re = ((R t).gram fun a => w a t).det.re * ((R' t).gram fun j => q t (b (J j) t)).det.re`. Rewrite using `[e2, Complex.mul_re, hw1.2]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hupos : ((R' t).gram fun j => q t (b (J j) t)).det.re ≠ 0`. Introduce `h0`. Rewrite `hre` using `[h0, mul_zero]`. Rewrite `hc1` using `[hre]`. Conclude with `lt_irrefl _ hc1.1`.
+
+Rewrite `e1` using `[hre, Real.log_mul hw1.1.ne' hupos]`. Simplify using `only [Complex.neg_re, add_zero]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem perEmb {U W : Set (Fin n → ℂ)} {R : (Fin n → ℂ) → RiemLat E g Λ} (hHol : IsHolFam U R)
     {g' : ℕ} {Λ' : Type} [AddCommGroup Λ'] [Module (𝓞 E) Λ'] (hW : IsOpen W) (hWU : W ⊆ U) {t₀ : Fin n → ℂ} (ht₀ : t₀ ∈ W)
     {R' : (Fin n → ℂ) → RiemLat E g' Λ'} (hR' : IsHolFam W R')
@@ -150,6 +201,15 @@ theorem perEmb {U W : Set (Fin n → ℂ)} {R : (Fin n → ℂ) → RiemLat E g 
   simp only [Complex.neg_re, add_zero]
   linarith
 
+/- English proof (translation)
+Take `⟨g', k, Λ', i1, i2, e, form', π, hk, hπ, hall⟩` from `GlobalTheory.T.isotropic_quotient_structure E g Λ (R t₀) I hsat hiso`. Establish `hform : ∀ t ∈ U, (R t).form = (R t₀).form` using `fun t ht => hHol.1 t ht t₀ ht₀`. Take `⟨W, hWo, ht₀W, hWU, q, hq, hqs⟩` from `GlobalTheory.T.holomorphic_local_quotient_map g' k g n U (fun i t => (R t).P (e i)) t₀ hU ht₀ hk (fun i => hHol.2 (e i)) (hall (R t₀) rfl).1`. Establish `hker : ∀ t ∈ W, LinearMap.ker (q t) = Submodule.span ℂ ((R t).P '' I)` using `fun t ht => by`. Rewrite using `[(hqs t ht).2, (hall (R t) (hform t (hWU ht))).2.1]`.
+
+Establish `hex : ∀ t ∈ W, ∃ R' : RiemLat E g' Λ', R'.form = form' ∧ (∀ x, (∀ y ∈ I, (R t).form x y = 0) → R'.P (π x) = q t ((R t).P x)) ∧ ∀ x y, (∀ v ∈ I, (R t).ip ((R t).P v) x = 0) → R'.ip (q t x) (q t y) = (R t).ip x y` using `fun t ht => (hall (R t) (hform t (hWU ht))).2.2 (q t) (hqs t ht).1 (hker t ht)`. Establish `hex' : ∀ t, ∃ R' : RiemLat E g' Λ', t ∈ W → (R'.form = form' ∧ (∀ x, (∀ y ∈ I, (R t).form x y = 0) → R'.P (π x) = q t ((R t).P x)) ∧ ∀ x y, (∀ v ∈ I, (R t).ip ((R t).P v) x = 0) → R'.ip (q t x) (q t y) = (R t).ip x y)`. Introduce `t`. Distinguish the cases in `ht : t ∈ W`. Take `⟨R', h⟩` from `hex t ht`.
+
+Conclude with `⟨R', fun _ => h⟩`. Take `⟨R', _⟩` from `hex t₀ ht₀W`. Conclude with `⟨R', fun h => absurd h ht⟩`. Use `choose R' hR' using hex'`. Use `⟨W, hWo, ht₀W, hWU, g', Λ', i1, i2, R', q, ⟨fun t ht t' ht' => ?_, fun x' => ?_⟩, hq, hker, fun t ht => (hR' t ht).2.2⟩` and prove the remaining obligations.
+
+Rewrite using `[(hR' t ht).1, (hR' t' ht').1]`. Take `⟨x, hx, rfl⟩` from `hπ x'`. Establish `e1 : Set.EqOn (fun t => (R' t).P (π x)) (fun t => q t ((R t).P x)) W` using `fun t ht => (hR' t ht).2.1 x (fun y hy => by rw [hform t (hWU ht)]; exact hx y hy)`. Conclude with `(hol_apply hq ((hHol.2 x).mono hWU)).congr e1`.
+-/
 theorem localQuot {U : Set (Fin n → ℂ)} {R : (Fin n → ℂ) → RiemLat E g Λ} (hU : IsOpen U) (hHol : IsHolFam U R)
     {t₀ : Fin n → ℂ} (ht₀ : t₀ ∈ U) {I : Submodule (𝓞 E) Λ} (hsat : IsSaturated I) (hiso : IsIsoSub (R t₀).form I) :
     ∃ W : Set (Fin n → ℂ), IsOpen W ∧ t₀ ∈ W ∧ W ⊆ U ∧ ∃ (g' : ℕ) (Λ' : Type) (_ : AddCommGroup Λ') (_ : Module (𝓞 E) Λ')
@@ -192,6 +252,29 @@ namespace GlobalTheory.CompanionTheory.Ar.Cusp
 open GlobalTheory.CompanionTheory.Ar.Cusp.PhiI
 open ReciprocityTheory.AnForm.A (IsPsh)
 
+/- English proof (translation)
+Introduce `E _ _ _ g Λ _ _ Ψ _ n U R σ m b I hU hHol hCM hB hC`. Establish `hcusp : ∀ t ∈ U, I ≠ ⊥ ∧ IsIsoSub (R t).form I` using `fun t ht => ⟨(hC t ht).1, (hC t ht).2.2⟩`. Break down `U.eq_empty_or_nonempty with rfl | ⟨t₁, ht₁⟩` into its components or cases. Use `⟨GlobalTheory.CompanionTheory.AnForm.PshLocal.isPsh_of_locally n _ _ isOpen_empty (fun z hz => absurd hz (Set.notMem_empty z)), continuousOn_empty _⟩` and prove the remaining obligations. Take `⟨⟨r, v, hv⟩, -⟩` from `GlobalTheory.T.isotropic_sublattice_covolume_positive E g Λ Ψ (R t₁) σ I hCM (hcusp t₁ ht₁).2 (hcusp t₁ ht₁).1`.
+
+Establish `hnz : ∀ t ∈ U, (R t).nz σ I = (R t).nzOf σ I v ∧ 0 < (R t).nz σ I` using `fun t ht => by`. Use `((GlobalTheory.T.isotropic_sublattice_covolume_positive E g Λ Ψ (R t) σ I hCM (hcusp t ht).2 (hcusp t ht).1).2 r v hv)` as an intermediate fact. Conclude with `⟨this.1, this.2.1⟩`. Use `set w : Ψ → Fin r → (Fin n → ℂ) → Fin g → ℂ := fun τ a t => eigComp (R t).B (σ τ) ((R t).P (v a)) with hw`. Use `set idx : ℝ := ((Submodule.span (𝓞 E) (Set.range v)).toAddSubgroup.relIndex I.toAddSubgroup : ℝ) with hidx`.
+
+Establish `hidx0 : idx ≠ 0`. Rewrite using `[hidx]`. Conclude with `hv.2.2.2` after adjusting the coercions. Establish `hwpos : ∀ t ∈ U, ∀ τ, 0 < ((R t).gram fun a => w τ a t).det.re` using `fun t ht τ => ((GlobalTheory.T.gram_det_pos_iff_linearIndependent E g Λ (R t) _ _).1 ((GlobalTheory.T.isotropic_eigencomponent_conjugate_form E g Λ Unit (R t) I (hcusp t ht).2 (σ τ)).2 r v hv.2.1 hv.2.2.1)).1`. Establish `hlog : ∀ t ∈ U, (R t).logDet (fun τ i => b τ i t) - Real.log ((R t).nz σ I) = (∑ τ, (Real.log ((R t).gram fun i => b τ i t).det.re - Real.log ((R t).gram fun a => w τ a t).det.re)) + Real.log idx`.
+
+Introduce `t ht`. Rewrite using `[(hnz t ht).1]`. Unfold `RiemLat.nzOf RiemLat.logDet`. Rewrite using `[Real.log_div (Finset.prod_ne_zero_iff.2 fun τ _ => (hwpos t ht τ).ne') hidx0, Real.log_prod (fun τ _ => (hwpos t ht τ).ne'), Finset.sum_sub_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `⟨GlobalTheory.CompanionTheory.AnForm.PshLocal.isPsh_of_locally n U _ hU fun t₀ ht₀ => ?_, ?_⟩` and prove the remaining obligations. Take `⟨W, hWo, ht₀W, hWU, g', Λ', i1, i2, R', q, hR', hq, hker, hcomp⟩` from `localQuot hU hHol ht₀ (hC t₀ ht₀).2.1 (hcusp t₀ ht₀).2`. Establish `hloc : ∀ τ, ∃ V : Set (Fin n → ℂ), IsOpen V ∧ t₀ ∈ V ∧ V ⊆ W ∧ IsPsh V (fun t => Real.log ((R t).gram fun i => b τ i t).det.re - Real.log ((R t).gram fun a => w τ a t).det.re)` using `fun τ => perEmb hHol hWo hWU ht₀W hR' hq hker hcomp (fun t ht => (hcusp t ht).2) (σ τ) hv (hB.1 τ) (fun t ht => (hB.2 t ht τ).1) (fun t ht => (hB.2 t ht τ).2)`. Use `choose V hVo ht₀V hVW hVp using hloc`. Set `V₀ : Set (Fin n → ℂ)` to `W ∩ ⋂ τ, V τ`.
+
+Establish `hV₀o : IsOpen V₀` using `hWo.inter (isOpen_iInter_of_finite hVo)`. Establish `hV₀ : ∀ τ, V₀ ⊆ V τ` using `fun τ x hx => Set.mem_iInter.1 hx.2 τ`. Use `⟨V₀, hV₀o, ⟨ht₀W, Set.mem_iInter.2 ht₀V⟩, ?_⟩` and prove the remaining obligations. Establish `hs` using `isPsh_add (isPsh_sum Finset.univ fun τ _ => GlobalTheory.CompanionTheory.AnForm.PshLocal.isPsh_mono (hV₀ τ) (hVp τ)) (isPsh_zero V₀ (Real.log idx))`. Conclude with `GroundTheory.Heights₂.Heights.NineStatements.isPsh_congr' (fun t ht => (hlog t (hWU ht.1)).symm) hs`.
+
+Establish `hHm : ∀ i j, ContinuousOn (fun t => (R t).Hm i j) U`. Introduce `i j`. Take `⟨h1, h2⟩` from `(GlobalTheory.T.holomorphic_family_smooth_entries E g Λ Ψ n U R hU hHol).1 i j`. Establish `e : (fun t => (R t).Hm i j) = fun t => (((R t).Hm i j).re : ℂ) + (((R t).Hm i j).im : ℂ) * Complex.I`. Use function extensionality and compare the values at `t`.
+
+Conclude with `(Complex.re_add_im _).symm`. Rewrite using `[e]`. Conclude with `(Complex.continuous_ofReal.comp_continuousOn h1.continuousOn).add ((Complex.continuous_ofReal.comp_continuousOn h2.continuousOn).mul continuousOn_const)`. Establish `hwc : ∀ τ a, ContinuousOn (w τ a) U` using `fun τ a => (hol_eig hHol.2 (σ τ) (v a)).continuousOn`. Establish `hip : ∀ τ a c, ContinuousOn (fun t => (R t).ip (w τ a t) (w τ c t)) U`.
+
+Introduce `τ a c`. Unfold `RiemLat.ip`. Simplify using `only [dotProduct, Matrix.mulVec, Pi.star_apply]`. Use `continuousOn_finset_sum _ fun i _ => ((continuousOn_pi.1 (hwc τ c) i)).mul ?_` and prove the remaining obligations. Use `continuousOn_finset_sum _ fun j _ => (hHm i j).mul ?_` and prove the remaining obligations.
+
+Conclude with `(continuous_star.comp_continuousOn (continuousOn_pi.1 (hwc τ a) j))`. Establish `hdet : ∀ τ, ContinuousOn (fun t => ((R t).gram fun a => w τ a t).det.re) U`. Introduce `τ`. Establish `hm : ContinuousOn (fun t => (R t).gram fun a => w τ a t) U` using `continuousOn_pi.2 fun a => continuousOn_pi.2 fun c => hip τ a c`. Conclude with `Complex.continuous_re.comp_continuousOn ((continuous_id.matrix_det).comp_continuousOn hm)`.
+
+Establish `hc : ContinuousOn (fun t => (∏ τ, ((R t).gram fun a => w τ a t).det.re) / idx) U` using `(continuousOn_finset_prod _ fun τ _ => hdet τ).div_const _`. Use `hc.congr fun t ht => ?_` and prove the remaining obligations. Rewrite using `[(hnz t ht).1]`. Both sides reduce to the same expression.
+-/
 theorem phi_isPsh_continuous : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (g : ℕ) (Λ : Type) [AddCommGroup Λ] [Module (𝓞 E) Λ] (Ψ : Type) [Fintype Ψ] (n : ℕ) (U : Set (Fin n → ℂ)) (R : (Fin n → ℂ) → RiemLat E g Λ) (σ : Ψ → (𝓞 E →+* ℂ)) (m : ℕ) (b : Ψ → Fin m → (Fin n → ℂ) → Fin g → ℂ) (I : Submodule (𝓞 E) Λ), IsOpen U → IsHolFam U R → IsCMFam σ → IsEigFrames U (fun t => (R t).B) σ b → (∀ t ∈ U, (R t).IsCusp I) → ReciprocityTheory.AnForm.A.IsPsh U (fun t => (R t).logDet (fun τ i => b τ i t) - Real.log ((R t).nz σ I)) ∧ ContinuousOn (fun t => (R t).nz σ I) U := by
   intro E _ _ _ g Λ _ _ Ψ _ n U R σ m b I hU hHol hCM hB hC
   have hcusp : ∀ t ∈ U, I ≠ ⊥ ∧ IsIsoSub (R t).form I := fun t ht => ⟨(hC t ht).1, (hC t ht).2.2⟩

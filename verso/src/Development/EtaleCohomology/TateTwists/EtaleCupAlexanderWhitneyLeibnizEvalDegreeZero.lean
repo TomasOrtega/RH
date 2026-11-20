@@ -6,6 +6,11 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 
 namespace LateralTheory.EtaleFoundations
 
+/- English proof (translation)
+Introduce `R _ E I n m hm α U x w w' h h'`. Substitute `h h'` using the available equality. Establish `hz : IsZero (((chains R).obj E).X (-((0 : ℕ) : ℤ) + 1))` using `HomologicalComplex.isZero_extend_X _ _ _ (fun i hi => by`. Establish `e : ComplexShape.embeddingDownNat.f i = -(i : ℤ)` using `rfl`. Use the proof step `omega)`.
+
+Establish `hd0 : ((chains R).obj E).d (-((0 : ℕ) : ℤ)) (-((0 : ℕ) : ℤ) + 1) = 0` using `hz.eq_of_tgt _ _`. Unfold `ev`. Rewrite using `[δ_v n m hm α (-((0 : ℕ) : ℤ)) (-((0 : ℕ) : ℤ) + m) rfl (-((0 : ℕ) : ℤ) + n) (-((0 : ℕ) : ℤ) + 1) (by omega) rfl, hd0, zero_comp, smul_zero, add_zero, ← Category.assoc]`. Both sides reduce to the same expression.
+-/
 theorem etale_cup_alexanderWhitney_leibniz_eval_degree_zero : EtaleCochainDifferentialEvaluationDegreeZero := by
   intro R _ E I n m hm α U x w w' h h'
   subst h h'
@@ -19,6 +24,9 @@ theorem etale_cup_alexanderWhitney_leibniz_eval_degree_zero : EtaleCochainDiffer
     (by omega) rfl, hd0, zero_comp, smul_zero, add_zero, ← Category.assoc]
   rfl
 
+/- English proof (translation)
+The claim follows from `etale_alexander_whitney_leibniz_of_ext_degree_zero_succ h0 etale_cup_alexanderWhitney_leibniz_eval_degree_zero hs`.
+-/
 theorem etale_cup_alexanderWhitney_leibniz_of_ext_and_succ (h0 : EtaleSimplicialCochainEqOfEvaluationsAgree) (hs : EtaleAlexanderWhitneyLeibnizPositiveSimplexDegree) :
     EtaleAlexanderWhitneyCupLeibnizRule :=
   etale_alexander_whitney_leibniz_of_ext_degree_zero_succ h0 etale_cup_alexanderWhitney_leibniz_eval_degree_zero hs

@@ -19,6 +19,9 @@ namespace CrystallineSemistableComparison
 
 namespace GlueP'
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(⟨one, ho⟩ : (S 0).lim), fun _ => rfl⟩`.
+-/
 theorem lim_one_ex {R : Type} [CommRing R] {Γ : Type} (S : ℕ → Sys.{1} R) {σ : Γ → R →+* R}
     (act : ∀ j g, Sys.Hom (S j) (S j) (σ g)) (one : ∀ n, (S 0).M n)
     (cup : ∀ n i j, (S i).M n → (S j).M n → (S (i + j)).M n) (ho : ∀ n, (S 0).r n (one (n + 1)) = one n) :
@@ -27,13 +30,22 @@ theorem lim_one_ex {R : Type} [CommRing R] {Γ : Type} (S : ℕ → Sys.{1} R) {
 
 variable {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)}
 
+/- English proof (translation)
+The claim follows from `lim_one_ex (M.HS true) _ _ _ (fun n => hC.one (B.schFn M.p) (okToOC l K) true n.le_succ)`.
+-/
 theorem one_ex (hC : B.CompatH l) (M : Model l K) : ∃ x, (M.HA true).one x :=
   lim_one_ex (M.HS true) _ _ _ (fun n => hC.one (B.schFn M.p) (okToOC l K) true n.le_succ)
 
+/- English proof (translation)
+The claim follows from `GlueBL.lim_one (fun j => GlueB'.βS hC (B.schFn M.p) (okToOC l K) true j) (fun n => hC.one (B.schFn M.p) (okToOC l K) true n) x hx`.
+-/
 theorem b_one (hC : B.Compat l) (M : Model l K) (x : (M.HA true).N 0) (hx : (M.HA true).one x) :
     M.MA.one ((GlueB'.βS hC (B.schFn M.p) (okToOC l K) true 0).lim x) :=
   GlueBL.lim_one (fun j => GlueB'.βS hC (B.schFn M.p) (okToOC l K) true j) (fun n => hC.one (B.schFn M.p) (okToOC l K) true n) x hx
 
+/- English proof (translation)
+The claim follows from `GlueBL.lim_cup (fun j => GlueB'.βS hC (B.schFn M.p) (okToOC l K) true j) (fun n i j x y => hC.cup (B.schFn M.p) (okToOC l K) true n rfl x y) x y z hz`.
+-/
 theorem b_cup (hC : B.Compat l) (M : Model l K) {i j : ℕ} (x : (M.HA true).N i) (y : (M.HA true).N j)
     (z : (M.HA true).N (i + j)) (hz : (M.HA true).cup x y z) :
     M.MA.cup ((GlueB'.βS hC (B.schFn M.p) (okToOC l K) true i).lim x) ((GlueB'.βS hC (B.schFn M.p) (okToOC l K) true j).lim y)
@@ -41,6 +53,9 @@ theorem b_cup (hC : B.Compat l) (M : Model l K) {i j : ℕ} (x : (M.HA true).N i
   GlueBL.lim_cup (fun j => GlueB'.βS hC (B.schFn M.p) (okToOC l K) true j)
     (fun n i j x y => hC.cup (B.schFn M.p) (okToOC l K) true n rfl x y) x y z hz
 
+/- English proof (translation)
+The claim follows from `GlueLim.cup_ex (M.HS true) _ _ (fun n _ _ x y => (CH.mulP (B.OcA (B.schFn M.p) (okToOC l K) true n)).cup rfl x y) (GlueL'.red_cup hC M true) x y`.
+-/
 theorem cup_ex (hC : B.CompatH l) (M : Model l K) {i j : ℕ} (x : (M.HA true).N i) (y : (M.HA true).N j) :
     ∃ z, (M.HA true).cup x y z :=
   GlueLim.cup_ex (M.HS true) _ _ (fun n _ _ x y => (CH.mulP (B.OcA (B.schFn M.p) (okToOC l K) true n)).cup rfl x y)
@@ -50,6 +65,9 @@ variable (Amp : ∀ M : Model l K, E.LineData M.X → Prop)
 
 variable (r : Res l K) (ζ : E.Roots l) (μ : r.Cup)
 
+/- English proof (translation)
+Introduce `{M} _ _ v hv n` and use `(congrArg (e M n 0) (hv n)).trans (hone M n) etale_firstChern := fun {M} _ _ L v hv => hc1 M L.1 v hv first_chern_class_unique := fun {M} _ _ L x y hx hy => Subtype.ext (hU l hR (OK l K) M.X M.p (okToOC l K) L.1 L.2.1 _ _ hx hy) one_ex := fun {M} _ _ => one_ex hCH M cup_ex := fun …`.
+-/
 theorem xlaws (hR : E.RIn l) (hU : E.FirstChernUniqueEtale) (hCH : B.CompatH l) (hMain : B.Main l) (hC : B.Compat l) (h1 : B.FirstChernCompatible l)
     (e : E.EtFam l K) (he : e.Good) (hone : ∀ (M : Model l K) n, e M n 0 (GlobalTheory.EtC.one (l ^ n) _) = CH.oneH _)
     (hc1 : ∀ (M : Model l K) D v, HT.IsEtaleFirstChernUntwisted ζ D v → E.IsFirstChernClassOfLineBundle M.p (okToOC l K) D (e.tMul M v))
@@ -72,6 +90,9 @@ end GlueP'
 
 open GlueP' in
 
+/- English proof (translation)
+Introduce `hCf hI h hE hP l _ K _ r ζ` and use `Exists.elim (cupEx l K r) fun μ hμ => Exists.elim (h.p l K) fun Amp hA => Exists.elim (hE l K ζ) fun e he => Exists.elim (hP l K r ζ μ Amp hμ) fun F hF => Exists.elim (phiPlus l K (per l K) Model.Sm r.perC r.iso (dat Amp) (r.xend ζ μ) (r.xmid ζ μ Amp) (facts l K) (hCf l K r).1 (h …`.
+-/
 theorem glueP : GlueP := fun hCf hI h hE hP l _ K _ r ζ =>
   Exists.elim (cupEx l K r) fun μ hμ =>
   Exists.elim (h.p l K) fun Amp hA =>

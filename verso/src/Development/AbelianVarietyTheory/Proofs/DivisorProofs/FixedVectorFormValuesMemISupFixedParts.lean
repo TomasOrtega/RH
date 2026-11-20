@@ -10,6 +10,29 @@ namespace GlobalTheory.FrameAut.VecSemis
 
 open GlobalTheory.UnitarySemisimple
 
+/- English proof (translation)
+Use `set O := orbSpan ρ y with hO`. Set `ρO` to `O.toRepresentation`. Establish `hρO : ∀ g (w : O.toSubmodule), (ρO g w : V) = ρ g w` using `fun _ _ => rfl`. Set `BO : O.toSubmodule →ₗ⋆[ℂ] O.toSubmodule →ₗ[ℂ] ℂ` to `(B.comp O.toSubmodule.subtype).compl₂ O.toSubmodule.subtype`. Establish `hBO : ∀ u w : O.toSubmodule, BO u w = B u w` using `fun _ _ => rfl`.
+
+Establish `hsmO : ∀ w : O.toSubmodule, IsOpen {k : H | ρO k w = w}`. Introduce `w`. Use `hsm w.1 using 1` and compare the differences between its conclusion and the goal. Use extensionality with `k`. Simplify using `only [Set.mem_setOf_eq]`.
+
+Conclude with `⟨fun h => by rw [← hρO, h], fun h => Subtype.ext (by rw [hρO, h])⟩`. Establish `hfdO : ∀ K : Subgroup H, IsOpen (K : Set H) → FiniteDimensional ℂ (GlobalTheory.PRep.fixed ρO K)`. Introduce `K hK`. Use `haveI := hfd K hK`. Establish `hle : (GlobalTheory.PRep.fixed ρO K).map O.toSubmodule.subtype ≤ GlobalTheory.PRep.fixed ρ K`.
+
+Introduce and unpack `_ ⟨w, hw, rfl⟩ k`. Establish `h1` using `hw k`. Use `show ρ k w.1 = ((1 : K →* ℂˣ) k : ℂ) • w.1`. Rewrite `h1`, the goal using `[MonoidHom.one_apply, Units.val_one, one_smul]`. Rewrite using `[← hρO, h1]`.
+
+Use `haveI : FiniteDimensional ℂ ((GlobalTheory.PRep.fixed ρO K).map O.toSubmodule.subtype) := Submodule.finiteDimensional_of_le hle`. Conclude with `LinearEquiv.finiteDimensional (Submodule.equivMapOfInjective _ O.toSubmodule.injective_subtype _).symm`. Establish `hy0 : (⟨y, mem_orbSpan ρ y⟩ : O.toSubmodule) ≠ 0` using `fun h => hy (congrArg Subtype.val h)`. Take `⟨U', P, hU0, hUst, hUirr, -, -, -⟩` from `GlobalTheory.AdmissibleProjection.exists_irreducible_equivariant_projection H O.toSubmodule ρO BO (fun u w => hh u w) (fun v => hp v) (fun v h => Subtype.ext (hd v h)) (fun g u w => hi g u w) hK0 hsmO hfdO _ hy0`. Use `⟨U'.map O.toSubmodule.subtype, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `h`. Apply `hU0` to reduce the goal to its premises. Rewrite using `[Submodule.eq_bot_iff]`. Introduce `u hu`. Establish `: u.1 ∈ U'.map O.toSubmodule.subtype` using `⟨u, hu, rfl⟩`.
+
+Rewrite `this` using `[h, Submodule.mem_bot]`. Conclude with `Subtype.ext this`. Introduce and unpack `_ ⟨u, -, rfl⟩`. Conclude with `u.2`. Introduce and unpack `g _ ⟨u, hu, rfl⟩`.
+
+Conclude with `⟨ρO g u, hUst g u hu, rfl⟩`. Introduce `N hNU hN`. Set `N' : Submodule ℂ O.toSubmodule` to `N.comap O.toSubmodule.subtype`. Establish `hN'U : N' ≤ U'`. Introduce `u hu`.
+
+Take `⟨w, hw, hwu⟩` from `hNU hu`. Rewrite using `[← Subtype.ext hwu]`. Conclude with `hw`. Establish `hN'st : ∀ g, ∀ u ∈ N', ρO g u ∈ N'` using `fun g u hu => hN g u.1 hu`. Establish `hNe : N'.map O.toSubmodule.subtype = N`.
+
+Rewrite using `[Submodule.map_comap_subtype]`. Conclude with `inf_eq_right.2 (hNU.trans (Submodule.map_subtype_le _ _))`. Break down `hUirr N' hN'U hN'st with h | h` into its components or cases. Use `left`. Rewrite using `[← hNe, h, Submodule.map_bot]`.
+
+Use `right`. Rewrite using `[← hNe, h]`.
+-/
 theorem exists_irred_le_orbSpan {H V : Type} [Group H] [TopologicalSpace H] [IsTopologicalGroup H] [AddCommGroup V]
     [Module ℂ V] (ρ : Representation ℂ H V) (B : V →ₗ⋆[ℂ] V →ₗ[ℂ] ℂ) (hh : ∀ u v, star (B u v) = B v u)
     (hp : ∀ v, 0 ≤ (B v v).re) (hd : ∀ v, B v v = 0 → v = 0) (hi : ∀ g u v, B (ρ g u) (ρ g v) = B u v)
@@ -82,6 +105,53 @@ namespace GlobalTheory.FrameAut.VecSemis
 
 open GlobalTheory.UnitarySemisimple GlobalTheory.DefU GlobalTheory.FrameAut.VecProj
 
+/- English proof (translation)
+Use `set T : Submodule ℂ (UA E n → ℂ) := ⨆ (π : Submodule ℂ (UA E n → ℂ)) (_ : IsAutRepU π ∧ ∃ f' : W →ₗ[ℂ] (UA E n → ℂ), f' ≠ 0 ∧ (∀ u, f' u ∈ π) ∧ ∀ (x : infU E n) u, f' (ρ x u) = RU E n x (f' u)), π ⊓ fixed (RF E n) K with hT`. Set `Y : Submodule ℂ (forms ρ)` to `{ carrier := {g | ∀ u, g.1 u ∈ T} add_mem' := fun ha hb u => by`. Rewrite using `[Submodule.coe_add, LinearMap.add_apply]`. Conclude with `add_mem (ha u) (hb u)`. Use the proof step `zero_mem' := fun u => by simp`.
+
+Use the proof step `smul_mem' := fun c g hg u => by`. Rewrite using `[Submodule.coe_smul, LinearMap.smul_apply]`. Conclude with `T.smul_mem c (hg u) }`. Set `X` to `GlobalTheory.PRep.fixed (rep ρ) K`. Use `haveI : FiniteDimensional ℂ X := rep_fd ρ K hK`.
+
+Use `haveI : FiniteDimensional ℂ (X ⊓ Y : Submodule ℂ (forms ρ)) := Submodule.finiteDimensional_of_le inf_le_left`. Set `Bf` to `form B ρ`. Establish `hBh` using `form_herm B hh ρ`. Establish `hBp` using `form_nonneg B hp ρ`. Establish `hBd` using `form_def B hh hp hd ρ`.
+
+Establish `hBi` using `form_inv B hi ρ`. Establish `memX : ∀ g : forms ρ, (∀ k ∈ K, rep ρ k g = g) → g ∈ X`. Introduce `g hg k`. Use `show rep ρ k g = ((1 : K →* ℂˣ) k : ℂ) • g`. Rewrite using `[MonoidHom.one_apply, Units.val_one, one_smul]`.
+
+Conclude with `hg k k.2`. Establish `ofX : ∀ g ∈ X, ∀ k ∈ K, rep ρ k g = g`. Introduce `g hg k hk`. Establish `h1` using `hg ⟨k, hk⟩`. Rewrite `h1` using `[MonoidHom.one_apply, Units.val_one, one_smul]`.
+
+Conclude with `h1`. Establish `hfA : f ∈ forms ρ` using `⟨fun v => hfa v, hfe⟩`. Set `ff : forms ρ` to `⟨f, hfA⟩`. Establish `hffX : ff ∈ X`. Use `memX ff fun k hk => Subtype.ext (LinearMap.ext fun u => ?_)` and prove the remaining obligations.
+
+Establish `h1` using `hfK u ⟨k, hk⟩`. Rewrite `h1` using `[MonoidHom.one_apply, Units.val_one, one_smul]`. Conclude with `h1`. It suffices to establish `hY : ff ∈ Y from hY`. Assume the negation of the conclusion as `hffY`.
+
+Take `⟨m, hm, hmo⟩` from `exists_orth_proj Bf hBd (X ⊓ Y) ff`. Take `⟨y, hy⟩ : ∃ y, y = ff - m` from `⟨_, rfl⟩`. Establish `hyX : y ∈ X` using `hy ▸ sub_mem hffX (Submodule.mem_inf.1 hm).1`. Establish `hy0 : y ≠ 0`. Introduce `h`.
+
+Apply `hffY` to reduce the goal to its premises. Rewrite `h` using `[hy, sub_eq_zero]`. Rewrite using `[h]`. Conclude with `(Submodule.mem_inf.1 hm).2`. Take `⟨U, hU0, hUO, hUst, hUirr⟩` from `exists_irred_le_orbSpan (rep ρ) Bf hBh hBp hBd hBi (GlobalTheory.T.definiteUnitaryFinitePoints_exists_openCompact E n) (rep_smooth ρ) (rep_fd ρ) y hy0`.
+
+Establish `hadm` using `GlobalTheory.AdmissibleProjection.hadm_of (rep ρ) (GlobalTheory.T.definiteUnitaryFinitePoints_exists_openCompact E n) (rep_smooth ρ) (rep_fd ρ)`. Set `Z : Subrepresentation (rep ρ)` to `⟨U, fun g _ hv => hUst g _ hv⟩`. Take `⟨P, hP1, hP2, hP3⟩` from `GlobalTheory.AdmissibleProjection.exists_proj (rep ρ) Bf hBd hBi hadm Z`. Take `⟨z, hz⟩ : ∃ z, z = P y` from `⟨_, rfl⟩`. Establish `hzU : z ∈ U` using `hz ▸ hP1 y`.
+
+Establish `hzX : z ∈ X` using `memX z fun k hk => by rw [hz, ← hP3, ofX y hyX k hk]`. Establish `hz0 : z ≠ 0`. Introduce `h0`. Apply `hU0` to reduce the goal to its premises. Establish `hyo : ∀ w ∈ Z.toSubmodule, Bf w y = 0`.
+
+Introduce `w hw`. Use `hP2 y w hw` as an intermediate fact. Rewrite `this` using `[← hz, h0, sub_zero]`. Then use the resulting hypothesis. Rewrite using `[Submodule.eq_bot_iff]`. Introduce `w hw`.
+
+Establish `hle : (orbSpan (rep ρ) y).toSubmodule ≤ LinearMap.ker (Bf w)`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨g, rfl⟩`. Conclude with `orth_stable (rep ρ) Bf hBi Z y hyo g w hw`. Conclude with `hBd _ (hle (hUO hw))`.
+
+Set `M : Submodule ℂ (W →ₗ[ℂ] (UA E n → ℂ))` to `U.map (forms ρ).subtype`. Establish `hM0 : M ≠ ⊥`. Introduce `h`. Apply `hU0` to reduce the goal to its premises. Rewrite using `[Submodule.eq_bot_iff]`.
+
+Introduce `u hu`. Establish `: u.1 ∈ M` using `⟨u, hu, rfl⟩`. Rewrite `this` using `[h, Submodule.mem_bot]`. Conclude with `Subtype.ext this`. Establish `hMf : ∀ g ∈ M, (∀ v, IsAutFormU (g v)) ∧ ∀ (x : infU E n) v, g (ρ x v) = RU E n x (g v)`.
+
+Introduce and unpack `_ ⟨u, -, rfl⟩`. Conclude with `⟨fun v => u.2.1 v, u.2.2⟩`. Establish `hMk : ∀ k ∈ finU E n, ∀ g ∈ M, (RU E n k) ∘ₗ g ∈ M`. Introduce and unpack `k hk _ ⟨u, hu, rfl⟩`. Conclude with `⟨rep ρ ⟨k, hk⟩ u, hUst _ u hu, rfl⟩`.
+
+Establish `hMirr : ∀ N ≤ M, (∀ k ∈ finU E n, ∀ g ∈ N, (RU E n k) ∘ₗ g ∈ N) → N = ⊥ ∨ N = M`. Introduce `N hNM hN`. Set `N' : Submodule ℂ (forms ρ)` to `N.comap (forms ρ).subtype`. Establish `hN'U : N' ≤ U`. Introduce `u hu`.
+
+Take `⟨w, hw, hwu⟩` from `hNM hu`. Rewrite using `[← Subtype.ext hwu]`. Conclude with `hw`. Establish `hN'st : ∀ g, ∀ u ∈ N', rep ρ g u ∈ N'` using `fun g u hu => hN g.1 g.2 u.1 hu`. Establish `hNe : N'.map (forms ρ).subtype = N`.
+
+Rewrite using `[Submodule.map_comap_subtype]`. Conclude with `inf_eq_right.2 (hNM.trans (Submodule.map_subtype_le _ _))`. Break down `hUirr N' hN'U hN'st with h | h` into its components or cases. Use `left`. Rewrite using `[← hNe, h, Submodule.map_bot]`.
+
+Use `right`. Rewrite using `[← hNe, h]`. Establish `hπ` using `GlobalTheory.FrameAut.VecForms.isAutRepU_span_values E n W ρ hsp M hM0 hMf hMk hMirr`. Establish `hzY : z ∈ Y`. Introduce `u`.
+
+Establish `hmemπ : z.1 u ∈ Submodule.span ℂ {φ | ∃ f ∈ M, ∃ v, f v = φ}` using `Submodule.subset_span ⟨z.1, ⟨z, hzU, rfl⟩, u, rfl⟩`. Establish `hfixu : z.1 u ∈ fixed (RF E n) K`. Introduce `k`. Rewrite using `[MonoidHom.one_apply, Units.val_one, one_smul]`. Establish `h1` using `congrArg (fun g : forms ρ => g.1 u) (ofX z hzX k k.2)`.
+
+Conclude with `h1`. Establish `hidx : IsAutRepU (Submodule.span ℂ {φ | ∃ f ∈ M, ∃ v, f v = φ}) ∧ ∃ f' : W →ₗ[ℂ] (UA E n → ℂ), f' ≠ 0 ∧ (∀ u, f' u ∈ Submodule.span ℂ {φ | ∃ f ∈ M, ∃ v, f v = φ}) ∧ ∀ (x : infU E n) u, f' (ρ x u) = RU E n x (f' u)` using `⟨hπ, z.1, fun h => hz0 (Subtype.ext h), fun v => Submodule.subset_span ⟨z.1, ⟨z, hzU, rfl⟩, v, rfl⟩, z.2.2⟩`. Conclude with `(le_iSup₂ (f := fun (π : Submodule ℂ (UA E n → ℂ)) (_ : IsAutRepU π ∧ ∃ f' : W →ₗ[ℂ] (UA E n → ℂ), f' ≠ 0 ∧ (∀ u, f' u ∈ π) ∧ ∀ (x : infU E n) u, f' (ρ x u) = RU E n x (f' u)) => π ⊓ fixed (RF E n) K) _ hidx) ⟨hmemπ, hfixu⟩`. Establish `hzm : Bf z y = 0` using `hy ▸ hmo z ⟨hzX, hzY⟩`. Establish `hzz : Bf z z = 0`.
+
+Establish `h2` using `hP2 y z hzU`. Rewrite `h2` using `[← hz, map_sub, hzm, zero_sub, neg_eq_zero]`. Conclude with `h2`. Conclude with `hz0 (hBd z hzz)`.
+-/
 theorem mem_iSup_of_form (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ)
     (B : autU E n →ₗ⋆[ℂ] autU E n →ₗ[ℂ] ℂ) (hh : ∀ u v, star (B u v) = B v u) (hp : ∀ v, 0 ≤ (B v v).re)
     (hd : ∀ v, B v v = 0 → v = 0) (hi : ∀ g u v, B (autRep E n g u) (autRep E n g v) = B u v)
@@ -221,6 +291,9 @@ namespace GlobalTheory.FrameAut.VecSemis
 
 open GlobalTheory.DefU
 
+/- English proof (translation)
+Introduce `E _ _ _ n W _ _ _ ρ hsp K hK f hfa hfe hfK`. Take `⟨B, hh, hp, hd, hi⟩` from `GlobalTheory.T.exists_invariant_positive_petersson_form E n`. Conclude with `mem_iSup_of_form E n B hh hp hd hi W ρ hsp K hK f hfa hfe hfK`.
+-/
 theorem mem_iSup_fixed_autRep : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (W : Type) [AddCommGroup W] [Module ℂ W] [FiniteDimensional ℂ W] (ρ : Representation ℂ (infU E n) W), Submodule.span ℂ (Set.range ρ) = ⊤ → ∀ (K : Subgroup (finU E n)), IsOpen (K : Set (finU E n)) → ∀ f : W →ₗ[ℂ] (UA E n → ℂ), (∀ u, IsAutFormU (f u)) → (∀ (x : infU E n) u, f (ρ x u) = RU E n x (f u)) → (∀ u, f u ∈ fixed (RF E n) K) → ∀ u, f u ∈ ⨆ (π : Submodule ℂ (UA E n → ℂ)) (_ : IsAutRepU π ∧ ∃ f' : W →ₗ[ℂ] (UA E n → ℂ), f' ≠ 0 ∧ (∀ u, f' u ∈ π) ∧ ∀ (x : infU E n) u, f' (ρ x u) = RU E n x (f' u)), π ⊓ fixed (RF E n) K := by
   intro E _ _ _ n W _ _ _ ρ hsp K hK f hfa hfe hfK
   obtain ⟨B, hh, hp, hd, hi⟩ := GlobalTheory.T.exists_invariant_positive_petersson_form E n

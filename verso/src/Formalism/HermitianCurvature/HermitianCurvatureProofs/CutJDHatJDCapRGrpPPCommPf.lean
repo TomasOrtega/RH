@@ -18,6 +18,9 @@ namespace PCommPf
 variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [NormedSpace ℂ Wp] [NormedAddCommGroup Wq]
   [NormedSpace ℂ Wq]
 
+/- English proof (translation)
+Establish `h` using `ho.preimage (continuous_const.prodMk continuous_id : Continuous (fun g : Q.Mx k r => (c, g)))`. Use `h using 1` and compare the differences between its conclusion and the goal. Use extensionality with `g`. Conclude with `⟨fun hg => ⟨hc, hg⟩, fun hg => hg.2⟩`.
+-/
 theorem isOpen_slice {Dc : (Fin r → ℂ) → Set (Q.Mx k r)}
     (ho : IsOpen {x : (Fin r → ℂ) × Q.Mx k r | x.1 ∈ OmX r ∧ x.2 ∈ Dc x.1}) {c : Fin r → ℂ} (hc : c ∈ OmX r) :
     IsOpen (Dc c) := by
@@ -26,6 +29,17 @@ theorem isOpen_slice {Dc : (Fin r → ℂ) → Set (Q.Mx k r)}
   ext g
   exact ⟨fun hg => ⟨hc, hg⟩, fun hg => hg.2⟩
 
+/- English proof (translation)
+Establish `hO : IsOpen (Dc c)` using `isOpen_slice ho hc`. Establish `hgG : g ∈ Q.Glev k r i ∩ Dc c` using `⟨hg, hgD⟩`. Establish `hx : ((c, g) : Qx8.XX k r) ∈ Qx8.UU Dc` using `⟨hc, hgD⟩`. Establish `hcd` using `Qx8.cd_tL (E := Wq →L[ℂ] Wp) (i := i) (U₀ := Qx8.UU Dc) ho z z' Y a b`. Establish `hder : ∀ s s₂ : ℂ, s • ((1 / 2 : ℂ) • (Qx8.dv (Pi.single l 1) (fun c' => Q.tL k r z z' i Y a b (Ψ c')) c g + s₂ • Qx8.dv (Pi.single l Complex.I) (fun c' => Q.tL k r z z' i Y a b (Ψ c')) c g)) = Q.tL k r z z' i Y a b (fun g' => s • ((1 / 2 : ℂ) • (Qx8.dv (Pi.single l 1) Ψ c g' + s …`.
+
+Introduce `s s₂`. Rewrite using `[hcd.comm _ Ψ hΨ (c, g) hx hg, hcd.comm _ Ψ hΨ (c, g) hx hg, smul_smul]`. Use `Qx8.tl_comb (z := z) (z' := z') (i := i) Formalism.FourierDecayAlt.P.transfer_linear_local hO Y a b (s * (1 / 2)) s₂ (Qx8.sf_slice (Qx8.sf_dv (Pi.single l 1) hΨ) hc) (Qx8.sf_slice (Qx8.sf_dv (Pi.single l Complex.I) hΨ) hc) hgG` as an intermediate fact. Rewrite using `[← this]`. Simplify using `only [smul_smul]`.
+
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `show pOp l (fun c' => Q.tL k r z z' i Y a b (Ψ c') g) c = Q.tL k r z z' i Y a b (fun g' => pOp l (fun c' => Ψ c' g') c) g`. Establish `h` using `hder (c l) (-Complex.I)`. Simplify using `only [pOp, if_pos hc, wirt]`. Simplify using `only [Qx8.dv, neg_smul, ← sub_eq_add_neg] at h`.
+
+Conclude with `h`. Use `show pbOp l (fun c' => Q.tL k r z z' i Y a b (Ψ c') g) c = Q.tL k r z z' i Y a b (fun g' => pbOp l (fun c' => Ψ c' g') c) g`. Establish `h` using `hder (star (c l)) Complex.I`. Simplify using `only [pbOp, if_pos hc, wirtBar]`. Simplify using `only [Qx8.dv] at h`.
+
+Conclude with `h`.
+-/
 theorem tL_crd_comm (z z' : Fin (2 * r + k + 1) → ℂ) (i : Fin (r + 1)) (Dc : (Fin r → ℂ) → Set (Q.Mx k r))
     (Ψ : Q.Fn k r (Wq →L[ℂ] Wp)) (ho : IsOpen {x : (Fin r → ℂ) × Q.Mx k r | x.1 ∈ OmX r ∧ x.2 ∈ Dc x.1})
     (hΨ : Q.SmoothFam k r i {x | x.1 ∈ OmX r ∧ x.2 ∈ Dc x.1} Ψ) (l : Fin r) (Y : ℂ) (a b : Fin 2)
@@ -64,10 +78,16 @@ theorem tL_crd_comm (z z' : Fin (2 * r + k + 1) → ℂ) (i : Fin (r + 1)) (Dc :
 
 end PCommPf
 
+/- English proof (translation)
+Introduce `Wp Wq _ _ _ _ k r z z' π π' Dc Ψ _ _ ho hΨ l Y a b c hc g hg hgD`. Conclude with `(PCommPf.tL_crd_comm z z' (Fin.last r) Dc Ψ ho hΨ.1 l Y a b hc hg hgD).1`.
+-/
 theorem residue_projection_commutation : JDRPComm := by
   intro Wp Wq _ _ _ _ k r z z' π π' Dc Ψ _ _ ho hΨ l Y a b c hc g hg hgD
   exact (PCommPf.tL_crd_comm z z' (Fin.last r) Dc Ψ ho hΨ.1 l Y a b hc hg hgD).1
 
+/- English proof (translation)
+Introduce `Wp Wq _ _ _ _ k r z z' π π' Dc Ψ _ _ ho hΨ l Y a b c hc g hg hgD`. Conclude with `(PCommPf.tL_crd_comm z z' (Fin.last r) Dc Ψ ho hΨ.1 l Y a b hc hg hgD).2`.
+-/
 theorem crd_pbOp_QL_last_comm :
     ∀ (Wp Wq : Type) [NormedAddCommGroup Wp] [NormedSpace ℂ Wp] [NormedAddCommGroup Wq] [NormedSpace ℂ Wq]
     (k r : ℕ) (z z' : Fin (2 * r + k + 1) → ℂ) (π : Q.Mx k r → (Wp →L[ℂ] Wp)) (π' : Q.Mx k r → (Wq →L[ℂ] Wq))

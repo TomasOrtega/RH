@@ -21,6 +21,9 @@ variable {R : Type} [CommRing R] {m a k b N : ℕ}
 def pmat (hk : k ≤ m) (w : GPm m a b) : Matrix (Fin k) (Fin m) (MvPolynomial (GVar m a k b) R) :=
   fun l i => gcell MvPolynomial.X (w.1⁻¹ i) (Fin.castLE hk l)
 
+/- English proof (translation)
+Simplify using `only [gvec, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Function.comp_apply, pmat]`. Use `((Equiv.sum_comp w.1 fun i => gcell MvPolynomial.X (w.1⁻¹ i) (Fin.castLE hk l) * MvPolynomial.C (c i r)).symm.trans ?_).symm` and prove the remaining obligations. Simplify using the standard rewrite rules.
+-/
 theorem gvec_apply (hk : k ≤ m) (c : Fin m → Fin (N + 1) → R) (w : GPm m a b) (l : Fin k) (r : Fin (N + 1)) :
     gvec (fun l => (MvPolynomial.C : R →+* MvPolynomial (GVar m a k b) R) ∘ c l) w
         (MvPolynomial.X : GVar m a k b → MvPolynomial (GVar m a k b) R) (Fin.castLE hk l) r =
@@ -30,6 +33,11 @@ theorem gvec_apply (hk : k ≤ m) (c : Fin m → Fin (N + 1) → R) (w : GPm m a
     gcell MvPolynomial.X (w.1⁻¹ i) (Fin.castLE hk l) * MvPolynomial.C (c i r)).symm.trans ?_).symm
   simp
 
+/- English proof (translation)
+Set `B : Matrix (Fin m) (Fin k) (MvPolynomial (GVar m a k b) R)` to `Matrix.of fun i l' => MvPolynomial.C (c i (plE N k q l'))`. Establish `h : (Matrix.of fun l l' => gvec (fun l => (MvPolynomial.C : R →+* MvPolynomial (GVar m a k b) R) ∘ c l) w (MvPolynomial.X : GVar m a k b → MvPolynomial (GVar m a k b) R) (Fin.castLE hk l) (plE N k q l')) = (pmat (R` using `R) hk w * B : Matrix (Fin k) (Fin k) (MvPolynomial (GVar m a k b) R)) := by ext1 l l'`. Rewrite using `[Matrix.mul_apply, Matrix.of_apply, gvec_apply]`. Both sides reduce to the same expression. Unfold `gxi plk`.
+
+Rewrite using `[h, det_mul_eq_sum_minors]`. Use `Finset.sum_congr rfl fun S _ => ?_` and prove the remaining obligations. Use `congr 1`. Rewrite using `[RingHom.map_det]`. Use `congr 1`.
+-/
 theorem gxi_eq (hk : k ≤ m) (c : Fin m → Fin (N + 1) → R) (w : GPm m a b) (q : Fin (plN N k + 1)) :
     gxi a b hk c w q = ∑ S : Set.powersetCard (Fin m) k, ((pmat hk w).submatrix id (subsetEnum S)).det *
       MvPolynomial.C (plk c (subsetEnum S) q) := by
@@ -48,6 +56,17 @@ theorem gxi_eq (hk : k ≤ m) (c : Fin m → Fin (N + 1) → R) (w : GPm m a b) 
   rw [RingHom.map_det]
   congr 1
 
+/- English proof (translation)
+Establish `h1 : ∀ q, (MvPolynomial.C : R →+* MvPolynomial (GVar m a k b) R) (gell a b hk D v q) = lform (fun i => (MvPolynomial.C : R →+* MvPolynomial (GVar m a k b) R) ∘ D i) (v.1 ∘ Fin.castLE hk) q`. Introduce `q`. Simplify using `[gell, lform, map_prod]`. Simplify using `only [h1, gxi]`. Rewrite using `[GlobalTheory.FlagEmb.CauchyBinet.lform_plk]`.
+
+Use `congr 1`. Use `ext1 l l'`. Simplify using `only [Matrix.of_apply, Matrix.submatrix_apply, id, gvec_apply, Function.comp_apply]`. Simplify using `only [Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`.
+
+Establish `h2 : ∀ i, ∑ r, (MvPolynomial.C : R →+* MvPolynomial (GVar m a k b) R) (D (v.1 (Fin.castLE hk l')) r) * (pmat hk w l i * MvPolynomial.C (c i r)) = pmat hk w l i * MvPolynomial.C (∑ r, D (v.1 (Fin.castLE hk l')) r * c i r)`. Introduce `i`. Simplify using `only [map_sum, map_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+
+Simplify using `only [h2, h _ _]`. Rewrite using `[Finset.sum_eq_single (v.1 (Fin.castLE hk l'))]`. Simplify using the standard rewrite rules. Introduce `i _ hi`. Rewrite using `[if_neg (Ne.symm hi)]`.
+
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+-/
 theorem sum_gell (hk : k ≤ m) {D c : Fin m → Fin (N + 1) → R} (h : LeftInv D c) (w v : GPm m a b) :
     ∑ q, MvPolynomial.C (gell a b hk D v q) * gxi a b hk c w q =
       ((pmat hk w).submatrix id (v.1 ∘ Fin.castLE hk)).det := by
@@ -77,6 +96,23 @@ theorem sum_gell (hk : k ≤ m) {D c : Fin m → Fin (N + 1) → R} (h : LeftInv
     simp
   · simp
 
+/- English proof (translation)
+Set `p : Fin m → Prop` to `fun i => (i : ℕ) < k ∨ b ≤ (i : ℕ)`. Set `g : {i // p i} → Fin m` to `fun i => if h : (i.1 : ℕ) < k then f ⟨i.1, h⟩ else i.1`. Establish `hg : Function.Injective g`. Introduce and unpack `⟨i, hi⟩ ⟨j, hj⟩ hij`. Simplify using `only [g] at hij`.
+
+Use `split_ifs at hij with h3 h4 h4`. Use `hf hij` as an intermediate fact. Simplify using `only [Fin.mk.injEq] at this`. Conclude with `Subtype.ext (Fin.ext this)`. Establish `h5` using `h2 ⟨i, h3⟩`.
+
+Rewrite `h5` using `[hij]`. Use `hj.resolve_left h4` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `h5` using `h2 ⟨j, h4⟩`. Rewrite `h5` using `[← hij]`.
+
+Use `hi.resolve_left h3` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Conclude with `Subtype.ext hij`. Set `e : {i // p i} ≃ {y // y ∈ Set.range g}` to `Equiv.ofInjective g hg`. Establish `hv : ∀ i (hi : p i), e.extendSubtype i = g ⟨i, hi⟩` using `fun i hi => by`.
+
+Rewrite using `[Equiv.extendSubtype_apply_of_mem e i hi]`. Both sides reduce to the same expression. Use `⟨⟨e.extendSubtype, fun i hi => ?_⟩, fun l => ?_⟩` and prove the remaining obligations. Break down `hi with hi | hi` into its components or cases. Establish `hik : (i : ℕ) < k` using `by omega`.
+
+Rewrite using `[hv i (Or.inl hik)]`. Simplify using `only [g, dif_pos hik]`. Conclude with `Fin.ext (h1 ⟨i, hik⟩ hi)`. Establish `hik : ¬ (i : ℕ) < k` using `by omega`. Rewrite using `[hv i (Or.inr hi)]`.
+
+Simplify using `only [g, dif_neg hik]`. Establish `hl : ((Fin.castLE hk l : Fin m) : ℕ) < k` using `l.2`. Express the relevant statement in the definitionally equal form `e.extendSubtype (Fin.castLE hk l) = f l`. Rewrite using `[hv _ (Or.inl hl)]`. Simplify using `only [g, dif_pos hl]`.
+
+Both sides reduce to the same expression.
+-/
 theorem exists_perm (hk : k ≤ m) (hkb : k ≤ b) (hak : a ≤ k) (f : Fin k → Fin m) (hf : Function.Injective f)
     (h1 : ∀ l : Fin k, (l : ℕ) < a → (f l : ℕ) = l) (h2 : ∀ l, (f l : ℕ) < b) :
     ∃ v : GPm m a b, ∀ l, v.1 (Fin.castLE hk l) = f l := by
@@ -118,6 +154,15 @@ theorem exists_perm (hk : k ≤ m) (hkb : k ≤ b) (hak : a ≤ k) (f : Fin k �
     simp only [g, dif_pos hl]
     rfl
 
+/- English proof (translation)
+Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Introduce `hn hna`. Take `⟨l', hl'⟩` from `h ⟨n, by omega⟩ hna`. Establish `h1 : ¬ (l' : ℕ) < n` using `fun hlt => by`.
+
+Use `ih l' hlt l'.2 (by omega)` as an intermediate fact. Establish `h3 : f ⟨l', l'.2⟩ = f l'` using `rfl`. Rewrite `this` using `[h3, hl']`. Simplify using `only at this`. Use linear arithmetic over natural numbers and integers.
+
+Break down `Nat.lt_or_ge n l' with h2 | h2` into its components or cases. Establish `h3 : f ⟨n, hn⟩ < f l'` using `hf (by simpa [Fin.lt_def] using h2)`. Rewrite `h3` using `[hl']`. Establish `h4 : (f ⟨n, hn⟩ : ℕ) < n` using `h3`. Establish `h5` using `hf.injective (Fin.ext (ih _ h4 (by omega) (by omega)))`.
+
+Simplify using `only [Fin.mk.injEq] at h5`. Use linear arithmetic over natural numbers and integers. Establish `: (⟨n, hn⟩ : Fin k) = l'` using `Fin.ext (by simp; omega)`. Rewrite using `[this, hl']`.
+-/
 theorem enum_init (hk : k ≤ m) (hak : a ≤ k) (f : Fin k → Fin m) (hf : StrictMono f)
     (h : ∀ i : Fin m, (i : ℕ) < a → i ∈ Set.range f) (n : ℕ) : ∀ (hn : n < k), n < a → (f ⟨n, hn⟩ : ℕ) = n := by
   induction n using Nat.strong_induction_on with
@@ -140,6 +185,11 @@ theorem enum_init (hk : k ≤ m) (hak : a ≤ k) (f : Fin k → Fin m) (hf : Str
     · have : (⟨n, hn⟩ : Fin k) = l' := Fin.ext (by simp; omega)
       rw [this, hl']
 
+/- English proof (translation)
+Use `Matrix.det_eq_zero_of_row_eq_zero ⟨i, by omega⟩ fun l' => ?_` and prove the remaining obligations. Simplify using `only [Matrix.submatrix_apply, id, pmat, gcell]`. Rewrite using `[dif_neg (fun h => by have := h.1; simp at this; omega), if_neg]`. Introduce `he`. Apply `hf` to reduce the goal to its premises.
+
+Use `⟨l', ?_⟩` and prove the remaining obligations. Establish `h1 : Fin.castLE hk (⟨i, by omega⟩ : Fin k) = i` using `rfl`. Rewrite `he` using `[h1, Equiv.Perm.inv_eq_iff_eq, w.2 i (Or.inl hi)]`. Conclude with `he`.
+-/
 theorem det_eq_zero_of_lt (hk : k ≤ m) (hak : a ≤ k) (w : GPm m a b) (f : Fin k → Fin m) (i : Fin m) (hi : (i : ℕ) < a)
     (hf : i ∉ Set.range f) : ((pmat (R := R) hk w).submatrix id f).det = 0 := by
   refine Matrix.det_eq_zero_of_row_eq_zero ⟨i, by omega⟩ fun l' => ?_
@@ -152,6 +202,11 @@ theorem det_eq_zero_of_lt (hk : k ≤ m) (hak : a ≤ k) (w : GPm m a b) (f : Fi
   rw [h1, Equiv.Perm.inv_eq_iff_eq, w.2 i (Or.inl hi)] at he
   exact he
 
+/- English proof (translation)
+Use `Matrix.det_eq_zero_of_column_eq_zero l' fun l => ?_` and prove the remaining obligations. Establish `h1 : w.1⁻¹ (f l') = f l'`. Rewrite using `[Equiv.Perm.inv_eq_iff_eq, w.2 _ (Or.inr hi)]`. Simplify using `only [Matrix.submatrix_apply, id, pmat, gcell, h1]`. Rewrite using `[dif_neg (fun h => by have := h.2.2.2; omega), if_neg]`.
+
+Introduce `he`. Establish `h2` using `congrArg Fin.val he`. Establish `h3` using `l.2`. Simplify using `only [Fin.val_castLE] at h2`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem det_eq_zero_of_ge (hk : k ≤ m) (hkb : k ≤ b) (w : GPm m a b) (f : Fin k → Fin m) (l' : Fin k)
     (hi : b ≤ (f l' : ℕ)) : ((pmat (R := R) hk w).submatrix id f).det = 0 := by
   refine Matrix.det_eq_zero_of_column_eq_zero l' fun l => ?_
@@ -165,6 +220,15 @@ theorem det_eq_zero_of_ge (hk : k ≤ m) (hkb : k ≤ b) (w : GPm m a b) (f : Fi
   simp only [Fin.val_castLE] at h2
   omega
 
+/- English proof (translation)
+Introduce `R _ m a k b N hk D c hak hkb h q`. Set `admitted : Set.powersetCard (Fin m) k → Prop` to `fun S => (∀ i : Fin m, (i : ℕ) < a → i ∈ Set.range (subsetEnum S)) ∧ ∀ l, (subsetEnum S l).val < b`. Establish `hex : ∀ S : {S // admitted S}, ∃ v : GPm m a b, ∀ l, v.1 (Fin.castLE hk l) = subsetEnum S.1 l` using `fun S => exists_perm hk hkb hak _ (subsetEnum_injective S.1) (fun l hl => enum_init hk hak _ (S.1.1.orderEmbOfFin S.1.2).strictMono S.2.1 l l.2 hl) S.2.2`. Use `choose jj hjj using hex`. Use `⟨{S // admitted S}, inferInstance, jj, fun S => plk c (subsetEnum S.1) q, fun w => ?_⟩` and prove the remaining obligations.
+
+Establish `h1 : ∀ S, (jj S).1 ∘ Fin.castLE hk = subsetEnum S.1` using `fun S => funext (hjj S)`. Simplify using `only [sum_gell hk h, h1]`. Rewrite using `[gxi_eq, ← Finset.sum_subtype (Finset.univ.filter admitted) (by simp) (fun S => MvPolynomial.C (plk c (subsetEnum S) q) * ((pmat hk w).submatrix id (subsetEnum S)).det), Finset.sum_filter]`. Use `Finset.sum_congr rfl fun S _ => ?_` and prove the remaining obligations. Use `split_ifs with hS`.
+
+Conclude with `mul_comm _ _`. Rewrite `hS` using `[not_and_or]`. Break down `hS with hS | hS` into its components or cases. Use `push Not at hS`. Take `⟨i, hi, hf⟩` from `hS`.
+
+Rewrite using `[det_eq_zero_of_lt hk hak w _ i hi hf, zero_mul]`. Use `push Not at hS`. Take `⟨l, hl⟩` from `hS`. Rewrite using `[det_eq_zero_of_ge hk hkb w _ l hl, zero_mul]`.
+-/
 theorem main : ∀ (R : Type) [CommRing R] (m a k b N : ℕ) (hk : k ≤ m) (D c : Fin m → Fin (N + 1) → R), a ≤ k → k ≤ b → LeftInv D c → ∀ q, ∃ (T : Type) (_ : Fintype T) (jj : T → GPm m a b) (e : T → R), ∀ w' : GPm m a b, gxi a b hk c w' q = ∑ t, (MvPolynomial.C : R →+* MvPolynomial (GVar m a k b) R) (e t) * ∑ q', (MvPolynomial.C : R →+* MvPolynomial (GVar m a k b) R) (gell a b hk D (jj t) q') * gxi a b hk c w' q' := by
   intro R _ m a k b N hk D c hak hkb h q
   classical

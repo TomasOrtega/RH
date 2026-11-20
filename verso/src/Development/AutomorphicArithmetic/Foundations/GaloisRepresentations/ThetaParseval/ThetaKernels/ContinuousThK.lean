@@ -19,8 +19,16 @@ namespace PositivityTheory.SiegelWeilFormula.Act.C5
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 variable {d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ} (R : _root_.PositivityTheory.SiegelWeilFormula.RD_k d) (L : _root_.PositivityTheory.SiegelWeilFormula.LD_k d)
 variable {R L}
+/- English proof (translation)
+The claim follows from `kfour.continuous_chr (σ := σ) (Y := L.Y) (b := L.b) d.ok.good.std.1 T'.1.1`.
+-/
 theorem continuous_th'_k (T' : nF σ L.Y L.b) : Continuous fun β : nA σ L.Y L.b => _root_.PositivityTheory.SiegelWeilFormula.Act.C5.th'_k (d := d) T' β :=
   kfour.continuous_chr (σ := σ) (Y := L.Y) (b := L.b) d.ok.good.std.1 T'.1.1
+/- English proof (translation)
+Establish `: Countable L.ratV`. Establish `: Countable E` using `(Module.finBasis ℚ E).equivFun.injective.countable`. Use `Function.Surjective.countable (f := fun v : Fin L.n → E => (⟨GlobalTheory.ThK.incV F v, AddSubgroup.subset_closure ⟨v, rfl⟩⟩ : L.ratV)) fun u => ?_` and prove the remaining obligations. Take `⟨v, hv⟩` from `_root_.PositivityTheory.SiegelWeilFormula.Act.C1.ratV_inc_k u.2`. Conclude with `⟨v, Subtype.ext hv.symm⟩`.
+
+Establish `: Countable F` using `(Module.finBasis ℚ F).equivFun.injective.countable`. Establish `: Countable (Set.range (algebraMap F (AF F)))` using `(Set.countable_range _).to_subtype`. Use `Function.Injective.countable (f := fun c : _root_.PositivityTheory.SiegelWeilFormula.Act.C5.Crat_k L => ((⟨c.1.1, c.2.1⟩ : L.ratV), (⟨c.1.2, c.2.2⟩ : Set.range (algebraMap F (AF F))))) fun c c' hcc => ?_` and prove the remaining obligations. Simplify using `only [Prod.mk.injEq, Subtype.mk.injEq] at hcc`. Conclude with `Subtype.ext (Prod.ext hcc.1 (congrArg Subtype.val hcc.2))`.
+-/
 theorem countable_crat_k : Countable (_root_.PositivityTheory.SiegelWeilFormula.Act.C5.Crat_k L) := by
   have : Countable L.ratV := by
     have : Countable E := (Module.finBasis ℚ E).equivFun.injective.countable

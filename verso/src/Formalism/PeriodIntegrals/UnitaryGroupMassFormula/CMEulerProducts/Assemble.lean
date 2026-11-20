@@ -7,6 +7,9 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.CMEulerProducts.EulerFa
 
 namespace CMEul
 
+/- English proof (translation)
+The claim follows from `eulerEq_of hF _root_.euler_factors_multipliable euler_factor_local euler_product_regroup`.
+-/
 theorem eulerEq_of_fib (hF : StepFib) : Formalism.L2.SG.MassRatio.EulerEq :=
   eulerEq_of hF _root_.euler_factors_multipliable euler_factor_local euler_product_regroup
 

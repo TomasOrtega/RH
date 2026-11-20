@@ -11,6 +11,9 @@ namespace GlobalTheory.DivLead
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
+/- English proof (translation)
+Unfold `leadM monoM`. Use `continuousOn_finsetSum _ fun α _ => continuousOn_finsetSum _ fun k _ => ?_` and prove the remaining obligations. Conclude with `((continuousOn_const.mul (continuousOn_finsetProd _ fun q _ => (hs q).pow _)).mul (hw.pow _)).mul (ht k)`.
+-/
 theorem continuousOn_leadM {r n δ : ℕ} (X : Data E r) {U : Set (Frame X.Ψ r)}
     {s : Fin n → Frame X.Ψ r → ℂ} {w : Frame X.Ψ r → ℂ} {t : Fin δ → Frame X.Ψ r → ℂ}
     (hs : ∀ k, ContinuousOn (s k) U) (hw : ContinuousOn w U) (ht : ∀ k, ContinuousOn (t k) U)
@@ -20,6 +23,9 @@ theorem continuousOn_leadM {r n δ : ℕ} (X : Data E r) {U : Set (Frame X.Ψ r)
   exact ((continuousOn_const.mul
     (continuousOn_finsetProd _ fun q _ => (hs q).pow _)).mul (hw.pow _)).mul (ht k)
 
+/- English proof (translation)
+Introduce `r X Xa Fl δ t ht hb f hf`. Take `⟨cc, hcc⟩` from `GlobalTheory.LeadJets.main r X Xa Fl Xa.Fp Xa.T (Xa.T - nd X) δ (by omega) t ht hb f hf`. Use `⟨cc, GlobalTheory.vanS_of_isBigO r X Xa Fl _ _ ?_ hcc⟩` and prove the remaining obligations. Conclude with `hf.1.continuousOn.sub (continuousOn_leadM X (fun k => (Fl.s_van k).1.1.1.1.continuousOn) Fl.weightForm_vanishes.1.1.1.1.continuousOn (fun k => (ht k).1.continuousOn) _ _ cc)`.
+-/
 theorem main : DivLeadStatement (E := E) := by
   intro r X Xa Fl δ t ht hb f hf
   obtain ⟨cc, hcc⟩ := GlobalTheory.LeadJets.main r X Xa Fl Xa.Fp Xa.T (Xa.T - nd X) δ (by omega) t ht hb f hf

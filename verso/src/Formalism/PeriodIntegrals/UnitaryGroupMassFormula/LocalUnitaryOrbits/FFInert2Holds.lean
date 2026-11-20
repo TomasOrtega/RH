@@ -12,6 +12,15 @@ section basic
 
 variable {K : Type} [Field K] {σ : K →+* K} {V : Type} [AddCommGroup V] [Module K V] {h : V → V → K}
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Take `⟨z, hz⟩` from `h2`. Choose the witnesses or unpack the hypotheses as in `⟨y, hy⟩ : ∃ y, h x y ≠ 0 := by`. Assume the negation of the conclusion as `hy`.
+
+Use `push_neg at hy`. Conclude with `hx (hs.nondeg x hy)`. Establish `hσσ : σ (σ (h x y)) = h x y`. Rewrite using `[← hs.herm x y, ← hs.herm y x]`. Establish `hxu : h x (x + (z * (h x y)⁻¹) • y) = z * (h x y)⁻¹ * h x y`.
+
+Rewrite using `[hs.add_right, hs.smul_right, hne x, zero_add]`. Establish `hyu : h y (x + (z * (h x y)⁻¹) • y) = σ (h x y)`. Rewrite using `[hs.add_right, hs.smul_right, hne y, mul_zero, add_zero, hs.herm x y]`. Establish `key` using `hne (x + (z * (h x y)⁻¹) • y)`. Rewrite `key` using `[hs.add_right, hs.smul_right, hs.herm x (x + (z * (h x y)⁻¹) • y), hs.herm y (x + (z * (h x y)⁻¹) • y), hxu, hyu, hσσ, inv_mul_cancel_right₀ hy]`.
+
+Conclude with `hz (by rw [add_comm]; exact key)`.
+-/
 theorem exists_aniso2 (h2 : ∃ z : K, z + σ z ≠ 0) (hs : IsHS σ h) (x : V) (hx : x ≠ 0) :
     ∃ e, h e e ≠ 0 := by
   by_contra hne
@@ -34,6 +43,21 @@ theorem exists_aniso2 (h2 : ∃ z : K, z + σ z ≠ 0) (hs : IsHS σ h) (x : V) 
 
 end basic
 
+/- English proof (translation)
+Introduce `m`. Proceed by induction on `m with`. Consider the case `zero`. Introduce `V _ _ _ h hs hm`. Conclude with `⟨Fin.elim0, fun i => Fin.elim0 i, fun i => Fin.elim0 i⟩`.
+
+Consider the case `succ m ih`. Introduce `V _ _ _ h hs hm`. Choose the witnesses or unpack the hypotheses as in `⟨x, hx⟩ : ∃ x : V, x ≠ 0 := by`. Establish `: 0 < finrank K V` using `by omega`. Conclude with `finrank_pos_iff_exists_ne_zero.mp this`.
+
+Take `⟨e, he⟩` from `exists_aniso2 h2 hs x hx`. Take `⟨g, hg1, hg2⟩` from `ih (perp hs.toIsSq e) (fun w w' => h w w') (perp_isHS hs e he) (by have := finrank_perp hs.toIsSq e he; omega)`. Use `⟨Fin.cons e (fun i => (g i : V)), ?_, ?_⟩` and prove the remaining obligations. Introduce `i j hij`. Consider the cases of `i using Fin.cases with`.
+
+Consider the case `zero`. Consider the cases of `j using Fin.cases with`. Consider the case `zero => exact absurd rfl hij`. Consider the case `succ j`. Simplify using `only [Fin.cons_zero, Fin.cons_succ]`.
+
+Conclude with `(mem_perp hs.toIsSq e _).mp (g j).2`. Consider the case `succ i`. Consider the cases of `j using Fin.cases with`. Consider the case `zero`. Simplify using `only [Fin.cons_zero, Fin.cons_succ]`.
+
+Rewrite using `[hs.herm e (g i : V), (mem_perp hs.toIsSq e _).mp (g i).2, map_zero]`. Consider the case `succ j`. Simplify using `only [Fin.cons_succ]`. Conclude with `hg1 i j (fun h' => hij (by rw [h']))`. Introduce `i`.
+
+Consider the cases of `i using Fin.cases with`. Consider the case `zero => simpa using he`. Consider the case `succ i => simpa using hg2 i`.
+-/
 theorem exists_orth2 {K : Type} [Field K] {σ : K →+* K} (h2 : ∃ z : K, z + σ z ≠ 0) :
     ∀ (m : ℕ) (V : Type) [AddCommGroup V] [Module K V]
     [FiniteDimensional K V] (h : V → V → K), IsHS σ h → finrank K V = m →
@@ -75,6 +99,33 @@ theorem exists_orth2 {K : Type} [Field K] {σ : K →+* K} (h2 : ∃ z : K, z + 
 
 variable {K : Type} [Field K] [Fintype K] [DecidableEq K] {σ : K →+* K}
 
+/- English proof (translation)
+Introduce `m`. Proceed by induction on `m with`. Consider the case `zero`. Introduce `V _ _ _ h hs hm c hc`. Establish `hV : ∀ x : V, x = 0` using `finrank_zero_iff_forall_zero.mp hm`.
+
+Establish `h00 : h 0 0 = 0`. Establish `h0` using `hs.smul_right 0 0 0`. Rewrite `h0` using `[zero_smul, zero_mul]`. Then use the resulting hypothesis. Establish `hq : (q : ℝ) ≠ 0` using `by exact_mod_cast hq0.ne'`. Distinguish the cases in `hc0 : c = 0`.
+
+Establish `h1 : Nat.card {x : V // h x x = c} = 1` using `Nat.card_eq_one_iff_exists.mpr ⟨⟨0, by rw [h00, hc0]⟩, fun y => Subtype.ext (hV y.1)⟩`. Rewrite using `[h1, if_pos hc0]`. Simplify using `only [Nat.cast_zero, mul_zero, zero_sub, zpow_neg_one, pow_zero, one_mul, Nat.cast_one]`. Clear the denominators using the available nonvanishing facts. Apply the tactic sequence `try ring`.
+
+Use `haveI : IsEmpty {x : V // h x x = c} := ⟨fun y => hc0 (by rw [← y.2, hV y.1, h00])⟩`. Rewrite using `[Nat.card_of_isEmpty, if_neg hc0]`. Simplify using `only [Nat.cast_zero, mul_zero, zero_sub, zpow_neg_one, pow_zero, one_mul]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `succ m ih`.
+
+Introduce `V _ _ _ h hs hm c hc`. Use `haveI : Finite V := Module.finite_of_finite K`. Establish `hpos : 0 < finrank K V` using `by omega`. Take `⟨x, hx⟩ : ∃ x : V, x ≠ 0` from `finrank_pos_iff_exists_ne_zero.mp hpos`. Take `⟨e, he⟩` from `exists_aniso2 h2 hs x hx`.
+
+Establish `hσa : σ (h e e) = h e e` using `(hs.herm e e).symm`. Establish `hW : finrank K (perp hs.toIsSq e) = m`. Use `finrank_perp hs.toIsSq e he` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hfib : ∀ t : K, (Nat.card {w : perp hs.toIsSq e // h w w = c - σ t * t * h e e} : ℝ) = (q : ℝ) ^ (2 * (m : ℤ) - 1) + (-1) ^ m * (q : ℝ) ^ ((m : ℤ) - 1) * ((if c - σ t * t * h e e = 0 then (q : ℝ) else 0) - 1)` using `fun t => ih (perp hs.toIsSq e) (fun w w' => h w w') (perp_isHS hs e he) hW _ (by rw [map_sub, map_mul, map_mul, hσ, hσa, hc]; ring)`.
+
+Establish `hq : (q : ℝ) ≠ 0` using `by exact_mod_cast hq0.ne'`. Establish `hsum : ∑ t : K, ((q : ℝ) ^ (2 * (m : ℤ) - 1) + (-1) ^ m * (q : ℝ) ^ ((m : ℤ) - 1) * ((if c - σ t * t * h e e = 0 then (q : ℝ) else 0) - 1)) = (Fintype.card K : ℝ) * ((q : ℝ) ^ (2 * (m : ℤ) - 1) - (-1) ^ m * (q : ℝ) ^ ((m : ℤ) - 1)) + (-1) ^ m * (q : ℝ) ^ ((m : ℤ) - 1) * q * ((Fin …`. Rewrite using `[Finset.card_filter]`. Use `push_cast`. Rewrite using `[Finset.mul_sum, show (Fintype.card K : ℝ) * ((q : ℝ) ^ (2 * (m : ℤ) - 1) - (-1) ^ m * (q : ℝ) ^ ((m : ℤ) - 1)) = ∑ _t : K, ((q : ℝ) ^ (2 * (m : ℤ) - 1) - (-1) ^ m * (q : ℝ) ^ ((m : ℤ) - 1)) by`.
+
+Rewrite using `[Finset.sum_const, Finset.card_univ, nsmul_eq_mul], ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl (fun t _ => ?_)` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> ring`. Establish `hN0 : ((Finset.univ.filter (fun t : K => c - σ t * t * h e e = 0)).card : ℝ) = if c = 0 then 1 else (q : ℝ) + 1`. Establish `e1 : Finset.univ.filter (fun t : K => c - σ t * t * h e e = 0) = Finset.univ.filter (fun t : K => t * σ t = c * (h e e)⁻¹)`.
+
+Use extensionality with `t`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and]`. Prove the components needed by the constructor for the conclusion. Introduce `h0`. Rewrite using `[eq_mul_inv_iff_mul_eq₀ he]`.
+
+Take the linear combination `-h0`. Introduce `h0`. Rewrite `h0` using `[eq_mul_inv_iff_mul_eq₀ he]`. Take the linear combination `-h0`. Rewrite using `[e1, ← Fintype.card_subtype, ← Nat.card_eq_fintype_card, hN _ (by rw [map_mul, map_inv₀, hc, hσa])]`.
+
+Apply the tactic sequence `by_cases hc0 : c = 0 <;> simp [hc0, he]`. Establish `hKr : (Fintype.card K : ℝ) = (q : ℝ) ^ 2` using `by rw [hK]; push_cast; ring`. Establish `e2 : (2 * ((m + 1 : ℕ) : ℤ) - 1) = (2 * (m : ℤ) - 1) + 2` using `by push_cast; ring`. Establish `e3 : (((m + 1 : ℕ) : ℤ) - 1) = ((m : ℤ) - 1) + 1` using `by push_cast; ring`. Rewrite using `[card_decomp hs.toIsSq e he c, Nat.cast_sum]`.
+
+Repeatedly rewrite using `[hfib]`. Rewrite using `[hsum, hN0, hKr, e2, e3, zpow_add₀ hq, zpow_add₀ hq, zpow_two, zpow_one]`. Distinguish the cases in `hc0 : c = 0`. Rewrite using `[if_pos hc0, if_pos hc0]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[if_neg hc0, if_neg hc0]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem card_norm2 (q : ℕ) (hq0 : 0 < q) (hK : Fintype.card K = q ^ 2) (hσ : ∀ x, σ (σ x) = x)
     (h2 : ∃ z : K, z + σ z ≠ 0)
     (hN : ∀ d, σ d = d → Nat.card {t : K // t * σ t = d} = if d = 0 then 1 else q + 1) :
@@ -160,6 +211,27 @@ theorem card_norm2 (q : ℕ) (hq0 : 0 < q) (hK : Fintype.card K = q ^ 2) (hσ : 
     · rw [if_neg hc0, if_neg hc0]
       ring
 
+/- English proof (translation)
+Introduce `a`. Proceed by induction on `a with`. Consider the case `zero`. Introduce `m _ V _ _ _ h hs hm d _ _`. Establish `h1 : Nat.card {Y : Fin 0 → V // ∀ i j, h (Y i) (Y j) = if i = j then d i else 0} = 1` using `Nat.card_eq_one_iff_exists.mpr ⟨⟨Fin.elim0, fun i => Fin.elim0 i⟩, fun y => Subtype.ext (funext fun i => Fin.elim0 i)⟩`.
+
+Rewrite using `[h1]`. Simplify using the standard rewrite rules. Consider the case `succ a ih`. Introduce `m ham V _ _ _ h hs hm d hd hd0`. Use `haveI : Finite V := Module.finite_of_finite K`.
+
+Set `e : {Y : Fin (a + 1) → V // ∀ i j, h (Y i) (Y j) = if i = j then d i else 0} ≃ Σ y : {x : V // h x x = d 0}, {Y' : Fin a → perp hs.toIsSq y.1 // ∀ i j, h (Y' i : V) (Y' j) = if i = j then d i.succ else 0}` to `{ toFun := fun Y => ⟨⟨Y.1 0, by simpa using Y.2 0 0⟩, ⟨fun i => ⟨Y.1 i.succ, (mem_perp hs.toIsSq _ _).mpr (by simpa [(Fin.succ_ne_zero i).symm] using Y.2 0 i.succ)⟩, fun i j => by simpa [Fin.succ_inj] using Y.2 i.succ j.succ⟩⟩ invFun := fun p => ⟨Fin.cons p.1.1 (fun i => (p.2.1 i …`. Consider the cases of `i using Fin.cases with`. Consider the case `zero`. Consider the cases of `j using Fin.cases with`. Consider the case `zero => simpa using p.1.2`.
+
+Consider the case `succ j`. Simplify using `only [Fin.cons_zero, Fin.cons_succ]`. Rewrite using `[if_neg (Fin.succ_ne_zero j).symm]`. Conclude with `(mem_perp hs.toIsSq _ _).mp (p.2.1 j).2`. Consider the case `succ i`.
+
+Consider the cases of `j using Fin.cases with`. Consider the case `zero`. Simplify using `only [Fin.cons_zero, Fin.cons_succ]`. Rewrite using `[if_neg (Fin.succ_ne_zero i), hs.herm, (mem_perp hs.toIsSq _ _).mp (p.2.1 i).2, map_zero]`. Consider the case `succ j`.
+
+Simplify using `only [Fin.cons_succ]`. Rewrite using `[p.2.2 i j]`. Simplify using `[Fin.succ_inj]⟩`. Use `left_inv := fun Y => by`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Use function extensionality and compare the values at `i`. Apply the tactic sequence `cases i using Fin.cases <;> rfl`. Use `right_inv := fun p => by`. Break down `p with ⟨⟨y, hy⟩, ⟨Y', hY'⟩⟩` into its components or cases. Use `rfl }`.
+
+Use `haveI : Fintype {x : V // h x x = d 0} := Fintype.ofFinite _`. Establish `hfib : ∀ y : {x : V // h x x = d 0}, (Nat.card {Y' : Fin a → perp hs.toIsSq y.1 // ∀ i j, h (Y' i : V) (Y' j) = if i = j then d i.succ else 0} : ℝ) = ∏ j : Fin a, ((q : ℝ) ^ (2 * (m - 1 - j) - 1) - (-1) ^ (m - 1 - j) * (q : ℝ) ^ (m - 1 - j - 1))` using `fun y => ih (m - 1) (by omega) (perp hs.toIsSq y.1) (fun w w' => h w w') (perp_isHS hs y.1 (by rw [y.2]; exact hd0 0)) (by have := finrank_perp hs.toIsSq y.1 (by rw [y.2]; exact hd0 0); omega) (fun i => d i.succ) (fun i => hd i.succ) (fun i => hd0 i.succ)`. Establish `hS` using `card_norm2 q hq0 hK hσ h2 hN m V h hs hm (d 0) (hd 0)`. Establish `hfirst : (q : ℝ) ^ (2 * (m : ℤ) - 1) + (-1) ^ m * (q : ℝ) ^ ((m : ℤ) - 1) * ((if d 0 = 0 then (q : ℝ) else 0) - 1) = (q : ℝ) ^ (2 * (m - ((0 : Fin (a + 1)) : ℕ)) - 1) - (-1) ^ (m - ((0 : Fin (a + 1)) : ℕ)) * (q : ℝ) ^ (m - ((0 : Fin (a + 1)) : ℕ) - 1)`. Rewrite using `[if_neg (hd0 0), Fin.val_zero, Nat.sub_zero]`.
+
+Establish `e1 : (2 * (m : ℤ) - 1) = ((2 * m - 1 : ℕ) : ℤ)` using `by omega`. Establish `e2 : ((m : ℤ) - 1) = ((m - 1 : ℕ) : ℤ)` using `by omega`. Rewrite using `[e1, e2, zpow_natCast, zpow_natCast]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Nat.card_congr e, Nat.card_sigma, Nat.cast_sum, Finset.sum_congr rfl (fun y _ => hfib y), Finset.sum_const, Finset.card_univ, nsmul_eq_mul, ← Nat.card_eq_fintype_card, hS, hfirst, Fin.prod_univ_succ]`.
+
+Use `congr 1`. Use `Finset.prod_congr rfl (fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[Fin.val_succ, show m - (↑j + 1) = m - 1 - ↑j by omega]`.
+-/
 theorem card_diag2 (q : ℕ) (hq0 : 0 < q) (hK : Fintype.card K = q ^ 2) (hσ : ∀ x, σ (σ x) = x)
     (h2 : ∃ z : K, z + σ z ≠ 0)
     (hN : ∀ d, σ d = d → Nat.card {t : K // t * σ t = d} = if d = 0 then 1 else q + 1) :
@@ -250,6 +322,13 @@ def FFInert2 : Prop :=
       ∏ j : Fin a, ((Nat.card k : ℝ) ^ (2 * (M - j) - 1) -
         (-1) ^ (M - j) * (Nat.card k : ℝ) ^ (M - j - 1))
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hall`. Use `push_neg at hall`. Apply `hne` to reduce the goal to its premises. Use extensionality with `z`. Establish `h1 : (1 : K) + 1 = 0`.
+
+Establish `h1'` using `hall 1`. Express the relevant statement in the definitionally equal form `(1 : K) + σ 1 = 0 at h1'`. Rewrite `h1'` using `[map_one]`. Then use the resulting hypothesis. Establish `h2' : z + σ z = 0` using `hall z`. Use `show σ z = z`.
+
+Take the linear combination `h2' - z * h1`.
+-/
 theorem exists_tr_ne {k K : Type} [Field k] [Field K] [Algebra k K] (σ : K ≃ₐ[k] K)
     (hne : σ ≠ AlgEquiv.refl) : ∃ z : K, z + (σ : K →+* K) z ≠ 0 := by
   by_contra hall
@@ -264,6 +343,31 @@ theorem exists_tr_ne {k K : Type} [Field k] [Field K] [Algebra k K] (σ : K ≃�
   show σ z = z
   linear_combination h2' - z * h1
 
+/- English proof (translation)
+Introduce `k K _ _ _ _ σ hσ hrank hne M a haM J hJ hJd T hT hTd`. Use `haveI : Fintype k := Fintype.ofFinite k`. Use `haveI : FiniteDimensional k K := Module.finite_of_finrank_pos (by omega)`. Use `haveI : Finite K := Module.finite_of_finite k`. Use `haveI : Fintype K := Fintype.ofFinite K`.
+
+Establish `hq0 : 0 < Fintype.card k` using `Fintype.card_pos`. Establish `hK : Fintype.card K = Fintype.card k ^ 2`. Rewrite using `[Module.card_eq_pow_finrank (K := k), hrank]`. Establish `hσ' : ∀ x, (σ : K →+* K) ((σ : K →+* K) x) = x` using `hσ`. Establish `h2` using `exists_tr_ne σ hne`.
+
+Establish `hfrob` using `frob_of_ne σ hrank hne`. Establish `hN : ∀ d, (σ : K →+* K) d = d → Nat.card {t : K // t * (σ : K →+* K) t = d} = if d = 0 then 1 else Fintype.card k + 1` using `fun d hd => card_norm_fiber σ hfrob hrank d hd`. Establish `hTs` using `ffH_isHS hσ' T hT hTd`. Take `⟨f, hf1, hf2⟩` from `exists_orth2 h2 a (Fin a → K) (ffH (σ : K →+* K) T) hTs (Module.finrank_fin_fun K)`. Establish `hPu : IsUnit (Matrix.of f)` using `(Matrix.linearIndependent_rows_iff_isUnit (A := Matrix.of f)).mp (linIndep_orth hTs.toIsSq f hf1 hf2)`.
+
+Establish `hPdet : IsUnit (Matrix.of f).det` using `(Matrix.isUnit_iff_isUnit_det _).mp hPu`. Establish `hPm : IsUnit ((Matrix.of f).map (σ : K →+* K))` using `(Matrix.isUnit_iff_isUnit_det _).mpr ((RingHom.map_det (σ : K →+* K) (Matrix.of f)) ▸ hPdet.map (σ : K →+* K))`. Establish `hPt : IsUnit (Matrix.transpose (Matrix.of f))` using `(Matrix.isUnit_iff_isUnit_det _).mpr ((Matrix.det_transpose (Matrix.of f)).symm ▸ hPdet)`. Establish `hG : ∀ {b c : ℕ} (A : Matrix (Fin c) (Fin c) K) (X : Matrix (Fin b) (Fin c) K), ffGram (σ : K →+* K) A X = X.map (σ : K →+* K) * A * Matrix.transpose X`. Introduce `b c A X`.
+
+Use extensionality with `i j`. Simplify using `only [ffGram, ffH, Matrix.mul_apply, Matrix.map_apply, Matrix.transpose_apply, Finset.sum_mul]`. Conclude with `Finset.sum_comm`. Establish `hD : ∀ i j, ffGram (σ : K →+* K) T (Matrix.of f) i j = if i = j then ffH (σ : K →+* K) T (f i) (f i) else 0`. Introduce `i j`.
+
+Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Rewrite using `[if_pos rfl]`. Both sides reduce to the same expression. Rewrite using `[if_neg hij]`.
+
+Conclude with `hf1 i j hij`. Set `E : (Fin a → Fin M → K) ≃ (Fin a → Fin M → K)` to `{ toFun := fun X => (Matrix.of f * Matrix.of X : Matrix (Fin a) (Fin M) K) invFun := fun Y => ((Matrix.of f)⁻¹ * Matrix.of Y : Matrix (Fin a) (Fin M) K) left_inv := fun X => by`. Express the relevant statement in the definitionally equal form `(Matrix.of f)⁻¹ * (Matrix.of f * Matrix.of X) = Matrix.of X`. Rewrite using `[← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hPdet, Matrix.one_mul]`. Use `right_inv := fun Y => by`.
+
+Express the relevant statement in the definitionally equal form `Matrix.of f * ((Matrix.of f)⁻¹ * Matrix.of Y) = Matrix.of Y`. Rewrite using `[← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hPdet, Matrix.one_mul] }`. Establish `hiff : ∀ X : Fin a → Fin M → K, ffGram (σ : K →+* K) J X = T ↔ ∀ i j, ffH (σ : K →+* K) J (E X i) (E X j) = if i = j then ffH (σ : K →+* K) T (f i) (f i) else 0`. Introduce `X`. Establish `hG1 : ffGram (σ : K →+* K) J (Matrix.of f * Matrix.of X) = (Matrix.of f).map (σ : K →+* K) * ffGram (σ : K →+* K) J X * Matrix.transpose (Matrix.of f)`.
+
+Rewrite using `[hG J (Matrix.of f * Matrix.of X), hG J X, Matrix.map_mul, Matrix.transpose_mul]`. Simplify using `only [Matrix.mul_assoc]`. Apply the tactic sequence `try rfl`. Establish `hD' : ffGram (σ : K →+* K) T (Matrix.of f) = (Matrix.of f).map (σ : K →+* K) * T * Matrix.transpose (Matrix.of f)` using `hG T (Matrix.of f)`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hX i j`. Establish `h3 : ffGram (σ : K →+* K) J (Matrix.of f * Matrix.of X) = ffGram (σ : K →+* K) T (Matrix.of f)`. Rewrite using `[hG1, hX, hD']`. Conclude with `(congrFun (congrFun h3 i) j).trans (hD i j)`. Introduce `hY`.
+
+Establish `h3 : ffGram (σ : K →+* K) J (Matrix.of f * Matrix.of X) = ffGram (σ : K →+* K) T (Matrix.of f)`. Use extensionality with `i j`. Conclude with `(hY i j).trans (hD i j).symm`. Rewrite `h3` using `[hG1, hD']`. Conclude with `hPm.mul_left_cancel (hPt.mul_right_cancel h3)`.
+
+Establish `hcd` using `card_diag2 (Fintype.card k) hq0 hK hσ' h2 hN a M haM (Fin M → K) (ffH (σ : K →+* K) J) (ffH_isHS hσ' J hJ hJd) (Module.finrank_fin_fun K) (fun i => ffH (σ : K →+* K) T (f i) (f i)) (fun i => (hTs.herm (f i) (f i)).symm) (fun i => hf2 i)`. Establish `hE : {X : Fin a → Fin M → K // ffGram (σ : K →+* K) J X = T} ≃ {Y : Fin a → Fin M → K // ∀ i j, ffH (σ : K →+* K) J (Y i) (Y j) = if i = j then ffH (σ : K →+* K) T (f i) (f i) else 0}` using `E.subtypeEquiv hiff`. Rewrite using `[Nat.card_congr hE]`. Rewrite using `[hcd]`. Rewrite using `[Nat.card_eq_fintype_card]`.
+-/
 theorem fFInert2_holds : FFInert2 := by
   intro k K _ _ _ _ σ hσ hrank hne M a haM J hJ hJd T hT hTd
   classical

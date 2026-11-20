@@ -23,16 +23,27 @@ namespace GlobalTheory.LevPrimeMid
 
 variable {D : D7}
 
+/- English proof (translation)
+Introduce `i j` and use `by rw [Matrix.mul_apply] exact Ideal.sum_mem _ fun l _ => Ideal.mul_mem_right _ _ (hx i l)`.
+-/
 theorem mxAt_mul_right (P : Pl D → Prop) {m n r : ℕ} {x : Mx D m n} (hx : MxAt P x) (M : Matrix (Fin n) (Fin r) (AE D)) :
     MxAt P (x * M) := fun i j => by
   rw [Matrix.mul_apply]
   exact Ideal.sum_mem _ fun l _ => Ideal.mul_mem_right _ _ (hx i l)
 
+/- English proof (translation)
+Introduce `i j` and use `by rw [Matrix.mul_apply] exact Ideal.sum_mem _ fun l _ => Ideal.mul_mem_left _ _ (hx l j)`.
+-/
 theorem mxAt_mul_left (P : Pl D → Prop) {m n r : ℕ} {x : Mx D n r} (hx : MxAt P x) (M : Matrix (Fin m) (Fin n) (AE D)) :
     MxAt P (M * x) := fun i j => by
   rw [Matrix.mul_apply]
   exact Ideal.sum_mem _ fun l _ => Ideal.mul_mem_left _ _ (hx l j)
 
+/- English proof (translation)
+Introduce `u hu`. Take `⟨w, hw, rfl⟩` from `Finset.mem_image.1 (Finsupp.mapDomain_support hu)`. Introduce `i j`. Express the relevant statement in the definitionally equal form `(w ⬝ o.pA + (0 : WO L T) ⬝ o.pB) i j ∈ idAt D P`. Rewrite using `[Matrix.zero_mul, add_zero]`.
+
+Conclude with `mxAt_mul_right P (hc w hw) _ i j`.
+-/
 theorem combAt_extS (P : Pl D → Prop) {S A L : HSp D} (o : OrthDec S A L) (T : HSp D) {c : WO A T →₀ ℂ}
     (hc : CombAt P c) : CombAt P (extS o T c) := by
   intro u hu
@@ -43,6 +54,11 @@ theorem combAt_extS (P : Pl D → Prop) {S A L : HSp D} (o : OrthDec S A L) (T :
   rw [Matrix.zero_mul, add_zero]
   exact mxAt_mul_right P (hc w hw) _ i j
 
+/- English proof (translation)
+Introduce `u hu`. Take `⟨w, hw, rfl⟩` from `Finset.mem_image.1 (Finsupp.mapDomain_support hu)`. Introduce `i j`. Express the relevant statement in the definitionally equal form `(o.jA ⬝ w + o.jB ⬝ (0 : WO S L)) i j ∈ idAt D P`. Rewrite using `[Matrix.mul_zero, add_zero]`.
+
+Conclude with `mxAt_mul_left P (hc w hw) _ i j`.
+-/
 theorem combAt_extT (P : Pl D → Prop) {T A L : HSp D} (o : OrthDec T A L) (S : HSp D) {c : WO S A →₀ ℂ}
     (hc : CombAt P c) : CombAt P (extT o S c) := by
   intro u hu
@@ -53,36 +69,62 @@ theorem combAt_extT (P : Pl D → Prop) {T A L : HSp D} (o : OrthDec T A L) (S :
   rw [Matrix.mul_zero, add_zero]
   exact mxAt_mul_left P (hc w hw) _ i j
 
+/- English proof (translation)
+Introduce `u hu`. Use extensionality with `i j`. Conclude with `(RingHom.mem_ker).1 (Ideal.mem_inf.1 (hc u hu i j)).1`.
+-/
 theorem isFinComb_of_combAt (P : Pl D → Prop) {S T : HSp D} {c : WO S T →₀ ℂ} (hc : CombAt P c) : IsFinComb c := by
   intro u hu
   ext i j
   exact (RingHom.mem_ker).1 (Ideal.mem_inf.1 (hc u hu i j)).1
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨H.nodup, H.all, H.inj, fun x => H.tP x, fun i => (H.char i).2⟩`.
+-/
 theorem places_of_preT {c : Comm D} {v : VCom c} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] {ι : Type} {o : TDat c k ι} (H : PreT v o) : Places o.p o.I (· ∈ v.tP) :=
   ⟨H.nodup, H.all, H.inj, fun x => H.tP x, fun i => (H.char i).2⟩
 
+/- English proof (translation)
+Use function extensionality and compare the values at `w`. Simplify using `[heisO]`.
+-/
 theorem heisO_zero (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (u : WO S T) : heisO ψ S T u (fun _ => 0) = fun _ => 0 := by
   funext w
   simp [heisO]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨GlobalTheory.OrientedHeis.theta_zero, fun u _ => heisO_zero ψ S T _, fun _ _ u _ _ => heisO_zero ψ S T u⟩`.
+-/
 theorem vac_zero (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (LS : Lat S) (LT : Lat T) (P : Pl D → Prop) :
     Vac ψ S T LS LT P (fun _ => 0) :=
   ⟨GlobalTheory.OrientedHeis.theta_zero, fun u _ => heisO_zero ψ S T _, fun _ _ u _ _ => heisO_zero ψ S T u⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ => vac_zero ψ A S LA LS P, fun _ => vac_zero ψ S A' LS LA' P⟩`.
+-/
 theorem biVacAt_zero (ψ : AddChar (AF D.host.F) ℂ) {A S A' : HSp D} (LA : Lat A) (LS : Lat S) (LA' : Lat A')
     (P : Pl D → Prop) : BiVacAt ψ LA LS LA' P (fun _ _ => 0) :=
   ⟨fun _ => vac_zero ψ A S LA LS P, fun _ => vac_zero ψ S A' LS LA' P⟩
 
+/- English proof (translation)
+Use function extensionality and compare the values at `w`. Simplify using `[comb, heisO_zero]`.
+-/
 theorem comb_zero (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (c : WO S T →₀ ℂ) : comb ψ S T c (fun _ => 0) = fun _ => 0 := by
   funext w
   simp [comb, heisO_zero]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `u v`. Simplify using `only [biComb, comb_zero]`.
+-/
 theorem biComb_zero (ψ : AddChar (AF D.host.F) ℂ) (A S A' : HSp D) (c : WO A S →₀ ℂ) (c' : WO S A' →₀ ℂ) :
     biComb ψ A S A' c c' (fun _ _ => 0) = fun _ _ => 0 := by
   funext u v
   simp only [biComb, comb_zero]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `h₂`. Simplify using `only [biLift]`. Establish `e1 : ∀ h₀ h₁, (fun v : WO S A' => oma (h₀, h₁) (fun _ => 0) 0) = 0` using `fun h₀ h₁ => by`. Use function extensionality and compare the values at `v`. Conclude with `congrFun (map_zero (oma (h₀, h₁))) 0`.
+
+Simplify using `only [e1, map_zero, Pi.zero_apply, mul_zero, MeasureTheory.integral_zero]`.
+-/
 theorem biLift_zero {A S A' : HSp D} (oma : Om A S) (omb : Om S A') (vA : Vol A) (vS : Vol S) (φ : GA D A → ℂ) :
     biLift oma omb vA vS φ (fun _ _ => 0) = 0 := by
   funext h₂
@@ -97,6 +139,9 @@ namespace GlobalTheory.LevPrimeMid
 
 variable {D : D7}
 
+/- English proof (translation)
+Take `⟨χA, χA', χz, omz, omz', e1, e2, w1, w2, w3, w4⟩` from `hW.mid j σ h`. Use function extensionality and compare the values at `g`. Use `(hCL c.ψ σ _ _ _ (t.sBF j (σ + 1) h) (t.sFB j σ h) (c.lnk j σ h) (c.vL j σ h) χA χA' χz (t.kom j) omz (t.kom (j + 1)) omz' e1 e2 w1 w2 w3 w4 φ Ξ₁ Ξ₂ hφ h₁ h₂).2.2 g` as an intermediate fact. Rewrite using `[hand0, this]`. Both sides reduce to the same expression.
+-/
 theorem bl_contr (hCL : ContrLaw D) {c : Comm D} (v : VCom c) (t : Tup c) (hW : WeilOK (t := t) v) {j σ : ℕ}
     (h : j + 2 * (σ + 1) + 2 = D.R.m) {φ : GA D (c.X j) → ℂ} (hφ : IsContAut (c.X j) φ)
     {Ξ₁ : WO (c.B j (σ + 1) h).V₀ (c.X (j + 1)) → ℂ} {Ξ₂ : WO (c.X (j + 1)) (c.B (j + 1 + 1) σ (idx_step h)).V₀ → ℂ}
@@ -116,6 +161,9 @@ namespace GlobalTheory.LevPrimeMid
 
 variable {D : D7}
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.IndefiniteRowSideFullHecke.AppendedVectorData.lastKer_eq q]`. Conclude with `gluedLat_isLattice q 1 2 L 0`.
+-/
 theorem lastKer_isLattice {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n : Type}
     (q : Unif k) (L : Submodule 𝒪[k] (n → k)) [L.IsLattice k] : (lastKer L).IsLattice k := by
   rw [GlobalTheory.IndefiniteRowSideFullHecke.AppendedVectorData.lastKer_eq q]
@@ -125,6 +173,41 @@ end GlobalTheory.LevPrimeMid
 
 namespace GlobalTheory.LevPrimeMid
 
+/- English proof (translation)
+Introduce `D c v k _ _ _ _ ι o hc hv hS j σ h`. Establish `hPl` using `places_of_preT hS.pre`. Take `⟨x₀⟩` from `Formalism.L2.Col.nonempty_places D.host.F`. Establish `hstd` using `hc.std`. Establish `sd0 : IsSelfDualC _ (c.x j).L` using `(hc.x j (by omega)).sd`.
+
+Establish `sd1 : IsSelfDualC _ (c.x (j + 1)).L` using `(hc.x (j + 1) (by omega)).sd`. Establish `sd2 : IsSelfDualC _ (c.x (j + 1 + 1)).L` using `(hc.x (j + 1 + 1) (by omega)).sd`. Establish `sdG : IsSelfDualC _ (o.M j (σ + 1) h)` using `((hS.good x₀).bf j (σ + 1) h).sdV₀`. Establish `sdG' : IsSelfDualC _ (o.M (j + 1 + 1) σ (idx_step h))` using `((hS.good x₀).fb j σ h).sdW₀`. Take `⟨M0, sdM0, latM0, -⟩` from `GlobalTheory.T.selfDualLattice_prescribed_finitelyManySplitPlaces D k ι o.p o.I _ hPl _ _ (o.β₀ j (σ + 1) h) (o.M j (σ + 1) h) sdG (fun i => lastKer (o.Q j i).lat) (fun i => lastKer_isLattice o.q _)`.
+
+Take `⟨M0', sdM0', latM0', -⟩` from `GlobalTheory.T.selfDualLattice_prescribed_finitelyManySplitPlaces D k ι o.p o.I _ hPl _ _ (o.β₀ (j + 1 + 1) σ (idx_step h)) (o.M (j + 1 + 1) σ (idx_step h)) sdG' (fun i => lastKer (o.Q (j + 1 + 1) i).lat) (fun i => lastKer_isLattice o.q _)`. Take `⟨e1, e1', he1, he1', hR1⟩` from `GlobalTheory.T.vacuumChangeAtSplitPlaces_proof D k ι o.p o.I _ hPl (Fin (c.X (j + 1)).rank) (Fin (c.X j).rank ⊕ Fin 1) c.ψ hstd _ _ (o.β₀ j (σ + 1) h) (o.β (j + 1)) (o.M j (σ + 1) h) M0 (c.x (j + 1)).L (c.x (j + 1)).L sdG sd1 sdM0 sd1`. Take `⟨e2, e2', he2, he2', hR2⟩` from `GlobalTheory.T.vacuumChangeAtSplitPlaces_proof D k ι o.p o.I _ hPl (Fin (c.X (j + 1 + 1)).rank ⊕ Fin 1) (Fin (c.X (j + 1)).rank) c.ψ hstd _ _ (o.β (j + 1)) (o.β₀ (j + 1 + 1) σ (idx_step h)) (c.x (j + 1)).L (c.x (j + 1)).L (o.M (j + 1 + 1) σ (idx_step h)) M0' sd1 sdG' sd1 sdM0'`. Establish `hext1` using `GlobalTheory.T.extensionByZeroAtSplitPlaces_proof D k ι o.p o.I _ hPl (Fin (c.X (j + 1)).rank) (Fin (c.X j).rank) c.ψ hstd (c.bes j (σ + 1) h).V₀ (c.X j) (c.bes j (σ + 1) h).L (c.X (j + 1)) (c.bes j (σ + 1) h).o (c.bes j (σ + 1) h).ζ (c.bes j (σ + 1) h).line (o.β j) (o.β₀ j (σ + …`. Establish `hext2` using `GlobalTheory.T.extensionByZeroAtSplitPlaces_proof D k ι o.p o.I _ hPl (Fin (c.X (j + 1)).rank) (Fin (c.X (j + 1 + 1)).rank) c.ψ hstd (c.bes (j + 1 + 1) σ (idx_step h)).V₀ (c.X (j + 1 + 1)) (c.bes (j + 1 + 1) σ (idx_step h)).L (c.X (j + 1)) (c.bes (j + 1 + 1) σ (idx_step h)).o (c. …`.
+
+Establish `hrep1 : Reps c.ψ (o.β j) (o.β (j + 1)) (c.x j).L (c.x (j + 1)).L (fun i => phiOne (o.Q j i) (o.Q (j + 1) i)) o.I (· ∈ v.tP) (v.dT j)` using `⟨(hv.atT j).1, hS.rep j (by omega)⟩`. Establish `hrep2 : Reps c.ψ (o.β (j + 1)) (o.β (j + 1 + 1)) (c.x (j + 1)).L (c.x (j + 1 + 1)).L (fun i => phiOne (o.Q (j + 1) i) (o.Q (j + 1 + 1) i)) o.I (· ∈ v.tP) (v.dT (j + 1))` using `⟨(hv.atT (j + 1)).1, hS.rep (j + 1) (by omega)⟩`. Establish `hX1` using `hext1.2.1 _ _ hrep1`. Establish `hX2` using `hext2.2.2 _ _ hrep2`. Take `⟨op0, hop0, hC⟩` from `GlobalTheory.T.contractionOfVacuumCombinations_proof D k ι o.p o.I _ hPl (Fin (c.X j).rank) (Fin (c.X (j + 1 + 1)).rank) c.ψ hstd (σ + 1) σ (c.B j (σ + 1) h) (c.B (j + 1 + 1) σ (idx_step h)) (c.lnk j σ h) (c.X (j + 1)) (c.vL j σ h) (o.β j) (o.β₀ j (σ + 1) h) (o.β (j + 1 + 1)) (o. …`.
+
+Establish `hInv` using `(GlobalTheory.T.biVacuumOperator_zero_or_left_invertible D k ι o.p o.I _ hPl c.ψ hstd _ _ _ op0 hop0).1 (c.x j).L (c.x (j + 1)).L (c.x (j + 1 + 1)).L sd0 sd1 sd2`. Take `⟨ε, -, hV⟩` from `GlobalTheory.T.doubleStepSmallPairsValueAllGluedSplitPlaces_proof D k ι o.p o.I _ hPl o.q c.ψ o.χ o.hχ (fun i => (hS.pre.char i).1)`. Take `⟨r, e, hr, hVE⟩` from `hV (Fin (c.X (j + 1)).rank) (Fin (c.X j).rank) (Fin (c.X (j + 1 + 1)).rank)`. Set `a : PairDat o.p (c.B j (σ + 1) h).A (c.B j (σ + 1) h).V₀ (Fin (c.X j).rank)` to `⟨o.β j, o.β₀ j (σ + 1) h, o.Q j⟩`. Set `b : MidDat o.p (c.J j (σ + 1) h).W₀ (Fin (c.X (j + 1)).rank)` to `⟨o.β (j + 1), o.Q (j + 1)⟩`.
+
+Set `a' : PairDat o.p (c.B (j + 1 + 1) σ (idx_step h)).A (c.B (j + 1 + 1) σ (idx_step h)).V₀ (Fin (c.X (j + 1 + 1)).rank)` to `⟨o.β (j + 1 + 1), o.β₀ (j + 1 + 1) σ (idx_step h), o.Q (j + 1 + 1)⟩`. Establish `hcore : ∀ i, GluedCore (c.B j (σ + 1) h) (o.M j (σ + 1) h) o.q (a.α i) (a.α₀ i) (a.P i) ∧ GluedCore (c.B (j + 1 + 1) σ (idx_step h)) (o.M (j + 1 + 1) σ (idx_step h)) o.q (a'.α i) (a'.α₀ i) (a'.P i) ∧ (b.β i).IsLat (c.x (j + 1)).L (b.Q i).lat` using `fun i => ⟨hS.glued j (σ + 1) h i, hS.glued (j + 1 + 1) σ (idx_step h) i, hS.pre.latT (j + 1) (by omega) i⟩`. Establish `hOrth : ∀ x, x ∈ v.tP → (∃ LL, OrthAt (c.B j (σ + 1) h).o M0 (c.x j).L LL x) ∧ ∃ LL, OrthAt (c.B (j + 1 + 1) σ (idx_step h)).o M0' (c.x (j + 1 + 1)).L LL x` using `fun x hx => ⟨hext1.1 x hx, hext2.1 x hx⟩`. Establish `key : ∀ t : Tup c, ∀ Ψ₁ Ψ₂, Vac c.ψ _ _ (v.N j) (v.N (j + 1)) (· ∈ v.tP) Ψ₁ → Vac c.ψ _ _ (v.N (j + 1)) (v.N (j + 1 + 1)) (· ∈ v.tP) Ψ₂ → ∃ f₁ f₂, Vac c.ψ _ _ (o.M j (σ + 1) h) (c.x (j + 1)).L (· ∈ v.tP) (flatBF (t.sBF j (σ + 1) h) Ψ₁) ∧ Vac c.ψ _ _ (c.x (j + 1)).L (o.M (j + 1 + …` using `c.B j (σ + 1) h) (B' := c.B (j + 1 + 1) σ (idx_step h)) (c.lnk j σ h) (c.X (j + 1)) (c.vL j σ h) f₁ f₂) ∧ BiVacAt c.ψ (c.x j).L (c.x (j + 1)).L (c.x (j + 1 + 1)).L (· ∈ v.tP) (GlobalTheory.Unf.contr (B := c.B j (σ + 1) h) (B' := c.B (j + 1 + 1) σ (idx_step h)) (c.lnk j σ h) (c.X …`. Introduce `t Ψ₁ Ψ₂ hΨ₁ hΨ₂`.
+
+Establish `hF` using `GlobalTheory.T.flatMapPreservesVacuum_proof D c.ψ (· ∈ v.tP)`. Establish `hXi1` using `hF.1 (σ + 1) (c.B j (σ + 1) h) (c.J j (σ + 1) h) (t.sBF j (σ + 1) h) (v.N j) (o.M j (σ + 1) h) (v.N (j + 1)) (c.x (j + 1)).L (fun x _ => (hS.good x).bf j (σ + 1) h) Ψ₁ hΨ₁`. Establish `hXi2` using `hF.2.1 σ (c.J j (σ + 1) h) (c.B (j + 1 + 1) σ (idx_step h)) (t.sFB j σ h) (v.N (j + 1)) (c.x (j + 1)).L (v.N (j + 1 + 1)) (o.M (j + 1 + 1) σ (idx_step h)) (fun x _ => (hS.good x).fb j σ h) Ψ₂ hΨ₂`. Take `⟨hf1, hinv1, hov1⟩` from `hR1 _ hXi1`. Take `⟨hf2, hinv2, hov2⟩` from `hR2 _ hXi2`.
+
+Use `⟨_, _, hXi1, hXi2, hf1, hf2, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `hC _ _ hf1 hf2` as an intermediate fact. Rewrite `this` using `[hinv1, hinv2]`. Conclude with `this`. Conclude with `(GlobalTheory.T.besselThetaContraction_extendByZero_vacuum_smooth D c.ψ hstd (σ + 1) σ (c.B j (σ + 1) h) (c.B (j + 1 + 1) σ (idx_step h)) (c.lnk j σ h) (c.X (j + 1)) (c.vL j σ h) _ _ hf1.1 hf2.1).2.2 (· ∈ v.tP) (c.x j).L (c.x (j + 1)).L (c.x (j + 1 + 1)).L M0 M0' sd0 sd1 sd2 sdM0 …`.
+
+Conclude with `(hov1 _ _).2 (hX1.2 _ hf1)`. Conclude with `(hov2 _ _).2 (hX2.2 _ hf2)`. Establish `hCL : ContrLaw D` using `GlobalTheory.T.doubleStep_eq_two_thetaColumnLifts D`. Establish `hCC` using `GlobalTheory.T.besselThetaContraction_extendByZero_vacuum_smooth D c.ψ hstd (σ + 1) σ (c.B j (σ + 1) h) (c.B (j + 1 + 1) σ (idx_step h)) (c.lnk j σ h) (c.X (j + 1)) (c.vL j σ h)`. Break down `hInv with hz | ⟨op', hop', hinv⟩` into its components or cases.
+
+Establish `happ : ∀ C, BiOp.app c.ψ (⟨0, Fin.elim0, Fin.elim0⟩ : BiOp (c.X j) (c.X (j + 1)) (c.X (j + 1 + 1))) C = fun _ _ => 0` using `fun C => by funext u w; simp [BiOp.app]`. Use `⟨ε, ⟨0, Fin.elim0, Fin.elim0⟩, r, e, hr, fun i => i.elim0, ?_⟩` and prove the remaining obligations. Introduce `t _ _ _ Ψ₁ Ψ₂ hΨ₁ hΨ₂`. Take `⟨f₁, f₂, -, -, -, -, hctr, hC0, -, -⟩` from `key t Ψ₁ Ψ₂ hΨ₁ hΨ₂`. Establish `h0 : c.ctr j σ h (t.sBF j (σ + 1) h) (t.sFB j σ h) Ψ₁ Ψ₂ = fun _ _ => 0` using `by rw [hctr, hz _ hC0]; rfl`.
+
+Use `⟨by rw [happ]; exact biVacAt_zero _ _ _ _ _, fun d d' _ _ φ _ => ?_⟩` and prove the remaining obligations. Rewrite using `[h0, happ, biComb_zero, biComb_zero, biComb_zero]`. Simplify using `only [Comm.bl, biLift_zero, smul_zero]`. Use `⟨ε, op', r, e, hr, hop', ?_⟩` and prove the remaining obligations. Introduce `t _ hW hU Ψ₁ Ψ₂ hΨ₁ hΨ₂`.
+
+Take `⟨f₁, f₂, hXi1, hXi2, hf₁, hf₂, hctr, hC0, hov1, hov2⟩` from `key t Ψ₁ Ψ₂ hΨ₁ hΨ₂`. Establish `hback : op'.app c.ψ (c.ctr j σ h (t.sBF j (σ + 1) h) (t.sFB j σ h) Ψ₁ Ψ₂) = (GlobalTheory.Unf.contr (B` using `c.B j (σ + 1) h) (B' := c.B (j + 1 + 1) σ (idx_step h)) (c.lnk j σ h) (c.X (j + 1)) (c.vL j σ h) f₁ f₂) := by`. Rewrite using `[hctr]`. Conclude with `hinv _ hC0`. Use `⟨by rw [hback]; exact hC0, fun d d' hd hd' φ hφ => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hback]`. Establish `hD1` using `combAt_extS (fun x => x ∉ v.tP) (c.bes j (σ + 1) h).o (c.X (j + 1)) hd`. Establish `hD2` using `combAt_extT (fun x => x ∉ v.tP) (c.bes (j + 1 + 1) σ (idx_step h)).o (c.X (j + 1)) hd'`. Establish `hT1` using `combAt_extS (· ∈ v.tP) (c.bes j (σ + 1) h).o (c.X (j + 1)) (hv.atT j).1`. Establish `hT2` using `combAt_extT (· ∈ v.tP) (c.bes (j + 1 + 1) σ (idx_step h)).o (c.X (j + 1)) (hv.atT (j + 1)).1`.
+
+Establish `hAC1` using `(GlobalTheory.T.dataAsCombinationsAtSplitPlaces_proof D k ι o.p o.I _ hPl (Fin (c.X (j + 1)).rank) (Fin (c.X j).rank ⊕ Fin 1) c.ψ hstd _ _ (o.β₀ j (σ + 1) h) (o.β (j + 1)) (o.M j (σ + 1) h) (c.x (j + 1)).L sdG sd1 (fun i => tensCol (phiOne (a.P i) (b.Q i)) (vecInd (b.Q i).lat))). …`. Establish `hAC2` using `(GlobalTheory.T.dataAsCombinationsAtSplitPlaces_proof D k ι o.p o.I _ hPl (Fin (c.X (j + 1 + 1)).rank ⊕ Fin 1) (Fin (c.X (j + 1)).rank) c.ψ hstd _ _ (o.β (j + 1)) (o.β₀ (j + 1 + 1) σ (idx_step h)) (c.x (j + 1)).L (o.M (j + 1 + 1) σ (idx_step h)) sd1 sdG' (fun i => tensRow (phiOne …`. Establish `th1'` using `GlobalTheory.AvgMid.theta_comb hstd (isFinComb_of_combAt _ hT1) hf₁.1`. Establish `th2'` using `GlobalTheory.AvgMid.theta_comb hstd (isFinComb_of_combAt _ hT2) hf₂.1`. Establish `thD1'` using `GlobalTheory.AvgMid.theta_comb hstd (isFinComb_of_combAt _ hD1) th1'`.
+
+Establish `thD2'` using `GlobalTheory.AvgMid.theta_comb hstd (isFinComb_of_combAt _ hD2) th2'`. Establish `hVx` using `hVE σ (c.B j (σ + 1) h) (c.J j (σ + 1) h) (c.B (j + 1 + 1) σ (idx_step h)) (t.sBF j (σ + 1) h) (t.sFB j σ h) (c.lnk j σ h) (c.vL j σ h) (fun x hx => ⟨hU.bf j (σ + 1) h x hx, hU.fb j σ h x hx⟩) a b a' (o.M j (σ + 1) h) (c.x (j + 1)).L (o.M (j + 1 + 1) σ (idx_step h)) sdG sd1 sdG' …`. Establish `hSφ : IsContAut (c.X j) (a.sAll o.q (fun i => resChar (o.χ i) (o.hχ i) o.q) ε o.I φ)` using `((GlobalTheory.T.epsilonFourierProduct_bijective_gluedPlaces D k ι o.p o.q o.χ o.hχ ε (Fin (c.X j).rank) _ _ a hS.pre.inj o.I).1.mapsTo hφ).1`. Establish `e1` using `(hCC _ _ hXi1.1 hXi2.1).2.1 d d'`. Establish `e2` using `bl_contr hCL v t hW h hφ.1 hAC1.1.1 hAC2.1.1`.
+
+Establish `e4` using `bl_contr hCL v t hW h hSφ thD1' thD2'`. Establish `e5` using `(hCC _ _ th1' th2').2.1 d d'`. Establish `e6` using `(hCC _ _ hf₁.1 hf₂.1).2.1 (v.dT j) (v.dT (j + 1))`. Use `show c.bl j (t.kom j) (t.kom (j + 1)) φ (biComb c.ψ _ _ _ d d' (GlobalTheory.Unf.contr (B := c.B j (σ + 1) h) (B' := c.B (j + 1 + 1) σ (idx_step h)) (c.lnk j σ h) (c.X (j + 1)) (c.vL j σ h) (flatBF (t.sBF j (σ + 1) h) Ψ₁) (flatFB (t.sFB j σ h) Ψ₂))) = _`. Rewrite using `[← e1, e2, hVx, ← e4, e5, e6]`.
+
+Both sides reduce to the same expression.
+-/
 theorem lawLevelPrime_double : ∀ (D : D7) (c : Comm D) (v : VCom c) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (ι : Type) (o : TDat c k ι), c.Is → v.Is → ShapeOff v o → ∀ j σ (h : j + 2 * (σ + 1) + 2 = D.R.m), ∃ (ε : ι → 𝓀[k]ˣ) (op : BiOp (c.X j) (c.X (j + 1)) (c.X (j + 1 + 1))) (r : ι → ℝ) (e : ι → ℤ), (∀ i, 0 < r i) ∧ OpAt (· ∈ v.tP) op ∧ ∀ t : Tup c, t.Is → WeilOK (t := t) v → t.UnrOn (· ∈ v.tP) → ∀ Ψ₁ Ψ₂, Vac c.ψ _ _ (v.N j) (v.N (j + 1)) (· ∈ v.tP) Ψ₁ → Vac c.ψ _ _ (v.N (j + 1)) (v.N (j + 1 + 1)) (· ∈ v.tP) Ψ₂ → BiVacAt c.ψ (c.x j).L (c.x (j + 1)).L (c.x (j + 1 + 1)).L (· ∈ v.tP) (op.app c.ψ (c.ctr j σ h (t.sBF j (σ + 1) h) (t.sFB j σ h) Ψ₁ Ψ₂)) ∧ ∀ d d', CombAt (· ∉ v.tP) d → CombAt (· ∉ v.tP) d' → ∀ φ ∈ o.Ram j, c.bl j (t.kom j) (t.kom (j + 1)) φ (biComb c.ψ _ _ _ d d' (c.ctr j σ h (t.sBF j (σ + 1) h) (t.sFB j σ h) Ψ₁ Ψ₂)) = o.mono r e (t.sBF j (σ + 1) h).χW • c.bl j (t.kom j) (t.kom (j + 1)) (o.S (fun _ => ε) j φ) (biComb c.ψ _ _ _ d d' (biComb c.ψ _ _ _ (v.dT j) (v.dT (j + 1)) (op.app c.ψ (c.ctr j σ h (t.sBF j (σ + 1) h) (t.sFB j σ h) Ψ₁ Ψ₂)))) := by
   intro D c v k _ _ _ _ ι o hc hv hS j σ h
   have hPl := places_of_preT hS.pre

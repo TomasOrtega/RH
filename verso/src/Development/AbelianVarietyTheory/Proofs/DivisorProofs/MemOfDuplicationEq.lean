@@ -7,6 +7,21 @@ open scoped IntermediateField BigOperators Topology
 
 namespace GlobalTheory.CMModel
 
+/- English proof (translation)
+Introduce `V W x y δ hW hE hl hδ h`. Take `⟨h₁, h₂, h₃, h₄, h₆⟩` from `hW`. Establish `hr : ∀ z : ℂ, z ∈ V → z ∈ (algebraMap V ℂ).range` using `fun z hz => ⟨⟨z, hz⟩, rfl⟩`. Establish `hr' : ∀ z : ℂ, z ∈ (algebraMap V ℂ).range → z ∈ V`. Introduce and unpack `z ⟨w, rfl⟩`.
+
+Conclude with `w.2`. Establish `hb₄ : W.b₄ ∈ V`. Rewrite using `[WeierstrassCurve.b₄]`. Conclude with `add_mem (mul_mem (ofNat_mem V 2) h₄) (mul_mem h₁ h₃)`. Establish `hb₆ : W.b₆ ∈ V`.
+
+Rewrite using `[WeierstrassCurve.b₆]`. Conclude with `add_mem (pow_mem h₃ 2) (mul_mem (ofNat_mem V 4) h₆)`. Establish `hb₈ : W.b₈ ∈ V`. Rewrite using `[WeierstrassCurve.b₈]`. Use `sub_mem (add_mem (sub_mem (add_mem ?_ ?_) ?_) ?_) ?_` and prove the remaining obligations.
+
+Conclude with `mul_mem (pow_mem h₁ 2) h₆`. Conclude with `mul_mem (mul_mem (ofNat_mem V 4) h₂) h₆`. Conclude with `mul_mem (mul_mem h₁ h₃) h₄`. Conclude with `mul_mem h₂ (pow_mem h₃ 2)`. Conclude with `pow_mem h₄ 2`.
+
+Use `set l := 2 * y + W.a₁ * x + W.a₃ with hl_def`. Establish `hx : x ∈ V`. Use `hr' x (GlobalTheory.mem_range_of_quartic (A := V) (c₀ := -(W.b₈ + l ^ 2 * δ)) (c₁ := -(2 * W.b₆ + l ^ 2)) (c₂ := -W.b₄) (c₃ := 0) (hr _ ?_) (hr _ ?_) (hr _ ?_) (hr _ ?_) ?_)` and prove the remaining obligations. Conclude with `neg_mem (add_mem hb₈ (mul_mem (pow_mem hl 2) hδ))`. Conclude with `neg_mem (add_mem (mul_mem (ofNat_mem V 2) hb₆) (pow_mem hl 2))`.
+
+Conclude with `neg_mem hb₄`. Conclude with `zero_mem V`. Take the linear combination `h`. Use `⟨hx, ?_⟩` and prove the remaining obligations. Rewrite `hE` using `[WeierstrassCurve.Affine.equation_iff]`.
+
+Use `hr' y (GlobalTheory.mem_range_of_quartic (A := V) (c₀ := 0) (c₁ := 0) (c₂ := -(x ^ 3 + W.a₂ * x ^ 2 + W.a₄ * x + W.a₆)) (c₃ := W.a₁ * x + W.a₃) (hr _ (zero_mem V)) (hr _ (zero_mem V)) (hr _ ?_) (hr _ ?_) ?_)` and prove the remaining obligations. Conclude with `neg_mem (add_mem (add_mem (add_mem (pow_mem hx 3) (mul_mem h₂ (pow_mem hx 2))) (mul_mem h₄ hx)) h₆)`. Conclude with `add_mem (mul_mem h₁ hx) h₃`. Take the linear combination `y ^ 2 * hE`.
+-/
 theorem mem_of_duplication_eq :
     ∀ (V : ValuationSubring ℂ) (W : WeierstrassCurve ℂ) (x y δ : ℂ), IntV V W →
       W.toAffine.Equation x y → 2 * y + W.a₁ * x + W.a₃ ∈ V → δ ∈ V →

@@ -7,13 +7,28 @@ open NumberField IsDedekindDomain GlobalTheory.CuspRep GlobalTheory.UnitaryBC Gl
 
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
+/- English proof (translation)
+Simplify using `[spehInf]`.
+-/
 private theorem spehInf_one' (m : Multiset ℂ) : spehInf 1 m = m := by
   simp [spehInf]
 
+/- English proof (translation)
+Simplify using `[satTot, GlobalTheory.WeilDeligne.qPow_zero]`.
+-/
 private theorem satTot_one {E : Type} [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E)) (S : Fin 1 → Multiset ℂˣ) :
     satTot w (fun _ => 1) S = S 0 := by
   simp [satTot, GlobalTheory.WeilDeligne.qPow_zero]
 
+/- English proof (translation)
+Introduce `PH E Ω _ _ _ _ _ _ l _ ι n hn1 π hπ c a d hn P ρ m σ H hsp hsplit hun hc hd r hr hF`. Substitute `hc` using the available equality. Take `rfl : d = fun _ => 1` from `funext hd`. Take `rfl : a = fun _ => n` from `funext fun i => by`. Rewrite using `[Subsingleton.elim i 0]`.
+
+Simplify using `using hn`. Establish `hw : ∀ φ lam, HasWeightAt π φ lam → (P 0).HasInfChar φ (infOfWeight lam)` using `fun φ lam h => by`. Establish `e` using `H.weight φ lam h`. Rewrite `e` using `[Fin.sum_univ_one, spehInf_one']`. Conclude with `e ▸ H.inf 0 φ`.
+
+Use `⟨P 0, (GlobalTheory.CuspRep.CG.isRegAlg_iff _).2 fun τ => ?_, GlobalTheory.LocGlobDual.Model.dualIsConj_of_isCsd (PH.toClassicalTheorems.litN.aut.gk E _ (P 0)) (H.csd 0), ⟨hr, hF.mono fun w ⟨S, h1, h2⟩ => ⟨S 0, h1 0, satTot_one w S ▸ h2⟩⟩, hw, fun w h => hun w h 0, fun w hs τ hτ …` and prove the remaining obligations. Take `⟨lam, hl⟩` from `GlobalTheory.T.exists_algebraicWeight_of_automorphic_definiteUnitary E _ hn1 π hπ τ`. Rewrite using `[CG.HasInfChar.infChar_eq (π := CG.mk (P 0)) (hw τ lam hl)]`. Use `⟨nodup_infOfWeight lam, fun z hz => ?_⟩` and prove the remaining obligations. Rewrite `hz` using `[infOfWeight, Multiset.mem_map]`.
+
+Take `⟨j, -, rfl⟩` from `hz`. Conclude with `⟨lam.w j - (j : ℕ), by push_cast; ring⟩`. Take `⟨e₁⟩` from `PositivityTheory.AutomorphicGaloisHodgeTate.SaturatedBaseChange.oneFactor E w n hn (ρ 0 w) (σ · w) (hsp 0 w)`. Take `⟨e₂⟩` from `LocUniq.isLocComp_unique (P 0) w _ _ (H.loc 0 w) hτ`. Conclude with `GlobalTheory.BaseChangeBridge.isCompAlong_of_equiv (e₁.trans e₂).toLinearEquiv (fun g x => LinearMap.congr_fun ((e₁.trans e₂).toIntertwiningMap.isIntertwining' g) x) τ.irred (hsplit w hs)`.
+-/
 theorem UpperTheory.V.Z.Win.Gu.irrCaseT :
     HypothesesH → IrrCaseT := by
   intro PH E Ω _ _ _ _ _ _ l _ ι n hn1 π hπ c a d hn P ρ m σ H hsp hsplit hun hc hd r hr hF

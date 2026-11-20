@@ -17,6 +17,11 @@ open ValuativeRel
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `B X I l Z L hT Gi Gl Kc Yd cX ex W _ u a ha _ j hj t₀ J₀ _ t J _ i₀ i hv g _ h0`. Establish `hsd : IsSelfDualC ((I.rec7 l Z).sp.X j) (a.g.x j).L` using `(ha.x j (by have h2 : (I.rec7 l Z).R.m = B.R.m := rfl; omega)).sd`. Establish `h0' : GlobalTheory.LevIdx.locHom (J₀.G i₀).q _ (GlobalTheory.PenBridge.frJ J₀ j i₀ (GlobalTheory.PenBridge.step_before_last_eq_s_succ J₀ hj i₀)) g ∈ KO (J₀.G i₀).k _` using `(GlobalTheory.PenBridge.toSum0_mem_KO_iff _).1 h0`. Establish `hm` using `GlobalTheory.LevProd.SamePlace.moves_of_mem_KO (J₀.G i₀).q _ hsd (GlobalTheory.PenBridge.intIn_frJ J₀ j i₀ (GlobalTheory.PenBridge.step_before_last_eq_s_succ J₀ hj i₀)) h0'`. Express the relevant statement in the definitionally equal form `GlobalTheory.PenBridge.toSum0 _ _ _ ∈ _`.
+
+Rewrite using `[GlobalTheory.PenBridge.toSum0_mem_KO_iff]`. Conclude with `GlobalTheory.SplitInt.mem_KO_of_moves (J.G i).q _ (GlobalTheory.PenBridge.frJ J j i (GlobalTheory.PenBridge.step_before_last_eq_s_succ J hj i)) (a.g.x j).L (· = (J₀.G i₀).q.v) hv.symm (GlobalTheory.PenBridge.intIn_frJ J j i (GlobalTheory.PenBridge.step_before_last_eq_s_succ J hj …`.
+-/
 theorem GlobalTheory.PenLev.rd_mem_KO_same : ∀ {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} {I : TC B X} {l : I.Laws} {Z : TC.Later B (I.cols l)} {L : SizeData₂ (I.rec7 l Z)} {hT : GatTies (I.rec7 l Z)} {Gi : Formalism.MainNotions.G.Inst (I.rec7 l Z) L} {Gl : Formalism.MainNotions.G.LatInst (I.rec7 l Z)} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX (I.rec7 l Z)} {cX : ExtraC} {ex : Extra (I.rec7 l Z) L hT Gi Gl Kc Yd cX} (W : RealPack ex), AllTrue W → ∀ (u : B.Word) (a : GeoAll W u), a.Is → a.True → ∀ j (hj : j + 1 = B.R.m), ∀ t₀ (J₀ : QJ a t₀), J₀.Reads → ∀ t (J : QJ a t), J.Reads → ∀ i₀ i, (J₀.G i₀).q.v = (J.G i).q.v → ∀ g ∈ GfC _, GlobalTheory.PenBridge.rd J₀ j hj g i₀ ∈ KO (J₀.G i₀).k _ → GlobalTheory.PenBridge.rd J j hj g i ∈ KO (J.G i).k _ := by
   intro B X I l Z L hT Gi Gl Kc Yd cX ex W _ u a ha _ j hj t₀ J₀ _ t J _ i₀ i hv g _ h0
   have hsd : IsSelfDualC ((I.rec7 l Z).sp.X j) (a.g.x j).L :=
@@ -31,6 +36,11 @@ theorem GlobalTheory.PenLev.rd_mem_KO_same : ∀ {B : GlobalTheory.Mem.Base} {X 
     (· = (J₀.G i₀).q.v) hv.symm (GlobalTheory.PenBridge.intIn_frJ J j i (GlobalTheory.PenBridge.step_before_last_eq_s_succ J hj i)) g hm _
     ((GlobalTheory.LevIdx.eq_locHom_iff _ _ _ _ _).2 rfl)
 
+/- English proof (translation)
+Establish `h1 : x ∈ GlobalTheory.FinPl.grpOff _ (· = (J.G i).q.v)` using `GlobalTheory.FinPl.SetCut.grpAt_le_grpOff _ P (· = (J.G i).q.v) (fun p hp e => hP (e ▸ hp)) hx`. Establish `h2` using `GlobalTheory.LocMod.PinInhab.map_mt_eq_one_of_off (J.G i).q (P := (· = (J.G i).q.v)) rfl h1`. Establish `h3 : GlobalTheory.LevIdx.locHom (J.G i).q _ (GlobalTheory.PenBridge.frJ J j i (GlobalTheory.PenBridge.step_before_last_eq_s_succ J hj i)) x = 1`. Use `symm`. Rewrite using `[← GlobalTheory.LevIdx.eq_locHom_iff, h2]`.
+
+Simplify using `[(GlobalTheory.PenBridge.frJ J j i (GlobalTheory.PenBridge.step_before_last_eq_s_succ J hj i)).βγ]`. Express the relevant statement in the definitionally equal form `GlobalTheory.PenBridge.toSum0 _ _ _ = 1`. Rewrite using `[h3, map_one]`.
+-/
 theorem GlobalTheory.PenLev.rd_eq_one_of_grpAt {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} {I : TC B X} {l : I.Laws} {Z : TC.Later B (I.cols l)} {L : SizeData₂ (I.rec7 l Z)} {hT : GatTies (I.rec7 l Z)} {Gi : Formalism.MainNotions.G.Inst (I.rec7 l Z) L} {Gl : Formalism.MainNotions.G.LatInst (I.rec7 l Z)} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX (I.rec7 l Z)} {cX : ExtraC} {ex : Extra (I.rec7 l Z) L hT Gi Gl Kc Yd cX} {W : RealPack ex} {u : B.Word} {a : GeoAll W u} {t : W.P.T}
     (J : QJ a t) {j : ℕ} (hj : j + 1 = B.R.m) (i : Fin J.r) {P : GlobalTheory.FinPl.Pl (I.rec7 l Z) → Prop} (hP : ¬ P (J.G i).q.v)
     {x : GA (I.rec7 l Z) ((I.rec7 l Z).sp.X j)} (hx : x ∈ GlobalTheory.FinPl.grpAt _ P) : GlobalTheory.PenBridge.rd J j hj x i = 1 := by
@@ -44,6 +54,13 @@ theorem GlobalTheory.PenLev.rd_eq_one_of_grpAt {B : GlobalTheory.Mem.Base} {X : 
   change GlobalTheory.PenBridge.toSum0 _ _ _ = 1
   rw [h3, map_one]
 
+/- English proof (translation)
+Introduce `B X I l Z L hT Gi Gl Kc Yd cX ex W hW u a ha hTr j hj t J hJ α t' J' hJ' g hg i`. Take `⟨hsup, hgf, hrd⟩` from `(GlobalTheory.PenLev.mem_relax_iff J j hj α g).1 hg`. Distinguish the cases in `hv : GlobalTheory.PenBridge.plF J (J'.G i).q.v`. Take `⟨i₀, hi₀⟩` from `hv`. Conclude with `GlobalTheory.PenLev.rd_mem_KO_same W hW u a ha hTr j hj t J hJ t' J' hJ' i₀ i hi₀ g hgf (hrd i₀)`.
+
+Establish `hle : J.A.U j (J.ι j α) ⊔ GlobalTheory.FinPl.grpAt _ (GlobalTheory.PenBridge.plF J) ≤ (KO (J'.G i).k _).comap ((Pi.evalMonoidHom _ i).comp (GlobalTheory.PenBridge.rd J' j hj))`. Use `sup_le (fun x hx => ?_) (fun x hx => ?_)` and prove the remaining obligations. Conclude with `GlobalTheory.T.true_geometry_tuple_free_index W hW u a ha hTr j hj t J hJ α t' J' hJ' i hv x hx`. Rewrite using `[Subgroup.mem_comap, MonoidHom.comp_apply, Pi.evalMonoidHom_apply, GlobalTheory.PenLev.rd_eq_one_of_grpAt J' hj i hv hx]`. Conclude with `one_mem _`.
+
+Conclude with `hle hsup`.
+-/
 theorem GlobalTheory.PenLev.relax_rd_mem_KO : ∀ {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} {I : TC B X} {l : I.Laws} {Z : TC.Later B (I.cols l)} {L : SizeData₂ (I.rec7 l Z)} {hT : GatTies (I.rec7 l Z)} {Gi : Formalism.MainNotions.G.Inst (I.rec7 l Z) L} {Gl : Formalism.MainNotions.G.LatInst (I.rec7 l Z)} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX (I.rec7 l Z)} {cX : ExtraC} {ex : Extra (I.rec7 l Z) L hT Gi Gl Kc Yd cX} (W : RealPack ex), AllTrue W → ∀ (u : B.Word) (a : GeoAll W u), a.Is → a.True → ∀ j (hj : j + 1 = B.R.m), ∀ t (J : QJ a t), J.Reads → ∀ (α : J.Ch j) t' (J' : QJ a t'), J'.Reads → ∀ g ∈ GlobalTheory.PenLev.relax J j hj α, ∀ i, GlobalTheory.PenBridge.rd J' j hj g i ∈ KO (J'.G i).k _ := by
   intro B X I l Z L hT Gi Gl Kc Yd cX ex W hW u a ha hTr j hj t J hJ α t' J' hJ' g hg i
   obtain ⟨hsup, hgf, hrd⟩ := (GlobalTheory.PenLev.mem_relax_iff J j hj α g).1 hg
@@ -59,6 +76,11 @@ theorem GlobalTheory.PenLev.relax_rd_mem_KO : ∀ {B : GlobalTheory.Mem.Base} {X
         exact one_mem _
     exact hle hsup
 
+/- English proof (translation)
+Introduce `B X I l Z L hT Gi Gl Kc Yd cX ex W hW u a ha hTr j hj t J hJ α`. Establish `hle : ∀ t (J : QJ a t), J.Reads → ∀ (α : J.Ch j) t' (J' : QJ a t'), J'.Reads → ∀ (α' : J'.Ch j), GlobalTheory.PenLev.relax J j hj α ≤ GlobalTheory.PenLev.relax J' j hj α'`. Introduce `t J hJ α t' J' hJ' α' x hx`. Establish `hx'` using `(GlobalTheory.PenLev.mem_relax_iff J j hj α x).1 hx`. Conclude with `(GlobalTheory.PenLev.mem_relax_iff J' j hj α' x).2 ⟨GlobalTheory.T.tuple_free_level_step W hW u a ha hTr j hj t J hJ α t' J' hJ' α' x hx, hx'.2.1, GlobalTheory.PenLev.relax_rd_mem_KO W hW u a ha hTr j hj t J hJ α t' J' hJ' x hx⟩`.
+
+Take `⟨t₀, J₀, α₀, hJ₀, h⟩` from `GlobalTheory.PenLev.tuple_free_level_eq_relaxed J j hj hJ α`. Rewrite using `[h]`. Conclude with `le_antisymm (hle _ _ hJ α _ _ hJ₀ α₀) (hle _ _ hJ₀ α₀ _ _ hJ α)`.
+-/
 theorem GlobalTheory.PenLev.relaxed_level_eq_tuple_free : ∀ {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} {I : TC B X} {l : I.Laws} {Z : TC.Later B (I.cols l)} {L : SizeData₂ (I.rec7 l Z)} {hT : GatTies (I.rec7 l Z)} {Gi : Formalism.MainNotions.G.Inst (I.rec7 l Z) L} {Gl : Formalism.MainNotions.G.LatInst (I.rec7 l Z)} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX (I.rec7 l Z)} {cX : ExtraC} {ex : Extra (I.rec7 l Z) L hT Gi Gl Kc Yd cX} (W : RealPack ex), AllTrue W → ∀ (u : B.Word) (a : GeoAll W u), a.Is → a.True → ∀ j (hj : j + 1 = B.R.m), ∀ t (J : QJ a t), J.Reads → ∀ α : J.Ch j, GlobalTheory.PenLev.relax J j hj α = GlobalTheory.PenLev.U0 a j hj := by
   intro B X I l Z L hT Gi Gl Kc Yd cX ex W hW u a ha hTr j hj t J hJ α
   have hle : ∀ t (J : QJ a t), J.Reads → ∀ (α : J.Ch j) t' (J' : QJ a t'), J'.Reads → ∀ (α' : J'.Ch j),

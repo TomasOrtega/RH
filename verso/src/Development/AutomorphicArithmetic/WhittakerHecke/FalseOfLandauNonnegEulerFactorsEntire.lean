@@ -4,6 +4,11 @@ open Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual GlobalTheory.CuspR
 open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.RankTwoDescent
 open scoped Classical ComplexOrder
 
+/- English proof (translation)
+Rewrite using `[LSeries.convolution_def, PowerSeries.coeff_mul]`. Simplify using `only [PowerSeries.coeff_mk]`. Rewrite using `[Nat.sum_divisorsAntidiagonal (fun x y => a x * a' y), Nat.divisors_prime_pow hp, Finset.sum_map, Finset.Nat.sum_antidiagonal_eq_sum_range_succ (fun i j => a (p ^ i) * a' (p ^ j))]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Establish `hik : i ≤ k` using `Nat.lt_succ_iff.mp (Finset.mem_range.mp hi)`.
+
+Simplify using `[Nat.pow_div hik hp.pos]`.
+-/
 private lemma conv_prime_pow (a a' : ℕ → ℂ) {p : ℕ} (hp : p.Prime) (k : ℕ) :
     LSeries.convolution a a' (p ^ k) =
       PowerSeries.coeff k (PowerSeries.mk (fun k => a (p ^ k)) * PowerSeries.mk (fun k => a' (p ^ k))) := by
@@ -15,6 +20,9 @@ private lemma conv_prime_pow (a a' : ℕ → ℂ) {p : ℕ} (hp : p.Prime) (k : 
   have hik : i ≤ k := Nat.lt_succ_iff.mp (Finset.mem_range.mp hi)
   simp [Nat.pow_div hik hp.pos]
 
+/- English proof (translation)
+Use `ArithmeticFunction.IsMultiplicative.iff_ne_zero.mpr ⟨?_, fun {m n} hm0 hn0 hmn => ?_⟩` and prove the remaining obligations. Simplify using `[toArithmeticFunction, h1]`. Simplify using `[toArithmeticFunction, hm0, hn0, hm m n hmn]`.
+-/
 private lemma toAF_mult (a : ℕ → ℂ) (h1 : a 1 = 1)
     (hm : ∀ m n, m.Coprime n → a (m * n) = a m * a n) :
     (toArithmeticFunction a).IsMultiplicative := by
@@ -22,6 +30,9 @@ private lemma toAF_mult (a : ℕ → ℂ) (h1 : a 1 = 1)
   · simp [toArithmeticFunction, h1]
   · simp [toArithmeticFunction, hm0, hn0, hm m n hmn]
 
+/- English proof (translation)
+Break down `eq_or_ne n 0 with rfl | hn` into its components or cases. Simplify using the standard rewrite rules. Rewrite using `[hb.multiplicative_factorization _ hn]`. Conclude with `Finset.prod_nonneg fun p hp => hpp p _ (Nat.prime_of_mem_primeFactors (by simpa using hp))`.
+-/
 private lemma conv_nonneg_of_pp (b : ArithmeticFunction ℂ) (hb : b.IsMultiplicative)
     (hpp : ∀ p k : ℕ, p.Prime → 0 ≤ b (p ^ k)) (n : ℕ) : 0 ≤ b n := by
   rcases eq_or_ne n 0 with rfl | hn
@@ -29,6 +40,25 @@ private lemma conv_nonneg_of_pp (b : ArithmeticFunction ℂ) (hb : b.IsMultiplic
   rw [hb.multiplicative_factorization _ hn]
   exact Finset.prod_nonneg fun p hp => hpp p _ (Nat.prime_of_mem_primeFactors (by simpa using hp))
 
+/- English proof (translation)
+Introduce `a a' N hN h1 h1' hm hm' hbad hbad' hgood hs hs' hE hE' hL`. Establish `hmul : (toArithmeticFunction a * toArithmeticFunction a').IsMultiplicative` using `(toAF_mult a h1 hm).mul (toAF_mult a' h1' hm')`. Establish `hcoe : ∀ n, LSeries.convolution a a' n = (toArithmeticFunction a * toArithmeticFunction a') n` using `fun n => rfl`. Establish `hone : LSeries.convolution a a' 1 = 1` using `by rw [hcoe, hmul.map_one]`. Establish `hpp : ∀ p k : ℕ, p.Prime → 0 ≤ LSeries.convolution a a' (p ^ k)`.
+
+Introduce `p k hp`. Distinguish the cases in `hpN : p ∣ N`. Break down `k with _ | k` into its components or cases. Simplify using `[hone]`. Establish `hz : LSeries.convolution a a' (p ^ (k + 1)) = 0`.
+
+Rewrite using `[conv_prime_pow a a' hp, PowerSeries.coeff_mul]`. Use `Finset.sum_eq_zero fun x hx => ?_` and prove the remaining obligations. Take `⟨i, j⟩` from `x`. Establish `hij : i + j = k + 1` using `by simpa using hx`. Break down `i with _ | i` into its components or cases.
+
+Establish `hj : j = k + 1` using `by omega`. Substitute `hj` using the available equality. Simplify using `[hbad' p k hp hpN]`. Simplify using `[hbad p i hp hpN]`. Conclude with `hz.ge`.
+
+Rewrite using `[conv_prime_pow a a' hp]`. Conclude with `(hgood p hp hpN).1 k`. Establish `hnn : ∀ n, 0 ≤ LSeries.convolution a a' n` using `conv_nonneg_of_pp _ hmul hpp`. Establish `hsum : ∀ s : ℂ, 4 < s.re → LSeriesSummable (LSeries.convolution a a') s` using `fun s h => (hs s h).convolution (hs' s h)`. Establish `hent : Entire (LSeries.convolution a a')`.
+
+Take `⟨F, hF, hFe⟩` from `hE`. Take `⟨G, hG, hGe⟩` from `hE'`. Use `⟨fun s => F s * G s, hF.mul hG, fun s h => ?_⟩` and prove the remaining obligations. Rewrite using `[LSeries_convolution' (hs s h) (hs' s h)]`. Use `show F s * G s = _`.
+
+Rewrite using `[hFe s h, hGe s h]`. Establish `hfin` using `hL _ hnn hone hsum hent`. Establish `hfin' : ((fun p : ℕ => p ^ 4) ⁻¹' {n | 1 ≤ LSeries.convolution a a' n}).Finite` using `hfin.preimage fun x _ y _ h => (Nat.pow_left_inj (by norm_num)).1 h`. Take `⟨M, hM⟩` from `hfin'.bddAbove`. Take `⟨p, hpl, hp⟩` from `Nat.exists_infinite_primes (max M N + 1)`.
+
+Establish `hpN : ¬ p ∣ N` using `fun h => by`. Use `Nat.le_of_dvd hN h` as an intermediate fact. Use `le_max_right M N` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hmem : p ∈ (fun p : ℕ => p ^ 4) ⁻¹' {n | 1 ≤ LSeries.convolution a a' n}` using `by show 1 ≤ LSeries.convolution a a' (p ^ 4)`.
+
+Rewrite using `[conv_prime_pow a a' hp]`. Conclude with `(hgood p hp hpN).2`. Use `hM hmem` as an intermediate fact. Use `le_max_left M N` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem UpperTheory.false_of_landau_nonneg_euler_factors_entire :
     ∀ (a a' : ℕ → ℂ) (N : ℕ), 0 < N → a 1 = 1 → a' 1 = 1 → (∀ m n, m.Coprime n → a (m * n) = a m * a n) →
         (∀ m n, m.Coprime n → a' (m * n) = a' m * a' n) → (∀ p k : ℕ, p.Prime → p ∣ N → a (p ^ (k + 1)) = 0) →

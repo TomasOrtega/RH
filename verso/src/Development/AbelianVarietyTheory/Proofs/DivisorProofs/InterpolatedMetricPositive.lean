@@ -4,6 +4,31 @@ open scoped ComplexOrder ContDiff
 
 namespace GlobalTheory.InterpConvex
 
+/- English proof (translation)
+Introduce `ι n _ _ _ Cμ U H₀ H r s h₀ h hr hs hs01 hc`. Establish `hre : ∀ z, ∀ v : n → ℂ, (form (interp H₀ H s z) v v).re = (1 - s z) * (form (H₀ z) v v).re + s z * (form (H z) v v).re`. Introduce `z v`. Simplify using `only [interp, form_add, form_smul, Complex.add_re, Complex.re_ofReal_mul]`. Use `⟨⟨h₀.isOpen, fun a b => ?_, fun z hz => ?_⟩, fun z hz v => ?_, fun σ blk hb₀ hb z hz a b hab => ?_⟩` and prove the remaining obligations.
+
+Establish `e : (fun x => interp H₀ H s x a b) = fun x => ((1 - s x : ℝ) : ℂ) * H₀ x a b + ((s x : ℝ) : ℂ) * H x a b`. Use function extensionality and compare the values at `x`. Simplify using `[interp]`. Rewrite using `[e]`. Establish `h1 : ContDiffOn ℝ ∞ (fun x => ((1 - s x : ℝ) : ℂ)) U` using `Complex.ofRealCLM.contDiff.comp_contDiffOn (contDiffOn_const.sub hs)`.
+
+Establish `h2 : ContDiffOn ℝ ∞ (fun x => ((s x : ℝ) : ℂ)) U` using `Complex.ofRealCLM.contDiff.comp_contDiffOn hs`. Conclude with `(h1.mul (h₀.smooth a b)).add (h2.mul (h.smooth a b))`. Take `⟨hs0, hs1⟩` from `hs01 z hz`. Break down `hs1.lt_or_eq with hlt | heq` into its components or cases. Establish `ha : ((H₀ z)).PosDef` using `h₀.posDef z hz`.
+
+Establish `hA : (((1 - s z : ℝ) : ℂ) • H₀ z).PosDef` using `ha.smul (by exact_mod_cast (sub_pos.2 hlt))`. Establish `hB : (((s z : ℝ) : ℂ) • H z).PosSemidef` using `(h.posDef z hz).posSemidef.smul (by exact_mod_cast hs0)`. Conclude with `hA.add_posSemidef hB`. Establish `hA : (((1 - s z : ℝ) : ℂ) • H₀ z).PosSemidef` using `(h₀.posDef z hz).posSemidef.smul (by rw [heq]; simp)`. Establish `hB : (((s z : ℝ) : ℂ) • H z).PosDef` using `(h.posDef z hz).smul (by rw [heq]; simp)`.
+
+Use `show (((1 - s z : ℝ) : ℂ) • H₀ z + ((s z : ℝ) : ℂ) • H z).PosDef`. Rewrite using `[add_comm]`. Conclude with `hB.add_posSemidef hA`. Take `⟨hs0, hs1⟩` from `hs01 z hz`. Take `⟨hlo, hhi⟩` from `hc z hz v`.
+
+Establish `hq0 : 0 ≤ (form (H₀ z) v v).re`. Distinguish the cases in `hv : v = 0`. Substitute `hv` using the available equality. Simplify using `[form]`. Use `((posDef_iff.1 (h₀.posDef z hz)).2 v hv).1` as an intermediate fact.
+
+Simplify using `only [Complex.zero_re] at this`. Conclude with `this.le`. Use `set q0 := (form (H₀ z) v v).re`. Use `set q := (form (H z) v v).re`. Establish `hrpos : 0 < r z` using `lt_of_lt_of_le (Real.exp_pos 1) (hr z hz)`.
+
+Establish `hP : 0 < r z ^ Cμ` using `Real.rpow_pos_of_pos hrpos Cμ`. Establish `hR : r z ^ (-Cμ) = (r z ^ Cμ)⁻¹` using `Real.rpow_neg hrpos.le Cμ`. Establish `key : r z ^ (-Cμ) * q0 ≤ q0 ∧ q0 ≤ r z ^ Cμ * q0`. Break down `hq0.lt_or_eq with hpos | h0` into its components or cases. Establish `hRP : r z ^ (-Cμ) ≤ r z ^ Cμ` using `le_of_mul_le_mul_right (hlo.trans hhi) hpos`.
+
+Rewrite `hRP`, the goal using `[hR]`. Establish `h1 : 1 ≤ r z ^ Cμ`. Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`. Establish `: 1 < (r z ^ Cμ)⁻¹` using `(one_lt_inv₀ hP).2 hlt`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2 : (r z ^ Cμ)⁻¹ ≤ 1` using `inv_le_one_of_one_le₀ h1`. Apply the tactic sequence `constructor <;> nlinarith`. Rewrite using `[← h0]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[hre]`. Establish `a1 : 0 ≤ 1 - s z` using `by linarith`. Prove the components needed by the constructor for the conclusion. Use polynomial arithmetic with `[mul_nonneg a1 (sub_nonneg.2 key.1), mul_nonneg hs0 (sub_nonneg.2 hlo)]`. Use polynomial arithmetic with `[mul_nonneg a1 (sub_nonneg.2 key.2), mul_nonneg hs0 (sub_nonneg.2 hhi)]`.
+
+Simplify using `[interp, hb₀ z hz a b hab, hb z hz a b hab]`.
+-/
 theorem interp_isPosFrame_comparable_blockDiag : ∀ {ι n : Type} [Fintype ι] [Fintype n] [DecidableEq n] {Cμ : ℝ} {U : Set (ι → ℂ)} {H₀ H : (ι → ℂ) → Matrix n n ℂ} {r s : (ι → ℂ) → ℝ}, IsPosFrame U H₀ → IsPosFrame U H → (∀ z ∈ U, Real.exp 1 ≤ r z) → ContDiffOn ℝ ∞ s U → (∀ z ∈ U, s z ∈ Icc (0 : ℝ) 1) → PowComparable U r Cμ H₀ H → IsPosFrame U (interp H₀ H s) ∧ PowComparable U r Cμ H₀ (interp H₀ H s) ∧ ∀ (σ : Type) (blk : n → σ), IsBlockDiag blk U H₀ → IsBlockDiag blk U H → IsBlockDiag blk U (interp H₀ H s) := by
   intro ι n _ _ _ Cμ U H₀ H r s h₀ h hr hs hs01 hc
   have hre : ∀ z, ∀ v : n → ℂ, (form (interp H₀ H s z) v v).re =

@@ -19,26 +19,46 @@ def dk {G : Type} [Group G] (K D : Subgroup G) (hN : Normalises D K) : Subgroup 
     rintro _ ⟨δ, hδ, κ, hκ, rfl⟩
     exact ⟨δ⁻¹, D.inv_mem hδ, δ * κ⁻¹ * δ⁻¹, hN δ hδ _ (K.inv_mem hκ), by group⟩
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_dk {G : Type} [Group G] (K D : Subgroup G) (hN : Normalises D K) {g : G} :
     g ∈ dk K D hN ↔ ∃ δ ∈ D, ∃ κ ∈ K, g = δ * κ := Iff.rfl
 
+/- English proof (translation)
+Introduce `κ hκ` and use `(mem_dk K D hN).2 ⟨1, D.one_mem, κ, hκ, by simp⟩`.
+-/
 theorem le_dk {G : Type} [Group G] (K D : Subgroup G) (hN : Normalises D K) : K ≤ dk K D hN :=
   fun κ hκ => (mem_dk K D hN).2 ⟨1, D.one_mem, κ, hκ, by simp⟩
 
+/- English proof (translation)
+Introduce `δ hδ` and use `(mem_dk K D hN).2 ⟨δ, hδ, 1, K.one_mem, by simp⟩`.
+-/
 theorem D_le_dk {G : Type} [Group G] (K D : Subgroup G) (hN : Normalises D K) : D ≤ dk K D hN :=
   fun δ hδ => (mem_dk K D hN).2 ⟨δ, hδ, 1, K.one_mem, by simp⟩
 
+/- English proof (translation)
+Introduce `g hg`. Take `⟨δ, hδ, κ, hκ, rfl⟩` from `(mem_dk K D hN).1 hg`. Conclude with `K₀.mul_mem (hD hδ) (hK hκ)`.
+-/
 theorem dk_le {G : Type} [Group G] (K D K₀ : Subgroup G) (hN : Normalises D K) (hK : K ≤ K₀)
     (hD : D ≤ K₀) : dk K D hN ≤ K₀ := by
   intro g hg
   obtain ⟨δ, hδ, κ, hκ, rfl⟩ := (mem_dk K D hN).1 hg
   exact K₀.mul_mem (hD hδ) (hK hκ)
 
+/- English proof (translation)
+Take `⟨δ, hδ, κ, hκ, e⟩` from `(mem_dk K D hN).1 g.2`. Conclude with `⟨(⟨δ, hδ⟩, ⟨κ, hκ⟩), e⟩`.
+-/
 theorem exists_semidirect_decomposition {G : Type} [Group G] {K D : Subgroup G} {hN : Normalises D K}
     (g : dk K D hN) : ∃ p : D × K, (g : G) = (p.1 : G) * (p.2 : G) := by
   obtain ⟨δ, hδ, κ, hκ, e⟩ := (mem_dk K D hN).1 g.2
   exact ⟨(⟨δ, hδ⟩, ⟨κ, hκ⟩), e⟩
 
+/- English proof (translation)
+Establish `hm : ((κ' * κ⁻¹ : K) : G) ∈ D`. Establish `h2 : ((κ' * κ⁻¹ : K) : G) = δ'⁻¹ * δ`. Simplify using `only [Subgroup.coe_mul, Subgroup.coe_inv]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h2]`.
+
+Conclude with `D.mul_mem (D.inv_mem hδ') hδ`. Establish `h1` using `htriv _ hm`. Rewrite `h1` using `[map_mul, map_inv, mul_inv_eq_one]`. Conclude with `h1.symm`.
+-/
 theorem chi_wd {G : Type} [Group G] {K D : Subgroup G} (k : Type) [Field k] (χ : K →* kˣ)
     (htriv : ∀ κ : K, (κ : G) ∈ D → χ κ = 1) {δ δ' : G} (hδ : δ ∈ D) (hδ' : δ' ∈ D)
     (κ κ' : K) (e : δ * (κ : G) = δ' * κ') : χ κ = χ κ' := by
@@ -58,6 +78,9 @@ def extendedCharacterOnQuotient {G : Type} [Group G] {K D : Subgroup G} {hN : No
     (χ : K →* kˣ) (g : dk K D hN) : kˣ :=
   χ (Classical.choose (exists_semidirect_decomposition g)).2
 
+/- English proof (translation)
+Establish `spec` using `Classical.choose_spec (exists_semidirect_decomposition g)`. Conclude with `chi_wd k χ htriv (Classical.choose (exists_semidirect_decomposition g)).1.2 hδ _ _ (spec.symm.trans e)`.
+-/
 theorem chi1Fun_eq {G : Type} [Group G] {K D : Subgroup G} {hN : Normalises D K} (k : Type)
     [Field k] (χ : K →* kˣ) (htriv : ∀ κ : K, (κ : G) ∈ D → χ κ = 1) (g : dk K D hN) {δ : G}
     (hδ : δ ∈ D) (κ : K) (e : (g : G) = δ * κ) : extendedCharacterOnQuotient χ g = χ κ := by
@@ -86,11 +109,23 @@ def chi1 {G : Type} [Group G] {K D : Subgroup G} (hN : Normalises D K) (k : Type
     exact hinv δ'⁻¹ (D.inv_mem hδ') ⟨κ, hκ⟩ κc
       (by show δ'⁻¹ * κ * δ' = δ'⁻¹ * κ * δ'⁻¹⁻¹; rw [inv_inv])
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_AMFChi {G : Type} [Group G] (k : Type) [Field k] {W : Type} [AddCommGroup W]
     [Module k W] (Γ K : Subgroup G) (ρ : Representation k Γ W) (χ : K →* kˣ) (f : G → W) :
     f ∈ AMFChi k Γ K ρ χ ↔
       ∀ γ : Γ, ∀ g : G, ∀ κ : K, f ((γ : G) * g * κ) = ((χ κ : kˣ) : k) • ρ γ (f g) := Iff.rfl
 
+/- English proof (translation)
+Use extensionality with `f`. Rewrite using `[mem_FixAt, mem_AMFChi, mem_AMFChi]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hA, hD⟩ γ g κ₁`. Take `⟨δ, hδ, κ, hκ, e⟩` from `(mem_dk K D hN).1 κ₁.2`.
+
+Establish `hc : chi1 hN k χ hinv htriv κ₁ = χ ⟨κ, hκ⟩` using `chi1Fun_eq k χ htriv κ₁ hδ ⟨κ, hκ⟩ e`. Rewrite using `[hc, e, show (γ : G) * g * (δ * κ) = (γ : G) * (g * δ) * κ by group]`. Rewrite using `[hA γ (g * δ) ⟨κ, hκ⟩, hD δ hδ g]`. Introduce `h`. Use `⟨fun γ g κ => ?_, fun δ hδ g => ?_⟩` and prove the remaining obligations.
+
+Establish `hc : chi1 hN k χ hinv htriv ⟨κ, le_dk K D hN κ.2⟩ = χ κ` using `chi1Fun_eq k χ htriv _ D.one_mem κ (by simp)`. Use `h γ g ⟨κ, le_dk K D hN κ.2⟩` as an intermediate fact. Rewrite `this` using `[hc]`. Conclude with `this`. Establish `hc : chi1 hN k χ hinv htriv ⟨δ, D_le_dk K D hN hδ⟩ = 1` using `(chi1Fun_eq k χ htriv _ hδ 1 (by simp)).trans (map_one χ)`.
+
+Use `h 1 g ⟨δ, D_le_dk K D hN hδ⟩` as an intermediate fact. Rewrite `this` using `[hc]`. Simplify using `using this`.
+-/
 theorem fixAt_eq {G : Type} [Group G] (k : Type) [Field k] (W : Type) [AddCommGroup W]
     [Module k W] (Γ K D : Subgroup G) (hN : Normalises D K) (ρ : Representation k Γ W)
     (χ : K →* kˣ) (hinv : ∀ δ ∈ D, ∀ κ κ' : K, (κ' : G) = δ * κ * δ⁻¹ → χ κ' = χ κ)
@@ -117,17 +152,28 @@ theorem fixAt_eq {G : Type} [Group G] (k : Type) [Field k] (W : Type) [AddCommGr
       rw [hc] at this
       simpa using this
 
+/- English proof (translation)
+Establish `hm : (⟨γ, hγ⟩ : Γ) ∈ stabAt Γ K₀ x` using `h`. Rewrite `hm` using `[hn x]`. Conclude with `congrArg Subtype.val hm`.
+-/
 theorem neat_one {G : Type} [Group G] {Γ K₀ : Subgroup G} (hn : IsNeat Γ K₀) {x γ : G}
     (hγ : γ ∈ Γ) (h : x⁻¹ * γ * x ∈ K₀) : γ = 1 := by
   have hm : (⟨γ, hγ⟩ : Γ) ∈ stabAt Γ K₀ x := h
   rw [hn x] at hm
   exact congrArg Subtype.val hm
 
+/- English proof (translation)
+Introduce `x γ hx`. Conclude with `Subtype.ext (neat_one hn γ.2 (h hx))`.
+-/
 theorem stabTriv_of {G : Type} [Group G] (Γ K₁ K₀ : Subgroup G) (h : K₁ ≤ K₀)
     (hn : IsNeat Γ K₀) : Formalism.L2.SG.ColsDim.StabTriv Γ.subtype K₁ := by
   intro x γ hx
   exact Subtype.ext (neat_one hn γ.2 (h hx))
 
+/- English proof (translation)
+Establish `hr : Γ.subtype.range = Γ` using `Subgroup.range_subtype Γ`. Establish `: Finite (Formalism.L2.SG.ColsDim.Classes Γ.subtype K₁)` using `by show Finite (ClassSet Γ.subtype.range K₁)`. Rewrite using `[hr]`. Conclude with `hfin`. Use `(Formalism.L2.SG.ColsDim.equi_dim Γ.subtype K₁ hst ρ χ).2` as an intermediate fact.
+
+Rewrite `this` using `[Formalism.L2.SG.ColsDim.equi_subtype]`. Rewrite using `[this]`. Use `show finrank k W * Nat.card (ClassSet Γ.subtype.range K₁) = _`. Rewrite using `[hr]`.
+-/
 theorem amf_dim {G : Type} [Group G] (k : Type) [Field k] (W : Type) [AddCommGroup W]
     [Module k W] [FiniteDimensional k W] (Γ K₁ : Subgroup G)
     (hst : Formalism.L2.SG.ColsDim.StabTriv Γ.subtype K₁) (hfin : Finite (ClassSet Γ K₁))
@@ -143,6 +189,11 @@ theorem amf_dim {G : Type} [Group G] (k : Type) [Field k] (W : Type) [AddCommGro
   show finrank k W * Nat.card (ClassSet Γ.subtype.range K₁) = _
   rw [hr]
 
+/- English proof (translation)
+Use `Finite.of_surjective (fun c : ClassSet Γ K => DoubleCoset.mk Γ (dk K D hN) (Quotient.out c)) ?_` and prove the remaining obligations. Introduce `c₁`. Use `⟨DoubleCoset.mk Γ K (Quotient.out c₁), ?_⟩` and prove the remaining obligations. Take `⟨γ, hγ, κ, hκ, e⟩` from `(DoubleCoset.eq Γ K (Quotient.out (DoubleCoset.mk Γ K (Quotient.out c₁))) (Quotient.out c₁)).1 (DoubleCoset.out_eq' Γ K (DoubleCoset.mk Γ K (Quotient.out c₁)))`. Use `Eq.trans ?_ (DoubleCoset.out_eq' Γ (dk K D hN) c₁)` and prove the remaining obligations.
+
+Use `show DoubleCoset.mk Γ (dk K D hN) (Quotient.out (DoubleCoset.mk Γ K (Quotient.out c₁))) = _`. Conclude with `(DoubleCoset.eq Γ (dk K D hN) _ _).2 ⟨γ, hγ, κ, le_dk K D hN hκ, e⟩`.
+-/
 theorem finite_dk {G : Type} [Group G] (Γ K D : Subgroup G) (hN : Normalises D K)
     (hfin : Finite (ClassSet Γ K)) : Finite (ClassSet Γ (dk K D hN)) := by
   refine Finite.of_surjective
@@ -160,6 +211,19 @@ def phiMap {G : Type} [Group G] (Γ K D : Subgroup G) (hN : Normalises D K)
     (p : ClassSet Γ (dk K D hN) × (D ⧸ K.subgroupOf D)) : ClassSet Γ K :=
   DoubleCoset.mk Γ K (Quotient.out p.1 * ((Quotient.out p.2 : D) : G))
 
+/- English proof (translation)
+Introduce and unpack `⟨c, q⟩ ⟨c', q'⟩ he`. Take `⟨γ, hγ, κ, hκ, e0⟩` from `(DoubleCoset.eq Γ K _ _).1 he`. Establish `e : Quotient.out c' * ((Quotient.out q' : D) : G) = γ * (Quotient.out c * ((Quotient.out q : D) : G)) * κ` using `e0`. Establish `hc : c = c'`. Rewrite using `[← DoubleCoset.out_eq' Γ (dk K D hN) c, ← DoubleCoset.out_eq' Γ (dk K D hN) c']`.
+
+Use `(DoubleCoset.eq Γ (dk K D hN) _ _).2 ⟨γ, hγ, ((Quotient.out q : D) : G) * κ * ((Quotient.out q' : D) : G)⁻¹, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(mem_dk K D hN).2 ⟨((Quotient.out q : D) : G) * ((Quotient.out q' : D) : G)⁻¹, D.mul_mem (Quotient.out q).2 (D.inv_mem (Quotient.out q').2), ((Quotient.out q' : D) : G) * κ * ((Quotient.out q' : D) : G)⁻¹, hN _ (Quotient.out q').2 _ hκ, by group⟩`. Combine the equalities or inequalities in the displayed calculation. Rewrite `e` using `[← hc]`. Establish `hγe : γ = Quotient.out c * ((Quotient.out q' : D) : G) * κ⁻¹ * ((Quotient.out q : D) : G)⁻¹ * (Quotient.out c)⁻¹`.
+
+Rewrite using `[e]`. Use `group`. Establish `hγ1 : γ = 1`. Use `neat_one hn hγ (x := Quotient.out c) ?_` and prove the remaining obligations. Establish `h3 : (Quotient.out c)⁻¹ * γ * Quotient.out c = ((Quotient.out q' : D) : G) * κ⁻¹ * ((Quotient.out q : D) : G)⁻¹`.
+
+Rewrite using `[hγe]`. Use `group`. Rewrite using `[h3]`. Conclude with `K₀.mul_mem (K₀.mul_mem (hD (Quotient.out q').2) (K₀.inv_mem (hK hκ))) (K₀.inv_mem (hD (Quotient.out q).2))`. Establish `e3 : Quotient.out c * ((Quotient.out q' : D) : G) = Quotient.out c * (((Quotient.out q : D) : G) * κ)`.
+
+Rewrite using `[e, hγ1]`. Use `group`. Establish `hq : q = q'`. Rewrite using `[← QuotientGroup.out_eq' q, ← QuotientGroup.out_eq' q', QuotientGroup.eq, Subgroup.mem_subgroupOf]`. Establish `h4 : (((Quotient.out q)⁻¹ * Quotient.out q' : D) : G) = κ`.
+
+Rewrite using `[Subgroup.coe_mul, Subgroup.coe_inv, mul_left_cancel e3]`. Use `group`. Rewrite using `[h4]`. Conclude with `hκ`. Rewrite using `[hc, hq]`.
+-/
 theorem phiMap_inj {G : Type} [Group G] (Γ K K₀ D : Subgroup G) (hN : Normalises D K)
     (hK : K ≤ K₀) (hD : D ≤ K₀) (hn : IsNeat Γ K₀) : Function.Injective (phiMap Γ K D hN) := by
   rintro ⟨c, q⟩ ⟨c', q'⟩ he
@@ -200,6 +264,13 @@ theorem phiMap_inj {G : Type} [Group G] (Γ K K₀ D : Subgroup G) (hN : Normali
     rw [h4]; exact hκ
   rw [hc, hq]
 
+/- English proof (translation)
+Introduce `c`. Take `⟨γ, hγ, κ₁, hκ₁, e⟩` from `(DoubleCoset.eq Γ (dk K D hN) (Quotient.out (DoubleCoset.mk Γ (dk K D hN) (Quotient.out c))) (Quotient.out c)).1 (DoubleCoset.out_eq' Γ (dk K D hN) (DoubleCoset.mk Γ (dk K D hN) (Quotient.out c)))`. Take `⟨δ, hδ, κ, hκ, rfl⟩` from `(mem_dk K D hN).1 hκ₁`. Take `⟨h, hh⟩` from `QuotientGroup.mk_out_eq_mul (K.subgroupOf D) (⟨δ, hδ⟩ : D)`. Use `⟨(DoubleCoset.mk Γ (dk K D hN) (Quotient.out c), (QuotientGroup.mk (⟨δ, hδ⟩ : D) : D ⧸ K.subgroupOf D)), ?_⟩` and prove the remaining obligations.
+
+Use `Eq.trans ?_ (DoubleCoset.out_eq' Γ K c)` and prove the remaining obligations. Simplify using `only [phiMap]`. Rewrite using `[hh]`. Establish `hcoe : (((⟨δ, hδ⟩ : D) * (h : D) : D) : G) = δ * ((h : D) : G)` using `rfl`. Rewrite using `[hcoe]`.
+
+Use `(DoubleCoset.eq Γ K _ _).2 ⟨γ, hγ, ((h : D) : G)⁻¹ * κ, K.mul_mem (K.inv_mem (Subgroup.mem_subgroupOf.1 h.2)) hκ, ?_⟩` and prove the remaining obligations. Use `e.trans ?_` and prove the remaining obligations. Use `group`.
+-/
 theorem phiMap_surj {G : Type} [Group G] (Γ K D : Subgroup G) (hN : Normalises D K) :
     Function.Surjective (phiMap Γ K D hN) := by
   intro c
@@ -220,6 +291,9 @@ theorem phiMap_surj {G : Type} [Group G] (Γ K D : Subgroup G) (hN : Normalises 
   refine e.trans ?_
   group
 
+/- English proof (translation)
+Rewrite using `[← Nat.card_congr (Equiv.ofBijective (phiMap Γ K D hN) ⟨phiMap_inj Γ K K₀ D hN hK hD hn, phiMap_surj Γ K D hN⟩), Nat.card_prod, Subgroup.relIndex, Subgroup.index_eq_card]`.
+-/
 theorem card_classes {G : Type} [Group G] (Γ K K₀ D : Subgroup G) (hN : Normalises D K)
     (hK : K ≤ K₀) (hD : D ≤ K₀) (hn : IsNeat Γ K₀) :
     Nat.card (ClassSet Γ K) = Nat.card (ClassSet Γ (dk K D hN)) * K.relIndex D := by
@@ -227,6 +301,9 @@ theorem card_classes {G : Type} [Group G] (Γ K K₀ D : Subgroup G) (hN : Norma
     ⟨phiMap_inj Γ K K₀ D hN hK hD hn, phiMap_surj Γ K D hN⟩), Nat.card_prod,
     Subgroup.relIndex, Subgroup.index_eq_card]
 
+/- English proof (translation)
+Introduce `G _ Γ K K₀ D k _ W _ _ _ ρ χ hK hD hn hN hinv htriv hfin`. Establish `hst1` using `stabTriv_of Γ (dk K D hN) K₀ (dk_le K D K₀ hN hK hD) hn`. Establish `hst` using `stabTriv_of Γ K K₀ hK hn`. Establish `hfin1` using `finite_dk Γ K D hN hfin`. Rewrite using `[fixAt_eq k W Γ K D hN ρ χ hinv htriv, amf_dim k W Γ (dk K D hN) hst1 hfin1, amf_dim k W Γ K hst hfin, card_classes Γ K K₀ D hN hK hD hn, mul_assoc]`.
+-/
 theorem fixedDim : Formalism.L2.SG.ClassAct.FixedDim := by
   intro G _ Γ K K₀ D k _ W _ _ _ ρ χ hK hD hn hN hinv htriv hfin
   have hst1 := stabTriv_of Γ (dk K D hN) K₀ (dk_le K D K₀ hN hK hD) hn

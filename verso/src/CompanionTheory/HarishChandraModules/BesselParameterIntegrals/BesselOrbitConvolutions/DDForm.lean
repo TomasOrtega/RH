@@ -12,6 +12,21 @@ open Formalism.FourierDecayAlt.ThreeDimData
 
 namespace G
 
+/- English proof (translation)
+Introduce `hPsi hSch _ _ _ _ hBC hNI hBB hSh hIn k r ε lam h H _ _ _ σ w0 Wp _ _ _ _ z u π μW μN μG νq hS`. Use `set c : ℂ := Formalism.QuantumDeterminants.cStd with hcdef`. Establish `hS'` using `hS`. Take `⟨hlam, hσ, -, -, hw0, -, -, -, -, hW, hN, hG, hq⟩` from `hS'`. Establish `hsm` using `DD_smooth hIn.2.2.1 hlam hσ hw0`.
+
+Take `⟨hBC1, -, -, -⟩` from `hBC hIn k r ε lam h H σ w0 Wp z c u π μW μN μG νq hS`. Take `⟨d, hd, hSd⟩` from `hSch k r ε lam H σ μG hlam hσ hG`. Establish `hw0n : w0 ≠ 0`. Take `⟨P, -, hn1, -⟩` from `hw0`. Introduce `h0`.
+
+Rewrite `hn1` using `[h0, norm_zero]`. Conclude with `zero_ne_one hn1`. Establish `hdeg : ∀ x : H, x ≠ 0 → PI.BesselPeriodGGP.fdegH μG σ x = d` using `fun x hx => fdeg_eq hd hSd hx`. Establish `hmu` using `muSof_facts hW hN`. Establish `hae` using `ae_UH_of_quot hG.2.2.1 hmu.1 hmu.2 hq`.
+
+Distinguish the cases in `hnz : ∃ x ∈ DDsp σ w0, ∃ y ∈ DDsp σ w0, be z c π σ μW μN x y ≠ 0`. Take `⟨l, hl, -, hid⟩` from `hSh hIn k r ε lam h H σ w0 Wp z u π μW μN μG νq hS hnz`. Use `⟨l, hl, fun x hx v hv => ⟨hBC1 x (hsm x hx) v (Or.inl hv), hid x (hsm x hx) v hv⟩, ?_⟩` and prove the remaining obligations. Introduce `x hx hx0 v hv`. Establish `hNv` using `(hNI hIn hSch k r ε lam h H σ w0 Wp z c u π μW μN μG νq hS x (hsm x hx) v (Or.inl hv) (l v)).1`.
+
+Rewrite `hNv` using `[hid v (hsm v hv) v hv]`. Simplify using `only [ContinuousLinearMap.smulRight_apply, innerSL_apply_apply] at hNv`. Rewrite `hNv` using `[hdeg w0 hw0n]`. Rewrite using `[hdeg x hx0]`. Use `l2_norm_scaling _ _ (l v) _ _ (by positivity) hNv (hae.mono fun g hg => ?_)` and prove the remaining obligations.
+
+Rewrite using `[hid _ (PI.UnitaryGroupMassFormula.CapelliEig.smooth_right_action k r ε lam H σ hσ x (hsm x hx) _ hg) v hv]`. Simplify using `only [ContinuousLinearMap.smulRight_apply, innerSL_apply_apply]`. Use `push_neg at hnz`. Use `⟨fun _ => 0, bessel_zero, fun x hx v hv => ⟨hBC1 x (hsm x hx) v (Or.inl hv), ?_⟩, fun x _ _ v _ => by simp⟩` and prove the remaining obligations. Use `show be z c π σ μW μN x v = _`.
+
+Rewrite using `[hnz x hx v hv]`. Use extensionality with `ξ`. Simplify using the standard rewrite rules.
+-/
 theorem discrete_form_one_side : CompanionTheory.D.Upq.BesselFunctionalConstruction.DDFormOneOfSteps := by
   intro hPsi hSch _ _ _ _ hBC hNI hBB hSh hIn k r ε lam h H _ _ _ σ w0 Wp _ _ _ _ z u π μW μN μG νq hS
   set c : ℂ := Formalism.QuantumDeterminants.cStd with hcdef

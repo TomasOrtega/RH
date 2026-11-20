@@ -11,6 +11,13 @@ open scoped ENNReal
 
 namespace PI.RhsWLim.W.PH
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[lintegral_subtype_comap (measurableSet_singleton _).compl (fun x => F ‖x‖), restrict_compl_singleton]`. Use `_ = ∫⁻ p, F (p.2 : ℝ) ∂(μ.toSphere.prod (Measure.volumeIoiPow (Module.finrank ℝ E - 1))) := by`. Rewrite using `[← (μ.measurePreserving_homeomorphUnitSphereProd).lintegral_comp_emb (Homeomorph.measurableEmbedding _)]`. Simplify using the standard rewrite rules.
+
+Use `_ = μ.toSphere univ * ∫⁻ y : Ioi (0 : ℝ), F y ∂(Measure.volumeIoiPow (Module.finrank ℝ E - 1)) := by`. Rewrite using `[lintegral_prod (fun p : (Metric.sphere (0 : E) 1) × Ioi (0 : ℝ) => F (p.2 : ℝ)) (hF.comp (measurable_subtype_coe.comp measurable_snd)).aemeasurable]`. Simplify using `only`. Rewrite using `[lintegral_const, mul_comm]`. Use `_ = _ := by`.
+
+Establish `hw` using `lintegral_withDensity_eq_lintegral_mul (Measure.comap Subtype.val volume) (f := fun r : Ioi (0 : ℝ) => ENNReal.ofReal ((r : ℝ) ^ (Module.finrank ℝ E - 1))) (by fun_prop) (g := fun y : Ioi (0 : ℝ) => F y) (hF.comp measurable_subtype_coe)`. Rewrite using `[Measure.volumeIoiPow, hw]`. Simplify using `only [Pi.mul_apply, Function.comp_apply]`. Rewrite using `[lintegral_subtype_comap measurableSet_Ioi (fun y : ℝ => ENNReal.ofReal (y ^ (Module.finrank ℝ E - 1)) * F y)]`.
+-/
 theorem lintegral_fun_norm {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E] [FiniteDimensional ℝ E]
     [MeasurableSpace E] [BorelSpace E] [Nontrivial E] (μ : Measure E) [μ.IsAddHaarMeasure]
     (F : ℝ → ℝ≥0∞) (hF : Measurable F) :
@@ -36,10 +43,20 @@ theorem lintegral_fun_norm {E : Type*} [NormedAddCommGroup E] [InnerProductSpace
         simp only [Pi.mul_apply, Function.comp_apply]
         rw [lintegral_subtype_comap measurableSet_Ioi (fun y : ℝ => ENNReal.ofReal (y ^ (Module.finrank ℝ E - 1)) * F y)]
 
+/- English proof (translation)
+Rewrite using `[← Module.finrank_mul_finrank ℝ ℂ (EuclideanSpace ℂ (Fin k)), Complex.finrank_real_complex, finrank_euclideanSpace, Fintype.card_fin]`.
+-/
 theorem finrank_ck (k : ℕ) : Module.finrank ℝ (EuclideanSpace ℂ (Fin k)) = 2 * k := by
   rw [← Module.finrank_mul_finrank ℝ ℂ (EuclideanSpace ℂ (Fin k)), Complex.finrank_real_complex,
     finrank_euclideanSpace, Fintype.card_fin]
 
+/- English proof (translation)
+Establish `: Nontrivial (EuclideanSpace ℂ (Fin k))`. Establish `: Nonempty (Fin k)` using `⟨⟨0, hk⟩⟩`. Use `infer_instance`. Rewrite using `[lintegral_fun_norm volume F hF, finrank_ck, Measure.toSphere_apply_univ, finrank_ck, InnerProductSpace.volume_ball, finrank_ck]`. Use `congr 1`.
+
+Take `⟨n, rfl⟩ : ∃ n, k = n + 1` from `⟨k - 1, by omega⟩`. Establish `hG : Real.Gamma ((↑(2 * (n + 1)) : ℝ) / 2 + 1) = ((n + 1).factorial : ℝ)`. Rewrite using `[show ((↑(2 * (n + 1)) : ℝ) / 2 + 1) = ((n + 1 : ℕ) : ℝ) + 1 by push_cast; ring, Real.Gamma_nat_eq_factorial]`. Rewrite using `[hG, ENNReal.ofReal_one, one_pow, one_mul, pow_mul, Real.sq_sqrt Real.pi_pos.le]`. Rewrite using `[show ((↑(2 * (n + 1)) : ℝ≥0∞)) = ENNReal.ofReal ((2 * (n + 1) : ℕ) : ℝ) from (ENNReal.ofReal_natCast _).symm, ← ENNReal.ofReal_mul (by positivity)]`.
+
+Use `congr 1`. Simplify using `only [Nat.add_sub_cancel, Nat.factorial_succ]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Apply the tactic sequence `try ring`.
+-/
 theorem lintegral_norm_ck (k : ℕ) (hk : 1 ≤ k) (F : ℝ → ℝ≥0∞) (hF : Measurable F) :
     ∫⁻ y : EuclideanSpace ℂ (Fin k), F ‖y‖ = ENNReal.ofReal (2 * Real.pi ^ k / (k - 1).factorial) *
       ∫⁻ ρ in Ioi (0 : ℝ), ENNReal.ofReal (ρ ^ (2 * k - 1)) * F ρ := by
@@ -62,6 +79,11 @@ theorem lintegral_norm_ck (k : ℕ) (hk : 1 ≤ k) (F : ℝ → ℝ≥0∞) (hF 
   field_simp
   try ring
 
+/- English proof (translation)
+Rewrite using `[← lintegral_indicator measurableSet_Ioo, ← setLIntegral_congr (Ioo_ae_eq_Ioc (μ := volume) (a := (0 : ℝ)) (b := 2 * Real.pi)), ← lintegral_indicator measurableSet_Ioo, ← lintegral_add_right_eq_self (fun θ => (Ioo 0 (2 * Real.pi)).indicator K θ) Real.pi]`. Use `congr 1`. Use function extensionality and compare the values at `φ`. Distinguish the cases in `h : φ ∈ Ioo (-Real.pi) Real.pi`. Establish `h' : φ + Real.pi ∈ Ioo 0 (2 * Real.pi)` using `⟨by linarith [h.1], by linarith [h.2]⟩`.
+
+Rewrite using `[indicator_of_mem h, indicator_of_mem h']`. Establish `h' : φ + Real.pi ∉ Ioo 0 (2 * Real.pi)` using `fun h' => h ⟨by linarith [h'.1], by linarith [h'.2]⟩`. Rewrite using `[indicator_of_notMem h, indicator_of_notMem h']`.
+-/
 theorem shift_pi (K : ℝ → ℝ≥0∞) :
     ∫⁻ φ in Ioo (-Real.pi) Real.pi, K (φ + Real.pi) = ∫⁻ θ in Ioc 0 (2 * Real.pi), K θ := by
   rw [← lintegral_indicator measurableSet_Ioo,
@@ -76,6 +98,11 @@ theorem shift_pi (K : ℝ → ℝ≥0∞) :
   · have h' : φ + Real.pi ∉ Ioo 0 (2 * Real.pi) := fun h' => h ⟨by linarith [h'.1], by linarith [h'.2]⟩
     rw [indicator_of_notMem h, indicator_of_notMem h']
 
+/- English proof (translation)
+Establish `hm : Measurable fun p : ℝ × ℝ => ENNReal.ofReal p.1 * Ψ (p.1 * (Real.cos p.2 + Real.sin p.2 * Complex.I))` using `by fun_prop`. Rewrite using `[← Complex.lintegral_comp_polarCoord_symm, show polarCoord.target = Ioi (0 : ℝ) ×ˢ Ioo (-Real.pi) Real.pi from rfl, Measure.volume_eq_prod, ← Measure.prod_restrict]`. Simplify using `only [Complex.polarCoord_symm_apply, smul_eq_mul]`. Rewrite using `[lintegral_prod _ hm.aemeasurable]`. Use `lintegral_congr fun R => ?_` and prove the remaining obligations.
+
+Rewrite using `[lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`.
+-/
 theorem lintegral_polar (Ψ : ℂ → ℝ≥0∞) (hΨ : Measurable Ψ) :
     ∫⁻ ζ, Ψ ζ = ∫⁻ R in Ioi (0 : ℝ), ENNReal.ofReal R *
       ∫⁻ φ in Ioo (-Real.pi) Real.pi, Ψ (R * (Real.cos φ + Real.sin φ * Complex.I)) := by
@@ -90,6 +117,27 @@ theorem lintegral_polar (Ψ : ℂ → ℝ≥0∞) (hΨ : Measurable Ψ) :
   refine lintegral_congr fun R => ?_
   rw [lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]
 
+/- English proof (translation)
+Use `set q := Real.sqrt (T * T') with hq`. Establish `hq0 : 0 ≤ q` using `Real.sqrt_nonneg _`. Establish `hTT : 0 < T * T'` using `mul_pos hT hT'`. Establish `e1 : ∫⁻ R in Ioi 0, X R = ∫⁻ R in Ioi q, X R`. Rewrite using `[← Ioc_union_Ioi_eq_Ioi hq0, lintegral_union measurableSet_Ioi (Ioc_disjoint_Ioi le_rfl), ← setLIntegral_congr (Ioo_ae_eq_Ioc (μ := volume) (a := (0 : ℝ)) (b := q)), setLIntegral_congr_fun measurableSet_Ioo (fun R hR => hX R hR), lintegral_zero, zero_add]`.
+
+Rewrite using `[e1]`. Use `set f : ℝ → ℝ := fun ρ => Real.sqrt (T * (ρ ^ 2 + T')) with hf`. Establish `hpos : ∀ ρ : ℝ, 0 < T * (ρ ^ 2 + T')` using `fun ρ => by positivity`. Establish `himage : f '' Ioi 0 = Ioi q`. Use extensionality with `R`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨ρ, hρ, rfl⟩`. Simplify using `only [mem_Ioi] at hρ ⊢`. Apply `Real.sqrt_lt_sqrt hTT.le` to reduce the goal to its premises. Establish `: 0 < T * ρ ^ 2` using `by positivity`.
+
+Use the polynomial consequences of the given equalities and inequalities. Introduce `hR`. Simplify using `only [mem_Ioi] at hR`. Establish `hR0 : 0 < R` using `lt_of_le_of_lt hq0 hR`. Establish `hR2 : T * T' < R ^ 2`.
+
+Use `(Real.sqrt_lt' hR0).1 hR` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hd : 0 < R ^ 2 / T - T'`. Rewrite using `[sub_pos, lt_div_iff₀ hT]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Use `⟨Real.sqrt (R ^ 2 / T - T'), Real.sqrt_pos.2 hd, ?_⟩` and prove the remaining obligations. Simplify using `only [hf]`. Rewrite using `[Real.sq_sqrt hd.le, show T * (R ^ 2 / T - T' + T') = R ^ 2 by field_simp; ring, Real.sqrt_sq hR0.le]`. Establish `hderiv : ∀ ρ ∈ Ioi (0 : ℝ), HasDerivWithinAt f (T * ρ / Real.sqrt (T * (ρ ^ 2 + T'))) (Ioi 0) ρ`. Introduce `ρ hρ`.
+
+Establish `h1 : HasDerivAt (fun x : ℝ => T * (x ^ 2 + T')) (T * (2 * ρ)) ρ`. Use `((hasDerivAt_pow 2 ρ).add_const T').const_mul T` as an intermediate fact. Simplify using `using this`. Establish `h2` using `h1.sqrt (hpos ρ).ne'`. Use `(h2.congr_deriv ?_).hasDerivWithinAt` and prove the remaining obligations.
+
+Establish `: Real.sqrt (T * (ρ ^ 2 + T')) ≠ 0` using `(Real.sqrt_pos.2 (hpos ρ)).ne'`. Clear the denominators using the available nonvanishing facts. Establish `hinj : InjOn f (Ioi 0)`. Introduce `a ha b hb hab`. Simplify using `only [hf] at hab`.
+
+Rewrite `hab` using `[Real.sqrt_inj (hpos a).le (hpos b).le]`. Establish `ha' : (0 : ℝ) < a` using `ha`. Establish `hb' : (0 : ℝ) < b` using `hb`. Establish `h2 : a ^ 2 = b ^ 2`. Use `mul_left_cancel₀ hT.ne' hab` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `le_antisymm (by nlinarith) (by nlinarith)`. Rewrite using `[← himage, lintegral_image_eq_lintegral_abs_deriv_mul measurableSet_Ioi hderiv hinj X]`.
+-/
 theorem subst_R (T T' : ℝ) (hT : 0 < T) (hT' : 0 < T') (X : ℝ → ℝ≥0∞)
     (hX : ∀ R ∈ Ioo 0 (Real.sqrt (T * T')), X R = 0) :
     ∫⁻ R in Ioi 0, X R = ∫⁻ ρ in Ioi 0,
@@ -152,6 +200,39 @@ namespace PI.RhsWLim.W
 
 open PI.RhsWLim PH
 
+/- English proof (translation)
+Introduce `k T T' hk hT hT' g hg`. Establish `hs0 : 0 < Real.sqrt T` using `Real.sqrt_pos.2 hT`. Establish `hTT : 0 < T * T'` using `mul_pos hT hT'`. Use `set H : ℝ → ℝ≥0∞ := fun ρ => ∫⁻ θ in Ioc 0 (2 * Real.pi), g ρ ((Real.sqrt (ρ ^ 2 + T') : ℂ) * Complex.exp (θ * Complex.I)) with hHdef`. Establish `hH : Measurable H`.
+
+Establish `hm : Measurable fun p : ℝ × ℝ => g p.1 ((Real.sqrt (p.1 ^ 2 + T') : ℂ) * Complex.exp (p.2 * Complex.I))` using `hg.comp (measurable_fst.prodMk (by fun_prop))`. Conclude with `hm.lintegral_prod_right'`. Establish `eL : hypMeas k T' (fun v => g ‖(WithLp.equiv 2 (Fin k → ℂ)).symm v.1‖ v.2) = 1 / 2 * ∫⁻ y : EuclideanSpace ℂ (Fin k), H ‖y‖` using `rfl`. Rewrite using `[eL, lintegral_norm_ck k hk H hH]`. Use `set Hh : ℝ → ℝ≥0∞ := fun R => ∫⁻ θ in Ioc 0 (2 * Real.pi), g (Real.sqrt ((R ^ 2 - T * T') / T)) (((R / Real.sqrt T : ℝ) : ℂ) * Complex.exp (θ * Complex.I)) with hHh`.
+
+Use `set wR : ℝ → ℝ := fun R => if T * T' ≤ R ^ 2 then (R ^ 2 - T * T') ^ (k - 1) else 0 with hwR`. Establish `hw : Measurable fun ζ : ℂ => zWeight k T T' ζ`. Unfold `zWeight`. Conclude with `Measurable.ite (measurableSet_le measurable_const Complex.continuous_normSq.measurable) ((Complex.continuous_normSq.sub continuous_const).pow _).measurable measurable_const`. Establish `hΨ : Measurable fun ζ : ℂ => ENNReal.ofReal (zWeight k T T' ζ) * g (Real.sqrt ((Complex.normSq ζ - T * T') / T)) (-(ζ / (Real.sqrt T : ℂ)))`.
+
+Use `(ENNReal.measurable_ofReal.comp hw).mul (hg.comp (Measurable.prodMk ?_ ?_))` and prove the remaining obligations. Conclude with `(Real.continuous_sqrt.comp ((Complex.continuous_normSq.sub continuous_const).div_const T)).measurable`. Conclude with `(continuous_id.div_const _).neg.measurable`. Rewrite using `[lintegral_polar _ hΨ]`. Establish `eP : ∀ R ∈ Ioi (0 : ℝ), ENNReal.ofReal R * ∫⁻ φ in Ioo (-Real.pi) Real.pi, ENNReal.ofReal (zWeight k T T' (R * (Real.cos φ + Real.sin φ * Complex.I))) * g (Real.sqrt ((Complex.normSq (R * (Real.cos φ + Real.sin φ * Complex.I)) - T * T') / T)) (-((R * (Real.cos φ + Real.sin φ * Co …`.
+
+Introduce `R hR`. Establish `hn : ∀ φ : ℝ, Complex.normSq (R * (Real.cos φ + Real.sin φ * Complex.I)) = R ^ 2`. Introduce `φ`. Rewrite using `[Complex.normSq_mul, Complex.normSq_ofReal, Complex.normSq_add_mul_I, Real.cos_sq_add_sin_sq]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hc : ∀ φ : ℝ, -((R * (Real.cos φ + Real.sin φ * Complex.I)) / (Real.sqrt T : ℂ)) = ((R / Real.sqrt T : ℝ) : ℂ) * Complex.exp (((φ + Real.pi : ℝ) : ℂ) * Complex.I)`. Introduce `φ`. Rewrite using `[Complex.ofReal_add, add_mul, Complex.exp_add, Complex.exp_mul_I, Complex.exp_pi_mul_I]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hz : ∀ φ : ℝ, zWeight k T T' (R * (Real.cos φ + Real.sin φ * Complex.I)) = wR R`. Introduce `φ`. Simplify using `only [zWeight, hn, hwR]`. Repeatedly rewrite using `[hn, hc, hz]`. Rewrite using `[lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`.
+
+Use `congr 2`. Conclude with `shift_pi (fun θ => g (Real.sqrt ((R ^ 2 - T * T') / T)) (((R / Real.sqrt T : ℝ) : ℂ) * Complex.exp (θ * Complex.I)))`. Rewrite using `[setLIntegral_congr_fun measurableSet_Ioi eP]`. Rewrite using `[subst_R T T' hT hT' (fun R => ENNReal.ofReal R * (ENNReal.ofReal (wR R) * Hh R)) (fun R hR => by`. Establish `h : ¬ T * T' ≤ R ^ 2`.
+
+Use `(Real.lt_sqrt hR.1.le).1 hR.2` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `[hwR, h])]`. Establish `eS : ∀ ρ ∈ Ioi (0 : ℝ), ENNReal.ofReal (|T * ρ / Real.sqrt (T * (ρ ^ 2 + T'))|) * (ENNReal.ofReal (Real.sqrt (T * (ρ ^ 2 + T'))) * (ENNReal.ofReal (wR (Real.sqrt (T * (ρ ^ 2 + T')))) * Hh (Real.sqrt (T * (ρ ^ 2 + T'))))) = ENNReal.ofReal (T ^ k) * (ENNReal.ofReal (ρ ^ (2 * k - 1) …`. Introduce `ρ hρ`.
+
+Establish `hρ0 : (0 : ℝ) < ρ` using `hρ`. Establish `hp : 0 < T * (ρ ^ 2 + T')` using `by positivity`. Use `set F := Real.sqrt (T * (ρ ^ 2 + T')) with hF`. Establish `hF0 : 0 < F` using `Real.sqrt_pos.2 hp`. Establish `hF2 : F ^ 2 = T * (ρ ^ 2 + T')` using `Real.sq_sqrt hp.le`.
+
+Establish `hwF : wR F = (T * ρ ^ 2) ^ (k - 1)`. Establish `hle : T * T' ≤ F ^ 2`. Rewrite using `[hF2]; have : 0 ≤ T * ρ ^ 2 := by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `only [hwR]`.
+
+Rewrite using `[if_pos hle, hF2]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `hHF : Hh F = H ρ`. Establish `h1 : Real.sqrt ((F ^ 2 - T * T') / T) = ρ`.
+
+Rewrite using `[hF2, show (T * (ρ ^ 2 + T') - T * T') / T = ρ ^ 2 by field_simp; ring, Real.sqrt_sq hρ0.le]`. Establish `h2 : F / Real.sqrt T = Real.sqrt (ρ ^ 2 + T')`. Rewrite using `[hF, Real.sqrt_mul hT.le, mul_div_cancel_left₀ _ hs0.ne']`. Simplify using `only [hHh, hHdef]`. Rewrite using `[h1, h2]`.
+
+Rewrite using `[hwF, hHF, ← mul_assoc, ← mul_assoc, ← ENNReal.ofReal_mul (abs_nonneg _), ← ENNReal.ofReal_mul (by positivity), ← mul_assoc, ← ENNReal.ofReal_mul (pow_nonneg hT.le k)]`. Use `congr 2`. Rewrite using `[abs_of_pos (by positivity), div_mul_cancel₀ _ hF0.ne']`. Take `⟨n, rfl⟩ : ∃ n, k = n + 1` from `⟨k - 1, by omega⟩`. Rewrite using `[show 2 * (n + 1) - 1 = 2 * n + 1 by omega, Nat.add_sub_cancel]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[setLIntegral_congr_fun measurableSet_Ioi eS, lintegral_const_mul' _ _ ENNReal.ofReal_ne_top, ← mul_assoc, ← mul_assoc, ← ENNReal.ofReal_mul (by positivity)]`. Establish `h12 : (1 / 2 : ℝ≥0∞) = ENNReal.ofReal (1 / 2)`. Rewrite using `[one_div, one_div, ENNReal.ofReal_inv_of_pos two_pos, ENNReal.ofReal_ofNat]`. Rewrite using `[h12, ← ENNReal.ofReal_mul (by norm_num)]`.
+
+Use `congr 2`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem polarHyp : PolarHyp := by
   intro k T T' hk hT hT' g hg
   have hs0 : 0 < Real.sqrt T := Real.sqrt_pos.2 hT

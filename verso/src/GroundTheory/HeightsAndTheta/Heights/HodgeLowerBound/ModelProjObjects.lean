@@ -16,12 +16,21 @@ def modelU (M : CxModel P e) (x : M.Xc) : Set M.Xc :=
 def modelLift (M : CxModel P e) (x : M.Xc) : M.Xc → (Σ k, ι k) → ℂ :=
   (M.sections x).choose_spec.2.2.choose
 
+/- English proof (translation)
+The claim follows from `(M.sections x).choose_spec.1`.
+-/
 theorem modelU_isOpen (M : CxModel P e) (x : M.Xc) : IsOpen (modelU M x) :=
   (M.sections x).choose_spec.1
 
+/- English proof (translation)
+The claim follows from `(M.sections x).choose_spec.2.1`.
+-/
 theorem mem_modelU (M : CxModel P e) (x : M.Xc) : x ∈ modelU M x :=
   (M.sections x).choose_spec.2.1
 
+/- English proof (translation)
+The claim follows from `(M.sections x).choose_spec.2.2.choose_spec`.
+-/
 theorem modelLift_spec (M : CxModel P e) (x : M.Xc) :
     (∀ y ∈ modelU M x, modelLift M x y ∈ mcPts P ∧ M.proj (modelLift M x y) = y) ∧
       ∀ p, M.atlas.HoloOn (modelU M x) fun y => modelLift M x y p :=
@@ -45,6 +54,9 @@ def modelCrit (M : CxModel P e) (Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (
 def modelBad (M : CxModel P e) (Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ)) (E : Set M.Xc) : Set M.Xc :=
   E ∪ modelCrit M Ψ
 
+/- English proof (translation)
+Introduce `x hx j hj`. Assume the negation of the conclusion as `h`. Conclude with `hx (Or.inr (Or.inr ⟨j, hj, h⟩))`.
+-/
 theorem modelQ_good_of_notMem (M : CxModel P e) (Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ))
     (E : Set M.Xc) : ∀ x ∉ modelBad M Ψ E, ∀ j, x ∈ (M.atlas.chart j).source →
       AnalyticAt ℂ (modelQ M Ψ ∘ (M.atlas.chart j).symm) (M.atlas.chart j x) ∧

@@ -90,6 +90,9 @@ def GeoAct : Prop :=
     IsInvTame T.σ₀ T.Q.l.Mb (T.Q.l.Mb.map (T.Q.H.bar : 𝓞 D.host.E →+* 𝓞 D.host.E)) (T.chiW j T.σ₀) χ →
       GeoActAt T j χ
 
+/- English proof (translation)
+Introduce `x _ u ub _ _ _`. Simplify using the standard rewrite rules.
+-/
 example {K : Type} [Field K] (σ : K →+* ℂ) (Mb Mc : Ideal (𝓞 D.host.E)) : IsInvTame (D := D) σ Mb Mc 1 1 := by
   intro x _ u ub _ _ _
   simp

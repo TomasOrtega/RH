@@ -13,6 +13,11 @@ section Gen
 
 variable {Tau : Type} [Fintype Tau] {n : ℕ}
 
+/- English proof (translation)
+Establish `h1 : fnOf G (shiftOf lam) M ((k * a * ∏ τ, (M τ).det ^ (-c)) • Q) z = k * (a * ((∏ τ, (M τ).det ^ (-c)) * fnOf G (shiftOf lam) M Q z))`. Rewrite using `[map_smul, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h1]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hv`. Rewrite using `[nrm_val_M hn a G lam c M hM Q z v hv]`. Introduce `hv`. Conclude with `nrm_val_M' hn a ha G lam c M hM Q z v (mul_left_cancel₀ hk hv)`.
+-/
 theorem val_tw_iff (hn : 0 < n) (k a : ℂ) (hk : k ≠ 0) (ha : a ≠ 0) (G : Tau → Matrix (Fin n) (Fin n) ℂ) (lam : Tau → DomWeight n) (c : ℤ)
     (M : Tau → Matrix (Fin n) (Fin n) ℂ) (hM : ∀ τ, IsUnit (M τ).det) (Q : MvPolynomial (Tau × Fin n × Fin n) ℂ) (z : Frames G) (v : ℂ) :
     v = fnOf G (shiftOf (fun τ => shW (lam τ) c)) M Q z ↔
@@ -53,12 +58,24 @@ def IntAtN (w : D.what₂.places.Pl) (β : S.Ch) (x : (M.lat i).V) (cl : {c // S
 
 variable {S}
 
+/- English proof (translation)
+The claim follows from `mul_ne_zero (mul_ne_zero (S.kTw_ne β) (Units.ne_zero _)) (Finset.prod_ne_zero_iff.2 fun τ _ => zpow_ne_zero _ (atInf_det_unit (embT D) B'⁻¹ τ).ne_zero)`.
+-/
 theorem sTw_ne (β : S.Ch) (cl : {c // S.chOf c = β}) (B' : GL (Fin (D.R.N i)) D.host.E) : S.sTw β cl B' ≠ 0 :=
   mul_ne_zero (mul_ne_zero (S.kTw_ne β) (Units.ne_zero _))
     (Finset.prod_ne_zero_iff.2 fun τ _ => zpow_ne_zero _ (atInf_det_unit (embT D) B'⁻¹ τ).ne_zero)
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Use `forall_congr' fun B' => forall_congr' fun hB => ?_` and prove the remaining obligations. Take `⟨r, hr, hr', er⟩` from `hU cl B' hB`. Establish `key : ∀ (Q : MvPolynomial (D.what₂.Tau × Fin (D.R.N i) × Fin (D.R.N i)) ℂ) (z : Fr D i hi), M.emb i x cl.1 (S.eY.symm z) = fnOf _ (shiftOf (lamTG M i)) (atInf (embT D) (B'⁻¹ : GL (Fin (D.R.N i)) D.host.E).1) Q z ↔ S.embN β x cl z = fnOf _ (shiftOf (M.lam i)) (atInf (embT D) (B'⁻¹ …`. Introduce `Q z`. Rewrite using `[er]`.
+
+Conclude with `val_tw_iff (D.R.N_pos i) (S.kTw β) _ (S.kTw_ne β) (Units.ne_zero _) _ (M.lam i) (cTw D i) _ (atInf_det_unit (embT D) B'⁻¹) Q z _`. Establish `hr0 : D.what₂.embLL r ≠ 0` using `by rw [er]; exact sTw_ne β cl B'`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨Q, hQ, h⟩`. Use `⟨D.what₂.embLL r • Q, intSpan_smul w (M.lam i) r hr hQ, fun z => (key Q z).1 ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[h, Equiv.apply_symm_apply]`. Introduce and unpack `⟨Q, hQ, h⟩`. Use `⟨D.what₂.embLL r⁻¹ • Q, intSpan_smul w (M.lam i) r⁻¹ hr' hQ, fun z' => ?_⟩` and prove the remaining obligations. Establish `h1` using `(key (D.what₂.embLL r⁻¹ • Q) (S.eY z')).2 (by`. Rewrite using `[smul_smul, map_inv₀, mul_inv_cancel₀ hr0, one_smul]`.
+
+Conclude with `h _)`. Rewrite `h1` using `[Equiv.symm_apply_apply]`. Then use the resulting hypothesis.
+-/
 theorem intAtJ_iff_N (w : D.what₂.places.Pl) (β : S.Ch) (hU : S.TwUnit w β) (x : (M.lat i).V) (cl : {c // S.chOf c = β}) :
     S.IntAtJ w β x cl ↔ S.IntAtN w β x cl := by
   refine forall_congr' fun B' => forall_congr' fun hB => ?_
@@ -91,6 +108,9 @@ def ValIntN (e : D.what₂.LL →+* G.Kf) (w : D.what₂.places.Pl) : Prop :=
 
 variable {S}
 
+/- English proof (translation)
+Introduce `β x a L cl hL hp` and use `(h β x a L cl hL hp).trans (intAtJ_iff_N w β (hU β) x cl).symm`.
+-/
 theorem valIntJ_of (e : D.what₂.LL →+* G.Kf) (w : D.what₂.places.Pl) (hU : ∀ β, S.TwUnit w β) (h : S.ValIntN e w) : S.ValIntJ e w :=
   fun β x a L cl hL hp => (h β x a L cl hL hp).trans (intAtJ_iff_N w β (hU β) x cl).symm
 

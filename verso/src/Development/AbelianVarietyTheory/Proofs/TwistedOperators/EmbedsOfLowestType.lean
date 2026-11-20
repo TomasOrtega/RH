@@ -7,6 +7,11 @@ open Formalism.BasicNotions.TH Formalism.MainNotions.SchurIrreducible
 
 namespace GlobalTheory.LowestType
 
+/- English proof (translation)
+Unfold `sameBlock at h`. Apply the tactic sequence `rcases a with i | i <;> rcases b with j | j`. Conclude with `(h trivial).elim`. Establish `hi` using `i.pos`. Establish `hj` using `j.pos`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hi` using `i.pos`. Establish `hj` using `j.pos`. Use linear arithmetic over natural numbers and integers. Conclude with `(h trivial).elim`.
+-/
 theorem two_le_of_not_sameBlock {p q : ℕ} {a b : Ix p q} (h : ¬ sameBlock a b) : 2 ≤ p + q := by
   unfold sameBlock at h
   rcases a with i | i <;> rcases b with j | j
@@ -19,6 +24,9 @@ theorem two_le_of_not_sameBlock {p q : ℕ} {a b : Ix p q} (h : ¬ sameBlock a b
     omega
   · exact (h trivial).elim
 
+/- English proof (translation)
+Unfold `GapGt at hg ⊢`. Introduce `a b hab`. Establish `h2 : (2 : ℝ) ≤ ((p + q : ℕ) : ℝ)` using `by exact_mod_cast two_le_of_not_sameBlock hab`. Conclude with `lt_of_le_of_lt (hh h2) (hg a b hab)`.
+-/
 theorem gapGt_of_cube {p q : ℕ} {lam : Ix p q → ℚ} (hg : GapGt lam (((p + q : ℕ) : ℝ) ^ 3))
     {h : ℝ} (hh : (2 : ℝ) ≤ ((p + q : ℕ) : ℝ) → h ≤ ((p + q : ℕ) : ℝ) ^ 3) : GapGt lam h := by
   unfold GapGt at hg ⊢
@@ -26,6 +34,9 @@ theorem gapGt_of_cube {p q : ℕ} {lam : Ix p q → ℚ} (hg : GapGt lam (((p + 
   have h2 : (2 : ℝ) ≤ ((p + q : ℕ) : ℝ) := by exact_mod_cast two_le_of_not_sameBlock hab
   exact lt_of_le_of_lt (hh h2) (hg a b hab)
 
+/- English proof (translation)
+Establish `hp : 0 ≤ n * (n - 1) * (n + 1)` using `mul_nonneg (mul_nonneg (by linarith) (by linarith)) (by linarith)`. Establish `e : n * (n - 1) * (n + 1) = n ^ 3 - n` using `by ring`. Apply the tactic sequence `constructor <;> linarith`.
+-/
 private lemma cube_div_add_one_le_cube_and_sub_one_le {n : ℝ} (h2 : 2 ≤ n) : n ^ 3 / 24 + 1 ≤ n ^ 3 ∧ n - 1 ≤ n ^ 3 := by
 
   have hp : 0 ≤ n * (n - 1) * (n + 1) :=
@@ -33,6 +44,9 @@ private lemma cube_div_add_one_le_cube_and_sub_one_le {n : ℝ} (h2 : 2 ≤ n) :
   have e : n * (n - 1) * (n + 1) = n ^ 3 - n := by ring
   constructor <;> linarith
 
+/- English proof (translation)
+Introduce `hQ7 hQ8 p q lam hlam hgap A B u v hu hv hcu hcv hirr`. Establish `g1 : GapGt lam (((p + q : ℕ) : ℝ) ^ 3 / 24 + 1)` using `gapGt_of_cube hgap (fun h2 => (cube_div_add_one_le_cube_and_sub_one_le h2).1)`. Establish `g2 : GapGt lam (((p + q : ℕ) : ℝ) - 1)` using `gapGt_of_cube hgap (fun h2 => (cube_div_add_one_le_cube_and_sub_one_le h2).2)`. Take `⟨⟨e, he, hcomm, heu, -⟩, -⟩` from `GlobalTheory.T.highest_weight_iso_of_equal_casimir hQ7 hQ8 p q lam hlam g1 g2 A B u v hu hv hcu hcv hirr`. Conclude with `⟨e, he, heu, hcomm⟩`.
+-/
 theorem embeds_of_lowest_type : admQ7 → admQ8 → ∀ (p q : ℕ) (lam : Ix p q → ℚ), IsParam lam → GapGt lam (((p + q : ℕ) : ℝ) ^ 3) → ∀ (A B : UGKMod p q) (u : A.M.V) (v : B.M.V), IsHW A.M.act (blattner lam) u → IsHW B.M.act (blattner lam) v → casimir A.M.act u = (((normSq lam - rhoSq (p + q) : ℚ)) : ℂ) • u → casimir B.M.act v = (((normSq lam - rhoSq (p + q) : ℚ)) : ℂ) • v → IrrGK B.M → ∃ e : B.M.V →ₗ[ℂ] A.M.V, Function.Injective e ∧ e v = u ∧ ∀ Z x, e (B.M.act Z x) = A.M.act Z (e x) := by
   intro hQ7 hQ8 p q lam hlam hgap A B u v hu hv hcu hcv hirr
 

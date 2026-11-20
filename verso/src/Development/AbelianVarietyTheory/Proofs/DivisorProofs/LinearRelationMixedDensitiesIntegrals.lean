@@ -17,6 +17,11 @@ open scoped ENNReal
 set_option autoImplicit false
 noncomputable section
 
+/- English proof (translation)
+Establish `key : part L ε ≤ (part L ε).restrict Sᶜ` using `iSup_le fun c => by`. Establish `e : chartMeas c.e (fun y => ENNReal.ofReal ((ε : ℤ) * dens L c y)) S = 0`. Rewrite using `[chartMeas_apply _ _ hS, (h c).inter_eq, image_empty, Measure.restrict_empty, lintegral_zero_measure]`. Rewrite using `[← Measure.restrict_eq_self_of_ae_mem (s := Sᶜ) (compl_mem_ae_iff.2 e)]`. Conclude with `Measure.restrict_mono le_rfl (le_iSup (fun c : AlgChart p σ D => chartMeas c.e fun y => ENNReal.ofReal ((ε : ℤ) * dens L c y)) c)`.
+
+Use `le_antisymm ((key S).trans_eq ?_) zero_le` and prove the remaining obligations. Rewrite using `[Measure.restrict_apply hS, inter_compl_self, measure_empty]`.
+-/
 theorem GlobalTheory.Mix.part_eq_zero_off_charts {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} {σ : k →+* ℂ} {D : ℕ}
     (L : Fin D → MLine p σ) (ε : ℤˣ) {S : Set (CxPts p σ)} (hS : MeasurableSet S)
     (h : ∀ c : AlgChart p σ D, Disjoint c.e.source S) : part L ε S = 0 := by
@@ -30,6 +35,33 @@ theorem GlobalTheory.Mix.part_eq_zero_off_charts {k : Type} [CommRing k] {X : Sc
   refine le_antisymm ((key S).trans_eq ?_) zero_le
   rw [Measure.restrict_apply hS, inter_compl_self, measure_empty]
 
+/- English proof (translation)
+Introduce `k _ X p σ _ D J _ a N hlin g hint`. Use `set P : J → ℤˣ → Measure (CxPts p σ) := fun j ε => part (N j) ε with hPdef`. Set `ap : J → ℝ` to `fun j => max (a j) 0`. Set `an : J → ℝ` to `fun j => max (-a j) 0`. Set `μ : (J → ℝ) → (J → ℝ) → Measure (CxPts p σ)` to `fun u w => ∑ j, (ENNReal.ofReal (u j) • P j 1 + ENNReal.ofReal (w j) • P j (-1))`.
+
+Establish `hcont : ∀ j (c : AlgChart p σ D), ContinuousOn (fun v => dens (N j) c (c.e.symm v)) c.e.target` using `fun j c => (GlobalTheory.T.continuousOn_mixedChernFormDensityInChart k X p σ D (N j) c).comp c.e.continuousOn_symm c.e.mapsTo_symm`. Establish `hchart : ∀ (u w : J → ℝ) (c : AlgChart p σ D) (A : Set (CxPts p σ)), MeasurableSet A → A ⊆ c.e.source → μ u w A = ∫⁻ v in c.e '' A, ∑ j, (ENNReal.ofReal (u j) * ENNReal.ofReal (1 * dens (N j) c (c.e.symm v)) + ENNReal.ofReal (w j) * ENNReal.ofReal (-1 * dens (N j) c (c.e.symm v)) …`. Introduce `u w c A hA hAc`. Establish `hsub : c.e '' A ⊆ c.e.target` using `fun _ ⟨y, hy, e⟩ => e ▸ c.e.map_source (hAc hy)`. Establish `hm : ∀ j (s : ℝ), AEMeasurable (fun v => ENNReal.ofReal (s * dens (N j) c (c.e.symm v))) (volume.restrict (c.e '' A))` using `fun j s => ((((hcont j c).aemeasurable c.e.open_target.measurableSet).const_mul s).ennreal_ofReal).mono_measure (Measure.restrict_mono hsub le_rfl)`.
+
+Establish `hP : ∀ j (ε : ℤˣ), P j ε A = ∫⁻ v in c.e '' A, ENNReal.ofReal ((ε : ℤ) * dens (N j) c (c.e.symm v))` using `fun j ε => GlobalTheory.T.mixedChernFormSignedPartMeasure_chart_apply k X p σ D (N j) ε c A hA hAc`. Establish `hm2 : ∀ j ∈ (Finset.univ : Finset J), AEMeasurable (fun v => ENNReal.ofReal (u j) * ENNReal.ofReal (1 * dens (N j) c (c.e.symm v)) + ENNReal.ofReal (w j) * ENNReal.ofReal (-1 * dens (N j) c (c.e.symm v))) (volume.restrict (c.e '' A))` using `fun j _ => ((hm j 1).const_mul _).add ((hm j (-1)).const_mul _)`. Rewrite using `[lintegral_finsetSum' _ hm2]`. Simplify using `only [μ, Measure.coe_finsetSum, Finset.sum_apply, Measure.add_apply, Measure.smul_apply, smul_eq_mul]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[lintegral_add_left' ((hm j 1).const_mul _), lintegral_const_mul' _ _ ENNReal.ofReal_ne_top, lintegral_const_mul' _ _ ENNReal.ofReal_ne_top, hP, hP]`. Simplify using the standard rewrite rules. Use `set U : Set (CxPts p σ) := ⋃ c : AlgChart p σ D, c.e.source with hUdef`. Establish `hUo : IsOpen U` using `isOpen_iUnion fun c => c.e.open_source`. Establish `hzero : ∀ u w : J → ℝ, μ u w Uᶜ = 0`.
+
+Introduce `u w`. Establish `h0 : ∀ j (ε : ℤˣ), P j ε Uᶜ = 0` using `fun j ε => GlobalTheory.Mix.part_eq_zero_off_charts (N j) ε hUo.measurableSet.compl fun c => Set.disjoint_compl_right_iff_subset.2 (Set.subset_iUnion (fun c : AlgChart p σ D => c.e.source) c)`. Simplify using `[μ, Measure.coe_finsetSum, Finset.sum_apply, Measure.add_apply, Measure.smul_apply, h0]`. Establish `hbal : μ ap an = μ an ap`. Take `⟨T, hTc, hT⟩` from `TopologicalSpace.isOpen_iUnion_countable (fun c : AlgChart p σ D => c.e.source) fun c => c.e.open_source`.
+
+Set `s : Option (AlgChart p σ D) → Set (CxPts p σ)` to `fun o => o.elim Uᶜ fun c => c.e.source`. Use `Measure.ext_of_biUnion_eq_univ (S := insert none (some '' T)) (s := s) ((hTc.image _).insert _) ?_ ?_` and prove the remaining obligations. Use `Set.eq_univ_of_forall fun y => ?_` and prove the remaining obligations. Distinguish the cases in `hy : y ∈ U`. Rewrite `hy` using `[hUdef, ← hT]`.
+
+Take `⟨c, hc, hyc⟩` from `Set.mem_iUnion₂.1 hy`. Conclude with `Set.mem_iUnion₂.2 ⟨some c, Set.mem_insert_of_mem _ ⟨c, hc, rfl⟩, hyc⟩`. Conclude with `Set.mem_iUnion₂.2 ⟨none, Set.mem_insert _ _, hy⟩`. Introduce and unpack `(_ | c) -`. Use `show (μ ap an).restrict Uᶜ = (μ an ap).restrict Uᶜ`.
+
+Rewrite using `[Measure.restrict_eq_zero.2 (hzero _ _), Measure.restrict_eq_zero.2 (hzero _ _)]`. Use `show (μ ap an).restrict c.e.source = (μ an ap).restrict c.e.source`. Use extensionality with `B hB`. Establish `hBs` using `hB.inter c.e.open_source.measurableSet`. Rewrite using `[Measure.restrict_apply hB, Measure.restrict_apply hB, hchart _ _ c _ hBs Set.inter_subset_right, hchart _ _ c _ hBs Set.inter_subset_right]`.
+
+Use `setLIntegral_congr_fun (GlobalTheory.ChartGlue.measurableSet_image _ hBs Set.inter_subset_right) fun v hv => ?_` and prove the remaining obligations. Take `⟨y, hy, rfl⟩` from `hv`. Establish `h0` using `hlin c (c.e.symm (c.e y)) (c.e.map_target (c.e.map_source hy.2))`. Use `GlobalTheory.GoodMetric.ChernLin.ofReal_balance a fun j => dens (N j) c (c.e.symm (c.e y))` as an intermediate fact. Rewrite `this` using `[h0, mul_zero, mul_zero, ENNReal.ofReal_zero, zero_add, zero_add]`.
+
+Conclude with `this.symm`. Establish `hI : ∀ u w : J → ℝ, (∀ j, 0 ≤ u j) → (∀ j, 0 ≤ w j) → ∫ y, g y ∂μ u w = ∑ j, (u j * ∫ y, g y ∂P j 1 + w j * ∫ y, g y ∂P j (-1))`. Introduce `u w hu hw`. Simplify using `only [μ]`. Rewrite using `[integral_finsetSum_measure fun j _ => ((hint j).1.smul_measure ENNReal.ofReal_ne_top).add_measure ((hint j).2.smul_measure ENNReal.ofReal_ne_top)]`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[integral_add_measure ((hint j).1.smul_measure ENNReal.ofReal_ne_top) ((hint j).2.smul_measure ENNReal.ofReal_ne_top), integral_smul_measure, integral_smul_measure, ENNReal.toReal_ofReal (hu j), ENNReal.toReal_ofReal (hw j), smul_eq_mul, smul_eq_mul]`. Establish `e` using `congrArg (fun m : Measure (CxPts p σ) => ∫ y, g y ∂m) hbal`. Rewrite `e` using `[hI _ _ (fun j => le_max_right _ _) (fun j => le_max_right _ _), hI _ _ (fun j => le_max_right _ _) (fun j => le_max_right _ _)]`. Establish `key : ∑ j, a j * Mix.int (N j) g = ∑ j, (ap j * ∫ y, g y ∂P j 1 + an j * ∫ y, g y ∂P j (-1)) - ∑ j, (an j * ∫ y, g y ∂P j 1 + ap j * ∫ y, g y ∂P j (-1))`.
+
+Rewrite using `[← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `ha : ap j - an j = a j` using `GlobalTheory.GoodMetric.ChernLin.max_sub_max_neg (a j)`. Rewrite using `[Mix.int]`. Simplify using `only [P]`.
+
+Take the linear combination `(-(∫ y, g y ∂part (N j) 1) + ∫ y, g y ∂part (N j) (-1)) * ha`. Rewrite using `[key, e, sub_self]`.
+-/
 theorem GlobalTheory.Mix.sum_int_eq_zero_of_dens : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) (σ : k →+* ℂ) [SecondCountableTopology (CxPts p σ)] (D : ℕ) (J : Type) [Fintype J] (a : J → ℝ) (L : J → Fin D → MLine p σ), (∀ c : AlgChart p σ D, ∀ y ∈ c.e.source, ∑ i, a i * dens (L i) c y = 0) → ∀ f : CxPts p σ → ℝ, (∀ i, Intg (L i) f) → ∑ i, a i * Mix.int (L i) f = 0 := by
   intro k _ X p σ _ D J _ a N hlin g hint
   classical

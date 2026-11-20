@@ -25,9 +25,15 @@ namespace GlobalTheory.ChainTwNorm
 variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m}
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ => hx, fun hn => absurd ⟨x, hx⟩ hn⟩`.
+-/
 theorem orZero_of {X : Type} [Zero X] {p : X → Prop} {x : X} (hx : p x) : OrZero p x :=
   ⟨fun _ => hx, fun hn => absurd ⟨x, hx⟩ hn⟩
 
+/- English proof (translation)
+Take `⟨lev, grp, fam, models, chain, thP⟩` from `hG.core`. Conclude with `⟨lev, grp, fam, models, ⟨chain.ωY, chain.ωX, chain.vY, chain.vX, chain.ptY, chain.ptX, fun k hk => orZero_of fun t => chain.ItY t k hk, orZero_of chain.ItX, fun t k hk => orZero_of (chain.ioY t k (by omega)), fun t => orZero_of (chain.ioX t), fun t => orZero_of (chain.Th t)⟩, ⟨th …`.
+-/
 theorem baseW_of_given (hG : Given R F) : R.BaseW F := by
   obtain ⟨lev, grp, fam, models, chain, thP⟩ := hG.core
   exact ⟨lev, grp, fam, models,
@@ -37,17 +43,46 @@ theorem baseW_of_given (hG : Given R F) : R.BaseW F := by
     ⟨thP.ωP, thP.vP, thP.pt_theta, fun i => orZero_of (thP.ioP i), fun i t => orZero_of ⟨thP.thF_mem i t, thP.thF i t⟩,
       fun i t => orZero_of (thP.thG i t)⟩⟩
 
+/- English proof (translation)
+Substitute `e1 e2 h2` using the available equality. Clear the denominators using the available nonvanishing facts. Take the linear combination `-h1`.
+-/
 theorem alg_step {d I aa xy ipv P P' na : ℂ} (hna : na ≠ 0) (e1 : aa = na ^ 2) (e2 : P = P') (h1 : d * I = aa * xy)
     (h2 : I = ipv * P) : xy = d * P' / na ^ 2 * ipv := by
   subst e1 e2 h2
   field_simp
   linear_combination -h1
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(InnerProductSpace.toDual ℂ W).symm (LinearMap.toContinuousLinearMap ℓ), fun w => by rw [InnerProductSpace.toDual_symm_apply]; rfl⟩`.
+-/
 theorem riesz {W : Type} [NormedAddCommGroup W] [InnerProductSpace ℂ W] [FiniteDimensional ℂ W]
     (ℓ : W →ₗ[ℂ] ℂ) : ∃ a : W, ∀ w, ℓ w = ⟪a, w⟫_ℂ :=
   ⟨(InnerProductSpace.toDual ℂ W).symm (LinearMap.toContinuousLinearMap ℓ), fun w => by
     rw [InnerProductSpace.toDual_symm_apply]; rfl⟩
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T A Ks _ _ _ R F hG h`. Establish `hB` using `baseW_of_given R F hG`. Establish `hm` using `hG.core.models`. Choose the witnesses or unpack the hypotheses as in `⟨w0, v0, hw0⟩ : ∃ (w : R.cX.W) (v : R.MX.Vec), R.prX w (PiTensorProduct.tprod ℂ v) ≠ 0 := by`. Assume the negation of the conclusion as `hc`.
+
+Use `push_neg at hc`. Apply `hm.prX.1` to reduce the goal to its premises. Use `LinearMap.ext fun w => LinearMap.ext fun x => ?_` and prove the remaining obligations. Proceed by induction on `x using PiTensorProduct.induction_on with`. Consider the case `smul_tprod r v => simp [hc w v]`.
+
+Consider the case `add x y hx hy => simp [map_add, hx, hy]`. Take `⟨a, ha⟩` from `riesz (R.prX.flip (PiTensorProduct.tprod ℂ v0))`. Establish `ha' : ∀ w, R.prX w (PiTensorProduct.tprod ℂ v0) = ⟪a, w⟫_ℂ` using `fun w => ha w`. Establish `hna : a ≠ 0`. Introduce and unpack `rfl`.
+
+Conclude with `hw0 (by rw [ha']; simp)`. Establish `hv : ∀ τ, (v0 τ : R.MX.H τ) ≠ 0`. Introduce `τ h0`. Apply `hw0` to reduce the goal to its premises. Establish `: v0 τ = 0` using `Subtype.ext h0`.
+
+Rewrite using `[(PiTensorProduct.tprod ℂ).map_coord_zero τ this, map_zero]`. Use `haveI : Nontrivial R.cX.W := hm.cX.2.2.2.1`. Establish `hd : (0 : ℝ) < Module.finrank ℂ R.cX.W` using `by exact_mod_cast Module.finrank_pos`. Establish `hP : (0 : ℝ) < ∏ τ, ‖(v0 τ : R.MX.H τ)‖ ^ 2` using `Finset.prod_pos fun τ _ => pow_pos (norm_pos_iff.2 (hv τ)) 2`. Establish `hA : (0 : ℝ) < ‖a‖ ^ 2` using `pow_pos (norm_pos_iff.2 hna) 2`.
+
+Use `⟨(Module.finrank ℂ R.cX.W : ℝ) * (∏ τ, ‖(v0 τ : R.MX.H τ)‖ ^ 2) / ‖a‖ ^ 2, by positivity, fun t => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Establish `hi` using `GlobalTheory.DefiniteMult.top_injective R hm.inf hm.cX hm.prX hm.HX t`. Use `⟨fun x y e => ?_, fun z => ?_⟩` and prove the remaining obligations. Establish `e2` using `(LinearEquiv.ofEq _ _ (h t)).injective e`. Conclude with `hi (congrArg Subtype.val e2)`.
+
+Take `⟨u, hu⟩` from `(LinearMap.surjective_rangeRestrict _) ((LinearEquiv.ofEq _ _ (h t)).symm z)`. Use `⟨u, ?_⟩` and prove the remaining obligations. Simplify using `only [toCC, hu]`. Conclude with `(LinearEquiv.ofEq _ _ (h t)).apply_symm_apply z`. Introduce `ipD ip hM x y`.
+
+Establish `hS` using `hM.schur (toCC R h t y) (toCC R h t x) (PiTensorProduct.tprod ℂ v0) (PiTensorProduct.tprod ℂ v0)`. Establish `hS'` using `hS.trans (congrArg _ (hM.pure v0 v0))`. Establish `hI` using `(GlobalTheory.T.unfolding_schur_orthogonality_definite_coefficients D G Pl0 T A Ks R F hB t x y a a).2`. Establish `hJ : (∫ g in R.fdX t, star ⟪a, R.cX.ext ((R.HX t).e x) g⟫_ℂ * ⟪a, R.cX.ext ((R.HX t).e y) g⟫_ℂ ∂(R.νX t)) = ip (toCC R h t y) (toCC R h t x) * ∏ τ, ⟪(v0 τ : R.MX.H τ), (v0 τ : R.MX.H τ)⟫_ℂ`. Use `Eq.trans ?_ hS'` and prove the remaining obligations.
+
+Unfold `Lift.pet`. Use `MeasureTheory.integral_congr_ae (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Establish `e3 : (((toCC R h t y : (stX R t).CC (comR R t)) : SmT (stX R t).M →ₗ[ℂ] (GA D (stX R t).V → ℂ)) (PiTensorProduct.tprod ℂ v0)) g = R.prX (R.cX.ext ((R.HX t).e y) g) (PiTensorProduct.tprod ℂ v0)` using `rfl`. Establish `e4 : (((toCC R h t x : (stX R t).CC (comR R t)) : SmT (stX R t).M →ₗ[ℂ] (GA D (stX R t).V → ℂ)) (PiTensorProduct.tprod ℂ v0)) g = R.prX (R.cX.ext ((R.HX t).e x) g) (PiTensorProduct.tprod ℂ v0)` using `rfl`. Simplify using `only [e3, e4, ha', starRingEnd_apply]`.
+
+Conclude with `mul_comm _ _`. Establish `e1 : ⟪a, a⟫_ℂ = ((‖a‖ : ℂ)) ^ 2` using `inner_self_eq_norm_sq_to_K a`. Establish `e2 : (∏ τ, ⟪(v0 τ : R.MX.H τ), (v0 τ : R.MX.H τ)⟫_ℂ) = ∏ τ, ((‖(v0 τ : R.MX.H τ)‖ : ℂ)) ^ 2` using `Finset.prod_congr rfl fun τ _ => inner_self_eq_norm_sq_to_K _`. Establish `hA' : (‖a‖ : ℂ) ≠ 0` using `by exact_mod_cast (norm_pos_iff.2 hna).ne'`. Establish `H` using `alg_step hA' e1 e2 hI hJ`.
+
+Rewrite using `[H]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem normX : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks]
     [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), Given R F → ∀ h : RangeX R, NormX R h := by
   intro D G _ _ Pl0 T A Ks _ _ _ R F hG h

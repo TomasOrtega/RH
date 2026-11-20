@@ -12,21 +12,35 @@ namespace GlobalTheory.UnitLemma.Desc.Window
 
 variable {K : UQ} (B : InvAlg K) {ι : Type}
 
+/- English proof (translation)
+Introduce `h`. Conclude with `ha.1 ((injective_iff_map_eq_zero (algebraMap K.O K.E)).1 (IsFractionRing.injective K.O K.E) a h)`.
+-/
 theorem al_ne_zero {a : K.O} (ha : K.Small a) : al K a ≠ 0 := by
   intro h
   exact ha.1 ((injective_iff_map_eq_zero (algebraMap K.O K.E)).1 (IsFractionRing.injective K.O K.E) a h)
 
+/- English proof (translation)
+Take `⟨m, rfl⟩` from `Int.eq_ofNat_of_zero_le hn`. Rewrite using `[zpow_natCast, Int.toNat_natCast, Algebra.smul_def, IsScalarTower.algebraMap_apply K.O K.E B.A]`. Simplify using `only [map_pow]`.
+-/
 theorem zpow_smul_eq (a : K.O) (n : ℤ) (hn : 0 ≤ n) (y : B.A) :
     al K a ^ n • y = algebraMap K.O B.A (a ^ n.toNat) * y := by
   obtain ⟨m, rfl⟩ := Int.eq_ofNat_of_zero_le hn
   rw [zpow_natCast, Int.toNat_natCast, Algebra.smul_def, IsScalarTower.algebraMap_apply K.O K.E B.A]
   simp only [map_pow]
 
+/- English proof (translation)
+Rewrite using `[zpow_smul_eq B a n hn]`. Conclude with `isIntegral_algebraMap.mul hy`.
+-/
 theorem isIntegral_zpow_smul (a : K.O) {n : ℤ} (hn : 0 ≤ n) {y : B.A} (hy : IsIntegral K.O y) :
     IsIntegral K.O (al K a ^ n • y) := by
   rw [zpow_smul_eq B a n hn]
   exact isIntegral_algebraMap.mul hy
 
+/- English proof (translation)
+Establish `: al K a ^ n • y = al K a ^ (n - c) • (al K a ^ c • y)`. Rewrite using `[smul_smul, ← zpow_add₀ (al_ne_zero ha)]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`.
+
+Conclude with `isIntegral_zpow_smul B a (by omega) hy`.
+-/
 theorem isIntegral_zpow_smul_of_le {a : K.O} (ha : K.Small a) {c n : ℤ} (hcn : c ≤ n) {y : B.A}
     (hy : IsIntegral K.O (al K a ^ c • y)) : IsIntegral K.O (al K a ^ n • y) := by
   have : al K a ^ n • y = al K a ^ (n - c) • (al K a ^ c • y) := by
@@ -34,6 +48,15 @@ theorem isIntegral_zpow_smul_of_le {a : K.O} (ha : K.Small a) {c n : ℤ} (hcn :
   rw [this]
   exact isIntegral_zpow_smul B a (by omega) hy
 
+/- English proof (translation)
+Establish `halg : IsAlgebraic K.O y` using `(IsFractionRing.isAlgebraic_iff K.O K.E (C := B.A)).2 (Algebra.IsAlgebraic.isAlgebraic y)`. Take `⟨y0, hy0, hint⟩` from `halg.exists_integral_multiple`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible K.O`. Take `⟨m, hm⟩` from `IsDiscreteValuationRing.associated_pow_irreducible hy0 hϖ`. Establish `hdvd : ϖ ∣ a`.
+
+Use `ha.2.1` as an intermediate fact. Rewrite `this` using `[hϖ.maximalIdeal_eq, Ideal.mem_span_singleton]`. Conclude with `this`. Take `⟨w, hw⟩ : y0 ∣ a ^ m` from `hm.dvd.trans (pow_dvd_pow_of_dvd hdvd m)`. Use `⟨m, fun n hn => isIntegral_zpow_smul_of_le B ha hn ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[zpow_natCast]`. Establish `: al K a ^ m • y = algebraMap K.O B.A w * (y0 • y)`. Rewrite using `[← map_pow, algebraMap_smul, hw, Algebra.smul_def, Algebra.smul_def, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`.
+
+Conclude with `isIntegral_algebraMap.mul hint`.
+-/
 theorem exists_scale {a : K.O} (ha : K.Small a) (y : B.A) :
     ∃ c : ℕ, ∀ n : ℤ, (c : ℤ) ≤ n → IsIntegral K.O (al K a ^ n • y) := by
   have halg : IsAlgebraic K.O y :=
@@ -53,6 +76,15 @@ theorem exists_scale {a : K.O} (ha : K.Small a) (y : B.A) :
   rw [this]
   exact isIntegral_algebraMap.mul hint
 
+/- English proof (translation)
+Take `⟨n, d, hd, rfl⟩` from `IsFractionRing.div_surjective (A := K.O) t`. Establish `hd0 : algebraMap K.O K.E d ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors hd`. Establish `hn0 : n ≠ 0` using `by rintro rfl; simp at ht`. Establish `hnu : ¬ IsUnit a` using `fun hu => (IsLocalRing.mem_maximalIdeal a).1 ha.2.1 hu`. Take `⟨C, hC⟩` from `FiniteMultiplicity.of_not_isUnit hnu hn0`.
+
+Use `⟨C, fun m hm => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`. Take `⟨b, hb⟩` from `hm`. Take `⟨j, hj⟩ : ∃ j : ℕ, m = -(j : ℤ)` from `⟨(-m).toNat, by omega⟩`.
+
+Apply `hC` to reduce the goal to its premises. Establish `hjC : C + 1 ≤ j` using `by omega`. Use `(pow_dvd_pow a hjC).trans ⟨d * b, ?_⟩` and prove the remaining obligations. Apply `IsFractionRing.injective K.O K.E` to reduce the goal to its premises. Establish `hα` using `al_ne_zero ha`.
+
+Rewrite `hb` using `[hj, zpow_neg, zpow_natCast]`. Rewrite using `[map_mul, map_mul, map_pow, hb]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem exists_bound {a : K.O} (ha : K.Small a) {t : K.E} (ht : t ≠ 0) :
     ∃ C : ℕ, ∀ m : ℤ, al K a ^ m * t ∈ (algebraMap K.O K.E).range → -(C : ℤ) ≤ m := by
   obtain ⟨n, d, hd, rfl⟩ := IsFractionRing.div_surjective (A := K.O) t
@@ -75,12 +107,22 @@ theorem exists_bound {a : K.O} (ha : K.Small a) {t : K.E} (ht : t ≠ 0) :
   rw [map_mul, map_mul, map_pow, hb]
   field_simp
 
+/- English proof (translation)
+Establish `h` using `GlobalTheory.DiscConductor.isIntegral_trace_of_isIntegral K.O K.E B.A y hy`. Take `⟨z, hz⟩` from `IsIntegrallyClosed.isIntegral_iff.1 h`. Conclude with `⟨z, hz⟩`.
+-/
 theorem trace_mem_of_isIntegral {y : B.A} (hy : IsIntegral K.O y) :
     Algebra.trace K.E B.A y ∈ (algebraMap K.O K.E).range := by
   have h := GlobalTheory.DiscConductor.isIntegral_trace_of_isIntegral K.O K.E B.A y hy
   obtain ⟨z, hz⟩ := IsIntegrallyClosed.isIntegral_iff.1 h
   exact ⟨z, hz⟩
 
+/- English proof (translation)
+Use `set g := Algebra.lmul K.E B.A f`. Establish `hproj : LinearMap.IsProj (LinearMap.range g) g`. Use `⟨fun x => LinearMap.mem_range_self g x, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨z, rfl⟩`. Express the relevant statement in the definitionally equal form `f * (f * z) = f * z`.
+
+Rewrite using `[← mul_assoc, hf.eq]`. Rewrite using `[Algebra.trace_apply, hproj.trace]`. Establish `hmem : f ∈ LinearMap.range g` using `⟨1, by change f * 1 = f; rw [mul_one]⟩`. Establish `hpos : LinearMap.range g ≠ ⊥`. Introduce `hb`.
+
+Rewrite `hmem` using `[hb, Submodule.mem_bot]`. Conclude with `h0 hmem`. Rewrite using `[Ne, Nat.cast_eq_zero, Submodule.finrank_eq_zero]`. Conclude with `hpos`.
+-/
 theorem trace_ne_zero_of_idem {f : B.A} (hf : IsIdempotentElem f) (h0 : f ≠ 0) :
     Algebra.trace K.E B.A f ≠ 0 := by
   set g := Algebra.lmul K.E B.A f
@@ -96,6 +138,13 @@ theorem trace_ne_zero_of_idem {f : B.A} (hf : IsIdempotentElem f) (h0 : f ≠ 0)
   rw [Ne, Nat.cast_eq_zero, Submodule.finrank_eq_zero]
   exact hpos
 
+/- English proof (translation)
+Introduce `hint`. Take `⟨C, hC⟩` from `exists_bound ha (trace_ne_zero_of_idem B hf h0)`. Establish `hpow : (al K a ^ (-1 : ℤ) • f) ^ (C + 1) = al K a ^ (-((C + 1 : ℕ) : ℤ)) • f`. Rewrite using `[_root_.smul_pow, hf.pow_succ_eq, ← zpow_natCast, ← zpow_mul]`. Use `congr 2`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `ht` using `trace_mem_of_isIntegral B (hint.pow (C + 1))`. Rewrite `ht` using `[hpow, LinearMap.map_smul, smul_eq_mul]`. Use `hC _ ht` as an intermediate fact.
+
+Move the coercions through the operations in `at this`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem not_isIntegral_inv_smul_idem {a : K.O} (ha : K.Small a) {f : B.A} (hf : IsIdempotentElem f)
     (h0 : f ≠ 0) : ¬ IsIntegral K.O (al K a ^ (-1 : ℤ) • f) := by
   intro hint
@@ -108,6 +157,11 @@ theorem not_isIntegral_inv_smul_idem {a : K.O} (ha : K.Small a) {f : B.A} (hf : 
   push_cast at this
   omega
 
+/- English proof (translation)
+Take `⟨f, hf, hf0, -, hS, hnS⟩` from `h.2 i`. Distinguish the cases in `hi : i ∈ S`. Rewrite using `[(hS hi).1]`. Conclude with `hf0`. Take `⟨h1, h2⟩` from `hnS hi`.
+
+Rewrite using `[h2]`. Introduce `hz`. Establish `hs : B.σ f = -f` using `eq_neg_of_add_eq_zero_right hz`. Rewrite `h1` using `[hs, mul_neg, hf.eq, neg_eq_zero]`. Conclude with `hf0 h1`.
+-/
 theorem ne_zero_of_isPre [Fintype ι] {e : ι → B.A} {S : Finset ι} (h : IsPre B e S) (i : ι) : e i ≠ 0 := by
   obtain ⟨f, hf, hf0, -, hS, hnS⟩ := h.2 i
   by_cases hi : i ∈ S
@@ -133,16 +187,30 @@ def dualSub (M : Submodule K.O B.A) : AddSubgroup B.A where
 
 def ind (Q : AddSubgroup B.A) (y : B.A) : ℚ := if y ∈ Q then 1 else 0
 
+/- English proof (translation)
+Use function extensionality and compare the values at `y`. Unfold `indM ind`. Simplify using the standard rewrite rules.
+-/
 theorem indM_eq (M : Submodule K.O B.A) : indM B M = ind B M.toAddSubgroup := by
   funext y; unfold indM ind; simp
 
+/- English proof (translation)
+Use function extensionality and compare the values at `y`. Unfold `indD ind`. Both sides reduce to the same expression.
+-/
 theorem indD_eq (M : Submodule K.O B.A) : indD B M = ind B (dualSub B M) := by
   funext y; unfold indD ind; rfl
 
+/- English proof (translation)
+Unfold `ind`. Rewrite using `[Q.add_mem_cancel_right hd]`.
+-/
 theorem ind_add {Q : AddSubgroup B.A} {w d : B.A} (hd : d ∈ Q) : ind B Q (w + d) = ind B Q w := by
   unfold ind
   rw [Q.add_mem_cancel_right hd]
 
+/- English proof (translation)
+Use `dlt_eq_zero π I _ y i hi fun J hJ => ?_` and prove the remaining obligations. Use `set w := (∏ j ∈ J, π j) * y`. Establish `hiJ : i ∉ J` using `fun h => Finset.notMem_erase i I (hJ h)`. Establish `hJI : J ⊆ I` using `hJ.trans (Finset.erase_subset i I)`. Establish `h1 : e i * (π i * w) ∈ Q`.
+
+Use `hQ (insert i J) (Finset.insert_subset hi hJI)` as an intermediate fact. Rewrite `this` using `[Finset.prod_insert hiJ, mul_assoc]`. Then use the resulting hypothesis. Establish `h2 : e i * w ∈ Q` using `hQ J hJI`. Establish `hw : π i * w = w + (e i * (π i * w) - e i * w)` using `by linear_combination w * hπ`. Rewrite using `[hw, ind_add B (sub_mem h1 h2)]`.
+-/
 theorem dlt_ind_eq_zero {e π : ι → B.A} (Q : AddSubgroup B.A) {I : Finset ι} {i : ι} (hi : i ∈ I)
     (hπ : π i * (1 - e i) = 1 - e i) (y : B.A)
     (hQ : ∀ J ⊆ I, e i * ((∏ j ∈ J, π j) * y) ∈ Q) : dlt π I (ind B Q) y = 0 := by
@@ -157,6 +225,13 @@ theorem dlt_ind_eq_zero {e π : ι → B.A} (Q : AddSubgroup B.A) {I : Finset ι
   have hw : π i * w = w + (e i * (π i * w) - e i * w) := by linear_combination w * hπ
   rw [hw, ind_add B (sub_mem h1 h2)]
 
+/- English proof (translation)
+Unfold `dlt`. Use `Finset.sum_congr rfl fun J hJ => ?_` and prove the remaining obligations. Use `congr 1`. Use `set w := (∏ j ∈ J, π j) * y`. Establish `hsum : ∑ i ∈ I₀ᶜ, e i * w ∈ Q` using `Q.sum_mem fun i hi => hQ J (Finset.mem_powerset.1 hJ) i (Finset.mem_compl.1 hi)`.
+
+Establish `hw : w = (∏ j ∈ J, π j) * (eS B e I₀ * y) + ∑ i ∈ I₀ᶜ, e i * w`. Establish `h` using `Finset.sum_add_sum_compl I₀ fun i => e i * w`. Establish `h2 : ∑ i, e i * w = w` using `by rw [← Finset.sum_mul, he, one_mul]`. Rewrite `h` using `[h2, ← Finset.sum_mul]`. Use `conv_lhs => rw [← h]`.
+
+Use `congr 1`. Unfold `eS`. Simplify using `only [w]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hw, ind_add B hsum]`.
+-/
 theorem dlt_ind_eS [Fintype ι] {e π : ι → B.A} (Q : AddSubgroup B.A) (he : ∑ i, e i = 1)
     (I I₀ : Finset ι) (y : B.A) (hQ : ∀ J ⊆ I, ∀ i ∉ I₀, e i * ((∏ j ∈ J, π j) * y) ∈ Q) :
     dlt π I (ind B Q) y = dlt π I (ind B Q) (eS B e I₀ * y) := by
@@ -175,11 +250,19 @@ theorem dlt_ind_eS [Fintype ι] {e π : ι → B.A} (Q : AddSubgroup B.A) (he : 
     unfold eS; simp only [w]; ring
   rw [hw, ind_add B hsum]
 
+/- English proof (translation)
+Take `⟨J, hJ, hne⟩` from `Finset.exists_ne_zero_of_sum_ne_zero h`. Conclude with `⟨J, Finset.mem_powerset.1 hJ, right_ne_zero_of_mul hne⟩`.
+-/
 theorem exists_of_dlt_ne_zero {π : ι → B.A} {I : Finset ι} {f : B.A → ℚ} {y : B.A}
     (h : dlt π I f y ≠ 0) : ∃ J ⊆ I, f ((∏ j ∈ J, π j) * y) ≠ 0 := by
   obtain ⟨J, hJ, hne⟩ := Finset.exists_ne_zero_of_sum_ne_zero h
   exact ⟨J, Finset.mem_powerset.1 hJ, right_ne_zero_of_mul hne⟩
 
+/- English proof (translation)
+Establish `hr` using `hy (2 * k - p i - N) (by omega)`. Establish `h` using `(hP i).1 _ hr`. Use `h using 1` and compare the differences between its conclusion and the goal. Rewrite using `[mul_smul_comm, mul_smul_comm, smul_smul, ← zpow_add₀ (al_ne_zero ha)]`. Use `congr 2`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem mem_of_pos {a : K.O} (ha : K.Small a) [Fintype ι] {e : ι → B.A} {N : ℕ} {M : Submodule K.O B.A}
     {p : ι → ℤ} (hP : Pos B a e N M p) (i : ι) {c : ℕ} {y : B.A}
     (hy : ∀ n : ℤ, (c : ℤ) ≤ n → IsIntegral K.O (al K a ^ n • y)) (k : ℕ) (hk : p i + N + c ≤ 2 * k) :
@@ -190,6 +273,13 @@ theorem mem_of_pos {a : K.O} (ha : K.Small a) [Fintype ι] {e : ι → B.A} {N :
   rw [mul_smul_comm, mul_smul_comm, smul_smul, ← zpow_add₀ (al_ne_zero ha)]
   congr 2; push_cast; ring
 
+/- English proof (translation)
+Introduce `z hz`. Establish `h2` using `(hP i).2 z hz`. Establish `h1` using `hy c le_rfl`. Establish `hα` using `al_ne_zero ha`. Establish `heq : e i * y * z = al K a ^ (p i - c) • ((al K a ^ (c : ℤ) • y) * (al K a ^ (-p i) • (e i * z)))`.
+
+Rewrite using `[smul_mul_smul_comm, smul_smul, ← zpow_add₀ hα, ← zpow_add₀ hα]`. Establish `: p i - c + (c + -p i) = 0` using `by ring`. Rewrite using `[this, zpow_zero, one_smul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[heq]`.
+
+Conclude with `trace_mem_of_isIntegral B (isIntegral_zpow_smul B a (by omega) (h1.mul h2))`.
+-/
 theorem inDual_of_pos {a : K.O} (ha : K.Small a) [Fintype ι] {e : ι → B.A} {N : ℕ} {M : Submodule K.O B.A}
     {p : ι → ℤ} (hP : Pos B a e N M p) (i : ι) {c : ℕ} {y : B.A}
     (hy : ∀ n : ℤ, (c : ℤ) ≤ n → IsIntegral K.O (al K a ^ n • y)) (hp : (c : ℤ) ≤ p i) :
@@ -205,6 +295,9 @@ theorem inDual_of_pos {a : K.O} (ha : K.Small a) [Fintype ι] {e : ι → B.A} {
   rw [heq]
   exact trace_mem_of_isIntegral B (isIntegral_zpow_smul B a (by omega) (h1.mul h2))
 
+/- English proof (translation)
+Rewrite using `[zpow_natCast, Algebra.smul_def, IsScalarTower.algebraMap_apply K.O K.E B.A]`. Simplify using `only [map_pow]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem prod_mul_eq (a : K.O) (P x : B.A) (k : ℕ) :
     P * (x * algebraMap K.O B.A a ^ (2 * k)) = al K a ^ ((2 * k : ℕ) : ℤ) • (P * x) := by
   rw [zpow_natCast, Algebra.smul_def, IsScalarTower.algebraMap_apply K.O K.E B.A]
@@ -214,6 +307,47 @@ end GlobalTheory.UnitLemma.Desc.Window
 
 open GlobalTheory.UnitLemma.Desc.Window in
 
+/- English proof (translation)
+Introduce `K B ι _ e π S a _ ha hF I I' hIS hI'S hcov N x s hx hs`. Establish `hα` using `al_ne_zero ha`. Establish `hPu : ∀ J ⊆ S, IsUnit (∏ j ∈ J, π j)` using `fun J hJ => Finset.prod_induction _ IsUnit (fun _ _ => IsUnit.mul) isUnit_one fun j hj => (hF.2 j (hJ hj)).1.1`. Set `T : Finset B.A` to `S.powerset.biUnion fun J => {(∏ j ∈ J, π j) * x, Ring.inverse ((∏ j ∈ J, π j) * x), (∏ j ∈ J, π j) * s, Ring.inverse ((∏ j ∈ J, π j) * s)}`. Establish `memT : ∀ J ⊆ S, ∀ y ∈ ({(∏ j ∈ J, π j) * x, Ring.inverse ((∏ j ∈ J, π j) * x), (∏ j ∈ J, π j) * s, Ring.inverse ((∏ j ∈ J, π j) * s)} : Finset B.A), y ∈ T` using `fun J hJ y hy => Finset.mem_biUnion.2 ⟨J, Finset.mem_powerset.2 hJ, hy⟩`.
+
+Use `choose cf hcf using fun y : B.A => exists_scale B ha y`. Use `set c := T.sup cf`. Establish `hc : ∀ y ∈ T, ∀ n : ℤ, (c : ℤ) ≤ n → IsIntegral K.O (al K a ^ n • y)` using `fun y hy n hn => hcf y n (le_trans (by exact_mod_cast Finset.le_sup hy) hn)`. Use `choose Cf hCf using fun i => exists_bound ha (trace_ne_zero_of_idem B (hF.1.1.idem i) (ne_zero_of_isPre B hF.1 i))`. Use `set Ct := Finset.univ.sup Cf`.
+
+Establish `hCt : ∀ i (m : ℤ), al K a ^ m * Algebra.trace K.E B.A (e i) ∈ (algebraMap K.O K.E).range → -(Ct : ℤ) ≤ m` using `fun i m h => le_trans (neg_le_neg (by exact_mod_cast Finset.le_sup (Finset.mem_univ i))) (hCf i m h)`. Establish `hπ : ∀ i ∈ S, π i * (1 - e i) = 1 - e i` using `fun i hi => (hF.2 i hi).2.1`. Use `⟨N + c + Ct, fun L hL k hk M p hP => ?_⟩` and prove the remaining obligations. Establish `memU : ∀ J ⊆ S, ∀ i, p i + N + c ≤ 2 * k → e i * ((∏ j ∈ J, π j) * (x * algebraMap K.O B.A a ^ (2 * k))) ∈ M`. Introduce `J hJ i hi`.
+
+Rewrite using `[prod_mul_eq]`. Conclude with `mem_of_pos B ha hP i (hc _ (memT J hJ _ (by simp))) k hi`. Establish `dualS : ∀ J ⊆ S, ∀ i, (c : ℤ) ≤ p i → InDual B (e i * ((∏ j ∈ J, π j) * s)) M`. Introduce `J hJ i hi`. Conclude with `inDual_of_pos B ha hP i (hc _ (memT J hJ _ (by simp))) hi`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hne`. Unfold `term at hne`. Establish `hne1` using `left_ne_zero_of_mul hne`. Establish `hne2` using `right_ne_zero_of_mul hne`.
+
+Take `⟨J, hJ, hJm⟩` from `exists_of_dlt_ne_zero B hne1`. Establish `hJM : (∏ j ∈ J, π j) * (x * algebraMap K.O B.A a ^ (2 * k)) ∈ M`. Assume the negation of the conclusion as `h`. Apply `hJm` to reduce the goal to its premises. Simplify using `[indM, h]`.
+
+Take `⟨J', hJ', hJd⟩` from `exists_of_dlt_ne_zero B hne2`. Establish `hJD : InDual B ((∏ j ∈ J', π j) * s) M`. Assume the negation of the conclusion as `h`. Apply `hJd` to reduce the goal to its premises. Simplify using `[indD, h]`.
+
+Introduce `i`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `set w := (∏ j ∈ J', π j) * s`. Establish `hw : IsUnit w` using `(hPu J' (hJ'.trans hI'S)).mul hs`. Establish `hr` using `hc (Ring.inverse w) (memT J' (hJ'.trans hI'S) _ (by simp [w])) c le_rfl`.
+
+Establish `ht` using `hJD _ ((hP i).1 _ hr)`. Establish `heq : w * (al K a ^ (p i + N) • (e i * (al K a ^ (c : ℤ) • Ring.inverse w))) = al K a ^ (p i + N + c) • e i`. Simplify using `only [mul_smul_comm, smul_smul, ← zpow_add₀ hα]`. Rewrite using `[mul_left_comm, Ring.mul_inverse_cancel w hw, mul_one]`. Rewrite `ht` using `[heq, LinearMap.map_smul, smul_eq_mul]`.
+
+Use `hCt i _ ht` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Assume the negation of the conclusion as `hb push_neg at hb set w := (∏ j ∈ J, π j) * x`. Establish `hw : IsUnit w` using `(hPu J (hJ.trans hIS)).mul hx`. Establish `h1` using `(hP i).2 _ hJM`.
+
+Rewrite `h1` using `[prod_mul_eq]`. Establish `h2` using `hc (Ring.inverse w) (memT J (hJ.trans hIS) _ (by simp [w])) c le_rfl`. Establish `h3` using `h1.mul h2`. Establish `heq : al K a ^ (-p i) • (e i * (al K a ^ ((2 * k : ℕ) : ℤ) • w)) * (al K a ^ (c : ℤ) • Ring.inverse w) = al K a ^ (-p i + ((2 * k : ℕ) : ℤ) + c) • e i`. Simplify using `only [mul_smul_comm, smul_mul_assoc, smul_smul, ← zpow_add₀ hα]`.
+
+Rewrite using `[mul_assoc, Ring.mul_inverse_cancel w hw, mul_one]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h3` using `[heq]`. Apply `not_isIntegral_inv_smul_idem B ha (hF.1.1.idem i) (ne_zero_of_isPre B hF.1 i)` to reduce the goal to its premises.
+
+Conclude with `isIntegral_zpow_smul_of_le B ha (by push_cast; omega) h3`. Introduce `hiI`. Assume the negation of the conclusion as `hc'`. Use `push_neg at hc'`. Apply `hne1` to reduce the goal to its premises.
+
+Rewrite using `[indM_eq]`. Use `dlt_ind_eq_zero B _ hiI (hπ i (hIS hiI)) _ fun J hJ => ?_` and prove the remaining obligations. Conclude with `memU J (hJ.trans hIS) i (by omega)`. Introduce `hiI'`. Assume the negation of the conclusion as `hd`.
+
+Use `push_neg at hd`. Apply `hne2` to reduce the goal to its premises. Rewrite using `[indD_eq]`. Use `dlt_ind_eq_zero B _ hiI' (hπ i (hI'S hiI')) _ fun J hJ => ?_` and prove the remaining obligations. Conclude with `dualS J (hJ.trans hI'S) i (by omega)`.
+
+Introduce `hW hMid`. Unfold `term`. Use `congr 1`. Rewrite using `[indM_eq]`. Use `dlt_ind_eS B _ hF.1.1.complete I I _ fun J hJ i hi => ?_` and prove the remaining obligations.
+
+Use `memU J (hJ.trans hIS) i ?_` and prove the remaining obligations. Establish `: p i ≤ 2 * k - L`. Distinguish the cases in `hiS : i ∈ S`. Establish `hiI' : i ∈ I'` using `(hcov i hiS).resolve_left hi`. Use `(hW i).2.2.2 hiI'` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Conclude with `(hMid i hiS).2`. Use linear arithmetic over natural numbers and integers. Rewrite using `[indD_eq]`. Use `dlt_ind_eS B _ hF.1.1.complete I' I' _ fun J hJ i hi => ?_` and prove the remaining obligations.
+
+Use `dualS J (hJ.trans hI'S) i ?_` and prove the remaining obligations. Establish `: (L : ℤ) ≤ p i`. Distinguish the cases in `hiS : i ∈ S`. Establish `hiI : i ∈ I` using `(hcov i hiS).resolve_right hi`. Use `(hW i).2.2.1 hiI` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Conclude with `(hMid i hiS).1`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem GlobalTheory.UnitLemma.Desc.term_window : ∀ (K : UQ) (B : InvAlg K) (ι : Type) [Fintype ι] (e π : ι → B.A)
     (S : Finset ι) (a : K.O), B.P.Separable → K.Small a → IsFrame B e π S → ∀ I I' : Finset ι, I ⊆ S → I' ⊆ S →
     (∀ i ∈ S, i ∈ I ∨ i ∈ I') → ∀ (N : ℕ) (x s : B.A), IsUnit x → IsUnit s → ∃ L₀ : ℕ, ∀ L ≥ L₀, ∀ k : ℕ, L ≤ k →

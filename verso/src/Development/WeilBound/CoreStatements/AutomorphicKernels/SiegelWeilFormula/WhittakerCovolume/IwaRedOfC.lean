@@ -11,8 +11,20 @@ namespace PositivityTheory.SiegelWeilFormula.KWhit
 
 open PositivityTheory.SiegelWeilFormula
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ _ _ _ d Φ hΦ k hk` and use `kfin_om d hΦ hk`.
+-/
 theorem kFinK : KFinK := fun _ _ _ _ _ _ _ _ d Φ hΦ k hk => kfin_om d hΦ hk
 
+/- English proof (translation)
+Introduce `hT c F E _ _ _ _ _ σ d Q hQs hQK hL Φ hΦ x nb lam 𝓖 hcd ε w hw T hTnd`. Take `⟨p, t, hp, k, hk, rfl⟩` from `d.ok.hgt.iwa x`. Take `⟨n0, m0, β₀, hn, hm, rfl⟩` from `par_decomp d p t hp`. Establish `key` using `hL (d.om k Φ) (hQK Φ hΦ k hk) m0 hm nb lam 𝓖 hcd ε w hw T hTnd`. Establish `e1 : (fun z => ∫ β, flat d.a (d.sec0 Φ) (s0 d.m d.n) z (w * nb β * (n0 * m0 * k)) * d.B.ψ (-d.tt (T.1.1 * β.1)) ∂lam) = fun z => d.B.ψ (d.tt (T.1.1 * β₀)) * ∫ β, flat d.a (d.sec0 (d.om k Φ)) (s0 d.m d.n) z (w * nb β * m0) * d.B.ψ (-d.tt (T.1.1 * β.1)) ∂lam`.
+
+Use function extensionality and compare the values at `z`. Rewrite using `[← int_n d nb lam 𝓖 hcd T w n0 m0 β₀ hn]`. Use `congr 1`. Use function extensionality and compare the values at `β`. Simplify using `only [flat]`.
+
+Rewrite using `[show w * nb β * (n0 * m0 * k) = (w * nb β * (n0 * m0)) * k by simp only [mul_assoc], a_mul_K d _ k hk, section_mul_weil_action]`. Establish `e2 : d.orb T (d.om (n0 * m0 * k) Φ) = d.B.ψ (d.tt (T.1.1 * β₀)) * d.orb T (d.om m0 (d.om k Φ))`. Rewrite using `[map_mul, map_mul, Module.End.mul_apply, Module.End.mul_apply]`. Conclude with `orb_n hT d T (om_mem_sch d _ (om_mem_sch d _ (hQs Φ hΦ))) n0 β₀ hn`. Use `show HolValueAt _ _ _`.
+
+Rewrite using `[e1, e2, mul_left_comm]`. Conclude with `holValueAt_const_mul _ key`.
+-/
 theorem iwaRedC : IwaRedC := by
   intro hT c F E _ _ _ _ _ σ d Q hQs hQK hL Φ hΦ x nb lam 𝓖 hcd ε w hw T hTnd
   obtain ⟨p, t, hp, k, hk, rfl⟩ := d.ok.hgt.iwa x

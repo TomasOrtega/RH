@@ -19,6 +19,17 @@ open CategoryTheory Limits AlgebraicGeometry TopologicalSpace Filter Asymptotics
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GlobalTheory GlobalTheory.QCoh GlobalTheory.CechPic GlobalTheory.Twist
 
+/- English proof (translation)
+Introduce `k _ _ d hlow X _ _ hproj hdim A N M hA hN hM q c hq hMcls hbound b hqb hbc hL`. Take `⟨b', rfl⟩ : ∃ b', b = b' + 1` from `⟨b - 1, by omega⟩`. Establish `hdim' : topologicalKrullDim X ≤ ((d + 1 : ℕ) : WithBot ℕ∞)` using `hdim.le`. Establish `hKl` using `GlobalTheory.T.nef_intersection_nonneg_induction k d hlow X hproj`. Establish `hmix` using `GlobalTheory.T.lineBundleIntersectionNumber_ample_cons_nef_nonneg k X hproj d hdim' hKl A hA`.
+
+Establish `hpos` using `GlobalTheory.T.ample_lineBundle_top_selfIntersection_pos k X hproj (d + 1) hdim A hA`. Establish `hNl` using `isLB_lbPow hN.isLB q`. Establish `hAl : ∀ n : ℕ, (lbPow A n).IsLB` using `fun n => isLB_lbPow hA.isLB n`. Establish `hLcls : cls _ hL.isLB = q • cls N hN.isLB + (b' + 1 + 1) • cls A hA.isLB`. Rewrite using `[cls_tens hNl (hAl _), cls_lbPow hN.isLB, cls_lbPow hA.isLB]`.
+
+Establish `hnum` using `GlobalTheory.T.top_intersection_growth_bound k X hproj d hdim' A N _ M hA hN hL hM hmix hpos q (b' + 1 + 1) c hq (by omega) hbc hLcls hMcls hbound`. Establish `hB : IsAmpleLB (lbPow A 2)` using `(isAmpleLB_pow_iff hA.isLB (by norm_num)).2 hA`. Establish `hM'nef : IsNef k (tens (lbPow N q) (lbPow A b'))` using `(hN.pow hA q).tens ((hA.isNef (k := k)).pow hA b') hA`. Establish `hsplit : cls _ hL.isLB = cls _ hM'nef.isLB + cls _ hB.isLB`. Rewrite using `[hLcls, cls_tens hNl (hAl _), cls_lbPow hN.isLB, cls_lbPow hA.isLB, cls_lbPow hA.isLB]`.
+
+Simplify using `only [add_smul, one_smul, two_smul]`. Normalize the expressions using the abelian group laws. Establish `hsec` using `GlobalTheory.T.exists_hasNonzeroSec_pow_of_ample_sub_ample' k X hproj d hdim' _ _ _ hL hB hM'nef.isLB hsplit hnum`. Establish `hamp` using `GlobalTheory.T.isAmple_tensor_nef_of_nonzeroSectionPow_induction k d hlow X hproj hdim' A _ hA hM'nef hsec`. Establish `hT : (tens (lbPow N q) (lbPow A (b' + 1))).IsLB` using `isLB_tens hNl (hAl _)`.
+
+Use `hamp.of_lbIso hT ((cls_eq_iff hT hamp.isLB).1 ?_)` and prove the remaining obligations. Rewrite using `[cls_tens hNl (hAl _), cls_tens hA.isLB hM'nef.isLB, cls_tens hNl (hAl _), cls_lbPow hN.isLB, cls_lbPow hA.isLB, cls_lbPow hA.isLB]`. Simplify using `only [add_smul, one_smul]`. Normalize the expressions using the abelian group laws.
+-/
 theorem isAmpleLB_tens_lbPow_descent_step : ∀ (k : Type) [Field k] [Infinite k] (d : ℕ), (∀ (Y : Scheme.{0}) [Algebra k Γ(Y, ⊤)], IsProjOver (strHom k Y) → topologicalKrullDim Y ≤ (d : ℕ) → ∀ A N : LB Y, IsAmpleLB A → IsNef k N → IsAmpleLB (tens A N)) → ∀ (X : Scheme.{0}) [IsIntegral X] [Algebra k Γ(X, ⊤)], IsProjOver (strHom k X) → topologicalKrullDim X = (d + 1 : ℕ) → ∀ (A N M : LB X) (hA : IsAmpleLB A) (hN : IsNef k N) (hM : M.IsLB) (q c : ℕ), 1 ≤ q → cls M hM = cls N hN.isLB + c • cls A hA.isLB → 2 * ((d : ℤ) + 1) * interNum k (GlobalTheory.structureModule X) (Fin.cons A (fun _ : Fin d => M) : Fin (d + 1) → LB X) < q → ∀ b : ℕ, q ≤ b → b + 1 ≤ c * q → IsAmpleLB (tens (lbPow N q) (lbPow A (b + 1))) → IsAmpleLB (tens (lbPow N q) (lbPow A b)) := by
   intro k _ _ d hlow X _ _ hproj hdim A N M hA hN hM q c hq hMcls hbound b hqb hbc hL
   obtain ⟨b', rfl⟩ : ∃ b', b = b' + 1 := ⟨b - 1, by omega⟩

@@ -36,6 +36,9 @@ local notation3 "E⁺" => NumberField.maximalRealSubfield E
 abbrev incl (s : SplitPlace E) : Os s →+* s.v.adicCompletion E⁺ :=
   (s.v.adicCompletionIntegers E⁺).subtype
 
+/- English proof (translation)
+Introduce `y y' h`. Use `Matrix.GeneralLinearGroup.ext fun a c => ?_` and prove the remaining obligations. Use `congrArg (fun g : GL (Fin n) (s.v.adicCompletion E⁺) => g.val a c) h` as an intermediate fact. Conclude with `Subtype.ext this`.
+-/
 theorem map_incl_injective (s : SplitPlace E) :
     Function.Injective (Matrix.GeneralLinearGroup.map (n := Fin n) (incl s)) := by
   intro y y' h
@@ -43,12 +46,26 @@ theorem map_incl_injective (s : SplitPlace E) :
   have := congrArg (fun g : GL (Fin n) (s.v.adicCompletion E⁺) => g.val a c) h
   exact Subtype.ext this
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `Matrix.GeneralLinearGroup.ext fun a c => h a c`. Introduce `h a c`. Rewrite using `[← h]`.
+
+Both sides reduce to the same expression.
+-/
 theorem isCompOf_iff (s : SplitPlace E) (κ : GAf E n) (y : GL (Fin n) (Os s)) :
     IsCompOf s κ y ↔ Matrix.GeneralLinearGroup.map (incl s) y = s.loc n κ := by
   constructor
   · intro h; exact Matrix.GeneralLinearGroup.ext fun a c => h a c
   · intro h a c; rw [← h]; rfl
 
+/- English proof (translation)
+Set `Y : Matrix (Fin n) (Fin n) (Os s)` to `fun a c => Function.surjInv hφ.surj ((g : Matrix (Fin n) (Fin n) k) a c)`. Establish `hY : Y.map φ = (g : Matrix (Fin n) (Fin n) k)`. Use extensionality with `a c`. Conclude with `Function.surjInv_eq hφ.surj _`. Establish `hdet : IsUnit Y.det`.
+
+Establish `hmax : (RingHom.ker φ).IsMaximal` using `RingHom.ker_isMaximal_of_surjective φ hφ.surj`. Establish `heq` using `IsLocalRing.eq_maximalIdeal hmax`. Establish `h1 : φ Y.det ≠ 0`. Rewrite using `[RingHom.map_det, RingHom.mapMatrix_apply, hY]`. Conclude with `(Matrix.isUnits_det_units g).ne_zero`.
+
+Assume the negation of the conclusion as `hnu`. Establish `h2 : Y.det ∈ IsLocalRing.maximalIdeal (Os s)` using `hnu`. Rewrite `h2` using `[← heq, RingHom.mem_ker]`. Conclude with `h1 h2`. Use `⟨Matrix.nonsingInvUnit Y hdet, ?_⟩` and prove the remaining obligations.
+
+Use extensionality with `a c`. Conclude with `congrFun (congrFun hY a) c`.
+-/
 theorem exists_lift {s : SplitPlace E} {k : Type} [Field k] {φ : Os s →+* k} (hφ : IsResidue s φ)
     (g : GL (Fin n) k) : ∃ y : GL (Fin n) (Os s), Matrix.GeneralLinearGroup.map φ y = g := by
   let Y : Matrix (Fin n) (Fin n) (Os s) := fun a c => Function.surjInv hφ.surj ((g : Matrix (Fin n) (Fin n) k) a c)
@@ -68,6 +85,11 @@ theorem exists_lift {s : SplitPlace E} {k : Type} [Field k] {φ : Os s →+* k} 
   ext a c
   exact congrFun (congrFun hY a) c
 
+/- English proof (translation)
+Take `⟨κ, hκ, hl⟩` from `GlobalTheory.SplitLift.exists_trivOutside_loc_eq n s (Matrix.GeneralLinearGroup.map (incl s) y)`. Use `⟨κ, GlobalTheory.HeckeStdFacts.mem_Umax_of_loc s κ hκ ?_ ?_, hκ, hl⟩` and prove the remaining obligations. Introduce `i j`. Rewrite using `[hl]`. Use `(y.val i j).2` as an intermediate fact.
+
+Rewrite `this` using `[IsDedekindDomain.HeightOneSpectrum.mem_adicCompletionIntegers]`. Then use the resulting hypothesis. Introduce `i j`. Rewrite using `[map_inv, hl, ← map_inv]`. Use `((y⁻¹).val i j).2` as an intermediate fact. Rewrite `this` using `[IsDedekindDomain.HeightOneSpectrum.mem_adicCompletionIntegers]`. Then use the resulting hypothesis.
+-/
 theorem exists_pt (s : SplitPlace E) (y : GL (Fin n) (Os s)) :
     ∃ κ : GAf E n, κ ∈ Umax E n ∧ TrivOutside {s.v} κ ∧
       s.loc n κ = Matrix.GeneralLinearGroup.map (incl s) y := by
@@ -82,6 +104,13 @@ theorem exists_pt (s : SplitPlace E) (y : GL (Fin n) (Os s)) :
     have := ((y⁻¹).val i j).2
     rwa [IsDedekindDomain.HeightOneSpectrum.mem_adicCompletionIntegers] at this
 
+/- English proof (translation)
+Establish `key : ∀ x : Os s, φ x = 0 → Valued.v ((x : s.v.adicCompletion E⁺)) < 1` using `fun x hx => (hφ.ker x).1 hx`. Use `⟨⟨⟨y, rfl⟩, fun a b ha hb => ?_⟩, fun a b ha hb => ⟨fun hba => ?_, fun hab => ?_⟩⟩` and prove the remaining obligations. Conclude with `key _ ((hy a b).1 ha hb)`. Conclude with `key _ ((hy a b).2.1 ha hba)`. Substitute `hab` using the available equality.
+
+Establish `h1 : φ (y.val a a - 1) = 0`. Use `(hy a a).2.2 ha rfl` as an intermediate fact. Rewrite using `[map_sub, map_one]`. Conclude with `sub_eq_zero.2 this`. Use `key _ h1` as an intermediate fact.
+
+Simplify using `using this`.
+-/
 theorem uniRT_of_red {s : SplitPlace E} {k : Type} [Field k] {φ : Os s →+* k} (hφ : IsResidue s φ) (r : ℕ)
     (y : GL (Fin n) (Os s))
     (hy : ∀ i j : Fin n, (r ≤ i.val → j.val < r → (Matrix.GeneralLinearGroup.map φ y).val i j = 0) ∧
@@ -100,12 +129,20 @@ theorem uniRT_of_red {s : SplitPlace E} {k : Type} [Field k] {φ : Os s →+* k}
     have := key _ h1
     simpa using this
 
+/- English proof (translation)
+Use extensionality with `a e`. Simplify using `only [Matrix.transvection, Matrix.map_apply, Matrix.add_apply, Matrix.one_apply, Matrix.single_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem map_transv {R S : Type} [CommRing R] [CommRing S] (ψ : R →+* S) (i j : Fin n) (c : R) :
     (Matrix.transvection i j c).map ψ = Matrix.transvection i j (ψ c) := by
   ext a e
   simp only [Matrix.transvection, Matrix.map_apply, Matrix.add_apply, Matrix.one_apply, Matrix.single_apply]
   split_ifs <;> simp
 
+/- English proof (translation)
+Introduce `a e`. Simplify using `only [Matrix.transvection, Matrix.add_apply, Matrix.one_apply, Matrix.single_apply, Fin.ext_iff]`. Use `⟨fun h1 h2 => ?_, fun h1 h2 => ?_, fun h1 h2 => ?_⟩` and prove the remaining obligations. Rewrite using `[if_neg (by omega), if_neg (by omega), add_zero]`. Rewrite using `[if_neg (by omega), if_neg (by omega), add_zero]`.
+
+Rewrite using `[if_pos h2, if_neg (by omega), add_zero]`.
+-/
 theorem transv_blockUni {R : Type} [CommRing R] {r : ℕ} (i j : Fin n) (hij : i.val + 1 = j.val) (c : R) :
     ∀ a e : Fin n, (r ≤ a.val → e.val < r → Matrix.transvection i j c a e = 0) ∧
       (a.val < r → e.val < a.val → Matrix.transvection i j c a e = 0) ∧
@@ -117,6 +154,11 @@ theorem transv_blockUni {R : Type} [CommRing R] {r : ℕ} (i j : Fin n) (hij : i
   · rw [if_neg (by omega), if_neg (by omega), add_zero]
   · rw [if_pos h2, if_neg (by omega), add_zero]
 
+/- English proof (translation)
+Establish `h : ∀ a b : Fin n, (if a.val + 1 = b.val ∧ b.val < r then Matrix.transvection i j x a b else 0) = if j = b then (if i = a then x else 0) else 0`. Introduce `a b`. Simplify using `only [Matrix.transvection, Matrix.add_apply, Matrix.one_apply, Matrix.single_apply, Fin.ext_iff]`. Apply the tactic sequence `split_ifs <;> first | omega | simp`. Unfold `Formalism.L2.NG.supDiag`.
+
+Rewrite using `[hM]`. Simplify using `only [h, Finset.sum_ite_eq, Finset.mem_univ, if_true]`.
+-/
 theorem supDiag_transv (s : SplitPlace E) {r : ℕ} (i j : Fin n) (hij : i.val + 1 = j.val) (hj : j.val < r)
     (x : s.v.adicCompletion E⁺) (M : GL (Fin n) (s.v.adicCompletion E⁺)) (hM : M.val = Matrix.transvection i j x) :
     Formalism.L2.NG.supDiag s r M = x := by
@@ -129,6 +171,11 @@ theorem supDiag_transv (s : SplitPlace E) {r : ℕ} (i j : Fin n) (hij : i.val +
   rw [hM]
   simp only [h, Finset.sum_ite_eq, Finset.mem_univ, if_true]
 
+/- English proof (translation)
+Unfold `Formalism.L2.NG.detDD`. Rewrite using `[hM]`. Establish `h : (Matrix.of fun a b : {x : Fin n // r ≤ x.val} => Matrix.transvection i j x a.1 b.1) = 1`. Use `Matrix.ext fun a b => ?_` and prove the remaining obligations. Establish `ha` using `a.2`.
+
+Simplify using `only [Matrix.of_apply, Matrix.transvection, Matrix.add_apply, Matrix.one_apply, Matrix.single_apply, Subtype.ext_iff]`. Rewrite using `[if_neg (c := i = a.1 ∧ j = b.1) (fun h => by rw [← h.1] at ha; omega), add_zero]`. Rewrite using `[h, Matrix.det_one]`.
+-/
 theorem detDD_transv (s : SplitPlace E) {r : ℕ} (i j : Fin n) (hi : i.val < r)
     (x : s.v.adicCompletion E⁺) (M : GL (Fin n) (s.v.adicCompletion E⁺)) (hM : M.val = Matrix.transvection i j x) :
     Formalism.L2.NG.detDD s r M = 1 := by
@@ -156,6 +203,9 @@ def eigGrp (s : SplitPlace E) (f : GAf E n → ℂ) : Subgroup (GAf E n) where
     rw [inv_mul_cancel_right] at this
     rw [this, ← mul_assoc, inv_mul_cancel₀ hc, one_mul]
 
+/- English proof (translation)
+Rewrite using `[hc, mul_div_assoc, div_self h0, mul_one]`.
+-/
 theorem ratio_eq {G : Type} [Group G] {f : G → ℂ} {g₀ κ : G} (h0 : f g₀ ≠ 0) {c : ℂ} (hc : ∀ g, f (g * κ) = c * f g) :
     f (g₀ * κ) / f g₀ = c := by
   rw [hc, mul_div_assoc, div_self h0, mul_one]
@@ -175,10 +225,16 @@ def eigChar (s : SplitPlace E) (f : GAf E n → ℂ) (g₀ : GAf E n) (h0 : f g�
     rw [ratio_eq h0 hc, ← mul_assoc, hc]
     ring
 
+/- English proof (translation)
+The claim follows from `ratio_eq h0 hc`.
+-/
 theorem eigChar_val (s : SplitPlace E) (f : GAf E n → ℂ) (g₀ : GAf E n) (h0 : f g₀ ≠ 0) (κ : eigGrp s f) {c : ℂ}
     (hc : ∀ g, f (g * κ.1) = c * f g) : ((eigChar s f g₀ h0 κ : ℂˣ) : ℂ) = c :=
   ratio_eq h0 hc
 
+/- English proof (translation)
+Take `⟨y, hy⟩` from `GlobalTheory.BlockLiftFrame.exists_isCompOf s hκ`. Conclude with `⟨y, (isCompOf_iff s κ y).1 hy⟩`.
+-/
 theorem loc_mem_range (s : SplitPlace E) {κ : GAf E n} (hκ : κ ∈ Umax E n) :
     s.loc n κ ∈ (Matrix.GeneralLinearGroup.map (n := Fin n) (incl s)).range := by
   obtain ⟨y, hy⟩ := GlobalTheory.BlockLiftFrame.exists_isCompOf s hκ
@@ -188,6 +244,9 @@ def compHom (s : SplitPlace E) (f : GAf E n → ℂ) : eigGrp s f →* GL (Fin n
   (MonoidHom.ofInjective (map_incl_injective s)).symm.toMonoidHom.comp
     (((s.loc n).comp (eigGrp s f).subtype).codRestrict _ fun κ => loc_mem_range s κ.2.1)
 
+/- English proof (translation)
+Use `show (MonoidHom.ofInjective (map_incl_injective s)).symm _ = y`. Rewrite using `[MulEquiv.symm_apply_eq]`. Conclude with `Subtype.ext hy`.
+-/
 theorem compHom_eq (s : SplitPlace E) (f : GAf E n → ℂ) (κ : eigGrp s f) (y : GL (Fin n) (Os s))
     (hy : s.loc n κ.1 = Matrix.GeneralLinearGroup.map (incl s) y) : compHom s f κ = y := by
   show (MonoidHom.ofInjective (map_incl_injective s)).symm _ = y
@@ -198,6 +257,9 @@ def red (s : SplitPlace E) (f : GAf E n → ℂ) {k : Type} [Field k] (φ : Os s
     eigGrp s f →* GL (Fin n) k :=
   (MulAut.conj b).toMonoidHom.comp ((Matrix.GeneralLinearGroup.map φ).comp (compHom s f))
 
+/- English proof (translation)
+Rewrite using `[← compHom_eq s f κ y hy]`. Both sides reduce to the same expression.
+-/
 theorem red_eq (s : SplitPlace E) (f : GAf E n → ℂ) {k : Type} [Field k] (φ : Os s →+* k) (b : GL (Fin n) k)
     (κ : eigGrp s f) (y : GL (Fin n) (Os s)) (hy : s.loc n κ.1 = Matrix.GeneralLinearGroup.map (incl s) y) :
     red s f φ b κ = b * Matrix.GeneralLinearGroup.map φ y * b⁻¹ := by
@@ -206,6 +268,9 @@ theorem red_eq (s : SplitPlace E) (f : GAf E n → ℂ) {k : Type} [Field k] (φ
 
 end Local
 
+/- English proof (translation)
+Use `⟨(QuotientGroup.lift p.ker q h).comp (QuotientGroup.quotientKerEquivRange p).symm.toMonoidHom, fun g => ?_⟩` and prove the remaining obligations. Establish `: (QuotientGroup.quotientKerEquivRange p).symm (p.rangeRestrict g) = (g : G ⧸ p.ker)`. Rewrite using `[MulEquiv.symm_apply_eq]`. Both sides reduce to the same expression. Simplify using `only [MonoidHom.comp_apply, MulEquiv.coe_toMonoidHom, this, QuotientGroup.lift_mk]`.
+-/
 theorem exists_descend {G M A : Type} [Group G] [Group M] [CommGroup A] (p : G →* M) (q : G →* A)
     (h : p.ker ≤ q.ker) : ∃ χ : p.range →* A, ∀ g, χ (p.rangeRestrict g) = q g := by
   refine ⟨(QuotientGroup.lift p.ker q h).comp (QuotientGroup.quotientKerEquivRange p).symm.toMonoidHom, fun g => ?_⟩
@@ -214,6 +279,31 @@ theorem exists_descend {G M A : Type} [Group G] [Group M] [CommGroup A] (p : G �
     rfl
   simp only [MonoidHom.comp_apply, MulEquiv.coe_toMonoidHom, this, QuotientGroup.lift_mk]
 
+/- English proof (translation)
+Introduce `E _ _ _ n r t hn hr s k _ φ hφ hc f hf J χ ψ₀ ξ hψ hLU hJ b hb`. Take `⟨g₀, hg₀⟩ : ∃ g₀, f g₀ ≠ 0` from `Function.ne_iff.1 hf`. Establish `cne : ∀ κ (c : ℂ), (∀ g, f (g * κ) = c * f g) → c ≠ 0`. Introduce `κ c hc h0`. Use `hc (g₀ * κ⁻¹)` as an intermediate fact.
+
+Rewrite `this` using `[inv_mul_cancel_right, h0, zero_mul]`. Conclude with `hg₀ this`. Establish `hker : (red s f φ b).ker ≤ (eigChar s f g₀ hg₀).ker`. Introduce `κ hκ`. Rewrite `hκ`, the goal using `[MonoidHom.mem_ker]`.
+
+Take `⟨y, hy⟩` from `GlobalTheory.BlockLiftFrame.exists_isCompOf s κ.2.1`. Rewrite `hκ` using `[red_eq s f φ b κ y ((isCompOf_iff s κ.1 y).1 hy).symm]`. Establish `h1 : Matrix.GeneralLinearGroup.map φ y = 1` using `conj_eq_one_iff.1 hκ`. Establish `h2` using `(hb κ.1 κ.2.1 κ.2.2.1 y hy).2 h1`. Conclude with `Units.ext (eigChar_val s f g₀ hg₀ κ (c := 1) fun g => by rw [h2, one_mul])`.
+
+Take `⟨χH, hχH⟩` from `exists_descend _ _ hker`. Substitute `hn` using the available equality. Establish `main` using `GlobalTheory.GenericCharBlockConj.block_upper_of_conj_generic r t hr hc b (red s f φ b).range χH ?_ ?_`. Rewrite using `[Formalism.L2.DIV.mem_blockTri]`. Introduce `i j hij`.
+
+Unfold `Formalism.L2.DIV.blk2 at hij`. Apply the tactic sequence `refine main i j ?_ ?_ <;> split_ifs at hij <;> omega`. Introduce `g hg`. Prove the components needed by the constructor for the conclusion. Take `⟨y, hy⟩` from `exists_lift hφ (b⁻¹ * g * b)`.
+
+Take `⟨κ, hU, hT, hl⟩` from `exists_pt s y`. Establish `hg' : b * Matrix.GeneralLinearGroup.map φ y * b⁻¹ = g` using `by rw [hy]; group`. Take `⟨c, hc'⟩` from `(hb κ hU hT y ((isCompOf_iff s κ y).2 hl.symm)).1 (by rw [hg']; exact hg)`. Establish `hmem : κ ∈ eigGrp s f` using `⟨hU, hT, c, cne κ c hc', hc'⟩`. Conclude with `MonoidHom.mem_range.2 ⟨⟨κ, hmem⟩, by rw [red_eq s f φ b ⟨κ, hmem⟩ y hl, hg']⟩`.
+
+Take `⟨y, hy⟩` from `exists_lift hφ g`. Take `⟨κ, hU, hT, hl⟩` from `exists_pt s y`. Establish `hJκ : κ ∈ J` using `(hLU.mem κ hT).2 (by rw [hl]; exact uniRT_of_red hφ r y (by rw [hy]; exact hg))`. Establish `hmem : κ ∈ eigGrp s f` using `⟨hU, hT, _, Units.ne_zero _, hJ κ hJκ⟩`. Conclude with `MonoidHom.mem_range.2 ⟨⟨κ, hmem⟩, by rw [red_eq s f φ b ⟨κ, hmem⟩ y hl, hy]⟩`.
+
+Introduce `i j hij hj`. Take `⟨_, x₀, hx₀, hψx⟩` from `hψ`. Establish `hx₁ : x₀ ∈ s.v.adicCompletionIntegers (NumberField.maximalRealSubfield E)`. Rewrite using `[IsDedekindDomain.HeightOneSpectrum.mem_adicCompletionIntegers]` and apply the resulting hypothesis. Set `x' : Os s` to `⟨x₀, hx₁⟩`.
+
+Establish `hij' : i ≠ j` using `by intro h; rw [h] at hij; omega`. Set `y : GL (Fin (r + t)) (Os s)` to `Matrix.nonsingInvUnit (Matrix.transvection i j x') (by rw [Matrix.det_transvection_of_ne i j hij']; exact isUnit_one)`. Establish `hyφ : (Matrix.GeneralLinearGroup.map φ y).val = Matrix.transvection i j (φ x')` using `map_transv φ i j x'`. Establish `hyι : (Matrix.GeneralLinearGroup.map (incl s) y).val = Matrix.transvection i j x₀` using `map_transv (incl s) i j x'`. Take `⟨κ, hU, hT, hl⟩` from `exists_pt s y`.
+
+Establish `hJκ : κ ∈ J` using `(hLU.mem κ hT).2 (by`. Rewrite using `[hl]; exact uniRT_of_red hφ r y (by rw [hyφ]; exact transv_blockUni i j hij _))`. Establish `hmem : κ ∈ eigGrp s f` using `⟨hU, hT, _, Units.ne_zero _, hJ κ hJκ⟩`. Establish `hM : (s.loc (r + t) κ).val = Matrix.transvection i j x₀` using `by rw [hl]; exact hyι`. Use `⟨φ x', (red s f φ b).rangeRestrict ⟨κ, hmem⟩, ?_, ?_⟩` and prove the remaining obligations.
+
+Use `show (red s f φ b ⟨κ, hmem⟩).val = _`. Rewrite using `[red_eq s f φ b ⟨κ, hmem⟩ y hl, Units.val_mul, Units.val_mul, hyφ]`. Rewrite using `[hχH]`. Introduce `h1`. Establish `h2` using `eigChar_val s f g₀ hg₀ ⟨κ, hmem⟩ (hJ κ hJκ)`.
+
+Rewrite `h2` using `[h1, hLU.chr κ hJκ hT 1 (detDD_transv s i j (by omega) x₀ _ hM).symm, supDiag_transv s i j hij hj x₀ _ hM, map_one, Units.val_one, mul_one]`. Conclude with `hψx h2.symm`.
+-/
 theorem block_upper_of_eigen : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {n r t : ℕ}, n = r + t → 2 ≤ r →
     ∀ (s : ReciprocityTheory.Aut.SplitPlace E) {k : Type} [Field k] (φ : GlobalTheory.CenFrame.Os s →+* k), GlobalTheory.CenFrame.IsResidue s φ →
     (∃ c : k, c ≠ 0 ∧ c ≠ 1) → ∀ (f : Formalism.AUTREP.GAf E n → ℂ), f ≠ 0 →

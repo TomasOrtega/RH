@@ -8,11 +8,19 @@ namespace UpperTheory.Cb.HomologyEvaluation
 universe w v u
 variable {C : Type u} [Category.{v} C] [Abelian C] [HasDerivedCategory.{w} C]
 
+/- English proof (translation)
+Simplify using the standard rewrite rules.
+-/
 private theorem comp_reassoc_six {D : Type*} [Category D] {A₀ A₁ A₂ A₃ A₄ A₅ A₆ : D} (f₁ : A₀ ⟶ A₁)
     (f₂ : A₁ ⟶ A₂) (f₃ : A₂ ⟶ A₃) (f₄ : A₃ ⟶ A₄) (f₅ : A₄ ⟶ A₅) (f₆ : A₅ ⟶ A₆) :
     ((f₁ ≫ f₂ ≫ f₃ ≫ f₄) ≫ f₅) ≫ f₆ = (f₁ ≫ f₂) ≫ f₃ ≫ f₄ ≫ f₅ ≫ f₆ := by
   simp
 
+/- English proof (translation)
+Use `⟨HomologicalComplex.mkHomFromSingle (c ≫ L.iCycles 0) (fun k _ => by simp), ?_⟩` and prove the remaining obligations. Establish `h1 : (HomologicalComplex.singleObjHomologySelfIso (ComplexShape.up ℤ) 0 X).inv = (HomologicalComplex.singleObjCyclesSelfIso (ComplexShape.up ℤ) 0 X).inv ≫ ((HomologicalComplex.single C (ComplexShape.up ℤ) 0).obj X).homologyπ 0`. Rewrite using `[← cancel_mono (HomologicalComplex.singleObjHomologySelfIso (ComplexShape.up ℤ) 0 X).hom]`. Simplify using the standard rewrite rules. Rewrite using `[h1, Category.assoc, HomologicalComplex.homologyπ_naturality, ← Category.assoc]`.
+
+Use `congr 1`. Rewrite using `[← cancel_mono (L.iCycles 0)]`. Simplify using the standard rewrite rules.
+-/
 private theorem single_homologyMap (L : CochainComplex C ℤ) (X : C) (c : X ⟶ L.cycles 0) :
     ∃ φ : (HomologicalComplex.single C (ComplexShape.up ℤ) 0).obj X ⟶ L,
       (HomologicalComplex.singleObjHomologySelfIso (ComplexShape.up ℤ) 0 X).inv ≫
@@ -28,6 +36,17 @@ private theorem single_homologyMap (L : CochainComplex C ℤ) (X : C) (c : X ⟶
   rw [← cancel_mono (L.iCycles 0)]
   simp
 
+/- English proof (translation)
+Take `⟨L, ⟨e⟩⟩ : ∃ L, Nonempty (DerivedCategory.Q.obj L ≅ K)` from `⟨_, ⟨(DerivedCategory.Q (C := C)).objObjPreimageIso K⟩⟩`. Use `⟨L.cycles 0, L.homologyπ 0 ≫ (DerivedCategory.homologyFunctorFactors C 0).inv.app L ≫ (DerivedCategory.homologyFunctor C 0).map e.hom, ?_, fun X c => ?_⟩` and prove the remaining obligations. Establish `i0 : Epi (L.homologyπ 0)` using `inferInstance`. Establish `i1 : IsIso ((DerivedCategory.homologyFunctorFactors C 0).inv.app L)` using `inferInstanceAs (IsIso ((DerivedCategory.homologyFunctorFactors C 0).app L).inv)`. Establish `i2 : Epi ((DerivedCategory.homologyFunctorFactors C 0).inv.app L ≫ (DerivedCategory.homologyFunctor C 0).map e.hom)` using `epi_comp _ _`.
+
+Conclude with `@epi_comp _ _ _ _ _ _ i0 _ i2`. Take `⟨φ, hφ⟩` from `single_homologyMap L X c`. Use `⟨(DerivedCategory.singleFunctorIsoCompQ C 0).hom.app X ≫ DerivedCategory.Q.map φ ≫ e.hom, ?_⟩` and prove the remaining obligations. Establish `h2 : (DerivedCategory.singleFunctorCompHomologyFunctorIso C 0).hom.app X = (DerivedCategory.homologyFunctor C 0).map ((DerivedCategory.singleFunctorIsoCompQ C 0).hom.app X) ≫ (DerivedCategory.homologyFunctorFactors C 0).hom.app _ ≫ (HomologicalComplex.singleObjHomologySelfIso (Co …`. Establish `h3 : (DerivedCategory.singleFunctorCompHomologyFunctorIso C 0).hom.app X = (DerivedCategory.homologyFunctor C 0).map (((DerivedCategory.singleFunctorsPostcompQIso C).hom.hom 0).app X) ≫ 𝟙 _ ≫ (DerivedCategory.homologyFunctorFactors C 0).hom.app _ ≫ (HomologicalComplex.singleObjHo …` using `rfl`.
+
+Establish `hm : (DerivedCategory.homologyFunctor C 0).map (NatTrans.app (𝟙 ((DerivedCategory.singleFunctors C).functor 0)) X) = (DerivedCategory.homologyFunctor C 0).map ((DerivedCategory.singleFunctorIsoCompQ C 0).hom.app X)` using `rfl`. Rewrite using `[h3, DerivedCategory.singleFunctorsPostcompQIso_hom_hom]`. Use `erw [Category.id_comp]`. Conclude with `congrArg (fun t => t ≫ (DerivedCategory.homologyFunctorFactors C 0).hom.app _ ≫ (HomologicalComplex.singleObjHomologySelfIso (ComplexShape.up ℤ) 0 X).hom) hm`. Rewrite using `[h2, Functor.map_comp, Functor.map_comp]`.
+
+Simplify using `only [Category.assoc]`. Use `congr 1`. Establish `hφ' : HomologicalComplex.homologyMap φ 0 = (HomologicalComplex.singleObjHomologySelfIso (ComplexShape.up ℤ) 0 X).hom ≫ c ≫ L.homologyπ 0`. Rewrite using `[← hφ, Iso.hom_inv_id_assoc]`. Establish `n' : (DerivedCategory.homologyFunctor C 0).map (DerivedCategory.Q.map φ) = ((DerivedCategory.homologyFunctorFactors C 0).hom.app _ ≫ HomologicalComplex.homologyMap φ 0) ≫ (DerivedCategory.homologyFunctorFactors C 0).inv.app L` using `(Iso.eq_comp_inv ((DerivedCategory.homologyFunctorFactors C 0).app L)).2 (DerivedCategory.homologyFunctorFactors_hom_naturality φ 0)`.
+
+Establish `key : (DerivedCategory.homologyFunctor C 0).map (DerivedCategory.Q.map φ) ≫ (DerivedCategory.homologyFunctor C 0).map e.hom = ((DerivedCategory.homologyFunctorFactors C 0).hom.app _ ≫ (HomologicalComplex.singleObjHomologySelfIso (ComplexShape.up ℤ) 0 X).hom) ≫ c ≫ L.homologyπ 0 ≫ …`. Rewrite using `[n', hφ']`. Conclude with `comp_reassoc_six _ _ _ _ _ _`. Conclude with `key`.
+-/
 private theorem exists_cycles (K : DerivedCategory C) :
     ∃ (Z : C) (π : Z ⟶ (DerivedCategory.homologyFunctor C 0).obj K), Epi π ∧
       ∀ (X : C) (c : X ⟶ Z), ∃ x : (DerivedCategory.singleFunctor C 0).obj X ⟶ K,
@@ -96,6 +115,9 @@ private def ev (H : SShv B q) (U : B.Etale) :
     ((((ModuleCat.adj (ULift.{1} (ZMod q))).whiskerRight B.Etaleᵒᵖ).homEquiv
       (uliftYoneda.{1}.obj U) H.obj).trans uliftYonedaEquiv)
 
+/- English proof (translation)
+Establish `h1` using `(sheafificationAdjunction (EtTop B) (ModuleCat.{1} (ULift.{1} (ZMod q)))).homEquiv_naturality_right t g`. Establish `h2` using `((ModuleCat.adj (ULift.{1} (ZMod q))).whiskerRight B.Etaleᵒᵖ).homEquiv_naturality_right (X := uliftYoneda.{1}.obj U) ((sheafificationAdjunction (EtTop B) (ModuleCat.{1} (ULift.{1} (ZMod q)))).homEquiv _ H t) ((sheafToPresheaf _ _).map g)`. Conclude with `(congrArg uliftYonedaEquiv ((congrArg (((ModuleCat.adj (ULift.{1} (ZMod q))).whiskerRight B.Etaleᵒᵖ).homEquiv (uliftYoneda.{1}.obj U) H'.obj) h1).trans h2)).trans (uliftYonedaEquiv_comp _ _)`.
+-/
 private theorem ev_comp {H H' : SShv B q} (g : H ⟶ H') (U : B.Etale) (t : (F0 B q).obj U ⟶ H) :
     ev H' U (t ≫ g) = g.hom.app (op U) (ev H U t) := by
   have h1 := (sheafificationAdjunction (EtTop B)
@@ -107,6 +129,9 @@ private theorem ev_comp {H H' : SShv B q} (g : H ⟶ H') (U : B.Etale) (t : (F0 
     B.Etaleᵒᵖ).homEquiv (uliftYoneda.{1}.obj U) H'.obj) h1).trans h2)).trans
       (uliftYonedaEquiv_comp _ _)
 
+/- English proof (translation)
+Establish `h1` using `(sheafificationAdjunction (EtTop B) (ModuleCat.{1} (ULift.{1} (ZMod q)))).homEquiv_naturality_left (X' := ((Functor.whiskeringRight _ _ _).obj (ModuleCat.free (ULift.{1} (ZMod q)))).obj (uliftYoneda.{1}.obj U')) (X := ((Functor.whiskeringRight _ _ _).obj (ModuleCat.free (ULift.{1 …`. Establish `h2` using `((ModuleCat.adj (ULift.{1} (ZMod q))).whiskerRight B.Etaleᵒᵖ).homEquiv_naturality_left (uliftYoneda.{1}.map a) ((sheafificationAdjunction (EtTop B) (ModuleCat.{1} (ULift.{1} (ZMod q)))).homEquiv _ H t)`. Conclude with `(congrArg uliftYonedaEquiv ((congrArg (((ModuleCat.adj (ULift.{1} (ZMod q))).whiskerRight B.Etaleᵒᵖ).homEquiv (uliftYoneda.{1}.obj U') H.obj) h1).trans h2)).trans (uliftYonedaEquiv_naturality _ a.op).symm`.
+-/
 private theorem ev_map (H : SShv B q) {U U' : B.Etale} (a : U' ⟶ U) (t : (F0 B q).obj U ⟶ H) :
     ev H U' ((F0 B q).map a ≫ t) = H.obj.map a.op (ev H U t) := by
   have h1 := (sheafificationAdjunction (EtTop B)
@@ -122,6 +147,11 @@ private theorem ev_map (H : SShv B q) {U U' : B.Etale} (a : U' ⟶ U) (t : (F0 B
     B.Etaleᵒᵖ).homEquiv (uliftYoneda.{1}.obj U') H.obj) h1).trans h2)).trans
       (uliftYonedaEquiv_naturality _ a.op).symm
 
+/- English proof (translation)
+Use `haveI : EssentiallySmall.{1} B.Etale := inferInstance`. Use `haveI : (EtTop B).HasSheafCompose (forget (ModuleCat.{1} (ULift.{1} (ZMod q)))) := inferInstance`. Establish `hls : Sheaf.IsLocallySurjective π` using `(Sheaf.isLocallySurjective_iff_epi' (ModuleCat.{1} (ULift.{1} (ZMod q))) π).2 inferInstance`. Use `⟨Presheaf.imageSieve π.hom (ev H U t), Presheaf.imageSieve_mem (EtTop B) π.hom (U := op U) (ev H U t), fun U' a ha => ?_⟩` and prove the remaining obligations. Take `⟨z, hz⟩` from `ha`.
+
+Use `⟨(ev Z U').symm z, (ev H U').injective ?_⟩` and prove the remaining obligations. Rewrite using `[ev_comp, ev_map, Equiv.apply_symm_apply]`. Conclude with `hz`.
+-/
 private theorem lift_local {Z H : SShv B q} (π : Z ⟶ H) [Epi π] (U : B.Etale) (t : (F0 B q).obj U ⟶ H) :
     Cov U (fun U' a => ∃ c : (F0 B q).obj U' ⟶ Z, c ≫ π = (F0 B q).map a ≫ t) := by
   haveI : EssentiallySmall.{1} B.Etale := inferInstance
@@ -138,6 +168,15 @@ private theorem lift_local {Z H : SShv B q} (π : Z ⟶ H) [Epi π] (U : B.Etale
 end UpperTheory.Cb.HomologyEvaluation
 
 open UpperTheory.Cb.HomologyEvaluation LateralTheory.E.EtaleTopologySheaves LateralTheory.E.LeafShMapZeroPf.Gen in
+/- English proof (translation)
+Introduce `B q K U s`. Take `⟨Z, π, hπ, hlift⟩` from `exists_cycles (C := SShv B q) K`. Use `(lift_local π U ((e0 B q).inv.app U ≫ s)).mono fun U' a hc => ?_` and prove the remaining obligations. Take `⟨c, hc⟩` from `hc`. Take `⟨x, hx⟩` from `hlift _ c`.
+
+Use `⟨x, ?_⟩` and prove the remaining obligations. Establish `he : (e0 B q).hom.app U' = (DerivedCategory.singleFunctorCompHomologyFunctorIso (SShv B q) 0).hom.app ((F0 B q).obj U')` using `Category.comp_id _`. Establish `n : (DerivedCategory.homologyFunctor (SShv B q) 0).map ((OU B q).map a) ≫ (e0 B q).hom.app U = (e0 B q).hom.app U' ≫ (F0 B q).map a` using `(e0 B q).hom.naturality a`. Establish `s1 : s = (e0 B q).hom.app U ≫ (e0 B q).inv.app U ≫ s`. Rewrite using `[Iso.hom_inv_id_app_assoc]`.
+
+Establish `h1 : (DerivedCategory.homologyFunctor (SShv B q) 0).map ((OU B q).map a) ≫ s = (DerivedCategory.homologyFunctor (SShv B q) 0).map ((OU B q).map a) ≫ (e0 B q).hom.app U ≫ (e0 B q).inv.app U ≫ s` using `by rw [← s1]`. Establish `h2 : (DerivedCategory.homologyFunctor (SShv B q) 0).map ((OU B q).map a) ≫ (e0 B q).hom.app U ≫ (e0 B q).inv.app U ≫ s = (e0 B q).hom.app U' ≫ (F0 B q).map a ≫ (e0 B q).inv.app U ≫ s`. Rewrite using `[reassoc_of% n]`. Both sides reduce to the same expression. Establish `h3 : (e0 B q).hom.app U' ≫ (F0 B q).map a ≫ (e0 B q).inv.app U ≫ s = (e0 B q).hom.app U' ≫ c ≫ π` using `by rw [hc]`.
+
+Establish `h4 : (e0 B q).hom.app U' ≫ c ≫ π = (DerivedCategory.homologyFunctor (SShv B q) 0).map x`. Rewrite using `[he]`. Conclude with `hx.symm`. Conclude with `h1.trans (h2.trans (h3.trans h4))`.
+-/
 theorem UpperTheory.Cb.free_etale_sheaf_lift_exists :
     LateralTheory.E.LeafShMapZeroPf.EtaleLift' := by
   intro B q K U s

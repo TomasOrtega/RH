@@ -18,6 +18,13 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 open UpperTheory.V.Af.Bc GlobalTheory.RealGal UpperTheory.V.Af.ExLib
 open private UpperTheory.V.Z.Win.SplitTorusFixedPoints.plainTor_of_iso from Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.AutomorphyLifting.PAdicTorsionHoms.SplitTr
 namespace UpperTheory.Gal.SV
+/- English proof (translation)
+Introduce `L F Ω _ _ _ _ _ _ K _ _ _ _ _ _ _ l _ ι a ha π P hBC r wt HT H`. Establish `hloc` using `_root_.GlobalTheory.T.local_global_compatibility_complex_alt L`. Establish `hsl` using `GlobalTheory.T.satakeParameters_local`. Use `(hBC.unr.and (eventually_not_mem K l)).mono ?_` and prove the remaining obligations. Introduce and unpack `w ⟨hu, hw⟩ f hf`.
+
+Take `⟨B, hB, hBw⟩` from `hu (w.under (𝓞 F)) rfl f hf`. Use `⟨B, hB, ?_⟩` and prove the remaining obligations. Take `⟨⟨σ, hσ⟩, hi⟩` from `hloc K a P w`. Establish `hS` using `((hsl K a w σ).2 _ P.finPart (hi σ hσ) _).1 hBw`. Establish `h1` using `frob_of (ι := ι) (r := r) hw σ hS fun A h rc hrc => by`.
+
+Establish `g` using `gdOf K Ω A w h rc hrc a σ ((plainOf K a ha P w).2 ⟨_, hBw⟩ σ hσ)`. Rewrite using `[← (H.away w hw A h rc hrc σ hσ).tor g.1 g.2]`. Conclude with `isWDOf_wdOf (h := h) hw ι (Units.continuous_val.comp H.cont)`. Rewrite `h1` using `[hf, GlobalTheory.RealGal.AttResProof.algSat_pow]`. Then use the resulting hypothesis.
+-/
 theorem attRes_alt : _root_.GlobalTheory.Mem.LiteralAutomorphy.LiteratureRankNHypothesis → ∀ (F Ω : Type) [Field F] [NumberField F] [IsTotallyReal F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (K : Type) [Field K] [NumberField K] [IsCMField K] [Algebra F K] [Algebra K Ω] [IsScalarTower F K Ω] [IsAlgClosure K Ω] (l : ℕ) [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (a : ℕ), 1 ≤ a → ∀ (π : TR.CuspSub F a) (P : CuspSub K a), IsBC π P → ∀ (r : G K Ω →* GL (Fin a) (Qbar l)) (wt : ℤ) (HT : (K →+* Qbar l) → Multiset ℤ), UpperTheory.GalStar.PropsB (fun h rc => IsRecT h rc) P ι r wt HT → AttRes π ι K r := by
   intro L F Ω _ _ _ _ _ _ K _ _ _ _ _ _ _ l _ ι a ha π P hBC r wt HT H
   have hloc := _root_.GlobalTheory.T.local_global_compatibility_complex_alt L
@@ -36,6 +43,27 @@ theorem attRes_alt : _root_.GlobalTheory.Mem.LiteralAutomorphy.LiteratureRankNHy
 section Descent
 variable {F Ω : Type} [Field F] [NumberField F] [IsTotallyReal F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω]
   {l : ℕ} [Fact l.Prime] {a : ℕ}
+/- English proof (translation)
+Take `⟨w, h', i, hi⟩` from `GlobalTheory.T.exists_place_completion_iso F Ω K v A h hdec`. Establish `hlw : ((l : ℕ) : 𝓞 F) ∉ v.asIdeal → ((l : ℕ) : 𝓞 K) ∉ w.asIdeal` using `fun hl hw => by`. Apply `hl` to reduce the goal to its premises. Establish `e1` using `(h ((l : ℕ) : 𝓞 F))`. Establish `e2` using `(h' ((l : ℕ) : 𝓞 K))`.
+
+Simplify using `only [map_natCast] at e1 e2`. Conclude with `e1.1 (e2.2 hw)`. Establish `ST` using `splitTr F K a ha π P hBC v w i ⟨hi.cont, hi.loc⟩`. Take `⟨⟨σ', hσ'⟩, -⟩` from `_root_.GlobalTheory.T.local_global_compatibility_complex_alt L K a P w`. Take `⟨rc', hrc'⟩` from `recTExists K Ω A w h'`.
+
+Take `⟨S, hS, -⟩` from `GlobalTheory.T.place_over_transport_ring_iso_symm F Ω A v h K Ω A w h' _ _ i hi`. Establish `inj : ∀ {x y : WD h} {x' y' : WD h'}, WDRel (RingEquiv.refl Ω) x x' → WDRel (RingEquiv.refl Ω) y y' → x' = y' → x = y` using `fun hx hy e => S.injective (by rw [(hS _ _).1 hx, (hS _ _).1 hy, e])`. Establish `up : ∀ σ, π.IsLocComp v σ → GlobalTheory.RoadU.PlainTor (IrrGL.of σ.ρ σ.smooth σ.irred) → Gd (rc' (algNorm σ'))` using `fun σ hσ hp => by`. Take `⟨e, he⟩` from `hBC.split v w i hi.cont hi.loc σ σ' hσ hσ'`. Conclude with `gdOf K Ω A w h' rc' hrc' a σ' (UpperTheory.V.Z.Win.SplitTorusFixedPoints.plainTor_of_iso i hi.cont (GlobalTheory.LocalFieldIso.continuous_symm i hi.cont) _ _ _ _ e he hp)`.
+
+Establish `br : ∀ (O : Type) [CommRing O] [Algebra ℤ_[l] O] [TopologicalSpace O] (Bw : LocBridge l F Ω (Dec (F` using `F) A) O), Induces Bw → ∃ (Bw' : LocBridge l K Ω (Dec (F := K) A) O) (_ : Induces Bw'), Bw'.Kw = Bw.Kw ∧ Bw'.j = Bw.j ∧ Bw'.LL = Bw.LL := fun O _ _ _ Bw hj => by`. Take `⟨Bw', e1, e2, e3⟩` from `UpperTheory.V.Af.Cq.exBridge F K Ω l A O Bw (GlobalTheory.T.local_field_embedding_mem F Ω K l A O Bw hdec)`. Conclude with `⟨Bw', fun x => by rw [e2]; exact hj x, e1, e2, e3⟩`. Use `⟨fun B hB => ST.1.2 ((plainOf K a ha P w).2 (ST.2 ⟨B, hB⟩)), fun σ hσ hp rc hrc => ?_, fun σ hσ hp O _ _ _ Bw hj => ?_, fun hl hp => ?_, fun O _ _ _ Bw hj σ hσ hs => ?_⟩` and prove the remaining obligations. Take `⟨e, he⟩` from `hBC.split v w i hi.cont hi.loc σ σ' hσ hσ'`.
+
+Establish `hy` using `recTr L.aut.art hi σ σ' e he hrc hrc' hp`. Establish `g` using `up σ hσ hp`. Use `⟨fun hl => ?_, fun O _ _ _ Bw hj _ => ?_⟩` and prove the remaining obligations. Take `⟨x, hx, hxx⟩` from `GlobalTheory.T.galois_rep_restriction_local_completion F Ω K l ι a r A v w h h' i hi _ (isWDOf_wdOf (h := h') (hlw hl) ι (Units.continuous_val.comp hG.cont))`. Conclude with `⟨x, hx, fun _ => inj hxx hy ((hG.away w (hlw hl) A h' rc' hrc' σ' hσ').tor g.1 g.2)⟩`.
+
+Take `⟨Bw', hj', e1, e2, e3⟩` from `br O Bw hj`. Take `⟨-, a2, -, a4⟩` from `(hG.above _ _ (Loc.tiedP l) w A h' O Bw' hj').nice σ' hσ' rc' hrc' (Or.inr g.1) g.2`. Establish `hpst` using `(GlobalTheory.T.local_embedding_compatible_extension F Ω K l _ A O Bw Bw' e1 e2 e3 a r).2.2.2.1 a2`. Conclude with `⟨hpst, inj (GlobalTheory.T.local_embedding_restrict_extension F Ω K l _ A O Bw Bw' e1 e2 e3 a r hpst ι v w h h' hj hj' i hi) hy (a4.tor g.1 g.2)⟩`. Establish `g` using `up σ hσ hp`.
+
+Take `⟨Bw', hj', e1, e2, e3⟩` from `br O Bw hj`. Take `⟨a1, -, a3, -⟩` from `(hG.above _ _ (Loc.tiedP l) w A h' O Bw' hj').nice σ' hσ' rc' hrc' (Or.inr g.1) g.2`. Establish `D` using `GlobalTheory.T.local_embedding_compatible_extension F Ω K l (Loc.PP l) A O Bw Bw' e1 e2 e3 a r`. Use `⟨D.1 a1, fun τ LL' τ' hτ => ?_⟩` and prove the remaining obligations. Take `⟨τK, τ'', hτK, hind⟩` from `GlobalTheory.T.local_embedding_agree F Ω K l A O Bw Bw' e1 e2 τ LL' τ' hτ`.
+
+Establish `hJ` using `D.2.2.2.2 τK (HT τK) (a3 τK LL' τ'' hind)`. Rewrite `hJ` using `[hHT τK, hτK]`. Conclude with `hJ`. Establish `hp'` using `ST.1.1 hp`. Establish `g` using `gdOf K Ω A w h' rc' hrc' a σ' (hp' σ' hσ')`.
+
+Take `⟨t, ht⟩` from `winPt UpperTheory.V.Z.Gam.suppFacts UpperTheory.V.Z.ImaginaryQuadraticEtaCharacter.winOf K a ha P`. Take `⟨x, hx, hxx⟩` from `GlobalTheory.T.galois_rep_restriction_local_completion F Ω K l ι a r A v w h h' i hi _ (isWDOf_wdOf (h := h') (hlw hl) ι (Units.continuous_val.comp hG.cont))`. Rewrite using `[hx.wdOf_eq hl]`. Use `UpperTheory.GalN.V.RatioW.descend hi hxx ?_` and prove the remaining obligations. Rewrite using `[(hG.away w (hlw hl) A h' rc' hrc' σ' hσ').tor g.1 g.2]`.
+
+Conclude with `ratioT K Ω A w h' rc' hrc' a P t (ht w hp') σ' hσ'`. Take `⟨e, he⟩` from `hBC.split v w i hi.cont hi.loc σ σ' hσ hσ'`. Take `⟨Bw', hj', e1, e2, e3⟩` from `br O Bw hj`. Conclude with `(GlobalTheory.T.local_embedding_compatible_extension F Ω K l _ A O Bw Bw' e1 e2 e3 a r).2.2.1 ((hG.above _ _ (Loc.tiedP l) w A h' O Bw' hj').crys σ' hσ' ((GlobalTheory.T.aux_statement_23 F K v w i hi.cont a σ σ' e he).2 hs)).1`.
+-/
 theorem local_condition_at_place_of_decomposition_le_range (L : _root_.GlobalTheory.Mem.LiteralAutomorphy.LiteratureRankNHypothesis) (ha : 1 ≤ a) {K : Type} [Field K] [NumberField K] [IsCMField K] [Algebra F K] [Algebra K Ω]
     [IsScalarTower F K Ω] [IsAlgClosure K Ω] {ι : Qbar l ≃+* ℂ} {π : TR.CuspSub F a} {P : CuspSub K a} (hBC : IsBC π P)
     {r : G F Ω →* GL (Fin a) (Qbar l)} {wt : ℤ} {HT : (K →+* Qbar l) → Multiset ℤ}
@@ -100,6 +128,27 @@ theorem local_condition_at_place_of_decomposition_le_range (L : _root_.GlobalThe
     exact (GlobalTheory.T.local_embedding_compatible_extension F Ω K l _ A O Bw Bw' e1 e2 e3 a r).2.2.1
       ((hG.above _ _ (Loc.tiedP l) w A h' O Bw' hj').crys σ' hσ' ((GlobalTheory.T.aux_statement_23 F K v w i hi.cont a σ σ' e he).2 hs)).1
 end Descent
+/- English proof (translation)
+Introduce `litN qbc adm F Ω _ _ _ _ _ _ l _ ι a ha2 ha π χ hreg hpol`. Set `S : Set (QCM F Ω)` to `{Q | ∃ P : CuspSub ↥Q.K a, IsBC π P}`. Establish `good : ∀ (v : HeightOneSpectrum (𝓞 F)) (A : ValuationSubring Ω), IsPlaceOver A v → {Q : QCM F Ω | Dec (F` using `F) A ≤ (res F Ω ↥Q.K).range ∧ ∃ P : CuspSub ↥Q.K a, IsBC π P}.Infinite := by`. Introduce `v A hA`. Take `rfl` from `ha2.out`.
+
+Establish `hT` using `GlobalTheory.T.eventually_has_satake_parameters adm F 2 π`. Use `(GlobalTheory.T.infinite_quadratic_fields_split_inertia F Ω (fun u => ∃ B, π.HasSat u B) hT v A hA).mono ?_` and prove the remaining obligations. Introduce and unpack `Q ⟨hdec, u, A', ⟨B, hB⟩, hA', hine⟩`. Use `⟨hdec, ?_⟩` and prove the remaining obligations. Break down `qbc F Q.K Q.two π hreg with ⟨η, hq, htw⟩ | hP` into its components or cases.
+
+Conclude with `absurd (_root_.GlobalTheory.T.inertia_le_range_of_unramified_alt litN F Ω Q.K Q.two η hq u A' hA' (unrAt_of_isoTwist adm F 2 ha π η htw u B hB)) hine`. Conclude with `hP`. Choose the witnesses or unpack the hypotheses as in `⟨v0⟩ : Nonempty (HeightOneSpectrum (𝓞 F)) := by`. Take `⟨m, hm⟩` from `Ideal.exists_maximal (𝓞 F)`. Conclude with `⟨⟨m, hm.isPrime, Ring.ne_bot_of_isMaximal_of_not_isField hm (RingOfIntegers.not_isField F)⟩⟩`.
+
+Take `⟨A0, hA0⟩` from `ReciprocityTheory.Gal.exists_isPlaceOver (F := F) Ω v0`. Establish `hS : S.Infinite` using `(good v0 A0 hA0).mono fun Q hQ => hQ.2`. Establish `key : ∀ Q : ↥S, ∃ (P : CuspSub ↥Q.1.K a) (r : G ↥Q.1.K Ω →* GL (Fin a) (Qbar l)) (wt : ℤ) (HT : (↥Q.1.K →+* Qbar l) → Multiset ℤ), IsBC π P ∧ UpperTheory.GalStar.PropsB (fun h rc => IsRecT h rc) P ι r wt HT`. Introduce and unpack `⟨Q, P, hP⟩`. Take `⟨hregP, χ', hχ'⟩` from `_root_.GlobalTheory.T.regular_algebraic_and_polarized_of_quadratic_base_change litN F ↥Q.K Q.two a ha π χ P hreg hpol hP`.
+
+Take `⟨r, wt, HT, hr⟩` from `_root_.UpperTheory.Gal.SV.rowOf' litN.aut.gal ↥Q.K Ω l ι a ha P χ' hregP hχ'`. Conclude with `⟨P, r, wt, HT, hP, hr⟩`. Use `choose P r wt HT hP hr using key`. Establish `hatt : ∀ Q, Continuous (r Q) ∧ IsSSRep (r Q) ∧ AttRes π ι ↥Q.1.K (r Q)` using `fun Q => ⟨(hr Q).cont, (hr Q).ss, _root_.UpperTheory.Gal.SV.attRes_alt litN F Ω ↥Q.1.K l ι a ha π (P Q) (hP Q) (r Q) (wt Q) (HT Q) (hr Q)⟩`. Take `⟨ρ, hρc, hρs, hev⟩` from `GlobalTheory.T.galois_rep_patching_infinite_family F Ω l ι a π S hS r hatt`.
+
+Take `⟨HTF, hcard, hwts, hbc⟩` from `hodgeTate F Ω l ι a π hreg`. Establish `hgal : ∀ᶠ Q : ↥S in Filter.cofinite, UpperTheory.GalStar.PropsB (fun h rc => IsRecT h rc) (P Q) ι (ρ.comp (res F Ω ↥Q.1.K)) (wt Q) (HT Q)` using `hev.mono fun Q hQ => props_iso (hr Q) hQ.1 hQ.2`. Establish `hHT : ∀ Q : ↥S, (∀ τ : ↥Q.1.K →+* Qbar l, HT Q τ = HTF (τ.comp (algebraMap F ↥Q.1.K))) ∧ ∀ τ : F →+* Qbar l, HTF τ = (HTF τ).map (wt Q - ·)` using `fun Q => hbc ↥Q.1.K Q.1.two (P Q) (hP Q) (r Q) (wt Q) (HT Q) (hr Q)`. Take `⟨Q0⟩ : Nonempty ↥S` from `hS.nonempty.to_subtype`. Set `τ0 : F →+* Qbar l` to `ι.symm.toRingHom.comp (Classical.arbitrary (InfinitePlace F)).embedding`.
+
+Establish `hwt : ∀ Q : ↥S, wt Q = wt Q0` using `fun Q => GlobalTheory.T.eq_of_multiset_symmetric_reflections (HTF τ0) (wt Q) (wt Q0) (by rw [← Multiset.card_pos, hcard]; exact ha) ((hHT Q).2 τ0) ((hHT Q0).2 τ0)`. Establish `hpick : ∀ (v : HeightOneSpectrum (𝓞 F)) (A : ValuationSubring Ω), IsPlaceOver A v → ∃ Q : ↥S, Dec (F` using `F) A ≤ (res F Ω ↥Q.1.K).range ∧ UpperTheory.GalStar.PropsB (fun h rc => IsRecT h rc) (P Q) ι (ρ.comp (res F Ω ↥Q.1.K)) (wt Q) (HT Q) := by`. Introduce `v A hA`. Establish `hfin` using `(Filter.eventually_cofinite.1 hgal).image Subtype.val`. Take `⟨Q, hQ, hQn⟩` from `((good v A hA).diff hfin).nonempty`.
+
+Use `⟨⟨Q, hQ.2⟩, hQ.1, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hc`. Conclude with `hQn ⟨⟨Q, hQ.2⟩, hc, rfl⟩`. Establish `hD : ∀ (v : HeightOneSpectrum (𝓞 F)) (A : ValuationSubring Ω) (h : IsPlaceOver A v), At π ι ρ HTF h` using `fun v A h => by`. Take `⟨Q, hdec, hQ⟩` from `hpick v A h`.
+
+Conclude with `_root_.UpperTheory.Gal.SV.local_condition_at_place_of_decomposition_le_range litN ha (hP Q) hQ h hdec (hHT Q).1`. Establish `hpl : ∀ w B, π.HasSat w B → PlainAtR π w` using `fun w B hB => by`. Take `⟨A, h⟩` from `ReciprocityTheory.Gal.exists_isPlaceOver (F := F) Ω w`. Conclude with `(hD w A h).plain B hB`. Use `⟨ρ, wt Q0, HTF, hρc, hρs, hpl, fun w σ hσ hp => ⟨fun A h => (hD w A h).cmp σ hσ hp, fun A h => (hD w A h).ht σ hσ hp⟩, fun w hw B hB => ?_, fun w hw A h => (hD w A h).ratio hw, hwts, (hHT Q0).2, fun w A h => (hD w A h).crys⟩` and prove the remaining obligations.
+
+Take `⟨⟨σ, hσ⟩, hiso⟩` from `GlobalTheory.T.local_global_compatibility_real adm F a π w`. Establish `hS` using `((GlobalTheory.T.satakeParameters_local F a w σ).2 _ π.finPart (hiso σ hσ) B).1 hB`. Conclude with `frob_of hw σ hS fun A h rc hrc => (((hD w A h).cmp σ hσ (hpl w B hB σ hσ) rc hrc).1 hw).isWDOf (gdOf F Ω A w h rc hrc a σ (hpl w B hB σ hσ))`.
+-/
 theorem galois_rep_exists_totally_real_rank_two_of_base_change : _root_.GlobalTheory.Mem.LiteralAutomorphy.LiteratureRankNHypothesis → UpperTheory.V.Z.Bc.QuadBC2 → AdmissibleReal → GaloisRepExistsTotallyRealGL2 := by
   intro litN qbc adm F Ω _ _ _ _ _ _ l _ ι a ha2 ha π χ hreg hpol
   let S : Set (QCM F Ω) := {Q | ∃ P : CuspSub ↥Q.K a, IsBC π P}

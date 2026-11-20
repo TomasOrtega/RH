@@ -8,6 +8,39 @@ namespace ReciprocityTheory.PGsh.Up
 
 open ReciprocityTheory.PGsh.L2
 
+/- English proof (translation)
+Introduce `p _ g C _ _ _ v R _ _ _ O _ _ σ cp hp2 hS H U X D hdet hbasis τ N z hN hNsq hz`. Establish `hv : v.Integers R` using `hS.integers`. Establish `hinj : Function.Injective (algebraMap R C)` using `hv.hom_inj`. Establish `hsqle : sqIdeal (augIdeal H.AA.carrier) ≤ augIdeal H.AA.carrier`. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations.
+
+Introduce and unpack `h ⟨f, hf, f', hf', rfl⟩`. Rewrite using `[SetLike.mem_coe]`. Take `⟨hfA, hf0⟩` from `Submodule.mem_inf.1 hf`. Take `⟨hfA', -⟩` from `Submodule.mem_inf.1 hf'`. Use `Submodule.mem_inf.2 ⟨H.AA.mul_mem f f' hfA hfA', ?_⟩` and prove the remaining obligations.
+
+Rewrite `hf0`, the goal using `[LinearMap.mem_ker]`. Simplify using `only [LinearMap.proj_apply, Pi.mul_apply] at hf0 ⊢`. Rewrite using `[hf0, zero_mul]`. Establish `hkill : ∀ k, D.κ k ≠ τ → thetaQ U τ (H.φ ⟨xL D k, D.x_mem k⟩) = 0`. Introduce `k hk`.
+
+Take `⟨l, hl⟩` from `Submodule.Quotient.mk_surjective _ (H.φ ⟨xL D k, D.x_mem k⟩)`. Establish `hg` using `phi_x_grade hS D k τ (Ne.symm hk) l hl.symm`. Take `⟨w', hw'⟩` from `(mem_pP _).1 hg`. Rewrite using `[← hl]`. Express the relevant statement in the definitionally equal form `redP (U.r τ) (thetaL U τ l) = 0`.
+
+Establish `hl_sum : ∑ i, (U.εL i)ᵀ *ᵥ l = l`. Use function extensionality and compare the values at `j`. Simplify using `only [Finset.sum_apply, Matrix.mulVec, dotProduct, Matrix.transpose_apply]`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [← Finset.sum_mul]`.
+
+Establish `h1 : ∀ k', ∑ i, U.εL i k' j = (1 : Matrix (Fin g) (Fin g) R) k' j` using `fun k' => by`. Rewrite using `[← U.εL_sum, Matrix.sum_apply]`. Simplify using `[h1, Matrix.one_apply]`. Establish `hθ : thetaL U τ l = (p : R) • thetaL U τ w'`. Rewrite using `[← hl_sum, map_sum, Finset.sum_eq_single τ (fun i _ hi => theta_kill U hi l) (by simp), hw', map_smul]`.
+
+Rewrite using `[hθ]`. Conclude with `redP_pP ((mem_pP _).2 ⟨_, rfl⟩)`. Establish `hsx : ∀ d : Ix g → R, sumX D d = ∑ k, d k • (⟨xL D k, D.x_mem k⟩ : augIdeal H.AA.carrier)`. Introduce `d`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Simplify using `[sumX]`. Set `π : (blockL D τ ⧸ N.comap (blockL D τ).subtype) →ₗ[R] (Fin (U.r τ) → R ⧸ Ideal.span {(p : R)})` to `(N.comap (blockL D τ).subtype).liftQ (thetaQ U τ ∘ₗ H.φ ∘ₗ sumX D ∘ₗ (blockL D τ).subtype) (by`. Introduce `c hc`. Rewrite `hc` using `[Submodule.mem_comap, Submodule.subtype_apply]`. Take `⟨f, hf, hfc⟩` from `hNsq _ hc`.
+
+Take `⟨c', hc', hsub⟩` from `sub_lin_mem_sq hv D hdet hbasis (hsqle hf)`. Establish `hcc : c' = (c : Ix g → R)` using `funext fun k => hinj ((hc' k).trans (hfc k).symm)`. Rewrite `hsub` using `[hcc]`. Establish `hmem : sumX D (c : Ix g → R) ∈ LinearMap.ker H.φ`. Rewrite using `[H.cotangent_ker_eq, Submodule.mem_comap, Submodule.subtype_apply]`.
+
+Establish `h2` using `Submodule.sub_mem _ hf hsub`. Rewrite `h2` using `[sub_sub_cancel]`. Simplify `h2` using `[sumX]`. Rewrite `hmem`, the goal using `[LinearMap.mem_ker]`. Simplify using `only [LinearMap.comp_apply, Submodule.subtype_apply, hmem, map_zero])`.
+
+Establish `hsurj : Function.Surjective π`. Introduce `w`. Take `⟨y, rfl⟩` from `thetaQ_surj U τ w`. Take `⟨f, rfl⟩` from `H.cotangent_surjective y`. Take `⟨c0, -, hsub0⟩` from `sub_lin_mem_sq hv D hdet hbasis f.2`.
+
+Set `c : blockL D τ` to `⟨fun k => if D.κ k = τ then c0 k else 0, fun k hk => by simp [hk]⟩`. Use `⟨Submodule.Quotient.mk c, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `thetaQ U τ (H.φ (sumX D (c : Ix g → R))) = thetaQ U τ (H.φ f)`. Establish `hf0 : H.φ f = H.φ (sumX D c0)`. Rewrite using `[← sub_eq_zero, ← map_sub]`.
+
+Apply `LinearMap.mem_ker.1` to reduce the goal to its premises. Rewrite using `[H.cotangent_ker_eq, Submodule.mem_comap, Submodule.subtype_apply]`. Simplify `hsub0` using `[sumX]`. Rewrite using `[hf0]`. Establish `hzero : thetaQ U τ (H.φ (sumX D (c0 - (c : Ix g → R)))) = 0`.
+
+Rewrite using `[hsx, map_sum, map_sum]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `k _`. Rewrite using `[map_smul, map_smul]`. Distinguish the cases in `hk : D.κ k = τ`.
+
+Establish `hck : (c0 - (c : Ix g → R)) k = 0` using `by simp [c, hk]`. Rewrite using `[hck, zero_smul]`. Rewrite using `[hkill k hk, smul_zero]`. Rewrite `hzero` using `[map_sub, map_sub, map_sub, sub_eq_zero]`. Conclude with `hzero.symm`.
+
+Conclude with `hasLen_le_of_surj hv hz (p : R) (U.r τ) π hsurj`.
+-/
 theorem u7F3 : FrobeniusLengthBoundStatement := by
   intro p _ g C _ _ _ v R _ _ _ O _ _ σ cp hp2 hS H U X D hdet hbasis τ N z hN hNsq hz
   have hv : v.Integers R := hS.integers

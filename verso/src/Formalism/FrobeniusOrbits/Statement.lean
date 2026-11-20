@@ -13,10 +13,16 @@ open Formalism.TwoAdicCyclotomicDecomposition
 def HostHyp (q d : ℕ) : Prop :=
   q.Prime ∧ d.Prime ∧ q % 8 = 3 ∧ d % 16 = 7 ∧ jacobiSym (-(d : ℤ)) q = 1
 
+/- English proof (translation)
+Take `⟨h1, h2, h3, h4, -⟩` from `h`. Conclude with `⟨h1, h2, h3, by omega⟩`.
+-/
 theorem HostHyp.toHypQD {q d : ℕ} (h : HostHyp q d) : HypQD q d := by
   obtain ⟨h1, h2, h3, h4, -⟩ := h
   exact ⟨h1, h2, h3, by omega⟩
 
+/- English proof (translation)
+Take `⟨h1, h2, h3, h4, -⟩` from `h`. Conclude with `⟨h1, h2, by omega, by omega, by omega⟩`.
+-/
 theorem HostHyp.toHypOdd {q d : ℕ} (h : HostHyp q d) : HypOdd q d := by
   obtain ⟨h1, h2, h3, h4, -⟩ := h
   exact ⟨h1, h2, by omega, by omega, by omega⟩
@@ -42,6 +48,9 @@ def chQ (e : ℕ) : GG e →* ℤˣ := (MonoidHom.fst ℤˣ ℤˣ).comp (MonoidH
 
 def Psi (e : ℕ) : Subgroup (GG e) := (chD e).ker
 
+/- English proof (translation)
+Rewrite using `[Psi, MonoidHom.mem_ker]`. Both sides reduce to the same expression.
+-/
 theorem mem_Psi_iff {e : ℕ} (g : GG e) : g ∈ Psi e ↔ g.1.2 = 1 := by
   rw [Psi, MonoidHom.mem_ker]
   rfl
@@ -58,10 +67,19 @@ def E0 (a b : L) : IntermediateField ℚ L := ℚ⟮a, b⟯
 
 def hostE (ζ a b : L) : IntermediateField ℚ L := E0 a b ⊔ F1 ζ
 
+/- English proof (translation)
+The claim follows from `(le_sup_right : F1 ζ ≤ E0 a b ⊔ F1 ζ) (mem_adjoin_simple_self ℚ _)`.
+-/
 theorem theta_mem (ζ a b : L) : ζ + ζ⁻¹ ∈ hostE ζ a b := (le_sup_right : F1 ζ ≤ E0 a b ⊔ F1 ζ) (mem_adjoin_simple_self ℚ _)
 
+/- English proof (translation)
+The claim follows from `(le_sup_left : E0 a b ≤ E0 a b ⊔ F1 ζ) (subset_adjoin ℚ _ (by simp))`.
+-/
 theorem a_mem (ζ a b : L) : a ∈ hostE ζ a b := (le_sup_left : E0 a b ≤ E0 a b ⊔ F1 ζ) (subset_adjoin ℚ _ (by simp))
 
+/- English proof (translation)
+The claim follows from `(le_sup_left : E0 a b ≤ E0 a b ⊔ F1 ζ) (subset_adjoin ℚ _ (by simp))`.
+-/
 theorem b_mem (ζ a b : L) : b ∈ hostE ζ a b := (le_sup_left : E0 a b ≤ E0 a b ⊔ F1 ζ) (subset_adjoin ℚ _ (by simp))
 
 def thE (ζ a b : L) : hostE ζ a b := ⟨ζ + ζ⁻¹, theta_mem ζ a b⟩

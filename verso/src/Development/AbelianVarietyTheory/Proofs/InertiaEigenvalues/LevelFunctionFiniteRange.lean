@@ -15,6 +15,11 @@ set_option maxHeartbeats 1000000
 
 namespace GlobalTheory.HalfLatFin
 
+/- English proof (translation)
+Introduce `i j`. Establish `h0 : t i j = t' i j + N • w i j`. Use `congrFun (congrFun hw i) j` as an intermediate fact. Simplify using `using this`. Establish `hw' : N • w i j = t i j - t' i j` using `by rw [h0]; abel`.
+
+Establish `h1 : (N : D.host.F) • (e * w i j - w i j) = 0`. Rewrite using `[Nat.cast_smul_eq_nsmul, smul_sub, ← mul_smul_comm, hw', mul_sub, ht i j, ht' i j, sub_self]`. Conclude with `sub_eq_zero.1 ((smul_eq_zero.1 h1).resolve_left (by exact_mod_cast hN.ne'))`.
+-/
 theorem isHalf_of_nsmul {D : D7} {m n : ℕ} (e : AE D) {N : ℕ} (hN : 0 < N) {t t' w : Mx D m n}
     (ht : IsHalf e t) (ht' : IsHalf e t') (hw : t = t' + N • w) : IsHalf e w := by
   intro i j

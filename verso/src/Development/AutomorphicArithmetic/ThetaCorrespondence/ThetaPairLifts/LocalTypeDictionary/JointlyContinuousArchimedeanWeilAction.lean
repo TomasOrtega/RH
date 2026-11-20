@@ -10,6 +10,47 @@ open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.WeilM
 open scoped SchwartzMap GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels Classical
 noncomputable section
 namespace GlobalTheory.ArchJointCont
+/- English proof (translation)
+Introduce `hP F E _ _ _ _ _ σ n d Y Wd M ψ χX χW om hψ _hM hW γ hγ r hr0 hR h k h₀ hk hh`. Establish `hs` using `IsUWeilPair.isUSplitting hW`. Set `δ : ℝ → UA σ Y.J × UA σ Wd.J` to `fun t => (γ (Multiplicative.ofAdd t), 1)`. Establish `hδc : Continuous δ` using `(hγ.1.comp continuous_ofAdd).prodMk continuous_const`. Establish `hδ0 : δ 0 = 1` using `by show (γ (Multiplicative.ofAdd 0), 1) = 1`.
+
+Rewrite using `[ofAdd_zero, map_one]`. Both sides reduce to the same expression. Establish `hδm : ∀ s t, δ (s + t) = δ s * δ t` using `fun s t => by show (γ (Multiplicative.ofAdd (s + t)), 1) = (γ (Multiplicative.ofAdd s), 1) * (γ (Multiplicative.ofAdd t), 1)`. Rewrite using `[ofAdd_add, map_mul, Prod.mk_mul_mk, one_mul]`. Establish `ex` using `fun f => _root_.GlobalTheory.ArchLinePair.exists_orbit_pair_archimedean_line hP M ψ χX χW om hψ hW δ hδc hδ0 hδm (fun t => hγ.2 _) (fun t u _ => by simp [δ, mat]) f`.
+
+Use `choose c g hc0 hslope hact using ex`. Establish `hrr : ∀ x z, At (evI F) z → r (x + z) = r x` using `(hR 0).1`. Establish `hinj` using `GlobalTheory.ArchCancel.eq_of_tens_eq F r hrr ⟨0, hr0⟩`. Establish `hA : ∀ t (f : SInf F (Fin n × Fin d)), om (δ t) (tens (evI F) ⇑f r) = tens (evI F) ⇑(c f t) r` using `fun t f => hact f t r (hR f)`. Establish `tadd : ∀ f g : SInf F (Fin n × Fin d), tens (evI F) ⇑(f + g) r = tens (evI F) ⇑f r + tens (evI F) ⇑g r`.
+
+Introduce `f g`. Use function extensionality and compare the values at `x`. Simplify using `[tens, add_mul]`. Establish `tsmul : ∀ (a : ℂ) (f : SInf F (Fin n × Fin d)), tens (evI F) ⇑(a • f) r = a • tens (evI F) ⇑f r`. Introduce `a f`.
+
+Use function extensionality and compare the values at `x`. Simplify using `[tens, mul_assoc]`. Set `A : ℝ → SInf F (Fin n × Fin d) →ₗ[ℂ] SInf F (Fin n × Fin d)` to `fun t => { toFun := fun f => c f t map_add' := fun f g => hinj _ _ (by rw [← hA, tadd, map_add, hA, hA, tadd]) map_smul' := fun a f => hinj _ _ (by rw [← hA, tsmul, map_smul, hA, RingHom.id_apply, tsmul]) }`. Establish `hAf : ∀ t f, A t f = c f t` using `fun _ _ => rfl`. Establish `hmul : ∀ s t f, c f (s + t) = c (c f t) s` using `fun s t f => hinj _ _ (by`.
+
+Rewrite using `[← hA (s + t) f, ← hA s (c f t), ← hA t f, hδm, map_mul, Module.End.mul_apply])`. Establish `hcont0 : ∀ f, Tendsto (fun s => c f s) (𝓝 0) (𝓝 f)`. Introduce `f`. Establish `h1 : Tendsto (fun s : ℝ => s • (s⁻¹ • (c f s - f))) (𝓝[≠] 0) (𝓝 ((0 : ℝ) • g f))` using `(tendsto_nhdsWithin_of_tendsto_nhds tendsto_id).smul (hslope f)`. Rewrite `h1` using `[zero_smul]`.
+
+Establish `h2 : Tendsto (fun s => c f s) (𝓝[≠] 0) (𝓝 f)`. Establish `h1'` using `h1.add_const f`. Rewrite `h1'` using `[zero_add]`. Use `h1'.congr' (eventually_nhdsWithin_of_forall fun s hs => ?_)` and prove the remaining obligations. Rewrite using `[smul_smul, mul_inv_cancel₀ hs, one_smul, sub_add_cancel]`.
+
+Establish `h3 : ContinuousAt (fun s => c f s) 0`. Rewrite using `[← continuousWithinAt_compl_self, ContinuousWithinAt, hc0]`. Conclude with `h2`. Establish `h4` using `h3.tendsto`. Rewrite `h4` using `[hc0]`. Then use the resulting hypothesis.
+
+Establish `hcont : ∀ f, Continuous fun s => c f s`. Introduce `f`. Use `continuous_iff_continuousAt.2 fun t₀ => ?_` and prove the remaining obligations. Establish `ht : Tendsto (fun s : ℝ => s - t₀) (𝓝 t₀) (𝓝 0)`. Establish `h5` using `(continuous_sub_right t₀).tendsto t₀`.
+
+Rewrite `h5` using `[sub_self]`. Then use the resulting hypothesis. Use `((hcont0 (c f t₀)).comp ht).congr fun s => ?_` and prove the remaining obligations. Use `show c (c f t₀) (s - t₀) = c f s`. Rewrite using `[← hmul, sub_add_cancel]`. Set `g₀` to `GlobalTheory.ArchLocality.intInd (F := F) (Fin n × Fin d)`.
+
+Establish `hg₀ : g₀ ∈ SB _` using `GlobalTheory.ArchLocality.intInd_mem _`. Establish `hg₀0 : g₀ 0 = 1`. Simplify using `only [g₀, GlobalTheory.ArchLocality.intInd]`. Rewrite using `[Set.indicator_of_mem (show (0 : Fin n × Fin d → IsDedekindDomain.FiniteAdeleRing (𝓞 F) F) ∈ Set.pi Set.univ fun _ => (GroundTheory.Global.integralFiniteAdeles (𝓞 F) F : Set (IsDedekindDomain.FiniteAdeleRing (𝓞 F) F)) from fun i _ => zero_mem (GroundTheory.Global.integralFiniteAd …`. Both sides reduce to the same expression.
+
+Set `r₀ : (Fin n × Fin d → AF F) → ℂ` to `fun x => g₀ fun i => (x i).2`. Establish `hrr₀ : ∀ x z, At (evI F) z → r₀ (x + z) = r₀ x`. Introduce `x z hz`. Use `congrArg g₀ (funext fun i => ?_)` and prove the remaining obligations. Use `show (x i).2 + (z i).2 = (x i).2`.
+
+Rewrite using `[GlobalTheory.ArchLocality.snd_eq_zero_of_at hz i, add_zero]`. Establish `hR₀ : ∀ f : SInf F (Fin n × Fin d), Rest (evI F) ⇑f r₀` using `fun f => ⟨hrr₀, Submodule.subset_span ⟨f, g₀, hg₀, rfl⟩⟩`. Establish `hAcont : ∀ t, Continuous (A t)`. Introduce `t`. Use `continuous_of_weak (A t) fun T => ?_` and prove the remaining obligations.
+
+Take `⟨l, hl, hlf⟩` from `exists_adm F T`. Take `⟨T', hT'⟩` from `hs.adm (δ t) l hl g₀ hg₀`. Use `T'.continuous.congr fun f => ?_` and prove the remaining obligations. Establish `e1 : om (δ t) (pureA F ⇑f g₀) = pureA F ⇑(c f t) g₀` using `hact f t r₀ (hR₀ f)`. Establish `e2` using `hT' f`.
+
+Rewrite `e2` using `[LinearMap.comp_apply, e1, hlf, hg₀0, one_mul]`. Conclude with `e2.symm`. Set `𝓕 : Set.Icc (-1 : ℝ) 1 → SInf F (Fin n × Fin d) →L[ℂ] SInf F (Fin n × Fin d)` to `fun i => ⟨A i, hAcont i⟩`. Use `haveI : BarrelledSpace ℂ (SInf F (Fin n × Fin d)) := GlobalTheory.schwartzMap_barrelledSpace _`. Establish `hq` using `schwartz_withSeminorms ℂ (Fin n × Fin d → mixedEmbedding.mixedSpace F) ℂ`.
+
+Establish `hUE : UniformEquicontinuous ((↑) ∘ 𝓕)` using `hq.banach_steinhaus fun q x => by`. Establish `hc : Continuous fun t : ℝ => schwartzSeminormFamily ℂ _ ℂ q (c x t)` using `(hq.continuous_seminorm q).comp (hcont x)`. Use `(isCompact_Icc (a := (-1 : ℝ)) (b := 1)).bddAbove_image hc.continuousOn` as an intermediate fact. Rewrite `this` using `[Set.image_eq_range]`. Conclude with `this`.
+
+Establish `hk' : ∀ t, k t = c (h t) t` using `fun t => hinj _ _ ((hk t).symm.trans (hA t (h t)))`. Establish `h1 : Tendsto (fun t => A t (h t - h₀)) (𝓝 0) (𝓝 0)`. Establish `hE` using `hUE.equicontinuous 0`. Introduce `U hU`. Establish `hU' : {p : SInf F (Fin n × Fin d) × SInf F (Fin n × Fin d) | p.2 - p.1 ∈ U} ∈ uniformity (SInf F (Fin n × Fin d))`.
+
+Rewrite using `[uniformity_eq_comap_nhds_zero]`. Conclude with `⟨U, hU, fun p hp => hp⟩`. Establish `ev` using `hE _ hU'`. Establish `hz : Tendsto (fun t => h t - h₀) (𝓝 0) (𝓝 0)` using `by simpa using hh.sub_const h₀`. Establish `ev3 : ∀ᶠ t in 𝓝 (0 : ℝ), t ∈ Set.Icc (-1 : ℝ) 1` using `Icc_mem_nhds (by norm_num) (by norm_num)`.
+
+Use `Filter.mem_map.2 ?_` and prove the remaining obligations. Use `filter_upwards [hz.eventually ev, ev3] with t ht ht'`. Use `ht ⟨t, ht'⟩` as an intermediate fact. Simplify `this` using `[𝓕]`. Establish `h2 : Tendsto (fun t => A t (h t - h₀) + c h₀ t) (𝓝 0) (𝓝 (0 + h₀))` using `h1.add (hcont0 h₀)`.
+
+Rewrite `h2` using `[zero_add]`. Use `h2.congr fun t => ?_` and prove the remaining obligations. Rewrite using `[hk' t, map_sub]`. Use `show c (h t) t - c h₀ t + c h₀ t = c (h t) t`. Conclude with `sub_add_cancel _ _`.
+-/
 theorem tendsto_schrodinger_action_along_line : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n d : ℕ}
     {Y : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E n} {Wd : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E d} (M : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Model σ Y Wd) (ψ : AddChar (AF F) ℂ)
     (χX χW : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chr F E) (om : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ Y Wd),
@@ -134,6 +175,9 @@ end
 section
 open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes NumberField
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.ArchJointCont.tendsto_schrodinger_action_along_line | exact _root_.GlobalTheory.ArchJointCont.tendsto_schrodinger_action_along_line | (intros; apply _root_.GlobalTheory.ArchJointCont.tendsto_schrodinger_action_along_line <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.jointly_continuous_archimedean_weil_action : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n d : ℕ}
     {Y : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E n} {Wd : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E d} (M : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Model σ Y Wd) (ψ : AddChar (AF F) ℂ)
     (χX χW : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chr F E) (om : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ Y Wd),

@@ -36,16 +36,29 @@ def InvSet : Subring bk.S where
     convert h using 1
     ring
 
+/- English proof (translation)
+Introduce `g` and use `by rw [bk.ev_C, bk.gal_w, sub_self] exact dvd_zero _`.
+-/
 theorem C_mem (w : Wq l bk.a) : (C w : bk.S) ∈ InvSet bk m := fun g => by
   rw [bk.ev_C, bk.gal_w, sub_self]
   exact dvd_zero _
 
 omit hl in
+/- English proof (translation)
+Rewrite using `[← Polynomial.coeToPowerSeries.ringHom_apply, map_sum]`. Simplify using `[Polynomial.coeToPowerSeries.ringHom_apply]`.
+-/
 theorem coe_sum_fin {R : Type} [CommRing R] {e : ℕ} (c : Fin e → R) :
     ((∑ i, Polynomial.C (c i) * Polynomial.X ^ (i : ℕ) : Polynomial R) : R⟦X⟧) = ∑ i, C (c i) * X ^ (i : ℕ) := by
   rw [← Polynomial.coeToPowerSeries.ringHom_apply, map_sum]
   simp [Polynomial.coeToPowerSeries.ringHom_apply]
 
+/- English proof (translation)
+Use `haveI : IsAdicComplete (Ideal.span {(l : Wq l bk.a)}) (Wq l bk.a) := WittVector.isAdicCompleteIdealSpanP`. Establish `hdist : bk.Ep.IsDistinguishedAt (Ideal.span {(l : Wq l bk.a)})` using `{ mem := fun {i} hi => Ideal.mem_span_singleton.2 (bk.dvd_coeff i hi) monic := bk.monic }`. Establish `hI : Ideal.span {(l : Wq l bk.a)} ≠ ⊤`. Rewrite using `[Ne, Ideal.span_singleton_eq_top]`. Conclude with `(WittVector.irreducible l (k := Fq l bk.a)).not_isUnit`.
+
+Take `⟨h1, h2⟩` from `(hdist.isWeierstrassDivisorAt hI).isWeierstrassDivisionAt_div_mod s`. Use `⟨(hdist.isWeierstrassDivisorAt hI).div s, fun i => ((hdist.isWeierstrassDivisorAt hI).mod s).coeff i, h2.trans ?_⟩` and prove the remaining obligations. Rewrite using `[← coe_sum_fin]`. Use `congr 2`. Establish `ho : bk.Ep.natDegree = _` using `congr(ENat.toNat $(hdist.coe_natDegree_eq_order_map (bk.Ep : (Wq l bk.a)⟦X⟧) 1 (by rwa [constantCoeff_one, ← Ideal.ne_top_iff_one]) (by simp)))`.
+
+Rewrite `h1` using `[← ho]`. Rewrite using `[Polynomial.sum_fin (fun i a => Polynomial.C a * Polynomial.X ^ i) (by simp) h1, Polynomial.sum_C_mul_X_pow_eq]`.
+-/
 theorem exists_div (s : bk.S) : ∃ (q : bk.S) (c : Fin bk.Ep.natDegree → Wq l bk.a),
     s = bk.E * q + ∑ i, C (c i) * X ^ (i : ℕ) := by
   haveI : IsAdicComplete (Ideal.span {(l : Wq l bk.a)}) (Wq l bk.a) := WittVector.isAdicCompleteIdealSpanP
@@ -67,6 +80,11 @@ theorem exists_div (s : bk.S) : ∃ (q : bk.S) (c : Fin bk.Ep.natDegree → Wq l
     Polynomial.sum_C_mul_X_pow_eq]
 
 variable {bk m} in
+/- English proof (translation)
+Proceed by induction on `k generalizing a with`. Consider the case `zero => simpa using h`. Consider the case `succ k ih`. Apply `(GlobalTheory.T.eisensteinImage_pow_ideal_ainf_properties l K bk m).1` to reduce the goal to its premises. Apply `ih` to reduce the goal to its premises.
+
+Rewrite `h` using `[pow_succ, mul_assoc]`. Then use the resulting hypothesis.
+-/
 theorem cancel_pow_l (k : ℕ) (a : Ainf l) (h : bk.ev bk.E ^ m ∣ (l : Ainf l) ^ k * a) : bk.ev bk.E ^ m ∣ a := by
   induction k generalizing a with
   | zero => simpa using h
@@ -79,6 +97,19 @@ end GlobalTheory.BSP.InvLift
 
 open GlobalTheory.BSP.InvLift in
 
+/- English proof (translation)
+Introduce `l hl K bk m`. Take `⟨M, q, hq1, hq2⟩` from `GlobalTheory.BSP.BK.exists_approx_root l K bk m`. Establish `hqinv : q ∈ InvSet bk m` using `fun g => by`. Take `⟨k, hk⟩` from `GlobalTheory.BSP.approx_root_indep l K bk m M q hq1 hq2 (ainfObj K) bk.ι ((ainfHom K g).comp bk.ι)`. Express the relevant statement in the definitionally equal form `bk.ev bk.E ^ m ∣ (l : Ainf l) ^ k * (bk.ev q - Per.σA (g : GQ l) (bk.ev q)) at hk`.
+
+Rewrite using `[← neg_sub]`. Conclude with `(cancel_pow_l k _ hk).neg_right`. Use `set e := bk.Ep.natDegree`. Use `⟨M * e, fun s => ?_⟩` and prove the remaining obligations. Take `⟨q', c, hs⟩` from `exists_div bk s`.
+
+Use `⟨∑ i : Fin e, C (c i) * (l : bk.S) ^ (M * (e - i)) * q ^ (i : ℕ), ?_, fun g => ?_⟩` and prove the remaining obligations. Establish `key : ∀ i : Fin e, bk.E ∣ C (c i) * (l : bk.S) ^ (M * (e - i)) * q ^ (i : ℕ) - (l : bk.S) ^ (M * e) * (C (c i) * X ^ (i : ℕ))`. Introduce `i`. Establish `h1 : (l : bk.S) ^ (M * e) * X ^ (i : ℕ) = (l : bk.S) ^ (M * (e - i)) * ((l : bk.S) ^ M * X) ^ (i : ℕ)`. Rewrite using `[mul_pow, ← pow_mul, ← mul_assoc, ← pow_add, ← Nat.mul_add]`.
+
+Use `congr 3`. Use `i.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[mul_left_comm, h1]`. Use `(hq1.trans (sub_dvd_pow_sub_pow q ((l : bk.S) ^ M * X) i)).mul_left (C (c i) * (l : bk.S) ^ (M * (e - i)))` as an intermediate fact.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Establish `heq : (∑ i : Fin e, C (c i) * (l : bk.S) ^ (M * (e - i)) * q ^ (i : ℕ)) - (l : bk.S) ^ (M * e) * s = (∑ i : Fin e, (C (c i) * (l : bk.S) ^ (M * (e - i)) * q ^ (i : ℕ) - (l : bk.S) ^ (M * e) * (C (c i) * X ^ (i : ℕ)))) - bk.E * ((l : bk.S) ^ (M * e) * q')`. Rewrite using `[hs, Finset.sum_sub_distrib, mul_add, Finset.mul_sum]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[heq]`. Conclude with `dvd_sub (Finset.dvd_sum fun i _ => key i) (dvd_mul_right _ _)`. Establish `hmem : (∑ i : Fin e, C (c i) * (l : bk.S) ^ (M * (e - i)) * q ^ (i : ℕ)) ∈ InvSet bk m` using `Subring.sum_mem _ fun i _ => Subring.mul_mem _ (Subring.mul_mem _ (C_mem bk m _) (Subring.pow_mem _ (natCast_mem _ _) _)) (Subring.pow_mem _ hqinv _)`. Conclude with `hmem g`.
+-/
 theorem GlobalTheory.BSP.BK.exists_inv_lift : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (m : ℕ), ∃ k : ℕ, ∀ s : bk.S, ∃ γ : bk.S, bk.E ∣ γ - (l : bk.S) ^ k * s ∧ ∀ g : ↥(GK K), bk.ev bk.E ^ m ∣ Per.σA (g : GQ l) (bk.ev γ) - bk.ev γ := by
   intro l hl K bk m
   obtain ⟨M, q, hq1, hq2⟩ := GlobalTheory.BSP.BK.exists_approx_root l K bk m

@@ -25,5 +25,8 @@ open GlobalTheory.IndefiniteRowSideFullHecke.LevelStructureAutomorphisms (LevelA
 open GlobalTheory.BadCount
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CovTop.DimLogTop.log_dim_top_le | exact GlobalTheory.CovTop.DimLogTop.log_dim_top_le | (intros; apply GlobalTheory.CovTop.DimLogTop.log_dim_top_le <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.log_finrank_cusp_forms_le : Hypotheses2 → Size → Covers fun Fm x _ ι p i Y PP _ => ∀ Z, Real.log (Module.finrank Y.d.c₂.F (cuspOn Y.U Z (wtOf (dat p i) ((⟨uW p i, cZero (Fm.D x ι) ((i : ℕ) + 1), (Fm.D x ι).R.k - 2, lenT p i PP⟩ : WtPar (dat p i)).wt (lenT p i PP)) 0)) : ℝ) ≤ PP := by
   first | exact @GlobalTheory.CovTop.DimLogTop.log_dim_top_le | exact GlobalTheory.CovTop.DimLogTop.log_dim_top_le | (intros; apply GlobalTheory.CovTop.DimLogTop.log_dim_top_le <;> assumption)

@@ -24,6 +24,11 @@ def lagSwap (W : HSp D) (Y : Lag W) : Lag W :=
     rintro _ ⟨y, hy, rfl⟩ _ ⟨y', hy', rfl⟩
     exact (Y.2.2 y hy y' hy').symm⟩
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨z, hz, rfl⟩, rfl⟩`. Conclude with `hz`.
+
+Introduce `hy`. Conclude with `⟨y.swap, ⟨y, hy, rfl⟩, rfl⟩`.
+-/
 theorem lagSwap_lagSwap (W : HSp D) (Y : Lag W) : lagSwap W (lagSwap W Y) = Y := by
   apply Subtype.ext
   ext y
@@ -33,6 +38,9 @@ theorem lagSwap_lagSwap (W : HSp D) (Y : Lag W) : lagSwap W (lagSwap W Y) = Y :=
   · intro hy
     exact ⟨y.swap, ⟨y, hy, rfl⟩, rfl⟩
 
+/- English proof (translation)
+Unfold `IsLagFrame at h ⊢`. Express the relevant statement in the definitionally equal form `_ = Submodule.map (LinearEquiv.prodComm D.host.E _ _).toLinearMap Y.1`. Rewrite using `[← h, Submodule.map_span, ← Set.range_comp]`. Use `congr 2`.
+-/
 theorem isLagFrame_lagSwap (W : HSp D) (Y : Lag W) (C : Matrix (Fin W.rank) (Fin W.rank) D.host.E ×
     Matrix (Fin W.rank) (Fin W.rank) D.host.E) (h : IsLagFrame W Y C) : IsLagFrame W (lagSwap W Y) (C.2, C.1) := by
   unfold IsLagFrame at h ⊢
@@ -40,6 +48,9 @@ theorem isLagFrame_lagSwap (W : HSp D) (Y : Lag W) (C : Matrix (Fin W.rank) (Fin
   rw [← h, Submodule.map_span, ← Set.range_comp]
   congr 2
 
+/- English proof (translation)
+Unfold `lagTerm`. Rewrite using `[Complex.star_def, ← integral_conj]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun u => ?_)` and prove the remaining obligations. Simplify using `[mul_comm]`.
+-/
 theorem lagTerm_swap {V W : HSp D} (μ : Measure (WO V W)) (𝓕 : Set (WO V W))
     (C : Matrix (Fin W.rank) (Fin W.rank) D.host.E × Matrix (Fin W.rank) (Fin W.rank) D.host.E) (f₁ f₂ : WO V W → ℂ) :
     lagTerm μ 𝓕 (C.2, C.1) f₂ f₁ = star (lagTerm μ 𝓕 C f₁ f₂) := by
@@ -55,6 +66,11 @@ variable {ψ : AddChar (AF D.host.F) ℂ} {V W : HSp D}
     {𝓗 : Set (GA D V)} {νW : Measure (GA D W)} {𝓖 : Set (GA D W)} {μ : Measure (WO V W)} {𝓕 : Set (WO V W)}
     {fr : Lag W → Matrix (Fin W.rank) (Fin W.rank) D.host.E × Matrix (Fin W.rank) (Fin W.rank) D.host.E}
 
+/- English proof (translation)
+Set `e : Lag W ≃ Lag W` to `⟨lagSwap W, lagSwap W, lagSwap_lagSwap W, lagSwap_lagSwap W⟩`. Rewrite using `[← e.tsum_eq]`. Use `tsum_congr fun Y => ?_` and prove the remaining obligations. Establish `h` using `(Move.termMove D ψ V W χV χW om νV 𝓗 νW 𝓖 μ 𝓕 fr hS f₂ f₁ h₂ h₁).1 (lagSwap W Y) _ (isLagFrame_lagSwap W Y (fr Y) (hS.frame Y))`. Express the relevant statement in the definitionally equal form `‖lagTerm μ 𝓕 (fr (lagSwap W Y)) f₂ f₁‖ₑ = _`.
+
+Rewrite using `[← h, lagTerm_swap, ← ofReal_norm_eq_enorm, norm_star, ofReal_norm_eq_enorm]`.
+-/
 theorem tsum_comm (hS : SWSetup ψ V W χV χW om νV 𝓗 νW 𝓖 μ 𝓕 fr) {f₁ f₂ : WO V W → ℂ} (h₁ : IsThetaFunO ψ V W f₁)
     (h₂ : IsThetaFunO ψ V W f₂) :
     ∑' Y : Lag W, ‖lagTerm μ 𝓕 (fr Y) f₂ f₁‖ₑ = ∑' Y : Lag W, ‖lagTerm μ 𝓕 (fr Y) f₁ f₂‖ₑ := by
@@ -66,6 +82,11 @@ theorem tsum_comm (hS : SWSetup ψ V W χV χW om νV 𝓗 νW 𝓖 μ 𝓕 fr) 
   change ‖lagTerm μ 𝓕 (fr (lagSwap W Y)) f₂ f₁‖ₑ = _
   rw [← h, lagTerm_swap, ← ofReal_norm_eq_enorm, norm_star, ofReal_norm_eq_enorm]
 
+/- English proof (translation)
+Set `g : GQ W` to `⟨γ, hγ⟩`. Set `e : Lag W ≃ Lag W` to `⟨lagAct W g, lagAct W g⁻¹, fun Y => by rw [← lagAct_mul, inv_mul_cancel, lagAct_one], fun Y => by rw [← lagAct_mul, mul_inv_cancel, lagAct_one]⟩`. Rewrite using `[← e.tsum_eq]`. Use `tsum_congr fun Y => ?_` and prove the remaining obligations. Establish `h` using `(Move.termMove D ψ V W χV χW om νV 𝓗 νW 𝓖 μ 𝓕 fr hS _ f₂ (hS.weil.om_pres (1, γ) f₁ h₁) h₂).1 (lagAct W g Y) _ (isLagFrame_lagAct W g Y (fr Y) (hS.frame Y))`.
+
+Establish `h'` using `((Move.termMove D ψ V W χV χW om νV 𝓗 νW 𝓖 μ 𝓕 fr hS f₁ f₂ h₁ h₂).2 γ hγ (gqMat W g) (gqMat_map W g).symm).1 (fr Y)`. Express the relevant statement in the definitionally equal form `‖lagTerm μ 𝓕 (fr (lagAct W g Y)) (om (1, γ) f₁) f₂‖ₑ = _`. Rewrite using `[← h, h']`.
+-/
 theorem tsum_left (hS : SWSetup ψ V W χV χW om νV 𝓗 νW 𝓖 μ 𝓕 fr) {f₁ f₂ : WO V W → ℂ} (h₁ : IsThetaFunO ψ V W f₁)
     (h₂ : IsThetaFunO ψ V W f₂) {γ : GA D W} (hγ : γ ∈ GQ W) :
     ∑' Y : Lag W, ‖lagTerm μ 𝓕 (fr Y) (om (1, γ) f₁) f₂‖ₑ = ∑' Y : Lag W, ‖lagTerm μ 𝓕 (fr Y) f₁ f₂‖ₑ := by
@@ -84,6 +105,9 @@ theorem tsum_left (hS : SWSetup ψ V W χV χW om νV 𝓗 νW 𝓖 μ 𝓕 fr) 
 
 end
 
+/- English proof (translation)
+Introduce `D ψ V W χV χW om νV 𝓗 νW 𝓖 μ 𝓕 fr hS F₁ F₂ h₁ h₂ γ₁ hγ₁ γ₂ hγ₂`. Establish `p₂` using `hS.weil.om_pres (1, γ₂) F₂ h₂`. Rewrite using `[tsum_left hS h₁ p₂ hγ₁, tsum_comm hS p₂ h₁, tsum_left hS h₂ h₁ hγ₂, tsum_comm hS h₁ h₂]`.
+-/
 theorem tsum_enorm_lagTerm_rat : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (V W : HSp D) (χV χW : (AE D)ˣ →* Circle) (om : GA D V × GA D W →* Module.End ℂ (WO V W → ℂ)) (νV : Measure (GA D V)) (𝓗 : Set (GA D V)) (νW : Measure (GA D W)) (𝓖 : Set (GA D W)) (μ : Measure (WO V W)) (𝓕 : Set (WO V W)) (fr : Lag W → Matrix (Fin W.rank) (Fin W.rank) D.host.E × Matrix (Fin W.rank) (Fin W.rank) D.host.E), SWSetup ψ V W χV χW om νV 𝓗 νW 𝓖 μ 𝓕 fr → ∀ (F₁ F₂ : WO V W → ℂ), IsThetaFunO ψ V W F₁ → IsThetaFunO ψ V W F₂ → ∀ γ₁ ∈ GQ W, ∀ γ₂ ∈ GQ W, ∑' Y : Lag W, ‖lagTerm μ 𝓕 (fr Y) (om (1, γ₁) F₁) (om (1, γ₂) F₂)‖ₑ = ∑' Y : Lag W, ‖lagTerm μ 𝓕 (fr Y) F₁ F₂‖ₑ := by
   intro D ψ V W χV χW om νV 𝓗 νW 𝓖 μ 𝓕 fr hS F₁ F₂ h₁ h₂ γ₁ hγ₁ γ₂ hγ₂
   have p₂ := hS.weil.om_pres (1, γ₂) F₂ h₂

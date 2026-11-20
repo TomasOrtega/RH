@@ -6,6 +6,9 @@ namespace UpperTheory.GalS.Dbl
 
 open Polynomial Matrix
 
+/- English proof (translation)
+Establish `h` using `Submodule.mul_mem_mul hp hq`. Rewrite `h` using `[Submodule.span_mul_span]`. Use `Submodule.span_mono ?_ h` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨a, rfl⟩, _, ⟨b, rfl⟩, rfl⟩`. Conclude with `⟨a * b, map_mul Φ a b⟩`.
+-/
 theorem span_mul_mem {R P Γ : Type} [CommRing R] [Ring P] [Algebra R P] [Monoid Γ] (Φ : Γ →* P) {p q : P}
     (hp : p ∈ Submodule.span R (Set.range Φ)) (hq : q ∈ Submodule.span R (Set.range Φ)) :
     p * q ∈ Submodule.span R (Set.range Φ) := by
@@ -15,6 +18,25 @@ theorem span_mul_mem {R P Γ : Type} [CommRing R] [Ring P] [Algebra R P] [Monoid
   rintro _ ⟨_, ⟨a, rfl⟩, _, ⟨b, rfl⟩, rfl⟩
   exact ⟨a * b, map_mul Φ a b⟩
 
+/- English proof (translation)
+Use `set B := Submodule.span k (Set.range (ρ.prod (Pi.monoidHom χ))) with hB`. Establish `h1 : ∀ N : Matrix (Fin a) (Fin a) k, ∃ w, (N, w) ∈ B` using `fun N => by`. Establish `hN : N ∈ Submodule.span k (Set.range ρ)` using `hρ ▸ Submodule.mem_top`. Proceed by induction on `hN using Submodule.span_induction with`. Consider the case `mem _ h => obtain ⟨g, rfl⟩ := h`.
+
+Conclude with `⟨_, Submodule.subset_span ⟨g, rfl⟩⟩`. Consider the case `zero => exact ⟨0, B.zero_mem⟩`. Consider the case `add _ _ _ _ h h' => obtain ⟨w, h⟩ := h`. Take `⟨w', h'⟩` from `h'`. Conclude with `⟨_, B.add_mem h h'⟩`.
+
+Consider the case `smul c _ _ h => obtain ⟨w, h⟩ := h`. Conclude with `⟨_, B.smul_mem c h⟩`. Establish `h2 : ∀ w : Fin t → k, ∃ N, (N, w) ∈ B` using `fun w => by`. Establish `hli : LinearIndependent k (fun j => (χ j : Γ → k))` using `(linearIndependent_monoidHom Γ k).comp χ hχ`. Establish `hw : w ∈ Submodule.span k (Set.range (flip fun j => (χ j : Γ → k)))` using `(span_flip_eq_top_iff_linearIndependent.2 hli) ▸ Submodule.mem_top`.
+
+Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem _ h => obtain ⟨g, rfl⟩ := h`. Conclude with `⟨_, Submodule.subset_span ⟨g, rfl⟩⟩`. Consider the case `zero => exact ⟨0, B.zero_mem⟩`. Consider the case `add _ _ _ _ h h' => obtain ⟨w, h⟩ := h`.
+
+Take `⟨w', h'⟩` from `h'`. Conclude with `⟨_, B.add_mem h h'⟩`. Consider the case `smul c _ _ h => obtain ⟨w, h⟩ := h`. Conclude with `⟨_, B.smul_mem c h⟩`. Establish `h3 : ∀ N N' : Matrix (Fin a) (Fin a) k, (N', (0 : Fin t → k)) ∈ B → (N * N', (0 : Fin t → k)) ∈ B` using `fun N N' h => by`.
+
+Take `⟨w, hw⟩` from `h1 N`. Simplify using `using span_mul_mem (R := k) _ hw h`. Establish `h4 : ∀ N N' : Matrix (Fin a) (Fin a) k, (N * N' - N' * N, (0 : Fin t → k)) ∈ B` using `fun N N' => by`. Take `⟨w, hw⟩` from `h1 N`. Take `⟨w', hw'⟩` from `h1 N'`.
+
+Use `B.sub_mem (span_mul_mem (R := k) _ hw hw') (span_mul_mem (R := k) _ hw' hw)` as an intermediate fact. Simplify `this` using `[mul_comm w w']`. Use `haveI : Nontrivial (Fin a) := Fin.nontrivial_iff_two_le.2 ha`. Establish `h5 : ∀ i : Fin a, (single i i (1 : k), (0 : Fin t → k)) ∈ B` using `fun i => by`. Take `⟨j, hj⟩` from `exists_ne i`.
+
+Establish `e` using `h3 (single i j 1) _ (h4 (single j j 1) (single j i 1))`. Rewrite `e` using `[single_mul_single_same, single_mul_single_of_ne (h := hj.symm), sub_zero, single_mul_single_same]`. Simplify using `using e`. Establish `h6 : ((1 : Matrix (Fin a) (Fin a) k), (0 : Fin t → k)) ∈ B`. Use `B.sum_mem (t := Finset.univ) fun i _ => h5 i` as an intermediate fact.
+
+Rewrite `this` using `[← prod_mk_sum, sum_single_one, Finset.sum_const_zero]`. Then use the resulting hypothesis. Take `⟨N, hN⟩` from `h2 v`. Use `B.add_mem hN (h3 (M - N) 1 h6)` as an intermediate fact. Simplify using `using this`.
+-/
 theorem span_pair {k Γ : Type} [Field k] [Monoid Γ] {a t : ℕ} (ha : 2 ≤ a) (ρ : Γ →* Matrix (Fin a) (Fin a) k)
     (χ : Fin t → Γ →* k) (hχ : Function.Injective χ) (hρ : Submodule.span k (Set.range ρ) = ⊤)
     (M : Matrix (Fin a) (Fin a) k) (v : Fin t → k) :
@@ -57,6 +79,15 @@ theorem span_pair {k Γ : Type} [Field k] [Monoid Γ] {a t : ℕ} (ha : 2 ≤ a)
   have := B.add_mem hN (h3 (M - N) 1 h6)
   simpa using this
 
+/- English proof (translation)
+Establish `hm : (A.charpoly * B.charpoly).Monic` using `A.charpoly_monic.mul B.charpoly_monic`. Establish `hdeg : (A.charpoly * B.charpoly).natDegree = d + u`. Rewrite using `[A.charpoly_monic.natDegree_mul B.charpoly_monic]`. Simplify using the standard rewrite rules. Rewrite using `[← Matrix.exists_mulVec_eq_zero_iff]`.
+
+Use `⟨fun j => (A.charpoly * B.charpoly).coeff j, fun e => ?_, ?_⟩` and prove the remaining obligations. Use `congrFun e ⟨d + u, h⟩` as an intermediate fact. Simplify using `only [Pi.zero_apply] at this`. Rewrite `this` using `[← hdeg, hm.coeff_natDegree]`. Conclude with `one_ne_zero this`.
+
+Use function extensionality and compare the values at `i`. Establish `key : ∀ {m : ℕ} (C : Matrix (Fin m) (Fin m) K), aeval C (A.charpoly * B.charpoly) = 0 → ∑ j : Fin n, (C ^ ((i : ℕ) + j)).trace * (A.charpoly * B.charpoly).coeff j = 0` using `fun C hC => by`. Rewrite `hC` using `[aeval_eq_sum_range' (n := n) (by omega), Finset.sum_range]`. Use `congrArg (fun Z => (C ^ (i : ℕ) * Z).trace) hC` as an intermediate fact. Simplify using `only [Finset.mul_sum, Matrix.mul_smul, trace_sum, trace_smul, smul_eq_mul, mul_zero, trace_zero, ← pow_add] at this`.
+
+Simplify `this` using `[mul_comm]`. Establish `hA` using `key A (by rw [map_mul, Matrix.aeval_self_charpoly, zero_mul])`. Establish `hB` using `key B (by rw [map_mul, Matrix.aeval_self_charpoly, mul_zero])`. Simplify using `only [mulVec, dotProduct, of_apply, add_mul, Finset.sum_add_distrib, mul_assoc, ← Finset.mul_sum, hA, hB, Pi.zero_apply]`. Simplify using the standard rewrite rules.
+-/
 theorem hankel_zero {K : Type} [Field K] {n d u : ℕ} (h : d + u < n) (A : Matrix (Fin d) (Fin d) K)
     (B : Matrix (Fin u) (Fin u) K) :
     (Matrix.of fun i j : Fin n => 2 * (A ^ ((i : ℕ) + j)).trace + (B ^ ((i : ℕ) + j)).trace).det = 0 := by
@@ -81,6 +112,9 @@ theorem hankel_zero {K : Type} [Field K] {n d u : ℕ} (h : d + u < n) (A : Matr
     simp only [mulVec, dotProduct, of_apply, add_mul, Finset.sum_add_distrib, mul_assoc, ← Finset.mul_sum, hA, hB, Pi.zero_apply]
     simp
 
+/- English proof (translation)
+Establish `e : (Matrix.of fun i j : Fin n => ∑ c, ν c ^ ((i : ℕ) + j)) = (vandermonde ν)ᵀ * vandermonde ν`. Use extensionality with `i j`. Simplify using `[Matrix.mul_apply, pow_add]`. Rewrite using `[e, det_mul, det_transpose]`. Conclude with `mul_ne_zero (det_vandermonde_ne_zero_iff.2 hν) (det_vandermonde_ne_zero_iff.2 hν)`.
+-/
 theorem hankel_ne {k : Type} [Field k] {n : ℕ} (ν : Fin n → k) (hν : Function.Injective ν) :
     (Matrix.of fun i j : Fin n => ∑ c, ν c ^ ((i : ℕ) + j)).det ≠ 0 := by
   have e : (Matrix.of fun i j : Fin n => ∑ c, ν c ^ ((i : ℕ) + j)) = (vandermonde ν)ᵀ * vandermonde ν := by
@@ -88,6 +122,27 @@ theorem hankel_ne {k : Type} [Field k] {n : ℕ} (ν : Fin n → k) (hν : Funct
   rw [e, det_mul, det_transpose]
   exact mul_ne_zero (det_vandermonde_ne_zero_iff.2 hν) (det_vandermonde_ne_zero_iff.2 hν)
 
+/- English proof (translation)
+Use `letI := f.toAlgebra`. Use `letI := res.toAlgebra`. Set `Φ` to `r.prod ((σ.prod υ).prod (ρ.prod (Pi.monoidHom χ)))`. Set `S` to `Submodule.span O (Set.range Φ)`. Establish `hS : ∀ p ∈ S, f p.1.trace = 2 * p.2.1.1.trace + p.2.1.2.trace ∧ res p.1.trace = p.2.2.1.trace + ∑ j, p.2.2.2 j`.
+
+Introduce `p hp`. Proceed by induction on `hp using Submodule.span_induction with`. Consider the case `mem _ h => obtain ⟨g, rfl⟩ := h`. Conclude with `⟨h1 g, h2 g⟩`. Consider the case `zero => simp`.
+
+Consider the case `add _ _ _ _ h h'`. Simplify using `only [Prod.fst_add, Prod.snd_add, trace_add, map_add, h.1, h.2, h'.1, h'.2, Pi.add_apply, Finset.sum_add_distrib]`. Apply the tactic sequence `constructor <;> ring`. Consider the case `smul c _ _ h`. Establish `a1 : ∀ z : K, c • z = f c * z` using `fun z => Algebra.smul_def c z`.
+
+Establish `a2 : ∀ z : k, c • z = res c * z` using `fun z => Algebra.smul_def c z`. Simplify using `only [Prod.smul_fst, Prod.smul_snd, trace_smul, smul_eq_mul, map_mul, h.1, h.2, Pi.smul_apply, a1, a2, ← Finset.mul_sum]`. Apply the tactic sequence `constructor <;> ring`. Establish `hl : ∀ q ∈ Submodule.span k (Set.range (ρ.prod (Pi.monoidHom χ))), ∃ p ∈ S, p.2.2 = q`. Introduce `q hq`.
+
+Proceed by induction on `hq using Submodule.span_induction with`. Consider the case `mem _ h => obtain ⟨g, rfl⟩ := h`. Conclude with `⟨Φ g, Submodule.subset_span ⟨g, rfl⟩, rfl⟩`. Consider the case `zero => exact ⟨0, S.zero_mem, rfl⟩`. Consider the case `add _ _ _ _ h h' => obtain ⟨p, hp, rfl⟩ := h`.
+
+Take `⟨p', hp', rfl⟩` from `h'`. Conclude with `⟨_, S.add_mem hp hp', rfl⟩`. Consider the case `smul c _ _ h`. Take `⟨p, hp, rfl⟩` from `h`. Take `⟨c, rfl⟩` from `hres c`.
+
+Conclude with `⟨_, S.smul_mem c hp, (algebraMap_smul k c p.2.2).symm⟩`. Take `⟨p, hp, e⟩` from `hl _ (span_pair ha ρ χ hχ hρ (diagonal fun i => ν (Fin.castAdd t i)) fun j => ν (Fin.natAdd a j))`. Establish `hpow : ∀ m : ℕ, p ^ m ∈ S` using `fun m => by`. Proceed by induction on `m with`. Consider the case `zero => exact Submodule.subset_span ⟨1, by rw [map_one, pow_zero]⟩`.
+
+Consider the case `succ m ih => rw [pow_succ]`. Conclude with `span_mul_mem Φ ih hp`. Set `Hm : Matrix (Fin (a + t)) (Fin (a + t)) O` to `Matrix.of fun i j => (p.1 ^ ((i : ℕ) + j)).trace`. Establish `e1 : f.mapMatrix Hm = Matrix.of fun i j : Fin (a + t) => 2 * (p.2.1.1 ^ ((i : ℕ) + j)).trace + (p.2.1.2 ^ ((i : ℕ) + j)).trace`. Use extensionality with `i j`.
+
+Conclude with `(hS _ (hpow _)).1`. Establish `e2 : res.mapMatrix Hm = Matrix.of fun i j : Fin (a + t) => ∑ c, ν c ^ ((i : ℕ) + j)`. Use extensionality with `i j`. Use `(hS _ (hpow ((i : ℕ) + j))).2` as an intermediate fact. Simplify using `only [Prod.pow_snd, Prod.pow_fst, e, diagonal_pow, trace_diagonal, Pi.pow_apply] at this`.
+
+Rewrite using `[of_apply, Fin.sum_univ_add]`. Conclude with `this`. Establish `z : Hm.det = 0` using `hf (by rw [RingHom.map_det, e1, hankel_zero hdu, map_zero])`. Conclude with `hankel_ne ν hν (by rw [← e2, ← RingHom.map_det, z, map_zero])`.
+-/
 theorem core {O K k Γ : Type} [CommRing O] [Field K] [Field k] [Monoid Γ] (f : O →+* K) (hf : Function.Injective f)
     (res : O →+* k) (hres : Function.Surjective res) {a t d u : ℕ} (ha : 2 ≤ a) (hdu : d + u < a + t)
     (r : Γ →* Matrix (Fin (a + t)) (Fin (a + t)) O) (σ : Γ →* Matrix (Fin d) (Fin d) K) (υ : Γ →* Matrix (Fin u) (Fin u) K)

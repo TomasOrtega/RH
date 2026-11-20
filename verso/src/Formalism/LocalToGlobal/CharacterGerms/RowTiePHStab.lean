@@ -15,14 +15,25 @@ section Coeff
 
 variable {τ : Type}
 
+/- English proof (translation)
+Introduce `ν hν`. Rewrite using `[map_sub, hf ν hν, hg ν hν, sub_zero]`.
+-/
 theorem Van.sub {T : Set τ} {f g : MvPowerSeries τ C} (hf : Van T f) (hg : Van T g) : Van T (f - g) := by
   intro ν hν
   rw [map_sub, hf ν hν, hg ν hν, sub_zero]
 
+/- English proof (translation)
+Rewrite using `[mul_comm]`. Conclude with `hf.mul_right g`.
+-/
 theorem Van.mul_left {T : Set τ} {f : MvPowerSeries τ C} (hf : Van T f) (g : MvPowerSeries τ C) : Van T (g * f) := by
   rw [mul_comm]
   exact hf.mul_right g
 
+/- English proof (translation)
+Unfold `Finsupp.prod`. Rewrite using `[← Finset.mul_prod_erase _ _ hs]`. Apply `Van.mul_right` to reduce the goal to its premises. Take `⟨m, hm⟩` from `Nat.exists_eq_succ_of_ne_zero (Finsupp.mem_support_iff.1 hs)`. Use `show Van T (a s ^ e s)`.
+
+Rewrite using `[hm, pow_succ']`. Conclude with `ha.mul_right _`.
+-/
 theorem van_prod {σ : Type} {T : Set τ} {a : σ → MvPowerSeries τ C} {e : σ →₀ ℕ} {s : σ} (hs : s ∈ e.support)
     (ha : Van T (a s)) : Van T (e.prod fun s m => a s ^ m) := by
   unfold Finsupp.prod
@@ -33,6 +44,15 @@ theorem van_prod {σ : Type} {T : Set τ} {a : σ → MvPowerSeries τ C} {e : �
   rw [hm, pow_succ']
   exact ha.mul_right _
 
+/- English proof (translation)
+Rewrite using `[coeff_mul]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce and unpack `⟨a, b⟩ hab`. Establish `hab' : a + b = e` using `Finset.HasAntidiagonal.mem_antidiagonal.1 hab`. Distinguish the cases in `ha : ∀ w ∈ a.support, w ∉ T`.
+
+Rewrite using `[hF a ha, zero_mul]`. Distinguish the cases in `hb : ∀ w ∈ b.support, w ∉ T`. Rewrite using `[hG b hb, mul_zero]`. Use `exfalso push Not at ha hb`. Take `⟨s, hs, hsT⟩` from `ha`.
+
+Take `⟨s', hs', hsT'⟩` from `hb`. Establish `h1 : a s ≠ 0` using `Finsupp.mem_support_iff.1 hs`. Establish `h2 : b s' ≠ 0` using `Finsupp.mem_support_iff.1 hs'`. Establish `e1 : e s = a s + b s` using `by rw [← hab']; rfl`. Establish `e2 : e s' = a s' + b s'` using `by rw [← hab']; rfl`.
+
+Establish `hsP : s = P` using `he s hsT (by omega)`. Establish `hsP' : s' = P` using `he s' hsT' (by omega)`. Substitute `hsP` using the available equality. Substitute `hsP'` using the available equality. Use linear arithmetic over natural numbers and integers.
+-/
 theorem coeff_mul_van_van {T : Set τ} {F G : MvPowerSeries τ C} (hF : Van T F) (hG : Van T G) (e : τ →₀ ℕ) (P : τ)
     (he : ∀ s ∈ T, e s ≠ 0 → s = P) (hP : e P ≤ 1) : coeff e (F * G) = 0 := by
   rw [coeff_mul]
@@ -59,20 +79,59 @@ theorem coeff_mul_van_van {T : Set τ} {F G : MvPowerSeries τ C} (hF : Van T F)
 
 def E2 (P Q : τ) : τ →₀ ℕ := Finsupp.single P 1 + Finsupp.single Q 1
 
+/- English proof (translation)
+Simplify using `[E2, h.symm]`.
+-/
 theorem exchangeTwo_self_eq_one {P Q : τ} (h : P ≠ Q) : E2 P Q P = 1 := by
   simp [E2, h.symm]
 
+/- English proof (translation)
+Simplify using `[E2, h]`.
+-/
 theorem elementary_pair_apply_second {P Q : τ} (h : P ≠ Q) : E2 P Q Q = 1 := by
   simp [E2, h]
 
+/- English proof (translation)
+Simplify using `[E2, h1.symm, h2.symm]`.
+-/
 theorem elementary_pair_eq_zero_of_ne {P Q s : τ} (h1 : s ≠ P) (h2 : s ≠ Q) : E2 P Q s = 0 := by
   simp [E2, h1.symm, h2.symm]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Conclude with `h (elementary_pair_eq_zero_of_ne hc.1 hc.2)`.
+-/
 theorem elementary_pair_support {P Q s : τ} (h : E2 P Q s ≠ 0) : s = P ∨ s = Q := by
   by_contra hc
   push Not at hc
   exact h (elementary_pair_eq_zero_of_ne hc.1 hc.2)
 
+/- English proof (translation)
+Rewrite using `[coeff_mul]`. Rewrite using `[Finset.sum_eq_single ((Finsupp.single P 1, Finsupp.single Q 1) : (τ →₀ ℕ) × (τ →₀ ℕ))]`. Introduce and unpack `⟨a, b⟩ hab hne`. Establish `hab' : a + b = E2 P Q` using `Finset.HasAntidiagonal.mem_antidiagonal.1 hab`. Establish `hs : ∀ s, a s + b s = E2 P Q s` using `fun s => by rw [← hab']; rfl`.
+
+Distinguish the cases in `ha : ∀ w ∈ a.support, w ∉ T1`. Rewrite using `[hF a ha, zero_mul]`. Distinguish the cases in `hb : ∀ w ∈ b.support, w ∉ T2`. Rewrite using `[hG b hb, mul_zero]`. Use `exfalso push Not at ha hb`.
+
+Take `⟨s, hs1, hsT⟩` from `ha`. Take `⟨s', hs1', hsT'⟩` from `hb`. Establish `h1 : a s ≠ 0` using `Finsupp.mem_support_iff.1 hs1`. Establish `h2 : b s' ≠ 0` using `Finsupp.mem_support_iff.1 hs1'`. Establish `hsP : s = P`.
+
+Break down `elementary_pair_support (P := P) (Q := Q) (s := s) (by have := hs s; omega) with h | h` into its components or cases. Conclude with `h`. Conclude with `absurd (h ▸ hsT) hQ`. Establish `hsQ : s' = Q`. Break down `elementary_pair_support (P := P) (Q := Q) (s := s') (by have := hs s'; omega) with h | h` into its components or cases.
+
+Conclude with `absurd (h ▸ hsT') hP`. Conclude with `h`. Substitute `hsP` using the available equality. Substitute `hsQ` using the available equality. Establish `hP1` using `hs s`.
+
+Establish `hQ1` using `hs s'`. Rewrite `hP1` using `[exchangeTwo_self_eq_one hPQ]`. Rewrite `hQ1` using `[elementary_pair_apply_second hPQ]`. Apply `hne` to reduce the goal to its premises. Establish `ea : a = Finsupp.single s 1`.
+
+Use extensionality with `x`. Distinguish the cases in `hx : x = s`. Substitute `hx` using the available equality. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
+
+Distinguish the cases in `hx' : x = s'`. Substitute `hx'` using the available equality. Rewrite using `[Finsupp.single_apply, if_neg (Ne.symm hx)]`. Use linear arithmetic over natural numbers and integers. Use `hs x` as an intermediate fact.
+
+Rewrite `this` using `[elementary_pair_eq_zero_of_ne hx hx']`. Rewrite using `[Finsupp.single_apply, if_neg (Ne.symm hx)]`. Use linear arithmetic over natural numbers and integers. Establish `eb : b = Finsupp.single s' 1`. Use extensionality with `x`.
+
+Distinguish the cases in `hx' : x = s'`. Substitute `hx'` using the available equality. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Distinguish the cases in `hx : x = s`.
+
+Substitute `hx` using the available equality. Rewrite using `[Finsupp.single_apply, if_neg (Ne.symm hx')]`. Use linear arithmetic over natural numbers and integers. Use `hs x` as an intermediate fact. Rewrite `this` using `[elementary_pair_eq_zero_of_ne hx hx']`.
+
+Rewrite using `[Finsupp.single_apply, if_neg (Ne.symm hx')]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[ea, eb]`. Introduce `h`. Use `absurd ?_ h` and prove the remaining obligations.
+
+Rewrite using `[Finset.HasAntidiagonal.mem_antidiagonal]`. Unfold `E2`. Both sides reduce to the same expression.
+-/
 theorem coeff_mul_van_two {T1 T2 : Set τ} {F G : MvPowerSeries τ C} (hF : Van T1 F) (hG : Van T2 G) {P Q : τ}
     (hPQ : P ≠ Q) (hQ : Q ∉ T1) (hP : P ∉ T2) :
     coeff (E2 P Q) (F * G) = coeff (Finsupp.single P 1) F * coeff (Finsupp.single Q 1) G := by
@@ -137,6 +196,15 @@ section Subst
 
 variable {τ κ : Type} [Fintype κ]
 
+/- English proof (translation)
+Establish `hne : ∀ x y : κ, ((0 : Fin 2), x) ≠ ((1 : Fin 2), y)` using `fun x y e => by`. Establish `h01 : (0 : Fin 2) = 1` using `congrArg Prod.fst e`. Conclude with `absurd h01 (by decide)`. Prove the components needed by the constructor for the conclusion. Establish `h1 : E2 ((0 : Fin 2), i') ((1 : Fin 2), j') ((0 : Fin 2), i) ≠ 0`.
+
+Rewrite using `[← h, exchangeTwo_self_eq_one (hne i j)]`. Conclude with `one_ne_zero`. Break down `elementary_pair_support h1 with e | e` into its components or cases. Conclude with `(Prod.mk.inj e).2`. Conclude with `absurd e (hne i j')`.
+
+Establish `h1 : E2 ((0 : Fin 2), i') ((1 : Fin 2), j') ((1 : Fin 2), j) ≠ 0`. Rewrite using `[← h, elementary_pair_apply_second (hne i j)]`. Conclude with `one_ne_zero`. Break down `elementary_pair_support h1 with e | e` into its components or cases. Conclude with `absurd e.symm (hne i' j)`.
+
+Conclude with `(Prod.mk.inj e).2`.
+-/
 theorem elementary_pair_injective {i i' j j' : κ} (h : E2 ((0 : Fin 2), i) ((1 : Fin 2), j) = E2 ((0 : Fin 2), i') ((1 : Fin 2), j')) :
     i = i' ∧ j = j' := by
   have hne : ∀ x y : κ, ((0 : Fin 2), x) ≠ ((1 : Fin 2), y) := fun x y e => by
@@ -154,6 +222,35 @@ theorem elementary_pair_injective {i i' j j' : κ} (h : E2 ((0 : Fin 2), i) ((1 
     · exact absurd e.symm (hne i' j)
     · exact (Prod.mk.inj e).2
 
+/- English proof (translation)
+Establish `hne : ∀ x y : κ, ((0 : Fin 2), x) ≠ ((1 : Fin 2), y)` using `fun x y e => by`. Establish `h01 : (0 : Fin 2) = 1` using `congrArg Prod.fst e`. Conclude with `absurd h01 (by decide)`. Establish `he1 : ∀ s ∈ T1, E2 P Q s ≠ 0 → s = P` using `fun s hs h0 => by`. Break down `elementary_pair_support h0 with e | e` into its components or cases.
+
+Conclude with `e`. Conclude with `absurd (e ▸ hs) hQ`. Establish `he2 : ∀ s ∈ T2, E2 P Q s ≠ 0 → s = Q` using `fun s hs h0 => by`. Break down `elementary_pair_support h0 with e | e` into its components or cases. Conclude with `absurd (e ▸ hs) hP`.
+
+Conclude with `e`. Rewrite using `[coeff_subst (hasSubst_of_constantCoeff_zero ha0)]`. Establish `hprod : ∀ (i j : κ) (d' : Fin 2 × κ →₀ ℕ), ((E2 ((0 : Fin 2), i) ((1 : Fin 2), j) + d').prod fun s m => a s ^ m) = a (0, i) * a (1, j) * d'.prod fun s m => a s ^ m`. Introduce `i j d'`. Unfold `E2`.
+
+Rewrite using `[Finsupp.prod_add_index' (fun _ => pow_zero _) (fun _ _ _ => pow_add _ _ _), Finsupp.prod_add_index' (fun _ => pow_zero _) (fun _ _ _ => pow_add _ _ _), Finsupp.prod_single_index (h := fun s m => a s ^ m) (pow_zero _), Finsupp.prod_single_index (h := fun s m => a s ^ m) (pow_zero …`. Establish `hsupp : (Function.support fun d : Fin 2 × κ →₀ ℕ => coeff d h • coeff (E2 P Q) (d.prod fun s m => a s ^ m)) ⊆ ↑((Finset.univ : Finset (κ × κ)).image fun ij => E2 ((0 : Fin 2), ij.1) ((1 : Fin 2), ij.2))`. Introduce `d hd`. Assume the negation of the conclusion as `hnot`. Apply `hd` to reduce the goal to its premises.
+
+Use `show coeff d h • coeff (E2 P Q) (d.prod fun s m => a s ^ m) = 0`. Distinguish the cases in `hx : ∀ s ∈ d.support, s.1 ≠ 0`. Rewrite using `[hh 0 d hx, zero_smul]`. Distinguish the cases in `hz : ∀ s ∈ d.support, s.1 ≠ 1`. Rewrite using `[hh 1 d hz, zero_smul]`.
+
+Use `push Not at hx hz`. Take `⟨⟨g, i⟩, hs, hg⟩` from `hx`. Take `⟨⟨g', j⟩, hs', hg'⟩` from `hz`. Establish `hg0 : g = 0` using `hg`. Establish `hg1 : g' = 1` using `hg'`.
+
+Substitute `hg0` using the available equality. Substitute `hg1` using the available equality. Establish `hle : E2 ((0 : Fin 2), i) ((1 : Fin 2), j) ≤ d`. Introduce `x`. Distinguish the cases in `h1 : x = ((0 : Fin 2), i)`.
+
+Rewrite using `[h1, exchangeTwo_self_eq_one (hne i j)]`. Conclude with `Nat.one_le_iff_ne_zero.2 (Finsupp.mem_support_iff.1 hs)`. Distinguish the cases in `h2 : x = ((1 : Fin 2), j)`. Rewrite using `[h2, elementary_pair_apply_second (hne i j)]`. Conclude with `Nat.one_le_iff_ne_zero.2 (Finsupp.mem_support_iff.1 hs')`.
+
+Rewrite using `[elementary_pair_eq_zero_of_ne h1 h2]`. Conclude with `Nat.zero_le _`. Establish `hd' : d = E2 ((0 : Fin 2), i) ((1 : Fin 2), j) + (d - E2 ((0 : Fin 2), i) ((1 : Fin 2), j))` using `(add_tsub_cancel_of_le hle).symm`. Use `set d' := d - E2 ((0 : Fin 2), i) ((1 : Fin 2), j) with hd'def`. Establish `hd'0 : d' ≠ 0`.
+
+Introduce `h0`. Apply `hnot` to reduce the goal to its premises. Rewrite using `[Finset.coe_image, Set.mem_image]`. Conclude with `⟨(i, j), by simp, by rw [hd', h0, add_zero]⟩`. Take `⟨⟨g'', t⟩, hs''⟩` from `Finsupp.support_nonempty_iff.2 hd'0`.
+
+Rewrite using `[hd', hprod]`. Establish `hall : ∀ x : Fin 2, x = 0 ∨ x = 1` using `by decide`. Establish `hcase : g'' = 0 ∨ g'' = 1` using `hall g''`. Break down `hcase with rfl | rfl` into its components or cases. Rewrite using `[mul_assoc, coeff_mul_van_van (hax i) ((van_prod hs'' (hax t)).mul_left _) (E2 P Q) P he1 (le_of_eq (exchangeTwo_self_eq_one hPQ)), smul_zero]`.
+
+Rewrite using `[mul_comm (a (0, i)), mul_assoc, coeff_mul_van_van (haz j) ((van_prod hs'' (haz t)).mul_left _) (E2 P Q) Q he2 (le_of_eq (elementary_pair_apply_second hPQ)), smul_zero]`. Rewrite using `[finsum_eq_sum_of_support_subset _ hsupp, Finset.sum_image, Fintype.sum_prod_type]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `i _`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises.
+
+Introduce `j _`. Use `hprod i j 0` as an intermediate fact. Rewrite `this` using `[add_zero, Finsupp.prod_zero_index, mul_one]`. Rewrite using `[this, coeff_mul_van_two (hax i) (haz j) hPQ hQ hP, smul_eq_mul]`. Introduce `x _ y _ hxy`.
+
+Take `⟨h1, h2⟩` from `elementary_pair_injective hxy`. Conclude with `Prod.ext h1 h2`.
+-/
 theorem coeff_subst_bil {T1 T2 : Set τ} {a : Fin 2 × κ → MvPowerSeries τ C}
     (ha0 : ∀ s, constantCoeff (a s) = 0) (hax : ∀ i, Van T1 (a (0, i))) (haz : ∀ j, Van T2 (a (1, j)))
     {P Q : τ} (hPQ : P ≠ Q) (hQ : Q ∉ T1) (hP : P ∉ T2) {h : MvPowerSeries (Fin 2 × κ) C}
@@ -245,6 +342,11 @@ section Exp
 
 variable [CharZero C] {n dd : ℕ}
 
+/- English proof (translation)
+Unfold `FB.expS`. Establish `h0 : PowerSeries.HasSubst f` using `PowerSeries.HasSubst.of_constantCoeff_zero hf.const`. Rewrite using `[PowerSeries.coeff_subst h0, finsum_eq_single _ 1]`. Simplify using `[PowerSeries.coeff_exp]`. Introduce `m hm`.
+
+Break down `m with _ | _ | k` into its components or cases. Rewrite using `[pow_zero, coeff_one, if_neg he0, smul_zero]`. Conclude with `absurd rfl hm`. Establish `e2 : f ^ (k + 1 + 1) = f * (f * f ^ k)` using `by ring`. Rewrite using `[e2, coeff_mul_van_van hf (hf.mul_right _) e P he hP, smul_zero]`.
+-/
 theorem coeff_expS_bil {T : Set (Fin n × Fin dd)} {f : PS C n dd} (hf : Van T f) (e : Fin n × Fin dd →₀ ℕ)
     (P : Fin n × Fin dd) (he : ∀ s ∈ T, e s ≠ 0 → s = P) (hP : e P ≤ 1) (he0 : e ≠ 0) :
     coeff e (FB.expS C f) = coeff e f := by
@@ -267,6 +369,9 @@ variable {dd : ℕ}
 
 def Tg (dd : ℕ) (g : Fin 2) : Set (Fin 2 × Fin dd) := {s | s.1 = g}
 
+/- English proof (translation)
+Introduce `ν hν`. Rewrite using `[coeff_X, if_neg]`. Introduce `h`. Conclude with `hν s (by rw [h]; simp) hs`.
+-/
 theorem van_X {τ : Type} {T : Set τ} {s : τ} (hs : s ∈ T) : Van T (X s : MvPowerSeries τ C) := by
   intro ν hν
   rw [coeff_X, if_neg]
@@ -276,6 +381,11 @@ theorem van_X {τ : Type} {T : Set τ} {s : τ} (hs : s ∈ T) : Van T (X s : Mv
 def bil (F : PS C 2 dd) (w v : Fin dd → C) : C :=
   ∑ i, ∑ j, coeff (E2 ((0 : Fin 2), i) ((1 : Fin 2), j)) F * (w i * v j)
 
+/- English proof (translation)
+Unfold `bil`. Rewrite using `[Finset.mul_sum]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `i _`. Rewrite using `[Finset.mul_sum]`.
+
+Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `j _`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem bil_smul_left (F : PS C 2 dd) (c : C) (w v : Fin dd → C) : bil F (c • w) v = c * bil F w v := by
   unfold bil
   rw [Finset.mul_sum]
@@ -287,6 +397,11 @@ theorem bil_smul_left (F : PS C 2 dd) (c : C) (w v : Fin dd → C) : bil F (c �
   simp only [Pi.smul_apply, smul_eq_mul]
   ring
 
+/- English proof (translation)
+Unfold `bil`. Rewrite using `[Finset.mul_sum]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `i _`. Rewrite using `[Finset.mul_sum]`.
+
+Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `j _`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem bil_smul_right (F : PS C 2 dd) (c : C) (w v : Fin dd → C) : bil F w (c • v) = c * bil F w v := by
   unfold bil
   rw [Finset.mul_sum]
@@ -298,6 +413,11 @@ theorem bil_smul_right (F : PS C 2 dd) (c : C) (w v : Fin dd → C) : bil F w (c
   simp only [Pi.smul_apply, smul_eq_mul]
   ring
 
+/- English proof (translation)
+Unfold `bil`. Rewrite using `[← Finset.sum_sub_distrib]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `i _`. Rewrite using `[← Finset.sum_sub_distrib]`.
+
+Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `j _`. Rewrite using `[map_sub, sub_mul]`.
+-/
 theorem bil_sub (F G : PS C 2 dd) (w v : Fin dd → C) : bil (F - G) w v = bil F w v - bil G w v := by
   unfold bil
   rw [← Finset.sum_sub_distrib]
@@ -308,10 +428,16 @@ theorem bil_sub (F G : PS C 2 dd) (w v : Fin dd → C) : bil (F - G) w v = bil F
   intro j _
   rw [map_sub, sub_mul]
 
+/- English proof (translation)
+The claim follows from `VF.Ge.sum fun i _ => VF.Ge.sum fun j _ => (hF _).mul_int ((hw i).mul_int (hv j))`.
+-/
 theorem bil_int {V : VF C} {F : PS C 2 dd} (hF : IntS V F) {w v : Fin dd → C} (hw : ∀ i, V.Ge 0 (w i))
     (hv : ∀ i, V.Ge 0 (v i)) : V.Ge 0 (bil F w v) :=
   VF.Ge.sum fun i _ => VF.Ge.sum fun j _ => (hF _).mul_int ((hw i).mul_int (hv j))
 
+/- English proof (translation)
+Use `show ev ![pt C (n := 2) dd g] (φ i) = _`. Rewrite using `[eval_single_eq_subst]`. Both sides reduce to the same expression.
+-/
 theorem comp_coordinate_point (φ : Pt C 1 dd) (g : Fin 2) (i : Fin dd) :
     comp1 φ (pt C (n := 2) dd g) i =
       MvPowerSeries.subst (fun q : Fin 1 × Fin dd => (X (g, q.2) : PS C 2 dd)) (φ i) := by
@@ -319,12 +445,18 @@ theorem comp_coordinate_point (φ : Pt C 1 dd) (g : Fin 2) (i : Fin dd) :
   rw [eval_single_eq_subst]
   rfl
 
+/- English proof (translation)
+Rewrite using `[comp_coordinate_point]`. Conclude with `Van.subst Set.univ (fun _ => constantCoeff_X _) (fun q _ => van_X (show (g, q.2) ∈ Tg dd g from rfl)) (van_univ (hφ i))`.
+-/
 theorem van_comp1_pt {φ : Pt C 1 dd} (hφ : ∀ i, constantCoeff (φ i) = 0) (g : Fin 2) (i : Fin dd) :
     Van (Tg dd g) (comp1 φ (pt C (n := 2) dd g) i) := by
   rw [comp_coordinate_point]
   exact Van.subst Set.univ (fun _ => constantCoeff_X _) (fun q _ => van_X (show (g, q.2) ∈ Tg dd g from rfl))
     (van_univ (hφ i))
 
+/- English proof (translation)
+Rewrite using `[comp_coordinate_point]`. Establish `hinj : Function.Injective (fun q : Fin 1 × Fin dd => (g, q.2))` using `fun x y h => Prod.ext (Subsingleton.elim _ _) (Prod.mk.inj h).2`. Use `coeff_subst_rename_inj (C := C) (fun q : Fin 1 × Fin dd => (g, q.2)) hinj (φ i) (Finsupp.single ((0 : Fin 1), k) 1)` as an intermediate fact. Rewrite `this` using `[Finsupp.mapDomain_single]`. Conclude with `this`.
+-/
 theorem coeff_comp1_pt (φ : Pt C 1 dd) (g : Fin 2) (i k : Fin dd) :
     coeff (Finsupp.single (g, k) 1) (comp1 φ (pt C (n := 2) dd g) i) =
       coeff (Finsupp.single ((0 : Fin 1), k) 1) (φ i) := by
@@ -336,6 +468,11 @@ theorem coeff_comp1_pt (φ : Pt C 1 dd) (g : Fin 2) (i k : Fin dd) :
   rw [Finsupp.mapDomain_single] at this
   exact this
 
+/- English proof (translation)
+Rewrite using `[coeff_X]`. Distinguish the cases in `h : j = k`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[if_neg h, if_neg]`.
+
+Introduce `e`. Conclude with `h (Prod.mk.inj ((Finsupp.single_left_inj one_ne_zero).1 e)).2.symm`.
+-/
 theorem coeff_single_X (g : Fin 2) (j k : Fin dd) :
     coeff (Finsupp.single (g, k) 1) (X (g, j) : PS C 2 dd) = if j = k then 1 else 0 := by
   rw [coeff_X]
@@ -345,6 +482,9 @@ theorem coeff_single_X (g : Fin 2) (j k : Fin dd) :
     intro e
     exact h (Prod.mk.inj ((Finsupp.single_left_inj one_ne_zero).1 e)).2.symm
 
+/- English proof (translation)
+Introduce `e` and use `by have h01 : (0 : Fin 2) = 1 := congrArg Prod.fst e exact absurd h01 (by decide)`.
+-/
 theorem ne01 (x y : Fin dd) : ((0 : Fin 2), x) ≠ ((1 : Fin 2), y) := fun e => by
   have h01 : (0 : Fin 2) = 1 := congrArg Prod.fst e
   exact absurd h01 (by decide)
@@ -355,6 +495,13 @@ variable {h : PS C 2 dd}
 
 include hh hφ
 
+/- English proof (translation)
+Unfold `ev`. Rewrite using `[coeff_subst_bil (T1 := Tg dd 0) (T2 := Tg dd 1) (κ := Fin dd) (a := fun p : Fin 2 × Fin dd => ![comp1 φ (pt C (n := 2) dd 0), pt C dd 1] p.1 p.2) ?_ (fun i => van_comp1_pt hφ 0 i) (fun j => van_X (show ((1 : Fin 2), j) ∈ Tg dd 1 from rfl)) (ne01 i0 j0) (fun e => absurd (show (1 …`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `i _`. Establish `h1 : ∀ j, coeff (Finsupp.single ((1 : Fin 2), j0) 1) ((![comp1 φ (pt C (n` using `2) dd 0), pt C dd 1] ((1 : Fin 2), j).1) ((1 : Fin 2), j).2) = if j = j0 then 1 else 0 := fun j => coeff_single_X 1 j j0`.
+
+Establish `h2 : coeff (Finsupp.single ((0 : Fin 2), i0) 1) ((![comp1 φ (pt C (n` using `2) dd 0), pt C dd 1] ((0 : Fin 2), i).1) ((0 : Fin 2), i).2) = coeff (Finsupp.single ((0 : Fin 1), i0) 1) (φ i) := coeff_comp1_pt φ 0 i i0`. Simplify using `only [h1, h2]`. Simplify using the standard rewrite rules. Introduce and unpack `⟨g, i⟩`. Establish `hall : ∀ x : Fin 2, x = 0 ∨ x = 1` using `by decide`.
+
+Break down `hall g with rfl | rfl` into its components or cases. Conclude with `(van_comp1_pt hφ 0 i).const`. Conclude with `constantCoeff_X _`.
+-/
 theorem coeff_ev_left (i0 j0 : Fin dd) :
     coeff (E2 ((0 : Fin 2), i0) ((1 : Fin 2), j0)) (ev (n := 2) ![comp1 φ (pt C dd 0), pt C dd 1] h) =
       ∑ i, coeff (E2 ((0 : Fin 2), i) ((1 : Fin 2), j0)) h * coeff (Finsupp.single ((0 : Fin 1), i0) 1) (φ i) := by
@@ -380,6 +527,13 @@ theorem coeff_ev_left (i0 j0 : Fin dd) :
     · exact (van_comp1_pt hφ 0 i).const
     · exact constantCoeff_X _
 
+/- English proof (translation)
+Unfold `ev`. Rewrite using `[coeff_subst_bil (T1 := Tg dd 0) (T2 := Tg dd 1) (κ := Fin dd) (a := fun p : Fin 2 × Fin dd => ![pt C (n := 2) dd 0, comp1 φ (pt C dd 1)] p.1 p.2) ?_ (fun i => van_X (show ((0 : Fin 2), i) ∈ Tg dd 0 from rfl)) (fun j => van_comp1_pt hφ 1 j) (ne01 i0 j0) (fun e => absurd (show (1 …`. Establish `h1 : ∀ i, coeff (Finsupp.single ((0 : Fin 2), i0) 1) ((![pt C (n` using `2) dd 0, comp1 φ (pt C dd 1)] ((0 : Fin 2), i).1) ((0 : Fin 2), i).2) = if i = i0 then 1 else 0 := fun i => coeff_single_X 0 i i0`. Establish `h2 : ∀ j, coeff (Finsupp.single ((1 : Fin 2), j0) 1) ((![pt C (n` using `2) dd 0, comp1 φ (pt C dd 1)] ((1 : Fin 2), j).1) ((1 : Fin 2), j).2) = coeff (Finsupp.single ((0 : Fin 1), j0) 1) (φ j) := fun j => coeff_comp1_pt φ 1 j j0`. Simplify using `only [h1, h2]`.
+
+Simplify using the standard rewrite rules. Introduce and unpack `⟨g, i⟩`. Establish `hall : ∀ x : Fin 2, x = 0 ∨ x = 1` using `by decide`. Break down `hall g with rfl | rfl` into its components or cases. Conclude with `constantCoeff_X _`.
+
+Conclude with `(van_comp1_pt hφ 1 i).const`.
+-/
 theorem coeff_ev_right (i0 j0 : Fin dd) :
     coeff (E2 ((0 : Fin 2), i0) ((1 : Fin 2), j0)) (ev (n := 2) ![pt C dd 0, comp1 φ (pt C dd 1)] h) =
       ∑ j, coeff (E2 ((0 : Fin 2), i0) ((1 : Fin 2), j)) h * coeff (Finsupp.single ((0 : Fin 1), j0) 1) (φ j) := by
@@ -403,6 +557,13 @@ theorem coeff_ev_right (i0 j0 : Fin dd) :
     · exact constantCoeff_X _
     · exact (van_comp1_pt hφ 1 i).const
 
+/- English proof (translation)
+Unfold `bil linAct`. Simplify using `only [coeff_ev_left hh hφ, Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `conv_rhs => rw [Finset.sum_comm]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises.
+
+Introduce `j _`. Rewrite using `[Finset.sum_comm]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `i _`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises.
+
+Introduce `k _`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem bil_ev_left (w v : Fin dd → C) :
     bil (ev (n := 2) ![comp1 φ (pt C dd 0), pt C dd 1] h) w v = bil h (linAct φ w) v := by
   unfold bil linAct
@@ -418,6 +579,11 @@ theorem bil_ev_left (w v : Fin dd → C) :
   intro k _
   ring
 
+/- English proof (translation)
+Unfold `bil linAct`. Simplify using `only [coeff_ev_right hh hφ, Finset.sum_mul, Finset.mul_sum]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `i _`. Rewrite using `[Finset.sum_comm]`.
+
+Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `j _`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `k _`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem bil_ev_right (w v : Fin dd → C) :
     bil (ev (n := 2) ![pt C dd 0, comp1 φ (pt C dd 1)] h) w v = bil h w (linAct φ v) := by
   unfold bil linAct
@@ -437,12 +603,23 @@ section Final
 
 variable [CharZero C] {V : VF C} {O : Type} [CommRing O] [StarRing O] {dd : ℕ}
 
+/- English proof (translation)
+Use extensionality with `e`. Simplify using the standard rewrite rules.
+-/
 theorem map_self {σ : Type} (F : MvPowerSeries σ C) : MvPowerSeries.map (algebraMap C C) F = F := by
   ext e
   simp
 
+/- English proof (translation)
+Evaluate the decidable proposition.
+-/
 theorem fin_two_eq_zero_or_eq_one : ∀ x : Fin 2, x = 0 ∨ x = 1 := by decide
 
+/- English proof (translation)
+Break down `fin_two_eq_zero_or_eq_one g with rfl | rfl` into its components or cases. Use `coeff_of_ev_zero Y.h 0 ![0, pt C dd 0] rfl ?_ Y.gauge.ax0 e he` and prove the remaining obligations. Introduce `g' hg'`. Rewrite using `[fin_two_eq_one_sub_of_ne' 0 g' hg']`. Both sides reduce to the same expression.
+
+Use `coeff_of_ev_zero Y.h 1 ![pt C dd 0, 0] rfl ?_ Y.gauge.ax1 e he` and prove the remaining obligations. Introduce `g' hg'`. Rewrite using `[fin_two_eq_one_sub_of_ne' 1 g' hg']`. Both sides reduce to the same expression.
+-/
 theorem FBChart.axisAll (Y : FBChart C V O dd) (g : Fin 2) (e : Fin 2 × Fin dd →₀ ℕ)
     (he : ∀ s ∈ e.support, s.1 ≠ g) : coeff e Y.h = 0 := by
   rcases fin_two_eq_zero_or_eq_one g with rfl | rfl
@@ -455,6 +632,11 @@ theorem FBChart.axisAll (Y : FBChart C V O dd) (g : Fin 2) (e : Fin 2 × Fin dd 
     rw [fin_two_eq_one_sub_of_ne' 1 g' hg']
     rfl
 
+/- English proof (translation)
+Unfold `ev`. Use `Van.subst {s : Fin 2 × Fin dd | s.1 = 0} ?_ ?_ (hh 0)` and prove the remaining obligations. Introduce and unpack `⟨g, i⟩`. Break down `fin_two_eq_zero_or_eq_one g with rfl | rfl` into its components or cases. Conclude with `(van_comp1_pt hφ 0 i).const`.
+
+Conclude with `constantCoeff_X _`. Introduce and unpack `⟨g, i⟩ hs`. Establish `hg : g = 0` using `hs`. Substitute `hg` using the available equality. Conclude with `van_comp1_pt hφ 0 i`.
+-/
 theorem van_ev_left {h : PS C 2 dd}
     (hh : ∀ (g : Fin 2) (e : Fin 2 × Fin dd →₀ ℕ), (∀ s ∈ e.support, s.1 ≠ g) → coeff e h = 0)
     {φ : Pt C 1 dd} (hφ : ∀ i, constantCoeff (φ i) = 0) :
@@ -470,6 +652,11 @@ theorem van_ev_left {h : PS C 2 dd}
     subst hg
     exact van_comp1_pt hφ 0 i
 
+/- English proof (translation)
+Unfold `ev`. Use `Van.subst {s : Fin 2 × Fin dd | s.1 = 0} ?_ ?_ (hh 0)` and prove the remaining obligations. Introduce and unpack `⟨g, i⟩`. Break down `fin_two_eq_zero_or_eq_one g with rfl | rfl` into its components or cases. Conclude with `constantCoeff_X _`.
+
+Conclude with `(van_comp1_pt hφ 1 i).const`. Introduce and unpack `⟨g, i⟩ hs`. Establish `hg : g = 0` using `hs`. Substitute `hg` using the available equality. Conclude with `van_X (show ((0 : Fin 2), i) ∈ Tg dd 0 from rfl)`.
+-/
 theorem van_ev_right {h : PS C 2 dd}
     (hh : ∀ (g : Fin 2) (e : Fin 2 × Fin dd →₀ ℕ), (∀ s ∈ e.support, s.1 ≠ g) → coeff e h = 0)
     {φ : Pt C 1 dd} (hφ : ∀ i, constantCoeff (φ i) = 0) :
@@ -485,6 +672,15 @@ theorem van_ev_right {h : PS C 2 dd}
     subst hg
     exact van_X (show ((0 : Fin 2), i) ∈ Tg dd 0 from rfl)
 
+/- English proof (translation)
+Unfold `bil`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `i _`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `j _`.
+
+Rewrite using `[coeff_expS_bil hf (E2 ((0 : Fin 2), i) ((1 : Fin 2), j)) ((0 : Fin 2), i) ?_ (le_of_eq (exchangeTwo_self_eq_one (ne01 i j))) ?_]`. Introduce `s hs h0`. Break down `elementary_pair_support h0 with e | e` into its components or cases. Conclude with `e`. Establish `h1 : s.1 = 0` using `hs`.
+
+Rewrite `h1` using `[e]`. Establish `h2 : (1 : Fin 2) = 0` using `h1`. Conclude with `absurd h2 (by decide)`. Introduce `h0`. Use `exchangeTwo_self_eq_one (ne01 i j)` as an intermediate fact.
+
+Rewrite `this` using `[h0]`. Conclude with `absurd this (by simp)`.
+-/
 theorem bil_expS {f : PS C 2 dd} (hf : Van (Tg dd 0) f) (w v : Fin dd → C) : bil (FB.expS C f) w v = bil f w v := by
   unfold bil
   apply Finset.sum_congr rfl
@@ -504,6 +700,11 @@ theorem bil_expS {f : PS C 2 dd} (hf : Van (Tg dd 0) f) (w v : Fin dd → C) : b
     rw [h0] at this
     exact absurd this (by simp)
 
+/- English proof (translation)
+Establish `hg` using `Y.gauge.ad a`. Establish `hact : ∀ x, Y.B.actK C x = Y.B.A.act x` using `fun x => funext fun i => map_self _`. Rewrite `hg` using `[hact, hact]`. Establish `hk : FB.toK C (Y.B.ad a) = Y.B.ad a` using `map_self _`. Rewrite `hg` using `[hk]`.
+
+Rewrite using `[hg, bil_expS ((van_ev_left Y.axisAll (Y.B.A.const a)).sub (van_ev_right Y.axisAll (Y.B.A.const (star a)))), bil_sub, bil_ev_left Y.axisAll (Y.B.A.const a), bil_ev_right Y.axisAll (Y.B.A.const (star a))]`.
+-/
 theorem FBChart.bil_ad (Y : FBChart C V O dd) (a : O) (w v : Fin dd → C) :
     bil (Y.B.ad a) w v = bil Y.h (linAct (Y.B.A.act a) w) v - bil Y.h w (linAct (Y.B.A.act (star a)) v) := by
   have hg := Y.gauge.ad a
@@ -514,6 +715,13 @@ theorem FBChart.bil_ad (Y : FBChart C V O dd) (a : O) (w v : Fin dd → C) :
   rw [hg, bil_expS ((van_ev_left Y.axisAll (Y.B.A.const a)).sub (van_ev_right Y.axisAll (Y.B.A.const (star a)))),
     bil_sub, bil_ev_left Y.axisAll (Y.B.A.const a), bil_ev_right Y.axisAll (Y.B.A.const (star a))]
 
+/- English proof (translation)
+Establish `hs : ∀ x, coeff (Finsupp.single x 1) ((Y.raw p).sg v) = -∑ i, v i * coeff (E2 ((0 : Fin 2), x) ((1 : Fin 2), i)) Y.h`. Introduce `x`. Use `show -∑ i, v i * coeff ((Finsupp.single x 1).mapDomain (fun x : Fin dd => ((0 : Fin 2), x)) + Finsupp.single ((1 : Fin 2), i) 1) Y.h = _`. Rewrite using `[Finsupp.mapDomain_single]`. Both sides reduce to the same expression.
+
+Unfold `RawChart.sg1 bil`. Simplify using `only [hs, mul_neg, Finset.sum_neg_distrib, Finset.mul_sum]`. Use `congr 1`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `i _`.
+
+Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `j _`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem FBChart.raw_first_pairing_eq (Y : FBChart C V O dd) {d : ℕ} {I : Fin 2 → Type} [∀ g, Fintype (I g)] (p : PairData Y d I)
     (w v : Fin dd → C) : (Y.raw p).sg1 w v = -bil Y.h w v := by
   have hs : ∀ x, coeff (Finsupp.single x 1) ((Y.raw p).sg v) =
@@ -534,6 +742,15 @@ theorem FBChart.raw_first_pairing_eq (Y : FBChart C V O dd) {d : ℕ} {I : Fin 2
 
 end Final
 
+/- English proof (translation)
+Introduce `C _ _ V O _ _ dd Y d _ I _ p g c q hty`. Establish `hconj : ∀ (g : Fin 2) t a, p.em (1 - g) t (star a) = p.em g t a`. Introduce `g t a`. Break down `fin_two_eq_zero_or_eq_one g with rfl | rfl` into its components or cases. Use `show p.em 1 t (star a) = p.em 0 t a`.
+
+Rewrite using `[p.em_conj, star_star]`. Use `show p.em 0 t (star a) = p.em 1 t a`. Rewrite using `[p.em_conj]`. Take `⟨a, ha⟩` from `p.em_sep (g, p.ty g c) (g, p.ty (1 - g) q) (fun h => hty (Prod.mk.inj h).2)`. Establish `ha' : V.v (p.em g (p.ty g c) a - p.em g (p.ty (1 - g) q) a) = 0` using `ha`.
+
+Establish `hb` using `Y.bil_ad a (p.u g c) (p.u (1 - g) q)`. Rewrite `hb` using `[p.u_eig g c a, p.u_eig (1 - g) q (star a), hconj, bil_smul_left, bil_smul_right, ← sub_mul]`. Establish `hint : V.Ge 0 (bil (Y.B.ad a) (p.u g c) (p.u (1 - g) q))` using `bil_int (Y.intAd a) (p.u_int g c) (p.u_int (1 - g) q)`. Rewrite `hint` using `[hb]`. Establish `hβ : V.Ge 0 (bil Y.h (p.u g c) (p.u (1 - g) q))`.
+
+Unfold `VF.Ge at hint ⊢`. Rewrite `hint` using `[V.v.map_mul, ha', zero_add]`. Then use the resulting hypothesis. Use `show V.Ge 0 ((Y.raw p).sg1 (p.u g c) (p.u (1 - g) q))`. Rewrite using `[Y.raw_first_pairing_eq]`. Conclude with `hβ.neg`.
+-/
 theorem hStabFB : HStabFBSt := by
   intro C _ _ V O _ _ dd Y d _ I _ p g c q hty
   have hconj : ∀ (g : Fin 2) t a, p.em (1 - g) t (star a) = p.em g t a := by

@@ -9,6 +9,9 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory GlobalTheory.Ex
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun ⟨φ, a, b, c, d, e, f⟩ => ⟨⟨φ, a, b, c, d, e⟩, f⟩, fun ⟨⟨φ, a, b, c, d, e⟩, f⟩ => ⟨φ, a, b, c, d, e, f⟩⟩`.
+-/
 theorem GlobalTheory.FullPoint.fullAt_iff {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H}
     {l : Geo.Tor.Level H} {Xo : Moduli D l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F} (Y : Model Xo c β)
     {K : Type} [Field K] (y : Sp K ⟶ Xo.XF c) (o : Full D K) :
@@ -16,6 +19,15 @@ theorem GlobalTheory.FullPoint.fullAt_iff {E : Type} [Field E] [NumberField E] [
       o.ρ = f (baseKA l).ρ ∧ (o.I.ζ l.A : K) = f (baseKA l).ζ :=
   ⟨fun ⟨φ, a, b, c, d, e, f⟩ => ⟨⟨φ, a, b, c, d, e⟩, f⟩, fun ⟨⟨φ, a, b, c, d, e⟩, f⟩ => ⟨φ, a, b, c, d, e, f⟩⟩
 
+/- English proof (translation)
+Introduce `hv _ _ _ _ _ _ E _ _ _ H D l Xo c W₀ Y K _ _ bF`. Use `⟨fun o hρ hζ => ?_, fun y => ?_, fun K' _ f y o o' h h' => ?_⟩` and prove the remaining obligations. Take `⟨y, ⟨h₁, h₂⟩, hu⟩` from `FullPoint.existsUnique_point hv.1.1 Y bF o hρ hζ`. Use `⟨y, ⟨h₁, (FullPoint.fullAt_iff Y y o).2 ⟨h₂, fun f hf => ?_⟩⟩, fun y' h => hu y' ⟨h.1, ((FullPoint.fullAt_iff Y y' o).1 h.2).1⟩⟩` and prove the remaining obligations. Rewrite `hf` using `[pullback.condition, ← Category.assoc, h₁, ← spMap_comp]`.
+
+Take `rfl` from `FullPoint.spMap_inj hf`. Conclude with `⟨hρ _ rfl, hζ _ rfl⟩`. Take `⟨o, h⟩` from `FullPoint.exists_isFibre Y.oF y`. Conclude with `⟨o, (FullPoint.fullAt_iff Y y o).2 h⟩`. Take `⟨hρ, hζ, ψ, g₁, g₂, g₃, g₄⟩` from `h'`.
+
+Take `⟨h₁, h₂⟩` from `(FullPoint.fullAt_iff Y y o).1 h`. Use `(FullPoint.fullAt_iff Y _ o').2 ⟨FullPoint.IsFibre.ext f h₁ ψ g₁ g₂ g₃ g₄, fun g hg => ?_⟩` and prove the remaining obligations. Take `⟨j, hj⟩ : ∃ j : KA l →+* K, y ≫ pullback.fst _ _ ≫ Xo.s = spMap j` from `⟨(Spec.preimage (y ≫ pullback.fst _ _ ≫ Xo.s)).hom, (Spec.map_preimage _).symm⟩`. Rewrite `hg` using `[Category.assoc, hj, ← spMap_comp]`. Take `rfl` from `FullPoint.spMap_inj hg`.
+
+Rewrite using `[hρ, hζ _ l.A_pos, (h₂ j hj).1, (h₂ j hj).2]`. Conclude with `⟨rfl, rfl⟩`.
+-/
 theorem GlobalTheory.FullPoint.fullAt_existsUnique_exists_ext : HV → Laws6 → GlobalTheory.LN.UDvrSt → GlobalTheory.LN.HomExtSt → ThetaPtDeterminesSt → EndDeterminedOnTorsionSt → ThetaUnifAV → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli D l) (c : Coeff l) (W₀ : ValuationSubring ℂ) (Y : Model Xo c (c.V W₀).subtype), ∀ (K : Type) [Field K] [IsAlgClosed K] (bF : c.F →+* K), (∀ o : Full D K, (∀ r : c.F, (r : ℂ) = H.rt0 → o.ρ = bF r) → (∀ z : c.F, (z : ℂ) = zeta l.A → (o.I.ζ l.A : K) = bF z) → ∃! y : Sp K ⟶ Xo.XF c, y ≫ pullback.snd _ _ = spMap bF ∧ FullAt Y y o) ∧ (∀ y : Sp K ⟶ Xo.XF c, ∃ o, FullAt Y y o) ∧ ∀ (K' : Type) [Field K'] (f : K →+* K') y o o', FullAt Y y o → FullExt f o o' → FullAt Y (spMap f ≫ y) o' := by
   intro hv _ _ _ _ _ _ E _ _ _ H D l Xo c W₀ Y K _ _ bF
   refine ⟨fun o hρ hζ => ?_, fun y => ?_, fun K' _ f y o o' h h' => ?_⟩

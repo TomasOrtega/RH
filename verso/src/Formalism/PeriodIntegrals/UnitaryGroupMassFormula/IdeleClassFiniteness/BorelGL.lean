@@ -34,9 +34,15 @@ def diagGL {R : Type} [CommRing R] (n : ℕ) : (Fin n → Rˣ) →* GL (Fin n) R
   (Units.map (Matrix.diagonalRingHom (Fin n) R : (Fin n → R) →* Matrix (Fin n) (Fin n) R)).comp
     (MulEquiv.piUnits.symm : (Fin n → Rˣ) ≃* (Fin n → R)ˣ).toMonoidHom
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem diagGL_val {R : Type} [CommRing R] (n : ℕ) (τ : Fin n → Rˣ) :
     (diagGL n τ).val = Matrix.diagonal fun i => (τ i : R) := rfl
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Simplify using `[diagGL_val, Matrix.diagonal_apply, glIncl, apply_ite]`.
+-/
 theorem glIncl_diagGL (F : Type) [Field F] [NumberField F] (n : ℕ) (f : Fin n → Fˣ) :
     glIncl F n (diagGL n f) =
       diagGL n (fun i => Units.map (algebraMap F (FiniteAdeleRing (𝓞 F) F) : F →* FiniteAdeleRing (𝓞 F) F) (f i)) := by
@@ -44,6 +50,13 @@ theorem glIncl_diagGL (F : Type) [Field F] [NumberField F] (n : ℕ) (f : Fin n 
   ext i j
   simp [diagGL_val, Matrix.diagonal_apply, glIncl, apply_ite]
 
+/- English proof (translation)
+Establish `hunit : ∀ i, IsUnit (t.val i i)`. Introduce `i`. Establish `h : (t⁻¹.val * t.val) i i = (1 : Matrix (Fin n) (Fin n) R) i i`. Rewrite using `[← Units.val_mul, inv_mul_cancel, Units.val_one]`. Rewrite `h` using `[Matrix.mul_apply, Matrix.one_apply_eq, Finset.sum_eq_single i (fun k _ hki => by rw [ht k i hki, mul_zero]) (by simp)]`.
+
+Conclude with `⟨⟨t.val i i, t⁻¹.val i i, (mul_comm _ _).trans h, h⟩, rfl⟩`. Use `⟨fun i => (hunit i).unit, Units.ext ?_⟩` and prove the remaining obligations. Rewrite using `[diagGL_val]`. Use extensionality with `i j`. Simplify using `only [Matrix.diagonal_apply]`.
+
+Use `split_ifs with hij`. Substitute `hij` using the available equality. Conclude with `(IsUnit.unit_spec _).symm`. Conclude with `ht i j hij`.
+-/
 theorem diag_eq_diagGL {R : Type} [CommRing R] {n : ℕ} (t : GL (Fin n) R) (ht : IsDiagM t.val) :
     ∃ τ : Fin n → Rˣ, t = diagGL n τ := by
   have hunit : ∀ i, IsUnit (t.val i i) := by
@@ -62,6 +75,13 @@ theorem diag_eq_diagGL {R : Type} [CommRing R] {n : ℕ} (t : GL (Fin n) R) (ht 
     exact (IsUnit.unit_spec _).symm
   · exact ht i j hij
 
+/- English proof (translation)
+Establish `hd : ∀ d : Fin n → FiniteAdeleRing (𝓞 F) F, (∀ i, d i ∈ Ohat F) → MatInt (Matrix.diagonal d)`. Introduce `d hd i j`. Rewrite using `[Matrix.diagonal_apply]`. Use `split_ifs with hij`. Substitute `hij` using the available equality.
+
+Conclude with `hd i`. Conclude with `(Ohat F).zero_mem`. Use `show MatInt (diagGL n e).val ∧ MatInt (diagGL n e)⁻¹.val`. Prove the components needed by the constructor for the conclusion. Rewrite using `[diagGL_val]`.
+
+Conclude with `hd _ h1`. Rewrite using `[← map_inv (diagGL (R := FiniteAdeleRing (𝓞 F) F) n), diagGL_val]`. Conclude with `hd _ fun i => h2 i`.
+-/
 theorem diagGL_mem_KGL (F : Type) [Field F] [NumberField F] (n : ℕ) (e : Fin n → (FiniteAdeleRing (𝓞 F) F)ˣ)
     (h1 : ∀ i, (e i : FiniteAdeleRing (𝓞 F) F) ∈ Ohat F)
     (h2 : ∀ i, ((e i)⁻¹ : (FiniteAdeleRing (𝓞 F) F)ˣ).val ∈ Ohat F) : diagGL n e ∈ KGL F n := by
@@ -80,6 +100,13 @@ theorem diagGL_mem_KGL (F : Type) [Field F] [NumberField F] (n : ℕ) (e : Fin n
   · rw [← map_inv (diagGL (R := FiniteAdeleRing (𝓞 F) F) n), diagGL_val]
     exact hd _ fun i => h2 i
 
+/- English proof (translation)
+Introduce `F _ _ n`. Take `⟨C, hCa⟩` from `hC F`. Use `⟨(Fintype.piFinset fun _ : Fin n => C).image (diagGL n), fun x => ?_⟩` and prove the remaining obligations. Take `⟨u, t, k, hu, ht, hk, rfl⟩` from `hI F n x`. Take `⟨ν, w, hw, huν⟩` from `hU F n u t hu ht`.
+
+Take `⟨τ, rfl⟩` from `diag_eq_diagGL t ht`. Use `choose f c hc e he1 he2 hτ using fun i => hCa (τ i)`. Establish `hsplit : diagGL n τ = glIncl F n (diagGL n f) * diagGL n c * diagGL n e`. Rewrite using `[glIncl_diagGL, ← map_mul (diagGL (R := FiniteAdeleRing (𝓞 F) F) n), ← map_mul (diagGL (R := FiniteAdeleRing (𝓞 F) F) n)]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `i`. Conclude with `hτ i`. Use `⟨ν * diagGL n f, diagGL n c, Finset.mem_image.mpr ⟨c, Fintype.mem_piFinset.mpr hc, rfl⟩, diagGL n e * (w * k), (KGL F n).mul_mem (diagGL_mem_KGL F n e he1 he2) ((KGL F n).mul_mem hw hk), ?_⟩` and prove the remaining obligations. Rewrite using `[huν, map_mul, hsplit]`. Use `group`.
+-/
 theorem borelKGL_of (hI : IwasawaAf) (hU : UnipApprox) (hC : IdeleClassFin) : BorelKGL := by
   classical
   intro F _ _ n

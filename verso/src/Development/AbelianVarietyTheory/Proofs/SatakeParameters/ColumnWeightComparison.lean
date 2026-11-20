@@ -9,6 +9,9 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.G Formal
 
 namespace GlobalTheory.Proof.ColumnWeightComparison
 
+/- English proof (translation)
+Take `⟨cmp, h0, hK, hrat, hval⟩` from `h`. Take `⟨y, hy, hy'⟩` from `GlobalTheory.Proof.LatticeValuationBound.exists_chain (Tw.fm u μ) Ch (c.embW u w hg) cmp hK hrat (Tw.e0 u μ x) D.R.m le_rfl`. Use `⟨y, ?_, hval y s (by rw [hy', h0]; exact hx)⟩` and prove the remaining obligations. Rewrite using `[hy, Tw.embed_mul_block_embedding]`. Both sides reduce to the same expression.
+-/
 theorem colGeTw_of_cmpLite {D : D7} (c : LatCmp D) (Tw : TwForms D) (u : D.what₂.Word) (μ : D.what₂.Tup)
     (w : D.what₂.places.Pl) (hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w))
     {Fl : Fills (D.gat u w hg)} {Lv : Levels Fl} (Ch : Chain Lv) (h : CmpLite D c Tw u μ w hg Ch)
@@ -22,6 +25,11 @@ theorem colGeTw_of_cmpLite {D : D7} (c : LatCmp D) (Tw : TwForms D) (u : D.what�
   rw [hy, Tw.embed_mul_block_embedding]
   rfl
 
+/- English proof (translation)
+Take `⟨y, hy, hv⟩` from `h`. Use `⟨(Tw.eMu0 u D.R.m le_rfl).symm y, ?_, GlobalTheory.Proof.LatticeValuationBound.VGe_symm _ _ _ (Tw.eMu0_lat u D.R.m le_rfl) hv⟩` and prove the remaining obligations. Establish `h1` using `Tw.eMu0_emb u D.R.m le_rfl ((Tw.eMu0 u D.R.m le_rfl).symm y)`. Rewrite `h1` using `[LinearEquiv.apply_symm_apply, hy]`. Establish `h2` using `Tw.eMu0_emb u 0 (Nat.zero_le _) x`.
+
+Rewrite `h2` using `[← h0, Tw.embed_mul_block_embedding]`. Conclude with `eq_of_heq (h1.symm.trans (GlobalTheory.Proof.LatticeValuationBound.col_heq (D.memberColumns_twistedChain_base u) h2))`.
+-/
 theorem colGe0_of_colGeTw {D : D7} (Tw : TwForms D) (u : D.what₂.Word) (w : D.what₂.places.Pl)
     (x : ((D.fm u).lat 0).V) (s : ℝ) (h0 : Tw.e0 u D.what₂.mu0 = Tw.eMu0 u 0 (Nat.zero_le _))
     (h : WeilJacquetShalikaLaw.ColGeTw Tw u D.what₂.mu0 w x s) : WeilJacquetShalikaLaw.ColGe0 D u w x s := by
@@ -34,6 +42,9 @@ theorem colGe0_of_colGeTw {D : D7} (Tw : TwForms D) (u : D.what₂.Word) (w : D.
   rw [← h0, Tw.embed_mul_block_embedding] at h2
   exact eq_of_heq (h1.symm.trans (GlobalTheory.Proof.LatticeValuationBound.col_heq (D.memberColumns_twistedChain_base u) h2))
 
+/- English proof (translation)
+Introduce `u w hg μ hU hQ x s hx`. Establish `key : WeilJacquetShalikaLaw.ColGeTw Tw u μ w x s` using `colGeTw_of_cmpLite c Tw u μ w hg (LC μ u w hg).2 (h μ hU u w hg hQ) x s hx`. Use `⟨?_, fun _ => key⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Conclude with `colGe0_of_colGeTw Tw u w x s (h0 u) key`.
+-/
 theorem cmpV_of_cmpLite (D : D7) (Y : LatInst D) (c : LatCmp D) (Dx : DivX D) (Tw : TwForms D)
     (LC : D.what₂.Tup → ∀ u (w : D.what₂.places.Pl) (hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)),
       Σ Lv : Levels (Y.Fl u w hg), Chain Lv)

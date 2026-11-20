@@ -12,6 +12,11 @@ open Formalism.QuantumDeterminants Formalism.MainNotions.S
 
 variable {k r : ℕ}
 
+/- English proof (translation)
+Use `measurable_pi_lambda _ fun i => measurable_pi_lambda _ fun j => ?_` and prove the remaining obligations. Simplify using `only [Formalism.FourierDecayAlt.B.rmulF, Matrix.mul_apply, Matrix.of_apply]`. Use `Finset.measurable_sum _ fun l _ => ?_` and prove the remaining obligations. Use `first`. Consider the case `exact (measurable_pi_iff.mp (measurable_pi_apply i) l).mul measurable_const`.
+
+Consider the case `fun_prop`.
+-/
 theorem rmulF_meas (ρ : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) :
     Measurable (Formalism.FourierDecayAlt.B.rmulF (n := 2 * r + k + 1) ρ) := by
   refine measurable_pi_lambda _ fun i => measurable_pi_lambda _ fun j => ?_
@@ -21,6 +26,17 @@ theorem rmulF_meas (ρ : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ)
   | exact (measurable_pi_iff.mp (measurable_pi_apply i) l).mul measurable_const
   | fun_prop
 
+/- English proof (translation)
+Establish `hfst : Measurable (fun x : PairSp k r => x.1.2)` using `measurable_snd.comp measurable_fst`. Establish `hf : Measurable (fun x : PairSp k r => F x * E.indicator (1 : Mt k r → ℝ≥0∞) x.1.2)` using `hF.mul ((measurable_one.indicator hE).comp hfst)`. Rewrite using `[hQ _ hf, ← lintegral_const_mul _ hF]`. Establish `hgood : ∀ᵐ x ∂ν, Good L x`. Rewrite using `[ae_iff]`.
+
+Conclude with `nu_bad L hR0 hRc hQ`. Establish `hstab : ∀ᵐ a ∂μR, Matrix.of a ∈ RStab k r γ`. Rewrite using `[ae_iff]`. Simplify using `using hRc`. Use `lintegral_congr_ae ?_` and prove the remaining obligations.
+
+Use `filter_upwards [hgood] with x hx`. Take `⟨hρn, hiff⟩` from `hρ x.1.2 hx.1`. Establish `hmr : Measurable (Formalism.FourierDecayAlt.B.rmulF (n` using `2 * r + k + 1) (ρh x.1.2)) := rmulF_meas _`. Establish `hin : ∀ᵐ a ∂μR, F (stabAct γ (Matrix.of a) x) * E.indicator (1 : Mt k r → ℝ≥0∞) (stabAct γ (Matrix.of a) x).1.2 = F x * ((Formalism.FourierDecayAlt.B.rmulF (n` using `2 * r + k + 1) (ρh x.1.2)) ⁻¹' A).indicator 1 a := by filter_upwards [hstab] with a ha`. Rewrite using `[hFinv x hx _ ha]`.
+
+Use `congr 1`. Establish `h1` using `hiff a ha`. Use `show E.indicator (1 : Mt k r → ℝ≥0∞) (fun i j => (Matrix.of a * Matrix.of x.1.2) i j) = _`. Distinguish the cases in `hA' : Formalism.FourierDecayAlt.B.rmulF (n := 2 * r + k + 1) (ρh x.1.2) a ∈ A`. Simplify using `only [Set.indicator_of_mem (h1.mpr hA'), Set.indicator_of_mem (show a ∈ _ ⁻¹' A from hA'), Pi.one_apply]`.
+
+Simplify using `only [Set.indicator_of_notMem (fun h => hA' (h1.mp h)), Set.indicator_of_notMem (show a ∉ _ ⁻¹' A from hA')]`. Rewrite using `[lintegral_congr_ae hin, lintegral_const_mul _ ((measurable_one.indicator (hmr hA))), lintegral_indicator_one (hmr hA), ← Measure.map_apply hmr hA, hR.right _ hρn, mul_comm]`.
+-/
 theorem orbit_identity (L : LocBessel k r) {γ : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     {μR : Measure (Mt k r)} (hR : Formalism.FourierDecayAlt.B.IsHaarOn (Formalism.FourierDecayAlt.C6.Rset γ) μR)
     (hRc : μR {x | Matrix.of x ∉ RStab k r γ} = 0) (hR0 : μR ≠ 0)

@@ -7,6 +7,17 @@ open UpperTheory.Gal.Int.Geo (Lv IsTrans Integ KS Mem FEt KSEx KSNice)
 open scoped TensorProduct
 universe u
 
+/- English proof (translation)
+Introduce `p _ D R _ _ gb S S' s s' f N o o' m k _ t`. Establish `hT` using `HeckeRestrict.tate_pullback D.toG o.A o'.A o.act o'.act o.P o'.P o.isLB o'.isLB f m.φ m.φ₂ m.cart m.sq m.act m.pol k t`. Establish `hpt : ∀ y, (toUnit (Over.mk (t ≫ f)) ≫ o.eta y).left = t ≫ (o'.eta y).left ≫ m.φ`. Introduce `y`. Rewrite using `[Over.comp_left, HeckeRestrict.toUnit_left, m.eta y]`.
+
+Conclude with `Category.assoc _ _ _`. Establish `hpt' : ∀ y, (toUnit (Over.mk t) ≫ o'.eta y).left ≫ m.φ = t ≫ (o'.eta y).left ≫ m.φ`. Introduce `y`. Rewrite using `[Over.comp_left, HeckeRestrict.toUnit_left]`. Conclude with `Category.assoc _ _ _`.
+
+Use `⟨fun I => ?_, fun I' => ?_⟩` and prove the remaining obligations. Take `⟨I', hI'⟩` from `hT.2 I`. Use `⟨I', fun hI y => ?_, fun n x => (hI' n x).symm⟩` and prove the remaining obligations. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `m.cart.1.hom_ext` to reduce the goal to its premises.
+
+Rewrite using `[hpt', ← hpt, hI y, hI' N y]`. Rewrite using `[Over.w, Over.w]`. Take `⟨I, hI⟩` from `hT.1 I'`. Use `⟨I, fun hI' y => ?_, fun n x => (hI n x).symm⟩` and prove the remaining obligations. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
+
+Rewrite using `[hpt, hI N y, ← hI' y, hpt']`.
+-/
 theorem UpperTheory.Gal.G3.pTatePull :
     TatePull := by
   intro p _ D R _ _ gb S S' s s' f N o o' m k _ t

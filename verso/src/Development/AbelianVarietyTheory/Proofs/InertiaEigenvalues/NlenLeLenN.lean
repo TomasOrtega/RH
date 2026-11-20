@@ -26,6 +26,11 @@ def toPi : KOG O k →ₗ[O] (Fin k → KmodO O) :=
 
 variable {O k}
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Take `⟨v, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Establish `h : ∀ a, ∃ c, algebraMap O (FractionRing O) c = v a` using `fun a => (Submodule.Quotient.mk_eq_zero _).1 (congrFun hx a)`.
+
+Use `choose u hu using h`. Conclude with `(Submodule.Quotient.mk_eq_zero _).2 ⟨u, funext hu⟩`. Introduce `x choose v hv using fun a => Submodule.Quotient.mk_surjective _ (x a)`. Conclude with `⟨Submodule.Quotient.mk v, funext hv⟩`.
+-/
 theorem toPi_bij : Function.Bijective (toPi O k) := by
   constructor
   · rw [injective_iff_map_eq_zero]
@@ -39,6 +44,9 @@ theorem toPi_bij : Function.Bijective (toPi O k) := by
     choose v hv using fun a => Submodule.Quotient.mk_surjective _ (x a)
     exact ⟨Submodule.Quotient.mk v, funext hv⟩
 
+/- English proof (translation)
+Take `⟨v, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Express the relevant statement in the definitionally equal form `Submodule.mkQ _ (∑ j, algebraMap O (FractionRing O) (M g a j) * v j) = ∑ j, M g a j • Submodule.mkQ _ (v j)`. Simplify using `only [map_sum, ← Algebra.smul_def, map_smul]`.
+-/
 theorem toPi_WKG {Γ : Type} [Group Γ] (M : Γ →* Matrix (Fin k) (Fin k) O) (g : Γ) (x : KOG O k) (a : Fin k) :
     toPi O k (WKG M g x) a = ∑ j, M g a j • toPi O k x j := by
   obtain ⟨v, rfl⟩ := Submodule.Quotient.mk_surjective _ x
@@ -46,6 +54,9 @@ theorem toPi_WKG {Γ : Type} [Group Γ] (M : Γ →* Matrix (Fin k) (Fin k) O) (
     ∑ j, M g a j • Submodule.mkQ _ (v j)
   simp only [map_sum, ← Algebra.smul_def, map_smul]
 
+/- English proof (translation)
+Take `⟨v, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk (fun j => fracMap f hf (((M γ).map (algebraMap O (FractionRing O))).mulVec v j)) = Submodule.Quotient.mk (((M' γ').map (algebraMap O' (FractionRing O'))).mulVec fun j => fracMap f hf (v j))`. Use `congr 1`. Use function extensionality and compare the values at `j`. Simplify using `[h, Matrix.mulVec, dotProduct, fracMap_alg]`.
+-/
 theorem push_WKG {O' : Type} [CommRing O'] [IsDomain O'] (f : O →+* O') (hf : Function.Injective f)
     {Γ Γ' : Type} [Group Γ] [Group Γ']
     (M : Γ →* Matrix (Fin k) (Fin k) O) (M' : Γ' →* Matrix (Fin k) (Fin k) O') (γ : Γ) (γ' : Γ')
@@ -67,6 +78,11 @@ variable {R Γ A A' : Type} [CommRing R] [Group Γ] [TopologicalSpace Γ]
   [AddCommGroup A] [Module R A] [TopologicalSpace A] [IsTopologicalAddGroup A] [ContinuousConstSMul R A]
   [AddCommGroup A'] [Module R A'] (ρ : Representation R Γ A)
 
+/- English proof (translation)
+Take `⟨z, hz, rfl⟩` from `hx`. Establish `key : Submodule.span R S ≤ ((T.comap F).comap (Submodule.mkQ _)).map (Z1 ρ).subtype`. Use `Submodule.span_le.2 fun c hc => ?_` and prove the remaining obligations. Take `⟨h1, h2⟩` from `h c hc`. Conclude with `⟨⟨c, h1⟩, h2, rfl⟩`.
+
+Take `⟨z', hz', e⟩` from `key hz`. Rewrite using `[← Subtype.ext e]`. Conclude with `hz'`.
+-/
 theorem mem_of_span (F : H1 ρ →ₗ[R] A') (S : Set (Γ → A)) (T : Submodule R A')
     (h : ∀ c ∈ S, ∃ hc : c ∈ Z1 ρ, F (Submodule.Quotient.mk ⟨c, hc⟩) ∈ T) (x : H1 ρ)
     (hx : x ∈ ((Submodule.span R S).comap (Z1 ρ).subtype).map (Submodule.mkQ _)) : F x ∈ T := by
@@ -89,6 +105,17 @@ variable {l : ℕ} [Fact l.Prime] (P : LocPrime l) {E Ω : Type} [Field E] [Fiel
 
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+Take `⟨z, hz, m, h⟩` from `(mem_HfD_iff P B M _).1 (phi_mem_of_mem_bkG P B M c hc)`. Establish `hcob : cob (matRep (Br.locM B M)) m ∈ finiteCocycles (P.PD B.Kw) (matRep (Br.locM B M))`. Use `⟨⟨?_, fun g h => ?_⟩, m ⊗ₜ 1, fun g => ?_⟩` and prove the remaining obligations. Use `continuous_pi fun a => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Continuous fun g => (∑ j, ((B.eO (M (B.e.symm g) a j) : Br.Ow B) : Br.LLw B) * m j) - m a`.
+
+Use `Continuous.sub (continuous_finset_sum _ fun j _ => Continuous.mul ?_ continuous_const) continuous_const` and prove the remaining obligations. Conclude with `continuous_subtype_val.comp (B.eO_cont.comp ((hM a j).comp B.e_symm_cont))`. Simplify using `[cob]`. Simplify using `[cob, actVB, TensorProduct.sub_tmul]`. Use `⟨_, add_mem hz hcob, ?_⟩` and prove the remaining obligations.
+
+Establish `hy : ∀ g : ↥Gw, ∃ y : Fin k → FractionRing O, (∀ a, Br.toLLK B (y a) = (z + cob (matRep (Br.locM B M)) m) (B.e g) a) ∧ c.1 g = Submodule.Quotient.mk y`. Introduce `g`. Take `⟨u, hu⟩` from `Submodule.Quotient.mk_surjective _ (c.1 g)`. Establish `hg : Br.phi B k (c.1 (B.e.symm (B.e g))) = _` using `h (B.e g)`. Rewrite `hg` using `[MulEquiv.symm_apply_apply, ← hu]`.
+
+Take `⟨n, hn⟩ : Br.vecS B k u - (z (B.e g) + ((Br.locM B M (B.e g)).mulVec m - m)) ∈ stdG (Br.Ow B) (Br.LLw B) k` from `(Submodule.Quotient.eq _).1 hg`. Use `⟨fun a => u a - algebraMap O _ (B.eO.symm (n a)), fun a => ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : algebraMap (Br.Ow B) (Br.LLw B) (n a) = Br.toLLK B (u a) - (z + cob (matRep (Br.locM B M)) m) (B.e g) a` using `congrFun hn a`. Rewrite using `[map_sub, Br.toLLK_alg, RingEquiv.apply_symm_apply, h1, sub_sub_cancel]`. Rewrite using `[← hu]`.
+
+Use `(Submodule.Quotient.eq _).2 ⟨fun a => B.eO.symm (n a), funext fun a => ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules. Use `choose y h1 h2 using hy`. Conclude with `⟨y, h1, h2⟩`.
+-/
 theorem exists_lift {k : ℕ} (M : ↥Gw →* Matrix (Fin k) (Fin k) O) (hM : ∀ a b, Continuous fun g => M g a b)
     (c : ↥(Z1 (WKG M))) (hc : Submodule.Quotient.mk c ∈ Br.bkG B P (WKG M) M) :
     ∃ z ∈ finiteCocycles (P.PD B.Kw) (matRep (Br.locM B M)), ∃ y : ↥Gw → Fin k → FractionRing O,
@@ -124,6 +151,15 @@ theorem exists_lift {k : ℕ} (M : ↥Gw →* Matrix (Fin k) (Fin k) O) (hM : �
 
 end Lift
 
+/- English proof (translation)
+Unfold `BlochKatoReduction.Gen.lenN nlen`. Prove the components needed by the constructor for the conclusion. Introduce `h1`. Establish `h2 : Module.length O A ≠ ⊤` using `fun h3 => h1 (by`. Rewrite using `[(top_le_iff.1 (h3 ▸ h) : Module.length O A' = ⊤), ENat.toENNReal_top, ENNReal.top_div_of_ne_top (ENNReal.natCast_ne_top _)])`.
+
+Rewrite using `[if_neg h2]`. Conclude with `WithTop.coe_ne_top`. Introduce `q hq split_ifs at hq with h2`. Conclude with `absurd hq WithTop.top_ne_coe`. Rewrite using `[← WithTop.coe_injective hq, lenUnit, GlobalTheory.length_quotient_span_singleton_dvr]`.
+
+Take `⟨n, hn⟩` from `ENat.ne_top_iff_exists.1 h2`. Rewrite `h`, the goal using `[← hn]`. Generalize the expression as in `(IsDiscreteValuationRing.addVal O (l : O)).toNat = a`. Break down `Nat.eq_zero_or_pos a with rfl | ha` into its components or cases. Simplify using the standard rewrite rules.
+
+Rewrite using `[ENat.toNat_coe, Rat.cast_div, Rat.cast_natCast, Rat.cast_natCast, ENNReal.ofReal_div_of_pos (by exact_mod_cast ha), ENNReal.ofReal_natCast, ENNReal.ofReal_natCast]`. Conclude with `ENNReal.div_le_div_right (by simpa using ENat.toENNReal_le.2 h) _`.
+-/
 theorem nlen_le_lenN {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (l : ℕ)
     (A A' : Type) [AddCommGroup A] [Module O A] [AddCommGroup A'] [Module O A']
     (h : Module.length O A ≤ Module.length O A') :
@@ -155,6 +191,9 @@ open Formalism.MainNotions.BlochKatoReduction
 
 variable (D : D7) (i : D.ntw.Tw) (s : D.ntw.Sig i) (k : ℕ) (ψ : Formalism.MainNotions.N.GE D.nd →* (D.ntw.Ok i k)ˣ)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a`. Rewrite using `[toPi_WKG]`. Rewrite using `[show toOk D.ntw i k = Gen.phiK D.ntw i k from rfl]`. Simplify using `[Gen.Trep, twRep, matAct, latTpsi, latT, twistM, mapM, Gen.chiS, Finset.smul_sum, smul_smul, mul_assoc]`.
+-/
 theorem equivariant (g : Formalism.MainNotions.N.GE D.nd) (x : KOG (D.ntw.Ok i k) D.R.r) :
     toPi _ _ (WKG (latTpsi D.ntw i s (toOk D.ntw i k) ψ) g x) = Gen.Trep i s k ψ g (toPi _ _ x) := by
   funext a
@@ -162,6 +201,9 @@ theorem equivariant (g : Formalism.MainNotions.N.GE D.nd) (x : KOG (D.ntw.Ok i k
   rw [show toOk D.ntw i k = Gen.phiK D.ntw i k from rfl]
   simp [Gen.Trep, twRep, matAct, latTpsi, latT, twistM, mapM, Gen.chiS, Finset.smul_sum, smul_smul, mul_assoc]
 
+/- English proof (translation)
+Establish `h : (fun g => latT D.ntw i s g a b) = fun g => ((D.ntw.chi1 i (D.ntw.jS i s) (D.ntw.side i s) g⁻¹ : (D.ntw.O0 i)ˣ) : D.ntw.O0 i) * ((D.ntw.rhoS i s g : GL _ _) : Matrix _ _ _) a b`. Use function extensionality and compare the values at `g`. Simplify using `[latT, twistM]`. Rewrite using `[h]`. Conclude with `((D.ntw.twistCharacterFamily_continuous i _ _).comp continuous_inv).mul ((D.ntw.rhoS_cont i s).matrix_elem a b)`.
+-/
 theorem latT_cont (a b : Fin D.R.r) : Continuous fun g => latT D.ntw i s g a b := by
   have h : (fun g => latT D.ntw i s g a b) = fun g =>
       ((D.ntw.chi1 i (D.ntw.jS i s) (D.ntw.side i s) g⁻¹ : (D.ntw.O0 i)ˣ) : D.ntw.O0 i) *
@@ -171,6 +213,11 @@ theorem latT_cont (a b : Fin D.R.r) : Continuous fun g => latT D.ntw i s g a b :
   rw [h]
   exact ((D.ntw.twistCharacterFamily_continuous i _ _).comp continuous_inv).mul ((D.ntw.rhoS_cont i s).matrix_elem a b)
 
+/- English proof (translation)
+Use `MonoidHom.ext fun g => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Matrix.toLinAlgEquiv' _ = Matrix.toLinAlgEquiv' _`. Use `congr 1`. Use `Matrix.ext fun a b => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(D.ntwbr i v hv).toLL (latT D.ntw i s ((D.ntwbr i v hv).e.symm g).1 a b) = (D.ntwbr i v hv).toLL (((Gen.Tgl i s ((D.ntwbr i v hv).e.symm g).1 : GL _ _) : Matrix _ _ _) a b)`.
+
+Use `congr 1`. Generalize the expression as in `((D.ntwbr i v hv).e.symm g).1 = γ`. Express the relevant statement in the definitionally equal form `_ = (Matrix.scalar (Fin D.R.r) ((Gen.chiS i s γ)⁻¹).val * (D.ntw.rhoS i s γ).val : Matrix (Fin D.R.r) (Fin D.R.r) (D.ntw.O0 i)) a b`. Simplify using `[latT, twistM, Gen.chiS]`.
+-/
 theorem rep_eq (v : PlE D.host) (hv : v ∈ placesOver D.host.E (D.ntw.l i)) :
     matRep (Br.locM (D.ntwbr i v hv) ((latT D.ntw i s).comp (decS D.nd v))) =
       Gen.repV (bk0 D) i v hv (Gen.Tgl i s) := by
@@ -188,6 +235,19 @@ theorem rep_eq (v : PlE D.host) (hv : v ∈ placesOver D.host.E (D.ntw.l i)) :
 
 set_option maxHeartbeats 800000 in
 set_option synthInstance.maxHeartbeats 400000 in
+/- English proof (translation)
+Unfold `condL at hx`. Rewrite `hx` using `[dif_pos hv]`. Unfold `Gen.bk`. Rewrite using `[dif_pos hv]`. Use `mem_of_span _ _ _ _ ?_ x hx` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨c₀, h₀, rfl⟩`. Establish `hM : ∀ g : Gw D.nd v, latTpsi D.ntw i s (toOk D.ntw i k) ψ g.1 = (latT D.ntw i s g.1).map (toOk D.ntw i k)` using `fun g => by`. Simplify using `[latTpsi, twistM, mapM, hψ g.1 g.2]`. Take `⟨z, hz, y, hy, hc⟩` from `exists_lift (D.loc (D.ntw.l i)) (D.ntwbr i v hv) ((latT D.ntw i s).comp (decS D.nd v)) (fun a b => (latT_cont D i s a b).comp continuous_subtype_val) c₀ h₀`. Rewrite `hz` using `[rep_eq]`.
+
+Use `⟨⟨(continuous_of_discreteTopology (f := pushKO _ (toOk_inj D.ntw i k) D.R.r)).comp c₀.2.1, fun g h => ?_⟩, Submodule.subset_span ⟨_, z, fun g a => fracMap _ (toOk_inj D.ntw i k) (y g a), hz, fun g a => ?_, fun g a => ?_, rfl⟩⟩` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[c₀.2.2, map_add]`. Conclude with `congrArg _ (push_WKG _ _ (latT D.ntw i s) _ g.1 g.1 (hM g) _)`. Take `⟨n, d, hd, e⟩` from `IsFractionRing.div_surjective (A := D.ntw.O0 i) (y g a)`.
+
+Establish `hd0` using `nonZeroDivisors.ne_zero hd`. Establish `e' : algebraMap _ _ d * y g a = algebraMap _ (FractionRing (D.ntw.O0 i)) n`. Rewrite using `[← e, mul_div_cancel₀ _ (by simpa using hd0)]`. Use `⟨n, d, ⟨hd0, ?_⟩, ?_⟩` and prove the remaining obligations. Use `congrArg (Br.toLLK (D.ntwbr i v hv)) e'` as an intermediate fact.
+
+Rewrite `this` using `[map_mul, Br.toLLK_alg, Br.toLLK_alg, hy]`. Conclude with `this`. Use `congrArg (fracMap _ (toOk_inj D.ntw i k)) e'` as an intermediate fact. Rewrite `this` using `[map_mul, fracMap_alg, fracMap_alg]`. Conclude with `this`.
+
+Express the relevant statement in the definitionally equal form `toPi _ _ (pushKO _ (toOk_inj D.ntw i k) D.R.r (c₀.1 g)) a = _`. Rewrite using `[hc]`. Both sides reduce to the same expression.
+-/
 theorem cond_le (v : PlE D.host) (hv : v ∈ placesOver D.host.E (D.ntw.l i))
     (hψ : ∀ σ ∈ Dec (F := D.host.E) (D.nd.plOm.1 v), ψ σ = 1)
     (x : H1 ((WKG (latTpsi D.ntw i s (toOk D.ntw i k) ψ)).comp (Dec (F := D.host.E) (D.nd.plOm.1 v)).subtype))
@@ -229,6 +289,17 @@ theorem cond_le (v : PlE D.host) (hv : v ∈ placesOver D.host.E (D.ntw.l i))
     rw [hc]
     rfl
 
+/- English proof (translation)
+Set `c` to `cH (Gen.Trep i s k ψ) (WKG (latTpsi D.ntw i s (toOk D.ntw i k) ψ)) (toPi _ _) continuous_of_discreteTopology (equivariant D i s k ψ)`. Establish `hS : setS D.ntw i = Gen.Spl i`. Use extensionality with `v`. Simplify using `[setS, Gen.Spl]`. Establish `hc : ∀ x ∈ selT D.loc D.ntwbr i s Q (toOk D.ntw i k) (toOk_inj D.ntw i k) ψ, c x ∈ Gen.selT (bk0 D) i s k Q ψ`.
+
+Introduce `x hx`. Use `cH_mem_Sel _ _ _ _ _ _ _ _ _ (fun v y hv => ?_) x hx` and prove the remaining obligations. Rewrite `hv` using `[hS]`. Unfold `Formalism.GaloisCohomology.bkCond at hv ⊢`. Use `split_ifs at hv ⊢ with h1 h2`.
+
+Conclude with `cond_le D i s k ψ v h1 (hψ v h1) _ hv`. Discharge the goal by the elementary cases of `trivial`. Conclude with `cH_mem_H1ur _ _ _ _ _ _ _ hv`. Use `Module.length_le_of_injective (c.restrict hc) ?_` and prove the remaining obligations. Rewrite using `[injective_iff_map_eq_zero]`.
+
+Introduce `x hx`. Use `Subtype.ext (eq_zero_of_cH (ι := Unit) (Gen.Trep i s k ψ) _ (fun _ => toPi _ _) (fun _ => continuous_of_discreteTopology) (fun _ => equivariant D i s k ψ) ⟨?_, ?_⟩ x.1 fun _ => ?_)` and prove the remaining obligations. Conclude with `fun m m' h => toPi_bij.1 (congrFun h ())`. Introduce `m`. Take `⟨m', hm⟩` from `toPi_bij.2 (m ())`.
+
+Conclude with `⟨m', funext fun _ => hm⟩`. Conclude with `congrArg Subtype.val hx`.
+-/
 theorem length_le (Q : Finset (PlE D.host))
     (hψ : ∀ v ∈ placesOver D.host.E (D.ntw.l i), ∀ σ ∈ Dec (F := D.host.E) (D.nd.plOm.1 v), ψ σ = 1) :
     Module.length (D.ntw.Ok i k) (selT D.loc D.ntwbr i s Q (toOk D.ntw i k) (toOk_inj D.ntw i k) ψ) ≤
@@ -261,6 +332,9 @@ theorem length_le (Q : Finset (PlE D.host))
 
 end Main
 
+/- English proof (translation)
+Introduce `D i s k Q ψ hψ` and use `nlen_le_lenN _ _ _ (length_le D i s k ψ Q hψ)`.
+-/
 theorem sT_le_sLen : ∀ (D : D7) (i : D.ntw.Tw) (s : D.ntw.Sig i) (k : ℕ) (Q : Finset (PlE D.host)) (ψ : Formalism.MainNotions.N.GE D.nd →* (D.ntw.Ok i k)ˣ), (∀ v ∈ placesOver D.host.E (D.ntw.l i), ∀ σ ∈ Dec (F := D.host.E) (D.nd.plOm.1 v), ψ σ = 1) → (BlochKatoReduction.Gen.sLen (BlochKatoReduction.bk0 D) i s k Q ψ ≠ ⊤ → GlobalTheory.IndefiniteRowSideFullHecke.LatticeConditions.sT D.loc D.ntwbr i s Q (GlobalTheory.IndefiniteRowSideFullHecke.LatticeConditions.toOk D.ntw i k) (GlobalTheory.IndefiniteRowSideFullHecke.LatticeConditions.toOk_inj D.ntw i k) ψ ≠ ⊤) ∧ ∀ q : ℚ, GlobalTheory.IndefiniteRowSideFullHecke.LatticeConditions.sT D.loc D.ntwbr i s Q (GlobalTheory.IndefiniteRowSideFullHecke.LatticeConditions.toOk D.ntw i k) (GlobalTheory.IndefiniteRowSideFullHecke.LatticeConditions.toOk_inj D.ntw i k) ψ = (q : WithTop ℚ) → ENNReal.ofReal (q : ℝ) ≤ BlochKatoReduction.Gen.sLen (BlochKatoReduction.bk0 D) i s k Q ψ :=
   fun D i s k Q ψ hψ => nlen_le_lenN _ _ _ (length_le D i s k ψ Q hψ)
 

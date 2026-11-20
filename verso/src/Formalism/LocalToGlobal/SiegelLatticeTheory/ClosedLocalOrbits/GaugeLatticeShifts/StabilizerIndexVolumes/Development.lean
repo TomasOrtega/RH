@@ -14,6 +14,9 @@ namespace Formalism.L2.SG.Pf.StabilizerIndexVolumes
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Introduce `hAg t w F' L U hr hg hN hG`. Conclude with `⟨hC _ _ _ _ _ (hAin hSt hyps hAg t w F' L U hr hg hN hG) (hAbdd hDel hyps hAg t w F' L U hr hg hN hG) (hBcong hyps hAg t w F' L U hr hg hN hG), hC _ _ _ _ _ (hBin hSt hyps hAg t w F' L U hr hg hN hG) (hBbdd hyps hAg t w F' L U hr hg hN hG) (hAcong hyps hAg t w F' L U hr hg hN hG) …`.
+-/
 theorem volume_index_finite_of_hyps (D : D7) (u u' : D.what₂.Word)
     (F0 : FlagG (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E))
     (what₂ : Finset (Submodule (𝓞 D.host.E) (VS D).V))

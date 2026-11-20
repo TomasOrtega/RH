@@ -11,6 +11,27 @@ namespace Formalism.L2.SG.NGCut.SplitEmbedding
 def lawX {ι P : Type} (BX : P → (P → ℂ) → (P → ℂ) → ℂ) (γ x : ι → P → ℂ) : ι → P → ℂ :=
   fun v p => γ v p + x v p + BX p (γ v) (x v)
 
+/- English proof (translation)
+Establish `hsf : SigmaFinite (ENNReal.ofReal c • (volume : Measure ℂ))` using `(inferInstance : SigmaFinite (c.toNNReal • (volume : Measure ℂ)))`. Set `sw : (ι → P → ℂ) → (P → ι → ℂ)` to `fun x p v => x v p`. Set `usw : (P → ι → ℂ) → (ι → P → ℂ)` to `fun y v p => y p v`. Establish `h1 : ∀ x, usw (sw x) = x` using `fun x => rfl`. Establish `h2 : ∀ y, sw (usw y) = y` using `fun y => rfl`.
+
+Establish `hsw : MeasurePreserving sw _ _` using `swap_mp (ι := ι) (P := P) (ENNReal.ofReal c • (volume : Measure ℂ))`. Establish `husw : Measurable usw` using `measurable_pi_lambda _ fun v => measurable_pi_lambda _ fun p => (measurable_pi_apply v).comp (measurable_pi_apply p)`. Set `B : ∀ _ : P, (P → ι → ℂ) → (P → ι → ℂ) → (ι → ℂ)` to `fun p y y' v => BX p (fun q => y q v) (fun q => y' q v)`. Set `τT : ∀ _ : P, (P → ι → ℂ) → (ι → ℂ)` to `fun p y => τ p (usw y)`. Establish `hlaw : ∀ γ x, mlaw B (sw γ) (sw x) = sw (lawX BX γ x)` using `fun γ x => rfl`.
+
+Establish `hmemT : ∀ γ : ι → P → ℂ, (∀ p, sw γ p - τT p (sw γ) ∈ (Λ p).map (embS φ (s p))) ↔ (∀ p, (fun v => γ v p) - τ p γ ∈ (Λ p).map (embS φ (s p)))` using `fun γ => Iff.rfl`. Establish `hpre : Kset = sw ⁻¹' (usw ⁻¹' Kset)` using `by ext x; simp [h1]`. Establish `hKT : MeasurableSet (usw ⁻¹' Kset)` using `husw hK`. Rewrite using `[hpre, hsw.measure_preimage hKT.nullMeasurableSet]`. Use `covol_oneT K ι φ σ hφ P h B ?_ ?_ ?_ c hc I Λ hΛ k hk hk0 s hs τT ?_ ?_ (usw ⁻¹' Kset) hKT ?_` and prove the remaining obligations.
+
+Introduce `p`. Use `measurable_pi_lambda _ fun v => ?_` and prove the remaining obligations. Establish `hf : Measurable (fun z : (P → ι → ℂ) × (P → ι → ℂ) => ((fun q => z.1 q v), (fun q => z.2 q v)))` using `(measurable_pi_lambda _ fun q => (measurable_pi_apply v).comp ((measurable_pi_apply q).comp measurable_fst)).prodMk (measurable_pi_lambda _ fun q => (measurable_pi_apply v).comp ((measurable_pi_apply q).comp measurable_snd))`. Conclude with `(hBm p).comp hf`. Introduce `p x x' y y' hxy`.
+
+Use function extensionality and compare the values at `v`. Conclude with `hBd p _ _ _ _ fun q hq => ⟨congrFun (hxy q hq).1 v, congrFun (hxy q hq).2 v⟩`. Introduce `p x`. Use function extensionality and compare the values at `v`. Conclude with `hB0 p _`.
+
+Introduce `p x x' hxx`. Conclude with `hτ p _ _ fun q hq v => congrFun (hxx q hq) v`. Introduce `γT hγT`. Take `⟨γ', hγ', hinv'⟩` from `hinv (usw γT) ((hmemT (usw γT)).1 (by rw [h2]; exact hγT))`. Use `⟨sw γ', (hmemT γ').2 hγ', fun g => ⟨?_, ?_⟩⟩` and prove the remaining obligations.
+
+Use `(hinv' (usw g)).1` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation. Use `(hinv' (usw g)).2` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation. Introduce `g`.
+
+Take `⟨γ, ⟨hγΓ, hγK⟩, hγu⟩` from `hKd (usw g)`. Use `⟨sw γ, ⟨(hmemT γ).2 hγΓ, ?_⟩, ?_⟩` and prove the remaining obligations. Use `show usw (mlaw B (sw γ) g) ∈ Kset`. Rewrite using `[show g = sw (usw g) from (h2 g).symm, hlaw, h1]`. Conclude with `hγK`.
+
+Introduce and unpack `γT ⟨hΓT, hKT'⟩`. Establish `e` using `hγu (usw γT) ⟨(hmemT (usw γT)).1 (by rw [h2]; exact hΓT), by`. Establish `: usw (mlaw B γT g) ∈ Kset` using `hKT'`. Rewrite `this` using `[show γT = sw (usw γT) from (h2 γT).symm, show g = sw (usw g) from (h2 g).symm, hlaw, h1]`. Conclude with `this⟩`.
+
+Rewrite using `[← e, h2]`.
+-/
 theorem pi_measure_eq_prod_absNorm_mul_sqrt_discr (K : Type) [Field K] [NumberField K] [IsEmpty {w : InfinitePlace K // w.IsReal}]
     (ι : Type) [Fintype ι] (φ : ι → (K →+* ℂ)) (σ : ι ≃ {w : InfinitePlace K // w.IsComplex})
     (hφ : ∀ i, φ i = (σ i).1.embedding ∨ φ i = ComplexEmbedding.conjugate (σ i).1.embedding)
@@ -91,6 +112,11 @@ theorem pi_measure_eq_prod_absNorm_mul_sqrt_discr (K : Type) [Field K] [NumberFi
         exact this⟩
       rw [← e, h2]
 
+/- English proof (translation)
+Rewrite using `[pi_measure_eq_prod_absNorm_mul_sqrt_discr K ι φ σ hφ P h BX hBm hBd hB0 c hc I Λ hΛ k hk hk0 s hs τ hτ hinv Kset hK hKd, ← ENNReal.ofReal_prod_of_nonneg, hconst, ENNReal.ofReal_one]`. Introduce `p _`. Establish `hN` using `FractionalIdeal.absNorm_nonneg (I p : FractionalIdeal (nonZeroDivisors (𝓞 K)) K)`. Establish `hN' : (0 : ℝ) ≤ (FractionalIdeal.absNorm (I p : FractionalIdeal (nonZeroDivisors (𝓞 K)) K) : ℝ)`. Conclude with `hN` after adjusting the coercions.
+
+Check the signs of the components of the expression.
+-/
 theorem covol_one_eq_one (K : Type) [Field K] [NumberField K] [IsEmpty {w : InfinitePlace K // w.IsReal}]
     (ι : Type) [Fintype ι] (φ : ι → (K →+* ℂ)) (σ : ι ≃ {w : InfinitePlace K // w.IsComplex})
     (hφ : ∀ i, φ i = (σ i).1.embedding ∨ φ i = ComplexEmbedding.conjugate (σ i).1.embedding)

@@ -15,9 +15,15 @@ open NumberField Formalism.BasicNotions Formalism.MainNotions Formalism.MainNoti
 
 variable {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ}
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.Glob.normSq1_eq_nrm1Sq Λ G).symm`.
+-/
 theorem genusOne_meanSquare_forms_agree (Λ : AddSubgroup ℂ) (G : ℂ → ℂ) : StandardLatticesGL3.nrm1Sq Λ G = GL3Theta.normSq1 Λ G :=
   (GlobalTheory.Glob.normSq1_eq_nrm1Sq Λ G).symm
 
+/- English proof (translation)
+Rewrite using `[(GlobalTheory.ConjNorm.useNorm_all D cc δ hc _ B.t0 N N' L L' (StandardLatticesGL3.admissible_self_dual_even hA).1 (StandardLatticesGL3.admissible_self_dual_even hA).2.1 (StandardLatticesGL3.admissible_self_dual_even hA).2.2 _ (ht _ B.t0 N N' L L' hA) M ρ hD hcoef t hT).1, genus …`.
+-/
 theorem conj_normSq (B : Base D cc δ) (χ : IdE D → ℂ) (hc : StandardLatticesGL3.Crv D cc δ) (ht : StandardLatticesGL3.natTie D cc δ (B.eNat χ))
     {N N' : ℕ} {L : Submodule (𝓞 D.host.E) (Fin N → D.host.E)} {L' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E)}
     (hA : admitted D N N' L L') (M : IntermediateField ℚ ℂ) (hD : DataIn D (tor0 D cc δ) M)
@@ -28,6 +34,9 @@ theorem conj_normSq (B : Base D cc δ) (χ : IdE D → ℂ) (hc : StandardLattic
   rw [(GlobalTheory.ConjNorm.useNorm_all D cc δ hc _ B.t0 N N' L L' (StandardLatticesGL3.admissible_self_dual_even hA).1 (StandardLatticesGL3.admissible_self_dual_even hA).2.1 (StandardLatticesGL3.admissible_self_dual_even hA).2.2 _
     (ht _ B.t0 N N' L L' hA) M ρ hD hcoef t hT).1, genusOne_meanSquare_forms_agree]
 
+/- English proof (translation)
+Introduce `N N' L₁ L₁' L₂ L₂' a₁ a₂ M _ hD c₁ c₂ ρ`. Establish `: NumberField M` using `NumberField.mk`. Take `⟨t, hT⟩` from `GlobalTheory.Glob.exists_isThetaZero hc hD ρ`. Rewrite using `[conj_normSq B χ hc ht a₁ M hD c₁ ρ hT, conj_normSq B χ hc ht a₂ M hD c₂ ρ hT]`.
+-/
 theorem conj_indep (B : Base D cc δ) (χ : IdE D → ℂ) (hc : StandardLatticesGL3.Crv D cc δ) (ht : StandardLatticesGL3.natTie D cc δ (B.eNat χ)) :
     ThetaNormConjugateIndependent D (tor0 D cc δ) (B.eNat χ) := by
   intro N N' L₁ L₁' L₂ L₂' a₁ a₂ M _ hD c₁ c₂ ρ
@@ -35,6 +44,13 @@ theorem conj_indep (B : Base D cc δ) (χ : IdE D → ℂ) (hc : StandardLattice
   obtain ⟨t, hT⟩ := GlobalTheory.Glob.exists_isThetaZero hc hD ρ
   rw [conj_normSq B χ hc ht a₁ M hD c₁ ρ hT, conj_normSq B χ hc ht a₂ M hD c₂ ρ hT]
 
+/- English proof (translation)
+Introduce `Lsc hL N N' L L' hA M _ hD hcoef`. Establish `: NumberField M` using `NumberField.mk`. Establish `hex : ∀ ρ : M →ₐ[ℚ] ℂ, ∃ t, GL3Theta.IsTwoTorsionPointUnkilled D (lamConj M ρ (lamOf D cc δ)) t` using `fun ρ => GlobalTheory.Glob.exists_isThetaZero hc hD ρ`. Use `choose t hT using hex`. Establish `hm` using `hC cc δ M t ⟨hc.1, hc.2, hD, hT⟩ Lsc hL`.
+
+Establish `key : meanLogNormSq D (tor0 D cc δ) L L' M (B.eNat χ N N' L L') = ((fF D * N * N' : ℕ) : ℝ) * GlobalTheory.IndefiniteRowSideFullHecke.SignedLogMeans.meanLog M (lamOf D cc δ) t`. Unfold `meanLogNormSq GlobalTheory.IndefiniteRowSideFullHecke.SignedLogMeans.meanLog GlobalTheory.IndefiniteRowSideFullHecke.SignedLogMeans.conjNormSq`. Repeatedly rewrite using `[fun ρ => conj_normSq B χ hc ht hA M hD hcoef ρ (hT ρ), Real.log_pow]`. Rewrite using `[← Finset.mul_sum, mul_div_assoc]`. Both sides reduce to the same expression.
+
+Rewrite using `[key]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem mean_le_of {C : ℝ} (hC : GlobalTheory.IndefiniteRowSideFullHecke.SignedLogMeans.MeanLeC C D) (B : Base D cc δ) (χ : IdE D → ℂ) (hc : StandardLatticesGL3.Crv D cc δ)
     (ht : StandardLatticesGL3.natTie D cc δ (B.eNat χ)) : ThetaMeanBound D (tor0 D cc δ) C (B.eNat χ) := by
   intro Lsc hL N N' L L' hA M _ hD hcoef
@@ -53,6 +69,11 @@ theorem mean_le_of {C : ℝ} (hC : GlobalTheory.IndefiniteRowSideFullHecke.Signe
       ≤ ((fF D * N * N' : ℕ) : ℝ) * (C * Lsc) := mul_le_mul_of_nonneg_left hm (by positivity)
     _ = C * (fF D : ℝ) * (N : ℝ) * (N' : ℝ) * Lsc := by push_cast; ring
 
+/- English proof (translation)
+Take `⟨C, -, hC⟩` from `hM`. Use `⟨C, fun D cc δ B χ h1 h2 hcc hδ hχ hY => ?_⟩` and prove the remaining obligations. Establish `ht` using `hT D cc δ B χ h1 h2 hcc hδ hχ hY`. Establish `hc : StandardLatticesGL3.Crv D cc δ` using `⟨hcc, hδ⟩`. Establish `h14` using `theta_link_holds D cc hcc δ hδ B (Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.SO.stdOK B hcc hδ) χ hχ`.
+
+Conclude with `⟨h14.1, mean_le_of (hC D) B χ hc ht, conj_indep B χ hc ht, h14.2⟩`.
+-/
 theorem familyNorms_of (hT : FamilyTie) (hM : ∃ C : ℝ, 0 ≤ C ∧ ∀ D : D7, GlobalTheory.IndefiniteRowSideFullHecke.SignedLogMeans.MeanLeC C D) : FamilyNorms := by
   obtain ⟨C, -, hC⟩ := hM
   refine ⟨C, fun D cc δ B χ h1 h2 hcc hδ hχ hY => ?_⟩
@@ -61,6 +82,9 @@ theorem familyNorms_of (hT : FamilyTie) (hM : ∃ C : ℝ, 0 ≤ C ∧ ∀ D : D
   have h14 := theta_link_holds D cc hcc δ hδ B (Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.SO.stdOK B hcc hδ) χ hχ
   exact ⟨h14.1, mean_le_of (hC D) B χ hc ht, conj_indep B χ hc ht, h14.2⟩
 
+/- English proof (translation)
+The claim follows from `familyNorms_of GlobalTheory.T.normalisedFamily_eq_tensorPower_vacuum GlobalTheory.T.exists_thetaZeroMeanLogLeConstMul`.
+-/
 theorem familyNorms : FamilyNorms := familyNorms_of GlobalTheory.T.normalisedFamily_eq_tensorPower_vacuum GlobalTheory.T.exists_thetaZeroMeanLogLeConstMul
 
 end GlobalTheory.ColNorms.FamilyBound

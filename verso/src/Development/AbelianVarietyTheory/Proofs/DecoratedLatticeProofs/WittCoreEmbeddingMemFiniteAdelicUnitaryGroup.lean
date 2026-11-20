@@ -24,11 +24,17 @@ variable {D : D7}
 abbrev finfR (D : D7) : AE D →+* Ainf D.host.F ⊗[D.host.F] D.host.E :=
   (Algebra.TensorProduct.map (fstA D.host.F) (AlgHom.id D.host.F D.host.E)).toRingHom
 
+/- English proof (translation)
+Use `show infHom V g = 1 ↔ _`. Rewrite using `[Units.ext_iff]`. Both sides reduce to the same expression.
+-/
 theorem mem_GfC_iff' (V : HSp D) (g : GA D V) : g ∈ GfC V ↔ (Formalism.L2.Theta.mt V g).map (finfR D) = 1 := by
   show infHom V g = 1 ↔ _
   rw [Units.ext_iff]
   rfl
 
+/- English proof (translation)
+Establish `e1 : (x ⬝ m ⬝ y).map (finfR D) = x.map (finfR D) ⬝ m.map (finfR D) ⬝ y.map (finfR D)`. Rewrite using `[Matrix.map_mul (f := finfR D), Matrix.map_mul (f := finfR D)]`. Establish `e2 : (x ⬝ y).map (finfR D) = x.map (finfR D) ⬝ y.map (finfR D)` using `Matrix.map_mul (f := finfR D)`. Rewrite using `[e1, e2, hm, Matrix.mul_one]`.
+-/
 theorem map_sand' {k n : ℕ} (x : Mx D k n) (m : Mx D n n) (y : Mx D n k) (hm : m.map (finfR D) = 1) :
     (x ⬝ m ⬝ y).map (finfR D) = (x ⬝ y).map (finfR D) := by
   have e1 : (x ⬝ m ⬝ y).map (finfR D) = x.map (finfR D) ⬝ m.map (finfR D) ⬝ y.map (finfR D) := by
@@ -36,12 +42,18 @@ theorem map_sand' {k n : ℕ} (x : Mx D k n) (m : Mx D n n) (y : Mx D n k) (hm :
   have e2 : (x ⬝ y).map (finfR D) = x.map (finfR D) ⬝ y.map (finfR D) := Matrix.map_mul (f := finfR D)
   rw [e1, e2, hm, Matrix.mul_one]
 
+/- English proof (translation)
+Rewrite `ha`, the goal using `[mem_GfC_iff']`. Rewrite using `[OrthDec.mt_emb, Matrix.map_add _ (map_add (finfR D)), map_sand' _ _ _ ha, GlobalTheory.MixModel.mt_one, Matrix.mul_one, ← Matrix.map_add _ (map_add (finfR D)), o.sum_eq_one, Matrix.map_one _ (map_zero _) (map_one _)]`.
+-/
 theorem orth_emb_mem_GfC' {S A B : HSp D} (o : OrthDec S A B) {a : GA D A} (ha : a ∈ GfC A) :
     o.emb (a, 1) ∈ GfC S := by
   rw [mem_GfC_iff'] at ha ⊢
   rw [OrthDec.mt_emb, Matrix.map_add _ (map_add (finfR D)), map_sand' _ _ _ ha, GlobalTheory.MixModel.mt_one, Matrix.mul_one,
     ← Matrix.map_add _ (map_add (finfR D)), o.sum_eq_one, Matrix.map_one _ (map_zero _) (map_one _)]
 
+/- English proof (translation)
+Rewrite `hg`, the goal using `[mem_GfC_iff']`. Rewrite using `[HypDec.unitaryMatrix_wittCoreEmbedding, Matrix.map_add _ (map_add (finfR D)), Matrix.map_add _ (map_add (finfR D)), map_sand' _ _ _ hg, ← Matrix.map_add _ (map_add (finfR D)), ← Matrix.map_add _ (map_add (finfR D)), d.sum_eq_one, Matrix.map_one _ (map_zero _) (map_one _)]`.
+-/
 theorem wittCoreEmbedding_mem_finiteAdelicUnitaryGroup {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) {g : GA D S₀} (hg : g ∈ GfC S₀) :
     d.emb0 g ∈ GfC S := by
   rw [mem_GfC_iff'] at hg ⊢
@@ -49,6 +61,9 @@ theorem wittCoreEmbedding_mem_finiteAdelicUnitaryGroup {S S₀ : HSp D} {ρ : �
     ← Matrix.map_add _ (map_add (finfR D)), ← Matrix.map_add _ (map_add (finfR D)), d.sum_eq_one,
     Matrix.map_one _ (map_zero _) (map_one _)]
 
+/- English proof (translation)
+Introduce `D S S₀ A L ρ d o κ hκ`. Rewrite using `[embA_apply]`. Conclude with `wittCoreEmbedding_mem_finiteAdelicUnitaryGroup d (orth_emb_mem_GfC' o hκ)`.
+-/
 theorem embA_mem_GfC_fin : ∀ (D : D7) (S S₀ A L : HSp D) (ρ : ℕ) (d : HypDec S S₀ ρ) (o : OrthDec S₀ A L) (κ : GA D A), κ ∈ GfC A → embA d o κ ∈ GfC S := by
   intro D S S₀ A L ρ d o κ hκ
   rw [embA_apply]

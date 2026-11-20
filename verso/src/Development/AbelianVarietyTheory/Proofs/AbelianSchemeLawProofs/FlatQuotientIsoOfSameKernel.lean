@@ -16,6 +16,9 @@ open scoped CategoryTheory.Obj in
 attribute [local instance] Over.cartesianMonoidalCategory in
 variable {S : Scheme.{0}} in
 
+/- English proof (translation)
+Establish `hepi : Epi f.left` using `Flat.epi_of_flat_of_surjective f.left`. Conclude with `(Over.forget S).epi_of_epi_map hepi`.
+-/
 lemma _root_.GlobalTheory.FlatQuotient.epi_of_flat_surjective {X Y : Over S} (f : X ⟶ Y) [Flat f.left] [Surjective f.left] :
     Epi f := by
   have hepi : Epi f.left := Flat.epi_of_flat_of_surjective f.left
@@ -25,6 +28,11 @@ open CategoryTheory CategoryTheory.Limits MonoidalCategory CartesianMonoidalCate
 open scoped CategoryTheory.Obj in
 attribute [local instance] Over.cartesianMonoidalCategory in
 variable {S : Scheme.{0}} in
+/- English proof (translation)
+Establish `e1 : (f ▷ Z).left ≫ pullback.snd Y.hom Z.hom = pullback.snd X.hom Z.hom`. Rewrite using `[Over.whiskerRight_left]`. Conclude with `(pullback.lift_snd _ _ _).trans (by simp)`. Establish `e2 : (f ▷ Z).left ≫ pullback.fst Y.hom Z.hom = pullback.fst X.hom Z.hom ≫ f.left`. Rewrite using `[Over.whiskerRight_left]`.
+
+Conclude with `(pullback.lift_fst _ _ _).trans (by simp)`. Establish `houter : IsPullback ((f ▷ Z).left ≫ pullback.snd Y.hom Z.hom) (pullback.fst X.hom Z.hom) Z.hom (f.left ≫ Y.hom)`. Rewrite using `[e1, Over.w f]`. Conclude with `(IsPullback.of_hasPullback X.hom Z.hom).flip`. Conclude with `MorphismProperty.of_isPullback (IsPullback.of_right houter e2 (IsPullback.of_hasPullback Y.hom Z.hom).flip).flip hf`.
+-/
 private lemma whiskerRight_left_of_isStableUnderBaseChange (P : MorphismProperty Scheme.{0})
     [P.IsStableUnderBaseChange] {X Y : Over S} (f : X ⟶ Y) (Z : Over S) (hf : P f.left) :
     P (f ▷ Z).left := by
@@ -45,6 +53,11 @@ open CategoryTheory CategoryTheory.Limits MonoidalCategory CartesianMonoidalCate
 open scoped CategoryTheory.Obj in
 attribute [local instance] Over.cartesianMonoidalCategory in
 variable {S : Scheme.{0}} in
+/- English proof (translation)
+Establish `e1 : (Z ◁ f).left ≫ pullback.fst Z.hom Y.hom = pullback.fst Z.hom X.hom`. Rewrite using `[Over.whiskerLeft_left]`. Conclude with `(pullback.lift_fst _ _ _).trans (by simp)`. Establish `e2 : (Z ◁ f).left ≫ pullback.snd Z.hom Y.hom = pullback.snd Z.hom X.hom ≫ f.left`. Rewrite using `[Over.whiskerLeft_left]`.
+
+Conclude with `(pullback.lift_snd _ _ _).trans (by simp)`. Establish `houter : IsPullback ((Z ◁ f).left ≫ pullback.fst Z.hom Y.hom) (pullback.snd Z.hom X.hom) Z.hom (f.left ≫ Y.hom)`. Rewrite using `[e1, Over.w f]`. Conclude with `IsPullback.of_hasPullback Z.hom X.hom`. Conclude with `MorphismProperty.of_isPullback (IsPullback.of_right houter e2 (IsPullback.of_hasPullback Z.hom Y.hom)).flip hf`.
+-/
 private lemma whiskerLeft_left_of_isStableUnderBaseChange (P : MorphismProperty Scheme.{0})
     [P.IsStableUnderBaseChange] {X Y : Over S} (Z : Over S) (f : X ⟶ Y) (hf : P f.left) :
     P (Z ◁ f).left := by
@@ -66,6 +79,11 @@ open scoped CategoryTheory.Obj in
 attribute [local instance] Over.cartesianMonoidalCategory in
 variable {S : Scheme.{0}} in
 
+/- English proof (translation)
+Establish `h₁ : Flat (f ▷ X').left` using `whiskerRight_left_of_isStableUnderBaseChange @Flat f X' hf`. Establish `h₂ : Surjective (f ▷ X').left` using `whiskerRight_left_of_isStableUnderBaseChange @Surjective f X' hf'`. Establish `h₃ : Flat (Y ◁ g).left` using `whiskerLeft_left_of_isStableUnderBaseChange @Flat Y g hg`. Establish `h₄ : Surjective (Y ◁ g).left` using `whiskerLeft_left_of_isStableUnderBaseChange @Surjective Y g hg'`. Establish `e₁` using `_root_.GlobalTheory.FlatQuotient.epi_of_flat_surjective (f ▷ X')`.
+
+Establish `e₂` using `_root_.GlobalTheory.FlatQuotient.epi_of_flat_surjective (Y ◁ g)`. Rewrite using `[MonoidalCategory.tensorHom_def]`. Conclude with `epi_comp _ _`.
+-/
 lemma _root_.GlobalTheory.FlatQuotient.epi_tensorHom {X Y X' Y' : Over S} (f : X ⟶ Y) (g : X' ⟶ Y')
     [hf : Flat f.left] [hf' : Surjective f.left] [hg : Flat g.left] [hg' : Surjective g.left] :
     Epi (f ⊗ₘ g) := by
@@ -83,6 +101,11 @@ open scoped CategoryTheory.Obj in
 attribute [local instance] Over.cartesianMonoidalCategory in
 variable {S : Scheme.{0}} in
 
+/- English proof (translation)
+Establish `hk : (g * g'⁻¹) ≫ q = toUnit Z ≫ η[B]`. Rewrite using `[mul_comp, GrpObj.inv_comp, h, mul_inv_cancel, Hom.one_def]`. Establish `hl : hker.lift (g * g'⁻¹) (toUnit Z) hk ≫ i = g * g'⁻¹` using `hker.lift_fst _ _ _`. Establish `hone : (g * g'⁻¹) ≫ f = 1`. Rewrite using `[← hl, Category.assoc, hf, Hom.one_def, ← Category.assoc, toUnit_unique (hker.lift (g * g'⁻¹) (toUnit Z) hk ≫ toUnit T) (toUnit Z)]`.
+
+Rewrite `hone` using `[mul_comp, GrpObj.inv_comp, mul_inv_eq_one]`. Conclude with `hone`.
+-/
 lemma _root_.GlobalTheory.FlatQuotient.comp_eq_of_kills_kernel {G B B' T : Over S} [GrpObj G] [GrpObj B] [GrpObj B']
     (q : G ⟶ B) (i : T ⟶ G) (f : G ⟶ B') [IsMonHom q] [IsMonHom f]
     (hker : IsPullback i (toUnit _) q (η[B])) (hf : i ≫ f = toUnit _ ≫ η[B'])
@@ -101,6 +124,17 @@ open scoped CategoryTheory.Obj in
 attribute [local instance] Over.cartesianMonoidalCategory in
 variable {S : Scheme.{0}} in
 
+/- English proof (translation)
+Establish `hcomp : ∀ {Z : Scheme} (g₁ g₂ : Z ⟶ G.left), g₁ ≫ q.left = g₂ ≫ q.left → g₁ ≫ f.left = g₂ ≫ f.left`. Introduce `Z g₁ g₂ h`. Establish `hw : g₂ ≫ G.hom = g₁ ≫ G.hom`. Rewrite using `[← Over.w q, ← Category.assoc, ← h, Category.assoc]`. Establish `key` using `_root_.GlobalTheory.FlatQuotient.comp_eq_of_kills_kernel q i f hker hf (Z := Over.mk (g₁ ≫ G.hom)) (Over.homMk g₁) (Over.homMk g₂ hw) (by ext; simpa using h)`.
+
+Simplify using `using congrArg (fun φ => φ.left) key`. Set `β₀ : B.left ⟶ B'.left` to `EffectiveEpi.desc q.left f.left hcomp`. Establish `hβ₀ : q.left ≫ β₀ = f.left` using `EffectiveEpi.fac _ _ _`. Establish `hw : β₀ ≫ B'.hom = B.hom`. Rewrite using `[← cancel_epi q.left, reassoc_of% hβ₀, Over.w f, Over.w q]`.
+
+Set `β : B ⟶ B'` to `Over.homMk β₀ hw`. Establish `hqβ : q ≫ β = f`. Use `ext`. Simplify using `[β, hβ₀]`. Establish `hqq : Epi (q ⊗ₘ q)` using `_root_.GlobalTheory.FlatQuotient.epi_tensorHom q q`.
+
+Use `⟨β, ⟨?_, ?_⟩, hqβ⟩` and prove the remaining obligations. Rewrite using `[← IsMonHom.one_hom (f := q), Category.assoc, hqβ, IsMonHom.one_hom]`. Rewrite using `[← cancel_epi (q ⊗ₘ q)]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Category.assoc, ← IsMonHom.mul_hom, Category.assoc]`.
+
+Use `_ = μ ≫ f := by rw [hqβ]`. Use `_ = (f ⊗ₘ f) ≫ μ := IsMonHom.mul_hom f`. Use `_ = (q ⊗ₘ q) ≫ (β ⊗ₘ β) ≫ μ := by`. Rewrite using `[← hqβ]`. Simplify using the standard rewrite rules.
+-/
 theorem _root_.GlobalTheory.FlatQuotient.exists_desc {G B B' T : Over S} [GrpObj G]
     [GrpObj B] [GrpObj B'] (q : G ⟶ B) (i : T ⟶ G) (f : G ⟶ B') [IsMonHom q] [IsMonHom f]
     [Flat q.left] [Surjective q.left] [QuasiCompact q.left]
@@ -140,6 +174,11 @@ open CategoryTheory CategoryTheory.Limits MonoidalCategory CartesianMonoidalCate
 open scoped CategoryTheory.Obj in
 attribute [local instance] Over.cartesianMonoidalCategory in
 
+/- English proof (translation)
+Introduce `S G B B' T T' _ _ _ _ _ q i q' i' hq _ hqf hqs hqc hk hq' _ hq'f hq's hq'c hk' h₁ h₂`. Take `⟨β, -, hqβ⟩` from `_root_.GlobalTheory.FlatQuotient.exists_desc q i q' hk h₂`. Take `⟨β', hβ', hq'β'⟩` from `_root_.GlobalTheory.FlatQuotient.exists_desc q' i' q hk' h₁`. Establish `eq : Epi q` using `_root_.GlobalTheory.FlatQuotient.epi_of_flat_surjective q`. Establish `eq' : Epi q'` using `_root_.GlobalTheory.FlatQuotient.epi_of_flat_surjective q'`.
+
+Establish `e₁ : β ≫ β' = 𝟙 B`. Rewrite using `[← cancel_epi q, reassoc_of% hqβ, hq'β', Category.comp_id]`. Establish `e₂ : β' ≫ β = 𝟙 B'`. Rewrite using `[← cancel_epi q', reassoc_of% hq'β', hqβ, Category.comp_id]`. Conclude with `⟨⟨β', β, e₂, e₁⟩, hβ', hq'β'⟩`.
+-/
 theorem _root_.GlobalTheory.flatQuotient_iso_of_same_kernel :
     ∀ (S : Scheme.{0}) (G B B' T T' : Over S) [GrpObj G] [GrpObj B] [GrpObj B'] [GrpObj T]
       [GrpObj T'] (q : G ⟶ B) (i : T ⟶ G) (q' : G ⟶ B') (i' : T' ⟶ G),

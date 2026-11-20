@@ -14,6 +14,9 @@ namespace GlobalTheory.SchwartzCoord
 
 variable {D : D7}
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a e`. Simplify using `[Algebra.TensorProduct.basis_repr_tmul, Algebra.TensorProduct.map_tmul, Finsupp.mapRange_apply]`. Consider the case `add x y hx hy => simp only [map_add, Finsupp.add_apply, hx, hy]`.
+-/
 theorem repr_map {R : Type} [CommRing R] [Algebra D.host.F R] (π : AF D.host.F →ₐ[D.host.F] R) {d : ℕ}
     (ε : Module.Basis (Fin d) D.host.F D.host.E) (z : AE D) (k : Fin d) :
     π ((Algebra.TensorProduct.basis (AF D.host.F) ε).repr z k) =
@@ -28,9 +31,21 @@ end GlobalTheory.SchwartzCoord
 
 namespace GlobalTheory.SchwartzCoord
 variable {D : D7}
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem finPart_eq (z : AE D) : finPart D z = Algebra.TensorProduct.map (sndA D.host.F) (AlgHom.id D.host.F D.host.E) z := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem infPart_eq (z : AE D) : infPart D z = Algebra.TensorProduct.map (fstA D.host.F) (AlgHom.id D.host.F D.host.E) z := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem snd_eq (a : AF D.host.F) : a.2 = sndA D.host.F a := rfl
+/- English proof (translation)
+Rewrite using `[snd_eq, finPart_eq]`. Conclude with `repr_map (sndA D.host.F) ε z k`.
+-/
 theorem fin_coord {d : ℕ} (ε : Module.Basis (Fin d) D.host.F D.host.E) (z : AE D) (k : Fin d) :
     ((Algebra.TensorProduct.basis (AF D.host.F) ε).repr z k).2 =
       (Algebra.TensorProduct.basis (Af D.host.F) ε).repr (finPart D z) k := by
@@ -66,6 +81,9 @@ def finCoord {m n d : ℕ} (ε : Module.Basis (Fin d) D.host.F D.host.E) :
       (IsModuleTopology.continuous_of_linearMap b.equivFun.symm.toLinearMap).comp
         (continuous_pi fun k => continuous_apply (i, j, k)) }
 
+/- English proof (translation)
+Simplify using `[finCoord]`.
+-/
 theorem finCoord_apply {m n d : ℕ} (ε : Module.Basis (Fin d) D.host.F D.host.E)
     (y : Fin m → Fin n → Af D.host.F ⊗[D.host.F] D.host.E) (p : Fin m × Fin n × Fin d) :
     finCoord ε y p = (Algebra.TensorProduct.basis (Af D.host.F) ε).repr (y p.1 p.2.1) p.2.2 := by
@@ -77,6 +95,11 @@ namespace GlobalTheory.SchwartzCoord
 
 variable {D : D7}
 
+/- English proof (translation)
+Establish `: (InfiniteAdeleRing.ringEquiv_mixedSpace F : InfiniteAdeleRing F → mixedEmbedding.mixedSpace F) = fun x => ((fun v : {w : InfinitePlace F // InfinitePlace.IsReal w} => InfinitePlace.Completion.extensionEmbeddingOfIsReal v.2 (x v)), (fun v : {w : InfinitePlace F // InfinitePlace. …`. Use function extensionality and compare the values at `x`. Conclude with `InfiniteAdeleRing.ringEquiv_mixedSpace_apply F x`. Rewrite using `[this]`. Use `Continuous.prodMk (continuous_pi fun v => ?_) (continuous_pi fun v => ?_)` and prove the remaining obligations.
+
+Conclude with `(InfinitePlace.Completion.isometry_extensionEmbeddingOfIsReal v.2).continuous.comp (continuous_apply _)`. Conclude with `(InfinitePlace.Completion.isometry_extensionEmbedding v.1).continuous.comp (continuous_apply _)`.
+-/
 theorem continuous_mixed (F : Type) [Field F] [NumberField F] :
     Continuous (InfiniteAdeleRing.ringEquiv_mixedSpace F) := by
   have : (InfiniteAdeleRing.ringEquiv_mixedSpace F : InfiniteAdeleRing F → mixedEmbedding.mixedSpace F) =
@@ -112,6 +135,9 @@ def realCoord (σ : (D.what₂.Tau → ℂ) →+ AE D) {m n d : ℕ} (ε : Modul
     rw [this, map_add, Finsupp.add_apply, map_add, map_add]
     rfl
 
+/- English proof (translation)
+Use `haveI : IsModuleTopology (AF D.host.F) (AE D) := ⟨rfl⟩`. Use `continuous_pi fun p => (continuous_mixed D.host.F).comp (continuous_fst.comp ?_)` and prove the remaining obligations. Conclude with `((continuous_apply p.2.2).comp (IsModuleTopology.continuous_of_linearMap (Algebra.TensorProduct.basis (AF D.host.F) ε).equivFun.toLinearMap)).comp (hσ.comp (continuous_pi fun τ => (continuous_apply p.2.1).comp ((continuous_apply p.1).comp (continuous_apply τ))))`.
+-/
 theorem continuous_realCoord {σ : (D.what₂.Tau → ℂ) →+ AE D} (hσ : Continuous σ) {m n d : ℕ}
     (ε : Module.Basis (Fin d) D.host.F D.host.E) : Continuous (realCoord σ (m := m) (n := n) ε) := by
   haveI : IsModuleTopology (AF D.host.F) (AE D) := ⟨rfl⟩
@@ -126,18 +152,29 @@ namespace GlobalTheory.SchwartzCoord
 
 variable {D : D7}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `p`. Rewrite using `[finCoord_apply]`. Conclude with `fin_coord ε (x p.1 p.2.1) p.2.2`.
+-/
 theorem finCoord_coord {m n d : ℕ} (ε : Module.Basis (Fin d) D.host.F D.host.E) (x : Mx D m n) :
     (fun p => (coord ε x p).2) = finCoord ε (fun i j => finPart D (x i j)) := by
   funext p
   rw [finCoord_apply]
   exact fin_coord ε (x p.1 p.2.1) p.2.2
 
+/- English proof (translation)
+Rewrite using `[infPart_eq]`. Conclude with `repr_map (fstA D.host.F) ε z k`.
+-/
 theorem inf_coord {d : ℕ} (ε : Module.Basis (Fin d) D.host.F D.host.E) (z : AE D) (k : Fin d) :
     ((Algebra.TensorProduct.basis (AF D.host.F) ε).repr z k).1 =
       (Algebra.TensorProduct.basis (Ainf D.host.F) ε).repr (infPart D z) k := by
   rw [infPart_eq]
   exact repr_map (fstA D.host.F) ε z k
 
+/- English proof (translation)
+Use function extensionality and compare the values at `p`. Establish `hx : x p.1 p.2.1 = s (finPart D (x p.1 p.2.1)) + σ (fun τ => compAt θ τ x p.1 p.2.1)` using `congrFun (congrFun (GlobalTheory.SchwartzBruhatTensor.decomp hσ hsf hsi x) p.1) p.2.1`. Establish `h0 : fstA D.host.F ((Algebra.TensorProduct.basis (AF D.host.F) ε).repr (s (finPart D (x p.1 p.2.1))) p.2.2) = 0` using `(inf_coord ε _ _).trans (by rw [hsi, map_zero, Finsupp.zero_apply])`. Use `show InfiniteAdeleRing.ringEquiv_mixedSpace D.host.F (fstA D.host.F ((Algebra.TensorProduct.basis (AF D.host.F) ε).repr (x p.1 p.2.1) p.2.2)) = InfiniteAdeleRing.ringEquiv_mixedSpace D.host.F (fstA D.host.F ((Algebra.TensorProduct.basis (AF D.host.F) ε).repr (σ fun τ => compAt θ …`. Use `conv_lhs => rw [hx]`.
+
+Rewrite using `[map_add, Finsupp.add_apply, map_add (fstA D.host.F), h0, zero_add]`.
+-/
 theorem realCoord_compAt {θ : InfFam D} {σ : (D.what₂.Tau → ℂ) →+ AE D} (hσ : GlobalTheory.FockCompare.Chart θ σ)
     {s : (Af D.host.F ⊗[D.host.F] D.host.E) →+ AE D} (hsf : ∀ a, finPart D (s a) = a) (hsi : ∀ a, infPart D (s a) = 0)
     {m n d : ℕ} (ε : Module.Basis (Fin d) D.host.F D.host.E) (x : Mx D m n) :
@@ -161,6 +198,13 @@ namespace GlobalTheory.SchwartzCoord
 
 variable {D : D7}
 
+/- English proof (translation)
+Rewrite using `[injective_iff_map_eq_zero]`. Introduce `c hc`. Use function extensionality and compare the values at `τ i j`. Establish `h0 : infPart D (σ fun τ => c τ i j) = 0`. Apply `(Algebra.TensorProduct.basis (Ainf D.host.F) ε).repr.injective` to reduce the goal to its premises.
+
+Use extensionality with `k`. Rewrite using `[map_zero, Finsupp.zero_apply]`. Establish `e : InfiniteAdeleRing.ringEquiv_mixedSpace D.host.F (fstA D.host.F ((Algebra.TensorProduct.basis (AF D.host.F) ε).repr (σ fun τ => c τ i j) k)) = 0` using `congrFun hc (i, j, k)`. Establish `e2` using `(map_eq_zero_iff _ (InfiniteAdeleRing.ringEquiv_mixedSpace D.host.F).injective).1 e`. Rewrite using `[← e2, repr_map (fstA D.host.F) ε]`.
+
+Both sides reduce to the same expression. Establish `h1` using `hσ.comp (fun τ => c τ i j) τ`. Rewrite `h1` using `[h0, map_zero]`. Conclude with `h1.symm`.
+-/
 theorem injective_realCoord {θ : InfFam D} {σ : (D.what₂.Tau → ℂ) →+ AE D} (hσ : GlobalTheory.FockCompare.Chart θ σ) {m n d : ℕ}
     (ε : Module.Basis (Fin d) D.host.F D.host.E) : Function.Injective (realCoord σ (m := m) (n := n) ε) := by
   rw [injective_iff_map_eq_zero]
@@ -180,6 +224,25 @@ theorem injective_realCoord {θ : InfFam D} {σ : (D.what₂.Tau → ℂ) →+ A
   rw [h0, map_zero] at h1
   exact h1.symm
 
+/- English proof (translation)
+Introduce `D θ hθ m n d ε φ`. Take `⟨σ, hσ⟩` from `GlobalTheory.RealLineAt.exists_inverse_chart hθ`. Take `⟨s, -, hsf, hsi⟩` from `GlobalTheory.SchwartzBruhatTensor.exists_finSection D`. Take `⟨M, hM⟩ : ∃ M : (D.what₂.Tau → Fin m → Fin n → ℂ) →L[ℝ] (Fin m × Fin n × Fin d → mixedEmbedding.mixedSpace D.host.F), ⇑M = ⇑(realCoord σ ε)` from `⟨(realCoord σ ε).toRealLinearMap (continuous_realCoord hσ.cont ε), rfl⟩`. Establish `hMi : Function.Injective M.toLinearMap`.
+
+Introduce `a b h`. Establish `h' : M a = M b` using `h`. Rewrite `h'` using `[hM]`. Conclude with `injective_realCoord hσ ε h'`. Take `⟨K, -, hK⟩` from `(LinearMap.injective_iff_antilipschitz _).1 hMi`.
+
+Establish `hbound : ∃ (k : ℕ) (C : ℝ), ∀ x, ‖x‖ ≤ C * (1 + ‖M x‖) ^ k` using `⟨1, K, fun x => by`. Establish `h` using `hK.le_mul_dist x 0`. Rewrite `h` using `[dist_zero_right, map_zero, dist_zero_right]`. Establish `hK0 : (0 : ℝ) ≤ K` using `K.coe_nonneg`. Combine the equalities or inequalities in the displayed calculation.
+
+Take `⟨φ, hφ⟩` from `φ`. Proceed by induction on `hφ using Submodule.span_induction with`. Consider the case `mem Φ h`. Take `⟨f, g, hg, rfl⟩` from `h`. Set `f' : SchwartzMap (D.what₂.Tau → Fin m → Fin n → ℂ) ℂ` to `SchwartzMap.compCLM ℂ M.hasTemperateGrowth hbound f`.
+
+Establish `hf' : ∀ c, f' c = f (M c)` using `fun c => rfl`. Set `g' : (Fin m → Fin n → Af D.host.F ⊗[D.host.F] D.host.E) → ℂ` to `g ∘ finCoord ε`. Establish `hg' : g' ∈ WeilM.SB (Fin m → Fin n → Af D.host.F ⊗[D.host.F] D.host.E)` using `⟨hg.1.comp_continuous (finCoord ε).continuous, hg.2.comp_homeomorph _⟩`. Establish `heq : WeilM.pureA D.host.F f g ∘ coord ε = fun x => f' (fun τ i j => compAt θ τ x i j) * g' (fun i j => finPart D (x i j))`. Use function extensionality and compare the values at `x`.
+
+Rewrite using `[hf']`. Use `show f (fun p => InfiniteAdeleRing.ringEquiv_mixedSpace D.host.F (coord ε x p).1) * g (fun p => (coord ε x p).2) = f (M (fun τ i j => compAt θ τ x i j)) * g (finCoord ε (fun i j => finPart D (x i j)))`. Rewrite using `[realCoord_compAt hσ hsf hsi ε x, finCoord_coord ε x, ← hM]`. Rewrite using `[heq]`. Conclude with `Submodule.subset_span ⟨f', g', hg', rfl⟩`.
+
+Consider the case `zero`. Establish `e : (0 : (Fin m × Fin n × Fin d → AdeleRing (𝓞 D.host.F) D.host.F) → ℂ) ∘ coord ε = 0` using `rfl`. Rewrite using `[e]`. Conclude with `Submodule.zero_mem _`. Consider the case `add Φ Ψ _ _ h1 h2`.
+
+Establish `e : (Φ + Ψ) ∘ coord ε = Φ ∘ coord ε + Ψ ∘ coord ε` using `rfl`. Rewrite using `[e]`. Conclude with `Submodule.add_mem _ h1 h2`. Consider the case `smul a Φ _ h`. Establish `e : (a • Φ) ∘ coord ε = a • (Φ ∘ coord ε)` using `rfl`.
+
+Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ a h`.
+-/
 theorem mem_schwartzA_comp_coord : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → ∀ (m n d : ℕ)
     (ε : Module.Basis (Fin d) D.host.F D.host.E) (φ : WeilM.schA D.host.F (Fin m × Fin n × Fin d)),
     φ.1 ∘ coord ε ∈ GlobalTheory.IndefiniteRowSideFullHecke.ModerateGrowthSchwartz.schwartzA θ m n := by

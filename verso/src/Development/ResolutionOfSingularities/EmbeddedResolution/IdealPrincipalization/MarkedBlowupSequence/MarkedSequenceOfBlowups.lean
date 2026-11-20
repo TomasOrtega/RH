@@ -18,14 +18,34 @@ def withBotSuccToNat : WithBot ℕ∞ → ℕ
   | ⊥ => 0
   | (n : ℕ∞) => n.toNat + 1
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem withBotSuccToNat_bot : withBotSuccToNat ⊥ = 0 := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem withBotSuccToNat_coe (n : ℕ∞) : withBotSuccToNat (n : WithBot ℕ∞) = n.toNat + 1 := rfl
 
 def krullDimSucc (X : Scheme.{u}) : ℕ := withBotSuccToNat (topologicalKrullDim ↥X)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem krullDimSucc_eq_withBotSuccToNat_topologicalKrullDim (X : Scheme.{u}) : krullDimSucc X = withBotSuccToNat (topologicalKrullDim ↥X) := rfl
 
+/- English proof (translation)
+Break down `eq_or_ne (topologicalKrullDim ↥X) ⊥ with hX | hX` into its components or cases. Simplify using `[krullDimSucc_eq_withBotSuccToNat_topologicalKrullDim, hX, withBotSuccToNat_bot]`. Take `⟨a, ha⟩` from `WithBot.ne_bot_iff_exists.mp hX`. Establish `hYne : topologicalKrullDim ↥Y ≠ ⊥`. Introduce `hb0`.
+
+Rewrite `h` using `[hb0, le_bot_iff]`. Conclude with `hX h`. Take `⟨b, hb⟩` from `WithBot.ne_bot_iff_exists.mp hYne`. Establish `hab : a ≤ b`. Rewrite `h` using `[← ha, ← hb]`.
+
+Conclude with `h` after adjusting the coercions. Establish `hbtop : b ≠ ⊤`. Introduce `hbt`. Rewrite `hY` using `[← hb, hbt]`. Conclude with `lt_irrefl _ hY`.
+
+Establish `hatop : a ≠ ⊤`. Introduce `hat`. Rewrite `hab` using `[hat, top_le_iff]`. Conclude with `hbtop hab`. Establish `hle : a.toNat ≤ b.toNat` using `by lift a to ℕ using hatop lift b to ℕ using hbtop`.
+
+Simplify using `using hab`. Rewrite using `[krullDimSucc_eq_withBotSuccToNat_topologicalKrullDim X, krullDimSucc_eq_withBotSuccToNat_topologicalKrullDim Y, ← ha, ← hb, withBotSuccToNat_coe, withBotSuccToNat_coe]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem krullDimSucc_le_krullDimSucc_of_topologicalKrullDim_le (X Y : Scheme.{u})
     (h : topologicalKrullDim ↥X ≤ topologicalKrullDim ↥Y)
     (hY : topologicalKrullDim ↥Y < ⊤) :
@@ -67,6 +87,9 @@ structure MarkedIdealWithBoundary : Type (u + 1) where
 
 attribute [instance] MarkedIdealWithBoundary.instField
 
+/- English proof (translation)
+Substitute `hp` using the available equality. Substitute `hI` using the available equality. Substitute `hE` using the available equality. Both sides reduce to the same expression.
+-/
 theorem MarkedIdealWithBoundary.mk_eq_mk {k : Type u} [instk : Field k] (X : Scheme.{u}) (m : ℕ)
     {p p' : X ⟶ Spec (CommRingCat.of k)} {I I' : X.IdealSheafData}
     {E E' : List X.IdealSheafData} (hp : p = p') (hI : I = I') (hE : E = E') :
@@ -78,6 +101,9 @@ theorem MarkedIdealWithBoundary.mk_eq_mk {k : Type u} [instk : Field k] (X : Sch
 
 abbrev MarkedIdealWithBoundary.krullDimSucc (T : MarkedIdealWithBoundary.{u}) : ℕ := EmbeddedResolution.krullDimSucc T.scheme
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem MarkedIdealWithBoundary.krullDimSucc_eq_krullDimSucc_scheme (T : MarkedIdealWithBoundary.{u}) : T.krullDimSucc = EmbeddedResolution.krullDimSucc T.scheme := rfl
 
 structure MarkedIdealWithBoundary.IsAdmissible (T : MarkedIdealWithBoundary.{u}) : Prop where
@@ -120,6 +146,9 @@ def projectionToSpec (s : MarkedSequenceOfBlowups p I m E) (i : ℕ) :
     s.toSequenceOfBlowups.schemeAt i ⟶ Spec (CommRingCat.of k) :=
   s.toSequenceOfBlowups.projectionToBase i ≫ p
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem projectionToSpec_eq (s : MarkedSequenceOfBlowups p I m E) (i : ℕ) :
     s.projectionToSpec i = s.toSequenceOfBlowups.projectionToBase i ≫ p := rfl
 
@@ -127,6 +156,9 @@ def exceptionalDivisor (s : MarkedSequenceOfBlowups p I m E) (i : ℕ) :
     (s.toSequenceOfBlowups.schemeAt (i + 1)).IdealSheafData :=
   Blowup.exceptionalIdeal (s.toSequenceOfBlowups.transitionMapSucc i) (s.toSequenceOfBlowups.center i)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem exceptionalDivisor_eq (s : MarkedSequenceOfBlowups p I m E) (i : ℕ) :
     s.exceptionalDivisor i = (s.toSequenceOfBlowups.center i).comap (s.toSequenceOfBlowups.transitionMapSucc i) := rfl
 
@@ -134,6 +166,9 @@ def lastIdeal (s : MarkedSequenceOfBlowups p I m E) :
     (s.toSequenceOfBlowups.schemeAt s.toSequenceOfBlowups.length).IdealSheafData :=
   s.ideal s.toSequenceOfBlowups.length
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem lastIdeal_eq (s : MarkedSequenceOfBlowups p I m E) :
     s.lastIdeal = s.ideal s.toSequenceOfBlowups.length := rfl
 
@@ -141,12 +176,18 @@ def lastBoundary (s : MarkedSequenceOfBlowups p I m E) :
     List (s.toSequenceOfBlowups.schemeAt s.toSequenceOfBlowups.length).IdealSheafData :=
   s.boundary s.toSequenceOfBlowups.length
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem lastBoundary_eq (s : MarkedSequenceOfBlowups p I m E) :
     s.lastBoundary = s.boundary s.toSequenceOfBlowups.length := rfl
 
 def IsResolution (s : MarkedSequenceOfBlowups p I m E) : Prop :=
   orderAtLeastLocus s.lastIdeal m = ∅
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem isResolution_iff (s : MarkedSequenceOfBlowups p I m E) :
     s.IsResolution ↔ orderAtLeastLocus s.lastIdeal m = ∅ := Iff.rfl
 
@@ -159,6 +200,9 @@ def emptySequenceOfBlowups (X : Scheme.{u}) : SequenceOfBlowups X where
   center := fun _ => ⊥
   isBlowup := fun i hi => absurd hi (Nat.not_lt_zero i)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem emptySequenceOfBlowups_length (X : Scheme.{u}) : (emptySequenceOfBlowups X).length = 0 := rfl
 
 def emptyMarkedSequenceOfBlowups {k : Type u} [Field k] {X : Scheme.{u}}
@@ -175,6 +219,9 @@ def emptyMarkedSequenceOfBlowups {k : Type u} [Field k] {X : Scheme.{u}}
   ideal_succ := fun i hi => absurd hi (Nat.not_lt_zero i)
   boundary_succ := fun i hi => absurd hi (Nat.not_lt_zero i)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem emptyMarkedSequenceOfBlowups_length {k : Type u} [Field k] {X : Scheme.{u}}
     (p : X ⟶ Spec (CommRingCat.of k)) (I : X.IdealSheafData) (m : ℕ)
     (E : List X.IdealSheafData) :
@@ -185,6 +232,9 @@ abbrev MarkedIdealWithBoundary.SequenceOfBlowups (T : MarkedIdealWithBoundary.{u
 
 def PrincipalizationAssignment : Type (u + 1) := ∀ T : MarkedIdealWithBoundary.{u}, T.SequenceOfBlowups
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 theorem PrincipalizationAssignment.toSequenceOfBlowups_heq_of_eq (L : PrincipalizationAssignment.{u})
     {T T' : MarkedIdealWithBoundary.{u}} (h : T = T') :
     HEq (L T).toSequenceOfBlowups (L T').toSequenceOfBlowups := by
@@ -213,14 +263,23 @@ def HasReducedCenters (s : MarkedSequenceOfBlowups p I m E) : Prop :=
         (J.support : Set ↥(s.toSequenceOfBlowups.schemeAt i)) →
       J ≤ s.toSequenceOfBlowups.center i
 
+/- English proof (translation)
+Rewrite using `[s.ideal_zero, s.toSequenceOfBlowups.projectionToBase_zero]`.
+-/
 theorem markedSequenceOfBlowups_ideal_zero (s : MarkedSequenceOfBlowups p I m E) :
     s.ideal 0 = I.comap (s.toSequenceOfBlowups.projectionToBase 0) := by
   rw [s.ideal_zero, s.toSequenceOfBlowups.projectionToBase_zero]
 
+/- English proof (translation)
+Rewrite using `[s.boundary_zero, s.toSequenceOfBlowups.projectionToBase_zero]`.
+-/
 theorem markedSequenceOfBlowups_boundary_zero (s : MarkedSequenceOfBlowups p I m E) :
     s.boundary 0 = E.map (fun D => D.comap (s.toSequenceOfBlowups.projectionToBase 0)) := by
   rw [s.boundary_zero, s.toSequenceOfBlowups.projectionToBase_zero]
 
+/- English proof (translation)
+Establish `hs` using `s.ideal_succ i h`. Rewrite `hs` using `[pow_one]`. Then use the resulting hypothesis.
+-/
 theorem markedSequenceOfBlowups_exceptionalIdeal_mul_ideal_succ (s : MarkedSequenceOfBlowups p I 1 E) (i : ℕ)
     (h : i < s.toSequenceOfBlowups.length) :
     Blowup.exceptionalIdeal (s.toSequenceOfBlowups.transitionMapSucc i) (s.toSequenceOfBlowups.center i) * s.ideal (i + 1) =
@@ -228,6 +287,11 @@ theorem markedSequenceOfBlowups_exceptionalIdeal_mul_ideal_succ (s : MarkedSeque
   have hs := s.ideal_succ i h
   rwa [pow_one] at hs
 
+/- English proof (translation)
+Rewrite using `[vanishesAlong_iff_le]`. Use `hmax i h (s.ideal i) ?_` and prove the remaining obligations. Introduce `x hx`. Establish `hx'` using `s.center_order i h hx`. Rewrite `hx'` using `[mem_orderAtLeastLocus_one_iff]`.
+
+Conclude with `hx'`.
+-/
 theorem markedSequenceOfBlowups_ideal_vanishesAlong_center (s : MarkedSequenceOfBlowups p I 1 E)
     (hmax : HasReducedCenters s) (i : ℕ) (h : i < s.toSequenceOfBlowups.length) :
     VanishesAlong (s.ideal i) (s.toSequenceOfBlowups.center i) := by
@@ -252,11 +316,17 @@ def MarkedSequenceOfBlowups.toIdealBlowupSequence (s : MarkedSequenceOfBlowups p
   boundary_succ := s.boundary_succ
 
 @[simp]
+/- English proof (translation)
+The claim follows from `rfl @[simp]`.
+-/
 theorem MarkedSequenceOfBlowups.toMarkedSequence_toSequenceOfBlowups (s : MarkedSequenceOfBlowups p I 1 E)
     (hmax : HasReducedCenters s) :
     (s.toIdealBlowupSequence hmax).toSequenceOfBlowups = s.toSequenceOfBlowups := rfl
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem MarkedSequenceOfBlowups.toMarkedSequence_lastIdeal (s : MarkedSequenceOfBlowups p I 1 E)
     (hmax : HasReducedCenters s) :
     (s.toIdealBlowupSequence hmax).lastIdeal = s.lastIdeal := rfl

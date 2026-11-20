@@ -10,19 +10,42 @@ noncomputable section
 
 namespace GlobalTheory.HeightCounting
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.exists_semisimplification_matrix_rep_same_charpoly`.
+-/
 theorem ss_exists : ∀ {Γ : Type} [Group Γ] {k : Type} [Field k] {a : ℕ} (ρ : Γ →* GL (Fin a) k), ∃ ρ' : Γ →* GL (Fin a) k, IsSSRep ρ' ∧ ρ.ker ≤ ρ'.ker ∧ ∀ g, (ρ' g : Matrix (Fin a) (Fin a) k).charpoly = (ρ g : Matrix (Fin a) (Fin a) k).charpoly := GlobalTheory.T.exists_semisimplification_matrix_rep_same_charpoly
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.charpoly_coeff_congr_same_place_alt`.
+-/
 theorem indep : ∀ (D : D7) (Rw : RowSide D) (Pl : PlSide D) (X : LocNd (lay0 D)) (Y : LocAut X), GlobalTheory.RowTie.ChebSplit D.nd → (∀ i σ w, Y.locW i σ w = Rw.locR σ w) → (∀ (i : X.nd.Loc) (y : X.nd.O i), ∃ h : iotaO X.nd Y.naut i y ∈ Pl.plB (X.nd.w i), fbCast (X.nd.w_l i) (D.what₂.places.resChar_prime (X.nd.w i)) (X.nd.lPrime i).out (Pl.plκ (X.nd.w i) (IsLocalRing.residue (Pl.plB (X.nd.w i)) ⟨_, h⟩)) = Y.naut.kFbar i (IsLocalRing.residue (X.nd.O i) y)) → ∀ (σ : D.what₂.FT) (i i' : X.nd.Loc), X.nd.w i = X.nd.w i' → ∀ (Sig Sig' : List (Formalism.BasicNotions.Part Y.naut.CG)) (ρ : G D.host.E X.nd.Om →* GL (Fin D.R.r) (X.nd.O i)) (ρ' : G D.host.E X.nd.Om →* GL (Fin D.R.r) (X.nd.O i')), HasParamW X.nd Y.naut i σ Sig → IsRepOfSig X.nd Y.naut i Sig ρ → HasParamW X.nd Y.naut i' σ Sig' → IsRepOfSig X.nd Y.naut i' Sig' ρ' → ∀ (g : G D.host.E X.nd.Om) (n : ℕ), iotaO X.nd Y.naut i ((ρ g : Matrix (Fin D.R.r) (Fin D.R.r) (X.nd.O i)).charpoly.coeff n) - iotaO X.nd Y.naut i' ((ρ' g : Matrix (Fin D.R.r) (Fin D.R.r) (X.nd.O i')).charpoly.coeff n) ∈ (Pl.plB (X.nd.w i)).nonunits := GlobalTheory.T.charpoly_coeff_congr_same_place_alt
 
+/- English proof (translation)
+The claim follows from `Classical.epsilon_spec (ss_exists ρ)`.
+-/
 theorem ssRep_spec {Γ : Type} [Group Γ] {k : Type} [Field k] {a : ℕ} (ρ : Γ →* GL (Fin a) k) :
     IsSSRep (ssRep ρ) ∧ ρ.ker ≤ (ssRep ρ).ker ∧
     ∀ g, (ssRep ρ g : Matrix (Fin a) (Fin a) k).charpoly = (ρ g : Matrix (Fin a) (Fin a) k).charpoly :=
   Classical.epsilon_spec (ss_exists ρ)
 
+/- English proof (translation)
+Substitute `h1` using the available equality. Substitute `h2` using the available equality. Conclude with `eq_of_heq h`.
+-/
 theorem castMt_eq {D : D7} {μ μ' : D.what₂.Tup} {j j' : ℕ} (h1 : μ = μ') (h2 : j = j') (M : Submodule ℂ (D.what₂.Mt μ j))
     (M' : Submodule ℂ (D.what₂.Mt μ' j')) (h : HEq M M') : castMt h1 h2 M = M' := by
   subst h1; subst h2; exact eq_of_heq h
 
+/- English proof (translation)
+Set `U : Set Γ` to `⋂ i : Fin a, ⋂ j : Fin a, (fun g => (ρ g : Matrix (Fin a) (Fin a) O) i j - (1 : Matrix (Fin a) (Fin a) O) i j) ⁻¹' (I : Set O)`. Establish `hU : IsOpen U`. Use `isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j => hI.preimage ?_` and prove the remaining obligations. Conclude with `((continuous_apply j).comp ((continuous_apply i).comp hρ)).sub continuous_const`. Establish `h1 : (1 : Γ) ∈ U`.
+
+Simplify using `only [U, Set.mem_iInter, Set.mem_preimage, map_one, Units.val_one, sub_self]`. Introduce `i j`. Conclude with `I.zero_mem`. Establish `hsub : U ⊆ ((mapRep φ ρ).ker : Set Γ)`. Introduce `g hg`.
+
+Simplify using `only [U, Set.mem_iInter, Set.mem_preimage] at hg`. Use `show mapRep φ ρ g = 1`. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Use `hφ (hg i j)` as an intermediate fact.
+
+Rewrite `this` using `[RingHom.mem_ker, map_sub, sub_eq_zero]`. Simplify using `only [mapRep, MonoidHom.coe_comp, Function.comp_apply, Units.coe_map, MonoidHom.coe_coe, RingHom.mapMatrix_apply, Matrix.map_apply, Units.val_one]`. Express the relevant statement in the definitionally equal form `φ ((ρ g : Matrix (Fin a) (Fin a) O) i j) = (1 : Matrix (Fin a) (Fin a) k) i j`. Rewrite using `[this, Matrix.one_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+
+Conclude with `Subgroup.isOpen_of_mem_nhds _ (Filter.mem_of_superset (hU.mem_nhds h1) hsub)`.
+-/
 theorem isOpen_ker_mapRep {Γ : Type} [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] {O : Type} [CommRing O]
     [TopologicalSpace O] [IsTopologicalRing O] (I : Ideal O) (hI : IsOpen (I : Set O)) {k : Type} [CommRing k] (φ : O →+* k)
     (hφ : I ≤ RingHom.ker φ) {a : ℕ} (ρ : Γ →* GL (Fin a) O)
@@ -50,15 +73,26 @@ theorem isOpen_ker_mapRep {Γ : Type} [Group Γ] [TopologicalSpace Γ] [IsTopolo
     split_ifs <;> simp
   exact Subgroup.isOpen_of_mem_nhds _ (Filter.mem_of_superset (hU.mem_nhds h1) hsub)
 
+/- English proof (translation)
+Introduce `W _`. Take `⟨W', hW'⟩` from `Submodule.exists_isCompl W`. Conclude with `⟨W', fun g v hv => by simpa using hv, hW'⟩`.
+-/
 theorem isSSRep_one {Γ : Type} [Group Γ] {k : Type} [Field k] {a : ℕ} : IsSSRep (1 : Γ →* GL (Fin a) k) := by
   intro W _
   obtain ⟨W', hW'⟩ := Submodule.exists_isCompl W
   exact ⟨W', fun g v hv => by simpa using hv, hW'⟩
 
+/- English proof (translation)
+Substitute `h1` using the available equality. Substitute `h2` using the available equality. Both sides reduce to the same expression.
+-/
 theorem fbCast_trans {p q r : ℕ} (h1 : p = q) (h2 : q = r) (hp : p.Prime) (hq : q.Prime) (hr : r.Prime) (x : Fb p hp) :
     fbCast h2 hq hr (fbCast h1 hp hq x) = fbCast (h1.trans h2) hp hr x := by
   subst h1; subst h2; rfl
 
+/- English proof (translation)
+Substitute `h` using the available equality. Establish `: IsLocalRing.residue (Pl.plB lam) ⟨z, hz⟩ = IsLocalRing.residue (Pl.plB lam) ⟨z', hz'⟩`. Rewrite using `[← sub_eq_zero, ← map_sub, IsLocalRing.residue_eq_zero_iff, ValuationSubring.valuation_lt_one_iff]`. Rewrite `hd` using `[ValuationSubring.mem_nonunits_iff]`. Simplify using `using hd`.
+
+Rewrite using `[this]`.
+-/
 theorem plκ_cast (D : D7) (Pl : PlSide D) {lam lam' : D.what₂.places.Pl} (h : lam = lam') {p : ℕ} (hp : p.Prime)
     (h1 : D.what₂.places.resChar lam = p) (h1' : D.what₂.places.resChar lam' = p) (z z' : ℂ) (hz : z ∈ Pl.plB lam)
     (hz' : z' ∈ Pl.plB lam') (hd : z - z' ∈ (Pl.plB lam).nonunits) :
@@ -71,12 +105,18 @@ theorem plκ_cast (D : D7) (Pl : PlSide D) {lam lam' : D.what₂.places.Pl} (h :
     simpa using hd
   rw [this]
 
+/- English proof (translation)
+Rewrite using `[← Matrix.charpoly_map]`. Both sides reduce to the same expression.
+-/
 theorem charpoly_mapRep {Γ : Type} [Group Γ] {A B : Type} [CommRing A] [CommRing B] {a : ℕ} (f : A →+* B)
     (ρ : Γ →* GL (Fin a) A) (g : Γ) :
     ((mapRep f ρ g : GL (Fin a) B) : Matrix (Fin a) (Fin a) B).charpoly = (ρ g : Matrix (Fin a) (Fin a) A).charpoly.map f := by
   rw [← Matrix.charpoly_map]
   rfl
 
+/- English proof (translation)
+Unfold `rbarOf`. Use `split_ifs with h`. Conclude with `(ssRep_spec _).1`. Conclude with `isSSRep_one`.
+-/
 theorem isSSRep_rbarOf {D : D7} {X : LocNd (lay0 D)} (Y : LocAut X) (σ : D.what₂.FT) (lam : D.what₂.places.Pl) :
     IsSSRep (rbarOf Y σ lam) := by
   unfold rbarOf
@@ -85,6 +125,13 @@ theorem isSSRep_rbarOf {D : D7} {X : LocNd (lay0 D)} (Y : LocAut X) (σ : D.what
   · exact isSSRep_one
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Establish `hex : RbarData Y σ (X.nd.w i)` using `⟨i, rfl, Sig, ρ, hP, hR⟩`. Unfold `rbarOf`. Rewrite using `[dif_pos hex, (ssRep_spec _).2.2 g, charpoly_mapRep, Polynomial.map_map]`. Establish `hw0` using `hex.choose_spec.1`. Establish `hs` using `hex.choose_spec.2.choose_spec.choose_spec`.
+
+Generalize the expression as in `hex.choose_spec.2.choose_spec.choose = ρ0 at hs ⊢`. Generalize the expression as in `hex.choose_spec.2.choose = Sig0 at hs ρ0 ⊢`. Use extensionality with `n`. Rewrite using `[Polynomial.coeff_map, Polynomial.coeff_map]`. Simplify using `only [RingHom.comp_apply, RingEquiv.toRingHom_eq_coe, RingHom.coe_coe]`.
+
+Take `⟨hz0, e0⟩` from `hplB hex.choose ((ρ0 g : Matrix (Fin D.R.r) (Fin D.R.r) (X.nd.O hex.choose)).charpoly.coeff n)`. Take `⟨hz, e⟩` from `hplB i ((ρ g : Matrix (Fin D.R.r) (Fin D.R.r) (X.nd.O i)).charpoly.coeff n)`. Rewrite using `[← e0, ← e, fbCast_trans, fbCast_trans]`. Conclude with `plκ_cast D Pl hw0 _ _ _ _ _ hz0 hz (indep D Rw Pl X Y hCheb hloc hplB σ _ i hw0 Sig0 Sig ρ0 ρ hs.1 hs.2 hP hR g n)`.
+-/
 theorem rbar_tie_at (D : D7) (Rw : RowSide D) (Pl : PlSide D) (X : LocNd (lay0 D)) (Y : LocAut X)
     (hCheb : GlobalTheory.RowTie.ChebSplit D.nd) (hloc : ∀ i σ w, Y.locW i σ w = Rw.locR σ w)
     (hplB : ∀ (i : X.nd.Loc) (y : X.nd.O i), ∃ h : iotaO X.nd Y.naut i y ∈ Pl.plB (X.nd.w i), fbCast (X.nd.w_l i) (D.what₂.places.resChar_prime (X.nd.w i)) (X.nd.lPrime i).out (Pl.plκ (X.nd.w i) (IsLocalRing.residue (Pl.plB (X.nd.w i)) ⟨_, h⟩)) = Y.naut.kFbar i (IsLocalRing.residue (X.nd.O i) y))
@@ -112,6 +159,31 @@ theorem rbar_tie_at (D : D7) (Rw : RowSide D) (Pl : PlSide D) (X : LocNd (lay0 D
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `D Rw Pl X Y hBU hCheb hloc hiota hplB hgam hchi hMt`. Use `⟨{ bc := bcOf D Rw, bc_pos := ?_, bc_sum := ?_, rbar := rbarOf Y, rbar_open := ?_, heckeLoc_gamma_places := hgam, chiT_tg := ?_, MtPar := mtParOf Y }, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `σ p hp`. Unfold `bcOf at hp`. Use `split_ifs at hp with h`.
+
+Take `⟨q, hq, rfl⟩` from `List.mem_map.1 (Multiset.mem_coe.1 hp)`. Take `⟨h1, h2, -⟩` from `h.choose_spec.1 q hq`. Conclude with `⟨h1, h2⟩`. Rewrite `hp` using `[Multiset.mem_singleton]`. Substitute `hp` using the available equality.
+
+Use `⟨?_, Nat.one_pos⟩` and prove the remaining obligations. Use `D.R.m_add_three_le_k` as an intermediate fact. Use `D.R.two_le_m` as an intermediate fact. Simplify using `only [Ranks.r]`. Use linear arithmetic over natural numbers and integers.
+
+Introduce `σ`. Unfold `bcOf`. Use `split_ifs with h`. Use `h.choose_spec.2.1` as an intermediate fact. Simplify using `only [Multiset.map_coe, Multiset.sum_coe, List.map_map]`.
+
+Simplify `this` using `[rankIso, Function.comp_def]`. Simplify using the standard rewrite rules. Introduce `σ lam show IsOpen (((rbarOf Y σ lam).ker : Subgroup _) : Set (G D.host.E X.nd.Om))`. Unfold `rbarOf`. Use `split_ifs with h`.
+
+Apply `Subgroup.isOpen_mono (ssRep_spec _).2.1` to reduce the goal to its premises. Establish `hc` using `h.choose_spec.2.choose_spec.choose_spec.2.1`. Use `isOpen_ker_mapRep (IsLocalRing.maximalIdeal (X.nd.O h.choose)) ?_ _ ?_ _ hc` and prove the remaining obligations. Use `(isAdic_iff.1 (X.nd.O_adic h.choose)).1 1` as an intermediate fact. Simplify using `using this`.
+
+Introduce `y hy`. Rewrite using `[RingHom.mem_ker]`. Simplify using `[(IsLocalRing.residue_eq_zero_iff y).2 hy]`. Simplify using `[MonoidHom.ker_one]`. Introduce `i k v hk`.
+
+Take `⟨u, hu, he⟩` from `hchi i k v hk`. Break down `hu with rfl | rfl` into its components or cases. Conclude with `Or.inl he`. Conclude with `Or.inr he`. Introduce `i σ Sig hP hcsd hinf`.
+
+Establish `hg : BcGood D Rw σ Sig` using `⟨fun p hp => ⟨(hP.1 p hp).1, (hP.1 p hp).2, hcsd p hp, hinf p hp⟩, hP.2.1, fun w hw => (hP.2.2 w hw).trans (hloc i σ w)⟩`. Establish `hex : ∃ Sig, BcGood D Rw σ Sig` using `⟨Sig, hg⟩`. Use `show bcOf D Rw σ = _`. Unfold `bcOf`. Rewrite using `[dif_pos hex]`.
+
+Establish `h0` using `hex.choose_spec`. Use `hBU _ _ (fun p hp => ?_) h0.2.1 hg.2.1 (fun w hw => (h0.2.2 w hw).trans (hg.2.2 w hw).symm)` and prove the remaining obligations. Break down `List.mem_append.1 hp with hp | hp` into its components or cases. Conclude with `h0.1 p hp`. Conclude with `hg.1 p hp`.
+
+Introduce `i σ Sig ρ hP hR`. Use `⟨?_, rbar_tie_at D Rw Pl X Y hCheb hloc hplB i σ Sig ρ hP hR⟩` and prove the remaining obligations. Conclude with `isSSRep_rbarOf Y σ (X.nd.w i)`. Introduce `i σ' show mtParOf Y (X.nd.mu i) (X.nd.j i) σ' = mtSup Y i σ'`. Establish `hex : ∃ i', X.nd.mu i' = X.nd.mu i ∧ X.nd.j i' = X.nd.j i` using `⟨i, rfl, rfl⟩`.
+
+Unfold `mtParOf`. Rewrite using `[dif_pos hex]`. Conclude with `castMt_eq _ _ _ _ (hMt _ _ σ' hex.choose_spec.1 hex.choose_spec.2)`. Conclude with `fun σ lam => isSSRep_rbarOf Y σ lam`.
+-/
 theorem locTy_exists : ∀ (D : D7) (Rw : RowSide D) (Pl : PlSide D) (X : LocNd (lay0 D)) (Y : LocAut X), BlocksUnique D → GlobalTheory.RowTie.ChebSplit D.nd → (∀ i σ w, Y.locW i σ w = Rw.locR σ w) → (∀ i : X.nd.Loc, Y.naut.iotaQC i = qCast (X.nd.w_l i) (Pl.ι (X.nd.w i))) → (∀ (i : X.nd.Loc) (y : X.nd.O i), ∃ h : iotaO X.nd Y.naut i y ∈ Pl.plB (X.nd.w i), fbCast (X.nd.w_l i) (D.what₂.places.resChar_prime (X.nd.w i)) (X.nd.lPrime i).out (Pl.plκ (X.nd.w i) (IsLocalRing.residue (Pl.plB (X.nd.w i)) ⟨_, h⟩)) = Y.naut.kFbar i (IsLocalRing.residue (X.nd.O i) y)) → (∀ i k v, X.nd.gam0 i (D.naut.plGw k v) = D.ntypes.tg k v) → (∀ (i : X.nd.Loc) k v, X.nd.l i ≠ D.host.g k → haveI : Fact (D.host.g k).Prime := ⟨D.host.g_prime k⟩; ∃ u : (ZMod (D.host.g k))ˣ, (u = D.nd.chiT k v ⟨X.nd.j i - 1, by have := X.nd.j_range i; omega⟩ ∨ u = (D.nd.chiT k v ⟨X.nd.j i - 1, by have := X.nd.j_range i; omega⟩)⁻¹) ∧ iotaO X.nd Y.naut i ((X.nd.chi i 1 (D.ntypes.tg k v) : (X.nd.O i)ˣ) : X.nd.O i) = D.ntypes.teichC k (algebraMap (ZMod (D.host.g k)) (Formalism.CyclotomicNorms.Fbar (D.host.g k)) (u : ZMod (D.host.g k)))) → (∀ (i i' : X.nd.Loc) (σ' : (lay0 D).ntypes.Par), X.nd.mu i = X.nd.mu i' → X.nd.j i = X.nd.j i' → HEq (⨆ P ∈ {P | ∃ Sig, (∀ w, isoLoc X.nd Y.naut Sig w = (lay0 D).ntypes.locPar σ' w) ∧ IsBCV X.nd Y.naut i P (twistIso X.nd Y.naut (Sig ++ [muPart X.nd Y.naut i]) Y.naut.etaTinv)}, Y.naut.typeV i P) (⨆ P ∈ {P | ∃ Sig, (∀ w, isoLoc X.nd Y.naut Sig w = (lay0 D).ntypes.locPar σ' w) ∧ IsBCV X.nd Y.naut i' P (twistIso X.nd Y.naut (Sig ++ [muPart X.nd Y.naut i']) Y.naut.etaTinv)}, Y.naut.typeV i' P)) → ∃ Z : LocTy Y, BcTie X.nd Y.naut Z.ntypes ∧ RbarTie X.nd Y.naut Z.ntypes ∧ MtParTie X.nd Y.naut Z.ntypes ∧ ∀ σ lam, IsSSRep (Z.rbar σ lam) := by
   intro D Rw Pl X Y hBU hCheb hloc hiota hplB hgam hchi hMt
   refine ⟨{ bc := bcOf D Rw, bc_pos := ?_, bc_sum := ?_, rbar := rbarOf Y, rbar_open := ?_, heckeLoc_gamma_places := hgam, chiT_tg := ?_, MtPar := mtParOf Y }, ?_, ?_, ?_, ?_⟩

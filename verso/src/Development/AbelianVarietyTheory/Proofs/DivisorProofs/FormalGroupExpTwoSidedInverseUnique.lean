@@ -8,6 +8,9 @@ open MvPowerSeries ReciprocityTheory.PGsh ReciprocityTheory.ChartRestriction.G.S
 
 namespace GlobalTheory.FGDepth
 
+/- English proof (translation)
+Introduce `C _ _ v d G`. Take `⟨h1, h2, h3⟩` from `expOf_spec G`. Conclude with `⟨h1, h3, h2⟩`.
+-/
 theorem expOf_twoSided_unique : ∀ (C : Type) [Field C] [CharZero C] (v : AddValuation C (WithTop ℝ))
     (d : ℕ) (G : LogFGL v d), IsExp G (expOf G) ∧ (∀ a, subst G.lg (expOf G a) = X a) ∧
       ∀ ex, IsExp G ex → ex = expOf G := by

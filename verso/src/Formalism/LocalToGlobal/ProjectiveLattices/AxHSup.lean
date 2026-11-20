@@ -27,6 +27,9 @@ variable (Xo c) in
 
 def PTNe : Prop := ∀ (Z : Comp Xo c) (σ : c.F →+* ℂ), (PT (Ω := Om Z) σ).Nonempty
 
+/- English proof (translation)
+Introduce `Z σ` and use `exists_embedding_over (hfg Z) σ`.
+-/
 theorem ptNe_of_fnFG (hfg : FnFG Xo c) : PTNe Xo c := fun Z σ => exists_embedding_over (hfg Z) σ
 
 def ValAtCx (h : GenFrEx Xo c) (yP : ∀ Z : Comp Xo c, ∀ P : Om Z →+* ℂ, FrPt Xo c (CAt (sgOf P))) : Prop :=
@@ -40,15 +43,28 @@ section Pf
 variable {h : GenFrEx Xo c} {fn : ∀ σ : c.F →+* ℂ, FrPt Xo c (CAt σ) → Ix Dw → ℝ}
   {yP : ∀ Z : Comp Xo c, ∀ P : Om Z →+* ℂ, FrPt Xo c (CAt (sgOf P))}
 
+/- English proof (translation)
+Unfold `meanK`. Use `gcongr with sg _`. Conclude with `hFG sg`.
+-/
 theorem meanK_mono' {K : Type} [Field K] [NumberField K] {F G : (K →+* ℂ) → ℝ} (hFG : ∀ sg, F sg ≤ G sg) :
     meanK F ≤ meanK G := by
   unfold meanK
   gcongr with sg _
   exact hFG sg
 
+/- English proof (translation)
+Apply the tactic sequence `cases i <;> rfl`.
+-/
 theorem exZ_wtZ (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ) (i : Ix Dw) : exZ Dw (wtZ a n) i = (ex Dw a n i : ℤ) := by
   cases i <;> rfl
 
+/- English proof (translation)
+Establish `hb` using `hB (sgOf P)`. Unfold `BddAt at hb`. Establish `hle` using `le_ciSup hb (yP Z P)`. Establish `hc : (valC h a n f Z).coeff (wtZ a n) = evC h Z f`. Unfold `valC`.
+
+Simplify using the standard rewrite rules. Establish `heq : nrmC fn (yP Z) (wtZ a n) (valC h a n f Z) P = ptNorm (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) (sgOf P) (fn (sgOf P)) (ex Dw a n) f (yP Z P)`. Unfold `nrmC ptNorm`. Rewrite using `[hc, hcx Z P a n f hS]`. Apply the tactic sequence `simp only [exZ_wtZ, zpow_neg, zpow_natCast, inv_pow] <;> rfl`.
+
+Rewrite using `[heq]`. Conclude with `hle`.
+-/
 theorem nrmC_valC_le (hcx : ValAtCx h yP) {a : (E →+* ℂ) × ℕ → ℕ} {n : ℕ} {f : Rul Xo c}
     (hS : f ∈ sec Xo c a n) (hB : SupBdd Xo c fn a n f) (Z : Comp Xo c) (P : Om Z →+* ℂ) :
     nrmC fn (yP Z) (wtZ a n) (valC h a n f Z) P ≤ supR Xo c fn (sgOf P) a n f := by
@@ -66,6 +82,17 @@ theorem nrmC_valC_le (hcx : ValAtCx h yP) {a : (E →+* ℂ) × ℕ → ℕ} {n 
   rw [heq]
   exact hle
 
+/- English proof (translation)
+Establish `hbd : ∀ p : (Σ Z : Comp Xo c, PT (Ω` using `Om Z) σ), nrmC fn (yP p.1) (wtZ a n) (valC h a n f p.1) p.2 ≤ supR Xo c fn σ a n f := by`. Introduce and unpack `⟨Z, P, hP⟩`. Establish `hσ : sgOf P = σ` using `hP`. Establish `key` using `nrmC_valC_le (h := h) (yP := yP) hcx hS hB Z P`. Rewrite `key` using `[hσ]`.
+
+Conclude with `key`. Take `⟨Z0, hZ0⟩` from `hN`. Take `⟨P0, hP0⟩` from `hPT Z0 σ`. Establish `hpos : 0 < nrmC fn (yP Z0) (wtZ a n) (valC h a n f Z0) P0`. Establish `hc : (valC h a n f Z0).coeff (wtZ a n) = evC h Z0 f`.
+
+Unfold `valC`. Simplify using the standard rewrite rules. Unfold `nrmC`. Rewrite using `[hc]`. Apply `mul_pos` to reduce the goal to its premises.
+
+Conclude with `norm_pos_iff.mpr ((map_ne_zero P0).mpr hZ0)`. Apply `Finset.prod_pos` to reduce the goal to its premises. Introduce `i _`. Conclude with `zpow_pos (abs_pos.mpr (hfn _ _ i)) _`. Establish `hne : Nonempty (Σ Z : Comp Xo c, PT (Ω` using `Om Z) σ) := ⟨⟨Z0, P0, hP0⟩⟩`.
+
+Establish `hB' : BddAbove (Set.range fun p : (Σ Z : Comp Xo c, PT (Ω` using `Om Z) σ) => nrmC fn (yP p.1) (wtZ a n) (valC h a n f p.1) p.2) := ⟨_, Set.forall_mem_range.mpr hbd⟩`. Apply `Real.log_le_log` to reduce the goal to its premises. Conclude with `lt_of_lt_of_le hpos (le_ciSup hB' ⟨Z0, P0, hP0⟩)`. Conclude with `ciSup_le hbd`.
+-/
 theorem log_supN_le (hfn : FnNe Xo c fn) (hPT : PTNe Xo c) (hcx : ValAtCx h yP) {a : (E →+* ℂ) × ℕ → ℕ} {n : ℕ}
     {f : Rul Xo c} (hS : f ∈ sec Xo c a n) (hB : SupBdd Xo c fn a n f) (hN : NZSome h f) (σ : c.F →+* ℂ) :
     Real.log (⨆ p : (Σ Z : Comp Xo c, PT (Ω := Om Z) σ), nrmC fn (yP p.1) (wtZ a n) (valC h a n f p.1) p.2) ≤
@@ -99,6 +126,15 @@ theorem log_supN_le (hfn : FnNe Xo c fn) (hPT : PTNe Xo c) (hcx : ValAtCx h yP) 
 
 end Pf
 
+/- English proof (translation)
+Establish `hPT : PTNe Xo c` using `ptNe_of_fnFG hfg`. Unfold `Data.HtSup`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `le_trans (meanK_mono' fun sg => ?_) hmxm` and prove the remaining obligations. Conclude with `ciSup_le fun j => (log_supN_le hfn hPT hcx (hwS j) (hwB j) (hwN j) sg).trans (hmx sg j)`.
+
+Introduce `k`. Use `le_trans (meanK_mono' fun sg => ?_) (hth k)` and prove the remaining obligations. Conclude with `log_supN_le hfn hPT hcx (hpS k) (hpB k) (hpN k) sg`. Use `le_trans (meanK_mono' fun sg => ?_) hta1` and prove the remaining obligations. Establish `e : (2 : ℕ) • (dataOf h δ fn yP Dd N T i g0 cc uL uF uka ude uet uta1 uta2 wR jc np thpR n0 th0R uF0 nk thkR MR etR ta1R ta2R nu ip wsize DF PN PQ tableDegreeThreeBase PP0' Pd Gc PI4 Pet tableLineDegreeFive tableLineDegreeTwo Prw PO f r).G1 = wtZ uta1.1 uta1.2`.
+
+Apply the tactic sequence `rw [huta1] <;> rfl`. Rewrite using `[e]`. Conclude with `log_supN_le hfn hPT hcx h1S h1B h1N sg`. Use `le_trans (meanK_mono' fun sg => ?_) hta2` and prove the remaining obligations. Establish `e : (dataOf h δ fn yP Dd N T i g0 cc uL uF uka ude uet uta1 uta2 wR jc np thpR n0 th0R uF0 nk thkR MR etR ta1R ta2R nu ip wsize DF PN PQ tableDegreeThreeBase PP0' Pd Gc PI4 Pet tableLineDegreeFive tableLineDegreeTwo Prw PO f r).G2 = wtZ uta2.1 uta2.2`.
+
+Apply the tactic sequence `rw [huta2] <;> rfl`. Rewrite using `[e]`. Conclude with `log_supN_le hfn hPT hcx h2S h2B h2N sg`.
+-/
 theorem htSup_of (h : GenFrEx Xo c)
     (δ : ∀ Z : Comp Xo c, AddValuation (Om Z) (WithTop ℤ) → Ix Dw → ℤ)
     (fn : ∀ σ : c.F →+* ℂ, FrPt Xo c (CAt σ) → Ix Dw → ℝ)

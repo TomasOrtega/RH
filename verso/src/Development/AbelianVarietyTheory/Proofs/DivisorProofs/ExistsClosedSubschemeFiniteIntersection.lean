@@ -7,6 +7,17 @@ open scoped CategoryTheory.Obj
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `H Idx _ Z i hi`. Use `revert Z i hi`. Use `Finite.induction_empty_option (P := fun (α : Type) => ∀ (Z : α → Scheme.{0}) (i : ∀ k, Z k ⟶ H), (∀ k, IsClosedImmersion (i k)) → ∃ (Z₀ : Scheme.{0}) (i₀ : Z₀ ⟶ H), IsClosedImmersion i₀ ∧ ∀ (T : Scheme.{0}) (h : T ⟶ H), (∃ z, z ≫ i₀ = h) ↔ ∀ k, ∃ z, z ≫ i k = h) ?_ ?_ ?_ Idx` and prove the remaining obligations. Introduce `α β e ih Z i hi`. Take `⟨Z₀, i₀, h₀, hp⟩` from `ih (fun a => Z (e a)) (fun a => i (e a)) (fun a => hi (e a))`.
+
+Use `⟨Z₀, i₀, h₀, fun T h => (hp T h).trans ?_⟩` and prove the remaining obligations. Conclude with `e.forall_congr_right (q := fun k => ∃ z, z ≫ i k = h)`. Introduce `Z i _`. Use `⟨H, 𝟙 H, inferInstance, fun T h => ⟨fun _ k => k.elim, fun _ => ⟨h, Category.comp_id h⟩⟩⟩` and prove the remaining obligations. Introduce `α _ ih Z i hi`.
+
+Take `⟨Z₀, i₀, h₀, hp⟩` from `ih (fun a => Z (some a)) (fun a => i (some a)) (fun a => hi (some a))`. Use `haveI := h₀`. Use `haveI := hi none`. Use `⟨Limits.pullback i₀ (i none), Limits.pullback.fst i₀ (i none) ≫ i₀, inferInstance, ?_⟩` and prove the remaining obligations. Introduce `T h`.
+
+Rewrite using `[Option.forall, ← hp T h]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, rfl⟩`. Use `⟨⟨z ≫ Limits.pullback.snd _ _, ?_⟩, ⟨z ≫ Limits.pullback.fst _ _, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, ← Limits.pullback.condition]`.
+
+Both sides reduce to the same expression. Introduce and unpack `⟨⟨z₂, h₂⟩, ⟨z₁, h₁⟩⟩`. Conclude with `⟨Limits.pullback.lift z₁ z₂ (h₁.trans h₂.symm), by rw [Limits.pullback.lift_fst_assoc, h₁]⟩`.
+-/
 theorem closedSubscheme_iInter_exists :
     ∀ (H : Scheme.{0}) (Idx : Type) [Finite Idx] (Z : Idx → Scheme.{0}) (i : ∀ k, Z k ⟶ H),
       (∀ k, IsClosedImmersion (i k)) → ∃ (Z₀ : Scheme.{0}) (i₀ : Z₀ ⟶ H), IsClosedImmersion i₀ ∧

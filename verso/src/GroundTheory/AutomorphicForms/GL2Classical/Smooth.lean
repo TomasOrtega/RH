@@ -16,15 +16,26 @@ open AdelicGLn AutomorphicForm GroundTheory.Global
 def archToReal (e : archGroup ℚ 2) : GL (Fin 2) ℝ :=
   Matrix.GeneralLinearGroup.map RationalIdeles.realEquiv.toRingHom ((archEquiv ℚ 2).symm e)
 
+/- English proof (translation)
+Simplify using `only [archToReal, map_mul]`.
+-/
 theorem archToReal_mul (e e' : archGroup ℚ 2) : archToReal (e * e') = archToReal e * archToReal e' := by
   simp only [archToReal, map_mul]
 
+/- English proof (translation)
+Apply `(prodEquiv ℚ 2).injective` to reduce the goal to its premises. Rewrite using `[prodEquiv_infEmb, prodEquiv_realEmb]`. Use `Prod.ext (Units.ext (Matrix.ext fun a b => ?_)) rfl` and prove the remaining obligations. Conclude with `(RationalIdeles.realEquiv.symm_apply_apply _).symm`.
+-/
 theorem infEmb_eq_realEmb (e : archGroup ℚ 2) : infEmb ℚ 2 e = realEmb (archToReal e) := by
   apply (prodEquiv ℚ 2).injective
   rw [prodEquiv_infEmb, prodEquiv_realEmb]
   refine Prod.ext (Units.ext (Matrix.ext fun a b => ?_)) rfl
   exact (RationalIdeles.realEquiv.symm_apply_apply _).symm
 
+/- English proof (translation)
+Establish `hX : X = (1 / 2 : ℝ) • X + (1 / 2 : ℝ) • X` using `by rw [← add_smul]; norm_num`. Establish `hsq : (isExpLieAlgebra ℚ 2).expG X = (isExpLieAlgebra ℚ 2).expG ((1 / 2 : ℝ) • X) * (isExpLieAlgebra ℚ 2).expG ((1 / 2 : ℝ) • X)`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `NormedSpace.exp ((X : archLie ℚ 2) : ArchMatrix ℚ 2) = NormedSpace.exp _ * NormedSpace.exp _`.
+
+Use `conv_lhs => rw [hX]`. Conclude with `exp_add_of_commute' ℝ (Commute.refl _)`. Rewrite using `[hsq, archToReal_mul, map_mul, Units.val_mul]`. Conclude with `mul_self_pos.2 (Units.ne_zero _)`.
+-/
 theorem det_archToReal_expG_pos (X : archLie ℚ 2) :
     0 < (archToReal ((isExpLieAlgebra ℚ 2).expG X)).det.val := by
   have hX : X = (1 / 2 : ℝ) • X + (1 / 2 : ℝ) • X := by rw [← add_smul]; norm_num
@@ -51,6 +62,11 @@ def entryLift (k : ℤ) (F : ℂ → ℂ) (m : Fin 2 → Fin 2 → ℝ) : ℂ :=
     F (((m 0 0 : ℂ) * Complex.I + m 0 1) * ((m 1 0 : ℂ) * Complex.I + m 1 1)⁻¹) *
       ((m 1 0 : ℂ) * Complex.I + m 1 1) ^ (-k)
 
+/- English proof (translation)
+Rewrite using `[archLift]`. Unfold `entryLift`. Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply, Matrix.det_fin_two, Function.comp_apply, ← div_eq_mul_inv]`. Establish `h1 : ((x • UpperHalfPlane.I : ℍ) : ℂ) = ((x : Matrix (Fin 2) (Fin 2) ℝ) 0 0 * Complex.I + (x : Matrix (Fin 2) (Fin 2) ℝ) 0 1) / ((x : Matrix (Fin 2) (Fin 2) ℝ) 1 0 * Complex.I + (x : Matrix (Fin 2) (Fin 2) ℝ) 1 1)`. Rewrite using `[coe_smul_of_det_pos hx, num, denom, coe_I]`.
+
+Rewrite using `[← h1, ofComplex_apply]`. Simplify using `only [denom, coe_I]`.
+-/
 theorem archLift_eq_entryLift (k : ℤ) (f : ℍ → ℂ) {x : GL (Fin 2) ℝ} (hx : 0 < x.det.val) :
     archLift k f x = entryLift k (f ∘ ofComplex) (x : Matrix (Fin 2) (Fin 2) ℝ) := by
   rw [archLift]
@@ -64,6 +80,23 @@ theorem archLift_eq_entryLift (k : ℤ) (f : ℍ → ℂ) {x : GL (Fin 2) ℝ} (
   rw [← h1, ofComplex_apply]
   simp only [denom, coe_I]
 
+/- English proof (translation)
+Establish `hc : ∀ i j : Fin 2, ContDiff ℝ ∞ (fun m : Fin 2 → Fin 2 → ℝ => m i j)` using `fun i j => contDiff_apply_apply ℝ ℝ i j`. Establish `hcC : ∀ i j : Fin 2, ContDiff ℝ ∞ (fun m : Fin 2 → Fin 2 → ℝ => ((m i j : ℝ) : ℂ))` using `fun i j => Complex.ofRealCLM.contDiff.comp (hc i j)`. Use `set D : (Fin 2 → Fin 2 → ℝ) → ℝ := fun m => m 0 0 * m 1 1 - m 0 1 * m 1 0`. Establish `hD : ContDiff ℝ ∞ D` using `((hc 0 0).mul (hc 1 1)).sub ((hc 0 1).mul (hc 1 0))`. Use `set den : (Fin 2 → Fin 2 → ℝ) → ℂ := fun m => (m 1 0 : ℂ) * Complex.I + m 1 1`.
+
+Use `set num : (Fin 2 → Fin 2 → ℝ) → ℂ := fun m => (m 0 0 : ℂ) * Complex.I + m 0 1`. Establish `hden : ContDiff ℝ ∞ den` using `((hcC 1 0).mul contDiff_const).add (hcC 1 1)`. Establish `hnum : ContDiff ℝ ∞ num` using `((hcC 0 0).mul contDiff_const).add (hcC 0 1)`. Establish `hden0 : den m ≠ 0`. Introduce `h`.
+
+Establish `h1` using `congrArg Complex.re h`. Establish `h2` using `congrArg Complex.im h`. Simplify using `[den] at h1 h2`. Rewrite `hm` using `[h1, h2]`. Simplify using `at hm`.
+
+Establish `hq : 0 < (num m * (den m)⁻¹).im`. Rewrite using `[← div_eq_mul_inv, Complex.div_im]`. Establish `hns : 0 < Complex.normSq (den m)` using `Complex.normSq_pos.2 hden0`. Simplify using `only [num, den, Complex.add_re, Complex.add_im, Complex.mul_re, Complex.mul_im, Complex.ofReal_re, Complex.ofReal_im, Complex.I_re, Complex.I_im]`. Rewrite using `[← sub_div]`.
+
+Apply `div_pos _ hns` to reduce the goal to its premises. Use the polynomial consequences of the given equalities and inequalities. Establish `h1 : ContDiffAt ℝ ∞ (fun m : Fin 2 → Fin 2 → ℝ => (Real.sqrt (D m) : ℂ) ^ k) m`. Establish `hs : ContDiffAt ℝ ∞ (fun m => (Real.sqrt (D m) : ℂ)) m` using `Complex.ofRealCLM.contDiff.contDiffAt.comp m ((Real.contDiffAt_sqrt hm.ne').comp m hD.contDiffAt)`. Establish `hs0 : (Real.sqrt (D m) : ℂ) ≠ 0` using `by exact_mod_cast (Real.sqrt_pos.2 hm).ne'`.
+
+Establish `hz : ContDiffAt ℝ ∞ (fun z : ℂ => z ^ k) (Real.sqrt (D m) : ℂ)` using `(((differentiableOn_zpow k {0}ᶜ (Or.inl (by simp))).analyticOnNhd isOpen_compl_singleton _ hs0).contDiffAt).restrict_scalars ℝ`. Conclude with `hz.comp m hs`. Establish `h2 : ContDiffAt ℝ ∞ (fun m => F (num m * (den m)⁻¹)) m`. Establish `hinv : ContDiffAt ℝ ∞ (fun m => (den m)⁻¹) m` using `(contDiffAt_inv ℝ hden0).comp m hden.contDiffAt`. Establish `hqd : ContDiffAt ℝ ∞ (fun m => num m * (den m)⁻¹) m` using `hnum.contDiffAt.mul hinv`.
+
+Establish `hFd : ContDiffAt ℝ ∞ F (num m * (den m)⁻¹)` using `((hF.contDiffOn (isOpen_lt continuous_const Complex.continuous_im)).contDiffAt ((isOpen_lt continuous_const Complex.continuous_im).mem_nhds hq)).restrict_scalars ℝ`. Conclude with `hFd.comp m hqd`. Establish `h3 : ContDiffAt ℝ ∞ (fun m => den m ^ (-k)) m`. Establish `hz : ContDiffAt ℝ ∞ (fun z : ℂ => z ^ (-k)) (den m)` using `(((differentiableOn_zpow (-k) {0}ᶜ (Or.inl (by simp))).analyticOnNhd isOpen_compl_singleton _ hden0).contDiffAt).restrict_scalars ℝ`. Conclude with `hz.comp m hden.contDiffAt`.
+
+Conclude with `(h1.mul h2).mul h3`.
+-/
 theorem contDiffAt_entryLift (k : ℤ) {F : ℂ → ℂ} (hF : DifferentiableOn ℂ F {z | 0 < z.im})
     {m : Fin 2 → Fin 2 → ℝ} (hm : 0 < m 0 0 * m 1 1 - m 0 1 * m 1 0) :
     ContDiffAt ℝ ∞ (entryLift k F) m := by
@@ -117,6 +150,19 @@ theorem contDiffAt_entryLift (k : ℤ) {F : ℂ → ℂ} (hF : DifferentiableOn 
 
 variable {N : ℕ} [NeZero N] {k : ℤ}
 
+/- English proof (translation)
+Introduce `g`. Rewrite using `[(isExpLieAlgebra ℚ 2).isSmoothFun_iff]`. Introduce `x`. Use `set g' := g * infEmb ℚ 2 x`. Take `⟨hpos, γ, u, hu, hg'⟩` from `decompGL_spec N g'`.
+
+Use `set h := decompGL N g'`. Use `set P : archLie ℚ 2 → (Fin 2 → Fin 2 → ℝ) := fun Y i j => ∑ a, (h : Matrix (Fin 2) (Fin 2) ℝ) i a * archLin (NormedSpace.exp ((Y : ArchMatrix ℚ 2))) a j`. Establish `hP : ContDiff ℝ ∞ P`. Establish `hE : ContDiff ℝ ∞ (fun Y : archLie ℚ 2 => archLin (NormedSpace.exp ((Y : ArchMatrix ℚ 2))))` using `archLin.contDiff.comp ((contDiff_exp ℝ (ArchMatrix ℚ 2)).comp (archLie ℚ 2).subtypeL.contDiff)`. Use `contDiff_pi.2 fun i => contDiff_pi.2 fun j => ?_` and prove the remaining obligations.
+
+Conclude with `ContDiff.sum fun a _ => contDiff_const.mul ((contDiff_apply_apply ℝ ℝ a j).comp hE)`. Establish `hPval : ∀ Y : archLie ℚ 2, P Y = ((h * archToReal ((isExpLieAlgebra ℚ 2).expG Y) : GL (Fin 2) ℝ) : Matrix (Fin 2) (Fin 2) ℝ)`. Introduce `Y`. Use function extensionality and compare the values at `i j`. Rewrite using `[Units.val_mul, Matrix.mul_apply]`.
+
+Both sides reduce to the same expression. Establish `hdet : ∀ Y : archLie ℚ 2, 0 < (h * archToReal ((isExpLieAlgebra ℚ 2).expG Y)).det.val`. Introduce `Y`. Rewrite using `[map_mul, Units.val_mul]`. Conclude with `mul_pos hpos (det_archToReal_expG_pos Y)`.
+
+Establish `hval : ∀ Y : archLie ℚ 2, archSlice (adelicLift N k f) g (x * (isExpLieAlgebra ℚ 2).expG Y) = entryLift k (f ∘ ofComplex) (P Y)`. Introduce `Y`. Rewrite using `[archSlice_apply, map_mul, ← mul_assoc, show g * infEmb ℚ 2 x = g' from rfl, hg', infEmb_eq_realEmb, mul_assoc _ _ (realEmb _), ← realEmb_mul_finEmb_comm, ← mul_assoc, mul_assoc (diagonal ℚ 2 γ), ← map_mul, adelicLift_apply hf γ (hdet Y) hu, archLift_eq_entryLift k f (hdet Y), hP …`. Establish `hF : DifferentiableOn ℂ (f ∘ ofComplex) {z | 0 < z.im}` using `mdifferentiable_iff.1 hhol`. Rewrite using `[show (fun Y : archLie ℚ 2 => archSlice (adelicLift N k f) g (x * (isExpLieAlgebra ℚ 2).expG Y)) = entryLift k (f ∘ ofComplex) ∘ P from funext hval]`.
+
+Use `contDiff_iff_contDiffAt.2 fun Y => (contDiffAt_entryLift k hF ?_).comp Y hP.contDiffAt` and prove the remaining obligations. Use `hdet Y` as an intermediate fact. Rewrite `this` using `[Matrix.GeneralLinearGroup.val_det_apply, Matrix.det_fin_two, ← hPval]`. Conclude with `this`.
+-/
 theorem isArchSmooth_adelicLift {f : ℍ → ℂ}
     (hf : ∀ γ ∈ (Gamma0 N : Subgroup (GL (Fin 2) ℝ)), f ∣[k] γ = f) (hhol : MDiff f) :
     IsArchSmooth (adelicLift N k f) := by
@@ -160,6 +206,9 @@ theorem isArchSmooth_adelicLift {f : ℍ → ℂ}
   rw [Matrix.GeneralLinearGroup.val_det_apply, Matrix.det_fin_two, ← hPval] at this
   exact this
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨isArchSmooth_adelicLift hf hhol, (isWeightLevel_adelicLift hf).eventually_finEmb⟩`.
+-/
 theorem isSmooth_adelicLift {f : ℍ → ℂ}
     (hf : ∀ γ ∈ (Gamma0 N : Subgroup (GL (Fin 2) ℝ)), f ∣[k] γ = f) (hhol : MDiff f) :
     IsSmooth (adelicLift N k f) :=

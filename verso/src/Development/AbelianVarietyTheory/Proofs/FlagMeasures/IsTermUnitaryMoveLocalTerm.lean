@@ -5,6 +5,9 @@ open Formalism.MainNotions.S.Loc Formalism.MainNotions.S.LocNG
 
 namespace GlobalTheory.LocOver
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.LocOver.MoveTerm.isTerm_move H g t hg ht`.
+-/
 theorem isTerm_unitary_move {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
     {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E]
     (M : Model F E) {V : Type} [AddCommGroup V] [Module E V] (H : HermSp M V)

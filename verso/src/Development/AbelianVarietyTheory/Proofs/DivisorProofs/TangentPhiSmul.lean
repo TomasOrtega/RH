@@ -10,6 +10,13 @@ namespace GlobalTheory.SqZeroPt
 
 open GlobalTheory.LieVB GlobalTheory.Conormal
 
+/- English proof (translation)
+Rewrite using `[show (cotMap z h).app ⊤ (cst O c • w) = cst O c • (cotMap z h).app ⊤ w from (QCoh.appLinear (cotMap z h) ⊤).map_smul (cst O c) w]`. Take `⟨b, hb⟩` from `(isChart O M).d_surjective (sec_hom (zeroSec O M)) ((cotMap z h).app ⊤ w)`. Rewrite using `[← hb]`. Establish `key : cst O c • d (sec_hom (zeroSec O M)) (isChart O M).le b = d (sec_hom (zeroSec O M)) (isChart O M).le ((TM O M).hom.appLE ⊤ ⊤ le_top (cst O c) * b)`. Rewrite using `[d_mul]`.
+
+Use `erw [d_base (sec_hom (zeroSec O M)) (isChart O M).le le_top (cst O c)]`. Rewrite using `[smul_zero, add_zero]`. Use `erw [appLE_base (sec_hom (zeroSec O M)) _ _ le_rfl]`. Both sides reduce to the same expression. Rewrite using `[key, kappa_d, kappa_d, map_mul, toTsze_base, TrivSqZeroExt.snd_mul]`.
+
+Simplify using `[TrivSqZeroExt.algebraMap_eq_inl]`.
+-/
 theorem kappa_cotMap_cst_smul (O : Type) [CommRing O] (M : Type) [AddCommGroup M] [Module O M]
     [Module Oᵐᵒᵖ M] [IsCentralScalar O M] (A : Over (Sp O)) [GrpObj A] (z : TM O M ⟶ A)
     (h : zeroSec O M ≫ z = η[A]) (c : O) (w : Γ(omega A, ⊤)) :
@@ -28,6 +35,9 @@ theorem kappa_cotMap_cst_smul (O : Type) [CommRing O] (M : Type) [AddCommGroup M
   rw [key, kappa_d, kappa_d, map_mul, toTsze_base, TrivSqZeroExt.snd_mul]
   simp [TrivSqZeroExt.algebraMap_eq_inl]
 
+/- English proof (translation)
+The claim follows from `kappa_cotMap_cst_smul O M A z h c w`.
+-/
 theorem Phi_smul (O : Type) [CommRing O] (M : Type) [AddCommGroup M] [Module O M] [Module Oᵐᵒᵖ M]
     [IsCentralScalar O M] (A : Over (Sp O)) [GrpObj A] (z : TM O M ⟶ A)
     (h : zeroSec O M ≫ z = η[A]) (c : O) (w : Wmod A) :

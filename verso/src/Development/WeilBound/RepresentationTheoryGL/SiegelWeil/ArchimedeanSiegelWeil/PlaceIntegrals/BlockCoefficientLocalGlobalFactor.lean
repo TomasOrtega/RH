@@ -21,6 +21,17 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.CompanionTheory.WhitFree
 
+/- English proof (translation)
+Take `⟨S₁, hS₁⟩` from `GlobalTheory.T.euler_product_almost_all_standard F E M n d b I 1 _ _ hI`. Take `⟨S₂, hS₂⟩` from `GlobalTheory.T.adelic_siegelWeil_coefficient_eq F E σ hCM M J hJ n hn hM ψ hψ dx hdx db hdb d b laminf lam hinf hlam minf hminf m hm T hT`. Take `⟨hφm, hφi, -⟩` from `GlobalTheory.T.archimedean_siegel_weil_measure F E σ hCM M J hJ n hn hM d b laminf hinf minf hminf (hermOf (Ainf F) σ T hT) φ hφ`. Establish `hfin` using `fun v => GlobalTheory.T.local_siegel_weil_unramified_measure F E σ hCM M J hJ n hn hM d b v (lam v) (hlam v) (m v) (hm v) (hermOf (Fv F v) σ T hT) (A v) (hA v).1 (hA v).2`. Establish `hΦSB : GlobalTheory.Published.SiegelOneVector.IsSchwartzBruhat (pureN φ A)` using `GlobalTheory.T.factorizable_siegel_weil_finite_set F E σ hCM M J hJ n hn hM d b S₀ φ A hφ hA hAl`.
+
+Establish `hstar : Integrable (starN σ J ψ dx (pureN φ A)) db` using `GlobalTheory.T.siegel_weil_convergent_range F E σ hCM M J hJ n hM ψ hψ dx hdx db hdb _ hΦSB`. Establish `hlimC` using `GlobalTheory.T.siegel_weil_stabilizer_integrable F E σ hCM M J hJ n hn hM ψ hψ dx db d b _ hstar T`. Establish `htail` using `GlobalTheory.T.tendsto_tail_infinite_product_one _ hI.2.1`. Establish `hev : ∀ᶠ S in Filter.atTop, S₀ ∪ S₁ ∪ S₂ ⊆ S` using `Filter.eventually_ge_atTop _`. Take `⟨Sb, hSb⟩ : ∃ S, S₀ ∪ S₁ ∪ S₂ ⊆ S` from `⟨_, subset_rfl⟩`.
+
+Establish `hEu : ∀ S, S₀ ∪ S₁ ∪ S₂ ⊆ S → Integrable (pureN φ A) I ∧ ∫ X, pureN φ A X ∂I = ((1 : NNReal) : ℂ) * (∫ X, φ X ∂(minf (hermOf (Ainf F) σ T hT))) * (∏ v ∈ S, ((m v (hermOf (Fv F v) σ T hT) (A v)).toReal : ℂ)) * ((∏' v : {v // v ∉ S}, (m v.1 (hermOf (Fv F v.1) σ T hT) (latV b v.1)). …`. Introduce `S hS`. Establish `hs0 : S₀ ⊆ S` using `fun x hx => hS (by simp [hx])`. Establish `hs1 : S₁ ⊆ S` using `fun x hx => hS (by simp [hx])`. Conclude with `hS₁ S hs1 φ hφm hφi A (fun v => (hfin v).1) (fun v => (hfin v).2.1) (fun v hv => hAl v fun h => hv (hs0 h))`.
+
+Use `⟨(hEu Sb hSb).1, ?_⟩` and prove the remaining obligations. Establish `hlim2 : Filter.Tendsto (fun S => coefS σ J ψ dx db (pureN φ A) T b S * ((∏' v : {v // v ∉ S}, (m v.1 (hermOf (Fv F v.1) σ T hT) (latV b v.1)).toReal : ℝ) : ℂ)) Filter.atTop (nhds (coefN σ J ψ dx db (pureN φ A) T * ((1 : ℝ) : ℂ)))` using `hlimC.mul ((Complex.continuous_ofReal.tendsto _).comp htail)`. Establish `hconst : ∀ᶠ S in Filter.atTop, coefS σ J ψ dx db (pureN φ A) T b S * ((∏' v : {v // v ∉ S}, (m v.1 (hermOf (Fv F v.1) σ T hT) (latV b v.1)).toReal : ℝ) : ℂ) = ∫ X, pureN φ A X ∂I` using `by filter_upwards [hev] with S hS`. Establish `hs0 : S₀ ⊆ S` using `fun x hx => hS (by simp [hx])`. Establish `hs2 : S₂ ⊆ S` using `fun x hx => hS (by simp [hx])`.
+
+Rewrite using `[hS₂ S hs2 φ hφ A hA (fun v hv => hAl v fun h => hv (hs0 h)), (hEu S hS).2]`. Simplify using the standard rewrite rules. Use `tendsto_nhds_unique (hlim2.congr' hconst) tendsto_const_nhds` as an intermediate fact. Simplify using `using this`.
+-/
 theorem pure_identity {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (hCM : IsCMExt F E σ) {M : ℕ} (J : Matrix (Fin M) (Fin M) E) (hJ : IsHermND σ J)
     {n : ℕ} (hn : 0 < n) (hM : 2 * n < M) (ψ : AddChar (AF F) ℂ) (hψ : IsCharAF F ψ)
@@ -82,6 +93,11 @@ theorem pure_identity {F E : Type} [Field F] [NumberField F] [Field E] [NumberFi
   have := tendsto_nhds_unique (hlim2.congr' hconst) tendsto_const_nhds
   simpa using this
 
+/- English proof (translation)
+Take `⟨k, φ, A, S, hφ, hA, hAl, hsum⟩` from `GlobalTheory.T.schwartz_bruhat_factorizable_decomposition F E σ hCM M J hJ n hn hM d b Φ hΦ`. Establish `hSB : ∀ i, GlobalTheory.Published.SiegelOneVector.IsSchwartzBruhat (pureN (φ i) (A i))` using `fun i => GlobalTheory.T.factorizable_siegel_weil_finite_set F E σ hCM M J hJ n hn hM d b S (φ i) (A i) (hφ i) (hA i) (hAl i)`. Establish `hP` using `fun i => pure_identity σ hCM J hJ hn hM ψ hψ dx hdx db hdb d b laminf lam hinf hlam minf hminf m hm T hT I hI S (φ i) (hφ i) (A i) (hA i) (hAl i)`. Establish `hΦe : Φ = fun X => ∑ i, pureN (φ i) (A i) X` using `funext hsum`. Rewrite using `[hΦe, GlobalTheory.T.siegel_weil_orbital_integral_formula F E σ hCM M J hJ n hn hM ψ hψ dx hdx db hdb T k _ hSB, integral_finset_sum _ fun i _ => (hP i).1]`.
+
+Conclude with `Finset.sum_congr rfl fun i _ => (hP i).2`.
+-/
 theorem coefN_eq_integral {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (hCM : IsCMExt F E σ) {M : ℕ} (J : Matrix (Fin M) (Fin M) E) (hJ : IsHermND σ J)
     {n : ℕ} (hn : 0 < n) (hM : 2 * n < M) (ψ : AddChar (AF F) ℂ) (hψ : IsCharAF F ψ)
@@ -115,6 +131,11 @@ end GlobalTheory.CompanionTheory.WhitFree
 
 namespace GlobalTheory.CompanionTheory.WhitFree
 
+/- English proof (translation)
+Introduce `D r V ψ θ μ lam ν φ hyp t β hβ d b laminf lamv minf m hinf hlamv hminf hm I hI _`. Take `⟨hr, hψ, hθ, hμ, hlam, -, hφ, -⟩` from `hyp`. Establish `hCM` using `GlobalTheory.DefiniteQuotient.cmExt D`. Establish `hJ` using `GlobalTheory.DefiniteQuotient.gram_hermND V`. Take `⟨dx, db, hdx, hdb, hW⟩` from `GlobalTheory.T.exists_self_dual_siegel_weil_measures D r V ψ hψ μ hμ lam hlam`.
+
+Take `⟨ht, -⟩` from `hβ`. Rewrite using `[hW φ β]`. Conclude with `coefN_eq_integral D.sp.cm.sig hCM V.gram hJ (by omega) hr ψ hψ dx hdx db hdb d b laminf lamv hinf hlamv minf hminf m hm β.1 (hermE_symm β) I hI _ (GlobalTheory.T.schwartz_function_schwartz_bruhat D θ hθ V.rank r φ hφ)`.
+-/
 theorem whit_eq_integral : ∀ (D : D7) (r : ℕ) (V : HSp D) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (μ : Measure (Mx D V.rank r)) (lam : Measure (hermA D r)) (ν : Measure (GA D V)) (φ : Mx D V.rank r → ℂ), Hyp D r V ψ θ μ lam ν φ → ∀ (t : ℕ) (β : HermE D r), GlobalTheory.CompanionTheory.WeilSiegel.Deg.IsBlockNF t β → ∀ (d : ℕ) (b : Module.Basis (Fin d) D.host.F D.host.E) (laminf : Measure (HeckeCharacterZeroLocus.SiegelWeilU.Ainf D.host.F)) (lamv : ∀ v : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers D.host.F), Measure (HeckeCharacterZeroLocus.SiegelWeilU.Fv D.host.F v)) (minf : HeckeCharacterZeroLocus.SiegelWeilU.HermR (HeckeCharacterZeroLocus.SiegelWeilU.Ainf D.host.F) D.sp.cm.sig r → Measure (Fin r → Fin V.rank → HeckeCharacterZeroLocus.SiegelWeilU.Ainf D.host.F ⊗[D.host.F] D.host.E)) (m : ∀ v : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers D.host.F), HeckeCharacterZeroLocus.SiegelWeilU.HermR (HeckeCharacterZeroLocus.SiegelWeilU.Fv D.host.F v) D.sp.cm.sig r → Measure (Fin r → Fin V.rank → HeckeCharacterZeroLocus.SiegelWeilU.Fv D.host.F v ⊗[D.host.F] D.host.E)), GlobalTheory.CompanionTheory.SW.IsStdInf laminf → (∀ v, GlobalTheory.CompanionTheory.SW.IsStdV v (lamv v)) → IsGramFibFree (HeckeCharacterZeroLocus.SiegelWeilU.Ainf D.host.F) D.sp.cm.sig V.gram r (GlobalTheory.CompanionTheory.SW.coordW (HeckeCharacterZeroLocus.SiegelWeilU.Ainf D.host.F) b laminf r V.rank) (GlobalTheory.CompanionTheory.SW.coordHerm (HeckeCharacterZeroLocus.SiegelWeilU.Ainf D.host.F) D.sp.cm.sig b laminf r) minf → (∀ v, IsGramFibFree (HeckeCharacterZeroLocus.SiegelWeilU.Fv D.host.F v) D.sp.cm.sig V.gram r (GlobalTheory.CompanionTheory.SW.coordW (HeckeCharacterZeroLocus.SiegelWeilU.Fv D.host.F v) b (lamv v) r V.rank) (GlobalTheory.CompanionTheory.SW.coordHerm (HeckeCharacterZeroLocus.SiegelWeilU.Fv D.host.F v) D.sp.cm.sig b (lamv v) r) (m v)) → ∀ I : Measure (Fin r → Fin V.rank → AE D), GlobalTheory.CompanionTheory.SW.IsEulerProd b I 1 (minf (HeckeCharacterZeroLocus.SiegelWeilU.hermOf (HeckeCharacterZeroLocus.SiegelWeilU.Ainf D.host.F) D.sp.cm.sig β.1 (hermE_symm β))) (fun v => m v (HeckeCharacterZeroLocus.SiegelWeilU.hermOf (HeckeCharacterZeroLocus.SiegelWeilU.Fv D.host.F v) D.sp.cm.sig β.1 (hermE_symm β))) → Integrable (fun X => φ (trM X)) I → W ψ V μ lam φ β = ∫ X, φ (trM X) ∂I := by
   intro D r V ψ θ μ lam ν φ hyp t β hβ d b laminf lamv minf m hinf hlamv hminf hm I hI _
   obtain ⟨hr, hψ, hθ, hμ, hlam, -, hφ, -⟩ := hyp

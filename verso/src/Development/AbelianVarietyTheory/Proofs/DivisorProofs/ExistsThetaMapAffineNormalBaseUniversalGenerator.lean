@@ -20,6 +20,27 @@ noncomputable section
 
 namespace GlobalTheory.UMin.MapAff
 
+/- English proof (translation)
+Introduce `S G _ _ L ρ hL hρ g m n o R _ _ _ _ _ _ β x θ hm hm3 hmu hn hpol hgen`. Take `⟨e, he⟩` from `GlobalTheory.T.thetaSymmetricFunctions_mem_normalDomain S G L ρ hL hρ g m (n + 1) R x θ hm hmu hn hpol`. Establish `hpolK : ∀ (K : Type) [Field K] (i : R →+* K), PolFib G L g (spMap i ≫ x)` using `fun K _ i => (GlobalTheory.T.principallyPolarisedFibre_iff_of_grpPullback S S G L G L (𝟙 S) (𝟙 G.left) hL hL (GlobalTheory.SiegLower.isGrpPullback_id G) (GlobalTheory.SiegLower.lbIso_pull_id hL) g R x).2 K i hpol`. Establish `hspan : Ideal.span (Set.range e) = ⊤`. Assume the negation of the conclusion as `hne`.
+
+Take `⟨M, hM, hle⟩` from `Ideal.exists_le_maximal _ hne`. Use `letI := Ideal.Quotient.field M`. Set `i : R →+* AlgebraicClosure (R ⧸ M)` to `(algebraMap (R ⧸ M) (AlgebraicClosure (R ⧸ M))).comp (Ideal.Quotient.mk M)`. Establish `hmK : ((m : ℕ) : AlgebraicClosure (R ⧸ M)) ≠ 0`. Use `hmu.map i` as an intermediate fact.
+
+Rewrite `this` using `[map_natCast]`. Conclude with `this.ne_zero`. Establish `hpK` using `hpolK _ i`. Take `⟨pt, c, hl⟩` from `GlobalTheory.T.exists_thetaConstantList_algClosed S G L ρ hL hρ g m (n + 1) _ (spMap i ≫ x) (SecAt.pull G L θ i) hm hmK hn hpK`. Take `⟨a, ha⟩` from `GlobalTheory.T.exists_thetaConstant_levelSquare_ne_zero S G L ρ hL hρ g m (n + 1) _ (spMap i ≫ x) c hm hm3 hmK hpK ⟨_, pt, hgen _ i, hl⟩`.
+
+Take `⟨j, hj⟩` from `GlobalTheory.UMin.symTup_basic.2.2.2 _ (n + 1) c ⟨a, ha⟩`. Apply `hj` to reduce the goal to its premises. Rewrite using `[← he _ i pt c hl j]`. Establish `hM' : e j ∈ M` using `hle (Ideal.subset_span ⟨j, rfl⟩)`. Simplify using `[i, Ideal.Quotient.eq_zero_iff_mem.2 hM']`.
+
+Establish `hstr` using `GlobalTheory.ProjSpace.pt_str β e hspan`. Establish `hf : PCrd (GlobalTheory.ProjSpace.pt β e hspan) e` using `(GlobalTheory.UMin.CrdUniq.pCrd_iff _ β hstr e).2 ⟨hspan, rfl⟩`. Use `⟨GlobalTheory.ProjSpace.pt β e hspan, hstr, ?_⟩` and prove the remaining obligations. Introduce `K _ x' c ⟨θ', pt, hθ', hl⟩`. Take `⟨i, rfl⟩` from `GlobalTheory.UMin.CrdUniq.exists_spMap' x'`.
+
+Take `⟨r, hr⟩` from `hθ' (SecAt.pull G L θ i)`. Establish `hsm : SecM.ofSec G (SecAt.pull G L θ i) = r • SecM.ofSec G θ'` using `Subtype.ext (funext hr)`. Use `set a : K := (Scheme.ΓSpecIso (CommRingCat.of K)).hom.hom r with ha`. Establish `hra : GlobalTheory.ZH.fn a = r`. Simplify using `[GlobalTheory.ZH.fn, a]`.
+
+Establish `hl0 : ThList G L ρ m (spMap i ≫ x) (SecAt.pull G L θ i) pt (fun b => a * c b)`. Use `⟨hl.1, fun b => ?_, hl.2.2⟩` and prove the remaining obligations. Establish `h1` using `GlobalTheory.Ex.OneGen.ThG.smul hL hsm (hl.2.1 b)`. Use `h1 using 1` and compare the differences between its conclusion and the goal. Rewrite using `[← hra]`.
+
+Conclude with `map_mul _ _ _`. Establish `h2 : PCrd (spMap i ≫ GlobalTheory.ProjSpace.pt β e hspan) (fun j => a ^ (n + 1).factorial * symTup c j)`. Use `GlobalTheory.T.projectiveHomogeneousCoords_basic_properties.1 o R K n _ e i hf` as an intermediate fact. Use `this using 2 with j` and compare the differences between its conclusion and the goal. Rewrite using `[he K i pt _ hl0 j, GlobalTheory.UMin.symTup_basic.1]`.
+
+Establish `ha0 : a ≠ 0`. Introduce and unpack `h0`. Take `⟨j, hj⟩` from `(GlobalTheory.T.projectiveHomogeneousCoords_basic_properties.2.2 o K n _).2 _ h2`. Apply `hj` to reduce the goal to its premises. Simplify using `[h0, Nat.factorial_ne_zero]`.
+
+Establish `h3` using `GlobalTheory.T.projectiveHomogeneousCoords_basic_properties.2.1 o K n _ _ ((a ^ (n + 1).factorial)⁻¹) (isUnit_iff_ne_zero.2 (inv_ne_zero (pow_ne_zero _ ha0))) h2`. Use `h3 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `j`. Rewrite using `[inv_mul_cancel_left₀ (pow_ne_zero _ ha0)]`.
+-/
 theorem theta_map_aff : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G] [IsCommMonObj G] (L : LB G.left) (ρ : LB.Gen (L.pull (eSec G))), L.IsLB → ρ.IsGen → ∀ (g m n : ℕ) (o R : Type) [CommRing o] [CommRing R] [IsDomain R] [IsNoetherianRing R] [IsIntegrallyClosed R] [CharZero R] (β : o →+* R) (x : Sp R ⟶ S) (θ : SecAt G L x), Odd m → 3 ≤ m → IsUnit (m : R) → n + 1 = m ^ (4 * g) → PolFib G L g x → (∀ (K : Type) [Field K] (i : R →+* K), IsGenSec G L _ (SecAt.pull G L θ i)) → ∃ f : Sp R ⟶ PSpace o n, f ≫ PSpace.str o n = spMap β ∧ ThMap G L ρ m x f := by
   intro S G _ _ L ρ hL hρ g m n o R _ _ _ _ _ _ β x θ hm hm3 hmu hn hpol hgen
   obtain ⟨e, he⟩ := GlobalTheory.T.thetaSymmetricFunctions_mem_normalDomain S G L ρ hL hρ g m (n + 1) R x θ hm hmu hn hpol

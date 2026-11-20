@@ -15,6 +15,11 @@ namespace cubicPeriodConstant
 
 variable {E : Type} [Field E] [NumberField E] {k : ℕ}
 
+/- English proof (translation)
+Establish `h' : (c : ℕ) ≤ i` using `h`. Express the relevant statement in the definitionally equal form `(1 + posM Subtype.val x : Matrix (Fin k) (Fin k) (Ad E)) i c = _`. Rewrite using `[Matrix.add_apply, posM, Matrix.sum_apply, Finset.sum_eq_zero, add_zero]`. Introduce `t _`. Establish `h1` using `t.2`.
+
+Rewrite using `[Matrix.single_apply_of_ne]`. Introduce and unpack `⟨e1, e2⟩`. Rewrite `h'` using `[← e1, ← e2]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem blkU_low {j : ℕ} (x : UnipotentBlockColumnIndex k j j → Ad E) (i c : Fin k) (h : c ≤ i) :
     (blkU x : GA E k).val i c = (1 : Matrix (Fin k) (Fin k) (Ad E)) i c := by
   have h' : (c : ℕ) ≤ i := h
@@ -27,16 +32,29 @@ theorem blkU_low {j : ℕ} (x : UnipotentBlockColumnIndex k j j → Ad E) (i c :
   rw [← e1, ← e2] at h'
   omega
 
+/- English proof (translation)
+Use `⟨fun i c h => ?_, fun i => ?_, fun i c h => absurd h (Nat.not_lt_zero _)⟩` and prove the remaining obligations. Rewrite using `[blkU_low x i c h.le, Matrix.one_apply_ne (ne_of_gt h)]`. Rewrite using `[blkU_low x i i le_rfl, Matrix.one_apply_eq]`.
+-/
 theorem blkU_unipotent_zero {j : ℕ} (x : UnipotentBlockColumnIndex k j j → Ad E) : UU 0 (blkU x : GA E k) := by
   refine ⟨fun i c h => ?_, fun i => ?_, fun i c h => absurd h (Nat.not_lt_zero _)⟩
   · rw [blkU_low x i c h.le, Matrix.one_apply_ne (ne_of_gt h)]
   · rw [blkU_low x i i le_rfl, Matrix.one_apply_eq]
 
+/- English proof (translation)
+Use `⟨fun i c h => ?_, fun i => ?_, fun i c h => absurd h (Nat.not_lt_zero _)⟩` and prove the remaining obligations. Rewrite using `[Units.val_one, Matrix.one_apply_ne (ne_of_gt h)]`. Rewrite using `[Units.val_one, Matrix.one_apply_eq]`.
+-/
 theorem unipotent_zero_one : UU 0 (1 : GA E k) := by
   refine ⟨fun i c h => ?_, fun i => ?_, fun i c h => absurd h (Nat.not_lt_zero _)⟩
   · rw [Units.val_one, Matrix.one_apply_ne (ne_of_gt h)]
   · rw [Units.val_one, Matrix.one_apply_eq]
 
+/- English proof (translation)
+Use `⟨fun i c h => ?_, fun i => ?_, fun i c h => absurd h (Nat.not_lt_zero _)⟩` and prove the remaining obligations. Rewrite using `[Units.val_mul, Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun l _ => ?_` and prove the remaining obligations. Break down `lt_or_ge l i with hl | hl` into its components or cases. Rewrite using `[hu.1 i l hl, zero_mul]`.
+
+Rewrite using `[hv.1 l c (lt_of_lt_of_le h hl), mul_zero]`. Rewrite using `[Units.val_mul, Matrix.mul_apply, Finset.sum_eq_single i]`. Rewrite using `[hu.2.1, hv.2.1, one_mul]`. Introduce `l _ hl`. Break down `lt_or_gt_of_ne hl with hl | hl` into its components or cases.
+
+Rewrite using `[hu.1 i l hl, zero_mul]`. Rewrite using `[hv.1 l i hl, mul_zero]`. Introduce `hi`. Conclude with `absurd (Finset.mem_univ i) hi`.
+-/
 theorem unipotent_zero_mul {u v : GA E k} (hu : UU 0 u) (hv : UU 0 v) : UU 0 (u * v) := by
   refine ⟨fun i c h => ?_, fun i => ?_, fun i c h => absurd h (Nat.not_lt_zero _)⟩
   · rw [Units.val_mul, Matrix.mul_apply]
@@ -52,6 +70,11 @@ theorem unipotent_zero_mul {u v : GA E k} (hu : UU 0 u) (hv : UU 0 v) : UU 0 (u 
       · rw [hv.1 l i hl, mul_zero]
     · intro hi; exact absurd (Finset.mem_univ i) hi
 
+/- English proof (translation)
+Introduce `u hu`. Simplify using `only [colT, coefF]`. Rewrite using `[← avg_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `x`.
+
+Rewrite using `[← mul_assoc (blkU x) u g, ← mul_assoc (blkU x) u g', h _ (unipotent_zero_mul (blkU_unipotent_zero x) hu)]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem step (ψ : AddChar (Ad E) ℂ) (j : ℕ) (f f' : GA E k → ℂ) (g g' : GA E k) (c : ℂ)
     (h : ∀ u, UU 0 u → f (u * g) = c * f' (u * g')) :
     ∀ u, UU 0 u → colT ψ j f (u * g) = c * colT ψ j f' (u * g') := by
@@ -63,6 +86,9 @@ theorem step (ψ : AddChar (Ad E) ℂ) (j : ℕ) (f f' : GA E k → ℂ) (g g' :
   rw [← mul_assoc (blkU x) u g, ← mul_assoc (blkU x) u g', h _ (unipotent_zero_mul (blkU_unipotent_zero x) hu)]
   ring
 
+/- English proof (translation)
+The claim follows from `| 0, _, _, _, h => h | m + 1, f, f', c, h => whit_gen ψ g g' m _ _ c (step ψ (m + 1) f f' g g' c h)`.
+-/
 theorem whit_gen (ψ : AddChar (Ad E) ℂ) (g g' : GA E k) : ∀ (m : ℕ) (f f' : GA E k → ℂ) (c : ℂ),
     (∀ u, UU 0 u → f (u * g) = c * f' (u * g')) →
       ∀ u, UU 0 u → whit ψ m f (u * g) = c * whit ψ m f' (u * g')
@@ -71,6 +97,9 @@ theorem whit_gen (ψ : AddChar (Ad E) ℂ) (g g' : GA E k) : ∀ (m : ℕ) (f f'
 
 end cubicPeriodConstant
 
+/- English proof (translation)
+Introduce `E _ _ _ k ψ m f f' g g' c h`. Simplify `cubicPeriodConstant.whit_gen ψ g g' m f f' c h 1 cubicPeriodConstant.unipotent_zero_one` using `only [one_mul]`.
+-/
 theorem crystalline_clause_of_admitted : P3 := by
   intro E _ _ _ k ψ m f f' g g' c h
   simpa only [one_mul] using cubicPeriodConstant.whit_gen ψ g g' m f f' c h 1 cubicPeriodConstant.unipotent_zero_one

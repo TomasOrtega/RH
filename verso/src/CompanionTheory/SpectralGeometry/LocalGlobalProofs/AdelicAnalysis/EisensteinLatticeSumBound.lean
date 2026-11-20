@@ -5,6 +5,15 @@ open scoped ENNReal NNReal MatrixGroups
 
 namespace GlobalTheory.CompanionTheory.SW.LatSum
 
+/- English proof (translation)
+Establish `hnn : ∀ n : ℕ, 0 ≤ 1 / ((n : ℝ) + y) - 1 / ((n : ℝ) + y + 1)`. Introduce `n`. Establish `h0 : 0 < (n : ℝ) + y` using `by positivity`. Establish `: 1 / ((n : ℝ) + y + 1) ≤ 1 / ((n : ℝ) + y)` using `one_div_le_one_div_of_le h0 (by linarith)`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Rewrite using `[hasSum_iff_tendsto_nat_of_nonneg hnn]`. Establish `hpart : ∀ n : ℕ, ∑ i ∈ Finset.range n, (1 / ((i : ℝ) + y) - 1 / ((i : ℝ) + y + 1)) = 1 / y - 1 / ((n : ℝ) + y)`. Introduce `n`. Use `Finset.sum_range_sub' (fun i : ℕ => 1 / ((i : ℝ) + y)) n` as an intermediate fact. Simplify using `only [Nat.cast_add, Nat.cast_one, Nat.cast_zero, zero_add] at this`.
+
+Rewrite using `[← this]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree. Repeatedly rewrite using `[hpart]`.
+
+Establish `h0 : Filter.Tendsto (fun n : ℕ => 1 / ((n : ℝ) + y)) Filter.atTop (𝓝 0)` using `tendsto_const_nhds.div_atTop (Filter.tendsto_atTop_add_const_right _ y tendsto_natCast_atTop_atTop)`. Simplify using `using tendsto_const_nhds.sub h0`.
+-/
 theorem hasSum_tele {y : ℝ} (hy : 0 < y) :
     HasSum (fun n : ℕ => 1 / ((n : ℝ) + y) - 1 / ((n : ℝ) + y + 1)) (1 / y) := by
   have hnn : ∀ n : ℕ, 0 ≤ 1 / ((n : ℝ) + y) - 1 / ((n : ℝ) + y + 1) := by
@@ -29,6 +38,15 @@ theorem hasSum_tele {y : ℝ} (hy : 0 < y) :
       (Filter.tendsto_atTop_add_const_right _ y tendsto_natCast_atTop_atTop)
   simpa using tendsto_const_nhds.sub h0
 
+/- English proof (translation)
+Establish `hy0 : 0 < y` using `by linarith`. Establish `hu0 : 0 < u` using `by linarith`. Establish `h1 : 1 / u - 1 / (u + 1) = (u * (u + 1))⁻¹`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `h2 : (u ^ 2)⁻¹ ≤ (1 + 1 / t) * (u * (u + 1))⁻¹`. Establish `h5 : 1 / u ≤ 1 / t` using `one_div_le_one_div_of_le ht (by linarith)`. Establish `h3 : (u ^ 2)⁻¹ = (1 + 1 / u) * (u * (u + 1))⁻¹`. Clear the denominators using the available nonvanishing facts. Rewrite using `[h3]`.
+
+Establish `: 0 ≤ (u * (u + 1))⁻¹` using `by positivity`. Conclude with `mul_le_mul_of_nonneg_right (by linarith) this`. Establish `h4 : (u ^ m)⁻¹ ≤ (y ^ m)⁻¹`. Apply `inv_anti₀ (by positivity)` to reduce the goal to its premises. Conclude with `pow_le_pow_left₀ hy0.le hu m`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem pt_bound {t u y : ℝ} (ht : 0 < t) (hy : t ≤ y) (hu : y ≤ u) (m : ℕ) :
     (u ^ (m + 2))⁻¹ ≤ (1 + 1 / t) * (y ^ m)⁻¹ * (1 / u - 1 / (u + 1)) := by
   have hy0 : 0 < y := by linarith
@@ -51,6 +69,21 @@ theorem pt_bound {t u y : ℝ} (ht : 0 < t) (hy : t ≤ y) (hu : y ≤ u) (m : �
         mul_le_mul h4 h2 (by positivity) (by positivity)
     _ = (1 + 1 / t) * (y ^ m)⁻¹ * (1 / u - 1 / (u + 1)) := by rw [h1]; ring
 
+/- English proof (translation)
+Establish `hy0 : 0 < y` using `by linarith`. Take `⟨B, hB⟩ : ∃ B, B = (1 + 1 / t) * (y ^ m)⁻¹` from `⟨_, rfl⟩`. Establish `hB0 : 0 ≤ B` using `by rw [hB]; positivity`. Establish `hs : HasSum (fun n : ℕ => B * (1 / ((n : ℝ) + y) - 1 / ((n : ℝ) + y + 1))) (B * (1 / y))` using `(hasSum_tele hy0).mul_left B`. Establish `nn : ∀ k : ℤ, 0 ≤ ((|(k : ℝ)| + y) ^ (m + 2))⁻¹` using `fun k => by positivity`.
+
+Establish `hp : ∀ n : ℕ, ((|(((n : ℤ)) : ℝ)| + y) ^ (m + 2))⁻¹ ≤ B * (1 / ((n : ℝ) + y) - 1 / ((n : ℝ) + y + 1))`. Introduce `n`. Establish `e : |(((n : ℤ)) : ℝ)| = (n : ℝ)` using `by simp`. Rewrite using `[e, hB]`. Conclude with `pt_bound ht hy (by have : (0 : ℝ) ≤ n := Nat.cast_nonneg n; linarith) m`.
+
+Establish `hn : ∀ n : ℕ, ((|((-((n : ℤ) + 1) : ℤ) : ℝ)| + y) ^ (m + 2))⁻¹ ≤ B * (1 / ((n : ℝ) + y) - 1 / ((n : ℝ) + y + 1))`. Introduce `n`. Use `le_trans ?_ (hp n)` and prove the remaining obligations. Establish `e : |((-((n : ℤ) + 1) : ℤ) : ℝ)| = (n : ℝ) + 1`. Use `push_cast`.
+
+Rewrite using `[abs_neg, abs_of_nonneg (by positivity)]`. Establish `e' : |(((n : ℤ)) : ℝ)| = (n : ℝ)` using `by simp`. Rewrite using `[e, e']`. Apply `inv_anti₀ (by positivity)` to reduce the goal to its premises. Conclude with `pow_le_pow_left₀ (by positivity) (by linarith) _`.
+
+Establish `s1 : Summable (fun n : ℕ => ((|(((n : ℤ)) : ℝ)| + y) ^ (m + 2))⁻¹)` using `Summable.of_nonneg_of_le (fun n => nn n) hp hs.summable`. Establish `s2 : Summable (fun n : ℕ => ((|((-((n : ℤ) + 1) : ℤ) : ℝ)| + y) ^ (m + 2))⁻¹)` using `Summable.of_nonneg_of_le (fun n => nn _) hn hs.summable`. Use `⟨Summable.of_nat_of_neg_add_one (f := fun k : ℤ => ((|(k : ℝ)| + y) ^ (m + 2))⁻¹) s1 s2, ?_⟩` and prove the remaining obligations. Rewrite using `[tsum_of_nat_of_neg_add_one (f := fun k : ℤ => ((|(k : ℝ)| + y) ^ (m + 2))⁻¹) s1 s2]`. Establish `e1` using `s1.tsum_le_tsum hp hs.summable`.
+
+Establish `e2` using `s2.tsum_le_tsum hn hs.summable`. Rewrite `e1`, `e2` using `[hs.tsum_eq]`. Establish `e3 : B * (1 / y) = (1 + 1 / t) * (y * (y ^ (m + 2))⁻¹)`. Rewrite using `[hB]`. Clear the denominators using the available nonvanishing facts.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite `e1`, `e2` using `[e3]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem sum_int {t y : ℝ} (ht : 0 < t) (hy : t ≤ y) (m : ℕ) :
     Summable (fun k : ℤ => ((|(k : ℝ)| + y) ^ (m + 2))⁻¹) ∧
       ∑' k : ℤ, ((|(k : ℝ)| + y) ^ (m + 2))⁻¹ ≤ 2 * (1 + 1 / t) * (y * (y ^ (m + 2))⁻¹) := by
@@ -93,6 +126,17 @@ theorem sum_int {t y : ℝ} (ht : 0 < t) (hy : t ≤ y) (m : ℕ) :
   rw [e3] at e1 e2
   linarith
 
+/- English proof (translation)
+Establish `hc : 0 < 2 + 1 / t` using `by positivity`. Rewrite using `[inv_mul_le_iff₀ hc]`. Take `⟨v, hv⟩ : ∃ v, v = z + (s : ℂ)` from `⟨_, rfl⟩`. Rewrite using `[← hv]`. Establish `hre : v.re = z.re + s` using `by rw [hv]; simp`.
+
+Establish `him : v.im = z.im` using `by rw [hv]; simp`. Establish `h1 : |v.re| ≤ ‖v‖` using `Complex.abs_re_le_norm v`. Establish `h2 : |v.im| ≤ ‖v‖` using `Complex.abs_im_le_norm v`. Establish `h3 : z.im ≤ ‖v‖` using `by rw [← him]; exact (le_abs_self _).trans h2`. Rewrite using `[← hre]`.
+
+Establish `h4 : |((⌊v.re⌋ : ℤ) : ℝ)| ≤ |v.re| + 1`. Establish `a1` using `Int.floor_le v.re`. Establish `a2` using `Int.lt_floor_add_one v.re`. Rewrite using `[abs_le]`. Prove the components needed by the constructor for the conclusion.
+
+Use `neg_abs_le v.re` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Use `le_abs_self v.re` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h5 : 1 ≤ ‖v‖ * (1 / t)`.
+
+Establish `: t ≤ ‖v‖` using `hz.trans h3`. Rewrite using `[mul_one_div, le_div_iff₀ ht]`. Combine the linear equalities and inequalities to obtain the conclusion. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem norm_lower {t : ℝ} (ht : 0 < t) (z : ℂ) (hz : t ≤ z.im) (s : ℝ) :
     (2 + 1 / t)⁻¹ * (|((⌊z.re + s⌋ : ℤ) : ℝ)| + z.im) ≤ ‖z + (s : ℂ)‖ := by
   have hc : 0 < 2 + 1 / t := by positivity
@@ -120,6 +164,11 @@ theorem norm_lower {t : ℝ} (ht : 0 < t) (z : ℂ) (hz : t ≤ z.im) (s : ℝ) 
     linarith
   nlinarith
 
+/- English proof (translation)
+Establish `hf` using `Embeddings.finite_of_norm_le F ℂ 1`. Use `(hf.preimage (f := fun α : 𝓞 F => (α : F)) ?_).subset ?_` and prove the remaining obligations. Conclude with `(RingOfIntegers.coe_injective).injOn`. Introduce `α hα`. Use `⟨RingOfIntegers.isIntegral_coe α, fun φ => ?_⟩` and prove the remaining obligations.
+
+Establish `h1 : ‖φ (α : F)‖ = InfinitePlace.mk φ (α : F)` using `(InfinitePlace.apply φ _).symm`. Establish `h2` using `InfinitePlace.norm_embedding_eq (InfinitePlace.mk φ) (α : F)`. Rewrite using `[h1, ← h2, ← hρ, Complex.norm_real, Real.norm_eq_abs]`. Conclude with `(hα _).le`.
+-/
 theorem finite_small (F : Type) [Field F] [NumberField F] (ρ : InfinitePlace F → (F →+* ℝ))
     (hρ : ∀ w x, ((ρ w x : ℝ) : ℂ) = w.embedding x) :
     {α : 𝓞 F | ∀ w, |ρ w (α : F)| < 1}.Finite := by
@@ -135,6 +184,17 @@ theorem finite_small (F : Type) [Field F] [NumberField F] (ρ : InfinitePlace F 
 
 open Classical in
 
+/- English proof (translation)
+Establish `key : ∀ T : Finset α, ∑ r ∈ T, a r ≤ K * ∏ w, ∑' k, g w k`. Introduce `T`. Establish `hG : ∀ n : ι → ℤ, 0 ≤ ∏ w, g w (n w)` using `fun n => Finset.prod_nonneg fun w _ => hg w _`. Establish `s1 : ∑ r ∈ T, a r ≤ ∑ r ∈ T, ∏ w, g w (φ r w)` using `Finset.sum_le_sum fun r _ => hle r`. Establish `s2 : ∑ r ∈ T, ∏ w, g w (φ r w) = ∑ n ∈ T.image φ, (T.filter fun r => φ r = n).card • ∏ w, g w (n w)` using `Finset.sum_comp (fun n : ι → ℤ => ∏ w, g w (n w)) φ`.
+
+Establish `s3 : ∑ n ∈ T.image φ, (T.filter fun r => φ r = n).card • ∏ w, g w (n w) ≤ ∑ n ∈ T.image φ, (K : ℝ) * ∏ w, g w (n w)`. Use `Finset.sum_le_sum fun n _ => ?_` and prove the remaining obligations. Rewrite using `[nsmul_eq_mul]`. Conclude with `mul_le_mul_of_nonneg_right (by exact_mod_cast hfib T n) (hG n)`. Establish `s4 : ∑ n ∈ T.image φ, ∏ w, g w (n w) ≤ ∑ n ∈ Fintype.piFinset (fun w => (T.image φ).image (fun n => n w)), ∏ w, g w (n w)`.
+
+Use `Finset.sum_le_sum_of_subset_of_nonneg ?_ fun n _ _ => hG n` and prove the remaining obligations. Introduce `n hn`. Rewrite using `[Fintype.mem_piFinset]`. Introduce `w`. Conclude with `Finset.mem_image_of_mem _ hn`.
+
+Establish `s5 : ∑ n ∈ Fintype.piFinset (fun w => (T.image φ).image (fun n => n w)), ∏ w, g w (n w) ≤ ∏ w, ∑' k, g w k`. Rewrite using `[← Finset.prod_univ_sum]`. Use `Finset.prod_le_prod (fun w _ => Finset.sum_nonneg fun k _ => hg w k) fun w _ => ?_` and prove the remaining obligations. Conclude with `(hgs w).sum_le_tsum _ fun k _ => hg w k`. Rewrite `s3` using `[← Finset.mul_sum]`.
+
+Establish `hK : (0 : ℝ) ≤ K` using `Nat.cast_nonneg K`. Combine the equalities or inequalities in the displayed calculation. Establish `hsum : Summable a` using `summable_of_sum_le ha key`. Conclude with `⟨hsum, hsum.tsum_le_of_sum_le key⟩`.
+-/
 theorem sum_le_of_fibres {α ι : Type} [Fintype ι] (a : α → ℝ) (φ : α → ι → ℤ)
     (g : ι → ℤ → ℝ) (K : ℕ) (ha : ∀ r, 0 ≤ a r) (hg : ∀ w k, 0 ≤ g w k)
     (hgs : ∀ w, Summable (g w)) (hle : ∀ r, a r ≤ ∏ w, g w (φ r w))
@@ -176,6 +236,15 @@ theorem sum_le_of_fibres {α ι : Type} [Fintype ι] (a : α → ℝ) (φ : α �
 
 open Classical in
 
+/- English proof (translation)
+Break down `(T.filter fun r : 𝓞 F => (fun w => ⌊x w + ρ w (r : F)⌋) = n).eq_empty_or_nonempty with h | ⟨r₀, h₀⟩` into its components or cases. Rewrite using `[h]`. Simplify using the standard rewrite rules. Use `Finset.card_le_card_of_injOn (fun r => r - r₀) ?_ ?_` and prove the remaining obligations. Introduce `r hr`.
+
+Apply `hS` to reduce the goal to its premises. Introduce `w`. Establish `e1` using `(Finset.mem_filter.1 (Finset.mem_coe.1 hr)).2`. Establish `e0` using `(Finset.mem_filter.1 h₀).2`. Establish `e : ⌊x w + ρ w (r : F)⌋ = ⌊x w + ρ w (r₀ : F)⌋`.
+
+Rewrite using `[congrFun e1 w, congrFun e0 w]`. Use `Int.abs_sub_lt_one_of_floor_eq_floor e` as an intermediate fact. Establish `e2 : ρ w ((r - r₀ : 𝓞 F) : F) = (x w + ρ w (r : F)) - (x w + ρ w (r₀ : F))`. Use `push_cast`. Rewrite using `[map_sub]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e2]`. Conclude with `this`. Introduce `a _ b _ hab`. Conclude with `sub_left_injective hab`.
+-/
 theorem fibre_card (F : Type) [Field F] [NumberField F] (ρ : InfinitePlace F → (F →+* ℝ))
     (S : Finset (𝓞 F)) (hS : ∀ α : 𝓞 F, (∀ w, |ρ w (α : F)| < 1) → α ∈ S)
     (x : InfinitePlace F → ℝ) (T : Finset (𝓞 F)) (n : InfinitePlace F → ℤ) :
@@ -201,6 +270,21 @@ theorem fibre_card (F : Type) [Field F] [NumberField F] (ρ : InfinitePlace F �
     · intro a _ b _ hab
       exact sub_left_injective hab
 
+/- English proof (translation)
+Introduce `F _ _ _ ρ hρ M hM t ht`. Take `⟨m, rfl⟩ : ∃ m, M = m + 2` from `⟨M - 2, by omega⟩`. Establish `hfin` using `finite_small F ρ hρ`. Take `⟨c, hc⟩ : ∃ c : ℝ, c = (2 + 1 / t)⁻¹` from `⟨_, rfl⟩`. Establish `hc0 : 0 < c` using `by rw [hc]; positivity`.
+
+Use `⟨(hfin.toFinset.card : ℝ) * ((c ^ (m + 2))⁻¹ * (2 * (1 + 1 / t))) ^ Fintype.card (InfinitePlace F), fun τ hτ => ?_⟩` and prove the remaining obligations. Establish `hy0 : ∀ w, 0 < (τ w).im` using `fun w => ht.trans_le (hτ w)`. Establish `hint` using `fun w => sum_int ht (hτ w) m`. Establish `hmain` using `sum_le_of_fibres (fun r : 𝓞 F => (∏ w, ‖τ w + (ρ w (r : F) : ℝ)‖ ^ (m + 2))⁻¹) (fun r w => ⌊(τ w).re + ρ w (r : F)⌋) (fun w k => (c ^ (m + 2))⁻¹ * ((|(k : ℝ)| + (τ w).im) ^ (m + 2))⁻¹) hfin.toFinset.card (fun r => by positivity) (fun w k => by have := hy0 w; positivity) (fun w => …`. Rewrite using `[← Finset.prod_inv_distrib]`.
+
+Use `Finset.prod_le_prod (fun w _ => by positivity) fun w _ => ?_` and prove the remaining obligations. Establish `h1` using `norm_lower ht (τ w) (hτ w) (ρ w (r : F))`. Rewrite `h1` using `[← hc]`. Establish `hpos : 0 < c * (|((⌊(τ w).re + ρ w (r : F)⌋ : ℤ) : ℝ)| + (τ w).im)`. Use `hy0 w` as an intermediate fact.
+
+Check the signs of the components of the expression. Rewrite using `[← mul_inv, ← mul_pow]`. Conclude with `inv_anti₀ (pow_pos hpos _) (pow_le_pow_left₀ hpos.le h1 _))`. Use the proof step `(fun T n => by classical`. Conclude with `fibre_card F ρ hfin.toFinset (fun α hα => hfin.mem_toFinset.2 hα) (fun w => (τ w).re) T n)`.
+
+Use `⟨hmain.1, hmain.2.trans ?_⟩` and prove the remaining obligations. Establish `hK : (0 : ℝ) ≤ hfin.toFinset.card` using `Nat.cast_nonneg _`. Rewrite using `[mul_assoc]`. Use `mul_le_mul_of_nonneg_left ?_ hK` and prove the remaining obligations. Establish `hconst : ((c ^ (m + 2))⁻¹ * (2 * (1 + 1 / t))) ^ Fintype.card (InfinitePlace F) = ∏ _w : InfinitePlace F, ((c ^ (m + 2))⁻¹ * (2 * (1 + 1 / t)))`.
+
+Rewrite using `[Finset.prod_const, Finset.card_univ]`. Rewrite using `[hconst, ← Finset.prod_mul_distrib]`. Use `Finset.prod_le_prod (fun w _ => ?_) fun w _ => ?_` and prove the remaining obligations. Conclude with `tsum_nonneg fun k => by have := hy0 w; positivity`. Rewrite using `[tsum_mul_left, mul_assoc]`.
+
+Use `mul_le_mul_of_nonneg_left ?_ (by positivity)` and prove the remaining obligations. Conclude with `(hint w).2`.
+-/
 theorem lattice_sum : ∀ (F : Type) [Field F] [NumberField F], IsTotallyReal F →
     ∀ ρ : InfinitePlace F → (F →+* ℝ), (∀ w x, ((ρ w x : ℝ) : ℂ) = w.embedding x) →
     ∀ M : ℕ, 2 ≤ M → ∀ t : ℝ, 0 < t → ∃ C : ℝ, ∀ τ : InfinitePlace F → ℂ, (∀ w, t ≤ (τ w).im) →

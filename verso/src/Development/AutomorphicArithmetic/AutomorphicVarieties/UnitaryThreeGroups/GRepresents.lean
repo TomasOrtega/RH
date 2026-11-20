@@ -45,8 +45,14 @@ def rbar : Γ →* GG 3 (ResidueField O) := r0 η (barChar O Ψ)
 
 variable {O η Ψ} {R R' : Type} [CommRing R] [Algebra O R] [IsCO O R] [CommRing R'] [Algebra O R'] [IsCO O R']
 
+/- English proof (translation)
+Introduce `g` and use `congrArg SemidirectProduct.right (r.red g)`.
+-/
 theorem GLift.hasMult (r : GLift O η Ψ R) : HasMult η r.hom := fun g => congrArg SemidirectProduct.right (r.red g)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem GG.map_map {m : ℕ} {A B C : Type*} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (f' : B →+* C)
     (x : GG m A) : GG.map f' (GG.map f x) = GG.map (f'.comp f) x := rfl
 

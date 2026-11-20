@@ -15,6 +15,21 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.Ker.VacBase
 
+/- English proof (translation)
+Use `haveI : AddGroup.FG A₀ := (AddGroup.fg_iff_addSubgroup_fg A₀).2 hfg`. Set `φ' : A₀ →+ A` to `(φ.comp A₀.subtype).codRestrict A fun y => hφ y y.2`. Establish `hq : ∀ a b : A, (a : A ⧸ B.addSubgroupOf A) = b ↔ (a : G) - b ∈ B` using `fun a b => by`. Rewrite using `[QuotientAddGroup.eq_iff_sub_mem, AddSubgroup.mem_addSubgroupOf]`. Both sides reduce to the same expression.
+
+Establish `hsurj : Function.Surjective ((QuotientAddGroup.mk' (B.addSubgroupOf A)).comp φ')`. Introduce `q`. Take `⟨u, rfl⟩` from `QuotientAddGroup.mk_surjective q`. Take `⟨y, hy, h⟩` from `hs u u.2`. Conclude with `⟨⟨y, hy⟩, ((hq _ _).2 h).symm⟩`.
+
+Use `haveI : AddGroup.FG (A ⧸ B.addSubgroupOf A) := AddGroup.fg_of_surjective hsurj`. Use `haveI : Finite (A ⧸ B.addSubgroupOf A) := by`. Use `AddCommGroup.finite_of_fg_torsion _ fun q => ?_` and prove the remaining obligations. Take `⟨u, rfl⟩` from `QuotientAddGroup.mk_surjective q`. Use `isOfFinAddOrder_iff_nsmul_eq_zero.2 ⟨2 * k + 1, Nat.succ_pos _, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← QuotientAddGroup.mk_nsmul, QuotientAddGroup.eq_zero_iff]`. Conclude with `hN u u.2`. Use `haveI := Fintype.ofFinite (A ⧸ B.addSubgroupOf A)`. Set `r : A ⧸ B.addSubgroupOf A → G` to `fun c => 2 • ((k + 1) • (c.out : G))`. Establish `hr : ∀ (u : A) c, (u : G) - r c ∈ B ↔ (u : A ⧸ B.addSubgroupOf A) = c` using `fun u c => by`.
+
+Establish `e : (u : G) - r c = ((u : G) - c.out) - (2 * k + 1) • (c.out : G)`. Simplify using `only [r]`. Use `module`. Rewrite using `[e, sub_eq_add_neg, B.add_mem_cancel_right (B.neg_mem (hN _ c.out.2)), ← hq, QuotientAddGroup.out_eq']`. Use `⟨Finset.univ.image r, fun y hy => ?_, fun u hu => ?_⟩` and prove the remaining obligations.
+
+Take `⟨c, -, rfl⟩` from `Finset.mem_image.1 hy`. Conclude with `⟨_, A.nsmul_mem c.out.2 _, rfl⟩`. Use `⟨r (⟨u, hu⟩ : A), ⟨Finset.mem_image_of_mem _ (Finset.mem_univ _), (hr ⟨u, hu⟩ _).2 rfl⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `y ⟨hy, h⟩`. Take `⟨c, -, rfl⟩` from `Finset.mem_image.1 hy`.
+
+Rewrite using `[(hr ⟨u, hu⟩ c).1 h]`.
+-/
 theorem exists_reps {G H : Type} [AddCommGroup G] [AddCommGroup H] (A B : AddSubgroup G) (A₀ : AddSubgroup H)
     (hfg : A₀.FG) (φ : H →+ G) (hφ : ∀ y ∈ A₀, φ y ∈ A) (hs : ∀ u ∈ A, ∃ y ∈ A₀, u - φ y ∈ B) (k : ℕ)
     (hN : ∀ u ∈ A, (2 * k + 1) • u ∈ B) :
@@ -49,6 +64,13 @@ theorem exists_reps {G H : Type} [AddCommGroup G] [AddCommGroup H] (A B : AddSub
     obtain ⟨c, -, rfl⟩ := Finset.mem_image.1 hy
     rw [(hr ⟨u, hu⟩ c).1 h]
 
+/- English proof (translation)
+Take `⟨a, m, ⟨k, rfl⟩, rfl⟩` from `Nat.exists_eq_two_pow_mul_odd hM.ne'`. Use `⟨k, ?_⟩` and prove the remaining obligations. Establish `h2 : IsCoprime I (Ideal.span {(2 : R) ^ a})`. Rewrite using `[← Ideal.span_singleton_pow]`. Conclude with `h.pow_right`.
+
+Take `⟨i, hi, j, hj, e⟩` from `Ideal.isCoprime_iff_exists.1 h2`. Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton'.1 hj`. Establish `: ((2 * k + 1 : ℕ) : R) = i * ((2 * k + 1 : ℕ) : R) + c * ((2 ^ a * (2 * k + 1) : ℕ) : R)`. Rewrite using `[Nat.cast_mul (2 ^ a), ← mul_assoc, ← add_mul, Nat.cast_pow, Nat.cast_ofNat, e, one_mul]`. Rewrite using `[this]`.
+
+Conclude with `I.add_mem (I.mul_mem_right _ hi) (I.mul_mem_left _ hm)`.
+-/
 theorem exists_odd_mem {R : Type} [CommRing R] (I : Ideal R) (h : IsCoprime I (Ideal.span {2})) (M : ℕ)
     (hM : 0 < M) (hm : (M : R) ∈ I) : ∃ k : ℕ, ((2 * k + 1 : ℕ) : R) ∈ I := by
   obtain ⟨a, m, ⟨k, rfl⟩, rfl⟩ := Nat.exists_eq_two_pow_mul_odd hM.ne'
@@ -62,6 +84,11 @@ theorem exists_odd_mem {R : Type} [CommRing R] (I : Ideal R) (h : IsCoprime I (I
   rw [this]
   exact I.add_mem (I.mul_mem_right _ hi) (I.mul_mem_left _ hm)
 
+/- English proof (translation)
+Establish `h1 : tens Λ L ≤ (tens Λ L').comap (nsmulAddMonoidHom N)`. Use `(AddSubgroup.closure_le _).2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨v, hv, u, hu, rfl⟩`. Conclude with `AddSubgroup.subset_closure ⟨v, hv, N • u, h u hu, (map_nsmul (LatTens.vmv v) N u).symm⟩`. Establish `h2 : hatA S T (tens Λ L) ≤ (hatA S T (tens Λ L')).comap (nsmulAddMonoidHom N)`.
+
+Use `(AddSubgroup.closure_le _).2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨α, hα, y, hy, rfl⟩`. Conclude with `AddSubgroup.subset_closure ⟨α, hα, N • y, h1 hy, (map_nsmul (LatTens.gen S T α) N y).symm⟩`. Conclude with `fun u hu => h2 hu`.
+-/
 theorem nsmul_mem_hatA {D : D7} (S T : HSp D) (Λ : Lt D.host.E S.rank) (L L' : Lt D.host.E T.rank) (N : ℕ)
     (h : ∀ v ∈ L, N • v ∈ L') : ∀ u ∈ hatA S T (tens Λ L), N • u ∈ hatA S T (tens Λ L') := by
   have h1 : tens Λ L ≤ (tens Λ L').comap (nsmulAddMonoidHom N) := by
@@ -74,6 +101,25 @@ theorem nsmul_mem_hatA {D : D7} (S T : HSp D) (Λ : Lt D.host.E S.rank) (L L' : 
     exact AddSubgroup.subset_closure ⟨α, hα, N • y, h1 hy, (map_nsmul (LatTens.gen S T α) N y).symm⟩
   exact fun u hu => h2 hu
 
+/- English proof (translation)
+Introduce `D S T C μ 𝓕 hμ Lv hn M _ hM hm B _ LT hLT f₀ hf`. Take `⟨-, hv⟩` from `hf`. Establish `hstar : ∀ v : Fin S.rank → D.host.E, v ∈ stdL D.host.E S.rank ↔ star v ∈ stdL D.host.E S.rank`. Establish `: ∀ v : Fin S.rank → D.host.E, v ∈ stdL D.host.E S.rank → star v ∈ stdL D.host.E S.rank` using `fun v hv => (SW.Base.mem_stdL _).2 fun a => SW.Base.isIntegral_cc ((SW.Base.mem_stdL _).1 hv a)`. Conclude with `fun v => ⟨this v, fun h => by simpa using this _ h⟩`.
+
+Use `⟨hv.theta, ?_, hv.fock, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Use `hv.norm.2 (μ, 𝓕) hμ` as an intermediate fact. Simplify using `[nrm2] at this`. Rewrite using `[← LatTens.latO_eq_hatA D S T C _ _ LT _ hstar hLT]`.
+
+Conclude with `hv.lat`. Take `⟨k, hk⟩` from `exists_odd_mem _ Lv.odd M hM hm`. Establish `hlev` using `SW.level_laws _ _ C.X C.g C.bas C.idx S.rank C.sympl C.even Lv hn`. Establish `hsd : SelfD C.X (Lv.sh C.X.Λ)` using `(hlev.2.2.2.1 _ hlev.1).1`. Establish `hfg` using `(SW.TensLat.tens_selfDual_semichar_index _ _ C.X C.g C.bas C.idx S.rank C.sympl C.even Lv.w Lv.w_int Lv.w_tr _ hsd M _ (SW.Base.stdL_mem_Vset S.rank M)).1`.
+
+Establish `hN : ∀ v ∈ Lv.sh C.X.Λ, (2 * k + 1) • v ∈ C.X.Λ` using `fun v hv => by`. Establish `hc : ((2 * k + 1 : ℕ) : 𝓞 D.host.E) ∈ conjI Lv.𝔪` using `Ideal.subset_span ⟨_, hk, by simp only [RingOfIntegers.coe_eq_algebraMap, map_natCast, cc]⟩`. Use `Submodule.smul_le_right (hv _ hc)` as an intermediate fact. Rewrite `this` using `[Nat.cast_smul_eq_nsmul]`. Then use the resulting hypothesis. Establish `hspan : Submodule.span D.host.E (Lv.sh C.X.Λ : Set (Fin T.rank → D.host.E)) = ⊤`.
+
+Rewrite using `[eq_top_iff, ← C.X.Λ_span, Submodule.span_le]`. Introduce `v hv`. Establish `h1 : (M : 𝓞 D.host.E) • v ∈ Lv.sh C.X.Λ` using `fun b _ => by`. Rewrite using `[smul_comm]`. Conclude with `Submodule.smul_mem_smul hm (C.X.Λ.smul_mem b hv)`.
+
+Rewrite `h1` using `[Nat.cast_smul_eq_nsmul, ← Nat.cast_smul_eq_nsmul D.host.E]`. Conclude with `(Submodule.smul_mem_iff _ (Nat.cast_ne_zero.2 hM.ne')).1 (Submodule.subset_span h1)`. Establish `hspanS : Submodule.span D.host.E (stdL D.host.E S.rank : Set (Fin S.rank → D.host.E)) = ⊤`. Rewrite using `[eq_top_iff, ← (Pi.basisFun D.host.E (Fin S.rank)).span_eq]`. Use `Submodule.span_mono ?_` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨a, rfl⟩`. Conclude with `Submodule.subset_span ⟨a, by simp⟩`. Establish `hh` using `HatLat.hatA_tens D S T C _ _ ⟨(SW.Base.stdL_mem_Vset S.rank M).1, hspanS⟩ ⟨hsd.1, hspan⟩`. Establish `hN'` using `nsmul_mem_hatA S T (stdL D.host.E S.rank) _ _ _ hN`. Use `exists_reps _ _ _ hfg (LatTens.gen S T 1) (fun y hy => (hh.2.1 y).2 hy) (fun u hu => ?_) k hN'` and prove the remaining obligations.
+
+Take `⟨y, hy, u', hu', e⟩` from `(hh.2.2.1 u hu).2 (2 * k + 1) (Nat.succ_pos _)`. Use `⟨y, hy, ?_⟩` and prove the remaining obligations. Establish `: u - LatTens.gen S T 1 y = (2 * k + 1) • u'`. Rewrite using `[e]`. Conclude with `add_sub_cancel_left _ _`.
+
+Rewrite using `[this]`. Conclude with `hN' u' hu'`.
+-/
 theorem vac_base : ∀ (D : D7) (S T : HSp D) (C : Ctx S T), ∀ (μ : Measure (WO S T)) (𝓕 : Set (WO S T)), IsCovolOne (ratL T S) μ 𝓕 → ∀ (Lv : SW.Level C.X) (hn : T.rank ≤ S.rank) (M : ℕ), IdemTwo Lv.w → 0 < M → (M : 𝓞 D.host.E) ∈ Lv.𝔪 → ∀ B, C.IsB B → ∀ LT : Lt D.host.E T.rank, IsAA C.X.Λ LT → ∀ f₀, IsVacO C.ψ C.θ S T (fun _ => 1) (C.sB B) ((stdL D.host.E S.rank) : Set (Fin S.rank → D.host.E)) (LT : Set (Fin T.rank → D.host.E)) f₀ → C.IsTh f₀ ∧ f₀ ≠ 0 ∧ C.IsFock B f₀ ∧ IsLatVac (heisO C.ψ S T) (hatA S T (tens (stdL D.host.E S.rank) C.X.Λ)) f₀ ∧ ∃ Ys : Finset (WO S T), (∀ y ∈ Ys, ∃ u ∈ hatA S T (tens (stdL D.host.E S.rank) (Lv.sh C.X.Λ)), y = 2 • u) ∧ ∀ u ∈ hatA S T (tens (stdL D.host.E S.rank) (Lv.sh C.X.Λ)), ∃! y, y ∈ Ys ∧ u - y ∈ hatA S T (tens (stdL D.host.E S.rank) C.X.Λ) := by
   intro D S T C μ 𝓕 hμ Lv hn M _ hM hm B _ LT hLT f₀ hf
   obtain ⟨-, hv⟩ := hf

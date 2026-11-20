@@ -25,6 +25,9 @@ section Main
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H}
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F} {Z : Model Xo c β}
 
+/- English proof (translation)
+Substitute `e` using the available equality. Rewrite using `[M.change p G F τ, EigFrame.co_eq h]`.
+-/
 theorem eigGram_transport {σ : c.F →+* ℂ} (M : EigMet Z σ) {p q : CxPts (genStr Z) σ} (e : p = q)
     (F : EigFrame Z σ (p.1 ≫ genι Z)) (G : EigFrame Z σ (q.1 ≫ genι Z)) (τ : E →+* ℂ)
     (T : Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) ℂ)
@@ -33,6 +36,11 @@ theorem eigGram_transport {σ : c.F →+* ℂ} (M : EigMet Z σ) {p q : CxPts (g
   subst e
   rw [M.change p G F τ, EigFrame.co_eq h]
 
+/- English proof (translation)
+Use `eigGram_transport M (cxPt_congr h) _ _ τ K fun i => ?_` and prove the remaining obligations. Establish `hv : IsTanAtG Xo.univ.t y'.x (y.u τ i)` using `h ▸ y.tan τ i`. Establish `hx' : GlobalTheory.AllWt.ptF (S` using `CAt σ) y' ≫ Z.jQ ≫ genι Z = (cxPt Z y').1 ≫ genι Z := (Category.assoc _ _ _).symm`. Establish `hx : GlobalTheory.AllWt.ptF (S` using `CAt σ) y ≫ Z.jQ ≫ genι Z = (cxPt Z y).1 ≫ genι Z := (Category.assoc _ _ _).symm`. Establish `e1 : (cxFrame Z y).v τ i = (tv (lieEquiv Z y' hx' (tanOf hv))).left` using `ofFrPt_v_eq h hx hx' τ i hv`.
+
+Rewrite using `[e1]`. Conclude with `isComb_ofFrPt (S := CAt σ) y' hx' τ (fun b => (K b i : CAt σ)) hv (hK i)`.
+-/
 theorem eigGram_of_comb {σ : c.F →+* ℂ} (M : EigMet Z σ) (y y' : FrPt Xo c (CAt σ)) (h : y.x = y'.x)
     (τ : E →+* ℂ) (K : Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) ℂ)
     (hK : ∀ i, Formalism.L2.Pj.IsCombAt y'.x (y'.u τ) (fun b => (K b i : CAt σ)) (y.u τ i)) :
@@ -47,6 +55,9 @@ theorem eigGram_of_comb {σ : c.F →+* ℂ} (M : EigMet Z σ) (y y' : FrPt Xo c
 
 end Main
 
+/- English proof (translation)
+Establish `hW' : IsUnit Wᴴ.det` using `by rw [det_conjTranspose]; exact hW.star`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_assoc, mul_nonsing_inv_cancel_right _ _ hW, ← Matrix.mul_assoc, nonsing_inv_mul _ hW', Matrix.one_mul]`. Use `_ = (W⁻¹)ᴴ * W⁻¹ := by rw [h, Matrix.mul_one, conjTranspose_nonsing_inv]`.
+-/
 theorem eq_of_conj_eq_one {n : Type} [Fintype n] [DecidableEq n] {W P : Matrix n n ℂ} (hW : IsUnit W.det)
     (h : Wᴴ * P * W = 1) : P = (W⁻¹)ᴴ * W⁻¹ := by
   have hW' : IsUnit Wᴴ.det := by rw [det_conjTranspose]; exact hW.star
@@ -55,6 +66,9 @@ theorem eq_of_conj_eq_one {n : Type} [Fintype n] [DecidableEq n] {W P : Matrix n
           Matrix.one_mul]
     _ = (W⁻¹)ᴴ * W⁻¹ := by rw [h, Matrix.mul_one, conjTranspose_nonsing_inv]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem smul_submatrix_sq {m n : Type} (a : ℂ) (M : Matrix n n ℂ) (e : m → n) :
     (a • M).submatrix e e = a • M.submatrix e e := rfl
 

@@ -27,6 +27,9 @@ def secAt {v : Pl D} (τ : D.host.E →ₐ[D.host.F] Fv D.host.F v) : Fv D.host.
 def prAt {v : Pl D} (τ : D.host.E →ₐ[D.host.F] Fv D.host.F v) : AE D →+* Fv D.host.F v :=
   (splitProj τ).toRingHom.comp (GlobalTheory.AdelicU.compFin D.host.F D.host.E v)
 
+/- English proof (translation)
+Establish `: (Valued.v : Valuation (Fv D.host.F v) (WithZero (Multiplicative ℤ))).Compatible` using `Valuation.Compatible.ofValuation _`. Rewrite using `[Valuation.mem_integer_iff, (isEquiv (valuation (Fv D.host.F v)) (Valued.v : Valuation (Fv D.host.F v) (WithZero (Multiplicative ℤ)))).le_one_iff_le_one]`.
+-/
 theorem mem_int_iff {v : Pl D} (a : Fv D.host.F v) : a ∈ 𝒪[Fv D.host.F v] ↔ Valued.v a ≤ 1 := by
   have : (Valued.v : Valuation (Fv D.host.F v) (WithZero (Multiplicative ℤ))).Compatible :=
     Valuation.Compatible.ofValuation _
@@ -56,10 +59,16 @@ def splitPt {v : Pl D} (τ : D.host.E →ₐ[D.host.F] Fv D.host.F v) : SplitPt 
     exact (h1.comp (Continuous.prodMk continuous_const (continuous_singleFin v))).mul continuous_const
   int_iff a := (mem_int_iff a).trans (GlobalTheory.IdemPrime.mem_iff (splitAt_splitIdemAd τ) a).symm
 
+/- English proof (translation)
+Take `⟨v, ⟨τ⟩⟩` from `exists_split_place (isCMExt_host D)`. Conclude with `⟨v, ⟨splitPt τ⟩⟩`.
+-/
 theorem exists_splitPt (D : D7) : ∃ v : Pl D, Nonempty (SplitPt D (Fv D.host.F v)) := by
   obtain ⟨v, ⟨τ⟩⟩ := exists_split_place (isCMExt_host D)
   exact ⟨v, ⟨splitPt τ⟩⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun i j => V.herm.eq (V.frame j) (V.frame i), (GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.gram_det_isUnit V).ne_zero⟩`.
+-/
 theorem isHermND (V : HSp D) : IsHermND D.sp.cm.sig V.gram :=
   ⟨fun i j => V.herm.eq (V.frame j) (V.frame i), (GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.gram_det_isUnit V).ne_zero⟩
 
@@ -79,6 +88,11 @@ def frame {v : Pl D} (τ : D.host.E →ₐ[D.host.F] Fv D.host.F v) (S : HSp D) 
     conv at h => lhs; rw [proj_emb_self, ContinuousMulEquiv.apply_symm_apply]
     exact h.symm
 
+/- English proof (translation)
+Introduce `g h e`. Establish `h1` using `β.gl_mat g`. Rewrite `h1` using `[e, β.gl_mat]`. Establish `key : ∀ x : Matrix n n k, β.b' * (β.b * x * β.b') * β.b = x` using `fun x => by`. Rewrite using `[Matrix.mul_assoc β.b, ← Matrix.mul_assoc β.b', β.b'b, Matrix.one_mul, Matrix.mul_assoc, β.b'b, Matrix.mul_one]`.
+
+Conclude with `Units.ext (by rw [← key g.val, ← h1, key])`.
+-/
 theorem gl_injective {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {p : SplitPt D k} {S : HSp D} {n : Type} [Fintype n] [DecidableEq n] (β : Frame p S n) : Function.Injective β.gl := by
   intro g h e
@@ -88,6 +102,13 @@ theorem gl_injective {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] 
     rw [Matrix.mul_assoc β.b, ← Matrix.mul_assoc β.b', β.b'b, Matrix.one_mul, Matrix.mul_assoc, β.b'b, Matrix.mul_one]
   exact Units.ext (by rw [← key g.val, ← h1, key])
 
+/- English proof (translation)
+Establish `hc : ∀ u (z : AE D), GlobalTheory.AdelicU.compFin D.host.F D.host.E u z = compAt D u z` using `fun u z => (tens_map_map (sndA D.host.F) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV D.host.F u) z).symm`. Take `⟨h1, h2⟩` from `Submodule.mem_inf.1 ha`. Use `adTens_ext (fun w => ?_) fun u => ?_` and prove the remaining obligations. Rewrite using `[compInf_singleTens]`. Use `(tens_map_map (fstA D.host.F) (GlobalTheory.AutFunCompare.evW w) a).symm.trans ?_` and prove the remaining obligations.
+
+Conclude with `(congrArg (Algebra.TensorProduct.map (GlobalTheory.AutFunCompare.evW w) (AlgHom.id D.host.F D.host.E)) h1).trans (map_zero _)`. Distinguish the cases in `e : u = v`. Substitute `e` using the available equality. Rewrite using `[compFin_singleTens_self, hc]`. Rewrite using `[compFin_singleTens_ne e, hc]`.
+
+Conclude with `(Submodule.mem_iInf _).1 h2 ⟨u, e⟩`.
+-/
 theorem eq_single {v : Pl D} {a : AE D} (ha : a ∈ idAt D (· = v)) : a = singleTens D.host.E v (compAt D v a) := by
   have hc : ∀ u (z : AE D), GlobalTheory.AdelicU.compFin D.host.F D.host.E u z = compAt D u z := fun u z =>
     (tens_map_map (sndA D.host.F) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV D.host.F u) z).symm
@@ -101,9 +122,17 @@ theorem eq_single {v : Pl D} {a : AE D} (ha : a ∈ idAt D (· = v)) : a = singl
     · rw [compFin_singleTens_ne e, hc]
       exact (Submodule.mem_iInf _).1 h2 ⟨u, e⟩
 
+/- English proof (translation)
+The claim follows from `tens_map_map (sndA D.host.F) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV D.host.F u) z`.
+-/
 theorem compAt_eq (u : Pl D) (z : AE D) : compAt D u z = GlobalTheory.AdelicU.compFin D.host.F D.host.E u z :=
   tens_map_map (sndA D.host.F) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV D.host.F u) z
 
+/- English proof (translation)
+Use `Submodule.mem_inf.2 ⟨?_, (Submodule.mem_iInf _).2 fun u => ?_⟩` and prove the remaining obligations. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => exact (congrArg (infPart D) (singleTens D.host.E v).map_zero').trans (infPart D).map_zero`. Consider the case `add x y hx hy => rw [map_add]`. Conclude with `add_mem hx hy`.
+
+Consider the case `tmul a x => exact TensorProduct.zero_tmul _ x`. Conclude with `(compAt_eq u.1 _).trans (compFin_singleTens_ne u.2 y)`.
+-/
 theorem single_mem_idAt (v : Pl D) (y : Fv D.host.F v ⊗[D.host.F] D.host.E) : singleTens D.host.E v y ∈ idAt D (· = v) := by
   refine Submodule.mem_inf.2 ⟨?_, (Submodule.mem_iInf _).2 fun u => ?_⟩
   · induction y using TensorProduct.induction_on with
@@ -112,11 +141,21 @@ theorem single_mem_idAt (v : Pl D) (y : Fv D.host.F v ⊗[D.host.F] D.host.E) : 
     | tmul a x => exact TensorProduct.zero_tmul _ x
   · exact (compAt_eq u.1 _).trans (compFin_singleTens_ne u.2 y)
 
+/- English proof (translation)
+Rewrite using `[← singleTens_one, singleTens_mul, one_mul, ← compAt_eq]`. Conclude with `⟨fun h => (eq_single h).symm, fun h => h ▸ single_mem_idAt v _⟩`.
+-/
 theorem mem_idAt_iff {v : Pl D} {a : AE D} :
     a ∈ idAt D (· = v) ↔ algebraMap (AF D.host.F) (AE D) (placeIdem v) * a = a := by
   rw [← singleTens_one, singleTens_mul, one_mul, ← compAt_eq]
   exact ⟨fun h => (eq_single h).symm, fun h => h ▸ single_mem_idAt v _⟩
 
+/- English proof (translation)
+Take `⟨ε, h1, h2⟩` from `p.above`. Take `rfl` from `isPlaceIdem_iff.1 h1`. Rewrite using `[SuppAt, h2]`. Simplify using `only [← mem_idAt_iff]`. Rewrite using `[grpAt, congGrp, MonoidHom.mem_ker, Units.ext_iff, ← Matrix.ext_iff]`.
+
+Use `forall₂_congr fun i j => ?_` and prove the remaining obligations. Rewrite using `[Matrix.sub_apply, ← Ideal.Quotient.eq]`. Establish `: Ideal.Quotient.mk (idAt D (· = p.v)) ((1 : Matrix (Fin S.rank) (Fin S.rank) (AE D)) i j) = (1 : Matrix (Fin S.rank) (Fin S.rank) (AE D ⧸ idAt D (· = p.v))) i j`. Apply the tactic sequence `by_cases h : i = j <;> simp [Matrix.one_apply, h]`. Rewrite using `[this]`.
+
+Conclude with `Iff.rfl`.
+-/
 theorem mem_grpAt_iff {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (p : SplitPt D k) (S : HSp D) (g : GA D S) : g ∈ grpAt S (· = p.v) ↔ SuppAt p.e S g := by
   obtain ⟨ε, h1, h2⟩ := p.above
@@ -132,6 +171,9 @@ theorem mem_grpAt_iff {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
   rw [this]
   exact Iff.rfl
 
+/- English proof (translation)
+Take `⟨ε, h1, h2⟩` from `p.above`. Conclude with `⟨fun P hP _ => Algebra.unramified_iff_forall.1 (GlobalTheory.InertOfConj.unram D) ⟨P, hP⟩, Or.inr ⟨p.e, ε, p.split, h1, h2⟩⟩`.
+-/
 theorem tame {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (p : SplitPt D k) : Tame D p.v := by
   obtain ⟨ε, h1, h2⟩ := p.above
@@ -141,6 +183,11 @@ theorem tame {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonar
 def intGrp (D : D7) (v : Pl D) : AddSubgroup (AE D) :=
   (idAt D (· = v)).toAddSubgroup ⊓ (intAE D).comap (finPart D).toAddMonoidHom
 
+/- English proof (translation)
+Use `(AddSubgroup.closure_le _).2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨α, hα, h0, a, rfl, x, hx, rfl⟩ i -`. Take `⟨b, hb⟩` from `hL x hx i`. Use `⟨Submodule.mem_inf.2 ⟨TensorProduct.zero_tmul _ _, (Submodule.mem_iInf _).2 fun u => ?_⟩, AddSubgroup.subset_closure ⟨α, hα, b, by rw [hb, ← one_mul (x i)]; rfl⟩⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV D.host.F u.1 α ⊗ₜ[D.host.F] _ = 0`.
+
+Rewrite using `[h0 _ u.2, TensorProduct.zero_tmul]`.
+-/
 theorem latV_le_int (S : HSp D) (L : Lat S) (hL : ∀ x ∈ L, ∀ i, ∃ b : 𝓞 D.host.E, (b : D.host.E) = x i) (v : Pl D) :
     latV S L (· = v) ≤ AddSubgroup.pi Set.univ fun _ => intGrp D v := by
   refine (AddSubgroup.closure_le _).2 ?_
@@ -151,6 +198,13 @@ theorem latV_le_int (S : HSp D) (L : Lat S) (hL : ∀ x ∈ L, ∀ i, ∃ b : �
   change Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV D.host.F u.1 α ⊗ₜ[D.host.F] _ = 0
   rw [h0 _ u.2, TensorProduct.zero_tmul]
 
+/- English proof (translation)
+Use `(AddSubgroup.closure_le _).2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨α, hα, b, rfl⟩`. Use `AddSubgroup.subset_closure ⟨singleFin v (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV D.host.F v α), fun u => ?_, fun u hu => evalV_singleFin_ne hu _, 1, rfl, Pi.single i (b : D.host.E), hL b, funext fun j => ?_⟩` and prove the remaining obligations. Distinguish the cases in `e : u = v`. Substitute `e` using the available equality.
+
+Rewrite using `[evalV_singleFin_self]`. Conclude with `hα u`. Rewrite using `[evalV_singleFin_ne e]`. Conclude with `zero_mem _`. Express the relevant statement in the definitionally equal form `(Pi.single i (pairA D.host.F 0 (singleFin v (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV D.host.F v α)) ⊗ₜ[D.host.F] (b : D.host.E)) : Fin S.rank → AE D) j = _`.
+
+Distinguish the cases in `e : j = i`. Substitute `e` using the available equality. Rewrite using `[Pi.single_eq_same, Pi.single_eq_same, one_mul]`. Rewrite using `[Pi.single_eq_of_ne e, Pi.single_eq_of_ne e, mul_zero, TensorProduct.tmul_zero]`.
+-/
 theorem single_mem_latV (S : HSp D) (L : Lat S) (v : Pl D) (i : Fin S.rank)
     (hL : ∀ b : 𝓞 D.host.E, Pi.single i (b : D.host.E) ∈ L) :
     intAE D ≤ (latV S L (· = v)).comap ((AddMonoidHom.single (fun _ : Fin S.rank => AE D) i).comp
@@ -168,6 +222,11 @@ theorem single_mem_latV (S : HSp D) (L : Lat S) (v : Pl D) (i : Fin S.rank)
     · subst e; rw [Pi.single_eq_same, Pi.single_eq_same, one_mul]
     · rw [Pi.single_eq_of_ne e, Pi.single_eq_of_ne e, mul_zero, TensorProduct.tmul_zero]
 
+/- English proof (translation)
+Use `⟨fun hy i => latV_le_int S L (fun x => (hL x).1) v hy i trivial, fun hy => ?_⟩` and prove the remaining obligations. Rewrite using `[← Finset.univ_sum_single y]`. Use `sum_mem fun i _ => ?_` and prove the remaining obligations. Rewrite using `[eq_single (hy i).1]`. Use `single_mem_latV S L v i (fun b => (hL _).2 fun j => ?_) (hy i).2` and prove the remaining obligations.
+
+Distinguish the cases in `e : j = i`. Substitute `e; exact ⟨b, by rw [Pi.single_eq_same]⟩` using the available equality. Conclude with `⟨0, by rw [Pi.single_eq_of_ne e]; rfl⟩`.
+-/
 theorem mem_latV_std (S : HSp D) (L : Lat S) (hL : ∀ x, x ∈ L ↔ ∀ i, ∃ b : 𝓞 D.host.E, (b : D.host.E) = x i) (v : Pl D)
     (y : Fin S.rank → AE D) : y ∈ latV S L (· = v) ↔ ∀ i, y i ∈ intAt D (· = v) := by
   refine ⟨fun hy i => latV_le_int S L (fun x => (hL x).1) v hy i trivial, fun hy => ?_⟩
@@ -179,6 +238,9 @@ theorem mem_latV_std (S : HSp D) (L : Lat S) (hL : ∀ x, x ∈ L ↔ ∀ i, ∃
   · subst e; exact ⟨b, by rw [Pi.single_eq_same]⟩
   · exact ⟨0, by rw [Pi.single_eq_of_ne e]; rfl⟩
 
+/- English proof (translation)
+Introduce `x` and use `by rw [mem_latV_std S L hL, Submodule.mem_pi] refine forall_congr' fun i => ?_ have e : ((frame τ S 1).b *ᵥ x) = x := Matrix.one_mulVec x rw [e] have h1 : (splitPt τ).sec (x i) ∈ idAt D (· = v) := Ideal.mul_mem_right _ _ (single_mem_idAt v _) rw [show (splitPt τ).sec (x i) ∈ intA …`.
+-/
 theorem isLat_std {v : Pl D} (τ : D.host.E →ₐ[D.host.F] Fv D.host.F v) (S : HSp D) (L : Lat S)
     (hL : ∀ x, x ∈ L ↔ ∀ i, ∃ b : 𝓞 D.host.E, (b : D.host.E) = x i) :
     (frame τ S 1).IsLat L (Submodule.pi Set.univ fun _ => (1 : Submodule 𝒪[Fv D.host.F v] (Fv D.host.F v))) := fun x => by
@@ -191,6 +253,11 @@ theorem isLat_std {v : Pl D} (τ : D.host.E →ₐ[D.host.F] Fv D.host.F v) (S :
     Submodule.mem_one]
   exact ⟨fun h => let ⟨b, hb⟩ := h trivial; hb ▸ b.2, fun h _ => ⟨⟨_, h⟩, rfl⟩⟩
 
+/- English proof (translation)
+Rewrite using `[d.integrandS_eq, d.integrandS_eq, heisO, map_add (d.extY W), ← mul_assoc, ← mul_assoc, ← AddChar.map_add_eq_mul, ← AddChar.map_add_eq_mul]`. Establish `h0 : symplOH V W (d.ext0 W w₀) (d.extY W a) = 0`. Rewrite using `[symplOH_skew, d.wittDecomp_sympl_extDual_extAnisotropic, neg_zero]`. Simplify using `only [GlobalTheory.OrientedHeis.symplOH_add_left, d.symplOH_extY_extY, h0, zero_add, add_zero]`. Rewrite using `[symplOH_skew V W (d.extX W x) (d.extY W a)]`.
+
+Use `congr 2`. Expand and normalize the polynomial expressions, which then agree. Normalize the expressions using the abelian group laws.
+-/
 theorem integrand_dual {V V₀ W : HSp D} {ρ : ℕ} (d : HypDec V V₀ ρ) (ψ : AddChar (AF D.host.F) ℂ) (f : WO V W → ℂ)
     (x a a' : Mx D W.rank ρ) (w₀ : WO V₀ W) :
     heisO ψ V W (d.extY W a') (heisO ψ V W (d.extX W x) (heisO ψ V W (d.ext0 W w₀) (heisO ψ V W (d.extY W a) f))) 0 =

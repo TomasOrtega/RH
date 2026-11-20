@@ -10,11 +10,19 @@ open GlobalTheory GlobalTheory.Sandwich GlobalTheory.IndefiniteRowSideFullHecke.
 
 namespace GlobalTheory.PointGroup
 
+/- English proof (translation)
+The claim follows from `isIntegrallyClosedIn_iff.2 ⟨hv.hom_inj, fun h => hv.exists_of_le_one (hv.isIntegral_iff_v_le_one.1 h)⟩`.
+-/
 theorem isIntegrallyClosedIn_of_integers {C : Type} [Field C] {v : Valuation C NNReal} {O : Type}
     [CommRing O] [Algebra O C] (hv : v.Integers O) : IsIntegrallyClosedIn O C :=
   isIntegrallyClosedIn_iff.2 ⟨hv.hom_inj, fun h => hv.exists_of_le_one
     (hv.isIntegral_iff_v_le_one.1 h)⟩
 
+/- English proof (translation)
+Set `b` to `Module.Free.chooseBasis R N`. Use `choose s hs using fun i => hB (b.coord i)`. Use `⟨∑ i, φ (1 ⊗ₜ b i) ⊗ₜ s i, fun n => ?_⟩` and prove the remaining obligations. Use `conv_rhs => rw [← b.sum_repr n]`. Simplify using `only [map_sum, LinearMap.baseChange_tmul, LinearMap.flip_apply, hs, TensorProduct.rid_tmul, TensorProduct.tmul_sum, Module.Basis.coord_apply, TensorProduct.tmul_smul]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← algebraMap_smul O (b.repr n i) ((1 : O) ⊗ₜ[R] b i), map_smul, algebraMap_smul]`.
+-/
 theorem exists_tensor_eq {R O M N : Type} [CommRing R] [CommRing O] [Algebra R O] [AddCommGroup M]
     [Module R M] [AddCommGroup N] [Module R N] [Module.Finite R N] [Module.Free R N]
     (B : M →ₗ[R] N →ₗ[R] R) (hB : Function.Surjective B) (φ : O ⊗[R] N →ₗ[O] O) :
@@ -28,6 +36,9 @@ theorem exists_tensor_eq {R O M N : Type} [CommRing R] [CommRing O] [Algebra R O
   refine Finset.sum_congr rfl fun i _ => ?_
   rw [← algebraMap_smul O (b.repr n i) ((1 : O) ⊗ₜ[R] b i), map_smul, algebraMap_smul]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(Algebra.TensorProduct.lift (algebraMap R E).toIntAlgHom ψ.toIntAlgHom fun a b => Algebra.commute_algebraMap_left a _).toRingHom, fun a => (Algebra.TensorProduct.lift_tmul _ _ _ 1 a).trans (by rw [map_one, one_mul]; rfl)⟩`.
+-/
 theorem exists_lift {R Λ E : Type} [CommRing R] [CommRing Λ] [Ring E] [Algebra R E]
     (ψ : Λ →+* E) : ∃ ρ : R ⊗[ℤ] Λ →+* E, ∀ a, ρ (1 ⊗ₜ a) = ψ a :=
   ⟨(Algebra.TensorProduct.lift (algebraMap R E).toIntAlgHom ψ.toIntAlgHom
@@ -37,6 +48,9 @@ theorem exists_lift {R Λ E : Type} [CommRing R] [CommRing Λ] [Ring E] [Algebra
 variable {p : ℕ} [Fact p.Prime] {C : Type} [Field C] [IsAlgClosed C] [CharZero C]
   {v : Valuation C NNReal} {O : Type} [CommRing O] [Algebra O C]
 
+/- English proof (translation)
+Use `haveI := isIntegrallyClosedIn_of_integers hv`. Set `z` to `LinearEquiv.ofBijective (LinearMap.toSpanSingleton ℤ_[p] _ ζ) hζ`. Use `⟨(pairing G O).compr₂ z.symm.toLinearMap, fun s χ => (z.apply_symm_apply _).symm, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(LinearEquiv.congrRight (M := G.dual.Tate) z.symm).bijective.comp (G.pairing_bijective C)`. Conclude with `(LinearEquiv.congrRight (M := G.Tate) z.symm).bijective.comp (G.pairing_flip_bijective C)`.
+-/
 theorem exists_form (hv : v.Integers O) (G : PDivGroup p O) (ζ : (PDivGroup.mu p O).Tate)
     (hζ : Function.Bijective fun a : ℤ_[p] => a • ζ) :
     ∃ B : G.Tate →ₗ[ℤ_[p]] G.dual.Tate →ₗ[ℤ_[p]] ℤ_[p], (∀ s χ, pairing G O s χ = B s χ • ζ) ∧
@@ -47,10 +61,16 @@ theorem exists_form (hv : v.Integers O) (G : PDivGroup p O) (ζ : (PDivGroup.mu 
   · exact (LinearEquiv.congrRight (M := G.dual.Tate) z.symm).bijective.comp (G.pairing_bijective C)
   · exact (LinearEquiv.congrRight (M := G.Tate) z.symm).bijective.comp (G.pairing_flip_bijective C)
 
+/- English proof (translation)
+The claim follows from `haveI := isIntegrallyClosedIn_of_integers hv G.finite_tate C`.
+-/
 theorem finite_tate (hv : v.Integers O) (G : PDivGroup p O) : Module.Finite ℤ_[p] G.Tate :=
   haveI := isIntegrallyClosedIn_of_integers hv
   G.finite_tate C
 
+/- English proof (translation)
+The claim follows from `haveI := isIntegrallyClosedIn_of_integers hv G.free_tate C`.
+-/
 theorem free_tate (hv : v.Integers O) (G : PDivGroup p O) : Module.Free ℤ_[p] G.Tate :=
   haveI := isIntegrallyClosedIn_of_integers hv
   G.free_tate C
@@ -58,6 +78,13 @@ theorem free_tate (hv : v.Integers O) (G : PDivGroup p O) : Module.Free ℤ_[p] 
 variable [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] [IsDomain O]
   {ε : PreTilt O p} {hε : GlobalTheory.IndefiniteRowSideFullHecke.EpsilonPairingZeta.IsPrimitiveSystem ε}
 
+/- English proof (translation)
+Take `⟨u₁, u₂, H⟩` from `H`. Take `⟨D, e, fil, lie, R⟩` from `H G ℤ_[p] G.padicAction`. Take `⟨B, hB, -, hB'⟩` from `exists_form hv G _ (GlobalTheory.IndefiniteRowSideFullHecke.EpsilonPairingZeta.epsEquiv hε).bijective`. Establish `hE : ∀ s χ, GlobalTheory.IndefiniteRowSideFullHecke.EpsilonPairingZeta.epsPairing hε G s χ = B s χ` using `fun s χ => (LinearEquiv.symm_apply_eq _).2 (hB s χ)`. Establish `h0 : GlobalTheory.IndefiniteRowSideFullHecke.EpsilonPairingZeta.bQuot D (lie.symm y) = 0`.
+
+Use function extensionality and compare the values at `j`. Take `⟨χ, hχ⟩` from `hB'.2 (LinearMap.proj j ∘ₗ e.toLinearMap)`. Establish `h1 : ∀ s, B s χ = e s j` using `fun s => LinearMap.congr_fun hχ s`. Establish `h` using `R.b_eq y χ`. Rewrite `h` using `[← dlog_eq_omegaMap, hy, mul_zero, GlobalTheory.IndefiniteRowSideFullHecke.EpsilonPairingZeta.pairingO]`.
+
+Simplify `h` using `[hE, h1, Pi.single_apply, apply_ite]`. Establish `h1 : lie.symm y = 0`. Establish `hk : LinearMap.ker (GlobalTheory.IndefiniteRowSideFullHecke.EpsilonPairingZeta.bQuot D) = ⊥` using `Submodule.ker_liftQ_eq_bot _ _ _ le_rfl`. Conclude with `LinearMap.ker_eq_bot'.1 hk _ h0`. Conclude with `lie.symm.map_eq_zero_iff.1 h1`.
+-/
 theorem lie_eq_zero (hv : v.Integers O) (H : GlobalTheory.IndefiniteRowSideFullHecke.EpsilonPairingZeta.HodgeTateSandwichAt hε)
     (G : PDivGroup p O) (y : G.Lie) (hy : ∀ χ, y (dlog G χ) = 0) : y = 0 := by
   obtain ⟨u₁, u₂, H⟩ := H
@@ -77,6 +104,9 @@ theorem lie_eq_zero (hv : v.Integers O) (H : GlobalTheory.IndefiniteRowSideFullH
     exact LinearMap.ker_eq_bot'.1 hk _ h0
   exact lie.symm.map_eq_zero_iff.1 h1
 
+/- English proof (translation)
+Take `⟨u₁, u₂, H⟩` from `H`. Take `⟨D, e, fil, lie, R⟩` from `H G.dual ℤ_[p] G.dual.padicAction`. Establish `h : fil (omegaMap _ _ G.bidual.inv w) = 0` using `Subtype.ext (funext fun j => hw (LinearMap.proj j ∘ₗ D.Fil.subtype ∘ₗ fil.toLinearMap ∘ₗ omegaMap _ _ G.bidual.inv))`. Establish `h2` using `congrArg (omegaMap _ _ G.bidual.hom) (fil.map_eq_zero_iff.1 h)`. Rewrite `h2` using `[map_zero, ← LinearMap.comp_apply, ← omegaMap_comp, Iso.hom_inv_id, omegaMap_id]`. Then use the resulting hypothesis.
+-/
 theorem omega_eq_zero (H : GlobalTheory.IndefiniteRowSideFullHecke.EpsilonPairingZeta.HodgeTateSandwichAt hε)
     (G : PDivGroup p O) (w : G.omega) (hw : ∀ y : G.Lie, y w = 0) : w = 0 := by
   obtain ⟨u₁, u₂, H⟩ := H
@@ -88,6 +118,11 @@ theorem omega_eq_zero (H : GlobalTheory.IndefiniteRowSideFullHecke.EpsilonPairin
 
 omit [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] [IsDomain O] in
 
+/- English proof (translation)
+Establish `h : G.dual.hodgeTateLinear z = omegaMap _ _ G.bidual.inv (dlogLinear G z)`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul c χ`.
+
+Rewrite using `[hodgeTateLinear_tmul, dlogLinear_tmul, map_smul, hodgeTate_apply, ← dlog_tateMap, dualHom_bidual_inv]`. Rewrite using `[h]`. Use `⟨fun h0 => ?_, fun h0 => by rw [h0, map_zero]⟩` and prove the remaining obligations. Establish `h2` using `congrArg (omegaMap _ _ G.bidual.hom) h0`. Rewrite `h2` using `[map_zero, ← LinearMap.comp_apply, ← omegaMap_comp, Iso.hom_inv_id, omegaMap_id]`. Then use the resulting hypothesis.
+-/
 theorem hodgeTateLinear_dual_eq_zero_iff [Algebra ℤ_[p] O] (G : PDivGroup p O)
     (z : O ⊗[ℤ_[p]] G.dual.Tate) : G.dual.hodgeTateLinear z = 0 ↔ dlogLinear G z = 0 := by
   have h : G.dual.hodgeTateLinear z = omegaMap _ _ G.bidual.inv (dlogLinear G z) := by
@@ -113,6 +148,9 @@ variable [Algebra ℤ_[p] O]
 
 omit [IsDomain O] in
 
+/- English proof (translation)
+The claim follows from `((SW p C v O hv).1 G G LinearMap.id fun x hx => by rwa [LinearMap.baseChange_id]).unique (LinearMap.ext h) rfl`.
+-/
 theorem eq_id_of_tateMap (SW : GlobalTheory.Published.ScholzeWeinsteinB) (hv : v.Integers O) {G : PDivGroup p O}
     (φ : G ⟶ G) (h : ∀ t, tateMap G G O φ t = t) : φ = 𝟙 G :=
   ((SW p C v O hv).1 G G LinearMap.id fun x hx => by rwa [LinearMap.baseChange_id]).unique
@@ -120,6 +158,9 @@ theorem eq_id_of_tateMap (SW : GlobalTheory.Published.ScholzeWeinsteinB) (hv : v
 
 omit [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] in
 
+/- English proof (translation)
+Use `haveI := finite_tate hv G.dual`. Use `haveI := free_tate hv G.dual`. Take `⟨x, hx⟩` from `exists_tensor_eq B hB (y ∘ₗ dlogLinear G)`. Establish `hx' : ∀ χ, (TensorProduct.rid ℤ_[p] O) ((B.flip χ).baseChange O x) = y (dlog G χ)` using `fun χ => by rw [hx, LinearMap.comp_apply, dlogLinear_tmul, one_smul]`. Conclude with `⟨x, (hk x).2 ⟨1, y, one_ne_zero, fun χ => by rw [one_mul, hx']⟩, hx'⟩`.
+-/
 theorem exists_ker_of_lie (hv : v.Integers O) {G : PDivGroup p O}
     {B : G.Tate →ₗ[ℤ_[p]] G.dual.Tate →ₗ[ℤ_[p]] ℤ_[p]} (hB : Function.Surjective B)
     (hk : KerIsLie G B) (y : G.Lie) : ∃ x, G.hodgeTateLinear x = 0 ∧
@@ -131,6 +172,21 @@ theorem exists_ker_of_lie (hv : v.Integers O) {G : PDivGroup p O}
     fun χ => by rw [hx, LinearMap.comp_apply, dlogLinear_tmul, one_smul]
   exact ⟨x, (hk x).2 ⟨1, y, one_ne_zero, fun χ => by rw [one_mul, hx']⟩, hx'⟩
 
+/- English proof (translation)
+Set `f : G.Tate ≃ₗ[ℤ_[p]] G.dual.Tate` to `(LinearEquiv.ofBijective β.flip hβ).trans (LinearEquiv.ofBijective B.flip hB2).symm`. Establish `hf : ∀ s t, B s (f t) = β s t` using `fun s t => LinearMap.congr_fun ((LinearEquiv.ofBijective B.flip hB2).apply_symm_apply (β.flip t)) s`. Establish `h1 : ∀ x (d : O) t, β.baseChange O x (d ⊗ₜ t) = d * (TensorProduct.rid ℤ_[p] O) ((B.flip (f t)).baseChange O x)` using `fun x d t => by`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+
+Consider the case `add x y hx hy => simp only [map_add, LinearMap.add_apply, hx, hy, mul_add]`. Consider the case `tmul a s`. Rewrite using `[LinearMap.BilinForm.baseChange_tmul, LinearMap.baseChange_tmul, LinearMap.flip_apply, hf, TensorProduct.rid_tmul, mul_smul_comm, mul_comm]`. Establish `h2 : ∀ x (c : O) (y : G.Lie), (∀ χ, c * (TensorProduct.rid ℤ_[p] O) ((B.flip χ).baseChange O x) = y (dlog G χ)) → ∀ z, c * β.baseChange O x z = y (dlogLinear G (f.toLinearMap.baseChange O z))` using `fun x c y h z => by`. Proceed by induction on `z using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp`. Consider the case `add z w hz hw => simp only [map_add, hz, hw, mul_add]`. Consider the case `tmul d t`. Rewrite using `[h1, LinearMap.baseChange_tmul, dlogLinear_tmul, map_smul, ← h, smul_eq_mul, mul_left_comm]`. Both sides reduce to the same expression.
+
+Establish `h3 : ∀ z, G.hodgeTateLinear z = 0 ↔ G.dual.hodgeTateLinear (f.toLinearMap.baseChange O z) = 0` using `fun z => by`. Rewrite using `[hodgeTateLinear_dual_eq_zero_iff]`. Use `⟨fun hz => omega_eq_zero H G _ fun y => ?_, fun hz => (hL z).2 fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨x, hx, hx'⟩` from `exists_ker_of_lie hv hB1 hk y`. Rewrite using `[← h2 x 1 y (fun χ => by rw [one_mul, hx']), (hL z).1 hz x hx, mul_zero]`.
+
+Take `⟨c, y, hc, h⟩` from `(hk x).1 hx`. Use `h2 x c y h z` as an intermediate fact. Rewrite `this` using `[hz, map_zero]`. Conclude with `(mul_eq_zero.1 this).resolve_left hc`. Take `⟨φ, hφ, -⟩` from `(SW p C v O hv).1 G G.dual f.toLinearMap fun x hx => (h3 x).1 hx`.
+
+Take `⟨ψ, hψ, -⟩` from `(SW p C v O hv).1 G.dual G f.symm.toLinearMap fun x hx => (h3 _).2 (by`. Rewrite using `[← LinearMap.comp_apply (f.toLinearMap.baseChange O), ← LinearMap.baseChange_comp, LinearEquiv.comp_symm, LinearMap.baseChange_id])` and apply the resulting hypothesis. Use `⟨⟨φ, ψ, eq_id_of_tateMap SW hv _ fun t => ?_, eq_id_of_tateMap SW hv _ fun t => ?_⟩, fun s t => ?_⟩` and prove the remaining obligations. Rewrite using `[tateMap_comp, hφ, hψ]`. Conclude with `f.symm_apply_apply t`.
+
+Rewrite using `[tateMap_comp, hφ, hψ]`. Conclude with `f.apply_symm_apply t`. Rewrite using `[hφ, hB, ← hf]`. Both sides reduce to the same expression.
+-/
 theorem exists_pol (SW : GlobalTheory.Published.ScholzeWeinsteinB) (hv : v.Integers O)
     (H : GlobalTheory.IndefiniteRowSideFullHecke.EpsilonPairingZeta.HodgeTateSandwichAt hε) (G : PDivGroup p O) (ζ : (PDivGroup.mu p O).Tate)
     (B : G.Tate →ₗ[ℤ_[p]] G.dual.Tate →ₗ[ℤ_[p]] ℤ_[p]) (hB : ∀ s χ, pairing G O s χ = B s χ • ζ)
@@ -182,6 +238,13 @@ theorem exists_pol (SW : GlobalTheory.Published.ScholzeWeinsteinB) (hv : v.Integ
   · rw [tateMap_comp, hφ, hψ]; exact f.apply_symm_apply t
   · rw [hφ, hB, ← hf]; rfl
 
+/- English proof (translation)
+Take `⟨i, hi, -⟩` from `(SW p C v O hv).1 G₁ G ι fun x hx => (h1 x).1 hx`. Take `⟨ρ, hρ, -⟩` from `(SW p C v O hv).1 G G₁ r fun x hx => (h1 _).2 (by rwa [h2 x hx])`. Establish `h3 : i ≫ ρ = 𝟙 G₁` using `eq_id_of_tateMap SW hv _ fun t => by rw [tateMap_comp, hi, hρ, hr]`. Use `⟨i, hi, Function.bijective_iff_has_inverse.2 ⟨lieMap G G₁ ρ, fun y => ?_, fun y => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← LinearMap.comp_apply, ← lieMap_comp, h3, lieMap_id, LinearMap.id_apply]`.
+
+Rewrite using `[← LinearMap.comp_apply, ← lieMap_comp]`. Take `⟨x, hx, hx'⟩` from `exists_ker_of_lie hv hB1 hk y`. Use `sub_eq_zero.1 (lie_eq_zero hv H G _ fun χ => ?_)` and prove the remaining obligations. Establish `h4 : B.flip (tateMap _ _ O (dualHom G G (ρ ≫ i)) χ) = B.flip χ ∘ₗ ι ∘ₗ r` using `LinearMap.ext fun s => hζ (by`. Use `pairing_tateMap (ρ ≫ i) s χ` as an intermediate fact.
+
+Rewrite `this` using `[hB, hB, tateMap_comp, hi, hρ]`. Conclude with `this.symm)`. Rewrite using `[LinearMap.sub_apply, lieMap_apply, ← dlog_tateMap, ← hx', ← hx', h4, LinearMap.baseChange_comp, LinearMap.baseChange_comp, LinearMap.comp_apply, LinearMap.comp_apply, h2 x hx, sub_self]`.
+-/
 theorem exists_lie_bijective (SW : GlobalTheory.Published.ScholzeWeinsteinB) (hv : v.Integers O)
     (H : GlobalTheory.IndefiniteRowSideFullHecke.EpsilonPairingZeta.HodgeTateSandwichAt hε) (G G₁ : PDivGroup p O)
     (ζ : (PDivGroup.mu p O).Tate) (hζ : Function.Injective fun a : ℤ_[p] => a • ζ)
@@ -210,6 +273,13 @@ theorem exists_lie_bijective (SW : GlobalTheory.Published.ScholzeWeinsteinB) (hv
 
 omit [IsDomain O] in
 
+/- English proof (translation)
+Establish `hex` using `fun a => (SW p C v O hv).1 G G (α a) (h a)`. Use `choose φ hφ hu using hex`. Set `ψ : Λ →+* End G` to `{ toFun := φ map_one' := (hu 1 _ (by rw [map_one]; rfl)).symm map_mul' := fun a b => (hu (a * b) (φ b ≫ φ a) (by`. Rewrite using `[map_mul, ← hφ a, ← hφ b]`. Use the proof step `rfl)).symm`.
+
+Use the proof step `map_zero' := (hu 0 _ (by rw [map_zero]; exact map_zero _)).symm`. Use the proof step `map_add' := fun a b => (hu (a + b) (φ a + φ b) (by`. Rewrite using `[map_add, ← hφ a, ← hφ b]`. Conclude with `map_add _ _ _)).symm }`. Take `⟨ρ, hρ⟩` from `exists_lift (R := ℤ_[p]) ψ`.
+
+Conclude with `⟨ρ, fun a => by rw [Action.onTate_apply, hρ]; exact hφ a⟩`.
+-/
 theorem exists_action (SW : GlobalTheory.Published.ScholzeWeinsteinB) (hv : v.Integers O) (G : PDivGroup p O)
     {Λ : Type} [CommRing Λ] (α : Λ →+* Module.End ℤ_[p] G.Tate)
     (h : ∀ a x, G.hodgeTateLinear x = 0 → G.hodgeTateLinear ((α a).baseChange O x) = 0) :

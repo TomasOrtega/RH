@@ -7,6 +7,9 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.LBDescent
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.LBDescent.coboundary_locally_of_cocycle | exact GlobalTheory.LBDescent.coboundary_locally_of_cocycle | (intros; apply GlobalTheory.LBDescent.coboundary_locally_of_cocycle <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.finiteFlat_unitCocycle_locally_coboundary : ∀ {X Y : Scheme.{0}} (f : X ⟶ Y) [IsFinite f] [Flat f] [Surjective f] [IsLocallyNoetherian Y]
     (V : Y.Opens) (c : Γ(pullback f f, pullback.fst f f ⁻¹ᵁ f ⁻¹ᵁ V)ˣ),
     (∀ w : ↥(Triple f), f (pullback.fst f f (pullback.fst (pullback.snd f f) (pullback.fst f f) w)) ∈ V →

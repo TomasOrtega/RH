@@ -13,6 +13,15 @@ open scoped ValuativeRel
 variable {F : Type*} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
   {n : ℕ}
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero`. Introduce `b _ _`. Use `hasSum_single (f := fun l : Fin 0 → ℕ => ∏ i, b i ^ l i) 0 (fun b' hb' => absurd (Subsingleton.elim b' 0) hb')` as an intermediate fact. Simplify using `using this`.
+
+Consider the case `succ m ihm`. Introduce `b h0 h1`. Establish `ih : HasSum (fun l : Fin m → ℕ => ∏ i : Fin m, b i.succ ^ l i) (∏ i : Fin m, (1 - b i.succ)⁻¹)` using `ihm (fun i => h0 _) (fun i => h1 _)`. Establish `hg : HasSum (fun k : ℕ => b 0 ^ k) (1 - b 0)⁻¹` using `hasSum_geometric_of_lt_one (h0 0) (h1 0)`. Establish `hs : Summable fun x : ℕ × (Fin m → ℕ) => b 0 ^ x.1 * ∏ i : Fin m, b i.succ ^ x.2 i` using `Summable.mul_of_nonneg (f := fun k : ℕ => b 0 ^ k) (g := fun l : Fin m → ℕ => ∏ i : Fin m, b i.succ ^ l i) hg.summable ih.summable (by intro k; exact pow_nonneg (h0 0) k) (by intro l; exact Finset.prod_nonneg fun i _ => pow_nonneg (h0 _) _)`.
+
+Establish `hm` using `HasSum.mul hg ih hs`. Establish `hfun : ((fun l : Fin (m + 1) → ℕ => ∏ i, b i ^ l i) ∘ (Fin.consEquiv fun _ : Fin (m + 1) => ℕ)) = fun x : ℕ × (Fin m → ℕ) => b 0 ^ x.1 * ∏ i : Fin m, b i.succ ^ x.2 i`. Use function extensionality and compare the values at `x`. Use `show ∏ i, b i ^ (Fin.cons x.1 x.2 : Fin (m + 1) → ℕ) i = _`. Rewrite using `[Fin.prod_univ_succ]`.
+
+Simplify using `only [Fin.cons_zero, Fin.cons_succ]`. Rewrite using `[← (Fin.consEquiv fun _ : Fin (m + 1) => ℕ).hasSum_iff, hfun, Fin.prod_univ_succ]`. Conclude with `hm`.
+-/
 theorem hasSum_prod_pow_real (m : ℕ) : ∀ {b : Fin m → ℝ}, (∀ i, 0 ≤ b i) → (∀ i, b i < 1) →
     HasSum (fun l : Fin m → ℕ => ∏ i, b i ^ l i) (∏ i, (1 - b i)⁻¹) := by
   induction m with
@@ -42,6 +51,17 @@ theorem hasSum_prod_pow_real (m : ℕ) : ∀ {b : Fin m → ℝ}, (∀ i, 0 ≤ 
     rw [← (Fin.consEquiv fun _ : Fin (m + 1) => ℕ).hasSum_iff, hfun, Fin.prod_univ_succ]
     exact hm
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero`. Introduce `b _`. Use `hasSum_single (f := fun l : Fin 0 → ℕ => ∏ i, b i ^ l i) 0 (fun b' hb' => absurd (Subsingleton.elim b' 0) hb')` as an intermediate fact. Simplify using `using this`.
+
+Consider the case `succ m ihm`. Introduce `b h1`. Establish `ih : HasSum (fun l : Fin m → ℕ => ∏ i : Fin m, b i.succ ^ l i) (∏ i : Fin m, (1 - b i.succ)⁻¹)` using `ihm (fun i => h1 _)`. Establish `hg : HasSum (fun k : ℕ => b 0 ^ k) (1 - b 0)⁻¹` using `hasSum_geometric_of_norm_lt_one (h1 0)`. Establish `hn1 : Summable fun k : ℕ => ‖b 0 ^ k‖`.
+
+Simplify `(summable_geometric_of_lt_one (norm_nonneg _) (h1 0))` using `[norm_pow]`. Establish `hn2 : Summable fun l : Fin m → ℕ => ‖∏ i : Fin m, b i.succ ^ l i‖`. Simplify `(hasSum_prod_pow_real m (b := fun i => ‖b i.succ‖) (fun i => norm_nonneg _) (fun i => h1 _)).summable` using `[norm_prod, norm_pow]`. Establish `hs : Summable fun x : ℕ × (Fin m → ℕ) => b 0 ^ x.1 * ∏ i : Fin m, b i.succ ^ x.2 i` using `summable_mul_of_summable_norm (f := fun k : ℕ => b 0 ^ k) (g := fun l : Fin m → ℕ => ∏ i : Fin m, b i.succ ^ l i) hn1 hn2`. Establish `hm` using `HasSum.mul hg ih hs`.
+
+Establish `hfun : ((fun l : Fin (m + 1) → ℕ => ∏ i, b i ^ l i) ∘ (Fin.consEquiv fun _ : Fin (m + 1) => ℕ)) = fun x : ℕ × (Fin m → ℕ) => b 0 ^ x.1 * ∏ i : Fin m, b i.succ ^ x.2 i`. Use function extensionality and compare the values at `x`. Use `show ∏ i, b i ^ (Fin.cons x.1 x.2 : Fin (m + 1) → ℕ) i = _`. Rewrite using `[Fin.prod_univ_succ]`. Simplify using `only [Fin.cons_zero, Fin.cons_succ]`.
+
+Rewrite using `[← (Fin.consEquiv fun _ : Fin (m + 1) => ℕ).hasSum_iff, hfun, Fin.prod_univ_succ]`. Conclude with `hm`.
+-/
 theorem hasSum_prod_pow (m : ℕ) : ∀ {b : Fin m → ℂ}, (∀ i, ‖b i‖ < 1) →
     HasSum (fun l : Fin m → ℕ => ∏ i, b i ^ l i) (∏ i, (1 - b i)⁻¹) := by
   induction m with
@@ -74,6 +94,11 @@ theorem hasSum_prod_pow (m : ℕ) : ∀ {b : Fin m → ℂ}, (∀ i, ‖b i‖ <
     rw [← (Fin.consEquiv fun _ : Fin (m + 1) => ℕ).hasSum_iff, hfun, Fin.prod_univ_succ]
     exact hm
 
+/- English proof (translation)
+Establish `H` using `hasSum_prod_pow m h`. Rewrite `H` using `[← (Finset.Nat.sigmaAntidiagonalTupleEquivTuple m).hasSum_iff]`. Use `H.sigma fun k => ?_` and prove the remaining obligations. Establish `h1` using `hasSum_fintype (fun c : Finset.Nat.antidiagonalTuple m k => ∏ i, b i ^ (c : Fin m → ℕ) i)`. Rewrite `h1` using `[Finset.sum_coe_sort (Finset.Nat.antidiagonalTuple m k) (fun l : Fin m → ℕ => ∏ i, b i ^ l i)]`.
+
+Conclude with `h1`.
+-/
 theorem hasSum_sum_antidiagonalTuple {m : ℕ} {b : Fin m → ℂ} (h : ∀ i, ‖b i‖ < 1) :
     HasSum (fun k : ℕ => ∑ l ∈ Finset.Nat.antidiagonalTuple m k, ∏ i, b i ^ l i)
       (∏ i, (1 - b i)⁻¹) := by
@@ -86,6 +111,13 @@ theorem hasSum_sum_antidiagonalTuple {m : ℕ} {b : Fin m → ℂ} (h : ∀ i, �
     (fun l : Fin m → ℕ => ∏ i, b i ^ l i)] at h1
   exact h1
 
+/- English proof (translation)
+Establish `hq : (0 : ℝ) < (LocalField.residueCard F : ℝ)`. Conclude with `Nat.card_pos` after adjusting the coercions. Establish `key : qs F ((m : ℂ) / 2) * sqrtQ F ^ m = 1`. Establish `h1 : qs F ((m : ℂ) / 2) = (((LocalField.residueCard F : ℝ) ^ (-(m : ℝ) / 2) : ℝ) : ℂ)`. Rewrite using `[qs, Complex.ofReal_cpow hq.le]`.
+
+Use `push_cast`. Put the polynomial expressions in normal form. Establish `h2 : sqrtQ F ^ m = (((LocalField.residueCard F : ℝ) ^ ((m : ℝ) / 2) : ℝ) : ℂ)`. Rewrite using `[sqrtQ, ← Complex.ofReal_zpow]`. Use `congr 1`.
+
+Rewrite using `[Real.coe_sqrt, NNReal.coe_natCast, Real.sqrt_eq_rpow, ← Real.rpow_intCast, ← Real.rpow_mul (Nat.cast_nonneg _), show (1 / 2 : ℝ) * m = m / 2 by ring]`. Both sides reduce to the same expression. Rewrite using `[h1, h2, ← Complex.ofReal_mul, ← Real.rpow_add hq, neg_div, neg_add_cancel, Real.rpow_zero, Complex.ofReal_one]`. Rewrite using `[qs_add, mul_pow, _root_.zpow_mul, zpow_natCast, mul_assoc, ← mul_pow, key, one_pow, mul_one]`.
+-/
 theorem qs_pow_mul_sqrtQ (s : ℂ) (m : ℤ) (k : ℕ) :
     qs F (s + (m : ℂ) / 2) ^ k * sqrtQ F ^ (m * k) = qs F s ^ k := by
   have hq : (0 : ℝ) < (LocalField.residueCard F : ℝ) := by
@@ -111,6 +143,9 @@ variable (F n) in
 def integralMatrixSet : Set (Matrix (Fin n) (Fin n) F) :=
   Set.pi Set.univ fun _ => Set.pi Set.univ fun _ => (𝒪[F] : Set F)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h i j => h i (Set.mem_univ _) j (Set.mem_univ _), fun h i _ j _ => h i j⟩`.
+-/
 theorem mem_integralMatrixSet {X : Matrix (Fin n) (Fin n) F} :
     X ∈ integralMatrixSet F n ↔ ∀ i j, X i j ∈ 𝒪[F] :=
   ⟨fun h i j => h i (Set.mem_univ _) j (Set.mem_univ _), fun h i _ j _ => h i j⟩
@@ -120,6 +155,11 @@ variable (F n) in
 def integralIndicator : Matrix (Fin n) (Fin n) F → ℂ :=
   (integralMatrixSet F n).indicator 1
 
+/- English proof (translation)
+Establish `hc : IsCompact (integralMatrixSet F n)` using `isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => isCompact_iff_compactSpace.mpr (inferInstanceAs (CompactSpace 𝒪[F]))`. Establish `ho : IsOpen (integralMatrixSet F n)` using `isOpen_set_pi Set.finite_univ fun _ _ => isOpen_set_pi Set.finite_univ fun _ _ => Valuation.isOpen_integer`. Use `⟨?_, HasCompactSupport.intro hc fun X hX => Set.indicator_of_notMem hX _⟩` and prove the remaining obligations. Rewrite using `[IsLocallyConstant.iff_exists_open]`. Introduce `X`.
+
+Distinguish the cases in `hX : X ∈ integralMatrixSet F n`. Conclude with `⟨_, ho, hX, fun Y hY => by`. Simplify using `[integralIndicator, Set.indicator_of_mem hY, Set.indicator_of_mem hX]⟩`. Conclude with `⟨_, hc.isClosed.isOpen_compl, hX, fun Y hY => by`. Simplify using `[integralIndicator, Set.indicator_of_notMem hY, Set.indicator_of_notMem hX]⟩`.
+-/
 theorem isSchwartzBruhat_integralIndicator : IsSchwartzBruhat (integralIndicator F n) := by
   have hc : IsCompact (integralMatrixSet F n) :=
     isCompact_univ_pi fun _ => isCompact_univ_pi fun _ =>
@@ -136,6 +176,9 @@ theorem isSchwartzBruhat_integralIndicator : IsSchwartzBruhat (integralIndicator
   · exact ⟨_, hc.isClosed.isOpen_compl, hX, fun Y hY => by
       simp [integralIndicator, Set.indicator_of_notMem hY, Set.indicator_of_notMem hX]⟩
 
+/- English proof (translation)
+The claim follows from `ord_nonneg_of_mem_integer (det_mem_integer hg) (det_ne_zero g)`.
+-/
 theorem ordDet_nonneg_of_integral {g : GL (Fin n) F} (hg : ∀ i j, g i j ∈ 𝒪[F]) : 0 ≤ ordDet g :=
   ord_nonneg_of_mem_integer (det_mem_integer hg) (det_ne_zero g)
 
@@ -144,6 +187,13 @@ section ZetaNonvanishing₂
 variable [MeasurableSpace (GL (Fin n) F)] [BorelSpace (GL (Fin n) F)]
   {V : Type*} [AddCommGroup V] [Module ℂ V] {π : Representation ℂ (GL (Fin n) F) V}
 
+/- English proof (translation)
+Rewrite using `[← integral_indicator (measurableSet_shell _), ← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `g`. Rewrite using `[integralHecke_apply]`. Distinguish the cases in `hg : ordDet g = (m : ℤ)`.
+
+Rewrite using `[Set.indicator_of_mem (show g ∈ {g : GL (Fin n) F | ordDet g = (m : ℤ)} from hg), detPow_eq_qs_zpow, hg, zpow_natCast]`. Distinguish the cases in `hi : ∀ i j, g i j ∈ 𝒪[F]`. Rewrite using `[integralIndicator, Set.indicator_of_mem (mem_integralMatrixSet.2 hi), Set.indicator_of_mem (show g ∈ integralShell F n m from ⟨hi, hg⟩)]`. Simplify using `only [Pi.one_apply]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[integralIndicator, Set.indicator_of_notMem (fun h => hi (mem_integralMatrixSet.1 h)), Set.indicator_of_notMem (fun h => hi h.1)]`. Simplify using the standard rewrite rules. Rewrite using `[Set.indicator_of_notMem (show g ∉ {g : GL (Fin n) F | ordDet g = (m : ℤ)} from hg), Set.indicator_of_notMem (fun h => hg h.2)]`. Simplify using the standard rewrite rules.
+-/
 theorem integral_shell_integralIndicator (μ : Measure (GL (Fin n) F)) [μ.IsHaarMeasure]
     (f : GL (Fin n) F → ℂ) (s : ℂ) (m : ℕ) :
     ∫ g in {g : GL (Fin n) F | ordDet g = (m : ℤ)},
@@ -168,6 +218,11 @@ theorem integral_shell_integralIndicator (μ : Measure (GL (Fin n) F)) [μ.IsHaa
       Set.indicator_of_notMem (fun h => hg h.2)]
     simp
 
+/- English proof (translation)
+Rewrite using `[← integral_indicator (measurableSet_shell _)]`. Establish `: ({g : GL (Fin n) F | ordDet g = k}.indicator fun g => integralIndicator F n (g : Matrix (Fin n) (Fin n) F) * f g * detPow g s) = fun _ => 0`. Use function extensionality and compare the values at `g`. Distinguish the cases in `hg : ordDet g = k`. Rewrite using `[Set.indicator_of_mem (show g ∈ {g : GL (Fin n) F | ordDet g = k} from hg), integralIndicator, Set.indicator_of_notMem, zero_mul, zero_mul]`.
+
+Introduce `h`. Use `ordDet_nonneg_of_integral (mem_integralMatrixSet.1 h)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Conclude with `Set.indicator_of_notMem (show g ∉ {g : GL (Fin n) F | ordDet g = k} from hg) _`. Rewrite using `[this, integral_zero]`.
+-/
 theorem integral_shell_integralIndicator_of_neg (μ : Measure (GL (Fin n) F))
     (f : GL (Fin n) F → ℂ) (s : ℂ) {k : ℤ} (hk : k < 0) :
     ∫ g in {g : GL (Fin n) F | ordDet g = k},
@@ -185,6 +240,9 @@ theorem integral_shell_integralIndicator_of_neg (μ : Measure (GL (Fin n) F))
     · exact Set.indicator_of_notMem (show g ∉ {g : GL (Fin n) F | ordDet g = k} from hg) _
   rw [this, integral_zero]
 
+/- English proof (translation)
+Establish `hs : v₀ ∈ smoothVectors π` using `mem_smoothVectors_of_mem_fixedVectors (isOpen_integralGL F n) hv₀`. Use `dual_heckeAct (μ := μ) (ρ := π) (h : HeckeAlgebra μ).mem hs ℓ₀` as an intermediate fact. Rewrite `this` using `[hz h v₀ hv₀, map_smul, smul_eq_mul]`. Conclude with `this.symm`.
+-/
 theorem integral_mul_matrixCoeff_of_isSatakeParameter {μ : Measure (GL (Fin n) F)}
     [μ.IsHaarMeasure] {z : Fin n → ℂˣ} (hz : IsSatakeParameter π μ z) {v₀ : V}
     (hv₀ : v₀ ∈ fixedVectors π (integralGL F n)) (ℓ₀ : Module.Dual ℂ V)
@@ -197,12 +255,32 @@ theorem integral_mul_matrixCoeff_of_isSatakeParameter {μ : Measure (GL (Fin n) 
   rw [hz h v₀ hv₀, map_smul, smul_eq_mul] at this
   exact this.symm
 
+/- English proof (translation)
+Use `qs_pow_mul_sqrtQ (F := F) s ((n : ℤ) - 1) k` as an intermediate fact. Move the coercions through the operations in `at this`. Conclude with `this`.
+-/
 theorem qs_shift_pow_mul_sqrtQ (s : ℂ) (k : ℕ) :
     qs F (s + ((n : ℂ) - 1) / 2) ^ k * sqrtQ F ^ (((n : ℤ) - 1) * k) = qs F s ^ k := by
   have := qs_pow_mul_sqrtQ (F := F) s ((n : ℤ) - 1) k
   push_cast at this
   exact this
 
+/- English proof (translation)
+Take `⟨s₁, hint⟩` from `exists_integrable_zetaIntegral hπ μ`. Use `set ε : ℝ := (1 + ∑ i, ‖(z i : ℂ)‖)⁻¹ with hεdef`. Establish `hpos : 0 < 1 + ∑ i, ‖(z i : ℂ)‖` using `by positivity`. Establish `hε : 0 < ε` using `inv_pos.2 hpos`. Take `⟨s₂, hs₂⟩` from `exists_re_of_norm_qs_lt (F := F) hε`.
+
+Use `⟨max s₁ s₂, fun s hs => ?_⟩` and prove the remaining obligations. Establish `hzs : ∀ i, ‖(z i : ℂ) * qs F s‖ < 1` using `fun i => by`. Rewrite using `[norm_mul]`. Establish `h1 : ‖qs F s‖ < ε` using `hs₂ s ((le_max_right _ _).trans_lt hs)`. Establish `h2 : ‖(z i : ℂ)‖ ≤ ∑ j, ‖(z j : ℂ)‖` using `Finset.single_le_sum (f := fun j => ‖(z j : ℂ)‖) (fun j _ => norm_nonneg _) (Finset.mem_univ i)`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `⟨hzs, ?_⟩` and prove the remaining obligations. Establish `hI` using `hint _ isSchwartzBruhat_integralIndicator v₀ ℓ₀ hℓ₀s s ((le_max_left _ _).trans_lt hs)`. Establish `hsum` using `hasSum_integral_shell μ hI`. Rewrite using `[← (Nat.cast_injective (R := ℤ)).hasSum_iff fun k hk => by`.
+
+Establish `hk' : k < 0`. Assume the negation of the conclusion as `hc`. Conclude with `hk ⟨k.toNat, Int.toNat_of_nonneg (not_lt.1 hc)⟩`. Conclude with `integral_shell_integralIndicator_of_neg μ _ _ hk'] at hsum`. Use `set c : ℂ := (μ.real (integralGL F n : Set (GL (Fin n) F)) : ℂ)`.
+
+Establish `hterm : ∀ m : ℕ, ((fun k : ℤ => ∫ g in {g : GL (Fin n) F | ordDet g = k}, integralIndicator F n (g : Matrix (Fin n) (Fin n) F) * matrixCoeff π v₀ ℓ₀ g * detPow g (s + ((n : ℂ) - 1) / 2) ∂μ) ∘ Nat.cast) m = c * ∑ l ∈ Finset.Nat.antidiagonalTuple n m, ∏ i, ((z i : ℂ) * qs F s) ^ l …`. Introduce `m`. Simplify using `only [Function.comp_apply]`. Rewrite using `[integral_shell_integralIndicator, integral_mul_matrixCoeff_of_isSatakeParameter hz hv₀, hℓ₀, mul_one, evalAt_satakeTransform_integralHecke]`. Establish `hprod : ∀ l ∈ Finset.Nat.antidiagonalTuple n m, ∏ i, ((z i : ℂ) * qs F s) ^ l i = qs F s ^ m * ∏ i, (z i : ℂ) ^ l i`.
+
+Introduce `l hl`. Rewrite using `[← Finset.Nat.mem_antidiagonalTuple.1 hl]`. Simplify using `only [mul_pow, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.sum_congr rfl hprod, ← Finset.mul_sum, ← qs_shift_pow_mul_sqrtQ (n := n) s m]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hfun : ((fun k : ℤ => ∫ g in {g : GL (Fin n) F | ordDet g = k}, integralIndicator F n (g : Matrix (Fin n) (Fin n) F) * matrixCoeff π v₀ ℓ₀ g * detPow g (s + ((n : ℂ) - 1) / 2) ∂μ) ∘ Nat.cast) = fun m : ℕ => c * ∑ l ∈ Finset.Nat.antidiagonalTuple n m, ∏ i, ((z i : ℂ) * qs F s) ^ l …` using `funext hterm`. Rewrite `hsum` using `[hfun]`. Rewrite using `[zetaIntegral]`. Establish `hgen` using `(hasSum_sum_antidiagonalTuple hzs).mul_left c`.
+
+Conclude with `hsum.unique hgen`.
+-/
 theorem zetaIntegral_sphericalCoeff [π.IsIrreducible] (hπ : IsAdmissible π)
     (μ : Measure (GL (Fin n) F)) [μ.IsHaarMeasure] {z : Fin n → ℂˣ}
     (hz : IsSatakeParameter π μ z) {v₀ : V} (hv₀ : v₀ ∈ fixedVectors π (integralGL F n))
@@ -259,6 +337,11 @@ theorem zetaIntegral_sphericalCoeff [π.IsIrreducible] (hπ : IsAdmissible π)
   have hgen := (hasSum_sum_antidiagonalTuple hzs).mul_left c
   exact hsum.unique hgen
 
+/- English proof (translation)
+Rewrite using `[natDegree_prod _ _ fun i _ => ?_]`. Establish `: ∀ i, (1 - C (z i : ℂ) * X).natDegree = 1` using `fun i => by`. Establish `h1 : (C (z i : ℂ) * X).natDegree = 1` using `natDegree_C_mul_X _ (Units.ne_zero _)`. Apply the tactic sequence `rw [sub_eq_neg_add, natDegree_add_eq_left_of_natDegree_lt] <;> simp [natDegree_neg, h1]`. Simplify using `[this]`.
+
+Introduce `h`. Use `congrArg (eval 0) h` as an intermediate fact. Simplify using `at this`.
+-/
 theorem natDegree_prod_one_sub {m : ℕ} (z : Fin m → ℂˣ) :
     (∏ i, (1 - C (z i : ℂ) * X)).natDegree = m := by
   rw [natDegree_prod _ _ fun i _ => ?_]
@@ -270,6 +353,29 @@ theorem natDegree_prod_one_sub {m : ℕ} (z : Fin m → ℂˣ) :
     have := congrArg (eval 0) h
     simp at this
 
+/- English proof (translation)
+Establish `hKc` using `isCompact_integralGL F n`. Establish `hKo` using `isOpen_integralGL F n`. Take `⟨v₀, hv₀, h0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hK`. Choose the witnesses or unpack the hypotheses as in `⟨f0, hf0⟩ : ∃ f0 : Module.Dual ℂ (fixedVectors π (integralGL F n)), f0 ⟨v₀, hv₀⟩ = 1 := by`. Establish `hne : (⟨v₀, hv₀⟩ : fixedVectors π (integralGL F n)) ≠ 0` using `fun h => h0 (congrArg Subtype.val h)`.
+
+Establish `hnot : ¬ ∀ g : Module.Dual ℂ (fixedVectors π (integralGL F n)), g ⟨v₀, hv₀⟩ = 0` using `fun h => hne ((Module.forall_dual_apply_eq_zero_iff ℂ _).1 h)`. Take `⟨g, hg⟩` from `not_forall.1 hnot`. Conclude with `⟨(g ⟨v₀, hv₀⟩)⁻¹ • g, by simp [hg]⟩`. Use `set ℓ₀ : Module.Dual ℂ V := f0 ∘ₗ fixedProj π hπ.1 hKc hKo with hℓdef`. Establish `hℓK : ∀ k ∈ integralGL F n, ∀ x, ℓ₀ (π k x) = ℓ₀ x` using `fun k hk x => by`.
+
+Simplify using `only [ℓ₀, LinearMap.coe_comp, Function.comp_apply, fixedProj_apply_act hπ.1 hKc hKo hk]`. Establish `hℓs : ℓ₀ ∈ smoothVectors (Representation.dual π)` using `mem_smoothVectors_of_mem_fixedVectors hKo (mem_fixedVectors_dual.2 hℓK)`. Establish `hℓv : ℓ₀ v₀ = 1`. Establish `: fixedProj π hπ.1 hKc hKo v₀ = ⟨v₀, hv₀⟩` using `Subtype.ext (fixedProj_apply_of_mem hπ.1 hKc hKo hv₀)`. Simplify using `only [ℓ₀, LinearMap.coe_comp, Function.comp_apply, this, hf0]`.
+
+Use `set Q : ℂ[X] := ∏ i, (1 - C (z i : ℂ) * X) with hQdef`. Use `set c : ℂ := (μ.real (integralGL F n : Set (GL (Fin n) F)) : ℂ) with hcdef`. Establish `hc : c ≠ 0`. Establish `: 0 < μ.real (integralGL F n : Set (GL (Fin n) F))` using `ENNReal.toReal_pos (hKo.measure_ne_zero μ ⟨1, (integralGL F n).one_mem⟩) hKc.measure_lt_top.ne`. Rewrite using `[hcdef]`.
+
+Conclude with `this.ne'` after adjusting the coercions. Take `⟨s₀, hZ⟩` from `zetaIntegral_sphericalCoeff hπ μ hz hv₀ hℓs hℓv`. Establish `hQeval : ∀ x : ℂ, Q.eval x = ∏ i, (1 - (z i : ℂ) * x)` using `fun x => by`. Simplify using `[hQdef, eval_prod]`. Establish `hmem : algebraMap ℂ[X] (RatFunc ℂ) (C c) / algebraMap ℂ[X] (RatFunc ℂ) Q ∈ zetaSet π μ`.
+
+Use `⟨integralIndicator F n, v₀, ℓ₀, isSchwartzBruhat_integralIndicator, hℓs, s₀, fun s hs => ?_⟩` and prove the remaining obligations. Take `⟨hzs, hZs⟩` from `hZ s hs`. Establish `hQs : Q.eval (qs F s) ≠ 0`. Rewrite using `[hQeval]`. Use `Finset.prod_ne_zero_iff.2 fun i _ => sub_ne_zero.2 fun h => ?_` and prove the remaining obligations.
+
+Use `hzs i` as an intermediate fact. Rewrite `this` using `[← h, norm_one]`. Conclude with `lt_irrefl _ this`. Rewrite using `[hZs, eval_div_algebraMap _ _ hQs, eval_C, hQeval, Finset.prod_inv_distrib, div_eq_mul_inv]`. Take `⟨hP0, hP⟩` from `LPolynomial_spec hπ μ`.
+
+Take `⟨L, hL, hRL⟩` from `(hP _).1 (Submodule.subset_span hmem)`. Establish `hQ0 : Q.eval 0 = 1` using `by simp [hQeval]`. Establish `hdvd : Q ∣ LPolynomial π`. Use `dvd_of_inv_eq_laurent_div (P := LPolynomial π) (P' := Q) (by rw [hQ0]; exact one_ne_zero) (L := algebraMap ℂ[X] (RatFunc ℂ) (C c⁻¹) * L) (Subalgebra.mul_mem _ (algebraMap_mem_laurentSubalgebra _) hL) ?_` and prove the remaining obligations. Rewrite using `[mul_div_assoc, ← hRL, ← mul_div_assoc, ← map_mul, ← C_mul, inv_mul_cancel₀ hc, C_1, map_one, one_div]`.
+
+Establish `hPn` using `natDegree_LPolynomial_le (π := π) hπ`. Establish `hQn : Q.natDegree = n` using `natDegree_prod_one_sub z`. Establish `hPne : LPolynomial π ≠ 0` using `fun h => by rw [h, eval_zero] at hP0; exact zero_ne_one hP0`. Establish `hQne : Q ≠ 0` using `fun h => by rw [h, eval_zero] at hQ0; exact zero_ne_one hQ0`. Take `⟨A, hA⟩` from `hdvd`.
+
+Establish `hAne : A ≠ 0` using `fun h => hPne (by rw [hA, h, mul_zero])`. Establish `hAdeg : A.natDegree = 0`. Use `natDegree_mul hQne hAne` as an intermediate fact. Rewrite `this` using `[← hA]`. Use linear arithmetic over natural numbers and integers.
+
+Rewrite `hA` using `[eq_C_of_natDegree_eq_zero hAdeg]`. Establish `hA0` using `congrArg (eval 0) hA`. Rewrite `hA0` using `[eval_mul, eval_C, hP0, hQ0, one_mul]`. Rewrite using `[hA, ← hA0, C_1, mul_one]`.
+-/
 theorem LPolynomial_eq_prod_of_isSatakeParameter [NeZero n] [π.IsIrreducible]
     (hπ : IsAdmissible π) (hK : fixedVectors π (integralGL F n) ≠ ⊥) (μ : Measure (GL (Fin n) F))
     [μ.IsHaarMeasure] {z : Fin n → ℂˣ} (hz : IsSatakeParameter π μ z) :
@@ -344,6 +450,9 @@ theorem LPolynomial_eq_prod_of_isSatakeParameter [NeZero n] [π.IsIrreducible]
   rw [eval_mul, eval_C, hP0, hQ0, one_mul] at hA0
   rw [hA, ← hA0, C_1, mul_one]
 
+/- English proof (translation)
+Rewrite using `[LFunction, LPolynomial_eq_prod_of_isSatakeParameter hπ hK μ hz, eval_prod, ← Finset.prod_inv_distrib]`. Simplify using the standard rewrite rules.
+-/
 theorem LFunction_eq_prod_of_isSatakeParameter [NeZero n] [π.IsIrreducible]
     (hπ : IsAdmissible π) (hK : fixedVectors π (integralGL F n) ≠ ⊥) (μ : Measure (GL (Fin n) F))
     [μ.IsHaarMeasure] {z : Fin n → ℂˣ} (hz : IsSatakeParameter π μ z) (s : ℂ) :

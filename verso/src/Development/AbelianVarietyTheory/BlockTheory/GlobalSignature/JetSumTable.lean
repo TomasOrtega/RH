@@ -23,6 +23,9 @@ def adj (x : HomE E a b) : HomE E b a := Matrix.toLin' (LinearMap.toMatrix' x).c
 
 omit [NumberField E] in
 
+/- English proof (translation)
+Rewrite using `[adj, Matrix.toLin'_apply, Matrix.mulVec_single_one]`. Simplify using `[LinearMap.toMatrix'_apply]`.
+-/
 theorem adj_single (x : HomE E a b) (α : Fin a) (β : Fin b) :
     adj x (Pi.single β 1) α = star (x (Pi.single α 1) β) := by
   rw [adj, Matrix.toLin'_apply, Matrix.mulVec_single_one]
@@ -49,6 +52,13 @@ def InIntClosure {H I : Type} (Sup : Set H) (tab : H → I → ℂ_[p]) (M : Set
     ∃ c : H →₀ ℂ_[p], (c.support : Set H) ⊆ Sup ∧ (∀ x, ‖c x‖ ≤ 1) ∧
       ∀ m ∈ F, ‖J m - c.sum fun x r => r * tab x m‖ < ε
 
+/- English proof (translation)
+Introduce `F _ ε hε`. Use `⟨Finsupp.single x 1, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `y hy`. Use `Finsupp.support_single_subset (Finset.mem_coe.1 hy)` as an intermediate fact. Rewrite `this` using `[Finset.mem_singleton]`.
+
+Conclude with `this ▸ hx`. Introduce `y`. Rewrite using `[Finsupp.single_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Introduce `m _`.
+
+Simplify using `[hε]`.
+-/
 theorem InIntClosure.single {H I : Type} {Sup : Set H} (tab : H → I → ℂ_[p]) (M : Set I) {x : H} (hx : x ∈ Sup) :
     InIntClosure Sup tab M (tab x) := by
   classical

@@ -17,6 +17,17 @@ noncomputable section
 
 namespace GlobalTheory.StdThetaInt
 
+/- English proof (translation)
+Introduce `hP D n V hn hr θ hθ ω ν hν Φ g`. Use `set φ := ω g Φ with hφdef`. Establish `hfin : GlobalTheory.SiegelFormula.absThetaInt V ν φ.1 < ⊤` using `hP D n V hn (Or.inr hr) θ hθ ν hν φ`. Establish `hcont : Continuous φ.1` using `(GlobalTheory.T.schwartzBruhatAdelicMatrix_continuous_le_majorant D θ hθ _ _ φ.1 (GlobalTheory.SchwartzPure.isSchwartzBruhat_of_mem_schwartzA D θ hθ _ _ φ.1 φ.2)).1`. Establish `hleft` using `GlobalTheory.SiegelWeilLitCompare.leftInv_theta ω Φ g`.
+
+Establish `hterm : ∀ h, theta ω Φ g h = ∑' ξ, φ.1 (GlobalTheory.SiegelFormula.invPt V h ξ)` using `fun h => rfl`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[autMeasure, aestronglyMeasurable_quotMeasure_iff_lift, hleft.lift_descend]`. Establish `hae : ∀ᵐ q ∂autMeasure V ν, descend (GQ V) (GlobalTheory.SiegelFormula.absTheta V φ.1) q < ⊤` using `ae_lt_top (GlobalTheory.AbsThetaSemi.measurable_descend_absTheta V hcont) hfin.ne`. Establish `hae' : ∀ᵐ h ∂ν, GlobalTheory.SiegelFormula.absTheta V φ.1 h < ⊤`.
+
+Use `(quasiMeasurePreserving_mk (Γ := GQ V) (μ := ν)).ae hae` as an intermediate fact. Use `filter_upwards [this] with h hh`. Rewrite `hh` using `[(GlobalTheory.SiegelFormula.leftInv_absTheta V φ.1).descend_mk]`. Then use the resulting hypothesis. Use `haveI := GlobalTheory.ThetaTransformMeas.countable_field D.host.E`. Use `haveI : Countable (Matrix (Fin V.rank) (Fin n) D.host.E) := inferInstanceAs (Countable (Fin V.rank → Fin n → D.host.E))`.
+
+Establish `hsum : ∀ᵐ h ∂ν, Summable fun ξ : Matrix (Fin V.rank) (Fin n) D.host.E => φ.1 (GlobalTheory.SiegelFormula.invPt V h ξ)` using `hae'.mono fun h hh => Summable.of_enorm hh.ne`. Establish `hlim` using `aestronglyMeasurable_of_tendsto_ae (μ := ν) (Filter.atTop : Filter (Finset (Matrix (Fin V.rank) (Fin n) D.host.E))) (f := fun F h => ∑ ξ ∈ F, φ.1 (GlobalTheory.SiegelFormula.invPt V h ξ)) (fun F => (continuous_finset_sum F fun ξ _ => hcont.comp (GlobalTheory.AbsThetaSemi.continuo …`. Conclude with `hlim.congr (Filter.Eventually.of_forall fun h => (hterm h).symm)`. Use `lt_of_le_of_lt (lintegral_mono fun q => ?_) hfin` and prove the remaining obligations. Simplify using `only [GlobalTheory.AutomorphicL2Unitary.descend, GlobalTheory.SiegelFormula.absTheta]`.
+
+Conclude with `enorm_tsum_le_tsum_enorm`.
+-/
 theorem integrable_theta : GlobalTheory.Published.WeilThetaConvergence → ∀ (D : D7) (n : ℕ) (V : HSp D), 1 ≤ n → n + Formalism.MainNotions.SchurIrreducible.wittIdx V < V.rank → ∀ θ : InfFam D, IsInfFam θ → ∀ (ω : G D n →* Module.End ℂ (schwartzA θ V.rank n)) (ν : Measure (GA D V)), ν.IsHaarMeasure → ∀ (Φ : schwartzA θ V.rank n) (g : G D n), Integrable (GlobalTheory.AutomorphicL2Unitary.descend (GQ V) (theta ω Φ g)) (autMeasure V ν) := by
   intro hP D n V hn hr θ hθ ω ν hν Φ g
   set φ := ω g Φ with hφdef

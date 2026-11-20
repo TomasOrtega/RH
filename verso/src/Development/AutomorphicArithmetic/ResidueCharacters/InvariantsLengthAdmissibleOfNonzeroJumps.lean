@@ -27,6 +27,11 @@ def JumpsNoZero (i : D.nd.Loc) (M : GE D.nd →* Matrix (Fin D.R.r) (Fin D.R.r) 
 set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Establish `hcard : Nat.card (↥(D.nbr i w hw).Kw.1 →ₐ[ℚ_[D.nd.l i]] ↥C.LL.1) ≤ 4 * D.R.n`. Rewrite using `[GlobalTheory.HubLoc.card_emb _ _ fun τ x => C.le ((D.nbr i w hw).LL_split τ x)]`. Conclude with `GlobalTheory.bridge_finrank_le D i w hw`. Use `haveI : Finite (↥(D.nbr i w hw).Kw.1 →ₐ[ℚ_[D.nd.l i]] ↥C.LL.1) := by haveI := (D.nbr i w hw).Kw.2 infer_instance`. Take `⟨U, h1, h2, h3⟩` from `exists_union (4 * D.R.n) D.R.r h hcard (fun τ a => IsJumpV (Br.PD D.loc D.nbr i w hw) (matRep (TruncatedSeriesCountingIdentities.locC C M)) τ a) (fun τ => ((hM w hw C).2 τ).1)`.
+
+Establish `hn : U.card ≤ 4 * D.R.n * D.R.nV` using `h1.trans (Nat.mul_le_mul_left _ (Nat.le_add_right _ _))`. Conclude with `hK N h _ (D.nbr i w hw).Kw C.LL (hC w hw C) { V := Fin D.R.r → ↥C.LL.1, ρ := matRep (TruncatedSeriesCountingIdentities.locC C M), cont := hc, L := L2 } U hn h2 (hM w hw C).1 (fun τ a ha => h3 τ a ha) (fun τ => ((hM w hw C).2 τ).2)`.
+-/
 theorem kill_of (i : D.nd.Loc) (N : ℕ) (hK : InvariantsKilledOverCyclotomic (D.loc (D.nd.l i))) (hC : CycAt N i)
     (M : GE D.nd →* Matrix (Fin D.R.r) (Fin D.R.r) (D.nd.O i)) (h : ℕ) (hM : JumpsNoZero i M h)
     (w : HeightOneSpectrum (𝓞 D.host.E)) (hw : w ∈ placesOver D.host.E (D.nd.l i)) (C : TruncatedSeriesCountingIdentities.CoefExt D i w hw)
@@ -50,6 +55,13 @@ theorem kill_of (i : D.nd.Loc) (N : ℕ) (hK : InvariantsKilledOverCyclotomic (D
 set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Introduce `_ u _ w hw _ C _ L2 hstd`. Establish `hT2c : Continuous fun g => T2O D.nd i ρ π g` using `GlobalTheory.HTW.RecS.Model.continuous_twistedDual_rhoO i ρ π hρ`. Establish `hc : ∀ v, Continuous fun g => matRep (TruncatedSeriesCountingIdentities.locC C (T2O D.nd i ρ π)) g v` using `fun v => (GlobalTheory.CrysChiOne.locC_cont' C _ hT2c).matrix_mulVec continuous_const`. Establish `hkill` using `kill_of i N hK hC _ h hM w hw C hc L2`. Unfold `EmbeddingTypes.lenInvD`.
+
+Use `haveI : IsDiscreteValuationRing ↥(OL C.LL) := Formalism.BasicNotions.Examples₂.LB.OL_dvr C.LL`. Use `haveI : IsFractionRing ↥(OL C.LL) ↥C.LL.1 := Formalism.BasicNotions.Examples₂.LB.OL_frac C.LL`. Use `EmbeddingTypes.len_le_of_kill (Br.PD D.loc D.nbr i w hw) L2.T hstd _ _ ?_` and prove the remaining obligations. Introduce `x hx`. Rewrite using `[Br.PD_p]`.
+
+Conclude with `hkill x fun g => hx g`.
+-/
 theorem invariants_length_admissible_of_nonzero_jumps (i : D.nd.Loc) (N : ℕ) (hK : InvariantsKilledOverCyclotomic (D.loc (D.nd.l i))) (hC : CycAt N i)
     (ρ : D.nd.X i → (GE D.nd →* GL (Fin D.R.r) (D.nd.O i))) (π : D.nd.X i) (dc : TruncatedSeriesCountingIdentities.Decl D i) (h : ℕ)
     (hρ : Continuous fun g => ((ρ π g : GL (Fin D.R.r) (D.nd.O i)) : Matrix (Fin D.R.r) (Fin D.R.r) (D.nd.O i)))
@@ -71,6 +83,11 @@ theorem invariants_length_admissible_of_nonzero_jumps (i : D.nd.Loc) (N : ℕ) (
 set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Set `C` to `TruncatedSeriesCountingIdentities.CoefExt.self i u hu`. Establish `e : TruncatedSeriesCountingIdentities.locC C (WpO D.nd i ρ π) = Br.locM (D.nbr i u hu) ((WpO D.nd i ρ π).comp (decS D.nd u))`. Use extensionality with `g a b`. Both sides reduce to the same expression. Establish `hc : ∀ v, Continuous fun g => matRep (TruncatedSeriesCountingIdentities.locC C (WpO D.nd i ρ π)) g v` using `fun v => (GlobalTheory.CrysChiOne.locC_cont' C _ hW).matrix_mulVec continuous_const`.
+
+Establish `hkill` using `kill_of i N hK hC _ h hM u hu C hc`. Rewrite `hkill` using `[e]`. Establish `hK'` using `GlobalTheory.LengthH0Bound.inv_killed (D.nbr i u hu) (WpO D.nd i ρ π) (decS D.nd u) (D.nd.l i) _ (hkill (Br.lat (D.nbr i u hu) ((WpO D.nd i ρ π).comp (decS D.nd u))))`. Establish `hq` using `GlobalTheory.LengthH0Bound.lenUnit_le_of_kill D.R.r (D.nd.l i) _ (GlobalTheory.LengthH0Bound.natCast_ne_zero (D.nbr i u hu)) _ hK'`. Conclude with `hq` after adjusting the coercions.
+-/
 theorem length_invariants_Wprime_divisible_le_of_nonzero_jumps (i : D.nd.Loc) (N : ℕ) (hK : InvariantsKilledOverCyclotomic (D.loc (D.nd.l i))) (hC : CycAt N i)
     (ρ : D.nd.X i → (GE D.nd →* GL (Fin D.R.r) (D.nd.O i))) (π : D.nd.X i) (h : ℕ)
     (hW : Continuous fun g => WpO D.nd i ρ π g) (hM : JumpsNoZero i (WpO D.nd i ρ π) h)

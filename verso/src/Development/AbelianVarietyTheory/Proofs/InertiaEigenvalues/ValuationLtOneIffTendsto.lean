@@ -24,6 +24,11 @@ section Val
 variable {K L : Type} [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
   [Field L] [ValuativeRel L] [TopologicalSpace L] [IsNonarchimedeanLocalField L]
 
+/- English proof (translation)
+Use `⟨GlobalTheory.LocalTraceSum.tendsto_pow, fun h => ?_⟩` and prove the remaining obligations. Establish `hO` using `GlobalTheory.LocalTraceSum.isOpen_lt (K := K) 1`. Take `⟨n, hn⟩` from `(h.eventually (hO.mem_nhds (by simp))).exists`. Assume the negation of the conclusion as `hx`. Establish `h1 : 1 ≤ valuation K x` using `not_lt.1 hx`.
+
+Establish `h2 : 1 ≤ valuation K (x ^ n)` using `by rw [map_pow]; exact one_le_pow₀ h1`. Conclude with `absurd hn (not_lt.2 h2)`.
+-/
 theorem valuation_lt_one_iff_tendsto (x : K) :
     valuation K x < 1 ↔ Tendsto (fun n : ℕ => x ^ n) atTop (𝓝 0) := by
   refine ⟨GlobalTheory.LocalTraceSum.tendsto_pow, fun h => ?_⟩
@@ -34,11 +39,21 @@ theorem valuation_lt_one_iff_tendsto (x : K) :
   have h2 : 1 ≤ valuation K (x ^ n) := by rw [map_pow]; exact one_le_pow₀ h1
   exact absurd hn (not_lt.2 h2)
 
+/- English proof (translation)
+Rewrite `hx`, the goal using `[valuation_lt_one_iff_tendsto]`. Simplify `(hf.tendsto 0).comp hx` using `[Function.comp_def, map_pow]`.
+-/
 theorem valuation_lt_one_map (f : K →+* L) (hf : Continuous f) {x : K} (hx : valuation K x < 1) :
     valuation L (f x) < 1 := by
   rw [valuation_lt_one_iff_tendsto] at hx ⊢
   simpa [Function.comp_def, map_pow] using (hf.tendsto 0).comp hx
 
+/- English proof (translation)
+Establish `hx0 : x ≠ 0`. Introduce and unpack `rfl`. Simplify using `at hx`. Establish `hv : 0 < valuation K x`. Rewrite using `[zero_lt_iff]`.
+
+Conclude with `(Valuation.ne_zero_iff _).2 hx0`. Break down `lt_trichotomy (valuation K x) 1 with h | h | h` into its components or cases. Conclude with `absurd hx (ne_of_lt (valuation_lt_one_map f.toRingHom hf h))`. Conclude with `h`. Establish `h1 : valuation K x⁻¹ < 1` using `by rw [map_inv₀]; exact (inv_lt_one₀ hv).2 h`.
+
+Establish `h2` using `valuation_lt_one_map f.toRingHom hf h1`. Simplify using `only [RingEquiv.toRingHom_eq_coe, RingHom.coe_coe, map_inv₀, hx, inv_one] at h2`. Conclude with `absurd h2 (lt_irrefl 1)`.
+-/
 theorem valuation_eq_one_of_map (f : K ≃+* L) (hf : Continuous f) {x : K}
     (hx : valuation L (f x) = 1) : valuation K x = 1 := by
   have hx0 : x ≠ 0 := by
@@ -69,6 +84,9 @@ def push {D : D7} (I : Ident D) (k : Fin 2) (v : D.nd.PlG k) (μ : ℚ_[D.host.g
     ((D.naut.plGw k v).adicCompletion D.host.E)ˣ →* ℂˣ :=
   μ.comp (Units.map (I.i k v).symm.toRingHom.toMonoidHom)
 
+/- English proof (translation)
+Introduce `y hy`. Apply `hμ` to reduce the goal to its premises. Apply `valuation_eq_one_of_map (I.i k v) (I.cont k v)` to reduce the goal to its premises. Simplify using `using hy`.
+-/
 theorem isUnram_push {D : D7} (I : Ident D) (k : Fin 2) (v : D.nd.PlG k) {μ : ℚ_[D.host.g k]ˣ →* ℂˣ}
     (hμ : IsUnram μ) : IsUnram (push I k v μ) := by
   intro y hy
@@ -76,6 +94,9 @@ theorem isUnram_push {D : D7} (I : Ident D) (k : Fin 2) (v : D.nd.PlG k) {μ : �
   apply valuation_eq_one_of_map (I.i k v) (I.cont k v)
   simpa using hy
 
+/- English proof (translation)
+Rewrite using `[detChar_apply, detChar_apply, push, MonoidHom.comp_apply]`. Use `congr 1`. Use `ext`. Establish `e : ((g : Matrix (Fin n) (Fin n) ℚ_[D.host.g k]).map (I.i k v)).det = I.i k v (g : Matrix (Fin n) (Fin n) ℚ_[D.host.g k]).det` using `((I.i k v).toRingHom.map_det _).symm`. Simplify using `[e]`.
+-/
 theorem detChar_push {D : D7} (I : Ident D) (k : Fin 2) (v : D.nd.PlG k) {n : ℕ} (μ : ℚ_[D.host.g k]ˣ →* ℂˣ)
     (g : GL (Fin n) ℚ_[D.host.g k]) :
     detChar (Fin n) (push I k v μ) (Matrix.GeneralLinearGroup.map (I.i k v).toRingHom g) = detChar (Fin n) μ g := by
@@ -97,6 +118,11 @@ def twistPullEquiv {D : D7} (I : Ident D) (k : Fin 2) (v : D.nd.PlG k) {n : ℕ}
         σ.ρ (Matrix.GeneralLinearGroup.map (I.i k v).toRingHom g) x
     rw [detChar_push]
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.WeilDeligne.WD.inePol_of_mem_Ine _ hσ, GlobalTheory.WeilDeligne.WD.inePol_of_mem_Ine _ hσ]`. Take `⟨m, b, rfl⟩` from `y.exists_rep`. Rewrite using `[GlobalTheory.WeilDeligne.WD.lpTwist_mk, GlobalTheory.WeilDeligne.WD.charPol_mk, GlobalTheory.WeilDeligne.WD.charPol_mk]`. Use `congr 1`. Use `show ((ξ (GlobalTheory.WeilDeligne.ineIncl h ⟨σ, hσ⟩) : ℂˣ) : ℂ) • b.ρ (GlobalTheory.WeilDeligne.ineIncl h ⟨σ, hσ⟩) = _`.
+
+Rewrite using `[h1, Units.val_one, one_smul]`.
+-/
 theorem inePol_lpTwist {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
     {A : ValuationSubring Ω} {w : IsDedekindDomain.HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w}
     (y : GlobalTheory.WeilDeligne.WD h) (ξ : GlobalTheory.WeilDeligne.Weil h →* ℂˣ) (hξ : GlobalTheory.WeilDeligne.IsSmooth ξ)
@@ -109,6 +135,13 @@ theorem inePol_lpTwist {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algeb
   show ((ξ (GlobalTheory.WeilDeligne.ineIncl h ⟨σ, hσ⟩) : ℂˣ) : ℂ) • b.ρ (GlobalTheory.WeilDeligne.ineIncl h ⟨σ, hσ⟩) = _
   rw [h1, Units.val_one, one_smul]
 
+/- English proof (translation)
+Introduce `hL D T I rc hrc k v ρ hs hi x hx`. Take `⟨μ, hμ, rfl⟩` from `hx`. Take `⟨σ₁, ⟨e₁⟩⟩` from `GlobalTheory.TypeRec.Model.exists_pull I k v ρ.2 ⟨(GlobalTheory.GLp.Model.isIrrRep_iff _).2 hi, hs⟩`. Establish `hμ' : IsUnram (push I k v μ)` using `isUnram_push I k v hμ`. Establish `hμs : IsSmoothChar (push I k v μ)` using `isSmoothChar_of_isUnram hμ'`.
+
+Establish `e₂ : Nonempty (Rep.of ((IrrGL.of ρ.2.ρ hs hi).tw μ (isSmoothChar_of_isUnram hμ)).rep ≅ pull I k v (irrTwist σ₁ (detChar (Fin ρ.1) (push I k v μ)) hμs.detChar))` using `⟨Rep.mkIso ((IrrGL.twEquiv _ _ _).symm.trans ((twistEquiv (IrrGL.equivOf ρ.2.ρ hs hi).symm _).trans ((twistEquiv (Representation.equivOfIso e₁) _).trans (twistPullEquiv I k v σ₁ μ hμs))))⟩`. Establish `h1` using `hrc k v _ σ₁ ρ.2 ⟨e₁⟩`. Establish `h2` using `hrc k v _ _ _ e₂`. Establish `hc : GlobalTheory.LocLanglands.cls (irrTwist σ₁ (detChar (Fin ρ.1) (push I k v μ)) hμs.detChar) = (GlobalTheory.LocLanglands.cls σ₁).tw (push I k v μ) hμs` using `congrArg (Sigma.mk _) (clTwist_cl _ _ _).symm`. Take `⟨a, ha, ε, -, H⟩` from `GlobalTheory.CuspRep.ParLaws.isRec_locRec hL (D.nd.plOm.2 (D.naut.plGw k v))`.
+
+Rewrite using `[T.inePol _ _ _ (D.ntypes.tg_mem k v), T.inePol _ _ _ (D.ntypes.tg_mem k v), h1, h2]`. Establish `h3` using `congrArg (fun z => (GlobalTheory.CuspRep.ParLaws.locRec hL (D.nd.plOm.2 (D.naut.plGw k v)) z).inePol (D.ntypes.tg k v)) hc`. Establish `h4` using `congrArg (fun z => GlobalTheory.WeilDeligne.WD.inePol z (D.ntypes.tg k v)) (H.tw_eq (GlobalTheory.LocLanglands.cls σ₁) _ hμs)`. Use `Eq.trans ?_ (h3.trans h4).symm` and prove the remaining obligations. Conclude with `(inePol_lpTwist _ _ _ (D.ntypes.tg_mem k v) (hμ' _ (ord_eq_zero_iff.1 (by rw [ha.ord_eq]; simp)))).symm`.
+-/
 theorem inePol_inert : ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (D : D7) (T : GlobalTheory.RowTie.WDTie D.nd D.naut) (I : Ident D) (rc : GlobalTheory.SerSys.Corr D), IsRc hL T I rc → ∀ (k : Fin 2) (v : D.nd.PlG k) (ρ : Supp.GLRep (D.host.g k)) (hs : GlobalTheory.PRep.IsSmooth ρ.2.ρ) (hi : ρ.2.ρ.IsIrreducible) (x : GlobalTheory.LocGL.IrrGL ℚ_[D.host.g k]), (GlobalTheory.LocGL.IrrGL.of ρ.2.ρ hs hi).Inert x → D.naut.inePol (rc k v ρ.1 ρ.2) (D.ntypes.tg k v) = D.naut.inePol (rc k v x.1 (Rep.of x.rep)) (D.ntypes.tg k v) := by
   intro hL D T I rc hrc k v ρ hs hi x hx
   obtain ⟨μ, hμ, rfl⟩ := hx

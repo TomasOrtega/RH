@@ -56,6 +56,9 @@ end Lemmas
 
 section Examples
 
+/- English proof (translation)
+Use `⟨(G'.comap (liftForm (J := J))).map (Ideal.Quotient.mk P), G'.map (Ideal.Quotient.mk _), Ideal.map_isPrime_of_surjective Ideal.Quotient.mk_surjective (by rwa [Ideal.mk_ker]), Ideal.map_isPrime_of_surjective Ideal.Quotient.mk_surjective (by rwa [Ideal.mk_ker]), Ideal.comap_map_mk …` and prove the remaining obligations.
+-/
 theorem BlowUpLocalChart.exists_quotient_primes {R : Type*} [CommRing R] {K : Type*} {ι : K → Type}
     {J : Type} {P : Ideal (MRing ι R)} {u : J → MRing ι R} {G' : Ideal (MRing (extIdx ι J) R)}
     (hG' : G'.IsPrime) (hQ : blowUpOf P u ≤ G') (hP : P ≤ G'.comap (liftForm (J := J))) :

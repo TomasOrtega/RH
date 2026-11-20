@@ -19,15 +19,27 @@ def LeafTensQIsoGen : Prop := ∀ (R : Type) [CommRing R] {I I' J S T : Cx R} (f
     Sec.map (ι.f w) (σ.mul U s t w h a b) = τ.mul U s t w h (Sec.map (f.f s) a) b) →
   QuasiIso ι
 
+/- English proof (translation)
+Unfold `resAug`. Conclude with `@InjectiveResolution.instQuasiIsoIntι' _ _ _ _ _`.
+-/
 theorem resAug_quasiIso (R : Type) [CommRing R] (F : Shv R) : QuasiIso (resAug F) := by
   unfold resAug; exact @InjectiveResolution.instQuasiIsoIntι' _ _ _ _ _
 
+/- English proof (translation)
+Unfold `res`. Use `infer_instance`.
+-/
 theorem res_strictlyGE (R : Type) [CommRing R] (F : Shv R) : (res R F).IsStrictlyGE 0 := by
   unfold res; infer_instance
 
+/- English proof (translation)
+Use `infer_instance`.
+-/
 theorem sgl_strictlyGE (R : Type) [CommRing R] (F : Shv R) : (sgl F).IsStrictlyGE 0 := by
   infer_instance
 
+/- English proof (translation)
+Introduce `q _ i S T σ τ hσ hτ ι hι`. Conclude with `hgen (ZMod q) (resAug (tw q 0)) (resAug_quasiIso _ _) (sgl_strictlyGE _ _) (res_strictlyGE _ _) (res_strictlyGE _ _) (fun n U => hflat q _ (hinj _ _ (LateralTheory.E.LeafExtTensPf.res_injective _ _ n) U)) σ τ hσ hτ ι hι`.
+-/
 theorem LeafTensQIso_of (hgen : LeafTensQIsoGen) (hinj : LeafSecInj) (hflat : LeafZModInjFlat) :
     LateralTheory.E.LeafExtTensPf.LeafTensQIso := by
   intro q _ i S T σ τ hσ hτ ι hι

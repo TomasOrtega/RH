@@ -17,6 +17,9 @@ open scoped nonZeroDivisors
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.AHBundle.exists_lb_of_hermitian_int | exact GlobalTheory.AHBundle.exists_lb_of_hermitian_int | (intros; apply GlobalTheory.AHBundle.exists_lb_of_hermitian_int <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_appell_humbert_factor : ∀ (g : ℕ) (A : Over (Sp ℂ)) [GrpObj A], IsAbelianScheme A →
     ∀ (L₀ : LB A.left) (u₀ : HolUnif A L₀ g) (H₀ : Matrix (Fin g) (Fin g) ℂ) (χ₀ : u₀.Λ → ℂ), L₀.IsLB → u₀.IsAH H₀ χ₀ →
     ∀ Hm : Matrix (Fin g) (Fin g) ℂ, Hm.IsHermitian →

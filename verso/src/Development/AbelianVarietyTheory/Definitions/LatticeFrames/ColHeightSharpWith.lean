@@ -25,6 +25,9 @@ def SizeRowsS (CY : ℝ) (N : NumDatum) (δ : Code N) : Prop :=
     N.Sc ≤ (((N.hc z).u ⟨0, by omega⟩ - (N.hc z).v ⟨0, by omega⟩ : ℚ) : ℝ) ∧
     (((N.hc z).u ⟨0, by omega⟩ : ℚ) : ℝ) ≤ 3 * N.Sc
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.1, h.2.1, trivial, h.2.2.2⟩`.
+-/
 theorem sizeRowsS_of {N : NumDatum} {δ : Code N} {T : ℕ} (h : SizeRows N δ T) : SizeRowsS 9 N δ :=
   ⟨h.1, h.2.1, trivial, h.2.2.2⟩
 

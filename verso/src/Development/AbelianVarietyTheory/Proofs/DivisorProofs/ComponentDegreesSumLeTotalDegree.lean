@@ -9,6 +9,13 @@ open NumberField IsDedekindDomain MeasureTheory ReciprocityTheory.ChartRestricti
 
 namespace GlobalTheory.Proof.componentDegrees_sum_le_total_degree
 
+/- English proof (translation)
+Introduce `D H Dw l Xo c r U V dict hc G hG`. Use `haveI : Finite (Comp Xo c) := finite_comp`. Establish `hS : Splits U G` using `GlobalTheory.T.cuspForms_supLattice_split_over_components D H Dw l Xo c r U V dict (fun σ hσ => (hc.2 σ hσ).1) G`. Establish `hO` using `GlobalTheory.T.components_peterssonOrthogonal_and_masses D H Dw l Xo c r U V dict hc G`. Establish `hA : Adds U V dict G` using `GlobalTheory.T.component_ranks_degrees_add_with_masses D H Dw l Xo c r U V dict G hS hO.1`.
+
+Take `⟨-, hr, -, -, hd⟩` from `hA.2 hG`. Use `⟨hr, ?_⟩` and prove the remaining obligations. Rewrite using `[hd]`. Use `haveI : Fintype (Comp Xo c) := Fintype.ofFinite _`. Rewrite using `[finsum_eq_sum_of_fintype, finsum_eq_sum_of_fintype]`.
+
+Use `Finset.sum_le_sum fun Z _ => ?_` and prove the remaining obligations. Establish `hlog : (∑ σ : c.F →+* ℂ, Real.log (mass U V dict Z σ)) ≤ 0` using `Finset.sum_nonpos fun σ _ => Real.log_nonpos (hO.2.1 Z σ).1 (hO.2.1 Z σ).2`. Establish `hq : ((∑ σ : c.F →+* ℂ, Real.log (mass U V dict Z σ)) / (Module.finrank ℚ c.F : ℝ)) ≤ 0` using `div_nonpos_of_nonpos_of_nonneg hlog (Nat.cast_nonneg _)`. Establish `hk : (0:ℝ) ≤ (rankOn U Z G : ℝ) / 2` using `by positivity`. Use polynomial arithmetic with `[mul_nonpos_of_nonneg_of_nonpos hk hq]`.
+-/
 theorem degOn_sum_le : ∀ (D : D7) (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (r : ℕ) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (V : (c.F →+* ℂ) → HSp D) (dict : ∀ σ, GA D (V σ) → Σ k, Frame ((U σ).X k).Ψ r), IsComplexData U V dict → ∀ G : WTZ D.host.E, GoodW U (xiR D) V dict G → rankW U G = ∑ᶠ Z : Comp Xo c, rankOn U Z G ∧ (∑ᶠ Z : Comp Xo c, degOn U (xiR D) V dict Z G) ≤ degW U (xiR D) V dict G := by
   intro D H Dw l Xo c r U V dict hc G hG
   haveI : Finite (Comp Xo c) := finite_comp

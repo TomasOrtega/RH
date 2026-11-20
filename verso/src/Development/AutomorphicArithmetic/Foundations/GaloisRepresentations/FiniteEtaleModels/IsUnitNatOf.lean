@@ -9,6 +9,11 @@ open UpperTheory.Gal.crystallineComparison.Mod (Std TjD KerAt)
 open scoped TensorProduct
 open UpperTheory.Gal.FiniteEtaleModels
 
+/- English proof (translation)
+Establish `hE : IsUnit ((n : E))` using `(Nat.cast_ne_zero.mpr hn).isUnit`. Establish `h1 : IsUnit ((n : Γ(Sp E, ⊤)))`. Use `hE.map (Scheme.ΓSpecIso (CommRingCat.of E)).inv.hom` as an intermediate fact. Simplify using `using this`. Use `h1.map s.appTop.hom` as an intermediate fact.
+
+Simplify using `using this`.
+-/
 private theorem isUnit_nat_of {E : Type} [Field E] [CharZero E] {V : Scheme.{0}} (s : V ⟶ Sp E) (n : ℕ) (hn : n ≠ 0) :
     IsUnit ((n : ℕ) : Γ(V, ⊤)) := by
   have hE : IsUnit ((n : E)) := (Nat.cast_ne_zero.mpr hn).isUnit
@@ -22,17 +27,26 @@ section
 variable {q : ℕ} [Fact q.Prime] {D : Datum q} {R R' : Type} [CommRing R] [CommRing R'] [Algebra ℚ R'] {b : Base D R}
   {gb : GBase D.toG R'}
 
+/- English proof (translation)
+Substitute `h` using the available equality. Conclude with `⟨n, rfl⟩`.
+-/
 private theorem qmap_cast {N₁ N c : ℕ} {V Y : Scheme.{0}} {s : V ⟶ Sp R'} {t : Y ⟶ Sp R} {a : GObj gb N₁ s} {u : Obj b N t}
     {f f' : V ⟶ Y} (h : f = f') (n : QMap a u f c) : ∃ n' : QMap a u f' c, n'.φ = n.φ := by
   subst h
   exact ⟨n, rfl⟩
 
+/- English proof (translation)
+Substitute `h` using the available equality. Conclude with `(hO q D R b N hN hNq S₁ S₂ S₂ s₁ s₂ s₂ o₁ o₂ o₂ f (𝟙 _)).1 m m'`.
+-/
 private theorem rigid_of (hO : UpperTheory.Gal.crystallineComparison.Mod.ObjTri) {N : ℕ} (hN : 3 ≤ N) (hNq : N.Coprime q) {S₁ S₂ : Scheme.{0}}
     {s₁ : S₁ ⟶ Sp R} {s₂ : S₂ ⟶ Sp R} {o₁ : Obj b N s₁} {o₂ : Obj b N s₂} {f f' : S₁ ⟶ S₂}
     (m : ObjMap o₁ o₂ f) (m' : ObjMap o₁ o₂ f') (h : f = f') : m.φ = m'.φ := by
   subst h
   exact (hO q D R b N hN hNq S₁ S₂ S₂ s₁ s₂ s₂ o₁ o₂ o₂ f (𝟙 _)).1 m m'
 
+/- English proof (translation)
+Substitute `hx` using the available equality. Take `⟨y, ⟨hy, m₀, m₁, h⟩, -⟩` from `Tj.univ V x o₁ o₂ m ψ₀ hu hi ht`. Conclude with `⟨y, hy, m₀, m₁, h⟩`.
+-/
 private theorem read_tj {N : ℕ} {M : Model b N} {r : ℤ} {w : Ideal (𝓞 D.F)} {j c : ℕ} (Tj : TjD M r w j c) {V : Scheme.{0}}
     (x : V ⟶ M.X) (s₀ : V ⟶ Sp R) (hx : x ≫ M.s = s₀) (o₁ o₂ : Obj b N s₀) (m : ObjMap o₁ M.univ x) (ψ₀ : o₁.A ⟶ o₂.A)
     (hu : IsUnit ((q : ℕ) : Γ(V, ⊤))) (hi : ES.IsPIsog c o₁ o₂ ψ₀) (ht : ES.IsTj r w j o₁ o₂ ψ₀) :
@@ -42,6 +56,21 @@ private theorem read_tj {N : ℕ} {M : Model b N} {r : ℤ} {w : Ideal (𝓞 D.F
   obtain ⟨y, ⟨hy, m₀, m₁, h⟩, -⟩ := Tj.univ V x o₁ o₂ m ψ₀ hu hi ht
   exact ⟨y, hy, m₀, m₁, h⟩
 
+/- English proof (translation)
+Take `⟨k₁', hk₁'⟩` from `qmap_cast (Category.id_comp j₁).symm k₁`. Take `⟨k₂', hk₂'⟩` from `qmap_cast (Category.id_comp j₂).symm k₂`. Take `⟨m₁, hm₁⟩` from `(hQ q D R R' b gb N₁ N c₁ V V Y₁ s s₀ t₁ a o₁ u₁ (𝟙 V) j₁).2.2.1 inferInstance n₁ k₁'`. Take `⟨m₂, hm₂⟩` from `(hQ q D R R' b gb N₂ N c₂ V V Y₂ s s₀ t₂ a' o₂ u₂ (𝟙 V) j₂).2.2.1 inferInstance n₂ k₂'`. Take `⟨mx, hmx⟩` from `GlobalTheory.HTQuotRigid.objMap_comp_φ m₁ mf`.
+
+Take `⟨mz, hmz⟩` from `GlobalTheory.HTQuotRigid.objMap_comp_φ m₂ mπ`. Take `⟨y, hy, m₀, m', hsq⟩` from `read_tj Tj (j₁ ≫ f) s₀ hb₁ o₁ o₂ mx ψ₀ hu hi ht`. Take `⟨e₁, he₁⟩` from `GlobalTheory.HTQuotRigid.objMap_comp_φ m' Tj.mt`. Take `⟨e₀, he₀⟩` from `GlobalTheory.HTQuotRigid.objMap_comp_φ m₀ Tj.ms`. Establish `hbt : (y ≫ Tj.t) ≫ M.s = s₀`.
+
+Rewrite using `[Category.assoc, ← Tj.st, ← Category.assoc, hy, hb₁]`. Establish `yt : y ≫ Tj.t = j₂ ≫ π` using `(M.rep V s₀ o₂).unique ⟨hbt, ⟨e₁⟩⟩ ⟨hb₂, ⟨mz⟩⟩`. Take `⟨p₁, hp₁⟩` from `(hQ q D R R' b gb N₁ N c₁ V V Tj.Y s s₀ (Tj.s ≫ M.s) a o₁ Tj.o (𝟙 V) y).1 n₁ m₀`. Take `⟨p₂, hp₂⟩` from `(hQ q D R R' b gb N₂ N c₂ V V Tj.Y s s₀ (Tj.s ≫ M.s) a' o₂ Tj.o' (𝟙 V) y).1 n₂ m'`. Establish `r₀ : m₀.φ ≫ Tj.ms.φ = m₁.φ ≫ mf.φ`.
+
+Rewrite using `[← he₀, ← hmx]`. Conclude with `rigid_of hO hN hNq e₀ mx hy`. Establish `r₁ : m'.φ ≫ Tj.mt.φ = m₂.φ ≫ mπ.φ`. Rewrite using `[← he₁, ← hmz]`. Conclude with `rigid_of hO hN hNq e₁ mz yt`.
+
+Use `⟨y, n₁.φ ≫ m₀.φ, n₂.φ ≫ m'.φ, hy, yt, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Take `⟨p₁', hp₁'⟩` from `qmap_cast (Category.id_comp y) p₁`. Use `p₁'.cart` as an intermediate fact. Rewrite `this` using `[hp₁', hp₁]`. Conclude with `this`.
+
+Take `⟨p₂', hp₂'⟩` from `qmap_cast (Category.id_comp y) p₂`. Use `p₂'.cart` as an intermediate fact. Rewrite `this` using `[hp₂', hp₂]`. Conclude with `this`. Rewrite using `[Category.assoc, hsq, ← Category.assoc, hψ, Category.assoc]`.
+
+Rewrite using `[Category.assoc, r₀, ← Category.assoc, ← hm₁, hk₁']`. Rewrite using `[Category.assoc, r₁, ← Category.assoc, ← hm₂, hk₂']`.
+-/
 private theorem read_core (hQ : QComp) (hO : UpperTheory.Gal.crystallineComparison.Mod.ObjTri) {N N₁ N₂ c₁ c₂ : ℕ} (hN : 3 ≤ N) (hNq : N.Coprime q)
     {M : Model b N} {r : ℤ} {w : Ideal (𝓞 D.F)} {j c : ℕ} (Tj : TjD M r w j c)
     {V Y₁ Y₂ : Scheme.{0}} {s : V ⟶ Sp R'} {s₀ : V ⟶ Sp R} {t₁ : Y₁ ⟶ Sp R} {t₂ : Y₂ ⟶ Sp R}
@@ -90,6 +119,17 @@ private theorem read_core (hQ : QComp) (hO : UpperTheory.Gal.crystallineComparis
 
 end
 
+/- English proof (translation)
+Introduce `hI hQO hQC hO p _ D G L _ E _ _ gb w q _ r 𝔴 𝔫 S k T N₀ 𝔟₁ 𝔟₂ X₁ X₂ 𝔴' i hmax hu hle hin h hint htj M₁ M₂ c₁ c₂ a₁ a₂ hn₁ hn₂ C₁ C₂ W f mf hf e he he0 Tj`. Establish `h3 : 3 ≤ N₀` using `X₁.lev.1`. Establish `hcq : N₀.Coprime q` using `X₁.lev.2.1`. Establish `hM₁ : M₁.1 = N₀ * c₁` using `hn₁.1`. Establish `hM₂ : M₂.1 = N₀ * c₂` using `hn₂.1`.
+
+Establish `pos₁ : 0 < M₁.1` using `by have := M₁.2.1; omega`. Establish `pos₂ : 0 < M₂.1` using `by have := M₂.2.1; omega`. Take `⟨o₁, ⟨n₁⟩⟩` from `hQO q (datAt S.atq S.sp) (Ow w) E S.b gb (algebraMap (Ow w) E) S.mat M₁.1 N₀ c₁ hM₁ pos₁ hcq _ _ (T.M M₁).univ`. Take `⟨o₂, ⟨n₂⟩⟩` from `hQO q (datAt S.atq S.sp) (Ow w) E S.b gb (algebraMap (Ow w) E) S.mat M₂.1 N₀ c₂ hM₂ pos₂ hcq _ _ W.o`. Take `⟨ψ₀, hψ, hi, ht⟩` from `hI p D G L E gb q r 𝔴 𝔴' S.atq S.sp S.std.m1 hmax hu (Ow w) S.b N₀ hcq i e he h 1 htj hint (one_mem _) M₁ M₂ c₁ c₂ hM₁ hM₂ _ _ (T.M M₁).univ W.o W.ψ (by rw [_root_.mul_one]; exact W.trans) _ o₁ o₂ n₁ n₂`.
+
+Take `⟨k₂, hk₂⟩` from `(hQC q (datAt S.atq S.sp) (Ow w) E S.b gb M₂.1 N₀ c₂ (T.M M₂).X X₂.Y.X X₂.Y.X (T.M M₂).s X₂.Y.s X₂.Y.s (T.M M₂).univ X₂.Y.univ X₂.Y.univ C₂.j (𝟙 _)).2.2.2 _ (T.M M₁).s W.o W.π W.φ C₂.m`. Establish `hb₁ : (C₁.j ≫ f) ≫ X₂.M.s = (T.M M₁).s ≫ spMap (algebraMap (Ow w) E)`. Rewrite using `[Category.assoc, hf]`. Conclude with `C₁.ov`. Establish `hb₂ : ((W.π ≫ C₂.j) ≫ X₂.π) ≫ X₂.M.s = (T.M M₁).s ≫ spMap (algebraMap (Ow w) E)`.
+
+Rewrite using `[Category.assoc, Category.assoc, X₂.ov]`. Use `(congrArg (W.π ≫ ·) C₂.ov).trans ?_` and prove the remaining obligations. Simplify using `only [← Category.assoc, W.ov]`. Establish `hun : IsUnit ((q : ℕ) : Γ((T.M M₁).X, ⊤))` using `isUnit_nat_of (T.M M₁).s q (Fact.out : q.Prime).ne_zero`. Take `⟨y, fa, fb, ys, yt, ca, cb, sq, ms, mt⟩` from `read_core hQC hO h3 hcq Tj n₁ n₂ C₁.m k₂ mf X₂.mπ hb₁ hb₂ W.ψ.left ψ₀ hψ hun hi ht`.
+
+Conclude with `⟨⟨y, ys, by rw [yt, Category.assoc], fa, fb, ca, cb, sq, ms, by rw [mt, hk₂, Category.assoc]⟩⟩`.
+-/
 theorem UpperTheory.Gal.FiniteEtaleModels.bRead_of :
     IsogG → QObj → QComp → UpperTheory.Gal.crystallineComparison.Mod.ObjTri → BRead := by
   intro hI hQO hQC hO p _ D G L _ E _ _ gb w q _ r 𝔴 𝔫 S k T N₀ 𝔟₁ 𝔟₂ X₁ X₂ 𝔴' i hmax hu hle hin h hint htj M₁ M₂ c₁ c₂ a₁ a₂ hn₁ hn₂

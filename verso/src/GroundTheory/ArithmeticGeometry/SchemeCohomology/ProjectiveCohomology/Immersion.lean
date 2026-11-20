@@ -28,12 +28,18 @@ instance isQuasicoherent_pushforward (F : X.Modules) [F.IsQuasicoherent] :
     ((Scheme.Modules.pushforward i).obj F).IsQuasicoherent :=
   isQuasicoherent_pushforward_of_isAffineHom i F
 
+/- English proof (translation)
+The claim follows from `isCoherent_pushforward_of_isClosedImmersion i hF`.
+-/
 theorem isCoherent_pushforward {F : X.Modules} (hF : IsCoherent F) :
     IsCoherent ((Scheme.Modules.pushforward i).obj F) :=
   isCoherent_pushforward_of_isClosedImmersion i hF
 
 omit [IsClosedImmersion i] in
 
+/- English proof (translation)
+Introduce `x`. Take `⟨j, hj⟩ : ∃ j, i.base x ∈ ProjSpace.stdOpen A n j` from `Opens.mem_iSup.1 (by rw [ProjSpace.iSup_stdOpen]; trivial)`. Conclude with `⟨i ⁻¹ᵁ ProjSpace.stdOpen A n j, hj, _, isBasisOn_pullbackUnitApp i (ProjTwist.isBasisOn_upow _ (ProjSpace.X_mem j) k)⟩`.
+-/
 theorem isInvertibleSheaf_twistingSheaf (k : ℤ) : IsInvertibleSheaf (twistingSheaf i k) := by
   intro x
   obtain ⟨j, hj⟩ : ∃ j, i.base x ∈ ProjSpace.stdOpen A n j :=
@@ -50,6 +56,9 @@ def pushforwardTwistIso (F : X.Modules) (k : ℤ) :
       (Scheme.Modules.pushforward i).obj (twist i F k) :=
   pushforwardTwistIso' i F k
 
+/- English proof (translation)
+The claim follows from `exists_generatingSections_of_pushforward_of_isAffineHom i M h`.
+-/
 theorem exists_generatingSections_of_pushforward (M : X.Modules) [M.IsQuasicoherent]
     (h : ∃ σ : ((Scheme.Modules.pushforward i).obj M).GeneratingSections, σ.IsFiniteType) :
     ∃ σ : M.GeneratingSections, σ.IsFiniteType :=

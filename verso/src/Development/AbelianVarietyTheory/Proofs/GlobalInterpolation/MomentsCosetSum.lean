@@ -22,9 +22,17 @@ section Lat
 variable {E : Type} [Field E] [NumberField E] {H : Type} [AddCommGroup H] [Module E H] [Module (𝓞 E) H]
   [IsScalarTower (𝓞 E) E H]
 
+/- English proof (translation)
+Rewrite using `[h]`. Use `L.smul_mem r hy` as an intermediate fact. Rewrite `this` using `[← algebraMap_smul E r y]`. Then use the resulting hypothesis.
+-/
 theorem sm (L : Submodule (𝓞 E) H) (r : 𝓞 E) {y z : H} (hy : y ∈ L) (h : z = (r : E) • y) : z ∈ L := by
   rw [h]; have := L.smul_mem r hy; rwa [← algebraMap_smul E r y] at this
 
+/- English proof (translation)
+Take `⟨u, v, huv⟩` from `h`. Establish `h0 : (u : E) * r + v * s = 1` using `by exact_mod_cast congrArg (fun x : 𝓞 E => (x : E)) huv`. Establish `: y = (u : E) • ((r : E) • y) + (v : E) • ((s : E) • y)`. Rewrite using `[smul_smul, smul_smul, ← add_smul, h0, one_smul]`. Rewrite using `[this]`.
+
+Conclude with `add_mem (sm L u h1 rfl) (sm L v h2 rfl)`.
+-/
 theorem cop (L : Submodule (𝓞 E) H) {r s : 𝓞 E} (h : IsCoprime r s) {y : H} (h1 : (r : E) • y ∈ L) (h2 : (s : E) • y ∈ L) :
     y ∈ L := by
   obtain ⟨u, v, huv⟩ := h
@@ -33,6 +41,41 @@ theorem cop (L : Submodule (𝓞 E) H) {r s : 𝓞 E} (h : IsCoprime r s) {y : H
     rw [smul_smul, smul_smul, ← add_smul, h0, one_smul]
   rw [this]; exact add_mem (sm L u h1 rfl) (sm L v h2 rfl)
 
+/- English proof (translation)
+Establish `hpE : (p : E) = π * σ` using `by exact_mod_cast congrArg (fun x : 𝓞 E => (x : E)) hπσ.symm`. Establish `hp' : (p : E) ≠ 0` using `by exact_mod_cast hp0`. Establish `hπ0 : (π : E) ≠ 0` using `fun h => hp' (by rw [hpE, h, zero_mul])`. Establish `hσ0 : (σ : E) ≠ 0` using `fun h => hp' (by rw [hpE, h, mul_zero])`. Establish `hπ : star (σ : E) = π` using `by rw [← hσ, star_star]`.
+
+Establish `h0 : ∀ x, ω x 0 = 0` using `fun x => by have := hadd x 0 0; rw [add_zero] at this; linarith`. Establish `hneg : ∀ x y, ω x (-y) = -ω x y` using `fun x y => by`. Use `hadd x y (-y)` as an intermediate fact. Rewrite `this` using `[add_neg_cancel, h0]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hgp : IsCoprime (g : 𝓞 E) (π * σ)` using `by rw [hπσ]; exact Nat.Coprime.cast hg`. Establish `hcgp : IsCoprime ((c * g : ℕ) : 𝓞 E) (p : 𝓞 E)` using `Nat.Coprime.cast (Nat.Coprime.mul_left hc hg)`. Set `B' : AddSubgroup H` to `{ carrier := {y | y ∈ B ∧ ∀ m ∈ M ⊓ M'', ∃ n : ℤ, ω ((((c * g : ℕ) : E) * σ) • m) y = n} zero_mem' := ⟨zero_mem _, fun m _ => ⟨0, by simp [h0]⟩⟩ add_mem' := fun {x y} hx hy => ⟨add_mem hx.1 hy.1, fun m hm => by`. Take `⟨n, hn⟩` from `hx.2 m hm`. Take `⟨k, hk⟩` from `hy.2 m hm`.
+
+Conclude with `⟨n + k, by rw [hadd, hn, hk]; push_cast; rfl⟩⟩`. Use the proof step `neg_mem' := fun {x} hx => ⟨neg_mem hx.1, fun m hm => by`. Take `⟨n, hn⟩` from `hx.2 m hm`. Conclude with `⟨-n, by rw [hneg, hn]; push_cast; rfl⟩⟩ }`. Set `B₂ : AddSubgroup H` to `B.toAddSubgroup.map (DistribSMul.toAddMonoidHom H (p : E))`.
+
+Establish `hB₂ : ∀ y, y ∈ B₂ ↔ ∃ z ∈ B, (p : E) • z = y` using `fun y => Iff.rfl`. Establish `hg₂ : ∀ y ∈ B₂, (g : E) • y ∈ M`. Introduce `y hy`. Take `⟨z, hz, rfl⟩` from `(hB₂ y).1 hy`. Use `sm M (π * π) (b2 z hz) ?_` and prove the remaining obligations.
+
+Rewrite using `[hpE]`. Use `push_cast`. Use `match_scalars`. Clear the denominators using the available nonvanishing facts. Use `⟨B', M''.toAddSubgroup ⊓ B.toAddSubgroup, B₂, fun y => Iff.rfl, ?_, ?_, ?_, ?_, ?_, ?_, hg₂⟩` and prove the remaining obligations.
+
+Introduce `y hy`. Conclude with `⟨hy.2, fun m hm => (hM'' _).1 (sm M'' ((c * g : ℕ) * σ) hm.2 (by push_cast; rfl)) y hy.1⟩`. Introduce `y hy`. Take `⟨z, hz, rfl⟩` from `(hB₂ y).1 hy`. Use `⟨sm B p hz (by push_cast; rfl), fun m hm => ?_⟩` and prove the remaining obligations.
+
+Establish `: (p : E) = star (p : E)` using `by simp`. Rewrite using `[this, ← hstar]`. Use `hB _ (sm B (c * σ * σ * σ) (b1 m hm.1) ?_) z hz` and prove the remaining obligations. Rewrite using `[hpE]`. Use `push_cast`.
+
+Use `match_scalars`. Clear the denominators using the available nonvanishing facts. Introduce `y hy hyM`. Conclude with `⟨hy, fun m hm => (hM _).1 (sm M ((c * g : ℕ) * σ) hm.1 (by push_cast; rfl)) y hyM⟩`. Introduce `y hy`.
+
+Establish `e1 : ((π * π : 𝓞 E) : E) • (((c * g : ℕ) : E) • y) ∈ M''`. Rewrite using `[hM'']`. Introduce `m hm`. Take `⟨n, hn⟩` from `hy.2 ((σ : E) • m) ⟨h2 m hm, sm M'' σ hm rfl⟩`. Rewrite `hn` using `[smul_smul, hstar]`.
+
+Use `⟨-n, ?_⟩` and prove the remaining obligations. Rewrite using `[hanti, Int.cast_neg, ← hn]`. Use `congr 2`. Simplify using `only [star_mul, hπ, star_natCast]`. Use `push_cast`.
+
+Use `module`. Establish `e2 : (σ : E) • (((c * g : ℕ) : E) • y) ∈ M''`. Use `sm M'' c (h1 _ (b2 y hy.1)) ?_` and prove the remaining obligations. Use `push_cast`. Use `match_scalars`.
+
+Clear the denominators using the available nonvanishing facts. Establish `e3` using `cop M'' (hcop.mul_left hcop) e1 e2`. Take `⟨u, v, huv⟩` from `hcgp`. Establish `huv' : (u : E) * ((c * g : ℕ) : E) + v * p = 1` using `by exact_mod_cast congrArg (fun x : 𝓞 E => (x : E)) huv`. Use `⟨(u : E) • (((c * g : ℕ) : E) • y), ⟨sm M'' u e3 rfl, sm B (u * (c * g : ℕ)) hy.1 (by push_cast; module)⟩, (p : E) • ((v : E) • y), (hB₂ _).2 ⟨_, sm B v hy.1 rfl, rfl⟩, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[smul_smul, smul_smul, ← add_smul, mul_comm (p : E), huv', one_smul, sub_self]`. Conclude with `zero_mem _`. Introduce `y₁ hy₁ y₂ hy₂ hs`. Establish `e1 : ((g : 𝓞 E) : E) • y₁ ∈ M`. Use `sub_mem (sm M g hs rfl) (hg₂ y₂ hy₂)` as an intermediate fact.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Use `push_cast`. Use `module`. Conclude with `cop M hgp.of_mul_right_right e1 (h2 _ hy₁.1)`. Introduce and unpack `R ⟨r1, r2, r3⟩`.
+
+Use `⟨fun x hx => (r1 x hx).1, r2, fun m hm => ?_⟩` and prove the remaining obligations. Take `⟨u, v, huv⟩` from `hgp.of_mul_right_right.mul_left hcop`. Establish `huv' : (u : E) * (g * π) + v * σ = 1` using `by exact_mod_cast congrArg (fun x : 𝓞 E => (x : E)) huv`. Take `⟨x, hx, hx'⟩` from `r3 (((u : E) * (g * π)) • m) ⟨sm M'' (u * (g * π)) hm (by push_cast; rfl), sm B u (b1 _ (h2 m hm)) (by match_scalars; field_simp)⟩`. Use `⟨x, hx, ?_⟩` and prove the remaining obligations.
+
+Use `add_mem hx' (sm M v (h2 m hm) rfl)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Rewrite using `[smul_smul, sub_add_eq_add_sub, ← add_smul, huv', one_smul]`.
+-/
 theorem lat [StarRing E] (M M'' B : Submodule (𝓞 E) H) (ω : H → H → ℝ) (π σ : 𝓞 E) (p g c : ℕ)
     (hπσ : π * σ = p) (hcop : IsCoprime π σ) (hp0 : p ≠ 0) (hg : g.Coprime p) (hc : c.Coprime p)
     (hadd : ∀ x y z, ω x (y + z) = ω x y + ω x z) (hanti : ∀ x y, ω x y = -ω y x)
@@ -129,10 +172,18 @@ section Size
 
 variable {p : ℕ} [Fact p.Prime]
 
+/- English proof (translation)
+Simplify using `only [TaylorLogMetric.lamC, dif_pos hx, dif_pos hy, dif_pos (mul_mem hx hy), ← map_mul]`. Both sides reduce to the same expression.
+-/
 theorem lamC_mul (lam : TaylorLogMetric.Qbar →+* ℂ_[p]) {x y : ℂ} (hx : x ∈ TaylorLogMetric.Qbar) (hy : y ∈ TaylorLogMetric.Qbar) :
     TaylorLogMetric.lamC lam (x * y) = TaylorLogMetric.lamC lam x * TaylorLogMetric.lamC lam y := by
   simp only [TaylorLogMetric.lamC, dif_pos hx, dif_pos hy, dif_pos (mul_mem hx hy), ← map_mul]; rfl
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => rw [Finset.sum_empty, Finset.sum_empty, TaylorLogMetric.lamC, dif_pos (zero_mem _)]`. Conclude with `map_zero lam`. Consider the case `insert k s hk ih`. Establish `h1` using `h k (Finset.mem_insert_self _ _)`.
+
+Establish `h2 : ∀ i ∈ s, f i ∈ TaylorLogMetric.Qbar` using `fun j hj => h j (Finset.mem_insert_of_mem hj)`. Establish `h3` using `sum_mem h2`. Rewrite using `[Finset.sum_insert hk, Finset.sum_insert hk, ← ih h2]`. Simplify using `only [TaylorLogMetric.lamC, dif_pos h1, dif_pos h3, dif_pos (add_mem h1 h3), ← map_add]`. Both sides reduce to the same expression.
+-/
 theorem lamC_sum (lam : TaylorLogMetric.Qbar →+* ℂ_[p]) {κ : Type} (s : Finset κ) (f : κ → ℂ) (h : ∀ i ∈ s, f i ∈ TaylorLogMetric.Qbar) :
     TaylorLogMetric.lamC lam (∑ i ∈ s, f i) = ∑ i ∈ s, TaylorLogMetric.lamC lam (f i) := by
   classical
@@ -145,26 +196,63 @@ theorem lamC_sum (lam : TaylorLogMetric.Qbar →+* ℂ_[p]) {κ : Type} (s : Fin
     rw [Finset.sum_insert hk, Finset.sum_insert hk, ← ih h2]
     simp only [TaylorLogMetric.lamC, dif_pos h1, dif_pos h3, dif_pos (add_mem h1 h3), ← map_add]; rfl
 
+/- English proof (translation)
+Simplify using `only [TaylorLogMetric.lamC, dif_pos (natCast_mem TaylorLogMetric.Qbar n)]`. Conclude with `map_natCast lam n`.
+-/
 theorem lamC_nat (lam : TaylorLogMetric.Qbar →+* ℂ_[p]) (n : ℕ) : TaylorLogMetric.lamC lam (n : ℂ) = n := by
   simp only [TaylorLogMetric.lamC, dif_pos (natCast_mem TaylorLogMetric.Qbar n)]; exact map_natCast lam n
 
+/- English proof (translation)
+The claim follows from `IsUltrametricDist.norm_natCast_le_one _ n`.
+-/
 theorem norm_nat_le (n : ℕ) : ‖(n : ℂ_[p])‖ ≤ 1 := IsUltrametricDist.norm_natCast_le_one _ n
 
+/- English proof (translation)
+Take `⟨k, rfl⟩` from `h`. Rewrite using `[Nat.cast_mul, norm_mul]`. Conclude with `mul_le_of_le_one_right (norm_nonneg _) (norm_nat_le k)`.
+-/
 theorem norm_le_of_dvd {m n : ℕ} (h : m ∣ n) : ‖(n : ℂ_[p])‖ ≤ ‖(m : ℂ_[p])‖ := by
   obtain ⟨k, rfl⟩ := h
   rw [Nat.cast_mul, norm_mul]
   exact mul_le_of_le_one_right (norm_nonneg _) (norm_nat_le k)
 
+/- English proof (translation)
+Simplify using `using PadicComplex.norm_extends' p (n : ℚ_[p])`.
+-/
 theorem norm_nat (n : ℕ) : ‖(n : ℂ_[p])‖ = ‖(n : ℚ_[p])‖ := by
   simpa using PadicComplex.norm_extends' p (n : ℚ_[p])
 
+/- English proof (translation)
+Rewrite using `[norm_nat, Padic.norm_p]`.
+-/
 theorem norm_p : ‖(p : ℂ_[p])‖ = (p : ℝ)⁻¹ := by
   rw [norm_nat, Padic.norm_p]
 
+/- English proof (translation)
+Rewrite using `[norm_nat, Padic.norm_natCast_eq_one_iff]`. Conclude with `((Fact.out : p.Prime).coprime_iff_not_dvd).2 h`.
+-/
 theorem norm_unit {u : ℕ} (h : ¬ p ∣ u) : ‖(u : ℂ_[p])‖ = 1 := by
   rw [norm_nat, Padic.norm_natCast_eq_one_iff]
   exact ((Fact.out : p.Prime).coprime_iff_not_dvd).2 h
 
+/- English proof (translation)
+Establish `hs2 : ((Real.sqrt (k : ℝ) : ℝ) : ℂ) * ((Real.sqrt (k : ℝ) : ℝ) : ℂ) = k`. Rewrite using `[← Complex.ofReal_mul, Real.mul_self_sqrt (Nat.cast_nonneg k)]`. Simplify using the standard rewrite rules. Establish `hs : ((Real.sqrt (k : ℝ) : ℝ) : ℂ) ∈ TaylorLogMetric.Qbar`. Rewrite using `[mem_algebraicClosure_iff]`.
+
+Use `IsAlgebraic.of_pow (n := 2) two_pos ?_` and prove the remaining obligations. Rewrite using `[sq, hs2]`. Conclude with `isAlgebraic_natCast k`. Establish `hnQ` using `natCast_mem TaylorLogMetric.Qbar n`. Establish `hjQ` using `natCast_mem TaylorLogMetric.Qbar j`.
+
+Establish `hn' : (n : ℂ) ≠ 0` using `by exact_mod_cast hn`. Use `⟨mul_mem (mul_mem (mul_mem (inv_mem hnQ) hjQ) (mul_mem hs hκ)) hζ, ?_⟩` and prove the remaining obligations. Rewrite using `[lamC_mul lam (mul_mem (mul_mem (inv_mem hnQ) hjQ) (mul_mem hs hκ)) hζ, lamC_mul lam (mul_mem (inv_mem hnQ) hjQ) (mul_mem hs hκ), lamC_mul lam hs hκ, lamC_mul lam (inv_mem hnQ) hjQ, lamC_nat]`. Establish `e1 : ‖TaylorLogMetric.lamC lam (n : ℂ)⁻¹‖ * ‖(n : ℂ_[p])‖ = 1`. Rewrite using `[← norm_mul, ← lamC_nat lam n, ← lamC_mul lam (inv_mem hnQ) hnQ, inv_mul_cancel₀ hn']`.
+
+Use `lamC_nat lam 1` as an intermediate fact. Rewrite `this` using `[Nat.cast_one]`. Rewrite using `[this]`. Simplify using the standard rewrite rules. Establish `e2 : ‖TaylorLogMetric.lamC lam ((Real.sqrt (k : ℝ) : ℝ) : ℂ)‖ ^ 2 = ‖(k : ℂ_[p])‖`.
+
+Rewrite using `[sq, ← norm_mul, ← lamC_mul lam hs hs, hs2, lamC_nat]`. Establish `e3 : ‖(j : ℂ_[p])‖ * ‖(k : ℂ_[p])‖ ≤ ‖(n : ℂ_[p])‖`. Use `norm_le_of_dvd (p := p) hd` as an intermediate fact. Rewrite `this` using `[Nat.cast_mul, Nat.cast_mul, norm_mul, norm_mul, norm_unit hu, one_mul]`. Then use the resulting hypothesis. Establish `hp : (0 : ℝ) < (p : ℝ) ^ F` using `pow_pos (by exact_mod_cast (Fact.out : p.Prime).pos) F`.
+
+Establish `e4 : 1 ≤ (p : ℝ) ^ F * ‖(k : ℂ_[p])‖`. Use `norm_le_of_dvd (p := p) hk` as an intermediate fact. Rewrite `this` using `[Nat.cast_pow, norm_pow, norm_p, inv_pow]`. Rewrite `this` using `[inv_le_iff_one_le_mul₀' hp]`. Then use the resulting hypothesis. Rewrite using `[norm_inv, norm_pow, norm_p, inv_pow, inv_inv, norm_mul, norm_mul, norm_mul, norm_mul, hζ', mul_one]`.
+
+Use `set a := ‖TaylorLogMetric.lamC lam (n : ℂ)⁻¹‖`. Use `set s := ‖TaylorLogMetric.lamC lam ((Real.sqrt (k : ℝ) : ℝ) : ℂ)‖`. Use `set K := ‖TaylorLogMetric.lamC lam κ‖`. Use `set J := ‖(j : ℂ_[p])‖`. Use `set kk := ‖(k : ℂ_[p])‖`.
+
+Use `set P := (p : ℝ) ^ F`. Establish `ha : 0 ≤ a` using `norm_nonneg _`. Establish `hJ : 0 ≤ J` using `norm_nonneg _`. Establish `hkk : 0 ≤ kk` using `norm_nonneg _`. Establish `e5 : a * J * kk ≤ 1` using `by rw [← e1, mul_assoc]; exact mul_le_mul_of_nonneg_left e3 ha`.
+
+Establish `e6 : a * J ≤ P` using `by nlinarith [mul_nonneg ha hJ]`. Use `(pow_le_pow_iff_left₀ (by positivity) hp.le two_ne_zero).1 ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem size (lam : TaylorLogMetric.Qbar →+* ℂ_[p]) (κ ζ : ℂ) (F n j k u : ℕ) (hκ : κ ∈ TaylorLogMetric.Qbar) (hκ' : ‖TaylorLogMetric.lamC lam κ‖ ^ 2 ≤ (p : ℝ) ^ F)
     (hζ : ζ ∈ TaylorLogMetric.Qbar) (hζ' : ‖TaylorLogMetric.lamC lam ζ‖ = 1) (hn : n ≠ 0) (hk : k ∣ p ^ F) (hu : ¬ p ∣ u) (hd : n ∣ u * (j * k)) :
     (n : ℂ)⁻¹ * j * (((Real.sqrt (k : ℝ) : ℝ) : ℂ) * κ) * ζ ∈ TaylorLogMetric.Qbar ∧
@@ -219,6 +307,11 @@ section Idx
 
 variable {X : Fields} {a b : ℕ}
 
+/- English proof (translation)
+Establish `e : (smulLat r D).toAddSubgroup = D.toAddSubgroup.map (DistribSMul.toAddMonoidHom _ r)`. Use extensionality with `y`. Conclude with `Iff.rfl`. Rewrite using `[e, ← AddSubgroup.relIndex_comap, ← AddSubgroup.inf_relIndex_right, ← AddSubgroup.inf_relIndex_right P]`. Use `congr 1`.
+
+Use extensionality with `y`. Conclude with `⟨fun hy => ⟨(h y hy.2).1 hy.1, hy.2⟩, fun hy => ⟨(h y hy.2).2 hy.1, hy.2⟩⟩`.
+-/
 theorem relIndex_smulLat (r : X.E) (Z : AddSubgroup (HomE X.E a b)) (D : Submodule (𝓞 X.E) (HomE X.E a b))
     (P : AddSubgroup (HomE X.E a b)) (h : ∀ y ∈ D, r • y ∈ Z ↔ y ∈ P) :
     Z.relIndex (smulLat r D).toAddSubgroup = P.relIndex D.toAddSubgroup := by
@@ -229,6 +322,11 @@ theorem relIndex_smulLat (r : X.E) (Z : AddSubgroup (HomE X.E a b)) (D : Submodu
   ext y
   exact ⟨fun hy => ⟨(h y hy.2).1 hy.1, hy.2⟩, fun hy => ⟨(h y hy.2).2 hy.1, hy.2⟩⟩
 
+/- English proof (translation)
+Rewrite using `[← relIndex_smulLat r (smulLat r M).toAddSubgroup B M.toAddSubgroup]`. Use `fun h0 => hfin (AddSubgroup.relIndex_eq_zero_of_le_right ?_ h0)` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Conclude with `h y hy`. Use `fun y _ => ⟨?_, fun hy => ⟨y, hy, rfl⟩⟩` and prove the remaining obligations.
+
+Introduce and unpack `⟨m, hm, e⟩`. Establish `: m = y` using `smul_right_injective _ hr e`. Conclude with `this ▸ hm`.
+-/
 theorem relIndex_ne (r : X.E) (hr : r ≠ 0) (M B : Submodule (𝓞 X.E) (HomE X.E a b)) (h : ∀ y ∈ B, r • y ∈ M)
     (hfin : (smulLat r M).toAddSubgroup.relIndex M.toAddSubgroup ≠ 0) : M.toAddSubgroup.relIndex B.toAddSubgroup ≠ 0 := by
   rw [← relIndex_smulLat r (smulLat r M).toAddSubgroup B M.toAddSubgroup]
@@ -240,6 +338,17 @@ theorem relIndex_ne (r : X.E) (hr : r ≠ 0) (M B : Submodule (𝓞 X.E) (HomE X
     have : m = y := smul_right_injective _ hr e
     exact this ▸ hm
 
+/- English proof (translation)
+Take `⟨-, r2, -, -, r5⟩` from `GlobalTheory.T.addSubgroup_reps_existence_card_sum (HomE X.E a b)`. Establish `l1 : (smulLat ((g : X.E) * (π : X.E)) M).toAddSubgroup ≤ (smulLat (π : X.E) M).toAddSubgroup`. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Conclude with `(mem_smulLat _ _ _).2 ⟨(g : X.E) • y, sm M g hy rfl, by`. Express the relevant statement in the definitionally equal form `_ = ((g : X.E) * (π : X.E)) • y`.
+
+Use the proof step `module⟩`. Establish `l2 : (smulLat (π : X.E) M).toAddSubgroup ≤ (M ⊓ M'').toAddSubgroup`. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Conclude with `⟨sm M π hy rfl, h1 y hy⟩`. Establish `l3 : (M ⊓ M'').toAddSubgroup ≤ M.toAddSubgroup` using `fun y hy => hy.1`.
+
+Establish `l4 : (smulLat ((g : X.E) * (π : X.E)) M).toAddSubgroup ≤ B.toAddSubgroup`. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Conclude with `hb y hy`. Use `⟨(smulLat ((g : X.E) * (π : X.E)) M).toAddSubgroup.relIndex (smulLat (π : X.E) M).toAddSubgroup, r5 _ _ g p hp hg ?_ ?_, ?_⟩` and prove the remaining obligations. Conclude with `fun h0 => hfin (AddSubgroup.relIndex_eq_zero_of_le_right (l2.trans l3) h0)`.
+
+Introduce and unpack `_ ⟨y, hy, rfl⟩`. Use `(mem_smulLat _ _ _).2 ⟨y, hy, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = g • ((π : X.E) • y)`. Rewrite using `[← Nat.cast_smul_eq_nsmul X.E, smul_smul]`. Establish `e : M''.toAddSubgroup.relIndex M.toAddSubgroup = (M ⊓ M'').toAddSubgroup.relIndex M.toAddSubgroup` using `(AddSubgroup.inf_relIndex_left M.toAddSubgroup M''.toAddSubgroup).symm`.
+
+Rewrite using `[r2 _ _ _ hJ, relIndex_smulLat f _ (M ⊓ M'') (smulLat (π : X.E) M).toAddSubgroup fun y hy => hZ y hy.1, e, AddSubgroup.relIndex_mul_relIndex _ _ _ l2 l3, AddSubgroup.relIndex_mul_relIndex _ _ _ l1 (l2.trans l3)]`. Conclude with `AddSubgroup.relIndex_dvd_of_le_left _ l4`.
+-/
 theorem idx (M M'' B Z : Submodule (𝓞 X.E) (HomE X.E a b)) (π : 𝓞 X.E) (f : X.E) (g p : ℕ) (hp : p.Prime) (hg : g.Coprime p)
     (h1 : ∀ y ∈ M, (π : X.E) • y ∈ M'') (hb : ∀ y ∈ M, ((g : X.E) * (π : X.E)) • y ∈ B)
     (hZ : ∀ y ∈ M, f • y ∈ Z ↔ y ∈ smulLat (π : X.E) M)
@@ -277,19 +386,31 @@ section An
 
 variable {X : Fields} (A : Amb X) {a b : ℕ}
 
+/- English proof (translation)
+Simplify using `only [Wx, opU, Finset.mul_sum, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun _ _ => by ring`.
+-/
 theorem Wx_sum {κ : Type} (x : HomE X.E a b) (T : Finset κ) (c : κ → ℂ) (F : κ → VCx X.Tau a b → ℂ) (z : VCx X.Tau a b) :
     Wx A x (fun z => ∑ i ∈ T, c i * F i z) z = ∑ i ∈ T, c i * Wx A x (F i) z := by
   simp only [Wx, opU, Finset.mul_sum, Finset.sum_mul]
   exact Finset.sum_congr rfl fun _ _ => by ring
 
+/- English proof (translation)
+Simplify using `using Wx_sum A x T (fun _ => 1) F z`.
+-/
 theorem Wx_sum' {κ : Type} (x : HomE X.E a b) (T : Finset κ) (F : κ → VCx X.Tau a b → ℂ) (z : VCx X.Tau a b) :
     Wx A x (fun z => ∑ i ∈ T, F i z) z = ∑ i ∈ T, Wx A x (F i) z := by
   simpa using Wx_sum A x T (fun _ => 1) F z
 
+/- English proof (translation)
+Simplify using `only [Wx, opU]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem Wx_mul (x : HomE X.E a b) (c : ℂ) (F : VCx X.Tau a b → ℂ) (z : VCx X.Tau a b) :
     Wx A x (fun z => c * F z) z = c * Wx A x F z := by
   simp only [Wx, opU]; ring
 
+/- English proof (translation)
+Take `⟨n, hn⟩` from `h`. Rewrite using `[(GlobalTheory.T.weylHeisenbergOperator_calculus_rational X A a b).1, hn]`. Establish `: Complex.exp (-(2 * (Real.pi : ℂ)) * Complex.I * (((n : ℝ)) : ℂ)) = 1` using `Complex.exp_eq_one_iff.2 ⟨-n, by push_cast; ring⟩`. Rewrite using `[this]`. Simplify using the standard rewrite rules.
+-/
 theorem Wx_add {x y : HomE X.E a b} (h : ∃ n : ℤ, coc A x y = n) (F : VCx X.Tau a b → ℂ) :
     Wx A x (Wx A y F) = Wx A (x + y) F := by
   obtain ⟨n, hn⟩ := h
@@ -298,6 +419,17 @@ theorem Wx_add {x y : HomE X.E a b} (h : ∃ n : ℤ, coc A x y = n) (F : VCx X.
     Complex.exp_eq_one_iff.2 ⟨-n, by push_cast; ring⟩
   rw [this]; simp
 
+/- English proof (translation)
+Take `⟨-, h2, -, h4, h5, h6, -⟩` from `GlobalTheory.T.weylHeisenbergOperator_calculus_rational X A a b`. Establish `e1 : ∀ j ∈ J, Wx A (-j) (fun z => ∑ y ∈ R, Wx A y e z) z = ∑ y ∈ R, brkE A y (-j) * Wx A y e z`. Introduce `j hj`. Rewrite using `[Wx_sum']`. Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[h2, hfix _ (neg_mem (hCM (hJ.1 j hj)))]`. Rewrite using `[Finset.sum_congr rfl e1, Finset.sum_comm, Finset.sum_filter, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun y hy => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_mul]`. Take `⟨c1, c2⟩` from `(GlobalTheory.T.addSubgroup_reps_existence_card_sum (HomE X.E a b)).2.2.2.1 ℂ Z C J (fun j => brkE A y (-j)) hJ (fun u _ v _ => by`.
+
+Simplify using `only [h5]`. Rewrite using `[neg_add, (h4 _ _ _).2.2.1, ← Complex.exp_add]`. Use `congr 1`. Use `push_cast`. Use the proof step `ring)`.
+
+Use the proof step `(fun u hu hZ => (h6 _ _).2 (hB _ (neg_mem (hCZ u hu hZ)) y (hR y hy)))`. Use `split_ifs with h`. Rewrite using `[c1 fun u hu => (h6 _ _).2 (((hB' y).1 h).2 _ (neg_mem hu))]`. Rewrite using `[c2, zero_mul, mul_zero]`. Introduce `h'`.
+
+Use `h ((hB' y).2 ⟨hR y hy, fun c hc => (h6 _ _).1 ?_⟩)` and prove the remaining obligations. Simplify using `using h' (-c) (neg_mem hc)`.
+-/
 theorem charsum (e : VCx X.Tau a b → ℂ) (M B Z C B' : AddSubgroup (HomE X.E a b)) [DecidablePred (· ∈ B')]
     (hfix : ∀ y ∈ M, Wx A y e = e)
     (hCM : C ≤ M) (hCZ : ∀ j ∈ C, j ∈ Z → j ∈ B) (hB : ∀ x ∈ B, ∀ y ∈ B, ∃ n : ℤ, imH A x y = n)
@@ -326,6 +458,11 @@ theorem charsum (e : VCx X.Tau a b → ℂ) (M B Z C B' : AddSubgroup (HomE X.E 
     refine h ((hB' y).2 ⟨hR y hy, fun c hc => (h6 _ _).1 ?_⟩)
     simpa using h' (-c) (neg_mem hc)
 
+/- English proof (translation)
+Rewrite using `[(GlobalTheory.T.addSubgroup_reps_existence_card_sum (HomE X.E a b)).2.2.1 ℂ M B' B₁ B₂ R R₁ R₂ (fun y => Wx A y e z) l1 l2 hs hu hR hR₁ hR₂ (fun y hy l hl hl' => by show Wx A (y + l) e z = Wx A y e z`. Rewrite using `[← Wx_add A (hB y hy l hl'), hfix l hl])]`. Use `Finset.sum_congr rfl fun y₂ h₂ => ?_` and prove the remaining obligations. Rewrite using `[← Wx_mul, ← funext he, Wx_sum']`. Use `Finset.sum_congr rfl fun y₁ h₁ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Wx_add A (hB _ (l2 (hR₂.1 _ h₂)) _ (l1 (hR₁.1 _ h₁))), add_comm]`.
+-/
 theorem prodsum (e e'' : VCx X.Tau a b → ℂ) (c : ℂ) (M B' B₁ B₂ : AddSubgroup (HomE X.E a b)) (hfix : ∀ y ∈ M, Wx A y e = e)
     (hB : ∀ x ∈ B', ∀ y ∈ B', ∃ n : ℤ, coc A x y = n) (l1 : B₁ ≤ B') (l2 : B₂ ≤ B')
     (hs : ∀ y ∈ B', ∃ y₁ ∈ B₁, ∃ y₂ ∈ B₂, y - (y₁ + y₂) ∈ M) (hu : ∀ y₁ ∈ B₁, ∀ y₂ ∈ B₂, y₁ + y₂ ∈ M → y₁ ∈ M)
@@ -341,6 +478,11 @@ theorem prodsum (e e'' : VCx X.Tau a b → ℂ) (c : ℂ) (M B' B₁ B₂ : AddS
   refine Finset.sum_congr rfl fun y₁ h₁ => ?_
   rw [Wx_add A (hB _ (l2 (hR₂.1 _ h₂)) _ (l1 (hR₁.1 _ h₁))), add_comm]
 
+/- English proof (translation)
+Establish `h4` using `(GlobalTheory.T.weylHeisenbergOperator_calculus_rational X A a b).2.2.2.1`. Proceed by induction on `n with`. Consider the case `zero => have := (h4 0 0 y).1`. Simplify using `only [add_zero] at this`. Simplify using `only [Nat.cast_zero, zero_smul]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Consider the case `succ n ih => rw [Nat.cast_succ, add_smul, one_smul, (h4 _ _ _).1, ih]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem coc_nsmul (n : ℕ) (x y : HomE X.E a b) : coc A ((n : X.E) • x) y = n * coc A x y := by
   have h4 := (GlobalTheory.T.weylHeisenbergOperator_calculus_rational X A a b).2.2.2.1
   induction n with
@@ -349,6 +491,13 @@ theorem coc_nsmul (n : ℕ) (x y : HomE X.E a b) : coc A ((n : X.E) • x) y = n
 
 end An
 
+/- English proof (translation)
+Introduce `y hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨s, hs, x, hx, rfl⟩` from `hz`. Conclude with `Submodule.subset_span ⟨s, hs, r • x, fun v hv => h _ (hx v hv), smul_comm _ _ _⟩`.
+
+Consider the case `zero => rw [smul_zero]`. Conclude with `zero_mem _`. Consider the case `add u v _ _ hu hv => rw [smul_add]`. Conclude with `add_mem hu hv`. Consider the case `smul c u _ hu => rw [smul_comm]`.
+
+Conclude with `Submodule.smul_mem _ c hu`.
+-/
 theorem per_smul {X : Fields} (A : Amb X) {a b : ℕ} (N : Submodule (𝓞 X.E) (Sp X.E a)) (N' N'' : Submodule (𝓞 X.E) (Sp X.E b))
     (r : X.E) (h : ∀ y ∈ N', r • y ∈ N'') : ∀ y ∈ per A N N', r • y ∈ per A N N'' := by
   intro y hy
@@ -360,6 +509,57 @@ theorem per_smul {X : Fields} (A : Amb X) {a b : ℕ} (N : Submodule (𝓞 X.E) 
   | add u v _ _ hu hv => rw [smul_add]; exact add_mem hu hv
   | smul c u _ hu => rw [smul_comm]; exact Submodule.smul_mem _ c hu
 
+/- English proof (translation)
+Introduce `X A a b S SG ϖ p g cA N N' N'' _ lam ι un κ F hctx hN hN' hN'' hn1 hn2 hpt hκ hκ' hk hmove J hJ x hx hx'`. Take `⟨hAA, b1, b2, b3, b4, -, b6, b7⟩` from `GlobalTheory.T.periodLattice_halfLattice_inclusions_splitPrime X A a b S SG ϖ p g cA N N' hctx hN hN'`. Take `⟨hX, hLa, -, hsm, hp, hϖ, hcop, -, -, hg, hcA⟩` from `hctx`. Establish `hLa'` using `hLa`. Take `⟨hδ, hne, hS, hAU, hFG, hL⟩` from `hLa'`.
+
+Establish `hLa0 : A.LaHyp a b ∅` using `⟨hδ, hne, by simp, by simp [Amb.AAUnit], hFG, hL⟩`. Take `⟨h1, -, h3, h4, -, -, h7, h8⟩` from `GlobalTheory.T.weylHeisenbergOperator_calculus_rational X A a b`. Take `⟨c1, c2, -⟩` from `GlobalTheory.T.heisenbergCocycleForm_integral_selfDual X A a b N N' hX hδ (hL N N' hN hN').2`. Take `⟨-, c2'', -⟩` from `GlobalTheory.T.heisenbergCocycleForm_integral_selfDual X A a b N N'' hX hδ (hL N N'' hN hN'').2`. Take `⟨-, -, f3, -⟩` from `GlobalTheory.T.per_relIndex_ne_zero_and_mem_locP_iff X A a b N N' hFG hAA hN hN'`.
+
+Take `⟨r1, r2, -⟩` from `GlobalTheory.T.addSubgroup_reps_existence_card_sum (HomE X.E a b)`. Establish `hg0 : 0 < g` using `Nat.pos_of_ne_zero fun h => hp.one_lt.ne' (by simpa [h] using hg)`. Establish `hcA0 : 0 < cA` using `Nat.pos_of_ne_zero fun h => hp.one_lt.ne' (by simpa [h] using hcA)`. Establish `hσ : star (ϖ : X.E) = (X.conjO ϖ : 𝓞 X.E)` using `rfl`. Rewrite `b1`, `b2`, `b4`, `hn2`, `hJ` using `[hσ]`.
+
+Use `set σ := X.conjO ϖ with hσd`. Establish `hpE : (p : X.E) = ϖ * σ` using `by exact_mod_cast congrArg (fun x : 𝓞 X.E => (x : X.E)) hϖ.symm`. Establish `hp' : (p : X.E) ≠ 0` using `by exact_mod_cast hp.ne_zero`. Establish `hπ0 : (ϖ : X.E) ≠ 0` using `fun h => hp' (by rw [hpE, h, zero_mul])`. Establish `hσ0 : (σ : X.E) ≠ 0` using `fun h => hp' (by rw [hpE, h, mul_zero])`.
+
+Establish `hgE : (g : X.E) ≠ 0` using `by exact_mod_cast hg0.ne'`. Establish `m1` using `per_smul A N N' N'' _ hn1`. Establish `m2` using `per_smul A N N'' N' _ hn2`. Use `set M := per A N N' with hM`. Use `set M'' := per A N N'' with hM''`.
+
+Use `set B := halfBO S M (p * g) with hB`. Establish `hanti : ∀ u v : HomE X.E a b, imH A u v = -imH A v u` using `fun u v => by rw [h3, h3]; ring`. Establish `hBi : ∀ u ∈ B, ∀ v ∈ B, ∃ n : ℤ, imH A u v = n` using `fun u hu v hv => by`. Take `⟨n, hn⟩` from `b6 u hu v hv`. Take `⟨k, hk⟩` from `b6 v hv u hu`.
+
+Conclude with `⟨n - k, by rw [h3, hn, hk]; push_cast; rfl⟩`. Take `⟨B', B₁, B₂, hB', l1, l2, l3, hs, hu, hrep, hg₂⟩` from `lat M M'' B (imH A) ϖ σ p g cA hϖ hcop hp.ne_zero hg hcA (fun u v w => (h4 u v w).2.2.2) hanti (fun r u v => (c1 r u v).2) hσ c2 c2'' hBi m1 m2 b1 b2`. Establish `l0 : B' ≤ B.toAddSubgroup` using `fun y hy => ((hB' y).1 hy).1`. Establish `hb : ∀ y ∈ M, ((g : X.E) * ϖ) • y ∈ B` using `fun y hy => sm B σ (b1 y hy) (by match_scalars; field_simp)`. Establish `fB : M.toAddSubgroup.relIndex B.toAddSubgroup ≠ 0`.
+
+Use `relIndex_ne ((g * σ : 𝓞 X.E) : X.E) (by push_cast; exact mul_ne_zero hgE hσ0) M B (fun y hy => sm M ϖ (b2 y hy) ?_) (f3 _ fun h => mul_ne_zero hgE hσ0 (by exact_mod_cast congrArg (fun x : 𝓞 X.E => (x : X.E)) h))` and prove the remaining obligations. Use `push_cast`. Use `match_scalars`. Clear the denominators using the available nonvanishing facts. Establish `fM : M.toAddSubgroup.relIndex M''.toAddSubgroup ≠ 0` using `relIndex_ne (σ : X.E) hσ0 M M'' m2 (f3 _ fun h => hσ0 (by simp [h]))`.
+
+Establish `fM' : M''.toAddSubgroup.relIndex M.toAddSubgroup ≠ 0` using `ne_zero_of_dvd_ne_zero (pow_ne_zero _ hp.ne_zero) hk`. Take `⟨R, hR⟩` from `r1 _ _ fB`. Take `⟨R₁, hR₁⟩` from `r1 M.toAddSubgroup B₁ fun h => fB (AddSubgroup.relIndex_eq_zero_of_le_right (l1.trans l0) h)`. Take `⟨R₂, hR₂⟩` from `r1 M.toAddSubgroup B₂ fun h => fB (AddSubgroup.relIndex_eq_zero_of_le_right (l2.trans l0) h)`. Establish `hR' : IsReps M.toAddSubgroup B' (R.filter (· ∈ B'))`.
+
+Use `⟨fun y hy => (Finset.mem_filter.1 hy).2, fun u hu v hv => hR.2.1 u (Finset.mem_filter.1 hu).1 v (Finset.mem_filter.1 hv).1, fun y hy => ?_⟩` and prove the remaining obligations. Take `⟨u, hu, hu'⟩` from `hR.2.2 y (l0 hy)`. Use `⟨u, Finset.mem_filter.2 ⟨hu, ?_⟩, hu'⟩` and prove the remaining obligations. Simplify using `using sub_mem hy (l3 _ (sub_mem (l0 hy) (hR.1 u hu)) hu')`. Establish `hcard : R₁.card = M''.toAddSubgroup.relIndex M.toAddSubgroup`.
+
+Rewrite using `[r2 _ _ _ (hrep R₁ hR₁)]`. Conclude with `GlobalTheory.T.relIndex_eq_of_selfDual_alternating _ (imH A) _ _ (fun u v w => (h4 u v w).2.2.1) hanti c2 c2'' fM fM'`. Take `⟨u, hup, hud⟩` from `idx M M'' B _ ϖ _ g p hp hg m1 hb (fun y hy => (b4 y hy).2.2.2) (by simpa using f3 (g * ϖ) fun h => mul_ne_zero hgE hπ0 (by exact_mod_cast congrArg (fun x : 𝓞 X.E => (x : X.E)) h)) J hJ`. Rewrite `hud`, `hk` using `[← hcard]`. Take `⟨t₀, ht₀, ht₀'⟩` from `GlobalTheory.T.exists_lift_halfLattice_rational X A a b S N N' cA (p * g) hFG hAA hS hAU hN hN' hcA0 (Nat.mul_pos hp.pos hg0) x hx`.
+
+Take `⟨n, hn0, hnd, hth⟩` from `GlobalTheory.T.theta_movedCosetIndicator_vacuum_shape X A a b S N N' cA (p * g) hX hLa hAA hN hN' hcA0 (Nat.mul_pos hp.pos hg0)`. Establish `hγt` using `b3 x hx hx' t₀ ht₀ ht₀'`. Establish `hCM : (smulLat (((cA * g : ℕ) : X.E) * (σ : X.E)) (M ⊓ M'')).toAddSubgroup ≤ M.toAddSubgroup`. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Conclude with `sm M ((cA * g : ℕ) * σ) hy.1 (by push_cast; rfl)`.
+
+Establish `hfix : ∀ y ∈ M.toAddSubgroup, Wx A y (A.e a b N N') = A.e a b N N'` using `fun y hy =>`. Use function extensionality and compare the values at `fun z => (hL N N' hN hN').1 _ ⟨y, hy, rfl⟩ z`. Establish `hsh : ∀ j ∈ J, A.thInd S N N' (p * g) (x + j) = fun z => (n : ℂ)⁻¹ * Wx A (-t₀) (Wx A (-j) fun z => ∑ y ∈ R, Wx A y (A.e a b N N') z) z`. Introduce `j hj`. Establish `hjA : j ∈ halfAO S M (cA * (p * g))`.
+
+Take `⟨y, hy, rfl⟩` from `hJ.1 j hj`. Conclude with `(b4 y hy.1).2.1`. Rewrite using `[Wx_add A (b7 _ (neg_mem ht₀) _ (neg_mem hjA)), ← neg_add]`. Use `hth _ (add_mem hx ?_) _ (add_mem ht₀ hjA) (by simpa using ht₀') R hR` and prove the remaining obligations. Conclude with `Submodule.smul_mem _ (cA : 𝓞 X.E) (b4 j (hCM (hJ.1 j hj))).1`.
+
+Establish `hsmooth : ∀ j ∈ J, ∀ k : ℕ, ContDiff ℂ k (A.thInd S N N' (p * g) (x + j))`. Introduce `j hj k`. Rewrite using `[hsh j hj]`. Conclude with `contDiff_const.mul (h7 _ _ (h7 _ _ fun k => ContDiff.sum fun y _ => h7 _ _ (hsm N N' hN hN') k) k)`. Use `set ζ : HomE X.E a b → ℂ := fun y => Complex.exp (-(2 * (Real.pi : ℂ)) * Complex.I * (coc A (-t₀) y : ℂ)) with hζ`.
+
+Establish `hsum : (fun z => ∑ j ∈ J, 1 * A.thInd S N N' (p * g) (x + j) z) = fun z => ∑ y ∈ R₂, ((n : ℂ)⁻¹ * J.card * (((Real.sqrt (R₁.card : ℝ) : ℝ) : ℂ) * κ) * ζ y) * Wx A (-t₀ + y) (A.e a b N N'') z`. Use function extensionality and compare the values at `z`. Rewrite using `[Finset.sum_congr rfl fun j hj => by rw [one_mul, hsh j hj], ← Finset.mul_sum, ← Wx_sum',`. Use function extensionality and compare the values at `(charsum A _ M.toAddSubgroup B.toAddSubgroup _ _ B' hfix hCM ?_ hBi ?_ J R hJ hR.1), Wx_mul,`. Use function extensionality and compare the values at `(prodsum A _ _ _ _ B' B₁ B₂ hfix (fun u hu v hv => b6 u (l0 hu) v (l0 hv)) l1 l2 hs hu _ R₁ R₂ hR' hR₁ hR₂ (hmove R₁ (hrep R₁ hR₁))), Wx_sum, Finset.mul_sum, Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Rewrite using `[h1]`. Expand and normalize the polynomial expressions, which then agree. Introduce and unpack `_ ⟨y, hy, rfl⟩ hZ`. Take `⟨m, hm, rfl⟩` from `(b4 y hy.1).2.2.2.1 hZ`.
+
+Use `sm B (cA * σ) (hb m hm) ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(((cA * g : ℕ) : X.E) * (σ : X.E)) • ((ϖ : X.E) • m) = _`. Use `push_cast`. Use `module`. Introduce `y`.
+
+Rewrite using `[hB']`. Use `and_congr_right fun _ => ⟨?_, fun h m hm => h _ ⟨m, hm, rfl⟩⟩` and prove the remaining obligations. Introduce and unpack `h _ ⟨m, hm, rfl⟩`. Conclude with `h m hm`. Establish `hunit : ∀ y ∈ R₂, _` using `fun y hy => GlobalTheory.T.moments_translate_rationalPoint_unitDenominator X A a b ϖ p N N'' lam ι un hX hLa0 hAA hsm hϖ hcop hN hN'' hpt (-t₀ + y) (cA * g) (Nat.Coprime.mul_left hcA hg) (by`.
+
+Use `m1 _ (add_mem (neg_mem hγt) (sm M cA (hg₂ y (hR₂.1 y hy)) rfl))` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use `push_cast`. Use the proof step `module)`. Establish `hroot : ∀ y ∈ R₂, ζ y ∈ TaylorLogMetric.Qbar ∧ ‖TaylorLogMetric.lamC lam (ζ y)‖ = 1`.
+
+Introduce `y hy`. Establish `e0 : ((g * p * (cA * g) : ℕ) : X.E) • (-t₀) ∈ B`. Use `sm B σ (hb _ (neg_mem hγt)) ?_` and prove the remaining obligations. Use `push_cast`. Rewrite using `[hpE]`.
+
+Use `module`. Take `⟨k, hk⟩` from `b6 _ e0 y (l0 (l2 (hR₂.1 y hy)))`. Rewrite `hk` using `[coc_nsmul]`. Establish `hne : ((g * p * (cA * g) : ℕ) : ℝ) ≠ 0`. Use `hp.pos` as an intermediate fact.
+
+Check the signs of the components of the expression. Establish `e1 : coc A (-t₀) y = (((k : ℚ) / (g * p * (cA * g) : ℕ) : ℚ) : ℝ)`. Rewrite using `[Rat.cast_div, Rat.cast_intCast, Rat.cast_natCast, eq_div_iff hne, ← hk, mul_comm]`. Simplify using `only [hζ]`. Rewrite using `[e1]`.
+
+Conclude with `(GlobalTheory.T.algebraicNumbers_padicPlaces_facts X.K p A.σ₀ ι).2.2 lam _`. Establish `hsz` using `fun y hy => size lam κ (ζ y) F n J.card R₁.card u hκ hκ' (hroot y hy).1 (hroot y hy).2 hn0 hk hup (hnd.trans hud)`. Establish `hp0 : ((p : ℂ_[p]) ^ F)⁻¹ ≠ 0` using `inv_ne_zero (pow_ne_zero _ (by exact_mod_cast hp.ne_zero))`. Use `clo_congr (clo_sum R₂ _ fun y hy => clo_smul (hunit y hy).2 _ _ hp0 (hsz y hy).2) le_rfl le_rfl fun m _ => ?_` and prove the remaining obligations. Establish `e1` using `h8 _ J (fun _ => 1) (fun j => A.thInd S N N' (p * g) (x + j)) hsmooth m`.
+
+Rewrite `e1` using `[hsum, h8 _ R₂ _ (fun y => Wx A (-t₀ + y) (A.e a b N N'')) (fun y _ => h7 _ _ (hsm N N'' hN hN''))]`. Simplify using `only [one_mul] at e1`. Rewrite using `[← e1, lamC_sum lam _ _ fun y hy => mul_mem (hsz y hy).1 ((hunit y hy).1 m)]`. Conclude with `Finset.sum_congr rfl fun y hy => lamC_mul lam (hsz y hy).1 ((hunit y hy).1 m)`.
+-/
 theorem moments_coset_sum : ∀ (X : Fields) (A : Amb X) (a b : ℕ) (S SG : Finset (HeightOneSpectrum (𝓞 X.E))) (ϖ : 𝓞 X.E) (p g cA : ℕ) (N : Submodule (𝓞 X.E) (Sp X.E a)) (N' : Submodule (𝓞 X.E) (Sp X.E b)) (N'' : Submodule (𝓞 X.E) (Sp X.E b)) [Fact p.Prime] (lam : TaylorLogMetric.Qbar →+* ℂ_[p]) (ι : X.K →+* ℂ_[p]) (un : X.Tau → ℂ_[p]) (κ : ℂ) (F : ℕ), Ctx A a b S SG ϖ p g cA → IsSdLat N → IsSdLat N' → IsSdLat N'' → (∀ y ∈ N', (ϖ : X.E) • y ∈ N'') → (∀ y ∈ N'', star (ϖ : X.E) • y ∈ N') → PtMom A a b lam ι un (star (ϖ : X.E) / (ϖ : X.E)) → κ ∈ TaylorLogMetric.Qbar → ‖TaylorLogMetric.lamC lam κ‖ ^ 2 ≤ (p : ℝ) ^ F → (per A N N'').toAddSubgroup.relIndex (per A N N').toAddSubgroup ∣ p ^ F → (∀ R : Finset (HomE X.E a b), IsReps (per A N N').toAddSubgroup (per A N N'').toAddSubgroup R → ∀ z, ∑ y ∈ R, Wx A y (A.e a b N N') z = ((Real.sqrt (R.card : ℝ) : ℝ) : ℂ) * κ * A.e a b N N'' z) → ∀ J : Finset (HomE X.E a b), IsReps (mulLat (p * g) (homAt S N N')).toAddSubgroup (smulLat (((cA * g : ℕ) : X.E) * star (ϖ : X.E)) (per A N N' ⊓ per A N N'')).toAddSubgroup J → ∀ x ∈ divLat cA (homAt S N N'), x ∈ homAt (divs ϖ) N N' → InIntClosure (per A N N'' : Set (HomE X.E a b)) (fun t m => ((p : ℂ_[p]) ^ F)⁻¹ * ptTab ι un t m) Set.univ fun m => TaylorLogMetric.lamC lam (∑ j ∈ J, jetC A.cD (A.thInd S N N' (p * g) (x + j)) m) := by
   classical
   intro X A a b S SG ϖ p g cA N N' N'' _ lam ι un κ F hctx hN hN' hN'' hn1 hn2 hpt hκ hκ' hk hmove J hJ x hx hx'

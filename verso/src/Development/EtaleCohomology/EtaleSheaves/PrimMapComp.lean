@@ -5,6 +5,11 @@ open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC LateralTh
 
 namespace LateralTheory.E.Deg0Pf
 
+/- English proof (translation)
+Choose the witnesses or unpack the hypotheses as in `⟨z, hz⟩ : ∃ z : S, (Polynomial.cyclotomic q S).eval z = 0 := by`. Break down `subsingleton_or_nontrivial S with hs | hs` into its components or cases. Conclude with `⟨0, Subsingleton.elim _ _⟩`. Conclude with `hA _ (Polynomial.cyclotomic.monic q S) (by`. Rewrite using `[Polynomial.natDegree_cyclotomic]`.
+
+Conclude with `Nat.totient_pos.2 (Nat.pos_of_ne_zero (NeZero.ne q)))`. Use `⟨⟨z, hq, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[Polynomial.aeval_def, Polynomial.eval₂_eq_eval_map, Polynomial.map_cyclotomic]`. Conclude with `hz`.
+-/
 theorem exists_prim (q : ℕ) [NeZero q] (S : Type) [CommRing S] (hA : AIC S) (hq : IsUnit (q : S)) :
     Nonempty (Prim q S) := by
   obtain ⟨z, hz⟩ : ∃ z : S, (Polynomial.cyclotomic q S).eval z = 0 := by
@@ -17,17 +22,31 @@ theorem exists_prim (q : ℕ) [NeZero q] (S : Type) [CommRing S] (hA : AIC S) (h
   rw [Polynomial.aeval_def, Polynomial.eval₂_eq_eval_map, Polynomial.map_cyclotomic]
   exact hz
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem prim_map_comp {q : ℕ} {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C)
     (ζ : Prim q A) : (ζ.map f).map g = ζ.map (g.comp f) := rfl
 
+/- English proof (translation)
+Use extensionality with `a`. Conclude with `IsLocalization.Away.awayToAwayRight_eq f g a`.
+-/
 theorem rL_comp {S : Type} [CommRing S] (f g : S) :
     (rL f g).comp (algebraMap S (Localization.Away f)) = algebraMap S (Localization.Away (f * g)) := by
   ext a; exact IsLocalization.Away.awayToAwayRight_eq f g a
 
+/- English proof (translation)
+Use extensionality with `a`. Conclude with `IsLocalization.Away.awayToAwayLeft_eq g f a`.
+-/
 theorem rR_comp {S : Type} [CommRing S] (f g : S) :
     (rR f g).comp (algebraMap S (Localization.Away g)) = algebraMap S (Localization.Away (f * g)) := by
   ext a; exact IsLocalization.Away.awayToAwayLeft_eq g f a
 
+/- English proof (translation)
+Introduce `hQ hH hL h9 q _ i S _ hS hq f g hfg c`. Take `⟨e, he⟩` from `hH h9 q i`. Take `⟨ζ⟩` from `exists_prim q S (hQ S hS).1 hq`. Take `⟨a, b, hab⟩` from `hL q S hS f g hfg ((e _ (ζ.map (algebraMap S (Localization.Away (f * g))))).symm c)`. Use `⟨e _ (ζ.map (algebraMap S (Localization.Away f))) a, e _ (ζ.map (algebraMap S (Localization.Away g))) b, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[he, he, prim_map_comp, prim_map_comp, rL_comp, rR_comp, ← map_sub, ← hab, AddEquiv.apply_symm_apply]`.
+-/
 theorem Deg0_of : LateralTheory.E.AcycQAPf.Deg0 := by
   intro hQ hH hL h9 q _ i S _ hS hq f g hfg c
   obtain ⟨e, he⟩ := hH h9 q i

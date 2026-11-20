@@ -21,10 +21,16 @@ def trPairL {κ : Type} [Fintype κ] (z : κ → mixedEmbedding.mixedSpace F) :
   (Algebra.trace ℝ (mixedEmbedding.mixedSpace F)).comp
     (∑ i, (LinearMap.mulLeft ℝ (z i)).comp (LinearMap.proj i))
 
+/- English proof (translation)
+Simplify using `[trPairL, LinearMap.sum_apply]`.
+-/
 theorem trPairL_apply {κ : Type} [Fintype κ] (z w : κ → mixedEmbedding.mixedSpace F) :
     trPairL z w = Algebra.trace ℝ (mixedEmbedding.mixedSpace F) (∑ i, z i * w i) := by
   simp [trPairL, LinearMap.sum_apply]
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem fderiv_basis {κ : Type} [Fintype κ] {ι : Type} [Fintype ι]
     (b : Module.Basis ι ℝ (κ → mixedEmbedding.mixedSpace F)) (f : SInf F κ)
     (z v : κ → mixedEmbedding.mixedSpace F) :
@@ -32,6 +38,11 @@ theorem fderiv_basis {κ : Type} [Fintype κ] {ι : Type} [Fintype ι]
   calc fderiv ℝ (⇑f) z v = fderiv ℝ (⇑f) z (∑ j, b.repr v j • b j) := by rw [b.sum_repr]
     _ = _ := by rw [map_sum]; simp only [map_smul, Complex.real_smul]
 
+/- English proof (translation)
+Establish `h1 : ∀ w : κ → AF F, trForm F w z = trPairL z (fun i => evI F (w i))`. Introduce `w`. Rewrite using `[trForm_apply, trPairL_apply]`. Establish `h2 : trPairL z (fun i => evI F (y i)) = ∑ j, b.repr (fun i => evI F (y i)) j * trPairL z (b j)`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `h3 : ∀ j, (fun i => evI F (liftV (F` using `F) (b j) i)) = b j := fun j => Coord.loc_lift (b j)`. Simplify using `only [mult_apply, h1, h3, h2]`. Use `push_cast`. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => by ring`.
+-/
 theorem mult_basis {κ : Type} [Fintype κ] {ι : Type} [Fintype ι]
     (b : Module.Basis ι ℝ (κ → mixedEmbedding.mixedSpace F)) (y : κ → AF F)
     (z : κ → mixedEmbedding.mixedSpace F) :
@@ -58,6 +69,13 @@ open GlobalTheory.HeisDeriv GlobalTheory.HeisDerivArch
 
 variable {F : Type} [Field F] [NumberField F]
 
+/- English proof (translation)
+Use extensionality with `y`. Take `⟨R, hR0, hR⟩` from `GlobalTheory.ArchRest.exists_rest_arch (F := F) (Fin n × Fin d)`. Establish `hr` using `hR f`. Use `set x : Fin n × Fin d → AF F := liftV y with hx`. Establish `hd1` using `hg R hr x`.
+
+Establish `hd2` using `actsD_heisLine_heisD M ψ hψ u f R hr x`. Establish `huniq` using `hd1.unique hd2`. Establish `hRx : R x = R 0`. Use `hr.1 0 x (at_liftV y)` as an intermediate fact. Rewrite `this` using `[zero_add]`. Then use the resulting hypothesis.
+
+Establish `hlx : (fun i => evI F (x i)) = y` using `Coord.loc_lift y`. Simplify using `only [tens, hlx, hRx] at huniq`. Conclude with `mul_right_cancel₀ hR0 huniq`.
+-/
 theorem actsD_heisLine_eq {E : Type} [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     {n d : ℕ} {X : Spc F E n} {W : Spc F E d} (M : Model σ X W) (ψ : AddChar (AF F) ℂ) (hψ : IsStd ψ)
     (u : Matrix (Fin n) (Fin d) (AE F E)) (f g : SInf F (Fin n × Fin d))
@@ -77,6 +95,17 @@ theorem actsD_heisLine_eq {E : Type} [Field E] [NumberField E] [Algebra F E] {σ
   simp only [tens, hlx, hRx] at huniq
   exact mul_right_cancel₀ hR0 huniq
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ n d X W M ψ hψ`. Set `b` to `Module.finBasis ℝ (Fin n × Fin d → mixedEmbedding.mixedSpace F)`. Use `set N := Module.finrank ℝ (Fin n × Fin d → mixedEmbedding.mixedSpace F)`. Set `A : Fin N → SInf F (Fin n × Fin d) →ₗ[ℂ] SInf F (Fin n × Fin d)` to `fun j => (LineDeriv.lineDerivOpCLM ℂ (SInf F (Fin n × Fin d)) (b j)).toLinearMap`. Set `B : Fin N → SInf F (Fin n × Fin d) →ₗ[ℂ] SInf F (Fin n × Fin d)` to `fun j => (SchwartzMap.smulLeftCLM ℂ (⇑(mult F (liftV (b j))))).toLinearMap`.
+
+Use `⟨N + N, fun i => Sum.elim A B (finSumFinEquiv.symm i), fun u _ => ?_⟩` and prove the remaining obligations. Use `⟨heisD F (fun i => evI F ((M.co.e u).1 i)) (M.co.e u).2, fun f f₁ => ⟨actsD_heisLine_eq M ψ hψ u f f₁, fun h => by subst h; exact actsD_heisLine_heisD M ψ hψ u f⟩, fun f => ?_⟩` and prove the remaining obligations. Use `set S := Submodule.span ℂ (Set.range fun i => Sum.elim A B (finSumFinEquiv.symm i) f) with hS`. Establish `hA : ∀ j, A j f ∈ S` using `fun j => Submodule.subset_span ⟨finSumFinEquiv (Sum.inl j), by simp only [Equiv.symm_apply_apply, Sum.elim_inl]⟩`. Establish `hB : ∀ j, B j f ∈ S` using `fun j => Submodule.subset_span ⟨finSumFinEquiv (Sum.inr j), by simp only [Equiv.symm_apply_apply, Sum.elim_inr]⟩`.
+
+Use `set v : Fin n × Fin d → mixedEmbedding.mixedSpace F := fun i => evI F ((M.co.e u).1 i) with hv`. Use `set y := (M.co.e u).2 with hy`. Establish `key : heisD F v y f = ∑ j, (b.repr v j : ℂ) • A j f + ∑ j, (b.repr (fun i => evI F (y i)) j : ℂ) • B j f`. Use extensionality with `z`. Rewrite using `[heisD_apply, fderiv_basis b f z v, mult_basis b y z, Finset.sum_mul]`.
+
+Simplify using `only [SchwartzMap.add_apply, SchwartzMap.sum_apply, SchwartzMap.smul_apply, smul_eq_mul, A, B, ContinuousLinearMap.coe_coe, SchwartzMap.lineDerivOp_apply_eq_fderiv]`. Use `congr 1`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[SchwartzMap.smulLeftCLM_apply_apply (mult F (liftV (F := F) (b j))).hasTemperateGrowth]`. Simplify using `only [smul_eq_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key]`. Conclude with `add_mem (Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (hA j)) (Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (hB j))`.
+-/
 theorem heisLine_deriv_finite_span : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n d : ℕ)
     (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (ψ : AddChar (AF F) ℂ), IsStd ψ →
     ∃ (m : ℕ) (L : Fin m → SInf F (Fin n × Fin d) →ₗ[ℂ] SInf F (Fin n × Fin d)),

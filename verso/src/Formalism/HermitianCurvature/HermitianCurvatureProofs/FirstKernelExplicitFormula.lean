@@ -19,9 +19,15 @@ def eN (hN : N = m + 1) : Fin m ⊕ Unit ≃ Fin N :=
   ((Equiv.sumCongr (Equiv.refl (Fin m)) finOneEquiv.symm).trans finSumFinEquiv).trans
     (finCongr hN.symm)
 
+/- English proof (translation)
+Simplify using `[eN]`.
+-/
 theorem eN_inl (hN : N = m + 1) (a : Fin m) : ((eN hN (Sum.inl a) : Fin N) : ℕ) = a := by
   simp [eN]
 
+/- English proof (translation)
+Simplify using `[eN]`.
+-/
 theorem eN_inr (hN : N = m + 1) (u : Unit) : ((eN hN (Sum.inr u) : Fin N) : ℕ) = m := by
   simp [eN]
 
@@ -30,22 +36,37 @@ def blkM (hN : N = m + 1) (A : Matrix (Fin m) (Fin m) K) (b a : Fin m → K) (d 
   (fromBlocks A (replicateCol Unit b) (replicateRow Unit a) (Matrix.of fun _ _ => d)).submatrix
     (eN hN).symm (eN hN).symm
 
+/- English proof (translation)
+Simplify using `[blkM]`.
+-/
 theorem blkM_ll (hN : N = m + 1) (A : Matrix (Fin m) (Fin m) K) (b a : Fin m → K) (d : K)
     (i j : Fin m) : blkM hN A b a d (eN hN (Sum.inl i)) (eN hN (Sum.inl j)) = A i j := by
   simp [blkM]
 
+/- English proof (translation)
+Simplify using `[blkM]`.
+-/
 theorem blkM_lr (hN : N = m + 1) (A : Matrix (Fin m) (Fin m) K) (b a : Fin m → K) (d : K)
     (i : Fin m) (u : Unit) : blkM hN A b a d (eN hN (Sum.inl i)) (eN hN (Sum.inr u)) = b i := by
   simp [blkM]
 
+/- English proof (translation)
+Simplify using `[blkM]`.
+-/
 theorem blkM_rl (hN : N = m + 1) (A : Matrix (Fin m) (Fin m) K) (b a : Fin m → K) (d : K)
     (j : Fin m) (u : Unit) : blkM hN A b a d (eN hN (Sum.inr u)) (eN hN (Sum.inl j)) = a j := by
   simp [blkM]
 
+/- English proof (translation)
+Simplify using `[blkM]`.
+-/
 theorem blkM_rr (hN : N = m + 1) (A : Matrix (Fin m) (Fin m) K) (b a : Fin m → K) (d : K)
     (u u' : Unit) : blkM hN A b a d (eN hN (Sum.inr u)) (eN hN (Sum.inr u')) = d := by
   simp [blkM]
 
+/- English proof (translation)
+Use extensionality with `i j`. Take `⟨x, rfl⟩` from `(eN hN).surjective i`. Take `⟨y, rfl⟩` from `(eN hN).surjective j`. Apply the tactic sequence `rcases x with x | ⟨⟩ <;> rcases y with y | ⟨⟩ <;> simp [blkM_ll, blkM_lr, blkM_rl, blkM_rr]`.
+-/
 theorem eq_blkM (hN : N = m + 1) (M : Matrix (Fin N) (Fin N) K) :
     M = blkM hN (Matrix.of fun i j => M (eN hN (Sum.inl i)) (eN hN (Sum.inl j)))
       (fun i => M (eN hN (Sum.inl i)) (eN hN (Sum.inr ())))
@@ -56,6 +77,13 @@ theorem eq_blkM (hN : N = m + 1) (M : Matrix (Fin N) (Fin N) K) :
   obtain ⟨y, rfl⟩ := (eN hN).surjective j
   rcases x with x | ⟨⟩ <;> rcases y with y | ⟨⟩ <;> simp [blkM_ll, blkM_lr, blkM_rl, blkM_rr]
 
+/- English proof (translation)
+Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Use `congrFun (congrFun h (eN hN (Sum.inl i))) (eN hN (Sum.inl j))` as an intermediate fact. Simplify `this` using `[blkM_ll]`. Use function extensionality and compare the values at `i`.
+
+Use `congrFun (congrFun h (eN hN (Sum.inl i))) (eN hN (Sum.inr ()))` as an intermediate fact. Simplify `this` using `[blkM_lr]`. Use function extensionality and compare the values at `j`. Use `congrFun (congrFun h (eN hN (Sum.inr ()))) (eN hN (Sum.inl j))` as an intermediate fact. Simplify `this` using `[blkM_rl]`.
+
+Use `congrFun (congrFun h (eN hN (Sum.inr ()))) (eN hN (Sum.inr ()))` as an intermediate fact. Simplify `this` using `[blkM_rr]`.
+-/
 theorem blkM_inj (hN : N = m + 1) {A A' : Matrix (Fin m) (Fin m) K} {b a b' a' : Fin m → K}
     {d d' : K} (h : blkM hN A b a d = blkM hN A' b' a' d') :
     A = A' ∧ b = b' ∧ a = a' ∧ d = d' := by
@@ -72,6 +100,11 @@ theorem blkM_inj (hN : N = m + 1) {A A' : Matrix (Fin m) (Fin m) K} {b a b' a' :
   · have := congrFun (congrFun h (eN hN (Sum.inr ()))) (eN hN (Sum.inr ()))
     simpa [blkM_rr] using this
 
+/- English proof (translation)
+Unfold `blkM`. Rewrite using `[Matrix.submatrix_mul_equiv, fromBlocks_multiply]`. Use `congr 1`. Use extensionality with `i j`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j <;>`.
+
+Simplify using `[Matrix.mul_apply, mulVec, vecMul, dotProduct, vecMulVec, mul_comm]`.
+-/
 theorem blkM_mul (hN : N = m + 1) (A A' : Matrix (Fin m) (Fin m) K) (b a b' a' : Fin m → K)
     (d d' : K) : blkM hN A b a d * blkM hN A' b' a' d' =
       blkM hN (A * A' + vecMulVec b a') (A *ᵥ b' + d' • b) (a ᵥ* A' + d • a') (a ⬝ᵥ b' + d * d') := by
@@ -82,12 +115,20 @@ theorem blkM_mul (hN : N = m + 1) (A A' : Matrix (Fin m) (Fin m) K) (b a b' a' :
   rcases i with i | i <;> rcases j with j | j <;>
     simp [Matrix.mul_apply, mulVec, vecMul, dotProduct, vecMulVec, mul_comm]
 
+/- English proof (translation)
+Use extensionality with `i j`. Take `⟨x, rfl⟩` from `(eN hN).surjective i`. Take `⟨y, rfl⟩` from `(eN hN).surjective j`. Apply the tactic sequence `rcases x with x | ⟨⟩ <;> rcases y with y | ⟨⟩ <;> simp [blkM_ll, blkM_lr, blkM_rl, blkM_rr, Matrix.one_apply]`.
+-/
 theorem blkM_one (hN : N = m + 1) : blkM hN (1 : Matrix (Fin m) (Fin m) K) 0 0 1 = 1 := by
   ext i j
   obtain ⟨x, rfl⟩ := (eN hN).surjective i
   obtain ⟨y, rfl⟩ := (eN hN).surjective j
   rcases x with x | ⟨⟩ <;> rcases y with y | ⟨⟩ <;> simp [blkM_ll, blkM_lr, blkM_rl, blkM_rr, Matrix.one_apply]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨fun i j => by simpa [blkM_ll] using h (eN hN (Sum.inl i)) (eN hN (Sum.inl j)), fun i => by simpa [blkM_lr] using h (eN hN (Sum.inl i)) (eN hN (Sum.inr ())), fun j => by simpa [blkM_rl] using h (eN hN (Sum.inr ())) (eN hN (Sum.inl j)), by simpa [blkM_rr] using h (eN hN (Sum.inr ( …` and prove the remaining obligations. Introduce and unpack `⟨hA, hb, ha, hd⟩ i j`. Take `⟨x, rfl⟩` from `(eN hN).surjective i`.
+
+Take `⟨y, rfl⟩` from `(eN hN).surjective j`. Apply the tactic sequence `rcases x with x | ⟨⟩ <;> rcases y with y | ⟨⟩ <;> simp [hA _ _, blkM_ll, blkM_lr, blkM_rl, blkM_rr, hb, ha, hd]`.
+-/
 theorem blkM_isInt (R : Subring K) (hN : N = m + 1) (A : Matrix (Fin m) (Fin m) K)
     (b a : Fin m → K) (d : K) : IsInt R (blkM hN A b a d) ↔
       IsInt R A ∧ (∀ i, b i ∈ R) ∧ (∀ j, a j ∈ R) ∧ d ∈ R := by
@@ -102,15 +143,34 @@ theorem blkM_isInt (R : Subring K) (hN : N = m + 1) (A : Matrix (Fin m) (Fin m) 
     obtain ⟨y, rfl⟩ := (eN hN).surjective j
     rcases x with x | ⟨⟩ <;> rcases y with y | ⟨⟩ <;> simp [hA _ _, blkM_ll, blkM_lr, blkM_rl, blkM_rr, hb, ha, hd]
 
+/- English proof (translation)
+Rewrite using `[Fin.lt_iff_val_lt_val, eN_inl, eN_inl, Fin.lt_iff_val_lt_val]`.
+-/
 theorem eN_lt_iff (hN : N = m + 1) (i j : Fin m) :
     eN hN (Sum.inl i) < eN hN (Sum.inl j) ↔ i < j := by
   rw [Fin.lt_iff_val_lt_val, eN_inl, eN_inl, Fin.lt_iff_val_lt_val]
 
+/- English proof (translation)
+Rewrite using `[Fin.lt_iff_val_lt_val, eN_inl, eN_inr]`. Conclude with `i.isLt`.
+-/
 theorem eN_inl_lt_inr (hN : N = m + 1) (i : Fin m) (u : Unit) :
     eN hN (Sum.inl i) < eN hN (Sum.inr u) := by
   rw [Fin.lt_iff_val_lt_val, eN_inl, eN_inr]
   exact i.isLt
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hl, hd⟩`. Use `⟨⟨fun i j hij => ?_, fun i => ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Establish `hh : blkM hN A b a d (eN hN (Sum.inl i)) (eN hN (Sum.inl j)) = 0` using `hl ((eN_lt_iff hN i j).2 hij)`. Rewrite `hh` using `[blkM_ll]`. Then use the resulting hypothesis.
+
+Establish `hh : blkM hN A b a d (eN hN (Sum.inl i)) (eN hN (Sum.inl i)) = 1` using `hd _`. Rewrite `hh` using `[blkM_ll]`. Then use the resulting hypothesis. Use function extensionality and compare the values at `i`. Establish `hh : blkM hN A b a d (eN hN (Sum.inl i)) (eN hN (Sum.inr ())) = 0` using `hl (eN_inl_lt_inr hN i ())`. Rewrite `hh` using `[blkM_lr]`. Then use the resulting hypothesis.
+
+Establish `hh : blkM hN A b a d (eN hN (Sum.inr ())) (eN hN (Sum.inr ())) = 1` using `hd _`. Rewrite `hh` using `[blkM_rr]`. Then use the resulting hypothesis. Introduce and unpack `⟨⟨hl, hd⟩, rfl, rfl⟩`. Use `⟨fun i j hij => ?_, fun i => ?_⟩` and prove the remaining obligations. Establish `hij' : i < j` using `hij`.
+
+Take `⟨x, rfl⟩` from `(eN hN).surjective i`. Take `⟨y, rfl⟩` from `(eN hN).surjective j`. Apply the tactic sequence `rcases x with x | ⟨⟩ <;> rcases y with y | ⟨⟩`. Rewrite using `[blkM_ll]`. Conclude with `hl ((eN_lt_iff hN x y).1 hij')`.
+
+Rewrite using `[blkM_lr]`. Both sides reduce to the same expression. Conclude with `absurd hij' (lt_asymm (eN_inl_lt_inr hN y ()))`. Conclude with `absurd hij' (lt_irrefl _)`. Take `⟨x, rfl⟩` from `(eN hN).surjective i`.
+
+Break down `x with x | ⟨⟩` into its components or cases. Rewrite using `[blkM_ll]`. Conclude with `hd x`. Rewrite using `[blkM_rr]`.
+-/
 theorem blkM_isLowUni (hN : N = m + 1) (A : Matrix (Fin m) (Fin m) K)
     (b a : Fin m → K) (d : K) : IsLowUni (blkM hN A b a d) ↔ IsLowUni A ∧ b = 0 ∧ d = 1 := by
   constructor
@@ -144,6 +204,19 @@ theorem blkM_isLowUni (hN : N = m + 1) (A : Matrix (Fin m) (Fin m) K)
         exact hd x
       · rw [blkM_rr]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hl, hd⟩`. Use `⟨⟨fun i j hij => ?_, fun i => ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Establish `hh : blkM hN A b a d (eN hN (Sum.inl i)) (eN hN (Sum.inl j)) = 0` using `hl ((eN_lt_iff hN j i).2 hij)`. Rewrite `hh` using `[blkM_ll]`. Then use the resulting hypothesis.
+
+Establish `hh : blkM hN A b a d (eN hN (Sum.inl i)) (eN hN (Sum.inl i)) = 1` using `hd _`. Rewrite `hh` using `[blkM_ll]`. Then use the resulting hypothesis. Use function extensionality and compare the values at `i`. Establish `hh : blkM hN A b a d (eN hN (Sum.inr ())) (eN hN (Sum.inl i)) = 0` using `hl (eN_inl_lt_inr hN i ())`. Rewrite `hh` using `[blkM_rl]`. Then use the resulting hypothesis.
+
+Establish `hh : blkM hN A b a d (eN hN (Sum.inr ())) (eN hN (Sum.inr ())) = 1` using `hd _`. Rewrite `hh` using `[blkM_rr]`. Then use the resulting hypothesis. Introduce and unpack `⟨⟨hl, hd⟩, rfl, rfl⟩`. Use `⟨fun i j hij => ?_, fun i => ?_⟩` and prove the remaining obligations. Establish `hij' : j < i` using `hij`.
+
+Take `⟨x, rfl⟩` from `(eN hN).surjective i`. Take `⟨y, rfl⟩` from `(eN hN).surjective j`. Apply the tactic sequence `rcases x with x | ⟨⟩ <;> rcases y with y | ⟨⟩`. Rewrite using `[blkM_ll]`. Conclude with `hl ((eN_lt_iff hN y x).1 hij')`.
+
+Conclude with `absurd hij' (lt_asymm (eN_inl_lt_inr hN x ()))`. Rewrite using `[blkM_rl]`. Both sides reduce to the same expression. Conclude with `absurd hij' (lt_irrefl _)`. Take `⟨x, rfl⟩` from `(eN hN).surjective i`.
+
+Break down `x with x | ⟨⟩` into its components or cases. Rewrite using `[blkM_ll]`. Conclude with `hd x`. Rewrite using `[blkM_rr]`.
+-/
 theorem blkM_isUpUni (hN : N = m + 1) (A : Matrix (Fin m) (Fin m) K)
     (b a : Fin m → K) (d : K) : IsUpUni (blkM hN A b a d) ↔ IsUpUni A ∧ a = 0 ∧ d = 1 := by
   constructor
@@ -192,6 +265,9 @@ abbrev Par (h : Point K) : Type := Cos R h × (Fin h.1.sum → KR R) × (Fin h.1
 
 def outV {m : ℕ} (x : Fin m → KR R) : Fin m → K := fun j => Quotient.out (x j)
 
+/- English proof (translation)
+Simplify using `[addBlock]`.
+-/
 theorem addBlock_sum (h : Point K) (c : Kˣ) : (addBlock h 1 c).1.sum = h.1.sum + 1 := by
   simp [addBlock]
 
@@ -212,6 +288,17 @@ section SecPart
 section SecBlk
 variable {K : Type} [CommRing K] {m N : ℕ}
 
+/- English proof (translation)
+Use extensionality with `x y`. Take `⟨x, rfl⟩` from `(eN (addBlock_sum h c)).surjective x`. Take `⟨y, rfl⟩` from `(eN (addBlock_sum h c)).surjective y`. Apply the tactic sequence `rcases x with x | x <;> rcases y with y | y`. Rewrite using `[blkM_ll]`.
+
+Simplify using `only [pt, eN_inl]`. Express the relevant statement in the definitionally equal form `(if (y : ℕ) = revIn (h.1 ++ [1]) x then ((Function.update h.2 h.1.length c (blk (h.1 ++ [1]) x) : Kˣ) : K) else 0) = _`. Rewrite using `[A5x7.revIn_app_lt 1 _ _ x.2, A5x7.blk_app_lt 1 _ _ x.2, Function.update_of_ne (ne_of_lt (A5x7.blk_lt_length _ _ x.2))]`. Rewrite using `[blkM_lr]`. Simplify using `only [pt, eN_inl, eN_inr]`.
+
+Express the relevant statement in the definitionally equal form `(if h.1.sum = revIn (h.1 ++ [1]) x then ((Function.update h.2 h.1.length c (blk (h.1 ++ [1]) x) : Kˣ) : K) else 0) = _`. Rewrite using `[A5x7.revIn_app_lt 1 _ _ x.2, if_neg (ne_of_gt (Formalism.DoubleCosetMeasures.P.Phase.revIn_lt _ _ x.2))]`. Both sides reduce to the same expression. Rewrite using `[blkM_rl]`. Simplify using `only [pt, eN_inl, eN_inr]`.
+
+Express the relevant statement in the definitionally equal form `(if (y : ℕ) = revIn (h.1 ++ [1]) h.1.sum then ((Function.update h.2 h.1.length c (blk (h.1 ++ [1]) h.1.sum) : Kˣ) : K) else 0) = _`. Rewrite using `[A5x7.revIn_app _ 1 le_rfl, if_neg (by have := y.2; omega)]`. Both sides reduce to the same expression. Rewrite using `[blkM_rr]`. Simplify using `only [pt, eN_inr]`.
+
+Express the relevant statement in the definitionally equal form `(if h.1.sum = revIn (h.1 ++ [1]) h.1.sum then ((Function.update h.2 h.1.length c (blk (h.1 ++ [1]) h.1.sum) : Kˣ) : K) else 0) = _`. Rewrite using `[A5x7.revIn_app _ 1 le_rfl, A5x7.blk_app _ 1 le_rfl, if_pos (by omega), Function.update_self]`.
+-/
 theorem sec_pt (h : Point K) (c : Kˣ) :
     pt (addBlock h 1 c).1 (addBlock h 1 c).2 =
       blkM (addBlock_sum h c) (pt h.1 h.2) 0 0 (c : K) := by
@@ -243,6 +330,17 @@ theorem sec_pt (h : Point K) (c : Kˣ) :
       ((Function.update h.2 h.1.length c (blk (h.1 ++ [1]) h.1.sum) : Kˣ) : K) else 0) = _
     rw [A5x7.revIn_app _ 1 le_rfl, A5x7.blk_app _ 1 le_rfl, if_pos (by omega), Function.update_self]
 
+/- English proof (translation)
+Unfold `sLow lastE`. Rewrite using `[← (eN hN).sum_comp, Fintype.sum_sum_type]`. Establish `hinr : ¬ (((eN hN (Sum.inr ())) : Fin N) : ℕ) + 1 < N`. Rewrite using `[eN_inr]`. Use linear arithmetic over natural numbers and integers.
+
+Simplify using `only [Fintype.univ_unit, Finset.sum_singleton]`. Rewrite using `[dif_neg hinr, add_zero, ← Finset.sum_add_distrib]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `i _`. Establish `hi` using `i.isLt`.
+
+Establish `hlt : ((eN hN (Sum.inl i) : Fin N) : ℕ) + 1 < N`. Rewrite using `[eN_inl]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[dif_pos hlt]`. Distinguish the cases in `h : i.val + 1 < m`.
+
+Establish `e : (⟨((eN hN (Sum.inl i) : Fin N) : ℕ) + 1, hlt⟩ : Fin N) = eN hN (Sum.inl ⟨i.val + 1, h⟩)`. Use `ext`. Simplify using `[eN_inl]`. Rewrite using `[e, blkM_ll, dif_pos h, if_neg (by omega), add_zero]`. Establish `e : (⟨((eN hN (Sum.inl i) : Fin N) : ℕ) + 1, hlt⟩ : Fin N) = eN hN (Sum.inr ())`.
+
+Use `ext`. Simplify using `only [eN_inl, eN_inr]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[e, blkM_rl, dif_neg h, if_pos (by omega), zero_add]`.
+-/
 theorem sec_sLow (hN : N = m + 1) (A : Matrix (Fin m) (Fin m) K) (b a : Fin m → K) (d : K) :
     sLow (blkM hN A b a d) = sLow A + lastE a := by
   unfold sLow lastE
@@ -270,6 +368,17 @@ theorem sec_sLow (hN : N = m + 1) (A : Matrix (Fin m) (Fin m) K) (b a : Fin m �
       omega
     rw [e, blkM_rl, dif_neg h, if_pos (by omega), zero_add]
 
+/- English proof (translation)
+Unfold `sUp lastE`. Rewrite using `[← (eN hN).sum_comp, Fintype.sum_sum_type]`. Establish `hinr : ¬ (((eN hN (Sum.inr ())) : Fin N) : ℕ) + 1 < N`. Rewrite using `[eN_inr]`. Use linear arithmetic over natural numbers and integers.
+
+Simplify using `only [Fintype.univ_unit, Finset.sum_singleton]`. Rewrite using `[dif_neg hinr, add_zero, ← Finset.sum_add_distrib]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `i _`. Establish `hi` using `i.isLt`.
+
+Establish `hlt : ((eN hN (Sum.inl i) : Fin N) : ℕ) + 1 < N`. Rewrite using `[eN_inl]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[dif_pos hlt]`. Distinguish the cases in `h : i.val + 1 < m`.
+
+Establish `e : (⟨((eN hN (Sum.inl i) : Fin N) : ℕ) + 1, hlt⟩ : Fin N) = eN hN (Sum.inl ⟨i.val + 1, h⟩)`. Use `ext`. Simplify using `[eN_inl]`. Rewrite using `[e, blkM_ll, dif_pos h, if_neg (by omega), add_zero]`. Establish `e : (⟨((eN hN (Sum.inl i) : Fin N) : ℕ) + 1, hlt⟩ : Fin N) = eN hN (Sum.inr ())`.
+
+Use `ext`. Simplify using `only [eN_inl, eN_inr]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[e, blkM_lr, dif_neg h, if_pos (by omega), zero_add]`.
+-/
 theorem sec_sUp (hN : N = m + 1) (A : Matrix (Fin m) (Fin m) K) (b a : Fin m → K) (d : K) :
     sUp (blkM hN A b a d) = sUp A + lastE b := by
   unfold sUp lastE
@@ -297,6 +406,15 @@ theorem sec_sUp (hN : N = m + 1) (A : Matrix (Fin m) (Fin m) K) (b a : Fin m →
       omega
     rw [e, blkM_lr, dif_neg h, if_pos (by omega), zero_add]
 
+/- English proof (translation)
+Unfold `lastE`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `j _`. Use `split_ifs with hj`. Rewrite using `[vecMul, dotProduct, Finset.sum_eq_single j]`.
+
+Rewrite using `[hv.2 j, mul_one]`. Introduce `k _ hk`. Establish `hkj : k < j`. Rewrite using `[Fin.lt_iff_val_lt_val]`. Use `k.isLt` as an intermediate fact.
+
+Establish `: k.val ≠ j.val` using `fun h => hk (Fin.ext h)`. Use linear arithmetic over natural numbers and integers. Establish `h0 : v k j = 0` using `hv.1 hkj`. Rewrite using `[h0, mul_zero]`. Simplify using the standard rewrite rules.
+
+Both sides reduce to the same expression.
+-/
 theorem sec_lastE_vecMul {v : Matrix (Fin m) (Fin m) K} (hv : IsLowUni v) (ξ : Fin m → K) :
     lastE (ξ ᵥ* v) = lastE ξ := by
   unfold lastE
@@ -316,6 +434,15 @@ theorem sec_lastE_vecMul {v : Matrix (Fin m) (Fin m) K} (hv : IsLowUni v) (ξ : 
     · simp
   · rfl
 
+/- English proof (translation)
+Unfold `lastE`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `j _`. Use `split_ifs with hj`. Rewrite using `[mulVec, dotProduct, Finset.sum_eq_single j]`.
+
+Rewrite using `[hu.2 j, one_mul]`. Introduce `k _ hk`. Establish `hkj : k < j`. Rewrite using `[Fin.lt_iff_val_lt_val]`. Use `k.isLt` as an intermediate fact.
+
+Establish `: k.val ≠ j.val` using `fun h => hk (Fin.ext h)`. Use linear arithmetic over natural numbers and integers. Establish `h0 : u j k = 0` using `hu.1 hkj`. Rewrite using `[h0, zero_mul]`. Simplify using the standard rewrite rules.
+
+Both sides reduce to the same expression.
+-/
 theorem sec_lastE_mulVec {u : Matrix (Fin m) (Fin m) K} (hu : IsUpUni u) (η : Fin m → K) :
     lastE (u *ᵥ η) = lastE η := by
   unfold lastE
@@ -343,6 +470,9 @@ variable {K : Type} [CommRing K]
 abbrev sec_m {n : ℕ} {H : Subgroup (GL (Fin n) K)} (g : H) : Matrix (Fin n) (Fin n) K :=
   ((g : GL (Fin n) K) : Matrix (Fin n) (Fin n) K)
 
+/- English proof (translation)
+Conclude with `Subtype.ext (Units.ext h)`.
+-/
 theorem sec_m_ext {n : ℕ} {H : Subgroup (GL (Fin n) K)} {g g' : H} (h : sec_m g = sec_m g') :
     g = g' := by
   exact Subtype.ext (Units.ext h)
@@ -350,21 +480,39 @@ theorem sec_m_ext {n : ℕ} {H : Subgroup (GL (Fin n) K)} {g g' : H} (h : sec_m 
 def sec_gl {n : ℕ} (x : Matrix (Fin n) (Fin n) K) (hx : x.det = 1) : GL (Fin n) K :=
   Matrix.nonsingInvUnit x (by rw [hx]; exact isUnit_one)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem sec_gl_coe {n : ℕ} (x : Matrix (Fin n) (Fin n) K) (hx : x.det = 1) :
     ((sec_gl x hx : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) = x := rfl
 
 variable {m N : ℕ}
 
+/- English proof (translation)
+Rewrite using `[blkM_mul]`. Apply the tactic sequence `congr 1 <;> simp`.
+-/
 theorem sec_mul_low (hN : N = m + 1) (A A' : Matrix (Fin m) (Fin m) K) (a a' : Fin m → K) :
     blkM hN A 0 a 1 * blkM hN A' 0 a' 1 = blkM hN (A * A') 0 (a ᵥ* A' + a') 1 := by
   rw [blkM_mul]
   congr 1 <;> simp
 
+/- English proof (translation)
+Rewrite using `[blkM_mul]`. Apply the tactic sequence `congr 1 <;> simp`.
+-/
 theorem sec_mul_up (hN : N = m + 1) (A A' : Matrix (Fin m) (Fin m) K) (b b' : Fin m → K) :
     blkM hN A b 0 1 * blkM hN A' b' 0 1 = blkM hN (A * A') (A *ᵥ b' + b) 0 1 := by
   rw [blkM_mul]
   congr 1 <;> simp
 
+/- English proof (translation)
+Rewrite using `[sec_pt]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, H, hH, e⟩`. Use `⟨((blkM_isLowUni _ _ _ _ _).1 h1).1, ?_⟩` and prove the remaining obligations. Rewrite `hH`, `e` using `[eq_blkM (addBlock_sum h c) H]`.
+
+Use `⟨_, ((blkM_isLowUni _ _ _ _ _).1 hH).1, ?_⟩` and prove the remaining obligations. Rewrite `e` using `[blkM_mul, blkM_mul]`. Use `(blkM_inj _ e).1` as an intermediate fact. Simplify using `using this`. Introduce and unpack `⟨h1, H, hH, e⟩`.
+
+Use `⟨(blkM_isLowUni _ _ _ _ _).2 ⟨h1, rfl, rfl⟩, blkM (addBlock_sum h c) H 0 (((c⁻¹ : Kˣ) : K) • (a ᵥ* pt h.1 h.2)) 1, (blkM_isLowUni _ _ _ _ _).2 ⟨hH, rfl, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[blkM_mul, blkM_mul]`. Use `congr 1`. Simplify using `[e]`. Simplify using the standard rewrite rules.
+
+Simplify using `[smul_smul]`. Simplify using the standard rewrite rules.
+-/
 theorem sec_low_mem (h : Point K) (c : Kˣ) (A : Matrix (Fin h.1.sum) (Fin h.1.sum) K)
     (a : Fin h.1.sum → K) :
     (IsLowUni (blkM (addBlock_sum h c) A 0 a 1) ∧
@@ -399,6 +547,9 @@ def sec_lowJ (h : Point K) (c : Kˣ) (v : lowW K h.1 h.2) (ξ : Fin h.1.sum → 
     (isLowUni_det K ((blkM_isLowUni _ _ _ _ _).2 ⟨v.2.1, rfl, rfl⟩)),
     (sec_low_mem h c (sec_m v) (ξ ᵥ* sec_m v)).2 v.2⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem sec_lowJ_m (h : Point K) (c : Kˣ) (v : lowW K h.1 h.2) (ξ : Fin h.1.sum → K) :
     sec_m (sec_lowJ h c v ξ) = blkM (addBlock_sum h c) (sec_m v) 0 (ξ ᵥ* sec_m v) 1 := rfl
 
@@ -408,9 +559,17 @@ def sec_upJ (h : Point K) (c : Kˣ) (u : upUniG K h.1.sum) (η : Fin h.1.sum →
     (isUpUni_det K ((blkM_isUpUni _ _ _ _ _).2 ⟨u.2, rfl, rfl⟩)),
     (blkM_isUpUni _ _ _ _ _).2 ⟨u.2, rfl, rfl⟩⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem sec_upJ_m (h : Point K) (c : Kˣ) (u : upUniG K h.1.sum) (η : Fin h.1.sum → K) :
     sec_m (sec_upJ h c u η) = blkM (addBlock_sum h c) (sec_m u) (sec_m u *ᵥ η) 0 1 := rfl
 
+/- English proof (translation)
+Unfold `orbZ bigZ`. Express the relevant statement in the definitionally equal form `sec_m (sec_lowJ h c p.1 ξ) * _ * sec_m (sec_upJ h c p.2 η) = _`. Rewrite using `[sec_lowJ_m, sec_upJ_m, sec_pt, blkM_mul, blkM_mul]`. Use `congr 1`. Simplify using the standard rewrite rules.
+
+Simplify using `[Matrix.mulVec_mulVec]`. Simplify using `[Matrix.vecMul_vecMul, Matrix.mul_assoc]`. Simplify using `[Matrix.vecMul_vecMul, Matrix.dotProduct_mulVec, Matrix.mul_assoc]`.
+-/
 theorem sec_orbZ (h : Point K) (c : Kˣ) (p : lowW K h.1 h.2 × upUniG K h.1.sum)
     (ξ η : Fin h.1.sum → K) :
     orbZ (addBlock h 1 c) (sec_lowJ h c p.1 ξ, sec_upJ h c p.2 η) =
@@ -424,6 +583,9 @@ theorem sec_orbZ (h : Point K) (c : Kˣ) (p : lowW K h.1 h.2 × upUniG K h.1.sum
   · simp [Matrix.vecMul_vecMul, Matrix.mul_assoc]
   · simp [Matrix.vecMul_vecMul, Matrix.dotProduct_mulVec, Matrix.mul_assoc]
 
+/- English proof (translation)
+Use `show ψ (sLow (sec_m (sec_lowJ h c p.1 ξ)) + sUp (sec_m (sec_upJ h c p.2 η))) = ψ (sLow (sec_m p.1) + sUp (sec_m p.2)) * ψ (lastE ξ + lastE η)`. Rewrite using `[sec_lowJ_m, sec_upJ_m, sec_sLow, sec_sUp, sec_lastE_vecMul p.1.2.1, sec_lastE_mulVec p.2.2, ← AddChar.map_add_eq_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sec_phase (h : Point K) (c : Kˣ) (p : lowW K h.1 h.2 × upUniG K h.1.sum)
     (ξ η : Fin h.1.sum → K) (ψ : AddChar K ℂ) :
     phase ψ ((sec_lowJ h c p.1 ξ, sec_upJ h c p.2 η) :
@@ -440,6 +602,15 @@ end SecGrp
 
 section SecFib
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨p, q⟩ ⟨p', q'⟩ h`. Simplify using `only at h`. Establish `h1` using `E1 _ _ _ _ h`. Rewrite `h1` using `[hA, hA]`.
+
+Substitute `h1` using the available equality. Establish `h2` using `(E2 _ _ _).1 h`. Rewrite `h2` using `[hX, hX]`. Rewrite using `[h2]`. Introduce `g'`.
+
+Take `⟨g, rfl⟩` from `hG g'`. Take `⟨a, x, rfl⟩` from `S g`. Take `⟨x', hx'⟩` from `E3 a (oA (cA a)) (hA _).symm x`. Use `⟨(cA a, cX x'), ?_⟩` and prove the remaining obligations. Simplify using `only`.
+
+Rewrite using `[hx']`. Conclude with `(E2 _ _ _).2 (hX _)`.
+-/
 theorem sec_fib {A X G QA QX QG : Type} (cA : A → QA) (oA : QA → A) (hA : ∀ q, cA (oA q) = q)
     (cX : X → QX) (oX : QX → X) (hX : ∀ q, cX (oX q) = q) (cG : G → QG)
     (hG : Function.Surjective cG) (J : A → X → G) (S : ∀ g, ∃ a x, g = J a x)
@@ -467,6 +638,11 @@ theorem sec_fib {A X G QA QX QG : Type} (cA : A → QA) (oA : QA → A) (hA : �
 
 variable {K : Type} [CommRing K] (R : Subring K)
 
+/- English proof (translation)
+Rewrite using `[Quotient.eq, QuotientGroup.rightRel_apply]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `⟨_, h, by group⟩`. Introduce and unpack `⟨g, hg, rfl⟩`.
+
+Simplify using `using hg`.
+-/
 theorem sec_right_eq {G : Type} [Group G] (S : Subgroup G) (x y : G) :
     (Quotient.mk (QuotientGroup.rightRel S) x = Quotient.mk (QuotientGroup.rightRel S) y) ↔
       ∃ g ∈ S, y = g * x := by
@@ -477,6 +653,11 @@ theorem sec_right_eq {G : Type} [Group G] (S : Subgroup G) (x y : G) :
   · rintro ⟨g, hg, rfl⟩
     simpa using hg
 
+/- English proof (translation)
+Rewrite using `[QuotientGroup.eq]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `⟨_, h, by group⟩`. Introduce and unpack `⟨g, hg, rfl⟩`.
+
+Simplify using `using hg`.
+-/
 theorem sec_left_eq {G : Type} [Group G] (S : Subgroup G) (x y : G) :
     ((x : G ⧸ S) = (y : G ⧸ S)) ↔ ∃ g ∈ S, y = x * g := by
   rw [QuotientGroup.eq]
@@ -488,10 +669,18 @@ theorem sec_left_eq {G : Type} [Group G] (S : Subgroup G) (x y : G) :
 
 def sec_cX {m : ℕ} (x : Fin m → K) : Fin m → KR R := fun j => Submodule.Quotient.mk (x j)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Conclude with `Quotient.out_eq (q j)`.
+-/
 theorem sec_cX_outV {m : ℕ} (q : Fin m → KR R) : sec_cX R (outV R q) = q := by
   funext j
   exact Quotient.out_eq (q j)
 
+/- English proof (translation)
+Simplify using `only [funext_iff, sec_cX, Submodule.Quotient.eq', Pi.sub_apply]`. Use `forall_congr' fun j => ?_` and prove the remaining obligations. Rewrite using `[neg_add_eq_sub, LinearMap.mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨r, hr⟩`.
+
+Rewrite using `[← hr]`. Conclude with `r.2`. Introduce `h`. Conclude with `⟨⟨_, h⟩, rfl⟩`.
+-/
 theorem sec_cX_eq {m : ℕ} (x x' : Fin m → K) :
     sec_cX R x = sec_cX R x' ↔ ∀ j, (x' - x) j ∈ R := by
   simp only [funext_iff, sec_cX, Submodule.Quotient.eq', Pi.sub_apply]
@@ -504,6 +693,15 @@ theorem sec_cX_eq {m : ℕ} (x x' : Fin m → K) :
   · intro h
     exact ⟨⟨_, h⟩, rfl⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hg`. Conclude with `hg.1`. Introduce `h`. Use `⟨h, ?_⟩` and prove the remaining obligations.
+
+Set `B : Matrix (Fin n) (Fin n) R` to `fun a b => ⟨sec_m g a b, h a b⟩`. Establish `hB : R.subtype.mapMatrix B = sec_m g`. Use extensionality with `a b`. Both sides reduce to the same expression. Establish `hinv : (((g : GL (Fin n) K)⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) = (sec_m g).adjugate`.
+
+Rewrite using `[Matrix.coe_units_inv, Matrix.inv_def]`. Simplify using `[sec_m] at hd ⊢`. Simplify using `[hd]`. Introduce `a b`. Rewrite using `[hinv, ← hB, ← RingHom.map_adjugate]`.
+
+Conclude with `(B.adjugate a b).2`.
+-/
 theorem sec_mem_int {n : ℕ} {H : Subgroup (GL (Fin n) K)} (g : H) (hd : (sec_m g).det = 1) :
     g ∈ intSub R H ↔ IsInt R (sec_m g) := by
   constructor
@@ -523,16 +721,27 @@ theorem sec_mem_int {n : ℕ} {H : Subgroup (GL (Fin n) K)} (g : H) (hd : (sec_m
     rw [hinv, ← hB, ← RingHom.map_adjugate]
     exact (B.adjugate a b).2
 
+/- English proof (translation)
+Simplify using `only [vecMul, dotProduct]`. Conclude with `R.sum_mem fun k _ => R.mul_mem (hx k) (hA k j)`.
+-/
 theorem sec_vecMul_int {m : ℕ} {A : Matrix (Fin m) (Fin m) K} (hA : IsInt R A) {x : Fin m → K}
     (hx : ∀ j, x j ∈ R) (j : Fin m) : (x ᵥ* A) j ∈ R := by
   simp only [vecMul, dotProduct]
   exact R.sum_mem fun k _ => R.mul_mem (hx k) (hA k j)
 
+/- English proof (translation)
+Simplify using `only [mulVec, dotProduct]`. Conclude with `R.sum_mem fun k _ => R.mul_mem (hA j k) (hx k)`.
+-/
 theorem sec_mulVec_int {m : ℕ} {A : Matrix (Fin m) (Fin m) K} (hA : IsInt R A) {x : Fin m → K}
     (hx : ∀ j, x j ∈ R) (j : Fin m) : (A *ᵥ x) j ∈ R := by
   simp only [mulVec, dotProduct]
   exact R.sum_mem fun k _ => R.mul_mem (hA j k) (hx k)
 
+/- English proof (translation)
+Establish `hinv : (sec_m a)⁻¹ * sec_m a = 1`. Rewrite using `[sec_m, ← Matrix.coe_units_inv, ← Units.val_mul, inv_mul_cancel, Units.val_one]`. Establish `hav : sec_m (a * v) = sec_m a * sec_m v` using `rfl`. Apply `sec_m_ext` to reduce the goal to its premises. Rewrite using `[show sec_m (sec_lowJ h c a ρ * sec_lowJ h c v ξ) = sec_m (sec_lowJ h c a ρ) * sec_m (sec_lowJ h c v ξ) from rfl, sec_lowJ_m, sec_lowJ_m, sec_lowJ_m, sec_mul_low, hav]`.
+
+Use `congr 2`. Simplify using `only [Matrix.add_vecMul, Matrix.vecMul_vecMul, ← Matrix.mul_assoc, hinv, Matrix.one_mul]`.
+-/
 theorem sec_lowJ_mul (h : Point K) (c : Kˣ) (a v : lowW K h.1 h.2) (ρ ξ : Fin h.1.sum → K) :
     sec_lowJ h c a ρ * sec_lowJ h c v ξ = sec_lowJ h c (a * v) (ρ + ξ ᵥ* (sec_m a)⁻¹) := by
   have hinv : (sec_m a)⁻¹ * sec_m a = 1 := by
@@ -545,6 +754,13 @@ theorem sec_lowJ_mul (h : Point K) (c : Kˣ) (a v : lowW K h.1 h.2) (ρ ξ : Fin
   congr 2
   simp only [Matrix.add_vecMul, Matrix.vecMul_vecMul, ← Matrix.mul_assoc, hinv, Matrix.one_mul]
 
+/- English proof (translation)
+Take `⟨A, b, a, d, hM⟩ : ∃ A b a d, sec_m V = blkM (addBlock_sum h c) A b a d` from `⟨_, _, _, _, eq_blkM (addBlock_sum h c) (sec_m V)⟩`. Establish `hV` using `V.2`. Express the relevant statement in the definitionally equal form `IsLowUni (sec_m V) ∧ ∃ H, IsLowUni H ∧ sec_m V * _ = _ * H at hV`. Take `⟨hA, hb, hd⟩` from `(blkM_isLowUni _ _ _ _ _).1 (hM ▸ hV.1)`. Substitute `hb hd` using the available equality.
+
+Rewrite `hV` using `[hM]`. Establish `hv` using `(sec_low_mem h c _ _).1 hV`. Use `⟨⟨sec_gl A (isLowUni_det K hA), hv⟩, a ᵥ* A⁻¹, ?_⟩` and prove the remaining obligations. Apply `sec_m_ext` to reduce the goal to its premises. Rewrite using `[sec_lowJ_m, hM]`.
+
+Use `congr 1`. Express the relevant statement in the definitionally equal form `_ = (a ᵥ* A⁻¹) ᵥ* A`. Rewrite using `[Matrix.vecMul_vecMul, Formalism.DoubleCosetMeasures.P.Phase.inv_mul_one_low hA, Matrix.vecMul_one]`.
+-/
 theorem sec_lowJ_surj (h : Point K) (c : Kˣ) (V : lowW K (addBlock h 1 c).1 (addBlock h 1 c).2) :
     ∃ v ξ, V = sec_lowJ h c v ξ := by
   obtain ⟨A, b, a, d, hM⟩ : ∃ A b a d, sec_m V = blkM (addBlock_sum h c) A b a d :=
@@ -562,6 +778,11 @@ theorem sec_lowJ_surj (h : Point K) (c : Kˣ) (V : lowW K (addBlock h 1 c).1 (ad
   change _ = (a ᵥ* A⁻¹) ᵥ* A
   rw [Matrix.vecMul_vecMul, Formalism.DoubleCosetMeasures.P.Phase.inv_mul_one_low hA, Matrix.vecMul_one]
 
+/- English proof (translation)
+Establish `e1` using `congrArg sec_m e`. Rewrite `e1` using `[sec_lowJ_m, sec_lowJ_m]`. Take `⟨hA, -, ha, -⟩` from `blkM_inj _ e1`. Establish `hv : v = v'` using `sec_m_ext hA`. Substitute `hv` using the available equality.
+
+Use `⟨rfl, ?_⟩` and prove the remaining obligations. Establish `hinv : sec_m v * (sec_m v)⁻¹ = 1`. Rewrite using `[sec_m, ← Matrix.coe_units_inv, ← Units.val_mul, mul_inv_cancel, Units.val_one]`. Establish `h2 : ξ ᵥ* sec_m v ᵥ* (sec_m v)⁻¹ = ξ' ᵥ* sec_m v ᵥ* (sec_m v)⁻¹` using `by rw [ha]`. Simplify `h2` using `[Matrix.vecMul_vecMul, hinv]`.
+-/
 theorem sec_lowJ_inj (h : Point K) (c : Kˣ) {v v' : lowW K h.1 h.2} {ξ ξ' : Fin h.1.sum → K}
     (e : sec_lowJ h c v ξ = sec_lowJ h c v' ξ') : v = v' ∧ ξ = ξ' := by
   have e1 := congrArg sec_m e
@@ -575,6 +796,15 @@ theorem sec_lowJ_inj (h : Point K) (c : Kˣ) {v v' : lowW K h.1 h.2} {ξ ξ' : F
   have h2 : ξ ᵥ* sec_m v ᵥ* (sec_m v)⁻¹ = ξ' ᵥ* sec_m v ᵥ* (sec_m v)⁻¹ := by rw [ha]
   simpa [Matrix.vecMul_vecMul, hinv] using h2
 
+/- English proof (translation)
+Establish `hd1 : (sec_m (sec_lowJ h c a ρ)).det = 1` using `isLowUni_det K (sec_lowJ h c a ρ).2.1`. Establish `hd2 : (sec_m a).det = 1` using `isLowUni_det K a.2.1`. Rewrite using `[sec_mem_int R _ hd1, sec_mem_int R _ hd2, sec_lowJ_m, blkM_isInt]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hA, -, ha, -⟩`.
+
+Use `⟨hA, fun j => ?_⟩` and prove the remaining obligations. Establish `hmem` using `(sec_mem_int R a hd2).2 hA`. Establish `hinvI : IsInt R (sec_m a)⁻¹`. Establish `h2` using `hmem.2`. Rewrite `h2` using `[Matrix.coe_units_inv]`. Then use the resulting hypothesis.
+
+Establish `hinv : sec_m a * (sec_m a)⁻¹ = 1`. Rewrite using `[sec_m, ← Matrix.coe_units_inv, ← Units.val_mul, mul_inv_cancel, Units.val_one]`. Establish `e : ρ = (ρ ᵥ* sec_m a) ᵥ* (sec_m a)⁻¹`. Rewrite using `[Matrix.vecMul_vecMul, hinv, Matrix.vecMul_one]`. Rewrite using `[e]`.
+
+Conclude with `sec_vecMul_int R hinvI ha j`. Introduce and unpack `⟨hA, hρ⟩`. Conclude with `⟨hA, fun i => R.zero_mem, fun j => sec_vecMul_int R hA hρ j, R.one_mem⟩`.
+-/
 theorem sec_lowJ_int (h : Point K) (c : Kˣ) (a : lowW K h.1 h.2) (ρ : Fin h.1.sum → K) :
     sec_lowJ h c a ρ ∈ intSub R (lowW K (addBlock h 1 c).1 (addBlock h 1 c).2) ↔
       a ∈ intSub R (lowW K h.1 h.2) ∧ ∀ j, ρ j ∈ R := by
@@ -597,6 +827,21 @@ theorem sec_lowJ_int (h : Point K) (c : Kˣ) (a : lowW K h.1 h.2) (ρ : Fin h.1.
   · rintro ⟨hA, hρ⟩
     exact ⟨hA, fun i => R.zero_mem, fun j => sec_vecMul_int R hA hρ j, R.one_mem⟩
 
+/- English proof (translation)
+Use `sec_fib (Quotient.mk (QuotientGroup.rightRel (intSub R (lowW K h.1 h.2)))) Quotient.out Quotient.out_eq (sec_cX R) (outV R) (sec_cX_outV R) _ Quotient.mk_surjective (sec_lowJ h c) (sec_lowJ_surj h c) ?_ ?_ ?_` and prove the remaining obligations. Introduce `a x a' x' e`. Take `⟨g, hg, e1⟩` from `(sec_right_eq _ _ _).1 e`. Take `⟨a0, ρ, rfl⟩` from `sec_lowJ_surj h c g`. Rewrite `e1` using `[sec_lowJ_mul]`.
+
+Conclude with `(sec_right_eq _ _ _).2 ⟨a0, ((sec_lowJ_int R h c a0 ρ).1 hg).1, (sec_lowJ_inj h c e1).1⟩`. Introduce `a x x'`. Rewrite using `[sec_cX_eq]`. Prove the components needed by the constructor for the conclusion. Introduce `e`.
+
+Take `⟨g, hg, e1⟩` from `(sec_right_eq _ _ _).1 e`. Take `⟨a0, ρ, rfl⟩` from `sec_lowJ_surj h c g`. Rewrite `e1` using `[sec_lowJ_mul]`. Take `⟨e2, e3⟩` from `sec_lowJ_inj h c e1`. Establish `ha0 : a0 = 1` using `by simpa using e2.symm`.
+
+Substitute `ha0` using the available equality. Establish `e4 : x' = ρ + x`. Rewrite using `[e3]`. Express the relevant statement in the definitionally equal form `ρ + x ᵥ* (1 : Matrix (Fin h.1.sum) (Fin h.1.sum) K)⁻¹ = _`. Simplify using the standard rewrite rules.
+
+Introduce `j`. Rewrite using `[e4]`. Simplify using `using ((sec_lowJ_int R h c 1 ρ).1 hg).2 j`. Introduce `hx`. Use `(sec_right_eq _ _ _).2 ⟨sec_lowJ h c 1 (x' - x), (sec_lowJ_int R h c 1 _).2 ⟨Subgroup.one_mem _, hx⟩, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[sec_lowJ_mul, one_mul]`. Use `congr 1`. Express the relevant statement in the definitionally equal form `x' = x' - x + x ᵥ* (1 : Matrix (Fin h.1.sum) (Fin h.1.sum) K)⁻¹`. Simplify using the standard rewrite rules. Introduce `a a' e x`.
+
+Take `⟨a0, ha0, rfl⟩` from `(sec_right_eq _ _ _).1 e`. Use `⟨0 + x ᵥ* (sec_m a0)⁻¹, (sec_right_eq _ _ _).2 ⟨sec_lowJ h c a0 0, (sec_lowJ_int R h c a0 0).2 ⟨ha0, fun _ => R.zero_mem⟩, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[sec_lowJ_mul]`.
+-/
 theorem sec_low_bij (h : Point K) (c : Kˣ) :
     Function.Bijective (fun p : Quotient (QuotientGroup.rightRel (intSub R (lowW K h.1 h.2))) ×
         (Fin h.1.sum → KR R) =>
@@ -646,6 +891,11 @@ end SecFib
 section SecUp
 variable {K : Type} [CommRing K] (R : Subring K)
 
+/- English proof (translation)
+Establish `hinv : sec_m b * (sec_m b)⁻¹ = 1`. Rewrite using `[sec_m, ← Matrix.coe_units_inv, ← Units.val_mul, mul_inv_cancel, Units.val_one]`. Establish `hub : sec_m (u * b) = sec_m u * sec_m b` using `rfl`. Apply `sec_m_ext` to reduce the goal to its premises. Rewrite using `[show sec_m (sec_upJ h c u η * sec_upJ h c b ρ) = sec_m (sec_upJ h c u η) * sec_m (sec_upJ h c b ρ) from rfl, sec_upJ_m, sec_upJ_m, sec_upJ_m, sec_mul_up, hub]`.
+
+Use `congr 2`. Simplify using `only [Matrix.mulVec_add, Matrix.mulVec_mulVec, Matrix.mul_assoc, hinv, Matrix.mul_one]`.
+-/
 theorem sec_upJ_mul (h : Point K) (c : Kˣ) (u b : upUniG K h.1.sum) (η ρ : Fin h.1.sum → K) :
     sec_upJ h c u η * sec_upJ h c b ρ = sec_upJ h c (u * b) (ρ + (sec_m b)⁻¹ *ᵥ η) := by
   have hinv : sec_m b * (sec_m b)⁻¹ = 1 := by
@@ -658,6 +908,15 @@ theorem sec_upJ_mul (h : Point K) (c : Kˣ) (u b : upUniG K h.1.sum) (η ρ : Fi
   congr 2
   simp only [Matrix.mulVec_add, Matrix.mulVec_mulVec, Matrix.mul_assoc, hinv, Matrix.mul_one]
 
+/- English proof (translation)
+Establish `hE` using `eq_blkM (addBlock_sum h c) (sec_m V)`. Use `set A := Matrix.of fun i j => sec_m V (eN (addBlock_sum h c) (Sum.inl i)) (eN (addBlock_sum h c) (Sum.inl j)) with hA`. Use `set b := fun i => sec_m V (eN (addBlock_sum h c) (Sum.inl i)) (eN (addBlock_sum h c) (Sum.inr ())) with hb`. Use `set a := fun j => sec_m V (eN (addBlock_sum h c) (Sum.inr ())) (eN (addBlock_sum h c) (Sum.inl j)) with ha`. Use `set d := sec_m V (eN (addBlock_sum h c) (Sum.inr ())) (eN (addBlock_sum h c) (Sum.inr ())) with hd`.
+
+Establish `hU : IsUpUni (blkM (addBlock_sum h c) A b a d)`. Rewrite using `[← hE]`. Conclude with `V.2`. Take `⟨hAu, ha0, hd1⟩` from `(blkM_isUpUni _ _ _ _ _).1 hU`. Establish `hdet : A.det = 1` using `isUpUni_det K hAu`.
+
+Use `⟨⟨sec_gl A hdet, hAu⟩, A⁻¹ *ᵥ b, ?_⟩` and prove the remaining obligations. Apply `sec_m_ext` to reduce the goal to its premises. Rewrite using `[sec_upJ_m]`. Use `show sec_m V = blkM (addBlock_sum h c) A (A *ᵥ (A⁻¹ *ᵥ b)) 0 1`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv A (by rw [hdet]; exact isUnit_one), Matrix.one_mulVec, ← ha0, ← hd1]`.
+
+Conclude with `hE`.
+-/
 theorem sec_upJ_surj (h : Point K) (c : Kˣ) (V : upUniG K (addBlock h 1 c).1.sum) :
     ∃ u η, V = sec_upJ h c u η := by
   have hE := eq_blkM (addBlock_sum h c) (sec_m V)
@@ -679,6 +938,11 @@ theorem sec_upJ_surj (h : Point K) (c : Kˣ) (V : upUniG K (addBlock h 1 c).1.su
     ← ha0, ← hd1]
   exact hE
 
+/- English proof (translation)
+Establish `e1` using `congrArg sec_m e`. Rewrite `e1` using `[sec_upJ_m, sec_upJ_m]`. Take `⟨hA, hb, -, -⟩` from `blkM_inj _ e1`. Establish `hu : u = u'` using `sec_m_ext hA`. Substitute `hu` using the available equality.
+
+Use `⟨rfl, ?_⟩` and prove the remaining obligations. Establish `hinv : (sec_m u)⁻¹ * sec_m u = 1`. Rewrite using `[sec_m, ← Matrix.coe_units_inv, ← Units.val_mul, inv_mul_cancel, Units.val_one]`. Establish `h2 : (sec_m u)⁻¹ *ᵥ (sec_m u *ᵥ η) = (sec_m u)⁻¹ *ᵥ (sec_m u *ᵥ η')` using `by rw [hb]`. Simplify `h2` using `[Matrix.mulVec_mulVec, hinv]`.
+-/
 theorem sec_upJ_inj (h : Point K) (c : Kˣ) {u u' : upUniG K h.1.sum} {η η' : Fin h.1.sum → K}
     (e : sec_upJ h c u η = sec_upJ h c u' η') : u = u' ∧ η = η' := by
   have e1 := congrArg sec_m e
@@ -692,6 +956,15 @@ theorem sec_upJ_inj (h : Point K) (c : Kˣ) {u u' : upUniG K h.1.sum} {η η' : 
   have h2 : (sec_m u)⁻¹ *ᵥ (sec_m u *ᵥ η) = (sec_m u)⁻¹ *ᵥ (sec_m u *ᵥ η') := by rw [hb]
   simpa [Matrix.mulVec_mulVec, hinv] using h2
 
+/- English proof (translation)
+Establish `hd1 : (sec_m (sec_upJ h c b ρ)).det = 1` using `isUpUni_det K (sec_upJ h c b ρ).2`. Establish `hd2 : (sec_m b).det = 1` using `isUpUni_det K b.2`. Rewrite using `[sec_mem_int R _ hd1, sec_mem_int R _ hd2, sec_upJ_m, blkM_isInt]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hA, hb, -, -⟩`.
+
+Use `⟨hA, fun j => ?_⟩` and prove the remaining obligations. Establish `hmem` using `(sec_mem_int R b hd2).2 hA`. Establish `hinvI : IsInt R (sec_m b)⁻¹`. Establish `h2` using `hmem.2`. Rewrite `h2` using `[Matrix.coe_units_inv]`. Then use the resulting hypothesis.
+
+Establish `hinv : (sec_m b)⁻¹ * sec_m b = 1`. Rewrite using `[sec_m, ← Matrix.coe_units_inv, ← Units.val_mul, inv_mul_cancel, Units.val_one]`. Establish `e : ρ = (sec_m b)⁻¹ *ᵥ (sec_m b *ᵥ ρ)`. Rewrite using `[Matrix.mulVec_mulVec, hinv, Matrix.one_mulVec]`. Rewrite using `[e]`.
+
+Conclude with `sec_mulVec_int R hinvI hb j`. Introduce and unpack `⟨hA, hρ⟩`. Conclude with `⟨hA, fun i => sec_mulVec_int R hA hρ i, fun j => R.zero_mem, R.one_mem⟩`.
+-/
 theorem sec_upJ_int (h : Point K) (c : Kˣ) (b : upUniG K h.1.sum) (ρ : Fin h.1.sum → K) :
     sec_upJ h c b ρ ∈ intSub R (upUniG K (addBlock h 1 c).1.sum) ↔
       b ∈ intSub R (upUniG K h.1.sum) ∧ ∀ j, ρ j ∈ R := by
@@ -714,6 +987,25 @@ theorem sec_upJ_int (h : Point K) (c : Kˣ) (b : upUniG K h.1.sum) (ρ : Fin h.1
   · rintro ⟨hA, hρ⟩
     exact ⟨hA, fun i => sec_mulVec_int R hA hρ i, fun j => R.zero_mem, R.one_mem⟩
 
+/- English proof (translation)
+Establish `hJint : ∀ (b : upUniG K h.1.sum) (ρ : Fin h.1.sum → K), b ∈ intSub R (upUniG K h.1.sum) → (∀ j, ρ j ∈ R) → sec_upJ h c b ρ ∈ intSub R (upUniG K (addBlock h 1 c).1.sum)` using `fun b ρ hb hρ => (sec_upJ_int R h c b ρ).2 ⟨hb, hρ⟩`. Establish `hone : ∀ x : Fin h.1.sum → K, (sec_m (1 : upUniG K h.1.sum))⁻¹ *ᵥ x = x`. Introduce `x`. Simplify using `[sec_m]`. Use `sec_fib (A := upUniG K h.1.sum) (X := Fin h.1.sum → K) (G := upUniG K (addBlock h 1 c).1.sum) (cA := fun a => (a : upUniG K h.1.sum ⧸ intSub R (upUniG K h.1.sum))) (oA := Quotient.out) (fun q => QuotientGroup.out_eq' q) (cX := sec_cX R) (oX := outV R) (sec_cX_outV R) (cG := fun g …` and prove the remaining obligations.
+
+Introduce `a x a' x' hq`. Take `⟨g, hg, e⟩` from `(sec_left_eq _ _ _).1 hq`. Take `⟨b, ρ, rfl⟩` from `sec_upJ_surj h c g`. Establish `hbρ` using `(sec_upJ_int R h c b ρ).1 hg`. Rewrite `e` using `[sec_upJ_mul]`.
+
+Take `⟨e1, -⟩` from `sec_upJ_inj h c e`. Conclude with `(sec_left_eq _ _ _).2 ⟨b, hbρ.1, e1⟩`. Introduce `a x x'`. Prove the components needed by the constructor for the conclusion. Introduce `hq`.
+
+Take `⟨g, hg, e⟩` from `(sec_left_eq _ _ _).1 hq`. Take `⟨b, ρ, rfl⟩` from `sec_upJ_surj h c g`. Establish `hbρ` using `(sec_upJ_int R h c b ρ).1 hg`. Rewrite `e` using `[sec_upJ_mul]`. Take `⟨e1, e2⟩` from `sec_upJ_inj h c e`.
+
+Establish `hb1 : b = 1`. Establish `h3` using `congrArg (a⁻¹ * ·) e1`. Simplify using `using h3.symm`. Substitute `hb1` using the available equality. Rewrite `e2` using `[hone]`.
+
+Rewrite using `[sec_cX_eq]`. Introduce `j`. Rewrite using `[e2]`. Simplify using `using hbρ.2 j`. Introduce `hx`.
+
+Rewrite `hx` using `[sec_cX_eq]`. Apply `(sec_left_eq _ _ _).2` to reduce the goal to its premises. Use `⟨sec_upJ h c 1 (x' - x), hJint 1 _ (one_mem _) hx, ?_⟩` and prove the remaining obligations. Use `show sec_upJ h c a x' = sec_upJ h c a x * sec_upJ h c 1 (x' - x)`. Rewrite using `[sec_upJ_mul, mul_one, hone, sub_add_cancel]`.
+
+Introduce `a a' hq x`. Take `⟨b, hb, e⟩` from `(sec_left_eq _ _ _).1 hq`. Use `⟨(sec_m b)⁻¹ *ᵥ x, ?_⟩` and prove the remaining obligations. Substitute `e` using the available equality. Apply `(sec_left_eq _ _ _).2` to reduce the goal to its premises.
+
+Use `⟨sec_upJ h c b 0, hJint b 0 hb (fun j => R.zero_mem), ?_⟩` and prove the remaining obligations. Use `show sec_upJ h c (a * b) ((sec_m b)⁻¹ *ᵥ x) = sec_upJ h c a x * sec_upJ h c b 0`. Rewrite using `[sec_upJ_mul, zero_add]`.
+-/
 theorem sec_up_bij (h : Point K) (c : Kˣ) :
     Function.Bijective (fun p : (upUniG K h.1.sum ⧸ intSub R (upUniG K h.1.sum)) ×
         (Fin h.1.sum → KR R) =>
@@ -773,6 +1065,9 @@ def sec_sigma (h : Point K) (c : Kˣ) (t : Par R h) :
     lowW K (addBlock h 1 c).1 (addBlock h 1 c).2 × upUniG K (addBlock h 1 c).1.sum :=
   (sec_lowJ h c (rep R t.1).1 (outV R t.2.1), sec_upJ h c (rep R t.1).2 (outV R t.2.2))
 
+/- English proof (translation)
+Establish `h1` using `((sec_low_bij R h c).prodMap (sec_up_bij R h c)).comp (Equiv.prodProdProdComm (Quotient (QuotientGroup.rightRel (intSub R (lowW K h.1 h.2)))) (upUniG K h.1.sum ⧸ intSub R (upUniG K h.1.sum)) (Fin h.1.sum → KR R) (Fin h.1.sum → KR R)).bijective`. Conclude with `h1`.
+-/
 theorem sec_sigma_bij (h : Point K) (c : Kˣ) :
     Function.Bijective (fun t => toCos R (sec_sigma R h c t)) := by
   have h1 := ((sec_low_bij R h c).prodMap (sec_up_bij R h c)).comp
@@ -781,6 +1076,9 @@ theorem sec_sigma_bij (h : Point K) (c : Kˣ) :
       (Fin h.1.sum → KR R)).bijective
   exact h1
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨sec_sigma R h c, sec_sigma_bij R h c, fun t => ⟨sec_orbZ h c (rep R t.1) _ _, fun ψ => sec_phase h c (rep R t.1) _ _ ψ⟩⟩`.
+-/
 theorem section_exists (h : Point K) (c : Kˣ) :
     ∃ σ : Par R h → lowW K (addBlock h 1 c).1 (addBlock h 1 c).2 × upUniG K (addBlock h 1 c).1.sum,
       Function.Bijective (fun t => toCos R (σ t)) ∧
@@ -799,6 +1097,9 @@ section InvPart
 
 variable {K : Type} [CommRing K] (R : Subring K)
 
+/- English proof (translation)
+Unfold `toCos at h`. Take `⟨h1, h2⟩` from `Prod.ext_iff.mp h`. Take `⟨a, ha, e1⟩` from `(sec_right_eq _ _ _).1 h1`. Take `⟨b, hb, e2⟩` from `(sec_left_eq _ _ _).1 h2`. Conclude with `⟨a, ha, b, hb, Prod.ext e1 e2⟩`.
+-/
 theorem inv_exists {w : Point K} (p p₁ : lowW K w.1 w.2 × upUniG K w.1.sum)
     (h : toCos R p = toCos R p₁) :
     ∃ a ∈ intSub R (lowW K w.1 w.2), ∃ b ∈ intSub R (upUniG K w.1.sum),
@@ -809,12 +1110,22 @@ theorem inv_exists {w : Point K} (p p₁ : lowW K w.1 w.2 × upUniG K w.1.sum)
   obtain ⟨b, hb, e2⟩ := (sec_left_eq _ _ _).1 h2
   exact ⟨a, ha, b, hb, Prod.ext e1 e2⟩
 
+/- English proof (translation)
+Simplify using `only [orbZ, Subgroup.coe_mul, Units.val_mul, Matrix.mul_assoc]`.
+-/
 theorem inv_orbZ (w : Point K) (a x : lowW K w.1 w.2) (y b : upUniG K w.1.sum) :
     orbZ w (a * x, y * b) =
       ((a : GL (Fin w.1.sum) K) : Matrix (Fin w.1.sum) (Fin w.1.sum) K) * orbZ w (x, y) *
         ((b : GL (Fin w.1.sum) K) : Matrix (Fin w.1.sum) (Fin w.1.sum) K) := by
   simp only [orbZ, Subgroup.coe_mul, Units.val_mul, Matrix.mul_assoc]
 
+/- English proof (translation)
+Rewrite using `[inv_orbZ]`. Establish `haL : IsLowUni ((a : GL (Fin w.1.sum) K) : Matrix (Fin w.1.sum) (Fin w.1.sum) K)` using `a.2.1`. Establish `hbU : IsUpUni ((b : GL (Fin w.1.sum) K) : Matrix (Fin w.1.sum) (Fin w.1.sum) K)` using `b.2`. Establish `haI : IsInt R ((a : GL (Fin w.1.sum) K) : Matrix (Fin w.1.sum) (Fin w.1.sum) K)` using `ha.1`. Establish `hbI : IsInt R ((b : GL (Fin w.1.sum) K) : Matrix (Fin w.1.sum) (Fin w.1.sum) K)` using `hb.1`.
+
+Generalize the expression as in `((a : GL (Fin w.1.sum) K) : Matrix (Fin w.1.sum) (Fin w.1.sum) K) = a0 at *`. Generalize the expression as in `((b : GL (Fin w.1.sum) K) : Matrix (Fin w.1.sum) (Fin w.1.sum) K) = b0 at *`. Generalize the expression as in `orbZ w (x, y) = Z`. Take `⟨A, rfl⟩ : ∃ A : Matrix (Fin w.1.sum) (Fin w.1.sum) R, A.map R.subtype = a0` from `⟨Formalism.DoubleCosetMeasures.P.liftR R a0 haI, Formalism.DoubleCosetMeasures.P.liftR_map R a0 haI⟩`. Take `⟨B, rfl⟩ : ∃ B : Matrix (Fin w.1.sum) (Fin w.1.sum) R, B.map R.subtype = b0` from `⟨Formalism.DoubleCosetMeasures.P.liftR R b0 hbI, Formalism.DoubleCosetMeasures.P.liftR_map R b0 hbI⟩`.
+
+Establish `hA` using `isLowUni_det K haL`. Establish `hB` using `isUpUni_det K hbU`. Use `⟨Formalism.DoubleCosetMeasures.P.cokEquiv R A B Z hA hB, Formalism.DoubleCosetMeasures.P.cokEquiv_eZ R A B Z hA hB haL, fun v v' hv => ?_⟩` and prove the remaining obligations. Rewrite `hv` using `[Formalism.DoubleCosetMeasures.P.cokEquiv_mk]`. Rewrite using `[← Formalism.FourierDecayAlt.P.A5x4.lamLin_mk_eq R _ hv, Formalism.DoubleCosetMeasures.P.lamLin_mul R A B Z hA hbU]`.
+-/
 theorem inv_iso (w : Point K) (a : lowW K w.1 w.2) (ha : a ∈ intSub R (lowW K w.1 w.2))
     (b : upUniG K w.1.sum) (hb : b ∈ intSub R (upUniG K w.1.sum))
     (x : lowW K w.1 w.2) (y : upUniG K w.1.sum) :
@@ -839,6 +1150,15 @@ theorem inv_iso (w : Point K) (a : lowW K w.1 w.2) (ha : a ∈ intSub R (lowW K 
   rw [Formalism.DoubleCosetMeasures.P.cokEquiv_mk] at hv
   rw [← Formalism.FourierDecayAlt.P.A5x4.lamLin_mk_eq R _ hv, Formalism.DoubleCosetMeasures.P.lamLin_mul R A B Z hA hbU]
 
+/- English proof (translation)
+Establish `hSA` using `Formalism.DoubleCosetMeasures.Final.simpleAdd`. Unfold `phase`. Simplify using `only [Subgroup.coe_mul, Units.val_mul]`. Rewrite using `[(hSA K _ _ _).1 a.2.1 x.2.1, (hSA K _ _ _).2 y.2 b.2]`. Establish `hLa : sLow ((a : GL (Fin w.1.sum) K) : Matrix (Fin w.1.sum) (Fin w.1.sum) K) ∈ R`.
+
+Unfold `sLow`. Use `R.sum_mem fun j _ => ?_` and prove the remaining obligations. Use `split_ifs`. Conclude with `ha.1 _ _`. Conclude with `R.zero_mem`.
+
+Establish `hUb : sUp ((b : GL (Fin w.1.sum) K) : Matrix (Fin w.1.sum) (Fin w.1.sum) K) ∈ R`. Unfold `sUp`. Use `R.sum_mem fun j _ => ?_` and prove the remaining obligations. Use `split_ifs`. Conclude with `hb.1 _ _`.
+
+Conclude with `R.zero_mem`. Establish `key : ∀ p q r s : K, p + q + (r + s) = (q + r) + (p + s)`. Introduce `p q r s`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key, AddChar.map_add_eq_mul, hψ _ (R.add_mem hLa hUb), mul_one]`.
+-/
 theorem inv_phase (ψ : AddChar K ℂ) (hψ : ∀ r ∈ R, ψ r = 1) (w : Point K)
     (a : lowW K w.1 w.2) (ha : a ∈ intSub R (lowW K w.1 w.2))
     (b : upUniG K w.1.sum) (hb : b ∈ intSub R (upUniG K w.1.sum))
@@ -865,6 +1185,13 @@ theorem inv_phase (ψ : AddChar K ℂ) (hψ : ∀ r ∈ R, ψ r = 1) (w : Point 
     ring
   rw [key, AddChar.map_add_eq_mul, hψ _ (R.add_mem hLa hUb), mul_one]
 
+/- English proof (translation)
+Take `⟨a, ha, b, hb, rfl⟩` from `inv_exists R p p₁ h`. Take `⟨a', ha', b', hb', rfl⟩` from `inv_exists R p' p₁' h'`. Take `⟨x, y⟩` from `p`. Take `⟨x', y'⟩` from `p'`. Take `⟨φ, hφ⟩` from `inv_iso R w a ha b hb x y`.
+
+Take `⟨φ', hφ'⟩` from `inv_iso R w' a' ha' b' hb' x' y'`. Simplify using `only [Gterm]`. Rewrite using `[inv_phase R ψ hψ w a ha b hb x y, inv_phase R ψ hψ w' a' ha' b' hb' x' y', Formalism.FourierDecayAlt.P.A5x4.card_isoZZ_congr R hφ hφ']`. Establish `e1` using `Formalism.FourierDecayAlt.P.A5x4.isInt_orbZ_inv R w a ha b hb x y`. Establish `e2` using `Formalism.FourierDecayAlt.P.A5x4.isInt_orbZ_inv R w' a' ha' b' hb' x' y'`.
+
+Distinguish the cases in `hc : IsInt R (orbZ w (x, y)) ∧ IsInt R (orbZ w' (x', y'))`. Rewrite using `[if_pos hc, if_pos ⟨e1.2 hc.1, e2.2 hc.2⟩]`. Rewrite using `[if_neg hc, if_neg (fun h => hc ⟨e1.1 h.1, e2.1 h.2⟩)]`.
+-/
 theorem Gterm_inv (ψ : AddChar K ℂ) (hψ : ∀ r ∈ R, ψ r = 1) (w w' : Point K)
     (p p₁ : lowW K w.1 w.2 × upUniG K w.1.sum) (p' p₁' : lowW K w'.1 w'.2 × upUniG K w'.1.sum)
     (h : toCos R p = toCos R p₁) (h' : toCos R p' = toCos R p₁') :
@@ -884,10 +1211,16 @@ theorem Gterm_inv (ψ : AddChar K ℂ) (hψ : ∀ r ∈ R, ψ r = 1) (w w' : Poi
   · rw [if_pos hc, if_pos ⟨e1.2 hc.1, e2.2 hc.2⟩]
   · rw [if_neg hc, if_neg (fun h => hc ⟨e1.1 h.1, e2.1 h.2⟩)]
 
+/- English proof (translation)
+Unfold `toCos rep`. Conclude with `Prod.ext (Quotient.out_eq _) (QuotientGroup.out_eq' _)`.
+-/
 theorem inv_toCos_rep {w : Point K} (q : Cos R w) : toCos R (rep R q) = q := by
   unfold toCos rep
   exact Prod.ext (Quotient.out_eq _) (QuotientGroup.out_eq' _)
 
+/- English proof (translation)
+Unfold `Kp`. Use `symm`. Use `finsum_eq_of_bijective (fun x : T × T' => ((toCos R (σ x.1), toCos R (σ' x.2)) : Cos R w × Cos R w')) (hσ.prodMap hσ') fun x => ?_` and prove the remaining obligations. Use `show _ = Gterm R ψ w w' (rep R (toCos R (σ x.1))) (rep R (toCos R (σ' x.2)))`. Conclude with `Gterm_inv R ψ hψ w w' _ _ _ _ (inv_toCos_rep R _).symm (inv_toCos_rep R _).symm`.
+-/
 theorem Kp_eq_section (ψ : AddChar K ℂ) (hψ : ∀ r ∈ R, ψ r = 1) (w w' : Point K) (T T' : Type)
     (σ : T → lowW K w.1 w.2 × upUniG K w.1.sum) (σ' : T' → lowW K w'.1 w'.2 × upUniG K w'.1.sum)
     (hσ : Function.Bijective (fun t => toCos R (σ t)))
@@ -922,6 +1255,11 @@ variable {M₁ M₂ C₁ C₂ : Type} [AddCommGroup M₁] [Module R M₁] [AddCo
   {Φ₁ : M₁ →ₗ[R] K} {π₁ : M₁ →ₗ[R] C₁} {g₁ : M₁} {lam₁ : C₁ →ₗ[R] KR R}
   {Φ₂ : M₂ →ₗ[R] K} {π₂ : M₂ →ₗ[R] C₂} {g₂ : M₂} {lam₂ : C₂ →ₗ[R] KR R}
 
+/- English proof (translation)
+Take `⟨r, hr⟩` from `D.ker (x - y) (by rw [map_sub, h1, sub_self])`. Establish `h0 : Φ₁ (x - y) = 0` using `by rw [map_sub, h2, sub_self]`. Rewrite `h0` using `[hr, map_smul, D.Pg]`. Establish `hr0 : (r : K) = 0`. Establish `h3 : (r : K) * (γ : K) = 0` using `h0`.
+
+Conclude with `(Units.mul_left_eq_zero γ).mp h3`. Establish `hr1 : r = 0` using `Subtype.ext hr0`. Rewrite `hr` using `[hr1, zero_smul, sub_eq_zero]`. Conclude with `hr`.
+-/
 theorem iso_uniq (D : iso_Dat R M₁ C₁ γ Φ₁ π₁ g₁ lam₁) {x y : M₁} (h1 : π₁ x = π₁ y)
     (h2 : Φ₁ x = Φ₁ y) : x = y := by
   obtain ⟨r, hr⟩ := D.ker (x - y) (by rw [map_sub, h1, sub_self])
@@ -934,6 +1272,13 @@ theorem iso_uniq (D : iso_Dat R M₁ C₁ γ Φ₁ π₁ g₁ lam₁) {x y : M�
   rw [hr1, zero_smul, sub_eq_zero] at hr
   exact hr
 
+/- English proof (translation)
+Take `⟨x0, hx0⟩` from `D.surj y`. Establish `h1` using `D.lam_pi x0`. Rewrite `h1` using `[hx0, h, Submodule.Quotient.eq, LinearMap.mem_range]`. Take `⟨s, hs⟩` from `h1`. Establish `hs' : (s : K) = ((γ⁻¹ : Kˣ) : K) * k - ((γ⁻¹ : Kˣ) : K) * Φ₂ x0` using `hs`.
+
+Use `⟨x0 + s • g₂, by rw [map_add, map_smul, D.pg, smul_zero, add_zero, hx0], ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, map_smul, D.Pg]`. Use `show Φ₂ x0 + (s : K) * (γ : K) = k`. Rewrite using `[hs']`. Establish `hγ : ((γ⁻¹ : Kˣ) : K) * (γ : K) = 1` using `by simp`.
+
+Take the linear combination `(k - Φ₂ x0) * hγ`.
+-/
 theorem iso_ex (D : iso_Dat R M₂ C₂ γ Φ₂ π₂ g₂ lam₂) (y : C₂) (k : K)
     (h : lam₂ y = Submodule.Quotient.mk (((γ⁻¹ : Kˣ) : K) * k)) : ∃ x, π₂ x = y ∧ Φ₂ x = k := by
   obtain ⟨x0, hx0⟩ := D.surj y
@@ -952,6 +1297,9 @@ def iso_liftFun (D₂ : iso_Dat R M₂ C₂ γ Φ₂ π₂ g₂ lam₂) (D₁ : 
     (φ : C₁ →ₗ[R] C₂) (hφ : ∀ y, lam₂ (φ y) = lam₁ y) (x : M₁) : M₂ :=
   Classical.choose (iso_ex D₂ (φ (π₁ x)) (Φ₁ x) (by rw [hφ, D₁.lam_pi]))
 
+/- English proof (translation)
+Unfold `iso_liftFun`. Conclude with `Classical.choose_spec (iso_ex D₂ (φ (π₁ x)) (Φ₁ x) (by rw [hφ, D₁.lam_pi]))`.
+-/
 theorem iso_liftFun_spec (D₂ : iso_Dat R M₂ C₂ γ Φ₂ π₂ g₂ lam₂)
     (D₁ : iso_Dat R M₁ C₁ γ Φ₁ π₁ g₁ lam₁)
     (φ : C₁ →ₗ[R] C₂) (hφ : ∀ y, lam₂ (φ y) = lam₁ y) (x : M₁) :
@@ -975,12 +1323,18 @@ def iso_lift (D₂ : iso_Dat R M₂ C₂ γ Φ₂ π₂ g₂ lam₂) (D₁ : iso
     · rw [RingHom.id_apply, map_smul, (iso_liftFun_spec D₂ D₁ φ hφ _).2,
         (iso_liftFun_spec D₂ D₁ φ hφ _).2, map_smul]
 
+/- English proof (translation)
+Conclude with `iso_liftFun_spec D₂ D₁ φ hφ x`.
+-/
 theorem iso_lift_spec (D₂ : iso_Dat R M₂ C₂ γ Φ₂ π₂ g₂ lam₂)
     (D₁ : iso_Dat R M₁ C₁ γ Φ₁ π₁ g₁ lam₁)
     (φ : C₁ →ₗ[R] C₂) (hφ : ∀ y, lam₂ (φ y) = lam₁ y) (x : M₁) :
     π₂ (iso_lift D₂ D₁ φ hφ x) = φ (π₁ x) ∧ Φ₂ (iso_lift D₂ D₁ φ hφ x) = Φ₁ x := by
   exact iso_liftFun_spec D₂ D₁ φ hφ x
 
+/- English proof (translation)
+Rewrite using `[← hφ]`. Simplify using the standard rewrite rules.
+-/
 theorem iso_symm_lam (φ : C₁ ≃ₗ[R] C₂) (hφ : ∀ y, lam₂ (φ y) = lam₁ y) (y : C₂) :
     lam₁ ((φ.symm : C₂ →ₗ[R] C₁) y) = lam₂ y := by
   rw [← hφ]
@@ -1007,12 +1361,26 @@ def iso_liftE (D₂ : iso_Dat R M₂ C₂ γ Φ₂ π₂ g₂ lam₂) (D₁ : is
       · simp only [LinearMap.comp_apply, LinearMap.id_apply]
         rw [(iso_lift_spec D₁ D₂ _ _ _).2, (iso_lift_spec D₂ D₁ _ _ _).2])
 
+/- English proof (translation)
+Conclude with `iso_lift_spec D₂ D₁ (φ : C₁ →ₗ[R] C₂) hφ x`.
+-/
 theorem iso_liftE_spec (D₂ : iso_Dat R M₂ C₂ γ Φ₂ π₂ g₂ lam₂)
     (D₁ : iso_Dat R M₁ C₁ γ Φ₁ π₁ g₁ lam₁)
     (φ : C₁ ≃ₗ[R] C₂) (hφ : ∀ y, lam₂ (φ y) = lam₁ y) (x : M₁) :
     π₂ (iso_liftE D₂ D₁ φ hφ x) = φ (π₁ x) ∧ Φ₂ (iso_liftE D₂ D₁ φ hφ x) = Φ₁ x := by
   exact iso_lift_spec D₂ D₁ (φ : C₁ →ₗ[R] C₂) hφ x
 
+/- English proof (translation)
+Establish `hker1 : ∀ x, π₁ x = 0 → π₂ (Ψ x) = 0`. Introduce `x hx`. Take `⟨r, rfl⟩` from `D₁.ker x hx`. Rewrite using `[map_smul, hg, map_smul, D₂.pg, smul_zero]`. Establish `hker2 : ∀ y, π₂ y = 0 → π₁ (Ψ.symm y) = 0`.
+
+Introduce `y hy`. Take `⟨r, rfl⟩` from `D₂.ker y hy`. Rewrite using `[map_smul, ← hg, LinearEquiv.symm_apply_apply, map_smul, D₁.pg, smul_zero]`. Set `e₁` to `π₁.quotKerEquivOfSurjective D₁.surj`. Set `e₂` to `π₂.quotKerEquivOfSurjective D₂.surj`.
+
+Set `f : (M₁ ⧸ LinearMap.ker π₁) →ₗ[R] (M₂ ⧸ LinearMap.ker π₂)` to `(LinearMap.ker π₁).mapQ (LinearMap.ker π₂) Ψ.toLinearMap (fun x hx => by`. Simplify using `only [Submodule.mem_comap, LinearMap.mem_ker] at hx ⊢`. Conclude with `hker1 x hx)`. Set `g : (M₂ ⧸ LinearMap.ker π₂) →ₗ[R] (M₁ ⧸ LinearMap.ker π₁)` to `(LinearMap.ker π₂).mapQ (LinearMap.ker π₁) Ψ.symm.toLinearMap (fun y hy => by`. Simplify using `only [Submodule.mem_comap, LinearMap.mem_ker] at hy ⊢`.
+
+Conclude with `hker2 y hy)`. Set `F : (M₁ ⧸ LinearMap.ker π₁) ≃ₗ[R] (M₂ ⧸ LinearMap.ker π₂)` to `LinearEquiv.ofLinear f g (by ext y; simp [f, g]) (by ext x; simp [f, g])`. Use `⟨(e₁.symm.trans F).trans e₂, fun x => ?_⟩` and prove the remaining obligations. Establish `h1 : e₁.symm (π₁ x) = Submodule.Quotient.mk x`. Rewrite using `[LinearEquiv.symm_apply_eq]`.
+
+Simplify using `[e₁]`. Simplify using `only [LinearEquiv.trans_apply]`. Rewrite using `[h1]`. Simplify using `[F, f, e₂]`.
+-/
 theorem iso_down (D₂ : iso_Dat R M₂ C₂ γ Φ₂ π₂ g₂ lam₂) (D₁ : iso_Dat R M₁ C₁ γ Φ₁ π₁ g₁ lam₁)
     (Ψ : M₁ ≃ₗ[R] M₂) (hg : Ψ g₁ = g₂) : ∃ φ : C₁ ≃ₗ[R] C₂, ∀ x, φ (π₁ x) = π₂ (Ψ x) := by
   have hker1 : ∀ x, π₁ x = 0 → π₂ (Ψ x) = 0 := by
@@ -1043,6 +1411,17 @@ theorem iso_down (D₂ : iso_Dat R M₂ C₂ γ Φ₂ π₂ g₂ lam₂) (D₁ :
   rw [h1]
   simp [F, f, e₂]
 
+/- English proof (translation)
+Use `Nat.card_congr (Equiv.ofBijective (fun φ => ⟨iso_liftE D₂ D₁ φ.1 φ.2.1, fun x => (iso_liftE_spec D₂ D₁ φ.1 φ.2.1 x).2, ?_, ?_⟩) ⟨?_, ?_⟩)` and prove the remaining obligations. Apply `iso_uniq D₂` to reduce the goal to its premises. Rewrite using `[(iso_liftE_spec D₂ D₁ φ.1 φ.2.1 _).1, D₁.pg, D₂.pg, map_zero]`. Rewrite using `[(iso_liftE_spec D₂ D₁ φ.1 φ.2.1 _).2, D₁.Pg, D₂.Pg]`. Apply `iso_uniq D₂` to reduce the goal to its premises.
+
+Rewrite using `[(iso_liftE_spec D₂ D₁ φ.1 φ.2.1 _).1, φ.2.2]`. Rewrite using `[(iso_liftE_spec D₂ D₁ φ.1 φ.2.1 _).2, hf]`. Introduce `φ φ' h`. Apply `Subtype.ext` to reduce the goal to its premises. Use extensionality with `y`.
+
+Take `⟨x, rfl⟩` from `D₁.surj y`. Establish `h1 : iso_liftE D₂ D₁ φ.1 φ.2.1 = iso_liftE D₂ D₁ φ'.1 φ'.2.1` using `congrArg Subtype.val h`. Rewrite using `[← (iso_liftE_spec D₂ D₁ φ.1 φ.2.1 x).1, ← (iso_liftE_spec D₂ D₁ φ'.1 φ'.2.1 x).1, h1]`. Introduce and unpack `⟨Ψ, hΨ, hg, hff⟩`. Take `⟨φ, hφ⟩` from `iso_down D₂ D₁ Ψ hg`.
+
+Establish `hl : ∀ y, lam₂ (φ y) = lam₁ y`. Introduce `y`. Take `⟨x, rfl⟩` from `D₁.surj y`. Rewrite using `[hφ, D₂.lam_pi, D₁.lam_pi, hΨ]`. Use `⟨⟨φ, hl, by rw [hφ, hff]⟩, ?_⟩` and prove the remaining obligations.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Use extensionality with `x`. Apply `iso_uniq D₂` to reduce the goal to its premises. Rewrite using `[(iso_liftE_spec D₂ D₁ φ hl x).1, hφ]`. Rewrite using `[(iso_liftE_spec D₂ D₁ φ hl x).2, hΨ]`.
+-/
 theorem iso_card (D₂ : iso_Dat R M₂ C₂ γ Φ₂ π₂ g₂ lam₂) (D₁ : iso_Dat R M₁ C₁ γ Φ₁ π₁ g₁ lam₁)
     (f₁ : M₁) (f₂ : M₂) (hf : Φ₁ f₁ = Φ₂ f₂) :
     Nat.card {φ : C₁ ≃ₗ[R] C₂ // (∀ y, lam₂ (φ y) = lam₁ y) ∧ φ (π₁ f₁) = π₂ f₂} =
@@ -1083,14 +1462,23 @@ variable {K : Type} [CommRing K] {m N : ℕ} (hN : N = m + 1)
 def iso_vec {X : Type} (a : Fin m → X) (r : X) : Fin N → X :=
   fun x => Sum.elim a (fun _ => r) ((eN hN).symm x)
 
+/- English proof (translation)
+Simplify using `[iso_vec]`.
+-/
 theorem iso_vec_inl {X : Type} (a : Fin m → X) (r : X) (i : Fin m) :
     iso_vec hN a r (eN hN (Sum.inl i)) = a i := by
   simp [iso_vec]
 
+/- English proof (translation)
+Simplify using `[iso_vec]`.
+-/
 theorem iso_vec_inr {X : Type} (a : Fin m → X) (r : X) (u : Unit) :
     iso_vec hN a r (eN hN (Sum.inr u)) = r := by
   simp [iso_vec]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `z`. Take `⟨w, rfl⟩` from `(eN hN).surjective z`. Break down `w with i | ⟨⟩` into its components or cases. Conclude with `iso_vec_inl hN _ _ i`. Conclude with `iso_vec_inr hN _ _ ()`.
+-/
 theorem iso_vec_eta {X : Type} (x : Fin N → X) :
     iso_vec hN (fun i => x (eN hN (Sum.inl i))) (x (eN hN (Sum.inr ()))) = x := by
   funext z
@@ -1099,6 +1487,9 @@ theorem iso_vec_eta {X : Type} (x : Fin N → X) :
   · exact iso_vec_inl hN _ _ i
   · exact iso_vec_inr hN _ _ ()
 
+/- English proof (translation)
+Use function extensionality and compare the values at `z`. Take `⟨w, rfl⟩` from `(eN hN).surjective z`. Break down `w with i | ⟨⟩` into its components or cases. Conclude with `h1 i`. Conclude with `h2`.
+-/
 theorem iso_vec_ext {X : Type} {x y : Fin N → X}
     (h1 : ∀ i, x (eN hN (Sum.inl i)) = y (eN hN (Sum.inl i)))
     (h2 : x (eN hN (Sum.inr ())) = y (eN hN (Sum.inr ()))) : x = y := by
@@ -1108,6 +1499,11 @@ theorem iso_vec_ext {X : Type} {x y : Fin N → X}
   · exact h1 i
   · exact h2
 
+/- English proof (translation)
+Apply `iso_vec_ext hN` to reduce the goal to its premises. Introduce `i`. Rewrite using `[iso_vec_inl]`. Simplify using `only [mulVec, dotProduct]`. Rewrite using `[← (eN hN).sum_comp, Fintype.sum_sum_type]`.
+
+Simplify using `[blkM_ll, blkM_lr, iso_vec_inl, iso_vec_inr, mulVec, dotProduct, mul_comm]`. Rewrite using `[iso_vec_inr]`. Simplify using `only [mulVec, dotProduct]`. Rewrite using `[← (eN hN).sum_comp, Fintype.sum_sum_type]`. Simplify using `[blkM_rl, blkM_rr, iso_vec_inl, iso_vec_inr, dotProduct]`.
+-/
 theorem iso_blkM_mulVec (A : Matrix (Fin m) (Fin m) K) (b a : Fin m → K) (d : K)
     (y : Fin m → K) (s : K) :
     blkM hN A b a d *ᵥ iso_vec hN y s = iso_vec hN (A *ᵥ y + s • b) (a ⬝ᵥ y + d * s) := by
@@ -1122,6 +1518,19 @@ theorem iso_blkM_mulVec (A : Matrix (Fin m) (Fin m) K) (b a : Fin m → K) (d : 
     rw [← (eN hN).sum_comp, Fintype.sum_sum_type]
     simp [blkM_rl, blkM_rr, iso_vec_inl, iso_vec_inr, dotProduct]
 
+/- English proof (translation)
+Use `set ci : K := ((c⁻¹ : Kˣ) : K) with hci`. Establish `hZi : Z * Z⁻¹ = 1` using `Matrix.mul_nonsing_inv Z hZ`. Establish `hZi' : Z⁻¹ * Z = 1` using `Matrix.nonsing_inv_mul Z hZ`. Establish `hc : (c : K) * ci = 1` using `by simp [hci]`. Establish `hmv : ∀ w : Fin m → K, Z * vecMulVec η w = vecMulVec (Z *ᵥ η) w`.
+
+Introduce `w`. Use extensionality with `i j`. Simplify using `[vecMulVec, Matrix.mul_apply, mulVec, dotProduct, Finset.sum_mul, mul_assoc]`. Establish `hv : ∀ (x w : Fin m → K), x ᵥ* vecMulVec η w = (x ⬝ᵥ η) • w`. Introduce `x w`.
+
+Use function extensionality and compare the values at `j`. Simplify using `[vecMul, vecMulVec, dotProduct, Finset.sum_mul, mul_assoc]`. It suffices to establish `H : (Z * (Z⁻¹ + vecMulVec η (ci • ξ)) + vecMulVec (Z *ᵥ η) (-(ci • ξ)) = 1) ∧ (Z *ᵥ -(ci • η) + ci • (Z *ᵥ η) = 0) ∧ ((ξ ᵥ* Z) ᵥ* (Z⁻¹ + vecMulVec η (ci • ξ)) + (ξ ⬝ᵥ (Z *ᵥ η) + (c : K)) • -(ci • ξ) = 0) ∧ ((ξ ᵥ* Z) ⬝ᵥ -(ci • η) + (ξ ⬝ᵥ (Z *ᵥ η) + (c : K)) * ci = 1) by`. Unfold `bigZ`. Rewrite using `[blkM_mul, H.1, H.2.1, H.2.2.1, H.2.2.2, blkM_one]`.
+
+Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_add, hZi, hmv, add_assoc]`. Establish `h0 : vecMulVec (Z *ᵥ η) (ci • ξ) + vecMulVec (Z *ᵥ η) (-(ci • ξ)) = 0`. Use extensionality with `i j`. Simplify using `[vecMulVec]`.
+
+Rewrite using `[h0, add_zero]`. Rewrite using `[Matrix.mulVec_neg, Matrix.mulVec_smul]`. Simplify using the standard rewrite rules. Rewrite using `[Matrix.vecMul_add, Matrix.vecMul_vecMul, hZi, Matrix.vecMul_one, hv, ← Matrix.dotProduct_mulVec]`. Use function extensionality and compare the values at `j`.
+
+Simplify using `only [Pi.add_apply, Pi.smul_apply, Pi.neg_apply, smul_eq_mul, Pi.zero_apply]`. Take the linear combination `(-(ξ j)) * hc`. Rewrite using `[← Matrix.dotProduct_mulVec, Matrix.mulVec_neg, Matrix.mulVec_smul, dotProduct_neg, dotProduct_smul, smul_eq_mul]`. Take the linear combination `hc`.
+-/
 theorem iso_bigZ_mul_inv (Z : Matrix (Fin m) (Fin m) K) (hZ : IsUnit Z.det) (ξ η : Fin m → K)
     (c : Kˣ) : bigZ hN Z ξ η (c : K) *
       blkM hN (Z⁻¹ + vecMulVec η (((c⁻¹ : Kˣ) : K) • ξ)) (-(((c⁻¹ : Kˣ) : K) • η))
@@ -1160,16 +1569,27 @@ theorem iso_bigZ_mul_inv (Z : Matrix (Fin m) (Fin m) K) (hZ : IsUnit Z.det) (ξ 
       smul_eq_mul]
     linear_combination hc
 
+/- English proof (translation)
+Conclude with `Matrix.inv_eq_right_inv (iso_bigZ_mul_inv hN Z hZ ξ η c)`.
+-/
 theorem iso_bigZ_inv (Z : Matrix (Fin m) (Fin m) K) (hZ : IsUnit Z.det) (ξ η : Fin m → K)
     (c : Kˣ) : (bigZ hN Z ξ η (c : K))⁻¹ =
       blkM hN (Z⁻¹ + vecMulVec η (((c⁻¹ : Kˣ) : K) • ξ)) (-(((c⁻¹ : Kˣ) : K) • η))
         (-(((c⁻¹ : Kˣ) : K) • ξ)) ((c⁻¹ : Kˣ) : K) := by
   exact Matrix.inv_eq_right_inv (iso_bigZ_mul_inv hN Z hZ ξ η c)
 
+/- English proof (translation)
+Conclude with `Matrix.isUnit_det_of_right_inverse (iso_bigZ_mul_inv hN Z hZ ξ η c)`.
+-/
 theorem iso_bigZ_det (Z : Matrix (Fin m) (Fin m) K) (hZ : IsUnit Z.det) (ξ η : Fin m → K)
     (c : Kˣ) : IsUnit (bigZ hN Z ξ η (c : K)).det := by
   exact Matrix.isUnit_det_of_right_inverse (iso_bigZ_mul_inv hN Z hZ ξ η c)
 
+/- English proof (translation)
+Rewrite using `[← (eN hN).sum_comp, Fintype.sum_sum_type]`. Establish `h1 : ∀ i : Fin m, ¬ ((eN hN (Sum.inl i) : Fin N) : ℕ) + 1 = N`. Introduce `i`. Use `i.isLt` as an intermediate fact. Rewrite using `[eN_inl]`.
+
+Use linear arithmetic over natural numbers and integers. Establish `h2 : ((eN hN (Sum.inr ()) : Fin N) : ℕ) + 1 = N`. Rewrite using `[eN_inr]`. Use linear arithmetic over natural numbers and integers. Simplify using `[h1, h2]`.
+-/
 theorem iso_last_sum (w : Fin N → K) :
     (∑ j : Fin N, if j.val + 1 = N then w j else 0) = w (eN hN (Sum.inr ())) := by
   rw [← (eN hN).sum_comp, Fintype.sum_sum_type]
@@ -1188,6 +1608,9 @@ end IsoBlk
 section IsoConc
 variable {K : Type} [CommRing K] (R : Subring K) {m N : ℕ} (hN : N = m + 1)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `z`. Take `⟨w, rfl⟩` from `(eN hN).surjective z`. Apply the tactic sequence `rcases w with i | ⟨⟩ <;> (simp [coeLin, iso_vec_inl, iso_vec_inr]; try rfl)`.
+-/
 theorem iso_coeLin_vec (a : Fin m → R) (r : R) :
     coeLin R (iso_vec hN a r) = iso_vec hN (coeLin R a) (r : K) := by
   funext z
@@ -1199,13 +1622,22 @@ def iso_top : (Fin N → R) →ₗ[R] (Fin m → R) :=
 
 def iso_bot : (Fin N → R) →ₗ[R] R := LinearMap.proj (eN hN (Sum.inr ()))
 
+/- English proof (translation)
+Conclude with `iso_vec_eta hN x`.
+-/
 theorem iso_eta (x : Fin N → R) : iso_vec hN (iso_top R hN x) (iso_bot R hN x) = x := by
   exact iso_vec_eta hN x
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Conclude with `iso_vec_inl hN a r i`.
+-/
 theorem iso_top_vec (a : Fin m → R) (r : R) : iso_top R hN (iso_vec hN a r) = a := by
   funext i
   exact iso_vec_inl hN a r i
 
+/- English proof (translation)
+Conclude with `iso_vec_inr hN a r ()`.
+-/
 theorem iso_bot_vec (a : Fin m → R) (r : R) : iso_bot R hN (iso_vec hN a r) = r := by
   exact iso_vec_inr hN a r ()
 
@@ -1217,17 +1649,26 @@ def iso_dot (ξ : Fin m → K) : (Fin m → R) →ₗ[R] K where
     have : r • coeLin R v = (r : K) • coeLin R v := rfl
     rw [this, dotProduct_smul]; rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem iso_dot_apply (ξ : Fin m → K) (v : Fin m → R) : iso_dot R ξ v = ξ ⬝ᵥ coeLin R v := rfl
 
 def affineForm (ξ : Fin m → K) : (Fin N → R) →ₗ[R] K :=
   (Algebra.linearMap R K).comp (iso_bot R hN) - (iso_dot R ξ).comp (iso_top R hN)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem affine_form_apply (ξ : Fin m → K) (x : Fin N → R) :
     affineForm R hN ξ x = (iso_bot R hN x : K) - ξ ⬝ᵥ coeLin R (iso_top R hN x) := rfl
 
 def iso_rho (Z : Matrix (Fin m) (Fin m) K) (ξ : Fin m → K) : (Fin N → R) →ₗ[R] coker R Z × K :=
   LinearMap.prod ((Submodule.mkQ _).comp (iso_top R hN)) (affineForm R hN ξ)
 
+/- English proof (translation)
+Simplify using `[iso_rho, LinearMap.mem_ker, Prod.mk_eq_zero, Submodule.Quotient.mk_eq_zero]`.
+-/
 theorem iso_mem_ker (Z : Matrix (Fin m) (Fin m) K) (ξ : Fin m → K) (x : Fin N → R) :
     x ∈ LinearMap.ker (iso_rho R hN Z ξ) ↔ iso_top R hN x ∈ latZ R Z ∧ affineForm R hN ξ x = 0 := by
   simp [iso_rho, LinearMap.mem_ker, Prod.mk_eq_zero, Submodule.Quotient.mk_eq_zero]
@@ -1246,6 +1687,13 @@ def iso_piS (Z : Matrix (Fin m) (Fin m) K) (ξ : Fin m → K) : iso_M R hN Z ξ 
         Submodule.Quotient.mk_eq_zero]
       exact ((iso_mem_ker R hN Z ξ x).1 hx).1)
 
+/- English proof (translation)
+Introduce `x hx`. Rewrite `hx` using `[iso_mem_ker]`. Take `⟨hlat, hphi⟩` from `hx`. Rewrite using `[LinearMap.mem_ker, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Take `⟨u, hu⟩` from `hlat`.
+
+Simplify using `only [LinearMap.comp_apply, LinearMap.coe_restrictScalars, Matrix.mulVecLin_apply] at hu`. Rewrite `hphi` using `[affine_form_apply, sub_eq_zero]`. Use `⟨iso_vec hN u 0, ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, LinearMap.coe_restrictScalars, Matrix.mulVecLin_apply]`. Rewrite using `[iso_coeLin_vec, bigZ, iso_blkM_mulVec, ← iso_eta R hN x, iso_coeLin_vec, hphi, ← hu, ← Matrix.dotProduct_mulVec]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem iso_ker_le (Z : Matrix (Fin m) (Fin m) K) (ξ η : Fin m → K) (c : K) :
     LinearMap.ker (iso_rho R hN Z ξ) ≤ LinearMap.ker (Submodule.mkQ (latZ R (bigZ hN Z ξ η c))) := by
   intro x hx
@@ -1265,6 +1713,13 @@ def iso_piB (Z : Matrix (Fin m) (Fin m) K) (ξ η : Fin m → K) (c : K) :
     iso_M R hN Z ξ →ₗ[R] coker R (bigZ hN Z ξ η c) :=
   (LinearMap.ker (iso_rho R hN Z ξ)).liftQ (Submodule.mkQ _) (iso_ker_le R hN Z ξ η c)
 
+/- English proof (translation)
+Apply `iso_vec_ext hN` to reduce the goal to its premises. Introduce `i`. Rewrite using `[iso_vec_inl]`. Simplify using `only [eLast]`. Rewrite using `[if_neg]`.
+
+Both sides reduce to the same expression. Rewrite using `[eN_inl]`. Use `i.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[iso_vec_inr]`.
+
+Simplify using `only [eLast]`. Rewrite using `[if_pos]`. Rewrite using `[eN_inr]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem iso_eLast : (eLast R : Fin N → R) = iso_vec hN 0 1 := by
   apply iso_vec_ext hN
   · intro i
@@ -1287,20 +1742,35 @@ section IsoData
 variable {K : Type} [CommRing K] (R : Subring K) {m N : ℕ} (hN : N = m + 1)
   (Z : Matrix (Fin m) (Fin m) K) (hZ : IsUnit Z.det) (ξ η : Fin m → K) (c : Kˣ)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem iso_Phi_mk (x : Fin N → R) :
     iso_Phi R hN Z ξ (Submodule.Quotient.mk x) = affineForm R hN ξ x := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem iso_piS_mk (x : Fin N → R) :
     iso_piS R hN Z ξ (Submodule.Quotient.mk x) = Submodule.Quotient.mk (iso_top R hN x) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem iso_piB_mk (x : Fin N → R) :
     iso_piB R hN Z ξ η (c : K) (Submodule.Quotient.mk x) = Submodule.Quotient.mk x := rfl
 
+/- English proof (translation)
+Rewrite using `[affine_form_apply, iso_bot_vec, iso_top_vec]`.
+-/
 theorem affine_form_on_vector (a : Fin m → R) (r : R) :
     affineForm R hN ξ (iso_vec hN a r) = (r : K) - ξ ⬝ᵥ coeLin R a := by
   rw [affine_form_apply, iso_bot_vec, iso_top_vec]
 
 include hZ in
+/- English proof (translation)
+Rewrite using `[Formalism.DoubleCosetMeasures.P.lamLin_apply, Formalism.DoubleCosetMeasures.P.lastCoord_apply, iso_last_sum hN, iso_bigZ_inv hN Z hZ, ← iso_eta R hN x, iso_coeLin_vec, iso_blkM_mulVec, iso_vec_inr, affine_form_on_vector, Submodule.mkQ_apply]`. Use `congr 1`. Rewrite using `[neg_dotProduct, smul_dotProduct, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem iso_lamLin_big (x : Fin N → R) :
     lamLin R (bigZ hN Z ξ η (c : K)) x =
       Submodule.Quotient.mk (((c⁻¹ : Kˣ) : K) * affineForm R hN ξ x) := by
@@ -1311,6 +1781,23 @@ theorem iso_lamLin_big (x : Fin N → R) :
   rw [neg_dotProduct, smul_dotProduct, smul_eq_mul]
   ring
 
+/- English proof (translation)
+Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Conclude with `⟨Submodule.Quotient.mk x, rfl⟩`. Use `ker x hx := by`. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Rewrite `hx` using `[iso_piB_mk, Submodule.Quotient.mk_eq_zero, Formalism.DoubleCosetMeasures.P.mem_latZ]`.
+
+Take `⟨y, hy⟩` from `hx`. Use `⟨iso_bot R hN y, ?_⟩` and prove the remaining obligations. Rewrite using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.eq, iso_mem_ker]`. Rewrite `hy` using `[← iso_eta R hN y, iso_coeLin_vec, bigZ, iso_blkM_mulVec, ← iso_eta R hN x, iso_coeLin_vec]`. Establish `h1 : Z *ᵥ coeLin R (iso_top R hN y) + (iso_bot R hN y : K) • Z *ᵥ η = coeLin R (iso_top R hN x)`.
+
+Use function extensionality and compare the values at `i`. Use `congrFun hy (eN hN (Sum.inl i))` as an intermediate fact. Rewrite `this` using `[iso_vec_inl, iso_vec_inl]`. Then use the resulting hypothesis. Establish `h2 : ξ ᵥ* Z ⬝ᵥ coeLin R (iso_top R hN y) + (ξ ⬝ᵥ Z *ᵥ η + (c : K)) * (iso_bot R hN y : K) = (iso_bot R hN x : K)`. Use `congrFun hy (eN hN (Sum.inr ()))` as an intermediate fact.
+
+Rewrite `this` using `[iso_vec_inr, iso_vec_inr]`. Then use the resulting hypothesis. Establish `h3 : coeLin R (iso_top R hN (x - iso_bot R hN y • iso_vec hN b s)) = Z *ᵥ coeLin R (iso_top R hN y)`. Rewrite using `[map_sub, map_sub, map_smul, map_smul, iso_top_vec, hb, ← h1]`. Establish `: iso_bot R hN y • Z *ᵥ η = (iso_bot R hN y : K) • Z *ᵥ η` using `rfl`. Rewrite using `[this]`.
+
+Normalize the expressions using the abelian group laws. Use `⟨(Formalism.DoubleCosetMeasures.P.mem_latZ R Z _).2 ⟨_, h3.symm⟩, ?_⟩` and prove the remaining obligations. Rewrite `*` using `[affine_form_apply, h3, map_sub, map_smul, iso_bot_vec, ← Matrix.dotProduct_mulVec]`. Use `push_cast`. Rewrite using `[← h2]`.
+
+Simplify using `only [smul_eq_mul, Subring.coe_mul, hs]`. Expand and normalize the polynomial expressions, which then agree. Use `pg := by`. Rewrite using `[iso_piB_mk, Submodule.Quotient.mk_eq_zero, Formalism.DoubleCosetMeasures.P.mem_latZ]`. Use `⟨iso_vec hN 0 1, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[iso_coeLin_vec, iso_coeLin_vec, bigZ, iso_blkM_mulVec, hb, hs]`. Simplify using the standard rewrite rules. Use `Pg := by`. Rewrite using `[iso_Phi_mk, affine_form_on_vector, hs, hb]`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `lam_pi x := by`. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Rewrite using `[iso_piB_mk, A5x6.muZ_mk, iso_lamLin_big R hN Z hZ, iso_Phi_mk]`.
+-/
 theorem iso_datB (b : Fin m → R) (hb : coeLin R b = Z *ᵥ η) (s : R)
     (hs : (s : K) = ξ ⬝ᵥ (Z *ᵥ η) + (c : K)) :
     iso_Dat R (iso_M R hN Z ξ) (coker R (bigZ hN Z ξ η (c : K))) c (iso_Phi R hN Z ξ)
@@ -1358,6 +1845,19 @@ theorem iso_datB (b : Fin m → R) (hb : coeLin R b = Z *ᵥ η) (s : R)
     obtain ⟨x, rfl⟩ := Submodule.Quotient.mk_surjective _ x
     rw [iso_piB_mk, A5x6.muZ_mk, iso_lamLin_big R hN Z hZ, iso_Phi_mk]
 
+/- English proof (translation)
+Take `⟨a, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Conclude with `⟨Submodule.Quotient.mk (iso_vec hN a 0), by rw [iso_piS_mk, iso_top_vec]⟩`. Use `ker x hx := by`. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Rewrite `hx` using `[iso_piS_mk, Submodule.Quotient.mk_eq_zero]`.
+
+Take `⟨a, ha⟩` from `(Formalism.DoubleCosetMeasures.P.mem_latZ R Z _).1 hx`. Establish `hmem : ξ ᵥ* Z ⬝ᵥ coeLin R a ∈ R`. Use `R.sum_mem fun j _ => R.mul_mem (hξ j) ?_` and prove the remaining obligations. Rewrite using `[Formalism.DoubleCosetMeasures.P.coeLin_apply]`. Conclude with `(a j).2`.
+
+Use `⟨iso_bot R hN x - ⟨_, hmem⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.eq, iso_mem_ker]`. Establish `h3 : iso_top R hN (x - (iso_bot R hN x - ⟨_, hmem⟩) • iso_vec hN 0 1) = iso_top R hN x`. Rewrite using `[map_sub, map_smul, iso_top_vec, smul_zero, sub_zero]`. Use `⟨by rw [h3]; exact hx, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[affine_form_apply, h3, map_sub, map_smul, iso_bot_vec, ← ha, Matrix.dotProduct_mulVec]`. Simplify using the standard rewrite rules. Use `pg := by`. Rewrite using `[iso_piS_mk, iso_top_vec]`. Both sides reduce to the same expression.
+
+Use `Pg := by`. Rewrite using `[iso_Phi_mk, affine_form_on_vector]`. Simplify using the standard rewrite rules. Use `lam_pi x := by`. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`.
+
+Rewrite using `[iso_piS_mk, LinearMap.neg_apply, hα, iso_Phi_mk, affine_form_apply, ← Submodule.Quotient.mk_neg, Submodule.Quotient.eq]`. Use `⟨-iso_bot R hN x, ?_⟩` and prove the remaining obligations. Establish `h0 : (algebraMap R K) (iso_bot R hN x) = (iso_bot R hN x : K)` using `rfl`. Simplify using `only [map_neg, Algebra.linearMap_apply, h0, inv_one, Units.val_one, one_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem iso_datS (hξ : ∀ j, (ξ ᵥ* Z) j ∈ R) (α : coker R Z →ₗ[R] KR R)
     (hα : ∀ v, α (Submodule.Quotient.mk v) = Submodule.Quotient.mk (ξ ⬝ᵥ coeLin R v)) :
     iso_Dat R (iso_M R hN Z ξ) (coker R Z) 1 (iso_Phi R hN Z ξ)
@@ -1395,6 +1895,19 @@ theorem iso_datS (hξ : ∀ j, (ξ ᵥ* Z) j ∈ R) (α : coker R Z →ₗ[R] KR
 
 end IsoData
 
+/- English proof (translation)
+Take `⟨-, -, hξ₁, hs₁⟩` from `(blkM_isInt R hN _ _ _ _).1 hi₁`. Take `⟨-, -, hξ₂, hs₂⟩` from `(blkM_isInt R hN' _ _ _ _).1 hi₂`. Establish `DB₁` using `iso_datB R hN Z₁ hZ₁ ξ₁ η₁ c b₁ hb₁ ⟨_, hs₁⟩ rfl`. Establish `DB₂` using `iso_datB R hN' Z₂ hZ₂ ξ₂ η₂ c b₂ hb₂ ⟨_, hs₂⟩ rfl`. Establish `DS₁` using `iso_datS R hN Z₁ ξ₁ hξ₁ α₁ hα₁`.
+
+Establish `DS₂` using `iso_datS R hN' Z₂ ξ₂ hξ₂ α₂ hα₂`. Establish `e1` using `iso_card DB₂ DB₁ (Submodule.Quotient.mk (iso_vec hN 0 1)) (Submodule.Quotient.mk (iso_vec hN' 0 1)) (by rw [DS₁.Pg, DS₂.Pg])`. Establish `e2` using `iso_card DS₂ DS₁ (Submodule.Quotient.mk (iso_vec hN b₁ ⟨_, hs₁⟩)) (Submodule.Quotient.mk (iso_vec hN' b₂ ⟨_, hs₂⟩)) (by rw [DB₁.Pg, DB₂.Pg])`. Establish `l1 : Nat.card (isoZZ R (bigZ hN Z₁ ξ₁ η₁ (c : K)) (bigZ hN' Z₂ ξ₂ η₂ (c : K))) = Nat.card {φ : coker R (bigZ hN Z₁ ξ₁ η₁ (c : K)) ≃ₗ[R] coker R (bigZ hN' Z₂ ξ₂ η₂ (c : K)) // (∀ y, A5x6.muZ R (bigZ hN' Z₂ ξ₂ η₂ (c : K)) (iso_bigZ_det hN' Z₂ hZ₂ ξ₂ η₂ c) (φ y) = A5x6.muZ R (bigZ h …`. Use `Nat.card_congr (Equiv.subtypeEquivRight fun φ => ?_)` and prove the remaining obligations.
+
+Rewrite using `[iso_piB_mk, iso_piB_mk, ← iso_eLast, ← iso_eLast]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Use `⟨fun y => ?_, h1⟩` and prove the remaining obligations. Take `⟨v, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`.
+
+Take `⟨v', hv'⟩` from `Submodule.Quotient.mk_surjective _ (φ (Submodule.Quotient.mk v))`. Rewrite using `[← hv', A5x6.muZ_mk, A5x6.muZ_mk]`. Conclude with `h2 v v' hv'.symm`. Introduce and unpack `⟨h1, h2⟩`. Use `⟨h2, fun v v' hv => ?_⟩` and prove the remaining obligations.
+
+Use `h1 (Submodule.Quotient.mk v)` as an intermediate fact. Rewrite `this` using `[hv, A5x6.muZ_mk, A5x6.muZ_mk]`. Then use the resulting hypothesis. Establish `l2 : Nat.card {θ : coker R Z₁ ≃ₗ[R] coker R Z₂ // (∀ y, α₂ (θ y) = α₁ y) ∧ θ (Submodule.Quotient.mk b₁) = Submodule.Quotient.mk b₂} = Nat.card {θ : coker R Z₁ ≃ₗ[R] coker R Z₂ // (∀ y, (-α₂) (θ y) = (-α₁) y) ∧ θ (iso_piS R hN Z₁ ξ₁ (Submodule.Quotient.mk (iso_vec hN b₁ ⟨_, hs₁⟩)) …`. Use `Nat.card_congr (Equiv.subtypeEquivRight fun θ => ?_)` and prove the remaining obligations. Rewrite using `[iso_piS_mk, iso_piS_mk, iso_top_vec, iso_top_vec]`.
+
+Simplify using `only [LinearMap.neg_apply, neg_inj]`. Rewrite using `[l1, l2, e1, e2]`. Use `Nat.card_congr (Equiv.subtypeEquivRight fun Ψ => ?_)` and prove the remaining obligations. The claim follows by propositional logic.
+-/
 theorem card_iso_big {K : Type} [CommRing K] (R : Subring K)
     {m m' N N' : ℕ} (hN : N = m + 1) (hN' : N' = m' + 1)
     (Z₁ : Matrix (Fin m) (Fin m) K) (Z₂ : Matrix (Fin m') (Fin m') K)
@@ -1455,6 +1968,9 @@ section Dual
 variable {K : Type} [CommRing K] (R : Subring K) {m : ℕ}
 
 open Formalism.DoubleCosetMeasures.P Formalism.FourierDecayAlt.P.A5x3 in
+/- English proof (translation)
+Conclude with `Quotient.out_eq (x j)`.
+-/
 theorem mk_outV (x : Fin m → KR R) (j : Fin m) :
     (Submodule.Quotient.mk (outV R x j) : KR R) = x j := by
   exact Quotient.out_eq (x j)
@@ -1465,6 +1981,13 @@ def iA (Z : Matrix (Fin m) (Fin m) K) (α : coker R Z →ₗ[R] KR R) : Fin m �
 def iC (Z : Matrix (Fin m) (Fin m) K) (β : coker R Z) : Fin m → KR R :=
   fun j => A5x3.rowFun R Z j (Quotient.out β)
 
+/- English proof (translation)
+Establish `key : α.comp (Submodule.mkQ _) = (Submodule.mkQ _).comp (iso_dot R (outV R (iA R Z α)))`. Use extensionality with `j`. Establish `hc : coeLin R (Pi.single j (1 : R)) = Pi.single j (1 : K)`. Use function extensionality and compare the values at `k`. Distinguish the cases in `hk : k = j`.
+
+Substitute `hk` using the available equality. Simplify using `[coeLin]`. Simplify using `[coeLin, Pi.single_apply, hk]`. Simplify using `only [LinearMap.comp_apply, Submodule.mkQ_apply, iso_dot_apply, LinearMap.single_apply]`. Rewrite using `[hc, dotProduct_single, mul_one, mk_outV]`.
+
+Both sides reduce to the same expression. Establish `h` using `LinearMap.congr_fun key v`. Simplify `h` using `[iso_dot_apply]`.
+-/
 theorem iA_spec (Z : Matrix (Fin m) (Fin m) K) (α : coker R Z →ₗ[R] KR R) (v : Fin m → R) :
     α (Submodule.Quotient.mk v) = Submodule.Quotient.mk (outV R (iA R Z α) ⬝ᵥ coeLin R v) := by
   have key : α.comp (Submodule.mkQ _) =
@@ -1482,12 +2005,26 @@ theorem iA_spec (Z : Matrix (Fin m) (Fin m) K) (α : coker R Z →ₗ[R] KR R) (
   have h := LinearMap.congr_fun key v
   simpa [iso_dot_apply] using h
 
+/- English proof (translation)
+Introduce `α β h`. Apply `Submodule.linearMap_qext` to reduce the goal to its premises. Use extensionality with `j`. Simplify `congrFun h j` using `[iA]`.
+-/
 theorem iA_injective (Z : Matrix (Fin m) (Fin m) K) : Function.Injective (iA R Z) := by
   intro α β h
   apply Submodule.linearMap_qext
   ext j
   simpa [iA] using congrFun h j
 
+/- English proof (translation)
+Establish `h1 : ∀ j, outV R (iC R Z β) j - (Z⁻¹ *ᵥ coeLin R (Quotient.out β)) j ∈ R`. Introduce `j`. Rewrite using `[← A5x3.mk_eq_mk, mk_outV]`. Both sides reduce to the same expression. Set `r : Fin m → R` to `fun j => ⟨_, h1 j⟩`.
+
+Establish `hr : outV R (iC R Z β) = Z⁻¹ *ᵥ coeLin R (Quotient.out β) + coeLin R r`. Use function extensionality and compare the values at `j`. Rewrite using `[Pi.add_apply, P.coeLin_apply]`. Simplify using `[r]`. Establish `h2 : Z *ᵥ outV R (iC R Z β) = coeLin R (Quotient.out β) + Z *ᵥ coeLin R r`.
+
+Rewrite using `[hr, mulVec_add, mulVec_mulVec, Matrix.mul_nonsing_inv Z hd, one_mulVec]`. Establish `h3 : Z *ᵥ coeLin R r = coeLin R (P.liftR R Z hZ *ᵥ r)`. Rewrite using `[P.coeLin_mulVec, P.liftR_map]`. Use `⟨Quotient.out β + P.liftR R Z hZ *ᵥ r, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, h2, h3]`.
+
+Rewrite using `[Submodule.Quotient.mk_add]`. Establish `h4 : (Submodule.Quotient.mk (P.liftR R Z hZ *ᵥ r) : coker R Z) = 0`. Rewrite using `[Submodule.Quotient.mk_eq_zero, P.mem_latZ]`. Conclude with `⟨r, h3⟩`. Rewrite using `[h4, add_zero]`.
+
+Conclude with `Quotient.out_eq β`.
+-/
 theorem iC_spec (Z : Matrix (Fin m) (Fin m) K) (hZ : IsInt R Z) (hd : IsUnit Z.det)
     (β : coker R Z) : ∃ b : Fin m → R, coeLin R b = Z *ᵥ outV R (iC R Z β) ∧
       Submodule.Quotient.mk b = β := by
@@ -1513,6 +2050,9 @@ theorem iC_spec (Z : Matrix (Fin m) (Fin m) K) (hZ : IsInt R Z) (hd : IsUnit Z.d
     rw [h4, add_zero]
     exact Quotient.out_eq β
 
+/- English proof (translation)
+Introduce `β β' h`. Take `⟨b, hb, rfl⟩` from `iC_spec R Z hZ hd β`. Take `⟨b', hb', rfl⟩` from `iC_spec R Z hZ hd β'`. Rewrite `hb` using `[h, ← hb']`. Rewrite using `[P.coeLin_injective R hb]`.
+-/
 theorem iC_injective (Z : Matrix (Fin m) (Fin m) K) (hZ : IsInt R Z) (hd : IsUnit Z.det) :
     Function.Injective (iC R Z) := by
   intro β β' h
@@ -1521,6 +2061,15 @@ theorem iC_injective (Z : Matrix (Fin m) (Fin m) K) (hZ : IsInt R Z) (hd : IsUni
   rw [h, ← hb'] at hb
   rw [P.coeLin_injective R hb]
 
+/- English proof (translation)
+Set `f : (Fin m → R) →ₗ[R] KR R` to `(Submodule.mkQ _).comp (iso_dot R (outV R x))`. Establish `hker : latZ R Z ≤ LinearMap.ker f`. Introduce `v hv`. Take `⟨u, hu⟩` from `hv`. Simplify using `only [LinearMap.comp_apply, LinearMap.coe_restrictScalars, Matrix.mulVecLin_apply] at hu`.
+
+Establish `hmem : (outV R x ᵥ* Z) ⬝ᵥ coeLin R u ∈ R` using `R.sum_mem fun j _ => R.mul_mem (hx j) (u j).2`. Rewrite using `[LinearMap.mem_ker, LinearMap.comp_apply, iso_dot_apply, ← hu, Matrix.dotProduct_mulVec, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero, LinearMap.mem_range]`. Conclude with `⟨⟨_, hmem⟩, rfl⟩`. Use `⟨(latZ R Z).liftQ f hker, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `j`.
+
+Establish `hc : coeLin R (Pi.single j (1 : R)) = Pi.single j (1 : K)`. Use function extensionality and compare the values at `k`. Distinguish the cases in `hk : k = j`. Substitute `hk` using the available equality. Simplify using `[coeLin]`.
+
+Simplify using `[coeLin, Pi.single_apply, hk]`. Use `show (latZ R Z).liftQ f hker (Submodule.Quotient.mk (Pi.single j 1)) = x j`. Rewrite using `[Submodule.liftQ_apply]`. Simplify using `only [f, LinearMap.comp_apply, iso_dot_apply, Submodule.mkQ_apply]`. Rewrite using `[hc, dotProduct_single, mul_one, mk_outV]`.
+-/
 theorem mem_range_iA (Z : Matrix (Fin m) (Fin m) K) (x : Fin m → KR R)
     (hx : ∀ j, (outV R x ᵥ* Z) j ∈ R) : x ∈ Set.range (iA R Z) := by
   let f : (Fin m → R) →ₗ[R] KR R := (Submodule.mkQ _).comp (iso_dot R (outV R x))
@@ -1545,6 +2094,11 @@ theorem mem_range_iA (Z : Matrix (Fin m) (Fin m) K) (x : Fin m → KR R)
   simp only [f, LinearMap.comp_apply, iso_dot_apply, Submodule.mkQ_apply]
   rw [hc, dotProduct_single, mul_one, mk_outV]
 
+/- English proof (translation)
+Set `b : Fin m → R` to `fun j => ⟨_, hx j⟩`. Establish `hb : coeLin R b = Z *ᵥ outV R x`. Use function extensionality and compare the values at `j`. Rewrite using `[P.coeLin_apply]`. Use `⟨Submodule.Quotient.mk b, ?_⟩` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `j`. Establish `h1 : iC R Z (Submodule.Quotient.mk b) j = (latZ R Z).liftQ (A5x3.rowFun R Z j) (A5x3.rowFun_kills R Z hd j) (Submodule.Quotient.mk (Quotient.out (Submodule.Quotient.mk b : coker R Z)))` using `rfl`. Establish `h2 : (Submodule.Quotient.mk (Quotient.out (Submodule.Quotient.mk b : coker R Z)) : coker R Z) = Submodule.Quotient.mk b` using `Quotient.out_eq _`. Rewrite using `[h1, h2, Submodule.liftQ_apply, A5x3.rowFun_apply, hb, mulVec_mulVec, Matrix.nonsing_inv_mul Z hd, one_mulVec, mk_outV]`.
+-/
 theorem mem_range_iC (Z : Matrix (Fin m) (Fin m) K) (hd : IsUnit Z.det) (x : Fin m → KR R)
     (hx : ∀ j, (Z *ᵥ outV R x) j ∈ R) : x ∈ Set.range (iC R Z) := by
   let b : Fin m → R := fun j => ⟨_, hx j⟩
@@ -1560,6 +2114,11 @@ theorem mem_range_iC (Z : Matrix (Fin m) (Fin m) K) (hd : IsUnit Z.det) (x : Fin
   rw [h1, h2, Submodule.liftQ_apply, A5x3.rowFun_apply, hb, mulVec_mulVec,
     Matrix.nonsing_inv_mul Z hd, one_mulVec, mk_outV]
 
+/- English proof (translation)
+Rewrite using `[eZ, iA_spec]`. Use `congr 1`. Unfold `lastE dotProduct`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `j _`.
+
+Simplify using `only [coeLin, eLast, LinearMap.pi_apply, LinearMap.comp_apply, LinearMap.proj_apply, Algebra.linearMap_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem iA_eZ (Z : Matrix (Fin m) (Fin m) K) (α : coker R Z →ₗ[R] KR R) :
     α (eZ R Z) = Submodule.Quotient.mk (lastE (outV R (iA R Z α))) := by
   rw [eZ, iA_spec]
@@ -1571,6 +2130,9 @@ theorem iA_eZ (Z : Matrix (Fin m) (Fin m) K) (α : coker R Z →ₗ[R] KR R) :
     Algebra.linearMap_apply]
   split_ifs <;> simp
 
+/- English proof (translation)
+Take `⟨b, hb, hβ⟩` from `iC_spec R Z hZ hd β`. Use `conv_lhs => rw [← hβ]`. Rewrite using `[A5x6.muZ_mk, P.lamLin_apply, hb, mulVec_mulVec, Matrix.nonsing_inv_mul Z hd, one_mulVec, P.lastCoord_apply]`. Both sides reduce to the same expression.
+-/
 theorem iC_mu (Z : Matrix (Fin m) (Fin m) K) (hZ : IsInt R Z) (hd : IsUnit Z.det)
     (β : coker R Z) :
     A5x6.muZ R Z hd β = Submodule.Quotient.mk (lastE (outV R (iC R Z β))) := by
@@ -1580,6 +2142,21 @@ theorem iC_mu (Z : Matrix (Fin m) (Fin m) K) (hZ : IsInt R Z) (hd : IsUnit Z.det
     P.lastCoord_apply]
   rfl
 
+/- English proof (translation)
+Take `⟨b, hb, hβ⟩` from `iC_spec R Z hZ hd β`. Unfold `bigZ`. Rewrite using `[blkM_isInt]`. Establish `h1 : ∀ i, (Z *ᵥ outV R (iC R Z β)) i ∈ R`. Introduce `i`.
+
+Rewrite using `[← hb, P.coeLin_apply]`. Conclude with `(b i).2`. Establish `h2 : ∀ j, (outV R (iA R Z α) ᵥ* Z) j ∈ R`. Introduce `j`. Establish `h3 : (Submodule.Quotient.mk (fun i => (⟨Z i j, hZ i j⟩ : R)) : coker R Z) = 0`.
+
+Rewrite using `[Submodule.Quotient.mk_eq_zero, P.mem_latZ]`. Use `⟨Pi.single j 1, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Rewrite using `[P.coeLin_apply]`. Establish `: coeLin R (Pi.single j 1 : Fin m → R) = Pi.single j 1`.
+
+Use function extensionality and compare the values at `k`. Rewrite using `[P.coeLin_apply]`. Distinguish the cases in `hk : k = j`. Substitute `hk` using the available equality. Simplify using the standard rewrite rules.
+
+Simplify using `[hk]`. Rewrite using `[this, mulVec_single_one]`. Both sides reduce to the same expression. Establish `h4` using `iA_spec R Z α (fun i => (⟨Z i j, hZ i j⟩ : R))`. Rewrite `h4` using `[h3, map_zero, eq_comm, A5x3.mk_eq_zero]`.
+
+Use `h4 using 1` and compare the differences between its conclusion and the goal. Simplify using `only [vecMul, dotProduct]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[P.coeLin_apply]`. Establish `h5 : α β = Submodule.Quotient.mk (outV R (iA R Z α) ⬝ᵥ Z *ᵥ outV R (iC R Z β))`.
+
+Rewrite using `[← hb, ← iA_spec, hβ]`. Rewrite using `[h5, eq_neg_iff_add_eq_zero, ← Submodule.Quotient.mk_add, A5x3.mk_eq_zero]`. Conclude with `⟨fun h => h.2.2.2, fun h => ⟨hZ, h1, h2, h⟩⟩`.
+-/
 theorem bigZ_int_iff {N : ℕ} (hN : N = m + 1) (Z : Matrix (Fin m) (Fin m) K) (hZ : IsInt R Z)
     (hd : IsUnit Z.det) (α : coker R Z →ₗ[R] KR R) (β : coker R Z) (c : K) :
     IsInt R (bigZ hN Z (outV R (iA R Z α)) (outV R (iC R Z β)) c) ↔
@@ -1620,6 +2197,19 @@ end Dual
 section Comb
 
 open Classical in
+/- English proof (translation)
+Establish `key : ∀ s : (A₁ × C₁) × (A₂ × C₂), (if P₁ s.1.1 s.1.2 ∧ P₂ s.2.1 s.2.2 then (Nat.card {θ // Q θ s.1.1 s.1.2 s.2.1 s.2.2} : ℂ) else 0) * f₁ s.1.1 s.1.2 * f₂ s.2.1 s.2.2 = ∑ θ, if s.2 = (ta θ s.1.1, tc θ s.1.2) then (if P₁ s.1.1 s.1.2 then f₁ s.1.1 s.1.2 * f₂ (ta θ s.1.1) (tc θ s.1 …`. Introduce and unpack `⟨⟨a₁, c₁⟩, ⟨a₂, c₂⟩⟩`. Simplify using `only`. Establish `h1 : ∀ θ, (if (a₂, c₂) = (ta θ a₁, tc θ c₁) then (if P₁ a₁ c₁ then f₁ a₁ c₁ * f₂ (ta θ a₁) (tc θ c₁) else 0) else 0) = (if P₁ a₁ c₁ ∧ P₂ a₂ c₂ then ((if Q θ a₁ c₁ a₂ c₂ then 1 else 0 : ℕ) : ℂ) else 0) * f₁ a₁ c₁ * f₂ a₂ c₂`. Introduce `θ`.
+
+Distinguish the cases in `h : a₂ = ta θ a₁ ∧ c₂ = tc θ c₁`. Take `⟨rfl, rfl⟩` from `h`. Establish `hq : Q θ a₁ c₁ (ta θ a₁) (tc θ c₁)` using `(hQ _ _ _ _ _).2 ⟨rfl, rfl⟩`. Distinguish the cases in `hp : P₁ a₁ c₁`. Simplify using `[hq, hP, hp]`.
+
+Simplify using `[hp]`. Establish `hq : ¬ Q θ a₁ c₁ a₂ c₂` using `fun hq => h ((hQ _ _ _ _ _).1 hq)`. Establish `hne : ¬ (a₂, c₂) = (ta θ a₁, tc θ c₁)` using `fun he => h (Prod.ext_iff.1 he)`. Simplify using `[hq, hne]`. Rewrite using `[Finset.sum_congr rfl fun θ _ => h1 θ, ← Finset.sum_mul, ← Finset.sum_mul, Nat.card_eq_fintype_card, Fintype.card_subtype, Finset.card_filter, Nat.cast_sum]`.
+
+Use `congr 2`. Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[Finset.sum_congr rfl fun s _ => key s, Fintype.sum_prod_type]`. Simplify using `only`. Establish `h2 : ∀ x : A₁ × C₁, (∑ y : A₂ × C₂, ∑ θ, if y = (ta θ x.1, tc θ x.2) then (if P₁ x.1 x.2 then f₁ x.1 x.2 * f₂ (ta θ x.1) (tc θ x.2) else 0) else 0) = ∑ θ, if P₁ x.1 x.2 then f₁ x.1 x.2 * f₂ (ta θ x.1) (tc θ x.2) else 0`.
+
+Introduce `x`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun θ _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_ite_eq']`. Simplify using the standard rewrite rules.
+
+Rewrite using `[Finset.sum_congr rfl fun x _ => h2 x, Finset.sum_comm]`. Use `Finset.sum_congr rfl fun θ _ => ?_` and prove the remaining obligations. Rewrite using `[Fintype.sum_prod_type]`.
+-/
 theorem comb_identity {A₁ C₁ A₂ C₂ Θ : Type} [Fintype A₁] [Fintype C₁] [Fintype A₂] [Fintype C₂]
     [Fintype Θ] (P₁ : A₁ → C₁ → Prop) (P₂ : A₂ → C₂ → Prop) (ta : Θ → A₁ → A₂) (tc : Θ → C₁ → C₂)
     (Q : Θ → A₁ → C₁ → A₂ → C₂ → Prop)
@@ -1670,6 +2260,9 @@ end Comb
 
 section Inner
 
+/- English proof (translation)
+Establish `h1 : ∑ᶠ x ∈ Set.range ι, t x = ∑ᶠ x, t x`. Rewrite using `[finsum_mem_def, Set.indicator_eq_self.mpr ht]`. Establish `h2 : ∑ᶠ x ∈ Set.range ι, t x = ∑ᶠ s, t (ι s)` using `finsum_mem_range hι`. Rewrite using `[← h1, h2]`.
+-/
 theorem finsum_of_inj {X S : Type} (ι : S → X) (hι : Function.Injective ι) (t : X → ℂ)
     (ht : Function.support t ⊆ Set.range ι) : ∑ᶠ x, t x = ∑ᶠ s, t (ι s) := by
   have h1 : ∑ᶠ x ∈ Set.range ι, t x = ∑ᶠ x, t x := by
@@ -1692,6 +2285,9 @@ def tTerm (R : Subring K) (ψ : AddChar K ℂ) {m m' N N' : ℕ} (hN : N = m + 1
     conj (ψ (lastE (outV R y.2.1) + lastE (outV R y.2.2)))
 
 open Classical in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem tTerm_mk (R : Subring K) (ψ : AddChar K ℂ) {m m' N N' : ℕ} (hN : N = m + 1)
     (hN' : N' = m' + 1) (Z₁ : Matrix (Fin m) (Fin m) K) (Z₂ : Matrix (Fin m') (Fin m') K) (c : K)
     (x y : Fin m → KR R) (x' y' : Fin m' → KR R) :
@@ -1709,6 +2305,9 @@ def iota (R : Subring K) {m m' : ℕ} (Z₁ : Matrix (Fin m) (Fin m) K)
     ((Fin m → KR R) × (Fin m → KR R)) × ((Fin m' → KR R) × (Fin m' → KR R)) :=
   ((iA R Z₁ s.1.1, iC R Z₁ s.1.2), (iA R Z₂ s.2.1, iC R Z₂ s.2.2))
 
+/- English proof (translation)
+Introduce and unpack `⟨⟨a, b⟩, ⟨a', b'⟩⟩ ⟨⟨x, y⟩, ⟨x', y'⟩⟩ h`. Simplify using `only [iota, Prod.mk.injEq] at h`. Take `⟨⟨e1, e2⟩, e3, e4⟩` from `h`. Rewrite using `[iA_injective R Z₁ e1, iC_injective R Z₁ h₁ d₁ e2, iA_injective R Z₂ e3, iC_injective R Z₂ h₂ d₂ e4]`.
+-/
 theorem iota_injective (R : Subring K) {m m' : ℕ} (Z₁ : Matrix (Fin m) (Fin m) K)
     (Z₂ : Matrix (Fin m') (Fin m') K) (h₁ : IsInt R Z₁) (h₂ : IsInt R Z₂) (d₁ : IsUnit Z₁.det)
     (d₂ : IsUnit Z₂.det) : Function.Injective (iota R Z₁ Z₂) := by
@@ -1718,6 +2317,13 @@ theorem iota_injective (R : Subring K) {m m' : ℕ} (Z₁ : Matrix (Fin m) (Fin 
   rw [iA_injective R Z₁ e1, iC_injective R Z₁ h₁ d₁ e2, iA_injective R Z₂ e3,
     iC_injective R Z₂ h₂ d₂ e4]
 
+/- English proof (translation)
+Introduce and unpack `⟨⟨x, y⟩, ⟨x', y'⟩⟩ hy`. Distinguish the cases in `hI : IsInt R (bigZ hN Z₁ (outV R x) (outV R y) c) ∧ IsInt R (bigZ hN' Z₂ (outV R x') (outV R y') c)`. Take `⟨hI1, hI2⟩` from `hI`. Unfold `bigZ at hI1 hI2`. Rewrite `hI1`, `hI2` using `[blkM_isInt]`.
+
+Take `⟨a, rfl⟩` from `mem_range_iA R Z₁ x hI1.2.2.1`. Take `⟨b, rfl⟩` from `mem_range_iC R Z₁ d₁ y hI1.2.1`. Take `⟨a', rfl⟩` from `mem_range_iA R Z₂ x' hI2.2.2.1`. Take `⟨b', rfl⟩` from `mem_range_iC R Z₂ d₂ y' hI2.2.1`. Conclude with `⟨((a, b), (a', b')), rfl⟩`.
+
+It suffices to derive a contradiction. Apply `hy` to reduce the goal to its premises. Rewrite using `[tTerm_mk, if_neg hI]`. Simplify using the standard rewrite rules.
+-/
 theorem tTerm_supp (R : Subring K) (ψ : AddChar K ℂ) {m m' N N' : ℕ} (hN : N = m + 1)
     (hN' : N' = m' + 1) (Z₁ : Matrix (Fin m) (Fin m) K) (Z₂ : Matrix (Fin m') (Fin m') K) (c : K)
     (d₁ : IsUnit Z₁.det) (d₂ : IsUnit Z₂.det) :
@@ -1739,6 +2345,13 @@ theorem tTerm_supp (R : Subring K) (ψ : AddChar K ℂ) {m m' N N' : ℕ} (hN : 
     simp
 
 open Classical in
+/- English proof (translation)
+Take `⟨⟨a, b⟩, ⟨a', b'⟩⟩` from `s`. Rewrite using `[show iota R Z₁ Z₂ ((a, b), (a', b')) = ((iA R Z₁ a, iC R Z₁ b), (iA R Z₂ a', iC R Z₂ b')) from rfl, tTerm_mk]`. Simplify using `only`. Rewrite using `[iA_eZ, iA_eZ, iC_mu R Z₁ h₁ d₁, iC_mu R Z₂ h₂ d₂, ← Submodule.Quotient.mk_add, ← Submodule.Quotient.mk_add, A5x6.psiKR_mk R ψ hψ, A5x6.psiKR_mk R ψ hψ]`. Use `congr 2`.
+
+Distinguish the cases in `hI : a b = -(Submodule.Quotient.mk (c : K) : KR R) ∧ a' b' = -(Submodule.Quotient.mk (c : K) : KR R)`. Establish `hI1` using `(bigZ_int_iff R hN Z₁ h₁ d₁ a b (c : K)).2 hI.1`. Establish `hI2` using `(bigZ_int_iff R hN' Z₂ h₂ d₂ a' b' (c : K)).2 hI.2`. Rewrite using `[if_pos hI, if_pos ⟨hI1, hI2⟩]`. Take `⟨v, hv, hb⟩` from `iC_spec R Z₁ h₁ d₁ b`.
+
+Take `⟨v', hv', hb'⟩` from `iC_spec R Z₂ h₂ d₂ b'`. Rewrite using `[card_iso_big R hN hN' Z₁ Z₂ d₁ d₂ _ _ _ _ c hI1 hI2 a a' (iA_spec R Z₁ a) (iA_spec R Z₂ a') v v' hv hv', hb, hb']`. Rewrite using `[if_neg hI, if_neg]`. Introduce and unpack `⟨hI1, hI2⟩`. Conclude with `hI ⟨(bigZ_int_iff R hN Z₁ h₁ d₁ a b (c : K)).1 hI1, (bigZ_int_iff R hN' Z₂ h₂ d₂ a' b' (c : K)).1 hI2⟩`.
+-/
 theorem tTerm_iota (R : Subring K) (ψ : AddChar K ℂ) (hψ : ∀ r ∈ R, ψ r = 1) {m m' N N' : ℕ}
     (hN : N = m + 1) (hN' : N' = m' + 1) (Z₁ : Matrix (Fin m) (Fin m) K)
     (Z₂ : Matrix (Fin m') (Fin m') K) (c : Kˣ) (h₁ : IsInt R Z₁) (h₂ : IsInt R Z₂)
@@ -1777,6 +2390,13 @@ end Inner
 section InnerSum
 variable {K : Type} [CommRing K] [TopologicalSpace K] [IsTopologicalRing K]
 
+/- English proof (translation)
+Unfold `psiKR`. Rewrite using `[hD.unitary]`. Establish `e1 : (Submodule.Quotient.mk (Quotient.out (-x)) : KR R) = -x` using `Quotient.out_eq _`. Establish `e2 : (Submodule.Quotient.mk (Quotient.out x) : KR R) = x` using `Quotient.out_eq _`. Establish `hx : (Submodule.Quotient.mk (Quotient.out (-x)) : KR R) = Submodule.Quotient.mk (-Quotient.out x)`.
+
+Rewrite using `[Submodule.Quotient.mk_neg, e1, e2]`. Rewrite `hx` using `[Submodule.Quotient.eq, LinearMap.mem_range]`. Take `⟨r, hr⟩` from `hx`. Establish `hr' : (r : K) = Quotient.out (-x) - -Quotient.out x` using `hr`. Establish `hr1 : ψ (r : K) = 1`.
+
+Use `(hD.selfDual (r : K)).2 r.2 1 R.one_mem` as an intermediate fact. Simplify using `using this`. Establish `h3 : Quotient.out (-x) = -Quotient.out x + (r : K)` using `by rw [hr']; ring`. Rewrite using `[h3, AddChar.map_add_eq_mul, hr1, mul_one]`.
+-/
 theorem psiKR_conj (R : Subring K) (ψ : AddChar K ℂ) (hD : LocalDatum K R ψ) (x : KR R) :
     conj (psiKR R ψ x) = psiKR R ψ (-x) := by
   unfold psiKR
@@ -1794,6 +2414,23 @@ theorem psiKR_conj (R : Subring K) (ψ : AddChar K ℂ) (hD : LocalDatum K R ψ)
   have h3 : Quotient.out (-x) = -Quotient.out x + (r : K) := by rw [hr']; ring
   rw [h3, AddChar.map_add_eq_mul, hr1, mul_one]
 
+/- English proof (translation)
+Establish `hψ : ∀ r ∈ R, ψ r = 1` using `fun r hr => A5x3.psi_of_mem hD.selfDual hr`. Use `A5x3.finite_coker hD Z₁ h₁ d₁` as an intermediate fact. Use `A5x3.finite_coker hD Z₂ h₂ d₂` as an intermediate fact. Establish `: Finite (coker R Z₁ →ₗ[R] KR R)` using `A5x3.finite_dual hD.selfDual`. Establish `: Finite (coker R Z₂ →ₗ[R] KR R)` using `A5x3.finite_dual hD.selfDual`.
+
+Establish `: Finite (coker R Z₁ ≃ₗ[R] coker R Z₂)` using `Finite.of_injective (fun θ => (θ : coker R Z₁ → coker R Z₂)) DFunLike.coe_injective`. Set `` to `Fintype.ofFinite (coker R Z₁)`. Set `` to `Fintype.ofFinite (coker R Z₂)`. Set `` to `Fintype.ofFinite (coker R Z₁ →ₗ[R] KR R)`. Set `` to `Fintype.ofFinite (coker R Z₂ →ₗ[R] KR R)`.
+
+Set `` to `Fintype.ofFinite (coker R Z₁ ≃ₗ[R] coker R Z₂)`. Rewrite using `[finsum_of_inj _ (iota_injective R Z₁ Z₂ h₁ h₂ d₁ d₂) _ (tTerm_supp R ψ hN hN' Z₁ Z₂ _ d₁ d₂), finsum_eq_sum_of_fintype, Finset.sum_congr rfl fun s _ => tTerm_iota R ψ hψ hN hN' Z₁ Z₂ c h₁ h₂ d₁ d₂ s]`. Establish `hc` using `comb_identity (Θ := coker R Z₁ ≃ₗ[R] coker R Z₂) (P₁ := fun (a : coker R Z₁ →ₗ[R] KR R) (b : coker R Z₁) => a b = -(Submodule.Quotient.mk (c : K) : KR R)) (P₂ := fun (a : coker R Z₂ →ₗ[R] KR R) (b : coker R Z₂) => a b = -(Submodule.Quotient.mk (c : K) : KR R)) (ta := fun θ a => a …`. Introduce `θ a b a' b'`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨h1, h2⟩`. Use `⟨?_, h2.symm⟩` and prove the remaining obligations. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `y`. Simplify using `[← h1]`.
+
+Introduce and unpack `⟨rfl, rfl⟩`. Conclude with `⟨fun y => by simp, rfl⟩)`. Use the proof step `(by intro θ a b; simp)`. Use the proof step `(fun a b => psiKR R ψ (a (eZ R Z₁) + A5x6.muZ R Z₁ d₁ b))`. Use the proof step `(fun a b => conj (psiKR R ψ (a (eZ R Z₂) + A5x6.muZ R Z₂ d₂ b)))`.
+
+Use `Eq.trans ?_ (hc.trans ?_)` and prove the remaining obligations. Conclude with `Finset.sum_congr rfl fun s _ => rfl`. Unfold `singleBlockInner`. Rewrite using `[finsum_eq_sum_of_fintype]`. Use `Finset.sum_congr rfl fun θ _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[finsum_eq_sum_of_fintype]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[finsum_eq_sum_of_fintype]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Distinguish the cases in `hab : a b = -(Submodule.Quotient.mk (c : K) : KR R)`.
+
+Rewrite using `[if_pos hab, if_pos hab, psiKR_conj R ψ hD, ← A5x6.psiKR_add R ψ hψ, A5x6.lamLin_out R Z₁ d₁, A5x6.lamLin_out R Z₂ d₂]`. Use `congr 1`. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe, map_sub]`. Normalize the expressions using the abelian group laws. Rewrite using `[if_neg hab, if_neg hab]`.
+-/
 theorem inner_sum (R : Subring K) (ψ : AddChar K ℂ) (hD : LocalDatum K R ψ) {m m' N N' : ℕ}
     (hN : N = m + 1) (hN' : N' = m' + 1) (Z₁ : Matrix (Fin m) (Fin m) K)
     (Z₂ : Matrix (Fin m') (Fin m') K) (c : Kˣ) (h₁ : IsInt R Z₁) (h₂ : IsInt R Z₂)
@@ -1857,6 +2494,11 @@ end InnerSum
 section Final
 variable {K : Type} [CommRing K] [TopologicalSpace K] [IsTopologicalRing K]
 
+/- English proof (translation)
+Unfold `tTerm`. Rewrite using `[if_neg]`. Simplify using the standard rewrite rules. Introduce and unpack `⟨h1, h2⟩`. Unfold `bigZ at h1 h2`.
+
+Conclude with `hn ⟨((blkM_isInt R hN _ _ _ _).1 h1).1, ((blkM_isInt R hN' _ _ _ _).1 h2).1⟩`.
+-/
 theorem tTerm_zero (R : Subring K) (ψ : AddChar K ℂ) {m m' N N' : ℕ}
     (hN : N = m + 1) (hN' : N' = m' + 1) (Z₁ : Matrix (Fin m) (Fin m) K)
     (Z₂ : Matrix (Fin m') (Fin m') K) (c : K) (hn : ¬ (IsInt R Z₁ ∧ IsInt R Z₂))
@@ -1869,6 +2511,13 @@ theorem tTerm_zero (R : Subring K) (ψ : AddChar K ℂ) {m m' N N' : ℕ}
     unfold bigZ at h1 h2
     exact hn ⟨((blkM_isInt R hN _ _ _ _).1 h1).1, ((blkM_isInt R hN' _ _ _ _).1 h2).1⟩
 
+/- English proof (translation)
+Distinguish the cases in `hI : IsInt R Z₁ ∧ IsInt R Z₂`. Use `A5x3.finite_coker hD Z₁ hI.1 d₁` as an intermediate fact. Use `A5x3.finite_coker hD Z₂ hI.2 d₂` as an intermediate fact. Establish `: Finite (coker R Z₁ →ₗ[R] KR R)` using `A5x3.finite_dual hD.selfDual`. Establish `: Finite (coker R Z₂ →ₗ[R] KR R)` using `A5x3.finite_dual hD.selfDual`.
+
+Conclude with `(Set.finite_range (iota R Z₁ Z₂)).subset (tTerm_supp R ψ hN hN' Z₁ Z₂ c d₁ d₂)`. Establish `: Function.support (tTerm R ψ hN hN' Z₁ Z₂ c) = ∅`. Use extensionality with `y`. Simplify using `[tTerm_zero R ψ hN hN' Z₁ Z₂ c hI y]`. Rewrite using `[this]`.
+
+Conclude with `Set.finite_empty`.
+-/
 theorem tTerm_fin (R : Subring K) (ψ : AddChar K ℂ) (hD : LocalDatum K R ψ) {m m' N N' : ℕ}
     (hN : N = m + 1) (hN' : N' = m' + 1) (Z₁ : Matrix (Fin m) (Fin m) K)
     (Z₂ : Matrix (Fin m') (Fin m') K) (c : K) (d₁ : IsUnit Z₁.det) (d₂ : IsUnit Z₂.det) :
@@ -1885,10 +2534,28 @@ theorem tTerm_fin (R : Subring K) (ψ : AddChar K ℂ) (hD : LocalDatum K R ψ) 
     rw [this]
     exact Set.finite_empty
 
+/- English proof (translation)
+Rewrite using `[A5x6.orbZ_det]`. Conclude with `A5x6.pt_det_isUnit w`.
+-/
 theorem orbZ_unit (w : Point K) (p : lowW K w.1 w.2 × upUniG K w.1.sum) :
     IsUnit (orbZ w p).det := by
   rw [A5x6.orbZ_det]; exact A5x6.pt_det_isUnit w
 
+/- English proof (translation)
+Introduce `K _ _ _ R ψ hD h h' c _`. Establish `hψ : ∀ r ∈ R, ψ r = 1` using `fun r hr => A5x3.psi_of_mem hD.selfDual hr`. Establish `hNs : Ns R ψ 1 h h' c c = Kp R ψ (addBlock h 1 c) (addBlock h' 1 c)` using `by simp [Ns]`. Rewrite using `[hNs]`. Take `⟨σ, hσb, hσ⟩` from `section_exists R h c`.
+
+Take `⟨σ', hσb', hσ'⟩` from `section_exists R h' c`. Rewrite using `[Kp_eq_section R ψ hψ _ _ _ _ σ σ' hσb hσb']`. Set `F : (Cos R h × Cos R h') × (((Fin h.1.sum → KR R) × (Fin h.1.sum → KR R)) × ((Fin h'.1.sum → KR R) × (Fin h'.1.sum → KR R))) → ℂ` to `fun z => tTerm R ψ (addBlock_sum h c) (addBlock_sum h' c) (orbZ h (rep R z.1.1)) (orbZ h' (rep R z.1.2)) (c : K) z.2 * (phase ψ (rep R z.1.1) * conj (phase ψ (rep R z.1.2)))`. Establish `hG : ∀ x : Par R h × Par R h', Gterm R ψ _ _ (σ x.1) (σ' x.2) = F (Equiv.prodProdProdComm _ _ _ _ x)`. Introduce and unpack `⟨⟨q, x, y⟩, ⟨q', x', y'⟩⟩`.
+
+Simplify using `only [F, Equiv.prodProdProdComm_apply]`. Rewrite using `[tTerm_mk]`. Unfold `Gterm`. Rewrite using `[(hσ (q, x, y)).1, (hσ' (q', x', y')).1, (hσ (q, x, y)).2 ψ, (hσ' (q', x', y')).2 ψ, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[finsum_congr hG, finsum_comp_equiv]`. Establish `hI` using `Formalism.FourierDecayAlt.P.integral_points_finite K R ψ hD h`. Establish `hI'` using `Formalism.FourierDecayAlt.P.integral_points_finite K R ψ hD h'`. Establish `hfin : (Function.support F).Finite`. Use `((hI.prod hI').biUnion (t := fun q => (Prod.mk q) '' Function.support (tTerm R ψ (addBlock_sum h c) (addBlock_sum h' c) (orbZ h (rep R q.1)) (orbZ h' (rep R q.2)) (c : K))) fun q _ => (tTerm_fin R ψ hD _ _ _ _ _ (orbZ_unit _ _) (orbZ_unit _ _)).image _).subset ?_` and prove the remaining obligations.
+
+Introduce and unpack `⟨q, y⟩ hz`. Establish `h1 : tTerm R ψ (addBlock_sum h c) (addBlock_sum h' c) (orbZ h (rep R q.1)) (orbZ h' (rep R q.2)) (c : K) y ≠ 0` using `fun h0 => hz (by simp [F, h0])`. Establish `h2 : IsInt R (orbZ h (rep R q.1)) ∧ IsInt R (orbZ h' (rep R q.2))`. Assume the negation of the conclusion as `hn`. Conclude with `h1 (tTerm_zero R ψ _ _ _ _ _ hn y)`.
+
+Conclude with `Set.mem_biUnion (x := q) ⟨h2.1, h2.2⟩ ⟨y, h1, rfl⟩`. Rewrite using `[finsum_curry F hfin]`. Use `finsum_congr fun q => ?_` and prove the remaining obligations. Simplify using `only [F]`. Rewrite using `[← finsum_mul]`.
+
+Distinguish the cases in `hq : IsInt R (orbZ h (rep R q.1)) ∧ IsInt R (orbZ h' (rep R q.2))`. Rewrite using `[if_pos hq, inner_sum R ψ hD _ _ _ _ c hq.1 hq.2 (orbZ_unit _ _) (orbZ_unit _ _)]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg hq, finsum_congr (tTerm_zero R ψ _ _ _ _ _ hq)]`. Simplify using the standard rewrite rules.
+-/
 theorem first_kernel_formula_proof : SingleBlockFormula := by
   intro K _ _ _ R ψ hD h h' c _
   have hψ : ∀ r ∈ R, ψ r = 1 := fun r hr => A5x3.psi_of_mem hD.selfDual hr
@@ -1940,6 +2607,9 @@ end Formalism.FourierDecayAlt.P.A5x8
 
 namespace Formalism.FourierDecayAlt.P
 
+/- English proof (translation)
+The claim follows from `A5x8.first_kernel_formula_proof`.
+-/
 theorem first_kernel_explicit_formula : Formalism.FourierDecayAlt.A5.SingleBlockFormula := A5x8.first_kernel_formula_proof
 
 end Formalism.FourierDecayAlt.P

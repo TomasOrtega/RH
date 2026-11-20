@@ -17,6 +17,9 @@ namespace GlobalTheory.CM.RankOne
 
 variable {E : Type} [Field E] [NumberField E]
 
+/- English proof (translation)
+Rewrite using `[← eq_ratCast (algebraMap ℚ Ω)]`. Conclude with `algebraMap_trace_eq_sum_algHom_of_card (Nat.card_eq_fintype_card.symm.trans h) (P := fun τ : E →+* Ω => τ.toRatAlgHom) (fun τ τ' e => RingHom.ext fun y => AlgHom.congr_fun e y) x`.
+-/
 theorem trace_eq_sum {Ω : Type} [Field Ω] [CharZero Ω] [Fintype (E →+* Ω)]
     (h : Nat.card (E →+* Ω) = Module.finrank ℚ E) (x : E) :
     ((Algebra.trace ℚ E x : ℚ) : Ω) = ∑ τ : E →+* Ω, τ x := by
@@ -26,6 +29,25 @@ theorem trace_eq_sum {Ω : Type} [Field Ω] [CharZero Ω] [Fintype (E →+* Ω)]
 
 variable [IsCMField E]
 
+/- English proof (translation)
+Establish `him : ∀ σ : E →+* ℂ, (σ β).im = 0` using `fun σ => by`. Rewrite using `[← Complex.conj_eq_iff_im, ← IsCMField.complexEmbedding_complexConj, hβ]`. Establish `hne : (τ β).re ≠ 0` using `fun e => (map_ne_zero τ).2 hβ0 (Complex.ext e (him τ))`. Use `lt_of_le_of_ne (not_lt.1 fun hneg => ?_) hne.symm` and prove the remaining obligations. Take `⟨a, ha, hb⟩` from `AbsoluteValue.exists_one_lt_lt_one_pi_of_not_isEquiv (v := fun v : InfinitePlace E => v.1) (fun v => v.isNontrivial) (fun _ _ h => (InfinitePlace.eq_iff_isEquiv (K := E)).not.mp h) (InfinitePlace.mk τ)`.
+
+Use `replace ha : 1 < ‖τ a‖ := ha`. Use `replace hb : ∀ σ : E →+* ℂ, InfinitePlace.mk σ ≠ InfinitePlace.mk τ → ‖σ a‖ < 1 := fun σ hσ => hb _ hσ`. Establish `ha0 : a ≠ 0`. Introduce and unpack `rfl`. Evaluate the numerical expressions using `at ha`.
+
+Establish `h1 : ∀ n : ℕ, 0 < ∑ σ : E →+* ℂ, (σ β).re * (‖σ a‖ ^ 2) ^ n` using `fun n => by`. Establish `h2` using `congrArg Complex.re (trace_eq_sum (Ω := ℂ) (by rw [Nat.card_eq_fintype_card, Embeddings.card]) (β * a ^ n * IsCMField.complexConj E (a ^ n)))`. Establish `h3 : (0 : ℝ) < (Algebra.trace ℚ E (β * a ^ n * IsCMField.complexConj E (a ^ n)) : ℚ)`. Conclude with `h _ (pow_ne_zero n ha0)` after adjusting the coercions. Rewrite `h2` using `[Complex.ratCast_re, Complex.re_sum]`.
+
+Rewrite `h3` using `[h2]`. Use `h3 using 2 with σ` and compare the differences between its conclusion and the goal. Rewrite using `[map_mul, map_mul, IsCMField.complexEmbedding_complexConj, _root_.mul_assoc, Complex.mul_conj, Complex.re_mul_ofReal, map_pow, map_pow, Complex.normSq_eq_norm_sq]`. Set `g : (E →+* ℂ) → ℕ → ℝ` to `fun σ n => if InfinitePlace.mk σ = InfinitePlace.mk τ then (τ β).re else (σ β).re * (‖σ a‖ ^ 2) ^ n`. Establish `h2 : ∀ n, 0 ≤ ∑ σ, g σ n` using `fun n => (h1 n).le.trans (Finset.sum_le_sum fun σ _ => by`.
+
+Simplify using `only [g]`. Use `split_ifs with hσ`. Establish `e1 : ‖σ a‖ = ‖τ a‖` using `congrArg (fun v : InfinitePlace E => v a) hσ`. Establish `e2 : (σ β).re = (τ β).re`. Break down `InfinitePlace.mk_eq_iff.1 hσ with rfl | rfl` into its components or cases.
+
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. Rewrite using `[e1, e2]`. Establish `e3 : 1 ≤ (‖τ a‖ ^ 2) ^ n` using `one_le_pow₀ (one_le_pow₀ ha.le)`. Use the polynomial consequences of the given equalities and inequalities.
+
+Conclude with `le_rfl)`. Establish `h3 : Filter.Tendsto (fun n => ∑ σ, g σ n) Filter.atTop (nhds (∑ σ : E →+* ℂ, if InfinitePlace.mk σ = InfinitePlace.mk τ then (τ β).re else 0))`. Use `tendsto_finset_sum _ fun σ _ => ?_` and prove the remaining obligations. Simplify using `only [g]`. Use `split_ifs with hσ`.
+
+Conclude with `tendsto_const_nhds`. Simplify using `using (tendsto_pow_atTop_nhds_zero_of_lt_one (sq_nonneg ‖σ a‖) (pow_lt_one₀ (norm_nonneg _) (hb σ hσ) two_ne_zero)).const_mul (σ β).re`. Use `absurd (ge_of_tendsto' h3 h2) (not_le.2 ?_)` and prove the remaining obligations. Use `(Finset.sum_lt_sum (g := fun _ => 0) (fun σ _ => ?_) ⟨τ, Finset.mem_univ _, ?_⟩).trans_eq (by simp)` and prove the remaining obligations. Use `split_ifs`.
+
+Conclude with `hneg.le`. Conclude with `le_rfl`. Simplify using `using hneg`.
+-/
 theorem re_pos_of_trace_pos {β : E} (hβ : IsCMField.complexConj E β = β) (hβ0 : β ≠ 0)
     (h : ∀ x : E, x ≠ 0 → 0 < Algebra.trace ℚ E (β * x * IsCMField.complexConj E x)) (τ : E →+* ℂ) :
     0 < (τ β).re := by
@@ -81,6 +103,19 @@ theorem re_pos_of_trace_pos {β : E} (hβ : IsCMField.complexConj E β = β) (h�
     · exact le_rfl
   · simpa using hneg
 
+/- English proof (translation)
+Establish `h0` using `conjFrac_ne_zero h𝔞`. Establish `h1 : FractionalIdeal.dual ℤ ℚ (conjFrac 𝔞) = FractionalIdeal.spanSingleton _ c * 𝔞`. Use extensionality with `w`. Take `⟨v, rfl⟩ : ∃ v, w = c * v` from `⟨c⁻¹ * w, (mul_inv_cancel_left₀ hc w).symm⟩`. Establish `: c * v ∈ FractionalIdeal.spanSingleton (nonZeroDivisors (𝓞 E)) c * 𝔞 ↔ v ∈ 𝔞`.
+
+Rewrite using `[FractionalIdeal.mem_singleton_mul]`. Conclude with `⟨fun ⟨y, hy, e⟩ => mul_left_cancel₀ hc e ▸ hy, fun hv => ⟨v, hv, rfl⟩⟩`. Rewrite using `[this, h, FractionalIdeal.mem_dual h0]`. Prove the components needed by the constructor for the conclusion. Introduce `hh y hy`.
+
+Take `⟨n, hn⟩` from `hh _ (cc_mem_conjFrac.2 hy)`. Conclude with `⟨n, hn.symm⟩`. Introduce `hh y hy`. Take `⟨n, hn⟩` from `hh _ (mem_conjFrac.1 hy)`. Use `⟨n, ?_⟩` and prove the remaining obligations.
+
+Rewrite `hn` using `[FD.cc, IsCMField.complexConj_apply_apply]`. Conclude with `hn.symm`. Rewrite `h1` using `[FractionalIdeal.dual_eq_mul_inv, ← inv_inv (FractionalIdeal.dual ℤ ℚ 1), ← coeIdeal_differentIdeal ℤ ℚ E (𝓞 E)]`. Establish `nz : ∀ {𝔞 : FractionalIdeal (nonZeroDivisors (𝓞 E)) E}, 𝔞 ≠ 0 → (FractionalIdeal.absNorm 𝔞 : ℝ) ≠ 0` using `fun h => by simpa using h`. Establish `h3` using `congrArg (fun 𝔞 => Real.log (FractionalIdeal.absNorm 𝔞 : ℚ)) h1`.
+
+Establish `hN : (Algebra.norm ℚ c : ℝ) ≠ 0` using `by exact_mod_cast Algebra.norm_ne_zero_iff.2 hc`. Establish `hd : (0 : ℝ) < (|discr E| : ℤ)` using `by exact_mod_cast abs_pos.2 (discr_ne_zero E)`. Establish `h2 : (0 : ℝ) < Module.finrank ℚ E` using `by exact_mod_cast Module.finrank_pos`. Simplify using `only [map_mul, map_inv₀, Rat.cast_mul, Rat.cast_inv, FractionalIdeal.coeIdeal_absNorm, FractionalIdeal.absNorm_span_singleton, absNorm_differentIdeal E (𝓞 E), Rat.cast_natCast, Nat.cast_natAbs, Rat.cast_intCast] at h3`. Rewrite `h3` using `[Real.log_mul (inv_ne_zero hd.ne') (inv_ne_zero (nz h0)), Real.log_inv, Real.log_inv, log_absNorm_conjFrac h𝔞, Real.log_mul (by simpa using hN) (nz h𝔞)]`.
+
+Rewrite using `[rootDiscr_def, Real.log_rpow hd, mul_inv_cancel_left₀ h2.ne', ← Rat.cast_abs]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem log_absNorm_of_selfDual {𝔞 : FractionalIdeal (nonZeroDivisors (𝓞 E)) E} (h𝔞 : 𝔞 ≠ 0) {c : E} (hc : c ≠ 0)
     (h : ∀ v, v ∈ 𝔞 ↔ ∀ y ∈ 𝔞, ∃ n : ℤ, Algebra.trace ℚ E (c * v * IsCMField.complexConj E y) = n) :
     2 * Real.log (FractionalIdeal.absNorm 𝔞 : ℚ) + Real.log |(Algebra.norm ℚ c : ℚ)| =
@@ -118,15 +153,27 @@ theorem log_absNorm_of_selfDual {𝔞 : FractionalIdeal (nonZeroDivisors (𝓞 E
   rw [rootDiscr_def, Real.log_rpow hd, mul_inv_cancel_left₀ h2.ne', ← Rat.cast_abs]
   linarith
 
+/- English proof (translation)
+Rewrite using `[HostModel.rt_eq]`. Use `push_cast`. Both sides reduce to the same expression.
+-/
 theorem coe_rt_eq (H : Host E) : (H.rt : E) = 2 * (H.w0 : E) - 1 := by
   rw [HostModel.rt_eq]; push_cast; rfl
 
+/- English proof (translation)
+Rewrite using `[← H.bar_eq, HostModel.bar_rt]`. Use `push_cast`. Both sides reduce to the same expression.
+-/
 theorem conj_rt (H : Host E) : IsCMField.complexConj E (H.rt : E) = -(H.rt : E) := by
   rw [← H.bar_eq, HostModel.bar_rt]; push_cast; rfl
 
+/- English proof (translation)
+Conclude with `HostModel.rt_ne_zero H` after adjusting the coercions.
+-/
 theorem coe_rt_ne_zero (H : Host E) : (H.rt : E) ≠ 0 := by
   exact_mod_cast HostModel.rt_ne_zero H
 
+/- English proof (translation)
+Establish `h` using `congrArg (fun z : E => Real.log |(Algebra.norm ℚ z : ℚ)|) (HostModel.coe_sq_eq_neg H.rt_sq)`. Establish `e : (-(H.d : E)) = algebraMap ℚ E (-(H.d : ℚ))` using `by simp`. Simplify using `only [e, Algebra.norm_algebraMap, map_pow, Rat.cast_pow, Real.log_abs, Real.log_pow, Rat.cast_neg, Real.log_neg_eq_log, Rat.cast_natCast, Nat.cast_ofNat] at h`. Rewrite using `[Real.log_abs]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem log_norm_rt (H : Host E) :
     Real.log |(Algebra.norm ℚ (H.rt : E) : ℚ)| = Module.finrank ℚ E * (Real.log H.d / 2) := by
   have h := congrArg (fun z : E => Real.log |(Algebra.norm ℚ z : ℚ)|) (HostModel.coe_sq_eq_neg H.rt_sq)
@@ -136,6 +183,15 @@ theorem log_norm_rt (H : Host E) :
   rw [Real.log_abs]
   linarith
 
+/- English proof (translation)
+Establish `: Finite (E →+* Ω)` using `Nat.finite_of_card_ne_zero (by rw [hΩ]; exact Module.finrank_pos.ne')`. Use `Fintype.ofFinite (E →+* Ω)` as an intermediate fact. Rewrite using `[finsum_eq_sum_of_fintype, ← Finset.sum_subtype (Finset.univ.filter fun τ : E →+* Ω => τ (H.rt : E) = τ₀ (H.rt : E)) (by simp) (fun τ : E →+* Ω => τ z), Finset.sum_filter, trace_eq_sum hΩ, trace_eq_sum hΩ, Finset.sum_mul, ← Finset.sum_sub_distrib, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Establish `h0 : τ (H.rt : E) ≠ 0` using `(map_ne_zero τ).2 (coe_rt_ne_zero H)`.
+
+Establish `h1 : ∀ σ : E →+* Ω, σ (H.rt : E) = 2 * σ H.w0 - 1` using `fun σ => by`. Rewrite using `[coe_rt_eq, map_sub, map_mul, map_ofNat, map_one]`. Establish `h2 : ∀ σ : E →+* Ω, σ (H.rt : E) ^ 2 = -(H.d : Ω)` using `fun σ => by`. Rewrite using `[← map_pow, HostModel.coe_sq_eq_neg H.rt_sq, map_neg, map_natCast]`. Establish `h3` using `h1 τ`.
+
+Establish `h4` using `h1 τ₀`. Simplify using `only [map_div₀, map_mul]`. Use `split_ifs with hτ`. Clear the denominators using the available nonvanishing facts. Take the linear combination `(τ z / 2) * (- hτ - h3 - h4)`.
+
+Establish `h5` using `(sq_eq_sq_iff_eq_or_eq_neg.1 ((h2 τ).trans (h2 τ₀).symm)).resolve_left hτ`. Clear the denominators using the available nonvanishing facts. Take the linear combination `(τ z / 2) * (h5 - h3 - h4)`.
+-/
 theorem relTrace_eq (H : Host E) {Ω : Type} [Field Ω] [CharZero Ω] (hΩ : Nat.card (E →+* Ω) = Module.finrank ℚ E)
     (τ₀ : E →+* Ω) (z : E) :
     ((Algebra.trace ℚ E (H.w0 * z / H.rt) : ℚ) : Ω) - (Algebra.trace ℚ E (z / H.rt) : ℚ) +
@@ -169,6 +225,41 @@ namespace GlobalTheory.CM
 
 open RankOne
 
+/- English proof (translation)
+Introduce `E _ _ _ H D ε h hr hh hpos`. Establish `hε : ((ε : ℤ) : E) * (ε : ℤ) = 1`. Rewrite using `[← Int.cast_mul, ← Units.val_mul, Int.units_mul_self, Units.val_one, Int.cast_one]`. Establish `hrt` using `coe_rt_ne_zero H`. Establish `hε0 : ((ε : ℤ) : E) ≠ 0` using `left_ne_zero_of_mul_eq_one hε`.
+
+Establish `hξ : FD.cc (((ε : ℤ) : E) / H.rt) = -(((ε : ℤ) : E) / H.rt)`. Rewrite using `[FD.cc, map_div₀, map_intCast, conj_rt, div_neg]`. Take `⟨G, φ, hm⟩` from `exists_herm_coord_of_datum E H D _ hξ (div_ne_zero hε0 hrt) 1 hr.symm`. Take `⟨-, hfg, -, hdual⟩` from `HermModel.rank_integral_selfDual E H D 1 _ G φ hξ hm`. Take `⟨hinj, hspan, hG, hdet, hEF⟩` from `hm`.
+
+Rewrite `hdet` using `[Matrix.det_fin_one]`. Establish `hherm : ∀ x y, FD.herm G x y = G 0 0 * x 0 * IsCMField.complexConj E (y 0)` using `fun x y => by`. Simplify using `only [FD.herm, FD.cc, Fin.sum_univ_one]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [hherm] at hdual hEF`.
+
+Establish `hβ : IsCMField.complexConj E (G 0 0) = G 0 0` using `hG 0 0`. Generalize the expression as in `G 0 0 = β at hdet hdual hEF hβ`. Set `e : D.La →ₗ[𝓞 E] E` to `LinearMap.proj 0 ∘ₗ φ`. Establish `he : ∀ x, φ x 0 = e x` using `fun _ => rfl`. Simplify using `only [he] at hdual hEF`.
+
+Establish `heinj : Function.Injective e` using `fun x y hxy => hinj (funext fun i => by rw [Subsingleton.elim i 0]; exact hxy)`. Establish `hfg' : (LinearMap.range e).FG`. Rewrite using `[LinearMap.range_comp]`. Conclude with `hfg.map _`. Set `𝔞 : FractionalIdeal (nonZeroDivisors (𝓞 E)) E` to `⟨_, FractionalIdeal.isFractional_of_fg hfg'⟩`.
+
+Establish `hmem : ∀ v, v ∈ 𝔞 ↔ ∃ x, e x = v` using `fun v => Iff.rfl`. Establish `: Nontrivial D.La` using `Module.nontrivial_of_finrank_pos (R := 𝓞 E) (by rw [D.rank, hr]; exact one_pos)`. Take `⟨a, ha⟩` from `exists_ne (0 : D.La)`. Establish `ha' : e a ≠ 0` using `(map_ne_zero_iff _ heinj).2 ha`. Establish `h𝔞 : 𝔞 ≠ 0` using `fun h0 => ha' (FractionalIdeal.eq_zero_iff.1 h0 _ ((hmem _).2 ⟨a, rfl⟩))`.
+
+Establish `hsm : ∀ (s : 𝓞 E) x, e (s • x) = s * e x` using `fun s x => by rw [map_smul]; rfl`. Establish `hE : ∀ x y, (((ε : ℤ) * D.EF x y : ℤ) : ℚ) = Algebra.trace ℚ E (β * e x * IsCMField.complexConj E (e y) / H.rt)` using `fun x y => by`. Rewrite using `[Int.cast_mul, hEF, ← zsmul_eq_mul, ← map_zsmul, zsmul_eq_mul, ← _root_.mul_assoc, ← mul_div_assoc, hε]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hE' : ∀ x y, (((ε : ℤ) * D.EF (H.w0 • x) y : ℤ) : ℚ) = Algebra.trace ℚ E (H.w0 * (β * e x * IsCMField.complexConj E (e y)) / H.rt)` using `fun x y => by`. Rewrite using `[hE, hsm]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Use `⟨𝔞, e, β, h𝔞, heinj, rfl, hβ, re_pos_of_trace_pos hβ hdet fun v hv => ?_, fun Ω _ _ hΩ τ₀ x y => ?_, ?_⟩` and prove the remaining obligations.
+
+Choose the witnesses or unpack the hypotheses as in `⟨s, n, hn, hs⟩ : ∃ (s : 𝓞 E) (n : ℤ), n ≠ 0 ∧ (s : E) = n * (v / e a) := by`. Take `⟨n, hn, hi⟩` from `((IsFractionRing.isAlgebraic_iff ℤ ℚ E).2 (Algebra.IsAlgebraic.isAlgebraic (v / e a))).exists_integral_multiple`. Conclude with `⟨⟨_, hi⟩, n, hn, zsmul_eq_mul _ _⟩`. Establish `hx : e (s • a) = n * v` using `by rw [hsm, hs]; field_simp`. Establish `h1 : (0 : ℚ) < (((ε : ℤ) * D.EF (H.w0 • s • a) (s • a) : ℤ) : ℚ)`.
+
+Conclude with `hpos _ ((map_ne_zero_iff _ heinj).1 (hx ▸ mul_ne_zero (Int.cast_ne_zero.2 hn) hv))` after adjusting the coercions. Establish `h2` using `hE (s • a) (s • a)`. Rewrite `h2` using `[D.alt, mul_zero, Int.cast_zero]`. Rewrite `h1` using `[hE']`. Establish `h3 : (H.w0 : E) * (β * e (s • a) * IsCMField.complexConj E (e (s • a))) / H.rt = (2⁻¹ : ℚ) • (β * e (s • a) * IsCMField.complexConj E (e (s • a)) / H.rt) + ((n : ℚ) ^ 2 / 2) • (β * v * IsCMField.complexConj E v)`.
+
+Rewrite using `[hx, map_mul, map_intCast, Rat.smul_def, Rat.smul_def]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Rewrite using `[coe_rt_eq]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite `h1` using `[h3, map_add, map_smul (Algebra.trace ℚ E), map_smul (Algebra.trace ℚ E), ← h2, smul_zero, zero_add, smul_eq_mul]`. Conclude with `(mul_pos_iff_of_pos_left (by positivity)).1 h1`. Rewrite using `[← relTrace_eq H hΩ, ← hE, ← hE', hh]`. Use `push_cast`. Simplify using `only [map_add, map_mul, map_sub, map_intCast]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `h1` using `log_absNorm_of_selfDual h𝔞 (mul_ne_zero (div_ne_zero hε0 hrt) hdet) fun v => by`. Establish `h2` using `hdual fun _ => v`. Simplify using `only [← _root_.mul_assoc] at h2`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hv y hy`. Take `⟨x, rfl⟩` from `(hmem _).1 hv`. Take `⟨y, rfl⟩` from `(hmem _).1 hy`. Conclude with `h2.2 ⟨x, funext fun i => by rw [Subsingleton.elim i 0]; rfl⟩ y`. Introduce `hv`.
+
+Take `⟨x, hx⟩` from `h2.1 fun y => hv _ ((hmem _).2 ⟨y, rfl⟩)`. Conclude with `(hmem _).2 ⟨x, congrFun hx 0⟩`. Establish `h2 : Real.log |(Algebra.norm ℚ (((ε : ℤ) : E) / H.rt * β) : ℚ)| = Real.log |(Algebra.norm ℚ β : ℚ)| - Real.log |(Algebra.norm ℚ (H.rt : E) : ℚ)|`. Establish `n1 : (Algebra.norm ℚ β : ℝ) ≠ 0` using `by exact_mod_cast Algebra.norm_ne_zero_iff.2 hdet`. Establish `n2 : (Algebra.norm ℚ (H.rt : E) : ℝ) ≠ 0` using `by exact_mod_cast Algebra.norm_ne_zero_iff.2 hrt`.
+
+Establish `n3 : |(Algebra.norm ℚ ((ε : ℤ) : E) : ℝ)| = 1`. Rewrite using `[← map_intCast (algebraMap ℚ E), Algebra.norm_algebraMap]`. Apply the tactic sequence `rcases Int.units_eq_one_or ε with rfl | rfl <;> simp`. Rewrite using `[div_eq_mul_inv, map_mul, map_mul, Algebra.norm_inv]`. Use `push_cast`.
+
+Rewrite using `[abs_mul, abs_mul, n3, _root_.one_mul, Real.log_mul (by simpa using n2) (by simpa using n1), abs_inv, Real.log_inv]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h1` using `[h2, log_norm_rt]`. Take the linear combination `h1`.
+-/
 theorem exists_ideal_traceForm_of_rank_one : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (ε : ℤˣ) (h : D.La → D.La → OK H), D.p + D.q = 1 → IsKForm D ε h → (∀ x : D.La, x ≠ 0 → 0 < (ε : ℤ) * D.EF (H.w0 • x) x) → ∃ (𝔞 : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) (e : D.La →ₗ[𝓞 E] E) (β : E), 𝔞 ≠ 0 ∧ Function.Injective e ∧ LinearMap.range e = (𝔞 : Submodule (𝓞 E) E) ∧ IsCMField.complexConj E β = β ∧ (∀ τ : E →+* ℂ, 0 < (τ β).re) ∧
   (∀ (Ω : Type) [Field Ω] [CharZero Ω], Nat.card (E →+* Ω) = Module.finrank ℚ E → ∀ (τ₀ : E →+* Ω) x y, τ₀ (((h x y : OK H) : 𝓞 E) : E) = ∑ᶠ τ : {τ : E →+* Ω // τ (H.rt : E) = τ₀ (H.rt : E)}, τ.1 (β * e x * IsCMField.complexConj E (e y))) ∧
   2 * Real.log (FractionalIdeal.absNorm 𝔞 : ℚ) + Real.log |(Algebra.norm ℚ β : ℚ)| = Module.finrank ℚ E * (Real.log H.d / 2 - Real.log (NumberField.rootDiscr E)) := by

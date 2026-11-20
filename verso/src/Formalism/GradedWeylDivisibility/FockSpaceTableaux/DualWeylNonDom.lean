@@ -15,6 +15,11 @@ def ndEv (R : Type*) [CommRing R] (r n : ℕ) :
     MvPolynomial (Option (Fin r × Fin n)) R →ₐ[R] MvPolynomial (Fin r × Fin n) R :=
   aeval fun o => o.elim 0 X
 
+/- English proof (translation)
+Establish `: (ndEv R r n).comp (colAddGen R (r` using `r) l j) = AlgHom.id R _ := by`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `v`. Simplify using `only [AlgHom.comp_apply, colAddGen, aeval_X, AlgHom.id_apply]`. Apply the tactic sequence `split_ifs <;> simp [ndEv]`.
+
+Conclude with `congrArg (fun φ => φ g) this`.
+-/
 lemma ndEv_colAddGen (l j : Fin n) (g : MvPolynomial (Fin r × Fin n) R) :
     ndEv R r n (colAddGen R l j g) = g := by
   have : (ndEv R r n).comp (colAddGen R (r := r) l j) = AlgHom.id R _ := by
@@ -24,6 +29,11 @@ lemma ndEv_colAddGen (l j : Fin n) (g : MvPolynomial (Fin r × Fin n) R) :
     split_ifs <;> simp [ndEv]
   exact congrArg (fun φ => φ g) this
 
+/- English proof (translation)
+Proceed by induction on `g using MvPolynomial.induction_on with`. Consider the case `C a => simp [colAddGen, derivation_C]`. Consider the case `add p q hp hq => rw [map_add, map_add, map_add, hp, hq, map_add]`. Consider the case `mul_X p v hp`. Rewrite using `[map_mul, Derivation.leibniz, Derivation.leibniz, map_add, smul_eq_mul, smul_eq_mul, map_mul, map_mul, hp, ndEv_colAddGen, ndEv_colAddGen, smul_eq_mul, smul_eq_mul]`.
+
+Use `congr 1`. Simplify using `only [ndE, mkDerivation_X, colAddGen, aeval_X]`. Apply the tactic sequence `split_ifs <;> simp [ndEv, Derivation.leibniz, pderiv_X]`.
+-/
 lemma ndEv_pderiv_colAddGen (l j : Fin n) (g : MvPolynomial (Fin r × Fin n) R) :
     ndEv R r n (pderiv none (colAddGen R l j g)) = ndE R r n l j g := by
   induction g using MvPolynomial.induction_on with
@@ -36,6 +46,9 @@ lemma ndEv_pderiv_colAddGen (l j : Fin n) (g : MvPolynomial (Fin r × Fin n) R) 
     simp only [ndE, mkDerivation_X, colAddGen, aeval_X]
     split_ifs <;> simp [ndEv, Derivation.leibniz, pderiv_X]
 
+/- English proof (translation)
+Proceed by induction on `g using MvPolynomial.induction_on with`. Consider the case `C a => simp`. Consider the case `add p q hp hq => rw [map_add, map_add, hp, hq, add_zero]`. Consider the case `mul_X p v hp => simp [Derivation.leibniz, hp, pderiv_X]`.
+-/
 lemma nd_pderiv_none_rename (g : MvPolynomial (Fin r × Fin n) R) :
     pderiv none (rename (some : Fin r × Fin n → Option (Fin r × Fin n)) g) = 0 := by
   induction g using MvPolynomial.induction_on with
@@ -43,10 +56,16 @@ lemma nd_pderiv_none_rename (g : MvPolynomial (Fin r × Fin n) R) :
   | add p q hp hq => rw [map_add, map_add, hp, hq, add_zero]
   | mul_X p v hp => simp [Derivation.leibniz, hp, pderiv_X]
 
+/- English proof (translation)
+Rewrite using `[← ndEv_pderiv_colAddGen, h, nd_pderiv_none_rename, map_zero]`.
+-/
 lemma ndE_eq_zero {l j : Fin n} {f : MvPolynomial (Fin r × Fin n) R}
     (h : colAddGen R l j f = rename some f) : ndE R r n l j f = 0 := by
   rw [← ndEv_pderiv_colAddGen, h, nd_pderiv_none_rename, map_zero]
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => simpa using hf`. Consider the case `succ k ih`. Rewrite using `[Function.iterate_succ_apply', nd_comm_EulF_l hlj, ih, Derivation.map_smul, Nat.cast_succ, show c - ((k : R) + 1) = (c - k) - 1 by ring, sub_smul (c - k) 1, one_smul]`.
+-/
 lemma nd_iter_Eul_l {l j : Fin n} (hlj : l ≠ j) {f : MvPolynomial (Fin r × Fin n) R} {c : R}
     (hf : ndEul R r n l f = c • f) (k : ℕ) :
     ndEul R r n l ((ndF R r n l j)^[k] f) = (c - k) • (ndF R r n l j)^[k] f := by
@@ -56,6 +75,9 @@ lemma nd_iter_Eul_l {l j : Fin n} (hlj : l ≠ j) {f : MvPolynomial (Fin r × Fi
     rw [Function.iterate_succ_apply', nd_comm_EulF_l hlj, ih, Derivation.map_smul, Nat.cast_succ,
       show c - ((k : R) + 1) = (c - k) - 1 by ring, sub_smul (c - k) 1, one_smul]
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => simpa using hf`. Consider the case `succ k ih`. Rewrite using `[Function.iterate_succ_apply', nd_comm_EulF_j hlj, ih, Derivation.map_smul, Nat.cast_succ, show c + ((k : R) + 1) = (c + k) + 1 by ring, add_smul (c + k) 1, one_smul]`.
+-/
 lemma nd_iter_Eul_j {l j : Fin n} (hlj : l ≠ j) {f : MvPolynomial (Fin r × Fin n) R} {c : R}
     (hf : ndEul R r n j f = c • f) (k : ℕ) :
     ndEul R r n j ((ndF R r n l j)^[k] f) = (c + k) • (ndF R r n l j)^[k] f := by
@@ -65,6 +87,11 @@ lemma nd_iter_Eul_j {l j : Fin n} (hlj : l ≠ j) {f : MvPolynomial (Fin r × Fi
     rw [Function.iterate_succ_apply', nd_comm_EulF_j hlj, ih, Derivation.map_smul, Nat.cast_succ,
       show c + ((k : R) + 1) = (c + k) + 1 by ring, add_smul (c + k) 1, one_smul]
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero`. Rewrite using `[zero_add, Function.iterate_one, nd_comm_EF hlj, hE, map_zero, hl, hj]`. Simplify using `only [Function.iterate_zero, id_eq, Nat.cast_zero, zero_add, one_mul, sub_zero]`. Rewrite using `[sub_smul]`.
+
+Consider the case `succ k ih`. Rewrite using `[Function.iterate_succ_apply' (ndF R r n l j) (k + 1) f, nd_comm_EF hlj, ih, Derivation.map_smul, nd_iter_Eul_l hlj hl, nd_iter_Eul_j hlj hj, ← Function.iterate_succ_apply' (ndF R r n l j) k f, ← sub_smul, ← add_smul]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma nd_iter_E {l j : Fin n} (hlj : l ≠ j) {f : MvPolynomial (Fin r × Fin n) R} {cl cj : R}
     (hl : ndEul R r n l f = cl • f) (hj : ndEul R r n j f = cj • f) (hE : ndE R r n l j f = 0)
     (k : ℕ) :
@@ -82,6 +109,19 @@ lemma nd_iter_E {l j : Fin n} (hlj : l ≠ j) {f : MvPolynomial (Fin r × Fin n)
     congr 1
     push_cast; ring
 
+/- English proof (translation)
+Establish `hne : l ≠ j` using `ne_of_lt hlj`. Establish `hl` using `ndEul_homog (R := R) hhom l`. Establish `hj` using `ndEul_homog (R := R) hhom j`. Establish `hE` using `ndE_eq_zero hinv`. Use `set G : ℕ → MvPolynomial (Fin r × Fin n) R := fun k => (ndF R r n l j)^[k] f with hG`.
+
+Establish `hN : G (ν l + 1) = 0`. Apply `ndEul_neg_eq_zero l` to reduce the goal to its premises. Rewrite using `[hG]`. Simplify using `only`. Rewrite using `[nd_iter_Eul_l hne hl, Nat.cast_succ, show (ν l : R) - ((ν l : R) + 1) = -1 by ring, neg_one_smul]`.
+
+Establish `hstep : ∀ k, G (k + 1) = 0 → G k = 0`. Introduce `k hk`. Establish `h1` using `nd_iter_E hne hl hj hE k`. Rewrite `h1` using `[show (ndF R r n l j)^[k + 1] f = G (k + 1) from rfl, hk, map_zero]`. Establish `hc : (((k : R) + 1) * ((ν l : R) - (ν j : R) - k)) ≠ 0`.
+
+Use `mul_ne_zero (Nat.cast_add_one_ne_zero k) ?_` and prove the remaining obligations. Establish `: (ν l : R) - (ν j : R) - k = (((ν l : ℤ) - ν j - k : ℤ) : R)` using `by push_cast; ring`. Rewrite using `[this, Int.cast_ne_zero]`. Use linear arithmetic over natural numbers and integers. Conclude with `(smul_eq_zero.1 h1.symm).resolve_left hc`.
+
+Establish `hdown : ∀ d k, G (k + d) = 0 → G k = 0`. Introduce `d`. Proceed by induction on `d with`. Consider the case `zero => intro k hk`. Simplify using `using hk`.
+
+Consider the case `succ d ih`. Introduce `k hk`. Conclude with `hstep k (ih (k + 1) (by rw [show k + 1 + d = k + (d + 1) by omega]; exact hk))`. Use `hdown (ν l + 1) 0 (by simpa using hN)` as an intermediate fact. Simplify `this` using `[hG]`.
+-/
 theorem nd_main [IsDomain R] [CharZero R] (ν : Fin n → ℕ) {l j : Fin n} (hlj : l < j)
     (hν : ν l < ν j) (f : MvPolynomial (Fin r × Fin n) R)
     (hhom : IsWeightedHomogeneous (colW r n) f ν) (hinv : colAddGen R l j f = rename some f) :
@@ -118,6 +158,11 @@ theorem nd_main [IsDomain R] [CharZero R] (ν : Fin n → ℕ) {l j : Fin n} (hl
   have := hdown (ν l + 1) 0 (by simpa using hN)
   simpa [hG] using this
 
+/- English proof (translation)
+Introduce `R _ _ _ r n ν ⟨l, j, hlj, hν⟩`. Rewrite using `[Submodule.eq_bot_iff]`. Introduce `f hf`. Rewrite `hf` using `[dualWeyl, Submodule.mem_inf, mem_weightedHomogeneousSubmodule]`. Take `⟨hhom, hinv⟩` from `hf`.
+
+Establish `h1` using `Submodule.mem_iInf _ |>.1 hinv l`. Establish `h2` using `Submodule.mem_iInf _ |>.1 h1 j`. Establish `h3` using `Submodule.mem_iInf _ |>.1 h2 hlj`. Rewrite `h3` using `[LinearMap.mem_ker, LinearMap.sub_apply, sub_eq_zero, AlgHom.toLinearMap_apply, AlgHom.toLinearMap_apply]`. Conclude with `nd_main ν hlj hν f hhom h3`.
+-/
 theorem dualWeylModuleNonDominant : DualWeylNonDom := by
   intro R _ _ _ r n ν ⟨l, j, hlj, hν⟩
   rw [Submodule.eq_bot_iff]

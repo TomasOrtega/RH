@@ -6,6 +6,13 @@ namespace Formalism.FourierDecayAlt.P
 
 namespace EntryMinorBounds
 
+/- English proof (translation)
+Establish `hR0 : ∀ i, 0 ≤ R i` using `fun i => le_trans (norm_nonneg _) (hR i i)`. Rewrite using `[Matrix.det_apply]`. Use `(norm_sum_le _ _).trans ?_` and prove the remaining obligations. Establish `hterm : ∀ σ : Equiv.Perm (Fin n), ‖Equiv.Perm.sign σ • ∏ i, A (σ i) i‖ ≤ ∏ i, R i`. Introduce `σ`.
+
+Rewrite using `[Units.smul_def, zsmul_eq_mul, norm_mul]`. Establish `hs : ‖((Equiv.Perm.sign σ : ℤ) : ℂ)‖ = 1`. Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign σ) with h | h <;> rw [h] <;> simp`. Rewrite using `[hs, one_mul, norm_prod]`. Combine the equalities or inequalities in the displayed calculation.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_const, Finset.card_univ, Fintype.card_perm, Fintype.card_fin, nsmul_eq_mul]`.
+-/
 lemma det_norm_le {n : ℕ} (A : Matrix (Fin n) (Fin n) ℂ) (R : Fin n → ℝ) (hR : ∀ i j, ‖A i j‖ ≤ R i) :
     ‖A.det‖ ≤ (Nat.factorial n : ℝ) * ∏ i, R i := by
   have hR0 : ∀ i, 0 ≤ R i := fun i => le_trans (norm_nonneg _) (hR i i)
@@ -25,6 +32,13 @@ lemma det_norm_le {n : ℕ} (A : Matrix (Fin n) (Fin n) ℂ) (R : Fin n → ℝ)
     _ = (Nat.factorial n : ℝ) * ∏ i, R i := by
         rw [Finset.sum_const, Finset.card_univ, Fintype.card_perm, Fintype.card_fin, nsmul_eq_mul]
 
+/- English proof (translation)
+Establish `hinv : M⁻¹ = M.adjugate`. Rewrite using `[Matrix.inv_def, hdet, Ring.inverse_one, one_smul]`. Rewrite using `[hinv, Matrix.adjugate_apply]`. Establish `hb` using `det_norm_le (M.updateRow j (Pi.single i 1)) (fun r => if r = j then 1 else X) (fun r s => by`. Distinguish the cases in `hr : r = j`.
+
+Apply the tactic sequence `subst hr; rw [if_pos rfl, Matrix.updateRow_self, Pi.single_apply]; split_ifs <;> simp`. Rewrite using `[if_neg hr, Matrix.updateRow_ne hr]`. Conclude with `hM r s)`. Use `hb.trans (le_of_eq ?_)` and prove the remaining obligations. Use `congr 1`.
+
+Rewrite using `[Finset.prod_ite, Finset.prod_const_one, one_mul, Finset.prod_const]`. Use `congr 1`. Rewrite using `[Finset.filter_ne' Finset.univ j, Finset.card_erase_of_mem (Finset.mem_univ j), Finset.card_univ, Fintype.card_fin]`.
+-/
 lemma inv_entry_le {n : ℕ} (M : Matrix (Fin n) (Fin n) ℂ) (hdet : M.det = 1) (X : ℝ) (hX : 1 ≤ X)
     (hM : ∀ i j, ‖M i j‖ ≤ X) (i j : Fin n) : ‖M⁻¹ i j‖ ≤ (Nat.factorial n : ℝ) * X ^ (n - 1) := by
   have hinv : M⁻¹ = M.adjugate := by
@@ -41,11 +55,19 @@ lemma inv_entry_le {n : ℕ} (M : Matrix (Fin n) (Fin n) ℂ) (hdet : M.det = 1)
   rw [Finset.filter_ne' Finset.univ j, Finset.card_erase_of_mem (Finset.mem_univ j), Finset.card_univ,
     Fintype.card_fin]
 
+/- English proof (translation)
+Unfold `C2.mx`. Conclude with `(norm_le_pi_norm (fun j => M i j) j).trans (norm_le_pi_norm (Matrix.of.symm M) i)`.
+-/
 lemma entry_le_mx {α β : Type*} [Fintype α] [Fintype β] (M : Matrix α β ℂ) (i : α) (j : β) :
     ‖M i j‖ ≤ C2.mx M := by
   unfold C2.mx
   exact (norm_le_pi_norm (fun j => M i j) j).trans (norm_le_pi_norm (Matrix.of.symm M) i)
 
+/- English proof (translation)
+Unfold `C2.mx`. Apply `(pi_norm_le_iff_of_nonneg hc).mpr` to reduce the goal to its premises. Introduce `i`. Apply `(pi_norm_le_iff_of_nonneg hc).mpr` to reduce the goal to its premises. Introduce `j`.
+
+Conclude with `h i j`.
+-/
 lemma mx_le {α β : Type*} [Fintype α] [Fintype β] (M : Matrix α β ℂ) (c : ℝ) (hc : 0 ≤ c)
     (h : ∀ i j, ‖M i j‖ ≤ c) : C2.mx M ≤ c := by
   unfold C2.mx
@@ -55,6 +77,13 @@ lemma mx_le {α β : Type*} [Fintype α] [Fintype β] (M : Matrix α β ℂ) (c 
   intro j
   exact h i j
 
+/- English proof (translation)
+Establish `hmx : 0 ≤ C2.mx M` using `norm_nonneg _`. Unfold `C2.minorS`. Use `split_ifs with h`. Establish `hcard : I.card ≤ m` using `by simpa using Finset.card_le_univ I`. Use `(det_norm_le _ (fun _ => C2.mx M) (fun a b => entry_le_mx M _ _)).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[Finset.prod_const, Finset.card_univ, Fintype.card_fin]`. Apply `mul_le_mul` to reduce the goal to its premises. Conclude with `Nat.factorial_le hcard` after adjusting the coercions. Combine the equalities or inequalities in the displayed calculation. Check the signs of the components of the expression.
+
+Check the signs of the components of the expression. Rewrite using `[norm_zero]`. Check the signs of the components of the expression.
+-/
 lemma minor_le {m : ℕ} (M : Matrix (Fin m) (Fin m) ℂ) (I J : Finset (Fin m)) :
     ‖C2.minorS M I J‖ ≤ (Nat.factorial m : ℝ) * (1 + C2.mx M) ^ m := by
   have hmx : 0 ≤ C2.mx M := norm_nonneg _

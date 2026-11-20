@@ -16,6 +16,11 @@ section General
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E] {n : ℕ}
 
+/- English proof (translation)
+Use `Submodule.smul_induction_on (p := fun w => a • w ∈ Λ) hx (fun m hm y hy => ?_) (fun u v hu hv => ?_)` and prove the remaining obligations. Take `⟨c, hc⟩` from `ha m hm`. Establish `e : a • (m • y) = c • y`. Rewrite using `[← algebraMap_smul E m y, ← algebraMap_smul E c y, smul_smul, hc, mul_comm]`. Simplify using `only [e]`.
+
+Conclude with `Λ.smul_mem c hy`. Simplify using `only [smul_add]`. Conclude with `Λ.add_mem hu hv`.
+-/
 theorem smul_mem_of_mem_smul (Λ : Submodule (𝓞 E) (Fin n → E)) (𝔪 : Ideal (𝓞 E)) (a : E)
     (ha : ∀ m ∈ 𝔪, ∃ c : 𝓞 E, algebraMap (𝓞 E) E c = algebraMap (𝓞 E) E m * a) (x : Fin n → E) (hx : x ∈ 𝔪 • Λ) :
     a • x ∈ Λ := by
@@ -28,6 +33,15 @@ theorem smul_mem_of_mem_smul (Λ : Submodule (𝓞 E) (Fin n → E)) (𝔪 : Ide
   · simp only [smul_add]
     exact Λ.add_mem hu hv
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `z ∈ Submodule.span _ _ at hz`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem w hw`. Take `⟨x, hx, rfl⟩` from `hw`. Establish `hax` using `smul_mem_of_mem_smul Λ 𝔪 a ha x hx`.
+
+Express the relevant statement in the definitionally equal form `_ ∈ Submodule.span _ _`. Use `Submodule.subset_span ⟨a • x, hax, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Use `show (a • x) i ⊗ₜ[F] (1 : Formalism.L2.Herm.Af F) = (a ⊗ₜ[F] (1 : Formalism.L2.Herm.Af F)) * (x i ⊗ₜ[F] 1)`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, mul_one]`.
+
+Both sides reduce to the same expression. Consider the case `zero => rw [smul_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add u v _ _ hu hv => rw [smul_add]`. Conclude with `Submodule.add_mem _ hu hv`.
+
+Consider the case `smul s u _ hu`. Rewrite using `[Subring.smul_def, smul_smul, mul_comm, ← smul_smul, ← Subring.smul_def]`. Conclude with `Submodule.smul_mem _ s hu`.
+-/
 theorem smul_mem_hatL (Λ : Submodule (𝓞 E) (Fin n → E)) (𝔪 : Ideal (𝓞 E)) (a : E)
     (ha : ∀ m ∈ 𝔪, ∃ c : 𝓞 E, algebraMap (𝓞 E) E c = algebraMap (𝓞 E) E m * a)
     (z : Fin n → E ⊗[F] Formalism.L2.Herm.Af F) (hz : z ∈ Formalism.L2.Herm.hatL (F := F) (𝔪 • Λ)) :
@@ -49,6 +63,13 @@ theorem smul_mem_hatL (Λ : Submodule (𝓞 E) (Fin n → E)) (𝔪 : Ideal (�
     rw [Subring.smul_def, smul_smul, mul_comm, ← smul_smul, ← Subring.smul_def]
     exact Submodule.smul_mem _ s hu
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `z ∈ Submodule.span _ _ at hz`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem w hw`. Take `⟨x, hx, rfl⟩` from `hw`. Establish `hx0 : x = 0` using `(Submodule.mem_bot _).1 hx`.
+
+Substitute `hx0` using the available equality. Use function extensionality and compare the values at `i`. Use `show (0 : E) ⊗ₜ[F] (1 : Formalism.L2.Herm.Af F) = 0`. Conclude with `TensorProduct.zero_tmul _ _`. Consider the case `zero => rfl`.
+
+Consider the case `add u v _ _ hu hv => rw [hu, hv, add_zero]`. Consider the case `smul s u _ hu => rw [hu, smul_zero]`.
+-/
 theorem eq_zero_of_mem_hatL_bot (z : Fin n → E ⊗[F] Formalism.L2.Herm.Af F)
     (hz : z ∈ Formalism.L2.Herm.hatL (F := F) (⊥ : Submodule (𝓞 E) (Fin n → E))) : z = 0 := by
   change z ∈ Submodule.span _ _ at hz
@@ -64,6 +85,9 @@ theorem eq_zero_of_mem_hatL_bot (z : Fin n → E ⊗[F] Formalism.L2.Herm.Af F)
   | add u v _ _ hu hv => rw [hu, hv, add_zero]
   | smul s u _ hu => rw [hu, smul_zero]
 
+/- English proof (translation)
+Take `⟨p, hp0, hp⟩` from `Ring.not_isField_iff_exists_prime.mp (NumberField.RingOfIntegers.not_isField F)`. Set `v : HeightOneSpectrum (𝓞 F)` to `⟨p, hp, hp0⟩`. Use `⟨⟨0, 1, fun h => ?_⟩⟩` and prove the remaining obligations. Establish `h'` using `congrArg (fun b : Formalism.L2.Herm.Af F => b v) h`. Simplify using `at h'`.
+-/
 theorem nontrivial_af : Nontrivial (Formalism.L2.Herm.Af F) := by
   obtain ⟨p, hp0, hp⟩ := Ring.not_isField_iff_exists_prime.mp (NumberField.RingOfIntegers.not_isField F)
   let v : HeightOneSpectrum (𝓞 F) := ⟨p, hp, hp0⟩
@@ -71,6 +95,23 @@ theorem nontrivial_af : Nontrivial (Formalism.L2.Herm.Af F) := by
   have h' := congrArg (fun b : Formalism.L2.Herm.Af F => b v) h
   simp at h'
 
+/- English proof (translation)
+Distinguish the cases in `h𝔪 : 𝔪 = ⊥`. Substitute `h𝔪` using the available equality. Establish `h0 : g.1 *ᵥ (fun i => y i ⊗ₜ[F] (1 : Formalism.L2.Herm.Af F)) = 0` using `eq_zero_of_mem_hatL_bot _ (by simpa [Submodule.bot_smul] using hy)`. Establish `hv : (fun i => y i ⊗ₜ[F] (1 : Formalism.L2.Herm.Af F)) = 0`. Use `congrArg (fun w => (g⁻¹ : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)).1 *ᵥ w) h0` as an intermediate fact.
+
+Simplify `this` using `[Matrix.mulVec_mulVec]`. Use `haveI := nontrivial_af (F := F)`. Establish `hinj : Function.Injective (Algebra.TensorProduct.includeLeft : E →ₐ[F] E ⊗[F] Formalism.L2.Herm.Af F)` using `Algebra.TensorProduct.includeLeft_injective (algebraMap F (Formalism.L2.Herm.Af F)).injective`. Establish `hy0 : y = 0`. Use function extensionality and compare the values at `i`.
+
+Apply `hinj` to reduce the goal to its premises. Simplify using `using congrFun hv i`. Substitute `hy0` using the available equality. Conclude with `Submodule.zero_mem _`. Establish `hP : (𝔪 : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) ≠ 0`.
+
+Rewrite using `[Ne, FractionalIdeal.coeIdeal_eq_zero]` and apply the resulting hypothesis. Establish `h1 : (1 : E) ∈ ((𝔪 : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) : Submodule (𝓞 E) E) * (((𝔪 : FractionalIdeal (nonZeroDivisors (𝓞 E)) E)⁻¹ : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) : Submodule (𝓞 E) E)`. Rewrite using `[← FractionalIdeal.coe_mul, mul_inv_cancel₀ hP]`. Conclude with `FractionalIdeal.one_mem_one _`. Establish `key : ∀ c ∈ ((𝔪 : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) : Submodule (𝓞 E) E) * (((𝔪 : FractionalIdeal (nonZeroDivisors (𝓞 E)) E)⁻¹ : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) : Submodule (𝓞 E) E), c • y ∈ 𝔪 • Submodule.span (𝓞 E) {y : Fin n → E | g.1 *ᵥ (fun i => y i ⊗ₜ[F] …` using `F) Λ} := by`.
+
+Introduce `c hc`. Use `Submodule.mul_induction_on (C := fun c => c • y ∈ 𝔪 • Submodule.span (𝓞 E) {y : Fin n → E | g.1 *ᵥ (fun i => y i ⊗ₜ[F] (1 : Formalism.L2.Herm.Af F)) ∈ Formalism.L2.Herm.hatL (F := F) Λ}) hc (fun m hm a ha => ?_) (fun u v hu hv => ?_)` and prove the remaining obligations. Take `⟨m', hm', rfl⟩` from `(FractionalIdeal.mem_coeIdeal _).1 hm`. Establish `hint : ∀ t ∈ 𝔪, ∃ c : 𝓞 E, algebraMap (𝓞 E) E c = algebraMap (𝓞 E) E t * a`. Introduce `t ht`.
+
+Take `⟨c, hc⟩` from `(FractionalIdeal.mem_one_iff _).1 ((FractionalIdeal.mem_inv_iff hP).1 ha _ (FractionalIdeal.mem_coeIdeal_of_mem _ ht))`. Conclude with `⟨c, by rw [hc, mul_comm]⟩`. Establish `hcol : (fun i => (a • y) i ⊗ₜ[F] (1 : Formalism.L2.Herm.Af F)) = (a ⊗ₜ[F] (1 : Formalism.L2.Herm.Af F)) • (fun i => y i ⊗ₜ[F] (1 : Formalism.L2.Herm.Af F))`. Use function extensionality and compare the values at `i`. Use `show (a * y i) ⊗ₜ[F] (1 : Formalism.L2.Herm.Af F) = (a ⊗ₜ[F] (1 : Formalism.L2.Herm.Af F)) * (y i ⊗ₜ[F] 1)`.
+
+Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, mul_one]`. Establish `haS : g.1 *ᵥ (fun i => (a • y) i ⊗ₜ[F] (1 : Formalism.L2.Herm.Af F)) ∈ Formalism.L2.Herm.hatL (F` using `F) Λ := by`. Rewrite using `[hcol, Matrix.mulVec_smul]`. Conclude with `smul_mem_hatL Λ 𝔪 a hint _ hy`. Rewrite using `[mul_smul, algebraMap_smul]`.
+
+Conclude with `Submodule.smul_mem_smul hm' (Submodule.subset_span haS)`. Rewrite using `[add_smul]`. Conclude with `Submodule.add_mem _ hu hv`. Simplify using `using key 1 h1`.
+-/
 theorem mem_smul_span (Λ : Submodule (𝓞 E) (Fin n → E)) (𝔪 : Ideal (𝓞 E)) (g : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F))
     (y : Fin n → E)
     (hy : g.1 *ᵥ (fun i => y i ⊗ₜ[F] (1 : Formalism.L2.Herm.Af F)) ∈ Formalism.L2.Herm.hatL (F := F) (𝔪 • Λ)) :
@@ -128,6 +169,9 @@ theorem mem_smul_span (Λ : Submodule (𝓞 E) (Fin n → E)) (𝔪 : Ideal (�
 
 end General
 
+/- English proof (translation)
+Introduce `D V Λ 𝔪 _ x y hy`. Unfold `GlobalTheory.SepPer.latAt`. Conclude with `mem_smul_span Λ 𝔪 (Lev.finE V x⁻¹) y hy`.
+-/
 theorem mem_smul_latAt : ∀ (D : D7) (V : HSp D) (Λ : Lat V) (𝔪 : Ideal (𝓞 D.host.E)), IsSelfDualC V Λ → ∀ (x : GA D V) (y : Fin V.rank → D.host.E), (Lev.finE V x⁻¹).1 *ᵥ (fun i => y i ⊗ₜ[D.host.F] (1 : Formalism.L2.Herm.Af D.host.F)) ∈ Formalism.L2.Herm.hatL (F := D.host.F) (𝔪 • Λ) → y ∈ 𝔪 • latAt Λ x := by
   intro D V Λ 𝔪 _ x y hy
   unfold GlobalTheory.SepPer.latAt

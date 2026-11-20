@@ -20,6 +20,11 @@ open scoped InnerProductSpace ENNReal
 
 namespace GlobalTheory.BesselEquiv
 
+/- English proof (translation)
+Establish `hFT : Integrable (fun p => F (T p)) μ` using `hT.integrable_comp_of_integrable hF`. Establish `e1 : ∫ p, F (T p) ∂μ = ∫ p, F p ∂μ`. Use `integral_map (μ := μ) (φ := T) (f := F) hT.measurable.aemeasurable (by rw [hT.map_eq]; exact hF.aestronglyMeasurable)` as an intermediate fact. Rewrite `this` using `[hT.map_eq]`. Conclude with `this.symm`.
+
+Rewrite using `[integral_congr_ae h, integral_smul, ← e1]`. Use `congr 1`. Conclude with `(ContinuousLinearMap.compL ℂ Wp Wp Wp A).integral_comp_comm hFT`.
+-/
 theorem integral_smul_comp_of_measurePreserving {X Wp : Type} [MeasurableSpace X] [NormedAddCommGroup Wp]
     [NormedSpace ℂ Wp] [CompleteSpace Wp] {μ : Measure X} {T : X → X} (hT : MeasurePreserving T μ μ)
     {F F' : X → (Wp →L[ℂ] Wp)} (hF : Integrable F μ) (c : ℂ) (A : Wp →L[ℂ] Wp)
@@ -35,6 +40,23 @@ theorem integral_smul_comp_of_measurePreserving {X Wp : Type} [MeasurableSpace X
   congr 1
   exact (ContinuousLinearMap.compL ℂ Wp Wp Wp A).integral_comp_comm hFT
 
+/- English proof (translation)
+Introduce `hH k r ε mu h R Wp _ _ _ _ z π u μW μN μG νq hDS hgap hok hS v hv w hw g hg m hm`. Establish `hint` using `(GlobalTheory.T.besselIntegral_integrable_and_cwContinuous_of_gap hH k r ε mu h R Wp z π u μW μN μG νq hDS hgap hok hS v hv).1 w hw`. Take `⟨hz, hT, ⟨u₀, hπ⟩, -, hW, hN, -, -⟩` from `hS`. Take `⟨hψ1, hψm, -, hψc, hUW, hNG⟩` from `GlobalTheory.T.besselCharacter_unipotentRadical_properties k r z Formalism.QuantumDeterminants.cStd hz`. Take `⟨hmp, -, -, -, -, hae⟩` from `GlobalTheory.T.besselSubgroup_parameter_measurePreserving k r z μW μN hok.1 hz hT hW hN`.
+
+Establish `hσ` using `(GlobalTheory.rep_basic_of_isDS hH.1.2.2.1 k r ε mu R hDS).1`. Establish `hπm` using `(Formalism.FourierDecayAlt.P.MatrixMultiplicationContinuity.piW_facts hT hπ).2.1`. Establish `hGm : ∀ a ∈ GG k r, ∀ b ∈ GG k r, a * b ∈ GG k r`. Introduce `a ha b hb`. Establish `ha' : aᴴ * Formalism.QuantumDeterminants.Hpk k r * a = Formalism.QuantumDeterminants.Hpk k r` using `ha`.
+
+Establish `hb' : bᴴ * Formalism.QuantumDeterminants.Hpk k r * b = Formalism.QuantumDeterminants.Hpk k r` using `hb`. Use `show (a * b)ᴴ * Formalism.QuantumDeterminants.Hpk k r * (a * b) = Formalism.QuantumDeterminants.Hpk k r`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = _ := by rw [ha', hb']`.
+
+Unfold `be`. Use `integral_smul_comp_of_measurePreserving (hmp g hg m hm).1 hint _ _ ?_` and prove the remaining obligations. Use `filter_upwards [hae] with p hp`. Take `⟨ha, hn⟩` from `hp`. Establish `key : ∀ a ∈ Formalism.QuantumDeterminants.UWset k r z, ∀ n ∈ Formalism.QuantumDeterminants.Nset k r, (⟪v, R.σ (a * n) (R.σ (g * m) w)⟫_ℂ * star (Formalism.QuantumDeterminants.psi k r z Formalism.QuantumDeterminants.cStd n)) • π a⁻¹ = Formalism.QuantumDeterminants.psi k r z Formal …`.
+
+Introduce `a ha n hn`. Take `⟨hag, -, haG⟩` from `hUW a ha g hg`. Establish `hgG` using `(hUW g hg g hg).2.2`. Take `⟨-, hgg, -⟩` from `Formalism.FourierDecayAlt.P.MatrixMultiplicationContinuity.uw_inv hg`. Take `⟨hagi, -, -⟩` from `Formalism.FourierDecayAlt.P.MatrixMultiplicationContinuity.uw_inv hag`.
+
+Take `⟨-, hc, -, hcψ⟩` from `hψc g hg n hn`. Establish `e1 : a * g * (g⁻¹ * n * g * m) = a * n * (g * m)`. Combine the equalities or inequalities in the displayed calculation. Establish `e2 : g * (a * g)⁻¹ = a⁻¹`. Rewrite using `[Matrix.mul_inv_rev, ← Matrix.mul_assoc, hgg, Matrix.one_mul]`.
+
+Establish `e3 : Formalism.QuantumDeterminants.psi k r z Formalism.QuantumDeterminants.cStd m * star (Formalism.QuantumDeterminants.psi k r z Formalism.QuantumDeterminants.cStd m) = 1`. Rewrite using `[Complex.star_def, Complex.mul_conj, Complex.normSq_eq_norm_sq, hψ1 m]`. Simplify using the standard rewrite rules. Rewrite using `[e1, hσ _ (hGm a haG n (hNG n hn)) _ (hGm g hgG m (hNG m hm)), (hψm _ hc m hm).2, hcψ, ContinuousLinearMap.comp_smul, ← hπm g hg _ hagi, e2, smul_smul, star_mul']`. Use `congr 1`.
+
+Take the linear combination `(-(⟪v, R.σ (a * n) (R.σ (g * m) w)⟫_ℂ * star (Formalism.QuantumDeterminants.psi k r z Formalism.QuantumDeterminants.cStd n))) * e3`. Conclude with `key _ ha _ hn`.
+-/
 theorem be_equivariant : HypsG → ∀ (k r : ℕ) (ε : Fin (2 * r + k + 1) → Bool) (mu : Fin (2 * r + k + 1) → ℝ) (h : ℝ) (R : Rep k r) (Wp : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [CompleteSpace Wp] [FiniteDimensional ℂ Wp] (z : Fin (2 * r + k + 1) → ℂ) (π : Mx k r → (Wp →L[ℂ] Wp)) (u : ℕ → ℝ) (μW μN μG νq : Measure (Formalism.QuantumDeterminants.Mt k r)), R.IsDG ε mu → Formalism.QuantumDeterminants.GapAtLeast ε mu h → GapOK k r h → SideG k r z π u μW μN μG νq → ∀ v ∈ R.TK, ∀ w ∈ R.sm, ∀ g ∈ Formalism.QuantumDeterminants.UWset k r z, ∀ m ∈ Formalism.QuantumDeterminants.Nset k r, be z Formalism.QuantumDeterminants.cStd π R.σ μW μN (R.σ (g * m) w) v = Formalism.QuantumDeterminants.psi k r z Formalism.QuantumDeterminants.cStd m • (π g).comp (be z Formalism.QuantumDeterminants.cStd π R.σ μW μN w v) := by
   intro hH k r ε mu h R Wp _ _ _ _ z π u μW μN μG νq hDS hgap hok hS v hv w hw g hg m hm
   have hint := (GlobalTheory.T.besselIntegral_integrable_and_cwContinuous_of_gap hH k r ε mu h R Wp z π u μW μN μG νq hDS hgap hok hS v hv).1 w hw

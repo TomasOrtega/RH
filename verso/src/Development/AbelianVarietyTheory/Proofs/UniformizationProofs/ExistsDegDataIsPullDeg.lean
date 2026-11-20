@@ -18,6 +18,11 @@ open CategoryTheory CategoryTheory.Limits MonoidalCategory CartesianMonoidalCate
 open scoped CategoryTheory.Obj in
 attribute [local instance] Over.cartesianMonoidalCategory in
 
+/- English proof (translation)
+Introduce `hP hG R R' _ _ _ _ I I' φ hle D W hψ hgen`. Take `⟨D₀, hE, hT, hI, hF⟩` from `D`. Take `⟨D', hD, hW, hg⟩` from `_root_.GlobalTheory.DegPull.exists_isPullDeg hP R R' φ D₀ W hψ hgen`. Use `⟨⟨D', _root_.GlobalTheory.PsiEvenPull.psiEven_pull hG R R' φ D₀ D' hD hE, _root_.GlobalTheory.tauBimult_of_isPullDeg hG R R' φ D₀ D' hD hT, ?_, ?_⟩, hD, hW, hg⟩` and prove the remaining obligations. Introduce `χ hχ`.
+
+Conclude with `_root_.GlobalTheory.psiIn_of_isPullDeg R R' φ D₀ D' hD χ I I' hle (hI _ fun h => hχ (hD.xe.map_eq_zero_iff.mp h))`. Introduce `n`. Use `((hF n).preimage hD.xe.injective.injOn).subset ?_` and prove the remaining obligations. Introduce `χ hχ h`. Conclude with `hχ (_root_.GlobalTheory.psiIn_of_isPullDeg R R' φ D₀ D' hD χ (I ^ n) (I' ^ n) (by rw [Ideal.map_pow]; exact Ideal.pow_right_mono hle n) h)`.
+-/
 theorem _root_.GlobalTheory.exists_degData_isPullDeg : _root_.ReciprocityTheory.ChartRestriction.G.Out.PolBaseChangeSt → _root_.ReciprocityTheory.ChartRestriction.G.Out.GlobalFnsSt → ∀ (R R' : Type) [CommRing R] [IsDomain R] [CommRing R'] [IsDomain R'] (I : Ideal R) (I' : Ideal R') (φ : R →+* R'), I.map φ ≤ I' → ∀ (D : _root_.ReciprocityTheory.ChartRestriction.G.Out.DegData R I) (W : (Spec (CommRingCat.of R)).Opens), Nonempty (_root_.ReciprocityTheory.ChartRestriction.G.Out.PsiOn D.toPre W) → (_root_.ReciprocityTheory.ChartRestriction.G.Out.specOf φ).base (genericPoint (Spec (CommRingCat.of R'))) ∈ W → ∃ (D' : _root_.ReciprocityTheory.ChartRestriction.G.Out.DegData R' I') (hD : _root_.ReciprocityTheory.ChartRestriction.G.Out.IsPullDeg φ D.toPre D'.toPre), hD.W = W ∧ D'.toPre.P.g = D.toPre.P.g := by
   intro hP hG R R' _ _ _ _ I I' φ hle D W hψ hgen
   obtain ⟨D₀, hE, hT, hI, hF⟩ := D

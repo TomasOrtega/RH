@@ -15,6 +15,29 @@ def unitT (R : Type) [CommRing R] : (R[T;T⁻¹])ˣ where
   val_inv := by rw [← LaurentPolynomial.T_add]; simp
   inv_val := by rw [← LaurentPolynomial.T_add]; simp
 
+/- English proof (translation)
+Introduce `p _ A _ B _ _ K _ _ i f g hA hK hPQ`. Set `j : A[T;T⁻¹] →+* K[T;T⁻¹]` to `AddMonoidAlgebra.liftNCRingHom ((LaurentPolynomial.C : K →+* K[T;T⁻¹]).comp (algebraMap A K)) (AddMonoidAlgebra.of K ℤ) (fun _ _ => Commute.all _ _)`. Set `i₁ : K[T;T⁻¹] →+* B ⊗[A] K` to `AddMonoidAlgebra.liftNCRingHom (Algebra.TensorProduct.includeRight : K →ₐ[A] B ⊗[A] K).toRingHom (((Algebra.TensorProduct.includeLeftRingHom : B →+* B ⊗[A] K).comp (i : A[T;T⁻¹] →+* B)).toMonoidHom.comp (AddMonoidAlgebra.of A ℤ)) (fun _ _ => Commute.all _ _)`. Establish `hi1 : ∀ (n : ℤ) (k : K), i₁ (AddMonoidAlgebra.single n k) = ((1 : B) ⊗ₜ[A] k) * (i (LaurentPolynomial.T n) ⊗ₜ[A] (1 : K))`. Introduce `n k`.
+
+Conclude with `AddMonoidAlgebra.liftNC_single _ _ n k`. Establish `hj1 : ∀ (n : ℤ) (a : A), j (AddMonoidAlgebra.single n a) = LaurentPolynomial.C (algebraMap A K a) * LaurentPolynomial.T n`. Introduce `n a`. Conclude with `AddMonoidAlgebra.liftNC_single _ _ n a`. Establish `hC : ∀ a, i₁ (LaurentPolynomial.C a) = (1 : B) ⊗ₜ[A] a`.
+
+Introduce `a`. Establish `h1` using `hi1 0 a`. Rewrite `h1` using `[LaurentPolynomial.T_zero, map_one, ← Algebra.TensorProduct.one_def, mul_one]`. Conclude with `h1`. Establish `hT : ∀ n : ℤ, i₁ (LaurentPolynomial.T n) = i (LaurentPolynomial.T n) ⊗ₜ[A] (1 : K)`.
+
+Introduce `n`. Establish `h1` using `hi1 n 1`. Rewrite `h1` using `[← Algebra.TensorProduct.one_def, one_mul]`. Conclude with `h1`. Establish `hjC : ∀ a, j (LaurentPolynomial.C a) = LaurentPolynomial.C (algebraMap A K a)`.
+
+Introduce `a`. Establish `h1` using `hj1 0 a`. Rewrite `h1` using `[LaurentPolynomial.T_zero, mul_one]`. Conclude with `h1`. Establish `hjT : ∀ n : ℤ, j (LaurentPolynomial.T n) = LaurentPolynomial.T n`.
+
+Introduce `n`. Establish `h1` using `hj1 n 1`. Rewrite `h1` using `[map_one, map_one, one_mul]`. Conclude with `h1`. Establish `hiC : ∀ a, i (LaurentPolynomial.C a) = algebraMap A B a`.
+
+Introduce `a`. Rewrite using `[← AlgHom.commutes i a, LaurentPolynomial.algebraMap_apply, Algebra.algebraMap_self_apply]`. Establish `hcomp : (LaurentPolynomial.C : K →+* K[T;T⁻¹]).comp (algebraMap A K) = j.comp (algebraMap A A[T;T⁻¹])`. Use extensionality with `a`. Rewrite using `[RingHom.comp_apply, RingHom.comp_apply, LaurentPolynomial.algebraMap_apply, Algebra.algebraMap_self_apply, hjC]`.
+
+Establish `hgen : Subring.closure (Set.range (LaurentPolynomial.C : K →+* K[T;T⁻¹]) ∪ Set.range j) = ⊤`. Rewrite using `[eq_top_iff]`. Introduce `q _`. Use `LaurentPolynomial.induction_on' q ?_ ?_` and prove the remaining obligations. Introduce `a b ha hb`.
+
+Conclude with `Subring.add_mem _ ha hb`. Introduce `n a`. Conclude with `Subring.mul_mem _ (Subring.subset_closure (Or.inl ⟨a, rfl⟩)) (Subring.subset_closure (Or.inr ⟨LaurentPolynomial.T n, hjT n⟩))`. Establish `hij : ∀ s, i₁ (j s) = i s ⊗ₜ[A] (1 : K)`. Introduce `s`.
+
+Use `LaurentPolynomial.induction_on' s ?_ ?_` and prove the remaining obligations. Introduce `a b ha hb`. Rewrite using `[map_add, map_add, ha, hb, map_add, TensorProduct.add_tmul]`. Introduce `n a`. Rewrite using `[map_mul, map_mul, hjC, hjT, map_mul, hC, hT, hiC, Algebra.TensorProduct.tmul_mul_tmul, one_mul, mul_one, ← Algebra.smul_def, TensorProduct.smul_tmul, ← Algebra.algebraMap_eq_smul_one]`.
+
+Establish `hmap : (Ideal.span {LaurentPolynomial.C f - LaurentPolynomial.T 1 * LaurentPolynomial.C g} : Ideal A[T;T⁻¹]).map j = Ideal.span {LaurentPolynomial.C (algebraMap A K f) - LaurentPolynomial.T 1 * LaurentPolynomial.C (algebraMap A K g)}`. Rewrite using `[Ideal.map_span, Set.image_singleton, map_sub, map_mul, hjC, hjC, hjT]`. Use `⟨i₁, ?_, hC, hT⟩` and prove the remaining obligations. Rewrite using `[← hmap]`. Conclude with `GlobalTheory.T.perfect_tensor_generated_lift p A A[T;T⁻¹] B K K[T;T⁻¹] i _ LaurentPolynomial.C j i₁ hA hK hPQ hcomp hgen hC hij`.
+-/
 theorem bc_laur : ∀ (p : ℕ) [Fact p.Prime] (A : Type) [CommRing A](B : Type) [CommRing B] [Algebra A B] (K : Type) [CommRing K] [Algebra A K] (i : A[T;T⁻¹] →ₐ[A] B) (f g : A), Pf p A → Pf p K → PQ p (i : A[T;T⁻¹] →+* B) (Ideal.span {LaurentPolynomial.C f - LaurentPolynomial.T 1 * LaurentPolynomial.C g}) → ∃ i₁ : K[T;T⁻¹] →+* B ⊗[A] K, PQ p i₁ (Ideal.span {LaurentPolynomial.C (algebraMap A K f) - LaurentPolynomial.T 1 * LaurentPolynomial.C (algebraMap A K g)}) ∧ (∀ a, i₁ (LaurentPolynomial.C a) = (1 : B) ⊗ₜ[A] a) ∧ ∀ n : ℤ, i₁ (LaurentPolynomial.T n) = i (LaurentPolynomial.T n) ⊗ₜ[A] (1 : K) := by
   intro p _ A _ B _ _ K _ _ i f g hA hK hPQ
   let j : A[T;T⁻¹] →+* K[T;T⁻¹] :=

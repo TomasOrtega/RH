@@ -7,6 +7,15 @@ noncomputable section
 
 namespace Formalism.ZeroFreeDirichlet
 
+/- English proof (translation)
+Use `⟨∫ x in a..(a + 1), (x ^ (-σ) - (a + 1) ^ (-σ)), ?_, ?_⟩` and prove the remaining obligations. Apply `intervalIntegral.integral_nonneg (by linarith)` to reduce the goal to its premises. Introduce `x hx`. Establish `hx0 : 0 < x` using `lt_of_lt_of_le ha hx.1`. Establish `h1` using `Real.rpow_le_rpow_of_nonpos hx0 hx.2 (by linarith : -σ ≤ 0)`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Unfold `Formalism.ZF.ComplexPowerDifferenceIntegral.eint`. Rewrite using `[← intervalIntegral.integral_ofReal]`. Apply `intervalIntegral.integral_congr` to reduce the goal to its premises. Introduce `x hx`.
+
+Rewrite `hx` using `[Set.uIcc_of_le (by linarith)]`. Establish `hx0 : 0 ≤ x` using `le_trans ha.le hx.1`. Simplify using `only [Complex.ofReal_sub]`. Rewrite using `[Complex.ofReal_cpow hx0, Complex.ofReal_cpow (by linarith : (0 : ℝ) ≤ a + 1)]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma exponential_integral_nonneg_real {σ a : ℝ} (hσ : 0 ≤ σ) (ha : 0 < a) :
     ∃ r : ℝ, 0 ≤ r ∧ Formalism.ZF.ComplexPowerDifferenceIntegral.eint (σ : ℂ) a = (r : ℂ) := by
   refine ⟨∫ x in a..(a + 1), (x ^ (-σ) - (a + 1) ^ (-σ)), ?_, ?_⟩
@@ -26,6 +35,21 @@ lemma exponential_integral_nonneg_real {σ a : ℝ} (hσ : 0 ≤ σ) (ha : 0 < a
     push_cast
     ring
 
+/- English proof (translation)
+Introduce `σ hσ0 hσ1`. Establish `hre : 0 < (σ : ℂ).re` using `by simpa using hσ0`. Establish `hz1` using `Formalism.ZF.ComplexPowerDifferenceIntegral.riemannZetaOne_eq_one_sub_of_re_pos hre`. Establish `hne : (σ : ℂ) ≠ 1`. Introduce `h`.
+
+Use `congrArg Complex.re h` as an intermediate fact. Simplify using `at this`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hne' : (σ : ℂ) - 1 ≠ 0` using `sub_ne_zero.mpr hne`. Establish `hζ` using `riemannZeta_eq_inv_sub_mul hne`.
+
+Use `choose r hr0 hr using fun n : ℕ => exponential_integral_nonneg_real (σ := σ) (a := (n : ℝ) + 1) hσ0.le (by positivity)`. Establish `hdz : ∀ n : ℕ, Formalism.ZF.ComplexPowerDifferenceIntegral.dz (σ : ℂ) n = ((σ : ℂ) - 1) * ((r n : ℝ) : ℂ)`. Introduce `n`. Rewrite using `[← hr n]`. Conclude with `Formalism.ZF.ComplexPowerDifferenceIntegral.d_eq (by positivity) _`.
+
+Establish `hsum : Summable r`. Establish `hs` using `Formalism.ZF.ComplexPowerDifferenceIntegral.summable_norm_dz hre`. Establish `hs' : Summable (fun n => ‖((σ : ℂ) - 1)‖⁻¹ * ‖Formalism.ZF.ComplexPowerDifferenceIntegral.dz (σ : ℂ) n‖)` using `hs.mul_left _`. Use `hs'.congr (fun n => ?_)` and prove the remaining obligations. Rewrite using `[hdz n, norm_mul, ← mul_assoc, inv_mul_cancel₀ (norm_ne_zero_iff.mpr hne'), one_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (hr0 n)]`.
+
+Establish `hDz : Formalism.ZF.ComplexPowerDifferenceIntegral.Dz (σ : ℂ) = ((σ : ℂ) - 1) * ((∑' n, r n : ℝ) : ℂ)`. Unfold `Formalism.ZF.ComplexPowerDifferenceIntegral.Dz`. Repeatedly rewrite using `[hdz]`. Rewrite using `[tsum_mul_left, Complex.ofReal_tsum]`. Use `set R := ∑' n, r n with hRdef`.
+
+Establish `hR0 : 0 ≤ R` using `tsum_nonneg hr0`. Establish `hval : riemannZeta (σ : ℂ) = ((σ / (σ - 1) - R : ℝ) : ℂ)`. Rewrite using `[hζ, hz1, hDz]`. Establish `hσ1' : (σ - 1 : ℝ) ≠ 0` using `by intro h; linarith`. Use `push_cast`.
+
+Clear the denominators using the available nonvanishing facts. Rewrite using `[hval, Complex.ofReal_im, Complex.ofReal_re]`. Use `⟨rfl, ?_⟩` and prove the remaining obligations. Establish `: σ / (σ - 1) < 0` using `div_neg_of_pos_of_neg hσ0 (by linarith)`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem zeta_negative_real_axis : ZetaNegReal := by
   intro σ hσ0 hσ1
   have hre : 0 < (σ : ℂ).re := by simpa using hσ0

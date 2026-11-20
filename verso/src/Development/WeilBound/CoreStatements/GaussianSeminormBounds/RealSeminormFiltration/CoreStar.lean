@@ -8,6 +8,17 @@ open scoped InnerProductSpace
 
 namespace PositivityTheory.KReal
 
+/- English proof (translation)
+Set `Z : Submodule ℂ M` to `Y ⊓ LinearMap.ker π`. Use `haveI : FiniteDimensional ℂ Z := Submodule.finiteDimensional_of_le (S₂ := Y) inf_le_left`. Establish `hZ : ∀ z ∈ Z, D z ∈ Z`. Introduce `z hz`. Use `⟨hY z hz.1, ?_⟩` and prove the remaining obligations.
+
+Establish `h2 : π z = 0` using `hz.2`. Use `show π (D z) = 0`. Rewrite using `[← hπ, h2, map_zero]`. Establish `hinj : Function.Injective (D.restrict hZ)`. Rewrite using `[← LinearMap.ker_eq_bot, eq_bot_iff]`.
+
+Introduce `z hz`. Establish `h3 : D z.1 = 0` using `congrArg Subtype.val (LinearMap.mem_ker.1 hz)`. Conclude with `Subtype.ext (hi z.1 z.2.1 h3)`. Establish `hsurj` using `LinearMap.injective_iff_surjective.1 hinj`. Establish `hDy : D y ∈ Z` using `⟨hY y hy, by show π (D y) = 0`.
+
+Rewrite using `[← hπ, h0]⟩`. Take `⟨z, hz⟩` from `hsurj ⟨D y, hDy⟩`. Establish `hz' : D z.1 = D y` using `congrArg Subtype.val hz`. Establish `h4 : y - z.1 = 0` using `hi _ (Y.sub_mem hy z.2.1) (by rw [map_sub, hz', sub_self])`. Establish `h5 : y = z.1` using `sub_eq_zero.1 h4`.
+
+Rewrite using `[h5]`. Conclude with `z.2.2`.
+-/
 theorem star_inj_quot {M T : Type} [AddCommGroup M] [Module ℂ M] [AddCommGroup T] [Module ℂ T]
     (D : Module.End ℂ M) (D' : Module.End ℂ T) (π : M →ₗ[ℂ] T) (hπ : ∀ x, D' (π x) = π (D x))
     (Y : Submodule ℂ M) [FiniteDimensional ℂ Y] (hY : ∀ y ∈ Y, D y ∈ Y) (hi : ∀ y ∈ Y, D y = 0 → y = 0)
@@ -36,6 +47,11 @@ theorem star_inj_quot {M T : Type} [AddCommGroup M] [Module ℂ M] [AddCommGroup
   rw [h5]
   exact z.2.2
 
+/- English proof (translation)
+Unfold `casK`. Rewrite using `[LinearMap.sum_apply]`. Use `Y.sum_mem fun a _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.sum_apply]`. Use `Y.sum_mem fun b _ => ?_` and prove the remaining obligations.
+
+Use `split_ifs with h`. Conclude with `hY a b h _ (hY b a (PI.FHS.sameBlock_symm h) _ hy)`. Simplify using the standard rewrite rules.
+-/
 theorem star_casK_mem {r s : ℕ} {M : Type} [AddCommGroup M] [Module ℂ M]
     {ρ : Ix r s → Ix r s → Module.End ℂ M} {Y : Submodule ℂ M} (hY : KSt ρ Y) {y : M} (hy : y ∈ Y) :
     casK ρ y ∈ Y := by
@@ -48,12 +64,18 @@ theorem star_casK_mem {r s : ℕ} {M : Type} [AddCommGroup M] [Module ℂ M]
   · exact hY a b h _ (hY b a (PI.FHS.sameBlock_symm h) _ hy)
   · simp
 
+/- English proof (translation)
+Unfold `Eab`. Use `split_ifs with h`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Conclude with `Matrix.trace_single_eq_of_ne _ _ _ h`.
+-/
 theorem star_trace {r s : ℕ} (a b : Ix r s) : (Eab a b).trace = if a = b then 1 else 0 := by
   unfold Eab
   split_ifs with h
   · subst h; simp
   · exact Matrix.trace_single_eq_of_ne _ _ _ h
 
+/- English proof (translation)
+Unfold `units`. Rewrite using `[twAct_apply, star_trace]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem star_tw {p q r s : ℕ} (τ : ℂ) (a b : Ix r s) (g : Pol p q r s) :
     units (twAct p q r s τ) a b g =
       units (fockAct2 p q r s) a b g + (if a = b then τ else 0) • g := by
@@ -61,6 +83,11 @@ theorem star_tw {p q r s : ℕ} (τ : ℂ) (a b : Ix r s) (g : Pol p q r s) :
   rw [twAct_apply, star_trace]
   split_ifs <;> simp
 
+/- English proof (translation)
+Unfold `casK`. Simplify using `only [LinearMap.sum_apply, map_sum]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Use `split_ifs with h`. Simplify using `only [Module.End.mul_apply, units, thAct_mk]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem star_cas_mk {p q r s : ℕ} (c τ : ℂ) (g : Pol p q r s) :
     casK (units (thAct p q r s c τ)) (thMkC p q r s c g) =
       thMkC p q r s c (casK (units (twAct p q r s τ)) g) := by
@@ -71,9 +98,47 @@ theorem star_cas_mk {p q r s : ℕ} (c τ : ℂ) (g : Pol p q r s) :
   · simp only [Module.End.mul_apply, units, thAct_mk]
   · simp
 
+/- English proof (translation)
+Apply the tactic sequence `cases a <;> trivial`.
+-/
 theorem star_sb_refl {r s : ℕ} (a : Ix r s) : sameBlock a a := by
   cases a <;> trivial
 
+/- English proof (translation)
+Introduce `t ht x hx hcas`. Set `Y : Submodule ℂ (Pol p q r s)` to `harm1 p q r s ⊓ polChi p q r s c ⊓ homog (Ix p q × Ix r s) (d0 + 2)`. Use `haveI : FiniteDimensional ℂ (homog (Ix p q × Ix r s) (d0 + 2)) := Module.Finite.iff_fg.2 (homogeneousSubmodule_fg _ ℂ (d0 + 2))`. Use `haveI : FiniteDimensional ℂ Y := Submodule.finiteDimensional_of_le (S₂ := homog (Ix p q × Ix r s) (d0 + 2)) inf_le_right`. Establish `hYK : KSt (units (fockAct2 p q r s)) Y` using `fun a b hab y hy => ⟨⟨harmonic_stable_second_action a b hab y hy.1.1, polChi_stable_second_action c _ hy.1.2⟩, homogeneous_stable_second_action (d0 + 2) a b hab y hy.2⟩`.
+
+Establish `hYT : KSt (units (twAct p q r s τ)) Y`. Introduce `a b hab y hy`. Rewrite using `[star_tw]`. Conclude with `Y.add_mem (hYK a b hab y hy) (Y.smul_mem _ hy)`. Establish `hgl : GlK (units (twAct p q r s τ))` using `glK_of_lie (lie_tw p q r s τ)`.
+
+Establish `hx1 : x ∈ (homog (Ix p q × Ix r s) (d0 + 2)).map (thMkC p q r s c)`. Use `Submodule.span_le.2 ?_ hx` and prove the remaining obligations. Introduce and unpack `_ ⟨a, b, hab, _, ⟨g, hg, rfl⟩, rfl⟩`. Establish `hne : a ≠ b`. Introduce and unpack `rfl`.
+
+Conclude with `hab (star_sb_refl a)`. Establish `hlow : thMkC p q r s c (PI.FockOneDegW.lowOp (p` using `p) (q := q) a b g) = 0 := by`. Distinguish the cases in `h2 : d0 < 2`. Rewrite using `[low_homog_small a b h2 hg, map_zero]`. Take `⟨e, rfl⟩ : ∃ e, d0 = e + 2` from `⟨d0 - 2, by omega⟩`.
+
+Use `th_small c c0 hc e ?_ (low_homog a b hg)` and prove the remaining obligations. Rewrite using `[← hd]`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨_, second_action_add_lowering hab hg, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_add, hlow, add_zero, thAct_mk, twAct_apply, star_trace, if_neg hne]`. Simplify using the standard rewrite rules. Take `⟨y, hy, rfl⟩` from `th_next c c0 hc d0 hd hx1`. Set `D : Module.End ℂ (Pol p q r s)` to `casK (units (twAct p q r s τ)) - (t : ℂ) • 1`. Establish `hD : ∀ g, D g = casK (units (twAct p q r s τ)) g - (t : ℂ) • g` using `fun g => rfl`.
+
+Use `star_inj_quot D (casK (units (thAct p q r s c τ)) - (t : ℂ) • 1) (thMkC p q r s c) ?_ Y ?_ ?_ hy ?_` and prove the remaining obligations. Introduce `g`. Rewrite using `[hD, map_sub, map_smul, ← star_cas_mk]`. Both sides reduce to the same expression. Introduce `g hg`.
+
+Rewrite using `[hD]`. Conclude with `Y.sub_mem (star_casK_mem hYT hg) (Y.smul_mem _ hg)`. Introduce `g0 hg0 hDg0`. Assume the negation of the conclusion as `hne`. Set `U : Submodule ℂ (Pol p q r s)` to `Y ⊓ LinearMap.ker D`.
+
+Use `haveI : FiniteDimensional ℂ U := Submodule.finiteDimensional_of_le (S₂ := Y) inf_le_left`. Establish `hU0 : U ≠ ⊥`. Introduce `h`. Establish `: g0 ∈ U` using `⟨hg0, hDg0⟩`. Rewrite `this` using `[h]`.
+
+Conclude with `hne ((Submodule.mem_bot ℂ).1 this)`. Establish `hUT : KSt (units (twAct p q r s τ)) U`. Introduce `a b hab u hu`. Use `⟨hYT a b hab u hu.1, ?_⟩` and prove the remaining obligations. Establish `h1 : D u = 0` using `hu.2`.
+
+Establish `h2` using `LinearMap.congr_fun (cas_comm hgl hab) u`. Simplify using `only [Module.End.mul_apply] at h2`. Use `show D _ = 0`. Rewrite `h1`, the goal using `[hD]`. Rewrite using `[h2, ← map_smul, ← map_sub, h1, map_zero]`.
+
+Establish `hUK : KSt (units (fockAct2 p q r s)) U`. Introduce `a b hab u hu`. Establish `h1` using `U.sub_mem (hUT a b hab u hu) (U.smul_mem (if a = b then τ else 0) hu)`. Rewrite `h1` using `[star_tw, add_sub_cancel_right]`. Conclude with `h1`.
+
+Take `⟨ν, g, hgU, hw⟩` from `hwExist2 U hU0 hUK`. Take `⟨⟨a, b, hab, hroot⟩, hdeg⟩` from `root_of_hw c c0 hc La hC.2.1 d0 hd hgU.1 hw`. Establish `hlt` using `hC.2.2 ν a b hab hroot (dom2 hw) (supp2 hw) hdeg`. Establish `hK` using `hwK_of_hwSub.1 hw.2`. Establish `hKT : HwK (units (twAct p q r s τ)) (fun x => ν x + τ0) g`.
+
+Use `⟨fun a => ?_, fun a b h => ?_⟩` and prove the remaining obligations. Rewrite using `[star_tw, hK.1 a, if_pos rfl, hτ, ← add_smul] push_cast`. Both sides reduce to the same expression. Rewrite using `[star_tw, hK.2 a b h, if_neg (PI.FockOneDegW.Core.posC_ne a b h)]`. Simplify using the standard rewrite rules.
+
+Establish `h1 : D g = 0` using `hgU.2`. Rewrite `h1` using `[hD, cas_hw hgl hKT, ← sub_smul, smul_eq_zero]`. Break down `h1 with h1 | h1` into its components or cases. Establish `h2 : ((casW (fun x => ν x + τ0) : ℚ) : ℝ) = t`. Establish `h3 : (((casW (fun x => ν x + τ0) : ℚ) : ℝ) : ℂ) = (t : ℂ)`.
+
+Rewrite using `[← sub_eq_zero.1 h1]`. Simplify using the standard rewrite rules. Conclude with `h3` after adjusting the coercions. Establish `h4 : ((casW (fun x => La x + τ0) : ℚ) : ℝ) + ((r : ℝ) + s) < ((casW (fun x => ν x + τ0) : ℚ) : ℝ)` using `by exact_mod_cast hlt`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Conclude with `hw.1 h1`. Use `show casK (units (thAct p q r s c τ)) _ - (t : ℂ) • _ = 0`. Conclude with `sub_eq_zero.2 hcas`.
+-/
 theorem star_th {p q r s : ℕ} (c τ : ℂ) (c0 τ0 : ℚ) (hc : c = c0) (hτ : τ = τ0) (La : Ix r s → ℚ)
     (hC : CombOK p q c0 τ0 La) (d0 : ℕ) (hd : (d0 : ℚ) = degW (cPair r s) (fun _ : Ix p q => c0)) :
     StarK (thAct p q r s c τ) ((homog (Ix p q × Ix r s) d0).map (thMkC p q r s c))

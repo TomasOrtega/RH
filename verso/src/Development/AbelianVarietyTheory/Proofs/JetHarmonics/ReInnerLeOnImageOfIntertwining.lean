@@ -5,6 +5,17 @@ open scoped InnerProductSpace
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `key : ∀ i j, ((C : ℂ) - l j) * ⟪v i, v j⟫_ℂ = ⟪((√(C - l i) : ℝ) : ℂ) • v i, ((√(C - l j) : ℝ) : ℂ) • v j⟫_ℂ`. Introduce `i j`. Rewrite using `[inner_smul_left, inner_smul_right, Complex.conj_ofReal, ← mul_assoc]`. Distinguish the cases in `h : l i = l j`. Rewrite using `[h, ← Complex.ofReal_mul, Real.mul_self_sqrt (sub_nonneg.2 (hl j))]`.
+
+Use `push_cast`. Both sides reduce to the same expression. Establish `h1` using `hB (v i) (v j)`. Rewrite `h1` using `[hv, hv, inner_smul_left, inner_smul_right, Complex.conj_ofReal]`. Establish `h2 : ((l i : ℂ) - l j) * ⟪v i, v j⟫_ℂ = 0` using `by rw [sub_mul, h1, sub_self]`.
+
+Establish `h3 : ((l i : ℂ) - l j) ≠ 0`. Rewrite using `[sub_ne_zero]`. Conclude with `h` after adjusting the coercions. Establish `h4 : ⟪v i, v j⟫_ℂ = 0` using `(mul_eq_zero.1 h2).resolve_left h3`. Rewrite using `[h4, mul_zero, mul_zero]`.
+
+Establish `hsum : (C : ℂ) * ⟪∑ i, v i, ∑ i, v i⟫_ℂ - ⟪∑ i, v i, B (∑ i, v i)⟫_ℂ = ⟪∑ i, ((√(C - l i) : ℝ) : ℂ) • v i, ∑ i, ((√(C - l i) : ℝ) : ℂ) • v i⟫_ℂ`. Rewrite using `[map_sum]`. Simplify using `only [sum_inner, inner_sum, ← key, hv, Finset.mul_sum, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[inner_smul_right, sub_mul]`.
+
+Establish `hre` using `congrArg Complex.re hsum`. Rewrite `hre` using `[inner_self_eq_norm_sq_to_K, inner_self_eq_norm_sq_to_K]`. Simplify using `only [Complex.coe_algebraMap, ← Complex.ofReal_pow, ← Complex.ofReal_mul, Complex.sub_re, Complex.ofReal_re] at hre`. Use polynomial arithmetic with `[sq_nonneg ‖∑ i, ((√(C - l i) : ℝ) : ℂ) • v i‖]`.
+-/
 theorem re_inner_sum_eigen_le {N ι : Type} [NormedAddCommGroup N] [InnerProductSpace ℂ N]
     [Fintype ι] (B : N →ₗ[ℂ] N) (hB : B.IsSymmetric) (C : ℝ) (v : ι → N) (l : ι → ℝ)
     (hv : ∀ i, B (v i) = (l i : ℂ) • v i) (hl : ∀ i, l i ≤ C) :
@@ -36,6 +47,13 @@ theorem re_inner_sum_eigen_le {N ι : Type} [NormedAddCommGroup N] [InnerProduct
     Complex.sub_re, Complex.ofReal_re] at hre
   nlinarith [sq_nonneg ‖∑ i, ((√(C - l i) : ℝ) : ℂ) • v i‖]
 
+/- English proof (translation)
+Introduce `T N _ _ _ _ _ Φ A B C hA hB hΦ hC x`. Use `set b := hA.eigenvectorBasis (n := Module.finrank ℂ T) rfl with hb`. Use `set l := hA.eigenvalues (n := Module.finrank ℂ T) rfl with hl`. Establish `hAb : ∀ i, A (b i) = (l i : ℂ) • b i` using `fun i => hA.apply_eigenvectorBasis rfl i`. Establish `hle : ∀ i, l i ≤ C`.
+
+Introduce `i`. Establish `h` using `hC (b i)`. Rewrite `h` using `[hAb, inner_smul_right, inner_self_eq_norm_sq_to_K, b.orthonormal.1 i]`. Simplify using `using h`. Establish `hx : Φ x = ∑ i, Φ (b.repr x i • b i)`.
+
+Rewrite using `[← map_sum, b.sum_repr]`. Rewrite using `[hx]`. Use `re_inner_sum_eigen_le B hB C _ l (fun i => ?_) hle` and prove the remaining obligations. Rewrite using `[← hΦ, map_smul A, hAb, smul_comm, map_smul]`.
+-/
 theorem re_inner_le_on_image_of_intertwining :
     ∀ (T N : Type) [NormedAddCommGroup T] [InnerProductSpace ℂ T] [FiniteDimensional ℂ T]
       [NormedAddCommGroup N] [InnerProductSpace ℂ N] (Φ : T →ₗ[ℂ] N) (A : T →ₗ[ℂ] T)

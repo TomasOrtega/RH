@@ -19,19 +19,34 @@ namespace GlobalTheory.CompanionTheory.PcFc
 
 variable {D : D7} {n ρ p : ℕ}
 
+/- English proof (translation)
+Rewrite using `[AddChar.map_neg_eq_inv, Complex.inv_eq_conj (hψ.2.1 t)]`.
+-/
 theorem conj_psi {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F ψ) (t : AF D.host.F) : conj (ψ t) = ψ (-t) := by
   rw [AddChar.map_neg_eq_inv, Complex.inv_eq_conj (hψ.2.1 t)]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem chn_eq (ψ : AddChar (AF D.host.F) ℂ) (β : HermE D n) (b : hermA D n) :
     chn ψ β b = ψ (-GlobalTheory.CompanionTheory.FourierN.pr β.1 b.1) := rfl
 
+/- English proof (translation)
+The claim follows from `hψ.1.comp ((GlobalTheory.CompanionTheory.FourierN.continuous_pr β.1).neg.comp continuous_subtype_val)`.
+-/
 theorem chn_cont {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F ψ) (β : HermE D n) : Continuous (chn ψ β) :=
   hψ.1.comp ((GlobalTheory.CompanionTheory.FourierN.continuous_pr β.1).neg.comp continuous_subtype_val)
 
+/- English proof (translation)
+Introduce `γ hγ x` and use `by rw [chn_eq, chn_eq, show (γ + x).1 = γ.1 + x.1 from rfl, GlobalTheory.CompanionTheory.FourierN.pr_add_right, neg_add, AddChar.map_add_eq_mul, GlobalTheory.CompanionTheory.FourierN.ker_of_rat hψ γ hγ, one_mul]`.
+-/
 theorem chn_per {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F ψ) (β : HermE D n) : IsPer (chn ψ β) := fun γ hγ x => by
   rw [chn_eq, chn_eq, show (γ + x).1 = γ.1 + x.1 from rfl, GlobalTheory.CompanionTheory.FourierN.pr_add_right, neg_add, AddChar.map_add_eq_mul,
     GlobalTheory.CompanionTheory.FourierN.ker_of_rat hψ γ hγ, one_mul]
 
+/- English proof (translation)
+Unfold `bl`. Rewrite using `[Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply]`. Establish `h : ∀ M : Matrix (Fin ρ ⊕ Fin p) (Fin ρ ⊕ Fin p) R, Matrix.trace (M.submatrix (finSumFinEquiv.trans (finCongr hn)).symm (finSumFinEquiv.trans (finCongr hn)).symm) = Matrix.trace M` using `fun M => Equiv.sum_comp (finSumFinEquiv.trans (finCongr hn)).symm (fun j => M j j)`. Rewrite using `[h]`. Simplify using `[Matrix.trace, Fintype.sum_sum_type]`.
+-/
 theorem trace_bl_mul {R : Type} [CommRing R] (hn : ρ + p = n) (a z : Matrix (Fin ρ) (Fin ρ) R) (d y : Matrix (Fin p) (Fin p) R)
     (x : Matrix (Fin ρ) (Fin p) R) (c : Matrix (Fin p) (Fin ρ) R) :
     Matrix.trace (bl hn a 0 0 d * bl hn z x c y) = Matrix.trace (a * z) + Matrix.trace (d * y) := by
@@ -43,6 +58,9 @@ theorem trace_bl_mul {R : Type} [CommRing R] (hn : ρ + p = n) (a z : Matrix (Fi
   rw [h]
   simp [Matrix.trace, Fintype.sum_sum_type]
 
+/- English proof (translation)
+Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Simplify using `only [dsum, bl, Matrix.map_apply, Matrix.submatrix_apply]`. Apply the tactic sequence `rcases (finSumFinEquiv.trans (finCongr hn)).symm i with i' | i' <;>`. Apply the tactic sequence `rcases (finSumFinEquiv.trans (finCongr hn)).symm j with j' | j' <;> simp`.
+-/
 theorem map_dsum (hn : ρ + p = n) (b₀ : HermE D ρ) (β' : HermE D p) :
     (dsum hn b₀ β').1.map (incA D) = bl hn (b₀.1.map (incA D)) 0 0 (β'.1.map (incA D)) := by
   refine Matrix.ext fun i j => ?_
@@ -50,6 +68,9 @@ theorem map_dsum (hn : ρ + p = n) (b₀ : HermE D ρ) (β' : HermE D p) :
   rcases (finSumFinEquiv.trans (finCongr hn)).symm i with i' | i' <;>
     rcases (finSumFinEquiv.trans (finCongr hn)).symm j with j' | j' <;> simp
 
+/- English proof (translation)
+Simplify using `only [GlobalTheory.CompanionTheory.FourierN.pr, ← GlobalTheory.CompanionTheory.FourierN.halfTr_add]`. Use `congr 1`. Rewrite using `[map_dsum]`. Conclude with `trace_bl_mul hn _ _ _ _ _ _`.
+-/
 theorem pr_split (hn : ρ + p = n) (b₀ : HermE D ρ) (β' : HermE D p) (z : hermA D ρ) (x : Mx D ρ p) (y : hermA D p) :
     GlobalTheory.CompanionTheory.FourierN.pr (dsum hn b₀ β').1 (bT hn z x y).1 = GlobalTheory.CompanionTheory.FourierN.pr b₀.1 z.1 + GlobalTheory.CompanionTheory.FourierN.pr β'.1 y.1 := by
   simp only [GlobalTheory.CompanionTheory.FourierN.pr, ← GlobalTheory.CompanionTheory.FourierN.halfTr_add]
@@ -57,6 +78,9 @@ theorem pr_split (hn : ρ + p = n) (b₀ : HermE D ρ) (β' : HermE D p) (z : he
   rw [map_dsum]
   exact trace_bl_mul hn _ _ _ _ _ _
 
+/- English proof (translation)
+Rewrite using `[chn_eq, pr_split, neg_add, AddChar.map_add_eq_mul, chn_eq]`. Use `congr 1`. Conclude with `(conj_psi hψ _).symm`.
+-/
 theorem chn_split {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F ψ) (hn : ρ + p = n) (b₀ : HermE D ρ) (β' : HermE D p)
     (z : hermA D ρ) (x : Mx D ρ p) (y : hermA D p) :
     chn ψ (dsum hn b₀ β') (bT hn z x y) = conj (chz ψ b₀ z) * chn ψ β' y := by
@@ -64,6 +88,11 @@ theorem chn_split {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F ψ) 
   congr 1
   exact (conj_psi hψ _).symm
 
+/- English proof (translation)
+Establish `hd` using `GlobalTheory.T.hermitian_integral_block_fubini hn m h hp (fun b => Φ b * chn ψ (dsum hn b₀ β') b) (hc.mul (chn_cont hψ _)) (fun γ hγ x => by show Φ (γ + x) * chn ψ (dsum hn b₀ β') (γ + x) = _`. Rewrite using `[hper γ hγ x, chn_per hψ _ γ hγ x])`. Rewrite using `[hd]`. Use `integral_congr_ae (.of_forall fun y => ?_)` and prove the remaining obligations. Use `show ∫ x in m.𝓕, ∫ z in m.𝓖, Φ (bT hn z x y) * chn ψ (dsum hn b₀ β') (bT hn z x y) ∂m.lz ∂m.μ = pm hn m ψ b₀ Φ y * chn ψ β' y`.
+
+Simplify using `only [chn_split hψ, ← mul_assoc]`. Simplify using `only [integral_mul_const, pm]`.
+-/
 theorem coef_pm (hn : ρ + p = n) (m : Meas D ρ p) {lam : Measure (hermA D n)} {𝓖 : Set (hermA D n)} (h : IsCovolOneH lam 𝓖)
     {lp : Measure (hermA D p)} {𝓖p : Set (hermA D p)} (hp : IsCovolOneH lp 𝓖p) {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F ψ)
     (b₀ : HermE D ρ) (β' : HermE D p) (Φ : hermA D n → ℂ) (hc : Continuous Φ) (hper : IsPer Φ) :
@@ -82,12 +111,18 @@ end GlobalTheory.CompanionTheory.PcFc
 
 namespace GlobalTheory.CompanionTheory.PcFc
 
+/- English proof (translation)
+Introduce `γ hγ x` and use `by show F (nb (γ + x) * g) = F (nb x * g) rw [GlobalTheory.CompanionTheory.FourierN.nb_add hnb, mul_assoc] exact hinv _ (GlobalTheory.CompanionTheory.FourierN.nb_rat hnb γ hγ) _`.
+-/
 theorem per_nb {D : D7} {n : ℕ} {F : G D n → ℂ} (hinv : LeftInv (GF D n) F) {nb : hermA D n → G D n} (hnb : IsNMap nb) (g : G D n) :
     IsPer (fun b => F (nb b * g)) := fun γ hγ x => by
   show F (nb (γ + x) * g) = F (nb x * g)
   rw [GlobalTheory.CompanionTheory.FourierN.nb_add hnb, mul_assoc]
   exact hinv _ (GlobalTheory.CompanionTheory.FourierN.nb_rat hnb γ hγ) _
 
+/- English proof (translation)
+The claim follows from `hF.comp ((GlobalTheory.CompanionTheory.FourierN.continuous_nb hnb).mul continuous_const)`.
+-/
 theorem cont_nb {D : D7} {n : ℕ} {F : G D n → ℂ} (hF : Continuous F) {nb : hermA D n → G D n} (hnb : IsNMap nb) (g : G D n) :
     Continuous (fun b => F (nb b * g)) :=
   hF.comp ((GlobalTheory.CompanionTheory.FourierN.continuous_nb hnb).mul continuous_const)
@@ -95,11 +130,31 @@ theorem cont_nb {D : D7} {n : ℕ} {F : G D n → ℂ} (hF : Continuous F) {nb :
 def zH (D : D7) (p : ℕ) : HermE D p := ⟨0, by
   rw [Matrix.map_zero _ (map_zero _), Matrix.transpose_zero]⟩
 
+/- English proof (translation)
+Establish `h` using `GlobalTheory.CompanionTheory.FourierN.pr_zero_left (D := D) (n := p) y.1`. Simplify using `only [GlobalTheory.CompanionTheory.FourierN.pr] at h`. Simplify using `only [chn, zH, h, neg_zero, AddChar.map_zero_eq_one]`.
+-/
 theorem chn_zero {D : D7} {p : ℕ} (ψ : AddChar (AF D.host.F) ℂ) (y : hermA D p) : chn ψ (zH D p) y = 1 := by
   have h := GlobalTheory.CompanionTheory.FourierN.pr_zero_left (D := D) (n := p) y.1
   simp only [GlobalTheory.CompanionTheory.FourierN.pr] at h
   simp only [chn, zH, h, neg_zero, AddChar.map_zero_eq_one]
 
+/- English proof (translation)
+Introduce `D n ρ p hn M m ψ hψ F hF hinv`. Take `⟨lp, 𝓖p, hp⟩` from `GlobalTheory.CompanionTheory.HermVol.exists_isCovolOneH D p`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `h nb lam 𝓖 hC β hr g`. Take `⟨a, b₀, β', hd, he⟩` from `GlobalTheory.T.hermitian_block_diagonal_normal_form hn β hr`.
+
+Take `⟨q, hq⟩` from `GlobalTheory.T.fourier_coefficient_conjugation hψ F hF hinv hC a β`. Establish `h1` using `hq (q⁻¹ * g)`. Rewrite `h1` using `[mul_inv_cancel_left]`. Rewrite using `[h1, he]`. Establish `h2` using `coef_pm hn m hC.2 hp hψ b₀ β' _ (cont_nb hF hC.1 (q⁻¹ * g)) (per_nb hinv hC.1 (q⁻¹ * g))`.
+
+Use `h2.trans ?_` and prove the remaining obligations. Use `setIntegral_eq_zero_of_forall_eq_zero fun y _ => ?_` and prove the remaining obligations. Rewrite using `[← GlobalTheory.T.partial_coefficient_unipotent_mean M m ψ b₀ F hC.1, h b₀ hd, zero_mul]`. Introduce `hR b₀ hb β hβ nb lam 𝓖 hC g`. Establish `hc` using `cont_nb hF hC.1 g`.
+
+Establish `hpr` using `per_nb hinv hC.1 g`. Establish `key` using `GlobalTheory.T.eq_const_of_fourier_coefficients_zero hp hψ (pm hn m ψ b₀ (fun b => F (nb b * g))) (GlobalTheory.T.continuous_partial_fourier_mean hn m hψ b₀ _ hc hpr) (GlobalTheory.T.periodic_partial_fourier_mean hn m ψ b₀ _ hpr) (fun a ha => by`. Rewrite using `[← coef_pm hn m hC.2 hp hψ b₀ a _ hc hpr]`. Conclude with `hR nb lam 𝓖 hC _ (GlobalTheory.T.rank_direct_sum_hermitian_lt hn b₀ hb a ha) g)`. Establish `e0 : β = dsum hn b₀ (zH D p)` using `Subtype.ext hβ`.
+
+Establish `e1 : fc ψ lam 𝓖 nb F β g = ∫ y in 𝓖p, pm hn m ψ b₀ (fun b => F (nb b * g)) y * chn ψ (zH D p) y ∂lp`. Rewrite using `[e0]`. Conclude with `coef_pm hn m hC.2 hp hψ b₀ _ _ hc hpr`. Establish `e2 : pc M m ψ b₀ F g = pm hn m ψ b₀ (fun b => F (nb b * g)) 0`. Use `GlobalTheory.T.partial_coefficient_unipotent_mean M m ψ b₀ F hC.1 g 0` as an intermediate fact.
+
+Establish `hz : bT hn (0 : hermA D ρ) 0 (0 : hermA D p) = 0`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show (bl hn (0 : Mx D ρ ρ) 0 (adj (0 : Mx D ρ p)) 0 : Mx D n n) = 0`. Rewrite using `[adj_zero, bl, Matrix.fromBlocks_zero]`. Both sides reduce to the same expression.
+
+Rewrite `this` using `[hz, GlobalTheory.CompanionTheory.FourierN.nb_zero hC.1, one_mul]`. Conclude with `this`. Rewrite using `[e1, e2]`. Simplify using `only [chn_zero, mul_one]`. Rewrite using `[show (fun y => pm hn m ψ b₀ (fun b => F (nb b * g)) y) = fun _ => pm hn m ψ b₀ (fun b => F (nb b * g)) 0 from funext key]`.
+
+Rewrite using `[setIntegral_const, measureReal_def, hp.2.2]`. Simplify using the standard rewrite rules.
+-/
 theorem pcFc : PcFc := by
   intro D n ρ p hn M m ψ hψ F hF hinv
   obtain ⟨lp, 𝓖p, hp⟩ := GlobalTheory.CompanionTheory.HermVol.exists_isCovolOneH D p
@@ -141,6 +196,9 @@ theorem pcFc : PcFc := by
     rw [setIntegral_const, measureReal_def, hp.2.2]
     simp
 
+/- English proof (translation)
+Introduce `_ _` and use `pcFc`.
+-/
 theorem target : MapsExist → PositivityTheory.PfSWUS.FourierZero → PcFc := fun _ _ => pcFc
 
 end GlobalTheory.CompanionTheory.PcFc

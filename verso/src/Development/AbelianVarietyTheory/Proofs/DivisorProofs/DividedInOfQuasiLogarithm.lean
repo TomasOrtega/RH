@@ -12,6 +12,13 @@ noncomputable section
 
 namespace GlobalTheory.QLogDiff
 
+/- English proof (translation)
+Establish `hl : ∀ s : Fin d, constantCoeff (X (Sum.inl s) : MvPowerSeries (Fin d ⊕ Fin d) R) = 0` using `fun s => by simp`. Establish `hr : ∀ s : Fin d, constantCoeff (X (Sum.inr s) : MvPowerSeries (Fin d ⊕ Fin d) R) = 0` using `fun s => by simp`. Apply the tactic sequence `have hρ : HasSubst (Sum.elim (fun j => (X j : MvPowerSeries (Fin d) R)) (fun _ : Fin d => 0)) := hasSubst_of_constantCoeff_zero (fun s => by cases s <;> simp)`. Prove the components needed by the constructor for the conclusion. Unfold `inL`.
+
+Rewrite using `[GlobalTheory.T.pderiv_subst_chain_rule _ hl f (Sum.inr i), Finset.sum_eq_zero (fun j _ => by rw [pderiv_X_of_ne (by simp), mul_zero]), ← substAlgHom_apply hρ, map_zero]`. Unfold `inR`. Rewrite using `[GlobalTheory.T.pderiv_subst_chain_rule _ hr f (Sum.inr i), Finset.sum_eq_single i (fun j _ hj => by rw [pderiv_X_of_ne (by simpa using hj), mul_zero]) (by simp), pderiv_X_self, mul_one, subst_comp_subst_apply (hasSubst_of_constantCoeff_zero hr) hρ]`. Establish `e : (fun s : Fin d => subst (Sum.elim (fun j => (X j : MvPowerSeries (Fin d) R)) (fun _ : Fin d => 0)) (X (Sum.inr s) : MvPowerSeries (Fin d ⊕ Fin d) R)) = 0`. Use function extensionality and compare the values at `s`.
+
+Simplify using `[subst_X hρ]`. Rewrite using `[e, subst_zero_eq_C_constantCoeff, Algebra.algebraMap_self, map_id, RingHom.id_apply, ← coeff_zero_eq_constantCoeff_apply, coeff_pderiv, zero_add]`. Simplify using `[lin]`.
+-/
 theorem restr_inL_inR {R : Type} [CommRing R] {d : ℕ} (f : MvPowerSeries (Fin d) R) (i : Fin d) :
     subst (Sum.elim (fun j => (X j : MvPowerSeries (Fin d) R)) (fun _ => 0))
         (pderiv R (Sum.inr i) (inL f)) = 0 ∧
@@ -44,16 +51,29 @@ end GlobalTheory.QLogDiff
 
 namespace GlobalTheory.QLogDiff
 
+/- English proof (translation)
+Use extensionality with `n`. Simplify using `[coeff_pderiv, coeff_map]`.
+-/
 theorem pderiv_map_eq {R S σ : Type} [CommRing R] [CommRing S] (h : R →+* S)
     (f : MvPowerSeries σ R) (i : σ) : pderiv S i (map h f) = map h (pderiv R i f) := by
   ext n; simp [coeff_pderiv, coeff_map]
 
+/- English proof (translation)
+Introduce `α` and use `by obtain ⟨a, ha, ea⟩ := hf α obtain ⟨b, hb, eb⟩ := hg α exact ⟨a + b, N.add_mem ha hb, by rw [map_add, ea, eb, map_add]⟩`.
+-/
 theorem in_add {B Q σ : Type} [CommRing B] [CommRing Q] [Algebra B Q] {N : Ideal B}
     {f g : MvPowerSeries σ Q} (hf : In N f) (hg : In N g) : In N (f + g) := fun α => by
   obtain ⟨a, ha, ea⟩ := hf α
   obtain ⟨b, hb, eb⟩ := hg α
   exact ⟨a + b, N.add_mem ha hb, by rw [map_add, ea, eb, map_add]⟩
 
+/- English proof (translation)
+Apply the tactic sequence `have hs : HasSubst (Sum.elim (fun _ : Fin d => (0 : MvPowerSeries (Fin d) B)) (fun i : Fin d => X i)) := hasSubst_of_constantCoeff_zero (fun s => by cases s <;> simp)`. Apply the tactic sequence `have hw : HasSubst (Sum.elim (fun i => (X (Sum.inr i) : MvPowerSeries (Fin d ⊕ Fin d) B)) (fun i => X (Sum.inl i))) := hasSubst_of_constantCoeff_zero (fun s => by cases s <;> simp)`. Establish `key : subst (Sum.elim (fun _ : Fin d => (0 : MvPowerSeries (Fin d) B)) (fun i : Fin d => X i)) (μ j) = X j`. Establish `h1` using `congrFun hu j`. Simplify using `only [op, at2] at h1`.
+
+Rewrite using `[← hc j, swap, at2, subst_comp_subst_apply hw hs]`. Establish `e : (fun s => subst (Sum.elim (fun _ : Fin d => (0 : MvPowerSeries (Fin d) B)) (fun i : Fin d => X i)) (Sum.elim (fun i => (X (Sum.inr i) : MvPowerSeries (Fin d ⊕ Fin d) B)) (fun i => X (Sum.inl i)) s)) = Sum.elim (fun i => X i) (fun _ => 0)`. Apply the tactic sequence `funext s; cases s <;> simp [subst_X hs]`. Rewrite using `[e]`. Conclude with `h1`.
+
+Use `(GlobalTheory.T.coeff_subst_restrict_sum_variables (μ j)).2 (Finsupp.single i 1)` as an intermediate fact. Rewrite `this` using `[key, Finsupp.mapDomain_single]`. Rewrite using `[← this, coeff_X]`. Simplify using `[Finsupp.single_left_inj one_ne_zero]`.
+-/
 theorem coeff_inr_of_unit {B : Type} [CommRing B] {d : ℕ} (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) B)
     (hu : op μ (fun i => (X i : MvPowerSeries (Fin d) B)) (fun _ => 0) = fun i => X i)
     (hc : ∀ i, swap (μ i) = μ i) (i j : Fin d) :
@@ -78,6 +98,37 @@ theorem coeff_inr_of_unit {B : Type} [CommRing B] {d : ℕ} (μ : Fin d → MvPo
   rw [← this, coeff_X]
   simp [Finsupp.single_left_inj one_ne_zero]
 
+/- English proof (translation)
+Introduce `p _ B O Q _ _ _ _ θ _ d μ hμ N f hf`. Take `⟨-, hlin, hcob⟩` from `hf`. Establish `hμ0 : ∀ j, constantCoeff (up Q μ j) = 0` using `fun j => by`. Rewrite using `[up, ← coeff_zero_eq_constantCoeff_apply, coeff_map, coeff_zero_eq_constantCoeff_apply, hμ.const j, map_zero]`. Establish `haμ : HasSubst (up Q μ)` using `hasSubst_of_constantCoeff_zero hμ0`.
+
+Take `⟨ρ, hρe⟩ : ∃ ρ : Fin d ⊕ Fin d → MvPowerSeries (Fin d) Q, ρ = Sum.elim (fun j => (X j : MvPowerSeries (Fin d) Q)) (fun _ => 0)` from `⟨_, rfl⟩`. Take `⟨ρB, hρBe⟩ : ∃ ρ : Fin d ⊕ Fin d → MvPowerSeries (Fin d) B, ρ = Sum.elim (fun j => (X j : MvPowerSeries (Fin d) B)) (fun _ => 0)` from `⟨_, rfl⟩`. Apply the tactic sequence `have hρ : HasSubst ρ := hasSubst_of_constantCoeff_zero (fun s => by cases s <;> simp [hρe])`. Apply the tactic sequence `have hρB : HasSubst ρB := hasSubst_of_constantCoeff_zero (fun s => by cases s <;> simp [hρBe])`. Establish `hmapρ : (fun s => map (algebraMap B Q) (ρB s)) = ρ`.
+
+Apply the tactic sequence `funext s; cases s <;> simp [hρe, hρBe]`. Establish `hmapsub : ∀ g : MvPowerSeries (Fin d ⊕ Fin d) B, map (algebraMap B Q) (subst ρB g) = subst ρ (map (algebraMap B Q) g)`. Introduce `g`. Rewrite using `[map_subst hρB, hmapρ]`. Establish `hunit : ∀ j, subst ρ (up Q μ j) = X j`.
+
+Introduce `j`. Establish `h1` using `congrFun hμ.unit j`. Simplify using `only [op, at2] at h1`. Rewrite `h1` using `[← hρBe]`. Establish `h2` using `congrArg (map (algebraMap B Q)) h1`.
+
+Rewrite `h2` using `[hmapsub, map_X]`. Conclude with `h2`. Set `M : Matrix (Fin d) (Fin d) (MvPowerSeries (Fin d) B)` to `fun j i => subst ρB (pderiv B (Sum.inr i) (μ j))`. Establish `hM : ∀ j i, constantCoeff (M j i) = if j = i then 1 else 0`. Introduce `j i`.
+
+Establish `h2` using `(GlobalTheory.T.coeff_subst_restrict_sum_variables (R := B) (pderiv B (Sum.inr i) (μ j))).1 0`. Rewrite `h2` using `[← hρBe]`. Rewrite using `[← coeff_zero_eq_constantCoeff_apply]`. Simplify using `only [M]`. Rewrite using `[h2, Finsupp.mapDomain_zero, coeff_pderiv, zero_add, coeff_inr_of_unit μ hμ.unit hμ.comm i j]`.
+
+Simplify using `[eq_comm]`. Set `g : Fin d → MvPowerSeries (Fin d) Q` to `fun i => subst ρ (pderiv Q (Sum.inr i) (subst (up Q μ) f))`. Establish `hvg : ∀ i, ∑ j, pderiv Q j f * map (algebraMap B Q) (M j i) = g i`. Introduce `i`. Simplify using `only [g, M]`.
+
+Rewrite using `[GlobalTheory.T.pderiv_subst_chain_rule (up Q μ) hμ0 f (Sum.inr i), ← substAlgHom_apply hρ, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, substAlgHom_apply, substAlgHom_apply, subst_comp_subst_apply haμ hρ, hmapsub]`. Establish `e : (fun s => subst ρ (up Q μ s)) = X` using `funext hunit`. Rewrite using `[e, subst_self, id, up, pderiv_map_eq]`.
+
+Establish `hg : ∀ i, In N (g i)`. Introduce `i`. Establish `hsplit : subst (up Q μ) f = cob1 (up Q μ) f + inL f + inR f`. Unfold `cob1`. Normalize the expressions using the abelian group laws.
+
+Establish `l4` using `restr_inL_inR f i`. Rewrite `l4` using `[← hρe]`. Simplify using `only [g]`. Rewrite using `[hsplit, map_add, map_add, ← substAlgHom_apply hρ, map_add, map_add]`. Simplify using `only [substAlgHom_apply]`.
+
+Rewrite using `[l4.1, l4.2, add_zero]`. Use `in_add ?_ ?_` and prove the remaining obligations. Introduce `α`. Establish `h2` using `(GlobalTheory.T.coeff_subst_restrict_sum_variables (R := Q) (pderiv Q (Sum.inr i) (cob1 (up Q μ) f))).1 α`. Rewrite `h2` using `[← hρe]`.
+
+Rewrite using `[h2, coeff_pderiv]`. Take `⟨b, hb, e⟩` from `hcob (Finsupp.mapDomain Sum.inl α + Finsupp.single (Sum.inr i) 1)`. Use `⟨b, hb, ?_⟩` and prove the remaining obligations. Rewrite using `[e, Finsupp.mapDomain_of_notMem_range _ _ (by simp), Nat.cast_zero, zero_add, mul_one]`. Introduce `α`.
+
+Take `⟨b, hb, e⟩` from `hlin i`. Distinguish the cases in `h0 : α = 0`. Conclude with `⟨b, hb, by rw [h0, coeff_zero_C, e]⟩`. Conclude with `⟨0, N.zero_mem, by rw [coeff_C, if_neg h0, map_zero]⟩`. Establish `hv` using `GlobalTheory.T.coeffsInIdeal_solution_of_unipotent_series_matrix N M hM (fun j => pderiv Q j f) g hvg hg`.
+
+Introduce `α i`. Distinguish the cases in `hi : α i = 0`. Conclude with `⟨0, N.zero_mem, by rw [hi, Nat.cast_zero, zero_mul, map_zero]⟩`. Establish `hle : Finsupp.single i 1 ≤ α`. Rewrite using `[Finsupp.single_le_iff]`.
+
+Use linear arithmetic over natural numbers and integers. Take `⟨b, hb, e⟩` from `hv i (α - Finsupp.single i 1)`. Use `⟨b, hb, ?_⟩` and prove the remaining obligations. Rewrite using `[← e, coeff_pderiv, tsub_add_cancel_of_le hle, Finsupp.tsub_apply, Finsupp.single_eq_same, mul_comm, Nat.cast_sub (Nat.one_le_iff_ne_zero.mpr hi), Nat.cast_one, sub_add_cancel]`.
+-/
 theorem dIn_of_QL : ∀ (p : ℕ) [Fact p.Prime] (B O Q : Type) [CommRing B] [CommRing Q] [CommRing O]
     [Algebra B Q] (θ : B →+* O), IsFrame p Q θ → ∀ (d : ℕ) (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) B),
     IsLift θ μ → ∀ (N : Ideal B) (f : MvPowerSeries (Fin d) Q), QL μ N f → DIn N f := by

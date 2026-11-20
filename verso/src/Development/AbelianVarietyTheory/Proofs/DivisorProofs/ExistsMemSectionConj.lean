@@ -7,6 +7,11 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace GlobalTheory.BCT
 
+/- English proof (translation)
+Introduce `E _ _ _ S hS u hu`. Take `⟨w, ⟨hwS, hwu⟩, -⟩` from `hS u`. Use `⟨w, hwS, ?_⟩` and prove the remaining obligations. Establish `hr : Module.finrank (maximalRealSubfield E) E = 2` using `Algebra.IsQuadraticExtension.finrank_eq_two _ _`. Break down `(GlobalTheory.Mem.Chr.under_eq_iff_conjPl (IsCMField.complexConj E) hr (IsCMField.complexConj_ne_one E) u w).1 hwu with h | h` into its components or cases.
+
+Conclude with `absurd (h ▸ hwS) hu`. Introduce `x`. Conclude with `(h x).symm`.
+-/
 theorem exists_mem_section_conj : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (S : Set (Pl E)), IsSection S →
     ∀ u : Pl E, u ∉ S → ∃ w ∈ S, ∀ x : E, u.valuation E x = w.valuation E (IsCMField.complexConj E x) := by
   intro E _ _ _ S hS u hu

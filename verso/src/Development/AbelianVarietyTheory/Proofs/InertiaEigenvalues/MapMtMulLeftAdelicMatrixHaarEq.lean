@@ -18,6 +18,19 @@ def matrixColumns (R : Type) [AddCommGroup R] (n m : ℕ) :
   right_inv _ := rfl
   map_add' _ _ := rfl
 
+/- English proof (translation)
+Use `letI mM : MeasurableSpace (Matrix (Fin n) (Fin m) R) := borel _`. Use `haveI bM : BorelSpace (Matrix (Fin n) (Fin m) R) := ⟨rfl⟩`. Use `letI mP : MeasurableSpace (Fin m → Fin n → R) := borel _`. Use `haveI bP : BorelSpace (Fin m → Fin n → R) := ⟨rfl⟩`. Set `e` to `matrixColumns R n m`.
+
+Establish `he : Continuous e` using `continuous_pi fun j => continuous_pi fun i => (continuous_apply j).comp (continuous_apply i)`. Establish `hes : Continuous e.symm` using `continuous_pi fun i => continuous_pi fun j => (continuous_apply i).comp (continuous_apply j)`. Set `φ : (Fin n → R) →+ (Fin n → R)` to `A.mulVecLin.toAddMonoidHom`. Establish `hφ : Continuous φ` using `Continuous.matrix_mulVec continuous_const continuous_id`. Use `haveI hν : (μ.map e).IsAddHaarMeasure := e.isAddHaarMeasure_map μ he hes`.
+
+Establish `key` using `map_pi_eq_of_map_addHaar_eq (Fin n → R) φ hφ hA m (μ.map e) hν`. Establish `hΦ : Continuous (fun (x : Fin m → Fin n → R) i => φ (x i))` using `continuous_pi fun i => hφ.comp (continuous_apply i)`. Establish `hfac : (fun x : Matrix (Fin n) (Fin m) R => A * x) = e.symm ∘ (fun (x : Fin m → Fin n → R) i => φ (x i)) ∘ e`. Use function extensionality and compare the values at `x`. Use extensionality with `i j`.
+
+Conclude with `Matrix.mul_apply`. Rewrite using `[hfac]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Measure.map_map hΦ.measurable he.measurable, Measure.map_map hes.measurable (hΦ.comp he).measurable]`. Use `_ = (μ.map e).map e.symm := by rw [key]`.
+
+Use `_ = μ := by`. Rewrite using `[Measure.map_map hes.measurable he.measurable]`. Establish `: (e.symm ∘ e : Matrix (Fin n) (Fin m) R → _) = id`. Use function extensionality and compare the values at `x`. Simplify using the standard rewrite rules.
+
+Rewrite using `[this, Measure.map_id]`.
+-/
 theorem map_mul_left_eq_of_mulVec (R : Type) [CommRing R] [TopologicalSpace R] [IsTopologicalRing R]
     [LocallyCompactSpace R] [SecondCountableTopology R] [T2Space R] [MeasurableSpace R] [BorelSpace R]
     (n m : ℕ) (A : Matrix (Fin n) (Fin n) R)
@@ -56,6 +69,9 @@ theorem map_mul_left_eq_of_mulVec (R : Type) [CommRing R] [TopologicalSpace R] [
           funext x; simp
         rw [this, Measure.map_id]
 
+/- English proof (translation)
+Introduce `D V m g μ hμ`. Use `map_mul_left_eq_of_mulVec (AE D) V.rank m (mt V g) ?_ μ hμ` and prove the remaining obligations. Introduce `ν hν`. Conclude with `PI.VolSemiDirect.W.Cj.unipotent_modulus_holds _ _ D.sp.cm.sig (GlobalTheory.Mem.VolExists.isCMExt D.sp.cm) V.rank V.gram (GlobalTheory.Mem.VolExists.isHermND D.sp.cm V) g ν hν`.
+-/
 theorem map_mt_mul_eq : ∀ (D : D7) (V : HSp D) (m : ℕ) (g : GA D V) (μ : Measure (Mx D V.rank m)), μ.IsAddHaarMeasure → μ.map (fun x : Mx D V.rank m => (HMul.hMul (mt V g) (x : Matrix (Fin V.rank) (Fin m) (AE D)) : Mx D V.rank m)) = μ := by
   intro D V m g μ hμ
   refine map_mul_left_eq_of_mulVec (AE D) V.rank m (mt V g) ?_ μ hμ

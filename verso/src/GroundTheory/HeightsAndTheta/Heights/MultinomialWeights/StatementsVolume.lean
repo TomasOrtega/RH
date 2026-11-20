@@ -441,6 +441,11 @@ abbrev p0 : Idx d1 := (0, ⟨0, by norm_num⟩)
 
 abbrev p1 : Idx d1 := (0, ⟨1, by norm_num⟩)
 
+/- English proof (translation)
+Rewrite using `[polarPoly, coeff_sum]`. Simplify using `only [coeff_monomial]`. Rewrite using `[Finset.sum_ite_eq']`. Use `split_ifs with h`. Both sides reduce to the same expression.
+
+Rewrite using `[notMem_support_iff.1 h, map_zero]`.
+-/
 theorem polarPoly_coeff_eq {σ R : Type*} [CommRing R] [Fintype σ] (Φ : MvPolynomial σ R →ₗ[R] R)
     (n : ℕ) (m : σ →₀ ℕ) : coeff m (polarPoly Φ n) = Φ (coeff m ((-outerDot σ R) ^ n)) := by
   classical
@@ -451,6 +456,11 @@ theorem polarPoly_coeff_eq {σ R : Type*} [CommRing R] [Fintype σ] (Φ : MvPoly
   · rfl
   · rw [notMem_support_iff.1 h, map_zero]
 
+/- English proof (translation)
+Use extensionality with `m`. Rewrite using `[polarPoly_coeff_eq, pow_one, coeff_sum]`. Establish `hc : ∀ v : σ, (X v * C (X v) : MvPolynomial σ (MvPolynomial σ R)) = C (X v) * X v` using `fun v => mul_comm _ _`. Simplify using `only [outerDot, hc, coeff_neg, coeff_sum, coeff_C_mul, coeff_X]`. Rewrite using `[map_neg, map_sum, ← Finset.sum_neg_distrib]`.
+
+Use `Finset.sum_congr rfl (fun v _ => ?_)` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem polarPoly_one {σ R : Type*} [CommRing R] [Fintype σ] [DecidableEq σ]
     (Φ : MvPolynomial σ R →ₗ[R] R) : polarPoly Φ 1 = ∑ v : σ, C (Φ (-X v)) * X v := by
   ext m
@@ -462,6 +472,11 @@ theorem polarPoly_one {σ R : Type*} [CommRing R] [Fintype σ] [DecidableEq σ]
   refine Finset.sum_congr rfl (fun v _ => ?_)
   split_ifs <;> simp
 
+/- English proof (translation)
+Unfold `RestTerms.flagIntegral`. Rewrite using `[Finset.sum_eq_single (Finsupp.single v 1)]`. Simplify using `[coeff_X, Finsupp.prod_single_index]`. Introduce `b _ hb`. Rewrite using `[coeff_X, if_neg (Ne.symm hb), zero_mul, zero_mul]`.
+
+Introduce `h`. Rewrite using `[notMem_support_iff.1 h]`. Simplify using the standard rewrite rules.
+-/
 theorem flagIntegral_X (f N : ℕ) (v : Fin f × Fin N) :
     RestTerms.flagIntegral f N (X v) = coeff (Finsupp.single v 1) (RestTerms.blockVandermonde f N) := by
   classical
@@ -474,6 +489,9 @@ theorem flagIntegral_X (f N : ℕ) (v : Fin f × Fin N) :
     rw [notMem_support_iff.1 h]
     simp
 
+/- English proof (translation)
+Establish `h0 : Finset.Ioi (0 : Fin 2) = {1}` using `by decide`. Establish `h1 : Finset.Ioi (1 : Fin 2) = ∅` using `by decide`. Simplify using `[RestTerms.blockVandermonde, RestTerms.vandermondeOf, Fin.prod_univ_two, h0, h1]`. Both sides reduce to the same expression.
+-/
 theorem blockVandermonde_rankTwo :
     RestTerms.blockVandermonde d1.f d1.N = (X p0 - X p1 : XPoly d1) := by
   have h0 : Finset.Ioi (0 : Fin 2) = {1} := by decide
@@ -481,6 +499,9 @@ theorem blockVandermonde_rankTwo :
   simp [RestTerms.blockVandermonde, RestTerms.vandermondeOf, Fin.prod_univ_two, h0, h1]
   rfl
 
+/- English proof (translation)
+Establish `h : ∏ i : Fin 2, ((i : ℕ).factorial : ℚ) = 1` using `by simp [Fin.prod_univ_two]`. Establish `hD : RestTerms.topDegree 1 2 = 1` using `rfl`. Use `show (-1) ^ RestTerms.topDegree 1 2 / (∏ i : Fin 2, ((i : ℕ).factorial : ℚ)) ^ 1 = -1`. Rewrite using `[h, hD]`. Evaluate the numerical expressions.
+-/
 theorem flagNormalisation_rankTwo : flagNormalisation d1.f d1.N = -1 := by
   have h : ∏ i : Fin 2, ((i : ℕ).factorial : ℚ) = 1 := by simp [Fin.prod_univ_two]
   have hD : RestTerms.topDegree 1 2 = 1 := rfl
@@ -488,6 +509,9 @@ theorem flagNormalisation_rankTwo : flagNormalisation d1.f d1.N = -1 := by
   rw [h, hD]
   norm_num
 
+/- English proof (translation)
+Rewrite using `[intFl, LinearMap.smul_apply, flagNormalisation_rankTwo]`. Use `show (-1 : ℚ) • RestTerms.flagIntegral d1.f d1.N (X v) = _`. Rewrite using `[flagIntegral_X, blockVandermonde_rankTwo]`. Simplify using the standard rewrite rules.
+-/
 theorem intFl_X_of_two_variables (v : Idx d1) :
     intFl d1 (X v) = -coeff (Finsupp.single v 1) (X p0 - X p1 : XPoly d1) := by
   rw [intFl, LinearMap.smul_apply, flagNormalisation_rankTwo]
@@ -495,6 +519,13 @@ theorem intFl_X_of_two_variables (v : Idx d1) :
   rw [flagIntegral_X, blockVandermonde_rankTwo]
   simp
 
+/- English proof (translation)
+Establish `hD : d1.D = 1` using `rfl`. Rewrite using `[degPoly, hD, polarPoly_one]`. Simplify using `only [map_neg, intFl_X_of_two_variables, neg_neg, Fintype.sum_prod_type, Fin.sum_univ_one, Fin.sum_univ_two]`. Establish `hne : p1 ≠ p0` using `by decide`. Establish `e00 : coeff (Finsupp.single p0 1) (X p0 - X p1 : XPoly d1) = 1`.
+
+Simplify using `[coeff_X, Finsupp.single_left_inj one_ne_zero, hne]`. Establish `e01 : coeff (Finsupp.single p1 1) (X p0 - X p1 : XPoly d1) = -1`. Simplify using `[coeff_X, Finsupp.single_left_inj one_ne_zero, hne.symm]`. Establish `q0 : ((0 : Fin 1), (0 : Fin 2)) = p0` using `rfl`. Establish `q1 : ((0 : Fin 1), (1 : Fin 2)) = p1` using `rfl`.
+
+Rewrite using `[q0, q1, e00, e01]`. Simplify using `[sub_eq_add_neg]`.
+-/
 theorem degPoly_eq_sub_of_two_variables : degPoly d1 = (X p0 - X p1 : XPoly d1) := by
   have hD : d1.D = 1 := rfl
   rw [degPoly, hD, polarPoly_one]
@@ -509,48 +540,81 @@ theorem degPoly_eq_sub_of_two_variables : degPoly d1 = (X p0 - X p1 : XPoly d1) 
   rw [q0, q1, e00, e01]
   simp [sub_eq_add_neg]
 
+/- English proof (translation)
+Use `⟨zero_le_one, ?_⟩` and prove the remaining obligations. Rewrite using `[degPoly_eq_sub_of_two_variables, blockVandermonde_rankTwo, map_one, one_mul]`.
+-/
 theorem degForm_of_two_variables : DegForm d1 1 := by
   refine ⟨zero_le_one, ?_⟩
   rw [degPoly_eq_sub_of_two_variables, blockVandermonde_rankTwo, map_one, one_mul]
 
+/- English proof (translation)
+Simplify using `[degR, degPolyR, degPoly_eq_sub_of_two_variables]`.
+-/
 theorem degR_eq_sub_of_two_variables (lam : Weight d1) : degR d1 lam = lam p0 - lam p1 := by
   simp [degR, degPolyR, degPoly_eq_sub_of_two_variables]
 
+/- English proof (translation)
+Establish `: τ = 0` using `Subsingleton.elim _ _`. Substitute `this` using the available equality. Both sides reduce to the same expression.
+-/
 theorem gap_eq_sub_of_two_variables (τ : Fin d1.f) (lam : Weight d1) : gap d1 τ lam = lam p0 - lam p1 := by
   have : τ = 0 := Subsingleton.elim _ _
   subst this
   rfl
 
+/- English proof (translation)
+The claim follows from `h 0 ⟨0, by norm_num⟩ ⟨1, by norm_num⟩ rfl`.
+-/
 theorem dominant_gap_nonneg_two_variables {lam : Weight d1} (h : IsDominant d1 lam) : 0 ≤ lam p0 - lam p1 :=
   h 0 ⟨0, by norm_num⟩ ⟨1, by norm_num⟩ rfl
 
+/- English proof (translation)
+Establish `h : (univ.filter fun i : Fin d1.N => i.val < d1.j) = {⟨0, by norm_num⟩}` using `by decide`. Rewrite using `[lowerSum, h, Finset.sum_singleton]`.
+-/
 theorem lowerSum_rankTwo : lowerSum d1 0 = (X p0 : LamPoly d1) := by
   have h : (univ.filter fun i : Fin d1.N => i.val < d1.j) = {⟨0, by norm_num⟩} := by decide
   rw [lowerSum, h, Finset.sum_singleton]
 
+/- English proof (translation)
+Establish `h : (univ.filter fun i : Fin d1.N => d1.j ≤ i.val) = {⟨1, by norm_num⟩}` using `by decide`. Rewrite using `[upperSum, h, Finset.sum_singleton]`.
+-/
 theorem upperSum_rankTwo : upperSum d1 0 = (X p1 : LamPoly d1) := by
   have h : (univ.filter fun i : Fin d1.N => d1.j ≤ i.val) = {⟨1, by norm_num⟩} := by decide
   rw [upperSum, h, Finset.sum_singleton]
 
 def sampleForm : LamPoly d1 := lowerSum d1 0 - upperSum d1 0
 
+/- English proof (translation)
+The claim follows from `Submodule.sub_mem _ (Submodule.subset_span (Or.inl ⟨0, rfl⟩)) (Submodule.subset_span (Or.inr ⟨0, rfl⟩))`.
+-/
 theorem sampleForm_mem : sampleForm ∈ invForms d1 :=
   Submodule.sub_mem _ (Submodule.subset_span (Or.inl ⟨0, rfl⟩))
     (Submodule.subset_span (Or.inr ⟨0, rfl⟩))
 
 def sqPoly : LamPoly d1 := antisymDelta (Fin d1.f) d1.N * sampleForm
 
+/- English proof (translation)
+Rewrite using `[sqPoly, sampleForm, antisymDelta_rankTwo, lowerSum_rankTwo, upperSum_rankTwo, sq]`. Both sides reduce to the same expression.
+-/
 theorem sqPoly_eq : sqPoly = (X p0 - X p1 : LamPoly d1) ^ 2 := by
   rw [sqPoly, sampleForm, antisymDelta_rankTwo, lowerSum_rankTwo, upperSum_rankTwo, sq]
   rfl
 
+/- English proof (translation)
+Rewrite using `[sqPoly_eq]`. Simplify using the standard rewrite rules.
+-/
 theorem eval_sqPoly (lam : Weight d1) : eval lam sqPoly = (lam p0 - lam p1) ^ 2 := by
   rw [sqPoly_eq]; simp
 
+/- English proof (translation)
+Rewrite using `[sqPoly_eq]`. Conclude with `((isHomogeneous_X ℝ p0).sub (isHomogeneous_X ℝ p1)).pow 2`.
+-/
 theorem sqPoly_homogeneous : sqPoly.IsHomogeneous (d1.D + 1) := by
   rw [sqPoly_eq]
   exact ((isHomogeneous_X ℝ p0).sub (isHomogeneous_X ℝ p1)).pow 2
 
+/- English proof (translation)
+Introduce `h`. Use `congrArg (eval (fun p => if p = p0 then (1 : ℝ) else 0)) h` as an intermediate fact. Rewrite `this` using `[eval_sqPoly]`. Simplify using `at this`.
+-/
 theorem sqPoly_ne_zero : sqPoly ≠ 0 := by
   intro h
   have := congrArg (eval (fun p => if p = p0 then (1 : ℝ) else 0)) h
@@ -565,6 +629,9 @@ def sampleBound (k : ℝ) : ℝ :=
   max (Classical.choose (exists_coeff_bound (samplePoly k)))
     (Classical.choose (exists_coeff_bound (samplePolyS k)))
 
+/- English proof (translation)
+Establish `h1` using `Classical.choose_spec (exists_coeff_bound (samplePoly k))`. Establish `h2` using `Classical.choose_spec (exists_coeff_bound (samplePolyS k))`. Use `⟨fun m => (h1 m).trans (le_max_left _ _), fun m => (h2 m).trans (le_max_right _ _), ?_⟩` and prove the remaining obligations. Conclude with `(abs_nonneg _).trans ((h1 0).trans (le_max_left _ _))`.
+-/
 theorem sampleBound_spec (k : ℝ) : (∀ m, |coeff m (samplePoly k)| ≤ sampleBound k) ∧
     (∀ m, |coeff m (samplePolyS k)| ≤ sampleBound k) ∧ 0 ≤ sampleBound k := by
   have h1 := Classical.choose_spec (exists_coeff_bound (samplePoly k))
@@ -572,6 +639,9 @@ theorem sampleBound_spec (k : ℝ) : (∀ m, |coeff m (samplePoly k)| ≤ sample
   refine ⟨fun m => (h1 m).trans (le_max_left _ _), fun m => (h2 m).trans (le_max_right _ _), ?_⟩
   exact (abs_nonneg _).trans ((h1 0).trans (le_max_left _ _))
 
+/- English proof (translation)
+Establish `h2 : 0 < Real.log 2` using `Real.log_pos (by norm_num)`. Establish `hB' : (2 : ℝ) ≤ B` using `by exact_mod_cast hB`. Establish `hl : Real.log 2 ≤ Real.log B` using `Real.log_le_log (by norm_num) hB'`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem le_div_log_mul (M : ℝ) (hM : 0 ≤ M) (B : ℤ) (hB : 2 ≤ B) :
     M ≤ M / Real.log 2 * Real.log B := by
   have h2 : 0 < Real.log 2 := Real.log_pos (by norm_num)
@@ -580,15 +650,24 @@ theorem le_div_log_mul (M : ℝ) (hM : 0 ≤ M) (B : ℤ) (hB : 2 ≤ B) :
   calc M = M / Real.log 2 * Real.log 2 := by field_simp
     _ ≤ M / Real.log 2 * Real.log B := mul_le_mul_of_nonneg_left hl (div_nonneg hM h2.le)
 
+/- English proof (translation)
+Rewrite using `[samplePoly, eval_mul, eval_C, eval_sqPoly]`.
+-/
 theorem eval_samplePoly (k : ℝ) (lam : Weight d1) :
     eval lam (samplePoly k) = k * (lam p0 - lam p1) ^ 2 := by
   rw [samplePoly, eval_mul, eval_C, eval_sqPoly]
 
+/- English proof (translation)
+Rewrite using `[evalLS, samplePolyS, eval_rename]`. Both sides reduce to the same expression.
+-/
 theorem evalLS_samplePolyS (k : ℝ) (lam : Weight d1) (s : ℝ) :
     evalLS d1 (samplePolyS k) lam s = eval lam (samplePoly k) := by
   rw [evalLS, samplePolyS, eval_rename]
   rfl
 
+/- English proof (translation)
+Establish `a0 : |lam p0| ≤ 1` using `(by simpa using norm_le_pi_norm lam p0 : ‖lam p0‖ ≤ ‖lam‖).trans h |>.trans_eq' (Real.norm_eq_abs _).symm`. Establish `a1 : |lam p1| ≤ 1` using `(by simpa using norm_le_pi_norm lam p1 : ‖lam p1‖ ≤ ‖lam‖).trans h |>.trans_eq' (Real.norm_eq_abs _).symm`. Use `abs_le.1 a0` as an intermediate fact. Use `abs_le.1 a1` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem abs_sub_le_two (lam : Weight d1) (h : ‖lam‖ ≤ 1) : lam p0 - lam p1 ≤ 2 := by
   have a0 : |lam p0| ≤ 1 := (by simpa using norm_le_pi_norm lam p0 : ‖lam p0‖ ≤ ‖lam‖).trans h |>.trans_eq' (Real.norm_eq_abs _).symm
   have a1 : |lam p1| ≤ 1 := (by simpa using norm_le_pi_norm lam p1 : ‖lam p1‖ ≤ ‖lam‖).trans h |>.trans_eq' (Real.norm_eq_abs _).symm
@@ -717,10 +796,20 @@ def sampleSystem (k : ℝ) (hk : 0 ≤ k) : VolumeSystem d1 where
     have hblk' : b.val < 1 ∨ 1 ≤ a.val := hblk
     omega
 
+/- English proof (translation)
+Use `show C 0 * sqPoly = 0`. Rewrite using `[C_0, zero_mul]`.
+-/
 theorem sampleSystem_zero (B : ℤ) : (sampleSystem 0 le_rfl).P B = 0 := by
   show C 0 * sqPoly = 0
   rw [C_0, zero_mul]
 
+/- English proof (translation)
+Introduce `VS`. Establish `hform : sampleForm ≠ 0`. Introduce `h`. Use `congrArg (eval (fun p => if p = p0 then (1 : ℝ) else 0)) h` as an intermediate fact. Simplify using `[sampleForm, lowerSum_rankTwo, upperSum_rankTwo] at this`.
+
+Establish `hRB : VS.RB B = sqPoly` using `by show C 2 * sqPoly - (1 : ℝ) • sqPoly = sqPoly`. Rewrite using `[one_smul, C_mul', two_smul, add_sub_cancel_right]`. Use `⟨rfl, rfl, sampleForm_mem, hform, ?_, ?_⟩` and prove the remaining obligations. Use `show C 2 * sqPoly ≠ 0`. Conclude with `mul_ne_zero (by simp) sqPoly_ne_zero`.
+
+Rewrite using `[hRB]`. Conclude with `sqPoly_ne_zero`.
+-/
 theorem sampleSystem_two (B : ℤ) :
     let VS := sampleSystem 2 (by norm_num)
     VS.P B = C 2 * (antisymDelta (Fin d1.f) d1.N * sampleForm) ∧
@@ -739,6 +828,11 @@ theorem sampleSystem_two (B : ℤ) :
     exact mul_ne_zero (by simp) sqPoly_ne_zero
   · rw [hRB]; exact sqPoly_ne_zero
 
+/- English proof (translation)
+Use `⟨by rw [norm_zero]; norm_num, by simp [gap], ?_, ?_⟩` and prove the remaining obligations. Introduce `τ hτ`. Conclude with `absurd (Subsingleton.elim τ 0) hτ`. Introduce and unpack `τ a b ⟨hab, hbj⟩`. It suffices to derive a contradiction.
+
+Establish `hb : b.val < 2` using `b.isLt`. Establish `hbj' : b.val ≠ 1` using `hbj`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem zero_mem_KSet_rankTwo_any (c0 : ℝ) : (0 : Weight d1) ∈ KSet d1 0 c0 := by
   refine ⟨by rw [norm_zero]; norm_num, by simp [gap], ?_, ?_⟩
   · intro τ hτ
@@ -749,18 +843,30 @@ theorem zero_mem_KSet_rankTwo_any (c0 : ℝ) : (0 : Weight d1) ∈ KSet d1 0 c0 
     have hbj' : b.val ≠ 1 := hbj
     omega
 
+/- English proof (translation)
+Introduce `_` and use `⟨0, by simp⟩`.
+-/
 theorem isRatWeight_zero : IsRatWeight d (0 : Weight d) := fun _ => ⟨0, by simp⟩
 
+/- English proof (translation)
+Simplify using `only [VolumeSystem.thresholdB, VolumeSystem.C7, etaConstant]`. Use `show 20 * ((1 : ℕ) : ℝ) * (1 + 2 * ‖(0 : Weight d1)‖) / (1 * min (min (1 / 2) 1) 1) = 40`. Rewrite using `[norm_zero]`. Evaluate the numerical expressions.
+-/
 theorem sampleSystem_two_B1W : (sampleSystem 2 (by norm_num)).thresholdB 1 = 40 := by
   simp only [VolumeSystem.thresholdB, VolumeSystem.C7, etaConstant]
   show 20 * ((1 : ℕ) : ℝ) * (1 + 2 * ‖(0 : Weight d1)‖) / (1 * min (min (1 / 2) 1) 1) = 40
   rw [norm_zero]
   norm_num
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨1, by norm_num⟩, one_pos, le_rfl, zero_mem_KSet_rankTwo_any 1, isRatWeight_zero d1, by rw [sampleSystem_two_B1W]; norm_num⟩`.
+-/
 theorem TheoremWSetting.inhabited : TheoremWSetting d1 (sampleSystem 2 (by norm_num)) 1 40 0 0 :=
   ⟨⟨1, by norm_num⟩, one_pos, le_rfl, zero_mem_KSet_rankTwo_any 1, isRatWeight_zero d1,
     by rw [sampleSystem_two_B1W]; norm_num⟩
 
+/- English proof (translation)
+Apply the tactic sequence `refine ⟨zero_mem_KSet_rankTwo_any 1, one_pos, by norm_num, ?_, ?_, ?_⟩ <;> norm_num [etaConstant]`.
+-/
 theorem Gap1Norm.hypotheses_inhabited :
     (0 : Weight d1) ∈ KSet d1 0 1 ∧ (0 : ℝ) < 1 ∧ (0 : ℝ) < 1 / 10 ∧
       2 * (1 / 10 : ℝ) + etaConstant d1 0 * (1 / 10) ^ 2 ≤ 1 / 2 ∧
@@ -769,6 +875,11 @@ theorem Gap1Norm.hypotheses_inhabited :
 
 def halfWeight : Weight d1 := fun p => if p = p0 then 1 / 2 else -1 / 2
 
+/- English proof (translation)
+Establish `hne : p1 ≠ p0` using `by decide`. Use `⟨one_pos, le_rfl, by norm_num, ?_, fun τ hτ => absurd (Subsingleton.elim τ 0) hτ, ?_⟩` and prove the remaining obligations. Rewrite using `[gap_eq_sub_of_two_variables]`. Simplify using `[halfWeight, hne]`. Evaluate the numerical expressions.
+
+Use `(pi_norm_le_iff_of_nonneg zero_le_one).2 (fun p => ?_)` and prove the remaining obligations. Unfold `halfWeight`. Apply the tactic sequence `split_ifs <;> norm_num`.
+-/
 theorem Gap4Nef.hypotheses_inhabited :
     (0 : ℝ) < 1 ∧ (10 : ℝ) ≤ 10 ∧ 2 + 8 * (d1.f : ℝ) / 1 ≤ 10 ∧
       5 * (d1.f : ℝ) / 10 ≤ gap d1 0 halfWeight ∧
@@ -780,17 +891,28 @@ theorem Gap4Nef.hypotheses_inhabited :
     unfold halfWeight
     split_ifs <;> norm_num
 
+/- English proof (translation)
+Use `⟨by norm_num, one_pos, le_rfl, ?_⟩` and prove the remaining obligations. Rewrite using `[sampleSystem_two_B1W]`.
+-/
 theorem ThresholdExists.hypotheses_inhabited :
     0 < d1.f ∧ (0 : ℝ) < 1 ∧ (1 : ℝ) ≤ 1 ∧ (sampleSystem 2 (by norm_num)).thresholdB 1 ≤ 40 := by
   refine ⟨by norm_num, one_pos, le_rfl, ?_⟩
   rw [sampleSystem_two_B1W]
 
+/- English proof (translation)
+Use `⟨le_rfl, fun _ _ _ _ => by simp, fun _ _ _ _ => ?_⟩` and prove the remaining obligations. Simplify using `[VolumeSystem.lamPP]`.
+-/
 theorem DegDifferenceNonneg.hypotheses_inhabited :
     (0 : ℝ) ≤ 0 ∧ IsDominant d1 (0 : Weight d1) ∧
       IsDominant d1 ((sampleSystem 2 (by norm_num)).lamPP 0 0) := by
   refine ⟨le_rfl, fun _ _ _ _ => by simp, fun _ _ _ _ => ?_⟩
   simp [VolumeSystem.lamPP]
 
+/- English proof (translation)
+Establish `hne : p1 ≠ p0` using `by decide`. Use `⟨degForm_of_two_variables, zero_le_one, by norm_num, ?_, ?_⟩` and prove the remaining obligations. Use `(pi_norm_le_iff_of_nonneg zero_le_one).2 (fun p => ?_)` and prove the remaining obligations. Simplify using `only [Pi.smul_apply, smul_eq_mul, halfWeight]`. Apply the tactic sequence `split_ifs <;> norm_num`.
+
+Rewrite using `[gap_eq_sub_of_two_variables]`. Simplify using `[halfWeight, hne]`. Evaluate the numerical expressions.
+-/
 theorem DegBoundByTau.hypotheses_inhabited :
     DegForm d1 1 ∧ (0 : ℝ) ≤ 1 ∧ (0 : ℝ) ≤ 1 / 4 ∧ ‖(1 / 2 : ℝ) • halfWeight‖ ≤ 1 ∧
       gap d1 0 ((1 / 2 : ℝ) • halfWeight) = 2 * (1 / 4) := by
@@ -801,21 +923,39 @@ theorem DegBoundByTau.hypotheses_inhabited :
     split_ifs <;> norm_num
   · rw [gap_eq_sub_of_two_variables]; simp [halfWeight, hne]; norm_num
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨le_rfl, le_rfl⟩`.
+-/
 theorem LogRatioBound.hypotheses_inhabited : 1 ≤ (1 : ℕ) ∧ (1 : ℝ) ≤ 1 := ⟨le_rfl, le_rfl⟩
 
+/- English proof (translation)
+Use `⟨le_rfl, by rw [norm_zero]; exact zero_le_one, le_rfl, zero_le_one⟩` and prove the remaining obligations.
+-/
 theorem PolyShiftStep.hypotheses_inhabited :
     (2 : ℤ) ≤ 2 ∧ ‖(0 : Weight d1)‖ ≤ 1 ∧ (0 : ℝ) ≤ 0 ∧ (0 : ℝ) ≤ 1 := by
   refine ⟨le_rfl, by rw [norm_zero]; exact zero_le_one, le_rfl, zero_le_one⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨TheoremWSetting.inhabited, degForm_of_two_variables⟩`.
+-/
 theorem TopSqueeze.hypotheses_inhabited :
     TheoremWSetting d1 (sampleSystem 2 (by norm_num)) 1 40 0 0 ∧ DegForm d1 1 :=
   ⟨TheoremWSetting.inhabited, degForm_of_two_variables⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨one_pos, le_rfl⟩`.
+-/
 theorem TheoremW.hypotheses_inhabited : (0 : ℚ) < 1 ∧ (1 : ℚ) ≤ 1 := ⟨one_pos, le_rfl⟩
 
+/- English proof (translation)
+The claim follows from `exists_complement_of_le uSpace_le_vSpace_rankTwo`.
+-/
 theorem IsComplementInV.inhabited : ∃ V' : Submodule ℝ (LamPoly d1), IsComplementInV d1 V' :=
   exists_complement_of_le uSpace_le_vSpace_rankTwo
 
+/- English proof (translation)
+Establish `h1 : permAct d1 (1 : Equiv.Perm (Idx d1)) = id`. Use function extensionality and compare the values at `lam p`. Both sides reduce to the same expression. Use `⟨Subgroup.one_mem _, fun τ a b _ => ⟨1, Subgroup.one_mem _, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[h1, Set.image_id]`.
+-/
 theorem RBSup.hypotheses_inhabited :
     (1 : Equiv.Perm (Idx d1)) ∈ weylL d1 ∧
       ∀ (τ : Fin d1.f) (a b : Fin d1.N), IsCross d1 a b →
@@ -826,14 +966,23 @@ theorem RBSup.hypotheses_inhabited :
   refine ⟨Subgroup.one_mem _, fun τ a b _ => ⟨1, Subgroup.one_mem _, ?_⟩⟩
   rw [h1, Set.image_id]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨one_ne_zero, sampleForm_mem⟩`.
+-/
 theorem DefineAlBe.hypotheses_inhabited : (1 : ℝ) ≠ 0 ∧ sampleForm ∈ invForms d1 :=
   ⟨one_ne_zero, sampleForm_mem⟩
 
+/- English proof (translation)
+Rewrite using `[Finsupp.sum_single_index rfl]`. Both sides reduce to the same expression.
+-/
 theorem CorollaryBPrimeMonomial.hypotheses_inhabited :
     ((Finsupp.single p0 2 : Idx d1 →₀ ℕ).sum fun _ e => e) = d1.D + 1 := by
   rw [Finsupp.sum_single_index rfl]
   rfl
 
+/- English proof (translation)
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[rankTwo_D]`. Conclude with `isHomogeneous_X ℝ p0`. Rewrite using `[rankTwo_D]`. Conclude with `isHomogeneous_one _ _`.
+-/
 theorem CorollaryBSecond.hypotheses_inhabited :
     (X p0 : LamPoly d1).IsHomogeneous d1.D ∧ (1 : LamPoly d1).IsHomogeneous (d1.D - 1) := by
   refine ⟨?_, ?_⟩

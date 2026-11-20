@@ -56,6 +56,21 @@ open scoped Classical
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.S Formalism.L2.SG.HidaSetting Formalism.L2.SG.Full Formalism.L2.SG.RowsConc Formalism.L2.SG.PackageTie2 Formalism.L2.SG.TermTieOf GlobalTheory.Core.Deg
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Introduce `D large₂ X Y hF hI u C' Cl Cg cb Cu cT CT hC' hCl hT hS hCT`. Use `haveI : Fact Formalism.FourierDecayAlt.ThreeDimData.DecLow := ⟨GlobalTheory.DecTransport.decLow_main⟩`. Use `haveI : Fact Formalism.L2.SG.SplitPrimeNormLemmas.CoefWeightedLoc := ⟨GlobalTheory.Sloc.CoefWeighted.coefWeightedLoc_uncond⟩`. Establish `hG : Formalism.L2.SG.ConcreteSettingExists.GapHyp D` using `Formalism.L2.SG.ThmSOwn.gap_hypothesis_of_hypotheses hS (by linarith) hC'`. Establish `hWD : Formalism.L2.SG.WuDecay.WuDecay X` using `hCT.2.2.2.2.1`.
+
+Use `haveI : Nonempty D.what₂.Word := ⟨u⟩`. Take `⟨C⟩` from `Formalism.L2.SG.Pf.choiceExists X 1 one_pos`. Establish `hB : Formalism.L2.SG.LocWSOf.WuBessel C` using `Formalism.L2.SG.Pf.wuBesselOfLoc_all C hG GlobalTheory.uniqGap_and_besselOfW.2 (Formalism.L2.SG.Pf.LocF.locFactor_holds hG C) (fun τ => Formalism.L2.SG.Pf.dsTr C τ) (fun τ => Formalism.L2.SG.Pf.haarTr C τ) (fun w τ => Formalism.L2.SG.Pf.colsTypeTr C w τ)`. Establish `hW : ∀ τ, GoodW D τ u u 1 (Formalism.L2.SG.LocWSOf.locW C u u τ)` using `fun τ => Formalism.L2.SG.LocWSOf.goodW_of C u u τ (Formalism.L2.SG.Pf.colsTypeTr C u τ) (Formalism.L2.SG.Pf.colsTypeTr C u τ) (Formalism.L2.SG.Pf.zTr C u τ) (Formalism.L2.SG.Pf.zTr C u τ) (Formalism.L2.SG.Pf.haarTr C τ)`. Establish `hSS : ∀ τ, GoodS D (lamD D τ) (Formalism.L2.SG.LocWSOf.locS hB u u τ)` using `fun τ => Formalism.L2.SG.LocWSOf.goodS_of hB u u τ (Formalism.L2.SG.Pf.goodSRest_all hG hT.dsig_tie hB u u τ)`.
+
+Establish `hwin : normWin D large₂ 1 1` using `Formalism.L2.SG.Pf.LoopBTheta.normWin_one large₂ zero_le_one`. Establish `hCF : Formalism.L2.SG.Pf.LoopBCovN.CovNFormula` using `GlobalTheory.T.covolume_unipotentIntegral_normalisedHaar`. Establish `hup : Formalism.L2.SG.Pf.LoopBCovN.eN D * Real.log (2 * D.host.v) ≤ 1 * (D.R.m : ℝ) ^ 2 * Real.log large₂.sc.b`. Establish `h2v : 2 * D.host.v = D.host.rdE` using `by unfold Formalism.BasicNotions.Host.v; ring`. Establish `hrd : Real.log D.host.rdE ≤ large₂.sc.L / Cl` using `hS.2.2.2.2.2.2.2.2.2.2.1`.
+
+Establish `hv0 : 0 ≤ Real.log (2 * D.host.v)` using `Real.log_nonneg (Formalism.L2.SG.Pf.LoopBCovN.rdE_ge_one D)`. Establish `he` using `Formalism.L2.SG.Pf.LoopBCovN.eN_le D`. Establish `he0 : 0 ≤ Formalism.L2.SG.Pf.LoopBCovN.eN D` using `by unfold Formalism.L2.SG.Pf.LoopBCovN.eN; positivity`. Rewrite using `[Formalism.MainNotions.S.log_scb large₂, h2v]`. Rewrite `hv0` using `[h2v]`.
+
+Establish `hCl0 : (0 : ℝ) < Cl` using `by linarith`. Establish `hL0 : 0 ≤ large₂.sc.L`. Assume the negation of the conclusion as `hneg`. Use `push_neg at hneg`. Establish `: large₂.sc.L / Cl < 0` using `div_neg_of_neg_of_pos hneg hCl0`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `h72 : large₂.sc.L / Cl ≤ large₂.sc.L / 72` using `div_le_div_of_nonneg_left hL0 (by norm_num) hCl`. Establish `hm0 : 0 ≤ (D.R.m : ℝ) ^ 2` using `sq_nonneg _`. Combine the equalities or inequalities in the displayed calculation. Establish `hFE` using `Formalism.L2.SG.LoopsFinal.frameEqvInj_of (Formalism.L2.SG.LoopsTies.wOf X) hI (Formalism.L2.SG.LoopsTies.hOf X Y hF hI) (Formalism.L2.SG.LoopsTies.aOfW X Y hF hI hWD) (Formalism.L2.SG.LoopsTies.hvOfW X Y hF hI hWD) (Formalism.L2.SG.Pf.LoopBFrame.frameChangeC_holds _ _ _ hF hI _) …`.
+
+Establish `hti` using `Formalism.L2.SG.LoopsTies.tiesAt X Y hF hI hWD u u`. Use `⟨Formalism.L2.SG.LoopsTies.wOf X, Formalism.L2.SG.LoopsTies.hOf X Y hF hI, Formalism.L2.SG.LoopsTies.aOfW X Y hF hI hWD, Formalism.L2.SG.LoopsTies.hvOfW X Y hF hI hWD, Formalism.L2.SG.LoopTieOf.loopTieOfParts (Formalism.L2.SG.LoopTieOf.loopRowsOf (Formalism.L2.SG.LoopsTies.wOf X) …` and prove the remaining obligations. Conclude with `⟨Formalism.L2.SG.LoopsFinal.jtPin_of _ hI _ _ _ (Formalism.L2.SG.Pf.FibreCounting.AmpFibreConst_holds Y), Formalism.L2.SG.Pf.WittFlags.WRowPin_holds hF hI _ _ _ _, Formalism.L2.SG.Pf.FibreCounting.FibreCount_holds Y, Formalism.MainNotions.BridgeLemma₂.rows_TermPtsTie_of _ (Formal …`.
+-/
 theorem GlobalTheory.Core.Deg.exists_termLoop_of_standingHypotheses : ∀ (D : D7) (large₂ : SizeData₂ D) (X : HidaSetting D) (Y : Full X) (hF : FinX Y) (hI : SIso D.s (sOf hF)) (u : D.what₂.Word) (C' Cl Cg cb Cu cT CT : ℝ), 29 ≤ C' → 72 ≤ Cl → Ties D → StandingHypotheses D large₂ C' Cl Cg cb Cu cT CT → ConcTie X Y → ∃ (W : WittDat X) (H : TieHyp W hI) (Am : AmpDat X) (hV : PvalForm W hI Am) (Z : LoopTie D large₂ (termTieOf W hI H Am hV) u u 1), TieAt hF hI large₂ u (termTieOf W hI H Am hV) Z ∧ ∀ t, Z.volR t = Formalism.L2.SG.LoopTerm.volRC hI t := by
   intro D large₂ X Y hF hI u C' Cl Cg cb Cu cT CT hC' hCl hT hS hCT
   haveI : Fact Formalism.FourierDecayAlt.ThreeDimData.DecLow := ⟨GlobalTheory.DecTransport.decLow_main⟩
@@ -120,6 +135,13 @@ theorem GlobalTheory.Core.Deg.exists_termLoop_of_standingHypotheses : ∀ (D : D
 
 namespace GlobalTheory.Core.Deg
 
+/- English proof (translation)
+Introduce `c Cg cb Cu cT CT`. Take `⟨C, hCv⟩` from `GlobalTheory.T.stabiliserCovolume_relevantTerm_le_heightPow Cg cb Cu cT CT c 1`. Use `⟨C, 72, ?_⟩` and prove the remaining obligations. Introduce `C0 hC0 C' Cl hC' hCl D large₂ X Y hF hI u hT hH hCT`. Establish `hC0' : C0 = c` using `hC0`.
+
+Substitute `hC0'` using the available equality. Take `⟨W, H, Am, hV, Z, hTie, hvol⟩` from `exists_termLoop_of_standingHypotheses D large₂ X Y hF hI u C' Cl Cg cb Cu cT CT (by linarith) hCl hT hH.1 hCT`. Use `⟨_, Z, hTie, ?_⟩` and prove the remaining obligations. Introduce `hHyp t hG hr`. Rewrite using `[hvol t]`.
+
+Conclude with `hCv D X Y hF hI W H Am hV large₂ u u C' Cl (by linarith) hHyp t hG hr`.
+-/
 theorem tieOn_singleton_uncond : ∀ c : ℝ, TieOn {c} := by
   intro c Cg cb Cu cT CT
   obtain ⟨C, hCv⟩ := GlobalTheory.T.stabiliserCovolume_relevantTerm_le_heightPow Cg cb Cu cT CT c 1

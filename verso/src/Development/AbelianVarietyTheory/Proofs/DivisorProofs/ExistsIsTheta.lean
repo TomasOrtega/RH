@@ -25,6 +25,9 @@ def IsTheta (D : DegPre V) (θ : D.SecB 1 0) : Prop :=
     IsPullSecLC D.P.L (D.famφB 0) (DegPre.famε 1) (snd (Over.mk (Spec.map (CommRingCat.ofHom f))) D.P.A).left θ θ' →
       ThetaOne.OneBasisAt D f θ'
 
+/- English proof (translation)
+The claim follows from `ThetaOne.exists_theta hV D`.
+-/
 theorem exists_isTheta [IsLocalRing V] (hV : IsCN V) (D : DegPre V) : ∃ θ, IsTheta D θ :=
   ThetaOne.exists_theta hV D
 

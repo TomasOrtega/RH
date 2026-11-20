@@ -18,12 +18,18 @@ def HasRationalTorsion (W : WeierstrassCurve K) (L : Type*) [Field L] [Algebra K
 
 variable {W : WeierstrassCurve K} {L : Type*} [Field L] [Algebra K L] {m n : ℕ}
 
+/- English proof (translation)
+Unfold `HasRationalTorsion`. Use `Iff.rfl` and compare the differences between its conclusion and the goal.
+-/
 theorem hasRationalTorsion_iff [DecidableEq L] : HasRationalTorsion W L n ↔
     ∀ (x y : L) (h : (W.baseChange L).toAffine.Nonsingular x y), n • Point.some x y h = 0 →
       x ∈ (algebraMap K L).range ∧ y ∈ (algebraMap K L).range := by
   unfold HasRationalTorsion
   convert Iff.rfl
 
+/- English proof (translation)
+Take `⟨k, rfl⟩` from `hmn`. Rewrite `h`, the goal using `[hasRationalTorsion_iff]`. Introduce `x y hP h0`. Conclude with `h x y hP (by rw [mul_nsmul, h0, nsmul_zero])`.
+-/
 theorem HasRationalTorsion.of_dvd (h : HasRationalTorsion W L n) (hmn : m ∣ n) :
     HasRationalTorsion W L m := by
   classical
@@ -32,6 +38,15 @@ theorem HasRationalTorsion.of_dvd (h : HasRationalTorsion W L n) (hmn : m ∣ n)
   intro x y hP h0
   exact h x y hP (by rw [mul_nsmul, h0, nsmul_zero])
 
+/- English proof (translation)
+Rewrite `h`, the goal using `[hasRationalTorsion_iff]`. Introduce `x y hP h0`. Establish `e : (C.map (algebraMap K L)) • (W.baseChange L) = (C • W).baseChange L` using `map_variableChange ..`. Establish `h1` using `congrArg (variableChangePoint _ e) h0`. Rewrite `h1` using `[map_nsmul, map_zero, variableChangePoint_some]`.
+
+Take `⟨⟨a, ha⟩, ⟨b, hb⟩⟩` from `h _ _ _ h1`. Establish `hu : algebraMap K L C.u ≠ 0` using `by simp`. Simplify using `only [VariableChange.map, Units.coe_map, MonoidHom.coe_coe] at ha hb`. Establish `hx : algebraMap K L ((a - C.r) / C.u ^ 2) = x`. Simplify using `only [map_div₀, map_sub, map_pow, ha]`.
+
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Use `⟨⟨_, hx⟩, ⟨(b - C.s * (a - C.r) - C.t) / C.u ^ 3, ?_⟩⟩` and prove the remaining obligations. Simplify using `only [map_div₀, map_sub, map_mul, map_pow, ha, hb]`. Clear the denominators using the available nonvanishing facts.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem HasRationalTorsion.variableChange (h : HasRationalTorsion W L n) (C : VariableChange K) :
     HasRationalTorsion (C • W) L n := by
   classical
@@ -67,30 +82,54 @@ section Invariants
 
 variable {R : Type*} [CommRing R]
 
+/- English proof (translation)
+Simplify using `only [splitCurve, Δ, b₂, b₄, b₆, b₈]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem splitCurve_Δ (A B : R) : (splitCurve A B).Δ = 16 * A ^ 2 * B ^ 2 * (A - B) ^ 2 := by
   simp only [splitCurve, Δ, b₂, b₄, b₆, b₈]; ring
 
+/- English proof (translation)
+Simplify using `only [splitCurve, c₄, b₂, b₄]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem splitCurve_c₄ (A B : R) : (splitCurve A B).c₄ = 16 * (A ^ 2 - A * B + B ^ 2) := by
   simp only [splitCurve, c₄, b₂, b₄]; ring
 
+/- English proof (translation)
+Simplify using `only [legendreCurve, Δ, b₂, b₄, b₆, b₈]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem legendreCurve_Δ (l : R) : (legendreCurve l).Δ = 16 * l ^ 2 * (l - 1) ^ 2 := by
   simp only [legendreCurve, Δ, b₂, b₄, b₆, b₈]; ring
 
+/- English proof (translation)
+Simplify using `only [legendreCurve, c₄, b₂, b₄]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem legendreCurve_c₄ (l : R) : (legendreCurve l).c₄ = 16 * (l ^ 2 - l + 1) := by
   simp only [legendreCurve, c₄, b₂, b₄]; ring
 
+/- English proof (translation)
+Simplify using `only [deuringCurve, Δ, b₂, b₄, b₆, b₈]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem deuringCurve_Δ (a b : R) : (deuringCurve a b).Δ = b ^ 3 * (a ^ 3 - 27 * b) := by
   simp only [deuringCurve, Δ, b₂, b₄, b₆, b₈]; ring
 
+/- English proof (translation)
+Simplify using `only [deuringCurve, c₄, b₂, b₄]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem deuringCurve_c₄ (a b : R) : (deuringCurve a b).c₄ = a * (a ^ 3 - 24 * b) := by
   simp only [deuringCurve, c₄, b₂, b₄]; ring
 
+/- English proof (translation)
+Simplify using `[deuringCurve, WeierstrassCurve.map]`.
+-/
 theorem deuringCurve_map {S : Type*} [CommRing S] (f : R →+* S) (a b : R) :
     (deuringCurve a b).map f = deuringCurve (f a) (f b) := by
   simp [deuringCurve, WeierstrassCurve.map]
 
 end Invariants
 
+/- English proof (translation)
+The claim follows from `haveI : (W.baseChange L).IsElliptic := inferInstanceAs (W.map (algebraMap K L)).IsElliptic equation_iff_nonsingular.symm`.
+-/
 theorem nonsingular_baseChange_iff {K : Type*} [Field K] {W : WeierstrassCurve K} [W.IsElliptic]
     {L : Type*} [Field L] [Algebra K L] {x y : L} :
     (W.baseChange L).toAffine.Nonsingular x y ↔ (W.baseChange L).toAffine.Equation x y :=
@@ -101,17 +140,26 @@ section Roots
 
 variable {L : Type*} [Field L] [IsAlgClosed L]
 
+/- English proof (translation)
+Take `⟨x, hx⟩` from `IsAlgClosed.exists_root (X ^ 2 + C b * X + C c : L[X]) (by rw [show (X ^ 2 + C b * X + C c : L[X]).degree = 2 by compute_degree!]; decide)`. Conclude with `⟨x, by simpa using hx⟩`.
+-/
 theorem exists_root_quadratic (b c : L) : ∃ x : L, x ^ 2 + b * x + c = 0 := by
   obtain ⟨x, hx⟩ := IsAlgClosed.exists_root (X ^ 2 + C b * X + C c : L[X])
     (by rw [show (X ^ 2 + C b * X + C c : L[X]).degree = 2 by compute_degree!]; decide)
   exact ⟨x, by simpa using hx⟩
 
+/- English proof (translation)
+Take `⟨x, hx⟩` from `IsAlgClosed.exists_root (C a * X ^ 3 + C b * X ^ 2 + C c * X + C d : L[X]) (by rw [degree_cubic ha]; decide)`. Conclude with `⟨x, by simpa using hx⟩`.
+-/
 theorem exists_root_cubic {a : L} (ha : a ≠ 0) (b c d : L) :
     ∃ x : L, a * x ^ 3 + b * x ^ 2 + c * x + d = 0 := by
   obtain ⟨x, hx⟩ := IsAlgClosed.exists_root (C a * X ^ 3 + C b * X ^ 2 + C c * X + C d : L[X])
     (by rw [degree_cubic ha]; decide)
   exact ⟨x, by simpa using hx⟩
 
+/- English proof (translation)
+Take `⟨y, hy⟩` from `exists_root_quadratic (W.a₁ * x + W.a₃) (-(x ^ 3 + W.a₂ * x ^ 2 + W.a₄ * x + W.a₆))`. Conclude with `⟨y, (equation_iff ..).mpr (by linear_combination hy)⟩`.
+-/
 theorem exists_equation (W : WeierstrassCurve L) (x : L) : ∃ y, W.toAffine.Equation x y := by
   obtain ⟨y, hy⟩ := exists_root_quadratic (W.a₁ * x + W.a₃)
     (-(x ^ 3 + W.a₂ * x ^ 2 + W.a₄ * x + W.a₆))
@@ -123,6 +171,13 @@ section Flex
 
 variable {F : Type*} [Field F] {W : WeierstrassCurve F}
 
+/- English proof (translation)
+Rewrite `h` using `[nonsingular_iff', equation_iff']`. Take `⟨hE, hN⟩` from `h`. Simplify using `only [Ψ₃, b₂, b₄, b₆, b₈, eval_add, eval_mul, eval_pow, eval_C, eval_X, eval_ofNat] at h3`. Establish `hη : 2 * y + W.a₁ * x + W.a₃ ≠ 0`. Introduce `h0`.
+
+Use `hN.elim (fun h => h ?_) (fun h => h h0)` and prove the remaining obligations. Use `pow_eq_zero_iff (two_ne_zero) |>.mp ?_` and prove the remaining obligations. Take the linear combination `-h3 - (W.a₁ ^ 2 + 4 * W.a₂ + 12 * x) * hE - (W.a₁ * (3 * x ^ 2 + 2 * W.a₂ * x + W.a₄ - W.a₁ * y) - (W.a₂ + 3 * x) * (2 * y + W.a₁ * x + W.a₃)) * h0`. Take `⟨l, hl⟩ : ∃ l : F, l * (2 * y + W.a₁ * x + W.a₃) = 3 * x ^ 2 + 2 * W.a₂ * x + W.a₄ - W.a₁ * y` from `⟨_, div_mul_cancel₀ _ hη⟩`. Use `⟨l, hl, mul_left_cancel₀ (pow_ne_zero 2 hη) ?_⟩` and prove the remaining obligations.
+
+Take the linear combination `-h3 - (W.a₁ ^ 2 + 4 * W.a₂ + 12 * x) * hE + (l * (2 * y + W.a₁ * x + W.a₃) + (3 * x ^ 2 + 2 * W.a₂ * x + W.a₄ - W.a₁ * y) + W.a₁ * (2 * y + W.a₁ * x + W.a₃)) * hl`.
+-/
 theorem exists_flex_slope {x y : F} (h : W.toAffine.Nonsingular x y) (h3 : W.Ψ₃.eval x = 0) :
     ∃ l : F, l * (2 * y + W.a₁ * x + W.a₃) = 3 * x ^ 2 + 2 * W.a₂ * x + W.a₄ - W.a₁ * y ∧
       l ^ 2 + W.a₁ * l - W.a₂ = 3 * x := by
@@ -144,6 +199,13 @@ theorem exists_flex_slope {x y : F} (h : W.toAffine.Nonsingular x y) (h3 : W.Ψ�
     + (l * (2 * y + W.a₁ * x + W.a₃) + (3 * x ^ 2 + 2 * W.a₂ * x + W.a₄ - W.a₁ * y)
       + W.a₁ * (2 * y + W.a₁ * x + W.a₃)) * hl
 
+/- English proof (translation)
+Rewrite using `[three'_nsmul]`. Prove the components needed by the constructor for the conclusion. Introduce `h0`. Take `⟨l, n, e, -, -, s₁, s₂, s₃⟩` from `exists_line_of_add_add_eq_zero h0`. Simplify using `only [Ψ₃, b₂, b₄, b₆, b₈, eval_add, eval_mul, eval_pow, eval_C, eval_X, eval_ofNat]`.
+
+Establish `h2 : W.a₂ = l ^ 2 + W.a₁ * l - 3 * x` using `by linear_combination s₁`. Establish `h4 : W.a₄ = 3 * x ^ 2 + 2 * l * n + W.a₁ * n + W.a₃ * l` using `by linear_combination -s₂`. Establish `h6 : W.a₆ = n ^ 2 + W.a₃ * n - x ^ 3` using `by linear_combination s₃`. Rewrite using `[h2, h4, h6]`. Expand and normalize the polynomial expressions, which then agree.
+
+Introduce `h3`. Take `⟨l, h₁, h₂⟩` from `exists_flex_slope h h3`. Conclude with `add_add_eq_zero_of_line h h h l (y - l * x) (by ring) (by ring) (by ring) (by linear_combination -h₂) (by linear_combination h₁ - 2 * x * h₂)`.
+-/
 theorem three_nsmul_eq_zero_iff [DecidableEq F] {x y : F} (h : W.toAffine.Nonsingular x y) :
     3 • Point.some x y h = 0 ↔ W.Ψ₃.eval x = 0 := by
   rw [three'_nsmul]
@@ -170,6 +232,11 @@ variable {K : Type*} [Field K] [CharZero K] {L : Type*} [Field L] [Algebra K L] 
 
 omit [CharZero K] in
 
+/- English proof (translation)
+Take `⟨y, hy⟩` from `exists_equation (W.baseChange L) x`. Establish `hy' : (W.baseChange L).toAffine.Nonsingular x y` using `nonsingular_baseChange_iff.mpr hy`. Take `⟨⟨x₀, rfl⟩, ⟨y₀, rfl⟩⟩` from `hasRationalTorsion_iff.mp h x y hy' ((three_nsmul_eq_zero_iff hy').mpr hx)`. Use `⟨x₀, y₀, rfl, (W.toAffine.map_nonsingular (algebraMap K L).injective x₀ y₀).mp hy', ?_⟩` and prove the remaining obligations. Rewrite `hx` using `[WeierstrassCurve.baseChange, map_Ψ₃, eval_map_apply]`.
+
+Conclude with `(map_eq_zero _).mp hx`.
+-/
 theorem HasRationalTorsion.exists_point_of_root (h : HasRationalTorsion W L 3) {x : L}
     (hx : (W.baseChange L).Ψ₃.eval x = 0) :
     ∃ x₀ y₀ : K, algebraMap K L x₀ = x ∧ W.toAffine.Nonsingular x₀ y₀ ∧ W.Ψ₃.eval x₀ = 0 := by
@@ -182,6 +249,23 @@ theorem HasRationalTorsion.exists_point_of_root (h : HasRationalTorsion W L 3) {
   rw [WeierstrassCurve.baseChange, map_Ψ₃, eval_map_apply] at hx
   exact (map_eq_zero _).mp hx
 
+/- English proof (translation)
+Establish `: CharZero L` using `charZero_of_injective_algebraMap (algebraMap K L).injective`. Take `⟨x, hx⟩` from `IsAlgClosed.exists_root (W.baseChange L).Ψ₃ (degree_ne_of_natDegree_ne ((W.baseChange L).natDegree_Ψ₃_pos three_ne_zero).ne')`. Take `⟨x₀, y₀, -, h₀, h₃⟩` from `h.exists_point_of_root hx`. Take `⟨l, h₁, h₂⟩` from `exists_flex_slope h₀ h₃`. Establish `hE` using `(equation_iff' ..).mp h₀.1`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨a, b, e⟩ : ∃ a b : K, (⟨1, x₀, l, y₀⟩ : VariableChange K) • W = deuringCurve a b := by`. Use `⟨W.a₁ + 2 * l, 2 * y₀ + W.a₁ * x₀ + W.a₃, ?_⟩` and prove the remaining obligations. Simplify using `only [variableChange_def, deuringCurve, inv_one, Units.val_one]`. Apply the tactic sequence `ext <;> dsimp only`. Expand and normalize the polynomial expressions, which then agree.
+
+Take the linear combination `-h₂`. Expand and normalize the polynomial expressions, which then agree. Take the linear combination `-h₁`. Take the linear combination `-hE`. Establish `h'` using `h.variableChange ⟨1, x₀, l, y₀⟩`.
+
+Establish `hell : ((⟨1, x₀, l, y₀⟩ : VariableChange K) • W).IsElliptic` using `inferInstance`. Rewrite `h'`, `hell` using `[e]`. Establish `hb : b ≠ 0`. Introduce `hb`. Use `(deuringCurve a b).isUnit_Δ.ne_zero` as an intermediate fact.
+
+Rewrite `this` using `[deuringCurve_Δ, hb]`. Simplify using `at this`. Take `⟨z, hz⟩` from `exists_root_cubic (three_ne_zero : (3 : L) ≠ 0) (algebraMap K L a ^ 2) (3 * algebraMap K L a * algebraMap K L b) (3 * algebraMap K L b ^ 2)`. Take `⟨z₀, -, rfl, -, -⟩` from `h'.exists_point_of_root (x := z) (by`. Simplify using `only [WeierstrassCurve.baseChange, deuringCurve_map]`.
+
+Simplify using `only [deuringCurve, Ψ₃, b₂, b₄, b₆, b₈, eval_add, eval_mul, eval_pow, eval_C, eval_X, eval_ofNat]`. Take the linear combination `z * hz)`. Establish `hz₀ : 3 * z₀ ^ 3 + a ^ 2 * z₀ ^ 2 + 3 * a * b * z₀ + 3 * b ^ 2 = 0`. Apply `(algebraMap K L).injective` to reduce the goal to its premises. Simplify `hz` using `[map_ofNat]`.
+
+Establish `hz0 : z₀ ≠ 0`. Introduce and unpack `rfl`. Simplify using `[hb] at hz₀`. Use `⟨_, a, b, a + 3 * b / z₀, rfl, e, ?_⟩` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts.
+
+Take the linear combination `9 * b * hz₀`.
+-/
 theorem HasRationalTorsion.exists_deuringCurve (h : HasRationalTorsion W L 3) :
     ∃ (C : VariableChange K) (a b d : K), C.u = 1 ∧ C • W = deuringCurve a b ∧
       d ^ 3 = a ^ 3 - 27 * b := by
@@ -228,6 +312,11 @@ theorem HasRationalTorsion.exists_deuringCurve (h : HasRationalTorsion W L 3) :
 
 omit [CharZero K] [IsAlgClosed L] in
 
+/- English proof (translation)
+Establish `hy : (W.baseChange L).toAffine.Equation x 0`. Rewrite using `[equation_iff]`. Simplify using `only [WeierstrassCurve.baseChange, map_a₁, map_a₂, map_a₃, map_a₄, map_a₆]`. Take the linear combination `-hx`. Use `(hasRationalTorsion_iff.mp h x 0 (nonsingular_baseChange_iff.mpr hy) ?_).1` and prove the remaining obligations.
+
+Rewrite using `[two_nsmul]`. Apply `Point.add_self_of_Y_eq` to reduce the goal to its premises. Simplify using `[WeierstrassCurve.baseChange, h₁, h₃]`.
+-/
 theorem HasRationalTorsion.mem_range_of_root (h : HasRationalTorsion W L 2) (h₁ : W.a₁ = 0)
     (h₃ : W.a₃ = 0) {x : L} (hx : x ^ 3 + algebraMap K L W.a₂ * x ^ 2 + algebraMap K L W.a₄ * x
       + algebraMap K L W.a₆ = 0) : x ∈ (algebraMap K L).range := by
@@ -241,6 +330,19 @@ theorem HasRationalTorsion.mem_range_of_root (h : HasRationalTorsion W L 2) (h�
   apply Point.add_self_of_Y_eq
   simp [WeierstrassCurve.baseChange, h₁, h₃]
 
+/- English proof (translation)
+Use `set C₁ : VariableChange K := ⟨1, 0, -W.a₁ / 2, -W.a₃ / 2⟩ with hC₁`. Establish `h₁ : (C₁ • W).a₁ = 0` using `by simp only [hC₁, variableChange_a₁]; ring`. Establish `h₃ : (C₁ • W).a₃ = 0` using `by simp only [hC₁, variableChange_a₃]; ring`. Establish `h'` using `h.variableChange C₁`. Take `⟨e, he⟩` from `exists_root_cubic (one_ne_zero : (1 : L) ≠ 0) (algebraMap K L (C₁ • W).a₂) (algebraMap K L (C₁ • W).a₄) (algebraMap K L (C₁ • W).a₆)`.
+
+Rewrite `he` using `[one_mul]`. Take `⟨e, rfl⟩` from `h'.mem_range_of_root h₁ h₃ he`. Take `⟨f, hf⟩` from `exists_root_quadratic (algebraMap K L ((C₁ • W).a₂ + e)) (algebraMap K L ((C₁ • W).a₄ + (C₁ • W).a₂ * e + e ^ 2))`. Take `⟨f, rfl⟩` from `h'.mem_range_of_root h₁ h₃ (x := f) (by`. Simplify using `only [map_add, map_mul, map_pow] at hf`.
+
+Take the linear combination `he + (f - algebraMap K L e) * hf)`. Establish `he' : e ^ 3 + (C₁ • W).a₂ * e ^ 2 + (C₁ • W).a₄ * e + (C₁ • W).a₆ = 0`. Apply `(algebraMap K L).injective` to reduce the goal to its premises. Simplify using `using he`. Establish `hf' : f ^ 2 + ((C₁ • W).a₂ + e) * f + ((C₁ • W).a₄ + (C₁ • W).a₂ * e + e ^ 2) = 0`.
+
+Apply `(algebraMap K L).injective` to reduce the goal to its premises. Simplify using `using hf`. Use `⟨⟨1, e, 0, 0⟩ * C₁, f - e, -(C₁ • W).a₂ - 2 * e - f, by simp [VariableChange.mul_def, hC₁], ?_⟩` and prove the remaining obligations. Rewrite using `[mul_smul]`. Generalize the expression as in `C₁ • W = W₁ at *`.
+
+Simplify using `only [variableChange_def, splitCurve, inv_one, Units.val_one]`. Apply the tactic sequence `ext <;> dsimp only`. Take the linear combination `h₁`. Expand and normalize the polynomial expressions, which then agree. Take the linear combination `h₃ + e * h₁`.
+
+Take the linear combination `hf'`. Take the linear combination `he'`.
+-/
 theorem HasRationalTorsion.exists_splitCurve (h : HasRationalTorsion W L 2) :
     ∃ (C : VariableChange K) (A B : K), C.u = 1 ∧ C • W = splitCurve A B := by
   set C₁ : VariableChange K := ⟨1, 0, -W.a₁ / 2, -W.a₃ / 2⟩ with hC₁
@@ -276,6 +378,25 @@ theorem HasRationalTorsion.exists_splitCurve (h : HasRationalTorsion W L 2) :
 
 omit [CharZero K] in
 
+/- English proof (translation)
+Establish `hΔ` using `(splitCurve A B).isUnit_Δ.ne_zero`. Rewrite `hΔ` using `[splitCurve_Δ]`. Establish `hA : A ≠ 0` using `by rintro rfl; simp at hΔ`. Establish `hB : B ≠ 0` using `by rintro rfl; simp at hΔ`. Establish `hAB : A ≠ B` using `by rintro rfl; simp at hΔ`.
+
+Take `⟨α, hα⟩` from `IsAlgClosed.exists_pow_nat_eq (-algebraMap K L A) two_pos`. Take `⟨β, hβ⟩` from `IsAlgClosed.exists_pow_nat_eq (-algebraMap K L B) two_pos`. Establish `hP : ((splitCurve A B).baseChange L).toAffine.Nonsingular (α * β) (α * β * (α + β))`. Rewrite using `[nonsingular_baseChange_iff, equation_iff]`. Simplify using `only [WeierstrassCurve.baseChange, splitCurve, map_a₁, map_a₂, map_a₃, map_a₄, map_a₆, map_zero, map_neg, map_add, map_mul]`.
+
+Rewrite using `[← neg_neg (algebraMap K L A), ← hα, ← neg_neg (algebraMap K L B), ← hβ]`. Expand and normalize the polynomial expressions, which then agree. Establish `hT : ((splitCurve A B).baseChange L).toAffine.Nonsingular 0 0`. Rewrite using `[nonsingular_baseChange_iff, equation_iff]`. Simplify using `[WeierstrassCurve.baseChange, splitCurve]`.
+
+Establish `h2 : Point.some _ _ hT + Point.some _ _ hT = 0`. Apply `Point.add_self_of_Y_eq` to reduce the goal to its premises. Simplify using `[WeierstrassCurve.baseChange, splitCurve]`. Establish `h3 : Point.some _ _ hP + Point.some _ _ hP + Point.some _ _ hT = 0`. Use `add_add_eq_zero_of_line hP hP hT (α + β) 0 (by ring) (by ring) (by ring) ?_ ?_` and prove the remaining obligations.
+
+Use `all_goals`. Simplify using `only [WeierstrassCurve.baseChange, splitCurve, map_a₁, map_a₂, map_a₃, map_a₄, map_zero, map_neg, map_add, map_mul]`. Rewrite using `[← neg_neg (algebraMap K L A), ← hα, ← neg_neg (algebraMap K L B), ← hβ]`. Expand and normalize the polynomial expressions, which then agree. Establish `h4 : 4 • Point.some _ _ hP = 0`.
+
+Establish `: 4 • Point.some _ _ hP = 2 • (Point.some _ _ hP + Point.some _ _ hP + Point.some _ _ hT) - (Point.some _ _ hT + Point.some _ _ hT)` using `by abel`. Rewrite using `[this, h2, h3, smul_zero, sub_zero]`. Take `⟨⟨p, hp⟩, ⟨q, hq⟩⟩` from `hasRationalTorsion_iff.mp h _ _ hP h4`. Establish `hα0 : α ≠ 0` using `by rintro rfl; simp [hA] at hα`. Establish `hβ0 : β ≠ 0` using `by rintro rfl; simp [hB] at hβ`.
+
+Establish `hαβ : α + β ≠ 0`. Introduce `h0`. Apply `hAB` to reduce the goal to its premises. Apply `(algebraMap K L).injective` to reduce the goal to its premises. Take the linear combination `hα - hβ - (α - β) * h0`.
+
+Use `⟨(p - A) * p / q, (algebraMap K L).injective ?_⟩` and prove the remaining obligations. Rewrite using `[map_pow, map_neg, ← hα]`. Use `congr 1`. Rewrite using `[map_div₀, map_mul, map_sub, hp, hq, ← neg_neg (algebraMap K L A), ← hα]`. Clear the denominators using the available nonvanishing facts.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem HasRationalTorsion.isSquare_neg {A B : K} [(splitCurve A B).IsElliptic]
     (h : HasRationalTorsion (splitCurve A B) L 4) : ∃ a : K, a ^ 2 = -A := by
   classical
@@ -324,6 +445,15 @@ theorem HasRationalTorsion.isSquare_neg {A B : K} [(splitCurve A B).IsElliptic]
   field_simp
   ring
 
+/- English proof (translation)
+Take `⟨C, A, B, hu, e⟩` from `(h.of_dvd (by norm_num : 2 ∣ 4)).exists_splitCurve`. Establish `e₁ : C • W = splitCurve B A`. Rewrite using `[e, splitCurve, splitCurve, add_comm, mul_comm]`. Establish `e₂ : ((⟨1, A, 0, 0⟩ : VariableChange K) * C) • W = splitCurve (-A) (B - A)`. Rewrite using `[mul_smul, e]`.
+
+Simplify using `only [variableChange_def, splitCurve, inv_one, Units.val_one]`. Apply the tactic sequence `ext <;> dsimp only <;> ring`. Establish `e₃ : ((⟨1, A, 0, 0⟩ : VariableChange K) * C) • W = splitCurve (B - A) (-A)`. Rewrite using `[e₂, splitCurve, splitCurve, add_comm, mul_comm (B - A)]`. Establish `key : ∀ {C : VariableChange K} {A B : K}, C • W = splitCurve A B → ∃ a : K, a ^ 2 = -A`.
+
+Introduce `C A B e`. Establish `: (splitCurve A B).IsElliptic` using `e ▸ inferInstance`. Conclude with `HasRationalTorsion.isSquare_neg (L := L) (B := B) (e ▸ h.variableChange C)`. Take `⟨a₀, h₀⟩` from `key e`. Take `⟨a₁, h₁⟩` from `key e₁`.
+
+Take `⟨a₂, h₂⟩` from `key e₂`. Take `⟨a₃, h₃⟩` from `key e₃`. Use `⟨C, A, B, a₂, a₀ * a₁ * a₃, hu, e, by rw [h₂, neg_neg], ?_⟩` and prove the remaining obligations. Rewrite using `[mul_pow, mul_pow, h₀, h₁, h₃]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem HasRationalTorsion.exists_splitCurve_sq (h : HasRationalTorsion W L 4) :
     ∃ (C : VariableChange K) (A B a c : K), C.u = 1 ∧ C • W = splitCurve A B ∧ a ^ 2 = A ∧
       c ^ 2 = A * B * (A - B) := by
@@ -348,6 +478,15 @@ theorem HasRationalTorsion.exists_splitCurve_sq (h : HasRationalTorsion W L 4) :
   rw [mul_pow, mul_pow, h₀, h₁, h₃]
   ring
 
+/- English proof (translation)
+Take `⟨C, A, B, -, c, hu, e, -, hc⟩` from `(h.of_dvd (by norm_num : 4 ∣ 12)).exists_splitCurve_sq`. Take `⟨C', a, b, d, hu', e', hd⟩` from `(h.of_dvd (by norm_num : 3 ∣ 12)).exists_deuringCurve`. Establish `h4 : (2 * c) ^ 4 = W.Δ`. Use `congrArg WeierstrassCurve.Δ e` as an intermediate fact. Rewrite `this` using `[variableChange_Δ, hu, splitCurve_Δ]`.
+
+Simplify using `only [inv_one, Units.val_one, one_pow, one_mul] at this`. Rewrite using `[this]`. Take the linear combination `16 * (c ^ 2 + A * B * (A - B)) * hc`. Establish `h3 : (b * d) ^ 3 = W.Δ`. Use `congrArg WeierstrassCurve.Δ e'` as an intermediate fact.
+
+Rewrite `this` using `[variableChange_Δ, hu', deuringCurve_Δ]`. Simplify using `only [inv_one, Units.val_one, one_pow, one_mul] at this`. Rewrite using `[this, mul_pow, hd]`. Use `⟨b * d / (2 * c), ?_⟩` and prove the remaining obligations. Establish `hΔ` using `W.isUnit_Δ.ne_zero`.
+
+Rewrite using `[div_pow, show 12 = 3 * 4 by rfl, pow_mul, h3, mul_comm 3 4, pow_mul, h4]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem HasRationalTorsion.exists_pow_twelve_eq_Δ (h : HasRationalTorsion W L 12) :
     ∃ δ : K, δ ^ 12 = W.Δ := by
   obtain ⟨C, A, B, -, c, hu, e, -, hc⟩ := (h.of_dvd (by norm_num : 4 ∣ 12)).exists_splitCurve_sq

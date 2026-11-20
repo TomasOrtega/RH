@@ -13,6 +13,11 @@ section Padic
 
 variable {K : Type*} [NormedField K] [IsUltrametricDist K] (l : ℕ) [hl : Fact l.Prime]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Establish `hm1 : ‖(m : K)‖ < 1` using `lt_of_le_of_ne (IsUltrametricDist.norm_natCast_le_one K m) hne`. Establish `hc : IsCoprime (l : ℤ) (m : ℤ)` using `Nat.isCoprime_iff_coprime.2 ((Nat.Prime.coprime_iff_not_dvd hl.out).2 hm)`. Take `⟨s, t, hst⟩` from `hc`. Establish `h1 : (s : K) * l + t * m = 1` using `by exact_mod_cast congrArg (Int.cast : ℤ → K) hst`.
+
+Use `IsUltrametricDist.norm_add_le_max ((s : K) * l) (t * m)` as an intermediate fact. Rewrite `this` using `[h1, norm_one, norm_mul, norm_mul]`. Use `absurd this (not_le.2 (max_lt ?_ ?_))` and prove the remaining obligations. Conclude with `mul_lt_one_of_nonneg_of_lt_one_right (IsUltrametricDist.norm_intCast_le_one K s) (norm_nonneg _) h`. Conclude with `mul_lt_one_of_nonneg_of_lt_one_right (IsUltrametricDist.norm_intCast_le_one K t) (norm_nonneg _) hm1`.
+-/
 theorem norm_natCast_eq_one (h : ‖(l : K)‖ < 1) {m : ℕ} (hm : ¬ l ∣ m) : ‖(m : K)‖ = 1 := by
   by_contra hne
   have hm1 : ‖(m : K)‖ < 1 := lt_of_le_of_ne (IsUltrametricDist.norm_natCast_le_one K m) hne
@@ -29,6 +34,11 @@ theorem norm_natCast_eq_one (h : ‖(l : K)‖ < 1) {m : ℕ} (hm : ¬ l ∣ m) 
       (norm_nonneg _) hm1
 
 omit [IsUltrametricDist K] in
+/- English proof (translation)
+Introduce `hd`. Establish `h1 : ‖((q.den : ℤ) : ℚ_[l])‖ < 1` using `Padic.norm_intCast_lt_one_iff.2 (by exact_mod_cast hd)`. Establish `h2 : (q.num : ℚ_[l]) = q * ((q.den : ℤ) : ℚ_[l])`. Establish `: (q.num : ℚ) = q * q.den` using `(Rat.mul_den_eq_num q).symm`. Conclude with `congrArg (Rat.cast : ℚ → ℚ_[l]) this` after adjusting the coercions.
+
+Establish `h3 : ‖(q.num : ℚ_[l])‖ < 1`. Rewrite using `[h2, norm_mul]`. Conclude with `mul_lt_one_of_nonneg_of_lt_one_right hq (norm_nonneg _) h1`. Establish `h4 : l ∣ q.num.natAbs` using `Int.natCast_dvd.1 (Padic.norm_intCast_lt_one_iff.1 h3)`. Conclude with `hl.out.one_lt.ne' (Nat.eq_one_of_dvd_coprimes q.reduced h4 hd)`.
+-/
 theorem not_dvd_den {q : ℚ} (hq : ‖(q : ℚ_[l])‖ ≤ 1) : ¬ l ∣ q.den := by
   intro hd
   have h1 : ‖((q.den : ℤ) : ℚ_[l])‖ < 1 := Padic.norm_intCast_lt_one_iff.2 (by exact_mod_cast hd)
@@ -41,11 +51,29 @@ theorem not_dvd_den {q : ℚ} (hq : ‖(q : ℚ_[l])‖ ≤ 1) : ¬ l ∣ q.den 
   have h4 : l ∣ q.num.natAbs := Int.natCast_dvd.1 (Padic.norm_intCast_lt_one_iff.1 h3)
   exact hl.out.one_lt.ne' (Nat.eq_one_of_dvd_coprimes q.reduced h4 hd)
 
+/- English proof (translation)
+Rewrite using `[Rat.cast_def, norm_div, norm_natCast_eq_one l h (not_dvd_den l hq), div_one]`. Conclude with `IsUltrametricDist.norm_intCast_le_one K _`.
+-/
 theorem norm_ratCast_le_one [CharZero K] (h : ‖(l : K)‖ < 1) {q : ℚ} (hq : ‖(q : ℚ_[l])‖ ≤ 1) :
     ‖(q : K)‖ ≤ 1 := by
   rw [Rat.cast_def, norm_div, norm_natCast_eq_one l h (not_dvd_den l hq), div_one]
   exact IsUltrametricDist.norm_intCast_le_one K _
 
+/- English proof (translation)
+Set `w : AbsoluteValue ℚ ℝ` to `Rat.AbsoluteValue.padic l`. Set `i : WithAbs w →+* ℚ_[l]` to `(Rat.castHom ℚ_[l]).comp (WithAbs.equiv w).toRingHom`. Set `f : WithAbs w →+* K` to `(Rat.castHom K).comp (WithAbs.equiv w).toRingHom`. Establish `hi : ∀ x, ‖i x‖ = ‖x‖` using `fun x => Padic.eq_padicNorm _`. Apply the tactic sequence `have hi' : Isometry i := AddMonoidHomClass.isometry_of_norm i hi`.
+
+Establish `hf : UniformContinuous f`. Use `uniformContinuous_of_continuousAt_zero f ?_` and prove the remaining obligations. Rewrite using `[Metric.continuousAt_iff]`. Introduce `ε hε`. Take `⟨n, hn⟩` from `exists_pow_lt_of_lt_one hε h`.
+
+Establish `hl0 : (l : ℚ) ^ n ≠ 0` using `pow_ne_zero _ (by exact_mod_cast hl.out.ne_zero)`. Establish `hl1 : (0 : ℝ) < ‖(((l : ℚ) ^ n : ℚ) : ℚ_[l])‖` using `norm_pos_iff.2 (by exact_mod_cast hl0)`. Use `⟨_, hl1, fun {x} hx => ?_⟩` and prove the remaining obligations. Rewrite `hx` using `[dist_zero_right, ← hi]`. Rewrite using `[map_zero, dist_zero_right]`.
+
+Use `set q : ℚ := WithAbs.equiv w x`. Express the relevant statement in the definitionally equal form `‖(q : ℚ_[l])‖ < _ at hx`. Express the relevant statement in the definitionally equal form `‖(q : K)‖ < ε`. Establish `h1 : ‖((q / (l : ℚ) ^ n : ℚ) : K)‖ ≤ 1`. Use `norm_ratCast_le_one l h ?_` and prove the remaining obligations.
+
+Rewrite using `[Rat.cast_div, norm_div, div_le_one hl1]`. Conclude with `hx.le`. Establish `h2 : (q : K) = ((q / (l : ℚ) ^ n : ℚ) : K) * (l : K) ^ n`. Establish `: q = q / (l : ℚ) ^ n * (l : ℚ) ^ n` using `(div_mul_cancel₀ q hl0).symm`. Conclude with `congrArg (Rat.cast : ℚ → K) this` after adjusting the coercions.
+
+Rewrite using `[h2, norm_mul, norm_pow]`. Conclude with `(mul_le_of_le_one_left (by positivity) h1).trans_lt hn`. Establish `hd : DenseRange i` using `(Padic.denseRange_ratCast l).mono (by`. Introduce and unpack `_ ⟨q, rfl⟩`. Conclude with `⟨WithAbs.toAbs w q, rfl⟩)`.
+
+Conclude with `⟨IsDenseInducing.extendRingHom hi'.isUniformInducing hd hf, (uniformContinuous_uniformly_extend hi'.isUniformInducing hd hf).continuous⟩`.
+-/
 theorem exists_continuous_padic [CharZero K] [CompleteSpace K] (h : ‖(l : K)‖ < 1) :
     ∃ j : ℚ_[l] →+* K, Continuous j := by
   let w : AbsoluteValue ℚ ℝ := Rat.AbsoluteValue.padic l
@@ -85,6 +113,19 @@ theorem exists_continuous_padic [CharZero K] [CompleteSpace K] (h : ‖(l : K)�
 def IsPrincipalPart (x : ℚ_[l]) (a : ℚ) : Prop :=
   (∃ n : ℕ, a.den = l ^ n) ∧ ‖x - (a : ℚ_[l])‖ ≤ 1
 
+/- English proof (translation)
+Establish `hp : ‖(l : ℚ_[l])‖ < 1` using `Padic.norm_p_lt_one`. Establish `hl0 : (l : ℚ_[l]) ≠ 0` using `by exact_mod_cast hl.out.ne_zero`. Take `⟨n, hn⟩` from `exists_pow_lt_of_lt_one (show (0 : ℝ) < (‖x‖ + 1)⁻¹ by positivity) hp`. Establish `hx : ‖x * (l : ℚ_[l]) ^ n‖ ≤ 1`. Rewrite using `[norm_mul, norm_pow]`.
+
+Combine the equalities or inequalities in the displayed calculation. Set `z : ℤ_[l]` to `⟨_, hx⟩`. Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.1 (PadicInt.appr_spec n z)`. Use `⟨(z.appr n : ℚ) / (l : ℚ) ^ n, ?_, ?_⟩` and prove the remaining obligations. Establish `: ((z.appr n : ℚ) / (l : ℚ) ^ n).den ∣ l ^ n`.
+
+Establish `h` using `Rat.den_dvd (z.appr n : ℤ) ((l : ℤ) ^ n)`. Rewrite `h` using `[Rat.divInt_eq_div]`. Simplify using `only [Int.cast_natCast, Int.cast_pow] at h`. Rewrite `h` using `[← Nat.cast_pow (α := ℤ)]`. Conclude with `Int.natCast_dvd_natCast.1 h`.
+
+Take `⟨k, -, hk⟩` from `(Nat.dvd_prime_pow hl.out).1 this`. Conclude with `⟨k, hk⟩`. Establish `h1 : (c : ℚ_[l]) * (l : ℚ_[l]) ^ n = x * (l : ℚ_[l]) ^ n - (z.appr n : ℚ_[l])`. Use `congrArg (fun t : ℤ_[l] => (t : ℚ_[l])) hc` as an intermediate fact. Simplify using `only [PadicInt.coe_mul, PadicInt.coe_pow, PadicInt.coe_sub, PadicInt.coe_natCast] at this`.
+
+Conclude with `this`. Establish `h2 : x - (((z.appr n : ℚ) / (l : ℚ) ^ n : ℚ) : ℚ_[l]) = c`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Take the linear combination `-h1`.
+
+Rewrite using `[h2]`. Conclude with `c.2`.
+-/
 theorem exists_isPrincipalPart (x : ℚ_[l]) : ∃ a, IsPrincipalPart l x a := by
   have hp : ‖(l : ℚ_[l])‖ < 1 := Padic.norm_p_lt_one
   have hl0 : (l : ℚ_[l]) ≠ 0 := by exact_mod_cast hl.out.ne_zero
@@ -115,6 +156,11 @@ theorem exists_isPrincipalPart (x : ℚ_[l]) : ∃ a, IsPrincipalPart l x a := b
     rw [h2]
     exact c.2
 
+/- English proof (translation)
+Take `⟨m, hm⟩` from `ha`. Take `⟨n, hn⟩` from `hb`. Establish `h1` using `Rat.add_den_dvd a b`. Establish `h2` using `Rat.sub_den_dvd a b`. Rewrite `h1`, `h2` using `[hm, hn, ← pow_add]`.
+
+Take `⟨k, -, hk⟩` from `(Nat.dvd_prime_pow hl.out).1 h1`. Take `⟨k', -, hk'⟩` from `(Nat.dvd_prime_pow hl.out).1 h2`. Conclude with `⟨⟨k, hk⟩, k', hk'⟩`.
+-/
 theorem den_dvd_pow_sub {a b : ℚ} (ha : ∃ n : ℕ, a.den = l ^ n) (hb : ∃ n : ℕ, b.den = l ^ n) :
     (∃ n : ℕ, (a + b).den = l ^ n) ∧ ∃ n : ℕ, (a - b).den = l ^ n := by
   obtain ⟨m, hm⟩ := ha
@@ -126,6 +172,9 @@ theorem den_dvd_pow_sub {a b : ℚ} (ha : ∃ n : ℕ, a.den = l ^ n) (hb : ∃ 
   obtain ⟨k', -, hk'⟩ := (Nat.dvd_prime_pow hl.out).1 h2
   exact ⟨⟨k, hk⟩, k', hk'⟩
 
+/- English proof (translation)
+Use `⟨(den_dvd_pow_sub l ha.1 hb.1).1, ?_⟩` and prove the remaining obligations. Establish `: x + y - ((a + b : ℚ) : ℚ_[l]) = (x - a) + (y - b)` using `by push_cast; ring`. Rewrite using `[this]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le ha.2 hb.2)`.
+-/
 theorem IsPrincipalPart.add {x y : ℚ_[l]} {a b : ℚ} (ha : IsPrincipalPart l x a)
     (hb : IsPrincipalPart l y b) : IsPrincipalPart l (x + y) (a + b) := by
   refine ⟨(den_dvd_pow_sub l ha.1 hb.1).1, ?_⟩
@@ -133,6 +182,15 @@ theorem IsPrincipalPart.add {x y : ℚ_[l]} {a b : ℚ} (ha : IsPrincipalPart l 
   rw [this]
   exact (IsUltrametricDist.norm_add_le_max _ _).trans (max_le ha.2 hb.2)
 
+/- English proof (translation)
+Take `⟨n, hn⟩` from `(den_dvd_pow_sub l ha.1 hb.1).2`. Establish `h1 : ‖((a - b : ℚ) : ℚ_[l])‖ ≤ 1`. Establish `: ((a - b : ℚ) : ℚ_[l]) = (x - b) + -(x - a)` using `by push_cast; ring`. Rewrite using `[this]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le hb.2 (by rw [norm_neg]; exact ha.2))`.
+
+Establish `h2` using `not_dvd_den l h1`. Establish `h3 : (a - b).den = 1`. Break down `n with _ | n` into its components or cases. Simplify using `using hn`. Conclude with `absurd (hn ▸ dvd_pow_self l n.succ_ne_zero) h2`.
+
+Establish `h4 : a = b + ((a - b).num : ℚ)`. Rewrite using `[Rat.coe_int_num_of_den_eq_one h3]`. Expand and normalize the polynomial expressions, which then agree. Use `Complex.exp_eq_exp_iff_exists_int.2 ⟨(a - b).num, ?_⟩` and prove the remaining obligations. Establish `h5 : (a : ℂ) = b + ((a - b).num : ℂ)` using `by exact_mod_cast congrArg (Rat.cast : ℚ → ℂ) h4`.
+
+Rewrite using `[h5]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem IsPrincipalPart.exp_eq {x : ℚ_[l]} {a b : ℚ} (ha : IsPrincipalPart l x a)
     (hb : IsPrincipalPart l x b) :
     Complex.exp (2 * Real.pi * Complex.I * (a : ℂ)) =
@@ -168,6 +226,9 @@ def padicChar : AddChar ℚ_[l] ℂ where
     push_cast
     ring
 
+/- English proof (translation)
+The claim follows from `(exists_isPrincipalPart l x).choose_spec.exp_eq l ha`.
+-/
 theorem padicChar_eq {x : ℚ_[l]} {a : ℚ} (ha : IsPrincipalPart l x a) :
     padicChar l x = Complex.exp (2 * Real.pi * Complex.I * (a : ℂ)) :=
   (exists_isPrincipalPart l x).choose_spec.exp_eq l ha
@@ -178,12 +239,18 @@ section Completion
 
 variable {F : Type} [Field F] [NumberField F] (p : HeightOneSpectrum (𝓞 F))
 
+/- English proof (translation)
+Use `haveI := p.isMaximal`. Use `letI := Ideal.Quotient.field p.asIdeal`. Use `haveI : Finite (𝓞 F ⧸ p.asIdeal) := Ideal.finiteQuotientOfFreeOfNeBot _ p.ne_bot`. Conclude with `CharP.char_is_prime (𝓞 F ⧸ p.asIdeal) _`.
+-/
 theorem resChar_prime : (resChar p).Prime := by
   haveI := p.isMaximal
   letI := Ideal.Quotient.field p.asIdeal
   haveI : Finite (𝓞 F ⧸ p.asIdeal) := Ideal.finiteQuotientOfFreeOfNeBot _ p.ne_bot
   exact CharP.char_is_prime (𝓞 F ⧸ p.asIdeal) _
 
+/- English proof (translation)
+Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_natCast]`. Conclude with `ringChar.Nat.cast_ringChar`.
+-/
 theorem resChar_mem : ((resChar p : ℕ) : 𝓞 F) ∈ p.asIdeal := by
   rw [← Ideal.Quotient.eq_zero_iff_mem, map_natCast]
   exact ringChar.Nat.cast_ringChar
@@ -191,6 +258,11 @@ theorem resChar_mem : ((resChar p : ℕ) : 𝓞 F) ∈ p.asIdeal := by
 @[reducible] def complRel : ValuativeRel (p.adicCompletion F) :=
   ValuativeRel.ofValuation (Valued.v : Valuation (p.adicCompletion F) (WithZero (Multiplicative ℤ)))
 
+/- English proof (translation)
+Use `letI := complRel p`. Use `haveI : (Valued.v : Valuation (p.adicCompletion F) (WithZero (Multiplicative ℤ))).Compatible := Valuation.Compatible.ofValuation _`. Use `haveI := GlobalTheory.AdelicUnitaryTop.properSpace_adicCompletion F p`. Use `haveI : IsValuativeTopology (p.adicCompletion F) := IsValuativeTopology.of_mem_nhds_zero_iff_vle (Valued.v : Valuation (p.adicCompletion F) (WithZero (Multiplicative ℤ))) Valued.mem_nhds_zero`. Use `haveI : ValuativeRel.IsNontrivial (p.adicCompletion F) := by`.
+
+Rewrite using `[ValuativeRel.isNontrivial_iff_isNontrivial (Valued.v : Valuation (p.adicCompletion F) (WithZero (Multiplicative ℤ)))]`. Use `infer_instance`. Conclude with `{}`.
+-/
 theorem isLocalField : letI := complRel p; IsNonarchimedeanLocalField (p.adicCompletion F) := by
   letI := complRel p
   haveI : (Valued.v : Valuation (p.adicCompletion F) (WithZero (Multiplicative ℤ))).Compatible :=
@@ -205,10 +277,16 @@ theorem isLocalField : letI := complRel p; IsNonarchimedeanLocalField (p.adicCom
     infer_instance
   exact {}
 
+/- English proof (translation)
+Use `(NumberField.FinitePlace.norm_lt_one_iff_mem F p _).2 (resChar_mem p)` as an intermediate fact. Rewrite `this` using `[map_natCast, map_natCast]`. Then use the resulting hypothesis.
+-/
 theorem norm_resChar_lt_one : ‖((resChar p : ℕ) : p.adicCompletion F)‖ < 1 := by
   have := (NumberField.FinitePlace.norm_lt_one_iff_mem F p _).2 (resChar_mem p)
   rwa [map_natCast, map_natCast] at this
 
+/- English proof (translation)
+Rewrite using `[← HeightOneSpectrum.valuedAdicCompletion_eq_valuation' p x, ← HeightOneSpectrum.valuedAdicCompletion_eq_valuation' p y]`. Conclude with `Iff.rfl`.
+-/
 theorem complRel_algebraMap (x y : F) : letI := complRel p
     (algebraMap F (p.adicCompletion F) x ≤ᵥ algebraMap F (p.adicCompletion F) y) ↔
       p.valuation F x ≤ p.valuation F y := by
@@ -218,6 +296,19 @@ theorem complRel_algebraMap (x y : F) : letI := complRel p
 
 end Completion
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ sig hr p`. Use `letI := complRel p`. Use `haveI hp : Fact (resChar p).Prime := ⟨resChar_prime p⟩`. Use `haveI hc : CharZero (p.adicCompletion F) := charZero_of_injective_ringHom (algebraMap F (p.adicCompletion F)).injective`. Use `haveI := GlobalTheory.AdelicUnitaryTop.properSpace_adicCompletion F p`.
+
+Use `haveI : FiniteDimensional F E := Module.finite_of_finrank_pos (by omega)`. Take `⟨j, hj⟩` from `exists_continuous_padic (resChar p) (norm_resChar_lt_one p)`. Use `letI alg : Algebra ℚ_[resChar p] (p.adicCompletion F) := j.toAlgebra`. Use `haveI : ContinuousSMul ℚ_[resChar p] (p.adicCompletion F) := ⟨(hj.comp continuous_fst).mul continuous_snd⟩`. Set `sigE : E ≃ₐ[F] E` to `AlgEquiv.ofBijective sig (AlgHom.bijective sig)`.
+
+Use `letI top : TopologicalSpace (p.adicCompletion F ⊗[F] E) := moduleTopology (p.adicCompletion F) _`. Use `letI ms : MeasurableSpace (p.adicCompletion F ⊗[F] E) := borel _`. Use `letI algE : Algebra ℚ_[resChar p] (p.adicCompletion F ⊗[F] E) := ((algebraMap (p.adicCompletion F) (p.adicCompletion F ⊗[F] E)).comp (algebraMap ℚ_[resChar p] (p.adicCompletion F))).toAlgebra`. Use `⟨{ Fp := p.adicCompletion F Ep := p.adicCompletion F ⊗[F] E epT := top epM := ms lf := isLocalField p char0 := hc ιF := algebraMap F _ ιE := (Algebra.TensorProduct.includeRight : E →ₐ[F] p.adicCompletion F ⊗[F] E).toRingHom compat := fun a => ?_ dense := HeightOneSpectrum.denseRa …` and prove the remaining obligations. Simplify using `[Algebra.TensorProduct.algebraMap_apply]`.
+
+Rewrite using `[eq_top_iff]`. Introduce and unpack `x -`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => exact zero_mem _`. Consider the case `add a b ha hb => exact add_mem ha hb`.
+
+Consider the case `tmul a b`. Establish `: a ⊗ₜ[F] b = a • ((1 : p.adicCompletion F) ⊗ₜ[F] b)`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨b, rfl⟩)`.
+
+Simplify using `[sigE]`. Take `⟨a, ha⟩` from `exists_isPrincipalPart (resChar p) (@Algebra.trace ℚ_[resChar p] (p.adicCompletion F ⊗[F] E) _ _ algE y)`. Conclude with `⟨a, ha.1, ha.2, padicChar_eq _ ha⟩`.
+-/
 theorem exists_locAt : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (sig : E →ₐ[F] E), Module.finrank F E = 2 → ∀ p : HeightOneSpectrum (𝓞 F), ∃ L : LocAt F E sig p, L.split = none := by
   intro F E _ _ _ _ _ sig hr p
   letI := complRel p

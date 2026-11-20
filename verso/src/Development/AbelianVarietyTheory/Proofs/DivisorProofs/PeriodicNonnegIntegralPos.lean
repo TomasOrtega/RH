@@ -4,6 +4,19 @@ open scoped ContDiff
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `ι _ f hf hnn hper ⟨x, hx⟩`. Take `⟨y, hy⟩ : ∃ y : ι → ℝ, y = fun i => Int.fract (x i)` from `⟨_, rfl⟩`. Establish `hxy : x = y + fun i => ((⌊x i⌋ : ℤ) : ℝ)`. Use function extensionality and compare the values at `i`. Substitute `hy` using the available equality.
+
+Conclude with `(Int.fract_add_floor (x i)).symm`. Establish `hyne : f y ≠ 0`. Use `hper y (fun i => ⌊x i⌋)` as an intermediate fact. Rewrite `this` using `[← hxy]`. Rewrite using `[← this]`.
+
+Conclude with `hx`. Use `set V : Set (ι → ℝ) := pi univ (fun _ => Ioo (0:ℝ) 1) with hV`. Establish `hVopen : IsOpen V` using `isOpen_set_pi finite_univ (fun _ _ => isOpen_Ioo)`. Establish `hyV : y ∈ closure V`. Rewrite using `[hV, closure_pi_set]`.
+
+Introduce `i _`. Rewrite using `[closure_Ioo (zero_ne_one)]`. Substitute `hy` using the available equality. Conclude with `⟨Int.fract_nonneg _, (Int.fract_lt_one _).le⟩`. Establish `hWopen : IsOpen (Function.support f)` using `isOpen_ne_fun hf continuous_const`.
+
+Establish `hne : (Function.support f ∩ V).Nonempty` using `mem_closure_iff.mp hyV _ hWopen hyne`. Establish `hpos : 0 < volume (Function.support f ∩ V)` using `(hWopen.inter hVopen).measure_pos volume hne`. Establish `hVsub : V ⊆ Icc (0 : ι → ℝ) 1`. Rewrite using `[← pi_univ_Icc]`. Conclude with `pi_mono (fun _ _ => Ioo_subset_Icc_self)`.
+
+Rewrite using `[setIntegral_pos_iff_support_of_nonneg_ae]`. Conclude with `lt_of_lt_of_le hpos (measure_mono (inter_subset_inter_right _ hVsub))`. Conclude with `Filter.Eventually.of_forall (fun z => hnn z)`. Conclude with `hf.continuousOn.integrableOn_compact isCompact_Icc`.
+-/
 theorem integral_unitCube_pos_of_periodic :
     ∀ (ι : Type) [Fintype ι] (f : (ι → ℝ) → ℝ), Continuous f → (∀ x, 0 ≤ f x) →
       (∀ (x : ι → ℝ) (n : ι → ℤ), f (x + fun i => (n i : ℝ)) = f x) → (∃ x, f x ≠ 0) →

@@ -6,10 +6,20 @@ noncomputable section
 
 namespace Formalism.HermitianLattices.Ext.PrimitiveCharacterCasts.ZD
 
+/- English proof (translation)
+Rewrite using `[norm_natCast_cpow_of_pos (by omega), neg_re]`. Conclude with `Real.rpow_le_one_of_one_le_of_nonpos (by exact_mod_cast hn) (by linarith)`.
+-/
 lemma norm_cpow_neg_le_one {n : ℕ} (hn : 1 ≤ n) {w : ℂ} (hw : 0 ≤ w.re) : ‖(n : ℂ) ^ (-w)‖ ≤ 1 := by
   rw [norm_natCast_cpow_of_pos (by omega), neg_re]
   exact Real.rpow_le_one_of_one_le_of_nonpos (by exact_mod_cast hn) (by linarith)
 
+/- English proof (translation)
+Establish `hi0 : (0 : ℝ) < i` using `by exact_mod_cast (by omega : 0 < i)`. Establish `h` using `Formalism.FX.LFunctionPartialSum.norm_cpow_sub_le' hi0 hw`. Establish `e1 : (((i : ℝ) : ℂ)) = (i : ℂ)` using `by push_cast; rfl`. Establish `e2 : ((((i : ℝ) + 1 : ℝ)) : ℂ) = ((i + 1 : ℕ) : ℂ)` using `by push_cast; rfl`. Rewrite `h` using `[e1, e2, norm_sub_rev]`.
+
+Use `h.trans ?_` and prove the remaining obligations. Establish `hUi : (U : ℝ) ≤ i` using `by exact_mod_cast hi`. Establish `hU0 : (0 : ℝ) < U` using `by exact_mod_cast hU`. Establish `h1 : (i : ℝ) ^ (-w.re - 1) ≤ (i : ℝ) ^ (-1 : ℝ)` using `Real.rpow_le_rpow_of_exponent_le (by exact_mod_cast (by omega : 1 ≤ i)) (by linarith)`. Establish `h2 : (i : ℝ) ^ (-1 : ℝ) ≤ 1 / U`.
+
+Rewrite using `[Real.rpow_neg_one, one_div]`. Conclude with `inv_anti₀ hU0 hUi`. Combine the equalities or inequalities in the displayed calculation.
+-/
 lemma norm_cpow_step_le {i U : ℕ} (hU : 1 ≤ U) (hi : U ≤ i) {w : ℂ} (hw : 0 < w.re) :
     ‖(((i + 1 : ℕ) : ℂ) ^ (-w) - (i : ℂ) ^ (-w))‖ ≤ ‖w‖ / U := by
   have hi0 : (0 : ℝ) < i := by exact_mod_cast (by omega : 0 < i)
@@ -29,6 +39,21 @@ lemma norm_cpow_step_le {i U : ℕ} (hU : 1 ≤ U) (hi : U ≤ i) {w : ℂ} (hw 
         mul_le_mul_of_nonneg_left (h1.trans h2) (norm_nonneg _)
     _ = ‖w‖ / U := by ring
 
+/- English proof (translation)
+Introduce `hPS p p' hp hp' hne w hw U hU`. Use `set m : ℝ := (((p.1 + 1) * (p'.1 + 1) : ℕ) : ℝ) with hm`. Use `set g : ℕ → ℂ := fun n => cv p n * (starRingEnd ℂ) (cv p' n) with hg`. Use `set f : ℕ → ℂ := fun n => (n : ℂ) ^ (-w) with hf`. Establish `hGs : ∀ k, ‖∑ i ∈ range k, g i‖ ≤ m` using `fun k => hPS p p' hp hp' hne k`.
+
+Establish `hm0 : 0 ≤ m` using `by positivity`. Establish `hrw : ∑ n ∈ Ioc U (2 * U), cv p n * (starRingEnd ℂ) (cv p' n) * (n : ℂ) ^ (-w) = ∑ n ∈ Ioc U (2 * U), f n • g n`. Use `sum_congr rfl (fun n _ => ?_)` and prove the remaining obligations. Simplify using `only [hf, hg, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[hrw, Finset.sum_Ioc_by_parts f g (by omega : U < 2 * U)]`. Establish `hb1 : ‖f (2 * U) • ∑ i ∈ range (2 * U + 1), g i‖ ≤ m`. Rewrite using `[smul_eq_mul, norm_mul]`. Combine the equalities or inequalities in the displayed calculation. Establish `hb2 : ‖f (U + 1) • ∑ i ∈ range (U + 1), g i‖ ≤ m`.
+
+Rewrite using `[smul_eq_mul, norm_mul]`. Combine the equalities or inequalities in the displayed calculation. Establish `hb3 : ‖∑ i ∈ Ioc U (2 * U - 1), (f (i + 1) - f i) • ∑ k ∈ range (i + 1), g k‖ ≤ m * ‖w‖`. Use `(norm_sum_le _ _).trans ?_` and prove the remaining obligations. Establish `hterm : ∀ i ∈ Ioc U (2 * U - 1), ‖(f (i + 1) - f i) • ∑ k ∈ range (i + 1), g k‖ ≤ ‖w‖ / U * m`.
+
+Introduce `i hi`. Rewrite using `[smul_eq_mul, norm_mul]`. Establish `hi' : U ≤ i` using `by have := (mem_Ioc.1 hi).1; omega`. Conclude with `mul_le_mul (norm_cpow_step_le hU hi' hw) (hGs _) (norm_nonneg _) (by positivity)`. Use `(sum_le_sum hterm).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[sum_const, Nat.card_Ioc, nsmul_eq_mul]`. Establish `hU0 : (0 : ℝ) < U` using `by exact_mod_cast hU`. Establish `hcnt : ((2 * U - 1 - U : ℕ) : ℝ) ≤ U` using `by exact_mod_cast (by omega : 2 * U - 1 - U ≤ U)`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+
+Use `(norm_sub_le _ _).trans ?_` and prove the remaining obligations. Use `add_le_add ((norm_sub_le _ _).trans (add_le_add hb1 hb2)) hb3` and prove the remaining obligations. Use `_ ≤ 2 * m * (1 + ‖w‖) := by nlinarith [norm_nonneg w]`.
+-/
 theorem pair_twist_bound : PairTwistOf := by
   intro hPS p p' hp hp' hne w hw U hU
   set m : ℝ := (((p.1 + 1) * (p'.1 + 1) : ℕ) : ℝ) with hm

@@ -19,12 +19,18 @@ variable {K L : Type*} [Field K] [NumberField K] [Field L] [NumberField L] [Alge
   [IsGalois K L] {V W : Type*} [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V]
   [AddCommGroup W] [Module ℂ W] [FiniteDimensional ℂ W]
 
+/- English proof (translation)
+Apply `Nat.cast_injective (R := ℂ)` to reduce the goal to its premises. Rewrite using `[natCast_artinExponent v ρ (placeAbove v), natCast_artinExponent v ρ' (placeAbove v), h]`.
+-/
 theorem artinExponent_congr_character {ρ : Representation ℂ Gal(L/K) V}
     {ρ' : Representation ℂ Gal(L/K) W} (h : ρ.character = ρ'.character)
     (v : HeightOneSpectrum (𝓞 K)) : artinExponent v ρ = artinExponent v ρ' := by
   apply Nat.cast_injective (R := ℂ)
   rw [natCast_artinExponent v ρ (placeAbove v), natCast_artinExponent v ρ' (placeAbove v), h]
 
+/- English proof (translation)
+The claim follows from `finprod_congr fun v ↦ by rw [artinExponent_congr_character h v]`.
+-/
 theorem artinConductorIdeal_congr_character {ρ : Representation ℂ Gal(L/K) V}
     {ρ' : Representation ℂ Gal(L/K) W} (h : ρ.character = ρ'.character) :
     artinConductorIdeal ρ = artinConductorIdeal ρ' :=
@@ -36,6 +42,19 @@ namespace Quadratic
 
 variable (K : Type) [Field K] [NumberField K] [Algebra.IsQuadraticExtension ℚ K]
 
+/- English proof (translation)
+Use `Fintype.ofFinite Gal(K/ℚ)` as an intermediate fact. Use `Fintype.ofFinite Gal(K/IntermediateField.fixedField (⊥ : Subgroup Gal(K/ℚ)))` as an intermediate fact. Establish `hH : Nat.card Gal(K/IntermediateField.fixedField (⊥ : Subgroup Gal(K/ℚ))) = 1`. Rewrite using `[IsGalois.card_aut_eq_finrank, IntermediateField.finrank_fixedField_eq_card, Subgroup.card_bot]`. Establish `hsub : ∀ h : Gal(K/IntermediateField.fixedField (⊥ : Subgroup Gal(K/ℚ))), h = 1` using `fun h ↦ (Nat.card_eq_one_iff_unique.1 hH).1.elim h 1`.
+
+Use function extensionality and compare the values at `g`. Rewrite using `[character_ind, indFun_apply, character_prod, character_charRep, hH]`. Simplify using `only [Nat.cast_one, inv_one, one_mul]`. Establish `htriv : ∀ h, (Representation.trivial ℂ Gal(K/IntermediateField.fixedField (⊥ : Subgroup Gal(K/ℚ))) ℂ).character h = 1` using `fun h ↦ by`. Simplify using `[Representation.character]`.
+
+Establish `htriv' : (Representation.trivial ℂ Gal(K/ℚ) ℂ).character g = 1`. Simplify using `[Representation.character]`. Rewrite using `[htriv']`. Establish `hinner : ∀ t : Gal(K/ℚ), (∑ h : Gal(K/IntermediateField.fixedField (⊥ : Subgroup Gal(K/ℚ))), if (AlgEquiv.restrictScalarsHom ℚ) h = t⁻¹ * g * t then (Representation.trivial ℂ _ ℂ).character h else 0) = if g = 1 then 1 else 0` using `fun t ↦ by`. Rewrite using `[Fintype.sum_eq_single 1 (fun h hh ↦ absurd (hsub h) hh), map_one, htriv]`.
+
+Distinguish the cases in `hg : g = 1`. Simplify using `[hg]`. Rewrite using `[if_neg hg, if_neg]`. Introduce `h1`. Apply `hg` to reduce the goal to its premises.
+
+Establish `: t * (t⁻¹ * g * t) * t⁻¹ = g` using `by group`. Rewrite using `[← this, ← h1]`. Use `group`. Simplify using `only [hinner, Finset.sum_const, Finset.card_univ, Fintype.card_eq_nat_card, card_gal]`. Distinguish the cases in `hg : g = 1`.
+
+Substitute `hg` using the available equality. Rewrite using `[if_pos rfl, galChar_one_apply]`. Evaluate the numerical expressions. Rewrite using `[if_neg hg, galChar_apply_of_ne_one K hg]`. Evaluate the numerical expressions.
+-/
 theorem character_ind_trivial :
     ((Representation.trivial ℂ Gal(K/IntermediateField.fixedField (⊥ : Subgroup Gal(K/ℚ))) ℂ).ind
       (AlgEquiv.restrictScalarsHom ℚ)).character =
@@ -77,6 +96,9 @@ theorem character_ind_trivial :
   · rw [if_neg hg, galChar_apply_of_ne_one K hg]
     norm_num
 
+/- English proof (translation)
+Establish `h1` using `artinConductorIdeal_ind (K := ℚ) (L := K) ⊥ (Representation.trivial ℂ Gal(K/IntermediateField.fixedField (⊥ : Subgroup Gal(K/ℚ))) ℂ)`. Rewrite `h1` using `[artinConductorIdeal_eq_top_of_forall_eq_one (Representation.trivial ℂ Gal(K/IntermediateField.fixedField (⊥ : Subgroup Gal(K/ℚ))) ℂ) (fun _ ↦ rfl), Module.finrank_self, pow_one, ← Ideal.one_eq_top, map_one, mul_one]`. Establish `h2` using `artinConductorIdeal_congr_character (character_ind_trivial K)`. Rewrite `h2` using `[artinConductorIdeal_prod, artinConductorIdeal_eq_top_of_forall_eq_one (Representation.trivial ℂ Gal(K/ℚ) ℂ) (fun _ ↦ rfl), ← Ideal.one_eq_top, one_mul]`. Conclude with `h2.symm.trans h1`.
+-/
 theorem artinConductorIdeal_galChar :
     artinConductorIdeal (charRep (galChar K)) =
       relDiscr ℚ (IntermediateField.fixedField (⊥ : Subgroup Gal(K/ℚ))) := by
@@ -91,12 +113,18 @@ theorem artinConductorIdeal_galChar :
       (Representation.trivial ℂ Gal(K/ℚ) ℂ) (fun _ ↦ rfl), ← Ideal.one_eq_top, one_mul] at h2
   exact h2.symm.trans h1
 
+/- English proof (translation)
+Rewrite using `[artinConductorIdeal_galChar, absNorm_relDiscr_rat, discr_eq_discr_of_algEquiv _ ((IntermediateField.equivOfEq (IntermediateField.fixedField_bot (F := ℚ) (E := K))).trans IntermediateField.topEquiv)]`.
+-/
 theorem absNorm_artinConductorIdeal_galChar :
     Ideal.absNorm (artinConductorIdeal (charRep (galChar K))) = (discr K).natAbs := by
   rw [artinConductorIdeal_galChar, absNorm_relDiscr_rat, discr_eq_discr_of_algEquiv _
     ((IntermediateField.equivOfEq (IntermediateField.fixedField_bot (F := ℚ) (E := K))).trans
       IntermediateField.topEquiv)]
 
+/- English proof (translation)
+Establish `h1` using `DirichletHecke.absNorm_conductor_heckeCharacter (kronecker K) (isPrimitive_kronecker K)`. Rewrite `h1` using `[← heckeCharacterOfChar_galChar, ← artinConductorIdeal_charRep_eq_conductor, absNorm_artinConductorIdeal_galChar]`. Conclude with `h1.symm`.
+-/
 theorem level_eq : level K = (discr K).natAbs := by
   have h1 := DirichletHecke.absNorm_conductor_heckeCharacter (kronecker K) (isPrimitive_kronecker K)
   rw [← heckeCharacterOfChar_galChar, ← artinConductorIdeal_charRep_eq_conductor,
@@ -107,27 +135,42 @@ section Transport
 
 variable {N M : ℕ} (h : N = M) (χ : DirichletCharacter ℂ N)
 
+/- English proof (translation)
+Substitute `h` using the available equality. Rewrite using `[DirichletCharacter.changeLevel_self]`.
+-/
 theorem changeLevel_of_eq_apply (n : ℕ) : DirichletCharacter.changeLevel (dvd_of_eq h) χ n = χ n := by
   subst h
   rw [DirichletCharacter.changeLevel_self]
 
+/- English proof (translation)
+Substitute `h` using the available equality. Rewrite using `[DirichletCharacter.changeLevel_self]` and apply the resulting hypothesis.
+-/
 theorem isPrimitive_changeLevel_of_eq (hχ : χ.IsPrimitive) :
     (DirichletCharacter.changeLevel (dvd_of_eq h) χ).IsPrimitive := by
   subst h
   rwa [DirichletCharacter.changeLevel_self]
 
+/- English proof (translation)
+Substitute `h` using the available equality. Rewrite using `[DirichletCharacter.changeLevel_self]`.
+-/
 theorem LFunction_changeLevel_of_eq [NeZero N] [NeZero M] (s : ℂ) :
     DirichletCharacter.LFunction (DirichletCharacter.changeLevel (dvd_of_eq h) χ) s =
       DirichletCharacter.LFunction χ s := by
   subst h
   rw [DirichletCharacter.changeLevel_self]
 
+/- English proof (translation)
+Substitute `h` using the available equality. Rewrite using `[DirichletCharacter.changeLevel_self]`.
+-/
 theorem heckeCharacter_changeLevel_of_eq [NeZero N] [NeZero M] :
     DirichletHecke.heckeCharacter (DirichletCharacter.changeLevel (dvd_of_eq h) χ) =
       DirichletHecke.heckeCharacter χ := by
   subst h
   rw [DirichletCharacter.changeLevel_self]
 
+/- English proof (translation)
+Substitute `h` using the available equality. Rewrite using `[DirichletCharacter.changeLevel_self]` and apply the resulting hypothesis.
+-/
 theorem changeLevel_of_eq_ne_one (hχ : χ ≠ 1) :
     DirichletCharacter.changeLevel (dvd_of_eq h) χ ≠ 1 := by
   subst h
@@ -141,40 +184,72 @@ instance : NeZero (discr K).natAbs :=
 def kroneckerChar : DirichletCharacter ℂ (discr K).natAbs :=
   DirichletCharacter.changeLevel (dvd_of_eq (level_eq K)) (kronecker K)
 
+/- English proof (translation)
+The claim follows from `isPrimitive_changeLevel_of_eq (level_eq K) _ (isPrimitive_kronecker K)`.
+-/
 theorem isPrimitive_kroneckerChar : (kroneckerChar K).IsPrimitive :=
   isPrimitive_changeLevel_of_eq (level_eq K) _ (isPrimitive_kronecker K)
 
+/- English proof (translation)
+The claim follows from `isPrimitive_kroneckerChar K`.
+-/
 theorem conductor_kroneckerChar : (kroneckerChar K).conductor = (discr K).natAbs :=
   isPrimitive_kroneckerChar K
 
+/- English proof (translation)
+Rewrite using `[kroneckerChar, heckeCharacter_changeLevel_of_eq (level_eq K), heckeCharacterOfChar_galChar]`.
+-/
 theorem heckeCharacter_kroneckerChar :
     DirichletHecke.heckeCharacter (kroneckerChar K) = heckeCharacterOfChar (galChar K) := by
   rw [kroneckerChar, heckeCharacter_changeLevel_of_eq (level_eq K), heckeCharacterOfChar_galChar]
 
+/- English proof (translation)
+The claim follows from `changeLevel_of_eq_apply (level_eq K) _ n`.
+-/
 theorem kroneckerChar_apply (n : ℕ) : kroneckerChar K n = kronecker K n :=
   changeLevel_of_eq_apply (level_eq K) _ n
 
+/- English proof (translation)
+The claim follows from `LFunction_changeLevel_of_eq (level_eq K) _ s`.
+-/
 theorem LFunction_kroneckerChar (s : ℂ) :
     DirichletCharacter.LFunction (kroneckerChar K) s = DirichletCharacter.LFunction (kronecker K) s :=
   LFunction_changeLevel_of_eq (level_eq K) _ s
 
+/- English proof (translation)
+The claim follows from `changeLevel_of_eq_ne_one (level_eq K) _ (kronecker_ne_one K)`.
+-/
 theorem kroneckerChar_ne_one : kroneckerChar K ≠ 1 :=
   changeLevel_of_eq_ne_one (level_eq K) _ (kronecker_ne_one K)
 
+/- English proof (translation)
+Rewrite using `[kroneckerChar_apply, kronecker_apply_prime K p hp]`.
+-/
 theorem kroneckerChar_apply_prime (p : ℕ) [Fact p.Prime] (hp : p ≠ 2) :
     kroneckerChar K p = (legendreSym p (discr K) : ℂ) := by
   rw [kroneckerChar_apply, kronecker_apply_prime K p hp]
 
+/- English proof (translation)
+Rewrite using `[LFunction_kroneckerChar, classNumber_eq_of_discr_neg K hd]`.
+-/
 theorem classNumber_eq_of_discr_neg' (hd : discr K < 0) :
     (classNumber K : ℂ) = torsionOrder K * Real.sqrt |(discr K : ℝ)| *
       DirichletCharacter.LFunction (kroneckerChar K) 1 / (2 * π) := by
   rw [LFunction_kroneckerChar, classNumber_eq_of_discr_neg K hd]
 
+/- English proof (translation)
+Rewrite using `[LFunction_kroneckerChar, classNumber_mul_regulator_eq_of_discr_pos K hd]`.
+-/
 theorem classNumber_mul_regulator_eq_of_discr_pos' (hd : 0 < discr K) :
     ((classNumber K * regulator K : ℝ) : ℂ) = Real.sqrt (discr K : ℝ) *
       DirichletCharacter.LFunction (kroneckerChar K) 1 / 2 := by
   rw [LFunction_kroneckerChar, classNumber_mul_regulator_eq_of_discr_pos K hd]
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `places_of_discr_neg K hd`. Establish `hR : regulator K = 1` using `regulator_eq_one_of_card_eq_one (by omega)`. Establish `hz` using `continuedDedekindZeta_zero K`. Rewrite `hz` using `[if_pos (by omega), hR, continuedDedekindZeta_eq_mul K zero_ne_one, riemannZeta_zero]`. Rewrite using `[LFunction_kroneckerChar]`.
+
+Move the coercions through the operations in `at hz`. Take the linear combination `(-2 : ℂ) * hz`.
+-/
 theorem LFunction_kroneckerChar_zero (hd : discr K < 0) :
     DirichletCharacter.LFunction (kroneckerChar K) 0 = 2 * classNumber K / torsionOrder K := by
   obtain ⟨h1, h2⟩ := places_of_discr_neg K hd
@@ -185,6 +260,11 @@ theorem LFunction_kroneckerChar_zero (hd : discr K < 0) :
   push_cast at hz
   linear_combination (-2 : ℂ) * hz
 
+/- English proof (translation)
+Establish `h0` using `LFunction_kroneckerChar_zero K hd`. Rewrite `h0` using `[LFunction_zero_eq_of_ne_one (kroneckerChar_ne_one K)]`. Establish `hw : (torsionOrder K : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 (torsionOrder_ne_zero K)`. Establish `hN : ((discr K).natAbs : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 (Int.natAbs_ne_zero.2 (discr_ne_zero K))`. Combine the equalities or inequalities in the displayed calculation.
+
+Clear the denominators using the available nonvanishing facts. Use `_ = (torsionOrder K / 2) * (-(1 / ((discr K).natAbs : ℂ)) * ∑ a : ZMod (discr K).natAbs, kroneckerChar K a * (a.val : ℂ)) := by rw [h0]`. Use `_ = _ := by ring`.
+-/
 theorem classNumber_eq_sum_of_discr_neg (hd : discr K < 0) :
     (classNumber K : ℂ) = -(torsionOrder K / (2 * (discr K).natAbs)) *
       ∑ a : ZMod (discr K).natAbs, kroneckerChar K a * (a.val : ℂ) := by

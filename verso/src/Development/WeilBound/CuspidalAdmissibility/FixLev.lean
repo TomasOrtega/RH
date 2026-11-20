@@ -12,6 +12,9 @@ namespace PositivityTheory.TfC.FixLev
 
 variable {K : Type} [Field K] [NumberField K] {n : ℕ}
 
+/- English proof (translation)
+Use extensionality with `a b`. Rewrite using `[finAt_apply, AdelicGLn.finiteRestrictedEquiv_apply, ← AdelicGLn.prodEquiv_apply_snd, prodEquiv_finEmb]`.
+-/
 theorem finAt_finEmb (u : AdelicGLn.FiniteAdelicGL K n) (v : Pl K) :
     finAt v (finEmb K n u) =
       (AdelicGLn.finiteRestrictedEquiv K n u v : GL (Fin n) (v.adicCompletion K)) := by
@@ -23,11 +26,17 @@ section Rep
 
 variable (μ : Measure (normOneGL K n)) [μ.IsHaarMeasure]
 
+/- English proof (translation)
+Simplify using `only [rhoF, map_mul]`. Conclude with `UnitaryRep.map_mul_apply _ _ _ _`.
+-/
 theorem rhoF_mul (a b : AdelicGLn.FiniteAdelicGL K n) (x : LL μ) :
     rhoF μ (a * b) x = rhoF μ a (rhoF μ b x) := by
   simp only [rhoF, map_mul]
   exact UnitaryRep.map_mul_apply _ _ _ _
 
+/- English proof (translation)
+Simplify using `only [rhoF, map_one]`. Conclude with `UnitaryRep.map_one_apply _ _`.
+-/
 theorem rhoF_one (x : LL μ) : rhoF μ 1 x = x := by
   simp only [rhoF, map_one]
   exact UnitaryRep.map_one_apply _ _

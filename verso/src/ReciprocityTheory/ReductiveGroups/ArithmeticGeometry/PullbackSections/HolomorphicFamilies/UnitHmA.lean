@@ -10,22 +10,37 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor
 
 variable {g : ℕ}
 
+/- English proof (translation)
+Simplify using `[hermForm, add_dotProduct]`.
+-/
 theorem hermForm_add_left (Hm : Matrix (Fin g) (Fin g) ℂ) (z z' w : Fin g → ℂ) :
     hermForm Hm (z + z') w = hermForm Hm z w + hermForm Hm z' w := by
   simp [hermForm, add_dotProduct]
 
+/- English proof (translation)
+Simplify using `[hermForm, smul_dotProduct]`.
+-/
 theorem hermForm_smul_left (Hm : Matrix (Fin g) (Fin g) ℂ) (c : ℂ) (z w : Fin g → ℂ) :
     hermForm Hm (c • z) w = c * hermForm Hm z w := by
   simp [hermForm, smul_dotProduct]
 
+/- English proof (translation)
+Simplify using `[hermForm, star_add, Matrix.mulVec_add, dotProduct_add]`.
+-/
 theorem hermForm_add_right (Hm : Matrix (Fin g) (Fin g) ℂ) (z w w' : Fin g → ℂ) :
     hermForm Hm z (w + w') = hermForm Hm z w + hermForm Hm z w' := by
   simp [hermForm, star_add, Matrix.mulVec_add, dotProduct_add]
 
+/- English proof (translation)
+Simplify using `[hermForm, star_smul, Matrix.mulVec_smul, dotProduct_smul, Complex.real_smul]`.
+-/
 theorem hermForm_rsmul_right (Hm : Matrix (Fin g) (Fin g) ℂ) (c : ℝ) (z w : Fin g → ℂ) :
     hermForm Hm z (c • w) = c * hermForm Hm z w := by
   simp [hermForm, star_smul, Matrix.mulVec_smul, dotProduct_smul, Complex.real_smul]
 
+/- English proof (translation)
+Simplify using `[hermForm, Matrix.sub_mulVec, dotProduct_sub]`.
+-/
 theorem hermForm_sub_mat (H₁ H₂ : Matrix (Fin g) (Fin g) ℂ) (z w : Fin g → ℂ) :
     hermForm (H₁ - H₂) z w = hermForm H₁ z w - hermForm H₂ z w := by
   simp [hermForm, Matrix.sub_mulVec, dotProduct_sub]
@@ -39,6 +54,19 @@ def imForm (Hm : Matrix (Fin g) (Fin g) ℂ) : (Fin g → ℂ) →ₗ[ℝ] (Fin 
     (fun z w w' => by rw [hermForm_add_right, Complex.add_im])
     (fun c z w => by rw [hermForm_rsmul_right, smul_eq_mul]; simp)
 
+/- English proof (translation)
+Establish `hD : ∀ x y, (hermForm (H₁ - H₂) (P x) (P y)).im = 0` using `fun x y => by`. Rewrite using `[hermForm_sub_mat, Complex.sub_im, h, sub_self]`. Establish `h0 : imForm (H₁ - H₂) = 0`. Apply `LinearMap.ext_on_range hP` to reduce the goal to its premises. Introduce `x`.
+
+Apply `LinearMap.ext_on_range hP` to reduce the goal to its premises. Introduce `y`. Simplify `hD x y` using `[imForm]`. Establish `hall : ∀ z w, hermForm (H₁ - H₂) z w = 0`. Introduce `z w`.
+
+Establish `him : ∀ z' : Fin g → ℂ, (hermForm (H₁ - H₂) z' w).im = 0` using `fun z' => by`. Simplify `LinearMap.congr_fun₂ h0 z' w` using `[imForm]`. Establish `hre` using `him (Complex.I • z)`. Rewrite `hre` using `[hermForm_smul_left]`. Apply `Complex.ext` to reduce the goal to its premises.
+
+Simplify using `using hre`. Simplify using `using him z`. Establish `hs : ∀ j : Fin g, star (Pi.single j 1 : Fin g → ℂ) = (Pi.single j 1 : Fin g → ℂ)` using `fun j => by`. Use extensionality with `k`. Distinguish the cases in `hk : k = j`.
+
+Substitute `hk` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, hk]`. Use `sub_eq_zero.1 ?_` and prove the remaining obligations. Use extensionality with `i j`.
+
+Use `hall (Pi.single i 1) (Pi.single j 1)` as an intermediate fact. Simplify `this` using `[hermForm, hs, Matrix.mulVec_single, single_dotProduct]`.
+-/
 theorem herm_eq_of_im {L : Type} [AddCommGroup L] (P : L →+ (Fin g → ℂ))
     (hP : Submodule.span ℝ (Set.range P) = ⊤) (H₁ H₂ : Matrix (Fin g) (Fin g) ℂ)
     (h : ∀ x y, (hermForm H₁ (P x) (P y)).im = (hermForm H₂ (P x) (P y)).im) : H₁ = H₂ := by

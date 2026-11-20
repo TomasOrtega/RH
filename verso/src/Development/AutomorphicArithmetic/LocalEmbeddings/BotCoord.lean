@@ -20,6 +20,13 @@ section Mat
 variable {K : Type} [CommRing K] {a d k : Type} [Fintype a] [Fintype d] [Fintype k] [DecidableEq a] [DecidableEq d]
   [DecidableEq k]
 
+/- English proof (translation)
+Establish `h1 : c'ᵀ * cᵀ = 1` using `by rw [← transpose_mul, hc, transpose_one]`. Establish `h2 : Gᵀ * G'ᵀ = 1` using `by rw [← transpose_mul, hG, transpose_one]`. Establish `h3 : (x * G')ᵀ.submatrix id e = G'ᵀ * xᵀ.submatrix id e`. Rewrite using `[transpose_mul]`. Use extensionality with `i j`.
+
+Simplify using `[Matrix.mul_apply]`. Establish `h4 : (γ * x * β)ᵀ.submatrix id e = βᵀ * (xᵀ.submatrix id e * (γ.submatrix e e)ᵀ)`. Rewrite using `[transpose_submatrix, Matrix.submatrix_mul_equiv, transpose_mul, transpose_mul]`. Use extensionality with `i j`. Simplify using `[Matrix.mul_apply]`.
+
+Rewrite using `[h3, h4, transpose_mul]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by rw [hb, Matrix.mul_one, h2, h1]; simp only [Matrix.mul_assoc, Matrix.mul_one, Matrix.one_mul]`.
+-/
 theorem coord_fst (e : k ≃ d) (x : Matrix d a K) {G G' : Matrix a a K} (hG : G' * G = 1) (β : Matrix a a K) {b b' : Matrix a a K}
     (hb : b * b' = 1) {c c' : Matrix k k K} (hc : c * c' = 1) (γ : Matrix d d K) :
     (βᵀ * Gᵀ * b) * (b' * ((x * G')ᵀ.submatrix id e) * c'ᵀ) * (γ.submatrix e e * c)ᵀ = (γ * x * β)ᵀ.submatrix id e := by
@@ -35,6 +42,13 @@ theorem coord_fst (e : k ≃ d) (x : Matrix d a K) {G G' : Matrix a a K} (hG : G
         simp only [Matrix.mul_assoc]
     _ = _ := by rw [hb, Matrix.mul_one, h2, h1]; simp only [Matrix.mul_assoc, Matrix.mul_one, Matrix.one_mul]
 
+/- English proof (translation)
+Establish `h1 : b'ᵀ * bᵀ = 1` using `by rw [← transpose_mul, hb, transpose_one]`. Establish `h3 : (G' * y).submatrix id e = G' * y.submatrix id e` using `by ext i j; simp [Matrix.mul_apply]`. Establish `h4 : (ξ • (β * (G' * y * H) * γ)).submatrix id e = ξ • (β * G' * (y.submatrix id e * H.submatrix e e * γ.submatrix e e))`. Rewrite using `[Matrix.submatrix_mul_equiv, Matrix.submatrix_mul_equiv]`. Simplify using `only [Matrix.mul_assoc]`.
+
+Use extensionality with `i j`. Simplify using `[Matrix.mul_apply]`. Establish `h5 : (ξ • Hᵀ.submatrix e e)ᵀ = ξ • H.submatrix e e` using `rfl`. Rewrite using `[h3, h4, h5]`. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [Matrix.mul_assoc, Matrix.mul_neg, Matrix.neg_mul, neg_neg, smul_neg, Matrix.mul_smul, Matrix.smul_mul]`. Use `_ = _ := by rw [h1, hG, hc]; simp only [Matrix.mul_one, Matrix.one_mul]`.
+-/
 theorem coord_snd (e : k ≃ d) (y : Matrix a d K) {G G' : Matrix a a K} (hG : G * G' = 1) (β : Matrix a a K) {b b' : Matrix a a K}
     (hb : b * b' = 1) {c c' : Matrix k k K} (hc : c * c' = 1) (H γ : Matrix d d K) (ξ : K) :
     (β * G' * b'ᵀ) * (-(bᵀ * (-G) * ((G' * y).submatrix id e) * (ξ • Hᵀ.submatrix e e)ᵀ * c)) * (c' * γ.submatrix e e) =
@@ -55,21 +69,35 @@ end Mat
 
 variable {D : D7} {v : Pl D.host.F} (τ : D.host.E →ₐ[D.host.F] Fv D.host.F v)
 
+/- English proof (translation)
+Conclude with `(complEquiv τ (splitPrime_under τ)).injective (by rw [GlobalTheory.FlipMatch.isPlaceIso_complEquiv τ, (atPl_spec _ _).2, Pi.single_eq_same])`.
+-/
 theorem piW_atPl (y : Fv D.host.F v) : piW τ (atPl (splitPrime τ) (complEquiv τ (splitPrime_under τ) y)) = y := by
   classical
   exact (complEquiv τ (splitPrime_under τ)).injective
     (by rw [GlobalTheory.FlipMatch.isPlaceIso_complEquiv τ, (atPl_spec _ _).2, Pi.single_eq_same])
 
+/- English proof (translation)
+Use `piW_atPl τ 1` as an intermediate fact. Rewrite `this` using `[map_one]`. Then use the resulting hypothesis.
+-/
 theorem piW_atPl_one : piW τ (atPl (D := D) (splitPrime τ) 1) = 1 := by
   have := piW_atPl τ 1
   rwa [map_one] at this
 
+/- English proof (translation)
+Conclude with `(complEquiv (τ.comp D.sp.cm.sig) (splitPrime_under _)).injective (by`. Rewrite using `[GlobalTheory.FlipMatch.isPlaceIso_complEquiv (τ.comp D.sp.cm.sig), (atPl_spec _ _).2, Pi.single_eq_of_ne (splitPrime_comp_ne (isCMExt_host D) τ), map_zero])`.
+-/
 theorem piW_conj_atPl_one : piW (τ.comp D.sp.cm.sig) (atPl (D := D) (splitPrime τ) 1) = 0 := by
   classical
   exact (complEquiv (τ.comp D.sp.cm.sig) (splitPrime_under _)).injective (by
     rw [GlobalTheory.FlipMatch.isPlaceIso_complEquiv (τ.comp D.sp.cm.sig), (atPl_spec _ _).2,
       Pi.single_eq_of_ne (splitPrime_comp_ne (isCMExt_host D) τ), map_zero])
 
+/- English proof (translation)
+Use `ae_ext (by rw [RingHom.map_mul, (atPl_spec _ _).1, zero_mul, map_zero]) fun Q => ?_` and prove the remaining obligations. Rewrite using `[RingHom.map_mul, RingHom.map_mul, (atPl_spec _ _).2, map_zero, map_zero]`. Distinguish the cases in `hQ : Q = splitPrime τ`. Substitute `hQ` using the available equality. Rewrite using `[← GlobalTheory.FlipMatch.isPlaceIso_complEquiv τ z, h, map_zero, mul_zero]`.
+
+Rewrite using `[Pi.single_eq_of_ne hQ, zero_mul]`.
+-/
 theorem atPl_mul_eq_zero {z : AE D} (h : piW τ z = 0) : atPl (splitPrime τ) 1 * z = 0 := by
   classical
   refine ae_ext (by rw [RingHom.map_mul, (atPl_spec _ _).1, zero_mul, map_zero]) fun Q => ?_
@@ -79,14 +107,32 @@ theorem atPl_mul_eq_zero {z : AE D} (h : piW τ z = 0) : atPl (splitPrime τ) 1 
     rw [← GlobalTheory.FlipMatch.isPlaceIso_complEquiv τ z, h, map_zero, mul_zero]
   · rw [Pi.single_eq_of_ne hQ, zero_mul]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨U.map fun y => atPl (splitPrime τ) (complEquiv τ (splitPrime_under τ) y), Matrix.ext fun _ _ => piW_atPl τ _⟩`.
+-/
 theorem exists_map_piW {m n : Type} (U : Matrix m n (Fv D.host.F v)) : ∃ u : Matrix m n (AE D), u.map (piW τ) = U :=
   ⟨U.map fun y => atPl (splitPrime τ) (complEquiv τ (splitPrime_under τ) y), Matrix.ext fun _ _ => piW_atPl τ _⟩
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.FlipMatch.piW_tmul τ 1 x).trans (by rw [map_one, one_mul])`.
+-/
 theorem piW_incA (x : D.host.E) : piW τ (incA D x) = τ x :=
   (GlobalTheory.FlipMatch.piW_tmul τ 1 x).trans (by rw [map_one, one_mul])
 
+/- English proof (translation)
+The claim follows from `(evW_toEAf τ (incA D x)).trans (piW_incA τ x)`.
+-/
 theorem evW_eToEAf (x : D.host.E) : evW τ (eToEAf D x) = τ x := (evW_toEAf τ (incA D x)).trans (piW_incA τ x)
 
+/- English proof (translation)
+Establish `hat` using `GlobalTheory.FlipMatch.at_atPl τ 1`. Establish `hat'` using `GlobalTheory.FlipMatch.RowChart.at_cA hat`. Establish `hone : At (evFin D.host.F v) u → ∀ p q, atPl (splitPrime τ) 1 * u p q + cA D (atPl (splitPrime τ) 1) * u p q = u p q` using `fun h p q => by`. Establish `h1` using `h (1 - GlobalTheory.LatVac.liftV v 1) (by rw [map_sub, map_one, GlobalTheory.LatVac.evFin_liftV, sub_self])`. Rewrite `h1` using `[sub_smul, one_smul, sub_eq_zero]`.
+
+Rewrite using `[← add_mul, hsum, ← Algebra.smul_def]`. Conclude with `(congrFun (congrFun h1 p) q).symm`. Establish `hAt : ∀ b : AE D, At (evFin D.host.F v) b → IsHalf b u → At (evFin D.host.F v) u` using `fun b hb h c hc => by`. Use extensionality with `p q`. Rewrite using `[Matrix.smul_apply, ← h p q, ← smul_mul_assoc, hb c hc, zero_mul, Matrix.zero_apply]`.
+
+Use `⟨⟨fun h p q => ?_, fun h => ⟨hAt _ hat h, Matrix.ext fun p q => ?_⟩⟩, ⟨fun h p q => ?_, fun h => ⟨hAt _ hat' h, Matrix.ext fun p q => ?_⟩⟩⟩` and prove the remaining obligations. Establish `h1` using `congrArg (cA D) (atPl_mul_eq_zero τ (z := cA D (u p q)) ((GlobalTheory.FlipMatch.RowChart.piW_cA_eq τ _).trans (congrFun (congrFun h.2 p) q)))`. Rewrite `h1` using `[RingHom.map_mul, GlobalTheory.DualPairCheck.cA_cA, map_zero]`. Establish `h2` using `hone h.1 p q`. Rewrite `h2` using `[h1, add_zero]`. Then use the resulting hypothesis.
+
+Rewrite using `[Matrix.map_apply, ← h p q, RingHom.map_mul, piW_conj_atPl_one, zero_mul, Matrix.zero_apply]`. Establish `h2` using `hone h.1 p q`. Rewrite `h2` using `[atPl_mul_eq_zero τ (congrFun (congrFun h.2 p) q), zero_add]`. Then use the resulting hypothesis. Rewrite using `[Matrix.map_apply, ← h p q, RingHom.map_mul, GlobalTheory.FlipMatch.RowChart.piW_cA_eq, piW_conj_atPl_one, zero_mul, Matrix.zero_apply]`.
+-/
 theorem half_iff {m n : ℕ} (hsum : atPl (D := D) (splitPrime τ) 1 + cA D (atPl (splitPrime τ) 1) =
       algebraMap (AF D.host.F) (AE D) (GlobalTheory.LatVac.liftV v 1)) (u : Matrix (Fin m) (Fin n) (AE D)) :
     ((At (evFin D.host.F v) u ∧ u.map (piW (τ.comp D.sp.cm.sig)) = 0) ↔ IsHalf (atPl (splitPrime τ) 1) u) ∧
@@ -115,11 +161,19 @@ theorem half_iff {m n : ℕ} (hsum : atPl (D := D) (splitPrime τ) 1 + cA D (atP
   · rw [Matrix.map_apply, ← h p q, RingHom.map_mul, GlobalTheory.FlipMatch.RowChart.piW_cA_eq, piW_conj_atPl_one, zero_mul,
       Matrix.zero_apply]
 
+/- English proof (translation)
+Use `Matrix.map_mul (L := S.gram⁻¹) (M := S.gram) (f := (τ : D.host.E →+* Fv D.host.F v))` as an intermediate fact. Rewrite `this` using `[Matrix.nonsing_inv_mul _ (Formalism.L2.Theta.gram_det_ne S).isUnit, Matrix.map_one _ (map_zero _) (map_one _)]`. Conclude with `this.symm`.
+-/
 theorem gram_inv_map (S : HSp D) : (S.gram⁻¹).map τ * S.gram.map τ = 1 := by
   have := Matrix.map_mul (L := S.gram⁻¹) (M := S.gram) (f := (τ : D.host.E →+* Fv D.host.F v))
   rw [Matrix.nonsing_inv_mul _ (Formalism.L2.Theta.gram_det_ne S).isUnit, Matrix.map_one _ (map_zero _) (map_one _)] at this
   exact this.symm
 
+/- English proof (translation)
+Establish `h1 : (GlobalTheory.TripleRead.ptO S.gram e x).map (piW τ) = (x.map (piW τ) * (S.gram⁻¹).map τ)ᵀ.submatrix id e`. Establish `: (S.gram⁻¹).map τ = (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.incM S.gram⁻¹).map (piW τ)` using `Matrix.ext fun _ _ => (piW_incA τ _).symm`. Rewrite using `[this, ← Matrix.map_mul]`. Both sides reduce to the same expression. Establish `h2 : (frMapO S X βS βX x).map (evW τ) = (βX⁻¹).val.map (evW τ) * x.map (piW τ) * βS.val.map (evW τ)`.
+
+Establish `: x.map (piW τ) = (x.map (toEAf D)).map (evW τ)` using `Matrix.ext fun _ _ => (evW_toEAf τ _).symm`. Rewrite using `[this, ← Matrix.map_mul, ← Matrix.map_mul]`. Both sides reduce to the same expression. Rewrite using `[h1, h2]`. Conclude with `coord_fst e _ (gram_inv_map τ S) _ b.mul_inv c.mul_inv _`.
+-/
 theorem frMapO_coX (S X : HSp D) {k : ℕ} (e : Fin k ≃ Fin X.rank) (βS : GL (Fin S.rank) (Lev.EAf D))
     (βX : GL (Fin X.rank) (Lev.EAf D)) (b : GL (Fin S.rank) (Fv D.host.F v)) (c : GL (Fin k) (Fv D.host.F v)) (x : WO S X) :
     ((βS.val.map (evW τ))ᵀ * (S.gram.map τ)ᵀ * b.val) * ((b⁻¹).val * (GlobalTheory.TripleRead.ptO S.gram e x).map (piW τ) * (c⁻¹).valᵀ) *
@@ -135,6 +189,15 @@ theorem frMapO_coX (S X : HSp D) {k : ℕ} (e : Fin k ≃ Fin X.rank) (βS : GL 
   rw [h1, h2]
   exact coord_fst e _ (gram_inv_map τ S) _ b.mul_inv c.mul_inv _
 
+/- English proof (translation)
+Establish `hs : (S.gram⁻¹).map star = (S.gram⁻¹)ᵀ`. Establish `h0 : S.gramᴴ = S.gram` using `Matrix.ext fun a b => S.herm.eq _ _`. Use `Matrix.conjTranspose_nonsing_inv S.gram` as an intermediate fact. Rewrite `this` using `[h0]`. Use extensionality with `a b`.
+
+Conclude with `congrFun (congrFun this b) a`. Establish `h1 : (GlobalTheory.TripleRead.ptO S.gram e y).map (piW (τ.comp D.sp.cm.sig)) = ((S.gram⁻¹).map τ * ((y.map (cA D)).map (piW τ))ᵀ).submatrix id e`. Establish `e1 : (S.gram⁻¹).map τ = ((GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.incM S.gram⁻¹).map (piW (τ.comp D.sp.cm.sig)))ᵀ` using `Matrix.ext fun a b => ((piW_incA (τ.comp D.sp.cm.sig) _).trans (congrArg τ (congrFun (congrFun hs b) a))).symm`. Establish `e2 : (y.map (cA D)).map (piW τ) = y.map (piW (τ.comp D.sp.cm.sig))` using `Matrix.ext fun _ _ => GlobalTheory.FlipMatch.RowChart.piW_cA_eq τ _`. Rewrite using `[e1, e2, ← transpose_mul, ← Matrix.map_mul]`.
+
+Both sides reduce to the same expression. Establish `h2 : (GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.dualCoord S X βS βX y).map (evW τ) = τ D.host.xi0 • ((βS⁻¹).val.map (evW τ) * ((S.gram⁻¹).map τ * ((y.map (cA D)).map (piW τ))ᵀ * X.gram.map τ) * βX.val.map (evW τ))`. Establish `e1 : ∀ {p : ℕ} (M : Matrix (Fin p) (Fin p) D.host.E), M.map τ = (M.map (incA D)).map (piW τ)` using `fun M => Matrix.ext fun _ _ => (piW_incA τ _).symm`. Establish `e2 : ∀ {p q : ℕ} (M : Matrix (Fin p) (Fin q) (AE D)), M.map (piW τ) = (M.map (toEAf D)).map (evW τ)` using `fun M => Matrix.ext fun _ _ => (evW_toEAf τ _).symm`. Rewrite using `[e1, e1 X.gram, ← transpose_map, ← Matrix.map_mul, ← Matrix.map_mul, e2, ← Matrix.map_mul, ← Matrix.map_mul, ← evW_eToEAf]`.
+
+Conclude with `Matrix.ext fun _ _ => map_mul (evW τ) _ _`. Establish `h3 : ((-1 : D.host.E) • S.gram).map τ = -S.gram.map τ` using `Matrix.ext fun _ _ => by simp`. Establish `h4 : (D.host.xi0 • (X.gramᵀ).submatrix e e).map τ = τ D.host.xi0 • (X.gram.map τ)ᵀ.submatrix e e` using `Matrix.ext fun _ _ => map_mul τ _ _`. Rewrite using `[h1, h2, h3, h4]`. Conclude with `coord_snd e _ (mul_eq_one_comm.1 (gram_inv_map τ S)) _ b.mul_inv c.mul_inv _ _ _`.
+-/
 theorem dualCoord_coY (S X : HSp D) {k : ℕ} (e : Fin k ≃ Fin X.rank) (βS : GL (Fin S.rank) (Lev.EAf D))
     (βX : GL (Fin X.rank) (Lev.EAf D)) (b : GL (Fin S.rank) (Fv D.host.F v)) (c : GL (Fin k) (Fv D.host.F v)) (y : WO S X) :
     ((βS⁻¹).val.map (evW τ) * (S.gram⁻¹).map τ * (b⁻¹).valᵀ) *

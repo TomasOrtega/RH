@@ -9,6 +9,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Set `N` to `Limits.pullback m u`. Use `haveI : IsAffine N := isAffine_of_isAffineHom (Limits.pullback.snd m u)`. Set `f : Spec Γ(N, ⊤) ⟶ Spec O` to `N.isoSpec.inv ≫ Limits.pullback.snd m u`. Establish `hf : Spec.map (Spec.preimage f) = f` using `Spec.map_preimage f`. Use `⟨Γ(N, ⊤), Spec.preimage f, N.isoSpec.inv ≫ Limits.pullback.fst m u, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← IsFinite.SpecMap_iff, hf] infer_instance`. Rewrite using `[← HasRingHomProperty.Spec_iff (P := @Flat), hf] infer_instance`. Rewrite using `[hf]`. Apply the tactic sequence `refine (IsPullback.of_hasPullback m u).of_iso N.isoSpec (Iso.refl _) (Iso.refl _) (Iso.refl _) ?_ ?_ ?_ ?_ <;> simp [f]`.
+-/
 theorem finRep_exists_isPullback_spec {X Y : Scheme.{0}} (m : X ⟶ Y) [IsFinite m] [Flat m]
     (O : CommRingCat.{0}) (u : Spec O ⟶ Y) :
     ∃ (A : CommRingCat.{0}) (φ : O ⟶ A) (y : Spec A ⟶ X),
@@ -26,12 +31,36 @@ theorem finRep_exists_isPullback_spec {X Y : Scheme.{0}} (m : X ⟶ Y) [IsFinite
     refine (IsPullback.of_hasPullback m u).of_iso N.isoSpec (Iso.refl _) (Iso.refl _) (Iso.refl _)
       ?_ ?_ ?_ ?_ <;> simp [f]
 
+/- English proof (translation)
+Rewrite using `[← spMap_left, ← Over.comp_left, MonObj.comp_one]`.
+-/
 theorem finRep_one_left {R₀ : Type} [CommRing R₀] (G : Over (Spec (CommRingCat.of R₀))) [GrpObj G]
     {P S : Type} [CommRing P] [Algebra R₀ P] [CommRing S] [Algebra R₀ S] (g : P →ₐ[R₀] S) :
     (1 : sp (R₀ := R₀) S ⟶ G).left =
       Spec.map (CommRingCat.ofHom g.toRingHom) ≫ (1 : sp (R₀ := R₀) P ⟶ G).left := by
   rw [← spMap_left, ← Over.comp_left, MonObj.comp_one]
 
+/- English proof (translation)
+Introduce `R₀ _ G _ _ O p hfin hflat _`. Take `⟨A, φ, y, hφf, hφl, hpb⟩` from `finRep_exists_isPullback_spec ((𝟙 G) ^ p : G ⟶ G).left (CommRingCat.of (O : Type)) (1 : sp (R₀ := R₀) (O : Type) ⟶ G).left`. Use `letI : Algebra (O : Type) A := φ.hom.toAlgebra`. Use `letI : Algebra R₀ A := (φ.hom.comp (algebraMap R₀ (O : Type))).toAlgebra`. Use `haveI : IsScalarTower R₀ (O : Type) A := IsScalarTower.of_algebraMap_eq (fun _ => rfl)`.
+
+Use `haveI : Module.Finite (O : Type) A := hφf`. Use `haveI : Module.Flat (O : Type) A := hφl`. Establish `hpow : ∀ {T : Over (Spec (CommRingCat.of R₀))} (z : T ⟶ G), z.left ≫ ((𝟙 G) ^ p : G ⟶ G).left = (z ^ p).left`. Introduce `T z`. Rewrite using `[← Over.comp_left, MonObj.comp_pow, Category.comp_id]`.
+
+Establish `hy : y ≫ G.hom = (sp (R₀` using `R₀) A).hom := by`. Rewrite using `[← Over.w ((𝟙 G) ^ p : G ⟶ G), ← Category.assoc, hpb.w, Category.assoc, Over.w (1 : sp (R₀ := R₀) (O : Type) ⟶ G)]`. Simplify using `only [sp, Over.mk_hom]`. Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+
+Set `y' : sp (R₀` to `R₀) A ⟶ G := Over.homMk y hy`. Use `⟨A, inferInstance, inferInstance, inferInstance, inferInstance, Module.free_of_flat_of_isLocalRing, inferInstance, y', ?_, ?_⟩` and prove the remaining obligations. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[← hpow, finRep_one_left G (IsScalarTower.toAlgHom R₀ (O : Type) A)]`. Conclude with `hpb.w`.
+
+Introduce `S _ _ _ _ z hz`. Establish `hw : z.left ≫ ((𝟙 G) ^ p : G ⟶ G).left = Spec.map (CommRingCat.ofHom (algebraMap (O : Type) S)) ≫ (1 : sp (R₀` using `R₀) (O : Type) ⟶ G).left := by`. Rewrite using `[hpow, hz, finRep_one_left G (IsScalarTower.toAlgHom R₀ (O : Type) S)]`. Both sides reduce to the same expression. Set `l : Spec (CommRingCat.of S) ⟶ Spec A` to `hpb.lift _ _ hw`.
+
+Establish `hl : Spec.map (Spec.preimage l) = l` using `Spec.map_preimage l`. Establish `h1 : φ ≫ Spec.preimage l = CommRingCat.ofHom (algebraMap (O : Type) S)`. Apply `Spec.map_injective` to reduce the goal to its premises. Rewrite using `[Spec.map_comp, hl]`. Conclude with `hpb.lift_snd _ _ hw`.
+
+Use `⟨⟨(Spec.preimage l).hom, fun r => congrArg (fun f => f.hom r) h1⟩, ?_, ?_⟩` and prove the remaining obligations. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `Spec.map (Spec.preimage l) ≫ y = z.left`. Rewrite using `[hl]`. Conclude with `hpb.lift_fst _ _ hw`.
+
+Introduce `ψ hψ`. Establish `h2 : Spec.map (CommRingCat.ofHom ψ.toRingHom : A ⟶ CommRingCat.of S) = l`. Apply `hpb.hom_ext` to reduce the goal to its premises. Rewrite using `[hpb.lift_fst _ _ hw, ← hψ]`. Both sides reduce to the same expression.
+
+Rewrite using `[hpb.lift_snd _ _ hw, ← Spec.map_comp]`. Use `congr 1`. Use extensionality with `r`. Conclude with `ψ.commutes r`. Establish `h3` using `Spec.map_injective (h2.trans hl.symm)`.
+
+Use extensionality with `a`. Conclude with `congrArg (fun f => f.hom a) h3`.
+-/
 theorem finRep_kernel_mul_finite_free :
   (∀ {R₀ : Type} [CommRing R₀] (G : Over (Spec (CommRingCat.of R₀))) [GrpObj G] [IsCommMonObj G] (O : LAlg R₀) (p : ℕ), IsFinite ((𝟙 G) ^ p : G ⟶ G).left → Flat ((𝟙 G) ^ p : G ⟶ G).left → Smooth G.hom →
     ∃ (A : Type) (_ : CommRing A) (_ : Algebra (O : Type) A) (_ : Algebra R₀ A) (_ : IsScalarTower R₀ (O : Type) A),

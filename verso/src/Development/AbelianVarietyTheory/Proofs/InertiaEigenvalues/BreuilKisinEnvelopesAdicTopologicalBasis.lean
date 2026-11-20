@@ -7,6 +7,11 @@ open scoped Formalism.Per NNReal
 
 namespace GlobalTheory.BSP
 
+/- English proof (translation)
+Introduce `l _ K bk En En₂`. Establish `h1 : bk.J.map (BK.hf En.inl) = Ideal.span {(BK.hf En.inl) (l : bk.S)} ⊔ Ideal.span {(BK.hf En.inl) bk.E}`. Simplify using `only [BK.J, Ideal.map_sup, Ideal.map_span, Set.image_singleton]`. Establish `h2 : (BK.hf En.inl) (l : bk.S) = (l : En.Q.A)` using `map_natCast (BK.hf En.inl) l`. Establish `h3 : En.Q.I = Ideal.span {(BK.hf En.inl) bk.E}` using `En.I_eq`.
+
+Establish `hI : Ideal.span {(l : En.Q.A)} ⊔ En.Q.I = bk.J.map (BK.hf En.inl)` using `(h1.trans (congrArg₂ (· ⊔ ·) (congrArg (fun x => Ideal.span {x}) h2) h3.symm)).symm`. Establish `T₁ : TopBasis (BK.hf En.inl) bk.J (Digits l)` using `En.tb`. Establish `T₂ : TopBasis En₂.inl.f (Ideal.span {(l : En.Q.A)} ⊔ En.Q.I) (Digits l)` using `En₂.tb`. Establish `key` using `GlobalTheory.T.adicTopologicalBasis_exists_comp bk.S En.Q.A (BK.hf En.inl) bk.J (Digits l) T₁ En₂.Q.A En₂.inl.f (Ideal.span {(l : En.Q.A)} ⊔ En.Q.I) (Digits l) T₂ hI`. Conclude with `⟨⟨T₁⟩, Digits l × Digits l, key.elim fun TC _ => ⟨TC⟩⟩`.
+-/
 theorem envelopes_topBasis : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K)
     (En : Env bk bk.prism (bk.toP bk.E) (bk.toP X))
     (En₂ : Env bk En.Q (BK.hf En.inl bk.E) (BK.hf En.inl X)),

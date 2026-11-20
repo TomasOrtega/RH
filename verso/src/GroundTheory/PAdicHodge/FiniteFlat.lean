@@ -16,6 +16,9 @@ variable {R H A : Type*} [CommRing R] [CommRing H] [HopfAlgebra R H] [CommRing A
 instance pointsInv : Inv (WithConv (H →ₐ[R] A)) where
   inv f := toConv (f.ofConv.comp (HopfAlgebra.antipodeAlgHom R H))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem points_inv_def (f : WithConv (H →ₐ[R] A)) :
     f⁻¹ = toConv (f.ofConv.comp (HopfAlgebra.antipodeAlgHom R H)) := rfl
 
@@ -57,20 +60,32 @@ variable {R : Type u} [CommRing R]
 abbrev of (H : Type v) [CommRing H] [HopfAlgebra R H] [IsCocomm R H] [Module.Finite R H]
     [Module.Projective R H] : FiniteFlatGroupScheme.{u, v} R := ⟨H⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem of_H (H : Type v) [CommRing H] [HopfAlgebra R H] [IsCocomm R H]
     [Module.Finite R H] [Module.Projective R H] : (of (R := R) H).H = H := rfl
 
 noncomputable def order (G : FiniteFlatGroupScheme.{u, v} R) : PrimeSpectrum R → ℕ :=
   Module.rankAtStalk G.H
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem order_apply (G : FiniteFlatGroupScheme.{u, v} R) (p : PrimeSpectrum R) :
     G.order p = Module.rankAtStalk G.H p := rfl
 
+/- English proof (translation)
+The claim follows from `haveI := Module.finitePresentation_of_projective R G.H Module.isLocallyConstant_rankAtStalk`.
+-/
 theorem isLocallyConstant_order (G : FiniteFlatGroupScheme.{u, v} R) :
     IsLocallyConstant G.order :=
   haveI := Module.finitePresentation_of_projective R G.H
   Module.isLocallyConstant_rankAtStalk
 
+/- English proof (translation)
+Simplify using `[order]`. Use the proof step `@[ext]`.
+-/
 theorem order_eq_finrank (G : FiniteFlatGroupScheme.{u, v} R) [Module.Free R G.H]
     (p : PrimeSpectrum R) : G.order p = Module.finrank R G.H := by
   simp [order]
@@ -88,17 +103,29 @@ instance category : Category (FiniteFlatGroupScheme.{u, v} R) where
   comp_id _ := Hom.ext (BialgHom.ext fun _ => rfl)
   assoc _ _ _ := Hom.ext (BialgHom.ext fun _ => rfl)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem id_comap (G : FiniteFlatGroupScheme.{u, v} R) :
     (𝟙 G : G ⟶ G).comap = BialgHom.id R G.H := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem comp_comap {G G' G'' : FiniteFlatGroupScheme.{u, v} R} (f : G ⟶ G')
     (g : G' ⟶ G'') : (f ≫ g).comap = f.comap.comp g.comap := rfl
 
+/- English proof (translation)
+The claim follows from `Hom.ext h`.
+-/
 @[ext] theorem hom_ext {G G' : FiniteFlatGroupScheme.{u, v} R} {f g : G ⟶ G'}
     (h : f.comap = g.comap) : f = g := Hom.ext h
 
 def homOfBialgHom {G G' : FiniteFlatGroupScheme.{u, v} R} (φ : G'.H →ₐc[R] G.H) : G ⟶ G' := ⟨φ⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem homOfBialgHom_comap {G G' : FiniteFlatGroupScheme.{u, v} R}
     (φ : G'.H →ₐc[R] G.H) : (homOfBialgHom φ).comap = φ := rfl
 
@@ -112,6 +139,9 @@ abbrev Points (G : FiniteFlatGroupScheme.{u, v} R) (A : Type w) [CommRing A] [Al
     Type (max v w) :=
   WithConv (G.H →ₐ[R] A)
 
+/- English proof (translation)
+The claim follows from `inferInstance`.
+-/
 example (G : FiniteFlatGroupScheme.{u, v} R) (A : Type w) [CommRing A] [Algebra R A] :
     CommGroup (G.Points A) := inferInstance
 
@@ -119,12 +149,21 @@ variable (G : FiniteFlatGroupScheme.{u, v} R)
 variable {A : Type w} {B : Type w'} {C : Type*} [CommRing A] [Algebra R A] [CommRing B]
   [Algebra R B] [CommRing C] [Algebra R C]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem points_one_apply (h : G.H) :
     (1 : G.Points A) h = algebraMap R A (counit h) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem points_mul_apply (x y : G.Points A) (h : G.H) :
     (x * y) h = lmul' R (Algebra.TensorProduct.map x.ofConv y.ofConv (comul h)) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem points_inv_apply (x : G.Points A) (h : G.H) :
     x⁻¹ h = x (antipode R h) := rfl
 
@@ -138,11 +177,20 @@ def mapPoints (f : A →ₐ[R] B) : G.Points A →* G.Points B where
     apply WithConv.ofConv_injective
     exact AlgHom.comp_convMul_distrib f x y
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem mapPoints_apply (f : A →ₐ[R] B) (x : G.Points A) (h : G.H) :
     G.mapPoints f x h = f (x h) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem mapPoints_id : G.mapPoints (AlgHom.id R A) = MonoidHom.id _ := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mapPoints_comp (f : A →ₐ[R] B) (g : B →ₐ[R] C) :
     G.mapPoints (g.comp f) = (G.mapPoints g).comp (G.mapPoints f) := rfl
 
@@ -157,14 +205,26 @@ def Hom.mapPoints {G G' : FiniteFlatGroupScheme.{u, v} R} (φ : G ⟶ G') (A : T
     apply WithConv.ofConv_injective
     exact AlgHom.convMul_comp_bialgHom_distrib x y φ.comap
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem Hom.mapPoints_apply {G G' : FiniteFlatGroupScheme.{u, v} R} (φ : G ⟶ G')
     (x : G.Points A) (h : G'.H) : φ.mapPoints A x h = x (φ.comap h) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem Hom.mapPoints_id : (𝟙 G : G ⟶ G).mapPoints A = MonoidHom.id _ := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem Hom.mapPoints_comp {G G' G'' : FiniteFlatGroupScheme.{u, v} R} (f : G ⟶ G')
     (g : G' ⟶ G'') : (f ≫ g).mapPoints A = (g.mapPoints A).comp (f.mapPoints A) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem Hom.mapPoints_mapPoints {G G' : FiniteFlatGroupScheme.{u, v} R} (φ : G ⟶ G')
     (f : A →ₐ[R] B) (x : G.Points A) :
     φ.mapPoints B (G.mapPoints f x) = G'.mapPoints f (φ.mapPoints A x) := rfl
@@ -175,6 +235,9 @@ def pointsFunctor : CommAlgCat.{w} R ⥤ CommGrpCat.{max v w} where
   map_id _ := rfl
   map_comp _ _ := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem pointsFunctor_obj (A : CommAlgCat.{w} R) :
     G.pointsFunctor.obj A = CommGrpCat.of (G.Points A) := rfl
 

@@ -6,6 +6,13 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HeckeCharLocPo
 
 open NumberField IsDedekindDomain Formalism.L2.Host GlobalTheory.ConjSize
 
+/- English proof (translation)
+Establish `hI : v.asIdeal ∈ nonZeroDivisors (Ideal (𝓞 L))` using `mem_nonZeroDivisors_of_ne_zero v.ne_bot`. Establish `hpow : v.asIdeal ^ Fintype.card (ClassGroup (𝓞 L)) ∈ nonZeroDivisors (Ideal (𝓞 L))` using `pow_mem hI _`. Establish `hone : ClassGroup.mk0 ⟨_, hpow⟩ = 1`. Establish `h1` using `pow_card_eq_one (x := ClassGroup.mk0 ⟨v.asIdeal, hI⟩)`. Rewrite `h1` using `[← map_pow]`.
+
+Use `h1` and compare the differences between its conclusion and the goal. Simplify using the standard rewrite rules. Take `⟨a, ha⟩` from `((ClassGroup.mk0_eq_one_iff hpow).1 hone).principal`. Use `⟨_, a, Fintype.card_pos, ?_, ha⟩` and prove the remaining obligations. Introduce and unpack `rfl`.
+
+Apply `nonZeroDivisors.ne_zero hpow` to reduce the goal to its premises. Rewrite using `[ha]`. Simplify using the standard rewrite rules.
+-/
 private theorem exists_pow_eq_span {L : Type} [Field L] [NumberField L] (v : HeightOneSpectrum (𝓞 L)) :
     ∃ (h : ℕ) (a : 𝓞 L), 0 < h ∧ a ≠ 0 ∧ v.asIdeal ^ h = Ideal.span {a} := by
   classical
@@ -24,6 +31,27 @@ private theorem exists_pow_eq_span {L : Type} [Field L] [NumberField L] (v : Hei
   rw [ha]
   simp
 
+/- English proof (translation)
+Take `⟨h, a, hh, ha0, hspan⟩` from `exists_pow_eq_span w`. Establish `haw : a ∈ w.asIdeal`. Establish `hmem : a ∈ w.asIdeal ^ h`. Rewrite using `[hspan]`. Conclude with `Ideal.mem_span_singleton_self a`.
+
+Conclude with `Ideal.pow_le_self hh.ne' hmem`. Establish `hav : ∀ v : HeightOneSpectrum (𝓞 L), v ≠ w → a ∉ v.asIdeal`. Introduce `v hvw hva`. Apply `hvw` to reduce the goal to its premises. Establish `hle : w.asIdeal ^ h ≤ v.asIdeal`.
+
+Rewrite using `[hspan, Ideal.span_le, Set.singleton_subset_iff]`. Conclude with `hva`. Establish `hwv` using `v.isPrime.le_of_pow_le hle`. Conclude with `(HeightOneSpectrum.ext (w.isMaximal.eq_of_le v.isPrime.ne_top hwv)).symm`. Use `set k := GlobalTheory.Mem.ValAlg.uOf a ha0 with hk`.
+
+Use `set S := (GlobalTheory.T.heckeCharacter_unramified_ae_and_exists_level L χ).1.toFinset ∪ {w} with hS`. Establish `hwS : w ∈ S` using `by simp [hS]`. Use `choose Nf hNf hNa using fun v => GlobalTheory.Mem.ValAlg.locK_pow χ v`. Use `⟨k, ∏ v ∈ S.erase w, Nf v, Finset.prod_pos (fun v _ => hNf v), ?_, ?_⟩` and prove the remaining obligations. Establish `hval : Valued.v ((atFin w k : (w.adicCompletion L)ˣ) : w.adicCompletion L) = w.intValuation a`.
+
+Express the relevant statement in the definitionally equal form `Valued.v (algebraMap L (w.adicCompletion L) (algebraMap (𝓞 L) L a)) = _`. Rewrite using `[← IsScalarTower.algebraMap_apply (𝓞 L) L]`. Conclude with `(HeightOneSpectrum.valuedAdicCompletion_eq_valuation w a).trans (HeightOneSpectrum.valuation_of_algebraMap w a)`. Rewrite using `[hval]`. Conclude with `((HeightOneSpectrum.intValuation_lt_one_iff_mem w a).2 haw).ne`.
+
+Establish `hrule` using `GlobalTheory.HeckeProduct.hchar_productRule L χ S (by`. Introduce `v hv`. Assume the negation of the conclusion as `hc`. Conclude with `hv (by simp [hS, hc])) k`. Establish `hfin : ∏ᶠ (v) (_ : v ∉ S), χ.val v ^ ordF v k = 1`.
+
+Apply `finprod_eq_one_of_forall_eq_one` to reduce the goal to its premises. Introduce `v`. Rewrite using `[finprod_eq_if]`. Use `split_ifs with hv`. Both sides reduce to the same expression.
+
+Establish `hvw : v ≠ w` using `fun e => hv (by simp [hS, e])`. Establish `h0 : ordF v k = 0`. Simplify using `[Formalism.L2.Host.ordF, hk, GlobalTheory.Mem.ValAlg.uOf, HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.intValuation_eq_one_iff.2 (hav v hvw)]`. Rewrite using `[h0, zpow_zero]`. Rewrite `hrule` using `[hfin, mul_one, ← Finset.mul_prod_erase S (fun v => χ.locK v k) hwS, ← mul_assoc]`.
+
+Establish `hrest : (∏ v ∈ S.erase w, χ.locK v k) ^ (∏ v ∈ S.erase w, Nf v) = 1`. Rewrite using `[← Finset.prod_pow]`. Apply `Finset.prod_eq_one` to reduce the goal to its premises. Introduce `v hv`. Take `⟨c, hc⟩` from `Finset.dvd_prod_of_mem Nf hv`.
+
+Rewrite using `[hc, pow_mul, hNa v a ha0 (hav v (Finset.ne_of_mem_erase hv)), one_pow]`. Establish `hpow` using `congrArg (fun z => z ^ (∏ v ∈ S.erase w, Nf v)) hrule`. Rewrite `hpow` using `[mul_pow, hrest, mul_one, one_pow]`. Conclude with `hpow`.
+-/
 private theorem exists_global {L : Type} [Field L] [NumberField L] (χ : HChar L) (w : HeightOneSpectrum (𝓞 L)) :
     ∃ (k : Lˣ) (N : ℕ), 0 < N ∧ Valued.v ((atFin w k : (w.adicCompletion L)ˣ) : w.adicCompletion L) ≠ 1 ∧
       (χ.inf k * χ.locK w k) ^ N = 1 := by
@@ -81,6 +109,23 @@ private theorem exists_global {L : Type} [Field L] [NumberField L] (χ : HChar L
     rw [mul_pow, hrest, mul_one, one_pow] at hpow
     exact hpow
 
+/- English proof (translation)
+Take `⟨k, N, hN, hk1, hkN⟩` from `exists_global χ w`. Use `set y := atFin w k with hy`. Establish `hx0 : Valued.v (x : w.adicCompletion L) ≠ 0` using `(Valuation.ne_zero_iff _).2 x.ne_zero`. Establish `hy0 : Valued.v (y : w.adicCompletion L) ≠ 0` using `(Valuation.ne_zero_iff _).2 y.ne_zero`. Take `⟨p, hp⟩ : ∃ p : ℤ, Valued.v (x : w.adicCompletion L) = WithZero.exp p` from `⟨_, (WithZero.exp_log hx0).symm⟩`.
+
+Take `⟨q, hq⟩ : ∃ q : ℤ, Valued.v (y : w.adicCompletion L) = WithZero.exp q` from `⟨_, (WithZero.exp_log hy0).symm⟩`. Establish `hq0 : q ≠ 0`. Introduce and unpack `rfl`. Conclude with `hk1 (by rw [hq, WithZero.exp_zero])`. Establish `hunit : IsUnitAt w (x ^ q * y ^ (-p))` using `by show Valued.v ((x ^ q * y ^ (-p) : (w.adicCompletion L)ˣ) : w.adicCompletion L) = 1`.
+
+Rewrite using `[Units.val_mul, Units.val_zpow_eq_zpow_val, Units.val_zpow_eq_zpow_val, map_mul, map_zpow₀, map_zpow₀, hp, hq, ← WithZero.exp_zsmul, ← WithZero.exp_zsmul, ← WithZero.exp_add, WithZero.exp_eq_one, smul_eq_mul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨m, hm, hmx⟩` from `GlobalTheory.T.heckeChar_loc_pow_eq_one_on_localUnits L χ w _ hunit`. Establish `hinf : (χ.locK w k) ^ N = (χ.inf k ^ N)⁻¹`. Rewrite `hkN` using `[mul_pow]`.
+
+Conclude with `eq_inv_of_mul_eq_one_right hkN`. Establish `key : (χ.loc w x) ^ (q * m * N) * χ.inf (k ^ (p * m * N)) = 1`. Rewrite `hmx` using `[map_mul, map_zpow, map_zpow]`. Establish `hly : χ.loc w y = χ.locK w k` using `rfl`. Rewrite `hmx` using `[hly]`.
+
+Rewrite using `[map_zpow]`. Establish `hY : (χ.locK w k) ^ (-(p * m * N)) = (χ.inf k) ^ (p * m * N)`. Rewrite using `[show -(p * (m : ℤ) * N) = (N : ℤ) * (-(p * m)) by ring, zpow_mul, zpow_natCast, hinf, inv_zpow', neg_neg, ← zpow_natCast, ← zpow_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[← hY]`. Establish `hmN` using `congrArg (fun z => z ^ N) hmx`. Simplify using `only [one_pow] at hmN`. Rewrite using `[← hmN, ← pow_mul, ← zpow_natCast, mul_zpow, ← zpow_mul, ← zpow_mul]`. Apply the tactic sequence `congr 2 <;> push_cast <;> ring`.
+
+Establish `hQ : q * m * N ≠ 0` using `by positivity`. Break down `Int.natAbs_eq (q * m * N) with h | h` into its components or cases. Use `⟨k ^ (p * m * N), (q * m * N).natAbs, Int.natAbs_pos.2 hQ, ?_⟩` and prove the remaining obligations. Rewrite using `[← zpow_natCast, ← h]`. Conclude with `key`.
+
+Use `⟨(k ^ (p * m * N))⁻¹, (q * m * N).natAbs, Int.natAbs_pos.2 hQ, ?_⟩` and prove the remaining obligations. Rewrite `key` using `[h, zpow_neg, zpow_natCast]`. Rewrite using `[map_inv, ← inv_mul_eq_one.1 key, mul_inv_cancel]`.
+-/
 private theorem exists_pow_inf {L : Type} [Field L] [NumberField L] (χ : HChar L) (w : HeightOneSpectrum (𝓞 L))
     (x : (w.adicCompletion L)ˣ) : ∃ (b : Lˣ) (M : ℕ), 0 < M ∧ χ.loc w x ^ M * χ.inf b = 1 := by
   obtain ⟨k, N, hN, hk1, hkN⟩ := exists_global χ w
@@ -128,6 +173,11 @@ private theorem exists_pow_inf {L : Type} [Field L] [NumberField L] (χ : HChar 
     rw [h, zpow_neg, zpow_natCast] at key
     rw [map_inv, ← inv_mul_eq_one.1 key, mul_inv_cancel]
 
+/- English proof (translation)
+Establish `hjmem : ∀ t : K, ι t ∈ Formalism.MainNotions.TaylorLogMetric.Qbar` using `fun t => mem_algebraicClosure_iff.2 ((Algebra.IsAlgebraic.isAlgebraic (R := ℚ) t).algHom ι.toRatAlgHom)`. Use `haveI hQ : Algebra.IsAlgebraic ℚ Formalism.MainNotions.TaylorLogMetric.Qbar := algebraicClosure.isAlgebraic ℚ ℂ`. Set `j : K →+* Formalism.MainNotions.TaylorLogMetric.Qbar` to `ι.codRestrict Formalism.MainNotions.TaylorLogMetric.Qbar hjmem`. Use `letI : Algebra K Formalism.MainNotions.TaylorLogMetric.Qbar := j.toAlgebra`. Use `letI : Algebra K ℂ := τ.toAlgebra`.
+
+Use `haveI : IsScalarTower ℚ K Formalism.MainNotions.TaylorLogMetric.Qbar := IsScalarTower.of_algebraMap_eq fun r => congrArg (fun f : ℚ →+* Formalism.MainNotions.TaylorLogMetric.Qbar => f r) (Subsingleton.elim (algebraMap ℚ Formalism.MainNotions.TaylorLogMetric.Qbar) ((algebraMap K F …`. Use `haveI : Algebra.IsAlgebraic K Formalism.MainNotions.TaylorLogMetric.Qbar := Algebra.IsAlgebraic.tower_top (K := ℚ) K`. Use `⟨(IsAlgClosed.lift : Formalism.MainNotions.TaylorLogMetric.Qbar →ₐ[K] ℂ).toRingHom, hjmem y, ?_⟩` and prove the remaining obligations. Conclude with `(IsAlgClosed.lift : Formalism.MainNotions.TaylorLogMetric.Qbar →ₐ[K] ℂ).commutes y`.
+-/
 private theorem exists_qbar_embedding_lift {K : Type} [Field K] [NumberField K] (ι τ : K →+* ℂ) (y : K) :
     ∃ ψ : Formalism.MainNotions.TaylorLogMetric.Qbar →+* ℂ, ∃ hy : ι y ∈ Formalism.MainNotions.TaylorLogMetric.Qbar, ψ ⟨ι y, hy⟩ = τ y := by
   have hjmem : ∀ t : K, ι t ∈ Formalism.MainNotions.TaylorLogMetric.Qbar := fun t =>
@@ -144,6 +194,15 @@ private theorem exists_qbar_embedding_lift {K : Type} [Field K] [NumberField K] 
   refine ⟨(IsAlgClosed.lift : Formalism.MainNotions.TaylorLogMetric.Qbar →ₐ[K] ℂ).toRingHom, hjmem y, ?_⟩
   exact (IsAlgClosed.lift : Formalism.MainNotions.TaylorLogMetric.Qbar →ₐ[K] ℂ).commutes y
 
+/- English proof (translation)
+Introduce `L _ _ _ χ I _ φ n hχ K _ _ ι τ w x hx`. Take `⟨y, hy⟩` from `hx`. Take `⟨b, M, hM, hb⟩` from `exists_pow_inf χ w x`. Establish `hz : ((χ.loc w x : ℂˣ) : ℂ) ^ M * ∏ i, ((φ i) (b : L) / (‖(φ i) (b : L)‖ : ℂ)) ^ n i = 1`. Rewrite using `[← hχ b]`.
+
+Establish `h1` using `congrArg (fun u : ℂˣ => (u : ℂ)) hb`. Simplify using `using h1`. Take `⟨hzQ, hψ⟩` from `GlobalTheory.HeckeVal.root_value φ n b _ M hM hz`. Take `⟨ψ, hyQ, hψy⟩` from `exists_qbar_embedding_lift ι τ y`. Use `⟨y, hy, ?_⟩` and prove the remaining obligations.
+
+Establish `heq : (⟨_, hzQ⟩ : Formalism.MainNotions.TaylorLogMetric.Qbar) = ⟨ι y, hyQ⟩` using `Subtype.ext hy.symm`. Rewrite using `[← hψy, ← heq]`. Apply `hψ ℂ ψ` to reduce the goal to its premises. Introduce `σ`. Rewrite using `[← RingHom.comp_apply ψ σ, ← RingHom.comp_apply ψ σ, IsCMField.complexEmbedding_complexConj]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem UpperTheory.conjSize_heckeChar_local_of_mem_range_embedding :
     ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (χ : Formalism.L2.Host.HChar L) {I : Type} [Fintype I] (φ : I → L →+* ℂ) (n : I → ℤ), χ.HasInf φ n → ∀ {K : Type} [Field K] [NumberField K] (ι τ : K →+* ℂ) (w : HeightOneSpectrum (𝓞 L)) (x : (w.adicCompletion L)ˣ), ((χ.loc w x : ℂˣ) : ℂ) ∈ Set.range ι → GlobalTheory.ConjSize.Un ι τ ((χ.loc w x : ℂˣ) : ℂ) := by
   intro L _ _ _ χ I _ φ n hχ K _ _ ι τ w x hx

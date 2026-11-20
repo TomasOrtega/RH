@@ -23,6 +23,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.SquareComm GlobalTheory.SquareAgree
 noncomputable section
 namespace GlobalTheory.SquareAgree
+/- English proof (translation)
+Introduce `hR hP D ψ θ W W₁ X A A₁ B α β ν 𝓕 ν₁ 𝓕₁ ωA ωB e Bs Γ Xc om om' cA cB hθ hT hO hT' R Rf hRf Pi rf rl p p' hm Φ hΦ ΦD hΦD hD`. Take `⟨K₁, g₁, ne₁, max₁, h₁⟩` from `_root_.GlobalTheory.T.theta_subspace_kernel_maximal hP D ψ θ W W₁ X A A₁ B α β ν 𝓕 ν₁ 𝓕₁ ωA ωB e Bs Γ Xc om om' cA cB hθ hT hO hT' Pi rf rl p p' hm`. Take `⟨K₂, g₂, ne₂, h₂⟩` from `_root_.GlobalTheory.T.thetaSubspace_contains_polKernel hP _ _ _ Bs _ _ Γ Xc om om' hT' R Rf hRf`. Establish `hle : K₁ ≤ K₂` using `fun x hx => (h₂ x (g₁.1.1 hx)).2 (_root_.UpperTheory.Lit.HoweDuality.twisted_theta_kernel_condition hR hP _ _ _ Bs _ _ Γ Xc om om' hT' R Rf hRf K₁ g₁ ne₁ x hx)`. Break down `max₁ K₂ g₂ hle with h | h` into its components or cases.
+
+Rewrite using `[← h₁ Φ hΦ ΦD hΦD hD, ← h, h₂ ΦD hΦD]`. Conclude with `absurd h ne₂`.
+-/
 theorem theta_kernel_match_on_parabolic : GlobalTheory.Published.HoweDualityReal → _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (W W₁ X : HSp D) (A : Fr W) (A₁ : Fr W₁)
     (B : Fr X) (α β : (AE D)ˣ →* Circle) (ν : Measure (GA D W)) (𝓕 : Set (GA D W)) (ν₁ : Measure (GA D W₁))
     (𝓕₁ : Set (GA D W₁)) (ωA : WRep W X) (ωB : WRep W₁ X) (e : Fin X.rank ≃ Fin (W.rank + W₁.rank))
@@ -45,6 +50,15 @@ theorem theta_kernel_match_on_parabolic : GlobalTheory.Published.HoweDualityReal
   rcases max₁ K₂ g₂ hle with h | h
   · rw [← h₁ Φ hΦ ΦD hΦD hD, ← h, h₂ ΦD hΦD]
   · exact absurd h ne₂
+/- English proof (translation)
+Introduce `hR hP D ψ θ W W₁ X A A₁ B α β ν 𝓕 ν₁ 𝓕₁ ωA ωB e Bs Γ Xc om om' cA cB hθ hT hO hT' R Rf hM Pi rf rl p p' hm Φ₀ hΦ₀ Φ₀D hΦ₀D hD`. Take `⟨K, hK, hKs, hKne⟩` from `_root_.GlobalTheory.T.thetaSubspace_eq_ker_projDerivation_of_square hP D ψ θ W W₁ X A A₁ B α β ν 𝓕 ν₁ 𝓕₁ ωA ωB e Bs Γ Xc om om' cA cB hθ hT hO hT' Pi rf rl p p' hm`. Take `⟨KD, hKD, hKDs, hKDne⟩` from `_root_.GlobalTheory.T.thetaSubgroup_of_ker_derivation hP Bs Γ Xc om om' R Rf hM`. Establish `h1 : K ≤ KD` using `fun Φ hΦ => (hKD Φ).2 ⟨hKs.le hΦ, _root_.UpperTheory.Lit.HoweDuality.twisted_theta_jet_condition hR hP Bs Γ Xc om om' R Rf hM K hKs hKne Φ hΦ⟩`. Establish `h2 : KD = K` using `(_root_.GlobalTheory.T.thetaKernel_projection_isMax hP D ψ θ W W₁ X A A₁ B α β ν 𝓕 ν₁ 𝓕₁ ωA ωB e Bs Γ Xc om om' cA cB hθ hT hO hT' Pi rf rl p p' hm K KD hK hKDs h1).resolve_right hKDne`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h0`. Establish `hm : Φ₀D ∈ K` using `(hK Φ₀D).2 ⟨hΦ₀D, Φ₀, hΦ₀, hD, h0⟩`. Rewrite `hm` using `[← h2]`. Conclude with `((hKD _).1 hm).2`.
+
+Introduce `hpm`. Establish `hm : Φ₀D ∈ KD` using `(hKD _).2 ⟨hΦ₀D, hpm⟩`. Rewrite `hm` using `[h2]`. Take `⟨_, Φ₁, _, hD₁, h0⟩` from `(hK _).1 hm`. Rewrite using `[IsDatum.fun_eq Γ.M' ψ cB cB.surjective hD hD₁]`.
+
+Conclude with `h0`.
+-/
 theorem theta_kernel_match_on_opposite_parabolic : GlobalTheory.Published.HoweDualityReal → _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (W W₁ X : HSp D) (A : Fr W) (A₁ : Fr W₁)
     (B : Fr X) (α β : (AE D)ˣ →* Circle) (ν : Measure (GA D W)) (𝓕 : Set (GA D W)) (ν₁ : Measure (GA D W₁))
     (𝓕₁ : Set (GA D W₁)) (ωA : WRep W X) (ωB : WRep W₁ X) (e : Fin X.rank ≃ Fin (W.rank + W₁.rank))
@@ -76,6 +90,37 @@ theorem theta_kernel_match_on_opposite_parabolic : GlobalTheory.Published.HoweDu
     obtain ⟨_, Φ₁, _, hD₁, h0⟩ := (hK _).1 hm
     rw [IsDatum.fun_eq Γ.M' ψ cB cB.surjective hD hD₁]
     exact h0
+/- English proof (translation)
+Introduce `hRe hP D ψ θ W W₁ X A A₁ B α β ν 𝓕 ν₁ 𝓕₁ ωA ωB e Bs Γ Xc om om' cA cB hθ hT hO hTD R Rf hR Pi rf rl p p' hM`. Establish `hstd : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsStd ψ` using `hO.psi ▸ hTD.base.std`. Establish `dA` using `GlobalTheory.SquareAgree.isDatum_linear Γ.M ψ hstd cA`. Establish `dB` using `GlobalTheory.SquareAgree.isDatum_linear Γ.M' ψ hstd cB`. Establish `lin` using `GlobalTheory.PolMatchLin.polMatch_linear Bs Γ Xc om om' R Rf hR.fin`.
+
+Set `G : Set (Pi × Pi)` to `{x | ∃ Φ ∈ algF ψ θ true A B, ∃ Φ₀ ∈ algF ψ θ false A₁ B, ∃ ΦD ∈ algD Γ.M Bs.ψ Bs.emb, ∃ Φ₀D ∈ algD Γ.M' Bs.ψ Bs.emb, IsDatum Γ.M ψ cA ΦD Φ ∧ IsDatum Γ.M' ψ cB Φ₀D Φ₀ ∧ GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.PolMatch Bs Γ Xc R Rf ΦD Φ₀D ∧ x = (p Φ, p' Φ₀)}`. Establish `G0 : (0 : Pi × Pi) ∈ G` using `⟨0, zero_mem _, 0, zero_mem _, 0, zero_mem _, 0, zero_mem _, dA.1, dB.1, lin.1, Prod.ext (map_zero p).symm (map_zero p').symm⟩`. Establish `Glin : ∀ x ∈ G, ∀ y ∈ G, ∀ c : ℂ, x + c • y ∈ G`. Introduce and unpack `_ ⟨Φ, hΦ, Φ₀, hΦ₀, ΦD, hΦD, Φ₀D, hΦ₀D, h1, h2, h3, rfl⟩ _ ⟨Ψ, hΨ, Ψ₀, hΨ₀, ΨD, hΨD, Ψ₀D, hΨ₀D, k1, k2, k3, rfl⟩ c`. Apply the tactic sequence `exact ⟨Φ + c • Ψ, add_mem hΦ (Submodule.smul_mem _ c hΨ), Φ₀ + c • Ψ₀, add_mem hΦ₀ (Submodule.smul_mem _ c hΨ₀), ΦD + c • ΨD, add_mem hΦD (Submodule.smul_mem _ c hΨD), Φ₀D + c • Ψ₀D, add_mem hΦ₀D (Submodule.smul_mem _ c hΨ₀D), dA.2 _ _ _ _ c h1 k1, dB.2 _ _ _ _ c h2 k2, lin.2 _ _ …`.
+
+Set `S : Submodule ℂ (Pi × Pi)` to `{ carrier := G add_mem' := fun {x y} hx hy => by simpa using Glin x hx y hy 1 zero_mem' := G0 smul_mem' := fun c x hx => by simpa using Glin 0 G0 x hx c }`. Establish `stf : ∀ g ∈ GfC X, ∀ x ∈ S, (rf g x.1, rf g x.2) ∈ S`. Introduce and unpack `g hg _ ⟨Φ, hΦ, Φ₀, hΦ₀, ΦD, hΦD, Φ₀D, hΦ₀D, h1, h2, h3, rfl⟩`. Establish `a1` using `hM.mapA.stabX.1 g hg Φ hΦ`. Establish `b1` using `hM.mapB.stabX.1 g hg Φ₀ hΦ₀`.
+
+Take `⟨ΨD, hΨD, hΨ⟩` from `hO.algA _ a1`. Take `⟨Ψ₀D, hΨ₀D, hΨ₀⟩` from `hO.algB _ b1`. Establish `e1` using `GlobalTheory.ThetaInj.theta_inj Γ.M ψ hstd cA _ _ _ hΨ (hO.weilA ΦD Φ h1 1 g)`. Establish `e2` using `GlobalTheory.ThetaInj.theta_inj Γ.M' ψ hstd cB _ _ _ hΨ₀ (hO.weilB Φ₀D Φ₀ h2 1 g)`. Use `⟨_, a1, _, b1, ΨD, hΨD, Ψ₀D, hΨ₀D, hΨ, hΨ₀, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[e1, e2]`. Conclude with `_root_.GlobalTheory.SquareAgree.polarization_match_square_kappa hP D ψ θ W W₁ X A A₁ B α β ν 𝓕 ν₁ 𝓕₁ ωA ωB e Bs Γ Xc om om' cA cB hθ hT hO hTD R Rf hR Pi rf rl p p' hM g hg ΦD hΦD Φ₀D hΦ₀D h3`. Rewrite using `[hM.mapA.eqf g hg Φ hΦ, hM.mapB.eqf g hg Φ₀ hΦ₀]`. Establish `stl : ∀ τ, ∀ Y ∈ lieAt X τ, ∀ x ∈ S, (rl τ Y x.1, rl τ Y x.2) ∈ S`. Introduce and unpack `τ Y hY _ ⟨Φ, hΦ, Φ₀, hΦ₀, ΦD, hΦD, Φ₀D, hΦ₀D, h1, h2, h3, rfl⟩`.
+
+Take `⟨Φ', hΦ', hd⟩` from `hM.mapA.stabX.2 τ Y hY Φ hΦ`. Take `⟨Φ₀', hΦ₀', hd₀⟩` from `hM.mapB.stabX.2 τ Y hY Φ₀ hΦ₀`. Take `⟨ΨD, hΨD, hΨ⟩` from `hO.algA _ hΦ'`. Take `⟨Ψ₀D, hΨ₀D, hΨ₀⟩` from `hO.algB _ hΦ₀'`. Use `⟨Φ', hΦ', Φ₀', hΦ₀', ΨD, hΨD, Ψ₀D, hΨ₀D, hΨ, hΨ₀, _root_.GlobalTheory.SquareAgree.LieEq.polarization_match_lie_derivative hP D ψ θ W W₁ X A A₁ B α β ν 𝓕 ν₁ 𝓕₁ ωA ωB e Bs Γ Xc om om' cA cB hθ hT hO hTD R Rf hR Pi rf rl p p' hM τ Y hY Φ hΦ Φ' hΦ' Φ₀ hΦ₀ Φ₀' hΦ₀' hd hd₀ ΦD hΦD ΨD hΨ …` and prove the remaining obligations.
+
+Rewrite using `[hM.mapA.eql τ Y hY Φ hΦ Φ' hΦ' hd, hM.mapB.eql τ Y hY Φ₀ hΦ₀ Φ₀' hΦ₀' hd₀]`. Establish `k1 : ∀ x : Pi, ((x, 0) : Pi × Pi) ∈ S → x = 0`. Introduce and unpack `x ⟨Φ, hΦ, Φ₀, hΦ₀, ΦD, hΦD, Φ₀D, hΦ₀D, h1, h2, h3, hx⟩`. Simplify using `only [Prod.mk.injEq] at hx`. Take `⟨rfl, h0⟩` from `hx`.
+
+Establish `m0` using `(_root_.GlobalTheory.SquareAgree.theta_kernel_match_on_opposite_parabolic hRe hP D ψ θ W W₁ X A A₁ B α β ν 𝓕 ν₁ 𝓕₁ ωA ωB e Bs Γ Xc om om' cA cB hθ hT hO hTD R Rf hR Pi rf rl p p' hM Φ₀ hΦ₀ Φ₀D hΦ₀D h2).1 h0.symm`. Establish `m1` using `lin.2 _ _ _ _ (-1) h3 m0`. Rewrite `m1` using `[smul_zero, add_zero, neg_one_smul, add_neg_cancel]`. Conclude with `(_root_.GlobalTheory.SquareAgree.theta_kernel_match_on_parabolic hRe hP D ψ θ W W₁ X A A₁ B α β ν 𝓕 ν₁ 𝓕₁ ωA ωB e Bs Γ Xc om om' cA cB hθ hT hO hTD R Rf hR Pi rf rl p p' hM Φ hΦ ΦD hΦD h1).2 m1`. Establish `k2 : ∀ y : Pi, ((0, y) : Pi × Pi) ∈ S → y = 0`.
+
+Introduce and unpack `y ⟨Φ, hΦ, Φ₀, hΦ₀, ΦD, hΦD, Φ₀D, hΦ₀D, h1, h2, h3, hy⟩`. Simplify using `only [Prod.mk.injEq] at hy`. Take `⟨h0, rfl⟩` from `hy`. Establish `m0` using `(_root_.GlobalTheory.SquareAgree.theta_kernel_match_on_parabolic hRe hP D ψ θ W W₁ X A A₁ B α β ν 𝓕 ν₁ 𝓕₁ ωA ωB e Bs Γ Xc om om' cA cB hθ hT hO hTD R Rf hR Pi rf rl p p' hM Φ hΦ ΦD hΦD h1).1 h0.symm`. Establish `m1` using `lin.2 _ _ _ _ (-1) h3 m0`.
+
+Rewrite `m1` using `[smul_zero, add_zero, neg_one_smul, add_neg_cancel]`. Conclude with `(_root_.GlobalTheory.SquareAgree.theta_kernel_match_on_opposite_parabolic hRe hP D ψ θ W W₁ X A A₁ B α β ν 𝓕 ν₁ 𝓕₁ ωA ωB e Bs Γ Xc om om' cA cB hθ hT hO hTD R Rf hR Pi rf rl p p' hM Φ₀ hΦ₀ Φ₀D hΦ₀D h2).2 m1`. Establish `on : ∀ x : Pi, ∃ y : Pi, ((x, y) : Pi × Pi) ∈ S`. Introduce `x`. Establish `hx : x ∈ (algF ψ θ true A B).map p` using `hM.mapA.onto ▸ Submodule.mem_top`.
+
+Take `⟨Φ, hΦ, rfl⟩` from `hx`. Take `⟨ΦD, hΦD, h1⟩` from `hO.algA Φ hΦ`. Take `⟨Φ₀D, hΦ₀D, h3⟩` from `GlobalTheory.SquareAgree.polMatch_onto Bs Γ Xc om om' R Rf hR ΦD hΦD`. Take `⟨Φ₀, hΦ₀, h2⟩` from `hO.algB' Φ₀D hΦ₀D`. Conclude with `⟨p' Φ₀, Φ, hΦ, Φ₀, hΦ₀, ΦD, hΦD, Φ₀D, hΦ₀D, h1, h2, h3, rfl⟩`.
+
+Take `⟨c, hc0, hc⟩` from `GlobalTheory.SquareAgree.eq_smul_of_stable_graph D X Pi rf rl hM.irred (_root_.GlobalTheory.SquareAgree.rank_polarization_pi_le_aleph0 hRe hP D ψ θ W W₁ X A A₁ B α β ν 𝓕 ν₁ 𝓕₁ ωA ωB e Bs Γ Xc om om' cA cB hθ hT hO hTD R Rf hR Pi rf rl p p' hM) S stf stl k1 k2 on`. Use `⟨c, hc0, ?_⟩` and prove the remaining obligations. Introduce `Φ hΦ Φ₀ hΦ₀ ΦD Φ₀D hD hD₀ hSo hp`. Take `⟨ΦD', hΦD', h1⟩` from `hO.algA Φ hΦ`. Establish `hΦD : ΦD ∈ algD Γ.M Bs.ψ Bs.emb` using `(GlobalTheory.ThetaInj.theta_inj Γ.M ψ hstd cA _ _ _ hD h1) ▸ hΦD'`.
+
+Take `⟨Φ₀D', hΦ₀D', h2⟩` from `hO.algB Φ₀ hΦ₀`. Establish `hΦ₀D : Φ₀D ∈ algD Γ.M' Bs.ψ Bs.emb` using `(GlobalTheory.ThetaInj.theta_inj Γ.M' ψ hstd cB _ _ _ hD₀ h2) ▸ hΦ₀D'`. Take `⟨Φ₁D, hΦ₁D, m1⟩` from `GlobalTheory.SquareAgree.polMatch_onto Bs Γ Xc om om' R Rf hR ΦD hΦD`. Take `⟨Φ₁, hΦ₁, h4⟩` from `hO.algB' Φ₁D hΦ₁D`. Establish `hy` using `hc (p Φ) (p' Φ₁) ⟨Φ, hΦ, Φ₁, hΦ₁, ΦD, hΦD, Φ₁D, hΦ₁D, hD, h4, m1, rfl⟩`.
+
+Establish `h5` using `dB.2 _ _ _ _ (-c) h4 hD₀`. Establish `hz : p' (Φ₁ + (-c) • Φ₀) = 0` using `by rw [map_add, map_smul, hy, hp, neg_smul, add_neg_cancel]`. Establish `m2` using `(_root_.GlobalTheory.SquareAgree.theta_kernel_match_on_opposite_parabolic hRe hP D ψ θ W W₁ X A A₁ B α β ν 𝓕 ν₁ 𝓕₁ ωA ωB e Bs Γ Xc om om' cA cB hθ hT hO hTD R Rf hR Pi rf rl p p' hM _ (add_mem hΦ₁ (Submodule.smul_mem _ _ hΦ₀)) _ (add_mem hΦ₁D (Submodule.smul_mem _ _ hΦ₀D)) h5).1 …`. Establish `m3` using `lin.2 _ _ _ _ (-1) m1 m2`. Establish `e3 : Φ₁D + (-1 : ℂ) • (Φ₁D + (-c) • Φ₀D) = c • Φ₀D` using `by module`.
+
+Rewrite `m3` using `[smul_zero, add_zero, e3]`. Conclude with `GlobalTheory.SquareAgree.PolMatchConst.match_of_polMatch Bs Γ Xc om om' R Rf hTD _ _ m3 (Submodule.smul_mem _ c hSo)`.
+-/
 theorem theta_kernels_agree_up_to_scalar : GlobalTheory.Published.HoweDualityReal → _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (W W₁ X : HSp D) (A : Fr W) (A₁ : Fr W₁)
     (B : Fr X) (α β : (AE D)ˣ →* Circle) (ν : Measure (GA D W)) (𝓕 : Set (GA D W)) (ν₁ : Measure (GA D W₁))
     (𝓕₁ : Set (GA D W₁)) (ωA : WRep W X) (ωB : WRep W₁ X) (e : Fin X.rank ≃ Fin (W.rank + W₁.rank))
@@ -186,6 +231,9 @@ open scoped TensorProduct GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorMode
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.SquareComm GlobalTheory.SquareAgree
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.SquareAgree.theta_kernels_agree_up_to_scalar | exact _root_.GlobalTheory.SquareAgree.theta_kernels_agree_up_to_scalar | (intros; apply _root_.GlobalTheory.SquareAgree.theta_kernels_agree_up_to_scalar <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.twisted_theta_kernels_agree_up_to_scalar : GlobalTheory.Published.HoweDualityReal → _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (W W₁ X : HSp D) (A : Fr W) (A₁ : Fr W₁)
     (B : Fr X) (α β : (AE D)ˣ →* Circle) (ν : Measure (GA D W)) (𝓕 : Set (GA D W)) (ν₁ : Measure (GA D W₁))
     (𝓕₁ : Set (GA D W₁)) (ωA : WRep W X) (ωB : WRep W₁ X) (e : Fin X.rank ≃ Fin (W.rank + W₁.rank))

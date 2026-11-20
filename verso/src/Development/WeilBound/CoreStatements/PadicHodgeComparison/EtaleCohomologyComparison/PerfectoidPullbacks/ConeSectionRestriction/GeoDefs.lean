@@ -16,6 +16,9 @@ attribute [local instance] MvPolynomial.gradedAlgebra
 
 abbrev grK (K : Type) [Field K] (N : ℕ) := MvPolynomial.homogeneousSubmodule (Fin (N + 1)) K
 
+/- English proof (translation)
+The claim follows from `MvPolynomial.isHomogeneous_X K j`.
+-/
 theorem xv_mem (K : Type) [Field K] (N : ℕ) (j : Fin (N + 1)) : (MvPolynomial.X j : MvPolynomial (Fin (N + 1)) K) ∈ grK K N 1 :=
   MvPolynomial.isHomogeneous_X K j
 
@@ -32,11 +35,17 @@ def yS {K : Type} [Field K] {N m : ℕ} (y : Fin m → MvPolynomial (Fin (N + 1)
     MvPolynomial (Fin (N + 1)) K :=
   ∏ k ∈ S, y k
 
+/- English proof (translation)
+Establish `h` using `MvPolynomial.IsHomogeneous.prod S y (fun _ => e) (fun k _ => hy k)`. Simplify `h` using `[yS, Finset.sum_const, smul_eq_mul]`.
+-/
 theorem yS_mem {K : Type} [Field K] {N m e : ℕ} (y : Fin m → MvPolynomial (Fin (N + 1)) K)
     (hy : ∀ k, (y k).IsHomogeneous e) (S : Finset (Fin m)) : yS y S ∈ grK K N (S.card * e) := by
   have h := MvPolynomial.IsHomogeneous.prod S y (fun _ => e) (fun k _ => hy k)
   simpa [yS, Finset.sum_const, smul_eq_mul] using h
 
+/- English proof (translation)
+Establish `h` using `hc.aeval y hy`. Rewrite using `[MvPolynomial.mem_homogeneousSubmodule, smul_eq_mul]`. Use `h using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem aeval_mem {K : Type} [Field K] {N m e : ℕ} (y : Fin m → MvPolynomial (Fin (N + 1)) K)
     (hy : ∀ k, (y k).IsHomogeneous e) (S : Finset (Fin m)) {j : ℕ} (c : MvPolynomial (Fin m) K)
     (hc : c.IsHomogeneous (j * S.card)) : MvPolynomial.aeval y c ∈ grK K N (j • (S.card * e)) := by
@@ -58,10 +67,16 @@ def tV {K : Type} [Field K] {X : Scheme.{0}} {N e d : ℕ} (i : X ⟶ PSpace K N
 
 abbrev resO {X : Scheme.{0}} {V W : X.Opens} (h : V ≤ W) : Γ(X, W) →+* Γ(X, V) := (X.presheaf.map (homOfLE h).op).hom
 
+/- English proof (translation)
+The claim follows from `hV.trans (le_iInf₂ fun k _ => iInf_le U k)`.
+-/
 theorem le_biInf_of_le {X : Scheme.{0}} {m : ℕ} {U : Fin m → X.Opens} {V : X.Opens} (hV : V ≤ ⨅ k, U k)
     (S : Finset (Fin m)) : V ≤ ⨅ k ∈ S, U k :=
   hV.trans (le_iInf₂ fun k _ => iInf_le U k)
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `_ = CommRingCat.Hom.hom (((Scheme.ΓSpecIso (CommRingCat.of O)).inv ≫ q.appLE ⊤ W le_top) ≫ X.presheaf.map (homOfLE h).op)`. Rewrite using `[Category.assoc, Scheme.Hom.appLE_map]`. Both sides reduce to the same expression.
+-/
 theorem strV_res {O : Type} [CommRing O] {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of O)) {V W : X.Opens}
     (h : V ≤ W) : strV q V = (resO h).comp (strV q W) := by
   change _ = CommRingCat.Hom.hom (((Scheme.ΓSpecIso (CommRingCat.of O)).inv ≫ q.appLE ⊤ W le_top) ≫

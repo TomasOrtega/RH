@@ -15,6 +15,33 @@ open ModularForm (E₄ E₆)
 
 namespace GlobalTheory.FN
 
+/- English proof (translation)
+Introduce `Ω _ ε f h hf hh`. Take `⟨N, w, hN, hLv⟩` from `hf`. Take `⟨b, hb, hbE⟩` from `hLv.2 1`. Establish `hb' : HasQ N (fun τ => DD τ ^ w * f τ) b`. Simplify `hb` using `only [one_smul]`.
+
+Use `choose a ha using fun n => (hbE n : b n ∈ ε.range)`. Establish `hb'' : HasQ N (fun τ => DD τ ^ w * f τ) (fun n => ε (a n))`. Establish `: (fun n => ε (a n)) = b` using `funext ha`. Rewrite using `[this]`. Conclude with `hb'`.
+
+Take `⟨S, hS⟩` from `GlobalTheory.T.qExpansion_coeffs_mem_finitelyGenerated Ω ε N w f a hN hLv hb''`. Take `⟨H, hH, hHa, hH0⟩` from `GlobalTheory.T.exists_hahnSeries_isExp_of_hasQ Ω ε N (fun τ => DD τ ^ w * f τ) a hN hb''`. Take `⟨hD, hDe, hD0, hDl, hDz⟩` from `GlobalTheory.T.exists_cuspExpansion_discriminant_integer_leading_one Ω ε`. Take `⟨hops, huniq, hC, -, -⟩` from `GlobalTheory.T.isCuspExpansionAtInfinity_properties Ω ε`. Take `⟨hmul, hinv⟩` from `GlobalTheory.T.hahnSeries_subring_coeff_mul_inv_mem Ω (Subring.closure (S : Set Ω))`.
+
+Use `set A := Subring.closure (S : Set Ω)`. Establish `hpow : ∀ k : ℕ, IsExp ε (fun τ => DD τ ^ k) (hD ^ k)`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`.
+
+Use `hC 1` as an intermediate fact. Simplify `this` using `[map_one]`. Consider the case `succ k ih`. Establish `e : (fun τ => DD τ ^ (k + 1)) = (fun τ => DD τ ^ k) * DD`. Use function extensionality and compare the values at `τ`.
+
+Simplify using `[pow_succ]`. Rewrite using `[e, pow_succ]`. Conclude with `(hops _ _ _ _ ih hDe).2.2`. Establish `hprod : IsExp ε (fun τ => DD τ ^ w * f τ) (hD ^ w * h)` using `(hops _ _ _ _ (hpow w) hh).2.2`. Establish `hEq : hD ^ w * h = H` using `huniq _ _ _ hprod hH`.
+
+Establish `hDw0 : hD ^ w ≠ 0` using `pow_ne_zero _ hD0`. Establish `hEq' : h = H * (hD⁻¹) ^ w`. Rewrite using `[← hEq, inv_pow, mul_comm (hD ^ w) h, mul_assoc, mul_inv_cancel₀ hDw0, mul_one]`. Establish `hHA : ∀ r, H.coeff r ∈ A`. Introduce `r`.
+
+Distinguish the cases in `hr : ∃ k : ℕ, r = (k : ℚ) / N`. Take `⟨k, rfl⟩` from `hr`. Rewrite using `[hHa k]`. Conclude with `hS k`. Use `push_neg at hr`.
+
+Rewrite using `[hH0 r hr]`. Conclude with `A.zero_mem`. Establish `hDA : ∀ r, hD.coeff r ∈ A`. Introduce `r`. Take `⟨n, hn⟩` from `hDz r`.
+
+Rewrite using `[hn]`. Conclude with `intCast_mem A n`. Establish `hDiA : ∀ r, (hD⁻¹).coeff r ∈ A` using `hinv hD hDA (by rw [hDl, inv_one]; exact A.one_mem)`. Establish `hpA : ∀ k : ℕ, ∀ r, ((hD⁻¹) ^ k).coeff r ∈ A`. Introduce `k`.
+
+Proceed by induction on `k with`. Consider the case `zero`. Introduce `r`. Rewrite using `[pow_zero]`. Distinguish the cases in `hr : r = 0`.
+
+Substitute `hr` using the available equality. Simplify using `using A.one_mem`. Simplify `A.zero_mem` using `[hr]`. Consider the case `succ k ih`. Introduce `r`.
+
+Rewrite using `[pow_succ]`. Conclude with `hmul _ _ ih hDiA r`. Use `⟨S, fun r => ?_⟩` and prove the remaining obligations. Rewrite using `[hEq']`. Conclude with `hmul _ _ hHA (hpA w) r`.
+-/
 theorem coeff_fg : ∀ (Ω : Type) [Field Ω] (ε : Ω →+* ℂ) (f : ℍ → ℂ) (h : HahnSeries ℚ Ω),
     InR ε.range f → IsExp ε f h → ∃ S : Finset Ω, ∀ r, h.coeff r ∈ Subring.closure (S : Set Ω) := by
   intro Ω _ ε f h hf hh

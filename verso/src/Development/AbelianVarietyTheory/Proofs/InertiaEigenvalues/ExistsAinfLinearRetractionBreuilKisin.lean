@@ -11,6 +11,9 @@ open scoped Formalism.Per NNReal
 
 namespace GlobalTheory.BKLim.AinfRetraction
 
+/- English proof (translation)
+Introduce `l _ K bk`. Take `⟨ι, ⟨TB⟩⟩` from `GlobalTheory.BSP.AinfTopBasis.main l K bk`. Use `⟨TB.c TB.i₀, TB.c_mul TB.i₀, ?_⟩` and prove the remaining obligations. Rewrite using `[← TB.b_i₀]`. Conclude with `TB.c_self TB.i₀`.
+-/
 theorem main : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K), ∃ c : Ainf l →+ bk.S, (∀ (s : bk.S) (a : Ainf l), c (bk.ev s * a) = s * c a) ∧ c 1 = 1 := by
   intro l _ K bk
   obtain ⟨ι, ⟨TB⟩⟩ := GlobalTheory.BSP.AinfTopBasis.main l K bk

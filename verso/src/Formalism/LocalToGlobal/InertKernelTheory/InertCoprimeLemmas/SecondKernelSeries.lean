@@ -9,6 +9,11 @@ namespace Formalism.L2.KerInert.SecondKernelSeries
 
 open Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Ker Formalism.L2.KerInert.K2 Formalism.L2.KerInert.SecondKernelInstances
 
+/- English proof (translation)
+Apply the tactic sequence `refine mul_ne_zero ?_ (inv_ne_zero ?_) <;>`. Use `Finset.prod_ne_zero_iff.mpr fun v _ => zpow_ne_zero _ ?_` and prove the remaining obligations. Establish `hs` using `X.G.P.setting v`. Use `haveI := hs.frac_alt`. Establish `h1 : ((p : ℕ) : X.G.P.W v) ≠ 0` using `hs.p_unif.ne_zero`.
+
+Establish `h2 : ((p : ℕ) : X.G.P.Qq v) ≠ 0`. Rewrite using `[← map_natCast (algebraMap (X.G.P.W v) (X.G.P.Qq v))]`. Conclude with `(map_ne_zero_iff _ (IsFractionRing.injective _ _)).mpr h1`. Rewrite using `[← map_natCast (X.G.P.ι v)]`. Conclude with `(map_ne_zero _).mpr h2`.
+-/
 theorem eFac_ne_zero {p : ℕ} [Fact p.Prime] {X : Sys p} (Y : Pend X) (j : ℕ) (La : X.Lt j) (La' : X.Lt (j + 1)) :
     Y.eS j La * (Y.eT j La')⁻¹ ≠ 0 := by
   refine mul_ne_zero ?_ (inv_ne_zero ?_) <;>
@@ -22,6 +27,9 @@ theorem eFac_ne_zero {p : ℕ} [Fact p.Prime] {X : Sys p} (Y : Pend X) (j : ℕ)
     rw [← map_natCast (X.G.P.ι v)]
     exact (map_ne_zero _).mpr h2
 
+/- English proof (translation)
+Introduce `p _ X Y j La _ c' L' _`. Unfold `srOf`. Rewrite using `[smul_smul, inv_mul_cancel₀ (eFac_ne_zero Y j La (c', L')), one_smul]`.
+-/
 theorem series_compatibility_of : TieSerOf := by
   intro p _ X Y j La _ c' L' _
   unfold srOf

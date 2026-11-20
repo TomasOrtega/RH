@@ -11,6 +11,15 @@ namespace GlobalTheory.DefLift
 
 namespace Compl
 
+/- English proof (translation)
+Set `b` to `Module.finBasis ℂ W`. Set `L : E →ₗ[ℂ] (Fin (Module.finrank ℂ W) → ℂ)` to `LinearMap.pi fun i => B.flip (b i)`. Establish `hL (P) (h : L P = 0) (w) (hw : w ∈ W) : B P w = 0`. Use `congrArg W.subtype (b.sum_repr ⟨w, hw⟩)` as an intermediate fact. Rewrite `this` using `[map_sum, Submodule.subtype_apply]`.
+
+Express the relevant statement in the definitionally equal form `_ = w at this`. Rewrite using `[← this, map_sum]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, map_smulₛₗ]`. Conclude with `smul_eq_zero_of_right _ (congrFun h i)`.
+
+Establish `hinj : Function.Injective (L ∘ₗ W.subtype)`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Conclude with `Subtype.ext (hB _ (hL x hx x x.2))`. Take `⟨x, hx⟩` from `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank (by simp)).mp hinj (L P)`.
+
+Conclude with `⟨x, x.2, hL _ (by rw [map_sub, ← hx]; simp)⟩`.
+-/
 theorem exists_sub_perp {E : Type*} [AddCommGroup E] [Module ℂ E] (B : E →ₗ[ℂ] E →ₗ⋆[ℂ] ℂ)
     (hB : ∀ x, B x x = 0 → x = 0) (W : Submodule ℂ E) [FiniteDimensional ℂ W] (P : E) :
     ∃ Q ∈ W, ∀ w ∈ W, B (P - Q) w = 0 := by
@@ -32,6 +41,11 @@ theorem exists_sub_perp {E : Type*} [AddCommGroup E] [Module ℂ E] (B : E →�
     (L P)
   exact ⟨x, x.2, hL _ (by rw [map_sub, ← hx]; simp)⟩
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.AevalTotalDegreeBound.main`. Consider the case `exact _root_.GlobalTheory.AevalTotalDegreeBound.main`. Consider the case `(apply _root_.GlobalTheory.AevalTotalDegreeBound.main <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.AevalTotalDegreeBound.main <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.AevalTotalDegreeBound.main <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.AevalTotalDegreeBound.main ..)`.
+-/
 theorem totalDegree_aeval_le {σ : Type*} (f : σ → MvPolynomial σ ℂ) (hf : ∀ v, (f v).totalDegree ≤ 1)
     (P : MvPolynomial σ ℂ) : (aeval f P).totalDegree ≤ P.totalDegree := by
   first
@@ -44,18 +58,27 @@ theorem totalDegree_aeval_le {σ : Type*} (f : σ → MvPolynomial σ ℂ) (hf :
 
 variable {ι : Type} {m n : ℕ}
 
+/- English proof (translation)
+Use `totalDegree_aeval_le _ (fun v => ?_) P` and prove the remaining obligations. Use `totalDegree_finsetSum_le fun i _ => totalDegree_finsetSum_le fun c _ => ?_` and prove the remaining obligations. Conclude with `(totalDegree_smul_le _ _).trans (totalDegree_X _).le`.
+-/
 theorem totalDegree_subst_le (a : ι → Matrix (Fin n) (Fin n) ℂ) (b : ι → Matrix (Fin m) (Fin m) ℂ) (P : Pol ι m n) :
     (subst a b P).totalDegree ≤ P.totalDegree := by
   refine totalDegree_aeval_le _ (fun v => ?_) P
   refine totalDegree_finsetSum_le fun i _ => totalDegree_finsetSum_le fun c _ => ?_
   exact (totalDegree_smul_le _ _).trans (totalDegree_X _).le
 
+/- English proof (translation)
+Unfold `colSub`. Rewrite using `[AlgHom.toLinearMap_apply]`. Conclude with `totalDegree_subst_le _ _ _`.
+-/
 theorem totalDegree_colSub_le (τ : ι) (g : Matrix.unitaryGroup (Fin n) ℂ) (P : Pol ι m n) :
     (colSub m τ g P).totalDegree ≤ P.totalDegree := by
   unfold colSub
   rw [AlgHom.toLinearMap_apply]
   exact totalDegree_subst_le _ _ _
 
+/- English proof (translation)
+Use `fockInner_algHom_of_linear _ _ (fun v w => if v.1 = w.1 then b v.1 w.2.1 v.2.1 * a v.1 v.2.2 w.2.2 else 0) ?_ ?_ P Q` and prove the remaining obligations. Introduce and unpack `⟨t, i, k⟩`. Simplify using `[subst, Fintype.sum_prod_type]`. Introduce and unpack `⟨t, i, k⟩`. Simplify using `[subst, Fintype.sum_prod_type, apply_ite star, mul_comm]`.
+-/
 theorem fockInner_subst [Fintype ι] (a : ι → Matrix (Fin n) (Fin n) ℂ) (b : ι → Matrix (Fin m) (Fin m) ℂ)
     (P Q : Pol ι m n) :
     fockInner (subst a b P) Q = fockInner P (subst (fun τ => star (a τ)) (fun τ => star (b τ)) Q) := by
@@ -67,6 +90,11 @@ theorem fockInner_subst [Fintype ι] (a : ι → Matrix (Fin n) (Fin n) ℂ) (b 
   · rintro ⟨t, i, k⟩
     simp [subst, Fintype.sum_prod_type, apply_ite star, mul_comm]
 
+/- English proof (translation)
+Unfold `colSub`. Simplify using `only [AlgHom.toLinearMap_apply]`. Rewrite using `[fockInner_subst]`. Use `congr 3`. Use function extensionality and compare the values at `ρ split_ifs`.
+
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. Use function extensionality and compare the values at `ρ`. Simplify using the standard rewrite rules.
+-/
 theorem fockInner_colSub [Fintype ι] (τ : ι) (g : Matrix.unitaryGroup (Fin n) ℂ) (P Q : Pol ι m n) :
     fockInner (colSub m τ g P) Q = fockInner P (colSub m τ g⁻¹ Q) := by
   unfold colSub
@@ -84,6 +112,31 @@ end Compl
 
 open Compl in
 
+/- English proof (translation)
+Set `b` to `Module.finBasis ℂ X`. Set `B : (X →ₗ[ℂ] Pol ι m n) →ₗ[ℂ] (X →ₗ[ℂ] Pol ι m n) →ₗ⋆[ℂ] ℂ` to `LinearMap.mk₂'ₛₗ (RingHom.id ℂ) (starRingEnd ℂ) (fun Φ Ψ => ∑ i, fockInner (Φ (b i)) (Ψ (b i))) (fun _ _ _ => by simp [fockInner_add_left, Finset.sum_add_distrib]) (fun _ _ _ => by simp [fockInner_smul_left, Finset.mul_sum]) (fun _ _ _ => by simp [fockInner_add_right, Finset.sum_ …`. Establish `hBa (Φ Ψ) : B Φ Ψ = ∑ i, fockInner (Φ (b i)) (Ψ (b i))` using `rfl`. Establish `hB (Φ) (h : B Φ Φ = 0) : Φ = 0`. Rewrite `h` using `[hBa]`.
+
+Simplify using `only [fockInner_self] at h`. Establish `h' : ∑ i, fockNormSq (Φ (b i)) = 0`. Rewrite `h` using `[← RCLike.ofReal_sum]`. Conclude with `RCLike.ofReal_eq_zero.mp h`. Rewrite `h'` using `[Finset.sum_eq_zero_iff_of_nonneg fun i _ => fockNormSq_nonneg _]`.
+
+Conclude with `b.ext fun i => fockNormSq_eq_zero.mp (h' i (Finset.mem_univ i))`. Establish `hadj (Φ Ψ τ g) : B (colSub m τ g ∘ₗ Φ) Ψ = B Φ (colSub m τ g⁻¹ ∘ₗ Ψ)`. Simplify using `only [hBa, LinearMap.comp_apply, fockInner_colSub]`. Use `clear hBa`. Use `clear_value B`.
+
+Take `⟨β, hβW, hβU⟩` from `SetLike.exists_of_lt hlt`. Take `⟨d, hd⟩ : ∃ d : ℕ, ∀ i, (β (b i)).totalDegree ≤ d` from `⟨_, fun i => Finset.le_sup (f := fun i => (β (b i)).totalDegree) (Finset.mem_univ i)⟩`. Take `⟨R, hRf, hR⟩ : ∃ R : Submodule ℂ (Pol ι m n), FiniteDimensional ℂ R ∧ ∀ P, P ∈ R ↔ P.totalDegree ≤ d` from `⟨restrictTotalDegree (ι × Fin m × Fin n) ℂ d, inferInstance, fun P => mem_restrictTotalDegree _ _ _⟩`. Set `ψ : (X →ₗ[ℂ] R) →ₗ[ℂ] (X →ₗ[ℂ] Pol ι m n)` to `{ toFun := fun Ψ => R.subtype ∘ₗ Ψ map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl }`. Set `D : Submodule ℂ (X →ₗ[ℂ] Pol ι m n)` to `LinearMap.range ψ`.
+
+Establish `hD (Φ) : Φ ∈ D ↔ ∀ x, Φ x ∈ R`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨Ψ, rfl⟩ x`. Conclude with `(Ψ x).2`. Introduce `h`.
+
+Conclude with `⟨Φ.codRestrict R h, rfl⟩`. Use `haveI : FiniteDimensional ℂ D := inferInstance`. Use `clear_value D`. Establish `hDs (Φ) (h : Φ ∈ D) (τ g) : colSub m τ g ∘ₗ Φ ∈ D`. Rewrite `h`, the goal using `[hD]`.
+
+Introduce `x`. Use `h x` as an intermediate fact. Rewrite `this`, the goal using `[hR]`. Rewrite using `[LinearMap.comp_apply]`. Conclude with `(totalDegree_colSub_le τ g _).trans this`.
+
+Establish `hβD : β ∈ D`. Rewrite using `[hD]`. Introduce `x`. Rewrite using `[← b.sum_repr x, map_sum]`. Use `R.sum_mem fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_smul]`. Conclude with `R.smul_mem _ ((hR _).2 (hd i))`. Use `haveI : FiniteDimensional ℂ (U ⊓ D : Submodule ℂ _) := Submodule.finiteDimensional_inf_right _ _`. Set `T : Submodule ℂ (X →ₗ[ℂ] Pol ι m n)` to `⨅ w ∈ U ⊓ D, LinearMap.ker (B.flip w)`. Establish `hT (Φ) : Φ ∈ T ↔ ∀ w ∈ U ⊓ D, B Φ w = 0` using `by simp [T, Submodule.mem_iInf]`.
+
+Take `⟨Q, hQ, hperp⟩` from `exists_sub_perp B hB (U ⊓ D) β`. Use `⟨W ⊓ D ⊓ T, ?_, inf_le_left.trans inf_le_left, ?_, ?_⟩` and prove the remaining obligations. Introduce `h`. Establish `hm : β - Q ∈ W ⊓ D ⊓ T` using `⟨⟨W.sub_mem hβW (hlt.le hQ.1), D.sub_mem hβD hQ.2⟩, (hT _).2 hperp⟩`. Rewrite `hm` using `[h, Submodule.mem_bot, sub_eq_zero]`.
+
+Conclude with `hβU (hm ▸ hQ.1)`. Rewrite using `[Submodule.eq_bot_iff]`. Introduce and unpack `Φ ⟨h1, ⟨-, h2⟩, h3⟩`. Conclude with `hB Φ ((hT Φ).1 h3 Φ ⟨h1, h2⟩)`. Introduce and unpack `Φ ⟨⟨h1, h2⟩, h3⟩ τ g`.
+
+Use `⟨⟨hW Φ h1 τ g, hDs Φ h2 τ g⟩, (hT _).2 fun w hw => ?_⟩` and prove the remaining obligations. Rewrite using `[hadj]`. Conclude with `(hT Φ).1 h3 _ ⟨hU w hw.1 τ _, hDs w hw.2 τ _⟩`.
+-/
 theorem exists_colStable_disjoint (ι : Type) [Fintype ι] (m n : ℕ) (X : Type) [AddCommGroup X] [Module ℂ X]
     [FiniteDimensional ℂ X] (U W : Submodule ℂ (X →ₗ[ℂ] Pol ι m n))
     (hU : ∀ Φ ∈ U, ∀ τ g, colSub m τ g ∘ₗ Φ ∈ U) (hW : ∀ Φ ∈ W, ∀ τ g, colSub m τ g ∘ₗ Φ ∈ W) (hlt : U < W) :

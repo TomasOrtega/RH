@@ -6,6 +6,9 @@ open scoped IntermediateField.algebraAdjoinAdjoin
 
 namespace GlobalTheory.SepPoint
 
+/- English proof (translation)
+Take `⟨b, hb, h⟩` from `IsLocalization.integerNormalization_spec (nonZeroDivisors (Algebra.adjoin k s)) p`. Use `⟨IsLocalization.integerNormalization (nonZeroDivisors (Algebra.adjoin k s)) p, b, nonZeroDivisors.ne_zero hb, ?_⟩` and prove the remaining obligations. Rewrite using `[h, ← IsScalarTower.algebraMap_smul (IntermediateField.adjoin k s) b p, Polynomial.smul_eq_C_mul]`.
+-/
 theorem exists_clear_poly {k F : Type} [Field k] [Field F] [Algebra k F] (s : Set F)
     (p : (IntermediateField.adjoin k s)[X]) :
     ∃ q : (Algebra.adjoin k s)[X], ∃ b : Algebra.adjoin k s, b ≠ 0 ∧
@@ -17,6 +20,9 @@ theorem exists_clear_poly {k F : Type} [Field k] [Field F] [Algebra k F] (s : Se
     nonZeroDivisors.ne_zero hb, ?_⟩
   rw [h, ← IsScalarTower.algebraMap_smul (IntermediateField.adjoin k s) b p, Polynomial.smul_eq_C_mul]
 
+/- English proof (translation)
+Rewrite using `[aeval_eq_sum_range]`. Use `Subalgebra.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def]`. Conclude with `Subalgebra.mul_mem _ (Algebra.subset_adjoin (Set.mem_insert_of_mem _ (g.coeff i).2)) (Subalgebra.pow_mem _ (Algebra.subset_adjoin (Set.mem_insert _ _)) _)`.
+-/
 theorem aeval_mem_adjoin_insert {k F : Type} [Field k] [Field F] [Algebra k F]
     (R : Subalgebra k F) (θ : F) (g : R[X]) :
     aeval θ g ∈ Algebra.adjoin k (insert θ (R : Set F)) := by
@@ -26,6 +32,13 @@ theorem aeval_mem_adjoin_insert {k F : Type} [Field k] [Field F] [Algebra k F]
   exact Subalgebra.mul_mem _ (Algebra.subset_adjoin (Set.mem_insert_of_mem _ (g.coeff i).2))
     (Subalgebra.pow_mem _ (Algebra.subset_adjoin (Set.mem_insert _ _)) _)
 
+/- English proof (translation)
+Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty => exact ⟨1, one_ne_zero, by simp⟩`. Consider the case `insert a T ha ih`. Take `⟨B, hB, hBT⟩` from `ih fun x hx => h x (Finset.mem_insert_of_mem hx)`. Take `⟨b, hb, hba⟩` from `h a (Finset.mem_insert_self a T)`.
+
+Use `⟨b * B, mul_ne_zero hb hB, fun x hx => ?_⟩` and prove the remaining obligations. Break down `Finset.mem_insert.mp hx with rfl | hx` into its components or cases. Establish `: ((b * B : R) : F) * x = (B : F) * ((b : F) * x)` using `by push_cast; ring`. Rewrite using `[this]`. Conclude with `S.mul_mem (hRS B.2) hba`.
+
+Establish `: ((b * B : R) : F) * x = (b : F) * ((B : F) * x)` using `by push_cast; ring`. Rewrite using `[this]`. Conclude with `S.mul_mem (hRS b.2) (hBT x hx)`.
+-/
 theorem exists_common_mul_mem {k F : Type} [Field k] [Field F] [Algebra k F]
     (R S : Subalgebra k F) (hRS : R ≤ S) (T : Finset F)
     (h : ∀ x ∈ T, ∃ b : R, b ≠ 0 ∧ (b : F) * x ∈ S) :
@@ -47,6 +60,29 @@ end GlobalTheory.SepPoint
 
 namespace GlobalTheory.SepPoint
 
+/- English proof (translation)
+Use `haveI hIC := isIntegrallyClosed_adjoin k F s hs.1`. Establish `hr : Set.range ((↑) : s → F) = (s : Set F)` using `Subtype.range_coe`. Establish `halg : Algebra.IsAlgebraic (Algebra.adjoin k (s : Set F)) F`. Use `hs.isAlgebraic` as an intermediate fact. Rewrite `this` using `[hr]`.
+
+Conclude with `this`. Set `E` to `IntermediateField.adjoin (IntermediateField.adjoin k (s : Set F)) (T : Set F)`. Use `haveI : FiniteDimensional (IntermediateField.adjoin k (s : Set F)) E := IntermediateField.finiteDimensional_adjoin fun x _ => Algebra.IsSeparable.isIntegral _ x`. Use `haveI : Algebra.IsSeparable (IntermediateField.adjoin k (s : Set F)) E := Algebra.isSeparable_tower_bot_of_isSeparable _ E F`. Take `⟨α, hα⟩` from `Field.exists_primitive_element (IntermediateField.adjoin k (s : Set F)) E`.
+
+Establish `hE : E = IntermediateField.adjoin (IntermediateField.adjoin k (s : Set F)) {(α : F)}`. Rewrite using `[← IntermediateField.lift_adjoin_simple, hα, IntermediateField.lift_top]`. Take `⟨c, hc, hcint⟩` from `IsAlgebraic.exists_integral_multiple (halg.isAlgebraic (α : F))`. Use `set θ : F := c • (α : F) with hθdef`. Use `⟨θ, hcint, ?_⟩` and prove the remaining obligations.
+
+Establish `hmin : minpoly (IntermediateField.adjoin k (s : Set F)) θ = (minpoly (Algebra.adjoin k (s : Set F)) θ).map (algebraMap (Algebra.adjoin k (s : Set F)) (IntermediateField.adjoin k (s : Set F)))` using `minpoly.isIntegrallyClosed_eq_field_fractions' _ hcint`. Establish `hsepθ : (minpoly (IntermediateField.adjoin k (s : Set F)) θ).Separable` using `Algebra.IsSeparable.isSeparable _ θ`. Take `⟨u, v, huv⟩` from `hsepθ`. Take `⟨u', b₁, hb₁, hu'⟩` from `exists_clear_poly (k := k) (s : Set F) u`. Take `⟨v', b₂, hb₂, hv'⟩` from `exists_clear_poly (k := k) (s : Set F) v`.
+
+Establish `hden : ∀ x ∈ T, ∃ b : Algebra.adjoin k (s : Set F), b ≠ 0 ∧ (b : F) * x ∈ Algebra.adjoin k (insert θ (Algebra.adjoin k (s : Set F) : Set F))`. Introduce `x hx`. Establish `hxE : x ∈ E` using `IntermediateField.subset_adjoin _ _ hx`. Rewrite `hxE` using `[hE]`. Establish `hcF : (c : F) ≠ 0` using `fun h => hc (Subtype.ext h)`.
+
+Establish `hcmem : (c : F) ∈ IntermediateField.adjoin (IntermediateField.adjoin k (s : Set F)) {θ}` using `IntermediateField.algebraMap_mem _ (algebraMap (Algebra.adjoin k (s : Set F)) (IntermediateField.adjoin k (s : Set F)) c)`. Establish `hαmem : (α : F) ∈ IntermediateField.adjoin (IntermediateField.adjoin k (s : Set F)) {θ}`. Establish `: (α : F) = (c : F)⁻¹ * θ` using `by show (α : F) = (c : F)⁻¹ * ((c : F) * (α : F))`. Rewrite using `[← mul_assoc, inv_mul_cancel₀ hcF, one_mul]`. Rewrite using `[this]`.
+
+Conclude with `mul_mem (inv_mem hcmem) (IntermediateField.mem_adjoin_simple_self _ _)`. Establish `hxθ` using `IntermediateField.adjoin_simple_le_iff.mpr hαmem hxE`. Establish `hθint : IsIntegral (IntermediateField.adjoin k (s : Set F)) θ` using `Algebra.IsSeparable.isIntegral _ θ`. Establish `hxθ' : x ∈ (IntermediateField.adjoin (IntermediateField.adjoin k (s : Set F)) {θ}).toSubalgebra` using `hxθ`. Rewrite `hxθ'` using `[IntermediateField.adjoin_simple_toSubalgebra_of_isAlgebraic hθint.isAlgebraic, Algebra.adjoin_singleton_eq_range_aeval]`.
+
+Take `⟨g, hg⟩` from `hxθ'`. Take `⟨q, b, hb, hq⟩` from `exists_clear_poly (k := k) (s : Set F) g`. Use `⟨b, hb, ?_⟩` and prove the remaining obligations. Establish `: (b : F) * x = aeval θ q`. Rewrite using `[← hg, ← Polynomial.aeval_map_algebraMap (IntermediateField.adjoin k (s : Set F)) θ q, hq, Polynomial.aeval_mul, Polynomial.aeval_C]`.
+
+Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `aeval_mem_adjoin_insert _ θ q`. Take `⟨B, hB, hBT⟩` from `exists_common_mul_mem (Algebra.adjoin k (s : Set F)) (Algebra.adjoin k (insert θ (Algebra.adjoin k (s : Set F) : Set F))) (fun y hy => Algebra.subset_adjoin (Set.mem_insert_of_mem _ hy)) T hden`. Use `⟨b₁ * b₂ * B, mul_ne_zero (mul_ne_zero hb₁ hb₂) hB, C (b₂ * B) * u', C (b₁ * B) * v', ?_, ?_⟩` and prove the remaining obligations.
+
+Apply `Polynomial.map_injective (algebraMap (Algebra.adjoin k (s : Set F)) (IntermediateField.adjoin k (s : Set F))) (IsFractionRing.injective _ _)` to reduce the goal to its premises. Simplify using `only [Polynomial.map_add, Polynomial.map_mul, Polynomial.map_C, ← Polynomial.derivative_map, ← hmin, hu', hv', map_mul]`. Take the linear combination `(C (algebraMap _ (IntermediateField.adjoin k (s : Set F)) b₁) * C (algebraMap _ (IntermediateField.adjoin k (s : Set F)) b₂) * C (algebraMap _ (IntermediateField.adjoin k (s : Set F)) B)) * huv`. Introduce `x hx`. Establish `: ((b₁ * b₂ * B : Algebra.adjoin k (s : Set F)) : F) * x = ((b₁ * b₂ : Algebra.adjoin k (s : Set F)) : F) * ((B : F) * x)` using `by push_cast; ring`.
+
+Rewrite using `[this]`. Conclude with `Subalgebra.mul_mem _ (Algebra.subset_adjoin (Set.mem_insert_of_mem _ (b₁ * b₂).2)) (hBT x hx)`.
+-/
 theorem exists_primitive_sep_certificate (k F : Type) [Field k] [Field F] [Algebra k F]
     (s : Finset F) (hs : IsTranscendenceBasis k ((↑) : s → F))
     (hsep : Algebra.IsSeparable (IntermediateField.adjoin k (s : Set F)) F) (T : Finset F) :

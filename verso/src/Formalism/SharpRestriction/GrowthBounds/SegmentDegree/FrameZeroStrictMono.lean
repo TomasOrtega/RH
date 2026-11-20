@@ -10,6 +10,19 @@ section Num
 
 variable {p n' r K : ℕ} [NeZero n'] [NeZero r] [NeZero K] {X : Dat n' r}
 
+/- English proof (translation)
+Establish `B` using `basics hX`. Establish `h1` using `pow_Rj_le hX j`. Establish `h2` using `lt_pow_Rj hX (j + 1)`. Establish `d1` using `den_pos hX j`. Establish `d2` using `den_pos hX (j + 1)`.
+
+Unfold `Tj at h1 h2`. Rewrite `h1` using `[le_div_iff₀ d1]`. Rewrite `h2` using `[div_lt_iff₀ d2]`. Simplify using `only [add_sub_cancel_right] at h2`. Establish `hc0 : 0 < 8 * X.Y * Dat.k (r` using `r) K ^ 2 * (X.Ns : ℝ) := by`.
+
+Establish `h2 : (0 : ℝ) < X.Y` using `by linarith [B.Y1]`. Establish `h3 : (0 : ℝ) < Dat.k (r` using `r) K := by linarith [B.k5]`. Establish `h4 : (0 : ℝ) < X.Ns` using `by linarith [B.Ns1]`. Check the signs of the components of the expression. Establish `h3 : (p : ℝ) ^ (X.Rj p K j + X.F.dist j (X.F.fr (j - 1) 0)) < (p : ℝ) ^ (X.Rj p K (j + 1) + 1 + X.F.dist (j + 1) (X.F.fr j 0))`.
+
+Rewrite using `[pow_add, pow_add _ (X.Rj p K (j + 1) + 1)]`. Use `lt_of_mul_lt_mul_right ?_ hc0.le` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ X.a := h1`.
+
+Use `_ < _ := h2`. Use `_ = _ := by ring`. Establish `h4` using `(pow_lt_pow_iff_right₀ B.p1).mp h3`. Establish `b1` using `mem_letters_bounds (reflection_mem_Glev_castSucc hX.valid j)`. Establish `b2` using `mem_letters_bounds (reflection_mem_Glev_castSucc hX.valid (j + 1))`.
+
+Simplify using `only [add_sub_cancel_right] at b2`. Unfold `Frames.dist at h4`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem Rj_add_first_frame_gap_le_last_frame_gap_add_Rj_succ (hX : X.Hyp p K) (j : ℤ) :
     (X.Rj p K j : ℤ) + (X.F.fr j 0 - X.F.fr (j - 1) 0) ≤
       X.F.fr (j + 1) (r - 1) - X.F.fr j (r - 1) + X.Rj p K (j + 1) := by
@@ -44,11 +57,19 @@ theorem Rj_add_first_frame_gap_le_last_frame_gap_add_Rj_succ (hX : X.Hyp p K) (j
   unfold Frames.dist at h4
   omega
 
+/- English proof (translation)
+Establish `h1` using `hX.valid.2.2.2.1 (j - 1)`. Rewrite `h1` using `[sub_add_cancel]`. Conclude with `lt_of_le_of_lt (fr_zero_le_eFr hX.valid (j - 1)) h1`.
+-/
 theorem frame_zero_strict_mono (hX : X.Hyp p K) (j : ℤ) : X.F.fr (j - 1) 0 < X.F.fr j 0 := by
   have h1 := hX.valid.2.2.2.1 (j - 1)
   rw [sub_add_cancel] at h1
   exact lt_of_le_of_lt (fr_zero_le_eFr hX.valid (j - 1)) h1
 
+/- English proof (translation)
+Establish `h` using `Rj_add_first_frame_gap_le_last_frame_gap_add_Rj_succ hX j`. Establish `h0` using `frame_zero_strict_mono hX j`. Establish `hm : X.F.fr j (r - 1) < X.F.fr (j + 1) (r - 1)` using `eFr_strictMono hX.valid (by omega : j < j + 1)`. Unfold `Dat.Pz Dat.Qc`. Rewrite using `[← pow_add]`.
+
+Use `congr 1`. Unfold `Frames.dist`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem sum_PzQc (hX : X.Hyp p K) (j v : ℤ) (hv : v ≤ X.F.fr j (r - 1)) :
     X.Pz p K j v * X.Qc p K j = p ^ (X.F.dist (j + 1) v + X.Rj p K (j + 1)) := by
   have h := Rj_add_first_frame_gap_le_last_frame_gap_add_Rj_succ hX j
@@ -60,6 +81,17 @@ theorem sum_PzQc (hX : X.Hyp p K) (j v : ℤ) (hv : v ≤ X.F.fr j (r - 1)) :
   unfold Frames.dist
   omega
 
+/- English proof (translation)
+Unfold `Dat.Qc`. Rewrite using `[Finset.prod_pow_eq_pow_sum]`. Use `congr 1`. Establish `key : ((∑ j ∈ Finset.range X.F.J, (X.F.fr ((j : ℤ) + 1) (r - 1) - X.F.fr (j : ℤ) (r - 1) + (X.Rj p K ((j : ℤ) + 1) : ℤ) - (X.Rj p K (j : ℤ) : ℤ)).toNat : ℕ) : ℤ) = n'`. Use `push_cast`.
+
+Establish `e : ∀ j ∈ Finset.range X.F.J, (((X.F.fr ((j : ℤ) + 1) (r - 1) - X.F.fr (j : ℤ) (r - 1) + (X.Rj p K ((j : ℤ) + 1) : ℤ) - (X.Rj p K (j : ℤ) : ℤ)).toNat : ℕ) : ℤ) = (fun i : ℕ => X.F.fr (i : ℤ) (r - 1) + (X.Rj p K (i : ℤ) : ℤ)) (j + 1) - (fun i : ℕ => X.F.fr (i : ℤ) (r - 1) + (X.Rj …`. Introduce `j _`. Establish `h` using `Rj_add_first_frame_gap_le_last_frame_gap_add_Rj_succ hX (j : ℤ)`. Establish `h0` using `frame_zero_strict_mono hX (j : ℤ)`. Rewrite using `[Int.toNat_of_nonneg (by omega)]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `tel` using `Finset.sum_range_sub (fun i : ℕ => X.F.fr (i : ℤ) (r - 1) + (X.Rj p K (i : ℤ) : ℤ)) X.F.J`. Rewrite using `[Finset.sum_congr rfl e]`. Use `tel.trans ?_` and prove the remaining obligations.
+
+Establish `p1` using `fr_add_mul_period hX.valid 0 (r - 1) 1`. Establish `p2` using `sum_Rj_per X p K hX.valid 0 1`. Simplify using `only [zero_add, one_mul] at p1 p2`. Use `beta_reduce`. Rewrite using `[p1, p2]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Conclude with `key` after adjusting the coercions.
+-/
 theorem sum_prodQ (hX : X.Hyp p K) : ∏ j ∈ Finset.range X.F.J, X.Qc p K (j : ℤ) = p ^ n' := by
   unfold Dat.Qc
   rw [Finset.prod_pow_eq_pow_sum]
@@ -89,6 +121,11 @@ theorem sum_prodQ (hX : X.Hyp p K) : ∏ j ∈ Finset.range X.F.J, X.Qc p K (j :
     ring
   exact_mod_cast key
 
+/- English proof (translation)
+Establish `B` using `basics hX`. Use `le_trans ?_ (l42b hX 0 _ (reflection_mem_Glev_castSucc hX.valid 0))` and prove the remaining obligations. Establish `h1 : (1 : ℝ) ≤ (p : ℝ) ^ (X.F.dist 0 (X.F.fr (0 - 1) 0) + X.Rj p K 0)` using `one_le_pow₀ B.p1.le`. Establish `hk2 : (25 : ℝ) ≤ Dat.k (r` using `r) K ^ 2 := by nlinarith [B.k5]`. Establish `hY0 : (0 : ℝ) < X.Y` using `by linarith [B.Y1]`.
+
+Establish `h2 : 32 * X.Y ≤ 8 * X.Y * Dat.k (r` using `r) K ^ 2 := by nlinarith`. Establish `h3 : 8 * X.Y * Dat.k (r` using `r) K ^ 2 ≤ 8 * X.Y * Dat.k (r := r) K ^ 2 * (X.Ns : ℝ) := le_mul_of_one_le_right (by positivity) B.Ns1`. Establish `h4 : 8 * X.Y * Dat.k (r` using `r) K ^ 2 * (X.Ns : ℝ) ≤ 8 * X.Y * Dat.k (r := r) K ^ 2 * (X.Ns : ℝ) * (p : ℝ) ^ (X.F.dist 0 (X.F.fr (0 - 1) 0) + X.Rj p K 0) := le_mul_of_one_le_right (by have := B.Ns1; positivity) h1`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem thirty_two_Y_le_a (hX : X.Hyp p K) : 32 * X.Y ≤ X.a := by
   have B := basics hX
   refine le_trans ?_ (l42b hX 0 _ (reflection_mem_Glev_castSucc hX.valid 0))
@@ -103,6 +140,9 @@ theorem thirty_two_Y_le_a (hX : X.Hyp p K) : 32 * X.Y ≤ X.a := by
     le_mul_of_one_le_right (by have := B.Ns1; positivity) h1
   linarith
 
+/- English proof (translation)
+Establish `h41` using `(top_count_lower_bounds_of_occurrence 1088 (by norm_num) top_occurs_in_at_most_two_segments p n' r K X hX hLa hk).1 _ (mem_letters_bounds hy).2.2`. Establish `hd` using `(hX.degs _ (mem_letters_bounds hy).2.2).1`. Establish `h2` using `l42b hX j y hy`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem sum_aP (hX : X.Hyp p K) (hLa : (1088 : ℝ) ≤ X.CLa) (hk : (1088 : ℝ) ≤ X.Ck) (j y : ℤ)
     (hy : y ∈ X.F.letters j) :
     (36 / 5 : ℝ) * (X.Y * Dat.k (r := r) K ^ 2 * (X.Ns : ℝ) * (p : ℝ) ^ (X.F.dist j y + X.Rj p K j)) ≤
@@ -112,6 +152,17 @@ theorem sum_aP (hX : X.Hyp p K) (hLa : (1088 : ℝ) ≤ X.CLa) (hk : (1088 : ℝ
   have h2 := l42b hX j y hy
   linarith
 
+/- English proof (translation)
+Establish `B` using `basics hX`. Establish `h` using `sum_aP hX hLa hk j x (sum_late_mem hx).1`. Establish `hP : (0 : ℝ) < (p : ℝ) ^ (X.F.dist j x + X.Rj p K j)`. Establish `: (0 : ℝ) < p` using `by linarith [B.p1]`. Check the signs of the components of the expression.
+
+Establish `h1 : Dat.k (r` using `r) K ≤ X.Y * Dat.k (r := r) K ^ 2 * (X.Ns : ℝ) := by`. Establish `hk0 : (0 : ℝ) < Dat.k (r` using `r) K := by linarith [B.k5]`. Establish `a1 : Dat.k (r` using `r) K ≤ Dat.k (r := r) K ^ 2 := by nlinarith [B.k5]`. Establish `a2 : Dat.k (r` using `r) K ^ 2 ≤ X.Y * Dat.k (r := r) K ^ 2 := le_mul_of_one_le_left (by positivity) B.Y1`. Establish `a3 : X.Y * Dat.k (r` using `r) K ^ 2 ≤ X.Y * Dat.k (r := r) K ^ 2 * (X.Ns : ℝ) := le_mul_of_one_le_right (by have := B.Y1; positivity) B.Ns1`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2` using `mul_le_mul_of_nonneg_right h1 hP.le`. Establish `h3 : Dat.k (r` using `r) K * (p : ℝ) ^ (X.F.dist j x + X.Rj p K j) ≤ (X.a' p K (posOf n' x) : ℝ) := by`. Establish `: 0 ≤ X.Y * Dat.k (r` using `r) K ^ 2 * (X.Ns : ℝ) * (p : ℝ) ^ (X.F.dist j x + X.Rj p K j) := by`. Use `B.Y1` as an intermediate fact.
+
+Use `B.Ns1` as an intermediate fact. Check the signs of the components of the expression. Combine the linear equalities and inequalities to obtain the conclusion. Unfold `Dat.k at h3`. Unfold `Dat.Pz`.
+
+Conclude with `h3` after adjusting the coercions.
+-/
 theorem sum_kP (hX : X.Hyp p K) (hLa : (1088 : ℝ) ≤ X.CLa) (hk : (1088 : ℝ) ≤ X.Ck) (j x : ℤ)
     (hx : x ∈ X.toLate j) : (r + K) * X.Pz p K j x ≤ X.a' p K (posOf n' x) := by
   have B := basics hX
@@ -135,15 +186,46 @@ theorem sum_kP (hX : X.Hyp p K) (hLa : (1088 : ℝ) ≤ X.CLa) (hk : (1088 : ℝ
   unfold Dat.Pz
   exact_mod_cast h3
 
+/- English proof (translation)
+Unfold `sumBin`. Establish `: n + (r + K) - 1 = n + (r + K - 1)` using `Nat.add_sub_assoc (by have := NeZero.pos r; omega) n`. Rewrite using `[this]`.
+-/
 theorem sumBin_eq (n : ℕ) : sumBin r K n = (((n + (r + K - 1)).choose (r + K - 1) : ℕ) : ℝ) := by
   unfold sumBin
   have : n + (r + K) - 1 = n + (r + K - 1) := Nat.add_sub_assoc (by have := NeZero.pos r; omega) n
   rw [this]
 
+/- English proof (translation)
+Unfold `Dat.k`. Conclude with `Nat.sub_le _ _` after adjusting the coercions.
+-/
 theorem sum_M_le : ((r + K - 1 : ℕ) : ℝ) ≤ Dat.k (r := r) K := by
   unfold Dat.k
   exact_mod_cast Nat.sub_le _ _
 
+/- English proof (translation)
+Establish `B` using `basics hX`. Establish `hk0 : (0 : ℝ) < Dat.k (r` using `r) K := by linarith [B.k5]`. Establish `hY0 : (0 : ℝ) < X.Y` using `by linarith [B.Y1]`. Establish `hu : 0 < Dat.k (r` using `r) K * X.Y := by positivity`. Establish `ha0 : 0 ≤ X.a` using `by have := thirty_two_Y_le_a hX; linarith`.
+
+Establish `hE0 : (X.E₀ : ℝ) * (Dat.k (r` using `r) K * X.Y) ≤ X.a := by`. Establish `h1` using `Tj_ge hX 0`. Establish `d1` using `den_pos hX 0`. Unfold `Tj at h1`. Rewrite `h1` using `[le_div_iff₀ d1]`.
+
+Establish `hp1 : (1 : ℝ) ≤ (p : ℝ) ^ X.F.dist 0 (X.F.fr (0 - 1) 0)` using `one_le_pow₀ B.p1.le`. Establish `w1 : Dat.k (r` using `r) K * X.Y ≤ 8 * X.Y * Dat.k (r := r) K ^ 2 * (X.Ns : ℝ) * (p : ℝ) ^ X.F.dist 0 (X.F.fr (0 - 1) 0) := by`. Establish `a1 : Dat.k (r` using `r) K * X.Y ≤ 8 * X.Y * Dat.k (r := r) K ^ 2 := by nlinarith [B.k5]`. Establish `a2 : 8 * X.Y * Dat.k (r` using `r) K ^ 2 ≤ 8 * X.Y * Dat.k (r := r) K ^ 2 * (X.Ns : ℝ) := le_mul_of_one_le_right (by positivity) B.Ns1`. Establish `a3 : 8 * X.Y * Dat.k (r` using `r) K ^ 2 * (X.Ns : ℝ) ≤ 8 * X.Y * Dat.k (r := r) K ^ 2 * (X.Ns : ℝ) * (p : ℝ) ^ X.F.dist 0 (X.F.fr (0 - 1) 0) := le_mul_of_one_le_right (by have := B.Ns1; positivity) hp1`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hE : (X.E₀ : ℝ) ≤ 4 * (p : ℝ) * ((X.E₀ : ℝ) + X.mStar + 1)`. Establish `e0 : (0 : ℝ) ≤ X.E₀` using `Nat.cast_nonneg _`. Establish `m0 : (0 : ℝ) ≤ X.mStar` using `Nat.cast_nonneg _`. Use polynomial arithmetic with `[B.p1]`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hEt : (X.Et p K t : ℝ) * (Dat.k (r` using `r) K * X.Y) ≤ 4 * X.a := by`. Establish `h1` using `Et_le top_occurs_in_at_most_two_segments hX t`. Rewrite `h1` using `[le_div_iff₀ (by positivity)]`. Establish `hNk : (X.Ns : ℝ) ≤ Dat.k (r` using `r) K := by`.
+
+Unfold `Dat.k`. Use `hX.NsK` as an intermediate fact. Conclude with `(by omega : X.Ns ≤ r + K)` after adjusting the coercions. Establish `h2 : 4 * (X.Ns : ℝ) * X.a ≤ 4 * Dat.k (r` using `r) K * X.a := by nlinarith`. Establish `h3 : Dat.k (r` using `r) K * ((X.Et p K t : ℝ) * (Dat.k (r := r) K * X.Y)) ≤ Dat.k (r := r) K * (4 * X.a) := by`.
+
+Use the polynomial consequences of the given equalities and inequalities. Conclude with `le_of_mul_le_mul_left h3 hk0`. Establish `hdeg` using `(hX.degs t ht).1`. Establish `hnat : X.deg t ≤ X.a' p K t + X.E' t + X.Et p K t`. Unfold `Dat.a' Dat.d`.
+
+Rewrite using `[if_pos ht]`. Use linear arithmetic over natural numbers and integers. Establish `hnat' : (X.deg t : ℝ) ≤ (X.a' p K t : ℝ) + X.E' t + X.Et p K t` using `by exact_mod_cast hnat`. Establish `hE' : (X.E' t : ℝ) ≤ X.E₀` using `by exact_mod_cast hX.E'le t ht`. Use `set θ : ℝ := 5 / (Dat.k (r := r) K * X.Y) with hθ`.
+
+Establish `hθ0 : 0 ≤ θ` using `by positivity`. Establish `hθ1 : θ ≤ 1`. Rewrite using `[hθ, div_le_one hu]`. Use polynomial arithmetic with `[B.k5, B.Y1]`. Establish `key : (X.E₀ : ℝ) + X.Et p K t ≤ θ * X.deg t`.
+
+Rewrite using `[hθ, div_mul_eq_mul_div, le_div_iff₀ hu]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hcmp` using `choose_add_mul_one_sub_le_pow_mul_choose_add (X.a' p K t) (X.deg t) (r + K - 1) 1 θ hθ1 (fun l _ => by`. Establish `hl : (0 : ℝ) ≤ θ * (1 + l)` using `by positivity`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite `hcmp` using `[one_pow, one_mul]`. Rewrite using `[sumBin_eq, sumBin_eq]`. Use `le_trans (mul_le_mul_of_nonneg_left ?_ (Nat.cast_nonneg _)) hcmp` and prove the remaining obligations. Establish `hM` using `sum_M_le (r := r) (K := K)`. Establish `: ((r + K - 1 : ℕ) : ℝ) * θ ≤ 5 / X.Y`.
+
+Combine the equalities or inequalities in the displayed calculation. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem sum_compA (hX : X.Hyp p K) (hLa : (1088 : ℝ) ≤ X.CLa) (hk : (1088 : ℝ) ≤ X.Ck) (t : Fin n')
     (ht : t ∈ X.F.TT) : sumBin r K (X.deg t) * (1 - 5 / X.Y) ≤ sumBin r K (X.a' p K t) := by
   have B := basics hX
@@ -216,6 +298,35 @@ theorem sum_compA (hX : X.Hyp p K) (hLa : (1088 : ℝ) ≤ X.CLa) (hk : (1088 : 
       _ = 5 / X.Y := by rw [hθ]; field_simp
   linarith
 
+/- English proof (translation)
+Establish `B` using `basics hX`. Establish `hk0 : (0 : ℝ) < Dat.k (r` using `r) K := by linarith [B.k5]`. Establish `hY0 : (0 : ℝ) < X.Y` using `by linarith [B.Y1]`. Establish `hu : 0 < Dat.k (r` using `r) K * X.Y := by positivity`. Establish `hrr : r - 1 < r` using `Nat.sub_lt (NeZero.pos r) Nat.one_pos`.
+
+Establish `hvle : X.F.fr j i.val ≤ X.F.fr j (r - 1)` using `sum_fr_le hX.valid j i.val (r - 1) (by have := i.isLt; omega) hrr`. Establish `hvlet : X.F.fr j i.val ∈ X.F.letters (j + 1)`. Unfold `Frames.letters`. Rewrite using `[Finset.mem_filter, Finset.mem_Icc, add_sub_cancel_right]`. Use `⟨⟨fr_zero_le hX.valid j i.val i.isLt, ?_⟩, (hX.valid.2.2.2.2.1 j i.val i.isLt).1⟩` and prove the remaining obligations.
+
+Conclude with `hvle.trans (eFr_strictMono hX.valid (by omega : j < j + 1)).le`. Rewrite using `[sum_PzQc hX j _ hvle]`. Establish `hn` using `sum_aP hX hLa hk (j + 1) _ hvlet`. Use `set v := X.F.fr j i.val`. Use `set P' : ℕ := p ^ (X.F.dist (j + 1) v + X.Rj p K (j + 1)) with hP'`.
+
+Use `set n : ℕ := X.a' p K (posOf n' v) with hnn`. Establish `hP'0 : 0 < P'` using `pow_pos hX.prime.pos _`. Establish `hP'r : (0 : ℝ) < (P' : ℝ)` using `by exact_mod_cast hP'0`. Establish `hP'1 : (1 : ℝ) ≤ (P' : ℝ)` using `by exact_mod_cast hP'0`. Establish `hn' : (36 / 5 : ℝ) * (X.Y * Dat.k (r` using `r) K ^ 2 * (X.Ns : ℝ) * (P' : ℝ)) ≤ (n : ℝ) := by`.
+
+Rewrite using `[hP']`. Use `push_cast`. Conclude with `hn`. Use `set Bn : ℕ := (X.Bw p K (j + 1) v - (X.m0 K : ℤ)).toNat with hBn`. Establish `hB1 : ((X.Bw p K (j + 1) v - (X.m0 K : ℤ) : ℤ) : ℝ) ≤ (Bn : ℝ)`.
+
+Conclude with `Int.self_le_toNat _` after adjusting the coercions. Establish `hB2 : ((X.Bw p K (j + 1) v - (X.m0 K : ℤ) : ℤ) : ℝ) = ((n / P' : ℕ) : ℝ) - (Dat.k (r` using `r) K + r + 1) - (Dat.k (r := r) K * X.Ns + 1) := by`. Establish `hBw : X.Bw p K (j + 1) v = ((n / P' : ℕ) : ℤ) - ((r + K + r + 1 : ℕ) : ℤ)` using `rfl`. Rewrite using `[hBw]`. Unfold `Dat.m0 Dat.k`.
+
+Generalize the expression as in `n / P' = q`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hdiv` using `natDiv_gt n P' hP'0`. Establish `hrk` using `B.rk`.
+
+Establish `hc : Dat.k (r` using `r) K + r + 3 + Dat.k (r := r) K * X.Ns ≤ 4 * (Dat.k (r := r) K * X.Ns) := by`. Establish `: Dat.k (r` using `r) K ≤ Dat.k (r := r) K * X.Ns := le_mul_of_one_le_right hk0.le B.Ns1`. Combine the linear relations using `[B.k5]`. Establish `hPB : (n : ℝ) - 4 * (Dat.k (r` using `r) K * X.Ns) * P' ≤ (P' : ℝ) * Bn := by`. Establish `h1 : (n : ℝ) / P' - 1 - (Dat.k (r` using `r) K + r + 1) - (Dat.k (r := r) K * X.Ns + 1) ≤ (Bn : ℝ) := by`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2` using `mul_le_mul_of_nonneg_left h1 hP'r.le`. Establish `h3 : (P' : ℝ) * ((n : ℝ) / P') = n` using `by field_simp`. Establish `h4` using `mul_le_mul_of_nonneg_right hc hP'r.le`. Use the polynomial consequences of the given equalities and inequalities.
+
+Use `set θ : ℝ := 1 / (Dat.k (r := r) K * X.Y) with hθ`. Establish `hθ0 : 0 ≤ θ` using `by positivity`. Establish `hθ1 : θ ≤ 1`. Rewrite using `[hθ, div_le_one hu]`. Use polynomial arithmetic with `[B.k5, B.Y1]`.
+
+Establish `key : 4 * (Dat.k (r` using `r) K * X.Ns) * P' ≤ θ * n := by`. Rewrite using `[hθ, div_mul_eq_mul_div, one_mul, le_div_iff₀ hu]`. Establish `: 4 * (Dat.k (r` using `r) K * X.Ns) * P' * (Dat.k (r := r) K * X.Y) = 4 * (X.Y * Dat.k (r := r) K ^ 2 * (X.Ns : ℝ) * (P' : ℝ)) := by ring`. Rewrite using `[this]`. Establish `h0 : 0 ≤ X.Y * Dat.k (r` using `r) K ^ 2 * (X.Ns : ℝ) * (P' : ℝ) := by`.
+
+Use `B.Ns1` as an intermediate fact. Check the signs of the components of the expression. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hcmp` using `choose_add_mul_one_sub_le_pow_mul_choose_add Bn n (r + K - 1) (P' : ℝ) θ hθ1 (fun l _ => by`. Establish `hl : (0 : ℝ) ≤ θ * (1 + l)` using `by positivity`.
+
+Establish `hl2 : (1 : ℝ) + l ≤ (P' : ℝ) * (1 + l)` using `le_mul_of_one_le_left (by positivity) hP'1`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[sumBin_eq, sumBin_eq]`. Use `le_trans (mul_le_mul_of_nonneg_left ?_ (Nat.cast_nonneg _)) hcmp` and prove the remaining obligations. Establish `hM` using `sum_M_le (r := r) (K := K)`.
+
+Establish `: ((r + K - 1 : ℕ) : ℝ) * θ ≤ 1 / X.Y`. Combine the equalities or inequalities in the displayed calculation. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem sum_compW (hX : X.Hyp p K) (hLa : (1088 : ℝ) ≤ X.CLa) (hk : (1088 : ℝ) ≤ X.Ck) (j : ℤ) (i : Fin r) :
     sumBin r K (X.a' p K (posOf n' (X.F.fr j i.val))) * (1 - 1 / X.Y) ≤
     (((X.Pz p K j (X.F.fr j i.val) * X.Qc p K j : ℕ) : ℝ)) ^ (r + K - 1) *
@@ -292,6 +403,9 @@ theorem sum_compW (hX : X.Hyp p K) (hLa : (1088 : ℝ) ≤ X.CLa) (hk : (1088 : 
       _ = 1 / X.Y := by rw [hθ]; field_simp
   linarith
 
+/- English proof (translation)
+The claim follows from `prod_tiling X hX.valid split := sum_split X hX.valid LLsub := sum_LLsub X hX.valid frlate := sum_frlate X hX.valid uniqP := sum_uniqP X p K hX.valid kP := sum_kP hX hLa hk compA := sum_compA hX hLa hk compW := sum_compW hX hLa hk prodQ := sum_prodQ hX perW := sum_perW X p K hX.va …`.
+-/
 theorem sum_facts (hX : X.Hyp p K) (hLa : (1088 : ℝ) ≤ X.CLa) (hk : (1088 : ℝ) ≤ X.Ck) : SumFacts X p K where
   tiling := prod_tiling X hX.valid
   split := sum_split X hX.valid
@@ -308,6 +422,9 @@ theorem sum_facts (hX : X.Hyp p K) (hLa : (1088 : ℝ) ≤ X.CLa) (hk : (1088 : 
 
 end Num
 
+/- English proof (translation)
+The claim follows from `restSum_of fun p n' r K _ _ _ X hX hLa hk => ⟨sum_facts hX hLa hk, Ns_one_le hX⟩`.
+-/
 theorem restSum : RestSum 1088 1 :=
   restSum_of fun p n' r K _ _ _ X hX hLa hk => ⟨sum_facts hX hLa hk, Ns_one_le hX⟩
 

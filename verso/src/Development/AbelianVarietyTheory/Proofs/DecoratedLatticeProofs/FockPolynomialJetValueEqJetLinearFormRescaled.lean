@@ -10,6 +10,15 @@ open GlobalTheory.KJInf Formalism.L2.Ker
 
 namespace GlobalTheory.KJInf
 
+/- English proof (translation)
+Use `set M := mvZ (fun _ => (1 : Matrix (Fin a) (Fin a) ℂ)) (fun τ => r τ • (1 : Matrix (Fin b) (Fin b) ℂ)) with hM`. Establish `hX : ∀ v : ι × Fin b × Fin a, M (MvPolynomial.X v) = MvPolynomial.C (r v.1) * MvPolynomial.X v`. Introduce `v`. Simplify using `only [hM, mvZ, MvPolynomial.aeval_X]`. Rewrite using `[Finset.sum_eq_single v.2.1]`.
+
+Rewrite using `[Finset.sum_eq_single v.2.2]`. Simplify using the standard rewrite rules. Introduce `j _ hj`. Simplify using `[Matrix.one_apply_ne (Ne.symm hj)]`. Simplify using the standard rewrite rules.
+
+Introduce `i _ hi`. Simplify using `[Matrix.one_apply_ne hi]`. Simplify using the standard rewrite rules. Establish `hC : M (MvPolynomial.C c) = MvPolynomial.C c`. Simplify using `only [hM, mvZ, MvPolynomial.aeval_C, MvPolynomial.algebraMap_eq]`.
+
+Rewrite using `[MvPolynomial.monomial_eq, map_mul, MvPolynomial.monomial_eq, hC]`. Simplify using `only [Finsupp.prod, map_prod, map_pow, hX, mul_pow, Finset.prod_mul_distrib, MvPolynomial.C_mul, mul_assoc]`.
+-/
 theorem mvZ_scal_monomial {ι : Type} {a b : ℕ} (r : ι → ℂ) (k : ι × Fin b × Fin a →₀ ℕ) (c : ℂ) :
     mvZ (fun _ => (1 : Matrix (Fin a) (Fin a) ℂ)) (fun τ => r τ • (1 : Matrix (Fin b) (Fin b) ℂ)) (MvPolynomial.monomial k c) =
       MvPolynomial.monomial k (c * k.prod fun v n => r v.1 ^ n) := by
@@ -33,6 +42,15 @@ end GlobalTheory.KJInf
 
 namespace GlobalTheory.KJInf
 
+/- English proof (translation)
+Introduce `D S T s cD hcD G P`. Establish `hid : (fun v : FVar D T.rank S.rank => (v.1, Fin.cast rfl v.2.1, Fin.cast rfl v.2.2)) = id`. Use function extensionality and compare the values at `v`. Both sides reduce to the same expression. Unfold `GlobalTheory.AdForm.jetP`.
+
+Rewrite using `[hid]`. Simplify using `only [Finsupp.mapDomain_id]`. Use `conv_rhs => rw [P.as_sum]`. Rewrite using `[map_sum, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[mvZ_scal_monomial]`. Establish `hm : ∀ x : ℂ, (MvPolynomial.monomial k x : FP D.what₂.Tau S.rank T.rank) = x • MvPolynomial.monomial k 1`. Introduce `x`. Rewrite using `[MvPolynomial.smul_monomial, smul_eq_mul, mul_one]`. Rewrite using `[hm, map_smul, jetL_monomial, smul_eq_mul]`.
+
+Unfold `jetC`. Rewrite using `[mul_assoc, ← mul_assoc (k.prod _), ← Finsupp.prod_mul]`. Use `congr 2`. Use `Finsupp.prod_congr fun v _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_pow, div_mul_cancel₀ _ (hcD v.1)]`.
+-/
 theorem jetP_eq_jetL : ∀ (D : D7) (S T : HSp D) (s : ℂ) (cD : D.what₂.Tau → ℂ), (∀ τ, cD τ ≠ 0) → ∀ (G : VCx D.what₂.Tau S.rank T.rank → ℂ) (P : FP D.what₂.Tau S.rank T.rank), jetP S T rfl rfl s G P = jetL cD G (mvZ (fun _ => 1) (fun τ => (s / cD τ) • 1) P) := by
   intro D S T s cD hcD G P
   have hid : (fun v : FVar D T.rank S.rank => (v.1, Fin.cast rfl v.2.1, Fin.cast rfl v.2.2)) = id := by

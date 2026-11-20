@@ -14,13 +14,22 @@ open GlueG GlueM GlueK
 
 variable {L : Type} [Field L] [NumberField L] {N : ℕ}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem emb_eq (γ : Gm L N) : emb L N γ = toP L N (toK L N γ) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem hecke_eq (π : 𝓞 L) (hπ : π ≠ 0) (f : Gp L N → ℝ) (y : Gp L N) :
     hecke (toK L N) (toP L N) (qel L N π hπ) f y =
       ((Hq L N π hπ).index : ℝ)⁻¹ * ∑ᶠ c : Quotient (QuotientGroup.rightRel (Hq L N π hπ)),
         f (toP L N (qel L N π hπ * toK L N c.out) * y) := rfl
 
+/- English proof (translation)
+Take `⟨k, ⟨γ', rfl⟩, hk⟩` from `Subgroup.mem_map.mp (Subgroup.mem_comap.mp hh)`. Establish `e : qel L N π hπ * toK L N h = toK L N γ' * qel L N π hπ`. Rewrite using `[← hk]`. Simplify using `[MulAut.conj_apply, mul_assoc]`. Rewrite using `[(toK L N).map_mul h γ, ← mul_assoc, e, mul_assoc, (toP L N).map_mul, ← emb_eq, mul_assoc, hf]`.
+-/
 theorem coset_inv (π : 𝓞 L) (hπ : π ≠ 0) (f : Gp L N → ℝ) (hf : ∀ γ x, f (emb L N γ * x) = f x)
     (y : Gp L N) (h : Gm L N) (hh : h ∈ Hq L N π hπ) (γ : Gm L N) :
     f (toP L N (qel L N π hπ * toK L N (h * γ)) * y) = f (toP L N (qel L N π hπ * toK L N γ) * y) := by
@@ -33,6 +42,51 @@ theorem coset_inv (π : 𝓞 L) (hπ : π ≠ 0) (f : Gp L N → ℝ) (hf : ∀ 
 end Glue
 
 open Glue GlueG GlueM GlueK in
+/- English proof (translation)
+Introduce `hGap _ hAr hDe L _ _ hTC π hπp h25 N hN d f hf`. Establish `hπ : π ≠ 0` using `hπp.ne_zero`. Establish `hN0 : 0 < N` using `by omega`. Take `⟨hfc, hfe, hfs, hfi, hf0⟩` from `hf`. Use `haveI := d.haar`.
+
+Take `⟨q, s, hq⟩` from `exists_q L N π hπ 1 hN0`. Take `⟨q₂, s₂, hq₂⟩` from `exists_q L N π hπ 2 hN0`. Establish `hmem1` using `mem_map_Kg L N π hπ 1 q s hq`. Establish `hmem2` using `mem_map_Kg L N π hπ 2 q₂ s₂ hq₂`. Establish `hfund0 : IsFundamentalDomain (Subgroup.map (jS L N) (Kg L N π 0)) d.D d.μ`.
+
+Rewrite using `[map_Kg_zero]`. Conclude with `d.fund`. Take `⟨hD1, hμ1, hint1⟩` from `fund_conj d.μ (latS L N) _ q hmem1 d.D d.fund`. Take `⟨hD2, -, -⟩` from `fund_conj d.μ (latS L N) _ q₂ hmem2 d.D d.fund`. Set `w : Sp L N → ℝ` to `fun x => f (ofS L N (q * x))`.
+
+Establish `hwc : Continuous w` using `hfc.comp ((continuous_ofS L N).comp (continuous_const.mul continuous_id))`. Establish `hwinv : LInv (jS L N) (Kg L N π 1) w`. Introduce `γ hγ x`. Establish `h1 : q * jS L N γ * q⁻¹ ∈ latS L N` using `(hmem1 _).1 ⟨γ, hγ, rfl⟩`. Take `⟨δ, hδ⟩` from `latS_emb L N _ h1`.
+
+Use `show f (ofS L N (q * (jS L N γ * x))) = f (ofS L N (q * x))`. Establish `e : q * (jS L N γ * x) = (q * jS L N γ * q⁻¹) * (q * x)` using `by group`. Rewrite using `[e, map_mul, hδ, hfe]`. Establish `hwint : IntegrableOn (fun x => w x ^ 2) ((fun x => q * x) ⁻¹' d.D) d.μ` using `(hint1 (fun y => f (ofS L N y) ^ 2)).1.mpr hfi`. Establish `hw0 : ∫ x in (fun x => q * x) ⁻¹' d.D, w x ∂d.μ = 0`.
+
+Rewrite using `[← hf0]`. Conclude with `(hint1 (fun y => f (ofS L N y))).2`. Establish `hw2 : ∫ x in (fun x => q * x) ⁻¹' d.D, w x ^ 2 ∂d.μ = ∫ x in d.D, f (ofS L N x) ^ 2 ∂d.μ` using `(hint1 (fun y => f (ofS L N y) ^ 2)).2`. Establish `htri` using `hAr L π hπp h25 N hN`. Take `⟨hAint, hA0, hAle⟩` from `hGap (Matrix.SpecialLinearGroup (Fin N) L) (Sp L N) d.μ (jS L N) (jS_injective L N) (Kg L N π 0) (Kg L N π 1) (Kg L N π 2) htri (hDe L hTC π hπp N hN) d.D _ _ hfund0 hD1 hD2 d.fin hμ1 w hwc.measurable hwinv hwint hw0`.
+
+Set `C : Subgroup (Matrix.SpecialLinearGroup (Fin N) (𝓞 L))` to `(Hq L N π hπ).comap (Matrix.SpecialLinearGroup.toGL)`. Set `ψ : Matrix.SpecialLinearGroup (Fin N) (𝓞 L) →* Kg L N π 0` to `(iO L N).codRestrict (Kg L N π 0) (fun a => (mem_Kg_zero L N π _).2 ⟨a, rfl⟩)`. Set `H' : Subgroup (Kg L N π 0)` to `(Kg L N π 0 ⊓ Kg L N π 1).subgroupOf (Kg L N π 0)`. Establish `hψ : ∀ a, ψ a ∈ H' ↔ a ∈ C`. Introduce `a`.
+
+Use `show iO L N a ∈ Kg L N π 0 ⊓ Kg L N π 1 ↔ Matrix.SpecialLinearGroup.toGL a ∈ Hq L N π hπ`. Rewrite using `[Subgroup.mem_inf, mem_Hq]`. Conclude with `⟨fun h => h.2, fun h => ⟨(mem_Kg_zero L N π _).2 ⟨a, rfl⟩, h⟩⟩`. Establish `hψs : ∀ γ : Kg L N π 0, ∃ a, γ * (ψ a)⁻¹ ∈ H'`. Introduce `γ`.
+
+Take `⟨a, ha⟩` from `(mem_Kg_zero L N π _).1 γ.2`. Use `⟨a, ?_⟩` and prove the remaining obligations. Establish `: ψ a = γ` using `Subtype.ext ha`. Rewrite using `[this, mul_inv_cancel]`. Conclude with `H'.one_mem`.
+
+Establish `hkey : ∀ x : Sp L N, hecke (toK L N) (toP L N) (qel L N π hπ) f (ofS L N x) = avg (jS L N) (Kg L N π 0 ⊓ Kg L N π 1) (Kg L N π 0) w x`. Introduce `x`. Take `⟨e1, i1⟩` from `finsum_transfer (Matrix.SpecialLinearGroup.toGL) (Hq L N π hπ) C (fun a => Iff.rfl) (fun γ => Hq_surj L N π hπ hN0 γ) (fun γ => f (toP L N (qel L N π hπ * toK L N γ) * ofS L N x)) (fun h hh γ => coset_inv π hπ f hfe (ofS L N x) h hh γ)`. Take `⟨e2, i2⟩` from `finsum_transfer ψ H' C hψ hψs (fun k : Kg L N π 0 => w (jS L N k * x)) (fun h hh k => by show w (jS L N ((h : _) * k) * x) = w (jS L N k * x)`. Rewrite using `[map_mul, mul_assoc]`.
+
+Conclude with `hwinv _ (Subgroup.mem_subgroupOf.1 hh).2 _)`. Use `beta_reduce at e1 e2`. Rewrite using `[hecke_eq]`. Unfold `avg`. Rewrite using `[e1, e2, ← i1, ← i2]`.
+
+Use `congr 1`. Apply `finsum_congr` to reduce the goal to its premises. Introduce `c`. Use `show f (toP L N (qel L N π hπ * toK L N (Matrix.SpecialLinearGroup.toGL c.out)) * ofS L N x) = f (ofS L N (q * (jS L N (iO L N c.out) * x)))`. Establish `e : ofS L N (q * (jS L N (iO L N c.out) * x)) = scal L N s * (toP L N (qel L N π hπ * toK L N (Matrix.SpecialLinearGroup.toGL c.out)) * ofS L N x)`.
+
+Rewrite using `[map_mul, map_mul, ofS_q L N π hπ q s hq, ← toP_toGL, map_mul]`. Simplify using `only [mul_assoc]`. Rewrite using `[e, hfs]`. Establish `hle : (Kg L N π 0 ⊓ Kg L N π 1 ⊓ Kg L N π 2).subgroupOf (Kg L N π 0) ≤ H'`. Introduce `k hk`.
+
+Rewrite `hk`, the goal using `[Subgroup.mem_subgroupOf]`. Conclude with `hk.1`. Establish `hH'0 : H'.index ≠ 0`. Introduce `h0`. Establish `hd` using `Subgroup.index_dvd_of_le hle`.
+
+Rewrite `hd` using `[h0]`. Conclude with `htri.fin₀ (Nat.eq_zero_of_zero_dvd hd)`. Establish `hHq0 : (Hq L N π hπ).index ≠ 0`. Take `⟨-, i1⟩` from `finsum_transfer (Matrix.SpecialLinearGroup.toGL) (Hq L N π hπ) C (fun a => Iff.rfl) (fun γ => Hq_surj L N π hπ hN0 γ) (E := ℝ) (fun _ => 0) (fun _ _ _ => rfl)`. Take `⟨-, i2⟩` from `finsum_transfer ψ H' C hψ hψs (E := ℝ) (fun _ => 0) (fun _ _ _ => rfl)`.
+
+Rewrite using `[← i1, i2]`. Conclude with `hH'0`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Unfold `Lz`. Use `⟨?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Establish `e : hecke (toK L N) (toP L N) (qel L N π hπ) f = fun y => ((Hq L N π hπ).index : ℝ)⁻¹ * ∑ᶠ c : Quotient (QuotientGroup.rightRel (Hq L N π hπ)), f (toP L N (qel L N π hπ * toK L N c.out) * y)` using `funext (hecke_eq π hπ f)`. Rewrite using `[e]`. Conclude with `continuous_const.mul (continuous_finsum_quot (Hq L N π hπ) hHq0 (fun γ y => f (toP L N (qel L N π hπ * toK L N γ) * y)) (fun γ => hfc.comp (continuous_const.mul continuous_id)))`. Introduce `γ x`. Rewrite using `[hecke_eq, hecke_eq]`.
+
+Use `congr 1`. Establish `h` using `finsum_mul_right (Hq L N π hπ) (fun δ => f (toP L N (qel L N π hπ * toK L N δ) * x)) (fun h hh δ => coset_inv π hπ f hfe x h hh δ) γ`. Use `beta_reduce at h`. Rewrite using `[← h]`. Apply `finsum_congr` to reduce the goal to its premises.
+
+Introduce `c`. Simplify using `only [emb_eq, map_mul, mul_assoc]`. Introduce `s' x`. Rewrite using `[hecke_eq, hecke_eq]`. Use `congr 1`.
+
+Apply `finsum_congr` to reduce the goal to its premises. Introduce `c`. Rewrite using `[← mul_assoc, ← scal_comm L N s', mul_assoc, hfs]`. Simplify using `only [hkey]`. Conclude with `hAint`.
+
+Simplify using `only [hkey]`. Conclude with `hA0`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [hkey]`. Use `_ ≤ (2 / 5) ^ 2 * ∫ x in (fun x => q * x) ⁻¹' d.D, w x ^ 2 ∂d.μ := hAle`.
+
+Use `_ = (2 / 5) ^ 2 * ∫ x in d.D, f (ofS L N x) ^ 2 ∂d.μ := by rw [hw2]`. Use `_ ≤ (3 / 5) ^ 2 * ∫ x in d.D, f (ofS L N x) ^ 2 ∂d.μ := by`. Apply `mul_le_mul_of_nonneg_right (by norm_num)` to reduce the goal to its premises. Conclude with `integral_nonneg (fun x => sq_nonneg _)`.
+-/
 theorem _root_.PositivityTheory.KB.sGap_of_parts : GapAbs → Unfold → Arith → Dens → SGap := by
   intro hGap _ hAr hDe L _ _ hTC π hπp h25 N hN d f hf
   have hπ : π ≠ 0 := hπp.ne_zero

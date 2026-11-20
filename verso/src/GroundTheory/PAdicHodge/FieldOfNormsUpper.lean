@@ -29,18 +29,27 @@ variable {K Ω}
 
 variable (K Ω) in
 
+/- English proof (translation)
+The claim follows from `fun _ _ h _ hσ M ↦ upperRamificationGroup_antitone K _ h (hσ M)`.
+-/
 theorem absUpper_antitone : Antitone (absUpper K Ω) :=
   fun _ _ h _ hσ M ↦ upperRamificationGroup_antitone K _ h (hσ M)
 
 omit [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K] [ValuativeRel Ω]
   [TopologicalSpace Ω] [IsValuativeTopology Ω] [ValuativeExtension K Ω] [Algebra.IsAlgebraic K Ω] in
 
+/- English proof (translation)
+Use extensionality with `x`. Rewrite using `[restrictAut_apply, AlgEquiv.restrictNormalHom_apply, AlgEquiv.restrictNormalHom_apply]`.
+-/
 theorem restrictAut_restrictNormalHom {M M' : IntermediateField K Ω} [Normal K M] [Normal K M']
     (h : M ≤ M') (σ : Gal(Ω/K)) :
     restrictAut h (AlgEquiv.restrictNormalHom M' σ) = AlgEquiv.restrictNormalHom M σ := by
   ext x
   rw [restrictAut_apply, AlgEquiv.restrictNormalHom_apply, AlgEquiv.restrictNormalHom_apply]
 
+/- English proof (translation)
+Rewrite using `[← map_upperRamificationGroup_restrictAut h u, ← restrictAut_restrictNormalHom h]`. Conclude with `Subgroup.mem_map_of_mem _ hσ`.
+-/
 theorem restrictNormalHom_mem_of_le {M M' : FiniteGaloisIntermediateField K Ω}
     (h : (M : IntermediateField K Ω) ≤ M') {u : ℝ} {σ : Gal(Ω/K)}
     (hσ : AlgEquiv.restrictNormalHom (M' : IntermediateField K Ω) σ ∈
@@ -52,6 +61,17 @@ theorem restrictNormalHom_mem_of_le {M M' : FiniteGaloisIntermediateField K Ω}
 
 variable [IsGalois K Ω]
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨σ, hσ, rfl⟩`. Conclude with `hσ M`. Introduce `τ hτ`. Set `t : FiniteGaloisIntermediateField K Ω → Set Gal(Ω/K)` to `fun M' ↦ {σ | AlgEquiv.restrictNormalHom (M : IntermediateField K Ω) σ = τ ∧ AlgEquiv.restrictNormalHom (M' : IntermediateField K Ω) σ ∈ upperRamificationGroup K (M' : IntermediateField K Ω) u}`.
+
+Establish `hmono : ∀ {M₁ M₂ : FiniteGaloisIntermediateField K Ω}, M₁ ≤ M₂ → t M₂ ⊆ t M₁` using `fun h σ hσ ↦ ⟨hσ.1, restrictNormalHom_mem_of_le h hσ.2⟩`. Establish `hdir : Directed (· ⊇ ·) t` using `fun M₁ M₂ ↦ ⟨M₁ ⊔ M₂, hmono le_sup_left, hmono le_sup_right⟩`. Establish `hne : ∀ M', (t M').Nonempty`. Introduce `M'`. Set `M''` to `M ⊔ M'`.
+
+Establish `hMM : (M : IntermediateField K Ω) ≤ M''` using `(le_sup_left : M ≤ M'')`. Rewrite `hτ` using `[← map_upperRamificationGroup_restrictAut hMM u]`. Take `⟨ρ, hρ, rfl⟩` from `hτ`. Take `⟨σ, rfl⟩` from `AlgEquiv.restrictNormalHom_surjective (F := K) (K₁ := (M'' : IntermediateField K Ω)) Ω ρ`. Use `⟨σ, (restrictAut_restrictNormalHom hMM σ).symm, ?_⟩` and prove the remaining obligations.
+
+Conclude with `restrictNormalHom_mem_of_le (le_sup_right : M' ≤ M'') hρ`. Establish `hcl : ∀ M', IsClosed (t M')`. Introduce `M'`. Establish `h1 : IsClosed {σ : Gal(Ω/K) | AlgEquiv.restrictNormalHom (M : IntermediateField K Ω) σ = τ}` using `isClosed_eq (InfiniteGalois.restrictNormalHom_continuous _) continuous_const`. Establish `h2 : IsClosed {σ : Gal(Ω/K) | AlgEquiv.restrictNormalHom (M' : IntermediateField K Ω) σ ∈ upperRamificationGroup K (M' : IntermediateField K Ω) u}` using `(Set.toFinite _).isClosed.preimage (InfiniteGalois.restrictNormalHom_continuous _)`.
+
+Conclude with `h1.inter h2`. Take `⟨σ, hσ⟩` from `IsCompact.nonempty_iInter_of_directed_nonempty_isCompact_isClosed t hdir hne (fun M' ↦ (hcl M').isCompact) hcl`. Rewrite `hσ` using `[Set.mem_iInter]`. Conclude with `⟨σ, fun M' ↦ (hσ M').2, (hσ M).1⟩`.
+-/
 theorem map_absUpper (M : FiniteGaloisIntermediateField K Ω) (u : ℝ) :
     (absUpper K Ω u).map (AlgEquiv.restrictNormalHom (M : IntermediateField K Ω)) =
       upperRamificationGroup K (M : IntermediateField K Ω) u := by
@@ -127,57 +147,96 @@ def upperField (u : ℝ) : IntermediateField K Ω :=
 
 variable {K Ω L}
 
+/- English proof (translation)
+The claim follows from `le_sup_right`.
+-/
 theorem fixingSubgroup_le_upperSupFixing (u : ℝ) : L.fixingSubgroup ≤ upperSupFixing K Ω L u :=
   le_sup_right
 
+/- English proof (translation)
+The claim follows from `le_sup_left`.
+-/
 theorem absUpper_le_upperSupFixing (u : ℝ) : absUpper K Ω u ≤ upperSupFixing K Ω L u :=
   le_sup_left
 
+/- English proof (translation)
+The claim follows from `fun _ _ h ↦ sup_le_sup_right (absUpper_antitone K Ω h) _`.
+-/
 theorem upperSupFixing_antitone : Antitone (upperSupFixing K Ω L) :=
   fun _ _ h ↦ sup_le_sup_right (absUpper_antitone K Ω h) _
 
 variable [IsGalois K Ω]
 
+/- English proof (translation)
+Use `Subgroup.quotient_finite_of_isOpen H h` as an intermediate fact. Conclude with `Subgroup.finiteIndex_of_finite_quotient`.
+-/
 theorem finiteIndex_of_isOpen (H : Subgroup Gal(Ω/K)) (h : IsOpen (H : Set Gal(Ω/K))) :
     H.FiniteIndex := by
   have := Subgroup.quotient_finite_of_isOpen H h
   exact Subgroup.finiteIndex_of_finite_quotient
 
+/- English proof (translation)
+Use `finiteIndex_of_isOpen H h` as an intermediate fact. Establish `: H.IsFiniteRelIndex ⊤` using `Subgroup.isFiniteRelIndex_top_iff.mpr this`. Conclude with `mt (Subgroup.relIndex_eq_zero_of_le_right le_top) (Subgroup.relIndex_ne_zero (K := ⊤))`.
+-/
 theorem relIndex_ne_zero_of_isOpen {H : Subgroup Gal(Ω/K)} (h : IsOpen (H : Set Gal(Ω/K)))
     (H' : Subgroup Gal(Ω/K)) : H.relIndex H' ≠ 0 := by
   have := finiteIndex_of_isOpen H h
   have : H.IsFiniteRelIndex ⊤ := Subgroup.isFiniteRelIndex_top_iff.mpr this
   exact mt (Subgroup.relIndex_eq_zero_of_le_right le_top) (Subgroup.relIndex_ne_zero (K := ⊤))
 
+/- English proof (translation)
+Use `conv_rhs => rw [← InfiniteGalois.fixedField_fixingSubgroup L]`. Conclude with `(IntermediateField.fixedField_antitone (fixingSubgroup_le_upperSupFixing u))`.
+-/
 theorem upperField_le (u : ℝ) : upperField K Ω L u ≤ L := by
   conv_rhs => rw [← InfiniteGalois.fixedField_fixingSubgroup L]
   exact (IntermediateField.fixedField_antitone (fixingSubgroup_le_upperSupFixing u))
 
+/- English proof (translation)
+The claim follows from `fun _ _ h ↦ IntermediateField.fixedField_antitone (upperSupFixing_antitone h)`.
+-/
 theorem upperField_mono : Monotone (upperField K Ω L) :=
   fun _ _ h ↦ IntermediateField.fixedField_antitone (upperSupFixing_antitone h)
 
+/- English proof (translation)
+The claim follows from `Subgroup.isClosed_of_isOpen _ (hL u)`.
+-/
 theorem isClosed_upperSupFixing (hL : IsAPF K Ω L) (u : ℝ) :
     IsClosed (upperSupFixing K Ω L u : Set Gal(Ω/K)) :=
   Subgroup.isClosed_of_isOpen _ (hL u)
 
+/- English proof (translation)
+The claim follows from `InfiniteGalois.fixingSubgroup_fixedField ⟨upperSupFixing K Ω L u, isClosed_upperSupFixing hL u⟩`.
+-/
 theorem fixingSubgroup_upperField (hL : IsAPF K Ω L) (u : ℝ) :
     (upperField K Ω L u).fixingSubgroup = upperSupFixing K Ω L u :=
   InfiniteGalois.fixingSubgroup_fixedField ⟨upperSupFixing K Ω L u, isClosed_upperSupFixing hL u⟩
 
+/- English proof (translation)
+Rewrite using `[← InfiniteGalois.isOpen_iff_finite]`. Use `fixingSubgroup_upperField hL u` as an intermediate fact. Conclude with `this ▸ hL u`.
+-/
 theorem finiteDimensional_upperField (hL : IsAPF K Ω L) (u : ℝ) :
     FiniteDimensional K (upperField K Ω L u) := by
   rw [← InfiniteGalois.isOpen_iff_finite]
   have := fixingSubgroup_upperField hL u
   exact this ▸ hL u
 
+/- English proof (translation)
+Introduce `u u' h`. Conclude with `Subgroup.relIndex_le_of_le_left (upperSupFixing_antitone h) (relIndex_ne_zero_of_isOpen (hL u') _)`.
+-/
 theorem apfIndex_mono (hL : IsAPF K Ω L) : Monotone (apfIndex K Ω L) := by
   intro u u' h
   exact Subgroup.relIndex_le_of_le_left (upperSupFixing_antitone h)
     (relIndex_ne_zero_of_isOpen (hL u') _)
 
+/- English proof (translation)
+Conclude with `Nat.pos_of_ne_zero (relIndex_ne_zero_of_isOpen (hL u) _)`.
+-/
 theorem apfIndex_pos (hL : IsAPF K Ω L) (u : ℝ) : 0 < apfIndex K Ω L u := by
   exact Nat.pos_of_ne_zero (relIndex_ne_zero_of_isOpen (hL u) _)
 
+/- English proof (translation)
+The claim follows from `(Monotone.intervalIntegrable (fun _ _ h ↦ by exact_mod_cast apfIndex_mono hL h))`.
+-/
 theorem intervalIntegrable_apfIndex (hL : IsAPF K Ω L) (a b : ℝ) :
     IntervalIntegrable (fun w ↦ (apfIndex K Ω L w : ℝ)) MeasureTheory.volume a b :=
   (Monotone.intervalIntegrable (fun _ _ h ↦ by exact_mod_cast apfIndex_mono hL h))

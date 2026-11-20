@@ -15,6 +15,9 @@ open GlobalTheory.IndefiniteRowSideFullHecke.DefiningCoordinates (IsDefSum polyd
 
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.TorusRenumber.isTorusPoint_perm | exact GlobalTheory.TorusRenumber.isTorusPoint_perm | (intros; apply GlobalTheory.TorusRenumber.isTorusPoint_perm <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.torus_point_permutation_sign : ∀ (F : Type) [Field F] [NumberField F] (e : Fin (Module.finrank ℚ F) ≃ (F →+* ℝ))
     (π : Equiv.Perm (Fin (Module.finrank ℚ F))) (𝔞 𝔟 : FracId F) (z : (F →+* ℝ) → ℂ)
     (X : Obj F (𝔞 * 𝔟⁻¹) (Sp ℂ)) (δ : X.DetOmega),

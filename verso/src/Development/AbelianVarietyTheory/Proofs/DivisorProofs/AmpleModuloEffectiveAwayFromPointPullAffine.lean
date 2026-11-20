@@ -30,6 +30,13 @@ open GlobalTheory.Cartier GlobalTheory.Discrepancy GlobalTheory.QCoh
 
 namespace GlobalTheory.AmplePull
 
+/- English proof (translation)
+Introduce `Y X π _ N hN x h`. Take `⟨m, A, s, hm, hA, hAmp, hy⟩` from `h`. Establish `hNm : (lbPow N m).IsLB` using `isLB_lbPow hN m`. Establish `hP : (LB.div (lbPow N m) A).IsLB` using `LB.isLB_div hNm hA`. Establish `hN' : (N.pull π).IsLB` using `LB.isLB_pull hN π`.
+
+Establish `hA' : (A.pull π).IsLB` using `LB.isLB_pull hA π`. Establish `hNm' : (lbPow (N.pull π) m).IsLB` using `isLB_lbPow hN' m`. Establish `hQ : (LB.div (lbPow (N.pull π) m) (A.pull π)).IsLB` using `LB.isLB_div hNm' hA'`. Establish `iso : LBIso (LB.div (lbPow (N.pull π) m) (A.pull π)) ((LB.div (lbPow N m) A).pull π)`. Rewrite using `[← cls_eq_iff hQ (LB.isLB_pull hP π), cls_div hNm' hA' hQ, cls_pull hP π, cls_div hNm hA hP, cls_lbPow hN' m hNm', cls_pull hN π hN', cls_pull hA π hA', cls_lbPow hN m hNm, map_sub, map_nsmul]`.
+
+Take `⟨t, ht⟩` from `exists_sec_nonzeroLocus_eq_of_lbIso hQ (LB.isLB_pull hP π) iso (ZM.RepBC.secPull _ π s)`. Use `⟨m, A.pull π, t, hm, hA', hAmp.pull_of_isAffineHom π, ?_⟩` and prove the remaining obligations. Rewrite using `[ht, GlobalTheory.ZV.GraphSystem.nonzeroLocus_pull]`. Conclude with `hy`.
+-/
 theorem ampleAt_pull : ∀ (Y X : Scheme.{0}) (π : X ⟶ Y) [IsAffineHom π] (N : LB Y), N.IsLB → ∀ x : X,
     AmpleAt N (π x) → AmpleAt (N.pull π) x := by
   intro Y X π _ N hN x h

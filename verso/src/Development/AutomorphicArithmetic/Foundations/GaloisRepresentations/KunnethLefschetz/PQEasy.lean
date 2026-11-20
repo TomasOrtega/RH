@@ -6,6 +6,17 @@ open scoped TensorProduct DirectSum
 
 namespace UpperTheory.Gal.KunnethLefschetz
 
+/- English proof (translation)
+Unfold `QEasy`. Introduce `l _ k _ G`. Use `haveI : Module.Flat ℤ_[l] ℚ_[l] := IsLocalization.flat ℚ_[l] (nonZeroDivisors ℤ_[l])`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `d e Z X p ι h n m hn U hU a`.
+
+Establish `h0 : (pullHl l (sch.map U.ι) m 0).comp (G.hl h hn) = 0` using `LinearMap.ext fun x => Subtype.ext (funext fun j => (G.exact j h hn U hU _).mpr ⟨x.1 j, rfl⟩)`. Establish `h1 : (pb l U.ι m).comp (G.q h hn) = 0`. Unfold `Gys0.q pb pullHQ`. Rewrite using `[← LinearMap.baseChange_comp, h0, LinearMap.baseChange_zero]`. Conclude with `LinearMap.congr_fun h1 a`.
+
+Introduce `d e Z X p ι h n m hn U hU hs`. Establish `hinj : Function.Injective (G.hl h hn)` using `fun x y hxy => Subtype.ext (funext fun j => G.inj j h hn U hU (hs j) (congrArg (fun z => z.1 j) hxy))`. Unfold `Gys0.q`. Rewrite using `[LinearMap.baseChange_eq_ltensor]`. Conclude with `Module.Flat.lTensor_preserves_injective_linearMap _ hinj`.
+
+Introduce `d e' e Z' X' Z X p' ι' p ι h' h f u hf hp n m hn a`. Establish `h0 : (pullHl l (sch.map f) m 0).comp (G.hl h hn) = (G.hl h' hn).comp (pullHl l (sch.map u) n 0)` using `LinearMap.ext fun x => Subtype.ext (funext fun j => G.nat j h' h f u hf hp hn (x.1 j))`. Establish `h1 : (pb l f m).comp (G.q h hn) = (G.q h' hn).comp (pb l u n)`. Unfold `Gys0.q pb pullHQ`. Rewrite using `[← LinearMap.baseChange_comp, ← LinearMap.baseChange_comp, h0]`.
+
+Conclude with `LinearMap.congr_fun h1 a`.
+-/
 theorem qEasy_holds : QEasy := by
   unfold QEasy
   intro l _ k _ G

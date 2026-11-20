@@ -4,6 +4,31 @@ namespace Formalism.InvariantFactorPaths.MC
 
 open Formalism.GM Formalism.GM.M Formalism.GM.TM Formalism.GM.DimensionMonotonicity Formalism.CountingSumsFrames Formalism.CountingSumsFrames.TO Formalism.InvariantFactorPaths.OddLevelGainBounds.TB MvPolynomial Finset
 
+/- English proof (translation)
+Establish `hr : 1 ≤ r` using `Nat.one_le_iff_ne_zero.mpr (fun h => by subst h; exact ρ.elim0)`. Take `⟨hfP, hfI⟩` from `Submodule.mem_inf.mp hf`. Take `⟨hfP', hfI'⟩` from `Submodule.mem_inf.mp hf'`. Take `⟨hFP, -, hFI⟩` from `Formalism.GM.extendMapsTo p (K + 1) r LLw ρ n hS f hfP`. Take `⟨-, -, hFI'⟩` from `Formalism.GM.extendMapsTo p (K + 1) r LLw ρ n hS f' hfP'`.
+
+Use `set F := freeze p LLw ρ n f with hF`. Use `set F' := freeze p LLw ρ n f' with hF'`. Establish `hc` using `gammaIntegralityLemmas.intPol_coeff F (hFI hfI)`. Establish `hc'` using `gammaIntegralityLemmas.intPol_coeff F' (hFI' hfI')`. Use `set Den : ℕ := ((n - LLw.total).factorial * LLw.total.factorial) * ∏ i, (LLw.deg i).factorial with hDen`.
+
+Establish `hDen0 : Den ≠ 0`. Rewrite using `[hDen]`. Conclude with `Nat.mul_ne_zero (Nat.mul_ne_zero (Nat.factorial_pos _).ne' (Nat.factorial_pos _).ne') (Finset.prod_ne_zero_iff.mpr fun i _ => (Nat.factorial_pos _).ne')`. Establish `hDcast : ((((n - LLw.total).factorial * LLw.total.factorial : ℕ) : ℚ_[p]) * ∏ i, ((LLw.deg i).factorial : ℚ_[p])) = (Den : ℚ_[p])`. Rewrite using `[hDen]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hDcast, gammaIntegralityLemmas.fock_def', Finset.sum_div, Finset.mul_sum]`. Use `gammaIntegralityLemmas.norm_sum_le_bound _ _ 1 zero_le_one ?_` and prove the remaining obligations. Introduce `m hm`.
+
+Establish `hmd : MultiDeg (LLw.snoc n) m`. Rewrite `hFP` using `[Pol, mem_restrictSupport_iff]`. Conclude with `hFP (Finset.mem_coe.mpr hm)`. Use `set Num : ℕ := ∏ v : Fin (K + 1 + 1) × Fin r, (m v).factorial with hNum`. Establish `hNum0 : Num ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun i _ => (Nat.factorial_pos _).ne'`.
+
+Establish `hwf : gammaIntegralityLemmas.wf (p` using `p) m = (Num : ℚ_[p]) := by`. Rewrite using `[hNum, gammaIntegralityLemmas.wf]`. Use `push_cast`. Both sides reduce to the same expression. Rewrite using `[hwf]`.
+
+Establish `hδ : ∀ i, gammaIntegralityLemmas.δv m i = (LLw.snoc n).deg i` using `fun i => hmd i`. Establish `hT : ∀ i, gammaIntegralityLemmas.δv m i ≤ a`. Introduce `i`. Rewrite using `[hδ]`. Use `Fin.lastCases ?_ (fun i => ?_) i` and prove the remaining obligations.
+
+Rewrite using `[FrozenVariableComponents.snoc_deg_last]`. Conclude with `hn`. Rewrite using `[FrozenVariableComponents.snoc_deg_castSucc]`. Conclude with `(gammaIntegralityLemmas.deg_le_total LLw i).trans (hS.trans hn)`. Establish `h1` using `gammaIntegralityLemmas.vW_ge (p := p) m (T := a) (B := Nat.log p (a)) le_rfl hT`.
+
+Rewrite `h1` using `[Fin.sum_univ_castSucc]`. Simplify using `only [hδ, FrozenVariableComponents.snoc_deg_last, FrozenVariableComponents.snoc_deg_castSucc] at h1`. Establish `h2 : padicValNat p Den = padicValNat p (n - LLw.total).factorial + padicValNat p LLw.total.factorial + ∑ i, padicValNat p (LLw.deg i).factorial`. Rewrite using `[hDen, padicValNat.mul (Nat.mul_ne_zero (Nat.factorial_pos _).ne' (Nat.factorial_pos _).ne') (Finset.prod_ne_zero_iff.mpr fun i _ => (Nat.factorial_pos _).ne'), padicValNat.mul (Nat.factorial_pos _).ne' (Nat.factorial_pos _).ne', gammaIntegralityLemmas.v_prod _ _ (fun i _ => (Nat …`. Establish `h3 : padicValNat p (n - LLw.total).factorial + padicValNat p LLw.total.factorial ≤ padicValNat p n.factorial`.
+
+Establish `e` using `Nat.choose_mul_factorial_mul_factorial hS`. Rewrite using `[← e, padicValNat.mul (Nat.mul_ne_zero (Nat.choose_pos hS).ne' (Nat.factorial_pos _).ne') (Nat.factorial_pos _).ne', padicValNat.mul (Nat.choose_pos hS).ne' (Nat.factorial_pos _).ne']`. Use linear arithmetic over natural numbers and integers. Establish `h5` using `gammaIntegralityLemmas.norm_K (p := p) ⌈κ⌉₊ (coeff m F) (coeff m F') 0 0 (by simpa using hc m) (by simpa using hc' m) Num Den hNum0 hDen0 1 norm_one (by`. Establish `: (padicValNat p Den : ℤ) ≤ (padicValNat p Num : ℤ) + (⌈κ⌉₊ : ℤ)`.
+
+Establish `: padicValNat p Den ≤ padicValNat p Num + ⌈κ⌉₊`. Rewrite using `[h2]`. Establish `h1' : ∑ i, padicValNat p (LLw.deg i).factorial + padicValNat p n.factorial ≤ padicValNat p Num + (K + 2) * (r * Nat.log p (a))` using `h1`. Use linear arithmetic over natural numbers and integers. Conclude with `this` after adjusting the coercions.
+
+Use the proof step `omega)`. Rewrite `h5` using `[one_mul]`. Conclude with `h5`.
+-/
 theorem gamma_zero_integral {p : ℕ} [Fact p.Prime] (K r : ℕ) (LLw : Letters (K + 1)) (ρ : Fin r) (n a : ℕ) (κ : ℝ)
     (hS : LLw.total ≤ n) (hn : n ≤ a) (h4 : (K + 2) * (r * Nat.log p a) ≤ ⌈κ⌉₊)
     (f f' : MvPolynomial (Fin (K + 1) × Fin r) ℚ_[p]) (hf : f ∈ PolZ p r LLw) (hf' : f' ∈ PolZ p r LLw) :
@@ -75,6 +100,55 @@ theorem gamma_zero_integral {p : ℕ} [Fact p.Prime] (K r : ℕ) (LLw : Letters 
   rw [one_mul] at h5
   exact h5
 
+/- English proof (translation)
+Introduce `p _ N r _ _ LL T Xb E κ lgv e1 n ρ _hp2 hr hρ hadm hE hSn hdeg hL hκ hHP hHW nb f U V dg fw hf hUV hfw i`. Establish `hK : T.pos i + 1 + 1 ≤ N` using `hK_of_adm LL T hadm i`. Establish `hS : ((LL.setTies T n).takeD (T.pos i + 1)).total ≤ n i`. Rewrite using `[S_eq_total (LL.setTies T n) T i (by omega)]; exact hSn i`. Establish `hni : n i ≤ Xb`.
+
+Use `hdeg ⟨T.pos i + 1, by omega⟩` as an intermediate fact. Rewrite `this` using `[setTies_deg_eta LL T hadm i n (by omega)]`. Then use the resulting hypothesis. Take `⟨coef, hcoef⟩ : ∃ coef : ℕ, coef = (((LL.setTies T n).takeD (T.pos i + 1)).deg (Fin.last (T.pos i)) + n i + r + T.z i - 1).choose (((LL.setTies T n).takeD (T.pos i + 1)).deg (Fin.last (T.pos i)))` from `⟨_, rfl⟩`. Take `⟨NN, hNN⟩ : ∃ NN : ℚ_[p], NN = ((((n i - ((LL.setTies T n).takeD (T.pos i + 1)).total).factorial * ((LL.setTies T n).takeD (T.pos i + 1)).total.factorial : ℕ) : ℚ_[p]) * ∏ x, ((((LL.setTies T n).takeD (T.pos i + 1)).deg x).factorial : ℚ_[p]))` from `⟨_, rfl⟩`. Take `⟨cst, hcst⟩ : ∃ cst : ℚ_[p], cst = (p : ℚ_[p]) ^ ⌈κ⌉₊ * (coef : ℚ_[p]) / NN` from `⟨_, rfl⟩`.
+
+Establish `hgam : ∀ g g', (p : ℚ_[p]) ^ ⌈κ⌉₊ * tieGam p ((LL.setTies T n).takeD (T.pos i + 1)) ρ (T.z i) (n i) g g' = cst * fock p (T.phi p (LL.setTies T n) i (T.Ffull p (LL.setTies T n) i ρ (n i) g)) (T.Ffull p (LL.setTies T n) i ρ (n i) g')`. Introduce `g g'`. Rewrite using `[gam_eq LL T hadm i ρ n g g', ← hcoef, ← hNN, hcst]`. Expand and normalize the polynomial expressions, which then agree. Set `B : MvPolynomial (Fin (T.pos i + 1) × Fin r) ℚ_[p] →ₗ[ℚ_[p]] MvPolynomial (Fin (T.pos i + 1) × Fin r) ℚ_[p] →ₗ[ℚ_[p]] ℚ_[p]` to `cst • ((fockB p (Fin N × Fin r)).compl₁₂ ((T.phi p (LL.setTies T n) i) ∘ₗ FfL p (LL.setTies T n) T i ρ (n i)) (FfL p (LL.setTies T n) T i ρ (n i)))`.
+
+Establish `hB : ∀ g g', B g g' = cst * fock p (T.phi p (LL.setTies T n) i (T.Ffull p (LL.setTies T n) i ρ (n i) g)) (T.Ffull p (LL.setTies T n) i ρ (n i) g')`. Introduce `g g'`. Simplify using `[B, fockB_apply, FfL_apply]`. Establish `hsm : ∀ w, ∃ f' f'' : Fin (nb i w) → MvPolynomial (Fin (T.pos i + 1) × Fin r) ℚ_[p], (∀ a, f' a ∈ MMwZ p ((LL.setTies T n).takeD (T.pos i + 1)) T.J (T.thrUpTo i) ρ w) ∧ (∀ a, f'' a ∈ MMwZ p ((LL.setTies T n).takeD (T.pos i + 1)) T.J (T.thrUpTo i) ρ w) ∧ LinearIndependent ℚ_[p] f' …`. Introduce `w`.
+
+Take `⟨hU1, hV1, hU2, hV2, hfac⟩` from `hUV i w`. Use `smith_bases (nb i w) (f i w) _ (hf i w).1 (hf i w).2 B (U i w) (V i w) (dg i w) hU1 hV1 hU2 hV2 ?_` and prove the remaining obligations. Rewrite using `[← hfac]`. Use extensionality with `x y`. Simplify using `only [Matrix.of_apply]`.
+
+Rewrite using `[hB, hgam]`. Use `choose f' f'' hf'1 hf''1 hf'li hf'sp hf'diag using hsm`. Take `⟨Ω, hΩ⟩ : ∃ Ω : Finset (Fin r → ℤ), ∀ w, w ∈ Ω ↔ MMw p ((LL.setTies T n).takeD (T.pos i + 1)) T.J (T.thrUpTo i) ρ w ≠ ⊥` from `⟨(mmw_finite (p := p) LL T i ρ n).toFinset, fun w => by simp⟩`. Establish `hnb0 : ∀ w, w ∉ Ω → nb i w = 0`. Introduce `w hw`.
+
+Assume the negation of the conclusion as `h0`. Establish `hbot : MMw p ((LL.setTies T n).takeD (T.pos i + 1)) T.J (T.thrUpTo i) ρ w = ⊥`. Assume the negation of the conclusion as `h`. Conclude with `hw ((hΩ w).mpr h)`. Establish `hmem : f i w ⟨0, Nat.pos_of_ne_zero h0⟩ ∈ MMwZ p ((LL.setTies T n).takeD (T.pos i + 1)) T.J (T.thrUpTo i) ρ w`.
+
+Rewrite using `[← (hf i w).2]`. Conclude with `Submodule.subset_span ⟨_, rfl⟩`. Establish `h1` using `mmwZ_mmw _ _ _ _ _ hmem`. Rewrite `h1` using `[hbot, Submodule.mem_bot]`. Conclude with `(hf i w).1.ne_zero _ h1`.
+
+Establish `hκ' : (T.pos i + 2) * (r * Nat.log p Xb) ≤ ⌈κ⌉₊`. Establish `hl0 : (0 : ℝ) ≤ (Nat.log p Xb : ℝ)` using `Nat.cast_nonneg _`. Establish `hr' : (2 : ℝ) ≤ r` using `by exact_mod_cast hr`. Establish `h1 : ((T.pos i : ℝ) + 2) ≤ (N : ℝ) + 2`. Establish `: ((T.pos i + 1 + 1 : ℕ) : ℝ) ≤ (N : ℝ)` using `by exact_mod_cast hK`.
+
+Move the coercions through the operations in `at this`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2 : (r : ℝ) * (Nat.log p Xb : ℝ) ≤ (r : ℝ) ^ 2 * lgv` using `mul_le_mul (by nlinarith) (by linarith) hl0 (by positivity)`. Establish `h3 : (((T.pos i + 2) * (r * Nat.log p Xb) : ℕ) : ℝ) ≤ κ`. Use `push_cast`.
+
+Combine the equalities or inequalities in the displayed calculation. Conclude with `h3.trans (Nat.le_ceil κ)` after adjusting the coercions. Establish `hspZ : ∀ μ v, v ∈ TO.Cset p (LL.setTies T n) (T.pos i + 1 + 1) T.J T.thr → (GA p (LL.setTies T n) (T.pos i + 1 + 1)).IsHW μ v → v ∈ IntPol p (Fin N × Fin r) → v ∈ Submodule.span ℤ_[p] (Set.range fun x : (Σ w : Ω, Fin (nb i w.1)) => T.Ffull p (LL.setTies T n) i ρ (n i) (f' x.1.1 x …`. Introduce `μ v hv hw hvi`. Take `⟨g, hg, rfl⟩` from `hw_is_Ffull LL T hadm i ρ hρ n hS μ v hv hw hvi`.
+
+Distinguish the cases in `hwΩ : (μ + ((n i : ℕ) : ℤ) • Pi.single ρ 1) ∈ Ω`. Establish `hg'` using `hf'sp _ hg`. Use `Submodule.span_induction (p := fun g _ => T.Ffull p (LL.setTies T n) i ρ (n i) g ∈ Submodule.span ℤ_[p] (Set.range fun x : (Σ w : Ω, Fin (nb i w.1)) => T.Ffull p (LL.setTies T n) i ρ (n i) (f' x.1.1 x.2))) ?_ ?_ ?_ ?_ hg'` and prove the remaining obligations. Introduce and unpack `_ ⟨b, rfl⟩`. Conclude with `Submodule.subset_span ⟨⟨⟨_, hwΩ⟩, b⟩, rfl⟩`.
+
+Rewrite using `[← FfL_apply, map_zero]`. Conclude with `Submodule.zero_mem _`. Introduce `x y _ _ hx hy`. Rewrite using `[← FfL_apply, map_add]`. Conclude with `Submodule.add_mem _ hx hy`.
+
+Introduce `c x _ hx`. Rewrite using `[← FfL_apply, LinearMap.map_smul_of_tower]`. Conclude with `Submodule.smul_mem _ c hx`. Establish `hbot : MMw p ((LL.setTies T n).takeD (T.pos i + 1)) T.J (T.thrUpTo i) ρ (μ + ((n i : ℕ) : ℤ) • Pi.single ρ 1) = ⊥`. Assume the negation of the conclusion as `h`.
+
+Conclude with `hwΩ ((hΩ _).mpr h)`. Establish `h1` using `mmwZ_mmw _ _ _ _ _ hg`. Rewrite `h1` using `[hbot, Submodule.mem_bot]`. Rewrite using `[h1, ← FfL_apply, map_zero]`. Conclude with `Submodule.zero_mem _`.
+
+Establish `hdiag : ∀ x y : (Σ w : Ω, Fin (nb i w.1)), x.1.1 - ((n i : ℕ) : ℤ) • (Pi.single ρ 1 : Fin r → ℤ) = y.1.1 - ((n i : ℕ) : ℤ) • Pi.single ρ 1 → cst * fock p (T.phi p (LL.setTies T n) i (T.Ffull p (LL.setTies T n) i ρ (n i) (f' x.1.1 x.2))) (T.Ffull p (LL.setTies T n) i ρ (n i) (f'' …`. Introduce and unpack `⟨⟨w, hw⟩, b⟩ ⟨⟨w', hw'⟩, b'⟩ hla`. Establish `hww : w = w'` using `sub_left_injective hla`. Substitute `hww` using the available equality. Use `hf'diag w b b'` as an intermediate fact.
+
+Rewrite `this` using `[hB]`. Simplify using `only`. Rewrite using `[this]`. Distinguish the cases in `hbb : b = b'`. Substitute `hbb` using the available equality.
+
+Simplify using the standard rewrite rules. Rewrite using `[if_neg hbb, if_neg]`. Introduce `h`. Apply `hbb` to reduce the goal to its premises. Simplify using `using h`.
+
+Establish `hG0 : ∀ x y : (Σ w : Ω, Fin (nb i w.1)), ‖cst * fock p (T.Ffull p (LL.setTies T n) i ρ (n i) (f' x.1.1 x.2)) (T.Ffull p (LL.setTies T n) i ρ (n i) (f' y.1.1 y.2))‖ ≤ 1`. Introduce `x y`. Rewrite using `[fock_Ffull LL T hadm i ρ n]`. Establish `hg` using `gamma_zero_integral (p := p) (T.pos i) r ((LL.setTies T n).takeD (T.pos i + 1)) ρ (n i) Xb κ hS hni hκ' (f' x.1.1 x.2) (f' y.1.1 y.2) (mmwZ_polZ _ _ _ _ _ (hf'1 x.1.1 x.2)) (mmwZ_polZ _ _ _ _ _ (hf'1 y.1.1 y.2))`. Rewrite `hg` using `[← hNN]`.
+
+Establish `e : cst * fock p (freeze p ((LL.setTies T n).takeD (T.pos i + 1)) ρ (n i) (f' x.1.1 x.2)) (freeze p ((LL.setTies T n).takeD (T.pos i + 1)) ρ (n i) (f' y.1.1 y.2)) = (coef : ℚ_[p]) * ((p : ℚ_[p]) ^ ⌈κ⌉₊ * (fock p (freeze p ((LL.setTies T n).takeD (T.pos i + 1)) ρ (n i) (f' x.1.1 x …`. Rewrite using `[hcst]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, norm_mul]`. Conclude with `mul_le_one₀ (gammaIntegralityLemmas.norm_natCast_le_one' coef) (norm_nonneg _) hg`.
+
+Take `⟨Tm, πm, h1, h2, h3, h4, h5⟩` from `tie_core (LL.setTies T n) T hadm i ρ e1 hK hHP hHW E (by linarith) (ι := Σ w : Ω, Fin (nb i w.1)) (fun x => T.Ffull p (LL.setTies T n) i ρ (n i) (f' x.1.1 x.2)) (fun x => T.Ffull p (LL.setTies T n) i ρ (n i) (f'' x.1.1 x.2)) (fun x => x.1.1 - ((n i : ℕ) : ℤ) • Pi.single ρ 1) (fun …`. Use `⟨Tm, πm, e1 * (T.pos i + 1 + 1) + 2 * e1, (by nlinarith [hK, Nat.zero_le e1]), h1, h2, h3, fun j hij u _ => h4 j hij u, ?_⟩` and prove the remaining obligations. Establish `hsumN : ∑ x ∈ univ.filter (fun x : (Σ w : Ω, Fin (nb i w.1)) => ‖dg i x.1.1 x.2‖ < (p : ℝ) ^ (-E)), Module.finrank ℚ_[p] (TO.YYs (LL.setTies T n) (T.pos i + 1 + 1) T.J T.thr (T.Ffull p (LL.setTies T n) i ρ (n i) (fw i x.1.1))) = ∑ w ∈ Ω, (univ.filter (fun b => ‖dg i w b‖ < (p : ℝ …`. Rewrite using `[Finset.sum_filter, Fintype.sum_sigma, ← Finset.sum_coe_sort Ω]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[← Finset.sum_filter, TO.YYsp_eq]`. Conclude with `Finset.sum_const_nat (fun _ _ => rfl)`. Establish `hfs : ∑ᶠ w, ((univ.filter (fun b => ‖dg i w b‖ < (p : ℝ) ^ (-E))).card : ℝ) * (Module.finrank ℚ_[p] (T.YYsp p LL i ρ n (fw i w)) : ℝ) = ∑ w ∈ Ω, ((univ.filter (fun b => ‖dg i w b‖ < (p : ℝ) ^ (-E))).card : ℝ) * (Module.finrank ℚ_[p] (T.YYsp p LL i ρ n (fw i w)) : ℝ)`. Use `finsum_eq_sum_of_support_subset _ fun w hw => ?_` and prove the remaining obligations. Rewrite using `[Finset.mem_coe]`.
+
+Assume the negation of the conclusion as `hwΩ`. Use `hw ?_` and prove the remaining obligations. Establish `hle : (univ.filter (fun b => ‖dg i w b‖ < (p : ℝ) ^ (-E))).card ≤ nb i w` using `(Finset.card_le_univ _).trans (by simp)`. Establish `hle0` using `Nat.le_zero.mp (hle.trans (hnb0 w hwΩ).le)`. Simplify using `only [hle0, Nat.cast_zero, zero_mul]`.
+
+Rewrite using `[hfs]`. Rewrite `h5` using `[hsumN]`. Conclude with `h5` after adjusting the coercions.
+-/
 theorem tieOpsX_main : TieOpsX := by
   intro p _ N r _ _ LL T Xb E κ lgv e1 n ρ _hp2 hr hρ hadm hE hSn hdeg hL hκ hHP hHW nb f U V dg fw hf hUV hfw i
   classical
@@ -250,6 +324,49 @@ theorem tieOpsX_main : TieOpsX := by
   rw [hsumN] at h5
   exact_mod_cast h5
 
+/- English proof (translation)
+Introduce `p _ N r _ _ LL T Xb E κ lgv e1 n ρ h2p hr hρ hadm hE hS hdeg hL hκ he1 hHP hHW nb f U V dg fw h1 h2 h3`. Establish `hops` using `hT p N r LL T Xb E κ lgv e1 n ρ h2p hr hρ hadm hE hS hdeg hL hκ hHP hHW nb f U V dg fw h1 h2 h3`. Use `choose Tm πm Kf hK hTY hTint hadj hcomm hrank using hops`. Establish `hadm' : T.Admissible (LL.setTies T n)` using `hadm`. Use `set LL' := LL.setTies T n with hLL'`.
+
+Use `set Ysp : Submodule ℚ_[p] (MvPolynomial (Fin N × Fin r) ℚ_[p]) := Y p (r := r) LL' T.J T.thr with hYsp`. Use `set W : Submodule ℚ_[p] (MvPolynomial (Fin N × Fin r) ℚ_[p]) := Ysp ⊓ (Finset.univ : Finset (Fin T.t)).inf (fun i => LinearMap.ker (πm i - LinearMap.id)) with hW`. Establish `hYpol : Ysp ≤ Pol p r LL'` using `inf_le_left`. Establish `hWY : W ≤ Ysp` using `inf_le_left`. Establish `hp0 : (0 : ℝ) < p` using `by exact_mod_cast (Fact.out : p.Prime).pos`.
+
+Establish `hp1 : (1 : ℝ) < p` using `by exact_mod_cast (Fact.out : p.Prime).one_lt`. Establish `hlg : 0 ≤ lgv`. Establish `: (0 : ℝ) ≤ (Nat.log p Xb : ℝ)` using `Nat.cast_nonneg _`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hκ0 : 0 ≤ κ` using `le_trans (by positivity) hκ`.
+
+Establish `hsat : ∀ (c : ℤ_[p]) (x : MvPolynomial (Fin N × Fin r) ℚ_[p]), c ≠ 0 → x ∈ YZ p (r` using `r) LL' T.J T.thr → c • x ∈ W.restrictScalars ℤ_[p] ⊓ PolZ p r LL' → x ∈ W.restrictScalars ℤ_[p] ⊓ PolZ p r LL' := by`. Introduce `c x hc hx hcx`. Use `Submodule.mem_inf.mpr ⟨?_, (Submodule.mem_inf.mp hx).2⟩` and prove the remaining obligations. Establish `hxY : x ∈ Ysp` using `(Submodule.mem_inf.mp hx).1`. Establish `hcW : c • x ∈ W` using `(Submodule.mem_inf.mp hcx).1`.
+
+Use `show x ∈ W`. Use `Submodule.mem_inf.mpr ⟨hxY, ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.mem_finsetInf]`. Introduce `i _`. Establish `hci` using `(Submodule.mem_finsetInf.mp (Submodule.mem_inf.mp hcW).2) i (Finset.mem_univ i)`.
+
+Rewrite `hci`, the goal using `[LinearMap.mem_ker]`. Rewrite `hci` using `[← algebraMap_smul ℚ_[p] c x, map_smul, smul_eq_zero]`. Break down `hci with h | h` into its components or cases. Conclude with `absurd (PadicInt.ext (h.trans PadicInt.coe_zero.symm)) hc`. Conclude with `h`.
+
+Establish `hL1Y : W.restrictScalars ℤ_[p] ⊓ PolZ p r LL' ≤ YZ p (r` using `r) LL' T.J T.thr := inf_le_inf_right (PolZ p r LL') (show W.restrictScalars ℤ_[p] ≤ Ysp.restrictScalars ℤ_[p] from fun x hx => hWY hx)`. Use `⟨W.restrictScalars ℤ_[p] ⊓ PolZ p r LL', hL1Y, hsat, ?_, ?_⟩` and prove the remaining obligations. Introduce `u hu hprim`. Establish `huY : u ∈ YZ p (r` using `r) LL' T.J T.thr := hL1Y hu`. Establish `hprimY : ∀ (c : ℤ_[p]) (x : MvPolynomial (Fin N × Fin r) ℚ_[p]), x ∈ YZ p (r` using `r) LL' T.J T.thr → u = c • x → IsUnit c := by`.
+
+Introduce `c x hx hux`. Distinguish the cases in `hc : c = 0`. It suffices to derive a contradiction. Establish `hu0 : u = 0` using `by rw [hux, hc, zero_smul]`. Use `hprim 0 0 (Submodule.zero_mem _) (by rw [hu0, smul_zero])` as an intermediate fact.
+
+Conclude with `not_isUnit_zero this`. Conclude with `hprim c x (hsat c x hc hx (hux ▸ hu)) hux`. Take `⟨z'', hz'', hnorm⟩` from `hY p N r LL' T.J T.thr ρ e1 hr hHP u huY hprimY`. Take `⟨K₀, hK₀⟩ : ∃ K₀ : ℕ, K₀ = e1 * (N + 1)` from `⟨_, rfl⟩`. Rewrite `hnorm` using `[← hK₀]`.
+
+Use `set e := ⌊E⌋₊ with he`. Set `Ts : Fin T.t → MvPolynomial (Fin N × Fin r) ℚ_[p] →ₗ[ℚ_[p]] MvPolynomial (Fin N × Fin r) ℚ_[p]` to `fun i => ((p : ℚ_[p]) ^ (Kf i)) • Tm i`. Establish `hTsZ : ∀ i, ∀ y ∈ YZ p (r` using `r) LL' T.J T.thr, Ts i y ∈ YZ p (r := r) LL' T.J T.thr := by`. Introduce `i y hy`. Establish `hyY : y ∈ Ysp` using `(Submodule.mem_inf.mp hy).1`.
+
+Establish `h1 : Ts i y ∈ Ysp` using `Ysp.smul_mem _ (hTY i y hyY)`. Conclude with `Submodule.mem_inf.mpr ⟨h1, Submodule.mem_inf.mpr ⟨hYpol h1, hTint i y hy⟩⟩`. Establish `hTsY : ∀ i, ∀ y ∈ (Ysp : Set (MvPolynomial (Fin N × Fin r) ℚ_[p])), Ts i y ∈ Ysp` using `fun i y hy => Ysp.smul_mem _ (hTY i y hy)`. Use `set u' := lcomp Ts (List.finRange T.t) z'' with hu'`. Establish `hu'Z : u' ∈ YZ p (r` using `r) LL' T.J T.thr := lcomp_keep Ts (YZ p (r := r) LL' T.J T.thr : Set _) (List.finRange T.t) (fun j _ => hTsZ j) z'' hz''`.
+
+Use `⟨u', hu'Z, ?_⟩` and prove the remaining obligations. Establish `hfix : ∀ i ∈ List.finRange T.t, πm i u = u`. Introduce `i _`. Establish `huW : u ∈ W` using `(Submodule.mem_inf.mp hu).1`. Use `(Submodule.mem_finsetInf.mp (Submodule.mem_inf.mp huW).2) i (Finset.mem_univ i)` as an intermediate fact.
+
+Rewrite `this` using `[LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, sub_eq_zero]`. Conclude with `this`. Establish `hpeel` using `peel (fockN p LL') (T.phi p LL') Ts πm (fun i => (p : ℚ_[p]) ^ (Kf i + e)) (fun i => (Y p (r := r) LL' T.J (T.thrUpTo i) : Set (MvPolynomial (Fin N × Fin r) ℚ_[p]))) (Ysp : Set (MvPolynomial (Fin N × Fin r) ℚ_[p])) (fun i => fun x hx => y_le_thrUpTo LL' T i hx) hTsY (fun i j hij …`. Rewrite using `[fockN_smul_right', hadj i u hu u' hu', pow_add]`. Use the proof step `ring)`.
+
+Use the proof step `(List.finRange T.t) (List.pairwise_lt_finRange T.t) u (hWY (Submodule.mem_inf.mp hu).1) hfix z''`. Use the proof step `(Submodule.mem_inf.mp hz'').1`. Establish `hphis : T.phis p (r` using `r) LL' = lcomp (T.phi p (r := r) LL') (List.finRange T.t) := rfl`. Rewrite using `[hphis, hpeel]`. Establish `hS' : (∑ i, ((Kf i + e : ℕ) : ℝ)) ≤ (T.t : ℝ) * (E + κ)`.
+
+Establish `hb : ∀ i, ((Kf i + e : ℕ) : ℝ) ≤ E + κ`. Introduce `i`. Use `push_cast`. Establish `h1 : (Kf i : ℝ) ≤ ((e1 * (N + 2) : ℕ) : ℝ)` using `by exact_mod_cast hK i`. Establish `h2 : (e : ℝ) ≤ E` using `Nat.floor_le (by linarith)`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation. Establish `hK0' : (K₀ : ℝ) ≤ κ`. Establish `h1 : (K₀ : ℝ) ≤ ((e1 * (N + 2) : ℕ) : ℝ)`. Rewrite using `[hK₀]; exact_mod_cast Nat.mul_le_mul_left e1 (by omega)`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hD : (((∑ i, (Kf i + e)) + K₀ : ℕ) : ℤ) ≤ ⌊(T.t : ℝ) * (E + κ) + κ⌋`. Apply `Int.le_floor.mpr` to reduce the goal to its premises. Establish `: (((∑ i, (Kf i + e)) + K₀ : ℕ) : ℝ) = (∑ i, ((Kf i + e : ℕ) : ℝ)) + K₀` using `by push_cast; rfl`. Rewrite using `[Int.cast_natCast, this]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hprod : ((List.finRange T.t).map (fun i => (p : ℚ_[p]) ^ (Kf i + e))).prod = (p : ℚ_[p]) ^ (∑ i, (Kf i + e))`. Rewrite using `[← Fin.prod_univ_def, Finset.prod_pow_eq_pow_sum]`. Rewrite using `[hprod, norm_mul, norm_pow, Padic.norm_p]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[Nat.cast_add, neg_add, zpow_add₀ (ne_of_gt hp0), zpow_neg, zpow_natCast, inv_pow]`. Use `_ ≤ (p : ℝ)⁻¹ ^ (∑ i, (Kf i + e)) * ‖fockN p LL' u z''‖ := mul_le_mul_of_nonneg_left hnorm (by positivity)`. Use `haveI := pol_finiteDimensional (p := p) (r := r) LL'`. Use `haveI : FiniteDimensional ℚ_[p] Ysp := Submodule.finiteDimensional_of_le hYpol`. Establish `q1 : Module.finrank ℤ_[p] (YZ p (r` using `r) LL' T.J T.thr) = Module.finrank ℚ_[p] Ysp := finrank_lattice LL' Ysp hYpol`.
+
+Establish `q2 : Module.finrank ℤ_[p] (W.restrictScalars ℤ_[p] ⊓ PolZ p r LL' : Submodule ℤ_[p] _) = Module.finrank ℚ_[p] W` using `finrank_lattice LL' W (hWY.trans hYpol)`. Rewrite using `[q1, q2]`. Establish `hc` using `codim_inf_le Ysp (fun i => LinearMap.ker (πm i - LinearMap.id)) univ`. Use `(Nat.cast_le.mpr hc).trans ?_` and prove the remaining obligations. Rewrite using `[Nat.cast_sum]`.
+
+Conclude with `Finset.sum_le_sum fun i _ => hrank i`.
+-/
 theorem partnerMX_of_parts (hT : TieOpsX) (hY : YPartnerC) : PartnerMX := by
   intro p _ N r _ _ LL T Xb E κ lgv e1 n ρ h2p hr hρ hadm hE hS hdeg hL hκ he1 hHP hHW nb f U V dg fw h1 h2 h3
   have hops := hT p N r LL T Xb E κ lgv e1 n ρ h2p hr hρ hadm hE hS hdeg hL hκ hHP hHW nb f U V dg fw h1 h2 h3
@@ -375,6 +492,9 @@ theorem partnerMX_of_parts (hT : TieOpsX) (hY : YPartnerC) : PartnerMX := by
     rw [Nat.cast_sum]
     exact Finset.sum_le_sum fun i _ => hrank i
 
+/- English proof (translation)
+Introduce `p _ N r _ _ LL T Xb E κ lgv e1 n ρ hp2 hr hρ hT hE hS hdeg hlg hκ hκ' hPP hW nb f U V dg fw hf hUV hfw`. Take `⟨L₁, hL₁, hsat, hprim, hrank⟩` from `hP p N r LL T Xb E κ lgv e1 n ρ hp2 hr hρ hT hE hS hdeg hlg hκ hκ' hPP hW nb f U V dg fw hf hUV hfw`. Establish `hfin : Module.Finite ℤ_[p] (YZ p (r` using `r) (LL.setTies T n) T.J T.thr) := by haveI : IsNoetherian ℤ_[p] (PolZ p r (LL.setTies T n)) := isNoetherian_of_fg_of_noetherian _ (polZ_fg (LL.setTies T n)) haveI : IsNoetherian ℤ_[p] (YZ p (r := r) (LL.setTies T n) T.J T.thr) := isNoetherian_of_le (fun x hx => by unfold YZ at hx …`. Establish `hb : bad p (fun F G => fockN p (LL.setTies T n) (T.phis p (LL.setTies T n) F) G) (YZ p (r` using `r) (LL.setTies T n) T.J T.thr) ⌊(T.t : ℝ) * (E + κ) + κ⌋ ≤ Module.finrank ℤ_[p] (YZ p (r := r) (LL.setTies T n) T.J T.thr) - Module.finrank ℤ_[p] L₁ := hBad p (MvPolynomial (Fin N × Fin r) ℚ_[p]) (fockBil (LL.setTies T n) (T.phis p (LL.setTies T n))) (YZ p (r := r) (LL.setTies T …`. Conclude with `le_trans (Nat.cast_le.mpr hb) hrank`.
+-/
 theorem pointMX_of_partner (hBad : BadCrit) (hP : PartnerMX) : PointMX := by
   intro p _ N r _ _ LL T Xb E κ lgv e1 n ρ hp2 hr hρ hT hE hS hdeg hlg hκ hκ' hPP hW nb f U V dg fw hf hUV hfw
   obtain ⟨L₁, hL₁, hsat, hprim, hrank⟩ :=

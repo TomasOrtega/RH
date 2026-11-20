@@ -8,6 +8,19 @@ open scoped TensorProduct ComplexConjugate Matrix
 
 namespace GlobalTheory.TrEll
 
+/- English proof (translation)
+Establish `h : (γ.1.1.map (σ : E →+* E))ᵀ * J * γ.1.1 = J` using `γ.2`. Establish `hJu : IsUnit J` using `(Matrix.isUnit_iff_isUnit_det J).2 (Ne.isUnit hJ)`. Take `⟨U, hU⟩` from `hJu`. Establish `hg : IsUnit γ.1.1` using `γ.1.isUnit`. Establish `hgd : IsUnit γ.1.1.det` using `(Matrix.isUnit_iff_isUnit_det _).1 hg`.
+
+Establish `hJd : IsUnit J.det` using `Ne.isUnit hJ`. Use `set g := γ.1.1 with hgdef`. Establish `h2 : (g.map (σ : E →+* E))ᵀ = J * g⁻¹ * J⁻¹`. Establish `: (g.map (σ : E →+* E))ᵀ * J = J * g⁻¹` using `by conv_rhs => rw [← h]`. Rewrite using `[Matrix.mul_nonsing_inv_cancel_right _ _ hgd]`.
+
+Rewrite using `[← this, Matrix.mul_nonsing_inv_cancel_right _ _ hJd]`. Use `set c : E := (-1) ^ n * Ring.inverse g.det with hc`. Establish `hc0 : c ≠ 0`. Rewrite using `[hc, Ring.inverse_eq_inv']`. Conclude with `mul_ne_zero (pow_ne_zero _ (by simp)) (inv_ne_zero hgd.ne_zero)`.
+
+Establish `hdeg : g.charpoly.natDegree = n` using `by simp`. Establish `h3 : g.charpoly.map (σ : E →+* E) = C c * reflect n g.charpoly`. Rewrite using `[← Matrix.charpoly_map, ← Matrix.charpoly_transpose, h2, ← hU, Matrix.charpoly_units_conj, Matrix.charpoly_inv _ hg, ← Matrix.reverse_charpoly, Polynomial.reverse, hdeg, hc]`. Simplify using the standard rewrite rules. Establish `h4 : σ (g.charpoly.eval 0) = c`.
+
+Establish `e : σ (g.charpoly.eval 0) = (g.charpoly.map (σ : E →+* E)).coeff 0`. Rewrite using `[coeff_map, coeff_zero_eq_eval_zero]`. Both sides reduce to the same expression. Establish `m : g.charpoly.coeff n = 1`. Use `(Matrix.charpoly_monic g).coeff_natDegree` as an intermediate fact.
+
+Rewrite `this` using `[hdeg]`. Then use the resulting hypothesis. Rewrite using `[e, h3, coeff_C_mul, coeff_reflect, revAt_zero, m, mul_one]`. Unfold `sharp`. Rewrite using `[h4, h3, reflect_C_mul, reflect_reflect, ← mul_assoc, ← C_mul, inv_mul_cancel₀ hc0, C_1, one_mul]`.
+-/
 theorem charpoly_eq_sharp (F E : Type) [Field F] [Field E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ)
     (J : Matrix (Fin n) (Fin n) E) (hJ : J.det ≠ 0) (γ : GRat σ J) :
     γ.1.1.charpoly = sharp σ n γ.1.1.charpoly := by

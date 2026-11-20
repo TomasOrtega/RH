@@ -9,6 +9,11 @@ namespace GlobalTheory
 
 open GlobalTheory.IndefiniteRowSideFullHecke.ImageStableDegreeBounds in
 
+/- English proof (translation)
+Use extensionality with `i`. Simplify using `only [degrees, Finset.mem_image, Finset.mem_product, Prod.exists]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, n, ⟨hs, hn⟩, rfl⟩`. Conclude with `⟨(c - s).val, n, ⟨⟨s, hs, rfl⟩, hn⟩, rfl⟩`.
+
+Introduce and unpack `⟨x, n, ⟨⟨s, hs, rfl⟩, hn⟩, rfl⟩`. Conclude with `⟨s, n, ⟨hs, hn⟩, rfl⟩`.
+-/
 theorem degrees_eq_image_pairs {e : ℕ} (Sig : Finset (ZMod e)) (c : ZMod e) (m m' : ℕ) :
     degrees Sig c m m' =
       ((Sig.image fun s => (c - s).val) ×ˢ Finset.Ico m m').image (fun p : ℕ × ℕ => p.1 + p.2 * e) := by
@@ -20,6 +25,11 @@ theorem degrees_eq_image_pairs {e : ℕ} (Sig : Finset (ZMod e)) (c : ZMod e) (m
   · rintro ⟨x, n, ⟨⟨s, hs, rfl⟩, hn⟩, rfl⟩
     exact ⟨s, n, ⟨hs, hn⟩, rfl⟩
 
+/- English proof (translation)
+Establish `h1 : (x + n * e) % e = x` using `by rw [Nat.add_mul_mod_self_right, Nat.mod_eq_of_lt hx]`. Establish `h2 : (y + m * e) % e = y` using `by rw [Nat.add_mul_mod_self_right, Nat.mod_eq_of_lt hy]`. Establish `hxy : x = y` using `by rw [← h1, ← h2, h]`. Substitute `hxy` using the available equality. Establish `he : 0 < e` using `lt_of_le_of_lt (Nat.zero_le _) hx`.
+
+Conclude with `⟨rfl, Nat.eq_of_mul_eq_mul_right he (by omega)⟩`.
+-/
 theorem add_mul_inj_of_lt {e x y n m : ℕ} (hx : x < e) (hy : y < e) (h : x + n * e = y + m * e) :
     x = y ∧ n = m := by
   have h1 : (x + n * e) % e = x := by rw [Nat.add_mul_mod_self_right, Nat.mod_eq_of_lt hx]
@@ -33,6 +43,15 @@ end GlobalTheory
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `hla : ((l : ZMod e)) ^ a = 1`. Establish `h` using `congrArg (Nat.cast : ℕ → ZMod e) he`. Move the coercions through the operations in `at h`. Rewrite `h` using `[ZMod.natCast_self, zero_add]`. Conclude with `h.symm`.
+
+Establish `hper : Function.IsPeriodicPt (fun x : ZMod e => (l : ZMod e) * x) a (s' - s)` using `by show (fun x : ZMod e => (l : ZMod e) * x)^[a] (s' - s) = s' - s`. Rewrite using `[mul_left_iterate, hla]`. Conclude with `one_mul _`. Use `⟨GlobalTheory.BK.frobPeriod l (s' - s), hper.minimalPeriod_pos (by omega), ?_, ?_⟩` and prove the remaining obligations. Conclude with `Finset.le_sup (f := fun p : ZMod e × ZMod e => GlobalTheory.BK.frobPeriod l (p.1 - p.2)) (b := (s', s)) (Finset.mem_product.2 ⟨hs', hs⟩)`.
+
+Establish `hE : ((l : ℤ) ^ a - 1) = (e : ℤ)`. Establish `: (e : ℤ) + 1 = (l : ℤ) ^ a` using `by exact_mod_cast he`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[hE, ← ZMod.intCast_zmod_eq_zero_iff_dvd]`. Establish `hfix : (fun x : ZMod e => (l : ZMod e) * x)^[GlobalTheory.BK.frobPeriod l (s' - s)] (s' - s) = s' - s` using `Function.iterate_minimalPeriod`.
+
+Rewrite `hfix` using `[mul_left_iterate]`. Use `push_cast`. Rewrite using `[ZMod.natCast_zmod_val, ZMod.natCast_zmod_val]`. Take the linear combination `hfix`.
+-/
 theorem exists_period_dvd {l e a : ℕ} (ha : 1 ≤ a) (he : e + 1 = l ^ a) [NeZero e]
     (Sig : Finset (ZMod e)) (c : ZMod e) {s s' : ZMod e} (hs : s ∈ Sig) (hs' : s' ∈ Sig) :
     ∃ ρ, 1 ≤ ρ ∧ ρ ≤ GlobalTheory.BK.maxPeriod l Sig ∧
@@ -65,6 +84,37 @@ namespace GlobalTheory
 
 open GlobalTheory.IndefiniteRowSideFullHecke.ImageStableDegreeBounds GlobalTheory.IndefiniteRowSideFullHecke.RepresentationBounds GlobalTheory.BK in
 
+/- English proof (translation)
+Introduce `l e a _ ha he Sig c A' N hN hA`. Establish `hl : l.Prime` using `Fact.out`. Establish `hl2` using `hl.two_le`. Establish `hepos : 0 < e`. Establish `: l ≤ l ^ a` using `Nat.le_self_pow (by omega) l`.
+
+Use linear arithmetic over natural numbers and integers. Establish `: NeZero e` using `⟨by omega⟩`. Establish `hE : ((l : ℤ) ^ a - 1) = (e : ℤ)`. Establish `: (e : ℤ) + 1 = (l : ℤ) ^ a` using `by exact_mod_cast he`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Use `set Cc : Finset ℕ := Sig.image fun s => (c - s).val with hCc`. Establish `hCclt : ∀ x ∈ Cc, x < e`. Introduce `x hx`. Take `⟨s, _, rfl⟩` from `Finset.mem_image.1 hx`. Conclude with `ZMod.val_lt _`.
+
+Establish `hD₁ : D₁ Sig c A' = (Cc ×ˢ Finset.Ico 0 A').image (fun p : ℕ × ℕ => p.1 + p.2 * e)` using `degrees_eq_image_pairs Sig c 0 A'`. Establish `hD₂ : D₂ Sig c A' = (Cc ×ˢ Finset.Ico A' (2 * A')).image (fun p : ℕ × ℕ => p.1 + p.2 * e)` using `degrees_eq_image_pairs Sig c A' (2 * A')`. Establish `hmap : ∀ T : Finset ℕ, (rootPoly T).map (Int.castRingHom ℤ_[l]) = ∏ i ∈ T.image (Nat.cast : ℕ → ℤ), (Polynomial.X - Polynomial.C ((i : ℤ) : ℤ_[l]))`. Introduce `T`. Rewrite using `[Finset.prod_image (fun x _ y _ hxy => by exact_mod_cast hxy)]`.
+
+Simplify using `[rootPoly, Polynomial.map_prod]`. Use `set Z₁ : Finset ℤ := (D₁ Sig c A').image (Nat.cast : ℕ → ℤ) with hZ₁`. Use `set Z₂ : Finset ℤ := (D₂ Sig c A').image (Nat.cast : ℕ → ℤ) with hZ₂`. Establish `hdisj : Disjoint Z₁ Z₂`. Rewrite using `[Finset.disjoint_left]`.
+
+Introduce `i hi1 hi2`. Take `⟨i₁, hi₁, rfl⟩` from `Finset.mem_image.1 hi1`. Take `⟨i₂, hi₂, heq⟩` from `Finset.mem_image.1 hi2`. Establish `heq' : i₂ = i₁` using `by exact_mod_cast heq`. Substitute `heq'` using the available equality.
+
+Rewrite `hi₁` using `[hD₁]`. Rewrite `hi₂` using `[hD₂]`. Take `⟨p, hp, hpe⟩` from `Finset.mem_image.1 hi₁`. Take `⟨q, hq, hqe⟩` from `Finset.mem_image.1 hi₂`. Rewrite `hp`, `hq` using `[Finset.mem_product, Finset.mem_Ico]`.
+
+Use `add_mul_inj_of_lt (hCclt _ hp.1) (hCclt _ hq.1) (hpe.trans hqe.symm)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hlt : ∀ x ∈ Cc, x < l ^ a - 1` using `fun x hx => by have := hCclt x hx; omega`. Establish `hper : ∀ x ∈ Cc, ∀ y ∈ Cc, x ≠ y → ∃ ρ, 1 ≤ ρ ∧ ρ ≤ maxPeriod l Sig ∧ ((l : ℤ) ^ a - 1) ∣ ((x : ℤ) - y) * ((l : ℤ) ^ ρ - 1)`. Introduce `x hx y hy _`.
+
+Take `⟨s, hs, rfl⟩` from `Finset.mem_image.1 hx`. Take `⟨s', hs', rfl⟩` from `Finset.mem_image.1 hy`. Conclude with `exists_period_dvd ha he Sig c hs hs'`. Establish `hU : Z₁ ∪ Z₂ = ((Cc ×ˢ Finset.range (2 * A')).image (fun p : ℕ × ℕ => p.1 + p.2 * e)).image (Nat.cast : ℕ → ℤ)`. Rewrite using `[hZ₁, hZ₂, ← Finset.image_union, hD₁, hD₂, ← Finset.image_union, ← Finset.product_union]`.
+
+Use `congr 3`. Use extensionality with `n`. Simplify using `only [Finset.mem_union, Finset.mem_Ico, Finset.mem_range]`. Use linear arithmetic over natural numbers and integers. Establish `hbound : ∀ i ∈ Z₁, (∑ j ∈ Z₂, padicValInt l (i - j)) + ∑ j ∈ Z₁.erase i, padicValInt l (i - j) ≤ rho l Sig N`.
+
+Introduce `i hi`. Rewrite using `[Finset.sum_erase _ (by simp), add_comm, ← Finset.sum_union hdisj, hU, Finset.sum_image (fun x _ y _ hxy => by exact_mod_cast hxy)]`. Rewrite using `[Finset.sum_image (fun p hp q hq hpq => by`. Rewrite `hp`, `hq` using `[Finset.mem_coe, Finset.mem_product]`. Use `add_mul_inj_of_lt (hCclt _ hp.1) (hCclt _ hq.1) hpq` as an intermediate fact.
+
+Conclude with `Prod.ext this.1 this.2), Finset.sum_product]`. Take `⟨i₀, hi₀, rfl⟩` from `Finset.mem_image.1 hi`. Rewrite `hi₀` using `[hD₁]`. Take `⟨⟨x, n⟩, hxn, rfl⟩` from `Finset.mem_image.1 hi₀`. Rewrite `hxn` using `[Finset.mem_product, Finset.mem_Ico]`.
+
+Establish `LB` using `Formalism.IrreducibleCountingLemmas.WindowSums.sumPadicValDifferencesLe l a A' (maxPeriod l Sig) Cc hl ha (by omega) hlt hper x hxn.1 n hxn.2.2`. Rewrite `LB` using `[hE]`. Use `le_trans (le_of_eq ?_) (LB.trans ?_)` and prove the remaining obligations. Use `Finset.sum_congr rfl fun y _ => Finset.sum_congr rfl fun m _ => ?_ split_ifs with hc` and prove the remaining obligations. Take `⟨rfl, rfl⟩` from `hc`.
+
+Simplify using the standard rewrite rules. Use `push_cast`. Both sides reduce to the same expression. Establish `hcard : Cc.card ≤ N` using `Finset.card_image_le.trans hN`. Unfold `rho`.
+
+Combine the equalities or inequalities in the displayed calculation. Take `⟨α, β, hαβ⟩` from `Ideal.mem_span_pair.1 (Formalism.IrreducibleCountingLemmas.WindowSums.lagrange_resolvent_T l Z₁ Z₂ (rho l Sig N) hdisj hbound)`. Use `⟨α, β, ?_⟩` and prove the remaining obligations. Rewrite using `[← hαβ, P₁, P₂, hmap, hmap]`.
+-/
 theorem lagrange_C_rho_eq_comb_degrees : ∀ (l e a : ℕ) [Fact l.Prime], 1 ≤ a → e + 1 = l ^ a →
     ∀ (Sig : Finset (ZMod e)) (c : ZMod e) (A' N : ℕ), Sig.card ≤ N → 2 * A' + 2 < l →
     ∃ α β : Polynomial ℤ_[l], Polynomial.C ((l : ℤ_[l]) ^ GlobalTheory.IndefiniteRowSideFullHecke.RepresentationBounds.rho l Sig N) =

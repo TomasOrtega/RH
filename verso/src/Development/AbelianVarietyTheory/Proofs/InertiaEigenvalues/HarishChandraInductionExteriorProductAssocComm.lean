@@ -13,33 +13,57 @@ open scoped Classical
 
 variable {g : ℕ} [Fact g.Prime]
 
+/- English proof (translation)
+Unfold `toG`. Rewrite using `[dif_pos x.isUnit]`. Conclude with `Units.ext rfl`.
+-/
 theorem toG_val {n : ℕ} (x : Gn g n) : toG (x : Mt g n) = x := by
   unfold toG
   rw [dif_pos x.isUnit]
   exact Units.ext rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i j`. Simplify using `only [br, entN, zero_add, i.isLt, j.isLt, and_self, dif_pos]`.
+-/
 theorem br_zero {a : ℕ} (M : Mt g a) : br 0 a M = M := by
   funext i j
   simp only [br, entN, zero_add, i.isLt, j.isLt, and_self, dif_pos]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i j`. Simplify using `only [tl, entN, i.isLt, j.isLt, and_self, dif_pos]`.
+-/
 theorem tl_self {a : ℕ} (M : Mt g a) : tl a M = M := by
   funext i j
   simp only [tl, entN, i.isLt, j.isLt, and_self, dif_pos]
 
+/- English proof (translation)
+Introduce `_ _ hj _` and use `absurd hj (Nat.not_lt_zero _)`.
+-/
 theorem inPar_zero {n : ℕ} (M : Mt g n) : InPar 0 M := fun _ _ hj _ => absurd hj (Nat.not_lt_zero _)
 
+/- English proof (translation)
+Introduce `i _ _ hi` and use `absurd i.isLt (not_lt.2 hi)`.
+-/
 theorem inPar_self {a : ℕ} (M : Mt g a) : InPar a M := fun i _ _ hi => absurd i.isLt (not_lt.2 hi)
 
+/- English proof (translation)
+Use `h x y⁻¹` as an intermediate fact. Rewrite `this` using `[inv_inv]`. Then use the resulting hypothesis.
+-/
 theorem class_conj {G : Type} [Group G] {χ : G → ℂ} (h : IsClass χ) (x y : G) : χ (y⁻¹ * x * y) = χ x := by
   have := h x y⁻¹
   rwa [inv_inv] at this
 
+/- English proof (translation)
+Simplify using `only [class_conj h, Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`. Establish `: (Fintype.card G : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 Fintype.card_ne_zero`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem mean_class {G : Type} [Group G] [Fintype G] {χ : G → ℂ} (h : IsClass χ) (x : G) :
     (Fintype.card G : ℂ)⁻¹ * ∑ y : G, χ (y⁻¹ * x * y) = χ x := by
   simp only [class_conj h, Finset.sum_const, Finset.card_univ, nsmul_eq_mul]
   have : (Fintype.card G : ℂ) ≠ 0 := Nat.cast_ne_zero.2 Fintype.card_ne_zero
   field_simp
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Unfold `hc hcT`. Simplify using `only [inPar_zero, if_true, one_mul, br_zero, toG_val]`. Rewrite using `[Finset.filter_true_of_mem (fun _ _ => trivial), Finset.card_univ]`. Conclude with `mean_class hα x`.
+-/
 theorem hc_one_left (a : ℕ) (α : Gn g a → ℂ) (hα : IsClass α) : hc 0 a (fun _ => 1) α a = α := by
   funext x
   unfold hc hcT
@@ -48,6 +72,9 @@ theorem hc_one_left (a : ℕ) (α : Gn g a → ℂ) (hα : IsClass α) : hc 0 a 
   rw [Finset.filter_true_of_mem (fun _ _ => trivial), Finset.card_univ]
   exact mean_class hα x
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Unfold `hc hcT`. Simplify using `only [inPar_self, if_true, mul_one, tl_self, toG_val]`. Rewrite using `[Finset.filter_true_of_mem (fun _ _ => trivial), Finset.card_univ]`. Conclude with `mean_class hα x`.
+-/
 theorem hc_one_right (a : ℕ) (α : Gn g a → ℂ) (hα : IsClass α) : hc a 0 α (fun _ => 1) a = α := by
   funext x
   unfold hc hcT
@@ -56,6 +83,9 @@ theorem hc_one_right (a : ℕ) (α : Gn g a → ℂ) (hα : IsClass α) : hc a 0
   rw [Finset.filter_true_of_mem (fun _ _ => trivial), Finset.card_univ]
   exact mean_class hα x
 
+/- English proof (translation)
+Introduce `g _ a b c n α β γ hα hβ hγ` and use `⟨GlobalTheory.GLm.HcAssoc.hc_assoc g a b c n α β γ hα hβ hγ, GlobalTheory.HCComm.main g a b n α β hα hβ, hc_one_left a α hα, hc_one_right a α hα⟩`.
+-/
 theorem main : ∀ (g : ℕ) [Fact g.Prime] (a b c n : ℕ) (α : Gn g a → ℂ) (β : Gn g b → ℂ) (γ : Gn g c → ℂ),
     IsClass α → IsClass β → IsClass γ →
       (n = a + b + c → hc (a + b) c (hc a b α β (a + b)) γ n = hc a (b + c) α (hc b c β γ (b + c)) n) ∧

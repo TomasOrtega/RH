@@ -27,6 +27,13 @@ namespace GlobalTheory.FirstRowScalar
 
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts}
 
+/- English proof (translation)
+Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Both sides reduce to the same expression. Consider the case `tmul a x`. Rewrite using `[Algebra.TensorProduct.comm_tmul]`.
+
+Simplify using `only [GlobalTheory.StdFrames.cpt, RingHom.comp_apply]`. Rewrite using `[GlobalTheory.StdFrames.toAd_spec]`. Use `show _ = (GlobalTheory.LFun.toFinAd D.host.F D.host.E (TensorProduct.tmul D.host.F a x)) Q`. Rewrite using `[GlobalTheory.LFun.toFinAd_tmul, mul_comm]`. Both sides reduce to the same expression.
+
+Consider the case `add y z hy hz`. Simplify using `only [map_add] at *`. Rewrite using `[hy, hz]`. Both sides reduce to the same expression.
+-/
 private theorem cpt_tensor_comm_eq_finAdEquiv (Q : Pl D.host.E) (y : TensorProduct D.host.F (Af D.host.F) D.host.E) :
     GlobalTheory.StdFrames.cpt Q ((Algebra.TensorProduct.comm D.host.F (Af D.host.F) D.host.E) y) =
       (GlobalTheory.LFun.finAdEquiv D.host.F D.host.E y) Q := by
@@ -44,6 +51,15 @@ private theorem cpt_tensor_comm_eq_finAdEquiv (Q : Pl D.host.E) (y : TensorProdu
     rw [hy, hz]
     rfl
 
+/- English proof (translation)
+Establish `hs : IsIdemSum e {w}` using `⟨⟨fun _ => e, by simpa using he, by simp⟩, he.1.2.1⟩`. Take `⟨hinf, hin, hout⟩` from `GlobalTheory.FunObj.Comparison₂.cpt_idemSum hs`. Apply `GlobalTheory.LFun.eq_locIdele` to reduce the goal to its premises. Use `show infPart D (x : AE D) = 1`. Rewrite using `[hx, map_add, map_mul, map_sub, map_one, hinf]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `Subtype.ext (funext fun Q => ?_)` and prove the remaining obligations. Establish `hb` using `cpt_tensor_comm_eq_finAdEquiv Q (finPart D (x : AE D))`. Express the relevant statement in the definitionally equal form `GlobalTheory.StdFrames.cpt Q (toEAf D (x : AE D)) = _ at hb`. Express the relevant statement in the definitionally equal form `(GlobalTheory.LFun.finAdEquiv D.host.F D.host.E (finPart D (x : AE D))) Q = Neutral.B1.finiteSingle D.host.E w (y : Kw w) Q`.
+
+Rewrite using `[← hb, hx]`. Simplify using `only [map_add, map_mul, map_sub, map_one]`. Distinguish the cases in `hQ : Q = w`. Substitute `hQ` using the available equality. Rewrite using `[GlobalTheory.LFun.finSingle_self, hin Q (by simp), ← hy]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[GlobalTheory.LFun.finSingle_ne hQ, hout Q (by simpa using hQ)]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem eq_locIdele_of_idemAt {e : AE D} {w : Pl D.host.E} (he : Formalism.L2.NTheta.IsIdemAt e w) (x : (AE D)ˣ) (d : AE D)
     (hx : (x : AE D) = e * d + (1 - e)) (y : (Kw w)ˣ) (hy : (y : Kw w) = GlobalTheory.StdFrames.cpt w (toEAf D d)) :
     x = GlobalTheory.LFun.locIdele D.host.F w y := by
@@ -70,6 +86,11 @@ private theorem eq_locIdele_of_idemAt {e : AE D} {w : Pl D.host.E} (he : Formali
 set_option maxHeartbeats 1000000 in
 set_option synthInstance.maxHeartbeats 200000 in
 
+/- English proof (translation)
+Establish `hee : e * e = e` using `he.1.1`. Use `eq_locIdele_of_idemAt he _ (Formalism.L2.Theta.mt V ((u⁻¹ * k * u : GfC V) : GA D V)).det ?_ _ ?_` and prove the remaining obligations. Unfold `detIdl`. Rewrite using `[dif_pos hee]`. Both sides reduce to the same expression.
+
+Rewrite using `[GlobalTheory.TopLevelInv.det_mt_conj V k u, RingHom.map_det (toEAf D), RingHom.mapMatrix_apply, ← GlobalTheory.TopLevelInv.val_finG, Matrix.GeneralLinearGroup.val_det_apply]`. Simplify using `only [inBasis, MonoidHom.comp_apply, MulEquiv.coe_toMonoidHom, MulAut.conj_apply]`. Rewrite using `[GlobalTheory.TopLevelInv.det_val_reGL, GlobalTheory.TopLevelInv.val_loc, ← RingHom.mapMatrix_apply, ← RingHom.map_det, GlobalTheory.TopLevelInv.det_val_conj_inv]`.
+-/
 theorem detIdl_conj {e : AE D} {w : Pl D.host.E} (he : Formalism.L2.NTheta.IsIdemAt e w) (V : HSp D) (k u : GfC V) {n : ℕ}
     (h : n = V.rank) (β : GL (Fin V.rank) (Lev.EAf D)) :
     detIdl e V ((u⁻¹ * k * u : GfC V) : GA D V) = GlobalTheory.LFun.locIdele D.host.F w (gdet (inBasis h β w (finG V k))) := by
@@ -86,6 +107,9 @@ theorem detIdl_conj {e : AE D} {w : Pl D.host.E} (he : Formalism.L2.NTheta.IsIde
 
 variable {G : GridData L sc} {W : G.Weil} {U : Set T}
 
+/- English proof (translation)
+Conclude with `Subgroup.mem_iInf.mp (Subgroup.mem_inf.mp hk).1 w`.
+-/
 theorem kapAt_mem (S : GridChoice W U) {t : T} {k : FinPt G (.grid 0 D.R.m)}
     (hk : finG (G.V (.grid 0 D.R.m)) k ∈ S.levRow t 0 (Nat.zero_le _)) (w : locPl G t) :
     kapAt S t w.1 k ∈ givenLevel G t w.1 (0, D.R.m) := by
@@ -93,6 +117,23 @@ theorem kapAt_mem (S : GridChoice W U) {t : T} {k : FinPt G (.grid 0 D.R.m)}
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Establish `hm1 : 1 ≤ D.R.m` using `(GlobalTheory.FirstRowVertex.firstIx D).pos`. Establish `h1 : detIdl (idemAt w.1) (G.pS (.chi 0 D.R.m)) 1 = 1`. Distinguish the cases in `he : idemAt w.1 * idemAt w.1 = idemAt w.1`. Use `ext`. Rewrite using `[detIdl_val he]`.
+
+Simplify using `[Formalism.L2.Theta.mt]`. Simplify using `[detIdl, he]`. Establish `hKO` using `GlobalTheory.FirstRowLat.givenLevel_zero_le_KO G t w.1 D.R.m hm1 _ (kapAt_mem S hk w)`. Establish `hap : ∀ z : ℂ, apow (gdet (Assignment.one.read (kapAt S t w.1 k))) z = 1`. Introduce `z`.
+
+Establish `hx : Assignment.one.read (kapAt S t w.1 k) ∈ KO (Kw w.1) (Fin ((locGrid G t w.1).rank (0, D.R.m)))` using `invT_mem_KO hKO`. Simplify using `only [apow, gdet, GlobalTheory.LGrp.nabs_det_of_mem_KO hx, NNReal.coe_one, Complex.ofReal_one, Complex.one_cpow]`. Establish `hd` using `detIdl_conj (GlobalTheory.RowVacScalar.isIdemAt_idemAt hL G t w.2) (G.V (.grid 0 D.R.m)) k (S.N.u (.grid 0 D.R.m)) (rank_vertex G t w.1 (X := (0, D.R.m)) ⟨Nat.zero_le _, le_rfl⟩) (S.B.β 0 D.R.m)`. Simplify using `only [GlobalTheory.RowVacScalar.splitScal, GlobalTheory.SplitFlip.Grid.edgeFactor, GlobalTheory.SplitFlip.Grid.kappa, GlobalTheory.SplitFlip.Grid.blockChar, GlobalTheory.SplitFlip.Edge.src, GlobalTheory.SplitFlip.Edge.tgt, Pi.mulSingle_eq_same]`. Rewrite using `[GlobalTheory.FirstRowTermLaw.mulSingle_ne _ (show ((0 + 1, D.R.m) : ℕ × ℕ) ≠ (0, D.R.m) by simp), h1]`.
+
+Simplify using `only [map_one, inv_one, Units.val_one, mul_one, apow_one, hap]`. Unfold `splitFacO`. Simplify using `only [map_one, inv_one, one_mul]`. Use `erw [hd]`. Establish `hpar : Odd (G.pS (.chi 0 D.R.m)).rank ↔ ((locGrid G t w.1).rank (0, D.R.m) + 1) % 2 = 1`.
+
+Establish `hr0 : (locGrid G t w.1).rank (0, D.R.m) = D.R.r + D.R.m * D.R.t`. Rewrite using `[rank_vertex G t w.1 (X := (0, D.R.m)) ⟨Nat.zero_le _, le_rfl⟩, ← rank_zero_m G, D.sp.X'_rank]`. Both sides reduce to the same expression. Establish `hr1 : (G.pS (.chi 0 D.R.m)).rank = D.R.r + D.R.m * D.R.t + 1 * sLen D` using `(G.sp.V_is 1 D.R.m le_rfl hm1 le_rfl).rank`. Establish `hs : sLen D % 2 = 1` using `Nat.odd_iff.mp (odd_sLen (D := D))`.
+
+Rewrite using `[hr0, hr1, Nat.odd_iff]`. Generalize the expression as in `D.R.r + D.R.m * D.R.t = a`. Use linear arithmetic over natural numbers and integers. Rewrite using `[show (locGrid G t w.1).chi ((locGrid G t w.1).m - 0) = (G.ch.chiH D.R.m).loc w.1 from rfl, show (locGrid G t w.1).eta = L.C.eta.loc w.1 from rfl, ← GlobalTheory.LFun.locChar_eq_of_chrEq (G.ch.chi_eq D.R.m hm1 le_rfl) w.1, ← GlobalTheory.LFun.locChar_eq_of_chrEq hL.eta w.1]`. Simplify using `only [GridData.chrS, GridData.chr, Formalism.IndefR.Lift.attChr, Nat.sub_zero]`.
+
+Unfold `FirstRowTermLaw.kapAt`. Break down `Nat.mod_two_eq_zero_or_one ((locGrid G t w.1).rank (0, D.R.m) + 1) with h0 | h0` into its components or cases. Establish `ho : ¬ Odd (G.pS (.chi 0 D.R.m)).rank` using `fun h => by simp [hpar.mp h] at h0`. Rewrite using `[if_neg ho, h0]`. Simplify using `[GlobalTheory.LFun.locChar]`.
+
+Use `done`. Rewrite using `[if_pos (hpar.mpr h0), h0]`. Simplify using `[GlobalTheory.LFun.locChar, div_eq_mul_inv]`. Use `done`.
+-/
 theorem splitScal_eq (S : GridChoice W U) {μ₀ : T} (hL : L.Is μ₀) {t : T} {k : FinPt G (.grid 0 D.R.m)}
     (hk : finG (G.V (.grid 0 D.R.m)) k ∈ S.levRow t 0 (Nat.zero_le _)) (w : locPl G t) :
     splitScal G (.chi 0 D.R.m) w.1 1 ((S.N.u (.grid 0 D.R.m))⁻¹ * k * S.N.u (.grid 0 D.R.m)).1 =
@@ -141,6 +182,9 @@ theorem splitScal_eq (S : GridChoice W U) {μ₀ : T} (hL : L.Is μ₀) {t : T} 
     simp [GlobalTheory.LFun.locChar, div_eq_mul_inv]
     done
 
+/- English proof (translation)
+Establish `h1 : Formalism.L2.Theta.mt V 1 = 1` using `by simp [Formalism.L2.Theta.mt]`. Rewrite using `[h1, Matrix.map_one _ (map_zero _) (map_one _), Matrix.one_mulVec]`.
+-/
 theorem one_lat (V : HSp D) (Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E))
     (y : Fin V.rank → TensorProduct D.host.F (Af D.host.F) D.host.E) :
     y ∈ latHat D.host.F D.host.E (Λ : Set (Fin V.rank → D.host.E)) ↔
@@ -148,12 +192,20 @@ theorem one_lat (V : HSp D) (Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.ho
   have h1 : Formalism.L2.Theta.mt V 1 = 1 := by simp [Formalism.L2.Theta.mt]
   rw [h1, Matrix.map_one _ (map_zero _) (map_one _), Matrix.one_mulVec]
 
+/- English proof (translation)
+Simplify using `[GridData.toPair]`.
+-/
 theorem toPair_zero (G : GridData L sc) (x : GA D (G.V (.grid 0 D.R.m))) :
     G.toPair (.chi 0 D.R.m : Pair T) x 1 = (1, x) := by
   simp [GridData.toPair]
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Use `GlobalTheory.RowMovedLat.latHat_stab_of_hatL _ _ _ (fun z => ?_) y` and prove the remaining obligations. Establish `hU` using `S.N.u_lat (.grid 0 D.R.m) ⟨Nat.zero_le _, rfl⟩`. Establish `hK : ∀ x, x ∈ Formalism.L2.Herm.hatL (F` using `D.host.F) (G.Λ (.grid 0 D.R.m)) ↔ (Formalism.IndefR.Lev.finE (G.V (.grid 0 D.R.m)) k.1).val *ᵥ x ∈ Formalism.L2.Herm.hatL (F := D.host.F) (G.Λ (.grid 0 D.R.m)) := GlobalTheory.FirstRowLat.levRow_zero_stab S hL t k hk`. Establish `hm : Formalism.IndefR.Lev.finE (G.V (.grid 0 D.R.m)) ((S.N.u (.grid 0 D.R.m))⁻¹ * k * S.N.u (.grid 0 D.R.m)).1 = (Formalism.IndefR.Lev.finE (G.V (.grid 0 D.R.m)) (S.N.u (.grid 0 D.R.m)).1)⁻¹ * Formalism.IndefR.Lev.finE (G.V (.grid 0 D.R.m)) k.1 * Formalism.IndefR.Lev.finE (G.V (. …`. Simplify using `only [Subgroup.coe_mul, Subgroup.coe_inv, map_mul, map_inv]`.
+
+Express the relevant statement in the definitionally equal form `z ∈ Formalism.L2.Herm.hatL (F := D.host.F) (colLat (S.N.fr (.grid 0 D.R.m))) ↔ (Formalism.IndefR.Lev.finE (G.V (.grid 0 D.R.m)) ((S.N.u (.grid 0 D.R.m))⁻¹ * k * S.N.u (.grid 0 D.R.m)).1).val *ᵥ z ∈ Formalism.L2.Herm.hatL (F := D.host.F) (colLat (S.N.fr (.grid 0 D.R.m)))`. Rewrite using `[hm, hU z, hK, hU, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, ← Units.val_mul, ← Units.val_mul]`. Simplify using `only [mul_assoc, mul_inv_cancel_left]`.
+-/
 theorem moved_latT (S : GridChoice W U) {μ₀ : T} (hL : L.Is μ₀) {t : T} {k : FinPt G (.grid 0 D.R.m)}
     (hk : finG (G.V (.grid 0 D.R.m)) k ∈ S.levRow t 0 (Nat.zero_le _)) (y) :
     y ∈ latHat D.host.F D.host.E (S.N.latT (.chi 0 D.R.m) : Set (Fin (G.pT (.chi 0 D.R.m)).rank → D.host.E)) ↔
@@ -176,6 +228,11 @@ theorem moved_latT (S : GridChoice W U) {μ₀ : T} (hL : L.Is μ₀) {t : T} {k
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Use `set x := (S.N.u (.grid 0 D.R.m))⁻¹ * k * S.N.u (.grid 0 D.R.m) with hx`. Establish `hm : 0 + 1 ≤ D.R.m` using `(GlobalTheory.FirstRowVertex.firstIx D).pos`. Establish `hq` using `toPair_zero G x.1`. Establish `key` using `GlobalTheory.RowVacScalar.vacScalar_eq_prod S hL t 0 hm (G.toPair (.chi 0 D.R.m) x.1 1) (by rw [hq]; exact one_mem _) (by rw [hq]; exact x.2) (by rw [hq]; exact fun y => one_lat _ _ y) (by rw [hq]; exact fun y => moved_latT S hL hk y) c hc`. Rewrite using `[key]`.
+
+Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[hq]`. Conclude with `splitScal_eq S hL hk w`.
+-/
 theorem vac_scalar (S : GridChoice W U) {μ₀ : T} (hL : L.Is μ₀) {t : T} {k : FinPt G (.grid 0 D.R.m)}
     (hk : finG (G.V (.grid 0 D.R.m)) k ∈ S.levRow t 0 (Nat.zero_le _)) (c : ℂ)
     (hc : W.om (.chi 0 D.R.m) (G.toPair (.chi 0 D.R.m) ((S.N.u (.grid 0 D.R.m))⁻¹ * k * S.N.u (.grid 0 D.R.m)).1 1)
@@ -192,6 +249,13 @@ theorem vac_scalar (S : GridChoice W U) {μ₀ : T} (hL : L.Is μ₀) {t : T} {k
   rw [hq]
   exact splitScal_eq S hL hk w
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero`. Rewrite using `[Fin.prod_univ_zero]`. Both sides reduce to the same expression. Consider the case `succ n ih => set Q := (TypeDatum.principal K (Fin r)).iter (Fin t) μ hμ n with hQ`.
+
+Establish `hmem : (reGL (ixSucc (Fin r) (Fin t) n)).symm (g' : GL (Ix (Fin r) (Fin t) (n + 1)) K) ∈ Q.stepJ (Fin t)` using `g'.2`. Set `h : Q.stepJ (Fin t)` to `⟨_, hmem⟩`. Establish `hlam : ((TypeDatum.principal K (Fin r)).iter (Fin t) μ hμ (n + 1)).lam g' = (Q.step (Fin t) (μ (n + 1)) (hμ _)).lam h` using `rfl`. Establish `hval : (h : GL (Ix (Fin r) (Fin t) n ⊕ Fin t) K).val = (M.map ψ).submatrix (ixSucc (Fin r) (Fin t) n) (ixSucc (Fin r) (Fin t) n)` using `by show ((reGL (ixSucc (Fin r) (Fin t) n)).symm (g' : GL (Ix (Fin r) (Fin t) (n + 1)) K)).val = _`. Rewrite using `[reGL_symm_val, hg']`.
+
+Take `⟨-, ⟨g0, hg0, eg0⟩, -, -, D, -, eD⟩` from `(Q.mem_stepJ (t := Fin t)).1 h.2`. Establish `hlast : χ (n + 1) (u (Fin.last n)) = μ (n + 1) (Matrix.GeneralLinearGroup.det D)` using `(hχ n (Nat.lt_succ_self n)).det (M.submatrix (ixSucc (Fin r) (Fin t) n ∘ Sum.inr) (ixSucc (Fin r) (Fin t) n ∘ Sum.inr)) (by rw [hu]; rfl) (by rw [Matrix.GeneralLinearGroup.val_det_apply, eD, hval]; rfl)`. Establish `hsmall` using `ih (fun c hc => hχ c (Nat.lt_succ_of_lt hc)) (M.submatrix (ixSucc (Fin r) (Fin t) n ∘ Sum.inl) (ixSucc (Fin r) (Fin t) n ∘ Sum.inl)) (fun c => u c.castSucc) (fun c => by rw [hu]; rfl) ⟨g0, hg0⟩ (by rw [eg0, hval]; rfl)`. Rewrite using `[hlam, Q.step_lam_eq (μ (n + 1)) (hμ _) h ⟨g0, hg0⟩ eg0 D eD, hsmall, Fin.prod_univ_castSucc, ← hlast]`. Both sides reduce to the same expression.
+-/
 private theorem iter_lam_eq_prod_chi {S κ K : Type} [CommRing S] [CommRing κ] [Field K] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K] {φ : S →+* κ} {ψ : S →+* K} {r t : ℕ} {μ : ℕ → Kˣ →* ℂˣ} (hμ : ∀ c, IsTame (μ c)) {χ : ℕ → κˣ →* ℂˣ} (n : ℕ)
     (hχ : ∀ c, c < n → GlobalTheory.FunObj.Comparison₂.Compat φ ψ (χ (c + 1)) (μ (c + 1)))
@@ -232,6 +296,11 @@ open GlobalTheory.FunObj.Comparison₂
 variable {S κ K : Type} [CommRing S] [CommRing κ] [Field K] [ValuativeRel K] [TopologicalSpace K]
   [IsNonarchimedeanLocalField K] {φ : S →+* κ} {ψ : S →+* K} {r t j a : ℕ} {ea : Ix (Fin r) (Fin t) j ≃ Fin a}
 
+/- English proof (translation)
+Establish `hu : ∀ c : Fin j, ((dBlk (blkOf r t) (c.val + 1) g : κˣ) : κ) = (Ix.diagonalBlockOfMatrix ((N.submatrix ea ea).map φ) c).det`. Introduce `c`. Rewrite using `[diagonalBlock_det_blockTriangular ha hg c, hgN]`. Both sides reduce to the same expression. Rewrite using `[iter_lam_eq_prod_chi hμ j hχ (N.submatrix ea ea) (fun c => dBlk (blkOf r t) (c.val + 1) g) hu g' hg']`.
+
+Conclude with `(Finset.prod_range (fun c => χ (c + 1) (dBlk (blkOf r t) (c + 1) g))).symm`.
+-/
 theorem iter_lam_eq {μ : ℕ → Kˣ →* ℂˣ} (hμ : ∀ c, IsTame (μ c)) (h : IsRed φ ψ) (ha : IsIx ea) {χ : ℕ → κˣ →* ℂˣ}
     (hχ : ∀ c, c < j → Compat φ ψ (χ (c + 1)) (μ (c + 1))) (N : Matrix (Fin a) (Fin a) S) {g : GL (Fin a) κ}
     (hg : g ∈ blockTri (blkOf r t)) (hgN : g.val = N.map φ)
@@ -248,6 +317,15 @@ theorem iter_lam_eq {μ : ℕ → Kˣ →* ℂˣ} (hμ : ∀ c, IsTame (μ c)) (
 
 omit [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K] in
 
+/- English proof (translation)
+Establish `hmem : ∀ x : Fin j × Fin t, blk2 r (ea (.inr x)) = 1`. Introduce and unpack `⟨c, s⟩`. Simplify using `only [blk2, ha.2.2 c s]`. Simplify using the standard rewrite rules. Set `f : Fin j × Fin t → {b : Fin a // blk2 r b = 1}` to `fun x => ⟨ea (.inr x), hmem x⟩`.
+
+Establish `hf : Function.Bijective f`. Prove the components needed by the constructor for the conclusion. Introduce `x y hxy`. Conclude with `Sum.inr_injective (ea.injective (congrArg Subtype.val hxy))`. Introduce and unpack `⟨b, hb⟩`.
+
+Break down `hcase : ea.symm b with i | x` into its components or cases. It suffices to derive a contradiction. Establish `h1 : (ea (.inl i)).val = i.val` using `ha.2.1 i`. Rewrite `h1` using `[← hcase, Equiv.apply_symm_apply]`. Simplify using `[blk2, h1, i.2] at hb`.
+
+Use `⟨x, Subtype.ext ?_⟩` and prove the remaining obligations. Simplify using `only [f, ← hcase, Equiv.apply_symm_apply]`. Rewrite using `[diag_block_det_val 1 hg]`. Use `(Matrix.det_submatrix_equiv_self (Equiv.ofBijective f hf) _).symm.trans ?_` and prove the remaining obligations. Use `congr 1`.
+-/
 theorem block_triangular_second_diagonal_block_det_eq (ha : IsIx ea) {g : GL (Fin a) κ} (hg : g ∈ blockTri (blk2 r)) :
     (dBlk (blk2 r) 1 g : κ) = ((g.val.submatrix ea ea).toBlocks₂₂).det := by
   have hmem : ∀ x : Fin j × Fin t, blk2 r (ea (.inr x)) = 1 := by
@@ -271,6 +349,9 @@ theorem block_triangular_second_diagonal_block_det_eq (ha : IsIx ea) {g : GL (Fi
   refine (Matrix.det_submatrix_equiv_self (Equiv.ofBijective f hf) _).symm.trans ?_
   congr 1
 
+/- English proof (translation)
+Take `⟨-, -, -, -, D, -, eD⟩` from `((TypeDatum.full K (Fin r)).mem_stepJ (t := Fin j × Fin t)).1 g'.2`. Rewrite using `[parahoric_lam g' D eD]`. Conclude with `(hχ.det ((N.submatrix ea ea).toBlocks₂₂) (by rw [block_triangular_second_diagonal_block_det_eq ha hg, hgN]; rfl) (by rw [Matrix.GeneralLinearGroup.val_det_apply, eD, hg']; rfl)).symm`.
+-/
 theorem parahoric_lam_eq {δ : Kˣ →* ℂˣ} (hδ : IsTame δ) (h : IsRed φ ψ) (ha : IsIx ea) {χ : κˣ →* ℂˣ}
     (hχ : Compat φ ψ χ δ) (N : Matrix (Fin a) (Fin a) S) {g : GL (Fin a) κ}
     (hg : g ∈ blockTri (blk2 r)) (hgN : g.val = N.map φ)
@@ -288,6 +369,35 @@ end Red
 open GlobalTheory.FunObj.Comparison₂ in
 open Classical in
 
+/- English proof (translation)
+Establish `hred` using `isRed (D := D) w`. Distinguish the cases in `hP' : w ∈ L.Pg`. Establish `hQ' : w ∉ L.Q t`. Introduce `hwQ`. Take `⟨kk, hkk⟩` from `(hL.Pg w).1 hP'`.
+
+Take `⟨⟨q, hq, hcard, -, hne⟩, -⟩` from `hL.Q_pl t w hwQ`. Establish `hkk' : w.under (𝓞 D.host.K) = L.C.P.pb kk` using `hkk`. Establish `h1` using `L.C.P.pb_over kk`. Rewrite `h1` using `[← hkk']`. Establish `hmem : ((D.host.g kk : ℕ) : 𝓞 D.host.E) ∈ w.asIdeal`.
+
+Establish `h3` using `Ideal.mem_comap.mp h1`. Simplify using `using h3`. Establish `hfin : Finite (Formalism.L2.DIV.kP w)` using `Nat.finite_of_card_ne_zero (by rw [hcard]; exact hq.ne_zero)`. Use `haveI := Fintype.ofFinite (Formalism.L2.DIV.kP w)`. Establish `hq0 : ((q : ℕ) : Formalism.L2.DIV.kP w) = 0`.
+
+Rewrite using `[← hcard, Nat.card_eq_fintype_card]`. Conclude with `Nat.cast_card_eq_zero _`. Establish `hg0 : ((D.host.g kk : ℕ) : Formalism.L2.DIV.kP w) = 0`. Rewrite using `[← map_natCast (Ideal.Quotient.mk w.asIdeal)]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 hmem`.
+
+Establish `hcop : Nat.Coprime q (D.host.g kk)` using `(Nat.coprime_primes hq (D.host.g_prime kk)).2 (hne kk)`. Establish `key` using `Nat.gcd_eq_gcd_ab q (D.host.g kk)`. Rewrite `key` using `[hcop.gcd_eq_one]`. Establish `h2` using `congrArg (Int.cast : ℤ → Formalism.L2.DIV.kP w) key`. Move the coercions through the operations in `at h2`.
+
+Rewrite `h2` using `[hq0, hg0]`. Simplify using `only [zero_mul, add_zero] at h2`. Use `haveI : Subsingleton (Formalism.L2.DIV.kP w) := subsingleton_of_zero_eq_one h2.symm`. Establish `hc1 : Nat.card (Formalism.L2.DIV.kP w) = 1` using `Nat.card_of_subsingleton (0 : Formalism.L2.DIV.kP w)`. Rewrite `hc1` using `[hcard]`.
+
+Conclude with `hq.one_lt.ne' hc1`. Establish `hT : stepType L t w j = (TypeDatum.principal (Kw w) (Fin D.R.r)).iter (Fin D.R.t) (fun c => ((muBase L c).loc w)⁻¹) (isTame_muBase w) j`. Simplify using `only [stepType, if_pos hP']`. Establish `hG : stepGroup L t w j = ((TypeDatum.principal (Kw w) (Fin D.R.r)).iter (Fin D.R.t) (fun c => ((muBase L c).loc w)⁻¹) (isTame_muBase w) j).J`. Simplify using `only [stepGroup, if_pos hP']`.
+
+Rewrite `hk` using `[hG]`. Rewrite using `[hT]`. Use `⟨hk, ?_⟩` and prove the remaining obligations. Rewrite using `[if_pos hP', if_neg hQ', mul_one]`. Conclude with `iter_lam_eq (isTame_muBase w) hred ha (χ := fun c => L.chi c w) (fun c hc => compat_chi w hL hP' (by omega)) N (hP hP') hr ⟨κ, hk⟩ hv`.
+
+Distinguish the cases in `hQ' : w ∈ L.Q t`. Establish `h0` using `isTame_loc (hL.xi_tame t w)`. Establish `htame : IsTame ((L.xiH t).loc w)⁻¹`. Introduce `x hx`. Simplify using `[h0 x hx]`.
+
+Establish `hp : w ∈ L.Q t ∧ IsTame ((L.xiH t).loc w)⁻¹` using `⟨hQ', htame⟩`. Establish `hT : stepType L t w j = parahoric (Fin D.R.r) (Fin j × Fin D.R.t) _ htame`. Simplify using `only [stepType, if_neg hP', dif_pos hp]`. Establish `hG : stepGroup L t w j = (parahoric (k` using `Kw w) (Fin D.R.r) (Fin j × Fin D.R.t) 1 fun _ _ => rfl).J := by`. Simplify using `only [stepGroup, if_neg hP', if_pos hQ']`.
+
+Rewrite `hk` using `[hG]`. Establish `hk2 : κ ∈ (parahoric (Fin D.R.r) (Fin j × Fin D.R.t) _ htame).J` using `mem_parahoric.2 (mem_parahoric.1 hk)`. Establish `hc0` using `compat_of_isRes (hL.xi_tame t w) (hL.xiR t w hQ')`. Establish `hχ : Compat (resS D.host.F w) (cptO w) (L.xiR t w)⁻¹ ((L.xiH t).loc w)⁻¹`. Introduce `s u k hu hk`.
+
+Simplify using `[hc0 s u k hu hk]`. Rewrite using `[hT]`. Use `⟨hk2, ?_⟩` and prove the remaining obligations. Rewrite using `[if_neg hP', if_pos hQ', one_mul]`. Conclude with `parahoric_lam_eq htame hred ha hχ N (hQ hQ') hr ⟨κ, hk2⟩ hv`.
+
+Establish `hn : ¬ (w ∈ L.Q t ∧ IsTame ((L.xiH t).loc w)⁻¹)` using `fun h => hQ' h.1`. Establish `hT : stepType L t w j = TypeDatum.full _ _`. Simplify using `only [stepType, if_neg hP', dif_neg hn]`. Establish `hG : stepGroup L t w j = KO (Kw w) _`. Simplify using `only [stepGroup, if_neg hP', if_neg hQ']`.
+
+Rewrite `hk` using `[hG]`. Rewrite using `[hT]`. Use `⟨hk, ?_⟩` and prove the remaining obligations. Rewrite using `[if_neg hP', if_neg hQ', mul_one]`. Both sides reduce to the same expression.
+-/
 theorem stepType_lam {μ₀ : T} (hL : L.Is μ₀) (t : T) {j n : ℕ} (hj : j ≤ D.R.m) (w : Pl D.host.E)
     {ea : Ix (Fin D.R.r) (Fin D.R.t) j ≃ Fin n} (ha : IsIx ea) (N : Matrix (Fin n) (Fin n) (OA D)) (g : GL (Fin n) (kP w))
     (hr : g.val = N.map (resS D.host.F w)) (κ : GL (Ix (Fin D.R.r) (Fin D.R.t) j) (Kw w))
@@ -378,6 +488,17 @@ set_option maxHeartbeats 1000000 in
 open GlobalTheory.FunObj.Comparison₂ in
 open Classical in
 
+/- English proof (translation)
+Take `⟨y, rfl⟩` from `hx`. Set `ea : Ix (Fin D.R.r) (Fin D.R.t) j ≃ Fin n` to `(ixFin G t w j).trans (finCongr h)`. Establish `hn : n = D.R.r + j * D.R.t`. Use `Fintype.card_congr ea` as an intermediate fact. Simplify using `[GlobalTheory.StepData.Ix] at this`.
+
+Use linear arithmetic over natural numbers and integers. Establish `ha : IsIx ea`. Use `⟨hn, fun i => ?_, fun c s => ?_⟩` and prove the remaining obligations. Simplify using `[ea, (ixFin_val G t w j).1 i]`. Simplify using `[ea, (ixFin_val G t w j).2 c s]`.
+
+Establish `hr : (redFn β w (frGL β y)).val = (y.val).map (resS D.host.F w)`. Rewrite using `[redFn_frGL]`. Both sides reduce to the same expression. Establish `hv : ((reGL (ixFin G t w j)).symm (inBasis h β w (frGL β y))).val = ((y.val).submatrix ea ea).map (cptO w)`. Establish `hc : MulAut.conj β⁻¹ (frGL β y) = intGL D.host.F D.host.E n y`.
+
+Simplify using `[frGL, MulAut.conj_apply, mul_assoc]`. Rewrite using `[show inBasis h β w (frGL β y) = (reGL (finCongr h.symm)) (GlobalTheory.StdFrames.loc w (MulAut.conj β⁻¹ (frGL β y))) from rfl, hc]`. Use extensionality with `i l`. Simplify using `[GlobalTheory.TopLevelInv.val_loc, intGL, cptO_apply, ea, GlobalTheory.StepData.reGL, Formalism.UG.bc]`. Take `⟨hk', hlam⟩` from `stepType_lam hL t hj w ha y.val (redFn β w (frGL β y)) hr _ hv hP hQ hk`.
+
+Unfold `endLamAt`. Rewrite using `[dif_pos hk', hlam, Units.val_inv_eq_inv_val]`.
+-/
 theorem endLamAt_eq {μ₀ : T} (hL : L.Is μ₀) (G : GridData L sc) (t : T) {j n : ℕ} (hj : j ≤ D.R.m) (w : Pl D.host.E)
     (h : (locGrid G t w).rank (0, j) = n) (β x : GL (Fin n) (Lev.EAf D)) (hx : x ∈ St β)
     (hP : w ∈ L.Pg → redFn β w x ∈ blockTri (blkOf D.R.r D.R.t)) (hQ : w ∈ L.Q t → redFn β w x ∈ blockTri (blk2 D.R.r))
@@ -413,6 +534,15 @@ theorem endLamAt_eq {μ₀ : T} (hL : L.Is μ₀) (G : GridData L sc) (t : T) {j
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Establish `hPg : L.Pg ⊆ locPl G t` using `fun w hw => Finset.mem_union_left _ (levelChainTypePlaces_subset_chosenPlaces G hL t hw)`. Establish `hQ : L.Q t ⊆ locPl G t` using `fun w hw => Finset.mem_union_right _ hw`. Establish `hxl : x ∈ Formalism.L2.DIV.parLev D.sp.cm D.sp.X'.gram L.βX (Lev.flag1L (L.datXt t))` using `hx.1`. Establish `hSt : x ∈ Formalism.L2.DIV.St L.βX` using `Formalism.L2.DIV.parLev_St hxl`. Use `set a : Pl D.host.E → ℂˣ := fun w => if w ∈ L.Pg then ∏ c ∈ Finset.range D.R.m, L.chi (c + 1) w (dBlk (blkOf D.R.r D.R.t) (c + 1) (redFn L.βX w x)) else 1 with ha`.
+
+Use `set b : Pl D.host.E → ℂˣ := fun w => if w ∈ L.Q t then (L.xiR t w)⁻¹ (dBlk (blk2 D.R.r) 1 (redFn L.βX w x)) else 1 with hb`. Establish `hE : ∀ w : locPl G t, endLamAt G t w D.R.m (inBasis (h w) L.βX w x) = (((a w.1 * b w.1)⁻¹ : ℂˣ) : ℂ)`. Introduce `w`. Rewrite using `[endLamAt_eq hL G t le_rfl w.1 (h w) L.βX x hSt (fun hw => Formalism.L2.DIV.parLev_g hxl hw) (fun hw => Formalism.L2.DIV.parLev_q hxl hw) (hk w), Units.val_inv_eq_inv_val]`. Establish `hlev : Formalism.L2.DIV.levFn L.βX (Lev.flag1L (L.datXt t)) x = (∏ PP ∈ L.Pg, ∏ c ∈ Finset.range D.R.m, L.chi (c + 1) PP (dBlk (blkOf D.R.r D.R.t) (c + 1) (redFn L.βX PP x))) * ∏ PP ∈ L.Q t, (L.xiR t PP)⁻¹ (dBlk (blk2 D.R.r) 1 (redFn L.βX PP x))`.
+
+Rewrite using `[Formalism.L2.DIV.levFn]`. Establish `h1 : Formalism.L2.DIV.ext1 (Lev.flag1L (L.datXt t)).P.H (Lev.flag1L (L.datXt t)).P.chi (Formalism.L2.DIV.rTup L.βX (Lev.flag1L (L.datXt t)) x) = 1`. Unfold `Formalism.L2.DIV.ext1`. Apply the tactic sequence `split <;> rfl`. Rewrite using `[h1, one_mul]`.
+
+Simplify using `[Lev.flag1L, Lev.withP, Formalism.IndefR.Links.LevCh.datXt, Lev.datY]`. Establish `hU : Formalism.L2.DIV.levFn L.βX (Lev.flag1L (L.datXt t)) x * ∏ w ∈ locPl G t, (a w * b w)⁻¹ = 1`. Rewrite using `[Finset.prod_inv_distrib, Finset.prod_mul_distrib, mul_inv_eq_one, hlev, ha, hb, Finset.prod_ite_mem, Finset.prod_ite_mem, Finset.inter_eq_right.mpr hPg, Finset.inter_eq_right.mpr hQ]`. Rewrite using `[Fintype.prod_congr _ _ hE, Finset.prod_coe_sort (locPl G t) (fun w => (((a w * b w)⁻¹ : ℂˣ) : ℂ)), ← Units.coe_prod, ← Units.val_mul, hU, Units.val_one]`.
+-/
 theorem levFn_mul_endLamAt {μ₀ : T} (hL : L.Is μ₀) (G : GridData L sc) (t : T)
     (h : ∀ w, (locGrid G t w).rank (0, D.R.m) = D.sp.X'.rank) (x : GL (Fin D.sp.X'.rank) (Lev.EAf D))
     (hx : x ∈ lev D.sp.cm D.sp.X'.gram L.βX (Lev.flag1L (L.datXt t)))
@@ -448,6 +578,9 @@ theorem levFn_mul_endLamAt {μ₀ : T} (hL : L.Is μ₀) (G : GridData L sc) (t 
   rw [Fintype.prod_congr _ _ hE, Finset.prod_coe_sort (locPl G t) (fun w => (((a w * b w)⁻¹ : ℂˣ) : ℂ)),
     ← Units.coe_prod, ← Units.val_mul, hU, Units.val_one]
 
+/- English proof (translation)
+Substitute `hXY` using the available equality. Take `rfl` from `eq_of_heq hβ`. Both sides reduce to the same expression.
+-/
 private theorem inBasis_eq_of_heq_of_cast {X Y : LSp D} (hXY : X = Y) (β : GL (Fin X.sp.rank) (Lev.EAf D))
     (β' : GL (Fin Y.sp.rank) (Lev.EAf D)) (hβ : HEq β β') (y : GA D X.sp) (w : Pl D.host.E) {n : ℕ}
     (h : n = X.sp.rank) (h' : n = Y.sp.rank) :
@@ -457,6 +590,9 @@ private theorem inBasis_eq_of_heq_of_cast {X Y : LSp D} (hXY : X = Y) (β : GL (
   obtain rfl := eq_of_heq hβ
   rfl
 
+/- English proof (translation)
+Consider the cases of `n with`. Consider the case `zero => omega`. Consider the case `succ j`. Take `⟨y, hy, rfl⟩` from `Subgroup.mem_map.mp hκ`. Simplify using `using hy`.
+-/
 private theorem reGL_symm_mem_of_mem_givenLevel (G : GridData L sc) (t : T) (w : Pl D.host.E) {n : ℕ} (hn : 1 ≤ n)
     (κ : GL (Fin ((locGrid G t w).rank (0, n))) (Kw w)) (hκ : κ ∈ givenLevel G t w (0, n)) :
     (reGL (ixFin G t w n)).symm κ ∈ stepGroup L t w n := by
@@ -468,6 +604,15 @@ private theorem reGL_symm_mem_of_mem_givenLevel (G : GridData L sc) (t : T) (w :
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Establish `hm1 : 1 ≤ D.R.m` using `(GlobalTheory.FirstRowVertex.firstIx D).pos`. Establish `h : ∀ w, (locGrid G t w).rank (0, D.R.m) = D.sp.X'.rank` using `fun w => (rank_vertex G t w (X := (0, D.R.m)) ⟨Nat.zero_le _, le_rfl⟩).trans (congrArg (fun X : LSp D => X.sp.rank) (colY_m L))`. Use `set x0 := Lev.finE D.sp.X' (cast (congrArg (fun X : LSp D => GA D X.sp) (colY_m L)) k.1) with hx0`. Establish `hχ : (((levEnv D.sp.X' L.βX (L.datXt t)).χ ⟨toXf k, hk'⟩ : ℂˣ) : ℂ) = ((levFn L.βX (Lev.flag1L (L.datXt t)) x0 : ℂˣ) : ℂ)`. Rewrite using `[hx0, Lev.finE_eq]`.
+
+Both sides reduce to the same expression. Establish `hx : x0 ∈ lev D.sp.cm D.sp.X'.gram L.βX (Lev.flag1L (L.datXt t))`. Rewrite using `[hx0, Lev.finE_eq]`. Conclude with `hk'`. Establish `hkap : ∀ w : locPl G t, kapAt S t w.1 k = inBasis (h w) L.βX w x0` using `fun w => inBasis_eq_of_heq_of_cast (colY_m L) (colFrame L D.R.m) L.βX (colFrame_m L) k.1 w _ _`.
+
+Establish `hk2 : ∀ w : locPl G t, (reGL (ixFin G t w D.R.m)).symm (inBasis (h w) L.βX w x0) ∈ stepGroup L t w D.R.m` using `fun w => by`. Rewrite using `[← hkap w]`. Conclude with `reGL_symm_mem_of_mem_givenLevel G t w.1 hm1 _ (kapAt_mem S hk w)`. Establish `key` using `levFn_mul_endLamAt hL G t h x0 hx hk2`. Rewrite using `[hχ]`.
+
+Simplify `key` using `only [endLam, hkap]`.
+-/
 theorem chi_mul_endLam {G : GridData L sc} {W : G.Weil} {U : Set T} (S : GridChoice W U) {μ₀ : T} (hL : L.Is μ₀) {t : T}
     {k : FinPt G (.grid 0 D.R.m)} (hk : finG (G.V (.grid 0 D.R.m)) k ∈ S.levRow t 0 (Nat.zero_le _))
     (hk' : toXf k ∈ (levEnv D.sp.X' L.βX (L.datXt t)).J) :
@@ -494,6 +639,9 @@ theorem chi_mul_endLam {G : GridData L sc} {W : G.Weil} {U : Set T} (S : GridCho
   rw [hχ]
   simpa only [endLam, hkap] using key
 
+/- English proof (translation)
+Establish `h1` using `vac_scalar S hL hk c hc`. Establish `h2` using `chi_mul_endLam S hL hk hk'`. Take the linear combination `c * h2 + h1`.
+-/
 theorem scalar_of_is {G : GridData L sc} {W : G.Weil} {U : Set T} (S : GridChoice W U) {μ₀ : T} (hL : L.Is μ₀) (t : T)
     (k : FinPt G (.grid 0 D.R.m)) (hk : finG (G.V (.grid 0 D.R.m)) k ∈ S.levRow t 0 (Nat.zero_le _))
     (hk' : toXf k ∈ (levEnv D.sp.X' L.βX (L.datXt t)).J) (c : ℂ)
@@ -505,6 +653,9 @@ theorem scalar_of_is {G : GridData L sc} {W : G.Weil} {U : Set T} (S : GridChoic
   have h2 := chi_mul_endLam S hL hk hk'
   linear_combination c * h2 + h1
 
+/- English proof (translation)
+Introduce `_ _`. Use `⟨0, fun ε CF _ => ⟨0, ?_⟩⟩` and prove the remaining obligations. Introduce `D large₂ _ _ Γ _ _ Pl0 T A Ks _ _ _ R F hS ch _ _ t k hk hk' c hc`. Conclude with `scalar_of_is ch.S.toGridChoice hS.core.lev t k hk hk' c hc`.
+-/
 theorem scalar : GlobalTheory.FunPr.Hypotheses₂ → SumOKK → Big fun {D} {_Γ} _ _ {_Pl0} {T} {_A} {_Ks} _ _ _ {R} ch =>
     ∀ (t : T) (k : FinPt ch.G (.grid 0 D.R.m)), finG (ch.G.V (.grid 0 D.R.m)) k ∈ ch.S.levRow t 0 (Nat.zero_le _) →
     ∀ (hk : toXf k ∈ (levEnv D.sp.X' R.βX (R.datXt t)).J) (c : ℂ),

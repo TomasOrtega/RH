@@ -12,6 +12,9 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 
 omit [NumberField E] in
 
+/- English proof (translation)
+Unfold `ScalesBy at *`. Rewrite using `[map_mul, Units.val_mul, Matrix.mul_assoc, e', ← Matrix.mul_assoc, e, Units.val_mul, Matrix.mul_assoc]`.
+-/
 theorem scalesBy_mul {p q : GAd σ J} {β γ : GL (Fin k) (AF F ⊗[F] E)} (e : ScalesBy σ J X p β)
     (e' : ScalesBy σ J X q γ) : ScalesBy σ J X (p * q) (β * γ) := by
   unfold ScalesBy at *
@@ -19,6 +22,11 @@ theorem scalesBy_mul {p q : GAd σ J} {β γ : GL (Fin k) (AF F ⊗[F] E)} (e : 
 
 omit [NumberField E] in
 
+/- English proof (translation)
+Unfold `ScalesBy at *`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_assoc (adMat F X), ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.mul_one]`. Use `_ = (matHom _ σ J p⁻¹).1 * (matHom _ σ J p).1 * adMat F X * (β⁻¹).1 := by`. Rewrite using `[← e]`.
+
+Simplify using `only [Matrix.mul_assoc]`. Use `_ = adMat F X * (β⁻¹).1 := by`. Rewrite using `[← Units.val_mul, ← map_mul, inv_mul_cancel, map_one, Units.val_one, Matrix.one_mul]`.
+-/
 theorem scalesBy_inv {p : GAd σ J} {β : GL (Fin k) (AF F ⊗[F] E)} (e : ScalesBy σ J X p β) :
     ScalesBy σ J X p⁻¹ β⁻¹ := by
   unfold ScalesBy at *
@@ -29,11 +37,31 @@ theorem scalesBy_inv {p : GAd σ J} {β : GL (Fin k) (AF F ⊗[F] E)} (e : Scale
     _ = adMat F X * (β⁻¹).1 := by
         rw [← Units.val_mul, ← map_mul, inv_mul_cancel, map_one, Units.val_one, Matrix.one_mul]
 
+/- English proof (translation)
+Establish `h : absE F E u * absE F E u⁻¹ = 1` using `by rw [← map_mul, mul_inv_cancel, map_one]`. Establish `: absE F E u ≠ 0` using `fun h0 => by rw [h0, zero_mul] at h; exact zero_ne_one h`. Conclude with `pos_iff_ne_zero.2 this` after adjusting the coercions.
+-/
 theorem absE_pos (u : (AF F ⊗[F] E)ˣ) : (0 : ℝ) < absE F E u := by
   have h : absE F E u * absE F E u⁻¹ = 1 := by rw [← map_mul, mul_inv_cancel, map_one]
   have : absE F E u ≠ 0 := fun h0 => by rw [h0, zero_mul] at h; exact zero_ne_one h
   exact_mod_cast pos_iff_ne_zero.2 this
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ n J r X Y L a h H`. Use `haveI := H.lat`. Take `⟨_, _⟩` from `GlobalTheory.StdPar.ring_facts (F := F) (E := E)`. Establish `hK : IsCompact (levelAll σ J L a : Set (GAd σ J))` using `GlobalTheory.Doubling.isCompact_levelAll H.cm J L a`. Establish `hyx : Formalism.UG.cT (σ : E →+* E) Y * J * X = 1` using `GlobalTheory.StdPar.yx H.cm H.herm H.witt`.
+
+Establish `hsc : ∀ p β, ScalesBy σ J X p β → ∀ g, h (p * g) = absE F E (Matrix.GeneralLinearGroup.det β) * h g`. Introduce `p β e g`. Take `⟨q, γ, e', k, hk, rfl⟩` from `H.iwa g`. Rewrite using `[← mul_assoc, H.ht _ _ (scalesBy_mul e e') _ hk, H.ht _ _ e' _ hk, map_mul, map_mul, NNReal.coe_mul]`. Set `φ : GAd σ J → Matrix (Fin (r + 1)) (Fin (r + 1)) (AF F ⊗[F] E)` to `fun p => adMat F (Formalism.UG.cT (σ : E →+* E) Y * J) * ((matHom _ σ J p).1 * adMat F X)`.
+
+Establish `h1 : adMat F (Formalism.UG.cT (σ : E →+* E) Y * J) * adMat F X = 1`. Simplify using `only [adMat, ← Matrix.map_mul, hyx]`. Simplify using the standard rewrite rules. Establish `hφ : ∀ p β, ScalesBy σ J X p β → φ p = β.1` using `fun p β e => by`. Unfold `ScalesBy at e`.
+
+Use `show adMat F (Formalism.UG.cT (σ : E →+* E) Y * J) * ((matHom _ σ J p).1 * adMat F X) = β.1`. Rewrite using `[e, ← Matrix.mul_assoc, h1, Matrix.one_mul]`. Establish `cφ : Continuous φ` using `continuous_const.matrix_mul (GlobalTheory.StdPar.continuous_mat.matrix_mul continuous_const)`. Set `P` to `GlobalTheory.StdPar.frameStab σ J X (⊤ : Subgroup (GL (Fin (r + 1)) (AF F ⊗[F] E)))`. Establish `cP : IsClosed (P : Set (GAd σ J))` using `GlobalTheory.StdPar.isClosed_frameStab hyx isClosed_univ`.
+
+Establish `hP : ∀ p : P, ScalesBy σ J X p.1 p.2.choose` using `fun p => p.2.choose_spec.2`. Set `u : P → (AF F ⊗[F] E)ˣ` to `fun p => Matrix.GeneralLinearGroup.det p.2.choose`. Establish `cu : Continuous u` using `Units.continuous_iff.2 ⟨((cφ.comp continuous_subtype_val).matrix_det).congr fun p => by`. Simplify using `only [Function.comp, u, hφ _ _ (hP p)]`. Use the proof step `rfl,`.
+
+Use the proof step `((cφ.comp (continuous_subtype_val.inv)).matrix_det).congr fun p => by show (φ (p.1⁻¹)).det = _`. Rewrite using `[hφ _ _ (scalesBy_inv (hP p)), ← map_inv, Matrix.GeneralLinearGroup.val_det_apply]⟩`. Use `⟨hK, ⟨fun g => ?_, ?_, fun k hk => by simpa using H.ht 1 1 (by simp [ScalesBy]) k hk, fun g => ?_⟩, hsc⟩` and prove the remaining obligations. Take `⟨p, β, e, k, hk, rfl⟩` from `H.iwa g`. Rewrite using `[H.ht _ _ e _ hk]`.
+
+Conclude with `absE_pos _`. Use `GlobalTheory.Doubling.continuous_of_prod cP hK (fun g => let ⟨p, β, e, k, hk, e'⟩ := H.iwa g; ⟨⟨p, β, trivial, e⟩, k, hk, e'⟩) ?_` and prove the remaining obligations. Conclude with `(NNReal.continuous_coe.comp (GlobalTheory.Doubling.continuous_absE.comp (cu.comp continuous_fst))).congr fun x => (H.ht _ _ (hP x.1) _ x.2.2).symm`. Take `⟨p, β, e, k, hk, rfl⟩` from `H.iwa g`. Use `⟨k, hk, fun x => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[mul_assoc, hsc _ _ e, H.ht _ _ e _ hk]`.
+-/
 theorem isCompact_isHt_scales : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ) (J : Matrix (Fin n) (Fin n) E) (r : ℕ) (X Y : Matrix (Fin n) (Fin (r + 1)) E) (L : Submodule (𝓞 E) (Fin n → E)) (a : GL (Fin n) (AF F ⊗[F] E)) (h : GAd σ J → ℝ), DataJ σ J X Y L a h → IsCompact (levelAll σ J L a : Set (GAd σ J)) ∧ IsHt (levelAll σ J L a) h ∧ ∀ p β, ScalesBy σ J X p β → ∀ g, h (p * g) = absE F E (Matrix.GeneralLinearGroup.det β) * h g := by
   intro F E _ _ _ _ _ σ n J r X Y L a h H
   haveI := H.lat

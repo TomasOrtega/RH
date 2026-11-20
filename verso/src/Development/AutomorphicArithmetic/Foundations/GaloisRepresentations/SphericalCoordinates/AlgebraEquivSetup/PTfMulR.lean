@@ -4,6 +4,11 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Spher
 open Formalism.UG GlobalTheory.LKDef.HeckeTraceForms UpperTheory.Gal.W2.Seed
 open scoped Classical
 
+/- English proof (translation)
+Unfold `tyFn`. Distinguish the cases in `hb : b ∈ J`. Establish `hab : a * b ∈ J` using `J.mul_mem ha hb`. Rewrite using `[dif_pos ha, dif_pos hb, dif_pos hab]`. Establish `e : (⟨a * b, hab⟩ : J) = ⟨a, ha⟩ * ⟨b, hb⟩` using `rfl`.
+
+Rewrite using `[e, map_mul, mul_inv, Units.val_mul, mul_comm]`. Establish `hab : a * b ∉ J` using `fun h => hb (by simpa using J.mul_mem (J.inv_mem ha) h)`. Rewrite using `[dif_neg hb, dif_neg hab, mul_zero]`.
+-/
 private theorem tyFn_mul_of_mem {M : Type} [Group M] (J : Subgroup M) (ψ : J →* ℂˣ) (a b : M)
     (ha : a ∈ J) : tyFn J ψ a * tyFn J ψ b = tyFn J ψ (a * b) := by
   unfold tyFn
@@ -15,6 +20,23 @@ private theorem tyFn_mul_of_mem {M : Type} [Group M] (J : Subgroup M) (ψ : J �
   · have hab : a * b ∉ J := fun h => hb (by simpa using J.mul_mem (J.inv_mem ha) h)
     rw [dif_neg hb, dif_neg hab, mul_zero]
 
+/- English proof (translation)
+Take `⟨hn, hk⟩` from `(hC t 1 (map_one _) (y⁻¹ * g)).1 (by rw [mul_one]; exact hz)`. Take `⟨ha, hy'⟩` from `(hC 1 r hr y).1 (by rw [map_one, one_mul]; exact hy)`. Establish `haK : L'.pr y ∈ Kw`. Take `⟨u, hu, v, hv, e⟩` from `DoubleCoset.mem_doubleCoset.1 ha`. Rewrite using `[e, mul_one]`.
+
+Conclude with `Kw.mul_mem hu hv`. Establish `hkK : (L'.loc (L'.pr (y⁻¹ * g)))⁻¹ * (y⁻¹ * g) ∈ K`. Take `⟨u, hu, v, hv, e⟩` from `DoubleCoset.mem_doubleCoset.1 hk`. Rewrite using `[e, mul_one]`. Conclude with `K.mul_mem hu hv`.
+
+Generalize the expression as in `hkd : (L'.loc (L'.pr (y⁻¹ * g)))⁻¹ * (y⁻¹ * g) = k at hkK`. Generalize the expression as in `hyd : (L'.loc (L'.pr y))⁻¹ * y = y' at hy'`. Establish `hm : L'.pr g = L'.pr y * L'.pr (y⁻¹ * g)` using `by simp`. Generalize the expression as in `had : L'.pr y = a at haK hm hyd`. Generalize the expression as in `hnd : L'.pr (y⁻¹ * g) = n at hn hm hkd`.
+
+Establish `hpy' : L'.pr y' = 1`. Rewrite using `[← hyd, map_mul, map_inv, L'.pr_loc, had, inv_mul_cancel]`. Establish `hcomm : ∀ x, L'.loc x * y' = y' * L'.loc x` using `fun x => L'.comm x y' hpy'`. Establish `hy1 : y = L'.loc a * y'` using `by rw [← hyd]; group`. Establish `hg : g = L'.loc a * y' * (L'.loc n * k)`.
+
+Rewrite using `[← hkd, ← hy1]`. Use `group`. Establish `hy0 : (L'.loc (L'.pr g))⁻¹ * g = y' * k`. Rewrite using `[hm, map_mul, hg, mul_assoc (L'.loc a), ← mul_assoc y', ← hcomm n]`. Use `group`.
+
+Use `⟨(hC t r hr g).2 ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hm]`. Take `⟨u, hu, v, hv, e⟩` from `DoubleCoset.mem_doubleCoset.1 hn`. Conclude with `DoubleCoset.mem_doubleCoset.2 ⟨a * u, Kw.mul_mem haK hu, v, hv, by rw [e]; group⟩`. Rewrite using `[hy0]`.
+
+Take `⟨u, hu, v, hv, e⟩` from `DoubleCoset.mem_doubleCoset.1 hy'`. Conclude with `DoubleCoset.mem_doubleCoset.2 ⟨u, hu, v * k, K.mul_mem hv hkK, by rw [e]; group⟩`. Rewrite using `[hy0]`. Establish `e : y⁻¹ * (y' * k) = (L'.loc a)⁻¹ * k`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[e]`. Conclude with `K.mul_mem (K.inv_mem (hF.1 a haK)) hkK`.
+-/
 private theorem mem_doubleCoset_loc_mul_of_mem_of_pr_eq_one {X M' : Type} [Group X] [Group M'] (L' : Loc X M') (K : Subgroup X)
     (Kw : Subgroup M') (hF : L'.Fact K Kw)
     (hC : ∀ (t : M') (r : X), L'.pr r = 1 → ∀ g, g ∈ DoubleCoset.doubleCoset (L'.loc t * r) (K : Set X) K ↔
@@ -63,6 +85,11 @@ private theorem mem_doubleCoset_loc_mul_of_mem_of_pr_eq_one {X M' : Type} [Group
     rw [e]
     exact K.mul_mem (K.inv_mem (hF.1 a haK)) hkK
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Assume the negation of the conclusion as `hn`. Apply `h` to reduce the goal to its premises. Simplify using `[dosetInd, Set.indicator_apply, hn]`. Assume the negation of the conclusion as `hn`.
+
+Apply `h` to reduce the goal to its premises. Simplify using `[dosetInd, Set.indicator_apply, hn]`.
+-/
 private theorem mem_doubleCosets_of_dosetInd_mul_ne_zero {X : Type} [Group X] (K : Subgroup X) (a b : ℂ) (r s x g : X)
     (h : a * dosetInd ℂ K r x * (b * dosetInd ℂ K s (x⁻¹ * g)) ≠ 0) :
     x ∈ DoubleCoset.doubleCoset r (K : Set X) K ∧
@@ -75,6 +102,31 @@ private theorem mem_doubleCosets_of_dosetInd_mul_ne_zero {X : Type} [Group X] (K
     apply h
     simp [dosetInd, Set.indicator_apply, hn]
 
+/- English proof (translation)
+Introduce `hA hAdm hC X M M' _ _ _ T L' Kw hF hAp t r hr hr'`. Use function extensionality and compare the values at `g`. Establish `hloc : T.L.pr (L'.loc t) = 1` using `hAp.1 t`. Establish `hinv : ∀ k ∈ T.K, ∀ x : X, T.tf r (x * k) * T.tf (L'.loc t) ((x * k)⁻¹ * g) = T.tf r x * T.tf (L'.loc t) (x⁻¹ * g)`. Introduce `k hk x`.
+
+Establish `h1` using `((hAdm X M T r hr).2 k hk x).2`. Establish `h2` using `((hAdm X M T (L'.loc t) hloc).2 k⁻¹ (T.K.inv_mem hk) (x⁻¹ * g)).1`. Rewrite using `[show (x * k)⁻¹ * g = k⁻¹ * (x⁻¹ * g) by group, h1, h2]`. Use `generalize_proofs p1 p2`. Establish `e : (⟨T.L.pr k⁻¹, p2⟩ : T.J) = (⟨T.L.pr k, p1⟩ : T.J)⁻¹` using `Subtype.ext (map_inv _ _)`.
+
+Rewrite using `[e, map_inv, inv_inv]`. Establish `hu` using `Units.inv_mul (T.ψ ⟨T.L.pr k, p1⟩)`. Take the linear combination `(T.tf r x * T.tf (L'.loc t) (x⁻¹ * g)) * hu`. Establish `hsum` using `hA X ℂ T.K T.K₀ T.le T.idx (fun x => T.tf r x * T.tf (L'.loc t) (x⁻¹ * g)) hinv`. Use `beta_reduce at hsum`.
+
+Unfold `conv`. Rewrite using `[hsum]`. Establish `hc : ((T.K₀.relIndex T.K : ℕ) : ℂ) ≠ 0` using `by exact_mod_cast T.idx`. Distinguish the cases in `hg : g ∈ DoubleCoset.doubleCoset (L'.loc t * r) (T.K : Set X) T.K`. Take `⟨hm, hy0⟩` from `(hC X M' L' T.K Kw hF t r hr' g).1 hg`.
+
+Take `⟨y₀, hy0d⟩ : ∃ y₀, y₀ = (L'.loc (L'.pr g))⁻¹ * g` from `⟨_, rfl⟩`. Rewrite `hy0` using `[← hy0d]`. Establish `hp0 : L'.pr y₀ = 1` using `by rw [hy0d, map_mul, map_inv, L'.pr_loc, inv_mul_cancel]`. Establish `hcomm : L'.loc (L'.pr g) * y₀ = y₀ * L'.loc (L'.pr g)` using `L'.comm _ _ hp0`. Establish `hg0 : g = L'.loc (L'.pr g) * y₀` using `by rw [hy0d]; group`.
+
+Establish `hz0 : y₀⁻¹ * g = L'.loc (L'.pr g)`. Combine the equalities or inequalities in the displayed calculation. Establish `hzK : y₀⁻¹ * g ∈ DoubleCoset.doubleCoset (L'.loc t) (T.K : Set X) T.K`. Rewrite using `[hz0]`. Take `⟨u, hu, v, hv, e⟩` from `DoubleCoset.mem_doubleCoset.1 hm`.
+
+Conclude with `DoubleCoset.mem_doubleCoset.2 ⟨L'.loc u, hF.1 u hu, L'.loc v, hF.1 v hv, by rw [e, map_mul, map_mul]⟩`. Establish `hJ : T.L.pr y₀ ∈ T.J`. Take `⟨u, hu, v, hv, e⟩` from `DoubleCoset.mem_doubleCoset.1 hy0`. Rewrite using `[e, map_mul, map_mul, hr, mul_one]`. Conclude with `T.J.mul_mem (T.fact.2 u hu) (T.fact.2 v hv)`.
+
+Rewrite using `[finsum_eq_single _ (QuotientGroup.mk y₀ : X ⧸ T.K)]`. Take `⟨k, hk⟩` from `QuotientGroup.mk_out_eq_mul T.K y₀`. Rewrite using `[hk, hinv k k.2 y₀]`. Establish `hτ` using `tyFn_mul_of_mem T.J T.ψ _ (T.L.pr (y₀⁻¹ * g)) hJ`. Rewrite `hτ` using `[← map_mul, mul_inv_cancel_left]`.
+
+Simplify using `only [TyLev.tf, dosetInd, Set.indicator_of_mem hy0, Set.indicator_of_mem hzK, Set.indicator_of_mem hg, Pi.one_apply]`. Rewrite using `[smul_eq_mul, ← hτ]`. Clear the denominators using the available nonvanishing facts. Introduce `q hq`. Assume the negation of the conclusion as `hne`.
+
+Apply `hq` to reduce the goal to its premises. Simplify using `only [TyLev.tf] at hne`. Establish `hm1` using `mem_doubleCosets_of_dosetInd_mul_ne_zero T.K _ _ r (L'.loc t) q.out g hne`. Establish `hK` using `(mem_doubleCoset_loc_mul_of_mem_of_pr_eq_one L' T.K Kw hF (hC X M' L' T.K Kw hF) t r g q.out hr' hm1.1 hm1.2).2`. Rewrite `hK` using `[← hy0d]`.
+
+Establish `h` using `(QuotientGroup.eq (s := T.K)).2 hK`. Rewrite `h` using `[QuotientGroup.out_eq']`. Then use the resulting hypothesis. Rewrite using `[finsum_eq_zero_of_forall_eq_zero]`. Simplify using `[TyLev.tf, dosetInd, hg]`. Introduce `q`.
+
+Assume the negation of the conclusion as `hne`. Apply `hg` to reduce the goal to its premises. Simplify using `only [TyLev.tf] at hne`. Establish `hm1` using `mem_doubleCosets_of_dosetInd_mul_ne_zero T.K _ _ r (L'.loc t) q.out g hne`. Conclude with `(mem_doubleCoset_loc_mul_of_mem_of_pr_eq_one L' T.K Kw hF (hC X M' L' T.K Kw hF) t r g q.out hr' hm1.1 hm1.2).1`.
+-/
 theorem UpperTheory.Gal.W2.Seed.pTfMulR :
     (∀ (X V : Type) [Group X] [AddCommGroup V] [Module ℂ V] (K K₀ : Subgroup X), K₀ ≤ K → K₀.relIndex K ≠ 0 → ∀ Ψ : X → V, (∀ k ∈ K, ∀ g, Ψ (g * k) = Ψ g) → ∑ᶠ x : X ⧸ K₀, Ψ x.out = ((K₀.relIndex K : ℕ) : ℂ) • ∑ᶠ y : X ⧸ K, Ψ y.out) → TfAdm → (∀ (X M' : Type) [Group X] [Group M'] (L' : Loc X M') (K : Subgroup X) (Kw : Subgroup M'), L'.Fact K Kw → ∀ (t : M') (r : X), L'.pr r = 1 → ∀ g, g ∈ DoubleCoset.doubleCoset (L'.loc t * r) (K : Set X) K ↔ L'.pr g ∈ DoubleCoset.doubleCoset t (Kw : Set M') Kw ∧ (L'.loc (L'.pr g))⁻¹ * g ∈ DoubleCoset.doubleCoset r (K : Set X) K) → TfMulR := by
   intro hA hAdm hC X M M' _ _ _ T L' Kw hF hAp t r hr hr'

@@ -17,9 +17,37 @@ section Algebra
 
 variable {g : ℕ} [Fact g.Prime]
 
+/- English proof (translation)
+The claim follows from `nodup_roots ((separable_map _).2 (PerfectField.separable_iff_squarefree.2 hf))`.
+-/
 theorem nodup_rootsBar {f : (ZMod g)[X]} (hf : Squarefree f) : (rootsBar f).Nodup :=
   nodup_roots ((separable_map _).2 (PerfectField.separable_iff_squarefree.2 hf))
 
+/- English proof (translation)
+Set `t : Module.End K (Fin N → K)` to `Matrix.toLin' (T : Matrix (Fin N) (Fin N) K)`. Establish `ht : ∀ x ∈ W, t x ∈ W` using `hTW`. Use `set p := LinearMap.charpoly (t.restrict ht) with hp`. Establish `hT' : (T : Matrix (Fin N) (Fin N) K).charpoly = (((rootsBar f).map a).map fun x => X - C x).prod`. Rewrite using `[hT, Multiset.map_map]`.
+
+Both sides reduce to the same expression. Establish `hdvd : p ∣ (((rootsBar f).map a).map fun x => X - C x).prod`. Rewrite using `[← hT', ← Matrix.charpoly_toLin', GlobalTheory.CuspGL.charpoly_eq_restrict_mul_mapQ W t ht]`. Conclude with `dvd_mul_right _ _`. Establish `h0 : (((rootsBar f).map a).map fun x => X - C x).prod ≠ 0` using `hT' ▸ (Matrix.charpoly_monic _).ne_zero`.
+
+Establish `hle : p.roots ≤ (rootsBar f).map a`. Use `roots.le_of_dvd h0 hdvd` as an intermediate fact. Rewrite `this` using `[roots_multiset_prod_X_sub_C]`. Then use the resulting hypothesis. Establish `hcard : p.roots.card = Module.finrank K W`. Rewrite using `[← LinearMap.charpoly_natDegree (t.restrict ht)]`.
+
+Use `(Splits.natDegree_eq_card_roots ?_).symm` and prove the remaining obligations. Conclude with `Splits.of_dvd (Splits.multisetProd fun x hx => by`. Take `⟨y, -, rfl⟩` from `Multiset.mem_map.1 hx`. Conclude with `Splits.X_sub_C _) h0 hdvd`. Establish `hnd` using `nodup_rootsBar hf`.
+
+Set `S` to `(rootsBar f).filter fun x => a x ∈ p.roots`. Establish `hS : S.map a = p.roots`. Establish `h1 : ((rootsBar f).map a).Nodup` using `hnd.map_on ha`. Rewrite using `[Multiset.Nodup.ext (Multiset.nodup_of_le (Multiset.map_le_map (Multiset.filter_le _ _)) h1) (Multiset.nodup_of_le hle h1)]`. Introduce `z`.
+
+Rewrite using `[Multiset.mem_map]`. Use `⟨?_, fun hz => ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `(Multiset.mem_filter.1 hx).2`. Take `⟨x, hx, rfl⟩` from `Multiset.mem_map.1 (Multiset.mem_of_le hle hz)`.
+
+Conclude with `⟨x, Multiset.mem_filter.2 ⟨hx, hz⟩, rfl⟩`. Establish `hroot : ∀ c, c ∈ p.roots ↔ ∃ w ∈ W, w ≠ 0 ∧ (T : Matrix (Fin N) (Fin N) K).mulVec w = c • w` using `fun c => by`. Rewrite using `[mem_roots (LinearMap.charpoly_monic _).ne_zero, ← Module.End.hasEigenvalue_iff_isRoot_charpoly]`. Use `⟨fun h => ?_, ?_⟩` and prove the remaining obligations. Take `⟨w, hw⟩` from `h.exists_hasEigenvector`.
+
+Conclude with `⟨w.1, w.2, fun h => hw.2 (Subtype.ext h), congrArg Subtype.val hw.apply_eq_smul⟩`. Introduce and unpack `⟨w, hw, h1, h2⟩`. Conclude with `Module.End.hasEigenvalue_of_hasEigenvector (x := ⟨w, hw⟩) ⟨Module.End.mem_eigenspace_iff.2 (Subtype.ext h2), fun h => h1 (congrArg Subtype.val h)⟩`. Establish `hst : ∀ x ∈ S, x ^ g ∈ S` using `fun x hx => by`. Take `⟨hx1, hx2⟩` from `Multiset.mem_filter.1 hx`.
+
+Use `Multiset.mem_filter.2 ⟨rootsBar_frob f ▸ Multiset.mem_map_of_mem _ hx1, ?_⟩` and prove the remaining obligations. Take `⟨w, hw, h1, h2⟩` from `(hroot _).1 hx2`. Establish `h3 : ∀ n : ℕ, ((T ^ n : GL (Fin N) K) : Matrix (Fin N) (Fin N) K).mulVec w = a x ^ n • w` using `fun n => by`. Proceed by induction on `n with`. Consider the case `zero => simp`.
+
+Consider the case `succ n ih => rw [pow_succ, Units.val_mul, ← Matrix.mulVec_mulVec, h2, Matrix.mulVec_smul, ih, smul_smul, pow_succ']`. Use `(hroot _).2 ⟨_, hPW w hw, fun h => h1 ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← Matrix.one_mulVec w, ← Units.val_one, ← mul_inv_cancel P, Units.val_mul, ← Matrix.mulVec_mulVec, h, Matrix.mulVec_zero]`. Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, show T * P⁻¹ = P⁻¹ * T ^ g by rw [← hP]; group, Units.val_mul, ← Matrix.mulVec_mulVec, h3, Matrix.mulVec_smul, map_pow]`. Establish `hSn : S.Nodup` using `hnd.filter _`.
+
+Take `⟨q, hq, hqS⟩` from `GlobalTheory.Compare.TeichmullerRoots.exists_monic_of_stable S (by`. Use `Multiset.eq_of_le_of_card_le ((Multiset.le_iff_subset (hSn.map (frobenius (Fbar g) g).injective)).2 ?_) (Multiset.card_map _ _).ge` and prove the remaining obligations. Introduce `y hy`. Take `⟨x, hx, rfl⟩` from `Multiset.mem_map.1 hy`. Conclude with `hst x hx)`.
+
+Use `⟨q, ?_, by rw [← card_rootsBar, hqS, ← hcard, ← hS, Multiset.card_map]⟩` and prove the remaining obligations. Rewrite using `[← map_dvd_map' (algebraMap (ZMod g) (Fbar g))]`. Use `(IsAlgClosed.splits _).dvd_of_roots_le_roots (hq.map _).ne_zero ?_` and prove the remaining obligations. Conclude with `hqS.trans_le (Multiset.filter_le _ _)`.
+-/
 theorem exists_dvd_of_stable {K : Type} [Field K] {N : ℕ} {f : (ZMod g)[X]} (hf : Squarefree f) (a : Fbar g →* K)
     (ha : ∀ x ∈ rootsBar f, ∀ y ∈ rootsBar f, a x = a y → x = y) (T P : GL (Fin N) K) (hP : P * T * P⁻¹ = T ^ g)
     (hT : (T : Matrix (Fin N) (Fin N) K).charpoly = ((rootsBar f).map fun x => X - C (a x)).prod)
@@ -92,6 +120,15 @@ theorem exists_dvd_of_stable {K : Type} [Field K] {N : ℕ} {f : (ZMod g)[X]} (h
   refine (IsAlgClosed.splits _).dvd_of_roots_le_roots (hq.map _).ne_zero ?_
   exact hqS.trans_le (Multiset.filter_le _ _)
 
+/- English proof (translation)
+Introduce `W hW`. Establish `key : ∀ v, ∃ q : (ZMod g)[X], q ∣ f v ∧ q.natDegree = Module.finrank (Fbar l) W` using `fun v => by`. Take `⟨φ, h⟩` from `hφ v`. Rewrite `h` using `[map_mul, map_mul, map_inv]`. Conclude with `exists_dvd_of_stable (hf v) (a v) (ha v) _ _ h (hτ v) W (hW _ trivial) (by rw [← map_inv]; exact hW _ trivial)`.
+
+Establish `hle : Module.finrank (Fbar l) W ≤ N` using `by simpa using W.finrank_le`. Assume the negation of the conclusion as `hc`. Rewrite `hc` using `[not_or]`. Establish `h0 : Module.finrank (Fbar l) W ≠ 0` using `fun h => hc.1 (Submodule.finrank_eq_zero.1 h)`. Establish `h1 : Module.finrank (Fbar l) W ≠ N` using `fun h => hc.2 (Submodule.eq_top_of_finrank_eq (by simpa using h))`.
+
+Distinguish the cases in `h : 2 * Module.finrank (Fbar l) W ≤ N`. Take `⟨v, hv⟩` from `h4 _ (by omega) h`. Conclude with `hv (key v)`. Take `⟨v, hv⟩` from `h4 (N - Module.finrank (Fbar l) W) (by omega) (by omega)`. Take `⟨q, ⟨q', hq⟩, hqa⟩` from `key v`.
+
+Establish `hne : q * q' ≠ 0` using `hq ▸ (hf v).ne_zero`. Establish `hdeg` using `hd v`. Rewrite `hdeg` using `[hq, natDegree_mul (left_ne_zero_of_mul hne) (right_ne_zero_of_mul hne)]`. Conclude with `hv ⟨q', Dvd.intro_left _ hq.symm, by omega⟩`.
+-/
 theorem irredOn_of_labels {l N : ℕ} [Fact l.Prime] {PP Γ : Type} [Group Γ] {f : PP → (ZMod g)[X]}
     (hd : ∀ v, (f v).natDegree = N) (hf : ∀ v, Squarefree (f v))
     (h4 : ∀ a : ℕ, 1 ≤ a → 2 * a ≤ N → ∃ v, ¬ ∃ q : (ZMod g)[X], q ∣ f v ∧ q.natDegree = a)
@@ -120,6 +157,9 @@ theorem irredOn_of_labels {l N : ℕ} [Fact l.Prime] {PP Γ : Type} [Group Γ] {
     rw [hq, natDegree_mul (left_ne_zero_of_mul hne) (right_ne_zero_of_mul hne)] at hdeg
     exact hv ⟨q', Dvd.intro_left _ hq.symm, by omega⟩
 
+/- English proof (translation)
+Establish `key : ∀ x : Fbar g, x ≠ 0 → primeToPart l x ≠ 0 ∧ (orderOf (primeToPart l x)).Coprime l` using `fun x hx => by`. Take `⟨-, M, -, h1, h2, -⟩` from `GlobalTheory.TameRed.part_spec (Fact.out : l.Prime) (isOfFinOrder_of_ne_zero hx)`. Conclude with `⟨pow_ne_zero _ hx, h1.coprime_dvd_left (orderOf_dvd_of_pow_eq_one h2)⟩`. Use `ha _ _ (key x hx).1 (key y hy).1 (key x hx).2 (key y hy).2 ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.TypeLeaf.map_primeToPart_fbar, GlobalTheory.TypeLeaf.map_primeToPart_fbar, h]`.
+-/
 theorem primeToPart_eq_of_eq {l : ℕ} [Fact l.Prime] (a : Fbar g →* Fbar l)
     (ha : ∀ x y, x ≠ 0 → y ≠ 0 → (orderOf x).Coprime l → (orderOf y).Coprime l → a x = a y → x = y)
     {x y : Fbar g} (hx : x ≠ 0) (hy : y ≠ 0) (h : a x = a y) : primeToPart l x = primeToPart l y := by
@@ -129,6 +169,11 @@ theorem primeToPart_eq_of_eq {l : ℕ} [Fact l.Prime] (a : Fbar g →* Fbar l)
   refine ha _ _ (key x hx).1 (key y hy).1 (key x hx).2 (key y hy).2 ?_
   rw [GlobalTheory.TypeLeaf.map_primeToPart_fbar, GlobalTheory.TypeLeaf.map_primeToPart_fbar, h]
 
+/- English proof (translation)
+Establish `e : ∀ (M : Matrix (Fin n) (Fin n) K) (z : K), Matrix.scalar (Fin n) z - (c : K) • M = (c : K) • (Matrix.scalar (Fin n) (z / c) - M)` using `fun M z => by`. Rewrite using `[smul_sub, Matrix.scalar_apply, Matrix.scalar_apply, ← Matrix.diagonal_smul]`. Use `congr 2`. Use function extensionality and compare the values at `x`. Simplify using `[mul_div_cancel₀ _ c.ne_zero]`.
+
+Use `Polynomial.funext fun z => ?_` and prove the remaining obligations. Rewrite using `[Matrix.eval_charpoly, Matrix.eval_charpoly, e, e, Matrix.det_smul, Matrix.det_smul, ← Matrix.eval_charpoly, ← Matrix.eval_charpoly, h]`.
+-/
 theorem charpoly_smul_congr {K : Type} [Field K] [Infinite K] {n : ℕ} {A B : Matrix (Fin n) (Fin n) K} (c : Kˣ)
     (h : A.charpoly = B.charpoly) : ((c : K) • A).charpoly = ((c : K) • B).charpoly := by
   have e : ∀ (M : Matrix (Fin n) (Fin n) K) (z : K), Matrix.scalar (Fin n) z - (c : K) • M =
@@ -154,12 +199,24 @@ section Row
 
 variable {σ : D.what₂.FT} {π : D.naut.CG D.R.r} {w : D.what₂.places.Pl}
 
+/- English proof (translation)
+Establish `: Fact (D.host.g k).Prime` using `⟨D.host.g_prime k⟩`. Introduce and unpack `rfl`. Conclude with `((hg k).1.1 v).2.2 ((GlobalTheory.Compare.TeichmullerRoots.zero_mem_rootsBar ((hg k).1.1 v).1).1 hx)`.
+-/
 theorem root_ne_zero (hg : D.nd.goodRow σ) (k : Fin 2) (v : D.nd.PlG k) {x : Fb (D.host.g k) (D.host.g_prime k)}
     (hx : x ∈ @rootsBar _ ⟨D.host.g_prime k⟩ (D.nd.lab k σ v)) : x ≠ 0 := by
   have : Fact (D.host.g k).Prime := ⟨D.host.g_prime k⟩
   rintro rfl
   exact ((hg k).1.1 v).2.2 ((GlobalTheory.Compare.TeichmullerRoots.zero_mem_rootsBar ((hg k).1.1 v).1).1 hx)
 
+/- English proof (translation)
+Establish `: Fact (D.host.g k).Prime` using `⟨D.host.g_prime k⟩`. Establish `h1` using `(hr.2.2 _ (not_mem_of_ne (v := v) (Fact.out : l.Prime) hl)).1 _ (D.ntypes.tg_mem k v)`. Rewrite `h1` using `[D.naut.inePol_tw _ _ _ (D.ntypes.tg_mem k v), D.ntypes.inertiaCharpoly_type k v _ (by rw [← hπ.lab, (D.nd.lab_monic k σ v).2, D.naut.locG_dim]), ← hπ.lab]`. Establish `hz : ∀ x, ∃ z : Zbar l, x ≠ 0 → (z : Qbar l) = ι.symm (D.ntypes.teichC k x)`. Introduce `x`.
+
+Distinguish the cases in `hx : x = 0`. Conclude with `⟨0, fun h => absurd hx h⟩`. Establish `hfin : IsOfFinOrder (ι.symm (D.ntypes.teichC k x))` using `(ι.symm.toRingHom.toMonoidHom.comp (D.ntypes.teichC k)).isOfFinOrder (isOfFinOrder_of_ne_zero hx)`. Conclude with `⟨⟨_, hfin.norm_eq_one.le⟩, fun _ => rfl⟩`. Use `choose z hz using hz`.
+
+Take `⟨p, hp1, hp2⟩` from `hρ.charpoly (D.ntypes.tg k v)`. Establish `hp : p = ((rootsBar (D.nd.lab k σ v)).map fun x => X - C (z x)).prod`. Apply `Polynomial.map_injective (ι.toRingHom.comp (Zbar l).subtype) (ι.injective.comp Subtype.val_injective)` to reduce the goal to its premises. Rewrite using `[← Polynomial.map_map, hp1, h1, Polynomial.map_multiset_prod, Multiset.map_map]`. Use `congrArg _ (Multiset.map_congr rfl fun x hx => ?_)` and prove the remaining obligations.
+
+Simplify using `[hz x (root_ne_zero hg k v hx)]`. Rewrite using `[← hp2, hp, Polynomial.map_multiset_prod, Multiset.map_map]`. Use `congrArg _ (Multiset.map_congr rfl fun x hx => ?_)` and prove the remaining obligations. Rewrite using `[← hρ.teich k hl v x (root_ne_zero hg k v hx) _ (hz x (root_ne_zero hg k v hx))]`. Simplify using the standard rewrite rules.
+-/
 theorem charpoly_tameGen (hg : D.nd.goodRow σ) (hπ : IsParam σ π) {l : ℕ} [Fact l.Prime] {k : Fin 2}
     (hl : l ≠ D.host.g k) (v : D.nd.PlG k) {ι : Qbar l ≃+* ℂ} {r : GalE D →* GL (Fin D.R.r) (Qbar l)}
     {red : Zbar l →+* FbAt D w} (hr : IsGaloisRepOf D π l ι r) (hρ : IsResidual ι r σ w red) :
@@ -188,10 +245,26 @@ theorem charpoly_tameGen (hg : D.nd.goodRow σ) (hπ : IsParam σ π) {l : ℕ} 
   rw [← hρ.teich k hl v x (root_ne_zero hg k v hx) _ (hz x (root_ne_zero hg k v hx))]
   simp
 
+/- English proof (translation)
+The claim follows from `have : Fact (D.host.g k).Prime := ⟨D.host.g_prime k⟩ (map_ne_zero_iff _ (algebraMap (ZMod (D.host.g k)) (Fbar (D.host.g k))).injective).2 u.ne_zero`.
+-/
 theorem toFb_ne_zero (k : Fin 2) (u : (ZMod (D.host.g k))ˣ) : toFb D k u ≠ 0 :=
   have : Fact (D.host.g k).Prime := ⟨D.host.g_prime k⟩
   (map_ne_zero_iff _ (algebraMap (ZMod (D.host.g k)) (Fbar (D.host.g k))).injective).2 u.ne_zero
 
+/- English proof (translation)
+Substitute `hl` using the available equality. Establish `hlp` using `D.what₂.places.resChar_prime w`. Establish `hred : IsReduction D red r (D.ntypes.rbar σ w)` using `⟨D.ntypes.rbar_open σ w, hρ.ss, hρ.charpoly⟩`. Establish `hwild : ∀ k, D.what₂.places.resChar w ≠ D.host.g k → ∀ (v : D.nd.PlG k) u, WildAt (D.nd.plOm.1 (D.naut.plGw k v)) u → D.ntypes.rbar σ w u = 1` using `fun k hk v u hu => wild_fixed hW (by rw [← hπ.lab, (D.nd.lab_monic k σ v).2]) hk hr hred hu`. Use `⟨?_, fun k hk v => ⟨fun s hs => ?_, hwild k hk v, fun j u hu h0 => ?_⟩⟩` and prove the remaining obligations.
+
+Choose the witnesses or unpack the hypotheses as in `⟨k, hk⟩ : ∃ k, D.what₂.places.resChar w ∉ BB D.R.r (D.host.g k) := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `Set.disjoint_left.1 D.ntypes.BB_disj (h 0) (h 1)`. Establish `hk' : D.what₂.places.resChar w ≠ D.host.g k` using `fun e => hk (Or.inl e)`.
+
+Establish `: Fact (D.host.g k).Prime` using `⟨D.host.g_prime k⟩`. Take `⟨h0, h1, h2, -, h4, -⟩` from `(hg k).1`. Use `irredOn_of_labels (fun v => (h0 v).2.1) h1 h4 (fun v => D.ntypes.iota k v w) (fun v x hx y hy h => h2 _ hlp hk v x hx y hy (primeToPart_eq_of_eq _ (D.ntypes.iota_inj k v w) (root_ne_zero hg k v hx) (root_ne_zero hg k v hy) h)) _ (D.ntypes.tg k) (fun v => ?_) fun v => charpoly_tam …` and prove the remaining obligations. Take `⟨φ, hφ⟩` from `exists_isFrob (D.nd.plOm.2 (D.naut.plGw k v))`. Rewrite `hφ` using `[normV_eq_of_split (D.host.g_prime k) (D.nd.g_split k) (D.naut.plGw_over k v)]`.
+
+Establish `h3` using `hwild k hk' v _ (wild_of_frob (D.ntypes.tg_mem k v) hφ)`. Rewrite `h3` using `[map_mul, map_inv, inv_mul_eq_one, map_pow]`. Conclude with `⟨φ, h3.symm⟩`. Conclude with `charpoly_cConj_red Y (GlobalTheory.SplitFrobDense.frobDense D GlobalTheory.Published.cheb_holds) hπ.csd hr hred (not_mem_of_ne hlp hk) (D.nd.plOm.2 _) hs`. Establish `: Fact (D.host.g k).Prime` using `⟨D.host.g_prime k⟩`.
+
+Rewrite `h0` using `[charpoly_tameGen hg hπ hk v hr hρ, IsRoot, eval_multiset_prod, Multiset.map_map, Multiset.prod_eq_zero_iff, Multiset.mem_map]`. Take `⟨x, hx, e⟩` from `h0`. Simplify using `only [Function.comp_apply, eval_sub, eval_X, eval_C, sub_eq_zero] at e`. Establish `h3` using `primeToPart_eq_of_eq _ (D.ntypes.iota_inj k v w) (root_ne_zero hg k v hx) (toFb_ne_zero k u) e.symm`. Break down `hu with rfl | rfl` into its components or cases.
+
+Conclude with `(hg k).1.2.2.2.1 _ hlp hk v j x hx h3`. Conclude with `(hg k).2.2.2.2.1 _ hlp hk v j x hx h3`.
+-/
 theorem row_clauses (Y : NTw D.R D.host D.what₂ D.LL0 D.nd) (hW : WildOne D) (hg : D.nd.goodRow σ) (hπ : IsParam σ π)
     {l : ℕ} [Fact l.Prime] (hl : D.what₂.places.resChar w = l) {ι : Qbar l ≃+* ℂ}
     {r : GalE D →* GL (Fin D.R.r) (Qbar l)} {red : Zbar l →+* FbAt D w} (hr : IsGaloisRepOf D π l ι r)
@@ -246,6 +319,11 @@ section Comparison₂
 
 variable {Y : NTw D.R D.host D.what₂ D.LL0 D.nd} {i : Y.Tw} {b : Bool}
 
+/- English proof (translation)
+Establish `h : IsIntegral ℤ_[Y.l i] x` using `Algebra.IsIntegral.isIntegral x`. Set `f : Y.O0 i →ₐ[ℤ_[Y.l i]] Qbar (Y.l i)` to `{ toQ ρ.κ with commutes' := ρ.κ_alg }`. Take `⟨p, hp, h0⟩ : IsIntegral ℤ_[Y.l i] (toQ ρ.κ x)` from `h.map f`. Set `v` to `NormedField.valuation (K := Qbar (Y.l i))`. Set `z : ℤ_[Y.l i] →+* v.integer` to `(algebraMap ℤ_[Y.l i] (Qbar (Y.l i))).codRestrict _ fun a => by`.
+
+Express the relevant statement in the definitionally equal form `‖algebraMap ℚ_[Y.l i] (Qbar (Y.l i)) (a : ℚ_[Y.l i])‖ ≤ 1`. Rewrite using `[norm_algebraMap']`. Conclude with `a.2`. Conclude with `(Valuation.integer.integers v).mem_of_integral ⟨p.map z, hp.map z, by rw [eval₂_map]; exact h0⟩`.
+-/
 theorem norm_toQ_le (ρ : Reading Y i b) (x : Y.O0 i) : ‖toQ ρ.κ x‖ ≤ 1 := by
   have h : IsIntegral ℤ_[Y.l i] x := Algebra.IsIntegral.isIntegral x
   let f : Y.O0 i →ₐ[ℤ_[Y.l i]] Qbar (Y.l i) := { toQ ρ.κ with commutes' := ρ.κ_alg }
@@ -259,6 +337,15 @@ theorem norm_toQ_le (ρ : Reading Y i b) (x : Y.O0 i) : ‖toQ ρ.κ x‖ ≤ 1 
 
 def toZ (ρ : Reading Y i b) : Y.O0 i →+* Zbar (Y.l i) := (toQ ρ.κ).codRestrict _ (norm_toQ_le ρ)
 
+/- English proof (translation)
+Take `⟨-, -, hint, -⟩` from `GlobalTheory.CoefEmbed.embedding_closed_integral _ _ (Y.twistBaseCoefficientRing_isAdic i) ρ.κ ρ.κ_alg`. Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, ← not_le, not_iff_not]`. Use `⟨?_, fun h => ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨u, rfl⟩`. Establish `h1 : ‖toQ ρ.κ u‖ * ‖toQ ρ.κ (u⁻¹ : (Y.O0 i)ˣ)‖ = 1`.
+
+Rewrite using `[← norm_mul, ← map_mul, Units.mul_inv, map_one, norm_one]`. Use polynomial arithmetic with `[norm_toQ_le ρ (u⁻¹ : (Y.O0 i)ˣ), norm_nonneg (toQ ρ.κ u)]`. Establish `h0 : x ≠ 0`. Introduce and unpack `rfl`. Rewrite `h` using `[map_zero, norm_zero]`.
+
+Conclude with `absurd h (by norm_num)`. Take `⟨y, hy⟩` from `hint (algebraMap (Y.O0 i) (FractionRing (Y.O0 i)) x)⁻¹ (by`. Rewrite using `[map_inv₀, norm_inv]`. Conclude with `inv_le_one_of_one_le₀ h)`. Use `IsUnit.of_mul_eq_one y (IsFractionRing.injective _ (FractionRing (Y.O0 i)) ?_)` and prove the remaining obligations.
+
+Rewrite using `[map_mul, hy, map_one, mul_inv_cancel₀ ((map_ne_zero_iff _ (IsFractionRing.injective _ _)).2 h0)]`.
+-/
 theorem mem_maximalIdeal_iff (ρ : Reading Y i b) (x : Y.O0 i) :
     x ∈ IsLocalRing.maximalIdeal (Y.O0 i) ↔ ‖toQ ρ.κ x‖ < 1 := by
   obtain ⟨-, -, hint, -⟩ := GlobalTheory.CoefEmbed.embedding_closed_integral _ _ (Y.twistBaseCoefficientRing_isAdic i) ρ.κ ρ.κ_alg
@@ -278,6 +365,11 @@ theorem mem_maximalIdeal_iff (ρ : Reading Y i b) (x : Y.O0 i) :
     refine IsUnit.of_mul_eq_one y (IsFractionRing.injective _ (FractionRing (Y.O0 i)) ?_)
     rw [map_mul, hy, map_one, mul_inv_cancel₀ ((map_ne_zero_iff _ (IsFractionRing.injective _ _)).2 h0)]
 
+/- English proof (translation)
+Establish `h0 : RingHom.ker f ≠ ⊥` using `fun h => by`. Establish `h1 : ((Y.l i : ℕ) : Y.O0 i) ∈ RingHom.ker f` using `by rw [RingHom.mem_ker, map_natCast, hl]`. Rewrite `h1` using `[h, Ideal.mem_bot]`. Establish `h2` using `congrArg (toQ ρ.κ) h1`. Rewrite `h2` using `[map_natCast, map_zero]`.
+
+Conclude with `(Y.lPrime i).out.ne_zero (by exact_mod_cast h2)`. Establish `h1` using `IsLocalRing.eq_maximalIdeal ((RingHom.ker_isPrime f).isMaximal h0)`. Conclude with `⟨Ideal.Quotient.lift _ f fun x hx => by rwa [← h1] at hx, fun _ => rfl⟩`.
+-/
 theorem exists_residue_lift (ρ : Reading Y i b) {K : Type} [Field K] (f : Y.O0 i →+* K) (hl : ((Y.l i : ℕ) : K) = 0) :
     ∃ κ : IsLocalRing.ResidueField (Y.O0 i) →+* K, ∀ x, κ (IsLocalRing.residue _ x) = f x := by
   have h0 : RingHom.ker f ≠ ⊥ := fun h => by
@@ -291,6 +383,27 @@ theorem exists_residue_lift (ρ : Reading Y i b) {K : Type} [Field K] (f : Y.O0 
 
 variable {C : CharFrame D} {art : Neutral.B1.Ideles D.host.E →* GlobalTheory.HeckeGal.Gab D.host.E D.nd.Om}
 
+/- English proof (translation)
+Establish `: Fact (D.what₂.places.resChar w).Prime` using `⟨D.what₂.places.resChar_prime w⟩`. Establish `hl` using `h.induces.resChar`. Take `⟨κ, hκ⟩` from `exists_residue_lift ρ (red.comp (toZ ρ)) (by rw [← hl]; exact CharP.cast_eq_zero _ _)`. Use `⟨κ, h.good, h.occurs, hl, fun x => ?_, ⟨(Units.map (red.comp (toZ ρ)).toMonoidHom).comp ν, fun v hv A hA t ht => ?_, fun g => ?_⟩, fun k hk v => ?_⟩` and prove the remaining obligations. Take `⟨-, -, hint, -⟩` from `GlobalTheory.CoefEmbed.embedding_closed_integral _ _ (Y.twistBaseCoefficientRing_isAdic i) ρ.κ ρ.κ_alg`.
+
+Establish `e : ∀ y : ↥D.LL0, ρ.ι.symm (D.what₂.embLL (y : D.what₂.LL)) = ρ.κ (GlobalTheory.Triple.embSide Y i (Y.side i s) y)` using `fun y => by rw [RingEquiv.symm_apply_eq, ρ.read]; rfl`. Establish `h1 : 0 < D.what₂.places.val w ((x : ↥D.LL0) : D.what₂.LL) ↔ ‖ρ.κ (GlobalTheory.Triple.embSide Y i (Y.side i s) (x : ↥D.LL0))‖ < 1`. Rewrite using `[← e]`. Generalize the expression as in `((x : ↥D.LL0) : D.what₂.LL) = y`. Break down `eq_or_ne y 0 with rfl | hy` into its components or cases.
+
+Simplify using the standard rewrite rules. Establish `h2` using `h.induces y⁻¹`. Establish `h3 : 0 < ‖ρ.ι.symm (D.what₂.embLL y)‖` using `by simpa using hy`. Rewrite `h2` using `[map_inv₀ D.what₂.embLL, map_inv₀ ρ.ι.symm, norm_inv, inv_le_one₀ h3]`. Rewrite using `[← not_le, ← not_le, ← h2, not_iff_not, AddValuation.map_inv]`.
+
+Take `⟨n, hn⟩` from `WithTop.ne_top_iff_exists.1 ((D.what₂.places.val w).ne_top_iff.2 hy)`. Rewrite using `[← hn, ← WithTop.LinearOrderedAddCommGroup.coe_neg, ← WithTop.coe_zero, WithTop.coe_le_coe, WithTop.coe_le_coe, neg_nonneg]`. Rewrite using `[h1]`. Use `⟨?_, fun h2 => ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨y, hy, e1⟩`.
+
+Rewrite using `[GlobalTheory.Triple.embSide, ← e1]`. Conclude with `(mem_maximalIdeal_iff ρ y).1 hy`. Take `⟨y, hy⟩` from `hint _ h2.le`. Conclude with `⟨y, (mem_maximalIdeal_iff ρ y).2 (by rw [← hy] at h2; exact h2), hy⟩`. Take `⟨n, hn⟩` from `h.shift`.
+
+Rewrite using `[MonoidHom.comp_apply, (hn.unr_iff ha (Or.inl hv) hA).2 (GlobalTheory.Triple.shiftChar_unr C v) t ht, map_one]`. Take `⟨p, h1, h2⟩` from `h.residual.charpoly g`. Set `M : Matrix (Fin D.R.r) (Fin D.R.r) (Y.O0 i)` to `(((ν g)⁻¹ : (Y.O0 i)ˣ) : Y.O0 i) • ((Y.rhoS i s g : GL (Fin D.R.r) (Y.O0 i)) : Matrix (Fin D.R.r) (Fin D.R.r) (Y.O0 i))`. Establish `e1 : (M.map (toZ ρ)).map (Zbar (Y.l i)).subtype = (r g : GL (Fin D.R.r) (Qbar (Y.l i)))`. Use extensionality with `x y`.
+
+Use `congrFun (congrFun (h.rho g) x) y` as an intermediate fact. Express the relevant statement in the definitionally equal form `toQ ρ.κ (_ * _) = _`. Rewrite using `[map_mul]`. Simplify using `only [Matrix.map_apply, Matrix.smul_apply, smul_eq_mul] at this`. Rewrite using `[this, ← mul_assoc, ← map_mul, Units.inv_mul, map_one, one_mul]`.
+
+Establish `e2 : p = (M.map (toZ ρ)).charpoly` using `Polynomial.map_injective (Zbar (Y.l i)).subtype Subtype.val_injective (by rw [h1, ← Matrix.charpoly_map, e1])`. Rewrite `h2` using `[e2, ← Matrix.charpoly_map]`. Rewrite using `[← charpoly_smul_congr _ h2]`. Use `congr 1`. Use extensionality with `x y`.
+
+Express the relevant statement in the definitionally equal form `κ (IsLocalRing.residue _ _) = red (toZ ρ (ν g : (Y.O0 i)ˣ)) * red (toZ ρ (_ * _))`. Rewrite using `[hκ, ← map_mul, ← map_mul, ← mul_assoc, Units.mul_inv, one_mul]`. Both sides reduce to the same expression. Take `⟨u, hu, e⟩` from `hχ.tame (jIdx s) k hk.symm v`. Use `⟨u, hu, (hκ _).trans (h.residual.teich k hk.symm v _ (toFb_ne_zero k u) _ ?_)⟩` and prove the remaining obligations.
+
+Rewrite using `[← e, GlobalTheory.Triple.jIdx_add_one, Reading.toC_apply, RingEquiv.symm_apply_apply]`. Both sides reduce to the same expression.
+-/
 theorem isRowOfTriple (ha : GlobalTheory.HeckeGal.IsGlobalArtin art) {s : Y.Sig i} {ρ : Reading Y i (Y.side i s)}
     (hχ : IsChars C art ρ) {σ : D.what₂.FT} {π : D.naut.CG D.R.r} {r : GalE D →* GL (Fin D.R.r) (Qbar (Y.l i))}
     {ν : GalE D →* (Y.O0 i)ˣ} {w : D.what₂.places.Pl} {red : Zbar (Y.l i) →+* FbAt D w}
@@ -349,6 +462,11 @@ theorem isRowOfTriple (ha : GlobalTheory.HeckeGal.IsGlobalArtin art) {s : Y.Sig 
     rw [← e, GlobalTheory.Triple.jIdx_add_one, Reading.toC_apply, RingEquiv.symm_apply_apply]
     rfl
 
+/- English proof (translation)
+Take `⟨c, hc1, hcm, hr, -⟩` from `GlobalTheory.Mem.HostCM.host_cm D.R D.host`. Establish `h1 : ∀ x : D.host.E, Y.cc (algebraMap D.host.E D.nd.Om x) = algebraMap D.host.E D.nd.Om (c x)` using `fun x => by`. Take `⟨j, hj⟩` from `Y.cc_cm.1`. Apply `j.injective` to reduce the goal to its premises. Rewrite using `[hj, hc1]`.
+
+Conclude with `(D.host.conjE_apply (j.comp (algebraMap D.host.E D.nd.Om)) x).symm`. Conclude with `GlobalTheory.AntiLAdic.antiHom_of_trivOn D.host.F D.host.E c hcm.rank hcm.ne (fun x => by rw [hc1, hc1, conj_conj]) hr D.nd.Om Y.cc h1 art ha l ι χ n _ hc h ht`.
+-/
 theorem antiHom_of_isLAdicOf (ha : GlobalTheory.HeckeGal.IsGlobalArtin art) {l : ℕ} [Fact l.Prime] {ι : Qbar l ≃+* ℂ}
     {χ : HChar D.host.E} {n : (D.host.E →+* ℂ) → ℤ} {r : GalE D →* (Qbar l)ˣ} (hc : Continuous r)
     (h : GlobalTheory.HeckeGal.IsLAdicOf art ι χ n r) (ht : χ.TrivOn D.host.F) : AntiHom Y.cc r := by
@@ -363,6 +481,17 @@ theorem antiHom_of_isLAdicOf (ha : GlobalTheory.HeckeGal.IsGlobalArtin art) {l :
 
 variable {Z : NExp D.R D.host D.what₂ D.LL0 D.nd Y}
 
+/- English proof (translation)
+Take `⟨C, art, h⟩` from `h`. Introduce `i hi j b h1 h2 k hk v hv A hA t ht t' ht'`. Take `⟨ρ, hχ, -⟩` from `h.evidence i hi b`. Take `⟨j, rfl⟩ : ∃ j' : Fin D.R.m, j = j'.1 + 1` from `⟨⟨j - 1, by omega⟩, by simp only; omega⟩`. Take `⟨n, hn⟩` from `hχ.chi j`.
+
+Take `⟨n0, h0⟩` from `exists_isAlgPos_mu0 (hframe C) GlobalTheory.Triple.eExp_int j`. Take `⟨r, hr, hL⟩` from `h.artin.exists_isLAdicOf ρ.ι (isAlgPos_mul h0 (del_alg (hframe C) (Y.l i)))`. Establish `hanti : AntiHom Y.cc r` using `antiHom_of_isLAdicOf h.artin hr hL (((hframe C).isMu0 j).triv.mul (inertialOrderFifteenChar_auxiliaryPrime_spec (hframe C) (l := Y.l i)).2.2.2.2.triv)`. Establish `key : ∀ v, v ∉ placesOver D.host.E (Y.l i) → ∀ A : ValuationSubring D.nd.Om, IsPlaceOver A v → ∀ t ∈ Ine (F` using `D.host.E) A, inQ ρ.κ (Y.chi1 i (j.1 + 1) b) t = r t := fun v hv A hA t ht => by`. Take `⟨x, hx, e⟩` from `exists_unit h.artin hA ht`.
+
+Establish `e1` using `hn.loc (Or.inl hv) e`. Rewrite `e1` using `[GlobalTheory.Triple.blockChar, block_loc (C.isEta.unr v) hx]`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[hL.loc_away (Or.inl hv) x t e, inQ_val, RingEquiv.eq_symm_apply]`. Conclude with `e1`.
+
+Establish `hvl : v ∉ placesOver D.host.E (Y.l i)` using `notMem_of_ne (D.host.g_prime k) (Y.lPrime i).out hk hv`. Take `⟨bar, -, hbar⟩` from `GlobalTheory.ConjPoly.exists_conj D`. Take `rfl : t' = cConj Y t` from `AlgEquiv.ext ht'`. Rewrite using `[← map_inv]`. Use `inQ_inj ρ.κ ?_` and prove the remaining obligations.
+
+Rewrite using `[map_inv, key v hvl A hA t ht, key (bar v) (fun hm => hvl (mem_placesOver_conj (TwistDet.isConjPl_symm (hbar v).1) hm)) _ (isPlaceOver_moveVal_cc Y (hbar v).1 hA) _ (cConj_mem_ine Y ht), hanti t _ ht']`.
+-/
 theorem blockCharConj (h : IsTripleOf Z) : BlockCharConj Y := by
   obtain ⟨C, art, h⟩ := h
   intro i hi j b h1 h2 k hk v hv A hA t ht t' ht'
@@ -389,6 +518,13 @@ theorem blockCharConj (h : IsTripleOf Z) : BlockCharConj Y := by
   rw [map_inv, key v hvl A hA t ht, key (bar v) (fun hm => hvl (mem_placesOver_conj (TwistDet.isConjPl_symm (hbar v).1) hm)) _
     (isPlaceOver_moveVal_cc Y (hbar v).1 hA) _ (cConj_mem_ine Y ht), hanti t _ ht']
 
+/- English proof (translation)
+Introduce `i hi s`. Establish `hχ` using `blockCharConj hT`. Take `⟨C, art, h⟩` from `hT`. Take `⟨ρ, h1, σ, π, r, ν, w, red, h2⟩` from `h.triple hi s`. Take `⟨κ, h3⟩` from `isRowOfTriple h.artin h1 h2`.
+
+Establish `: Fact (D.what₂.places.resChar w).Prime` using `⟨D.what₂.places.resChar_prime w⟩`. Establish `hl` using `h2.induces.resChar`. Take `⟨hirr, hrow⟩` from `row_clauses Y hW h2.good h2.param hl h2.gal h2.residual`. Use `admissible_at_of_irreducible_tame h3 hirr fun k hk v hv A hA => ?_` and prove the remaining obligations. Use `tameOff_all Y (fun e => hk (e.symm.trans hl)) (D.ntypes.rbar_open σ w) (fun v => (hrow k hk.symm v).1) (fun v t ht => ?_) (fun v => ⟨(hrow k hk.symm v).2.1, ?_⟩) hv hA` and prove the remaining obligations.
+
+Use `hχ i hi _ (Y.side i s) (Y.jS_range i s).1 (Y.jS_range i s).2 k hk _ (D.naut.plGw_over k v) _ (D.nd.plOm.2 _) t ht _ (cConj_apply Y t)` as an intermediate fact. Rewrite using `[← map_inv, MonoidHom.comp_apply, MonoidHom.comp_apply, map_inv]`. Conclude with `congrArg _ this`. Take `⟨u, hu, e⟩` from `h3.2.2.2.2.2 k hk v`. Conclude with `⟨_, D.ntypes.tg_mem k v, fun h0 => (hrow k hk.symm v).2.2 _ u hu (e ▸ h0)⟩`.
+-/
 theorem gen_adm2 (hT : IsTripleOf Z) (hW : WildOne D) : BlochKatoReduction.Gen.adm2 Y := by
   intro i hi s
   have hχ := blockCharConj hT
@@ -410,6 +546,9 @@ theorem gen_adm2 (hT : IsTripleOf Z) (hW : WildOne D) : BlochKatoReduction.Gen.a
 
 end Comparison₂
 
+/- English proof (translation)
+The claim follows from `gen_adm2 hT hW`.
+-/
 theorem adm2_of_isTriple (D : D7) (hT : IsTriple D) (hW : WildOne D) : BlochKatoReduction.adm2 D := gen_adm2 hT hW
 
 end GlobalTheory.TripleAdm

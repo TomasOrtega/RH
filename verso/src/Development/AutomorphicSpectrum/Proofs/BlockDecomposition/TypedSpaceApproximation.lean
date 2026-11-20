@@ -35,6 +35,15 @@ namespace GlobalTheory.CompanionTheory.Conc
 
 variable {K : Type} [Field K] [NumberField K] {n : ℕ}
 
+/- English proof (translation)
+Introduce `ω hω hB t₀ Q hQ`. Take `⟨C, hC⟩` from `h ω hω hB t₀ Q hQ`. Use `⟨max C 0 * Real.exp (∑ r ∈ Finset.range n, (m' r - m r) * (if 0 < r ∧ r < n then t₀ else 0)), ?_⟩` and prove the remaining obligations. Introduce `i b hb x hx q hq`. Establish `h1` using `hC i b hb x hx q hq`.
+
+Establish `hs : ∑ r ∈ Finset.range n, m r * An.sr x r ≤ (∑ r ∈ Finset.range n, (m' r - m r) * (if 0 < r ∧ r < n then t₀ else 0)) + ∑ r ∈ Finset.range n, m' r * An.sr x r`. Rewrite using `[← Finset.sum_add_distrib]`. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `r _`. Distinguish the cases in `hr : 0 < r ∧ r < n`.
+
+Rewrite using `[if_pos hr]`. Use `mul_le_mul_of_nonneg_left (hx r) (sub_nonneg.2 (hm r hr.1 hr.2))` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Rewrite using `[if_neg hr, GlobalTheory.CompanionTheory.AnBoot.sr_eq_zero x hr]`. Simplify using the standard rewrite rules.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Real.exp_add, mul_assoc]`.
+-/
 theorem ubnd_mono {ι : Type*} {f : ι → AdelicGLn.AdelicGL K n → ℂ} {m m' : ℕ → ℝ}
     (hm : ∀ r, 0 < r → r < n → m r ≤ m' r) (h : UBnd f m) : UBnd f m' := by
   intro ω hω hB t₀ Q hQ
@@ -67,6 +76,11 @@ theorem ubnd_mono {ι : Type*} {f : ι → AdelicGLn.AdelicGL K n → ℂ} {m m'
             Real.exp (∑ r ∈ Finset.range n, m' r * An.sr x r) := by
         rw [Real.exp_add, mul_assoc]
 
+/- English proof (translation)
+Introduce `ω hω hB t₀ Q hQ`. Take `⟨C, hC⟩` from `hf ω hω hB t₀ Q hQ`. Take `⟨D, hD⟩` from `hg ω hω hB t₀ Q hQ`. Use `⟨C + D, fun i b hb x hx q hq => ?_⟩` and prove the remaining obligations. Establish `h1` using `hC i b hb x hx q hq`.
+
+Establish `h2` using `hD i b hb x hx q hq`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem ubnd_add {ι : Type*} {f g : ι → AdelicGLn.AdelicGL K n → ℂ} {m : ℕ → ℝ} (hf : UBnd f m) (hg : UBnd g m) :
     UBnd (fun i y => f i y + g i y) m := by
   intro ω hω hB t₀ Q hQ
@@ -85,6 +99,11 @@ section Iter
 
 variable [MeasurableSpace (archGroup K n)] [BorelSpace (archGroup K n)] (ν : Measure (archGroup K n)) [ν.IsHaarMeasure]
 
+/- English proof (translation)
+Establish `hf₁ : UFam (fun i => sm ν β (f i))` using `GlobalTheory.T.uniform_family_smoothing K n ν β ι f hβ hf`. Establish `hb₁ : UBnd (fun i => sm ν β (f i)) m` using `GlobalTheory.T.uniform_bound_smoothing K n ν β ι f m hβ hf.cont hb`. Establish `hct` using `GlobalTheory.T.uniform_bound_constant_term K n ι (fun i => sm ν β (f i)) m r D κ' κ p h0 h1 hf₁ hb₁ hk hp`. Establish `hdiff` using `GlobalTheory.T.uniform_bound_of_archimedean_lipschitz K n ι f (fun i => sm ν β (f i)) m r h0 h1 hf₁ (fun R => by`. Take `⟨Q₀, C, hQ₀, hC, h⟩` from `GlobalTheory.T.smoothing_lipschitz_bound K n ν β hβ R`.
+
+Conclude with `⟨Q₀, C, hQ₀, hC, fun i g Y M hY hR hM => h (f i) (hf.cont i) g Y M hY hR hM⟩) hb`. Establish `a : UBnd (fun i g => sm ν β (f i) g - An.ctn r (sm ν β (f i)) g) (Function.update m r (max (m r - 1) κ))` using `ubnd_mono (fun s _ _ => GlobalTheory.CompanionTheory.AnBoot.update_le_update m r (le_max_left _ _) s) hdiff`. Establish `b : UBnd (fun i => An.ctn r (sm ν β (f i))) (Function.update m r (max (m r - 1) κ))` using `ubnd_mono (fun s _ _ => GlobalTheory.CompanionTheory.AnBoot.update_le_update m r (le_max_right _ _) s) hct`. Establish `c` using `ubnd_add a b`. Simplify using `using c`.
+-/
 theorem step {β : archGroup K n → ℝ} (hβ : Ker ν β) {ι : Type} {f : ι → AdelicGLn.AdelicGL K n → ℂ} {m : ℕ → ℝ}
     {r D : ℕ} {κ' κ : ℝ} {p : ι → ℂ[X]} (h0 : 0 < r) (h1 : r < n) (hf : UFam f) (hb : UBnd f m) (hk : κ' < κ)
     (hp : ∀ i, (p i).Monic ∧ (p i).natDegree ≤ D ∧ An.Kill r (sm ν β (f i)) (p i) ∧
@@ -103,6 +122,9 @@ theorem step {β : archGroup K n → ℝ} (hβ : Ker ν β) {ι : Type} {f : ι 
   have c := ubnd_add a b
   simpa using c
 
+/- English proof (translation)
+Proceed by induction on `j with`. Consider the case `zero => simpa using hf`. Consider the case `succ j ih`. Simplify using `only [Function.iterate_succ_apply']`. Conclude with `GlobalTheory.T.uniform_family_smoothing K n ν β ι _ hβ ih`.
+-/
 theorem iter_fam {β : archGroup K n → ℝ} (hβ : Ker ν β) {ι : Type} {f : ι → AdelicGLn.AdelicGL K n → ℂ}
     (hf : UFam f) (j : ℕ) : UFam (fun i => (sm ν β)^[j] (f i)) := by
   induction j with
@@ -111,6 +133,9 @@ theorem iter_fam {β : archGroup K n → ℝ} (hβ : Ker ν β) {ι : Type} {f :
     simp only [Function.iterate_succ_apply']
     exact GlobalTheory.T.uniform_family_smoothing K n ν β ι _ hβ ih
 
+/- English proof (translation)
+Proceed by induction on `j with`. Consider the case `zero => simpa using hk`. Consider the case `succ j ih`. Simplify using `only [Function.iterate_succ_apply']`. Conclude with `GlobalTheory.T.killed_by_polynomial_smoothing K n ν β _ r p hβ h0 h1 ((iter_fam ν hβ hf j).cont i) ih`.
+-/
 theorem iter_kill {β : archGroup K n → ℝ} (hβ : Ker ν β) {ι : Type} {f : ι → AdelicGLn.AdelicGL K n → ℂ} {r : ℕ}
     {p : ℂ[X]} (h0 : 0 < r) (h1 : r < n) (hf : UFam f) (i : ι) (hk : An.Kill r (f i) p) (j : ℕ) :
     An.Kill r ((sm ν β)^[j] (f i)) p := by
@@ -120,6 +145,17 @@ theorem iter_kill {β : archGroup K n → ℝ} (hβ : Ker ν β) {ι : Type} {f 
     simp only [Function.iterate_succ_apply']
     exact GlobalTheory.T.killed_by_polynomial_smoothing K n ν β _ r p hβ h0 h1 ((iter_fam ν hβ hf j).cont i) ih
 
+/- English proof (translation)
+Proceed by induction on `j with`. Consider the case `zero`. Use `ubnd_mono (fun s _ _ => ?_) hb` and prove the remaining obligations. Distinguish the cases in `hs : s = r`. Substitute `hs` using the available equality.
+
+Simplify using the standard rewrite rules. Simplify using `[Function.update_of_ne hs]`. Consider the case `succ j ih`. Use `step ν hβ (r := r) (D := D) (κ' := κ') (κ := κ) (p := p) h0 h1 (iter_fam ν hβ hf j) ih hk (fun i => ⟨(hp i).1, (hp i).2.1, by` as an intermediate fact. Use `iter_kill ν hβ h0 h1 hf i (hp i).2.2.1 (j + 1)` as an intermediate fact.
+
+Rewrite using `[Function.iterate_succ_apply'] at this, (hp i).2.2.2⟩)` and apply the resulting hypothesis. Simplify using `only [Function.iterate_succ_apply']`. Rewrite `this` using `[Function.update_self, Function.update_idem]`. Use `ubnd_mono (fun s _ _ => GlobalTheory.CompanionTheory.AnBoot.update_le_update m r ?_ s) this` and prove the remaining obligations. Use `push_cast`.
+
+Use `max_le ?_ (le_max_right _ _)` and prove the remaining obligations. Break down `le_total (m r - j) κ with h' | h'` into its components or cases. Rewrite using `[max_eq_right h']`. Conclude with `le_trans (by linarith) (le_max_right _ _)`. Rewrite using `[max_eq_left h']`.
+
+Conclude with `le_trans (by linarith) (le_max_left _ _)`.
+-/
 theorem iter_one {β : archGroup K n → ℝ} (hβ : Ker ν β) {ι : Type} {f : ι → AdelicGLn.AdelicGL K n → ℂ} {m : ℕ → ℝ}
     {r D : ℕ} {κ' κ : ℝ} {p : ι → ℂ[X]} (h0 : 0 < r) (h1 : r < n) (hf : UFam f) (hb : UBnd f m) (hk : κ' < κ)
     (hp : ∀ i, (p i).Monic ∧ (p i).natDegree ≤ D ∧ An.Kill r (f i) (p i) ∧
@@ -148,6 +184,17 @@ theorem iter_one {β : archGroup K n → ℝ} (hβ : Ker ν β) {ι : Type} {f :
     · rw [max_eq_left h']
       exact le_trans (by linarith) (le_max_left _ _)
 
+/- English proof (translation)
+Establish `key : ∀ s : Finset ℕ, (∀ r ∈ s, 0 < r ∧ r < n) → ∃ k : ℕ, ∀ β, Ker ν β → UBnd (fun i => (sm ν β)^[k] (f i)) (fun r => if r ∈ s then κ r else M)`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Introduce `_`.
+
+Conclude with `⟨0, fun β _ => by simpa using hb⟩`. Consider the case `insert a s ha ih`. Introduce `hs`. Take `⟨k, hk⟩` from `ih (fun r hr => hs r (Finset.mem_insert_of_mem hr))`. Take `⟨h0, h1⟩` from `hs a (Finset.mem_insert_self a s)`.
+
+Take `⟨j, hj⟩` from `exists_nat_ge (M - κ a)`. Use `⟨j + k, fun β hβ => ?_⟩` and prove the remaining obligations. Establish `hfk` using `iter_fam ν hβ hf k`. Use `iter_one ν hβ (D := D) (κ' := κ' a) (κ := κ a) (p := p a) h0 h1 hfk (hk β hβ) (hp a h0 h1).1 (fun i => ⟨((hp a h0 h1).2 i).1, ((hp a h0 h1).2 i).2.1, iter_kill ν hβ h0 h1 hf i ((hp a h0 h1).2 i).2.2.1 k, ((hp a h0 h1).2 i).2.2.2⟩) j` as an intermediate fact. Simplify using `only [Function.iterate_add_apply]`.
+
+Use `ubnd_mono (fun r _ _ => ?_) this` and prove the remaining obligations. Establish `hna : a ∉ s` using `ha`. Distinguish the cases in `hr : r = a`. Substitute `hr` using the available equality. Simplify using `only [Function.update_self, Finset.mem_insert, true_or, if_true, hna, if_false]`.
+
+Conclude with `max_le (by linarith) le_rfl`. Simplify using `[Function.update_of_ne hr, Finset.mem_insert, hr]`. Take `⟨k, hk⟩` from `key (Finset.Ioo 0 n) (fun r hr => Finset.mem_Ioo.1 hr)`. Use `⟨k, fun β hβ => ubnd_mono (fun r h0 h1 => ?_) (hk β hβ)⟩` and prove the remaining obligations. Simplify using `[h0, h1]`.
+-/
 theorem iterU {ι : Type} {f : ι → AdelicGLn.AdelicGL K n → ℂ} {M : ℝ} {κ' κ : ℕ → ℝ} {D : ℕ} {p : ℕ → ι → ℂ[X]}
     (hf : UFam f) (hb : UBnd f fun _ => M)
     (hp : ∀ r, 0 < r → r < n → κ' r < κ r ∧ ∀ i, (p r i).Monic ∧ (p r i).natDegree ≤ D ∧ An.Kill r (f i) (p r i) ∧
@@ -185,6 +232,25 @@ theorem iterU {ι : Type} {f : ι → AdelicGLn.AdelicGL K n → ℂ} {M : ℝ} 
 
 end Iter
 
+/- English proof (translation)
+Take `⟨C₀, hC₀⟩` from `GlobalTheory.T.kernel_eigenfunction_bound E N μ α δ F hα hαc hδ hF`. Take `⟨M, hM0, hM⟩` from `GlobalTheory.T.finite_lattice_points_siegel E N`. Use `⟨M / 2, fun ι f hc hl hs hn ω hω hωB t₀ Q hQ => ?_⟩` and prove the remaining obligations. Take `⟨C, hC⟩` from `hM (tsupport α) ω t₀ Q hαc hω hωB hQ`. Use `set c : ℝ := Real.exp (M * ((N : ℝ) * |t₀|)) with hc'`.
+
+Use `⟨Real.sqrt (|C₀| * (|C| + c)), fun i b hb x hx q hq => ?_⟩` and prove the remaining obligations. Use `set S : ℝ := ∑ r ∈ Finset.range N, An.sr x r with hS`. Establish `hsum : ∑ r ∈ Finset.range N, (M / 2) * An.sr x r = M / 2 * S` using `by rw [hS, Finset.mul_sum]`. Establish `hS0 : -((N : ℝ) * |t₀|) ≤ S`. Establish `: ∑ r ∈ Finset.range N, (-|t₀|) ≤ S` using `Finset.sum_le_sum fun r _ => by`.
+
+Use `hx r` as an intermediate fact. Use `le_abs_self t₀` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `using this`. Use `set g := b * An.tor E x * q with hg`.
+
+Use `set k : ℕ := ⌈C * Real.exp (M * S)⌉₊ with hk`. Establish `h1` using `hC₀ (f i) (hc i) (hl i) (hs i) (hn i) g k (by`. Use `le_trans (Set.encard_le_encard ?_) (hC b hb x hx q hq)` and prove the remaining obligations. Introduce `γ hγ`. Conclude with `hγ)`.
+
+Establish `hE : 0 < Real.exp (M * S)` using `Real.exp_pos _`. Establish `hone : 1 ≤ c * Real.exp (M * S)`. Rewrite using `[hc', ← Real.exp_add]`. Apply `Real.one_le_exp` to reduce the goal to its premises. Use the polynomial consequences of the given equalities and inequalities.
+
+Establish `hkle : (k : ℝ) ≤ (|C| + c) * Real.exp (M * S)`. Establish `h3 : C * Real.exp (M * S) ≤ |C| * Real.exp (M * S)` using `mul_le_mul_of_nonneg_right (le_abs_self C) hE.le`. Establish `h4 : 0 ≤ |C| * Real.exp (M * S)` using `by positivity`. Establish `h5 : k ≤ ⌈|C| * Real.exp (M * S)⌉₊` using `Nat.ceil_mono h3`. Establish `h6 : (k : ℝ) ≤ |C| * Real.exp (M * S) + 1` using `(Nat.cast_le.2 h5).trans (Nat.ceil_lt_add_one h4).le`.
+
+Use the polynomial consequences of the given equalities and inequalities. Establish `hsq : ‖f i g‖ ^ 2 ≤ |C₀| * (|C| + c) * Real.exp (M * S)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hsum]`. Establish `e : Real.exp (M / 2 * S) ^ 2 = Real.exp (M * S)`.
+
+Rewrite using `[← Real.exp_nat_mul]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hA : 0 ≤ |C₀| * (|C| + c)` using `by positivity`.
+
+Use `abs_le_of_sq_le_sq' ?_ ?_ |>.2` and prove the remaining obligations. Rewrite using `[mul_pow, Real.sq_sqrt hA, e]`. Conclude with `hsq`. Check the signs of the components of the expression.
+-/
 theorem initU (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (N : ℕ) [MeasurableSpace (GA E N)]
     [BorelSpace (GA E N)] (μ : Measure (GA E N)) [μ.IsHaarMeasure] (α : GA E N → ℂ) (δ : ℝ) (F : Set (GA E N))
     (hα : Continuous α) (hαc : HasCompactSupport α) (hδ : 0 < δ) (hF : IsFundamentalDomain (latticeGL E N) F μ) :
@@ -238,6 +304,11 @@ theorem initU (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (N : ℕ
   · rw [mul_pow, Real.sq_sqrt hA, e]; exact hsq
   · positivity
 
+/- English proof (translation)
+Establish `h : ‖a‖ ^ 2 ≤ 2 * ‖a - b‖ ^ 2 + 2 * ‖b‖ ^ 2`. Establish `h1 : ‖a‖ ≤ ‖a - b‖ + ‖b‖` using `by simpa using norm_add_le (a - b) b`. Establish `h2` using `norm_nonneg a`. Use polynomial arithmetic with `[sq_nonneg (‖a - b‖ - ‖b‖)]`. Establish `e : ∀ z : ℂ, ‖z‖ₑ ^ 2 = ENNReal.ofReal (‖z‖ ^ 2)` using `fun z => by`.
+
+Rewrite using `[← ofReal_norm_eq_enorm, ENNReal.ofReal_pow (norm_nonneg _)]`. Rewrite using `[e, e, e]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[ENNReal.ofReal_add (by positivity) (by positivity), ENNReal.ofReal_mul (by norm_num), ENNReal.ofReal_mul (by norm_num)]`. Simplify using the standard rewrite rules.
+-/
 theorem enorm_sq_le (a b : ℂ) : ‖a‖ₑ ^ 2 ≤ 2 * ‖a - b‖ₑ ^ 2 + 2 * ‖b‖ₑ ^ 2 := by
   have h : ‖a‖ ^ 2 ≤ 2 * ‖a - b‖ ^ 2 + 2 * ‖b‖ ^ 2 := by
     have h1 : ‖a‖ ≤ ‖a - b‖ + ‖b‖ := by simpa using norm_add_le (a - b) b
@@ -257,18 +328,27 @@ section Approx
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {N : ℕ}
   [MeasurableSpace (archGroup E N)] [BorelSpace (archGroup E N)] (ν : Measure (archGroup E N)) [ν.IsHaarMeasure]
 
+/- English proof (translation)
+Use `Continuous.integrable_of_hasCompactSupport ((Complex.continuous_ofReal.comp hβ.cont).mul (hf.comp (continuous_const.mul continuous_infEmb))) ?_` and prove the remaining obligations. Conclude with `(hβ.cpt.comp_left (g := fun t : ℝ => (t : ℂ)) (by simp)).mul_right`.
+-/
 theorem sm_integrable {β : archGroup E N → ℝ} (hβ : Ker ν β) {f : GA E N → ℂ} (hf : Continuous f) (x : GA E N) :
     Integrable (fun y => (β y : ℂ) * f (x * infEmb E N y)) ν := by
   refine Continuous.integrable_of_hasCompactSupport
     ((Complex.continuous_ofReal.comp hβ.cont).mul (hf.comp (continuous_const.mul continuous_infEmb))) ?_
   exact (hβ.cpt.comp_left (g := fun t : ℝ => (t : ℂ)) (by simp)).mul_right
 
+/- English proof (translation)
+Unfold `sm`. Rewrite using `[← integral_sub (sm_integrable ν hβ hf x) (sm_integrable ν hβ hg x)]`. Simplify using `only [mul_sub]`.
+-/
 theorem sm_sub {β : archGroup E N → ℝ} (hβ : Ker ν β) {f g : GA E N → ℂ} (hf : Continuous f) (hg : Continuous g)
     (x : GA E N) : sm ν β (fun x => f x - g x) x = sm ν β f x - sm ν β g x := by
   unfold sm
   rw [← integral_sub (sm_integrable ν hβ hf x) (sm_integrable ν hβ hg x)]
   simp only [mul_sub]
 
+/- English proof (translation)
+Proceed by induction on `j with`. Consider the case `zero => simpa using hf`. Consider the case `succ j ih`. Rewrite using `[Function.iterate_succ_apply']`. Conclude with `GlobalTheory.T.continuous_archimedean_smoothing E N ν β _ hβ ih`.
+-/
 theorem iter_cont {β : archGroup E N → ℝ} (hβ : Ker ν β) {f : GA E N → ℂ} (hf : Continuous f) (j : ℕ) :
     Continuous ((sm ν β)^[j] f) := by
   induction j with
@@ -277,6 +357,11 @@ theorem iter_cont {β : archGroup E N → ℝ} (hβ : Ker ν β) {f : GA E N →
     rw [Function.iterate_succ_apply']
     exact GlobalTheory.T.continuous_archimedean_smoothing E N ν β _ hβ ih
 
+/- English proof (translation)
+Proceed by induction on `j with`. Consider the case `zero => simpa using hf`. Consider the case `succ j ih`. Introduce `γ hγ g`. Rewrite using `[Function.iterate_succ_apply']`.
+
+Simplify using `only [sm, mul_assoc]`. Use `integral_congr_ae (Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[ih γ hγ]`.
+-/
 theorem iter_left {β : archGroup E N → ℝ} {f : GA E N → ℂ} (hf : ∀ γ ∈ latticeGL E N, ∀ g, f (γ * g) = f g) (j : ℕ) :
     ∀ γ ∈ latticeGL E N, ∀ g, (sm ν β)^[j] f (γ * g) = (sm ν β)^[j] f g := by
   induction j with
@@ -289,6 +374,23 @@ theorem iter_left {β : archGroup E N → ℝ} {f : GA E N → ℂ} (hf : ∀ γ
     simp only
     rw [ih γ hγ]
 
+/- English proof (translation)
+Establish `h4 : (4 : ℝ≥0∞) ^ k ≠ 0` using `pow_ne_zero _ (by norm_num)`. Establish `h4' : (4 : ℝ≥0∞) ^ k ≠ ⊤` using `ENNReal.pow_ne_top (by norm_num)`. Use `set e : ℝ≥0∞ := η / 4 ^ k with he`. Establish `he0 : 0 < e` using `ENNReal.div_pos hη.ne' h4'`. Take `⟨U, hU, hUψ⟩` from `GlobalTheory.T.kernel_eigenfunction_equicontinuous E N μ α δ F hα hαc hδ hF e he0`.
+
+Establish `hU' : (infEmb E N) ⁻¹' U ∈ 𝓝 (1 : archGroup E N)`. Use `continuous_infEmb.continuousAt.preimage_mem_nhds ?_` and prove the remaining obligations. Rewrite using `[map_one]` and apply the resulting hypothesis. Take `⟨β, hβ, hsupp⟩` from `exists_ker ν hU'`. Use `⟨β, hβ, fun ψ hc hl hs hn => ?_⟩` and prove the remaining obligations.
+
+Establish `hnear : ∫⁻ x in F, ‖ψ x - sm ν β ψ x‖ₑ ^ 2 ∂μ ≤ e` using `GlobalTheory.T.smoothing_fundamental_domain_bound E N μ ν F β e hF hβ ψ hc fun y hy => hUψ ψ hc hl hs hn _ (hsupp hy)`. Establish `key : ∀ j : ℕ, ∫⁻ x in F, ‖ψ x - (sm ν β)^[j] ψ x‖ₑ ^ 2 ∂μ ≤ 4 ^ j * e`. Introduce `j`. Proceed by induction on `j with`. Consider the case `zero => simp`.
+
+Consider the case `succ j ih`. Establish `hcj` using `iter_cont ν hβ hc j`. Establish `hcj1` using `iter_cont ν hβ hc (j + 1)`. Establish `hh : Continuous fun x => ψ x - (sm ν β)^[j] ψ x` using `hc.sub hcj`. Establish `hcontr` using `GlobalTheory.T.smoothing_fundamental_domain_integral E N μ ν F β hF hβ _ hh (fun γ hγ g => by`.
+
+Simplify using `only [hl γ hγ g, iter_left ν hl j γ hγ g])`. Establish `hS1 : Continuous (sm ν β ψ)` using `GlobalTheory.T.continuous_archimedean_smoothing E N ν β ψ hβ hc`. Establish `hpt : ∀ x, ‖ψ x - (sm ν β)^[j + 1] ψ x‖ₑ ^ 2 ≤ 2 * ‖ψ x - sm ν β ψ x‖ₑ ^ 2 + 2 * ‖sm ν β (fun x => ψ x - (sm ν β)^[j] ψ x) x‖ₑ ^ 2`. Introduce `x`. Establish `h` using `enorm_sq_le (ψ x - (sm ν β)^[j + 1] ψ x) (sm ν β (fun x => ψ x - (sm ν β)^[j] ψ x) x)`.
+
+Establish `e1 : ψ x - (sm ν β)^[j + 1] ψ x - sm ν β (fun x => ψ x - (sm ν β)^[j] ψ x) x = ψ x - sm ν β ψ x`. Rewrite using `[sm_sub ν hβ hc hcj, Function.iterate_succ_apply']`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h` using `[e1]`. Then use the resulting hypothesis. Establish `hm1 : Measurable fun x => 2 * ‖ψ x - sm ν β ψ x‖ₑ ^ 2` using `(((hc.sub hS1).enorm.measurable).pow_const 2).const_mul 2`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[lintegral_add_left hm1, lintegral_const_mul' _ _ (by norm_num), lintegral_const_mul' _ _ (by norm_num)]`. Use `_ ≤ 2 * e + 2 * (4 ^ j * e) := by gcongr; exact hcontr.trans ih`. Use `_ ≤ 4 ^ (j + 1) * e := by`. Establish `h1 : (1 : ℝ≥0∞) ≤ 4 ^ j` using `one_le_pow₀ (by norm_num)`.
+
+Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Use `_ = 4 ^ (j + 1) * e := by rw [pow_succ]; ring`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem approxU [MeasurableSpace (GA E N)] [BorelSpace (GA E N)] (μ : Measure (GA E N)) [μ.IsHaarMeasure]
     (α : GA E N → ℂ) (δ : ℝ) (F : Set (GA E N)) (hα : Continuous α) (hαc : HasCompactSupport α) (hδ : 0 < δ)
     (hF : IsFundamentalDomain (latticeGL E N) F μ) (η : ℝ≥0∞) (hη : 0 < η) (k : ℕ) :
@@ -352,6 +454,45 @@ section Half
 variable {G : Type} [Group G] [TopologicalSpace G] [T2Space G] [IsTopologicalGroup G] [MeasurableSpace G] [BorelSpace G]
   (Γ : Subgroup G) [Countable Γ] (μ : Measure G) [μ.IsMulLeftInvariant]
 
+/- English proof (translation)
+Establish `: MeasurableConstSMul (Γ) (G)` using `⟨fun γ => measurable_const_mul (γ : G)⟩`. Establish `: SMulInvariantMeasure (Γ) (G) μ` using `⟨fun γ s _ => measure_preimage_mul _ γ.1 s⟩`. Use `set T : Set (G) := ⋃ γ : Γ, (fun g => (γ : G) * g) ⁻¹' Ω with hTdef`. Establish `hT : MeasurableSet T` using `MeasurableSet.iUnion fun γ => (measurable_const_mul _) hΩ.measurableSet`. Establish `hmem : ∀ x, x ∈ T ↔ ∃ γ : Γ, (γ : G) * x ∈ Ω` using `fun x => by`.
+
+Simplify using `[hTdef, Set.mem_iUnion]`. Establish `hTinv : ∀ (γ : Γ) x, γ • x ∈ T ↔ x ∈ T`. Introduce `γ x`. Rewrite using `[hmem, hmem]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨γ', h⟩`. Use `⟨γ' * γ, ?_⟩` and prove the remaining obligations. Simplify `h` using `[Subgroup.smul_def, mul_assoc]`. Introduce and unpack `⟨γ', h⟩`. Use `⟨γ' * γ⁻¹, ?_⟩` and prove the remaining obligations.
+
+Simplify `h` using `[Subgroup.smul_def, mul_assoc]`. Establish `hΩT : Ω ⊆ T` using `fun x hx => (hmem x).2 ⟨1, by simpa using hx⟩`. Establish `hmψ : Measurable fun x => ‖ψ x‖ₑ ^ 2` using `(hψ.enorm.measurable).pow_const 2`. Establish `hmf : Measurable fun x => ‖f x‖ₑ ^ 2` using `(hf.enorm.measurable).pow_const 2`. Use `set u : G → ℝ≥0∞ := T.indicator fun x => ‖ψ x‖ₑ ^ 2 with hu`.
+
+Use `set w : G → ℝ≥0∞ := Tᶜ.indicator fun x => ‖ψ x‖ₑ ^ 2 with hw`. Use `set v : G → ℝ≥0∞ := Tᶜ.indicator fun x => ‖f x‖ₑ ^ 2 with hv`. Establish `invI : ∀ (A : Set (G)) (h : G → ℝ≥0∞), (∀ (γ : Γ) x, γ • x ∈ A ↔ x ∈ A) → (∀ (γ : Γ) x, h (γ • x) = h x) → ∀ (γ : Γ) x, A.indicator h (γ • x) = A.indicator h x`. Introduce `A h hA hh γ x`. Distinguish the cases in `hx : x ∈ A`.
+
+Rewrite using `[Set.indicator_of_mem hx, Set.indicator_of_mem ((hA γ x).2 hx), hh]`. Rewrite using `[Set.indicator_of_notMem hx, Set.indicator_of_notMem (fun h' => hx ((hA γ x).1 h'))]`. Establish `hinvψ : ∀ (γ : Γ) x, ‖ψ (γ • x)‖ₑ ^ 2 = ‖ψ x‖ₑ ^ 2` using `fun γ x => by`. Rewrite using `[Subgroup.smul_def, smul_eq_mul, lψ γ.1 γ.2 x]`. Establish `hinvf : ∀ (γ : Γ) x, ‖f (γ • x)‖ₑ ^ 2 = ‖f x‖ₑ ^ 2` using `fun γ x => by`.
+
+Rewrite using `[Subgroup.smul_def, smul_eq_mul, lf γ.1 γ.2 x]`. Establish `hTcinv : ∀ (γ : Γ) x, γ • x ∈ Tᶜ ↔ x ∈ Tᶜ` using `fun γ x => not_congr (hTinv γ x)`. Establish `A : ∫⁻ x in F, u x ∂μ ≤ ∫⁻ x in Ω, ‖ψ x‖ₑ ^ 2 ∂μ`. Establish `c1 : ∫⁻ x in F, u x ∂μ ≤ ∫⁻ x in Ω ∪ Tᶜ, u x ∂μ`. Use `JSqIntGlue.setLIntegral_le_of_cover hF (fun x => ?_) u (invI _ _ hTinv hinvψ)` and prove the remaining obligations.
+
+Distinguish the cases in `hx : x ∈ T`. Take `⟨γ, hγ⟩` from `(hmem x).1 hx`. Conclude with `⟨γ, Or.inl hγ⟩`. Conclude with `⟨1, Or.inr (by simpa using hx)⟩`. Establish `c2 : ∫⁻ x in Tᶜ, u x ∂μ = 0`.
+
+Rewrite using `[setLIntegral_congr_fun (g := fun _ => (0 : ℝ≥0∞)) hT.compl fun x hx => Set.indicator_of_notMem hx _]`. Simplify using the standard rewrite rules. Combine the equalities or inequalities in the displayed calculation. Establish `B : ∫⁻ x in F, v x ∂μ ≤ 1 / 8`. Establish `c1 : ∫⁻ x in F, v x ∂μ ≤ ∫⁻ x in Sl, v x ∂μ`.
+
+Use `JSqIntGlue.setLIntegral_le_of_cover hF (fun x => ?_) v (invI _ _ hTcinv hinvf)` and prove the remaining obligations. Take `⟨γ, hγ, h⟩` from `hS x`. Conclude with `⟨⟨γ, hγ⟩, h⟩`. Establish `c2 : ∫⁻ x in Ω, v x ∂μ = 0`. Rewrite using `[setLIntegral_congr_fun (g := fun _ => (0 : ℝ≥0∞)) hΩ.measurableSet fun x hx => Set.indicator_of_notMem (Set.notMem_compl_iff.2 (hΩT hx)) _]`.
+
+Simplify using the standard rewrite rules. Combine the equalities or inequalities in the displayed calculation. Distinguish the cases in `h : x ∈ Ω`. Conclude with `Or.inr h`. Conclude with `Or.inl ⟨hx, h⟩`.
+
+Use `_ ≤ ∫⁻ x in Sl \ Ω, v x ∂μ + ∫⁻ x in Ω, v x ∂μ := lintegral_union_le _ _ _`. Use `_ = ∫⁻ x in Sl \ Ω, v x ∂μ := by rw [c2, add_zero]`. Use `_ ≤ ∫⁻ x in Sl \ Ω, ‖f x‖ₑ ^ 2 ∂μ := lintegral_mono (Set.indicator_le_self _ _)`. Use `_ ≤ _ := h3`. Establish `C : ∫⁻ x in F, w x ∂μ ≤ 1 / 2`.
+
+Establish `hpt : ∀ x, w x ≤ 2 * ‖ψ x - f x‖ₑ ^ 2 + 2 * v x`. Introduce `x`. Distinguish the cases in `hx : x ∈ Tᶜ`. Simplify using `only [hw, hv, Set.indicator_of_mem hx]`. Conclude with `enorm_sq_le _ _`.
+
+Simplify using `only [hw, Set.indicator_of_notMem hx]`. Conclude with `zero_le`. Establish `hm1 : Measurable fun x => 2 * ‖ψ x - f x‖ₑ ^ 2` using `(((hψ.sub hf).enorm.measurable).pow_const 2).const_mul 2`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[lintegral_add_left hm1, lintegral_const_mul' _ _ (by norm_num), lintegral_const_mul' _ _ (by norm_num)]`.
+
+Use `_ ≤ 2 * (1 / 8) + 2 * (1 / 8) := by gcongr`. Use `_ = 1 / 2 := by`. Establish `e8 : (2 : ℝ≥0∞) * (1 / 8) = 1 / 4`. Rewrite using `[mul_one_div, ENNReal.div_eq_div_iff (by norm_num) (by norm_num) (by norm_num) (by norm_num)]`. Evaluate the numerical expressions.
+
+Rewrite using `[e8]`. Establish `e4 : (1 / 4 : ℝ≥0∞) + 1 / 4 = 1 / 2`. Rewrite using `[ENNReal.div_add_div_same, ENNReal.div_eq_div_iff (by norm_num) (by norm_num) (by norm_num) (by norm_num)]`. Evaluate the numerical expressions. Conclude with `e4`.
+
+Establish `D : (1 : ℝ≥0∞) ≤ ∫⁻ x in Ω, ‖ψ x‖ₑ ^ 2 ∂μ + 1 / 2`. Establish `e : ∀ x, ‖ψ x‖ₑ ^ 2 = u x + w x` using `fun x => by`. Distinguish the cases in `hx : x ∈ T`. Simplify using `[hu, hw, hx]`. Simplify using `[hu, hw, hx]`.
+
+Establish `hmu : Measurable u` using `hmψ.indicator hT`. Combine the equalities or inequalities in the displayed calculation. Establish `h12 : (1 / 2 : ℝ≥0∞) + 1 / 2 ≤ ∫⁻ x in Ω, ‖ψ x‖ₑ ^ 2 ∂μ + 1 / 2`. Rewrite using `[ENNReal.add_halves]` and apply the resulting hypothesis. Establish `h5 : (1 / 2 : ℝ≥0∞) ≤ ∫⁻ x in Ω, ‖ψ x‖ₑ ^ 2 ∂μ` using `(ENNReal.add_le_add_iff_right (by simp)).1 h12`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_one_div, ENNReal.div_self (by norm_num) (by norm_num)]`. Use `_ ≤ _ := by gcongr`.
+-/
 theorem half_of_cover {F Ω Sl : Set (G)} (hF : IsFundamentalDomain (Γ) F μ) (hΩ : IsCompact Ω)
     (hS : ∀ x, ∃ γ ∈ Γ, γ * x ∈ Sl) {ψ f : G → ℂ} (hψ : Continuous ψ) (hf : Continuous f)
     (lψ : ∀ γ ∈ Γ, ∀ g, ψ (γ * g) = ψ g) (lf : ∀ γ ∈ Γ, ∀ g, f (γ * g) = f g)
@@ -468,6 +609,43 @@ end Half
 open PositivityTheory.Rg.BcB.SpectralAccumulation in
 open scoped Classical in
 
+/- English proof (translation)
+Introduce `E _ _ _ N _ _ μ _ K W R ε δ α F hK hW hε hα hαc hδ hF`. Use `letI : MeasurableSpace (archGroup E N) := borel _`. Use `haveI : BorelSpace (archGroup E N) := ⟨rfl⟩`. Use `haveI : Countable (latticeGL E N) := GlobalTheory.DiscreteUnit.countable_latticeGL`. Set `ν : Measure (archGroup E N)` to `Measure.haar`.
+
+Set `P : Sm E N → Prop` to `fun ψ => ∃ V : Submodule ℂ (Sm E N), IsDiscrete V ∧ ψ ∈ V ∧ TypeB K W ψ ∧ InfBdd R V ∧ (∀ r, 0 < r → r < N → ∀ c ∈ ExpV r V, pE E N r c ≤ -ε * (r * ((N : ℝ) - r))) ∧ (∃ s : ℂ, δ ≤ ‖s‖ ∧ ∀ x, ∫ y, α y * ψ.1 (x * y) ∂μ = s * ψ.1 x) ∧ (∫⁻ x in F, ‖ψ.1 x‖ₑ ^ 2 ∂μ) = 1`. Set `ι : Type` to `{ψ : Sm E N // P ψ}`. Set `f : ι → GA E N → ℂ` to `fun i => i.1.1`. Establish `hAut : ∀ i : ι, IsAutForm i.1`. Introduce and unpack `⟨ψ, V, hV, hψ, -⟩`.
+
+Conclude with `hV.aut ψ hψ`. Establish `hcen : ∀ (i : ι) t g, f i (splitCentre E N t * g) = f i g`. Introduce and unpack `⟨ψ, V, hV, hψ, -⟩`. Conclude with `(hV.sqInt ψ hψ).1`. Establish `hcont : ∀ i, Continuous (f i)` using `fun i => ContAut.continuous_of_isOpen_stab E N _ (hAut i).level`.
+
+Establish `hLI : ∀ i, IsLeftInvariant (f i)` using `fun i => GlobalTheory.CompanionTheory.LeftInv.isLeftInvariant_of_isAutForm E N _ (hAut i)`. Establish `hleft : ∀ (i : ι), ∀ γ ∈ latticeGL E N, ∀ g, f i (γ * g) = f i g`. Introduce `i`. Set `S : Subgroup (GA E N)` to `{ carrier := {γ | ∀ g, f i (γ * g) = f i g} one_mem' := fun g => by rw [one_mul] mul_mem' := fun {x y} hx hy g => by rw [mul_assoc, hx, hy] inv_mem' := fun {x} hx g => by rw [← hx, mul_inv_cancel_left] }`. Establish `: latticeGL E N ≤ S` using `sup_le (by rintro _ ⟨γ, rfl⟩; exact (hAut i).left γ) (Subgroup.zpowers_le.2 (hcen i 1))`.
+
+Conclude with `this`. Take `⟨U, hU, hUk⟩` from `GlobalTheory.T.exists_open_integral_subgroup E N K hK`. Establish `hfam : UFam f`. Use `⟨hcont, hLI, U, hU, fun i g u => ?_⟩` and prove the remaining obligations. Take `⟨k, hk, e⟩` from `hUk u`.
+
+Rewrite using `[e]`. Take `⟨ψ, V, hV, hψ, hT, -⟩` from `i`. Conclude with `hT.1 k hk g`. Establish `hrep : ∀ i : ι, ∃ s : ℂ, δ ≤ ‖s‖ ∧ ∀ x, ∫ y, α y * f i (x * y) ∂μ = s * f i x`. Introduce and unpack `⟨ψ, V, hV, hψ, hT, hI, hE, hs, hn⟩`.
+
+Conclude with `hs`. Establish `hnorm : ∀ i : ι, (∫⁻ x in F, ‖f i x‖ₑ ^ 2 ∂μ) = 1`. Introduce and unpack `⟨ψ, V, hV, hψ, hT, hI, hE, hs, hn⟩`. Conclude with `hn`. Take `⟨M, hM⟩` from `initU E N μ α δ F hα hαc hδ hF`.
+
+Establish `hM'` using `hM ι f hcont hleft hrep hnorm`. Establish `hD : ∀ r, ∃ D : ℕ, 0 < r → r < N → ∀ V : Submodule ℂ (Sm E N), IsDiscrete V → (∀ τ : E →+* ℂ, ∃ m, HasInfCharGL V τ m) → ∀ φ ∈ V, ∃ p : ℂ[X], p.Monic ∧ p.natDegree ≤ D ∧ An.Kill r φ.1 p ∧ ∀ z, p.IsRoot z → ∃ c ∈ Exp r φ.1, z = Complex.exp c`. Introduce `r`. Distinguish the cases in `hr : 0 < r ∧ r < N`. Take `⟨D, h⟩` from `GlobalTheory.T.exists_exponent_polynomial_discrete E N r hr.1 hr.2`.
+
+Conclude with `⟨D, fun _ _ => h⟩`. Conclude with `⟨0, fun h0 h1 => (hr ⟨h0, h1⟩).elim⟩`. Use `choose Dr hDr using hD`. Use `set D : ℕ := (Finset.range N).sup Dr with hDdef`. Establish `hd : (0 : ℝ) < Module.finrank ℚ E` using `by exact_mod_cast Module.finrank_pos`.
+
+Establish `hrho : ∀ r, 0 < r → r < N → 0 < An.rho E N r`. Introduce `r h0 h1`. Unfold `An.rho`. Establish `a1 : (0 : ℝ) < r` using `by exact_mod_cast h0`. Establish `a2 : (0 : ℝ) < (N : ℝ) - r` using `sub_pos.2 (by exact_mod_cast h1)`.
+
+Check the signs of the components of the expression. Use `set κ' : ℕ → ℝ := fun r => An.rho E N r * (1 - 2 * ε) with hκ'`. Use `set κ : ℕ → ℝ := fun r => An.rho E N r * (1 - ε) with hκ`. Establish `hp : ∀ r (i : ι), ∃ p : ℂ[X], 0 < r → r < N → p.Monic ∧ p.natDegree ≤ D ∧ An.Kill r (f i) p ∧ ∀ z, p.IsRoot z → ‖z‖ ≤ Real.exp (κ' r)`. Introduce and unpack `r ⟨ψ, V, hV, hψ, hT, hI, hE, hs, hn⟩`.
+
+Distinguish the cases in `hr : 0 < r ∧ r < N`. Use `swap`. Conclude with `⟨1, fun h0 h1 => (hr ⟨h0, h1⟩).elim⟩`. Take `⟨h0, h1⟩` from `hr`. Take `⟨p, hpm, hpd, hpk, hpz⟩` from `hDr r h0 h1 V hV (fun τ => (hI τ).imp fun m h => h.1) ψ hψ`.
+
+Use `⟨p, fun _ _ => ⟨hpm, hpd.trans (Finset.le_sup (Finset.mem_range.2 (by omega))), hpk, fun z hz => ?_⟩⟩` and prove the remaining obligations. Take `⟨c, hc, rfl⟩` from `hpz z hz`. Establish `h2` using `hE r h0 h1 c ⟨ψ, hψ, hc⟩`. Unfold `pE at h2`. Rewrite using `[Complex.norm_exp]`.
+
+Use `Real.exp_le_exp.2 ?_` and prove the remaining obligations. Establish `h3 : c.re / (Module.finrank ℚ E : ℝ) ≤ (r : ℝ) * ((N : ℝ) - r) / 2 - ε * (r * ((N : ℝ) - r))` using `by linarith`. Establish `h4` using `(div_le_iff₀ hd).1 h3`. Simplify using `only [hκ', An.rho]`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `choose p hpp using hp`. Take `⟨k, hk⟩` from `iterU ν (κ' := κ') (κ := κ) (D := D) (p := p) hfam hM' (fun r h0 h1 => ⟨by`. Use `hrho r h0 h1` as an intermediate fact. Simplify using `only [hκ', hκ]`. Use the proof step `nlinarith, fun i => hpp r i h0 h1⟩)`.
+
+Take `⟨ω, hω, hωB, t, ht, hsieg⟩` from `GroundTheory.Automorphic.Reduction.exists_siegelSet (K := E) N`. Take `⟨-, hS, hL, -⟩` from `dict_holds E N`. Establish `h8 : (0 : ℝ≥0∞) < 1 / 8` using `by simp`. Take `⟨β, hβ, hβψ⟩` from `approxU ν μ α δ F hα hαc hδ hF (1 / 8) h8 k`. Take `⟨Ω, hΩ, hΩf⟩` from `GlobalTheory.T.uniform_bound_siegel_set E N μ ι (fun i => (sm ν β)^[k] (f i)) κ (iter_fam ν hβ hfam k).cont (hk β hβ) (fun r h0 h1 => by`.
+
+Use `hrho r h0 h1` as an intermediate fact. Simplify using `only [hκ]`. Use the proof step `nlinarith) ω hω hωB (max 0 (-Real.log t)) (1 / 8) h8`. Use `⟨Ω, hΩ, fun V ψ hV hψ hT hI hE hs hn => ?_⟩` and prove the remaining obligations. Set `i : ι` to `⟨ψ, V, hV, hψ, hT, hI, hE, hs, hn⟩`.
+
+Conclude with `half_of_cover (latticeGL E N) μ hF hΩ (fun g => JSqIntGlue.exists_mem_slab hS hL ht hsieg g) (hcont i) ((iter_fam ν hβ hfam k).cont i) (hleft i) (iter_left ν (hleft i) k) hn (hβψ _ (hcont i) (hleft i) (hrep i) hn) (hΩf i)`.
+-/
 theorem conc : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (N : ℕ) [MeasurableSpace (GA E N)] [BorelSpace (GA E N)]
   (μ : Measure (GA E N)) [μ.IsHaarMeasure] (K : Subgroup (GL (Fin N) (Af E))) (W : Submodule ℂ (Kinf E N → ℂ))
   (R ε δ : ℝ) (α : GA E N → ℂ) (F : Set (GA E N)), IsOpen (K : Set (GL (Fin N) (Af E))) → FiniteDimensional ℂ W → 0 < ε →

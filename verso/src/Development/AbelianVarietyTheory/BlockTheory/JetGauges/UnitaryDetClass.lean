@@ -50,11 +50,20 @@ def SameClass (bad Q : ℕ) (γ : Matrix (Fin n) (Fin n) E) (Λ Λ' : GenLat E n
   IsTrivRep bad Q Λ ∧ IsTrivRep bad Q Λ' ∧ IsUnitary γ ∧ Carries γ Λ Λ' ∧
     ∀ v ∈ Λ.La, CongrAt Q (γ.mulVec v) v
 
+/- English proof (translation)
+Simplify using `[IsUnitary, Matrix.map_one]`.
+-/
 example : IsUnitary (1 : Matrix (Fin n) (Fin n) E) := by
   simp [IsUnitary, Matrix.map_one]
 
+/- English proof (translation)
+Introduce `v` and use `by simp`.
+-/
 example (Λ : GenLat E n) : Carries 1 Λ Λ := fun v => by simp
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨1, by simp, fun _ => ⟨0, by simp⟩⟩`.
+-/
 example (Q : ℕ) (v : Fin n → E) : CongrAt Q v v := ⟨1, by simp, fun _ => ⟨0, by simp⟩⟩
 
 end Lattices
@@ -66,6 +75,9 @@ def push {n : ℕ} (γ : Matrix (Fin n) (Fin n) E) :
     MvPolynomial (LtN Dw n) c.F →ₐ[c.F] MvPolynomial (LtN Dw n) c.F :=
   aeval fun ℓ : LtN Dw n => letB c ℓ.1 ℓ.2.1 fun k => γ k ℓ.2.2
 
+/- English proof (translation)
+Take `⟨σ, i, j⟩` from `ℓ`. Simplify using `[push, letB, Matrix.one_apply, apply_ite, ite_mul]`.
+-/
 example {n : ℕ} (ℓ : LtN Dw n) : push c (1 : Matrix (Fin n) (Fin n) E) (X ℓ) = X ℓ := by
   obtain ⟨σ, i, j⟩ := ℓ
   simp [push, letB, Matrix.one_apply, apply_ite, ite_mul]

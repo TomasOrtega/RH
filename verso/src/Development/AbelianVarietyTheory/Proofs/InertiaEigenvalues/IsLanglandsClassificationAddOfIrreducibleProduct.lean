@@ -22,23 +22,37 @@ namespace GlobalTheory.LocGL.SumProd
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
   {V : Type} [AddCommGroup V] [Module ℂ V] {N : ℕ}
 
+/- English proof (translation)
+Take `⟨Δ, ⟨rfl, -⟩, hΔ⟩` from `hx`. Rewrite using `[Multiset.map_map, ← Finset.sum_eq_multiset_sum]`. Conclude with `Finset.sum_congr rfl fun a _ => (hΔ a).deg_eq.symm`.
+-/
 theorem sum_fst_of_lFactors {𝔪 : Multiset (Segment k)} {h : ℕ} {x : Fin h → IrrGL k} (hx : LFactors 𝔪 x) :
     ∑ a, (x a).1 = (𝔪.map Segment.deg).sum := by
   obtain ⟨Δ, ⟨rfl, -⟩, hΔ⟩ := hx
   rw [Multiset.map_map, ← Finset.sum_eq_multiset_sum]
   exact Finset.sum_congr rfl fun a _ => (hΔ a).deg_eq.symm
 
+/- English proof (translation)
+Take `⟨_, x, hd, hx, -⟩` from `h`. Conclude with `(sum_fst_of_lFactors hx).symm.trans hd`.
+-/
 theorem deg_of_isL {𝔪 : Multiset (Segment k)} {π : Representation ℂ (GL (Fin N) k) V} (h : IsL 𝔪 π) :
     (𝔪.map Segment.deg).sum = N := by
   obtain ⟨_, x, hd, hx, -⟩ := h
   exact (sum_fst_of_lFactors hx).symm.trans hd
 
+/- English proof (translation)
+Take `⟨_, x, -, ⟨D, ⟨rfl, -⟩, hD⟩, -⟩` from `h`. Take `⟨a, -, rfl⟩` from `Multiset.mem_map.1 hΔ`. Conclude with `⟨x a, hD a⟩`.
+-/
 theorem exists_isLSeg_of_isL {𝔪 : Multiset (Segment k)} {π : Representation ℂ (GL (Fin N) k) V} (h : IsL 𝔪 π)
     {Δ : Segment k} (hΔ : Δ ∈ 𝔪) : ∃ y : IrrGL k, IsLSeg Δ y.rep := by
   obtain ⟨_, x, -, ⟨D, ⟨rfl, -⟩, hD⟩, -⟩ := h
   obtain ⟨a, -, rfl⟩ := Multiset.mem_map.1 hΔ
   exact ⟨x a, hD a⟩
 
+/- English proof (translation)
+Take `⟨D, hD⟩` from `exists_isOrderedForm 𝔪`. Establish `hm : ∀ i, D i ∈ 𝔪` using `fun i => hD.1 ▸ Multiset.mem_map_of_mem D (Finset.mem_univ i)`. Use `choose x hx using fun i => h _ (hm i)`. Establish `hF : LFactors 𝔪 x` using `⟨D, hD, hx⟩`. Establish `hd : ∑ a, (x a).1 = N` using `(sum_fst_of_lFactors hF).trans hN`.
+
+Take `⟨π, hπ⟩` from `hS k 𝔪 _ _ x hd hF`. Conclude with `⟨π, _, x, hd, hF, hπ⟩`.
+-/
 theorem exists_isL [CharZero k] (hS : StandardCosocleGL) {𝔪 : Multiset (Segment k)}
     (h : ∀ Δ ∈ 𝔪, ∃ y : IrrGL k, IsLSeg Δ y.rep) (hN : (𝔪.map Segment.deg).sum = N) :
     ∃ π : IrrRep (GL (Fin N) k), IsL 𝔪 π.ρ := by
@@ -50,6 +64,13 @@ theorem exists_isL [CharZero k] (hS : StandardCosocleGL) {𝔪 : Multiset (Segme
   obtain ⟨π, hπ⟩ := hS k 𝔪 _ _ x hd hF
   exact ⟨π, _, x, hd, hF, hπ⟩
 
+/- English proof (translation)
+Introduce and unpack `hM hS k _ _ _ _ _ r t σ τ π 𝔪 𝔫 h1 h2 ⟨e⟩`. Take `⟨y, hy⟩` from `exists_isL (N := r + t) hS (𝔪 := 𝔪 + 𝔫) (fun Δ hΔ => (Multiset.mem_add.1 hΔ).elim (exists_isLSeg_of_isL h1) (exists_isLSeg_of_isL h2)) (by rw [Multiset.map_add, Multiset.sum_add, deg_of_isL h1, deg_of_isL h2])`. Establish `hd : ∑ a, (![IrrGL.of σ.ρ σ.smooth σ.irr, IrrGL.of τ.ρ τ.smooth τ.irr] a).1 = r + t` using `Fin.sum_univ_two _`. Take `⟨φ⟩` from `nonempty_prod₂_equiv_prodIrr σ.ρ σ.smooth σ.irr τ.ρ τ.smooth τ.irr hd`. Establish `ψ` using `IrrGL.equivOf y.ρ y.smooth y.irr`.
+
+Establish `a1 : IsL 𝔪 (IrrGL.of σ.ρ σ.smooth σ.irr).rep` using `h1.of_equiv (IrrGL.equivOf _ _ _)`. Establish `a2 : IsL 𝔫 (IrrGL.of τ.ρ τ.smooth τ.irr).rep` using `h2.of_equiv (IrrGL.equivOf _ _ _)`. Establish `a3 : IsL (𝔪 + 𝔫) (IrrGL.of y.ρ y.smooth y.irr).rep` using `hy.of_equiv ψ`. Establish `hs` using `(hM k).2 𝔪 𝔫 ![IrrGL.of σ.ρ σ.smooth σ.irr, IrrGL.of τ.ρ τ.smooth τ.irr] (IrrGL.of y.ρ y.smooth y.irr) hd a1 a2 a3`. Establish `E` using `(e.trans φ).symm`.
+
+Take `⟨θ⟩` from `IsSubquotient.nonempty_equiv (hs.trans (.of_injective E.toIntertwiningMap E.toLinearEquiv.injective)) (IrrRep.irr _) π.irr`. Conclude with `a3.of_equiv θ.symm`.
+-/
 theorem isL_add_of_equiv_prod₂ : LanglandsMultisegments → StandardCosocleGL → ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [CharZero k] (r t : ℕ) (σ : IrrRep (GL (Fin r) k)) (τ : IrrRep (GL (Fin t) k)) (π : IrrRep (GL (Fin (r + t)) k)) (𝔪 𝔫 : Multiset (Segment k)), IsL 𝔪 σ.ρ → IsL 𝔫 τ.ρ → Nonempty (π.ρ.Equiv (prod₂ σ.ρ τ.ρ)) → IsL (𝔪 + 𝔫) π.ρ := by
   rintro hM hS k _ _ _ _ _ r t σ τ π 𝔪 𝔫 h1 h2 ⟨e⟩
   obtain ⟨y, hy⟩ := exists_isL (N := r + t) hS (𝔪 := 𝔪 + 𝔫)

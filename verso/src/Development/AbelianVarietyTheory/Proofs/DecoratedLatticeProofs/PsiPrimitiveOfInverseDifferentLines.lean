@@ -19,6 +19,23 @@ namespace GlobalTheory.Core.Mi.LatMatch
 
 open GlobalTheory.SeeSaw.AdaptFBIdeals
 
+/- English proof (translation)
+Introduce `D ψ hψ S S₀ ρ d z L M μ v hμ hline hcol`. Establish `hdI : dI D ≠ 0` using `(GlobalTheory.SeeSaw.ChainIdeals.host_ne_zero D).2.2.2`. Establish `hu : incA D μ⁻¹ * incA D μ = 1` using `by rw [← map_mul, inv_mul_cancel₀ hμ, map_one]`. Establish `key : ∀ 𝔞 𝔟 : FI D, 𝔞 ≠ 0 → 𝔟 ≠ 0 → 𝔟 * 𝔞⁻¹ = dI D → ∀ s ∈ idAt D (· = v), ((∀ a ∈ idAt D (· = v), incA D μ * a ∈ idV 𝔞 v → incA D μ * (s * a) ∈ idV 𝔟 v) ↔ ∀ o ∈ intAt D (· = v), psiE ψ (s * o) = 1)`. Introduce `𝔞 𝔟 h𝔞 h𝔟 hq s hs`.
+
+Rewrite using `[← GlobalTheory.SeeSaw.DiffDual.idV_dI_iff D ψ hψ v s hs, ← hq, ← GlobalTheory.T.mul_fractionalIdealCompletion_subset_iff_mem_quotient D v 𝔞 𝔟 h𝔞 h𝔟 s hs]`. Prove the components needed by the constructor for the conclusion. Introduce `h b hb`. Establish `hbAt` using `idV_supp 𝔞 v hb`. Establish `ha : incA D μ⁻¹ * b ∈ idAt D (· = v)` using `Ideal.mul_mem_left _ _ hbAt`.
+
+Establish `hb' : incA D μ * (incA D μ⁻¹ * b) = b` using `by rw [← mul_assoc, mul_comm (incA D μ), hu, one_mul]`. Establish `h2` using `h _ ha (by rw [hb']; exact hb)`. Rewrite `h2` using `[mul_left_comm, hb']`. Then use the resulting hypothesis. Introduce `h a _ hma`. Rewrite using `[mul_left_comm]`.
+
+Conclude with `h _ hma`. Prove the components needed by the constructor for the conclusion. Introduce `i j hij s hs`. Establish `hq : dI D ^ (ρ - i.1) * (dI D ^ (ρ - j.1))⁻¹ = dI D`. Establish `he : ρ - i.1 = (ρ - j.1) + 1` using `by have := j.2; omega`.
+
+Rewrite using `[he, pow_succ, mul_comm, ← mul_assoc, inv_mul_cancel₀ (pow_ne_zero _ hdI), one_mul]`. Rewrite using `[← key (dI D ^ (ρ - j.1)) (dI D ^ (ρ - i.1)) (pow_ne_zero _ hdI) (pow_ne_zero _ hdI) hq s hs]`. Prove the components needed by the constructor for the conclusion. Introduce `h a ha hma`. Conclude with `(hcol i (s * a) (Ideal.mul_mem_left _ _ ha)).1 (h a ((hcol j a ha).2 hma))`.
+
+Introduce `h a ha`. Establish `haAt` using `supp_of_colMul d L v j a ha`. Conclude with `(hcol i (s * a) (Ideal.mul_mem_left _ _ haAt)).2 (h a haAt ((hcol j a haAt).1 ha))`. Introduce `i hi s hs`. Rewrite using `[← key 1 (dI D) one_ne_zero hdI (by rw [inv_one, mul_one]) s hs]`.
+
+Establish `hρi : ρ - i.1 = 1` using `by omega`. Prove the components needed by the constructor for the conclusion. Introduce `h a ha hma`. Rewrite `hma` using `[GlobalTheory.SeeSaw.idV_one_eq_intAt]`. Establish `h2` using `(hcol i (s * a) (Ideal.mul_mem_left _ _ ha)).1 (h a ha ((hline a ha).2 hma))`.
+
+Rewrite `h2` using `[hρi, pow_one]`. Then use the resulting hypothesis. Introduce `h a ha hz`. Establish `h2` using `h a ha ((GlobalTheory.SeeSaw.idV_one_eq_intAt D v _).2 ((hline a ha).1 hz))`. Conclude with `(hcol i (s * a) (Ideal.mul_mem_left _ _ ha)).2 (by rwa [hρi, pow_one])`.
+-/
 theorem primAt_lastAt_of_lines : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (S S₀ : HSp D) (ρ : ℕ) (d : HypDec S S₀ ρ) (z : Fin S₀.rank → D.host.E) (L : Lat S) (M : Lat S₀) (μ : D.host.E) (v : GlobalTheory.FinPl.Pl D), μ ≠ 0 → LineAt z μ M v → (∀ i : Fin ρ, ∀ a ∈ idAt D (· = v), colMul d.jX i a ∈ latV S L (· = v) ↔ incA D μ * a ∈ idV (dI D ^ (ρ - i.1)) v) → PrimAt ψ d L v ∧ LastAt ψ d z L M v := by
   intro D ψ hψ S S₀ ρ d z L M μ v hμ hline hcol
   have hdI : dI D ≠ 0 := (GlobalTheory.SeeSaw.ChainIdeals.host_ne_zero D).2.2.2

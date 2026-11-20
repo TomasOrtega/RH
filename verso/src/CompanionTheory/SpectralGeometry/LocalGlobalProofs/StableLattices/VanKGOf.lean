@@ -14,6 +14,33 @@ open Formalism.REAL (GlRel KHighest IsWeight CasK)
 open PI.UpqRep (rhoC nsq)
 open CompanionTheory.D.DSIC (KRel KUnit KStab)
 
+/- English proof (translation)
+Establish `hC : COK` using `cok_of hGenCO`. Establish `hP : WtProj` using `GlobalTheory.CompanionTheory.LKWtProj.wtProj`. Establish `hM : WtMajor` using `GlobalTheory.CompanionTheory.KWeightMajor.wtMajor_of CompanionTheory.D.DSIC.hLowSpan`. Introduce `n ε γ lev V _ _ E hg hE hU hF hmin B j z hB hBU hz hwt hb`. Use `set τ := xv ε γ with hτ`.
+
+Establish `hzw : ∀ A, IsWeight E (τ - wt A) (z A)` using `fun A c => by`. Use `congrFun (hwt c) A` as an intermediate fact. Rewrite `this` using `[Ft_apply, filter_all, Pi.smul_apply]`. Rewrite using `[eq_sub_of_add_eq this, Pi.sub_apply, Complex.ofReal_sub, sub_smul]`. Take `⟨w, hw, e⟩` from `hC n ε V E hE B j (τ - wt B) z hz (fun c => funext fun A => by`.
+
+Distinguish the cases in `h : z A = 0`. Simplify using `[Ft_apply, h]`. Rewrite using `[Ft_apply, hzw A c, Pi.smul_apply, ← add_smul, Pi.sub_apply, Pi.sub_apply, wt_split (ε := ε) A, (hz A h).1]`. Use `congr 1`. Use `push_cast`.
+
+Use the proof step `ring) hb`. Use `choose S hS hSt hmem using hF`. Set `W : Submodule ℂ V` to `⨆ A, S (z A)`. Use `haveI : ∀ A, FiniteDimensional ℂ (S (z A)) := fun A => hS _`. Establish `hWs : KStab ε E W` using `fun a b h v hv => (iSup_le fun A y hy => Submodule.mem_iSup_of_mem A (hSt _ a b h y hy) : W ≤ W.comap (E a b)) hv`.
+
+Take `⟨q, hq⟩` from `exists_poly (CasK ε E) (fun x y => by`. Simplify using `only [CasK, LinearMap.sum_apply, sum_inner, inner_sum]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Use `split_ifs with h`. Rewrite using `[Module.End.mul_apply, Module.End.mul_apply, hU a b h, hU b a h.symm]`.
+
+Use the proof step `simp) W (fun x hx => by`. Simplify using `only [CasK, LinearMap.sum_apply]`. Use `Submodule.sum_mem _ fun a _ => Submodule.sum_mem _ fun b _ => ?_` and prove the remaining obligations. Use `split_ifs with h`. Conclude with `hWs a b h _ (hWs b a h.symm _ hx)`.
+
+Use the proof step `simp) (nsq (τ - wt B - rhoC ε) - nsq (rhoC ε))`. Establish `hcq : ∀ c d, ε c = ε d → ∀ x, Polynomial.aeval (CasK ε E) q (E c d x) = E c d (Polynomial.aeval (CasK ε E) q x)` using `fun c d h x => by`. Establish `: Commute (E c d) (Polynomial.aeval (CasK ε E) q)`. Rewrite using `[Polynomial.aeval_eq_sum_range]`. Conclude with `Commute.sum_right _ _ _ fun k _ => ((casK_comm hE h).pow_right k).smul_right _`.
+
+Conclude with `(LinearMap.congr_fun this.eq x).symm`. Establish `h0 : z + lift n (Polynomial.aeval (CasK ε E) q) (bd ε E w) = 0`. Use function extensionality and compare the values at `A`. Assume the negation of the conclusion as `hne`. Rewrite `hne` using `[← e]`.
+
+Establish `hA : z A ≠ 0` using `fun h => hne (by simp [h])`. Take `⟨ν, y, hy0, hy, hs, hd, hc⟩` from `hM n ε V E hE hU (fun x => ⟨S x, hS x, hSt x, hmem x⟩) (τ - wt A) _ _ hne (fun c => by`. Simplify using `only [Pi.add_apply, lift_apply, Pi.sub_apply, Pi.smul_apply]`. Rewrite using `[map_add, ← hcq c c rfl, map_sub, map_smul, ← Module.End.mul_apply, (casK_comm hE rfl).eq, Module.End.mul_apply, hzw A c]`. Simplify using `only [map_smul, map_sub, smul_add, smul_sub, Pi.sub_apply, smul_comm ((τ c - wt A c : ℝ) : ℂ)])`.
+
+Use the proof step `(hq (z A) (Submodule.mem_iSup_of_mem A (hmem _)) _ rfl)`. Establish `hA1` using `(hz A hA).1`. Use `absurd (hmin ν y hy0 hy) (not_le.2 (hN n ε γ lev ν B (A.filter (cpt ε)) hg hB (fun i hi => ⟨(mem_filter.1 (hA1.symm ▸ hi :)).2, hBU i hi⟩) (fun i hi => (mem_filter.1 hi).2) hd (fun w hw' => ?_) ?_))` and prove the remaining obligations. Use `hc w hw' using 2` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `c`.
+
+Simplify using `only [Pi.sub_apply, wt_split (ε := ε) A, hA1, hτ]`. Expand and normalize the polynomial expressions, which then agree. Establish `h1 : nsq (τ - wt B - rhoC ε) = nsq (ν + rhoC ε)`. Use `Complex.ofReal_injective hs` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Rewrite using `[← h1]`. Use `congr 1`. Normalize the expressions using the abelian group laws. Establish `h1 : bd ε E (-lift n (Polynomial.aeval (CasK ε E) q) w) = z`. Rewrite using `[map_neg, ← lift_bd _ E E fun i hi x => hcq _ _ hi x]`.
+
+Conclude with `(eq_neg_of_add_eq_zero_left h0).symm`. Take `⟨t, ht1, ht2, ht3⟩` from `hP n (allT n) ε V E hE hU (fun x => ⟨S x, hS x, hSt x, hmem x⟩) (bd ε E) (differential_commutes_weight_operator n _ ε V E (fun _ _ _ => rfl) hE) τ _ (h1.symm ▸ hwt)`. Conclude with `⟨t, sup_of_supp hw fun A h => ht3 A (by simp [h]), ht1, ht2.trans h1⟩`.
+-/
 theorem vanKG_of (hN : NumKG) : VanKG := by
   have hC : COK := cok_of hGenCO
   have hP : WtProj := GlobalTheory.CompanionTheory.LKWtProj.wtProj

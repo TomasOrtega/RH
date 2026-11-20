@@ -66,6 +66,11 @@ open Formalism.L2.Ker
 
 variable {X : Fields} {Pr : Primes X} {S : Set ℕ} (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E))
 
+/- English proof (translation)
+Establish `h : Qprime (1 : Chr X.F X.E X.K) = ∅`. Use extensionality with `v`. Simplify using `[Qprime]`. Use `show QE sel (1 : Chr X.F X.E X.K) = ∅`. Unfold `QE`.
+
+Rewrite using `[dif_pos (by rw [h]; exact Set.finite_empty)]`. Simplify using `[h]`.
+-/
 theorem twistPrimes_trivialTuple_empty_target : QE sel ((mu0 X.F X.E X.K S : Tup X.F X.E X.K S) : Chr X.F X.E X.K) = ∅ := by
   have h : Qprime (1 : Chr X.F X.E X.K) = ∅ := by
     ext v
@@ -75,6 +80,9 @@ theorem twistPrimes_trivialTuple_empty_target : QE sel ((mu0 X.F X.E X.K S : Tup
   rw [dif_pos (by rw [h]; exact Set.finite_empty)]
   simp [h]
 
+/- English proof (translation)
+Rewrite using `[twistPrimes_trivialTuple_empty_target]`. Conclude with `Finset.notMem_empty P`.
+-/
 theorem target_not_mem_qe (P : HeightOneSpectrum (𝓞 X.E)) :
     P ∉ QE sel ((mu0 X.F X.E X.K S : Tup X.F X.E X.K S) : Chr X.F X.E X.K) := by
   rw [twistPrimes_trivialTuple_empty_target]

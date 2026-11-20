@@ -12,15 +12,24 @@ namespace GlobalTheory.KSp.FourInv
 
 variable {X : Type} [AddCommGroup X] [TopologicalSpace X] {e : X → X → ℂ}
 
+/- English proof (translation)
+Introduce `h`. Establish `h1` using `he.norm x y`. Rewrite `h1` using `[h, norm_zero]`. Conclude with `zero_ne_one h1`.
+-/
 theorem ne_zero (he : IsPair e) (x y : X) : e x y ≠ 0 := by
   intro h
   have h1 := he.norm x y
   rw [h, norm_zero] at h1
   exact zero_ne_one h1
 
+/- English proof (translation)
+Rewrite using `[he.symm x (y + y'), he.add y y' x, he.symm y x, he.symm y' x]`.
+-/
 theorem add_right (he : IsPair e) (x y y' : X) : e x (y + y') = e x y * e x y' := by
   rw [he.symm x (y + y'), he.add y y' x, he.symm y x, he.symm y' x]
 
+/- English proof (translation)
+Establish `h` using `add_right he x 0 0`. Rewrite `h` using `[add_zero]`. Conclude with `mul_left_cancel₀ (ne_zero he x 0) (by rw [mul_one]; exact h.symm)`.
+-/
 theorem zero_right (he : IsPair e) (x : X) : e x 0 = 1 := by
   have h := add_right he x 0 0
   rw [add_zero] at h
@@ -35,6 +44,13 @@ def ann (he : IsPair e) (L : Set X) : AddSubgroup X where
     rw [add_neg_cancel, zero_right he, ha y hy, one_mul] at h
     exact h.symm
 
+/- English proof (translation)
+Establish `hS : IsOpen {p : X × X | e p.1 p.2 = 1}` using `he.lc.isOpen_fiber 1`. Establish `hsub : L ×ˢ ({0} : Set X) ⊆ {p : X × X | e p.1 p.2 = 1}`. Introduce and unpack `⟨y, z⟩ ⟨_, hz⟩`. Simplify using `only [Set.mem_singleton_iff] at hz`. Substitute `hz` using the available equality.
+
+Conclude with `zero_right he y`. Take `⟨u, v, -, hv, hLu, h0v, huv⟩` from `generalized_tube_lemma hL isCompact_singleton hS hsub`. Apply `AddSubgroup.isOpen_of_mem_nhds (g := 0)` to reduce the goal to its premises. Use `Filter.mem_of_superset (hv.mem_nhds (h0v (Set.mem_singleton 0))) ?_` and prove the remaining obligations. Introduce `z hz`.
+
+Use `show ∀ y ∈ L, e y z = 1`. Introduce `y hy`. Conclude with `huv (show (y, z) ∈ u ×ˢ v from ⟨hLu hy, hz⟩)`.
+-/
 theorem isOpen_ann [IsTopologicalAddGroup X] (he : IsPair e) {L : Set X} (hL : IsCompact L) :
     IsOpen (ann he L : Set X) := by
   have hS : IsOpen {p : X × X | e p.1 p.2 = 1} := he.lc.isOpen_fiber 1
@@ -51,6 +67,15 @@ theorem isOpen_ann [IsTopologicalAddGroup X] (he : IsPair e) {L : Set X} (hL : I
   intro y hy
   exact huv (show (y, z) ∈ u ×ˢ v from ⟨hLu hy, hz⟩)
 
+/- English proof (translation)
+Establish `hf' : IsLocallyConstant f ∧ HasCompactSupport f` using `hf`. Establish `hS : IsOpen {p : X × X | f (p.1 + p.2) - f p.1 = 0}` using `((hf'.1.comp_continuous continuous_add).comp₂ (hf'.1.comp_continuous continuous_fst) (fun a b : ℂ => a - b)).isOpen_fiber 0`. Establish `hsub : tsupport f ×ˢ ({0} : Set X) ⊆ {p : X × X | f (p.1 + p.2) - f p.1 = 0}`. Introduce and unpack `⟨x, t⟩ ⟨_, ht⟩`. Simplify using `only [Set.mem_singleton_iff] at ht`.
+
+Substitute `ht` using the available equality. Simplify using the standard rewrite rules. Take `⟨u, v, -, hv, hKu, h0v, huv⟩` from `generalized_tube_lemma hf'.2.isCompact isCompact_singleton hS hsub`. Use `⟨v, hv.mem_nhds (h0v (Set.mem_singleton 0)), fun M hM t ht x => ?_⟩` and prove the remaining obligations. Establish `key : ∀ y ∈ tsupport f, ∀ s ∈ M, f (y + s) = f y` using `fun y hy s hs => by`.
+
+Establish `h` using `huv (show (y, s) ∈ u ×ˢ v from ⟨hKu hy, hM hs⟩)`. Conclude with `sub_eq_zero.mp h`. Distinguish the cases in `hx : x ∈ tsupport f`. Conclude with `key x hx t ht`. Distinguish the cases in `hxt : x + t ∈ tsupport f`.
+
+Establish `h` using `key (x + t) hxt (-t) (M.neg_mem ht)`. Rewrite `h` using `[add_neg_cancel_right]`. Conclude with `h.symm`. Rewrite using `[image_eq_zero_of_notMem_tsupport hx, image_eq_zero_of_notMem_tsupport hxt]`.
+-/
 theorem exists_invariant [IsTopologicalAddGroup X] {f : X → ℂ} (hf : f ∈ SB X) :
     ∃ U ∈ 𝓝 (0 : X), ∀ M : AddSubgroup X, (M : Set X) ⊆ U → ∀ t ∈ M, ∀ x, f (x + t) = f x := by
   have hf' : IsLocallyConstant f ∧ HasCompactSupport f := hf
@@ -76,6 +101,11 @@ theorem exists_invariant [IsTopologicalAddGroup X] {f : X → ℂ} (hf : f ∈ S
       exact h.symm
     · rw [image_eq_zero_of_notMem_tsupport hx, image_eq_zero_of_notMem_tsupport hxt]
 
+/- English proof (translation)
+Introduce `t ht x`. Distinguish the cases in `hx : x ∈ (L : Set X)`. Establish `hxt : x + t ∈ (L : Set X)` using `L.add_mem hx ht`. Rewrite using `[Set.indicator_of_mem hxt, Set.indicator_of_mem hx]`. Establish `hxt : x + t ∉ (L : Set X)` using `fun h => hx (by simpa using L.sub_mem h ht)`.
+
+Rewrite using `[Set.indicator_of_notMem hxt, Set.indicator_of_notMem hx]`.
+-/
 theorem indicator_invariant (L : AddSubgroup X) (c : ℂ) :
     ∀ t ∈ L, ∀ x, (L : Set X).indicator (fun _ => c) (x + t) = (L : Set X).indicator (fun _ => c) x := by
   intro t ht x
@@ -85,6 +115,11 @@ theorem indicator_invariant (L : AddSubgroup X) (c : ℂ) :
   · have hxt : x + t ∉ (L : Set X) := fun h => hx (by simpa using L.sub_mem h ht)
     rw [Set.indicator_of_notMem hxt, Set.indicator_of_notMem hx]
 
+/- English proof (translation)
+Establish `hcl : IsClosed (L : Set X)` using `AddSubgroup.isClosed_of_isOpen L ho`. Use `show IsLocallyConstant _ ∧ HasCompactSupport _`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[IsLocallyConstant.iff_exists_open]`. Introduce `x`.
+
+Distinguish the cases in `hx : x ∈ (L : Set X)`. Conclude with `⟨(L : Set X), ho, hx, fun y hy => by rw [Set.indicator_of_mem hy, Set.indicator_of_mem hx]⟩`. Conclude with `⟨(L : Set X)ᶜ, hcl.isOpen_compl, hx, fun y hy => by`. Rewrite using `[Set.indicator_of_notMem hy, Set.indicator_of_notMem hx]⟩`. Conclude with `HasCompactSupport.intro' hc hcl fun x hx => Set.indicator_of_notMem hx _`.
+-/
 theorem indicator_mem [IsTopologicalAddGroup X] [T2Space X] (L : AddSubgroup X) (hc : IsCompact (L : Set X))
     (ho : IsOpen (L : Set X)) : (L : Set X).indicator (fun _ => (1 : ℂ)) ∈ SB X := by
   have hcl : IsClosed (L : Set X) := AddSubgroup.isClosed_of_isOpen L ho
@@ -100,6 +135,13 @@ theorem indicator_mem [IsTopologicalAddGroup X] [T2Space X] (L : AddSubgroup X) 
 
 variable [IsTopologicalAddGroup X] [MeasurableSpace X] [BorelSpace X] (μ : Measure X) [μ.IsAddHaarMeasure]
 
+/- English proof (translation)
+Establish `hy' : ¬ ∀ t ∈ M, e t y = 1` using `hy`. Simplify using `only [not_forall] at hy'`. Take `⟨t, ht, hne⟩` from `hy'`. Establish `hne' : e y t ≠ 1` using `by rwa [he.symm]`. Establish `key : four μ e f y = e y t * four μ e f y`.
+
+Simplify using `only [four]`. Combine the equalities or inequalities in the displayed calculation. Use `congr 1`. Use extensionality with `z`. Rewrite using `[add_right he, add_comm t z, hs t ht z]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `_ = e y t * ∫ z, e y z * f z ∂μ := integral_const_mul _ _`. Assume the negation of the conclusion as `h`. Conclude with `hne' (mul_right_cancel₀ h (key.symm.trans (one_mul _).symm))`.
+-/
 theorem four_eq_zero (he : IsPair e) {M : Set X} {f : X → ℂ}
     (hs : ∀ t ∈ M, ∀ x, f (x + t) = f x) {y : X} (hy : y ∉ ann he M) : four μ e f y = 0 := by
   have hy' : ¬ ∀ t ∈ M, e t y = 1 := hy
@@ -117,6 +159,13 @@ theorem four_eq_zero (he : IsPair e) {M : Set X} {f : X → ℂ}
   by_contra h
   exact hne' (mul_right_cancel₀ h (key.symm.trans (one_mul _).symm))
 
+/- English proof (translation)
+Distinguish the cases in `hx : x ∈ (ann he L : Set X)`. Rewrite using `[Set.indicator_of_mem hx]`. Establish `hx' : ∀ y ∈ (L : Set X), e y x = 1` using `hx`. Simplify using `only [four]`. Establish `h : (fun z => e x z * (L : Set X).indicator (fun _ => (1 : ℂ)) z) = (L : Set X).indicator (fun _ => (1 : ℂ))`.
+
+Use extensionality with `z`. Distinguish the cases in `hz : z ∈ (L : Set X)`. Rewrite using `[Set.indicator_of_mem hz, mul_one, he.symm, hx' z hz]`. Rewrite using `[Set.indicator_of_notMem hz, mul_zero]`. Rewrite using `[h, integral_indicator_const _ ho.measurableSet]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[Set.indicator_of_notMem hx]`. Conclude with `four_eq_zero μ he (indicator_invariant L 1) hx`.
+-/
 theorem four_indicator (he : IsPair e) (L : AddSubgroup X) (ho : IsOpen (L : Set X)) (x : X) :
     four μ e ((L : Set X).indicator fun _ => (1 : ℂ)) x =
       (ann he L : Set X).indicator (fun _ => (μ.real (L : Set X) : ℂ)) x := by
@@ -135,6 +184,43 @@ theorem four_indicator (he : IsPair e) (L : AddSubgroup X) (ho : IsOpen (L : Set
   · rw [Set.indicator_of_notMem hx]
     exact four_eq_zero μ he (indicator_invariant L 1) hx
 
+/- English proof (translation)
+Use `hX.sc` as an intermediate fact. Use `set A := ann he (L : Set X) with hA`. Use `set B := ann he (A : Set X) with hB`. Establish `hAo : IsOpen (A : Set X)` using `isOpen_ann he hLc`. Establish `hAc : IsCompact (A : Set X)`.
+
+Take `⟨K, hK, hKA⟩` from `he.big (L : Set X) (hLo.mem_nhds L.zero_mem)`. Conclude with `hK.of_isClosed_subset (AddSubgroup.isClosed_of_isOpen A hAo) fun y hy => hKA y hy`. Establish `hBo : IsOpen (B : Set X)` using `isOpen_ann he hAc`. Establish `hBc : IsCompact (B : Set X)`. Take `⟨K, hK, hKB⟩` from `he.big (A : Set X) (hAo.mem_nhds A.zero_mem)`.
+
+Conclude with `hK.of_isClosed_subset (AddSubgroup.isClosed_of_isOpen B hBo) fun y hy => hKB y hy`. Establish `hLB : (L : Set X) ⊆ B`. Introduce `z hz`. Use `show ∀ y ∈ (A : Set X), e y z = 1`. Introduce `y hy`.
+
+Establish `hy' : ∀ x ∈ (L : Set X), e x y = 1` using `hy`. Rewrite using `[he.symm]`. Conclude with `hy' z hz`. Establish `hBA : (ann he (B : Set X) : Set X) = A`. Use extensionality with `z`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hz`. Establish `hz' : ∀ y ∈ (B : Set X), e y z = 1` using `hz`. Use `show ∀ x ∈ (L : Set X), e x z = 1`. Conclude with `fun x hx => hz' x (hLB hx)`.
+
+Introduce `hz show ∀ y ∈ (B : Set X), e y z = 1`. Introduce `y hy`. Establish `hy' : ∀ w ∈ (A : Set X), e w y = 1` using `hy`. Rewrite using `[he.symm]`. Conclude with `hy' z hz`.
+
+Establish `hApos : 0 < μ.real (A : Set X)`. Rewrite using `[measureReal_def]`. Conclude with `ENNReal.toReal_pos (hAo.measure_pos μ ⟨0, A.zero_mem⟩).ne' hAc.measure_lt_top.ne`. Establish `hBpos : 0 < μ.real (B : Set X)`. Rewrite using `[measureReal_def]`.
+
+Conclude with `ENNReal.toReal_pos (hBo.measure_pos μ ⟨0, B.zero_mem⟩).ne' hBc.measure_lt_top.ne`. Use `⟨μ.real (A : Set X) * μ.real (B : Set X), mul_pos hApos hBpos, fun φ hφ hs w => ?_⟩` and prove the remaining obligations. Establish `hφ' : IsLocallyConstant φ ∧ HasCompactSupport φ` using `hφ`. Establish `hSc : IsCompact (tsupport φ)` using `hφ'.2.isCompact`. Establish `: IsFiniteMeasure (μ.restrict (tsupport φ))` using `⟨by rw [Measure.restrict_apply_univ]; exact hSc.measure_lt_top⟩`.
+
+Establish `: IsFiniteMeasure (μ.restrict (B : Set X))` using `⟨by rw [Measure.restrict_apply_univ]; exact hBc.measure_lt_top⟩`. Establish `h1 : ∀ x, ∫ z, e x z * φ z ∂μ = ∫ z in tsupport φ, e x z * φ z ∂μ` using `fun x => (setIntegral_eq_integral_of_forall_compl_eq_zero fun z hz => by`. Rewrite using `[image_eq_zero_of_notMem_tsupport hz, mul_zero]).symm`. Establish `h2 : ∫ x, e w x * ∫ z, e x z * φ z ∂μ ∂μ = ∫ x in (B : Set X), e w x * ∫ z, e x z * φ z ∂μ ∂μ` using `(setIntegral_eq_integral_of_forall_compl_eq_zero fun x hx => by`. Establish `h0` using `four_eq_zero μ he hs (y := x) hx`.
+
+Simplify using `only [four] at h0`. Rewrite using `[h0, mul_zero]).symm`. Establish `h3 : ∀ x, e w x * ∫ z in tsupport φ, e x z * φ z ∂μ = ∫ z in tsupport φ, e w x * (e x z * φ z) ∂μ` using `fun x => (integral_const_mul _ _).symm`. Take `⟨C0, hC0⟩` from `hφ'.1.continuous.bounded_above_of_compact_support hφ'.2`. Establish `hcont : Continuous (Function.uncurry fun x z => e w x * (e x z * φ z))` using `(he.lc.continuous.comp (continuous_const.prodMk continuous_fst)).mul (he.lc.continuous.mul (hφ'.1.continuous.comp continuous_snd))`.
+
+Establish `hint : Integrable (Function.uncurry fun x z => e w x * (e x z * φ z)) ((μ.restrict (B : Set X)).prod (μ.restrict (tsupport φ)))` using `(integrable_const C0).mono' hcont.aestronglyMeasurable (Filter.Eventually.of_forall fun p => by`. Simplify using `only [Function.uncurry, norm_mul, he.norm, one_mul]`. Conclude with `hC0 p.2)`. Establish `h4 : ∀ z, ∫ x in (B : Set X), e w x * (e x z * φ z) ∂μ = φ z * (ann he (B : Set X) : Set X).indicator (fun _ => (μ.real (B : Set X) : ℂ)) (w + z)`. Introduce `z`.
+
+Establish `hB1` using `four_indicator μ he B hBo (w + z)`. Simplify using `only [four] at hB1`. Rewrite using `[← hB1, ← integral_indicator hBo.measurableSet, mul_comm (φ z), ← integral_mul_const]`. Use `congr 1`. Use extensionality with `x`.
+
+Distinguish the cases in `hx : x ∈ (B : Set X)`. Rewrite using `[Set.indicator_of_mem hx, Set.indicator_of_mem hx, he.add, he.symm z x]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Set.indicator_of_notMem hx, Set.indicator_of_notMem hx]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `h5 : ∀ z, φ z * (ann he (B : Set X) : Set X).indicator (fun _ => (μ.real (B : Set X) : ℂ)) (w + z) = φ (-w) * (ann he (B : Set X) : Set X).indicator (fun _ => (μ.real (B : Set X) : ℂ)) (w + z)`. Introduce `z`. Distinguish the cases in `hz : w + z ∈ (ann he (B : Set X) : Set X)`. Establish `hzA : w + z ∈ (A : Set X)` using `hBA.subset hz`. Establish `h` using `hs (w + z) hzA (-w)`.
+
+Rewrite `h` using `[neg_add_cancel_left]`. Rewrite using `[h]`. Rewrite using `[Set.indicator_of_notMem hz, mul_zero, mul_zero]`. Establish `h6 : ∫ z in tsupport φ, φ (-w) * (ann he (B : Set X) : Set X).indicator (fun _ => (μ.real (B : Set X) : ℂ)) (w + z) ∂μ = ∫ z, φ (-w) * (ann he (B : Set X) : Set X).indicator (fun _ => (μ.real (B : Set X) : ℂ)) (w + z) ∂μ`. Use `setIntegral_eq_integral_of_forall_compl_eq_zero fun z hz => ?_` and prove the remaining obligations.
+
+Rewrite using `[← h5 z, image_eq_zero_of_notMem_tsupport hz, zero_mul]`. Establish `hAm : MeasurableSet (ann he (B : Set X) : Set X)`. Rewrite using `[hBA]`. Conclude with `hAo.measurableSet`. Simplify using `only [four]`.
+
+Rewrite using `[h2]`. Repeatedly rewrite using `[h1, h3]`. Rewrite using `[integral_integral_swap hint]`. Repeatedly rewrite using `[h4, h5]`. Rewrite using `[h6, integral_const_mul, integral_add_left_eq_self (fun z => (ann he (B : Set X) : Set X).indicator (fun _ => (μ.real (B : Set X) : ℂ)) z) w, integral_indicator_const _ hAm, hBA, Complex.real_smul]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem exists_four_four_eq_smul_neg_of_ann_invariant (hX : Good X) (he : IsPair e) (L : AddSubgroup X)
     (hLc : IsCompact (L : Set X)) (hLo : IsOpen (L : Set X)) :
     ∃ C : ℝ, 0 < C ∧ ∀ φ ∈ SB X, (∀ t ∈ ann he (L : Set X), ∀ x, φ (x + t) = φ x) →
@@ -244,6 +330,9 @@ private theorem exists_four_four_eq_smul_neg_of_ann_invariant (hX : Good X) (he 
   push_cast
   ring
 
+/- English proof (translation)
+Take `⟨K, hK, hKM⟩` from `he.small (M : Set X) (hMo.mem_nhds M.zero_mem)`. Take `⟨L, hLc, hLo, hKL⟩` from `hX.large K hK`. Take `⟨C, hC, hCφ⟩` from `exists_four_four_eq_smul_neg_of_ann_invariant μ hX he L hLc hLo`. Use `⟨C, hC, fun φ hφ hs => hCφ φ hφ fun t ht => hs t (hKM t fun x hx => ?_)⟩` and prove the remaining obligations. Conclude with `(show ∀ y ∈ (L : Set X), e y t = 1 from ht) x (hKL hx)`.
+-/
 theorem four_four_of_invariant (hX : Good X) (he : IsPair e) (M : AddSubgroup X) (hMc : IsCompact (M : Set X))
     (hMo : IsOpen (M : Set X)) : ∃ C : ℝ, 0 < C ∧ ∀ φ ∈ SB X, (∀ t ∈ M, ∀ x, φ (x + t) = φ x) →
       ∀ x, four μ e (four μ e φ) x = (C : ℂ) * φ (-x) := by
@@ -259,6 +348,17 @@ namespace GlobalTheory.KSp
 
 open FourInv in
 
+/- English proof (translation)
+Use `hX.grp` as an intermediate fact. Use `hX.t2` as an intermediate fact. Take `⟨M0, hM0c, hM0o, -⟩` from `hX.large ∅ isCompact_empty`. Take `⟨C, hC, hCφ⟩` from `four_four_of_invariant μ hX he M0 hM0c hM0o`. Use `⟨C, hC, fun φ hφ x => ?_⟩` and prove the remaining obligations.
+
+Take `⟨U, hU, hUinv⟩` from `exists_invariant hφ`. Take `⟨M1, hM1c, hM1o, hM1U⟩` from `hX.small U hU`. Establish `hMo : IsOpen ((M1 ⊓ M0 : AddSubgroup X) : Set X)`. Rewrite using `[AddSubgroup.coe_inf]`. Conclude with `hM1o.inter hM0o`.
+
+Establish `hMc : IsCompact ((M1 ⊓ M0 : AddSubgroup X) : Set X)`. Rewrite using `[AddSubgroup.coe_inf]`. Conclude with `hM1c.inter_right (AddSubgroup.isClosed_of_isOpen M0 hM0o)`. Take `⟨C', -, hC'φ⟩` from `four_four_of_invariant μ hX he (M1 ⊓ M0) hMc hMo`. Establish `h0 : (0 : X) ∈ (M0 : Set X)` using `M0.zero_mem`.
+
+Establish `hCC : C' = C`. Establish `h1` using `hCφ _ (indicator_mem M0 hM0c hM0o) (indicator_invariant M0 1) 0`. Establish `h2` using `hC'φ _ (indicator_mem M0 hM0c hM0o) (fun t ht => indicator_invariant M0 1 t (AddSubgroup.mem_inf.mp ht).2) 0`. Rewrite `h1`, `h2` using `[neg_zero, Set.indicator_of_mem h0, mul_one]`. Conclude with `h2.symm.trans h1` after adjusting the coercions.
+
+Rewrite using `[← hCC]`. Conclude with `hC'φ φ hφ (fun t ht => hUinv M1 hM1U t (AddSubgroup.mem_inf.mp ht).1) x`.
+-/
 theorem four_four (X : Type) [AddCommGroup X] [TopologicalSpace X] [MeasurableSpace X] [BorelSpace X] (hX : Good X)
     (μ : Measure X) [μ.IsAddHaarMeasure] (e : X → X → ℂ) (he : IsPair e) :
     ∃ C : ℝ, 0 < C ∧ ∀ φ ∈ SB X, ∀ x, four μ e (four μ e φ) x = (C : ℂ) * φ (-x) := by

@@ -30,6 +30,9 @@ section Basic
 
 variable {X : Scheme.{0}} {S : Type} [CommRing S]
 
+/- English proof (translation)
+Establish `e : (x.appLE U ⊤ h).hom a = (Scheme.ΓSpecIso (CommRingCat.of S)).inv.hom (ev x U h a)` using `((Scheme.ΓSpecIso (CommRingCat.of S)).hom_inv_id_apply _).symm`. Establish `hu : IsUnit ((x.appLE U ⊤ h).hom a)` using `e ▸ ha.map _`. Establish `h1` using `Scheme.basicOpen_appLE x ⊤ U h a`. Establish `h2` using `Scheme.basicOpen_of_isUnit (Sp S) hu`. Conclude with `h2.symm.le.trans (h1.le.trans inf_le_right)`.
+-/
 theorem le_basicOpen_of_isUnit (x : Sp S ⟶ X) {U : X.Opens} (h : ⊤ ≤ x ⁻¹ᵁ U) (a : Γ(X, U))
     (ha : IsUnit (ev x U h a)) : ⊤ ≤ x ⁻¹ᵁ X.basicOpen a := by
   have e : (x.appLE U ⊤ h).hom a = (Scheme.ΓSpecIso (CommRingCat.of S)).inv.hom (ev x U h a) :=
@@ -39,6 +42,11 @@ theorem le_basicOpen_of_isUnit (x : Sp S ⟶ X) {U : X.Opens} (h : ⊤ ≤ x ⁻
   have h2 := Scheme.basicOpen_of_isUnit (Sp S) hu
   exact h2.symm.le.trans (h1.le.trans inf_le_right)
 
+/- English proof (translation)
+Use `IsUnit.mk0 _ fun h0 => ?_` and prove the remaining obligations. Establish `e : (x.appLE U ⊤ h).hom a = (Scheme.ΓSpecIso (CommRingCat.of K)).inv.hom (ev x U h a)` using `((Scheme.ΓSpecIso (CommRingCat.of K)).hom_inv_id_apply _).symm`. Rewrite `e` using `[h0, map_zero]`. Establish `h1` using `Scheme.basicOpen_appLE x ⊤ U h a`. Establish `h2 : p ∈ (Sp K).basicOpen ((x.appLE U ⊤ h).hom a)` using `h1.ge ⟨trivial, hp⟩`.
+
+Rewrite `h2` using `[e, Scheme.basicOpen_zero]`. Conclude with `h2`.
+-/
 theorem isUnit_of_mem_basicOpen {K : Type} [Field K] (x : Sp K ⟶ X) {U : X.Opens} (h : ⊤ ≤ x ⁻¹ᵁ U) (a : Γ(X, U))
     (p : Sp K) (hp : x p ∈ X.basicOpen a) : IsUnit (ev x U h a) := by
   refine IsUnit.mk0 _ fun h0 => ?_
@@ -59,6 +67,13 @@ section Model
 
 variable {O : Type} [CommRing O] {β : O →+* c.F} {Y : Model Xo c β} {S : Type} [CommRing S] [Algebra c.F S]
 
+/- English proof (translation)
+Take `⟨Λ⟩` from `MChart.nonempty_lift E H Dw l Xo c O β Y M S (ev x M.U hM) y hy (hx.trans (spMap_ev x M.hU hM).symm)`. Set `u : ∀ σ : E →+* ℂ, Matrix (Fin M.n) (Fin (Dw.mult σ)) S` to `fun σ j i => (vec M x hM).symm (f σ i) j`. Establish `hu : ∀ σ i, vec M x hM (fun j => u σ j i) = f σ i` using `fun σ i => (vec M x hM).apply_symm_apply _`. Establish `hs : ∀ σ (a : Fin (Dw.mult σ) → S), vec M x hM ((u σ).mulVec a) = ∑ i, a i • f σ i` using `fun σ a => by`. Simplify using `only [← hu, ← map_smul, ← map_sum]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `j`. Simplify using `[Matrix.mulVec, dotProduct, Finset.sum_apply, _root_.mul_comm]`. Take `⟨Q, -, Λ', hQ, -⟩` from `exists_frPt_tie GlobalTheory.abelianSchemeLaws_all.2.secTwist E H Dw l Xo c O β Y M S _ _ Λ u (fun σ i => (vec_mem_eigLie M x hM σ _).1 (by rw [hu]; exact h1 σ i)) (fun σ cv h => by`. Take `⟨a, ha, hu'⟩` from `h2 σ _ ((vec_mem_eigLie M x hM σ cv).2 h)`.
+
+Conclude with `⟨a, (vec M x hM).injective ((hs σ a).trans ha), fun b hb => hu' b ((hs σ b).symm.trans (congrArg _ hb))⟩)`. Establish `hQx : frX Q ≫ Y.j = x`. Rewrite using `[← eq_frX Q Λ'.xF_fst Λ'.xF_snd, Λ'.xF_j, spMap_ev]`. Conclude with `⟨Q, hQx, fun σ i => ((vec_iff_toModel hM Λ' (eq_frX Q Λ'.xF_fst Λ'.xF_snd) (frX_fst Q) hQx _ (Q.tan σ i)).1 (hQ σ i)).trans (hu σ i)⟩`.
+-/
 theorem exists_frPt_of_basis (M : MChart Y) {y : Sp S ⟶ Xo.XF c}
     (hy : y ≫ pullback.snd _ _ = spMap (algebraMap c.F S)) {x : Sp S ⟶ Y.X} (hx : y ≫ Y.j = x)
     (hM : ⊤ ≤ x ⁻¹ᵁ M.U) (f : ∀ σ : E →+* ℂ, Fin (Dw.mult σ) → TanM x Y.t.G) (h1 : ∀ σ i, f σ i ∈ eigLie c x σ)
@@ -84,6 +99,15 @@ theorem exists_frPt_of_basis (M : MChart Y) {y : Sp S ⟶ Xo.XF c}
   exact ⟨Q, hQx, fun σ i => ((vec_iff_toModel hM Λ' (eq_frX Q Λ'.xF_fst Λ'.xF_snd) (frX_fst Q) hQx _
     (Q.tan σ i)).1 (hQ σ i)).trans (hu σ i)⟩
 
+/- English proof (translation)
+Take `⟨Q, hQ⟩` from `X.top.exists_chartFr (frX_snd P) (hx.trans hPx.symm) k hz`. Establish `hQx` using `hQ.over.trans hx`. Establish `ex : ∀ σ, ∃ b : Matrix (Fin (Dw.mult σ)) (Fin (Dw.mult σ)) S, b.BlockTriangular id ∧ (∀ i, IsUnit (b i i)) ∧ ∀ i, frVec Y P hPx σ i = ∑ j, b j i • frVec Y Q hQx σ j` using `fun σ => by`. Rewrite using `[hQ.frVec_eq hx]`. Conclude with `exists_tri_of_eq (X.F.linearIndependent_vecAt k z hz hx σ) (h σ)`.
+
+Use `choose b hb hu hv using ex`. Establish `e : P.x = Q.x`. Rewrite using `[← frX_fst, ← frX_fst, xF_ext (Y := Y) (frX_snd P) (frX_snd Q) (hPx.trans hQx.symm)]`. Establish `hB : ∃ t, FrBor t Q P`. Take `⟨x', xo', v', t1', t2', t3', s', t4'⟩` from `P`.
+
+Simplify using `only at e`. Substitute `e` using the available equality. Take `⟨u0, hu0⟩` from `gen_unit Q.s s' Q.gen t4'`. Conclude with `⟨_, frBor_of_frVec (X.F.inM hz hx) hQx hPx (fun ix => match ix with | none => u0 | some p => (hu p.1 p.2).unit) b hb (fun _ _ => rfl) hv fun _ => hu0⟩`. Take `⟨t, ht⟩` from `hB`.
+
+Conclude with `FlagCover.eq_ptY (hQ.lies.frBor ht)`.
+-/
 theorem eq_ptY_of_initSpan_eq (X : FlagCover Y) {P : FrPt Xo c S} {x : Sp S ⟶ Y.X} (hPx : frX P ≫ Y.j = x)
     {z : Sp S ⟶ X.YY} (hx : z ≫ X.π = x) {k : X.F.J} (hz : ⊤ ≤ z ⁻¹ᵁ X.F.U k)
     (h : ∀ σ i, initSpan S (frVec Y P hPx σ) i = initSpan S (X.F.vecAt k z hz hx σ) i) : z = X.ptY P := by
@@ -108,6 +132,11 @@ theorem eq_ptY_of_initSpan_eq (X : FlagCover Y) {P : FrPt Xo c S} {x : Sp S ⟶ 
 
 end Model
 
+/- English proof (translation)
+Establish `key : ∀ a : Fin m → R, ∑ i, a i • ∑ j, T i j • f j = ∑ j, Matrix.vecMul a T j • f j` using `fun a => by`. Simplify using `only [Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [← Finset.sum_smul, Matrix.vecMul, dotProduct]`. Take `⟨a, ha, hu⟩` from `h`.
+
+Use `⟨Matrix.vecMul a T⁻¹, ?_, fun b hb => ?_⟩` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[key, Matrix.vecMul_vecMul, Matrix.nonsing_inv_mul _ hT, Matrix.vecMul_one, ha]`. Rewrite using `[← hu _ ((key b).symm.trans hb), Matrix.vecMul_vecMul, Matrix.mul_nonsing_inv _ hT, Matrix.vecMul_one]`.
+-/
 theorem existsUnique_of_isUnit_det {R : Type} [CommRing R] {m : ℕ} {M : Type} [AddCommGroup M] [Module R M]
     (T : Matrix (Fin m) (Fin m) R) (hT : IsUnit T.det) (f : Fin m → M) (w : M)
     (h : ∃! a : Fin m → R, ∑ i, a i • f i = w) : ∃! a : Fin m → R, ∑ i, a i • ∑ j, T i j • f j = w := by
@@ -127,9 +156,15 @@ variable (TF : TorFlag Xo c) {U : TF.Y.X.affineOpens} {n : ℕ} {e : (Σ τ : E 
 def valV (hv : IsEigBasis TF U e v) {S : Type} [CommRing S] (x : Sp S ⟶ TF.Y.X) (hU : ⊤ ≤ x ⁻¹ᵁ U.1) (m : Fin n) :
     TanM x TF.Y.t.G := GlobalTheory.LieMet.tanOf (GlobalTheory.LieMet.isTan_map _ (spMap_ev x U.2 hU) (hv.1 m))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem valV_left (hv : IsEigBasis TF U e v) {S : Type} [CommRing S] (x : Sp S ⟶ TF.Y.X) (hU : ⊤ ≤ x ⁻¹ᵁ U.1)
     (m : Fin n) : (tv (valV TF hv x hU m)).left = spMap (dualMap (ev x U.1 hU)) ≫ v m := rfl
 
+/- English proof (translation)
+Substitute `h` using the available equality. Apply `tan_ext_left` to reduce the goal to its premises. Rewrite using `[tanPull_left, valV_left, valV_left, ev_spMap φ x U.1 hU, FlagMod.dualMap_comp, ← spMap_comp', Category.assoc]`.
+-/
 theorem tanPull_valV (hv : IsEigBasis TF U e v) {S S' : Type} [CommRing S] [CommRing S'] (φ : S →+* S')
     {x : Sp S ⟶ TF.Y.X} {x' : Sp S' ⟶ TF.Y.X} (h : spMap φ ≫ x = x') (hU : ⊤ ≤ x ⁻¹ᵁ U.1) (hU' : ⊤ ≤ x' ⁻¹ᵁ U.1)
     (m : Fin n) : tanPull φ h (valV TF hv x hU m) = valV TF hv x' hU' m := by
@@ -137,6 +172,23 @@ theorem tanPull_valV (hv : IsEigBasis TF U e v) {S S' : Type} [CommRing S] [Comm
   apply tan_ext_left
   rw [tanPull_left, valV_left, valV_left, ev_spMap φ x U.1 hU, FlagMod.dualMap_comp, ← spMap_comp', Category.assoc]
 
+/- English proof (translation)
+Establish `hxψ : spMap (ev x U.1 hU) ≫ LogKS.chart U = x` using `spMap_ev _ U.2 hU`. Take `⟨-, b2⟩` from `GlobalTheory.LocM.FrameBase.tanBasis_baseChange TF.Y.t (ev x U.1 hU) (LogKS.chart U) n v hv.1 hv.2.1`. Rewrite `b2` using `[hxψ]`. Establish `hφ : (ev (x ≫ TF.Y.s) ⊤ le_top).comp (toΓ c.F) = algebraMap c.F S` using `congrArg CommRingCat.Hom.hom (Spec.map_injective ((spMap_ev_top _).trans hs))`. Establish `hφψ : ∀ r : c.F, ev x U.1 hU (algX TF.Y.s U.1 r) = algebraMap c.F S r` using `fun r => (ev_appLE x TF.Y.s (by simp) hU le_top (toΓ c.F r)).trans (RingHom.congr_fun hφ r)`.
+
+Set `V` to `valV TF hv x hU`. Establish `hb : ∀ W, ∃! a : Fin n → S, ∑ i, a i • V i = W` using `fun W => by`. Take `⟨a, ha, hu⟩` from `b2 _ (GlobalTheory.LieMet.isTan_tv W)`. Conclude with `⟨a, ((GlobalTheory.LieMet.isComb_iff V a W).1 ha).symm, fun a' ha' => hu a' ((GlobalTheory.LieMet.isComb_iff V a' W).2 ha'.symm)⟩`. Establish `hV : ∀ (τ : E →+* ℂ) (j : Fin (Dw.mult τ)) (a : 𝓞 E), actR TF.Y.t.act a (V (e ⟨τ, j⟩)) = algebraMap c.F S (embK c τ a) • V (e ⟨τ, j⟩)`.
+
+Introduce `τ j a`. Establish `h` using `(GlobalTheory.TanBaseChange.tan_comb_baseChange E H TF.Y.X TF.Y.t _ S (ev x U.1 hU) (LogKS.chart U) _ hxψ).2 n v _ _ (hv.2.2 a τ j)`. Establish `e1 : (fun i => ev x U.1 hU ((Pi.single (e ⟨τ, j⟩) (algX TF.Y.s U.1 (embK c τ a)) : Fin n → Γ(TF.Y.X, U.1)) i)) = fun i => (Pi.single (e ⟨τ, j⟩) (algebraMap c.F S (embK c τ a)) : Fin n → S) i`. Use function extensionality and compare the values at `i`. Distinguish the cases in `hi : i = e ⟨τ, j⟩`.
+
+Substitute `hi` using the available equality. Simplify using `[hφψ]`. Simplify using `[hi]`. Rewrite `h` using `[e1]`. Establish `e2 : spMap (dualMap (ev x U.1 hU)) ≫ v (e ⟨τ, j⟩) ≫ (TF.Y.t.act.act a).left = (tv (actR TF.Y.t.act a (V (e ⟨τ, j⟩)))).left`.
+
+Rewrite using `[← Category.assoc]`. Both sides reduce to the same expression. Rewrite `h` using `[e2]`. Rewrite using `[(GlobalTheory.LieMet.isComb_iff V _ _).1 h]`. Simplify using `[Pi.single_apply]`.
+
+Establish `hu : ∀ z : (Σ τ : E →+* ℂ, Fin (Dw.mult τ)), ReciprocityTheory.ChartRestriction.G.PullbackSections.IsEigV (actR TF.Y.t.act) (embK c z.1) (V (e z))` using `fun z a => hV z.1 z.2 a`. Establish `hb' : ∀ w, ∃! a : (Σ τ : E →+* ℂ, Fin (Dw.mult τ)) → S, ∑ z, a z • V (e z) = w` using `fun w => by`. Take `⟨a, ha, hu⟩` from `hb w`. Use `⟨fun z => a (e z), ?_, fun a' ha' => ?_⟩` and prove the remaining obligations. Rewrite using `[← ha]`.
+
+Conclude with `Equiv.sum_comp e (fun i => a i • V i)`. Establish `h' : ∑ i, a' (e.symm i) • V i = w`. Rewrite using `[← ha', ← Equiv.sum_comp e.symm (fun z => a' z • V (e z))]`. Simplify using the standard rewrite rules. Use `hu _ h'` as an intermediate fact.
+
+Use function extensionality and compare the values at `z`. Use `congrFun this (e z)` as an intermediate fact. Simplify using `using this`. Conclude with `⟨fun j a => hV σ j a, fun w hw => GlobalTheory.FlagEmb.EigSpread.block_basis (GlobalTheory.FlagEmb.EigSpread.splits (E := E) c) (fun z => V (e z)) hu hb' σ w hw⟩`.
+-/
 theorem valV_block (hv : IsEigBasis TF U e v) {S : Type} [CommRing S] [Algebra c.F S] (x : Sp S ⟶ TF.Y.X)
     (hU : ⊤ ≤ x ⁻¹ᵁ U.1) (hs : x ≫ TF.Y.s = spMap (algebraMap c.F S)) (σ : E →+* ℂ) :
     (∀ j, valV TF hv x hU (e ⟨σ, j⟩) ∈ eigLie c x σ) ∧
@@ -187,6 +239,11 @@ theorem valV_block (hv : IsEigBasis TF U e v) {S : Type} [CommRing S] [Algebra c
   exact ⟨fun j a => hV σ j a, fun w hw =>
     GlobalTheory.FlagEmb.EigSpread.block_basis (GlobalTheory.FlagEmb.EigSpread.splits (E := E) c) (fun z => V (e z)) hu hb' σ w hw⟩
 
+/- English proof (translation)
+Establish `hr : Set.range x ⊆ Set.range TF.Y.j`. Introduce and unpack `_ ⟨s, rfl⟩`. Conclude with `hI (Set.mem_univ s)`. Take `⟨y, hy⟩ : ∃ y, y ≫ TF.Y.j = x` from `⟨_, IsOpenImmersion.lift_fac TF.Y.j x hr⟩`. Use `letI : Algebra c.F S := ((ev (y ≫ pullback.snd _ _) ⊤ le_top).comp (toΓ c.F)).toAlgebra`.
+
+Establish `hy2 : y ≫ pullback.snd _ _ = spMap (algebraMap c.F S)` using `(spMap_ev_top _).symm`. Establish `hs : x ≫ TF.Y.s = spMap (algebraMap c.F S)`. Rewrite using `[← hy, Category.assoc, Model.j, Category.assoc, pullback.condition, ← Category.assoc TF.Y.jQ, TF.Y.jQ_over, ← Category.assoc, hy2]`. Conclude with `(congrArg (_ ≫ ·) (Spec.map_id _)).trans (Category.comp_id _)`. Conclude with `⟨inferInstance, exists_frPt_of_basis M hy2 hy hM _ (fun σ i => Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ ((valV_block TF hv x hU hs σ).1 j)) fun σ w hw => existsUnique_of_isUnit_det (T σ) (hT σ) _ w ((valV_block TF hv x hU hs σ).2 w hw)⟩`.
+-/
 theorem exists_frPt_mul (hv : IsEigBasis TF U e v) {S : Type} [CommRing S] (x : Sp S ⟶ TF.Y.X)
     (hU : ⊤ ≤ x ⁻¹ᵁ U.1) (hI : ⊤ ≤ x ⁻¹ᵁ LogKS.interior TF.Y) (M : MChart TF.Y) (hM : ⊤ ≤ x ⁻¹ᵁ M.U)
     (T : ∀ σ : E →+* ℂ, Matrix (Fin (Dw.mult σ)) (Fin (Dw.mult σ)) S) (hT : ∀ σ, IsUnit (T σ).det) :
@@ -211,6 +268,11 @@ def Carries (Z : Comp Xo c) (hv : IsEigBasis TF U e v) {S : Type} [CommRing S] (
   ∃ (_ : Algebra c.F S) (P : FrPt Xo c S) (hP : frX P ≫ TF.Y.j = x), z ≫ inc₀ TF.X Z = TF.X.ptY P ∧
     ∀ σ i, frVec TF.Y P hP σ i = ∑ j, T σ i j • valV TF hv x hU (e ⟨σ, j⟩)
 
+/- English proof (translation)
+Take `⟨inst, P, hP, hvec⟩` from `exists_frPt_mul TF hv x hU hI M hM T hT`. Establish `hπ : TF.X.ptY P ≫ TF.X.π = x` using `(TF.X.lies_ptY P).1.trans hP`. Establish `hY : ⊤ ≤ TF.X.ptY P ⁻¹ᵁ (TF.X.π ⁻¹ᵁ barComp TF.Y Z)`. Rewrite using `[← Scheme.Hom.comp_preimage, hπ]`. Conclude with `hB`.
+
+Establish `hr : Set.range (TF.X.ptY P) ⊆ Set.range (inc₀ TF.X Z)`. Introduce and unpack `_ ⟨s, rfl⟩`. Conclude with `⟨⟨_, hY (Set.mem_univ s)⟩, rfl⟩`. Take `⟨z, hz⟩ : ∃ z, z ≫ inc₀ TF.X Z = TF.X.ptY P` from `⟨_, IsOpenImmersion.lift_fac _ _ hr⟩`. Conclude with `⟨z, by rw [← Category.assoc, hz, hπ], inst, P, hP, hz, hvec⟩`.
+-/
 theorem exists_carries (Z : Comp Xo c) (hv : IsEigBasis TF U e v) {S : Type} [CommRing S] (x : Sp S ⟶ TF.Y.X)
     (hU : ⊤ ≤ x ⁻¹ᵁ U.1) (hI : ⊤ ≤ x ⁻¹ᵁ LogKS.interior TF.Y) (hB : ⊤ ≤ x ⁻¹ᵁ barComp TF.Y Z) (M : MChart TF.Y)
     (hM : ⊤ ≤ x ⁻¹ᵁ M.U) (T : ∀ σ : E →+* ℂ, Matrix (Fin (Dw.mult σ)) (Fin (Dw.mult σ)) S)
@@ -227,6 +289,13 @@ theorem exists_carries (Z : Comp Xo c) (hv : IsEigBasis TF U e v) {S : Type} [Co
 
 variable {TF} {Z : Comp Xo c} {hv : IsEigBasis TF U e v}
 
+/- English proof (translation)
+Take `⟨inst, P, hP, hz, hvec⟩` from `h`. Choose the witnesses or unpack the hypotheses as in `⟨inst', χ, rfl⟩ : ∃ (_ : Algebra c.F S') (χ : S →ₐ[c.F] S'), χ.toRingHom = ψ := by`. Use `letI : Algebra c.F S' := (ψ.comp (algebraMap c.F S)).toAlgebra`. Conclude with `⟨inferInstance, { ψ with commutes' := fun _ => rfl }, rfl⟩`. Take `⟨P', hPP⟩` from `exists_frMap χ P`.
+
+Establish `hP' : frX P' ≫ TF.Y.j = x'`. Rewrite using `[← frX_frMap hPP, Category.assoc, hP]`. Conclude with `hx'`. Use `⟨inst', P', hP', ?_, fun σ i => ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, hz]`.
+
+Conclude with `TF.X.ptY_frMap hPP`. Rewrite using `[← tanPull_frVec hPP hP hP' hx' σ i, hvec, map_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => by`. Rewrite using `[map_smulₛₗ, tanPull_valV TF hv _ hx' hU hU']`. Both sides reduce to the same expression.
+-/
 theorem Carries.map {S S' : Type} [CommRing S] [CommRing S'] {z : Sp S ⟶ Y₀ TF.X Z} {x : Sp S ⟶ TF.Y.X}
     {hU : ⊤ ≤ x ⁻¹ᵁ U.1} {T : ∀ σ : E →+* ℂ, Matrix (Fin (Dw.mult σ)) (Fin (Dw.mult σ)) S}
     (h : Carries TF Z hv z x hU T) (ψ : S →+* S') {x' : Sp S' ⟶ TF.Y.X} (hx' : spMap ψ ≫ x = x')
@@ -248,6 +317,9 @@ theorem Carries.map {S S' : Type} [CommRing S] [CommRing S'] {z : Sp S ⟶ Y₀ 
 variable {W : (Y₀ TF.X Z).Opens} {k : TF.X.F.J}
   {L N : ∀ σ : E →+* ℂ, Matrix (Fin (Dw.mult σ)) (Fin (Dw.mult σ)) Γ(Y₀ TF.X Z, W)}
 
+/- English proof (translation)
+Take `⟨_, P, hP, hpt, hvec⟩` from `h`. Take `⟨B, hB0, -, hBc⟩` from `frVec_cell_comb E H Dw l Xo c TF Z U n e v hv W k L N hC S P _ hW _ hP hU hpt`. Use `⟨B σ, hB0 σ, fun i j => ?_⟩` and prove the remaining obligations. Establish `h1` using `(GlobalTheory.LieMet.isComb_iff (fun j => valV TF hv _ hU (e ⟨σ, j⟩)) _ _).2 (hvec σ i)`. Conclude with `congrFun (cell_eigComb_coeff_unique E H Dw l Xo c TF Z U n e v hv W k L N hC S _ hW _ rfl hU σ _ _ _ h1 (hBc σ i)) j`.
+-/
 theorem Carries.exists_lower (hC : IsCell TF Z U e v W k L N) {S : Type} [CommRing S] {z : Sp S ⟶ Y₀ TF.X Z}
     (hW : ⊤ ≤ z ⁻¹ᵁ W) {hU : ⊤ ≤ (z ≫ toBase TF Z) ⁻¹ᵁ U.1}
     {T : ∀ σ : E →+* ℂ, Matrix (Fin (Dw.mult σ)) (Fin (Dw.mult σ)) S}
@@ -261,6 +333,13 @@ theorem Carries.exists_lower (hC : IsCell TF Z U e v W k L N) {S : Type} [CommRi
   exact congrFun (cell_eigComb_coeff_unique E H Dw l Xo c TF Z U n e v hv W k L N hC S _ hW _ rfl hU σ _ _ _ h1
     (hBc σ i)) j
 
+/- English proof (translation)
+Take `⟨-, -, hWk, hLz, hLu, -, -, hcomb⟩` from `hC`. Take `⟨_, P, hP, hpt, hvec⟩` from `h`. Establish `hk : ⊤ ≤ (zw ≫ inc₀ TF.X Z) ⁻¹ᵁ TF.X.F.U k` using `fun p hp => hWk (hW hp)`. Establish `hxx : (zw ≫ inc₀ TF.X Z) ≫ TF.X.π = zw ≫ toBase TF Z` using `Category.assoc _ _ _`. Establish `heq : zw ≫ inc₀ TF.X Z = TF.X.ptY P`.
+
+Use `eq_ptY_of_initSpan_eq TF.X hP hxx hk fun σ i => Eq.symm ?_` and prove the remaining obligations. Use `CellMono.initSpan_eq_of_lowerTri (A := (L σ).map (ev zw W hW)) (fun i j h => ?_) (fun i => (hLu σ i).map (ev zw W hW)) (fun i => ?_) i` and prove the remaining obligations. Use `show ev zw W hW (L σ i j) = 0`. Rewrite using `[hLz σ i j h, map_zero]`. Rewrite using `[(GlobalTheory.LieMet.isComb_iff (fun j => valV TF hv _ hU (e ⟨σ, j⟩)) _ _).1 (hcomb S zw hW hU hk hxx σ i)]`.
+
+Simplify using `only [hvec, Finset.smul_sum, smul_smul, Matrix.mul_apply, map_sum, map_mul, Finset.sum_smul, Matrix.map_apply]`. Conclude with `Finset.sum_comm`. Rewrite using `[← cancel_mono (inc₀ TF.X Z), hpt, heq]`.
+-/
 theorem Carries.eq_of_cell (hC : IsCell TF Z U e v W k L N) {S : Type} [CommRing S] {z zw : Sp S ⟶ Y₀ TF.X Z}
     (hW : ⊤ ≤ zw ⁻¹ᵁ W) {hU : ⊤ ≤ (zw ≫ toBase TF Z) ⁻¹ᵁ U.1}
     (h : Carries TF Z hv z (zw ≫ toBase TF Z) hU fun σ => (N σ).map (ev zw W hW)) : z = zw := by
@@ -284,6 +363,9 @@ def univN (Dw : Datum H) (A : Type) [CommRing A] (σ : E →+* ℂ) :
     Matrix (Fin (Dw.mult σ)) (Fin (Dw.mult σ)) (MvPolynomial (VIx Dw) A) := fun i j =>
   if h : i < j then MvPolynomial.X ⟨σ, ⟨(i, j), h⟩⟩ else if i = j then 1 else 0
 
+/- English proof (translation)
+Rewrite using `[Matrix.det_of_upperTriangular (M := (univN Dw A σ).map f) (fun i j (h : j < i) => by`. Rewrite using `[Matrix.map_apply, univN, dif_neg (not_lt.2 h.le), if_neg h.ne', map_zero])]`. Use `IsUnit.prod_univ_iff.2 fun i => ?_` and prove the remaining obligations. Rewrite using `[Matrix.map_apply, univN, dif_neg (lt_irrefl i), if_pos rfl, map_one]`. Conclude with `isUnit_one`.
+-/
 theorem isUnit_det_univN {A B : Type} [CommRing A] [CommRing B] (f : MvPolynomial (VIx Dw) A →+* B) (σ : E →+* ℂ) :
     IsUnit ((univN Dw A σ).map f).det := by
   rw [Matrix.det_of_upperTriangular (M := (univN Dw A σ).map f) (fun i j (h : j < i) => by
@@ -292,6 +374,11 @@ theorem isUnit_det_univN {A B : Type} [CommRing A] [CommRing B] (f : MvPolynomia
   rw [Matrix.map_apply, univN, dif_neg (lt_irrefl i), if_pos rfl, map_one]
   exact isUnit_one
 
+/- English proof (translation)
+Rewrite using `[univN]`. Break down `lt_trichotomy i j with h | rfl | h` into its components or cases. Rewrite using `[dif_pos h]`. Conclude with `MvPolynomial.eval₂Hom_X' _ _ _`. Rewrite using `[dif_neg (lt_irrefl i), if_pos rfl, h1, map_one, map_one]`.
+
+Rewrite using `[dif_neg (not_lt.2 h.le), if_neg h.ne', h0 σ i j h, map_zero, map_zero]`.
+-/
 theorem eval₂Hom_univN {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : C →+* B)
     (N : ∀ σ : E →+* ℂ, Matrix (Fin (Dw.mult σ)) (Fin (Dw.mult σ)) C) (h0 : ∀ σ i j, j < i → N σ i j = 0)
     (h1 : ∀ σ i, N σ i i = 1) (σ : E →+* ℂ) (i j : Fin (Dw.mult σ)) :
@@ -302,6 +389,17 @@ theorem eval₂Hom_univN {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (
   · rw [dif_neg (lt_irrefl i), if_pos rfl, h1, map_one, map_one]
   · rw [dif_neg (not_lt.2 h.le), if_neg h.ne', h0 σ i j h, map_zero, map_zero]
 
+/- English proof (translation)
+Establish `hUw : ⊤ ≤ (zw ≫ toBase TF Z) ⁻¹ᵁ U.1` using `fun p hp => hC.2.1 (hzw hp)`. Establish `hau : IsUnit (ev (zw ≫ toBase TF Z) U.1 hUw a)` using `isUnit_of_mem_basicOpen _ hUw a p hp`. Take `⟨ψ₀, hψ₀⟩ : ∃ ψ₀, ψ₀ = MvPolynomial.eval₂Hom (ev (zw ≫ toBase TF Z) U.1 hUw) fun i : VIx Dw => ev zw W hzw (cellCoord N i)` from `⟨_, rfl⟩`. Establish `hψC : ∀ r, ψ₀ (MvPolynomial.C r) = ev (zw ≫ toBase TF Z) U.1 hUw r` using `fun r => by`. Rewrite using `[hψ₀, MvPolynomial.eval₂Hom_C]`.
+
+Establish `hψa : IsUnit (ψ₀ (MvPolynomial.C a))` using `by rw [hψC]; exact hau`. Take `⟨ψ, hψ⟩ : ∃ ψ : S →+* K, ∀ r, ψ (algebraMap _ S r) = ψ₀ r` from `⟨IsLocalization.Away.lift (MvPolynomial.C a) hψa, fun r => IsLocalization.Away.lift_eq _ hψa r⟩`. Establish `hx' : spMap ψ ≫ x = zw ≫ toBase TF Z`. Establish `e1 : ψ.comp (ev x U.1 hU) = ev (zw ≫ toBase TF Z) U.1 hUw` using `RingHom.ext fun r => by rw [RingHom.comp_apply, hρ, hψ, hψC]`. Rewrite using `[← spMap_ev x U.2 hU, ← Category.assoc, spMap_comp', e1]`.
+
+Conclude with `spMap_ev _ U.2 hUw`. Establish `h1` using `h.map ψ hx' hUw`. Establish `hTN : (fun σ => ((univN Dw Γ(TF.Y.X, U.1) σ).map (algebraMap _ S)).map ψ) = fun σ => (N σ).map (ev zw W hzw)`. Use function extensionality and compare the values at `σ`. Use extensionality with `i j`.
+
+Rewrite using `[Matrix.map_apply, Matrix.map_apply, Matrix.map_apply, hψ, hψ₀]`. Conclude with `eval₂Hom_univN _ _ N hC.2.2.2.2.2.1 hC.2.2.2.2.2.2.1 σ i j`. Rewrite `h1` using `[hTN]`. Establish `hzz` using `h1.eq_of_cell hC hzw`. Use `⟨spMap ψ p, ?_⟩` and prove the remaining obligations.
+
+Establish `h2 : (spMap ψ ≫ z) p ∈ W` using `by rw [hzz]; exact hzw (Set.mem_univ p)`. Conclude with `h2`.
+-/
 theorem Carries.nonempty (hC : IsCell TF Z U e v W k L N) (a : Γ(TF.Y.X, U.1)) {S : Type} [CommRing S]
     [Algebra (MvPolynomial (VIx Dw) Γ(TF.Y.X, U.1)) S]
     [IsLocalization.Away (MvPolynomial.C a : MvPolynomial (VIx Dw) Γ(TF.Y.X, U.1)) S] {z : Sp S ⟶ Y₀ TF.X Z}
@@ -337,6 +435,11 @@ theorem Carries.nonempty (hC : IsCell TF Z U e v W k L N) (a : Γ(TF.Y.X, U.1)) 
   have h2 : (spMap ψ ≫ z) p ∈ W := by rw [hzz]; exact hzw (Set.mem_univ p)
   exact h2
 
+/- English proof (translation)
+Take `⟨x, hU, hρ⟩ : ∃ (x : Sp S ⟶ TF.Y.X) (hU : ⊤ ≤ x ⁻¹ᵁ U.1), ev x U.1 hU = (algebraMap (MvPolynomial (VIx Dw) Γ(TF.Y.X, U.1)) S).comp MvPolynomial.C` from `⟨spMap _ ≫ tau U.2, le_preimage_comp _ (tau_le U.2 le_rfl), ev_spMap_tau U.2 _ _⟩`. Establish `hxa : ⊤ ≤ x ⁻¹ᵁ TF.Y.X.basicOpen a` using `le_basicOpen_of_isUnit x hU a (by`. Rewrite using `[hρ]`. Conclude with `IsLocalization.Away.algebraMap_isUnit (MvPolynomial.C a : MvPolynomial (VIx Dw) Γ(TF.Y.X, U.1)))`. Establish `hI` using `le_preimage_mono (ha.trans (inf_le_left.trans inf_le_left)) hxa`.
+
+Establish `hB` using `le_preimage_mono (ha.trans (inf_le_left.trans inf_le_right)) hxa`. Establish `hM` using `le_preimage_mono (ha.trans inf_le_right) hxa`. Take `⟨z, rfl, hz⟩` from `exists_carries TF Z hv x hU hI hB (TF.X.F.M k).toMChart hM (fun σ => (univN Dw Γ(TF.Y.X, U.1) σ).map (algebraMap _ S)) fun σ => isUnit_det_univN _ σ`. Conclude with `⟨z, hU, fun p hp => hI hp, fun r => RingHom.congr_fun hρ r, hz⟩`.
+-/
 theorem exists_section (hv : IsEigBasis TF U e v) (hC : IsCell TF Z U e v W k L N) (a : Γ(TF.Y.X, U.1))
     (ha : TF.Y.X.basicOpen a ≤ LogKS.interior TF.Y ⊓ barComp TF.Y Z ⊓ (TF.X.F.M k).U) (S : Type) [CommRing S]
     [Algebra (MvPolynomial (VIx Dw) Γ(TF.Y.X, U.1)) S]
@@ -358,6 +461,15 @@ theorem exists_section (hv : IsEigBasis TF U e v) (hC : IsCell TF Z U e v W k L 
     (fun σ => (univN Dw Γ(TF.Y.X, U.1) σ).map (algebraMap _ S)) fun σ => isUnit_det_univN _ σ
   exact ⟨z, hU, fun p hp => hI hp, fun r => RingHom.congr_fun hρ r, hz⟩
 
+/- English proof (translation)
+Take `⟨w, hwW, -, hwa⟩` from `hw`. Take `⟨z, hU, hO, hρ, hz⟩` from `exists_section hv hC a ha A`. Use `⟨z, hO, ⟨hU, hρ⟩, ?_, fun S _ ψ hW σ => ?_⟩` and prove the remaining obligations. Take `⟨K, _, zw, hpt⟩ : ∃ (K : Type) (_ : Field K) (zw : Sp K ⟶ Y₀ TF.X Z), ∀ p, zw p = w` from `⟨(Y₀ TF.X Z).residueField w, inferInstance, (Y₀ TF.X Z).fromSpecResidueField w, Scheme.fromSpecResidueField_apply w⟩`. Establish `hzw : ⊤ ≤ zw ⁻¹ᵁ W` using `fun p _ => show zw p ∈ W from (hpt p).symm ▸ hwW`.
+
+Take `⟨p⟩ : Nonempty (Sp K)` from `⟨IsLocalRing.closedPoint K⟩`. Establish `hp : (zw ≫ toBase TF Z) p ∈ TF.Y.X.basicOpen a`. Rewrite using `[Scheme.Hom.comp_apply, hpt]`. Conclude with `hwa`. Take `⟨q, hq⟩` from `hz.nonempty hC a hρ zw hzw _ hp`.
+
+Conclude with `⟨q, hq⟩`. Establish `hU' : ⊤ ≤ ((spMap ψ ≫ z) ≫ toBase TF Z) ⁻¹ᵁ U.1` using `fun p hp => hC.2.1 (hW hp)`. Establish `h1` using `hz.map ψ (Category.assoc (spMap ψ) z (toBase TF Z)).symm hU'`. Take `⟨b, hb, h⟩` from `h1.exists_lower hC hW σ`. Use `⟨b, hb, fun i j => Eq.trans ?_ (h i j)⟩` and prove the remaining obligations.
+
+Rewrite using `[Matrix.map_apply, Matrix.map_apply, univN]`.
+-/
 theorem exists_section_props (hv : IsEigBasis TF U e v) (hC : IsCell TF Z U e v W k L N) (a : Γ(TF.Y.X, U.1))
     (ha : TF.Y.X.basicOpen a ≤ LogKS.interior TF.Y ⊓ barComp TF.Y Z ⊓ (TF.X.F.M k).U)
     (hw : ∃ w : Y₀ TF.X Z, w ∈ W ∧ w ∈ U₀ TF.X Z ∧ toBase TF Z w ∈ TF.Y.X.basicOpen a) (A : Type) [CommRing A]
@@ -395,6 +507,9 @@ namespace GlobalTheory.LogPole
 
 open GlobalTheory.FlagMod
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c TF Z _ U n e v hv W k L N hC a ha hw`. Conclude with `CellSection.exists_section_props hv hC a ha hw (Localization.Away (MvPolynomial.C a : MvPolynomial (VIx Dw) Γ(TF.Y.X, U.1)))`.
+-/
 theorem exists_cell_section_away : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (TF : TorFlag Xo c) (Z : Comp Xo c), FnAlgClosed Xo c → ∀ (U : TF.Y.X.affineOpens) (n : ℕ) (e : (Σ τ : E →+* ℂ, Fin (Dw.mult τ)) ≃ Fin n) (v : Fin n → (Sp (DualNumber Γ(TF.Y.X, U.1)) ⟶ TF.Y.t.G.left)), IsEigBasis TF U e v → ∀ (W : (Y₀ TF.X Z).Opens) (k : TF.X.F.J) (L N : ∀ σ : E →+* ℂ, Matrix (Fin (Dw.mult σ)) (Fin (Dw.mult σ)) Γ(Y₀ TF.X Z, W)), IsCell TF Z U e v W k L N → ∀ (a : Γ(TF.Y.X, U.1)), TF.Y.X.basicOpen a ≤ LogKS.interior TF.Y ⊓ barComp TF.Y Z ⊓ (TF.X.F.M k).U → (∃ w : Y₀ TF.X Z, w ∈ W ∧ w ∈ U₀ TF.X Z ∧ toBase TF Z w ∈ TF.Y.X.basicOpen a) → ∃ z₁ : Sp (Localization.Away (MvPolynomial.C a : MvPolynomial (VIx Dw) Γ(TF.Y.X, U.1))) ⟶ Y₀ TF.X Z, ⊤ ≤ z₁ ⁻¹ᵁ U₀ TF.X Z ∧ (∃ hU : ⊤ ≤ (z₁ ≫ toBase TF Z) ⁻¹ᵁ U.1, ∀ r, ev (z₁ ≫ toBase TF Z) U.1 hU r = algebraMap (MvPolynomial (VIx Dw) Γ(TF.Y.X, U.1)) (Localization.Away (MvPolynomial.C a : MvPolynomial (VIx Dw) Γ(TF.Y.X, U.1))) (MvPolynomial.C r)) ∧ ((z₁ ⁻¹ᵁ W : TopologicalSpace.Opens _) : Set (Sp (Localization.Away (MvPolynomial.C a : MvPolynomial (VIx Dw) Γ(TF.Y.X, U.1))))).Nonempty ∧ ∀ (S : Type) [CommRing S] (ψ : Localization.Away (MvPolynomial.C a : MvPolynomial (VIx Dw) Γ(TF.Y.X, U.1)) →+* S) (hW : ⊤ ≤ (spMap ψ ≫ z₁) ⁻¹ᵁ W) (σ : E →+* ℂ), ∃ b : Matrix (Fin (Dw.mult σ)) (Fin (Dw.mult σ)) S, (∀ i j, i < j → b i j = 0) ∧ ∀ i j, ψ (algebraMap (MvPolynomial (VIx Dw) Γ(TF.Y.X, U.1)) _ (if h : i < j then MvPolynomial.X ⟨σ, ⟨(i, j), h⟩⟩ else if i = j then 1 else 0)) = ∑ m, b i m * ev (spMap ψ ≫ z₁) W hW ((L σ * N σ) m j) := by
   intro E _ _ _ H Dw l Xo c TF Z _ U n e v hv W k L N hC a ha hw
   exact CellSection.exists_section_props hv hC a ha hw

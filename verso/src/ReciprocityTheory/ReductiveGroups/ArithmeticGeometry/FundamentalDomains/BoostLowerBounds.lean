@@ -15,37 +15,63 @@ variable {r : ℕ} (X : Data E r) (τ : X.Ψ) {z : Frame X.Ψ r} (hz : z ∈ X.d
 
 include hz
 
+/- English proof (translation)
+Simplify using `only [hermC, Pi.add_apply, add_mul, Finset.sum_add_distrib]`.
+-/
 private theorem hermC_Gm_add_left (u u' v : Fin r → ℂ) :
     hermC τ.1 X.Gm (u + u') v = hermC τ.1 X.Gm u v + hermC τ.1 X.Gm u' v := by
   simp only [hermC, Pi.add_apply, add_mul, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Simplify using `only [hermC, Pi.sub_apply, sub_mul, Finset.sum_sub_distrib]`.
+-/
 private theorem hermC_Gm_sub_left (u u' v : Fin r → ℂ) :
     hermC τ.1 X.Gm (u - u') v = hermC τ.1 X.Gm u v - hermC τ.1 X.Gm u' v := by
   simp only [hermC, Pi.sub_apply, sub_mul, Finset.sum_sub_distrib]
 
+/- English proof (translation)
+Simplify using `only [hermC, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => by ring`.
+-/
 private theorem hermC_Gm_smul_left (c : ℂ) (u v : Fin r → ℂ) :
     hermC τ.1 X.Gm (c • u) v = c * hermC τ.1 X.Gm u v := by
   simp only [hermC, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]
   exact Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => by ring
 
+/- English proof (translation)
+Simplify using `only [hermC, Pi.add_apply, map_add, mul_add, Finset.sum_add_distrib]`.
+-/
 private theorem hermC_Gm_add_right (u v v' : Fin r → ℂ) :
     hermC τ.1 X.Gm u (v + v') = hermC τ.1 X.Gm u v + hermC τ.1 X.Gm u v' := by
   simp only [hermC, Pi.add_apply, map_add, mul_add, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Simplify using `only [hermC, Pi.sub_apply, map_sub, mul_sub, Finset.sum_sub_distrib]`.
+-/
 private theorem hermC_Gm_sub_right (u v v' : Fin r → ℂ) :
     hermC τ.1 X.Gm u (v - v') = hermC τ.1 X.Gm u v - hermC τ.1 X.Gm u v' := by
   simp only [hermC, Pi.sub_apply, map_sub, mul_sub, Finset.sum_sub_distrib]
 
+/- English proof (translation)
+Simplify using `only [hermC, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => by ring`.
+-/
 private theorem hermC_Gm_smul_right (c : ℂ) (u v : Fin r → ℂ) :
     hermC τ.1 X.Gm u (c • v) = conj c * hermC τ.1 X.Gm u v := by
   simp only [hermC, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]
   exact Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => by ring
 
+/- English proof (translation)
+The claim follows from `map_sum (AddMonoidHom.mk' (fun u => hermC τ.1 X.Gm u v) (fun u u' => hermC_Gm_add_left X τ hz u u' v)) f Finset.univ`.
+-/
 private theorem hermC_Gm_sum_left {n : ℕ} (f : Fin n → Fin r → ℂ) (v : Fin r → ℂ) :
     hermC τ.1 X.Gm (∑ a, f a) v = ∑ a, hermC τ.1 X.Gm (f a) v :=
   map_sum (AddMonoidHom.mk' (fun u => hermC τ.1 X.Gm u v)
     (fun u u' => hermC_Gm_add_left X τ hz u u' v)) f Finset.univ
 
+/- English proof (translation)
+Establish `hz' : ∀ ψ : X.Ψ, (mat z ψ).det ≠ 0 ∧ ∀ i : Fin (r + 1), 0 < psgn X.p0 i * (dmin X.Gm z ψ i).re` using `hz`. Establish `h2` using `(hz' τ).2 ⟨X.p0, Nat.lt_succ_of_le X.p0_le⟩`. Establish `hd : dmin X.Gm z τ ⟨X.p0, Nat.lt_succ_of_le X.p0_le⟩ = (X.gramPos z τ).det` using `rfl`. Introduce `h0`. Rewrite `h2` using `[hd, h0]`.
+
+Simplify using `at h2`.
+-/
 private theorem det_gramPos_ne_zero : (X.gramPos z τ).det ≠ 0 := by
   have hz' : ∀ ψ : X.Ψ, (mat z ψ).det ≠ 0 ∧
       ∀ i : Fin (r + 1), 0 < psgn X.p0 i * (dmin X.Gm z ψ i).re := hz
@@ -55,6 +81,11 @@ private theorem det_gramPos_ne_zero : (X.gramPos z τ).det ≠ 0 := by
   rw [hd, h0] at h2
   simp at h2
 
+/- English proof (translation)
+Establish `hinv : (X.gramPos z τ)⁻¹ * X.gramPos z τ = 1` using `Matrix.nonsing_inv_mul _ (isUnit_iff_ne_zero.mpr (det_gramPos_ne_zero X τ hz))`. Establish `hgk : ∀ a b : Fin X.p0, hermC τ.1 X.Gm (col (mat z τ) (Fin.castLE X.p0_le a)) (col (mat z τ) (Fin.castLE X.p0_le b)) = X.gramPos z τ a b` using `fun a b => rfl`. Rewrite using `[Data.ppos, hermC_Gm_sum_left X τ hz]`. Simplify using `only [hermC_Gm_smul_left X τ hz, hgk]`. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [Matrix.mul_apply, Finset.sum_mul, Finset.mul_sum, mul_assoc]`. Conclude with `Finset.sum_comm`. Use `_ = _ := by`. Rewrite using `[hinv]`. Simplify using `[Matrix.one_apply]`.
+-/
 private theorem hermC_ppos_col_castLE (u : Fin r → ℂ) (k : Fin X.p0) :
     hermC τ.1 X.Gm (X.ppos z τ u) (col (mat z τ) (Fin.castLE X.p0_le k)) =
       hermC τ.1 X.Gm u (col (mat z τ) (Fin.castLE X.p0_le k)) := by
@@ -74,6 +105,9 @@ private theorem hermC_ppos_col_castLE (u : Fin r → ℂ) (k : Fin X.p0) :
         rw [hinv]
         simp [Matrix.one_apply]
 
+/- English proof (translation)
+Rewrite using `[← FD.hermC_conj τ.1 X.Gm_herm (X.ppos z τ w) x, Data.ppos, hermC_Gm_sum_left X τ hz, map_sum]`. Simplify using `only [hermC_Gm_smul_left X τ hz, map_mul, FD.hermC_conj τ.1 X.Gm_herm]`.
+-/
 private theorem hermC_ppos_right_eq_sum_gramPos_inv (x w : Fin r → ℂ) :
     hermC τ.1 X.Gm x (X.ppos z τ w) = ∑ a, conj (∑ b, hermC τ.1 X.Gm w
       (col (mat z τ) (Fin.castLE X.p0_le b)) * (X.gramPos z τ)⁻¹ b a) *
@@ -81,21 +115,33 @@ private theorem hermC_ppos_right_eq_sum_gramPos_inv (x w : Fin r → ℂ) :
   rw [← FD.hermC_conj τ.1 X.Gm_herm (X.ppos z τ w) x, Data.ppos, hermC_Gm_sum_left X τ hz, map_sum]
   simp only [hermC_Gm_smul_left X τ hz, map_mul, FD.hermC_conj τ.1 X.Gm_herm]
 
+/- English proof (translation)
+Rewrite using `[hermC_ppos_right_eq_sum_gramPos_inv X τ hz (X.ppos z τ u) w, hermC_ppos_right_eq_sum_gramPos_inv X τ hz u w]`. Simplify using `only [hermC_ppos_col_castLE X τ hz]`.
+-/
 private theorem hermC_ppos_ppos (u w : Fin r → ℂ) :
     hermC τ.1 X.Gm (X.ppos z τ u) (X.ppos z τ w) = hermC τ.1 X.Gm u (X.ppos z τ w) := by
   rw [hermC_ppos_right_eq_sum_gramPos_inv X τ hz (X.ppos z τ u) w, hermC_ppos_right_eq_sum_gramPos_inv X τ hz u w]
   simp only [hermC_ppos_col_castLE X τ hz]
 
+/- English proof (translation)
+Rewrite using `[← FD.hermC_conj τ.1 X.Gm_herm w (X.ppos z τ u), ← hermC_ppos_ppos X τ hz w u, FD.hermC_conj τ.1 X.Gm_herm, hermC_ppos_ppos X τ hz u w]`.
+-/
 private theorem hermC_ppos_self_adjoint (u w : Fin r → ℂ) :
     hermC τ.1 X.Gm (X.ppos z τ u) w = hermC τ.1 X.Gm u (X.ppos z τ w) := by
   rw [← FD.hermC_conj τ.1 X.Gm_herm w (X.ppos z τ u), ← hermC_ppos_ppos X τ hz w u,
     FD.hermC_conj τ.1 X.Gm_herm, hermC_ppos_ppos X τ hz u w]
 
+/- English proof (translation)
+Simplify using `only [Data.jp, hermC_Gm_sub_left X τ hz, hermC_Gm_smul_left X τ hz, hermC_Gm_sub_right X τ hz, hermC_Gm_smul_right X τ hz, map_ofNat, hermC_ppos_self_adjoint X τ hz]`.
+-/
 private theorem hermC_jp_left_eq_hermC_jp_right (u w : Fin r → ℂ) :
     hermC τ.1 X.Gm (X.jp z τ u) w = hermC τ.1 X.Gm u (X.jp z τ w) := by
   simp only [Data.jp, hermC_Gm_sub_left X τ hz, hermC_Gm_smul_left X τ hz, hermC_Gm_sub_right X τ hz,
     hermC_Gm_smul_right X τ hz, map_ofNat, hermC_ppos_self_adjoint X τ hz]
 
+/- English proof (translation)
+Simplify using `only [Data.jp, hermC_Gm_sub_left X τ hz, hermC_Gm_smul_left X τ hz, hermC_Gm_sub_right X τ hz, hermC_Gm_smul_right X τ hz, map_ofNat]`. Rewrite using `[hermC_ppos_ppos X τ hz u w, hermC_ppos_self_adjoint X τ hz u w]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem hermC_jp_jp' (u w : Fin r → ℂ) :
     hermC τ.1 X.Gm (X.jp z τ u) (X.jp z τ w) = hermC τ.1 X.Gm u w := by
   simp only [Data.jp, hermC_Gm_sub_left X τ hz, hermC_Gm_smul_left X τ hz, hermC_Gm_sub_right X τ hz,
@@ -103,25 +149,42 @@ private theorem hermC_jp_jp' (u w : Fin r → ℂ) :
   rw [hermC_ppos_ppos X τ hz u w, hermC_ppos_self_adjoint X τ hz u w]
   ring
 
+/- English proof (translation)
+Simplify using `only [Data.ppos, hermC_Gm_add_left X τ hz, add_mul, Finset.sum_add_distrib, add_smul]`.
+-/
 private theorem ppos_add' (u w : Fin r → ℂ) :
     X.ppos z τ (u + w) = X.ppos z τ u + X.ppos z τ w := by
   simp only [Data.ppos, hermC_Gm_add_left X τ hz, add_mul, Finset.sum_add_distrib, add_smul]
 
+/- English proof (translation)
+Simplify using `only [Data.ppos, hermC_Gm_smul_left X τ hz, Finset.smul_sum, smul_smul, Finset.mul_sum, mul_assoc]`.
+-/
 private theorem ppos_smul_eq_smul_ppos (t : ℂ) (u : Fin r → ℂ) :
     X.ppos z τ (t • u) = t • X.ppos z τ u := by
   simp only [Data.ppos, hermC_Gm_smul_left X τ hz, Finset.smul_sum, smul_smul, Finset.mul_sum,
     mul_assoc]
 
+/- English proof (translation)
+Simplify using `only [Data.jp, ppos_add' X τ hz, smul_add]`. Normalize the expressions using the abelian group laws.
+-/
 private theorem jp_add' (u w : Fin r → ℂ) :
     X.jp z τ (u + w) = X.jp z τ u + X.jp z τ w := by
   simp only [Data.jp, ppos_add' X τ hz, smul_add]
   abel
 
+/- English proof (translation)
+Simplify using `only [Data.jp, ppos_smul_eq_smul_ppos X τ hz, smul_sub, smul_smul]`. Rewrite using `[mul_comm]`.
+-/
 private theorem jp_smul' (t : ℂ) (u : Fin r → ℂ) :
     X.jp z τ (t • u) = t • X.jp z τ u := by
   simp only [Data.jp, ppos_smul_eq_smul_ppos X τ hz, smul_sub, smul_smul]
   rw [mul_comm]
 
+/- English proof (translation)
+Establish `h1 : hermC τ.1 X.Gm (X.ppos z τ v) v = ∑ a, ∑ b, hermC τ.1 X.Gm v (col (mat z τ) (Fin.castLE X.p0_le a)) * (X.gramPos z τ)⁻¹ a b * conj (hermC τ.1 X.Gm v (col (mat z τ) (Fin.castLE X.p0_le b)))`. Rewrite using `[Data.ppos, hermC_Gm_sum_left X τ hz]`. Simplify using `only [hermC_Gm_smul_left X τ hz, FD.hermC_conj τ.1 X.Gm_herm, Finset.sum_mul]`. Conclude with `Finset.sum_comm`. Simplify using `only [Data.maj, Data.posPart, Data.jp, hermC_Gm_sub_left X τ hz, hermC_Gm_smul_left X τ hz, ← h1]`.
+
+Simplify using `[Complex.sub_re, Complex.mul_re]`.
+-/
 private theorem maj_eq_re_hermC_jp (v : Fin r → ℂ) :
     X.maj z τ v = (hermC τ.1 X.Gm (X.jp z τ v) v).re := by
   have h1 : hermC τ.1 X.Gm (X.ppos z τ v) v = ∑ a, ∑ b,
@@ -133,6 +196,13 @@ private theorem maj_eq_re_hermC_jp (v : Fin r → ℂ) :
   simp only [Data.maj, Data.posPart, Data.jp, hermC_Gm_sub_left X τ hz, hermC_Gm_smul_left X τ hz, ← h1]
   simp [Complex.sub_re, Complex.mul_re]
 
+/- English proof (translation)
+Establish `hdet : (X.Gm.map τ.1).det ≠ 0`. Rewrite using `[← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Conclude with `(map_ne_zero τ.1).mpr X.Gm_det`. Establish `hmv : (X.Gm.map τ.1).mulVec (fun b => conj (w b)) = 0`. Use function extensionality and compare the values at `a`.
+
+Establish `h` using `H (Pi.single a 1)`. Express the relevant statement in the definitionally equal form `(∑ b, (X.Gm.map τ.1) a b * conj (w b)) = 0`. Simplify `h` using `[hermC, Pi.single_apply, Matrix.map_apply]`. Establish `h0` using `Matrix.eq_zero_of_mulVec_eq_zero hdet hmv`. Use function extensionality and compare the values at `b`.
+
+Simplify using `using congrFun h0 b`.
+-/
 private theorem eq_zero_of_hermC_Gm_left_eq_zero (w : Fin r → ℂ) (H : ∀ u, hermC τ.1 X.Gm u w = 0) : w = 0 := by
   have hdet : (X.Gm.map τ.1).det ≠ 0 := by
     rw [← RingHom.mapMatrix_apply, ← RingHom.map_det]
@@ -146,6 +216,9 @@ private theorem eq_zero_of_hermC_Gm_left_eq_zero (w : Fin r → ℂ) (H : ∀ u,
   funext b
   simpa using congrFun h0 b
 
+/- English proof (translation)
+Establish `hs : hermC τ.1 X.Gm (X.jp z τ u) v = conj (hermC τ.1 X.Gm (X.jp z τ v) u)`. Rewrite using `[FD.hermC_conj τ.1 X.Gm_herm, hermC_jp_left_eq_hermC_jp_right X τ hz]`. Rewrite using `[maj_eq_re_hermC_jp X τ hz (v + t • u), maj_eq_re_hermC_jp X τ hz v, maj_eq_re_hermC_jp X τ hz u, jp_add' X τ hz, jp_smul' X τ hz, hermC_Gm_add_left X τ hz, hermC_Gm_smul_left X τ hz, hermC_Gm_add_right X τ hz, hermC_Gm_add_right X τ hz, hermC_Gm_smul_right X τ hz, hermC_Gm_smul_ …`. Simplify using `only [Complex.add_re, Complex.add_im, Complex.mul_re, Complex.mul_im, Complex.conj_re, Complex.conj_im, Complex.normSq_apply]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem maj_add_smul (v u : Fin r → ℂ) (t : ℂ) :
     X.maj z τ (v + t • u) = X.maj z τ v +
       2 * (conj t * hermC τ.1 X.Gm (X.jp z τ v) u).re + Complex.normSq t * X.maj z τ u := by
@@ -158,6 +231,13 @@ private theorem maj_add_smul (v u : Fin r → ℂ) (t : ℂ) :
     Complex.conj_im, Complex.normSq_apply]
   ring
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hw`. Establish `hn` using `Complex.normSq_pos.mpr hw`. Establish `h1` using `MajorantConjugateTransfer.maj_nonneg (X := X) hz τ (v + (-(((X.maj z τ v + 1) / (2 * Complex.normSq (hermC τ.1 X.Gm (X.jp z τ v) u)) : ℝ) : ℂ) * hermC τ.1 X.Gm (X.jp z τ v) u) • u)`. Rewrite `h1` using `[maj_add_smul X τ hz, hu, mul_zero, add_zero]`. Generalize the expression as in `hW : hermC τ.1 X.Gm (X.jp z τ v) u = W at h1 hn`.
+
+Generalize the expression as in `hM : X.maj z τ v = M at h1`. Establish `hS : Complex.normSq W ≠ 0` using `ne_of_gt hn`. Establish `h2 : (conj (-(((M + 1) / (2 * Complex.normSq W) : ℝ) : ℂ) * W) * W).re = -((M + 1) / (2 * Complex.normSq W)) * Complex.normSq W`. Simplify using `only [map_mul, map_neg, Complex.conj_ofReal, Complex.mul_re, Complex.mul_im, Complex.neg_re, Complex.neg_im, Complex.ofReal_re, Complex.ofReal_im, Complex.conj_re, Complex.conj_im, Complex.normSq_apply]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `h3 : -((M + 1) / (2 * Complex.normSq W)) * Complex.normSq W = -((M + 1) / 2)`. Rewrite using `[neg_mul, div_mul_eq_mul_div, mul_div_mul_right _ _ hS]`. Rewrite `h1` using `[h2, h3]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 private theorem hermC_jp_eq_zero_of_maj_eq_zero (u v : Fin r → ℂ) (hu : X.maj z τ u = 0) :
     hermC τ.1 X.Gm (X.jp z τ v) u = 0 := by
   by_contra hw
@@ -180,6 +260,15 @@ private theorem hermC_jp_eq_zero_of_maj_eq_zero (u v : Fin r → ℂ) (hu : X.ma
   rw [h2, h3] at h1
   linarith
 
+/- English proof (translation)
+Establish `hre : hermC τ.1 X.Gm (X.jp z τ e) e = X.maj z τ e`. Rewrite using `[maj_eq_re_hermC_jp X τ hz e]`. Establish `hc : conj (hermC τ.1 X.Gm (X.jp z τ e) e) = hermC τ.1 X.Gm (X.jp z τ e) e`. Rewrite using `[FD.hermC_conj τ.1 X.Gm_herm, hermC_jp_left_eq_hermC_jp_right X τ hz]`. Conclude with `(Complex.conj_eq_iff_re.mp hc).symm`.
+
+Establish `hiso : hermC τ.1 X.Gm (X.jp z τ e) (X.jp z τ e) = 0`. Rewrite using `[hermC_jp_jp' X τ hz, hee]`. Establish `hsym : hermC τ.1 X.Gm e (X.jp z τ e) = X.maj z τ e`. Rewrite using `[← hermC_jp_left_eq_hermC_jp_right X τ hz, hre]`. Establish `hpos : 0 < X.maj z τ e`.
+
+Break down `(MajorantConjugateTransfer.maj_nonneg (X := X) hz τ e).lt_or_eq with h | h` into its components or cases. Conclude with `h`. It suffices to derive a contradiction. Establish `hje : X.jp z τ e = 0` using `eq_zero_of_hermC_Gm_left_eq_zero X τ hz _ fun u => by`. Rewrite using `[← hermC_jp_left_eq_hermC_jp_right X τ hz u e]`.
+
+Conclude with `hermC_jp_eq_zero_of_maj_eq_zero X τ hz e u h.symm`. Conclude with `he0 (eq_zero_of_hermC_Gm_left_eq_zero X τ hz _ fun u => by`. Rewrite using `[← hermC_jp_jp' X τ hz u e, hje]`. Simplify using `[hermC])`. Conclude with `⟨hpos, hiso, hsym, hre⟩`.
+-/
 theorem plane_facts (hee : hermC τ.1 X.Gm e e = 0) (he0 : e ≠ 0) :
     0 < X.maj z τ e ∧ hermC τ.1 X.Gm (X.jp z τ e) (X.jp z τ e) = 0 ∧
       hermC τ.1 X.Gm e (X.jp z τ e) = X.maj z τ e ∧
@@ -205,6 +294,11 @@ theorem plane_facts (hee : hermC τ.1 X.Gm e e = 0) (he0 : e ≠ 0) :
         simp [hermC])
   exact ⟨hpos, hiso, hsym, hre⟩
 
+/- English proof (translation)
+Take `⟨-, hff, -, -⟩` from `plane_facts X τ hz hee he0`. Establish `hjw : hermC τ.1 X.Gm (X.jp z τ w0) e = 0`. Rewrite using `[hermC_jp_left_eq_hermC_jp_right X τ hz, h0f]`. Establish `hjf : hermC τ.1 X.Gm (X.jp z τ (w0 + a • e)) (X.jp z τ e) = 0`. Rewrite using `[jp_add' X τ hz, jp_smul' X τ hz, hermC_Gm_add_left X τ hz, hermC_Gm_smul_left X τ hz, hermC_jp_jp' X τ hz w0 e, h0e, hff, mul_zero, add_zero]`.
+
+Establish `hmf : X.maj z τ (X.jp z τ e) = X.maj z τ e`. Rewrite using `[maj_eq_re_hermC_jp X τ hz (X.jp z τ e), maj_eq_re_hermC_jp X τ hz e, hermC_jp_jp' X τ hz (X.jp z τ e) e]`. Rewrite using `[maj_add_smul X τ hz (w0 + a • e), maj_add_smul X τ hz w0, hjw, hjf, hmf]`. Simplify using `only [mul_zero, Complex.zero_re, add_zero]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem maj_decomp (hee : hermC τ.1 X.Gm e e = 0) (he0 : e ≠ 0) (w0 : Fin r → ℂ)
     (h0e : hermC τ.1 X.Gm w0 e = 0) (h0f : hermC τ.1 X.Gm w0 (X.jp z τ e) = 0) (a b : ℂ) :
     X.maj z τ (w0 + a • e + b • X.jp z τ e) =
@@ -221,6 +315,27 @@ theorem maj_decomp (hee : hermC τ.1 X.Gm e e = 0) (he0 : e ≠ 0) (w0 : Fin r �
   simp only [mul_zero, Complex.zero_re, add_zero]
   ring
 
+/- English proof (translation)
+Take `⟨hm, hff, hef, hfe⟩` from `plane_facts X τ hz hee he0`. Establish `hm0 : ((X.maj z τ e : ℝ) : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.mpr hm.ne'`. Establish `hσ0 : (σ : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.mpr hσ.ne'`. Take `⟨A, hA⟩ : ∃ A : ℂ, A = hermC τ.1 X.Gm w (X.jp z τ e) / (X.maj z τ e : ℂ)` from `⟨_, rfl⟩`. Take `⟨B, hB⟩ : ∃ B : ℂ, B = hermC τ.1 X.Gm w e / (X.maj z τ e : ℂ)` from `⟨_, rfl⟩`.
+
+Establish `hwf : hermC τ.1 X.Gm w (X.jp z τ e) = A * X.maj z τ e`. Rewrite using `[hA, div_mul_cancel₀ _ hm0]`. Establish `hwe : hermC τ.1 X.Gm w e = B * X.maj z τ e`. Rewrite using `[hB, div_mul_cancel₀ _ hm0]`. Establish `h0e : hermC τ.1 X.Gm (w - A • e - B • X.jp z τ e) e = 0`.
+
+Rewrite using `[hermC_Gm_sub_left X τ hz, hermC_Gm_sub_left X τ hz, hermC_Gm_smul_left X τ hz, hermC_Gm_smul_left X τ hz, hee, hfe, hwe]`. Expand and normalize the polynomial expressions, which then agree. Establish `h0f : hermC τ.1 X.Gm (w - A • e - B • X.jp z τ e) (X.jp z τ e) = 0`. Rewrite using `[hermC_Gm_sub_left X τ hz, hermC_Gm_sub_left X τ hz, hermC_Gm_smul_left X τ hz, hermC_Gm_smul_left X τ hz, hef, hff, hwf]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hw : w = (w - A • e - B • X.jp z τ e) + A • e + B • X.jp z τ e` using `by abel`. Establish `hBw : Matrix.mulVec (boost X τ e (X.jp z τ e) (X.maj z τ e) σ⁻¹) w = (w - A • e - B • X.jp z τ e) + ((σ : ℂ)⁻¹ * A) • e + ((σ : ℂ) * B) • X.jp z τ e`. Rewrite using `[boost_mulVec, hwf, hwe]`. Establish `c1 : (((σ⁻¹ - 1) / X.maj z τ e : ℝ) : ℂ) * (A * (X.maj z τ e : ℂ)) = (σ : ℂ)⁻¹ * A - A`. Use `push_cast`.
+
+Clear the denominators using the available nonvanishing facts. Establish `c2 : (((σ⁻¹⁻¹ - 1) / X.maj z τ e : ℝ) : ℂ) * (B * (X.maj z τ e : ℂ)) = (σ : ℂ) * B - B`. Rewrite using `[inv_inv]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+
+Rewrite using `[c1, c2, sub_smul, sub_smul]`. Normalize the expressions using the abelian group laws. Establish `hmw : X.maj z τ w = X.maj z τ (w - A • e - B • X.jp z τ e) + (Complex.normSq A + Complex.normSq B) * X.maj z τ e`. Rewrite using `[← maj_decomp X τ hz hee he0 _ h0e h0f A B, ← hw]`. Rewrite using `[hBw, maj_decomp X τ hz hee he0 _ h0e h0f, hmw]`.
+
+Simplify using `only [Complex.normSq_mul, Complex.normSq_inv, Complex.normSq_ofReal]`. Establish `hM0` using `MajorantConjugateTransfer.maj_nonneg (X := X) hz τ (w - A • e - B • X.jp z τ e)`. Establish `hNA` using `Complex.normSq_nonneg A`. Establish `hNB` using `Complex.normSq_nonneg B`. Establish `hs0 : 0 < σ * σ` using `mul_pos hσ hσ`.
+
+Rewrite using `[sq]`. Establish `hk2 : min (σ * σ) (σ * σ)⁻¹ ≤ σ * σ` using `min_le_left _ _`. Establish `hk3 : min (σ * σ) (σ * σ)⁻¹ ≤ (σ * σ)⁻¹` using `min_le_right _ _`. Establish `hk1 : min (σ * σ) (σ * σ)⁻¹ ≤ 1`. Break down `le_total (σ * σ) 1 with h | h` into its components or cases.
+
+Conclude with `hk2.trans h`. Use `hk3.trans ?_` and prove the remaining obligations. Establish `hi : (σ * σ)⁻¹ * (σ * σ) = 1` using `inv_mul_cancel₀ hs0.ne'`. Establish `hip : 0 < (σ * σ)⁻¹` using `inv_pos.mpr hs0`. Use the polynomial consequences of the given equalities and inequalities.
+
+Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right hk1 hM0, mul_le_mul_of_nonneg_right hk3 (mul_nonneg hNA hm.le), mul_le_mul_of_nonneg_right hk2 (mul_nonneg hNB hm.le)]`.
+-/
 theorem boost_lower (hee : hermC τ.1 X.Gm e e = 0) (he0 : e ≠ 0) {σ : ℝ} (hσ : 0 < σ)
     (w : Fin r → ℂ) :
     min (σ ^ 2) (σ ^ 2)⁻¹ * X.maj z τ w ≤

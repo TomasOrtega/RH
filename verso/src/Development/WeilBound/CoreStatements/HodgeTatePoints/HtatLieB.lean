@@ -11,6 +11,23 @@ noncomputable section
 
 namespace PositivityTheory.HtPt.Htat.Lie
 
+/- English proof (translation)
+Introduce `S G _ U hU C _ y u hu v w hv hw φ ψ χ hφ hψ hχ hs ev ew`. Establish `hv' : LieEx.zsec y ≫ (v : LieEx.ob y C ⟶ G) = 1` using `(LieEx.isTanAt_iff y G v).1 hv`. Establish `hw' : LieEx.zsec y ≫ (w : LieEx.ob y C ⟶ G) = 1` using `(LieEx.isTanAt_iff y G w).1 hw`. Establish `z : ∀ t : LieEx.ob y C ⟶ G, LieEx.zsec y ≫ t = 1 → LieEx.hom y (0 : C →ₗ[C] C) ≫ t = 1` using `fun t ht => by`. Rewrite using `[LieEx.hom_zero, Category.assoc, ht, MonObj.comp_one]`.
+
+Take `⟨t, ht⟩ : ∃ t : LieEx.ob y (C × C) ⟶ G, t = (LieEx.hom y (LinearMap.inl C C C) ≫ (v : LieEx.ob y C ⟶ G)) * (LieEx.hom y (LinearMap.inr C C C) ≫ (w : LieEx.ob y C ⟶ G))` from `⟨_, rfl⟩`. Establish `hz : LieEx.zsec y ≫ t = 1`. Rewrite using `[ht, MonObj.comp_mul, ← Category.assoc, ← Category.assoc, LieEx.zsec_hom, LieEx.zsec_hom, hv', hw', _root_.mul_one]`. Establish `h1 : LieEx.hom y (LinearMap.fst C C C) ≫ t = v`. Simplify using `only [ht, MonObj.comp_mul, ← Category.assoc, LieEx.hom_comp, LinearMap.fst_comp_inl, LinearMap.fst_comp_inr, LieEx.hom_id, Category.id_comp, z w hw', _root_.mul_one]`.
+
+Establish `h2 : LieEx.hom y (LinearMap.snd C C C) ≫ t = w`. Simplify using `only [ht, MonObj.comp_mul, ← Category.assoc, LieEx.hom_comp, LinearMap.snd_comp_inl, LinearMap.snd_comp_inr, LieEx.hom_id, Category.id_comp, z v hv', _root_.one_mul]`. Establish `h3 : LieEx.hom y (LinearMap.fst C C C + LinearMap.snd C C C) ≫ t = v * w`. Simplify using `only [ht, MonObj.comp_mul, ← Category.assoc, LieEx.hom_comp, LinearMap.add_comp, LinearMap.fst_comp_inl, LinearMap.fst_comp_inr, LinearMap.snd_comp_inl, LinearMap.snd_comp_inr, add_zero, zero_add, LieEx.hom_id, Category.id_comp]`. Establish `hzl : Spec.map (CommRingCat.ofHom (TrivSqZeroExt.fstHom C C (C × C)).toRingHom) ≫ t.left = spMap u ≫ hU.fromSpec` using `(congrArg CommaMorphism.left hz).trans hu`.
+
+Establish `hle : ⊤ ≤ t.left ⁻¹ᵁ U`. Introduce `p _`. Take `⟨q, rfl⟩` from `LieVB.surj_fst (T := C) (M := C × C) p`. Establish `e : t.left (Spec.map (CommRingCat.ofHom (TrivSqZeroExt.fstHom C C (C × C)).toRingHom) q) = hU.fromSpec (spMap u q)` using `congrArg (fun f : Sp C ⟶ G.left => f q) hzl`. Use `show t.left _ ∈ U`.
+
+Rewrite using `[e]`. Conclude with `hU.range_fromSpec.subset (Set.mem_range_self _)`. Take `⟨Φ, hΦ⟩ : ∃ Φ : Γ(G.left, U) →+* TrivSqZeroExt C (C × C), spMap Φ ≫ hU.fromSpec = t.left` from `⟨_, TanMul.ringOf_spec (A := TrivSqZeroExt C (C × C)) hU t.left hle⟩`. Establish `key : ∀ (l : C × C →ₗ[C] C), (LieEx.hom y l ≫ t).left = spMap ((TrivSqZeroExt.map l).toRingHom.comp Φ) ≫ hU.fromSpec` using `fun l => by`. Rewrite using `[spMap_comp, Category.assoc, hΦ]`.
+
+Both sides reduce to the same expression. Establish `e1` using `TanMul.ring_inj hU (ev.symm.trans ((congrArg CommaMorphism.left h1).symm.trans (key _)))`. Establish `e2` using `TanMul.ring_inj hU (ew.symm.trans ((congrArg CommaMorphism.left h2).symm.trans (key _)))`. Establish `e3 : χ = (TrivSqZeroExt.map (LinearMap.fst C C C + LinearMap.snd C C C)).toRingHom.comp Φ`. Use `RingHom.ext fun a => TrivSqZeroExt.ext ?_ ?_` and prove the remaining obligations.
+
+Rewrite using `[hχ, ← hφ, e1]`. Simplify using the standard rewrite rules. Rewrite using `[hs, e1, e2]`. Simplify using the standard rewrite rules. Rewrite using `[e3]`.
+
+Conclude with `(congrArg CommaMorphism.left h3).symm.trans (key _)`.
+-/
 theorem mul_left_eq : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G] (U : G.left.Opens) (hU : IsAffineOpen U)
   (C : Type) [CommRing C] (y : Sp C ⟶ S) (u : Γ(G.left, U) →+* C),
   (1 : Over.mk y ⟶ G).left = spMap u ≫ hU.fromSpec →
@@ -65,6 +82,19 @@ theorem mul_left_eq : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G] (U : G.left.O
   rw [e3]
   exact (congrArg CommaMorphism.left h3).symm.trans (key _)
 
+/- English proof (translation)
+Take `⟨c1, c2⟩` from `GlobalTheory.T.tangent_vector_of_dual_hom S G U V hU hV hUV C y v h1`. Set `φ : E → (Γ(G.left, U) →+* DualNumber C)` to `fun e => dualOf v (δ e) (hadd e) (hmul e)`. Establish `φfst : ∀ e a, (φ e a).fst = v a` using `fun e a => dualOf_fst ..`. Establish `φsnd : ∀ e a, (φ e a).snd = δ e a` using `fun e a => dualOf_snd ..`. Establish `ex : ∀ e, ∃ t : epsAt y ⟶ G, IsTanAt G y t ∧ t.left = spMap (φ e) ≫ hU.fromSpec` using `fun e => c1 (φ e) (φfst e) fun b => by rw [φsnd, hker]`.
+
+Use `choose pt ptan pleft using ex`. Establish `spinj : ∀ ψ ψ' : Γ(G.left, U) →+* DualNumber C, spMap ψ ≫ hU.fromSpec = spMap ψ' ≫ hU.fromSpec → ψ = ψ'` using `fun ψ ψ' h => by`. Establish `h2` using `Spec.map_injective ((cancel_mono hU.fromSpec).1 h)`. Simplify using `using congrArg CommRingCat.Hom.hom h2`. Use `⟨{ pt := pt, tan := ptan, inj := ?_, onto := ?_, add := ?_, smul := ?_ }, fun e => ⟨φ e, φfst e, φsnd e, pleft e⟩⟩` and prove the remaining obligations.
+
+Introduce `e e' h`. Establish `h2` using `spinj _ _ (by rw [← pleft, ← pleft, h] : spMap (φ e) ≫ hU.fromSpec = spMap (φ e') ≫ hU.fromSpec)`. Conclude with `hinj _ _ fun a => by rw [← φsnd, h2, φsnd]`. Introduce `t ht`. Take `⟨ψ, f1, f2, f3⟩` from `c2 t ht`.
+
+Take `⟨e, he⟩` from `hsurj (fun a => (ψ a).snd) (fun a b => by simp) (fun a b => by`. Simplify using `only [map_mul, TrivSqZeroExt.snd_mul, f1]`. Simplify using `[mul_comm, add_comm]) f2`. Use `⟨e, Over.OverMorphism.ext ?_⟩` and prove the remaining obligations. Establish `h2 : φ e = ψ` using `RingHom.ext fun a => TrivSqZeroExt.ext (by rw [φfst, f1]) (by rw [φsnd, he])`.
+
+Rewrite using `[pleft, f3, h2]`. Introduce `e e'`. Use `Over.OverMorphism.ext ?_` and prove the remaining obligations. Rewrite using `[mul_left_eq S G U hU C y v h1 (pt e) (pt e') (ptan e) (ptan e') (φ e) (φ e') (φ (e + e')) (φfst e) (φfst e') (φfst _) (fun a => by rw [φsnd, φsnd, φsnd, hEadd]) (pleft e) (pleft e'), pleft]`. Introduce `c e`.
+
+Establish `h2 : φ (c • e) = (epsMul c).comp (φ e)` using `RingHom.ext fun a => TrivSqZeroExt.ext (by simp [epsMul, φfst]) (by simp [epsMul, φsnd, hEsmul])`. Rewrite using `[pleft, pleft, h2, spMap_comp, Category.assoc]`.
+-/
 theorem exists_lieModel {S : Scheme.{0}} (G : Over S) [GrpObj G] (U : G.left.Opens) (V : S.Opens)
     (hU : IsAffineOpen U) (hV : IsAffineOpen V) (hUV : U ≤ G.hom ⁻¹ᵁ V)
     (C : Type) [CommRing C] (y : Sp C ⟶ S) (v : Γ(G.left, U) →+* C)
@@ -115,6 +145,21 @@ theorem exists_lieModel {S : Scheme.{0}} (G : Over S) [GrpObj G] (U : G.left.Ope
       (by simp [epsMul, φfst]) (by simp [epsMul, φsnd, hEsmul])
     rw [pleft, pleft, h2, spMap_comp, Category.assoc]
 
+/- English proof (translation)
+Introduce `S G _ R _ x f U V hU hV hUV hsm u h1`. Take `⟨P, i1, i2, i3, i4, i5, i6, d, dadd, dmul, dker, hP⟩` from `exists_diffModule (G.hom.appLE V U hUV).hom hsm f u`. Establish `hunit : ∀ (C : Type) [CommRing C] [Algebra R C] (κ : Localization.Away f →+* C), κ.comp (algebraMap R (Localization.Away f)) = algebraMap R C → (1 : Over.mk (spMap (algebraMap R C) ≫ x) ⟶ G).left = spMap (κ.comp u) ≫ hU.fromSpec`. Introduce `C _ _ κ hκ`. Rewrite `h1`, the goal using `[one_left]`.
+
+Simplify using `only [Over.mk_hom] at h1 ⊢`. Establish `e : spMap (algebraMap R C) = spMap κ ≫ spMap (algebraMap R (Localization.Away f))`. Rewrite using `[← spMap_comp, hκ]`. Establish `h3 : ((spMap κ ≫ spMap (algebraMap R (Localization.Away f))) ≫ x) ≫ η[G].left = spMap κ ≫ (spMap (algebraMap R (Localization.Away f)) ≫ x) ≫ η[G].left`. Simplify using `only [Category.assoc]`.
+
+Rewrite using `[e, h3, h1, spMap_comp κ u]`. Conclude with `(Category.assoc _ _ _).symm`. Establish `key : ∀ (C : Type) [CommRing C] [Algebra R C] (hC : IsUnit (algebraMap R C f)), ∃ M : LieModel G (spMap (algebraMap R C) ≫ x) (P →ₗ[R] C), ∀ w, ∃ φ : Γ(G.left, U) →+* DualNumber C, (∀ a, (φ a).fst = ((IsLocalization.Away.lift f hC).comp u) a) ∧ (∀ a, (φ a).snd = w (d a)) ∧ (M.pt …`. Introduce `C _ _ hC`. Establish `hκ` using `IsLocalization.Away.lift_comp (S := Localization.Away f) f hC`.
+
+Take `⟨l1, l2, l3⟩` from `hP C _ hκ`. Conclude with `exists_lieModel (E := P →ₗ[R] C) G U V hU hV hUV C _ _ (hunit C _ hκ) (fun (w : P →ₗ[R] C) a => w (d a)) (fun w a b => by simp [dadd]) (fun w a b => by simp only [dmul, map_add, l1, RingHom.comp_apply]) (fun w b => by simp [dker]) (fun w w' a => rfl) (fun c w a => by simp) l2 l3`. Use `⟨P, i1, i2, i3, i4, i5, i6, fun C _ _ hC => (key C hC).choose, ?_⟩` and prove the remaining obligations. Introduce `C C' _ _ _ _ hC hC' c w`. Take `⟨φ, f1, f2, f3⟩` from `(key C hC).choose_spec w`.
+
+Take `⟨φ', g1, g2, g3⟩` from `(key C' hC').choose_spec (c.toLinearMap ∘ₗ w)`. Establish `hc : c.toRingHom.comp (IsLocalization.Away.lift (S` using `Localization.Away f) f hC) = IsLocalization.Away.lift (S := Localization.Away f) f hC' := by`. Use `IsLocalization.ringHom_ext (Submonoid.powers f) ?_` and prove the remaining obligations. Rewrite using `[RingHom.comp_assoc, IsLocalization.Away.lift_comp, IsLocalization.Away.lift_comp]`. Conclude with `c.comp_algebraMap`.
+
+Establish `h2 : φ' = (dualMap c.toRingHom).comp φ` using `RingHom.ext fun a => TrivSqZeroExt.ext (by`. Simplify using `only [g1, RingHom.comp_apply, dualMap, RingHom.coe_mk, MonoidHom.coe_mk, OneHom.coe_mk, TrivSqZeroExt.fst_add, TrivSqZeroExt.fst_inl, TrivSqZeroExt.fst_inr, add_zero, f1]`. Conclude with `(RingHom.congr_fun hc (u a)).symm)`. Use the proof step `(by`. Simplify using `only [g2, RingHom.comp_apply, dualMap, RingHom.coe_mk, MonoidHom.coe_mk, OneHom.coe_mk, TrivSqZeroExt.snd_add, TrivSqZeroExt.snd_inl, TrivSqZeroExt.snd_inr, zero_add, f2]`.
+
+Use the proof step `rfl)`. Rewrite using `[g3, f3, h2, spMap_comp, Category.assoc]`.
+-/
 theorem lieChart_of_smooth_chart : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G] (R : Type) [CommRing R] (x : Sp R ⟶ S) (f : R) (U : G.left.Opens) (V : S.Opens)
   (hU : IsAffineOpen U) (hV : IsAffineOpen V) (hUV : U ≤ G.hom ⁻¹ᵁ V), RingHom.Smooth (G.hom.appLE V U hUV).hom →
   ∀ u : Γ(G.left, U) →+* Localization.Away f,

@@ -8,6 +8,17 @@ open UpperTheory.V.Z.Sym UpperTheory.V.Z.Sym.Dict
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 open UpperTheory.V.Z.Sym.Al
 
+/- English proof (translation)
+Introduce `L _ _ _ n π hπ w hw τ ⟨_, f, f0, fm, fe⟩`. Take `⟨f1, f2, -⟩` from `factor L n w`. Take `⟨s1, s2, s3, -⟩` from `secSpec L n w hw`. Use `set N := ⨆ f : {f : τ.V →ₗ[ℂ] π // ∀ h x, f (τ.ρ h x) = (repOn hπ).comp (secW n w) h (f x)}, LinearMap.range f.1 with hN`. Establish `hst : ∀ g, ∀ v ∈ N, repOn hπ g v ∈ N`.
+
+Introduce `g v hv`. Take `⟨x, hx, y, hy, rfl⟩` from `f2 g`. Use `Submodule.iSup_induction _ (motive := fun v => repOn hπ (x * y) v ∈ N) hv ?_ (by simp) fun a b ha hb => by` and prove the remaining obligations. Rewrite using `[map_add]`. Conclude with `N.add_mem ha hb`.
+
+Introduce and unpack `⟨p, hp⟩ _ ⟨t, rfl⟩`. Use `Submodule.mem_iSup_of_mem ⟨repOn hπ y ∘ₗ p, fun h t => ?_⟩ ⟨τ.ρ (cLoc w x) t, ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.comp_apply, hp, MonoidHom.comp_apply, ← Module.End.mul_apply, ← map_mul, ← f1 _ (s1 h) y hy, map_mul]`. Both sides reduce to the same expression. Rewrite using `[LinearMap.comp_apply, hp, MonoidHom.comp_apply, s3 x hx, ← Module.End.mul_apply, ← map_mul, f1 x hx y hy]`.
+
+Break down `hπ.irred (N.map π.subtype) (Submodule.map_subtype_le _ _) (by` into its components or cases. Introduce and unpack `x _ ⟨v, hv, rfl⟩`. Conclude with `⟨_, hst x v hv, rfl⟩) with h | h`. Use `absurd (LinearMap.ext fun t => ?_) f0` and prove the remaining obligations. Establish `: f t ∈ N.map π.subtype` using `⟨⟨f t, fm t⟩, Submodule.mem_iSup_of_mem ⟨f.codRestrict π fm, fun h t => Subtype.ext (by`.
+
+Use `fe ⟨secW n w h, s1 h⟩ t` as an intermediate fact. Rewrite `this` using `[MonoidHom.comp_apply, Subgroup.subtype_apply, s2]`. Conclude with `this)⟩ ⟨t, rfl⟩, rfl⟩`. Rewrite `this` using `[h]`. Then use the resulting hypothesis. Conclude with `Submodule.map_injective_of_injective π.injective_subtype (by rw [h, Submodule.map_subtype_top])`.
+-/
 theorem UpperTheory.V.Z.Sym.Al.isoTypic :
     ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (π : Submodule ℂ (UA L n → ℂ)) (hπ : IsAutRepU π) (w : Plc L), IsSplitAt w → ∀ τ, Comp π w τ →
         (⨆ f : {f : τ.V →ₗ[ℂ] π // ∀ h x, f (τ.ρ h x) = (repOn hπ).comp (secW n w) h (f x)}, LinearMap.range f.1) = ⊤ := by

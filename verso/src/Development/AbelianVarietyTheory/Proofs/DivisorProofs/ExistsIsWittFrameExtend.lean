@@ -20,6 +20,9 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 
 omit [NumberField F] [NumberField E] in
 
+/- English proof (translation)
+Simplify using `only [hE, form, dotProduct, mulVec, Finset.mul_sum, map_sum, map_mul, Function.comp_apply, hσ, Pi.smul_apply, smul_eq_mul, Matrix.smul_apply, Matrix.map_apply]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by show σ (s * x i) * (c * σ (J i j)) * (t * y j) = _`. Rewrite using `[map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hE_smul_map {σ : E →ₐ[F] E} (hσ : ∀ x, σ (σ x) = x) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (c s t : E)
     (x y : Fin n → E) : hE σ (c • J.map σ) (s • x) (t • y) = σ s * t * c * σ (form σ J x y) := by
   simp only [hE, form, dotProduct, mulVec, Finset.mul_sum, map_sum, map_mul, Function.comp_apply, hσ, Pi.smul_apply,
@@ -30,6 +33,9 @@ theorem hE_smul_map {σ : E →ₐ[F] E} (hσ : ∀ x, σ (σ x) = x) {n : ℕ} 
 
 omit [NumberField F] [NumberField E] in
 
+/- English proof (translation)
+Establish `e : (⇑σ ∘ (ι *ᵥ v)) = ι.map σ *ᵥ (⇑σ ∘ v)` using `funext fun i => by simp [mulVec, dotProduct, map_sum]`. Use `show (ι *ᵥ u) ⬝ᵥ J *ᵥ (⇑σ ∘ (ι *ᵥ v)) = u ⬝ᵥ (ιᵀ * J * ι.map σ) *ᵥ (⇑σ ∘ v)`. Rewrite using `[e, ← mulVec_mulVec, ← mulVec_mulVec, dotProduct_mulVec u, vecMul_transpose]`.
+-/
 theorem form_mulVec {σ : E →ₐ[F] E} {n m : ℕ} (J : Matrix (Fin n) (Fin n) E) (ι : Matrix (Fin n) (Fin m) E)
     (u v : Fin m → E) : form σ J (ι *ᵥ u) (ι *ᵥ v) = form σ (ιᵀ * J * ι.map σ) u v := by
   have e : (⇑σ ∘ (ι *ᵥ v)) = ι.map σ *ᵥ (⇑σ ∘ v) := funext fun i => by simp [mulVec, dotProduct, map_sum]
@@ -38,6 +44,9 @@ theorem form_mulVec {σ : E →ₐ[F] E} {n m : ℕ} (J : Matrix (Fin n) (Fin n)
 
 omit [NumberField F] [NumberField E] in
 
+/- English proof (translation)
+Simplify using `only [form, dotProduct, mulVec, Finset.mul_sum, map_sum, map_mul, Function.comp_apply, hσ, hJ, ← Finset.sum_neg_distrib]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`.
+-/
 theorem form_swap {σ : E →ₐ[F] E} (hσ : ∀ x, σ (σ x) = x) {n : ℕ} {J : Matrix (Fin n) (Fin n) E}
     (hJ : ∀ i j, σ (J j i) = -J i j) (x y : Fin n → E) : form σ J x y = -σ (form σ J y x) := by
   simp only [form, dotProduct, mulVec, Finset.mul_sum, map_sum, map_mul, Function.comp_apply, hσ, hJ,

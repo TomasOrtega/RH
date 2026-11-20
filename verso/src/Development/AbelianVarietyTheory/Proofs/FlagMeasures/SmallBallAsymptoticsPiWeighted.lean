@@ -6,6 +6,21 @@ open MeasureTheory NumberField Matrix Finset Formalism.MainNotions.S GlobalTheor
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero`. Introduce `X _ ν _ ρ d C _ _ _ _`. Establish `hball : ∀ m : ℕ, m = 0 → volume (Metric.ball (0 : EuclideanSpace ℝ (Fin m)) 1) = 1`. Introduce and unpack `m rfl`.
+
+Rewrite using `[volume_euclideanSpace_eq_dirac]`. Conclude with `Measure.dirac_apply_of_mem (Metric.mem_ball_self one_pos)`. Rewrite using `[hball _ (Fin.sum_univ_zero d), Fin.prod_univ_zero, ENNReal.ofReal_one, mul_one]`. Use `tendsto_const_nhds.congr' ?_` and prove the remaining obligations. Use `filter_upwards [self_mem_nhdsWithin] with r hr`.
+
+Establish `hr' : (0 : ℝ) ≤ r` using `le_of_lt hr`. Establish `hset : {x : ∀ i : Fin 0, X i | Real.sqrt (∑ i, ρ i (x i)) ≤ r} = Set.univ`. Use extensionality with `x`. Simplify using `[hr']`. Rewrite using `[hset, Measure.pi_univ]`.
+
+Simplify using the standard rewrite rules. Consider the case `succ n ih`. Introduce `X _ ν _ ρ d C hρm hρ0 hC h`. Establish `hmp` using `measurePreserving_piFinSuccAbove ν 0`. Establish `h2` using `ih (fun j => X (Fin.succAbove 0 j)) (fun j => ν (Fin.succAbove 0 j)) (fun j => ρ (Fin.succAbove 0 j)) (fun j => d (Fin.succAbove 0 j)) (fun j => C (Fin.succAbove 0 j)) (fun j => hρm _) (fun j => hρ0 _) (fun j => hC _) (fun j => h _)`.
+
+Establish `hmeas2 : Measurable fun y : (∀ j : Fin n, X (Fin.succAbove 0 j)) => ∑ j, ρ (Fin.succAbove 0 j) (y j)` using `Finset.measurable_sum _ fun j _ => (hρm _).comp (measurable_pi_apply j)`. Establish `key` using `GlobalTheory.T.tendsto_prod_smallBall_asymptotics (X 0) (∀ j : Fin n, X (Fin.succAbove 0 j)) (ν 0) (Measure.pi fun j => ν (Fin.succAbove 0 j)) (ρ 0) (fun y => ∑ j, ρ (Fin.succAbove 0 j) (y j)) (d 0) (∑ j, d (Fin.succAbove 0 j)) (C 0) (∏ j, C (Fin.succAbove 0 j)) (hρm 0) hmeas2 (h …`. Establish `hsumd : d 0 + ∑ j, d (Fin.succAbove 0 j) = ∑ i, d i` using `(Fin.sum_univ_succAbove d 0).symm`. Establish `hprodC : C 0 * ∏ j, C (Fin.succAbove 0 j) = ∏ i, C i` using `(Fin.prod_univ_succAbove C 0).symm`. Rewrite `key` using `[hsumd, hprodC]`.
+
+Use `key.congr' (Filter.Eventually.of_forall fun r => ?_)` and prove the remaining obligations. Use `congr 1`. Rewrite using `[← hmp.measure_preimage_equiv]`. Use `congr 1`. Use extensionality with `x`.
+
+Express the relevant statement in the definitionally equal form `Real.sqrt (ρ 0 (x 0) + ∑ j, ρ (Fin.succAbove 0 j) (x (Fin.succAbove 0 j))) ≤ r ↔ Real.sqrt (∑ i, ρ i (x i)) ≤ r`. Rewrite using `[Fin.sum_univ_succAbove (fun i => ρ i (x i)) 0]`.
+-/
 theorem smallBall_pi_fin (n : ℕ) : ∀ (X : Fin n → Type) [∀ i, MeasurableSpace (X i)]
     (ν : ∀ i, Measure (X i)) [∀ i, IsFiniteMeasure (ν i)] (ρ : ∀ i, X i → ℝ) (d : Fin n → ℕ)
     (C : Fin n → ℝ), (∀ i, Measurable (ρ i)) → (∀ i x, 0 ≤ ρ i x) → (∀ i, 0 < C i) →
@@ -63,6 +78,21 @@ theorem smallBall_pi_fin (n : ℕ) : ∀ (X : Fin n → Type) [∀ i, Measurable
       Real.sqrt (∑ i, ρ i (x i)) ≤ r
     rw [Fin.sum_univ_succAbove (fun i => ρ i (x i)) 0]
 
+/- English proof (translation)
+Establish `hs : 0 < Real.sqrt w` using `Real.sqrt_pos.2 hw`. Establish `hmap : Filter.Tendsto (fun r : ℝ => r / Real.sqrt w) (nhdsWithin 0 (Set.Ioi 0)) (nhdsWithin 0 (Set.Ioi 0))`. Use `tendsto_nhdsWithin_iff.2 ⟨?_, ?_⟩` and prove the remaining obligations. Establish `h0 : Filter.Tendsto (fun r : ℝ => r / Real.sqrt w) (nhds 0) (nhds (0 / Real.sqrt w))` using `(continuous_id.div_const _).tendsto 0`. Rewrite `h0` using `[zero_div]`.
+
+Conclude with `h0.mono_left nhdsWithin_le_nhds`. Use `filter_upwards [self_mem_nhdsWithin] with r hr`. Conclude with `div_pos hr hs`. Establish `key` using `ENNReal.Tendsto.mul_const (h.comp hmap) (b := ENNReal.ofReal (w ^ (-((d : ℝ) / 2)))) (Or.inr ENNReal.ofReal_ne_top)`. Rewrite using `[mul_comm]`.
+
+Use `key.congr' ?_` and prove the remaining obligations. Use `filter_upwards [self_mem_nhdsWithin] with r hr`. Establish `hr' : (0 : ℝ) < r` using `hr`. Establish `hrs : 0 < r / Real.sqrt w` using `div_pos hr' hs`. Establish `hset : {x | Real.sqrt (w * ρ x) ≤ r} = {x | Real.sqrt (ρ x) ≤ r / Real.sqrt w}`.
+
+Use extensionality with `x`. Simplify using `only [Set.mem_ofPred_eq, Real.sqrt_mul hw.le, le_div_iff₀' hs]`. Establish `hc : w ^ (-((d : ℝ) / 2)) = (Real.sqrt w ^ d)⁻¹`. Rewrite using `[Real.rpow_neg hw.le, Real.sqrt_eq_rpow, ← Real.rpow_natCast, ← Real.rpow_mul hw.le]`. Use `congr 2`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hrd : r ^ d = (r / Real.sqrt w) ^ d * Real.sqrt w ^ d`. Rewrite using `[div_pow, div_mul_cancel₀]`. Conclude with `pow_ne_zero _ hs.ne'`. Establish `ha0 : ENNReal.ofReal ((r / Real.sqrt w) ^ d) ≠ 0`.
+
+Rewrite using `[Ne, ENNReal.ofReal_eq_zero, not_le]`. Conclude with `pow_pos hrs d`. Simplify using `only [Function.comp_apply]`. Rewrite using `[hset, hc, hrd, ENNReal.ofReal_mul (pow_nonneg hrs.le d), ENNReal.ofReal_inv_of_pos (pow_pos hs d)]`. Simplify using `only [ENNReal.div_eq_inv_mul]`.
+
+Rewrite using `[ENNReal.mul_inv (Or.inl ha0) (Or.inl ENNReal.ofReal_ne_top)]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem smallBall_weight {X : Type} [MeasurableSpace X] (ν : Measure X) (ρ : X → ℝ) (d : ℕ)
     (w : ℝ) (hw : 0 < w) (V : ENNReal)
     (h : Filter.Tendsto (fun r : ℝ => ν {x | Real.sqrt (ρ x) ≤ r} / ENNReal.ofReal (r ^ d))
@@ -106,6 +136,15 @@ theorem smallBall_weight {X : Type} [MeasurableSpace X] (ν : Measure X) (ρ : X
   rw [ENNReal.mul_inv (Or.inl ha0) (Or.inl ENNReal.ofReal_ne_top)]
   ring
 
+/- English proof (translation)
+Introduce `ι _ X _ ν _ ρ d w hρm hρ0 hw h`. Establish `hw' : ∀ i, Filter.Tendsto (fun r : ℝ => ν i {x | Real.sqrt (w i * ρ i x) ≤ r} / ENNReal.ofReal (r ^ d i)) (nhdsWithin 0 (Set.Ioi 0)) (nhds (ENNReal.ofReal (w i ^ (-((d i : ℝ) / 2))) * volume (Metric.ball (0 : EuclideanSpace ℝ (Fin (d i))) 1)))` using `fun i => smallBall_weight (ν i) (ρ i) (d i) (w i) (hw i) _ (h i)`. Set `f : Fin (Fintype.card ι) ≃ ι` to `(Fintype.equivFin ι).symm`. Establish `key` using `smallBall_pi_fin (Fintype.card ι) (fun j => X (f j)) (fun j => ν (f j)) (fun j x => w (f j) * ρ (f j) x) (fun j => d (f j)) (fun j => w (f j) ^ (-((d (f j) : ℝ) / 2))) (fun j => (hρm _).const_mul _) (fun j x => mul_nonneg (hw _).le (hρ0 _ x)) (fun j => Real.rpow_pos_of_pos (hw _) …`. Establish `hS : ∑ j, d (f j) = ∑ i, d i` using `Equiv.sum_comp f d`.
+
+Establish `hP : ∏ j, w (f j) ^ (-((d (f j) : ℝ) / 2)) = ∏ i, w i ^ (-((d i : ℝ) / 2))` using `Equiv.prod_comp f (fun i => w i ^ (-((d i : ℝ) / 2)))`. Rewrite `key` using `[hS, hP]`. Establish `hmp` using `measurePreserving_piCongrLeft ν f`. Use `key.congr' (Filter.Eventually.of_forall fun r => ?_)` and prove the remaining obligations. Use `congr 1`.
+
+Rewrite using `[← hmp.measure_preimage_equiv]`. Use `congr 1`. Use extensionality with `g`. Simplify using `only [Set.mem_preimage, Set.mem_ofPred_eq]`. Establish `hsum : ∑ i, w i * ρ i (MeasurableEquiv.piCongrLeft X f g i) = ∑ j, w (f j) * ρ (f j) (g j)`.
+
+Rewrite using `[← Equiv.sum_comp f (fun i => w i * ρ i (MeasurableEquiv.piCongrLeft X f g i))]`. Simplify using `only [MeasurableEquiv.piCongrLeft_apply_apply]`. Rewrite using `[hsum]`.
+-/
 theorem smallBall_pi_weight : ∀ (ι : Type) [Fintype ι] (X : ι → Type) [∀ i, MeasurableSpace (X i)] (ν : ∀ i, Measure (X i)) [∀ i, IsFiniteMeasure (ν i)] (ρ : ∀ i, X i → ℝ) (d : ι → ℕ) (w : ι → ℝ), (∀ i, Measurable (ρ i)) → (∀ i x, 0 ≤ ρ i x) → (∀ i, 0 < w i) → (∀ i, Filter.Tendsto (fun r : ℝ => ν i {x | Real.sqrt (ρ i x) ≤ r} / ENNReal.ofReal (r ^ d i)) (nhdsWithin 0 (Set.Ioi 0)) (nhds (volume (Metric.ball (0 : EuclideanSpace ℝ (Fin (d i))) 1)))) → Filter.Tendsto (fun r : ℝ => Measure.pi ν {x | Real.sqrt (∑ i, w i * ρ i (x i)) ≤ r} / ENNReal.ofReal (r ^ ∑ i, d i)) (nhdsWithin 0 (Set.Ioi 0)) (nhds (ENNReal.ofReal (∏ i, w i ^ (-((d i : ℝ) / 2))) * volume (Metric.ball (0 : EuclideanSpace ℝ (Fin (∑ i, d i))) 1))) := by
   intro ι _ X _ ν _ ρ d w hρm hρ0 hw h
   have hw' : ∀ i, Filter.Tendsto

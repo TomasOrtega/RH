@@ -8,6 +8,9 @@ namespace Formalism.BasicNotions
 open Formalism.FrobeniusOrbits Formalism.MainNotions.G
 open scoped BigOperators
 
+/- English proof (translation)
+Unfold `plGG`. Apply the tactic sequence `split <;> exact (Formalism.HC.Frame.mem_Psi_iff _).2 rfl`.
+-/
 theorem plGG_mem_Psi (D : D7) (z : Bool × HH D) : plGG D z ∈ D.R.Psi := by
   unfold plGG
   split <;> exact (Formalism.HC.Frame.mem_Psi_iff _).2 rfl
@@ -19,12 +22,25 @@ def wPl (D : D7) (j : ℕ) (z : Bool × HH D) : ℝ := wj D j (tauPl D z)
 def posPl (D : D7) (p : ℕ) (z : Bool × HH D) (e : ℕ) : Bool × HH D :=
   (xor z.1 (partner D p z.2 e).1, (partner D p z.2 e).2)
 
+/- English proof (translation)
+Simplify using `[posPl]`.
+-/
 theorem positionPlace_conjugate_partner (D : D7) (p : ℕ) (t : HH D) (e : ℕ) : posPl D p (false, t) e = partner D p t e := by
   simp [posPl]
 
+/- English proof (translation)
+Simplify using `[posPl, partner]`.
+-/
 theorem posPl_zero (D : D7) (p : ℕ) (z : Bool × HH D) : posPl D p z 0 = z := by
   simp [posPl, partner]
 
+/- English proof (translation)
+Unfold `posPl partner`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use `show xor (xor z.1 (decide (IsSg D p ∧ Odd a))) (decide (IsSg D p ∧ Odd b)) = xor z.1 (decide (IsSg D p ∧ Odd (a + b)))`. Rewrite using `[Bool.xor_assoc]`. Use `congr 1`.
+
+Distinguish the cases in `hs : IsSg D p`. Establish `h : ∀ e : ℕ, decide (IsSg D p ∧ Odd e) = decide (Odd e)` using `fun e => decide_eq_decide.2 ⟨fun h => h.2, fun h => ⟨hs, h⟩⟩`. Simplify using `only [h]`. Apply the tactic sequence `by_cases ha : Odd a <;> by_cases hb : Odd b <;> simp [ha, hb, Nat.odd_add, ← Nat.not_odd_iff_even]`. Establish `h : ∀ e : ℕ, decide (IsSg D p ∧ Odd e) = false` using `fun e => decide_eq_false (fun h => hs h.1)`.
+
+Simplify using `only [h, Bool.xor_false]`. Use `show z.2 + a • hP D p + b • hP D p = z.2 + (a + b) • hP D p`. Rewrite using `[add_smul, add_assoc]`.
+-/
 theorem posPl_add (D : D7) (p : ℕ) (z : Bool × HH D) (a b : ℕ) :
     posPl D p (posPl D p z a) b = posPl D p z (a + b) := by
   unfold posPl partner
@@ -50,6 +66,13 @@ instance nP_neZero (D : D7) (p : ℕ) : NeZero (nP D p) := by
   · exact (Nat.mul_pos two_pos (addOrderOf_pos _)).ne'
   · exact (addOrderOf_pos _).ne'
 
+/- English proof (translation)
+Establish `key : ¬ (IsSg D p ∧ Odd (nP D p)) ∧ nP D p • hP D p = 0`. Distinguish the cases in `hs : IsSg D p`. Establish `hn : nP D p = 2 * addOrderOf (2 • hP D p)` using `if_pos hs`. Rewrite using `[hn]`. Use `⟨fun h => (Nat.not_odd_iff_even.2 (even_two_mul _)) h.2, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[mul_comm, mul_smul]`. Conclude with `addOrderOf_nsmul_eq_zero _`. Establish `hn : nP D p = addOrderOf (hP D p)` using `if_neg hs`. Rewrite using `[hn]`. Conclude with `⟨fun h => hs h.1, addOrderOf_nsmul_eq_zero _⟩`.
+
+Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use `show xor z.1 (decide (IsSg D p ∧ Odd (nP D p))) = z.1`. Rewrite using `[decide_eq_false key.1, Bool.xor_false]`. Use `show z.2 + nP D p • hP D p = z.2`. Rewrite using `[key.2, add_zero]`.
+-/
 theorem posPl_period (D : D7) (p : ℕ) (z : Bool × HH D) : posPl D p z (nP D p) = z := by
   have key : ¬ (IsSg D p ∧ Odd (nP D p)) ∧ nP D p • hP D p = 0 := by
     by_cases hs : IsSg D p
@@ -67,14 +90,25 @@ theorem posPl_period (D : D7) (p : ℕ) (z : Bool × HH D) : posPl D p z (nP D p
   · show z.2 + nP D p • hP D p = z.2
     rw [key.2, add_zero]
 
+/- English proof (translation)
+Proceed by induction on `c with`. Consider the case `zero => simpa using posPl_zero D p z`. Consider the case `succ c ih => rw [Nat.mul_succ, ← posPl_add, ih, posPl_period]`.
+-/
 theorem posPl_mul_period (D : D7) (p : ℕ) (z : Bool × HH D) (c : ℕ) : posPl D p z (nP D p * c) = z := by
   induction c with
   | zero => simpa using posPl_zero D p z
   | succ c ih => rw [Nat.mul_succ, ← posPl_add, ih, posPl_period]
 
+/- English proof (translation)
+Use `conv_rhs => rw [← Nat.div_add_mod e (nP D p), ← posPl_add, posPl_mul_period]`.
+-/
 theorem posPl_mod (D : D7) (p : ℕ) (z : Bool × HH D) (e : ℕ) : posPl D p z (e % nP D p) = posPl D p z e := by
   conv_rhs => rw [← Nat.div_add_mod e (nP D p), ← posPl_add, posPl_mul_period]
 
+/- English proof (translation)
+Introduce and unpack `y ⟨xs, h0, hs, hc, rfl⟩`. Use `⟨fun s i => xs (s - c) i, fun s i => h0 _ _, fun s i h => hs _ _ h, fun s => ?_, ?_⟩` and prove the remaining obligations. Establish `h` using `hc (s - c)`. Establish `e : ∀ i : ℕ, s - (i : ZMod d) - c = s - c - (i : ZMod d)` using `fun i => sub_right_comm _ _ _`. Simplify using `only [sub_add_cancel] at h`.
+
+Simplify using `only [e]`. Conclude with `h`. Conclude with `(Equiv.sum_comp (Equiv.subRight c) (fun s => ∑ i ∈ Finset.range d, xs s i)).symm`.
+-/
 theorem lpFeasible_shift_sub (l d : ℕ) [NeZero d] (Ds : ZMod d → ℝ) (c : ZMod d) :
     lpFeasible l d (fun s => Ds (s + c)) ⊆ lpFeasible l d Ds := by
   rintro y ⟨xs, h0, hs, hc, rfl⟩
@@ -86,6 +120,11 @@ theorem lpFeasible_shift_sub (l d : ℕ) [NeZero d] (Ds : ZMod d → ℝ) (c : Z
     exact h
   · exact (Equiv.sum_comp (Equiv.subRight c) (fun s => ∑ i ∈ Finset.range d, xs s i)).symm
 
+/- English proof (translation)
+Establish `hset : lpFeasible l d (fun s => Ds (s + c)) = lpFeasible l d Ds`. Use `Set.Subset.antisymm (lpFeasible_shift_sub l d Ds c) ?_` and prove the remaining obligations. Establish `h` using `lpFeasible_shift_sub l d (fun s => Ds (s + c)) (-c)`. Simplify using `using h`. Establish `hsum : ∑ s, Ds (s + c) = ∑ s, Ds s` using `Equiv.sum_comp (Equiv.addRight c) Ds`.
+
+Unfold `lpF`. Rewrite using `[hset, hsum]`.
+-/
 theorem lpF_shift (l d : ℕ) [NeZero d] (Ds : ZMod d → ℝ) (c : ZMod d) :
     lpF l d (fun s => Ds (s + c)) = lpF l d Ds := by
   have hset : lpFeasible l d (fun s => Ds (s + c)) = lpFeasible l d Ds := by
@@ -99,6 +138,9 @@ theorem lpF_shift (l d : ℕ) [NeZero d] (Ds : ZMod d → ℝ) (c : ZMod d) :
 def FOrb (D : D7) (j p : ℕ) (z : Bool × HH D) : ℝ :=
   lpF p (nP D p) (fun s => ((D.R.k : ℝ) - 1) * wPl D j (posPl D p z s.val))
 
+/- English proof (translation)
+Unfold `FOrb`. Rewrite using `[← lpF_shift p (nP D p) (fun s => ((D.R.k : ℝ) - 1) * wPl D j (posPl D p z s.val)) (e : ZMod (nP D p))]`. Use `congr 1`. Use function extensionality and compare the values at `s`. Rewrite using `[posPl_add, ZMod.val_add, ZMod.val_natCast, posPl_mod, ← posPl_add D p z s.val, posPl_mod, posPl_add, add_comm]`.
+-/
 theorem FOrb_step (D : D7) (j p : ℕ) (z : Bool × HH D) (e : ℕ) : FOrb D j p (posPl D p z e) = FOrb D j p z := by
   unfold FOrb
   rw [← lpF_shift p (nP D p) (fun s => ((D.R.k : ℝ) - 1) * wPl D j (posPl D p z s.val)) (e : ZMod (nP D p))]
@@ -134,6 +176,15 @@ def Fval {D : D7} (L : SizeData₂ D) (j : ℕ) (w : D.what₂.places.Pl) : ℝ 
 def SizeData₂.FDef {D : D7} (L : SizeData₂ D) : Prop :=
   ∀ j ∈ SizeData₂.lifts D, ∀ w, L.F j w = Fval L j w
 
+/- English proof (translation)
+Establish `h1 : xor y.1 (decide (IsSg D p ∧ Odd c)) = y.1` using `congrArg Prod.fst h`. Establish `h2 : y.2 + c • hP D p = y.2` using `congrArg Prod.snd h`. Establish `h2' : c • hP D p = 0` using `by simpa using h2`. Establish `h1' : ¬ (IsSg D p ∧ Odd c)`. Introduce `hc`.
+
+Rewrite `h1` using `[decide_eq_true hc]`. Apply the tactic sequence `cases hy : y.1 <;> simp [hy] at h1`. Distinguish the cases in `hs : IsSg D p`. Establish `hn : nP D p = 2 * addOrderOf (2 • hP D p)` using `if_pos hs`. Establish `hev : Even c` using `Nat.not_odd_iff_even.1 (fun ho => h1' ⟨hs, ho⟩)`.
+
+Take `⟨a, rfl⟩` from `hev`. Establish `h3 : a • (2 • hP D p) = 0`. Rewrite using `[← mul_smul, mul_two]`. Conclude with `h2'`. Rewrite using `[hn, ← two_mul]`.
+
+Conclude with `Nat.mul_dvd_mul_left 2 (addOrderOf_dvd_of_nsmul_eq_zero h3)`. Establish `hn : nP D p = addOrderOf (hP D p)` using `if_neg hs`. Rewrite using `[hn]`. Conclude with `addOrderOf_dvd_of_nsmul_eq_zero h2'`.
+-/
 theorem posPl_fix (D : D7) (p : ℕ) (y : Bool × HH D) (c : ℕ) (h : posPl D p y c = y) : nP D p ∣ c := by
   have h1 : xor y.1 (decide (IsSg D p ∧ Odd c)) = y.1 := congrArg Prod.fst h
   have h2 : y.2 + c • hP D p = y.2 := congrArg Prod.snd h
@@ -154,6 +205,11 @@ theorem posPl_fix (D : D7) (p : ℕ) (y : Bool × HH D) (c : ℕ) (h : posPl D p
     rw [hn]
     exact addOrderOf_dvd_of_nsmul_eq_zero h2'
 
+/- English proof (translation)
+Establish `key : ∀ a b : ℕ, a ≤ b → b < nP D p → posPl D p z a = posPl D p z b → a = b`. Introduce `a b hab hb h`. Take `⟨c, rfl⟩` from `Nat.exists_eq_add_of_le hab`. Rewrite `h` using `[← posPl_add]`. Establish `hd` using `posPl_fix D p _ c h.symm`.
+
+Establish `hc : c = 0` using `Nat.eq_zero_of_dvd_of_lt hd (by omega)`. Use linear arithmetic over natural numbers and integers. Break down `le_total a b with hab | hab` into its components or cases. Conclude with `key a b hab hb h`. Conclude with `(key b a hab ha h.symm).symm`.
+-/
 theorem posPl_inj (D : D7) (p : ℕ) (z : Bool × HH D) (a b : ℕ) (ha : a < nP D p) (hb : b < nP D p)
     (h : posPl D p z a = posPl D p z b) : a = b := by
   have key : ∀ a b : ℕ, a ≤ b → b < nP D p → posPl D p z a = posPl D p z b → a = b := by
@@ -167,6 +223,13 @@ theorem posPl_inj (D : D7) (p : ℕ) (z : Bool × HH D) (a b : ℕ) (ha : a < nP
   · exact key a b hab hb h
   · exact (key b a hab ha h.symm).symm
 
+/- English proof (translation)
+Establish `hn : (nP D p : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 (NeZero.ne _)`. Establish `hpos : 0 < nP D p` using `Nat.pos_of_ne_zero (NeZero.ne _)`. Establish `h1 : ∑ x ∈ T ×ˢ Finset.range (nP D p), FOrb D j p (posPl D p x.1 x.2) = ∑ z : Bool × HH D, FOrb D j p z`. Use `Finset.sum_bij (fun x _ => posPl D p x.1 x.2) (fun _ _ => Finset.mem_univ _) ?_ ?_ (fun _ _ => rfl)` and prove the remaining obligations. Introduce and unpack `⟨r, a⟩ hx ⟨r', b⟩ hx' h`.
+
+Rewrite `hx`, `hx'` using `[Finset.mem_product, Finset.mem_range]`. Establish `hr : r = r'` using `(hT (posPl D p r a)).unique ⟨hx.1, a, rfl⟩ ⟨hx'.1, b, h.symm⟩`. Substitute `hr` using the available equality. Rewrite using `[posPl_inj D p r a b hx.2 hx'.2 h]`. Introduce `z _`.
+
+Take `⟨r, ⟨hr, e, he⟩, -⟩` from `hT z`. Conclude with `⟨(r, e % nP D p), Finset.mem_product.2 ⟨hr, Finset.mem_range.2 (Nat.mod_lt _ hpos)⟩, by rw [posPl_mod, he]⟩`. Rewrite using `[← h1, Finset.sum_product]`. Simplify using `only [FOrb_step, Finset.sum_const, Finset.card_range, nsmul_eq_mul]`. Rewrite using `[← Finset.mul_sum, mul_div_cancel_left₀ _ hn]`.
+-/
 theorem sum_orbits (D : D7) (j p : ℕ) (T : Finset (Bool × HH D))
     (hT : ∀ z, ∃! r, r ∈ T ∧ ∃ e : ℕ, posPl D p r e = z) :
     (∑ z : Bool × HH D, FOrb D j p z) / (nP D p : ℝ) = ∑ r ∈ T, FOrb D j p r := by
@@ -188,6 +251,9 @@ theorem sum_orbits (D : D7) (j p : ℕ) (T : Finset (Bool × HH D))
   simp only [FOrb_step, Finset.sum_const, Finset.card_range, nsmul_eq_mul]
   rw [← Finset.mul_sum, mul_div_cancel_left₀ _ hn]
 
+/- English proof (translation)
+Unfold `Host.cls primeClass at h`. Apply the tactic sequence `split_ifs at h <;> simp_all`.
+-/
 theorem cls_ramD {D : D7} {p : ℕ} (h : D.host.cls p = PrimeClass.ramD) : p = D.host.d := by
   unfold Host.cls primeClass at h
   split_ifs at h <;> simp_all
@@ -196,12 +262,21 @@ section Cases
 
 variable {D : D7} (L : SizeData₂ D) (j : ℕ) {p : ℕ}
 
+/- English proof (translation)
+The claim follows from `if_pos hg`.
+-/
 theorem FvalP_g (hg : p ∈ L.gTypes) : FvalP L j p = FTypeG D j := if_pos hg
 
+/- English proof (translation)
+Unfold `FvalP`. Rewrite using `[if_neg hg, if_pos hd]`.
+-/
 theorem FvalP_d (hg : p ∉ L.gTypes) (hd : D.host.cls p = PrimeClass.ramD) : FvalP L j p = FRamD D j := by
   unfold FvalP
   rw [if_neg hg, if_pos hd]
 
+/- English proof (translation)
+Establish `hd : D.host.cls p ≠ PrimeClass.ramD`. Apply the tactic sequence `rcases hc with h | h <;> rw [h] <;> simp`. Unfold `FvalP`. Rewrite using `[if_neg hg, if_neg hd, if_pos ⟨hc, hX⟩]`.
+-/
 theorem FvalP_inert (hg : p ∉ L.gTypes) (hc : IsResidueClassZero D p ∨ IsSg D p) (hX : (p : ℝ) ≤ L.sc.X'' D.R.n) :
     FvalP L j p = FInert D j p := by
   have hd : D.host.cls p ≠ PrimeClass.ramD := by
@@ -209,6 +284,11 @@ theorem FvalP_inert (hg : p ∉ L.gTypes) (hc : IsResidueClassZero D p ∨ IsSg 
   unfold FvalP
   rw [if_neg hg, if_neg hd, if_pos ⟨hc, hX⟩]
 
+/- English proof (translation)
+Establish `hd : D.host.cls p ≠ PrimeClass.ramD`. Apply the tactic sequence `rcases hc with h | h | h <;> rw [h] <;> simp`. Establish `hi : ¬ ((IsResidueClassZero D p ∨ IsSg D p) ∧ (p : ℝ) ≤ L.sc.X'' D.R.n)`. Apply the tactic sequence `rintro ⟨h' | h', -⟩ <;> rcases hc with h | h | h <;> exact absurd (h'.symm.trans h) (by decide)`. Unfold `FvalP`.
+
+Rewrite using `[if_neg hg, if_neg hd, if_neg hi]`.
+-/
 theorem FvalP_split (hg : p ∉ L.gTypes) (hc : D.host.cls p = PrimeClass.splitK ∨ D.host.cls p = PrimeClass.ram2 ∨
     D.host.cls p = PrimeClass.ramQ) : FvalP L j p = 0 := by
   have hd : D.host.cls p ≠ PrimeClass.ramD := by
@@ -218,12 +298,18 @@ theorem FvalP_split (hg : p ∉ L.gTypes) (hc : D.host.cls p = PrimeClass.splitK
   unfold FvalP
   rw [if_neg hg, if_neg hd, if_neg hi]
 
+/- English proof (translation)
+Unfold `FvalP`. Rewrite using `[if_neg hg, if_neg (fun h => hd (cls_ramD h)), if_neg (fun h => absurd h.2 (not_le.2 hX))]`.
+-/
 theorem FvalP_above (hX : L.sc.X'' D.R.n < (p : ℝ)) (hg : p ∉ L.gTypes) (hd : p ≠ D.host.d) : FvalP L j p = 0 := by
   unfold FvalP
   rw [if_neg hg, if_neg (fun h => hd (cls_ramD h)), if_neg (fun h => absurd h.2 (not_le.2 hX))]
 
 end Cases
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[Nat.cast_succ]`. Conclude with `le_trans (le_min ih (by rw [v.map_one])) (v.map_add _ _)`.
+-/
 theorem addVal_natCast_nonneg {K : Type*} [Field K] (v : AddValuation K (WithTop ℤ)) (n : ℕ) : 0 ≤ v (n : K) := by
   induction n with
   | zero => simp
@@ -231,6 +317,19 @@ theorem addVal_natCast_nonneg {K : Type*} [Field K] (v : AddValuation K (WithTop
     rw [Nat.cast_succ]
     exact le_trans (le_min ih (by rw [v.map_one])) (v.map_add _ _)
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Use `set v := D.what₂.places.val (D.what₂.places.conj w) with hv`. Use `set q := D.what₂.places.resChar (D.what₂.places.conj w) with hq`. Use `set p := D.what₂.places.resChar w with hp`. Establish `hqpr : q.Prime` using `D.what₂.places.resChar_prime _`.
+
+Establish `hppr : p.Prime` using `D.what₂.places.resChar_prime _`. Establish `hvq : 0 < v (q : D.what₂.LL)`. Rewrite using `[hv, hq, D.what₂.places.val_resChar]`. Conclude with `D.what₂.places.ramIdx_pos _` after adjusting the coercions. Establish `hvp : 0 < v (p : D.what₂.LL)`.
+
+Rewrite using `[hv, D.conj_val, star_natCast, hp, D.what₂.places.val_resChar]`. Conclude with `D.what₂.places.ramIdx_pos _` after adjusting the coercions. Take `⟨c, -, hc⟩` from `Nat.exists_mul_mod_eq_one_of_coprime ((Nat.coprime_primes hppr hqpr).2 (fun h => hne h.symm)) hqpr.one_lt`. Establish `h1 : ((p * c : ℕ) : D.what₂.LL) - ((q * (p * c / q) : ℕ) : D.what₂.LL) = 1`. Use `Nat.div_add_mod (p * c) q` as an intermediate fact.
+
+Rewrite `this` using `[hc]`. Rewrite using `[sub_eq_iff_eq_add, add_comm]`. Conclude with `this.symm` after adjusting the coercions. Establish `h2 : 0 < v ((p * c : ℕ) : D.what₂.LL)`. Rewrite using `[Nat.cast_mul, v.map_mul]`.
+
+Conclude with `add_pos_of_pos_of_nonneg hvp (addVal_natCast_nonneg v c)`. Establish `h3 : 0 < v ((q * (p * c / q) : ℕ) : D.what₂.LL)`. Rewrite using `[Nat.cast_mul, v.map_mul]`. Conclude with `add_pos_of_pos_of_nonneg hvq (addVal_natCast_nonneg v _)`. Establish `h4` using `v.map_sub ((p * c : ℕ) : D.what₂.LL) ((q * (p * c / q) : ℕ) : D.what₂.LL)`.
+
+Rewrite `h4` using `[h1, v.map_one]`. Conclude with `absurd (lt_of_lt_of_le (lt_min h2 h3) h4) (lt_irrefl _)`.
+-/
 theorem resChar_conj (D : D7) (w : D.what₂.places.Pl) :
     D.what₂.places.resChar (D.what₂.places.conj w) = D.what₂.places.resChar w := by
   by_contra hne
@@ -261,6 +360,9 @@ theorem resChar_conj (D : D7) (w : D.what₂.places.Pl) :
   rw [h1, v.map_one] at h4
   exact absurd (lt_of_lt_of_le (lt_min h2 h3) h4) (lt_irrefl _)
 
+/- English proof (translation)
+Unfold `Fval`. Rewrite using `[resChar_conj]`.
+-/
 theorem Fval_conj {D : D7} (L : SizeData₂ D) (j : ℕ) (w : D.what₂.places.Pl) :
     Fval L j (D.what₂.places.conj w) = Fval L j w := by
   unfold Fval
@@ -275,6 +377,9 @@ def SizeData₂.withFval {D : D7} (L : SizeData₂ D) (hs : ∀ j w, w ∉ L.sup
     F_conj := fun j w => Fval_conj L j w
     F_above := fun j _ h1 h2 h3 => FvalP_above L j h1 h2 h3 }
 
+/- English proof (translation)
+Introduce `_ _ _` and use `rfl`.
+-/
 theorem SizeData₂.withFval_FDef {D : D7} (L : SizeData₂ D) (hs : ∀ j w, w ∉ L.supp → Fval L j w = 0)
     (hu : ∀ w, D.what₂.muAt w = D.what₂.mu0 → ∀ j, 1 ≤ j → j ≤ D.R.m → Fval L j w = 0) :
     (L.withFval hs hu).FDef := fun _ _ _ => rfl

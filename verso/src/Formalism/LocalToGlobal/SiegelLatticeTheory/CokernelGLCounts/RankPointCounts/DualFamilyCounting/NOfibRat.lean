@@ -20,12 +20,56 @@ namespace Formalism.L2.SG.Pf.NcReal.JX.NOf
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Rewrite using `[Formalism.L2.SG.Pf.LatDict.mem_hermitianStandardLattice_iff_pairing_integral X y]`. Conclude with `⟨fun h => Formalism.L2.SG.Pf.Level.incl_mem_Lf X _ h, fun h => Formalism.L2.SG.Pf.Tau.TraceIntegralityAlt.mem_L_of_inclE_mem X.B.I _ h⟩`.
+-/
 theorem mem_base_lattice_iff_adelic {D : D7} (X : HidaSetting D) (y : (VS D).V) :
     y ∈ (VS D).L0 ↔ incl X.B.I (X.crd y) ∈ X.B.I.Lf := by
   rw [Formalism.L2.SG.Pf.LatDict.mem_hermitianStandardLattice_iff_pairing_integral X y]
   exact ⟨fun h => Formalism.L2.SG.Pf.Level.incl_mem_Lf X _ h,
     fun h => Formalism.L2.SG.Pf.Tau.TraceIntegralityAlt.mem_L_of_inclE_mem X.B.I _ h⟩
 
+/- English proof (translation)
+Introduce `D X u s`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨γ, hG, rfl, hN, hF, hk⟩`. Establish `hK2` using `Formalism.L2.SG.Closed.level_subgroup_properties X`. Establish `hγK : γ.2 ∈ X.B.I.Kset`.
+
+Establish `h1 : (X.xu u)⁻¹ * γ.2 * X.xu u ∈ X.B.I.Kset` using `hK2.2.1 _ hk`. Establish `e : γ.2 = X.xu u * ((X.xu u)⁻¹ * γ.2 * X.xu u) * (X.xu u)⁻¹` using `by group`. Rewrite using `[e]`. Conclude with `unitaryCongruence.K_mul X.B.I (unitaryCongruence.K_mul X.B.I (X.xu_K u) h1) (unitaryCongruence.K_inv X.B.I (X.xu_K u))`. Take `⟨M, hM, hinf, hfin⟩` from `hG`.
+
+Use `⟨γ, matEC X M, ⟨M, hM, hinf, hfin, matE_crdC X M⟩, rfl, ?_⟩` and prove the remaining obligations. Take `⟨v⟩ : Nonempty (InfinitePlace X.B.I.F)` from `inferInstance`. Establish `hGv : ∀ y, uMat (γ.1 v) *ᵥ rvHom X.B.I v y = rvHom X.B.I v ((M : Matrix _ _ _) *ᵥ y)`. Introduce `y`. Rewrite using `[rvHom_apply, rvHom_apply, hinf v]`.
+
+Conclude with `rv_mulVec X v _ y`. Establish `hsub : ∀ y, (uMat (γ.1 v) - 1) *ᵥ rv X.B.I v y = rv X.B.I v (((M : Matrix _ _ _) - 1) *ᵥ y)` using `fun y => tr_sub (rvHom X.B.I v) _ _ hGv y`. Establish `hcrdn : ∀ y, X.crd (matEC X M y - y) = ((M : Matrix _ _ _) - 1) *ᵥ X.crd y`. Introduce `y`. Rewrite using `[crd_sub', matE_crdC, Matrix.sub_mulVec, Matrix.one_mulVec]`.
+
+Establish `hback : ∀ (y : (VS D).V) (T : Set (Fin D.R.rS)), ((M : Matrix _ _ _) - 1) *ᵥ X.crd y ∈ Submodule.span X.B.I.E (X.eR '' T) → matEC X M y - y ∈ Submodule.span D.host.E (X.eX '' T)`. Introduce `y T hy`. Rewrite `hy` using `[← hcrdn]`. Use `toV_span X hy` as an intermediate fact. Rewrite `this` using `[toV_crd]`. Then use the resulting hypothesis.
+
+Establish `hInN` using `hN v`. Use `⟨⟨matE_isomC X M hM, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Establish `key : ∀ y, matEC X M y ∈ (VS D).L0 ↔ y ∈ (VS D).L0`. Introduce `y`. Rewrite using `[mem_base_lattice_iff_adelic, mem_base_lattice_iff_adelic, matE_inclC, ← hfin]`.
+
+Conclude with `(Formalism.L2.SG.Pf.UnipB.kset_apply X hγK _).symm`. Use `show Formalism.HermitianLatticesTheory.gmap (matEC X M) (VS D).L0 = (VS D).L0`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz, rfl⟩`.
+
+Conclude with `(key z).2 hz`. Introduce `hy`. Use `⟨(matEC X M).symm y, (key _).1 (by simpa using hy), ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules. Introduce `j x hx`.
+
+Express the relevant statement in the definitionally equal form `x ∈ Submodule.span D.host.E ((X.Fu u).e '' {i | i.1 < j + 1}) at hx`. Express the relevant statement in the definitionally equal form `_ ∈ Submodule.span D.host.E ((X.Fu u).e '' {i | i.1 < j})`. Rewrite `hx`, the goal using `[X.Fu_e]`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`.
+
+Take `⟨a, ha, rfl⟩` from `hy`. Establish `h1` using `hInN.1.1 a`. Rewrite `h1` using `[hsub]`. Establish `h2 : rv X.B.I v (((M : Matrix _ _ _) - 1) *ᵥ X.eR a) ∈ Submodule.span ℂ (rv X.B.I v '' (X.eR '' {b | b.1 < a.1}))`. Rewrite using `[Set.image_image]`.
+
+Conclude with `h1`. Establish `h3` using `rv_desc X v _ _ h2`. Establish `h4 : ((M : Matrix _ _ _) - 1) *ᵥ X.crd (X.eX a) ∈ Submodule.span X.B.I.E (X.eR '' {b | b.1 < j})`. Use `Submodule.span_mono (Set.image_mono fun b hb => ?_) h3` and prove the remaining obligations. Establish `: a.1 < j + 1` using `ha`.
+
+Use `show b.1 < j`. Establish `: b.1 < a.1` using `hb`. Use linear arithmetic over natural numbers and integers. Conclude with `hback _ _ h4`. Consider the case `zero => simp`.
+
+Consider the case `add a b _ _ ha hb`. Rewrite using `[map_add, add_sub_add_comm]`. Conclude with `add_mem ha hb`. Consider the case `smul c a _ ha`. Rewrite using `[map_smul, ← smul_sub]`.
+
+Conclude with `Submodule.smul_mem _ _ ha`. Introduce `x hx`. Express the relevant statement in the definitionally equal form `x ∈ orth (VS D) (Submodule.span D.host.E (Set.range (X.Fu u).e)) at hx`. Express the relevant statement in the definitionally equal form `_ ∈ Submodule.span D.host.E (Set.range (X.Fu u).e)`. Rewrite `hx`, the goal using `[X.Fu_e]`.
+
+Establish `hzero : ∀ a, hJ (X.B.I.ε v) (rv X.B.I v (X.eR a)) (rv X.B.I v (X.crd x)) = 0`. Introduce `a`. Rewrite using `[hJ_rv]`. Establish `h0 : hE X (X.eR a) (X.crd x) = 0`. Apply `X.ιE.injective` to reduce the goal to its premises.
+
+Rewrite using `[iota_hE, map_zero, HidaSetting.eR, toV_crd, toV_crd]`. Conclude with `(mem_orth_iff _ _).1 hx _ (Submodule.subset_span ⟨a, rfl⟩)`. Rewrite using `[h0, map_zero]`. Establish `h1` using `hInN.2 _ hzero`. Rewrite `h1` using `[hsub]`.
+
+Establish `huniv : {b : Fin D.R.rS | b.1 < D.R.rS} = Set.univ` using `Set.eq_univ_of_forall fun b => b.2`. Establish `h2 : rv X.B.I v (((M : Matrix _ _ _) - 1) *ᵥ X.crd x) ∈ Submodule.span ℂ (rv X.B.I v '' (X.eR '' {b | b.1 < D.R.rS}))`. Rewrite using `[Set.image_image]`. Conclude with `h1`. Establish `h3` using `hback x _ (rv_desc X v _ _ h2)`.
+
+Rewrite `h3` using `[huniv, Set.image_univ]`. Then use the resulting hypothesis. Introduce and unpack `⟨x, n, hx, rfl, hn⟩`. Establish `hNf` using `nLamNfin_holds D X u _ x n hx hn`. Establish `hlat : ∀ y : (VS D).V, y ∈ (VS D).L0 ↔ X.B.I.fmat (((1 : Hfin X u) : X.B.I.Gf) * X.xu u)⁻¹ *ᵥ incl X.B.I (X.crd y) ∈ X.B.I.Lf`. Introduce `y`.
+
+Rewrite using `[mem_base_lattice_iff_adelic]`. Simplify using `only [OneMemClass.coe_one, one_mul]`. Conclude with `Formalism.L2.SG.Pf.UnipB.kset_apply X (unitaryCongruence.K_inv X.B.I (X.xu_K u)) _`. Establish `hc` using `(Formalism.L2.SG.Pf.VanishNConj.core X u (Formalism.L2.SG.Pf.unipotent_in_level X u) 1 hlat hn hx).1`. Simplify using `only [OneMemClass.coe_one, one_mul] at hc`.
+
+Conclude with `⟨x, ratLink_mem X hx, rfl, nLamNinf_holds D X u _ x n hx hn, hNf, hc⟩`.
+-/
 theorem noratC_holds : NOratC := by
   intro D X u s
   constructor

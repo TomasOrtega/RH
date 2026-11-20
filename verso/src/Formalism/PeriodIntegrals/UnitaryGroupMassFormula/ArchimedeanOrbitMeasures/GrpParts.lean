@@ -10,9 +10,19 @@ open MeasureTheory Topology Filter Metric Matrix Formalism.BasicNotions Formalis
 open scoped TensorProduct
 
 set_option backward.isDefEq.respectTransparency false in
+/- English proof (translation)
+The claim follows from `open scoped Norms.Operator in NormedSpace.exp_continuous`.
+-/
 theorem continuous_matExp (n : ℕ) : Continuous (NormedSpace.exp : Matrix (Fin n) (Fin n) ℂ → Matrix (Fin n) (Fin n) ℂ) :=
   open scoped Norms.Operator in NormedSpace.exp_continuous
 
+/- English proof (translation)
+Apply `continuous_induced_rng.2` to reduce the goal to its premises. Rewrite using `[Units.continuous_iff]`. Prove the components needed by the constructor for the conclusion. Establish `e : (Units.val ∘ Subtype.val ∘ fun y => expU ε (f y)) = fun y => NormedSpace.exp (f y)`. Use function extensionality and compare the values at `fun y => expU_val ε _ (hL y)`.
+
+Rewrite using `[e]`. Conclude with `(continuous_matExp n).comp hf`. Establish `e : (fun x => ((((Subtype.val ∘ fun y => expU ε (f y)) x)⁻¹ : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ)) = fun y => NormedSpace.exp (-f y)`. Use function extensionality and compare the values at `y`. Apply `Units.inv_eq_of_mul_eq_one_right` to reduce the goal to its premises.
+
+Use `show (((expU ε (f y) : Formalism.REAL.UJ ε) : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ) * NormedSpace.exp (-f y) = 1`. Rewrite using `[expU_val ε _ (hL y), ← Matrix.exp_add_of_commute (f y) (-f y) (Commute.neg_right (Commute.refl (f y))), add_neg_cancel, NormedSpace.exp_zero]`. Rewrite using `[e]`. Conclude with `(continuous_matExp n).comp hf.neg`.
+-/
 theorem continuous_expU {n : ℕ} (ε : Fin n → Bool) {Y : Type} [TopologicalSpace Y]
     (f : Y → Matrix (Fin n) (Fin n) ℂ) (hf : Continuous f)
     (hL : ∀ y, (f y)ᴴ * Formalism.REAL.Jm ε + Formalism.REAL.Jm ε * f y = 0) : Continuous (fun y => expU ε (f y)) := by
@@ -34,6 +44,9 @@ theorem continuous_expU {n : ℕ} (ε : Fin n → Bool) {Y : Type} [TopologicalS
     rw [e]
     exact (continuous_matExp n).comp hf.neg
 
+/- English proof (translation)
+Establish `hLc : Continuous L` using `L.continuous_of_finiteDimensional`. Establish `hg : Continuous (fun x => ((fun v => expU (X.B.I.ε v) (L x v)) : X.B.I.Ginf))` using `continuous_pi fun v => continuous_expU _ (fun x => L x v) ((continuous_apply v).comp hLc) (fun x => (hL.1 x v).1)`. Conclude with `(MassDataMassesW.continuous_toInf X hb).comp ((continuous_const.mul hg).mul continuous_const)`.
+-/
 theorem continuous_kap0_of_lieCompl {D : D7} (X : HidaSetting D) (hb : Formalism.L2.SG.AdBridge.AdBridgeIso X.B.I) (c : X.B.I.Ginf)
     (S : NumberField.InfinitePlace X.B.I.F → Finset (Fin X.B.I.n)) {ι : Type} [Fintype ι]
     (L : EuclideanSpace ℝ ι →ₗ[ℝ] (NumberField.InfinitePlace X.B.I.F → Matrix (Fin X.B.I.n) (Fin X.B.I.n) ℂ))
@@ -100,6 +113,23 @@ def GrpInj : Prop := ∀ {D : D7} (X : HidaSetting D) (u' : D.what₂.Word) hb c
           MulAction.stabilizer (HA (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J) (Y0 X u') → a = b) ∧
       Set.InjOn (chiOf X hb c L₁) (ball 0 r)
 
+/- English proof (translation)
+Introduce `D X u' ψ hT μinf νinf fibInf hP hb c S ι _ L hc hL`. Take `⟨η, hη, L₁, hB⟩` from `h0 X S`. Establish `ctx : StdCtx X u' hb c S L L₁` using `⟨⟨ψ, hT, μinf, νinf, fibInf, hP⟩, hc, hL, hB⟩`. Establish `hst` using `hS X u' hb c S L L₁ ctx`. Take `⟨r1, hr1, d, hdc, hd0, hdens⟩` from `hD X u' hb c S L L₁ ctx`.
+
+Take `⟨ν, r2, e, hL', hSF, h0', hf, hr2, hec, he0, hvol, hνd⟩` from `hH X u' hb c S L L₁ ctx hst`. Take `⟨r3, hr3, hinj, hχi⟩` from `hI X u' hb c S L L₁ ctx`. Establish `hr : 0 < min r1 (min r2 r3)` using `lt_min hr1 (lt_min hr2 hr3)`. Establish `h1 : min r1 (min r2 r3) ≤ r1` using `min_le_left _ _`. Establish `h2 : min r1 (min r2 r3) ≤ r2` using `(min_le_right _ _).trans (min_le_left _ _)`.
+
+Establish `h3 : min r1 (min r2 r3) ≤ r3` using `(min_le_right _ _).trans (min_le_right _ _)`. Establish `hχc : Continuous (fun y => (⟨chiOf X hb c L₁ y, hst y⟩ : MulAction.stabilizer (HA (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J) (Y0 X u')))`. Apply `Continuous.subtype_mk` to reduce the goal to its premises. Establish `hLc : Continuous L₁` using `L₁.continuous_of_finiteDimensional`. Conclude with `(MassDataMassesW.continuous_toInf X hb).comp ((continuous_const.mul (continuous_pi fun v => continuous_expU _ (fun y => L₁ y v) ((continuous_apply v).comp hLc) (fun y => (hB.1 y v).1))).mul continuous_const)`.
+
+Establish `hgpos : 0 < Formalism.MainNotions.S.AutInst.gaugeU X.B.I` using `Finset.prod_pos fun v _ => (hP.2.2.2.1 v).2`. Establish `hdet1 : (ContinuousLinearMap.id ℝ (EuclideanSpace ℝ ι × EuclideanSpace ℝ η)).det = 1`. Simplify using `[ContinuousLinearMap.det]`. Use `⟨η, hη, fun y => ⟨chiOf X hb c L₁ y, hst y⟩, min r1 (min r2 r3), fun p => kap0 X hb c L p.1 * chiOf X hb c L₁ p.2, ball 0 (min r1 (min r2 r3)), d, id, fun _ => ContinuousLinearMap.id ℝ _, e, ν, hL', hSF, h0', hf, hr, (continuous_kap0_of_lieCompl X hb c S L hL).continuousOn, hχc.c …` and prove the remaining obligations. Introduce `a ha b hb' hab`.
+
+Conclude with `hχi (ball_subset_ball h3 ha) (ball_subset_ball h3 hb') (congrArg Subtype.val hab)`. Introduce `a ha b hb' hm`. Conclude with `hinj a (ball_subset_ball h3 ha) b (ball_subset_ball h3 hb') hm`. Introduce `A hA hAm`. Conclude with `hdens A (hA.trans (ball_subset_ball h1)) hAm`.
+
+Introduce `p _`. Conclude with `hasFDerivWithinAt_id p _`. Rewrite using `[Set.image_id]`. Introduce `p _`. Both sides reduce to the same expression.
+
+Introduce `s hs hsr`. Conclude with `hνd s hs (hsr.trans h2)`. Simplify using `only [hdet1]`. Conclude with `continuousAt_const`. Simplify using `only [hdet1, abs_one, one_mul, id]`.
+
+Rewrite using `[hd0]`. Conclude with `hgpos`. Simplify using `only [hdet1, abs_one, one_mul, id]`. Rewrite using `[hd0, gVal, ← hvol]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem grpPiecesStd_of (h0 : BlockEx) (hS : ChiStab) (hD : GrpDens) (hH : GrpHaarH) (hI : GrpInj) :
     GrpPiecesStd := by
   intro D X u' ψ hT μinf νinf fibInf hP hb c S ι _ L hc hL
@@ -152,6 +182,11 @@ theorem grpPiecesStd_of (h0 : BlockEx) (hS : ChiStab) (hD : GrpDens) (hH : GrpHa
 
 set_option backward.isDefEq.respectTransparency false in
 
+/- English proof (translation)
+Use `open scoped Norms.Operator in`. Establish `hs : Summable (fun k : ℕ => ((k.factorial : ℚ)⁻¹) • M ^ k)` using `NormedSpace.expSeries_summable' (𝕂 := ℚ) M`. Rewrite using `[NormedSpace.exp_eq_tsum_rat, ← hs.tsum_mul_right P, tsum_eq_single 0]`. Simplify using the standard rewrite rules. Introduce `k hk`.
+
+Take `⟨k', rfl⟩` from `Nat.exists_eq_succ_of_ne_zero hk`. Rewrite using `[smul_mul_assoc, pow_succ, Matrix.mul_assoc, hMP, Matrix.mul_zero, smul_zero]`.
+-/
 theorem exp_mul_of_mul_eq_zero {n : ℕ} (M P : Matrix (Fin n) (Fin n) ℂ) (hMP : M * P = 0) :
     NormedSpace.exp M * P = P := by
   open scoped Norms.Operator in
@@ -162,6 +197,13 @@ theorem exp_mul_of_mul_eq_zero {n : ℕ} (M P : Matrix (Fin n) (Fin n) ℂ) (hMP
     obtain ⟨k', rfl⟩ := Nat.exists_eq_succ_of_ne_zero hk
     rw [smul_mul_assoc, pow_succ, Matrix.mul_assoc, hMP, Matrix.mul_zero, smul_zero]
 
+/- English proof (translation)
+Establish `hMP : M * Matrix.diagonal (fun k => if k ∈ S then (0 : ℂ) else 1) = 0`. Use extensionality with `a b`. Rewrite using `[Matrix.mul_diagonal]`. Distinguish the cases in `hb : b ∈ S`. Simplify using `[hb]`.
+
+Simplify using `[hb, hM a b (Or.inr hb)]`. Establish `h` using `congrFun (congrFun (exp_mul_of_mul_eq_zero M _ hMP) j) i`. Rewrite `h` using `[Matrix.mul_diagonal, Matrix.diagonal_apply]`. Simplify using `only [hi, if_false, mul_one] at h`. Rewrite using `[h]`.
+
+Distinguish the cases in `hji : j = i`. Substitute `hji` using the available equality. Simplify using `[hi]`. Simplify using `[hji]`.
+-/
 theorem exp_block_col {n : ℕ} (S : Finset (Fin n)) (M : Matrix (Fin n) (Fin n) ℂ)
     (hM : ∀ i j, (i ∉ S ∨ j ∉ S) → M i j = 0) (i : Fin n) (hi : i ∉ S) (j : Fin n) :
     NormedSpace.exp M j i = if j = i then 1 else 0 := by
@@ -180,6 +222,11 @@ theorem exp_block_col {n : ℕ} (S : Finset (Fin n)) (M : Matrix (Fin n) (Fin n)
     simp [hi]
   · simp [hji]
 
+/- English proof (translation)
+Introduce `D X u' hb c S ι η _ _ L L₁ ctx y`. Unfold `chiOf`. Use `(ctx.2.1.2 _).2 fun v i hi j => ?_` and prove the remaining obligations. Use `show (((expU (X.B.I.ε v) (L₁ y v) : Formalism.REAL.UJ (X.B.I.ε v)) : (Matrix (Fin X.B.I.n) (Fin X.B.I.n) ℂ)ˣ) : Matrix (Fin X.B.I.n) (Fin X.B.I.n) ℂ) j i = _`. Rewrite using `[expU_val _ _ (ctx.2.2.2.1 y v).1]`.
+
+Conclude with `exp_block_col (S v) _ (ctx.2.2.2.1 y v).2 i hi j`.
+-/
 theorem chiStab' : ChiStab := by
   intro D X u' hb c S ι η _ _ L L₁ ctx y
   unfold chiOf

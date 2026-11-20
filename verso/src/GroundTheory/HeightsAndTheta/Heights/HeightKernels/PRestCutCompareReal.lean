@@ -10,6 +10,9 @@ noncomputable section
 
 namespace RestCutCompareReal
 
+/- English proof (translation)
+Unfold `realFlagIntegral RestTerms.flagIntegral`. Rewrite using `[Rat.cast_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun β _ => ?_` and prove the remaining obligations. Rewrite using `[coeff_monomial, coeff_monomial]`. Apply the tactic sequence `split_ifs <;> push_cast <;> ring`.
+-/
 theorem realFlagIntegral_monomial (f N : ℕ) (α : Fin f × Fin N →₀ ℕ) (r : ℝ) :
     realFlagIntegral f N (monomial α r) =
       r * (RestTerms.flagIntegral f N (monomial α (1 : ℚ)) : ℝ) := by
@@ -19,6 +22,9 @@ theorem realFlagIntegral_monomial (f N : ℕ) (α : Fin f × Fin N →₀ ℕ) (
   rw [coeff_monomial, coeff_monomial]
   split_ifs <;> push_cast <;> ring
 
+/- English proof (translation)
+Unfold `realFlagIntegral`. Use `conv_lhs => rw [P.as_sum]`. Simplify using `only [coeff_sum, Finset.sum_mul]`. Conclude with `Finset.sum_comm`.
+-/
 theorem realFlagIntegral_eq_sum (f N : ℕ) (P : MvPolynomial (Fin f × Fin N) ℝ) :
     realFlagIntegral f N P =
       ∑ α ∈ P.support, realFlagIntegral f N (monomial α (coeff α P)) := by
@@ -27,6 +33,9 @@ theorem realFlagIntegral_eq_sum (f N : ℕ) (P : MvPolynomial (Fin f × Fin N) �
   simp only [coeff_sum, Finset.sum_mul]
   exact Finset.sum_comm
 
+/- English proof (translation)
+Establish `h : (monomial α r : MvPolynomial (Fin f × Fin N) ℝ) = r • map (algebraMap ℚ ℝ) (monomial α (1 : ℚ))`. Rewrite using `[map_monomial, smul_monomial, map_one, smul_eq_mul, mul_one]`. Rewrite using `[h, map_smul]`. Both sides reduce to the same expression.
+-/
 theorem restRename_monomial (f j k N : ℕ) (e : Fin N ≃ Fin j ⊕ Fin k)
     (α : Fin f × Fin N →₀ ℕ) (r : ℝ) :
     restRename f j k N e (monomial α r) = r • restTransport f j k N e (monomial α (1 : ℚ)) := by
@@ -40,6 +49,13 @@ end RestCutCompareReal
 
 open RestCutCompareReal in
 
+/- English proof (translation)
+Introduce `f j k N e I c d hI P hP`. Establish `hmono : ∀ α ∈ P.support, I (restRename f j k N e (monomial α (coeff α P))) = c * realFlagIntegral f N (monomial α (coeff α P))`. Introduce `α hα`. Establish `hdeg : (monomial α (1 : ℚ) : RestTerms.RootRing f N).IsHomogeneous d` using `isHomogeneous_monomial 1 (by`. Assume the negation of the conclusion as `h`.
+
+Conclude with `mem_support_iff.mp hα (hP.coeff_eq_zero h))`. Rewrite using `[restRename_monomial, map_smul, hI _ hdeg, realFlagIntegral_monomial, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hL : I (restRename f j k N e P) = ∑ α ∈ P.support, I (restRename f j k N e (monomial α (coeff α P)))` using `by conv_lhs => rw [P.as_sum]`. Rewrite using `[map_sum, map_sum]`.
+
+Rewrite using `[hL, realFlagIntegral_eq_sum, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl hmono`.
+-/
 theorem RestCutCompareReal.proof : RestCutCompareReal.Statement := by
   intro f j k N e I c d hI P hP
   have hmono : ∀ α ∈ P.support, I (restRename f j k N e (monomial α (coeff α P))) =

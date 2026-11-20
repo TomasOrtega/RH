@@ -9,5 +9,8 @@ open GlobalTheory.FinPl (Lat idAt idOff intAt grpAt grpOff MxAt latV latA InK Mo
 open scoped nonZeroDivisors ContDiff
 open GlobalTheory.AscFin
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ShiftUnit.exists_d | exact GlobalTheory.ShiftUnit.exists_d | (intros; apply GlobalTheory.ShiftUnit.exists_d <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_unit_mem_modulusDivConjugateIdeal : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} (G : GridData L sc) (v : GlobalTheory.FinPl.Pl D), v ∉ G.pl.S0 → ∃ d : 𝓞 D.host.F, d ∉ v.asIdeal ∧ ((d : D.host.F) : D.host.E) ∈ shiftId G ∧ ∀ x ∈ shiftId G, ∃ y : 𝓞 D.host.E, (y : D.host.E) = ((d : D.host.F) : D.host.E) * x := by
   first | exact @GlobalTheory.ShiftUnit.exists_d | exact GlobalTheory.ShiftUnit.exists_d | (intros; apply GlobalTheory.ShiftUnit.exists_d <;> assumption)

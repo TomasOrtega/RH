@@ -16,9 +16,17 @@ namespace DiscreteGroups.sglob.LConvGenR
 variable {k : Type} [Field k] {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
 variable (π : Representation ℂ (GL (Fin n) k) V) (ψ : AddChar k Circle)
 
+/- English proof (translation)
+Introduce `r hr` and use `absurd (Finset.mem_univ r) hr`.
+-/
 theorem univ_supp (c : Fin n → k) : ∀ r ∉ (Finset.univ : Finset (Fin n)), c r = 0 :=
   fun r hr => absurd (Finset.mem_univ r) hr
 
+/- English proof (translation)
+Take `⟨a, ha, b, hb, rfl⟩` from `Submodule.mem_sup.1 hw`. Rewrite using `[map_add]`. Use `Submodule.add_mem_sup (KN_stable π ψ j _ hy.good (by rw [inv_inv]; exact hx.good) ha) ?_` and prove the remaining obligations. Use `(Submodule.span_le.2 ?_ : KUS π ψ j Finset.univ (rowMul j ξ ((x⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k)) ≤ (KUS π ψ j Finset.univ ξ).comap (π x⁻¹)) hb` and prove the remaining obligations. Introduce and unpack `_ ⟨c, -, v, rfl⟩`.
+
+Use `Submodule.subset_span ⟨colMul j ((x⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) c, univ_supp _, π x⁻¹ v, ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub, map_smul, conj_apply, inv_inv, conj_colU j hj x hx hy, dotj_colMul]`.
+-/
 theorem conj_S (j : ℕ) (hj : j < n) (x : GL (Fin n) k) (hx : TopLeft j (x : Matrix (Fin n) (Fin n) k))
     (hy : TopLeft j ((x⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k)) (ξ : Fin n → k) {w : V}
     (hw : w ∈ KN π ψ (j + 1) ⊔ KUS π ψ j Finset.univ (rowMul j ξ ((x⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k))) :
@@ -32,6 +40,9 @@ theorem conj_S (j : ℕ) (hj : j < n) (x : GL (Fin n) k) (hx : TopLeft j (x : Ma
   refine Submodule.subset_span ⟨colMul j ((x⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) c, univ_supp _, π x⁻¹ v, ?_⟩
   rw [map_sub, map_smul, conj_apply, inv_inv, conj_colU j hj x hx hy, dotj_colMul]
 
+/- English proof (translation)
+Introduce `htop`. Apply `h` to reduce the goal to its premises. Use `eq_top_iff.2 fun v _ => ?_` and prove the remaining obligations. Use `conj_S π ψ j hj x hx hy ξ (w := π x v) (by rw [htop]; exact Submodule.mem_top)` as an intermediate fact. Rewrite `this` using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]`. Then use the resulting hypothesis.
+-/
 theorem ne_top_of_conj (j : ℕ) (hj : j < n) (x : GL (Fin n) k) (hx : TopLeft j (x : Matrix (Fin n) (Fin n) k))
     (hy : TopLeft j ((x⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k)) (ξ : Fin n → k)
     (h : KN π ψ (j + 1) ⊔ KUS π ψ j Finset.univ ξ ≠ ⊤) :
@@ -42,6 +53,15 @@ theorem ne_top_of_conj (j : ℕ) (hj : j < n) (x : GL (Fin n) k) (hx : TopLeft j
   have := conj_S π ψ j hj x hx hy ξ (w := π x v) (by rw [htop]; exact Submodule.mem_top)
   rwa [← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply] at this
 
+/- English proof (translation)
+Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨g, hg, v, rfl⟩`. Take `⟨h1, h2⟩` from `peel_N j hj hj1 hg`. Use `set c : Fin n → k := fun i => (g : Matrix (Fin n) (Fin n) k) i ⟨j, hj⟩ with hc`. Use `set n' := colU j (-c) * g with hn'`.
+
+Establish `hg' : g = colU j c * n'` using `by rw [hn', ← mul_assoc, ← colU_add, add_neg_cancel, colU_zero, one_mul]`. Establish `hch : chM ψ j g = chM ψ (j + 1) n' * ((ψ (c (i0 j hj hj1)) : Circle) : ℂ)`. Rewrite using `[chM, chM, h2, AddChar.map_add_eq_mul, Circle.coe_mul]`. Both sides reduce to the same expression. Establish `e : π g v - chM ψ j g • v = π (colU j c) (π n' v - chM ψ (j + 1) n' • v) + chM ψ (j + 1) n' • (π (colU j c) v - ((ψ (dotj j η c) : Circle) : ℂ) • v)`.
+
+Rewrite using `[hη, hch, map_sub, map_smul, smul_sub, smul_smul]`. Use `conv_lhs => rw [hg', map_mul, Module.End.mul_apply]`. Normalize the expressions using the abelian group laws. Use `show _ ∈ _`. Rewrite using `[e]`.
+
+Use `Submodule.add_mem_sup (KN_stable π ψ j _ (good_colU j c) (good_colU_inv j c) (Submodule.subset_span ⟨n', h1, v, rfl⟩)) (Submodule.smul_mem _ _ (Submodule.subset_span ⟨c, univ_supp c, v, rfl⟩))` and prove the remaining obligations.
+-/
 theorem KN_le (j : ℕ) (hj : j < n) (hj1 : 1 ≤ j) (η : Fin n → k) (hη : ∀ c, dotj j η c = c (i0 j hj hj1)) :
     KN π ψ j ≤ KN π ψ (j + 1) ⊔ KUS π ψ j Finset.univ η := by
   refine Submodule.span_le.2 ?_
@@ -62,6 +82,15 @@ theorem KN_le (j : ℕ) (hj : j < n) (hj1 : 1 ≤ j) (η : Fin n → k) (hη : �
   refine Submodule.add_mem_sup (KN_stable π ψ j _ (good_colU j c) (good_colU_inv j c)
     (Submodule.subset_span ⟨n', h1, v, rfl⟩)) (Submodule.smul_mem _ _ (Submodule.subset_span ⟨c, univ_supp c, v, rfl⟩))
 
+/- English proof (translation)
+Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨⟨g, hg⟩, v, rfl⟩`. Take `⟨h1, h2⟩` from `peel_rad j hj h hg`. Use `set c : Fin n → k := fun i => (g : Matrix (Fin n) (Fin n) k) i ⟨j, hj⟩ with hc`. Use `set n' := colU j (-c) * g with hn'`.
+
+Establish `hg' : g = colU j c * n'` using `by rw [hn', ← mul_assoc, ← colU_add, add_neg_cancel, colU_zero, one_mul]`. Establish `hch : chM ψ (j + 1) n' = 1` using `by rw [chM, h2, AddChar.map_zero_eq_one, Circle.coe_one]`. Establish `hd : dotj j ξ c = 0` using `Finset.sum_eq_zero fun i _ => by`. Distinguish the cases in `hi : i.val < j`. Rewrite using `[if_pos hi, hz i hi, zero_mul]`.
+
+Rewrite using `[if_neg hi]`. Establish `e : π g v - (((1 : ↥(unipRad k (stdBlocks ![j, n - j] h)) →* ℂˣ) ⟨g, hg⟩ : ℂˣ) : ℂ) • v = π (colU j c) (π n' v - chM ψ (j + 1) n' • v) + (π (colU j c) v - ((ψ (dotj j ξ c) : Circle) : ℂ) • v)`. Rewrite using `[hch, hd, AddChar.map_zero_eq_one, Circle.coe_one, MonoidHom.one_apply, Units.val_one, one_smul, map_sub]`. Use `conv_lhs => rw [hg', map_mul, Module.End.mul_apply]`. Normalize the expressions using the abelian group laws.
+
+Use `show _ ∈ _`. Rewrite using `[e]`. Conclude with `Submodule.add_mem_sup (KN_stable π ψ j _ (good_colU j c) (good_colU_inv j c) (Submodule.subset_span ⟨n', h1, v, rfl⟩)) (Submodule.subset_span ⟨c, univ_supp c, v, rfl⟩)`.
+-/
 theorem twKer_le (j : ℕ) (hj : j < n) (h : ∑ i, ![j, n - j] i = n) (ξ : Fin n → k) (hz : ∀ i : Fin n, i.val < j → ξ i = 0) :
     twKer π (unipRad k (stdBlocks ![j, n - j] h)) 1 ≤ KN π ψ (j + 1) ⊔ KUS π ψ j Finset.univ ξ := by
   refine Submodule.span_le.2 ?_

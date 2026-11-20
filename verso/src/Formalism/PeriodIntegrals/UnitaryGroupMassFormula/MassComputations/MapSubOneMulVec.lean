@@ -12,6 +12,15 @@ section Gen
 
 variable {E S : Type} [Field E] [CommRing S] (ψ : E →+* S) {n r : ℕ}
 
+/- English proof (translation)
+Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨b, hb, rfl⟩` from `hx`. Conclude with `Submodule.subset_span ⟨b, hb, rfl⟩`. Consider the case `zero`.
+
+Establish `: (fun i => ψ ((0 : Fin n → E) i)) = 0` using `by funext i; simp`. Rewrite using `[this]`. Conclude with `Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy`. Establish `: (fun i => ψ ((x + y) i)) = (fun i => ψ (x i)) + (fun i => ψ (y i))` using `by funext i; simp`.
+
+Rewrite using `[this]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul c x _ hx`. Establish `: (fun i => ψ ((c • x) i)) = ψ c • (fun i => ψ (x i))` using `by funext i; simp`. Rewrite using `[this]`.
+
+Conclude with `Submodule.smul_mem _ _ hx`.
+-/
 theorem up_span (e : Fin r → Fin n → E) (s : Set (Fin r)) {w : Fin n → E}
     (hw : w ∈ Submodule.span E (e '' s)) :
     (fun i => ψ (w i)) ∈ Submodule.span S ((fun b i => ψ (e b i)) '' s) := by
@@ -29,6 +38,11 @@ theorem up_span (e : Fin r → Fin n → E) (s : Set (Fin r)) {w : Fin n → E}
     have : (fun i => ψ ((c • x) i)) = ψ c • (fun i => ψ (x i)) := by funext i; simp
     rw [this]; exact Submodule.smul_mem _ _ hx
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Rewrite using `[RingHom.map_mulVec]`. Establish `h : (M - 1).map ψ = M.map ψ - 1`. Use extensionality with `a b`. Simplify using `only [Matrix.map_apply, Matrix.sub_apply, Matrix.one_apply, map_sub]`.
+
+Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[h]`. Both sides reduce to the same expression.
+-/
 theorem map_sub_one_mulVec (M : Matrix (Fin n) (Fin n) E) (x : Fin n → E) :
     (M.map ψ - 1) *ᵥ (fun i => ψ (x i)) = fun i => ψ (((M - 1) *ᵥ x) i) := by
   funext i
@@ -40,6 +54,23 @@ theorem map_sub_one_mulVec (M : Matrix (Fin n) (Fin n) E) (x : Fin n → E) :
   rw [h]
   rfl
 
+/- English proof (translation)
+Use `set T := Finset.univ.filter (fun b => b ∈ s) with hT`. Establish `key : ∀ x ∈ Submodule.span S ((fun b i => ψ (e b i)) '' s), x = ∑ b ∈ T, (∑ j, ψ (K b j) * x j) • (fun i => ψ (e b i))`. Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`.
+
+Take `⟨c, hc, rfl⟩` from `hx`. Establish `h1 : ∀ b, (∑ j, ψ (K b j) * ψ (e c j)) = if b = c then 1 else 0`. Introduce `b`. Use `congrArg ψ (hK b c)` as an intermediate fact. Simplify using `only [map_sum, map_mul] at this`.
+
+Apply the tactic sequence `rw [this]; split_ifs <;> simp`. Simplify using `only [h1, ite_smul, one_smul, zero_smul]`. Rewrite using `[Finset.sum_ite_eq' T c]`. Rewrite using `[if_pos (by simp [hT, hc])]`. Consider the case `zero => simp`.
+
+Consider the case `add x y _ _ hx hy => conv_lhs => rw [hx, hy]`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[← add_smul]`. Use `congr 1`.
+
+Simplify using `only [Pi.add_apply, mul_add, Finset.sum_add_distrib]`. Consider the case `smul c x _ hx => conv_lhs => rw [hx]`. Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul]`.
+
+Use `congr 1`. Simplify using `only [Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => by ring` and prove the remaining obligations. Establish `h` using `key _ hw`. Establish `h2 : (fun i => ψ (w i)) = fun i => ψ ((∑ b ∈ T, (∑ j, K b j * w j) • e b) i)`.
+
+Rewrite using `[h]`. Use function extensionality and compare the values at `i`. Simplify using `[Finset.sum_apply, map_sum, map_mul]`. Establish `h3 : w = ∑ b ∈ T, (∑ j, K b j * w j) • e b`. Use function extensionality and compare the values at `i`.
+
+Conclude with `hψ (congrFun h2 i)`. Rewrite using `[h3]`. Use `Submodule.sum_mem _ fun b hb => Submodule.smul_mem _ _ (Submodule.subset_span ⟨b, ?_, rfl⟩)` and prove the remaining obligations. Simplify `hb` using `[hT]`.
+-/
 theorem down_span (hψ : Function.Injective ψ) (e K : Fin r → Fin n → E)
     (hK : ∀ c b, ∑ j, K c j * e b j = if c = b then 1 else 0) (s : Set (Fin r)) (w : Fin n → E)
     (hw : (fun i => ψ (w i)) ∈ Submodule.span S ((fun b i => ψ (e b i)) '' s)) :
@@ -88,6 +119,21 @@ theorem down_span (hψ : Function.Injective ψ) (e K : Fin r → Fin n → E)
   refine Submodule.sum_mem _ fun b hb => Submodule.smul_mem _ _ (Submodule.subset_span ⟨b, ?_, rfl⟩)
   simpa [hT] using hb
 
+/- English proof (translation)
+Use `set p : Fin n → Fin n → E := fun j => Pi.single j 1 - ∑ b, K b j • f b with hp`. Establish `hpK : ∀ j a, ∑ i, K a i * p j i = 0`. Introduce `j a`. Simplify using `only [hp, Pi.sub_apply, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, mul_sub, Finset.sum_sub_distrib, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`.
+
+Establish `h1 : ∑ i, K a i * (Pi.single j (1 : E) : Fin n → E) i = K a j`. Simplify using `[Pi.single_apply]`. Establish `h2 : ∑ b, ∑ i, K a i * (K b j * f b i) = K a j`. Establish `: ∀ b, ∑ i, K a i * (K b j * f b i) = K b j * (if a = b then 1 else 0)`. Introduce `b`.
+
+Rewrite using `[← hKf a b, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => by ring` and prove the remaining obligations. Simplify using `only [this, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Rewrite using `[h1, h2, sub_self]`. Establish `hy' : y = ∑ j, y j • (fun i => ψ (p j i))`.
+
+Use function extensionality and compare the values at `i`. Simplify using `only [hp, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Pi.sub_apply, map_sub, map_sum, map_mul, mul_sub, Finset.sum_sub_distrib, Finset.mul_sum]`. Establish `h1 : ∑ j, y j * ψ ((Pi.single j (1 : E) : Fin n → E) i) = y i`. Simplify using `[Pi.single_apply]`. Establish `h2 : ∑ j, ∑ b, y j * (ψ (K b j) * ψ (f b i)) = 0`.
+
+Rewrite using `[Finset.sum_comm]`. Establish `: ∀ b, ∑ j, y j * (ψ (K b j) * ψ (f b i)) = (∑ j, ψ (K b j) * y j) * ψ (f b i)`. Introduce `b`. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl fun j _ => by ring` and prove the remaining obligations.
+
+Simplify using `only [this, hy, zero_mul, Finset.sum_const_zero]`. Rewrite using `[h1, h2, sub_zero]`. Rewrite using `[hy', Matrix.mulVec_sum]`. Use `Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_smul]`.
+
+Use `Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Rewrite using `[map_sub_one_mulVec]`. Use `up_span ψ e Set.univ (w := (M - 1) *ᵥ p j) (by rw [Set.image_univ]; exact hrat _ (hpK j))` as an intermediate fact. Rewrite `this` using `[Set.image_univ]`. Then use the resulting hypothesis.
+-/
 theorem perp_up (M : Matrix (Fin n) (Fin n) E) (e f K : Fin r → Fin n → E)
     (hKf : ∀ a b, ∑ j, K a j * f b j = if a = b then 1 else 0)
     (hrat : ∀ y : Fin n → E, (∀ a, ∑ j, K a j * y j = 0) →

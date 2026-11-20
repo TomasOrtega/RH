@@ -14,6 +14,27 @@ open GlobalTheory GlobalTheory.LogDR
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `K _ p _ _ n x J γ Y _ A t r hA hr hγ a η hη hd`. Take `⟨y0⟩` from `‹Nonempty Y›`. Establish `hc : IsCoord x` using `(hA y0).coord`. Establish `hp : 0 < p` using `(Fact.out : p.Prime).pos`. Take `⟨h, Q, π, hhom, hQw, hπ, -, -, hstab⟩` from `GlobalTheory.T.cartier_projection_properties K p n x hc`.
+
+Establish `hT : ∀ y, (∀ q, ∀ η ∈ chartForms (A y) x J (t y ^ p * ∏ j ∈ J, x j ^ r y j) (q + 1), h η ∈ chartForms (A y) x J (t y ^ p * ∏ j ∈ J, x j ^ r y j) q) ∧ (∀ η ∈ chartForms (A y) x J (t y ^ p * ∏ j ∈ J, x j ^ r y j) 0, h η = 0) ∧ ∀ q, ∀ η ∈ chartForms (A y) x J (t y ^ p * ∏ j ∈ J, x j …`. Introduce `y`. Conclude with `hstab (fun q => chartForms (A y) x J (t y ^ p * ∏ j ∈ J, x j ^ r y j) q) (GlobalTheory.T.chart_forms_differential_closed K p (A y) n x J (t y) (r y) (hA y)) (fun i θ hθ => GlobalTheory.T.euler_contraction_chart_forms K (A y) n x J _ i θ (hA y).mem hθ)`. Take `⟨hli, hsp⟩` from `GlobalTheory.T.logCoordinateWedge_linearIndependent_span_eq_top K n x hc`. Take `⟨c, hcη⟩ : ∃ c : Finset (Fin n) → K, ∑ I, c I • logWedge x I = η` from `(Submodule.mem_span_range_iff_exists_fun K).mp (hsp ▸ Submodule.mem_top)`.
+
+Use `choose g hg using fun I => hπ (c I)`. Establish `hQη : Q η = ∑ I, g I ^ p • logWedge x I`. Rewrite using `[← hcη, map_sum]`. Use `Finset.sum_congr rfl fun I _ => ?_` and prove the remaining obligations. Rewrite using `[hQw, hg]`.
+
+Use `⟨∑ I, g I • logWedge x I, h η, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `y`. Establish `hm` using `(hT y).2.2 a η (hη y)`. Rewrite `hm` using `[GlobalTheory.T.mem_chart_forms_iff]`. Take `⟨c', hc'0, hc'A, hc'eq⟩` from `hm`.
+
+Establish `heq : ∀ I, c' I = g I ^ p`. Establish `h0 : ∑ I, (c' I - g I ^ p) • logWedge x I = 0`. Simplify using `only [sub_smul, Finset.sum_sub_distrib]`. Rewrite using `[← hc'eq, ← hQη, sub_self]`. Introduce `I`.
+
+Conclude with `sub_eq_zero.mp (Fintype.linearIndependent_iff.mp hli _ h0 I)`. Rewrite using `[GlobalTheory.T.mem_chart_forms_iff]`. Use `⟨g, ?_, ?_, rfl⟩` and prove the remaining obligations. Introduce `I hI`. Establish `h1` using `hc'0 I hI`.
+
+Rewrite `h1` using `[heq]`. Conclude with `(pow_eq_zero_iff hp.ne').mp h1`. Introduce `I`. Establish `h1` using `hc'A I`. Rewrite `h1` using `[heq]`.
+
+Conclude with `GlobalTheory.T.mem_subring_of_pthPower_twisted_monomial_mem K p (A y) n x I J (t y) (r y) (g I) hp (hA y) (hr y) h1`. Introduce `y q hq`. Substitute `hq` using the available equality. Conclude with `(hT y).1 q η (hη y)`. Introduce `ha`.
+
+Substitute `ha` using the available equality. Conclude with `(hT y0).2.1 η (hη y0)`. Rewrite using `[map_sum]`. Repeatedly rewrite using `[GlobalTheory.T.logFrobeniusLift_smul_logCoordinateWedge K p n x γ hγ]`. Rewrite using `[← hQη]`.
+
+Establish `h2` using `hhom η`. Rewrite `h2` using `[hd, map_zero, add_zero]`. Conclude with `sub_eq_iff_eq_add'.mp h2`.
+-/
 theorem logCartier_rounding_family : ∀ (K : Type) [Field K] (p : ℕ) [Fact p.Prime] [CharP K p] (n : ℕ)
     (x : Fin n → Kˣ) (J : Finset (Fin n)) (γ : abelian₂ K →+* abelian₂ K) (Y : Type) [Nonempty Y] (A : Y → Subring K)
     (t : Y → Kˣ) (r : Y → Fin n → ℕ), (∀ y, AlgChart (A y) x) → (∀ y j, r y j < p) → IsCartierMap p x γ →

@@ -20,8 +20,14 @@ def FrobWH (p : ℕ) [Fact p.Prime] : Prop := ∀ a : WW p, ∃ y : WW p, sigW p
 
 variable {K'} (vp : K')
 
+/- English proof (translation)
+The claim follows from `W_mem_Rp p K' vp _`.
+-/
 theorem th_Aw_mem (w : WW p) (k : ℕ) : Aw K' w k ∈ Rp p K' vp := W_mem_Rp p K' vp _
 
+/- English proof (translation)
+Take `⟨y, hy⟩` from `hW ((sigW p)^[k] w)`. Use `⟨wK' p K' y, ?_, ?_⟩` and prove the remaining obligations. Establish `h1` using `th_Aw_mem vp y 0`. Simplify `h1` using `[Aw]`. Simplify using `only [Aw, wK', Function.iterate_succ_apply', hy, map_add, map_mul, map_pow, map_natCast]`.
+-/
 theorem th_Aw_succ (hW : FrobWH p) (w : WW p) (k : ℕ) :
     ∃ y ∈ Rp p K' vp, Aw K' w (k + 1) = Aw K' w k ^ p + (p : K') * y := by
   obtain ⟨y, hy⟩ := hW ((sigW p)^[k] w)
@@ -30,6 +36,15 @@ theorem th_Aw_succ (hW : FrobWH p) (w : WW p) (k : ℕ) :
     simpa [Aw] using h1
   · simp only [Aw, wK', Function.iterate_succ_apply', hy, map_add, map_mul, map_pow, map_natCast]
 
+/- English proof (translation)
+Establish `hint : ∀ s ∈ P, IntR (Rp p K' vp) (MvPowerSeries.C (Aw K' w (e s)) * x s)` using `fun s _ => IntR_mul (IntR_C (R := Rp p K' vp) (th_Aw_mem vp w _)) (hx s)`. Take `⟨Y, hY, hEq⟩` from `hF P (fun s => MvPowerSeries.C (Aw K' w (e s)) * x s) hint`. Establish `h1 : Cg (Rp p K' vp) (p : K') ((∑ s ∈ P, MvPowerSeries.C (Aw K' w (e s)) * x s) ^ p) (∑ s ∈ P, (MvPowerSeries.C (Aw K' w (e s)) * x s) ^ p)` using `⟨Y, hY, hEq⟩`. Use `cg_trans h1 (cg_sum _ _ _ fun s _ => ?_)` and prove the remaining obligations. Take `⟨z, hz, hzeq⟩` from `th_Aw_succ vp hW w (e s)`.
+
+Rewrite using `[mul_pow, ← map_pow]`. Use `cg_mul (IntR_pow (hx s) p) (IntR_C (R := Rp p K' vp) (th_Aw_mem vp w _)) ?_ (cg_refl _)` and prove the remaining obligations. Use `cg_of_coeff fun n => ?_` and prove the remaining obligations. Distinguish the cases in `hn : n = 0`. Substitute `hn` using the available equality.
+
+Use `⟨-z, Subring.neg_mem _ hz, ?_⟩` and prove the remaining obligations. Rewrite using `[MvPowerSeries.coeff_zero_C, MvPowerSeries.coeff_zero_C, hzeq]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨0, Subring.zero_mem _, ?_⟩` and prove the remaining obligations. Rewrite using `[MvPowerSeries.coeff_C, MvPowerSeries.coeff_C, if_neg hn, if_neg hn]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem th_frob_lin (hF : FrobSumH p n' r0 r1 K' (Rp p K' vp)) (hW : FrobWH p) (w : WW p) (P : Finset (Fin n'))
     (e : Fin n' → ℕ) (x : Fin n' → MvPowerSeries (Zidx n' r0 r1) K') (hx : ∀ s, IntR (Rp p K' vp) (x s)) :
     Cg (Rp p K' vp) (p : K') ((∑ s ∈ P, MvPowerSeries.C (Aw K' w (e s)) * x s) ^ p)
@@ -57,16 +72,29 @@ def linK (K' : Type) [Field K'] [Algebra (K0 p) K'] (w : WW p) (P : Finset (Fin 
     (k : ℕ) : MvPowerSeries (Zidx n' r0 r1) K' :=
   ∑ s ∈ P, MvPowerSeries.C (Aw K' w (s.val + k)) * MvPowerSeries.X (s, a, b) ^ (p ^ k)
 
+/- English proof (translation)
+Unfold `linK`. Conclude with `IntR_sum _ _ fun s _ => IntR_mul (IntR_C (R := Rp p K' vp) (th_Aw_mem vp w _)) (IntR_pow (IntR_X (R := Rp p K' vp) _) _)`.
+-/
 theorem th_linK_int (w : WW p) (P : Finset (Fin n')) (a : Fin r0) (b : Fin r1) (k : ℕ) :
     IntR (Rp p K' vp) (linK K' w P a b k) := by
   unfold linK
   exact IntR_sum _ _ fun s _ => IntR_mul (IntR_C (R := Rp p K' vp) (th_Aw_mem vp w _))
     (IntR_pow (IntR_X (R := Rp p K' vp) _) _)
 
+/- English proof (translation)
+Simplify using `[linK]`.
+-/
 theorem th_linK_const (w : WW p) (P : Finset (Fin n')) (a : Fin r0) (b : Fin r1) :
     MvPowerSeries.constantCoeff (linK K' w P a b 0) = 0 := by
   simp [linK]
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero`. Apply `cg_of_eq` to reduce the goal to its premises. Simplify using `only [pow_zero, pow_one]`. Consider the case `succ k ih`.
+
+Establish `hL : IntR (Rp p K' vp) (linK K' w P a b 0)` using `th_linK_int vp w P a b 0`. Establish `h1` using `cg_pow (IntR_pow hL (p ^ k)) (th_linK_int vp w P a b k) ih p`. Rewrite `h1` using `[← pow_mul, ← pow_succ]`. Use `cg_trans h1 ?_` and prove the remaining obligations. Establish `h2` using `th_frob_lin vp hF hW w P (fun s => s.val + k) (fun s => MvPowerSeries.X (s, a, b) ^ (p ^ k)) (fun s => IntR_pow (IntR_X (R := Rp p K' vp) _) _)`.
+
+Simplify using `only [← pow_mul, ← pow_succ] at h2`. Conclude with `h2`.
+-/
 theorem th_claimF (hF : FrobSumH p n' r0 r1 K' (Rp p K' vp)) (hW : FrobWH p) (w : WW p) (P : Finset (Fin n'))
     (a : Fin r0) (b : Fin r1) (k : ℕ) :
     Cg (Rp p K' vp) (p : K') (linK K' w P a b 0 ^ (p ^ k)) (linK K' w P a b k) := by
@@ -84,12 +112,22 @@ theorem th_claimF (hF : FrobSumH p n' r0 r1 K' (Rp p K' vp)) (hW : FrobWH p) (w 
     simp only [← pow_mul, ← pow_succ] at h2
     exact h2
 
+/- English proof (translation)
+Simplify using `only [linK, map_sum, MvPowerSeries.coeff_C_mul, MvPowerSeries.coeff_X_pow]`.
+-/
 theorem th_coeff_linK (w : WW p) (P : Finset (Fin n')) (a : Fin r0) (b : Fin r1) (k : ℕ)
     (n : Zidx n' r0 r1 →₀ ℕ) :
     MvPowerSeries.coeff n (linK K' w P a b k) =
       ∑ s ∈ P, Aw K' w (s.val + k) * (if n = Finsupp.single (s, a, b) (p ^ k) then 1 else 0) := by
   simp only [linK, map_sum, MvPowerSeries.coeff_C_mul, MvPowerSeries.coeff_X_pow]
 
+/- English proof (translation)
+Establish `hAw : ∀ s : Fin n', Aw K' w (posAdd s (2 * l)).val = Aw K' w (s.val + 2 * l)`. Introduce `s`. Simplify using `only [Aw, posAdd]`. Rewrite using `[Function.IsPeriodicPt.iterate_mod_apply hper]`. Rewrite using `[Finset.mul_sum]`.
+
+Use `symm`. Use `Finset.sum_nbij' (fun t => posSub t (2 * l)) (fun s => posAdd s (2 * l)) (fun t ht => hPs t ht l) (fun s hs => hPa s hs l) (fun t _ => th_posAdd_posSub t _) (fun s _ => th_posSub_posAdd s _) (fun t _ => ?_)` and prove the remaining obligations. Establish `h1 : Aw K' w t.val = Aw K' w ((posSub t (2 * l)).val + 2 * l)`. Rewrite using `[← hAw, th_posAdd_posSub]`. Rewrite using `[h1]`.
+
+Apply the tactic sequence `split_ifs <;> ring`.
+-/
 theorem th_reindex (w : WW p) (hper : (sigW p)^[n'] w = w) (P : Finset (Fin n'))
     (hPa : ∀ s ∈ P, ∀ d, posAdd s (2 * d) ∈ P) (hPs : ∀ s ∈ P, ∀ d, posSub s (2 * d) ∈ P)
     (a : Fin r0) (b : Fin r1) (n : Zidx n' r0 r1 →₀ ℕ) (l : ℕ) :
@@ -110,6 +148,17 @@ theorem th_reindex (w : WW p) (hper : (sigW p)^[n'] w = w) (P : Finset (Fin n'))
   rw [h1]
   split_ifs <;> ring
 
+/- English proof (translation)
+Establish `hL0` using `th_linK_const (K' := K') w P a b`. Establish `hsL : PowerSeries.HasSubst (linK K' w P a b 0)` using `PowerSeries.HasSubst.of_constantCoeff_zero hL0`. Establish `h1 : Cg (Rp p K' vp) (p : K') (PowerSeries.subst (linK K' w P a b 0) μ) (PowerSeries.subst (linK K' w P a b 0) (altF K' p))` using `by choose y hy he using hT1`. Establish `e : μ = altF K' p + PowerSeries.C (p : K') * PowerSeries.mk y`. Use extensionality with `n`.
+
+Rewrite using `[map_add, PowerSeries.coeff_C_mul, PowerSeries.coeff_mk, ← he n]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨PowerSeries.subst (linK K' w P a b 0) (PowerSeries.mk y), IntR_psubst hL0 (th_linK_int vp w P a b 0) (fun n => by rw [PowerSeries.coeff_mk]; exact hy n), ?_⟩` and prove the remaining obligations. Use `conv_lhs => rw [e]`. Rewrite using `[PowerSeries.subst_add hsL, PowerSeries.subst_mul hsL, PowerSeries.subst_C]`.
+
+Use `cg_trans h1 (cg_of_coeff fun n => ?_)` and prove the remaining obligations. Rewrite using `[Formalism.InvariantFactorPaths.G7.TwoS.coeff_subst_altF hp.out.two_le hL0 n]`. Use `choose y hy he using fun l => cg_coeff (th_claimF vp hF hW w P a b (2 * l)) n`. Use `⟨∑ l ∈ range (n.degree + 1), (-1 : K') ^ l * y l, Subring.sum_mem _ fun l _ => (Rp p K' vp).mul_mem ((Rp p K' vp).pow_mem ((Rp p K' vp).neg_mem (Rp p K' vp).one_mem) l) (hy l), ?_⟩` and prove the remaining obligations. Establish `e2 : MvPowerSeries.coeff n (∑ t ∈ P, MvPowerSeries.C (Aw K' w t.val) * sSer p K' t a b) = ∑ l ∈ range (n.degree + 1), (-1 : K') ^ l * MvPowerSeries.coeff n (linK K' w P a b (2 * l))`.
+
+Rewrite using `[map_sum]`. Simplify using `only [MvPowerSeries.coeff_C_mul, th_coeff_linK, th_reindex w hper P hPa hPs a b n]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.mul_sum]`.
+
+Both sides reduce to the same expression. Rewrite using `[e2, Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[← pow_mul, he l]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem th_claimM (hF : FrobSumH p n' r0 r1 K' (Rp p K' vp)) (hW : FrobWH p) (μ : PowerSeries K')
     (hT1 : ∀ n, ∃ y ∈ Rp p K' vp, PowerSeries.coeff n μ - PowerSeries.coeff n (altF K' p) = (p : K') * y)
     (w : WW p) (hper : (sigW p)^[n'] w = w) (P : Finset (Fin n'))

@@ -3,6 +3,13 @@ import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.UnderTie
 
 namespace GlobalTheory.RepresentativesImage
 
+/- English proof (translation)
+Unfold `Formalism.L2.Th1.H.IsReps at hS ⊢`. Take `⟨hmem, hdist, hcov⟩` from `hS`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `w hw`. Take `⟨v, hv, rfl⟩` from `Finset.mem_image.1 hw`.
+
+Conclude with `(h₂ v).2 (hmem v hv)`. Introduce `a ha b hb hab`. Take `⟨v, hv, rfl⟩` from `Finset.mem_image.1 ha`. Take `⟨u, hu, rfl⟩` from `Finset.mem_image.1 hb`. Rewrite `hab` using `[← map_sub]`.
+
+Rewrite using `[hdist v hv u hu ((h₁ _).1 hab)]`. Introduce `w hw`. Take `⟨v, rfl⟩` from `T.surjective w`. Take `⟨u, hu, hvu⟩` from `hcov v ((h₂ v).1 hw)`. Conclude with `⟨T u, Finset.mem_image_of_mem _ hu, by rw [← map_sub]; exact (h₁ _).2 hvu⟩`.
+-/
 theorem isReps_image {V W : Type} [AddCommGroup V] [AddCommGroup W] [DecidableEq W] (T : V ≃+ W)
     {Λ₁ Λ₂ : AddSubgroup V} {M₁ M₂ : AddSubgroup W} {S : Finset V}
     (hS : Formalism.L2.Th1.H.IsReps Λ₁ Λ₂ S) (h₁ : ∀ x : V, T x ∈ M₁ ↔ x ∈ Λ₁) (h₂ : ∀ x : V, T x ∈ M₂ ↔ x ∈ Λ₂) :

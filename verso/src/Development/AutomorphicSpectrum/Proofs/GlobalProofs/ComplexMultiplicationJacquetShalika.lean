@@ -11,22 +11,37 @@ section
 
 variable {K : Type} [Field K] [NumberField K] [Algebra K ℂ]
 
+/- English proof (translation)
+Simplify using `[GlobalTheory.latticeCurve, weierstrassCurve, neg_div]`.
+-/
 theorem latticeCurve_eq_weierstrassCurve (L : PeriodPair) :
     GlobalTheory.latticeCurve L = weierstrassCurve L := by
   simp [GlobalTheory.latticeCurve, weierstrassCurve, neg_div]
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 theorem j_eq_of_eq {W W' : WeierstrassCurve ℂ} [W.IsElliptic] [W'.IsElliptic] (h : W = W') :
     W.j = W'.j := by
   subst h
   rfl
 
+/- English proof (translation)
+The claim follows from `j_eq_of_eq (latticeCurve_eq_weierstrassCurve L)`.
+-/
 theorem latticeCurve_j (L : PeriodPair) : (GlobalTheory.latticeCurve L).j = (weierstrassCurve L).j :=
   j_eq_of_eq (latticeCurve_eq_weierstrassCurve L)
 
+/- English proof (translation)
+Introduce `h` and use `hP (Ideal.eq_bot_of_comap_eq_bot h)`.
+-/
 theorem under_ne_bot (M : IntermediateField K ℂ) [NumberField M] {P : Ideal (𝓞 M)} (hP : P ≠ ⊥) :
     P.under (𝓞 K) ≠ ⊥ :=
   fun h => hP (Ideal.eq_bot_of_comap_eq_bot h)
 
+/- English proof (translation)
+Establish `: NumberField (hilbertClassField K ℂ)` using `NumberField.of_module_finite K _`. Use `⟨inferInstance, inferInstance, fun P hp hP => ?_⟩` and prove the remaining obligations. Set `v : HeightOneSpectrum (𝓞 K)` to `⟨P.under (𝓞 K), inferInstance, under_ne_bot _ hP⟩`. Conclude with `(isUnramifiedEverywhere_hilbertClassField K ℂ).1 v P hp ⟨rfl⟩`.
+-/
 theorem isUnramifiedAbelian_hilbertClassField :
     GlobalTheory.Published.IsUnramifiedAbelian (hilbertClassField K ℂ) := by
   have : NumberField (hilbertClassField K ℂ) := NumberField.of_module_finite K _
@@ -34,6 +49,9 @@ theorem isUnramifiedAbelian_hilbertClassField :
   let v : HeightOneSpectrum (𝓞 K) := ⟨P.under (𝓞 K), inferInstance, under_ne_bot _ hP⟩
   exact (isUnramifiedEverywhere_hilbertClassField K ℂ).1 v P hp ⟨rfl⟩
 
+/- English proof (translation)
+Use `⟨fun v P hp hv => ?_, fun v w hw => ?_⟩` and prove the remaining obligations. Conclude with `h.2.2 P (Ideal.ne_bot_of_liesOver_of_ne_bot v.ne_bot P)`. Conclude with `InfinitePlace.isUnramified_iff.2 (Or.inr (hw ▸ IsTotallyComplex.isComplex v))`.
+-/
 theorem isUnramifiedEverywhere_of_isUnramifiedAbelian [IsTotallyComplex K]
     {M : IntermediateField K ℂ} [NumberField M] (h : GlobalTheory.Published.IsUnramifiedAbelian M) :
     IsUnramifiedEverywhere K M := by
@@ -41,6 +59,9 @@ theorem isUnramifiedEverywhere_of_isUnramifiedAbelian [IsTotallyComplex K]
   · exact h.2.2 P (Ideal.ne_bot_of_liesOver_of_ne_bot v.ne_bot P)
   · exact InfinitePlace.isUnramified_iff.2 (Or.inr (hw ▸ IsTotallyComplex.isComplex v))
 
+/- English proof (translation)
+Use `⟨isUnramifiedAbelian_hilbertClassField, fun M hM => ?_⟩` and prove the remaining obligations. Use `hM.1` as an intermediate fact. Use `hM.2.1` as an intermediate fact. Establish `: NumberField M` using `NumberField.of_module_finite K _`. Conclude with `(le_hilbertClassField_iff K ℂ M).2 (isUnramifiedEverywhere_of_isUnramifiedAbelian hM)`.
+-/
 theorem isHilbertClassField_hilbertClassField [IsTotallyComplex K] :
     GlobalTheory.Published.IsHilbertClassField (hilbertClassField K ℂ) := by
   refine ⟨isUnramifiedAbelian_hilbertClassField, fun M hM => ?_⟩
@@ -49,6 +70,13 @@ theorem isHilbertClassField_hilbertClassField [IsTotallyComplex K] :
   have : NumberField M := NumberField.of_module_finite K _
   exact (le_hilbertClassField_iff K ℂ M).2 (isUnramifiedEverywhere_of_isUnramifiedAbelian hM)
 
+/- English proof (translation)
+Introduce `𝔭 𝔓 hP hO`. Establish `: NumberField (hilbertClassField K ℂ)` using `NumberField.of_module_finite K _`. Establish `hne : (𝔭 : Ideal (𝓞 K)) ≠ ⊥` using `mem_nonZeroDivisors_iff_ne_zero.1 𝔭.2`. Establish `hpp : (𝔭 : Ideal (𝓞 K)).IsPrime`. Rewrite using `[hO.over]`.
+
+Conclude with `Ideal.IsPrime.under _ _`. Set `v : HeightOneSpectrum (𝓞 K)` to `⟨𝔭, hpp, hne⟩`. Set `w : HeightOneSpectrum (𝓞 (hilbertClassField K ℂ))` to `⟨𝔓, hP, Ideal.ne_bot_of_liesOver_of_ne_bot hne 𝔓⟩`. Establish `hwv : w.asIdeal.LiesOver v.asIdeal` using `hO`. Establish `: Finite (𝓞 (hilbertClassField K ℂ) ⧸ w.asIdeal)` using `Ideal.finiteQuotientOfFreeOfNeBot _ w.ne_bot`.
+
+Establish `e : hilbertClassFieldArtinEquiv K ℂ (ClassGroup.mk0 𝔭) = _` using `hilbertClassFieldArtinEquiv_mk0 K ℂ v w`. Express the relevant statement in the definitionally equal form `IsArithFrobAt (𝓞 K) (hilbertClassFieldArtinEquiv K ℂ (ClassGroup.mk0 𝔭)) w.asIdeal`. Rewrite using `[e]`. Conclude with `IsArithFrobAt.arithFrobAt _ _ _`.
+-/
 theorem isArtinMap_hilbertClassFieldArtinEquiv :
     GlobalTheory.Published.IsArtinMap (hilbertClassFieldArtinEquiv K ℂ).toMonoidHom := by
   intro 𝔭 𝔓 hP hO
@@ -69,10 +97,18 @@ theorem isArtinMap_hilbertClassFieldArtinEquiv :
   rw [e]
   exact IsArithFrobAt.arithFrobAt _ _ _
 
+/- English proof (translation)
+The claim follows from `SetLike.coe_injective h`.
+-/
 theorem lattice_eq_idealLattice {𝔞 : (FractionalIdeal (𝓞 K)⁰ K)ˣ} {L : PeriodPair}
     (h : GlobalTheory.Published.IsIdealLattice 𝔞 L) : L.lattice = idealLattice (algebraMap K ℂ) 𝔞.1 :=
   SetLike.coe_injective h
 
+/- English proof (translation)
+Rewrite using `[← latticeEnd_ideal (algebraMap K ℂ) hK 𝔞]`. Use extensionality with `α`. Use `show (∀ l ∈ L.lattice, α * l ∈ L.lattice) ↔ ∀ l ∈ (idealPeriodPair (algebraMap K ℂ) hK 𝔞).lattice, α * l ∈ (idealPeriodPair (algebraMap K ℂ) hK 𝔞).lattice`. Establish `e : (idealPeriodPair (algebraMap K ℂ) hK 𝔞).lattice = L.lattice`. Rewrite using `[lattice_eq_idealLattice h]`.
+
+Conclude with `lattice_idealPeriodPair (algebraMap K ℂ) hK 𝔞`. Rewrite using `[e]`.
+-/
 theorem latticeEnd_eq_cmRing [IsTotallyComplex K] (hK : Module.finrank ℚ K = 2)
     {𝔞 : (FractionalIdeal (𝓞 K)⁰ K)ˣ} {L : PeriodPair} (h : GlobalTheory.Published.IsIdealLattice 𝔞 L) :
     latticeEnd L = cmRing (algebraMap K ℂ) := by
@@ -88,6 +124,13 @@ theorem latticeEnd_eq_cmRing [IsTotallyComplex K] (hK : Module.finrank ℚ K = 2
 
 end
 
+/- English proof (translation)
+Introduce `K _ _ _ _ hK`. Use `⟨hilbertClassField K ℂ, hilbertClassFieldArtinEquiv K ℂ, isHilbertClassField_hilbertClassField, isArtinMap_hilbertClassFieldArtinEquiv, ?_, ?_⟩` and prove the remaining obligations. Introduce `𝔞 L hL`. Rewrite using `[latticeCurve_j]`. Conclude with `adjoin_j_curve_eq_hilbertClassField hK (CMCurve.ofLattice (algebraMap K ℂ) L (latticeEnd_eq_cmRing hK hL))`.
+
+Introduce `𝔞 𝔟 L L' hL hL' x hx`. Establish `hE` using `latticeEnd_eq_cmRing hK hL`. Establish `hlat : L'.lattice = idealLattice (algebraMap K ℂ) ↑𝔟⁻¹ * L.lattice`. Rewrite using `[lattice_eq_idealLattice hL', lattice_eq_idealLattice hL, Units.val_mul, idealLattice_mul]`. Rewrite `hx`, the goal using `[latticeCurve_j]`.
+
+Establish `hx' : x = ⟨(weierstrassCurve L).j, j_weierstrassCurve_mem_hilbertClassField hK L hE⟩` using `Subtype.ext hx`. Rewrite using `[hx']`. Conclude with `hilbertClassFieldArtinEquiv_apply_j_weierstrassCurve hK L L' hE 𝔟 hlat`.
+-/
 theorem complexMultiplicationJ : GlobalTheory.Published.ComplexMultiplicationJSt := by
   intro K _ _ _ _ hK
   refine ⟨hilbertClassField K ℂ, hilbertClassFieldArtinEquiv K ℂ,

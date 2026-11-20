@@ -31,6 +31,9 @@ def degCh2 (E : T.Modules) (r : ℕ) : ℚ :=
 
 variable {k}
 
+/- English proof (translation)
+The claim follows from `have := hE.isFiniteQC have := hE.dual.isFiniteQC have := (isVB_structureModule T).isFiniteQC ⟨finiteCoh_of_isProjOver (algebraMap_eq_strHom k T) _ h.2.2, finiteCoh_of_isProjOver (algebraMap_eq_strHom k T) _ h.2.2, finiteCoh_of_isProjOver (algebraMap_eq_strHom k T) _ h.2.2⟩`.
+-/
 theorem IsProjSurface.finiteCoh (h : IsProjSurface k T) {E : T.Modules} {r : ℕ} (hE : IsVB E r) :
     FiniteCoh k E ∧ FiniteCoh k (VB.dual E) ∧ FiniteCoh k (structureModule T) :=
   have := hE.isFiniteQC
@@ -40,9 +43,21 @@ theorem IsProjSurface.finiteCoh (h : IsProjSurface k T) {E : T.Modules} {r : ℕ
     finiteCoh_of_isProjOver (algebraMap_eq_strHom k T) _ h.2.2,
     finiteCoh_of_isProjOver (algebraMap_eq_strHom k T) _ h.2.2⟩
 
+/- English proof (translation)
+Rewrite using `[degCh2, degCh2, chi_congr k φ, chi_congr k (dualIso φ)]`.
+-/
 theorem degCh2_congr {E E' : T.Modules} (φ : E ≅ E') (r : ℕ) : degCh2 k E r = degCh2 k E' r := by
   rw [degCh2, degCh2, chi_congr k φ, chi_congr k (dualIso φ)]
 
+/- English proof (translation)
+Use `(isVB_structureModule T).isFiniteQC` as an intermediate fact. Establish `hL` using `hE.isLB_det`. Establish `e₁ : chi k E = chiPic k (structureModule T) (cls _ hL)` using `(chi_congr k hE.isoDet).trans (chi_congr k (Twist.unitTwistIso _)).symm`. Establish `e₂ : chi k (VB.dual E) = chiPic k (structureModule T) (-cls _ hL)`. Rewrite using `[← cls_dual hL (isLB_dual hL), (cls_eq_iff (isLB_dual hL) hE.dual.isLB_det).2 hE.lbIso_det_dual]`.
+
+Conclude with `(chi_congr k hE.dual.isoDet).trans (chi_congr k (Twist.unitTwistIso _)).symm`. Establish `hv : DiffVanish (2 + 1) (chiPic k (structureModule T))` using `diffVanish_chiPic_of_isProjOver (algebraMap_eq_strHom k T) _ h.2.2 ((QCoh.suppDim_le _).trans h.2.1.le)`. Establish `e₃` using `congrFun (hv fun _ => cls _ hL) (cls _ hL)`. Rewrite using `[degCh2, e₁, e₂, ← chiPic_zero, topSelf_def, interNum_eq_multiDiff k _ fun _ => hL]`. Generalize the expression as in `cls _ hL = c at e₃ ⊢`.
+
+Generalize the expression as in `chiPic k (structureModule T) = φ at e₃ ⊢`. Rewrite `e₃`, the goal using `[multiDiff_const]`. Simplify using `only [Function.iterate_succ, Function.iterate_zero, Function.comp_apply, id, bwdDiff_apply, sub_self, zero_sub, Pi.zero_apply] at e₃ ⊢`. Use `congr 2`. Use `push_cast`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem IsProjSurface.degCh2_rank_one (h : IsProjSurface k T) {E : T.Modules} (hE : IsVB E 1) :
     degCh2 k E 1 = (topSelfIntersection k (det E 1) 2 : ℚ) / 2 := by
   have := (isVB_structureModule T).isFiniteQC
@@ -67,6 +82,9 @@ theorem IsProjSurface.degCh2_rank_one (h : IsProjSurface k T) {E : T.Modules} (h
   push_cast
   omega
 
+/- English proof (translation)
+Use `letI : Algebra k Γ(PSpace k 2, ⊤) := ((PSpace.str k 2).appTop.hom.comp (Scheme.ΓSpecIso (.of k)).inv.hom).toAlgebra`. Use `⟨GlobalTheory.ProjSpace.isIntegral_of_isDomain _ _, ProjSpace.topologicalKrullDim_eq k 2, 2, 𝟙 _, inferInstance, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.id_comp]`. Conclude with `(strHom_eq (f := PSpace.str k 2) fun _ => rfl).symm`.
+-/
 theorem isProjSurface_plane (k : Type) [Field k] :
     letI : Algebra k Γ(PSpace k 2, ⊤) :=
       ((PSpace.str k 2).appTop.hom.comp (Scheme.ΓSpecIso (.of k)).inv.hom).toAlgebra
@@ -105,10 +123,16 @@ def IsPrincipalPol (c : Pic (A ⊗ A).left) : Prop :=
 
 def zeroSec : S ⟶ A.left := η[A].left
 
+/- English proof (translation)
+The claim follows from `Over.w η[A]`.
+-/
 theorem zeroSec_comp : zeroSec A ≫ A.hom = 𝟙 S := Over.w η[A]
 
 def hodge : S.Modules := Conormal.conormal (zeroSec A)
 
+/- English proof (translation)
+Use `hA.proper` as an intermediate fact. Establish `: IsClosedImmersion (zeroSec A ≫ A.hom)` using `by rw [zeroSec_comp]; infer_instance`. Establish `: IsClosedImmersion (zeroSec A)` using `IsClosedImmersion.of_comp (zeroSec A) A.hom`. Conclude with `Conormal.isVB_conormal (zeroSec_comp A) g`.
+-/
 theorem isVB_hodge (hA : IsAbelianScheme A) (g : ℕ) [SmoothOfRelativeDimension g A.hom] :
     IsVB (hodge A) g := by
   have := hA.proper
@@ -116,6 +140,13 @@ theorem isVB_hodge (hA : IsAbelianScheme A) (g : ℕ) [SmoothOfRelativeDimension
   have : IsClosedImmersion (zeroSec A) := IsClosedImmersion.of_comp (zeroSec A) A.hom
   exact Conormal.isVB_conormal (zeroSec_comp A) g
 
+/- English proof (translation)
+Use `P.isAb.comm` as an intermediate fact. Use `⟨?_, ?_, fun Ω _ _ s => ?_⟩` and prove the remaining obligations. Rewrite using `[pull_lam, lift_fst, lam_one_left]`. Rewrite using `[pull_lam, lift_snd, lam_one_right]`. Establish `h` using `isGrpPullback_pullback P.A s`.
+
+Establish `hL` using `pull_isLB P.isLB (pullback.fst P.A.hom s)`. Take `⟨w, hw⟩` from `(cls_eq_iff hL hL).1 rfl`. Take `⟨U, hU, hx, -⟩` from `exists_isAffineOpen_mem_and_subset (X := S) (x := s (IsLocalRing.closedPoint Ω)) (U := ⊤) trivial`. Use `⟨_, hL, relAmple_pull h.1 P.isLB hL ((isGen_iff w).1 hw) U hU (fun y => by rwa [Subsingleton.elim y (IsLocalRing.closedPoint Ω)]) P.ample, kTriv_pull h P.isLB hL ((isGen_iff w).1 hw) P.ktriv, ?_⟩` and prove the remaining obligations. Rewrite using `[sqToBase, pull_lam, lift_fst, lift_snd, cls_pull P.isLB, lam_pull_of_isGrpPullback h]`.
+
+Both sides reduce to the same expression.
+-/
 theorem isPrincipalPol_of_polAV (P : Out.PolAV S) :
     IsPrincipalPol P.A (lam (cls P.L P.isLB) (fst P.A P.A) (snd P.A P.A)) := by
   have := P.isAb.comm
@@ -151,6 +182,9 @@ def RecordIsGeometric (D : D7) (X : DivX D) : Prop :=
       SmoothOfRelativeDimension g A.hom ∧ (∃ c, IsPrincipalPol A c) ∧
         X.surfFpCh2 s = (degCh2 (ZMod p) (hodge A) g : ℝ)
 
+/- English proof (translation)
+Introduce `s` and use `by obtain ⟨p, _, T, _, A, _, g, hT, hA, hg, hc, e⟩ := hX s rw [e, h p T hT A g hA hg hc, Rat.cast_zero]`.
+-/
 theorem recordVanishes_of (h : Ch2HodgeVanishes) {D : D7} {X : DivX D}
     (hX : RecordIsGeometric D X) : RecordVanishes D X := fun s => by
   obtain ⟨p, _, T, _, A, _, g, hT, hA, hg, hc, e⟩ := hX s

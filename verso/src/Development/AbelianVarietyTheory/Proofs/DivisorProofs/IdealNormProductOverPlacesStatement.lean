@@ -17,6 +17,9 @@ open IsDedekindDomain
 open scoped nonZeroDivisors
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.RegroupAbsNorm.finprod_aboveF_absNorm_zpow_count | exact GlobalTheory.RegroupAbsNorm.finprod_aboveF_absNorm_zpow_count | (intros; apply GlobalTheory.RegroupAbsNorm.finprod_aboveF_absNorm_zpow_count <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.ideal_norm_product_over_places : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (I : FractionalIdeal (𝓞 E)⁰ E), I ≠ 0 →
       ∏ᶠ v : HeightOneSpectrum (𝓞 F), ∏ w ∈ Formalism.L2.Host.aboveF (L := E) F v,

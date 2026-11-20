@@ -11,6 +11,13 @@ namespace GlobalTheory.TamUnf.RatEx
 
 open ReciprocityTheory.ChartRestriction.G.FD in
 
+/- English proof (translation)
+Use extensionality with `i j`. Establish `hij` using `h (Pi.single j 1) (Pi.single i 1)`. Simplify using `only [herm, mulVec_single_one, transpose_apply, Pi.single_apply] at hij`. Simplify using `only [Formalism.UG.cT, Matrix.mul_apply, transpose_apply, map_apply, Finset.sum_mul] at hij ⊢`. Establish `e : ∀ x, ((IsCMField.complexConj E).toAlgHom : E →+* E) x = cc x` using `fun x => rfl`.
+
+Simplify using `only [Matrix.col_apply, ite_mul, zero_mul, one_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true] at hij`. Simplify using `only [cc, apply_ite (IsCMField.complexConj E), map_one, map_zero, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true] at hij`. Establish `hij'` using `hij.trans (by simp : _ = G j i)`. Rewrite using `[← hij']`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `(IsCMField.complexConj E) (δ b i) * G a b * δ a j = _`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem cT_transpose_of_herm {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
     {G δ : Matrix (Fin r) (Fin r) E} (h : ∀ x y, herm G (δ *ᵥ x) (δ *ᵥ y) = herm G x y) :
     Formalism.UG.cT ((IsCMField.complexConj E).toAlgHom : E →+* E) δ * Gᵀ * δ = Gᵀ := by
@@ -30,10 +37,18 @@ theorem cT_transpose_of_herm {E : Type} [Field E] [NumberField E] [IsCMField E] 
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E]
 
+/- English proof (translation)
+Simplify using `[sigR, inclR, Algebra.TensorProduct.map_tmul]`.
+-/
 theorem sigR_inclR (R : Type) [CommRing R] [Algebra F R] (σ : E →ₐ[F] E) (x : E) :
     sigR R σ (inclR R x) = inclR R (σ x) := by
   simp [sigR, inclR, Algebra.TensorProduct.map_tmul]
 
+/- English proof (translation)
+Establish `hu' : Formalism.UG.cT (σ : E →+* E) (u : Matrix (Fin M) (Fin M) E) * J * (u : Matrix (Fin M) (Fin M) E) = J` using `hu`. Use `show Formalism.UG.cT (sigR R σ) ((u : Matrix (Fin M) (Fin M) E).map (inclR R)) * JR R J * (u : Matrix (Fin M) (Fin M) E).map (inclR R) = JR R J`. Establish `hc : Formalism.UG.cT (sigR R σ) ((u : Matrix (Fin M) (Fin M) E).map (inclR R)) = (Formalism.UG.cT (σ : E →+* E) (u : Matrix (Fin M) (Fin M) E)).map (inclR R)`. Use extensionality with `a b`. Simplify using `only [Formalism.UG.cT, transpose_apply, map_apply]`.
+
+Conclude with `sigR_inclR R σ _`. Rewrite using `[hc, JR, ← Matrix.map_mul, ← Matrix.map_mul, hu']`.
+-/
 theorem bc_mem_HR (R : Type) [CommRing R] [Algebra F R] (σ : E →ₐ[F] E) {M : ℕ}
     {J : Matrix (Fin M) (Fin M) E} {u : GL (Fin M) E} (hu : u ∈ Formalism.UG.UJ (σ : E →+* E) J) :
     Formalism.UG.bc (inclR R) u ∈ HR R σ J := by
@@ -47,6 +62,19 @@ theorem bc_mem_HR (R : Type) [CommRing R] [Algebra F R] (σ : E →ₐ[F] E) {M 
     exact sigR_inclR R σ _
   rw [hc, JR, ← Matrix.map_mul, ← Matrix.map_mul, hu']
 
+/- English proof (translation)
+Introduce `E _ _ _ r G Ψ θ hθ δ hδ`. Take `⟨hdet, hherm⟩` from `GlobalTheory.SUCount.rat_of_isSA hδ`. Set `u : GL (Fin r) E` to `Matrix.GeneralLinearGroup.mk'' δ (by rw [hdet]; exact isUnit_one)`. Establish `hu : u ∈ Formalism.UG.UJ ((IsCMField.complexConj E).toAlgHom : E →+* E) Gᵀ` using `cT_transpose_of_herm hherm`. Set `g0 : HR (AF (maximalRealSubfield E)) (IsCMField.complexConj E).toAlgHom Gᵀ` to `⟨Formalism.UG.bc (inclR (AF (maximalRealSubfield E))) u, bc_mem_HR _ _ hu⟩`.
+
+Set `g : HA (AF (maximalRealSubfield E)) (IsCMField.complexConj E).toAlgHom Gᵀ` to `g0`. Establish `hgm : ((HA.mat (AF (maximalRealSubfield E)) (IsCMField.complexConj E).toAlgHom Gᵀ g : GL (Fin r) (AF (maximalRealSubfield E) ⊗[maximalRealSubfield E] E)) : Matrix (Fin r) (Fin r) (AF (maximalRealSubfield E) ⊗[maximalRealSubfield E] E)) = δ.map (inclR (AF (maximalRealSubfield E)))` using `rfl`. Establish `hgS : g ∈ SUAdelic (IsCMField.complexConj E).toAlgHom Gᵀ`. Rewrite using `[StrongApprox.mem_SUAdelic, hgm]`. Establish `h1` using `RingHom.map_det (inclR (F := maximalRealSubfield E) (AF (maximalRealSubfield E))) δ`.
+
+Rewrite `h1` using `[hdet, map_one]`. Conclude with `h1.symm`. Use `⟨⟨g, hgS⟩, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Subgroup.mem_subgroupOf]`. Use `⟨hgS, ?_⟩` and prove the remaining obligations.
+
+Conclude with `(Subgroup.mem_subgroupOf (h := g0)).2 (Subgroup.mem_map_of_mem _ hu)`. Introduce `ρ`. Use extensionality with `a b`. Simplify using `only [infMat, map_apply]`. Rewrite using `[hgm, map_apply]`.
+
+Simplify using `only [inclR, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, Algebra.TensorProduct.includeRight_apply, Algebra.TensorProduct.map_tmul, map_one, AlgHom.id_apply]`. Conclude with `(hθ ρ).1 (δ a b)`. Use extensionality with `a b`. Simplify using `only [finMat, map_apply]`. Rewrite using `[hgm, map_apply]`.
+
+Simplify using `only [inclR, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, Algebra.TensorProduct.includeRight_apply, Algebra.TensorProduct.map_tmul, map_one, AlgHom.id_apply, GlobalTheory.UCls.ratM]`. Both sides reduce to the same expression.
+-/
 theorem exists_SURat_of_isSA : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (G : Matrix (Fin r) (Fin r) E)
     (Ψ : Finset (E →+* ℂ)) (θ : Ψ → (Ainf (maximalRealSubfield E) ⊗[maximalRealSubfield E] E →+* ℂ)),
     (∀ ρ : Ψ, IsInfEmb ρ.1 (θ ρ)) →

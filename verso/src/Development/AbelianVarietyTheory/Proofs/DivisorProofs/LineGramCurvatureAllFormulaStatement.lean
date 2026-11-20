@@ -5,6 +5,9 @@ import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.HodgeFrameGram
 open Matrix Complex ComplexConjugate GlobalTheory.HermFrame GlobalTheory.IndefiniteRowSideFullHecke.HodgeFrameGram
 open scoped ComplexOrder ContDiff
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ChernWeight.lineChern_weightNormSq | exact GlobalTheory.ChernWeight.lineChern_weightNormSq | (intros; apply GlobalTheory.ChernWeight.lineChern_weightNormSq <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.lineChern_weightNormSq_eq_vertForm_add_horizForm : ∀ (E : Type) [NormedAddCommGroup E] [NormedSpace ℂ E] [NormedSpace ℝ E] [IsScalarTower ℝ ℂ E]
     [FiniteDimensional ℂ E] (ι : Type) [Fintype ι] (n : ℕ) (U : Set (ι → ℂ))
     (H : (ι → ℂ) → Matrix (Fin n) (Fin n) ℂ) (Y : Set E) (π : E → ι → ℂ)

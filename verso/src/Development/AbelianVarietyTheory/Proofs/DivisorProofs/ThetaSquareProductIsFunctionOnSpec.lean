@@ -16,6 +16,11 @@ open ReciprocityTheory.ChartRestriction.G.DVR GlobalTheory.Poinc.Sep.Frames Glob
 
 namespace GlobalTheory.IntPointFnSq
 
+/- English proof (translation)
+Rewrite using `[← Over.comp_left]`. Use `congr 1`. Establish `h : D.c χ * D.c (-χ) = 1`. Rewrite using `[← GlobalTheory.Poinc.ThetaOne.c_zero D, ← add_neg_cancel χ, D.c_add]`. Both sides reduce to the same expression.
+
+Conclude with `(eq_inv_of_mul_eq_one_right h).symm`.
+-/
 theorem c_comp_inv (V : Type) [CommRing V] [IsDomain V] (D : DegPre V) (χ : D.X) :
     (D.c χ).left ≫ (ι[D.P.A]).left = (D.c (-χ)).left := by
   rw [← Over.comp_left]
@@ -24,12 +29,26 @@ theorem c_comp_inv (V : Type) [CommRing V] [IsDomain V] (D : DegPre V) (χ : D.X
     rw [← GlobalTheory.Poinc.ThetaOne.c_zero D, ← add_neg_cancel χ, D.c_add]; rfl
   exact (eq_inv_of_mul_eq_one_right h).symm
 
+/- English proof (translation)
+Rewrite using `[add_neg_cancel, GlobalTheory.Poinc.ThetaOne.c_zero, ← SymFrame.eta_eq]`.
+-/
 theorem c_eq_eta (V : Type) [CommRing V] [IsDomain V] (D : DegPre V) (χ : D.X) :
     (D.c (χ + -χ)).left = (η[D.P.A]).left := by
   rw [add_neg_cancel, GlobalTheory.Poinc.ThetaOne.c_zero, ← SymFrame.eta_eq]
 
 open GlobalTheory.IntPointFn in
 
+/- English proof (translation)
+Introduce `V _ _ D θ b χ t ht χt hχt τ hτ`. Establish `hL` using `D.P.isLB`. Establish `e0 : (D.c 0).left = (η[D.P.A]).left` using `by rw [GlobalTheory.Poinc.ThetaOne.c_zero, ← SymFrame.eta_eq]`. Establish `e1` using `c_comp_inv V D χ`. Establish `e2` using `c_eq_eta V D χ`.
+
+Establish `e4 : (b * D.c χ).left = (D.c χ * b).left` using `by rw [_root_.mul_comm]`. Set `u` to `LB.mulGen D.P.L _ _ _ _ (LB.mulGen D.P.L _ _ _ _ (LB.mulGen D.P.L _ _ _ _ (LB.mulGen D.P.L _ _ _ _ (LB.mulGen D.P.L _ _ _ _ t t) (LB.mulGen D.P.L _ _ _ _ χt χt)) (LB.pullGen D.P.L _ _ D.sym (D.c χ).left)) (LB.invGen D.P.L _ _ τ)) (LB.invGen D.P.L _ _ (LB.mulGen D.P.L (Y := Sp V) …`. Establish `hu : u.IsGen`. Use `mulGen_isGen _ _ _ _ _ _ _ (mulGen_isGen _ _ _ _ _ _ _ (mulGen_isGen _ _ _ _ _ _ _ (mulGen_isGen _ _ _ _ _ _ _ (mulGen_isGen _ _ _ _ _ _ _ ht ht) (mulGen_isGen _ _ _ _ _ _ _ hχt hχt)) (pullGen_isGen _ _ _ _ D.sym_gen _)) (invGen_isGen _ _ _ _ hτ)) (invGen_isGen _ _ _ _ (mulGen_is …` and prove the remaining obligations. Take `⟨s', hs'⟩` from `GlobalTheory.Poinc.Sep.ConjPt.exists_powSec hL (θ : LB.Sec (LB.LinComb D.P.L (D.famφB 0) (DegPre.famε 1))) (b * D.c χ).left 2 u hu (K' := PEmpty) PEmpty.elim PEmpty.elim (fun U _ f => by`.
+
+Simplify using `only [u, Fintype.prod_sum_type, Sum.elim_inl, Sum.elim_inr, Fin.prod_univ_four, Fin.prod_univ_two, Fintype.prod_empty, Fintype.prod_unique, DegPre.famφB, DegPre.famε, DegPre.lineε, DegPre.gtε, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.cons_val_three, …`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv, ofMul_zpow, ofMul_pow, ofMul_one]`. Use the proof step `abel)`. Take `⟨a, ha⟩` from `GlobalTheory.Poinc.Sep.ConjPt.exists_fn s'`.
+
+Use `⟨(Scheme.ΓSpecIso (CommRingCat.of V)).hom.hom a, fun Z r z J hJ => ?_⟩` and prove the remaining obligations. Establish `e2' : (Scheme.ΓSpecIso (CommRingCat.of V)).inv.hom ((Scheme.ΓSpecIso (CommRingCat.of V)).hom.hom a) = a`. Rewrite using `[← CommRingCat.comp_apply, Iso.hom_inv_id]`. Both sides reduce to the same expression. Rewrite using `[e2', ← ha, hs' Z r z J hJ]`.
+
+Use `congr 1`. Simplify using `only [u, val_mul hJ, val_inv, val_pull hJ, rigV]`. Simplify using `only [pow_two]`.
+-/
 theorem fn_of_theta_sq : ∀ (V : Type) [CommRing V] [IsDomain V] (D : DegPre V)
     (θ : SecOver D.P.A.hom (LB.LinComb D.P.L (D.famφB 0) (DegPre.famε 1)))
     (b : 𝟙_ (Over (Sp V)) ⟶ D.P.A) (χ : D.X)

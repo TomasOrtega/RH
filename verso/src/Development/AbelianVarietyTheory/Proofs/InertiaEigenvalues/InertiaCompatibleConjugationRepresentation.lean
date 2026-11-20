@@ -9,6 +9,21 @@ open GlobalTheory.AntiRamConj GlobalTheory.AntiLAdic
 
 namespace GlobalTheory.ConjPoly
 
+/- English proof (translation)
+Establish `hcard : Multiset.card m = n`. Use `congrArg natDegree hM` as an intermediate fact. Rewrite `this` using `[Matrix.charpoly_natDegree_eq_dim, natDegree_multiset_prod_X_sub_C_eq_card, Fintype.card_fin]`. Conclude with `this.symm`. Establish `ev : ∀ y : ℂ, (Matrix.scalar (Fin n) y - M).det = (m.map fun β => y - β).prod` using `fun y => by`.
+
+Rewrite using `[← Matrix.eval_charpoly, hM, eval_multiset_prod, Multiset.map_map]`. Simplify using the standard rewrite rules. Establish `h0 : (-M).det = (m.map fun β => -β).prod` using `by simpa using ev 0`. Establish `hne : (-M).det ≠ 0`. Introduce `e`.
+
+Establish `: (-M * -N).det = 1` using `by rw [neg_mul_neg, h, Matrix.det_one]`. Rewrite `this` using `[Matrix.det_mul, e, zero_mul]`. Conclude with `zero_ne_one this`. Establish `hβ : ∀ β ∈ m, β ≠ 0`. Introduce and unpack `β hβ rfl`.
+
+Apply `hne` to reduce the goal to its premises. Rewrite using `[h0]`. Conclude with `Multiset.prod_eq_zero (Multiset.mem_map.2 ⟨0, hβ, neg_zero⟩)`. Use `Polynomial.eq_of_infinite_eval_eq _ _ ((Set.finite_singleton (0 : ℂ)).infinite_compl.mono ?_)` and prove the remaining obligations. Introduce `x hx`.
+
+Establish `hx0 : x ≠ 0` using `hx`. Use `show eval x _ = eval x _`. Rewrite using `[Matrix.eval_charpoly, eval_multiset_prod, Multiset.map_map]`. Apply `mul_left_cancel₀ hne` to reduce the goal to its premises. Establish `e1 : -M * (Matrix.scalar (Fin n) x - c • N) = x • (Matrix.scalar (Fin n) (c / x) - M)`.
+
+Rewrite using `[Matrix.scalar_apply, Matrix.scalar_apply, ← Matrix.smul_one_eq_diagonal, ← Matrix.smul_one_eq_diagonal, mul_sub, Matrix.mul_smul, Matrix.mul_smul, neg_mul, neg_mul, h, smul_sub, smul_smul, mul_div_cancel₀ _ hx0]`. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Rewrite using `[← Matrix.det_mul, e1, Matrix.det_smul, ev, h0, ← Multiset.prod_map_mul, Fintype.card_fin, ← hcard, ← Multiset.prod_replicate, ← Multiset.map_const', ← Multiset.prod_map_mul]`. Use `congr 1`.
+
+Use `Multiset.map_congr rfl fun β hb => ?_` and prove the remaining obligations. Use `hβ β hb` as an intermediate fact. Simplify using `only [Function.comp_apply, eval_sub, eval_X, eval_C]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem charpoly_smul_inv {n : ℕ} (M N : Matrix (Fin n) (Fin n) ℂ) (h : M * N = 1) (m : Multiset ℂ) (c : ℂ)
     (hM : M.charpoly = (m.map fun β => X - C β).prod) :
     (c • N).charpoly = (m.map fun β => X - C (c * β⁻¹)).prod := by
@@ -50,12 +65,18 @@ theorem charpoly_smul_inv {n : ℕ} (M N : Matrix (Fin n) (Fin n) ℂ) (h : M * 
   field_simp
   ring
 
+/- English proof (translation)
+Establish `h1 : Continuous (algebraMap ℚ_[l] (PadicAlgCl l))` using `continuous_algebraMap _ _`. Establish `h2 : Continuous fun z : ℤ_[l] => (z : ℚ_[l])` using `continuous_subtype_val`. Conclude with `h1.comp (h2.comp (Units.continuous_val.comp (continuous_cycZ F Ω l)))`.
+-/
 theorem continuous_cyc_val (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] (l : ℕ) [Fact l.Prime] :
     Continuous fun g : G F Ω => ((cyc F Ω l g : (Qbar l)ˣ) : Qbar l) := by
   have h1 : Continuous (algebraMap ℚ_[l] (PadicAlgCl l)) := continuous_algebraMap _ _
   have h2 : Continuous fun z : ℤ_[l] => (z : ℚ_[l]) := continuous_subtype_val
   exact h1.comp (h2.comp (Units.continuous_val.comp (continuous_cycZ F Ω l)))
 
+/- English proof (translation)
+Rewrite using `[cyc_eq_map_cycZ, Units.coe_map, cycZ_of_isFrob hl h hσ]`. Simplify using the standard rewrite rules.
+-/
 theorem cyc_val_frob {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] {l : ℕ}
     [Fact l.Prime] {A : ValuationSubring Ω} {v : HeightOneSpectrum (𝓞 F)} (hl : ((l : ℕ) : 𝓞 F) ∉ v.asIdeal)
     (h : IsPlaceOver A v) {σ : G F Ω} (hσ : IsFrob A (normV v) σ) :
@@ -63,16 +84,29 @@ theorem cyc_val_frob {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra
   rw [cyc_eq_map_cycZ, Units.coe_map, cycZ_of_isFrob hl h hσ]
   simp
 
+/- English proof (translation)
+Establish `: Finite (𝓞 F ⧸ v.asIdeal)` using `Ideal.finiteQuotientOfFreeOfNeBot _ v.ne_bot`. Conclude with `Nat.card_pos.ne'`.
+-/
 theorem normV_ne_zero {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) : normV v ≠ 0 := by
   have : Finite (𝓞 F ⧸ v.asIdeal) := Ideal.finiteQuotientOfFreeOfNeBot _ v.ne_bot
   exact Nat.card_pos.ne'
 
+/- English proof (translation)
+Establish `h0 : Ideal.span {(l : 𝓞 E)} ≠ 0`. Simplify using `using hl`. Use `(Ideal.finite_factors h0).subset fun v hv => ?_` and prove the remaining obligations. Simplify `hv` using `[Ideal.dvd_span_singleton, placesOver]`.
+-/
 theorem finite_placesOver (E : Type) [Field E] [NumberField E] (l : ℕ) (hl : l ≠ 0) : (placesOver E l).Finite := by
   have h0 : Ideal.span {(l : 𝓞 E)} ≠ 0 := by
     simpa using hl
   refine (Ideal.finite_factors h0).subset fun v hv => ?_
   simpa [Ideal.dvd_span_singleton, placesOver] using hv
 
+/- English proof (translation)
+Use `choose bar hbar using fun v => (GlobalTheory.Mem.Chr.existsUnique_conjPl D.host.conj.toRingEquiv v).exists`. Establish `hbb : ∀ v, bar (bar v) = v` using `fun v => (GlobalTheory.Mem.Chr.existsUnique_conjPl D.host.conj.toRingEquiv (bar v)).unique (hbar _) (conjPl_symm (host_conj_conj D) (hbar v))`. Establish `hc : ∀ v, IsConjPl D.host v (bar v)` using `fun v => (GlobalTheory.Mem.Chr.conjPl_iff_mem _ _ _).1 (hbar v)`. Use `⟨bar, Function.LeftInverse.injective hbb, fun w => ⟨hc w, normV_conjPl (hbar w), ?_⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨x, hx, hx'⟩`.
+
+Set `y : 𝓞 D.host.E` to `RingOfIntegers.mapRingEquiv D.host.conj.toRingEquiv x`. Establish `hy : (y : D.host.E) = D.host.conj x` using `rfl`. Use `⟨y, (hc w x y hy).1 hx, fun z hz hzm => ?_⟩` and prove the remaining obligations. Rewrite `hz` using `[hy, host_conj_conj]`. Establish `hzx : z = x` using `Subtype.ext hz`.
+
+Rewrite `hzm` using `[hzx]`. Conclude with `hx' y hy ((hc w y x (by rw [hy, host_conj_conj])).2 hzm)`.
+-/
 theorem exists_conj (D : D7) : ∃ bar : PlE D.host → PlE D.host, Function.Injective bar ∧
     ∀ w, IsConjPl D.host w (bar w) ∧ normV (bar w) = normV w ∧ (IsSplitPl D.host w → IsSplitPl D.host (bar w)) := by
   choose bar hbar using fun v => (GlobalTheory.Mem.Chr.existsUnique_conjPl D.host.conj.toRingEquiv v).exists
@@ -90,16 +124,37 @@ theorem exists_conj (D : D7) : ∃ bar : PlE D.host → PlE D.host, Function.Inj
   rw [hzx] at hzm
   exact hx' y hy ((hc w y x (by rw [hy, host_conj_conj])).2 hzm)
 
+/- English proof (translation)
+Simplify using `[isoLoc, spehLoc, D.naut.lpSum_zero, D.naut.lpTw_zero]`.
+-/
 theorem isoLoc_single (D : D7) (π : D.naut.CG D.R.r) (w : PlE D.host) :
     isoLoc D.nd D.naut [⟨D.R.r, π, 1⟩] w = D.naut.locG π w := by
   simp [isoLoc, spehLoc, D.naut.lpSum_zero, D.naut.lpTw_zero]
 
+/- English proof (translation)
+Rewrite using `[← Complex.cpow_add _ _ hq, ← Complex.cpow_intCast]`. Use `congr 1`. Rewrite using `[← two_mul]`. Conclude with `h` after adjusting the coercions.
+-/
 theorem cpow_sq {q : ℂ} (hq : q ≠ 0) (s : ℝ) (k : ℤ) (h : (k : ℝ) = 2 * s) : q ^ k = q ^ (s : ℂ) * q ^ (s : ℂ) := by
   rw [← Complex.cpow_add _ _ hq, ← Complex.cpow_intCast]
   congr 1
   rw [← two_mul]
   exact_mod_cast h
 
+/- English proof (translation)
+Establish `: Algebra.IsAlgebraic D.host.E D.nd.Om` using `IsAlgClosure.isAlgebraic`. Take `⟨bar, hinj, hbar⟩` from `exists_conj D`. Take `⟨hcont, -, hfr⟩` from `hρ`. Establish `hι` using `(iotaOQ_continuous_injective D i).1`. Establish `hfr'` using `hinj.tendsto_cofinite.eventually hfr`.
+
+Establish `hl` using `(finite_placesOver D.host.E (D.nd.l i) (D.nd.lPrime i).out.ne_zero).compl_mem_cofinite`. Establish `hall` using `(hfr.and hfr').and ((D.naut.locG_unr_ae π).and hl)`. Use `charpoly_eq_of_dense (G D.host.E D.nd.Om) (Qbar (D.nd.l i)) D.R.r (fun g => ((ρ (conjHom D.ntw.cc hc g) : GL _ _) : Matrix (Fin D.R.r) (Fin D.R.r) (D.nd.O i)).map (iotaOQ D.nd D.naut i)) (fun g => (((cyc D.host.E D.nd.Om (D.nd.l i) g : (Qbar (D.nd.l i))ˣ) : Qbar (D.nd.l i)) ^ (1 …` and prove the remaining obligations. Introduce and unpack `σ ⟨w, hw, -, B, hB, hσ⟩`. Take `⟨⟨h1, h2⟩, hu, hwl⟩` from `not_not.1 hw`.
+
+Take `⟨hcj, hn, -⟩` from `hbar w`. Take `⟨hu', he⟩` from `D.naut.csd_unr π w (bar w) hπ hcj hu`. Establish `e1` using `h1 B σ hB hσ`. Establish `e2` using `h2 _ _ (isPlaceOver_moveVal D hcj hB) (by rw [hn]; exact isFrob_conjHom D.ntw.cc hc hσ)`. Rewrite `e1` using `[isoLoc_single, galPol, D.naut.frobEig_tw _ _ hu, ← Matrix.charpoly_map]`.
+
+Rewrite `e2` using `[isoLoc_single, galPol, D.naut.frobEig_tw _ _ hu', he, hn, ← Matrix.charpoly_map]`. Establish `hq : ((normV w : ℕ) : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 (normV_ne_zero w)`. Establish `e3` using `charpoly_smul_inv _ (((ρ σ⁻¹ : GL _ _) : Matrix (Fin D.R.r) (Fin D.R.r) (D.nd.O i)).map (iotaO D.nd D.naut i)) (by rw [← Matrix.map_mul, ← Units.val_mul, ← map_mul, mul_inv_cancel, map_one, Units.val_one, Matrix.map_one _ (map_zero _) (map_one _)]) _ (((normV w : ℕ) : ℂ) ^ (1 - ( …`. Apply `Polynomial.map_injective (D.naut.iotaQC i).toRingHom (D.naut.iotaQC i).injective` to reduce the goal to its premises. Use `beta_reduce`.
+
+Rewrite using `[← Matrix.charpoly_map, ← Matrix.charpoly_map, cyc_val_frob hwl hB hσ]`. Use `e2.trans (Eq.trans ?_ (e3.symm.trans ?_))` and prove the remaining obligations. Rewrite using `[Multiset.map_map, Multiset.map_map, Multiset.map_map]`. Use `congr 1`. Use `Multiset.map_congr rfl fun a _ => ?_` and prove the remaining obligations.
+
+Simplify using `only [Function.comp_apply]`. Rewrite using `[cpow_sq hq ((1 - (D.R.r : ℝ)) / 2) _ (by push_cast; ring)]`. Establish `: ((normV w : ℕ) : ℂ) ^ (((1 - (D.R.r : ℝ)) / 2 : ℝ) : ℂ) ≠ 0`. Simplify using `[hq]`. Rewrite using `[mul_inv_rev, ← mul_assoc, mul_inv_cancel_right₀ this, mul_comm a⁻¹]`.
+
+Use `congr 1`. Use extensionality with `a b`. Simplify using `[iotaO, iotaOQ]`.
+-/
 theorem charpoly_conj (D : D7) (hD : FrobDense D) (i : D.nd.Loc) (π : D.naut.CG D.R.r)
     (ρ : G D.host.E D.nd.Om →* GL (Fin D.R.r) (D.nd.O i)) (hπ : D.naut.csd π)
     (hρ : IsRepOfSig D.nd D.naut i [⟨D.R.r, π, 1⟩] ρ)
@@ -153,6 +208,23 @@ theorem charpoly_conj (D : D7) (hD : FrobDense D) (i : D.nd.Loc) (π : D.naut.CG
     ext a b
     simp [iotaO, iotaOQ]
 
+/- English proof (translation)
+Establish `: Algebra.IsAlgebraic D.host.E D.nd.Om` using `IsAlgClosure.isAlgebraic`. Take `⟨bar, hinj, hbar⟩` from `exists_conj D`. Establish `hι` using `(iotaOQ_continuous_injective D i).1`. Establish `hl` using `(finite_placesOver D.host.E (D.nd.l i) (D.nd.lPrime i).out.ne_zero).compl_mem_cofinite`. Establish `hout : ∀ᶠ w in Filter.cofinite, w ∉ placesOver D.host.E (D.nd.l i) ∧ w ∉ D.nd.S i ∧ w ∉ D.nd.Q i` using `Filter.Eventually.and hl ((D.nd.S i).eventually_cofinite_notMem.and (D.nd.Q i).eventually_cofinite_notMem)`.
+
+Establish `hall` using `(hout.and (hinj.tendsto_cofinite.eventually hout)).and (D.naut.locG_unr_ae (D.naut.muC i))`. Establish `hχ` using `hι.comp (D.nd.chi_cont i 1)`. Use `congrFun (Continuous.ext_on (hD _ (Filter.eventually_cofinite.1 hall)) ((hχ.comp (continuous_conjHom D.ntw.cc hc)).mul hχ) ((continuous_cyc_val _ _ _).zpow₀ _ fun g => Or.inl (Units.ne_zero _)) ?_) g` and prove the remaining obligations. Introduce and unpack `σ ⟨w, hw, hs, B, hB, hσ⟩`. Take `⟨⟨h1, h2⟩, hu⟩` from `not_not.1 hw`.
+
+Take `⟨hcj, hn, hs'⟩` from `hbar w`. Take `⟨hu', he⟩` from `D.naut.csd_unr _ w (bar w) (D.naut.muC_csd i) hcj hu`. Take `⟨u1, e1⟩` from `D.naut.chi_mu i w ⟨hs, h1⟩`. Take `⟨u2, e2⟩` from `D.naut.chi_mu i (bar w) ⟨hs' hs, h2⟩`. Establish `e1` using `e1 B σ hB hσ`.
+
+Establish `e2` using `e2 _ _ (isPlaceOver_moveVal D hcj hB) (by rw [hn]; exact isFrob_conjHom D.ntw.cc hc hσ)`. Establish `one : ∀ (χ : D.naut.CG 1) (v : PlE D.host), D.naut.unr (D.naut.locG χ v) → ∃ a, D.naut.frobEig (D.naut.locG χ v) = {a}` using `fun χ v h => Multiset.card_eq_one.1 ((D.naut.frobEig_card _ h).trans (D.naut.locG_dim χ v))`. Take `⟨a, ha⟩` from `one _ w (D.naut.etaT_unr w)`. Take `⟨b, hb⟩` from `one _ (bar w) (D.naut.etaT_unr (bar w))`. Take `⟨m, hm⟩` from `one _ w hu`.
+
+Establish `hab` using `D.naut.etaT_split w (bar w) hs hcj a b ha hb`. Establish `hm0 : m ≠ 0`. Introduce and unpack `rfl`. Conclude with `D.naut.frobEig_ne_zero _ hu (by rw [hm]; exact Multiset.mem_singleton_self _)`. Take `⟨v1, f1⟩` from `D.naut.etaTinv_def w`.
+
+Take `⟨v2, f2⟩` from `D.naut.etaTinv_def (bar w)`. Rewrite `f1` using `[ha, Multiset.map_singleton]`. Rewrite `f2` using `[hb, Multiset.map_singleton]`. Rewrite `e1` using `[D.naut.frobEig_tw _ _ u1, D.naut.locG_tw, D.naut.frobEig_char _ _ _ hu v1 (D.naut.locG_dim _ _) f1, hm, Multiset.map_singleton, Multiset.map_singleton, Multiset.singleton_inj]`. Rewrite `e2` using `[D.naut.frobEig_tw _ _ u2, D.naut.locG_tw, D.naut.frobEig_char _ _ _ hu' v2 (D.naut.locG_dim _ _) f2, he, hm, Multiset.map_singleton, Multiset.map_singleton, Multiset.map_singleton, Multiset.singleton_inj, hn]`.
+
+Establish `hq : ((normV w : ℕ) : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 (normV_ne_zero w)`. Apply `(D.naut.iotaQC i).injective` to reduce the goal to its premises. Simplify using `only [Function.comp_apply, Pi.mul_apply]`. Rewrite using `[map_mul, cyc_val_frob h1.1 hB hσ, map_zpow₀, map_natCast, cpow_sq hq (((D.R.t : ℝ) - 1) / 2 + (1 - (D.R.nV : ℝ)) / 2) _ (by push_cast; ring)]`. Use `(congrArg₂ (· * ·) e2.symm e1.symm).trans ?_` and prove the remaining obligations.
+
+Establish `hab' : a⁻¹ * b⁻¹ = 1` using `by rw [← mul_inv, hab, inv_one]`. Establish `hmm : m⁻¹ * m = 1` using `inv_mul_cancel₀ hm0`. Generalize the expression as in `((normV w : ℕ) : ℂ) ^ ((((D.R.t : ℝ) - 1) / 2 + (1 - (D.R.nV : ℝ)) / 2 : ℝ) : ℂ) = y`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem chi_conj (D : D7) (hD : FrobDense D) (i : D.nd.Loc)
     (hc : ∀ x : D.host.E, ∃ y : D.host.E,
       D.ntw.cc.symm (algebraMap D.host.E D.nd.Om x) = algebraMap D.host.E D.nd.Om y) (g : G D.host.E D.nd.Om) :
@@ -208,6 +280,13 @@ theorem chi_conj (D : D7) (hD : FrobDense D) (i : D.nd.Loc)
   calc m⁻¹ * b⁻¹ * y * (m * a⁻¹ * y) = (m⁻¹ * m) * (a⁻¹ * b⁻¹) * (y * y) := by ring
     _ = y * y := by rw [hmm, hab', one_mul, one_mul]
 
+/- English proof (translation)
+Introduce `D hD i π ρ hπ hρ w B hw hB s hs s' hs'`. Establish `hc : ∀ x : D.host.E, ∃ y : D.host.E, D.ntw.cc.symm (algebraMap D.host.E D.nd.Om x) = algebraMap D.host.E D.nd.Om y` using `fun x => ⟨_, cc_symm_algebraMap_host D x⟩`. Choose the witnesses or unpack the hypotheses as in `rfl : s' = conjHom D.ntw.cc hc s := by`. Use extensionality with `y`. Rewrite using `[conjHom_apply, ← hs', RingEquiv.apply_symm_apply]`.
+
+Establish `hε : cyc D.host.E D.nd.Om (D.nd.l i) s = 1` using `cyc_eq_one_of_mem_Ine hw hB hs`. Establish `hι` using `(iotaOQ_continuous_injective D i).2`. Prove the components needed by the constructor for the conclusion. Establish `h` using `charpoly_conj D hD i π ρ hπ hρ hc s`. Rewrite `h` using `[hε, Units.val_one, one_zpow, one_smul, Matrix.charpoly_map, Matrix.charpoly_map]`.
+
+Conclude with `Polynomial.map_injective _ hι h`. Establish `h` using `chi_conj D hD i hc s`. Rewrite `h` using `[hε, Units.val_one, one_zpow, ← map_mul, ← map_one (iotaOQ D.nd D.naut i), ← Units.val_mul]`. Rewrite using `[map_inv]`. Conclude with `eq_inv_of_mul_eq_one_left (Units.ext (hι h))`.
+-/
 theorem conj_inertia : ∀ D : D7, FrobDense D → ∀ (i : D.nd.Loc) (π : D.naut.CG D.R.r) (ρ : G D.host.E D.nd.Om →* GL (Fin D.R.r) (D.nd.O i)), D.naut.csd π → IsRepOfSig D.nd D.naut i [⟨D.R.r, π, 1⟩] ρ → ∀ (w : PlE D.host) (B : ValuationSubring D.nd.Om), w ∉ placesOver D.host.E (D.nd.l i) → IsPlaceOver (F := D.host.E) B w → ∀ s ∈ Ine (F := D.host.E) B, ∀ s' : G D.host.E D.nd.Om, (∀ y, s' (D.ntw.cc y) = D.ntw.cc (s y)) → ((ρ s' : GL _ _) : Matrix (Fin D.R.r) (Fin D.R.r) (D.nd.O i)).charpoly = ((ρ s⁻¹ : GL _ _) : Matrix (Fin D.R.r) (Fin D.R.r) (D.nd.O i)).charpoly ∧ D.nd.chi i 1 s' = D.nd.chi i 1 s⁻¹ := by
   intro D hD i π ρ hπ hρ w B hw hB s hs s' hs'
   have hc : ∀ x : D.host.E, ∃ y : D.host.E,

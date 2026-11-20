@@ -10,6 +10,19 @@ noncomputable abbrev genMat {R ι : Type} [CommRing R] [Fintype ι] {n : ℕ}
     (M : ι → Matrix (Fin n) (Fin n) R) : Matrix (Fin n) (Fin n) (MvPolynomial ι R) :=
   ∑ i, (X i : MvPolynomial ι R) • (M i).map (C : R →+* MvPolynomial ι R)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hu`. Establish `hinj : Function.Injective (Algebra.TensorProduct.includeRight : B →ₐ[K] E ⊗[K] B)` using `Algebra.TensorProduct.includeRight_injective (algebraMap K E).injective`. Establish `hL : Function.Injective (LinearMap.mulLeft K x)`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`.
+
+Introduce `z hz`. Establish `h0 : ((1 : E) ⊗ₜ[K] x) * (1 ⊗ₜ z) = 0`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul]`. Simplify using `only [LinearMap.mulLeft_apply] at hz`. Rewrite using `[hz, TensorProduct.tmul_zero]`.
+
+Establish `h1 : (1 : E) ⊗ₜ[K] z = 0` using `hu.mul_right_eq_zero.mp h0`. Conclude with `hinj (by simpa using h1)`. Establish `hR : Function.Injective (LinearMap.mulRight K x)`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `z hz`.
+
+Establish `h0 : ((1 : E) ⊗ₜ[K] z) * (1 ⊗ₜ x) = 0`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul]`. Simplify using `only [LinearMap.mulRight_apply] at hz`. Rewrite using `[hz, TensorProduct.tmul_zero]`. Establish `h1 : (1 : E) ⊗ₜ[K] z = 0` using `hu.mul_left_eq_zero.mp h0`.
+
+Conclude with `hinj (by simpa using h1)`. Take `⟨z, hz⟩` from `LinearMap.injective_iff_surjective.mp hL 1`. Take `⟨w, hw⟩` from `LinearMap.injective_iff_surjective.mp hR 1`. Simplify using `only [LinearMap.mulLeft_apply] at hz`. Simplify using `only [LinearMap.mulRight_apply] at hw`.
+
+Establish `hwz : w = z`. Combine the equalities or inequalities in the displayed calculation. Conclude with `⟨⟨x, z, hz, hwz ▸ hw⟩, rfl⟩`. Introduce `hx`. Conclude with `hx.map (Algebra.TensorProduct.includeRight : B →ₐ[K] E ⊗[K] B)`.
+-/
 theorem isUnit_one_tmul_iff {K E B : Type} [Field K] [Field E] [Algebra K E] [Ring B]
     [Algebra K B] [FiniteDimensional K B] (x : B) :
     IsUnit ((1 : E) ⊗ₜ[K] x) ↔ IsUnit x := by

@@ -11,6 +11,11 @@ variable {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensiona
 
 omit [FiniteDimensional ℝ E] in
 
+/- English proof (translation)
+Take `⟨f, -, rfl⟩` from `Submodule.mem_span_finset.1 hw`. Use `⟨∑ x ∈ s, ⌊f x⌋ • x, Submodule.sum_mem _ fun x hx => Λ.smul_mem _ (hs x hx), ?_⟩` and prove the remaining obligations. Rewrite using `[← Finset.sum_sub_distrib]`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun x _ => ?_)` and prove the remaining obligations. Rewrite using `[← Int.cast_smul_eq_zsmul ℝ, ← sub_smul, norm_smul]`.
+
+Establish `h1` using `Int.floor_le (f x)`. Establish `h2` using `Int.lt_floor_add_one (f x)`. Establish `: ‖f x - (⌊f x⌋ : ℝ)‖ ≤ 1`. Apply the tactic sequence `rw [Real.norm_eq_abs, abs_le]; constructor <;> linarith`. Use polynomial arithmetic with `[norm_nonneg x]`.
+-/
 theorem near_of_finset (Λ : Submodule ℤ E) (s : Finset E) (hs : ∀ x ∈ s, x ∈ Λ) (w : E)
     (hw : w ∈ Submodule.span ℝ (s : Set E)) : ∃ l ∈ Λ, ‖w - l‖ ≤ ∑ x ∈ s, ‖x‖ := by
   obtain ⟨f, -, rfl⟩ := Submodule.mem_span_finset.1 hw
@@ -24,6 +29,9 @@ theorem near_of_finset (Λ : Submodule ℤ E) (s : Finset E) (hs : ∀ x ∈ s, 
     rw [Real.norm_eq_abs, abs_le]; constructor <;> linarith
   nlinarith [norm_nonneg x]
 
+/- English proof (translation)
+Establish `hd : DiscreteTopology Λ.toAddSubgroup` using `‹_›`. Establish `hc : IsClosed (Λ.toAddSubgroup : Set E)` using `AddSubgroup.isClosed_of_discrete`. Use `Metric.finite_isBounded_inter_isClosed (s := (Λ.toAddSubgroup : Set E)) (K := Metric.closedBall (0 : E) r) (isDiscrete_iff_discreteTopology.2 hd) Metric.isBounded_closedBall hc` as an intermediate fact. Use `this.subset fun x hx => ⟨by simpa using hx.2, hx.1⟩` and prove the remaining obligations.
+-/
 theorem finite_norm_le (Λ : Submodule ℤ E) [DiscreteTopology Λ] (r : ℝ) :
     {x : E | x ∈ Λ ∧ ‖x‖ ≤ r}.Finite := by
   have hd : DiscreteTopology Λ.toAddSubgroup := ‹_›
@@ -32,6 +40,17 @@ theorem finite_norm_le (Λ : Submodule ℤ E) [DiscreteTopology Λ] (r : ℝ) :
     (K := Metric.closedBall (0 : E) r) (isDiscrete_iff_discreteTopology.2 hd) Metric.isBounded_closedBall hc
   refine this.subset fun x hx => ⟨by simpa using hx.2, hx.1⟩
 
+/- English proof (translation)
+Take `⟨s, hs, -, hsp, -⟩` from `Submodule.exists_finset_span_eq_linearIndepOn ℝ {x | x ∈ Λ ∧ x ∈ W}`. Use `set C := ∑ x ∈ s, ‖x‖ with hC`. Establish `hfin : ({x : E | x ∈ Λ ∧ ‖x‖ ≤ C + 1} \ (W : Set E)).Finite` using `(finite_norm_le Λ (C + 1)).sdiff`. Establish `hcl : IsClosed (W : Set E)` using `W.closed_of_finiteDimensional`. Choose the witnesses or unpack the hypotheses as in `⟨δ, hδ, hd⟩ : ∃ δ > 0, ∀ x ∈ ({x : E | x ∈ Λ ∧ ‖x‖ ≤ C + 1} \ (W : Set E)), δ ≤ Metric.infDist x W := by`.
+
+Distinguish the cases in `hne : ({x : E | x ∈ Λ ∧ ‖x‖ ≤ C + 1} \ (W : Set E)).Nonempty`. Take `⟨x₀, hx₀, hm⟩` from `Set.exists_min_image _ (fun x => Metric.infDist x (W : Set E)) hfin hne`. Conclude with `⟨_, (hcl.notMem_iff_infDist_pos ⟨0, W.zero_mem⟩).1 hx₀.2, hm⟩`. Conclude with `⟨1, one_pos, fun x hx => absurd ⟨x, hx⟩ hne⟩`. Use `⟨min 1 δ, lt_min one_pos hδ, fun x hx w hw h => ?_⟩` and prove the remaining obligations.
+
+Take `⟨l, hl, hwl⟩` from `near_of_finset (Λ ⊓ W.restrictScalars ℤ) s (fun x hx => hs hx) w (by rw [hsp]; exact hW hw)`. Assume the negation of the conclusion as `hxW`. Establish `h1 : x + l ∈ ({x : E | x ∈ Λ ∧ ‖x‖ ≤ C + 1} \ (W : Set E))`. Use `⟨⟨Λ.add_mem hx hl.1, ?_⟩, fun h' => hxW ?_⟩` and prove the remaining obligations. Establish `: x + l = (x + w) - (w - l)` using `by abel`.
+
+Rewrite using `[this]`. Use `norm_sub_le (x + w) (w - l)` as an intermediate fact. Use `min_le_left 1 δ` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `using W.sub_mem h' hl.2`.
+
+Establish `h2` using `hd _ h1`. Establish `h3 : Metric.infDist (x + l) (W : Set E) ≤ dist (x + l) (l - w)` using `Metric.infDist_le_dist_of_mem (W.sub_mem hl.2 hw)`. Establish `: dist (x + l) (l - w) = ‖x + w‖` using `by rw [dist_eq_norm]; congr 1; abel`. Use `min_le_right 1 δ` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem separated (Λ : Submodule ℤ E) [DiscreteTopology Λ] (W : Submodule ℝ E)
     (hW : W ≤ Submodule.span ℝ {x | x ∈ Λ ∧ x ∈ W}) :
     ∃ ε > 0, ∀ x ∈ Λ, ∀ w ∈ W, ‖x + w‖ < ε → x ∈ W := by
@@ -65,6 +84,29 @@ theorem separated (Λ : Submodule ℤ E) [DiscreteTopology Λ] (W : Submodule �
   have := min_le_right 1 δ
   linarith
 
+/- English proof (translation)
+Take `⟨p, hp⟩` from `TopologicalSpace.exists_dense_seq E`. Set `B : ℕ → Set E` to `fun n => {c | ∃ w ∈ W, ‖c + w - p n‖ < ε / 2}`. Set `G : ℕ → Set E` to `fun n => {c | ∃ x ∈ D, c + x ∈ B n}`. Establish `hB : ∀ n, IsOpen (B n)` using `fun n => by`. Establish `: B n = ⋃ w ∈ W, {c | ‖c + w - p n‖ < ε / 2}` using `by ext c; simp [B]`.
+
+Rewrite using `[this]`. Conclude with `isOpen_biUnion fun w _ => isOpen_lt (by fun_prop) continuous_const`. Establish `hG : ∀ n, IsOpen (G n)` using `fun n => by`. Establish `: G n = ⋃ x ∈ D, (fun c => c + x) ⁻¹' B n` using `by ext c; simp [G]`. Rewrite using `[this]`.
+
+Conclude with `isOpen_biUnion fun w _ => (hB n).preimage (by fun_prop)`. Establish `hBW : ∀ n c w, w ∈ W → c ∈ B n → c + w ∈ B n`. Introduce and unpack `n c w hw ⟨w', hw', h'⟩`. Conclude with `⟨w' - w, W.sub_mem hw' hw, by convert h' using 2; abel⟩`. Establish `hGW : ∀ n c w, w ∈ W → c + w ∈ G n → c ∈ G n`.
+
+Introduce and unpack `n c w hw ⟨x, hx, h'⟩`. Use `⟨x, hx, ?_⟩` and prove the remaining obligations. Use `hBW n _ (-w) (W.neg_mem hw) h'` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Normalize the expressions using the abelian group laws.
+
+Establish `hGD : ∀ n c x, x ∈ D → c + x ∈ G n → c ∈ G n`. Introduce and unpack `n c x hx ⟨y, hy, h'⟩`. Conclude with `⟨x + y, D.add_mem hx hy, by rwa [← add_assoc]⟩`. Use `⟨⋃ n, B n \ ⋃ m < n, G m, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `MeasurableSet.iUnion fun n => (hB n).measurableSet.diff (isOpen_biUnion fun m _ => hG m).measurableSet`.
+
+Introduce `c hc w hw`. Simplify using `only [mem_iUnion, mem_sdiff, not_exists] at hc ⊢`. Take `⟨n, h1, h2⟩` from `hc`. Conclude with `⟨n, hBW n c w hw h1, fun m hm h' => h2 m hm (hGW m c w hw h')⟩`. Introduce `c`.
+
+Establish `hex : ∃ n, c ∈ G n`. Take `⟨n, hn⟩` from `hp.exists_dist_lt c (half_pos hε)`. Conclude with `⟨n, 0, D.zero_mem, 0, W.zero_mem, by simpa [dist_eq_norm] using hn⟩`. Take `⟨x, hx, hb⟩` from `Nat.find_spec hex`. Use `⟨x, hx, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [mem_iUnion, mem_sdiff, not_exists]`. Conclude with `⟨_, hb, fun m hm h' => Nat.find_min hex hm (hGD m c x hx h')⟩`. Introduce `c hc x hx hcx`. Simplify using `only [mem_iUnion, mem_sdiff, not_exists] at hc hcx`. Take `⟨n, h1, h2⟩` from `hc`.
+
+Take `⟨m, h3, h4⟩` from `hcx`. Establish `hnm : n = m`. Break down `lt_trichotomy n m with hl | hl | hl` into its components or cases. Conclude with `absurd ⟨-x, D.neg_mem hx, by simpa using h1⟩ (h4 n hl)`. Conclude with `hl`.
+
+Conclude with `absurd ⟨x, hx, h3⟩ (h2 m hl)`. Substitute `hnm` using the available equality. Take `⟨w, hw, e1⟩` from `h1`. Take `⟨w', hw', e2⟩` from `h3`. Use `h x hx (w' - w) (W.sub_mem hw' hw) ?_` and prove the remaining obligations.
+
+Establish `: x + (w' - w) = (c + x + w' - p n) - (c + w - p n)` using `by abel`. Rewrite using `[this]`. Use `norm_sub_le (c + x + w' - p n) (c + w - p n)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem exists_transversal [MeasurableSpace E] [BorelSpace E] (D : Submodule ℤ E)
     (W : Submodule ℝ E) (ε : ℝ) (hε : 0 < ε) (h : ∀ x ∈ D, ∀ w ∈ W, ‖x + w‖ < ε → x ∈ W) :
     ∃ F : Set E, MeasurableSet F ∧ (∀ c ∈ F, ∀ w ∈ W, c + w ∈ F) ∧
@@ -131,6 +173,9 @@ variable {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensiona
   [MeasurableSpace E] [BorelSpace E] (μ : Measure E) [μ.IsAddHaarMeasure]
 
 omit [MeasurableSpace E] [BorelSpace E] in
+/- English proof (translation)
+Establish `: (Λ : Set E).Countable`. Use `(Set.countable_iUnion fun n : ℕ => (finite_norm_le Λ n).countable).mono fun x hx => ?_` and prove the remaining obligations. Take `⟨n, hn⟩` from `exists_nat_ge ‖x‖`. Conclude with `mem_iUnion.2 ⟨n, hx, hn⟩`. Conclude with `this.to_subtype`.
+-/
 theorem countable_of_discrete (Λ : Submodule ℤ E) [DiscreteTopology Λ] : Countable Λ := by
   have : (Λ : Set E).Countable := by
     refine (Set.countable_iUnion fun n : ℕ => (finite_norm_le Λ n).countable).mono fun x hx => ?_
@@ -138,6 +183,25 @@ theorem countable_of_discrete (Λ : Submodule ℤ E) [DiscreteTopology Λ] : Cou
     exact mem_iUnion.2 ⟨n, hx, hn⟩
   exact this.to_subtype
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Take `⟨f, hf0, hker⟩` from `Submodule.exists_le_ker_of_lt_top _ (lt_top_iff_ne_top.2 hne)`. Choose the witnesses or unpack the hypotheses as in `⟨e, he⟩ : ∃ e, f e = 1 := by`. Choose the witnesses or unpack the hypotheses as in `⟨v, hv⟩ : ∃ v, f v ≠ 0 := by`. Assume the negation of the conclusion as `hc`.
+
+Use `push Not at hc`. Conclude with `hf0 (LinearMap.ext hc)`. Conclude with `⟨(f v)⁻¹ • v, by simp [hv]⟩`. Establish `hfc : Continuous f` using `f.continuous_of_finiteDimensional`. Take `⟨δ, hδ, hsep⟩` from `separated Λ ⊥ bot_le`.
+
+Set `P : E →ₗ[ℝ] E` to `LinearMap.id - f.smulRight e`. Establish `hP : ∀ c, P c = c - f c • e` using `fun c => rfl`. Establish `hPc : Continuous P` using `P.continuous_of_finiteDimensional`. Set `s : Set E` to `P ⁻¹' Metric.ball 0 δ`. Establish `hso : IsOpen s` using `Metric.isOpen_ball.preimage hPc`.
+
+Establish `hs : μ s = ⊤`. Assume the negation of the conclusion as `hs`. Set `t : ℕ → Set E` to `fun n => s ∩ {c | (n : ℝ) < f c}`. Establish `hto : ∀ n, IsOpen (t n)` using `fun n => hso.inter (isOpen_lt continuous_const hfc)`. Establish `hanti : Antitone t` using `fun n m hnm c hc => ⟨hc.1, lt_of_le_of_lt (Nat.cast_le.2 hnm : (n : ℝ) ≤ m) hc.2⟩`.
+
+Establish `hT` using `tendsto_measure_iInter_atTop (μ := μ) (fun n => (hto n).measurableSet.nullMeasurableSet) hanti ⟨0, ne_top_of_le_ne_top hs (measure_mono inter_subset_left)⟩`. Establish `hemp : (⋂ n, t n) = ∅`. Use `eq_empty_of_forall_notMem fun c hc => ?_` and prove the remaining obligations. Take `⟨n, hn⟩` from `exists_nat_ge (f c)`. Conclude with `absurd (mem_iInter.1 hc n).2 (not_lt.2 hn)`.
+
+Establish `hconst : ∀ n, μ (t n) = μ (t 0)` using `fun n => by`. Establish `: t 0 = (fun c => c + (n : ℝ) • e) ⁻¹' t n`. Use extensionality with `c`. Establish `: P (c + (n : ℝ) • e) = P c` using `by simp [hP, he, add_smul]`. Simplify using `[t, s, this, he]`.
+
+Rewrite using `[this, measure_preimage_add_right]`. Rewrite `hT` using `[hemp, measure_empty, show (⇑μ ∘ t) = fun _ => μ (t 0) from funext hconst]`. Establish `h0 : μ (t 0) = 0` using `tendsto_nhds_unique tendsto_const_nhds hT`. Use `((hto 0).measure_pos μ ⟨e, ?_, ?_⟩).ne' h0` and prove the remaining obligations. Simplify using `[s, hP, he, hδ]`.
+
+Simplify using `[he]`. Use `countable_of_discrete Λ` as an intermediate fact. Establish `: Countable Λ.toAddSubgroup` using `this`. Take `⟨x, hx0, hx⟩` from `exists_ne_zero_mem_lattice_of_measure_mul_two_pow_lt_measure (L := Λ.toAddSubgroup) (μ := μ) (F := Ω₀) (s := s) h (fun x hx => by simpa [s] using hx) ((convex_ball 0 δ).linear_preimage P) (by rw [hs]; exact ENNReal.mul_lt_top hf.lt_top (by simp [lt_top_iff_ne_top]))`. Establish `hfx : f x = 0` using `hker (Submodule.subset_span x.2)`.
+
+Establish `: (x : E) ∈ (⊥ : Submodule ℝ E)` using `hsep x x.2 0 (by simp) (by simpa [s, hP, hfx] using hx)`. Conclude with `hx0 (Subtype.ext (by simpa using this))`.
+-/
 theorem span_eq_top (Λ : Submodule ℤ E) [DiscreteTopology Λ] (Ω₀ : Set E)
     (h : IsAddFundamentalDomain Λ Ω₀ μ) (hf : μ Ω₀ ≠ ⊤) :
     Submodule.span ℝ (Λ : Set E) = ⊤ := by
@@ -187,6 +251,27 @@ theorem span_eq_top (Λ : Submodule ℤ E) [DiscreteTopology Λ] (Ω₀ : Set E)
   have : (x : E) ∈ (⊥ : Submodule ℝ E) := hsep x x.2 0 (by simp) (by simpa [s, hP, hfx] using hx)
   exact hx0 (Subtype.ext (by simpa using this))
 
+/- English proof (translation)
+Establish `hF : ∀ k, ∃ F : Set E, MeasurableSet F ∧ (∀ c ∈ F, ∀ w ∈ W (k + 1), c + w ∈ F) ∧ (∀ c, ∃ x ∈ Λ ⊓ (W k).restrictScalars ℤ, c + x ∈ F) ∧ ∀ c ∈ F, ∀ x ∈ Λ ⊓ (W k).restrictScalars ℤ, c + x ∈ F → x ∈ W (k + 1)` using `fun k => by`. Take `⟨ε, hε, hs⟩` from `separated Λ (W (k + 1)) (hrat _)`. Conclude with `exists_transversal _ _ ε hε fun x hx => hs x hx.1`. Use `choose F hFm hFW hFc hFu using hF`. Establish `key : ∀ ψ : E → E → E, (∀ k, ∀ x ∈ Λ, x ∈ W k → ∀ c, ψ x c - c - x ∈ W (k + 1)) → (∀ x ∈ Λ, ∀ y ∈ Λ, ∃ z ∈ Λ, ∀ c, ψ x (ψ y c) = ψ z c) → ∀ c, ∃ x ∈ Λ, ψ x c ∈ ⋂ k < n, F k`.
+
+Introduce `ψ h1 h2 c`. Establish `: ∀ m, ∃ x ∈ Λ, ∀ k < m, ψ x c ∈ F k`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => exact ⟨0, Λ.zero_mem, fun k hk => absurd hk (Nat.not_lt_zero k)⟩`.
+
+Consider the case `succ m ih`. Take `⟨y, hy, hyF⟩` from `ih`. Take `⟨x, hx, hxF⟩` from `hFc m (ψ y c)`. Take `⟨z, hz, hzz⟩` from `h2 x hx.1 y hy`. Use `⟨z, hz, fun k hk => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← hzz]`. Establish `hw` using `h1 m x hx.1 hx.2 (ψ y c)`. Break down `Nat.lt_succ_iff_lt_or_eq.1 hk with hk | rfl` into its components or cases. Use `hFW k _ (hyF k hk) _ ((W (k + 1)).add_mem (hanti (by omega : k + 1 ≤ m + 1) hw) (hanti (by omega : k + 1 ≤ m) hx.2))` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+
+Normalize the expressions using the abelian group laws. Use `hFW k _ hxF _ hw` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Normalize the expressions using the abelian group laws. Take `⟨x, hx, hh⟩` from `this n`.
+
+Conclude with `⟨x, hx, by simpa using hh⟩`. Establish `hm : MeasurableSet (⋂ k < n, F k)` using `MeasurableSet.iInter fun k => MeasurableSet.iInter fun _ => hFm k`. Use `⟨⋂ k < n, F k, hm, ?_, key φ hφ hcomp⟩` and prove the remaining obligations. Use `countable_of_discrete Λ` as an intermediate fact. Establish `: Countable Λ.toAddSubgroup` using `this`.
+
+Establish `h' : IsAddFundamentalDomain Λ.toAddSubgroup Ω₀ μ` using `h`. Use `IsAddFundamentalDomain.measure_eq (G := Λ.toAddSubgroup) (IsAddFundamentalDomain.mk' hm.nullMeasurableSet fun c => ?_) h'` and prove the remaining obligations. Take `⟨x, hx, hxc⟩` from `key (fun x c => x + c) (fun k x _ _ c => by simp) (fun x hx y hy => ⟨x + y, Λ.add_mem hx hy, fun c => by rw [add_assoc]⟩) c`. Use `⟨⟨x, hx⟩, hxc, fun y hy => Subtype.ext ?_⟩` and prove the remaining obligations. Establish `hy' : (y : E) + c ∈ ⋂ k < n, F k` using `hy`.
+
+Simplify using `only [mem_iInter] at hy' hxc`. Establish `: ∀ k ≤ n, (y : E) - x ∈ W k`. Introduce `k hk`. Proceed by induction on `k with`. Consider the case `zero => simp [h0]`.
+
+Consider the case `succ k ih`. Use `hFu k _ (hxc k hk) _ ⟨Λ.sub_mem y.2 hx, ih (by omega)⟩ ?_` and prove the remaining obligations. Use `hy' k hk using 1` and compare the differences between its conclusion and the goal. Normalize the expressions using the abelian group laws. Use `this n le_rfl` as an intermediate fact.
+
+Rewrite `this` using `[hn]`. Conclude with `sub_eq_zero.1 this`.
+-/
 theorem exists_cover (Λ : Submodule ℤ E) [DiscreteTopology Λ] (Ω₀ : Set E)
     (h : IsAddFundamentalDomain Λ Ω₀ μ) (W : ℕ → Submodule ℝ E) (n : ℕ) (h0 : W 0 = ⊤)
     (hn : W n = ⊥) (hanti : Antitone W)
@@ -254,6 +339,13 @@ variable {A : Type} [Ring A] [Algebra ℝ A] (M : ℕ → Submodule ℝ A) (hant
   (hmul : ∀ i j x y, x ∈ M i → y ∈ M j → x * y ∈ M (i + j + 1))
 include hanti hmul
 
+/- English proof (translation)
+Establish `hp : ∀ i, y ^ (i + 1) ∈ M 0` using `fun i => by`. Proceed by induction on `i with`. Consider the case `zero => simpa using hy`. Consider the case `succ i ih => rw [pow_succ]; exact hanti (by omega) (hmul _ _ _ _ ih hy)`. Establish `step : ∀ i, x ^ (i + 1) - y ^ (i + 1) ∈ M j → x ^ (i + 2) - y ^ (i + 2) ∈ M (j + 1)`.
+
+Introduce `i hi`. Establish `: x ^ (i + 2) - y ^ (i + 2) = x * (x ^ (i + 1) - y ^ (i + 1)) + (x - y) * y ^ (i + 1)`. Rewrite using `[pow_succ' x (i + 1), pow_succ' y (i + 1)]`. Use `noncomm_ring`. Rewrite using `[this]`.
+
+Conclude with `(M _).add_mem (by simpa using hmul _ _ _ _ hx hi) (by simpa using hmul _ _ _ _ h (hp i))`. Proceed by induction on `i with`. Consider the case `zero => exact step 0 (by simpa using h)`. Consider the case `succ i ih => exact step _ (hanti (by omega) ih)`.
+-/
 theorem pow_sub_pow_mem {j : ℕ} {x y : A} (hx : x ∈ M 0) (hy : y ∈ M 0) (h : x - y ∈ M j)
     (i : ℕ) : x ^ (i + 2) - y ^ (i + 2) ∈ M (j + 1) := by
   have hp : ∀ i, y ^ (i + 1) ∈ M 0 := fun i => by
@@ -270,6 +362,9 @@ theorem pow_sub_pow_mem {j : ℕ} {x y : A} (hx : x ∈ M 0) (hy : y ∈ M 0) (h
   | zero => exact step 0 (by simpa using h)
   | succ i ih => exact step _ (hanti (by omega) ih)
 
+/- English proof (translation)
+Rewrite using `[← Finset.sum_sub_distrib, Finset.sum_range_succ', Finset.sum_range_succ']`. Simplify using `only [zero_add, Nat.factorial_one, Nat.cast_one, inv_one, pow_one, one_smul, pow_zero, sub_self, add_zero, add_sub_cancel_right]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← smul_sub]`. Conclude with `(M _).smul_mem _ (pow_sub_pow_mem M hanti hmul hx hy h i)`.
+-/
 theorem trunc_sub_mem {j : ℕ} {x y : A} (hx : x ∈ M 0) (hy : y ∈ M 0) (h : x - y ∈ M j)
     (n : ℕ) : (∑ i ∈ Finset.range (n + 2), ((i.factorial : ℝ))⁻¹ • x ^ i) -
       (∑ i ∈ Finset.range (n + 2), ((i.factorial : ℝ))⁻¹ • y ^ i) - (x - y) ∈ M (j + 1) := by
@@ -280,6 +375,39 @@ theorem trunc_sub_mem {j : ℕ} {x y : A} (hx : x ∈ M 0) (hy : y ∈ M 0) (h :
   rw [← smul_sub]
   exact (M _).smul_mem _ (pow_sub_pow_mem M hanti hmul hx hy h i)
 
+/- English proof (translation)
+Use `set S : ℕ → Submodule ℝ A := fun k => Submodule.span ℝ {x | x ∈ Λ ∧ x ∈ M k} with hS`. Establish `he1 : ∀ j x, x ∈ M j → e x - 1 - x ∈ M (j + 1)` using `fun j x hx => by`. Simplify `he j x 0 (hanti (Nat.zero_le _) hx) (M 0).zero_mem (by simpa using hx)` using `[he0]`. Establish `hinj : ∀ j x y, x ∈ M 0 → y ∈ M 0 → e x - e y ∈ M j → x - y ∈ M j`. Introduce `j x y hx hy`.
+
+Proceed by induction on `j with`. Consider the case `zero => exact fun _ => (M 0).sub_mem hx hy`. Consider the case `succ j ih`. Introduce `h`. Use `(M _).sub_mem h (he j x y hx hy (ih (hanti (by omega) h)))` as an intermediate fact.
+
+Simplify using `using this`. Establish `hbr : ∀ k x y, x ∈ Λ → y ∈ Λ → y ∈ M k → x * y - y * x ∈ S (k + 1) ⊔ M (k + 2)`. Introduce `k x y hx hy hyk`. Take `⟨z₁, hz₁, e₁⟩` from `hgr x hx y hy`. Take `⟨z₂, hz₂, e₂⟩` from `hgr y hy x hx`.
+
+Establish `hx0` using `hΛ x hx`. Establish `hX` using `he1 0 x hx0`. Establish `hY` using `he1 k y hyk`. Use `set X := e x - 1 - x`. Use `set Y := e y - 1 - y`.
+
+Establish `hd : e z₁ - e z₂ - (x * y - y * x) ∈ M (k + 2)`. Establish `: e z₁ - e z₂ - (x * y - y * x) = (X * y - y * X) + (x * Y - Y * x) + (X * Y - Y * X)`. Rewrite using `[← e₁, ← e₂]`. Simplify using `only [X, Y]`. Use `noncomm_ring`.
+
+Rewrite using `[this]`. Use `(M _).add_mem ((M _).add_mem ((M _).sub_mem ?_ ?_) ((M _).sub_mem ?_ ?_)) ((M _).sub_mem ?_ ?_)` and prove the remaining obligations. Conclude with `hanti (by omega) (hmul _ _ _ _ hX hyk)`. Conclude with `hanti (by omega) (hmul _ _ _ _ hyk hX)`. Conclude with `hanti (by omega) (hmul _ _ _ _ hx0 hY)`.
+
+Conclude with `hanti (by omega) (hmul _ _ _ _ hY hx0)`. Conclude with `hanti (by omega) (hmul _ _ _ _ hX hY)`. Conclude with `hanti (by omega) (hmul _ _ _ _ hY hX)`. Establish `hc : x * y - y * x ∈ M (k + 1)` using `(M _).sub_mem (hanti (by omega) (hmul _ _ _ _ hx0 hyk)) (hanti (by omega) (hmul _ _ _ _ hyk hx0))`. Establish `hz : z₁ - z₂ ∈ M (k + 1)` using `hinj _ _ _ (hΛ _ hz₁) (hΛ _ hz₂) (by simpa using (M _).add_mem (hanti (by omega : k + 1 ≤ k + 2) hd) hc)`.
+
+Establish `h2` using `he _ _ _ (hΛ _ hz₁) (hΛ _ hz₂) hz`. Establish `: x * y - y * x = (z₁ - z₂) + ((e z₁ - e z₂ - (z₁ - z₂)) - (e z₁ - e z₂ - (x * y - y * x)))` using `by abel`. Rewrite using `[this]`. Conclude with `Submodule.add_mem_sup (Submodule.subset_span ⟨Λ.sub_mem hz₁ hz₂, hz⟩) ((M _).sub_mem h2 hd)`. Establish `c1 : ∀ k, M k ≤ S k ⊔ M (k + 1)`.
+
+Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Use `hsp.trans (le_sup_of_le_left (Submodule.span_mono fun x hx => ⟨hx, hΛ x hx⟩))` and prove the remaining obligations. Consider the case `succ k ih`.
+
+Use `(hgen k).trans (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, y, hy, rfl⟩`. Take `⟨s, hs, m, hm, rfl⟩` from `Submodule.mem_sup.1 (ih hy)`. Establish `: x * (s + m) - (s + m) * x = (x * s - s * x) + (x * m - m * x)` using `by noncomm_ring`. Rewrite using `[this]`.
+
+Use `Submodule.add_mem _ ?_ (Submodule.mem_sup_right ((M _).sub_mem (hanti (by omega) (hmul _ _ _ _ hx hm)) (hanti (by omega) (hmul _ _ _ _ hm hx))))` and prove the remaining obligations. Establish `hx'` using `hsp hx`. Use `clear hx hy this`. Proceed by induction on `hx' using Submodule.span_induction with`. Consider the case `zero => simp`.
+
+Consider the case `add a b _ _ ha hb`. Use `Submodule.add_mem _ ha hb using 1` and compare the differences between its conclusion and the goal. Use `noncomm_ring`. Consider the case `smul r a _ ha`. Use `Submodule.smul_mem _ r ha using 1` and compare the differences between its conclusion and the goal.
+
+Simplify using `[smul_sub]`. Consider the case `mem a ha`. Proceed by induction on `hs using Submodule.span_induction with`. Consider the case `zero => simp`. Consider the case `add b c _ _ hb hc`.
+
+Use `Submodule.add_mem _ hb hc using 1` and compare the differences between its conclusion and the goal. Use `noncomm_ring`. Consider the case `smul r b _ hb`. Use `Submodule.smul_mem _ r hb using 1` and compare the differences between its conclusion and the goal. Simplify using `[smul_sub]`.
+
+Consider the case `mem b hb => exact hbr k a b ha hb.1 hb.2`. Establish `c2 : ∀ j k, n ≤ k + j → M k ≤ S k`. Introduce `j`. Proceed by induction on `j with`. Consider the case `zero => intro k hk; exact (hanti hk).trans (by simp [hn])`.
+
+Consider the case `succ j ih`. Introduce `k hk`. Use `(c1 k).trans (sup_le le_rfl ((ih (k + 1) (by omega)).trans ?_))` and prove the remaining obligations. Conclude with `Submodule.span_mono fun x hx => ⟨hx.1, hanti (by omega) hx.2⟩`. Conclude with `c2 n k (by omega)`.
+-/
 theorem rational (n : ℕ) (hn : M n = ⊥)
     (hgen : ∀ k, M (k + 1) ≤ Submodule.span ℝ {z | ∃ x ∈ M 0, ∃ y ∈ M k, z = x * y - y * x})
     (e : A → A) (he0 : e 0 = 1)
@@ -378,16 +506,25 @@ def Deep (k : ℕ) : Fin N → Fin N → Prop :=
 
 variable {R}
 
+/- English proof (translation)
+The claim follows from `| 0, _, _, h => h | k + 1, a, c, ⟨b, h1, h2⟩ => ht a b c h1 (Deep.mem ht k b c h2)`.
+-/
 theorem Deep.mem (ht : ∀ a b c : Fin N, (a, b) ∈ R → (b, c) ∈ R → (a, c) ∈ R) :
     ∀ k a c, Deep R k a c → (a, c) ∈ R
   | 0, _, _, h => h
   | k + 1, a, c, ⟨b, h1, h2⟩ => ht a b c h1 (Deep.mem ht k b c h2)
 
+/- English proof (translation)
+The claim follows from `| 0, a, c, h => Deep.mem ht 1 a c h | k + 1, _, c, ⟨b, h1, h2⟩ => ⟨b, h1, Deep.of_succ ht k b c h2⟩`.
+-/
 theorem Deep.of_succ (ht : ∀ a b c : Fin N, (a, b) ∈ R → (b, c) ∈ R → (a, c) ∈ R) :
     ∀ k a c, Deep R (k + 1) a c → Deep R k a c
   | 0, a, c, h => Deep.mem ht 1 a c h
   | k + 1, _, c, ⟨b, h1, h2⟩ => ⟨b, h1, Deep.of_succ ht k b c h2⟩
 
+/- English proof (translation)
+The claim follows from `| 0, a, h' => by rw [Nat.zero_add]; exact ⟨b, h', h⟩ | i + 1, a, ⟨d, h1, h2⟩ => by rw [show i + 1 + j + 1 = (i + j + 1) + 1 by omega] exact ⟨d, h1, Deep.trans j b c h i d h2⟩`.
+-/
 theorem Deep.trans (j : ℕ) (b c : Fin N) (h : Deep R j b c) :
     ∀ i a, Deep R i a b → Deep R (i + j + 1) a c
   | 0, a, h' => by rw [Nat.zero_add]; exact ⟨b, h', h⟩
@@ -395,6 +532,9 @@ theorem Deep.trans (j : ℕ) (b c : Fin N) (h : Deep R j b c) :
       rw [show i + 1 + j + 1 = (i + j + 1) + 1 by omega]
       exact ⟨d, h1, Deep.trans j b c h i d h2⟩
 
+/- English proof (translation)
+The claim follows from `| 0, a, c, h => hl (a, c) h | k + 1, a, c, ⟨b, h1, h2⟩ => by have := Deep.lt hl k b c h2 have : (a : ℕ) < b := hl (a, b) h1 omega`.
+-/
 theorem Deep.lt (hl : ∀ q ∈ R, q.1 < q.2) : ∀ k a c, Deep R k a c → (a : ℕ) + k < c
   | 0, a, c, h => hl (a, c) h
   | k + 1, a, c, ⟨b, h1, h2⟩ => by
@@ -417,6 +557,11 @@ def rootMat : (ι → R → ℂ) →ₗ[ℝ] (ι → Matrix (Fin N) (Fin N) ℂ)
 
 variable {R ι}
 
+/- English proof (translation)
+Introduce `v a c h`. Rewrite using `[Pi.mul_apply, Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun b _ => ?_` and prove the remaining obligations. Distinguish the cases in `h1 : Deep R i a b`. Rewrite using `[hy v b c fun h2 => h (Deep.trans j b c h2 i a h1), mul_zero]`.
+
+Rewrite using `[hx v a b h1, zero_mul]`.
+-/
 theorem deepSub_mul (i j : ℕ) (x y : ι → Matrix (Fin N) (Fin N) ℂ) (hx : x ∈ deepSub R ι i)
     (hy : y ∈ deepSub R ι j) : x * y ∈ deepSub R ι (i + j + 1) := by
   intro v a c h
@@ -426,6 +571,17 @@ theorem deepSub_mul (i j : ℕ) (x y : ι → Matrix (Fin N) (Fin N) ℂ) (hx : 
   · rw [hy v b c fun h2 => h (Deep.trans j b c h2 i a h1), mul_zero]
   · rw [hx v a b h1, zero_mul]
 
+/- English proof (translation)
+Introduce `x hx`. Establish `: x = ∑ v, ∑ a, ∑ c, Pi.single v (Matrix.single a c (x v a c))`. Use extensionality with `v : 1`. Simplify using `only [Finset.sum_apply]`. Rewrite using `[Finset.sum_eq_single v (fun w _ hw => by simp [Pi.single_eq_of_ne hw.symm]) (by simp)]`.
+
+Simplify using `using Matrix.matrix_eq_sum_single (x v)`. Rewrite using `[this]`. Use `Submodule.sum_mem _ fun v _ => Submodule.sum_mem _ fun a _ => Submodule.sum_mem _ fun c _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : Deep R (k + 1) a c`. Establish `hac` using `Deep.lt hl _ _ _ h`.
+
+Take `⟨b, h1, h2⟩` from `h`. Establish `hs : ∀ k a c z, Deep R k a c → (Pi.single v (Matrix.single a c z) : ι → Matrix (Fin N) (Fin N) ℂ) ∈ deepSub R ι k`. Introduce `k a c z h w a' c' h'`. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality.
+
+Rewrite using `[Pi.single_eq_same, Matrix.single_apply_of_ne]`. Introduce and unpack `⟨rfl, rfl⟩`. Conclude with `h' h`. Simplify using `[Pi.single_eq_of_ne hw]`. Use `Submodule.subset_span ⟨_, hs 0 a b (x v a c) h1, _, hs k b c 1 h2, ?_⟩` and prove the remaining obligations.
+
+Establish `hca : c ≠ a` using `by rintro rfl; omega`. Rewrite using `[← Pi.single_mul, ← Pi.single_mul, Matrix.single_mul_single_same, Matrix.single_mul_single_of_ne _ _ _ _ hca]`. Simplify using the standard rewrite rules. Simplify using `[hx v a c h]`.
+-/
 theorem deepSub_gen [Fintype ι] (hl : ∀ q ∈ R, q.1 < q.2) (k : ℕ) :
     deepSub R ι (k + 1) ≤ Submodule.span ℝ
       {z | ∃ x ∈ deepSub R ι 0, ∃ y ∈ deepSub R ι k, z = x * y - y * x} := by
@@ -456,6 +612,15 @@ theorem deepSub_gen [Fintype ι] (hl : ∀ q ∈ R, q.1 < q.2) (k : ℕ) :
     simp
   · simp [hx v a c h]
 
+/- English proof (translation)
+Distinguish the cases in `hN : N < 2`. Establish `h0 : ∀ z ∈ deepSub R ι 0, z = 0` using `fun z hz => by`. Use extensionality with `v a c`. Use `hz v a c fun h => ?_` and prove the remaining obligations. Use `Deep.lt hl _ _ _ h` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Rewrite using `[h0 x hx, h0 y hy]`. Simplify using the standard rewrite rules. Establish `he : ∀ z : ι → Matrix (Fin N) (Fin N) ℂ, (fun v => expT (z v)) = ∑ i ∈ Finset.range (N - 2 + 2), ((i.factorial : ℝ))⁻¹ • z ^ i` using `fun z => by`. Use extensionality with `v : 1`.
+
+Rewrite using `[show N - 2 + 2 = N by omega, expT, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, Pi.pow_apply, ← Complex.coe_smul]`. Simplify using the standard rewrite rules. Rewrite using `[he, he]`.
+
+Conclude with `trunc_sub_mem _ hanti deepSub_mul hx hy h _`.
+-/
 theorem expT_sub_mem (hl : ∀ q ∈ R, q.1 < q.2)
     (hanti : Antitone (deepSub R ι)) (j : ℕ) (x y : ι → Matrix (Fin N) (Fin N) ℂ)
     (hx : x ∈ deepSub R ι 0) (hy : y ∈ deepSub R ι 0) (h : x - y ∈ deepSub R ι j) :
@@ -478,6 +643,39 @@ theorem expT_sub_mem (hl : ∀ q ∈ R, q.1 < q.2)
 
 end Roots
 
+/- English proof (translation)
+Introduce `ι _ N R Λ Ω₀ hl ht _ hfd hfin hdisc hgr`. Establish `hanti : Antitone (deepSub R ι)` using `antitone_nat_of_succ_le fun k x hx v a c h => hx v a c fun h' => h (Deep.of_succ ht k a c h')`. Establish `hn : deepSub R ι N = ⊥`. Use `eq_bot_iff.2 fun x hx => ?_` and prove the remaining obligations. Use extensionality with `v a c`.
+
+Use `hx v a c fun h => ?_` and prove the remaining obligations. Use `Deep.lt hl _ _ _ h` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `set L := rootMat R ι with hL`. Set `π : (ι → Matrix (Fin N) (Fin N) ℂ) → (ι → R → ℂ)` to `fun a v q => a v q.1.1 q.1.2`.
+
+Set `e : (ι → Matrix (Fin N) (Fin N) ℂ) → (ι → Matrix (Fin N) (Fin N) ℂ)` to `fun a v => expT (a v)`. Establish `hLof : ∀ x v, ofRoots R (x v) = 1 + L x v` using `fun x v => by`. Use extensionality with `i j`. Distinguish the cases in `h : (i, j) ∈ R`. Establish `: i ≠ j` using `(hl _ h).ne`.
+
+Simplify using `[ofRoots, hL, rootMat, h, this]`. Simplify using `[ofRoots, hL, rootMat, h, Matrix.one_apply]`. Establish `hL0 : ∀ x, L x ∈ deepSub R ι 0` using `fun x v a c h => by`. Establish `: (a, c) ∉ R` using `h`. Simplify using `[hL, rootMat, this]`.
+
+Establish `hπL : ∀ x, π (L x) = x` using `fun x => by ext v q; simp [π, hL, rootMat]`. Establish `hLπ : ∀ a ∈ deepSub R ι 0, L (π (1 + a)) = a` using `fun a ha => by`. Use extensionality with `v i j`. Distinguish the cases in `h : (i, j) ∈ R`. Establish `: i ≠ j` using `(hl _ h).ne`.
+
+Simplify using `[π, hL, rootMat, h, this]`. Simplify using `[hL, rootMat, h, ha v i j h]`. Establish `hinj : Function.Injective L` using `Function.LeftInverse.injective hπL`. Establish `he0 : e 0 = 1`. Use extensionality with `v : 1`.
+
+Break down `N with _ | N` into its components or cases. Conclude with `Subsingleton.elim _ _`. Simplify using `[e, expT, Finset.sum_range_succ']`. Establish `he : ∀ j x y, x ∈ deepSub R ι 0 → y ∈ deepSub R ι 0 → x - y ∈ deepSub R ι j → e x - e y - (x - y) ∈ deepSub R ι (j + 1)` using `expT_sub_mem hl hanti`. Establish `: (volume : Measure (R → ℂ)).IsAddHaarMeasure` using `Measure.pi.isAddHaarMeasure _`.
+
+Establish `: (volume : Measure (ι → R → ℂ)).IsAddHaarMeasure` using `Measure.pi.isAddHaarMeasure _`. Establish `he1 : ∀ j x, x ∈ deepSub R ι j → e x - 1 - x ∈ deepSub R ι (j + 1)` using `fun j x hx => by`. Use `he j x 0 (hanti (Nat.zero_le _) hx) (Submodule.zero_mem _) (by simpa using hx)` as an intermediate fact. Rewrite `this` using `[he0, sub_zero]`. Then use the resulting hypothesis. Establish `hgr' : ∀ x ∈ Λ, ∀ y ∈ Λ, ∃ z ∈ Λ, e (L x) * e (L y) = e (L z)` using `fun x hx y hy => by`.
+
+Take `⟨z, hz, h⟩` from `hgr x hx y hy`. Conclude with `⟨z, hz, funext fun v => by simpa [hLof] using h v⟩`. Establish `hspan` using `span_eq_top volume Λ Ω₀ hfd hfin`. Establish `hrat` using `rational (deepSub R ι) hanti deepSub_mul N hn (deepSub_gen hl) e he0 he (Λ.map (L.restrictScalars ℤ)) (by rintro _ ⟨x, -, rfl⟩; exact hL0 x) (fun a ha => by`. Rewrite using `[← hLπ a ha]`.
+
+Conclude with `Submodule.apply_mem_span_image_of_mem_span L (s := (Λ : Set (ι → R → ℂ))) (hspan ▸ Submodule.mem_top))`. Use the proof step `(by`. Introduce and unpack `_ ⟨x, hx, rfl⟩ _ ⟨y, hy, rfl⟩`. Take `⟨z, hz, h⟩` from `hgr' x hx y hy`. Conclude with `⟨_, ⟨z, hz, rfl⟩, h⟩)`.
+
+Establish `hLφ : ∀ x c, L (π (e (L x) * (1 + L c))) = e (L x) * (1 + L c) - 1` using `fun x c => by`. Establish `h1 : e (L x) - 1 ∈ deepSub R ι 0`. Simplify using `using (deepSub R ι 0).add_mem (hanti (Nat.zero_le _) (he1 0 _ (hL0 x))) (hL0 x)`. Establish `h2 : e (L x) * (1 + L c) - 1 ∈ deepSub R ι 0`. Establish `: e (L x) * (1 + L c) - 1 = (e (L x) - 1) + (e (L x) - 1) * L c + L c` using `by noncomm_ring`.
+
+Rewrite using `[this]`. Conclude with `Submodule.add_mem _ (Submodule.add_mem _ h1 (hanti (Nat.zero_le _) (deepSub_mul _ _ _ _ h1 (hL0 c)))) (hL0 c)`. Simplify using `using hLπ _ h2`. Take `⟨Ω, h1, h2, h3⟩` from `exists_cover volume Λ Ω₀ hfd (fun k => (deepSub R ι k).comap L) N (eq_top_iff.2 fun x _ => hL0 x) (by simp [hn, LinearMap.ker_eq_bot.2 hinj]) (fun i j hij => Submodule.comap_mono (hanti hij)) (fun k x hx => by`. Use `(Submodule.apply_mem_span_image_iff_mem_span hinj).1 (Submodule.span_mono ?_ (hrat k hx))` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨⟨y, hy, rfl⟩, hy'⟩`. Conclude with `⟨y, ⟨hy, hy'⟩, rfl⟩)`. Use the proof step `(fun x c => π (e (L x) * (1 + L c)))`. Use the proof step `(fun k x _ hx c => by`. Rewrite using `[Submodule.mem_comap, map_sub, map_sub, hLφ]`.
+
+Establish `: e (L x) * (1 + L c) - 1 - L c - L x = (e (L x) - 1 - L x) + (e (L x) - 1 - L x) * L c + L x * L c` using `by noncomm_ring`. Rewrite using `[this]`. Conclude with `Submodule.add_mem _ (Submodule.add_mem _ (he1 k _ hx) (hanti (by omega) (deepSub_mul _ _ _ _ (he1 k _ hx) (hL0 c)))) (deepSub_mul _ _ _ _ hx (hL0 c)))`. Use the proof step `(fun x hx y hy => by`. Take `⟨z, hz, h⟩` from `hgr' x hx y hy`.
+
+Use `⟨z, hz, fun c => ?_⟩` and prove the remaining obligations. Simplify using `only [hLφ, add_sub_cancel, ← mul_assoc, h])`. Use `⟨Ω, h1, h2, fun c => ?_⟩` and prove the remaining obligations. Take `⟨x, hx, h⟩` from `h3 c`. Use `⟨x, hx, ?_⟩` and prove the remaining obligations.
+
+Simplify `h` using `[hLof, π, e]`.
+-/
 theorem cover : ∀ (ι : Type) [Fintype ι] (N : ℕ) (R : Finset (Fin N × Fin N)) (Λ : Submodule ℤ (ι → R → ℂ)) (Ω₀ : Set (ι → R → ℂ)), (∀ q ∈ R, q.1 < q.2) → (∀ a b c : Fin N, (a, b) ∈ R → (b, c) ∈ R → (a, c) ∈ R) → MeasurableSet Ω₀ → MeasureTheory.IsAddFundamentalDomain Λ Ω₀ MeasureTheory.volume → MeasureTheory.volume Ω₀ ≠ ⊤ → DiscreteTopology Λ → (∀ x ∈ Λ, ∀ y ∈ Λ, ∃ z ∈ Λ, ∀ v, expT (ofRoots R (x v) - 1) * expT (ofRoots R (y v) - 1) = expT (ofRoots R (z v) - 1)) → ∃ Ω : Set (ι → R → ℂ), MeasurableSet Ω ∧ MeasureTheory.volume Ω = MeasureTheory.volume Ω₀ ∧ ∀ c : ι → R → ℂ, ∃ x ∈ Λ, (fun v (q : R) => (expT (ofRoots R (x v) - 1) * ofRoots R (c v) : Matrix (Fin N) (Fin N) ℂ) q.1.1 q.1.2) ∈ Ω := by
   intro ι _ N R Λ Ω₀ hl ht _ hfd hfin hdisc hgr
   have hanti : Antitone (deepSub R ι) := antitone_nat_of_succ_le fun k x hx v a c h =>

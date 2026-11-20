@@ -52,6 +52,9 @@ def RebaseAt (S : Subring K) (π : K) (h : V →ₗ⋆[K] V →ₗ[K] K) : Prop 
       Submodule.span K (Set.range c) = Submodule.span K (Set.range b) ∧
       ∀ v, v ∈ spanS S c ↔ v ∈ spanS S b
 
+/- English proof (translation)
+Introduce `ι _ _ b e i₀ horth hunit hmin ξ hξ hξu`. Take `⟨X, hX, hXX⟩` from `hE ι b e i₀ horth hunit hmin ξ hξ hξu`. Establish `hXu : IsUnitIn S (h X X * (π ^ e i₀)⁻¹)` using `by rw [hXX]; exact hξu`. Take `⟨c, hco, hcu, hc0, hsp, hmem⟩` from `hR ι b e i₀ horth hunit hmin X hX hXu`. Conclude with `⟨c, hco, hcu, by rw [hc0, hXX], hsp, hmem⟩`.
+-/
 theorem splitAt_of {S : Subring K} {π : K} {h : V →ₗ⋆[K] V →ₗ[K] K} (hE : ExactAt S π h)
     (hR : RebaseAt S π h) : SplitAt S π h := by
   intro ι _ _ b e i₀ horth hunit hmin ξ hξ hξu

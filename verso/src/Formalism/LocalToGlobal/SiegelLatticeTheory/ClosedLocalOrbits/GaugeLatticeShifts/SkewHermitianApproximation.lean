@@ -12,6 +12,11 @@ open Formalism.L2.SG Formalism.L2.SG.PoincareInHH Formalism.L2.SG.Pf.Unip Formal
 
 section KgPart
 
+/- English proof (translation)
+Use `choose t ht e using hM`. Use `⟨(d₂ : I.E ⊗[I.F] Af I.F) • fun i => ∑ j, t i j * ((d₁ : I.E ⊗[I.F] Af I.F) * y j), H₂ _ fun i => sum_mem fun j _ => mul_mem (ht i j) (H₁ y hy j), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Simplify using `only [Matrix.mulVec, dotProduct, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[e i j]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem cg_Lf_step (I : AutInst) {d₁ d₂ g : ℕ}
     (H₁ : ∀ y ∈ I.Lf, ∀ i, (d₁ : I.E ⊗[I.F] Af I.F) * y i ∈ IntAf I.F I.E)
     (H₂ : ∀ y : Fin I.n → I.E ⊗[I.F] Af I.F, (∀ i, y i ∈ IntAf I.F I.E) →
@@ -27,6 +32,17 @@ theorem cg_Lf_step (I : AutInst) {d₁ d₂ g : ℕ}
   refine Finset.sum_congr rfl fun j _ => ?_
   rw [e i j]; push_cast; ring
 
+/- English proof (translation)
+Establish `fwd : ∀ v ∈ I.Lf, I.fmat k *ᵥ v ∈ I.Lf`. Introduce `v hv`. Take `⟨z, hz, e⟩` from `hk v hv`. Establish `e2 : I.fmat k *ᵥ v = v + (I.fmat k - 1) *ᵥ v`. Rewrite using `[Matrix.sub_mulVec, Matrix.one_mulVec]`.
+
+Normalize the expressions using the abelian group laws. Rewrite using `[e2, e, Nat.cast_smul_eq_nsmul]`. Conclude with `add_mem hv (nsmul_mem hz g)`. Establish `inv : ∀ w ∈ I.Lf, I.fmat k⁻¹ *ᵥ w ∈ I.Lf`. Introduce `w hw`.
+
+Use `PIW.AdelClassFin.dual_hat_lattice I _ fun y' hy' => ?_` and prove the remaining obligations. Establish `e : PIW.AdelClassFin.hhat I y' (I.fmat k⁻¹ *ᵥ w) = PIW.AdelClassFin.hhat I (I.fmat k *ᵥ y') w`. Rewrite using `[← PIW.AdelClassFin.dictTop_hhat_unit I k y' (I.fmat k⁻¹ *ᵥ w), Matrix.mulVec_mulVec, PIW.AdelClassFin.dictTop_mul_inv, Matrix.one_mulVec]`. Rewrite using `[e]`. Conclude with `PIW.AdelClassFin.dual_hat_integral I _ (fwd y' hy') w hw`.
+
+Use `⟨?_, hk⟩` and prove the remaining obligations. Use `show ∀ v, v ∈ I.Lf ↔ I.fmat k *ᵥ v ∈ I.Lf`. Introduce `v`. Use `⟨fwd v, fun h => ?_⟩` and prove the remaining obligations. Establish `h2` using `inv _ h`.
+
+Rewrite `h2` using `[Matrix.mulVec_mulVec, PIW.AdelClassFin.dictTop_inv_mul, Matrix.one_mulVec]`. Then use the resulting hypothesis.
+-/
 theorem cg_Kg (I : AutInst) (k : I.Gf) (g : ℕ)
     (hk : ∀ y ∈ I.Lf, ∃ z ∈ I.Lf, (I.fmat k - 1) *ᵥ y = (g : I.E ⊗[I.F] Af I.F) • z) : k ∈ I.Kg g := by
   have fwd : ∀ v ∈ I.Lf, I.fmat k *ᵥ v ∈ I.Lf := by
@@ -53,15 +69,26 @@ theorem cg_Kg (I : AutInst) (k : I.Gf) (g : ℕ)
 
 variable {D : D7} (X : HidaSetting D)
 
+/- English proof (translation)
+Unfold `Bf Bf'`. Rewrite using `[← Matrix.map_mul, Bm_mul_Bm']`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`.
+-/
 theorem cg_BB : Bf X * Bf' X = 1 := by
   unfold Bf Bf'
   rw [← Matrix.map_mul, Bm_mul_Bm']
   exact Matrix.map_one _ (map_zero _) (map_one _)
 
+/- English proof (translation)
+Simplify using `only [Mf, ← Matrix.mul_assoc, cg_BB, Matrix.one_mul]`. Rewrite using `[Matrix.mul_assoc, cg_BB, Matrix.mul_one]`.
+-/
 theorem cg_conj (y : X.B.I.Gf) : Bf X * Mf X y * Bf' X = X.B.I.fmat y := by
   simp only [Mf, ← Matrix.mul_assoc, cg_BB, Matrix.one_mul]
   rw [Matrix.mul_assoc, cg_BB, Matrix.mul_one]
 
+/- English proof (translation)
+Establish `key : Bf X * (Mf X y - Mf X x) * Bf' X = X.B.I.fmat y - X.B.I.fmat x`. Rewrite using `[Matrix.mul_sub, Matrix.sub_mul, cg_conj, cg_conj]`. Establish `h1 : X.B.I.fmat (x⁻¹ * y) = X.B.I.fmat x⁻¹ * X.B.I.fmat y` using `rfl`. Establish `h2 : X.B.I.fmat x⁻¹ * X.B.I.fmat x = 1`. Rewrite using `[show X.B.I.fmat x⁻¹ * X.B.I.fmat x = X.B.I.fmat (x⁻¹ * x) from rfl, inv_mul_cancel]`.
+
+Both sides reduce to the same expression. Rewrite using `[Matrix.mul_assoc (X.B.I.fmat x⁻¹) (Bf X), Matrix.mul_assoc (X.B.I.fmat x⁻¹), key, Matrix.mul_sub, h1, h2]`.
+-/
 theorem cg_fmat_eq (x y : X.B.I.Gf) :
     X.B.I.fmat (x⁻¹ * y) - 1 = X.B.I.fmat x⁻¹ * Bf X * (Mf X y - Mf X x) * Bf' X := by
   have key : Bf X * (Mf X y - Mf X x) * Bf' X = X.B.I.fmat y - X.B.I.fmat x := by
@@ -74,6 +101,11 @@ theorem cg_fmat_eq (x y : X.B.I.Gf) :
 
 end KgPart
 
+/- English proof (translation)
+Introduce `D X x g hg`. Take `⟨d₁, hd₁, H₁⟩` from `Formalism.L2.SG.Pf.Tau.TraceIntegralityAlt.Lf_upper X.B.I`. Take `⟨d₂, hd₂, H₂⟩` from `Formalism.L2.SG.Pf.Tau.TraceIntegralityAlt.Lf_lower X.B.I`. Take `⟨mP, hmP, hP⟩` from `cg_D_exists (X.B.I.fmat x⁻¹ * Bf X)`. Take `⟨mQ, hmQ, hQ⟩` from `cg_D_exists (Bf' X)`.
+
+Use `⟨g * d₁ * d₂ * mQ * mP, Nat.mul_pos (Nat.mul_pos (Nat.mul_pos (Nat.mul_pos hg hd₁) hd₂) hmQ) hmP, fun y hy => ?_⟩` and prove the remaining obligations. Establish `hΔ : cg_C (IntAf X.B.I.F X.B.I.E) (g * d₁ * d₂) (X.B.I.fmat (x⁻¹ * y) - 1)`. Rewrite using `[cg_fmat_eq X x y]`. Conclude with `cg_C_mul_right (cg_C_mul_left hP hy) hQ`. Conclude with `cg_Kg X.B.I _ g fun y' hy' => cg_Lf_step X.B.I H₁ H₂ hΔ y' hy'`.
+-/
 theorem level_of_close_element : KgOfClose := by
   intro D X x g hg
   obtain ⟨d₁, hd₁, H₁⟩ := Formalism.L2.SG.Pf.Tau.TraceIntegralityAlt.Lf_upper X.B.I
@@ -91,6 +123,15 @@ section Approx
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Take `⟨m, hm, hmz⟩` from `PIW.AdelClassFin.dual_denominator F E z`. Take `⟨a, r', hr', e⟩` from `PIW.AdelClassFin.dual_dense F E (k * m) (Nat.mul_pos hk hm) _ hmz`. Use `⟨(a : E) / m, -r', neg_mem hr', ?_⟩` and prove the remaining obligations. Establish `hm' : (m : E) ≠ 0` using `Nat.cast_ne_zero.2 hm.ne'`. Establish `h2 : Formalism.UG.inclE (F` using `F) (Af F) ((1 : E) / m) * (m : E ⊗[F] Af F) = 1 := by`.
+
+Rewrite using `[← map_natCast (Formalism.UG.inclE (F := F) (Af F)) m, ← map_mul, div_mul_cancel₀ _ hm', map_one]`. Establish `hz : z = Formalism.UG.inclE (F` using `F) (Af F) ((1 : E) / m) * ((m : E ⊗[F] Af F) * z) := by`. Rewrite using `[← mul_assoc, h2, one_mul]`. Establish `ha : Formalism.UG.inclE (F` using `F) (Af F) ((a : E) / m) = Formalism.UG.inclE (F := F) (Af F) ((1 : E) / m) * Formalism.UG.inclE (F := F) (Af F) (a : E) := by`. Rewrite using `[← map_mul]`.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[ha]`. Rewrite using `[hz]`. Rewrite using `[e]`.
+
+Use `push_cast`. Take the linear combination `(-(k : E ⊗[F] Af F) * r') * h2`.
+-/
 theorem cg_approx (k : ℕ) (hk : 1 ≤ k) (z : E ⊗[F] Af F) :
     ∃ a : E, ∃ t ∈ IntAf F E, Formalism.UG.inclE (F := F) (Af F) a - z = (k : E ⊗[F] Af F) * t := by
   obtain ⟨m, hm, hmz⟩ := PIW.AdelClassFin.dual_denominator F E z
@@ -110,6 +151,11 @@ theorem cg_approx (k : ℕ) (hk : 1 ≤ k) (z : E ⊗[F] Af F) :
   push_cast
   linear_combination (-(k : E ⊗[F] Af F) * r') * h2
 
+/- English proof (translation)
+Use `choose a t ht e using fun i j => cg_approx (F := F) k hk (Z i j)`. Use `⟨Matrix.of fun i j => if lv j < lv i + 1 then 0 else a i j, fun i j h => ?_, fun i j => ?_⟩` and prove the remaining obligations. Simplify using `only [Matrix.of_apply, if_pos h]`. Distinguish the cases in `h : lv j < lv i + 1`. Use `⟨0, zero_mem _, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [Matrix.sub_apply, Matrix.map_apply, Matrix.of_apply, if_pos h, map_zero, hZ i j h, sub_zero, mul_zero]`. Use `⟨t i j, ht i j, ?_⟩` and prove the remaining obligations. Simplify using `only [Matrix.sub_apply, Matrix.map_apply, Matrix.of_apply, if_neg h]`. Conclude with `e i j`.
+-/
 theorem cg_approx_mat {ι : Type} [Fintype ι] (lv : ι → ℕ) (Z : Matrix ι ι (E ⊗[F] Af F))
     (hZ : InPat lv 1 Z) (k : ℕ) (hk : 1 ≤ k) :
     ∃ W : Matrix ι ι E, InPat lv 1 W ∧ cg_C (IntAf F E) k (W.map (Formalism.UG.inclE (F := F) (Af F)) - Z) := by
@@ -130,6 +176,15 @@ section Skew
 
 variable {D : D7} (X : HidaSetting D)
 
+/- English proof (translation)
+Establish `hle : IntAf I.F I.E ≤ (IntAf I.F I.E).comap (Formalism.UG.sigR I.cm.sig (Af I.F))` using `by show Formalism.UG.tensInt (F := I.F) (Af I.F) (Formalism.UG.intOE I.E) (Formalism.UG.intAd I.F) ≤ _`. Unfold `Formalism.UG.tensInt`. Rewrite using `[Subring.closure_le]`. Introduce and unpack `_ (⟨⟨x, hx⟩, rfl⟩ | ⟨⟨y, hy⟩, rfl⟩)`. Take `⟨z, rfl⟩` from `hx`.
+
+Rewrite using `[SetLike.mem_coe, Subring.mem_comap]`. Apply `Subring.subset_closure` to reduce the goal to its premises. Use `left`. Conclude with `⟨⟨algebraMap (𝓞 I.E) I.E (NumberField.RingOfIntegers.mapRingHom (I.cm.sig : I.E →+* I.E) z), ⟨_, rfl⟩⟩, rfl⟩`. Rewrite using `[SetLike.mem_coe, Subring.mem_comap]`.
+
+Apply `Subring.subset_closure` to reduce the goal to its premises. Use `right`. Conclude with `⟨⟨y, hy⟩, by simp [Formalism.UG.sigR]⟩`. Introduce `i j`. Take `⟨t, ht, hA⟩` from `h j i`.
+
+Use `⟨Formalism.UG.sigR I.cm.sig (Af I.F) t, hle ht, ?_⟩` and prove the remaining obligations. Simplify using `only [Formalism.UG.cT, Matrix.transpose_apply, Matrix.map_apply, hA, map_mul, map_natCast]`.
+-/
 theorem cg_C_cT (I : AutInst) {α β : Type} {c : ℕ} {A : Matrix α β (I.E ⊗[I.F] Af I.F)}
     (h : cg_C (IntAf I.F I.E) c A) :
     cg_C (IntAf I.F I.E) c (Formalism.UG.cT (Formalism.UG.sigR I.cm.sig (Af I.F)) A) := by
@@ -153,27 +208,44 @@ theorem cg_C_cT (I : AutInst) {α β : Type} {c : ℕ} {A : Matrix α β (I.E �
   refine ⟨Formalism.UG.sigR I.cm.sig (Af I.F) t, hle ht, ?_⟩
   simp only [Formalism.UG.cT, Matrix.transpose_apply, Matrix.map_apply, hA, map_mul, map_natCast]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[Formalism.UG.cT, map_sub]`.
+-/
 theorem cg_cT_sub (I : AutInst) {α β : Type} (A B : Matrix α β (I.E ⊗[I.F] Af I.F)) :
     Formalism.UG.cT (Formalism.UG.sigR I.cm.sig (Af I.F)) (A - B) =
       Formalism.UG.cT (Formalism.UG.sigR I.cm.sig (Af I.F)) A - Formalism.UG.cT (Formalism.UG.sigR I.cm.sig (Af I.F)) B := by
   ext i j
   simp [Formalism.UG.cT, map_sub]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, Matrix.conjTranspose_apply, Formalism.UG.cT, Matrix.transpose_apply]`. Both sides reduce to the same expression.
+-/
 theorem cg_map_cT {α β : Type} (M : Matrix α β X.B.I.E) :
     (Mᴴ).map (ic X) = Formalism.UG.cT (Formalism.UG.sigR X.B.I.cm.sig (Af X.B.I.F)) (M.map (ic X)) := by
   ext i j
   simp only [Matrix.map_apply, Matrix.conjTranspose_apply, Formalism.UG.cT, Matrix.transpose_apply]
   rfl
 
+/- English proof (translation)
+Use `(invOf_eq_right_inv ?_).symm` and prove the remaining obligations. Rewrite using `[← map_ofNat (ic X) 2, ← map_mul, mul_invOf_self, map_one]`.
+-/
 theorem cg_half : ic X (⅟2 : X.B.I.E) = (⅟2 : RA X) := by
   refine (invOf_eq_right_inv ?_).symm
   rw [← map_ofNat (ic X) 2, ← map_mul, mul_invOf_self, map_one]
 
+/- English proof (translation)
+Unfold `JBf`. Rewrite using `[← Matrix.map_mul, JB'_mul_JB]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`.
+-/
 theorem cg_JJ : (JB' X).map (ic X) * JBf X = 1 := by
   unfold JBf
   rw [← Matrix.map_mul, JB'_mul_JB]
   exact Matrix.map_one _ (map_zero _) (map_one _)
 
+/- English proof (translation)
+Establish `e1 : (JB' X * Wᴴ * JB X).map (ic X) = (JB' X).map (ic X) * Formalism.UG.cT (Formalism.UG.sigR X.B.I.cm.sig (Af X.B.I.F)) (W.map (ic X)) * JBf X`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, cg_map_cT]`. Unfold `JBf`. Both sides reduce to the same expression. Use extensionality with `i j`.
+
+Establish `e2` using `congrFun (congrFun e1 i) j`. Simplify using `only [Matrix.map_apply] at e2`. Simplify using `only [proj, sharp, Matrix.map_apply, Matrix.smul_apply, Matrix.sub_apply, smul_eq_mul, map_mul, map_sub, cg_half, e2]`.
+-/
 theorem cg_proj_map (W : Matrix (Kap X) (Kap X) X.B.I.E) :
     (proj (JB X) (JB' X) W).map (ic X) = (⅟2 : RA X) • (W.map (ic X) - (JB' X).map (ic X) *
       Formalism.UG.cT (Formalism.UG.sigR X.B.I.cm.sig (Af X.B.I.F)) (W.map (ic X)) * JBf X) := by
@@ -190,6 +262,15 @@ theorem cg_proj_map (W : Matrix (Kap X) (Kap X) X.B.I.E) :
 
 end Skew
 
+/- English proof (translation)
+Introduce `D X Z hZ hskew c hc`. Take `⟨mJ, hmJ, hJ⟩` from `cg_D_exists (JBf X)`. Take `⟨mJ', hmJ', hJ'⟩` from `cg_D_exists ((JB' X).map (ic X))`. Take `⟨W, hW, hWZ⟩` from `cg_approx_mat (lvk X) Z hZ (2 * c * mJ * mJ') (Nat.mul_pos (Nat.mul_pos (Nat.mul_pos two_pos hc) hmJ) hmJ')`. Use `⟨proj (JB X) (JB' X) W, inPat_proj (JB_graded X) (JB'_graded X) hW, proj_skew (JB_herm X) (JB'_herm X) (JB'_mul_JB X) (JB_mul_JB' X) W, ?_⟩` and prove the remaining obligations.
+
+Establish `hJZ : (JB' X).map (ic X) * Formalism.UG.cT (Formalism.UG.sigR X.B.I.cm.sig (Af X.B.I.F)) Z * JBf X = -Z`. Rewrite using `[Matrix.mul_assoc, hskew, Matrix.mul_neg, ← Matrix.mul_assoc, cg_JJ, Matrix.one_mul]`. Establish `habel : ∀ P Q S : Matrix (Kap X) (Kap X) (RA X), P - S - (Q - -S) = (P - Q) - (S + S)`. Introduce `P Q S`. Normalize the expressions using the abelian group laws.
+
+Establish `hhalf : (⅟2 : RA X) • (Z + Z) = Z`. Rewrite using `[← two_smul (RA X) Z, smul_smul, invOf_mul_self, one_smul]`. Establish `e : (proj (JB X) (JB' X) W).map (ic X) - Z = (⅟2 : RA X) • ((W.map (ic X) - Z) - (JB' X).map (ic X) * Formalism.UG.cT (Formalism.UG.sigR X.B.I.cm.sig (Af X.B.I.F)) (W.map (ic X) - Z) * JBf X)`. Rewrite using `[cg_proj_map, cg_cT_sub, Matrix.mul_sub, Matrix.sub_mul, hJZ, habel, smul_sub _ _ (Z + Z), hhalf]`. Use `show cg_C (IntAf X.B.I.F X.B.I.E) c _`.
+
+Rewrite using `[e]`. Use `cg_C_half (cg_C_sub (cg_C_dvd (k := mJ) (cg_C_dvd (k := mJ') hWZ)) ?_)` and prove the remaining obligations. Conclude with `cg_C_mul_right (cg_C_mul_left hJ' (cg_C_cT X.B.I hWZ)) hJ`.
+-/
 theorem skew_hermitian_approximation : SkewApprox := by
   intro D X Z hZ hskew c hc
   obtain ⟨mJ, hmJ, hJ⟩ := cg_D_exists (JBf X)

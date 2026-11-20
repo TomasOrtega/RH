@@ -5,6 +5,15 @@ open Formalism Formalism.MainNotions Formalism.BasicNotions Formalism.BasicNotio
 
 namespace GlobalTheory.Pass
 
+/- English proof (translation)
+Take `⟨hopen, hbasis⟩` from `isAdic_iff.1 hO`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Take `⟨k, u, rfl⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible ha hϖ`. Establish `hm` using `hϖ.maximalIdeal_eq`. Rewrite using `[continuous_iff_continuousAt]`.
+
+Introduce `x0`. Establish `h0 : Filter.Tendsto (fun x => f x - f x0) (nhds x0) (nhds 0)`. Introduce `s hs`. Take `⟨n, hn⟩` from `hbasis s hs`. Establish `h1 : Continuous fun x => (u : O) * ϖ ^ k * f x - (u : O) * ϖ ^ k * f x0` using `hf.sub continuous_const`.
+
+Establish `h2` using `(h1.isOpen_preimage _ (hopen (k + n))).mem_nhds (x := x0) (by simp)`. Rewrite using `[Filter.mem_map]`. Use `filter_upwards [h2] with x hx`. Apply `hn` to reduce the goal to its premises. Simplify using `only [Set.mem_preimage, SetLike.mem_coe, hm, Ideal.span_singleton_pow, Ideal.mem_span_singleton] at hx ⊢`.
+
+Rewrite `hx` using `[← mul_sub, pow_add, mul_assoc, u.isUnit.dvd_mul_left, mul_dvd_mul_iff_left (pow_ne_zero k hϖ.ne_zero)]`. Conclude with `hx`. Use `h0.add_const (f x0)` as an intermediate fact. Simplify `this` using `[ContinuousAt]`.
+-/
 theorem continuous_of_mul_left_dvr {O X : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     [TopologicalSpace O] [IsTopologicalRing O] [TopologicalSpace X]
     (hO : IsAdic (IsLocalRing.maximalIdeal O)) {a : O} (ha : a ≠ 0) {f : X → O}
@@ -29,6 +38,15 @@ theorem continuous_of_mul_left_dvr {O X : Type} [CommRing O] [IsDomain O] [IsDis
   have := h0.add_const (f x0)
   simpa [ContinuousAt] using this
 
+/- English proof (translation)
+Take `⟨b, hb⟩` from `IsLocalization.exist_integer_multiples_of_finite (nonZeroDivisors O) (fun p : Fin n × Fin n => L (Pi.single p.1 1) * v p.2)`. Use `choose d hd using hb`. Use `continuous_of_mul_left_dvr hO (nonZeroDivisors.coe_ne_zero b) ?_` and prove the remaining obligations. Establish `: (fun x => (b : O) * f x) = fun x => ∑ p, ∑ q, d (p, q) * M x p q`. Use function extensionality and compare the values at `x`.
+
+Apply `IsFractionRing.injective O (FractionRing O)` to reduce the goal to its premises. Rewrite using `[map_mul, hf, LinearMap.pi_apply_eq_sum_univ L]`. Simplify using `only [map_sum, map_mul, hd, Finset.mul_sum, Matrix.mulVec, dotProduct, Matrix.map_apply, smul_eq_mul, Finset.sum_mul, Algebra.smul_def]`. Use `Finset.sum_congr rfl fun p _ => Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Establish `: (fun j => if p = j then (1 : FractionRing O) else 0) = Pi.single p 1`.
+
+Use function extensionality and compare the values at `j`. Simplify using `[Pi.single_apply, eq_comm]`. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`.
+
+Use `fun_prop`.
+-/
 theorem continuous_of_coeff_dvr {O X : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     [TopologicalSpace O] [IsTopologicalRing O] [TopologicalSpace X]
     (hO : IsAdic (IsLocalRing.maximalIdeal O)) {n : ℕ} {M : X → Matrix (Fin n) (Fin n) O} (hM : Continuous M)
@@ -52,6 +70,9 @@ theorem continuous_of_coeff_dvr {O X : Type} [CommRing O] [IsDomain O] [IsDiscre
   rw [this]
   fun_prop
 
+/- English proof (translation)
+Rewrite using `[← Matrix.smul_mulVec]`. Use `congr 1`. Use extensionality with `p q`. Simplify using `[mapM, twistM]`.
+-/
 theorem mapM_twistM_mulVec {O S Γ : Type} [CommRing O] [CommRing S] [Group Γ] {k : ℕ} (f : O →+* S)
     (M : Γ →* Matrix (Fin k) (Fin k) O) (χ : Γ →* Oˣ) (g : Γ) (v : Fin k → S) :
     (mapM f (twistM M χ) g).mulVec v = f (χ g : O) • (mapM f M g).mulVec v := by
@@ -60,6 +81,25 @@ theorem mapM_twistM_mulVec {O S Γ : Type} [CommRing O] [CommRing S] [Group Γ] 
   ext p q
   simp [mapM, twistM]
 
+/- English proof (translation)
+Introduce `D i r ρ hr π e he Xs hπ`. Establish `hO` using `D.nd.O_adic i`. Establish `hrc : Continuous fun g => rO D.nd i r π g` using `(hr π).1`. Establish `hχ : ∀ c, Continuous fun g => ((chiU D.nd i c g : (D.nd.O i)ˣ) : D.nd.O i)` using `fun c => D.nd.chi_cont i c`. Establish `hχi : Continuous fun g => (((chiU D.nd i 1)⁻¹ g : (D.nd.O i)ˣ) : D.nd.O i)`.
+
+Use `(hχ 1).comp (continuous_inv (G := GE D.nd))` as an intermediate fact. Use `this.congr fun g => ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Establish `hρc : Continuous fun g => rhoO D.nd i ρ π g`. Use `continuous_matrix fun p q => ?_` and prove the remaining obligations.
+
+Use `continuous_of_coeff_dvr hO hrc ((LinearMap.proj p).comp ((LinearMap.fst _ _ _).comp e.toLinearMap)) (e.symm (Pi.single q 1, 0)) fun g => ?_` and prove the remaining obligations. Use `congrArg (fun z => z.1 p) (he g (e.symm (Pi.single q 1, 0)))` as an intermediate fact. Simplify using `only [LinearEquiv.apply_symm_apply, Matrix.mulVec_single_one] at this`. Conclude with `this.symm`. Use `⟨⟨hχi.smul hρc, π, hπ, e.symm.toLinearMap.comp (LinearMap.inl _ _ _), e.symm.injective.comp LinearMap.inl_injective, fun g v => ?_⟩, fun c hc => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[WpO, rTwO, mapM_twistM_mulVec, mapM_twistM_mulVec, map_smul]`. Use `congr 1`. Apply `e.injective` to reduce the goal to its premises. Rewrite using `[he]`. Simplify using the standard rewrite rules.
+
+Both sides reduce to the same expression. Take `⟨hc1, hc2⟩` from `Finset.mem_Icc.1 hc`. Set `c' : Fin D.R.t` to `⟨c - 1, by omega⟩`. Establish `hcc : (c' : ℕ) + 1 = c` using `by simp only [c']; omega`. Use `⟨?_, π, hπ, e.symm.toLinearMap.comp ((LinearMap.inr _ _ _).comp ((LinearMap.single _ (fun _ => KK D.nd i) c').comp (LinearMap.proj 0))), ?_, fun g v => ?_⟩` and prove the remaining obligations.
+
+Establish `: Continuous fun g => (((chiU D.nd i c g : (D.nd.O i)ˣ) : D.nd.O i) * (((chiU D.nd i 1)⁻¹ g : (D.nd.O i)ˣ) : D.nd.O i)) • (1 : Matrix (Fin 1) (Fin 1) (D.nd.O i))` using `((hχ c).mul hχi).smul continuous_const`. Conclude with `this`. Introduce `v w h`. Establish `h1` using `congrArg (fun z => (e z).2 c') h`. Use function extensionality and compare the values at `j`.
+
+Rewrite using `[Subsingleton.elim j 0]`. Simplify using `using h1`. Rewrite using `[chiRatO, rTwO, mapM_twistM_mulVec, mapM_twistM_mulVec, map_smul, MonoidHom.mul_apply, Units.val_mul, map_mul, mul_comm, mul_smul]`. Use `congr 1`. Apply `e.injective` to reduce the goal to its premises.
+
+Rewrite using `[he, map_smul]`. Use extensionality with `j`. Simplify using the standard rewrite rules. Distinguish the cases in `hj : j = c'`. Substitute `hj` using the available equality.
+
+Simplify using `[hcc, mapM, Algebra.smul_def]`. Simplify using `[hj]`.
+-/
 theorem subTw_blocks : ∀ (D : D7) (i : D.nd.Loc) (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i))) (ρ : D.nd.X i → (GE D.nd →* GL (Fin D.R.r) (D.nd.O i))), GoodR D.nd i r → ∀ (π : D.nd.X i) (e : (Fin D.R.nV → KK D.nd i) ≃ₗ[KK D.nd i] ((Fin D.R.r → KK D.nd i) × (Fin D.R.t → KK D.nd i))), (∀ g u, e ((mapM (toK D.nd i) (rO D.nd i r π) g).mulVec u) = ((mapM (toK D.nd i) (rhoO D.nd i ρ π) g).mulVec (e u).1, fun c : Fin D.R.t => toK D.nd i ((chiU D.nd i ((c : ℕ) + 1) g : (D.nd.O i)ˣ) : D.nd.O i) * (e u).2 c)) → ∀ Xs : Set (D.nd.X i), π ∈ Xs → SubTw i r Xs (WpO D.nd i ρ π) ∧ ∀ c ∈ Finset.Icc 1 D.R.t, SubTw i r Xs (chiRatO D.nd i c) := by
   intro D i r ρ hr π e he Xs hπ
   have hO := D.nd.O_adic i

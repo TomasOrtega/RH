@@ -16,6 +16,11 @@ open GlobalTheory.Mem GlobalTheory.Mem.R3 GlobalTheory.Mem.R3.Rw
 
 namespace GlobalTheory.Mem.GoodLatFree
 
+/- English proof (translation)
+Introduce `v hv`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx => exact hX x hx`. Consider the case `zero => rw [map_zero]`. Conclude with `P.zero_mem`.
+
+Consider the case `add _ _ _ _ h1 h2 => rw [map_add]`. Conclude with `P.add_mem h1 h2`. Consider the case `smul b x _ h => rw [hfs]`. Conclude with `P.smul_mem _ h`.
+-/
 theorem mem_of_span {S V H : Type} [Semiring S] [AddCommGroup V] [Module S V] [AddCommGroup H] [Module ℂ H]
     (f : V →+ H) (τ : S → ℂ) (hfs : ∀ (b : S) (x : V), f (b • x) = τ b • f x) (P : Submodule ℂ H) (X : Set V)
     (hX : ∀ x ∈ X, f x ∈ P) : ∀ v ∈ Submodule.span S X, f v ∈ P := by
@@ -26,6 +31,9 @@ theorem mem_of_span {S V H : Type} [Semiring S] [AddCommGroup V] [Module S V] [A
   | add _ _ _ _ h1 h2 => rw [map_add]; exact P.add_mem h1 h2
   | smul b x _ h => rw [hfs]; exact P.smul_mem _ h
 
+/- English proof (translation)
+Take `rfl : iZ = AddCommGroup.toIntModule V` from `Subsingleton.elim _ _`. Conclude with `mem_of_span j.toAddMonoidHom (fun n : ℤ => (n : ℂ)) (fun n x => by show j (n • x) = (n : ℂ) • j x`. Rewrite using `[map_zsmul, Int.cast_smul_eq_zsmul]) P X hX`.
+-/
 theorem int_span {L V H : Type} [Field L] [AddCommGroup V] [Module L V] [AddCommGroup H] [Module ℂ H] {σ : L →+* ℂ}
     {iZ : Module ℤ V} (j : V →ₛₗ[σ] H) (X : Set V) (P : Submodule ℂ H) (hX : ∀ x ∈ X, j x ∈ P) :
     ∀ v ∈ @Submodule.span ℤ V _ _ iZ X, j v ∈ P := by
@@ -34,6 +42,9 @@ theorem int_span {L V H : Type} [Field L] [AddCommGroup V] [Module L V] [AddComm
     show j (n • x) = (n : ℂ) • j x
     rw [map_zsmul, Int.cast_smul_eq_zsmul]) P X hX
 
+/- English proof (translation)
+The claim follows from `mem_of_span j.toAddMonoidHom (fun a : 𝓞 L => σ (a : L)) (fun a x => by show j (a • x) = σ (a : L) • j x rw [← algebraMap_smul L a x, map_smulₛₗ]) P X hX`.
+-/
 theorem ring_span {L V H : Type} [Field L] [NumberField L] [AddCommGroup V] [Module L V] [Module (𝓞 L) V]
     [IsScalarTower (𝓞 L) L V] [AddCommGroup H] [Module ℂ H] {σ : L →+* ℂ}
     (j : V →ₛₗ[σ] H) (X : Set V) (P : Submodule ℂ H) (hX : ∀ x ∈ X, j x ∈ P) : ∀ v ∈ Submodule.span (𝓞 L) X, j v ∈ P :=
@@ -41,10 +52,20 @@ theorem ring_span {L V H : Type} [Field L] [NumberField L] [AddCommGroup V] [Mod
     show j (a • x) = σ (a : L) • j x
     rw [← algebraMap_smul L a x, map_smulₛₗ]) P X hX
 
+/- English proof (translation)
+The claim follows from `mem_of_span j.toAddMonoidHom (fun a : L => σ a) (fun a x => j.map_smulₛₗ a x) P X hX`.
+-/
 theorem field_span {L V H : Type} [Field L] [AddCommGroup V] [Module L V] [AddCommGroup H] [Module ℂ H] {σ : L →+* ℂ}
     (j : V →ₛₗ[σ] H) (X : Set V) (P : Submodule ℂ H) (hX : ∀ x ∈ X, j x ∈ P) : ∀ v ∈ Submodule.span L X, j v ∈ P :=
   mem_of_span j.toAddMonoidHom (fun a : L => σ a) (fun a x => j.map_smulₛₗ a x) P X hX
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 I0 T A3 Ks _ _ _ R F cG hP hH i g`. Establish `hL` using `hP.char.base.lev`. Establish `h : ((Formalism.IndefR.FWT.chiC R.toRealDat i g : ℂˣ) : ℂ) ∈ (D.what₂.embLL.comp (algebraMap Ks D.what₂.LL)).fieldRange`. Unfold `Formalism.IndefR.FWT.chiC`. Rewrite using `[Units.coe_prod]`.
+
+Use `prod_mem fun PP _ => ?_` and prove the remaining obligations. Use `GlobalTheory.ChiDetValues.res_mem _ _ _ (hL.mu0 i) (fun x hx => ?_) _ _ (hL.chi i _ PP.2) _` and prove the remaining obligations. Take `⟨y, hy⟩` from `hP.keep.valKs i x hx`. Conclude with `⟨y, hy.symm⟩`. Take `⟨y, hy⟩` from `h`.
+
+Conclude with `⟨y, D.what₂.embLL.injective (hy.trans ((Units.coe_prod _ _).trans (hP.char.base.grp.chiW i g).symm))⟩`.
+-/
 theorem chiKs_of_pins : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 I0 T : Type) (A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3) (cG : G0 R.Pg D.R.r ≃* G0g D.nd), Pins R F cG → Holds R F → ∀ i : Fin D.R.m, (R.FW i).ChiKs := by
   intro D G _ _ Pl0 I0 T A3 Ks _ _ _ R F cG hP hH i g
   have hL := hP.char.base.lev
@@ -60,6 +81,51 @@ theorem chiKs_of_pins : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 I0 T 
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 I0 T A3 Ks _ _ _ R F cG hO _ hP hH i M _ _ _ E hinj hrange`. Establish `hI` using `hH.aux.integral i`. Establish `hχ` using `chiKs_of_pins D G Pl0 I0 T A3 Ks R F cG hP hH i`. Establish `hspan` using `GlobalTheory.GoodLatDescent.span_MK_good (R.FW i) hI.1 (fun g f => (hI.2.2 g f).1) hχ F.lv2.P0 F.lv2.ψ0⁻¹ (fun g => (idemOf A3.A.X).coeff g) (fun p => ?_) hP.keep.levKs.2`. Use `swap`.
+
+Take `⟨y, hy⟩` from `hP.keep.levKs.1 p`. Conclude with `⟨y⁻¹, by rw [map_inv₀, hy, MonoidHom.inv_apply, Units.val_inv_eq_inv_val]⟩`. Establish `hsa : ∀ a, sg0 D A3.A a = D.what₂.embLL a` using `fun a => by rw [sg0, sgAt_mk _ R.hv0]`. Take `⟨S0, hS0⟩` from `GlobalTheory.GoodLatDescent.fg_MK_good (R.FW i) hI.2.1 F.lv2.P0 F.lv2.ψ0⁻¹ (fun g => (idemOf A3.A.X).coeff g)`. Establish `hfg : ((Submodule.span (𝓞 Ks) (S0 : Set (Fin (R.nW i) → D.what₂.LL))).restrictScalars ℤ).FG` using `Submodule.FG.restrictScalars ⟨S0, rfl⟩`.
+
+Take `⟨T0, hT0⟩` from `hfg`. Establish `hT : ∀ y, y ∈ Submodule.span ℤ (T0 : Set (Fin (R.nW i) → D.what₂.LL)) ↔ y ∈ (R.FW i).MK ∧ y ∈ (R.FW i).Wgood F.lv2.P0 F.lv2.ψ0⁻¹ (fun g => (idemOf A3.A.X).coeff g)`. Introduce `y`. Rewrite using `[hT0]`. Use `show y ∈ ((Submodule.span (𝓞 Ks) (S0 : Set (Fin (R.nW i) → D.what₂.LL))) : Set _) ↔ _`.
+
+Rewrite using `[hS0]`. Both sides reduce to the same expression. Establish `hWS : LinearMap.range E = R.toRealDat.WS F.lv2 false i (sg0 D A3.A)`. Rewrite using `[hrange]`. Conclude with `(hH.aux.levelW false i _).symm`.
+
+Establish `hjW : ∀ y ∈ (R.FW i).Wgood F.lv2.P0 F.lv2.ψ0⁻¹ (fun g => (idemOf A3.A.X).coeff g), (R.FW i).j (sg0 D A3.A) y ∈ LinearMap.range E`. Introduce `y hy`. Rewrite using `[hWS, ← GlobalTheory.Mem.LiftTheta.goodForm_span R.toRealDat F.lv2 false i]`. Establish `hyW : y ∈ R.toRealDat.WL F.lv2 false i` using `hy`. Establish `hs : ∑ k, (Module.finBasis D.what₂.LL (R.toRealDat.WL F.lv2 false i)).repr ⟨y, hyW⟩ k • R.toRealDat.bL F.lv2 false i k = y`.
+
+Establish `h` using `congrArg (R.toRealDat.WL F.lv2 false i).subtype ((Module.finBasis D.what₂.LL (R.toRealDat.WL F.lv2 false i)).sum_repr ⟨y, hyW⟩)`. Rewrite `h` using `[map_sum]`. Conclude with `h`. Rewrite using `[← hs, map_sum]`. Use `Submodule.sum_mem _ fun k _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_smulₛₗ, ← GlobalTheory.Mem.LiftTheta.goodForm_single]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨k, rfl⟩)`. Establish `hex : ∀ t, ∃ x : M, t ∈ T0 → E x = (R.FW i).j (sg0 D A3.A) t`. Introduce `t`. Distinguish the cases in `ht : t ∈ T0`.
+
+Take `⟨x, hx⟩` from `hjW t ((hT t).1 (Submodule.subset_span (Finset.mem_coe.2 ht))).2`. Conclude with `⟨x, fun _ => hx⟩`. Conclude with `⟨0, fun h => absurd h ht⟩`. Use `choose g hg using hex`. Establish `hA : ∀ y, y ∈ (R.FW i).MK ∧ y ∈ (R.FW i).Wgood F.lv2.P0 F.lv2.ψ0⁻¹ (fun g => (idemOf A3.A.X).coeff g) → (R.FW i).j (sg0 D A3.A) y ∈ Submodule.span ℂ ((R.FW i).j (sg0 D A3.A) '' (T0 : Set _))`.
+
+Introduce `y hy`. Establish `h1 : y ∈ Submodule.span ℤ (T0 : Set (Fin (R.nW i) → D.what₂.LL))` using `(hT y).2 hy`. Establish `h2 : ∀ x ∈ (T0 : Set (Fin (R.nW i) → D.what₂.LL)), (R.FW i).j (sg0 D A3.A) x ∈ Submodule.span ℂ ((R.FW i).j (sg0 D A3.A) '' (T0 : Set _))` using `fun x hx => Submodule.subset_span (Set.mem_image_of_mem _ hx)`. Establish `h1' : y ∈ @Submodule.span ℤ (Fin (R.nW i) → D.what₂.LL) _ _ (AddCommGroup.toIntModule _) (T0 : Set (Fin (R.nW i) → D.what₂.LL))`. Use `h1` and compare the differences between its conclusion and the goal.
+
+Establish `h3` using `int_span (L := D.what₂.LL) (V := Fin (R.nW i) → D.what₂.LL) (iZ := AddCommGroup.toIntModule _) ((R.FW i).j (sg0 D A3.A)) (T0 : Set _) _ h2`. Conclude with `h3 y h1'`. Establish `hB : ∀ y ∈ (R.FW i).Mj F.lv2.P0 F.lv2.ψ0⁻¹ (fun g => (idemOf A3.A.X).coeff g), (R.FW i).j (sg0 D A3.A) y ∈ Submodule.span ℂ ((R.FW i).j (sg0 D A3.A) '' (T0 : Set _))`. Introduce `y hy`. Rewrite `hy` using `[← hspan]`.
+
+Conclude with `ring_span ((R.FW i).j (sg0 D A3.A)) _ _ (fun x hx => hA x hx) y hy`. Establish `hC : ∀ y ∈ (R.FW i).Wgood F.lv2.P0 F.lv2.ψ0⁻¹ (fun g => (idemOf A3.A.X).coeff g), (R.FW i).j (sg0 D A3.A) y ∈ Submodule.span ℂ ((R.FW i).j (sg0 D A3.A) '' (T0 : Set _))`. Introduce `y hy`. Rewrite `hy` using `[← (GlobalTheory.GoodLat.mj_full (R.FW i) hI.1 hI.2.1 F.lv2.P0 F.lv2.ψ0⁻¹ (fun g => (idemOf A3.A.X).coeff g)).2]`. Conclude with `field_span ((R.FW i).j (sg0 D A3.A)) _ _ (fun x hx => hB x hx) y hy`.
+
+Establish `hgen : Submodule.span ℂ ((T0.image g : Finset M) : Set M) = ⊤`. Apply `Submodule.map_injective_of_injective hinj` to reduce the goal to its premises. Rewrite using `[Submodule.map_top, Submodule.map_span, Finset.coe_image, Set.image_image]`. Establish `him : (fun t => E (g t)) '' (T0 : Set _) = (R.FW i).j (sg0 D A3.A) '' (T0 : Set _)` using `Set.image_congr fun t ht => hg t ht`. Rewrite using `[him]`.
+
+Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨t, ht, rfl⟩`. Conclude with `hjW t ((hT t).1 (Submodule.subset_span ht)).2`. Rewrite using `[hWS, ← GlobalTheory.Mem.LiftTheta.goodForm_span R.toRealDat F.lv2 false i, Submodule.span_le]`.
+
+Introduce and unpack `_ ⟨k, rfl⟩`. Rewrite using `[SetLike.mem_coe]`. Use `beta_reduce`. Rewrite using `[GlobalTheory.Mem.LiftTheta.goodForm_single]`. Conclude with `hC _ (Module.finBasis D.what₂.LL (R.toRealDat.WL F.lv2 false i) k).2`.
+
+Use `⟨⟨T0.image g, hgen⟩, fun x => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨c, rfl⟩`. Rewrite using `[map_sum]`. Use `Finset.sum_induction _ (fun w => ∃ v ∈ (R.FW i).MK, v ∈ (R.FW i).Wgood F.lv2.P0 F.lv2.ψ0⁻¹ (fun g => (idemOf A3.A.X).coeff g) ∧ w = (R.FW i).j (sg0 D A3.A) v) ?_ ?_ ?_` and prove the remaining obligations. Introduce and unpack `_ _ ⟨v1, h1, h1', rfl⟩ ⟨v2, h2, h2', rfl⟩`.
+
+Conclude with `⟨v1 + v2, Submodule.add_mem _ h1 h2, Submodule.add_mem _ h1' h2', (map_add _ _ _).symm⟩`. Conclude with `⟨0, Submodule.zero_mem _, Submodule.zero_mem _, (map_zero _).symm⟩`. Introduce `y hy`. Take `⟨t, ht, rfl⟩` from `Finset.mem_image.1 hy`. Establish `htg` using `(hT t).1 (Submodule.subset_span (Finset.mem_coe.2 ht))`.
+
+Take `⟨k, hk⟩` from `hO (c (g t))`. Establish `hint : IsIntegral ℤ k`. Establish `h1 : IsIntegral ℤ (D.what₂.OtoLL (c (g t)))` using `D.O_int (c (g t))`. Rewrite `h1` using `[← hk]`. Conclude with `(isIntegral_algHom_iff (algebraMap Ks D.what₂.LL).toIntAlgHom (algebraMap Ks D.what₂.LL).injective).1 h1`.
+
+Set `kk : 𝓞 Ks` to `⟨k, hint⟩`. Establish `hkk : D.what₂.OtoLL (c (g t)) • t = kk • t`. Rewrite using `[← hk, algebraMap_smul, ← algebraMap_smul Ks kk t]`. Both sides reduce to the same expression. Use `⟨D.what₂.OtoLL (c (g t)) • t, ?_, Submodule.smul_mem _ _ htg.2, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hkk]`. Conclude with `Submodule.smul_mem _ _ htg.1`. Rewrite using `[map_smul, hg t ht, map_smulₛₗ, hsa]`. Both sides reduce to the same expression. Introduce and unpack `⟨v, hv1, hv2, hxv⟩`.
+
+Take `⟨n, -, hn⟩` from `Submodule.mem_span_finset.1 ((hT v).2 ⟨hv1, hv2⟩)`. Establish `hx : x = ∑ t ∈ T0, ((n t : ℤ) : ℂ) • g t`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[hxv, ← hn, map_sum, map_sum]`. Use `Finset.sum_congr rfl fun t ht => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_zsmul, map_smul, hg t ht, Int.cast_smul_eq_zsmul]`. Use `⟨fun y => ∑ t ∈ T0 with g t = y, (n t : D.what₂.O), ?_⟩` and prove the remaining obligations. Rewrite using `[hx]`. Use `symm`. Use `Finset.sum_image' _ fun t _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_sum, Finset.sum_smul]`. Use `Finset.sum_congr rfl fun t' ht' => ?_` and prove the remaining obligations. Rewrite using `[(Finset.mem_filter.1 ht').2, map_intCast]`.
+-/
 theorem exists_oLat_good : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 I0 T : Type) (A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3) (cG : G0 R.Pg D.R.r ≃* G0g D.nd), (∀ o : D.what₂.O, ∃ k : Ks, algebraMap Ks D.what₂.LL k = D.what₂.OtoLL o) → Inputs D → Pins R F cG → Holds R F → ∀ (i : Fin D.R.m) (M : Type) [AddCommGroup M] [Module ℂ M] [FiniteDimensional ℂ M] (E : M →ₗ[ℂ] (R.toRealDat.HW i (sg0 D A3.A)).H), Function.Injective E → LinearMap.range E = (R.toRealDat.Wat i (sg0 D A3.A) (R.toRealDat.levL F.lv2 false (sg0 D A3.A))).comap (R.toRealDat.HW i (sg0 D A3.A)).e → ∃ L : Rows.OLat D.what₂.O (D.what₂.embLL.comp D.what₂.OtoLL) M, ∀ x, x ∈ L.carrier ↔ ∃ v ∈ (R.toRealDat.FW i).MK, v ∈ (R.toRealDat.FW i).Wgood F.lv2.P0 F.lv2.ψ0⁻¹ (fun g => (idemOf A3.A.X).coeff g) ∧ E x = (R.toRealDat.FW i).j (sg0 D A3.A) v := by
   intro D G _ _ Pl0 I0 T A3 Ks _ _ _ R F cG hO _ hP hH i M _ _ _ E hinj hrange
   classical

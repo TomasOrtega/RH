@@ -43,6 +43,9 @@ def IsRigidificationPullbackCompatibleIso {S' : Scheme.{0}} {A : Over S'} [GrpOb
       wVal w z J J' (r ≫ eSec A) * val (L := L') (φ := fun _ : PUnit => eSec A) (ε := fun _ => 1) ρ' r z J'
 end Defs
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem thG_iff {R : Type} [CommRing R] [IsDomain R] (A : PolAV (Sp (FractionRing R))) {F : Type} [Field F]
     [Algebra (FractionRing R) F] (ρ : LB.Gen (A.L.pull (eSec A.A))) (m : ℕ) (th : GlobalTheory.UT.SecA A F 1)
     (x : TFK (R := R) F ⟶ A.A) (c : F) :
@@ -55,6 +58,9 @@ variable {S S' : Scheme.{0}} {G : Over S} [GrpObj G] {A : Over S'} [GrpObj A]
   {L₀ : LB G.left} {L₁ : LB A.left} {w : LB.Iso L₁ (L₀.pull φ)}
   {ρ₀ : LB.Gen (L₀.pull (eSec G))} {ρ₁ : LB.Gen (L₁.pull (eSec A))}
 
+/- English proof (translation)
+Establish `hz` using `hJ.mem (fun _ : Fin 1 => T₀.hom ≫ eSec G) r`. Rewrite using `[val_of (L := L₀) (φ := fun _ : PUnit => eSec G) (ε := fun _ => 1) ρ₀ (r ≫ T₀.hom) z J (fun _ => J (r ≫ T₀.hom ≫ eSec G)) (fun _ => by rw [Category.assoc])]`. Use `(map_zpow _ _ _).trans (congrArg (· ^ k) ?_)` and prove the remaining obligations. Conclude with `(gm_res r z _ hz _).trans (gm_pull r T₀.hom z _ (rigT_le G L₀ _ hz) _)`.
+-/
 theorem val_rigT (k : ℤ) {Z : Scheme.{0}} (r : Z ⟶ T₀.left) (z : Z) {J} (hJ : Good L₀ z J) :
     val (rigT G L₀ ρ₀ T₀ k) r z J =
       val (L := L₀) (φ := fun _ : PUnit => eSec G) (ε := fun _ => 1) ρ₀ (r ≫ T₀.hom) z J ^ k := by
@@ -66,12 +72,18 @@ theorem val_rigT (k : ℤ) {Z : Scheme.{0}} (r : Z ⟶ T₀.left) (z : Z) {J} (h
 
 include hτ in
 
+/- English proof (translation)
+Rewrite using `[val_rigT k _ z hJ, val_rigT k _ z hJ', Category.assoc, hτ, ← Category.assoc, h _ _ z J J' hJ hJ', mul_zpow, Category.assoc]`.
+-/
 theorem IsRigidificationPullbackCompatibleIso.rigT (h : IsRigidificationPullbackCompatibleIso w f ρ₁ ρ₀) (k : ℤ) {Z : Scheme.{0}} (r : Z ⟶ T.left) (z : Z) {J J'}
     (hJ : Good L₀ z J) (hJ' : Good L₁ z J') : val (rigT G L₀ ρ₀ T₀ k) (r ≫ τ) z J =
       wVal w z J J' (r ≫ T.hom ≫ eSec A) ^ k * val (rigT A L₁ ρ₁ T k) r z J' := by
   rw [val_rigT k _ z hJ, val_rigT k _ z hJ', Category.assoc, hτ, ← Category.assoc, h _ _ z J J' hJ hJ', mul_zpow,
     Category.assoc]
 
+/- English proof (translation)
+Rewrite using `[hr.rigT τ hτ _ r z hJ hJ', Category.assoc, ← psi_ptSec hp τ hτ (over_one hp τ hτ), ← Category.assoc, H _ _ _ _ _ hJ hJ', Category.assoc, Category.assoc, NormTheta.ptSec_snd, NormTheta.ptSec_snd_pow, ← zpow_add, show a + -((1 : ℕ) : ℤ) = a - 1 from rfl, mul_right_inj]`.
+-/
 theorem norm_iff (hr : IsRigidificationPullbackCompatibleIso w f ρ₁ ρ₀) {m : ℕ} {a : ℤ}
     {α₀ : LB.Gen (LB.LinComb L₀ (K := Fin 2) ![(snd T₀ G).left, (snd T₀ G ^ m).left] ![a, -((1 : ℕ) : ℤ)])}
     {α : LB.Gen (LB.LinComb L₁ (K := Fin 2) ![(snd T A).left, (snd T A ^ m).left] ![a, -((1 : ℕ) : ℤ)])}
@@ -85,6 +97,9 @@ theorem norm_iff (hr : IsRigidificationPullbackCompatibleIso w f ρ₁ ρ₀) {m
     H _ _ _ _ _ hJ hJ', Category.assoc, Category.assoc, NormTheta.ptSec_snd, NormTheta.ptSec_snd_pow, ← zpow_add,
     show a + -((1 : ℕ) : ℤ) = a - 1 from rfl, mul_right_inj]
 
+/- English proof (translation)
+Rewrite using `[hr.rigT τ hτ _ r z hJ hJ', Category.assoc, ← psi_ptSec hp τ hτ (over_one hp τ hτ), ← Category.assoc, ht _ _ _ _ _ hJ hJ', Category.assoc, NormTheta.ptSec_snd, Units.val_mul, mul_left_comm, Units.mul_right_inj]`.
+-/
 theorem value_iff (hr : IsRigidificationPullbackCompatibleIso w f ρ₁ ρ₀) {a : ℤ} {t₀ : LB.Sec (LPow G L₀ a T₀)} {t : LB.Sec (LPow A L₁ a T)}
     (ht : SecRel hp τ hτ w t t₀) {Z : Scheme.{0}} (r : Z ⟶ T.left) (z : Z) {J J'} (hJ : Good L₀ z J) (hJ' : Good L₁ z J')
     (c : Z.presheaf.stalk z) :
@@ -93,6 +108,9 @@ theorem value_iff (hr : IsRigidificationPullbackCompatibleIso w f ρ₁ ρ₀) {
   rw [hr.rigT τ hτ _ r z hJ hJ', Category.assoc, ← psi_ptSec hp τ hτ (over_one hp τ hτ), ← Category.assoc,
     ht _ _ _ _ _ hJ hJ', Category.assoc, NormTheta.ptSec_snd, Units.val_mul, mul_left_comm, Units.mul_right_inj]
 
+/- English proof (translation)
+The claim follows from `sv_of_isValueAt (x := (1 : T ⟶ A)) (ρ := Out.rigT A L₁ ρ₁ T a) (isValueAt_of_sv hL₁ fun y J hJ => by rw [Category.id_comp]; exact h y J hJ) r z hJ`.
+-/
 theorem value_at {a : ℤ} {t : LB.Sec (LPow A L₁ a T)} {c : Γ(T.left, ⊤)} (hL₁ : L₁.IsLB)
     (h : ∀ z J, Good L₁ z J → VVRank.sv A t (ptSecT A 1).left z J =
       gs (𝟙 _) z ⊤ c * (val (Out.rigT A L₁ ρ₁ T a) (𝟙 _) z J).val)
@@ -101,6 +119,13 @@ theorem value_at {a : ℤ} {t : LB.Sec (LPow A L₁ a T)} {c : Γ(T.left, ⊤)} 
   sv_of_isValueAt (x := (1 : T ⟶ A)) (ρ := Out.rigT A L₁ ρ₁ T a) (isValueAt_of_sv hL₁ fun y J hJ => by
     rw [Category.id_comp]; exact h y J hJ) r z hJ
 
+/- English proof (translation)
+Take `⟨-, t₀, α₀, s₀, θ₀, h₁, h₂, h₃, h₄, h₅, h₆⟩` from `H`. Take `⟨s, hs⟩` from `exists_secRel hp τ hτ hw hL₀ hL₁ s₀`. Take `⟨t, ht⟩` from `exists_secRel hp τ hτ hw hL₀ hL₁ t₀`. Take `⟨α, hα, vα⟩` from `exists_genThrough₂ hp τ hτ hw hL₀ hL₁ (psi_pow hp τ hτ m) α₀ h₁`. Take `⟨θ, hθ, hθ'⟩` from `symLift_move hp τ hτ hw hL₀ hL₁ hx hn h₄`.
+
+Use `⟨hn, t, α, s, θ, hα, corr_of_val hL₁ fun y J' hJ' => ?_, isTwistPull_move hp τ hτ hL₀ hL₁ (psi_pow hp τ hτ m) hα vα hth hs h₃, hθ, hθ' _ _ _ _ hs ht h₅, fun y J' hJ' => ?_⟩` and prove the remaining obligations. Take `⟨J, hJ⟩` from `exists_good' hL₀ y`. Rewrite using `[val_pull hJ']`. Conclude with `(norm_iff hp τ hτ hr vα _ y hJ hJ').1 ((val_pull hJ _ _ _).symm.trans (val_corr hJ h₂ _))`. Take `⟨J, hJ⟩` from `exists_good' hL₀ y`.
+
+Establish `q` using `(value_iff hp τ hτ hr ht (𝟙 _) y hJ hJ' _).1 (value_at hL₀ h₆ (𝟙 _ ≫ τ) y hJ)`. Rewrite `q` using `[Category.id_comp (ptSecT A 1).left]`. Conclude with `q.trans (congrArg (· * _) (gs_pull (𝟙 _) τ y ⊤ trivial c).symm)`.
+-/
 theorem ThG.move [IsCommMonObj A] (hw : w.IsGen) (hL₀ : L₀.IsLB) (hL₁ : L₁.IsLB) (hr : IsRigidificationPullbackCompatibleIso w f ρ₁ ρ₀) {m : ℕ}
     {x : T ⟶ A} {x₀ : T₀ ⟶ G} (hx : τ ≫ x₀.left = x.left ≫ φ) (hn : x ^ (m ^ 2) = 1)
     {th : LB.Sec (LPow A L₁ ((1 : ℕ) : ℤ) T)} {th₀ : LB.Sec (LPow G L₀ ((1 : ℕ) : ℤ) T₀)} (hth : SecRel hp τ hτ w th th₀)
@@ -120,6 +145,13 @@ theorem ThG.move [IsCommMonObj A] (hw : w.IsGen) (hL₀ : L₀.IsLB) (hL₁ : L�
     rw [Category.id_comp (ptSecT A 1).left] at q
     exact q.trans (congrArg (· * _) (gs_pull (𝟙 _) τ y ⊤ trivial c).symm)
 
+/- English proof (translation)
+Take `⟨h₀, t, α, s, θ, h₁, h₂, h₃, h₄, h₅, h₆⟩` from `H`. Take `⟨s₀, hs⟩` from `exists_secRel_up hp τ hτ hw hL₀ hL₁ s`. Take `⟨t₀, ht⟩` from `exists_secRel_up hp τ hτ hw hL₀ hL₁ t`. Take `⟨α₀, hα, vα⟩` from `ThetaPtUp.exists_genThrough_up hp τ hτ hw hL₀ hL₁ (psi_pow hp τ hτ m) α h₁`. Take `⟨θ₀, hθ, hθ'⟩` from `ThetaPtUp.symLift_up hp τ hτ hw hL₀ hL₁ hx h₀ h₄`.
+
+Use `⟨hn, t₀, α₀, s₀, θ₀, hα, corr_of_val hL₀ fun y J hJ => ?_, ThetaPtUp.isTwistPull_up hp τ hτ hL₀ hL₁ (psi_pow hp τ hτ m) hα vα hth hs h₃, hθ, hθ' _ _ _ _ hs ht h₅, fun y J hJ => ?_⟩` and prove the remaining obligations. Take `⟨J', hJ'⟩` from `exists_good' hL₁ y`. Rewrite using `[val_pull hJ, ← IsIso.inv_hom_id τ]`. Conclude with `(norm_iff hp τ hτ hr vα _ y hJ hJ').2 ((val_pull hJ' _ _ _).symm.trans (val_corr hJ' h₂ _))`. Take `⟨J', hJ'⟩` from `exists_good' hL₁ y`.
+
+Establish `q` using `(value_iff hp τ hτ hr ht (inv τ) y hJ hJ' _).2 (value_at hL₁ h₆ (inv τ) y hJ')`. Rewrite `q` using `[IsIso.inv_hom_id, Category.id_comp]`. Conclude with `q.trans (congrArg (· * _) ((gs_pull (𝟙 _) (inv τ) y ⊤ trivial c).trans (by rw [Category.id_comp])).symm)`.
+-/
 theorem ThG.up [IsIso τ] [IsCommMonObj A] (hw : w.IsGen) (hL₀ : L₀.IsLB) (hL₁ : L₁.IsLB) (hr : IsRigidificationPullbackCompatibleIso w f ρ₁ ρ₀) {m : ℕ}
     {x : T ⟶ A} {x₀ : T₀ ⟶ G} (hx : τ ≫ x₀.left = x.left ≫ φ) (hn : x₀ ^ (m ^ 2) = 1)
     {th : LB.Sec (LPow A L₁ ((1 : ℕ) : ℤ) T)} {th₀ : LB.Sec (LPow G L₀ ((1 : ℕ) : ℤ) T₀)} (hth : SecRel hp τ hτ w th th₀)
@@ -140,6 +172,11 @@ theorem ThG.up [IsIso τ] [IsCommMonObj A] (hw : w.IsGen) (hL₀ : L₀.IsLB) (h
     rw [IsIso.inv_hom_id, Category.id_comp] at q
     exact q.trans (congrArg (· * _) ((gs_pull (𝟙 _) (inv τ) y ⊤ trivial c).trans (by rw [Category.id_comp])).symm)
 
+/- English proof (translation)
+Take `⟨h₀, t, α, s, θ, h₁, h₂, h₃, h₄, h₅, h₆⟩` from `H`. Establish `tw : ∀ {p q : ℤ} {κ : T ⊗ A ⟶ A} {β} (_ : β.IsGen) {u u' : LB.Sec (LPow A L₁ q T)} {v : LB.Sec (LPow A L₁ p T)}, SecM.ofSec A u' = a • SecM.ofSec A u → IsTwistPull A L₁ (lift (fst T A) κ) κ (lift_snd _ _) p q β u v → IsTwistPull A L₁ (lift (fst T A) κ) κ (lift_snd _ _) p q β u' ( …`. Introduce `p q κ β hβ u u' v hu hv`. Use `VVRank.isTwistPull_of_sv A hL₁ hβ fun y J hJ => ?_` and prove the remaining obligations. Establish `e₁` using `sv_of_eq_mul (s := u') (t := u) (c := a) (fun j => congrArg (fun q => q.1 j) hu) (𝟙 _ ≫ (lift (fst T A) κ).left) y hJ`.
+
+Establish `e₂` using `sv_of_eq_mul (s := SecM.toSec A (a • SecM.ofSec A v)) (t := v) (c := a) (fun j => rfl) (𝟙 _) y hJ`. Rewrite using `[e₁, e₂, VVRank.sv_of_isTwistPull A hv (𝟙 _) y hJ, Category.assoc, ← Over.comp_left, lift_fst, mul_left_comm]`. Use `⟨h₀, SecM.toSec A (a • SecM.ofSec A t), α, SecM.toSec A (a • SecM.ofSec A s), θ, h₁, h₂, tw h₁ h h₃, h₄, tw θ.isGen rfl h₅, fun y J hJ => ?_⟩` and prove the remaining obligations. Rewrite using `[sv_of_eq_mul (s := SecM.toSec A (a • SecM.ofSec A t)) (t := t) (c := a) (fun j => rfl) _ y hJ, h₆ y J hJ, ptSecT_fst, ← _root_.mul_assoc, gs_mul _ y ⊤ trivial]`.
+-/
 theorem ThG.smul (hL₁ : L₁.IsLB) {m : ℕ} {x : T ⟶ A} {th th' : LB.Sec (LPow A L₁ ((1 : ℕ) : ℤ) T)} {a c : Γ(T.left, ⊤)}
     (h : SecM.ofSec A th' = a • SecM.ofSec A th) (H : ThG A L₁ ρ₁ m th x c) : ThG A L₁ ρ₁ m th' x (a * c) := by
   obtain ⟨h₀, t, α, s, θ, h₁, h₂, h₃, h₄, h₅, h₆⟩ := H
@@ -159,6 +196,9 @@ theorem ThG.smul (hL₁ : L₁.IsLB) {m : ℕ} {x : T ⟶ A} {th th' : LB.Sec (L
 
 include hp in
 
+/- English proof (translation)
+Establish `e : eSec A ≫ φ = f ≫ eSec G`. Use `over_one hp (T := baseOver S') (T₀ := baseOver S) f ((Category.comp_id _).trans (Category.id_comp _).symm)` as an intermediate fact. Conclude with `((Category.id_comp _).symm.trans (Category.assoc _ _ _).symm).trans (this.symm.trans (congrArg (f ≫ ·) (Category.id_comp _)))`. Take `⟨ρ₁, h₁, h₂⟩` from `exists_gen_through (φ' := fun _ : PUnit => eSec A) (φ := fun _ : PUnit => eSec G) (ε := fun _ => 1) (h := f) hw hL₀ hL₁ (fun _ => e) ρ₀ hρ`. Conclude with `⟨ρ₁, h₁, fun Z r z J J' hJ hJ' => (h₂ Z r z J J' hJ hJ').trans (by rw [Fintype.prod_unique, zpow_one])⟩`.
+-/
 theorem exists_rigidificationPullbackCompatibleIso (hw : w.IsGen) (hL₀ : L₀.IsLB) (hL₁ : L₁.IsLB) (hρ : ρ₀.IsGen) :
     ∃ ρ₁ : LB.Gen (L₁.pull (eSec A)), ρ₁.IsGen ∧ IsRigidificationPullbackCompatibleIso w f ρ₁ ρ₀ := by
   have e : eSec A ≫ φ = f ≫ eSec G := by
@@ -171,6 +211,13 @@ theorem exists_rigidificationPullbackCompatibleIso (hw : w.IsGen) (hL₀ : L₀.
 
 end Move
 
+/- English proof (translation)
+Take `⟨hx, t, α, s₁, θ, hα, hn, hs₁, hθ, ht, hc⟩` from `H`. Take `⟨-, t', α', s₁', θ', hα', hn', hs₁', hθ', ht', hc'⟩` from `H'`. Establish `hL` using `P.isLB`. Take `⟨-, huniq⟩` from `hLaw.symLift _ P (m ^ 2) hm.pow hu T x hx`. Establish `ea` using `gen_unique hL (fst T P.A).left (ptSecT P.A 1).left NormTheta.ptSec_fst (CommPairing.surj_fst hLaw.globalFns P.isAb T) hα hα' (fun y J hJ => by`.
+
+Establish `a` using `(val_corr hJ hn (𝟙 _)).trans (val_corr hJ hn' (𝟙 _)).symm`. Rewrite using `[val_pull hJ, val_pull hJ, Category.id_comp] at a)` and apply the resulting hypothesis. Take `rfl : s₁ = s₁'` from `NormTheta.sec_ext (sec_ext_val hL fun y J hJ => (ThetaLin.sval_of_isTwistPull P.A hs₁ _ y hJ).trans (Eq.trans (by rw [ea _ _ y J hJ]) (ThetaLin.sval_of_isTwistPull P.A hs₁' _ y hJ).symm))`. Establish `eθ` using `huniq θ θ' hθ hθ'`. Establish `ept : θ.pt = θ'.pt` using `hθ.pt_eq.trans hθ'.pt_eq.symm`.
+
+Take `rfl : t = t'` from `NormTheta.sec_ext (sec_ext_val hL fun y J hJ => (ThetaLin.sval_of_isTwistPull P.A ht _ y hJ).trans (Eq.trans (by rw [val_corr hJ eθ, ept]) (ThetaLin.sval_of_isTwistPull P.A ht' _ y hJ).symm))`. Use `fn_ext (V := ⊤) fun y _ => ?_` and prove the remaining obligations. Take `⟨J, hJ⟩` from `exists_good' hL y`. Conclude with `(Units.mul_left_inj _).1 ((hc y J hJ).symm.trans (hc' y J hJ))`.
+-/
 theorem ThG.unique (hLaw : Laws) {S : Scheme.{0}} [IsLocallyNoetherian S] (P : PolAV S)
     {ρ : LB.Gen (P.L.pull (eSec P.A))} {m : ℕ} (hm : Odd m) (hu : IsUnit ((m ^ 2 : ℕ) : Γ(S, ⊤))) {T : Over S}
     {th : LB.Sec (LPow P.A P.L ((1 : ℕ) : ℤ) T)} {x : T ⟶ P.A} {c c' : Γ(T.left, ⊤)} (H : ThG P.A P.L ρ m th x c)

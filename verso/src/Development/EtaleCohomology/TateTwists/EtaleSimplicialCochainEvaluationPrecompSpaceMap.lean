@@ -21,6 +21,9 @@ end LateralTheory.EtaleFoundations
 namespace LateralTheory.EtaleFoundations.BasicPf
 variable {R : Type} [CommRing R]
 
+/- English proof (translation)
+Apply the tactic sequence `first | rfl | simp | (change (((sheafToPresheaf _ _).map (φ + ψ)).app (op U)).hom y = _; rw [Functor.map_add]; rfl)`.
+-/
 lemma app_add {A B : Shv R} (φ ψ : A ⟶ B) (U : Scheme.{0}) (y : Sec A U) :
     ((φ + ψ).hom.app (op U)).hom y = (φ.hom.app (op U)).hom y + (ψ.hom.app (op U)).hom y := by
   first | rfl | simp | (change (((sheafToPresheaf _ _).map (φ + ψ)).app (op U)).hom y = _; rw [Functor.map_add]; rfl)
@@ -33,17 +36,26 @@ noncomputable def evH {E : Spc} {I : Cx R} {n : ℤ} (p : ℕ) (s : ℤ) (h : -(
     rw [Cochain.add_v, Preadditive.comp_add, app_add]
     rfl)
 
+/- English proof (translation)
+Introduce `R _ E I n α β p s h U x`. Conclude with `⟨map_add (evH p s h U x) α β, map_sub (evH p s h U x) α β, map_zero (evH p s h U x), fun c => map_zsmul (evH p s h U x) c α⟩`.
+-/
 theorem lin : EtaleSimplicialCochainEvaluationAdditive := by
   intro R _ E I n α β p s h U x
   exact ⟨map_add (evH p s h U x) α β, map_sub (evH p s h U x) α β, map_zero (evH p s h U x),
     fun c => map_zsmul (evH p s h U x) c α⟩
 
+/- English proof (translation)
+Introduce `R _ E I n J m α p s h U x`. Use `show ((((chainsXIso R E p).inv ≫ (α.comp (Cochain.ofHom m) (add_zero n)).v _ _ h).hom.app (op U))).hom _ = _`. Rewrite using `[Cochain.comp_zero_cochain_v, Cochain.ofHom_v]`. Both sides reduce to the same expression.
+-/
 theorem cx : EtaleSimplicialCochainEvaluationPostcompComplexMap := by
   intro R _ E I n J m α p s h U x
   show ((((chainsXIso R E p).inv ≫ (α.comp (Cochain.ofHom m) (add_zero n)).v _ _ h).hom.app (op U))).hom _ = _
   rw [Cochain.comp_zero_cochain_v, Cochain.ofHom_v]
   rfl
 
+/- English proof (translation)
+Unfold `freeGen Sec.res`. Use `erw [← ConcreteCategory.comp_apply, ← NatTrans.naturality, ConcreteCategory.comp_apply]`. Use `congr 1`. Conclude with `ModuleCat.free_map_apply _ _`.
+-/
 lemma freeGen_res (P : PSh) {V U : Scheme.{0}} (g : V ⟶ U) (x : P.obj (op U)) :
     Sec.res g (freeGen R P U x) = freeGen R P V (P.map g.op x) := by
   unfold freeGen Sec.res
@@ -51,6 +63,9 @@ lemma freeGen_res (P : PSh) {V U : Scheme.{0}} (g : V ⟶ U) (x : P.obj (op U)) 
   congr 1
   exact ModuleCat.free_map_apply _ _
 
+/- English proof (translation)
+Introduce `R _ E I n α p s h V U g x`. Use `show Sec.res g ((((chainsXIso R E p).inv ≫ α.v _ _ h).hom.app (op U)).hom (freeGen R _ U x)) = ((((chainsXIso R E p).inv ≫ α.v _ _ h).hom.app (op V)).hom (freeGen R _ V (x.res g)))`. Rewrite using `[show x.res g = (E.obj (op (SimplexCategory.mk p))).map g.op x from rfl, ← freeGen_res]`. Simplify using `only [Sec.res]`. Conclude with `(congrArg (fun f => ModuleCat.Hom.hom f (freeGen R _ U x)) (((chainsXIso R E p).inv ≫ α.v _ _ h).hom.naturality g.op)).symm`.
+-/
 theorem nat : EtaleSimplicialCochainEvaluationRestrictionNaturality := by
   intro R _ E I n α p s h V U g x
   show Sec.res g ((((chainsXIso R E p).inv ≫ α.v _ _ h).hom.app (op U)).hom (freeGen R _ U x)) =
@@ -60,6 +75,9 @@ theorem nat : EtaleSimplicialCochainEvaluationRestrictionNaturality := by
   exact (congrArg (fun f => ModuleCat.Hom.hom f (freeGen R _ U x))
     (((chainsXIso R E p).inv ≫ α.v _ _ h).hom.naturality g.op)).symm
 
+/- English proof (translation)
+Unfold `freeGen`. Use `erw [← ConcreteCategory.comp_apply, ← NatTrans.comp_app, ← toSheafify_naturality, NatTrans.comp_app, ConcreteCategory.comp_apply]`. Use `congr 1`. Conclude with `ModuleCat.free_map_apply _ _`.
+-/
 lemma freeGen_map {P Q : PSh} (η : P ⟶ Q) (U : Scheme.{0}) (x : P.obj (op U)) :
     (((free R).map η).hom.app (op U)).hom (freeGen R P U x) = freeGen R Q U (η.app (op U) x) := by
   unfold freeGen
@@ -67,6 +85,11 @@ lemma freeGen_map {P Q : PSh} (η : P ⟶ Q) (U : Scheme.{0}) (x : P.obj (op U))
   congr 1
   exact ModuleCat.free_map_apply _ _
 
+/- English proof (translation)
+Introduce `R _ E I n E' f α p s h U x`. Establish `key : (chainsXIso R E' p).inv ≫ ((chains R).map f).f (-(p:ℤ)) = (free R).map (f.app (op (SimplexCategory.mk p))) ≫ (chainsXIso R E p).inv`. Simplify using `only [chains, chainsXIso, Functor.comp_map]`. Use `erw [HomologicalComplex.extendMap_f _ _ (i := p) rfl, Iso.inv_hom_id_assoc]`. Both sides reduce to the same expression.
+
+Use `show ((((chainsXIso R E' p).inv ≫ ((Cochain.ofHom ((chains R).map f)).comp α (zero_add n)).v _ _ h).hom.app (op U))).hom _ = ((((chainsXIso R E p).inv ≫ α.v _ _ h).hom.app (op U))).hom (freeGen R _ U (x.map f))`. Rewrite using `[Cochain.zero_cochain_comp_v, Cochain.ofHom_v, ← Category.assoc, key, Category.assoc]`. Use `show (((chainsXIso R E p).inv ≫ α.v _ _ h).hom.app (op U)).hom ((((free R).map (f.app (op (SimplexCategory.mk p)))).hom.app (op U)).hom (freeGen R _ U x)) = _`. Rewrite using `[freeGen_map]`. Both sides reduce to the same expression.
+-/
 theorem spc : LateralTheory.EtaleFoundations.EtaleSimplicialCochainEvaluationPrecompSpaceMap := by
   intro R _ E I n E' f α p s h U x
   have key : (chainsXIso R E' p).inv ≫ ((chains R).map f).f (-(p:ℤ)) =
@@ -80,6 +103,15 @@ theorem spc : LateralTheory.EtaleFoundations.EtaleSimplicialCochainEvaluationPre
   rw [freeGen_map]
   rfl
 
+/- English proof (translation)
+Introduce `R _ E I n α β hev`. Apply `Cochain.ext` to reduce the goal to its premises. Introduce `a b hab`. Break down `le_or_gt a 0 with ha | ha` into its components or cases. Take `⟨k, rfl⟩ : ∃ k : ℕ, a = -(k:ℤ)` from `⟨a.natAbs, by omega⟩`.
+
+Rewrite using `[← cancel_epi (chainsXIso R E k).inv]`. Apply `(sheafToPresheaf _ _).map_injective` to reduce the goal to its premises. Apply `sheafify_hom_ext _ _ _ (I.X b).cond` to reduce the goal to its premises. Apply `NatTrans.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `U`.
+
+Apply `ModuleCat.free_hom_ext` to reduce the goal to its premises. Introduce and unpack `⟨y⟩`. Conclude with `hev k b hab U.unop y`. Apply `(HomologicalComplex.isZero_extend_X _ _ a _).eq_of_src` to reduce the goal to its premises. Introduce `i hi`.
+
+Express the relevant statement in the definitionally equal form `-(i:ℤ) = a at hi`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem ext : LateralTheory.EtaleFoundations.EtaleSimplicialCochainExtOfEvaluation := by
   intro R _ E I n α β hev
   apply Cochain.ext
@@ -102,6 +134,9 @@ theorem ext : LateralTheory.EtaleFoundations.EtaleSimplicialCochainExtOfEvaluati
 end LateralTheory.EtaleFoundations.BasicPf
 
 open LateralTheory.EtaleFoundations in
+/- English proof (translation)
+Introduce `R _ E I n`. Conclude with `⟨BasicPf.lin R, BasicPf.nat R, BasicPf.ext R, BasicPf.spc R, BasicPf.cx R⟩`.
+-/
 theorem LateralTheory.EtaleFoundations.etaleSimplicialCochain_evaluation_properties_of_components : EtaleSimplicialCochainEvaluationProperties := by
   intro R _ E I n
   exact ⟨BasicPf.lin R, BasicPf.nat R, BasicPf.ext R, BasicPf.spc R, BasicPf.cx R⟩

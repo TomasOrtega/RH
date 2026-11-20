@@ -12,6 +12,13 @@ namespace GlobalTheory.CuspQuot
 
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 
+/- English proof (translation)
+Take `⟨C, hC, hc⟩` from `hd.exists_isCompl`. Set `p` to `π.V.projectionOnto C hc.symm`. Establish `hp : ∀ (x : π.V) n, n ∈ N → p (x.1 + n) = x` using `fun x n hn => by`. Rewrite using `[map_add, Submodule.projectionOnto_apply_left, (Submodule.projectionOnto_apply_eq_zero_iff _).2 (hC hn), add_zero]`. Use `⟨π.V ⊔ N, π, p, Submodule.mem_sup.2 ⟨ψ, hψ, _, hf, add_sub_cancel _ _⟩, fun o g hg => ?_, ?_, fun o g hg => ?_⟩` and prove the remaining obligations.
+
+Take `⟨x, hx, n, hn, rfl⟩` from `Submodule.mem_sup.1 hg`. Rewrite using `[map_add]`. Conclude with `Submodule.add_mem_sup (π.stable o x hx) (hN o n hn)`. Rewrite using `[← add_sub_cancel ψ f, hp ⟨ψ, hψ⟩ _ hf]`. Conclude with `fun e => h0 (congrArg Subtype.val e)`.
+
+Take `⟨x, hx, n, hn, rfl⟩` from `Submodule.mem_sup.1 hg`. Rewrite using `[map_add, hp ⟨x, hx⟩ n hn]`. Conclude with `hp (π.op o ⟨x, hx⟩) _ (hN o n hn)`.
+-/
 theorem hasCuspImage_of_disjoint (π : CuspSub E a) {N : Submodule ℂ (Sm E a)} (hN : IsStable N) (hd : Disjoint N π.V)
     {f ψ : Sm E a} (hψ : ψ ∈ π.V) (h0 : ψ ≠ 0) (hf : f - ψ ∈ N) : HasCuspImage f := by
   obtain ⟨C, hC, hc⟩ := hd.exists_isCompl
@@ -30,6 +37,15 @@ theorem hasCuspImage_of_disjoint (π : CuspSub E a) {N : Submodule ℂ (Sm E a)}
 
 variable {μ : Measure (GA E a)} [μ.IsHaarMeasure] [μ.IsMulRightInvariant]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Set `T : Subgroup (GL (Fin a) (Af E))` to `(MulAction.stabilizer (L2 (latticeGL E a) μ →L[ℂ] L2 (latticeGL E a) μ)ˣ hm.toL2).comap ((R (latticeGL E a) μ).toHomUnits.comp (finGL E a))`. Use `T.isOpen_of_mem_nhds (g := 1) (Filter.mem_of_superset (h.level.mem_nhds (by simp)) fun k hk => ?_)` and prove the remaining obligations. Use `(right_translate_toL2 hm _).trans (((hm.mul_right _).toL2_eq_iff_ae_eq hm).2 (.of_forall fun g => ?_))` and prove the remaining obligations. Conclude with `congrFun (congrArg Subtype.val hk) g`.
+
+Use `h.kfin` as an intermediate fact. Establish `hV : ∀ ψ ∈ Submodule.span ℂ (Set.range fun k => cptRep E a k φ), MemL2Quotient (latticeGL E a) μ ψ.1` using `fun ψ hψ => by`. Proceed by induction on `hψ using Submodule.span_induction with`. Consider the case `mem x hx => obtain ⟨k, rfl⟩ := hx`. Conclude with `hm.mul_right _`.
+
+Consider the case `zero => exact ⟨fun _ _ _ => rfl, MemLp.zero⟩`. Consider the case `add x y _ _ hx hy => exact ⟨fun γ hγ g => congrArg₂ (· + ·) (hx.1 γ hγ g) (hy.1 γ hγ g), hx.2.add hy.2⟩`. Consider the case `smul c x _ hx => exact ⟨fun γ hγ g => congrArg (c • ·) (hx.1 γ hγ g), hx.2.const_smul c⟩`. Use `Submodule.finiteDimensional_of_le (S₂ := LinearMap.range (toL2ₗ μ _ hV)) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`.
+
+Conclude with `⟨⟨_, Submodule.subset_span ⟨k, rfl⟩⟩, (right_translate_toL2 hm _).symm⟩`.
+-/
 theorem isKFinL2_toL2 {φ : Sm E a} (h : IsAutForm φ) (hm : MemL2Quotient (latticeGL E a) μ φ.1) : IsKFinL2 μ hm.toL2 := by
   constructor
   · let T : Subgroup (GL (Fin a) (Af E)) :=
@@ -49,6 +65,11 @@ theorem isKFinL2_toL2 {φ : Sm E a} (h : IsAutForm φ) (hm : MemL2Quotient (latt
     rintro _ ⟨k, rfl⟩
     exact ⟨⟨_, Submodule.subset_span ⟨k, rfl⟩⟩, (right_translate_toL2 hm _).symm⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Set `T : Subgroup (GL (Fin a) (Af E))` to `(MulAction.stabilizer (L2 (latticeGL E a) μ →L[ℂ] L2 (latticeGL E a) μ)ˣ (P F)).comap ((R (latticeGL E a) μ).toHomUnits.comp (finGL E a))`. Use `T.isOpen_of_mem_nhds (g := 1) (Filter.mem_of_superset (h.1.mem_nhds (by simp)) fun k hk => ?_)` and prove the remaining obligations. Conclude with `(hP _ F).symm.trans (congrArg P hk)`. Use `h.2` as an intermediate fact.
+
+Use `Submodule.finiteDimensional_of_le (S₂ := (Submodule.span ℂ (Set.range fun k : Kinf E a => R (latticeGL E a) μ (infGL E a (Unitary.toUnits k)) F)).map P.toLinearMap) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `⟨_, Submodule.subset_span ⟨k, rfl⟩, hP _ F⟩`.
+-/
 theorem isKFinL2_map {P : L2 (latticeGL E a) μ →L[ℂ] L2 (latticeGL E a) μ}
     (hP : ∀ g F, P (R (latticeGL E a) μ g F) = R (latticeGL E a) μ g (P F)) {F : L2 (latticeGL E a) μ}
     (h : IsKFinL2 μ F) : IsKFinL2 μ (P F) := by
@@ -64,6 +85,19 @@ theorem isKFinL2_map {P : L2 (latticeGL E a) μ →L[ℂ] L2 (latticeGL E a) μ}
     rintro _ ⟨k, rfl⟩
     exact ⟨_, Submodule.subset_span ⟨k, rfl⟩, hP _ F⟩
 
+/- English proof (translation)
+Set `μ : Measure (GA E a)` to `Measure.haar`. Take `⟨_, _⟩` from `GlobalTheory.CovolGL.finvol E a μ`. Establish `hc` using `mem_cuspCont_of_isCuspForm h hi`. Take `⟨C, hC⟩` from `hP.2.2.of_invariant h hi`. Establish `hl` using `leftInv_of_mem_cuspCont hc`.
+
+Establish `hm : MemL2Quotient (latticeGL E a) μ φ.1` using `memL2_of_bound hc.1 hl hC`. Establish `h0 : hm.toL2 ≠ 0` using `toL2_ne_zero hm hc.1 fun e => hne (Subtype.ext e)`. Take `⟨ι, W, hW, hs⟩` from `(hP.1 E a μ).1`. Take `⟨i, y, hy, hyi⟩ : ∃ i, ∃ y ∈ W i, ⟪y, (⟨hm.toL2, toL2_mem_cuspidal hm hc⟩ : L2cusp μ)⟫_ℂ ≠ 0` from `by by_contra! h`. Conclude with `h0 (congrArg Subtype.val (GlobalTheory.DiscreteSum.eq_zero_of_isHilbertSum hs h))`.
+
+Take `⟨π, hπ⟩` from `hP.2.1.of_Rcusp (hW i)`. Establish `hH` using `(isIrredSubrep_map (hW i)).1`. Establish `hy' : y.1 ∈ (W i).map (L2cusp μ).subtype` using `⟨y, hy, rfl⟩`. Generalize the expression as in `(W i).map (L2cusp μ).subtype = H at hπ hH hy'`. Use `hH.completeSpace` as an intermediate fact.
+
+Establish `hu` using `isUnitaryRep_R (latticeGL E a) μ`. Establish `hV : ∀ ψ ∈ π.V, Continuous ψ.1 ∧ LeftInv (latticeGL E a) ψ.1 ∧ ∃ C : ℝ, ∀ g, ‖ψ.1 g‖ ≤ C` using `fun ψ hψ =>`. Establish `h1` using `mem_cuspCont_of_isCuspForm (π.cusp ψ hψ) (hπ.normalised ψ hψ)`. Use the proof step `⟨h1.1, leftInv_of_mem_cuspCont h1, hP.2.2.of_invariant (π.cusp ψ hψ) (hπ.normalised ψ hψ)⟩`. Take `⟨ψ, hψ, e⟩` from `hπ.kfin _ (H.starProjection_apply_mem hm.toL2) (isKFinL2_map (hH.starProjection_apply hu) (isKFinL2_toL2 h.1 hm))`.
+
+Take `⟨p1, p2, C', p3⟩` from `hV ψ hψ`. Use `hasCuspImage_of_disjoint π (isStable_weakIn (hH.orthogonal hu)) (Submodule.disjoint_def.2 fun x h1 h2 => ?_) hψ (fun e0 => hyi ?_) ?_` and prove the remaining obligations. Take `⟨q1, q2, C, q3⟩` from `hV x h2`. Conclude with `eq_zero_of_mem_weakIn q1 q3 (mem_weakIn hH q1 q2 q3 (hπ.classes_le (toL2_mem_classes h2 (hπ.finitePartMemL2 x h2))) (hπ.finitePartMemL2 x h2).lift_toL2_ae_eq) h1`. Substitute `e0` using the available equality.
+
+Establish `e1 : H.starProjection hm.toL2 = 0` using `l2DiscreteQuotient_ext_iff_lift_ae_eq.2 (e.trans (Filter.EventuallyEq.symm (ae_quotMeasure_iff.1 (Lp.coeFn_zero ℂ 2 _))))`. Conclude with `(Submodule.starProjection_apply_eq_zero_iff _).1 e1 y.1 hy'`. Conclude with `mem_weakIn (C := C + C') (hH.orthogonal hu) (hc.1.sub p1) (fun γ hγ g => congrArg₂ (· - ·) (hl γ hγ g) (p2 γ hγ g)) (fun g => (norm_sub_le _ _).trans (add_le_add (hC g) (p3 g))) (H.sub_starProjection_mem_orthogonal hm.toL2) (Filter.EventuallyEq.trans (ae_quotMeasure_iff.1 (Lp.coe …`.
+-/
 theorem hasCuspImage_of_splitInvariant (hP : GlobalTheory.Published.CuspidalSpectrumGL) {φ : Sm E a} (h : IsCuspForm φ) (hne : φ ≠ 0)
     (hi : ∀ (t : ℝ) g, φ.1 (splitCentre E a t * g) = φ.1 g) : HasCuspImage φ := by
   let μ : Measure (GA E a) := Measure.haar
@@ -103,6 +137,9 @@ theorem hasCuspImage_of_splitInvariant (hP : GlobalTheory.Published.CuspidalSpec
       (fun g => (norm_sub_le _ _).trans (add_le_add (hC g) (p3 g))) (H.sub_starProjection_mem_orthogonal hm.toL2)
       (Filter.EventuallyEq.trans (ae_quotMeasure_iff.1 (Lp.coeFn_sub _ _)) (hm.lift_toL2_ae_eq.sub e))
 
+/- English proof (translation)
+Introduce `hP _ _ _ _ _ _ h h0` and use `hasCuspImage_of_invariant (fun _ => hasCuspImage_of_splitInvariant hP) h h0`.
+-/
 theorem exists_cuspSub_map : GlobalTheory.Published.CuspidalSpectrumGL →
     ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (d : ℕ) (f : GlobalTheory.CuspRep.Sm E d),
     GlobalTheory.CuspRep.IsCuspForm f → f ≠ 0 →

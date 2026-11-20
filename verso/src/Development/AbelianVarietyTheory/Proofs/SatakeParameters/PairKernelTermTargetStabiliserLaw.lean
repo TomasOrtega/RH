@@ -11,10 +11,22 @@ namespace GlobalTheory.KerJ
 
 open GlobalTheory.KerWt
 
+/- English proof (translation)
+Conclude with `(GlobalTheory.NormSum.applyAt0_minorPol_linear D N N' (fun _ => 0) G hG).2.2.1 k P`.
+-/
 theorem applyAt0_const_mul (D : D7) {N N' : ℕ} (P : MvPolynomial (GL3Theta.Idx D N N') ℂ) (k : ℂ) (G : TaylorLogMetric.VC D N N' → ℂ)
     (hG : Differentiable ℂ G) : GL3Theta.applyAt0 D P (fun z => k * G z) = k * GL3Theta.applyAt0 D P G := by
   exact (GlobalTheory.NormSum.applyAt0_minorPol_linear D N N' (fun _ => 0) G hG).2.2.1 k P
 
+/- English proof (translation)
+Establish `h` using `GlobalTheory.ClassSumEquiv.applyAt0_polD_equivariant D N N' s Q y' γ (fun _ => 1) (fun z => k * G z) hγ (hG.const_mul k)`. Establish `e1 : (fun z : TaylorLogMetric.VC D N N' => k * G (fun τ => ((γ τ)⁻¹ * Matrix.of (z τ) * (1 : Matrix (Fin N) (Fin N) ℂ) : Matrix (Fin N') (Fin N) ℂ))) = G`. Use function extensionality and compare the values at `z`. Use `(hk _).symm.trans (congrArg G (funext fun τ => ?_))` and prove the remaining obligations. Establish `: (γ τ * ((γ τ)⁻¹ * Matrix.of (z τ) * (1 : Matrix (Fin N) (Fin N) ℂ)) : Matrix (Fin N') (Fin N) ℂ) = Matrix.of (z τ)`.
+
+Rewrite using `[Matrix.mul_one, Matrix.mul_nonsing_inv_cancel_left _ _ (hγ τ).isUnit]`. Conclude with `this`. Establish `e2 : (MvPolynomial.aeval (fun k : GL3Theta.FrV D N => ∑ a : Fin N, MvPolynomial.C ((1 : Matrix (Fin N) (Fin N) ℂ) k.2.1 a) * (MvPolynomial.X (k.1, a, k.2.2) : MvPolynomial (GL3Theta.FrV D N) ℂ)) Q) = Q`. Establish `: (fun k : GL3Theta.FrV D N => ∑ a : Fin N, MvPolynomial.C ((1 : Matrix (Fin N) (Fin N) ℂ) k.2.1 a) * (MvPolynomial.X (k.1, a, k.2.2) : MvPolynomial (GL3Theta.FrV D N) ℂ)) = MvPolynomial.X`. Use function extensionality and compare the values at `k`.
+
+Rewrite using `[Finset.sum_eq_single k.2.1]`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Simplify using `[Matrix.one_apply_ne hb.symm]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[this, MvPolynomial.aeval_X_left_apply]`. Use `beta_reduce at h`. Rewrite `h` using `[e1, e2, applyAt0_const_mul D _ k G hG]`. Conclude with `h`.
+-/
 theorem applyAt0_polD_eigen (D : D7) (N N' : ℕ) (s : D.what₂.Tau → ℂ) (Q : MvPolynomial (GL3Theta.FrV D N) ℂ)
     (y' γ : D.what₂.Tau → Matrix (Fin N') (Fin N') ℂ) (G : TaylorLogMetric.VC D N N' → ℂ) (k : ℂ) (hγ : ∀ τ, (γ τ).det ≠ 0)
     (hG : Differentiable ℂ G) (hk : ∀ z : TaylorLogMetric.VC D N N', G (fun τ => (γ τ * Matrix.of (z τ) : Matrix _ _ ℂ)) = k * G z) :
@@ -41,6 +53,19 @@ theorem applyAt0_polD_eigen (D : D7) (N N' : ℕ) (s : D.what₂.Tau → ℂ) (Q
   rw [e1, e2, applyAt0_const_mul D _ k G hG] at h
   exact h
 
+/- English proof (translation)
+Introduce `D u C A Pm M O i hi h c c' hd g ⟨hdet, k, hk, hg⟩ f ⟨P, hP, hf⟩ y y' hy`. Take `⟨n, hw, hn, -, -⟩` from `GlobalTheory.T.trueWeight_consecutive_steps_partition D u C A Pm M i hi`. Establish `hs : C.sharp i f = frPoly O i (MvPolynomial.map (RingHom.id ℂ) P * ∏ τ, frDet ℂ (D.R.N i) τ ^ n τ)`. Establish `h1` using `mulFun_evG (fr := O.frm i) (fun y => (O.frm_range i hi.le _).1 ⟨y, rfl⟩) (RingHom.id ℂ) _ (C.sSharp i) n hn P`. Establish `e1 : (fun y => ∏ τ, (O.frm i y τ).det ^ C.sSharp i τ) = fun y => ∏ τ, (C.de i y τ) ^ (C.sSharp i τ)`.
+
+Use function extensionality and compare the values at `y`. Simplify using `only [O.frm_de i hi.le]`. Rewrite `h1` using `[e1]`. Rewrite using `[hf]`. Conclude with `h1`.
+
+Establish `hQ : MvPolynomial.map (RingHom.id ℂ) P * ∏ τ, frDet ℂ (D.R.N i) τ ^ n τ ∈ WtPol ℂ (nuT D u i)`. Establish `h2` using `vv_in_weight ℂ D.what₂.Tau _ (lamTG M i) n (MvPolynomial.map (RingHom.id ℂ) P) (map_mem_VV _ _ P hP)`. Establish `e : (fun τ r => (lamTG M i τ).natW r + n τ) = nuT D u i` using `by funext τ r; exact hw τ r`. Rewrite `h2` using `[e]`. Then use the resulting hypothesis. Generalize the expression as in `MvPolynomial.map (RingHom.id ℂ) P * ∏ τ, frDet ℂ (D.R.N i) τ ^ n τ = Q at hs hQ`.
+
+Establish `hu : ∀ x : C.Y (i + 1), C.unf i c c' (C.sharp i f) x = GL3Theta.applyAt0 D (GL3Theta.polD D O.dgen Q (O.frm (i + 1) x)) (O.Th i c c')` using `fun x => by`. Rewrite using `[hs]`. Conclude with `(unfolding_iff_alt D u C O i hi.le _).1 h c c' Q hQ x`. Establish `hK : ∀ x : C.Y (i + 1), C.Kmap i c c' f x = (C.rhoDet i c * C.rhoDet' i c') * ((∏ τ, (O.frm (i + 1) x τ).det ^ C.sDiv i τ)⁻¹ * GL3Theta.applyAt0 D (GL3Theta.polD D O.dgen Q (O.frm (i + 1) x)) (O.Th i c c'))` using `fun x => by`. Rewrite using `[← hu x]`.
+
+Simplify using `only [← O.frm_de (i + 1) hi]`. Both sides reduce to the same expression. Establish `hdm : ∀ τ, (g.1.map (TaylorLogMetric.embT D τ)).det = TaylorLogMetric.embT D τ g.1.det` using `fun τ => ((TaylorLogMetric.embT D τ).map_det g.1).symm`. Establish `hne : ∀ τ, (g.1.map (TaylorLogMetric.embT D τ)).det ≠ 0` using `fun τ => by`. Rewrite using `[hdm]`.
+
+Conclude with `(map_ne_zero _).2 hdet`. Establish `hy' : O.frm (i + 1) y = fun τ => g.1.map (TaylorLogMetric.embT D τ) * O.frm (i + 1) y' τ` using `funext hy`. Rewrite using `[hK, hK, hy', applyAt0_polD_eigen D _ _ _ Q _ _ _ k hne hd hk, hg]`. Simplify using `only [Matrix.det_mul, hdm, mul_zpow, Finset.prod_mul_distrib, zpow_neg, Finset.prod_inv_distrib, mul_inv]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem lawAt_Kmap : ∀ (D : D7) (u : D.what₂.Word) (C : ColumnChain D.R D.what₂.Tau (D.hcW u)) (A : ColumnsAtT D.R C) (Pm : PeriodMap D.R C) (M : MemberForms D.what₂.LL D.what₂.embLL D.what₂.places D.what₂.Tau (D.hcW u) C A Pm) (O : GL3Theta.LiftObj D C) (i : ℕ), i < D.R.m → UnfIs O i (nuT D u i) → ∀ (c : C.cls i) (c' : C.cls (i + 1)), Differentiable ℂ (O.Th i c c') → ∀ g, TermLaw O i c c' g → ∀ f, IsVal (O.frm i) (lamTG M i) (RingHom.id ℂ) f → LawAt O (i + 1) g (C.Kmap i c c' f) := by
   intro D u C A Pm M O i hi h c c' hd g ⟨hdet, k, hk, hg⟩ f ⟨P, hP, hf⟩ y y' hy
   obtain ⟨n, hw, hn, -, -⟩ := GlobalTheory.T.trueWeight_consecutive_steps_partition D u C A Pm M i hi

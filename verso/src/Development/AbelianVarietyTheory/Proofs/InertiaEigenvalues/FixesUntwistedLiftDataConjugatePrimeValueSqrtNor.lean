@@ -25,11 +25,17 @@ noncomputable def starOEquiv : 𝓞 D.host.E ≃+* 𝓞 D.host.E :=
     left_inv := fun a => Formalism.L2.DIV.starO_starO a
     right_inv := fun a => Formalism.L2.DIV.starO_starO a }
 
+/- English proof (translation)
+Use `show Formalism.L2.DIV.starOHom (N : 𝓞 D.host.E) ∈ PP.asIdeal ↔ _`. Rewrite using `[map_natCast]`.
+-/
 theorem natCast_mem_conjPl_iff (PP : Pl D.host.E) (N : ℕ) :
     ((N : 𝓞 D.host.E)) ∈ (Formalism.L2.DIV.conjPl PP).asIdeal ↔ ((N : 𝓞 D.host.E)) ∈ PP.asIdeal := by
   show Formalism.L2.DIV.starOHom (N : 𝓞 D.host.E) ∈ PP.asIdeal ↔ _
   rw [map_natCast]
 
+/- English proof (translation)
+Establish `h : (Formalism.L2.DIV.conjPl PP).asIdeal = PP.asIdeal.map (starOEquiv (D` using `D)) := by`. Rewrite using `[← Ideal.comap_symm]`. Both sides reduce to the same expression. Rewrite using `[Ideal.absNorm_apply, Ideal.absNorm_apply, Submodule.cardQuot_apply, Submodule.cardQuot_apply]`. Conclude with `(Nat.card_congr (Ideal.quotientEquiv PP.asIdeal (Formalism.L2.DIV.conjPl PP).asIdeal (starOEquiv (D := D)) h).toEquiv).symm`.
+-/
 theorem absNorm_conjPl (PP : Pl D.host.E) :
     Ideal.absNorm (Formalism.L2.DIV.conjPl PP).asIdeal = Ideal.absNorm PP.asIdeal := by
   have h : (Formalism.L2.DIV.conjPl PP).asIdeal = PP.asIdeal.map (starOEquiv (D := D)) := by
@@ -37,6 +43,9 @@ theorem absNorm_conjPl (PP : Pl D.host.E) :
   rw [Ideal.absNorm_apply, Ideal.absNorm_apply, Submodule.cardQuot_apply, Submodule.cardQuot_apply]
   exact (Nat.card_congr (Ideal.quotientEquiv PP.asIdeal (Formalism.L2.DIV.conjPl PP).asIdeal (starOEquiv (D := D)) h).toEquiv).symm
 
+/- English proof (translation)
+Introduce `hF hN`. Establish `hN' : ((D.host.g 0 * D.host.g 1 : ℕ) : 𝓞 D.host.E) ∉ (Formalism.L2.DIV.conjPl PP).asIdeal`. Rewrite using `[natCast_mem_conjPl_iff]` and apply the resulting hypothesis. Use `hF.split (Formalism.L2.DIV.conjPl PP) hN'` as an intermediate fact. Rewrite `this` using `[absNorm_conjPl]`. Then use the resulting hypothesis.
+-/
 theorem fixBase_split_conj {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m} (T : CoreJ D)
     [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F) (i : Fin D.R.m) (τ : ℂ ≃+* ℂ) (PP : Pl D.host.E) :
     FixBase T R i τ → ((D.host.g 0 * D.host.g 1 : ℕ) : 𝓞 D.host.E) ∉ PP.asIdeal →

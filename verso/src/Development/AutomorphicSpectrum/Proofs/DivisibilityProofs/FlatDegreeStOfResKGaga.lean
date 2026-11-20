@@ -15,6 +15,13 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.Ar.Br
 
+/- English proof (translation)
+Introduce `hR hG E _ _ _ H _ _ χ hχ Dw l Xo c r U x hL Z τ`. Take `⟨s, hs⟩` from `GlobalTheory.T.exists_const_section_kronecker_char hR hG E H Dw l Xo c r U x hL χ hχ Z τ`. Set `t : GlobalTheory.FlatLine.FlatSec U x Z τ` to `s.relat (GlobalTheory.FlatLine.flDefect_vw Dw c τ) (by simpa using GlobalTheory.FlatLine.finite_flDefect_vw (Dw := Dw) (c := c) τ)`. Establish `ht : t.deg = GlobalTheory.FlatLine.flatDegVal Dw (GlobalTheory.CM.logOm E χ).re`. Establish `h2` using `GlobalTheory.FlatLine.ConstSec.deg_relat s (GlobalTheory.FlatLine.flDefect_vw Dw c τ) (by simpa using GlobalTheory.FlatLine.finite_flDefect_vw (Dw := Dw) (c := c) τ)`.
+
+Simplify using `only [Pi.zero_apply, zero_sub, neg_mul, finsum_neg_distrib, GlobalTheory.FlatLine.sum_flDefect_vw] at h2`. Use `show (s.relat _ _).deg = _`. Rewrite using `[h2, hs, GlobalTheory.FlatLine.flatDegVal]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨⟨t⟩, fun s' => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[GlobalTheory.FlatLine.ConstSec.deg_eq hL.unf hL.geo t s', ht, neg_neg]`.
+-/
 theorem flatDegreeSt_of_resK_gaga : Geo.ResK.ResKStatement → GagaSections → GlobalTheory.FlatCore.FlatDegreeSt := by
   intro hR hG E _ _ _ H _ _ χ hχ Dw l Xo c r U x hL Z τ
   obtain ⟨s, hs⟩ := GlobalTheory.T.exists_const_section_kronecker_char hR hG E H Dw l Xo c r U x hL χ hχ Z τ

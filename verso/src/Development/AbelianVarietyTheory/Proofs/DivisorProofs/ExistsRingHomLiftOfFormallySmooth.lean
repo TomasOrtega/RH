@@ -7,6 +7,11 @@ noncomputable section
 
 namespace GlobalTheory.DI
 
+/- English proof (translation)
+Use `letI := φ.toAlgebra`. Use `letI := ψ.toAlgebra`. Use `haveI : Algebra.FormallySmooth R A := hφ`. Set `g' : A →ₐ[R] C ⧸ I` to `{ g with commutes' := fun r => by`. Use `congrArg (· r) hg` as an intermediate fact.
+
+Conclude with `this }`. Use `⟨(Algebra.FormallySmooth.lift I hI g').toRingHom, fun x => ?_, fun r => ?_⟩` and prove the remaining obligations. Conclude with `Algebra.FormallySmooth.mk_lift I hI g' x`. Use `(Algebra.FormallySmooth.lift I hI g').commutes r` as an intermediate fact. Simplify `this` using `[RingHom.algebraMap_toAlgebra]`.
+-/
 theorem exists_ringHom_lift_of_formallySmooth {R A C : Type} [CommRing R] [CommRing A] [CommRing C]
     (φ : R →+* A) (hφ : φ.FormallySmooth) (ψ : R →+* C) (I : Ideal C) (hI : IsNilpotent I)
     (g : A →+* C ⧸ I) (hg : g.comp φ = (Ideal.Quotient.mk I).comp ψ) :
@@ -38,6 +43,23 @@ def powModP (p : ℕ) (hp : p.Prime) (B : Type) [CommRing B] :
       exact Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _)
     rw [this, add_zero]
 
+/- English proof (translation)
+Introduce `p hpf n B _ φ hφ`. Establish `hp : p.Prime` using `hpf.out`. Use `set I : Ideal B := Ideal.span {(p : B)} with hIdef`. Establish `hp2 : ((p : B)) ^ 2 = 0`. Establish `: ((p ^ 2 : ℕ) : MvPolynomial (Fin n) (ZMod (p ^ 2))) = 0`.
+
+Rewrite using `[← map_natCast (MvPolynomial.C (σ := Fin n)), ZMod.natCast_self, map_zero]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_natCast]`. Use `push_cast`. Both sides reduce to the same expression.
+
+Use `_ = 0 := by rw [this, map_zero]`. Establish `hI : IsNilpotent I`. Use `⟨2, ?_⟩` and prove the remaining obligations. Rewrite using `[hIdef, Ideal.span_singleton_pow, hp2, Ideal.span_singleton_eq_bot.mpr rfl, Ideal.zero_eq_bot]`. Establish `hsm : φ.FormallySmooth`.
+
+Use `letI := φ.toAlgebra`. Use `haveI : Algebra.Etale _ B := hφ`. Use `show Algebra.FormallySmooth _ B`. Use `infer_instance`. Set `ψ : MvPolynomial (Fin n) (ZMod (p ^ 2)) →+* B` to `φ.comp (MvPolynomial.expand p).toRingHom`.
+
+Establish `hg : (powModP p hp B).comp φ = (Ideal.Quotient.mk I).comp ψ`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `r`. Conclude with `congrArg (· r) (Subsingleton.elim ((((powModP p hp B).comp φ)).comp MvPolynomial.C) (((Ideal.Quotient.mk I).comp ψ).comp MvPolynomial.C))`. Introduce `i`.
+
+Simplify using `[ψ, powModP, I]`. Take `⟨F, hF1, hF2⟩` from `exists_ringHom_lift_of_formallySmooth φ hsm ψ I hI (powModP p hp B) hg`. Use `⟨F, fun z => ?_, fun l => ?_⟩` and prove the remaining obligations. Establish `h1` using `hF1 z`. Establish `: F z - z ^ p ∈ I`.
+
+Rewrite using `[← Ideal.Quotient.eq]`. Conclude with `h1`. Take `⟨w, hw⟩` from `Ideal.mem_span_singleton'.mp this`. Conclude with `⟨w, by rw [mul_comm]; linear_combination -hw⟩`. Rewrite using `[hF2]`.
+
+Simplify using `[ψ]`.
+-/
 theorem frob_lift_etale_chart :
     ∀ (p : ℕ) [Fact p.Prime] {n : ℕ} {B : Type} [CommRing B]
       (φ : MvPolynomial (Fin n) (ZMod (p ^ 2)) →+* B), φ.Etale →

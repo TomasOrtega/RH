@@ -11,6 +11,11 @@ open Formalism.REAL Formalism.MainNotions.S PositivityTheory.UnitaryDecompositio
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Introduce `h0`. Break down `irr_of hirr (LinearMap.ker (j : H' →ₗ[ℂ] H)) j.isClosed_ker (fun g v hv => by` into its components or cases. Rewrite `hv`, the goal using `[LinearMap.mem_ker]`. Use `show j (σ (um g) v) = 0`. Rewrite using `[hj, show j v = 0 from hv, map_zero]) with h | h`.
+
+Conclude with `hw ((Submodule.mem_bot ℂ).1 (h ▸ (LinearMap.mem_ker.2 h0 : w ∈ LinearMap.ker (j : H' →ₗ[ℂ] H))))`. Conclude with `hj0 (ContinuousLinearMap.ext fun x => by`. Establish `: x ∈ LinearMap.ker (j : H' →ₗ[ℂ] H)` using `h ▸ Submodule.mem_top`. Simplify using `using this)`.
+-/
 theorem apply_ne_zero {ε' : Fin n → Bool} {H H' : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     [NormedAddCommGroup H'] [InnerProductSpace ℂ H'] {σ : Matrix (Fin n) (Fin n) ℂ → (H' →L[ℂ] H')}
     {ρ : UJ ε' → (H →L[ℂ] H)} (hirr : IsIrredOn (UJset ε') σ) {j : H' →L[ℂ] H} (hj0 : j ≠ 0)
@@ -25,6 +30,15 @@ theorem apply_ne_zero {ε' : Fin n → Bool} {H H' : Type} [NormedAddCommGroup H
       have : x ∈ LinearMap.ker (j : H' →ₗ[ℂ] H) := h ▸ Submodule.mem_top
       simpa using this)
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `schur_bounded (Set.range fun k : UJ ε' => σ (um k)) (by`. Introduce and unpack `_ ⟨k, rfl⟩`. Use `⟨k⁻¹, ?_⟩` and prove the remaining obligations. Rewrite using `[ContinuousLinearMap.star_eq_adjoint]`. Use `ContinuousLinearMap.ext fun y => ext_inner_left ℂ fun x => ?_` and prove the remaining obligations.
+
+Rewrite using `[ContinuousLinearMap.adjoint_inner_right]`. Conclude with `(u_adj hU k x y).symm)`. Use the proof step `(fun S hS hst => irr_of hirr S hS fun k => hst _ ⟨k, rfl⟩) (ContinuousLinearMap.adjoint j ∘L j) (by`. Introduce and unpack `_ ⟨k, rfl⟩`. Use `ContinuousLinearMap.ext fun x => ext_inner_left ℂ fun y => ?_` and prove the remaining obligations.
+
+Simplify using `only [ContinuousLinearMap.mul_apply, ContinuousLinearMap.comp_apply, ContinuousLinearMap.adjoint_inner_right]`. Rewrite using `[hj]`. Establish `e1 : ⟪j y, ρ k (j x)⟫_ℂ = ⟪ρ k⁻¹ (j y), j x⟫_ℂ` using `by rw [hρ.adj, inv_inv]`. Rewrite using `[e1, ← hj, ← ContinuousLinearMap.adjoint_inner_right, u_adj hU, inv_inv])`. Use `⟨c, fun x => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← ContinuousLinearMap.adjoint_inner_right, ← ContinuousLinearMap.comp_apply, hc, ContinuousLinearMap.smul_apply, ContinuousLinearMap.one_apply, inner_smul_right]`.
+-/
 theorem isom_of {ε' : Fin n → Bool} {H H' : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
     [NormedAddCommGroup H'] [InnerProductSpace ℂ H'] [CompleteSpace H'] {σ : Matrix (Fin n) (Fin n) ℂ → (H' →L[ℂ] H')}
     {ρ : UJ ε' → (H →L[ℂ] H)} (hU : IsURepOn (UJset ε') σ) (hirr : IsIrredOn (UJset ε') σ) (hρ : URep ρ)

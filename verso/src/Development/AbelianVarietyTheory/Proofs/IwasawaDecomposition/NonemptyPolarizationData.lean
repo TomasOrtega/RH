@@ -15,6 +15,23 @@ local notation "T_rel" => GlobalTheory.ShFam.RelAmpleFlag.eventually_ample
 local notation "T_ab" => GlobalTheory.AmpleKaehler.exists_ample_model
 local notation "T_fam" => GlobalTheory.ConjExph.exists_exph_conjComm
 
+/- English proof (translation)
+Introduce `D A N j S κ s Φ hm h0`. Establish `: IsTotallyComplex D.what₂.LL` using `⟨fun v => InfinitePlace.not_isReal_iff_isComplex.1 fun hv => by`. Set `φ : D.host.E →+* D.what₂.LL` to `κ.e.symm.toRingHom.comp (D.host.φ₀.codRestrict κ.c.F (κ.c.conj _))`. Conclude with `InfinitePlace.not_isReal_iff_isComplex.2 (IsTotallyComplex.isComplex (v.comap φ)) (hv.comap φ)⟩`. Set `μ : Fin N → ℤ` to `fun i => -(i : ℤ)`.
+
+Establish `hμ : StrictAnti μ` using `fun a b h => neg_lt_neg (by exact_mod_cast h)`. Use `choose n₀ hn₀ using fun k => T_rel D A N j S κ s Φ k μ hμ _ _ s.isRec.ample (T_base D A N j S κ s Φ k)`. Set `n : ℕ+` to `⟨(Finset.univ.sup n₀) + 1, Nat.succ_pos _⟩`. Use `choose M h₁ h₂ h₃ h₄ h₅ using fun k => T_ab _ _ _ (hn₀ k n ((Finset.le_sup (Finset.mem_univ k)).trans (Nat.le_succ _)))`. Use `choose E hE hE' using fun k => T_fam _ (Φ.C k).Y _ (fun σ => (h₄ k σ).2) (h₅ k)`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨a, K, δ, hc⟩ : ∃ a K δ, (∃ a' K' δ', CommonConst hm h0 (fun k σ => curvMet ((M k).m σ)) E a' K' δ') → CommonConst hm h0 (fun k σ => curvMet ((M k).m σ)) E a K δ := by`. Distinguish the cases in `h : ∃ a' K' δ', CommonConst hm h0 (fun k σ => curvMet ((M k).m σ)) E a' K' δ'`. Take `⟨a, K, δ, h⟩` from `h`. Conclude with `⟨a, K, δ, fun _ => h⟩`. Conclude with `⟨0, 0, 0, fun h' => (h h').elim⟩`.
+
+Set `Q : ℕ` to `Finset.univ.sup (fun k => (((M k).divide n).n : ℕ)) + 1`. Establish `hn : ((n : ℕ) : ℚ) ≠ 0` using `Nat.cast_ne_zero.2 n.ne_zero`. Use `⟨⟨1, one_pos, ((n : ℕ) : ℚ)⁻¹, by positivity, μ, hμ, fun k => (M k).divide n, fun k => ?_, h₂, fun k => ?_, fun k σ => (h₄ k σ).1, _, fun k σ => (h₄ k σ).2, h₅, (Q : ℝ)⁻¹, by positivity, fun k σ c y hy ξ => ?_, E, hE, hE', a, K, δ, hc⟩⟩` and prove the remaining obligations. Establish `e : qDiv ((M k).divide n) = ((n : ℕ) : ℚ)⁻¹ • qDiv (M k)`. Simplify using `[qDiv, Adl.divide, TensorProduct.smul_tmul', mul_comm]`.
+
+Rewrite using `[e, h₁, qL]`. Simplify using `only [← natCast_zsmul, TensorProduct.tmul_sub, TensorProduct.tmul_sum, smul_sub, Finset.smul_sum, ← TensorProduct.smul_tmul, TensorProduct.smul_tmul', zsmul_eq_mul, smul_eq_mul, dirOf, ← Finset.sum_neg_distrib, ← TensorProduct.neg_tmul]`. Rewrite using `[sub_right_comm, ← Finset.sum_sub_distrib]`. Use `congr 1`. Use `Finset.sum_congr rfl fun x _ => (TensorProduct.sub_tmul _ _ _).symm.trans (congrArg (· ⊗ₜ _) ?_)` and prove the remaining obligations.
+
+Unfold `varpi`. Apply the tactic sequence `split_ifs <;> push_cast <;> field_simp <;> ring`. Simplify using `[hn]`. Take `⟨Z, L, q, h, h'⟩` from `h₃ k`. Conclude with `⟨Z, L, q, by have := h.divide n; simp only [Pi.zero_apply, zero_div] at this; exact this, h'⟩`.
+
+Establish `h0 : 0 ≤ curvMet ((M k).m σ) c y ξ`. Distinguish the cases in `hξ : ξ = 0`. Simplify `((continuous_and_smul (h₄ k σ).2 hy).2 0 0).ge` using `[hξ]`. Conclude with `((h₄ k σ).2.2 c y hy ξ hξ).le`. Rewrite using `[inv_mul_eq_div]`.
+
+Use `div_le_div_of_nonneg_left h0 (Nat.cast_pos.2 (PNat.pos _)) (Nat.cast_le.2 ?_)` and prove the remaining obligations. Conclude with `(Finset.le_sup (f := fun k => (((M k).divide n).n : ℕ)) (Finset.mem_univ k)).trans (Nat.le_succ _)`.
+-/
 theorem GlobalTheory.existsPolDat : ∀ (D : D7) (A : Amb D) (N j : ℕ) (S : Sig A N j) (κ : Lv A) (s : FinalTheorems S κ) (Φ : s.Flag) (hm : ∀ k, Mets (Φ.C k) (cxSt D.what₂.LL)) (h0 : RefMets Φ), Nonempty (PolDat s Φ hm h0) := by
   intro D A N j S κ s Φ hm h0
   have : IsTotallyComplex D.what₂.LL := ⟨fun v => InfinitePlace.not_isReal_iff_isComplex.1 fun hv => by

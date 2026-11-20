@@ -30,6 +30,11 @@ set_option synthInstance.maxHeartbeats 400000
 
 namespace GlobalTheory.StdAtPrime
 
+/- English proof (translation)
+Take `⟨e, he⟩` from `hQ`. Establish `: idem Q = e`. Take `⟨⟨es, hes, hsum⟩, -⟩` from `he`. Rewrite using `[hsum, GlobalTheory.ExportSeries.idem]`. Conclude with `Finset.sum_congr rfl fun PP hPP => GlobalTheory.ExportSeries.idemAt_eq (hes PP hPP)`.
+
+Rewrite using `[this]`. Conclude with `he`.
+-/
 theorem isIdemSum_idem (D : D7) (Q : Finset (Formalism.L2.DIV.Pl D.host.E)) (hQ : GlobalTheory.ExportSeries.SplitSet Q) : IsIdemSum (idem Q) Q := by
   obtain ⟨e, he⟩ := hQ
   have : idem Q = e := by
@@ -39,6 +44,15 @@ theorem isIdemSum_idem (D : D7) (Q : Finset (Formalism.L2.DIV.Pl D.host.E)) (hQ 
   rw [this]
   exact he
 
+/- English proof (translation)
+Use `⟨1, Nat.coprime_one_left p, fun i j Q => ?_⟩` and prove the remaining obligations. Establish `hx : (Pi.single j (1 : D.host.E) : Fin V.rank → D.host.E) ∈ Bridge.hLat V k`. Rewrite using `[hk]`. Use `Submodule.mem_pi.2 fun i' _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : i' = j`.
+
+Substitute `h` using the available equality. Rewrite using `[Pi.single_eq_same]`. Conclude with `Submodule.mem_one.2 ⟨1, map_one _⟩`. Rewrite using `[Pi.single_eq_of_ne h]`. Conclude with `zero_mem _`.
+
+Use `(GlobalTheory.ClassScalarValue.mem_hLat ι h1 h2 V hL k _).1 hx i Q` as an intermediate fact. Establish `e : (fun j' => algebraMap D.host.E (FiniteAdeleRing (𝓞 D.host.E) D.host.E) ((Pi.single j (1 : D.host.E) : Fin V.rank → D.host.E) j')) = Pi.single j 1`. Use function extensionality and compare the values at `j'`. Distinguish the cases in `h : j' = j`. Substitute `h` using the available equality.
+
+Simplify using the standard rewrite rules. Simplify using `[Pi.single_eq_of_ne h]`. Rewrite `this` using `[e, Matrix.mulVec_single_one]`. Rewrite using `[Nat.cast_one, one_mul]`. Conclude with `this`.
+-/
 theorem bnd_inv_of_hLat_std (D : D7) (ι : (Af D.host.F ⊗[D.host.F] D.host.E) ≃+* FiniteAdeleRing (𝓞 D.host.E) D.host.E)
     (h1 : ∀ x : D.host.E, ι ((1 : Af D.host.F) ⊗ₜ[D.host.F] x) = algebraMap D.host.E _ x)
     (h2 : ∀ y, y ∈ intAE D ↔ ∀ P : HeightOneSpectrum (𝓞 D.host.E), Valued.v (ι y P) ≤ 1)
@@ -65,6 +79,35 @@ theorem bnd_inv_of_hLat_std (D : D7) (ι : (Af D.host.F ⊗[D.host.F] D.host.E) 
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Introduce `D V W B hB hS p bad hp hpb Q hQs hpQ hQ hsQ`. Establish `hQsum` using `isIdemSum_idem D Q hQs`. Establish `hinf : infPart D (idem Q) = 0`. Take `⟨⟨es, hes, hsum⟩, -⟩` from `hQsum`. Rewrite using `[hsum, map_sum]`.
+
+Conclude with `Finset.sum_eq_zero fun PP hPP => GlobalTheory.ExportSeries.SpecGood.infPart_eq_zero_of_isIdemAt D PP _ (hes PP hPP)`. Use `⟨GlobalTheory.WeilProduct.mem_GfC_of_supp (a := idem Q + cA D (idem Q)) ?_ hsQ, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, GlobalTheory.PlaceIdem.infPart_cA, hinf, map_zero, add_zero]`. Introduce `h h' γ k hh' hk heq`. Take `⟨ι, h1, h2, h3⟩` from `GlobalTheory.HostAdeleIso.exists_finiteAdele_equiv D`.
+
+Establish `h4` using `GlobalTheory.PlaceIdem.exists_isPlIdem D ι h1 h2 h3`. Take `⟨hid, hcj⟩` from `GlobalTheory.T.placeIdempotent_components_conj_valuation D ι h1 h2 h4`. Establish `hL0 : (B.F.ΛS : Set (Fin V.rank → D.host.E)) = L0c D V` using `hS.2.2.1`. Establish `hstd : Bridge.hLat V 1 = Formalism.L2.Pj.stdLat D.host.E V.rank`. Apply `SetLike.coe_injective` to reduce the goal to its premises.
+
+Rewrite using `[GlobalTheory.Equiv.StdSpace.identityClassLattice_eq_selfDualFrameLattice, ← hL0, hS.2.2.2.2]`. Rewrite using `[GlobalTheory.LatAtHLat.latAt_eq_hLat D V W B hL0]`. Establish `hg : Bridge.ratF V γ⁻¹ * finPt V h * 1 = finPt V h' * k * (finPt V hQ)⁻¹`. Establish `e1 : finPt V (h * hQ) = finPt V h * finPt V hQ` using `map_mul _ _ _`. Establish `e2 : finPt V h = Bridge.ratF V γ * finPt V h' * k * (finPt V hQ)⁻¹` using `eq_mul_inv_of_mul_eq (e1.symm.trans heq)`.
+
+Establish `e3 : Bridge.ratF V γ⁻¹ = (Bridge.ratF V γ)⁻¹` using `map_inv (Bridge.ratF V) γ`. Establish `key : ∀ {G : Type} [Group G] (a b c d f : G), b = a * c * d * f⁻¹ → a⁻¹ * b * 1 = c * d * f⁻¹`. Introduce `G _ a b c d f hb`. Rewrite using `[hb, mul_one, mul_assoc, mul_assoc, inv_mul_cancel_left, ← mul_assoc]`. Conclude with `(congrArg (fun x => x * finPt V h * 1) e3).trans (key _ _ _ _ _ e2)`.
+
+Rewrite using `[hg]`. Establish `hk1 : ∀ k : Bridge.Gf V, Formalism.UG.bc (Lev.swapAE D) k.1 ∈ Formalism.L2.DIV.St B.F.βS → Bridge.hLat V k = Formalism.L2.Pj.stdLat D.host.E V.rank`. Introduce `k hk`. Establish `hr : Bridge.IsRatMat V 1 1`. Simplify using `[Bridge.IsRatMat]`.
+
+Establish `e4 : Bridge.ratF V 1 * 1 * k = k`. Rewrite using `[map_one (Bridge.ratF V), one_mul, one_mul]`. Establish `e5 : B.latAt k = B.latAt 1`. Use extensionality with `x`. Use `GlobalTheory.ExportSeries.Base.mem_latAt_iff hB.frame hr 1 k hk x` as an intermediate fact.
+
+Rewrite `this` using `[e4, inv_one, Units.val_one, Matrix.one_mulVec]`. Conclude with `this`. Conclude with `(GlobalTheory.LatAtHLat.latAt_eq_hLat D V W B hL0 k).symm.trans (e5.trans ((GlobalTheory.LatAtHLat.latAt_eq_hLat D V W B hL0 1).trans hstd))`. Establish `hkS : Bridge.hLat V k = Formalism.L2.Pj.stdLat D.host.E V.rank` using `hk1 k hk`. Establish `hkS' : Bridge.hLat V k⁻¹ = Formalism.L2.Pj.stdLat D.host.E V.rank`.
+
+Use `hk1 k⁻¹ ?_` and prove the remaining obligations. Rewrite using `[Subgroup.coe_inv, map_inv]`. Conclude with `inv_mem hk`. Use `set M := Matrix.GeneralLinearGroup.map (n := Fin V.rank) ι.toRingHom with hM`. Establish `hsupp : ∀ (e : AE D) (P : Finset (Formalism.L2.DIV.Pl D.host.E)) (g : GA D V), IsIdemSum e P → (∀ PP ∈ P, (p : 𝓞 D.host.E) ∉ PP.asIdeal) → SuppAt e V g → Bnd p (M (finPt V g).1).1 ∧ Bnd p (M (finPt V g).1)⁻¹.1`.
+
+Introduce `e P g he hp' hs`. Take `⟨S, hSf, hSp, hS0⟩` from `GlobalTheory.T.idempotent_add_conj_support_finite_prime_to_p D ι hid hcj p e P he hp'`. Conclude with `GlobalTheory.T.isBoundedPrimeToDenom_GL_and_inv_of_eq_one_off_finite p hp _ (M (finPt V g).1) S hSf hSp fun Q hQ i j => GlobalTheory.T.supported_adelic_point_eq_one_where_idempotent_vanishes D ι V e g hs Q (hS0 Q hQ) i j`. Take `⟨-, e', P', he', hb', hs'⟩` from `hh'`. Establish `hp' : ∀ PP ∈ P', (p : 𝓞 D.host.E) ∉ PP.asIdeal`.
+
+Introduce `PP hPP hpP`. Take `⟨c, rfl⟩` from `hpb`. Conclude with `hb' PP hPP (by rw [Nat.cast_mul]; exact Ideal.mul_mem_right _ _ hpP)`. Take `⟨b1, b1'⟩` from `hsupp e' P' h' he' hp' hs'`. Take `⟨b3, b3'⟩` from `hsupp (idem Q) Q hQ hQsum hpQ hsQ`.
+
+Establish `b2' : Bnd p (M k.1)⁻¹.1` using `bnd_inv_of_hLat_std D ι h1 h2 V hstd p k hkS`. Establish `b2 : Bnd p (M k.1).1`. Use `bnd_inv_of_hLat_std D ι h1 h2 V hstd p k⁻¹ hkS'` as an intermediate fact. Rewrite `this` using `[Subgroup.coe_inv, map_inv, inv_inv]`. Then use the resulting hypothesis. Establish `eM : M (finPt V h' * k * (finPt V hQ)⁻¹).1 = M (finPt V h').1 * M k.1 * (M (finPt V hQ).1)⁻¹`.
+
+Rewrite using `[Subgroup.coe_mul, Subgroup.coe_mul, Subgroup.coe_inv, map_mul, map_mul, map_inv]`. Use `GlobalTheory.T.bounded_entries_integral D ι h1 h2 V hstd p _ ?_ ?_` and prove the remaining obligations. Rewrite using `[eM, Units.val_mul, Units.val_mul]`. Conclude with `bnd_mul p _ _ _ (bnd_mul p _ _ _ b1 b2) b3'`. Rewrite using `[eM, _root_.mul_inv_rev, _root_.mul_inv_rev, inv_inv, Units.val_mul, Units.val_mul]`.
+
+Conclude with `bnd_mul p _ _ _ b3 (bnd_mul p _ _ _ b2' b1')`.
+-/
 theorem latAt_trivAt_of_split : ∀ (D : D7) (V W : HSp D) (B : Base V W), B.Good → StdBase B → ∀ (p bad : ℕ), p.Prime → p ∣ bad → ∀ (Q : Finset (Formalism.L2.DIV.Pl D.host.E)), GlobalTheory.ExportSeries.SplitSet Q → (∀ PP ∈ Q, (p : 𝓞 D.host.E) ∉ PP.asIdeal) → ∀ hQ : GA D V, SuppAt (idem Q) V hQ → hQ ∈ GfC V ∧ ∀ (h h' : GA D V) (γ : GQ V) (k : Bridge.Gf V), SplitOffBad V bad h' → Formalism.UG.bc (Lev.swapAE D) k.1 ∈ Formalism.L2.DIV.St B.F.βS → finPt V (h * hQ) = Bridge.ratF V γ * finPt V h' * k → (⟨B.latAt (Bridge.ratF V γ⁻¹ * finPt V h * 1)⟩ : GenLat D.host.E V.rank).TrivAt p := by
   intro D V W B hB hS p bad hp hpb Q hQs hpQ hQ hsQ
   have hQsum := isIdemSum_idem D Q hQs

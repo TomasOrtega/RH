@@ -16,12 +16,20 @@ variable {p : ℕ} [hp : Fact p.Prime] {L : Type*} [NontriviallyNormedField L] [
   [CharP L p] [PerfectRing L p] {Γ : Type*} [CommRing Γ] (T : TeichLift p L Γ)
   {ρ0 : Set.Ioo (0 : ℝ) 1} [CompleteSpace L]
 
+/- English proof (translation)
+Rewrite using `[ξExt, ptEval_coe]`. Use `show T.ptEvalB Q.2 (algebraMap Γ T.B X) = _`. Rewrite using `[ptEvalB_algebraMap, T.ptE_int Q.2 X.2]`.
+-/
 theorem ptEval_ξExt_eq (Q : T.Pt) (hQ : T.ptRad Q.1 ≤ ρ0) (X : T.int) :
     T.ptEval Q.2 hQ (T.ξExt X ρ0) = T.toUntiltField Q.2 (T.toUntilt Q.1 X) := by
   rw [ξExt, ptEval_coe]
   show T.ptEvalB Q.2 (algebraMap Γ T.B X) = _
   rw [ptEvalB_algebraMap, T.ptE_int Q.2 X.2]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `congrArg norm h` as an intermediate fact. Rewrite `this` using `[norm_zero, T.norm_toUntiltField]`. Conclude with `(T.untiltNorm_eq_zero_iff Q.2).1 this`.
+
+Introduce and unpack `rfl`. Conclude with `map_zero _`.
+-/
 theorem toUntiltField_eq_zero_iff (Q : T.Pt) (q : T.Untilt Q.1) :
     T.toUntiltField Q.2 q = 0 ↔ q = 0 := by
   constructor
@@ -31,6 +39,9 @@ theorem toUntiltField_eq_zero_iff (Q : T.Pt) (q : T.Untilt Q.1) :
     exact (T.untiltNorm_eq_zero_iff Q.2).1 this
   · rintro rfl; exact map_zero _
 
+/- English proof (translation)
+Rewrite using `[ξExt, ξExt, ← Completion.coe_mul]`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show algebraMap Γ T.B P.1 = algebraMap Γ T.B Q.1 * algebraMap Γ T.B B`. Rewrite using `[h, map_mul]`.
+-/
 theorem ξExt_mul_of_eq (P Q : T.Pt) {B : Γ} (hB : B ∈ T.int) (h : (P.1 : Γ) = Q.1 * B) :
     T.ξExt P.1 ρ0 = T.ξExt Q.1 ρ0 *
       ((⟨algebraMap Γ T.B B, T.algebraMap_int_mem_Econ hB ρ0⟩ : T.Econ ρ0) : T.RobbaExt ρ0) := by
@@ -40,6 +51,23 @@ theorem ξExt_mul_of_eq (P Q : T.Pt) {B : Γ} (hB : B ∈ T.int) (h : (P.1 : Γ)
   show algebraMap Γ T.B P.1 = algebraMap Γ T.B Q.1 * algebraMap Γ T.B B
   rw [h, map_mul]
 
+/- English proof (translation)
+Rewrite `h` using `[T.ptEval_ξExt_eq Q hQ.le, T.toUntiltField_eq_zero_iff]`. Take `⟨B, hB, hPB⟩` from `(T.toUntilt_eq_zero_iff (ξ := Q.1)).1 h`. Establish `hPQB` using `T.ξExt_mul_of_eq (ρ0 := ρ0) P Q hB hPB`. Use `set cB : T.RobbaExt ρ0 := ((⟨algebraMap Γ T.B B, T.algebraMap_int_mem_Econ hB ρ0⟩ : T.Econ ρ0) : T.RobbaExt ρ0) with hcB`. Establish `hcB0 : cB ≠ 0`.
+
+Introduce `h0`. Rewrite `hPQB` using `[h0, mul_zero]`. Conclude with `T.ptExt_ne_zero P.2 hPQB`. Establish `hQr : 0 < T.ptRad Q.1 ∧ T.ptRad Q.1 < ρ0` using `⟨T.ptRad_pos' Q.2, hQ⟩`. Establish `hm` using `T.mult_mul (T.ptExt_ne_zero Q.2) hcB0 hQr`.
+
+Rewrite `hm` using `[← hPQB, T.mult_ptExt P.2 hQr, T.mult_ptExt Q.2 hQr, if_pos rfl]`. Establish `hr : T.ptRad Q.1 = T.ptRad P.1`. Assume the negation of the conclusion as `hne`. Rewrite `hm` using `[if_neg hne]`. Use `T.mult_nonneg cB (T.ptRad Q.1)` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Use `⟨hr.symm, ?_⟩` and prove the remaining obligations. Establish `hredB : ‖T.red B‖ = 1`. Establish `e` using `congrArg T.red hPB`. Rewrite `e` using `[map_mul]`.
+
+Establish `e2` using `congrArg norm e`. Rewrite `e2` using `[norm_mul, ← coeff_zero, ← coeff_zero]`. Establish `hQ0 : 0 < ‖T.coeff (Q.1 : Γ) 0‖` using `T.ptRad_pos' Q.2`. Establish `: ‖T.coeff (P.1 : Γ) 0‖ = ‖T.coeff (Q.1 : Γ) 0‖` using `hr.symm`. Rewrite `e2` using `[this]`.
+
+Clear denominators, using `at e2` for the nonvanishing conditions. Combine the linear relations using `[e2]`. Establish `hBu : IsUnit (⟨B, hB⟩ : T.int)` using `T.isUnit_int_iff.2 hredB`. Take `⟨Binv, hBinv⟩` from `hBu.exists_right_inv`. Use `set cBi : T.RobbaExt ρ0 := ((⟨algebraMap Γ T.B Binv, T.algebraMap_int_mem_Econ Binv.2 ρ0⟩ : T.Econ ρ0) : T.RobbaExt ρ0) with hcBi`.
+
+Establish `hQP : T.ξExt Q.1 ρ0 = T.ξExt P.1 ρ0 * cBi`. Use `T.ξExt_mul_of_eq (ρ0 := ρ0) Q P Binv.2 ?_` and prove the remaining obligations. Establish `e` using `congrArg Subtype.val hBinv`. Simplify using `only [Subring.coe_mul, Subring.coe_one] at e`. Rewrite using `[hPB, mul_assoc, e, mul_one]`.
+
+Introduce `z`. Rewrite using `[T.ptEval_eq_zero_iff P.2 hP.le, T.ptEval_eq_zero_iff Q.2 hQ.le]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩; exact ⟨cB * y, by rw [hPQB, mul_assoc]⟩`. Introduce and unpack `⟨y, rfl⟩; exact ⟨cBi * y, by rw [hQP, mul_assoc]⟩`.
+-/
 theorem ptEval_iff_of_ptEval_ξExt (P Q : T.Pt) (hP : T.ptRad P.1 < ρ0) (hQ : T.ptRad Q.1 < ρ0)
     (h : T.ptEval Q.2 hQ.le (T.ξExt P.1 ρ0) = 0) :
     T.ptRad P.1 = T.ptRad Q.1 ∧
@@ -89,18 +117,35 @@ theorem ptEval_iff_of_ptEval_ξExt (P Q : T.Pt) (hP : T.ptRad P.1 < ρ0) (hQ : T
   · rintro ⟨y, rfl⟩; exact ⟨cB * y, by rw [hPQB, mul_assoc]⟩
   · rintro ⟨y, rfl⟩; exact ⟨cBi * y, by rw [hQP, mul_assoc]⟩
 
+/- English proof (translation)
+Rewrite using `[πExt, ptEval_coe]`. Use `show T.ptEvalB P.2 (algebraMap Γ T.B T.π) = _`. Rewrite using `[ptEvalB_algebraMap, ← pow_one T.π, T.ptE_π_pow P.2 1, pow_one]`.
+-/
 theorem ptEval_πExt (P : T.Pt) (hr : T.ptRad P.1 ≤ ρ0) :
     T.ptEval P.2 hr (T.πExt ρ0) = T.ptPi P.2 := by
   rw [πExt, ptEval_coe]
   show T.ptEvalB P.2 (algebraMap Γ T.B T.π) = _
   rw [ptEvalB_algebraMap, ← pow_one T.π, T.ptE_π_pow P.2 1, pow_one]
 
+/- English proof (translation)
+Establish `h` using `congrArg (T.ptEval P.2 hr) (T.πExt_mul_πInvExt ρ0)`. Rewrite `h` using `[map_mul, map_one, ptEval_πExt]`. Conclude with `eq_inv_of_mul_eq_one_right h`.
+-/
 theorem ptEval_πInvExt (P : T.Pt) (hr : T.ptRad P.1 ≤ ρ0) :
     T.ptEval P.2 hr (T.πInvExt ρ0) = (T.ptPi P.2)⁻¹ := by
   have h := congrArg (T.ptEval P.2 hr) (T.πExt_mul_πInvExt ρ0)
   rw [map_mul, map_one, ptEval_πExt] at h
   exact eq_inv_of_mul_eq_one_right h
 
+/- English proof (translation)
+Use `set v := (T.ptEval P.2 hr z)⁻¹ with hv`. Establish `hv0 : v ≠ 0` using `inv_ne_zero hz`. Establish `hpi : ‖T.ptPi P.2‖ < 1` using `by rw [T.norm_ptPi P.2]; exact T.ptRad_lt_one' P.2`. Establish `hpi0 : T.ptPi P.2 ≠ 0` using `T.ptPi_ne_zero P.2`. Take `⟨m, hm⟩` from `exists_pow_lt_of_lt_one (show 0 < 1 / ‖v‖ by positivity) hpi`.
+
+Use `set w := v * T.ptPi P.2 ^ m with hw`. Establish `hw1 : ‖w‖ ≤ 1`. Rewrite using `[hw, norm_mul, norm_pow]`. Rewrite `hm` using `[lt_div_iff₀ (norm_pos_iff.2 hv0)]`. Combine the linear relations using `[mul_comm ‖v‖ (‖T.ptPi P.2‖ ^ m)]`.
+
+Take `⟨zz, hzz, V, hV, hVe⟩` from `T.exists_lift_value P.2 hw1`. Establish `hzz1 : ‖zz‖ ≤ 1` using `hzz ▸ hw1`. Use `set b : T.RobbaExt ρ0 := ((⟨algebraMap Γ T.B (T.teich zz * V), T.coe_teich_mul_mem_Econ hzz1 hV⟩ : T.Econ ρ0) : T.RobbaExt ρ0) * T.πInvExt ρ0 ^ m with hb`. Establish `hbv : T.ptEval P.2 hr b = v`. Rewrite using `[hb, map_mul, map_pow, ptEval_πInvExt, ptEval_coe]`.
+
+Use `show T.ptEvalB P.2 (algebraMap Γ T.B (T.teich zz * V)) * _ = v`. Rewrite using `[ptEvalB_algebraMap, hVe, hw, inv_pow, mul_assoc, mul_inv_cancel₀ (pow_ne_zero _ hpi0), mul_one]`. Establish `h0 : T.ptEval P.2 hr (b * z - 1) = 0`. Rewrite using `[map_sub, map_mul, map_one, hbv, hv, inv_mul_cancel₀ hz, sub_self]`. Take `⟨q, hq⟩` from `(T.ptEval_eq_zero_iff P.2 hr _).1 h0`.
+
+Use `⟨-(T.normUnitInv (ξ := P.1) ρ0 * q), b, ?_⟩` and prove the remaining obligations. Rewrite `hq` using `[T.ξExt_eq_normPtExt P.2]`. Take the linear combination `hq`.
+-/
 theorem exists_bezout_pt (P : T.Pt) (hr : T.ptRad P.1 ≤ ρ0) {z : T.RobbaExt ρ0}
     (hz : T.ptEval P.2 hr z ≠ 0) :
     ∃ a b : T.RobbaExt ρ0, a * T.normPtExt P.2 ρ0 + b * z = 1 := by
@@ -130,6 +175,11 @@ theorem exists_bezout_pt (P : T.Pt) (hr : T.ptRad P.1 ≤ ρ0) {z : T.RobbaExt �
   rw [T.ξExt_eq_normPtExt P.2] at hq
   linear_combination hq
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => exact ⟨1, 0, by rw [normProd_nil]; ring⟩`. Consider the case `cons P l ih`. Take `⟨hr, hP⟩` from `h P List.mem_cons_self`. Take `⟨a1, b1, h1⟩` from `T.exists_bezout_pt P hr hP`.
+
+Take `⟨a2, b2, h2⟩` from `ih fun Q hQ => h Q (List.mem_cons_of_mem _ hQ)`. Use `⟨a1 * a2, b1 + b2 - b1 * b2 * z, ?_⟩` and prove the remaining obligations. Rewrite using `[normProd_cons]`. Take the linear combination `(a2 * T.normProd ρ0 l) * h1 + (1 - b1 * z) * h2`.
+-/
 theorem exists_bezout_list (z : T.RobbaExt ρ0) (l : List T.Pt)
     (h : ∀ P ∈ l, ∃ hr : T.ptRad P.1 ≤ ρ0, T.ptEval P.2 hr z ≠ 0) :
     ∃ a b : T.RobbaExt ρ0, a * T.normProd ρ0 l + b * z = 1 := by
@@ -143,12 +193,28 @@ theorem exists_bezout_list (z : T.RobbaExt ρ0) (l : List T.Pt)
     rw [normProd_cons]
     linear_combination (a2 * T.normProd ρ0 l) * h1 + (1 - b1 * z) * h2
 
+/- English proof (translation)
+Rewrite `h` using `[ptProd, map_list_prod, List.prod_eq_zero_iff, List.map_map]`. Take `⟨P, hP, hP0⟩` from `List.mem_map.1 h`. Conclude with `⟨P, hP, hP0⟩`.
+-/
 theorem ptEval_ptProd_eq_zero {l : List T.Pt} (Q : T.Pt) (hQ : T.ptRad Q.1 ≤ ρ0)
     (h : T.ptEval Q.2 hQ (T.ptProd ρ0 l) = 0) : ∃ P ∈ l, T.ptEval Q.2 hQ (T.ξExt P.1 ρ0) = 0 := by
   rw [ptProd, map_list_prod, List.prod_eq_zero_iff, List.map_map] at h
   obtain ⟨P, hP, hP0⟩ := List.mem_map.1 h
   exact ⟨P, hP, hP0⟩
 
+/- English proof (translation)
+Proceed by induction on `l generalizing y with`. Consider the case `nil => exact ⟨[], [], y, by rw [ptProd_nil, one_mul], by simp [ptProd], by simp, by simp, by simp⟩`. Consider the case `cons P l ih`. Establish `hPr` using `hl P List.mem_cons_self`. Establish `hl' : ∀ Q ∈ l, T.ptRad Q.1 < ρ0` using `fun Q hQ => hl Q (List.mem_cons_of_mem _ hQ)`.
+
+Distinguish the cases in `h0 : T.ptEval P.2 hPr.le y = 0`. Take `⟨y1, hy1⟩` from `(T.ptEval_eq_zero_iff P.2 hPr.le y).1 h0`. Take `⟨R, K, y'', hy, hlRK, hR, hK, hKev⟩` from `ih hl' y1`. Use `⟨P :: R, K, y'', ?_, ?_, ?_, fun Q hQ => List.mem_cons_of_mem _ (hK Q hQ), hKev⟩` and prove the remaining obligations. Rewrite using `[hy1, hy, ptProd_cons, mul_assoc]`.
+
+Rewrite using `[ptProd_cons, ptProd_cons, hlRK, mul_assoc]`. Introduce `Q hQ`. Break down `List.mem_cons.1 hQ with rfl | hQ` into its components or cases. Conclude with `List.mem_cons_self`. Conclude with `List.mem_cons_of_mem _ (hR Q hQ)`.
+
+Take `⟨R, K, y'', hy, hlRK, hR, hK, hKev⟩` from `ih hl' y`. Use `⟨R, P :: K, y'', hy, ?_, fun Q hQ => List.mem_cons_of_mem _ (hR Q hQ), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[ptProd_cons, ptProd_cons, hlRK]`. Expand and normalize the polynomial expressions, which then agree. Introduce `Q hQ`.
+
+Break down `List.mem_cons.1 hQ with rfl | hQ` into its components or cases. Conclude with `List.mem_cons_self`. Conclude with `List.mem_cons_of_mem _ (hK Q hQ)`. Introduce `Q hQ hr`. Break down `List.mem_cons.1 hQ with rfl | hQ` into its components or cases.
+
+Introduce `hQ0`. Apply `h0` to reduce the goal to its premises. Rewrite using `[hy, map_mul, hQ0, mul_zero]`. Conclude with `hKev Q hQ hr`.
+-/
 theorem exists_greedy (l : List T.Pt) (hl : ∀ P ∈ l, T.ptRad P.1 < ρ0) (y : T.RobbaExt ρ0) :
     ∃ (R K : List T.Pt) (y'' : T.RobbaExt ρ0),
       y = T.ptProd ρ0 R * y'' ∧ T.ptProd ρ0 l = T.ptProd ρ0 R * T.ptProd ρ0 K ∧
@@ -183,6 +249,17 @@ theorem exists_greedy (l : List T.Pt) (hl : ∀ P ∈ l, T.ptRad P.1 < ρ0) (y :
           rw [hy, map_mul, hQ0, mul_zero]
         · exact hKev Q hQ hr
 
+/- English proof (translation)
+Take `⟨l, w, hlrad, hxl, hw0, hwm⟩` from `T.exists_factor_annulus hRE ha hab hb hx`. Take `⟨R, K, y'', hy'', hlRK, hR, hK, hKev⟩` from `T.exists_greedy l (fun P hP => (hlrad P hP).2.trans_lt hb) y`. Use `⟨R, T.ptProd ρ0 K * w, y'', ?_, hy'', fun P hP => hlrad P (hR P hP), mul_ne_zero (T.ptProd_ne_zero K) hw0, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hxl, hlRK, mul_assoc]`. Introduce and unpack `rfl`.
+
+Rewrite `hy''` using `[mul_zero]`. Conclude with `hy hy''`. Introduce and unpack `Q hQ ⟨hQx, hQy⟩`. Establish `hs : 0 < T.ptRad Q.1 ∧ T.ptRad Q.1 < ρ0` using `⟨ha.trans_le hQ.1, hQ.2.trans_lt hb⟩`. Rewrite `hQx` using `[map_mul, mul_eq_zero]`.
+
+Break down `hQx with hK0 | hw` into its components or cases. Take `⟨P, hP, hP0⟩` from `T.ptEval_ptProd_eq_zero Q _ hK0`. Establish `hPr : T.ptRad P.1 < ρ0` using `(hlrad P (hK P hP)).2.trans_lt hb`. Take `⟨-, hiff⟩` from `T.ptEval_iff_of_ptEval_ξExt P Q hPr hs.2 hP0`. Conclude with `hKev P hP hPr.le ((hiff y'').2 hQy)`.
+
+Take `⟨w', hw'⟩` from `(T.ptEval_eq_zero_iff Q.2 _ w).1 hw`. Establish `hw'0 : w' ≠ 0` using `by rintro rfl; rw [mul_zero] at hw'; exact hw0 hw'`. Establish `hm` using `T.mult_mul (T.ptExt_ne_zero Q.2) hw'0 hs`. Rewrite `hm` using `[← hw', hwm _ hQ.1 hQ.2, T.mult_ptExt Q.2 hs, if_pos rfl]`. Use `T.mult_nonneg w' (T.ptRad Q.1)` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem exists_stage (hRE : T.RootExists) {a b : ℝ} (ha : 0 < a) (hab : a ≤ b) (hb : b < ρ0)
     {x y : T.RobbaExt ρ0} (hx : x ≠ 0) (hy : y ≠ 0) :
     ∃ (R : List T.Pt) (x' y' : T.RobbaExt ρ0), x = T.ptProd ρ0 R * x' ∧ y = T.ptProd ρ0 R * y' ∧
@@ -220,12 +297,21 @@ structure GcdSt (ρ0 : Set.Ioo (0 : ℝ) 1) where
 def annLo (ρ0 : Set.Ioo (0 : ℝ) 1) (k : ℕ) : ℝ := (ρ0 : ℝ) / 2 ^ (k + 2)
 def annHi (ρ0 : Set.Ioo (0 : ℝ) 1) (k : ℕ) : ℝ := (ρ0 : ℝ) / 2 ^ (k + 1)
 
+/- English proof (translation)
+Unfold `annLo`. Use `ρ0.2.1` as an intermediate fact. Check the signs of the components of the expression.
+-/
 theorem annLo_pos (k : ℕ) : 0 < annLo ρ0 k := by unfold annLo; have := ρ0.2.1; positivity
 
+/- English proof (translation)
+Unfold `annLo annHi`. Conclude with `div_le_div_of_nonneg_left ρ0.2.1.le (by positivity) (pow_le_pow_right₀ (by norm_num) (by omega))`.
+-/
 theorem annLo_le (k : ℕ) : annLo ρ0 k ≤ annHi ρ0 k := by
   unfold annLo annHi
   exact div_le_div_of_nonneg_left ρ0.2.1.le (by positivity) (pow_le_pow_right₀ (by norm_num) (by omega))
 
+/- English proof (translation)
+Unfold `annHi`. Rewrite using `[div_lt_iff₀ (by positivity)]`. Use `ρ0.2.1` as an intermediate fact. Establish `: (1 : ℝ) < 2 ^ (k + 1)` using `one_lt_pow₀ (by norm_num) (by omega)`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem annHi_lt (k : ℕ) : annHi ρ0 k < ρ0 := by
   unfold annHi
   rw [div_lt_iff₀ (by positivity)]
@@ -233,9 +319,19 @@ theorem annHi_lt (k : ℕ) : annHi ρ0 k < ρ0 := by
   have : (1 : ℝ) < 2 ^ (k + 1) := one_lt_pow₀ (by norm_num) (by omega)
   nlinarith
 
+/- English proof (translation)
+Unfold `annHi annLo`. Put the polynomial expressions in normal form.
+-/
 theorem annHi_succ (k : ℕ) : annHi ρ0 (k + 1) = annLo ρ0 k := by
   unfold annHi annLo; ring_nf
 
+/- English proof (translation)
+Establish `ht : 1 ≤ (ρ0 : ℝ) / 2 / s` using `by rw [le_div_iff₀ hs0, one_mul]; exact hs`. Take `⟨n, hn1, hn2⟩` from `exists_nat_pow_near ht (show (1 : ℝ) < 2 by norm_num)`. Use `⟨n, ?_, ?_⟩` and prove the remaining obligations. Unfold `annLo`. Rewrite using `[div_le_iff₀ (by positivity)]`.
+
+Rewrite `hn2` using `[div_lt_iff₀ hs0]`. Establish `e : s * 2 ^ (n + 2) = 2 * (2 ^ (n + 1) * s)` using `by ring`. Rewrite using `[e]`. Combine the linear equalities and inequalities to obtain the conclusion. Unfold `annHi`.
+
+Rewrite using `[le_div_iff₀ (by positivity)]`. Rewrite `hn1` using `[le_div_iff₀ hs0]`. Establish `e : s * 2 ^ (n + 1) = 2 * (2 ^ n * s)` using `by ring`. Rewrite using `[e]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem exists_ann {s : ℝ} (hs0 : 0 < s) (hs : s ≤ (ρ0 : ℝ) / 2) :
     ∃ k, annLo ρ0 k ≤ s ∧ s ≤ annHi ρ0 k := by
   have ht : 1 ≤ (ρ0 : ℝ) / 2 / s := by rw [le_div_iff₀ hs0, one_mul]; exact hs
@@ -262,6 +358,9 @@ def gcdStep (k : ℕ) (S : T.GcdSt ρ0) : List T.Pt × T.GcdSt ρ0 :=
     (Classical.choose_spec (Classical.choose_spec (Classical.choose_spec h))).2.2.2.1,
     (Classical.choose_spec (Classical.choose_spec (Classical.choose_spec h))).2.2.2.2.1⟩)
 
+/- English proof (translation)
+Establish `h` using `T.exists_stage hRE (annLo_pos (ρ0 := ρ0) k) (annLo_le k) (annHi_lt k) S.hx S.hy`. Establish `hs` using `Classical.choose_spec (Classical.choose_spec (Classical.choose_spec h))`. Conclude with `⟨hs.1, hs.2.1, hs.2.2.1, hs.2.2.2.2.2⟩`.
+-/
 theorem gcdStep_spec (k : ℕ) (S : T.GcdSt ρ0) :
     S.x = T.ptProd ρ0 (T.gcdStep hRE k S).1 * (T.gcdStep hRE k S).2.x ∧
       S.y = T.ptProd ρ0 (T.gcdStep hRE k S).1 * (T.gcdStep hRE k S).2.y ∧
@@ -279,6 +378,13 @@ def gcdStates (S0 : T.GcdSt ρ0) : ℕ → T.GcdSt ρ0
 
 def gcdRemoved (S0 : T.GcdSt ρ0) (k : ℕ) : List T.Pt := (T.gcdStep hRE k (T.gcdStates hRE S0 k)).1
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => simp [gcdStates, ptProd]`. Consider the case `succ k ih`. Take `⟨hx, hy, -, -⟩` from `T.gcdStep_spec hRE k (T.gcdStates hRE S0 k)`. Rewrite using `[List.range_succ, List.flatMap_append, ptProd_append]`.
+
+Simplify using `only [List.flatMap_cons, List.flatMap_nil, List.append_nil]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[ih.1, hx, mul_assoc]`. Both sides reduce to the same expression. Rewrite using `[ih.2, hy, mul_assoc]`.
+
+Both sides reduce to the same expression.
+-/
 theorem gcdStates_spec (S0 : T.GcdSt ρ0) (k : ℕ) :
     S0.x = T.ptProd ρ0 ((List.range k).flatMap (T.gcdRemoved hRE S0)) * (T.gcdStates hRE S0 k).x ∧
       S0.y = T.ptProd ρ0 ((List.range k).flatMap (T.gcdRemoved hRE S0)) *
@@ -294,6 +400,11 @@ theorem gcdStates_spec (S0 : T.GcdSt ρ0) (k : ℕ) :
     · rw [ih.2, hy, mul_assoc]; rfl
 
 omit hRE in
+/- English proof (translation)
+Establish `h` using `(tendsto_pow_atTop_nhds_zero_of_lt_one (show (0 : ℝ) ≤ 1 / 2 by norm_num) (show (1 : ℝ) / 2 < 1 by norm_num)).const_mul ((ρ0 : ℝ) / 2)`. Rewrite `h` using `[mul_zero]`. Use `h.congr fun k => ?_` and prove the remaining obligations. Unfold `annHi`. Rewrite using `[pow_succ, div_pow, one_pow]`.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem tendsto_annHi : Tendsto (annHi ρ0) atTop (𝓝 0) := by
   have h := (tendsto_pow_atTop_nhds_zero_of_lt_one (show (0 : ℝ) ≤ 1 / 2 by norm_num)
     (show (1 : ℝ) / 2 < 1 by norm_num)).const_mul ((ρ0 : ℝ) / 2)
@@ -304,8 +415,24 @@ theorem tendsto_annHi : Tendsto (annHi ρ0) atTop (𝓝 0) := by
   field_simp
 
 omit hRE in
+/- English proof (translation)
+The claim follows from `(annLo_pos k).le.trans (annLo_le k)`.
+-/
 theorem annHi_nonneg (k : ℕ) : 0 ≤ annHi ρ0 k := (annLo_pos k).le.trans (annLo_le k)
 
+/- English proof (translation)
+Use `set S0 : T.GcdSt ρ0 := ⟨x, y, hx, hy⟩`. Establish `hl : ∀ k, ∀ P ∈ T.gcdRemoved hRE S0 k, T.ptRad P.1 ≤ annHi ρ0 k` using `fun k P hP => ((T.gcdStep_spec hRE k (T.gcdStates hRE S0 k)).2.2.1 P hP).2`. Use `set D := InfProd.ofLists T ρ0 (T.gcdRemoved hRE S0) (annHi ρ0) annHi_nonneg tendsto_annHi hl`. Establish `hpart : ∀ k, D.part k = T.normProd ρ0 ((List.range k).flatMap (T.gcdRemoved hRE S0))` using `fun k => InfProd.ofLists_part T _ _ _ _ _ k`. Establish `hdx : ∀ k, D.part k ∣ x` using `fun k => by`.
+
+Rewrite using `[hpart, normProd_dvd_iff]`. Conclude with `⟨_, (T.gcdStates_spec hRE S0 k).1⟩`. Establish `hdy : ∀ k, D.part k ∣ y` using `fun k => by`. Rewrite using `[hpart, normProd_dvd_iff]`. Conclude with `⟨_, (T.gcdStates_spec hRE S0 k).2⟩`.
+
+Take `⟨x', hx'⟩` from `D.dvd_of_forall hdx`. Take `⟨y', hy'⟩` from `D.dvd_of_forall hdy`. Use `⟨D.prod, x', y', D.prod_ne_zero, hx', hy', ?_⟩` and prove the remaining obligations. Introduce and unpack `Q hQ ⟨h1, h2⟩`. Establish `hs0` using `T.ptRad_pos' Q.2`.
+
+Take `⟨k, hk1, hk2⟩` from `exists_ann (ρ0 := ρ0) hs0 hQ`. Use `set F := (List.range (k + 1)).flatMap (T.gcdRemoved hRE S0)`. Establish `hQr : T.ptRad Q.1 ≤ ρ0` using `hQ.trans (half_le_self ρ0.2.1.le)`. Establish `key : ∀ (w w' W : T.RobbaExt ρ0), w = D.prod * w' → w = T.ptProd ρ0 F * W → T.ptEval Q.2 hQr w' = 0 → T.ptEval Q.2 hQr W = 0`. Introduce `w w' W hw hW hw'`.
+
+Establish `e : T.ptProd ρ0 F * W = T.ptProd ρ0 F * (T.unitProd ρ0 F * (D.shift (k + 1)).prod * w')`. Rewrite using `[← hW, hw, D.prod_eq_part_mul_shift (k + 1), hpart, normProd_eq]`. Expand and normalize the polynomial expressions, which then agree. Establish `hW'` using `mul_left_cancel₀ (T.ptProd_ne_zero F) e`. Rewrite using `[hW', map_mul, hw', mul_zero]`.
+
+Establish `hX` using `key x x' _ hx' (T.gcdStates_spec hRE S0 (k + 1)).1 h1`. Establish `hY` using `key y y' _ hy' (T.gcdStates_spec hRE S0 (k + 1)).2 h2`. Conclude with `(T.gcdStep_spec hRE k (T.gcdStates hRE S0 k)).2.2.2 Q ⟨hk1, hk2⟩ ⟨hX, hY⟩`.
+-/
 theorem exists_gcd {x y : T.RobbaExt ρ0} (hx : x ≠ 0) (hy : y ≠ 0) :
     ∃ (d x' y' : T.RobbaExt ρ0), d ≠ 0 ∧ x = d * x' ∧ y = d * y' ∧
       ∀ Q : T.Pt, ∀ hQ : T.ptRad Q.1 ≤ (ρ0 : ℝ) / 2,

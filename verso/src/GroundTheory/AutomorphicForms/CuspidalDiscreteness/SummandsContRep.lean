@@ -23,9 +23,15 @@ def quotFun (F : normOneGL K n → ℂ) (hF : ∀ γ ∈ Γ₁, ∀ y, F (γ * y
     obtain ⟨γ, rfl⟩ := hab
     exact hF γ γ.2 b
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem quotFun_mk (F : normOneGL K n → ℂ) (hF : ∀ γ ∈ Γ₁, ∀ y, F (γ * y) = F y)
     (y : normOneGL K n) : quotFun F hF (mk Γ₁ y) = F y := rfl
 
+/- English proof (translation)
+The claim follows from `(isOpenQuotientMap_mk Γ₁).isQuotientMap.continuous_iff.2 hc`.
+-/
 theorem continuous_quotFun {F : normOneGL K n → ℂ} (hF : ∀ γ ∈ Γ₁, ∀ y, F (γ * y) = F y)
     (hc : Continuous F) : Continuous (quotFun F hF) :=
   (isOpenQuotientMap_mk Γ₁).isQuotientMap.continuous_iff.2 hc
@@ -37,16 +43,25 @@ def IsContRep (φ : Lp ℂ 2 (quotientMeasure Γ₁ μ)) (F : normOneGL K n → 
 
 variable {μ}
 
+/- English proof (translation)
+The claim follows from `(h.1.ae_eq_iff_eq μ h'.1).1 (h.2.2.symm.trans h'.2.2)`.
+-/
 theorem IsContRep.unique {φ : Lp ℂ 2 (quotientMeasure Γ₁ μ)} {F F' : normOneGL K n → ℂ}
     (h : IsContRep μ φ F) (h' : IsContRep μ φ F') : F = F' :=
   (h.1.ae_eq_iff_eq μ h'.1).1 (h.2.2.symm.trans h'.2.2)
 
+/- English proof (translation)
+Use `⟨continuous_const, fun _ _ _ => rfl, ?_⟩` and prove the remaining obligations. Use `filter_upwards [(quasiMeasurePreserving_mk Γ₁ μ).ae_eq_comp (Lp.coeFn_zero ℂ 2 (quotientMeasure Γ₁ μ))] with y hy`. Conclude with `hy`.
+-/
 theorem isContRep_zero : IsContRep μ (0 : Lp ℂ 2 (quotientMeasure Γ₁ μ)) 0 := by
   refine ⟨continuous_const, fun _ _ _ => rfl, ?_⟩
   filter_upwards [(quasiMeasurePreserving_mk Γ₁ μ).ae_eq_comp
     (Lp.coeFn_zero ℂ 2 (quotientMeasure Γ₁ μ))] with y hy
   exact hy
 
+/- English proof (translation)
+Use `⟨h.1.add h'.1, fun γ hγ y => by simp [h.2.1 γ hγ y, h'.2.1 γ hγ y], ?_⟩` and prove the remaining obligations. Use `filter_upwards [(quasiMeasurePreserving_mk Γ₁ μ).ae_eq_comp (Lp.coeFn_add φ ψ), h.2.2, h'.2.2] with y h1 h2 h3`. Simplify using `only [Function.comp_apply, Pi.add_apply] at h1`. Rewrite using `[h1, h2, h3, Pi.add_apply]`.
+-/
 theorem IsContRep.add {φ ψ : Lp ℂ 2 (quotientMeasure Γ₁ μ)} {F F' : normOneGL K n → ℂ}
     (h : IsContRep μ φ F) (h' : IsContRep μ ψ F') : IsContRep μ (φ + ψ) (F + F') := by
   refine ⟨h.1.add h'.1, fun γ hγ y => by simp [h.2.1 γ hγ y, h'.2.1 γ hγ y], ?_⟩
@@ -55,6 +70,9 @@ theorem IsContRep.add {φ ψ : Lp ℂ 2 (quotientMeasure Γ₁ μ)} {F F' : norm
   simp only [Function.comp_apply, Pi.add_apply] at h1
   rw [h1, h2, h3, Pi.add_apply]
 
+/- English proof (translation)
+Use `⟨h.1.const_smul c, fun γ hγ y => by simp [h.2.1 γ hγ y], ?_⟩` and prove the remaining obligations. Use `filter_upwards [(quasiMeasurePreserving_mk Γ₁ μ).ae_eq_comp (Lp.coeFn_smul c φ), h.2.2] with y h1 h2`. Simplify using `only [Function.comp_apply, Pi.smul_apply] at h1`. Rewrite using `[h1, h2, Pi.smul_apply]`.
+-/
 theorem IsContRep.smul (c : ℂ) {φ : Lp ℂ 2 (quotientMeasure Γ₁ μ)} {F : normOneGL K n → ℂ}
     (h : IsContRep μ φ F) : IsContRep μ (c • φ) (c • F) := by
   refine ⟨h.1.const_smul c, fun γ hγ y => by simp [h.2.1 γ hγ y], ?_⟩
@@ -63,6 +81,11 @@ theorem IsContRep.smul (c : ℂ) {φ : Lp ℂ 2 (quotientMeasure Γ₁ μ)} {F :
   simp only [Function.comp_apply, Pi.smul_apply] at h1
   rw [h1, h2, Pi.smul_apply]
 
+/- English proof (translation)
+Use `⟨h.1.comp (continuous_mul_const x), fun γ hγ y => by show F (γ * y * x) = F (y * x)` and prove the remaining obligations. Rewrite using `[mul_assoc, h.2.1 γ hγ], ?_⟩`. Establish `h2 : (fun y => φ (mk Γ₁ (y * x))) =ᵐ[μ] fun y => F (y * x)` using `(measurePreserving_mul_right μ x).quasiMeasurePreserving.ae_eq_comp h.2.2`. Use `filter_upwards [(quasiMeasurePreserving_mk Γ₁ μ).ae_eq_comp (coeFn_rightRegularRep Γ₁ μ x φ), h2] with y hy1 hy2`. Simplify using `only [Function.comp_apply, rightMul_mk] at hy1`.
+
+Rewrite using `[hy1]`. Conclude with `hy2`.
+-/
 theorem IsContRep.translate {φ : Lp ℂ 2 (quotientMeasure Γ₁ μ)} {F : normOneGL K n → ℂ}
     (h : IsContRep μ φ F) (x : normOneGL K n) :
     IsContRep μ (rightRegularRep Γ₁ μ x φ) (fun y => F (y * x)) := by
@@ -79,6 +102,9 @@ theorem IsContRep.translate {φ : Lp ℂ 2 (quotientMeasure Γ₁ μ)} {F : norm
 
 variable (μ) in
 
+/- English proof (translation)
+Use `isFiniteMeasure_quotientMeasure (K := K) (n := n) μ` as an intermediate fact. Use `⟨continuous_rconv Γ₁ μ f φ, fun γ hγ y => rconv_mul_left Γ₁ μ f φ hγ y, ?_⟩` and prove the remaining obligations. Use `filter_upwards [(quasiMeasurePreserving_mk Γ₁ μ).ae_eq_comp (integrated_ae_eq_rconvQ Γ₁ μ f φ)] with y hy`. Simplify using `only [Function.comp_apply] at hy`. Rewrite using `[hy, rconvQ_mk]`.
+-/
 theorem isContRep_rconv (f : CompactlySupportedContinuousMap (normOneGL K n) ℂ)
     (φ : Lp ℂ 2 (quotientMeasure Γ₁ μ)) :
     IsContRep μ ((rightRegularRep Γ₁ μ).integrated μ (UnitaryRep.ccToL1 μ f) φ)
@@ -90,6 +116,9 @@ theorem isContRep_rconv (f : CompactlySupportedContinuousMap (normOneGL K n) ℂ
   simp only [Function.comp_apply] at hy
   rw [hy, rconvQ_mk]
 
+/- English proof (translation)
+Establish `hm : ∀ᵐ x ∂(Measure.map (mk Γ₁) (μ.restrict (fundamentalDomain Γ₁))), (φ : RightCosetSpace Γ₁ → ℂ) x = quotFun F h.2.1 x`. Use `(ae_map_iff (measurable_mk Γ₁).aemeasurable (measurableSet_eq_fun (Lp.stronglyMeasurable φ).measurable (continuous_quotFun h.2.1 h.1).measurable)).2 ?_` and prove the remaining obligations. Conclude with `ae_restrict_of_ae (h.2.2.mono fun y hy => by simpa using hy)`. Rewrite `hm` using `[map_restrict_eq_quotientMeasure μ (isFundamentalDomain_fundamentalDomain Γ₁ μ)]`. Then use the resulting hypothesis.
+-/
 theorem IsContRep.ae_eq_quotFun {φ : Lp ℂ 2 (quotientMeasure Γ₁ μ)} {F : normOneGL K n → ℂ}
     (h : IsContRep μ φ F) :
     (φ : RightCosetSpace Γ₁ → ℂ) =ᵐ[quotientMeasure Γ₁ μ] quotFun F h.2.1 := by
@@ -104,11 +133,17 @@ theorem IsContRep.ae_eq_quotFun {φ : Lp ℂ 2 (quotientMeasure Γ₁ μ)} {F : 
 variable (μ)
 variable (ν : Measure (archGroup K n)) [ν.IsHaarMeasure]
 
+/- English proof (translation)
+The claim follows from `(hγ.smul ((archRep μ).continuous_orbit w)).integrable_of_hasCompactSupport hγc.smul_right`.
+-/
 theorem integrable_smul_archRep {γ : archGroup K n → ℂ} (hγ : Continuous γ)
     (hγc : HasCompactSupport γ) (w : cuspidalL2 μ) :
     Integrable (fun a => γ a • archRep μ a w) ν :=
   (hγ.smul ((archRep μ).continuous_orbit w)).integrable_of_hasCompactSupport hγc.smul_right
 
+/- English proof (translation)
+Establish `e` using `(cuspidalL2 μ).subtypeL.integral_comp_comm (integrable_smul_archRep μ ν hγ hγc w)`. Conclude with `e.symm.trans (integral_congr_ae (Eventually.of_forall fun a => rfl))`.
+-/
 theorem coe_integrated_archRep {γ : archGroup K n → ℂ} (hγ : Continuous γ)
     (hγc : HasCompactSupport γ) (w : cuspidalL2 μ) :
     (((archRep μ).integrated ν γ w : cuspidalL2 μ) : Lp ℂ 2 (quotientMeasure Γ₁ μ)) =
@@ -118,6 +153,41 @@ theorem coe_integrated_archRep {γ : archGroup K n → ℂ} (hγ : Continuous γ
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Use `isFiniteMeasure_quotientMeasure (K := K) (n := n) μ` as an intermediate fact. Take `⟨S, hS⟩ : ∃ S, S = tsupport γ` from `⟨_, rfl⟩`. Establish `hSc : IsCompact S` using `hS ▸ hγc.isCompact`. Establish `hWc : Continuous W` using `hW.1`. Establish `hpc : Continuous (archP K n)` using `continuous_archP`.
+
+Establish `hJ : Continuous (uncurry fun (y : normOneGL K n) (a : archGroup K n) => γ a * W (y * archP K n a))` using `(hγ.comp continuous_snd).mul (hWc.comp (continuous_fst.mul (hpc.comp continuous_snd)))`. Establish `hset : ∀ y, ∫ a, γ a * W (y * archP K n a) ∂ν = ∫ a in S, γ a * W (y * archP K n a) ∂ν`. Introduce `y`. Use `(setIntegral_eq_integral_of_forall_compl_eq_zero fun a ha => ?_).symm` and prove the remaining obligations. Establish `h0 : γ a = 0` using `image_eq_zero_of_notMem_tsupport (by rw [← hS]; exact ha)`.
+
+Rewrite using `[h0, zero_mul]`. Take `⟨Ψ, hΨ⟩ : ∃ Ψ : normOneGL K n → ℂ, Ψ = fun y => ∫ a, γ a * W (y * archP K n a) ∂ν` from `⟨_, rfl⟩`. Establish `hΨc : Continuous Ψ`. Establish `: Ψ = fun y => ∫ a in S, γ a * W (y * archP K n a) ∂ν` using `hΨ.trans (funext hset)`. Rewrite using `[this]`.
+
+Conclude with `continuous_parametric_integral_of_continuous hJ hSc`. Establish `hΨinv : ∀ γ₀ ∈ Γ₁, ∀ y, Ψ (γ₀ * y) = Ψ y`. Introduce `γ₀ hγ₀ y`. Rewrite using `[hΨ]`. Use `integral_congr_ae (Eventually.of_forall fun a => ?_)` and prove the remaining obligations.
+
+Use `show γ a * W (γ₀ * y * archP K n a) = γ a * W (y * archP K n a)`. Rewrite using `[mul_assoc, hW.2.1 γ₀ hγ₀]`. Rewrite using `[← hΨ]`. Use `⟨hΨc, hΨinv, ?_⟩` and prove the remaining obligations. Take `⟨WQ, hWQ⟩ : ∃ WQ, WQ = quotFun W hW.2.1` from `⟨_, rfl⟩`.
+
+Establish `hWQc : Continuous WQ` using `hWQ ▸ continuous_quotFun hW.2.1 hWc`. Establish `hWQb : ∀ x, ‖WQ x‖ ≤ C`. Introduce `x`. Take `⟨y, rfl⟩` from `mk_surjective Γ₁ x`. Rewrite using `[hWQ, quotFun_mk]`.
+
+Conclude with `hWb y`. Take `⟨ΨQ, hΨQ⟩ : ∃ ΨQ, ΨQ = quotFun Ψ hΨinv` from `⟨_, rfl⟩`. Establish `hΨQ_eq : ∀ x, ΨQ x = ∫ a, γ a * WQ (rightMul Γ₁ (archP K n a) x) ∂ν`. Introduce `x`. Take `⟨y, rfl⟩` from `mk_surjective Γ₁ x`.
+
+Rewrite using `[hΨQ, quotFun_mk, hΨ, hWQ]`. Simplify using `only [rightMul_mk, quotFun_mk]`. Establish `hγi : Integrable γ ν` using `hγ.integrable_of_hasCompactSupport hγc`. Establish `hC0 : 0 ≤ C` using `(norm_nonneg _).trans (hWb 1)`. Establish `hJQ : Continuous (uncurry fun (a : archGroup K n) (x : RightCosetSpace Γ₁) => γ a * WQ (rightMul Γ₁ (archP K n a) x))`.
+
+Establish `hr : Continuous fun p : archGroup K n × RightCosetSpace Γ₁ => rightMul Γ₁ (archP K n p.1) p.2`. Establish `h1 : Continuous fun p : RightCosetSpace Γ₁ × normOneGL K n => rightMul Γ₁ p.2 p.1` using `continuous_rightMul_prod Γ₁`. Establish `h2 : Continuous fun p : archGroup K n × RightCosetSpace Γ₁ => (p.2, archP K n p.1)` using `continuous_snd.prodMk (hpc.comp continuous_fst)`. Establish `h3` using `h1.comp h2`. Conclude with `h3`.
+
+Establish `h4` using `(hγ.comp continuous_fst).mul (hWQc.comp hr)`. Conclude with `h4`. Establish `hint : ∀ s : Set (RightCosetSpace Γ₁), Integrable (uncurry fun (a : archGroup K n) (x : RightCosetSpace Γ₁) => γ a * WQ (rightMul Γ₁ (archP K n a) x)) (ν.prod ((quotientMeasure Γ₁ μ).restrict s))`. Introduce `s`. Use `Integrable.mono' ((hγi.norm.mul_prod (integrable_const C))) hJQ.aestronglyMeasurable (Eventually.of_forall fun p => ?_)` and prove the remaining obligations.
+
+Take `⟨a, x⟩` from `p`. Use `show ‖γ a * WQ (rightMul Γ₁ (archP K n a) x)‖ ≤ ‖γ a‖ * C`. Rewrite using `[norm_mul]`. Conclude with `mul_le_mul_of_nonneg_left (hWQb _) (norm_nonneg _)`. Establish `hΨQi : Integrable ΨQ (quotientMeasure Γ₁ μ)`.
+
+Use `(hint univ).integral_prod_right` as an intermediate fact. Rewrite `this` using `[Measure.restrict_univ]`. Conclude with `this.congr (Eventually.of_forall fun x => (hΨQ_eq x).symm)`. Take `⟨V, hV⟩ : ∃ V : Lp ℂ 2 (quotientMeasure Γ₁ μ), V = ∫ a, γ a • rightRegularRep Γ₁ μ (archP K n a) (w : Lp ℂ 2 (quotientMeasure Γ₁ μ)) ∂ν` from `⟨_, rfl⟩`. Establish `hVi : Integrable (fun a => γ a • rightRegularRep Γ₁ μ (archP K n a) (w : Lp ℂ 2 (quotientMeasure Γ₁ μ))) ν` using `(hγ.smul (((rightRegularRep Γ₁ μ).continuous_orbit _).comp hpc)).integrable_of_hasCompactSupport hγc.smul_right`.
+
+Establish `hwQ : (w : RightCosetSpace Γ₁ → ℂ) =ᵐ[quotientMeasure Γ₁ μ] WQ` using `hWQ ▸ hW.ae_eq_quotFun`. Establish `hVeq : (V : RightCosetSpace Γ₁ → ℂ) =ᵐ[quotientMeasure Γ₁ μ] ΨQ`. Use `ae_eq_of_forall_setIntegral_eq_of_sigmaFinite (fun s _ _ => ((Lp.memLp _).integrable one_le_two).integrableOn) (fun s _ _ => hΨQi.integrableOn) fun s hs hμs => ?_` and prove the remaining obligations. Rewrite using `[← L2.inner_indicatorConstLp_one hs hμs.ne, hV, ← integral_inner hVi]`. Establish `hcoef : ∀ a, ⟪indicatorConstLp 2 hs hμs.ne (1 : ℂ), γ a • rightRegularRep Γ₁ μ (archP K n a) (w : Lp ℂ 2 (quotientMeasure Γ₁ μ))⟫_ℂ = ∫ x in s, γ a * WQ (rightMul Γ₁ (archP K n a) x) ∂quotientMeasure Γ₁ μ`.
+
+Introduce `a`. Rewrite using `[inner_smul_right, L2.inner_indicatorConstLp_one, ← integral_const_mul]`. Use `setIntegral_congr_ae hs ?_` and prove the remaining obligations. Establish `h1` using `coeFn_rightRegularRep Γ₁ μ (archP K n a) (w : Lp ℂ 2 (quotientMeasure Γ₁ μ))`. Establish `h2` using `(measurePreserving_rightMul μ (archP K n a)).quasiMeasurePreserving.ae_eq_comp hwQ`.
+
+Use `filter_upwards [h1, h2] with x hx1 hx2`. Introduce `_`. Simplify using `only [Function.comp_apply] at hx2`. Conclude with `congrArg (γ a * ·) (hx1.trans hx2)`. Repeatedly rewrite using `[hcoef]`.
+
+Use `(integral_integral_swap (hint s)).trans ?_` and prove the remaining obligations. Conclude with `setIntegral_congr_fun hs fun x _ => (hΨQ_eq x).symm`. Establish `hcoe` using `(coe_integrated_archRep μ ν hγ hγc w).trans hV.symm`. Use `filter_upwards [(quasiMeasurePreserving_mk Γ₁ μ).ae_eq_comp hVeq] with y hy`. Simplify using `only [Function.comp_apply] at hy`.
+
+Use `(congrArg (fun f : Lp ℂ 2 (quotientMeasure Γ₁ μ) => (f : RightCosetSpace Γ₁ → ℂ) (mk Γ₁ y)) hcoe).trans ?_` and prove the remaining obligations. Use `hy.trans ?_` and prove the remaining obligations. Rewrite using `[hΨQ, quotFun_mk]`.
+-/
 theorem hasContRep_integrated_archRep {w : cuspidalL2 μ} {W : normOneGL K n → ℂ}
     (hW : IsContRep μ (w : Lp ℂ 2 (quotientMeasure Γ₁ μ)) W) {C : ℝ} (hWb : ∀ y, ‖W y‖ ≤ C)
     {γ : archGroup K n → ℂ} (hγ : Continuous γ) (hγc : HasCompactSupport γ) :

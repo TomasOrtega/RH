@@ -6,6 +6,11 @@ open IsLocalRing
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Proceed by induction on `G using MvPolynomial.induction_on' with`. Consider the case `monomial u a`. Establish `h : MvPolynomial.aeval (fun j => Polynomial.C (w j) * Polynomial.X) (MvPolynomial.monomial u a) = Polynomial.C (MvPolynomial.aeval w (MvPolynomial.monomial u a)) * Polynomial.X ^ u.degree`. Simplify using `only [MvPolynomial.aeval_monomial, Finsupp.prod, mul_pow, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum, map_mul, map_prod, map_pow, Polynomial.algebraMap_apply, mul_assoc]`. Both sides reduce to the same expression.
+
+Rewrite using `[h, Polynomial.coeff_C_mul_X_pow, MvPolynomial.homogeneousComponent_of_mem (MvPolynomial.isHomogeneous_monomial a (rfl : u.degree = u.degree))]`. Apply the tactic sequence `split_ifs <;> simp`. Consider the case `add p q hp hq => simp only [map_add, Polynomial.coeff_add, hp, hq]`.
+-/
 theorem coeff_aeval_C_mul_X {K A J : Type*} [CommRing K] [CommRing A] [Algebra K A] (w : J → A)
     (G : MvPolynomial J K) (d : ℕ) :
     (MvPolynomial.aeval (fun j => Polynomial.C (w j) * Polynomial.X) G).coeff d =
@@ -25,6 +30,31 @@ theorem coeff_aeval_C_mul_X {K A J : Type*} [CommRing K] [CommRing A] [Algebra K
     split_ifs <;> simp
   | add p q hp hq => simp only [map_add, Polynomial.coeff_add, hp, hq]
 
+/- English proof (translation)
+Introduce `K A J _ _ _ _ _ hA w v hv hG`. Set `L` to `FractionRing (Polynomial A)`. Establish `hinj : Function.Injective (algebraMap (Polynomial A) L)` using `IsFractionRing.injective _ _`. Establish `: Algebra.EssFiniteType (Polynomial A) L` using `.of_isLocalization L (nonZeroDivisors _)`. Establish `: Algebra.FiniteType K (Polynomial A)` using `.trans hA inferInstance`.
+
+Establish `: Algebra.EssFiniteType K L` using `.comp K (Polynomial A) L`. Set `ψ : MvPolynomial J K →ₐ[K] Polynomial A` to `MvPolynomial.aeval fun j => Polynomial.C (w j) * Polynomial.X`. Set `Φ : MvPolynomial J K →+* L` to `(algebraMap (Polynomial A) L).comp ψ.toRingHom`. Establish `hker : RingHom.ker Φ ≤ RingHom.ker (MvPolynomial.eval v)`. Introduce `G h`.
+
+Establish `h1 : ψ G = 0` using `hinj (h.trans (map_zero _).symm)`. Rewrite using `[RingHom.mem_ker, ← MvPolynomial.sum_homogeneousComponent G, map_sum]`. Use `Finset.sum_eq_zero fun d _ => hG _ d (MvPolynomial.homogeneousComponent_isHomogeneous d G) ?_` and prove the remaining obligations. Rewrite using `[← coeff_aeval_C_mul_X]`. Express the relevant statement in the definitionally equal form `(ψ G).coeff d = 0`.
+
+Rewrite using `[h1, Polynomial.coeff_zero]`. Establish `hne : (RingHom.ker (MvPolynomial.eval v)).map Φ.rangeRestrict ≠ ⊤`. Rewrite using `[Ideal.ne_top_iff_one, Ideal.mem_map_iff_of_surjective _ Φ.rangeRestrict_surjective]`. Introduce and unpack `⟨G, h1, h2⟩`. Establish `h3 : G - 1 ∈ RingHom.ker Φ`.
+
+Rewrite using `[RingHom.mem_ker, map_sub, map_one, sub_eq_zero]`. Conclude with `congrArg Subtype.val h2`. Establish `h4` using `hker h3`. Rewrite `h1`, `h4` using `[RingHom.mem_ker]`. Simplify using `[h1] at h4`.
+
+Take `⟨U, hU, hU'⟩` from `Ideal.image_subset_nonunits_valuationSubring (A := Φ.range) _ hne`. Establish `hC : ∀ r : K, Φ (MvPolynomial.C r) = algebraMap K L r` using `fun r => by`. Rewrite using `[IsScalarTower.algebraMap_apply K (Polynomial A) L, ← ψ.commutes]`. Both sides reduce to the same expression. Set `t : J → L` to `fun j => Φ (MvPolynomial.X j - MvPolynomial.C (v j))`.
+
+Establish `ht : ∀ j, t j = algebraMap (Polynomial A) L (Polynomial.C (w j) * Polynomial.X - Polynomial.C (algebraMap K A (v j)))` using `fun j => by`. Simplify using `[t, Φ, ψ]`. Take `⟨V, hV, hKV, -, htV⟩` from `exists_discreteValuationSubring_of_valuationSubring (R := K) U (fun r => hU ⟨_, hC r⟩) Set.finite_empty (Set.finite_range t) (by simp) (by`. Introduce and unpack `_ ⟨j, rfl⟩`. Conclude with `hU' ⟨_, Ideal.mem_map_of_mem _ (show MvPolynomial.X j - MvPolynomial.C (v j) ∈ _ by simp [RingHom.mem_ker]), rfl⟩)`.
+
+Use the proof step `(by`. Take `⟨j, hj⟩` from `Function.ne_iff.mp hv`. Use `⟨_, ⟨j, rfl⟩, fun h => hj ?_⟩` and prove the remaining obligations. Rewrite `h` using `[ht, map_eq_zero_iff _ hinj]`. Simplify using `using congrArg (Polynomial.coeff · 0) h)`.
+
+Set `W` to `AdicCompletion (maximalIdeal V) V`. Set `κ : K →+* V` to `(algebraMap K L).codRestrict V hKV`. Set `ι : V →+* W` to `algebraMap V W`. Use `letI : Algebra K W := (ι.comp κ).toAlgebra`. Establish `hι : Function.Injective ((algebraMap W (FractionRing W)).comp ι)` using `(IsFractionRing.injective W _).comp (algebraMap_adicCompletion_injective_of_dvr V)`.
+
+Set `g : L →+* FractionRing W` to `IsFractionRing.lift hι`. Establish `hg : ∀ x : V, g x = algebraMap W (FractionRing W) (ι x)` using `fun x => IsFractionRing.lift_algebraMap hι x`. Set `f : A →ₐ[K] FractionRing W` to `{ g.comp ((algebraMap (Polynomial A) L).comp Polynomial.C) with commutes' := fun r => by`. Rewrite using `[IsScalarTower.algebraMap_apply K W (FractionRing W)]`. Conclude with `hg (κ r) }`.
+
+Establish `htm : ∀ j, t j ∈ V` using `fun j => V.nonunits_subset (htV _ ⟨j, rfl⟩)`. Use `⟨W, inferInstance, inferInstance, inferInstance, inferInstance, f, g (algebraMap (Polynomial A) L Polynomial.X), fun j => ι (⟨t j, htm j⟩ + κ (v j)), inferInstance, ?_, fun j => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[map_ne_zero, map_ne_zero_iff _ hinj]`. Conclude with `Polynomial.X_ne_zero`. Rewrite using `[← hg]`.
+
+Express the relevant statement in the definitionally equal form `g (t j + algebraMap (Polynomial A) L (Polynomial.C (algebraMap K A (v j)))) = _ * g (algebraMap (Polynomial A) L (Polynomial.C (w j)))`. Rewrite using `[ht, ← map_add, sub_add_cancel, mul_comm, map_mul, map_mul]`. Express the relevant statement in the definitionally equal form `ι _ - ι (κ (v j)) ∈ _`. Rewrite using `[← map_sub, add_sub_cancel_right]`. Conclude with `map_nonunit ι _ ((ValuationSubring.coe_mem_nonunits_iff (a := ⟨t j, htm j⟩)).mp (htV _ ⟨j, rfl⟩))`.
+-/
 theorem exists_complete_discreteValuationRing_of_mem_closure_cone :
     ∀ (K A J : Type) [Field K] [CommRing A] [IsDomain A] [Algebra K A] [Fintype J], Algebra.FiniteType K A → ∀ (w : J → A) (v : J → K), v ≠ 0 → (∀ (G : MvPolynomial J K) (d : ℕ), G.IsHomogeneous d → MvPolynomial.aeval w G = 0 → MvPolynomial.eval v G = 0) → ∃ (W : Type) (_ : CommRing W) (_ : IsDomain W) (_ : IsDiscreteValuationRing W) (_ : Algebra K W) (f : A →ₐ[K] FractionRing W) (s : FractionRing W) (w' : J → W), IsAdicComplete (IsLocalRing.maximalIdeal W) W ∧ s ≠ 0 ∧ ∀ j, algebraMap W (FractionRing W) (w' j) = s * f (w j) ∧ w' j - algebraMap K W (v j) ∈ IsLocalRing.maximalIdeal W := by
   intro K A J _ _ _ _ _ hA w v hv hG

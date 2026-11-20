@@ -11,17 +11,29 @@ namespace DeltaTermLin
 
 variable {Ψ : Type} [Fintype Ψ] [DecidableEq Ψ] {N : ℕ}
 
+/- English proof (translation)
+Simplify using `only [degFl, coeff_add, mul_add, Finset.sum_add_distrib]`.
+-/
 theorem degFl_add (F G : RP Ψ N) : degFl (F + G) = degFl F + degFl G := by
   simp only [degFl, coeff_add, mul_add, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Simplify using `[degFl]`.
+-/
 theorem degFl_zero : degFl (0 : RP Ψ N) = 0 := by
   simp [degFl]
 
+/- English proof (translation)
+Simplify using `only [degFl, coeff_C_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem degFl_C_mul (a : ℝ) (F : RP Ψ N) : degFl (C a * F) = a * degFl F := by
   simp only [degFl, coeff_C_mul, Finset.mul_sum]
   refine Finset.sum_congr rfl fun σ _ => ?_
   ring
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [degFl_zero]`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, degFl_add, ih]`.
+-/
 theorem degFl_sum {ι : Type} (s : Finset ι) (f : ι → RP Ψ N) :
     degFl (∑ i ∈ s, f i) = ∑ i ∈ s, degFl (f i) := by
   classical
@@ -31,6 +43,13 @@ theorem degFl_sum {ι : Type} (s : Finset ι) (f : ι → RP Ψ N) :
 
 end DeltaTermLin
 
+/- English proof (translation)
+Introduce `Ψ _ _ N j p k hp hk φ τ Q`. Establish `hlie : ∀ σ : Ψ ⊕ Ψ, liePs (N` using `N) j (k - 1) σ = pLie j (k - 1) σ := by`. Apply the tactic sequence `rintro (s | s) <;> rfl`. Establish `hco` using `co_series_three_step.1 (Ψ ⊕ Ψ) φ p k hp hk (fun σ => degFl (pLie (N := N) j (k - 1) σ * Q)) (Sum.inl τ)`. Establish `hb : degFl (bracket j φ p k τ * Q) = (k : ℝ) * ∑ σ, co φ p k (Sum.inl τ) σ * degFl (pLie (N` using `N) j (k - 1) σ * Q) := by`.
+
+Unfold `bracket`. Rewrite using `[mul_assoc, DeltaTermLin.degFl_C_mul, Finset.sum_mul, DeltaTermLin.degFl_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[mul_assoc, DeltaTermLin.degFl_C_mul, hlie]`.
+
+Rewrite using `[hb, hco]`. Simplify using `only [deltaTerm, pLie]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem log_mul_degFl_bracket_mul : ∀ (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N j p k : ℕ), 2 ≤ p → 1 ≤ k → ∀ (φ : Equiv.Perm (Ψ ⊕ Ψ)) (τ : Ψ) (Q : RP Ψ N), Real.log p * degFl (bracket j φ p k τ * Q) = deltaTerm j p τ (fun n => (φ ^ (n + 1)) (Sum.inl τ)) k Q := by
   intro Ψ _ _ N j p k hp hk φ τ Q
   have hlie : ∀ σ : Ψ ⊕ Ψ, liePs (N := N) j (k - 1) σ = pLie j (k - 1) σ := by

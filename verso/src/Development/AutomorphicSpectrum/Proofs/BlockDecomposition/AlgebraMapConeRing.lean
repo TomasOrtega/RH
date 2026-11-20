@@ -10,6 +10,9 @@ open CrystallineSemistableComparison.Onto
 section Forms
 variable {K : Type} [CommRing K] {A B C : Type} [CommRing A] [CommRing B] [CommRing C] [Algebra K A] [Algebra K B] [Algebra K C]
 
+/- English proof (translation)
+Use `letI : Algebra A B := φ.toRingHom.toAlgebra`. Use `haveI : IsScalarTower K A B := IsScalarTower.of_algHom φ`. Establish `h` using `map_smul (exteriorPower.alternatingMapLinearEquiv { ((exteriorPower.ιMulti B a (M := Ω[B⁄K])).toMultilinearMap.restrictScalars A).compLinearMap fun _ => KaehlerDifferential.map K K A B with map_eq_zero_of_eq' := fun v i j h hij => (exteriorPower.ιMulti B a (M := Ω[B⁄K])).map_eq_z …`. Conclude with `h.trans (algebraMap_smul B c _)`.
+-/
 theorem omMap_smul (φ : A →ₐ[K] B) {a : ℕ} (c : A) (ω : Om K A a) :
     omMap φ a (c • ω) = φ c • omMap φ a ω := by
   letI : Algebra A B := φ.toRingHom.toAlgebra
@@ -22,6 +25,9 @@ theorem omMap_smul (φ : A →ₐ[K] B) {a : ℕ} (c : A) (ω : Om K A a) :
           (congrArg _ h) hij } : Om K A a →ₗ[A] Om K B a) c ω
   exact h.trans (algebraMap_smul B c _)
 
+/- English proof (translation)
+The claim follows from `IsScalarTower.of_algHom φ omMap φ a (exteriorPower.ιMulti A a g) = exteriorPower.ιMulti B a fun k => KaehlerDifferential.map K K A B (g k) := by letI : Algebra A B := φ.toRingHom.toAlgebra haveI : IsScalarTower K A B := IsScalarTower.of_algHom φ exact exteriorPower.alternatingMap …`.
+-/
 theorem omMap_ιMulti (φ : A →ₐ[K] B) {a : ℕ} (g : Fin a → Ω[A⁄K]) :
     letI : Algebra A B := φ.toRingHom.toAlgebra
     haveI : IsScalarTower K A B := IsScalarTower.of_algHom φ
@@ -30,6 +36,11 @@ theorem omMap_ιMulti (φ : A →ₐ[K] B) {a : ℕ} (g : Fin a → Ω[A⁄K]) :
   haveI : IsScalarTower K A B := IsScalarTower.of_algHom φ
   exact exteriorPower.alternatingMapLinearEquiv_apply_ιMulti _ _
 
+/- English proof (translation)
+Use `letI : Algebra A B := φ.toRingHom.toAlgebra`. Use `haveI : IsScalarTower K A B := IsScalarTower.of_algHom φ`. Unfold `form`. Rewrite using `[omMap_smul, omMap_ιMulti]`. Use `congr 2`.
+
+Use function extensionality and compare the values at `k`. Conclude with `KaehlerDifferential.map_D K K A B (g k)`.
+-/
 theorem omMap_form (φ : A →ₐ[K] B) {a : ℕ} (g₀ : A) (g : Fin a → A) :
     omMap φ a (form K g₀ g) = form K (φ g₀) fun k => φ (g k) := by
   letI : Algebra A B := φ.toRingHom.toAlgebra
@@ -40,6 +51,13 @@ theorem omMap_form (φ : A →ₐ[K] B) {a : ℕ} (g₀ : A) (g : Fin a → A) :
   funext k
   exact KaehlerDifferential.map_D K K A B (g k)
 
+/- English proof (translation)
+Proceed by induction on `hω using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨g₀, g, hg, rfl⟩` from `hx`. Rewrite using `[omMap_form]`. Use `Submodule.subset_span ⟨_, _, ?_, rfl⟩` and prove the remaining obligations.
+
+Break down `hg with hg | ⟨k, hk⟩` into its components or cases. Conclude with `Or.inl (h _ hg)`. Conclude with `Or.inr ⟨k, h _ hk⟩`. Consider the case `zero => rw [map_zero]`. Conclude with `Submodule.zero_mem _`.
+
+Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul c x _ hx => rw [omMap_smul]`. Conclude with `Submodule.smul_mem _ _ hx`.
+-/
 theorem omMap_mem_relOm (φ : A →ₐ[K] B) {I : Ideal A} {J : Ideal B} (h : ∀ x ∈ I, φ x ∈ J) (a : ℕ)
     {ω : Om K A a} (hω : ω ∈ relOm K I a) : omMap φ a ω ∈ relOm K J a := by
   induction hω using Submodule.span_induction with
@@ -59,6 +77,9 @@ def relMap (φ : A →ₐ[K] B) {I : Ideal A} {J : Ideal B} (h : ∀ x ∈ I, φ
   ((omMap φ a).comp ((relOm K I a).subtype.restrictScalars K)).codRestrict ((relOm K J a).restrictScalars K)
     fun ω => omMap_mem_relOm φ h a ω.2
 
+/- English proof (translation)
+The claim follows from `IsScalarTower.of_algHom φ haveI : IsScalarTower K B C := IsScalarTower.of_algHom χ haveI : IsScalarTower K A C := IsScalarTower.of_algHom (χ.comp φ) KaehlerDifferential.map K K B C (KaehlerDifferential.map K K A B v) = KaehlerDifferential.map K K A C v := by letI : Algebra A B := …`.
+-/
 theorem map_map_apply (φ : A →ₐ[K] B) (χ : B →ₐ[K] C) (v : Ω[A⁄K]) :
     letI : Algebra A B := φ.toRingHom.toAlgebra
     letI : Algebra B C := χ.toRingHom.toAlgebra
@@ -89,6 +110,13 @@ theorem map_map_apply (φ : A →ₐ[K] B) (χ : B →ₐ[K] C) (v : Ω[A⁄K]) 
     rw [h1, map_smul, hx, map_smul]
     exact algebraMap_smul B c _
 
+/- English proof (translation)
+Establish `hs : ω ∈ (⊤ : Submodule A (Om K A a))` using `trivial`. Rewrite `hs` using `[← exteriorPower.ιMulti_span]`. Proceed by induction on `hs using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨v, rfl⟩` from `hx`.
+
+Rewrite using `[omMap_ιMulti, omMap_ιMulti, omMap_ιMulti]`. Use `congr 1`. Use function extensionality and compare the values at `k`. Conclude with `map_map_apply φ χ (v k)`. Consider the case `zero => rw [map_zero, map_zero, map_zero]`.
+
+Consider the case `add x y _ _ hx hy => simp only [map_add, hx, hy]`. Consider the case `smul c x _ hx => rw [omMap_smul, omMap_smul, omMap_smul, hx]`. Both sides reduce to the same expression.
+-/
 theorem omMap_comp (φ : A →ₐ[K] B) (χ : B →ₐ[K] C) (a : ℕ) (ω : Om K A a) :
     omMap χ a (omMap φ a ω) = omMap (χ.comp φ) a ω := by
   have hs : ω ∈ (⊤ : Submodule A (Om K A a)) := trivial
@@ -130,6 +158,9 @@ variable {n d}
 
 def tdeg (g : Gam n d) : ℤ := ∑ j, g (Sum.inr j)
 
+/- English proof (translation)
+Simplify using `[tdeg, Finset.sum_add_distrib]`.
+-/
 theorem tdeg_add (g g' : Gam n d) : tdeg (g + g') = tdeg g + tdeg g' := by
   simp [tdeg, Finset.sum_add_distrib]
 
@@ -139,11 +170,19 @@ def cone (S : Finset (Fin d)) : AddSubmonoid (Gam n d) where
     rw [tdeg_add]; exact add_nonneg h.2.2 h'.2.2⟩
   zero_mem' := ⟨fun _ => le_rfl, fun _ _ => le_rfl, by simp [tdeg]⟩
 
+/- English proof (translation)
+Introduce `_ hg` and use `⟨hg.1, fun j hj => hg.2.1 j fun hS => hj (h hS), hg.2.2⟩`.
+-/
 theorem cone_mono {S T : Finset (Fin d)} (h : S ⊆ T) : (cone S : AddSubmonoid (Gam n d)) ≤ cone T :=
   fun _ hg => ⟨hg.1, fun j hj => hg.2.1 j fun hS => hj (h hS), hg.2.2⟩
 
 def oneE (e : E n d) : Gam n d := Pi.single e 1
 
+/- English proof (translation)
+Establish `h0 : ∀ e', 0 ≤ oneE e e'` using `fun e' => by`. Unfold `oneE`. Distinguish the cases in `h : e' = e`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+
+Simplify using `[Pi.single_eq_of_ne h]`. Conclude with `⟨fun _ => h0 _, fun _ _ => h0 _, Finset.sum_nonneg fun _ _ => h0 _⟩`.
+-/
 theorem oneE_mem (S : Finset (Fin d)) (e : E n d) : oneE e ∈ (cone S : AddSubmonoid (Gam n d)) := by
   have h0 : ∀ e', 0 ≤ oneE e e' := fun e' => by
     unfold oneE
@@ -171,12 +210,20 @@ variable (K) in
 
 def mon {M : AddSubmonoid (Gam n d)} (g : Gam n d) (hg : g ∈ M) : Rg K M := AddMonoidAlgebra.single ⟨g, hg⟩ 1
 
+/- English proof (translation)
+Simplify using `only [incl, mon, AddMonoidAlgebra.mapDomainAlgHom_apply]`. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
+-/
 theorem incl_mon {M M' : AddSubmonoid (Gam n d)} (h : M ≤ M') (g : Gam n d) (hg : g ∈ M) :
     incl h (mon K g hg) = mon K g (h hg) := by
   simp only [incl, mon, AddMonoidAlgebra.mapDomainAlgHom_apply]
   simp
   rfl
 
+/- English proof (translation)
+Use `AlgHom.ext fun x => ?_` and prove the remaining obligations. Proceed by induction on `x using AddMonoidAlgebra.induction_linear with`. Consider the case `zero => rw [map_zero, map_zero]`. Consider the case `add f g hf hg => rw [map_add, map_add, hf, hg]`. Consider the case `single m c`.
+
+Simplify using `only [incl, AlgHom.comp_apply, AddMonoidAlgebra.mapDomainAlgHom_apply]`. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
+-/
 theorem incl_comp {M M' M'' : AddSubmonoid (Gam n d)} (h : M ≤ M') (h' : M' ≤ M'') :
     (incl (K := K) h').comp (incl h) = incl (h.trans h') := by
   refine AlgHom.ext fun x => ?_
@@ -188,6 +235,9 @@ theorem incl_comp {M M' M'' : AddSubmonoid (Gam n d)} (h : M ≤ M') (h' : M' �
     simp
     rfl
 
+/- English proof (translation)
+Simplify using `only [mon, AddMonoidAlgebra.single_mul_single, mul_one]`. Both sides reduce to the same expression.
+-/
 theorem mon_mul {M : AddSubmonoid (Gam n d)} (g g' : Gam n d) (hg : g ∈ M) (hg' : g' ∈ M) :
     mon K g hg * mon K g' hg' = mon K (g + g') (M.add_mem hg hg') := by
   simp only [mon, AddMonoidAlgebra.single_mul_single, mul_one]
@@ -200,11 +250,20 @@ def poly (S : Finset (Fin d)) : Bp K n d →ₐ[K] R0 K n d S :=
 
 instance (S : Finset (Fin d)) : Algebra (Bp K n d) (R0 K n d S) := (poly n K S).toRingHom.toAlgebra
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem algebraMap_cone_ring (S : Finset (Fin d)) (b : Bp K n d) : algebraMap (Bp K n d) (R0 K n d S) b = poly n K S b := rfl
 
+/- English proof (translation)
+Simplify using `[poly]`.
+-/
 theorem poly_X (S : Finset (Fin d)) (e : E n d) : poly n K S (MvPolynomial.X e) = mon K (oneE e) (oneE_mem S e) := by
   simp [poly]
 
+/- English proof (translation)
+Establish `: (incl (cone_mono h)).comp (poly n K S) = poly n K T`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `e`. Simplify using `only [AlgHom.comp_apply, poly_X, incl_mon]`. Conclude with `DFunLike.congr_fun this b`.
+-/
 theorem incl_poly {S T : Finset (Fin d)} (h : S ⊆ T) (b : Bp K n d) :
     incl (cone_mono h) (poly n K S b) = poly n K T b := by
   have : (incl (cone_mono h)).comp (poly n K S) = poly n K T := by
@@ -220,9 +279,17 @@ def I0 (S : Finset (Fin d)) : Ideal (R0 K n d S) :=
 
 def ratE (k j : Fin d) : Gam n d := oneE (Sum.inr j) - oneE (Sum.inr k)
 
+/- English proof (translation)
+Simplify using `[tdeg, oneE, Pi.single_apply]`.
+-/
 theorem tdeg_oneE_inr (j : Fin d) : tdeg (oneE (Sum.inr j) : Gam n d) = 1 := by
   simp [tdeg, oneE, Pi.single_apply]
 
+/- English proof (translation)
+Use `⟨fun l => by simp [ratE, oneE], fun j' hj' => ?_, ?_⟩` and prove the remaining obligations. Establish `hne : j' ≠ k` using `fun h => hj' (h ▸ hk)`. Simplify using `only [ratE, oneE, Pi.sub_apply, Pi.single_apply, Sum.inr.injEq, if_neg hne, sub_zero]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `h1` using `tdeg_add (ratE k j : Gam n d) (oneE (Sum.inr k))`.
+
+Establish `h2 : (ratE k j : Gam n d) + oneE (Sum.inr k) = oneE (Sum.inr j)` using `by simp [ratE]`. Rewrite `h1` using `[h2, tdeg_oneE_inr, tdeg_oneE_inr]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem ratE_mem {S : Finset (Fin d)} {k : Fin d} (hk : k ∈ S) (j : Fin d) : ratE k j ∈ (cone S : AddSubmonoid (Gam n d)) := by
   refine ⟨fun l => by simp [ratE, oneE], fun j' hj' => ?_, ?_⟩
   · have hne : j' ≠ k := fun h => hj' (h ▸ hk)
@@ -233,6 +300,15 @@ theorem ratE_mem {S : Finset (Fin d)} {k : Fin d} (hk : k ∈ S) (j : Fin d) : r
     rw [h2, tdeg_oneE_inr, tdeg_oneE_inr] at h1
     linarith
 
+/- English proof (translation)
+Establish `hle : I0 n K S ≤ (I0 n K T).comap (incl (cone_mono h))`. Use `Ideal.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨k, hk, rfl⟩`. Express the relevant statement in the definitionally equal form `incl (cone_mono h) _ ∈ I0 n K T`. Rewrite using `[incl_mon]`.
+
+Distinguish the cases in `hT : T = ∅`. Conclude with `Ideal.subset_span ⟨k, Or.inl hT, rfl⟩`. Distinguish the cases in `hkT : k ∈ T`. Conclude with `Ideal.subset_span ⟨k, Or.inr hkT, rfl⟩`. Take `⟨k', hk'⟩` from `Finset.nonempty_iff_ne_empty.2 hT`.
+
+Establish `e : (oneE (Sum.inr k) : Gam n d) = oneE (Sum.inr k') + ratE k' k` using `by simp [ratE]`. Establish `hm : mon K (oneE (Sum.inr k) : Gam n d) (cone_mono h (oneE_mem S _)) = mon K (oneE (Sum.inr k')) (oneE_mem T _) * mon K (ratE k' k) (ratE_mem hk' k)`. Rewrite using `[mon_mul]`. Simplify using `only [e]`. Rewrite using `[hm]`.
+
+Conclude with `Ideal.mul_mem_right _ _ (Ideal.subset_span ⟨k', Or.inr hk', rfl⟩)`. Conclude with `hle hx`.
+-/
 theorem cone_ideal_map_mono {S T : Finset (Fin d)} (h : S ⊆ T) (x : R0 K n d S) (hx : x ∈ I0 n K S) : incl (cone_mono h) x ∈ I0 n K T := by
   have hle : I0 n K S ≤ (I0 n K T).comap (incl (cone_mono h)) := by
     refine Ideal.span_le.2 ?_
@@ -256,6 +332,9 @@ def wv (k : Fin d) : E n d → Gam n d
   | Sum.inl l => oneE (Sum.inl l)
   | Sum.inr j => if j = k then oneE (Sum.inr k) else ratE k j
 
+/- English proof (translation)
+Break down `e with l | j` into its components or cases. Conclude with `oneE_mem S _`. Simplify using `only [wv] split_ifs`. Conclude with `oneE_mem S _`. Conclude with `ratE_mem hk j`.
+-/
 theorem wv_mem {S : Finset (Fin d)} {k : Fin d} (hk : k ∈ S) (e : E n d) : wv k e ∈ (cone S : AddSubmonoid (Gam n d)) := by
   rcases e with l | j
   · exact oneE_mem S _
@@ -331,6 +410,11 @@ def thetaLin {S : Finset (Fin d)} (θ : R0 K n d S →ₐ[K] C.R S) (hθ : ∀ b
     change θ (poly n K S b * y) = toR C S (phi C b) * θ y
     rw [map_mul, hθ]
 
+/- English proof (translation)
+Establish `hle : I0 n K S ≤ (C.I S).comap θ`. Use `Ideal.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨k, hk, rfl⟩`. Express the relevant statement in the definitionally equal form `θ _ ∈ C.I S`. Rewrite using `[← poly_X, hθ]`.
+
+Use `Ideal.subset_span ⟨k, hk, ?_⟩` and prove the remaining obligations. Simplify using `[toR, phi]`. Conclude with `hle hx`.
+-/
 theorem theta_mem_I {S : Finset (Fin d)} (θ : R0 K n d S →ₐ[K] C.R S) (hθ : ∀ b, θ (poly n K S b) = toR C S (phi C b))
     (x : R0 K n d S) (hx : x ∈ I0 n K S) : θ x ∈ C.I S := by
   have hle : I0 n K S ≤ (C.I S).comap θ := by
@@ -352,6 +436,13 @@ def psi {S : Finset (Fin d)} (θ : R0 K n d S →ₐ[K] C.R S) (hθ : ∀ b, θ 
     rw [← hθ, ← omMap_smul]
     congr 1
 
+/- English proof (translation)
+Establish `hle : C.I S ≤ (C.I T).comap (C.res h)`. Use `Ideal.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨k, hk, rfl⟩`. Express the relevant statement in the definitionally equal form `C.res h _ ∈ C.I T`. Rewrite using `[C.res_comp]`.
+
+Distinguish the cases in `hT : T = ∅`. Conclude with `Ideal.subset_span ⟨k, Or.inl hT, rfl⟩`. Distinguish the cases in `hkT : k ∈ T`. Conclude with `Ideal.subset_span ⟨k, Or.inr hkT, rfl⟩`. Take `⟨k', hk'⟩` from `Finset.nonempty_iff_ne_empty.2 hT`.
+
+Rewrite using `[C.t_eq T k' hk' k]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.subset_span ⟨k', Or.inr hk', rfl⟩)`. Conclude with `hle hx`.
+-/
 theorem res_mem_I {S T : Finset (Fin d)} (h : S ⊆ T) (x : C.R S) (hx : x ∈ C.I S) : C.res h x ∈ C.I T := by
   have hle : C.I S ≤ (C.I T).comap (C.res h) := by
     refine Ideal.span_le.2 ?_
@@ -367,9 +458,15 @@ theorem res_mem_I {S T : Finset (Fin d)} (h : S ⊆ T) (x : C.R S) (hx : x ∈ C
       exact Ideal.mul_mem_right _ _ (Ideal.subset_span ⟨k', Or.inr hk', rfl⟩)
   exact hle hx
 
+/- English proof (translation)
+Simplify using `[toR, C.res_comp]`.
+-/
 theorem res_toR {S T : Finset (Fin d)} (h : S ⊆ T) (c : A) : C.res h (toR C S c) = toR C T c := by
   simp [toR, C.res_comp]
 
+/- English proof (translation)
+Use `C.etale` as an intermediate fact. Conclude with `this`.
+-/
 theorem etale_Aa : Algebra.Etale (Bp K n d) (Aa C) := by
   have := C.etale
   exact this

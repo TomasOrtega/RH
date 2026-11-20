@@ -10,10 +10,20 @@ namespace ReciprocityTheory.PGsh.L2
 variable {C : Type} [Field C] {R : Type} [CommRing R] [Algebra R C] {v : Valuation C NNReal}
 variable {N : Type} [AddCommGroup N] [Fintype N] [DecidableEq N]
 
+/- English proof (translation)
+Conclude with `AA.le_int hf x`.
+-/
 theorem hopfOrder_exists_algebraMap_eq_of_mem (AA : HopfOrder (C := C) R N) {f : N → C} (hf : f ∈ AA.carrier) (x : N) :
     ∃ r : R, algebraMap R C r = f x := by
   exact AA.le_int hf x
 
+/- English proof (translation)
+Establish `key : tensorSpan R AA.carrier ≤ AA.carrier.comap (LinearMap.funLeft R C (fun x : N => (x, y)))`. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `F ⟨g, hg, h, hh, rfl⟩`. Take `⟨r, hr⟩` from `AA.le_int hh y`. Rewrite using `[SetLike.mem_coe, Submodule.mem_comap]`.
+
+Establish `e : LinearMap.funLeft R C (fun x : N => (x, y)) (fun p : N × N => g p.1 * h p.2) = r • g`. Use extensionality with `x`. Simplify using `[Algebra.smul_def, hr, mul_comm]`. Rewrite using `[e]`. Conclude with `AA.carrier.smul_mem r hg`.
+
+Conclude with `key (AA.comul f hf)`.
+-/
 theorem hopfOrder_translate_mem (AA : HopfOrder (C := C) R N) {f : N → C} (hf : f ∈ AA.carrier) (y : N) :
     (fun x => f (x + y)) ∈ AA.carrier := by
   have key : tensorSpan R AA.carrier ≤
@@ -27,6 +37,15 @@ theorem hopfOrder_translate_mem (AA : HopfOrder (C := C) R N) {f : N → C} (hf 
     rw [e]; exact AA.carrier.smul_mem r hg
   exact key (AA.comul f hf)
 
+/- English proof (translation)
+Set `φR` to `φ.restrictScalars R`. Set `Ψ : (N × N → C) →ₗ[R] (N → C)` to `(φR.compLeft N) ∘ₗ (LinearEquiv.curry R C N K).toLinearMap ∘ₗ LinearMap.funLeft R C (fun p : N × K => (p.1, (p.2 : N)))`. Establish `key : tensorSpan R AA.carrier ≤ AA.carrier.comap Ψ`. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `F ⟨g, hg, h, hh, rfl⟩`.
+
+Take `⟨r, hr⟩` from `hφ (resK (R := R) K h) (Submodule.mem_map_of_mem hh)`. Rewrite using `[SetLike.mem_coe, Submodule.mem_comap]`. Establish `e : Ψ (fun p : N × N => g p.1 * h p.2) = r • g`. Use extensionality with `x`. Establish `: (fun k : K => g x * h k) = g x • resK (R` using `R) K h := by`.
+
+Use extensionality with `k`. Simplify using `[resK]`. Simplify using `only [Ψ, φR, LinearMap.coe_comp, Function.comp_apply, LinearMap.compLeft_apply, LinearEquiv.coe_coe, LinearMap.restrictScalars_apply]`. Use `show φ (fun k : K => g x * h k) = (r • g) x`. Rewrite using `[this, φ.map_smul, ← hr]`.
+
+Simplify using `[Algebra.smul_def, mul_comm]`. Rewrite using `[e]`. Conclude with `AA.carrier.smul_mem r hg`. Conclude with `key (AA.comul f hf)`.
+-/
 theorem coset_functional_mem (AA : HopfOrder (C := C) R N) (K : AddSubgroup N) [DecidablePred (· ∈ K)] (φ : (K → C) →ₗ[C] C)
     (hφ : ∀ h ∈ AA.carrier.map (resK (R := R) K), ∃ r : R, algebraMap R C r = φ h)
     {f : N → C} (hf : f ∈ AA.carrier) :
@@ -55,12 +74,24 @@ theorem coset_functional_mem (AA : HopfOrder (C := C) R N) (K : AddSubgroup N) [
 def h3co (K : AddSubgroup N) [DecidablePred (· ∈ K)] (β : Matrix K K C) (f : N → C) (x : N) : K → C :=
   β⁻¹ *ᵥ fun k : K => f (x + k)
 
+/- English proof (translation)
+Establish `e : β *ᵥ (β⁻¹ *ᵥ fun k' : K => f (x + k')) = fun k' : K => f (x + k')`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ hβ, Matrix.one_mulVec]`. Conclude with `(congrFun e k).symm`.
+-/
 theorem cosetCoordinates_expand (K : AddSubgroup N) [DecidablePred (· ∈ K)] (β : Matrix K K C) (hβ : IsUnit β.det) (f : N → C)
     (x : N) (k : K) : f (x + k) = ∑ l, β k l * h3co K β f x l := by
   have e : β *ᵥ (β⁻¹ *ᵥ fun k' : K => f (x + k')) = fun k' : K => f (x + k') := by
     rw [Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ hβ, Matrix.one_mulVec]
   exact (congrFun e k).symm
 
+/- English proof (translation)
+Rewrite `hh` using `[hAK]`. Proceed by induction on `hh using Submodule.span_induction with`. Consider the case `mem g hg`. Take `⟨j, rfl⟩` from `hg`. Establish `e : β⁻¹ *ᵥ (fun k => β k j) = Pi.single j 1`.
+
+Use extensionality with `l'`. Use `congrFun (congrFun (Matrix.nonsing_inv_mul β hβ) l') j` as an intermediate fact. Simplify `this` using `[Matrix.mulVec, dotProduct, Matrix.mul_apply, Matrix.one_apply, Pi.single_apply, eq_comm]`. Rewrite using `[e]`. Distinguish the cases in `hl : l = j`.
+
+Conclude with `⟨1, by simp [hl]⟩`. Conclude with `⟨0, by simp [hl]⟩`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `add a b _ _ ha hb`. Take `⟨r, hr⟩` from `ha`.
+
+Take `⟨s, hs⟩` from `hb`. Conclude with `⟨r + s, by simp [Matrix.mulVec_add, hr, hs]⟩`. Consider the case `smul c a _ ha`. Take `⟨r, hr⟩` from `ha`. Conclude with `⟨c * r, by rw [Matrix.mulVec_smul]; simp [hr, Algebra.smul_def]⟩`.
+-/
 theorem exists_algebraMap_eq_inv_mulVec (AA : HopfOrder (C := C) R N) (K : AddSubgroup N) [DecidablePred (· ∈ K)] (β : Matrix K K C)
     (hβ : IsUnit β.det)
     (hAK : AA.carrier.map (resK (R := R) K) = Submodule.span R (Set.range fun j k => β k j))
@@ -88,6 +119,9 @@ theorem exists_algebraMap_eq_inv_mulVec (AA : HopfOrder (C := C) R N) (K : AddSu
     obtain ⟨r, hr⟩ := ha
     exact ⟨c * r, by rw [Matrix.mulVec_smul]; simp [hr, Algebra.smul_def]⟩
 
+/- English proof (translation)
+Conclude with `coset_functional_mem AA K ((LinearMap.proj l).comp (Matrix.mulVecLin β⁻¹)) (fun h hh => exists_algebraMap_eq_inv_mulVec AA K β hβ hAK hh l) hf`.
+-/
 theorem cosetCoordinates_mem (AA : HopfOrder (C := C) R N) (K : AddSubgroup N) [DecidablePred (· ∈ K)] (β : Matrix K K C)
     (hβ : IsUnit β.det)
     (hAK : AA.carrier.map (resK (R := R) K) = Submodule.span R (Set.range fun j k => β k j))
@@ -99,6 +133,11 @@ theorem cosetCoordinates_mem (AA : HopfOrder (C := C) R N) (K : AddSubgroup N) [
 def h3T (K : AddSubgroup N) [DecidablePred (· ∈ K)] (β : Matrix K K C) (k : K) : Matrix K K C :=
   Matrix.of fun l l' => (β⁻¹ *ᵥ fun k' : K => β (k + k') l) l'
 
+/- English proof (translation)
+Use extensionality with `l'`. Establish `hw : (fun k' : K => f (x + k + k')) = ∑ l, h3co K β f x l • (fun k' : K => β (k + k') l)`. Use extensionality with `k'`. Rewrite using `[show (x + (k : N) + (k' : N)) = x + ((k + k' : K) : N) by simp [add_assoc], cosetCoordinates_expand K β hβ f x (k + k')]`. Simplify using `[Finset.sum_apply, mul_comm]`.
+
+Use `show (β⁻¹ *ᵥ fun k' : K => f (x + k + k')) l' = _`. Rewrite using `[hw, Matrix.mulVec_sum]`. Simplify using `only [Matrix.mulVec_smul, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Matrix.vecMul, dotProduct, h3T, Matrix.of_apply]`.
+-/
 theorem cosetCoordinates_add (K : AddSubgroup N) [DecidablePred (· ∈ K)] (β : Matrix K K C) (hβ : IsUnit β.det) (f : N → C)
     (x : N) (k : K) : h3co K β f (x + k) = h3co K β f x ᵥ* h3T K β k := by
   ext l'
@@ -113,6 +152,11 @@ theorem cosetCoordinates_add (K : AddSubgroup N) [DecidablePred (· ∈ K)] (β 
   simp only [Matrix.mulVec_smul, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Matrix.vecMul,
     dotProduct, h3T, Matrix.of_apply]
 
+/- English proof (translation)
+Use `choose Mr hMr using hM`. Establish `e : M = (algebraMap R C).mapMatrix (Matrix.of Mr)`. Use extensionality with `i j`. Simplify using `[hMr]`. Rewrite using `[e, ← RingHom.map_det]`.
+
+Conclude with `hv.map_le_one _`.
+-/
 theorem valuation_det_le_one_of_entries_integral (hv : v.Integers R) {X : Type} [Fintype X] [DecidableEq X]
     (M : Matrix X X C) (hM : ∀ i j, ∃ r : R, algebraMap R C r = M i j) : v M.det ≤ 1 := by
   choose Mr hMr using hM
@@ -124,6 +168,9 @@ theorem valuation_det_le_one_of_entries_integral (hv : v.Integers R) {X : Type} 
 def h3mm (K : AddSubgroup N) [DecidablePred (· ∈ K)] (β : Matrix K K C) (f : K → N → C) (x : N) : Matrix K K C :=
   Matrix.of fun j l => h3co K β (f j) x l
 
+/- English proof (translation)
+Use extensionality with `j l'`. Simplify using `only [h3mm, Matrix.of_apply, Matrix.mul_apply]`. Rewrite using `[cosetCoordinates_add K β hβ (f j) x k]`. Simplify using `[Matrix.vecMul, dotProduct]`.
+-/
 theorem cosetCoordinateMatrix_add (K : AddSubgroup N) [DecidablePred (· ∈ K)] (β : Matrix K K C) (hβ : IsUnit β.det) (f : K → N → C)
     (x : N) (k : K) : h3mm K β f (x + k) = h3mm K β f x * h3T K β k := by
   ext j l'
@@ -131,6 +178,13 @@ theorem cosetCoordinateMatrix_add (K : AddSubgroup N) [DecidablePred (· ∈ K)]
   rw [cosetCoordinates_add K β hβ (f j) x k]
   simp [Matrix.vecMul, dotProduct]
 
+/- English proof (translation)
+Rewrite using `[cosetCoordinateMatrix_add K β hβ f x k, Matrix.det_mul, map_mul]`. It suffices to establish `h : v (h3T K β k).det = 1 by rw [h, mul_one]`. Establish `hT : h3T K β k = (β⁻¹ * β.submatrix (Equiv.addLeft k) id)ᵀ`. Use extensionality with `l l'`. Simplify using `[h3T, Matrix.mulVec, dotProduct, Matrix.mul_apply]`.
+
+Rewrite using `[hT, Matrix.det_transpose, Matrix.det_mul, Matrix.det_permute, Matrix.det_nonsing_inv]`. Establish `hd : β.det ≠ 0` using `hβ.ne_zero`. Establish `hs : v ((Equiv.Perm.sign (Equiv.addLeft k) : ℤ) : C) = 1`. Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign (Equiv.addLeft k)) with h | h <;>`. Simplify using `[h, Valuation.map_neg]`.
+
+Rewrite using `[Ring.inverse_eq_inv', map_mul, map_mul, hs, one_mul, map_inv₀, inv_mul_cancel₀]`. Conclude with `(Valuation.ne_zero_iff v).mpr hd`.
+-/
 theorem valuation_det_cosetCoordinateMatrix_add (hv : v.Integers R) (AA : HopfOrder (C := C) R N) (K : AddSubgroup N) [DecidablePred (· ∈ K)]
     (β : Matrix K K C) (hβ : IsUnit β.det)
     (hAK : AA.carrier.map (resK (R := R) K) = Submodule.span R (Set.range fun j k => β k j))
@@ -157,6 +211,13 @@ def hopfOrderSubgroup (AA : HopfOrder (C := C) R N) : Subring (N → C) where
   zero_mem' := AA.carrier.zero_mem
   neg_mem' := fun ha => AA.carrier.neg_mem ha
 
+/- English proof (translation)
+Set `F' : Matrix X X (hopfOrderSubgroup AA)` to `Matrix.of fun i j => ⟨F i j, hF i j⟩`. Establish `hF' : F = (hopfOrderSubgroup AA).subtype.mapMatrix F'` using `Matrix.ext fun i j => rfl`. Use `⟨?_, fun i j => ?_⟩` and prove the remaining obligations. Establish `e : (fun x => (F.map fun g => g x).det) = F.det`. Use function extensionality and compare the values at `x`.
+
+Conclude with `((Pi.evalRingHom (fun _ : N => C) x).map_det F).symm`. Rewrite using `[e, hF', ← RingHom.map_det]`. Conclude with `(F'.det).2`. Establish `e : (fun x => (F.map fun g => g x).adjugate i j) = F.adjugate i j`. Use function extensionality and compare the values at `x`.
+
+Use `(Pi.evalRingHom (fun _ : N => C) x).map_adjugate F` as an intermediate fact. Conclude with `(congrFun (congrFun this i) j).symm`. Rewrite using `[e, hF', ← RingHom.map_adjugate]`. Conclude with `(F'.adjugate i j).2`.
+-/
 theorem det_mem_and_adjugate_mem (AA : HopfOrder (C := C) R N) {X : Type} [Fintype X] [DecidableEq X]
     (F : Matrix X X (N → C)) (hF : ∀ i j, F i j ∈ AA.carrier) :
     (fun x => (F.map fun g => g x).det) ∈ AA.carrier ∧
@@ -176,6 +237,11 @@ theorem det_mem_and_adjugate_mem (AA : HopfOrder (C := C) R N) {X : Type} [Finty
     rw [e, hF', ← RingHom.map_adjugate]
     exact (F'.adjugate i j).2
 
+/- English proof (translation)
+Establish `hE : (fun k : K => (pullQ (R` using `R) K e * f) (x + k)) = e (x : N ⧸ K) • fun k : K => f (x + k) := by`. Use extensionality with `k`. Use `show e ((x + k : N) : N ⧸ K) * f (x + k) = e (x : N ⧸ K) * f (x + k)`. Rewrite using `[QuotientAddGroup.mk_add, (QuotientAddGroup.eq_zero_iff _).mpr k.2, add_zero]`. Use `show β⁻¹ *ᵥ (fun k : K => (pullQ (R := R) K e * f) (x + k)) = _`.
+
+Rewrite using `[hE, Matrix.mulVec_smul]`. Both sides reduce to the same expression.
+-/
 theorem cosetCoordinates_pullbackQuotient_mul (K : AddSubgroup N) [DecidablePred (· ∈ K)] (β : Matrix K K C) (e : N ⧸ K → C) (f : N → C)
     (x : N) : h3co K β (pullQ (R := R) K e * f) x = e (x : N ⧸ K) • h3co K β f x := by
   have hE : (fun k : K => (pullQ (R := R) K e * f) (x + k)) =

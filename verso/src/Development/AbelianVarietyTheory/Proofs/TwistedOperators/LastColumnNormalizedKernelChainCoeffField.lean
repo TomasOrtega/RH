@@ -12,9 +12,21 @@ noncomputable section
 namespace GlobalTheory.RowRat
 open Formalism.L2.DIV MvPolynomial
 
+/- English proof (translation)
+The claim follows from `DFunLike.congr_fun D.embE_φ₀ (D.host.sigmaOf (D.eTau τ).1 x)`.
+-/
 theorem embLL_labLL {D : D7} (τ : D.what₂.Tau) (x : D.host.E) : D.what₂.embLL (labLL D τ x) = tauE D τ x :=
   DFunLike.congr_fun D.embE_φ₀ (D.host.sigmaOf (D.eTau τ).1 x)
 
+/- English proof (translation)
+Introduce `D Γ _ _ Pl0 T A Ks _ _ _ R ch large₂ F _ _ hF t Φ hSum β hβ τ hτ d hd c v hv`. Establish `h0` using `GlobalTheory.T.covariantVectorToFunctionForm_coeff_mem_range _ D.what₂.embLL hSum.read.1 v hv`. Establish `h1` using `GlobalTheory.T.coeff_coefficientSpaceAction_mem_range (tauE D) D.what₂.embLL (fun τ x => ⟨labLL D τ x, embLL_labLL τ x⟩) _ (ch.S.N.fr (.grid 0 D.R.m))⁻¹ _ h0`. Establish `gen : ∀ (k : ∀ i, VV ℂ (wt ch.G (.grid i D.R.m)) →ₗ[ℂ] VV ℂ (wt ch.G (.grid (i + 1) D.R.m))), (∀ i (w : VV ℂ (wt ch.G (.grid i D.R.m))), (∀ m, coeff m w.1 ∈ Set.range D.what₂.embLL) → ∀ m, coeff m (k i w).1 ∈ Set.range D.what₂.embLL) → ∀ j (w : VV ℂ (wt ch.G (.grid 0 D.R.m))), (∀ …` using `fun i => VV ℂ (wt ch.G (.grid i D.R.m))) k j w).1 ∈ Set.range D.what₂.embLL := by`. Introduce `k hk j`.
+
+Proceed by induction on `j with`. Consider the case `zero => intro w hw`. Conclude with `hw`. Consider the case `succ j ih => intro w hw`. Conclude with `hk j _ (ih w hw)`.
+
+Simplify using `only [GlobalTheory.FunObj.GridChoice.rowMap, LinearMap.comp_apply]`. Use `gen _ (fun i w hw m => ?_) D.R.m _ h1` and prove the remaining obligations. Use `split_ifs with h`. Use `coeff_map_mem _ _ (fun a b => ?_) w hw m` and prove the remaining obligations. Use `(hF.isRatAt hβ hτ hd c).2 ⟨i, h⟩ a b` as an intermediate fact.
+
+Simplify `this` using `[GlobalTheory.FunObj.Normal.IsRatAt, GlobalTheory.FunObj.Normal.IsRatIn, GlobalTheory.FunObj.Normal.kkIn, LinearMap.toMatrix_apply]`. Conclude with `⟨0, by simp⟩`.
+-/
 theorem rowMap_coeff_mem : ∀ {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type} {A : FamIn D.what₂.LL Γ Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks} (ch : Choice R) (large₂ : SizeData₂ D) (F : Face D A), HidaSetting large₂ R F → ch.Is → ch.FieldOK → ∀ (t : T) (Φ : ch.G.Datum), ch.S.SumOK t Φ → ∀ β ∈ ch.S.supp t Φ, ∀ τ, IsCosetExpansion ch.S.toGridChoice t Φ β (expDepth ch.S.toGridChoice t Φ β) τ → ∀ d ∈ τ.support, ∀ (c : ch.S.Classes t Φ β) (v : VV ℂ (listedWt ch.G (.grid 0 D.R.m))), (∀ m, MvPolynomial.coeff m v.1 ∈ Set.range D.what₂.embLL) → ∀ m, MvPolynomial.coeff m (ch.S.rowMap d (ch.S.ptRow c) v).1 ∈ Set.range D.what₂.embLL := by
   intro D Γ _ _ Pl0 T A Ks _ _ _ R ch large₂ F _ _ hF t Φ hSum β hβ τ hτ d hd c v hv
   have h0 := GlobalTheory.T.covariantVectorToFunctionForm_coeff_mem_range _ D.what₂.embLL hSum.read.1 v hv

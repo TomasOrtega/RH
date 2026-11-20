@@ -23,6 +23,9 @@ namespace GlobalTheory.FinPl.ValDbl
 
 variable {D : D7}
 
+/- English proof (translation)
+Establish `hle : latO S T (LS : Set _) (LT : Set _) (· = v) ≤ latO S T (LS : Set _) (LT : Set _) P`. Apply `AddSubgroup.closure_mono` to reduce the goal to its premises. Introduce and unpack `w ⟨α, hα, hz, rest⟩`. Conclude with `⟨α, hα, fun v' hv' => hz v' (fun e => hv' (by subst e; exact hv)), rest⟩`. Conclude with `⟨h.1, fun u hu => h.2.1 u (hle hu), fun e he u hu hh => h.2.2 e he u (hle hu) hh⟩`.
+-/
 theorem vac_at {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {LS : Lat S} {LT : Lat T} {P : Pl D → Prop} {v : Pl D}
     {f : WO S T → ℂ} (hv : P v) (h : Vac ψ S T LS LT P f) : Vac ψ S T LS LT (· = v) f := by
   have hle : latO S T (LS : Set _) (LT : Set _) (· = v) ≤ latO S T (LS : Set _) (LT : Set _) P := by
@@ -35,6 +38,9 @@ section Local
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Establish `h : formAt β P (c • φ₀) = c • formAt β P φ₀`. Use function extensionality and compare the values at `P₁`. Simplify using `only [formAt, map_smul, Pi.smul_apply]`. Simplify using `only [sOp, h, map_smul, Pi.smul_apply]`.
+-/
 theorem sOp_smul {p : SplitPt D k} {S : HSp D} {n : Type} [Fintype n] [DecidableEq n] (β : Frame p S n) (P : Pair k n)
     (q : Unif k) (χ : AddChar 𝓀[k] ℂ) (ε : 𝓀[k]ˣ) (c : ℂ) (φ₀ : GA D S → ℂ) :
     sOp β P q χ ε (c • φ₀) = c • sOp β P q χ ε φ₀ := by
@@ -43,6 +49,9 @@ theorem sOp_smul {p : SplitPt D k} {S : HSp D} {n : Type} [Fintype n] [Decidable
     simp only [formAt, map_smul, Pi.smul_apply]
   simp only [sOp, h, map_smul, Pi.smul_apply]
 
+/- English proof (translation)
+Establish `H` using `(GlobalTheory.T.splitPlace_baseVacuum_datum_exists_unique D k p m m' ψ hstd S T α β LS LT h.1 h.2.1 g h.2.2.1).2.1 Φ f h`. Conclude with `⟨H.1, fun v hv hg => H.2 LS LT (· = v) (fun e => hv e.symm) hg⟩`.
+-/
 theorem over_keep {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {LS : Lat S} {LT : Lat T} {p : SplitPt D k}
     {m m' : Type} [Fintype m] [DecidableEq m] [Fintype m'] [DecidableEq m'] (hstd : IsStdChar D ψ (-1))
     {α : Frame p S m'} {β : Frame p T m} {g f : WO S T → ℂ} {Φ : Matrix m m' k → ℂ}
@@ -55,12 +64,23 @@ variable {ι : Type} {p : ι → SplitPt D k} {ψ : AddChar (AF D.host.F) ℂ} {
   [DecidableEq n] [Fintype n'] [DecidableEq n'] {α : ∀ i, Frame (p i) S n'} {β : ∀ i, Frame (p i) T n} {LS : Lat S}
   {LT : Lat T} {Ψ : ι → Matrix n n' k → ℂ}
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem overAll_nil {f f' : WO S T → ℂ} : OverAll ψ α β LS LT Ψ [] f f' ↔ f' = f := Iff.rfl
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem overAll_cons {i : ι} {l : List ι} {f f' : WO S T → ℂ} :
     OverAll ψ α β LS LT Ψ (i :: l) f f' ↔ ∃ g, OverAll ψ α β LS LT Ψ l f g ∧ Over ψ (α i) (β i) LS LT g (Ψ i) f' :=
   Iff.rfl
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => intro f f' h hf`. Rewrite using `[overAll_nil.1 h]`. Conclude with `hf`. Consider the case `cons i l _`.
+
+Introduce `f f' h _`. Take `⟨g, -, hf'⟩` from `overAll_cons.1 h`. Conclude with `(over_keep hstd hf').1`.
+-/
 theorem overAll_theta (hstd : IsStdChar D ψ (-1)) (l : List ι) :
     ∀ f f', OverAll ψ α β LS LT Ψ l f f' → IsThetaFunO ψ S T f → IsThetaFunO ψ S T f' := by
   induction l with
@@ -70,6 +90,11 @@ theorem overAll_theta (hstd : IsStdChar D ψ (-1)) (l : List ι) :
     obtain ⟨g, -, hf'⟩ := overAll_cons.1 h
     exact (over_keep hstd hf').1
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => intro f f' h j _ hf`. Rewrite using `[overAll_nil.1 h]`. Conclude with `hf`. Consider the case `cons i l ih`.
+
+Introduce `f f' h j hj hf`. Take `⟨g, hg, hf'⟩` from `overAll_cons.1 h`. Establish `hji : j ≠ i` using `fun e => hj (by simp [e])`. Establish `hjl : j ∉ l` using `fun h' => hj (by simp [h'])`. Conclude with `(over_keep hstd hf').2 _ (fun e => hji (hinj e)) (ih f g hg j hjl hf)`.
+-/
 theorem overAll_vac (hstd : IsStdChar D ψ (-1)) (hinj : Function.Injective fun i => (p i).v) (l : List ι) :
     ∀ f f', OverAll ψ α β LS LT Ψ l f f' → ∀ j, j ∉ l →
       Vac ψ S T LS LT (· = (p j).v) f → Vac ψ S T LS LT (· = (p j).v) f' := by
@@ -82,6 +107,19 @@ theorem overAll_vac (hstd : IsStdChar D ψ (-1)) (hinj : Function.Injective fun 
     have hjl : j ∉ l := fun h' => hj (by simp [h'])
     exact (over_keep hstd hf').2 _ (fun e => hji (hinj e)) (ih f g hg j hjl hf)
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => intro _ _ _ _ _ i hi`. Simplify using `at hi`. Consider the case `cons j l ih`. Introduce `hl f f' hf h i hi`.
+
+Rewrite `hl` using `[List.nodup_cons]`. Take `⟨g₀, hg₀, hf'⟩` from `overAll_cons.1 h`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Use `⟨g₀, hf', fun j' hj' => ?_⟩` and prove the remaining obligations.
+
+Establish `hj'l : j' ∉ l`. Break down `hj' with rfl | hj'` into its components or cases. Conclude with `hl.1`. Conclude with `fun h' => hj' (List.mem_cons_of_mem _ h')`. Conclude with `overAll_vac hstd hinj l f g₀ hg₀ j' hj'l (hf j')`.
+
+Establish `hil : i ∈ l` using `by simpa [hij] using hi`. Take `⟨g₁, hg₁, hv₁⟩` from `ih hl.2 f g₀ hf hg₀ i hil`. Establish `hjv : Vac ψ S T LS LT (· = (p j).v) g₁` using `hv₁ j (Or.inr hl.1)`. Take `⟨g', hg'1, hg'2⟩` from `GlobalTheory.T.splitPlaceData_distinct_places_commute D k (p i) (p j) n n' n n' ψ hstd (hunit i) (hunit j) (fun e => hij (hinj e)) S T (α i) (β i) (α j) (β j) LS LT g₁ g₀ f' (Ψ i) (Ψ j) hjv hg₁ hf'`. Use `⟨g', hg'2, fun j' hj' => ?_⟩` and prove the remaining obligations.
+
+Establish `hne : j' ≠ j`. Break down `hj' with rfl | hj'` into its components or cases. Conclude with `hij`. Conclude with `fun e => hj' (by simp [e])`. Establish `hj'' : j' = i ∨ j' ∉ l`.
+
+Break down `hj' with rfl | hj'` into its components or cases. Conclude with `Or.inl rfl`. Conclude with `Or.inr fun h' => hj' (List.mem_cons_of_mem _ h')`. Conclude with `(over_keep hstd hg'1).2 _ (fun e => hne (hinj e)) (hv₁ j' hj'')`.
+-/
 theorem overAll_last (hstd : IsStdChar D ψ (-1)) (hunit : ∀ i, (p i).UnitAA) (hinj : Function.Injective fun i => (p i).v)
     (l : List ι) : l.Nodup → ∀ f f', (∀ j, Vac ψ S T LS LT (· = (p j).v) f) → OverAll ψ α β LS LT Ψ l f f' →
       ∀ i ∈ l, ∃ g, Over ψ (α i) (β i) LS LT g (Ψ i) f' ∧ ∀ j, (j = i ∨ j ∉ l) → Vac ψ S T LS LT (· = (p j).v) g := by
@@ -117,6 +155,9 @@ theorem overAll_last (hstd : IsStdChar D ψ (-1)) (hunit : ∀ i, (p i).UnitAA) 
 
 end Local
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.fourierJacobiHandOff_automorphic D ψ σ J B' s₂ vL _ Ξ₂ (GlobalTheory.T.bessel_level_step_fourierJacobi_period_link D ψ (σ + 1) B J s₁ B'.L B'.ζ B'.line l φ Ξ₁ hφ h₁).1 h₂`.
+-/
 theorem contAut_hand0 {ψ : AddChar (AF D.host.F) ℂ} {σ : ℕ} {B : BesLev D (σ + 1)} {J : JacLev D (σ + 1)} {B' : BesLev D σ}
     (s₁ : StepBF ψ B J) (s₂ : StepFB ψ J B') (l : Link B B'.L B'.ζ) (vL : VolM D B'.L.rank J.W₀.rank) {φ : GA D B.A → ℂ}
     {Ξ₁ : WO B.V₀ J.W₀ → ℂ} {Ξ₂ : WO J.W₀ B'.V₀ → ℂ} (hφ : IsContAut B.A φ) (h₁ : IsThetaFunO ψ B.V₀ J.W₀ Ξ₁)

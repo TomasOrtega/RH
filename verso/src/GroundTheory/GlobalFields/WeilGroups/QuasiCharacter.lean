@@ -28,6 +28,9 @@ def circleToUnits : Circle →ₜ* ℂˣ where
     rfl⟩
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_circleToUnits (z : Circle) : ((circleToUnits z : ℂˣ) : ℂ) = z :=
   rfl
 
@@ -41,20 +44,34 @@ def ofUnitary : HeckeCharacter K →* QuasiCharacter K where
     simp
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ofUnitary_apply (χ : HeckeCharacter K) (c : IdeleClassGroup K) :
     ((ofUnitary χ c : ℂˣ) : ℂ) = χ c :=
   rfl
 
+/- English proof (translation)
+Introduce `χ χ' h`. Use extensionality with `c`. Use `congrArg (fun ψ : QuasiCharacter K ↦ ((ψ c : ℂˣ) : ℂ)) h` as an intermediate fact. Simplify using `using this`.
+-/
 theorem ofUnitary_injective : Function.Injective (ofUnitary (K := K)) := by
   intro χ χ' h
   ext c
   have := congrArg (fun ψ : QuasiCharacter K ↦ ((ψ c : ℂˣ) : ℂ)) h
   simpa using this
 
+/- English proof (translation)
+Rewrite using `[ofUnitary_apply, Circle.norm_coe]`.
+-/
 theorem norm_ofUnitary (χ : HeckeCharacter K) (c : IdeleClassGroup K) :
     ‖((ofUnitary χ c : ℂˣ) : ℂ)‖ = 1 := by
   rw [ofUnitary_apply, Circle.norm_coe]
 
+/- English proof (translation)
+Use `Units.continuous_iff.2 ⟨hf, ?_⟩` and prove the remaining obligations. Establish `e : (fun x ↦ ((Units.mk0 (f x) (h x))⁻¹ : ℂˣ).val) = fun x ↦ (f x)⁻¹`. Use function extensionality and compare the values at `x`. Rewrite using `[Units.val_inv_eq_inv_val, Units.val_mk0]`. Rewrite using `[e]`.
+
+Conclude with `hf.inv₀ h`.
+-/
 theorem continuous_units_mk0 {X : Type*} [TopologicalSpace X] {f : X → ℂ} (hf : Continuous f)
     (h : ∀ x, f x ≠ 0) : Continuous fun x ↦ Units.mk0 (f x) (h x) := by
   refine Units.continuous_iff.2 ⟨hf, ?_⟩
@@ -64,6 +81,9 @@ theorem continuous_units_mk0 {X : Type*} [TopologicalSpace X] {f : X → ℂ} (h
   rw [e]
   exact hf.inv₀ h
 
+/- English proof (translation)
+The claim follows from `continuous_subtype_val.comp (IdeleClassGroup.continuous_ideleModule K)`.
+-/
 theorem continuous_ideleModule_val :
     Continuous fun c : IdeleClassGroup K ↦ (IdeleClassGroup.ideleModule K c : ℝ) :=
   continuous_subtype_val.comp (IdeleClassGroup.continuous_ideleModule K)
@@ -84,20 +104,32 @@ def modulePow (s : ℂ) : QuasiCharacter K where
       (continuous_ideleModule_val.log fun c ↦ (IdeleClassGroup.ideleModule K c).2.ne'))))
     fun _ ↦ Complex.exp_ne_zero _
 
+/- English proof (translation)
+The claim follows from `rfl @[simp]`.
+-/
 theorem modulePow_apply (s : ℂ) (c : IdeleClassGroup K) :
     ((modulePow s c : ℂˣ) : ℂ) = Complex.exp (s * Real.log (IdeleClassGroup.ideleModule K c : ℝ)) :=
   rfl
 
 @[simp]
+/- English proof (translation)
+Use extensionality with `c`. Simplify using `[modulePow_apply]`.
+-/
 theorem modulePow_zero : modulePow (0 : ℂ) = (1 : QuasiCharacter K) := by
   ext c
   simp [modulePow_apply]
 
+/- English proof (translation)
+Use extensionality with `c`. Simplify using `only [modulePow_apply, ContinuousMonoidHom.mul_apply, Units.val_mul, add_mul, Complex.exp_add]`.
+-/
 theorem modulePow_add (s t : ℂ) :
     modulePow (s + t) = (modulePow s * modulePow t : QuasiCharacter K) := by
   ext c
   simp only [modulePow_apply, ContinuousMonoidHom.mul_apply, Units.val_mul, add_mul, Complex.exp_add]
 
+/- English proof (translation)
+Rewrite using `[modulePow_apply, ← Complex.ofReal_mul, Complex.norm_exp_ofReal, Real.rpow_def_of_pos (IdeleClassGroup.ideleModule K c).2, mul_comm]`.
+-/
 theorem norm_modulePow_ofReal (σ : ℝ) (c : IdeleClassGroup K) :
     ‖((modulePow (σ : ℂ) c : ℂˣ) : ℂ)‖ = (IdeleClassGroup.ideleModule K c : ℝ) ^ σ := by
   rw [modulePow_apply, ← Complex.ofReal_mul, Complex.norm_exp_ofReal,
@@ -105,13 +137,26 @@ theorem norm_modulePow_ofReal (σ : ℝ) (c : IdeleClassGroup K) :
 
 variable (ψ : QuasiCharacter K)
 
+/- English proof (translation)
+The claim follows from `norm_pos_iff.2 (ψ c).ne_zero`.
+-/
 theorem norm_apply_pos (c : IdeleClassGroup K) : 0 < ‖((ψ c : ℂˣ) : ℂ)‖ :=
   norm_pos_iff.2 (ψ c).ne_zero
 
+/- English proof (translation)
+Rewrite using `[map_inv, Units.val_inv_eq_inv_val, norm_inv]`.
+-/
 theorem norm_apply_inv (c : IdeleClassGroup K) :
     ‖((ψ c⁻¹ : ℂˣ) : ℂ)‖ = ‖((ψ c : ℂˣ) : ℂ)‖⁻¹ := by
   rw [map_inv, Units.val_inv_eq_inv_val, norm_inv]
 
+/- English proof (translation)
+Take `⟨C, hC⟩` from `(IdeleClassGroup.isCompact_normOneSubgroup K).exists_bound_of_continuousOn (f := fun c ↦ ((ψ c : ℂˣ) : ℂ)) (Units.continuous_val.comp ψ.continuous).continuousOn`. Establish `hle : ∀ d ∈ IdeleClassGroup.normOneSubgroup K, ‖((ψ d : ℂˣ) : ℂ)‖ ≤ 1`. Introduce `d hd`. Assume the negation of the conclusion as `h`. Use `push Not at h`.
+
+Take `⟨n, hn⟩` from `pow_unbounded_of_one_lt C h`. Establish `hb` using `hC (d ^ n) (pow_mem hd n)`. Rewrite `hb` using `[map_pow, Units.val_pow_eq_pow_val, norm_pow]`. Conclude with `(not_le.2 hn) hb`. Establish `h1` using `hle c hc`.
+
+Establish `h2` using `hle c⁻¹ (inv_mem hc)`. Rewrite `h2` using `[norm_apply_inv]`. Establish `hpos` using `ψ.norm_apply_pos c`. Conclude with `le_antisymm h1 (by rwa [inv_le_one₀ hpos] at h2)`.
+-/
 theorem norm_eq_one_of_mem_normOneSubgroup {c : IdeleClassGroup K}
     (hc : c ∈ IdeleClassGroup.normOneSubgroup K) : ‖((ψ c : ℂˣ) : ℂ)‖ = 1 := by
   obtain ⟨C, hC⟩ := (IdeleClassGroup.isCompact_normOneSubgroup K).exists_bound_of_continuousOn
@@ -130,6 +175,17 @@ theorem norm_eq_one_of_mem_normOneSubgroup {c : IdeleClassGroup K}
   have hpos := ψ.norm_apply_pos c
   exact le_antisymm h1 (by rwa [inv_le_one₀ hpos] at h2)
 
+/- English proof (translation)
+Take `⟨w⟩ : Nonempty (InfinitePlace K)` from `inferInstance`. Set `sec : {r : ℝ // 0 < r} →* IdeleClassGroup K` to `(IdeleClassGroup.mk K).comp (moduleSection w)`. Establish `hsec : ∀ t, IdeleClassGroup.ideleModule K (sec t) = t` using `fun t ↦ by`. Simplify using `[sec, IdeleClassGroup.ideleModule_mk]`. Establish `hcont : Continuous fun x : ℝ ↦ ‖((ψ (sec (expPos x)) : ℂˣ) : ℂ)‖` using `continuous_norm.comp (Units.continuous_val.comp (ψ.continuous.comp ((IdeleClassGroup.continuous_mk K).comp ((continuous_moduleSection w).comp expPosHomeomorph.continuous))))`.
+
+Set `f : ℝ →+ ℝ` to `{ toFun := fun x ↦ Real.log ‖((ψ (sec (expPos x)) : ℂˣ) : ℂ)‖ map_zero' := by`. Establish `h0 : expPos 0 = 1` using `Subtype.ext Real.exp_zero`. Simplify using `[h0]`. Use the proof step `map_add' := fun x y ↦ by`. Simplify using `only [expPos_add, map_mul, Units.val_mul, norm_mul]`.
+
+Conclude with `Real.log_mul (ψ.norm_apply_pos _).ne' (ψ.norm_apply_pos _).ne' }`. Establish `hf : Continuous f` using `hcont.log fun x ↦ (ψ.norm_apply_pos _).ne'`. Use `⟨f 1, fun c ↦ ?_⟩` and prove the remaining obligations. Use `set t := IdeleClassGroup.ideleModule K c with ht`. Establish `hd : c * (sec t)⁻¹ ∈ IdeleClassGroup.normOneSubgroup K`.
+
+Rewrite using `[IdeleClassGroup.normOneSubgroup, MonoidHom.mem_ker, map_mul, map_inv, hsec, ← ht, mul_inv_cancel]`. Establish `hc : c = c * (sec t)⁻¹ * sec t` using `by rw [inv_mul_cancel_right]`. Establish `ht' : t = expPos (Real.log t)` using `Subtype.ext (Real.exp_log t.2).symm`. Establish `hlin : f (Real.log t) = Real.log t * f 1`. Simplify using `using map_real_smul f hf (Real.log t) 1`.
+
+Establish `hval : ‖((ψ (sec t) : ℂˣ) : ℂ)‖ = Real.exp (f (Real.log t))`. Express the relevant statement in the definitionally equal form `_ = Real.exp (Real.log ‖((ψ (sec (expPos (Real.log t))) : ℂˣ) : ℂ)‖)`. Rewrite using `[Real.exp_log (ψ.norm_apply_pos _), ← ht']`. Rewrite using `[hc, map_mul, Units.val_mul, norm_mul, ψ.norm_eq_one_of_mem_normOneSubgroup hd, one_mul, hval, hlin, Real.rpow_def_of_pos t.2]`.
+-/
 theorem exists_norm_eq_rpow :
     ∃ σ : ℝ, ∀ c, ‖((ψ c : ℂˣ) : ℂ)‖ = (IdeleClassGroup.ideleModule K c : ℝ) ^ σ := by
   obtain ⟨w⟩ : Nonempty (InfinitePlace K) := inferInstance

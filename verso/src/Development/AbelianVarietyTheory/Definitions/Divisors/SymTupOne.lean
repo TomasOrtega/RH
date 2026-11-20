@@ -59,12 +59,18 @@ def PolFib (g : ℕ) {R : Type} [CommRing R] (x : Sp R ⟶ S) : Prop :=
 
 variable {G L ρ}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun ⟨θ, pt, h, h'⟩ => ⟨θ, pt, pt, h, h', h'⟩, fun ⟨θ, pt, _, h, h', _⟩ => ⟨θ, pt, h, h'⟩⟩`.
+-/
 theorem hasTh_iff {m : ℕ} {K : Type} [Field K] {x : Sp K ⟶ S} {N : ℕ} {c : Fin N → K} :
     HasTh G L ρ m x c ↔ HasTh₂ G L ρ m m x c c :=
   ⟨fun ⟨θ, pt, h, h'⟩ => ⟨θ, pt, pt, h, h', h'⟩, fun ⟨θ, pt, _, h, h', _⟩ => ⟨θ, pt, h, h'⟩⟩
 
 end
 
+/- English proof (translation)
+Simplify using `[symTup, Multiset.esymm, Multiset.powersetCard_one]`.
+-/
 theorem symTup_one {R : Type} [CommRing R] (c : Fin 1 → R) : symTup c 0 = c 0 := by
   simp [symTup, Multiset.esymm, Multiset.powersetCard_one]
 

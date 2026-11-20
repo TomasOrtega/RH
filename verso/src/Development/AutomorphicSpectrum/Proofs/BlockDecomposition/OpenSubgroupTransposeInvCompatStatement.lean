@@ -9,6 +9,9 @@ open Ad3.R (G2 Jd md Dt KA Set0 Coord LInv pt dia2 pri)
 open GlobalTheory.CompanionTheory.UnfoldingAlt
 open scoped NumberField.AdeleRing ENNReal
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.UnfoldingAlt.TrLevel.ti_level | exact GlobalTheory.CompanionTheory.UnfoldingAlt.TrLevel.ti_level | (intros; apply GlobalTheory.CompanionTheory.UnfoldingAlt.TrLevel.ti_level <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.open_subgroup_transposeInv_compat : ∀ U₀ : OpenSubgroup (AdelicGLn.FiniteAdelicGL ℚ 3), ∃ U₁ : OpenSubgroup (AdelicGLn.FiniteAdelicGL ℚ 3),
   ∀ u ∈ U₁, ∃ u' ∈ U₀, ∀ g : G3, ti (g * finEmb ℚ 3 u) = ti g * finEmb ℚ 3 u' := by
   first | exact @GlobalTheory.CompanionTheory.UnfoldingAlt.TrLevel.ti_level | exact GlobalTheory.CompanionTheory.UnfoldingAlt.TrLevel.ti_level | (intros; apply GlobalTheory.CompanionTheory.UnfoldingAlt.TrLevel.ti_level <;> assumption)

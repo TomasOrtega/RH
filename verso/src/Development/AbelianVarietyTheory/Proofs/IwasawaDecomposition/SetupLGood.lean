@@ -62,20 +62,38 @@ def setupL (ρ : GlobalTheory.SeriesTie.Setup (Dof x).ntw) : GlobalTheory.Series
   β := (by with_unfolding_all exact (ρ.β :))
   eG := (by with_unfolding_all exact (ρ.eG :))
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(by with_unfolding_all exact (h.isOpen :)), (by with_unfolding_all exact (h.rat :)), (by with_unfolding_all exact (h.real :)), (by with_unfolding_all exact (h.split :)), (by with_unfolding_all exact (h.unram :)), (by with_unfolding_all exact (h.res :))⟩`.
+-/
 theorem twL_good {A : Type} [CommGroup A] {t : GlobalTheory.ExportSeries.Twist (Dof x) A} (h : t.Good) : (twL L t).Good :=
   ⟨(by with_unfolding_all exact (h.isOpen :)), (by with_unfolding_all exact (h.rat :)), (by with_unfolding_all exact (h.real :)), (by with_unfolding_all exact (h.split :)), (by with_unfolding_all exact (h.unram :)), (by with_unfolding_all exact (h.res :))⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(by with_unfolding_all exact (h.isOpen :)), (by with_unfolding_all exact (h.rat :)), (by with_unfolding_all exact (h.real :)), (by with_unfolding_all exact (h.split :)), (by with_unfolding_all exact (h.unram :)), (by with_unfolding_all exact (h.res :))⟩`.
+-/
 theorem twB_good {A : Type} [CommGroup A] {t : GlobalTheory.ExportSeries.Twist (DL x L) A} (h : t.Good) : (twB L t).Good :=
   ⟨(by with_unfolding_all exact (h.isOpen :)), (by with_unfolding_all exact (h.rat :)), (by with_unfolding_all exact (h.real :)), (by with_unfolding_all exact (h.split :)), (by with_unfolding_all exact (h.unram :)), (by with_unfolding_all exact (h.res :))⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(h.split), (h.disj), (h.prime)⟩`.
+-/
 theorem placesOK_L {Pg Q : Finset (HeightOneSpectrum (𝓞 (Dof x).host.E))} (h : @GlobalTheory.ExportSeries.PlacesOK (Dof x) Pg Q) :
     @GlobalTheory.ExportSeries.PlacesOK (DL x L) ((Pg)) ((Q)) := ⟨(h.split), (h.disj), (h.prime)⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(h.split), (h.disj), (h.prime)⟩`.
+-/
 theorem placesOK_B {Pg Q : Finset (HeightOneSpectrum (𝓞 (DL x L).host.E))} (h : @GlobalTheory.ExportSeries.PlacesOK (DL x L) Pg Q) :
     @GlobalTheory.ExportSeries.PlacesOK (Dof x) ((Pg)) ((Q)) := ⟨(h.split), (h.disj), (h.prime)⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(by with_unfolding_all exact (h.le :)), (by with_unfolding_all exact (h.lam_eq :))⟩`.
+-/
 theorem wtL_good {n : ℕ} {u : GlobalTheory.ExportSeries.Weight (Dof x) n} (h : u.Good) : (wtL L u).Good := ⟨(by with_unfolding_all exact (h.le :)), (by with_unfolding_all exact (h.lam_eq :))⟩
 
+/- English proof (translation)
+The claim follows from `{ rank_le := (by with_unfolding_all exact (h.rank_le :)) onbS := (by with_unfolding_all exact (h.onbS :)) cartT := (by with_unfolding_all exact (h.cartT :)) onbT := (by with_unfolding_all exact (h.onbT :)) sdS := (by with_unfolding_all exact (h.sdS :)) sdT := (by with_unfolding_a …`.
+-/
 theorem frL_good {S U : Formalism.BasicNotions.TH.HSp (Dof x)} {F : GlobalTheory.ExportSeries.Frame S U} (h : F.Good) : (frL L F).Good :=
   { rank_le := (by with_unfolding_all exact (h.rank_le :))
     onbS := (by with_unfolding_all exact (h.onbS :))
@@ -87,6 +105,9 @@ theorem frL_good {S U : Formalism.BasicNotions.TH.HSp (Dof x)} {F : GlobalTheory
     frT := (by with_unfolding_all exact (h.frT :))
     vac := by tr_clause x.o.Z (oL x L).Z h.vac }
 
+/- English proof (translation)
+The claim follows from `{ even := (by with_unfolding_all exact (h.even :)) odd := (by with_unfolding_all exact (h.odd :)) frame := frL_good L h.frame de := twL_good L h.de places := (by with_unfolding_all exact ((placesOK_L L h.places) :)) wt := (by with_unfolding_all exact ((wtL_good L h.wt) :)) sig := …`.
+-/
 theorem baseL_good {S U : Formalism.BasicNotions.TH.HSp (Dof x)} {Z : GlobalTheory.ExportSeries.Base S U} (h : Z.Good) : (baseL L Z).Good :=
   { even := (by with_unfolding_all exact (h.even :))
     odd := (by with_unfolding_all exact (h.odd :))
@@ -103,6 +124,9 @@ theorem baseL_good {S U : Formalism.BasicNotions.TH.HSp (Dof x)} {Z : GlobalTheo
     tame := (by with_unfolding_all exact (h.tame :))
     inf := (by with_unfolding_all exact (h.inf :)) }
 
+/- English proof (translation)
+The claim follows from `{ rc := ⟨(by with_unfolding_all exact (h.rc.cont :)), (by with_unfolding_all exact (h.rc.rat :)), (by with_unfolding_all exact (h.rc.loc :)), (by with_unfolding_all exact (h.rc.artin :))⟩ ch := fun i => ⟨(by with_unfolding_all exact ((h.ch ((i))).pair : _)), (by with_unfolding_al …`.
+-/
 theorem setupL_good {ρ : GlobalTheory.SeriesTie.Setup (Dof x).ntw} (h : ρ.Good) : (setupL L ρ).Good :=
   { rc := ⟨(by with_unfolding_all exact (h.rc.cont :)), (by with_unfolding_all exact (h.rc.rat :)), (by with_unfolding_all exact (h.rc.loc :)), (by with_unfolding_all exact (h.rc.artin :))⟩
     ch := fun i => ⟨(by with_unfolding_all exact ((h.ch ((i))).pair : _)), (by with_unfolding_all exact ((h.ch ((i))).one : _))⟩
@@ -126,15 +150,24 @@ theorem setupL_good {ρ : GlobalTheory.SeriesTie.Setup (Dof x).ntw} (h : ρ.Good
       have h' := h.classes ((by with_unfolding_all exact (i :))) ((by with_unfolding_all exact (j :))) b (twB L t) (twB_good L ht) ⟨(by with_unfolding_all exact ((placesOK_B L hA.1) :)), (by with_unfolding_all exact (hA.2 :))⟩
       ⟨(by with_unfolding_all exact (h'.fin :)), (by with_unfolding_all exact (h'.reps :)), (by with_unfolding_all exact (h'.stab :))⟩ }
 
+/- English proof (translation)
+The claim follows from `have p := l.b.ser.ex.pin ⟨(by with_unfolding_all exact (p.psi :)), (by with_unfolding_all exact (p.inf :)), (by with_unfolding_all exact (p.cartT :)), (by with_unfolding_all exact (p.onbS :)), (by with_unfolding_all exact (p.onbT :)), (by with_unfolding_all exact (p.latS :)), (by …`.
+-/
 theorem pinL (l : LC hL x) : GlobalTheory.SeriesTie.RealPin (datL x L).R (datL x L).cG (setupL L l.b.ser.ex.ρ) :=
   have p := l.b.ser.ex.pin
   ⟨(by with_unfolding_all exact (p.psi :)), (by with_unfolding_all exact (p.inf :)), (by with_unfolding_all exact (p.cartT :)), (by with_unfolding_all exact (p.onbS :)), (by with_unfolding_all exact (p.onbT :)), (by with_unfolding_all exact (p.latS :)), (by with_unfolding_all exact (p.latT :)), (by with_unfolding_all exact (p.frS :)), (by with_unfolding_all exact (p.frT :)), (by with_unfolding_all exact (p.vac :)), (by with_unfolding_all exact (p.Pg :)),
     (by with_unfolding_all exact (p.grp :)), (by with_unfolding_all exact (p.mu0 :)), (by with_unfolding_all exact (p.eta :)), (by with_unfolding_all exact (p.delta :)), (by with_unfolding_all exact (p.deltaPl :)), (by with_unfolding_all exact (p.ap :)), (by with_unfolding_all exact (p.am :))⟩
 
+/- English proof (translation)
+The claim follows from `(by with_unfolding_all exact (l.b.ser.ex.univ :))`.
+-/
 theorem univL (l : LC hL x) : GlobalTheory.UnivChar.IsUnivChar (DL x L).nexp := (by with_unfolding_all exact (l.b.ser.ex.univ :))
 
 open GlobalTheory.SeriesTie in
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i j b h P`. Use `delta GlobalTheory.SeriesTie.Setup.theta GlobalTheory.ExportSeries.Base.theta GlobalTheory.ExportSeries.Base.vecBase GlobalTheory.ExportSeries.Base.vecAt GlobalTheory.ExportSeries.Frame.vec GlobalTheory.ExportSeries.Frame.placeMap`. Use `tr_leaves x.o.Z (oL x L).Z`. Use `kexactB (Eq.refl (ρ.theta (kc% i) (kc% j) b (kc% h) (kc% P)))`.
+-/
 theorem theta_eq (ρ : Setup (Dof x).ntw) :
     (setupL L ρ).theta = fun i j b h P => (by exact ρ.theta i j b h P) := by
   funext i j b h P
@@ -145,6 +178,9 @@ theorem theta_eq (ρ : Setup (Dof x).ntw) :
 
 open GlobalTheory.SeriesTie in
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i j b s h P`. Use `propext ⟨fun d => ?_, fun d => ?_⟩` and prove the remaining obligations. Conclude with `(by with_unfolding_all exact ((⟨(d.split), (d.off), (d.fin), (d.supp), (d.mem)⟩ : ρ.IsDatum ((i)) ((j)) b ((s)) ((h)) ((P))) : _))`. Conclude with `⟨(by with_unfolding_all exact (d.split :)), (by with_unfolding_all exact (d.off :)), (by with_unfolding_all exact (d.fin :)), (by with_unfolding_all exact (d.supp :)), (by with_unfolding_all exact (d.mem :))⟩`.
+-/
 theorem isDatum_eq (ρ : Setup (Dof x).ntw) :
     (setupL L ρ).IsDatum = fun i j b s h P => (by exact ρ.IsDatum i j b s h P) := by
   funext i j b s h P

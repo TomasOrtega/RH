@@ -15,6 +15,29 @@ section Abstract
 
 variable {G V : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [AddCommGroup V] [Module ℂ V]
 
+/- English proof (translation)
+Take `⟨B, hB, hp, hi⟩` from `hU`. Set `core : InnerProductSpace.Core ℂ V` to `{ inner := fun x y => B y x conj_inner_symm := fun x y => (hB x y).symm re_inner_nonneg := fun x => by`. Distinguish the cases in `h : x = 0`. Simplify using `[h]`. Conclude with `(hp x h).le`.
+
+Use `add_left := fun x y z => by simp`. Use `smul_left := fun x y r => by simp`. Use `definite := fun x hx => by`. Assume the negation of the conclusion as `h`. Use `hp x h` as an intermediate fact.
+
+Establish `hx' : B x x = 0` using `hx`. Simplify using `[hx'] at this }`. Use `letI : NormedAddCommGroup V := core.toNormedAddCommGroup`. Use `letI : InnerProductSpace ℂ V := InnerProductSpace.ofCore _`. Establish `hin : ∀ x y : V, inner ℂ x y = B y x` using `fun _ _ => rfl`.
+
+Establish `hn : ∀ g v, ‖π g v‖ = ‖v‖` using `fun g v => by`. Rewrite using `[@norm_eq_sqrt_re_inner ℂ, @norm_eq_sqrt_re_inner ℂ, hin, hin, hi]`. Use `haveI := hπ.2 K ho hc`. Set `L : fixed π K →L[ℂ] ℂ` to `LinearMap.toContinuousLinearMap (l ∘ₗ (fixed π K).subtype)`. Use `⟨‖L‖ * ‖u‖, fun r => ?_⟩` and prove the remaining obligations.
+
+Establish `hpow : ∀ c ∈ C, (a ^ r)⁻¹ * c * a ^ r ∈ C`. Proceed by induction on `r with`. Consider the case `zero => simp`. Consider the case `succ r ih`. Introduce `c hcC`.
+
+Use `hcon _ (ih c hcC)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Rewrite using `[pow_succ]`. Use `group`. Set `f : V →ₗ[ℂ] ℂ × (fixed π K → ℂ)` to `l.prod (LinearMap.pi fun z => B.flip z.1)`.
+
+Take `⟨v, hv, e⟩` from `IwahoriOnto.exists_fixed_map_eq hπ.1 hc f (π (a ^ r) u) fun g hg => by`. Use `Prod.ext ?_ (funext fun z => ?_)` and prove the remaining obligations. Take `⟨x, hx, c, hcC, rfl⟩` from `hfac g hg show l _ = l _`. Rewrite using `[map_mul, Module.End.mul_apply, hl x hx]`. Use `conv_rhs => rw [← hu _ (hCK _ (hpow c hcC))]`.
+
+Rewrite using `[← Module.End.mul_apply, ← map_mul, ← Module.End.mul_apply, ← map_mul]`. Use `congr 3`. Use `group`. Use `show B _ z.1 = B _ z.1`. Establish `hz : π g z.1 = z.1` using `by simpa using z.2 ⟨g, hg⟩`.
+
+Use `conv_lhs => rw [← hz, hi]`. Establish `e1 : l v = l (π (a ^ r) u)` using `congrArg Prod.fst e`. Establish `e2 : B v v = B (π (a ^ r) u) v` using `congrFun (congrArg Prod.snd e) ⟨v, hv⟩`. Establish `hv' : ‖v‖ ≤ ‖u‖`. Establish `h1 : ‖v‖ * ‖v‖ ≤ ‖v‖ * ‖u‖`.
+
+Rewrite using `[← inner_self_eq_norm_mul_norm (𝕜 := ℂ), hin, e2, ← hin, ← hn (a ^ r) u]`. Conclude with `re_inner_le_norm _ _`. Distinguish the cases in `h : v = 0`. Simplify using `[h]`. Conclude with `le_of_mul_le_mul_left h1 (norm_pos_iff.2 h)`.
+
+Rewrite using `[← e1]`. Conclude with `(L.le_opNorm ⟨v, hv⟩).trans (mul_le_mul_of_nonneg_left hv' (norm_nonneg _))`.
+-/
 theorem exists_bound {π : Representation ℂ G V} (hπ : IsAdmissible π) (hU : IsUnitarisable π)
     {K N : Subgroup G} (ho : IsOpen (K : Set G)) (hc : IsCompact (K : Set G)) (a : G) (C : Set G)
     (hCK : ∀ c ∈ C, c ∈ K) (hfac : ∀ g ∈ K, ∃ x ∈ N, ∃ c ∈ C, g = x * c)
@@ -84,6 +107,9 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   {n : Type} [Fintype n] [DecidableEq n]
 
 omit [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
+/- English proof (translation)
+Use `Valuation.map_sum_lt _ γ.ne_zero fun s _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `(mul_le_of_le_one_left' (hA i s)).trans_lt (hB s j)`.
+-/
 theorem mul_small {γ : (ValueGroupWithZero k)ˣ} {A B : Matrix n n k} (hA : IntM A)
     (hB : ∀ i j, valuation k (B i j) < γ) (i j : n) : valuation k ((A * B) i j) < γ := by
   refine Valuation.map_sum_lt _ γ.ne_zero fun s _ => ?_
@@ -110,6 +136,11 @@ def cong (γ : (ValueGroupWithZero k)ˣ) (hγ : γ ≤ 1) : Subgroup (GL n k) wh
     rw [this]
     exact mul_small (intM_of_mem_KO (KOne_le_KO (inv_mem h1))).neg hg i j
 
+/- English proof (translation)
+Establish `e : (cong n γ hγ : Set (GL n k)) = ⋂ i, ⋂ j, (fun g : GL n k => (g.val - 1) i j) ⁻¹' {x | valuation k x < γ}`. Use extensionality with `g`. Simplify using `only [SetLike.mem_coe, Set.mem_iInter]`. Both sides reduce to the same expression. Rewrite using `[e]`.
+
+Use `isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j => IsOpen.preimage ?_ ?_` and prove the remaining obligations. Conclude with `(Units.continuous_val.sub continuous_const).matrix_elem i j`. Use `isOpen_iff_mem_nhds.2 fun x hx => (IsValuativeTopology.mem_nhds_iff).2 ⟨γ, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Conclude with `Valuation.map_add_lt (valuation k) (g := γ) hx hy`.
+-/
 theorem isOpen_cong (γ : (ValueGroupWithZero k)ˣ) (hγ : γ ≤ 1) :
     IsOpen (cong n γ hγ : Set (GL n k)) := by
   have e : (cong n γ hγ : Set (GL n k)) = ⋂ i, ⋂ j,
@@ -122,11 +153,23 @@ theorem isOpen_cong (γ : (ValueGroupWithZero k)ˣ) (hγ : γ ≤ 1) :
     rintro _ ⟨y, hy, rfl⟩
     exact Valuation.map_add_lt (valuation k) (g := γ) hx hy
 
+/- English proof (translation)
+The claim follows from `SplitFlip.isCompact_KO.of_isClosed_subset (Subgroup.isClosed_of_isOpen _ (isOpen_cong γ hγ)) fun _ hg => KOne_le_KO (mem_KOne.2 fun i j => (hg i j).trans_le hγ)`.
+-/
 theorem isCompact_cong (γ : (ValueGroupWithZero k)ˣ) (hγ : γ ≤ 1) :
     IsCompact (cong n γ hγ : Set (GL n k)) :=
   SplitFlip.isCompact_KO.of_isClosed_subset (Subgroup.isClosed_of_isOpen _ (isOpen_cong γ hγ))
     fun _ hg => KOne_le_KO (mem_KOne.2 fun i j => (hg i j).trans_le hγ)
 
+/- English proof (translation)
+Rewrite `hU` using `[SplitFlip.isEmbedding_val_GL.nhds_eq_comap]`. Take `⟨T, hT, hTU⟩` from `hU`. Establish `h1 : (fun A : Matrix n n k => A + 1) ⁻¹' T ∈ 𝓝 (0 : Matrix n n k)` using `(continuous_add_right _).continuousAt.preimage_mem_nhds (by simpa using hT)`. Establish `h2 : Tendsto (fun p : (ValueGroupWithZero k)ˣ × Matrix n n k => if ∀ i j, valuation k (p.2 i j) < p.1 then p.2 else 0) (atBot ×ˢ ⊤) (𝓝 0)`. Use `tendsto_pi_nhds.2 fun i => tendsto_pi_nhds.2 fun j => ?_` and prove the remaining obligations.
+
+Rewrite using `[Matrix.zero_apply, (IsValuativeTopology.hasBasis_nhds_zero k).tendsto_right_iff]`. Introduce `γ _`. Use `filter_upwards [prod_mem_prod (mem_atBot γ) univ_mem] with p hp`. Use `split_ifs with h`. Conclude with `(h i j).trans_le hp.1`.
+
+Simplify using the standard rewrite rules. Take `⟨γ, hγ1, hγ⟩` from `((eventually_le_atBot 1).and (mem_prod_top.1 (h2 h1))).exists`. Use `⟨γ, hγ1, fun g hg => hTU ?_⟩` and prove the remaining obligations. Use `hγ (g.val - 1)` as an intermediate fact. Establish `hg' : ∀ i j, valuation k ((g.val - 1) i j) < γ` using `hg`.
+
+Rewrite `this` using `[Set.mem_preimage, Set.mem_preimage, if_pos hg', sub_add_cancel]`. Conclude with `this`.
+-/
 theorem exists_cong_subset {U : Set (GL n k)} (hU : U ∈ 𝓝 (1 : GL n k)) :
     ∃ (γ : (ValueGroupWithZero k)ˣ) (hγ : γ ≤ 1), ∀ g ∈ cong n γ hγ, g ∈ U := by
   rw [SplitFlip.isEmbedding_val_GL.nhds_eq_comap] at hU
@@ -151,6 +194,19 @@ theorem exists_cong_subset {U : Set (GL n k)} (hU : U ∈ 𝓝 (1 : GL n k)) :
 
 variable {a b : Type} [Fintype a] [DecidableEq a] [Fintype b] [DecidableEq b]
 
+/- English proof (translation)
+Introduce `g hg`. Set `M : Matrix n n k` to `Matrix.of fun i j => if (e.symm j).isLeft then (1 : Matrix n n k) i j else g.val i j`. Establish `hM : ∀ i j, valuation k ((M - 1) i j) < γ` using `fun i j => by`. Distinguish the cases in `h : (e.symm j).isLeft`. Simplify using `[M, h]`.
+
+Simplify `hg i j` using `[M, h]`. Take `⟨p, -, hp⟩` from `exists_mem_KOne (M := M) fun i j => (hM i j).trans_le hγ`. Establish `hpK : p ∈ cong n γ hγ` using `fun i j => hp ▸ hM i j`. Establish `hpP : p ∈ parab k (two e)` using `(mem_parab_two k).2 fun j i => by simp [hp, M, one_apply]`. Set `q : parab k (two e)` to `⟨_, leviEmb_mem_parab k (two e) (leviProj k (two e) ⟨p, hpP⟩)⟩`.
+
+Establish `hqK : q.1 ∈ cong n γ hγ`. Introduce `i j`. Take `⟨⟨s, i⟩, rfl⟩` from `(two e).surjective i`. Take `⟨⟨t, j⟩, rfl⟩` from `(two e).surjective j`. Distinguish the cases in `h : s = t`.
+
+Substitute `h` using the available equality. Use `hpK (two e ⟨s, i⟩) (two e ⟨s, j⟩)` as an intermediate fact. Simplify `this` using `[q]`. Rewrite using `[Matrix.sub_apply, leviEmb_apply_ne k (two e) _ h, one_apply_ne (by simp [h])]`. Simplify using the standard rewrite rules.
+
+Use `⟨((⟨p, hpP⟩ * q⁻¹ : parab k (two e)) : GL n k), (coe_mem_unipRad k _).2 ?_, q * (p⁻¹ * g), Subgroup.mem_inf.2 ⟨mul_mem hqK (mul_mem (inv_mem hpK) hg), mul_mem (leviEmb_mem_parabLower k _ _) ((mem_parabLower_two k).2 fun i j => ?_)⟩, by simp [mul_assoc]⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_inv, leviProj_leviEmb, mul_inv_cancel]`. Establish `: (p⁻¹ * g).val (e (.inl i)) (e (.inr j)) = (p⁻¹ * p).val (e (.inl i)) (e (.inr j))`. Simplify using `only [Units.val_mul, mul_apply]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations.
+
+Use `congr 1`. Simplify using `[hp, M]`. Rewrite using `[this, inv_mul_cancel, Units.val_one, one_apply_ne (by simp)]`.
+-/
 theorem cong_factor (e : a ⊕ b ≃ n) (γ : (ValueGroupWithZero k)ˣ) (hγ : γ ≤ 1) :
     ∀ g ∈ cong n γ hγ, ∃ x ∈ unipRad k (two e), ∃ c ∈ cong n γ hγ ⊓ parabLower k (two e), g = x * c := by
   intro g hg
@@ -185,6 +241,11 @@ theorem cong_factor (e : a ⊕ b ≃ n) (γ : (ValueGroupWithZero k)ˣ) (hγ : �
     rw [this, inv_mul_cancel, Units.val_one, one_apply_ne (by simp)]
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
+/- English proof (translation)
+Rewrite using `[val_emb₂]`. Use extensionality with `i j`. Take `⟨i, rfl⟩` from `e.surjective i`. Take `⟨j, rfl⟩` from `e.surjective j`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j <;>`.
+
+Simplify using `[GeneralLinearGroup.scalar, diagonal_apply, one_apply]`.
+-/
 theorem val_emb₂_scalar (e : a ⊕ b ≃ n) (z : kˣ) :
     (emb₂ k e (GeneralLinearGroup.scalar a z, 1)).val =
       diagonal fun i => if (e.symm i).isLeft then (z : k) else 1 := by
@@ -195,6 +256,13 @@ theorem val_emb₂_scalar (e : a ⊕ b ≃ n) (z : kˣ) :
   rcases i with i | i <;> rcases j with j | j <;>
     simp [GeneralLinearGroup.scalar, diagonal_apply, one_apply]
 
+/- English proof (translation)
+Introduce `c hcc`. Take `⟨hc, hc'⟩` from `Subgroup.mem_inf.1 hcc`. Establish `hm : emb₂ k e (GeneralLinearGroup.scalar a z, 1) ∈ parabLower k (two e)` using `leviEmb_mem_parabLower k _ _`. Use `Subgroup.mem_inf.2 ⟨fun i j => ?_, mul_mem (mul_mem (inv_mem hm) hc') hm⟩` and prove the remaining obligations. Establish `h1` using `hc i j`.
+
+Rewrite using `[← map_inv, Prod.inv_mk, ← map_inv, inv_one, Units.val_mul, Units.val_mul, val_emb₂_scalar, val_emb₂_scalar, Matrix.sub_apply, mul_diagonal, diagonal_mul]`. Rewrite `h1` using `[Matrix.sub_apply]`. Take `⟨i, rfl⟩` from `e.surjective i`. Take `⟨j, rfl⟩` from `e.surjective j`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j`.
+
+Simplify `h1` using `[mul_comm, mul_left_comm]`. Simplify using `[(mem_parabLower_two k).1 hc' i j, one_apply]`. Simplify using `only [one_apply, EmbeddingLike.apply_eq_iff_eq, reduceCtorEq, if_false, sub_zero] at h1 ⊢`. Simplify using `using (mul_le_of_le_one_right' hz).trans_lt h1`. Simplify using `using h1`.
+-/
 theorem cong_contract (e : a ⊕ b ≃ n) (γ : (ValueGroupWithZero k)ˣ) (hγ : γ ≤ 1) {z : kˣ}
     (hz : valuation k (z : k) ≤ 1) : ∀ c ∈ cong n γ hγ ⊓ parabLower k (two e),
       (emb₂ k e (GeneralLinearGroup.scalar a z, 1))⁻¹ * c * emb₂ k e (GeneralLinearGroup.scalar a z, 1) ∈
@@ -226,6 +294,11 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   {V X : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup X] [Module ℂ X]
 
 variable (k) in
+/- English proof (translation)
+Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible 𝒪[k]`. Establish `h0 : (ϖ : k) ≠ 0` using `by simpa using hϖ.ne_zero`. Use `⟨Units.mk0 _ h0, ϖ.2, ?_⟩` and prove the remaining obligations. Rewrite using `[nabs_uniformiser hϖ (x := Units.mk0 _ h0) rfl]`. Use `inv_lt_one_of_one_lt₀ ?_` and prove the remaining obligations.
+
+Rewrite using `[resCard]`. Conclude with `Finite.one_lt_card` after adjusting the coercions.
+-/
 theorem exists_nabs_lt_one : ∃ z : kˣ, valuation k (z : k) ≤ 1 ∧ nabs k z < 1 := by
   obtain ⟨ϖ, hϖ⟩ := IsDiscreteValuationRing.exists_irreducible 𝒪[k]
   have h0 : (ϖ : k) ≠ 0 := by simpa using hϖ.ne_zero

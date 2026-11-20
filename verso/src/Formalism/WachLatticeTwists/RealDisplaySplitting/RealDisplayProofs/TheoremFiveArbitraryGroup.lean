@@ -11,6 +11,11 @@ namespace Formalism.RepresentationBoundsCohomology.SF
 open Formalism.NG Formalism.RepresentationBoundsCohomology.BR Formalism.RepresentationBoundsCohomology.TorsionBoundCyclotomic Formalism.RepresentationBoundsCohomology.JL Formalism.RepresentationBoundsCohomology.JT Formalism.RepresentationBoundsCohomology.JS Formalism.RepresentationBoundsCohomology.SplitClassesAll
 
 set_option maxHeartbeats 4000000 in
+/- English proof (translation)
+Take `⟨ha, hb, hc, hEE, hee, hpts, hρπ, hbl, hsurj, hblk, hcard1, hEsum, hE0, hδ0, hτ0, hne, hC0, hOne0⟩` from `hR`. Take `⟨p1, p2, p3, -⟩` from `hOne0`. Substitute `hl` using the available equality. Introduce `ι _ _ colIdx hinj D j e' what₂ qs deg s vhE H0 Sha uT wT sT mT dT UT cols eO cB vδ N h0 c1 L _ _ _ _ _ _ tens v₁ κ V _ _ _ _ _ _ iL qV Ff κz HcG Hc F Vo VS Io IS T₁ T₂ _ _ _ _ ρ₁ ρ₂ inc π γ lam Cs _ _ cls pr Fs Im I γQ ζ ζO nQ u s₀ y HW HV₂ _ _ _ _ _ _ _ _ qW jT pairW HfW Hf₂ Pe …`. Conclude with `realization_all_forms_holds ℓ O X X' T T' Z p q b ha (fun x _ => hb x) d R' hc Tc G r χ E e₁ δ ι colIdx hinj D j e' hEE hee π' ρπ hρπ t ht bl hbl ρk hsurj hblk hcard1 sE tE δO what₂ qs deg s vhE H0 Sha uT wT sT mT dT UT hEsum hF L tens v₁ κ V iL qV Ff κz HcG Hc F Vo VS Io IS ε T₁ …`.
+
+Take `⟨δx, q1, q2, q3, q4⟩` from `hpts x'`. Conclude with `⟨δx, q1, q2, q3, q4, (hrat0 x' hx').1, (hrat0 x' hx').2⟩)`. Use `hE0 hτ0 hne hFix hBK`. Use the proof step `(fun c hc2 => ⟨(hC0 c hc2).1, (hC0 c hc2).2.1, (hC0 c hc2).2.2.2, hC c hc2⟩)`. Use the proof step `⟨p1, p2, p3, hOne⟩ hrest`.
+-/
 theorem absDisplayAll_of (ℓ : ℕ) [Fact ℓ.Prime] (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     [Algebra ℤ_[ℓ] O] (X X' : Type)
     (Z : Set X) (p : X' → X)
@@ -57,6 +62,13 @@ theorem absDisplayAll_of (ℓ : ℕ) [Fact ℓ.Prime] (O : Type) [CommRing O] [I
     ⟨p1, p2, p3, hOne⟩ hrest
 
 set_option maxHeartbeats 4000000 in
+/- English proof (translation)
+Take `⟨ha, hb, hc, hEE, hee, hpts, hρπ, hbl, hsurj, hblk, hcard1, hEsum, hE0, hδ0, hτ0, hne, hC0, hOne0⟩` from `hR`. Take `⟨p1, p2, p3, -⟩` from `hOne0`. Substitute `hl` using the available equality. Introduce `ι _ _ colIdx hinj D j e' what₂ qs deg s vhE H0 Sha uT wT sT mT dT UT cols eO cB vδ N h0 c1 L _ _ _ _ _ _ tens v₁ κ V _ _ _ _ _ _ iL qV Ff κz HcG Hc F Vo VS Io IS T₁ T₂ _ _ _ _ ρ₁ ρ₂ inc π γ lam Cs _ _ _ _ cls pr Fs Im I γQ ζ ζO nQ u s₀ y HW HV₂ _ _ _ _ _ _ _ _ qW jT pairW HfW Hf₂ …`. Conclude with `split_all_second_form ℓ O X X' T T' Z p q b ha (fun x _ => hb x) d R' hc Tc G r χ E e₁ δ ι colIdx hinj D j e' hEE hee π' ρπ hρπ t ht bl hbl ρk hsurj hblk hcard1 sE tE δO what₂ qs deg s vhE H0 Sha uT wT sT mT dT UT hEsum hF L tens v₁ κ V iL qV Ff κz HcG Hc F Vo VS Io IS ε T₁ T₂ ρ₁ …`.
+
+Take `⟨δx, q1, q2, q3, q4⟩` from `hpts x'`. Conclude with `⟨δx, q1, q2, q3, q4, (hrat0 x' hx').1, (hrat0 x' hx').2⟩)`. Use `hE0 hτ0 hne hFix hBK`. Use the proof step `(fun c hc2 => ⟨(hC0 c hc2).1, (hC0 c hc2).2.1, (hC0 c hc2).2.2.2, hC c hc2⟩)`. Use the proof step `⟨p1, p2, p3, hOne⟩ hrest`.
+
+Use `conj nlam m cloudC lowsC cloudR lowsR h0C h0R V₂ ρV ρA iV qA Zc clsV H₁ Hf₁ gR`. Use `τH DatH bH wH mH hrows hseq hcls hclsV hliftR hH0 hJC hJR`.
+-/
 theorem absDisplaySplit2_of (ℓ : ℕ) [Fact ℓ.Prime] (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     [Algebra ℤ_[ℓ] O] (X X' : Type)
     (Z : Set X) (p : X' → X)
@@ -108,6 +120,13 @@ theorem absDisplaySplit2_of (ℓ : ℕ) [Fact ℓ.Prime] (O : Type) [CommRing O]
 
 open Formalism.TruncatedSeriesCounting.TruncatedSeriesCountingIdentities Formalism.RepresentationBoundsCohomology.ringDataObjects in
 set_option maxHeartbeats 4000000 in
+/- English proof (translation)
+Introduce `ℓ _ O _ _ _ _ X _ T d _ _ G _ r π t ht bl χ₁ ε g₀ hyp L ϖ hϖ`. Take `⟨eB, e₁, s, hAB, hall⟩` from `chain_from_primitive_data O X T d G r π t ht bl χ₁ ε g₀ hyp L ϖ hϖ`. Use `⟨eB, e₁, s, hAB, ?_⟩` and prove the remaining obligations. Introduce `O' _ _ _ _ _ _ e he hspl`. Take `⟨D, hD, ⟨i1, i2, i3, i4, i5, hT, hFree⟩, hv⟩` from `hall O' e he hspl`.
+
+Take `⟨hd1, hd2⟩` from `deltaBc O O' e he`. Use `⟨D, hD, hd2 ℓ, (hd1 X d G t bl T r π χ₁ ε g₀ eB e₁ s D hD).2, i1, i2, i3, i4, i5, ?_⟩` and prove the remaining obligations. Introduce `_ Z`. Establish `hδO` using `deltaO_eq hD`. Establish `hrr` using `rr_act hD`.
+
+Conclude with `⟨absDisplayAll_of ℓ O' X D.X' Z D.p d D.R' D.T' G D.r D.χ D.E D.e₁ D.δ t ht bl D.ρk D.δO (bcChar O' ε) g₀ _ (bcT O' T) D.T' D.q D.b D.π' D.ρπ D.sE D.tE D.rr (bcChar O' χ₁ g₀) hT (hFree Z) rfl hδO hrr (hv Z).symm, absDisplaySplit2_of ℓ O' X D.X' Z D.p d D.R' D.T' G D.r D.χ D.E D.e …`.
+-/
 theorem theorem_five_arbitrary_group : SplittingTheoremArbitraryGroup := by
   intro ℓ _ O _ _ _ _ X _ T d _ _ G _ r π t ht bl χ₁ ε g₀ hyp L ϖ hϖ
   obtain ⟨eB, e₁, s, hAB, hall⟩ := chain_from_primitive_data O X T d G r π t ht bl χ₁ ε g₀ hyp L ϖ hϖ

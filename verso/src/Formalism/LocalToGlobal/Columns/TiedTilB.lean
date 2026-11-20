@@ -16,6 +16,11 @@ section Gen
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E]
 
+/- English proof (translation)
+Rewrite using `[Matrix.map_apply, LinearMap.toMatrix'_apply, padL_apply, dif_pos (by simp), Pi.single_apply]`. Establish `e : (⟨(a.castSucc : ℕ), by simp⟩ : Fin n) = a` using `Fin.ext rfl`. Rewrite using `[e]`. Use `split_ifs`. Conclude with `map_one φ`.
+
+Conclude with `map_zero φ`.
+-/
 theorem til_tmv_padL_cs (n : ℕ) {R : Type} [CommRing R] (φ : E →+* R) (a b : Fin n) :
     ((LinearMap.toMatrix' (padL E n (n + 1))).map φ) a.castSucc b = if a = b then 1 else 0 := by
   rw [Matrix.map_apply, LinearMap.toMatrix'_apply, padL_apply, dif_pos (by simp), Pi.single_apply]
@@ -25,10 +30,28 @@ theorem til_tmv_padL_cs (n : ℕ) {R : Type} [CommRing R] (φ : E →+* R) (a b 
   · exact map_one φ
   · exact map_zero φ
 
+/- English proof (translation)
+Rewrite using `[Matrix.map_apply, LinearMap.toMatrix'_apply, padL_apply, dif_neg (by simp), map_zero]`.
+-/
 theorem til_tmv_padL_last (n : ℕ) {R : Type} [CommRing R] (φ : E →+* R) (b : Fin n) :
     ((LinearMap.toMatrix' (padL E n (n + 1))).map φ) (Fin.last n) b = 0 := by
   rw [Matrix.map_apply, LinearMap.toMatrix'_apply, padL_apply, dif_neg (by simp), map_zero]
 
+/- English proof (translation)
+Substitute `hN` using the available equality. Establish `hy' : decoOf (∅ : Finset (Pl E)) SG (ptOfD hc n ∅ SG 1 d').1 = d'`. Unfold `ptOfD`. Rewrite using `[decoOf_ptOf hc n ∅ SG hS', inv_one, DecoSet.dia_one]`. Establish `hy : decoOf ST SG (ptOfD hc (n + 1) ST SG c₀ e).1 = e.dia c₀⁻¹`.
+
+Unfold `ptOfD`. Rewrite using `[decoOf_ptOf hc (n + 1) ST SG hS]`. Establish `ha' : a • e = DecoSet.til (ST` using `ST) pi d' := ha`. Establish `h1` using `til_tmv_decoOfD ST SG hc (ptOfD hc n ∅ SG 1 d').2 c₀ hcP hw`. Rewrite `h1` using `[hy', ← ha']`.
+
+Establish `h2 : decoOf ST SG (padA F E n (ptOfD hc n ∅ SG 1 d').1) = a • decoOf ST SG (ptOfD hc (n + 1) ST SG c₀ e).1`. Rewrite using `[hy]`. Establish `h3` using `congrArg (fun t => DecoSet.dia c₀⁻¹ t) h1`. Establish `h4 : (decoOfD (n + 1) ST SG c₀ (padA F E n (ptOfD hc n ∅ SG 1 d').1)).dia c₀⁻¹ = decoOf ST SG (padA F E n (ptOfD hc n ∅ SG 1 d').1)` using `DecoSet.dia_inv_dia c₀ _`. Conclude with `h4.symm.trans h3`.
+
+Take `⟨γ, k, hγ, hk, hx⟩` from `rlc_rel_of_orbit hc (n + 1) ST SG H (x := ⟨padA F E n (ptOfD hc n ∅ SG 1 d').1, padA_mem_UAd hc (ptOfD hc n ∅ SG 1 d').2⟩) (y := ptOfD hc (n + 1) ST SG c₀ e) a h2`. Use `⟨k, hk, fun g hg1 hg2 => ?_⟩` and prove the remaining obligations. Establish `hγ' : (ratEquiv hc (n + 1)).symm a.1 = γ` using `(MulEquiv.symm_apply_eq _).2 hγ.symm`. Establish `hp : algebraMap (𝓞 E) E pi ≠ 0`. Introduce `hz`.
+
+Conclude with `h0 (RingOfIntegers.ext (by simpa using hz))`. Establish `hg : g = padA F E n (ptOfD hc n ∅ SG 1 d').1`. Apply `Units.ext` to reduce the goal to its premises. Use `til_tmv_eq_padM _ (til_tmv_padL_cs n (iA F E)) (til_tmv_padL_last n (iA F E)) _ ?_ ?_ _ _ hg1 hg2` and prove the remaining obligations. Introduce `j`.
+
+Rewrite using `[til_tmv_lastIdx, Pi.single_eq_of_ne (Fin.castSucc_ne_last j), map_zero]`. Rewrite using `[til_tmv_lastIdx, Pi.single_eq_same]`. Conclude with `hp.isUnit.map (iA F E)`. Rewrite using `[hγ', hg]`. Establish `hx' : padA F E n (ptOfD hc n ∅ SG 1 d').1 = bc (iA F E) (γ : GL (Fin (n + 1)) E) * (ptOfD hc (n + 1) ST SG c₀ e).1 * (k.1)⁻¹` using `hx`.
+
+Rewrite using `[hx', inv_mul_cancel_right]`.
+-/
 theorem til_tmv_move (hc : CMData F E) {N n : ℕ} (hN : N = n + 1) [NeZero N] [NeZero n] (ST SG : Finset (Pl E))
     (H : Subgroup (GLG E N SG)) (c₀ : DiaG E ST) {pi : 𝓞 E} (h0 : pi ≠ 0)
     (hcP : ∀ P : ST, ((c₀ P : (𝓞 E ⧸ P.1.asIdeal)ˣ) : 𝓞 E ⧸ P.1.asIdeal) = Ideal.Quotient.mk P.1.asIdeal (cO E pi))
@@ -82,6 +105,11 @@ section Pr
 
 variable {X : Fields} {Pr : Primes X}
 
+/- English proof (translation)
+Establish `hgg : ((Pr.cond * (Pr.g 0 * Pr.g 1) ^ 2 : ℕ) : 𝓞 X.E) ∈ w.1.asIdeal`. Take `⟨i, hi⟩` from `exists_g_mem hPr w`. Use `push_cast`. Apply `Ideal.mul_mem_left` to reduce the goal to its premises. Rewrite using `[sq]`.
+
+Apply `Ideal.mul_mem_left` to reduce the goal to its premises. Use `fin_cases i`. Conclude with `Ideal.mul_mem_right _ _ hi`. Conclude with `Ideal.mul_mem_left _ _ hi`. Conclude with `Ideal.mem_of_dvd _ (hPr.piT_cong u) hgg`.
+-/
 theorem til_tmv_piT_sub_one (hPr : Pr.Ok) (u : Pr.Word) (w : Pr.vGs) : Pr.piT u - 1 ∈ w.1.asIdeal := by
   have hgg : ((Pr.cond * (Pr.g 0 * Pr.g 1) ^ 2 : ℕ) : 𝓞 X.E) ∈ w.1.asIdeal := by
     obtain ⟨i, hi⟩ := exists_g_mem hPr w
@@ -94,6 +122,11 @@ theorem til_tmv_piT_sub_one (hPr : Pr.Ok) (u : Pr.Word) (w : Pr.vGs) : Pr.piT u 
     · exact Ideal.mul_mem_left _ _ hi
   exact Ideal.mem_of_dvd _ (hPr.piT_cong u) hgg
 
+/- English proof (translation)
+Use `P.1.isMaximal` as an intermediate fact. Set `_` to `Ideal.Quotient.field P.1.asIdeal`. Establish `hu : IsUnit (Ideal.Quotient.mk P.1.asIdeal (X.conjO (Pr.piT u)))` using `(mk_ne_zero (conj_piT_notMem hPr u P)).isUnit`. Unfold `diaT`. Rewrite using `[dif_pos hu]`.
+
+Both sides reduce to the same expression.
+-/
 theorem til_tmv_diaT (hPr : Pr.Ok) (u : Pr.Word) (P : Pr.vT u) :
     ((diaT u P : (𝓞 X.E ⧸ P.1.asIdeal)ˣ) : 𝓞 X.E ⧸ P.1.asIdeal) = Ideal.Quotient.mk P.1.asIdeal (cO X.E (Pr.piT u)) := by
   have := P.1.isMaximal
@@ -104,6 +137,9 @@ theorem til_tmv_diaT (hPr : Pr.Ok) (u : Pr.Word) (P : Pr.vT u) :
   rw [dif_pos hu]
   rfl
 
+/- English proof (translation)
+Unfold `colDia`. Rewrite using `[if_neg (lt_irrefl _)]`. Conclude with `til_tmv_diaT hPr u P`.
+-/
 theorem til_tmv_colDia (hPr : Pr.Ok) (R : Ranks) (u : Pr.Word) (P : Pr.vT u) :
     ((colDia R u R.m P : (𝓞 X.E ⧸ P.1.asIdeal)ˣ) : 𝓞 X.E ⧸ P.1.asIdeal) = Ideal.Quotient.mk P.1.asIdeal (cO X.E (Pr.piT u)) := by
   unfold colDia
@@ -118,6 +154,11 @@ variable {d : ColDat} (a : ColArgs d)
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Establish `h0 : d.Pr.piT u ≠ 0` using `fun h => piT_coe_ne_zero (d := d) u (by show ((d.Pr.piT u : 𝓞 d.X.E) : d.X.E) = 0`. Rewrite using `[h]`. Use the proof step `rfl)`. Take `⟨κ, h1, h2⟩` from `til_tmv_move (F := d.X.F) (E := d.X.E) d.sp.cm (N_m_succ d.R) (d.Pr.vT u) d.Pr.vGs (d.lev d.R.m).grp (colDia (X := d.X) (Pr := d.Pr) d.R u d.R.m) h0 (til_tmv_colDia d.hPr d.R u) (til_tmv_piT_sub_one d.hPr u) hP (hQ u d.R.m) (d.reprP c) (d.repr u d.R.m (tilCl (Pr := d.Pr) d.W d.le …`. Use `⟨κ, h1, fun g hg => h2 g ?_ hg.2⟩` and prove the remaining obligations.
+
+Establish `h3` using `hg.1`. Unfold `CF.iXm at h3`. Rewrite `h3` using `[iXc_eq a hS]`. Conclude with `h3`.
+-/
 theorem til_tmv_rec (hS : SpStd d.toColBase) (hP : PtSurjP d) (hQ : PtSurj d) (u : d.what₂.Word) (c : PCl d) :
     ∃ κ : levU d.sp.cm (d.R.N d.R.m) (d.Pr.vT u) d.Pr.vGs (d.lev d.R.m).grp,
     levRed d.sp.cm (d.R.N d.R.m) (d.Pr.vT u) d.Pr.vGs (d.lev d.R.m).grp κ = (d.tilMv u c).2 ∧

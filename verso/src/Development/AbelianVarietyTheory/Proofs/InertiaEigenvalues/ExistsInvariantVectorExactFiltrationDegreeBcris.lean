@@ -11,6 +11,63 @@ open Classical
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Introduce `l _ P AI hT K LL x hx c hc μ τ₀' τ' j hμ hτ d hd hd1`. Use `(P.PD K).finK₀` as an intermediate fact. Take `⟨m, cc, kk, h1, hsum⟩` from `GlobalTheory.exists_embedding_idempotent_tensor ℚ_[l] ↥(K0 K) ↥LL.1 τ'`. Use `set y := (⇑P.φB)^[j] x with hy`. Use `set z := P.ιB y with hzdef`.
+
+Use `clear_value z y`. Set `f : ↥(K0 K) →ₗ[ℚ_[l]] P.R.B` to `(LinearMap.mulRight ℚ_[l] y) ∘ₗ (IsScalarTower.toAlgHom ℚ_[l] ↥(K0 K) P.R.B).toLinearMap`. Establish `hB : ∀ s : ↥(K0 K), ∑ i, cc i ⊗ₜ[ℚ_[l]] (algebraMap ↥(K0 K) P.R.B (s * kk i) * y) = ∑ i, (τ' s * cc i) ⊗ₜ[ℚ_[l]] (algebraMap ↥(K0 K) P.R.B (kk i) * y)`. Introduce `s`. Use `congrArg (LinearMap.lTensor ↥LL.1 f) (hsum s)` as an intermediate fact.
+
+Simplify `this` using `[f, map_sum, LinearMap.lTensor_tmul]`. Establish `hφK : ∀ k : ↥(K0 K), P.φB (algebraMap ↥(K0 K) P.R.B k) = algebraMap ↥(K0 K) P.R.B ((P.PD K).σ k)`. Introduce `k`. Rewrite using `[← P.PD_φ K]`. Conclude with `(P.PD K).φ_K₀ k`.
+
+Establish `hact : ∀ g : ↥(GK K), ∀ n : ℕ, P.actQ (g : GQ l) ((⇑P.φB)^[n] x) = algebraMap ↥(K0 K) P.R.B ((⇑(P.PD K).σ)^[n] (c g : ↥(K0 K))) * (⇑P.φB)^[n] x`. Introduce `g n`. Establish `hcomm : ∀ b, P.actQ (g : GQ l) (P.φB b) = P.φB (P.actQ (g : GQ l) b)`. Introduce `b`. Use `(P.PD K).φ_comm g b` as an intermediate fact.
+
+Rewrite `this` using `[P.PD_φ, P.PD_φ, P.PD_actB, P.PD_actB]`. Conclude with `this.symm`. Proceed by induction on `n with`. Consider the case `zero => simpa using hc g`. Consider the case `succ n ih`.
+
+Simplify using `only [Function.iterate_succ_apply']`. Rewrite using `[hcomm, ih, map_mul, hφK]`. Establish `hterm : ∀ (g : ↥(GK K)) (a : ↥LL.1) (k : ↥(K0 K)), actVB (P.PD K) (charRep μ) g (a ⊗ₜ[ℚ_[l]] (algebraMap ↥(K0 K) P.R.B k * y)) = (((μ g : (↥LL.1)ˣ) : ↥LL.1) * a) ⊗ₜ[ℚ_[l]] (algebraMap ↥(K0 K) P.R.B ((⇑(P.PD K).σ)^[j] (c g : ↥(K0 K)) * k) * y)`. Introduce `g a k`. Simplify using `only [actVB, AlgebraTensorModule.map_tmul]`.
+
+Use `congr 1`. Express the relevant statement in the definitionally equal form `(P.PD K).actB g (algebraMap ↥(K0 K) P.R.B k * y) = _`. Rewrite using `[map_mul, AlgEquiv.commutes, P.PD_actB, hy, hact g j, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨w, hw⟩ : ∃ w : ↥LL.1 ⊗[ℚ_[l]] P.R.B, w = ∑ i, cc i ⊗ₜ[ℚ_[l]] (algebraMap ↥(K0 K) P.R.B (kk i) * y)` from `⟨_, rfl⟩`.
+
+Establish `hinv : ∀ g : ↥(GK K), actVB (P.PD K) (charRep μ) g w = w`. Introduce `g`. Use `set s := (⇑(P.PD K).σ)^[j] (c g : ↥(K0 K))`. Simplify using `only [hw, map_sum, hterm]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[Finset.smul_sum]`. Simplify using `only [TensorProduct.smul_tmul', smul_eq_mul]`. Use `_ = ((μ g : (↥LL.1)ˣ) : ↥LL.1) • ∑ i, (τ' s * cc i) ⊗ₜ[ℚ_[l]] (algebraMap ↥(K0 K) P.R.B (kk i) * y) := by rw [hB]`. Use `_ = _ := by`. Rewrite using `[Finset.smul_sum]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, ← mul_assoc, hτ, hμ, one_mul]`. Establish `hlet : ∀ a : ↥(K0 K), mulVB (K₀` using `↥(K0 K)) (B := P.R.B) (V := ↥LL.1) (LL := ↥LL.1) a w = τ' a • w := by`. Introduce `a`. Simplify using `only [hw, map_sum, mulVB, AlgebraTensorModule.map_tmul, LinearMap.id_apply, LinearMap.mulLeft_apply]`.
+
+Establish `: ∀ i, algebraMap ↥(K0 K) P.R.B a * (algebraMap ↥(K0 K) P.R.B (kk i) * y) = algebraMap ↥(K0 K) P.R.B (a * kk i) * y`. Introduce `i`. Rewrite using `[map_mul, mul_assoc]`. Simplify using `only [this]`. Rewrite using `[hB, Finset.smul_sum]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul]`. Establish `hι : ∀ k : ↥(K0 K), (P.PD K).ι (algebraMap ↥(K0 K) P.R.B k * y) = algebraMap ↥(K0 K) P.R.BdR k * z`. Introduce `k`. Rewrite using `[map_mul, AlgHom.commutes, P.PD_ι, ← hzdef]`.
+
+Establish `hιw : ιV (P.PD K) (LL` using `↥LL.1) (V := ↥LL.1) w = ∑ i, cc i ⊗ₜ[ℚ_[l]] (algebraMap ↥(K0 K) P.R.BdR (kk i) * z) := by`. Simplify using `only [hw, map_sum, ιV, AlgebraTensorModule.map_tmul, LinearMap.id_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `congr 1`. Conclude with `hι (kk i)`.
+
+Establish `hmem : ∀ k : ↥(K0 K), algebraMap ↥(K0 K) P.R.BdR k * z ∈ (P.PD K).Fil d`. Introduce `k`. Rewrite using `[IsScalarTower.algebraMap_apply ↥(K0 K) ↥K.1 P.R.BdR, ← Algebra.smul_def]`. Conclude with `(P.PD K).Fil d |>.smul_mem _ hd`. Use `⟨w, ⟨?_, ?_⟩, ?_, ?_⟩` and prove the remaining obligations.
+
+Unfold `Dcris`. Use `(Submodule.mem_iInf _).2 fun g => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.mem_ker, LinearMap.sub_apply, hinv g, LinearMap.id_apply, sub_self]`. Use `(Submodule.mem_iInf _).2 fun a => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.mem_ker, LinearMap.sub_apply, hlet a, LinearMap.smul_apply, LinearMap.id_apply, sub_self]`.
+
+Rewrite using `[hιw]`. Use `⟨∑ i, cc i ⊗ₜ[ℚ_[l]] (⟨algebraMap ↥(K0 K) P.R.BdR (kk i) * z, hmem (kk i)⟩ : ↥(((P.PD K).Fil d).restrictScalars ℚ_[l])), ?_⟩` and prove the remaining obligations. Simplify using `[map_sum, AlgebraTensorModule.map_tmul]`. Introduce `hcon`. Establish `hyu : ∀ n : ℕ, IsUnit ((⇑P.φB)^[n] x)`.
+
+Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => simpa using hx`. Consider the case `succ n ih => rw [Function.iterate_succ_apply']`. Conclude with `ih.map P.φB`.
+
+Establish `hz : IsUnit z` using `by rw [hzdef, hy]; exact (hyu j).map P.ιB`. Take `⟨v, hzv⟩` from `hz.exists_right_inv`. Establish `hvz : v * z = 1` using `by rw [mul_comm]; exact hzv`. Establish `hv : v ∈ (P.PD K).Fil (-d)` using `GlobalTheory.FilInv.inv_mem_Fil_neg l P AI hT K d z v hzv hd hd1`. Set `Mv : ↥LL.1 ⊗[ℚ_[l]] P.R.BdR →ₗ[↥LL.1] ↥LL.1 ⊗[ℚ_[l]] P.R.BdR` to `AlgebraTensorModule.map (LinearMap.id : ↥LL.1 →ₗ[↥LL.1] ↥LL.1) (LinearMap.mulLeft ℚ_[l] v)`.
+
+Establish `hvmul : ∀ b ∈ ((P.PD K).Fil (d + 1)).restrictScalars ℚ_[l], LinearMap.mulLeft ℚ_[l] v b ∈ ((P.PD K).Fil 1).restrictScalars ℚ_[l]`. Introduce `b hb`. Use `(P.PD K).Fil_mul (-d) (d + 1) v b hv hb` as an intermediate fact. Rewrite `this` using `[show -d + (d + 1) = 1 by ring]`. Conclude with `this`.
+
+Establish `hMv : ∀ t ∈ FilV (P.PD K) (LL` using `↥LL.1) (V := ↥LL.1) (d + 1), Mv t ∈ FilV (P.PD K) (LL := ↥LL.1) (V := ↥LL.1) 1 := by`. Introduce and unpack `t ⟨s, rfl⟩`. Use `⟨AlgebraTensorModule.map (LinearMap.id : ↥LL.1 →ₗ[↥LL.1] ↥LL.1) ((LinearMap.mulLeft ℚ_[l] v).restrict hvmul) s, ?_⟩` and prove the remaining obligations. Proceed by induction on `s using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+
+Consider the case `tmul a b => simp [Mv, AlgebraTensorModule.map_tmul]`. Consider the case `add s t hs ht => simp only [map_add, hs, ht]`. Establish `hE : Mv (ιV (P.PD K) (LL` using `↥LL.1) (V := ↥LL.1) w) = ∑ i, cc i ⊗ₜ[ℚ_[l]] algebraMap ↥(K0 K) P.R.BdR (kk i) := by`. Rewrite using `[hιw, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Simplify using `only [Mv, AlgebraTensorModule.map_tmul, LinearMap.id_apply, LinearMap.mulLeft_apply]`. Rewrite using `[mul_left_comm, hvz, mul_one]`. Establish `hF1` using `hMv _ hcon`. Rewrite `hF1` using `[hE]`. Set `q` to `(((P.PD K).Fil 1).restrictScalars ℚ_[l]).mkQ`.
+
+Set `h0 : ↥(K0 K) →ₗ[ℚ_[l]] P.R.BdR ⧸ (((P.PD K).Fil 1).restrictScalars ℚ_[l])` to `q ∘ₗ (IsScalarTower.toAlgHom ℚ_[l] ↥(K0 K) P.R.BdR).toLinearMap`. Establish `hinj : Function.Injective h0`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `k hk`. Establish `hk' : algebraMap ↥(K0 K) P.R.BdR k ∈ (P.PD K).Fil 1`.
+
+Use `(Submodule.Quotient.mk_eq_zero _).1 hk` as an intermediate fact. Conclude with `this`. Rewrite `hk'` using `[IsScalarTower.algebraMap_apply ↥(K0 K) ↥K.1 P.R.BdR]`. Use `JsetEmb.field_inter_filtration_one_eq_zero (P.PD K) _ hk'` as an intermediate fact. Conclude with `(map_eq_zero_iff _ (algebraMap ↥(K0 K) ↥K.1).injective).1 this`.
+
+Establish `hq : ∀ t ∈ FilV (P.PD K) (LL` using `↥LL.1) (V := ↥LL.1) 1, LinearMap.lTensor ↥LL.1 q t = 0 := by`. Introduce and unpack `t ⟨s, rfl⟩`. Proceed by induction on `s using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b`.
+
+Simplify using `only [AlgebraTensorModule.map_tmul, LinearMap.id_apply, LinearMap.lTensor_tmul]`. Rewrite using `[show q ((((P.PD K).Fil 1).restrictScalars ℚ_[l]).subtype b) = 0 from (Submodule.Quotient.mk_eq_zero _).2 b.2, tmul_zero]`. Consider the case `add s t hs ht => rw [map_add, map_add, hs, ht, add_zero]`. Establish `hzero : LinearMap.lTensor ↥LL.1 h0 (∑ i, cc i ⊗ₜ[ℚ_[l]] kk i) = 0`. Use `hq _ hF1` as an intermediate fact.
+
+Simplify `this` using `[h0, map_sum, LinearMap.lTensor_tmul]`. Establish `he : (∑ i, cc i ⊗ₜ[ℚ_[l]] kk i : ↥LL.1 ⊗[ℚ_[l]] ↥(K0 K)) = 0` using `Module.Flat.lTensor_preserves_injective_linearMap (M := ↥LL.1) h0 hinj (hzero.trans (map_zero _).symm)`. Set `Λ : ↥LL.1 ⊗[ℚ_[l]] ↥(K0 K) →ₗ[ℚ_[l]] ↥LL.1` to `TensorProduct.lift ((LinearMap.mul ℚ_[l] ↥LL.1).compl₂ τ'.toLinearMap)`. Establish `hΛ : Λ (∑ i, cc i ⊗ₜ[ℚ_[l]] kk i) = 1`. Simplify using `[Λ, map_sum, h1]`.
+
+Rewrite `hΛ` using `[he, map_zero]`. Conclude with `zero_ne_one hΛ`.
+-/
 theorem GlobalTheory.exists_letter_vector_exact_degree : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P), LocTied l P AI → ∀ (K LL : FinExt l) (x : P.R.B), IsUnit x → ∀ c : ↥(GK K) →* (↥(K0 K))ˣ, (∀ g : ↥(GK K), P.actQ (g : GQ l) x = algebraMap ↥(K0 K) P.R.B ((c g : (↥(K0 K))ˣ) : ↥(K0 K)) * x) → ∀ (μ : ↥(GK K) →* (↥LL.1)ˣ) (τ₀' τ' : ↥(K0 K) →ₐ[ℚ_[l]] ↥LL.1) (j : ℕ), (∀ g : ↥(GK K), ((μ g : (↥LL.1)ˣ) : ↥LL.1) * τ₀' ((c g : (↥(K0 K))ˣ) : ↥(K0 K)) = 1) → (∀ a : ↥(K0 K), τ' ((⇑(P.PD K).σ)^[j] a) = τ₀' a) → ∀ d : ℤ, P.ιB ((⇑P.φB)^[j] x) ∈ (P.PD K).Fil d → P.ιB ((⇑P.φB)^[j] x) ∉ (P.PD K).Fil (d + 1) → ∃ w ∈ DcrisL (P.PD K) (charRep μ) τ', ιV (P.PD K) (LL := ↥LL.1) (V := ↥LL.1) w ∈ FilV (P.PD K) (LL := ↥LL.1) (V := ↥LL.1) d ∧ ιV (P.PD K) (LL := ↥LL.1) (V := ↥LL.1) w ∉ FilV (P.PD K) (LL := ↥LL.1) (V := ↥LL.1) (d + 1) := by
   intro l _ P AI hT K LL x hx c hc μ τ₀' τ' j hμ hτ d hd hd1
   have := (P.PD K).finK₀

@@ -13,6 +13,9 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open Classical
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.secMaps_secPull_of_pointwise | exact GlobalTheory.secMaps_secPull_of_pointwise | (intros; apply GlobalTheory.secMaps_secPull_of_pointwise <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.secMaps_secPull_of_pointwise_germs : ∀ {Y XA XG : Scheme.{0}} (θ : Y ⟶ XA) (φ : XA ⟶ XG) (fst : Y ⟶ XG), θ ≫ φ = fst →
     ∀ (LP : LB XA) (LL LM : LB XG), LL.IsLB →
     ∀ (ψ : LB.Iso LP (LL.pull φ)) (e : LB.Iso LM LL) (w₀ : LB.Iso (LP.pull θ) (LM.pull fst)),

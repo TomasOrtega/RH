@@ -26,17 +26,26 @@ def dVGram (d : HSMDatum D Ω κ) (n : ℕ) {r : ℕ} (b : Fin r → MvPolynomia
     Matrix (Fin r) (Fin r) ℂ :=
   bGram d.dV (fun k y => secFun (b k) (resPt d y)) fun y => wgt d.m n (resPt d y)
 
+/- English proof (translation)
+Simplify using `only [pairVal, secFun, wgt, div_eq_mul_inv]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem pairVal_eq (m : ConeMetric ℂ (Ix κ)) (n : ℕ) (b b' : MvPolynomial (Ix κ) ℚ) (z : Ix κ → ℂ) :
     pairVal m n b b' z = starRingEnd ℂ (secFun b' z) * secFun b z * (wgt m n z : ℂ) := by
   simp only [pairVal, secFun, wgt, div_eq_mul_inv]
   push_cast
   ring
 
+/- English proof (translation)
+Use extensionality with `k l`. Simplify using `only [resCGram, dVGram, bGram, Matrix.transpose_apply, Matrix.of_apply, pairVal_eq]`.
+-/
 theorem resCGram_eq (d : HSMDatum D Ω κ) (n : ℕ) {r : ℕ} (b : Fin r → MvPolynomial (Ix κ) ℚ) :
     resCGram d n b = (dVGram d n b).transpose := by
   ext k l
   simp only [resCGram, dVGram, bGram, Matrix.transpose_apply, Matrix.of_apply, pairVal_eq]
 
+/- English proof (translation)
+Use `d.vol.1` as an intermediate fact. Establish `hc` using `ResSym.continuous_degZero_resPt d (ResSym.continuousOn_gramFun d.smooth n (b i) (b j)) fun c z hc => ResSym.gramFun_smul (hb i) (hb j) c z hc`. Conclude with `integrableOn_univ.1 (hc.continuousOn.integrableOn_compact isCompact_univ)`.
+-/
 theorem integrable_dV (d : HSMDatum D Ω κ) {n r : ℕ} {b : Fin r → MvPolynomial (Ix κ) ℚ}
     (hb : ∀ k, ∃ f : MvPolynomial (Ix κ) ℤ, f.IsHomogeneous n ∧ b k = map (Int.castRingHom ℚ) f)
     (i j : Fin r) :
@@ -47,20 +56,34 @@ theorem integrable_dV (d : HSMDatum D Ω κ) {n r : ℕ} {b : Fin r → MvPolyno
     fun c z hc => ResSym.gramFun_smul (hb i) (hb j) c z hc
   exact integrableOn_univ.1 (hc.continuousOn.integrableOn_compact isCompact_univ)
 
+/- English proof (translation)
+Rewrite using `[dot_bGram μ s w hint c, Complex.ofReal_re]`.
+-/
 theorem quad_bGram {X : Type*} [MeasurableSpace X] (μ : Measure X) {r : ℕ} (s : Fin r → X → ℂ) (w : X → ℝ)
     (hint : ∀ i j, Integrable (fun x => starRingEnd ℂ (s i x) * s j x * (w x : ℂ)) μ) (c : Fin r → ℂ) :
     (star c ⬝ᵥ (bGram μ s w *ᵥ c)).re = bNormSq μ s w c := by
   rw [dot_bGram μ s w hint c, Complex.ofReal_re]
 
+/- English proof (translation)
+Unfold `Matrix.IsHermitian`. Rewrite using `[Matrix.conjTranspose_smul, hA.eq, Complex.star_def, Complex.conj_ofReal]`.
+-/
 theorem isHermitian_ofReal_smul {r : ℕ} {A : Matrix (Fin r) (Fin r) ℂ} (hA : A.IsHermitian) (t : ℝ) :
     ((t : ℂ) • A).IsHermitian := by
   unfold Matrix.IsHermitian
   rw [Matrix.conjTranspose_smul, hA.eq, Complex.star_def, Complex.conj_ofReal]
 
+/- English proof (translation)
+Rewrite using `[Matrix.det_smul, Fintype.card_fin, ← Complex.ofReal_pow, Complex.re_ofReal_mul]`.
+-/
 theorem re_det_ofReal_smul {r : ℕ} (t : ℝ) (A : Matrix (Fin r) (Fin r) ℂ) :
     ((t : ℂ) • A).det.re = t ^ r * A.det.re := by
   rw [Matrix.det_smul, Fintype.card_fin, ← Complex.ofReal_pow, Complex.re_ofReal_mul]
 
+/- English proof (translation)
+Establish `hsub` using `psd_sub_of_quad_le (isHermitian_ofReal_smul hB t) hA.isHermitian fun c => by`. Rewrite using `[Matrix.smul_mulVec, dotProduct_smul, smul_eq_mul, Complex.re_ofReal_mul]`. Conclude with `h c`. Use `GroundTheory.Heights₂.Heights.MCDet.re_det_mono hA hsub` as an intermediate fact. Simplify using `only [RCLike.re_to_complex] at this`.
+
+Rewrite `this` using `[re_det_ofReal_smul]`. Then use the resulting hypothesis.
+-/
 theorem re_det_le_of_quad {r : ℕ} {A B : Matrix (Fin r) (Fin r) ℂ} (hA : A.PosSemidef) (hB : B.IsHermitian)
     (t : ℝ) (h : ∀ c : Fin r → ℂ, (star c ⬝ᵥ (A *ᵥ c)).re ≤ t * (star c ⬝ᵥ (B *ᵥ c)).re) :
     A.det.re ≤ t ^ r * B.det.re := by
@@ -71,6 +94,9 @@ theorem re_det_le_of_quad {r : ℕ} {A B : Matrix (Fin r) (Fin r) ℂ} (hA : A.P
   simp only [RCLike.re_to_complex] at this
   rwa [re_det_ofReal_smul] at this
 
+/- English proof (translation)
+The claim follows from `|resChi d n - resCChi d n| ≤ (finrank ℤ (sec ℤ d.x n) : ℝ) * (Real.log 2 + Real.log K + D * Real.log n) := by classical obtain ⟨C, hC⟩ := hR D Ω κ d refine ⟨max (C ^ 2) 1, le_max_right _ _, fun n hn => ?_⟩ set K := max (C ^ 2) 1 with hK have hK1 : 1 ≤ K := le_max_right _ _ have h …`.
+-/
 theorem abs_sub_le (hR : ResolutionSupBound.Statement) (d : HSMDatum D Ω κ) :
     ∃ K : ℝ, 1 ≤ K ∧ ∀ n : ℕ, 1 ≤ n →
       |resChi d n - resCChi d n| ≤
@@ -209,6 +235,13 @@ theorem abs_sub_le (hR : ResolutionSupBound.Statement) (d : HSMDatum D Ω κ) :
   rw [abs_le]
   constructor <;> nlinarith
 
+/- English proof (translation)
+Take `⟨m₀, hs, hc, hp, hpull⟩` from `hF D Ω κ d.x e hfr`. Take `⟨k, E, C, -, -, -, -, hrank, -⟩` from `hP D Ω κ (d.withMetric m₀ ⊥ hs hc bot_le hp) e hfr hpull`. Use `⟨(projDeg d.x e : ℝ) / D.factorial + |C|, by positivity, fun n => ?_⟩` and prove the remaining obligations. Establish `h1 : (finrank ℤ (sec ℤ d.x n) : ℝ) - (projDeg d.x e : ℝ) * (n : ℝ) ^ D / (D.factorial : ℝ) ≤ C * ((n : ℝ) + 1) ^ (D - 1)` using `(abs_le.mp (hrank n)).2`. Establish `hn0 : (0 : ℝ) ≤ n` using `Nat.cast_nonneg n`.
+
+Establish `hn1 : (1 : ℝ) ≤ n + 1` using `by linarith`. Establish `h2 : (n : ℝ) ^ D ≤ ((n : ℝ) + 1) ^ D` using `pow_le_pow_left₀ hn0 (by linarith) D`. Establish `h3 : ((n : ℝ) + 1) ^ (D - 1) ≤ ((n : ℝ) + 1) ^ D` using `pow_le_pow_right₀ hn1 (Nat.sub_le D 1)`. Establish `h4 : C * ((n : ℝ) + 1) ^ (D - 1) ≤ |C| * ((n : ℝ) + 1) ^ D` using `(mul_le_mul_of_nonneg_right (le_abs_self C) (by positivity)).trans (mul_le_mul_of_nonneg_left h3 (abs_nonneg C))`. Establish `h5 : (projDeg d.x e : ℝ) * (n : ℝ) ^ D / (D.factorial : ℝ) ≤ (projDeg d.x e : ℝ) / D.factorial * ((n : ℝ) + 1) ^ D`.
+
+Rewrite using `[div_mul_eq_mul_div]`. Use `gcongr`. Rewrite using `[add_mul]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem rank_le (hP : ProjectionBounds.Statement) (hF : PullFSExtension.Statement) (d : HSMDatum D Ω κ)
     (e : Fin (D + 1) → Ix κ) (hfr : IsProjFrame d.x e) :
     ∃ A : ℝ, 0 ≤ A ∧ ∀ n : ℕ, (finrank ℤ (sec ℤ d.x n) : ℝ) ≤ A * ((n : ℝ) + 1) ^ D := by
@@ -231,6 +264,19 @@ theorem rank_le (hP : ProjectionBounds.Statement) (hF : PullFSExtension.Statemen
   rw [add_mul]
   linarith
 
+/- English proof (translation)
+Introduce `D Ω _ _ κ _ d e hfr`. Take `⟨K, hK1, hK⟩` from `abs_sub_le hR d`. Take `⟨A, hA0, hA⟩` from `rank_le hP hF d e hfr`. Establish `hlog2 : 0 < Real.log 2` using `Real.log_pos (by norm_num)`. Establish `hlogK` using `Real.log_nonneg hK1`.
+
+Use `set B := (Real.log 2 + Real.log K) / Real.log 2 + D with hB`. Establish `hB0 : 0 ≤ B` using `by positivity`. Use `IsBigO.of_bound (A * 2 ^ D * B) ?_` and prove the remaining obligations. Use `filter_upwards [eventually_ge_atTop 1] with n hn`. Establish `hn1 : (1 : ℝ) ≤ n` using `by exact_mod_cast hn`.
+
+Establish `hlogn0` using `Real.log_nonneg hn1`. Establish `hlog21 : Real.log 2 ≤ Real.log ((n : ℝ) + 1)` using `Real.log_le_log (by norm_num) (by linarith)`. Establish `hlogn : Real.log n ≤ Real.log ((n : ℝ) + 1)` using `Real.log_le_log (by linarith) (by linarith)`. Establish `hlog1 : 0 ≤ Real.log ((n : ℝ) + 1)` using `Real.log_nonneg (by linarith)`. Establish `hL : Real.log 2 + Real.log K + D * Real.log n ≤ B * Real.log ((n : ℝ) + 1)`.
+
+Establish `h1 : Real.log 2 + Real.log K ≤ (Real.log 2 + Real.log K) / Real.log 2 * Real.log ((n : ℝ) + 1)`. Rewrite using `[div_mul_eq_mul_div, le_div_iff₀ hlog2]`. Use the polynomial consequences of the given equalities and inequalities. Establish `h2 : (D : ℝ) * Real.log n ≤ D * Real.log ((n : ℝ) + 1)` using `mul_le_mul_of_nonneg_left hlogn (Nat.cast_nonneg _)`. Rewrite using `[hB, add_mul]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hL0 : 0 ≤ Real.log 2 + Real.log K + D * Real.log n` using `by positivity`. Establish `hpow : ((n : ℝ) + 1) ^ D ≤ 2 ^ D * (n : ℝ) ^ D`. Rewrite using `[← mul_pow]`. Conclude with `pow_le_pow_left₀ (by linarith) (by linarith) D`.
+
+Rewrite using `[Real.norm_eq_abs, Real.norm_eq_abs, abs_of_nonneg (by positivity : 0 ≤ (n : ℝ) ^ D * Real.log ((n : ℝ) + 1))]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem proof (hR : ResolutionSupBound.Statement) (hP : ProjectionBounds.Statement)
     (hF : PullFSExtension.Statement) : RealGramComparison.Statement := by
   intro D Ω _ _ κ _ d e hfr

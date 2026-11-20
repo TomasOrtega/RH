@@ -13,11 +13,17 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 namespace PositivityTheory.SiegelWeilFormula.kfour
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 variable {σ : E →ₐ[F] E} {n : ℕ} {Y : Spc F E n}
+/- English proof (translation)
+Take `⟨-, -, -, h⟩` from `hB.cm`. Set `τ : E →+* ℂ` to `Classical.arbitrary _`. Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[h, h, star_star]`.
+-/
 theorem sigma_sigma_of_good_k {B : Base F E} (hB : _root_.UpperTheory.TP.W.GoodK σ B) (a : E) : σ (σ a) = a := by
   obtain ⟨-, -, -, h⟩ := hB.cm
   let τ : E →+* ℂ := Classical.arbitrary _
   apply τ.injective
   rw [h, h, star_star]
+/- English proof (translation)
+Establish `hσ` using `_root_.PositivityTheory.SiegelWeilFormula.kfour.sigma_sigma_of_good_k hB`. Take `⟨hlc, hsc, ht2, hbo⟩` from `nA_top hσ hb`. Take `⟨K, hK, hc⟩` from `nF_cocompact hσ hb`. Take `⟨lam, 𝓖, hlam, h𝓖, h1⟩` from `(GlobalTheory.meanSquare_addFundamentalDomain_of_cocompact (nA σ Y b) (nF σ Y b) K hK hc).1`. Conclude with `⟨nbE σ Y b, lam, 𝓖, isNMap_nbE hσ hb, hlam, h𝓖, h1⟩`.
+-/
 theorem coefData_exists_k {B : Base F E} (hB : _root_.UpperTheory.TP.W.GoodK σ B) {b : GL (Fin n ⊕ Fin n) E} (hb : IsFrame2 σ Y b) :
     ∃ nb lam 𝓖, CoefData (σ := σ) (Y := Y) b nb lam 𝓖 := by
   have hσ := _root_.PositivityTheory.SiegelWeilFormula.kfour.sigma_sigma_of_good_k hB
@@ -26,6 +32,9 @@ theorem coefData_exists_k {B : Base F E} (hB : _root_.UpperTheory.TP.W.GoodK σ 
   obtain ⟨lam, 𝓖, hlam, h𝓖, h1⟩ :=
     (GlobalTheory.meanSquare_addFundamentalDomain_of_cocompact (nA σ Y b) (nF σ Y b) K hK hc).1
   exact ⟨nbE σ Y b, lam, 𝓖, isNMap_nbE hσ hb, hlam, h𝓖, h1⟩
+/- English proof (translation)
+Introduce `_F _E _ _ _ _ _ _σ d` and use `_root_.PositivityTheory.SiegelWeilFormula.kfour.coefData_exists_k d.ok.good d.ok.frame`.
+-/
 theorem coefEx_k : _root_.PositivityTheory.SiegelWeilFormula.CoefEx_k := fun _F _E _ _ _ _ _ _σ d => _root_.PositivityTheory.SiegelWeilFormula.kfour.coefData_exists_k d.ok.good d.ok.frame
 end PositivityTheory.SiegelWeilFormula.kfour
 end

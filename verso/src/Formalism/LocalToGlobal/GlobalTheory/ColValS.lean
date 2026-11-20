@@ -27,6 +27,9 @@ def ColTieW {D : D7} {u : D.what₂.Word} (B : ColBase D u) : Prop :=
           (actAll ((D.fm u).lam 0) (fun τ => Matrix.reindex (B.eQ c τ) (B.eQ c τ) ((B.Q c τ).X v)⁻¹)
             (MvPolynomial.map v.embedding (co x c)))).re
 
+/- English proof (translation)
+Take `⟨h1, h2, co, hinj, hspan, hloc, hinf⟩` from `h`. Use `⟨h1, h2, co, hinj, hspan, fun w γ hγ x => ?_, hinf⟩` and prove the remaining obligations. Take `⟨γ0, hγ0, hx⟩` from `hloc w`. Rewrite using `[hx]`. Conclude with `forall_congr' fun c => mem_iff_of_locBasis D w ((D.fm u).lam 0) (B.Q c) (B.eQ c) (γ0 c) (γ c) (hγ0 c) (hγ c) (co x c)`.
+-/
 theorem colTie_of_colTieW {D : D7} {u : D.what₂.Word} (B : ColBase D u) (h : ColTieW B) : ColTie B := by
   obtain ⟨h1, h2, co, hinj, hspan, hloc, hinf⟩ := h
   refine ⟨h1, h2, co, hinj, hspan, fun w γ hγ x => ?_, hinf⟩
@@ -35,6 +38,9 @@ theorem colTie_of_colTieW {D : D7} {u : D.what₂.Word} (B : ColBase D u) (h : C
   exact forall_congr' fun c => mem_iff_of_locBasis D w ((D.fm u).lam 0) (B.Q c) (B.eQ c) (γ0 c) (γ c)
     (hγ0 c) (hγ c) (co x c)
 
+/- English proof (translation)
+Take `⟨h1, h2, co, hinj, hspan, hloc, hinf⟩` from `h`. Use `⟨h1, h2, co, hinj, hspan, fun w => ?_, hinf⟩` and prove the remaining obligations. Establish `hex : ∀ c τ, ∃ g, LocBasis D w (B.Q c τ) (B.eQ c τ) g` using `fun c τ => Formalism.L2.GlobalTheoryTheory.TraceIntegrality.exists_locBasis w (B.Q c τ) (B.Q_good c τ) (B.eQ c τ)`. Use `choose γ hγ using hex`. Conclude with `⟨γ, hγ, hloc w γ hγ⟩`.
+-/
 theorem colTieW_of {D : D7} {u : D.what₂.Word} (B : ColBase D u) (h : ColTie B) : ColTieW B := by
   obtain ⟨h1, h2, co, hinj, hspan, hloc, hinf⟩ := h
   refine ⟨h1, h2, co, hinj, hspan, fun w => ?_, hinf⟩
@@ -43,14 +49,23 @@ theorem colTieW_of {D : D7} {u : D.what₂.Word} (B : ColBase D u) (h : ColTie B
   choose γ hγ using hex
   exact ⟨γ, hγ, hloc w γ hγ⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨colTie_of_colTieW B, colTieW_of B⟩`.
+-/
 theorem colTieW_iff {D : D7} {u : D.what₂.Word} (B : ColBase D u) : ColTieW B ↔ ColTie B :=
   ⟨colTie_of_colTieW B, colTieW_of B⟩
 
+/- English proof (translation)
+Rewrite using `[ColVal_nonempty_iff]`. Conclude with `exists_congr fun B => (colTieW_iff B).symm`.
+-/
 theorem column_value_nonempty_iff (D : D7) (u : D.what₂.Word) :
     Nonempty (ColVal D u) ↔ ∃ B : ColBase D u, ColTieW B := by
   rw [ColVal_nonempty_iff]
   exact exists_congr fun B => (colTieW_iff B).symm
 
+/- English proof (translation)
+Introduce `D h1 h2 u`. Conclude with `(column_value_nonempty_iff D u).mpr (h D h1 h2 u)`.
+-/
 theorem column_value_of_tie_local_bases
     (h : ∀ D : D7, Formalism.L2.Forms.ColsTiedSym D → adm3 D → ∀ u : D.what₂.Word, ∃ B : ColBase D u, ColTieW B) :
     Formalism.MainNotions.RT.ColumnValuationFromTwistCompatibility := by

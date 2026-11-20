@@ -24,6 +24,9 @@ def expRing (m : Λ →+ ℂ) : torusRing ZU Λ →+* ℂ :=
       map_mul' := fun x y => by simp [Complex.exp_add] }
     (fun _ _ => Commute.all _ _)
 
+/- English proof (translation)
+Simplify using `[expRing, AddMonoidAlgebra.liftNCRingHom_single]`. Both sides reduce to the same expression.
+-/
 theorem expRing_single (m : Λ →+ ℂ) (x : Λ) (r : ULift.{0} ℤ) :
     expRing m (AddMonoidAlgebra.single x r) = (r.down : ℂ) * Complex.exp (m x) := by
   simp [expRing, AddMonoidAlgebra.liftNCRingHom_single]
@@ -32,6 +35,9 @@ theorem expRing_single (m : Λ →+ ℂ) (x : Λ) (r : ULift.{0} ℤ) :
 def expPt (m : Λ →+ ℂ) : Over.mk (𝟙 (Sp ℂ)) ⟶ splitTorus (Spec (.of ℂ)) Λ :=
   SplitTorus.ofCoord (CommRingCat.ofHom (expRing m) ≫ (Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv)
 
+/- English proof (translation)
+Unfold `SplitTorus.val expPt`. Rewrite using `[SplitTorus.coord_ofCoord]`. Simplify using `only [CommRingCat.hom_comp, CommRingCat.hom_ofHom, RingHom.comp_apply]`. Use `erw [expRing_single]`. Simplify using the standard rewrite rules.
+-/
 theorem val_expPt (m : Λ →+ ℂ) (x : Λ) :
     SplitTorus.val (expPt m) x = (Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv.hom (Complex.exp (m x)) := by
   unfold SplitTorus.val expPt
@@ -40,16 +46,25 @@ theorem val_expPt (m : Λ →+ ℂ) (x : Λ) :
   erw [expRing_single]
   simp
 
+/- English proof (translation)
+Apply `SplitTorus.hom_ext` to reduce the goal to its premises. Introduce `a`. Simplify using `only [SplitTorus.val_mul, val_expPt, AddMonoidHom.add_apply, Complex.exp_add, map_mul]`.
+-/
 theorem expPt_add (m m' : Λ →+ ℂ) : expPt (m + m') = expPt m * expPt m' := by
   apply SplitTorus.hom_ext
   intro a
   simp only [SplitTorus.val_mul, val_expPt, AddMonoidHom.add_apply, Complex.exp_add, map_mul]
 
+/- English proof (translation)
+Apply `SplitTorus.hom_ext` to reduce the goal to its premises. Introduce `a`. Simplify using `only [val_expPt, SplitTorus.val_one, AddMonoidHom.zero_apply, Complex.exp_zero, map_one]`.
+-/
 theorem expPt_zero : expPt (0 : Λ →+ ℂ) = 1 := by
   apply SplitTorus.hom_ext
   intro a
   simp only [val_expPt, SplitTorus.val_one, AddMonoidHom.zero_apply, Complex.exp_zero, map_one]
 
+/- English proof (translation)
+Use `Finset.induction_on s (by rw [Finset.sum_empty, expPt_zero]; exact H.one_mem) ?_` and prove the remaining obligations. Introduce `j s hj ih`. Rewrite using `[Finset.sum_insert hj, expPt_add]`. Conclude with `H.mul_mem (h j) ih`.
+-/
 theorem expPt_sum_mem {κ : Type} (s : Finset κ) (m : κ → Λ →+ ℂ)
     (H : Subgroup (Over.mk (𝟙 (Sp ℂ)) ⟶ splitTorus (Spec (.of ℂ)) Λ)) (h : ∀ i, expPt (m i) ∈ H) :
     expPt (∑ i ∈ s, m i) ∈ H := by
@@ -59,6 +74,13 @@ theorem expPt_sum_mem {κ : Type} (s : Finset κ) (m : κ → Λ →+ ℂ)
   rw [Finset.sum_insert hj, expPt_add]
   exact H.mul_mem (h j) ih
 
+/- English proof (translation)
+Set `φ : Λ → ℂˣ` to `fun x => ((SplitTorus.isUnit_val t x).map (Scheme.ΓSpecIso (CommRingCat.of ℂ)).hom.hom).unit`. Establish `hφ : ∀ x, (φ x : ℂ) = (Scheme.ΓSpecIso (CommRingCat.of ℂ)).hom.hom (SplitTorus.val t x)` using `fun x => rfl`. Take `⟨l, hl⟩` from `GlobalTheory.Ex.Arch.exists_log_of_character φ (fun x y => by`. Use `ext`. Simplify using `only [Units.val_mul, hφ, SplitTorus.val_add, map_mul])`.
+
+Use `⟨l, SplitTorus.hom_ext fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[val_expPt]`. Establish `h1` using `hl a`. Rewrite `h1` using `[hφ]`. Unfold `eTwoPi at h1`.
+
+Rewrite using `[AddMonoidHom.smul_apply, smul_eq_mul, ← h1]`. Simplify using the standard rewrite rules.
+-/
 theorem exists_eq_expPt [Module.Free ℤ Λ] (t : Over.mk (𝟙 (Sp ℂ)) ⟶ splitTorus (Spec (.of ℂ)) Λ) :
     ∃ l : Λ →+ ℂ, t = expPt ((2 * Real.pi * Complex.I : ℂ) • l) := by
   let φ : Λ → ℂˣ := fun x =>
@@ -76,6 +98,13 @@ theorem exists_eq_expPt [Module.Free ℤ Λ] (t : Over.mk (𝟙 (Sp ℂ)) ⟶ sp
   rw [AddMonoidHom.smul_apply, smul_eq_mul, ← h1]
   simp
 
+/- English proof (translation)
+Introduce `U s`. Take `⟨h1, h2⟩` from `hf (g ⁻¹ᵁ U) ((g.app U).hom s)`. Establish `key : ∀ b, valAt' (f b ≫ g) U s = valAt' (f b) (g ⁻¹ᵁ U) ((g.app U).hom s)`. Introduce `b`. Unfold `valAt'`.
+
+Distinguish the cases in `hb : ⊤ ≤ (f b ≫ g) ⁻¹ᵁ U`. Establish `hb' : ⊤ ≤ f b ⁻¹ᵁ g ⁻¹ᵁ U` using `hb`. Rewrite using `[dif_pos hb, dif_pos hb']`. Unfold `valAt`. Rewrite using `[Scheme.Hom.comp_appLE]`.
+
+Both sides reduce to the same expression. Establish `hb' : ¬ ⊤ ≤ f b ⁻¹ᵁ g ⁻¹ᵁ U` using `hb`. Rewrite using `[dif_neg hb, dif_neg hb']`. Conclude with `⟨h1, h2.congr fun b _ => key b⟩`.
+-/
 private theorem isHolTo_comp_continuousLinearMap {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] {X Y : Scheme.{0}}
     {B : Set V} {f : V → (Sp ℂ ⟶ X)} (hf : IsHolTo B f) (g : X ⟶ Y) : IsHolTo B fun b => f b ≫ g := by
   intro U s
@@ -93,6 +122,21 @@ private theorem isHolTo_comp_continuousLinearMap {V : Type} [NormedAddCommGroup 
       rw [dif_neg hb, dif_neg hb']
   exact ⟨h1, h2.congr fun b _ => key b⟩
 
+/- English proof (translation)
+Set `ψ : ℂ → (AddMonoidAlgebra ℂ Λ →+* ℂ)` to `fun s => AddMonoidAlgebra.liftNCRingHom (RingHom.id ℂ) { toFun := fun x => Complex.exp (m s (Multiplicative.toAdd x)) map_one' := by simp map_mul' := fun x y => by simp [Complex.exp_add] } (fun _ _ => Commute.all _ _)`. Establish `hψs : ∀ s a c, ψ s (AddMonoidAlgebra.single a c) = c * Complex.exp (m s a)`. Introduce `s a c`. Simplify using `[ψ, AddMonoidAlgebra.liftNCRingHom_single]`. Establish `hψ0 : ∀ s, (ψ s).comp (algebraMap ℂ (AddMonoidAlgebra ℂ Λ)) = RingHom.id ℂ`.
+
+Introduce `s`. Use extensionality with `c`. Simplify using `[AddMonoidAlgebra.coe_algebraMap, hψs]`. Establish `hs : ∀ s, Spec.map (CommRingCat.ofHom ((ψ s).comp (algebraMap (CommRingCat.of ℂ) (AddMonoidAlgebra (CommRingCat.of ℂ) Λ)))) ≫ 𝟙 (Spec (CommRingCat.of ℂ)) = 𝟙 (Sp ℂ)`. Introduce `s`.
+
+Rewrite using `[hψ0 s, Category.comp_id]`. Conclude with `Spec.map_id _`. Establish `key : ∀ s, expPt (m s) = SplitTorus.ptOf (S` using `Spec (CommRingCat.of ℂ)) (X := Λ) (A := CommRingCat.of ℂ) (B := CommRingCat.of ℂ) (s := 𝟙 (Sp ℂ)) (𝟙 _) (ψ s) (hs s) := by`. Introduce `s`. Apply `SplitTorus.pull_ext` to reduce the goal to its premises.
+
+Introduce `a`. Rewrite using `[SplitTorus.pull_ptOf, SplitTorus.ev_chi, SplitTorus.pull_chi, val_expPt]`. Use `erw [hψs]`. Simplify using the standard rewrite rules. Establish `hd : ∀ u : AddMonoidAlgebra ℂ Λ, DifferentiableOn ℂ (fun s => ψ s u) Set.univ`.
+
+Introduce `u`. Use `AddMonoidAlgebra.induction_linear u ?_ ?_ ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Introduce `f g hf hg`. Simplify using `only [map_add]`.
+
+Conclude with `hf.add hg`. Introduce `a c`. Simplify using `only [hψs]`. Conclude with `((hm a).cexp.const_mul c).differentiableOn`. Establish `hhol` using `isHolTo_comp_continuousLinearMap (GlobalTheory.ThetaValueCont.isHolTo_spMap isOpen_univ ψ hd) (SplitTorus.univPt Λ (𝟙 (Spec (CommRingCat.of ℂ)))).left`.
+
+Use `hhol using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `s`. Rewrite using `[key s]`. Both sides reduce to the same expression.
+-/
 theorem isHolTo_expPt {m : ℂ → Λ →+ ℂ} (hm : ∀ x, Differentiable ℂ fun s => m s x) :
     IsHolTo Set.univ fun s => (show Sp ℂ ⟶ _ from (expPt (m s)).left) := by
   let ψ : ℂ → (AddMonoidAlgebra ℂ Λ →+* ℂ) := fun s =>
@@ -141,9 +185,15 @@ theorem isHolTo_expPt {m : ℂ → Λ →+ ℂ} (hm : ∀ x, Differentiable ℂ 
 def oneParam (n : Λ →+ ℤ) (s : ℂ) : Over.mk (𝟙 (Sp ℂ)) ⟶ splitTorus (Spec (.of ℂ)) Λ :=
   expPt (s • (Int.castAddHom ℂ).comp n)
 
+/- English proof (translation)
+Simplify using `only [oneParam, add_smul, expPt_add]`.
+-/
 theorem oneParam_add (n : Λ →+ ℤ) (s s' : ℂ) : oneParam n (s + s') = oneParam n s * oneParam n s' := by
   simp only [oneParam, add_smul, expPt_add]
 
+/- English proof (translation)
+Apply `SplitTorus.hom_ext` to reduce the goal to its premises. Introduce `a`. Simplify using `only [oneParam, val_expPt, SplitTorus.val_one, AddMonoidHom.smul_apply, AddMonoidHom.comp_apply, Int.coe_castAddHom, smul_eq_mul]`. Rewrite using `[mul_comm (2 * (Real.pi : ℂ) * Complex.I), Complex.exp_int_mul_two_pi_mul_I, map_one]`.
+-/
 theorem oneParam_period (n : Λ →+ ℤ) : oneParam n (2 * Real.pi * Complex.I) = 1 := by
   apply SplitTorus.hom_ext
   intro a
@@ -151,11 +201,21 @@ theorem oneParam_period (n : Λ →+ ℤ) : oneParam n (2 * Real.pi * Complex.I)
     Int.coe_castAddHom, smul_eq_mul]
   rw [mul_comm (2 * (Real.pi : ℂ) * Complex.I), Complex.exp_int_mul_two_pi_mul_I, map_one]
 
+/- English proof (translation)
+Use `isHolTo_expPt fun x => ?_` and prove the remaining obligations. Simplify using `only [AddMonoidHom.smul_apply, AddMonoidHom.comp_apply, smul_eq_mul]`. Use `fun_prop`.
+-/
 theorem isHolTo_oneParam (n : Λ →+ ℤ) : IsHolTo Set.univ fun s => (show Sp ℂ ⟶ _ from (oneParam n s).left) := by
   refine isHolTo_expPt fun x => ?_
   simp only [AddMonoidHom.smul_apply, AddMonoidHom.comp_apply, smul_eq_mul]
   fun_prop
 
+/- English proof (translation)
+Take `⟨l, rfl⟩` from `exists_eq_expPt t`. Use `set M : Λ →+ ℂ := (2 * Real.pi * Complex.I : ℂ) • l`. Set `b` to `Module.Free.chooseBasis ℤ Λ`. Establish `hM : M = ∑ j, M (b j) • (Int.castAddHom ℂ).comp (b.coord j).toAddMonoidHom`. Use extensionality with `x`.
+
+Simplify using the standard rewrite rules. Use `conv_lhs => rw [← b.sum_repr x]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul, zsmul_eq_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hM]`. Use `expPt_sum_mem _ _ _ fun j => Subgroup.subset_closure ?_` and prove the remaining obligations. Conclude with `Set.mem_iUnion.2 ⟨(b.coord j).toAddMonoidHom, M (b j), rfl⟩`.
+-/
 theorem mem_closure_oneParam [Module.Free ℤ Λ] [Module.Finite ℤ Λ]
     (t : Over.mk (𝟙 (Sp ℂ)) ⟶ splitTorus (Spec (.of ℂ)) Λ) :
     t ∈ Subgroup.closure (⋃ n : Λ →+ ℤ, Set.range (oneParam n)) := by
@@ -181,6 +241,9 @@ section Push
 variable {X : Scheme.{0}} {G : Over X} [GrpObj G] {y : Sp ℂ ⟶ X} {Λ : Type} [AddCommGroup Λ]
   (i : splitTorus (Spec (.of ℂ)) Λ ⟶ (Over.pullback y).obj G)
 
+/- English proof (translation)
+Substitute `hy` using the available equality. Establish `h1 : a = a'` using `Over.OverMorphism.ext ha`. Establish `h2 : b = b'` using `Over.OverMorphism.ext hb`. Substitute `h1 h2` using the available equality. Both sides reduce to the same expression.
+-/
 theorem left_mul_congr {y' : Sp ℂ ⟶ X} (hy : y' = y) {a b : Over.mk y' ⟶ G} {a' b' : Over.mk y ⟶ G}
     (ha : (show Sp ℂ ⟶ G.left from a.left) = a'.left) (hb : (show Sp ℂ ⟶ G.left from b.left) = b'.left) :
     (show Sp ℂ ⟶ G.left from (a * b).left) = (a' * b').left := by
@@ -191,6 +254,9 @@ theorem left_mul_congr {y' : Sp ℂ ⟶ X} (hy : y' = y) {a b : Over.mk y' ⟶ G
   rfl
 
 omit [GrpObj G] in
+/- English proof (translation)
+Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc]`. Use `congr 1`. Conclude with `Over.w (t ≫ i)`.
+-/
 theorem push_w (t : Over.mk (𝟙 (Sp ℂ)) ⟶ splitTorus (Spec (.of ℂ)) Λ) :
     ((t ≫ i).left ≫ pullback.fst G.hom y) ≫ G.hom = (Over.mk (𝟙 (Sp ℂ))).hom ≫ y := by
   rw [Category.assoc, pullback.condition, ← Category.assoc]
@@ -200,6 +266,9 @@ theorem push_w (t : Over.mk (𝟙 (Sp ℂ)) ⟶ splitTorus (Spec (.of ℂ)) Λ) 
 def push (t : Over.mk (𝟙 (Sp ℂ)) ⟶ splitTorus (Spec (.of ℂ)) Λ) : Over.mk y ⟶ G :=
   Over.homMk ((t ≫ i).left ≫ pullback.fst G.hom y) ((push_w i t).trans (Category.id_comp y))
 
+/- English proof (translation)
+Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Establish `hx` using `SplitTorus.mul_left_comp_fst G y (t ≫ i) (t' ≫ i) (Over.homMk ((t ≫ i).left ≫ pullback.fst G.hom y) (push_w i t)) (Over.homMk ((t' ≫ i).left ≫ pullback.fst G.hom y) (push_w i t')) rfl rfl`. Establish `hc` using `left_mul_congr (G := G) (Category.id_comp y) (a := Over.homMk ((t ≫ i).left ≫ pullback.fst G.hom y) (push_w i t)) (b := Over.homMk ((t' ≫ i).left ≫ pullback.fst G.hom y) (push_w i t')) (a' := push i t) (b' := push i t') rfl rfl`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem push_mul [IsMonHom i] (t t' : Over.mk (𝟙 (Sp ℂ)) ⟶ splitTorus (Spec (.of ℂ)) Λ) :
     push i (t * t') = push i t * push i t' := by
   apply Over.OverMorphism.ext
@@ -218,6 +287,9 @@ theorem push_mul [IsMonHom i] (t t' : Over.mk (𝟙 (Sp ℂ)) ⟶ splitTorus (Sp
 def pushHom [IsMonHom i] : (Over.mk (𝟙 (Sp ℂ)) ⟶ splitTorus (Spec (.of ℂ)) Λ) →* (Over.mk y ⟶ G) :=
   MonoidHom.mk' (push i) (push_mul i)
 
+/- English proof (translation)
+Unfold `IsPerHol`. Use `⟨fun s t => by simp only [oneParam_add, map_mul], ?_, by simp only [oneParam_period, map_one]⟩` and prove the remaining obligations. Conclude with `isHolTo_comp_continuousLinearMap (isHolTo_comp_continuousLinearMap (isHolTo_oneParam n) i.left) (pullback.fst G.hom y)`.
+-/
 theorem isPerHol_push [IsMonHom i] (n : Λ →+ ℤ) : IsPerHol G y fun s => pushHom i (oneParam n s) := by
   unfold IsPerHol
   refine ⟨fun s t => by simp only [oneParam_add, map_mul], ?_, by simp only [oneParam_period, map_one]⟩
@@ -231,6 +303,13 @@ namespace GlobalTheory.PeriodSpan
 
 open TorusExp in
 
+/- English proof (translation)
+Set `_` to `E.addCommGroup`. Establish `: Module.Free ℤ E.X` using `E.free`. Establish `: Module.Finite ℤ E.X` using `E.finite`. Establish `: IsMonHom E.i` using `E.i_hom`. Introduce and unpack `x ⟨t, ht⟩`.
+
+Establish `hx : x = pushHom E.i t` using `Over.OverMorphism.ext ht.symm`. Rewrite using `[hx, SetLike.mem_coe]`. Unfold `perHolSub`. Establish `hmap` using `Subgroup.mem_map_of_mem (pushHom E.i) (mem_closure_oneParam t)`. Rewrite `hmap` using `[MonoidHom.map_closure]`.
+
+Use `Subgroup.closure_mono ?_ hmap` and prove the remaining obligations. Introduce and unpack `_ ⟨z, hz, rfl⟩`. Take `⟨n, s, rfl⟩` from `Set.mem_iUnion.1 hz`. Conclude with `Set.mem_iUnion₂.2 ⟨_, isPerHol_push E.i n, s, rfl⟩`.
+-/
 theorem torusPts_subset_perHolSub (X : Scheme.{0}) (G : Over X) [GrpObj G] (y : Sp ℂ ⟶ X)
     (E : TorusExtension ((Over.pullback y).obj G)) :
     torusPts G y E ⊆ (perHolSub G y : Set (Over.mk y ⟶ G)) := by

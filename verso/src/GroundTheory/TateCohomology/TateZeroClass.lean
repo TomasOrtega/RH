@@ -13,11 +13,17 @@ variable {k G : Type u} [CommRing k] [Group G] [Fintype G]
 noncomputable def tateZeroClass (M : Rep.{u} k G) : M.ρ.invariants →ₗ[k] tateCohomology M 0 :=
   ((tateCohomologyZeroIso k G).app M).inv.hom ∘ₗ (normRangeInvariants M).mkQ
 
+/- English proof (translation)
+The claim follows from `tateCohomologyZeroIso_inv_mk M z x hx`.
+-/
 lemma tateZeroClass_eq_homologyπ (M : Rep.{u} k G) (z : (tateComplex M).cycles 0)
     (x : M.ρ.invariants) (hx : (cochainsIso₀ M).inv.hom x = ((tateComplex M).iCycles 0).hom z) :
     tateZeroClass M x = ((tateComplex M).homologyπ 0).hom z :=
   tateCohomologyZeroIso_inv_mk M z x hx
 
+/- English proof (translation)
+Introduce `y`. Take `⟨q, hq⟩` from `((ModuleCat.epi_iff_surjective ((tateCohomologyZeroIso k G).app M).inv).1 inferInstance) y`. Take `⟨x, rfl⟩` from `(normRangeInvariants M).mkQ_surjective q`. Conclude with `⟨x, hq⟩`.
+-/
 lemma tateZeroClass_surjective (M : Rep.{u} k G) : Function.Surjective (tateZeroClass M) := by
   intro y
   obtain ⟨q, hq⟩ := ((ModuleCat.epi_iff_surjective ((tateCohomologyZeroIso k G).app M).inv).1
@@ -25,6 +31,11 @@ lemma tateZeroClass_surjective (M : Rep.{u} k G) : Function.Surjective (tateZero
   obtain ⟨x, rfl⟩ := (normRangeInvariants M).mkQ_surjective q
   exact ⟨x, hq⟩
 
+/- English proof (translation)
+Take `⟨z, hz⟩` from `exists_tateComplex_cycles_zero M x`. Rewrite using `[tateZeroClass_eq_homologyπ M z x hz.symm]`. Establish `e1` using `congr(($(HomologicalComplex.homologyπ_naturality f 0)).hom z)`. Establish `e2` using `congr(($(HomologicalComplex.cyclesMap_i f 0)).hom z)`. Simplify using `only [ModuleCat.hom_comp, LinearMap.comp_apply] at e1 e2`.
+
+Rewrite using `[e1]`. Use `(tateZeroClass_eq_homologyπ N _ y ?_).symm` and prove the remaining obligations. Rewrite using `[e2, hz, h]`.
+-/
 lemma homologyMap_tateZeroClass {H : Type u} [Group H] [Fintype H] {M : Rep.{u} k G}
     {N : Rep.{u} k H} (f : tateComplex M ⟶ tateComplex N) (x : M.ρ.invariants)
     (y : N.ρ.invariants)
@@ -39,6 +50,9 @@ lemma homologyMap_tateZeroClass {H : Type u} [Group H] [Fintype H] {M : Rep.{u} 
   refine (tateZeroClass_eq_homologyπ N _ y ?_).symm
   rw [e2, hz, h]
 
+/- English proof (translation)
+The claim follows from `homologyMap_tateZeroClass (tateComplex.map φ) x _ (funext fun _ => rfl)`.
+-/
 lemma tateCohomologyFunctor_map_tateZeroClass {M N : Rep.{u} k G} (φ : M ⟶ N)
     (x : M.ρ.invariants) :
     ((tateCohomologyFunctor 0).map φ).hom (tateZeroClass M x) =

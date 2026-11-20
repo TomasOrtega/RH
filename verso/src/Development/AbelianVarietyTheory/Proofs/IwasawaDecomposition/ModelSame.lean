@@ -17,6 +17,9 @@ def ModelSame {D D' : D7} {V : HSp D} {V' : HSp D'} {S : D.what₂.Tau → SPar}
     (M : DSModel V S) (M' : DSModel V' S') : Prop :=
   HEq M'.H M.H ∧ HEq M'.nacg M.nacg ∧ HEq M'.ips M.ips ∧ HEq M'.σ M.σ ∧ HEq M'.lam M.lam ∧ HEq M'.ε M.ε ∧ HEq M'.fr M.fr
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨HEq.rfl, HEq.rfl, HEq.rfl, HEq.rfl, HEq.rfl, HEq.rfl, HEq.rfl⟩`.
+-/
 theorem ModelSame.refl {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSModel V S) : ModelSame M M :=
   ⟨HEq.rfl, HEq.rfl, HEq.rfl, HEq.rfl, HEq.rfl, HEq.rfl, HEq.rfl⟩
 

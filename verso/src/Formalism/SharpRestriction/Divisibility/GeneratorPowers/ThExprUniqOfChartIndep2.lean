@@ -21,6 +21,13 @@ def ChartIndepSt2 : Prop :=
     ∀ (a : (E →+* ℂ) × ℕ → ℕ) (P : MvPolynomial (LtN Dw n) c.F), P ∈ harmA c a n →
       chartVal C k f P = chartVal C' k f' P
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c _ nab₁ nab₂ h₁ h₂ S _ _ _ y k n F a P hP`. Take `⟨C₁, hex₁, hpin₁⟩` from `h₁.2 S y`. Take `⟨C₂, hex₂, hpin₂⟩` from `h₂.2 S y`. Use `choose f₁ hf₁ using fun b => hex₁ k (F b)`. Use `choose f₂ hf₂ using fun b => hex₂ k (F b)`.
+
+Establish `e₁ : ∀ m, ∏ b, nab₁ y k (F b) (colOf m b) = ∏ b, C₁.B.nabVal S C₁.h H.w0 k (f₁ b) C₁.uvec (MvPolynomial.monomial (colOf m b) 1)` using `fun m => Finset.prod_congr rfl fun b _ => hpin₁ k (F b) (f₁ b) (hf₁ b) (colOf m b)`. Establish `e₂ : ∀ m, ∏ b, nab₂ y k (F b) (colOf m b) = ∏ b, C₂.B.nabVal S C₂.h H.w0 k (f₂ b) C₂.uvec (MvPolynomial.monomial (colOf m b) 1)` using `fun m => Finset.prod_congr rfl fun b _ => hpin₂ k (F b) (f₂ b) (hf₂ b) (colOf m b)`. Establish `h` using `hC E H Dw l Xo c h₁.1 S y C₁ C₂ k n F f₁ f₂ hf₁ hf₂ a P hP`. Simplify using `only [chartVal] at h`. Simplify using `only [e₁, e₂]`.
+
+Conclude with `h`.
+-/
 theorem thExprUniq_of_chartIndep2 (hC : ChartIndepSt2) : ThExprUniqSt := by
   intro E _ _ _ H Dw l Xo c _ nab₁ nab₂ h₁ h₂ S _ _ _ y k n F a P hP
   obtain ⟨C₁, hex₁, hpin₁⟩ := h₁.2 S y

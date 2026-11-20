@@ -23,24 +23,42 @@ structure Cusp {w : PlE H} (x y : A.LP w) : Prop where
 
 variable {N A}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨rfl, id, fun _ _ _ => rfl⟩`.
+-/
 theorem RelA.refl {w : PlE H} (x : A.LP w) : RelA N A x x := ⟨rfl, id, fun _ _ _ => rfl⟩
 
+/- English proof (translation)
+The claim follows from `e ▸ RelA.refl x`.
+-/
 theorem RelA.of_eq {w : PlE H} {x y : A.LP w} (e : x = y) : RelA N A x y := e ▸ RelA.refl x
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨RelA.of_eq e, fun _ _ h => e ▸ h, fun _ => e⟩`.
+-/
 theorem Cusp.of_eq {w : PlE H} {x y : A.LP w} (e : x = y) : Cusp N A x y :=
   ⟨RelA.of_eq e, fun _ _ h => e ▸ h, fun _ => e⟩
 
+/- English proof (translation)
+The claim follows from `Subgroup.commutator_le.2 fun a ha b hb => by rw [commutatorElement_def] exact mul_mem (mul_mem (mul_mem ha hb) (inv_mem ha)) (inv_mem hb)`.
+-/
 theorem comm_le_ine (w : PlE H) :
     ⁅Ine (F := H.E) (N.plOm.1 w), Ine (F := H.E) (N.plOm.1 w)⁆ ≤ Ine (F := H.E) (N.plOm.1 w) :=
   Subgroup.commutator_le.2 fun a ha b hb => by
     rw [commutatorElement_def]
     exact mul_mem (mul_mem (mul_mem ha hb) (inv_mem ha)) (inv_mem hb)
 
+/- English proof (translation)
+Take `⟨h0, h1⟩` from `(A.unr_iff_ine y).1 hy`. Use `(A.unr_iff_ine x).2 ⟨h.mono h0, fun σ hσ => ?_⟩` and prove the remaining obligations. Rewrite using `[h.ine (fun τ hτ => h1 τ (comm_le_ine w hτ)) σ hσ, h1 σ hσ, h.dim]`.
+-/
 theorem RelA.unr {w : PlE H} {x y : A.LP w} (h : RelA N A x y) (hy : A.unr y) : A.unr x := by
   obtain ⟨h0, h1⟩ := (A.unr_iff_ine y).1 hy
   refine (A.unr_iff_ine x).2 ⟨h.mono h0, fun σ hσ => ?_⟩
   rw [h.ine (fun τ hτ => h1 τ (comm_le_ine w hτ)) σ hσ, h1 σ hσ, h.dim]
 
+/- English proof (translation)
+Use `⟨by rw [A.lpDim_tw, A.lpDim_tw, h.dim], by rw [A.monomial_twist_iff, A.monomial_twist_iff]; exact h.mono, fun hy σ hσ => ?_⟩` and prove the remaining obligations. Rewrite using `[A.inePol_tw _ _ σ hσ, A.inePol_tw _ _ σ hσ]`. Use `h.ine (fun τ hτ => ?_) σ hσ` and prove the remaining obligations. Use `hy τ hτ` as an intermediate fact. Rewrite `this` using `[A.inePol_tw _ _ τ (comm_le_ine w hτ), A.lpDim_tw]`. Then use the resulting hypothesis.
+-/
 theorem RelA.tw {w : PlE H} {x y : A.LP w} (h : RelA N A x y) (s : ℝ) : RelA N A (A.lpTw x s) (A.lpTw y s) := by
   refine ⟨by rw [A.lpDim_tw, A.lpDim_tw, h.dim], by rw [A.monomial_twist_iff, A.monomial_twist_iff]; exact h.mono, fun hy σ hσ => ?_⟩
   rw [A.inePol_tw _ _ σ hσ, A.inePol_tw _ _ σ hσ]
@@ -48,6 +66,11 @@ theorem RelA.tw {w : PlE H} {x y : A.LP w} (h : RelA N A x y) (s : ℝ) : RelA N
   have := hy τ hτ
   rwa [A.inePol_tw _ _ τ (comm_le_ine w hτ), A.lpDim_tw] at this
 
+/- English proof (translation)
+Establish `hirr : Prime (X - C (1 : ℂ))` using `prime_X_sub_C 1`. Establish `hd : p ∣ (X - C (1 : ℂ)) ^ n` using `⟨q, by simpa using h.symm⟩`. Take `⟨k, -, hk⟩` from `(dvd_prime_pow hirr n).1 hd`. Establish `e : p = (X - C (1 : ℂ)) ^ k` using `eq_of_monic_of_associated hp ((monic_X_sub_C 1).pow k) hk`. Establish `: p.natDegree = k` using `by rw [e, natDegree_pow, natDegree_X_sub_C, mul_one]`.
+
+Rewrite using `[this, e]`. Simplify using the standard rewrite rules.
+-/
 theorem eq_pow_of_mul {p q : ℂ[X]} (hp : p.Monic) {n : ℕ} (h : p * q = (X - 1) ^ n) : p = (X - 1) ^ p.natDegree := by
   have hirr : Prime (X - C (1 : ℂ)) := prime_X_sub_C 1
   have hd : p ∣ (X - C (1 : ℂ)) ^ n := ⟨q, by simpa using h.symm⟩
@@ -56,6 +79,13 @@ theorem eq_pow_of_mul {p q : ℂ[X]} (hp : p.Monic) {n : ℕ} (h : p * q = (X - 
   have : p.natDegree = k := by rw [e, natDegree_pow, natDegree_X_sub_C, mul_one]
   rw [this, e]; simp
 
+/- English proof (translation)
+Use `⟨by rw [A.lpDim_sum, A.lpDim_sum, h.dim, h'.dim], by rw [A.monomial_sum_iff, A.monomial_sum_iff]; exact fun k => ⟨h.mono k.1, h'.mono k.2⟩, fun hy σ hσ => ?_⟩` and prove the remaining obligations. Establish `d1 : A.lpDim (A.lpUnr w {1}) = 1` using `by rw [(A.lpUnr_spec w {1} (by simp)).2.2]; simp`. Establish `mon : ∀ (a : A.LP w), ∀ τ ∈ Ine (F` using `H.E) (N.plOm.1 w), (A.inePol a τ).Monic ∧ (A.inePol a τ).natDegree = A.lpDim a := fun a τ hτ => ((hLP w a a _ _ 0 d1 d1).2.2.2.2.2 τ hτ).1`. Rewrite using `[A.inePol_sum, A.inePol_sum, h.ine (fun τ hτ => ?_) σ hσ, h'.ine (fun τ hτ => ?_) σ hσ]`. Establish `e` using `hy τ hτ`.
+
+Rewrite `e` using `[A.inePol_sum, mul_comm]`. Establish `m` using `mon y' τ (comm_le_ine w hτ)`. Rewrite using `[eq_pow_of_mul m.1 e, m.2]`. Establish `e` using `hy τ hτ`. Rewrite `e` using `[A.inePol_sum]`.
+
+Establish `m` using `mon y τ (comm_le_ine w hτ)`. Rewrite using `[eq_pow_of_mul m.1 e, m.2]`.
+-/
 theorem RelA.sum (hLP : TieLP N A) {w : PlE H} {x y x' y' : A.LP w} (h : RelA N A x y) (h' : RelA N A x' y') :
     RelA N A (A.lpSum x x') (A.lpSum y y') := by
   refine ⟨by rw [A.lpDim_sum, A.lpDim_sum, h.dim, h'.dim], by rw [A.monomial_sum_iff, A.monomial_sum_iff]; exact fun k => ⟨h.mono k.1, h'.mono k.2⟩,
@@ -73,11 +103,17 @@ theorem RelA.sum (hLP : TieLP N A) {w : PlE H} {x y x' y' : A.LP w} (h : RelA N 
     have m := mon y τ (comm_le_ine w hτ)
     rw [eq_pow_of_mul m.1 e, m.2]
 
+/- English proof (translation)
+Introduce `σ hσ` and use `by have e : A.inePol c σ = X - C 1 := by rw [((A.unr_iff_ine c).1 hu).2 σ hσ, hc]; simp rw [((hLP w a a c c 0 hc hc).2.2.2.2.2 σ hσ).2 1 e, scaleRoots_one]`.
+-/
 theorem inePol_char_unr (hLP : TieLP N A) {w : PlE H} (a c : A.LP w) (hc : A.lpDim c = 1) (hu : A.unr c) :
     ∀ σ ∈ Ine (F := H.E) (N.plOm.1 w), A.inePol (A.lpChar a c) σ = A.inePol a σ := fun σ hσ => by
   have e : A.inePol c σ = X - C 1 := by rw [((A.unr_iff_ine c).1 hu).2 σ hσ, hc]; simp
   rw [((hLP w a a c c 0 hc hc).2.2.2.2.2 σ hσ).2 1 e, scaleRoots_one]
 
+/- English proof (translation)
+Use `⟨by rw [A.lpDim_char _ _ hc, A.lpDim_char _ _ hc, h.dim], by rw [A.monomial_char_iff _ _ hc, A.monomial_char_iff _ _ hc]; exact h.mono, fun hy σ hσ => ?_⟩` and prove the remaining obligations. Rewrite using `[inePol_char_unr hLP _ _ hc hu σ hσ, inePol_char_unr hLP _ _ hc hu σ hσ]`. Use `h.ine (fun τ hτ => ?_) σ hσ` and prove the remaining obligations. Use `hy τ hτ` as an intermediate fact. Rewrite `this` using `[inePol_char_unr hLP _ _ hc hu τ (comm_le_ine w hτ), A.lpDim_char _ _ hc]`. Then use the resulting hypothesis.
+-/
 theorem RelA.char (hLP : TieLP N A) {w : PlE H} {x y : A.LP w} (h : RelA N A x y) (c : A.LP w) (hc : A.lpDim c = 1)
     (hu : A.unr c) : RelA N A (A.lpChar x c) (A.lpChar y c) := by
   refine ⟨by rw [A.lpDim_char _ _ hc, A.lpDim_char _ _ hc, h.dim], by rw [A.monomial_char_iff _ _ hc, A.monomial_char_iff _ _ hc]; exact h.mono,
@@ -108,6 +144,9 @@ def GaloisRepresentationsWeak : Prop :=
           ∀ τ, InducesW N i τ w → (A.jumpsW i ρ τ).map (fun n : ℤ => (n : ℂ)) =
             (A.infG χ ((A.iotaQC i).toRingHom.comp τ)).map (fun z => -(z + (s : ℂ))))
 
+/- English proof (translation)
+Introduce `i` and use `⟨fun a ha π hc hr => by obtain ⟨ρ, c, s, o, u⟩ := (h i).1 a ha π hc hr exact ⟨ρ, c, s, o, fun w hw => ⟨(u w hw).1, (u w hw).2.1, Cusp.of_eq (u w hw).2.2⟩⟩, (h i).2⟩`.
+-/
 theorem galois_statement_weak_of_full (h : exists_galois_rep_local_global_compatible N A) : GaloisRepresentationsWeak N A := fun i =>
   ⟨fun a ha π hc hr => by
     obtain ⟨ρ, c, s, o, u⟩ := (h i).1 a ha π hc hr

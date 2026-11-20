@@ -8,6 +8,21 @@ open ReciprocityTheory.AnForm.M (FinHolAtlas LocPot logNormSec)
 open ReciprocityTheory.AnForm.A (coordDiv)
 open GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Regular (RegChartData)
 
+/- English proof (translation)
+Introduce `X _ D A R φ hφ c`. Establish `hp : ∀ j, ∃ B : ℝ, ∀ y ∈ R.V'' j, |φ j y| ≤ B` using `fun j => hBI D A R j (φ j) ((hCC D A (bdDom R j) (isOpen_bdDom R j)).1 _ (hφ.1 j))`. Use `choose Bf hBf using R.f_bdd`. Use `choose Bp hBp using hp`. Use `⟨∑ j, (|Bf j| + 2 * |Bp j|) + 2 * |c|, fun y hy => ?_⟩` and prove the remaining obligations.
+
+Establish `hV` using `mem_V''_bdIdx R y`. Establish `hdom` using `V''_subset_bdDom R _ hV`. Use `set j := bdIdx R y with hj`. Establish `hW : R.ψ j y ∈ R.W j` using `hdom.2`. Establish `hsymm : (R.ψ j).symm (R.ψ j y) = y` using `(R.ψ j).left_inv hV.1`.
+
+Establish `hnd : R.ψ j y ∉ coordDiv (R.S j)`. Rewrite using `[← R.mem_Yo_iff j _ hW, hsymm]`. Conclude with `hy`. Establish `hz : ∀ i ∈ R.S j, R.ψ j y i ≠ 0` using `fun i hi h => hnd ⟨i, hi, h⟩`. Establish `hr` using `R.r_chart j (R.ψ j y) ⟨hW, hnd⟩`.
+
+Rewrite `hr` using `[hsymm]`. Establish `hs : rSec (bdPot R φ c) (bdSec R) y = Real.exp 1 - ∑ i ∈ R.S j, Real.log (‖R.ψ j y i‖ ^ 2) + 2 * (φ j y + c)`. Establish `hprod : ‖∏ i ∈ R.S j, R.ψ j y i‖ ≠ 0` using `norm_ne_zero_iff.2 (Finset.prod_ne_zero_iff.2 hz)`. Simplify using `only [rSec, logNormSec, bdPot, bdSec, bdEq, ← hj]`. Rewrite using `[Real.log_mul hprod (Real.exp_pos _).ne', Real.log_exp, norm_prod, Real.log_prod (fun i hi => norm_ne_zero_iff.2 (hz i hi))]`.
+
+Simplify using `only [Real.log_pow, Nat.cast_ofNat, ← Finset.mul_sum]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hr, hs]`. Establish `e : Real.exp 1 + R.f j (R.ψ j y) - ∑ i ∈ R.S j, Real.log (‖R.ψ j y i‖ ^ 2) - (Real.exp 1 - ∑ i ∈ R.S j, Real.log (‖R.ψ j y i‖ ^ 2) + 2 * (φ j y + c)) = R.f j (R.ψ j y) + (-2) * φ j y + (-2) * c` using `by ring`. Rewrite using `[e]`.
+
+Establish `h1 : |R.f j (R.ψ j y)| ≤ |Bf j|` using `(hBf j _ hW).trans (le_abs_self _)`. Establish `h2 : |φ j y| ≤ |Bp j|` using `(hBp j y hV).trans (le_abs_self _)`. Establish `h3 : |Bf j| + 2 * |Bp j| ≤ ∑ k, (|Bf k| + 2 * |Bp k|)` using `Finset.single_le_sum (f := fun k => |Bf k| + 2 * |Bp k|) (fun k _ => by positivity) (Finset.mem_univ j)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[abs_mul, abs_mul]`.
+
+Evaluate the numerical expressions. Use `_ ≤ ∑ k, (|Bf k| + 2 * |Bp k|) + 2 * |c| := by linarith`.
+-/
 theorem BdComparison.proof (hCC : ChartCont.Statement) (hBI : BddOnInner.Statement) :
     BdComparison.Statement := by
   intro X _ D A R φ hφ c

@@ -28,33 +28,57 @@ variable {k : Type} [Field k] [NumberField k] {ι : Type} [Fintype ι] [Decidabl
 noncomputable def detMod (A : GL ι 𝔸[k]) : ℝ :=
   (ideleModule k (Matrix.GeneralLinearGroup.det A) : ℝ)
 
+/- English proof (translation)
+The claim follows from `(ideleModule k _).2`.
+-/
 theorem detMod_pos (A : GL ι 𝔸[k]) : 0 < detMod A := (ideleModule k _).2
 
+/- English proof (translation)
+Simplify using `[detMod, map_inv]`.
+-/
 theorem detMod_inv (A : GL ι 𝔸[k]) : detMod A⁻¹ = (detMod A)⁻¹ := by
   simp [detMod, map_inv]
 
+/- English proof (translation)
+Rewrite using `[← map_inv]`. Use `ext1`. Simplify using `[tInv, Matrix.GeneralLinearGroup.det, Matrix.det_transpose]`.
+-/
 theorem det_tInv (A : GL ι 𝔸[k]) :
     Matrix.GeneralLinearGroup.det (tInv A) = (Matrix.GeneralLinearGroup.det A)⁻¹ := by
   rw [← map_inv]
   ext1
   simp [tInv, Matrix.GeneralLinearGroup.det, Matrix.det_transpose]
 
+/- English proof (translation)
+Simplify using `[detMod, det_tInv, map_inv]`.
+-/
 theorem detMod_tInv (A : GL ι 𝔸[k]) : detMod (tInv A) = (detMod A)⁻¹ := by
   simp [detMod, det_tInv, map_inv]
 
+/- English proof (translation)
+Use `ext1`. Establish `h : (((tInv A)⁻¹ : GL ι 𝔸[k]) : Matrix ι ι 𝔸[k]) = (A : Matrix ι ι 𝔸[k])ᵀ` using `rfl`. Use `show (((tInv A)⁻¹ : GL ι 𝔸[k]) : Matrix ι ι 𝔸[k])ᵀ = A`. Rewrite using `[h, Matrix.transpose_transpose]`.
+-/
 theorem tInv_tInv (A : GL ι 𝔸[k]) : tInv (tInv A) = A := by
   ext1
   have h : (((tInv A)⁻¹ : GL ι 𝔸[k]) : Matrix ι ι 𝔸[k]) = (A : Matrix ι ι 𝔸[k])ᵀ := rfl
   show (((tInv A)⁻¹ : GL ι 𝔸[k]) : Matrix ι ι 𝔸[k])ᵀ = A
   rw [h, Matrix.transpose_transpose]
 
+/- English proof (translation)
+The claim follows from `Continuous.units_map (Matrix.detMonoidHom : Matrix ι ι 𝔸[k] →* 𝔸[k]) (show Continuous fun A : Matrix ι ι 𝔸[k] ↦ A.det from continuous_id.matrix_det)`.
+-/
 theorem continuous_det : Continuous (Matrix.GeneralLinearGroup.det : GL ι 𝔸[k] → IdeleGroup k) :=
   Continuous.units_map (Matrix.detMonoidHom : Matrix ι ι 𝔸[k] →* 𝔸[k])
     (show Continuous fun A : Matrix ι ι 𝔸[k] ↦ A.det from continuous_id.matrix_det)
 
+/- English proof (translation)
+The claim follows from `continuous_subtype_val.comp (continuous_ideleModule.comp continuous_det)`.
+-/
 theorem continuous_detMod : Continuous (detMod : GL ι 𝔸[k] → ℝ) :=
   continuous_subtype_val.comp (continuous_ideleModule.comp continuous_det)
 
+/- English proof (translation)
+Use `Units.continuous_iff.2 ⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `(Units.continuous_val.comp continuous_inv).matrix_transpose`. Establish `h : Continuous fun A : GL ι 𝔸[k] ↦ (A : Matrix ι ι 𝔸[k])ᵀ` using `Units.continuous_val.matrix_transpose`. Conclude with `h`.
+-/
 theorem continuous_tInv : Continuous (tInv : GL ι 𝔸[k] → GL ι 𝔸[k]) := by
   refine Units.continuous_iff.2 ⟨?_, ?_⟩
   · exact (Units.continuous_val.comp continuous_inv).matrix_transpose
@@ -62,9 +86,15 @@ theorem continuous_tInv : Continuous (tInv : GL ι 𝔸[k] → GL ι 𝔸[k]) :=
       Units.continuous_val.matrix_transpose
     exact h
 
+/- English proof (translation)
+The claim follows from `dif_pos hx`.
+-/
 theorem thetaCFun_of_pos (w : InfinitePlace k) (F : (ι → 𝔸[k]) → ℂ) (ω : HeckeCharacter k)
     {x : ℝ} (hx : 0 < x) : thetaCFun w F ω x = thetaCInt w F ω ⟨x, hx⟩ := dif_pos hx
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Distinguish the cases in `hx : 0 < x`. Simplify using `only [Pi.smul_apply, smul_eq_mul, thetaCFun_of_pos w _ ω hx]`. Conclude with `GlobalTheory.CompanionTheory.He2M1.thetaCInt_smul w c F ω _`. Simplify using `[thetaCFun, hx]`.
+-/
 theorem thetaCFun_smul (w : InfinitePlace k) (c : ℂ) (F : (ι → 𝔸[k]) → ℂ)
     (ω : HeckeCharacter k) : thetaCFun w (c • F) ω = c • thetaCFun w F ω := by
   funext x
@@ -73,38 +103,66 @@ theorem thetaCFun_smul (w : InfinitePlace k) (c : ℂ) (F : (ι → 𝔸[k]) →
     exact GlobalTheory.CompanionTheory.He2M1.thetaCInt_smul w c F ω _
   · simp [thetaCFun, hx]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Unfold `thetaCFun`. Rewrite using `[GlobalTheory.CompanionTheory.AdelicThetaSeries.thetaCInt_neg w F ω]`.
+-/
 theorem thetaCFun_neg (w : InfinitePlace k) (F : (ι → 𝔸[k]) → ℂ) (ω : HeckeCharacter k) :
     thetaCFun w (fun x ↦ F (-x)) ω = thetaCFun w F ω := by
   funext x
   unfold thetaCFun
   rw [GlobalTheory.CompanionTheory.AdelicThetaSeries.thetaCInt_neg w F ω]
 
+/- English proof (translation)
+Simplify using `[thetaCConst, mul_assoc]`.
+-/
 theorem thetaCConst_smul (c : ℂ) (F : (ι → 𝔸[k]) → ℂ) (ω : HeckeCharacter k) :
     thetaCConst (c • F) ω = c * thetaCConst F ω := by
   simp [thetaCConst, mul_assoc]
 
+/- English proof (translation)
+Simplify using `[thetaCConst, ltr]`.
+-/
 theorem thetaCConst_ltr (A : GL ι 𝔸[k]) (F : (ι → 𝔸[k]) → ℂ) (ω : HeckeCharacter k) :
     thetaCConst (ltr A F) ω = thetaCConst F ω := by
   simp [thetaCConst, ltr]
 
+/- English proof (translation)
+Simplify using `[thetaCConst]`.
+-/
 theorem thetaCConst_neg (F : (ι → 𝔸[k]) → ℂ) (ω : HeckeCharacter k) :
     thetaCConst (fun x ↦ F (-x)) ω = thetaCConst F ω := by
   simp [thetaCConst]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `[ltr]`.
+-/
 theorem ltr_one (F : (ι → 𝔸[k]) → ℂ) : ltr (1 : GL ι 𝔸[k]) F = F := by
   funext x
   simp [ltr]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `[ltr, Matrix.mulVec_neg]`.
+-/
 theorem ltr_neg (A : GL ι 𝔸[k]) (F : (ι → 𝔸[k]) → ℂ) :
     ltr A (fun x ↦ F (-x)) = fun x ↦ ltr A F (-x) := by
   funext x
   simp [ltr, Matrix.mulVec_neg]
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.CompanionTheory.LtrFourier.Hd.adelicFourierPi_ltr A F`.
+-/
 theorem fourier_ltr (A : GL ι 𝔸[k]) (F : (ι → 𝔸[k]) → ℂ) :
     adelicFourierPi k (ltr A F) =
       (((detMod A : ℝ) : ℂ)⁻¹) • ltr (tInv A) (adelicFourierPi k F) :=
   GlobalTheory.CompanionTheory.LtrFourier.Hd.adelicFourierPi_ltr A F
 
+/- English proof (translation)
+Take `⟨N, hN⟩` from `exists_nat_ge r`. Take `⟨M, hM⟩` from `GlobalTheory.CompanionTheory.AdelicThetaSeries.exists_norm_thetaCInt_sub_le w hΨ ω hC N`. Use `⟨max M 0, le_max_right _ _, fun A hA x hx ↦ ?_⟩` and prove the remaining obligations. Establish `hx0 : 0 < x` using `zero_lt_one.trans_le hx`. Establish `h` using `hM A hA ⟨x, hx0⟩ hx`.
+
+Rewrite `h` using `[← thetaCFun_of_pos w _ ω hx0]`. Establish `hpow : (x ^ N)⁻¹ ≤ x ^ (-r)`. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_neg hx0.le]`. Conclude with `Real.rpow_le_rpow_of_exponent_le hx (by linarith)`. Establish `hp0 : 0 ≤ (x ^ N)⁻¹` using `by positivity`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem thetaCFun_decay (w : InfinitePlace k) {Ψ : (ι → 𝔸[k]) → ℂ}
     (hΨ : Ψ ∈ schwartzBruhatPi k ι) (ω : HeckeCharacter k) {C : Set (GL ι 𝔸[k])}
     (hC : IsCompact C) (r : ℝ) :
@@ -125,6 +183,11 @@ theorem thetaCFun_decay (w : InfinitePlace k) {Ψ : (ι → 𝔸[k]) → ℂ}
     _ ≤ x ^ (-r) * max M 0 := mul_le_mul_of_nonneg_right hpow (le_max_right _ _)
     _ = _ := mul_comm _ _
 
+/- English proof (translation)
+Take `⟨M, -, hM⟩` from `thetaCFun_decay w hF ω (isCompact_singleton (x := (1 : GL ι 𝔸[k]))) (-r)`. Use `IsBigO.of_bound M ?_` and prove the remaining obligations. Use `filter_upwards [eventually_ge_atTop (1 : ℝ)] with x hx`. Establish `h` using `hM 1 rfl x hx`. Rewrite `h` using `[ltr_one, neg_neg]`.
+
+Rewrite using `[Real.norm_of_nonneg (Real.rpow_nonneg (zero_le_one.trans hx) r)]` and apply the resulting hypothesis.
+-/
 theorem isBigO_thetaCFun_sub (w : InfinitePlace k) {F : (ι → 𝔸[k]) → ℂ}
     (hF : F ∈ schwartzBruhatPi k ι) (ω : HeckeCharacter k) (r : ℝ) :
     (fun x ↦ thetaCFun w F ω x - thetaCConst F ω) =O[atTop] (· ^ r) := by
@@ -135,6 +198,11 @@ theorem isBigO_thetaCFun_sub (w : InfinitePlace k) {F : (ι → 𝔸[k]) → ℂ
   rw [ltr_one, neg_neg] at h
   rwa [Real.norm_of_nonneg (Real.rpow_nonneg (zero_le_one.trans hx) r)]
 
+/- English proof (translation)
+Establish `h` using `GlobalTheory.CompanionTheory.EpsteinThetaC.continuous_thetaCInt_ltr w hΨ ω`. Rewrite using `[continuousOn_iff_continuous_restrict]`. Establish `hc : Continuous fun q : ↥(univ ×ˢ Ioi (0 : ℝ) : Set (GL ι 𝔸[k] × ℝ)) ↦ ((⟨q.1.2, q.2.2⟩ : {r : ℝ // 0 < r}), q.1.1)` using `(Continuous.subtype_mk (continuous_snd.comp continuous_subtype_val) _).prodMk (continuous_fst.comp continuous_subtype_val)`. Use `(h.comp hc).congr fun q ↦ ?_` and prove the remaining obligations. Simplify using `only [restrict, Function.comp]`.
+
+Conclude with `(thetaCFun_of_pos w _ ω q.2.2).symm`.
+-/
 theorem continuousOn_thetaCFun_ltr (w : InfinitePlace k) {Ψ : (ι → 𝔸[k]) → ℂ}
     (hΨ : Ψ ∈ schwartzBruhatPi k ι) (ω : HeckeCharacter k) :
     ContinuousOn (fun q : GL ι 𝔸[k] × ℝ ↦ thetaCFun w (ltr q.1 Ψ) ω q.2) (univ ×ˢ Ioi 0) := by
@@ -148,6 +216,9 @@ theorem continuousOn_thetaCFun_ltr (w : InfinitePlace k) {Ψ : (ι → 𝔸[k]) 
   simp only [restrict, Function.comp]
   exact (thetaCFun_of_pos w _ ω q.2.2).symm
 
+/- English proof (translation)
+Establish `h` using `continuousOn_thetaCFun_ltr w hF ω`. Establish `h2` using `h.comp (f := fun x : ℝ ↦ ((1 : GL ι 𝔸[k]), x)) (s := Ioi 0) (by fun_prop) (fun x hx ↦ ⟨mem_univ _, hx⟩)`. Simplify `h2` using `[Function.comp_def, ltr_one]`.
+-/
 theorem continuousOn_thetaCFun (w : InfinitePlace k) {F : (ι → 𝔸[k]) → ℂ}
     (hF : F ∈ schwartzBruhatPi k ι) (ω : HeckeCharacter k) :
     ContinuousOn (thetaCFun w F ω) (Ioi 0) := by
@@ -156,6 +227,11 @@ theorem continuousOn_thetaCFun (w : InfinitePlace k) {F : (ι → 𝔸[k]) → �
     (fun x hx ↦ ⟨mem_univ _, hx⟩)
   simpa [Function.comp_def, ltr_one] using h2
 
+/- English proof (translation)
+Establish `hx0 : (0 : ℝ) < x` using `hx`. Establish `h` using `GlobalTheory.CompanionTheory.AdelicThetaSeries.Hd.thetaCInt_inv w hF ω ⟨x, hx0⟩`. Rewrite `h` using `[← eq_inv_of_mul_eq_one_left hω]`. Rewrite using `[thetaCFun_of_pos w _ ω (one_div_pos.2 hx0), thetaCFun_of_pos w _ ω hx0, Real.rpow_natCast]`. Establish `e : (⟨1 / x, one_div_pos.2 hx0⟩ : {r : ℝ // 0 < r}) = (⟨x, hx0⟩ : {r : ℝ // 0 < r})⁻¹`.
+
+Use `ext`. Simplify using the standard rewrite rules. Rewrite using `[e, h]`. Simplify using the standard rewrite rules.
+-/
 theorem thetaCFun_one_div (w : InfinitePlace k) {F : (ι → 𝔸[k]) → ℂ}
     (hF : F ∈ schwartzBruhatPi k ι) {ω : HeckeCharacter k} (hω : ω * ω = 1) (x : ℝ)
     (hx : x ∈ Ioi (0 : ℝ)) :
@@ -191,6 +267,9 @@ noncomputable def pair [Nonempty ι] (w : InfinitePlace k) {F : (ι → 𝔸[k])
 noncomputable def entireForm (P : WeakFEPair ℂ) (z : ℂ) : ℂ :=
   z * (z - P.k) * P.Λ₀ z - (z - P.k) * P.f₀ + z * P.ε * P.g₀
 
+/- English proof (translation)
+Establish `h1 : z - P.k ≠ 0` using `sub_ne_zero.2 hk`. Establish `h2 : (P.k : ℂ) - z ≠ 0` using `sub_ne_zero.2 hk.symm`. Simplify using `only [entireForm, WeakFEPair.Λ, smul_eq_mul]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem entireForm_eq (P : WeakFEPair ℂ) {z : ℂ} (h0 : z ≠ 0) (hk : z ≠ P.k) :
     entireForm P z = z * (z - P.k) * P.Λ z := by
   have h1 : z - P.k ≠ 0 := sub_ne_zero.2 hk
@@ -199,17 +278,26 @@ theorem entireForm_eq (P : WeakFEPair ℂ) {z : ℂ} (h0 : z ≠ 0) (hk : z ≠ 
   field_simp
   ring
 
+/- English proof (translation)
+Unfold `entireForm`. Use `P.differentiable_Λ₀` as an intermediate fact. Use `fun_prop`.
+-/
 theorem differentiable_entireForm (P : WeakFEPair ℂ) : Differentiable ℂ (entireForm P) := by
   unfold entireForm
   have := P.differentiable_Λ₀
   fun_prop
 
+/- English proof (translation)
+Rewrite using `[fourier_ltr, thetaCFun_smul]`.
+-/
 theorem thetaCFun_fourier_ltr (w : InfinitePlace k) (A : GL ι 𝔸[k]) (F : (ι → 𝔸[k]) → ℂ)
     (ω : HeckeCharacter k) :
     thetaCFun w (adelicFourierPi k (ltr A F)) ω =
       (((detMod A : ℝ) : ℂ)⁻¹) • thetaCFun w (ltr (tInv A) (adelicFourierPi k F)) ω := by
   rw [fourier_ltr, thetaCFun_smul]
 
+/- English proof (translation)
+Rewrite using `[fourier_ltr, thetaCConst_smul, thetaCConst_ltr]`.
+-/
 theorem thetaCConst_fourier_ltr (A : GL ι 𝔸[k]) (F : (ι → 𝔸[k]) → ℂ) (ω : HeckeCharacter k) :
     thetaCConst (adelicFourierPi k (ltr A F)) ω =
       ((detMod A : ℝ) : ℂ)⁻¹ * thetaCConst (adelicFourierPi k F) ω := by
@@ -225,6 +313,15 @@ section pairAt
 variable [Nonempty ι] (w : InfinitePlace k) {Ψ : (ι → 𝔸[k]) → ℂ}
   (hΨ : Ψ ∈ schwartzBruhatPi k ι) {ω : HeckeCharacter k} (hω : ω * ω = 1)
 
+/- English proof (translation)
+Take `⟨M₁, hM₁, h₁⟩` from `thetaCFun_decay w hΨ ω hC r`. Take `⟨M₂, hM₂, h₂⟩` from `thetaCFun_decay w (adelicFourierPi_mem_schwartzBruhatPi hΨ) ω (hC.image continuous_tInv) r`. Establish `hcont : ContinuousOn (fun A : GL ι 𝔸[k] ↦ (detMod A)⁻¹) C` using `(continuous_detMod.inv₀ fun A ↦ (detMod_pos A).ne').continuousOn`. Take `⟨B, hB⟩` from `hC.exists_bound_of_continuousOn hcont`. Use `⟨max M₁ (max B 0 * M₂), le_max_of_le_left hM₁, fun A hA x hx ↦ ⟨?_, ?_⟩⟩` and prove the remaining obligations.
+
+Establish `hp : 0 ≤ x ^ (-r)` using `Real.rpow_nonneg (zero_le_one.trans hx) _`. Conclude with `(h₁ A hA x hx).trans (mul_le_mul_of_nonneg_right (le_max_left _ _) hp)`. Establish `hp : 0 ≤ x ^ (-r)` using `Real.rpow_nonneg (zero_le_one.trans hx) _`. Establish `e : (pairAt w hΨ hω A).g x - (pairAt w hΨ hω A).g₀ = ((detMod A : ℝ) : ℂ)⁻¹ * (thetaCFun w (ltr (tInv A) (adelicFourierPi k Ψ)) ω x - thetaCConst (ltr (tInv A) (adelicFourierPi k Ψ)) ω)` using `by show thetaCFun w (adelicFourierPi k (ltr A Ψ)) ω x - thetaCConst (adelicFourierPi k (ltr A Ψ)) ω = _`. Rewrite using `[thetaCFun_fourier_ltr, thetaCConst_fourier_ltr, thetaCConst_ltr, Pi.smul_apply, smul_eq_mul, mul_sub]`.
+
+Establish `hn : ‖((detMod A : ℝ) : ℂ)⁻¹‖ ≤ max B 0`. Use `hB A hA` as an intermediate fact. Simplify using `only [Real.norm_eq_abs, abs_inv] at this`. Rewrite using `[norm_inv, Complex.norm_real, Real.norm_eq_abs]`. Conclude with `this.trans (le_max_left _ _)`.
+
+Rewrite using `[e, norm_mul]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem pairAt_bound {C : Set (GL ι 𝔸[k])} (hC : IsCompact C) (r : ℝ) :
     ∃ M : ℝ, 0 ≤ M ∧ ∀ A ∈ C, ∀ x : ℝ, 1 ≤ x →
       ‖(pairAt w hΨ hω A).f x - (pairAt w hΨ hω A).f₀‖ ≤ M * x ^ (-r) ∧
@@ -257,6 +354,9 @@ theorem pairAt_bound {C : Set (GL ι 𝔸[k])} (hC : IsCompact C) (r : ℝ) :
       _ = (max B 0 * M₂) * x ^ (-r) := by ring
       _ ≤ _ := mul_le_mul_of_nonneg_right (le_max_right _ _) hp
 
+/- English proof (translation)
+Establish `h : (fun A : GL ι 𝔸[k] ↦ (pairAt w hΨ hω A).f₀) = fun _ ↦ thetaCConst Ψ ω`. Use function extensionality and compare the values at `A`. Conclude with `thetaCConst_ltr A Ψ ω`. Rewrite using `[h]`. Conclude with `continuous_const`.
+-/
 theorem continuous_pairAt_f₀ : Continuous fun A : GL ι 𝔸[k] ↦ (pairAt w hΨ hω A).f₀ := by
   have h : (fun A : GL ι 𝔸[k] ↦ (pairAt w hΨ hω A).f₀) = fun _ ↦ thetaCConst Ψ ω := by
     funext A
@@ -264,10 +364,16 @@ theorem continuous_pairAt_f₀ : Continuous fun A : GL ι 𝔸[k] ↦ (pairAt w 
   rw [h]
   exact continuous_const
 
+/- English proof (translation)
+The claim follows from `(Complex.continuous_ofReal.comp continuous_detMod).inv₀ fun A ↦ Complex.ofReal_ne_zero.2 (detMod_pos A).ne'`.
+-/
 theorem continuous_inv_detMod : Continuous fun A : GL ι 𝔸[k] ↦ ((detMod A : ℝ) : ℂ)⁻¹ :=
   (Complex.continuous_ofReal.comp continuous_detMod).inv₀ fun A ↦
     Complex.ofReal_ne_zero.2 (detMod_pos A).ne'
 
+/- English proof (translation)
+Establish `h : (fun A : GL ι 𝔸[k] ↦ (pairAt w hΨ hω A).g₀) = fun A ↦ ((detMod A : ℝ) : ℂ)⁻¹ * thetaCConst (adelicFourierPi k Ψ) ω`. Use function extensionality and compare the values at `A`. Conclude with `thetaCConst_fourier_ltr A Ψ ω`. Rewrite using `[h]`. Conclude with `continuous_inv_detMod.mul continuous_const`.
+-/
 theorem continuous_pairAt_g₀ : Continuous fun A : GL ι 𝔸[k] ↦ (pairAt w hΨ hω A).g₀ := by
   have h : (fun A : GL ι 𝔸[k] ↦ (pairAt w hΨ hω A).g₀) = fun A ↦
       ((detMod A : ℝ) : ℂ)⁻¹ * thetaCConst (adelicFourierPi k Ψ) ω := by
@@ -276,6 +382,13 @@ theorem continuous_pairAt_g₀ : Continuous fun A : GL ι 𝔸[k] ↦ (pairAt w 
   rw [h]
   exact continuous_inv_detMod.mul continuous_const
 
+/- English proof (translation)
+Use `GlobalTheory.CompanionTheory.EisRk1Cont.weakFEPair_continuous_Λ₀ (pairAt w hΨ hω) (Fintype.card ι) (fun _ ↦ rfl) 1 (fun _ ↦ rfl) ?_ ?_ (continuous_pairAt_f₀ w hΨ hω) (continuous_pairAt_g₀ w hΨ hω) ?_` and prove the remaining obligations. Conclude with `continuousOn_thetaCFun_ltr w hΨ ω`. Establish `h1` using `continuousOn_thetaCFun_ltr w (adelicFourierPi_mem_schwartzBruhatPi hΨ) ω`. Establish `h2` using `h1.comp (f := fun q : GL ι 𝔸[k] × ℝ ↦ (tInv q.1, q.2)) (s := univ ×ˢ Ioi 0) ((continuous_tInv.comp continuous_fst).prodMk continuous_snd).continuousOn (fun q hq ↦ ⟨mem_univ _, hq.2⟩)`. Establish `h3 : Continuous fun q : GL ι 𝔸[k] × ℝ ↦ ((detMod q.1 : ℝ) : ℂ)⁻¹` using `continuous_inv_detMod.comp continuous_fst`.
+
+Use `(h3.continuousOn.mul h2).congr fun q _ ↦ ?_` and prove the remaining obligations. Use `show thetaCFun w (adelicFourierPi k (ltr q.1 Ψ)) ω q.2 = _`. Rewrite using `[thetaCFun_fourier_ltr]`. Both sides reduce to the same expression. Introduce `p₀ r`.
+
+Take `⟨C, hC, hp⟩` from `exists_compact_mem_nhds p₀`. Take `⟨M, -, hM⟩` from `pairAt_bound w hΨ hω hC r`. Conclude with `⟨C, hp, M, hM⟩`.
+-/
 theorem continuous_pairAt_Λ₀ : Continuous fun q : ℂ × GL ι 𝔸[k] ↦ (pairAt w hΨ hω q.2).Λ₀ q.1 := by
   refine GlobalTheory.CompanionTheory.EisRk1Cont.weakFEPair_continuous_Λ₀ (pairAt w hΨ hω) (Fintype.card ι)
     (fun _ ↦ rfl) 1 (fun _ ↦ rfl) ?_ ?_ (continuous_pairAt_f₀ w hΨ hω)
@@ -296,10 +409,23 @@ theorem continuous_pairAt_Λ₀ : Continuous fun q : ℂ × GL ι 𝔸[k] ↦ (p
     obtain ⟨M, -, hM⟩ := pairAt_bound w hΨ hω hC r
     exact ⟨C, hp, M, hM⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pairAt_k (A : GL ι 𝔸[k]) : (pairAt w hΨ hω A).k = (Fintype.card ι : ℝ) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pairAt_ε (A : GL ι 𝔸[k]) : (pairAt w hΨ hω A).ε = 1 := rfl
 
+/- English proof (translation)
+Establish `hinv : Continuous fun y : ℂ × GL ι 𝔸[k] ↦ y.2⁻¹` using `continuous_inv.comp continuous_snd`. Establish `hc : Continuous fun y : ℂ × GL ι 𝔸[k] ↦ ((y.1, y.2⁻¹) : ℂ × GL ι 𝔸[k])` using `continuous_fst.prodMk hinv`. Establish `hΛ : Continuous fun y : ℂ × GL ι 𝔸[k] ↦ (pairAt w hΨ hω y.2⁻¹).Λ₀ y.1`. Establish `h` using `(continuous_pairAt_Λ₀ w hΨ hω).comp hc`. Simplify `h` using `only [Function.comp_def]`.
+
+Establish `hf : Continuous fun y : ℂ × GL ι 𝔸[k] ↦ (pairAt w hΨ hω y.2⁻¹).f₀`. Establish `h` using `(continuous_pairAt_f₀ w hΨ hω).comp hinv`. Simplify `h` using `only [Function.comp_def]`. Establish `hg : Continuous fun y : ℂ × GL ι 𝔸[k] ↦ (pairAt w hΨ hω y.2⁻¹).g₀`. Establish `h` using `(continuous_pairAt_g₀ w hΨ hω).comp hinv`.
+
+Simplify `h` using `only [Function.comp_def]`. Establish `hz : Continuous fun y : ℂ × GL ι 𝔸[k] ↦ y.1 - (((Fintype.card ι : ℝ)) : ℂ)` using `continuous_fst.sub continuous_const`. Simplify using `only [entireForm, pairAt_k, pairAt_ε]`. Conclude with `(((continuous_fst.mul hz).mul hΛ).sub (hz.mul hf)).add ((continuous_fst.mul continuous_const).mul hg)`.
+-/
 theorem continuous_entireForm_inv :
     Continuous fun y : ℂ × GL ι 𝔸[k] ↦ entireForm (pairAt w hΨ hω y.2⁻¹) y.1 := by
   have hinv : Continuous fun y : ℂ × GL ι 𝔸[k] ↦ y.2⁻¹ := continuous_inv.comp continuous_snd
@@ -320,6 +446,9 @@ theorem continuous_entireForm_inv :
   exact (((continuous_fst.mul hz).mul hΛ).sub (hz.mul hf)).add
     ((continuous_fst.mul continuous_const).mul hg)
 
+/- English proof (translation)
+The claim follows from `differentiable_entireForm _ cont := continuous_entireForm_inv w hΨ hω eq := by intro z hz m have hN : (0 : ℝ) < Fintype.card ι := by exact_mod_cast Fintype.card_pos have hz0 : z ≠ 0 := by rintro rfl simp only [Complex.zero_re] at hz linarith have hzk : z ≠ (((pairAt w hΨ hω m⁻¹). …`.
+-/
 theorem isEpCont : IsEpCont Ψ ω fun z m ↦ entireForm (pairAt w hΨ hω m⁻¹) z where
   entire m := differentiable_entireForm _
   cont := continuous_entireForm_inv w hΨ hω
@@ -408,6 +537,21 @@ theorem isEpCont : IsEpCont Ψ ω fun z m ↦ entireForm (pairAt w hΨ hω m⁻�
       nlinarith
     nlinarith
 
+/- English proof (translation)
+Establish `hΨ'` using `adelicFourierPi_mem_schwartzBruhatPi hΨ`. Use `set P := pairAt w hΨ hω A with hP`. Use `set Q := pairAt w hΨ' hω (tInv A) with hQ`. Use `set d : ℂ := ((detMod A : ℝ) : ℂ) with hd`. Establish `hd0 : d ≠ 0` using `Complex.ofReal_ne_zero.2 (detMod_pos A).ne'`.
+
+Establish `hdinv : (((detMod (tInv A) : ℝ) : ℂ)⁻¹) = d`. Rewrite using `[detMod_tInv, Complex.ofReal_inv, inv_inv]`. Establish `hneg : ltr A (adelicFourierPi k (adelicFourierPi k Ψ)) = fun x ↦ ltr A Ψ (-x)`. Rewrite using `[adelicFourierPi_adelicFourierPi hΨ, ltr_neg]`. Establish `hQg : Q.g = d • P.f` using `by show thetaCFun w (adelicFourierPi k (ltr (tInv A) (adelicFourierPi k Ψ))) ω = d • thetaCFun w (ltr A Ψ) ω`.
+
+Rewrite using `[thetaCFun_fourier_ltr, hdinv, tInv_tInv, hneg, thetaCFun_neg]`. Establish `hQg₀ : Q.g₀ = d * P.f₀` using `by show thetaCConst (adelicFourierPi k (ltr (tInv A) (adelicFourierPi k Ψ))) ω = d * thetaCConst (ltr A Ψ) ω`. Rewrite using `[fourier_ltr, hdinv, tInv_tInv, hneg, thetaCConst_smul, thetaCConst_neg]`. Establish `hPg : P.g = d⁻¹ • Q.f` using `by show thetaCFun w (adelicFourierPi k (ltr A Ψ)) ω = d⁻¹ • thetaCFun w (ltr (tInv A) (adelicFourierPi k Ψ)) ω`. Rewrite using `[thetaCFun_fourier_ltr]`.
+
+Establish `hPg₀ : P.g₀ = d⁻¹ * Q.f₀` using `by show thetaCConst (adelicFourierPi k (ltr A Ψ)) ω = d⁻¹ * thetaCConst (ltr (tInv A) (adelicFourierPi k Ψ)) ω`. Rewrite using `[fourier_ltr, thetaCConst_smul]`. Establish `hPf : P.f = d⁻¹ • Q.g`. Rewrite using `[hQg, smul_smul, inv_mul_cancel₀ hd0, one_smul]`. Establish `hPf₀ : P.f₀ = d⁻¹ * Q.g₀`.
+
+Rewrite using `[hQg₀, ← mul_assoc, inv_mul_cancel₀ hd0, one_mul]`. Establish `key : P.Λ₀ = d⁻¹ • Q.symm.Λ₀` using `GlobalTheory.CompanionTheory.EisRankOne.weakFEPair_Λ₀_of_smul Q.symm P d⁻¹ hPf hPg rfl (show (1 : ℂ) = (1 : ℂ)⁻¹ by simp) hPf₀ hPg₀`. Establish `hfe` using `Q.functional_equation₀ z`. Establish `hQk : ((Q.k : ℝ) : ℂ) = (Fintype.card ι : ℂ)` using `by show (((Fintype.card ι : ℝ)) : ℂ) = _`. Simplify using the standard rewrite rules.
+
+Establish `hPk : ((P.k : ℝ) : ℂ) = (Fintype.card ι : ℂ)` using `hQk`. Establish `hQε : Q.ε = 1` using `rfl`. Establish `hPε : P.ε = 1` using `rfl`. Rewrite `hfe` using `[hQk, hQε, one_smul]`. Simplify using `only [entireForm, hQk, hPk, hQε, hPε, hfe, key, Pi.smul_apply, smul_eq_mul, hPf₀, hPg₀]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem entireForm_fe (A : GL ι 𝔸[k]) (z : ℂ) :
     entireForm (pairAt w hΨ hω A) z = ((detMod A : ℝ) : ℂ)⁻¹ *
       entireForm (pairAt w (adelicFourierPi_mem_schwartzBruhatPi hΨ) hω (tInv A))
@@ -457,6 +601,19 @@ theorem entireForm_fe (A : GL ι 𝔸[k]) (z : ℂ) :
 
 end pairAt
 
+/- English proof (translation)
+Introduce `_ k _ _`. Take `⟨V, hV, hvol⟩` from `(GlobalTheory.CompanionTheory.EpsteinVol.volChar_one_eq : ∃ V : ℝ, 0 < V ∧ volChar (1 : HeckeCharacter k) = (V : ℂ))`. Take `⟨w⟩ : Nonempty (InfinitePlace k)` from `inferInstance`. Use `⟨V, hV, fun ι _ _ _ Ψ ω hΨ hω ↦ ?_⟩` and prove the remaining obligations. Establish `hΨ'` using `adelicFourierPi_mem_schwartzBruhatPi hΨ`.
+
+Use `⟨fun z m ↦ entireForm (pairAt w hΨ hω m⁻¹) z, fun z m ↦ entireForm (pairAt w hΨ' hω m⁻¹) z, isEpCont w hΨ hω, isEpCont w hΨ' hω, ?_, ?_⟩` and prove the remaining obligations. Introduce `z m`. Establish `h` using `entireForm_fe w hΨ hω m⁻¹ z`. Establish `e : modPow (Matrix.GeneralLinearGroup.det m) 1 = ((detMod m : ℝ) : ℂ)`. Simplify using `[modPow, detMod]`.
+
+Rewrite `h` using `[map_inv, detMod_inv, Complex.ofReal_inv, inv_inv]`. Rewrite using `[e]`. Conclude with `h`. Introduce and unpack `rfl m`. Establish `hk : ∀ A : GL ι 𝔸[k], (((pairAt w hΨ hω A).k : ℝ) : ℂ) = (Fintype.card ι : ℂ)`.
+
+Introduce `A`. Use `show (((Fintype.card ι : ℝ)) : ℂ) = _`. Simplify using the standard rewrite rules. Establish `hε : ∀ A : GL ι 𝔸[k], (pairAt w hΨ hω A).ε = 1` using `fun _ ↦ rfl`. Establish `hf₀ : (pairAt w hΨ hω m⁻¹).f₀ = Ψ 0 * V` using `by show thetaCConst (ltr m⁻¹ Ψ) 1 = _`.
+
+Rewrite using `[thetaCConst_ltr, thetaCConst, hvol]`. Establish `hg₀ : (pairAt w hΨ hω m⁻¹).g₀ = ((detMod m : ℝ) : ℂ) * (adelicFourierPi k Ψ 0 * V)` using `by show thetaCConst (adelicFourierPi k (ltr m⁻¹ Ψ)) 1 = _`. Rewrite using `[thetaCConst_fourier_ltr, detMod_inv, Complex.ofReal_inv, inv_inv, thetaCConst, hvol]`. Establish `e : modPow (Matrix.GeneralLinearGroup.det m) 1 = ((detMod m : ℝ) : ℂ)`. Simplify using `[modPow, detMod]`.
+
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Simplify using `only [entireForm, hk, hε, hf₀, hg₀]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [entireForm, hk, hε, hf₀, hg₀, e]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem epMain_of_epConv : EpConv → EpMain := by
   intro _ k _ _
   obtain ⟨V, hV, hvol⟩ :=

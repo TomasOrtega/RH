@@ -18,6 +18,9 @@ section Sections
 
 variable {X Y Y' W : Scheme.{0}}
 
+/- English proof (translation)
+Establish `e` using `unit_conjugateEquiv ((Scheme.Modules.pullbackPushforwardAdjunction a).comp (Scheme.Modules.pullbackPushforwardAdjunction b)) (Scheme.Modules.pullbackPushforwardAdjunction (b ≫ a)) (Scheme.Modules.pullbackComp b a).inv E`. Rewrite `e` using `[Scheme.Modules.conjugateEquiv_pullbackComp_inv, Adjunction.comp_unit_app]`. Use `(app_resM _ h _).trans (Eq.trans ?_ (pullbackSections_res b _ h₂ h₁ _).symm)` and prove the remaining obligations. Conclude with `congrArg (resM _ h) congr(($e).app U s).symm`.
+-/
 theorem pullbackComp_inv_app (b : W ⟶ Y) (a : Y ⟶ X) (E : X.Modules) {U : X.Opens} {V : Y.Opens}
     {T : W.Opens} (h₁ : V ≤ a ⁻¹ᵁ U) (h₂ : T ≤ b ⁻¹ᵁ V) (h : T ≤ (b ≫ a) ⁻¹ᵁ U) (s : Γ(E, U)) :
     ((Scheme.Modules.pullbackComp b a).inv.app E).app T (pullbackSections (b ≫ a) E h s) =
@@ -29,6 +32,11 @@ theorem pullbackComp_inv_app (b : W ⟶ Y) (a : Y ⟶ X) (E : X.Modules) {U : X.
   refine (app_resM _ h _).trans (Eq.trans ?_ (pullbackSections_res b _ h₂ h₁ _).symm)
   exact congrArg (resM _ h) congr(($e).app U s).symm
 
+/- English proof (translation)
+Establish `H {j j' : W ⟶ X} (w : j = j') (h : T ≤ j ⁻¹ᵁ U) (h' : T ≤ j' ⁻¹ᵁ U) : ((Scheme.Modules.pullbackCongr w).hom.app E).app T (pullbackSections j E h s) = pullbackSections j' E h' s`. Substitute `w` using the available equality. Both sides reduce to the same expression. Establish `h : T ≤ (b ≫ a) ⁻¹ᵁ U` using `h₂.trans (b.preimage_mono h₁)`. Establish `h' : T ≤ (b' ≫ a') ⁻¹ᵁ U` using `h₂'.trans (b'.preimage_mono h₁')`.
+
+Rewrite using `[← pullbackComp_inv_app b a E h₁ h₂ h, ← pullbackComp_inv_app b' a' E h₁' h₂' h', ← H w h h']`. Establish `e : (Scheme.Modules.pullbackComp b a).inv.app E ≫ (Scheme.Modules.pullbackComp b a ≪≫ Scheme.Modules.pullbackCongr w ≪≫ (Scheme.Modules.pullbackComp b' a').symm).hom.app E = (Scheme.Modules.pullbackCongr w).hom.app E ≫ (Scheme.Modules.pullbackComp b' a').inv.app E`. Simplify using the standard rewrite rules. Conclude with `congr(($e).app T (pullbackSections (b ≫ a) E h s))`.
+-/
 theorem pullbackSquare_app {b : W ⟶ Y} {a : Y ⟶ X} {b' : W ⟶ Y'} {a' : Y' ⟶ X}
     (w : b ≫ a = b' ≫ a') (E : X.Modules) {U : X.Opens} {V : Y.Opens} {V' : Y'.Opens}
     {T : W.Opens} (h₁ : V ≤ a ⁻¹ᵁ U) (h₂ : T ≤ b ⁻¹ᵁ V) (h₁' : V' ≤ a' ⁻¹ᵁ U) (h₂' : T ≤ b' ⁻¹ᵁ V')
@@ -52,6 +60,9 @@ theorem pullbackSquare_app {b : W ⟶ Y} {a : Y ⟶ X} {b' : W ⟶ Y'} {a' : Y' 
     simp
   exact congr(($e).app T (pullbackSections (b ≫ a) E h s))
 
+/- English proof (translation)
+Establish `e₁ : he.basis h = hd.basis k` using `DFunLike.ext _ _ fun i => by simp only [IsFrame.basis_apply, H]`. Use `Units.ext ?_` and prove the remaining obligations. Simplify using `only [IsFrame.val_detUnit, e₁, H']`.
+-/
 theorem detUnit_congr {F : X.Modules} {r : ℕ} {U U' T T' V : X.Opens} {e : Fin r → Γ(F, U)}
     {e' : Fin r → Γ(F, U')} {d : Fin r → Γ(F, T)} {d' : Fin r → Γ(F, T')} (he : IsFrame e)
     (he' : IsFrame e') (hd : IsFrame d) (hd' : IsFrame d') (h : V ≤ U) (h' : V ≤ U') (k : V ≤ T)
@@ -63,6 +74,9 @@ theorem detUnit_congr {F : X.Modules} {r : ℕ} {U U' T T' V : X.Opens} {e : Fin
   refine Units.ext ?_
   simp only [IsFrame.val_detUnit, e₁, H']
 
+/- English proof (translation)
+The claim follows from `congr(($e).app T s)`.
+-/
 theorem app_app_eq {A B C D : X.Modules} {a : A ⟶ B} {b : B ⟶ D} {c : A ⟶ C} {d : C ⟶ D}
     (e : a ≫ b = c ≫ d) (T : X.Opens) (s : Γ(A, T)) : b.app T (a.app T s) = d.app T (c.app T s) :=
   congr(($e).app T s)
@@ -76,6 +90,13 @@ def pullChart {X Y : Scheme.{0}} {F : X.Modules} [F.IsQuasicoherent] (c : Chart 
     Chart ((Scheme.Modules.pullback g).obj F) r :=
   ⟨g ⁻¹ᵁ c.U, _, c.isFrame.pullback g⟩
 
+/- English proof (translation)
+Rewrite using `[GenIso.detUnit, GenIso.detUnit, ← IsFrame.val_detUnit_pullback, ← IsFrame.detUnit_map_iso _ _ ((GenIso.genPullIso hf).hom.app E)]`. Use `congrArg Units.val (detUnit_congr _ _ _ _ _ _ _ _ (fun i => ?_) fun i => ?_)` and prove the remaining obligations. Use `(app_resM _ _ _).symm.trans (Eq.trans ?_ (res_pullbackSections _ _ _ _ _).symm)` and prove the remaining obligations. Use `(congrArg _ (res_pullbackSections _ _ _ _ _)).trans ?_` and prove the remaining obligations. Conclude with `pullbackSquare_app _ E _ _ _ _ _`.
+
+Establish `e : (φ.pull hf).inv ≫ (GenIso.genPullIso hf).hom.app E = (GenIso.genPullIso hf).hom.app E' ≫ (Scheme.Modules.pullback (GenIso.genMap hf)).map φ.inv`. Simplify using `[GenIso.pull]`. Use `(app_resM _ _ _).symm.trans (Eq.trans ?_ (res_pullbackSections _ _ _ _ _).symm)` and prove the remaining obligations. Use `(congrArg _ (app_resM _ _ _).symm).trans ?_` and prove the remaining obligations. Use `Eq.trans ?_ (pullback_map_app_pullbackSections _ _ _ _)` and prove the remaining obligations.
+
+Use `(app_app_eq e T _).trans (congrArg _ ?_)` and prove the remaining obligations. Use `(congrArg _ (res_pullbackSections _ _ _ _ _)).trans ?_` and prove the remaining obligations. Conclude with `pullbackSquare_app _ E' _ _ _ _ _`.
+-/
 theorem val_detUnit_pull [E.IsQuasicoherent] [E'.IsQuasicoherent]
     [((Scheme.Modules.pullback f).obj E).IsQuasicoherent]
     [((Scheme.Modules.pullback f).obj E').IsQuasicoherent] [(Z.genRes.obj E).IsQuasicoherent]
@@ -102,6 +123,21 @@ theorem val_detUnit_pull [E.IsQuasicoherent] [E'.IsQuasicoherent]
     refine (congrArg _ (res_pullbackSections _ _ _ _ _)).trans ?_
     exact pullbackSquare_app _ E' _ _ _ _ _
 
+/- English proof (translation)
+Use `hE.isQuasicoherent` as an intermediate fact. Use `hE'.isQuasicoherent` as an intermediate fact. Use `(hE.pullback f).isQuasicoherent` as an intermediate fact. Use `(hE'.pullback f).isQuasicoherent` as an intermediate fact. Use `(hE.pullback Z.gen.ι).isQuasicoherent` as an intermediate fact.
+
+Rewrite using `[← VertDiv.cls_pull, ← add_zero ((φ.div hE hE').pull hf).cls, ← VertDiv.cls_zero Z₁]`. Use `VertDiv.IsSum.cls_eq fun i j k => ?_` and prove the remaining obligations. Set `p : ((φ.pull hf).div (hE.pullback f) (hE'.pullback f)).M.ι` to `(pullChart (i ⟨⟩).1 f, pullChart (i ⟨⟩).2 f)`. Establish `hp : ((φ.div hE hE').pull hf).M.U i ≤ ((φ.pull hf).div (hE.pullback f) (hE'.pullback f)).M.U p` using `LB.pull_U_le f i`. Establish `key {W : Z₁.X.Opens} (hW : W ≤ Z₁.gen ⊓ ((φ.div hE hE').pull hf).M.U i) : ((φ.pull hf).div (hE.pullback f) (hE'.pullback f)).eqn p (hW.trans (inf_le_inf_left _ hp)) = ((φ.div hE hE').pull hf).eqn i hW`.
+
+Establish `hW' : W ≤ f ⁻¹ᵁ (Z.gen ⊓ ((i ⟨⟩).1.U ⊓ (i ⟨⟩).2.U))` using `hW.trans (inf_le_inf (preimage_gen hf).ge hp)`. Establish `e : ((φ.div hE hE').pull hf).eqn i hW = (f.appLE _ _ hW').hom ((φ.div hE hE').eqn (i ⟨⟩) le_rfl)`. Express the relevant statement in the definitionally equal form `resG Z₁.X _ (resG Z₁.X _ ((f.appLE _ _ (LB.pull_inf_le f _ i)).hom _)) = _`. Rewrite using `[LB.resG_appLE, LB.resG_appLE, VertDiv.eqn]`. Conclude with `(LB.appLE_resG _ _ _ _).symm`.
+
+Establish `w : GenIso.genMap hf ≫ Z.gen.ι = Z₁.gen.ι ≫ f` using `f.resLE_comp_ι (preimage_gen hf).ge`. Establish `hT : Z₁.gen.ι ⁻¹ᵁ W ≤ GenIso.genMap hf ⁻¹ᵁ Z.gen.ι ⁻¹ᵁ (Z.gen ⊓ ((i ⟨⟩).1.U ⊓ (i ⟨⟩).2.U))`. Rewrite using `[← Scheme.Hom.comp_preimage, w]`. Conclude with `Z₁.gen.ι.preimage_mono hW'`. Use `(genEquiv (hW.trans inf_le_left)).injective ?_` and prove the remaining obligations.
+
+Use `(GenIso.genEquiv_eqn_div _ _ _ _ _ _).trans ?_` and prove the remaining obligations. Rewrite using `[val_detUnit_pull hf φ _ _ (Z.gen.ι.preimage_mono inf_le_right) _ hT, e, ← GenIso.genEquiv_eqn_div φ hE hE' _ _ le_rfl, genEquiv_apply, genEquiv_apply]`. Establish `e₁` using `Scheme.Hom.comp_appLE (GenIso.genMap hf) Z.gen.ι (Z.gen ⊓ ((i ⟨⟩).1.U ⊓ (i ⟨⟩).2.U)) _ hT`. Establish `e₂` using `Scheme.Hom.appLE_comp_appLE Z₁.gen.ι f _ _ _ hW' le_rfl`. Rewrite `e₂` using `[← Scheme.Hom.app_eq_appLE]`.
+
+Establish `e₃ : ∀ {j j' : Z₁.gen.toScheme ⟶ Z.X} (_ : j = j') (U V h h'), j.appLE U V h = j'.appLE U V h'` using `by rintro _ _ rfl _ _ _ _; rfl`. Conclude with `congr(($(e₁.symm.trans ((e₃ w _ _ _ _).trans e₂.symm))).hom _)`. Use `⟨res (le_inf inf_le_right (inf_le_left.trans (inf_le_left.trans hp))) (((φ.pull hf).div (hE.pullback f) (hE'.pullback f)).M.g k p), ?_⟩` and prove the remaining obligations. Rewrite using `[← key, LB.val_res, LB.resG_resG]`. Use `(VertDiv.eqn_rel _ k p _ (inf_le_inf_left _ (inf_le_left.trans (inf_le_left.trans hp))) _).trans (congrArg _ ?_)` and prove the remaining obligations.
+
+Conclude with `(mul_one _).symm.trans (congrArg _ (map_one _).symm)`.
+-/
 theorem cls_div_pull (hE : IsVB E r) (hE' : IsVB E' r) (φ : Z.GenIso E E') :
     ((φ.pull hf).div (hE.pullback f) (hE'.pullback f)).cls = vPull hf (φ.div hE hE').cls := by
   have := hE.isQuasicoherent

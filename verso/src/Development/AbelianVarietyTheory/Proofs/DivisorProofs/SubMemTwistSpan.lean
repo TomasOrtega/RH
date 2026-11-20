@@ -22,14 +22,23 @@ def lowRank (r : ℕ) : Submodule ℂ (Matrix A D k → ℂ) where
   zero_mem' := ⟨zero_mem _, fun _ _ => rfl⟩
   smul_mem' c _ hΦ := ⟨Submodule.smul_mem _ c hΦ.1, fun Y hY => by simp [hΦ.2 Y hY]⟩
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_lowRank {r : ℕ} {Φ : Matrix A D k → ℂ} :
     Φ ∈ lowRank r ↔ Φ ∈ GlobalTheory.WeilM.SB (Matrix A D k) ∧ ∀ Y : Matrix A D k, Y.rank < r → Φ Y = 0 := Iff.rfl
 
+/- English proof (translation)
+Simplify using `[omA, invT_val]`.
+-/
 theorem omA_one_apply (ν β : kˣ →* ℂˣ) (g : GL A k) (Φ : Matrix A D k → ℂ) (X : Matrix A D k) :
     omA ν β g 1 Φ X = (((ν (gdet g))⁻¹ : ℂˣ) : ℂ) * apow (gdet g) (-(Fintype.card D : ℂ) / 2) *
       Φ ((g⁻¹).val * X) := by
   simp [omA, invT_val]
 
+/- English proof (translation)
+The claim follows from `Submodule.subset_span ⟨g, Ψ, hΨ, rfl⟩`.
+-/
 theorem sub_mem_twistSpan (ν β : kˣ →* ℂˣ) (g : GL A k) {Ψ : Matrix A D k → ℂ}
     (hΨ : Ψ ∈ GlobalTheory.WeilM.SB (Matrix A D k)) : omA ν β g 1 Ψ - Ψ ∈ twistSpan ν β :=
   Submodule.subset_span ⟨g, Ψ, hΨ, rfl⟩
@@ -41,6 +50,9 @@ def boxFn (ϖ : kˣ) (C : Matrix A D k) (e : A → ℕ) : Matrix A D k → ℂ :
 
 omit [Fintype A] [DecidableEq A] [Fintype D] [DecidableEq D] in
 
+/- English proof (translation)
+Use extensionality with `X`. Simplify using `only [box, Set.mem_setOf_eq, Set.mem_preimage, of_apply, Valuation.mem_integer_iff, map_mul]`. Use `forall₂_congr fun i j => ?_` and prove the remaining obligations. Establish `h0 : 0 < valuation k ((ϖ ^ e i : kˣ) : k)` using `zero_lt_iff.2 (by simp)`. Rewrite using `[Units.val_inv_eq_inv_val, map_inv₀, inv_mul_le_iff₀ h0, mul_one]`.
+-/
 theorem box_eq_preimage (ϖ : kˣ) (C : Matrix A D k) (e : A → ℕ) :
     box ϖ C e = (fun X : Matrix A D k => Matrix.of fun i j => (((ϖ ^ e i)⁻¹ : kˣ) : k) * (X i j - C i j)) ⁻¹'
       {Y | ∀ i j, Y i j ∈ 𝒪[k]} := by
@@ -52,6 +64,11 @@ theorem box_eq_preimage (ϖ : kˣ) (C : Matrix A D k) (e : A → ℕ) :
 
 omit [Fintype A] [DecidableEq A] [Fintype D] [DecidableEq D] in
 
+/- English proof (translation)
+Rewrite using `[box_eq_preimage]`. Use extensionality with `X`. Prove the components needed by the constructor for the conclusion. Introduce `hX`. Use `⟨_, hX, ?_⟩` and prove the remaining obligations.
+
+Use extensionality with `i j`. Simplify using `[← mul_assoc]`. Introduce and unpack `⟨Y, hY, rfl⟩`. Simplify `hY` using `[← mul_assoc]`.
+-/
 theorem box_eq_image (ϖ : kˣ) (C : Matrix A D k) (e : A → ℕ) :
     box ϖ C e = (fun Y : Matrix A D k => Matrix.of fun i j => C i j + ((ϖ ^ e i : kˣ) : k) * Y i j) ''
       {Y | ∀ i j, Y i j ∈ 𝒪[k]} := by
@@ -67,12 +84,18 @@ theorem box_eq_image (ϖ : kˣ) (C : Matrix A D k) (e : A → ℕ) :
 
 omit [DecidableEq A] [DecidableEq D] in
 
+/- English proof (translation)
+Rewrite using `[box_eq_image]`. Conclude with `isCompact_intMatrix.image (by fun_prop)`.
+-/
 theorem isCompact_box (ϖ : kˣ) (C : Matrix A D k) (e : A → ℕ) : IsCompact (box ϖ C e) := by
   rw [box_eq_image]
   exact isCompact_intMatrix.image (by fun_prop)
 
 omit [DecidableEq A] [DecidableEq D] in
 
+/- English proof (translation)
+Take `⟨_, _⟩` from `Model.secondCountable_and_t2_local_field (k := k)`. Establish `: T2Space (Matrix A D k)` using `inferInstanceAs (T2Space (A → D → k))`. Use `⟨(isCompact_box ϖ C e).isClosed, ?_⟩` and prove the remaining obligations. Rewrite using `[box_eq_preimage]`. Conclude with `isOpen_intMatrix.preimage (by fun_prop)`.
+-/
 theorem isClopen_box (ϖ : kˣ) (C : Matrix A D k) (e : A → ℕ) : IsClopen (box ϖ C e) := by
   obtain ⟨_, _⟩ := Model.secondCountable_and_t2_local_field (k := k)
   have : T2Space (Matrix A D k) := inferInstanceAs (T2Space (A → D → k))
@@ -82,6 +105,9 @@ theorem isClopen_box (ϖ : kˣ) (C : Matrix A D k) (e : A → ℕ) : IsClopen (b
 
 omit [DecidableEq A] [DecidableEq D] in
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(LocallyConstant.indicator (1 : LocallyConstant _ ℂ) (isClopen_box ϖ C e)).isLocallyConstant, HasCompactSupport.intro (isCompact_box ϖ C e) fun _ hx => Set.indicator_of_notMem hx _⟩`.
+-/
 theorem boxFn_mem_SB (ϖ : kˣ) (C : Matrix A D k) (e : A → ℕ) :
     boxFn ϖ C e ∈ GlobalTheory.WeilM.SB (Matrix A D k) :=
   ⟨(LocallyConstant.indicator (1 : LocallyConstant _ ℂ) (isClopen_box ϖ C e)).isLocallyConstant,
@@ -89,6 +115,11 @@ theorem boxFn_mem_SB (ϖ : kˣ) (C : Matrix A D k) (e : A → ℕ) :
 
 omit [Fintype A] [DecidableEq A] [Fintype D] [DecidableEq D] in
 
+/- English proof (translation)
+Use extensionality with `Y`. Use `⟨fun hY i j => ?_, fun hY i j => ?_⟩` and prove the remaining obligations. Rewrite using `[show Y i j - C i j = (Y i j - X i j) + (X i j - C i j) by ring]`. Conclude with `Valuation.map_add_le _ (hY i j) (hX i j)`. Rewrite using `[show Y i j - X i j = (Y i j - C i j) - (X i j - C i j) by ring]`.
+
+Conclude with `Valuation.map_sub_le _ (hY i j) (hX i j)`.
+-/
 theorem box_eq_of_mem {ϖ : kˣ} {C X : Matrix A D k} {e : A → ℕ} (hX : X ∈ box ϖ C e) : box ϖ X e = box ϖ C e := by
   ext Y
   refine ⟨fun hY i j => ?_, fun hY i j => ?_⟩
@@ -99,6 +130,9 @@ theorem box_eq_of_mem {ϖ : kˣ} {C X : Matrix A D k} {e : A → ℕ} (hX : X �
 
 omit [Fintype A] [DecidableEq A] [Fintype D] [DecidableEq D] in
 
+/- English proof (translation)
+Rewrite using `[boxFn, boxFn, box_eq_of_mem hX]`.
+-/
 theorem boxFn_eq_of_mem {ϖ : kˣ} {C X : Matrix A D k} {e : A → ℕ} (hX : X ∈ box ϖ C e) :
     boxFn ϖ X e = boxFn ϖ C e := by
   rw [boxFn, boxFn, box_eq_of_mem hX]

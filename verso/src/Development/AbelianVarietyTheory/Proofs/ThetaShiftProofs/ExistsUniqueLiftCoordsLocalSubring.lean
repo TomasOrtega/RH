@@ -20,6 +20,11 @@ section General
 variable {A K : Type} [CommRing A] [CommRing K] {j : A →+* K} {X Y : Scheme.{0}} {f : X ⟶ Y} {H : LB X}
   {I : Type} {t : I → LB.Sec H}
 
+/- English proof (translation)
+Use `choose φ hφ using h`. Simplify using `only [valR_eq x D hx] at hφ`. Set `ψ : Γ(X, D) →+* A` to `⟨⟨⟨φ, hj (by simp [hφ])⟩, fun a b => hj (by simp [hφ])⟩, hj (by simp [hφ]), fun a b => hj (by simp [hφ])⟩`. Use `⟨_, le_preimage_specMap_fromSpec hD (CommRingCat.ofHom ψ), ?_⟩` and prove the remaining obligations. Rewrite using `[← specMap_valMap_fromSpec hD x hx, ← Category.assoc, ← Spec.map_comp]`.
+
+Use `congr 2`. Conclude with `CommRingCat.hom_ext (RingHom.ext hφ)`.
+-/
 theorem exists_lift_of_valR_mem (hj : Function.Injective j) {D : X.Opens} (hD : IsAffineOpen D) (x : Sp K ⟶ X)
     (hx : ⊤ ≤ x ⁻¹ᵁ D) (h : ∀ g, valR x D g ∈ j.range) :
     ∃ ξ : Sp A ⟶ X, ⊤ ≤ ξ ⁻¹ᵁ D ∧ spMap j ≫ ξ = x := by
@@ -32,11 +37,25 @@ theorem exists_lift_of_valR_mem (hj : Function.Injective j) {D : X.Opens} (hD : 
   congr 2
   exact CommRingCat.hom_ext (RingHom.ext hφ)
 
+/- English proof (translation)
+The claim follows from `ext_of_valR (isAffineOpen_top Y) (le_preimage_top _) (le_preimage_top _) fun g => hj (by rw [← valR_spMap_comp j ξ ⊤ (le_preimage_top _), ← valR_spMap_comp j ξ' ⊤ (le_preimage_top _), h])`.
+-/
 theorem ext_of_spMap_comp [IsAffine Y] (hj : Function.Injective j) {ξ ξ' : Sp A ⟶ Y}
     (h : spMap j ≫ ξ = spMap j ≫ ξ') : ξ = ξ' :=
   ext_of_valR (isAffineOpen_top Y) (le_preimage_top _) (le_preimage_top _) fun g => hj (by
     rw [← valR_spMap_comp j ξ ⊤ (le_preimage_top _), ← valR_spMap_comp j ξ' ⊤ (le_preimage_top _), h])
 
+/- English proof (translation)
+Take `⟨hD, ρ, hρ, hsurj⟩` from `ht.2 m`. Establish `hx` using `h.le_nonzeroLocus (hm.map j)`. Take `⟨ξ, hξ, e⟩` from `exists_lift_of_valR_mem hj hD x hx fun g => by`. Take `⟨q, rfl⟩` from `hsurj g`. Rewrite using `[valR_eval₂Hom f x hx]`.
+
+Proceed by induction on `q using MvPolynomial.induction_on with`. Consider the case `C a`. Rewrite using `[MvPolynomial.eval₂Hom_C, ← valR_eq, hb, valR_spMap_comp j b ⊤ (le_preimage_top _)]`. Conclude with `⟨_, rfl⟩`. Consider the case `add p q hp hq => rw [map_add]`.
+
+Conclude with `add_mem hp hq`. Consider the case `mul_X p l hp`. Rewrite using `[map_mul, MvPolynomial.eval₂Hom_X']`. Use `mul_mem hp ⟨c l * hm.unit⁻¹.val, (hm.map j).mul_right_cancel ?_⟩` and prove the remaining obligations. Rewrite using `[h.valR_ratio hx (hρ l), ← map_mul, _root_.mul_assoc, IsUnit.val_inv_mul, _root_.mul_one]`.
+
+Use `⟨ξ, ext_of_spMap_comp hj ?_, e, ?_⟩` and prove the remaining obligations. Rewrite using `[← Category.assoc, e, hb]`. Establish `e' : (fun l => valR ξ (Out.nonzeroLocus (t m)) (ρ l) * c m) = c` using `funext fun l => hj (by`. Rewrite using `[map_mul, ← valR_spMap_comp j ξ _ hξ, e]`. Conclude with `h.valR_ratio hx (hρ l))`.
+
+Rewrite using `[← e']`. Conclude with `(hasCoords_ratio hξ hρ).mul_unit hm`.
+-/
 theorem exists_lift [IsAffine Y] [IsLocalRing A] (ht : EmbedsBy f t) (hj : Function.Injective j) {b : Sp A ⟶ Y}
     {x : Sp K ⟶ X} (hb : x ≫ f = spMap j ≫ b) {c : I → A} (h : HasCoords x t fun l => j (c l)) {m : I}
     (hm : IsUnit (c m)) : ∃ ξ : Sp A ⟶ X, ξ ≫ f = b ∧ spMap j ≫ ξ = x ∧ HasCoords ξ t c := by
@@ -64,11 +83,21 @@ theorem exists_lift [IsAffine Y] [IsLocalRing A] (ht : EmbedsBy f t) (hj : Funct
 
 end General
 
+/- English proof (translation)
+Introduce `_ hz` and use `Set.mem_iInter.2 fun _ => h hz`.
+-/
 theorem le_preimage_powOver {S : Scheme.{0}} (G : Over S) (L : LB G.left) (U : S.Opens) (N : ℕ) {A : Type}
     [CommRing A] (x : Sp A ⟶ (G.hom ⁻¹ᵁ U).toScheme) {j : L.ι} (h : ⊤ ≤ (x ≫ (G.hom ⁻¹ᵁ U).ι) ⁻¹ᵁ L.U j) :
     ⊤ ≤ x ⁻¹ᵁ (Out.powOver G L U N).U (fun _ => j) :=
   fun _ hz => Set.mem_iInter.2 fun _ => h hz
 
+/- English proof (translation)
+Introduce `S G _ _ L U N n b R K _ _ _ _ f y x cf j u hL hU hb hf hy hxy hj hval ⟨m, hm⟩`. Establish `: IsAffine U` using `hU`. Set `y' : Sp R ⟶ U.toScheme` to `IsOpenImmersion.lift U.ι y (by`. Introduce and unpack `_ ⟨z, rfl⟩`. Conclude with `⟨⟨y z, hy trivial⟩, rfl⟩)`.
+
+Establish `ey : y' ≫ U.ι = y` using `IsOpenImmersion.lift_fac _ _ _`. Establish `key : ∀ ξ : Sp R ⟶ (G.hom ⁻¹ᵁ U).toScheme, ξ ≫ (G.hom ⁻¹ᵁ U).ι ≫ G.hom = y ↔ ξ ≫ G.hom ∣_ U = y'` using `fun ξ => by`. Rewrite using `[← cancel_mono U.ι, ey, Category.assoc, morphismRestrict_ι]`. Establish `hxy' : x ≫ G.hom ∣_ U = spMap f ≫ y'`. Rewrite using `[← cancel_mono U.ι, Category.assoc, Category.assoc, ey, morphismRestrict_ι, hxy]`.
+
+Take `⟨ξ, h₁, h₂, h₃⟩` from `exists_lift hb hf hxy' (c := cf) ⟨fun _ => j, le_preimage_powOver G L U N x hj, u, hval⟩ hm`. Use `⟨ξ, ⟨(key ξ).2 h₁, h₂, fun j' hj' => h₃.chart (le_preimage_powOver G L U N ξ hj')⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `ξ' ⟨k₁, -, k₃⟩`. Take `⟨j', hj'⟩` from `exists_le_preimage_of_iSup_eq_top (ξ' ≫ (G.hom ⁻¹ᵁ U).ι) hL.cover`. Conclude with `HasCoords.ext hb (((key ξ').1 k₁).trans h₁.symm) ⟨fun _ => j', le_preimage_powOver G L U N ξ' hj', k₃ j' hj'⟩ h₃ hm`.
+-/
 theorem existsUnique_lift : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G] [IsSeparated G.hom] (L : LB G.left) (U : S.Opens) (N n : ℕ) (b : Fin n → LB.Sec (Out.powOver G L U N)) (R K : Type) [CommRing R] [IsLocalRing R] [CommRing K] [IsLocalRing K] (f : R →+* K) (y : Sp R ⟶ S) (x : Sp K ⟶ (G.hom ⁻¹ᵁ U).toScheme) (cf : Fin n → R) (j : L.ι) (u : Kˣ), L.IsLB → IsAffineOpen U → AmpleSpan.EmbedsBy (G.hom ∣_ U) b → Function.Injective f → ⊤ ≤ y ⁻¹ᵁ U → x ≫ (G.hom ⁻¹ᵁ U).ι ≫ G.hom = spMap f ≫ y → ⊤ ≤ (x ≫ (G.hom ⁻¹ᵁ U).ι) ⁻¹ᵁ L.U j → (∀ i, valR x ((Out.powOver G L U N).U (fun _ => j)) ((b i).f (fun _ => j)) = f (cf i) * u) → (∃ i, IsUnit (cf i)) → ∃! x' : Sp R ⟶ (G.hom ⁻¹ᵁ U).toScheme, x' ≫ (G.hom ⁻¹ᵁ U).ι ≫ G.hom = y ∧ spMap f ≫ x' = x ∧ ∀ j', ⊤ ≤ (x' ≫ (G.hom ⁻¹ᵁ U).ι) ⁻¹ᵁ L.U j' → ∃ u' : Rˣ, ∀ i, valR x' ((Out.powOver G L U N).U (fun _ => j')) ((b i).f (fun _ => j')) = cf i * u' := by
   intro S G _ _ L U N n b R K _ _ _ _ f y x cf j u hL hU hb hf hy hxy hj hval ⟨m, hm⟩
   have : IsAffine U := hU

@@ -11,12 +11,25 @@ section SlopeTestRemainingChoices
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+The claim follows from `Segment.ext_first (show (Δ.first.nu a).nu b = Δ.first.nu (a + b) from IrrGL.nu_nu _ _ _) rfl`.
+-/
 theorem segment_nu_nu (Δ : Segment k) (a b : ℂ) : (Δ.nu a).nu b = Δ.nu (a + b) :=
   Segment.ext_first (show (Δ.first.nu a).nu b = Δ.first.nu (a + b) from IrrGL.nu_nu _ _ _) rfl
 
+/- English proof (translation)
+The claim follows from `(h.tw _ _).of_equiv (x.twEquiv _ _)`.
+-/
 theorem isLSeg_nu {Δ : Segment k} {x : IrrGL k} (h : IsLSeg Δ x.rep) (s : ℂ) : IsLSeg (Δ.nu s) (x.nu s).rep :=
   (h.tw _ _).of_equiv (x.twEquiv _ _)
 
+/- English proof (translation)
+Rewrite using `[Fin.univ_val_map]`. Use `congr 1`. Rewrite using `[List.ofFn_mul, List.flatMap_def, ← List.map_coe_finRange_eq_range, List.map_map, ← List.ofFn_eq_map]`. Use `congr 1`. Use `List.ofFn_inj.2 (funext fun i => ?_)` and prove the remaining obligations.
+
+Rewrite using `[Function.comp_apply, List.map_ofFn]`. Use `List.ofFn_inj.2 (funext fun j => ?_)` and prove the remaining obligations. Establish `: ∀ h, finProdFinEquiv.symm (⟨i * m + j, h⟩ : Fin (d * m)) = (i, j)` using `fun h => by`. Rewrite using `[Equiv.symm_apply_eq]`. Use `ext`.
+
+Simplify using `[finProdFinEquiv_apply_val]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [Function.comp, this]`.
+-/
 theorem univ_map_speh_segments (d m : ℕ) (Δ : Fin m → Segment k) (s : Fin m → ℝ) :
     Finset.univ.val.map (fun p : Fin (d * m) => ((Δ (finProdFinEquiv.symm p).2).nu (s (finProdFinEquiv.symm p).2)).nu
       ((((d : ℝ) - 1) / 2 - ((finProdFinEquiv.symm p).1 : ℕ) : ℝ) : ℂ)) = ↑((List.range d).flatMap fun i : ℕ =>
@@ -34,6 +47,25 @@ theorem univ_map_speh_segments (d m : ℕ) (Δ : Fin m → Segment k) (s : Fin m
 
 end SlopeTestRemainingChoices
 
+/- English proof (translation)
+Introduce `k _ _ _ _ _ hLM hprec hstage a V _ _ σ m δ Δ s hΔ hδu hs hd hσ d n hdn W _ _ σ' hirr hf`. Take `⟨φ⟩` from `hσ`. Take `⟨f, hfs⟩` from `hf`. Set `y : Fin d → Fin m → IrrGL k` to `fun i j => ((δ j).nu (s j)).nu (((d : ℂ) - 1) / 2 - (i : ℕ))`. Establish `hN : ∀ i, ∑ j, (y i j).1 = a` using `fun _ => hd`.
+
+Set `Y : Fin (d * m) → IrrGL k` to `fun p => y (finProdFinEquiv.symm p).1 (finProdFinEquiv.symm p).2`. Establish `hM' : ∑ p, (Y p).1 = n`. Rewrite using `[← hdn, ← finProdFinEquiv.sum_comp, Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [Y, Equiv.symm_apply_apply]`.
+
+Conclude with `hN i`. Set `e1 : ∀ i : Fin d, (twist σ (detChar (Fin a) (absPow k (((d : ℂ) - 1) / 2 - (i : ℕ))))).Equiv (prodIrr (y i) (hN i))` to `fun i => (twistEquiv φ _).trans (prodIrrTwistEquiv _ hd _ (isSmoothChar_absPow _))`. Take `⟨e2⟩` from `hstage d m y (fun _ => a) n hN hdn hM'`. Set `E` to `(multiProdEquiv _ e1).trans e2`. Set `Γs : Fin (d * m) → Segment k` to `fun p => ((Δ (finProdFinEquiv.symm p).2).nu (s (finProdFinEquiv.symm p).2)).nu ((((d : ℝ) - 1) / 2 - ((finProdFinEquiv.symm p).1 : ℕ) : ℝ) : ℂ)`.
+
+Establish `hcast : ∀ i : ℕ, (((((d : ℝ) - 1) / 2 - i : ℝ)) : ℂ) = ((d : ℂ) - 1) / 2 - (i : ℕ)` using `fun i => by push_cast; ring`. Establish `hL : ∀ p, IsLSeg (Γs p) (Y p).rep` using `fun p => by`. Simplify using `only [Γs, Y, y, hcast]`. Conclude with `isLSeg_nu (isLSeg_nu (hΔ _) _) _`. Establish `hord : ∀ p p' : Fin (d * m), p < p' → ¬ (Γs p).Precedes (Γs p')`.
+
+Introduce `p p' hpp' hP`. Take `⟨⟨i, j⟩, rfl⟩` from `finProdFinEquiv.surjective p`. Take `⟨⟨i', j'⟩, rfl⟩` from `finProdFinEquiv.surjective p'`. Establish `hii : (i : ℕ) ≤ i'`. Assume the negation of the conclusion as `hlt`.
+
+Establish `h1 : (i' : ℕ) + 1 ≤ i` using `by omega`. Establish `h2` using `Nat.mul_le_mul_left m h1`. Establish `h3` using `Fin.lt_def.1 hpp'`. Simplify using `only [finProdFinEquiv_apply_val] at h3`. Use `j.2` as an intermediate fact.
+
+Use `j'.2` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Simplify using `only [Γs, Equiv.symm_apply_apply, segment_nu_nu] at hP`. Establish `key` using `hprec (δ j) (δ j') (Δ j) (Δ j') (hΔ j) (hδu j) (hΔ j') (hδu j') (s j + (((d : ℝ) - 1) / 2 - (i : ℕ))) (s j' + (((d : ℝ) - 1) / 2 - (i' : ℕ))) (by push_cast at hP ⊢; exact hP)`. Establish `hi : ((i : ℕ) : ℝ) ≤ (i' : ℕ)` using `by exact_mod_cast hii`.
+
+Use `abs_lt.1 (hs j)` as an intermediate fact. Use `abs_lt.1 (hs j')` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hLF : LFactors (↑((List.range d).flatMap fun i : ℕ => (List.ofFn fun j => (Δ j).nu (s j)).map fun Γ => Γ.nu ((((d : ℝ) - 1) / 2 - i : ℝ) : ℂ))) Y` using `⟨Γs, ⟨univ_map_speh_segments d m Δ s, hord⟩, hL⟩`. Take `⟨π, hπ⟩` from `hLM k _ (d * m) n Y hM' hLF`.
+
+Take `⟨ψ⟩` from `hπ.equiv_of_surjective hirr (f.comp E.symm.toIntertwiningMap) (hfs.comp E.symm.toLinearEquiv.surjective)`. Conclude with `⟨d * m, Y, hM', hLF, hπ.of_equiv ψ.symm (.refl _)⟩`.
+-/
 theorem speh_quotient_isL : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [CharZero k],
     GlobalTheory.Published.StandardCosocleGL → (∀ (δ δ' : IrrGL k) (Δ Δ' : Segment k), IsLSeg Δ δ.rep → IsUnitarisable δ.rep → IsLSeg Δ' δ'.rep →
     IsUnitarisable δ'.rep → ∀ x y : ℝ, (Δ.nu x).Precedes (Δ'.nu y) → x + 1 ≤ y) → (∀ (d h : ℕ) (y : Fin d → Fin h → IrrGL k) (N : Fin d → ℕ) (M : ℕ) (hN : ∀ i, ∑ j, (y i j).1 = N i)

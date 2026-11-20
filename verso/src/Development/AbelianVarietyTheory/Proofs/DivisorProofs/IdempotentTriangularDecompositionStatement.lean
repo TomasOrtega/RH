@@ -2,6 +2,9 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IdempotentTriangularDecomposition
 import Mathlib
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.exists_integral_block_bases_of_projectors | exact GlobalTheory.exists_integral_block_bases_of_projectors | (intros; apply GlobalTheory.exists_integral_block_bases_of_projectors <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.idempotent_triangular_decomposition : ∀ (F : Type) [Field F] (R : Subring F), IsPrincipalIdealRing R → (∀ x : F, ∃ d ∈ R, d ≠ 0 ∧ d * x ∈ R) →
     ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (N : ℕ) (e : ι → Matrix (Fin N) (Fin N) F),
     (∀ σ τ, e σ * e τ = if σ = τ then e τ else 0) → ∑ τ, e τ = 1 →

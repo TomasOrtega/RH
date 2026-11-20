@@ -6,6 +6,9 @@ open GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization
 
 namespace GlobalTheory
 
+/- English proof (translation)
+The claim follows from `|(Algebra.norm ℚ x : ℝ)| ^ 2 * Real.exp (-δ * ∑ τ : Emb F, τ x) ≤ C * Real.exp (-(δ / 2) * ∑ τ : Emb F, τ x) := by intro F _ _ _ δ hδ set n := 2 * Fintype.card (Emb F) with hn refine ⟨(n.factorial : ℝ) * (2 / δ) ^ n, fun x hx => ?_⟩ set T := ∑ τ : Emb F, τ x with hT have hT0 : 0 …`.
+-/
 theorem norm_sq_mul_exp_neg_trace_le : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (δ : ℝ), 0 < δ →
     ∃ C : ℝ, ∀ x : F, (∀ τ : Emb F, 0 < τ x) →
       |(Algebra.norm ℚ x : ℝ)| ^ 2 * Real.exp (-δ * ∑ τ : Emb F, τ x) ≤

@@ -15,6 +15,11 @@ open GlobalTheory.ZV
 
 namespace GlobalTheory.FormTorsion
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.RelationPowers.rel_prod_pow`. Consider the case `exact _root_.GlobalTheory.RelationPowers.rel_prod_pow`. Consider the case `(apply _root_.GlobalTheory.RelationPowers.rel_prod_pow <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.RelationPowers.rel_prod_pow <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.RelationPowers.rel_prod_pow <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.RelationPowers.rel_prod_pow ..)`.
+-/
 theorem rel_prod {G U : Type} [Monoid G] [CommMonoid U] (R : G → U → Prop) (h1 : R 1 1)
     (hm : ∀ x x' c c', R x c → R x' c' → R (x * x') (c * c')) :
     ∀ (n : ℕ) (y : Fin n → G) (c : Fin n → U) (a : Fin n → ℕ), (∀ i, R (y i) (c i)) →
@@ -27,9 +32,25 @@ theorem rel_prod {G U : Type} [Monoid G] [CommMonoid U] (R : G → U → Prop) (
   | (intros; apply @_root_.GlobalTheory.RelationPowers.rel_prod_pow <;> first | assumption | infer_instance)
   | (intros; exact _root_.GlobalTheory.RelationPowers.rel_prod_pow ..)
 
+/- English proof (translation)
+Introduce `_ _ h` and use `Units.ext ((ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of R)).inv).1 (congrArg Units.val h))`.
+-/
 theorem unitOn_inj {R : Type} [CommRing R] : Function.Injective (unitOn (R := R)) := fun _ _ h =>
   Units.ext ((ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of R)).inv).1 (congrArg Units.val h))
 
+/- English proof (translation)
+Take `⟨hu, hm, -, -⟩` from `hW (Sp K) P k (Out.baseOver (Sp K))`. Establish `h1 : Out.WeilIs P.A P.L k 1 z 1`. Take `⟨c, hc, hc'⟩` from `hu 1 z (one_pow k) hz`. Establish `h2` using `hm _ _ _ _ _ hc hc`. Rewrite `h2` using `[_root_.mul_one]`.
+
+Establish `: c = 1` using `mul_eq_left.1 (hc' _ h2)`. Conclude with `this ▸ hc`. Establish `H` using `rel_prod (fun x (c : Kˣ) => Out.WeilIs P.A P.L k x z (unitOn c)) (by`. Establish `: unitOn (1 : Kˣ) = 1` using `map_one _`. Use `show Out.WeilIs P.A P.L k 1 z (unitOn 1)`.
+
+Rewrite using `[this]`. Conclude with `h1)`. Use the proof step `(fun x x' c c' hx hx' => by`. Establish `: unitOn (c * c') = unitOn c * unitOn c'` using `map_mul _ _ _`. Use `show Out.WeilIs P.A P.L k (x * x') z (unitOn (c * c'))`.
+
+Rewrite using `[this]`. Conclude with `hm _ _ _ _ _ hx hx') n y (fun i => ζ ^ e i) a h`. Establish `e' : ∏ i, (ζ ^ e i) ^ a i = ζ ^ ∑ i, (a i : ℤ) * e i`. Establish `key : ∀ t : Finset (Fin n), ∏ i ∈ t, (ζ ^ e i) ^ a i = ζ ^ ∑ i ∈ t, (a i : ℤ) * e i` using `fun t => by`. Proceed by induction on `t using Finset.induction_on with`.
+
+Consider the case `empty => simp`. Consider the case `insert b t hb ih`. Rewrite using `[Finset.prod_insert hb, Finset.sum_insert hb, ih, zpow_add, ← zpow_natCast, ← zpow_mul, _root_.mul_comm (e b)]`. Conclude with `key _`. Rewrite using `[← e']`.
+
+Conclude with `H`.
+-/
 theorem weilIs_linComb (hW : Out.WeilSt) {K : Type} [Field K] (P : Out.PolAV (Sp K)) (k : ℕ) (ζ : Kˣ) {n : ℕ}
     (y : Fin n → (Out.baseOver (Sp K) ⟶ P.A)) (z : Out.baseOver (Sp K) ⟶ P.A) (hz : z ^ k = 1)
     (e : Fin n → ℤ) (a : Fin n → ℕ) (h : ∀ i, Out.WeilIs P.A P.L k (y i) z (unitOn (ζ ^ e i))) :
@@ -61,6 +82,9 @@ theorem weilIs_linComb (hW : Out.WeilSt) {K : Type} [Field K] (P : Out.PolAV (Sp
   rw [← e']
   exact H
 
+/- English proof (translation)
+Establish `: unitOn (ζ ^ (-e)) = (unitOn (ζ ^ e))⁻¹`. Rewrite using `[zpow_neg]`. Conclude with `map_inv _ _`. Rewrite using `[this]`. Conclude with `GlobalTheory.CommPairing.weilIs_symm P.isLB h`.
+-/
 theorem weilIs_symm_zpow {K : Type} [Field K] (P : Out.PolAV (Sp K)) (k : ℕ) (ζ : Kˣ)
     {x y : Out.baseOver (Sp K) ⟶ P.A} {e : ℤ} (h : Out.WeilIs P.A P.L k x y (unitOn (ζ ^ e))) :
     Out.WeilIs P.A P.L k y x (unitOn (ζ ^ (-e))) := by
@@ -69,6 +93,9 @@ theorem weilIs_symm_zpow {K : Type} [Field K] (P : Out.PolAV (Sp K)) (k : ℕ) (
   rw [this]
   exact GlobalTheory.CommPairing.weilIs_symm P.isLB h
 
+/- English proof (translation)
+Introduce `x x' h`. Apply `GlobalTheory.injective_toBilin'_stdSymp (R := ZMod k) g` to reduce the goal to its premises. Use extensionality with `a`. Use `congrFun h a` as an intermediate fact. Simplify `this` using `[Matrix.toBilin'_apply, Pi.single_apply]`.
+-/
 theorem injective_stdSymp (g k : ℕ) :
     Function.Injective (fun (x : Fin (2 * g) → ZMod k) a => ∑ l, x l * ((Out.stdSymp g l a : ℤ) : ZMod k)) := by
   intro x x' h
@@ -77,6 +104,27 @@ theorem injective_stdSymp (g k : ℕ) :
   have := congrFun h a
   simpa [Matrix.toBilin'_apply, Pi.single_apply] using this
 
+/- English proof (translation)
+Introduce `hL hL2 g N k Mat`. Use `⟨fun i j => Function.invFun (fun (x : Fin (2 * g) → ZMod k) a => ∑ l, x l * ((Out.stdSymp g l a : ℤ) : ZMod k)) (fun a => -(((Out.stdSymp g a j : ℤ) : ZMod k) * N + (∑ i, Mat i a * -(∑ l, Mat l j * ((Out.stdSymp g l i : ℤ) : ZMod k))) * N)) i, ?_⟩` and prove the remaining obligations. Introduce `K _ _ P pt ζ f s hk hζ hB hpt hf hM hs`. Use `⟨hB.pos, fun j => ?_⟩` and prove the remaining obligations. Use `haveI : NeZero k := ⟨fun e => hk (by simp [e])⟩`.
+
+Use `haveI := hs.isMonHom`. Establish `tors : ∀ (u : P.A ⟶ P.A) [IsMonHom u] i, (pt i ≫ u) ^ k = 1` using `fun u _ i => by`. Use `congrArg (IsMonHom.monoidHom u _) (hB.pow_eq_one i)` as an intermediate fact. Rewrite `this` using `[map_pow, map_one]`. Conclude with `this`.
+
+Take `⟨c, hc, -⟩` from `hB.existsUnique (tors s j)`. Rewrite using `[← hc]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Use `congr 1`.
+
+Use `congrFun (?_ : c = _) i` and prove the remaining obligations. Rewrite using `[← Function.leftInverse_invFun (injective_stdSymp g k) c]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Establish `w₁` using `weilIs_linComb hL.weil P k ζ pt (pt a) (hB.pow_eq_one a) _ (fun i => (c i).val) (fun i => hpt i a)`.
+
+Rewrite `w₁` using `[hc]`. Establish `w₂ : ∀ i, Out.WeilIs P.A P.L k (pt i) (pt j ≫ f) (unitOn (ζ ^ (-∑ l, ((Mat l j).val : ℤ) * Out.stdSymp g l i)))` using `fun i => by`. Rewrite using `[hM.comp_eq j]`. Conclude with `weilIs_symm_zpow P k ζ (weilIs_linComb hL.weil P k ζ pt (pt i) (hB.pow_eq_one i) _ _ (fun l => hpt l i))`. Establish `w₃` using `weilIs_linComb hL.weil P k ζ pt _ (tors f j) _ (fun i => (Mat i a).val) w₂`.
+
+Rewrite `w₃` using `[← hM.comp_eq a]`. Establish `eφ : (fun i : Fin 2 => ((![𝟙 P.A, f] : Fin 2 → (P.A ⟶ P.A)) i).left) = ![𝟙 P.A.left, f.left]`. Apply the tactic sequence `funext i; fin_cases i <;> rfl`. Establish `w₄` using `GlobalTheory.T.weilPairing_of_polarisationForm_linComb hL hL2 K P (Fin 2) ![𝟙 P.A, f] ![(N : ℤ), (N : ℤ)] s k (pt a) (pt j) ![ζ ^ Out.stdSymp g a j, ζ ^ ∑ i, ((Mat i a).val : ℤ) * (-∑ l, ((Mat l j).val : ℤ) * Out.stdSymp g l i)] hk (fun i => by fin_cases i`. Conclude with `(inferInstance : IsMonHom (𝟙 P.A))`.
+
+Conclude with `hf)`. Use the proof step `(by rw [eφ]; exact hs) (hB.pow_eq_one a) (hB.pow_eq_one j)`. Use the proof step `(fun i => by fin_cases i`. Use `show Out.WeilIs P.A P.L k (pt a ≫ 𝟙 _) (pt j ≫ 𝟙 _) _`. Rewrite using `[Category.comp_id, Category.comp_id]`.
+
+Conclude with `hpt a j`. Conclude with `w₃)`. Rewrite `w₄` using `[Fin.prod_univ_two]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_fin_one] at w₄`. Rewrite `w₄` using `[← zpow_mul, ← zpow_mul, ← zpow_add]`.
+
+Establish `w₅` using `weilIs_symm_zpow P k ζ w₄`. Establish `e` using `unitOn_inj (((hL.weil (Sp K) P k _).1 _ _ (tors s j) (hB.pow_eq_one a)).unique w₁ w₅)`. Rewrite `e` using `[← mul_inv_eq_one, ← zpow_sub, hζ.zpow_eq_one_iff_dvd, ← ZMod.intCast_zmod_eq_zero_iff_dvd]`. Move the coercions through the operations in `at e`. Simplify using `only [ZMod.natCast_zmod_val] at e`.
+
+Conclude with `sub_eq_zero.1 e`.
+-/
 theorem exists_matrix_form : Out.Laws → Out.Laws2 → ∀ (g N k : ℕ) (Mat : Matrix (Fin (2 * g)) (Fin (2 * g)) (ZMod k)), ∃ S : Matrix (Fin (2 * g)) (Fin (2 * g)) (ZMod k), ∀ (K : Type) [Field K] [IsAlgClosed K] (P : Out.PolAV (Sp K)) (pt : Fin (2 * g) → (Out.baseOver (Sp K) ⟶ P.A)) (ζ : Kˣ) (f s : P.A ⟶ P.A), (k : K) ≠ 0 → IsPrimitiveRoot ζ k → TorsBasis P.A k pt → (∀ i j, Out.WeilIs P.A P.L k (pt i) (pt j) (unitOn (ζ ^ Out.stdSymp g i j))) → IsMonHom f → ActsBy pt f Mat → FormIs P (LB.LinComb P.L (K := Fin 2) ![𝟙 P.A.left, f.left] ![(N : ℤ), (N : ℤ)]) s → ActsBy pt s S := by
   intro hL hL2 g N k Mat
   classical

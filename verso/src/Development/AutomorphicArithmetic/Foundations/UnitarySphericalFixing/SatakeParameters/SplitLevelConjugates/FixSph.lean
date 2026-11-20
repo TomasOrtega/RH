@@ -6,6 +6,15 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.LocGL GlobalTheory.RecT GlobalTheory.HeightCounting
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
+/- English proof (translation)
+Introduce `L _ _ _ n a S hS s f hf hf0 hfix σ hσ`. Set `J : Subgroup (GAf L n)` to `{ carrier := {κ | κ ∈ Umax L n ∧ ∀ g, f (g * κ) = f g} one_mem' := ⟨one_mem _, fun g => by rw [mul_one]⟩ mul_mem' := fun {x y} hx hy => ⟨mul_mem hx.1 hy.1, fun g => by rw [← mul_assoc, hy.2, hx.2]⟩ inv_mem' := fun {x} hx => ⟨inv_mem hx.1, fun g => by`. Rewrite using `[← hx.2 (g * x⁻¹), inv_mul_cancel_right]⟩ }`. Establish `hAF` using `hS.1.le hf`. Establish `hlev : ∃ N : ℕ, 0 < N ∧ ∀ κ, NG.Cong L n N κ → ∃ h : κ ∈ J, (1 : J →* ℂˣ) ⟨κ, h⟩ = 1`.
+
+Take `⟨-, N, hN, h⟩` from `hAF`. Conclude with `⟨N, hN, fun κ hκ => ⟨⟨hκ.1, h κ hκ⟩, rfl⟩⟩`. Establish `hB : NG.HypOutside J (1 : J →* ℂˣ) {s.v}ᶜ`. Introduce `κ hκ`. Rewrite `hκ` using `[compl_compl]`.
+
+Conclude with `⟨⟨fun h => h.1, fun h => ⟨h, fun g => congrFun (hfix κ h hκ) g⟩⟩, fun _ => rfl⟩`. Establish `hiso : f ∈ NG.isoTyp a.ρ S` using `(le_sSup (s := {S' | NG.IsIrrRep a.ρ S' ∧ NG.IsoRep S S'}) ⟨hS, LinearEquiv.refl ℂ S, fun _ _ _ h => h⟩ : S ≤ _) hf`. Establish `hT : f ∈ NG.TypeSp a.ρ J (1 : J →* ℂˣ)` using `⟨hAF, fun κ => by`. Rewrite using `[MonoidHom.one_apply, Units.val_one, one_smul]`. Conclude with `funext κ.2.2⟩`.
+
+Establish `h` using `GlobalTheory.SphHyp.isSpherical_of_hypOutside L n a S hS J 1 hlev _ hB f hiso hT hf0 s (by simp) σ hσ`. Conclude with `GlobalTheory.BCOffT.isSpherical_of_equiv (equivRep σ).symm h`.
+-/
 theorem UpperTheory.One.M.B.fixSph :
     UpperTheory.One.M.B.FixSph := by
   intro L _ _ _ n a S hS s f hf hf0 hfix σ hσ

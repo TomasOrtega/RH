@@ -22,18 +22,32 @@ def SchPB : Prop := ∀ {U V X : Scheme.{0}} (f : U ⟶ X) (g : V ⟶ X), IsIso 
 
 variable (R : Type) [CommRing R]
 
+/- English proof (translation)
+Rewrite using `[← pull_comp, IsIso.hom_inv_id, pull_id]`.
+-/
 theorem pull_hom_inv {E E' : Spc} (e : E ⟶ E') [IsIso e] (F : Shv R) (n : ℤ) (x : H R E F n) :
     pull R e F n (pull R (inv e) F n x) = x := by
   rw [← pull_comp, IsIso.hom_inv_id, pull_id]
 
+/- English proof (translation)
+Rewrite using `[← pull_comp, IsIso.inv_hom_id, pull_id]`.
+-/
 theorem pull_inv_hom {E E' : Spc} (e : E ⟶ E') [IsIso e] (F : Shv R) (n : ℤ) (x : H R E' F n) :
     pull R (inv e) F n (pull R e F n x) = x := by
   rw [← pull_comp, IsIso.inv_hom_id, pull_id]
 
+/- English proof (translation)
+Introduce `x y h` and use `by rw [← pull_inv_hom R e F n x, h, pull_inv_hom]`.
+-/
 theorem pull_inj_of_iso' {E E' : Spc} (e : E ⟶ E') [IsIso e] (F : Shv R) (n : ℤ) :
     Function.Injective (pull R e F n) := fun x y h => by
   rw [← pull_inv_hom R e F n x, h, pull_inv_hom]
 
+/- English proof (translation)
+Use `hP f g` as an intermediate fact. Use `hP f' g'` as an intermediate fact. Rewrite using `[IsIso.inv_comp_eq, ← Category.assoc, IsIso.eq_comp_inv]`. Apply `pullback.hom_ext` to reduce the goal to its premises. Simplify using `only [Category.assoc, pullbackComparison_comp_fst, pullback.lift_fst, ← Functor.map_comp, pullback.lift_fst_assoc]`.
+
+Rewrite using `[pullbackComparison_comp_fst_assoc, ← Functor.map_comp]`. Simplify using `only [Category.assoc, pullbackComparison_comp_snd, pullback.lift_snd, ← Functor.map_comp, pullback.lift_snd_assoc]`. Rewrite using `[pullbackComparison_comp_snd_assoc, ← Functor.map_comp]`.
+-/
 theorem comp_sq (hP : SchPB) {U V X U' V' X' : Scheme.{0}} (f : U ⟶ X) (g : V ⟶ X) (f' : U' ⟶ X') (g' : V' ⟶ X')
     (u : U ⟶ U') (v : V ⟶ V') (p : X ⟶ X') (hu : f ≫ p = u ≫ f') (hv : g ≫ p = v ≫ g')
     (hu' : sch.map f ≫ sch.map p = sch.map u ≫ sch.map f') (hv' : sch.map g ≫ sch.map p = sch.map v ≫ sch.map g') :
@@ -51,6 +65,25 @@ theorem comp_sq (hP : SchPB) {U V X U' V' X' : Scheme.{0}} (f : U ⟶ X) (g : V 
 end LateralTheory.E.MayerVietorisSequence
 
 open LateralTheory.E.MayerVietorisSequence in
+/- English proof (translation)
+Introduce `hyp R _ F`. Take `⟨d, hex, hnat⟩` from `hS hyp.a1 R F`. Use `⟨fun {U V X} f g n => if h : Cover2 R (sch.map f) (sch.map g) then` and prove the remaining obligations. Use `hP f g` as an intermediate fact. Use the proof step `(d _ _ h n).comp (pull R (inv (pullbackComparison sch f g)) F n) else 0, ?_, ?_⟩`.
+
+Introduce `U V X f g _ _ hcov n`. Use `hP f g` as an intermediate fact. Establish `h` using `hC R f g hcov`. Take `⟨h1, h2, h3⟩` from `hex (sch.map f) (sch.map g) h n`. Establish `hf : sch.map (pullback.fst f g) = pullbackComparison sch f g ≫ pullback.fst _ _` using `(pullbackComparison_comp_fst _ _ _).symm`.
+
+Establish `hg : sch.map (pullback.snd f g) = pullbackComparison sch f g ≫ pullback.snd _ _` using `(pullbackComparison_comp_snd _ _ _).symm`. Simplify using `only [dif_pos h, AddMonoidHom.comp_apply]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `a b hab`. Rewrite `hab` using `[hf, hg, pull_comp, pull_comp]`.
+
+Conclude with `(h1 a b).1 (pull_inj_of_iso' R _ F n hab)`. Introduce `w`. Rewrite using `[h2]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, b, hab⟩`.
+
+Use `⟨a, b, ?_⟩` and prove the remaining obligations. Rewrite using `[hf, hg, pull_comp, pull_comp, ← map_sub, ← hab, pull_hom_inv]`. Introduce and unpack `⟨a, b, rfl⟩`. Use `⟨a, b, ?_⟩` and prove the remaining obligations. Rewrite using `[hf, hg, pull_comp, pull_comp, ← map_sub, pull_inv_hom]`.
+
+Introduce `x`. Rewrite using `[h3]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, rfl⟩`. Conclude with `⟨pull R (pullbackComparison sch f g) F n c, by rw [pull_inv_hom]⟩`.
+
+Introduce and unpack `⟨w, rfl⟩`. Conclude with `⟨_, rfl⟩`. Introduce `U V X U' V' X' f g f' g' _ _ _ _ hcov hcov' u v p hu hv n w`. Use `hP f g` as an intermediate fact. Use `hP f' g'` as an intermediate fact.
+
+Establish `h` using `hC R f g hcov`. Establish `h'` using `hC R f' g' hcov'`. Simplify using `only [dif_pos h, dif_pos h', AddMonoidHom.comp_apply]`. Establish `hu' : sch.map f ≫ sch.map p = sch.map u ≫ sch.map f'` using `by rw [← Functor.map_comp, hu, Functor.map_comp]`. Establish `hv' : sch.map g ≫ sch.map p = sch.map v ≫ sch.map g'` using `by rw [← Functor.map_comp, hv, Functor.map_comp]`.
+
+Rewrite using `[hnat (sch.map f) (sch.map g) (sch.map f') (sch.map g') (sch.map p) (sch.map u) (sch.map v) hu' hv' h h' n, ← pull_comp, ← pull_comp, comp_sq hP f g f' g' u v p hu hv hu' hv']`.
+-/
 theorem LateralTheory.E.t_E2Cut.MV_of_three (hS : MVSpc) (hC : OpenCov) (hP : SchPB) : LateralTheory.E.t_E2Cut.MV := by
   classical
   intro hyp R _ F
@@ -98,6 +131,9 @@ theorem LateralTheory.E.t_E2Cut.MV_of_three (hS : MVSpc) (hC : OpenCov) (hP : Sc
 
 namespace LateralTheory.E.MayerVietorisSequence
 
+/- English proof (translation)
+Introduce `f g` and use `by have : PreservesLimitsOfShape WalkingCospan sch := by unfold sch; infer_instance infer_instance`.
+-/
 theorem schPB : SchPB := fun f g => by
   have : PreservesLimitsOfShape WalkingCospan sch := by unfold sch; infer_instance
   infer_instance
@@ -125,6 +161,13 @@ def LES : Prop := ∀ (R : Type) [CommRing R] (F : Shv R), ∃ d : ∀ {N K L M 
     a ≫ φK = φN ≫ a' → b ≫ φL = φN ≫ b' → c ≫ φM = φK ≫ c' → e ≫ φM = φL ≫ e' → ∀ (n : ℤ) t,
     HK.pull R φM F (n + 1) (d a' b' c' e' w' hS' n t) = d a b c e w hS n (HK.pull R φN F n t)
 
+/- English proof (translation)
+Introduce `_ R _ F`. Take `⟨d, hex, hnat⟩` from `hL R F`. Use `⟨fun f g h n => d _ _ _ _ (hE R f g h).choose (hE R f g h).choose_spec n, ?_, ?_⟩` and prove the remaining obligations. Introduce `U V E f g h n`. Conclude with `hex _ _ _ _ (hE R f g h).choose (hE R f g h).choose_spec n`.
+
+Introduce `U V E U' V' E' f g f' g' p u v hu hv h h' n c`. Use `hnat _ _ _ _ _ _ _ _ _ _ _ _ ((chains R).map (pullback.map f g f' g' u v p hu hv)) ((chains R).map u) ((chains R).map v) ((chains R).map p) ?_ ?_ ?_ ?_ n c` and prove the remaining obligations. Rewrite using `[← Functor.map_comp, ← Functor.map_comp, pullback.lift_fst]`. Rewrite using `[← Functor.map_comp, ← Functor.map_comp, pullback.lift_snd]`. Rewrite using `[← Functor.map_comp, ← Functor.map_comp, hu]`.
+
+Rewrite using `[← Functor.map_comp, ← Functor.map_comp, hv]`.
+-/
 theorem mvSpc_of (hE : SES) (hL : LES) : MVSpc := by
   intro _ R _ F
   obtain ⟨d, hex, hnat⟩ := hL R F

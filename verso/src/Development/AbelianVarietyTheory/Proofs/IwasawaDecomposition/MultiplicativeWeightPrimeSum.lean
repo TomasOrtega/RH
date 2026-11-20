@@ -18,6 +18,11 @@ namespace GlobalTheory.Mem.An
 
 open Formalism.HermitianLattices.GL2PrimeSums Formalism.HermitianLattices.GL2a2
 
+/- English proof (translation)
+Use `Finset.squarefree_prod_of_pairwise_isCoprime ?_ ?_` and prove the remaining obligations. Introduce `p hp q hq hpq`. Establish `hp'` using `Nat.prime_of_mem_primeFactors (Finset.mem_filter.1 hp).1`. Establish `hq'` using `Nat.prime_of_mem_primeFactors (Finset.mem_filter.1 hq).1`. Conclude with `Nat.coprime_iff_isRelPrime.1 ((Nat.coprime_primes hp' hq').2 hpq)`.
+
+Introduce `p hp`. Conclude with `(Nat.prime_of_mem_primeFactors (Finset.mem_filter.1 hp).1).prime.squarefree`.
+-/
 theorem squarefree_prod_primeFactors_filter (m : ℕ) (P : ℕ → Prop) [DecidablePred P] :
     Squarefree (∏ p ∈ m.primeFactors.filter P, p) := by
   refine Finset.squarefree_prod_of_pairwise_isCoprime ?_ ?_
@@ -28,6 +33,11 @@ theorem squarefree_prod_primeFactors_filter (m : ℕ) (P : ℕ → Prop) [Decida
   · intro p hp
     exact (Nat.prime_of_mem_primeFactors (Finset.mem_filter.1 hp).1).prime.squarefree
 
+/- English proof (translation)
+Unfold `inPart`. Use `Finset.prod_primes_dvd _ ?_ ?_` and prove the remaining obligations. Introduce `p hp`. Conclude with `(Nat.prime_of_mem_primeFactors (Finset.mem_filter.1 hp).1).prime`. Introduce `p hp`.
+
+Conclude with `(Finset.mem_filter.1 hp).2.1`.
+-/
 theorem inPart_dvd_modulus (m₀ m : ℕ) : inPart m₀ m ∣ m₀ := by
   unfold inPart
   refine Finset.prod_primes_dvd _ ?_ ?_
@@ -36,6 +46,9 @@ theorem inPart_dvd_modulus (m₀ m : ℕ) : inPart m₀ m ∣ m₀ := by
   · intro p hp
     exact (Finset.mem_filter.1 hp).2.1
 
+/- English proof (translation)
+Unfold `outPart`. Use `Nat.Coprime.prod_left ?_` and prove the remaining obligations. Introduce `p hp`. Conclude with `(Nat.Prime.coprime_iff_not_dvd (Nat.prime_of_mem_primeFactors (Finset.mem_filter.1 hp).1)).2 (Finset.mem_filter.1 hp).2.1`.
+-/
 theorem outPart_coprime_modulus (m₀ m : ℕ) : Nat.Coprime (outPart m₀ m) m₀ := by
   unfold outPart
   refine Nat.Coprime.prod_left ?_
@@ -43,11 +56,17 @@ theorem outPart_coprime_modulus (m₀ m : ℕ) : Nat.Coprime (outPart m₀ m) m�
   exact (Nat.Prime.coprime_iff_not_dvd
     (Nat.prime_of_mem_primeFactors (Finset.mem_filter.1 hp).1)).2 (Finset.mem_filter.1 hp).2.1
 
+/- English proof (translation)
+Use `Nat.le_of_dvd hm ?_` and prove the remaining obligations. Establish `h` using `GlobalTheory.inPart_mul_outPart_mul_sq m₀ m hm`. Conclude with `((Dvd.intro_left _ rfl).mul_right _).trans (dvd_of_eq h)`.
+-/
 theorem outPart_le_self (m₀ m : ℕ) (hm : 0 < m) : outPart m₀ m ≤ m := by
   refine Nat.le_of_dvd hm ?_
   have h := GlobalTheory.inPart_mul_outPart_mul_sq m₀ m hm
   exact ((Dvd.intro_left _ rfl).mul_right _).trans (dvd_of_eq h)
 
+/- English proof (translation)
+The claim follows from `|∑ q ∈ S, (jacobiSym (m : ℤ) q : ℝ)| ≤ |∑ q ∈ S, (jacobiSym (q : ℤ) (outPart m₀ m) : ℝ)| := by rcases S.eq_empty_or_nonempty with rfl | ⟨q₀, hq₀⟩ · simp have hodd : ∀ q ∈ S, Odd q := fun q hq => by have := (hS q hq).1 rw [Nat.odd_iff]; omega have hs : Odd (outPart m₀ m) := by hav …`.
+-/
 theorem abs_sum_jacobiSym_le_outPart (m₀ a₀ m : ℕ) (S : Finset ℕ) (h8 : 8 ∣ m₀) (hm : 0 < m)
     (hS : ∀ q ∈ S, q % 4 = 3 ∧ q ≡ a₀ [MOD m₀] ∧ Nat.Coprime m q) :
     |∑ q ∈ S, (jacobiSym (m : ℤ) q : ℝ)| ≤ |∑ q ∈ S, (jacobiSym (q : ℤ) (outPart m₀ m) : ℝ)| := by
@@ -75,6 +94,13 @@ theorem abs_sum_jacobiSym_le_outPart (m₀ a₀ m : ℕ) (S : Finset ℕ) (h8 : 
   rw [abs_mul, abs_neg_one_pow, mul_one]
   rcases jacobiSym.trichotomy (inPart m₀ m : ℤ) q₀ with h | h | h <;> simp [h]
 
+/- English proof (translation)
+Establish `hx0 : 0 < x` using `lt_of_lt_of_le (Real.exp_pos _) hx`. Establish `hL : 1600 ≤ Real.log x` using `(Real.le_log_iff_exp_le hx0).2 hx`. Establish `hm : 2 ≤ Real.log m₀`. Establish `h2 : Real.log 8 ≤ Real.log m₀` using `Real.log_le_log (by norm_num) (by exact_mod_cast h8)`. Establish `h3 : Real.log 8 = 3 * Real.log 2`.
+
+Rewrite using `[show (8 : ℝ) = 2 ^ 3 by norm_num, Real.log_pow]; norm_num`. Use `Real.log_two_gt_d9` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hq1 : Real.sqrt X < q`. Use `(Finset.mem_Ioc.1 (Finset.mem_filter.1 hq).1).1` as an intermediate fact.
+
+Conclude with `(Nat.floor_lt (Real.sqrt_nonneg X)).1 this`. Use `lt_of_le_of_lt ?_ hq1` and prove the remaining obligations. Rewrite using `[← Real.log_le_log_iff (Real.rpow_pos_of_pos hx0 _) (Real.sqrt_pos.2 hX), Real.log_rpow hx0, Real.log_sqrt hX.le]`. Establish `h4 : Real.log x ^ 2 * 2 ≤ Real.log x ^ 2 * Real.log m₀` using `mul_le_mul_of_nonneg_left hm (sq_nonneg _)`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem rpow_lt_of_mem_PP {x X : ℝ} {m₀ a₀ q : ℕ} (hx : Real.exp 1600 ≤ x) (h8 : 8 ≤ m₀) (hX : 0 < X)
     (h1 : (1 / 4) * Real.log x ^ 2 * Real.log m₀ ≤ Real.log X) (hq : q ∈ PP m₀ a₀ X) :
     x ^ (400 : ℝ) < q := by
@@ -96,6 +122,27 @@ theorem rpow_lt_of_mem_PP {x X : ℝ} {m₀ a₀ q : ℕ} (hx : Real.exp 1600 �
     mul_le_mul_of_nonneg_left hm (sq_nonneg _)
   nlinarith
 
+/- English proof (translation)
+Introduce `hTZ hPage hZ eps he he'`. Take `⟨x₁, C', c', hC', hc', hmu⟩` from `GlobalTheory.T.squarefree_prime_sum_exceptional hTZ hPage hZ eps he he'`. Take `⟨x₂, hcard⟩` from `card_primes_residue_ge_rpow hTZ eps he he'`. Take `⟨x₃, C, hcore⟩` from `GlobalTheory.meanSq_core sum_vonMangoldt_le_two_mul eps he (by linarith) C' c' hC' hc'`. Use `⟨max (max x₁ x₂) (max x₃ (Real.exp 1600)), C, ?_⟩` and prove the remaining obligations.
+
+Introduce `x hx m₀ a₀ h8 hm hcop ha hpr X hX h1 h2 κ hκ1 hκm hκb`. Simplify using `only [max_le_iff] at hx`. Take `⟨⟨hx1, hx2⟩, hx3, hx4⟩` from `hx`. Establish `hx0 : 0 < x` using `lt_of_lt_of_le (Real.exp_pos _) hx4`. Establish `h8' : 8 ≤ m₀` using `Nat.le_of_dvd hm h8`.
+
+Take `⟨nStar, hn⟩` from `hmu x hx1 m₀ a₀ h8 hm hcop X hX h1 h2`. Establish `hc` using `hcard x hx2 m₀ a₀ (by omega) hcop X hX h1 h2`. Establish `hpos : (0 : ℝ) < (PP m₀ a₀ X).card` using `lt_of_lt_of_le (Real.rpow_pos_of_pos hX _) hc`. Establish `hmem : ∀ q ∈ PP m₀ a₀ X, q.Prime ∧ q % 4 = 3 ∧ x ^ (400 : ℝ) < q`. Introduce `q hq`.
+
+Establish `h` using `(Finset.mem_filter.1 hq).2`. Use `⟨h.1, ?_, rpow_lt_of_mem_PP hx4 h8' hX h1 hq⟩` and prove the remaining obligations. Establish `h4 : q ≡ a₀ [MOD 4]` using `h.2.of_dvd (Dvd.dvd.trans (by norm_num) h8)`. Conclude with `(show q % 4 = a₀ % 4 from h4).trans ha`. Use `hcore x hx3 m₀ (PP m₀ a₀ X) κ nStar h8 hm hpr (Finset.card_pos.1 (by exact_mod_cast hpos)) hmem hκ1 hκm hκb ?_` and prove the remaining obligations.
+
+Introduce `n n' hn1 hn2 _ _ hne1 hne2`. Establish `hz : (0 : ℝ) ≤ x ^ (400 : ℝ)` using `(Real.rpow_pos_of_pos hx0 _).le`. Take `⟨hn1a, hn1b⟩` from `Finset.mem_Icc.1 hn1`. Take `⟨hn2a, hn2b⟩` from `Finset.mem_Icc.1 hn2`. Establish `hn1c : (n : ℝ) ≤ x ^ (400 : ℝ)` using `(Nat.le_floor_iff hz).1 hn1b`.
+
+Establish `hn2c : (n' : ℝ) ≤ x ^ (400 : ℝ)` using `(Nat.le_floor_iff hz).1 hn2b`. Establish `hnn : 0 < n * n'` using `Nat.mul_pos hn1a hn2a`. Establish `hsq : Squarefree (outPart m₀ (n * n'))` using `squarefree_prod_primeFactors_filter _ _`. Establish `hs1 : 1 < outPart m₀ (n * n')`. Use `hsq.ne_zero` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Establish `hsle : (outPart m₀ (n * n') : ℝ) ≤ x ^ (800 : ℝ)`. Establish `h3 : (outPart m₀ (n * n') : ℝ) ≤ (n : ℝ) * n'` using `by exact_mod_cast outPart_le_self m₀ _ hnn`. Establish `h4 : x ^ (800 : ℝ) = x ^ (400 : ℝ) * x ^ (400 : ℝ)`. Rewrite using `[← Real.rpow_add hx0]`.
+
+Evaluate the numerical expressions. Rewrite using `[h4]`. Conclude with `h3.trans (mul_le_mul hn1c hn2c (Nat.cast_nonneg _) hz)`. Use `le_trans ?_ (hn _ hs1 hsq (outPart_coprime_modulus _ _) hsle hne2)` and prove the remaining obligations. Rewrite using `[abs_div, abs_div]`.
+
+Use `div_le_div_of_nonneg_right ?_ (abs_nonneg _)` and prove the remaining obligations. Use `abs_sum_jacobiSym_le_outPart m₀ a₀ (n * n') _ h8 hnn ?_` and prove the remaining obligations. Introduce `q hq`. Take `⟨hp, h4, hlt⟩` from `hmem q hq`. Use `⟨h4, (Finset.mem_filter.1 hq).2.2, ?_⟩` and prove the remaining obligations.
+
+Establish `hl : ∀ k : ℕ, 1 ≤ k → (k : ℝ) ≤ x ^ (400 : ℝ) → Nat.Coprime k q` using `fun k hk hk' => (Nat.coprime_of_lt_prime (by omega) (by exact_mod_cast hk'.trans_lt hlt) hp).symm`. Conclude with `Nat.Coprime.mul_left (hl n hn1a hn1c) (hl n' hn2a hn2c)`.
+-/
 theorem meanSq_primes_residue_le : GlobalTheory.Mem.An.TZRat → GlobalTheory.Mem.An.PageThm → Formalism.ZeroFreeDirichlet.ZFRDirichlet → ∀ eps : ℝ, 0 < eps → eps < 1 / 52 → ∃ x₀ C : ℝ, ∀ x : ℝ, x₀ ≤ x → ∀ m₀ a₀ : ℕ, 8 ∣ m₀ → 0 < m₀ → Nat.Coprime a₀ m₀ → a₀ % 4 = 3 → (∀ p : ℕ, p.Prime → p ∣ m₀ → (p : ℝ) ≤ x ^ (eps / 5) ∨ x ^ (400 : ℝ) < p) → ∀ X : ℝ, 0 < X → (1 / 4) * Real.log x ^ 2 * Real.log m₀ ≤ Real.log X → x ^ (eps / 6) ≤ Real.log X → ∀ κ : ℕ → ℂ, κ 1 = 1 → (∀ m n, κ (m * n) = κ m * κ n) → (∀ n, ‖κ n‖ ≤ 1) → (∑ p ∈ Formalism.HermitianLattices.GL2PrimeSums.PP m₀ a₀ X, ‖Formalism.HermitianLattices.GL2PrimeSums.sqSum x κ p‖ ^ 2) / (Formalism.HermitianLattices.GL2PrimeSums.PP m₀ a₀ X).card ≤ C * x * Real.log x := by
   intro hTZ hPage hZ eps he he'
   obtain ⟨x₁, C', c', hC', hc', hmu⟩ := GlobalTheory.T.squarefree_prime_sum_exceptional hTZ hPage hZ eps he he'

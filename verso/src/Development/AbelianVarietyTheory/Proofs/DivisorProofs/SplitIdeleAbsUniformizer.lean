@@ -9,6 +9,11 @@ open Matrix
 
 namespace GlobalTheory.Div.IdeleAtNorm
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hcm v t ϖ e h1 h2`. Establish `key : Algebra.norm (Fv F v) (e : Fv F v ⊗[F] E) = ϖ`. Establish `h` using `congrArg (splitProj t) (GlobalTheory.Doubling.algebraMap_norm_eq hcm (e : Fv F v ⊗[F] E))`. Rewrite `h` using `[AlgHom.commutes, map_mul, ← splitProj_comp, h1, h2, mul_one]`. Simplify using `using h`.
+
+Rewrite using `[GlobalTheory.Doubling.absE_ideleAt, GlobalTheory.Doubling.absEv_apply]`. Use `((GlobalTheory.CompletionNorm.norm_nabs_valuation F v).1 ϖ).1` as an intermediate fact. Simplify using `only [coe_nnnorm]`. Rewrite using `[key]`. Conclude with `this`.
+-/
 theorem absE_ideleAt_split : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (v : HeightOneSpectrum (𝓞 F)) (t : E →ₐ[F] Fv F v) (ϖ : (Fv F v)ˣ)
     (e : (Fv F v ⊗[F] E)ˣ), splitProj t (e : Fv F v ⊗[F] E) = ϖ → splitProj (t.comp σ) (e : Fv F v ⊗[F] E) = 1 →
     (GlobalTheory.Doubling.absE F E (GlobalTheory.Doubling.ideleAt F E v e) : ℝ) = nabs (Fv F v) ϖ := by

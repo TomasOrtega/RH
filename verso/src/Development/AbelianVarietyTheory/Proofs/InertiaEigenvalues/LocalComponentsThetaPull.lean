@@ -23,6 +23,11 @@ noncomputable section
 
 namespace GlobalTheory.ConjPairLoc
 
+/- English proof (translation)
+Set `e : Subrepresentation (MonoidHom.comp ρ φ : Representation ℂ G V) ≃o Subrepresentation ρ` to `{ toFun := fun W => ⟨W.toSubmodule, fun g v hv => by`. Take `⟨g, rfl⟩` from `hφ g`. Conclude with `W.apply_mem_toSubmodule g hv⟩`. Use `invFun := fun W => ⟨W.toSubmodule, fun g v hv => W.apply_mem_toSubmodule (φ g) hv⟩`. Use `left_inv := fun _ => rfl`.
+
+Use `right_inv := fun _ => rfl`. Use the proof step `map_rel_iff' := Iff.rfl }`. Conclude with `e.isSimpleOrder`.
+-/
 theorem irred_comp {G H V : Type} [Group G] [Group H] [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ H V)
     (φ : G →* H) (hφ : Function.Surjective φ) (h : ρ.IsIrreducible) :
     Representation.IsIrreducible (MonoidHom.comp ρ φ) := by
@@ -36,6 +41,9 @@ theorem irred_comp {G H V : Type} [Group G] [Group H] [AddCommGroup V] [Module �
       map_rel_iff' := Iff.rfl }
   exact e.isSimpleOrder
 
+/- English proof (translation)
+The claim follows from `LinearMap.congr_fun (e.isIntertwining' g) x`.
+-/
 theorem equiv_apply {G V W : Type} [Group G] [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
     {ρ : Representation ℂ G V} {τ : Representation ℂ G W} (e : ρ.Equiv τ) (g : G) (x : V) :
     e.toLinearEquiv (ρ g x) = τ g (e.toLinearEquiv x) :=
@@ -43,11 +51,19 @@ theorem equiv_apply {G V W : Type} [Group G] [AddCommGroup V] [Module ℂ V] [Ad
 
 variable {E : Type} [Field E] [NumberField E] {a : ℕ}
 
+/- English proof (translation)
+Use extensionality with `i j : 2`. Conclude with `FiniteAdeleRing.ext _ fun v => congrArg (fun g : GL (Fin a) (v.adicCompletion E) => g.val i j) (h v)`.
+-/
 theorem gl_ext {k k' : GL (Fin a) (Af E)}
     (h : ∀ v, GeneralLinearGroup.map (pLoc E v) k = GeneralLinearGroup.map (pLoc E v) k') : k = k' := by
   ext i j : 2
   exact FiniteAdeleRing.ext _ fun v => congrArg (fun g : GL (Fin a) (v.adicCompletion E) => g.val i j) (h v)
 
+/- English proof (translation)
+Use `gl_ext fun u => ?_` and prove the remaining obligations. Establish `e : GeneralLinearGroup.map (pLoc E u) (GeneralLinearGroup.map (conjFin c) (locGL E a _ g)) = GeneralLinearGroup.map (conjLoc c u) (GeneralLinearGroup.map (pLoc E (conjSrc c u)) (locGL E a _ g))`. Use extensionality with `i j`. Both sides reduce to the same expression. Rewrite using `[e]`.
+
+Distinguish the cases in `h : u = v`. Substitute `h` using the available equality. Rewrite using `[pLoc_locGL, pLoc_locGL]`. Rewrite using `[pLoc_locGL_of_ne h, pLoc_locGL_of_ne (fun e => h (conjSrc_injective c e)), map_one]`.
+-/
 theorem conjFin_locGL (c : E ≃+* E) (v : HeightOneSpectrum (𝓞 E)) (g : GL (Fin a) ((conjSrc c v).adicCompletion E)) :
     GeneralLinearGroup.map (conjFin c) (locGL E a _ g) = locGL E a v (GeneralLinearGroup.map (conjLoc c v) g) := by
   refine gl_ext fun u => ?_
@@ -61,6 +77,9 @@ theorem conjFin_locGL (c : E ≃+* E) (v : HeightOneSpectrum (𝓞 E)) (g : GL (
     rw [pLoc_locGL, pLoc_locGL]
   · rw [pLoc_locGL_of_ne h, pLoc_locGL_of_ne (fun e => h (conjSrc_injective c e)), map_one]
 
+/- English proof (translation)
+Introduce `g`. Use `⟨GeneralLinearGroup.map (pLoc E _) (GeneralLinearGroup.map (cFin E) (locGL E a v g)), ?_⟩` and prove the remaining obligations. Use `conv_rhs => rw [← pLoc_locGL v g]`. Use extensionality with `i j : 2`. Conclude with `congrArg (pLoc E v) (cFin_cFin _)`.
+-/
 theorem map_conjLoc_surjective [IsCMField E] (v : HeightOneSpectrum (𝓞 E)) :
     Function.Surjective (GeneralLinearGroup.map (n := Fin a) (conjLoc (IsCMField.complexConj E).toRingEquiv v)) := by
   intro g

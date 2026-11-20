@@ -14,6 +14,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.IndefiniteRowSideFullHecke.TwistedLevelValues GlobalTheory.AdelicScalar GlobalTheory.LiftRows GlobalTheory.LowRow
 open Formalism.IndefR.Cx GlobalTheory.BigOn
 namespace GlobalTheory.BigTop
+/- English proof (translation)
+Introduce `h1 h2 h3 h4 h5 h6 h7`. Use `(Formalism.MainNotions.DIV.closed_Csz_ge FamHyp 8).imp ?_` and prove the remaining obligations. Introduce `eps Fm CH _ h8`. Take `⟨x0, hx0⟩` from `GlobalTheory.T.thetaLift_weightSizes_eventually_along_family eps Fm`. Use `⟨x0, fun x hx hle i p hp C => ?_⟩` and prove the remaining obligations.
+
+Establish `hS : ∀ j, Sizes (Fm.D x i) j (Fm.L x i).sc.b` using `hx0 x hx hle i`. Use `_root_.GlobalTheory.T.finiteness_inputs_real_data_three_alt h1 h2 h3 h4 h5 h6 h7 (T := p.T) (R := p.R) (F := p.F) p.κ p.v₀ p.O 1 (Fm.L x i).sc.b C CH hp.ok hp.sep p.charW hp.exAt hp.prim p.phsOne p.stdChar p.fw p.bar hp.ioExt p.pins (fun j => (hp.oneMap j).1) p.phase hS ?_ ?_ ⟨_, …` and prove the remaining obligations. Introduce `j`. Use `GlobalTheory.T.hookLogSum_sub_sizeTerm_le_lowerBound (Fm.D x i) (Fm.L x i) p.Del p.h0 Fm.Csz j h8 (hS j)` as an intermediate fact. Conclude with `this`.
+
+Introduce `j show _ - C * 0 ≤ _`. Rewrite using `[mul_zero, sub_zero]`. Conclude with `le_rfl`.
+-/
 theorem lamLow_of_hypotheses_alt_alt : GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.WeilSiegelFormulaUnitary → GlobalTheory.Published.SiegelWeilUnitaryConvergent →
     _root_.GlobalTheory.Published.DoublingMethodLocalZetaIntegrals → GlobalTheory.Published.UnramifiedDoublingGL → GlobalTheory.Published.BernsteinZelevinskyFiniteness →
     GlobalTheory.Published.FormalDegreeCompactDual → _root_.GlobalTheory.BigTop.LambdaLowerBound₂ := by

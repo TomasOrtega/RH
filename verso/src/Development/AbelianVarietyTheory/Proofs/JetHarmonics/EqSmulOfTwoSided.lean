@@ -12,6 +12,9 @@ open scoped InnerProductSpace ENNReal
 
 namespace GlobalTheory.UnipotentRadicalHaar
 
+/- English proof (translation)
+Establish `: IsFiniteMeasureOnCompacts ν` using `⟨fun K hK => hν.finite_compact K hK⟩`. Take `⟨c, -, c1, e⟩` from `GlobalTheory.BesselPeriodCompare.haar_unique hU hμ (ν := ν) ⟨inferInstance, hν.ne_zero, hν.conc, hν.left⟩`. Conclude with `⟨c, c1, e⟩`.
+-/
 theorem eq_smul_of_twoSided {k r : ℕ} {U : Set (B.Mat k r)} (hU : B2.IsClosedSubgroup U)
     {μ ν : Measure (Formalism.QuantumDeterminants.Mt k r)} (hμ : PI.BesselPeriodGGP.IsHaarOn U μ) (hν : B.IsHaarOn U ν) :
     ∃ c : ℝ≥0∞, c ≠ ⊤ ∧ μ = c • ν := by
@@ -20,6 +23,15 @@ theorem eq_smul_of_twoSided {k r : ℕ} {U : Set (B.Mat k r)} (hU : B2.IsClosedS
     (ν := ν) ⟨inferInstance, hν.ne_zero, hν.conc, hν.left⟩
   exact ⟨c, c1, e⟩
 
+/- English proof (translation)
+Introduce `k r z μW μN hz hT hW hN`. Take `⟨νW, hνW⟩` from `P.weyl_haar_exists k r z hz hT`. Take `⟨νN, hνN⟩` from `P.unipotent_haar_exists k r`. Take `⟨a, a1, ea⟩` from `eq_smul_of_twoSided (P.B2x3.closedW k r z) hW hνW`. Take `⟨b, -, eb⟩` from `eq_smul_of_twoSided (P.B2x2.closedN k r) hN hνN`.
+
+Use `⟨fun s hs => ?_, ⟨?_⟩, fun s hs => ?_, fun h hh m hm => (Formalism.QuantumDeterminants.uWNormal k r z hz h hh m hm).1, fun h hh => ?_⟩` and prove the remaining obligations. Rewrite using `[ea, Measure.map_smul]`. Conclude with `congrArg (a • ·) (hνW.right s hs)`. Establish `hK : IsCompact (Formalism.QuantumDeterminants.UWset k r z)` using `P.weyl_subgroup_compact k r z hz hT`. Establish `h1 : νW (Formalism.QuantumDeterminants.UWset k r z) < ⊤` using `hνW.finite_compact _ hK`.
+
+Establish `h2 : νW Set.univ ≤ νW (Formalism.QuantumDeterminants.UWset k r z) + νW (Formalism.QuantumDeterminants.UWset k r z)ᶜ` using `measure_univ_le_add_compl _`. Establish `h3 : νW (Formalism.QuantumDeterminants.UWset k r z)ᶜ = 0` using `hνW.conc`. Rewrite `h2` using `[h3, add_zero]`. Rewrite using `[ea, Measure.smul_apply, smul_eq_mul]`. Conclude with `ENNReal.mul_lt_top a1.lt_top (h2.trans_lt h1)`.
+
+Rewrite using `[eb, Measure.map_smul]`. Conclude with `congrArg (b • ·) (hνN.right s hs)`. Rewrite using `[eb, Measure.map_smul]`. Conclude with `congrArg (b • ·) (P.b2_conjInvRaw_proof k r z νN hz hT hνN h hh)`.
+-/
 theorem unimodular_normal : ∀ (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ) (μW μN : Measure (Formalism.QuantumDeterminants.Mt k r)), Formalism.QuantumDeterminants.inWb k r z → 0 < Formalism.QuantumDeterminants.Tz k r z → PI.BesselPeriodGGP.IsHaarOn (Formalism.QuantumDeterminants.UWset k r z) μW → PI.BesselPeriodGGP.IsHaarOn (Formalism.QuantumDeterminants.Nset k r) μN → PI.IsRightInvM (Formalism.QuantumDeterminants.UWset k r z) μW ∧ IsFiniteMeasure μW ∧ PI.IsRightInvM (Formalism.QuantumDeterminants.Nset k r) μN ∧ (∀ h ∈ Formalism.QuantumDeterminants.UWset k r z, ∀ m ∈ Formalism.QuantumDeterminants.Nset k r, h * m * h⁻¹ ∈ Formalism.QuantumDeterminants.Nset k r) ∧ ∀ h ∈ Formalism.QuantumDeterminants.UWset k r z, μN.map (fun x : Formalism.QuantumDeterminants.Mt k r => (fun i j => (h * Matrix.of x * h⁻¹) i j : Formalism.QuantumDeterminants.Mt k r)) = μN := by
   intro k r z μW μN hz hT hW hN
   obtain ⟨νW, hνW⟩ := P.weyl_haar_exists k r z hz hT

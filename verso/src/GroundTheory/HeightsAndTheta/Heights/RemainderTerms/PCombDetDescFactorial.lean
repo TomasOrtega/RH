@@ -8,6 +8,13 @@ namespace GroundTheory.Heights₂.Heights.RestTerms
 
 open Comb Equiv
 
+/- English proof (translation)
+Introduce `m l`. Rewrite using `[vandermondeOf_eq_det]`. Use `set v : Fin m → ℚ := fun i => (l i : ℚ)`. Establish `hA : (Matrix.of fun i j : Fin m => ((l i).descFactorial (stair m j) : ℚ)) = (Matrix.of fun i j : Fin m => (descPochhammer ℚ (j : ℕ)).eval (v i)).submatrix id Fin.revPerm`. Use extensionality with `i j`.
+
+Simplify using `only [Matrix.submatrix_apply, Matrix.of_apply, id, Fin.revPerm_apply, v, descPochhammer_eval_eq_descFactorial, stair]`. Rewrite using `[Fin.val_rev]`. Use `congr 2`. Use linear arithmetic over natural numbers and integers. Establish `hB : (Matrix.of fun i j : Fin m => v i ^ (m - 1 - (j : ℕ))) = (Matrix.vandermonde v).submatrix id Fin.revPerm`.
+
+Use extensionality with `i j`. Simplify using `only [Matrix.submatrix_apply, Matrix.of_apply, id, Fin.revPerm_apply, Fin.val_rev, Matrix.vandermonde_apply]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hA, hB, Matrix.det_permute', Matrix.det_permute', Matrix.det_eval_matrixOfPolynomials_eq_det_vandermonde v (fun j => descPochhammer ℚ (j : ℕ)) (fun j => descPochhammer_natDegree ℚ _) (fun j => monic_descPochhammer ℚ _)]`.
+-/
 theorem CombDetDescFactorial.proof : CombDetDescFactorial.Statement := by
   intro m l
   rw [vandermondeOf_eq_det]

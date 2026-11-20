@@ -10,6 +10,11 @@ namespace SheetDecomposition
 open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Top
 open GroundTheory.Heights₂.Heights.NumbersDVR (pointIdeal intNum mixedDiff diffStep)
 
+/- English proof (translation)
+Establish `: LeftCommutative (diffStep (K` using `K)) := ⟨fun x y g => by`. Use function extensionality and compare the values at `z`. Simplify using `only [diffStep, sub_right_comm z x y]`. Use the proof step `ring⟩`. Unfold `intNum mixedDiff`.
+
+Rewrite using `[h.foldr_eq]`.
+-/
 theorem intNum_perm {K : Type} [DecidableEq K] {ι : K → Type} {F : Type} [Field F] (I : Ideal (MvPolynomial (Σ k, ι k) F))
     {n m : ℕ} (a : Fin n → K → ℤ) (b : Fin m → K → ℤ) (h : (List.ofFn a).Perm (List.ofFn b)) : intNum F I a = intNum F I b := by
   have : LeftCommutative (diffStep (K := K)) := ⟨fun x y g => by
@@ -19,6 +24,13 @@ theorem intNum_perm {K : Type} [DecidableEq K] {ι : K → Type} {F : Type} [Fie
   unfold intNum mixedDiff
   rw [h.foldr_eq]
 
+/- English proof (translation)
+Establish `h1 : Finsupp.toMultiset (∑ j, Finsupp.single (w j) 1 : J →₀ ℕ) = (List.ofFn w : Multiset J)`. Rewrite using `[map_sum, ← Fin.univ_val_map, Finset.sum_eq_multiset_sum]`. Simplify using `only [Finsupp.toMultiset_single, one_smul]`. Use `conv_rhs => rw [← Multiset.sum_map_singleton (Multiset.map w Finset.univ.val), Multiset.map_map]`. Both sides reduce to the same expression.
+
+Establish `h2 : (Finsupp.toMultiset (∑ j, Finsupp.single (w j) 1 : J →₀ ℕ)).toList.Perm (List.ofFn w)`. Rewrite using `[← Multiset.coe_eq_coe, Multiset.coe_toList, h1]`. Establish `h4 : (List.ofFn fun k => (monoLines l (∑ j, Finsupp.single (w j) 1) d k).a) = ((Finsupp.toMultiset (∑ j, Finsupp.single (w j) 1 : J →₀ ℕ)).toList).map fun x => (l x).a`. Use `List.ext_getElem (by simp) fun i h h' => ?_` and prove the remaining obligations. Establish `hi : i < (Finsupp.toMultiset (∑ j, Finsupp.single (w j) 1 : J →₀ ℕ)).toList.length` using `by simpa using h'`.
+
+Simplify using `only [List.getElem_ofFn, List.getElem_map, monoLines, dif_pos hi, List.get_eq_getElem]`. Rewrite using `[h4]`. Establish `h5` using `h2.map fun x => (l x).a`. Rewrite `h5` using `[List.map_ofFn]`. Then use the resulting hypothesis.
+-/
 theorem monoLines_perm {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {J : Type} (l : J → HermLine ι) {d : ℕ}
     (w : Fin d → J) :
     (List.ofFn fun k => (monoLines l (∑ j, Finsupp.single (w j) 1) d k).a).Perm (List.ofFn fun j => (l (w j)).a) := by
@@ -38,6 +50,9 @@ theorem monoLines_perm {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype 
   have h5 := h2.map fun x => (l x).a
   rwa [List.map_ofFn] at h5
 
+/- English proof (translation)
+Unfold `monoLines`. Use `split_ifs`. Conclude with `hl _`. Conclude with `contDiffOn_const`.
+-/
 theorem monoLines_smooth {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {J : Type} (l : J → HermLine ι)
     (hl : ∀ j, IsSmoothHerm (l j)) (m : J →₀ ℕ) (d : ℕ) (k : Fin d) : IsSmoothHerm (monoLines l m d k) := by
   unfold monoLines
@@ -48,6 +63,15 @@ theorem monoLines_smooth {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintyp
 variable {Ψ : Type} [Fintype Ψ] {N : ℕ} (M : RootModel Ψ N)
 
 open Classical in
+/- English proof (translation)
+Establish `h1 : toA (∏ j, X (w j) : RP Ψ N) = basisMonomials (Option (Ψ × Fin N)) ℝ (∑ j, Finsupp.single (some (w j)) 1)`. Simplify using `only [toA, map_prod, rename_X, coe_basisMonomials]`. Rewrite using `[monomial_sum_one]`. Both sides reduce to the same expression. Establish `h2 : (∑ j, Finsupp.single (some (w j)) 1 : Option (Ψ × Fin N) →₀ ℕ).degree = dimFl Ψ N`.
+
+Simplify using `[map_sum]`. Establish `h3 : (∑ j, Finsupp.single (some (w j)) 1 : Option (Ψ × Fin N) →₀ ℕ) none = 0`. Simplify using `[Finsupp.finsetSum_apply]`. Establish `hs : ∀ j, IsSmoothHerm (M.line 1 j)` using `fun j => by`. Consider the cases of `j`.
+
+Conclude with `M.A_smooth`. Conclude with `M.x_smooth _ _`. Establish `h4` using `GlobalTheory.CompanionTheory.Ar.Giv.degreeGeneric_of_degree hI.degree M.K M.ι M.P (dimFl Ψ N) (monoLines (M.line 1) (∑ j, Finsupp.single (some (w j)) 1) (dimFl Ψ N)) M.arith (monoLines_smooth _ hs _ _)`. Establish `hδ : (M.δ : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 M.δ_pos.ne'`. Rewrite using `[h1, RootModel.geoFun, Module.Basis.constr_basis, RootModel.geoMono, if_pos h2, h3, pow_zero, mul_one, div_mul_cancel₀ _ hδ]`.
+
+Use `h4.trans (congrArg _ ?_)` and prove the remaining obligations. Use `(intNum_perm _ _ _ (monoLines_perm (M.line 1) fun j => some (w j))).trans ?_` and prove the remaining obligations. Simplify using `only [RootModel.line, M.x_deg]`.
+-/
 theorem geoFun_word (hI : PB.Inputs) (w : Fin (dimFl Ψ N) → Ψ × Fin N) :
     M.geoFun (toA (∏ j, X (w j))) * M.δ =
       (intNum ℚ (M.P.map (MvPolynomial.map (Int.castRingHom ℚ))) fun j => M.xdeg (w j) : ℤ) := by
@@ -72,6 +96,11 @@ theorem geoFun_word (hI : PB.Inputs) (w : Fin (dimFl Ψ N) → Ψ × Fin N) :
   simp only [RootModel.line, M.x_deg]
 
 open Classical in
+/- English proof (translation)
+Take `⟨F, hF⟩` from `exists_multilinear_gen (P := M.P) M.arith`. Rewrite using `[← hF, F.map_sum, Fintype.prod_sum]`. Establish `h1 : ∀ w : Fin (dimFl Ψ N) → Ψ × Fin N, toA (∏ j, c j (w j) • X (w j) : RP Ψ N) = ((∏ j, c j (w j) : ℤ) : ℝ) • toA (∏ j, X (w j))` using `fun w => by`. Rewrite using `[Finset.prod_smul, Int.cast_smul_eq_zsmul, toA, toA, map_zsmul]`. Establish `h2 : toA (∑ w : Fin (dimFl Ψ N) → Ψ × Fin N, ∏ j, c j (w j) • X (w j) : RP Ψ N) = ∑ w : Fin (dimFl Ψ N) → Ψ × Fin N, toA (∏ j, c j (w j) • X (w j))` using `map_sum (rename some) _ _`.
+
+Rewrite using `[h2, map_sum, Finset.sum_mul, Int.cast_sum]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[h1, map_smul, F.map_smul_univ, smul_eq_mul, smul_eq_mul, mul_assoc, geoFun_word M hI, hF, Int.cast_mul]`.
+-/
 theorem geoFun_prod (hI : PB.Inputs) (c : Fin (dimFl Ψ N) → Ψ × Fin N → ℤ) :
     M.geoFun (toA (∏ j, ∑ x, c j x • X x)) * M.δ =
       (intNum ℚ (M.P.map (MvPolynomial.map (Int.castRingHom ℚ))) fun j => ∑ x, c j x • M.xdeg x : ℤ) := by
@@ -86,12 +115,22 @@ theorem geoFun_prod (hI : PB.Inputs) (c : Fin (dimFl Ψ N) → Ψ × Fin N → �
   refine Finset.sum_congr rfl fun w _ => ?_
   rw [h1, map_smul, F.map_smul_univ, smul_eq_mul, smul_eq_mul, mul_assoc, geoFun_word M hI, hF, Int.cast_mul]
 
+/- English proof (translation)
+Establish `: CharZero Ω` using `algebraRat.charZero Ω`. Take `rfl : h = DivisionRing.toRatAlgebra` from `Subsingleton.elim _ _`. Conclude with `(GroundTheory.Heights₂.Heights.HilbertSamuel.LiftBirationalNef.genIdeal_eq y).symm`.
+-/
 theorem test_pointIdeal_rat {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Ω : Type} [Field Ω] [h : Algebra ℚ Ω]
     (y : (Σ k, ι k) → Ω) : pointIdeal ℚ y = (mCoordIdeal y).map (MvPolynomial.map (Int.castRingHom ℚ)) := by
   have : CharZero Ω := algebraRat.charZero Ω
   obtain rfl : h = DivisionRing.toRatAlgebra := Subsingleton.elim _ _
   exact (GroundTheory.Heights₂.Heights.HilbertSamuel.LiftBirationalNef.genIdeal_eq y).symm
 
+/- English proof (translation)
+Introduce `hI Ψ _ _ p q M _ n r e hq hn`. Establish `hc : n + r = dimFl Ψ (p + q)`. Rewrite using `[hn, ← count_pairs, ← Fintype.card_congr e, Fintype.card_fin]`. Use `⟨hc, ?_⟩` and prove the remaining obligations. Establish `key : ∀ (d : ℕ) (_ : d = dimFl Ψ (p + q)) (c : Fin d → Ψ × Fin (p + q) → ℤ), M.geoFun (toA (∏ j, ∑ x, c j x • X x)) * M.δ = inum ℚ M.y fun j => ∑ x, c j x • M.xdeg x`.
+
+Introduce and unpack `_ rfl c`. Rewrite using `[inum, test_pointIdeal_rat]`. Use `geoFun_prod M hI c` and compare the differences between its conclusion and the goal. Both sides reduce to the same expression. Rewrite using `[test_factor e hq hn, key _ hc]`.
+
+Use `congr 2`. Use function extensionality and compare the values at `j`. Use `Fin.addCases (fun j => ?_) (fun j => ?_) j` and prove the remaining obligations. Simplify using `only [Fin.append_left, sum_muCoef, muDeg]`. Simplify using `only [Fin.append_right, sum_fibCoef, fibDeg]`.
+-/
 theorem geoTest : GeoTest := by
   intro hI Ψ _ _ p q M _ n r e hq hn
   have hc : n + r = dimFl Ψ (p + q) := by

@@ -16,15 +16,24 @@ def Psi : Module.End (Fe hA he) (Wd e) →ₗ[k] Matrix (Fin N) (Fin N) k where
   map_add' f g := by rw [← map_add]; rfl
   map_smul' c f := by rw [RingHom.id_apply, ← map_smul]; rfl
 
+/- English proof (translation)
+The claim follows from `Th_mulVec (φ.restrictScalars k) v`.
+-/
 lemma Psi_mulVec (φ : Module.End (Fe hA he) (Wd e)) (v : Fin N → k) :
     Psi hA he φ *ᵥ v = (φ (Pe e v) : Fin N → k) := Th_mulVec (φ.restrictScalars k) v
 
+/- English proof (translation)
+Introduce `f g h`. Use `Th_inj h` as an intermediate fact. Use extensionality with `w : 1`. Conclude with `congrArg (fun F : Module.End k (Wd e) => F w) this`.
+-/
 lemma Psi_inj : Function.Injective (Psi hA he) := by
   intro f g h
   have := Th_inj h
   ext w : 1
   exact congrArg (fun F : Module.End k (Wd e) => F w) this
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Use `show e *ᵥ (a.1 *ᵥ v) = a.1 *ᵥ (e *ᵥ v)`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hA _ a.2 _ he]`.
+-/
 lemma Pe_smul (a : A) (v : Fin N → k) :
     Pe e (a.1 *ᵥ v) = (⟨rho hA he a, a, rfl⟩ : Fe hA he) • Pe e v := by
   apply Subtype.ext
@@ -40,6 +49,17 @@ def phiOf (c : Matrix (Fin N) (Fin N) k) (hc : ∀ a ∈ A, a * c = c * a) : Mod
     show c *ᵥ (a.1 *ᵥ (w : Fin N → k)) = a.1 *ᵥ (c *ᵥ (w : Fin N → k))
     rw [Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hc _ a.2]
 
+/- English proof (translation)
+Use extensionality with `m`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨φ, rfl⟩`. Use `⟨Psi hA he φ, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[SetLike.mem_coe, Subalgebra.mem_toSubmodule, Subalgebra.mem_centralizer_iff]`.
+
+Introduce `a ha`. Apply `mat_ext` to reduce the goal to its premises. Introduce `v`. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, Psi_mulVec, Psi_mulVec, Pe_smul hA he ⟨a, ha⟩, map_smul]`. Both sides reduce to the same expression.
+
+Apply `mat_ext` to reduce the goal to its premises. Introduce `v`. Simplify using `only [LinearMap.mulLeft_apply]`. Rewrite using `[← Matrix.mulVec_mulVec, Psi_mulVec]`. Conclude with `W_fix hid (φ (Pe e v)).2`.
+
+Introduce and unpack `⟨c, hc, rfl⟩`. Rewrite `hc` using `[SetLike.mem_coe, Subalgebra.mem_toSubmodule, Subalgebra.mem_centralizer_iff]`. Use `⟨phiOf hA he c hc, ?_⟩` and prove the remaining obligations. Apply `mat_ext` to reduce the goal to its premises. Introduce `v`.
+
+Rewrite using `[Psi_mulVec]`. Use `show c *ᵥ (e *ᵥ v) = (e * c) *ᵥ v`. Rewrite using `[Matrix.mulVec_mulVec, hc e he]`.
+-/
 lemma range_Psi (hid : IsIdempotentElem e) :
     LinearMap.range (Psi hA he) =
       (Subalgebra.centralizer k (A : Set (Matrix (Fin N) (Fin N) k))).toSubmodule.map (LinearMap.mulLeft k e) := by

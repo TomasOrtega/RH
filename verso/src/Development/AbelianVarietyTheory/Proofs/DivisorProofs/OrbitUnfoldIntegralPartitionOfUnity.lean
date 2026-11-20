@@ -7,6 +7,15 @@ open NumberField MeasureTheory
 
 namespace GlobalTheory.OrbitUnfold
 
+/- English proof (translation)
+Establish `key : ∀ u, ∫ y, p y • h (y + t u) = ∫ y, p (y - t u) • h y`. Introduce `u`. Use `integral_add_right_eq_self (μ := (volume : Measure (I → ℝ))) (fun y => p (y - t u) • h y) (t u)` as an intermediate fact. Simplify using `using this`. Repeatedly rewrite using `[key]`.
+
+Use `hasSum_integral_of_dominated_convergence (fun u y => p (y - t u) * ‖h y‖) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `u`. Conclude with `((hp.comp (measurable_sub_const (t u))).aestronglyMeasurable).smul hh.aestronglyMeasurable`. Introduce `u`. Use `ae_of_all _ (fun y => ?_)` and prove the remaining obligations.
+
+Rewrite using `[norm_smul, Real.norm_of_nonneg (hp0 _)]`. Conclude with `ae_of_all _ (fun y => ((hsum y).mul_right ‖h y‖).summable)`. Use `hh.norm.congr (ae_of_all _ (fun y => ?_))` and prove the remaining obligations. Simplify using `only [((hsum y).mul_right ‖h y‖).tsum_eq, one_mul]`. Use `ae_of_all _ (fun y => ?_)` and prove the remaining obligations.
+
+Simplify using `using (hsum y).smul_const (h y)`.
+-/
 theorem hasSum_integral_translate {I : Type} [Fintype I] {U : Type} [Countable U]
     {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E]
     (t : U → I → ℝ) (p : (I → ℝ) → ℝ) (hp : Measurable p) (hp0 : ∀ y, 0 ≤ p y)
@@ -31,6 +40,11 @@ theorem hasSum_integral_translate {I : Type} [Fintype I] {U : Type} [Countable U
   · refine ae_of_all _ (fun y => ?_)
     simpa using (hsum y).smul_const (h y)
 
+/- English proof (translation)
+Introduce `I _ U _ t p hp hp0 hsum g hg`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `hasSum_integral_translate t p hp hp0 hsum g hg` as an intermediate fact. Simplify `this` using `[Complex.real_smul]`. Use `hasSum_integral_translate t p hp hp0 hsum (fun y => ‖g y‖) hg.norm` as an intermediate fact.
+
+Simplify `this` using `[smul_eq_mul]`.
+-/
 theorem orbit_unfold : ∀ (I : Type) [Fintype I] (U : Type) [Countable U] (t : U → I → ℝ)
     (p : (I → ℝ) → ℝ), Measurable p → (∀ y, 0 ≤ p y) → (∀ y, HasSum (fun u => p (y - t u)) 1) →
     ∀ g : (I → ℝ) → ℂ, Integrable g →

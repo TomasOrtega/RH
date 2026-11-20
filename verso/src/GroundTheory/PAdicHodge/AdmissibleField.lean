@@ -10,6 +10,15 @@ section Field
 
 variable (G F B : Type*) [Group G] [Field F] [Field B] [Algebra F B] [MulSemiringAction G B]
 
+/- English proof (translation)
+Set `` to `IsFractionRing.mulSemiringAction G B (FractionRing B)`. Establish `hmap : ∀ (g : G) (b : B), g • algebraMap B (FractionRing B) b = algebraMap B (FractionRing B) (g • b)` using `fun g b => IsFractionRing.ringEquivOfRingEquiv_algebraMap _ b`. Establish `hinj` using `IsFractionRing.injective B (FractionRing B)`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨b, hb, rfl⟩ g`. Rewrite using `[hmap, hb g]`. Introduce `hy`. Take `⟨⟨a, s⟩, rfl⟩` from `IsLocalization.mk'_surjective (nonZeroDivisors B) y`. Establish `hs : (s : B) ≠ 0` using `nonZeroDivisors.ne_zero s.2`.
+
+Establish `e : IsLocalization.mk' (FractionRing B) a s = algebraMap B (FractionRing B) (a * (s : B)⁻¹)`. Rewrite using `[IsLocalization.mk'_eq_iff_eq_mul, ← map_mul, mul_assoc, inv_mul_cancel₀ hs, mul_one]`. Use `⟨a * (s : B)⁻¹, fun g => hinj ?_, e.symm⟩` and prove the remaining obligations. Rewrite using `[← hmap, ← e]`. Conclude with `hy g`.
+
+Use `isUnit_of_mem_span b hb _ := hb.isUnit`.
+-/
 theorem isRegular_of_field : IsRegular G F B where
   image_fixedPoints := by
     let := IsFractionRing.mulSemiringAction G B (FractionRing B)
@@ -50,9 +59,15 @@ def DBK : Submodule K (B ⊗[F] V) where
     rw [← algebraMap_smul B k x, baseChangeRep_smul, hx g, smul_algebraMap]
 
 variable {G F K B ρ} in
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_DBK {x : B ⊗[F] V} : x ∈ DBK G F K B ρ ↔ ∀ g : G, baseChangeRep B ρ g x = x :=
   Iff.rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_DBK : (DBK G F K B ρ : Set (B ⊗[F] V)) = DB B ρ := rfl
 
 def toInvariantRing : K →+* invariantRing G F B where
@@ -66,9 +81,15 @@ variable {G F K B}
 
 omit [Algebra F K] [IsScalarTower F K B] in
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_toInvariantRing (k : K) : (toInvariantRing G F K B k : B) = algebraMap K B k := rfl
 
 omit [Algebra F K] [IsScalarTower F K B] in
+/- English proof (translation)
+Use `⟨fun a b hab => (algebraMap K B).injective ?_, fun e => ?_⟩` and prove the remaining obligations. Simplify using `using congrArg Subtype.val hab`. Take `⟨k, hk⟩` from `hK e e.2`. Conclude with `⟨k, Subtype.ext hk⟩`.
+-/
 theorem toInvariantRing_bijective [Nontrivial B]
     (hK : ∀ b : B, (∀ g : G, g • b = b) → ∃ k : K, algebraMap K B k = b) :
     Function.Bijective (toInvariantRing G F K B) := by
@@ -77,6 +98,11 @@ theorem toInvariantRing_bijective [Nontrivial B]
   · obtain ⟨k, hk⟩ := hK e e.2
     exact ⟨k, Subtype.ext hk⟩
 
+/- English proof (translation)
+Use extensionality with `b`. Prove the components needed by the constructor for the conclusion. Introduce `hb`. Take `⟨k, hk⟩` from `hK b hb`. Conclude with `⟨k, hk⟩`.
+
+Introduce and unpack `⟨k, rfl⟩ g`. Conclude with `smul_algebraMap g k`.
+-/
 theorem invariantRing_eq_range
     (hK : ∀ b : B, (∀ g : G, g • b = b) → ∃ k : K, algebraMap K B k = b) :
     invariantRing G F B = (IsScalarTower.toAlgHom F K B).range := by
@@ -88,6 +114,11 @@ theorem invariantRing_eq_range
   · rintro ⟨k, rfl⟩ g
     exact smul_algebraMap g k
 
+/- English proof (translation)
+Set `j : DBK G F K B ρ ≃+ DB B ρ` to `{ toFun := fun x => ⟨x, x.2⟩ invFun := fun x => ⟨x, x.2⟩ left_inv := fun _ => rfl right_inv := fun _ => rfl map_add' := fun _ _ => rfl }`. Use `rank_eq_of_equiv_equiv (toInvariantRing G F K B) j (toInvariantRing_bijective hK) ?_` and prove the remaining obligations. Introduce `k x`. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `k • (x : B ⊗[F] V) = ((toInvariantRing G F K B k : invariantRing G F B) : B) • (x : B ⊗[F] V)`.
+
+Rewrite using `[coe_toInvariantRing, algebraMap_smul]`.
+-/
 theorem rank_DBK [Nontrivial B]
     (hK : ∀ b : B, (∀ g : G, g • b = b) → ∃ k : K, algebraMap K B k = b) :
     Module.rank K (DBK G F K B ρ) = Module.rank (invariantRing G F B) (DB B ρ) := by
@@ -104,6 +135,9 @@ theorem rank_DBK [Nontrivial B]
     ((toInvariantRing G F K B k : invariantRing G F B) : B) • (x : B ⊗[F] V)
   rw [coe_toInvariantRing, algebraMap_smul]
 
+/- English proof (translation)
+Simplify using `only [Module.finrank, rank_DBK ρ hK]`.
+-/
 theorem finrank_DBK [Nontrivial B]
     (hK : ∀ b : B, (∀ g : G, g • b = b) → ∃ k : K, algebraMap K B k = b) :
     finrank K (DBK G F K B ρ) = finrank (invariantRing G F B) (DB B ρ) := by
@@ -111,6 +145,9 @@ theorem finrank_DBK [Nontrivial B]
 
 variable [IsDomain B]
 
+/- English proof (translation)
+Set `` to `h.field`. Use `h.free ρ` as an intermediate fact. Use `h.finite ρ` as an intermediate fact. Establish `: Module.Free K (DBK G F K B ρ)` using `Module.Free.of_divisionRing K (DBK G F K B ρ)`. Conclude with `Module.rank_lt_aleph0_iff.1 (by rw [rank_DBK ρ hK]; exact Module.rank_lt_aleph0_iff.2 ‹_›)`.
+-/
 theorem IsRegular.finiteDimensional_DBK (h : IsRegular G F B)
     (hK : ∀ b : B, (∀ g : G, g • b = b) → ∃ k : K, algebraMap K B k = b) [FiniteDimensional F V] :
     FiniteDimensional K (DBK G F K B ρ) := by
@@ -120,12 +157,18 @@ theorem IsRegular.finiteDimensional_DBK (h : IsRegular G F B)
   have : Module.Free K (DBK G F K B ρ) := Module.Free.of_divisionRing K (DBK G F K B ρ)
   exact Module.rank_lt_aleph0_iff.1 (by rw [rank_DBK ρ hK]; exact Module.rank_lt_aleph0_iff.2 ‹_›)
 
+/- English proof (translation)
+Rewrite using `[finrank_DBK ρ hK]`. Conclude with `h.finrank_le ρ`.
+-/
 theorem IsRegular.finrank_DBK_le (h : IsRegular G F B)
     (hK : ∀ b : B, (∀ g : G, g • b = b) → ∃ k : K, algebraMap K B k = b) [FiniteDimensional F V] :
     finrank K (DBK G F K B ρ) ≤ finrank F V := by
   rw [finrank_DBK ρ hK]
   exact h.finrank_le ρ
 
+/- English proof (translation)
+Rewrite using `[finrank_DBK ρ hK]`. Both sides reduce to the same expression.
+-/
 theorem isAdmissible_iff_finrank_DBK
     (hK : ∀ b : B, (∀ g : G, g • b = b) → ∃ k : K, algebraMap K B k = b) :
     IsAdmissible B ρ ↔ finrank K (DBK G F K B ρ) = finrank F V := by

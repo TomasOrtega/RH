@@ -23,13 +23,28 @@ structure IsPr (P : Mat n) (U : Set (Fin n → ℂ)) : Prop where
   idem : P * P = P
   mem : ∀ v, v ∈ U ↔ P *ᵥ v = v
 
+/- English proof (translation)
+Rewrite using `[sub_mul, mul_sub, mul_sub, h, Matrix.one_mul, Matrix.mul_one, Matrix.one_mul]`. Normalize the expressions using the abelian group laws.
+-/
 theorem one_sub_idem {Q : Mat n} (h : Q * Q = Q) : (1 - Q) * (1 - Q) = 1 - Q := by
   rw [sub_mul, mul_sub, mul_sub, h, Matrix.one_mul, Matrix.mul_one, Matrix.one_mul]
   abel
 
+/- English proof (translation)
+The claim follows from `Matrix.mulVec_injective (funext h)`.
+-/
 theorem mat_ext {A B : Mat n} (h : ∀ v, A *ᵥ v = B *ᵥ v) : A = B :=
   Matrix.mulVec_injective (funext h)
 
+/- English proof (translation)
+Set `e` to `WithLp.linearEquiv 2 ℂ (Fin n → ℂ)`. Set `U : Submodule ℂ (EuclideanSpace ℂ (Fin n))` to `W.comap e.toLinearMap`. Set `p : EuclideanSpace ℂ (Fin n) →L[ℂ] EuclideanSpace ℂ (Fin n)` to `U.starProjection`. Set `Φ` to `Matrix.toEuclideanCLM (n := Fin n) (𝕜 := ℂ)`. Establish `hΦ : ∀ (A : Matrix (Fin n) (Fin n) ℂ) (v : Fin n → ℂ), e (Φ A (e.symm v)) = A *ᵥ v` using `fun A v => rfl`.
+
+Establish `hsp : IsStarProjection p` using `isStarProjection_starProjection`. Establish `hpp : p * p = p` using `hsp.isIdempotentElem`. Establish `hps : star p = p` using `hsp.isSelfAdjoint`. Use `⟨Φ.symm p, ?_, ?_, fun v => ?_⟩` and prove the remaining obligations. Rewrite using `[← star_eq_conjTranspose, ← map_star, hps]`.
+
+Rewrite using `[← map_mul, hpp]`. Establish `h1 : (Φ.symm p) *ᵥ v = e (p (e.symm v))`. Rewrite using `[← hΦ, Φ.apply_symm_apply]`. Establish `h2 : v ∈ (W : Set (Fin n → ℂ)) ↔ e.symm v ∈ U`. Simplify using `[U]`.
+
+Rewrite using `[h1, h2, ← Submodule.starProjection_eq_self_iff (K := U)]`. Conclude with `⟨fun h => by rw [show p (e.symm v) = e.symm v from h]; simp, fun h => by`. Rewrite using `[← e.symm_apply_apply (p (e.symm v)), h]⟩`.
+-/
 theorem exists_isPr (W : Submodule ℂ (Fin n → ℂ)) : ∃ Q : Mat n, IsPr Q (W : Set (Fin n → ℂ)) := by
   let e := WithLp.linearEquiv 2 ℂ (Fin n → ℂ)
   let U : Submodule ℂ (EuclideanSpace ℂ (Fin n)) := W.comap e.toLinearMap
@@ -50,12 +65,20 @@ theorem exists_isPr (W : Submodule ℂ (Fin n → ℂ)) : ∃ Q : Mat n, IsPr Q 
     exact ⟨fun h => by rw [show p (e.symm v) = e.symm v from h]; simp, fun h => by
       rw [← e.symm_apply_apply (p (e.symm v)), h]⟩
 
+/- English proof (translation)
+The claim follows from `mat_ext fun v => by rw [← mulVec_mulVec] exact (h'.mem _).1 (hs ((h.mem _).2 (by rw [mulVec_mulVec, h.idem])))`.
+-/
 theorem IsPr.mul_of_sub {P P' : Mat n} {U U' : Set (Fin n → ℂ)} (h : IsPr P U) (h' : IsPr P' U') (hs : U ⊆ U') :
     P' * P = P :=
   mat_ext fun v => by
     rw [← mulVec_mulVec]
     exact (h'.mem _).1 (hs ((h.mem _).2 (by rw [mulVec_mulVec, h.idem])))
 
+/- English proof (translation)
+Establish `h1` using `h.mul_of_sub h' subset_rfl`. Establish `h2` using `h'.mul_of_sub h subset_rfl`. Establish `h3 : P * P' = P`. Use `congrArg conjTranspose h1` as an intermediate fact. Rewrite `this` using `[conjTranspose_mul, h.herm, h'.herm]`. Then use the resulting hypothesis.
+
+Rewrite using `[← h3, h2]`.
+-/
 theorem IsPr.unique {P P' : Mat n} {U : Set (Fin n → ℂ)} (h : IsPr P U) (h' : IsPr P' U) : P = P' := by
   have h1 := h.mul_of_sub h' subset_rfl
   have h2 := h'.mul_of_sub h subset_rfl
@@ -64,6 +87,15 @@ theorem IsPr.unique {P P' : Mat n} {U : Set (Fin n → ℂ)} (h : IsPr P U) (h' 
     rwa [conjTranspose_mul, h.herm, h'.herm] at this
   rw [← h3, h2]
 
+/- English proof (translation)
+Use `⟨by rw [conjTranspose_sub, conjTranspose_one, h.herm], one_sub_idem h.idem, fun v => ?_⟩` and prove the remaining obligations. Establish `hadj : ∀ a b : Fin n → ℂ, star (Q *ᵥ a) ⬝ᵥ b = star a ⬝ᵥ (Q *ᵥ b)` using `fun a b => by`. Rewrite using `[star_mulVec, h.herm, dotProduct_mulVec]`. Establish `hfix : ∀ a, Q *ᵥ (Q *ᵥ a) = Q *ᵥ a` using `fun a => by rw [mulVec_mulVec, h.idem]`. Rewrite using `[sub_mulVec, one_mulVec]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hv`. Establish `h0 : star (Q *ᵥ v) ⬝ᵥ v = 0` using `hv _ ((h.mem _).2 (hfix v))`. Establish `h1 : star (Q *ᵥ v) ⬝ᵥ (Q *ᵥ v) = 0`. Use `hadj (Q *ᵥ v) v` as an intermediate fact.
+
+Rewrite `this` using `[hfix, h0, eq_comm]`. Then use the resulting hypothesis. Rewrite `h1` using `[dotProduct_star_self_eq_zero]`. Rewrite using `[h1, sub_zero]`. Introduce `hv w hw`. Establish `h0 : Q *ᵥ v = 0` using `by simpa using hv`.
+
+Use `hadj w v` as an intermediate fact. Rewrite `this` using `[(h.mem _).1 hw, h0, dotProduct_zero]`. Then use the resulting hypothesis.
+-/
 theorem IsPr.perp {Q : Mat n} {W : Submodule ℂ (Fin n → ℂ)} (h : IsPr Q (W : Set (Fin n → ℂ))) :
     IsPr (1 - Q) (perp W) := by
   refine ⟨by rw [conjTranspose_sub, conjTranspose_one, h.herm], one_sub_idem h.idem, fun v => ?_⟩
@@ -84,6 +116,13 @@ theorem IsPr.perp {Q : Mat n} {W : Submodule ℂ (Fin n → ℂ)} (h : IsPr Q (W
     have := hadj w v
     rwa [(h.mem _).1 hw, h0, dotProduct_zero] at this
 
+/- English proof (translation)
+Use `⟨by simp [conjTranspose_mul, h.herm, Matrix.mul_assoc], ?_, fun v => ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, hw, rfl⟩`. Use `(h.mem w).1 hw` as an intermediate fact.
+
+Simplify using `only [mulVec_mulVec] at *`. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, h2, Matrix.mul_one, ← mulVec_mulVec, this]`. Introduce `hv`. Use `⟨k *ᵥ v, (h.mem _).2 ?_, ?_⟩` and prove the remaining obligations. Use `congrArg (fun u => k *ᵥ u) hv` as an intermediate fact.
+
+Simplify using `only [mulVec_mulVec] at this ⊢`. Rewrite `this` using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, h2, Matrix.one_mul]`. Then use the resulting hypothesis. Simplify using `only [mulVec_mulVec, h1, one_mulVec]`.
+-/
 theorem IsPr.unitary {P k : Mat n} {V : Set (Fin n → ℂ)} (h : IsPr P V) (h1 : kᴴ * k = 1) (h2 : k * kᴴ = 1) :
     IsPr (kᴴ * P * k) (im kᴴ V) := by
   refine ⟨by simp [conjTranspose_mul, h.herm, Matrix.mul_assoc], ?_, fun v => ?_⟩
@@ -106,6 +145,19 @@ def Cm (Q x : Mat n) : Mat n := (x⁻¹ * Q)ᴴ * (x⁻¹ * Q) + (1 - Q)
 
 def prF (Q x : Mat n) : Mat n := (x⁻¹ * Q) * (Cm Q x)⁻¹ * (x⁻¹ * Q)ᴴ
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hdet`. Establish `hdet' : (Cm Q x).det = 0` using `by simpa [GLs] using hdet`. Take `⟨v, hv, h0⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 hdet'`. Establish `hxu : IsUnit x.det` using `isUnit_iff_ne_zero.2 hx`. Use `set B := x⁻¹ * Q with hB`.
+
+Establish `hQB : Q * Bᴴ = Bᴴ`. Rewrite using `[hB, conjTranspose_mul, hQ, ← Matrix.mul_assoc, hQ2]`. Establish `hRB : (1 - Q) * Bᴴ = 0` using `by rw [sub_mul, hQB, Matrix.one_mul, sub_self]`. Establish `hRC : (1 - Q) * Cm Q x = 1 - Q`. Rewrite using `[Cm, ← hB, mul_add, ← Matrix.mul_assoc, hRB, Matrix.zero_mul, zero_add, one_sub_idem hQ2]`.
+
+Establish `hQC : Q * Cm Q x = Bᴴ * B`. Rewrite using `[Cm, ← hB, mul_add, ← Matrix.mul_assoc, hQB]`. Establish `: Q * (1 - Q) = 0` using `by rw [mul_sub, hQ2, Matrix.mul_one, sub_self]`. Rewrite using `[this, add_zero]`. Establish `e1 : (1 - Q) *ᵥ v = 0`.
+
+Use `congrArg (fun u => (1 - Q) *ᵥ u) h0` as an intermediate fact. Simplify `this` using `only [mulVec_mulVec, hRC, mulVec_zero]`. Establish `e2 : (Bᴴ * B) *ᵥ v = 0`. Use `congrArg (fun u => Q *ᵥ u) h0` as an intermediate fact. Simplify `this` using `only [mulVec_mulVec, hQC, mulVec_zero]`.
+
+Establish `e3 : B *ᵥ v = 0` using `Matrix.conjTranspose_mul_self_mulVec_eq_zero _ _ |>.1 e2`. Establish `e4 : Q *ᵥ v = 0`. Use `congrArg (fun u => x *ᵥ u) e3` as an intermediate fact. Simplify `this` using `only [hB, mulVec_mulVec, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hxu, Matrix.one_mul, mulVec_zero]`. Apply `hv` to reduce the goal to its premises.
+
+Establish `: v = (1 - Q) *ᵥ v + Q *ᵥ v` using `by rw [sub_mulVec, one_mulVec]; abel`. Rewrite using `[this, e1, e4, add_zero]`.
+-/
 theorem Cm_mem {Q x : Mat n} (hQ : Qᴴ = Q) (hQ2 : Q * Q = Q) (hx : x ∈ GLs n) : Cm Q x ∈ GLs n := by
   by_contra hdet
   have hdet' : (Cm Q x).det = 0 := by simpa [GLs] using hdet
@@ -135,6 +187,23 @@ theorem Cm_mem {Q x : Mat n} (hQ : Qᴴ = Q) (hQ2 : Q * Q = Q) (hx : x ∈ GLs n
   have : v = (1 - Q) *ᵥ v + Q *ᵥ v := by rw [sub_mulVec, one_mulVec]; abel
   rw [this, e1, e4, add_zero]
 
+/- English proof (translation)
+Establish `hQ` using `h.herm`. Establish `hQ2` using `h.idem`. Establish `hC : IsUnit (Cm Q x).det` using `isUnit_iff_ne_zero.2 (Cm_mem hQ hQ2 hx)`. Establish `hCh : (Cm Q x)ᴴ = Cm Q x`. Simplify using `only [Cm, conjTranspose_add, conjTranspose_sub, conjTranspose_one, hQ, conjTranspose_mul, conjTranspose_conjTranspose]`.
+
+Establish `hCD` using `Matrix.mul_nonsing_inv _ hC`. Establish `hDC` using `Matrix.nonsing_inv_mul _ hC`. Establish `hDh : ((Cm Q x)⁻¹)ᴴ = (Cm Q x)⁻¹` using `by rw [conjTranspose_nonsing_inv, hCh]`. Unfold `prF`. Establish `hCdef : Cm Q x = (x⁻¹ * Q)ᴴ * (x⁻¹ * Q) + (1 - Q)` using `rfl`.
+
+Generalize the expression as in `(Cm Q x)⁻¹ = D at *`. Generalize the expression as in `Cm Q x = C at *`. Establish `hBQ : (x⁻¹ * Q) * Q = x⁻¹ * Q` using `by rw [Matrix.mul_assoc, hQ2]`. Establish `hQB : Q * (x⁻¹ * Q)ᴴ = (x⁻¹ * Q)ᴴ`. Rewrite using `[conjTranspose_mul, hQ, ← Matrix.mul_assoc, hQ2]`.
+
+Generalize the expression as in `hB : x⁻¹ * Q = B at *`. Establish `hR : (1 - Q) * Q = 0` using `by rw [sub_mul, hQ2, Matrix.one_mul, sub_self]`. Establish `hR' : Q * (1 - Q) = 0` using `by rw [mul_sub, hQ2, Matrix.mul_one, sub_self]`. Establish `hCQ : C * Q = Bᴴ * B`. Rewrite using `[hCdef, add_mul, hR, add_zero, Matrix.mul_assoc, hBQ]`.
+
+Establish `hQC : Q * C = Bᴴ * B`. Rewrite using `[hCdef, mul_add, hR', add_zero, ← Matrix.mul_assoc, hQB]`. Establish `hDB : D * (Bᴴ * B) = Q` using `by rw [← hCQ, ← Matrix.mul_assoc, hDC, Matrix.one_mul]`. Establish `hQD : Q * D = D * Q`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hPB : B * D * Bᴴ * B = B`. Combine the equalities or inequalities in the displayed calculation. Use `⟨by simp [conjTranspose_mul, hDh, Matrix.mul_assoc], ?_, fun v => ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨w, hw, rfl⟩`. Establish `hw'` using `(h.mem w).1 hw`. Establish `: x⁻¹ *ᵥ w = B *ᵥ w` using `by rw [← hB, ← mulVec_mulVec, hw']`. Simplify using `only [this, mulVec_mulVec, hPB]`. Introduce `hv`.
+
+Use `⟨Q *ᵥ ((D * Bᴴ) *ᵥ v), (h.mem _).2 (by rw [mulVec_mulVec, hQ2]), ?_⟩` and prove the remaining obligations. Use `show x⁻¹ *ᵥ (Q *ᵥ ((D * Bᴴ) *ᵥ v)) = v`. Use `conv_rhs => rw [← hv]`. Simplify using `only [mulVec_mulVec, ← hB, Matrix.mul_assoc]`.
+-/
 theorem prF_isPr {Q x : Mat n} {U : Set (Fin n → ℂ)} (h : IsPr Q U) (hx : x ∈ GLs n) : IsPr (prF Q x) (im x⁻¹ U) := by
   have hQ := h.herm
   have hQ2 := h.idem
@@ -181,26 +250,41 @@ theorem prF_isPr {Q x : Mat n} {U : Set (Fin n → ℂ)} (h : IsPr Q U) (hx : x 
       conv_rhs => rw [← hv]
       simp only [mulVec_mulVec, ← hB, Matrix.mul_assoc]
 
+/- English proof (translation)
+The claim follows from `contDiffOn_pi.2 fun a => contDiffOn_pi.2 fun b => h a b`.
+-/
 theorem cd_of_ent {f : Mat n → Mat n} {s : Set (Mat n)} (h : ∀ a b, ContDiffOn ℝ ∞ (fun x => f x a b) s) :
     ContDiffOn ℝ ∞ f s :=
   contDiffOn_pi.2 fun a => contDiffOn_pi.2 fun b => h a b
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.CompanionTheory.LengthGL.contDiff_ent a b).comp_contDiffOn h`.
+-/
 theorem cd_ent {f : Mat n → Mat n} {s : Set (Mat n)} (h : ContDiffOn ℝ ∞ f s) (a b : Fin n) :
     ContDiffOn ℝ ∞ (fun x => f x a b) s :=
   (GlobalTheory.CompanionTheory.LengthGL.contDiff_ent a b).comp_contDiffOn h
 
+/- English proof (translation)
+The claim follows from `cd_of_ent fun a b => by simp only [Matrix.mul_apply] exact ContDiffOn.sum fun c _ => (cd_ent hf a c).mul (cd_ent hg c b)`.
+-/
 theorem cd_mul {f g : Mat n → Mat n} {s : Set (Mat n)} (hf : ContDiffOn ℝ ∞ f s) (hg : ContDiffOn ℝ ∞ g s) :
     ContDiffOn ℝ ∞ (fun x => f x * g x) s :=
   cd_of_ent fun a b => by
     simp only [Matrix.mul_apply]
     exact ContDiffOn.sum fun c _ => (cd_ent hf a c).mul (cd_ent hg c b)
 
+/- English proof (translation)
+The claim follows from `cd_of_ent fun a b => by simp only [conjTranspose_apply] exact Complex.conjCLE.contDiff.comp_contDiffOn (cd_ent hf b a)`.
+-/
 theorem cd_ct {f : Mat n → Mat n} {s : Set (Mat n)} (hf : ContDiffOn ℝ ∞ f s) :
     ContDiffOn ℝ ∞ (fun x => (f x)ᴴ) s :=
   cd_of_ent fun a b => by
     simp only [conjTranspose_apply]
     exact Complex.conjCLE.contDiff.comp_contDiffOn (cd_ent hf b a)
 
+/- English proof (translation)
+Establish `hi : ContDiffOn ℝ ∞ (fun x : Mat n => x⁻¹) (GLs n)` using `GlobalTheory.CompanionTheory.LengthGL.contDiffOn_inv`. Establish `hB : ContDiffOn ℝ ∞ (fun x : Mat n => x⁻¹ * Q) (GLs n)` using `cd_mul hi contDiffOn_const`. Establish `hC : ContDiffOn ℝ ∞ (Cm Q) (GLs n)` using `(cd_mul (cd_ct hB) hB).add contDiffOn_const`. Establish `hD : ContDiffOn ℝ ∞ (fun x => (Cm Q x)⁻¹) (GLs n)` using `hi.comp hC fun x hx => Cm_mem hQ hQ2 hx`. Conclude with `cd_mul (cd_mul hB hD) (cd_ct hB)`.
+-/
 theorem prF_smooth {Q : Mat n} (hQ : Qᴴ = Q) (hQ2 : Q * Q = Q) : ContDiffOn ℝ ∞ (prF Q) (GLs n) := by
   have hi : ContDiffOn ℝ ∞ (fun x : Mat n => x⁻¹) (GLs n) := GlobalTheory.CompanionTheory.LengthGL.contDiffOn_inv
   have hB : ContDiffOn ℝ ∞ (fun x : Mat n => x⁻¹ * Q) (GLs n) := cd_mul hi contDiffOn_const
@@ -208,30 +292,80 @@ theorem prF_smooth {Q : Mat n} (hQ : Qᴴ = Q) (hQ2 : Q * Q = Q) : ContDiffOn �
   have hD : ContDiffOn ℝ ∞ (fun x => (Cm Q x)⁻¹) (GLs n) := hi.comp hC fun x hx => Cm_mem hQ hQ2 hx
   exact cd_mul (cd_mul hB hD) (cd_ct hB)
 
+/- English proof (translation)
+Simplify using `only [im, Set.image_image, mulVec_mulVec]`.
+-/
 theorem im_mul (a b : Mat n) (U : Set (Fin n → ℂ)) : im (a * b) U = im a (im b U) := by
   simp only [im, Set.image_image, mulVec_mulVec]
 
+/- English proof (translation)
+Simplify using `[im]`.
+-/
 theorem im_one (U : Set (Fin n → ℂ)) : im (1 : Mat n) U = U := by
   simp [im]
 
+/- English proof (translation)
+Rewrite using `[← im_mul, Matrix.nonsing_inv_mul _ (isUnit_iff_ne_zero.2 ha), im_one]`.
+-/
 theorem im_cancel {a : Mat n} (ha : a ∈ GLs n) (U : Set (Fin n → ℂ)) : im a⁻¹ (im a U) = U := by
   rw [← im_mul, Matrix.nonsing_inv_mul _ (isUnit_iff_ne_zero.2 ha), im_one]
 
+/- English proof (translation)
+Simplify using `[GLs]`.
+-/
 theorem one_mem_GLs : (1 : Mat n) ∈ GLs n := by
   simp [GLs]
 
+/- English proof (translation)
+Simplify `And.intro ha hb` using `[GLs, det_mul]`.
+-/
 theorem mul_mem_GLs {a b : Mat n} (ha : a ∈ GLs n) (hb : b ∈ GLs n) : a * b ∈ GLs n := by
   simpa [GLs, det_mul] using And.intro ha hb
 
+/- English proof (translation)
+The claim follows from `(prF_isPr h one_mem_GLs).unique (by simpa only [inv_one, im_one] using h)`.
+-/
 theorem prF_one {Q : Mat n} {U : Set (Fin n → ℂ)} (h : IsPr Q U) : prF Q 1 = Q :=
   (prF_isPr h one_mem_GLs).unique (by simpa only [inv_one, im_one] using h)
 
+/- English proof (translation)
+Use `congrArg (fun S : Submodule ℂ (Fin n → ℂ) => (S : Set (Fin n → ℂ))) h` as an intermediate fact. Simplify using `only [Submodule.map_coe] at this`. Conclude with `this`.
+-/
 theorem im_of_map {q : Mat n} {W : Submodule ℂ (Fin n → ℂ)} (h : W.map (Matrix.mulVecLin q) = W) :
     im q (W : Set (Fin n → ℂ)) = W := by
   have := congrArg (fun S : Submodule ℂ (Fin n → ℂ) => (S : Set (Fin n → ℂ))) h
   simp only [Submodule.map_coe] at this
   exact this
 
+/- English proof (translation)
+Introduce `n W₁ W₂ hW hne`. Take `⟨Q₁, h₁⟩` from `exists_isPr W₁`. Take `⟨Q₂, h₂⟩` from `exists_isPr W₂`. Establish `hH1 : prF Q₁ 1 - (1 - prF Q₂ 1) = Q₁ - (1 - Q₂)` using `by rw [prF_one h₁, prF_one h₂]`. Use `⟨fun x => prF Q₁ x - (1 - prF Q₂ x), ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Conclude with `(prF_smooth h₁.herm h₁.idem).sub (contDiffOn_const.sub (prF_smooth h₂.herm h₂.idem))`. Introduce `x hx`. Simplify using `only [IsHermitian, conjTranspose_sub, conjTranspose_one, (prF_isPr h₁ hx).herm, (prF_isPr h₂ hx).herm]`. Use `show ((prF Q₁ 1 - (1 - prF Q₂ 1)) * (prF Q₁ 1 - (1 - prF Q₂ 1))).trace ≠ 0`. Rewrite using `[hH1]`.
+
+Introduce `ht`. Establish `hherm : (Q₁ - (1 - Q₂))ᴴ = Q₁ - (1 - Q₂)`. Simplify using `only [conjTranspose_sub, conjTranspose_one, h₁.herm, h₂.herm]`. Establish `h0 : Q₁ - (1 - Q₂) = 0` using `Matrix.trace_conjTranspose_mul_self_eq_zero_iff.1 (by rwa [hherm])`. Establish `h3 : Q₁ = 1 - Q₂` using `sub_eq_zero.1 h0`.
+
+Establish `h4 : Q₂ * Q₁ = Q₁` using `h₁.mul_of_sub h₂ hW`. Establish `h5 : Q₁ = 0`. Establish `h6 : Q₁ * Q₁ = Q₁ - Q₂ * Q₁` using `by conv_lhs => rw [h3]`. Rewrite using `[sub_mul, Matrix.one_mul, ← h3]`. Rewrite `h6` using `[h₁.idem, h4, sub_self]`.
+
+Conclude with `h6`. Apply `hne` to reduce the goal to its premises. Rewrite using `[eq_bot_iff]`. Introduce `v hv`. Use `(h₁.mem v).1 hv` as an intermediate fact.
+
+Rewrite `this` using `[h5, zero_mulVec]`. Simplify using `[← this]`. Introduce `x hx k`. Establish `h1 : k.1ᴴ * k.1 = 1`. Rewrite using `[← star_eq_conjTranspose]`.
+
+Conclude with `Matrix.mem_unitaryGroup_iff'.1 k.2`. Establish `h2 : k.1 * k.1ᴴ = 1`. Rewrite using `[← star_eq_conjTranspose]`. Conclude with `Matrix.mem_unitaryGroup_iff.1 k.2`. Establish `hk : k.1 ∈ GLs n`.
+
+Establish `: k.1.det * k.1ᴴ.det = 1` using `by rw [← det_mul, h2, det_one]`. Conclude with `left_ne_zero_of_mul_eq_one this`. Establish `hinv : k.1⁻¹ = k.1ᴴ` using `Matrix.inv_eq_left_inv h1`. Establish `hp : ∀ {Q : Mat n} {U : Set (Fin n → ℂ)}, IsPr Q U → prF Q (x * k.1) = k.1ᴴ * prF Q x * k.1` using `fun h => (prF_isPr h (mul_mem_GLs hx hk)).unique (by`. Rewrite using `[Matrix.mul_inv_rev, hinv, im_mul]`.
+
+Conclude with `(prF_isPr h hx).unitary h1 h2)`. Use `show prF Q₁ (x * k.1) - (1 - prF Q₂ (x * k.1)) = k.1ᴴ * (prF Q₁ x - (1 - prF Q₂ x)) * k.1`. Rewrite using `[hp h₁, hp h₂, mul_sub, sub_mul, mul_sub, sub_mul, Matrix.mul_one, h1]`. Introduce `q hq hq₁ hq₂ x hx`. Establish `hp : ∀ {Q : Mat n} {W : Submodule ℂ (Fin n → ℂ)}, IsPr Q (W : Set (Fin n → ℂ)) → W.map (Matrix.mulVecLin q) = W → prF Q (q * x) = prF Q x` using `fun {Q W} h hm => (prF_isPr h (mul_mem_GLs hq hx)).unique (by`.
+
+Establish `hi : im q⁻¹ (W : Set (Fin n → ℂ)) = W` using `by conv_lhs => rw [← im_of_map hm]`. Conclude with `im_cancel hq _`. Rewrite using `[Matrix.mul_inv_rev, im_mul, hi]`. Conclude with `prF_isPr h hx)`. Use `show prF Q₁ (q * x) - (1 - prF Q₂ (q * x)) = prF Q₁ x - (1 - prF Q₂ x)`.
+
+Rewrite using `[hp h₁ hq₁, hp h₂ hq₂]`. Introduce `d hd hd₁ hd₂`. Establish `e₁ : prF Q₁ d = 1 - Q₂` using `(prF_isPr h₁ hd).unique (by`. Establish `: im d⁻¹ (W₁ : Set (Fin n → ℂ)) = perp W₂`. Rewrite using `[← hd₁]`.
+
+Conclude with `im_cancel hd _`. Rewrite using `[this]`. Conclude with `h₂.perp)`. Establish `e₂ : prF Q₂ d = 1 - Q₁` using `(prF_isPr h₂ hd).unique (by`. Establish `: im d⁻¹ (W₂ : Set (Fin n → ℂ)) = perp W₁`.
+
+Rewrite using `[← hd₂]`. Conclude with `im_cancel hd _`. Rewrite using `[this]`. Conclude with `h₁.perp)`. Use `show prF Q₁ d - (1 - prF Q₂ d) = -(prF Q₁ 1 - (1 - prF Q₂ 1))`.
+
+Rewrite using `[hH1, e₁, e₂]`. Normalize the expressions using the abelian group laws.
+-/
 theorem flagField_holds : PositivityTheory.RgBcC.FlagField := by
   intro n W₁ W₂ hW hne
   obtain ⟨Q₁, h₁⟩ := exists_isPr W₁

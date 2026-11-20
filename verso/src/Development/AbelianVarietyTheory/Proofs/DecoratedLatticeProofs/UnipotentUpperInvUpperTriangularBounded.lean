@@ -4,6 +4,17 @@ open Matrix GlobalTheory.ClassFin
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `N C`. Use `⟨(Nat.factorial N : ℝ) * (max C 1) ^ N, ?_⟩` and prove the remaining obligations. Introduce `n hd hl hb`. Establish `htri : n.BlockTriangular id` using `fun i j h => hl i j h`. Establish `hdet : n.det = 1`.
+
+Rewrite using `[Matrix.det_of_upperTriangular htri]`. Simplify using `[hd]`. Establish `hu : IsUnit n.det` using `by rw [hdet]; exact isUnit_one`. Use `⟨n⁻¹, Matrix.nonsing_inv_mul n hu, Matrix.mul_nonsing_inv n hu, ?_, ?_⟩` and prove the remaining obligations. Introduce `i j h`.
+
+Use `letI := Matrix.invertibleOfIsUnitDet n hu`. Conclude with `Matrix.blockTriangular_inv_of_blockTriangular htri h`. Introduce `i j`. Establish `hinv : n⁻¹ = n.adjugate` using `by rw [Matrix.inv_def, hdet]; simp`. Rewrite using `[hinv, Matrix.adjugate_apply]`.
+
+Establish `key` using `Matrix.det_le (abv := AbsoluteValue.abs) (x := max C 1) (A := n.updateRow j (Pi.single i 1)) ?_`. Simplify using `using key`. Introduce `k l`. Distinguish the cases in `hk : k = j`. Substitute `hk` using the available equality.
+
+Simplify using `only [Matrix.updateRow_self, Pi.single_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[Matrix.updateRow_ne hk]`. Conclude with `le_trans (hb k l) (le_max_left _ _)`.
+-/
 theorem unipotent_upper_inv_bounded : ∀ (N : ℕ) (C : ℝ), ∃ C' : ℝ, ∀ n : Matrix (Fin N) (Fin N) ℝ, (∀ i, n i i = 1) → (∀ i j, j < i → n i j = 0) → (∀ i j, |n i j| ≤ C) → ∃ m : Matrix (Fin N) (Fin N) ℝ, m * n = 1 ∧ n * m = 1 ∧ (∀ i j, j < i → m i j = 0) ∧ ∀ i j, |m i j| ≤ C' := by
   intro N C
   refine ⟨(Nat.factorial N : ℝ) * (max C 1) ^ N, ?_⟩

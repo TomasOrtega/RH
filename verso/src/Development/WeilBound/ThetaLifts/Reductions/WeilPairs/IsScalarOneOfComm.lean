@@ -35,15 +35,24 @@ variable (σ JS JT) in
 def substF (p : GAF σ JS × GAF σ JT) : Module.End ℂ (WOF F E nS nT → ℂ) :=
   LinearMap.funLeft ℂ ℂ (actOF σ JS JT p.1⁻¹ p.2⁻¹)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem substF_apply (p : GAF σ JS × GAF σ JT) (f : WOF F E nS nT → ℂ) :
     substF σ JS JT p f = fun x => f (actOF σ JS JT p.1⁻¹ p.2⁻¹ x) := rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Use `show f (actOF σ JS JT (p.1 * q.1)⁻¹ (p.2 * q.2)⁻¹ x) = f (actOF σ JS JT q.1⁻¹ q.2⁻¹ (actOF σ JS JT p.1⁻¹ p.2⁻¹ x))`. Rewrite using `[_root_.mul_inv_rev, _root_.mul_inv_rev, actOF_mul]`.
+-/
 theorem substF_mul (p q : GAF σ JS × GAF σ JT) (f : WOF F E nS nT → ℂ) :
     substF σ JS JT (p * q) f = substF σ JS JT p (substF σ JS JT q f) := by
   funext x
   show f (actOF σ JS JT (p.1 * q.1)⁻¹ (p.2 * q.2)⁻¹ x) = f (actOF σ JS JT q.1⁻¹ q.2⁻¹ (actOF σ JS JT p.1⁻¹ p.2⁻¹ x))
   rw [_root_.mul_inv_rev, _root_.mul_inv_rev, actOF_mul]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Use `show f (actOF σ JS JT 1⁻¹ 1⁻¹ x) = f x`. Rewrite using `[inv_one, inv_one, GlobalTheory.FinLatF.actOF_one]`.
+-/
 theorem substF_one (f : WOF F E nS nT → ℂ) : substF σ JS JT 1 f = f := by
   funext x
   show f (actOF σ JS JT 1⁻¹ 1⁻¹ x) = f x
@@ -54,12 +63,26 @@ variable (ξ₀ B of oi) in
 def IsScalarF (p : GAF σ JS × GAF σ JT) (c : ℂ) : Prop :=
   ∀ f, IsThetaFunOF σ JS JT ξ₀ B.ψ f → of p (oi p f) = c • substF σ JS JT p f
 
+/- English proof (translation)
+Take `⟨a, ha, k, hk, e1, e1'⟩` from `GlobalTheory.T.unitaryAdelicPoint_eq_real_mul_finite_both_orders F E σ nS JS p.1`. Take `⟨b, hb, l, hl, e2, e2'⟩` from `GlobalTheory.T.unitaryAdelicPoint_eq_real_mul_finite_both_orders F E σ nT JT p.2`. Conclude with `⟨(a, b), (k, l), ha, hb, hk, hl, Prod.ext e1 e2, Prod.ext e1' e2'⟩`.
+-/
 theorem exists_partsF (p : GAF σ JS × GAF σ JT) : ∃ a k : GAF σ JS × GAF σ JT, a.1 ∈ GinfCF σ JS ∧ a.2 ∈ GinfCF σ JT ∧
     k.1 ∈ GfCF σ JS ∧ k.2 ∈ GfCF σ JT ∧ p = a * k ∧ p = k * a := by
   obtain ⟨a, ha, k, hk, e1, e1'⟩ := GlobalTheory.T.unitaryAdelicPoint_eq_real_mul_finite_both_orders F E σ nS JS p.1
   obtain ⟨b, hb, l, hl, e2, e2'⟩ := GlobalTheory.T.unitaryAdelicPoint_eq_real_mul_finite_both_orders F E σ nT JT p.2
   exact ⟨(a, b), (k, l), ha, hb, hk, hl, Prod.ext e1 e2, Prod.ext e1' e2'⟩
 
+/- English proof (translation)
+Establish `R` using `fun f h => rat_subst C (inv_mem h1) (inv_mem h2) (f := f) h`. Establish `R'` using `fun f h => rat_subst C h1 h2 (f := f) h`. Take `⟨a, k, a1, a2, k1, k2, e1, e2⟩` from `exists_partsF p`. Establish `hoi : ∀ f, IsThetaFunOF σ JS JT ξ₀ B.ψ f → oi p f = oi a f` using `fun f h => by`. Rewrite using `[e1, map_mul, Module.End.mul_apply, hi.triv k.1 k1 k.2 k2 f h]`.
+
+Establish `hof : ∀ f, IsThetaFunOF σ JS JT ξ₀ B.ψ f → of p f = of k f` using `fun f h => by`. Rewrite using `[e2, map_mul, Module.End.mul_apply, hf.triv a.1 a1 a.2 a2 f h]`. Establish `hth` using `GlobalTheory.T.theta_function_heisenberg_invariant F E σ B C.good nS nT JS JT ξ₀`. Take `⟨c, hc, h⟩` from `schur_norm C (of p * oi p * substF σ JS JT p⁻¹) (fun f h => hf.pres _ _ (hi.pres _ _ (R f h).1)) (fun u f h => by`. Establish `t1 : IsThetaFunOF σ JS JT ξ₀ B.ψ (substF σ JS JT p⁻¹ f)` using `(R f h).1`.
+
+Establish `t2 : substF σ JS JT p⁻¹ (heisOF σ JS JT ξ₀ B.ψ u f) = heisOF σ JS JT ξ₀ B.ψ (actOF σ JS JT p.1⁻¹ p.2⁻¹ u) (substF σ JS JT p⁻¹ f)` using `(R f h).2.1 u`. Simplify using `only [Module.End.mul_apply]`. Rewrite using `[t2, hoi _ (hth _ _ t1), hi.Heisenberg₂ a.1 a1 a.2 a2 _ _ t1, hof _ (hth _ _ (hi.pres _ _ t1)), hf.Heisenberg₂ k.1 k1 k.2 k2 _ _ (hi.pres _ _ t1), ← actOF_mul, ← actOF_mul, ← hof _ (hi.pres _ _ t1), ← hoi _ t1, show k.1 * a.1 = p.1 from congrArg Prod.fst e2.symm, show k.2 * a.2 = …`. Use the proof step `(fun μ 𝓕 hμ h𝓕 f h => by`. Establish `t1 : IsThetaFunOF σ JS JT ξ₀ B.ψ (substF σ JS JT p⁻¹ f)` using `(R f h).1`.
+
+Simplify using `only [Module.End.mul_apply]`. Rewrite using `[hf.unit μ 𝓕 hμ h𝓕 _ _ (hi.pres _ _ t1), hi.unit μ 𝓕 hμ h𝓕 _ _ t1]`. Conclude with `(R f h).2.2 μ 𝓕 hμ h𝓕)`. Use `⟨c, hc, fun f hf' => ?_⟩` and prove the remaining obligations. Use `h (substF σ JS JT p f) (R' f hf').1` as an intermediate fact.
+
+Simplify using `only [Module.End.mul_apply] at this`. Rewrite `this` using `[← substF_mul, inv_mul_cancel, substF_one]`. Then use the resulting hypothesis.
+-/
 theorem exists_isScalarF (C : Ctx σ B JS JT ξ₀ θ ι) {χS χT : (AEF F E)ˣ →* Circle}
     (hf : IsFinWeilF σ JS JT ξ₀ B.ψ χS χT of) (hi : IsInfWeilF σ JS JT ξ₀ B.ψ oi)
     {p : GAF σ JS × GAF σ JT} (h1 : p.1 ∈ GQF σ JS) (h2 : p.2 ∈ GQF σ JT) : ∃ c : ℂ, ‖c‖ = 1 ∧ IsScalarF B ξ₀ of oi p c := by
@@ -92,6 +115,9 @@ theorem exists_isScalarF (C : Ctx σ B JS JT ξ₀ θ ι) {χS χT : (AEF F E)ˣ
   simp only [Module.End.mul_apply] at this
   rwa [← substF_mul, inv_mul_cancel, substF_one] at this
 
+/- English proof (translation)
+Introduce `f hf` and use `by have t : IsThetaFunOF σ JS JT ξ₀ B.ψ (substF σ JS JT q f) := (rat_subst C h1 h2 hf).1 rw [map_mul, map_mul, Module.End.mul_apply, Module.End.mul_apply, hcomm q p _ (hi.pres _ _ hf), h' f hf, map_smul, map_smul, h _ t, smul_smul, mul_comm c', substF_mul]`.
+-/
 theorem IsScalarF.mul (C : Ctx σ B JS JT ξ₀ θ ι) (hi : IsInfWeilF σ JS JT ξ₀ B.ψ oi)
     (hcomm : ∀ p q f, IsThetaFunOF σ JS JT ξ₀ B.ψ f → of p (oi q f) = oi q (of p f)) {p q : GAF σ JS × GAF σ JT} {c c' : ℂ}
     (h : IsScalarF B ξ₀ of oi p c) (h' : IsScalarF B ξ₀ of oi q c') (h1 : q.1 ∈ GQF σ JS) (h2 : q.2 ∈ GQF σ JT) :
@@ -100,11 +126,17 @@ theorem IsScalarF.mul (C : Ctx σ B JS JT ξ₀ θ ι) (hi : IsInfWeilF σ JS JT
   rw [map_mul, map_mul, Module.End.mul_apply, Module.End.mul_apply, hcomm q p _ (hi.pres _ _ hf), h' f hf, map_smul,
     map_smul, h _ t, smul_smul, mul_comm c', substF_mul]
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem comm_inv {G M : Type} [Group G] [Monoid M] (m : G →* M) {x : M} {p : G} (h : x * m p = m p * x) :
     x * m p⁻¹ = m p⁻¹ * x := by
   calc x * m p⁻¹ = m p⁻¹ * (m p * x) * m p⁻¹ := by rw [← mul_assoc, ← map_mul, inv_mul_cancel, map_one, one_mul]
     _ = m p⁻¹ * x := by rw [← h, mul_assoc, mul_assoc, ← map_mul, mul_inv_cancel, map_one, mul_one]
 
+/- English proof (translation)
+Introduce `h0` and use `by have := congrArg Matrix.det h.unitary rw [Matrix.det_mul, h0, mul_zero] at this exact hJ.2 this.symm`.
+-/
 theorem IsRatF.det_ne {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (hJ : IsHermND σ J) {g : GAF σ J} {a} (h : IsRatF σ J g a) :
     a.det ≠ 0 := fun h0 => by
   have := congrArg Matrix.det h.unitary
@@ -114,14 +146,28 @@ theorem IsRatF.det_ne {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (hJ : IsHermND σ
 def cutRat (x : AEF F E) (h : x * x = x) : Eˣ →* (AEF F E)ˣ :=
   (Units.map (GlobalTheory.SplitDetCharF.cut x h)).comp (Units.map (incAF F E).toMonoidHom)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cutRat_val (x : AEF F E) (h : x * x = x) (u : Eˣ) : (cutRat x h u : AEF F E) = (1 - x) + x * incAF F E u := rfl
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.HeisLineF.cAF_incAF σ x`.
+-/
 theorem cAF_incAF' (x : E) : cAF σ (incAF F E x) = incAF F E (σ x) := GlobalTheory.HeisLineF.cAF_incAF σ x
 
+/- English proof (translation)
+Establish `h3 : cAF σ ε * cAF σ ε = cAF σ ε` using `by rw [← map_mul, hε.idem]`. Take the linear combination `hε.idem + h3 + 2 * hε.orth`.
+-/
 theorem half_add (hB : B.IsGood σ) (hε : IsHalfF σ ε) : (ε + cAF σ ε) * (ε + cAF σ ε) = ε + cAF σ ε := by
   have h3 : cAF σ ε * cAF σ ε = cAF σ ε := by rw [← map_mul, hε.idem]
   linear_combination hε.idem + h3 + 2 * hε.orth
 
+/- English proof (translation)
+Establish `h3 : cAF σ ε * cAF σ ε = cAF σ ε` using `by rw [← map_mul, hε.idem]`. Establish `e1 : cutRat _ (half_add hB hε) u = cutRat ε hε.idem u * cutRat _ h3 u` using `Units.ext (by`. Rewrite using `[Units.val_mul, cutRat_val, cutRat_val, cutRat_val]`. Take the linear combination `(-(incAF F E u - 1) ^ 2) * hε.orth)`. Establish `e2` using `GlobalTheory.SplitDetCharF.char_norm hB.cm h2 (cutRat _ h3 u) (cutRat ε hε.idem (Units.map (σ : E →* E) u)) (by`.
+
+Rewrite using `[cutRat_val, cutRat_val, map_add, map_sub, map_mul, map_one, GlobalTheory.HeisLineF.cAF_cAF σ (GlobalTheory.SplitDetCharF.sig_invol hB.cm), cAF_incAF']`. Use the proof step `rfl)`. Rewrite using `[e1, map_mul, mul_assoc, e2, mul_one]`.
+-/
 theorem eta_cut (hB : B.IsGood σ) (h2 : ResEtaF η 1) (hε : IsHalfF σ ε) (u : Eˣ) :
     η (cutRat _ (half_add hB hε) u) * η (cutRat ε hε.idem (Units.map (σ : E →* E) u)) = η (cutRat ε hε.idem u) := by
   have h3 : cAF σ ε * cAF σ ε = cAF σ ε := by rw [← map_mul, hε.idem]
@@ -134,6 +180,9 @@ theorem eta_cut (hB : B.IsGood σ) (h2 : ResEtaF η 1) (hε : IsHalfF σ ε) (u 
     rfl)
   rw [e1, map_mul, mul_assoc, e2, mul_one]
 
+/- English proof (translation)
+The claim follows from `Units.ext (by rw [GlobalTheory.SplitDetCharF.cutDet_val, cutRat_val, show mtF σ J g = _ from h, Units.val_mk0, RingHom.map_det] rfl)`.
+-/
 theorem cutDet_rat {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (hJ : IsHermND σ J) {g : GAF σ J} {a} (h : IsRatF σ J g a)
     (x : AEF F E) (hx : x * x = x) : GlobalTheory.SplitDetCharF.cutDet σ J x hx g = cutRat x hx (Units.mk0 _ (h.det_ne hJ)) :=
   Units.ext (by
@@ -155,6 +204,13 @@ structure Parts (C : Ctx σ B JS JT ξ₀ θ ι) (hc : HeisClosedF σ JS JT ξ�
       s * mMF σ JS JT θ p = mMF σ JS JT θ p * s → ∀ f, IsThetaFunOF σ JS JT ξ₀ B.ψ f → IsVacF σ JS JT ξ₀ B.ψ ι s f →
         oi p f = GlobalTheory.RealWeil.dP s (mMF σ JS JT θ p) • f
 
+/- English proof (translation)
+Take `⟨q1, q2⟩` from `det_mMF C ha hb`. Establish `hH` using `GlobalTheory.T.hermitianFormRealCoordinateMatrix_hermitian_det_ne_zero F E σ B C.good nS nT JS JT C.hS C.hT ξ₀ C.h0 C.hξ`. Establish `hU` using `GlobalTheory.T.realCoordinateAction_unitary_preserves_hermitianForm F E σ B C.good nS nT JS JT C.hS C.hT ξ₀ C.h0 C.hξ θ C.inf ι C.chart (g⁻¹, h⁻¹)`. Establish `c1 : s * mMF σ JS JT θ (g⁻¹, h⁻¹) = mMF σ JS JT θ (g⁻¹, h⁻¹) * s`. Use `comm_inv (mMF σ JS JT θ) hcm` as an intermediate fact.
+
+Rewrite `this` using `[Prod.inv_mk]`. Then use the resulting hypothesis. Establish `c2 : mMF σ JS JT θ (g⁻¹, h⁻¹) * mMF σ JS JT θ (g, h) = 1`. Rewrite using `[← map_mul, Prod.mk_mul_mk, inv_mul_cancel, inv_mul_cancel, Prod.mk_one_one, map_one]`. Establish `c3 : (mMF σ JS JT θ (g⁻¹, h⁻¹) - 1).det ≠ 0`. Rewrite using `[q2]`.
+
+Conclude with `Finset.prod_ne_zero_iff.2 fun v _ => (map_ne_zero _).2 hd`. Rewrite using `[← q1, ← q2]`. Conclude with `integral_gaussV hH.1 hs.sq hs.pos hU c1 c2 c3`.
+-/
 theorem real_data (C : Ctx σ B JS JT ξ₀ θ ι) (hs : CartF σ JS JT ξ₀ B θ s) {g : GAF σ JS} {h : GAF σ JT} {a b}
     (ha : IsRatF σ JS g a) (hb : IsRatF σ JT h⁻¹ b) (hcm : s * mMF σ JS JT θ (g, h) = mMF σ JS JT θ (g, h) * s)
     (hd : (b ⊗ₖ aᵀ - 1).det ≠ 0) :
@@ -176,6 +232,13 @@ theorem real_data (C : Ctx σ B JS JT ξ₀ θ ι) (hs : CartF σ JS JT ξ₀ B 
   rw [← q1, ← q2]
   exact integral_gaussV hH.1 hs.sq hs.pos hU c1 c2 c3
 
+/- English proof (translation)
+Establish `da` using `ha.det_ne C.hS`. Establish `db` using `hb.det_ne C.hT`. Establish `e1` using `cutDet_rat C.hT hb ε hε`. Rewrite `e1` using `[map_inv, inv_eq_iff_eq_inv]`. Establish `e2` using `cutDet_rat C.hS ha ε hε`.
+
+Establish `u0 : Units.mk0 _ hΔ = Units.mk0 _ db ^ nS * Units.mk0 _ da ^ nT` using `Units.ext (by`. Rewrite using `[Units.val_mul, Units.val_pow_eq_pow_val, Units.val_pow_eq_pow_val, Units.val_mk0, Units.val_mk0, Units.val_mk0, Matrix.det_kronecker, Matrix.det_transpose, Fintype.card_fin, Fintype.card_fin])`. Unfold `zF`. Rewrite using `[u0, e1, e2]`. Simplify using `only [MonoidHom.pow_apply, map_mul, map_pow, map_inv]`.
+
+Generalize the expression as in `η (cutRat ε hε (Units.mk0 _ da)) = x`. Generalize the expression as in `η (cutRat ε hε (Units.mk0 _ db)) = y`. Rewrite using `[mul_comm (y ^ nS), mul_mul_mul_comm, inv_mul_cancel, inv_mul_cancel, one_mul]`.
+-/
 theorem zF_rat (C : Ctx σ B JS JT ξ₀ θ ι) (hε : ε * ε = ε) {g : GAF σ JS} {h : GAF σ JT} {a b}
     (ha : IsRatF σ JS g a) (hb : IsRatF σ JT h⁻¹ b) (hΔ : (b ⊗ₖ aᵀ).det ≠ 0) :
     zF σ JS JT η ε hε (g, h) * η (cutRat ε hε (Units.mk0 _ hΔ)) = 1 := by
@@ -194,6 +257,9 @@ theorem zF_rat (C : Ctx σ B JS JT ξ₀ θ ι) (hε : ε * ε = ε) {g : GAF σ
   generalize η (cutRat ε hε (Units.mk0 _ db)) = y
   rw [mul_comm (y ^ nS), mul_mul_mul_comm, inv_mul_cancel, inv_mul_cancel, one_mul]
 
+/- English proof (translation)
+Rewrite using `[← Circle.coe_mul, ← Circle.coe_mul]`. Establish `u1 : Units.mk0 _ hΔ * Units.map (σ : E →* E) (Units.mk0 _ hΔ) = 1` using `Units.ext d1`. Establish `u2 : Units.mk0 _ hΔ * Units.map (σ : E →* E) (Units.mk0 _ hd) = (-1) ^ m * Units.mk0 _ hd` using `Units.ext (by simpa using d2)`. Conclude with `congrArg _ (GlobalTheory.RatAut.phase_identity (η.comp (cutRat ε hε.idem)) (η.comp (cutRat _ (half_add C.good hε))) (Units.map (σ : E →* E)) (eta_cut C.good h2 hε) v0 u1 u2)`.
+-/
 theorem phase_rat (C : Ctx σ B JS JT ξ₀ θ ι) (h2 : ResEtaF η 1) (hε : IsHalfF σ ε) {Δ d N : E} (hΔ : Δ ≠ 0) (hd : d ≠ 0)
     (hN : N ≠ 0) {m : ℕ} (d1 : Δ * σ Δ = 1) (d2 : Δ * σ d = (-1) ^ m * d) {z : Circle}
     (v0 : z * η (cutRat ε hε.idem (Units.mk0 _ hΔ)) = 1) :
@@ -206,6 +272,9 @@ theorem phase_rat (C : Ctx σ B JS JT ξ₀ θ ι) (h2 : ResEtaF η 1) (hε : Is
   exact congrArg _ (GlobalTheory.RatAut.phase_identity (η.comp (cutRat ε hε.idem)) (η.comp (cutRat _ (half_add C.good hε)))
     (Units.map (σ : E →* E)) (eta_cut C.good h2 hε) v0 u1 u2)
 
+/- English proof (translation)
+Take `⟨r, p, e⟩` from `P.prod _ _ (mul_ne_zero hN hx) h (cutRat _ (half_add C.good P.half) (Units.mk0 _ hN * Units.mk0 _ hx)) (by rw [cutRat_val, add_comm, Units.val_mul, Units.val_mk0, Units.val_mk0])`. Use `⟨r, p, ?_⟩` and prove the remaining obligations. Rewrite using `[← e, map_mul lam, ← Finset.prod_mul_distrib]`. Simplify using `only [map_mul]`.
+-/
 theorem Parts.prod' {C : Ctx σ B JS JT ξ₀ θ ι} (P : Parts C hc lam Om η ε of oi) {N x : E} (hN : N ≠ 0) (hx : x ≠ 0)
     {c n : ℕ} (h : ((c * n : ℕ) : ℚ) = |Algebra.norm ℚ (N * x)|) : ∃ r : ℝ, 0 < r ∧
       (η (cutRat _ (half_add C.good P.half) (Units.mk0 _ hN * Units.mk0 _ hx)) : ℂ) * (lam c * lam n) *
@@ -216,6 +285,9 @@ theorem Parts.prod' {C : Ctx σ B JS JT ξ₀ θ ι} (P : Parts C hc lam Om η �
   rw [← e, map_mul lam, ← Finset.prod_mul_distrib]
   simp only [map_mul]
 
+/- English proof (translation)
+Establish `e1` using `congrFun (H f f.2) x`. Rewrite `e1` using `[P.vac s hs.sq hs.pos (g, h) hcm f f.2 f2, map_smul, P.hof, hO.vac _ f f1, normOp, Submodule.coe_smul]`. Simplify using `only [Pi.smul_apply, smul_eq_mul, substF_apply] at e1`. Rewrite using `[← one_mul (f.1 _), ← inv_mul_cancel₀ hc0, mul_assoc, ← e1]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem Parts.kappa {C : Ctx σ B JS JT ξ₀ θ ι} (P : Parts C hc lam Om η ε of oi)
     (hO : IsLatRepF σ JS JT ξ₀ B.ψ hc Λ w lam Om) (hs : CartF σ JS JT ξ₀ B θ s) {g : GAF σ JS} {h : GAF σ JT}
     (hcm : s * mMF σ JS JT θ (g, h) = mMF σ JS JT θ (g, h) * s) {c : ℂ} (hc0 : c ≠ 0) (H : IsScalarF B ξ₀ of oi (g, h) c)
@@ -232,6 +304,13 @@ theorem Parts.kappa {C : Ctx σ B JS JT ξ₀ θ ι} (P : Parts C hc lam Om η �
   rw [← one_mul (f.1 _), ← inv_mul_cancel₀ hc0, mul_assoc, ← e1]
   ring
 
+/- English proof (translation)
+Use `⟨(-s).det, η (cutRat ε P.half.idem ((-1) ^ Fintype.card (Fin nT × Fin nS))), Circle.coe_ne_zero _, fun g h a b ha hb hcm hd c hc0 H => ?_⟩` and prove the remaining obligations. Take `⟨d1, d2⟩` from `det_kron C ha hb`. Establish `hΔ` using `left_ne_zero_of_mul_eq_one d1`. Take `⟨hbij, n, t, c₀, N, M, hn, hc₀, hN, t1, t2, g1, g2, i1, i2⟩` from `finite_data C hG hR hO ha hb hΔ hd`. Take `⟨hI, hδ0, r₂, p₂, h2⟩` from `real_data C hs ha hb hcm hd`.
+
+Take `⟨r₁, p₁, h1⟩` from `gauss_mul_integral C hG hR hO hs ha hb hbij hI _ (P.kappa hO hs hcm hc0 H) n t t1 t2`. Rewrite `h1` using `[g1]`. Establish `hN' : (N : E) ^ M ≠ 0` using `pow_ne_zero _ (Nat.cast_ne_zero.2 hN)`. Take `⟨r₃, p₃, h3⟩` from `P.prod' hN' hd i1`. Take `⟨r₄, p₄, h4⟩` from `P.prod' hN' hΔ i2`.
+
+Conclude with `GlobalTheory.RatAut.final_algebra p₁ p₂ p₃ p₄ hn hc0 hδ0 (Circle.coe_ne_zero _) h1 h2 h3 h4 g2 (phase_rat C P.res P.half hΔ hd hN' d1 d2 (zF_rat C P.half.idem ha hb hΔ))`.
+-/
 theorem scalar_const (C : Ctx σ B JS JT ξ₀ θ ι) (hG : GoodLat Λ) (hR : RatSD σ JS JT ξ₀ Λ)
     (hO : IsLatRepF σ JS JT ξ₀ B.ψ hc Λ w lam Om) (P : Parts C hc lam Om η ε of oi) (hs : CartF σ JS JT ξ₀ B θ s) :
     ∃ e s₀ : ℂ, s₀ ≠ 0 ∧ ∀ g h a b, IsRatF σ JS g a → IsRatF σ JT h⁻¹ b →
@@ -253,6 +332,23 @@ theorem scalar_const (C : Ctx σ B JS JT ξ₀ θ ι) (hG : GoodLat Λ) (hR : Ra
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `exists_isRatF hg`. Take `⟨b, hb⟩` from `exists_isRatF (inv_mem hh)`. Take `⟨e, s₀, hs₀, H⟩` from `scalar_const C hG hR hO P hs`. Take `⟨t, ht, ht'⟩` from `(infinite_norm_one C).exists_notMem_finite ((GlobalTheory.RatAut.finite_det_smul_sub_one (b ⊗ₖ aᵀ)).union (GlobalTheory.RatAut.finite_det_smul_sub_one ((1 : Matrix (Fin nT) (Fin nT) E) ⊗ₖ (1 : Matrix (Fin nS) (Fin nS) E)ᵀ)))`. Rewrite `ht'` using `[Set.mem_union, not_or]`.
+
+Take `⟨k, rk⟩` from `exists_of_unitary (σ := σ) C.hT (a := t • 1) (by`. Establish `e : ((t • (1 : Matrix (Fin nT) (Fin nT) E)).map σ)ᵀ = σ t • 1`. Use extensionality with `i j`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality.
+
+Simplify using the standard rewrite rules. Simplify using `[Matrix.one_apply_ne hij, Matrix.one_apply_ne (Ne.symm hij)]`. Rewrite using `[e, Matrix.smul_mul, Matrix.one_mul, Matrix.mul_smul, Matrix.mul_one, smul_smul, show t * σ t = 1 from ht, one_smul])`. Establish `hk` using `rk.mem`. Establish `hcomm` using `fin_inf_comm C hO (fun p => ⟨_, P.hof p⟩) P.hi`.
+
+Establish `ck : s * mMF σ JS JT θ (1, k⁻¹) = mMF σ JS JT θ (1, k⁻¹) * s`. Use `comm_inv (mMF σ JS JT θ) (hs.cen k t rk)` as an intermediate fact. Rewrite `this` using `[Prod.inv_mk, inv_one]`. Then use the resulting hypothesis. Take `⟨c, hc1, sc⟩` from `exists_isScalarF (p := (g, h)) C P.hf P.hi hg hh`. Take `⟨c', hc', sc'⟩` from `exists_isScalarF (p := (1, k⁻¹)) C P.hf P.hi (one_mem _) (inv_mem hk)`.
+
+Establish `hc0 : c ≠ 0` using `norm_ne_zero_iff.1 (hc1 ▸ one_ne_zero)`. Establish `hc0' : c' ≠ 0` using `norm_ne_zero_iff.1 (hc' ▸ one_ne_zero)`. Take `⟨r', p', e'⟩` from `H 1 k⁻¹ 1 (t • 1) (isRatF_one JS) (by rwa [inv_inv]) ck (by rw [Matrix.smul_kronecker]; exact ht'.2) c' hc0' sc'`. Take `⟨r, p, e''⟩` from `H (g * 1) (h * k⁻¹) a (t • b) (by rwa [mul_one]) (by`. Use `rk.mul hb` as an intermediate fact.
+
+Rewrite using `[Matrix.smul_mul, Matrix.one_mul, ← inv_inv k, ← _root_.mul_inv_rev] at this)` and apply the resulting hypothesis. Use the proof step `(by rw [← Prod.mk_mul_mk, map_mul, ← mul_assoc, hcm, mul_assoc, ck, mul_assoc])`. Use the proof step `(by rw [Matrix.smul_kronecker]; exact ht'.1) (c * c') (mul_ne_zero hc0 hc0')`. Use the proof step `(sc.mul C P.hi hcomm sc' (one_mem _) (inv_mem hk))`. Establish `q' : (r' : ℂ) ≠ 0` using `by exact_mod_cast p'.ne'`.
+
+Establish `e1 : c = ((r / r' : ℝ) : ℂ)`. Rewrite using `[Complex.ofReal_div, eq_div_iff q']`. Use `mul_right_cancel₀ hs₀ ?_` and prove the remaining obligations. Rewrite using `[← e'', mul_assoc, ← e', mul_assoc]`. Establish `e2 : r / r' = 1`.
+
+Rewrite `hc1` using `[e1, Complex.norm_real, Real.norm_of_nonneg (div_pos p p').le]`. Conclude with `hc1`. Rewrite `sc` using `[e1, e2, Complex.ofReal_one]`. Then use the resulting hypothesis.
+-/
 theorem isScalar_one_of_comm (C : Ctx σ B JS JT ξ₀ θ ι) (hG : GoodLat Λ) (hR : RatSD σ JS JT ξ₀ Λ)
     (hO : IsLatRepF σ JS JT ξ₀ B.ψ hc Λ w lam Om) (P : Parts C hc lam Om η ε of oi) (hs : CartF σ JS JT ξ₀ B θ s)
     {g : GAF σ JS} {h : GAF σ JT} (hg : g ∈ GQF σ JS) (hh : h ∈ GQF σ JT)
@@ -299,6 +395,13 @@ theorem isScalar_one_of_comm (C : Ctx σ B JS JT ξ₀ θ ι) (hG : GoodLat Λ) 
     exact hc1
   rwa [e1, e2, Complex.ofReal_one] at sc
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B hB nS nT JS JT hS hT ξ₀ h0 hξ Λ hG hR hc w lam Om hO η h1 h2 h3 h4`. Take `⟨θ, hθ⟩` from `(GlobalTheory.T.standardTraceAddChar_isStandardChar_of_admissibleCMBase F E σ B hB).2.1`. Take `⟨ι, hι⟩` from `GlobalTheory.T.exists_realChart_adeleTensor_admissibleCMBase F E σ B hB θ hθ`. Establish `C : Ctx σ B JS JT ξ₀ θ ι` using `⟨hB, hS, hT, h0, hξ, hθ, hι⟩`. Take `⟨ε, hε, hprod⟩` from `eta_prod hB h1 h2 h3 h4 hO.good hO.sqrt`.
+
+Take `⟨of, hf, hof⟩` from `exists_fin C hO h1 h2 hε`. Take `⟨oi, hi, hvac⟩` from `exists_inf C`. Establish `P : Parts C hc lam Om η ε of oi` using `⟨h2, hε, hprod, hf, hof, hi, hvac⟩`. Establish `hcomm` using `fin_inf_comm C hO (fun p => ⟨_, hof p⟩) hi`. Use `datum_of_aut C hG hO h1 h2 hf (fun p => ⟨_, hof p⟩) hi fun γ hγ γ' hγ' f hf' => ?_` and prove the remaining obligations.
+
+Use `rat_gen C (fun p => IsScalarF B ξ₀ of oi p 1) (fun p q _ _ q1 q2 a b => mul_one (1 : ℂ) ▸ a.mul C hi hcomm b q1 q2) (fun p s p1 p2 hs hcm => isScalar_one_of_comm C hG hR hO P hs p1 p2 hcm) (γ, γ') hγ hγ' f hf'` as an intermediate fact. Rewrite using `[this, one_smul]`. Use `show f (actOF σ JS JT γ⁻¹ γ'⁻¹ 0) = f 0`. Rewrite using `[actOF, Matrix.mul_zero, Matrix.zero_mul]`.
+-/
 theorem datumEta : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E), B.IsGood σ → ∀ (nS nT : ℕ) (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E),
       IsHermND σ JS → IsHermND σ JT → ∀ ξ₀ : E, ξ₀ ≠ 0 → σ ξ₀ = -ξ₀ →

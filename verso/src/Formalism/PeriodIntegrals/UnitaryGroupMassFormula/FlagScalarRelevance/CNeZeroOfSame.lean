@@ -11,24 +11,48 @@ section Basics
 
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {S : HSpace E} {r : ℕ} {T T' : E}
 
+/- English proof (translation)
+Simplify using `[FlagG.fvec]`.
+-/
 theorem fvec_castSucc (F : FlagG S r T) (k : Fin r) : F.fvec k.castSucc = F.e k := by
   simp [FlagG.fvec]
 
+/- English proof (translation)
+Simplify using `[FlagG.fvec]`.
+-/
 theorem fvec_last (F : FlagG S r T) : F.fvec (Fin.last r) = F.z := by
   simp [FlagG.fvec]
 
+/- English proof (translation)
+Conclude with `Submodule.span_mono (Set.image_mono fun i (hi : i.1 < a) => (lt_of_lt_of_le hi h : i.1 < b))`.
+-/
 theorem Xa_mono (F : FlagG S r T) {a b : ℕ} (h : a ≤ b) : F.Xa a ≤ F.Xa b := by
   exact Submodule.span_mono (Set.image_mono fun i (hi : i.1 < a) => (lt_of_lt_of_le hi h : i.1 < b))
 
+/- English proof (translation)
+The claim follows from `Submodule.subset_span ⟨k, hk, rfl⟩`.
+-/
 theorem e_mem_Xa (F : FlagG S r T) {k : Fin r} {a : ℕ} (hk : k.val < a) : F.e k ∈ F.Xa a := Submodule.subset_span ⟨k, hk, rfl⟩
 
+/- English proof (translation)
+Simplify using `[FlagG.Xa, FlagG.X]`.
+-/
 theorem Xa_r (F : FlagG S r T) : F.Xa r = F.X := by
   simp [FlagG.Xa, FlagG.X]
 
+/- English proof (translation)
+The claim follows from `Submodule.span_mono (Set.image_subset_range _ _)`.
+-/
 theorem fXa_le_X (F : FlagG S r T) (a : ℕ) : F.Xa a ≤ F.X := Submodule.span_mono (Set.image_subset_range _ _)
 
+/- English proof (translation)
+The claim follows from `Submodule.subset_span (Set.mem_range_self k)`.
+-/
 theorem fe_mem_X (F : FlagG S r T) (k : Fin r) : F.e k ∈ F.X := Submodule.subset_span (Set.mem_range_self k)
 
+/- English proof (translation)
+Establish `h1 : F.Xa a ≤ LinearMap.ker (S.hT v)` using `Submodule.span_le.2 (by rintro _ ⟨j, hj, rfl⟩; exact hv j hj)`. Introduce `y hy`. Conclude with `LinearMap.mem_ker.1 (h1 hy)`.
+-/
 theorem hT_Xa_of (F : FlagG S r T) (v : S.V) (a : ℕ)
     (hv : ∀ j : Fin r, j.val < a → S.hT v (F.e j) = 0) : ∀ y ∈ F.Xa a, S.hT v y = 0 := by
   have h1 : F.Xa a ≤ LinearMap.ker (S.hT v) :=
@@ -36,28 +60,43 @@ theorem hT_Xa_of (F : FlagG S r T) (v : S.V) (a : ℕ)
   intro y hy
   exact LinearMap.mem_ker.1 (h1 hy)
 
+/- English proof (translation)
+Establish `h1 : F.X ≤ LinearMap.ker (S.hT (F.e j))` using `Submodule.span_le.2 (by rintro _ ⟨k, rfl⟩; exact F.e_iso j k)`. Introduce `y hy`. Conclude with `LinearMap.mem_ker.1 (h1 hy)`.
+-/
 theorem hT_e_X (F : FlagG S r T) (j : Fin r) : ∀ y ∈ F.X, S.hT (F.e j) y = 0 := by
   have h1 : F.X ≤ LinearMap.ker (S.hT (F.e j)) :=
     Submodule.span_le.2 (by rintro _ ⟨k, rfl⟩; exact F.e_iso j k)
   intro y hy
   exact LinearMap.mem_ker.1 (h1 hy)
 
+/- English proof (translation)
+Establish `h1 : F.X ≤ LinearMap.ker (S.hT.flip y)` using `Submodule.span_le.2 (by rintro _ ⟨j, rfl⟩; exact hT_e_X F j y hy)`. Simplify using `using h1 hx`.
+-/
 theorem hT_X_X (F : FlagG S r T) {x y : S.V} (hx : x ∈ F.X) (hy : y ∈ F.X) : S.hT x y = 0 := by
   have h1 : F.X ≤ LinearMap.ker (S.hT.flip y) :=
     Submodule.span_le.2 (by rintro _ ⟨j, rfl⟩; exact hT_e_X F j y hy)
   simpa using h1 hx
 
+/- English proof (translation)
+Establish `h1 : F.X ≤ LinearMap.ker (S.hT.flip F.z)` using `Submodule.span_le.2 (by rintro _ ⟨j, rfl⟩; exact F.z_orth j)`. Simplify using `using h1 hx`.
+-/
 theorem hT_X_alt (F : FlagG S r T) {x : S.V} (hx : x ∈ F.X) : S.hT x F.z = 0 := by
   have h1 : F.X ≤ LinearMap.ker (S.hT.flip F.z) :=
     Submodule.span_le.2 (by rintro _ ⟨j, rfl⟩; exact F.z_orth j)
   simpa using h1 hx
 
+/- English proof (translation)
+Proceed by induction on `m using Fin.lastCases with`. Consider the case `last => rw [fvec_last]`. Conclude with `hT_X_alt F hx`. Consider the case `cast k => rw [fvec_castSucc]`. Conclude with `hT_X_X F hx (fe_mem_X F k)`.
+-/
 theorem hT_X_fvec (F : FlagG S r T) {x : S.V} (hx : x ∈ F.X) (m : Fin (r + 1)) :
     S.hT x (F.fvec m) = 0 := by
   induction m using Fin.lastCases with
   | last => rw [fvec_last]; exact hT_X_alt F hx
   | cast k => rw [fvec_castSucc]; exact hT_X_X F hx (fe_mem_X F k)
 
+/- English proof (translation)
+Rewrite using `[FlagG.fvec, linearIndependent_fin_snoc]`. Use `⟨F.e_indep, fun hz => hT0 ?_⟩` and prove the remaining obligations. Establish `h1` using `hT_X_alt F hz`. Rewrite `h1` using `[F.z_norm]`. Conclude with `neg_eq_zero.1 h1`.
+-/
 theorem fvec_indep (F : FlagG S r T) (hT0 : T ≠ 0) : LinearIndependent E F.fvec := by
   rw [FlagG.fvec, linearIndependent_fin_snoc]
   refine ⟨F.e_indep, fun hz => hT0 ?_⟩
@@ -65,6 +104,9 @@ theorem fvec_indep (F : FlagG S r T) (hT0 : T ≠ 0) : LinearIndependent E F.fve
   rw [F.z_norm] at h1
   exact neg_eq_zero.1 h1
 
+/- English proof (translation)
+Take `⟨k, rfl⟩ : ∃ k : Fin r, k.castSucc = m` from `⟨⟨m.val, hm⟩, rfl⟩`. Rewrite using `[fvec_castSucc]`. Conclude with `e_mem_Xa F (Nat.lt_succ_self _)`.
+-/
 theorem fvec_mem_Xa (F : FlagG S r T) (m : Fin (r + 1)) (hm : m.val < r) :
     F.fvec m ∈ F.Xa (m.val + 1) := by
   obtain ⟨k, rfl⟩ : ∃ k : Fin r, k.castSucc = m := ⟨⟨m.val, hm⟩, rfl⟩
@@ -77,6 +119,11 @@ section TwoFlags
 
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {S : HSpace E} {r : ℕ} {T T' : E}
 
+/- English proof (translation)
+Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨k, hk, rfl⟩`. Establish `hk' : k.1 < a` using `hk`. Establish `h` using `hs k.castSucc`. Rewrite `h` using `[fvec_castSucc, fvec_castSucc]`.
+
+Establish `h2` using `Submodule.add_mem _ (Xa_mono F (le_of_lt hk') h) (Submodule.smul_mem _ (c k.castSucc) (e_mem_Xa F hk'))`. Simplify using `using h2`.
+-/
 theorem Xa_le_of_same (F : FlagG S r T) (F' : FlagG S r T') (c : Fin (r + 1) → E)
     (hs : SameFlag F F' c) (a : ℕ) : F'.Xa a ≤ F.Xa a := by
   refine Submodule.span_le.2 ?_
@@ -88,6 +135,9 @@ theorem Xa_le_of_same (F : FlagG S r T) (F' : FlagG S r T') (c : Fin (r + 1) →
     (Submodule.smul_mem _ (c k.castSucc) (e_mem_Xa F hk'))
   simpa using h2
 
+/- English proof (translation)
+The claim follows from `| 0, _ => by refine ⟨?_, fun k hk => absurd hk (Nat.not_lt_zero _)⟩ have h0 : F.Xa 0 = ⊥ := by simp [FlagG.Xa] rw [h0] exact bot_le | a + 1, ha => by obtain ⟨ih1, ih2⟩ := le_Xa_of_same F F' c hs a (by omega) obtain ⟨ka, hka⟩ : ∃ ka : Fin r, ka.val = a := ⟨⟨a, by omega⟩, rfl⟩ have …`.
+-/
 theorem le_Xa_of_same (F : FlagG S r T) (F' : FlagG S r T') (c : Fin (r + 1) → E)
     (hs : SameFlag F F' c) :
     ∀ a : ℕ, a ≤ r → F.Xa a ≤ F'.Xa a ∧ ∀ k : Fin r, k.val < a → c k.castSucc ≠ 0
@@ -126,14 +176,23 @@ theorem le_Xa_of_same (F : FlagG S r T) (F' : FlagG S r T') (c : Fin (r + 1) →
         rw [hkk]
         exact hc
 
+/- English proof (translation)
+The claim follows from `le_antisymm (Xa_le_of_same F F' c hs a) ((le_Xa_of_same F F' c hs a ha).1)`.
+-/
 theorem Xa_eq_of_same (F : FlagG S r T) (F' : FlagG S r T') (c : Fin (r + 1) → E)
     (hs : SameFlag F F' c) (a : ℕ) (ha : a ≤ r) : F'.Xa a = F.Xa a := le_antisymm (Xa_le_of_same F F' c hs a) ((le_Xa_of_same F F' c hs a ha).1)
 
+/- English proof (translation)
+Rewrite using `[← Xa_r, ← Xa_r]`. Conclude with `Xa_eq_of_same F F' c hs r le_rfl`.
+-/
 theorem X_eq_of_same (F : FlagG S r T) (F' : FlagG S r T') (c : Fin (r + 1) → E)
     (hs : SameFlag F F' c) : F'.X = F.X := by
   rw [← Xa_r, ← Xa_r]
   exact Xa_eq_of_same F F' c hs r le_rfl
 
+/- English proof (translation)
+The claim follows from `(le_Xa_of_same F F' c hs r le_rfl).2 k k.2`.
+-/
 theorem c_ne_zero_of_same (F : FlagG S r T) (F' : FlagG S r T') (c : Fin (r + 1) → E)
     (hs : SameFlag F F' c) (k : Fin r) : c k.castSucc ≠ 0 := (le_Xa_of_same F F' c hs r le_rfl).2 k k.2
 

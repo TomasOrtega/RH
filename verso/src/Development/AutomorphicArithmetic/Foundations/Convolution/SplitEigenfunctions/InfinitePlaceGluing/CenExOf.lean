@@ -6,6 +6,11 @@ import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.IsUnit
 
 open UpperTheory.ConvolutionTheory.RankTwoDescent
 
+/- English proof (translation)
+Introduce `E _ _ _ hE P hP`. Take `⟨ω, hω⟩` from `GlobalTheory.CuspRep.Central.exists_hasCentChar (GlobalTheory.CuspRep.CG.mk P)`. Take `⟨χ, hχ⟩` from `UpperTheory.ConvolutionTheory.RankTwoDescent.A.normChar_of_inv hE ω (UpperTheory.centralChar_galois_invariant_of_conjInv E P ω hω hP)`. Use `⟨χ, fun f hf z g => ?_⟩` and prove the remaining obligations. Establish `h1` using `(GlobalTheory.CuspRep.CuspSub.hasCentral_iff (π := P) (ω := ω)).2 hω z f hf`.
+
+Establish `h2` using `congrFun (congrArg Subtype.val h1) g`. Rewrite using `[GlobalTheory.CuspRep.scalar_comm, ← hχ z]`. Conclude with `h2`.
+-/
 theorem UpperTheory.ConvolutionTheory.RankTwoDescent.cenEx_of :
     CenEx := by
   intro E _ _ _ hE P hP

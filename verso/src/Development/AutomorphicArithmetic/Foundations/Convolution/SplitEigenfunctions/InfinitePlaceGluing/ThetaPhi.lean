@@ -24,6 +24,17 @@ namespace UpperTheory.ConvolutionTheory.RankTwoDescent
 
 variable {E : Type} [Field E] [NumberField E]
 
+/- English proof (translation)
+Take `⟨c, hc, hred⟩` from `UpperTheory.ConvolutionTheory.R2.red ℚ`. Establish `hK : IsCompact (KK ℚ)` using `(UpperTheory.ConvolutionTheory.R2.M.kkCpt ℚ).2`. Establish `cpt : ∀ S : Set (GL (Fin 2) (A ℚ)), IsCompact S → IsCompact ((fun p : G1 ℚ × GL (Fin 2) (A ℚ) => gl p.1 * p.2) '' (KK ℚ ×ˢ S))` using `fun S hS => (hK.prod hS).image ((UpperTheory.ConvolutionTheory.R2.M.continuous_gl.comp continuous_fst).mul continuous_snd)`. Take `⟨r, B₁, h₁⟩` from `UpperTheory.norm_thetaSeries_siegelSet_le_exp Φ hΦ _ (cpt C' hC') c hc n`. Take `⟨B₂, h₂⟩` from `UpperTheory.norm_admissible_baseChange_siegelSet_le D ω φ hφ _ (cpt C hC) c hc r`.
+
+Use `⟨B₂ * B₁, fun t ht g k hk k' hk' => ?_⟩` and prove the remaining obligations. Take `⟨γ, b, a, κ, hκ, hg, hca⟩` from `hred g`. Establish `ea : ∀ h : GL (Fin 2) (A ℚ), gl (nU b * mD a * κ) * h = gl (nU b * mD a) * (gl κ * h)` using `fun h => by`. Establish `hm : gl (nU b * mD a * κ) = gl (nU b * mD a) * gl κ` using `map_mul _ _ _`. Rewrite using `[hm, mul_assoc]`.
+
+Establish `e1 : φ (em E (gl g * k)) = φ (em E (gl (nU b * mD a) * (gl κ * k)))`. Rewrite using `[← ea, ← hg, UpperTheory.automorphicForm_baseChange_ratSL2_mul_invariant D ω φ hφ]`. Establish `e2 : ThR Φ t (gl g * k') = ThR Φ t (gl (nU b * mD a) * (gl κ * k'))`. Rewrite using `[← ea, ← hg, UpperTheory.thetaSeries_ratSL2_mul_invariant]`. Establish `p₂` using `h₂ b a _ ⟨(κ, k), ⟨hκ, hk⟩, rfl⟩ hca`.
+
+Establish `p₁` using `h₁ t ht b a _ ⟨(κ, k'), ⟨hκ, hk'⟩, rfl⟩ hca`. Establish `hab : 0 < ab a` using `UpperTheory.ConvolutionTheory.R2.M.ab_pos a`. Rewrite using `[e1, e2, norm_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[inv_pow]`.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 private theorem thetaPhi (D : Dat ℚ E) (ω : HChar ℚ) (φ : GL (Fin 2) (A E) → ℂ) (hφ : admitted D ω φ)
     (Φ : (Fin 2 → A ℚ) → ℂ) (hΦ : Φ ∈ schwartzBruhatPi ℚ (Fin 2))
     (C C' : Set (GL (Fin 2) (A ℚ))) (hC : IsCompact C) (hC' : IsCompact C') (n : ℕ) :
@@ -54,10 +65,18 @@ private theorem thetaPhi (D : Dat ℚ E) (ω : HChar ℚ) (φ : GL (Fin 2) (A E)
     _ = B₂ * B₁ * Real.exp (-((n : ℝ) * t)) := by
         rw [inv_pow]; field_simp
 
+/- English proof (translation)
+The claim follows from `(hφ.cont.comp ((UpperTheory.continuous_GL2BaseChange_diagUnit_infiniteIdele E).1.comp hh)).measurable`.
+-/
 private theorem measPhi (ω : HChar ℚ) (D : Dat ℚ E) (φ : GL (Fin 2) (A E) → ℂ) (hφ : admitted D ω φ) {X : Type} [TopologicalSpace X] [MeasurableSpace X] [OpensMeasurableSpace X]
     (h : X → GL (Fin 2) (A ℚ)) (hh : Continuous h) : Measurable fun x => φ (em E (h x)) :=
   (hφ.cont.comp ((UpperTheory.continuous_GL2BaseChange_diagUnit_infiniteIdele E).1.comp hh)).measurable
 
+/- English proof (translation)
+Use `haveI := U.prob`. Use `haveI : IsFiniteMeasure (M.μ.restrict M.D) := ⟨by simpa using UpperTheory.ConvolutionTheory.R2.M.volD ℚ M⟩`. Establish `hdM` using `(UpperTheory.continuous_GL2BaseChange_diagUnit_infiniteIdele E).2.1`. Establish `hc : Continuous fun p : (ℝ × IdeleGroup ℚ) × G1 ℚ => gl p.2 * dM p.1.2` using `(UpperTheory.ConvolutionTheory.R2.M.continuous_gl.comp continuous_snd).mul (hdM.comp (continuous_snd.comp continuous_fst))`. Establish `h1 : StronglyMeasurable fun p : (ℝ × IdeleGroup ℚ) × G1 ℚ => φ (em E (gl p.2 * dM p.1.2)) * ThR Φ p.1.1 (gl p.2 * dM p.1.2)` using `((measPhi ω D φ hφ _ hc).mul (UpperTheory.measurable_thetaSeries_comp_continuous Φ hΦ _ _ (continuous_fst.comp continuous_fst) hc)).stronglyMeasurable`.
+
+Establish `h2` using `h1.integral_prod_right' (ν := M.μ.restrict M.D)`. Establish `hχ : StronglyMeasurable fun x : ℝ × IdeleGroup ℚ => ((χ.1 x.2 : ℂˣ) : ℂ)` using `(Units.continuous_val.comp (χ.2.1.comp continuous_snd)).stronglyMeasurable`. Conclude with `(hχ.mul h2).integral_prod_right' (ν := U.υ)`.
+-/
 private theorem irMeas (D : Dat ℚ E) (ω χ : HChar ℚ) (M : Meas ℚ) (U : UMeas) (φ : GL (Fin 2) (A E) → ℂ) (hφ : admitted D ω φ)
     (Φ : (Fin 2 → A ℚ) → ℂ) (hΦ : Φ ∈ schwartzBruhatPi ℚ (Fin 2)) : StronglyMeasurable (Ir M U χ φ Φ) := by
   haveI := U.prob
@@ -73,6 +92,33 @@ private theorem irMeas (D : Dat ℚ E) (ω χ : HChar ℚ) (M : Meas ℚ) (U : U
     (Units.continuous_val.comp (χ.2.1.comp continuous_snd)).stronglyMeasurable
   exact (hχ.mul h2).integral_prod_right' (ν := U.υ)
 
+/- English proof (translation)
+Use `haveI := U.prob`. Take `⟨hUc, hU1⟩` from `UpperTheory.isCompact_integralIdeleUnits_and_abs_eq_one`. Establish `hdM` using `(UpperTheory.continuous_GL2BaseChange_diagUnit_infiniteIdele E).2.1`. Take `⟨Ψ, hΨ, hpois⟩` from `UpperTheory.thetaSeries_poisson_functional_equation Φ hΦ`. Use `set C : Set (GL (Fin 2) (A ℚ)) := (fun u : (A ℚ)ˣ => dM u) '' UU with hCdef`.
+
+Use `set C' : Set (GL (Fin 2) (A ℚ)) := (fun u : (A ℚ)ˣ => (gl (wW ℚ))⁻¹ * dM u⁻¹) '' UU with hC'def`. Establish `hC : IsCompact C` using `hUc.image hdM`. Establish `hc' : Continuous fun u : (A ℚ)ˣ => (gl (wW ℚ))⁻¹ * dM u⁻¹` using `continuous_const.mul (hdM.comp continuous_inv)`. Establish `hC' : IsCompact C'` using `hUc.image hc'`. Take `⟨Bp, hBp⟩` from `thetaPhi D ω φ hφ Φ hΦ C C hC hC n`.
+
+Take `⟨Bm, hBm⟩` from `thetaPhi D ω φ hφ Ψ hΨ C C' hC hC' (n + 2)`. Use `set V : ℝ := M.μ.real M.D with hV`. Establish `hV0 : 0 ≤ V` using `measureReal_nonneg`. Take `⟨Bφ, hBφ⟩` from `hφ.bdd`. Establish `hcu : Continuous fun p : IdeleGroup ℚ × G1 ℚ => gl p.2 * dM p.1` using `(UpperTheory.ConvolutionTheory.R2.M.continuous_gl.comp continuous_snd).mul (hdM.comp continuous_fst)`.
+
+Establish `hcu' : Continuous fun p : IdeleGroup ℚ × G1 ℚ => gl p.2 * ((gl (wW ℚ))⁻¹ * dM p.1⁻¹)` using `(UpperTheory.ConvolutionTheory.R2.M.continuous_gl.comp continuous_snd).mul (hc'.comp continuous_fst)`. Establish `mφ : Measurable fun p : IdeleGroup ℚ × G1 ℚ => φ (em E (gl p.2 * dM p.1))` using `measPhi ω D φ hφ _ hcu`. Use `⟨(|Bp| + |Bm|) * V, fun t => ?_⟩` and prove the remaining obligations. Break down `le_or_gt 0 t with ht | ht` into its components or cases. Establish `hb : ∀ u ∈ UU, ∀ g : G1 ℚ, ‖φ (em E (gl g * dM u)) * ThR Φ t (gl g * dM u)‖ ≤ Bp * Real.exp (-((n : ℝ) * t))` using `fun u hu g => hBp t ht g _ ⟨u, hu, rfl⟩ _ ⟨u, hu, rfl⟩`.
+
+Establish `hm : Measurable (Function.uncurry fun (u : IdeleGroup ℚ) (g : G1 ℚ) => φ (em E (gl g * dM u)) * ThR Φ t (gl g * dM u))` using `mφ.mul (UpperTheory.measurable_thetaSeries_comp_continuous Φ hΦ _ _ continuous_const hcu)`. Use `(UpperTheory.norm_integral_unitaryHeckeChar_fundDomain_le M U χ _ _ hχ hm hb).2.2` as an intermediate fact. Rewrite using `[abs_of_nonneg ht]`. Use `le_trans this ?_` and prove the remaining obligations. Establish `hex` using `Real.exp_pos (-((n : ℝ) * t))`.
+
+Establish `: Bp ≤ |Bp| + |Bm|` using `(le_abs_self _).trans (le_add_of_nonneg_right (abs_nonneg _))`. Combine the equalities or inequalities in the displayed calculation. Use `set e : ℂ := (Real.exp (-(2 * t)) : ℂ) with he`. Use `set c₀ : ℂ := -Φ 0 + e * Ψ 0 with hc₀`. Establish `hb1 : ∀ u ∈ UU, ∀ g : G1 ℚ, ‖φ (em E (gl g * dM u))‖ ≤ Bφ` using `fun _ _ _ => hBφ _`.
+
+Establish `hb2 : ∀ u ∈ UU, ∀ g : G1 ℚ, ‖φ (em E (gl g * dM u)) * ThR Ψ (-t) (gl g * ((gl (wW ℚ))⁻¹ * dM u⁻¹))‖ ≤ Bm * Real.exp (-(((n + 2 : ℕ) : ℝ) * (-t)))` using `fun u hu g => hBm (-t) (by linarith) g _ ⟨u, hu, rfl⟩ _ ⟨u, hu, rfl⟩`. Establish `hm1 : Measurable (Function.uncurry fun (u : IdeleGroup ℚ) (g : G1 ℚ) => φ (em E (gl g * dM u)))` using `mφ`. Establish `hm2 : Measurable (Function.uncurry fun (u : IdeleGroup ℚ) (g : G1 ℚ) => φ (em E (gl g * dM u)) * ThR Ψ (-t) (gl g * ((gl (wW ℚ))⁻¹ * dM u⁻¹)))` using `mφ.mul (UpperTheory.measurable_thetaSeries_comp_continuous Ψ hΨ _ _ continuous_const hcu')`. Take `⟨i1, j1, -⟩` from `UpperTheory.norm_integral_unitaryHeckeChar_fundDomain_le M U χ _ _ hχ hm1 hb1`. Take `⟨i2, j2, n2⟩` from `UpperTheory.norm_integral_unitaryHeckeChar_fundDomain_le M U χ _ _ hχ hm2 hb2`.
+
+Establish `hae : ∀ᵐ u ∂U.υ, u ∈ UU`. Use `U.supp` as an intermediate fact. Conclude with `measure_eq_zero_iff_ae_notMem.1 this |>.mono fun u hu => by simpa using hu`. Establish `key : Ir M U χ φ Φ t = c₀ * Per M U χ φ + e * ∫ u, ((χ.1 u : ℂˣ) : ℂ) * ∫ g in M.D, φ (em E (gl g * dM u)) * ThR Ψ (-t) (gl g * ((gl (wW ℚ))⁻¹ * dM u⁻¹)) ∂M.μ ∂U.υ`. Unfold `Per`.
+
+Rewrite using `[← integral_const_mul, ← integral_const_mul, ← integral_add (j1.const_mul _) (j2.const_mul _)]`. Unfold `Ir`. Use `integral_congr_ae (hae.mono fun u hu => ?_)` and prove the remaining obligations. Establish `hin : ∫ g in M.D, φ (em E (gl g * dM u)) * ThR Φ t (gl g * dM u) ∂M.μ = c₀ * (∫ g in M.D, φ (em E (gl g * dM u)) ∂M.μ) + e * ∫ g in M.D, φ (em E (gl g * dM u)) * ThR Ψ (-t) (gl g * ((gl (wW ℚ))⁻¹ * dM u⁻¹)) ∂M.μ`. Rewrite using `[← integral_const_mul, ← integral_const_mul, ← integral_add ((i1 u hu).const_mul _) ((i2 u hu).const_mul _)]`.
+
+Use `integral_congr_ae (Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Simplify using `only []`. Rewrite using `[hpois t g u (hU1 u hu)]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only []`.
+
+Rewrite using `[hin]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key, hP, mul_zero, zero_add, norm_mul, he, Complex.norm_real, Real.norm_of_nonneg (Real.exp_pos _).le, abs_of_neg ht]`. Use `(mul_le_mul_of_nonneg_left n2 (Real.exp_pos _).le).trans ?_` and prove the remaining obligations. Establish `hex : Real.exp (-(2 * t)) * Real.exp (-(((n + 2 : ℕ) : ℝ) * (-t))) = Real.exp (-((n : ℝ) * -t))`.
+
+Rewrite using `[← Real.exp_add]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `: Bm ≤ |Bp| + |Bm|` using `(le_abs_self _).trans (le_add_of_nonneg_left (abs_nonneg _))`.
+
+Establish `hpos` using `Real.exp_pos (-((n : ℝ) * -t))`. Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem irDecay (D : Dat ℚ E) (ω χ : HChar ℚ) (M : Meas ℚ) (U : UMeas) (φ : GL (Fin 2) (A E) → ℂ) (hφ : admitted D ω φ)
     (hχ : ∀ a, ‖((χ.1 a : ℂˣ) : ℂ)‖ = 1) (hP : Per M U χ φ = 0)
     (Φ : (Fin 2 → A ℚ) → ℂ) (hΦ : Φ ∈ schwartzBruhatPi ℚ (Fin 2)) (n : ℕ) :
@@ -155,6 +201,11 @@ private theorem irDecay (D : Dat ℚ E) (ω χ : HChar ℚ) (M : Meas ℚ) (U : 
       _ ≤ (|Bp| + |Bm|) * Real.exp (-((n : ℝ) * -t)) * V := by gcongr
       _ = _ := by ring
 
+/- English proof (translation)
+Introduce `E _ _ _ D P ω χ _ hω hχ M U φ hφ hP Φ hΦ`. Establish `hχ1 : ∀ a, ‖((χ.1 a : ℂˣ) : ℂ)‖ = 1` using `fun a => by`. Establish `h` using `congrArg (fun z : ℂˣ => ‖(z : ℂ)‖) (hχ a)`. Simplify using `only [Units.val_pow_eq_pow_val, Units.val_mul, norm_pow, norm_mul, Units.val_one, norm_one] at h`. Rewrite `h` using `[show ‖((ω.1 a : ℂˣ) : ℂ)‖ = 1 from hω a, mul_one]`.
+
+Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) two_ne_zero).1 h`. Conclude with `UpperTheory.differentiable_integral_exp_mul_of_rapid_decay _ (irMeas D ω χ M U φ hφ Φ hΦ).aestronglyMeasurable fun n => irDecay D ω χ M U φ hφ hχ1 hP Φ hΦ n`.
+-/
 theorem ent_of :
     Ent := by
   intro E _ _ _ D P ω χ _ hω hχ M U φ hφ hP Φ hΦ

@@ -7,19 +7,43 @@ import Development.EtaleCohomology.TateTwists.conePf
 import Development.EtaleCohomology.TateTwists.EtaleTensorPreservesQuasiIsoOfAcyclicAndCone
 
 namespace LateralTheory.Fin.EtaleTensorPairQuasiIsoOfFlatQuasiIso
+/- English proof (translation)
+Apply `LateralTheory.EtaleFoundations.acyc.acycIff_of` to reduce the goal to its premises.
+-/
 theorem etale_complex_acyclic_iff_local_exactness : LateralTheory.EtaleFoundations.acyc.acycIff := by
   apply LateralTheory.EtaleFoundations.acyc.acycIff_of
+/- English proof (translation)
+Apply `LateralTheory.EtaleFoundations.acyc.column_of` to reduce the goal to its premises.
+-/
 theorem etale_tensor_column_acyclic_of_flat : LateralTheory.EtaleFoundations.acyc.column := by
   apply LateralTheory.EtaleFoundations.acyc.column_of
+/- English proof (translation)
+Apply `LateralTheory.EtaleFoundations.StepPf.Step_of` to reduce the goal to its premises.
+-/
 theorem etale_tensor_staircase_lifting_inductive : LateralTheory.EtaleFoundations.stairPf.Step := by
   apply LateralTheory.EtaleFoundations.StepPf.Step_of
+/- English proof (translation)
+Apply the tactic sequence `apply LateralTheory.EtaleFoundations.acyc.stair_of <;> first | exact etale_tensor_staircase_lifting_inductive`.
+-/
 theorem etale_tensor_acyclic_of_staircase_lifting : LateralTheory.EtaleFoundations.acyc.stair := by
   apply LateralTheory.EtaleFoundations.acyc.stair_of <;> first | exact etale_tensor_staircase_lifting_inductive
+/- English proof (translation)
+Apply the tactic sequence `apply LateralTheory.EtaleFoundations.tqis.acyc_of <;> first | exact etale_complex_acyclic_iff_local_exactness | exact etale_tensor_column_acyclic_of_flat | exact etale_tensor_acyclic_of_staircase_lifting`.
+-/
 theorem etale_tensor_acyclic_cone_of_flat : LateralTheory.EtaleFoundations.tqis.acyc := by
   apply LateralTheory.EtaleFoundations.tqis.acyc_of <;> first | exact etale_complex_acyclic_iff_local_exactness | exact etale_tensor_column_acyclic_of_flat | exact etale_tensor_acyclic_of_staircase_lifting
+/- English proof (translation)
+Apply `LateralTheory.EtaleFoundations.tqis.cone_of` to reduce the goal to its premises.
+-/
 theorem etale_tensor_mappingCone_commutes : LateralTheory.EtaleFoundations.tqis.cone := by
   apply LateralTheory.EtaleFoundations.tqis.cone_of
+/- English proof (translation)
+Apply the tactic sequence `apply LateralTheory.EtaleFoundations.etale_tensor_preserves_quasiIso_of_acyclic_and_cone <;> first | exact etale_tensor_acyclic_cone_of_flat | exact etale_tensor_mappingCone_commutes`.
+-/
 theorem etale_tensor_quasiIso_of_acyclic_cone : LateralTheory.EtaleFoundations.EtaleTensorPairQuasiIsoOfFlatQuasiIso := by
   apply LateralTheory.EtaleFoundations.etale_tensor_preserves_quasiIso_of_acyclic_and_cone <;> first | exact etale_tensor_acyclic_cone_of_flat | exact etale_tensor_mappingCone_commutes
+/- English proof (translation)
+The claim follows from `etale_tensor_quasiIso_of_acyclic_cone`.
+-/
 theorem intersectionNumber_baseChange : LateralTheory.EtaleFoundations.EtaleTensorPairQuasiIsoOfFlatQuasiIso := etale_tensor_quasiIso_of_acyclic_cone
 end LateralTheory.Fin.EtaleTensorPairQuasiIsoOfFlatQuasiIso

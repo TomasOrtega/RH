@@ -12,6 +12,11 @@ namespace BL
 section herm
 variable {n : ℕ}
 
+/- English proof (translation)
+Unfold `dotProduct`. Rewrite using `[Finset.sum_eq_single i]`. Simplify using `[bvec]`. Introduce `b _ hb`. Simplify using `[bvec, hb]`.
+
+Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+-/
 theorem dot_bvec (i : Fin n) (x : Fin n → ℂ) : star (bvec i) ⬝ᵥ x = x i := by
   unfold dotProduct
   rw [Finset.sum_eq_single i]
@@ -19,55 +24,97 @@ theorem dot_bvec (i : Fin n) (x : Fin n → ℂ) : star (bvec i) ⬝ᵥ x = x i 
   · intro b _ hb; simp [bvec, hb]
   · intro h; exact absurd (Finset.mem_univ _) h
 
+/- English proof (translation)
+Simplify using `[bvec]`.
+-/
 theorem bvec_self (i : Fin n) : bvec i i = 1 := by simp [bvec]
 
+/- English proof (translation)
+Unfold `bvec`. Rewrite using `[Pi.single_apply, if_neg (fun e => h (congrArg Fin.val e).symm)]`.
+-/
 theorem bvec_ne (i j : Fin n) (h : i.val ≠ j.val) : bvec i j = 0 := by
   unfold bvec; rw [Pi.single_apply, if_neg (fun e => h (congrArg Fin.val e).symm)]
 
+/- English proof (translation)
+Unfold `herm`. Rewrite using `[dot_bvec, mv_bvec]`.
+-/
 theorem herm_bb (H : Matrix (Fin n) (Fin n) ℂ) (i j : Fin n) : herm H (bvec i) (bvec j) = H j i := by
   unfold herm; rw [dot_bvec, mv_bvec]
 
+/- English proof (translation)
+Unfold `herm`. Rewrite using `[mulVec_add, dotProduct_add]`.
+-/
 theorem herm_add_l (H : Matrix (Fin n) (Fin n) ℂ) (v v' w : Fin n → ℂ) :
     herm H (v + v') w = herm H v w + herm H v' w := by
   unfold herm; rw [mulVec_add, dotProduct_add]
 
+/- English proof (translation)
+Unfold `herm`. Rewrite using `[mulVec_smul, dotProduct_smul, smul_eq_mul]`.
+-/
 theorem herm_smul_l (H : Matrix (Fin n) (Fin n) ℂ) (c : ℂ) (v w : Fin n → ℂ) : herm H (c • v) w = c * herm H v w := by
   unfold herm; rw [mulVec_smul, dotProduct_smul, smul_eq_mul]
 
+/- English proof (translation)
+Unfold `herm`. Rewrite using `[star_add, add_dotProduct]`.
+-/
 theorem herm_add_r (H : Matrix (Fin n) (Fin n) ℂ) (v w w' : Fin n → ℂ) :
     herm H v (w + w') = herm H v w + herm H v w' := by
   unfold herm; rw [star_add, add_dotProduct]
 
+/- English proof (translation)
+Unfold `herm`. Rewrite using `[star_smul, smul_dotProduct, smul_eq_mul]`.
+-/
 theorem herm_smul_r (H : Matrix (Fin n) (Fin n) ℂ) (c : ℂ) (v w : Fin n → ℂ) :
     herm H v (c • w) = star c * herm H v w := by
   unfold herm; rw [star_smul, smul_dotProduct, smul_eq_mul]
 
+/- English proof (translation)
+Unfold `herm`. Rewrite using `[Matrix.mulVec_sum, dotProduct_sum]`.
+-/
 theorem herm_sum_l (H : Matrix (Fin n) (Fin n) ℂ) {ι : Type} (s : Finset ι) (f : ι → Fin n → ℂ) (w : Fin n → ℂ) :
     herm H (∑ i ∈ s, f i) w = ∑ i ∈ s, herm H (f i) w := by
   unfold herm; rw [Matrix.mulVec_sum, dotProduct_sum]
 
+/- English proof (translation)
+Unfold `herm`. Rewrite using `[mulVec_zero, dotProduct_zero]`.
+-/
 theorem herm_zero_l (H : Matrix (Fin n) (Fin n) ℂ) (w : Fin n → ℂ) : herm H 0 w = 0 := by
   unfold herm; rw [mulVec_zero, dotProduct_zero]
 
+/- English proof (translation)
+Unfold `herm`. Rewrite using `[star_mulVec, ← dotProduct_mulVec, mulVec_mulVec, mulVec_mulVec]`.
+-/
 theorem herm_mul (H g : Matrix (Fin n) (Fin n) ℂ) (v w : Fin n → ℂ) :
     herm H (g *ᵥ v) (g *ᵥ w) = herm (gᴴ * H * g) v w := by
   unfold herm; rw [star_mulVec, ← dotProduct_mulVec, mulVec_mulVec, mulVec_mulVec]
 
+/- English proof (translation)
+Rewrite using `[herm_mul, show gᴴ * H * g = H from hg]`.
+-/
 theorem herm_UH (H g : Matrix (Fin n) (Fin n) ℂ) (hg : g ∈ UH H) (v w : Fin n → ℂ) :
     herm H (g *ᵥ v) (g *ᵥ w) = herm H v w := by
   rw [herm_mul, show gᴴ * H * g = H from hg]
 
 end herm
 
+/- English proof (translation)
+Unfold `herm`. Rewrite using `[star_mulVec, ← dotProduct_mulVec, hpk_conjT, mulVec_mulVec, hpk_mul, one_mulVec]`.
+-/
 theorem herm_hpk_r (k r : ℕ) (v w : Fin (2 * r + k + 1) → ℂ) : herm (Hpk k r) v (Hpk k r *ᵥ w) = star w ⬝ᵥ v := by
   unfold herm; rw [star_mulVec, ← dotProduct_mulVec, hpk_conjT, mulVec_mulVec, hpk_mul, one_mulVec]
 
+/- English proof (translation)
+Establish `h2 : ((Real.sqrt 2 : ℝ) : ℂ) * ((Real.sqrt 2 : ℝ) : ℂ) = 2`. Rewrite using `[← Complex.ofReal_mul, Real.mul_self_sqrt (by norm_num)]; norm_num`. Apply the tactic sequence `try push_cast`. Rewrite using `[← mul_inv, h2]`. Evaluate the numerical expressions.
+-/
 theorem sq2_mul_sq2_eq_half : ((Real.sqrt 2)⁻¹ : ℂ) * ((Real.sqrt 2)⁻¹ : ℂ) = 1 / 2 := by
   have h2 : ((Real.sqrt 2 : ℝ) : ℂ) * ((Real.sqrt 2 : ℝ) : ℂ) = 2 := by
     rw [← Complex.ofReal_mul, Real.mul_self_sqrt (by norm_num)]; norm_num
   try push_cast
   rw [← mul_inv, h2]; norm_num
 
+/- English proof (translation)
+Apply the tactic sequence `try push_cast`. Rewrite using `[Complex.star_def, map_inv₀, Complex.conj_ofReal]`.
+-/
 theorem star_inv_sqrt_two : star ((Real.sqrt 2)⁻¹ : ℂ) = ((Real.sqrt 2)⁻¹ : ℂ) := by
   try push_cast
   rw [Complex.star_def, map_inv₀, Complex.conj_ofReal]
@@ -75,6 +122,13 @@ theorem star_inv_sqrt_two : star ((Real.sqrt 2)⁻¹ : ℂ) = ((Real.sqrt 2)⁻�
 section phi
 variable (k n : ℕ)
 
+/- English proof (translation)
+Rewrite using `[hpk_apply]`. Establish `hj` using `j.2`. Establish `e1 : (wI k n j).val = n + j.val` using `rfl`. Establish `e2 : (wI k n j').val = n + j'.val` using `rfl`. Establish `hs : sg k n (n + j.val) = n + j.val` using `by unfold sg; rw [if_neg (by omega)]`.
+
+Rewrite using `[e1, e2, hs]`. Distinguish the cases in `h : j = j'`. Substitute `h` using the available equality. Rewrite using `[if_pos rfl, if_pos rfl]`. Distinguish the cases in `h' : j.val = k`.
+
+Rewrite using `[if_pos (by omega : n + j.val = n + k), if_pos h']`. Rewrite using `[if_neg (by omega : ¬ n + j.val = n + k), if_neg h']`. Rewrite using `[if_neg h, if_neg (fun e => h (Fin.ext (by omega)))]`.
+-/
 theorem hpk_ww (j j' : Fin (k + 1)) :
     Hpk k n (wI k n j) (wI k n j') = if j = j' then (if j.val = k then -1 else 1) else 0 := by
   rw [hpk_apply]
@@ -90,6 +144,13 @@ theorem hpk_ww (j j' : Fin (k + 1)) :
     · rw [if_neg (by omega : ¬ n + j.val = n + k), if_neg h']
   · rw [if_neg h, if_neg (fun e => h (Fin.ext (by omega)))]
 
+/- English proof (translation)
+Unfold `phiV`. Use `split_ifs with ha hb hb`. Apply the tactic sequence `rw [herm_bb, hpk_apply]; simp only [esI, Fin.val_mk]; unfold sg; split_ifs <;> first | omega | rfl`. Unfold `epsV`. Rewrite using `[herm_smul_r, herm_add_r, herm_bb, herm_bb, hpk_apply, hpk_apply]`.
+
+Apply the tactic sequence `simp only [esI, wI, Fin.val_mk, Fin.val_zero, Fin.val_last]; unfold sg; split_ifs <;> first | omega | simp`. Unfold `epsV`. Rewrite using `[herm_smul_l, herm_add_l, herm_bb, herm_bb, hpk_apply, hpk_apply]`. Apply the tactic sequence `simp only [esI, wI, Fin.val_mk, Fin.val_zero, Fin.val_last]; unfold sg; split_ifs <;> first | omega | simp`. Unfold `epsV`.
+
+Establish `h0l : (0 : Fin (k + 1)) ≠ Fin.last k` using `fun h => by have := congrArg Fin.val h; simp at this; omega`. Rewrite using `[herm_smul_l, herm_smul_r, herm_add_l, herm_add_r, herm_add_r, herm_bb, herm_bb, herm_bb, herm_bb]`. Establish `hk0 : (0 : ℕ) ≠ k` using `by omega`. Simplify using `[hpk_ww, h0l, h0l.symm, hk0]`.
+-/
 theorem phi_iso (hk : 1 ≤ k) (a b : Fin (n + 1)) : herm (Hpk k n) (phiV k n a) (phiV k n b) = 0 := by
   unfold phiV
   split_ifs with ha hb hb
@@ -106,6 +167,9 @@ theorem phi_iso (hk : 1 ≤ k) (a b : Fin (n + 1)) : herm (Hpk k n) (phiV k n a)
     have hk0 : (0 : ℕ) ≠ k := by omega
     simp [hpk_ww, h0l, h0l.symm, hk0]
 
+/- English proof (translation)
+Unfold `epsV`. Establish `hne : (wI k n 0).val ≠ (wI k n (Fin.last k)).val` using `by simp only [wI, Fin.val_zero, Fin.val_last]; omega`. Rewrite using `[star_smul, star_inv_sqrt_two, smul_dotProduct, dotProduct_smul, star_add, add_dotProduct, dot_bvec, dot_bvec]`. Simplify using `only [Pi.add_apply, bvec_self, bvec_ne _ _ hne, bvec_ne _ _ (Ne.symm hne), smul_eq_mul]`. Take the linear combination `2 * sq2_mul_sq2_eq_half`.
+-/
 theorem eps_dot (hk : 1 ≤ k) : star (epsV k n) ⬝ᵥ epsV k n = 1 := by
   unfold epsV
   have hne : (wI k n 0).val ≠ (wI k n (Fin.last k)).val := by simp only [wI, Fin.val_zero, Fin.val_last]; omega
@@ -113,6 +177,19 @@ theorem eps_dot (hk : 1 ≤ k) : star (epsV k n) ⬝ᵥ epsV k n = 1 := by
   simp only [Pi.add_apply, bvec_self, bvec_ne _ _ hne, bvec_ne _ _ (Ne.symm hne), smul_eq_mul]
   linear_combination 2 * sq2_mul_sq2_eq_half
 
+/- English proof (translation)
+Establish `hv : a = b ↔ a.val = b.val` using `Fin.ext_iff`. Unfold `phiV`. Use `split_ifs with ha hb hab hb hab hb hab hb hab`. Substitute `hab` using the available equality. Rewrite using `[dot_bvec, bvec_self]`.
+
+Rewrite using `[dot_bvec, bvec_ne]`. Simplify using `only [esI, Fin.val_mk]`. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers. Unfold `epsV`.
+
+Rewrite using `[dot_bvec, Pi.smul_apply, Pi.add_apply, bvec_ne, bvec_ne, add_zero, smul_zero]`. Simplify using `only [esI, wI, Fin.val_mk]`. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using `only [esI, wI, Fin.val_mk]`.
+
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers. Unfold `epsV`. Rewrite using `[star_smul, smul_dotProduct, star_add, add_dotProduct, dot_bvec, dot_bvec, bvec_ne, bvec_ne, add_zero, smul_zero]`.
+
+Simplify using `only [esI, wI, Fin.val_mk]`. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using `only [esI, wI, Fin.val_mk]`. Simplify using the standard rewrite rules.
+
+Use linear arithmetic over natural numbers and integers. Conclude with `eps_dot k n hk`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem phi_dot (hk : 1 ≤ k) (a b : Fin (n + 1)) :
     star (phiV k n b) ⬝ᵥ phiV k n a = if a = b then 1 else 0 := by
   have hv : a = b ↔ a.val = b.val := Fin.ext_iff
@@ -133,10 +210,18 @@ theorem phi_dot (hk : 1 ≤ k) (a b : Fin (n + 1)) :
   · exact eps_dot k n hk
   · omega
 
+/- English proof (translation)
+Unfold `phiV'`. Rewrite using `[herm_hpk_r, phi_dot k n hk]`.
+-/
 theorem phi_pair (hk : 1 ≤ k) (a b : Fin (n + 1)) :
     herm (Hpk k n) (phiV k n a) (phiV' k n b) = if a = b then 1 else 0 := by
   unfold phiV'; rw [herm_hpk_r, phi_dot k n hk]
 
+/- English proof (translation)
+Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg b`. Establish `h : herm (Hpk k n) (∑ a, g a • (m *ᵥ phiV k n a)) (m *ᵥ phiV' k n b) = herm (Hpk k n) 0 (m *ᵥ phiV' k n b)` using `by rw [hg]`. Rewrite `h` using `[herm_zero_l, herm_sum_l]`. Simplify using `only [herm_smul_l, herm_UH _ _ hm, phi_pair k n hk, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true] at h`.
+
+Conclude with `h`.
+-/
 theorem mphi_li (hk : 1 ≤ k) (m : Mat k n) (hm : m ∈ UH (Hpk k n)) :
     LinearIndependent ℂ (fun a => m *ᵥ phiV k n a) := by
   rw [Fintype.linearIndependent_iff]; intro g hg b
@@ -147,6 +232,15 @@ theorem mphi_li (hk : 1 ≤ k) (m : Mat k n) (hm : m ∈ UH (Hpk k n)) :
     Finset.sum_ite_eq', Finset.mem_univ, if_true] at h
   exact h
 
+/- English proof (translation)
+Take `⟨κ0, hκ0, τ, hτ, hrep, hprod⟩` from `hIW k n (fun a => m *ᵥ phiV k n a) hk (mphi_li k n hk m hm) (fun a b => by show herm (Hpk k n) (m *ᵥ phiV k n a) (m *ᵥ phiV k n b) = 0`. Rewrite using `[herm_UH _ _ hm, phi_iso k n hk])`. Establish `hG : κ0ᴴ * Hpk k n * κ0 = Hpk k n` using `hκ0.1`. Establish `hU : κ0ᴴ * κ0 = 1` using `hκ0.2`. Use `⟨κ0 * Hpk k n, ?_, ?_, τ, hτ, fun a => ?_, hprod⟩` and prove the remaining obligations.
+
+Use `show (κ0 * Hpk k n)ᴴ * Hpk k n * (κ0 * Hpk k n) = Hpk k n`. Rewrite using `[conjTranspose_mul, hpk_conjT]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = Hpk k n := by rw [hG, hpk_mul, Matrix.one_mul]`.
+
+Rewrite using `[conjTranspose_mul, hpk_conjT]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[show m *ᵥ phiV k n a = ∑ b, τ b a • (κ0 *ᵥ phiV' k n b) from hrep a]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Unfold `phiV'`.
+
+Rewrite using `[Matrix.mulVec_mulVec]`.
+-/
 theorem iw_apply (hIW : IW) (hk : 1 ≤ k) (m : Mat k n) (hm : m ∈ UH (Hpk k n)) :
     ∃ κ : Mat k n, κ ∈ GV k n ∧ κᴴ * κ = 1 ∧ ∃ τ : Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ, τ.BlockTriangular id ∧
       (∀ a, m *ᵥ phiV k n a = ∑ b, τ b a • (κ *ᵥ phiV k n b)) ∧
@@ -174,6 +268,11 @@ end phi
 
 section gram
 
+/- English proof (translation)
+Rewrite using `[← Finset.sum_subset (Finset.subset_univ (Finset.univ.image (Fin.castLE h)))]`. Rewrite using `[Finset.sum_image (fun a _ b _ e => Fin.castLE_injective h e)]`. Introduce `b _ hb`. Apply `hf` to reduce the goal to its premises. Assume the negation of the conclusion as `hc`.
+
+Use `push Not at hc`. Conclude with `hb (Finset.mem_image.2 ⟨⟨b.val, by omega⟩, Finset.mem_univ _, Fin.ext (by simp)⟩)`.
+-/
 theorem sum_castLE {M : Type} [AddCommMonoid M] {n l : ℕ} (h : l + 1 ≤ n) (f : Fin n → M)
     (hf : ∀ b : Fin n, l < b.val → f b = 0) : ∑ b, f b = ∑ b : Fin (l + 1), f (Fin.castLE h b) := by
   classical
@@ -182,6 +281,17 @@ theorem sum_castLE {M : Type} [AddCommMonoid M] {n l : ℕ} (h : l + 1 ≤ n) (f
   · intro b _ hb; apply hf; by_contra hc; push Not at hc
     exact hb (Finset.mem_image.2 ⟨⟨b.val, by omega⟩, Finset.mem_univ _, Fin.ext (by simp)⟩)
 
+/- English proof (translation)
+Apply `Finset.prod_nbij' (fun a => (⟨min a.val l.val, by omega⟩ : Fin (l.val + 1))) (Fin.castLE (by omega))` to reduce the goal to its premises. Introduce `a _`. Conclude with `Finset.mem_univ _`. Introduce `a _`. Rewrite using `[Finset.mem_Iic, Fin.le_def]`.
+
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Introduce `a ha`. Rewrite `ha` using `[Finset.mem_Iic, Fin.le_def]`. Use `ext`.
+
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Introduce `a _`. Use `ext`. Simplify using the standard rewrite rules.
+
+Use linear arithmetic over natural numbers and integers. Introduce `a ha`. Rewrite `ha` using `[Finset.mem_Iic, Fin.le_def]`. Use `congr 1`. Use `ext`.
+
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
+-/
 theorem prod_Iic {M : Type} [CommMonoid M] {n : ℕ} (l : Fin (n + 1)) (f : Fin (n + 1) → M) :
     ∏ j ∈ Finset.Iic l, f j = ∏ j : Fin (l.val + 1), f (Fin.castLE (by omega) j) := by
   apply Finset.prod_nbij' (fun a => (⟨min a.val l.val, by omega⟩ : Fin (l.val + 1))) (Fin.castLE (by omega))
@@ -191,10 +301,18 @@ theorem prod_Iic {M : Type} [CommMonoid M] {n : ℕ} (l : Fin (n + 1)) (f : Fin 
   · intro a _; ext; simp; omega
   · intro a ha; rw [Finset.mem_Iic, Fin.le_def] at ha; congr 1; ext; simp; omega
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `[Matrix.mul_apply, dotProduct, conjTranspose_apply, hX]`.
+-/
 theorem gram_mat' {N L : ℕ} (X : Fin L → Fin N → ℂ) (Xm : Matrix (Fin N) (Fin L) ℂ) (hX : ∀ p a, Xm p a = X a p) :
     (Matrix.of fun a b => star (X a) ⬝ᵥ X b) = Xmᴴ * Xm := by
   ext a b; simp [Matrix.mul_apply, dotProduct, conjTranspose_apply, hX]
 
+/- English proof (translation)
+Rewrite using `[gram_mat' (fun a => ∑ j, T j a • Z j) ((Matrix.of fun p a => Z a p) * T) (fun p a => by`. Simplify using `only [Matrix.mul_apply, Matrix.of_apply, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Conclude with `Finset.sum_congr rfl fun j _ => mul_comm _ _),`. Use the proof step `gram_mat' Z (Matrix.of fun p a => Z a p) (fun p a => rfl), conjTranspose_mul]`. Rewrite using `[show Tᴴ * (Matrix.of fun p a => Z a p)ᴴ * ((Matrix.of fun p a => Z a p) * T) = Tᴴ * ((Matrix.of fun p a => Z a p)ᴴ * (Matrix.of fun p a => Z a p)) * T by simp only [Matrix.mul_assoc]]`.
+
+Rewrite using `[det_mul, det_mul, det_conjTranspose, det_of_upperTriangular hT]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem det_gram_tri {N L : ℕ} (Z : Fin L → Fin N → ℂ) (T : Matrix (Fin L) (Fin L) ℂ) (hT : T.BlockTriangular id) :
     (Matrix.of fun a b => star (∑ j, T j a • Z j) ⬝ᵥ ∑ j, T j b • Z j).det =
       (star (∏ j, T j j) * ∏ j, T j j) * (Matrix.of fun a b => star (Z a) ⬝ᵥ Z b).det := by
@@ -206,6 +324,15 @@ theorem det_gram_tri {N L : ℕ} (Z : Fin L → Fin N → ℂ) (T : Matrix (Fin 
       Tᴴ * ((Matrix.of fun p a => Z a p)ᴴ * (Matrix.of fun p a => Z a p)) * T by simp only [Matrix.mul_assoc]]
   rw [det_mul, det_mul, det_conjTranspose, det_of_upperTriangular hT]; ring
 
+/- English proof (translation)
+Establish `h : l.val + 1 ≤ r + 1` using `by omega`. Establish `hs : ∀ a : Fin (l.val + 1), (∑ b, τ b (Fin.castLE h a) • Z b) = ∑ j : Fin (l.val + 1), τ (Fin.castLE h j) (Fin.castLE h a) • Z (Fin.castLE h j)`. Introduce `a`. Apply `sum_castLE h` to reduce the goal to its premises. Introduce `b hb`.
+
+Rewrite using `[hτ (show id (Fin.castLE h a) < id b by simp only [id, Fin.lt_def, Fin.val_castLE]; omega), zero_smul]`. Establish `hT : (τ.submatrix (Fin.castLE h) (Fin.castLE h)).BlockTriangular id`. Introduce `i j hij`. Simplify using `only [submatrix_apply]`. Apply `hτ` to reduce the goal to its premises.
+
+Simplify using `only [id, Fin.lt_def, Fin.val_castLE] at hij ⊢`. Conclude with `hij`. Unfold `Ga`. Simplify using `only [hs]`. Establish `key` using `det_gram_tri (fun j => Z (Fin.castLE h j)) (τ.submatrix (Fin.castLE h) (Fin.castLE h)) hT`.
+
+Simplify using `only [submatrix_apply] at key`. Rewrite using `[key, prod_Iic l, show star (∏ j, τ (Fin.castLE h j) (Fin.castLE h j)) * ∏ j, τ (Fin.castLE h j) (Fin.castLE h j) = ((Complex.normSq (∏ j, τ (Fin.castLE h j) (Fin.castLE h j)) : ℝ) : ℂ) from (Complex.normSq_eq_conj_mul_self).symm, Complex.re_ofReal_mul, Complex.normSq_eq_norm_sq, …`.
+-/
 theorem ga_tri (k r : ℕ) (Z : Fin (r + 1) → Fin (2 * r + k + 1) → ℂ) (τ : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ)
     (hτ : τ.BlockTriangular id) (l : Fin (r + 1)) :
     Ga k r l (fun a => ∑ b, τ b a • Z b) = (∏ j ∈ Finset.Iic l, ‖τ j j‖ ^ 2) * Ga k r l Z := by
@@ -225,6 +352,9 @@ theorem ga_tri (k r : ℕ) (Z : Fin (r + 1) → Fin (2 * r + k + 1) → ℂ) (τ
       ((Complex.normSq (∏ j, τ (Fin.castLE h j) (Fin.castLE h j)) : ℝ) : ℂ) from (Complex.normSq_eq_conj_mul_self).symm,
     Complex.re_ofReal_mul, Complex.normSq_eq_norm_sq, norm_prod, ← Finset.prod_pow]
 
+/- English proof (translation)
+Unfold `Ga`. Simplify using `only [star_mulVec, ← dotProduct_mulVec, mulVec_mulVec, hU, one_mulVec]`.
+-/
 theorem ga_unit (k r : ℕ) (U : Mat k r) (hU : Uᴴ * U = 1) (l : Fin (r + 1)) (Z : Fin (r + 1) → Fin (2 * r + k + 1) → ℂ) :
     Ga k r l (fun a => U *ᵥ Z a) = Ga k r l Z := by
   unfold Ga; simp only [star_mulVec, ← dotProduct_mulVec, mulVec_mulVec, hU, one_mulVec]

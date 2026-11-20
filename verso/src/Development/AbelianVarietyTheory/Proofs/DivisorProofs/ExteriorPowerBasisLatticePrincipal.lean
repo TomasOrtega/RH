@@ -5,6 +5,15 @@ open GlobalTheory.Sandwich GlobalTheory.IndefiniteRowSideFullHecke.SandwichMaps
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `C _ O _ _ V _ _ _ _ N b`. Use `haveI : Module.Finite C V := Module.Finite.of_basis b`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[exteriorPower.finrank_eq, Module.finrank_eq_card_basis b, Fintype.card_fin, Nat.choose_self]`. Introduce `h`.
+
+Apply `ReciprocityTheory.PGsh.wedge_ne_zero_of_linearIndependent b.linearIndependent` to reduce the goal to its premises. Use `congrArg Subtype.val h` as an intermediate fact. Simplify using `using this`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`.
+
+Introduce and unpack `w ⟨x, hx, rfl⟩`. Take `⟨r, hr⟩` from `ReciprocityTheory.PGsh.exists_wedge_eq_integral_smul (R := O) b.linearIndependent hx`. Rewrite using `[SetLike.mem_coe, Submodule.mem_span_singleton]`. Use `⟨r, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Rewrite using `[Submodule.coe_smul_of_tower, exteriorPower.ιMulti_apply_coe, exteriorPower.ιMulti_apply_coe, hr, algebraMap_smul]`. Rewrite using `[Submodule.span_le, Set.singleton_subset_iff]`. Apply `Submodule.subset_span` to reduce the goal to its premises. Conclude with `⟨b, fun i => Submodule.subset_span ⟨i, rfl⟩, rfl⟩`.
+-/
 theorem span_wedge_of_span_basis : ∀ (C : Type) [Field C] (O : Type) [CommRing O] [Algebra O C] (V : Type) [AddCommGroup V] [Module C V] [Module O V] [IsScalarTower O C V] (N : ℕ) (b : Module.Basis (Fin N) C V), Module.finrank C (⋀[C]^N V) = 1 ∧ exteriorPower.ιMulti C N b ≠ 0 ∧ Submodule.span O {w : ⋀[C]^N V | ∃ x : Fin N → V, (∀ i, x i ∈ (Submodule.span O (Set.range b) : Set V)) ∧ w = exteriorPower.ιMulti C N x} = Submodule.span O {exteriorPower.ιMulti C N b} := by
   intro C _ O _ _ V _ _ _ _ N b
   haveI : Module.Finite C V := Module.Finite.of_basis b

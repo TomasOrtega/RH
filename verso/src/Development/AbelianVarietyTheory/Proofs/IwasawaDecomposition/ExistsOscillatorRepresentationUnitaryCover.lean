@@ -27,10 +27,16 @@ variable {P Q : ℕ}
 def gauss (F : Fock (Ix P Q)) {A : Matrix (Fin P) (Fin Q) ℂ} (h : (1 - Aᴴ * A).PosDef) (x : Ix P Q → ℂ) : F.H :=
   (GlobalTheory.T.fock_existsUnique_gaussian_vector P Q F A x h).exists.choose
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.T.fock_existsUnique_gaussian_vector P Q F A x h).exists.choose_spec`.
+-/
 theorem hasCoeff_gauss (F : Fock (Ix P Q)) {A : Matrix (Fin P) (Fin Q) ℂ} (h : (1 - Aᴴ * A).PosDef)
     (x : Ix P Q → ℂ) : HasCoeff F (gauss F h x) (expPS (gaussPoly A x)) :=
   (GlobalTheory.T.fock_existsUnique_gaussian_vector P Q F A x h).exists.choose_spec
 
+/- English proof (translation)
+Substitute `e e'` using the available equality. Both sides reduce to the same expression.
+-/
 theorem gauss_congr (F : Fock (Ix P Q)) {A B : Matrix (Fin P) (Fin Q) ℂ} (h : (1 - Aᴴ * A).PosDef)
     (h' : (1 - Bᴴ * B).PosDef) {x y : Ix P Q → ℂ} (e : A = B) (e' : x = y) : gauss F h x = gauss F h' y := by
   subst e e'; rfl
@@ -48,11 +54,19 @@ def act (T0 : GrpData P Q) (g : T0.G) (p : Par P Q) : Par P Q :=
 def base (c : ℂ) {A : Matrix (Fin P) (Fin Q) ℂ} (h : (1 - Aᴴ * A).PosDef) (x : Ix P Q → ℂ) : Par P Q :=
   (c, ⟨baseY A, isNeg_baseY h⟩, baseV x, baseF x)
 
+/- English proof (translation)
+Simplify using `only [vec, base, scal_base, mul_one]`. Rewrite using `[gauss_congr F _ h (matA_baseY A) (linX_base A x)]`.
+-/
 theorem vec_base (F : Fock (Ix P Q)) (c : ℂ) {A : Matrix (Fin P) (Fin Q) ℂ} (h : (1 - Aᴴ * A).PosDef)
     (x : Ix P Q → ℂ) : vec F (base c h x) = c • gauss F h x := by
   simp only [vec, base, scal_base, mul_one]
   rw [gauss_congr F _ h (matA_baseY A) (linX_base A x)]
 
+/- English proof (translation)
+Take `⟨c, ⟨Y, hY⟩, v, φ⟩` from `p`. Take `⟨c', ⟨Y', hY'⟩, v', φ'⟩` from `q`. Establish `h1` using `GlobalTheory.T.inner_gaussianVectors_fockSpace P Q F _ _ _ _ hY.posDef hY'.posDef _ _ (hasCoeff_gauss F hY.posDef (linX Y v φ)) (hasCoeff_gauss F hY'.posDef (linX Y' v' φ'))`. Establish `h2` using `GlobalTheory.T.gaussian_inner_eq_invariantKernel P Q Y Y' v φ v' φ' hY.isUnit hY'.isUnit (GlobalTheory.T.isUnit_det_one_sub_conjTranspose_mul_contractions P Q _ _ hY.posDef hY'.posDef)`. Simplify using `only at h1 h2`.
+
+Simplify using `only [vec, inner_smul_left, inner_smul_right, h1, ← h2, map_mul, starRingEnd_apply]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem inner_vec (F : Fock (Ix P Q)) (p q : Par P Q) :
     inner ℂ (vec F p) (vec F q) = star p.1 * q.1 * ker p.2.1.1 p.2.2.1 p.2.2.2 q.2.1.1 q.2.2.1 q.2.2.2 := by
   obtain ⟨c, ⟨Y, hY⟩, v, φ⟩ := p
@@ -64,6 +78,9 @@ theorem inner_vec (F : Fock (Ix P Q)) (p q : Par P Q) :
   simp only [vec, inner_smul_left, inner_smul_right, h1, ← h2, map_mul, starRingEnd_apply]
   ring
 
+/- English proof (translation)
+Establish `h1 : IsUnit (-(Yᴴ * Jm P Q * Y')).det`. Rewrite using `[form_factor Y Y' h.isUnit h'.isUnit, Matrix.det_mul, Matrix.det_mul, Matrix.det_conjTranspose]`. Conclude with `(h.isUnit.star.mul (GlobalTheory.T.isUnit_det_one_sub_conjTranspose_mul_contractions P Q _ _ h.posDef h'.posDef)).mul h'.isUnit`. Rewrite `h1` using `[Matrix.det_neg]`. Conclude with `isUnit_of_mul_isUnit_right h1`.
+-/
 theorem isUnit_form {Y Y' : Matrix (Ix P Q) (Fin Q) ℂ} (h : IsNeg Y) (h' : IsNeg Y') :
     IsUnit (Yᴴ * Jm P Q * Y').det := by
   have h1 : IsUnit (-(Yᴴ * Jm P Q * Y')).det := by
@@ -72,6 +89,9 @@ theorem isUnit_form {Y Y' : Matrix (Ix P Q) (Fin Q) ℂ} (h : IsNeg Y) (h' : IsN
   rw [Matrix.det_neg] at h1
   exact isUnit_of_mul_isUnit_right h1
 
+/- English proof (translation)
+Establish `h0 : (1 - (0 : Matrix (Fin P) (Fin Q) ℂ)ᴴ * (0 : Matrix (Fin P) (Fin Q) ℂ)).PosDef`. Simplify using `using Matrix.PosDef.one`. Use `(GlobalTheory.T.dense_span_coherent_vectors_fock P Q F (gauss F h0) (hasCoeff_gauss F h0)).mono (Submodule.span_mono ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `⟨base 1 h0 x, by rw [vec_base, one_smul]⟩`.
+-/
 theorem dense_vec (F : Fock (Ix P Q)) : Dense (Submodule.span ℂ (Set.range (vec F)) : Set F.H) := by
   have h0 : (1 - (0 : Matrix (Fin P) (Fin Q) ℂ)ᴴ * (0 : Matrix (Fin P) (Fin Q) ℂ)).PosDef := by
     simpa using Matrix.PosDef.one
@@ -79,6 +99,15 @@ theorem dense_vec (F : Fock (Ix P Q)) : Dense (Submodule.span ℂ (Set.range (ve
   rintro _ ⟨x, rfl⟩
   exact ⟨base 1 h0 x, by rw [vec_base, one_smul]⟩
 
+/- English proof (translation)
+Establish `hc : Continuous fun g : T0.G => (T0.cov g : Mat P Q)` using `Units.continuous_val.comp (continuous_fst.comp T0.emb.continuous)`. Use `GlobalTheory.T.exists_unitaryRep_of_action_on_total_family T0.G (Par P Q) F.H (act T0) (vec F) (fun p => ?_) (fun g h p => ?_) (dense_vec F) (fun g p q => ?_) (fun p q => ?_)` and prove the remaining obligations. Simplify using `[act]`. Simplify using `[act, mul_assoc, Matrix.mul_assoc]`. Rewrite using `[inner_vec, inner_vec]`.
+
+Simplify using `only [act]`. Rewrite using `[ker_mul (T0.cov_mem g) (by rw [← Units.val_mul, ← map_mul, inv_mul_cancel, map_one, Units.val_one])]`. Establish `h : star ((T0.sq g : ℂˣ) : ℂ) * (T0.sq g : ℂˣ) = 1`. Rewrite using `[Complex.star_def, Complex.conj_mul', RealPar.Cover.norm_sq]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[star_mul']`. Take the linear combination `(star p.1 * q.1 * ker p.2.1.1 p.2.2.1 p.2.2.2 q.2.1.1 q.2.2.1 q.2.2.2) * h`. Simplify using `only [inner_vec]`. Use `(continuous_const.mul (RealPar.Cover.continuous_sq.mul continuous_const)).mul (GlobalTheory.T.continuous_oscillatorGaussianKernel_right P Q T0.G _ _ _ _ _ _ ?_ ?_ ?_ fun g => isUnit_form q.2.1.2 (act T0 g p).2.1.2)` and prove the remaining obligations. Conclude with `hc.matrix_mul continuous_const`.
+
+Conclude with `hc.matrix_mulVec continuous_const`. Conclude with `continuous_const.matrix_vecMul (hc.comp continuous_inv)`.
+-/
 theorem exists_rep (T0 : GrpData P Q) (F : Fock (Ix P Q)) :
     ∃ π : T0.G →* (F.H →L[ℂ] F.H), (∀ g x, ‖π g x‖ = ‖x‖) ∧ (∀ x, Continuous fun g => π g x) ∧
       ∀ g p, π g (vec F p) = vec F (act T0 g p) := by
@@ -102,6 +131,9 @@ theorem exists_rep (T0 : GrpData P Q) (F : Fock (Ix P Q)) :
     · exact hc.matrix_mulVec continuous_const
     · exact continuous_const.matrix_vecMul (hc.comp continuous_inv)
 
+/- English proof (translation)
+Use `open scoped Matrix.Norms.Operator in`. Establish `h2` using `((Matrix.entryLinearMap ℝ ℂ a b).toContinuousLinearMap.hasFDerivAt).comp_hasDerivAt 0 (hasDerivAt_exp_smul_const (𝕂 := ℝ) X 0)`. Rewrite `h2` using `[zero_smul, NormedSpace.exp_zero, one_mul]`. Conclude with `h2`.
+-/
 theorem hasDerivAt_exp_entry (X : Mat P Q) (a b : Ix P Q) :
     HasDerivAt (fun t : ℝ => NormedSpace.exp (t • X) a b) (X a b) 0 := by
   open scoped Matrix.Norms.Operator in
@@ -110,18 +142,36 @@ theorem hasDerivAt_exp_entry (X : Mat P Q) (a b : Ix P Q) :
   rw [zero_smul, NormedSpace.exp_zero, one_mul] at h2
   exact h2
 
+/- English proof (translation)
+Rewrite using `[inv_eq_iff_mul_eq_one, smul_neg, ← neg_smul, ← T0.expt_add Z hZ, add_neg_cancel, zero_smul, T0.expt_zero]`.
+-/
 theorem expt_inv (T0 : GrpData P Q) {Z : Mat P Q} (hZ : Z ∈ upq P Q) (t : ℝ) :
     (T0.expt (t • Z))⁻¹ = T0.expt (t • -Z) := by
   rw [inv_eq_iff_mul_eq_one, smul_neg, ← neg_smul, ← T0.expt_add Z hZ, add_neg_cancel, zero_smul, T0.expt_zero]
 
+/- English proof (translation)
+Simplify using `using RealPar.KStabLie.smul_mem_upq hZ (-1)`.
+-/
 theorem neg_mem_upq {Z : Mat P Q} (hZ : Z ∈ upq P Q) : -Z ∈ upq P Q := by
   simpa using RealPar.KStabLie.smul_mem_upq hZ (-1)
 
+/- English proof (translation)
+Establish `h : Zᴴ * Jm P Q = -(Jm P Q * Z)` using `eq_neg_of_add_eq_zero_left hZ`. Rewrite using `[adjZ, Matrix.conjTranspose_neg, Matrix.mul_neg, Matrix.neg_mul, Matrix.mul_assoc, h, Matrix.mul_neg, neg_neg, ← Matrix.mul_assoc, Jm_mul_Jm, Matrix.one_mul]`.
+-/
 theorem adjZ_neg {Z : Mat P Q} (hZ : Z ∈ upq P Q) : adjZ (-Z) = Z := by
   have h : Zᴴ * Jm P Q = -(Jm P Q * Z) := eq_neg_of_add_eq_zero_left hZ
   rw [adjZ, Matrix.conjTranspose_neg, Matrix.mul_neg, Matrix.neg_mul, Matrix.mul_assoc, h, Matrix.mul_neg, neg_neg,
     ← Matrix.mul_assoc, Jm_mul_Jm, Matrix.one_mul]
 
+/- English proof (translation)
+Use `set g : ℝ → Mat P Q := fun t => (T0.cov (T0.expt (t • Z)) : Mat P Q) with hg`. Use `set g' : ℝ → Mat P Q := fun t => (T0.cov (T0.expt (t • Z))⁻¹ : Mat P Q) with hg'`. Establish `g0 : g 0 = 1` using `by simp [hg, T0.expt_zero]`. Establish `g0' : g' 0 = 1` using `by simp [hg', T0.expt_zero]`. Take `⟨hA, hx, hs⟩` from `GlobalTheory.T.hasDerivAt_gaussian_parameters_at_identity P Q A x Z g g' g0 g0' (fun a b => by`.
+
+Apply the tactic sequence `simpa only [hg, T0.expt_cov _ (RealPar.KStabLie.smul_mem_upq hZ _)] using hasDerivAt_exp_entry Z a b)`. Use the proof step `(fun a b => by`. Apply the tactic sequence `simpa only [hg', expt_inv T0 hZ, T0.expt_cov _ (RealPar.KStabLie.smul_mem_upq (neg_mem_upq hZ) _), Matrix.neg_apply] using hasDerivAt_exp_entry (-Z) a b)`. Establish `hn : ∀ t, IsNeg (g t * baseY A)` using `fun t => (isNeg_baseY h).mul (T0.cov_mem _)`. Establish `hp` using `GlobalTheory.T.hasDerivAt_inner_polynomial_moving_gaussian P Q F _ _ (fun t => gauss F (hn t).posDef (linX (g t * baseY A) (g t *ᵥ baseV x) (baseF x ᵥ* g' t))) _ _ (fun t => hasCoeff_gauss F _ _) hA hx f`.
+
+Establish `e0 : gauss F (hn 0).posDef (linX (g 0 * baseY A) (g 0 *ᵥ baseV x) (baseF x ᵥ* g' 0)) = gauss F h x` using `gauss_congr F _ _ (by rw [g0, Matrix.one_mul, matA_baseY]) (by rw [g0, g0', Matrix.one_mul, Matrix.one_mulVec, Matrix.vecMul_one, linX_base])`. Take `⟨a1, a2⟩` from `GlobalTheory.T.gaussianVector_annihilator_equations P Q F A x _ (hasCoeff_gauss F h x)`. Establish `h5` using `((((RealPar.Cover.hasDerivAt_sq (T := T0) hZ).mul_const c).fun_mul hs).fun_mul hp)`. Simplify using `only [vec_base, inner_smul_right, GlobalTheory.T.inner_lieAction_adjoint_gaussian_polynomial P Q F A x _ a1 a2 Z f]`. Simplify using `only [vec, inner_smul_right]`.
+
+Use `h5.congr_deriv ?_` and prove the remaining obligations. Simplify using `only [e0]`. Simplify using `only [g0, g0', Matrix.one_mul, Matrix.one_mulVec, Matrix.vecMul_one, scal_base, zero_smul, T0.expt_zero, map_one, Units.val_one]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hasDerivAt_inner_act (T0 : GrpData P Q) (F : Fock (Ix P Q)) {Z : Mat P Q} (hZ : Z ∈ upq P Q)
     (f : MvPolynomial (Ix P Q) ℂ) (c : ℂ) {A : Matrix (Fin P) (Fin Q) ℂ} (h : (1 - Aᴴ * A).PosDef)
     (x : Ix P Q → ℂ) :
@@ -153,6 +203,15 @@ theorem hasDerivAt_inner_act (T0 : GrpData P Q) (F : Fock (Ix P Q)) {Z : Mat P Q
     map_one, Units.val_one]
   ring
 
+/- English proof (translation)
+Take `⟨π, h1, h2, h3⟩` from `exists_rep T0 F`. Use `⟨π, h1, h2, fun Z hZ f => ?_⟩` and prove the remaining obligations. Use `GlobalTheory.T.hasDerivAt_of_weak_deriv_on_invariant_total_set F.H (fun t => π (T0.expt (t • Z))) (Set.range (vec F)) _ _ ?_ (fun s t => ?_) (fun t => h1 _) (fun y => (h2 y).comp (T0.expt_cont.comp_continuous (by fun_prop) fun t => RealPar.KStabLie.smul_mem_upq hZ t)) (dense_vec …` and prove the remaining obligations. Simplify using `[T0.expt_zero]`. Simplify using `only [T0.expt_add Z hZ, map_mul]`.
+
+Introduce and unpack `t _ ⟨p, rfl⟩`. Conclude with `⟨_, (h3 _ p).symm⟩`. Introduce and unpack `_ ⟨p, rfl⟩`. Establish `e : vec F p = vec F (base (p.1 * scal p.2.1.1 p.2.2.1 p.2.2.2) p.2.1.2.posDef (linX p.2.1.1 p.2.2.1 p.2.2.2))` using `by rw [vec_base, vec]`. Establish `h4` using `hasDerivAt_inner_act T0 F (neg_mem_upq hZ) f (p.1 * scal p.2.1.1 p.2.2.1 p.2.2.2) p.2.1.2.posDef (linX p.2.1.1 p.2.2.1 p.2.2.2)`.
+
+Simplify using `only [← h3, ← e, adjZ_neg hZ] at h4`. Use `h4.congr_of_eventuallyEq (.of_forall fun t => ?_)` and prove the remaining obligations. Establish `iso` using `(⟨(π (T0.expt (t • Z)) : F.H →ₗ[ℂ] F.H), h1 _⟩ : F.H →ₗᵢ[ℂ] F.H).inner_map_map (F.ι f) (π (T0.expt (t • -Z)) (vec F p))`. Simplify using `only [← iso]`. Express the relevant statement in the definitionally equal form `_ = inner ℂ (π _ _) (π _ (π _ _))`.
+
+Rewrite using `[← ContinuousLinearMap.mul_apply, ← map_mul, ← expt_inv T0 hZ, mul_inv_cancel, map_one, ContinuousLinearMap.one_apply]`.
+-/
 theorem exists_isOsc (P Q : ℕ) (T0 : GrpData P Q) (F : Fock (Ix P Q)) :
     ∃ Om : T0.G →* (F.H →L[ℂ] F.H), IsOsc T0 F Om := by
   obtain ⟨π, h1, h2, h3⟩ := exists_rep T0 F

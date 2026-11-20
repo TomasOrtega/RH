@@ -8,6 +8,9 @@ namespace PI.QuotSetU.UnitaryGroupMassFormula.SW
 
 open PI PI.QuotSetU
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hx`. Use `push_neg at hx`. Take `⟨m, hm⟩` from `pow_unbounded_of_one_lt M hx`. Combine the linear relations using `[h m]`.
+-/
 lemma le_one_of_pow_le {x M : ℝ} (h : ∀ m : ℕ, x ^ m ≤ M) : x ≤ 1 := by
   by_contra hx
   push_neg at hx
@@ -16,6 +19,9 @@ lemma le_one_of_pow_le {x M : ℝ} (h : ∀ m : ℕ, x ^ m ≤ M) : x ≤ 1 := b
 
 variable {m : ℕ} {G : Set (Matrix (Fin m) (Fin m) ℂ)} {D : Matrix (Fin m) (Fin m) ℂ → ℝ}
 
+/- English proof (translation)
+Establish `h1 : (1 : Matrix (Fin m) (Fin m) ℂ) ∈ G` using `hG.2.1`. Establish `hpos` using `hD.1 1 h1`. Establish `hm` using `hD.2.1 1 h1 1 h1`. Rewrite `hm` using `[mul_one]`. Conclude with `mul_left_cancel₀ hpos.ne' (hm.symm.trans (mul_one (D 1)).symm)`.
+-/
 lemma modOne (hG : IsMatGroup G) (hD : ModProps G D) : D 1 = 1 := by
   have h1 : (1 : Matrix (Fin m) (Fin m) ℂ) ∈ G := hG.2.1
   have hpos := hD.1 1 h1
@@ -23,6 +29,11 @@ lemma modOne (hG : IsMatGroup G) (hD : ModProps G D) : D 1 = 1 := by
   rw [mul_one] at hm
   exact mul_left_cancel₀ hpos.ne' (hm.symm.trans (mul_one (D 1)).symm)
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero`. Rewrite using `[pow_zero]`. Conclude with `hG.2.1`. Consider the case `succ n ih`.
+
+Rewrite using `[pow_succ]`. Conclude with `hG.2.2.1 _ ih _ hx`.
+-/
 lemma pow_mem (hG : IsMatGroup G) {x : Matrix (Fin m) (Fin m) ℂ} (hx : x ∈ G) (n : ℕ) : x ^ n ∈ G := by
   induction n with
   | zero =>
@@ -32,6 +43,11 @@ lemma pow_mem (hG : IsMatGroup G) {x : Matrix (Fin m) (Fin m) ℂ} (hx : x ∈ G
     rw [pow_succ]
     exact hG.2.2.1 _ ih _ hx
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero`. Rewrite using `[pow_zero, pow_zero]`. Conclude with `modOne hG hD`. Consider the case `succ n ih`.
+
+Rewrite using `[pow_succ, pow_succ, hD.2.1 _ (pow_mem hG hx n) _ hx, ih]`.
+-/
 lemma modPow (hG : IsMatGroup G) (hD : ModProps G D) {x : Matrix (Fin m) (Fin m) ℂ} (hx : x ∈ G)
     (n : ℕ) : D (x ^ n) = D x ^ n := by
   induction n with
@@ -41,6 +57,11 @@ lemma modPow (hG : IsMatGroup G) (hD : ModProps G D) {x : Matrix (Fin m) (Fin m)
   | succ n ih =>
     rw [pow_succ, pow_succ, hD.2.1 _ (pow_mem hG hx n) _ hx, ih]
 
+/- English proof (translation)
+Establish `hinv` using `(hG.2.2.2 x hx).1`. Establish `hxx` using `(hG.2.2.2 x hx).2`. Establish `hm` using `hD.2.1 x hx x⁻¹ hinv`. Rewrite `hm` using `[hxx, modOne hG hD]`. Establish `h0` using `hD.1 x hx`.
+
+Establish `hle : D x * D x⁻¹ ≤ D x`. Combine the equalities or inequalities in the displayed calculation. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 lemma modEqOne (hG : IsMatGroup G) (hD : ModProps G D) {x : Matrix (Fin m) (Fin m) ℂ} (hx : x ∈ G)
     (h1 : D x ≤ 1) (h2 : D x⁻¹ ≤ 1) : D x = 1 := by
   have hinv := (hG.2.2.2 x hx).1
@@ -55,6 +76,15 @@ lemma modEqOne (hG : IsMatGroup G) (hD : ModProps G D) {x : Matrix (Fin m) (Fin 
 
 def box1 (m : ℕ) : Set (Matrix (Fin m) (Fin m) ℂ) := {x | ∀ i j, ‖(x - 1) i j‖ ≤ 1}
 
+/- English proof (translation)
+Establish `hbox : box1 m = Set.pi Set.univ (fun i => Set.pi Set.univ (fun j => Metric.closedBall ((1 : Matrix (Fin m) (Fin m) ℂ) i j) 1))`. Use extensionality with `x`. Simplify using `only [box1, Set.mem_setOf_eq, Matrix.sub_apply]`. Prove the components needed by the constructor for the conclusion. Introduce `h show ∀ i ∈ Set.univ, ∀ j ∈ Set.univ, x i j ∈ Metric.closedBall ((1 : Matrix (Fin m) (Fin m) ℂ) i j) 1`.
+
+Introduce `i _ j _`. Rewrite using `[Metric.mem_closedBall, dist_eq_norm]`. Conclude with `h i j`. Introduce `h i j`. Establish `h' : ∀ i ∈ Set.univ, ∀ j ∈ Set.univ, x i j ∈ Metric.closedBall ((1 : Matrix (Fin m) (Fin m) ℂ) i j) 1` using `h`.
+
+Establish `h2` using `h' i (Set.mem_univ _) j (Set.mem_univ _)`. Rewrite `h2` using `[Metric.mem_closedBall, dist_eq_norm]`. Conclude with `h2`. Establish `hc : IsCompact (box1 m)`. Rewrite using `[hbox]`.
+
+Conclude with `isCompact_univ_pi fun i => isCompact_univ_pi fun j => isCompact_closedBall _ _`. Conclude with `hc.inter_left hG`.
+-/
 lemma isCompact_inter_unit_box (hG : IsClosed G) : IsCompact (G ∩ box1 m) := by
   have hbox : box1 m = Set.pi Set.univ (fun i => Set.pi Set.univ
       (fun j => Metric.closedBall ((1 : Matrix (Fin m) (Fin m) ℂ) i j) 1)) := by
@@ -76,6 +106,29 @@ lemma isCompact_inter_unit_box (hG : IsClosed G) : IsCompact (G ∩ box1 m) := b
     exact isCompact_univ_pi fun i => isCompact_univ_pi fun j => isCompact_closedBall _ _
   exact hc.inter_left hG
 
+/- English proof (translation)
+Unfold `TrivS`. Introduce `k r z hz hT D hD`. Establish `hG` using `hSG k r z hz hT`. Take `⟨hN1, hNmul, hNinv⟩` from `hN k r`. Establish `h1S : (1 : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) ∈ Sset k r z` using `hG.2.1`.
+
+Take `⟨h0, hh0, m0, hm0, he0⟩` from `h1S`. Establish `hNS : ∀ n ∈ Nset k r, n ∈ Sset k r z`. Introduce `n hn`. Use `⟨h0, hh0, m0 * n, hNmul _ hm0 _ hn, ?_⟩` and prove the remaining obligations. Rewrite using `[← mul_assoc, ← he0, one_mul]`.
+
+Establish `hUS : ∀ h ∈ UWset k r z, h ∈ Sset k r z`. Introduce `h hh`. Conclude with `⟨h, hh, 1, hN1, (mul_one h).symm⟩`. Establish `hpowN : ∀ n ∈ Nset k r, ∀ j : ℕ, n ^ j ∈ Nset k r`. Introduce `n hn j`.
+
+Proceed by induction on `j with`. Consider the case `zero`. Rewrite using `[pow_zero]`. Conclude with `hN1`. Consider the case `succ j ih`.
+
+Rewrite using `[pow_succ]`. Conclude with `hNmul _ ih _ hn`. Take `⟨M, hM⟩` from `hD.2.2.2 _ Set.inter_subset_left (isCompact_inter_unit_box hG.1)`. Establish `hNle : ∀ n ∈ Nset k r, D n ≤ 1`. Introduce `n hn`.
+
+Apply `le_one_of_pow_le (M := M)` to reduce the goal to its premises. Introduce `j`. Establish `hnj` using `hpowN n hn j`. Take `⟨c, hcu, hcS, hcb⟩` from `hNC k r z hz (n ^ j) hnj 1 one_pos`. Establish `hnjS` using `hNS _ hnj`.
+
+Rewrite using `[← modPow hG hD (hNS n hn) j, ← hD.2.2.1 c hcu hcS _ hnjS]`. Apply `hM` to reduce the goal to its premises. Conclude with `⟨(hcS _).mpr hnjS, fun i' j' => hcb i' j'⟩`. Take `⟨M', hM'⟩` from `hD.2.2.2 _ (fun h hh => hUS h hh) (hUW k r z hz hT)`. Establish `hSle : ∀ g ∈ Sset k r z, D g ≤ M'`.
+
+Introduce `g hg`. Take `⟨h, hh, m, hm, rfl⟩` from `hg`. Rewrite using `[hD.2.1 h (hUS h hh) m (hNS m hm)]`. Establish `h1` using `hNle m hm`. Establish `h2` using `hD.1 h (hUS h hh)`.
+
+Establish `h3` using `hM' h hh`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_one]`. Conclude with `h3`. Establish `hle1 : ∀ g ∈ Sset k r z, D g ≤ 1`.
+
+Introduce `g hg`. Apply `le_one_of_pow_le (M := M')` to reduce the goal to its premises. Introduce `j`. Rewrite using `[← modPow hG hD hg j]`. Conclude with `hSle _ (pow_mem hG hg j)`.
+
+Introduce `g hg`. Conclude with `modEqOne hG hD hg (hle1 g hg) (hle1 _ (hG.2.2.2 g hg).1)`.
+-/
 theorem trivS_of (hSG : SsetGroup) (hUW : UWCompact) (hN : NGroup) (hNC : NContract) : TrivS := by
   unfold TrivS
   intro k r z hz hT D hD

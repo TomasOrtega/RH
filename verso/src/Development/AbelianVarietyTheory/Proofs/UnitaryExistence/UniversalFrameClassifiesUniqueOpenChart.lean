@@ -9,10 +9,24 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 
 namespace GlobalTheory.Frames
 
+/- English proof (translation)
+Simplify using `only [spMap, CommRingCat.ofHom_comp, Spec.map_comp]`.
+-/
 private theorem spectrumMap_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap (g.comp f) = spMap g ≫ spMap f := by
   simp only [spMap, CommRingCat.ofHom_comp, Spec.map_comp]
 
+/- English proof (translation)
+Introduce `hS E _ _ _ H Dw l Xo c R _ _ A _ _ j y₀ π X s u hj hu T _ _ a a' z ha ha'`. Take `⟨hopen, hj1, hj2⟩` from `hj`. Take `⟨u₀, hπ, hchg⟩` from `hu.2`. Establish `key : ∀ b : A →ₐ[c.F] T, FrMap b u z → z.x = spMap (b.comp π).toRingHom ≫ y₀.x`. Introduce `b hb`.
+
+Rewrite using `[hb.1, hchg.1, hπ.1, ← Category.assoc, ← spectrumMap_comp]`. Both sides reduce to the same expression. Establish `hov : ∀ ψ : R →ₐ[c.F] T, spMap ψ.toRingHom ≫ spMap (algebraMap c.F R) = spMap (algebraMap c.F T)`. Introduce `ψ`. Rewrite using `[← spectrumMap_comp]`.
+
+Use `congr 1`. Conclude with `ψ.comp_algebraMap`. Establish `h1 : spMap (a.comp π).toRingHom ≫ j = spMap (a'.comp π).toRingHom ≫ j`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, Category.assoc, hj1, ← key a ha, ← key a' ha']`.
+
+Rewrite using `[Category.assoc, Category.assoc, hj2, hov, hov]`. Establish `h2 : spMap (a.comp π).toRingHom = spMap (a'.comp π).toRingHom` using `(cancel_mono j).1 h1`. Establish `h3 : a.comp π = a'.comp π`. Establish `h4` using `Spec.map_injective h2`. Establish `h5` using `congrArg CommRingCat.Hom.hom h4`.
+
+Conclude with `AlgHom.coe_ringHom_injective h5`. Take `⟨b, -, hb⟩` from `GlobalTheory.T.universalFrame_classifies_framedPoints hS E H Dw l Xo c R A y₀ π X s u hu T z (a.comp π) (key a ha)`. Conclude with `(hb a ⟨rfl, ha⟩).trans (hb a' ⟨h3.symm, ha'⟩).symm`.
+-/
 theorem univFrame_classifies_unique : Out.SecBaseChangeSt → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (R : Type) [CommRing R] [Algebra c.F R] (A : Type) [CommRing A] [Algebra c.F A] (j : Sp R ⟶ Xo.XF c) (y₀ : FrPt Xo c R) (π : R →ₐ[c.F] A) (X : (∀ τ : E →+* ℂ, Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) A)) (s : Aˣ) (u : FrPt Xo c A), OpenChart j y₀ → UnivFrame y₀ π X s u → ∀ (T : Type) [CommRing T] [Algebra c.F T] (a a' : A →ₐ[c.F] T) (z : FrPt Xo c T), FrMap a u z → FrMap a' u z → a = a' := by
   intro hS E _ _ _ H Dw l Xo c R _ _ A _ _ j y₀ π X s u hj hu T _ _ a a' z ha ha'
   obtain ⟨hopen, hj1, hj2⟩ := hj

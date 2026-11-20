@@ -33,10 +33,29 @@ variable {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H
 
 def frInv {Ψ : Finset (E →+* ℂ)} (b : Frame Ψ r) : Frame Ψ r := fun τ => ((mat b τ)⁻¹ : Matrix (Fin r) (Fin r) ℂ)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mat_frInv {Ψ : Finset (E →+* ℂ)} (b : Frame Ψ r) (τ : Ψ) : mat (frInv b) τ = (mat b τ)⁻¹ := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mat_rmul {Ψ : Finset (E →+* ℂ)} (x b : Frame Ψ r) (τ : Ψ) : mat (rmul x b) τ = mat x τ * mat b τ := rfl
 
+/- English proof (translation)
+Establish `hdet : ∀ τ, (mat b τ).det ≠ 0` using `fun τ => (hb τ).1`. Establish `hbinv : frInv b ∈ Bor X.Ψ r`. Introduce `τ`. Use `⟨?_, fun a c hca => ?_⟩` and prove the remaining obligations. Rewrite using `[mat_frInv]`.
+
+Conclude with `(Matrix.isUnit_nonsing_inv_det _ (isUnit_iff_ne_zero.2 (hdet τ))).ne_zero`. Use `haveI : Invertible (mat b τ) := Matrix.invertibleOfIsUnitDet _ (isUnit_iff_ne_zero.2 (hdet τ))`. Establish `ht : Matrix.BlockTriangular (mat b τ) id` using `fun i j hij => (hb τ).2 i j hij`. Use `Matrix.blockTriangular_inv_of_blockTriangular ht hca` as an intermediate fact. Rewrite `this` using `[← mat_frInv]`.
+
+Conclude with `this`. Establish `hcancel : rmul (rmul (lact γ x) b) (frInv b) = lact γ x`. Use function extensionality and compare the values at `τ`. Establish `e : mat (rmul (rmul (lact γ x) b) (frInv b)) τ = mat (lact γ x) τ`. Rewrite using `[mat_rmul, mat_rmul, mat_frInv]`.
+
+Conclude with `Matrix.mul_nonsing_inv_cancel_right _ _ (isUnit_iff_ne_zero.2 (hdet τ))`. Conclude with `Matrix.of.injective e`. Establish `h1 : P (lact γ x) = 0`. Use `hB _ hz (frInv b) hbinv` as an intermediate fact. Rewrite `this` using `[hcancel, h0, mul_zero]`.
+
+Conclude with `this`. Rewrite `h1` using `[hΓ γ hγ x hx]`. Take `⟨n, hn, hχ⟩` from `X.χ_fin la`. Establish `hne : X.χ la γ ≠ 0`. Introduce `h`.
+
+Use `hχ γ hγ` as an intermediate fact. Rewrite `this` using `[h, zero_pow hn.ne']`. Conclude with `zero_ne_one this`. Conclude with `(mul_eq_zero.1 h1).resolve_left hne`.
+-/
 theorem eq_zero_of_orbit (X : Data E r) (la : Wt X.Ψ r) (P : Frame X.Ψ r → ℂ)
     (hB : ∀ x ∈ X.dom, ∀ b ∈ Bor X.Ψ r, P (rmul x b) = bchar la b * P x)
     (hΓ : ∀ γ ∈ X.Γ, ∀ x ∈ X.dom, P (lact γ x) = X.χ la γ * P x)
@@ -73,6 +92,11 @@ theorem eq_zero_of_orbit (X : Data E r) (la : Wt X.Ψ r) (P : Frame X.Ψ r → �
     exact zero_ne_one this
   exact (mul_eq_zero.1 h1).resolve_left hne
 
+/- English proof (translation)
+Proceed by induction on `hP using Submodule.span_induction with`. Consider the case `mem P hP => exact ⟨fun k => (hP k).1.1.2.1, fun k => (hP k).1.1.2.2⟩`. Consider the case `zero => exact ⟨fun k x _ b _ => by simp, fun k γ _ x _ => by simp⟩`. Consider the case `add P Q _ _ h1 h2`. Conclude with `⟨fun k x hx b hb => by simp only [Pi.add_apply]; rw [h1.1 k x hx b hb, h2.1 k x hx b hb, mul_add], fun k γ hγ x hx => by simp only [Pi.add_apply]; rw [h1.2 k γ hγ x hx, h2.2 k γ hγ x hx, mul_add]⟩`.
+
+Consider the case `smul a P _ h1`. Conclude with `⟨fun k x hx b hb => by simp only [Pi.smul_apply, smul_eq_mul]; rw [h1.1 k x hx b hb]; ring, fun k γ hγ x hx => by simp only [Pi.smul_apply, smul_eq_mul]; rw [h1.2 k γ hγ x hx]; ring⟩`.
+-/
 theorem eqv_holSub {Comp : Type} (X : Comp → Data E r) (la : ∀ k, Wt (X k).Ψ r) {P : FDSec X}
     (hP : P ∈ holSub X la) :
     (∀ k, ∀ x ∈ (X k).dom, ∀ b ∈ Bor (X k).Ψ r, P k (rmul x b) = bchar (la k) b * P k x) ∧
@@ -103,6 +127,15 @@ def QuotSupp : Prop :=
 
 variable {V dict mu}
 
+/- English proof (translation)
+Proceed by induction on `hP using Submodule.span_induction with`. Consider the case `mem P hP => exact h la P hP`. Consider the case `zero => exact ⟨fun γ _ g => by simp, by rw [map_zero]; exact continuous_const⟩`. Consider the case `add P Q _ _ h1 h2`. Use `⟨fun γ hγ g => ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_add]`. Simplify using `only [Pi.add_apply]`. Rewrite using `[h1.1 γ hγ g, h2.1 γ hγ g]`. Rewrite using `[map_add]`. Conclude with `h1.2.add h2.2`.
+
+Consider the case `smul a P _ h1`. Use `⟨fun γ hγ g => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul]`. Simplify using `only [Pi.smul_apply]`. Rewrite using `[h1.1 γ hγ g]`.
+
+Rewrite using `[map_smul]`. Conclude with `h1.2.const_smul a`.
+-/
 theorem adelAut_holSub (h : AdelAut V dict mu) (la : ∀ k, Wt (X k).Ψ r) {P : FDSec X} (hP : P ∈ holSub X la) :
     (∀ γ ∈ GQ V, ∀ g, adel V dict mu P (γ * g) = adel V dict mu P g) ∧ Continuous (adel V dict mu P) := by
   induction hP using Submodule.span_induction with
@@ -117,6 +150,9 @@ theorem adelAut_holSub (h : AdelAut V dict mu) (la : ∀ k, Wt (X k).Ψ r) {P : 
     · rw [map_smul]; simp only [Pi.smul_apply]; rw [h1.1 γ hγ g]
     · rw [map_smul]; exact h1.2.const_smul a
 
+/- English proof (translation)
+Use function extensionality and compare the values at `q`. Use `show φ q.out = _`. Use `conv_rhs => rw [← Quotient.out_eq q]`. Both sides reduce to the same expression.
+-/
 theorem onQ_eq_lift (φ : GA D V → ℂ) (hL : ∀ γ ∈ GQ V, ∀ g, φ (γ * g) = φ g) :
     onQ V φ = Quotient.lift φ (fun a b hab => by
       have h' : b * a⁻¹ ∈ GQ V := QuotientGroup.rightRel_apply.1 hab
@@ -128,6 +164,11 @@ theorem onQ_eq_lift (φ : GA D V → ℂ) (hL : ∀ γ ∈ GQ V, ∀ g, φ (γ *
   conv_rhs => rw [← Quotient.out_eq q]
   rfl
 
+/- English proof (translation)
+Introduce `la P hP`. Take `⟨hL, hC⟩` from `h la P hP`. Use `haveI : BorelSpace (GA D V) := ⟨rfl⟩`. Rewrite using `[onQ_eq_lift _ hL]`. Use `Measurable.aestronglyMeasurable ?_` and prove the remaining obligations.
+
+Conclude with `measurable_from_quotient.2 hC.measurable`.
+-/
 theorem adelMeas_of_aut {U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r} {σ : c.F →+* ℂ} {V : HSp D}
     {dict : GA D V → Σ k, Frame ((U σ).X k).Ψ r} {mu : GA D V → ℂ}
     (h : AdelAut V dict mu) : AdelMeas U σ V dict mu := by
@@ -138,6 +179,13 @@ theorem adelMeas_of_aut {U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r} {σ : c.F �
   refine Measurable.aestronglyMeasurable ?_
   exact measurable_from_quotient.2 hC.measurable
 
+/- English proof (translation)
+Introduce `la P hP hae k x hx`. Establish `hA'` using `adelAut_holSub hA la hP`. Establish `hz : ∀ g, adel V dict mu P g = 0` using `hQ _ hA'.2 hA'.1 hae`. Establish `hEq` using `eqv_holSub (U σ).X la hP`. Take `⟨g, γ, hγ, b, hb, hg⟩` from `hd.2.2.2.2.1 k x hx`.
+
+Establish `hdom` using `hd.2.2.2.1 g`. Establish `h0` using `hz g`. Express the relevant statement in the definitionally equal form `mu g * P (dict g).1 (dict g).2 = 0 at h0`. Rewrite `h0`, `hdom` using `[hg]`. Establish `hmu0 : mu g ≠ 0`.
+
+Introduce `h`. Use `hmu.2.1 g` as an intermediate fact. Rewrite `this` using `[h, norm_zero]`. Conclude with `zero_ne_one this`. Conclude with `eq_zero_of_orbit _ (la k) (P k) (hEq.1 k) (hEq.2 k) hx hγ hb hdom ((mul_eq_zero.1 h0).resolve_left hmu0)`.
+-/
 theorem aeDom_of_aut {U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r} {σ : c.F →+* ℂ} {V : HSp D}
     {dict : GA D V → Σ k, Frame ((U σ).X k).Ψ r} {mu : GA D V → ℂ} {Kf : Subgroup (GA D V)}
     {th : ∀ k, ((U σ).X k).Ψ → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)} {hr : V.rank = r}
@@ -161,11 +209,33 @@ theorem aeDom_of_aut {U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r} {σ : c.F →+*
 
 end Defs
 
+/- English proof (translation)
+Take `⟨⟨μ, hμ⟩, h2⟩` from `hT V hs`. Take `⟨⟨𝓕, h𝓕⟩, _⟩` from `h2 μ hμ`. Conclude with `⟨(μ, 𝓕), hμ, h𝓕⟩`.
+-/
 theorem volPair_of_tie (hT : VolTieG D) (V : HSp D) (hs : V.SigOK) : ∃ p : Measure (GA D V) × Set (GA D V), IsVolPair D V p.1 p.2 := by
   obtain ⟨⟨μ, hμ⟩, h2⟩ := hT V hs
   obtain ⟨⟨𝓕, h𝓕⟩, _⟩ := h2 μ hμ
   exact ⟨(μ, 𝓕), hμ, h𝓕⟩
 
+/- English proof (translation)
+Introduce `φ hc hL hae g0`. Establish `hvp : IsVolPair D V (volPair V).1 (volPair V).2`. Unfold `volPair`. Rewrite using `[dif_pos hP]`. Conclude with `hP.choose_spec`.
+
+Use `haveI := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA D.sp.cm.sig V.gram`. Use `haveI := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.borelHA D.sp.cm.sig V.gram`. Use `haveI := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.measurableMulHA D.sp.cm.sig V.gram`. Use `haveI : Countable (GQ V) := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.countableGamma D.sp.cm.sig V.gram`. Use `haveI : (volPair V).1.IsHaarMeasure := hvp.1.1`.
+
+Use `haveI := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.measurableConstSMul_subgroup (GQ V)`. Use `haveI := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.smulInvariant_subgroup (GQ V) (volPair V).1`. Establish `h1 : onQ V φ =ᵐ[muQ V] 0`. Establish `hq : muQ1 V = (muQ V Set.univ)⁻¹ • muQ V`. Unfold `muQ1`.
+
+Rewrite using `[if_pos (show muQ V Set.univ ≠ 0 ∧ muQ V Set.univ ≠ ⊤ from hV)]`. Rewrite `hae` using `[hq]`. Rewrite `hae`, the goal using `[Filter.EventuallyEq, ae_iff]`. Rewrite `hae` using `[Measure.smul_apply, smul_eq_mul]`. Conclude with `(mul_eq_zero.1 hae).resolve_left (ENNReal.inv_ne_zero.2 hV.2)`.
+
+Establish `h2 : ∀ᵐ g ∂((volPair V).1.restrict (volPair V).2), φ g = 0`. Establish `hm : AEMeasurable (autMk V) ((volPair V).1.restrict (volPair V).2)` using `(measurable_quotient_mk'' (s := QuotientGroup.rightRel (GQ V))).aemeasurable`. Use `ae_of_ae_map hm (show ∀ᵐ q ∂(muQ V), onQ V φ q = (0 : AutQ V → ℂ) q from h1)` as an intermediate fact. Use `filter_upwards [this] with g hg`. Rewrite `hg` using `[onQ_eq_lift φ hL]`.
+
+Conclude with `hg`. Set `t : Set (GA D V)` to `{g | φ g ≠ 0}`. Establish `ht : IsOpen t` using `hc.isOpen_preimage _ isOpen_ne`. Establish `htm : MeasurableSet t` using `ht.measurableSet`. Establish `h3 : (volPair V).1 (t ∩ (volPair V).2) = 0`.
+
+Rewrite using `[← Measure.restrict_apply htm]`. Conclude with `ae_iff.1 h2`. Establish `hinv : ∀ γ : GQ V, γ • t = t`. Introduce `γ`. Use extensionality with `x`.
+
+Rewrite using `[Set.mem_smul_set_iff_inv_smul_mem]`. Use `show φ (γ⁻¹ • x) ≠ 0 ↔ φ x ≠ 0`. Rewrite using `[Subgroup.smul_def, smul_eq_mul, hL _ (γ⁻¹).2 x]`. Establish `h4 : (volPair V).1 t = 0` using `hvp.2.measure_zero_of_invariant t hinv h3`. Establish `h5 : t = ∅` using `(ht.measure_eq_zero_iff (volPair V).1).1 h4`.
+
+Assume the negation of the conclusion as `hne`. Establish `: g0 ∈ t` using `hne`. Rewrite `this` using `[h5]`. Conclude with `this`.
+-/
 theorem quotSupp_of (V : HSp D) (hV : FinVol V) (hP : ∃ p : Measure (GA D V) × Set (GA D V), IsVolPair D V p.1 p.2) :
     QuotSupp V := by
   intro φ hc hL hae g0
@@ -215,6 +285,11 @@ theorem quotSupp_of (V : HSp D) (hV : FinVol V) (hP : ∃ p : Measure (GA D V) �
   rw [h5] at this
   exact this
 
+/- English proof (translation)
+Introduce `γ hγ g`. Take `⟨γ', hγ', he⟩` from `hd γ hγ g`. Establish `hE` using `(eqv_holSub X la (holCusp_mem_holSub X la hP)).2 (dict g).1 γ' hγ' (dict g).2 (hdom g)`. Use `show mu (γ * g) * P (dict (γ * g)).1 (dict (γ * g)).2 = mu g * P (dict g).1 (dict g).2`. Rewrite using `[he, hm.1, hm.2.2.1 γ hγ, one_mul]`.
+
+Use `show mu g * P (dict g).1 (lact γ' (dict g).2) = _`. Rewrite using `[hE, hχ, one_mul]`.
+-/
 theorem adel_leftInv_triv {X : Comp → Data E r} {V : HSp D} {dict : GA D V → Σ k, Frame (X k).Ψ r}
     {mu : GA D V → ℂ} (hχ : ∀ k la γ, (X k).χ la γ = 1)
     (hd : ∀ γ ∈ GQ V, ∀ g, ∃ γ' ∈ (X (dict g).1).Γ, dict (γ * g) = ⟨(dict g).1, lact γ' (dict g).2⟩)
@@ -229,6 +304,13 @@ theorem adel_leftInv_triv {X : Comp → Data E r} {V : HSp D} {dict : GA D V →
   show mu g * P (dict g).1 (lact γ' (dict g).2) = _
   rw [hE, hχ, one_mul]
 
+/- English proof (translation)
+Introduce `la P hP`. Rewrite using `[continuous_iff_continuousAt]`. Introduce `g₀`. Take `⟨N, hN, k, x, hx, hs⟩` from `hL g₀`. Establish `hsec : (X k).IsSec (la k) (P k)` using `(hP k).1.1`.
+
+Establish `hPc : ContinuousOn (P k) (X k).dom` using `hsec.1.continuousOn`. Establish `hc : ContinuousOn (fun g => mu g * P k (x g)) N` using `hm.continuousOn.mul (hPc.comp hx fun g hg => (hs g hg).1)`. Establish `heq : (fun g => mu g * P k (x g)) =ᶠ[𝓝 g₀] adel V dict mu P` using `by filter_upwards [hN] with g hg`. Take `⟨hd, γ, hγ, he⟩` from `hs g hg`. Use `show mu g * P k (x g) = mu g * P (dict g).1 (dict g).2`.
+
+Rewrite using `[he]`. Use `show mu g * P k (x g) = mu g * P k (lact γ (x g))`. Rewrite using `[hsec.2.2 γ hγ (x g) hd, hχ, one_mul]`. Conclude with `(hc.continuousAt hN).congr heq`.
+-/
 theorem adelCont_of {V : HSp D} {X : Comp → Data E r} {dict : GA D V → Σ k, Frame (X k).Ψ r}
     {mu : GA D V → ℂ} (hχ : ∀ k la γ, (X k).χ la γ = 1) (hL : ∀ g₀ : GA D V, ∃ N ∈ 𝓝 g₀, ∃ (k : Comp) (x : GA D V → Frame (X k).Ψ r), ContinuousOn x N ∧
       ∀ g ∈ N, x g ∈ (X k).dom ∧ ∃ γ ∈ (X k).Γ, dict g = ⟨k, lact γ (x g)⟩) (hm : Continuous mu) :
@@ -252,6 +334,9 @@ theorem adelCont_of {V : HSp D} {X : Comp → Data E r} {dict : GA D V → Σ k,
 
 end Adelic
 
+/- English proof (translation)
+Introduce `D H Dw l Xo c r U σ V dict mu Kf th hr hT hs hσ hχ hd hm hmc hL hsup`. Establish `hA : AdelAut V dict mu` using `fun la P hP => ⟨adel_leftInv_triv hχ hd.1 hd.2.2.2.1 hm la hP, adelCont_of hχ hL hmc la P hP⟩`. Establish `h` using `cusp_L2_of_measurable hσ (dict_dom_of hd) hm (adelMeas_of_aut Xo c hA)`. Conclude with `⟨h, l2Def_of_cusp hσ hsup (aeDom_of_aut Xo c hA (quotSupp_of V (finVol_of_volTie hT V hs) (volPair_of_tie hT V hs)) hm hd) h⟩`.
+-/
 theorem cusp_l2_and_definite : ∀ (D : D7) (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (r : ℕ) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (σ : c.F →+* ℂ) (V : HSp D) (dict : GA D V → Σ k, Frame ((U σ).X k).Ψ r) (mu : GA D V → ℂ) (Kf : Subgroup (GA D V)) (th : ∀ k, ((U σ).X k).Ψ → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)) (hr : V.rank = r), VolTieG D → V.SigOK → GoodEmb c σ → (∀ k la γ, ((U σ).X k).χ la γ = 1) → DictIsUnif V dict Kf th hr → MuUnit V dict mu → Continuous mu → (∀ g₀ : GA D V, ∃ N ∈ 𝓝 g₀, ∃ (k : _) (x : GA D V → Frame ((U σ).X k).Ψ _), ContinuousOn x N ∧ ∀ g ∈ N, x g ∈ ((U σ).X k).dom ∧ ∃ γ ∈ ((U σ).X k).Γ, dict g = ⟨k, lact γ (x g)⟩) → SupDef Xo c U → ∃ h : CuspL2 U σ V dict mu, L2DefiniteCuspForms U σ V dict mu h := by
   intro D H Dw l Xo c r U σ V dict mu Kf th hr hT hs hσ hχ hd hm hmc hL hsup
   have hA : AdelAut V dict mu := fun la P hP =>

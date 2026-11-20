@@ -29,6 +29,33 @@ namespace GlobalTheory.NormalModel
 
 open TopologicalSpace
 
+/- English proof (translation)
+Introduce `K Ω _ _ _ _ D m y X _ p g ψ ⟨hgp, hX, hψ, hK, hy⟩`. Take `⟨W, hne, hn⟩` from `GlobalTheory.T.exists_nonempty_normal_open_arithmeticVariety (𝓞 K) X p D hX`. Use `hX.finite` as an intermediate fact. Establish `: IsFinite (spMap (Int.castRingHom (𝓞 K)))` using `(IsFinite.SpecMap_iff _).2 (by`. Establish `: (Int.castRingHom (𝓞 K)) = algebraMap ℤ (𝓞 K)` using `RingHom.ext_int _ _`.
+
+Express the relevant statement in the definitionally equal form `(Int.castRingHom (𝓞 K)).Finite`. Rewrite using `[this]`. Conclude with `RingHom.finite_algebraMap.2 hX.finite)`. Establish `hs : IsProjOver (p ≫ spMap (Int.castRingHom (𝓞 K)))`. Take `⟨h₁, h₂⟩` from `(isProjOver_iff_isProper_and_exists_isAmpleLB p).1 hX.isProjOver`.
+
+Conclude with `(isProjOver_iff_isProper_and_exists_isAmpleLB _).2 ⟨inferInstance, h₂⟩`. Use `hX.flat` as an intermediate fact. Take `⟨Y, ν, e, hν, hnY, -, hfl, hpb, hd⟩` from `GraphClosure.exists_normalisation_of_locallyClosed ℤ X W.toScheme (p ≫ spMap (Int.castRingHom (𝓞 K))) W (𝟙 _) hs inferInstance hn inferInstance`. Establish `he : IsOpenImmersion e` using `MorphismProperty.of_isPullback hpb.flip inferInstance`. Establish `: Nonempty W.toScheme` using `hne.to_subtype`.
+
+Establish `: IsIntegral W.toScheme` using `isIntegral_of_isOpenImmersion W.ι`. Establish `: IsIntegral Y`. Use `GlobalTheory.IsNormalScheme.of_pred hnY` as an intermediate fact. Establish `h` using `((IrreducibleSpace.isIrreducible_univ W.toScheme).image _ e.continuous.continuousOn).closure`. Rewrite `h` using `[Set.image_univ, hd.closure_eq]`.
+
+Establish `: IrreducibleSpace Y` using `(irreducibleSpace_def _).2 h`. Conclude with `isIntegral_of_irreducibleSpace_of_isReduced Y`. Establish `hfac : e ≫ ν = W.ι` using `by rw [hpb.w, Category.id_comp]`. Establish `hoi : IsOpenImmersion (e ≫ ν)` using `by rw [hfac]; infer_instance`. Establish `hg : e (genericPoint _) = genericPoint Y` using `genericPoint_eq_of_isOpenImmersion _`.
+
+Establish `hgen : ν (genericPoint Y) = genericPoint X`. Rewrite using `[← hg, ← Scheme.Hom.comp_apply]`. Conclude with `genericPoint_eq_of_isOpenImmersion _`. Establish `hdeg : ν.residueDegree (genericPoint Y) ≠ 0`. Introduce `h0`.
+
+Establish `h1` using `CurveDegreesCompare.residueDegree_comp e ν (genericPoint _)`. Rewrite `h1` using `[CurveDegreesCompare.residueDegree_of_isOpenImmersion, hg, h0, zero_mul]`. Conclude with `one_ne_zero h1`. Establish `hproj : IsProjOver (ν ≫ p)` using `isProjOver_comp_of_isFinite ν hX.isProjOver`. Establish `hflat : Flat ((ν ≫ p) ≫ spMap (Int.castRingHom (𝓞 K)))` using `by rwa [Category.assoc]`.
+
+Establish `har : IsArithVar (ν ≫ p) D` using `⟨hX.isDomain, hX.finite, ‹_›, hproj, hflat, DimCover.topologicalKrullDim_eq (𝓞 K) X Y p (ν ≫ p) D hX hproj hflat ν rfl hgen hdeg⟩`. Establish `hη : ν (genericPoint Y) ⤳ genericPoint X` using `specializes_of_eq hgen`. Establish `hWη : W.ι (genericPoint W.toScheme) ⤳ genericPoint X` using `specializes_of_eq (genericPoint_eq_of_isOpenImmersion _)`. Establish `heη : e (genericPoint W.toScheme) ⤳ genericPoint Y` using `specializes_of_eq hg`. Establish `hbij : Function.Bijective (SmallSec.fnMap ν hη)`.
+
+Use `⟨(SmallSec.fnMap ν hη).injective, fun u => ?_⟩` and prove the remaining obligations. Take `⟨t, ht⟩` from `SmallSec.fnMap_surjective W.ι hWη (SmallSec.fnMap e heη u)`. Use `⟨t, (SmallSec.fnMap e heη).injective ?_⟩` and prove the remaining obligations. Rewrite using `[← ht, ← ProjSpace.fnMap_comp e ν heη hη (ProjSpace.comp_genericPoint_specializes _ _ heη hη)]`. Conclude with `ProjSpace.fnMap_congr hfac _ _ t`.
+
+Use `⟨Y, ‹_›, ν ≫ p, ν ≫ g, (SmallSec.fnMap ν hη).comp ψ, by rw [Category.assoc, hgp], har, hnY, hbij.comp hψ, fun a => ?_, fun k l i h => ?_⟩` and prove the remaining obligations. Establish `e₁ : ν.app ⊤ (algX p ⊤ a) = algX (ν ≫ p) ⊤ a`. Simplify using `[algX, Scheme.Hom.appLE]`. Both sides reduce to the same expression. Rewrite using `[RingHom.comp_apply, hK, SmallSec.fnMap_fnOf ν hη _ (Opens.mem_top _), e₁]`.
+
+Both sides reduce to the same expression. Establish `hX' : genericPoint X ∈ ((ProjSpace.O1 (𝓞 K) m).pull g).U i` using `(pull_U _ g i).ge (by`. Establish `h' : ν (genericPoint Y) ∈ g ⁻¹ᵁ (ProjSpace.O1 (𝓞 K) m).U (i PUnit.unit)` using `(pull_U _ (ν ≫ g) i).le h`. Rewrite `h'` using `[hgen]`. Conclude with `h')`.
+
+Establish `key (a : Fin (m + 1)) : fnOf _ h ((GlobalTheory.Cartier.secPull (ProjSpace.coord (𝓞 K) m a) (ν ≫ g)).f i) = SmallSec.fnMap ν hη (fnOf _ hX' ((GlobalTheory.Cartier.secPull (ProjSpace.coord (𝓞 K) m a) g).f i))`. Establish `h₁ : genericPoint Y ∈ (ν ≫ g) ⁻¹ᵁ (ProjSpace.O1 (𝓞 K) m).U (i PUnit.unit)` using `(pull_U _ (ν ≫ g) i).le h`. Establish `h₂ : genericPoint X ∈ g ⁻¹ᵁ (ProjSpace.O1 (𝓞 K) m).U (i PUnit.unit)` using `(pull_U _ g i).le hX'`. Express the relevant statement in the definitionally equal form `fnOf _ h (resG Y _ _) = SmallSec.fnMap ν hη (fnOf _ hX' (resG X _ _))`. Rewrite using `[fnOf_resG, fnOf_resG, SmallSec.fnMap_fnOf ν hη h₂ h₁, Scheme.Hom.comp_app]`.
+
+Both sides reduce to the same expression. Rewrite using `[RingHom.comp_apply, RingHom.comp_apply, key, key, ← map_mul, ← map_mul, hy k l i hX']`.
+-/
 theorem exists_normal_model : ∀ (K Ω : Type) [Field K] [NumberField K] [Field Ω] [Algebra K Ω] (D m : ℕ) (y : Fin (m + 1) → Ω) (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp (𝓞 K)) (g : X ⟶ PSpace (𝓞 K) m) (ψ : Ω →+* X.functionField),
     (g ≫ PSpace.str (𝓞 K) m = p ∧ IsArithVar p D ∧ Function.Bijective ψ ∧
       (∀ a : 𝓞 K, ψ (algebraMap K Ω (a : K)) = fnOf ⊤ (TopologicalSpace.Opens.mem_top _) (algX p ⊤ a)) ∧

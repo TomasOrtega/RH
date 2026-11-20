@@ -14,6 +14,11 @@ namespace GlobalTheory.RawLift.Model
 variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m}
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
 
+/- English proof (translation)
+Unfold `latIndex`. Rewrite using `[AddSubgroup.relIndex_eq_one]`. Introduce `y hy`. Use `⟨(finMat D.sp.cm.sig W.gram g⁻¹).mulVec y, (hg'.2.1 y).1 hy, ?_⟩` and prove the remaining obligations. Establish `h : finMat D.sp.cm.sig W.gram g * finMat D.sp.cm.sig W.gram g⁻¹ = 1`.
+
+Use `congrArg (fun u : GL (Fin W.rank) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E) => u.val) (show finHom W g * finHom W g⁻¹ = 1 by rw [← map_mul, mul_inv_cancel, map_one])` as an intermediate fact. Conclude with `this`. Use `show (finMat D.sp.cm.sig W.gram g).mulVec ((finMat D.sp.cm.sig W.gram g⁻¹).mulVec y) = y`. Rewrite using `[Matrix.mulVec_mulVec, h, Matrix.one_mulVec]`.
+-/
 theorem latIndex_eq_one_of_mem (W : HSp D) (g : GA D W) (hg : g ∈ KsphC W ∅) (hg' : g⁻¹ ∈ KsphC W ∅) :
     latIndex W g = 1 := by
   unfold latIndex
@@ -27,6 +32,9 @@ theorem latIndex_eq_one_of_mem (W : HSp D) (g : GA D W) (hg : g ∈ KsphC W ∅)
   show (finMat D.sp.cm.sig W.gram g).mulVec ((finMat D.sp.cm.sig W.gram g⁻¹).mulVec y) = y
   rw [Matrix.mulVec_mulVec, h, Matrix.one_mulVec]
 
+/- English proof (translation)
+Unfold `coef`. Establish `: R.ωP i t (1, 1) = 1` using `map_one _`. Rewrite using `[this]`. Conclude with `div_self (h μ 𝓕 hμ).1`.
+-/
 theorem coef_one (R : RealDat D A Ks) (i : Fin D.R.m) (t : T) (h : VecNe R i t) (μ) (𝓕)
     (hμ : IsCovolOne (ratL (Wc D i) (Vc D i)) μ 𝓕) : coef R i t μ 𝓕 1 = 1 := by
   unfold coef
@@ -34,6 +42,9 @@ theorem coef_one (R : RealDat D A Ks) (i : Fin D.R.m) (t : T) (h : VecNe R i t) 
   rw [this]
   exact div_self (h μ 𝓕 hμ).1
 
+/- English proof (translation)
+Unfold `RealDat.ptP pureTensorO pureTensorL`. Establish `: (1 : MvPolynomial (FVar D (Wc D i).rank (Vc D i).rank) ℂ) = MvPolynomial.basisMonomials _ ℂ 0`. Simplify using the standard rewrite rules. Rewrite using `[this, Module.Basis.constr_basis]`. Simplify using `[opPow]`.
+-/
 theorem pureTensor_one (R : RealDat D A Ks) (i : Fin D.R.m) (t : T) : R.ptP i t 1 = R.vP i t := by
   unfold RealDat.ptP pureTensorO pureTensorL
   have : (1 : MvPolynomial (FVar D (Wc D i).rank (Vc D i).rank) ℂ) = MvPolynomial.basisMonomials _ ℂ 0 := by
@@ -41,6 +52,9 @@ theorem pureTensor_one (R : RealDat D A Ks) (i : Fin D.R.m) (t : T) : R.ptP i t 
   rw [this, Module.Basis.constr_basis]
   simp [opPow]
 
+/- English proof (translation)
+Unfold `coef`. Establish `e : R.ωP i t (1, g * k) = R.ωP i t (1, g) * R.ωP i t (1, k)` using `by rw [← map_mul]; simp`. Establish `hv` using `h k hk 1`. Rewrite `hv` using `[pureTensor_one]`. Rewrite using `[e, Module.End.mul_apply, hv]`.
+-/
 theorem coef_mul_lev (R : RealDat D A Ks) (i : Fin D.R.m) (t : T) (h : LevFix R i t) (μ) (𝓕) (g k : GA D (Wc D i))
     (hk : k ∈ levW R i) : coef R i t μ 𝓕 (g * k) = coef R i t μ 𝓕 g := by
   unfold coef
@@ -49,6 +63,9 @@ theorem coef_mul_lev (R : RealDat D A Ks) (i : Fin D.R.m) (t : T) (h : LevFix R 
   rw [pureTensor_one] at hv
   rw [e, Module.End.mul_apply, hv]
 
+/- English proof (translation)
+Introduce `h0`. Use `h μ 𝓕 hμ v f hf hP k hk` as an intermediate fact. Rewrite `this` using `[h0]`. Simplify using `at this`.
+-/
 theorem goodMod_ne (R : RealDat D A Ks) (i : Fin D.R.m) (t : T) (h : GoodMod R i t) (μ) (𝓕)
     (hμ : IsCovolOne (ratL (Wc D i) (Vc D i)) μ 𝓕) (v f) (hf : IsFinIdem D v f)
     (hP : ∀ P, P ∈ R.Pg ∨ P ∈ R.Q t → ∀ e f', IsPrimeIdem P e f' → f' ≠ f) (k) (hk : SuppF (Wc D i) f k) :
@@ -58,10 +75,16 @@ theorem goodMod_ne (R : RealDat D A Ks) (i : Fin D.R.m) (t : T) (h : GoodMod R i
   rw [h0] at this
   simp at this
 
+/- English proof (translation)
+Establish `: Formalism.L2.Theta.mt V 1 = 1` using `rfl`. Apply the tactic sequence `constructor <;> intro a b <;> simp [this]`.
+-/
 theorem trivAt_one (V : HSp D) (f : AE D) : TrivAt V f 1 ∧ SuppF V f 1 := by
   have : Formalism.L2.Theta.mt V 1 = 1 := rfl
   constructor <;> intro a b <;> simp [this]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `only [LinearMap.smul_apply, LinearMap.id_apply, Pi.smul_apply, smul_eq_mul, heisO]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem schur_hyp_scalar (ψ : AddChar (AF D.host.F) ℂ) (S T' : HSp D) (c : ℂ) (w : WO S T') (f : WO S T' → ℂ) :
     (c • (LinearMap.id : Module.End ℂ (WO S T' → ℂ))) (heisO ψ S T' w f) =
       heisO ψ S T' w ((c • (LinearMap.id : Module.End ℂ (WO S T' → ℂ))) f) := by

@@ -14,11 +14,25 @@ variable {LL O : Type} [Field LL] [CommRing O] [Algebra O LL]
 
 local notation "QE" => LL ⧸ LinearMap.range (Algebra.linearMap O LL)
 
+/- English proof (translation)
+Rewrite using `[Submodule.Quotient.mk_eq_zero, LinearMap.mem_range]`. Simplify using `[Algebra.linearMap_apply]`.
+-/
 theorem mk_eq_zero_iff (z : LL) :
     (Submodule.Quotient.mk z : QE) = 0 ↔ ∃ b : O, algebraMap O LL b = z := by
   rw [Submodule.Quotient.mk_eq_zero, LinearMap.mem_range]
   simp [Algebra.linearMap_apply]
 
+/- English proof (translation)
+Introduce `I g`. Take `⟨a, rfl⟩` from `(IsPrincipalIdealRing.principal I).principal`. Distinguish the cases in `ha : a = 0`. Substitute `ha` using the available equality. Use `⟨0, fun x hx => ?_⟩` and prove the remaining obligations.
+
+Establish `hx0 : x = 0` using `by simpa using hx`. Substitute `hx0` using the available equality. Establish `: (⟨0, hx⟩ : Ideal.span ({0} : Set O)) = 0` using `rfl`. Rewrite using `[this]`. Simplify using the standard rewrite rules.
+
+Establish `haL : algebraMap O LL a ≠ 0`. Introduce `h`. Apply `ha` to reduce the goal to its premises. Apply `hinj` to reduce the goal to its premises. Rewrite using `[h, map_zero]`.
+
+Take `⟨z, hz⟩` from `Submodule.Quotient.mk_surjective _ (g ⟨a, Ideal.mem_span_singleton_self a⟩)`. Use `⟨LinearMap.toSpanSingleton O _ (Submodule.Quotient.mk ((algebraMap O LL a)⁻¹ * z)), fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨r, rfl⟩` from `Ideal.mem_span_singleton'.mp hx`. Establish `: (⟨r * a, hx⟩ : Ideal.span ({a} : Set O)) = r • ⟨a, Ideal.mem_span_singleton_self a⟩` using `rfl`. Rewrite using `[this, map_smul, ← hz, LinearMap.toSpanSingleton_apply, ← Submodule.Quotient.mk_smul, ← Submodule.Quotient.mk_smul]`.
+
+Use `congr 1`. Rewrite using `[Algebra.smul_def, Algebra.smul_def, map_mul]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem baer [IsDomain O] [IsPrincipalIdealRing O] (hinj : Function.Injective (algebraMap O LL)) :
     Module.Baer O QE := by
   intro I g
@@ -43,6 +57,15 @@ theorem baer [IsDomain O] [IsPrincipalIdealRing O] (hinj : Function.Injective (a
     rw [Algebra.smul_def, Algebra.smul_def, map_mul]
     field_simp
 
+/- English proof (translation)
+Use `set w : LL := (algebraMap O LL ℓ ^ n)⁻¹ with hw_def`. Establish `hw : algebraMap O LL ℓ ^ n * w = 1` using `mul_inv_cancel₀ (pow_ne_zero _ hℓ)`. Use `set u : QE := Submodule.Quotient.mk w with hu_def`. Establish `key : ∀ e : QE, ℓ ^ n • e = 0 → ∃ b : O, e = b • u`. Introduce `e he`.
+
+Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ e`. Rewrite `he` using `[← Submodule.Quotient.mk_smul, mk_eq_zero_iff]`. Take `⟨b, hb⟩` from `he`. Use `⟨b, ?_⟩` and prove the remaining obligations. Rewrite using `[hu_def, ← Submodule.Quotient.mk_smul]`.
+
+Use `congr 1`. Rewrite using `[Algebra.smul_def, hb, Algebra.smul_def, map_pow]`. Combine the equalities or inequalities in the displayed calculation. Establish `hu : ℓ ^ n • u = 0`. Rewrite using `[hu_def, ← Submodule.Quotient.mk_smul, mk_eq_zero_iff]`.
+
+Conclude with `⟨1, by rw [map_one, Algebra.smul_def, map_pow, hw]⟩`. Take `⟨c, hc⟩` from `key (h u) (by rw [← map_smul, hu, map_zero])`. Use `⟨c, fun e he => ?_⟩` and prove the remaining obligations. Take `⟨b, rfl⟩` from `key e he`. Rewrite using `[map_smul, hc, smul_comm]`.
+-/
 theorem endo_on_torsion (ℓ : O) (hℓ : algebraMap O LL ℓ ≠ 0) (h : QE →ₗ[O] QE) (n : ℕ) :
     ∃ c : O, ∀ e : QE, ℓ ^ n • e = 0 → h e = c • e := by
   set w : LL := (algebraMap O LL ℓ ^ n)⁻¹ with hw_def
@@ -67,6 +90,17 @@ theorem endo_on_torsion (ℓ : O) (hℓ : algebraMap O LL ℓ ≠ 0) (h : QE →
   obtain ⟨b, rfl⟩ := key e he
   rw [map_smul, hc, smul_comm]
 
+/- English proof (translation)
+Take `⟨⟨x, y⟩, rfl⟩` from `IsLocalization.mk'_surjective (nonZeroDivisors O) z`. Establish `hy : (y : O) ≠ 0` using `nonZeroDivisors.ne_zero y.2`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Take `⟨n, u, hu⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hy hϖ`. Take `⟨e, v, hv⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hℓ0 hϖ`.
+
+Establish `he : e ≠ 0`. Introduce and unpack `rfl`. Apply `hℓ` to reduce the goal to its premises. Rewrite using `[hv, pow_zero, mul_one]`. Conclude with `v.isUnit`.
+
+Establish `hdvd : (y : O) ∣ ℓ ^ n`. Rewrite using `[hu, hv, mul_pow, Units.mul_left_dvd]`. Apply `Dvd.dvd.mul_left` to reduce the goal to its premises. Rewrite using `[← pow_mul]`. Conclude with `pow_dvd_pow ϖ (Nat.le_mul_of_pos_left n (Nat.pos_of_ne_zero he))`.
+
+Take `⟨t, ht⟩` from `hdvd`. Use `⟨n, t * x, ?_⟩` and prove the remaining obligations. Establish `hspec` using `IsLocalization.mk'_spec LL x y`. Rewrite using `[← map_pow, ht, map_mul, map_mul, ← hspec]`. Simplify using `only`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_pow_mul_mem [IsDomain O] [IsDiscreteValuationRing O] [IsFractionRing O LL]
     (ℓ : O) (hℓ0 : ℓ ≠ 0) (hℓ : ¬ IsUnit ℓ) (z : LL) :
     ∃ k : ℕ, ∃ b : O, algebraMap O LL b = algebraMap O LL ℓ ^ k * z := by
@@ -89,6 +123,11 @@ theorem exists_pow_mul_mem [IsDomain O] [IsDiscreteValuationRing O] [IsFractionR
   simp only
   ring
 
+/- English proof (translation)
+Introduce `hu`. Establish `htop : Ideal.span {ℓ} = ⊤` using `Ideal.span_singleton_eq_top.mpr hu`. Rewrite `h` using `[htop]`. Use `h.toIsHausdorff.haus (1 : O) (fun n => by` as an intermediate fact. Rewrite using `[Ideal.top_pow, Submodule.top_smul]`.
+
+Conclude with `SModEq.top)`. Conclude with `one_ne_zero this`.
+-/
 theorem not_isUnit_of_adicComplete [Nontrivial O] (ℓ : O) (h : IsAdicComplete (Ideal.span {ℓ}) O) :
     ¬ IsUnit ℓ := by
   intro hu
@@ -106,6 +145,53 @@ namespace GlobalTheory
 
 open GlobalTheory.DoubleAnnihilator in
 
+/- English proof (translation)
+Introduce `l _ LL _ _ _ O _ _ hO M N _ _ _ _ _ β S hker c hc`. Take `⟨-, hRc, -, hAd⟩` from `GlobalTheory.T.coefficient_ring_integers_compact_adic_properties l LL O hO`. Take `⟨⟨hD, hDVR, hFr⟩, -, -, hTR, hOpen⟩` from `hO`. Use `haveI := hD`. Use `haveI := hDVR`.
+
+Use `haveI := hFr`. Use `haveI := hTR`. Establish `hinj : Function.Injective (algebraMap O LL)` using `IsFractionRing.injective O LL`. Use `set ℓ : O := ((l : ℕ) : O) with hℓ_def`. Establish `hℓLL : algebraMap O LL ℓ ≠ 0`.
+
+Rewrite using `[hℓ_def, map_natCast]`. Introduce `h`. Establish `h' : algebraMap ℚ_[l] LL (l : ℚ_[l]) = 0` using `by rw [map_natCast]; exact h`. Rewrite `h'` using `[map_eq_zero_iff _ (algebraMap ℚ_[l] LL).injective]`. Conclude with `(Fact.out : l.Prime).ne_zero (by exact_mod_cast h')`.
+
+Establish `hℓ0 : ℓ ≠ 0` using `fun h => hℓLL (by rw [h, map_zero])`. Establish `hℓu : ¬ IsUnit ℓ` using `not_isUnit_of_adicComplete ℓ hAd`. Use `set R : Set LL := Set.range (algebraMap O LL) with hR_def`. Establish `hRcl : IsClosed R`. Establish `h1` using `AddSubgroup.isClosed_of_isOpen ((algebraMap O LL).toAddMonoidHom.range) (by simpa using hOpen)`.
+
+Simplify using `using h1`. Take `⟨r, v, hv⟩` from `Module.Finite.exists_fin (R := O) (M := M)`. Establish `hspan : ∀ d : M, ∃ a : Fin r → O, ∑ i, a i • v i = d` using `fun d => (Submodule.mem_span_range_iff_exists_fun O).mp (hv ▸ Submodule.mem_top)`. Establish `hlift : ∀ (s : N) (i : Fin r), ∃ z : LL, (Submodule.Quotient.mk z : LL ⧸ LinearMap.range (Algebra.linearMap O LL)) = β (v i) s` using `fun s i => Submodule.Quotient.mk_surjective _ _`. Use `choose y hy using hlift`.
+
+Establish `hexp : ∀ (a : Fin r → O) (s : N), β (∑ i, a i • v i) s = Submodule.Quotient.mk (∑ i, algebraMap O LL (a i) * y s i)`. Introduce `a s`. Rewrite using `[← Submodule.mkQ_apply, map_sum, map_sum, LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, LinearMap.smul_apply, ← hy, Submodule.mkQ_apply, ← Submodule.Quotient.mk_smul, Algebra.smul_def]`.
+
+Set `L : N → (Fin r → LL) → LL` to `fun s x => ∑ i, x i * y s i`. Establish `hLc : ∀ s, Continuous (L s)` using `fun s => by`. Simplify using `only [L]`. Use `fun_prop`. Set `K : Set (Fin r → LL)` to `Set.univ.pi (fun _ => R)`.
+
+Establish `hKc : IsCompact K` using `isCompact_univ_pi (fun _ => hRc)`. Set `U : Set (Fin r → LL)` to `{x | L c x ∈ R}`. Establish `hUo : IsOpen U` using `hOpen.preimage (hLc c)`. Set `T : S → Set (Fin r → LL)` to `fun s => {x | L s.1 x ∈ R}`. Establish `hTcl : ∀ s, IsClosed (T s)` using `fun s => hRcl.preimage (hLc s.1)`.
+
+Establish `hempty : (K \ U) ∩ ⋂ s, T s = ∅`. Use extensionality with `x`. Simplify using `only [Set.mem_inter_iff, Set.mem_diff, Set.mem_iInter, Set.mem_empty_iff_false, iff_false]`. Introduce and unpack `⟨⟨hK, hU⟩, hT⟩`. Establish `hK' : ∀ i, ∃ a : O, algebraMap O LL a = x i` using `fun i => hK i (Set.mem_univ i)`.
+
+Use `choose a ha using hK'`. Establish `hx : x = fun i => algebraMap O LL (a i)` using `funext fun i => (ha i).symm`. Substitute `hx` using the available equality. Apply `hU` to reduce the goal to its premises. Establish `h1` using `hc (∑ i, a i • v i) (fun s hs => by`.
+
+Rewrite using `[hexp, mk_eq_zero_iff]`. Conclude with `hT ⟨s, hs⟩)`. Rewrite `h1` using `[hexp, mk_eq_zero_iff]`. Conclude with `h1`. Take `⟨F, hF⟩` from `(hKc.diff hUo).elim_finite_subfamily_closed T hTcl hempty`.
+
+Establish `hfin : ∀ d : M, (∀ s ∈ F, β d s.1 = 0) → β d c = 0`. Introduce `d hd`. Take `⟨a, rfl⟩` from `hspan d`. Assume the negation of the conclusion as `hne`. Establish `hx : (fun i => algebraMap O LL (a i)) ∈ (K \ U) ∩ ⋂ s ∈ F, T s`.
+
+Use `⟨⟨fun i _ => ⟨a i, rfl⟩, fun hU => hne ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hexp, mk_eq_zero_iff]`. Conclude with `hU`. Simplify using `only [Set.mem_iInter]`. Introduce `s hs`.
+
+Establish `h2` using `hd s hs`. Rewrite `h2` using `[hexp, mk_eq_zero_iff]`. Conclude with `h2`. Rewrite `hx` using `[hF]`. Conclude with `hx`.
+
+Set `τ : M →ₗ[O] (F → LL ⧸ LinearMap.range (Algebra.linearMap O LL))` to `LinearMap.pi (fun s : F => β.flip s.1.1)`. Establish `hτ : ∀ d (s : F), τ d s = β d s.1.1` using `fun d s => rfl`. Establish `hker' : LinearMap.ker τ ≤ LinearMap.ker (β.flip c)`. Introduce `d hd`. Rewrite `hd`, the goal using `[LinearMap.mem_ker]`.
+
+Rewrite using `[LinearMap.flip_apply]`. Apply `hfin d` to reduce the goal to its premises. Introduce `s hs`. Establish `h3` using `congr_fun hd ⟨s, hs⟩`. Rewrite `h3` using `[hτ]`.
+
+Conclude with `h3`. Take `⟨G, hG⟩` from `(baer hinj).extension_property ((LinearMap.ker τ).liftQ τ le_rfl) (LinearMap.ker_eq_bot.mp (Submodule.ker_liftQ_eq_bot _ _ _ le_rfl)) ((LinearMap.ker τ).liftQ (β.flip c) hker')`. Establish `hφG : ∀ d, β d c = G (τ d)` using `fun d => by`. Establish `h4` using `LinearMap.congr_fun hG (Submodule.Quotient.mk d)`. Simplify using `only [LinearMap.comp_apply, Submodule.liftQ_apply, LinearMap.flip_apply] at h4`.
+
+Conclude with `h4.symm`. Establish `htor : ∀ s : N, ∃ n : ℕ, ∀ d : M, ℓ ^ n • β d s = 0`. Introduce `s`. Establish `h5 : ∀ i : Fin r, ∃ k : ℕ, ∀ m, k ≤ m → ℓ ^ m • β (v i) s = 0`. Introduce `i`.
+
+Take `⟨k, b, hb⟩` from `exists_pow_mul_mem ℓ hℓ0 hℓu (y s i)`. Use `⟨k, fun m hm => ?_⟩` and prove the remaining obligations. Rewrite using `[← hy, ← Submodule.Quotient.mk_smul, mk_eq_zero_iff]`. Use `⟨ℓ ^ (m - k) * b, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, hb, Algebra.smul_def, map_pow, map_pow, ← mul_assoc, ← pow_add, Nat.sub_add_cancel hm]`.
+
+Use `choose k hk using h5`. Use `⟨Finset.univ.sup k, fun d => ?_⟩` and prove the remaining obligations. Take `⟨a, rfl⟩` from `hspan d`. Rewrite using `[map_sum, LinearMap.sum_apply, Finset.smul_sum]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_smul, LinearMap.smul_apply, smul_comm, hk i _ (Finset.le_sup (Finset.mem_univ i)), smul_zero]`. Use `choose n hn using htor`. Establish `hcoef : ∀ s : F, ∃ cs : O, ∀ e : LL ⧸ LinearMap.range (Algebra.linearMap O LL), ℓ ^ (n s.1.1) • e = 0 → G (Pi.single s e) = cs • e` using `fun s => by`. Take `⟨cs, hcs⟩` from `endo_on_torsion ℓ hℓLL (G ∘ₗ LinearMap.single O (fun _ : F => LL ⧸ LinearMap.range (Algebra.linearMap O LL)) s) (n s.1.1)`. Conclude with `⟨cs, fun e he => by simpa using hcs e he⟩`.
+
+Use `choose cs hcs using hcoef`. Establish `hkey : ∀ d, β d c = β d (∑ s : F, cs s • s.1.1)`. Introduce `d`. Rewrite using `[hφG d, ← Finset.univ_sum_single (τ d), map_sum, map_sum]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[hτ, hcs s _ (hn _ d), map_smul]`. Establish `hdiff : c - ∑ s : F, cs s • s.1.1 ∈ S` using `hker _ (fun d => by rw [map_sub, sub_eq_zero]; exact hkey d)`. Establish `hsum : ∑ s : F, cs s • s.1.1 ∈ S` using `Submodule.sum_mem _ fun s _ => S.smul_mem _ s.1.2`. Simplify using `using S.add_mem hdiff hsum`.
+-/
 theorem mem_of_forall_annihilator_annihilator :
     ∀ (l : ℕ) [Fact l.Prime] (LL : Type) [Field LL] [Algebra ℚ_[l] LL] [TopologicalSpace LL]
       (O : Type) [CommRing O] [Algebra O LL], GoodO (Qp := ℚ_[l]) LL O →

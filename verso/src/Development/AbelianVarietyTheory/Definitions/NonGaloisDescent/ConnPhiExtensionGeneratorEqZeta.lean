@@ -13,6 +13,13 @@ variable {K : Type} [NormedField K] {a : ℕ} {ι κ : Type}
 
 def ulim (s : ℕ → K⟦X⟧) : K⟦X⟧ := PowerSeries.mk fun n => coeff n (s n)
 
+/- English proof (translation)
+Establish `key (m k : ℕ) : (X : K⟦X⟧) ^ (m + 1) ∣ s (m + k) - s m`. Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Use `dvd_add ((pow_dvd_pow _ (by omega : m + 1 ≤ m + k + 1)).trans (h (m + k))) ih` as an intermediate fact.
+
+Rewrite `this` using `[sub_add_sub_cancel]`. Then use the resulting hypothesis. Rewrite using `[X_pow_dvd_iff]`. Introduce `m hm`. Take `⟨k, rfl⟩` from `Nat.exists_eq_add_of_le (Nat.lt_succ_iff.1 hm)`. Use `X_pow_dvd_iff.1 (key m k) m (Nat.lt_succ_self m)` as an intermediate fact.
+
+Rewrite `this`, the goal using `[map_sub]`. Rewrite using `[ulim, coeff_mk, ← neg_sub, this, neg_zero]`.
+-/
 theorem ulim_sub_dvd {s : ℕ → K⟦X⟧} (h : ∀ n, (X : K⟦X⟧) ^ (n + 1) ∣ s (n + 1) - s n) (n : ℕ) :
     (X : K⟦X⟧) ^ (n + 1) ∣ ulim s - s n := by
   have key (m k : ℕ) : (X : K⟦X⟧) ^ (m + 1) ∣ s (m + k) - s m := by
@@ -36,19 +43,34 @@ def uPow (m : ℕ) : Submodule K⟦X⟧ (Vec K a ι) where
   zero_mem' _ _ := dvd_zero _
   smul_mem' c _ hv τ i := (hv τ i).mul_left c
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_uPow {m : ℕ} {v : Vec K a ι} : v ∈ uPow K a ι m ↔ ∀ τ i, (X : K⟦X⟧) ^ m ∣ v τ i :=
   Iff.rfl
 
+/- English proof (translation)
+Introduce `_ hv τ i` and use `(pow_dvd_pow _ h).trans (hv τ i)`.
+-/
 theorem uPow_anti {m n : ℕ} (h : m ≤ n) : uPow K a ι n ≤ uPow K a ι m :=
   fun _ hv τ i => (pow_dvd_pow _ h).trans (hv τ i)
 
+/- English proof (translation)
+Use extensionality with `τ i n`. Simplify using `using X_pow_dvd_iff.1 (h n τ i) n (Nat.lt_succ_self n)`.
+-/
 theorem eq_zero_of_mem_uPow {v : Vec K a ι} (h : ∀ m, v ∈ uPow K a ι (m + 1)) : v = 0 := by
   ext τ i n
   simpa using X_pow_dvd_iff.1 (h n τ i) n (Nat.lt_succ_self n)
 
+/- English proof (translation)
+Simplify using `[mem_uPow, X_dvd_iff, funext_iff]`.
+-/
 theorem mem_uPow_one {v : Vec K a ι} : v ∈ uPow K a ι 1 ↔ red v = 0 := by
   simp [mem_uPow, X_dvd_iff, funext_iff]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h choose w hw using h`. Conclude with `⟨w, funext fun τ => funext fun i => hw τ i⟩`. Introduce and unpack `⟨w, rfl⟩ τ i`. Conclude with `Dvd.intro _ rfl`.
+-/
 theorem mem_uPow_iff_exists {m : ℕ} {v : Vec K a ι} :
     v ∈ uPow K a ι m ↔ ∃ w : Vec K a ι, v = (X : K⟦X⟧) ^ m • w := by
   constructor
@@ -58,12 +80,21 @@ theorem mem_uPow_iff_exists {m : ℕ} {v : Vec K a ι} :
   · rintro ⟨w, rfl⟩ τ i
     exact Dvd.intro _ rfl
 
+/- English proof (translation)
+The claim follows from `mem_uPow_iff_exists.2 ⟨w, by simp⟩`.
+-/
 theorem X_smul_mem_uPow (w : Vec K a ι) : (X : K⟦X⟧) • w ∈ uPow K a ι 1 :=
   mem_uPow_iff_exists.2 ⟨w, by simp⟩
 
+/- English proof (translation)
+The claim follows from `Finset.dvd_sum fun i _ => (hv i).mul_left _`.
+-/
 theorem dvd_mulVec [Fintype ι] {c : K⟦X⟧} (Y : Matrix κ ι K⟦X⟧) {v : ι → K⟦X⟧} (hv : ∀ i, c ∣ v i)
     (j : κ) : c ∣ (Y *ᵥ v) j := Finset.dvd_sum fun i _ => (hv i).mul_left _
 
+/- English proof (translation)
+Establish `h1` using `map_dvd (frob K l) h`. Rewrite `h1` using `[map_pow, frob_X, ← pow_mul]`. Use `(Fact.out : l.Prime).two_le` as an intermediate fact. Conclude with `(pow_dvd_pow _ (by nlinarith)).trans h1`.
+-/
 theorem X_pow_dvd_frob (l : ℕ) [Fact l.Prime] {m : ℕ} {f : K⟦X⟧} (h : (X : K⟦X⟧) ^ (m + 1) ∣ f) :
     (X : K⟦X⟧) ^ (m + 2) ∣ frob K l f := by
   have h1 := map_dvd (frob K l) h
@@ -79,12 +110,18 @@ def geom (T : Module.End K (Vec K a ι)) : Module.End K (Vec K a ι) where
 def Raises (T : Module.End K (Vec K a ι)) : Prop :=
   ∀ m, ∀ v ∈ uPow K a ι (m + 1), T v ∈ uPow K a ι (m + 2)
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => exact hw`. Consider the case `succ n ih => rw [pow_succ']`. Conclude with `hT n _ ih`.
+-/
 theorem Raises.pow_mem {T : Module.End K (Vec K a ι)} (hT : Raises T) {w : Vec K a ι}
     (hw : w ∈ uPow K a ι 1) (n : ℕ) : (T ^ n) w ∈ uPow K a ι (n + 1) := by
   induction n with
   | zero => exact hw
   | succ n ih => rw [pow_succ']; exact hT n _ ih
 
+/- English proof (translation)
+Establish `h : geom T w - (∑ j ∈ Finset.range (n + 1), T ^ j) w ∈ uPow K a ι (n + 1)` using `fun τ i => ulim_sub_dvd (s := fun n => (∑ j ∈ Finset.range (n + 1), T ^ j) w τ i) (fun n => by`. Rewrite using `[Finset.sum_range_succ _ (n + 1), LinearMap.add_apply, Pi.add_apply, Pi.add_apply, add_sub_cancel_left]`. Conclude with `uPow_anti n.succ.le_succ (hT.pow_mem hw (n + 1)) τ i) n`. Use `add_mem h (hT.pow_mem hw n)` as an intermediate fact. Rewrite `this` using `[Finset.sum_range_succ, LinearMap.add_apply, ← sub_sub, sub_add_cancel]`. Then use the resulting hypothesis.
+-/
 theorem geom_sub_mem {T : Module.End K (Vec K a ι)} (hT : Raises T) {w : Vec K a ι}
     (hw : w ∈ uPow K a ι 1) (n : ℕ) :
     geom T w - (∑ j ∈ Finset.range n, T ^ j) w ∈ uPow K a ι (n + 1) := by
@@ -96,10 +133,18 @@ theorem geom_sub_mem {T : Module.End K (Vec K a ι)} (hT : Raises T) {w : Vec K 
   have := add_mem h (hT.pow_mem hw n)
   rwa [Finset.sum_range_succ, LinearMap.add_apply, ← sub_sub, sub_add_cancel] at this
 
+/- English proof (translation)
+Simplify using `using geom_sub_mem hT hw 0`.
+-/
 theorem geom_mem {T : Module.End K (Vec K a ι)} (hT : Raises T) {w : Vec K a ι}
     (hw : w ∈ uPow K a ι 1) : geom T w ∈ uPow K a ι 1 := by
   simpa using geom_sub_mem hT hw 0
 
+/- English proof (translation)
+Rewrite using `[← sub_eq_zero]`. Use `eq_zero_of_mem_uPow fun m => uPow_anti (Nat.le_succ _) ?_` and prove the remaining obligations. Use `sub_mem (geom_sub_mem hT hw (m + 1)) (hT m _ (geom_sub_mem hT hw m))` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Simplify using `only [Finset.sum_range_succ', pow_succ', ← Finset.mul_sum, LinearMap.add_apply, Module.End.mul_apply, map_sub, pow_zero, Module.End.one_apply]`.
+
+Normalize the expressions using the abelian group laws.
+-/
 theorem geom_eq {T : Module.End K (Vec K a ι)} (hT : Raises T) {w : Vec K a ι}
     (hw : w ∈ uPow K a ι 1) : geom T w = w + T (geom T w) := by
   rw [← sub_eq_zero]
@@ -115,8 +160,14 @@ def cst : (ZMod a → ι → K) →ₗ[K] Vec K a ι where
   map_add' d d' := by ext τ i : 2; simp
   map_smul' c d := by ext τ i : 2; simp [smul_eq_C_mul]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem cst_apply (d : ZMod a → ι → K) (τ : ZMod a) (i : ι) : cst d τ i = C (d τ i) := rfl
 
+/- English proof (translation)
+Use extensionality with `τ i`. Simplify using the standard rewrite rules.
+-/
 @[simp] theorem red_cst (d : ZMod a → ι → K) : red (cst d) = d := by ext τ i; simp
 
 def derV : Module.End K (Vec K a ι) where
@@ -124,6 +175,9 @@ def derV : Module.End K (Vec K a ι) where
   map_add' v w := by ext τ i : 2; simp
   map_smul' c v := by ext τ i : 2; simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem derV_apply (v : Vec K a ι) (τ : ZMod a) (i : ι) :
     derV v τ i = PowerSeries.derivative K (v τ i) := rfl
 
@@ -133,12 +187,18 @@ def NTot (f : ZMod a → K⟦X⟧) : ZMod a → K⟦X⟧ := fun τ => N K (f τ)
 
 def bas [DecidableEq ι] (i : ι) : Vec K a ι := fun _ => Pi.single i 1
 
+/- English proof (translation)
+Use `ext1 τ`. Use `ext1 j`. Simplify using `[bas, Finset.sum_apply, Pi.single_apply]`.
+-/
 theorem eq_sum_bas [Fintype ι] [DecidableEq ι] (v : Vec K a ι) :
     v = ∑ i, (fun τ => v τ i) • (bas i : Vec K a ι) := by
   ext1 τ
   ext1 j
   simp [bas, Finset.sum_apply, Pi.single_apply]
 
+/- English proof (translation)
+Use `ext1 τ`. Use `ext1 j`. Simplify using `only [bas, cst_apply, Pi.single_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem cst_single [DecidableEq ι] (i : ι) :
     cst (fun _ : ZMod a => (Pi.single i 1 : ι → K)) = bas i := by
   ext1 τ
@@ -156,9 +216,15 @@ namespace PhiMod
 
 variable (P : PhiMod O K l e a ι)
 
+/- English proof (translation)
+Introduce `_ _ hv τ` and use `dvd_mulVec _ fun i => X_pow_dvd_frob l (hv (τ - 1) i)`.
+-/
 theorem raises_phi : Raises P.phi := fun _ _ hv τ =>
   dvd_mulVec _ fun i => X_pow_dvd_frob l (hv (τ - 1) i)
 
+/- English proof (translation)
+Introduce `m v hv` and use `by have := (uPow K a ι (m + 2)).smul_mem (C c) (P.raises_phi m v hv) convert this using 1 ext τ i : 2 simp [smul_eq_C_mul]`.
+-/
 theorem raises_smul_phi (c : K) : Raises (c • P.phi) := fun m v hv => by
   have := (uPow K a ι (m + 2)).smul_mem (C c) (P.raises_phi m v hv)
   convert this using 1
@@ -167,6 +233,11 @@ theorem raises_smul_phi (c : K) : Raises (c • P.phi) := fun m v hv => by
 
 omit [IsUltrametricDist K] [Fintype ι] [DecidableEq ι] in
 
+/- English proof (translation)
+Use `eq_zero_of_mem_uPow fun m => ?_` and prove the remaining obligations. Proceed by induction on `m generalizing x with`. Consider the case `zero => exact h1 x`. Consider the case `succ m ih`. Take `⟨y, rfl⟩` from `hσ x`.
+
+Rewrite using `[h]`. Conclude with `hT m _ (ih y)`.
+-/
 theorem _root_.GlobalTheory.BK.Raises.eq_zero {T : Module.End K (Vec K a ι)} (hT : Raises T) {α : Type}
     {σ : α → α} (hσ : Function.Surjective σ) {δ : α → Vec K a ι} (h1 : ∀ x, δ x ∈ uPow K a ι 1)
     (h : ∀ x, δ (σ x) = T (δ x)) (x : α) : δ x = 0 := by
@@ -182,13 +253,28 @@ def xiSeq (n : ℕ) : ZMod a → Matrix ι ι K⟦X⟧ :=
   (fun Y τ => P.mx τ * (Y (τ - 1)).map (frob K l) * ((P.mxInv τ).map constantCoeff).map C)^[n]
     fun _ => 1
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem xiSeq_zero (τ : ZMod a) : P.xiSeq 0 τ = 1 := rfl
 
+/- English proof (translation)
+Rewrite using `[xiSeq, Function.iterate_succ_apply']`. Both sides reduce to the same expression.
+-/
 theorem xiSeq_succ (n : ℕ) (τ : ZMod a) : P.xiSeq (n + 1) τ =
     P.mx τ * (P.xiSeq n (τ - 1)).map (frob K l) * ((P.mxInv τ).map constantCoeff).map C := by
   rw [xiSeq, Function.iterate_succ_apply']
   rfl
 
+/- English proof (translation)
+Proceed by induction on `n generalizing τ i j with`. Consider the case `zero`. Establish `h` using `congrFun (congrFun (P.matrix_mul_inv_const_eq_one τ) i) j`. Rewrite using `[zero_add, pow_one, X_dvd_iff]`. Simplify using `only [xiSeq_succ, xiSeq_zero, Matrix.map_one _ (map_zero (frob K l)) (map_one _), Matrix.mul_one, map_sub]`.
+
+Rewrite `h`, the goal using `[Matrix.mul_apply]`. Simplify using `only [map_sum, map_mul, Matrix.map_apply, constantCoeff_C, mx0] at h ⊢`. Rewrite using `[h, Matrix.one_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Consider the case `succ n ih`.
+
+Rewrite using `[← Matrix.sub_apply, xiSeq_succ P (n + 1), xiSeq_succ P n τ, ← Matrix.sub_mul, ← Matrix.mul_sub, Matrix.mul_apply]`. Use `Finset.dvd_sum fun k _ => Dvd.dvd.mul_right ?_ _` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply]`. Use `Finset.dvd_sum fun m _ => Dvd.dvd.mul_left ?_ _` and prove the remaining obligations. Rewrite using `[Matrix.sub_apply, Matrix.map_apply, Matrix.map_apply, ← map_sub]`.
+
+Conclude with `X_pow_dvd_frob l (ih (τ - 1) m k)`.
+-/
 theorem xiSeq_dvd (n : ℕ) (τ : ZMod a) (i j : ι) :
     (X : K⟦X⟧) ^ (n + 1) ∣ P.xiSeq (n + 1) τ i j - P.xiSeq n τ i j := by
   induction n generalizing τ i j with
@@ -210,10 +296,16 @@ theorem xiSeq_dvd (n : ℕ) (τ : ZMod a) (i j : ι) :
 
 def xiMat (τ : ZMod a) : Matrix ι ι K⟦X⟧ := Matrix.of fun i j => ulim fun n => P.xiSeq n τ i j
 
+/- English proof (translation)
+The claim follows from `ulim_sub_dvd (s := fun n => P.xiSeq n τ i j) (fun n => P.xiSeq_dvd n τ i j) n`.
+-/
 theorem xiMat_sub_dvd (n : ℕ) (τ : ZMod a) (i j : ι) :
     (X : K⟦X⟧) ^ (n + 1) ∣ P.xiMat τ i j - P.xiSeq n τ i j :=
   ulim_sub_dvd (s := fun n => P.xiSeq n τ i j) (fun n => P.xiSeq_dvd n τ i j) n
 
+/- English proof (translation)
+Use extensionality with `i j`. Use `P.xiMat_sub_dvd 0 τ i j` as an intermediate fact. Rewrite `this` using `[zero_add, pow_one, X_dvd_iff, map_sub, sub_eq_zero]`. Rewrite using `[Matrix.map_apply, this, xiSeq_zero, Matrix.one_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem xiMat_map_constantCoeff (τ : ZMod a) : (P.xiMat τ).map constantCoeff = 1 := by
   ext i j
   have := P.xiMat_sub_dvd 0 τ i j
@@ -221,6 +313,13 @@ theorem xiMat_map_constantCoeff (τ : ZMod a) : (P.xiMat τ).map constantCoeff =
   rw [Matrix.map_apply, this, xiSeq_zero, Matrix.one_apply, Matrix.one_apply]
   split_ifs <;> simp
 
+/- English proof (translation)
+Establish `h : P.mx τ * (P.xiMat (τ - 1)).map (frob K l) * ((P.mxInv τ).map constantCoeff).map C = P.xiMat τ`. Use extensionality with `i j n`. Establish `h1 : (X : K⟦X⟧) ^ (n + 2) ∣ (P.mx τ * (P.xiMat (τ - 1)).map (frob K l) * ((P.mxInv τ).map constantCoeff).map C) i j - P.xiSeq (n + 1) τ i j`. Rewrite using `[← Matrix.sub_apply, xiSeq_succ, ← Matrix.sub_mul, ← Matrix.mul_sub, Matrix.mul_apply]`. Use `Finset.dvd_sum fun k _ => Dvd.dvd.mul_right ?_ _` and prove the remaining obligations.
+
+Rewrite using `[Matrix.mul_apply]`. Use `Finset.dvd_sum fun m _ => Dvd.dvd.mul_left ?_ _` and prove the remaining obligations. Rewrite using `[Matrix.sub_apply, Matrix.map_apply, Matrix.map_apply, ← map_sub]`. Conclude with `X_pow_dvd_frob l (P.xiMat_sub_dvd n (τ - 1) m k)`. Establish `h2` using `X_pow_dvd_iff.1 (dvd_sub h1 (P.xiMat_sub_dvd (n + 1) τ i j)) n (by omega)`.
+
+Rewrite `h2` using `[sub_sub_sub_cancel_right, map_sub, sub_eq_zero]`. Then use the resulting hypothesis. Rewrite using `[← h, Matrix.mul_assoc _ _ ((P.mx0 τ).map C), ← Matrix.map_mul, inv_const_mul_matrix_eq_one, Matrix.map_one _ (map_zero _) (map_one _), Matrix.mul_one]`.
+-/
 theorem mx_mul_xiMat (τ : ZMod a) :
     P.mx τ * (P.xiMat (τ - 1)).map (frob K l) = P.xiMat τ * (P.mx0 τ).map C := by
   have h : P.mx τ * (P.xiMat (τ - 1)).map (frob K l) * ((P.mxInv τ).map constantCoeff).map C =
@@ -239,6 +338,9 @@ theorem mx_mul_xiMat (τ : ZMod a) :
   rw [← h, Matrix.mul_assoc _ _ ((P.mx0 τ).map C), ← Matrix.map_mul, inv_const_mul_matrix_eq_one,
     Matrix.map_one _ (map_zero _) (map_one _), Matrix.mul_one]
 
+/- English proof (translation)
+Rewrite using `[isUnit_iff_constantCoeff, RingHom.map_det, RingHom.mapMatrix_apply, xiMat_map_constantCoeff]`. Simplify using the standard rewrite rules.
+-/
 theorem isUnit_det_xiMat (τ : ZMod a) : IsUnit (P.xiMat τ).det := by
   rw [isUnit_iff_constantCoeff, RingHom.map_det, RingHom.mapMatrix_apply, xiMat_map_constantCoeff]
   simp
@@ -251,21 +353,39 @@ def xiExt : Vec K a ι ≃ₗ[K] Vec K a ι where
   left_inv w := by ext1 τ; simp [Matrix.nonsing_inv_mul _ (P.isUnit_det_xiMat τ)]
   right_inv w := by ext1 τ; simp [Matrix.mul_nonsing_inv _ (P.isUnit_det_xiMat τ)]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem xiExt_apply (w : Vec K a ι) (τ : ZMod a) : P.xiExt w τ = P.xiMat τ *ᵥ w τ := rfl
 
+/- English proof (translation)
+The claim follows from `funext fun τ => Matrix.mulVec_smul _ (f τ) (w τ)`.
+-/
 theorem xiExt_smul_tot (f : ZMod a → K⟦X⟧) (w : Vec K a ι) : P.xiExt (f • w) = f • P.xiExt w :=
   funext fun τ => Matrix.mulVec_smul _ (f τ) (w τ)
 
 def xi : P.D →ₗ[K] Vec K a ι := P.xiExt.toLinearMap ∘ₗ cst
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem xi_apply (d : P.D) : P.xi d = P.xiExt (cst d) := rfl
 
+/- English proof (translation)
+Use `ext1 τ`. Rewrite using `[red_apply, xiExt_apply, powerSeriesVecReduceModU_mulVec, xiMat_map_constantCoeff, Matrix.one_mulVec, red_apply]`.
+-/
 theorem red_xiExt (w : Vec K a ι) : red (P.xiExt w) = red w := by
   ext1 τ
   rw [red_apply, xiExt_apply, powerSeriesVecReduceModU_mulVec, xiMat_map_constantCoeff, Matrix.one_mulVec, red_apply]
 
+/- English proof (translation)
+Rewrite using `[xi_apply, red_xiExt, red_cst]`.
+-/
 @[simp] theorem red_xi (d : P.D) : red (P.xi d) = d := by rw [xi_apply, red_xiExt, red_cst]
 
+/- English proof (translation)
+Use `ext1 τ`. Rewrite using `[phi_apply, xiExt_apply, xiExt_apply, Matrix.mulVec_mulVec, ← mx_mul_xiMat, ← Matrix.mulVec_mulVec]`. Use `congr 1`. Use `ext1 i`. Conclude with `RingHom.map_mulVec (frob K l).toRingHom _ _ i`.
+-/
 theorem phi_xiExt (w : Vec K a ι) :
     P.phi (P.xiExt w) = P.xiExt fun τ => (P.mx0 τ).map C *ᵥ frobV l (w (τ - 1)) := by
   ext1 τ
@@ -275,6 +395,9 @@ theorem phi_xiExt (w : Vec K a ι) :
   ext1 i
   exact RingHom.map_mulVec (frob K l).toRingHom _ _ i
 
+/- English proof (translation)
+Rewrite using `[xi_apply, phi_xiExt, xi_apply]`. Use `congr 1`. Use extensionality with `τ i : 2`. Simplify using `[phiD_apply, Matrix.mulVec, dotProduct]`.
+-/
 theorem phi_xi (d : P.D) : P.phi (P.xi d) = P.xi (P.phiD d) := by
   rw [xi_apply, phi_xiExt, xi_apply]
   congr 1
@@ -283,6 +406,9 @@ theorem phi_xi (d : P.D) : P.phi (P.xi d) = P.xi (P.phiD d) := by
 
 variable {P} in
 
+/- English proof (translation)
+Rewrite using `[← sub_eq_zero]`. Use `Q.raises_phi.eq_zero (σ := P.phiD) P.phiD.surjective (δ := fun d => g (P.xi d) - Q.xi (red (g (P.xi d)))) (fun d => ?_) (fun d => ?_) d` and prove the remaining obligations. Rewrite using `[mem_uPow_one, map_sub, red_xi, sub_self]`. Simplify using `only [← phi_xi, hg, red_phi, map_sub]`.
+-/
 theorem map_xi {Q : PhiMod O K l e a κ} {g : Vec K a ι → Vec K a κ}
     (hg : ∀ v, g (P.phi v) = Q.phi (g v)) (d : P.D) : g (P.xi d) = Q.xi (red (g (P.xi d))) := by
   rw [← sub_eq_zero]
@@ -291,6 +417,9 @@ theorem map_xi {Q : PhiMod O K l e a κ} {g : Vec K a ι → Vec K a κ}
   · rw [mem_uPow_one, map_sub, red_xi, sub_self]
   · simp only [← phi_xi, hg, red_phi, map_sub]
 
+/- English proof (translation)
+Rewrite using `[← sub_eq_zero]`. Use `P.raises_phi.eq_zero (σ := P.phiD) P.phiD.surjective (δ := fun d => s d - P.xi d) (fun d => ?_) (fun d => ?_) d` and prove the remaining obligations. Rewrite using `[mem_uPow_one, map_sub, red_xi, h0, sub_self]`. Simplify using `only [← phi_xi, ← h, map_sub]`.
+-/
 theorem xi_unique {s : P.D → Vec K a ι} (h0 : ∀ d, red (s d) = d)
     (h : ∀ d, P.phi (s d) = s (P.phiD d)) (d : P.D) : s d = P.xi d := by
   rw [← sub_eq_zero]
@@ -306,23 +435,41 @@ def conn : Module.End K (Vec K a ι) where
   map_add' v w := by rw [map_add, smul_add]
   map_smul' c v := by rw [map_smul, smul_comm]; rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem conn_apply (v : Vec K a ι) : P.conn v = (X : K⟦X⟧) • P.nabla v := rfl
 
+/- English proof (translation)
+Simplify using `[nabla, LinearEquiv.conj_apply]`.
+-/
 theorem nabla_xiExt (w : Vec K a ι) : P.nabla (P.xiExt w) = P.xiExt (derV w) := by
   simp [nabla, LinearEquiv.conj_apply]
 
+/- English proof (translation)
+Rewrite using `[conn_apply, nabla_xiExt]`. Conclude with `(P.xiExt_smul_tot (fun _ => X) _).symm`.
+-/
 theorem conn_xiExt (w : Vec K a ι) : P.conn (P.xiExt w) = P.xiExt fun τ i => N K (w τ i) := by
   rw [conn_apply, nabla_xiExt]
   exact (P.xiExt_smul_tot (fun _ => X) _).symm
 
+/- English proof (translation)
+Rewrite using `[xi_apply, nabla_xiExt, ← map_zero P.xiExt]`. Use `congr 1`. Use extensionality with `τ i : 2`. Simplify using the standard rewrite rules.
+-/
 @[simp] theorem nabla_xi (d : P.D) : P.nabla (P.xi d) = 0 := by
   rw [xi_apply, nabla_xiExt, ← map_zero P.xiExt]
   congr 1
   ext τ i : 2
   simp
 
+/- English proof (translation)
+Rewrite using `[conn_apply, nabla_xi, smul_zero]`.
+-/
 @[simp] theorem conn_xi (d : P.D) : P.conn (P.xi d) = 0 := by rw [conn_apply, nabla_xi, smul_zero]
 
+/- English proof (translation)
+Take `⟨w, rfl⟩` from `P.xiExt.surjective v`. Rewrite using `[← xiExt_smul_tot, nabla_xiExt, nabla_xiExt, ← xiExt_smul_tot, ← xiExt_smul_tot, ← map_add]`. Use `congr 1`. Use extensionality with `τ i : 2`. Simplify using `[derTot, add_comm, mul_comm]`.
+-/
 theorem nabla_smul_tot (f : ZMod a → K⟦X⟧) (v : Vec K a ι) :
     P.nabla (f • v) = derTot f • v + f • P.nabla v := by
   obtain ⟨w, rfl⟩ := P.xiExt.surjective v
@@ -331,6 +478,9 @@ theorem nabla_smul_tot (f : ZMod a → K⟦X⟧) (v : Vec K a ι) :
   ext τ i : 2
   simp [derTot, add_comm, mul_comm]
 
+/- English proof (translation)
+Rewrite using `[conn_apply, nabla_smul_tot, conn_apply]`. Use extensionality with `τ i : 2`. Simplify using `only [derTot, NTot, N_apply, Pi.add_apply, Pi.smul_apply, Pi.smul_apply', smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem conn_smul_tot (f : ZMod a → K⟦X⟧) (v : Vec K a ι) :
     P.conn (f • v) = NTot f • v + f • P.conn v := by
   rw [conn_apply, nabla_smul_tot, conn_apply]
@@ -338,11 +488,22 @@ theorem conn_smul_tot (f : ZMod a → K⟦X⟧) (v : Vec K a ι) :
   simp only [derTot, NTot, N_apply, Pi.add_apply, Pi.smul_apply, Pi.smul_apply', smul_eq_mul]
   ring
 
+/- English proof (translation)
+The claim follows from `P.conn_smul_tot (fun _ => f) v`.
+-/
 theorem conn_smul (f : K⟦X⟧) (v : Vec K a ι) : P.conn (f • v) = N K f • v + f • P.conn v :=
   P.conn_smul_tot (fun _ => f) v
 
+/- English proof (translation)
+The claim follows from `X_smul_mem_uPow _`.
+-/
 theorem conn_mem_uPow (v : Vec K a ι) : P.conn v ∈ uPow K a ι 1 := X_smul_mem_uPow _
 
+/- English proof (translation)
+Take `⟨w, rfl⟩` from `P.xiExt.surjective v`. Rewrite using `[phi_xiExt, conn_xiExt, conn_xiExt, phi_xiExt, ← map_smul]`. Use `congr 1`. Use extensionality with `τ i : 2`. Simplify using `only [Matrix.mulVec, dotProduct, map_sum, Pi.smul_apply, Finset.smul_sum, frobV_apply, Matrix.map_apply]`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← smul_eq_C_mul, ← smul_eq_C_mul, Derivation.map_smul, N_frob, smul_comm, smul_eq_C_mul (a := (l : K)), map_natCast]`.
+-/
 theorem conn_phi (v : Vec K a ι) : P.conn (P.phi v) = (l : K) • P.phi (P.conn v) := by
   obtain ⟨w, rfl⟩ := P.xiExt.surjective v
   rw [phi_xiExt, conn_xiExt, conn_xiExt, phi_xiExt, ← map_smul]
@@ -356,6 +517,9 @@ theorem conn_phi (v : Vec K a ι) : P.conn (P.phi v) = (l : K) • P.phi (P.conn
 
 variable {P} in
 
+/- English proof (translation)
+Take `⟨w, rfl⟩` from `P.xiExt.surjective v`. Rewrite using `[eq_sum_bas w]`. Simplify using `only [map_sum, xiExt_smul_tot, ← cst_single, ← xi_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[conn_smul_tot, conn_xi, smul_zero, add_zero, hs, hs, conn_smul_tot, map_xi hg, conn_xi, smul_zero, add_zero, hσ]`.
+-/
 theorem map_conn {Q : PhiMod O K l e a κ} (g : Vec K a ι →+ Vec K a κ)
     (σ : (ZMod a → K⟦X⟧) → ZMod a → K⟦X⟧) (hσ : ∀ f, σ (NTot f) = NTot (σ f))
     (hs : ∀ f v, g (f • v) = σ f • g v) (hg : ∀ v, g (P.phi v) = Q.phi (g v)) (v : Vec K a ι) :
@@ -374,11 +538,17 @@ namespace PhiMod
 variable (P : PhiMod O K l e a ι)
 
 omit [Fact l.Prime] in
+/- English proof (translation)
+The claim follows from `mem_tot.2 fun _ j => by simp only [bas, Pi.single_apply] split_ifs exacts [one_mem _, zero_mem _]`.
+-/
 theorem bas_mem_M (i : ι) : bas i ∈ P.M := mem_tot.2 fun _ j => by
   simp only [bas, Pi.single_apply]
   split_ifs
   exacts [one_mem _, zero_mem _]
 
+/- English proof (translation)
+Establish `: frobV l (Pi.single i (1 : K⟦X⟧)) = Pi.single i 1` using `by ext1 j`. Rewrite using `[frobV_apply, Pi.single_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Simplify using `[phi_apply, bas, this]`.
+-/
 theorem phi_bas (i : ι) (τ : ZMod a) : P.phi (bas i) τ = (P.mx τ).col i := by
   have : frobV l (Pi.single i (1 : K⟦X⟧)) = Pi.single i 1 := by
     ext1 j
@@ -386,6 +556,9 @@ theorem phi_bas (i : ι) (τ : ZMod a) : P.phi (bas i) τ = (P.mx τ).col i := b
     split_ifs <;> simp
   simp [phi_apply, bas, this]
 
+/- English proof (translation)
+Use `ext1 τ`. Use `conv_lhs => rw [← Matrix.one_mulVec (v τ), ← P.mx_mul_mxInv τ, ← Matrix.mulVec_mulVec]`. Use `ext1 j`. Simplify using `only [Finset.sum_apply, Pi.smul_apply', phi_bas, Pi.smul_apply, Matrix.col_apply, smul_eq_mul]`. Conclude with `Finset.sum_congr rfl fun i _ => mul_comm _ _`.
+-/
 theorem eq_sum_phi_bas (v : Vec K a ι) :
     v = ∑ i, (fun τ => (P.mxInv τ *ᵥ v τ) i) • P.phi (bas i) := by
   ext1 τ
@@ -395,44 +568,74 @@ theorem eq_sum_phi_bas (v : Vec K a ι) :
   exact Finset.sum_congr rfl fun i _ => mul_comm _ _
 
 omit [Fact l.Prime] in
+/- English proof (translation)
+The claim follows from `mem_tot.2 fun τ i => B.mul_mem (hf τ) (mem_tot.1 hv τ i)`.
+-/
 theorem smul_tot_mem_Mext {B : Subalgebra O K⟦X⟧} {f : ZMod a → K⟦X⟧} (hf : ∀ τ, f τ ∈ B)
     {v : Vec K a ι} (hv : v ∈ P.Mext B) : f • v ∈ P.Mext B :=
   mem_tot.2 fun τ i => B.mul_mem (hf τ) (mem_tot.1 hv τ i)
 
 omit [Fact l.Prime] in
+/- English proof (translation)
+The claim follows from `mem_tot.2 fun τ => (P.extc B τ).smul_mem ⟨f τ, hf τ⟩ (mem_tot.1 hv τ)`.
+-/
 theorem smul_tot_mem_ext {B : Subalgebra O K⟦X⟧} {f : ZMod a → K⟦X⟧} (hf : ∀ τ, f τ ∈ B)
     {v : Vec K a ι} (hv : v ∈ P.ext B) : f • v ∈ P.ext B :=
   mem_tot.2 fun τ => (P.extc B τ).smul_mem ⟨f τ, hf τ⟩ (mem_tot.1 hv τ)
 
 omit [Fact l.Prime] in
+/- English proof (translation)
+The claim follows from `mem_tot.2 fun τ i => h (mem_tot.1 hv τ i)`.
+-/
 theorem Mext_mono {B B' : Subalgebra O K⟦X⟧} (h : B ≤ B') {v : Vec K a ι} (hv : v ∈ P.Mext B) :
     v ∈ P.Mext B' := mem_tot.2 fun τ i => h (mem_tot.1 hv τ i)
 
 omit [Fact l.Prime] in
+/- English proof (translation)
+The claim follows from `mem_tot.2 fun τ => P.mem_extc_iff.2 fun i => h (P.mem_extc_iff.1 (mem_tot.1 hv τ) i)`.
+-/
 theorem ext_mono {B B' : Subalgebra O K⟦X⟧} (h : B ≤ B') {v : Vec K a ι} (hv : v ∈ P.ext B) :
     v ∈ P.ext B' := mem_tot.2 fun τ => P.mem_extc_iff.2 fun i =>
       h (P.mem_extc_iff.1 (mem_tot.1 hv τ) i)
 
 def lphi : Module.End K (Vec K a ι) := (l : K) • P.phi
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem lphi_apply (v : Vec K a ι) : P.lphi v = (l : K) • P.phi v := rfl
 
+/- English proof (translation)
+The claim follows from `P.raises_smul_phi l`.
+-/
 theorem raises_lphi : Raises P.lphi := P.raises_smul_phi l
 
 def zeta : Module.End K (Vec K a ι) := -(geom P.lphi * P.lphi * P.conn)
 
+/- English proof (translation)
+The claim follows from `uPow_anti one_le_two (P.raises_lphi 0 _ (P.conn_mem_uPow y))`.
+-/
 theorem lphi_conn_mem (y : Vec K a ι) : P.lphi (P.conn y) ∈ uPow K a ι 1 :=
   uPow_anti one_le_two (P.raises_lphi 0 _ (P.conn_mem_uPow y))
 
+/- English proof (translation)
+The claim follows from `neg_mem (geom_mem P.raises_lphi (P.lphi_conn_mem y))`.
+-/
 theorem zeta_mem_uPow (y : Vec K a ι) : P.zeta y ∈ uPow K a ι 1 :=
   neg_mem (geom_mem P.raises_lphi (P.lphi_conn_mem y))
 
+/- English proof (translation)
+Establish `h` using `geom_eq P.raises_lphi (P.lphi_conn_mem y)`. Establish `h' : P.zeta y = -geom P.lphi (P.lphi (P.conn y))` using `rfl`. Rewrite using `[map_sub, h', map_neg]`. Take the linear combination `(exp := 1) -h`.
+-/
 theorem zeta_eq (y : Vec K a ι) : P.zeta y = P.lphi (P.zeta y - P.conn y) := by
   have h := geom_eq P.raises_lphi (P.lphi_conn_mem y)
   have h' : P.zeta y = -geom P.lphi (P.lphi (P.conn y)) := rfl
   rw [map_sub, h', map_neg]
   linear_combination (exp := 1) -h
 
+/- English proof (translation)
+Rewrite using `[← sub_eq_zero]`. Use `P.raises_lphi.eq_zero (σ := (id : Unit → Unit)) Function.surjective_id (δ := fun _ => z - P.zeta y) (fun _ => sub_mem h1 (P.zeta_mem_uPow y)) (fun _ => ?_) ()` and prove the remaining obligations. Use `conv_lhs => rw [h, zeta_eq, ← map_sub, sub_sub_sub_cancel_right]`.
+-/
 theorem zeta_unique {y z : Vec K a ι} (h1 : z ∈ uPow K a ι 1) (h : z = P.lphi (z - P.conn y)) :
     z = P.zeta y := by
   rw [← sub_eq_zero]
@@ -440,18 +643,27 @@ theorem zeta_unique {y z : Vec K a ι} (h1 : z ∈ uPow K a ι 1) (h : z = P.lph
     (δ := fun _ => z - P.zeta y) (fun _ => sub_mem h1 (P.zeta_mem_uPow y)) (fun _ => ?_) ()
   conv_lhs => rw [h, zeta_eq, ← map_sub, sub_sub_sub_cancel_right]
 
+/- English proof (translation)
+Establish `h` using `neg_mem (geom_sub_mem P.raises_lphi (P.lphi_conn_mem y) m)`. Rewrite `h` using `[neg_sub, sub_eq_neg_add, LinearMap.sum_apply]`. Conclude with `h`.
+-/
 theorem zeta_add_sum_mem (y : Vec K a ι) (m : ℕ) :
     P.zeta y + ∑ n ∈ Finset.range m, (P.lphi ^ (n + 1)) (P.conn y) ∈ uPow K a ι (m + 1) := by
   have h := neg_mem (geom_sub_mem P.raises_lphi (P.lphi_conn_mem y) m)
   rw [neg_sub, sub_eq_neg_add, LinearMap.sum_apply] at h
   exact h
 
+/- English proof (translation)
+The claim follows from `(P.zeta_unique (P.conn_mem_uPow _) (by rw [map_sub P.conn, sub_sub_cancel, lphi_apply, conn_phi])).symm`.
+-/
 theorem zeta_phi_sub (m : Vec K a ι) : P.zeta (P.phi m - m) = P.conn (P.phi m) :=
   (P.zeta_unique (P.conn_mem_uPow _) (by
     rw [map_sub P.conn, sub_sub_cancel, lphi_apply, conn_phi])).symm
 
 variable {P} in
 
+/- English proof (translation)
+The claim follows from `Q.zeta_unique (h1 _ (P.zeta_mem_uPow y)) (by conv_lhs => rw [zeta_eq, lphi_apply, map_smul, hg, map_sub, hN] rfl)`.
+-/
 theorem map_zeta {Q : PhiMod O K l e a κ} (g : Vec K a ι →ₗ[K] Vec K a κ)
     (h1 : ∀ v ∈ uPow K a ι 1, g v ∈ uPow K a κ 1) (hg : ∀ v, g (P.phi v) = Q.phi (g v))
     (hN : ∀ v, g (P.conn v) = Q.conn (g v)) (y : Vec K a ι) : g (P.zeta y) = Q.zeta (g y) :=
@@ -465,23 +677,41 @@ namespace Hom
 
 variable {P : PhiMod O K l e a ι} {Q : PhiMod O K l e a κ} (F : Hom P Q)
 
+/- English proof (translation)
+The claim follows from `funext fun τ => Matrix.mulVec_smul _ (f τ) (v τ)`.
+-/
 theorem app_smul_tot (f : ZMod a → K⟦X⟧) (v : Vec K a ι) : F.app (f • v) = f • F.app v :=
   funext fun τ => Matrix.mulVec_smul _ (f τ) (v τ)
 
+/- English proof (translation)
+Introduce `τ` and use `dvd_mulVec _ (hv τ)`.
+-/
 theorem app_mem_uPow {m : ℕ} {v : Vec K a ι} (hv : v ∈ uPow K a ι m) : F.app v ∈ uPow K a κ m :=
   fun τ => dvd_mulVec _ (hv τ)
 
+/- English proof (translation)
+Rewrite using `[PhiMod.map_xi F.app_phi, red_app, PhiMod.red_xi]`.
+-/
 theorem app_xi (d : P.D) : F.app (P.xi d) = Q.xi (F.onD d) := by
   rw [PhiMod.map_xi F.app_phi, red_app, PhiMod.red_xi]
 
+/- English proof (translation)
+The claim follows from `PhiMod.map_conn F.app.toAddMonoidHom id (fun _ => rfl) F.app_smul_tot F.app_phi v`.
+-/
 theorem app_conn (v : Vec K a ι) : F.app (P.conn v) = Q.conn (F.app v) :=
   PhiMod.map_conn F.app.toAddMonoidHom id (fun _ => rfl) F.app_smul_tot F.app_phi v
 
+/- English proof (translation)
+Establish `h` using `F.app_conn v`. Rewrite `h` using `[PhiMod.conn_apply, PhiMod.conn_apply, map_smul]`. Conclude with `smul_right_injective _ X_ne_zero h`.
+-/
 theorem app_nabla (v : Vec K a ι) : F.app (P.nabla v) = Q.nabla (F.app v) := by
   have h := F.app_conn v
   rw [PhiMod.conn_apply, PhiMod.conn_apply, map_smul] at h
   exact smul_right_injective _ X_ne_zero h
 
+/- English proof (translation)
+The claim follows from `PhiMod.map_zeta (F.app.restrictScalars K) (fun _ => F.app_mem_uPow) F.app_phi F.app_conn y`.
+-/
 theorem app_zeta (y : Vec K a ι) : F.app (P.zeta y) = Q.zeta (F.app y) :=
   PhiMod.map_zeta (F.app.restrictScalars K) (fun _ => F.app_mem_uPow) F.app_phi F.app_conn y
 
@@ -515,6 +745,9 @@ def plus : PhiMod O K l e a (ι ⊕ Unit) :=
         Matrix.mulVec_mulVec, mx_mul_mxInv]
       simp [← Matrix.replicateCol_add]
 
+/- English proof (translation)
+Use `ext1 τ`. Rewrite using `[phi_apply, plus, mx_ofMatrix]`. Use `ext1 i`. Apply the tactic sequence `rcases i with i | i <;>`. Simplify using `[join, Matrix.mulVec, dotProduct, phi_apply, Fintype.sum_sum_type, mul_comm]`.
+-/
 theorem plus_phi_join (v : Vec K a ι) (f : ZMod a → K⟦X⟧) :
     (P.plus hy).phi (join v f) = join (P.phi v + frobTot K a l f • y) (frobTot K a l f) := by
   ext1 τ
@@ -536,21 +769,33 @@ def plusInl : Hom P (P.plus hy) where
       Matrix.map_zero _ (map_zero _), Matrix.fromBlocks_mul_fromRows, Matrix.fromRows_mul]
     simp
 
+/- English proof (translation)
+Use `ext1 τ`. Rewrite using `[Hom.app_apply, plusInl]`. Use `ext1 i`. Apply the tactic sequence `rcases i with i | i <;> simp [join]`.
+-/
 theorem plusInl_app (v : Vec K a ι) : (P.plusInl hy).app v = join v 0 := by
   ext1 τ
   rw [Hom.app_apply, plusInl]
   ext1 i
   rcases i with i | i <;> simp [join]
 
+/- English proof (translation)
+Rewrite using `[xVec, plus_phi_join, plusInl_app]`. Use `ext1 τ`. Use `ext1 i`. Apply the tactic sequence `rcases i with i | i <;> simp [join]`.
+-/
 theorem phi_extension_generator_eq_add : (P.plus hy).phi xVec = xVec + (P.plusInl hy).app y := by
   rw [xVec, plus_phi_join, plusInl_app]
   ext1 τ
   ext1 i
   rcases i with i | i <;> simp [join]
 
+/- English proof (translation)
+Rewrite using `[Hom.app_zeta, ← zeta_phi_sub, phi_extension_generator_eq_add, add_sub_cancel_left]`.
+-/
 theorem conn_phi_extension_generator_eq_zeta : (P.plus hy).conn ((P.plus hy).phi xVec) = (P.plusInl hy).app (P.zeta y) := by
   rw [Hom.app_zeta, ← zeta_phi_sub, phi_extension_generator_eq_add, add_sub_cancel_left]
 
+/- English proof (translation)
+Rewrite using `[map_sub, ← conn_phi_extension_generator_eq_zeta, phi_extension_generator_eq_add, map_add, Hom.app_conn, add_sub_cancel_right]`.
+-/
 theorem plus_conn_xVec_eq : (P.plus hy).conn xVec = (P.plusInl hy).app (P.zeta y - P.conn y) := by
   rw [map_sub, ← conn_phi_extension_generator_eq_zeta, phi_extension_generator_eq_add, map_add, Hom.app_conn, add_sub_cancel_right]
 
@@ -569,6 +814,9 @@ def plusProj : Hom (P.plus hy) (rankOne O K l e fun _ => 0) where
       Matrix.map_zero _ (map_zero _), Matrix.fromCols_mul_fromBlocks]
     simp
 
+/- English proof (translation)
+Use `ext1 τ`. Rewrite using `[Hom.app_apply, plusProj]`. Use `ext1 i`. Simplify using `[join]`.
+-/
 theorem plusProj_app (v : Vec K a ι) (f : ZMod a → K⟦X⟧) :
     (P.plusProj hy).app (join v f) = fun τ _ => f τ := by
   ext1 τ

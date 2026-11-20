@@ -26,6 +26,21 @@ open Matrix
 
 namespace GlobalTheory.BSP.HeightEx
 
+/- English proof (translation)
+Set `F` to `FractionRing R`. Set `v : κ → Fin d → F` to `fun k a => algebraMap R F (col k a)`. Establish `hinj : Function.Injective (algebraMap R F)` using `IsFractionRing.injective R F`. Establish `hspan : Submodule.span F (Set.range v) = ⊤`. Assume the negation of the conclusion as `hne`.
+
+Take `⟨f, hf0, hf⟩` from `Submodule.exists_le_ker_of_lt_top _ (lt_top_iff_ne_top.2 hne)`. Take `⟨b, hb⟩` from `IsLocalization.exist_integer_multiples_of_finite (nonZeroDivisors R) (fun a : Fin d => f (Pi.single a 1))`. Use `choose r hr using hb`. Establish `hb0 : algebraMap R F b ≠ 0` using `fun h0 => nonZeroDivisors.coe_ne_zero b (hinj (h0.trans (map_zero _).symm))`. Establish `hr0 : r = 0` using `h r fun k => hinj (by`.
+
+Establish `h1 : f (v k) = 0` using `hf (Submodule.subset_span ⟨k, rfl⟩)`. Rewrite `h1` using `[LinearMap.pi_apply_eq_sum_univ]`. Rewrite using `[map_zero, dotProduct, map_sum]`. Establish `h2 : ∀ a, algebraMap R F (r a * col k a) = algebraMap R F b * (v k a • f fun j => if a = j then 1 else 0)` using `fun a => by`. Establish `e : (fun j => if a = j then (1 : F) else 0) = Pi.single a 1`.
+
+Use extensionality with `j`. Simplify using `[Pi.single_apply, eq_comm]`. Rewrite using `[map_mul, hr, e, Algebra.smul_def, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.sum_congr rfl fun a _ => h2 a, ← Finset.mul_sum, h1, mul_zero])`.
+
+Use `hf0 ((Pi.basisFun F (Fin d)).ext fun a => ?_)` and prove the remaining obligations. Establish `h3` using `hr a`. Rewrite `h3` using `[hr0, Pi.zero_apply, map_zero, Algebra.smul_def]`. Rewrite using `[Pi.basisFun_apply]`. Conclude with `(mul_eq_zero.1 h3.symm).resolve_left hb0`.
+
+Take `⟨κ', a, -, hs, hli⟩` from `exists_linearIndependent' F v`. Set `B : Module.Basis κ' F (Fin d → F)` to `Module.Basis.mk hli (by rw [hs, hspan])`. Set `e : κ' ≃ Fin d` to `B.indexEquiv (Pi.basisFun F (Fin d))`. Use `⟨a ∘ e.symm, fun h0 => ?_⟩` and prove the remaining obligations. Establish `hu : IsUnit ((Matrix.of fun x y => col (a (e.symm y)) x).map (algebraMap R F))` using `Matrix.linearIndependent_cols_iff_isUnit.1 (hli.comp e.symm e.symm.injective)`.
+
+Establish `h4` using `(Matrix.isUnit_iff_isUnit_det _).1 hu`. Rewrite `h4` using `[← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Conclude with `h4.ne_zero ((congrArg (algebraMap R F) h0).trans (map_zero _))`.
+-/
 theorem exists_cols_det_ne_zero {R : Type} [CommRing R] [IsDomain R] {d : ℕ} {κ : Type} (col : κ → Fin d → R)
     (h : ∀ r : Fin d → R, (∀ k, r ⬝ᵥ col k = 0) → r = 0) :
     ∃ σ : Fin d → κ, (Matrix.of fun a b => col (σ b) a).det ≠ 0 := by
@@ -67,16 +82,32 @@ theorem exists_cols_det_ne_zero {R : Type} [CommRing R] [IsDomain R] {d : ℕ} {
 
 variable {l : ℕ} [Fact l.Prime] {K : FinExt l} (bk : BK K)
 
+/- English proof (translation)
+The claim follows from `WittVector.map_injective _ (IsFractionRing.injective (OCb l) (Cb l))`.
+-/
 theorem inclW_injective : Function.Injective (inclW l) :=
   WittVector.map_injective _ (IsFractionRing.injective (OCb l) (Cb l))
 
+/- English proof (translation)
+Introduce `a b h` and use `by have e : ∀ a, TB.c TB.i₀ (s a * TB.b TB.i₀) = a := fun a => by rw [TB.c_mul, TB.c_self, mul_one] rw [← e a, h, e]`.
+-/
 theorem injective_of_topBasis {S A : Type} [CommRing S] [CommRing A] {s : S →+* A} {I : Ideal S} {ι : Type}
     (TB : TopBasis s I ι) : Function.Injective s := fun a b h => by
   have e : ∀ a, TB.c TB.i₀ (s a * TB.b TB.i₀) = a := fun a => by rw [TB.c_mul, TB.c_self, mul_one]
   rw [← e a, h, e]
 
+/- English proof (translation)
+Introduce `_` and use `⟨0, s, 0, by simp⟩`.
+-/
 theorem evW_mem (s : bk.S) : bk.evW s ∈ bk.OE := fun _ => ⟨0, s, 0, by simp⟩
 
+/- English proof (translation)
+Use `exists_cols_det_ne_zero (fun (k : ι × Fin d) a => v k.1 a k.2) fun r hr => funext fun b => ?_` and prove the remaining obligations. Establish `h1` using `hasSum_sum (s := Finset.univ) fun a _ => (h a b).mul_left (bk.iA (r a))`. Establish `h2 : (fun i => ∑ a, bk.iA (r a) * bk.iA (v i a b * β i)) = fun _ => 0` using `funext fun i => by`. Establish `h3` using `hr (i, b)`. Simplify using `only [dotProduct] at h3`.
+
+Simplify using `only [← map_mul, ← map_sum, ← mul_assoc, ← Finset.sum_mul, h3, zero_mul, map_zero]`. Rewrite `h1` using `[h2]`. Establish `h4` using `h1.unique hasSum_zero`. Simplify using `only [← map_mul, ← map_sum] at h4`. Establish `h5` using `hinj (h4.trans (map_zero _).symm)`.
+
+Simplify using `only [mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true] at h5`. Conclude with `(mul_eq_zero.1 h5).resolve_right hc`.
+-/
 theorem exists_cols (hinj : Function.Injective bk.iA) {d : ℕ} {ι : Type}
     (v : ι → Matrix (Fin d) (Fin d) (Ainf l)) (β : ι → Ainf l) (c : Ainf l) (hc : c ≠ 0)
     (h : ∀ a b : Fin d, HasSum (fun i => bk.iA (v i a b * β i)) (bk.iA (c * if a = b then 1 else 0))) :
@@ -94,6 +125,15 @@ theorem exists_cols (hinj : Function.Injective bk.iA) {d : ℕ} {ι : Type}
   simp only [mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true] at h5
   exact (mul_eq_zero.1 h5).resolve_right hc
 
+/- English proof (translation)
+Establish `h0 : bk.evW δ ≠ 0` using `fun h0 => hδ (hev (inclW_injective (h0.trans (by rw [map_zero, map_zero]))))`. Take `⟨n, u, u', -, hu', huu, he⟩` from `(GlobalTheory.T.integral_elements_unit_factorization l K bk).2.2.2.1 _ (evW_mem bk δ) h0`. Establish `hl0 : (l : WCb l) ≠ 0` using `WittVector.p_nonzero l (Cb l)`. Establish `h1 : Y1.map (inclW l) *ᵥ (u' • fun a => bk.evW (c a)) = (l : WCb l) ^ n • fun a => inclW l (y a)`. Rewrite using `[Matrix.mulVec_smul]`.
+
+Use function extensionality and compare the values at `a`. Establish `h2` using `congrArg (inclW l) (congrFun h a)`. Rewrite `h2` using `[RingHom.map_mulVec, map_mul]`. Express the relevant statement in the definitionally equal form `bk.evW δ * _ = (Y1.map (inclW l) *ᵥ fun a => bk.evW (c a)) a at h2`. Rewrite using `[Pi.smul_apply, ← h2, he, Pi.smul_apply, smul_eq_mul, smul_eq_mul]`.
+
+Take the linear combination `((l : WCb l) ^ n * inclW l (y a)) * huu`. Take `⟨w, hw, hw2⟩` from `hP (u' • fun a => bk.evW (c a)) (fun i => bk.OE.mul_mem hu' (evW_mem bk _)) n (fun i => by rw [h1]; exact ⟨_, rfl⟩)`. Use `⟨w, hw, ?_⟩` and prove the remaining obligations. Establish `h3` using `congrArg (Y1.map (inclW l)).mulVec hw2`. Rewrite `h3` using `[Matrix.mulVec_smul, h1, Matrix.mulVec_smul, Matrix.mulVec_mulVec, ← hY', Matrix.smul_mulVec, smul_comm]`.
+
+Conclude with `smul_right_injective _ (pow_ne_zero m hl0) (smul_right_injective _ (pow_ne_zero n hl0) h3)`.
+-/
 theorem mem_lattice (hev : Function.Injective bk.ev) {d : ℕ} (Y1 : Matrix (Fin d) (Fin d) (Ainf l)) (m : ℕ)
     (P Y' : Matrix (Fin d) (Fin d) (WCb l)) (hY' : (l : WCb l) ^ m • Y' = Y1.map (inclW l) * P)
     (hP : ∀ v : Fin d → WCb l, (∀ i, v i ∈ bk.OE) → ∀ n : ℕ, (∀ i, (l : WCb l) ^ n ∣ (Y1.map (inclW l) *ᵥ v) i) →
@@ -120,6 +160,35 @@ theorem mem_lattice (hev : Function.Injective bk.ev) {d : ℕ} (Y1 : Matrix (Fin
   rw [Matrix.mulVec_smul, h1, Matrix.mulVec_smul, Matrix.mulVec_mulVec, ← hY', Matrix.smul_mulVec, smul_comm] at h3
   exact smul_right_injective _ (pow_ne_zero m hl0) (smul_right_injective _ (pow_ne_zero n hl0) h3)
 
+/- English proof (translation)
+Introduce `l _ K bk τ hτ d ρ hρ s`. Take `⟨-, -, ⟨hρ0, hρ1, -⟩, -⟩` from `GlobalTheory.BSP.flat_disc l K bk`. Take `⟨ι, TB, k, v, Zf, -, hvZ, hsum⟩` from `GlobalTheory.T.exists_bounded_periods_disc_ainf l K bk τ hτ d ρ hρ s`. Establish `hinj : Function.Injective bk.iA` using `(GlobalTheory.T.closedDisc_toDisc_injective_of_adicBasis l K bk _ bk.ev ι TB _ hρ0 hρ1).1`. Establish `hev` using `injective_of_topBasis TB`.
+
+Establish `hτ0 : τ ≠ 0` using `(GlobalTheory.T.breuilKisin_period_isUnit_wittTilt_and_ne_zero l K bk τ hτ).2.2.1`. Establish `hl0 : (l : Ainf l) ≠ 0` using `WittVector.p_nonzero l (OCb l)`. Take `⟨j₀, hj₀⟩ : ∃ j : bk.DS bk.ρ₀ →+* bk.DA bk.ρ₀, IsDiscMap bk.ev j` from `GlobalTheory.BSP.exists_discMap_of_pow_dvd l _ _ bk.ev X (bk.ev X) _ _ 1 hρ0 (by rw [pow_one]) (by rw [pow_one])`. Take `⟨σ, hσ⟩` from `exists_cols bk hinj v TB.b _ (mul_ne_zero (pow_ne_zero k hl0) (pow_ne_zero _ hτ0)) hsum`. Use `set Y1 : Matrix (Fin d) (Fin d) (Ainf l) := Matrix.of fun a b => v (σ b).1 a (σ b).2 with hY1`.
+
+Set `Z1 : Matrix (Fin d) (Fin d) (bk.DS bk.ρ₀)` to `Matrix.of fun a b => Zf (σ b).1 a (σ b).2`. Establish `hZ1 : ∀ j : bk.DS bk.ρ₀ →+* bk.DA bk.ρ₀, IsDiscMap bk.ev j → s.W * Z1.map j = Y1.map bk.iA` using `fun j hj => Matrix.ext fun a b => congrFun (congrFun (hvZ j hj (σ b).1) a) (σ b).2`. Use `clear_value Y1 Z1`. Establish `hdet : (Y1.map (inclW l)).det ≠ 0` using `fun h0 => hσ (inclW_injective (by`. Rewrite using `[RingHom.map_det, map_zero]`.
+
+Conclude with `h0))`. Take `⟨δ, A1, hδ, hA1⟩` from `GlobalTheory.T.crystallineLattice_frobenius_rational_columns l K bk τ hτ d ρ hρ s Y1 Z1 hσ hZ1`. Establish `hgal : ∀ g : ↥(GK K), bk.FixFlat g → τ ^ s.N • ((ρ g).map (algebraMap ℤ_[l] (Ainf l)) * Y1.map (Per.σA (g : GQ l))) = Per.σA (g : GQ l) τ ^ s.N • Y1` using `fun g hg => by`. Take `⟨G, hG⟩` from `(GlobalTheory.BSP.galois_discMap l K bk).2 _ hρ0 (g : GQ l)`. Take `⟨hfix, hW⟩` from `GlobalTheory.T.crystallineDiscPeriods_galois_action_eq l K bk τ hτ d ρ hρ s g hg G hG`.
+
+Establish `e1 : (Z1.map j₀).map G = Z1.map j₀` using `Matrix.ext fun a b => hfix j₀ hj₀ _`. Establish `e2 : s.W.map G * Z1.map j₀ = (Y1.map (Per.σA (g : GQ l))).map bk.iA`. Rewrite using `[← e1, ← Matrix.map_mul, hZ1 j₀ hj₀]`. Conclude with `Matrix.ext fun a b => hG.ext _`. Establish `e3` using `congrArg (· * Z1.map j₀) hW`.
+
+Simplify using `only [Matrix.smul_mul, Matrix.mul_assoc] at e3`. Rewrite `e3` using `[e2, hZ1 j₀ hj₀, hG.ext]`. Use `Matrix.ext fun a b => hinj ?_` and prove the remaining obligations. Establish `e4` using `congrFun (congrFun e3 a) b`. Simplify using `only [Matrix.smul_apply, Matrix.mul_apply, Matrix.map_apply, smul_eq_mul, map_mul, map_pow, map_sum, RingHom.comp_apply] at e4 ⊢`.
+
+Conclude with `e4`. Take `⟨m, P, Y', hP, hPd, hY', hlat, hsat⟩` from `GlobalTheory.T.exists_integralWittLattice_basis l K bk d _ hdet`. Establish `hY'u` using `GlobalTheory.T.isUnit_saturated_basis_etale_lattice l K bk τ hτ d s.N ρ hρ Y1 δ A1 hdet hδ hA1 hgal m P Y' hP hPd hY' hlat hsat`. Take `⟨Y, hYu, hY⟩` from `GlobalTheory.T.ainf_closed_membership_limit l K bk d (fun y : Fin d → Ainf l => ∃ x : Fin d → bk.DS bk.ρ₀, ∀ j : bk.DS bk.ρ₀ →+* bk.DA bk.ρ₀, IsDiscMap bk.ev j → s.W *ᵥ (fun a => j (x a)) = fun a => bk.iA (y a)) ⟨0, fun j _ => by simp only [Pi.zero_apply, map_zero]; exact Matrix. …`. Simplify using `only [Pi.add_apply, map_add]`.
+
+Conclude with `(Matrix.mulVec_add s.W (fun a => j (x a)) fun a => j (x' a)).trans (by rw [hx j hj, hx' j hj]; rfl)⟩)`. Use the proof step `(fun c y ⟨x, hx⟩ => ⟨fun a => toDisc l X bk.ρ₀ c * x a, fun j hj => by`. Simplify using `only [map_mul, hj.ext]`. Conclude with `(Matrix.mulVec_smul s.W (bk.iA (bk.ev c)) fun a => j (x a)).trans (by rw [hx j hj]; rfl)⟩)`. Use the proof step `(fun y ⟨x, hx⟩ => by`.
+
+Take `⟨t, ht⟩` from `(isUnit_l_disc l (X : bk.S) bk.ρ₀).exists_left_inv`. Use `⟨fun a => t * x a, fun j hj => ?_⟩` and prove the remaining obligations. Establish `ht'` using `congrArg j ht`. Rewrite `ht'` using `[map_mul, map_natCast, map_one]`. Simplify using `only [map_mul]`.
+
+Use `(Matrix.mulVec_smul s.W (j t) fun a => j (x a)).trans ?_` and prove the remaining obligations. Rewrite using `[hx j hj]`. Use function extensionality and compare the values at `a`. Rewrite using `[Pi.smul_apply, smul_eq_mul, map_mul, map_natCast, ← mul_assoc, ht', one_mul])`. Use the proof step `(GlobalTheory.T.crystalline_disc_period_module_isClosed_lAdic l K bk τ hτ d ρ hρ s) Y1 Y' hdet hY'u`.
+
+Use the proof step `(fun c => ⟨Z1 *ᵥ fun a => toDisc l X bk.ρ₀ (c a), fun j hj => by`. Simplify using `only [RingHom.map_mulVec]`. Establish `e : (j ∘ fun a => toDisc l X bk.ρ₀ (c a)) = bk.iA ∘ fun a => bk.ev (c a)` using `funext fun a => hj.ext _`. Rewrite using `[e, ← hZ1 j hj, ← Matrix.mulVec_mulVec]⟩)`. Use the proof step `(fun y hy => by`.
+
+Take `⟨δ, c, hδ, h⟩` from `GlobalTheory.T.crystallineLattice_rational_in_columns l K bk τ hτ d ρ hρ s Y1 Z1 hdet hZ1 y hy`. Conclude with `mem_lattice bk hev Y1 m P Y' hY' hlat y δ c hδ h)`. Take `⟨k', S', hS'⟩` from `GlobalTheory.T.basis_dvd_tauPow_lPow_ainf l K bk τ hτ d ρ hρ s Y hYu hY`. Establish `hcol : ∀ b : Fin d, ∃ x : Fin d → bk.DS bk.ρ₀, ∀ j : bk.DS bk.ρ₀ →+* bk.DA bk.ρ₀, IsDiscMap bk.ev j → s.W *ᵥ (fun a => j (x a)) = fun a => bk.iA (Y a b)` using `fun b => (hY fun a => Y a b).2 ⟨Pi.single b 1, by`. Use function extensionality and compare the values at `a`.
+
+Simplify using `[Matrix.mulVec, dotProduct, Pi.single_apply, apply_ite]⟩`. Establish `hφ` using `fun b => (hY _).1 (GlobalTheory.T.crystallineLattice_discSpan_frobenius_stable l K bk τ hτ d ρ hρ s _ (hcol b))`. Use `choose x hx using hcol`. Use `choose c hc using hφ`. Establish `hZ : ∀ j : bk.DS bk.ρ₀ →+* bk.DA bk.ρ₀, IsDiscMap bk.ev j → s.W * (Matrix.of fun a b => x b a).map j = Y.map bk.iA` using `fun j hj => Matrix.ext fun a b => congrFun (hx b j hj) a`.
+
+Establish `hA : Y.map WittVector.frobenius = Y * (Matrix.of fun a b => c b a).map bk.ev` using `Matrix.ext fun a b => congrFun (hc b) a`. Take `⟨b, A', hA'⟩` from `GlobalTheory.T.exists_frobenius_matrix_mul_eq_E_pow_of_period l K bk τ hτ d Y S' _ k' _ hYu hS' hA`. Conclude with `⟨⟨Y, hYu, _, GlobalTheory.T.isUnit_discBasis_crystallineLattice l K bk τ hτ d ρ hρ s Y _ k' S' hS' hZ, hZ, 0, b, _, A', hA', by`. Rewrite using `[pow_zero, one_smul]`. Conclude with `hA⟩⟩`.
+-/
 theorem nonempty_height : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (τ : Ainf l), bk.IsPer τ → ∀ (d : ℕ) (ρ : ↥(GK K) → Matrix (Fin d) (Fin d) ℤ_[l]), (∀ g, IsUnit (ρ g)) → ∀ s : Seed bk d ρ τ, Nonempty (Height s) := by
   intro l _ K bk τ hτ d ρ hρ s
   obtain ⟨-, -, ⟨hρ0, hρ1, -⟩, -⟩ := GlobalTheory.BSP.flat_disc l K bk

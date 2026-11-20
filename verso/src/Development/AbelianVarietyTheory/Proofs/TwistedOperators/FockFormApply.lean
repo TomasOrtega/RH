@@ -13,8 +13,14 @@ def blockB (J : (V × V) →ₗ[ℝ] (V × V)) : V →L[ℝ] V :=
 def blockD (J : (V × V) →ₗ[ℝ] (V × V)) : V →L[ℝ] V :=
   LinearMap.toContinuousLinearMap (LinearMap.snd ℝ V V ∘ₗ J ∘ₗ LinearMap.inr ℝ V V)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem blockB_apply (J : (V × V) →ₗ[ℝ] (V × V)) (q : V) : blockB J q = (J (0, q)).1 := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem blockD_apply (J : (V × V) →ₗ[ℝ] (V × V)) (q : V) : blockD J q = (J (0, q)).2 := rfl
 
 def fockForm (β : V →ₗ[ℝ] V →ₗ[ℝ] ℝ) (J : (V × V) →ₗ[ℝ] (V × V)) : V →ₗ[ℝ] V →ₗ[ℝ] ℂ :=
@@ -26,6 +32,9 @@ def fockForm (β : V →ₗ[ℝ] V →ₗ[ℝ] ℝ) (J : (V × V) →ₗ[ℝ] (V
     (fun x y y' => by simp only [map_add]; push_cast; ring)
     (fun c x y => by simp only [map_smul, smul_eq_mul, Complex.real_smul]; push_cast; ring)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem fockForm_apply (β : V →ₗ[ℝ] V →ₗ[ℝ] ℝ) (J : (V × V) →ₗ[ℝ] (V × V)) (x y : V) :
     fockForm β J x y = ((Real.pi * β x (Ring.inverse (blockB J) y) : ℝ) : ℂ) +
       (Real.pi : ℂ) * Complex.I * ((β x (blockD J (Ring.inverse (blockB J) y)) : ℝ) : ℂ) := rfl

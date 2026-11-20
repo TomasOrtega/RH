@@ -24,9 +24,17 @@ namespace GlobalTheory.AdelicSplitParts
 
 variable {D : D7}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem infMat_eq_map (V : HSp D) (θ : Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ) (h : GA D V) :
     infMat D.sp.cm.sig V.gram θ h = (infHom V h).1.map θ := rfl
 
+/- English proof (translation)
+Introduce `D V`. Use `⟨fun h => ?_, fun a ha k hk => ⟨?_, fun θ => ?_⟩⟩` and prove the remaining obligations. Take `⟨p, hp⟩` from `(GlobalTheory.AdelicSplit.splitEquiv V).surjective h`. Conclude with `⟨p.1.1, p.1.2, p.2.1, p.2.2, hp.symm⟩`. Establish `h1 : finE V a = 1`.
+
+Establish `: finHom V a = 1` using `ha`. Simplify using `only [finE, MonoidHom.comp_apply, this, map_one]`. Rewrite using `[map_mul, h1, one_mul]`. Establish `h1 : infHom V k = 1` using `hk`. Rewrite using `[infMat_eq_map, infMat_eq_map, map_mul, h1, mul_one]`.
+-/
 theorem split_parts : ∀ (D : D7) (V : HSp D), (∀ h : GA D V, ∃ a ∈ GinfC V, ∃ k ∈ GfC V, h = a * k) ∧ ∀ a ∈ GinfC V, ∀ k ∈ GfC V, Lev.finE V (a * k) = Lev.finE V k ∧ ∀ θ : Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ, infMat D.sp.cm.sig V.gram θ (a * k) = infMat D.sp.cm.sig V.gram θ a := by
   intro D V
   refine ⟨fun h => ?_, fun a ha k hk => ⟨?_, fun θ => ?_⟩⟩

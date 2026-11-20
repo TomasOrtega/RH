@@ -18,6 +18,17 @@ private def UpperTheory.LocalNormsMatchCuspForms {D : D7} (T : CoreJ D) (j : ℕ
     (e : T.cuspA j (wtA w) w.n → W) (pt : ∀ la, Pt la → T.PtM j la) : Prop :=
   ∀ la (y : Pt la) (f : T.cuspA j (wtA w) w.n), nrm la y (e f) = T.nrmM j la (pt la y) (f : T.R j)
 
+/- English proof (translation)
+Take `⟨⟨⟨H, l, cc, Dw, Xo, eO⟩, U, V, dict, mu, Kf, pb⟩, cE, chiW, x₀, iota⟩` from `T`. Take `⟨⟨⟨H', l', cc', Dw', Xo', eO'⟩, U', V', dict', mu', Kf', pb'⟩, cE', chiW', x₀', iota'⟩` from `T'`. Simplify using `only at h1 h2 h3 h4 h5 h6`. Consider the cases of `h1`. Consider the cases of `h2`.
+
+Consider the cases of `h3`. Consider the cases of `h4`. Consider the cases of `h5`. Consider the cases of `h6`. Take `⟨aP, aM, _, _, m, _⟩` from `w`.
+
+Take `⟨aP', aM', _, _, m', _⟩` from `w'`. Simplify using `only at hP hM hn`. Consider the cases of `hP`. Consider the cases of `hM`. Consider the cases of `hn`.
+
+Consider the cases of `hPt`. Introduce `h la y f`. Establish `k1` using `hnrm la la HEq.rfl y y HEq.rfl _ _ (he f f HEq.rfl)`. Establish `k3 : pt' la y = pt la y` using `eq_of_heq (hpt la la HEq.rfl y y HEq.rfl)`. Rewrite using `[k1, k3]`.
+
+Conclude with `h la y f`.
+-/
 private theorem UpperTheory.congr_of_heq {D : D7} (T T' : CoreJ D) (h1 : HEq T'.Q.H T.Q.H) (h2 : HEq T'.Q.l T.Q.l) (h3 : HEq T'.Q.c T.Q.c)
     (h4 : HEq T'.Q.Dw T.Q.Dw) (h5 : HEq T'.Q.Xo T.Q.Xo) (h6 : HEq T'.U T.U)
     (j : ℕ) (w w' : WeightFamilies.Wt D j) (hP : HEq w'.aP w.aP) (hM : HEq w'.aM w.aM) (hn : w'.n = w.n)
@@ -54,6 +65,9 @@ private noncomputable def UpperTheory.ringOfIntegersEquivOfEqSubfield {F F' : In
   subst h
   exact RingEquiv.refl _
 
+/- English proof (translation)
+Consider the cases of `h1`. Consider the cases of `h2`. Consider the cases of `h3`. Both sides reduce to the same expression.
+-/
 private theorem UpperTheory.coeff_field_eq_of_heq {E : Type} [Field E] [NumberField E] [IsCMField E] {H H' : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H} {l' : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H'}
     {c : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Coeff l} {c' : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Coeff l'}
@@ -63,6 +77,19 @@ private theorem UpperTheory.coeff_field_eq_of_heq {E : Type} [Field E] [NumberFi
   cases h3
   rfl
 
+/- English proof (translation)
+Introduce `B B' f f' T T' w w' hPre Z hX Wt z Z' hX' Wt' core' alg' halg hc _ Xg tr R' hRS _ ι hι κ' hκ e' he pt' hpt i'`. Use `letI := alg'`. Use `letI := z.alg`. Establish `hm : (w'.st Z').toD7.R.m = (w.st Z).toD7.R.m` using `(by with_unfolding_all exact ((congrArg (fun P : Pre => P.R.m) hPre) :))`. Set `i : Fin (w.st Z).toD7.R.m` to `⟨i'.1, hm ▸ i'.2⟩`.
+
+Establish `hi : (i : ℕ) = i'` using `rfl`. Establish `hb : UpperTheory.LocalNormsMatchCuspForms z.core ((i : ℕ) + 1) (z.geo.κ i) (z.R.FW i).Pt (W` using `(z.R.FW i).WK) (z.R.FW i).nrm (fun φ => z.geo.fw.e i φ) (fun la y => z.geo.fw.pt i la y) := (by with_unfolding_all exact ((z.geo.fw.nrm_eq i) :))`. Establish `hcl` using `((hRS.2.2.2.2.2.2.2.2.2.2.2.2.1 i i' hi).2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2 ι hι).2.2.2.2`. Establish `hPt` using `hcl.1`. Establish `hnrm` using `hcl.2`.
+
+Establish `he1` using `he i i' hi`. Establish `hpt1` using `hpt i i' hi`. Take `⟨hP, hM, hnn⟩` from `hκ i i' hi`. Take `⟨c1, c2, c3, c4, c5, c6, -⟩` from `hc`. Break down `B' with ⟨P'⟩` into its components or cases.
+
+Express the relevant statement in the definitionally equal form `P' = B.toPre at hPre`. Substitute `hPre` using the available equality. Set `H₁ : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host (w'.st Z').toD7.host.E` to `(by with_unfolding_all exact (z.core.Q.H :))`. Set `l₁ : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H₁` to `(by with_unfolding_all exact (z.core.Q.l :))`. Set `c₁ : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Coeff l₁` to `(by with_unfolding_all exact (z.core.Q.c :))`.
+
+Establish `hF : core'.Q.c.F = c₁.F` using `UpperTheory.coeff_field_eq_of_heq (H := H₁) (l := l₁) (c := c₁) ((by with_unfolding_all exact (c1 :))) ((by with_unfolding_all exact (c2 :))) ((by with_unfolding_all exact (c3 :)))`. Set `Q₀ : Formalism.L2.Pj.Par (w'.st Z').toD7` to `{ H := H₁, l := l₁, c := c₁, Dw := (by with_unfolding_all exact (z.core.Q.Dw :)), Xo := (by with_unfolding_all exact (z.core.Q.Xo :)), eO := (UpperTheory.ringOfIntegersEquivOfEqSubfield hF).trans core'.Q.eO }`. Set `core₀ : Formalism.L2.Pj.CoreJ (w'.st Z').toD7` to `{ toCore := { Q := Q₀, U := (by with_unfolding_all exact (z.core.U :)), V := (by with_unfolding_all exact (z.core.V :)), dict := (by with_unfolding_all exact (z.core.dict :)), mu := (by with_unfolding_all exact (z.core.mu :)), Kf := (by with_unfolding_all exact (z.core.Kf :)), pb …`. Set `κ₀ : WeightFamilies.Wt (w'.st Z').toD7 ((i' : ℕ) + 1)` to `{ aP := (by with_unfolding_all exact ((z.geo.κ i).aP :)), aM := (by with_unfolding_all exact ((z.geo.κ i).aM :)), aPlus_antitone := (by with_unfolding_all exact ((z.geo.κ i).aPlus_antitone :)), aM_anti := (by with_unfolding_all exact ((z.geo.κ i).aM_anti :)), n := (z.geo.κ i).n, …`. Set `Pt₀ : HeightOneSpectrum (𝓞 core₀.Q.c.F) → Type` to `(by with_unfolding_all exact ((z.R.FW i).Pt :))`.
+
+Set `nrm₀ : ∀ la, Pt₀ la → (z.R.FW i).WK → ℝ` to `(by with_unfolding_all exact ((z.R.FW i).nrm :))`. Set `e₀ : core₀.cuspA ((i' : ℕ) + 1) (wtA κ₀) κ₀.n → (z.R.FW i).WK` to `(by with_unfolding_all exact ((fun φ => z.geo.fw.e i φ) :))`. Set `pt₀ : ∀ la, Pt₀ la → core₀.PtM ((i' : ℕ) + 1) la` to `(by with_unfolding_all exact ((fun la y => z.geo.fw.pt i la y) :))`. Conclude with `(by with_unfolding_all exact ((UpperTheory.congr_of_heq core₀ core' ((c1)) ((c2)) ((c3)) ((c4)) ((c5)) ((c6)) ((i' : ℕ) + 1) κ₀ (κ' i') ((hP)) ((hM)) ((hnn)) Pt₀ (R'.FW i').Pt ((hPt)) (W := (z.R.FW i).WK) (W' := (R'.FW i').WK) (fun φ φ' => CrdOver ι φ.1 φ'.1) nrm₀ (R'.FW i').nrm …`.
+-/
 theorem UpperTheory.localCuspNorms_indep_of_base_same_pre :
     ∀ (B B' : Base) (f : Fr B.toPre) (f' : Fr B'.toPre) (T : TwDat B) (T' : TwDat B') (w : ColW B f T) (w' : ColW B' f' T'),
         B'.toPre = B.toPre → ∀ (Z : w.Lt) (hX : B.fields.Ok) (Wt : Set B.places.Pl) (z : Dat (w.st Z) w.I hX T Wt) (Z' : w'.Lt) (hX' : B'.fields.Ok)

@@ -7,6 +7,11 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsDecomposit
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.LDataCardLeFinrank UpperTheory.V.Base UpperTheory.V.Kum
 
+/- English proof (translation)
+Establish `hint : IsIntegral F ζ` using `(hζ.isIntegral hN).tower_top`. Use `haveI : FiniteDimensional F (IntermediateField.adjoin F ({ζ} : Set Ω)) := IntermediateField.adjoin.finiteDimensional hint`. Use `haveI : FiniteDimensional ℚ (IntermediateField.adjoin F ({ζ} : Set Ω)) := Module.Finite.trans F (IntermediateField.adjoin F ({ζ} : Set Ω))`. Rewrite using `[← IntermediateField.adjoin.finrank hint, Module.finrank_mul_finrank ℚ F (IntermediateField.adjoin F ({ζ} : Set Ω))]`. Establish `h1 : minpoly ℚ ζ = minpoly ℚ ((⟨ζ, IntermediateField.mem_adjoin_simple_self F ζ⟩ : IntermediateField.adjoin F ({ζ} : Set Ω)))` using `minpoly.algebraMap_eq (A := ℚ) (algebraMap (IntermediateField.adjoin F ({ζ} : Set Ω)) Ω).injective ⟨ζ, IntermediateField.mem_adjoin_simple_self F ζ⟩`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Polynomial.cyclotomic_eq_minpoly_rat hζ hN, Polynomial.natDegree_cyclotomic]`. Use `_ = (minpoly ℚ ((⟨ζ, IntermediateField.mem_adjoin_simple_self F ζ⟩ : IntermediateField.adjoin F ({ζ} : Set Ω)))).natDegree := by rw [h1]`. Use `_ ≤ _ := minpoly.natDegree_le _`.
+-/
 private theorem totient_le_finrank_mul_natDegree_minpoly (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [CharZero Ω] (ζ : Ω) (N : ℕ) (hζ : IsPrimitiveRoot ζ N) (hN : 0 < N) : N.totient ≤ Module.finrank ℚ F * (minpoly F ζ).natDegree := by
   have hint : IsIntegral F ζ := (hζ.isIntegral hN).tower_top
   haveI : FiniteDimensional F (IntermediateField.adjoin F ({ζ} : Set Ω)) := IntermediateField.adjoin.finiteDimensional hint
@@ -19,6 +24,17 @@ private theorem totient_le_finrank_mul_natDegree_minpoly (F Ω : Type) [Field F]
     _ = (minpoly ℚ ((⟨ζ, IntermediateField.mem_adjoin_simple_self F ζ⟩ : IntermediateField.adjoin F ({ζ} : Set Ω)))).natDegree := by rw [h1]
     _ ≤ _ := minpoly.natDegree_le _
 
+/- English proof (translation)
+Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed F`. Use `haveI : Normal F Ω := IsAlgClosure.normal F Ω`. Use `haveI : NeZero (l : Ω) := ⟨by exact_mod_cast (Fact.out : l.Prime).ne_zero⟩`. Establish `hint : IsIntegral F ζ` using `(hζ.isIntegral (pow_pos (Fact.out : l.Prime).pos n)).tower_top`. Establish `hsep : ((minpoly F ζ).map (algebraMap F Ω)).Separable` using `(minpoly.irreducible hint).separable.map`.
+
+Establish `hne : (minpoly F ζ).map (algebraMap F Ω) ≠ 0` using `Polynomial.map_ne_zero (minpoly.ne_zero hint)`. Set `S : Finset ℤ_[l]` to `(Polynomial.nthRoots k (1 : ℤ_[l])).toFinset`. Set `T : Finset Ω` to `S.image (fun x => ζ ^ (PadicInt.toZModPow n x).val)`. Establish `hsub : ((minpoly F ζ).map (algebraMap F Ω)).roots.toFinset ⊆ T`. Introduce `y hy`.
+
+Rewrite `hy` using `[Multiset.mem_toFinset, Polynomial.mem_roots hne]`. Establish `hy' : Polynomial.aeval y (minpoly F ζ) = 0`. Rewrite using `[← Polynomial.eval_map_algebraMap]`. Conclude with `hy`. Establish `hmy : minpoly F ζ = minpoly F y` using `minpoly.eq_of_irreducible_of_monic (minpoly.irreducible hint) hy' (minpoly.monic hint)`.
+
+Take `⟨g, rfl⟩` from `(Normal.minpoly_eq_iff_mem_orbit (F := F) (E := Ω)).mp hmy.symm`. Rewrite using `[Finset.mem_image]`. Use `⟨(cycZ F Ω l g : ℤ_[l]), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Multiset.mem_toFinset, Polynomial.mem_nthRoots hk, ← Units.val_pow_eq_pow_val, h g, Units.val_one]`. Conclude with `(cyclotomicCharacter.spec l (MulSemiringAction.toRingAut (G F Ω) Ω g) ζ hζ.pow_eq_one).symm`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem natDegree_minpoly_le_of_cycZ_pow_eq_one (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] [CharZero Ω] (l : ℕ) [Fact l.Prime] (k : ℕ) (hk : 0 < k) (h : ∀ g : G F Ω, cycZ F Ω l g ^ k = 1) (n : ℕ) (ζ : Ω) (hζ : IsPrimitiveRoot ζ (l ^ n)) : (minpoly F ζ).natDegree ≤ k := by
   classical
   haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed F
@@ -55,6 +71,51 @@ private theorem natDegree_minpoly_le_of_cycZ_pow_eq_one (F Ω : Type) [Field F] 
     _ ≤ Multiset.card (Polynomial.nthRoots k (1 : ℤ_[l])) := Multiset.toFinset_card_le _
     _ ≤ k := Polynomial.card_nthRoots k 1
 
+/- English proof (translation)
+Introduce `F Ω _ _ _ _ _ l _ D e he hP`. Establish `hcomp : ∀ h : G F Ω, D.chi (QuotientGroup.mk h) = cycZ F Ω l h`. Introduce `h`. Rewrite using `[← D.hchi]`. Both sides reduce to the same expression.
+
+Establish `hchi : Continuous D.chi`. Apply `(QuotientGroup.isQuotientMap_mk _).continuous_iff.mpr` to reduce the goal to its premises. Establish `h` using `continuous_cycZ F Ω l`. Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `h`.
+
+Conclude with `hcomp h`. Establish `hINF : ∃ g : G F Ω, cycZ F Ω l g ^ e ≠ 1`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Use `haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap F Ω).injective`.
+
+Establish `hk : 0 < e.natAbs` using `Int.natAbs_pos.mpr he`. Establish `hall : ∀ g : G F Ω, cycZ F Ω l g ^ e.natAbs = 1`. Introduce `g`. Establish `h0` using `hcon g`. Break down `Int.natAbs_eq e with h' | h'` into its components or cases.
+
+Rewrite `h0` using `[h', zpow_natCast]`. Conclude with `h0`. Rewrite `h0` using `[h', zpow_neg, inv_eq_one, zpow_natCast]`. Conclude with `h0`. Use `haveI : NeZero (l : Ω) := ⟨by exact_mod_cast (Fact.out : l.Prime).ne_zero⟩`.
+
+Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed F`. Take `⟨ζ, hζ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot Ω (l ^ (e.natAbs * Module.finrank ℚ F + 1))`. Establish `hlb` using `totient_le_finrank_mul_natDegree_minpoly F Ω ζ _ hζ (pow_pos (Fact.out : l.Prime).pos _)`. Establish `hub` using `natDegree_minpoly_le_of_cycZ_pow_eq_one F Ω l e.natAbs hk hall _ ζ hζ`. Establish `htot : e.natAbs * Module.finrank ℚ F + 1 ≤ (l ^ (e.natAbs * Module.finrank ℚ F + 1)).totient`.
+
+Rewrite using `[Nat.totient_prime_pow_succ (Fact.out : l.Prime)]`. Establish `h1 : e.natAbs * Module.finrank ℚ F < l ^ (e.natAbs * Module.finrank ℚ F)` using `Nat.lt_pow_self (Fact.out : l.Prime).one_lt`. Establish `h2 : 1 ≤ l - 1`. Use `(Fact.out : l.Prime).two_le` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `h3 : Module.finrank ℚ F * (minpoly F ζ).natDegree ≤ Module.finrank ℚ F * e.natAbs` using `Nat.mul_le_mul_left _ hub`. Rewrite `h3` using `[mul_comm (Module.finrank ℚ F) e.natAbs]`. Use linear arithmetic over natural numbers and integers. Establish `hDIV : ∀ a : ℤ_[l], a ≠ 0 → Function.Surjective (fun m : QZ l => a • m)`.
+
+Introduce `a ha m`. Take `⟨q, rfl⟩` from `Submodule.Quotient.mk_surjective (ZlSub l) m`. Establish `ha' : algebraMap ℤ_[l] ℚ_[l] a ≠ 0`. Introduce `h0`. Apply `ha` to reduce the goal to its premises.
+
+Conclude with `(FaithfulSMul.algebraMap_injective ℤ_[l] ℚ_[l]) (by rw [h0, map_zero])`. Use `⟨Submodule.Quotient.mk ((algebraMap ℤ_[l] ℚ_[l] a)⁻¹ * q), ?_⟩` and prove the remaining obligations. Use `show a • (Submodule.Quotient.mk _ : ℚ_[l] ⧸ ZlSub l) = _`. Rewrite using `[← Submodule.Quotient.mk_smul, ← algebraMap_smul ℚ_[l] a, smul_eq_mul, ← mul_assoc, mul_inv_cancel₀ ha', one_mul]`. Rewrite using `[← LinearMap.ker_eq_bot]`.
+
+Unfold `resInf resTriv`. Apply `Submodule.ker_liftQ_eq_bot` to reduce the goal to its premises. Introduce `z hz`. Rewrite `hz` using `[LinearMap.mem_ker]`. Establish `hclosed : IsClosed ((D.chi.range : Subgroup ℤ_[l]ˣ) : Set ℤ_[l]ˣ)`.
+
+Rewrite using `[MonoidHom.coe_range]`. Conclude with `(isCompact_range hchi).isClosed`. Establish `hcond : l ≠ 2 ∨ D.chi.range ≤ KStar.TotallyRealRoots.princ l 2`. Break down `hP with h | h` into its components or cases. Conclude with `Or.inl h`.
+
+Use `right`. Introduce and unpack `_ ⟨g, rfl⟩`. Take `⟨g', rfl⟩` from `QuotientGroup.mk_surjective g`. Rewrite using `[KStar.TotallyRealRoots.princ, MonoidHom.mem_ker, hcomp]`. Conclude with `h g'`.
+
+Take `⟨u, huV, hu⟩` from `existsGen l D.chi.range hclosed hcond`. Take `⟨γ, rfl⟩` from `huV`. Establish `hcont : ReciprocityTheory.Gal.ContAction (qzTw D e)`. Apply `contScal` to reduce the goal to its premises. Conclude with `Units.continuous_val.comp (hchi.zpow (-e))`.
+
+Establish `hne : (((D.chi γ) ^ (-e) : ℤ_[l]ˣ) : ℤ_[l]) - 1 ≠ 0`. Introduce `h0`. Establish `h1 : D.chi γ ^ (-e) = 1` using `Units.ext (sub_eq_zero.mp h0)`. Establish `h2 : D.chi γ ^ e = 1`. Rewrite `h1` using `[zpow_neg, inv_eq_one]`.
+
+Conclude with `h1`. Take `⟨g, hg⟩` from `hINF`. Apply `hg` to reduce the goal to its premises. Establish `hmem : D.chi (QuotientGroup.mk g) ∈ (Subgroup.zpowers (D.chi γ)).topologicalClosure` using `hu ⟨_, rfl⟩`. Rewrite using `[← hcomp]`.
+
+Establish `hsub : ((Subgroup.zpowers (D.chi γ)).topologicalClosure : Set ℤ_[l]ˣ) ⊆ {x | x ^ e = 1}`. Rewrite using `[Subgroup.topologicalClosure_coe]`. Apply `closure_minimal` to reduce the goal to its premises. Introduce and unpack `_ ⟨k, rfl⟩ show ((D.chi γ) ^ k) ^ e = 1`. Rewrite using `[← zpow_mul, mul_comm, zpow_mul, h2, one_zpow]`.
+
+Conclude with `isClosed_eq (continuous_zpow e) continuous_const`. Conclude with `hsub hmem`. Apply `cobOfGen l _ D.chi ℤ_[l] (QZ l) (qzTw D e) γ hchi hcont` to reduce the goal to its premises. Introduce `g hg m`. Simplify using `[qzTw, scalRep, hg]`.
+
+Introduce `g`. Conclude with `hu ⟨g, rfl⟩`. Introduce `m`. Take `⟨m', hm'⟩` from `hDIV _ hne m`. Use `⟨m', ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [qzTw, scalRep] at hm' ⊢`. Rewrite using `[← hm', sub_smul, one_smul]`. Both sides reduce to the same expression. Conclude with `z.2`. Introduce `g hg`.
+
+Take `⟨h, rfl⟩` from `QuotientGroup.mk_surjective g`. Establish `hh : h ∈ Uinf F Ω l`. Rewrite using `[Uinf, cycU, Subgroup.mem_inf, MonoidHom.mem_ker, ← hcomp]`. Conclude with `⟨trivial, hg⟩`. Use `congrFun hz ⟨h, hh⟩` as an intermediate fact.
+
+Conclude with `this`.
+-/
 theorem UpperTheory.V.Kum.resInfInj :
     ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime] (D : LData F Ω l) (e : ℤ), e ≠ 0 → Procyc F Ω l → Function.Injective (resInf D e) := by
   intro F Ω _ _ _ _ _ l _ D e he hP

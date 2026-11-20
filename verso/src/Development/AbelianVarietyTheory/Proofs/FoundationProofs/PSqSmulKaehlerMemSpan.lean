@@ -13,6 +13,11 @@ section Klc
 
 variable {p : ℕ} [Fact p.Prime] {Ω : Type} [Field Ω] [Algebra (O0 p) Ω]
 
+/- English proof (translation)
+Proceed by induction on `j with`. Consider the case `zero => simp`. Consider the case `succ j ih`. Rewrite using `[ih, pow_succ' p j, pow_mul]`. Use `congr 1`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[SubmonoidClass.coe_pow]`. Conclude with `(T.ζpow (k + j)).symm`.
+-/
 theorem zS_eq_pow (T : Tower p Ω) (k j : ℕ) : zS T k = zS T (k + j) ^ (p ^ j) := by
   induction j with
   | zero => simp
@@ -23,6 +28,11 @@ theorem zS_eq_pow (T : Tower p Ω) (k j : ℕ) : zS T k = zS T (k + j) ^ (p ^ j)
     rw [SubmonoidClass.coe_pow]
     exact (T.ζpow (k + j)).symm
 
+/- English proof (translation)
+Proceed by induction on `j with`. Consider the case `zero => simp`. Consider the case `succ j ih`. Rewrite using `[ih, pow_succ' p j, pow_mul]`. Use `congr 1`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[SubmonoidClass.coe_pow]`. Conclude with `(T.qpow (k + j)).symm`.
+-/
 theorem qS_eq_pow (T : Tower p Ω) (k j : ℕ) : qS T k = qS T (k + j) ^ (p ^ j) := by
   induction j with
   | zero => simp
@@ -33,6 +43,9 @@ theorem qS_eq_pow (T : Tower p Ω) (k j : ℕ) : qS T k = qS T (k + j) ^ (p ^ j)
     rw [SubmonoidClass.coe_pow]
     exact (T.qpow (k + j)).symm
 
+/- English proof (translation)
+Take `⟨j, rfl⟩` from `Nat.exists_eq_add_of_le h`. Rewrite using `[zS_eq_pow T k j, Derivation.leibniz_pow]`. Conclude with `Submodule.smul_of_tower_mem _ _ (Submodule.smul_mem _ _ (Submodule.subset_span (by simp)))`.
+-/
 theorem D_zS_mem_span (T : Tower p Ω) {k m : ℕ} (h : k ≤ m) :
     KaehlerDifferential.D (O0 p) (integralClosure (O0 p) Ω) (zS T k) ∈
       Submodule.span (integralClosure (O0 p) Ω)
@@ -43,6 +56,9 @@ theorem D_zS_mem_span (T : Tower p Ω) {k m : ℕ} (h : k ≤ m) :
   exact Submodule.smul_of_tower_mem _ _
     (Submodule.smul_mem _ _ (Submodule.subset_span (by simp)))
 
+/- English proof (translation)
+Take `⟨j, rfl⟩` from `Nat.exists_eq_add_of_le h`. Rewrite using `[qS_eq_pow T k j, Derivation.leibniz_pow]`. Conclude with `Submodule.smul_of_tower_mem _ _ (Submodule.smul_mem _ _ (Submodule.subset_span (by simp)))`.
+-/
 theorem D_qS_mem_span (T : Tower p Ω) {k m : ℕ} (h : k ≤ m) :
     KaehlerDifferential.D (O0 p) (integralClosure (O0 p) Ω) (qS T k) ∈
       Submodule.span (integralClosure (O0 p) Ω)
@@ -60,6 +76,21 @@ local notation "𝒮" => integralClosure (O0 p) Ω
 set_option hygiene false in
 local notation "𝒟" => KaehlerDifferential.D (O0 p) (integralClosure (O0 p) Ω)
 
+/- English proof (translation)
+Introduce `p _ Ω _ _ hp2 hclo T η n`. Set `N : ℕ → Submodule 𝒮 (KaehlerDifferential (O0 p) 𝒮)` to `fun m => Submodule.span 𝒮 {𝒟 (zS T m), 𝒟 (qS T m)}`. Establish `hmono : Monotone N` using `fun k m h => Submodule.span_le.2 (by`. Introduce and unpack `_ (rfl | rfl)`. Use `exacts [D_zS_mem_span T h, D_qS_mem_span T h])`.
+
+Establish `hder : ∀ B : Subalgebra (O0 p) 𝒮, IsDerOn B (fun x => 𝒟 x)` using `fun B => ⟨fun x _ y _ => map_add 𝒟 x y, fun x _ y _ => Derivation.leibniz 𝒟 x y, fun a => (𝒟).map_algebraMap a⟩`. Establish `hgen : ∀ t : 𝒮, (p : 𝒮) ^ 2 • 𝒟 t ∈ ⨆ m, N m`. Introduce `t`. Take `⟨C, tr, k, a, b, hF, htr⟩` from `GlobalTheory.T.exists_almostDualTraceData_towerUnionAdjoin p Ω hp2 hclo T {t}`. Establish `h1` using `GlobalTheory.T.almostDualTrace_derivation_mem_span_values (O0 p) 𝒮 _ (towerAlg T) C tr k a b _ htr (fun x => 𝒟 x) (hder C) t (hF (by simp))`.
+
+Establish `h2 : Submodule.span 𝒮 ((fun x => 𝒟 x) '' (towerAlg T : Set 𝒮)) ≤ ⨆ m, N m`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Establish `h3` using `GlobalTheory.T.derivationOn_adjoin_mem_span_image (O0 p) 𝒮 _ (Set.range (zS T) ∪ Set.range (qS T)) (fun x => 𝒟 x) (hder _) x hx`. Use `Submodule.span_le.2 ?_ h3` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨y, (⟨k, rfl⟩ | ⟨k, rfl⟩), rfl⟩`. Conclude with `Submodule.mem_iSup_of_mem k (Submodule.subset_span (by simp))`. Conclude with `Submodule.mem_iSup_of_mem k (Submodule.subset_span (by simp))`. Rewrite using `[pow_two]`. Conclude with `h2 h1`.
+
+Establish `hall : ∀ ω ∈ Submodule.span 𝒮 (Set.range 𝒟), (p : 𝒮) ^ 2 • ω ∈ ⨆ m, N m`. Introduce `ω hω`. Proceed by induction on `hω using Submodule.span_induction with`. Consider the case `mem x hx => obtain ⟨t, rfl⟩ := hx`. Conclude with `hgen t`.
+
+Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [smul_add]`. Conclude with `add_mem hx hy`. Consider the case `smul a x _ hx => rw [smul_comm]`. Conclude with `Submodule.smul_mem _ a hx`.
+
+Establish `hη : (p : 𝒮) ^ 2 • η ∈ ⨆ m, N m` using `hall η (by rw [KaehlerDifferential.span_range_derivation]; trivial)`. Take `⟨m, hm⟩` from `(Submodule.mem_iSup_of_directed N hmono.directed_le).1 hη`. Use `⟨max m n, le_max_right _ _, ?_⟩` and prove the remaining obligations. Take `⟨x, y, hxy⟩` from `Submodule.mem_span_pair.1 (hmono (le_max_left m n) hm)`. Conclude with `⟨x, y, hxy.symm⟩`.
+-/
 theorem p_sq_smul_kaehler_mem_span : ∀ (p : ℕ) [Fact p.Prime] (Ω : Type) [Field Ω] [Algebra (O0 p) Ω],
     p ≠ 2 → IsClo p Ω → ∀ (T : Tower p Ω) (η : KaehlerDifferential (O0 p) (integralClosure (O0 p) Ω))
     (n : ℕ), ∃ m, n ≤ m ∧ ∃ x y : (integralClosure (O0 p) Ω), (p : (integralClosure (O0 p) Ω)) ^ 2 • η =

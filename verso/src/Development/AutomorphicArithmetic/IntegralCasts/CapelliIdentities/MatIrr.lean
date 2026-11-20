@@ -6,6 +6,17 @@ noncomputable def UpperTheory.Reformulated.B.Qf5.MatIrr.{u_1, u_2} :
     fun {G : Type u_1} [Group G] {R : Type u_2} [CommRing R] {m : ℕ} (H : Subgroup G) (a : G → Matrix (Fin m) (Fin m) R) ↦
       ∀ (W : Submodule R (Fin m → R)), (∀ g ∈ H, ∀ v ∈ W, (a g).mulVec v ∈ W) → W = ⊥ ∨ W = ⊤
 
+/- English proof (translation)
+Introduce `G R _ _ m U a a' h hconj hirr W hW`. Establish `hcancel : ∀ w : Fin m → R, (↑h : Matrix (Fin m) (Fin m) R).mulVec ((↑h⁻¹ : Matrix (Fin m) (Fin m) R).mulVec w) = w`. Introduce `w`. Rewrite using `[Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec]`. Establish `hmem : ∀ v : Fin m → R, v ∈ W.comap (Matrix.mulVecLin (↑h : Matrix (Fin m) (Fin m) R)) ↔ (↑h : Matrix (Fin m) (Fin m) R).mulVec v ∈ W` using `fun v => Iff.rfl`.
+
+Establish `hinv : ∀ g ∈ U, ∀ v ∈ W.comap (Matrix.mulVecLin (↑h : Matrix (Fin m) (Fin m) R)), (a g).mulVec v ∈ W.comap (Matrix.mulVecLin (↑h : Matrix (Fin m) (Fin m) R))`. Introduce `g hg v hv`. Rewrite `hv`, the goal using `[hmem]`. Rewrite using `[hconj g hg, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hcancel]`. Conclude with `hW g hg _ hv`.
+
+Break down `hirr _ hinv with hb | ht` into its components or cases. Use `left`. Rewrite `hb`, the goal using `[Submodule.eq_bot_iff]`. Introduce `w hw`. Establish `h0` using `hb ((↑h⁻¹ : Matrix (Fin m) (Fin m) R).mulVec w) (by rw [hmem, hcancel]; exact hw)`.
+
+Rewrite using `[← hcancel w, h0, Matrix.mulVec_zero]`. Use `right`. Rewrite `ht`, the goal using `[Submodule.eq_top_iff']`. Introduce `w`. Establish `h1` using `(hmem _).1 (ht ((↑h⁻¹ : Matrix (Fin m) (Fin m) R).mulVec w))`.
+
+Rewrite `h1` using `[hcancel]`. Then use the resulting hypothesis.
+-/
 theorem UpperTheory.Reformulated.B.Qf5.matIrr_conj :
     ∀ {G R : Type} [inst : Group G] [inst_1 : CommRing R] {m : ℕ} {U : Subgroup G} {a a' : G → Matrix (Fin m) (Fin m) R}
       (h : GL (Fin m) R),

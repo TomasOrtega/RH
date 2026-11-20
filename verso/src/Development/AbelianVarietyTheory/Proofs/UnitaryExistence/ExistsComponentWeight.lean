@@ -33,6 +33,27 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 
 namespace GlobalTheory.CharacterFunction
 
+/- English proof (translation)
+Establish `sy : ∀ i j a, R i j a → R j i a⁻¹`. Introduce `i j a h`. Take `⟨f, hs, rfl, hx⟩` from `hf i j a h`. Establish `hi : Function.Injective f` using `Finite.injective_iff_surjective.2 hs`. Take `⟨N, hN, hp⟩` from `Function.mem_periodicPts.1 (hi.mem_periodicPts i)`.
+
+Establish `it : ∀ m x, R x (f^[m + 1] x) (a ^ (m + 1))`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => intro x`. Simplify using `using hx x`.
+
+Consider the case `succ m ih`. Introduce `x`. Rewrite using `[Function.iterate_succ_apply', pow_succ]`. Conclude with `tr _ _ _ _ _ (ih x) (hx _)`. Take `⟨M, rfl⟩ : ∃ M, N = M + 1` from `⟨N - 1, by omega⟩`.
+
+Establish `h2 : f^[2 * M + 1] (f i) = i`. Rewrite using `[← Function.iterate_succ_apply]`. Use `(hp.mul_const 2).eq` as an intermediate fact. Rewrite `this` using `[show (M + 1) * 2 = (2 * M + 1).succ by simp only [Nat.succ_eq_add_one]; ring]`. Then use the resulting hypothesis. Establish `h3` using `it (2 * M) (f i)`.
+
+Rewrite `h3` using `[h2]`. Rewrite using `[← eq_inv_of_mul_eq_one_right (loop _ _ (tr _ _ _ _ _ h h3))]` and apply the resulting hypothesis. Set `R' : ι → ι → A → Prop` to `fun i j a => (i = j ∧ a = 1) ∨ R i j a`. Establish `sy' : ∀ i j a, R' i j a → R' j i a⁻¹`. Introduce and unpack `i j a (⟨rfl, rfl⟩ | h)`.
+
+Conclude with `Or.inl ⟨rfl, inv_one⟩`. Conclude with `Or.inr (sy _ _ _ h)`. Establish `tr' : ∀ i j m a b, R' i j a → R' j m b → R' i m (a * b)`. Introduce and unpack `i j m a b (⟨rfl, rfl⟩ | h) h'`. Rewrite using `[one_mul]` and apply the resulting hypothesis.
+
+Break down `h' with ⟨rfl, rfl⟩ | h'` into its components or cases. Rewrite using `[mul_one]`. Conclude with `Or.inr h`. Conclude with `Or.inr (tr _ _ _ _ _ h h')`. Establish `loop' : ∀ i a, R' i i a → a = 1`.
+
+Introduce and unpack `i a (⟨-, h⟩ | h)`. Conclude with `h`. Conclude with `loop _ _ h`. Set `s : Setoid ι` to `⟨fun i j => ∃ a, R' i j a, fun i => ⟨1, Or.inl ⟨rfl, rfl⟩⟩, fun ⟨a, h⟩ => ⟨_, sy' _ _ _ h⟩, fun ⟨a, h⟩ ⟨b, h'⟩ => ⟨_, tr' _ _ _ _ _ h h'⟩⟩`. Establish `hv : ∀ i, ∃ a, R' (Quotient.mk s i).out i a` using `fun i => Quotient.mk_out (s := s) i`.
+
+Use `choose v hv using hv`. Use `⟨v, fun i => (hv i).elim (fun h => by rw [h.2, one_pow]) (hN _ _ _), fun i j a h => ?_⟩` and prove the remaining obligations. Establish `e : Quotient.mk s i = Quotient.mk s j` using `Quotient.sound ⟨a, Or.inr h⟩`. Establish `h1` using `hv j`. Rewrite `h1` using `[← e]`.
+
+Establish `h2` using `loop' _ _ (tr' _ _ _ _ _ (tr' _ _ _ _ _ (hv i) (Or.inr h)) (sy' _ _ _ h1))`. Rewrite `h2` using `[mul_inv_eq_one]`. Rewrite using `[← h2, mul_comm]`.
+-/
 theorem exists_weight {ι A : Type} [Finite ι] [CommGroup A] (R : ι → ι → A → Prop)
     (tr : ∀ i j m a b, R i j a → R j m b → R i m (a * b)) (loop : ∀ i a, R i i a → a = 1)
     (hf : ∀ i j a, R i j a → ∃ f : ι → ι, Function.Surjective f ∧ f i = j ∧ ∀ x, R x (f x) a)
@@ -88,6 +109,11 @@ theorem exists_weight {ι A : Type} [Finite ι] [CommGroup A] (R : ι → ι →
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
 
+/- English proof (translation)
+Take `⟨hs, ν, a, b⟩` from `h`. Take `⟨hs', ν', a', b'⟩` from `h'`. Take `⟨n, hn⟩` from `Moduli.LevelAction.exists_comp_sabMap ν ν' (h := (ρ ≪≫ ρ').hom) rfl`. Use `⟨by rw [Iso.trans_hom, Category.assoc, hs', hs], n, fun x => ?_, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[hn, Iso.trans_hom, Category.assoc, ← a', ← Category.assoc, ← Category.assoc, ← a]`.
+
+Both sides reduce to the same expression. Rewrite using `[hn, Iso.trans_hom, Category.assoc, ← b', ← Category.assoc, ← Category.assoc, ← b]`. Both sides reduce to the same expression.
+-/
 theorem levAut_mul {l : Level H} {Xo : Moduli Dw l} {g g' : Sim Dw} {ρ ρ' : Xo.X ≅ Xo.X} (h : Xo.LevAut g ρ)
     (h' : Xo.LevAut g' ρ') : Xo.LevAut (SimAlg.mul g g') (ρ ≪≫ ρ') := by
   obtain ⟨hs, ν, a, b⟩ := h
@@ -97,6 +123,11 @@ theorem levAut_mul {l : Level H} {Xo : Moduli Dw l} {g g' : Sim Dw} {ρ ρ' : Xo
   · rw [hn, Iso.trans_hom, Category.assoc, ← a', ← Category.assoc, ← Category.assoc, ← a]; rfl
   · rw [hn, Iso.trans_hom, Category.assoc, ← b', ← Category.assoc, ← Category.assoc, ← b]; rfl
 
+/- English proof (translation)
+Establish `hM0 : l.M ≠ 0` using `by have := l.three_le; omega`. Establish `hp : I * I.map (H.bar : 𝓞 E →+* 𝓞 E) = Ideal.span {(pd : 𝓞 E)}`. Establish `h2` using `l₂.prod`. Rewrite `h2` using `[hMb, hM, Ideal.map_mul, mul_mul_mul_comm, l.prod, Nat.cast_mul, ← Ideal.span_singleton_mul_span_singleton]`. Use `mul_left_cancel₀ ?_ h2` and prove the remaining obligations.
+
+Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `hM0` after adjusting the coercions. Establish `: Ideal.span {(pd : 𝓞 E)} ≤ I` using `hp ▸ Ideal.mul_le_left`. Conclude with `this (Ideal.subset_span rfl)`.
+-/
 theorem natCast_mem_half {l l₂ : Level H} {pd : ℕ} {I : Ideal (𝓞 E)} (hM : l₂.M = l.M * pd)
     (hMb : l₂.Mb = l.Mb * I) : (pd : 𝓞 E) ∈ I := by
   have hM0 : l.M ≠ 0 := by have := l.three_le; omega
@@ -110,11 +141,19 @@ theorem natCast_mem_half {l l₂ : Level H} {pd : ℕ} {I : Ideal (𝓞 E)} (hM 
   have : Ideal.span {(pd : 𝓞 E)} ≤ I := hp ▸ Ideal.mul_le_left
   exact this (Ideal.subset_span rfl)
 
+/- English proof (translation)
+Rewrite using `[← Nat.cast_smul_eq_nsmul R]`. Conclude with `Submodule.smul_mem_smul h trivial`.
+-/
 theorem nsmul_mem_smul_top {R L : Type} [CommRing R] [AddCommGroup L] [Module R L] {I : Ideal R} {N : ℕ}
     (h : (N : R) ∈ I) (x : L) : N • x ∈ (I • ⊤ : Submodule R L) := by
   rw [← Nat.cast_smul_eq_nsmul R]
   exact Submodule.smul_mem_smul h trivial
 
+/- English proof (translation)
+Use `letI : Field (R ⧸ 𝔪) := Ideal.Quotient.field 𝔪`. Use `haveI : Finite (R ⧸ 𝔪) := Finite.of_surjective _ Ideal.Quotient.mk_surjective`. Establish `h0 : (p : R ⧸ 𝔪) = 0` using `by rw [← map_natCast (Ideal.Quotient.mk 𝔪), h, map_zero]`. Use `haveI : Fact p.Prime := ⟨hp⟩`. Use `haveI : CharP (R ⧸ 𝔪) p := (CharP.charP_iff_prime_eq_zero hp).2 h0`.
+
+Use `Nat.card_le_card_of_injective _ (ZMod.castHom (dvd_refl p) (R ⧸ 𝔪)).injective` as an intermediate fact. Rewrite `this` using `[Nat.card_zmod]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem four_le_card {R : Type} [CommRing R] [Finite R] {p : ℕ} (hp : p.Prime) (h5 : 5 ≤ p) (h : (p : R) = 0)
     (𝔪 : Ideal R) (hm : 𝔪.IsMaximal) : 4 ≤ Nat.card (R ⧸ 𝔪) := by
   letI : Field (R ⧸ 𝔪) := Ideal.Quotient.field 𝔪
@@ -126,6 +165,29 @@ theorem four_le_card {R : Type} [CommRing R] [Finite R] {p : ℕ} (hp : p.Prime)
   rw [Nat.card_zmod] at this
   omega
 
+/- English proof (translation)
+Establish `hM' : l₂.M' = l.M * pd` using `by rw [Level.M', hA, Nat.lcm_one_right, hM]`. Establish `hpI : (pd : 𝓞 E) ∈ I` using `natCast_mem_half hM hMb`. Establish `hMI : ((l₂.M' : ℕ) : 𝓞 E) ∈ I` using `by rw [hM', Nat.cast_mul]; exact I.mul_mem_left _ hpI`. Establish `hMl : (l.M : 𝓞 E) ∈ l.Mb`. Establish `: Ideal.span {(l.M : 𝓞 E)} ≤ l.Mb` using `l.prod ▸ Ideal.mul_le_left`.
+
+Conclude with `this (Ideal.subset_span rfl)`. Establish `hMl' : ((l₂.M' : ℕ) : 𝓞 E) ∈ l.Mb` using `by rw [hM', Nat.cast_mul]; exact l.Mb.mul_mem_right _ hMl`. Establish `hmap : ∀ (J : Ideal (𝓞 E)) {L L' : Type} [AddCommGroup L] [Module (𝓞 E) L] [AddCommGroup L'] [Module (𝓞 E) L'] (f : L →ₗ[𝓞 E] L') (x : L), x ∈ (J • ⊤ : Submodule (𝓞 E) L) → f x ∈ (J • ⊤ : Submodule (𝓞 E) L')`. Introduce `J L L' _ _ _ _ f x hx`. Use `Submodule.mem_map_of_mem (f := f) hx` as an intermediate fact.
+
+Rewrite `this` using `[Submodule.map_smul'']`. Conclude with `Submodule.smul_mono le_rfl le_top this`. Establish `hlow : ∀ b, γ b - b ∈ l.Mb • (⊤ : Submodule (𝓞 E) D'.La)`. Introduce `b`. Take `⟨a, e, rfl⟩` from `tsurj b`.
+
+Take `⟨w, hw⟩` from `g.tower l.M pd (by have := l.three_le; omega) hp.pos a`. Rewrite `hw` using `[← hM]`. Establish `h1 : g.f l₂.M a - a ∈ l.Mb • (⊤ : Submodule (𝓞 E) Dw.La)`. Use `add_mem (hw ▸ nsmul_mem_smul_top hMl w) (hg a)` as an intermediate fact. Rewrite `this` using `[sub_add_sub_cancel]`. Then use the resulting hypothesis.
+
+Establish `h2` using `hmap _ (γ : D'.La →ₗ[𝓞 E] D'.La) _ (hmap _ t _ h1)`. Establish `h3 : γ (t (g.f l₂.M a)) - t a ∈ l.Mb • (⊤ : Submodule (𝓞 E) D'.La)` using `Submodule.smul_mono (hMb ▸ Ideal.mul_le_left) le_rfl (h a)`. Establish `h4` using `add_mem (sub_mem h3 h2) (nsmul_mem_smul_top hMl' (γ e - e))`. Use `h4 using 1` and compare the differences between its conclusion and the goal. Simplify using `only [map_add, map_sub, map_nsmul, LinearEquiv.coe_coe, smul_sub]`.
+
+Normalize the expressions using the abelian group laws. Establish `hdet` using `HalfLevelDet.det_eq_one_of_trivial_on_half E H D' l γ hγ (fun a ha => by`. Establish `: γ a - a ∈ (Ideal.span {(l.M : 𝓞 E)} • ⊤ : Submodule (𝓞 E) D'.La)`. Use `Submodule.smul_induction_on ha (fun c hc b _ => ?_) (fun u v hu hv => ?_)` and prove the remaining obligations. Rewrite using `[map_smul, ← smul_sub, ← l.prod, mul_comm, Submodule.mul_smul]`.
+
+Conclude with `Submodule.smul_mem_smul hc (hlow b)`. Rewrite using `[map_add, add_sub_add_comm]`. Conclude with `add_mem hu hv`. Rewrite `this` using `[Submodule.ideal_span_singleton_smul, Submodule.mem_smul_pointwise_iff_exists]`. Take `⟨e, -, he⟩` from `this`.
+
+Conclude with `⟨e, by rw [← Nat.cast_smul_eq_nsmul (𝓞 E), he]; abel⟩)`. Establish `hI0 : I ≠ ⊥` using `fun e => hp.ne_zero (by rw [e, Ideal.mem_bot] at hpI; exact_mod_cast hpI)`. Use `haveI : Finite (𝓞 E ⧸ I) := Ideal.finiteQuotientOfFreeOfNeBot _ hI0`. Use `haveI := D'.fin`. Use `haveI := D'.proj`.
+
+Establish `hsurj : ∀ b, ∃ a, b - t a ∈ (I • ⊤ : Submodule (𝓞 E) D'.La)` using `fun b => by`. Take `⟨a, e, rfl⟩` from `tsurj b`. Conclude with `⟨a, by rw [add_sub_cancel_left]; exact nsmul_mem_smul_top hMI e⟩`. Use `GlobalTheory.T.det_character_reduction_invariant (𝓞 E) Dw.La D'.La I A ψ t (γ : D'.La →ₗ[𝓞 E] D'.La) k (four_le_card hp h5 (by rw [← map_natCast (Ideal.Quotient.mk I)]; exact Ideal.Quotient.eq_zero_iff_mem.2 hpI)) hsurj (fun a ha => ?_) (GlobalTheory.T.det_one_reduction_of_det_on …` and prove the remaining obligations. Establish `key : ∀ b ∈ (I • ⊤ : Submodule (𝓞 E) D'.La), ∃ a' ∈ (I • ⊤ : Submodule (𝓞 E) Dw.La), ∃ e, b = t a' + l₂.M' • e`.
+
+Introduce `b hb`. Use `Submodule.smul_induction_on hb (fun c hc b _ => ?_) ?_` and prove the remaining obligations. Take `⟨a, e, rfl⟩` from `tsurj b`. Conclude with `⟨c • a, Submodule.smul_mem_smul hc trivial, c • e, by rw [smul_add, map_smul, smul_comm c l₂.M']⟩`. Introduce and unpack `_ _ ⟨u, hu, e, rfl⟩ ⟨v, hv, e', rfl⟩`.
+
+Conclude with `⟨u + v, add_mem hu hv, e + e', by rw [map_add, smul_add]; abel⟩`. Take `⟨a', ha', e, he⟩` from `key _ ha`. Take `⟨b, hb⟩` from `tinj (a - a') ⟨e, by rw [map_sub, he, add_sub_cancel_left]⟩`. Use `add_mem (hb ▸ nsmul_mem_smul_top hMI b) ha'` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis.
+-/
 theorem char_eq_one {l l₂ : Level H} {pd : ℕ} {I : Ideal (𝓞 E)} (hp : pd.Prime) (h5 : 5 ≤ pd) (hM : l₂.M = l.M * pd)
     (hA : l₂.A = 1) (hMb : l₂.Mb = l.Mb * I) {A : Type} [CommGroup A]
     (ψ : ((Dw.La ⧸ (I • ⊤ : Submodule (𝓞 E) Dw.La)) ≃ₗ[𝓞 E] (Dw.La ⧸ (I • ⊤ : Submodule (𝓞 E) Dw.La))) →* A)
@@ -197,6 +259,23 @@ theorem char_eq_one {l l₂ : Level H} {pd : ℕ} {I : Ideal (𝓞 E)} (hp : pd.
   have := add_mem (hb ▸ nsmul_mem_smul_top hMI b) ha'
   rwa [sub_add_cancel] at this
 
+/- English proof (translation)
+Establish `hper : ∀ i, ∃ P, IsPeriod (F.Di i) ty P` using `fun i => ((PeriodExists.typeFn_period_exist E H (F.Di i)).2.1 g₀ ty (by rw [(F.sig i).1, (F.sig i).2]; exact hty)).2`. Set `R : Fin F.n → Fin F.n → A → Prop` to `fun i j a => ∃ (k : _) (g : Sim Dw) (ρ : Xo.X ≅ Xo.X), (∀ a, g.f l.M a - a ∈ l.Mb • (⊤ : Submodule (𝓞 E) Dw.La)) ∧ Xo.LevAut g ρ ∧ (∀ a, Submodule.Quotient.mk (g.f l₂.M a) = k (Submodule.Quotient.mk a)) ∧ a = ψ k ∧ ∀ P, IsPeriod (F.Di i) ty P → ∃ P', IsPeriod (F.Di j) ty P' ∧ F.u …`. It suffices to establish `key : ∃ v : Fin F.n → A, (∀ i, v i ^ N = 1) ∧ ∀ i j a, R i j a → v j = a * v i by`. Take `⟨v, hv₀, hv⟩` from `key`. Use `⟨v, hv₀, fun k g ρ hg hρ hk i j P P' hP hP' e => hv i j _ ⟨k, g, ρ, hg, hρ, hk, rfl, ?_⟩⟩` and prove the remaining obligations.
+
+Take `⟨j', hj'⟩` from `(GlobalTheory.T.level_automorphism_period_family E H Dw l₂ Xo c hr hA g₀ ty F g ρ hty hρ).1 i`. Take `⟨Q, hQ, e'⟩` from `hj' P hP`. Take `rfl` from `F.disj _ _ _ _ hQ hP' (e'.symm.trans e)`. Conclude with `hj'`. Use `exists_weight R ?_ ?_ ?_ N (by rintro i j _ ⟨k, -, -, -, -, -, rfl, -⟩; exact hN k)` and prove the remaining obligations.
+
+Introduce and unpack `i j m _ _ ⟨k, g, ρ, hg, hρ, hk, rfl, h⟩ ⟨k', g', ρ', hg', hρ', hk', rfl, h'⟩`. Use `⟨k * k', SimAlg.mul g g', ρ ≪≫ ρ', fun a => ?_, levAut_mul hρ hρ', fun a => ?_, (map_mul ψ _ _).symm, fun P hP => ?_⟩` and prove the remaining obligations. Use `add_mem (hg (g'.f l.M a)) (hg' a)` as an intermediate fact. Rewrite `this` using `[sub_add_sub_cancel]`. Then use the resulting hypothesis. Rewrite using `[LinearEquiv.mul_apply, ← hk', ← hk]`.
+
+Both sides reduce to the same expression. Take `⟨P', hP', e⟩` from `h P hP`. Take `⟨P'', hP'', e'⟩` from `h' P' hP'`. Conclude with `⟨P'', hP'', by rw [Iso.trans_hom, ← Category.assoc, e, e']⟩`. Introduce and unpack `i _ ⟨k, g, ρ, hg, hρ, hk, rfl, h⟩`.
+
+Take `⟨P, hP⟩` from `hper i`. Take `⟨P', hP', e⟩` from `h P hP`. Take `⟨γ, hγ, hγ'⟩` from `(GlobalTheory.T.level_automorphism_period_family E H Dw l₂ Xo c hr hA g₀ ty F g ρ hty hρ).2 i P P' hP hP' e`. Conclude with `char_eq_one hp h5 hM hA hMb ψ (F.Di i) (F.t i) (fun a => (F.t_inj i a).1) (F.t_surj i) g hg k hk γ hγ hγ'`. Introduce and unpack `i j _ ⟨k, g, ρ, hg, hρ, hk, rfl, h⟩ choose f hf using (GlobalTheory.T.level_automorphism_period_family E H Dw l₂ Xo c hr hA g₀ ty F g ρ hty hρ).1`.
+
+Use `⟨f, fun m => ?_, ?_, fun x => ⟨k, g, ρ, hg, hρ, hk, rfl, hf x⟩⟩` and prove the remaining obligations. Take `⟨Q, hQ⟩` from `hper m`. Establish `hs : ρ.inv ≫ Xo.s = Xo.s` using `by rw [Iso.inv_comp_eq, hρ.1]`. Take `⟨x, P, hP, e⟩` from `F.onto (F.u m Q ≫ ρ.inv) (by rw [Category.assoc, hs, F.over_σ m Q hQ])`. Take `⟨P', hP', e'⟩` from `hf x P hP`.
+
+Rewrite `e'` using `[e, Category.assoc, Iso.inv_hom_id, Category.comp_id]`. Conclude with `⟨x, (F.disj _ _ _ _ hQ hP' e').symm⟩`. Take `⟨P, hP⟩` from `hper i`. Take `⟨P', hP', e⟩` from `h P hP`. Take `⟨P'', hP'', e'⟩` from `hf i P hP`.
+
+Conclude with `F.disj _ _ _ _ hP'' hP' (e'.symm.trans e)`.
+-/
 theorem exists_component_weight {l l₂ : Level H} {pd : ℕ} {I : Ideal (𝓞 E)} (hr : 1 ≤ Dw.p + Dw.q) (hp : pd.Prime)
     (h5 : 5 ≤ pd) (hM : l₂.M = l.M * pd) (hA : l₂.A = 1) (hMb : l₂.Mb = l.Mb * I) {A : Type} [CommGroup A]
     (ψ : ((Dw.La ⧸ (I • ⊤ : Submodule (𝓞 E) Dw.La)) ≃ₗ[𝓞 E] (Dw.La ⧸ (I • ⊤ : Submodule (𝓞 E) Dw.La))) →* A)
@@ -249,6 +328,33 @@ theorem exists_component_weight {l l₂ : Level H} {pd : ℕ} {I : Ideal (𝓞 E
       obtain ⟨P'', hP'', e'⟩ := hf i P hP
       exact F.disj _ _ _ _ hP'' hP' (e'.symm.trans e)
 
+/- English proof (translation)
+Set `f : Rul d.Xo₂ d.c₂` to `∑ i, d.eF (v i : c.F) • χ i`. Establish `hf : f ∈ sec d.Xo₂ d.c₂ 0 0` using `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (hχ i)`. Establish `hev : ∀ (y : FrPt d.Xo₂ d.c₂ (CAt d.c₂.F.val.toRingHom)) (i : Fin F.n) P, IsPeriod (F.Di i) ty P → y.x = F.u i P → evR d.Xo₂ d.c₂ f y = algebraMap d.c₂.F _ (d.eF (v i : c.F))`. Introduce `y i P hP e`. Establish `h1 : evR d.Xo₂ d.c₂ f y = ∑ j, d.eF (v j : c.F) • evR d.Xo₂ d.c₂ (χ j) y`.
+
+Express the relevant statement in the definitionally equal form `evalL (K := d.c₂.F) (fun S _ _ => FrPt d.Xo₂ d.c₂ S) (fun φ y z => FrMap φ y z) y f = _`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => map_smul _ _ _`. Rewrite using `[h1, Finset.sum_eq_single i]`. Rewrite using `[hval i y i P hP e, if_pos rfl, Algebra.smul_def, mul_one]`.
+
+Introduce `j _ hj`. Rewrite using `[hval j y i P hP e, if_neg (Ne.symm hj), smul_zero]`. Simplify using the standard rewrite rules. Establish `hon : ∀ y : FrPt d.Xo₂ d.c₂ (CAt d.c₂.F.val.toRingHom), ∃ i P, IsPeriod (F.Di i) ty P ∧ F.u i P = y.x` using `fun y => F.onto y.x y.x_over`. Use `haveI : IsDomain (CAt d.c₂.F.val.toRingHom) := inferInstanceAs (IsDomain ℂ)`.
+
+Establish `hne : ∀ i, algebraMap d.c₂.F (CAt d.c₂.F.val.toRingHom) (d.eF (v i : c.F)) ≠ 0` using `fun i h => (v i).ne_zero (d.eF.injective ((algebraMap d.c₂.F (CAt d.c₂.F.val.toRingHom)).injective (by`. Rewrite using `[h, map_zero, map_zero])))`. Take `⟨h1, h2, h3, h4, h5, h6, h7, -, -⟩` from `hd`. Use `⟨f, ⟨h1, h2, h3, h4, h5, h6, h7, hf, fun k _ _ _ y h0 => ?_⟩, fun k g ρ hg _ hρ hk K _ _ _ y y' e => ?_, ?_⟩` and prove the remaining obligations. Take `⟨z, -, -, hz, -⟩` from `GlobalTheory.T.exists_complex_frobenius_points E H Dw d.l₂ d.Xo₂ d.c₂ k y y`.
+
+Take `⟨i, P, hP, e⟩` from `hon z`. Use `hz f hf h0` as an intermediate fact. Rewrite `this` using `[hev z i P hP e.symm]`. Conclude with `hne i this`. Take `⟨z, z', hρz, -, hz⟩` from `GlobalTheory.T.exists_complex_frobenius_points E H Dw d.l₂ d.Xo₂ d.c₂ K y y'`.
+
+Take `⟨i, P, hP, e₁⟩` from `hon z`. Take `⟨j, P', hP', e₂⟩` from `hon z'`. Use `hz f hf _ ?_` and prove the remaining obligations. Rewrite using `[hev z i P hP e₁.symm, hev z' j P' hP' e₂.symm, hv k g ρ hg.2.1 hρ hk i j P P' hP hP' (by rw [e₁, e₂]; exact (hρz _ e).symm), Units.val_mul, map_mul, map_mul]`. Both sides reduce to the same expression.
+
+Establish `hone : (1 : Rul d.Xo₂ d.c₂) ∈ sec d.Xo₂ d.c₂ 0 0`. Use `⟨fun p q φ y z _ => by simp, fun p t y y' _ => ?_⟩` and prove the remaining obligations. Establish `: wchar (ex Dw 0 0) t = 1`. Unfold `wchar`. Use `Finset.prod_eq_one fun i _ => ?_` and prove the remaining obligations.
+
+Apply the tactic sequence `cases i <;> simp [ex]`. Simplify using `[this]`. Establish `hpow : ∀ m : ℕ, f ^ m ∈ sec d.Xo₂ d.c₂ 0 0`. Introduce `m`. Proceed by induction on `m with`.
+
+Consider the case `zero => rw [pow_zero]`. Conclude with `hone`. Consider the case `succ m ih => rw [pow_succ]`. Simplify using `using sec_mul d.Xo₂ d.c₂ 0 0 0 0 ih hf`. Establish `hs` using `Submodule.sub_mem _ (hpow N) hone`.
+
+Use `sub_eq_zero.1 (GlobalTheory.T.points_detect_frobenius_sections E H Dw d.l₂ d.Xo₂ d.c₂ 0 0 _ hs fun K _ _ _ y => ?_)` and prove the remaining obligations. Take `⟨z₀, z, -, -, hz⟩` from `GlobalTheory.T.exists_complex_frobenius_points E H Dw d.l₂ d.Xo₂ d.c₂ K y y`. Take `⟨i, P, hP, e⟩` from `hon z`. Establish `e₀` using `hev z i P hP e.symm`. Establish `hmul : ∀ a b : Rul d.Xo₂ d.c₂, evR d.Xo₂ d.c₂ (a * b) z = evR d.Xo₂ d.c₂ a z * evR d.Xo₂ d.c₂ b z` using `fun a b => evalAt_mul _ _ a b z`.
+
+Establish `e₁ : evR d.Xo₂ d.c₂ 1 z = 1`. Use `hmul f 1` as an intermediate fact. Rewrite `this` using `[mul_one, e₀]`. Conclude with `(mul_eq_left₀ (hne i)).1 this.symm`. Establish `e₂ : ∀ m : ℕ, evR d.Xo₂ d.c₂ (f ^ m) z = evR d.Xo₂ d.c₂ f z ^ m`.
+
+Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => rw [pow_zero, pow_zero, e₁]`. Consider the case `succ m ih => rw [pow_succ, pow_succ, hmul, ih]`. Establish `e₃ : evR d.Xo₂ d.c₂ (f ^ N - 1) z = evR d.Xo₂ d.c₂ (f ^ N) z - evR d.Xo₂ d.c₂ 1 z` using `map_sub (evalL (K := d.c₂.F) (fun S _ _ => FrPt d.Xo₂ d.c₂ S) (fun φ y z => FrMap φ y z) z) _ _`.
+
+Use `hz _ hs 0 (by` as an intermediate fact. Rewrite using `[e₃, e₂, e₀, e₁, ← map_pow, ← map_pow, ← Units.val_pow_eq_pow_val, hN, Units.val_one, map_one, map_one, map_zero, zero_mul, sub_self])`. Rewrite `this` using `[map_zero, zero_mul]`. Then use the resulting hypothesis.
+-/
 theorem isLev_psiTie {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {n : ℕ} (d : DeltaDat Xo c n) (hd : d.IsLev)
     (ψ : (LaI Xo c d ≃ₗ[𝓞 E] LaI Xo c d) →* c.Fˣ) {g₀ : ℕ} {ty : Fin g₀ → (E →+* ℂ)}
     (F : FamilyUnif d.Xo₂ (KA d.l₂).val.toRingHom ty) (χ : Fin F.n → Rul d.Xo₂ d.c₂)
@@ -331,6 +437,9 @@ theorem isLev_psiTie {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {n : ℕ} (d
         map_zero, zero_mul, sub_self])
     rwa [map_zero, zero_mul] at this
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨MonoidHom.toHomUnits { toFun := fun k => (⟨(ψ₀ k : ℂˣ), h k⟩ : F) map_one' := Subtype.ext (by simp) map_mul' := fun a b => Subtype.ext (by simp) }, fun _ => rfl⟩`.
+-/
 theorem exists_char_subfield {G : Type} [Group G] (ψ₀ : G →* ℂˣ) (F : IntermediateField ℚ ℂ)
     (h : ∀ k, ((ψ₀ k : ℂˣ) : ℂ) ∈ F) : ∃ ψ : G →* Fˣ, ∀ k, (((ψ k : Fˣ) : F) : ℂ) = (ψ₀ k : ℂˣ) :=
   ⟨MonoidHom.toHomUnits

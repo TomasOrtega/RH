@@ -26,15 +26,24 @@ def shIdx {r : ℕ} (i : Fin (r + 1)) : {l : Fin (r - i) // (0 : Fin (r - i + 1)
 def shEq {r : ℕ} (i : Fin (r + 1)) : Cf (r - i) 0 ≃ᵐ Cf r i :=
   MeasurableEquiv.piCongrLeft (fun _ => ℂ) (shIdx i)
 
+/- English proof (translation)
+The claim follows from `volume_measurePreserving_piCongrLeft (fun _ => ℂ) (shIdx i)`.
+-/
 theorem shEq_mp {r : ℕ} (i : Fin (r + 1)) : MeasurePreserving (shEq i) volume volume :=
   volume_measurePreserving_piCongrLeft (fun _ => ℂ) (shIdx i)
 
+/- English proof (translation)
+Unfold `shEq`. Rewrite using `[MeasurableEquiv.coe_piCongrLeft, Equiv.piCongrLeft_apply_eq_cast]`. Both sides reduce to the same expression.
+-/
 theorem shEq_apply {r : ℕ} (i : Fin (r + 1)) (c' : Cf (r - i) 0) (l : {l : Fin r // i.val ≤ l.val}) :
     shEq i c' l = c' ((shIdx i).symm l) := by
   unfold shEq
   rw [MeasurableEquiv.coe_piCongrLeft, Equiv.piCongrLeft_apply_eq_cast]
   rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `l`. Rewrite using `[shEq_apply]`. Simplify using `[Formalism.FourierDecayAlt.P.PTie.shiftCf, shIdx]`. Both sides reduce to the same expression.
+-/
 theorem shiftCf_glue {r : ℕ} (i : Fin (r + 1)) (c'' : Fin (r - i) → ℂ) (c' : Cf (r - i) 0) :
     Formalism.FourierDecayAlt.P.PTie.shiftCf i (glue 0 c'' c') = shEq i c' := by
   funext l
@@ -42,6 +51,9 @@ theorem shiftCf_glue {r : ℕ} (i : Fin (r + 1)) (c'' : Fin (r - i) → ℂ) (c'
   simp [Formalism.FourierDecayAlt.P.PTie.shiftCf, shIdx]
   rfl
 
+/- English proof (translation)
+Unfold `wtI`. Use `congr 1`. Repeatedly rewrite using `[shEq_apply]`. Conclude with `Fintype.prod_equiv (shIdx i).symm _ _ fun l => rfl`.
+-/
 theorem wtI_shEq {r : ℕ} (i : Fin (r + 1)) (c' : Cf (r - i) 0) : wtI i (shEq i c') = wtI 0 c' := by
   unfold wtI
   congr 1
@@ -55,6 +67,11 @@ section Transfer
 variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]
 
+/- English proof (translation)
+Unfold `LevelSquareIntegrable at h ⊢`. Establish `e : (fun c' : Cf r i => wtI i c' * pairAt μ v v (glue i c c')) ∘ (shEq i) = fun c' => (κ : ℂ)⁻¹ * (wtI 0 c' * pairAt μi (T v) (T v) (glue 0 c'' c'))`. Use function extensionality and compare the values at `c'`. Simplify using `only [Function.comp_apply]`. Rewrite using `[hT, shiftCf_glue, wtI_shEq]`.
+
+Establish `: (κ : ℂ) ≠ 0` using `by exact_mod_cast hκ.ne'`. Clear the denominators using the available nonvanishing facts. Establish `h2` using `h.const_mul ((κ : ℂ)⁻¹)`. Rewrite `h2` using `[← e]`. Conclude with `((shEq_mp i).integrable_comp_emb (shEq i).measurableEmbedding).mp h2`.
+-/
 theorem level_square_integrable_of_transport {k r : ℕ} {z z' : Fin (2 * r + k + 1) → ℂ} {π : Mx k r → (Wp →L[ℂ] Wp)}
     {π' : Mx k r → (Wq →L[ℂ] Wq)} (μ : Measure (Mt k r)) (i : Fin (r + 1)) (c : Fin r → ℂ)
     {zi zi' : Fin (2 * (r - i) + k + 1) → ℂ} {πi : Mx k (r - i) → (Wp →L[ℂ] Wp)} {πi' : Mx k (r - i) → (Wq →L[ℂ] Wq)}
@@ -90,6 +107,9 @@ def HermitianSquareIntegrableLevelZero : Prop :=
     IsData P z z' π π' X μ L st l0 → 1 ≤ l0 → l0 ≤ P.k → D.z = z → D.z' = z' → D.π = π → D.π' = π' →
     HermitianSquareIntegrableAt (S := S) P z z' π π' μ L st l0 D 0
 
+/- English proof (translation)
+Unfold `act`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Use `congrArg (fun f => f (x b)) (h a b).1` as an intermediate fact. Simplify using `using this.symm`.
+-/
 theorem act_tr {k r k' r' : ℕ} {z z' : Fin (2 * r + k + 1) → ℂ} {π : Mx k r → (Wp →L[ℂ] Wp)}
     {π' : Mx k r → (Wq →L[ℂ] Wq)} {zi zi' : Fin (2 * r' + k' + 1) → ℂ} {πi : Mx k' r' → (Wp →L[ℂ] Wp)}
     {πi' : Mx k' r' → (Wq →L[ℂ] Wq)} {S : Type} [Fintype S] [DecidableEq S]

@@ -19,6 +19,27 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     (T : LocLat G Qp LL O) (Pt : ZMod n → LL → (K →ₐ[Qp] LL) → Prop) (π' Eπ : LetA O n)
     (h' M σ : ℕ) (c : ZMod n) (α : FrA W π' Eπ h' M c) (β : FrB W π' Eπ h' M c)
 
+/- English proof (translation)
+Take `⟨h1, h2, h3⟩` from `(mem_LamPS W T Eπ h' c y0).1 hy0`. Establish `hE2 : Eπ ^ h' • (Eπ ^ h' • y0) ∈ W.N T` using `Eπ_φspan W T Eπ h' c hww hQ h5a h1`. Establish `eEQ : Eπ ^ h' = w' ^ h' * W.Q ^ h'`. Rewrite using `[hQ, mul_pow, ← mul_assoc, ← mul_pow, hww, one_pow, one_mul]`. Use `hexp c y0 ((mem_DelS W T y0).2 h2) ((mem_letS W T c y0).2 h3) ⟨2 * h', ?_⟩ ?_` and prove the remaining obligations.
+
+Rewrite using `[hQ, mul_pow, mul_smul, show Eπ ^ (2 * h') = Eπ ^ h' * Eπ ^ h' by rw [two_mul, pow_add], mul_smul]`. Conclude with `Submodule.smul_mem _ _ hE2`. Introduce `ζ τ hPt k hk i`. Take `⟨hc0, hc1⟩` from `levQ_pt W hs c ζ (hpt ζ τ hPt).1 (hpt ζ τ hPt).2`. Take `⟨m, a, z, hrep, hfil⟩` from `hxS`.
+
+Establish `e1 : W.Q ^ k • (Eπ ^ h' • y0) = (w' ^ h' * W.Q ^ h') • (W.Q ^ k • y0)`. Rewrite using `[eEQ, smul_smul, smul_smul, mul_comm (W.Q ^ k)]`. Establish `hQΛ : W.Q ^ k • (Eπ ^ h' • y0) ∈ W.N T` using `e1 ▸ Submodule.smul_mem _ _ hk`. Establish `hF : ∀ i' : ℤ, W.levN T c ζ ⟨_, hQΛ⟩ i' ∈ Formalism.MainNotions.DeltaInvariantLattices.FilC (PD` using `PD) T τ ((k : ℤ) + h' - i') := by`. Introduce `i'`.
+
+Break down `lt_or_ge i' ((k : ℤ) + 4 * h') with hi | hi` into its components or cases. Rewrite using `[(hfr.1 T hcry hjmp).2.2.2.2.2.2.2.2 τ ζ hPt x hx y0 hy0 hα m a z hrep k hQΛ i' hi]`. Use `nsmul_mem ?_ _` and prove the remaining obligations. Use `serMul_mem (fun i => Formalism.MainNotions.DeltaInvariantLattices.FilC (PD := PD) T τ ((h' : ℤ) - i)) (FilC_mono_shift T τ _) (W.lev c ζ (W.Q ^ k)) k (by rw [map_pow]; exact pow_vanish' _ hc0 k) _ (hfil τ ζ hPt) i'` as an intermediate fact. Use `this using 2` and compare the differences between its conclusion and the goal.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `h0` using `(Submodule.mem_inf.1 (levN_fil W T c hp4 hPt ⟨_, hQΛ⟩ i')).2`. Conclude with `FilC_anti T τ (by omega) (FilC_top T h' τ (hjmp τ) _ h0)`. Establish `hsub : (⟨_, hQΛ⟩ : ↥(W.N T)) = (w' ^ h' * W.Q ^ h') • (⟨_, hk⟩ : ↥(W.N T))` using `Subtype.ext e1`. Take `⟨m₀, hm₀⟩` from `W.levN_supp T c ζ ⟨_, hk⟩`.
+
+Take `⟨B', hB'⟩` from `PowerSeries.X_dvd_iff.2 hc0`. Establish `hw0 : PowerSeries.constantCoeff (W.lev c ζ w') ≠ 0`. Introduce `h`. Establish `hw : PowerSeries.constantCoeff (W.lev c ζ w') * PowerSeries.constantCoeff (W.lev c ζ w) = 1`. Rewrite using `[← map_mul, ← map_mul, hww, map_one, map_one]`.
+
+Rewrite `hw` using `[h, zero_mul]`. Conclude with `zero_ne_one hw`. Establish `hB0 : PowerSeries.constantCoeff B' ≠ 0`. Rewrite `hc1` using `[hB', PowerSeries.coeff_succ_X_mul, PowerSeries.coeff_zero_eq_constantCoeff_apply]`. Conclude with `hc1`.
+
+Establish `eg : W.lev c ζ (w' ^ h' * W.Q ^ h') = PowerSeries.X ^ h' * (W.lev c ζ w' ^ h' * B' ^ h')`. Rewrite using `[map_mul, map_pow, map_pow, hB', mul_pow]`. Expand and normalize the polynomial expressions, which then agree. Use `serMul_inv (fun i => Formalism.MainNotions.DeltaInvariantLattices.FilC (PD := PD) T τ ((k : ℤ) - i)) (FilC_mono_shift T τ _) (W.lev c ζ (w' ^ h' * W.Q ^ h')) h' ?_ ?_ (W.levN T c ζ ⟨_, hk⟩) m₀ hm₀ ?_ i` and prove the remaining obligations. Introduce `j hj`.
+
+Rewrite using `[eg, PowerSeries.coeff_X_pow_mul', if_neg (by omega)]`. Rewrite using `[eg, PowerSeries.coeff_X_pow_mul', if_pos le_rfl, Nat.sub_self, PowerSeries.coeff_zero_eq_constantCoeff_apply, map_mul, map_pow, map_pow]`. Conclude with `mul_ne_zero (pow_ne_zero _ hw0) (pow_ne_zero _ hB0)`. Introduce `i''`. Rewrite using `[← levN_eq_serMul, ← hsub]`.
+
+Use `hF (i'' + h')` as an intermediate fact. Use `this using 2` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem alpha_core (hfr : IsFrame W Pt π' Eπ h' M σ c α β) (hcry : IsCrys PD T.ρ)
     (hjmp : ∀ τ, JumpsInV PD T.ρ τ (Set.Icc (-(h' : ℤ)) h')) (hs : W.s = 1) {w w' : LetA O n}
     (hww : w' * w = 1) (hQ : W.Q = w * Eπ)

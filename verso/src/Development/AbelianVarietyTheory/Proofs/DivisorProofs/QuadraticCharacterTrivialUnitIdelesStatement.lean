@@ -11,6 +11,9 @@ open NumberField IsDedekindDomain Matrix Polynomial Filter GlobalTheory.CuspRep 
 open scoped Classical TensorProduct
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.EtaFinUnit.quadChar_finPartI_eq_one | exact GlobalTheory.EtaFinUnit.quadChar_finPartI_eq_one | (intros; apply GlobalTheory.EtaFinUnit.quadChar_finPartI_eq_one <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.quadratic_character_trivial_unit_ideles : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ b : Neutral.B1.Ideles (maximalRealSubfield E),
     b ∈ GlobalTheory.Mem.Chr.unitIdl (maximalRealSubfield E) → (GlobalTheory.GalOfCusp.quadChar E).1 (GlobalTheory.Mem.Chr.finPartI _ b) = 1 := by
   first | exact @GlobalTheory.EtaFinUnit.quadChar_finPartI_eq_one | exact GlobalTheory.EtaFinUnit.quadChar_finPartI_eq_one | (intros; apply GlobalTheory.EtaFinUnit.quadChar_finPartI_eq_one <;> assumption)

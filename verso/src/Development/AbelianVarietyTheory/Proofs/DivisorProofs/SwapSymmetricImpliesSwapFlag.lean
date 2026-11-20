@@ -12,6 +12,11 @@ set_option autoImplicit false
 
 namespace GlobalTheory.CovTest.SwapFlProof
 
+/- English proof (translation)
+Use `HermLB.Isometric.trans ?_ (isometric_comb_pull M n ρ wρ)` and prove the remaining obligations. Use `HermLB.icls_eq_iff.1 ?_` and prove the remaining obligations. Rewrite using `[icls_comb, icls_comb]`. Use `Finset.sum_congr rfl fun z _ => ?_` and prove the remaining obligations. Distinguish the cases in `hz : S z`.
+
+Rewrite using `[hn z hz, zero_smul, zero_smul]`. Rewrite using `[HermLB.icls_eq_iff.2 (hM z hz).symm]`.
+-/
 theorem comb_isometric_pullback {k : Type} [CommRing k] {X Y : Scheme.{0}} {p : X ⟶ Sp k} {q : Y ⟶ Sp k} {κ : Type} [Fintype κ]
     (L : κ → HermLB q) (M : κ → HermLB p) (ρ : Y ⟶ X) (wρ : ρ ≫ p = q) (n : κ → ℤ) (S : κ → Prop)
     (hn : ∀ z, S z → n z = 0) (hM : ∀ z, ¬ S z → ((M z).pull ρ wρ).Isometric (L z)) :
@@ -24,6 +29,11 @@ theorem comb_isometric_pullback {k : Type} [CommRing k] {X Y : Scheme.{0}} {p : 
   · rw [hn z hz, zero_smul, zero_smul]
   · rw [HermLB.icls_eq_iff.2 (hM z hz).symm]
 
+/- English proof (translation)
+Use `congr 1`. Use function extensionality and compare the values at `z`. Simplify using `only [Fin.sum_univ_three, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.tail_cons, Matrix.head_cons, Pi.single_apply, Function.update_apply]`. Distinguish the cases in `h1 : z = x`. Substitute `h1` using the available equality.
+
+Simplify using `[hx0, hxy]`. Distinguish the cases in `h2 : z = y`. Substitute `h2` using the available equality. Simplify using `[hy0, h1]`. Simplify using `[h1, h2, hne z h1 h2]`.
+-/
 theorem lin_update_two_coords {κ : Type} [Fintype κ] [DecidableEq κ] (x y : κ) (hxy : x ≠ y) (n n' : κ → ℤ)
     (hx0 : n' x = 0) (hy0 : n' y = 0) (hne : ∀ z, z ≠ x → z ≠ y → n' z = n z) (c₀ c₁ : ℤ) :
     (lin fun z => ∑ j : Fin 3, (![(c₀ : ℝ), c₁, 1] j) *
@@ -39,6 +49,31 @@ theorem lin_update_two_coords {κ : Type} [Fintype κ] [DecidableEq κ] (x y : �
     · subst h2; simp [hy0, h1]
     · simp [h1, h2, hne z h1 h2]
 
+/- English proof (translation)
+Introduce `_ G _ hS k _ B Y _ _ q p d D hq hp π w ι _ E r h H fl hfl Φ Ψ hΦ hΨ a i i' hi n`. Take `⟨Y₁, q₁, d₁, ρ, wρ, E₁, h₁, H₁, fl₁, M, rfl, hY₁, hfl₁, hS0, hS1, hM⟩` from `GlobalTheory.T.flag_bundle_hermitian_metric_grading k B Y q p d D hq hp π w ι E r h H fl hfl a i i' hi`. Use `haveI := hY₁.isIntegral`. Use `set x : Σ a, Fin (r a) := ⟨a, i⟩ with hx`. Use `set y : Σ a, Fin (r a) := ⟨a, i'⟩ with hy`.
+
+Establish `hxy : x ≠ y`. Introduce `e`. Rewrite `e` using `[hx, hy, Sigma.mk.inj_iff]`. Use `congrArg Fin.val (eq_of_heq e.2)` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+
+Use `set L : (Σ a, Fin (r a)) → HermLB p := fun z => VMetric.grLB (fl z.1) z.2 ((H z.1).pull π w) with hL`. Use `set n' : (Σ a, Fin (r a)) → ℤ := fun z => if z = x ∨ z = y then 0 else n z with hn'`. Use `set Mf : Fin 3 → HermLB p := ![VMetric.grLB fl₁ 0 (H₁.pull ρ wρ), VMetric.grLB fl₁ 1 (H₁.pull ρ wρ), (comb M n').pull ρ wρ] with hMf`. Use `set Am : Fin 3 → (Σ a, Fin (r a)) → ℤ := ![Pi.single x 1, Pi.single y 1, n'] with hAm`. Establish `hiso : ∀ j, (comb L (Am j)).Isometric (Mf j)`.
+
+Introduce `j`. Use `fin_cases j`. Conclude with `(isometric_comb_single L x).trans hS0.symm`. Conclude with `(isometric_comb_single L y).trans hS1.symm`. Conclude with `comb_isometric_pullback L M ρ wρ n' (fun z => z = x ∨ z = y) (fun z hz => if_pos hz) (fun z hz => hM z (fun e => hz (Or.inl e)) (fun e => hz (Or.inr e)))`.
+
+Use `set f : Fin 3 → MvPolynomial (Σ a, Fin (r a)) ℝ := fun j => lin fun z => (Am j z : ℝ) with hf`. Establish `hΦ'` using `((Published.arIso_holds k Y p (d₁ + 1) hp).2 _ L Φ hΦ).2.2 (Fin 3) Mf Am hiso`. Establish `hΨ' : IsGeoFun Mf (d₁ + 1) (Ψ ∘ₗ (aeval f : MvPolynomial (Fin 3) ℝ →ₐ[ℝ] _).toLinearMap)`. Use `⟨fun m => ?_, fun P e he hP => ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.comp_apply, AlgHom.toLinearMap_apply, map_pow, hf, aeval_lin]`.
+
+Establish `h2` using `hΨ.1 (fun z => ∑ j, m j * Am j z)`. Simplify using `only [Int.cast_sum, Int.cast_mul] at h2`. Rewrite using `[h2]`. Conclude with `((isometric_comb_comb L Am m).trans (isometric_comb_congr hiso m)).gdeg_eq _`. Rewrite using `[LinearMap.comp_apply, AlgHom.toLinearMap_apply]`.
+
+Conclude with `hΨ.2 _ e he (by simpa using hP.aeval _ fun j => isHomogeneous_lin _)`. Establish `key` using `hS k Y₁ Y q₁ p d₁ hY₁ hp ρ wρ E₁ h₁ H₁ fl₁ hfl₁ (comb M n') _ _ hΦ' hΨ' (n x) (n y)`. Establish `hsw : aeval f (G (d₁ + 1) (n x) (n y)) = swapPol G (d₁ + 1) x y n`. Unfold `swapPol`. Use `congr 2`.
+
+Use function extensionality and compare the values at `j`. Use `fin_cases j`. Conclude with `lin_single x`. Conclude with `lin_single y`. Simplify using `only [hf, hAm, hn', Matrix.cons_val_two, Matrix.tail_cons, Matrix.head_cons]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `z`. Apply the tactic sequence `by_cases hz : z = x ∨ z = y <;> simp [hz]`. Establish `hx0 : n' x = 0` using `if_pos (Or.inl rfl)`. Establish `hy0 : n' y = 0` using `if_pos (Or.inr rfl)`.
+
+Establish `hne : ∀ z, z ≠ x → z ≠ y → n' z = n z` using `fun z h1 h2 => if_neg (by tauto)`. Simplify using `only [LinearMap.comp_apply, AlgHom.toLinearMap_apply, map_pow, hf, aeval_lin] at key`. Rewrite using `[← hsw, ← key, hAm, lin_update_two_coords x y hxy n n' hx0 hy0 hne (n x) (n y), lin_update_two_coords x y hxy n n' hx0 hy0 hne (n y) (n x)]`. Apply the tactic sequence `congr 4 <;> funext z`. Rewrite using `[Function.update_eq_self, Function.update_eq_self]`.
+
+Distinguish the cases in `h1 : z = x`. Substitute `h1` using the available equality. Simplify using `[Function.update_apply, hxy, Equiv.swap_apply_left]`. Distinguish the cases in `h2 : z = y`. Substitute `h2` using the available equality.
+
+Simplify using `[Function.update_apply, Equiv.swap_apply_right]`. Simplify using `[Function.update_apply, h1, h2, Equiv.swap_apply_of_ne_of_ne h1 h2]`.
+-/
 theorem swapFl_of_swap2 : ArCalc → ∀ G, Homog G → Swap2 G → SwapFl G := by
   intro _ G _ hS k _ B Y _ _ q p d D hq hp π w ι _ E r h H fl hfl Φ Ψ hΦ hΨ a i i' hi n
   obtain ⟨Y₁, q₁, d₁, ρ, wρ, E₁, h₁, H₁, fl₁, M, rfl, hY₁, hfl₁, hS0, hS1, hM⟩ :=

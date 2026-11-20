@@ -10,6 +10,15 @@ namespace GlobalTheory.PinchEnl
 
 open MvPolynomial
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Introduce `p hp`. Rewrite using `[← Set.image_univ, MvPolynomial.mem_ideal_span_X_image]`. Introduce `m hm`. Assume the negation of the conclusion as `h`.
+
+Use `push_neg at h`. Establish `hm0 : m = 0` using `by ext i; simpa using h i (Set.mem_univ i)`. Substitute `hm0` using the available equality. Rewrite `hp` using `[RingHom.mem_ker]`. Establish `: aeval (R` using `D) (fun _ : κ ↦ (0 : D)) p = coeff 0 p := by first`.
+
+Consider the case `(show MvPolynomial.eval (0 : κ → D) p = _`. Conclude with `congrFun (congrArg DFunLike.coe (MvPolynomial.eval_zero (R := D) (σ := κ))) p)`. Consider the case `(rw [MvPolynomial.aeval_def]; simp [MvPolynomial.eval₂_eq, MvPolynomial.coeff_zero_eq_constantCoeff])`. Conclude with `(mem_support_iff.mp hm) (this ▸ hp)`. Rewrite using `[Ideal.span_le]`.
+
+Introduce and unpack `_ ⟨k, rfl⟩`. Simplify using the standard rewrite rules.
+-/
 theorem ker_aeval_zero_eq_span (D κ : Type) [CommRing D] :
     RingHom.ker (aeval (R := D) (fun _ : κ ↦ (0 : D))) = Ideal.span (Set.range X) := by
   apply le_antisymm
@@ -43,6 +52,11 @@ noncomputable def zeroPre (D κ : Type) [CommRing D] :
   map := id
   map_inj := Function.injective_id
 
+/- English proof (translation)
+Establish `: Fintype κ` using `Fintype.ofFinite κ`. Rewrite using `[Algebra.PreSubmersivePresentation.jacobian_eq_jacobiMatrix_det]`. Establish `h1 : (zeroPre D κ).jacobiMatrix = 1`. Use extensionality with `i j`. Rewrite using `[Algebra.PreSubmersivePresentation.jacobiMatrix_apply]`.
+
+Simplify using `[zeroPre, Matrix.one_apply, pderiv_X, Pi.single_apply, eq_comm]`. Rewrite using `[h1]`. Simplify using the standard rewrite rules.
+-/
 theorem zeroPre_jacobian (D κ : Type) [CommRing D] [Finite κ] : (zeroPre D κ).jacobian = 1 := by
   classical
   have : Fintype κ := Fintype.ofFinite κ
@@ -56,6 +70,11 @@ theorem zeroPre_jacobian (D κ : Type) [CommRing D] [Finite κ] : (zeroPre D κ)
 
 end GlobalTheory.PinchEnl
 
+/- English proof (translation)
+Introduce `R D ν σ κ _ _ _ _ _ _ P`. Set `Q : Algebra.SubmersivePresentation D D κ κ` to `{ __ := GlobalTheory.PinchEnl.zeroPre D κ jacobian_isUnit := by rw [GlobalTheory.PinchEnl.zeroPre_jacobian]; exact isUnit_one }`. Use `⟨Q.comp P, ?_⟩` and prove the remaining obligations. Use extensionality with `i`. Break down `i with k | j` into its components or cases.
+
+Both sides reduce to the same expression. Both sides reduce to the same expression.
+-/
 theorem GlobalTheory.PinchEnl.exists_submersivePresentation_sum_zero : ∀ (R D ν σ κ : Type) [CommRing R] [CommRing D] [Algebra R D] [Finite ν] [Finite σ] [Finite κ] (P : Algebra.SubmersivePresentation R D ν σ), ∃ P' : Algebra.SubmersivePresentation R D (κ ⊕ ν) (κ ⊕ σ), P'.val = Sum.elim (fun _ ↦ 0) P.val := by
   intro R D ν σ κ _ _ _ _ _ _ P
   let Q : Algebra.SubmersivePresentation D D κ κ :=

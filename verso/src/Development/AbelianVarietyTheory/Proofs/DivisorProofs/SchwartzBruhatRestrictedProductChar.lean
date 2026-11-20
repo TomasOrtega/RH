@@ -12,6 +12,19 @@ namespace GlobalTheory.WeylTwist
 
 open GlobalTheory.SympChange GlobalTheory.HeisSchA
 
+/- English proof (translation)
+Introduce `F _ _ ψ hψ hunr κ _ f φ y hφ hφO`. Establish `hlc` using `GlobalTheory.SympUnip.psiAt_isLocallyConstant ψ hψ.1`. Establish `hyint : ∀ᶠ v : Pl F in cofinite, ∀ i, evFin F v (y i) ∈ v.adicCompletionIntegers F` using `eventually_all.2 fun i => GlobalTheory.SympUnip.eventually_evFin (y i)`. Use `⟨fun v => ⟨(hφ v).1.mul ((hlc v).comp_continuous (continuous_id.dotProduct continuous_const)), (hφ v).2.mul_right⟩, ?_, fun x => ?_⟩` and prove the remaining obligations. Use `filter_upwards [hunr, hφO, hyint] with v hv hφv hy`.
+
+Use function extensionality and compare the values at `z`. Rewrite using `[hφv]`. Distinguish the cases in `hz : z ∈ {x : κ → Fv F v | ∀ i, x i ∈ v.adicCompletionIntegers F}`. Establish `hm : (z ⬝ᵥ fun i => evFin F v (y i)) ∈ v.adicCompletionIntegers F` using `sum_mem fun i _ => mul_mem (hz i) (hy i)`. Establish `h4` using `(hv 1).2 (one_mem _) _ hm`.
+
+Rewrite `h4` using `[one_mul]`. Rewrite using `[GlobalTheory.LatVac.psiAt_apply, h4, mul_one]`. Rewrite using `[indO, Set.indicator_of_notMem hz, zero_mul]`. Establish `hfin : (Function.mulSupport fun v : Pl F => φ v fun i => evFin F v (x i)).Finite`. Establish `h3 : ∀ᶠ v : Pl F in cofinite, ∀ i, evFin F v (x i) ∈ v.adicCompletionIntegers F` using `eventually_all.2 fun i => GlobalTheory.SympUnip.eventually_evFin (x i)`.
+
+Establish `h4 : ∀ᶠ v : Pl F in cofinite, (φ v fun i => evFin F v (x i)) = 1` using `by filter_upwards [hφO, h3] with v hv h3`. Rewrite using `[hv, indO, Set.indicator_of_mem (show _ ∈ {x : κ → Fv F v | ∀ i, x i ∈ v.adicCompletionIntegers F} from h3)]`. Both sides reduce to the same expression. Conclude with `h4`. Establish `hq : ∀ v : Pl F, evalV F v (p2 (x ⬝ᵥ y)) = (fun i => evFin F v (x i)) ⬝ᵥ fun i => evFin F v (y i)` using `fun v => RingHom.map_dotProduct (evFin F v : AF F →+* Fv F v) x y`.
+
+Take `⟨hs, hp⟩` from `GlobalTheory.SympUnip.finChar_eq_finprod ψ hψ.1 (p2 (x ⬝ᵥ y))`. Simplify using `only [hq] at hs hp`. Set `q : AF F →+* mixedEmbedding.mixedSpace F` to `(InfiniteAdeleRing.ringEquiv_mixedSpace F).toRingHom.comp p1`. Establish `h3 : ψ (mk (p1 (x ⬝ᵥ y)) 0) = eInf (fun i => evI F (x i)) (fun i => evI F (y i))`. Establish `e1 : evI F (mk (p1 (x ⬝ᵥ y)) 0) = (fun i => evI F (x i)) ⬝ᵥ fun i => evI F (y i)` using `RingHom.map_dotProduct q x y`.
+
+Rewrite using `[hψ.2.2 _ (at_mk _), e1, eInf]`. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure]`. Rewrite using `[finprod_mul_distrib hfin hs, ← hp, map_eq_mul ψ (x ⬝ᵥ y), h3]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem pure_mul_psi : ∀ (F : Type) [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ), IsStd ψ → (∀ᶠ v in cofinite, PsiUnr ψ v) →
     ∀ (κ : Type) [Fintype κ] (f : SInf F κ) (φ : ∀ v : Pl F, (κ → Fv F v) → ℂ) (y : κ → AF F),
     (∀ v, φ v ∈ SB (κ → Fv F v)) → (∀ᶠ v in cofinite, φ v = GlobalTheory.SympChange.indO v) →

@@ -29,14 +29,23 @@ namespace GlobalTheory.CompanionTheory.SW.ThW
 
 section Linear
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.1.add h'.1, h.2.add h'.2⟩`.
+-/
 theorem sb_add {V : Type} [TopologicalSpace V] {φ φ' : V → ℂ} (h : SB φ) (h' : SB φ') : SB (φ + φ') :=
   ⟨h.1.add h'.1, h.2.add h'.2⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨by have := h.1.comp (fun z => c * z) exact this, h.2.smul_left⟩`.
+-/
 theorem sb_smul {V : Type} [TopologicalSpace V] (c : ℂ) {φ : V → ℂ} (h : SB φ) : SB (c • φ) :=
   ⟨by
     have := h.1.comp (fun z => c * z)
     exact this, h.2.smul_left⟩
 
+/- English proof (translation)
+Take `⟨hT, _, _, _, hB, hH, _, _, hC, _⟩` from `hV`. Establish `hc : Continuous fun x => φ x * χ x y` using `h.1.continuous.mul (hC.comp (by fun_prop : Continuous fun x : V => (x, y)))`. Conclude with `hc.integrable_of_hasCompactSupport h.2.mul_right`.
+-/
 theorem sb_integrable {V : Type} [AddCommGroup V] [TopologicalSpace V] [MeasurableSpace V]
     {χ : V → V → ℂ} {μ : Measure V} (hV : NADual V χ μ) {φ : V → ℂ} (h : SB φ) (y : V) :
     Integrable (fun x => φ x * χ x y) μ := by
@@ -45,6 +54,9 @@ theorem sb_integrable {V : Type} [AddCommGroup V] [TopologicalSpace V] [Measurab
     h.1.continuous.mul (hC.comp (by fun_prop : Continuous fun x : V => (x, y)))
   exact hc.integrable_of_hasCompactSupport h.2.mul_right
 
+/- English proof (translation)
+Use function extensionality and compare the values at `y`. Simplify using `only [fou, Pi.add_apply, add_mul]`. Conclude with `integral_add (sb_integrable hV h y) (sb_integrable hV h' y)`.
+-/
 theorem fou_add {V : Type} [AddCommGroup V] [TopologicalSpace V] [MeasurableSpace V]
     {χ : V → V → ℂ} {μ : Measure V} (hV : NADual V χ μ) {φ φ' : V → ℂ} (h : SB φ) (h' : SB φ') :
     fou χ μ (φ + φ') = fou χ μ φ + fou χ μ φ' := by
@@ -52,6 +64,9 @@ theorem fou_add {V : Type} [AddCommGroup V] [TopologicalSpace V] [MeasurableSpac
   simp only [fou, Pi.add_apply, add_mul]
   exact integral_add (sb_integrable hV h y) (sb_integrable hV h' y)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `y`. Simplify using `only [fou, Pi.smul_apply, smul_eq_mul, mul_assoc]`. Conclude with `integral_const_mul c _`.
+-/
 theorem fou_smul {V : Type} [MeasurableSpace V] (χ : V → V → ℂ) (μ : Measure V) (c : ℂ)
     (φ : V → ℂ) : fou χ μ (c • φ) = c • fou χ μ φ := by
   funext y
@@ -64,12 +79,18 @@ section Global
 
 variable {F : Type} [Field F] [NumberField F] {ι : Type} [Fintype ι] [DecidableEq ι]
 
+/- English proof (translation)
+Simplify using `only [thTerm, one_mulVec]`. Both sides reduce to the same expression.
+-/
 theorem thTerm_one (B : Matrix ι ι F) (ρ : InfinitePlace F → (F →+* ℝ))
     (P : InfinitePlace F → Matrix ι ι ℝ) (φ : (ι → A F) → ℂ) (τ : InfinitePlace F → ℂ) (x : ι → F) :
     thTerm B ρ P 1 (fun _ => 1) φ τ x = φ (toA x) * gauss B ρ P τ (cur (emb ρ x)) := by
   simp only [thTerm, one_mulVec]
   rfl
 
+/- English proof (translation)
+Unfold `theta`. Rewrite using `[← h.of_norm.tsum_add h'.of_norm]`. Use `tsum_congr fun x => ?_` and prove the remaining obligations. Simplify using `only [thTerm, Pi.add_apply, add_mul]`.
+-/
 theorem theta_add {B : Matrix ι ι F} {ρ : InfinitePlace F → (F →+* ℝ)}
     {P : InfinitePlace F → Matrix ι ι ℝ} {τ : InfinitePlace F → ℂ} {φ φ' : (ι → A F) → ℂ}
     (h : Summable fun x => ‖thTerm B ρ P 1 (fun _ => 1) φ τ x‖)
@@ -81,6 +102,9 @@ theorem theta_add {B : Matrix ι ι F} {ρ : InfinitePlace F → (F →+* ℝ)}
   refine tsum_congr fun x => ?_
   simp only [thTerm, Pi.add_apply, add_mul]
 
+/- English proof (translation)
+Unfold `theta`. Rewrite using `[← tsum_mul_left]`. Use `tsum_congr fun x => ?_` and prove the remaining obligations. Simplify using `only [thTerm, Pi.smul_apply, smul_eq_mul, mul_assoc]`.
+-/
 theorem theta_smul (B : Matrix ι ι F) (ρ : InfinitePlace F → (F →+* ℝ))
     (P : InfinitePlace F → Matrix ι ι ℝ) (τ : InfinitePlace F → ℂ) (c : ℂ) (φ : (ι → A F) → ℂ) :
     theta B ρ P 1 (fun _ => 1) (c • φ) τ = c * theta B ρ P 1 (fun _ => 1) φ τ := by
@@ -89,10 +113,22 @@ theorem theta_smul (B : Matrix ι ι F) (ρ : InfinitePlace F → (F →+* ℝ))
   refine tsum_congr fun x => ?_
   simp only [thTerm, Pi.smul_apply, smul_eq_mul, mul_assoc]
 
+/- English proof (translation)
+Simplify using `[IsOrth]`.
+-/
 theorem orth_one (B : Matrix ι ι F) (ρ : InfinitePlace F → (F →+* ℝ)) :
     IsOrth B ρ 1 (fun _ => 1) := by
   simp [IsOrth]
 
+/- English proof (translation)
+Take `⟨hS, hP, hE⟩` from `GlobalTheory.T.siegel_matrix_symmetric_posdef_imag F ι M B ρ P hQ τ hτ`. Establish `hpl` using `GlobalTheory.T.poisson_summation_gaussian (ι × InfinitePlace F) (ZM B ρ P τ) hS hP g hg a`. Simplify using `only at hpl`. Take `⟨-, -, h⟩` from `hpl`. Simplify using `only [hE] at h`.
+
+Establish `hs : ((Real.sqrt |((Algebra.norm ℚ B.det : ℚ) : ℝ)| : ℝ) : ℂ) ≠ 0`. Establish `h0 : ((Algebra.norm ℚ B.det : ℚ) : ℝ) ≠ 0`. Conclude with `(Algebra.norm_ne_zero_iff.mpr hQ.2.2.2.1)` after adjusting the coercions. Establish `: 0 < Real.sqrt |((Algebra.norm ℚ B.det : ℚ) : ℝ)|` using `Real.sqrt_pos.mpr (abs_pos.mpr h0)`. Conclude with `this.ne'` after adjusting the coercions.
+
+Establish `key : ∀ n : ι × InfinitePlace F → ℤ, (∫ x : ι × InfinitePlace F → ℝ, gauss B ρ P τ (cur x) * Complex.exp (2 * (Real.pi : ℂ) * Complex.I * ((x ⬝ᵥ ((g⁻¹)ᵀ *ᵥ fun i => (n i : ℝ)) : ℝ) : ℂ))) * Complex.exp (-(2 * (Real.pi : ℂ) * Complex.I) * ((a ⬝ᵥ ((g⁻¹)ᵀ *ᵥ fun i => (n i : ℝ)) : ℝ) …`. Introduce `n`. Establish `hf` using `GlobalTheory.T.gaussian_fourier_transform_formula F ι M B ρ P hQ τ hτ (u n)`. Rewrite `hf` using `[hu n]`. Rewrite using `[hu n, mul_assoc (_)⁻¹, ← mul_assoc (cG B ρ P τ), ← hf]`.
+
+Clear the denominators using the available nonvanishing facts. Rewrite using `[h, tsum_congr key, tsum_mul_left]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem poisson_form [DecidableEq (InfinitePlace F)] {M : ℕ} {B : Matrix ι ι F}
     {ρ : InfinitePlace F → (F →+* ℝ)} {P : InfinitePlace F → Matrix ι ι ℝ} (hQ : QSetup M B ρ P)
     {τ : InfinitePlace F → ℂ} (hτ : ∀ w, 0 < (τ w).im)
@@ -137,6 +173,11 @@ section Base
 
 variable {F : Type} [Field F] [NumberField F] {ι : Type} [Fintype ι] [DecidableEq ι]
 
+/- English proof (translation)
+Unfold `theta`. Rewrite using `[← hi.tsum_eq]`. Use `tsum_congr fun n => ?_` and prove the remaining obligations. Rewrite using `[thTerm_one, he n, indC, Set.indicator_of_mem, one_mul]`. Conclude with `(hr _).2 ⟨n, rfl⟩`.
+
+Introduce `x hx`. Assume the negation of the conclusion as `hc`. Apply `hx` to reduce the goal to its premises. Rewrite using `[thTerm_one, indC, Set.indicator_of_notMem, zero_mul]`. Conclude with `fun h => hc ((hr x).1 h)`.
+-/
 theorem theta_indC [DecidableEq (InfinitePlace F)] (B : Matrix ι ι F)
     (ρ : InfinitePlace F → (F →+* ℝ)) (P : InfinitePlace F → Matrix ι ι ℝ)
     (τ : InfinitePlace F → ℂ) (a : ι → F) (N : ℕ) (g : Matrix (ι × InfinitePlace F) (ι × InfinitePlace F) ℝ)
@@ -156,6 +197,31 @@ theorem theta_indC [DecidableEq (InfinitePlace F)] (B : Matrix ι ι F)
     rw [thTerm_one, indC, Set.indicator_of_notMem, zero_mul]
     exact fun h => hc ((hr x).1 h)
 
+/- English proof (translation)
+Take `⟨hT, -, -, hdet, hemb, -, -⟩` from `id hQ`. Take `⟨b⟩` from `GlobalTheory.T.totally_real_integral_basis_exists F hT`. Establish `hgd` using `GlobalTheory.T.lattice_matrix_determinant_formula F ι ρ hT hemb b N`. Use `set g := gM (ι := ι) ρ (fun v => b v) N with hgdef`. Establish `hdisc : 0 < Real.sqrt |(discr F : ℝ)|` using `Real.sqrt_pos.mpr (abs_pos.mpr (by exact_mod_cast discr_ne_zero F))`.
+
+Establish `hNr : (0 : ℝ) < N` using `by exact_mod_cast hN`. Establish `hg : g.det ≠ 0`. Introduce `h0`. Rewrite `hgd` using `[h0, abs_zero]`. Conclude with `(pow_pos (mul_pos (pow_pos hNr _) hdisc) _).ne hgd`.
+
+Take `⟨e, ei, er, ee⟩` from `GlobalTheory.T.lattice_coset_parametrization F ι ρ b a N hN`. Take `⟨e', he', es⟩` from `GlobalTheory.T.dual_lattice_parametrization F ι B b N hdet hN`. Establish `hu : ∀ n : ι × InfinitePlace F → ℤ, DM B ρ *ᵥ emb ρ (e' n) = (g⁻¹)ᵀ *ᵥ fun i => (n i : ℝ)`. Introduce `n`. Establish `h2` using `GlobalTheory.T.gram_transpose_dual_trace_identity F ι M B ρ P hQ (fun v => b v) N (e' n)`.
+
+Establish `h3 : gᵀ *ᵥ (DM B ρ *ᵥ emb ρ (e' n)) = fun i => (n i : ℝ)`. Rewrite using `[hgdef, h2]`. Use function extensionality and compare the values at `p`. Use `he' n p.1 p.2` as an intermediate fact. Rewrite using `[this]`.
+
+Simplify using the standard rewrite rules. Establish `hU : IsUnit g.det` using `isUnit_iff_ne_zero.mpr hg`. Rewrite using `[← h3, mulVec_mulVec, ← transpose_mul, mul_nonsing_inv _ hU, transpose_one, one_mulVec]`. Establish `pf` using `poisson_form hQ hτ g hg (emb ρ a) (fun n => emb ρ (e' n)) hu`. Establish `ei' : Function.Injective e'`.
+
+Introduce `n n' h`. Use function extensionality and compare the values at `p`. Establish `h3` using `he' n p.1 p.2`. Rewrite `h3` using `[h, he' n' p.1 p.2]`. Conclude with `h3.symm` after adjusting the coercions.
+
+Establish `hfou : ∀ y : ι → F, fou (chiB ψ (Bf B)) (muF B lf) (indC N a) (toA y) = ((muF B lf (latN F ι N : Set (ι → A F))).toReal : ℂ) * chiB ψ (Bf B) (toA a) (toA y) * Set.indicator (perp (chiB ψ (Bf B)) (latN F ι N : Set (ι → A F))) (fun _ => (1 : ℂ)) (toA y)` using `fun y => GlobalTheory.T.fourier_transform_lattice_indicator _ _ _ hV (latN F ι N) (GlobalTheory.T.adelic_level_lattice_compact_open F ι N hN).1 (GlobalTheory.T.adelic_level_lattice_compact_open F ι N hN).2.1 (toA a) (toA y)`. Establish `hperp : ∀ y : ι → F, toA y ∈ perp (chiB ψ (Bf B)) (latN F ι N : Set (ι → A F)) ↔ y ∈ Set.range e'`. Introduce `y`. Rewrite using `[GlobalTheory.T.dual_lattice_membership_trace F ψ hψ ι B b N hN y]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h`. Conclude with `es y h`. Introduce and unpack `⟨n, rfl⟩ i v`. Conclude with `⟨n (i, v), he' n i v⟩`. Establish `hL : theta B ρ P 1 (fun _ => 1) (fou (chiB ψ (Bf B)) (muF B lf) (indC N a)) (fun w => -(τ w)⁻¹) = ((muF B lf (latN F ι N : Set (ι → A F))).toReal : ℂ) * ∑' n : ι × InfinitePlace F → ℤ, gauss B ρ P (fun w => -(τ w)⁻¹) (cur (emb ρ (e' n))) * Complex.exp (-(2 * (Real.pi : ℂ) * Compl …`.
+
+Unfold `theta`. Rewrite using `[← ei'.tsum_eq, ← tsum_mul_left]`. Use `tsum_congr fun n => ?_` and prove the remaining obligations. Rewrite using `[thTerm_one, hfou, Set.indicator_of_mem ((hperp _).2 ⟨n, rfl⟩), GlobalTheory.T.adelic_character_exponential_formula F ψ hψ ι M B ρ P hQ a (e' n)]`. Expand and normalize the polynomial expressions, which then agree.
+
+Introduce `x hx`. Assume the negation of the conclusion as `hc`. Apply `hx` to reduce the goal to its premises. Rewrite using `[thTerm_one, hfou, Set.indicator_of_notMem (fun h => hc ((hperp x).1 h))]`. Simplify using the standard rewrite rules.
+
+Establish `hmass` using `GlobalTheory.T.adelic_lattice_measure_formula F lf hl h1 ι B N hN`. Rewrite using `[hL, theta_indC B ρ P τ a N g e ei er ee, pf, hmass, hgd]`. Establish `hk : kap F = (Real.sqrt |(discr F : ℝ)|)⁻¹` using `rfl`. Rewrite using `[hk]`. Use `push_cast`.
+
+Simplify using `only [mul_inv, mul_pow, inv_pow]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem base [MeasurableSpace (A F)] [BorelSpace (A F)] {lf : Measure (A F)}
     (hl : lf.IsAddHaarMeasure) (h1 : lf (Oh F) = 1) {ψ : AddChar (A F) ℂ} (hψ : IsStdChar F ψ)
     {M : ℕ} {B : Matrix ι ι F} {ρ : InfinitePlace F → (F →+* ℝ)}
@@ -233,6 +299,21 @@ theorem base [MeasurableSpace (A F)] [BorelSpace (A F)] {lf : Measure (A F)}
   simp only [mul_inv, mul_pow, inv_pow]
   ring
 
+/- English proof (translation)
+Establish `hτ' : ∀ w, 0 < (-(τ w)⁻¹).im`. Introduce `w`. Establish `h0 : τ w ≠ 0` using `fun h => by simpa [h] using hτ w`. Simplify using `only [Complex.neg_im, Complex.inv_im, neg_div, neg_neg]`. Conclude with `div_pos (hτ w) (Complex.normSq_pos.mpr h0)`.
+
+Establish `hsum : ∀ {σ : InfinitePlace F → ℂ}, (∀ w, 0 < (σ w).im) → ∀ {f : (ι → A F) → ℂ}, SB f → Summable fun x => ‖thTerm B ρ P 1 (fun _ => 1) f σ x‖` using `fun hσ _ hf => (GlobalTheory.T.theta_series_summable F ι M B ρ P hQ 1 (fun _ => 1) (orth_one B ρ) _ hσ).1 _ hf`. Establish `hsb : ∀ {f : (ι → A F) → ℂ}, SB f → SB (fou (chiB ψ (Bf B)) (muF B lf) f)` using `fun hf => (GlobalTheory.T.fourier_inversion_schwartz_bruhat _ _ _ hV _ hf).1`. Take `⟨N, hN, s, c, rfl⟩` from `GlobalTheory.T.schwartz_bruhat_span_indicators F ι _ _ hV (fun N hN => (GlobalTheory.T.adelic_level_lattice_compact_open F ι N hN).2.1) φ hφ`. Establish `hI : ∀ a : ι → F, SB (indC N a)` using `(GlobalTheory.T.adelic_level_lattice_compact_open F ι N hN).2.2`. Establish `main : ∀ t : Finset (ι → F), SB (∑ a ∈ t, c a • indC N a) ∧ cG B ρ P τ * theta B ρ P 1 (fun _ => 1) (fou (chiB ψ (Bf B)) (muF B lf) (∑ a ∈ t, c a • indC N a)) (fun w => -(τ w)⁻¹) = theta B ρ P 1 (fun _ => 1) (∑ a ∈ t, c a • indC N a) τ`.
+
+Introduce `t`. Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty`. Establish `h0 : SB (0 : (ι → A F) → ℂ)` using `⟨IsLocallyConstant.const 0, HasCompactSupport.zero⟩`. Establish `hf0 : fou (chiB ψ (Bf B)) (muF B lf) (0 : (ι → A F) → ℂ) = 0`.
+
+Use function extensionality and compare the values at `y`. Simplify using `[fou]`. Establish `ht0 : ∀ σ, theta B ρ P 1 (fun _ => 1) (0 : (ι → A F) → ℂ) σ = 0`. Introduce `σ`. Simplify using `[theta, thTerm]`.
+
+Simplify using `only [Finset.sum_empty]`. Conclude with `⟨h0, by rw [hf0, ht0, ht0, mul_zero]⟩`. Consider the case `insert a t ha ih`. Take `⟨ihs, ihe⟩` from `ih`. Establish `hca` using `sb_smul (c a) (hI a)`.
+
+Simplify using `only [Finset.sum_insert ha]`. Use `⟨sb_add hca ihs, ?_⟩` and prove the remaining obligations. Rewrite using `[fou_add hV hca ihs, theta_add (hsum hτ' (hsb hca)) (hsum hτ' (hsb ihs)), theta_add (hsum hτ hca) (hsum hτ ihs), mul_add, ihe, fou_smul, theta_smul, theta_smul]`. Use `congr 1`. Rewrite using `[← base hl h1 hψ hQ hV a hN hτ]`.
+
+Expand and normalize the polynomial expressions, which then agree. Conclude with `(main s).2`.
+-/
 theorem core [MeasurableSpace (A F)] [BorelSpace (A F)] {lf : Measure (A F)}
     (hl : lf.IsAddHaarMeasure) (h1 : lf (Oh F) = 1) {ψ : AddChar (A F) ℂ} (hψ : IsStdChar F ψ)
     {M : ℕ} {B : Matrix ι ι F} {ρ : InfinitePlace F → (F →+* ℝ)}
@@ -282,6 +363,21 @@ theorem core [MeasurableSpace (A F)] [BorelSpace (A F)] {lf : Measure (A F)}
       ring
   exact (main s).2
 
+/- English proof (translation)
+Introduce `F _ _ _ _ lf hl h1 ψ hψ ι _ _ M B ρ P hQ gf gi hO φ hφ τ hτ`. Take `⟨-, -, hsym, hdet, -, -, -⟩` from `id hQ`. Establish `hNA` using `GlobalTheory.T.weil_representation_quadratic_datum F lf hl h1 ψ hψ ι B hsym hdet`. Establish `hV` using `hNA.2.2.2.2.2`. Establish `hBu : IsUnit (Bf B).det`.
+
+Establish `: (Bf B).det = algebraMap F (A F) B.det`. Rewrite using `[Bf, RingHom.map_det]`. Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `(isUnit_iff_ne_zero.mpr hdet).map _`.
+
+Establish `hgu : IsUnit gf.det`. Establish `h` using `congrArg det hO.1`. Rewrite `h` using `[det_mul, det_mul, det_transpose]`. Establish `h2 : gf.det * gf.det = 1`. Apply `hBu.mul_right_cancel` to reduce the goal to its premises.
+
+Take the linear combination `h`. Conclude with `IsUnit.of_mul_eq_one _ h2`. Take `⟨-, hfou⟩` from `GlobalTheory.T.weil_orthogonal_group_invariance (A F) ι ψ (hf F) (Bf B) (muF B lf) hNA gf hgu hO.1`. Take `⟨hsb, hfy⟩` from `hfou φ hφ`. Apply the tactic sequence `have hQ' := GlobalTheory.T.quadratic_setup_invariant_under_isometry F ι M B ρ P gi hQ hO.2`.
+
+Apply the tactic sequence `obtain ⟨hga, hgc⟩ := GlobalTheory.T.gaussian_change_of_variables_isometry F ι B ρ P gi hdet hO.2`. Establish `hth : ∀ (f : (ι → A F) → ℂ) (σ : InfinitePlace F → ℂ), theta B ρ P gf gi f σ = theta B ρ (fun w => (gi w)ᵀ * P w * gi w) 1 (fun _ => 1) (fun x => f (gf *ᵥ x)) σ`. Introduce `f σ`. Use `tsum_congr fun x => ?_` and prove the remaining obligations. Rewrite using `[thTerm_one]`.
+
+Simplify using `only [thTerm]`. Rewrite using `[hga]`. Both sides reduce to the same expression. Establish `hc` using `core hl h1 hψ hQ' hV hsb hτ`. Rewrite using `[hth, hth, ← hc, hgc]`.
+
+Use `congr 2`. Use function extensionality and compare the values at `y`. Conclude with `(hfy _).symm`.
+-/
 theorem thetaInvariance : ∀ (F : Type) [Field F] [NumberField F] [MeasurableSpace (A F)] [BorelSpace (A F)] (lf : Measure (A F)), lf.IsAddHaarMeasure → lf (Oh F) = 1 → ∀ ψ : AddChar (A F) ℂ, IsStdChar F ψ → ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (M : ℕ) (B : Matrix ι ι F) (ρ : InfinitePlace F → (F →+* ℝ)) (P : InfinitePlace F → Matrix ι ι ℝ), QSetup M B ρ P → ∀ (gf : Matrix ι ι (A F)) (gi : InfinitePlace F → Matrix ι ι ℝ), IsOrth B ρ gf gi → ∀ φ : (ι → A F) → ℂ, SB φ → ∀ τ : InfinitePlace F → ℂ, (∀ w, 0 < (τ w).im) → cG B ρ P τ * theta B ρ P gf gi (fou (chiB ψ (Bf B)) (muF B lf) φ) (fun w => -(τ w)⁻¹) = theta B ρ P gf gi φ τ := by
   intro F _ _ _ _ lf hl h1 ψ hψ ι _ _ M B ρ P hQ gf gi hO φ hφ τ hτ
   obtain ⟨-, -, hsym, hdet, -, -, -⟩ := id hQ

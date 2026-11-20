@@ -15,6 +15,11 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.Pk Forma
 
 namespace GlobalTheory.Fc
 
+/- English proof (translation)
+Introduce `hU hG Q Lk`. Use `Row.of_sel fun 𝒜 σ s => ?_` and prove the remaining obligations. Use `Closed.of_class fun Fm _ h hle => ?_` and prove the remaining obligations. Take `⟨κ, -, -, t⟩` from `s Fm h.1.1.1`. Establish `tVol : flipTwoThree.fam0 Fm StandardLattice.VolTie` using `⟨0, fun x _ hx i => volTie_of_realTied _ (built_val _ _ _ _ _ _ _ _ (t x hx i).1).2.2.2.2.2.2.1.some⟩`.
+
+Conclude with `StandardLattice.HarishChandraReduction.tuSize_min Fm hle (family_property_mono tVol fun D hT => GenusMassVolumes.volume_eq_mass_rank_two D (StandardLattice.volumeMass_of_unfolding D (hU D hT)) (GenusMassVolumes.volume_mass_of_genus_rank D 2 hT (hG D))) (Formalism.MainNotions.Gapp …`.
+-/
 theorem row_hTu_cTmin : (∀ D, MassRatioUnderVolume D) → (∀ D, Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.GenusMassAt D 2) → ∀ (Q : V4.Slot) (Lk : LkT Bundle),
     Row Q Lk fun 𝒜 _ => R1.H_hTu (fun _ y => Formalism.MainNotions.StandardLattice.HarishChandraReduction.cTmin y) 𝒜 := by
   intro hU hG Q Lk

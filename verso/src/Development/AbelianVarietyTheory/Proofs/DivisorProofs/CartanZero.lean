@@ -50,6 +50,11 @@ def Good (C : T ⥤ AbCx) (j : ℤ) : Prop :=
     (∀ n, WExact (term C n) a) → ∀ k : ℕ,
       ((AlgebraicTopology.alternatingCofaceMapComplex AddCommGrpCat.{1}).obj (X ⋙ cyc C i j)).ExactAt (k + 1)
 
+/- English proof (translation)
+Introduce `i hi U X a _ k`. Establish `hs : ∀ V, Subsingleton ((cyc C i j).obj V)` using `fun V => by`. Establish `: Subsingleton ((C.obj V).X i)` using `AddCommGrpCat.subsingleton_of_isZero (hb i (by omega) V)`. Express the relevant statement in the definitionally equal form `Subsingleton (((C.obj V).d i j).hom.ker)`. Use `infer_instance`.
+
+Rewrite using `[HomologicalComplex.exactAt_iff' _ k (k + 1) (k + 2) (by simp) (by simp), ShortComplex.ab_exact_iff]`. Introduce `x _`. Conclude with `⟨0, (hs _).elim _ _⟩`.
+-/
 theorem good_of_le (C : T ⥤ AbCx) (b : ℤ) (hb : ∀ n : ℤ, n < b → ∀ U, IsZero ((C.obj U).X n))
     (j : ℤ) (hj : j ≤ b) : Good C j := by
   intro i hi U X a _ k
@@ -61,6 +66,11 @@ theorem good_of_le (C : T ⥤ AbCx) (b : ℤ) (hb : ∀ n : ℤ, n < b → ∀ U
   intro x _
   exact ⟨0, (hs _).elim _ _⟩
 
+/- English proof (translation)
+Take `⟨V, g, hg, y, hy⟩` from `hL j U z hz`. Take `⟨X, a, h, hgh, hW⟩` from `hR U V g hg`. Establish `hZ` using `hG (j - 1) (by omega) U X a hW 0`. Use `GlobalTheory.CartanStep.cartan_step T U X a (cyc C (j - 1) j) (term C (j - 1)) (term C j) (incl C (j - 1) j) (dN C (j - 1) j) (fun V => Subtype.val_injective) (fun V y => ⟨fun h => ⟨⟨y, h⟩, rfl⟩, ?_⟩) (hW _) (hW _) hZ z ((C.map h).f (j - 1) y) ?_` and prove the remaining obligations. Introduce and unpack `⟨w, rfl⟩`.
+
+Conclude with `w.2`. Express the relevant statement in the definitionally equal form `(C.obj _).d (j - 1) j ((C.map h).f (j - 1) y) = (C.map (a.app _)).f j z`. Establish `e` using `ConcreteCategory.congr_hom ((C.map h).comm (j - 1) j) y`. Simplify using `only [ConcreteCategory.comp_apply] at e`. Rewrite using `[e, hy, ← hgh, Functor.map_comp, HomologicalComplex.comp_f, ConcreteCategory.comp_apply]`.
+-/
 theorem step (T : Type 1) [Category.{0} T] (Cov : MorphismProperty T) (C : T ⥤ AbCx)
     (hR : Refines Cov (fun U X a => ∀ n, WExact (term C n) a)) (hL : LocExact Cov C)
     (j : ℤ) (hG : Good C j) (U : T) (z : (C.obj U).X j) (hz : (C.obj U).d j (j + 1) z = 0) :
@@ -82,6 +92,11 @@ end GlobalTheory.CartanZero
 
 namespace GlobalTheory.CartanZero
 
+/- English proof (translation)
+Introduce `i hi U X a hW`. Take `rfl : i = j` from `by omega`. Use `cosimplicial_ses_exactAt_succ (X ⋙ cyc C (i - 1) i) (X ⋙ term C (i - 1)) (X ⋙ cyc C i (i + 1)) (Functor.whiskerLeft X (incl C (i - 1) i)) (Functor.whiskerLeft X (pN C (i - 1) i (i + 1))) (fun k => Subtype.val_injective) (fun k y => ⟨fun h => ⟨⟨y, congrArg Subtype.val h⟩, rfl⟩, ?_ …` and prove the remaining obligations. Introduce and unpack `⟨w, rfl⟩`. Conclude with `Subtype.ext w.2`.
+
+Introduce `k c`. Take `⟨y, hy⟩` from `step T Cov C hR hL i hG (X.obj k) c.1 c.2`. Conclude with `⟨y, Subtype.ext hy⟩`.
+-/
 theorem good_succ (T : Type 1) [Category.{0} T] (Cov : MorphismProperty T) (C : T ⥤ AbCx)
     (hR : Refines Cov (fun U X a => ∀ n, WExact (term C n) a)) (hL : LocExact Cov C)
     (j : ℤ) (hG : Good C j) : Good C (j + 1) := by
@@ -97,6 +112,15 @@ theorem good_succ (T : Type 1) [Category.{0} T] (Cov : MorphismProperty T) (C : 
     obtain ⟨y, hy⟩ := step T Cov C hR hL i hG (X.obj k) c.1 c.2
     exact ⟨y, Subtype.ext hy⟩
 
+/- English proof (translation)
+Introduce `T _ Cov C ⟨b, hb⟩ hR hL U n z hz`. Establish `hall : ∀ t : ℕ, Good C (b + t)`. Introduce `t`. Proceed by induction on `t with`. Consider the case `zero => simpa using good_of_le C b hb b le_rfl`.
+
+Consider the case `succ t ih`. Use `good_succ T Cov C hR hL _ ih` as an intermediate fact. Simplify `this` using `[add_assoc]`. Establish `hGn : Good C n`. Distinguish the cases in `h : n ≤ b`.
+
+Conclude with `good_of_le C b hb n h`. Establish `e : b + ((n - b).toNat : ℤ) = n` using `by omega`. Establish `h2` using `hall (n - b).toNat`. Rewrite `h2` using `[e]`. Conclude with `h2`.
+
+Conclude with `step T Cov C hR hL n hGn U z hz`.
+-/
 theorem cartan_zero : ∀ (T : Type 1) [Category.{0} T] (Cov : MorphismProperty T) (C : T ⥤ AbCx), (∃ b : ℤ, ∀ n : ℤ, n < b → ∀ U, IsZero ((C.obj U).X n)) → Refines Cov (fun U X a => ∀ n, WExact (term C n) a) → LocExact Cov C → ∀ (U : T) (n : ℤ) (z : (C.obj U).X n), (C.obj U).d n (n + 1) z = 0 → ∃ y : (C.obj U).X (n - 1), (C.obj U).d (n - 1) n y = z := by
   intro T _ Cov C ⟨b, hb⟩ hR hL U n z hz
   have hall : ∀ t : ℕ, Good C (b + t) := by

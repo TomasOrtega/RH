@@ -102,6 +102,11 @@ def ARead : Prop :=
       (rc : IrrGL (w.adicCompletion F) → WD h), IsRecT h rc → ∀ σ, π.IsLocComp w σ →
       GlobalTheory.RoadU.PlainTor (IrrGL.of σ.ρ σ.smooth σ.irred) ∧ ∀ x : WD h, UpperTheory.GalStar.AwayB x (rc (algNorm σ)) → x = rc (algNorm σ)
 
+/- English proof (translation)
+Introduce `F Ω _ _ _ _ _ _ l _ ι n r π hreg ha hW w hw A h rc hrc σ hσ`. Take `⟨t, ht⟩` from `hW.2 π hreg ha`. Establish `hwin : WinAt π t w` using `ht w (by`. Distinguish the cases in `e : ((l : ℕ) : 𝓞 F) ∈ w.asIdeal`. Conclude with `Or.inr (hW.1 w e (hw.resolve_left fun k => k e))`.
+
+Conclude with `Or.inl e)`. Take `⟨h1, h2, h3⟩` from `H F Ω A w h rc hrc n π t hwin σ hσ`. Conclude with `⟨h1, fun x k => k.tor h2 h3⟩`.
+-/
 theorem aRead_of (H : PlainRec) : ARead := by
   intro F Ω _ _ _ _ _ _ l _ ι n r π hreg ha hW w hw A h rc hrc σ hσ
   obtain ⟨t, ht⟩ := hW.2 π hreg ha

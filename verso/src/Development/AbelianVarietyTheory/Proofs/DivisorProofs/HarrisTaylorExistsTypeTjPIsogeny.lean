@@ -17,6 +17,13 @@ namespace GlobalTheory.UPel.HT.ES.TjExists
 
 variable {p : ℕ} [Fact p.Prime] {D : Datum p} {R : Type} [CommRing R] {b : Base D R} {S : Scheme.{0}} {N : ℕ}
 
+/- English proof (translation)
+Set `β : R →+* k` to `(Spec.preimage s).hom`. Use `haveI := ringChar.charP k`. Break down `CharP.char_is_prime_or_zero k (ringChar k) with hl | hl` into its components or cases. It suffices to derive a contradiction. Establish `h0 : ((ringChar k : ℕ) : k) = 0` using `CharP.cast_eq_zero k _`.
+
+Establish `hu : IsUnit ((ringChar k : ℕ) : R)`. Distinguish the cases in `h : ringChar k = p`. Rewrite using `[h]`. Conclude with `hp`. Conclude with `b.unit _ ((Nat.coprime_primes hl Fact.out).2 h)`.
+
+Use `hu.map β` as an intermediate fact. Rewrite `this` using `[map_natCast, h0]`. Conclude with `not_isUnit_zero this`. Use `haveI : CharP k 0 := hl ▸ ringChar.charP k`. Conclude with `CharP.charP_to_charZero k`.
+-/
 theorem charZero_of_base (b : Base D R) (hp : IsUnit ((p : ℕ) : R)) {k : Type} [Field k] (s : Sp k ⟶ Sp R) :
     CharZero k := by
   let β : R →+* k := (Spec.preimage s).hom
@@ -47,12 +54,40 @@ def torsSub {s : S ⟶ Sp R} (o : Obj b N s) (T : Over S) (c : ℕ) : Submodule 
     show (g.toMul ≫ o.act.act (algebraMap (𝓞 D.F) D.O a)) ^ c = 1
     rw [← MonObj.pow_comp, show g.toMul ^ c = 1 from hg, MonObj.one_comp]
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => rw [Nat.cast_zero, act_zero_eq_one_wvs, pow_zero, MonObj.comp_one]`. Consider the case `succ n ih => rw [Nat.cast_succ, o.act.add, o.act.one, MonObj.comp_mul, ih, Category.comp_id, pow_succ]`.
+-/
 theorem comp_act_natCast {s : S ⟶ Sp R} (o : Obj b N s) {T : Over S} (q : T ⟶ o.A) (n : ℕ) :
     q ≫ o.act.act (n : D.O) = q ^ n := by
   induction n with
   | zero => rw [Nat.cast_zero, act_zero_eq_one_wvs, pow_zero, MonObj.comp_one]
   | succ n ih => rw [Nat.cast_succ, o.act.add, o.act.one, MonObj.comp_mul, ih, Category.comp_id, pow_succ]
 
+/- English proof (translation)
+Take `⟨ex, hce, hje⟩` from `hc`. Establish `hpk : ((p : ℕ) : k) ≠ 0` using `Nat.cast_ne_zero.2 (Fact.out : p.Prime).ne_zero`. Establish `hck : (c : k) ≠ 0` using `by rw [hce, Nat.cast_pow]; exact pow_ne_zero _ hpk`. Take `⟨e, he, hl, hr, hadj, hskew, hnd⟩ : ∃ e : (𝟙_ (Over (Sp k)) ⟶ o.A) → (𝟙_ (Over (Sp k)) ⟶ o.A) → kˣ, (∀ g g' : 𝟙_ (Over (Sp k)) ⟶ o.A, g ^ c = 1 → g' ^ c = 1 → ∀ u : Γ((𝟙_ (Over (Sp k))).left, ⊤)ˣ, Out.WeilIs (G2 o.A) (Hecke.lbPow o.P c) 1 (lift g 1 : 𝟙_ (Over (Sp k)) ⟶ G2 o.A) (l …` from `PQuot.exists_pairing o c ⟨ex, hce⟩ k hpk (𝟙 _)`. Establish `hinj : Function.Injective (unitOn (R` using `k)) := by`.
+
+Use `Units.map_injective (f := (Scheme.ΓSpecIso (CommRingCat.of k)).inv.hom.toMonoidHom) ?_` and prove the remaining obligations. Conclude with `(Scheme.ΓSpecIso (CommRingCat.of k)).symm.commRingCatIsoToRingEquiv.injective`. Establish `hone : unitOn (1 : kˣ) = 1` using `map_one (Units.map _)`. Establish `he1 : ∀ g g' : 𝟙_ (Over (Sp k)) ⟶ o.A, g ^ c = 1 → g' ^ c = 1 → (Out.WeilIs (G2 o.A) (Hecke.lbPow o.P c) 1 (lift g 1 : 𝟙_ (Over (Sp k)) ⟶ G2 o.A) (lift 1 g') 1 ↔ e g g' = 1)` using `fun g g' hg hg' => by`. Rewrite using `[he g g' hg hg']`.
+
+Conclude with `⟨fun h => (hinj (hone.trans h)).symm, fun h => by rw [h]; exact hone.symm⟩`. Set `M` to `torsSub o (𝟙_ (Over (Sp k))) c`. Use `haveI : Finite M := (GlobalTheory.T.finite_torsion_and_descent_abelianVariety_algClosed k o.A o.ab c hck).1`. Establish `hM0 : ∀ x : M, x = 0 ↔ x.1.toMul = 1` using `fun x => ⟨fun h => by rw [h]; rfl, fun h => Subtype.ext h⟩`. Establish `hkill : ∀ (v : Ideal (𝓞 D.F)) (x : M), (∀ a ∈ v, a • x = 0) ↔ KilledBy o v x.1.toMul` using `fun v x => forall₂_congr fun a _ => hM0 (a • x)`.
+
+Establish `hwne : w ≠ ⊥` using `Ring.ne_bot_of_isMaximal_of_not_isField hw (NumberField.RingOfIntegers.not_isField D.F)`. Establish `hq : 0 < Ideal.absNorm w` using `Nat.pos_of_ne_zero fun h => hwne (Ideal.absNorm_eq_zero_iff.1 h)`. Establish `hle : Ideal.absNorm w ^ j ≤ Nat.card {x : M // ∀ a ∈ w, a • x = 0}`. Break down `Nat.eq_zero_or_pos j with rfl | hj0` into its components or cases. Rewrite using `[pow_zero] haveI : Nonempty {x : M // ∀ a ∈ w, a • x = 0} := ⟨⟨0, fun a _ => smul_zero a⟩⟩`.
+
+Conclude with `Nat.card_pos`. Establish `hrk : Nat.card {g : 𝟙_ (Over (Sp k)) ⟶ o.A // KilledBy o w g} = Ideal.absNorm w ^ (D.m * D.n)` using `GlobalTheory.T.card_torsion_killed_by_ideal_char_zero p D R b N (Sp k) s o w hwne k (𝟙 _)`. Establish `htor : ∀ g : 𝟙_ (Over (Sp k)) ⟶ o.A, KilledBy o w g → g ^ c = 1` using `fun g hg => by`. Establish `h1` using `hg _ (hu (p_mem_uIdeal D r))`. Rewrite `h1` using `[map_natCast, comp_act_natCast]`.
+
+Take `⟨e', rfl⟩` from `Nat.exists_eq_succ_of_ne_zero (hje hj0).ne'`. Rewrite using `[hce, pow_succ', pow_mul, h1, one_pow]`. Set `φ : {g : 𝟙_ (Over (Sp k)) ⟶ o.A // KilledBy o w g} ≃ {x : M // ∀ a ∈ w, a • x = 0}` to `{ toFun := fun g => ⟨⟨Additive.ofMul g.1, htor g.1 g.2⟩, (hkill w _).2 g.2⟩ invFun := fun x => ⟨x.1.1.toMul, (hkill w _).1 x.2⟩ left_inv := fun _ => rfl right_inv := fun _ => rfl }`. Rewrite using `[← Nat.card_congr φ, hrk, hm, Nat.one_mul]`. Conclude with `Nat.pow_le_pow_right hq hj`.
+
+Take `⟨K, Kiso, Kmax, Ku, Kcard⟩` from `GlobalTheory.T.perfect_pairing_torsion_module p D r w j c hw hu ⟨ex, hce⟩ M (fun x => (hM0 _).2 x.2) k (fun x y => e x.1.toMul y.1.toMul) (fun x x' y => hl _ _ _ x.2 x'.2 y.2) (fun x y y' => hr _ _ _ x.2 y.2 y'.2) (fun a x y => by`. Use `hadj (algebraMap (𝓞 D.F) D.O a) _ _ x.2 y.2` as an intermediate fact. Rewrite `this` using `[D.star_F, MulOpposite.unop_op]`. Conclude with `this)`. Use the proof step `(fun x y => hskew _ _ x.2 y.2)`.
+
+Use the proof step `(fun x h => (hM0 x).2 (hnd _ x.2 fun g' hg' => h ⟨Additive.ofMul g', hg'⟩)) hle`. Set `H : Subgroup (𝟙_ (Over (Sp k)) ⟶ o.A)` to `{ carrier := {g | ∃ x ∈ K, x.1.toMul = g} one_mem' := ⟨0, K.zero_mem, rfl⟩ mul_mem' := by`. Introduce and unpack `_ _ ⟨x, hx, rfl⟩ ⟨y, hy, rfl⟩`. Conclude with `⟨x + y, K.add_mem hx hy, rfl⟩`. Use the proof step `inv_mem' := by`.
+
+Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `⟨-x, K.neg_mem hx, rfl⟩ }`. Use `⟨H, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `c' _ ⟨x, hx, rfl⟩`. Take `⟨a, rfl⟩` from `GlobalTheory.T.integers_surjective_of_rank_one p D hm c'`.
+
+Conclude with `⟨a • x, K.smul_mem a hx, rfl⟩`. Introduce and unpack `_ ⟨x, -, rfl⟩`. Conclude with `x.2`. Introduce and unpack `_ ⟨x, hx, rfl⟩ _ ⟨y, hy, rfl⟩`. Conclude with `(he1 _ _ x.2 y.2).2 (Kiso x hx y hy)`.
+
+Introduce `g hg h`. Conclude with `⟨⟨Additive.ofMul g, hg⟩, Kmax _ fun y hy => (he1 _ _ hg y.2).1 (h _ ⟨y, hy, rfl⟩), rfl⟩`. Introduce and unpack `_ ⟨x, hx, rfl⟩ ⟨i, hi⟩`. Conclude with `(hkill w x).1 (Ku x hx ⟨i, (hkill _ x).2 hi⟩)`. Rewrite using `[← Kcard]`.
+
+Use `(Nat.card_eq_of_bijective (fun x : {x : M // x ∈ K ∧ ∀ a ∈ w, a • x = 0} => (⟨x.1.1.toMul, ⟨x.1, x.2.1, rfl⟩, (hkill w _).1 x.2.2⟩ : {h : 𝟙_ (Over (Sp k)) ⟶ o.A // h ∈ H ∧ KilledBy o w h})) ⟨fun x y h => ?_, ?_⟩).symm` and prove the remaining obligations. Conclude with `Subtype.ext (Subtype.ext (Subtype.mk.inj h))`. Introduce and unpack `⟨_, ⟨x, hx, rfl⟩, hk⟩`. Conclude with `⟨⟨x, hx, (hkill w x).2 hk⟩, rfl⟩`.
+-/
 theorem exists_sub (r : ℤ) (w : Ideal (𝓞 D.F)) (j c : ℕ) (hw : w.IsMaximal) (hu : uIdeal D r ≤ w) (hj : j ≤ D.n)
     (hc : ∃ e : ℕ, c = p ^ e ∧ (0 < j → 0 < e)) (hm : D.m = 1) {k : Type} [Field k] [IsAlgClosed k] [CharZero k]
     {s : Sp k ⟶ Sp R} (o : Obj b N s) :
@@ -152,6 +187,17 @@ theorem exists_sub (r : ℤ) (w : Ideal (𝓞 D.F)) (j c : ℕ) (hw : w.IsMaxima
     · rintro ⟨_, ⟨x, hx, rfl⟩, hk⟩
       exact ⟨⟨x, hx, (hkill w x).2 hk⟩, rfl⟩
 
+/- English proof (translation)
+Introduce `p _ D R _ _ b N _ _ hp r w j c hw hu hj hc hm k _ _ s o`. Use `haveI := charZero_of_base b hp s`. Take `⟨H, stab, hpow, hiso, hmax, hU, hcard⟩` from `exists_sub r w j c hw hu hj hc hm o`. Take `⟨ex, hce, -⟩` from `hc`. Establish `hck : (c : k) ≠ 0`.
+
+Rewrite using `[hce, Nat.cast_pow]`. Conclude with `pow_ne_zero _ (Nat.cast_ne_zero.2 (Fact.out : p.Prime).ne_zero)`. Establish `hfin : Finite H` using `by haveI := (GlobalTheory.T.finite_torsion_and_descent_abelianVariety_algClosed k o.A o.ab c hck).1`. Conclude with `Finite.of_injective (fun h : H => (⟨h.1, hpow h.1 h.2⟩ : {g : 𝟙_ (Over (Sp k)) ⟶ o.A // g ^ c = 1})) fun a a' h => Subtype.ext (Subtype.mk.inj h)`. Establish `hinj : ∀ (κ : Type) [Field κ] (x : Sp κ ⟶ Sp k) (h h' : 𝟙_ (Over (Sp k)) ⟶ o.A), toUnit (Over.mk x) ≫ h = toUnit (Over.mk x) ≫ h' → h = h'` using `fun κ _ x h h' e => by haveI : Nonempty (Over.mk x).left := inferInstanceAs (Nonempty (PrimeSpectrum κ)) haveI := GlobalTheory.PointQuot.epi_toUnit (Over.mk x)`.
+
+Conclude with `(cancel_epi _).1 e`. Establish `hfree : ∀ (κ : Type) [Field κ] (x : Sp κ ⟶ Sp k) (h : 𝟙_ (Over (Sp k)) ⟶ o.A), toUnit (Over.mk x) ≫ h = 1 ↔ h = 1` using `fun κ _ x h => ⟨fun e => hinj κ x h 1 (by rw [e, MonObj.comp_one]), fun e => by rw [e, MonObj.comp_one]⟩`. Take `⟨o', ψ, hψ, hker⟩` from `PQuot.exists_quot o c ⟨ex, hce⟩ hp H hfin (fun κ _ _ x h _ e => (hfree κ x h).1 e) stab hpow hiso (fun κ _ _ x g hg ho => PQuot.max_geom o c hck H hpow hmax κ x g hg ho)`. Use `⟨o', ψ, hψ, fun κ _ _ _ x => ?_⟩` and prove the remaining obligations. Establish `hkb : ∀ (v : Ideal (𝓞 D.F)) (h : 𝟙_ (Over (Sp k)) ⟶ o.A), KilledBy o v (toUnit (Over.mk x) ≫ h) ↔ KilledBy o v h` using `fun v h => forall₂_congr fun a _ => by rw [Category.assoc, hfree]`.
+
+Use `⟨fun g hg ⟨i, hi⟩ => ?_, ?_⟩` and prove the remaining obligations. Take `⟨h, hh, rfl⟩` from `(hker κ x g).1 hg`. Conclude with `(hkb w h).2 (hU h hh ⟨i, (hkb _ h).1 hi⟩)`. Rewrite using `[hm, Nat.one_mul, ← hcard]`. Use `(Nat.card_eq_of_bijective (fun h : {h : 𝟙_ (Over (Sp k)) ⟶ o.A // h ∈ H ∧ KilledBy o w h} => (⟨toUnit (Over.mk x) ≫ h.1, (hker κ x _).2 ⟨h.1, h.2.1, rfl⟩, (hkb w _).2 h.2.2⟩ : {g : Over.mk x ⟶ o.A // g ≫ ψ = 1 ∧ KilledBy o w g})) ⟨fun a a' h => ?_, ?_⟩).symm` and prove the remaining obligations.
+
+Conclude with `Subtype.ext (hinj κ x _ _ (congrArg Subtype.val h))`. Introduce and unpack `⟨g, hg, hk⟩`. Take `⟨h, hh, rfl⟩` from `(hker κ x g).1 hg`. Conclude with `⟨⟨h, hh, (hkb w h).1 hk⟩, rfl⟩`.
+-/
 theorem exists_isPIsog_isTj : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [CommRing R] [IsNoetherianRing R] (b : Base D R) (N : ℕ), 3 ≤ N → N.Coprime p → IsUnit ((p : ℕ) : R) → ∀ (r : ℤ) (w : Ideal (𝓞 D.F)) (j c : ℕ), w.IsMaximal → uIdeal D r ≤ w → j ≤ D.n → (∃ e : ℕ, c = p ^ e ∧ (0 < j → 0 < e)) → D.m = 1 → ∀ (k : Type) [Field k] [IsAlgClosed k] (s : Sp k ⟶ Sp R) (o : Obj b N s), ∃ (o' : Obj b N s) (ψ : o.A ⟶ o'.A), IsPIsog c o o' ψ ∧ IsTj r w j o o' ψ := by
   intro p _ D R _ _ b N _ _ hp r w j c hw hu hj hc hm k _ _ s o
   haveI := charZero_of_base b hp s

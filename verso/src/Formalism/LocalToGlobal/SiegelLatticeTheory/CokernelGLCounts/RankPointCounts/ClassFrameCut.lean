@@ -57,6 +57,9 @@ def LemmaVLiftC : Prop :=
 def AtPtRelevantC : Prop :=
   ∀ (t : Term D u u' (X.Fu u) (Y.what₂ u)) (w : Point D.host.E (D.R.rS + 1)), t.atPt w → t.relevant
 
+/- English proof (translation)
+Unfold `Formalism.L2.SG.PairVal.cTerm`. Rewrite using `[dif_neg]`. Introduce and unpack `⟨w, hw⟩`. Conclude with `ht (hAt t w hw)`.
+-/
 theorem cTerm_irrel (hAt : AtPtRelevantC X Y u u') (t : Term D u u' (X.Fu u) (Y.what₂ u)) (ht : ¬ t.relevant) :
     Formalism.L2.SG.PairVal.cTerm vR t = 0 := by
   unfold Formalism.L2.SG.PairVal.cTerm
@@ -71,6 +74,11 @@ namespace Formalism.L2.SG.Pf
 open Formalism.BasicNotions Formalism.MainNotions.S Formalism.MainNotions.S.LocalSplitGroups Formalism.L2.SG.TermDef Formalism.L2.SG.HidaSetting Formalism.L2.SG.AdBridge Formalism.L2.SG.Pf.RowForm
   MeasureTheory
 
+/- English proof (translation)
+Introduce `R ρ`. Take `⟨U, U', ζ, hζ, hU⟩` from `hC R ρ`. Use `⟨U, U', ζ, hζ, fun s => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hs : s.1.relevant`. Take `⟨A, B, hAB⟩` from `hB R ρ s hs`.
+
+Establish `h1` using `hAB.trans (hU s A B hAB)`. Unfold `chiOO frameVal at h1`. Rewrite using `[h1, smul_smul]`. Rewrite using `[hV R ρ s hs, smul_zero, cTerm_irrel X Y u u' vR hAt _ hs, mul_zero, zero_smul]`.
+-/
 theorem classFrameOO_of {D : D7} (X : HidaSetting D) (Y : Formalism.L2.SG.Full.Full X) (u u' : D.what₂.Word)
     (vR : Term D u u' (X.Fu u) (Y.what₂ u) → ℝ)
     (i0 i0' : ∀ _ : NumberField.InfinitePlace X.B.I.F, Fin D.R.k) (νq : X.B.I.Ginf → Measure X.B.I.Ginf)

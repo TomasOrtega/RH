@@ -42,6 +42,13 @@ def PlaceJ (P : Parts X u u') (sc : ℝ) (i0 i0' : ∀ _ : InfinitePlace X.B.I.F
             (Formalism.FourierDecayAlt.D.toStd P.S.G.r P.S.g 1 (Formalism.FourierDecayAlt.C.loc (P.S.emb (P.τ.symm v)) p)))
           ((P.eQ v).symm y))
 
+/- English proof (translation)
+Unfold `Formalism.L2.SG.Pf.Carrier.Parts.JointTensor`. Introduce `p w hpw hγ hG h h' hF x`. Rewrite using `[X.tensU_equiv, hQ w hγ hG, X.tensU_equiv]`. Conclude with `congrArg (fun f => X.tensU u f) (funext fun v => hP p w hpw hγ hG h h' hF v (x v))`. Apply the tactic sequence `all_goals first`.
+
+Consider the case `exact hF.2.1`. Consider the case `(intro v y hy`. Establish `h1` using `hF.1 v y hy`. Use `nth_rewrite 1 [← h1]`. Rewrite using `[Matrix.mulVec_mulVec, Pi.inv_apply]`.
+
+Simplify using `only [uMat]`. Rewrite using `[← Units.val_mul, ← MulMemClass.coe_mul, inv_mul_cancel, OneMemClass.coe_one, Units.val_one, Matrix.one_mulVec])`.
+-/
 theorem jointTensor_of_steps (P : Parts X u u') (sc : ℝ) (i0 i0' : ∀ _ : InfinitePlace X.B.I.F, Fin D.R.k)
     (νq : X.B.I.Ginf → Measure X.B.I.Ginf)
     (νl : Point D.host.E (D.R.rS + 1) → ∀ v : InfinitePlace X.B.I.F, Measure (Formalism.REAL.UJ (X.B.I.ε v)))

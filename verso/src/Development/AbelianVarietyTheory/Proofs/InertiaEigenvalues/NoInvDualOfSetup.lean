@@ -9,6 +9,15 @@ namespace GlobalTheory.NewPrime
 
 open IsLocalRing GlobalTheory.ScalarFrob in
 
+/- English proof (translation)
+Introduce `D N X bkP i s A _ _ _ _ κ Q ρ z hS hρ hz Y' _ _ m hm`. Take `⟨h, hloc, -, -, hκ, -⟩` from `hS`. Take `⟨e, he, -, hu, hε⟩` from `GlobalTheory.TwSys.TameScalar.exists_scalar_tmat_of_tame_inertia D N X bkP i s z h.1 hz`. Establish `c0 : residue (X.O0 i) e ≠ 0` using `(residue_ne_zero_iff_isUnit _).2 e.isUnit`. Establish `c1 : residue (X.O0 i) e ≠ 1`.
+
+Rewrite `hu` using `[← residue_ne_zero_iff_isUnit, map_sub, map_one, sub_ne_zero]`. Conclude with `hu`. Establish `e1 : resT i s z = residue (X.O0 i) e • 1`. Rewrite using `[resT_apply, he]`. Use extensionality with `a b`.
+
+Apply the tactic sequence `by_cases hab : a = b <;> simp [hab]`. Establish `e2` using `dual_of_scalar i s (by rw [hε]; simp) c0 e1`. Rewrite `e2` using `[← hρ z]`. Establish `hκ' : ∃ n : ℕ, κ⁻¹ z ^ (X.l i ^ n) = 1`. Take `⟨n, hn⟩` from `hκ z`.
+
+Conclude with `⟨n, by rw [MonoidHom.inv_apply, inv_pow, hn, inv_one]⟩`. Conclude with `eq_zero_of_scalar Fact.out (GlobalTheory.PrimeToInertia.l_mem i) ρ κ⁻¹ hκ' (inv_ne_one.2 c1) e2 (q := 1) Nat.cast_one m (by rw [one_smul]; exact hm z)`.
+-/
 theorem noInvDual_of_setup : ∀ (D : Formalism.BasicNotions.D7) (N : NData D.R D.host D.what₂) (X : NTw D.R D.host D.what₂ D.LL0 N) (bkP : BKPh X) (i : X.Tw) (s : X.Sig i), ∀ (A : Type) [CommRing A] [IsLocalRing A] [Finite A] [Algebra (X.O0 i) A] (κ : GE N →* Aˣ) (Q : Finset (PlE D.host)) (ρ : GE N →* GL (Fin D.R.r) (X.O0 i)) (z : GE N), Setup bkP i s κ Q → IsDual i s ρ → IsTameInertiaElementAtTwistPrime X i z → NoInvDual i κ ρ := by
   intro D N X bkP i s A _ _ _ _ κ Q ρ z hS hρ hz Y' _ _ m hm
   obtain ⟨h, hloc, -, -, hκ, -⟩ := hS

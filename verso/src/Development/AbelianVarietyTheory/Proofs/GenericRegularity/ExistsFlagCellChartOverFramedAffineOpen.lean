@@ -15,13 +15,24 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 
 namespace GlobalTheory.Reg.CellChart
 
+/- English proof (translation)
+Use `Spec.map_injective h` as an intermediate fact. Conclude with `congrArg CommRingCat.Hom.hom this`.
+-/
 theorem spMap_inj {A S : Type} [CommRing A] [CommRing S] {f g : A →+* S} (h : spMap f = spMap g) : f = g := by
   have := Spec.map_injective h
   exact congrArg CommRingCat.Hom.hom this
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(Spec.preimage m).hom, Spec.map_preimage m⟩`.
+-/
 theorem exists_spMap {A S : Type} [CommRing A] [CommRing S] (m : Sp S ⟶ Sp A) : ∃ f : A →+* S, spMap f = m :=
   ⟨(Spec.preimage m).hom, Spec.map_preimage m⟩
 
+/- English proof (translation)
+Take `⟨f, hf⟩` from `exists_spMap (IsOpenImmersion.lift j W hr)`. Establish `h1 : spMap f ≫ j = W` using `by rw [hf, IsOpenImmersion.lift_fac]`. Establish `h2 : f.comp (algebraMap K A) = algebraMap K S`. Apply `spMap_inj` to reduce the goal to its premises. Rewrite using `[← spMap_comp_ring, ← hj, ← Category.assoc, h1, hW]`.
+
+Conclude with `⟨{ f with commutes' := fun a => DFunLike.congr_fun h2 a }, h1⟩`.
+-/
 theorem exists_algHom_fac {K A S : Type} [CommRing K] [CommRing A] [Algebra K A] [CommRing S] [Algebra K S]
     {X : Scheme.{0}} (s : X ⟶ Sp K) (j : Sp A ⟶ X) [IsOpenImmersion j] (hj : j ≫ s = spMap (algebraMap K A))
     (W : Sp S ⟶ X) (hW : W ≫ s = spMap (algebraMap K S)) (hr : Set.range W ⊆ Set.range j) :
@@ -33,6 +44,13 @@ theorem exists_algHom_fac {K A S : Type} [CommRing K] [CommRing A] [Algebra K A]
     rw [← spMap_comp_ring, ← hj, ← Category.assoc, h1, hW]
   exact ⟨{ f with commutes' := fun a => DFunLike.congr_fun h2 a }, h1⟩
 
+/- English proof (translation)
+Set `p : PrimeSpectrum S` to `PrimeSpectrum.comap χ ⟨⊥, Ideal.isPrime_bot⟩`. Establish `hp : p ∈ (W ⁻¹ᵁ j.opensRange : (Sp S).Opens)`. Establish `e` using `congrArg (fun m : Sp L ⟶ X => m (⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum L)) h`. Simplify using `only [Scheme.Hom.comp_apply] at e`. Conclude with `⟨_, e.symm⟩`.
+
+Take `⟨_, ⟨g, rfl⟩, hg, hle⟩` from `PrimeSpectrum.isTopologicalBasis_basic_opens.exists_subset_of_mem_open hp (W ⁻¹ᵁ j.opensRange).isOpen`. Use `⟨g, fun h0 => hg (show χ g ∈ (⊥ : Ideal L) from h0), ?_⟩` and prove the remaining obligations. Use `exists_algHom_fac s j hj _ ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, hW, spMap_comp_ring, ← IsScalarTower.algebraMap_eq]`. Introduce and unpack `_ ⟨q, rfl⟩`.
+
+Rewrite using `[Scheme.Hom.comp_apply]`. Use `hle (a := PrimeSpectrum.comap (algebraMap S (Localization.Away g)) q) ?_` and prove the remaining obligations. Introduce `hq`. Conclude with `q.2.ne_top (Ideal.eq_top_of_isUnit_mem _ hq (IsLocalization.Away.algebraMap_isUnit g))`.
+-/
 theorem exists_away_fac {K A S L : Type} [CommRing K] [CommRing A] [Algebra K A] [CommRing S] [Algebra K S] [Field L]
     {X : Scheme.{0}} (s : X ⟶ Sp K) (j : Sp A ⟶ X) [IsOpenImmersion j] (hj : j ≫ s = spMap (algebraMap K A))
     (W : Sp S ⟶ X) (hW : W ≫ s = spMap (algebraMap K S)) (χ : S →+* L) (f : A →+* L)
@@ -55,6 +73,11 @@ theorem exists_away_fac {K A S L : Type} [CommRing K] [CommRing A] [Algebra K A]
     intro hq
     exact q.2.ne_top (Ideal.eq_top_of_isUnit_mem _ hq (IsLocalization.Away.algebraMap_isUnit g))
 
+/- English proof (translation)
+Establish `hi : IsIrreducible (Set.range j)`. Rewrite using `[← Set.image_univ]`. Conclude with `(IrreducibleSpace.isIrreducible_univ _).image _ j.continuous.continuousOn`. Use `⟨hi.closure, fun t ht hle => ?_⟩` and prove the remaining obligations. Establish `ho : IsOpen (Set.range j)` using `j.isOpenEmbedding.isOpen_range`.
+
+Establish `hne : (t ∩ Set.range j).Nonempty`. Take `⟨x, hx⟩` from `hi.nonempty`. Conclude with `⟨x, hle (subset_closure hx), hx⟩`. Conclude with `(subset_closure_inter_of_isPreirreducible_of_isOpen ht.isPreirreducible ho hne).trans (closure_mono Set.inter_subset_right)`.
+-/
 theorem closure_range_mem {A : Type} [CommRing A] [IsDomain A] {X : Scheme.{0}} (j : Sp A ⟶ X) [IsOpenImmersion j] :
     closure (Set.range j) ∈ irreducibleComponents X := by
   have hi : IsIrreducible (Set.range j) := by
@@ -68,6 +91,13 @@ theorem closure_range_mem {A : Type} [CommRing A] [IsDomain A] {X : Scheme.{0}} 
   exact (subset_closure_inter_of_isPreirreducible_of_isOpen ht.isPreirreducible ho hne).trans
     (closure_mono Set.inter_subset_right)
 
+/- English proof (translation)
+Set `m : Sp (FractionRing A) ⟶ X` to `spMap (algebraMap A (FractionRing A)) ≫ j`. Establish `h0 : IsGenericPoint (j (⊥ : PrimeSpectrum A)) (closure (Set.range j))`. Use `(genericPoint_spec (Sp A)).image j.continuous` as an intermediate fact. Rewrite `this` using `[genericPoint_eq_bot_of_affine (CommRingCat.of A), Set.image_univ]`. Conclude with `this`.
+
+Establish `h1 : x = m (IsLocalRing.closedPoint (FractionRing A))`. Use `(hx.eq h0).trans (Eq.trans (congrArg j ?_) (Scheme.Hom.comp_apply _ _ _).symm)` and prove the remaining obligations. Apply `PrimeSpectrum.ext` to reduce the goal to its premises. Use `show (⊥ : Ideal A) = Ideal.comap (algebraMap A (FractionRing A)) (IsLocalRing.maximalIdeal _)`. Rewrite using `[IsLocalRing.maximalIdeal_eq_bot, Ideal.comap_bot_of_injective _ (IsFractionRing.injective A _)]`.
+
+Use `⟨(Scheme.range_fromSpecResidueField x).le.trans ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ rfl`. Conclude with `⟨_, (hx.eq h0).symm⟩`. Substitute `h1` using the available equality. Conclude with `⟨_, Scheme.descResidueField_stalkClosedPointTo_fromSpecResidueField _ X m⟩`.
+-/
 theorem exists_residue_embed {A : Type} [CommRing A] [IsDomain A] {X : Scheme.{0}} (j : Sp A ⟶ X)
     (x : X) (hx : IsGenericPoint x (closure (Set.range j))) :
     Set.range (X.fromSpecResidueField x) ⊆ Set.range j ∧ ∃ β : X.residueField x ⟶ CommRingCat.of (FractionRing A),
@@ -88,6 +118,11 @@ theorem exists_residue_embed {A : Type} [CommRing A] [IsDomain A] {X : Scheme.{0
   · subst h1
     exact ⟨_, Scheme.descResidueField_stalkClosedPointTo_fromSpecResidueField _ X m⟩
 
+/- English proof (translation)
+Take `⟨f, hf⟩` from `exists_algHom_fac s j hj m hs hr`. Establish `h2 : β.comp f.toRingHom = algebraMap A (FractionRing A)`. Apply `spMap_inj` to reduce the goal to its premises. Rewrite using `[← cancel_mono j, ← spMap_comp_ring, Category.assoc, hf, hβ]`. Establish `h3 : ∀ a, β (f a) = algebraMap A (FractionRing A) a` using `fun a => DFunLike.congr_fun h2 a`.
+
+Use `⟨f, hf, fun a b hab => IsFractionRing.injective A (FractionRing A) (by rw [← h3, ← h3, hab]), fun y => ?_⟩` and prove the remaining obligations. Take `⟨a, b, hb, e⟩` from `IsFractionRing.div_surjective (A := A) (β y)`. Use `⟨a, b, nonZeroDivisors.ne_zero hb, β.injective ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, h3, h3, ← e, div_mul_cancel₀ _ (IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors hb)]`.
+-/
 theorem exists_generic {K A κ : Type} [CommRing K] [CommRing A] [IsDomain A] [Algebra K A] [Field κ] [Algebra K κ]
     {X : Scheme.{0}} (s : X ⟶ Sp K) (j : Sp A ⟶ X) [IsOpenImmersion j] (hj : j ≫ s = spMap (algebraMap K A))
     (m : Sp κ ⟶ X) (hs : m ≫ s = spMap (algebraMap K κ)) (hr : Set.range m ⊆ Set.range j)
@@ -104,6 +139,15 @@ theorem exists_generic {K A κ : Type} [CommRing K] [CommRing A] [IsDomain A] [A
   refine ⟨a, b, nonZeroDivisors.ne_zero hb, β.injective ?_⟩
   rw [map_mul, h3, h3, ← e, div_mul_cancel₀ _ (IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors hb)]
 
+/- English proof (translation)
+Set `θ₀ : MvPolynomial V A →ₐ[K] FractionRing (MvPolynomial V κ)` to `(polyChartHom V f.range).comp (MvPolynomial.mapAlgHom f.rangeRestrict)`. Establish `hs : Function.Surjective (MvPolynomial.mapAlgHom (σ` using `V) f.rangeRestrict) := MvPolynomial.map_surjective _ f.rangeRestrict_surjective`. Establish `hi : Function.Injective (MvPolynomial.mapAlgHom (σ` using `V) f.rangeRestrict) := MvPolynomial.map_injective _ fun a b h => hf (congrArg Subtype.val h)`. Use `⟨(e.toAlgHom.restrictScalars K).comp θ₀, e.injective.comp ((polyChartHom_injective V _).comp hi), fun a => ?_, fun v => ?_, fun x => ?_⟩` and prove the remaining obligations. Use `show e (polyChartHom V f.range (MvPolynomial.map _ (MvPolynomial.C a))) = _`.
+
+Rewrite using `[MvPolynomial.map_C, polyChartHom_C, e.commutes]`. Both sides reduce to the same expression. Use `show e (polyChartHom V f.range (MvPolynomial.map _ (MvPolynomial.X v))) = _`. Rewrite using `[MvPolynomial.map_X, polyChartHom_X]`. Take `⟨_, ⟨p, rfl⟩, _, ⟨q, rfl⟩, hq, hx⟩` from `(polyChart_smooth_fraction_lift K κ V f.range _ (polyChartHom_range V f.range)).2.1 (fun y => by`.
+
+Take `⟨a, b, hb, hy⟩` from `hfr y`. Conclude with `⟨_, ⟨a, rfl⟩, _, ⟨b, rfl⟩, fun h0 => hb (hf (h0.trans (map_zero f).symm)), hy⟩) (e.symm x)`. Take `⟨p, rfl⟩` from `hs p`. Take `⟨q, rfl⟩` from `hs q`. Use `⟨_, ⟨p, rfl⟩, _, ⟨q, rfl⟩, fun h0 => hq (e.injective (h0.trans (map_zero e).symm)), ?_⟩` and prove the remaining obligations.
+
+Use `congrArg e hx` as an intermediate fact. Rewrite `this` using `[map_mul, e.apply_symm_apply]`. Conclude with `this`.
+-/
 theorem exists_poly_embed {K κ A V : Type} [Field K] [Field κ] [Algebra K κ] [CommRing A] [Algebra K A] [Finite V]
     (f : A →ₐ[K] κ) (hf : Function.Injective f) (hfr : ∀ y : κ, ∃ a b : A, b ≠ 0 ∧ y * f b = f a)
     (e : FractionRing (MvPolynomial V κ) ≃ₐ[κ] FractionRing (MvPolynomial V κ)) :
@@ -145,30 +189,53 @@ noncomputable def cellM (σ : ∀ τ, Equiv.Perm (Fin (r τ)))
 
 variable (σ : ∀ τ, Equiv.Perm (Fin (r τ))) (x : (Σ τ : T, {p : Fin (r τ) × Fin (r τ) // p.1 < p.2}) → S)
 
+/- English proof (translation)
+Simplify using `[lowM, h.not_gt, h.ne']`.
+-/
 theorem lowM_zero (τ : T) (i j : Fin (r τ)) (h : i < j) : lowM x τ i j = 0 := by
   simp [lowM, h.not_gt, h.ne']
 
+/- English proof (translation)
+Simplify using `[lowM]`.
+-/
 theorem lowM_diag (τ : T) (i : Fin (r τ)) : lowM x τ i i = 1 := by
   simp [lowM]
 
+/- English proof (translation)
+Simplify using `[cellM]`.
+-/
 theorem cellM_apply (τ : T) (i j : Fin (r τ)) : cellM σ x τ (σ τ i) j = lowM x τ i j := by
   simp [cellM]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun i j h => (cellM_apply σ x τ i j).trans (lowM_zero x τ i j h), fun i => (cellM_apply σ x τ i i).trans (lowM_diag x τ i)⟩`.
+-/
 theorem cellM_shape (τ : T) : (∀ i j : Fin (r τ), i < j → cellM σ x τ ((σ τ).toEmbedding i) j = 0) ∧
     ∀ i : Fin (r τ), cellM σ x τ ((σ τ).toEmbedding i) i = 1 :=
   ⟨fun i j h => (cellM_apply σ x τ i j).trans (lowM_zero x τ i j h),
     fun i => (cellM_apply σ x τ i i).trans (lowM_diag x τ i)⟩
 
+/- English proof (translation)
+Rewrite using `[cellM, Matrix.det_permute, det_eq_one_of_lower_unitriangular _ (lowM_zero x τ) (lowM_diag x τ), _root_.mul_one]`. Conclude with `((Equiv.Perm.sign (σ τ).symm).isUnit).map (Int.castRingHom S)`.
+-/
 theorem isUnit_det_cellM (τ : T) : IsUnit (cellM σ x τ).det := by
   rw [cellM, Matrix.det_permute, det_eq_one_of_lower_unitriangular _ (lowM_zero x τ) (lowM_diag x τ), _root_.mul_one]
   exact ((Equiv.Perm.sign (σ τ).symm).isUnit).map (Int.castRingHom S)
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [cellM, lowM, Matrix.map_apply, Matrix.submatrix_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem cellM_map {S' F : Type} [CommRing S'] [FunLike F S S'] [RingHomClass F S S'] (φ : F) (τ : T) :
     (cellM σ x τ).map φ = cellM σ (fun v => φ (x v)) τ := by
   ext i j
   simp only [cellM, lowM, Matrix.map_apply, Matrix.submatrix_apply]
   split_ifs <;> simp
 
+/- English proof (translation)
+Use function extensionality and compare the values at `⟨τ, ⟨i, j⟩, hij⟩`. Establish `e` using `((cell_coordinates_exists_unique S _ _ (σ τ).toEmbedding (b τ)).2 _ _ (b τ) 1 (cellM_shape σ x τ) (cellM_shape σ x' τ) (hb τ).1 Matrix.blockTriangular_one (hb τ).2 (by rw [h, Matrix.mul_one])).1`. Establish `e'` using `congrFun (congrFun e (σ τ j)) i`. Rewrite `e'` using `[cellM_apply, cellM_apply]`. Establish `hij' : i < j` using `hij`.
+
+Simplify `e'` using `[lowM, hij']`.
+-/
 theorem cellM_unique (x' : (Σ τ : T, {p : Fin (r τ) × Fin (r τ) // p.1 < p.2}) → S)
     (b : ∀ τ, Matrix (Fin (r τ)) (Fin (r τ)) S) (hb : ∀ τ, (b τ).BlockTriangular id ∧ ∀ i, IsUnit (b τ i i))
     (h : ∀ τ, cellM σ x τ * b τ = cellM σ x' τ) : x = x' := by
@@ -184,11 +251,23 @@ noncomputable def minor (g : ∀ τ, Matrix (Fin (r τ)) (Fin (r τ)) S) (k : Σ
   ((g k.1).submatrix (fun i : Fin k.2 => (σ k.1).toEmbedding (Fin.castLE (Nat.lt_succ_iff.1 k.2.2) i))
     (Fin.castLE (Nat.lt_succ_iff.1 k.2.2))).det
 
+/- English proof (translation)
+The claim follows from `((φ : S →+* S').map_det _).symm`.
+-/
 theorem minor_map {S' F : Type} [CommRing S'] [FunLike F S S'] [RingHomClass F S S'] (φ : F)
     (g : ∀ τ, Matrix (Fin (r τ)) (Fin (r τ)) S) (k : Σ τ : T, Fin (r τ + 1)) :
     minor σ (fun τ => (g τ).map φ) k = φ (minor σ g k) :=
   ((φ : S →+* S').map_det _).symm
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h choose u b h0 h1 hb hu hg using fun τ => (cell_coordinates_exists_unique S _ _ (σ τ).toEmbedding (g τ)).1.1 fun k hk => h ⟨τ, ⟨k, Nat.lt_succ_iff.2 hk⟩⟩`. Use `⟨fun v => u v.1 (σ v.1 v.2.1.2) v.2.1.1, b, fun τ => ⟨hb τ, hu τ⟩, fun τ => ?_⟩` and prove the remaining obligations. Rewrite using `[hg τ]`. Use `congr 1`.
+
+Use extensionality with `i j`. Take `⟨i, rfl⟩` from `(σ τ).surjective i`. Rewrite using `[cellM_apply]`. Break down `lt_trichotomy i j with hij | rfl | hij` into its components or cases. Rewrite using `[lowM_zero _ _ _ _ hij]`.
+
+Conclude with `h0 τ i j hij`. Rewrite using `[lowM_diag]`. Conclude with `h1 τ i`. Simplify using `[lowM, hij]`. Introduce and unpack `⟨x, b, hb, hg⟩ ⟨τ, k⟩`.
+
+Conclude with `(cell_coordinates_exists_unique S _ _ (σ τ).toEmbedding (g τ)).1.2 ⟨_, _, (cellM_shape σ x τ).1, (cellM_shape σ x τ).2, (hb τ).1, (hb τ).2, hg τ⟩ k _`.
+-/
 theorem minor_iff (g : ∀ τ, Matrix (Fin (r τ)) (Fin (r τ)) S) :
     (∀ k, IsUnit (minor σ g k)) ↔ ∃ (x : (Σ τ : T, {p : Fin (r τ) × Fin (r τ) // p.1 < p.2}) → S)
       (b : ∀ τ, Matrix (Fin (r τ)) (Fin (r τ)) S), (∀ τ, (b τ).BlockTriangular id ∧ ∀ i, IsUnit (b τ i i)) ∧
@@ -216,12 +295,18 @@ end Cells
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
   {Xo : Moduli Dw l} {c : Coeff l}
 
+/- English proof (translation)
+Use extensionality with `j i`. Conclude with `congrFun ((y.basis τ (y'.u τ i) (h.1 ▸ y'.tan τ i) (y'.eig τ i)).unique (h.2 τ i) (h'.2 τ i)) j`.
+-/
 theorem reframe_unique {S : Type} [CommRing S] [Algebra c.F S]
     {g g' : ∀ τ : E →+* ℂ, Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) S} {y y' : FrPt Xo c S}
     (h : Reframe g y y') (h' : Reframe g' y y') (τ : E →+* ℂ) : g τ = g' τ := by
   ext j i
   exact congrFun ((y.basis τ (y'.u τ i) (h.1 ▸ y'.tan τ i) (y'.eig τ i)).unique (h.2 τ i) (h'.2 τ i)) j
 
+/- English proof (translation)
+Take `⟨b', ⟨_, hb'⟩, _⟩` from `(GlobalTheory.T.isTriangularReframe_exists_and_unique E H Dw l Xo c S y').2 y'' (h'.1.trans h.1.symm)`. Establish `e` using `reframe_unique ((GlobalTheory.T.triangularReframe_comp_baseChange_borel E H Dw l Xo c S).1 _ _ _ _ _ h hb') h'`. Establish `: b' = b` using `funext fun τ => ((Matrix.isUnit_iff_isUnit_det _).2 (hg τ)).mul_left_cancel (e τ)`. Conclude with `this ▸ hb'`.
+-/
 theorem reframe_cancel {S : Type} [CommRing S] [Algebra c.F S]
     {g b : ∀ τ : E →+* ℂ, Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) S} {y y' y'' : FrPt Xo c S}
     (hg : ∀ τ, IsUnit (g τ).det) (h : Reframe g y y') (h' : Reframe (fun τ => g τ * b τ) y y'') :
@@ -231,6 +316,11 @@ theorem reframe_cancel {S : Type} [CommRing S] [Algebra c.F S]
   have : b' = b := funext fun τ => ((Matrix.isUnit_iff_isUnit_det _).2 (hg τ)).mul_left_cancel (e τ)
   exact this ▸ hb'
 
+/- English proof (translation)
+Apply `AlgHom.coe_ringHom_injective` to reduce the goal to its premises. Apply `spMap_inj` to reduce the goal to its premises. Rewrite using `[← cancel_mono j]`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, Category.assoc]`.
+
+Conclude with `h`. Rewrite using `[Category.assoc, Category.assoc, hj, spMap_comp_ring, spMap_comp_ring, f.comp_algebraMap, f'.comp_algebraMap]`.
+-/
 theorem algHom_eq_of_point {A S : Type} [CommRing A] [Algebra c.F A] [CommRing S] [Algebra c.F S]
     (j : Sp A ⟶ Xo.XF c) [IsOpenImmersion j] (hj : j ≫ pullback.snd _ _ = spMap (algebraMap c.F A))
     (f f' : A →ₐ[c.F] S)
@@ -252,6 +342,9 @@ variable (bc : FrBC Xo c) {A : Type} [CommRing A] [Algebra c.F A] {yA : FrPt Xo 
 noncomputable def cst : A →ₐ[c.F] R :=
   q.toAlgHom.comp (IsScalarTower.toAlgHom c.F A (MvPolynomial (FlagVar Dw) A))
 
+/- English proof (translation)
+Use `(GlobalTheory.T.triangularReframe_comp_baseChange_borel E H Dw l Xo c R).2.1 S ψ _ _ _ _ _ hy (frMap_cancel _ _ _ _ _ _ _ _ h₀ hz₀) hz` as an intermediate fact. Simplify `this` using `only [cellM_map]`.
+-/
 theorem reframe_pt (h₀ : FrMap (cst q) yA y₀) (hy : Reframe (cellM σ fun v => q (MvPolynomial.X v)) y₀ y)
     {S : Type} [CommRing S] [Algebra c.F S] {ψ : R →ₐ[c.F] S} {z₀ z : FrPt Xo c S}
     (hz₀ : FrMap (ψ.comp (cst q)) yA z₀) (hz : FrMap ψ y z) :
@@ -260,6 +353,13 @@ theorem reframe_pt (h₀ : FrMap (cst q) yA y₀) (hy : Reframe (cellM σ fun v 
   simpa only [cellM_map] using this
 
 include bc in
+/- English proof (translation)
+Set `ψ : R →ₐ[c.F] S` to `(MvPolynomial.aevalTower f x).comp q.symm.toAlgHom`. Establish `h1 : ψ.comp (cst q) = f`. Use extensionality with `a`. Simplify using `[ψ, cst]`. Establish `h2 : (fun v => ψ (q (MvPolynomial.X v))) = x`.
+
+Use function extensionality and compare the values at `v`. Simplify using `[ψ]`. Take `⟨z, hz⟩` from `bc _ _ ψ y`. Establish `h3` using `reframe_pt σ q h₀ hy (h1 ▸ hz₀) hz`. Rewrite `h3` using `[h2]`.
+
+Take `⟨t, ht⟩` from `((GlobalTheory.T.triangularReframe_comp_baseChange_borel E H Dw l Xo c S).2.2 z w).2 ⟨b, hb, reframe_cancel (isUnit_det_cellM σ x) h3 hw⟩`. Conclude with `⟨ψ, z, t, hz, ht⟩`.
+-/
 theorem catches (h₀ : FrMap (cst q) yA y₀) (hy : Reframe (cellM σ fun v => q (MvPolynomial.X v)) y₀ y)
     {S : Type} [CommRing S] [Algebra c.F S] (f : A →ₐ[c.F] S) (z₀ w : FrPt Xo c S) (x : FlagVar Dw → S)
     (b : ∀ τ : E →+* ℂ, Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) S) (hz₀ : FrMap f yA z₀)
@@ -282,12 +382,20 @@ variable {j : Sp A ⟶ Xo.XF c} [IsOpenImmersion j] (hj : j ≫ pullback.snd _ _
   (hA : yA.x = j ≫ pullback.fst _ _)
 
 include hA in
+/- English proof (translation)
+Rewrite using `[hz.1, hy.1, h₀.1, hA, spMap_algHom_comp, Category.assoc]`.
+-/
 theorem point_eq (h₀ : FrMap (cst q) yA y₀) (hy : Reframe (cellM σ fun v => q (MvPolynomial.X v)) y₀ y)
     {S : Type} [CommRing S] [Algebra c.F S] {ψ : R →ₐ[c.F] S} {z : FrPt Xo c S} (hz : FrMap ψ y z) :
     z.x = spMap (ψ.comp (cst q)).toRingHom ≫ j ≫ pullback.fst _ _ := by
   rw [hz.1, hy.1, h₀.1, hA, spMap_algHom_comp, Category.assoc]
 
 include bc hj hA in
+/- English proof (translation)
+Establish `h1 : ψ.comp (cst q) = ψ'.comp (cst q)` using `algHom_eq_of_point j hj _ _ (by rw [← point_eq σ q hA h₀ hy hz, ← point_eq σ q hA h₀ hy hz', ht.1])`. Take `⟨z₀, hz₀⟩` from `bc _ _ (ψ.comp (cst q)) yA`. Take `⟨b, hb, hbz⟩` from `((GlobalTheory.T.triangularReframe_comp_baseChange_borel E H Dw l Xo c S).2.2 z z').1 ⟨t, ht⟩`. Establish `h2` using `cellM_unique σ _ _ b hb (reframe_unique ((GlobalTheory.T.triangularReframe_comp_baseChange_borel E H Dw l Xo c S).1 _ _ _ _ _ (reframe_pt σ q h₀ hy hz₀ hz) hbz) (reframe_pt σ q h₀ hy (h1 ▸ hz₀) hz'))`. Establish `h3 : ψ.comp q.toAlgHom = ψ'.comp q.toAlgHom` using `MvPolynomial.algHom_ext' h1 fun v => congrFun h2 v`.
+
+Use extensionality with `a`. Take `⟨p, rfl⟩` from `q.surjective a`. Conclude with `DFunLike.congr_fun h3 p`.
+-/
 theorem mono_chart (h₀ : FrMap (cst q) yA y₀) (hy : Reframe (cellM σ fun v => q (MvPolynomial.X v)) y₀ y)
     {S : Type} [CommRing S] [Algebra c.F S] (ψ ψ' : R →ₐ[c.F] S) (z z' : FrPt Xo c S) (t : Ix Dw → Sˣ)
     (hz : FrMap ψ y z) (hz' : FrMap ψ' y z') (ht : FrBor t z z') : ψ = ψ' := by
@@ -305,6 +413,29 @@ theorem mono_chart (h₀ : FrMap (cst q) yA y₀) (hy : Reframe (cellM σ fun v 
   exact DFunLike.congr_fun h3 p
 
 include bc hj hA in
+/- English proof (translation)
+Take `⟨ψ, z, t, hz, ht⟩` from `hc`. Set `W : Sp S ⟶ Xo.XF c` to `pullback.lift w.x (spMap (algebraMap c.F S)) (by`. Rewrite using `[w.x_over, spMap_comp_ring]`. Use the proof step `rfl)`. Establish `hW1 : W ≫ pullback.fst _ _ = w.x` using `pullback.lift_fst _ _ _`.
+
+Establish `hW2 : W ≫ pullback.snd _ _ = spMap (algebraMap c.F S)` using `pullback.lift_snd _ _ _`. Establish `hL : wL.x = spMap (ψ.comp (cst q)).toRingHom ≫ j ≫ pullback.fst _ _`. Rewrite using `[ht.1, point_eq σ q hA h₀ hy hz]`. Take `⟨g₁, hg₁, f₁, hf₁⟩` from `exists_away_fac (pullback.snd _ _) j hj W hW2 χ.toRingHom (ψ.comp (cst q)).toRingHom (by`. Apply `pullback.hom_ext` to reduce the goal to its premises.
+
+Rewrite using `[Category.assoc, Category.assoc, hW1, ← hL, hw.1]`. Rewrite using `[Category.assoc, Category.assoc, hW2, hj, spMap_comp_ring, spMap_comp_ring]`. Conclude with `congrArg spMap (χ.comp_algebraMap.trans (ψ.comp (cst q)).comp_algebraMap.symm))`. Set `S₁` to `Localization.Away g₁`. Set `i₁ : S →ₐ[c.F] S₁` to `IsScalarTower.toAlgHom c.F S S₁`.
+
+Establish `ext : ∀ (S' : Type) [CommRing S'] [Algebra c.F S'] (lam : S →ₐ[c.F] S'), IsUnit (lam g₁) → ∃ ν : S₁ →ₐ[c.F] S', ν.comp i₁ = lam` using `fun S' _ _ lam hu => ⟨IsLocalization.liftAlgHom (M := Submonoid.powers g₁) (f := lam) (by`. Introduce and unpack `⟨_, n, rfl⟩`. Simplify using `using hu.pow n), by ext a; simp [i₁]⟩`. Take `⟨w₁, hw₁⟩` from `bc _ _ i₁ w`. Take `⟨z₁, hz₁⟩` from `bc _ _ f₁ yA`.
+
+Establish `hx₁ : w₁.x = z₁.x`. Rewrite using `[hw₁.1, hz₁.1, hA, ← Category.assoc, hf₁, Category.assoc, hW1]`. Both sides reduce to the same expression. Take `⟨G, ⟨_, hG⟩, _⟩` from `(GlobalTheory.T.isTriangularReframe_exists_and_unique E H Dw l Xo c S₁ z₁).2 w₁ hx₁`. Establish `base : ∀ (S' : Type) [CommRing S'] [Algebra c.F S'] (ν : S₁ →ₐ[c.F] S') (z' w' : FrPt Xo c S'), FrMap (ν.comp f₁) yA z' → FrMap (ν.comp i₁) w w' → Reframe (fun τ => (G τ).map ν) z' w'` using `fun S' _ _ ν z' w' h1 h2 => (GlobalTheory.T.triangularReframe_comp_baseChange_borel E H Dw l Xo c S₁).2.1 S' ν _ _ _ _ _ hG (frMap_cancel _ _ _ _ _ _ _ _ hz₁ h1) (frMap_cancel _ _ _ _ _ _ _ _ hw₁ h2)`.
+
+Take `⟨χ₁, hχ₁⟩` from `ext L χ (IsUnit.mk0 _ hg₁)`. Take `⟨z₀, hz₀⟩` from `bc _ _ (χ₁.comp f₁) yA`. Establish `hGL` using `base L χ₁ z₀ wL hz₀ (hχ₁ ▸ hw)`. Establish `he : χ₁.comp f₁ = ψ.comp (cst q)` using `algHom_eq_of_point j hj _ _ (by rw [← hL, hGL.1, hz₀.1, hA])`. Take `⟨b, hb, hbz⟩` from `((GlobalTheory.T.triangularReframe_comp_baseChange_borel E H Dw l Xo c L).2.2 z wL).1 ⟨t, ht⟩`.
+
+Establish `hmin` using `(minor_iff σ _).2 ⟨_, b, hb, reframe_unique hGL ((GlobalTheory.T.triangularReframe_comp_baseChange_borel E H Dw l Xo c L).1 _ _ _ _ _ (reframe_pt σ q h₀ hy (he ▸ hz₀) hz) hbz)⟩`. Take `⟨n, g₂, hg₂⟩` from `IsLocalization.Away.surj g₁ (∏ k, minor σ G k)`. Establish `hval : ∀ (S' : Type) [CommRing S'] [Algebra c.F S'] (ν : S₁ →ₐ[c.F] S'), (ν.comp i₁) g₂ = (∏ k, minor σ (fun τ => (G τ).map ν) k) * (ν.comp i₁) g₁ ^ n`. Introduce `S' _ _ ν`. Use `congrArg ν hg₂` as an intermediate fact.
+
+Rewrite `this` using `[map_mul, map_prod, map_pow]`. Simplify using `only [minor_map]`. Conclude with `this.symm`. Use `⟨g₁ * g₂, ?_, fun S' _ _ lam hu w' hw' => ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul]`.
+
+Use `mul_ne_zero hg₁ ?_` and prove the remaining obligations. Rewrite using `[← hχ₁, hval, hχ₁]`. Conclude with `mul_ne_zero (Finset.prod_ne_zero_iff.2 fun k _ => (hmin k).ne_zero) (pow_ne_zero _ hg₁)`. Rewrite `hu` using `[map_mul]`. Take `⟨ν, hν⟩` from `ext S' lam (isUnit_of_mul_isUnit_left hu)`.
+
+Establish `hu2` using `isUnit_of_mul_isUnit_right hu`. Rewrite `hu2` using `[← hν, hval]`. Take `⟨x, b', hb', hx⟩` from `(minor_iff σ (fun τ => (G τ).map ν)).1 fun k => IsUnit.prod_iff.1 (isUnit_of_mul_isUnit_left hu2) k (Finset.mem_univ _)`. Take `⟨z', hz'⟩` from `bc _ _ (ν.comp f₁) yA`. Establish `hr` using `base S' ν z' w' hz' (hν ▸ hw')`.
+
+Rewrite `hr` using `[funext hx]`. Conclude with `catches bc σ q h₀ hy _ z' w' x b' hz' hb' hr`.
+-/
 theorem open_chart (h₀ : FrMap (cst q) yA y₀) (hy : Reframe (cellM σ fun v => q (MvPolynomial.X v)) y₀ y)
     (S L : Type) [CommRing S] [Algebra c.F S] [Field L] [Algebra c.F L] (χ : S →ₐ[c.F] L) (w : FrPt Xo c S)
     (wL : FrPt Xo c L) (hw : FrMap χ w wL)
@@ -380,6 +511,25 @@ namespace GlobalTheory.Reg
 
 open CellChart in
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c bc h A _ _ _ j yA hjo hj hsm hA σ`. Set `Z : Comp Xo c` to `⟨_, closure_range_mem j⟩`. Take `⟨hr, β, hβ⟩` from `exists_residue_embed j (genPt Z) ((Z.2.1 : IsIrreducible (Z : Set (Xo.XF c))).isGenericPoint_genericPoint isClosed_closure)`. Take `⟨f, hf, hfi, hfr⟩` from `exists_generic (K := c.F) (κ := kap Z) (pullback.snd _ _) j hj (genSp Z) (Spec.map_preimage (genSp Z ≫ strK)).symm hr β.hom hβ`. Use `haveI : Infinite (kap Z) := Infinite.of_injective _ (algebraMap c.F (kap Z)).injective`.
+
+Take `⟨hgx, y₀, hy₀, hgu⟩` from `isGenFr_genFr h Z`. Take `⟨zκ, hzκ⟩` from `bc _ _ f yA`. Take `⟨G, ⟨hGu, hG⟩, _⟩` from `(GlobalTheory.T.isTriangularReframe_exists_and_unique E H Dw l Xo c _ zκ).2 y₀ (by`. Rewrite using `[hy₀, hzκ.1, hA, ← Category.assoc, hf]`. Use the proof step `rfl)`.
+
+Take `⟨e, b, hb, he⟩` from `GlobalTheory.T.exists_flagCoordinates_cellChange_birational (kap Z) (E →+* ℂ) Dw.mult G σ hGu`. Take `⟨θ, hθ, hθC, hθX, hθf⟩` from `exists_poly_embed (V := FlagVar Dw) f hfi hfr e`. Set `q : MvPolynomial (FlagVar Dw) A ≃ₐ[c.F] θ.range` to `AlgEquiv.ofInjective θ hθ`. Take `⟨u₀, hu₀⟩` from `bc _ _ (cst q) yA`. Take `⟨u, hu⟩` from `(GlobalTheory.T.isTriangularReframe_exists_and_unique E H Dw l Xo c _ u₀).1 _ (isUnit_det_cellM σ fun v => q (MvPolynomial.X v))`.
+
+Take `⟨yg, hyg⟩` from `bc _ _ θ.range.val u`. Set `k : kap Z →ₐ[c.F] Om Z` to `IsScalarTower.toAlgHom c.F (kap Z) (Om Z)`. Take `⟨zΩ, hzΩ⟩` from `bc _ _ k zκ`. Take `⟨yΩ, hyΩ⟩` from `bc _ _ k y₀`. Establish `h1` using `(GlobalTheory.T.triangularReframe_comp_baseChange_borel E H Dw l Xo c _).2.1 _ k _ _ _ _ _ hG hzΩ hyΩ`.
+
+Establish `hx : (genFr h Z).x = yΩ.x` using `by rw [hgx, hyΩ.1, hy₀]; rfl`. Establish `h2 : Reframe (lowM fun v => algebraMap (MvPolynomial (FlagVar Dw) (kap Z)) (Om Z) (MvPolynomial.X v)) yΩ (genFr h Z)`. Use `⟨hx, fun τ i => ?_⟩` and prove the remaining obligations. Use `hgu τ i` as an intermediate fact. Rewrite `this` using `[hx]`.
+
+Rewrite using `[funext (hyΩ.2.1 τ)]`. Conclude with `this`. Establish `h3` using `(GlobalTheory.T.triangularReframe_comp_baseChange_borel E H Dw l Xo c _).1 _ _ _ _ _ h1 h2`. Establish `hc : θ.range.val.comp (cst q) = k.comp f` using `AlgHom.ext hθC`. Establish `h4` using `reframe_pt σ q hu₀ hu (hc ▸ frMap_trans _ _ _ _ _ _ _ _ hzκ hzΩ) hyg`.
+
+Establish `hX : (fun v => θ.range.val (q (MvPolynomial.X v))) = fun v => e (algebraMap (MvPolynomial (FlagVar Dw) (kap Z)) (Om Z) (MvPolynomial.X v))` using `funext hθX`. Rewrite `h4` using `[hX]`. Establish `h5 : Reframe b yg (genFr h Z)` using `reframe_cancel (isUnit_det_cellM σ _) h4 (by`. Use `funext he` as an intermediate fact. Conclude with `this ▸ h3)`.
+
+Take `⟨t, ht⟩` from `((GlobalTheory.T.triangularReframe_comp_baseChange_borel E H Dw l Xo c _).2.2 _ _).2 ⟨b, fun τ => ⟨(hb τ).1, fun i => IsUnit.mk0 _ ((hb τ).2 i)⟩, h5⟩`. Establish `hsm' : Algebra.Smooth c.F θ.range`. Establish `: Algebra.Smooth A (MvPolynomial (FlagVar Dw) A)` using `⟨inferInstance, inferInstance⟩`. Establish `: Algebra.Smooth c.F (MvPolynomial (FlagVar Dw) A)` using `Algebra.Smooth.comp c.F A _`. Conclude with `Algebra.Smooth.of_equiv q`.
+
+Use `⟨⟨Z, θ.range, hsm', hθf, u, yg, t⁻¹, hyg, (GlobalTheory.T.frameBorel_groupoid_properties E H Dw l Xo c _).2.2.1 _ _ _ ht, fun L _ _ => mono_chart bc σ q hj hA hu₀ hu, open_chart bc σ q hj hA hu₀ hu⟩, ?_⟩` and prove the remaining obligations. Introduce `L _ _ f' z₀ y x b' hz₀ hb' hr`. Conclude with `catches bc σ q hu₀ hu f' z₀ y x b' hz₀ (fun τ => ⟨(hb' τ).1, fun i => IsUnit.mk0 _ ((hb' τ).2 i)⟩) hr`.
+-/
 theorem exists_fChart_cell : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), FrBC Xo c → ∀ (h : GenFrEx Xo c) (A : Type) [CommRing A] [IsDomain A] [Algebra c.F A] (j : Sp A ⟶ Xo.XF c) (yA : FrPt Xo c A), IsOpenImmersion j → j ≫ pullback.snd _ _ = spMap (algebraMap c.F A) → Algebra.Smooth c.F A → yA.x = j ≫ pullback.fst _ _ → ∀ σ : ∀ τ : E →+* ℂ, Equiv.Perm (Fin (Dw.mult τ)), ∃ C : FChart h, ∀ (L : Type) [Field L] [Algebra c.F L] (f : A →ₐ[c.F] L) (z₀ y : FrPt Xo c L) (x : FlagVar Dw → L) (b : ∀ τ : E →+* ℂ, Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) L), FrMap f yA z₀ → (∀ τ, (b τ).BlockTriangular id ∧ ∀ i, b τ i i ≠ 0) → Reframe (fun τ => (lowM x τ).submatrix (σ τ).symm id * b τ) z₀ y → ∃ (ψ : C.R →ₐ[c.F] L) (z : FrPt Xo c L) (t' : Ix Dw → Lˣ), FrMap ψ C.y z ∧ FrBor t' z y := by
   intro E _ _ _ H Dw l Xo c bc h A _ _ _ j yA hjo hj hsm hA σ
   let Z : Comp Xo c := ⟨_, closure_range_mem j⟩

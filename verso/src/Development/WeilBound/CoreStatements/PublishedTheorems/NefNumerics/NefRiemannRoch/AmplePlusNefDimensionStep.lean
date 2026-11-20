@@ -18,6 +18,25 @@ open GlobalTheory GlobalTheory.QCoh GlobalTheory.CechPic GlobalTheory.Twist
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `k _ _ d ih X _ _ hproj hdim A N hA hN`. Establish `ampOfCls : ∀ {L M : LB X} (hL : L.IsLB) (hM : IsAmpleLB M), cls L hL = cls M hM.isLB → IsAmpleLB L` using `fun hL hM h => IsAmpleLB.of_lbIso hM hL ((cls_eq_iff hL hM.isLB).1 h)`. Take `⟨c, hc1, hcM⟩` from `exists_isAmpleLB_tens_lbPow k X hproj A N hA hN.isLB`. Establish `hMLB : (tens N (lbPow A c)).IsLB` using `isLB_tens hN.isLB (isLB_lbPow hA.isLB c)`. Establish `hMcls : cls (tens N (lbPow A c)) hMLB = cls N hN.isLB + c • cls A hA.isLB`.
+
+Rewrite using `[cls_tens hN.isLB (isLB_lbPow hA.isLB c), cls_lbPow hA.isLB]`. Use `set I := interNum k (GlobalTheory.structureModule X) (Fin.cons A (fun _ : Fin d => tens N (lbPow A c)) : Fin (d + 1) → LB X)`. Use `set q : ℕ := (2 * ((d : ℤ) + 1) * I).toNat + 1 with hqdef`. Establish `hq1 : 1 ≤ q` using `by omega`. Establish `hqlt : 2 * ((d : ℤ) + 1) * I < (q : ℤ)`.
+
+Use `Int.self_le_toNat (2 * ((d : ℤ) + 1) * I)` as an intermediate fact. Rewrite using `[hqdef]`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hP : ∀ b : ℕ, (tens (lbPow N q) (lbPow A b)).IsLB` using `fun b => isLB_tens (isLB_lbPow hN.isLB q) (isLB_lbPow hA.isLB b)`.
+
+Establish `clsP : ∀ b : ℕ, cls _ (hP b) = q • cls N hN.isLB + b • cls A hA.isLB`. Introduce `b`. Rewrite using `[cls_tens (isLB_lbPow hN.isLB q) (isLB_lbPow hA.isLB b), cls_lbPow hN.isLB, cls_lbPow hA.isLB]`. Establish `base : IsAmpleLB (tens (lbPow N q) (lbPow A (c * q)))`. Establish `hpow : IsAmpleLB (lbPow (tens N (lbPow A c)) q)` using `(isAmpleLB_pow_iff hMLB hq1).2 hcM`.
+
+Use `ampOfCls (hP _) hpow ?_` and prove the remaining obligations. Rewrite using `[clsP, cls_lbPow hMLB, hMcls, smul_add, smul_smul, mul_comm q c]`. Establish `hcq : q ≤ c * q` using `by nlinarith`. Establish `down : ∀ j : ℕ, j ≤ c * q - q → IsAmpleLB (tens (lbPow N q) (lbPow A (c * q - j)))`. Introduce `j`.
+
+Proceed by induction on `j with`. Consider the case `zero => intro _`. Simplify using `using base`. Consider the case `succ j hj`. Introduce `hj1`.
+
+Establish `hprev` using `hj (by omega)`. Establish `e : c * q - j = (c * q - (j + 1)) + 1` using `by omega`. Rewrite `hprev` using `[e]`. Conclude with `isAmpleLB_tens_lbPow_descent_step k d ih X hproj hdim A N (tens N (lbPow A c)) hA hN hMLB q c hq1 hMcls hqlt (c * q - (j + 1)) (by omega) (by omega) hprev`. Establish `hqq` using `down (c * q - q) le_rfl`.
+
+Establish `e2 : c * q - (c * q - q) = q` using `by omega`. Rewrite `hqq` using `[e2]`. Establish `hTLB : (tens A N).IsLB` using `isLB_tens hA.isLB hN.isLB`. Establish `hpow : IsAmpleLB (lbPow (tens A N) q)`. Use `ampOfCls (isLB_lbPow hTLB q) hqq ?_` and prove the remaining obligations.
+
+Rewrite using `[cls_lbPow hTLB, cls_tens hA.isLB hN.isLB, clsP, smul_add, add_comm]`. Conclude with `(isAmpleLB_pow_iff hTLB hq1).1 hpow`.
+-/
 theorem isAmpleLB_tens_of_nef_descent : ∀ (k : Type) [Field k] [Infinite k] (d : ℕ), (∀ (Y : Scheme.{0}) [Algebra k Γ(Y, ⊤)], IsProjOver (strHom k Y) → topologicalKrullDim Y ≤ (d : ℕ) → ∀ A N : LB Y, IsAmpleLB A → IsNef k N → IsAmpleLB (tens A N)) → ∀ (X : Scheme.{0}) [IsIntegral X] [Algebra k Γ(X, ⊤)], IsProjOver (strHom k X) → topologicalKrullDim X = (d + 1 : ℕ) → ∀ A N : LB X, IsAmpleLB A → IsNef k N → IsAmpleLB (tens A N) := by
   intro k _ _ d ih X _ _ hproj hdim A N hA hN
   have ampOfCls : ∀ {L M : LB X} (hL : L.IsLB) (hM : IsAmpleLB M), cls L hL = cls M hM.isLB → IsAmpleLB L :=

@@ -5,6 +5,9 @@ open CategoryTheory CategoryTheory.Limits DirectSum MvPolynomial TensorProduct G
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Rewrite `h`, the goal using `[Module.Flat.iff_lTensor_injectiveₛ]`. Introduce `P _ _ Q`. Use `IsLocalizedModule.map_injective T (AlgebraTensorModule.rTensor A Q f) (AlgebraTensorModule.rTensor A P f) (AlgebraTensorModule.lTensor S M Q.subtype) (h Q)` as an intermediate fact. Rewrite `this` using `[IsLocalizedModule.map_lTensor]`. Conclude with `this`.
+-/
 private theorem flat_loc_over_algebra {A S M N : Type} [CommRing A] [CommRing S] [Algebra A S]
     [AddCommGroup M] [Module A M] [Module S M] [IsScalarTower A S M] [AddCommGroup N] [Module A N]
     [Module S N] [IsScalarTower A S N] (T : Submonoid S) (f : M →ₗ[S] N) [IsLocalizedModule T f]
@@ -16,11 +19,23 @@ private theorem flat_loc_over_algebra {A S M N : Type} [CommRing A] [CommRing S]
   rw [IsLocalizedModule.map_lTensor] at this
   exact this
 
+/- English proof (translation)
+The claim follows from `(Module.Flat.equiv_iff (decomposeLinearEquiv ℳ)).trans Module.Flat.directSum_iff`.
+-/
 private theorem flat_iff_forall_piece {R M : Type} [CommRing R] [AddCommGroup M] [Module R M]
     (ℳ : ℤ → Submodule R M) [Decomposition ℳ] :
     Module.Flat R M ↔ ∀ n, Module.Flat R (ℳ n) :=
   (Module.Flat.equiv_iff (decomposeLinearEquiv ℳ)).trans Module.Flat.directSum_iff
 
+/- English proof (translation)
+Introduce `ι _ _ R _ M _ _ _ _ ℳ _ _ i s n hi h0`. Establish `step (t : ℤ) : Module.Flat R (homLoc ℳ {i} t) ↔ Module.Flat R (homLoc ℳ {i} (t + 1))` using `Module.Flat.equiv_iff (LinearEquiv.ofBijective _ (homLocSMul_X_bijective ℳ (Finset.mem_singleton_self i) t))`. Establish `hall (t : ℤ) : Module.Flat R (homLoc ℳ {i} t)`. Proceed by induction on `t using Int.induction_on with`. Consider the case `zero => exact h0`.
+
+Consider the case `succ k ih => exact (step _).1 ih`. Consider the case `pred k ih => exact (step _).2 (by rwa [sub_add_cancel])`. Establish `h1` using `(flat_iff_forall_piece (homLoc ℳ {i})).2 hall`. Establish `hsub : ({i} : Finset ι) ⊆ s` using `Finset.singleton_subset_iff.2 hi`. Establish `hc : xProd R s = xProd R (s \ {i}) * xProd R {i}` using `(Finset.prod_sdiff hsub).symm`.
+
+Establish `h2 : IsLocalizedModule.Away (xProd R (s \ {i}) * xProd R {i}) (locRes X M hsub ∘ₗ LocalizedModule.mkLinearMap (.powers (xProd R {i})) M)`. Rewrite using `[locRes_comp_mkLinearMap, ← hc]`. Conclude with `localizedModuleIsLocalizedModule _`. Establish `h3 : IsLocalizedModule.Away (xProd R (s \ {i})) (locRes X M hsub)` using `isLocalizedModule_away_of_comp (b := xProd R {i}) (LocalizedModule.mkLinearMap (.powers (xProd R {i})) M) _`. Establish `h4` using `flat_loc_over_algebra (A := R) (.powers (xProd R (s \ {i}))) (locRes X M hsub) h1`.
+
+Conclude with `(flat_iff_forall_piece (homLoc ℳ s)).1 h4 n`.
+-/
 theorem flat_homLoc_of_flat_homLoc_singleton :
     ∀ (ι : Type) [LinearOrder ι] [Fintype ι] (R : Type) [CommRing R] (M : Type) [AddCommGroup M]
       [Module R M] [Module (MvPolynomial ι R) M] [IsScalarTower R (MvPolynomial ι R) M]

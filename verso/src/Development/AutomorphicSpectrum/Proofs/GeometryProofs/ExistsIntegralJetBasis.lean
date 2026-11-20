@@ -21,6 +21,21 @@ namespace GlobalTheory.CompanionTheory.Ar.JetMain
 
 open Filter
 
+/- English proof (translation)
+Introduce `R _ G _ A _ z φ cart g Lb u v₀ hv₀ c v' hl hd V hV f h0`. Set `Z : Set (Fin g → ℂ)` to `{x | ⊤ ≤ ((u.ex x).left ≫ φ) ⁻¹ᵁ V}`. Establish `hopen : IsOpen Z` using `(u.hol (φ ⁻¹ᵁ V) (φ.app V f)).1`. Establish `hdiff : ∀ a : Γ(G.left, V), DifferentiableOn ℂ (fun x => valAt' ((u.ex x).left ≫ φ) V a) Z` using `fun a => by`. Use `(u.hol (φ ⁻¹ᵁ V) (φ.app V a)).2` as an intermediate fact.
+
+Simplify using `only [ReciprocityTheory.ChartRestriction.G.PullbackSections.valAt'_comp] at this`. Conclude with `this`. Establish `hcont : Continuous (fun τ : ℂ => τ • c)` using `continuous_id.smul continuous_const`. Establish `hZ' : IsOpen ((fun τ : ℂ => τ • c) ⁻¹' Z)` using `hopen.preimage hcont`. Establish `h00 : (0 : ℂ) ∈ (fun τ : ℂ => τ • c) ⁻¹' Z` using `by show (0 : ℂ) • c ∈ Z`.
+
+Rewrite using `[zero_smul]`. Conclude with `h0`. Establish `hder : ∀ (a : Γ(G.left, V)) (τ : ℂ), τ ∈ (fun τ : ℂ => τ • c) ⁻¹' Z → HasDerivAt (fun τ : ℂ => valAt' ((u.ex (τ • c)).left ≫ φ) V a) (valAt' ((u.ex (τ • c)).left ≫ φ) V (der v₀ hv₀ hV a)) τ`. Introduce `a τ hτ`. Establish `h1 : DifferentiableAt ℂ (fun x => valAt' ((u.ex x).left ≫ φ) V a) (τ • c)` using `(hdiff a _ hτ).differentiableAt (hopen.mem_nhds hτ)`.
+
+Establish `h3 : HasDerivAt (fun τ : ℂ => τ • c) c τ`. Simplify using `using (hasDerivAt_id τ).smul_const c`. Establish `h4` using `h1.hasFDerivAt.comp_hasDerivAt τ h3`. Rewrite `h4` using `[GlobalTheory.T.derivation_hol_unif_tangent R G A z φ cart g Lb u v₀ hv₀ c v' hl hd V hV a (τ • c) hτ]`. Conclude with `h4`.
+
+Establish `hanal : ∀ a : Γ(G.left, V), AnalyticAt ℂ (fun τ : ℂ => valAt' ((u.ex (τ • c)).left ≫ φ) V a) 0` using `fun a => DifferentiableOn.analyticAt (s := (fun τ : ℂ => τ • c) ⁻¹' Z) (fun τ hτ => (hder a τ hτ).differentiableAt.differentiableWithinAt) (hZ'.mem_nhds h00)`. Use `⟨hanal f, fun k => ?_⟩` and prove the remaining obligations. Establish `hit : ∀ (k : ℕ) (a : Γ(G.left, V)), iteratedDeriv k (fun τ : ℂ => valAt' ((u.ex (τ • c)).left ≫ φ) V a) 0 = valAt' ((u.ex 0).left ≫ φ) V ((der v₀ hv₀ hV)^[k] a)`. Introduce `k`. Proceed by induction on `k with`.
+
+Consider the case `zero`. Introduce `a`. Simplify using the standard rewrite rules. Consider the case `succ k ih`. Introduce `a`.
+
+Establish `e : deriv (fun τ : ℂ => valAt' ((u.ex (τ • c)).left ≫ φ) V a) =ᶠ[𝓝 0] (fun τ : ℂ => valAt' ((u.ex (τ • c)).left ≫ φ) V (der v₀ hv₀ hV a))` using `by filter_upwards [hZ'.mem_nhds h00] with τ hτ`. Conclude with `(hder a τ hτ).deriv`. Rewrite using `[iteratedDeriv_succ', e.iteratedDeriv_eq k, ih, Function.iterate_succ_apply]`. Conclude with `hit k f`.
+-/
 theorem L_an : ∀ (R : Type) [CommRing R] (G : Over (Sp R)) [GrpObj G] (A : Over (Sp ℂ)) [GrpObj A] (z : Sp ℂ ⟶ Sp R) (φ : A.left ⟶ G.left) (_ : IsGrpPullback A G z φ) (g : ℕ) (Lb : LB A.left) (u : HolUnif A Lb g) (v₀ : epsAt (𝟙 (Sp R)) ⟶ G) (hv₀ : IsTanAt G (𝟙 (Sp R)) v₀) (c : Fin g → ℂ) (v' : epsR ℂ ⟶ A), v'.left ≫ φ = spMap (dualMap (bmap z)) ≫ v₀.left → u.IsDiff c v' → ∀ (V : G.left.Opens) (hV : IsAffineOpen V) (f : Γ(G.left, V)), ⊤ ≤ ((u.ex 0).left ≫ φ) ⁻¹ᵁ V → AnalyticAt ℂ (fun τ : ℂ => valAt' ((u.ex (τ • c)).left ≫ φ) V f) 0 ∧ ∀ k : ℕ, iteratedDeriv k (fun τ : ℂ => valAt' ((u.ex (τ • c)).left ≫ φ) V f) 0 = valAt' ((u.ex 0).left ≫ φ) V ((der v₀ hv₀ hV)^[k] f) := by
   intro R _ G _ A _ z φ cart g Lb u v₀ hv₀ c v' hl hd V hV f h0
   let Z : Set (Fin g → ℂ) := {x | ⊤ ≤ ((u.ex x).left ≫ φ) ⁻¹ᵁ V}
@@ -65,20 +80,34 @@ theorem L_an : ∀ (R : Type) [CommRing R] (G : Over (Sp R)) [GrpObj G] (A : Ove
       rw [iteratedDeriv_succ', e.iteratedDeriv_eq k, ih, Function.iterate_succ_apply]
   exact hit k f
 
+/- English proof (translation)
+Simplify using `only [ev, RingHom.comp_apply]`. Use `congr 1`.
+-/
 theorem ev_app {C : Type} [CommRing C] {X Y : Scheme.{0}} (y : Sp C ⟶ Y) (φ : Y ⟶ X) (U : X.Opens) (h : ⊤ ≤ y ⁻¹ᵁ (φ ⁻¹ᵁ U))
     (h' : ⊤ ≤ (y ≫ φ) ⁻¹ᵁ U) (a : Γ(X, U)) : ev y (φ ⁻¹ᵁ U) h (φ.app U a) = ev (y ≫ φ) U h' a := by
   simp only [ev, RingHom.comp_apply]
   congr 1
 
+/- English proof (translation)
+The claim follows from `ev_res y le h h' u.val`.
+-/
 theorem ev_resU {C : Type} [CommRing C] {X : Scheme.{0}} (y : Sp C ⟶ X) {V V' : X.Opens} (le : V' ≤ V) (h : ⊤ ≤ y ⁻¹ᵁ V)
     (h' : ⊤ ≤ y ⁻¹ᵁ V') (u : Γ(X, V)ˣ) : ev y V' h' (res le u : Γ(X, V')ˣ).val = ev y V h u.val :=
   ev_res y le h h' u.val
 
+/- English proof (translation)
+The claim follows from `ev_app y φ U h h' u.val`.
+-/
 theorem ev_pullU {C : Type} [CommRing C] {X Y : Scheme.{0}} (y : Sp C ⟶ Y) (φ : Y ⟶ X) (U : X.Opens)
     (h : ⊤ ≤ y ⁻¹ᵁ (φ ⁻¹ᵁ U)) (h' : ⊤ ≤ (y ≫ φ) ⁻¹ᵁ U) (u : Γ(X, U)ˣ) :
     ev y (φ ⁻¹ᵁ U) h (pullU φ U u).val = ev (y ≫ φ) U h' u.val :=
   ev_app y φ U h h' u.val
 
+/- English proof (translation)
+Simplify using `only [LB.LinComb]`. Rewrite using `[map_prod]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_zpow]`. Use `congr 1`.
+
+Use `Units.ext ?_` and prove the remaining obligations. Establish `hk : ⊤ ≤ y ⁻¹ᵁ (φ k ⁻¹ᵁ (L.U (j k) ⊓ L.U (j' k)))` using `h' k`. Conclude with `(ev_resU y _ hk h _).trans (ev_pullU y (φ k) _ hk (h' k) _)`.
+-/
 theorem ev_g {C : Type} [CommRing C] {X Y : Scheme.{0}} (L : LB X) {κ : Type} [Fintype κ] (φ : κ → (Y ⟶ X)) (ε : κ → ℤ)
     (j j' : κ → L.ι) (y : Sp C ⟶ Y) (h : ⊤ ≤ y ⁻¹ᵁ (LB.wchart L φ j ⊓ LB.wchart L φ j'))
     (h' : ∀ k, ⊤ ≤ (y ≫ φ k) ⁻¹ᵁ (L.U (j k) ⊓ L.U (j' k))) :
@@ -93,12 +122,50 @@ theorem ev_g {C : Type} [CommRing C] {X Y : Scheme.{0}} (L : LB X) {κ : Type} [
   have hk : ⊤ ≤ y ⁻¹ᵁ (φ k ⁻¹ᵁ (L.U (j k) ⊓ L.U (j' k))) := h' k
   exact (ev_resU y _ hk h _).trans (ev_pullU y (φ k) _ hk (h' k) _)
 
+/- English proof (translation)
+Rewrite using `[← CommRingCat.comp_apply, ← Functor.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem res_res {X : Scheme.{0}} {a b c : X.Opens} (h1 : a ≤ b) (h2 : b ≤ c) (f : Γ(X, c)) :
     (X.presheaf.map (homOfLE h1).op).hom ((X.presheaf.map (homOfLE h2).op).hom f) =
       (X.presheaf.map (homOfLE (h1.trans h2)).op).hom f := by
   rw [← CommRingCat.comp_apply, ← Functor.map_comp]
   rfl
 
+/- English proof (translation)
+Introduce `R K A _ _ _ _ _ _ _ _ G _ P v₀ hv₀ n r s i₀ V hV hle h₀ hr i c hvan`. Establish `hfac : spMap (algebraMap R K) = spMap (algebraMap A K) ≫ spMap (algebraMap R A)`. Simplify using `only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Use `congr 2`. Conclude with `IsScalarTower.algebraMap_eq R A K`.
+
+Set `e : Sp R ⟶ G.left` to `eSec G`. Set `ym : Sp A ⟶ G.left` to `spMap (algebraMap R A) ≫ e`. Set `y : Sp K ⟶ G.left` to `spMap (algebraMap R K) ≫ e`. Establish `hy : y = spMap (algebraMap A K) ≫ ym` using `by show spMap (algebraMap R K) ≫ e = _`. Rewrite using `[hfac, Category.assoc]`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨i₁, hi₁⟩ : ∃ i₁, ym (IsLocalRing.closedPoint A) ∈ P.L.U i₁ := by`. Establish `h : ym (IsLocalRing.closedPoint A) ∈ (⨆ i, P.L.U i)` using `by rw [P.isLB.cover]; trivial`. Conclude with `TopologicalSpace.Opens.mem_iSup.1 h`. Establish `hm1 : ym (IsLocalRing.closedPoint A) ∈ LB.wchart P.L (fun _ : Fin 1 => 𝟙 G.left) (fun _ => i₁)` using `Set.mem_iInter.2 fun _ => hi₁`. Take `⟨V₁, hV₁, hmV₁, hsub⟩` from `exists_isAffineOpen_mem_and_subset hm1`.
+
+Establish `hle1 : V₁ ≤ LB.wchart P.L (fun _ : Fin 1 => 𝟙 G.left) (fun _ => i₁)` using `hsub`. Establish `t1A : ⊤ ≤ ym ⁻¹ᵁ V₁` using `fun p _ => ((IsLocalRing.specializes_closedPoint p).map ym.continuous).mem_open V₁.isOpen hmV₁`. Establish `t₁ : ⊤ ≤ y ⁻¹ᵁ V₁`. Rewrite using `[hy]`. Conclude with `top_comp _ _ _ t1A`.
+
+Establish `t : ⊤ ≤ y ⁻¹ᵁ (V ⊓ V₁)` using `fun p hp => ⟨h₀ hp, t₁ hp⟩`. Establish `leW : V ⊓ V₁ ≤ LB.wchart P.L (fun _ : Fin 1 => 𝟙 G.left) (fun _ => i₀) ⊓ LB.wchart P.L (fun _ : Fin 1 => 𝟙 G.left) (fun _ => i₁)` using `inf_le_inf hle hle1`. Set `gL` to `(LB.LinComb P.L (K := Fin 1) (fun _ => 𝟙 G.left) (fun _ => (n : ℤ))).g (fun _ => i₀) (fun _ => i₁)`. Set `uu : Γ(G.left, V ⊓ V₁)` to `(res leW gL).val`. Establish `huu : ev y _ t uu ≠ 0` using `((Units.isUnit (res leW gL)).map (ev y _ t)).ne_zero`.
+
+Establish `hcompat : ∀ j, (G.left.presheaf.map (homOfLE (inf_le_left : V ⊓ V₁ ≤ V)).op).hom ((G.left.presheaf.map (homOfLE hle).op).hom ((s j).f fun _ => i₀)) = uu * (G.left.presheaf.map (homOfLE (inf_le_right : V ⊓ V₁ ≤ V₁)).op).hom ((G.left.presheaf.map (homOfLE hle1).op).hom ((s j).f fun …`. Introduce `j`. Establish `h` using `congrArg (G.left.presheaf.map (homOfLE leW).op).hom ((s j).compat (fun _ => i₀) (fun _ => i₁))`. Use `(res_res (X := G.left) (inf_le_left : V ⊓ V₁ ≤ V) hle ((s j).f fun _ => i₀)).trans ?_` and prove the remaining obligations. Use `Eq.trans ?_ (congrArg (uu * ·) (res_res (X := G.left) (inf_le_right : V ⊓ V₁ ≤ V₁) hle1 ((s j).f fun _ => i₁)).symm)` and prove the remaining obligations.
+
+Use `(res_res leW inf_le_left _).symm.trans (h.trans ?_)` and prove the remaining obligations. Use `(map_mul (G.left.presheaf.map (homOfLE leW).op).hom _ _).trans ?_` and prove the remaining obligations. Conclude with `congrArg (uu * ·) (res_res leW inf_le_right _)`. Establish `hb : bmap (y ≫ G.hom) = algebraMap R K`. Establish `h1 : y ≫ G.hom = spMap (algebraMap R K)` using `by show (spMap (algebraMap R K) ≫ e) ≫ G.hom = _`.
+
+Establish `: e ≫ G.hom = 𝟙 _` using `Over.w η[G]`. Rewrite using `[Category.assoc, this, Category.comp_id]`. Rewrite using `[h1, bmap_spMap]`. Establish `key` using `GlobalTheory.T.section_ratio_overlap R K G v₀ hv₀ y V V₁ hV hV₁ h₀ t₁ t r _ _ uu huu hcompat i c (by`. Simplify `hvan)` using `only [hb]`.
+
+Simplify using `only [hb] at key`. Establish `hr1 : ⊤ ≤ (spMap (algebraMap R K)) ⁻¹ᵁ (P.L.pull (eSec G)).U (fun _ => i₁)` using `fun p hp => Set.mem_iInter.2 fun _ => Set.mem_iInter.1 (hle1 (t₁ hp)) 0`. Establish `hr1A : ⊤ ≤ (spMap (algebraMap R A)) ⁻¹ᵁ (P.L.pull (eSec G)).U (fun _ => i₁)` using `fun p hp => Set.mem_iInter.2 fun _ => Set.mem_iInter.1 (hle1 (t1A hp)) 0`. Establish `hU : ⊤ ≤ y ⁻¹ᵁ (P.L.U i₀ ⊓ P.L.U i₁)` using `fun p hp => ⟨Set.mem_iInter.1 (hle (h₀ hp)) 0, Set.mem_iInter.1 (hle1 (t₁ hp)) 0⟩`. Establish `hover : ⊤ ≤ (spMap (algebraMap R K)) ⁻¹ᵁ ((P.L.pull (eSec G)).U (fun _ => i₀) ⊓ (P.L.pull (eSec G)).U (fun _ => i₁))` using `fun p hp => ⟨hr hp, hr1 hp⟩`.
+
+Establish `hgen` using `congrArg Units.val (P.rigGen (fun _ => i₀) (fun _ => i₁))`. Establish `hγ` using `congrArg Units.val (ev_g P.L (fun _ : PUnit => eSec G) (fun _ => 1) (fun _ => i₀) (fun _ => i₁) (spMap (algebraMap R K)) hover (fun _ => hU))`. Establish `hu` using `congrArg Units.val (ev_g P.L (fun _ : Fin 1 => 𝟙 G.left) (fun _ => (n : ℤ)) (fun _ => i₀) (fun _ => i₁) y (fun p hp => leW (t hp)) (fun _ => by rw [Category.comp_id]; exact hU))`. Establish `hr0 : ev (spMap (algebraMap R K)) _ hr (P.rig.s fun _ => i₀).val = ev (spMap (algebraMap R K)) _ hover ((P.L.pull (eSec G)).g (fun _ => i₀) (fun _ => i₁)).val * ev (spMap (algebraMap R K)) _ hr1 (P.rig.s fun _ => i₁).val`. Use `(ev_resU _ inf_le_left hr hover _).symm.trans ?_` and prove the remaining obligations.
+
+Use `(congrArg (ev _ _ hover) hgen).trans ?_` and prove the remaining obligations. Use `(map_mul (ev _ _ hover) _ _).trans ?_` and prove the remaining obligations. Conclude with `congrArg (_ * ·) (ev_resU _ inf_le_right hr1 hover _)`. Simplify using `only [Fintype.prod_unique, zpow_one, zpow_natCast, Units.val_pow_eq_pow_val] at hγ hu`. Establish `hγ' : ev (spMap (algebraMap R K)) _ hover ((P.L.pull (eSec G)).g (fun _ => i₀) (fun _ => i₁)).val = ev y _ hU (P.L.g i₀ i₁).val` using `hγ`.
+
+Establish `huu' : ev y _ t uu = ev y _ hU (P.L.g i₀ i₁).val ^ n`. Use `(ev_resU y leW (fun p hp => leW (t hp)) t gL).trans ?_` and prove the remaining obligations. Use `Eq.trans hu ?_` and prove the remaining obligations. Conclude with `congrArg (· ^ n) (congrFun (congrArg DFunLike.coe (ev_congr (Category.comp_id y) _ _ hU)) _)`. Set `a : A` to `∑ j, algebraMap R A (c j) * ev ym V₁ t1A ((der v₀ hv₀ hV₁)^[i] ((G.left.presheaf.map (homOfLE hle1).op).hom ((s j).f fun _ => i₁)))`.
+
+Establish `ha : algebraMap A K a = ∑ j, algebraMap R K (c j) * ev y V₁ t₁ ((der v₀ hv₀ hV₁)^[i] ((G.left.presheaf.map (homOfLE hle1).op).hom ((s j).f fun _ => i₁)))`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, ← IsScalarTower.algebraMap_apply R A K]`. Use `congr 1`.
+
+Establish `hcomp : ⊤ ≤ (spMap (algebraMap A K) ≫ ym) ⁻¹ᵁ V₁` using `top_comp _ _ _ t1A`. Conclude with `(ev_comp (algebraMap A K) ym V₁ t1A hcomp _).symm.trans (congrFun (congrArg DFunLike.coe (ev_congr hy.symm V₁ hcomp t₁)) _)`. Take `⟨ru, hru⟩ : IsUnit (ev (spMap (algebraMap R A)) _ hr1A (P.rig.s fun _ => i₁).val)` from `(Units.isUnit _).map (ev (spMap (algebraMap R A)) _ hr1A)`. Establish `hr1K : ev (spMap (algebraMap R K)) _ hr1 (P.rig.s fun _ => i₁).val = algebraMap A K ru`. Rewrite using `[hru]`.
+
+Establish `hcomp : ⊤ ≤ (spMap (algebraMap A K) ≫ spMap (algebraMap R A)) ⁻¹ᵁ (P.L.pull (eSec G)).U (fun _ => i₁)` using `top_comp _ _ _ hr1A`. Conclude with `(congrFun (congrArg DFunLike.coe (ev_congr hfac _ hr1 hcomp)) _).trans (ev_comp _ _ _ hr1A hcomp _)`. Use `⟨a * ((ru⁻¹ : Aˣ) : A) ^ n, ?_⟩` and prove the remaining obligations. Establish `hxw : algebraMap A K ((ru⁻¹ : Aˣ) : A) * algebraMap A K ru = 1`. Rewrite using `[← map_mul]`.
+
+Simplify using the standard rewrite rules. Establish `hxw' : algebraMap A K ((ru⁻¹ : Aˣ) : A) ^ n * algebraMap A K ru ^ n = 1`. Rewrite using `[← mul_pow, hxw, one_pow]`. Use `Eq.trans ?_ key.symm` and prove the remaining obligations. Rewrite using `[hr0, hγ', hr1K, huu', ← ha, map_mul, map_pow, mul_pow]`.
+
+Take the linear combination `(algebraMap A K a * ev y _ hU (P.L.g i₀ i₁).val ^ n) * hxw'`.
+-/
 theorem L_int : ∀ (R K A : Type) [CommRing R] [Field K] [CommRing A] [IsLocalRing A] [Algebra R K] [Algebra R A] [Algebra A K] [IsScalarTower R A K] (G : Over (Sp R)) [GrpObj G] (P : RigLB G) (v₀ : epsAt (𝟙 (Sp R)) ⟶ G) (hv₀ : IsTanAt G (𝟙 (Sp R)) v₀) (n r : ℕ) (s : Fin r → Out.H0 P.L n) (i₀ : P.L.ι) (V : G.left.Opens) (hV : IsAffineOpen V) (hle : V ≤ LB.wchart P.L (fun _ : Fin 1 => 𝟙 G.left) (fun _ => i₀)) (h₀ : ⊤ ≤ (spMap (algebraMap R K) ≫ (eSec G : Sp R ⟶ G.left)) ⁻¹ᵁ V) (hr : ⊤ ≤ (spMap (algebraMap R K)) ⁻¹ᵁ (P.L.pull (eSec G)).U (fun _ => i₀)) (i : ℕ) (c : Fin r → R), (∀ k < i, ∑ j, algebraMap R K (c j) * ev (spMap (algebraMap R K) ≫ (eSec G : Sp R ⟶ G.left)) V h₀ ((der v₀ hv₀ hV)^[k] ((G.left.presheaf.map (homOfLE hle).op).hom ((s j).f fun _ => i₀))) = 0) → ∃ b : A, algebraMap A K b * ev (spMap (algebraMap R K)) _ hr (P.rig.s fun _ => i₀).val ^ n = ∑ j, algebraMap R K (c j) * ev (spMap (algebraMap R K) ≫ (eSec G : Sp R ⟶ G.left)) V h₀ ((der v₀ hv₀ hV)^[i] ((G.left.presheaf.map (homOfLE hle).op).hom ((s j).f fun _ => i₀))) := by
   intro R K A _ _ _ _ _ _ _ _ G _ P v₀ hv₀ n r s i₀ V hV hle h₀ hr i c hvan
   have hfac : spMap (algebraMap R K) = spMap (algebraMap A K) ≫ spMap (algebraMap R A) := by
@@ -204,6 +271,9 @@ theorem L_int : ∀ (R K A : Type) [CommRing R] [Field K] [CommRing A] [IsLocalR
   rw [hr0, hγ', hr1K, huu', ← ha, map_mul, map_pow, mul_pow]
   linear_combination (algebraMap A K a * ev y _ hU (P.L.g i₀ i₁).val ^ n) * hxw'
 
+/- English proof (translation)
+Establish `hx : x ∈ (⊥ : Subalgebra (𝓞 L) L)`. Rewrite using `[← MaximalSpectrum.iInf_localization_eq_bot (𝓞 L) L]`. Conclude with `Algebra.mem_iInf.2 h`. Take `⟨b, rfl⟩` from `Algebra.mem_bot.1 hx`. Conclude with `NumberField.RingOfIntegers.isIntegral_coe b`.
+-/
 theorem int_of_loc (L : Type) [Field L] [NumberField L] (x : L)
     (h : ∀ v : MaximalSpectrum (𝓞 L), x ∈ Localization.subalgebra.ofField L v.asIdeal.primeCompl
       v.asIdeal.primeCompl_le_nonZeroDivisors) : IsIntegral ℤ x := by
@@ -213,10 +283,18 @@ theorem int_of_loc (L : Type) [Field L] [NumberField L] (x : L)
   obtain ⟨b, rfl⟩ := Algebra.mem_bot.1 hx
   exact NumberField.RingOfIntegers.isIntegral_coe b
 
+/- English proof (translation)
+Introduce `p _` and use `((IsLocalRing.specializes_closedPoint p).map y.continuous).mem_open U.isOpen h`.
+-/
 theorem top_of_closed {A : Type} [CommRing A] [IsLocalRing A] {X : Scheme.{0}} (y : Sp A ⟶ X) (U : X.Opens)
     (h : y (IsLocalRing.closedPoint A) ∈ U) : ⊤ ≤ y ⁻¹ᵁ U := fun p _ =>
   ((IsLocalRing.specializes_closedPoint p).map y.continuous).mem_open U.isOpen h
 
+/- English proof (translation)
+Establish `h1 : a.u.ex 0 = 1`. Establish `h` using `a.u.ex_add 0 0`. Rewrite `h` using `[add_zero]`. Conclude with `left_eq_mul.mp h`. Establish `e` using `congrArg (fun m => m.left) (map_one (pushHom a.cart (𝟙_ (Over (Sp ℂ)))))`.
+
+Use `show (a.u.ex 0).left ≫ a.φ = _`. Rewrite using `[h1]`. Use `e.trans ?_` and prove the remaining obligations. Use `show (toUnit _ ≫ η[G]).left = _`. Simplify using `[eSec]`.
+-/
 theorem pt_zero {S : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj G] {P : RigLB G} {z : Sp ℂ ⟶ S} {g : ℕ}
     (a : ArchFrame P z g) : a.pt 0 = z ≫ (eSec G : S ⟶ G.left) := by
   have h1 : a.u.ex 0 = 1 := by
@@ -230,12 +308,57 @@ theorem pt_zero {S : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj G] {P : R
   show (toUnit _ ≫ η[G]).left = _
   simp [eSec]
 
+/- English proof (translation)
+The claim follows from `dif_pos h`.
+-/
 theorem valF_eq {F : Type} [Field F] {X : Scheme.{0}} (y : Sp F ⟶ X) (U : X.Opens) (h : ⊤ ≤ y ⁻¹ᵁ U) (g : Γ(X, U)) :
     valF y U g = ev y U h g := dif_pos h
 
+/- English proof (translation)
+The claim follows from `dif_pos h`.
+-/
 theorem valAt'_eq {X : Scheme.{0}} (y : Sp ℂ ⟶ X) (U : X.Opens) (h : ⊤ ≤ y ⁻¹ᵁ U) (g : Γ(X, U)) :
     valAt' y U g = ev y U h g := dif_pos h
 
+/- English proof (translation)
+Introduce `E _ _ _ H L _ _ D x n r s`. Establish `hv₀ : IsTanAt D.t.G (𝟙 (Sp (𝓞 L))) (D.MB.pt x)` using `D.MB.tan x`. Choose the witnesses or unpack the hypotheses as in `⟨i₀, hi₀⟩ : ∃ i₀, (spMap (algebraMap (𝓞 L) L) ≫ (eSec D.t.G : Sp (𝓞 L) ⟶ D.t.G.left)) (IsLocalRing.closedPoint L) ∈ D.t.PP.L.U i₀ := by`. Establish `h : (spMap (algebraMap (𝓞 L) L) ≫ (eSec D.t.G : Sp (𝓞 L) ⟶ D.t.G.left)) (IsLocalRing.closedPoint L) ∈ (⨆ i, D.t.PP.L.U i)` using `by rw [D.t.PP.isLB.cover]; trivial`. Conclude with `TopologicalSpace.Opens.mem_iSup.1 h`.
+
+Establish `hm : (spMap (algebraMap (𝓞 L) L) ≫ (eSec D.t.G : Sp (𝓞 L) ⟶ D.t.G.left)) (IsLocalRing.closedPoint L) ∈ LB.wchart D.t.PP.L (fun _ : Fin 1 => 𝟙 D.t.G.left) (fun _ => i₀)` using `Set.mem_iInter.2 fun _ => hi₀`. Take `⟨V, hV, hmV, hsub⟩` from `exists_isAffineOpen_mem_and_subset hm`. Establish `hle : V ≤ LB.wchart D.t.PP.L (fun _ : Fin 1 => 𝟙 D.t.G.left) (fun _ => i₀)` using `hsub`. Establish `h₀ : ⊤ ≤ (spMap (algebraMap (𝓞 L) L) ≫ (eSec D.t.G : Sp (𝓞 L) ⟶ D.t.G.left)) ⁻¹ᵁ V` using `top_of_closed _ _ hmV`. Establish `hr : ⊤ ≤ (spMap (algebraMap (𝓞 L) L)) ⁻¹ᵁ (D.t.PP.L.pull (eSec D.t.G)).U (fun _ => i₀)` using `fun p hp => Set.mem_iInter.2 fun _ => Set.mem_iInter.1 (hle (h₀ hp)) 0`.
+
+Establish `hr0 : ev (spMap (algebraMap (𝓞 L) L)) _ hr (D.t.PP.rig.s fun _ => i₀).val ≠ 0` using `((Units.isUnit _).map (ev (spMap (algebraMap (𝓞 L) L)) _ hr)).ne_zero`. Use `⟨fun k j => ev (spMap (algebraMap (𝓞 L) L) ≫ (eSec D.t.G : Sp (𝓞 L) ⟶ D.t.G.left)) V h₀ ((der (D.MB.pt x) hv₀ hV)^[k] ((D.t.G.left.presheaf.map (homOfLE hle).op).hom ((s j).f fun _ => i₀))) / ev (spMap (algebraMap (𝓞 L) L)) _ hr (D.t.PP.rig.s fun _ => i₀).val ^ n, ?_, ?_⟩` and prove the remaining obligations. Introduce `i c hvan`. Use `int_of_loc L _ fun v => ?_` and prove the remaining obligations. Use `haveI : IsLocalRing (Localization.subalgebra.ofField L v.asIdeal.primeCompl v.asIdeal.primeCompl_le_nonZeroDivisors) := IsLocalization.AtPrime.isLocalRing _ v.asIdeal`.
+
+Take `⟨b, hb⟩` from `L_int (𝓞 L) L (Localization.subalgebra.ofField L v.asIdeal.primeCompl v.asIdeal.primeCompl_le_nonZeroDivisors) D.t.G D.t.PP (D.MB.pt x) hv₀ n r s i₀ V hV hle h₀ hr i c (fun k hk => by`. Establish `h` using `hvan k hk`. Simplify using `only [mul_div_assoc', ← Finset.sum_div] at h`. Conclude with `(div_eq_zero_iff.1 h).resolve_right (pow_ne_zero _ hr0))`. Establish `hx : ∑ j, ((c j : 𝓞 L) : L) * (ev (spMap (algebraMap (𝓞 L) L) ≫ (eSec D.t.G : Sp (𝓞 L) ⟶ D.t.G.left)) V h₀ ((der (D.MB.pt x) hv₀ hV)^[i] ((D.t.G.left.presheaf.map (homOfLE hle).op).hom ((s j).f fun _ => i₀))) / ev (spMap (algebraMap (𝓞 L) L)) _ hr (D.t.PP.rig.s fun _ => i₀).val ^ …`.
+
+Simplify using `only [mul_div_assoc', ← Finset.sum_div]`. Rewrite using `[div_eq_iff (pow_ne_zero _ hr0)]`. Conclude with `hb.symm`. Rewrite using `[hx]`. Conclude with `b.2`.
+
+Introduce `σ a f v hf hvec i c`. Take `⟨vv, hlift, v', hv'1, hv'2⟩` from `hvec`. Establish `hl : v'.left ≫ a.φ = spMap (dualMap (bmap (emb σ))) ≫ (D.MB.pt x).left`. Establish `h1 : vv.left ≫ 𝟙 D.t.G.left = _` using `hlift`. Rewrite `h1` using `[Category.comp_id]`.
+
+Rewrite using `[hv'1, h1, bmap_spMap]`. Establish `hemb : emb σ = spMap σ ≫ spMap (algebraMap (𝓞 L) L)`. Simplify using `only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Establish `pt0 : (a.u.ex 0).left ≫ a.φ = spMap σ ≫ spMap (algebraMap (𝓞 L) L) ≫ (eSec D.t.G : Sp (𝓞 L) ⟶ D.t.G.left)`. Use `(pt_zero a).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[hemb, Category.assoc]`. Establish `h0 : ⊤ ≤ ((a.u.ex 0).left ≫ a.φ) ⁻¹ᵁ V`. Rewrite using `[pt0]`. Conclude with `top_comp σ _ V h₀`. Establish `AN` using `fun j => L_an (𝓞 L) D.t.G a.A (emb σ) a.φ a.cart D.g _ a.u (D.MB.pt x) hv₀ v v' hl hv'2 V hV ((D.t.G.left.presheaf.map (homOfLE hle).op).hom ((s j).f fun _ => i₀)) h0`.
+
+Establish `hval : ∀ (k : ℕ) (j : Fin r), iteratedDeriv k (fun τ : ℂ => valAt' ((a.u.ex (τ • v)).left ≫ a.φ) V ((D.t.G.left.presheaf.map (homOfLE hle).op).hom ((s j).f fun _ => i₀))) 0 = σ (ev (spMap (algebraMap (𝓞 L) L) ≫ (eSec D.t.G : Sp (𝓞 L) ⟶ D.t.G.left)) V h₀ ((der (D.MB.pt x) hv₀ hV)^ …`. Introduce `k j`. Rewrite using `[(AN j).2 k, valAt'_eq _ _ h0]`. Establish `hc : ⊤ ≤ (spMap σ ≫ spMap (algebraMap (𝓞 L) L) ≫ (eSec D.t.G : Sp (𝓞 L) ⟶ D.t.G.left)) ⁻¹ᵁ V` using `top_comp σ _ V h₀`. Conclude with `(congrFun (congrArg DFunLike.coe (ev_congr pt0 V h0 hc)) _).trans (ev_comp σ _ V h₀ hc _)`.
+
+Set `Z : Set (Fin D.g → ℂ)` to `{w | ⊤ ≤ ((a.u.ex w).left ≫ a.φ) ⁻¹ᵁ V}`. Establish `hZo : IsOpen Z` using `(a.u.hol (a.φ ⁻¹ᵁ V) (a.φ.app V 0)).1`. Establish `hcont : Continuous (fun τ : ℂ => τ • v)` using `continuous_id.smul continuous_const`. Establish `hZ' : IsOpen ((fun τ : ℂ => τ • v) ⁻¹' Z)` using `hZo.preimage hcont`. Establish `h00 : (0 : ℂ) ∈ (fun τ : ℂ => τ • v) ⁻¹' Z` using `by show (0 : ℂ) • v ∈ Z`.
+
+Rewrite using `[zero_smul]`. Conclude with `h0`. Establish `hZU : ∀ w ∈ Z, ⊤ ≤ (a.u.ex w).left ⁻¹ᵁ (D.t.PP.L.pull a.φ).U (fun _ => i₀)` using `fun w hw p hp => Set.mem_iInter.2 fun _ => Set.mem_iInter.1 (hle (hw hp)) 0`. Establish `hfrd : DifferentiableOn ℂ (fun τ : ℂ => a.u.fr (fun _ => i₀) (τ • v)) ((fun τ : ℂ => τ • v) ⁻¹' Z)`. Use `DifferentiableOn.comp (t := {w | ⊤ ≤ (a.u.ex w).left ⁻¹ᵁ (D.t.PP.L.pull a.φ).U (fun _ => i₀)}) (a.u.fr_hol _) ?_ (fun τ hτ => hZU _ hτ)` and prove the remaining obligations.
+
+Conclude with `(differentiable_id.smul_const v).differentiableOn`. Establish `hFan : AnalyticAt ℂ (fun τ : ℂ => a.u.fr (fun _ => i₀) (τ • v) ^ n) 0` using `DifferentiableOn.analyticAt (s := (fun τ : ℂ => τ • v) ⁻¹' Z) (hfrd.pow n) (hZ'.mem_nhds h00)`. Establish `hF0 : a.u.fr (fun _ => i₀) ((0 : ℂ) • v) ^ n = σ (ev (spMap (algebraMap (𝓞 L) L)) _ hr (D.t.PP.rig.s fun _ => i₀).val) ^ n`. Establish `hU0 : ⊤ ≤ ((a.u.ex 0).left ≫ a.φ) ⁻¹ᵁ D.t.PP.L.U i₀` using `fun p hp => Set.mem_iInter.1 (hle (h0 hp)) 0`. Establish `hrig` using `a.rig i₀ hU0`.
+
+Establish `hc : ⊤ ≤ (spMap σ ≫ spMap (algebraMap (𝓞 L) L)) ⁻¹ᵁ (D.t.PP.L.pull (eSec D.t.G)).U (fun _ => i₀)` using `top_comp σ _ _ hr`. Establish `hc' : ⊤ ≤ (emb σ) ⁻¹ᵁ (D.t.PP.L.pull (eSec D.t.G)).U (fun _ => i₀)`. Rewrite using `[hemb]`. Conclude with `hc`. Rewrite `hrig` using `[valF_eq _ _ hc']`.
+
+Rewrite using `[zero_smul, hrig]`. Conclude with `congrArg (· ^ n) ((congrFun (congrArg DFunLike.coe (ev_congr hemb _ hc' hc)) _).trans (ev_comp σ _ _ hr hc _))`. Establish `hσr : σ (ev (spMap (algebraMap (𝓞 L) L)) _ hr (D.t.PP.rig.s fun _ => i₀).val) ^ n ≠ 0` using `pow_ne_zero _ ((map_ne_zero σ).2 hr0)`. Establish `hev : ∀ᶠ τ in 𝓝 (0 : ℂ), ∑ j, c j * (fun τ : ℂ => valAt' ((a.u.ex (τ • v)).left ≫ a.φ) V ((D.t.G.left.presheaf.map (homOfLE hle).op).hom ((s j).f fun _ => i₀))) τ = (fun τ : ℂ => ∑ j, c j * f j (τ • v)) τ * (fun τ : ℂ => a.u.fr (fun _ => i₀) (τ • v) ^ n) τ` using `by filter_upwards [hZ'.mem_nhds h00] with τ hτ`. Establish `hτ' : ⊤ ≤ ((a.u.ex (τ • v)).left ≫ a.φ) ⁻¹ᵁ V` using `hτ`.
+
+Simplify using `only [Finset.sum_mul, _root_.mul_assoc]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `congr 1`. Establish `hW : ⊤ ≤ ((a.u.ex (τ • v)).left ≫ a.φ) ⁻¹ᵁ LB.wchart D.t.PP.L (fun _ : Fin 1 => 𝟙 D.t.G.left) (fun _ => i₀)` using `fun p hp => hle (hτ' hp)`. Establish `hU : ⊤ ≤ a.pt (τ • v) ⁻¹ᵁ D.t.PP.L.U i₀` using `fun p hp => Set.mem_iInter.1 (hW hp) 0`.
+
+Rewrite using `[valAt'_eq _ _ hτ']`. Use `(ev_res _ hle hW hτ' _).trans ?_` and prove the remaining obligations. Use `(valF_eq _ _ hW _).symm.trans ?_` and prove the remaining obligations. Conclude with `hf j i₀ (τ • v) hU`. Establish `key` using `GlobalTheory.T.iterated_derivative_factor r _ c _ _ (fun j => (AN j).1) hFan (by rw [hF0]; exact hσr) hev i`.
+
+Establish `hJ : ∀ k : ℕ, ∑ j, c j * σ (ev (spMap (algebraMap (𝓞 L) L) ≫ (eSec D.t.G : Sp (𝓞 L) ⟶ D.t.G.left)) V h₀ ((der (D.MB.pt x) hv₀ hV)^[k] ((D.t.G.left.presheaf.map (homOfLE hle).op).hom ((s j).f fun _ => i₀))) / ev (spMap (algebraMap (𝓞 L) L)) _ hr (D.t.PP.rig.s fun _ => i₀).val ^ n) …`. Introduce `k`. Simplify using `only [hval, map_div₀, map_pow, mul_div_assoc', Finset.sum_div]`. Simplify using `only [hJ]`. Rewrite `key` using `[hF0]`.
+
+Prove the components needed by the constructor for the conclusion. Rewrite using `[← key.1]`. Use `forall₂_congr fun k _ => ?_` and prove the remaining obligations. Rewrite using `[div_eq_zero_iff, or_iff_left hσr]`. Introduce `h`.
+
+Establish `h' : ∀ k < i, ∑ j, c j * iteratedDeriv k (fun τ : ℂ => valAt' ((a.u.ex (τ • v)).left ≫ a.φ) V ((D.t.G.left.presheaf.map (homOfLE hle).op).hom ((s j).f fun _ => i₀))) 0 = 0` using `fun k hk => (div_eq_zero_iff.1 (h k hk)).resolve_right hσr`. Rewrite using `[key.2 h', mul_div_cancel_left₀ _ hσr]`.
+-/
 theorem jets : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (L : Type) [Field L] [NumberField L] (D : PPData H L) (x : D.B.carrier) (n r : ℕ) (s : Fin r → Out.H0 D.t.PP.L n), ∃ J : ℕ → Fin r → L, (∀ (i : ℕ) (c : Fin r → 𝓞 L), (∀ k < i, ∑ j, (c j : L) * J k j = 0) → IsIntegral ℤ (∑ j, (c j : L) * J i j)) ∧ ∀ (σ : L →+* ℂ) (a : D.Frame σ) (f : Fin r → (Fin D.g → ℂ) → ℂ) (v : Fin D.g → ℂ), (∀ j, a.IsFn (s j) (f j)) → D.IsVec a x v → ∀ (i : ℕ) (c : Fin r → ℂ), ((∀ k < i, ∑ j, c j * σ (J k j) = 0) ↔ ∀ k < i, iteratedDeriv k (fun τ : ℂ => ∑ j, c j * f j (τ • v)) 0 = 0) ∧ ((∀ k < i, ∑ j, c j * σ (J k j) = 0) → ∑ j, c j * σ (J i j) = iteratedDeriv i (fun τ : ℂ => ∑ j, c j * f j (τ • v)) 0) := by
   intro E _ _ _ H L _ _ D x n r s
   have hv₀ : IsTanAt D.t.G (𝟙 (Sp (𝓞 L))) (D.MB.pt x) := D.MB.tan x

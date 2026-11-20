@@ -14,22 +14,36 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 
 namespace UpperTheory
 
+/- English proof (translation)
+The claim follows from `map_add ((toSheafify Scheme.etaleTopology (Scheme.Γ ⋙ unitsF)).app (op U)).hom (ULift.up (Additive.ofMul a)) (ULift.up (Additive.ofMul b))`.
+-/
 private theorem unitSec_mul {U : Scheme.{0}} (a b : (Γ(U, ⊤))ˣ) :
     unitSec (a * b) = unitSec a + unitSec b :=
   map_add ((toSheafify Scheme.etaleTopology (Scheme.Γ ⋙ unitsF)).app (op U)).hom
     (ULift.up (Additive.ofMul a)) (ULift.up (Additive.ofMul b))
 
+/- English proof (translation)
+Unfold `unitSec ofRings.sec`. Conclude with `map_nsmul (ModuleCat.Hom.hom ((toSheafify Scheme.etaleTopology (Scheme.Γ ⋙ unitsF)).app (op U))) c (show (Scheme.Γ ⋙ unitsF).obj (op U) from ⟨Additive.ofMul a⟩)`.
+-/
 private theorem unitSec_pow {U : Scheme.{0}} (a : (Γ(U, ⊤))ˣ) (c : ℕ) :
     unitSec (a ^ c) = c • unitSec a := by
   unfold unitSec ofRings.sec
   exact map_nsmul (ModuleCat.Hom.hom ((toSheafify Scheme.etaleTopology (Scheme.Γ ⋙ unitsF)).app (op U))) c
     (show (Scheme.Γ ⋙ unitsF).obj (op U) from ⟨Additive.ofMul a⟩)
 
+/- English proof (translation)
+Establish `h` using `(toSheafify Scheme.etaleTopology (Scheme.Γ ⋙ unitsF)).naturality g.op`. Conclude with `(congrArg (fun f => f.hom (ULift.up (Additive.ofMul u))) h).symm`.
+-/
 private theorem unitSec_res {V U : Scheme.{0}} (g : V ⟶ U) (u : (Γ(U, ⊤))ˣ) :
     Sec.res g (unitSec u) = unitSec (Units.map g.appTop.hom.toMonoidHom u) := by
   have h := (toSheafify Scheme.etaleTopology (Scheme.Γ ⋙ unitsF)).naturality g.op
   exact (congrArg (fun f => f.hom (ULift.up (Additive.ofMul u))) h).symm
 
+/- English proof (translation)
+Establish `hx` using `(GlobalTheory.T.etaleToSheafify_locally_bijective_and_lift ℤ (Scheme.Γ ⋙ unitsF)).2.1 U ((show (Scheme.Γ ⋙ unitsF).obj (op U) from ⟨Additive.ofMul a⟩) - (show (Scheme.Γ ⋙ unitsF).obj (op U) from ⟨Additive.ofMul b⟩)) (by`. Rewrite using `[map_sub]`. Conclude with `sub_eq_zero.mpr h)`. Use `(GlobalTheory.T.etaleLocal_property_calculus_rules).2.1 U _ _ hx ?_` and prove the remaining obligations. Introduce `V g hg`.
+
+Rewrite `hg` using `[map_sub, sub_eq_zero]`. Establish `h2` using `congrArg (fun t => Additive.toMul (ULift.down t)) hg`. Conclude with `h2`.
+-/
 private theorem unitSec_loc {U : Scheme.{0}} (a b : (Γ(U, ⊤))ˣ) (h : unitSec a = unitSec b) :
     Loc U fun _ g => Units.map g.appTop.hom.toMonoidHom a = Units.map g.appTop.hom.toMonoidHom b := by
   have hx := (GlobalTheory.T.etaleToSheafify_locally_bijective_and_lift ℤ (Scheme.Γ ⋙ unitsF)).2.1 U
@@ -43,18 +57,32 @@ private theorem unitSec_loc {U : Scheme.{0}} (a b : (Γ(U, ⊤))ˣ) (h : unitSec
   have h2 := congrArg (fun t => Additive.toMul (ULift.down t)) hg
   exact h2
 
+/- English proof (translation)
+The claim follows from `(congrArg (fun f => f.hom x) (φ.hom.naturality g.op)).symm`.
+-/
 private theorem res_map {R : Type} [CommRing R] {F G : Shv R} (φ : F ⟶ G) {V U : Scheme.{0}} (g : V ⟶ U)
     (x : Sec F U) : Sec.res g (Sec.map φ x) = Sec.map φ (Sec.res g x) :=
   (congrArg (fun f => f.hom x) (φ.hom.naturality g.op)).symm
 
+/- English proof (translation)
+Simplify using `only [Sec.res, map_add]`.
+-/
 private theorem res_add {R : Type} [CommRing R] {F : Shv R} {V U : Scheme.{0}} (g : V ⟶ U) (a b : Sec F U) :
     Sec.res g (a + b) = Sec.res g a + Sec.res g b := by
   simp only [Sec.res, map_add]
 
+/- English proof (translation)
+The claim follows from `map_nsmul (φ.hom.app (op U)).hom c a`.
+-/
 private theorem map_nsmul' {R : Type} [CommRing R] {F G : Shv R} (φ : F ⟶ G) {U : Scheme.{0}} (c : ℕ)
     (a : Sec F U) : Sec.map φ (c • a) = c • Sec.map φ a :=
   map_nsmul (φ.hom.app (op U)).hom c a
 
+/- English proof (translation)
+Proceed by induction on `c with`. Consider the case `zero => simp`. Consider the case `succ c ih`. Establish `h` using `(GlobalTheory.T.isKummerTorsorSplitting_kummerTorsorSplitting q).2 W ζ (z ^ c * v) (z ^ (c + 1) * v) (by`. Rewrite using `[← hz, pow_succ']`.
+
+Simplify using `[mul_assoc])`. Rewrite using `[h, ih, succ_nsmul, add_assoc]`.
+-/
 private theorem kum_pow (q : ℕ) [NeZero q] {W : Scheme.{0}} (ζ : Prim q Γ(W, ⊤)) (z : (Γ(W, ⊤))ˣ)
     (hz : (z : Γ(W, ⊤)) = ζ.1) (c : ℕ) (v : (Γ(W, ⊤))ˣ) :
     kumT q W (z ^ c * v) = kumT q W v + c • resGen 1 ζ := by
@@ -67,6 +95,9 @@ private theorem kum_pow (q : ℕ) [NeZero q] {W : Scheme.{0}} (ζ : Prim q Γ(W,
 
 end UpperTheory
 
+/- English proof (translation)
+Apply `(GlobalTheory.T.etaleSheafSections_ext_and_glue (ZMod q) _ U).1` to reduce the goal to its premises. Use `(GlobalTheory.T.etaleLocal_property_calculus_rules).2.1 U _ _ (UpperTheory.unitSec_loc a b h) ?_` and prove the remaining obligations. Introduce `V g hg`. Rewrite using `[(GlobalTheory.T.isKummerTorsorSplitting_kummerTorsorSplitting q).1 V U g a hq, (GlobalTheory.T.isKummerTorsorSplitting_kummerTorsorSplitting q).1 V U g b hq, hg]`.
+-/
 private theorem kumT_eq_of_unitSec_eq (q : ℕ) [NeZero q] {U : Scheme.{0}} (hq : IsUnit (q : Γ(U, ⊤)))
     (a b : (Γ(U, ⊤))ˣ) (h : unitSec a = unitSec b) : kumT q U a = kumT q U b := by
   apply (GlobalTheory.T.etaleSheafSections_ext_and_glue (ZMod q) _ U).1
@@ -74,6 +105,21 @@ private theorem kumT_eq_of_unitSec_eq (q : ℕ) [NeZero q] {U : Scheme.{0}} (hq 
   intro V g hg
   rw [(GlobalTheory.T.isKummerTorsorSplitting_kummerTorsorSplitting q).1 V U g a hq, (GlobalTheory.T.isKummerTorsorSplitting_kummerTorsorSplitting q).1 V U g b hq, hg]
 
+/- English proof (translation)
+Introduce `q _ κ hκ V hq v v' s hs`. Apply `(GlobalTheory.T.etaleSheafSections_ext_and_glue (ZMod q) _ V).1` to reduce the goal to its premises. Use `(GlobalTheory.T.etaleLocal_property_calculus_rules).2.1 V _ _ ((GlobalTheory.T.tateTwist_sections_locally_generated q 1).1 V s) ?_` and prove the remaining obligations. Introduce `W g hg`. Establish `hqW : IsUnit (q : Γ(W, ⊤))`.
+
+Establish `h1` using `hq.map g.appTop.hom`. Simplify using `using h1`. Establish `hsW` using `congrArg (Sec.res g) hs`. Rewrite `hsW` using `[UpperTheory.res_add, UpperTheory.unitSec_res, UpperTheory.unitSec_res, UpperTheory.res_map κ g (show Sec ((restr (Int.castRingHom (ZMod q))).obj (tw q 1)) V from s)]`. Rewrite using `[(GlobalTheory.T.isKummerTorsorSplitting_kummerTorsorSplitting q).1 W V g v' hq, UpperTheory.res_add, (GlobalTheory.T.isKummerTorsorSplitting_kummerTorsorSplitting q).1 W V g v hq, UpperTheory.res_map]`.
+
+Simplify using `only at hsW`. Break down `hg with h0 | ⟨ζ, c, hc⟩` into its components or cases. Establish `e0 : Sec.map κ (Sec.res (F` using `(restr (Int.castRingHom (ZMod q))).obj (tw q 1)) g s) = 0 := by`. Establish `h3 : Sec.res (F` using `(restr (Int.castRingHom (ZMod q))).obj (tw q 1)) g s = 0 := h0`. Rewrite using `[h3]`.
+
+Simplify using `only [Sec.map, map_zero]`. Rewrite `hsW` using `[e0, zero_add]`. Rewrite using `[h0]`. Simplify using `only [Sec.map, map_zero, add_zero]`. Conclude with `(kumT_eq_of_unitSec_eq q hqW _ _ hsW).symm`.
+
+Take `⟨u, hu⟩ : ∃ u : (Γ(W, ⊤))ˣ, (u : Γ(W, ⊤)) = ζ.1` from `⟨Units.ofPowEqOne ζ.1 q ((GlobalTheory.T.primitiveRoot_pow_unit_sub_prod_properties q _).1 ζ) (NeZero.ne q), rfl⟩`. Establish `hk` using `hκ W ζ u hu`. Simplify using `only at hk`. Establish `e1 : Sec.map κ (Sec.res (F` using `(restr (Int.castRingHom (ZMod q))).obj (tw q 1)) g s) = c • unitSec u := by`. Establish `h3 : Sec.res (F` using `(restr (Int.castRingHom (ZMod q))).obj (tw q 1)) g s = c • (twGen 1 ζ : Sec ((restr (Int.castRingHom (ZMod q))).obj (tw q 1)) W) := hc`.
+
+Rewrite using `[h3]`. Conclude with `(UpperTheory.map_nsmul' κ c (twGen 1 ζ)).trans (by rw [hk])`. Rewrite `hsW` using `[e1, ← UpperTheory.unitSec_pow, ← UpperTheory.unitSec_mul]`. Establish `h2` using `kumT_eq_of_unitSec_eq q hqW _ _ hsW`. Rewrite `h2` using `[UpperTheory.kum_pow q ζ u hu c]`.
+
+Rewrite using `[← h2, hc, UpperTheory.map_nsmul']`. Both sides reduce to the same expression.
+-/
 theorem UpperTheory.kummerMap_add_of_unitSec_add :
     ∀ (q : ℕ) [NeZero q] (κ : (restr (Int.castRingHom (ZMod q))).obj (tw q 1) ⟶ Gm), (∀ (U : Scheme.{0}) (ζ : Prim q Γ(U, ⊤)) (u : (Γ(U, ⊤))ˣ), (u : Γ(U, ⊤)) = ζ.1 → Sec.map κ (show Sec ((restr (Int.castRingHom (ZMod q))).obj (tw q 1)) U from twGen 1 ζ) = unitSec u) → ∀ (V : Scheme.{0}), IsUnit (q : Γ(V, ⊤)) → ∀ (v v' : (Γ(V, ⊤))ˣ) (s : Sec (tw q 1) V), Sec.map κ (show Sec ((restr (Int.castRingHom (ZMod q))).obj (tw q 1)) V from s) + unitSec v = unitSec v' → kumT q V v' = kumT q V v + Sec.map (resι _ (tw q 1)) s := by
   intro q _ κ hκ V hq v v' s hs

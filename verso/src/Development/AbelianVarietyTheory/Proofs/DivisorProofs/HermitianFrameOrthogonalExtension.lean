@@ -5,16 +5,25 @@ open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.RealL
 
 namespace GlobalTheory.FrameAssemble
 
+/- English proof (translation)
+Simplify using `only [Matrix.mul_apply, transpose_apply, map_apply, dotProduct, mulVec, Pi.star_apply, Finset.sum_mul, Finset.mul_sum, mul_assoc]`. Rewrite using `[Finset.sum_comm]`.
+-/
 lemma entry_eq {m α β : Type} [Fintype m] (A : Matrix m α ℂ) (M : Matrix m m ℂ) (B : Matrix m β ℂ) (a : α) (b : β) :
     (Aᵀ * M * B.map star) a b = (fun i => A i a) ⬝ᵥ M *ᵥ star (fun i => B i b) := by
   simp only [Matrix.mul_apply, transpose_apply, map_apply, dotProduct, mulVec, Pi.star_apply,
     Finset.sum_mul, Finset.mul_sum, mul_assoc]
   rw [Finset.sum_comm]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[Matrix.mul_apply, star_sum]`.
+-/
 lemma map_star_mul {m k l : Type} [Fintype k] (A : Matrix m k ℂ) (B : Matrix k l ℂ) :
     (A * B).map star = A.map star * B.map star := by
   ext i j; simp [Matrix.mul_apply, star_sum]
 
+/- English proof (translation)
+The claim follows from `| .inl i, .inl j => if i = j then 1 else 0 | .inr i, .inr j => if i = j then -1 else 0 | _, _ => 0 := by rcases a with a | a <;> rcases b with b | b <;> simp [Jm, Formalism.UG.Jpq, one_apply] <;> split_ifs <;> simp`.
+-/
 lemma Jm_apply (p q : ℕ) (a b : Ix p q) : Jm p q a b =
     match a, b with
     | .inl i, .inl j => if i = j then 1 else 0
@@ -22,9 +31,15 @@ lemma Jm_apply (p q : ℕ) (a b : Ix p q) : Jm p q a b =
     | _, _ => 0 := by
   rcases a with a | a <;> rcases b with b | b <;> simp [Jm, Formalism.UG.Jpq, one_apply] <;> split_ifs <;> simp
 
+/- English proof (translation)
+Simplify using `[Jm, Formalism.UG.Jpq, fromBlocks_multiply, fromBlocks_one]`.
+-/
 lemma Jm_mul_Jm (p q : ℕ) : Jm p q * Jm p q = 1 := by
   simp [Jm, Formalism.UG.Jpq, fromBlocks_multiply, fromBlocks_one]
 
+/- English proof (translation)
+The claim follows from `| .inl _ => D i a | .inr _ => - D i a := by rcases a with a | a <;> simp [Matrix.mul_apply, Fintype.sum_sum_type, Jm, Formalism.UG.Jpq, one_apply]`.
+-/
 lemma mul_Jm_apply {m : Type} {p q : ℕ} (D : Matrix m (Ix p q) ℂ) (i : m) (a : Ix p q) :
     (D * Jm p q) i a = match a with
       | .inl _ => D i a
@@ -41,6 +56,33 @@ def frame {n n₁ r₁ s₁ : ℕ} (ι : Matrix (Fin n) (Fin n₁) ℂ) (C₁ : 
     Matrix (Fin n) (Ix (r₁ + 1) (s₁ + 1)) ℂ :=
   Matrix.of fun i a => col ι C₁ e f a i
 
+/- English proof (translation)
+Introduce `n n₁ r₁ s₁ M θ θ₁ ι C₁ e f hn hF hθ₁ hθι he hf hee hff hef hfe horth`. Establish `hD : ∀ a b, (ι *ᵥ C₁ᵀ a) ⬝ᵥ M *ᵥ star (ι *ᵥ C₁ᵀ b) = Jm r₁ s₁ a b`. Introduce `a b`. Establish `h1` using `entry_eq (ι * C₁) M (ι * C₁) a b`. Establish `h2 : (fun i => (ι * C₁) i a) = ι *ᵥ C₁ᵀ a`.
+
+Use extensionality with `i`. Simplify using `[Matrix.mul_apply, mulVec, dotProduct]`. Establish `h3 : (fun i => (ι * C₁) i b) = ι *ᵥ C₁ᵀ b`. Use extensionality with `i`. Simplify using `[Matrix.mul_apply, mulVec, dotProduct]`.
+
+Rewrite `h1` using `[h2, h3]`. Rewrite using `[← h1, ← hF.1]`. Simplify using `only [Matrix.transpose_mul, map_star_mul, Matrix.mul_assoc]`. Establish `hgram : (frame ι C₁ e f)ᵀ * M * (frame ι C₁ e f).map star = Jm (r₁ + 1) (s₁ + 1)`. Use extensionality with `a b`.
+
+Rewrite using `[entry_eq]`. Express the relevant statement in the definitionally equal form `col ι C₁ e f a ⬝ᵥ M *ᵥ star (col ι C₁ e f b) = _`. Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b <;> refine Fin.cases ?_ (fun j => ?_) a <;>`. Apply the tactic sequence `refine Fin.cases ?_ (fun k => ?_) b <;>`. Apply the tactic sequence `simp only [col, Fin.cases_zero, Fin.cases_succ, hD, Jm_apply, hee, hff, hef, hfe, (horth _).1, (horth _).2.1, (horth _).2.2.1, (horth _).2.2.2, Fin.succ_inj] <;> simp [Fin.succ_ne_zero, (Fin.succ_ne_zero _).symm]`.
+
+Establish `hcolθ : ∀ a, θ *ᵥ col ι C₁ e f a = match a with`. Consider the case `.inl _ => col ι C₁ e f a`. Consider the case `.inr _ => - col ι C₁ e f a := by`. Establish `hc : ∀ b, θ₁ *ᵥ C₁ᵀ b = (C₁ * Jm r₁ s₁)ᵀ b`. Introduce `b`.
+
+Use extensionality with `j`. Rewrite using `[← hθ₁]`. Simplify using `[Matrix.mul_apply, mulVec, dotProduct]`. Establish `hι : ∀ b, θ *ᵥ (ι *ᵥ C₁ᵀ b) = ι *ᵥ (C₁ * Jm r₁ s₁)ᵀ b`. Introduce `b`.
+
+Rewrite using `[mulVec_mulVec, hθι, ← mulVec_mulVec, hc]`. Establish `hl : ∀ j, (C₁ * Jm r₁ s₁)ᵀ (.inl j) = C₁ᵀ (.inl j)`. Introduce `j`. Use extensionality with `k`. Simplify using `[transpose_apply, mul_Jm_apply]`.
+
+Establish `hr : ∀ j, (C₁ * Jm r₁ s₁)ᵀ (.inr j) = - C₁ᵀ (.inr j)`. Introduce `j`. Use extensionality with `k`. Simplify using `[transpose_apply, mul_Jm_apply]`. Introduce `a`.
+
+Apply the tactic sequence `rcases a with a | a <;> refine Fin.cases ?_ (fun j => ?_) a <;>`. Simplify using `only [col, Fin.cases_zero, Fin.cases_succ, he, hf, hι, hl, hr, mulVec_neg]`. Use `⟨frame ι C₁ e f, ⟨hgram, ?_⟩, ?_, fun i => rfl, fun i => rfl, ?_⟩` and prove the remaining obligations. Establish `hL : (frame ι C₁ e f)ᵀ * (M * (frame ι C₁ e f).map star * Jm (r₁ + 1) (s₁ + 1)) = 1`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, hgram, Jm_mul_Jm]`.
+
+Establish `hcard : Fintype.card (Ix (r₁ + 1) (s₁ + 1)) = Fintype.card (Fin n)`. Simplify using `[hn]`. Establish `hR` using `(Matrix.mul_eq_one_comm_of_equiv (Fintype.equivOfCardEq hcard)).1 hL`. Use `⟨(M * (frame ι C₁ e f).map star * Jm (r₁ + 1) (s₁ + 1))ᵀ, ?_⟩` and prove the remaining obligations. Use `congrArg Matrix.transpose hR` as an intermediate fact.
+
+Simplify `this` using `[Matrix.transpose_mul]`. Use extensionality with `i a`. Establish `h1 : (θ * frame ι C₁ e f) i a = (θ *ᵥ col ι C₁ e f a) i`. Simplify using `[frame, Matrix.mul_apply, mulVec, dotProduct]`. Rewrite using `[h1, hcolθ, mul_Jm_apply]`.
+
+Apply the tactic sequence `rcases a with a | a <;> simp [frame]`. Introduce `a h0 h0'`. Break down `a with a | a` into its components or cases. Use `Fin.cases (fun h => absurd rfl h) (fun j _ => ⟨C₁ᵀ (.inl j), fun i => ?_⟩) a h0` and prove the remaining obligations. Simplify using `[frame, col]`.
+
+Use `Fin.cases (fun h => absurd rfl h) (fun j _ => ⟨C₁ᵀ (.inr j), fun i => ?_⟩) a h0'` and prove the remaining obligations. Simplify using `[frame, col]`.
+-/
 theorem assemble : ∀ {n n₁ r₁ s₁ : ℕ} (M θ : Matrix (Fin n) (Fin n) ℂ) (θ₁ : Matrix (Fin n₁) (Fin n₁) ℂ)
     (ι : Matrix (Fin n) (Fin n₁) ℂ) (C₁ : Matrix (Fin n₁) (Ix r₁ s₁) ℂ) (e f : Fin n → ℂ),
     (r₁ + 1) + (s₁ + 1) = n → IsFrame (ιᵀ * M * ι.map star) C₁ → θ₁ * C₁ = C₁ * Jm r₁ s₁ →

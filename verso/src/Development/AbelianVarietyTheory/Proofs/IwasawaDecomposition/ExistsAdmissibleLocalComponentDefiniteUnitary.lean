@@ -13,6 +13,9 @@ namespace GlobalTheory.DefU.LocAdm
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
+/- English proof (translation)
+Use `Continuous.units_map _ ?_` and prove the remaining obligations. Establish `hs : Continuous (sFin E : Af E → Ad E)` using `(continuous_const.prodMk continuous_id : Continuous fun x : Af E => ((0, x) : InfiniteAdeleRing E × Af E))`. Conclude with `(continuous_const.add (continuous_id.matrix_map hs) : Continuous fun x : Matrix (Fin n) (Fin n) (Af E) => 1 - matN n (sFin E) 1 + x.map (sFin E))`.
+-/
 theorem continuous_finGL : Continuous (finGL E n) := by
   refine Continuous.units_map _ ?_
   have hs : Continuous (sFin E : Af E → Ad E) :=
@@ -20,31 +23,56 @@ theorem continuous_finGL : Continuous (finGL E n) := by
   exact (continuous_const.add (continuous_id.matrix_map hs) :
     Continuous fun x : Matrix (Fin n) (Fin n) (Af E) => 1 - matN n (sFin E) 1 + x.map (sFin E))
 
+/- English proof (translation)
+The claim follows from `inferInstanceAs (T2Space (RestrictedProduct (fun v : HeightOneSpectrum (𝓞 E) => v.adicCompletion E) (fun v => (v.adicCompletionIntegers E : Set (v.adicCompletion E))) Filter.cofinite))`.
+-/
 theorem t2Space_finiteAdeleRing_cmField : T2Space (FiniteAdeleRing (𝓞 E) E) :=
   inferInstanceAs (T2Space (RestrictedProduct (fun v : HeightOneSpectrum (𝓞 E) => v.adicCompletion E)
     (fun v => (v.adicCompletionIntegers E : Set (v.adicCompletion E))) Filter.cofinite))
 
+/- English proof (translation)
+The claim follows from `haveI := t2Space_finiteAdeleRing_cmField (E := E) haveI : T2Space (InfiniteAdeleRing E) := inferInstanceAs (T2Space ((v : InfinitePlace E) → v.Completion)) inferInstanceAs (T2Space (InfiniteAdeleRing E × FiniteAdeleRing (𝓞 E) E))`.
+-/
 theorem t2Space_adeleRing_cmField : T2Space (Ad E) :=
   haveI := t2Space_finiteAdeleRing_cmField (E := E)
   haveI : T2Space (InfiniteAdeleRing E) := inferInstanceAs (T2Space ((v : InfinitePlace E) → v.Completion))
   inferInstanceAs (T2Space (InfiniteAdeleRing E × FiniteAdeleRing (𝓞 E) E))
 
+/- English proof (translation)
+The claim follows from `haveI := t2Space_adeleRing_cmField (E := E) Units.isEmbedding_embedProduct.t2Space`.
+-/
 theorem t2Space_adelicGL_cmField : T2Space (GA E n) :=
   haveI := t2Space_adeleRing_cmField (E := E)
   Units.isEmbedding_embedProduct.t2Space
 
+/- English proof (translation)
+Use `haveI := t2Space_adeleRing_cmField (E := E)`. Use `show IsClosed {g : GA E n | ((g : Matrix (Fin n) (Fin n) (Ad E)).map (conjAd E))ᵀ * 1 * (g : Matrix (Fin n) (Fin n) (Ad E)) = 1}`. Conclude with `isClosed_eq (((Units.continuous_val.matrix_map GlobalTheory.ThetaPull.continuous_conjAd).matrix_transpose.matrix_mul continuous_const).matrix_mul Units.continuous_val) continuous_const`.
+-/
 theorem isClosed_UA : IsClosed ((UA E n : Subgroup (GA E n)) : Set (GA E n)) := by
   haveI := t2Space_adeleRing_cmField (E := E)
   show IsClosed {g : GA E n | ((g : Matrix (Fin n) (Fin n) (Ad E)).map (conjAd E))ᵀ * 1 * (g : Matrix (Fin n) (Fin n) (Ad E)) = 1}
   exact isClosed_eq (((Units.continuous_val.matrix_map GlobalTheory.ThetaPull.continuous_conjAd).matrix_transpose.matrix_mul
     continuous_const).matrix_mul Units.continuous_val) continuous_const
 
+/- English proof (translation)
+The claim follows from `inf_le_left`.
+-/
 theorem locU_le_finU (w : HeightOneSpectrum (𝓞 E)) : locU n w ≤ finU E n := inf_le_left
 
+/- English proof (translation)
+The claim follows from `Continuous.subtype_mk continuous_subtype_val _`.
+-/
 theorem continuous_inclusion_locU (w : HeightOneSpectrum (𝓞 E)) :
     Continuous (Subgroup.inclusion (locU_le_finU (n := n) w)) :=
   Continuous.subtype_mk continuous_subtype_val _
 
+/- English proof (translation)
+Use `haveI := t2Space_adelicGL_cmField (E := E) (n := n)`. Establish `e : ((locU n w : Subgroup (UA E n)) : Set (UA E n)) = {x | ((r x : locU n w) : UA E n) = x}`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+
+Conclude with `congrArg Subtype.val (hx ⟨x, h⟩)`. Introduce `h`. Express the relevant statement in the definitionally equal form `x ∈ locU n w`. Rewrite using `[← show ((r x : locU n w) : UA E n) = x from h]`. Conclude with `(r x).2`.
+
+Rewrite using `[e]`. Conclude with `isClosed_eq (continuous_subtype_val.comp hr) continuous_id`.
+-/
 theorem isClosed_of_retract (w : HeightOneSpectrum (𝓞 E)) (r : UA E n →* locU n w) (hr : Continuous r)
     (hx : ∀ x : locU n w, r x = x) : IsClosed ((locU n w : Subgroup (UA E n)) : Set (UA E n)) := by
   haveI := t2Space_adelicGL_cmField (E := E) (n := n)
@@ -61,6 +89,9 @@ theorem isClosed_of_retract (w : HeightOneSpectrum (𝓞 E)) (r : UA E n →* lo
   rw [e]
   exact isClosed_eq (continuous_subtype_val.comp hr) continuous_id
 
+/- English proof (translation)
+Introduce `v` and use `by have h := (π.isAut.aut v.1 v.2).level convert h.preimage (continuous_inclusion_locU (n := n) w) using 1 ext k exact Subtype.ext_iff`.
+-/
 theorem isSmooth_loc (π : AutSub E n) (w : HeightOneSpectrum (𝓞 E)) :
     IsSmooth (π.rep.comp (locU n w).subtype) := fun v => by
   have h := (π.isAut.aut v.1 v.2).level
@@ -68,6 +99,11 @@ theorem isSmooth_loc (π : AutSub E n) (w : HeightOneSpectrum (𝓞 E)) :
   ext k
   exact Subtype.ext_iff
 
+/- English proof (translation)
+Take `⟨U0, hU0o, hU0c⟩` from `GlobalTheory.GLIntegral.exists_isOpen_isCompact E n`. Set `p : locU n w →* GL (Fin n) (Af E)` to `(GeneralLinearGroup.map (pFin E)).comp ((UA E n).subtype.comp (locU n w).subtype)`. Establish `hp : Continuous p` using `continuous_map_pFin.comp (continuous_subtype_val.comp continuous_subtype_val)`. Set `K : Subgroup (locU n w)` to `U0.comap p ⊓ L.comap (Subgroup.inclusion (locU_le_finU w))`. Establish `hKo : IsOpen (K : Set (locU n w))` using `(hU0o.preimage hp).inter (hL.preimage (continuous_inclusion_locU w))`.
+
+Establish `hι : Topology.IsClosedEmbedding (fun x : locU n w => ((x : UA E n) : GA E n))` using `isClosed_UA.isClosedEmbedding_subtypeVal.comp (isClosed_of_retract w r hr hx).isClosedEmbedding_subtypeVal`. Use `⟨K, hKo, IsCompact.of_isClosed_subset (hι.isCompact_preimage (hU0c.image continuous_finGL)) (Subgroup.isClosed_of_isOpen K hKo) fun x hx => ⟨p x, (Subgroup.mem_inf.1 hx).1, ?_⟩, inf_le_right⟩` and prove the remaining obligations. Establish `h1 : GeneralLinearGroup.map (pInf E) ((x : UA E n) : GA E n) = 1` using `(Subgroup.mem_inf.1 x.2).1`. Conclude with `ga_ext (by rw [pInf_finGL, h1]) (by rw [pFin_finGL]; rfl)`.
+-/
 theorem exists_compact_open (w : HeightOneSpectrum (𝓞 E)) (r : UA E n →* locU n w) (hr : Continuous r)
     (hx : ∀ x : locU n w, r x = x) (L : Subgroup (finU E n)) (hL : IsOpen (L : Set (finU E n))) :
     ∃ K : Subgroup (locU n w), IsOpen (K : Set (locU n w)) ∧ IsCompact (K : Set (locU n w)) ∧
@@ -86,6 +122,33 @@ theorem exists_compact_open (w : HeightOneSpectrum (𝓞 E)) (r : UA E n →* lo
   have h1 : GeneralLinearGroup.map (pInf E) ((x : UA E n) : GA E n) = 1 := (Subgroup.mem_inf.1 x.2).1
   exact ga_ext (by rw [pInf_finGL, h1]) (by rw [pFin_finGL]; rfl)
 
+/- English proof (translation)
+Introduce `E _ _ _ n π w`. Take `⟨r, hr, hrx, hrc⟩` from `GlobalTheory.T.exists_continuous_retraction_onto_unitaryLocalPoints E n w`. Establish `hadm` using `(GlobalTheory.T.definiteUnitary_admissible_finiteMultiplicity E n π).1`. Set `ρ : Representation ℂ (locU n w) π.V` to `π.rep.comp (locU n w).subtype`. Set `ρf : Representation ℂ (finU E n) π.V` to `π.rep.comp (finU E n).subtype`.
+
+Establish `hρ : IsSmooth ρ` using `isSmooth_loc π w`. Establish `hle` using `locU_le_finU (n := n) w`. Take `⟨φ, hφ, h0⟩` from `(Submodule.ne_bot_iff _).1 π.isAut.ne_bot`. Set `v0 : π.V` to `⟨φ, hφ⟩`. Establish `hv0 : v0 ≠ 0` using `fun e => h0 (congrArg Subtype.val e)`.
+
+Set `L : Subgroup (finU E n)` to `LocEx.stab ρf v0`. Establish `hLo : IsOpen (L : Set (finU E n))`. Use `(π.isAut.aut φ hφ).level using 1` and compare the differences between its conclusion and the goal. Use extensionality with `k`. Conclude with `Subtype.ext_iff`.
+
+Establish `hLl : IsOpen ((L.comap (Subgroup.inclusion hle) : Subgroup (locU n w)) : Set (locU n w))` using `hLo.preimage (continuous_inclusion_locU w)`. Take `⟨K, hKo, hKc, hKL⟩` from `exists_compact_open w r hr hrx L hLo`. Establish `hT : ∀ x : UA E n, ∀ (g : locU n w) (y : π.V), π.rep ((r x : UA E n)⁻¹ * x) (ρ g y) = ρ g (π.rep ((r x : UA E n)⁻¹ * x) y)` using `fun x g y => by`. Express the relevant statement in the definitionally equal form `π.rep _ (π.rep (g : UA E n) y) = π.rep (g : UA E n) (π.rep _ y)`. Rewrite using `[← Module.End.mul_apply, ← map_mul, (hrc x g).eq, map_mul, Module.End.mul_apply]`.
+
+Establish `hst : ∀ x, ∀ y ∈ LocEx.nullPart ρ K, π.rep x y ∈ LocEx.nullPart ρ K` using `fun x y hy => by`. Establish `h1` using `LocEx.nullPart_act ρ K (r x) (LocEx.nullPart_comm ρ K (π.rep ((r x : UA E n)⁻¹ * x)) (hT x) hy)`. Establish `e : π.rep x y = ρ (r x) (π.rep ((r x : UA E n)⁻¹ * x) y)`. Express the relevant statement in the definitionally equal form `_ = π.rep (r x : UA E n) _`. Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel_left]`.
+
+Rewrite using `[e]`. Conclude with `h1`. Establish `hφK : v0 ∈ fixed ρ K` using `LocEx.mem_fix.2 fun k hk => hKL hk`. Establish `h2 : ∀ W : Submodule ℂ π.V, (∀ g, ∀ v ∈ W, ρ g v ∈ W) → W ⊓ fixed ρ K = ⊥ → W = ⊥`. Introduce `W hW h`.
+
+Break down `((CuspRep.isIrreducible_iff _).1 π.isIrreducible_rep).2 (LocEx.nullPart ρ K) hst with h1 | h1` into its components or cases. Conclude with `le_bot_iff.1 (h1 ▸ LocEx.le_nullPart hρ hKc W hW h)`. Conclude with `absurd (LocEx.eq_zero_of_mem_nullPart hρ hKc hφK (h1 ▸ Submodule.mem_top)) hv0`. Set `M : Subgroup (UA E n)` to `L.map (finU E n).subtype ⊓ r.ker`. Establish `hcomm : ∀ k ∈ M, ∀ g : locU n w, Commute k (g : UA E n)` using `fun k hk g => by`.
+
+Establish `h` using `hrc k g`. Rewrite `h` using `[MonoidHom.mem_ker.1 (Subgroup.mem_inf.1 hk).2, OneMemClass.coe_one, inv_one, one_mul]`. Then use the resulting hypothesis. Establish `hU : ∀ g, ∀ v ∈ fixed π.rep M, ρ g v ∈ fixed π.rep M` using `fun g v hv => LocEx.mem_fix.2 fun k hk => by`. Express the relevant statement in the definitionally equal form `π.rep k (π.rep (g : UA E n) v) = π.rep (g : UA E n) v`. Rewrite using `[← Module.End.mul_apply, ← map_mul, (hcomm k hk g).eq, map_mul, Module.End.mul_apply, LocEx.mem_fix.1 hv k hk]`.
+
+Establish `hU0 : fixed π.rep M ≠ ⊥` using `(Submodule.ne_bot_iff _).2 ⟨v0, LocEx.mem_fix.2 fun k hk => by`. Take `⟨k', hk', rfl⟩` from `(Subgroup.mem_inf.1 hk).1`. Conclude with `hk', hv0⟩`. Establish `hfin : ∀ K' : Subgroup (locU n w), IsOpen (K' : Set (locU n w)) → FiniteDimensional ℂ ↥(fixed π.rep M ⊓ fixed ρ K')` using `fun K' hK' => by`. Set `r' : finU E n →* locU n w` to `r.comp (finU E n).subtype`.
+
+Set `H : Subgroup (finU E n)` to `L ⊓ (K' ⊓ L.comap (Subgroup.inclusion hle)).comap r'`. Establish `hHo : IsOpen (H : Set (finU E n))` using `hLo.inter ((hK'.inter hLl).preimage (hr.comp continuous_subtype_val))`. Use `haveI := hadm H hHo`. Use `Submodule.finiteDimensional_of_le (S₂ := fixed ρf H) fun v hv => LocEx.mem_fix.2 fun k hk => ?_` and prove the remaining obligations. Take `⟨hv1, hv2⟩` from `Submodule.mem_inf.1 hv`.
+
+Take `⟨hkL, hkK, hkL'⟩` from `And.intro (Subgroup.mem_inf.1 hk).1 (Subgroup.mem_inf.1 (Subgroup.mem_inf.1 hk).2)`. Establish `hcM : (r k : UA E n)⁻¹ * k ∈ M`. Use `Subgroup.mem_inf.2 ⟨⟨(Subgroup.inclusion hle (r' k))⁻¹ * k, L.mul_mem (L.inv_mem hkL') hkL, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[MonoidHom.mem_ker, map_mul, map_inv, hrx (r k), inv_mul_cancel]`. Establish `e1` using `LocEx.mem_fix.1 hv1 _ hcM`.
+
+Establish `e2 : π.rep (r k : UA E n) v = v` using `LocEx.mem_fix.1 hv2 _ hkK`. Express the relevant statement in the definitionally equal form `π.rep (k : UA E n) v = v`. Rewrite using `[← mul_inv_cancel_left (r k : UA E n) (k : UA E n), map_mul, Module.End.mul_apply, e1, e2]`. Take `⟨σ, ⟨f, hf0, hf⟩, hσ⟩` from `LocEx.exists_irred hρ hKo h2 (fixed π.rep M) hU hU0 hfin`. Use `⟨σ, hσ, σ.irred, π.V.subtype ∘ₗ f, fun e => hf0 (LinearMap.ext fun v => Subtype.ext ?_), fun v => (f v).2, fun x v => ?_⟩` and prove the remaining obligations.
+
+Conclude with `LinearMap.congr_fun e v`. Express the relevant statement in the definitionally equal form `(f (σ.ρ x v)).1 = _`. Rewrite using `[hf]`. Both sides reduce to the same expression.
+-/
 theorem exists_admissible_comp : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (π : AutSub E n)
     (w : HeightOneSpectrum (𝓞 E)), ∃ σ : SmIrr (locU n w), IsAdmissible σ.ρ ∧
       IsCompAlong π.V (locU n w) (MonoidHom.id _) σ.ρ := by

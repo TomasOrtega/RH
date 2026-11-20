@@ -10,6 +10,13 @@ namespace GlobalTheory.KSp.NormIndex
 
 open Neutral.B1
 
+/- English proof (translation)
+Establish `hab : b = a`. Assume the negation of the conclusion as `hne`. Use `haveI := Fintype.ofFinite G`. Establish `: ({1, a, b} : Finset G).card ≤ Nat.card G`. Rewrite using `[Nat.card_eq_fintype_card]`.
+
+Conclude with `Finset.card_le_univ _`. Rewrite `this` using `[Finset.card_insert_of_notMem (by simp [Ne.symm ha, Ne.symm hb]), Finset.card_pair (Ne.symm hne), h]`. Use linear arithmetic over natural numbers and integers. Substitute `hab` using the available equality. Use `pow_card_eq_one' (G := G) (x := b)` as an intermediate fact.
+
+Rewrite `this` using `[h, pow_two]`. Conclude with `this`.
+-/
 theorem mul_eq_one_of_card_two {G : Type} [Group G] [Finite G] (h : Nat.card G = 2) {a b : G}
     (ha : a ≠ 1) (hb : b ≠ 1) : a * b = 1 := by
   classical
@@ -26,6 +33,19 @@ theorem mul_eq_one_of_card_two {G : Type} [Group G] [Finite G] (h : Nat.card G =
   rw [h, pow_two] at this
   exact this
 
+/- English proof (translation)
+Take `⟨b, -, -⟩` from `hE.basis`. Establish `h2 : Module.finrank F E = 2` using `by rw [Module.finrank_eq_card_basis b]; simp`. Use `haveI : FiniteDimensional F E := Module.finite_of_finrank_eq_succ h2`. Use `haveI : Algebra.IsQuadraticExtension F E := ⟨h2⟩`. Use `haveI : IsGalois F E := Algebra.IsQuadraticExtension.isGalois F E`.
+
+Set `φ : E →ₐ[F] AlgebraicClosure F` to `IsAlgClosed.lift`. Set `L : IntermediateField F (AlgebraicClosure F)` to `φ.fieldRange`. Set `e : E ≃ₐ[F] L` to `AlgEquiv.ofInjectiveField φ`. Use `haveI : FiniteDimensional F L := LinearEquiv.finiteDimensional e.toLinearEquiv`. Use `haveI : IsGalois F L := IsGalois.of_algEquiv e`.
+
+Establish `hL2 : Module.finrank F L = 2` using `e.toLinearEquiv.finrank_eq.symm.trans h2`. Establish `hcard : Nat.card (L ≃ₐ[F] L) = 2`. Rewrite using `[← hL2, ← IsGalois.card_aut_eq_finrank]`. Establish `hab : IsFiniteAbelian F L` using `{ finiteDimensional := inferInstance isGalois := inferInstance comm := fun a b' => by haveI : Fact (Nat.card (L ≃ₐ[F] L)).Prime := ⟨hcard ▸ Nat.prime_two⟩ haveI := isCyclic_of_prime_card (α := L ≃ₐ[F] L) (p := Nat.card (L ≃ₐ[F] L)) rfl`. Conclude with `IsCyclic.commGroup.mul_comm a b' }`.
+
+Take `⟨Art, hArt⟩` from `ReciprocityTheory.DiscreteGroups.LocalClassField.artin_reciprocity_char_zero F`. Take `⟨-, hker⟩` from `hArt.2.2.2.2 L hab`. Establish `hN : (Units.map (Algebra.norm F : E →* F)).range = normGroup F L`. Use extensionality with `z`. Simplify using `only [normGroup, MonoidHom.mem_range]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, rfl⟩`. Conclude with `⟨Units.map (e : E →* L) w, Units.ext (Algebra.norm_eq_of_algEquiv e (w : E))⟩`. Introduce and unpack `⟨w, rfl⟩`. Conclude with `⟨Units.map (e.symm : L →* E) w, Units.ext (Algebra.norm_eq_of_algEquiv e.symm (w : L))⟩`.
+
+Rewrite `hx`, `hy`, the goal using `[hN, ← hker]`. Rewrite `hx`, `hy`, the goal using `[MonoidHom.mem_ker]`. Rewrite using `[map_mul]`. Use `haveI : Finite (L ≃ₐ[F] L) := Nat.finite_of_card_ne_zero (by rw [hcard]; norm_num)`. Conclude with `mul_eq_one_of_card_two hcard hx hy`.
+-/
 theorem mul_mem_range_norm (F : Type) [Field F] [CharZero F] [ValuativeRel F] [TopologicalSpace F]
     [IsNonarchimedeanLocalField F] (E : Type) [Field E] [Algebra F E] [TopologicalSpace E] [IsModuleTopology F E]
     (c : E →ₐ[F] E) (δ : E) (hE : IsQuad c δ) (x y : Fˣ)

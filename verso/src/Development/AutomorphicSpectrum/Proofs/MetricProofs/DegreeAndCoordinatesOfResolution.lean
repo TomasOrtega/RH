@@ -22,6 +22,11 @@ namespace GlobalTheory.CompanionTheory.Ar.Pub
 
 open GroundTheory.Heights₂.Heights
 
+/- English proof (translation)
+Establish `hPts : ReciprocityTheory.ChartRestriction.G.Geo.PtsIntegrableStatement` using `GroundTheory.Heights₂.Heights.ForSecondHalf.PtsIntegrable.of_resExists hE`. Establish `hFI : GroundTheory.Heights₂.Heights.Inter.FibreIncomp.Statement` using `GroundTheory.Heights₂.Heights.ForSecondHalf.FibreIncomp.full`. Establish `hFD : ReciprocityTheory.ChartRestriction.G.AI.I4.FibreDimStatement` using `GlobalTheory.CompanionTheory.Ar.Giv.fibreDim`. Establish `hSec : GroundTheory.Heights₂.Heights.Inter.IntersectionWithSection.Statement` using `GroundTheory.Heights₂.Heights.Inter.IntersectionWithSection.proof hE GroundTheory.Heights₂.Heights.Inter.pullbackPushforward_holds.full (GroundTheory.Heights₂.Heights.Inter.PullbackDegreeCount.of_remaining GroundTheory.Heights₂.Heights.AutoClose.chart_norm_count hFD) GroundTheory …`. Establish `hCyc : GroundTheory.Heights₂.Heights.Inter.ArithmeticIntersectionCycle.Statement` using `GroundTheory.Heights₂.Heights.Inter.ArithmeticIntersectionCycle.of_remaining GroundTheory.Heights₂.Heights.ForSecondHalf.projDeg_all hFI (GroundTheory.Heights₂.Heights.ForSecondHalf.semilocMaxIdeals_of_fibreIncomp hFI) (GroundTheory.Heights₂.Heights.ForSecondHalf.semilocResidueDe …`.
+
+Conclude with `GroundTheory.Heights₂.Heights.Targets.GenDeg.of_pts hPts hSec hCyc`.
+-/
 theorem genDeg_of_resExists (hE : ReciprocityTheory.ChartRestriction.G.Geo.ResExistsStatement) :
     ReciprocityTheory.ChartRestriction.G.AI.I4.GenDegStatement := by
   have hPts : ReciprocityTheory.ChartRestriction.G.Geo.PtsIntegrableStatement :=
@@ -40,6 +45,9 @@ theorem genDeg_of_resExists (hE : ReciprocityTheory.ChartRestriction.G.Geo.ResEx
       (GroundTheory.Heights₂.Heights.ForSecondHalf.semilocResidueDeg_of_fibreIncomp hFI hFD) hFD
   exact GroundTheory.Heights₂.Heights.Targets.GenDeg.of_pts hPts hSec hCyc
 
+/- English proof (translation)
+Conclude with `GroundTheory.Heights₂.Heights.Targets.PFCoord.of_found hGD (fun F _ K _ ι _ => GroundTheory.Heights₂.Heights.Targets.ExistsUnique.full F ι) GroundTheory.Heights₂.Heights.Targets.genFibreExists GlobalTheory.CompanionTheory.Ar.Giv.fibreDim GroundTheory.Heights₂.Heights.Inter.Closed …`.
+-/
 theorem pfCoord_of_genDeg (hGD : ReciprocityTheory.ChartRestriction.G.AI.I4.GenDegStatement) :
     ReciprocityTheory.ChartRestriction.G.AI.I4.PFCoordStatement := by
   exact GroundTheory.Heights₂.Heights.Targets.PFCoord.of_found hGD
@@ -47,6 +55,9 @@ theorem pfCoord_of_genDeg (hGD : ReciprocityTheory.ChartRestriction.G.AI.I4.GenD
     GroundTheory.Heights₂.Heights.Targets.genFibreExists GlobalTheory.CompanionTheory.Ar.Giv.fibreDim
     GroundTheory.Heights₂.Heights.Inter.Closed.Targets.CoordFibreDeg
 
+/- English proof (translation)
+Introduce `hE`. Conclude with `⟨genDeg_of_resExists hE, pfCoord_of_genDeg (genDeg_of_resExists hE)⟩`.
+-/
 theorem genDeg_and_pfCoord :
     ReciprocityTheory.ChartRestriction.G.Geo.ResExistsStatement →
       ReciprocityTheory.ChartRestriction.G.AI.I4.GenDegStatement ∧ ReciprocityTheory.ChartRestriction.G.AI.I4.PFCoordStatement := by

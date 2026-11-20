@@ -5,12 +5,20 @@ open CategoryTheory Limits AlgebraicGeometry GlobalTheory.EtC LateralTheory.E.t_
 
 namespace LateralTheory.E.FibreEqvPf
 
+/- English proof (translation)
+Establish `e` using `pullbackLeftPullbackSndIso_hom_snd c t k`. Rewrite using `[← e, Functor.map_comp]`. Conclude with `⟨fun h => eqv_right h (eqv_iso (pullbackLeftPullbackSndIso c t k) q i), fun h => eqv_comp (eqv_iso _ q i) h⟩`.
+-/
 theorem eqv_snd_snd {q : ℕ} {i : ℤ} {Z S K L : Scheme.{0}} (c : Z ⟶ S) (t : L ⟶ S) (k : K ⟶ L) :
     Eqv _ (sch.map (pullback.snd (pullback.snd c t) k)) (tw q i) ↔ Eqv _ (sch.map (pullback.snd c (k ≫ t))) (tw q i) := by
   have e := pullbackLeftPullbackSndIso_hom_snd c t k
   rw [← e, Functor.map_comp]
   exact ⟨fun h => eqv_right h (eqv_iso (pullbackLeftPullbackSndIso c t k) q i), fun h => eqv_comp (eqv_iso _ q i) h⟩
 
+/- English proof (translation)
+Rewrite using `[← eqv_snd_snd]`. Establish `w : sch.map (pullback.snd (pullback.snd c T) ρ) ≫ sch.map ρ = sch.map (pullback.fst (pullback.snd c T) ρ) ≫ sch.map (pullback.snd c T)`. Rewrite using `[← Functor.map_comp, ← Functor.map_comp, pullback.condition]`. Use `eqv_left (g := sch.map ρ) ?_ (eqv_iso (asIso ρ) q i)` and prove the remaining obligations. Rewrite using `[w]`.
+
+Conclude with `eqv_comp (eqv_iso (asIso (pullback.fst (pullback.snd c T) ρ)) q i) h`.
+-/
 theorem eqv_snd_iso {q : ℕ} {i : ℤ} {Z S K K' : Scheme.{0}} (c : Z ⟶ S) (T : K ⟶ S) (ρ : K' ⟶ K) [IsIso ρ]
     (h : Eqv _ (sch.map (pullback.snd c T)) (tw q i)) : Eqv _ (sch.map (pullback.snd c (ρ ≫ T))) (tw q i) := by
   rw [← eqv_snd_snd]
@@ -24,6 +32,9 @@ def StalkFib : Prop := Hyp → HZero → AICAcyc → ∀ (q : ℕ) (i : ℤ) {Z 
   [QuasiSeparated c] [IsDominant c], AICSch Z → AICSch S → ∀ x : S, IsUnit (q : S.presheaf.stalk x) →
   Eqv _ (sch.map (pullback.snd c (S.fromSpecStalk x))) (tw q i)
 
+/- English proof (translation)
+Use `⟨(IsLocalRing.ResidueField.map f).injective, fun y => ?_⟩` and prove the remaining obligations. Take `⟨y, rfl⟩` from `IsLocalRing.residue_surjective y`. Take `⟨x, rfl⟩` from `hf y`. Conclude with `⟨IsLocalRing.residue R x, IsLocalRing.ResidueField.map_residue f x⟩`.
+-/
 theorem residue_bij {R R' : Type} [CommRing R] [CommRing R'] [IsLocalRing R] [IsLocalRing R'] (f : R →+* R') [IsLocalHom f]
     (hf : Function.Surjective f) : Function.Bijective (IsLocalRing.ResidueField.map f) := by
   refine ⟨(IsLocalRing.ResidueField.map f).injective, fun y => ?_⟩
@@ -31,6 +42,11 @@ theorem residue_bij {R R' : Type} [CommRing R] [CommRing R'] [IsLocalRing R] [Is
   obtain ⟨x, rfl⟩ := hf y
   exact ⟨IsLocalRing.residue R x, IsLocalRing.ResidueField.map_residue f x⟩
 
+/- English proof (translation)
+Establish `hsh` using `hS S hSs x`. Take `⟨_, _⟩` from `id hsh`. Establish `hx` using `hF H h0 hA q i c hZs hSs x hu`. Establish `hpb : Eqv _ (sch.map (pullback.fst (pullback.snd c (S.fromSpecStalk x)) (cpt (S.presheaf.stalk x)))) (tw q i)` using `hB _ hsh hu (S.fromSpecStalk x)`. Establish `hE1 : Eqv _ (sch.map (cpt (S.presheaf.stalk x))) (tw q i)` using `H.e1 q _ (IsLocalRing.maximalIdeal _) hu i`.
+
+Rewrite using `[← eqv_snd_snd]`. Use `eqv_left (g := sch.map (cpt (S.presheaf.stalk x))) ?_ hE1` and prove the remaining obligations. Rewrite using `[← Functor.map_comp, ← pullback.condition, Functor.map_comp]`. Conclude with `eqv_comp hpb hx`.
+-/
 theorem geom (H : Hyp) (h0 : HZero) (hA : AICAcyc) (hS : StalkSHS) (hF : StalkFib) (q : ℕ) (i : ℤ) {Z S : Scheme.{0}}
     (c : Z ⟶ S) [QuasiCompact c] [QuasiSeparated c] [IsDominant c] (hZs : AICSch Z) (hSs : AICSch S)
     (hB : ∀ (B : Type) [CommRing B] [IsLocalRing B], SH B → IsUnit (q : B) → ∀ t : Spec (CommRingCat.of B) ⟶ S, PB q i (pullback.snd c t))
@@ -47,6 +63,15 @@ theorem geom (H : Hyp) (h0 : HZero) (hA : AICAcyc) (hS : StalkSHS) (hF : StalkFi
   rw [← Functor.map_comp, ← pullback.condition, Functor.map_comp]
   exact eqv_comp hpb hx
 
+/- English proof (translation)
+Introduce `H h0 hA q i A _ _ hq Z S c p _ _ _ _ _ hZs hSs hB s`. Use `set j := pullback.fst p (cpt A)`. Establish `h1 : SurjectiveOnStalks (cpt A)` using `SurjectiveOnStalks.Spec_iff.2 (RingHom.surjectiveOnStalks_of_surjective IsLocalRing.residue_surjective)`. Establish `h2 : SurjectiveOnStalks j` using `MorphismProperty.of_isPullback (P := @SurjectiveOnStalks) (IsPullback.of_hasPullback p (cpt A)).flip h1`. Establish `hsurj : Function.Surjective (j.stalkMap s).hom` using `j.stalkMap_surjective s`.
+
+Establish `hu0 : IsUnit (q : Γ(S, ⊤))` using `unit_of hq p`. Establish `hu : IsUnit (q : S.presheaf.stalk (j s))`. Simplify using `using hu0.map (S.presheaf.germ ⊤ (j s) trivial).hom`. Establish `hbij` using `residue_bij (j.stalkMap s).hom hsurj`. Set `ρ : Spec (CommRingCat.of (IsLocalRing.ResidueField ((pullback p (cpt A)).presheaf.stalk s))) ⟶ Spec (CommRingCat.of (IsLocalRing.ResidueField (S.presheaf.stalk (j s))))` to `Spec.map (RingEquiv.ofBijective _ hbij).toCommRingCatIso.hom`.
+
+Establish `sq : cpt ((pullback p (cpt A)).presheaf.stalk s) ≫ (pullback p (cpt A)).fromSpecStalk s ≫ j = ρ ≫ cpt (S.presheaf.stalk (j s)) ≫ S.fromSpecStalk (j s)`. Rewrite using `[← Scheme.SpecMap_stalkMap_fromSpecStalk j, ← Category.assoc, ← Category.assoc]`. Use `congr 1`. Simplify using `only [ρ, cpt, ← Spec.map_comp]`. Use `congr 1`.
+
+Rewrite using `[eqv_snd_snd, sq]`. Conclude with `eqv_snd_iso c _ ρ (geom H h0 hA hS hF q i c hZs hSs hB (j s) hu)`.
+-/
 theorem FibreEqv_of (hS : StalkSHS) (hF : StalkFib) : FibreEqv := by
   intro H h0 hA q i A _ _ hq Z S c p _ _ _ _ _ hZs hSs hB s
   set j := pullback.fst p (cpt A)
@@ -79,6 +104,11 @@ def BaseAIC : Prop := ∀ {Z S : Scheme.{0}} (c : Z ⟶ S) [QuasiCompact c] [Qua
 
 def StalkAIC : Prop := ∀ (S : Scheme.{0}), AICSch S → ∀ x : S, AICSch (Spec (S.presheaf.stalk x))
 
+/- English proof (translation)
+Introduce `H h0 hA q i Z S c _ _ _ hZs hSs x hu`. Establish `hB` using `hZB c hZs hSs x`. Establish `hK` using `hSA S hSs x`. Establish `: IsIntegral (pullback c (S.fromSpecStalk x) : Scheme.{0})` using `hB.1`. Establish `: ConnectedSpace (pullback c (S.fromSpecStalk x) : Scheme.{0})` using `inferInstance`.
+
+Establish `: CompactSpace (pullback c (S.fromSpecStalk x) : Scheme.{0})` using `QuasiCompact.compactSpace_of_compactSpace (pullback.snd c (S.fromSpecStalk x))`. Establish `: QuasiSeparatedSpace (pullback c (S.fromSpecStalk x) : Scheme.{0})` using `quasiSeparatedSpace_of_quasiSeparated (pullback.snd c (S.fromSpecStalk x))`. Establish `hu1 : IsUnit (q : Γ(Spec (S.presheaf.stalk x), ⊤))` using `unit_of (A := S.presheaf.stalk x) hu (𝟙 _)`. Establish `hu2 : IsUnit (q : Γ(pullback c (S.fromSpecStalk x), ⊤))` using `unit_of (A := S.presheaf.stalk x) hu (pullback.snd c (S.fromSpecStalk x))`. Conclude with `eqv_of H.a9 _ (h0 H q (pullback.snd c (S.fromSpecStalk x)) hK inferInstance hu1 i) (fun n hn => hA H q _ hB hu2 n i hn) (fun n hn => hA H q _ hK hu1 n i hn)`.
+-/
 theorem StalkFib_of (hZB : BaseAIC) (hSA : StalkAIC) : StalkFib := by
   intro H h0 hA q i Z S c _ _ _ hZs hSs x hu
   have hB := hZB c hZs hSs x
@@ -103,6 +133,9 @@ def StalkAICRing : Prop := ∀ (S : Scheme.{0}), AICSch S → ∀ x : S, AIC (S.
 
 def SpecAIC : Prop := ∀ (B : CommRingCat.{0}), IsDomain B → AIC B → AICSch (Spec B)
 
+/- English proof (translation)
+Introduce `S hS x`. Establish `: IsIntegral S` using `hS.1`. Conclude with `h2 _ inferInstance (h1 S hS x)`.
+-/
 theorem StalkAIC_of (h1 : StalkAICRing) (h2 : SpecAIC) : StalkAIC := by
   intro S hS x
   have : IsIntegral S := hS.1

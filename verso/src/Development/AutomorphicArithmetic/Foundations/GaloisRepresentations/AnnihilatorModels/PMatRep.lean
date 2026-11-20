@@ -4,6 +4,31 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Annih
 open CategoryTheory AlgebraicGeometry TensorProduct
 open UpperTheory.Gal.crystallineComparison
 
+/- English proof (translation)
+Introduce `R S _ _ _ _ _`. Take `⟨n, f, g, -, -, hfg⟩` from `Module.Finite.exists_comp_eq_id_of_projective R S`. Use `set e : Fin n → S := fun k => f (Pi.single k 1) with he`. Establish `hsum : ∀ s : S, ∑ k, g s k • e k = s`. Introduce `s`.
+
+Establish `h1 : f (g s) = s` using `LinearMap.congr_fun hfg s`. Use `conv_rhs => rw [← h1, pi_eq_sum_univ (g s)]`. Simplify using `only [map_sum, map_smul, e]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Use `congr 2`.
+
+Use extensionality with `j`. Simplify using `[Pi.single_apply, eq_comm]`. Use `⟨n, fun s => Matrix.of fun j k => g (s * e k) j, ?_⟩` and prove the remaining obligations. Introduce `B _ _ I _ _ z hz`. Set `φ` to `AlgEquiv.ofBijective (splitMap z) hz`.
+
+Set `G : Fin n → (B ⊗[R] S →ₗ[B] B)` to `fun j => (TensorProduct.AlgebraTensorModule.rid R B B).toLinearMap ∘ₗ ((LinearMap.proj j ∘ₗ g).baseChange B)`. Establish `hG : ∀ j b s, G j (b ⊗ₜ s) = algebraMap R B (g s j) * b`. Introduce `j b s`. Simplify using `[G, LinearMap.baseChange_tmul, Algebra.smul_def]`. Establish `hK : ∀ x i, ∑ k, z i (e k) * G k x = splitMap z x i`.
+
+Introduce `x i`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul b s`. Rewrite using `[splitMap_tmul]`.
+
+Simplify using `only [hG]`. Use `conv_rhs => rw [← hsum s]`. Rewrite using `[map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, Algebra.smul_def]`.
+
+Expand and normalize the polynomial expressions, which then agree. Consider the case `add x y hx hy`. Simplify using `only [map_add, mul_add, Finset.sum_add_distrib, hx, hy, Pi.add_apply]`. Establish `hL : ∀ t : S, ∑ i, z i t • φ.symm (Pi.single i 1) = (1 : B) ⊗ₜ t`. Introduce `t`.
+
+Apply `φ.injective` to reduce the goal to its premises. Rewrite using `[map_sum]`. Simplify using `only [map_smul, AlgEquiv.apply_symm_apply]`. Use function extensionality and compare the values at `i'`. Simplify using `[φ, splitMap_tmul, Finset.sum_apply, Pi.single_apply]`.
+
+Use `show (z i') t = splitMap z (1 ⊗ₜ t) i'`. Rewrite using `[splitMap_tmul, one_mul]`. Use `⟨Matrix.of fun i k => z i (e k), Matrix.of fun j i => G j (φ.symm (Pi.single i 1)), ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `i i'`. Simplify using `only [Matrix.mul_apply, Matrix.of_apply]`.
+
+Rewrite using `[hK]`. Establish `h2 : splitMap z (φ.symm (Pi.single i' 1)) = Pi.single i' 1` using `φ.apply_symm_apply _`. Rewrite using `[h2, Matrix.one_apply, Pi.single_apply]`. Introduce `s`. Use extensionality with `j k`.
+
+Rewrite using `[Matrix.mul_apply]`. Simplify using `only [Matrix.mul_diagonal, Matrix.of_apply, Matrix.map_apply]`. Establish `h3 : (algebraMap R B) (g (s * e k) j) = G j ((1 : B) ⊗ₜ (s * e k))`. Rewrite using `[hG, mul_one]`. Rewrite using `[h3, ← hL, map_sum]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, smul_eq_mul, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem UpperTheory.Gal.crystallineComparison.matRep_of :
     MatRep := by
   intro R S _ _ _ _ _

@@ -18,6 +18,11 @@ namespace GlobalTheory.ConeLevel
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Establish `hf` using `d.form w w'`. Rewrite `hf` using `[h]`. Use function extensionality and compare the values at `x`. Simplify using `only [Darboux.rho, schr]`. Rewrite using `[show x + (d.e w).1 + (d.e w').1 = x + (d.e w').1 + (d.e w).1 by abel]`.
+
+Rewrite using `[← mul_assoc, ← mul_assoc, ← AddChar.map_add_eq_mul, ← AddChar.map_add_eq_mul]`. Use `congr 2`. Simplify using `only [add_dotProduct]`. Take the linear combination `-hf`.
+-/
 theorem rho_comm {R W κ : Type} [CommRing R] [Invertible (2 : R)] [AddCommGroup W] [Module R W] [Fintype κ]
     {B : W → W → R} (d : Darboux B κ) (ψ : AddChar R ℂ) (w w' : W) (h : B w w' = 0) (φ : (κ → R) → ℂ) :
     d.rho ψ w (d.rho ψ w' φ) = d.rho ψ w' (d.rho ψ w φ) := by
@@ -31,6 +36,21 @@ theorem rho_comm {R W κ : Type} [CommRing R] [Invertible (2 : R)] [AddCommGroup
   simp only [add_dotProduct]
   linear_combination -hf
 
+/- English proof (translation)
+Use `set a : Fin n → AE F E := incM F JX *ᵥ fun k => cA σ (incV F x₀ k) with ha`. Use `set bb : Fin d → AE F E := incM F JW *ᵥ fun l => cA σ (y l) with hbb`. Establish `ha' : a = fun i => inclR (F` using `F) (AF F) ((JX *ᵥ fun k => σ (x₀ k)) i) := by`. Use function extensionality and compare the values at `i`. Rewrite using `[ha, RingHom.map_mulVec]`.
+
+Both sides reduce to the same expression. Establish `key : a ᵥ* incM F ι = 0`. Use function extensionality and compare the values at `j`. Establish `h3` using `hι (Pi.single j 1)`. Rewrite `h3` using `[form, Matrix.mulVec_single_one]`.
+
+Establish `: a ᵥ* incM F ι = fun j => inclR (F` using `F) (AF F) (((JX *ᵥ fun k => σ (x₀ k)) ᵥ* ι) j) := by`. Use function extensionality and compare the values at `j`. Rewrite using `[RingHom.map_vecMul, ha']`. Both sides reduce to the same expression. Rewrite using `[this]`.
+
+Simplify using `only [Pi.zero_apply]`. Rewrite using `[Matrix.vecMul, dotProduct_comm]`. Conclude with `(congrArg _ h3).trans (map_zero _)`. Establish `hx : ∀ j, ∑ i, a i * (incM F ι * z * C) i j = 0`. Introduce `j`.
+
+Use `congrFun (show a ᵥ* (incM F ι * z * C) = 0 by` as an intermediate fact. Rewrite using `[← Matrix.vecMul_vecMul, ← Matrix.vecMul_vecMul, key, Matrix.zero_vecMul, Matrix.zero_vecMul]) j`. Simplify `this` using `[Matrix.vecMul, dotProduct]`. Establish `hT : hTens (cA σ) (incM F JX) (incM F JW) (incM F ι * z * C) (t • Matrix.vecMulVec (incV F x₀) y) = ∑ j, (∑ i, a i * (incM F ι * z * C) i j) * (cA σ t * bb j)`. Simplify using `only [hTens]`.
+
+Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [ha, hbb, Matrix.mulVec, dotProduct, Finset.mul_sum, Finset.sum_mul, Matrix.smul_apply, Matrix.vecMulVec_apply, smul_eq_mul, map_mul]`.
+
+Use `conv_rhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[symp, hT]`. Simplify using `[hx]`.
+-/
 theorem symp_eq_zero {n d n₁ d₁ : ℕ} (σ : E →ₐ[F] E) (JX : Matrix (Fin n) (Fin n) E) (JW : Matrix (Fin d) (Fin d) E)
     (x₀ : Fin n → E) (ι : Matrix (Fin n) (Fin n₁) E) (hι : ∀ u, form σ JX (ι *ᵥ u) x₀ = 0)
     (ξ : AE F E) (z : Matrix (Fin n₁) (Fin d₁) (AE F E)) (C : Matrix (Fin d₁) (Fin d) (AE F E)) (t : AE F E)
@@ -84,31 +104,84 @@ def jf {F : Type} [Field F] [NumberField F] (κ : Type) : (κ → FiniteAdeleRin
 def pf {F : Type} [Field F] [NumberField F] (κ : Type) : (κ → AF F) →+ (κ → FiniteAdeleRing (𝓞 F) F) :=
   AddMonoidHom.compLeft (AddMonoidHom.snd (InfiniteAdeleRing F) (FiniteAdeleRing (𝓞 F) F)) κ
 
+/- English proof (translation)
+The claim follows from `funext fun i => (GlobalTheory.SchrFixNbhd.adeleJoin_zero_apply v i).symm`.
+-/
 theorem jf_eq {F : Type} [Field F] [NumberField F] {κ : Type} (v : κ → FiniteAdeleRing (𝓞 F) F) :
     jf κ v = GlobalTheory.WeilCont.adeleJoin F 0 v :=
   funext fun i => (GlobalTheory.SchrFixNbhd.adeleJoin_zero_apply v i).symm
 
+/- English proof (translation)
+The claim follows from `continuous_pi fun i => continuous_const.prodMk (continuous_apply i)`.
+-/
 theorem continuous_jf {F : Type} [Field F] [NumberField F] {κ : Type} : Continuous (jf (F := F) κ) :=
   continuous_pi fun i => continuous_const.prodMk (continuous_apply i)
 
+/- English proof (translation)
+The claim follows from `continuous_pi fun i => continuous_snd.comp (continuous_apply i)`.
+-/
 theorem continuous_pf {F : Type} [Field F] [NumberField F] {κ : Type} : Continuous (pf (F := F) κ) :=
   continuous_pi fun i => continuous_snd.comp (continuous_apply i)
 
+/- English proof (translation)
+The claim follows from `funext fun i => Prod.ext (hu i).symm rfl`.
+-/
 theorem jf_pf {F : Type} [Field F] [NumberField F] {κ : Type} (u : κ → AF F) (hu : ∀ i, (u i).1 = 0) :
     jf κ (pf κ u) = u :=
   funext fun i => Prod.ext (hu i).symm rfl
 
 def finOne (F : Type) [Field F] [NumberField F] : AF F := ((0 : InfiniteAdeleRing F), (1 : FiniteAdeleRing (𝓞 F) F))
 
+/- English proof (translation)
+The claim follows from `show (0 : InfiniteAdeleRing F) * a.1 = 0 from zero_mul _`.
+-/
 theorem finOne_mul_fst {F : Type} [Field F] [NumberField F] (a : AF F) : (finOne F * a).1 = 0 :=
   show (0 : InfiniteAdeleRing F) * a.1 = 0 from zero_mul _
 
+/- English proof (translation)
+The claim follows from `funext fun i => Prod.ext (show (0 : InfiniteAdeleRing F) * 0 = 0 from zero_mul _) (show (1 : FiniteAdeleRing (𝓞 F) F) * v i = v i from one_mul _)`.
+-/
 theorem finOne_smul_jf {F : Type} [Field F] [NumberField F] {κ : Type} (v : κ → FiniteAdeleRing (𝓞 F) F) :
     finOne F • jf κ v = jf κ v :=
   funext fun i => Prod.ext (show (0 : InfiniteAdeleRing F) * 0 = 0 from zero_mul _)
     (show (1 : FiniteAdeleRing (𝓞 F) F) * v i = v i from one_mul _)
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B b a' G G₁ H H' hC e he K hK X om om' om₁ om₁' hT hT₁ Ψ hΨ`. Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `haveI : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) _`. Use `haveI hMT : ∀ m n : ℕ, IsModuleTopology (AF F) (Matrix (Fin m) (Fin n) (AE F E)) := fun m n => inferInstanceAs (IsModuleTopology (AF F) (Fin m → Fin n → AE F E))`. Establish `hstd : IsStd B.ψ` using `hT.base.std`.
+
+Establish `hsplit` using `IsUWeilPair.isUSplitting hT.weil`. Establish `hKc : IsCompact (K : Set (UA σ G.V.J))`. Establish `hKeq : K = GlobalTheory.StabHaar.stabK B G.V`. Use extensionality with `g`. Conclude with `hK g`.
+
+Take `⟨C, hCc, hsub⟩` from `GlobalTheory.StabBounded.exists_compact_superset_stabK F E σ B _ G.V _ _ hT.base hT.geo.hV`. Rewrite using `[hKeq]`. Conclude with `hCc.of_isClosed_subset (GlobalTheory.StabHaar.isClosed_stabK B G.V (GlobalTheory.LatHatClosed.isClosed_latHat F E _ G.V hT.geo.hV.lat)) hsub`. Take `⟨L₁, L₂, o₁, o₂, hfix⟩` from `GlobalTheory.SchrFixNbhd.exists_fix F B.ψ hstd.1 _ Ψ hΨ`. Set `κ` to `Fin (b + 2) × Fin (b + 2 + a')`.
+
+Set `κ₁` to `Fin b × Fin (b + a')`. Set `N₀ : Set ((κ → AF F) × (κ → AF F))` to `{p | pf κ p.1 ∈ L₁ ∧ pf κ p.2 ∈ L₂}`. Establish `hN₀ : IsOpen N₀` using `(o₁.preimage (continuous_pf.comp continuous_fst)).inter (o₂.preimage (continuous_pf.comp continuous_snd))`. Establish `h0N₀ : (0 : (κ → AF F) × (κ → AF F)) ∈ N₀` using `⟨by simp [map_zero], by simp [map_zero]⟩`. Establish `hce : Continuous G.M.co.e` using `IsModuleTopology.continuous_of_linearMap G.M.co.e.toLinearMap`.
+
+Establish `hce₁ : Continuous G₁.M.co.e.symm` using `IsModuleTopology.continuous_of_linearMap G₁.M.co.e.symm.toLinearMap`. Establish `hm : Continuous fun g : UA σ G.V.J => mat g` using `Units.continuous_val.comp continuous_subtype_val`. Establish `hcont : Continuous fun q : Matrix (Fin (b + 2)) (Fin (b + 2 + a')) (AE F E) × UA σ G.V.J => G.M.co.e (mat q.2⁻¹ * q.1)` using `hce.comp (((hm.comp continuous_inv).comp continuous_snd).matrix_mul continuous_fst)`. Establish `tube : ∀ᶠ w in 𝓝 (0 : Matrix (Fin (b + 2)) (Fin (b + 2 + a')) (AE F E)), ∀ g ∈ (K : Set (UA σ G.V.J)), G.M.co.e (mat g⁻¹ * w) ∈ N₀`. Use `hKc.eventually_forall_of_forall_eventually fun g _ => ?_` and prove the remaining obligations.
+
+Establish `h0 : G.M.co.e (mat g⁻¹ * (0 : Matrix (Fin (b + 2)) (Fin (b + 2 + a')) (AE F E))) ∈ N₀` using `by rw [Matrix.mul_zero, map_zero]; exact h0N₀`. Conclude with `(hcont.tendsto ((0 : Matrix (Fin (b + 2)) (Fin (b + 2 + a')) (AE F E)), g)).eventually (hN₀.mem_nhds h0)`. Set `zz : (κ₁ → FiniteAdeleRing (𝓞 F) F) → Matrix (Fin b) (Fin (b + a')) (AE F E)` to `fun v => G₁.M.co.e.symm (jf κ₁ v, 0)`. Set `ww : (κ₁ → FiniteAdeleRing (𝓞 F) F) → Matrix (Fin (b + 2)) (Fin (b + 2 + a')) (AE F E)` to `fun v => incM F H.ι * zz v * (incM F H'.ι)ᵀ`. Establish `hww : Continuous ww` using `(continuous_const.matrix_mul (hce₁.comp (continuous_jf.prodMk continuous_const))).matrix_mul continuous_const`.
+
+Establish `hww0 : ww 0 = 0`. Simplify using `only [ww, zz, map_zero, Prod.mk_zero_zero, Matrix.mul_zero, Matrix.zero_mul]`. Establish `ev : ∀ᶠ v in 𝓝 (0 : κ₁ → FiniteAdeleRing (𝓞 F) F), ∀ g ∈ (K : Set (UA σ G.V.J)), G.M.co.e (mat g⁻¹ * ww v) ∈ N₀`. Use `hww.tendsto 0` as an intermediate fact. Rewrite `this` using `[hww0]`.
+
+Conclude with `this.eventually tube`. Establish `hfinite : ∀ v (g : UA σ G.V.J), finOne F • G.M.co.e (mat g⁻¹ * ww v) = G.M.co.e (mat g⁻¹ * ww v)`. Introduce `v g`. Establish `h1 : finOne F • zz v = zz v`. Simplify using `only [zz]`.
+
+Rewrite using `[← map_smul, Prod.smul_mk, smul_zero, finOne_smul_jf]`. Establish `h2 : finOne F • ww v = ww v`. Simplify using `only [ww]`. Rewrite using `[← Matrix.smul_mul, ← Matrix.mul_smul, h1]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[Matrix.mul_smul, map_smul]`. Use `_ = _ := by rw [h2]`. Establish `hΨfix : ∀ v, (∀ g ∈ (K : Set (UA σ G.V.J)), G.M.co.e (mat g⁻¹ * ww v) ∈ N₀) → ∀ g ∈ (K : Set (UA σ G.V.J)), G.M.co.rho B.ψ (mat g⁻¹ * ww v) Ψ = Ψ`. Introduce `v hv g hg`. Establish `hpf : finOne F • G.M.co.e (mat g⁻¹ * ww v) = G.M.co.e (mat g⁻¹ * ww v)` using `hfinite v g`.
+
+Use `set p := G.M.co.e (mat g⁻¹ * ww v) with hp`. Establish `e1 : p.1 = jf κ (pf κ p.1)` using `(jf_pf _ fun i => by rw [← hpf]; exact finOne_mul_fst _).symm`. Establish `e2 : p.2 = jf κ (pf κ p.2)` using `(jf_pf _ fun i => by rw [← hpf]; exact finOne_mul_fst _).symm`. Use `show schr B.ψ p Ψ = Ψ`. Rewrite using `[show p = (GlobalTheory.WeilCont.adeleJoin F 0 (pf κ p.1), GlobalTheory.WeilCont.adeleJoin F 0 (pf κ p.2)) from Prod.ext (e1.trans (jf_eq _)) (e2.trans (jf_eq _))]`.
+
+Conclude with `hfix _ (hv g hg).1 _ (hv g hg).2`. Set `hh : K → (AE F E)ˣ → Fn F b (b + a')` to `fun k l => e (G.M.co.rho B.ψ (shiftA H H' l) (om (k.1, 1) Ψ))`. Set `T : AddSubgroup (κ₁ → AF F)` to `⨅ k : K, ⨅ l : (AE F E)ˣ, GlobalTheory.SchrFixNbhd.fixTrans (hh k l)`. Set `S : AddSubgroup (κ₁ → FiniteAdeleRing (𝓞 F) F)` to `T.comap (jf κ₁)`. Establish `key : ∀ v, (∀ g ∈ (K : Set (UA σ G.V.J)), G.M.co.e (mat g⁻¹ * ww v) ∈ N₀) → v ∈ S`.
+
+Introduce `v hv`. Simplify using `only [S, T, AddSubgroup.mem_comap, AddSubgroup.mem_iInf]`. Introduce `k l x`. Establish `hfixk` using `hΨfix v hv k.1 k.2`. Establish `hΦ₁ : om (k.1, 1) Ψ ∈ schA F κ` using `hsplit.pres _ _ hΨ`.
+
+Establish `hΦ₂` using `GlobalTheory.HeisSchA.rho_mem_schA G.M B.ψ hstd (shiftA H H' l) _ hΦ₁`. Establish `htr : ∀ f : Fn F b (b + a'), f (x + jf κ₁ v) = G₁.M.co.rho B.ψ (zz v) f x`. Introduce `f`. Simplify using `only [Darboux.rho, schr, zz, LinearEquiv.apply_symm_apply, dotProduct_zero, mul_zero, add_zero, AddChar.map_zero_eq_one, one_mul]`. Use `show hh k l (x + jf κ₁ v) = hh k l x`.
+
+Simplify using `only [hh]`. Rewrite using `[htr (e (G.M.co.rho B.ψ (shiftA H H' l) (om (k.1, 1) Ψ))), ← he.Heisenberg₂ _ _ hΦ₂]`. Rewrite using `[rho_comm G.M.co B.ψ (incM F H.ι * zz v * (incM F H'.ι)ᵀ) (shiftA H H' l) (symp_eq_zero σ G.V.J G.W.J H.x H.ι (fun u => (hC.hH.orth u).1) (-1) (zz v) _ l.1 _)]`. Establish `himpl` using `hsplit.impl (k.1, 1) (mat k.1⁻¹ * ww v) Ψ hΨ`. Establish `hact : actAB (cA σ) ((k.1, 1) : UA σ G.V.J × UA σ G.W.J) (mat k.1⁻¹ * ww v) = ww v` using `by show mat k.1 * (mat k.1⁻¹ * ww v) * (mat (1 : UA σ G.W.J))ᵀ = ww v`.
+
+Rewrite using `[GlobalTheory.StabHaar.mat_one, Matrix.transpose_one, Matrix.mul_one, ← Matrix.mul_assoc, GlobalTheory.StabHaar.mat_mul_inv, Matrix.one_mul]`. Rewrite `himpl` using `[hact, hfixk]`. Rewrite using `[← himpl]`. Establish `hS : IsOpen (S : Set (κ₁ → FiniteAdeleRing (𝓞 F) F))` using `AddSubgroup.isOpen_of_mem_nhds S (Filter.mem_of_superset ev key)`. Use `⟨S.comap (pf κ₁), hS.preimage continuous_pf, fun u hu hu0 k l x => ?_⟩` and prove the remaining obligations.
+
+Establish `hu' : jf κ₁ (pf κ₁ u) ∈ T` using `hu`. Rewrite `hu'` using `[jf_pf u hu0]`. Conclude with `(AddSubgroup.mem_iInf.1 (AddSubgroup.mem_iInf.1 hu' k) l) x`.
+-/
 theorem level : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (b a' : ℕ) (G : Geo σ (b + 2) a') (G₁ : Geo σ b a')
     (H : Plane E (b + 2) b) (H' : Plane E (b + 2 + a') (b + a')), CfgA B G G₁ H H' →
     ∀ e, IsEv B G.M G₁.M H.ι H'.ι (isoA H H') e → ∀ (K : Subgroup (UA σ G.V.J)), IsStab B K →

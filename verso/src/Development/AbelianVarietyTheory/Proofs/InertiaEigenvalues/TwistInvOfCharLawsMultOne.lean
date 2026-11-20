@@ -7,6 +7,9 @@ namespace GlobalTheory.TypeLeaf
 
 open Polynomial NumberField IsDedekindDomain in
 
+/- English proof (translation)
+Establish `hu2` using `D.naut.unr_char χ χ' hd' hu hu'`. Rewrite using `[D.naut.unr_eq_lpUnr _ hu2, D.naut.frobEig_char χ χ' c' hu hu' hd' hc', hc]`. Simplify using `[h]`.
+-/
 theorem _root_.GlobalTheory.TypeLeaf.lpChar_eq_triv_of_mul_eq_one (D : _root_.Formalism.BasicNotions.D7) (w : _root_.Formalism.BasicNotions.PlE D.host)
     (χ χ' : D.naut.LP w) (c c' : ℂ)
     (hu : D.naut.unr χ) (hu' : D.naut.unr χ') (hd' : D.naut.lpDim χ' = 1)
@@ -17,6 +20,11 @@ theorem _root_.GlobalTheory.TypeLeaf.lpChar_eq_triv_of_mul_eq_one (D : _root_.Fo
   simp [h]
 
 open Polynomial NumberField IsDedekindDomain in
+/- English proof (translation)
+Establish `hu` using `D.naut.etaT_unr w`. Establish `hcard : (D.naut.frobEig (D.naut.locG D.naut.etaT w)).card = 1`. Rewrite using `[D.naut.frobEig_card _ hu, D.naut.locG_dim]`. Take `⟨c, hc⟩` from `Multiset.card_eq_one.1 hcard`. Establish `hne` using `D.naut.frobEig_ne_zero _ hu`.
+
+Use `⟨c, fun h0 => hne (by rw [hc, h0]; exact Multiset.mem_singleton_self 0), hc, ?_⟩` and prove the remaining obligations. Rewrite using `[(D.naut.etaTinv_def w).2, hc]`. Simplify using the standard rewrite rules.
+-/
 private lemma exists_frobEig_etaT_inv_etaTinv (D : _root_.Formalism.BasicNotions.D7) (w : _root_.Formalism.BasicNotions.PlE D.host) :
     ∃ c : ℂ, c ≠ 0 ∧ D.naut.frobEig (D.naut.locG D.naut.etaT w) = {c} ∧
       D.naut.frobEig (D.naut.locG D.naut.etaTinv w) = {c⁻¹} := by
@@ -31,6 +39,13 @@ private lemma exists_frobEig_etaT_inv_etaTinv (D : _root_.Formalism.BasicNotions
 
 open Polynomial NumberField IsDedekindDomain in
 
+/- English proof (translation)
+Introduce `D hlaw hmult`. Establish `hdim : ∀ w : _root_.Formalism.BasicNotions.PlE D.host, D.naut.lpDim (D.naut.locG D.naut.etaT w) = 1` using `fun w => D.naut.locG_dim _ w`. Establish `hdim' : ∀ w : _root_.Formalism.BasicNotions.PlE D.host, D.naut.lpDim (D.naut.locG D.naut.etaTinv w) = 1` using `fun w => D.naut.locG_dim _ w`. Prove the components needed by the constructor for the conclusion. Introduce `a π ha`.
+
+Use `hmult a _ _ ha fun w => ?_` and prove the remaining obligations. Take `⟨c, hc0, hc, hc'⟩` from `exists_frobEig_etaT_inv_etaTinv D w`. Rewrite using `[D.naut.locG_tw, D.naut.locG_tw, (hlaw w _ _ _ (hdim w) (hdim' w)).1, _root_.GlobalTheory.TypeLeaf.lpChar_eq_triv_of_mul_eq_one D w _ _ c c⁻¹ (D.naut.etaT_unr w) (D.naut.etaTinv_def w).1 (hdim' w) hc hc' (mul_inv_cancel₀ hc0), (hlaw w _ _ _ (hdim w) (hdim w)).2]`. Introduce `a π ha`. Use `hmult a _ _ ha fun w => ?_` and prove the remaining obligations.
+
+Take `⟨c, hc0, hc, hc'⟩` from `exists_frobEig_etaT_inv_etaTinv D w`. Rewrite using `[D.naut.locG_tw, D.naut.locG_tw, (hlaw w _ _ _ (hdim' w) (hdim w)).1, _root_.GlobalTheory.TypeLeaf.lpChar_eq_triv_of_mul_eq_one D w _ _ c⁻¹ c (D.naut.etaTinv_def w).1 (D.naut.etaT_unr w) (hdim w) hc' hc (inv_mul_cancel₀ hc0), (hlaw w _ _ _ (hdim w) (hdim w)).2]`.
+-/
 theorem _root_.GlobalTheory.TypeLeaf.twistInv_of_charLaws_multOne :
     ∀ D : _root_.Formalism.BasicNotions.D7, _root_.GlobalTheory.TypeLeaf.CharLaws D → _root_.GlobalTheory.TypeLeaf.MultOne D →
       _root_.GlobalTheory.TypeLeaf.TwistInv D := by

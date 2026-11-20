@@ -4,6 +4,17 @@ namespace PositivityTheory.KB.SpectralGap.WordTransvectionCongruences
 
 open Matrix
 
+/- English proof (translation)
+Apply `SpecialLinearGroup.coeMonoidHom_injective` to reduce the goal to its premises. Simplify using `only [map_mul, SpecialLinearGroup.coeMonoidHom_apply, SpecialLinearGroup.diag2n_coe, SpecialLinearGroup.transvection_coe, mul_add, add_mul, one_mul, mul_one, single_mul_single_same]`. Simplify using `only [single_mul_single_of_ne _ _ _ _ hij.symm, single_mul_single_of_ne _ _ _ _ hij, zero_add, add_zero, single_mul_single_same, zero_mul, mul_zero]`. Use extensionality with `x y`. Distinguish the cases in `hxi : i = x`.
+
+Substitute `x` using the available equality. Distinguish the cases in `hyi : i = y`. Apply the tactic sequence `subst y; (simp [Matrix.add_apply, Matrix.one_apply, Matrix.single_apply, diagonal_apply, hij, hij.symm, ha, *] <;> (try field_simp) <;> (try ring) <;> (try (split_ifs <;> simp_all)))`. Distinguish the cases in `hyj : j = y`. Apply the tactic sequence `subst y; (simp [Matrix.add_apply, Matrix.one_apply, Matrix.single_apply, diagonal_apply, hij, hij.symm, ha, *] <;> (try field_simp) <;> (try ring) <;> (try (split_ifs <;> simp_all)))`.
+
+Apply the tactic sequence `(simp [Matrix.add_apply, Matrix.one_apply, Matrix.single_apply, diagonal_apply, hij, hij.symm, ha, *] <;> (try field_simp) <;> (try ring) <;> (try (split_ifs <;> simp_all)))`. Distinguish the cases in `hxj : j = x`. Substitute `x` using the available equality. Distinguish the cases in `hyi : i = y`. Apply the tactic sequence `subst y; (simp [Matrix.add_apply, Matrix.one_apply, Matrix.single_apply, diagonal_apply, hij, hij.symm, ha, *] <;> (try field_simp) <;> (try ring) <;> (try (split_ifs <;> simp_all)))`.
+
+Distinguish the cases in `hyj : j = y`. Apply the tactic sequence `subst y; (simp [Matrix.add_apply, Matrix.one_apply, Matrix.single_apply, diagonal_apply, hij, hij.symm, ha, *] <;> (try field_simp) <;> (try ring) <;> (try (split_ifs <;> simp_all)))`. Apply the tactic sequence `(simp [Matrix.add_apply, Matrix.one_apply, Matrix.single_apply, diagonal_apply, hij, hij.symm, ha, *] <;> (try field_simp) <;> (try ring) <;> (try (split_ifs <;> simp_all)))`. Distinguish the cases in `hyi : i = y`. Apply the tactic sequence `subst y; (simp [Matrix.add_apply, Matrix.one_apply, Matrix.single_apply, diagonal_apply, hij, hij.symm, ha, *] <;> (try field_simp) <;> (try ring) <;> (try (split_ifs <;> simp_all)))`.
+
+Distinguish the cases in `hyj : j = y`. Apply the tactic sequence `subst y; (simp [Matrix.add_apply, Matrix.one_apply, Matrix.single_apply, diagonal_apply, hij, hij.symm, ha, *] <;> (try field_simp) <;> (try ring) <;> (try (split_ifs <;> simp_all)))`. Apply the tactic sequence `(simp [Matrix.add_apply, Matrix.one_apply, Matrix.single_apply, diagonal_apply, hij, hij.symm, ha, *] <;> (try field_simp) <;> (try ring) <;> (try (split_ifs <;> simp_all)))`.
+-/
 theorem diagonal_decomposition_transvections {ι F : Type*} [Fintype ι] [DecidableEq ι] [Field F] {i j : ι} (hij : i ≠ j)
     {a : F} (ha : a ≠ 0) :
     SpecialLinearGroup.diag2n hij a ha = SpecialLinearGroup.transvection hij a *
@@ -45,6 +56,11 @@ theorem diagonal_decomposition_transvections {ι F : Type*} [Fintype ι] [Decida
   (simp [Matrix.add_apply, Matrix.one_apply, Matrix.single_apply, diagonal_apply, hij, hij.symm, ha, *]
         <;> (try field_simp) <;> (try ring) <;> (try (split_ifs <;> simp_all)))
 
+/- English proof (translation)
+Establish `hdiag : ∀ (i j : ι) (hij : i ≠ j) {c : F} (hc : c ≠ 0), SpecialLinearGroup.diag2n hij c hc ∈ S`. Introduce `i j hij c hc`. Rewrite using `[diagonal_decomposition_transvections hij hc]`. Conclude with `S.mul_mem (S.mul_mem (S.mul_mem (S.mul_mem (S.mul_mem (h _ _ _ _) (h _ _ _ _)) (h _ _ _ _)) (h _ _ _ _)) (h _ _ _ _)) (h _ _ _ _)`. Use `eq_top_iff.2 fun M _ => ?_` and prove the remaining obligations.
+
+Conclude with `SpecialLinearGroup.diagonal_transvection_induction' (· ∈ S) M hdiag h (fun _ _ => S.mul_mem)`.
+-/
 theorem sl_top {ι F : Type*} [Fintype ι] [DecidableEq ι] [Nontrivial ι] [Field F]
     (S : Subgroup (SpecialLinearGroup ι F))
     (h : ∀ (i j : ι) (hij : i ≠ j) (c : F), SpecialLinearGroup.transvection hij c ∈ S) : S = ⊤ := by

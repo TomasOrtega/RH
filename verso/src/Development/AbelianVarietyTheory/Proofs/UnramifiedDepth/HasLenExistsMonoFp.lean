@@ -22,6 +22,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.ChF
 
+/- English proof (translation)
+Take `⟨n, f, hf⟩` from `Module.Finite.exists_fin' O M`. Establish `hk : (LinearMap.ker f).FG` using `Module.FinitePresentation.fg_ker f hf`. Take `⟨m, g, hg⟩` from `Submodule.fg_iff_exists_fin_generating_family.1 hk`. Conclude with `⟨_, hasLen_of_equiv ((Submodule.quotEquivOfEq _ _ hg).trans (f.quotKerEquivOfSurjective hf)).symm (Smith.hasLen_coker_gen hv g)⟩`.
+-/
 private theorem hasLen_of_fp {C : Type} [Field C] {v : Valuation C NNReal} {O : Type} [CommRing O]
     [Algebra O C] (hv : v.Integers O) (M : Type) [AddCommGroup M] [Module O M]
     (h : Module.FinitePresentation O M) : ∃ x, HasLen v O M x := by
@@ -31,6 +34,21 @@ private theorem hasLen_of_fp {C : Type} [Field C] {v : Valuation C NNReal} {O : 
   exact ⟨_, hasLen_of_equiv ((Submodule.quotEquivOfEq _ _ hg).trans
     (f.quotKerEquivOfSurjective hf)).symm (Smith.hasLen_coker_gen hv g)⟩
 
+/- English proof (translation)
+Use `isLocal_of_integers hv` as an intermediate fact. Take `⟨m, c, ⟨e⟩, hzc⟩` from `hz`. Take `⟨r, q, ⟨e'⟩, hzq⟩` from `hz'`. Set `π : M →ₗ[R] ((t : Fin r) → R ⧸ Ideal.span {q t})` to `e'.toLinearMap ∘ₗ f`. Establish `hπ : Function.Surjective π` using `e'.surjective.comp hf`.
+
+Set `y : Fin m → ((t : Fin r) → R ⧸ Ideal.span {q t})` to `fun i => π (e.symm (Pi.single i 1))`. Establish `hspan : Submodule.span R (Set.range y) = ⊤`. Rewrite using `[eq_top_iff]`. Introduce `w _`. Take `⟨x, rfl⟩` from `hπ w`.
+
+Establish `hx` using `eq_sum_single c (e x)`. Establish `: x = ∑ i, (Quotient.out (e x i) : R) • e.symm (Pi.single i 1)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[this, map_sum]`. Conclude with `Submodule.sum_mem _ fun i _ => by`.
+
+Rewrite using `[map_smul]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Establish `hT : ∀ k, ∑ i, (Matrix.diagonal c) k i • y i = 0`. Introduce `k`. Rewrite using `[Finset.sum_eq_single k]`.
+
+Simplify using `only [Matrix.diagonal_apply_eq, y]`. Rewrite using `[← map_smul, ← map_smul, single_smul_self, map_zero, map_zero]`. Introduce `b _ hb`. Rewrite using `[Matrix.diagonal_apply_ne _ (Ne.symm hb), zero_smul]`. Introduce `h`.
+
+Conclude with `absurd (Finset.mem_univ k) h`. Establish `hdet` using `det_mem_span_prod r q m y hspan (Matrix.diagonal c) hT`. Rewrite `hdet` using `[Matrix.det_diagonal]`. Take `⟨w, hw⟩` from `Ideal.mem_span_singleton'.1 hdet`. Establish `hle` using `hv.le_of_dvd (⟨w, by rw [← hw, mul_comm]⟩ : ∏ t : Fin r, q t ∣ ∏ i, c i)`.
+
+Rewrite `hle` using `[map_prod, map_prod, map_prod, map_prod]`. Rewrite using `[← hzc, ← hzq]`. Conclude with `hle`.
+-/
 private theorem hasLen_mono {C : Type} [Field C] {v : Valuation C NNReal} {R : Type} [CommRing R]
     [Algebra R C] (hv : v.Integers R) {M M' : Type} [AddCommGroup M] [Module R M]
     [AddCommGroup M'] [Module R M'] (f : M →ₗ[R] M') {z z' : NNReal} (hf : Function.Surjective f)
@@ -70,6 +88,13 @@ private theorem hasLen_mono {C : Type} [Field C] {v : Valuation C NNReal} {R : T
   rw [← hzc, ← hzq]
   exact hle
 
+/- English proof (translation)
+Establish `: IsDomain O` using `hv.hom_inj.isDomain`. Establish `: IsFractionRing O C` using `hv.isFractionRing`. Establish `: ValuationRing O` using `ValuationRing.of_integers v hv`. Establish `: Module.Finite O M` using `Module.Finite.iff_fg.2 hM`. Establish `: Module.Flat O M`.
+
+Rewrite using `[Module.Flat.flat_iff_torsion_eq_bot_of_isBezout, ← Submodule.isTorsionFree_iff_torsion_eq_bot]`. Use `infer_instance`. Establish `: Module.Free O M` using `Module.free_of_flat_of_isLocalRing`. Establish `: Module.FinitePresentation O M` using `Module.finitePresentation_of_projective O M`. Use `Module.finitePresentation_of_surjective (N.comap M.subtype).mkQ (Submodule.mkQ_surjective _) ?_` and prove the remaining obligations.
+
+Rewrite using `[Submodule.ker_mkQ]`. Use `Submodule.fg_of_fg_map_injective M.subtype M.injective_subtype ?_` and prove the remaining obligations. Rewrite using `[Submodule.map_comap_subtype, inf_eq_right.2 hle]` and apply the resulting hypothesis.
+-/
 private theorem fp_quot {C : Type} [Field C] {v : Valuation C NNReal} {O : Type} [CommRing O]
     [Algebra O C] (hv : v.Integers O) (n : ℕ) (M N : Submodule O (Fin n → O)) (hM : M.FG)
     (hN : N.FG) (hle : N ≤ M) : Module.FinitePresentation O (M ⧸ N.comap M.subtype) := by
@@ -88,6 +113,9 @@ private theorem fp_quot {C : Type} [Field C] {v : Valuation C NNReal} {O : Type}
   refine Submodule.fg_of_fg_map_injective M.subtype M.injective_subtype ?_
   rwa [Submodule.map_comap_subtype, inf_eq_right.2 hle]
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ _ hv` and use `⟨fun M _ _ h => hasLen_of_fp hv M h, fun _ _ _ _ _ _ f _ _ hf hx hx' => hasLen_mono hv f hf hx hx', fun n M N hM hN hle => fp_quot hv n M N hM hN hle⟩`.
+-/
 theorem hasLen_exists_mono_fp : ∀ (C : Type) [Field C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C], v.Integers O → (∀ (M : Type) [AddCommGroup M] [Module O M], Module.FinitePresentation O M → ∃ x, HasLen v O M x) ∧ (∀ (M M' : Type) [AddCommGroup M] [Module O M] [AddCommGroup M'] [Module O M'] (f : M →ₗ[O] M') (x x' : NNReal), Function.Surjective f → HasLen v O M x → HasLen v O M' x' → x ≤ x') ∧ ∀ (n : ℕ) (M N : Submodule O (Fin n → O)), M.FG → N.FG → N ≤ M → Module.FinitePresentation O (M ⧸ N.comap M.subtype) :=
   fun _ _ _ _ _ _ hv => ⟨fun M _ _ h => hasLen_of_fp hv M h,
     fun _ _ _ _ _ _ f _ _ hf hx hx' => hasLen_mono hv f hf hx hx',

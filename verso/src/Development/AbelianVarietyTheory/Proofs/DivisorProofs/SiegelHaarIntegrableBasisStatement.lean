@@ -10,6 +10,9 @@ open scoped TensorProduct NNReal Matrix
 open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.SiegelConv.integrable_basisMap_main | exact GlobalTheory.SiegelConv.integrable_basisMap_main | (intros; apply GlobalTheory.SiegelConv.integrable_basisMap_main <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.siegel_haar_integrable_basis : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (n : ℕ)
     (f : (Fin n → AE F E) → ℂ) (μ : @Measure (Fin n → AE F E) (borel _)), GlobalTheory.SiegelAvg.IsHaarB μ →
     (∀ ν : @Measure (Fin n × Fin (Module.finrank F E) → AF F) (borel _), GlobalTheory.SiegelAvg.IsHaarB ν →

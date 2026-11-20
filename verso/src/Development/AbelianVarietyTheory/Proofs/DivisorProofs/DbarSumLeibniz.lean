@@ -9,6 +9,13 @@ open scoped ComplexConjugate ContDiff
 
 namespace GlobalTheory.CxForm
 
+/- English proof (translation)
+Establish `h (S : Finset (Fin (n + n))) : GlobalTheory.dbar (fun x => (bas n).repr (∑ i, c i x • F i x) S) v w = ∑ i, (c i v * GlobalTheory.dbar (fun x => (bas n).repr (F i x) S) v w + GlobalTheory.dbar (c i) v w * (bas n).repr (F i v) S)`. Establish `e : (fun x => (bas n).repr (∑ i, c i x • F i x) S) = fun x => ∑ i, c i x * (bas n).repr (F i x) S`. Use function extensionality and compare the values at `x`. Simplify using `[map_sum, Finsupp.finset_sum_apply]`. Rewrite using `[e, GlobalTheory.dbar_sum (A := fun i x => c i x * (bas n).repr (F i x) S) (fun i _ => (hc i).mul (hF i S)), ContinuousLinearMap.sum_apply]`.
+
+Conclude with `Finset.sum_congr rfl fun i _ => GlobalTheory.dbar_mul (hc i) (hF i S) w`. Simplify using `only [coefwise, h, Finset.sum_smul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `conv_rhs => rw [← (bas n).sum_repr (F i v)]`.
+
+Simplify using `only [add_smul, mul_smul, Finset.sum_add_distrib, Finset.smul_sum]`. Rewrite using `[add_comm]`.
+-/
 theorem coefwise_dbar_sum_smul {n : ℕ} {ι : Type} [Fintype ι] {c : ι → V n → ℂ} {F : ι → V n → Alt n} {v : V n}
     (hc : ∀ i, DifferentiableAt ℝ (c i) v)
     (hF : ∀ i S, DifferentiableAt ℝ (fun x => (bas n).repr (F i x) S) v) (w : V n) :
@@ -32,6 +39,9 @@ theorem coefwise_dbar_sum_smul {n : ℕ} {ι : Type} [Fintype ι] {c : ι → V 
   simp only [add_smul, mul_smul, Finset.sum_add_distrib, Finset.smul_sum]
   rw [add_comm]
 
+/- English proof (translation)
+Simplify using `only [dbarAt, coefwise_dbar_sum_smul hc hF, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [mul_add, mul_smul_comm, smul_mul_assoc, Finset.sum_mul, Finset.sum_add_distrib, Finset.smul_sum]`.
+-/
 theorem dbarAt_sum_smul {n : ℕ} {ι : Type} [Fintype ι] {c : ι → V n → ℂ} {F : ι → V n → Alt n} {v : V n}
     (hc : ∀ i, DifferentiableAt ℝ (c i) v)
     (hF : ∀ i S, DifferentiableAt ℝ (fun x => (bas n).repr (F i x) S) v) :

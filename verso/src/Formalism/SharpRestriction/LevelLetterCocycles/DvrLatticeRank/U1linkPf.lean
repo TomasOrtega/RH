@@ -13,6 +13,25 @@ namespace Formalism.MainNotions.N.Ln34
 open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.BasicNotions.Loc Module Formalism.MainNotions.ElementDenominator Formalism.MainNotions.ElementDenominator.CongruenceModules
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Introduce `D HW F Cm hA hdR hDi hML hMF`. Introduce `l _ hl K LL hG π' E hp9 T₁ T₂ Fm S η m h' up b c α β hIF hHyp`. Establish `hc2` using `hHyp.2.1`. Establish `hj2` using `hHyp.2.2.2.2.1`. Establish `hηb` using `hHyp.2.2.2.2.2.1`.
+
+Establish `hbS` using `hHyp.2.2.2.2.2.2.1`. Establish `hh'` using `hHyp.2.2.2.2.2.2.2.1`. Establish `hm` using `hHyp.2.2.2.2.2.2.2.2.1`. Establish `hjI : ∀ τ, JumpsInV ((D.loc l).PD K) T₂.ρ τ (Set.Icc (-(h' : ℤ)) h')`. Introduce `τ a ha`.
+
+Establish `hd` using `hj2 τ a ha`. Establish `hb` using `hbS τ`. Establish `hη` using `hηb τ`. Rewrite using `[Set.mem_Icc]`. Break down `hd with hd | hd` into its components or cases.
+
+Apply the tactic sequence `unfold deep at hd split_ifs at hd <;> (rw [Set.mem_Icc] at hd; constructor <;> omega)`. Rewrite `hd` using `[Set.mem_Icc]`. Apply the tactic sequence `constructor <;> omega`. Establish `hM` using `u3upPf_MK_pos hl K LL hG h' hh'`. Establish `hMF2` using `hMF l hl K LL hG π' E hp9 h' hh' c α β hIF T₂ hc2 hjI`.
+
+Establish `hML2` using `hML l hl K LL hG π' E hp9 h' hh' T₂ hc2 hjI c`. Establish `hR` using `UniversalLiftFrames.universal_lift_ring_membership D HW F Cm hA hl K LL hG π' E hp9`. Establish `hT` using `UniversalLiftFrames.embeddings_card_le_degree D HW K LL hG c`. Establish `hτs` using `hT.choose_spec.1`. Establish `hcard` using `hT.choose_spec.2`.
+
+Establish `hB` using `UniversalLiftFrames.universal_lift_basis D HW F Cm hA hl K LL hG π' E hp9 T₂ hc2 c`. Establish `hrep` using `hB.choose_spec.choose_spec.choose_spec.choose`. Establish `hbrep` using `hB.choose_spec.choose_spec.choose_spec.choose_spec`. Use `UniversalLiftFrames.universal_lift_frame (W := (HW l).W K 1 LL hG) (PD := (D.loc l).PD K) (GenPf.isDVR (D.loc l) LL) (GenPf.isFractionRing LL) Fm (Formalism.MainNotions.DeltaInvariantLattices.ptK D.loc HW hG) π' (Formalism.MainNotions.DeltaInvariantLattices.Eat E π') h' (MK l K h …` and prove the remaining obligations. Conclude with `fun τ ζ hpt => u3upPf_pt_over D HW hG c ζ τ hpt`.
+
+Conclude with `fun τ => Nat.lt_of_le_of_lt (Nat.zero_le _) (hηb τ)`. Conclude with `fun τ ζ hpt => ⟨(UniversalLiftFrames.universal_lift_points D HW F Cm hA hl K LL hG π' E hp9 c τ ζ hpt).1, (UniversalLiftFrames.universal_lift_points D HW F Cm hA hl K LL hG π' E hp9 c τ ζ hpt).2.1⟩`. Conclude with `fun τ ζ hpt => (UniversalLiftFrames.universal_lift_points D HW F Cm hA hl K LL hG π' E hp9 c τ ζ hpt).2.2.1`. Conclude with `fun τ ζ hpt => (UniversalLiftFrames.universal_lift_points D HW F Cm hA hl K LL hG π' E hp9 c τ ζ hpt).2.2.2`. Conclude with `fun τ ζ hpt => (UniversalLiftFrames.universal_lift_valuation D HW F Cm hA hl K LL hG π' E hp9 T₂ hc2 c τ ζ hpt).1`.
+
+Conclude with `fun τ ζ hpt => (UniversalLiftFrames.universal_lift_valuation D HW F Cm hA hl K LL hG π' E hp9 T₂ hc2 c τ ζ hpt).2`. Conclude with `fun τ ζ ζ' hpt hpt' k => UniversalLiftFrames.universal_lift_valuation_points D HW F Cm hA hl K LL hG π' E hp9 T₂ hc2 c τ ζ ζ' hpt hpt' (hB.choose_spec.choose_spec.choose k) (hrep k)`. Conclude with `fun τ ζ hpt hup => ((UniversalLiftFrames.universal_lift_filtration D HW F Cm hA hdR hDi hl K LL hG π' E hp9 T₂ hc2 c τ ζ hpt hB.choose hB.choose_spec.choose hB.choose_spec.choose_spec.choose hrep hbrep S η m (up τ) (b τ) (hj2 τ) (hηb τ) (hm τ)).1 hup).1`. Conclude with `fun τ ζ hpt hup => ((UniversalLiftFrames.universal_lift_filtration D HW F Cm hA hdR hDi hl K LL hG π' E hp9 T₂ hc2 c τ ζ hpt hB.choose hB.choose_spec.choose hB.choose_spec.choose_spec.choose hrep hbrep S η m (up τ) (b τ) (hj2 τ) (hηb τ) (hm τ)).1 hup).2`. Conclude with `fun τ ζ hpt hup => ((UniversalLiftFrames.universal_lift_filtration D HW F Cm hA hdR hDi hl K LL hG π' E hp9 T₂ hc2 c τ ζ hpt hB.choose hB.choose_spec.choose hB.choose_spec.choose_spec.choose hrep hbrep S η m (up τ) (b τ) (hj2 τ) (hηb τ) (hm τ)).2 hup).1`.
+
+Conclude with `fun τ ζ hpt hup => ((UniversalLiftFrames.universal_lift_filtration D HW F Cm hA hdR hDi hl K LL hG π' E hp9 T₂ hc2 c τ ζ hpt hB.choose hB.choose_spec.choose hB.choose_spec.choose_spec.choose hrep hbrep S η m (up τ) (b τ) (hj2 τ) (hηb τ) (hm τ)).2 hup).2`.
+-/
 theorem u1link_pf : FirstFrameOfModels := by
   intro D HW F Cm hA hdR hDi hML hMF
   intro l _ hl K LL hG π' E hp9 T₁ T₂ Fm S η m h' up b c α β hIF hHyp

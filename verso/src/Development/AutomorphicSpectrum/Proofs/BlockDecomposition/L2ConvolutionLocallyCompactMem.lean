@@ -8,6 +8,9 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.AutomorphicL2Convolution
 
+/- English proof (translation)
+Establish `h2 : mk Γ (Quotient.out q) = mk Γ (sec Γ q)` using `(Quotient.out_eq q).trans (mk_sec q).symm`. Take `⟨γ, hγ⟩` from `mk_eq_iff.1 h2`. Use `show φ (Quotient.out q) = φ (sec Γ q)`. Rewrite using `[← hγ, hφ _ γ.2]`.
+-/
 private theorem descend_eq_sec_lemma {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G] {Γ : Subgroup G} [DiscreteTopology Γ]
     {φ : G → ℂ} (hφ : LeftInv Γ φ) (q : Quot Γ) : descend Γ φ q = φ (sec Γ q) := by
@@ -16,6 +19,11 @@ private theorem descend_eq_sec_lemma {G : Type} [Group G] [TopologicalSpace G] [
   show φ (Quotient.out q) = φ (sec Γ q)
   rw [← hγ, hφ _ γ.2]
 
+/- English proof (translation)
+Rewrite using `[descend_eq_sec_lemma hφ]`. Establish `h1 : rmul Γ g q = mk Γ (sec Γ q * g)`. Rewrite using `[← rmul_mk, mk_sec]`. Establish `h2 : mk Γ (sec Γ (rmul Γ g q)) = mk Γ (sec Γ q * g)` using `(mk_sec _).trans h1`. Take `⟨γ, hγ⟩` from `mk_eq_iff.1 h2`.
+
+Rewrite using `[← hγ, hφ _ γ.2]`.
+-/
 private theorem descend_rmul_lemma_2 {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G] {Γ : Subgroup G} [DiscreteTopology Γ]
     {φ : G → ℂ} (hφ : LeftInv Γ φ) (g : G) (q : Quot Γ) :
@@ -27,6 +35,9 @@ private theorem descend_rmul_lemma_2 {G : Type} [Group G] [TopologicalSpace G] [
   obtain ⟨γ, hγ⟩ := mk_eq_iff.1 h2
   rw [← hγ, hφ _ γ.2]
 
+/- English proof (translation)
+Establish `h2 : (fun q => (h.toL2 : Lp ℂ 2 (GlobalTheory.AutomorphicL2Unitary.quotMeasure Γ μ)) (rmul Γ g q)) =ᵐ[GlobalTheory.AutomorphicL2Unitary.quotMeasure Γ μ] fun q => descend Γ φ (rmul Γ g q)` using `(measurePreserving_rmul g).quasiMeasurePreserving.ae_eq_comp h.coeFn_toL2`. Use `(coeFn_R g h.toL2).trans (h2.trans (Filter.Eventually.of_forall fun q => ?_))` and prove the remaining obligations. Conclude with `descend_rmul_lemma_2 h.1 g q`.
+-/
 private theorem coeFn_R_lemma_3 {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G] {Γ : Subgroup G} [DiscreteTopology Γ]
     {μ : Measure G} [μ.IsMulLeftInvariant] [μ.IsMulRightInvariant] {φ : G → ℂ} (h : MemL2Quotient Γ μ φ) (g : G) :
@@ -38,6 +49,9 @@ private theorem coeFn_R_lemma_3 {G : Type} [Group G] [TopologicalSpace G] [IsTop
   refine (coeFn_R g h.toL2).trans (h2.trans (Filter.Eventually.of_forall fun q => ?_))
   exact descend_rmul_lemma_2 h.1 g q
 
+/- English proof (translation)
+Establish `h1` using `MeasureTheory.L2.inner_def (𝕜 := ℂ) F F`. Simplify using `only [inner_self_eq_norm_sq_to_K] at h1`. Rewrite `h1` using `[← RCLike.ofReal_pow]`. Rewrite `h1` using `[integral_ofReal]`. Conclude with `(RCLike.ofReal_inj.mp h1).symm`.
+-/
 private theorem integral_norm_sq_lemma_4 {α : Type} [MeasurableSpace α] {m : Measure α} (F : Lp ℂ 2 m) :
     ∫ q, ‖F q‖ ^ 2 ∂m = ‖F‖ ^ 2 := by
   have h1 := MeasureTheory.L2.inner_def (𝕜 := ℂ) F F
@@ -46,6 +60,13 @@ private theorem integral_norm_sq_lemma_4 {α : Type} [MeasurableSpace α] {m : M
   rw [integral_ofReal] at h1
   exact (RCLike.ofReal_inj.mp h1).symm
 
+/- English proof (translation)
+Use `haveI : IsFiniteMeasure (m.restrict S) := isFiniteMeasure_restrict.2 hS.ne`. Establish `hsq : Integrable (fun q => ‖F q‖ ^ 2) m` using `(Lp.memLp F).norm.integrable_sq`. Establish `hint1 : Integrable (fun q => (1 + ‖F q‖ ^ 2) / 2) (m.restrict S)` using `((integrable_const (1 : ℝ)).add hsq.restrict).div_const 2`. Combine the equalities or inequalities in the displayed calculation. Use `integral_mono_of_nonneg (Filter.Eventually.of_forall fun q => norm_nonneg (F q)) hint1 (Filter.Eventually.of_forall fun q => ?_)` and prove the remaining obligations.
+
+Use polynomial arithmetic with `[sq_nonneg (‖F q‖ - 1)]`. Use `_ = ((∫ q in S, (1 : ℝ) ∂m) + ∫ q in S, ‖F q‖ ^ 2 ∂m) / 2 := by`. Rewrite using `[integral_div, integral_add (integrable_const (1 : ℝ)) hsq.restrict]`. Use `_ ≤ ((∫ q in S, (1 : ℝ) ∂m) + ‖F‖ ^ 2) / 2 := by`. Use `setIntegral_le_integral (s := S) hsq (Filter.Eventually.of_forall fun q => by positivity)` as an intermediate fact.
+
+Rewrite `this` using `[integral_norm_sq_lemma_4 F]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 private theorem setIntegral_norm_le_lemma_5 {α : Type} [MeasurableSpace α] {m : Measure α} {S : Set α}
     (hS : m S < ∞) (F : Lp ℂ 2 m) :
     ∫ q in S, ‖F q‖ ∂m ≤ ((∫ q in S, (1 : ℝ) ∂m) + ‖F‖ ^ 2) / 2 := by
@@ -64,6 +85,33 @@ private theorem setIntegral_norm_le_lemma_5 {α : Type} [MeasurableSpace α] {m 
         rw [integral_norm_sq_lemma_4 F] at this
         linarith
 
+/- English proof (translation)
+Establish `hLφ : LeftInv Γ φ` using `h.1`. Establish `hπ' : GlobalTheory.OpTrace.IsUnitaryRep ((R Γ μ).comp j)` using `⟨fun y w => norm_R (j y) w, fun w => (continuous_R w).comp hj⟩`. Establish `hDint : Integrable D ν` using `hD.integrable_of_hasCompactSupport hDc`. Take `⟨hTint, hTv⟩` from `isRepOp_of_integrable (μ := ν) hπ' hDint h.toL2`. Use `set T := GlobalTheory.OpTrace.repOp ((R Γ μ).comp j) ν D with hTdef`.
+
+Establish `hLψ : LeftInv Γ ψ`. Introduce `γ hγ g`. Rewrite using `[hψ (γ * g), hψ g]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Use `show φ (γ * g * j y) * D y = φ (g * j y) * D y`.
+
+Rewrite using `[mul_assoc γ g (j y), hLφ γ hγ]`. Establish `hmeasH : Measurable fun p : L × Quot Γ => φ (sec Γ p.2 * j p.1) * D p.1` using `(_hφ.measurable.comp ((measurableEmbedding_sec.measurable.comp measurable_snd).mul (hj.measurable.comp measurable_fst))).mul (hD.measurable.comp measurable_fst)`. Establish `hprod : ∀ S : Set (Quot Γ), MeasurableSet S → GlobalTheory.AutomorphicL2Unitary.quotMeasure Γ μ S < ∞ → Integrable (fun p : L × Quot Γ => φ (sec Γ p.2 * j p.1) * D p.1) (ν.prod ((GlobalTheory.AutomorphicL2Unitary.quotMeasure Γ μ).restrict S))`. Introduce `S hS hSf`. Use `haveI : IsFiniteMeasure ((GlobalTheory.AutomorphicL2Unitary.quotMeasure Γ μ).restrict S) := isFiniteMeasure_restrict.2 hSf.ne`.
+
+Rewrite using `[integrable_prod_iff hmeasH.aestronglyMeasurable]`. Use `⟨Filter.Eventually.of_forall fun y => ?_, ?_⟩` and prove the remaining obligations. Establish `hc` using `coeFn_R_lemma_3 h (j y)`. Use `((((Lp.memLp (((R Γ μ) (j y)) h.toL2 : Lp ℂ 2 (GlobalTheory.AutomorphicL2Unitary.quotMeasure Γ μ))).restrict S).integrable one_le_two).mul_const (D y)).congr ?_` and prove the remaining obligations. Conclude with `ae_restrict_of_ae (hc.mono fun q hq => by simp only [hq])`.
+
+Use `Integrable.mono' (hDint.norm.mul_const (((∫ q in S, (1 : ℝ) ∂(GlobalTheory.AutomorphicL2Unitary.quotMeasure Γ μ)) + ‖(h.toL2 : Lp ℂ 2 (GlobalTheory.AutomorphicL2Unitary.quotMeasure Γ μ))‖ ^ 2) / 2)) (hmeasH.norm.aestronglyMeasurable.integral_prod_right') (Filter.Eventually.of_for …` and prove the remaining obligations. Establish `hc` using `coeFn_R_lemma_3 h (j y)`. Rewrite using `[Real.norm_of_nonneg (integral_nonneg fun q => norm_nonneg _)]`. Establish `e1 : ∫ q, ‖φ (sec Γ q * j y) * D y‖ ∂((GlobalTheory.AutomorphicL2Unitary.quotMeasure Γ μ).restrict S) = (∫ q in S, ‖(((R Γ μ) (j y)) h.toL2 : Lp ℂ 2 (GlobalTheory.AutomorphicL2Unitary.quotMeasure Γ μ)) q‖ ∂(GlobalTheory.AutomorphicL2Unitary.quotMeasure Γ μ)) * ‖D y‖`. Repeatedly rewrite using `[norm_mul]`.
+
+Rewrite using `[integral_mul_const]`. Use `congr 1`. Conclude with `integral_congr_ae (ae_restrict_of_ae (hc.mono fun q hq => by simp only [hq]))`. Establish `hb` using `setIntegral_norm_le_lemma_5 hSf ((((R Γ μ) (j y)) h.toL2 : Lp ℂ 2 (GlobalTheory.AutomorphicL2Unitary.quotMeasure Γ μ)))`. Establish `hn : ‖(((R Γ μ) (j y)) h.toL2 : Lp ℂ 2 (GlobalTheory.AutomorphicL2Unitary.quotMeasure Γ μ))‖ = ‖(h.toL2 : Lp ℂ 2 (GlobalTheory.AutomorphicL2Unitary.quotMeasure Γ μ))‖` using `norm_R _ _`.
+
+Rewrite `hb` using `[hn]`. Use `show ∫ q, ‖φ (sec Γ q * j y) * D y‖ ∂((GlobalTheory.AutomorphicL2Unitary.quotMeasure Γ μ).restrict S) ≤ _`. Rewrite using `[e1, mul_comm _ (‖D y‖)]`. Conclude with `mul_le_mul_of_nonneg_left hb (norm_nonneg _)`. Establish `hkey : (fun q => (T h.toL2 : Lp ℂ 2 (GlobalTheory.AutomorphicL2Unitary.quotMeasure Γ μ)) q) =ᵐ[GlobalTheory.AutomorphicL2Unitary.quotMeasure Γ μ] fun q => ψ (sec Γ q)`.
+
+Use `ae_eq_of_forall_setIntegral_eq_of_sigmaFinite ?_ ?_ ?_` and prove the remaining obligations. Introduce `S hS hSf haveI : IsFiniteMeasure ((GlobalTheory.AutomorphicL2Unitary.quotMeasure Γ μ).restrict S) := isFiniteMeasure_restrict.2 hSf.ne`. Conclude with `((Lp.memLp (T h.toL2 : Lp ℂ 2 (GlobalTheory.AutomorphicL2Unitary.quotMeasure Γ μ))).restrict S).integrable one_le_two`. Introduce `S hS hSf`. Conclude with `(hprod S hS hSf).integral_prod_right.congr (Filter.Eventually.of_forall fun q => (hψ (sec Γ q)).symm)`.
+
+Introduce `S hS hSf`. Establish `hSf' : GlobalTheory.AutomorphicL2Unitary.quotMeasure Γ μ S ≠ ∞` using `hSf.ne`. Establish `hstep : ∀ y, ⟪indicatorConstLp 2 hS hSf' (1 : ℂ), (D y • ((((R Γ μ).comp j) y h.toL2 : L2 Γ μ) : Lp ℂ 2 (GlobalTheory.AutomorphicL2Unitary.quotMeasure Γ μ)))⟫_ℂ = ∫ q in S, φ (sec Γ q * j y) * D y ∂(GlobalTheory.AutomorphicL2Unitary.quotMeasure Γ μ)`. Introduce `y`. Establish `hc` using `coeFn_R_lemma_3 h (j y)`.
+
+Rewrite using `[inner_smul_right, L2.inner_indicatorConstLp_one, integral_mul_const, mul_comm (D y)]`. Use `congr 1`. Conclude with `integral_congr_ae (ae_restrict_of_ae (hc.mono fun q hq => by`. Simplify using `only [MonoidHom.comp_apply]`. Conclude with `hq))`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hTv]`. Both sides reduce to the same expression. Use `_ = ∫ y, ⟪indicatorConstLp 2 hS hSf' (1 : ℂ), (D y • ((((R Γ μ).comp j) y h.toL2 : L2 Γ μ) : Lp ℂ 2 (GlobalTheory.AutomorphicL2Unitary.quotMeasure Γ μ)))⟫_ℂ ∂ν := (integral_inner hTint _).symm`. Use `_ = ∫ y, ∫ q in S, φ (sec Γ q * j y) * D y ∂(GlobalTheory.AutomorphicL2Unitary.quotMeasure Γ μ) ∂ν := integral_congr_ae (Filter.Eventually.of_forall hstep)`.
+
+Use `_ = ∫ q in S, ∫ y, φ (sec Γ q * j y) * D y ∂ν ∂(GlobalTheory.AutomorphicL2Unitary.quotMeasure Γ μ) := integral_integral_swap (hprod S hS hSf)`. Use `_ = ∫ q in S, ψ (sec Γ q) ∂(GlobalTheory.AutomorphicL2Unitary.quotMeasure Γ μ) := integral_congr_ae (Filter.Eventually.of_forall fun q => (hψ (sec Γ q)).symm)`. Establish `hae : descend Γ ψ =ᵐ[GlobalTheory.AutomorphicL2Unitary.quotMeasure Γ μ] fun q => (T h.toL2 : Lp ℂ 2 (GlobalTheory.AutomorphicL2Unitary.quotMeasure Γ μ)) q` using `Filter.EventuallyEq.trans (Filter.Eventually.of_forall fun q => descend_eq_sec_lemma hLψ q) hkey.symm`. Establish `hmem : MemL2Quotient Γ μ ψ` using `⟨hLψ, MemLp.ae_eq hae.symm (Lp.memLp _)⟩`. Use `⟨hmem, fun W hW hvW => ?_⟩` and prove the remaining obligations.
+
+Establish `hEq : hmem.toL2 = T h.toL2` using `Lp.ext (hmem.coeFn_toL2.trans hae)`. Rewrite using `[hEq]`. Conclude with `IsSubrep.map_mem_of_isRepOp (π := (R Γ μ).comp j) ⟨hW.1, fun y w hw => hW.2 (j y) w hw⟩ (isRepOp_of_integrable hπ' hDint) hvW`.
+-/
 theorem memL2_convolution_mem {G L : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [SecondCountableTopology G]
     [T2Space G] [LocallyCompactSpace G] [MeasurableSpace G] [BorelSpace G] (Γ : Subgroup G) [DiscreteTopology Γ]
     (μ : Measure G) [μ.IsMulLeftInvariant] [μ.IsMulRightInvariant] [IsFiniteMeasureOnCompacts μ] [Group L]

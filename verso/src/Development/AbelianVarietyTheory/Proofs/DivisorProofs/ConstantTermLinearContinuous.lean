@@ -11,6 +11,19 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 
 namespace GlobalTheory.CuspCompZeroLin
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hcm n J hJ r X Y hW K S φ₁ φ₂ z hc1 hc2 hr1 hr2 H1 H2`. Take `⟨-, c₁, hC1, hs1⟩` from `H1`. Take `⟨-, c₂, hC2, hs2⟩` from `H2`. Establish `hint : ∀ (f : GAd σ J → ℂ), Continuous f → (∀ γ ∈ ratPts σ J, ∀ g, f (γ * g) = f g) → ∀ (μ : Measure (GlobalTheory.StdPar.unip σ J X S)) (𝓕 : Set (GlobalTheory.StdPar.unip σ J X S)), μ.IsHaarMeasure → IsFundamentalDomain ((ratPts σ J).subgroupOf (GlobalTheory.StdPar.unip σ J X S) …`. Introduce `f hf hfi μ 𝓕 hμ h𝓕 g`.
+
+Take `⟨C, hC, hcov⟩` from `GlobalTheory.T.cocompact_standardParabolicUnipotentRadical_wittFrame F E σ hcm n J hJ r X Y hW S`. Conclude with `GlobalTheory.integrableOn_fundamentalDomain_of_cocompact _ _ C hC hcov μ hμ 𝓕 h𝓕 _ (by fun_prop) fun γ hγ u => by`. Simplify using `only [Subgroup.coe_mul, mul_assoc]`. Conclude with `hfi _ (Subgroup.mem_subgroupOf.1 hγ) _`. Use `⟨⟨GlobalTheory.StdPar.isAutOn_const σ J X Y S K 0, fun S' _ => GlobalTheory.StdPar.isConstAlong_const σ J X S' 0⟩, fun g => c₁ g - z * c₂ g, fun μ 𝓕 hμ h𝓕 hone g => ?_, fun ψ hψ μ 𝓕 hμ h𝓕 g g' => ?_⟩` and prove the remaining obligations.
+
+Establish `e1` using `hC1 μ 𝓕 hμ h𝓕 hone g`. Establish `e2` using `hC2 μ 𝓕 hμ h𝓕 hone g`. Establish `i1` using `hint φ₁ hc1 hr1 μ 𝓕 hμ h𝓕 g`. Establish `i2` using `hint φ₂ hc2 hr2 μ 𝓕 hμ h𝓕 g`. Rewrite using `[integral_sub i1 (i2.const_mul z), integral_const_mul, ← e1, ← e2]`.
+
+Take `⟨i1, -, e1⟩` from `hs1 ψ hψ μ 𝓕 hμ h𝓕 g g'`. Take `⟨i2, -, e2⟩` from `hs2 ψ hψ μ 𝓕 hμ h𝓕 g g'`. Simplify using `only [Pi.zero_apply, zero_mul, integral_zero] at e1 e2`. Use `⟨?_, by simp, ?_⟩` and prove the remaining obligations. Conclude with `(i1.sub (i2.const_mul z)).congr (Filter.Eventually.of_forall fun m => by simp only [Pi.sub_apply]; ring)`.
+
+Establish `l : ∫ m in 𝓕, (c₁ ((m : GAd σ J) * g) - z * c₂ ((m : GAd σ J) * g)) * (starRingEnd ℂ) (ψ ((m : GAd σ J) * g')) ∂μ = (∫ m in 𝓕, c₁ ((m : GAd σ J) * g) * (starRingEnd ℂ) (ψ ((m : GAd σ J) * g')) ∂μ) - z * ∫ m in 𝓕, c₂ ((m : GAd σ J) * g) * (starRingEnd ℂ) (ψ ((m : GAd σ J) * g')) ∂ …`. Rewrite using `[← integral_const_mul, ← integral_sub i1 (i2.const_mul z)]`. Use `congr 1`. Use function extensionality and compare the values at `m`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `show ∫ m in 𝓕, (c₁ ((m : GAd σ J) * g) - z * c₂ ((m : GAd σ J) * g)) * (starRingEnd ℂ) (ψ ((m : GAd σ J) * g')) ∂μ = ∫ m in 𝓕, (0 : GAd σ J → ℂ) ((m : GAd σ J) * g) * (starRingEnd ℂ) (ψ ((m : GAd σ J) * g')) ∂μ`. Simplify using `only [Pi.zero_apply, zero_mul, integral_zero]`. Rewrite using `[l, e1, e2, mul_zero, sub_zero]`.
+-/
 theorem isCuspComp_sub_zero : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ →
     ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J → ∀ (r : ℕ) (X Y : Matrix (Fin n) (Fin r) E),
       GlobalTheory.SiegelSet.IsWittFrame σ J X Y → ∀ (K : Subgroup (GAd σ J)) (S : Finset (Fin r)) (φ₁ φ₂ : GAd σ J → ℂ) (z : ℂ),

@@ -5,6 +5,15 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.HeckeGal GlobalTheory.CuspRep UpperTheory.Gal.TP.Chr
 open scoped TensorProduct
 
+/- English proof (translation)
+Introduce `E _ _ _ μ χ hR hμ a`. Rewrite using `[hR]`. Establish `h3 : ∀ {σ : E →ₐ[↥(maximalRealSubfield E)] E} (h : HeckeCharacterZeroLocus.ThmBIn.IsCMExt (↥(maximalRealSubfield E)) E σ), Units.map ((GlobalTheory.UnitaryHeckeBaseChange.adeleEquiv h).toRingHom : AE (↥(maximalRealSubfield E)) E →* AdeleRing (𝓞 E) E) (Units.map (algebraMap (AF ↥( …` using `fun _ => Units.ext (GlobalTheory.UnitaryHeckeBaseChange.toAdele_algebraMap (a : AF ↥(maximalRealSubfield E)))`. Use `erw [h3 (GlobalTheory.GalOfCusp.isCMExt_real E), hμ a]`. Simplify using `only [GlobalTheory.GalOfCusp.quadChar, MonoidHom.comp_apply]`.
+
+Use `split_ifs with hm`. Take `⟨y, ⟨t, rfl⟩, z, hz, hyz⟩` from `Subgroup.mem_sup.1 hm`. Establish `hn : GlobalTheory.IdeleNormChar.normSign E a = 1`. Use `(GlobalTheory.IdeleNormChar.normSign_eq_one_iff E a).2 ⟨t, ?_⟩` and prove the remaining obligations. Rewrite using `[← hyz]`.
+
+Simplify `hz` using `[GlobalTheory.QuadSymbol.toUnits, GlobalTheory.QuadSymbol.normGroup]`. Simplify using `[hn]`. Break down `Int.units_eq_one_or (GlobalTheory.IdeleNormChar.normSign E a) with hn | hn` into its components or cases. It suffices to derive a contradiction. Take `⟨t, ht⟩` from `(GlobalTheory.IdeleNormChar.normSign_eq_one_iff E a).1 hn`.
+
+Conclude with `hm (Subgroup.mem_sup.2 ⟨_, ⟨t, rfl⟩, _, ht, mul_div_cancel _ _⟩)`. Simplify using `[hn]`.
+-/
 theorem UpperTheory.Gal.TP.Chr.readRes :
     UpperTheory.Gal.TP.Chr.ReadRes := by
   intro E _ _ _ μ χ hR hμ a

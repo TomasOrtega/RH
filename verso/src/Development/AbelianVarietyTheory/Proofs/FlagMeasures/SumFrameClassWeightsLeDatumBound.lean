@@ -20,6 +20,29 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.TypeAsm.PerRow
 
+/- English proof (translation)
+Introduce `D large₂ X Y u hStd W HW he Λ j x δ d N A hA hT`. Take `⟨hK, -, -, -, hf, -, -, -, -, -, hV, hg2, -⟩` from `GlobalTheory.T.unitaryHostFieldArithmeticConditions D large₂ hStd`. Establish `hgS : 1 ≤ gS D` using `by omega`. Take `⟨t₀, ht₀⟩` from `hA`. Take `⟨-, -, hj0, hδ0, hAd0, hTm0, hg0, -⟩` from `hT t₀ ht₀`.
+
+Take `⟨-, -, hLDel, hLDb, -⟩` from `GlobalTheory.T.adaptedNormalForm_normsMinors_eq_label D large₂ X Y u hStd t₀ (N t₀) hAd0`. Take `⟨-, hx1, -, -, hfW⟩` from `GlobalTheory.T.embeddedDatum_of_term_definiteSpace D.host.E (VS D).V W (HV D) HW W.subtype hK D.R.rS (F0 X u) (Ft t₀) (dI D) (N t₀) (gS D) Λ hgS he hAd0 hTm0`. Take `⟨-, -, hDb1, hDel1, -⟩` from `GlobalTheory.T.exists_star_stable_ideal_absorbing_minors D.host.E (VS D).V (HV D) hK D.R.rS (N t₀) (gS D) Λ hgS hTm0`. Rewrite `hx1` using `[hg0]`. Rewrite `hDel1` using `[hLDel, hj0, hδ0]`.
+
+Rewrite `hDb1` using `[hLDb, hj0, hδ0]`. Set `G : Set (Formalism.HermitianLatticeCounting.S6.FlagD (HV D) D.R.rS) → Formalism.HermitianLatticeCounting.S6.FlagD (HV D) D.R.rS` to `fun b => if hb : ∃ t ∈ A, frCls Λ t = b then Ft hb.choose else F0 X u`. Establish `hGb : ∀ b ∈ A.image (frCls Λ), ∃ t ∈ A, frCls Λ t = b ∧ G b = Ft t`. Introduce `b hb`. Establish `hb' : ∃ t ∈ A, frCls Λ t = b` using `Finset.mem_image.1 hb`.
+
+Take `⟨h1, h2⟩` from `hb'.choose_spec`. Conclude with `⟨hb'.choose, h1, h2, by simp only [G, dif_pos hb']⟩`. Establish `key` using `GlobalTheory.DegAsm.sum_weights_per_datum D.host.E (VS D).V W (HV D) HW W.subtype hK D.R.rS (F0 X u) (dI D) (gS D) j (Tu D u) x (fun l => star (δ l)) Λ d (k2Del D j δ) (DbL D j δ) (Set (Formalism.HermitianLatticeCounting.S6.FlagD (HV D) D.R.rS)) (A.image (frCls Λ)) G hgS hx1 hDel …`. Establish `hsum : ∑ b ∈ A.image (frCls Λ), clsOm Y u Λ b = ∑ b ∈ A.image (frCls Λ), GlobalTheory.DegAsm.omI (F0 X u) (G b) (dI D) Λ`. Use `Finset.sum_congr rfl fun b hb => ?_` and prove the remaining obligations.
+
+Take `⟨t, ht, hbt, hG⟩` from `hGb b hb`. Take `⟨-, hlt, -⟩` from `hT t ht`. Rewrite using `[hG, ← hbt, clsOm_frCls hK Λ t hlt]`. Unfold `omT`. Rewrite using `[hlt]`.
+
+Rewrite using `[hsum]`. Use `key.trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[show Module.finrank D.host.E W = D.R.k by omega, hf]`. Both sides reduce to the same expression. Introduce `b hb`.
+
+Take `⟨t, ht, -, hG⟩` from `hGb b hb`. Take `⟨-, -, hjt, hδt, hAdt, hTmt, hgt, -⟩` from `hT t ht`. Take `⟨a1, a2, a3, a4, -⟩` from `GlobalTheory.T.adaptedNormalForm_normsMinors_eq_label D large₂ X Y u hStd t (N t) hAdt`. Use `⟨N t, ?_, hTmt, a1.trans hjt, a2, ?_, ?_, hgt⟩` and prove the remaining obligations. Rewrite using `[hG]`.
+
+Conclude with `hAdt`. Rewrite using `[a3, hjt, hδt]`. Rewrite using `[a4, hjt, hδt]`. Introduce `b hb`. Take `⟨t, ht, -, hG⟩` from `hGb b hb`.
+
+Take `⟨-, -, hjt, hδt, hAdt, -, -, hdt⟩` from `hT t ht`. Take `⟨-, -, -, -, a5⟩` from `GlobalTheory.T.adaptedNormalForm_normsMinors_eq_label D large₂ X Y u hStd t (N t) hAdt`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hG, ← hjt, a5, hδt]`. Rewrite using `[hG]`.
+
+Conclude with `hdt`. Introduce `b hb b' hb' hE`. Take `⟨t, -, hbt, hG⟩` from `hGb b hb`. Take `⟨t', -, hbt', hG'⟩` from `hGb b' hb'`. Rewrite `hE` using `[hG, hG']`.
+
+Rewrite using `[← hbt, ← hbt']`. Conclude with `(frCls_eq_iff hK Λ t t').2 hE`.
+-/
 theorem sum_clsOm_le_datBd : ∀ (D : D7) (large₂ : SizeData₂ D) (X : HidaSetting D) (Y : Full X) (u : D.what₂.Word), Std D large₂ → ∀ (W : Submodule D.host.E (VS D).V) (HW : Formalism.HermitianLatticeCounting.S6.HermSpace D.host.E W), GlobalTheory.DegAsm.IsEmb (F0 X u) HW W.subtype → ∀ (Λ : Submodule (𝓞 D.host.E) (VS D).V) (j x : ℕ) (δ : ℕ → D.host.E) (d : Submodule (𝓞 D.host.E) W × Submodule (𝓞 D.host.E) (W × W)) (N : GTu Y u → GlobalTheory.DegCnt.NF (HV D) D.R.rS) (A : Finset (GTu Y u)), A.Nonempty → (∀ t ∈ A, t ∈ relSet Y u ∧ t.lam = Λ ∧ jT t = j ∧ labT t = δ ∧ AdT t (N t) ∧ (N t).IsTerm (gS D) Λ ∧ (N t).gI (gS D) Λ = x ∧ GlobalTheory.DegAsm.datOf (F0 X u) (Ft t) W.subtype (gS D) Λ = d) → ∑ b ∈ A.image (frCls Λ), clsOm Y u Λ b ≤ GlobalTheory.DegAsm.datBd D.host.E D.R.k D.R.rS (k2Del D j δ) (DbL D j δ) (NT D u) x := by
   intro D large₂ X Y u hStd W HW he Λ j x δ d N A hA hT
   obtain ⟨hK, -, -, -, hf, -, -, -, -, -, hV, hg2, -⟩ := GlobalTheory.T.unitaryHostFieldArithmeticConditions D large₂ hStd

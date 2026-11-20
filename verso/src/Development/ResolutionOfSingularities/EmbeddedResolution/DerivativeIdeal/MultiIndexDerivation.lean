@@ -10,11 +10,19 @@ def multiIndexDeriv {h : ℕ} (D : Fin h → Derivation k R R) (α : Fin h → �
   Fin.foldr h (fun i y => (⇑(D i))^[α i] y) x
 
 @[simp]
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `[multiIndexDeriv]`.
+-/
 theorem multiIndexDeriv_of_isEmpty (D : Fin 0 → Derivation k R R) (α : Fin 0 → ℕ) :
     multiIndexDeriv D α = id := by
   funext x
   simp [multiIndexDeriv]
 
+/- English proof (translation)
+Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `f hf x`. Simplify using the standard rewrite rules.
+
+Consider the case `succ n ih`. Introduce `f hf x`. Rewrite using `[Fin.foldr_succ, ih (fun i => f i.succ) (fun i y => hf i.succ y) x]`. Conclude with `hf 0 x`. Use the proof step `@[simp]`.
+-/
 private theorem foldr_eq_self_of_forall_eq_self {A : Type*} :
     ∀ (n : ℕ) (f : Fin n → A → A), (∀ (i : Fin n) (y : A), f i y = y) →
       ∀ x : A, Fin.foldr n f x = x := by
@@ -29,6 +37,9 @@ private theorem foldr_eq_self_of_forall_eq_self {A : Type*} :
       exact hf 0 x
 
 @[simp]
+/- English proof (translation)
+Unfold `multiIndexDeriv`. Conclude with `foldr_eq_self_of_forall_eq_self h (fun i y => (⇑(D i))^[(0 : Fin h → ℕ) i] y) (fun i y => by simp) f`. Use the proof step `@[simp]`.
+-/
 theorem multiIndexDeriv_zero {h : ℕ} (D : Fin h → Derivation k R R) (f : R) :
     multiIndexDeriv D (0 : Fin h → ℕ) f = f := by
   unfold multiIndexDeriv
@@ -36,10 +47,18 @@ theorem multiIndexDeriv_zero {h : ℕ} (D : Fin h → Derivation k R R) (f : R) 
     (fun i y => by simp) f
 
 @[simp]
+/- English proof (translation)
+The claim follows from `multiIndexDeriv_zero D f`.
+-/
 theorem multiIndexDeriv_fun_zero {h : ℕ} (D : Fin h → Derivation k R R) (f : R) :
     multiIndexDeriv D (fun _ => 0) f = f :=
   multiIndexDeriv_zero D f
 
+/- English proof (translation)
+Consider the cases of `n with`. Consider the case `zero => show J * J ^ 0 ≤ J ^ 0`. Rewrite using `[pow_zero, Ideal.one_eq_top]`. Conclude with `le_top`. Consider the case `succ m => show J * J ^ m ≤ J ^ (m + 1)`.
+
+Conclude with `le_of_eq (by rw [mul_comm, ← pow_succ])`.
+-/
 private theorem mul_pow_sub_one_le (J : Ideal R) (n : ℕ) :
     J * J ^ (n - 1) ≤ J ^ n := by
   cases n with
@@ -51,6 +70,17 @@ private theorem mul_pow_sub_one_le (J : Ideal R) (n : ℕ) :
       show J * J ^ m ≤ J ^ (m + 1)
       exact le_of_eq (by rw [mul_comm, ← pow_succ])
 
+/- English proof (translation)
+Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `f _`. Use `show D f ∈ J ^ 0`.
+
+Rewrite using `[pow_zero, Ideal.one_eq_top]`. Conclude with `Submodule.mem_top`. Consider the case `succ m ih`. Introduce `f hf`. Rewrite `hf` using `[pow_succ]`.
+
+Use `show D f ∈ J ^ m`. Use `Submodule.mul_induction_on (C := fun x => D x ∈ J ^ m) hf ?_ ?_` and prove the remaining obligations. Introduce `a ha b hb`. Establish `hDa : D a ∈ J ^ (m - 1)` using `ih a ha`. Establish `hL : D (a * b) = a * D b + b * D a`.
+
+Rewrite using `[D.leibniz, smul_eq_mul, smul_eq_mul]`. Use `show D (a * b) ∈ J ^ m`. Rewrite using `[hL]`. Use `Submodule.add_mem _ (Ideal.mul_mem_right _ _ ha) ?_` and prove the remaining obligations. Conclude with `mul_pow_sub_one_le J m (Ideal.mul_mem_mul hb hDa)`.
+
+Introduce `x y hx hy show D (x + y) ∈ J ^ m`. Rewrite using `[map_add]`. Conclude with `Submodule.add_mem _ hx hy`.
+-/
 private theorem derivation_mem_pow_sub_one (J : Ideal R) (D : Derivation k R R) :
     ∀ (n : ℕ) (f : R), f ∈ J ^ n → D f ∈ J ^ (n - 1) := by
   intro n
@@ -78,6 +108,13 @@ private theorem derivation_mem_pow_sub_one (J : Ideal R) (D : Derivation k R R) 
         rw [map_add]
         exact Submodule.add_mem _ hx hy
 
+/- English proof (translation)
+Introduce `m`. Proceed by induction on `m with`. Consider the case `zero`. Introduce `n f hf`. Rewrite using `[Function.iterate_zero_apply, Nat.sub_zero]`.
+
+Conclude with `hf`. Consider the case `succ m ih`. Introduce `n f hf`. Rewrite using `[Function.iterate_succ_apply]`. Establish `h1 : D f ∈ J ^ (n - 1)` using `derivation_mem_pow_sub_one J D n f hf`.
+
+Establish `h2` using `ih (n - 1) (D f) h1`. Establish `h3 : n - 1 - m = n - (m + 1)` using `by omega`. Rewrite `h2` using `[h3]`. Conclude with `h2`.
+-/
 private theorem iterate_derivation_mem_pow_sub (J : Ideal R) (D : Derivation k R R) :
     ∀ (m n : ℕ) (f : R), f ∈ J ^ n → (⇑D)^[m] f ∈ J ^ (n - m) := by
   intro m
@@ -95,6 +132,15 @@ private theorem iterate_derivation_mem_pow_sub (J : Ideal R) (D : Derivation k R
       rw [h3] at h2
       exact h2
 
+/- English proof (translation)
+Introduce `h`. Proceed by induction on `h with`. Consider the case `zero`. Introduce `D α n f hf`. Establish `hz : ∑ i : Fin 0, α i = 0` using `by simp`.
+
+Rewrite using `[Fin.foldr_zero, hz, Nat.sub_zero]`. Conclude with `hf`. Consider the case `succ h ih`. Introduce `D α n f hf`. Establish `hinner : Fin.foldr h (fun i y => (⇑(D i.succ))^[α i.succ] y) f ∈ J ^ (n - ∑ i : Fin h, α i.succ)` using `ih (fun i => D i.succ) (fun i => α i.succ) n f hf`.
+
+Establish `h2` using `iterate_derivation_mem_pow_sub J (D 0) (α 0) (n - ∑ i : Fin h, α i.succ) _ hinner`. Establish `hs0 : ∑ i, α i = α 0 + ∑ i : Fin h, α i.succ` using `Fin.sum_univ_succ α`. Establish `hs : n - ∑ i, α i = n - (∑ i : Fin h, α i.succ) - α 0`. Rewrite using `[hs0]`. Use linear arithmetic over natural numbers and integers.
+
+Rewrite using `[Fin.foldr_succ, hs]`. Conclude with `h2`.
+-/
 private theorem foldr_iterate_mem_pow_sub (J : Ideal R) :
     ∀ (h : ℕ) (D : Fin h → Derivation k R R) (α : Fin h → ℕ) (n : ℕ) (f : R), f ∈ J ^ n →
       Fin.foldr h (fun i y => (⇑(D i))^[α i] y) f ∈ J ^ (n - ∑ i, α i) := by
@@ -118,17 +164,26 @@ private theorem foldr_iterate_mem_pow_sub (J : Ideal R) :
       rw [Fin.foldr_succ, hs]
       exact h2
 
+/- English proof (translation)
+Conclude with `foldr_iterate_mem_pow_sub J h D α n f hf`.
+-/
 theorem multiIndexDeriv_mem_pow_sub {h : ℕ} (D : Fin h → Derivation k R R) (J : Ideal R) (n : ℕ)
     {f : R} (hf : f ∈ J ^ n) (α : Fin h → ℕ) :
     multiIndexDeriv D α f ∈ J ^ (n - ∑ i, α i) := by
   exact foldr_iterate_mem_pow_sub J h D α n f hf
 
+/- English proof (translation)
+Establish `h1 : ((m : S) * x) = m • x` using `by rw [nsmul_eq_mul]`. Establish `h2 : ((m : S) * D x) = m • D x` using `by rw [nsmul_eq_mul]`. Rewrite using `[h1, h2, map_nsmul]`.
+-/
 private theorem derivation_natCast_mul {B S : Type*} [CommRing B] [CommRing S] [Algebra B S]
     (D : Derivation B S S) (m : ℕ) (x : S) : D ((m : S) * x) = (m : S) * D x := by
   have h1 : ((m : S) * x) = m • x := by rw [nsmul_eq_mul]
   have h2 : ((m : S) * D x) = m • D x := by rw [nsmul_eq_mul]
   rw [h1, h2, map_nsmul]
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ m ih`. Simplify using `only [Function.iterate_succ_apply']`. Rewrite using `[ih, derivation_natCast_mul]`.
+-/
 private theorem iterate_derivation_natCast_mul {B S : Type*} [CommRing B] [CommRing S] [Algebra B S]
     (D : Derivation B S S) (m c : ℕ) (x : S) :
     (⇑D)^[m] ((c : S) * x) = (c : S) * (⇑D)^[m] x := by
@@ -138,6 +193,9 @@ private theorem iterate_derivation_natCast_mul {B S : Type*} [CommRing B] [CommR
       simp only [Function.iterate_succ_apply']
       rw [ih, derivation_natCast_mul]
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ m ih`. Simplify using `only [Function.iterate_succ_apply']`. Rewrite using `[ih, map_sum]`.
+-/
 private theorem iterate_derivation_sum {B S : Type*} [CommRing B] [CommRing S] [Algebra B S]
     (D : Derivation B S S) (m : ℕ) {ι : Type*} (s : Finset ι) (F : ι → S) :
     (⇑D)^[m] (∑ i ∈ s, F i) = ∑ i ∈ s, (⇑D)^[m] (F i) := by
@@ -147,6 +205,17 @@ private theorem iterate_derivation_sum {B S : Type*} [CommRing B] [CommRing S] [
       simp only [Function.iterate_succ_apply']
       rw [ih, map_sum]
 
+/- English proof (translation)
+Establish `e1 : (∑ i ∈ Finset.range (n + 1), ((n.choose i : ℕ) : S) * (u (i + 1) * v (n - i))) = (∑ i ∈ Finset.range n, ((n.choose i : ℕ) : S) * (u (i + 1) * v (n - i))) + u (n + 1) * v 0`. Rewrite using `[Finset.sum_range_succ]`. Simplify using the standard rewrite rules. Establish `e2 : (∑ i ∈ Finset.range (n + 1), ((n.choose i : ℕ) : S) * (u i * v (n + 1 - i))) = (∑ i ∈ Finset.range n, ((n.choose (i + 1) : ℕ) : S) * (u (i + 1) * v (n - i))) + u 0 * v (n + 1)`. Rewrite using `[Finset.sum_range_succ']`.
+
+Simplify using the standard rewrite rules. Establish `e3 : (∑ i ∈ Finset.range (n + 1 + 1), (((n + 1).choose i : ℕ) : S) * (u i * v (n + 1 - i))) = (∑ i ∈ Finset.range (n + 1), (((n + 1).choose (i + 1) : ℕ) : S) * (u (i + 1) * v (n - i))) + u 0 * v (n + 1)`. Rewrite using `[Finset.sum_range_succ']`. Simplify using the standard rewrite rules. Establish `e4 : (∑ i ∈ Finset.range (n + 1), (((n + 1).choose (i + 1) : ℕ) : S) * (u (i + 1) * v (n - i))) = (∑ i ∈ Finset.range n, (((n + 1).choose (i + 1) : ℕ) : S) * (u (i + 1) * v (n - i))) + u (n + 1) * v 0`.
+
+Rewrite using `[Finset.sum_range_succ]`. Simplify using the standard rewrite rules. Establish `e5 : (∑ i ∈ Finset.range n, (((n + 1).choose (i + 1) : ℕ) : S) * (u (i + 1) * v (n - i))) = (∑ i ∈ Finset.range n, ((n.choose i : ℕ) : S) * (u (i + 1) * v (n - i))) + (∑ i ∈ Finset.range n, ((n.choose (i + 1) : ℕ) : S) * (u (i + 1) * v (n - i)))`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations.
+
+Establish `hc : ((n + 1).choose (i + 1) : ℕ) = n.choose i + n.choose (i + 1)` using `Nat.choose_succ_succ n i`. Rewrite using `[hc]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, e2, e3, e4, e5]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem sum_choose_succ_mul_eq {S : Type*} [CommRing S] (u v : ℕ → S) (n : ℕ) :
     (∑ i ∈ Finset.range (n + 1), ((n.choose i : ℕ) : S) * (u (i + 1) * v (n - i)))
         + (∑ i ∈ Finset.range (n + 1), ((n.choose i : ℕ) : S) * (u i * v (n + 1 - i)))
@@ -186,6 +255,15 @@ private theorem sum_choose_succ_mul_eq {S : Type*} [CommRing S] (u v : ℕ → S
   rw [e1, e2, e3, e4, e5]
   ring
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Establish `hstep : ∀ i ∈ Finset.range (n + 1), D (((n.choose i : ℕ) : S) * ((⇑D)^[i] x * (⇑D)^[n - i] y)) = ((n.choose i : ℕ) : S) * ((⇑D)^[i + 1] x * (⇑D)^[n - i] y) + ((n.choose i : ℕ) : S) * ((⇑D)^[i] x * (⇑D)^[n + 1 - i] y)`. Introduce `i hi`.
+
+Rewrite `hi` using `[Finset.mem_range]`. Establish `e1 : D ((⇑D)^[i] x) = (⇑D)^[i + 1] x` using `(Function.iterate_succ_apply' (⇑D) i x).symm`. Establish `e2 : D ((⇑D)^[n - i] y) = (⇑D)^[n + 1 - i] y`. Establish `hni : n + 1 - i = n - i + 1` using `by omega`. Rewrite using `[hni]`.
+
+Conclude with `(Function.iterate_succ_apply' (⇑D) (n - i) y).symm`. Rewrite using `[derivation_natCast_mul, D.leibniz, e1, e2]`. Simplify using `only [smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Function.iterate_succ_apply', ih, map_sum]`.
+
+Use `Eq.trans (Finset.sum_congr rfl hstep) ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_add_distrib]`. Conclude with `sum_choose_succ_mul_eq (fun i => (⇑D)^[i] x) (fun i => (⇑D)^[i] y) n`.
+-/
 private theorem iterate_derivation_mul {B S : Type*} [CommRing B] [CommRing S] [Algebra B S]
     (D : Derivation B S S) (n : ℕ) (x y : S) :
     (⇑D)^[n] (x * y)
@@ -212,12 +290,18 @@ private theorem iterate_derivation_mul {B S : Type*} [CommRing B] [CommRing S] [
       rw [Finset.sum_add_distrib]
       exact sum_choose_succ_mul_eq (fun i => (⇑D)^[i] x) (fun i => (⇑D)^[i] y) n
 
+/- English proof (translation)
+Simplify using `only [multiIndexDeriv, Fin.foldr_succ]`.
+-/
 private theorem multiIndexDeriv_succ {B S : Type*} [CommRing B] [CommRing S] [Algebra B S]
     {m : ℕ} (D : Fin (m + 1) → Derivation B S S) (α : Fin (m + 1) → ℕ) (x : S) :
     multiIndexDeriv D α x
       = (⇑(D 0))^[α 0] (multiIndexDeriv (fun i => D i.succ) (fun i => α i.succ) x) := by
   simp only [multiIndexDeriv, Fin.foldr_succ]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Use `Fin.cases ?_ ?_ i` and prove the remaining obligations. Simplify using the standard rewrite rules. Introduce `j`. Simplify using the standard rewrite rules.
+-/
 private theorem fin_cons_self_tail {m : ℕ} (β : Fin (m + 1) → ℕ) :
     Fin.cons (β 0) (fun i => β i.succ) = β := by
   funext i
@@ -234,6 +318,15 @@ private def finSuccFunEquivProd (m : ℕ) : (Fin (m + 1) → ℕ) ≃ ℕ × (Fi
     rcases p with ⟨a, b⟩
     simp
 
+/- English proof (translation)
+Rewrite using `[← Finset.sum_product']`. Use `Finset.sum_equiv (finSuccFunEquivProd m) ?_ ?_` and prove the remaining obligations. Introduce `β`. Prove the components needed by the constructor for the conclusion. Introduce `hβ`.
+
+Establish `hβ'` using `Fintype.mem_piFinset.1 hβ`. Conclude with `Finset.mem_product.2 ⟨hβ' 0, Fintype.mem_piFinset.2 (fun i => hβ' i.succ)⟩`. Introduce `hβ`. Establish `h1` using `Finset.mem_product.1 hβ`. Use `Fintype.mem_piFinset.2 (fun i => ?_)` and prove the remaining obligations.
+
+Use `Fin.cases ?_ ?_ i` and prove the remaining obligations. Conclude with `h1.1`. Introduce `j`. Conclude with `Fintype.mem_piFinset.1 h1.2 j`. Introduce `β _`.
+
+Conclude with `congrArg F (fin_cons_self_tail β).symm`.
+-/
 private theorem sum_piFinset_succ {M : Type*} [AddCommMonoid M] {m : ℕ}
     (s : Fin (m + 1) → Finset ℕ) (F : (Fin (m + 1) → ℕ) → M) :
     ∑ β ∈ Fintype.piFinset s, F β
@@ -255,6 +348,21 @@ private theorem sum_piFinset_succ {M : Type*} [AddCommMonoid M] {m : ℕ}
   · intro β _
     exact congrArg F (fin_cons_self_tail β).symm
 
+/- English proof (translation)
+Proceed by induction on `h with`. Consider the case `zero`. Establish `hset : (Fintype.piFinset fun i : Fin 0 => Finset.range (α i + 1)) = {fun _ => 0}`. Use `Finset.eq_singleton_iff_unique_mem.2 ⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `Fintype.mem_piFinset.2 (fun i => i.elim0)`.
+
+Introduce `x _`. Use function extensionality and compare the values at `i`. Conclude with `i.elim0`. Rewrite using `[hset, Finset.sum_singleton]`. Simplify using the standard rewrite rules.
+
+Consider the case `succ h ih`. Establish `hcons : ∀ (j : ℕ) (γ : Fin h → ℕ) (x : R), multiIndexDeriv D (Fin.cons j γ) x = (⇑(D 0))^[j] (multiIndexDeriv (fun i => D i.succ) γ x)`. Introduce `j γ x`. Rewrite using `[multiIndexDeriv_succ D (Fin.cons j γ) x]`. Simplify using the standard rewrite rules.
+
+Establish `hcons2 : ∀ (j : ℕ) (γ : Fin h → ℕ) (x : R), multiIndexDeriv D (fun i => α i - (Fin.cons j γ : Fin (h + 1) → ℕ) i) x = (⇑(D 0))^[α 0 - j] (multiIndexDeriv (fun i => D i.succ) (fun i => α i.succ - γ i) x)`. Introduce `j γ x`. Rewrite using `[multiIndexDeriv_succ D (fun i => α i - (Fin.cons j γ : Fin (h + 1) → ℕ) i) x]`. Simplify using the standard rewrite rules. Establish `key : ∀ γ : Fin h → ℕ, (⇑(D 0))^[α 0] (((∏ i, (α i.succ).choose (γ i) : ℕ) : R) * multiIndexDeriv (fun i => D i.succ) γ f * multiIndexDeriv (fun i => D i.succ) (fun i => α i.succ - γ i) g) = ∑ j ∈ Finset.range (α 0 + 1), ((∏ i, (α i).choose ((Fin.cons j γ : Fin (h + 1) → ℕ) i) : …`.
+
+Introduce `γ`. Establish `hA : ((∏ i, (α i.succ).choose (γ i) : ℕ) : R) * multiIndexDeriv (fun i => D i.succ) γ f * multiIndexDeriv (fun i => D i.succ) (fun i => α i.succ - γ i) g = ((∏ i, (α i.succ).choose (γ i) : ℕ) : R) * (multiIndexDeriv (fun i => D i.succ) γ f * multiIndexDeriv (fun i => D i.succ) (f …` using `mul_assoc _ _ _`. Rewrite using `[hA, iterate_derivation_natCast_mul, iterate_derivation_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl (fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[hcons j γ f, hcons2 j γ g, Fin.prod_univ_succ]`.
+
+Simplify using `only [Fin.cons_zero, Fin.cons_succ]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[multiIndexDeriv_succ D α (f * g), ih (fun i => D i.succ) (fun i => α i.succ), iterate_derivation_sum]`. Use `Eq.trans (Finset.sum_congr rfl (fun γ _ => key γ)) ?_` and prove the remaining obligations.
+
+Rewrite using `[Finset.sum_comm]`. Conclude with `(sum_piFinset_succ (fun i : Fin (h + 1) => Finset.range (α i + 1)) (fun β => ((∏ i, (α i).choose (β i) : ℕ) : R) * multiIndexDeriv D β f * multiIndexDeriv D (fun i => α i - β i) g)).symm`.
+-/
 theorem multiIndexDeriv_mul {h : ℕ} (D : Fin h → Derivation k R R) (α : Fin h → ℕ) (f g : R) :
     multiIndexDeriv D α (f * g) =
       ∑ β ∈ Fintype.piFinset fun i => Finset.range (α i + 1),
@@ -315,6 +423,15 @@ theorem multiIndexDeriv_mul {h : ℕ} (D : Fin h → Derivation k R R) (α : Fin
         (fun β => ((∏ i, (α i).choose (β i) : ℕ) : R) * multiIndexDeriv D β f *
           multiIndexDeriv D (fun i => α i - β i) g)).symm
 
+/- English proof (translation)
+Rewrite using `[multiIndexDeriv_mul D α f g, ← Finset.sum_filter_add_sum_filter_not (Fintype.piFinset fun i => Finset.range (α i + 1)) (fun β => ∑ i, β i = r), add_sub_cancel_left]`. Use `Ideal.sum_mem _ ?_` and prove the remaining obligations. Introduce `β hβ`. Rewrite `hβ` using `[Finset.mem_filter]`. Take `⟨hβmem, hβne⟩` from `hβ`.
+
+Establish `hβi : ∀ i, β i ≤ α i` using `fun i => Nat.lt_succ_iff.mp (Finset.mem_range.mp (Fintype.mem_piFinset.mp hβmem i))`. Establish `h1 : (∑ i, (α i - β i)) + ∑ i, β i = r + s`. Rewrite using `[← hα, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun i _ => Nat.sub_add_cancel (hβi i)`. Distinguish the cases in `hlt : ∑ i, β i < r`.
+
+Establish `hmem : multiIndexDeriv D β f ∈ J ^ (r - ∑ i, β i)` using `multiIndexDeriv_mem_pow_sub D J r hf β`. Establish `hx : multiIndexDeriv D β f ∈ J`. Establish `hpos : 0 < r - ∑ i, β i` using `by omega`. Conclude with `Ideal.pow_le_self hpos.ne' hmem`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.mul_mem_left _ _ hx)`.
+
+Establish `hmem : multiIndexDeriv D (fun i => α i - β i) g ∈ J ^ (s - ∑ i, (α i - β i))` using `multiIndexDeriv_mem_pow_sub D J s hg (fun i => α i - β i)`. Establish `hy : multiIndexDeriv D (fun i => α i - β i) g ∈ J`. Establish `hpos : 0 < s - ∑ i, (α i - β i)` using `by omega`. Conclude with `Ideal.pow_le_self hpos.ne' hmem`. Conclude with `Ideal.mul_mem_left _ _ hy`.
+-/
 theorem multiIndexDeriv_mul_sub_sum_mem {h : ℕ} (D : Fin h → Derivation k R R) (J : Ideal R)
     (r s : ℕ) (α : Fin h → ℕ) (hα : ∑ i, α i = r + s) {f g : R}
     (hf : f ∈ J ^ r) (hg : g ∈ J ^ s) :
@@ -350,6 +467,11 @@ theorem multiIndexDeriv_mul_sub_sum_mem {h : ℕ} (D : Fin h → Derivation k R 
       exact Ideal.pow_le_self hpos.ne' hmem
     exact Ideal.mul_mem_left _ _ hy
 
+/- English proof (translation)
+Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `F _ x`. Simplify using the standard rewrite rules.
+
+Consider the case `succ n ih`. Introduce `F hF x`. Rewrite using `[Fin.foldr_succ, Fin.foldr_succ, hF 0, ih (fun i => F i.succ) (fun i y => hF i.succ y) x]`.
+-/
 private theorem foldr_comm_of_comm {A : Type*} (E : A → A) :
     ∀ (n : ℕ) (F : Fin n → A → A), (∀ (i : Fin n) (y : A), E (F i y) = F i (E y)) →
       ∀ x : A, E (Fin.foldr n F x) = Fin.foldr n F (E x) := by
@@ -363,6 +485,17 @@ private theorem foldr_comm_of_comm {A : Type*} (E : A → A) :
       rw [Fin.foldr_succ, Fin.foldr_succ, hF 0,
         ih (fun i => F i.succ) (fun i y => hF i.succ y) x]
 
+/- English proof (translation)
+Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `D _ α β x`. Simplify using the standard rewrite rules.
+
+Consider the case `succ n ih`. Introduce `D hD α β x`. Establish `key : ∀ (γ : Fin (n + 1) → ℕ) (y : R), multiIndexDeriv D γ y = (⇑(D 0))^[γ 0] (multiIndexDeriv (fun i : Fin n => D i.succ) (fun i : Fin n => γ i.succ) y)`. Introduce `γ y`. Conclude with `Fin.foldr_succ (fun (i : Fin (n + 1)) (z : R) => (⇑(D i))^[γ i] z) y`.
+
+Establish `hcomm0 : ∀ (γ : Fin n → ℕ) (y : R), (⇑(D 0)) (multiIndexDeriv (fun i : Fin n => D i.succ) γ y) = multiIndexDeriv (fun i : Fin n => D i.succ) γ ((⇑(D 0)) y)`. Introduce `γ y`. Establish `hc : ∀ (i : Fin n) (z : R), (⇑(D 0)) ((⇑(D i.succ))^[γ i] z) = (⇑(D i.succ))^[γ i] ((⇑(D 0)) z)`. Introduce `i z`. Establish `hcomm : Function.Commute (⇑(D 0) : R → R) (⇑(D i.succ) : R → R)` using `fun w => hD 0 i.succ w`.
+
+Conclude with `hcomm.iterate_right (γ i) z`. Conclude with `foldr_comm_of_comm (⇑(D 0)) n (fun i z => (⇑(D i.succ))^[γ i] z) hc y`. Establish `hcomm : ∀ (m : ℕ) (γ : Fin n → ℕ) (y : R), (⇑(D 0))^[m] (multiIndexDeriv (fun i : Fin n => D i.succ) γ y) = multiIndexDeriv (fun i : Fin n => D i.succ) γ ((⇑(D 0))^[m] y)`. Introduce `m γ y`. Establish `hc : Function.Commute (multiIndexDeriv (fun i : Fin n => D i.succ) γ) (⇑(D 0) : R → R)` using `fun w => (hcomm0 γ w).symm`.
+
+Conclude with `(hc.iterate_right m y).symm`. Establish `hidx : (fun i : Fin n => (α + β) i.succ) = (fun i : Fin n => α i.succ) + (fun i : Fin n => β i.succ)`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Rewrite using `[key (α + β) x, hidx, ih (fun i : Fin n => D i.succ) (fun i j w => hD i.succ j.succ w) (fun i : Fin n => α i.succ) (fun i : Fin n => β i.succ) x, key β x, key α, Pi.add_apply, Function.iterate_add_apply, hcomm (β 0) (fun i : Fin n => α i.succ) (multiIndexDeriv (fun i : Fin n => D …`.
+-/
 private theorem multiIndexDeriv_add_of_comm_forall :
     ∀ (n : ℕ) (D : Fin n → Derivation k R R),
       (∀ i j : Fin n, ∀ x : R, D i (D j x) = D j (D i x)) →
@@ -410,6 +543,9 @@ private theorem multiIndexDeriv_add_of_comm_forall :
         hcomm (β 0) (fun i : Fin n => α i.succ)
           (multiIndexDeriv (fun i : Fin n => D i.succ) (fun i : Fin n => β i.succ) x)]
 
+/- English proof (translation)
+The claim follows from `multiIndexDeriv_add_of_comm_forall h D hD α β x`.
+-/
 theorem multiIndexDeriv_add {h : ℕ} (D : Fin h → Derivation k R R)
     (hD : ∀ i j : Fin h, ∀ x : R, D i (D j x) = D j (D i x)) (α β : Fin h → ℕ) (x : R) :
     multiIndexDeriv D (α + β) x = multiIndexDeriv D α (multiIndexDeriv D β x) :=
@@ -418,12 +554,29 @@ theorem multiIndexDeriv_add {h : ℕ} (D : Fin h → Derivation k R R)
 def unitMultiIndex {h : ℕ} (i : Fin h) : Fin h → ℕ := fun j => if j = i then 1 else 0
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem unitMultiIndex_apply {h : ℕ} (i j : Fin h) :
     unitMultiIndex i j = if j = i then 1 else 0 := rfl
 
+/- English proof (translation)
+Simplify using `[unitMultiIndex]`.
+-/
 theorem sum_unitMultiIndex {h : ℕ} (i : Fin h) : ∑ j, unitMultiIndex i j = 1 := by
   simp [unitMultiIndex]
 
+/- English proof (translation)
+Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `F i`. Conclude with `i.elim0`.
+
+Consider the case `succ m ih`. Introduce `F i`. Proceed by induction on `i using Fin.cases with`. Consider the case `zero`. Introduce `f hne heq x`.
+
+Establish `hinner : Fin.foldr m (fun j : Fin m => F j.succ) x = x` using `foldr_eq_self_of_forall_eq_self m (fun j : Fin m => F j.succ) (fun j y => hne j.succ (Fin.succ_ne_zero j) y) x`. Rewrite using `[Fin.foldr_succ]`. Use `show F 0 (Fin.foldr m (fun j : Fin m => F j.succ) x) = f x`. Rewrite using `[hinner]`. Conclude with `heq x`.
+
+Consider the case `succ j`. Introduce `f hne heq x`. Establish `hinner : Fin.foldr m (fun j' : Fin m => F j'.succ) x = f x` using `ih (fun j' : Fin m => F j'.succ) j f (fun j' hj' y => hne j'.succ (fun hc => hj' (Fin.succ_injective m hc)) y) (fun y => heq y) x`. Rewrite using `[Fin.foldr_succ]`. Use `show F 0 (Fin.foldr m (fun j' : Fin m => F j'.succ) x) = f x`.
+
+Rewrite using `[hinner]`. Conclude with `hne 0 (Ne.symm (Fin.succ_ne_zero j)) (f x)`.
+-/
 private theorem foldr_eq_of_eq_id_of_ne {A : Type*} :
     ∀ (n : ℕ) (F : Fin n → A → A) (i : Fin n) (f : A → A),
       (∀ j : Fin n, j ≠ i → ∀ y : A, F j y = y) → (∀ y : A, F i y = f y) →
@@ -456,6 +609,11 @@ private theorem foldr_eq_of_eq_id_of_ne {A : Type*} :
           rw [hinner]
           exact hne 0 (Ne.symm (Fin.succ_ne_zero j)) (f x)
 
+/- English proof (translation)
+Use `show Fin.foldr h (fun j y => (⇑(D j))^[unitMultiIndex i j] y) x = D i x`. Use `foldr_eq_of_eq_id_of_ne h (fun j y => (⇑(D j))^[unitMultiIndex i j] y) i (⇑(D i)) ?_ ?_ x` and prove the remaining obligations. Introduce `j hj y`. Simplify using `[unitMultiIndex, hj]`. Introduce `y`.
+
+Simplify using `[unitMultiIndex]`.
+-/
 theorem multiIndexDeriv_unitMultiIndex {h : ℕ} (D : Fin h → Derivation k R R) (i : Fin h) (x : R) :
     multiIndexDeriv D (unitMultiIndex i) x = D i x := by
   show Fin.foldr h (fun j y => (⇑(D j))^[unitMultiIndex i j] y) x = D i x
@@ -466,6 +624,9 @@ theorem multiIndexDeriv_unitMultiIndex {h : ℕ} (D : Fin h → Derivation k R R
   · intro y
     simp [unitMultiIndex]
 
+/- English proof (translation)
+Rewrite using `[multiIndexDeriv_add D hD α (unitMultiIndex i) x, multiIndexDeriv_unitMultiIndex D i x]`.
+-/
 theorem multiIndexDeriv_add_unitMultiIndex_apply_first {h : ℕ} (D : Fin h → Derivation k R R)
     (hD : ∀ i j : Fin h, ∀ x : R, D i (D j x) = D j (D i x)) (α : Fin h → ℕ) (i : Fin h) (x : R) :
     multiIndexDeriv D (α + unitMultiIndex i) x = multiIndexDeriv D α (D i x) := by

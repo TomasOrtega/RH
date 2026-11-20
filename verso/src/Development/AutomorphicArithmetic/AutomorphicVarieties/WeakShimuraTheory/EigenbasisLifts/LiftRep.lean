@@ -12,6 +12,11 @@ import Mathlib.Topology.Instances.TrivSqZeroExt
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial Matrix UpperTheory.V UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws UpperTheory.V.Ws.Eb GlobalTheory.GalOfCusp
 
+/- English proof (translation)
+Rewrite using `[continuous_iff_continuousAt]`. Introduce `g₀`. Rewrite using `[ContinuousAt, Metric.tendsto_nhds]`. Introduce `ε hε`. Take `⟨n, hn⟩` from `hy (ε / 2) (half_pos hε)`.
+
+Use `filter_upwards [(hf n).eventually_eq g₀] with g hg`. Establish `h1` using `hn _ (Ideal.Quotient.eq.1 hg)`. Rewrite `h1` using `[map_sub]`. Rewrite using `[dist_eq_norm]`. Conclude with `h1.trans_lt (half_lt_self hε)`.
+-/
 private theorem lr_cont {Γ R E : Type} [TopologicalSpace Γ] [CommRing R] [NormedAddCommGroup E] (I : Ideal R) (f : Γ → R)
     (hf : AdicCont I f) (y : R →+ E) (hy : ∀ ε : ℝ, 0 < ε → ∃ n, ∀ x ∈ I ^ n, ‖y x‖ ≤ ε) :
     Continuous fun g => y (f g) := by
@@ -26,6 +31,11 @@ private theorem lr_cont {Γ R E : Type} [TopologicalSpace Γ] [CommRing R] [Norm
   rw [dist_eq_norm]
   exact h1.trans_lt (half_lt_self hε)
 
+/- English proof (translation)
+Take `⟨-, a, ha1, ha0, ha⟩` from `(coPt c R).1 ((TrivSqZeroExt.fstHom c.O (PadicAlgCl l) (PadicAlgCl l)).comp x)`. Establish `h1 : Continuous fun g => (x (f g)).fst`. Use `lr_cont _ f hf ((TrivSqZeroExt.fstHom c.O (PadicAlgCl l) (PadicAlgCl l)).comp x).toRingHom.toAddMonoidHom fun ε hε => ?_` and prove the remaining obligations. Take `⟨k, hk⟩` from `((tendsto_pow_atTop_nhds_zero_of_lt_one ha0 ha1).eventually (gt_mem_nhds hε)).exists`. Conclude with `⟨k, fun z hz => (ha k z hz).trans hk.le⟩`.
+
+Establish `h2 : Continuous fun g => (x (f g)).snd` using `lr_cont _ f hf ((TrivSqZeroExt.sndHom (PadicAlgCl l) (PadicAlgCl l)).toAddMonoidHom.comp x.toRingHom.toAddMonoidHom) ((coPt c R).2 x).2`. Conclude with `h1.prodMk h2`.
+-/
 private theorem lr_cont2 {l : ℕ} [Fact l.Prime] (c : Coef l) {Γ R : Type} [TopologicalSpace Γ] [CommRing R] [Algebra c.O R]
     [IsCO c.O R] (f : Γ → R) (hf : AdicCont (maximalIdeal R) f) (x : R →ₐ[c.O] DualNumber (PadicAlgCl l)) :
     Continuous fun g => x (f g) := by
@@ -40,6 +50,17 @@ private theorem lr_cont2 {l : ℕ} [Fact l.Prime] (c : Coef l) {Γ R : Type} [To
       ((coPt c R).2 x).2
   exact h1.prodMk h2
 
+/- English proof (translation)
+Introduce `l _ F c n r B x' ρ hn hρ hD`. Use `haveI : Module.Finite (PadicAlgCl l) (DualNumber (PadicAlgCl l)) := inferInstanceAs (Module.Finite (PadicAlgCl l) (PadicAlgCl l × PadicAlgCl l))`. Use `haveI : IsArtinianRing (DualNumber (PadicAlgCl l)) := IsArtinianRing.of_finite (PadicAlgCl l) _`. Use `haveI : IsAdicComplete (maximalIdeal (DualNumber (PadicAlgCl l))) (DualNumber (PadicAlgCl l)) := inferInstance`. Use `haveI : IsLocalHom (dF (PadicAlgCl l)) := ⟨fun a ha => TrivSqZeroExt.isUnit_iff_isUnit_fst.2 ha⟩`.
+
+Take `⟨ρ', h1, h2, h3⟩` from `detRep (dF (PadicAlgCl l)) (B.u.D.map (x' : B.B →+* DualNumber (PadicAlgCl l))) ρ hn (fun a => ⟨TrivSqZeroExt.inl a, rfl⟩) hρ (((AlgebraTools.Det.mapApi B.u.D _).2.2.2.2.2.2.1 _).trans hD)`. Establish `htr : ∀ g, (W.mat ρ' g).trace = x' (B.u.D.lam 1 (MonoidAlgebra.single g 1))` using `fun g => by`. Establish `e1` using `(AlgebraTools.Det.mapApi B.u.D (x' : B.B →+* DualNumber (PadicAlgCl l))).2.2.1 1 g`. Establish `e2` using `(AlgebraTools.Det.repApi (W.mat ρ')).2.2.1 hn (MonoidAlgebra.single g 1)`. Establish `e3 : W.GDet.repAlg (W.mat ρ') _ (MonoidAlgebra.single g 1) = W.mat ρ' g`.
+
+Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Simplify using `[W.GDet.repAlg]`. Rewrite `e1` using `[h1]`. Rewrite `e2` using `[e3]`. Conclude with `e2.symm.trans e1`.
+
+Establish `hc : Continuous ρ'` using `(trPlus ρ' h3).2 (by`. Simplify using `only [htr]`. Conclude with `lr_cont2 c _ (B.u.cont 1) x')`. Take `⟨h4, y, h5, h6⟩` from `tanOf ρ' hc`. Rewrite `h4`, `h5`, `h6` using `[h2]`.
+
+Conclude with `⟨ρ', y, h1, h2, h3, h4, h5, h6⟩`.
+-/
 theorem UpperTheory.V.Ws.Eb.liftRep :
     ∀ {l : ℕ} [Fact l.Prime] {F : W.GFrame l} {c : Coef l} {n : ℕ} {r : W.Resid F c.O n} (B : W.UniversalOrdinaryDeterminantRing r) (x' : B.B →ₐ[c.O] DualNumber (PadicAlgCl l)) (ρ : F.G₀ →* GL (Fin n) (PadicAlgCl l)), 1 ≤ n → Full ρ → B.u.D.map ((dF _).comp (x' : B.B →+* DualNumber (PadicAlgCl l))) = W.GDet.ofRep (W.mat ρ) →
         ∃ (ρ' : F.G₀ →* GL (Fin n) (DualNumber (PadicAlgCl l))) (y : F.G₀ → Matrix (Fin n) (Fin n) (PadicAlgCl l)), B.u.D.map (x' : B.B →+* DualNumber (PadicAlgCl l)) = W.GDet.ofRep (W.mat ρ') ∧ W.pushRep (dF _) ρ' = ρ ∧ Full ρ' ∧ Continuous ρ ∧ y ∈ Z1 (Loc.adGL ρ) ∧ IsTan ρ y ρ' := by

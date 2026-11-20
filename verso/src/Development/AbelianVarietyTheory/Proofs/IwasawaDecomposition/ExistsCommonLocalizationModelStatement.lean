@@ -11,6 +11,9 @@ open AlgebraicGeometry CategoryTheory Limits NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory GlobalTheory.ShFam GlobalTheory.LocM GlobalTheory.TorRef
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.Member.overlap_rings | exact GlobalTheory.Member.overlap_rings | (intros; apply GlobalTheory.Member.overlap_rings <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_common_localization_model : ∀ {O F R R₂ : Type} [CommRing O] [Field F] [CommRing R] [CommRing R₂] (β : O →+* F) (r r₂ : O) (b : O →+* R)
     (b₂ : O →+* R₂) (ω : R →+* F) (ω₂ : R₂ →+* F), Models.IsDedFrac β → Models.IsDedFrac ω → Models.IsDedFrac ω₂ →
     ω.comp b = β → ω₂.comp b₂ = β → @IsLocalization.Away O _ r R _ b.toAlgebra →

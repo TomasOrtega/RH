@@ -7,6 +7,13 @@ open GlobalTheory.AbDual (evc IsAdditive swap)
 attribute [local instance] Ideal.Quotient.field
 open UpperTheory.Gal.crystallineComparison UpperTheory.Gal.crystallineComparison.Mod
 
+/- English proof (translation)
+Introduce and unpack `hA κ _ A P ⟨K, i, hm, hfin, hfl, hP⟩`. Take `⟨B, _, _, k, hf, hfr, pb⟩` from `hA (Sp κ) K.left K.hom hfin hfl κ (𝟙 _)`. Establish `hk : IsIso k` using `pb.isIso_fst_of_isIso`. Establish `hw : k ≫ K.hom = spMap (algebraMap κ B)`. Simplify using `using pb.w`.
+
+Set `e : algPt κ B ≅ K` to `Over.isoMk (asIso k) hw`. Use `⟨Module.finrank κ B, B, ‹_›, ‹_›, hf, hfr, rfl, e.hom ≫ i, inferInstance, fun T g => ?_⟩` and prove the remaining obligations. Rewrite using `[← hP T g]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy⟩`.
+
+Conclude with `⟨y ≫ e.hom, by simpa using hy⟩`. Introduce and unpack `⟨y, hy⟩`. Conclude with `⟨y ≫ e.inv, by simpa using hy⟩`.
+-/
 theorem UpperTheory.Gal.crystallineComparison.Mod.repOfFF_of :
     AlgOf → RepOfFF := by
   rintro hA κ _ A P ⟨K, i, hm, hfin, hfl, hP⟩

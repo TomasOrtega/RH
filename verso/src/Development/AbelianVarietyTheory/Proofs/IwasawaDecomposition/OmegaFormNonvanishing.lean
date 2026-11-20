@@ -18,24 +18,42 @@ namespace GlobalTheory.OneMapRef.Lift
 
 def sgnGL (n : ℕ) (S : Type) [CommRing S] (ε : ℤˣ) : GL (Fin n) S := Units.map (Int.castRingHom _).toMonoidHom ε
 
+/- English proof (translation)
+The claim follows from `(zsmul_one _).symm`.
+-/
 theorem sgnGL_val (n : ℕ) (S : Type) [CommRing S] (ε : ℤˣ) : (sgnGL n S ε).1 = (ε : ℤ) • 1 := (zsmul_one _).symm
 
+/- English proof (translation)
+The claim follows from `Units.ext (by rw [Units.val_mul, Units.val_mul, sgnGL_val, mul_smul_comm, smul_mul_assoc, mul_one, one_mul])`.
+-/
 theorem sgnGL_comm {n : ℕ} {S : Type} [CommRing S] (ε : ℤˣ) (x : GL (Fin n) S) : x * sgnGL n S ε = sgnGL n S ε * x :=
   Units.ext (by rw [Units.val_mul, Units.val_mul, sgnGL_val, mul_smul_comm, smul_mul_assoc, mul_one, one_mul])
 
+/- English proof (translation)
+The claim follows from `Units.ext (map_intCast (f.mapMatrix : Matrix (Fin n) (Fin n) S →+* Matrix (Fin n) (Fin n) S') (ε : ℤ))`.
+-/
 theorem bc_sgnGL {n : ℕ} {S S' : Type} [CommRing S] [CommRing S'] (f : S →+* S') (ε : ℤˣ) :
     Formalism.UG.bc f (sgnGL n S ε) = sgnGL n S' ε :=
   Units.ext (map_intCast (f.mapMatrix : Matrix (Fin n) (Fin n) S →+* Matrix (Fin n) (Fin n) S') (ε : ℤ))
 
+/- English proof (translation)
+Rewrite using `[← bc_sgnGL f]`. Both sides reduce to the same expression.
+-/
 theorem map_sgn {n : ℕ} {S S' : Type} [CommRing S] [CommRing S'] (f : S →+* S') (ε : ℤˣ) (i j : Fin n) :
     (sgnGL n S' ε).1 i j = f ((sgnGL n S ε).1 i j) := by
   rw [← bc_sgnGL f]; rfl
 
+/- English proof (translation)
+Establish `h : intGL F E n (sgnGL n _ ε) = sgnGL n _ ε` using `bc_sgnGL (Formalism.L2.Herm.intAf F E).subtype ε`. Rewrite using `[frGL, MonoidHom.comp_apply, h, MulEquiv.coe_toMonoidHom, MulAut.conj_apply, sgnGL_comm, mul_inv_cancel_right]`.
+-/
 theorem frGL_sgn {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ}
     (β : GL (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) (ε : ℤˣ) : frGL β (sgnGL n _ ε) = sgnGL n _ ε := by
   have h : intGL F E n (sgnGL n _ ε) = sgnGL n _ ε := bc_sgnGL (Formalism.L2.Herm.intAf F E).subtype ε
   rw [frGL, MonoidHom.comp_apply, h, MulEquiv.coe_toMonoidHom, MulAut.conj_apply, sgnGL_comm, mul_inv_cancel_right]
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.LevelUnique.exists_matrix_hat hfr T hJ hx ⟨sgnGL n _ ε, rfl⟩ (fun P hP => by rw [h P hP, redFn_frGL, bc_sgnGL]) hb hK (fun i j => by rw [frGL_sgn] exact map_sgn (Algebra.TensorProduct.comm F (FiniteAdeleRing (𝓞 F) F) E).toAlgHom.toRingHom ε i j)`.
+-/
 theorem exists_matrix_sign {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ}
     {β : GL (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)} {Λ : Submodule (𝓞 E) (Fin n → E)} (hfr : IsFrame β Λ)
     (T : Finset (Pl E)) {J : Ideal (𝓞 E)} {M : ℕ} (hJ : (∏ P ∈ T, P.asIdeal) * J = Ideal.span {(M : 𝓞 E)})
@@ -52,29 +70,44 @@ theorem exists_matrix_sign {F E : Type} [Field F] [NumberField F] [Field E] [Num
       rw [frGL_sgn]
       exact map_sgn (Algebra.TensorProduct.comm F (FiniteAdeleRing (𝓞 F) F) E).toAlgHom.toRingHom ε i j)
 
+/- English proof (translation)
+Substitute `hr` using the available equality. Conclude with `Units.ext e`.
+-/
 theorem eq_sgn_of_submatrix {n r : ℕ} (hr : n = r) (h : r ≤ n) {S : Type} [CommRing S] {x : GL (Fin n) S} {ε : ℤˣ}
     (e : x.1.submatrix (Fin.castLE h) (Fin.castLE h) = (sgnGL r S ε).1) : x = sgnGL n S ε := by
   subst hr
   exact Units.ext e
 
+/- English proof (translation)
+Rewrite using `[smul_add, ← e₂, ← e₃, sub_add_sub_cancel, sgnGL_val, Matrix.smul_mulVec, Matrix.one_mulVec]`.
+-/
 theorem sign_calc {R : Type} [CommRing R] {n : ℕ} {K : Matrix (Fin n) (Fin n) R} {x z w₂ w₃ : Fin n → R} {M : ℕ} {ε : ℤˣ}
     (e₂ : x - K *ᵥ z = M • w₂) (e₃ : K *ᵥ z - (sgnGL n R ε).1 *ᵥ z = M • w₃) : x - (ε : ℤ) • z = M • (w₂ + w₃) := by
   rw [smul_add, ← e₂, ← e₃, sub_add_sub_cancel, sgnGL_val, Matrix.smul_mulVec, Matrix.one_mulVec]
 
 variable {D : D7}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Conclude with `(map_sub (TensorProduct.mk D.host.F (Af D.host.F) D.host.E 1) (x j) (e • y j)).trans (congrArg (fun t => finVec V x j - t) (map_zsmul (TensorProduct.mk D.host.F (Af D.host.F) D.host.E 1) e (y j)))`.
+-/
 theorem finVec_sub_zsmul (V : HSp D) (x y : Fin V.rank → D.host.E) (e : ℤ) :
     finVec V (x - e • y) = finVec V x - e • finVec V y := by
   funext j
   exact (map_sub (TensorProduct.mk D.host.F (Af D.host.F) D.host.E 1) (x j) (e • y j)).trans
     (congrArg (fun t => finVec V x j - t) (map_zsmul (TensorProduct.mk D.host.F (Af D.host.F) D.host.E 1) e (y j)))
 
+/- English proof (translation)
+Establish `hl : Formalism.L2.Pj.latHat V = GlobalTheory.AdLat.hat D.host.F (Λ : Set (Fin V.rank → D.host.E))`. Rewrite using `[GlobalTheory.PrincInLevel.eq_latC hβ]`. Conclude with `(GlobalTheory.Member.latHat_eq_hat_and_gram D V).1`. Rewrite using `[hl]`. Both sides reduce to the same expression.
+-/
 theorem hatV_eq {V : HSp D} {β : GL (Fin V.rank) (Lev.EAf D)} {Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)}
     (hβ : IsSDFrame V β Λ 1) : GlobalTheory.Ker.hatV Λ = Formalism.L2.Pj.latHat V := by
   have hl : Formalism.L2.Pj.latHat V = GlobalTheory.AdLat.hat D.host.F (Λ : Set (Fin V.rank → D.host.E)) := by
     rw [GlobalTheory.PrincInLevel.eq_latC hβ]; exact (GlobalTheory.Member.latHat_eq_hat_and_gram D V).1
   rw [hl]; rfl
 
+/- English proof (translation)
+Introduce `z hz`. Take `⟨y, hy, e⟩` from `hk z hz`. Rewrite `e` using `[one_nsmul]`. Rewrite using `[sub_eq_iff_eq_add.1 e]`. Conclude with `add_mem hy hz`.
+-/
 theorem mulVec_mem {V : HSp D} {k : GA D V} (hk : GlobalTheory.Member.FinCong V 1 k) :
     ∀ z ∈ Formalism.L2.Pj.latHat V, (finHom V k).1 *ᵥ z ∈ Formalism.L2.Pj.latHat V := by
   intro z hz
@@ -83,6 +116,13 @@ theorem mulVec_mem {V : HSp D} {k : GA D V} (hk : GlobalTheory.Member.FinCong V 
   rw [sub_eq_iff_eq_add.1 e]
   exact add_mem hy hz
 
+/- English proof (translation)
+Establish `hk' : Lev.finE V k⁻¹ ∈ St β` using `by rw [map_inv]; exact inv_mem hk`. Establish `h1` using `mulVec_mem (GlobalTheory.LevelAction.finCong_of_mem_St hβ hk)`. Establish `h2` using `mulVec_mem (GlobalTheory.LevelAction.finCong_of_mem_St hβ hk')`. Introduce `u`. Rewrite using `[hatV_eq hβ]`.
+
+Express the relevant statement in the definitionally equal form `_ ↔ ∃ u₀ ∈ _, u = (finHom V k).1 *ᵥ u₀`. Prove the components needed by the constructor for the conclusion. Introduce `hu`. Conclude with `⟨_, h2 u hu, by rw [← GlobalTheory.Member.LatMove.fin_mul, mul_inv_cancel, GlobalTheory.Member.LatMove.fin_one]⟩`. Introduce and unpack `⟨u₀, h0, rfl⟩`.
+
+Conclude with `h1 u₀ h0`.
+-/
 theorem isMov_of_mem_St {V : HSp D} {β : GL (Fin V.rank) (Lev.EAf D)} {Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)}
     (hβ : IsSDFrame V β Λ 1) {k : GA D V} (hk : Lev.finE V k ∈ St β) : GlobalTheory.Ker.IsMov (GlobalTheory.Ker.fmt V k) Λ Λ := by
   have hk' : Lev.finE V k⁻¹ ∈ St β := by rw [map_inv]; exact inv_mem hk
@@ -97,6 +137,15 @@ theorem isMov_of_mem_St {V : HSp D} {β : GL (Fin V.rank) (Lev.EAf D)} {Λ : Sub
   · rintro ⟨u₀, h0, rfl⟩
     exact h1 u₀ h0
 
+/- English proof (translation)
+Establish `hm : ∀ a, ι a ∈ latG V 1` using `fun a => hι.2 ▸ LinearMap.mem_range_self ι a`. Introduce `a ha`. Use `Submodule.smul_induction_on ha (fun b hb a _ => ?_) ?_` and prove the remaining obligations. Take `⟨w, hw, e⟩` from `h b hb _ ((GlobalTheory.Member.LatMove.mem_lat_iff V 1 _).1 (hm a))`. Establish `e₀ : finVec V (ι (b • a)) = ((1 : Af D.host.F) ⊗ₜ[D.host.F] (b : D.host.E)) • finVec V (ι a)`.
+
+Rewrite using `[map_smul]`. Conclude with `GlobalTheory.AdLat.Tower.fv_smul b (ι a)`. Conclude with `⟨w, hw, by rw [e₀, Matrix.mulVec_smul, Matrix.mulVec_smul, ← smul_sub, e]⟩`. Introduce and unpack `x y ⟨w, hw, e⟩ ⟨w', hw', e'⟩`. Establish `e₀ : finVec V (ι (x + y)) = finVec V (ι x) + finVec V (ι y)`.
+
+Rewrite using `[map_add]`. Use function extensionality and compare the values at `i`. Conclude with `TensorProduct.tmul_add _ _ _`. Use `⟨w + w', add_mem hw hw', ?_⟩` and prove the remaining obligations. Rewrite using `[e₀, Matrix.mulVec_add, Matrix.mulVec_add, smul_add, ← e, ← e']`.
+
+Normalize the expressions using the abelian group laws.
+-/
 theorem cong_on_half {V : HSp D} {La : Type} [AddCommGroup La] [Module (𝓞 D.host.E) La]
     {ι : La →ₗ[𝓞 D.host.E] (Fin V.rank → D.host.E)} (hι : LatEmb V ι) {J : Ideal (𝓞 D.host.E)} {M : ℕ}
     {K K' : Matrix (Fin V.rank) (Fin V.rank) (Af D.host.F ⊗[D.host.F] D.host.E)}
@@ -118,11 +167,19 @@ theorem cong_on_half {V : HSp D} {La : Type} [AddCommGroup La] [Module (𝓞 D.h
     rw [e₀, Matrix.mulVec_add, Matrix.mulVec_add, smul_add, ← e, ← e']
     abel
 
+/- English proof (translation)
+Rewrite using `[smul_add, ← Matrix.mulVec_smul, smul_add, ← e₁, ← e₂, ← e₃, sub_add_sub_cancel, Matrix.mulVec_sub, sub_add_sub_cancel]`.
+-/
 theorem mark_calc {R : Type} [CommRing R] {n : ℕ} {Hm K K' : Matrix (Fin n) (Fin n) R} {m x z w₁ w₂ w₃ : Fin n → R} {M : ℕ}
     (e₁ : m - Hm *ᵥ x = M • w₁) (e₂ : x - K *ᵥ z = M • w₂) (e₃ : K *ᵥ z - K' *ᵥ z = M • w₃) :
     m - Hm *ᵥ (K' *ᵥ z) = M • (w₁ + Hm *ᵥ (w₂ + w₃)) := by
   rw [smul_add, ← Matrix.mulVec_smul, smul_add, ← e₁, ← e₂, ← e₃, sub_add_sub_cancel, Matrix.mulVec_sub, sub_add_sub_cancel]
 
+/- English proof (translation)
+Establish `hl : Formalism.L2.Pj.latHat V = GlobalTheory.AdLat.hat D.host.F (Λ : Set (Fin V.rank → D.host.E))` using `(hatV_eq hβ).symm`. Take `⟨c, hfr, -⟩` from `hβ`. Take `⟨N, hN, e⟩` from `exists_matrix_sign hfr T hJ hk ε h hb (K := (finHom V k).1) (fun _ _ => rfl)`. Rewrite `hN` using `[← hl]`. Introduce `z hz`.
+
+Use `⟨_, GlobalTheory.LevelUnique.mulVec_mem_latGHat _ hN z hz, ?_⟩` and prove the remaining obligations. Rewrite using `[← Matrix.sub_mulVec, ← Matrix.smul_mulVec, e, Matrix.smul_mulVec]`.
+-/
 theorem exists_cong_sign {V : HSp D} {β : GL (Fin V.rank) (Lev.EAf D)} {Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)}
     (hβ : IsSDFrame V β Λ 1) (T : Finset (Pl D.host.E)) {J : Ideal (𝓞 D.host.E)} {M : ℕ}
     (hJ : (∏ P ∈ T, P.asIdeal) * J = Ideal.span {(M : 𝓞 D.host.E)}) {k : GA D V}
@@ -139,6 +196,9 @@ theorem exists_cong_sign {V : HSp D} {β : GL (Fin V.rank) (Lev.EAf D)} {Λ : Su
   refine ⟨_, GlobalTheory.LevelUnique.mulVec_mem_latGHat _ hN z hz, ?_⟩
   rw [← Matrix.sub_mulVec, ← Matrix.smul_mulVec, e, Matrix.smul_mulVec]
 
+/- English proof (translation)
+Introduce `P hP`. Establish `e : upperLeftBlock L.hr (redFn β P (Lev.finE V k)) = g ⟨P, hP⟩` using `congrFun hk.2.2 ⟨P, hP⟩`. Establish `e'` using `congrArg Units.val (e.trans (hg ⟨P, hP⟩))`. Rewrite `e'` using `[upper_block_val_submatrix _ (blockTri_blkOf_le _ _ (parLev_g hk.2.1 hP))]`. Conclude with `eq_sgn_of_submatrix hr L.hr e'`.
+-/
 theorem redFn_sign {V : HSp D} {β : GL (Fin V.rank) (Lev.EAf D)} {L : LevDat D.host.E ℂ V.rank} (hr : V.rank = L.r)
     {g : G0 L.Pg L.r} {k : GA D V} (hk : Lev.IsLevelLift V β L g k) (ε : ℤˣ) (hg : ∀ P, g P = sgnGL _ _ ε) :
     ∀ P ∈ L.Pg, redFn β P (Lev.finE V k) = sgnGL _ _ ε := by
@@ -148,6 +208,11 @@ theorem redFn_sign {V : HSp D} {β : GL (Fin V.rank) (Lev.EAf D)} {L : LevDat D.
   rw [upper_block_val_submatrix _ (blockTri_blkOf_le _ _ (parLev_g hk.2.1 hP))] at e'
   exact eq_sgn_of_submatrix hr L.hr e'
 
+/- English proof (translation)
+Establish `hm : ∀ a, ι a ∈ latG V 1` using `fun a => hι.2 ▸ LinearMap.mem_range_self ι a`. Establish `h5` using `(GlobalTheory.Member.latG_lattice_and_completion D V 1).2.2.2.2.1`. Take `⟨⟨v, hv⟩, ev⟩` from `GlobalTheory.AdLat.Tower.exists_div (F := D.host.F) (M := latG V 1) (fun v => h5 ▸ (GlobalTheory.Member.LatMove.mem_lat_iff V 1 v).symm) hM ⟨_, hm a⟩ (h5 ▸ hw) e`. Take `⟨c, rfl⟩ : v ∈ LinearMap.range ι` from `hι.2 ▸ hv`. Use `⟨c, hι.1 ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_nsmul]`. Conclude with `congrArg Subtype.val ev`.
+-/
 theorem exists_div {V : HSp D} {La : Type} [AddCommGroup La] [Module (𝓞 D.host.E) La]
     {ι : La →ₗ[𝓞 D.host.E] (Fin V.rank → D.host.E)} (hι : LatEmb V ι) {M : ℕ} (hM : 0 < M) {a : La}
     {w : Fin V.rank → Af D.host.F ⊗[D.host.F] D.host.E} (hw : w ∈ latGHat V 1) (e : finVec V (ι a) = M • w) :
@@ -161,6 +226,9 @@ theorem exists_div {V : HSp D} {La : Type} [AddCommGroup La] [Module (𝓞 D.hos
   rw [map_nsmul]
   exact congrArg Subtype.val ev
 
+/- English proof (translation)
+Take `⟨b, hb⟩` from `exists_div (a := a' - e • a) hι hM hw (by rw [map_sub, map_zsmul, finVec_sub_zsmul, h])`. Conclude with `⟨b, by rw [← hb, add_sub_cancel]⟩`.
+-/
 theorem sign_div {V : HSp D} {La : Type} [AddCommGroup La] [Module (𝓞 D.host.E) La]
     {ι : La →ₗ[𝓞 D.host.E] (Fin V.rank → D.host.E)} (hι : LatEmb V ι) {M : ℕ} (hM : 0 < M) {a a' : La} {e : ℤ}
     {w : Fin V.rank → Af D.host.F ⊗[D.host.F] D.host.E} (hw : w ∈ latGHat V 1)
@@ -168,11 +236,17 @@ theorem sign_div {V : HSp D} {La : Type} [AddCommGroup La] [Module (𝓞 D.host.
   obtain ⟨b, hb⟩ := exists_div (a := a' - e • a) hι hM hw (by rw [map_sub, map_zsmul, finVec_sub_zsmul, h])
   exact ⟨b, by rw [← hb, add_sub_cancel]⟩
 
+/- English proof (translation)
+Substitute `hV` using the available equality. Conclude with `h.2 k x hx`.
+-/
 theorem mu_cast {V W : HSp D} (hV : V = W) {χ : (AE D)ˣ →* Circle} {mu : GA D V → ℂ} (h : MuVal V χ mu) {k : GA D W}
     {x : (AE D)ˣ} (hx : IsDetRoot W k x) : castDict hV mu k = ((χ x : Circle) : ℂ) := by
   subst hV
   exact h.2 k x hx
 
+/- English proof (translation)
+Rewrite using `[P.isPrime.prod_le]`. Use `⟨fun h => ⟨P, h, le_rfl⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨Q, hQ, h⟩`. Rewrite using `[← HeightOneSpectrum.ext (Q.isMaximal.eq_of_le P.isPrime.ne_top h)]` and apply the resulting hypothesis.
+-/
 theorem mem_iff_prod_le {E : Type} [Field E] [NumberField E] (T : Finset (Pl E)) (P : Pl E) :
     P ∈ T ↔ ∏ Q ∈ T, Q.asIdeal ≤ P.asIdeal := by
   rw [P.isPrime.prod_le]

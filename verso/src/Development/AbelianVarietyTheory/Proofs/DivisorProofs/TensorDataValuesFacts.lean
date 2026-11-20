@@ -19,6 +19,9 @@ namespace GlobalTheory.Mum.TensTor
 variable {R : Type} [CommRing R] [IsDomain R] {D D' : DegPre R} {r : ℕ} {W : Matrix (Fin r) (Fin r) ℤ}
   {F : Type} [Field F] [Algebra (FractionRing R) F] {N N' : NumD F}
 
+/- English proof (translation)
+Use `haveI := T.pr_hom j`. Simplify using `only [TensTor.cmp, map_mul]`. Rewrite using `[← map_mul ν.eA.symm]`. Use `congr 1`. Conclude with `GlobalTheory.TorusDefect.mul_comp_of_pullback (jK R) (T.pr j) (jFK F) (jFK F ≫ jK R) rfl (ν'.eA x) (ν'.eA y)`.
+-/
 theorem cmp_mul (T : Tens D D' W) (ν : NumOf D F N) (ν' : NumOf D' F N') (x y : N'.A) (j : Fin r) :
     cmp T ν ν' (x * y) j = cmp T ν ν' x j * cmp T ν ν' y j := by
   haveI := T.pr_hom j
@@ -27,6 +30,13 @@ theorem cmp_mul (T : Tens D D' W) (ν : NumOf D F N) (ν' : NumOf D' F N') (x y 
   congr 1
   exact GlobalTheory.TorusDefect.mul_comp_of_pullback (jK R) (T.pr j) (jFK F) (jFK F ≫ jK R) rfl (ν'.eA x) (ν'.eA y)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `x y h`. Apply `ν'.eA.injective` to reduce the goal to its premises. Use `Fan.IsLimit.hom_ext T.lim _ _ fun j => ?_` and prove the remaining obligations. Use `congrFun h j` as an intermediate fact.
+
+Simplify `this` using `[TensTor.cmp]`. Introduce `f`. Use `⟨ν'.eA.symm (Fan.IsLimit.lift T.lim fun j => ν.eA (f j)), funext fun j => ?_⟩` and prove the remaining obligations. Simplify using `only [TensTor.cmp, MulEquiv.apply_symm_apply]`. Use `(congrArg ν.eA.symm (Fan.IsLimit.fac T.lim _ j)).trans ?_` and prove the remaining obligations.
+
+Simplify using the standard rewrite rules.
+-/
 theorem cmp_bijective (T : Tens D D' W) (ν : NumOf D F N) (ν' : NumOf D' F N') : Function.Bijective (cmp T ν ν') := by
   constructor
   · intro x y h
@@ -40,21 +50,35 @@ theorem cmp_bijective (T : Tens D D' W) (ν : NumOf D F N) (ν' : NumOf D' F N')
     refine (congrArg ν.eA.symm (Fan.IsLimit.fac T.lim _ j)).trans ?_
     simp
 
+/- English proof (translation)
+Simplify using `[TensTor.chi, map_add]`.
+-/
 theorem chi_add (T : Tens D D' W) (ν : NumOf D F N) (ν' : NumOf D' F N') (χ χ' : N'.X) (i : Fin r) :
     chi T ν ν' (χ + χ') i = chi T ν ν' χ i + chi T ν ν' χ' i := by
   simp [TensTor.chi, map_add]
 
+/- English proof (translation)
+Establish `: chi T ν ν' = ν'.eX.trans (T.xe.trans (AddEquiv.piCongrRight fun _ => ν.eX.symm))`. Use function extensionality and compare the values at `χ i`. Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `AddEquiv.bijective _`.
+-/
 theorem chi_bijective (T : Tens D D' W) (ν : NumOf D F N) (ν' : NumOf D' F N') : Function.Bijective (chi T ν ν') := by
   have : chi T ν ν' = ν'.eX.trans (T.xe.trans (AddEquiv.piCongrRight fun _ => ν.eX.symm)) := by
     funext χ i; rfl
   rw [this]; exact AddEquiv.bijective _
 
+/- English proof (translation)
+Simplify using `only [TensTor.cmp, TensTor.chi]`. Rewrite using `[ν.eA.symm_apply_eq, ν.c_eq, ν'.c_eq, ν.eX.apply_symm_apply]`. Simplify using `only [DegPre.cF, Category.assoc, T.c_pr]`.
+-/
 theorem cmp_c (T : Tens D D' W) (ν : NumOf D F N) (ν' : NumOf D' F N') (χ' : N'.X) (j : Fin r) :
     cmp T ν ν' (N'.c χ') j = N.c (chi T ν ν' χ' j) := by
   simp only [TensTor.cmp, TensTor.chi]
   rw [ν.eA.symm_apply_eq, ν.c_eq, ν'.c_eq, ν.eX.apply_symm_apply]
   simp only [DegPre.cF, Category.assoc, T.c_pr]
 
+/- English proof (translation)
+Unfold `TensTor.wv valF`. Rewrite using `[dif_pos]`. Conclude with `(((T.w.s _).isUnit.map _).map _).ne_zero`. Introduce `p _`. Use `⟨Set.mem_iInter.2 fun k => ?_, ν'.good _ trivial⟩` and prove the remaining obligations.
+
+Conclude with `ν.good ((ν'.eA x).left ≫ tensφ T.pr k) (show p ∈ (⊤ : (Sp F).Opens) from trivial)`.
+-/
 theorem wv_ne_zero (T : Tens D D' W) (ν : NumOf D F N) (ν' : NumOf D' F N') (x : N'.A) : wv T ν ν' x ≠ 0 := by
   unfold TensTor.wv valF
   rw [dif_pos]
@@ -67,6 +91,9 @@ end GlobalTheory.Mum.TensTor
 
 open GlobalTheory.Mum.TensTor in
 
+/- English proof (translation)
+Introduce `R _ _ _ hB D D' r W T F _ _ _ N N' ν ν'`. Conclude with `⟨cmp_mul T ν ν', cmp_bijective T ν ν', chi_add T ν ν', chi_bijective T ν ν', cmp_c T ν ν', wv_ne_zero T ν ν', GlobalTheory.T.tensorData_cubicalStructure_values R hB D D' W T F N N' ν ν', GlobalTheory.T.tensorData_psi_values_through_bundleIso R hB D D' W T F N N' ν ν'⟩`.
+-/
 theorem GlobalTheory.Mum.TensTor.tensFacts_holds : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (D D' : DegData R (maximalIdeal R)) {r : ℕ} (W : Matrix (Fin r) (Fin r) ℤ) (T : Tens D.toPre D'.toPre W) (F : Type) [Field F] [IsAlgClosed F] [Algebra (FractionRing R) F] (N N' : NumD F) (ν : NumOf D.toPre F N) (ν' : NumOf D'.toPre F N'), TensFacts W (cmp T ν ν') (chi T ν ν') (wv T ν ν') := by
   intro R _ _ _ hB D D' r W T F _ _ _ N N' ν ν'
   exact ⟨cmp_mul T ν ν', cmp_bijective T ν ν', chi_add T ν ν', chi_bijective T ν ν', cmp_c T ν ν', wv_ne_zero T ν ν',

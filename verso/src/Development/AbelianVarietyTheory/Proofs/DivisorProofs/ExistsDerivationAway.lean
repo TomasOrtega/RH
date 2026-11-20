@@ -19,6 +19,21 @@ noncomputable section
 
 namespace GlobalTheory.LocReg
 
+/- English proof (translation)
+Use `letI := φ.toAlgebra`. Establish `h0 : d 0 = 0`. Establish `e` using `hadd 0 0`. Rewrite `e` using `[add_zero]`. Take the linear combination `-e`.
+
+Establish `h1 : d 1 = 0`. Establish `e` using `hmul 1 1`. Rewrite `e` using `[_root_.mul_one, _root_.one_mul]`. Take the linear combination `-e`. Apply the tactic sequence `let ψ : A →+* TrivSqZeroExt B B := { toFun := fun a => TrivSqZeroExt.inl (φ a) + TrivSqZeroExt.inr (φ (d a)) map_one' := by ext <;> simp [h1] map_mul' := fun x y => by`.
+
+Use `ext`. Simplify using the standard rewrite rules. Simplify using `[hmul]`. Expand and normalize the polynomial expressions, which then agree. Apply the tactic sequence `map_zero' := by ext <;> simp [h0]`.
+
+Apply the tactic sequence `map_add' := fun x y => by ext <;> simp [hadd] }`. Establish `hu : IsUnit (ψ f)` using `TrivSqZeroExt.isUnit_iff_isUnit_fst.2 (by`. Simplify `IsLocalization.Away.algebraMap_isUnit (S := B) f)` using `[ψ, RingHom.algebraMap_toAlgebra]`. Set `Λ : B →+* TrivSqZeroExt B B` to `IsLocalization.Away.lift f hu`. Establish `hΛ : ∀ a, Λ (φ a) = ψ a` using `fun a => IsLocalization.lift_eq (M := Submonoid.powers f) (S := B) _ a`.
+
+Establish `hfst : ∀ x, (Λ x).fst = x`. Establish `: (TrivSqZeroExt.fstHom ℤ B B).toRingHom.comp Λ = RingHom.id B`. Use `IsLocalization.ringHom_ext (Submonoid.powers f) (RingHom.ext fun r => ?_)` and prove the remaining obligations. Simplify using `[RingHom.algebraMap_toAlgebra, hΛ, ψ]`. Introduce `x`.
+
+Conclude with `congr($this x)`. Set `L : B →+ B` to `{ toFun := fun x => (Λ x).snd map_zero' := by simp map_add' := fun x y => by simp }`. Use `⟨Derivation.mk' L.toIntLinearMap (fun x y => ?_), fun a => ?_⟩` and prove the remaining obligations. Use `show (Λ (x * y)).snd = x • (Λ y).snd + y • (Λ x).snd`. Rewrite using `[map_mul, TrivSqZeroExt.snd_mul, hfst, hfst]`.
+
+Simplify using `[mul_comm]`. Use `show (Λ (φ a)).snd = φ (d a)`. Rewrite using `[hΛ]`. Simplify using `[ψ]`.
+-/
 theorem exists_derivation_away {A B : Type} [CommRing A] [CommRing B] (φ : A →+* B) (f : A)
     (hloc : letI := φ.toAlgebra; IsLocalization.Away f B) (d : A → A)
     (hadd : ∀ x y, d (x + y) = d x + d y) (hmul : ∀ x y, d (x * y) = x * d y + y * d x) :
@@ -64,6 +79,33 @@ theorem exists_derivation_away {A B : Type} [CommRing A] [CommRing B] (φ : A �
     rw [hΛ]
     simp [ψ]
 
+/- English proof (translation)
+Introduce `X U W hWU D DW hDW h hhW R _ _ g hg D' hD'`. Use `set e := Scheme.ΓSpecIso (CommRingCat.of R) with he`. Use `set f := (g.appLE U.1 ⊤ hg).hom h with hf`. Establish `hUW : ((Sp R).affineBasicOpen (U` using `⟨⊤, isAffineOpen_top _⟩) f).1 ≤ g ⁻¹ᵁ W.1 := by show (Sp R).basicOpen f ≤ _`. Rewrite using `[hf, Scheme.Hom.appLE, CommRingCat.comp_apply, Scheme.basicOpen_res, ← Scheme.preimage_basicOpen]`.
+
+Conclude with `fun x hx => hhW hx.2`. Use `⟨hUW, ?_⟩` and prove the remaining obligations. Use `set U' := ((Sp R).affineBasicOpen (U := ⟨⊤, isAffineOpen_top _⟩) f) with hU'`. Set `φ` to `((Sp R).presheaf.map (homOfLE (le_top : U'.1 ≤ ⊤)).op).hom`. Establish `hloc : letI` using `φ.toAlgebra`.
+
+Use the proof step `IsLocalization.Away f Γ(Sp R, U'.1) := (isAffineOpen_top (Sp R)).isLocalization_basicOpen f`. Take `⟨D'', hD''⟩` from `exists_derivation_away φ f hloc (fun r => e.inv.hom (D' (e.hom.hom r))) (fun x y => by simp only [map_add]) (fun x y => by`. Simplify using `only [map_mul, Derivation.leibniz, smul_eq_mul, map_add]`. Use the proof step `simp)`. Use `⟨D'', hD'', ?_⟩` and prove the remaining obligations.
+
+Use `set resUW := (X.presheaf.map (homOfLE hWU).op).hom with hresUW`. Use `set ψW := (g.appLE W.1 U'.1 hUW).hom with hψW`. Establish `hUU : U'.1 ≤ g ⁻¹ᵁ U.1` using `hUW.trans (fun x hx => hWU hx)`. Use `set ψU := (g.appLE U.1 U'.1 hUU).hom with hψU`. Establish `hψ : ∀ y, ψW (resUW y) = ψU y` using `fun y => by`.
+
+Rewrite using `[hψW, hresUW, ← CommRingCat.comp_apply, Scheme.Hom.map_appLE]`. Establish `hψU' : ∀ y, ψU y = φ ((g.appLE U.1 ⊤ hg).hom y)` using `fun y => by`. Rewrite using `[hψU, ← CommRingCat.comp_apply, Scheme.Hom.appLE_map]`. Establish `hDU : ∀ y, D'' (ψU y) = ψU (D y)` using `fun y => by`. Rewrite using `[hψU', hD'', hψU', hD']`.
+
+Simplify using the standard rewrite rules. Establish `hres : ∀ y, D'' (ψW (resUW y)) = ψW (DW (resUW y))` using `fun y => by`. Rewrite using `[hψ, hDU, hDW, hψ]`. Establish `hunit : IsUnit (ψU h)`. Rewrite using `[hψU']`.
+
+Use `letI := φ.toAlgebra`. Conclude with `IsLocalization.Away.algebraMap_isUnit (S := Γ(Sp R, U'.1)) f`. Establish `key : ∀ θ : Γ(X, W.1), ∃ (a : Γ(X, U.1)) (M : ℕ), resUW (h ^ M) * θ = resUW a`. Introduce `θ`. Use `set V := X.basicOpen (resUW h) with hVdef`.
+
+Establish `hV : V = X.basicOpen h`. Rewrite using `[hVdef, hresUW, Scheme.basicOpen_res]`. Conclude with `inf_eq_right.2 hhW`. Establish `hVW : V ≤ W.1` using `X.basicOpen_le _`. Establish `hVU : V ≤ U.1` using `hVW.trans hWU`.
+
+Set `resUV` to `(X.presheaf.map (homOfLE hVU).op).hom`. Set `resWV` to `(X.presheaf.map (homOfLE hVW).op).hom`. Establish `hcomp : ∀ y, resWV (resUW y) = resUV y` using `fun y => by`. Rewrite using `[hresUW, ← CommRingCat.comp_apply, ← Functor.map_comp]`. Both sides reduce to the same expression.
+
+Establish `hlocU : letI` using `resUV.toAlgebra`. Use the proof step `IsLocalization.Away h Γ(X, V) := U.2.isLocalization_of_eq_basicOpen h (homOfLE hVU) hV`. Establish `hlocW : letI` using `resWV.toAlgebra`. Use the proof step `IsLocalization.Away (resUW h) Γ(X, V) := W.2.isLocalization_basicOpen (resUW h)`. Take `⟨⟨a, _, N, rfl⟩, hN⟩` from `(letI := resUV.toAlgebra; IsLocalization.surj (Submonoid.powers h) (resWV θ))`.
+
+Simplify using `only [RingHom.algebraMap_toAlgebra] at hN`. Rewrite `hN` using `[← hcomp, ← hcomp, ← map_mul]`. Use `letI := resWV.toAlgebra`. Take `⟨⟨c, k, rfl⟩, hc⟩` from `IsLocalization.exists_of_eq (M := Submonoid.powers (resUW h)) (S := Γ(X, V)) (x := θ * resUW (h ^ N)) (y := resUW a) (by simpa only [RingHom.algebraMap_toAlgebra] using hN)`. Use `⟨h ^ k * a, k + N, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [map_mul, map_pow] at hc ⊢`. Take the linear combination `hc`. Introduce `θ`. Take `⟨a, M, hM⟩` from `key θ`. Establish `e2` using `congrArg (fun x => D'' (ψW x)) hM`.
+
+Establish `e3` using `congrArg (fun x => ψW (DW x)) hM`. Simplify using `only [map_mul, Derivation.leibniz, smul_eq_mul, map_add] at e2 e3`. Rewrite `e2` using `[hres, hres]`. Establish `hu : IsUnit (ψW (resUW (h ^ M)))` using `by rw [hψ, map_pow]; exact hunit.pow M`. Conclude with `hu.mul_left_cancel (by linear_combination e2 - e3)`.
+-/
 theorem deriv_ext_basicOpen : ∀ (X : Scheme.{0}) (U W : X.affineOpens) (hWU : W.1 ≤ U.1) (D : Derivation ℤ Γ(X, U.1) Γ(X, U.1)) (DW : Derivation ℤ Γ(X, W.1) Γ(X, W.1)), (∀ r, DW ((X.presheaf.map (homOfLE hWU).op).hom r) = (X.presheaf.map (homOfLE hWU).op).hom (D r)) → ∀ (h : Γ(X, U.1)), X.basicOpen h ≤ W.1 → ∀ (R : Type) [CommRing R] [Algebra ℤ R] (g : Sp R ⟶ X) (hg : ⊤ ≤ g ⁻¹ᵁ U.1) (D' : Derivation ℤ R R), (∀ r, D' ((Scheme.ΓSpecIso (CommRingCat.of R)).hom.hom ((g.appLE U.1 ⊤ hg).hom r)) = (Scheme.ΓSpecIso (CommRingCat.of R)).hom.hom ((g.appLE U.1 ⊤ hg).hom (D r))) → ∃ (hUW : ((Sp R).affineBasicOpen (U := ⟨⊤, isAffineOpen_top _⟩) ((g.appLE U.1 ⊤ hg).hom h)).1 ≤ g ⁻¹ᵁ W.1) (D'' : Derivation ℤ Γ(Sp R, ((Sp R).affineBasicOpen (U := ⟨⊤, isAffineOpen_top _⟩) ((g.appLE U.1 ⊤ hg).hom h)).1) Γ(Sp R, ((Sp R).affineBasicOpen (U := ⟨⊤, isAffineOpen_top _⟩) ((g.appLE U.1 ⊤ hg).hom h)).1)), (∀ r, D'' (((Sp R).presheaf.map (homOfLE (le_top : ((Sp R).affineBasicOpen (U := ⟨⊤, isAffineOpen_top _⟩) ((g.appLE U.1 ⊤ hg).hom h)).1 ≤ ⊤)).op).hom r) = ((Sp R).presheaf.map (homOfLE (le_top : ((Sp R).affineBasicOpen (U := ⟨⊤, isAffineOpen_top _⟩) ((g.appLE U.1 ⊤ hg).hom h)).1 ≤ ⊤)).op).hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom (D' ((Scheme.ΓSpecIso (CommRingCat.of R)).hom.hom r)))) ∧ (∀ θ, D'' ((g.appLE W.1 _ hUW).hom θ) = (g.appLE W.1 _ hUW).hom (DW θ)) := by
 
   intro X U W hWU D DW hDW h hhW R _ _ g hg D' hD'

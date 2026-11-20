@@ -15,6 +15,11 @@ open GlobalTheory.LatVac
 
 variable {D : D7}
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[← sub_eq_zero]`. Apply `eq_zero_of_parts` to reduce the goal to its premises. Rewrite using `[RingHom.map_sub, sub_eq_zero]`. Conclude with `congrFun (congrFun h1 i) j`.
+
+Rewrite using `[RingHom.map_sub, sub_eq_zero]`. Conclude with `congrFun (congrFun h2 i) j`.
+-/
 theorem eq_of_parts {m n : ℕ} {u u' : Formalism.IndefR.Datum.Mx D m n} (h1 : u.map (infPart D) = u'.map (infPart D))
     (h2 : u.map (finPart D) = u'.map (finPart D)) : u = u' := by
   ext i j
@@ -23,6 +28,9 @@ theorem eq_of_parts {m n : ℕ} {u u' : Formalism.IndefR.Datum.Mx D m n} (h1 : u
   · rw [RingHom.map_sub, sub_eq_zero]; exact congrFun (congrFun h1 i) j
   · rw [RingHom.map_sub, sub_eq_zero]; exact congrFun (congrFun h2 i) j
 
+/- English proof (translation)
+Use `⟨fun h => ?_, finTens_mem_latO (one_mem_intAf _)⟩` and prove the remaining obligations. Use `(GlobalTheory.T.rationalHermitianRankOneLattice_selfDual D S T ΛS ΛT hS hT (GlobalTheory.T.exists_dual_family_selfDual_hermitianSpace D S ΛS hS) _).2 fun ℓ hℓ => ?_` and prove the remaining obligations. Establish `h1` using `char_sympl_eq_one hψ hS hT h (finTens_mem_latO (one_mem_intAf _) hℓ)`. Rewrite `h1` using `[symplO_finTens, one_mul, one_mul]`. Conclude with `(char_rat hψ _).1 h1`.
+-/
 theorem finTens_mem_iff {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) {S T : HSp D}
     {ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)} {ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)}
     (hS : IsSelfDualC S ΛS) (hT : IsSelfDualC T ΛT) (M : Matrix (Fin T.rank) (Fin S.rank) D.host.E) :
@@ -34,6 +42,9 @@ theorem finTens_mem_iff {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (
   rw [symplO_finTens, one_mul, one_mul] at h1
   exact (char_rat hψ _).1 h1
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `only [genMap, Matrix.mulVec, dotProduct, Matrix.of_apply, Pi.smul_apply, smul_eq_mul, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`.
+-/
 theorem genMap_mulVec (S T : HSp D) (a : D.host.E) (s y : Fin S.rank → D.host.E) (t : Fin T.rank → D.host.E) :
     genMap S T a s t *ᵥ y = a • (∑ i, ∑ j, star (s i) * S.gram i j * y j) • t := by
   funext i
@@ -42,6 +53,29 @@ theorem genMap_mulVec (S T : HSp D) (a : D.host.E) (s y : Fin S.rank → D.host.
   rw [Finset.sum_comm]
   exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Proceed by induction on `h using AddSubgroup.closure_induction with`. Consider the case `mem w hw`. Take `⟨a, ha, s, hs, t, ht, rfl⟩` from `hw`.
+
+Use `Submodule.subset_span ⟨a, ha, Matrix.toLin' (genMap S T 1 s t), fun y hy => ?_, ?_⟩` and prove the remaining obligations. Take `⟨b, hb⟩` from `(hS.2 y).1 hy s hs`. Rewrite using `[Matrix.toLin'_apply, genMap_mulVec, one_smul, ← hb]`. Conclude with `ΛT.smul_mem b ht`. Use `LinearMap.ext fun y => ?_` and prove the remaining obligations.
+
+Rewrite using `[LinearMap.smul_apply, Matrix.toLin'_apply, Matrix.toLin'_apply, genMap_mulVec, genMap_mulVec, one_smul]`. Consider the case `zero => rw [map_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`.
+
+Consider the case `neg x _ hx => rw [map_neg]`. Conclude with `neg_mem hx`. Introduce `h`. Take `⟨n, s, s', hs, hd⟩` from `GlobalTheory.T.exists_dual_family_selfDual_hermitianSpace D S ΛS hS`. Establish `key : ∀ z ∈ perO (D.host.AA : Submodule (𝓞 D.host.E) D.host.E) ΛS ΛT, LinearMap.toMatrix' z ∈ latRat S T (ΛS : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E))`.
+
+Introduce `z hz`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem w hw`. Take `⟨r, hr, x, hx, rfl⟩` from `hw`. Establish `e : LinearMap.toMatrix' (r • x) = ∑ k, genMap S T r (s' k) (x (s k))`.
+
+Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Establish `e1 : (Pi.single j 1 : Fin S.rank → D.host.E) = ∑ k, (∑ l, star (s' k l) * S.gram l j) • s k`. Use function extensionality and compare the values at `c`. Rewrite using `[Finset.sum_apply, Pi.single_apply, ← hd c j]`. Conclude with `Finset.sum_congr rfl fun k _ => mul_comm (s k c) _`.
+
+Establish `e2 : LinearMap.toMatrix' (r • x) i j = r * x (Pi.single j 1) i`. Rewrite using `[LinearMap.toMatrix'_apply]`. Use `first`. Consider the case `rfl`. Consider the case `(congr 3; funext c; simp [Pi.single_apply])`.
+
+Rewrite using `[e2, e1, map_sum, Matrix.sum_apply, Finset.sum_apply, Finset.mul_sum]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `k _`. Rewrite using `[LinearMap.map_smul]`. Express the relevant statement in the definitionally equal form `r * ((∑ l, star (s' k l) * S.gram l j) * x (s k) i) = r * x (s k) i * ∑ l, star (s' k l) * S.gram l j`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `e ▸ AddSubgroup.sum_mem _ fun k _ => ?_` and prove the remaining obligations. Conclude with `AddSubgroup.subset_closure ⟨r, hr, _, (hs k).2, _, hx _ (hs k).1, rfl⟩`. Consider the case `zero => rw [map_zero]`. Conclude with `zero_mem _`.
+
+Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`. Consider the case `smul c x _ hx`. Establish `e : LinearMap.toMatrix' (c • x) = (c : D.host.E) • LinearMap.toMatrix' x`. Rewrite using `[← map_smul]`.
+
+Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `smul_mem_latRat c hx`. Use `key _ h` as an intermediate fact. Rewrite `this` using `[LinearMap.toMatrix'_toLin']`. Then use the resulting hypothesis.
+-/
 theorem mem_latRat_iff_perO {S T : HSp D}
     {ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)} (ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E))
     (hS : IsSelfDualC S ΛS) (M : Matrix (Fin T.rank) (Fin S.rank) D.host.E) :
@@ -98,9 +132,17 @@ theorem mem_latRat_iff_perO {S T : HSp D}
     have := key _ h
     rwa [LinearMap.toMatrix'_toLin'] at this
 
+/- English proof (translation)
+Rewrite using `[Host.AA, Host.ccE, h, Ideal.map_top, FractionalIdeal.coeIdeal_top, one_mul]`.
+-/
 theorem AA_eq (h : D.host.ccK = ⊤) : D.host.AA = D.host.AA0 := by
   rw [Host.AA, Host.ccE, h, Ideal.map_top, FractionalIdeal.coeIdeal_top, one_mul]
 
+/- English proof (translation)
+Introduce `D ψ θ S T a b hS hT δ sc hP ΛS ΛT N N' h1 h2 hΛS hΛT γ v hv`. Substitute `hS hT` using the available equality. Establish `e1 : N = ΛS` using `(SetLike.coe_injective h1).symm`. Establish `e2 : N' = ΛT` using `(SetLike.coe_injective h2).symm`. Establish `: v = finTens 1 γ` using `eq_of_parts (hv.1.trans (Matrix.ext fun i j => (infPart_pair _ _).symm)) (hv.2.trans rfl)`.
+
+Rewrite using `[← h1, ← h2, this, finTens_mem_iff hP.std hΛS hΛT, mem_latRat_iff_perO ΛT hΛS, AA_eq hP.cc, e1, e2]`. Both sides reduce to the same expression.
+-/
 theorem finOf_mem_iff : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D) (a b : ℕ) (hS : S.rank = a) (hT : T.rank = b) (δ : ℂ) (sc : ℝ), StdPair θ S T δ sc ψ → ∀ (ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)) (ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)) N N', (ΛS : Set (Fin S.rank → D.host.E)) = latFr S hS N → (ΛT : Set (Fin T.rank → D.host.E)) = latFr T hT N' → IsSelfDualC S ΛS → IsSelfDualC T ΛT → ∀ γ v, GlobalTheory.AdTh.IsFinOf S T γ v → (v ∈ (latO S T (latFr S hS N) (latFr T hT N') fun _ => True) ↔ toHom S T hS hT γ ∈ perO (D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E) N N') := by
   intro D ψ θ S T a b hS hT δ sc hP ΛS ΛT N N' h1 h2 hΛS hΛT γ v hv
   subst hS hT

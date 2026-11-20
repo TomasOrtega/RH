@@ -13,5 +13,8 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.LN
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.LN.ega_of_laws | exact GlobalTheory.LN.ega_of_laws | (intros; apply GlobalTheory.LN.ega_of_laws <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.extension_of_abelian_schemes : Laws → Laws2 → Ega := by
   first | exact @GlobalTheory.LN.ega_of_laws | exact GlobalTheory.LN.ega_of_laws | (intros; apply GlobalTheory.LN.ega_of_laws <;> assumption)

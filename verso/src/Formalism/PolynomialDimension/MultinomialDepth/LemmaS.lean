@@ -15,12 +15,20 @@ def GR {A B : Type} [AddCommGroup A] [Module O A] [AddCommGroup B] [Module O B]
     (ι : Type) (π : O) (f : A →ₗ[O] B) (D : ℕ) : Prop :=
   ∃ (u : (ι → O) →ₗ[O] A) (v : B →ₗ[O] (ι → O)), v ∘ₗ f ∘ₗ u = (π ^ D) • LinearMap.id
 
+/- English proof (translation)
+Take `⟨u, v, huv⟩` from `h`. Conclude with `⟨w ∘ₗ u, v, by rw [← huv]; rfl⟩`.
+-/
 theorem gr_comp {A A' B ι : Type} [AddCommGroup A] [Module O A] [AddCommGroup A'] [Module O A']
     [AddCommGroup B] [Module O B] {π : O} {f : A →ₗ[O] B} {D : ℕ} (w : A' →ₗ[O] A)
     (h : GR ι π (f ∘ₗ w) D) : GR ι π f D := by
   obtain ⟨u, v, huv⟩ := h
   exact ⟨w ∘ₗ u, v, by rw [← huv]; rfl⟩
 
+/- English proof (translation)
+Take `⟨u, v, huv⟩` from `h`. Set `e : (Fin (Fintype.card ι) → O) ≃ₗ[O] (ι → O)` to `LinearEquiv.funCongrLeft O O (Fintype.equivFin ι)`. Use `⟨u ∘ₗ e.toLinearMap, e.symm.toLinearMap ∘ₗ v, ?_⟩` and prove the remaining obligations. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `x`.
+
+Establish `hx` using `LinearMap.congr_fun huv (e x)`. Simplify using `only [LinearMap.comp_apply, LinearMap.smul_apply, LinearMap.id_apply] at hx ⊢`. Express the relevant statement in the definitionally equal form `e.symm (v (f (u (e x)))) = _`. Rewrite using `[hx, map_smul, LinearEquiv.symm_apply_apply]`.
+-/
 theorem gr_goodRank {A B ι : Type} [Fintype ι] [AddCommGroup A] [Module O A] [AddCommGroup B]
     [Module O B] {π : O} {f : A →ₗ[O] B} {D : ℕ} (h : GR ι π f D) :
     Formalism.G0.GoodRank π f (Fintype.card ι) D := by
@@ -35,6 +43,13 @@ theorem gr_goodRank {A B ι : Type} [Fintype ι] [AddCommGroup A] [Module O A] [
   change e.symm (v (f (u (e x)))) = _
   rw [hx, map_smul, LinearEquiv.symm_apply_apply]
 
+/- English proof (translation)
+Take `⟨u, v, huv⟩` from `h`. Set `i : (Fin m → O) →ₗ[O] (Fin n → O)` to `LinearMap.pi (fun k => if hk : k.val < m then LinearMap.proj ⟨k.val, hk⟩ else 0)`. Set `p : (Fin n → O) →ₗ[O] (Fin m → O)` to `LinearMap.funLeft O O (Fin.castLE hmn)`. Establish `hpi : ∀ x, p (i x) = x`. Introduce `x`.
+
+Use function extensionality and compare the values at `k`. Simplify using `[p, i, LinearMap.funLeft_apply, Fin.castLE, k.isLt]`. Use `⟨u ∘ₗ i, p ∘ₗ v, ?_⟩` and prove the remaining obligations. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `x`.
+
+Establish `hx` using `LinearMap.congr_fun huv (i x)`. Simplify using `only [LinearMap.comp_apply, LinearMap.smul_apply, LinearMap.id_apply] at hx ⊢`. Rewrite using `[hx, map_smul, hpi]`.
+-/
 theorem goodRank_mono {A B : Type} [AddCommGroup A] [Module O A] [AddCommGroup B] [Module O B]
     {π : O} {f : A →ₗ[O] B} {n m D : ℕ} (h : Formalism.G0.GoodRank π f n D) (hmn : m ≤ n) :
     Formalism.G0.GoodRank π f m D := by
@@ -54,6 +69,13 @@ theorem goodRank_mono {A B : Type} [AddCommGroup A] [Module O A] [AddCommGroup B
   simp only [LinearMap.comp_apply, LinearMap.smul_apply, LinearMap.id_apply] at hx ⊢
   rw [hx, map_smul, hpi]
 
+/- English proof (translation)
+Distinguish the cases in `ha : a = 0`. Simplify using `[ha]`. Take `⟨k, u, hu⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible ha hπ`. Assume the negation of the conclusion as `hc`. Apply `h` to reduce the goal to its premises.
+
+Establish `hk : k ≤ E`. Assume the negation of the conclusion as `hk`. Apply `hc` to reduce the goal to its premises. Rewrite using `[hu]`. Conclude with `Dvd.dvd.mul_left (pow_dvd_pow π (not_le.mp hk)) _`.
+
+Rewrite using `[hu]`. Conclude with `(Units.mul_left_dvd).mpr (pow_dvd_pow π hk)`.
+-/
 theorem pow_succ_dvd_of_not_dvd {π : O} (hπ : Irreducible π) {a : O} {E : ℕ}
     (h : ¬ a ∣ π ^ E) : π ^ (E + 1) ∣ a := by
   by_cases ha : a = 0
@@ -69,6 +91,27 @@ theorem pow_succ_dvd_of_not_dvd {π : O} (hπ : Irreducible π) {a : O} {E : ℕ
   rw [hu]
   exact (Units.mul_left_dvd).mpr (pow_dvd_pow π hk)
 
+/- English proof (translation)
+Establish `hx' : ∀ x z, h x = π ^ (E + 1) • z → ∃ x', x = π • x'`. Introduce `x z hxz`. Use `⟨fun i => (hp x z hxz i).choose, funext fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, smul_eq_mul]`. Conclude with `(hp x z hxz i).choose_spec`.
+
+Establish `hker : LinearMap.ker h = ⊥`. Apply `Submodule.eq_bot_of_le_smul_of_le_jacobson_bot (Ideal.span {π}) _ (IsNoetherian.noetherian _)` to reduce the goal to its premises. Introduce `x hx`. Rewrite `hx` using `[LinearMap.mem_ker]`. Take `⟨x', rfl⟩` from `hx' x 0 (by rw [hx, smul_zero])`.
+
+Establish `: h x' = 0`. Rewrite `hx` using `[map_smul]`. Conclude with `(smul_eq_zero.mp hx).resolve_left hπ.ne_zero`. Conclude with `Submodule.smul_mem_smul (Ideal.mem_span_singleton_self π) this`. Rewrite using `[IsLocalRing.jacobson_eq_maximalIdeal ⊥ bot_ne_top, Ideal.span_le, Set.singleton_subset_iff]`.
+
+Conclude with `hπ.not_isUnit`. Take `⟨n, snf⟩` from `Submodule.smithNormalForm (Module.Free.chooseBasis O B) (LinearMap.range h)`. Set `eH : (ι → O) ≃ₗ[O] LinearMap.range h` to `LinearEquiv.ofInjective h (LinearMap.ker_eq_bot.mp hker)`. Establish `heH : ∀ x, ((eH x : LinearMap.range h) : B) = h x` using `fun x => rfl`. Establish `hdvd : ∀ i, snf.a i ∣ π ^ E`.
+
+Introduce `i`. Assume the negation of the conclusion as `hnd`. Take `⟨c, hc⟩` from `pow_succ_dvd_of_not_dvd hπ hnd`. Establish `hy : h (eH.symm (snf.bN i)) = (snf.bN i : B)`. Rewrite using `[← heH, LinearEquiv.apply_symm_apply]`.
+
+Take `⟨y', hy'⟩` from `hx' (eH.symm (snf.bN i)) (c • snf.bM (snf.f i)) (by rw [hy, snf.snf i, hc, smul_smul])`. Establish `hb : snf.bN i = π • eH y'`. Rewrite using `[← map_smul, ← hy', LinearEquiv.apply_symm_apply]`. Establish `h1` using `congrArg (fun m => snf.bN.repr m i) hb`. Simplify using `only [Basis.repr_self, Finsupp.single_eq_same, map_smul, Finsupp.smul_apply, smul_eq_mul] at h1`.
+
+Conclude with `hπ.not_isUnit (isUnit_of_dvd_one ⟨_, h1⟩)`. Use `choose c hc using hdvd`. Set `w : B →ₗ[O] (Fin n → O)` to `LinearMap.pi (fun i => c i • snf.bM.coord (snf.f i))`. Establish `key : w ∘ₗ (LinearMap.range h).subtype = (π ^ E) • snf.bN.equivFun.toLinearMap`. Apply `snf.bN.ext` to reduce the goal to its premises.
+
+Introduce `i`. Use function extensionality and compare the values at `j`. Simplify using `only [LinearMap.comp_apply, Submodule.subtype_apply, snf.snf i, map_smul, LinearMap.smul_apply, LinearEquiv.coe_coe, Basis.equivFun_self, w, LinearMap.pi_apply, Basis.coord_apply, Basis.repr_self, Pi.smul_apply, smul_eq_mul]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality.
+
+Simplify using `[hc i, mul_comm]`. Establish `: snf.f i ≠ snf.f j` using `fun h => hij (snf.f.injective h)`. Simplify using `[this, hij]`. Use `⟨LinearMap.id, eH.symm.toLinearMap ∘ₗ snf.bN.equivFun.symm.toLinearMap ∘ₗ w, ?_⟩` and prove the remaining obligations. Apply `LinearMap.ext` to reduce the goal to its premises.
+
+Introduce `x`. Establish `hk` using `LinearMap.congr_fun key (eH x)`. Simplify using `only [LinearMap.comp_apply, Submodule.subtype_apply, heH, LinearMap.smul_apply, LinearEquiv.coe_coe] at hk`. Simplify using `only [LinearMap.comp_apply, LinearMap.id_apply, LinearMap.smul_apply, LinearEquiv.coe_coe, hk, map_smul, LinearEquiv.symm_apply_apply]`.
+-/
 theorem gr_of_primitive {B ι : Type} [Fintype ι] [DecidableEq ι] [AddCommGroup B] [Module O B]
     [Module.Free O B] [Module.Finite O B] {π : O} (hπ : Irreducible π) (E : ℕ)
     (h : (ι → O) →ₗ[O] B) (hp : ∀ x z, h x = π ^ (E + 1) • z → ∀ i, π ∣ x i) :
@@ -133,6 +176,33 @@ theorem gr_of_primitive {B ι : Type} [Fintype ι] [DecidableEq ι] [AddCommGrou
   simp only [LinearMap.comp_apply, LinearMap.id_apply, LinearMap.smul_apply, LinearEquiv.coe_coe,
     hk, map_smul, LinearEquiv.symm_apply_apply]
 
+/- English proof (translation)
+Set `Z0 : Submodule O (Fin σ → O)` to `{ carrier := {x | ∃ z, g x = π ^ (E + 1) • z} add_mem' := by`. Introduce and unpack `a b ⟨z1, h1⟩ ⟨z2, h2⟩`. Conclude with `⟨z1 + z2, by rw [map_add, h1, h2, smul_add]⟩`. Use the proof step `zero_mem' := ⟨0, by simp⟩`. Use the proof step `smul_mem' := by`.
+
+Introduce and unpack `r a ⟨z, hz⟩`. Conclude with `⟨r • z, by rw [map_smul, hz, smul_comm]⟩ }`. Establish `hZ : ∀ x, x ∈ Z0 ↔ ∃ z, g x = π ^ (E + 1) • z` using `fun x => Iff.rfl`. Take `⟨n, snf⟩` from `Submodule.smithNormalForm (Pi.basisFun O (Fin σ)) Z0`. Set `p : Fin σ → Prop` to `fun k => ∃ i, snf.f i = k ∧ IsUnit (snf.a i)`.
+
+Set `e0 : ({k // p k} → O) →ₗ[O] (Fin σ → O)` to `LinearMap.pi (fun k => if hk : p k then LinearMap.proj (⟨k, hk⟩ : {k // p k}) else 0)`. Set `e1 : ({k // ¬ p k} → O) →ₗ[O] (Fin σ → O)` to `LinearMap.pi (fun k => if hk : ¬ p k then LinearMap.proj (⟨k, hk⟩ : {k // ¬ p k}) else 0)`. Establish `he0 : ∀ x (i : {k // p k}), e0 x i.1 = x i`. Introduce `x i`. Simplify using `[e0, i.2]`.
+
+Establish `he0' : ∀ x (k : Fin σ), ¬ p k → e0 x k = 0`. Introduce `x k hk`. Simplify using `[e0, hk]`. Establish `he1 : ∀ x (i : {k // ¬ p k}), e1 x i.1 = x i`. Introduce `x i`.
+
+Simplify using `[e1, i.2]`. Establish `hcoef : ∀ F k, snf.bM.repr (snf.bM.equivFun.symm F) k = F k`. Introduce `F k`. Rewrite using `[← Basis.equivFun_apply, LinearEquiv.apply_symm_apply]`. Use `⟨p, snf.bM.equivFun.symm.toLinearMap ∘ₗ e0, snf.bM.equivFun.symm.toLinearMap ∘ₗ e1, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `x`. Rewrite using `[← hZ]`. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe, Basis.equivFun_symm_apply]`. Use `Submodule.sum_mem _ (fun k _ => ?_)` and prove the remaining obligations. Distinguish the cases in `hk : p k`.
+
+Take `⟨i, rfl, u, hu⟩` from `hk`. Establish `hmem : snf.bM (snf.f i) ∈ Z0`. Establish `hb : snf.bM (snf.f i) = ((u⁻¹ : Oˣ) : O) • (snf.bN i : Fin σ → O)`. Rewrite using `[snf.snf i, smul_smul, ← hu, Units.inv_mul, one_smul]`. Rewrite using `[hb]`.
+
+Conclude with `Z0.smul_mem _ (snf.bN i).2`. Conclude with `Z0.smul_mem _ hmem`. Rewrite using `[he0' x k hk, zero_smul]`. Conclude with `Z0.zero_mem`. Introduce `x y hxy i`.
+
+Establish `h1` using `congrArg (fun m => snf.bM.repr m i.1) hxy`. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe, hcoef, he0, map_smul, Finsupp.smul_apply, smul_eq_mul] at h1`. Conclude with `⟨_, h1⟩`. Introduce `x z hxz i`. Establish `hm : (snf.bM.equivFun.symm.toLinearMap ∘ₗ e1) x ∈ Z0` using `(hZ _).mpr ⟨z, hxz⟩`.
+
+Establish `hc : snf.bM.repr ((snf.bM.equivFun.symm.toLinearMap ∘ₗ e1) x) i.1 = x i`. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe, hcoef, he1]`. Distinguish the cases in `hr : i.1 ∈ Set.range snf.f`. Take `⟨j, hj⟩` from `hr`. Establish `h2 : snf.bM.repr ((snf.bM.equivFun.symm.toLinearMap ∘ₗ e1) x) (snf.f j) = snf.bN.repr (snf.a j • (⟨_, hm⟩ : Z0)) j` using `snf.repr_apply_embedding_eq_repr_smul (⟨_, hm⟩ : Z0) (i := j)`.
+
+Rewrite `h2` using `[hj, map_smul, Finsupp.smul_apply, smul_eq_mul, hc]`. Establish `hnu : ¬ IsUnit (snf.a j)` using `fun hu => i.2 ⟨j, hj, hu⟩`. Establish `hπa : π ∣ snf.a j`. Establish `hmax : snf.a j ∈ IsLocalRing.maximalIdeal O` using `(IsLocalRing.mem_maximalIdeal _).mpr hnu`. Rewrite `hmax` using `[(IsDiscreteValuationRing.irreducible_iff_uniformizer π).mp hπ, Ideal.mem_span_singleton]`.
+
+Conclude with `hmax`. Rewrite using `[h2]`. Conclude with `Dvd.dvd.mul_right hπa _`. Establish `h3 : snf.bM.repr ((snf.bM.equivFun.symm.toLinearMap ∘ₗ e1) x) i.1 = 0` using `snf.repr_eq_zero_of_notMem_range ⟨_, hm⟩ hr`. Rewrite `h3` using `[hc]`.
+
+Rewrite using `[h3]`. Conclude with `dvd_zero π`.
+-/
 theorem split {B : Type} [AddCommGroup B] [Module O B] {π : O} (hπ : Irreducible π) (E σ : ℕ)
     (g : (Fin σ → O) →ₗ[O] B) :
     ∃ (p : Fin σ → Prop) (j0 : ({k // p k} → O) →ₗ[O] (Fin σ → O))
@@ -218,6 +288,27 @@ end GoodRankMultinomialDepth
 
 open GoodRankMultinomialDepth in
 
+/- English proof (translation)
+Introduce `O _ _ _ π hπ C Cp R R'' _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ io ph ps D ρp σ np h1 h2 h3`. Take `⟨u1, v1, huv1⟩` from `h1`. Take `⟨u2, v2, huv2⟩` from `h2`. Establish `e1 : ∀ y, v1 (ps (ph (u1 y))) = π ^ D • y` using `fun y => LinearMap.congr_fun huv1 y`. Establish `e2 : ∀ x, v2 (ph (io (u2 x))) = π ^ D • x` using `fun x => LinearMap.congr_fun huv2 x`.
+
+Take `⟨p, j0, j1, hi, hii, hiii⟩` from `split hπ (2 * D) σ (ps ∘ₗ ph ∘ₗ io ∘ₗ u2)`. Establish `hgood : GR {k // ¬ p k} π (ps ∘ₗ ph ∘ₗ io) (2 * D)` using `gr_comp (u2 ∘ₗ j1) (gr_of_primitive hπ (2 * D) _ (fun x z hxz => hiii x z hxz))`. Set `hmap : ({k // p k} ⊕ Fin ρp → O) →ₗ[O] Cp` to `io ∘ₗ u2 ∘ₗ j0 ∘ₗ LinearMap.funLeft O O Sum.inl + u1 ∘ₗ LinearMap.funLeft O O Sum.inr`. Establish `hbad : GR ({k // p k} ⊕ Fin ρp) π ph (2 * D)`. Use `gr_comp hmap (gr_of_primitive hπ (2 * D) _ ?_)` and prove the remaining obligations.
+
+Introduce `w z hwz`. Establish `hw : ph (io (u2 (j0 (fun k => w (Sum.inl k))))) + ph (u1 (fun k => w (Sum.inr k))) = π ^ (2 * D + 1) • z`. Rewrite using `[← map_add]`. Conclude with `hwz`. It suffices to establish `H : ∀ (x : {k // p k} → O) (y : Fin ρp → O), ph (io (u2 (j0 x))) + ph (u1 y) = π ^ (2 * D + 1) • z → (∀ k, π ∣ x k) ∧ ∀ k, π ∣ y k by`.
+
+Take `⟨hx, hy⟩` from `H _ _ hw`. Introduce and unpack `(k | k)`. Conclude with `hx k`. Conclude with `hy k`. Introduce `x y hw`.
+
+Take `⟨z0, hz0⟩` from `hi x`. Establish `hz0' : ps (ph (io (u2 (j0 x)))) = π ^ (2 * D + 1) • z0` using `hz0`. Establish `hy1 : ps (ph (u1 y)) = π ^ (2 * D + 1) • (ps z - z0)`. Use `congrArg ps hw` as an intermediate fact. Rewrite `this` using `[map_add, map_smul]`.
+
+Rewrite using `[smul_sub, ← this, ← hz0']`. Normalize the expressions using the abelian group laws. Establish `hy2 : π ^ D • y = π ^ D • (π ^ (D + 1) • v1 (ps z - z0))`. Rewrite using `[← e1, hy1, map_smul, smul_smul, ← pow_add, show D + (D + 1) = 2 * D + 1 by ring]`. Establish `hy : y = π ^ (D + 1) • v1 (ps z - z0)` using `smul_right_injective _ (pow_ne_zero D hπ.ne_zero) hy2`.
+
+Establish `hw' : ph (io (u2 (j0 x))) + ph (u1 y) = π ^ (2 * D + 1) • z` using `hw`. Establish `hx1 : ph (io (u2 (j0 x))) = π ^ (D + 1) • (π ^ D • z - ph (u1 (v1 (ps z - z0))))`. Rewrite using `[smul_sub, smul_smul, ← pow_add, show D + 1 + D = 2 * D + 1 by ring, ← hw', hy, map_smul, map_smul]`. Normalize the expressions using the abelian group laws. Establish `hjx : j0 x = π • v2 (π ^ D • z - ph (u1 (v1 (ps z - z0))))`.
+
+Use `e2 (j0 x)` as an intermediate fact. Rewrite `this` using `[hx1, map_smul, pow_succ, mul_smul]`. Conclude with `(smul_right_injective _ (pow_ne_zero D hπ.ne_zero) this).symm`. Use `⟨hii x _ hjx, fun k => ?_⟩` and prove the remaining obligations. Rewrite using `[hy, Pi.smul_apply, smul_eq_mul]`.
+
+Conclude with `Dvd.dvd.mul_right (dvd_pow_self π (Nat.succ_ne_zero D)) _`. Establish `hcard` using `h3 _ (gr_goodRank hbad)`. Rewrite `hcard` using `[Fintype.card_sum, Fintype.card_fin]`. Establish `hle` using `Fintype.card_subtype_le p`. Establish `hsum` using `Fintype.card_subtype_compl p`.
+
+Rewrite `hle`, `hsum` using `[Fintype.card_fin]`. Apply `goodRank_mono (gr_goodRank hgood)` to reduce the goal to its premises. Use linear arithmetic over natural numbers and integers.
+-/
 theorem wach_cohomology_top_S : LemmaS := by
   intro O _ _ _ π hπ C Cp R R'' _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ io ph ps D ρp σ np h1 h2 h3
   classical

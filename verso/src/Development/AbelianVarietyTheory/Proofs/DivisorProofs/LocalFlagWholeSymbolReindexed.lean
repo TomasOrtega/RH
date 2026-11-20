@@ -23,6 +23,11 @@ noncomputable section
 
 namespace GlobalTheory.WholeFlag
 
+/- English proof (translation)
+Introduce `h1 h2 h3 h4 D O hO Sx R hR p hp c`. Use `⟨(finCongr (two_mul _)).trans finSumFinEquiv.symm, ?_⟩` and prove the remaining obligations. Take `⟨hD, hlg⟩` from `GlobalTheory.T.flag_compactification_adelic_unit_height (O.Φ.C c) (O.met.hm c) (Function.update (ArIn.ind Sx) p true) (some R) (D.R.f * O.N) p hp`. Use `GlobalTheory.T.reversed_flag_local_height_log_formula (two_mul _) _ _ p (fun k x => hD k x) (fun k v hv ε y => hlg k v hv ε y) (GlobalTheory.T.half_flag_adelic_whole_symbol h1 h2 h3 h4 D O hO Sx R hR p hp c)` as an intermediate fact. Use `this using 2 with i` and compare the differences between its conclusion and the goal.
+
+Simplify using `only [Equiv.trans_apply]`. Apply the tactic sequence `rcases finSumFinEquiv.symm (finCongr (two_mul (D.R.f * O.N)) i) with k | k <;> rfl`.
+-/
 theorem locFlag_whole : Hypotheses2 → HypothesesH → RegularAlteration → ScholzeWeinsteinB → ∀ (D : D7) (O : Setup D), O.Core →
     ∀ (Sx : Finset ℕ) (R : ℝ), 2 ≤ R → ∀ p : ℕ, p.Prime → ∀ c : O.s.Comp,
     ∃ e : Fin (2 * (D.R.f * O.N)) ≃ Fin (D.R.f * O.N) ⊕ Fin (D.R.f * O.N),

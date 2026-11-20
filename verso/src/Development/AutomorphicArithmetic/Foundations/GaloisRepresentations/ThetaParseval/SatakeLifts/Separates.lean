@@ -5,6 +5,9 @@ import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ThetaCorresponde
 open NumberField IsDedekindDomain ValuativeRel GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil GlobalTheory.ThetaGL UpperTheory.Gal.TP.Loc
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
+/- English proof (translation)
+Introduce `k _ _ _ _ n V _ _ ρ hρ v hv`. Conclude with `GlobalTheory.ContraRefl.exists_smooth_form_ne hρ (GlobalTheory.ThetaLiftGL.compactOpen_basis k n) hv`.
+-/
 theorem UpperTheory.Gal.TP.Loc.separates :
     UpperTheory.Gal.TP.Loc.Separates := by
   intro k _ _ _ _ n V _ _ ρ hρ v hv

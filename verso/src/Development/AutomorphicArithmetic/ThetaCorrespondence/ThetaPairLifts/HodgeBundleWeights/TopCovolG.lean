@@ -26,6 +26,15 @@ section
 open GlobalTheory.CovTop GlobalTheory.BigTop
 namespace SelfIntersectionVolumeEstimates
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Introduce `hSB hX hP hH hGD hQ hD`. Establish `hS` using `hH.sieg`. Establish `hK` using `hX.ks`. Establish `hN` using `hX.lie`. Establish `gram` using `_root_.GlobalTheory.T.covering_gram_matrix_criterion hP`.
+
+Establish `size` using `GlobalTheory.T.size_bound_statement`. Establish `meas` using `_root_.GlobalTheory.T.covering_measure_reduction_bound hP`. Establish `anc` using `GlobalTheory.T.anchor_bound_statement`. Establish `dex` using `_root_.GlobalTheory.T.covering_deep_level_exists hP`. Establish `dg` using `_root_.GlobalTheory.T.deepGood_of_published_inputs hP hGD hQ hS hK hN`.
+
+Establish `fd` using `_root_.GlobalTheory.T.flatDeg_of_scholze_weinstein hP`. Establish `deg` using `_root_.GlobalTheory.T.covering_degree_multiplicative hX hP hS hK hGD hQ hN dg size fd`. Establish `sh` using `_root_.GlobalTheory.T.share_of_prints_deg_flatDeg hX hP hS hK hGD hQ hN dg size fd deg`. Establish `ht` using `_root_.SelfIntersectionVolumeEstimates.height_lower_bound_general hSB hX hGD hQ hP hH hD dg size deg fd`. Establish `hs` using `_root_.GlobalTheory.T.hilbertSamuel_lower_bound_of_components hX hP hGD hQ hS hK hN dg size fd deg sh`.
+
+Establish `ul` using `GlobalTheory.T.uniform_lower_bound_of_sums dg size deg sh ht hs (GlobalTheory.T.sum_constant_of_deep_good dg)`. Establish `low` using `GlobalTheory.T.lower_bound_of_all_estimates size (_root_.GlobalTheory.T.covering_low_defect_bound hP gram anc) dex dg (_root_.GlobalTheory.T.covering_ring_descent hP gram dg) (_root_.GlobalTheory.T.covering_descent_maps_exist hP hGD hQ hS hK hN gram dg size fd) (_root_.GlobalTheo …`. Conclude with `GlobalTheory.T.covolume_from_gram_and_bounds gram (GlobalTheory.T.recursion_of_gram_bound gram) (_root_.GlobalTheory.T.covering_cut_criterion hP) (_root_.GlobalTheory.T.covering_bad_locus_criterion hX hP hGD hQ hS hK hN hX.green gram dex dg size fd deg sh) (_root_.GlobalTheory.T. …`.
+-/
 theorem topCovolG_alt : _root_.SelfIntersectionVolumeEstimates.VolumeEstimateHypotheses → GlobalTheory.CovTop.HypothesesX → _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → GlobalTheory.CovHt.HypothesesH → GlobalTheory.Published.GrothendieckDeformation → GlobalTheory.HSCore.Quoted → GlobalTheory.CompanionTheory.Ar.Plug.DeepStR → CovolX :=
   by
   intro hSB hX hP hH hGD hQ hD

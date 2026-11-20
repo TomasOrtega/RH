@@ -14,6 +14,9 @@ def cycloLocal (p M : ℕ) : Subring ℂ :=
 def zetaElt (p M : ℕ) : cycloLocal p M :=
   ⟨zeta M, Subring.subset_closure (Or.inr rfl)⟩
 
+/- English proof (translation)
+Use `IsPrimitiveRoot.of_map_of_injective (f := (cycloLocal p M).subtype) ?_ Subtype.val_injective` and prove the remaining obligations. Simplify `Complex.isPrimitiveRoot_exp M hM` using `[zetaElt, ReciprocityTheory.ChartRestriction.G.Geo.Tor.zeta]`.
+-/
 theorem zetaElt_isPrimitiveRoot (p : ℕ) {M : ℕ} (hM : M ≠ 0) : IsPrimitiveRoot (zetaElt p M) M := by
   refine IsPrimitiveRoot.of_map_of_injective (f := (cycloLocal p M).subtype) ?_ Subtype.val_injective
   simpa [zetaElt, ReciprocityTheory.ChartRestriction.G.Geo.Tor.zeta] using Complex.isPrimitiveRoot_exp M hM
@@ -24,6 +27,9 @@ def zetaUnit (p : ℕ) {M : ℕ} (hM : M ≠ 0) : (cycloLocal p M)ˣ :=
 abbrev intRing (C : Type) [NormedField C] [IsUltrametricDist C] : ValuationSubring C :=
   (NormedField.valuation (K := C)).valuationSubring
 
+/- English proof (translation)
+Simplify using `[intRing, Valuation.mem_valuationSubring_iff]`. Conclude with `ge_iff_le`.
+-/
 theorem mem_intRing {C : Type} [NormedField C] [IsUltrametricDist C] (x : C) : x ∈ intRing C ↔ ‖x‖ ≤ 1 := by
   simp [intRing, Valuation.mem_valuationSubring_iff]
   exact ge_iff_le
@@ -42,6 +48,9 @@ def IsSymmetricPair (h : ℕ) (A : Over S) [GrpObj A] (P : LB (A ⊗ A).left) : 
     IsTrivial (P.pull (lift (𝟙 A) (1 : A ⟶ A)).left) ∧
     LBIso P (P.pull (lift (snd A A) (fst A A)).left)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example (A : Over S) [GrpObj A] : (1 : A ⟶ A) = toUnit A ≫ η[A] := rfl
 
 def slice (A : Over S) (P : LB (A ⊗ A).left) {T : Over S} (x : T ⟶ A) : LB (T ⊗ A).left :=

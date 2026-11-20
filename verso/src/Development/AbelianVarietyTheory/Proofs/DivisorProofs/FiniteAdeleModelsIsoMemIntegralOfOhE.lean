@@ -10,6 +10,11 @@ open scoped TensorProduct
 noncomputable section
 namespace GlobalTheory.FrameTransport.IntSwap
 
+/- English proof (translation)
+Establish `key : ∀ y : StandardLatticesGL3.AE D, (Algebra.TensorProduct.comm ℚ D.host.E (FiniteAdeleRing (𝓞 ℚ) ℚ)) y ∈ AddSubgroup.closure {z : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af ℚ ⊗[ℚ] D.host.E | ∃ a ∈ Formalism.MainNotions.StandardLattice.intAf ℚ, ∃ o : 𝓞 D.host. …` using `fun y hy => (GlobalTheory.LFun.mem_int_iff _).1 hy`. Establish `hle : StandardLatticesGL3.OhE D ≤ (Formalism.UG.intAd D.host.E).comap (GlobalTheory.BotFormula.toFinE D).toRingHom`. Use `Subring.closure_le.2 ?_` and prove the remaining obligations. Introduce and unpack `y (⟨⟨e, he⟩, rfl⟩ | ⟨⟨a, ha⟩, rfl⟩)`. Take `⟨o, rfl⟩` from `he`.
+
+Use `key _ (AddSubgroup.subset_closure ⟨1, fun v => ?_, o, rfl⟩)` and prove the remaining obligations. Conclude with `(one_mem (v.adicCompletionIntegers ℚ) : _)`. Use `key _ (AddSubgroup.subset_closure ⟨a, fun v => ha v, 1, ?_⟩)` and prove the remaining obligations. Both sides reduce to the same expression. Conclude with `hle hx`.
+-/
 theorem toFinE_mem_intAd {D : D7} {x : StandardLatticesGL3.AE D} (hx : x ∈ StandardLatticesGL3.OhE D) :
     GlobalTheory.BotFormula.toFinE D x ∈ Formalism.UG.intAd D.host.E := by
   have key : ∀ y : StandardLatticesGL3.AE D,
@@ -28,6 +33,11 @@ theorem toFinE_mem_intAd {D : D7} {x : StandardLatticesGL3.AE D} (hx : x ∈ Sta
       rfl
   exact hle hx
 
+/- English proof (translation)
+Establish `hle : AddSubgroup.closure {z : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E | ∃ a ∈ Formalism.MainNotions.StandardLattice.intAf D.host.F, ∃ o : 𝓞 D.host.E, z = a ⊗ₜ[D.host.F] (o : D.host.E)} ≤ (Formalism.L2.Herm.intAf D.host.F D.host. …`. Use `(AddSubgroup.closure_le _).2 ?_` and prove the remaining obligations. Introduce and unpack `z ⟨a, ha, o, rfl⟩`. Establish `e : Lev.swapAE D (a ⊗ₜ[D.host.F] (o : D.host.E)) = ((o : D.host.E) ⊗ₜ[D.host.F] (1 : Formalism.L2.Herm.Af D.host.F)) * ((1 : D.host.E) ⊗ₜ[D.host.F] (a : Formalism.L2.Herm.Af D.host.F))`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]`.
+
+Both sides reduce to the same expression. Use `show Lev.swapAE D (a ⊗ₜ[D.host.F] (o : D.host.E)) ∈ Formalism.L2.Herm.intAf D.host.F D.host.E`. Rewrite using `[e]`. Use `mul_mem (Subring.subset_closure (Or.inl ⟨⟨(o : D.host.E), o, rfl⟩, rfl⟩)) (Subring.subset_closure (Or.inr ⟨⟨a, fun v => ha v⟩, rfl⟩))` and prove the remaining obligations. Conclude with `hle hy`.
+-/
 theorem swapAE_mem_intAf {D : D7} {y : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E}
     (hy : y ∈ AddSubgroup.closure {z : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E |
       ∃ a ∈ Formalism.MainNotions.StandardLattice.intAf D.host.F, ∃ o : 𝓞 D.host.E, z = a ⊗ₜ[D.host.F] (o : D.host.E)}) :
@@ -50,6 +60,11 @@ theorem swapAE_mem_intAf {D : D7} {y : Formalism.MainNotions.GlobalTheoryTheory.
 
 end GlobalTheory.FrameTransport.IntSwap
 
+/- English proof (translation)
+Introduce `D x hx`. Establish `h1` using `GlobalTheory.FrameTransport.IntSwap.toFinE_mem_intAd hx`. Establish `h2 : GlobalTheory.BotFormula.toAfE D x ∈ AddSubgroup.closure {z : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E | ∃ a ∈ Formalism.MainNotions.StandardLattice.intAf D.host.F, ∃ o : 𝓞 D.host.E, z = a ⊗ₜ[D.host.F] (o : D.host.E)}`. Use `(GlobalTheory.LFun.mem_int_iff _).2 fun P => ?_` and prove the remaining obligations. Establish `e : GlobalTheory.LFun.finAdEquiv D.host.F D.host.E (GlobalTheory.BotFormula.toAfE D x) = GlobalTheory.BotFormula.toFinE D x` using `(GlobalTheory.LFun.finAdEquiv D.host.F D.host.E).apply_symm_apply _`.
+
+Rewrite using `[e]`. Conclude with `h1 P`. Conclude with `GlobalTheory.FrameTransport.IntSwap.swapAE_mem_intAf h2`.
+-/
 theorem GlobalTheory.FrameTransport.adSwap_mem_intAf_of_OhE : ∀ {D : D7} (x : StandardLatticesGL3.AE D), x ∈ StandardLatticesGL3.OhE D →
     GlobalTheory.FrameTransport.adSwap D x ∈ Formalism.L2.Herm.intAf D.host.F D.host.E := by
   intro D x hx

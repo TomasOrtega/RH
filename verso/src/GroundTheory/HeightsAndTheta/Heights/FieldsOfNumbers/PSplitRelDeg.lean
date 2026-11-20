@@ -29,18 +29,27 @@ def splitFracMap :
     ((IsFractionRing.injective (MRing ι' F ⧸ P') (FractionRing (MRing ι' F ⧸ P'))).comp
       Ideal.quotientMap_injective)
 
+/- English proof (translation)
+Simplify using `[splitFracMap, splitQuotToFrac]`. Both sides reduce to the same expression.
+-/
 theorem splitFracMap_mk (f : MRing (splitCoord j ι') F) :
     splitFracMap j P' (algebraMap _ _ (Ideal.Quotient.mk (splitPrime j P') f)) =
       algebraMap _ _ (Ideal.Quotient.mk P' (rename (splitVar j ι') f)) := by
   simp [splitFracMap, splitQuotToFrac]
   rfl
 
+/- English proof (translation)
+Simplify using `[contractFracMap, contractQuot]`. Both sides reduce to the same expression.
+-/
 theorem contractFracMap_mk (f : MRing (fun k => ι' (j k)) F) :
     contractFracMap j P' (algebraMap _ _ (Ideal.Quotient.mk (contractPrime j P') f)) =
       algebraMap _ _ (Ideal.Quotient.mk P' (rename (blockIncl j ι') f)) := by
   simp [contractFracMap, contractQuot]
   rfl
 
+/- English proof (translation)
+The claim follows from `(rename_rename _ _ f).trans rfl`.
+-/
 theorem rename_splitVar_blockIncl_inl {R : Type*} [CommSemiring R]
     (f : MvPolynomial (Σ k, ι' (j k)) R) :
     rename (splitVar j ι')
@@ -48,11 +57,17 @@ theorem rename_splitVar_blockIncl_inl {R : Type*} [CommSemiring R]
       rename (blockIncl j ι') f :=
   (rename_rename _ _ f).trans rfl
 
+/- English proof (translation)
+Use `show rename (splitVarEquiv j ι') (rename (splitVarEquiv j ι').symm f) = f`. Rewrite using `[rename_rename, Equiv.self_comp_symm, rename_id_apply]`.
+-/
 theorem rename_splitVar_symm {R : Type*} [CommSemiring R] (f : MvPolynomial (Σ k', ι' k') R) :
     rename (splitVar j ι') (rename (splitVarEquiv j ι').symm f) = f := by
   show rename (splitVarEquiv j ι') (rename (splitVarEquiv j ι').symm f) = f
   rw [rename_rename, Equiv.self_comp_symm, rename_id_apply]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `b`. Take `⟨a, rfl⟩` from `E.surjective b`. Simplify using `[E.injective.extend_apply]`.
+-/
 theorem extend_equiv_zero {A B : Type} (E : A ≃ B) (d : A → ℕ) :
     Function.extend E d 0 = d ∘ E.symm := by
   funext b
@@ -60,11 +75,17 @@ theorem extend_equiv_zero {A B : Type} (E : A ≃ B) (d : A → ℕ) :
   simp [E.injective.extend_apply]
 
 omit [P'.IsPrime] in
+/- English proof (translation)
+The claim follows from `iff_of_eq (congrArg (· ∈ P') (rename_splitVar_blockIncl_inl j g))`.
+-/
 theorem mem_contractPrime_inl_iff (g : MRing (fun k => ι' (j k)) F) :
     g ∈ contractPrime (Function.Embedding.inl : K ↪ K ⊕ blockCompl j) (splitPrime j P') ↔
       g ∈ contractPrime j P' :=
   iff_of_eq (congrArg (· ∈ P') (rename_splitVar_blockIncl_inl j g))
 
+/- English proof (translation)
+Establish `h1` using `contractFracMap_mk (Function.Embedding.inl : K ↪ K ⊕ blockCompl j) (splitPrime j P') f`. Establish `h2` using `splitFracMap_mk j P' (rename (blockIncl Function.Embedding.inl (splitCoord j ι')) f)`. Establish `h3` using `contractFracMap_mk j P' f`. Establish `h4` using `rename_splitVar_blockIncl_inl j (R := F) f`. Conclude with `(congrArg (splitFracMap j P') h1).trans (h2.trans ((congrArg (fun p => algebraMap (MRing ι' F ⧸ P') (FractionRing (MRing ι' F ⧸ P')) (Ideal.Quotient.mk P' p)) h4).trans h3.symm))`.
+-/
 theorem splitFracMap_contractFracMap_inl_mk (f : MRing (fun k => ι' (j k)) F) :
     splitFracMap j P' (contractFracMap (Function.Embedding.inl : K ↪ K ⊕ blockCompl j)
         (splitPrime j P') (algebraMap _ _
@@ -78,6 +99,19 @@ theorem splitFracMap_contractFracMap_inl_mk (f : MRing (fun k => ι' (j k)) F) :
     algebraMap (MRing ι' F ⧸ P') (FractionRing (MRing ι' F ⧸ P')) (Ideal.Quotient.mk P' p)) h4).trans
       h3.symm))
 
+/- English proof (translation)
+Use `set E := splitBlockEquiv j`. Use `set σ := splitVarEquiv j ι'`. Establish `hσ : ∀ v, (σ v).1 = E v.1` using `splitVarEquiv_fst j ι'`. Establish `hσ' : ∀ v, (σ.symm v).1 = E.symm v.1` using `fun v => by`. Rewrite using `[Equiv.eq_symm_apply, ← hσ, Equiv.apply_symm_apply]`.
+
+Unfold `homFracDegZero`. Rewrite using `[IntermediateField.adjoin_map]`. Use `congr 1`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨_, ⟨b, f, g, hf, hg, hgQ, rfl⟩, rfl⟩`. Use `⟨b ∘ E.symm, rename (splitVar j ι') f, rename (splitVar j ι') g, ?_, ?_, hgQ, ?_⟩` and prove the remaining obligations. Use `RenameMultiHomog.proof F _ K' E.toEmbedding _ ι' σ hσ f b hf` as an intermediate fact. Rewrite `this` using `[Equiv.coe_toEmbedding, extend_equiv_zero]`. Then use the resulting hypothesis. Use `RenameMultiHomog.proof F _ K' E.toEmbedding _ ι' σ hσ g b hg` as an intermediate fact.
+
+Rewrite `this` using `[Equiv.coe_toEmbedding, extend_equiv_zero]`. Then use the resulting hypothesis. Rewrite using `[map_div₀, splitFracMap_mk, splitFracMap_mk]`. Introduce and unpack `⟨b, f, g, hf, hg, hgP, rfl⟩`. Use `⟨_, ⟨b ∘ E, rename σ.symm f, rename σ.symm g, ?_, ?_, ?_, rfl⟩, ?_⟩` and prove the remaining obligations. Use `RenameMultiHomog.proof F K' _ E.symm.toEmbedding ι' _ σ.symm hσ' f b hf` as an intermediate fact.
+
+Rewrite `this` using `[Equiv.coe_toEmbedding, extend_equiv_zero, Equiv.symm_symm]`. Then use the resulting hypothesis. Use `RenameMultiHomog.proof F K' _ E.symm.toEmbedding ι' _ σ.symm hσ' g b hg` as an intermediate fact. Rewrite `this` using `[Equiv.coe_toEmbedding, extend_equiv_zero, Equiv.symm_symm]`. Then use the resulting hypothesis. Use `show rename (splitVar j ι') (rename σ.symm g) ∉ P'`. Rewrite using `[rename_splitVar_symm]` and apply the resulting hypothesis.
+
+Rewrite using `[map_div₀, splitFracMap_mk, splitFracMap_mk, rename_splitVar_symm, rename_splitVar_symm]`.
+-/
 theorem map_splitFracMap_homFracDegZero [DecidableEq K] [DecidableEq K'] :
     (homFracDegZero (splitPrime j P')).map (splitFracMap j P') = homFracDegZero P' := by
   set E := splitBlockEquiv j
@@ -107,6 +141,15 @@ theorem map_splitFracMap_homFracDegZero [DecidableEq K] [DecidableEq K'] :
       rwa [rename_splitVar_symm]
     · rw [map_div₀, splitFracMap_mk, splitFracMap_mk, rename_splitVar_symm, rename_splitVar_symm]
 
+/- English proof (translation)
+Rewrite using `[IntermediateField.map_map]`. Unfold `homFracDegZero`. Rewrite using `[IntermediateField.adjoin_map, IntermediateField.adjoin_map]`. Use `congr 1`. Use extensionality with `x`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨b, f, g, hf, hg, hgQ, rfl⟩, rfl⟩`. Use `⟨_, ⟨b, f, g, hf, hg, ?_, rfl⟩, ?_⟩` and prove the remaining obligations. Conclude with `fun h => hgQ ((mem_contractPrime_inl_iff j P' g).mpr h)`. Simplify using `only [AlgHom.comp_apply, map_div₀]`.
+
+Conclude with `(congrArg₂ (· / ·) (splitFracMap_contractFracMap_inl_mk j P' f) (splitFracMap_contractFracMap_inl_mk j P' g)).symm`. Introduce and unpack `⟨_, ⟨b, f, g, hf, hg, hgP, rfl⟩, rfl⟩`. Use `⟨_, ⟨b, f, g, hf, hg, ?_, rfl⟩, ?_⟩` and prove the remaining obligations. Conclude with `fun h => hgP ((mem_contractPrime_inl_iff j P' g).mp h)`. Simplify using `only [AlgHom.comp_apply, map_div₀]`.
+
+Conclude with `congrArg₂ (· / ·) (splitFracMap_contractFracMap_inl_mk j P' f) (splitFracMap_contractFracMap_inl_mk j P' g)`.
+-/
 theorem map_splitFracMap_contract [DecidableEq K] [DecidableEq K'] :
     ((homFracDegZero (contractPrime (Function.Embedding.inl : K ↪ K ⊕ blockCompl j)
         (splitPrime j P'))).map (contractFracMap Function.Embedding.inl (splitPrime j P'))).map
@@ -133,6 +176,9 @@ theorem map_splitFracMap_contract [DecidableEq K] [DecidableEq K'] :
 
 end SplitRelDeg
 
+/- English proof (translation)
+Introduce `F _ K K' _ _ j ι' P' _`. Unfold `relDeg`. Establish `h` using `IntermediateField.relfinrank_map_map ((homFracDegZero (contractPrime (Function.Embedding.inl : K ↪ K ⊕ blockCompl j) (splitPrime j P'))).map (contractFracMap Function.Embedding.inl (splitPrime j P'))) (homFracDegZero (splitPrime j P')) (splitFracMap j P')`. Rewrite `h` using `[map_splitFracMap_contract, map_splitFracMap_homFracDegZero]`. Conclude with `h`.
+-/
 theorem SplitRelDeg.proof : SplitRelDeg.Statement.{u} := by
   intro F _ K K' _ _ j ι' P' _
   unfold relDeg

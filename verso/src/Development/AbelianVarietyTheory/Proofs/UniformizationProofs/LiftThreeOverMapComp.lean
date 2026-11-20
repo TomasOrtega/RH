@@ -36,6 +36,9 @@ variable {w : LB.Iso (L.pull a) (M.pull b)} {ψ : K → (T ⟶ Y)} {ε : K → �
   {φ₁ : K → (Y₁ ⟶ X₁)} {s : LB.Gen (LB.LinComb L φ₁ ε)} {f₁ : T ⟶ Y₁}
   {φ₂ : K → (Y₂ ⟶ X₂)} {t : LB.Gen (LB.LinComb M φ₂ ε)} {f₂ : T ⟶ Y₂}
 
+/- English proof (translation)
+Take `rfl : ψ' = fun k => h ≫ ψ k` from `funext e`. Substitute `e₁ e₂` using the available equality. Introduce `Z r z p q hp hq`. Simplify `H Z (r ≫ h) z p q hp hq` using `only [Category.assoc]`.
+-/
 theorem Carries.comp (H : Carries w ψ ε s f₁ t f₂) {T' : Scheme.{0}} (h : T' ⟶ T) {ψ' : K → (T' ⟶ Y)}
     {g₁ : T' ⟶ Y₁} {g₂ : T' ⟶ Y₂} (e : ∀ k, ψ' k = h ≫ ψ k) (e₁ : g₁ = h ≫ f₁) (e₂ : g₂ = h ≫ f₂) :
     Carries w ψ' ε s g₁ t g₂ := by
@@ -44,6 +47,9 @@ theorem Carries.comp (H : Carries w ψ ε s f₁ t f₂) {T' : Scheme.{0}} (h : 
   intro Z r z p q hp hq
   simpa only [Category.assoc] using H Z (r ≫ h) z p q hp hq
 
+/- English proof (translation)
+Substitute `ha hb` using the available equality. Rewrite using `[eq_of_heq hw]`.
+-/
 theorem Carries.congr {a' : Y ⟶ X₁} {b' : Y ⟶ X₂} {w' : LB.Iso (L.pull a') (M.pull b')} (ha : a = a') (hb : b = b')
     (hw : HEq w w') : Carries w ψ ε s f₁ t f₂ ↔ Carries w' ψ ε s f₁ t f₂ := by
   subst ha hb
@@ -55,6 +61,9 @@ section Rigid
 
 variable {X X' T Y : Scheme.{0}} {L : LB X} {L' : LB X'} {F : X' ⟶ X}
 
+/- English proof (translation)
+Take `⟨u, hu⟩` from `glue_unit ⊤ M.U (fun _ => le_top) (fun x _ => TopologicalSpace.Opens.mem_iSup.2 (cov x)) (fun j => t.s j * (t'.s j)⁻¹) (fun i j x hx => by`. Rewrite using `[map_mul, map_mul, map_inv, map_inv, GtCoordCompare.gm_gen ht (𝟙 X) x hx.1 hx.2, GtCoordCompare.gm_gen ht' (𝟙 X) x hx.1 hx.2, ← div_eq_mul_inv, ← div_eq_mul_inv, mul_div_mul_left_eq_div])`. Use `⟨u, fun Z r z j hj => ?_⟩` and prove the remaining obligations. Rewrite using `[← gm_res r z (le_top : M.U j ≤ ⊤) hj u, hu, map_mul, map_inv, inv_mul_cancel_right]`.
+-/
 theorem exists_ratio {M : LB X} (cov : ∀ x, ∃ j, x ∈ M.U j) {t t' : LB.Gen M} (ht : t.IsGen) (ht' : t'.IsGen) :
     ∃ u : Γ(X, ⊤)ˣ, ∀ (Z : Scheme.{0}) (r : Z ⟶ X) (z : Z) (j : M.ι), r z ∈ M.U j →
       gm r z _ (t.s j) = gm r z ⊤ u * gm r z _ (t'.s j) := by
@@ -65,6 +74,15 @@ theorem exists_ratio {M : LB X} (cov : ∀ x, ∃ j, x ∈ M.U j) {t t' : LB.Gen
   refine ⟨u, fun Z r z j hj => ?_⟩
   rw [← gm_res r z (le_top : M.U j ≤ ⊤) hj u, hu, map_mul, map_inv, inv_mul_cancel_right]
 
+/- English proof (translation)
+Take `⟨t, ht, hv⟩` from `exists_up ((isGen_iff w₀).1 hw₀) hL hL' ρ' hρ'`. Establish `ex : ∀ g : T ⟶ X, g = h ≫ φ → ∃ t' : LB.Gen (L.pull g), t'.IsGen ∧ ∀ (Z : Scheme.{0}) (r : Z ⟶ T) (z : Z) p, r z ∈ (L.pull g).U p → gm r z _ (t'.s p) = gm (r ≫ h) z ((L.pull φ).U p) (ρ.s p)`. Introduce and unpack `_ rfl`. Conclude with `⟨LB.pullGen L _ _ ρ h, DVR.pullGen_isGen _ _ _ _ hρ h, fun Z r z p hp => (gm_res r z _ hp _).trans (gm_pull r h z _ (mem_pull.2 (mem_pull₂.1 hp)) _)⟩`. Take `⟨t', ht', hv'⟩` from `ex _ e`.
+
+Take `⟨u, hu⟩` from `exists_ratio (M := L.pull (σ ≫ F)) (fun x => by`. Take `⟨j, hj⟩` from `exists_chart hL (F (σ x))`. Conclude with `⟨fun _ => j, mem_pull₂.2 hj⟩) ht' ht`. Set `w : LB.Iso L' (L.pull F)` to `⟨fun p => res le_top (pullU π ⊤ u) * w₀.s p⟩`. Establish `hw : ∀ (Z : Scheme.{0}) (r : Z ⟶ X') (z : Z) j k, F (r z) ∈ L.U j → r z ∈ L'.U k → gw w r z j k = gm (r ≫ π) z ⊤ u * gw w₀ r z j k` using `fun Z r z j k hj hk => (map_mul _ _ _).trans (congrArg (· * _) (GtCoordCompare.gm_res_pull_top r z π (V := (L.pull F).U (fun _ => j) ⊓ L'.U k) ⟨mem_pull.2 hj, hk⟩ _ u))`.
+
+Use `⟨w, (isGen_iff w).2 fun Z r z j j' k k' hj hj' hk hk' => ?_, fun Z r z p q hp hq => ?_⟩` and prove the remaining obligations. Rewrite using `[hw Z r z j k hj hk, hw Z r z j' k' hj' hk', (isGen_iff w₀).1 hw₀ Z r z j j' k k' hj hj' hk hk']`. Conclude with `mul_left_comm _ _ _`. Establish `m : r z ∈ (L.pull (σ ≫ F)).U p` using `mem_pull₂.2 (hp _)`. Use `(hv' Z r z p m).symm.trans ((hu Z r z p m).trans ?_)` and prove the remaining obligations.
+
+Use `(congrArg _ (hv Z r z p q m (Set.mem_iInter.2 hq))).trans ?_` and prove the remaining obligations. Rewrite using `[pw, Fintype.prod_unique, Fintype.prod_unique, zpow_one, zpow_one, hw Z (r ≫ σ) z _ _ (hp _) (hq _), Category.assoc, hσ, Category.comp_id, _root_.mul_assoc]`.
+-/
 theorem exists_rigidified (hL : L.IsLB) (hL' : L'.IsLB) (π : X' ⟶ T) (σ : T ⟶ X') (hσ : σ ≫ π = 𝟙 T)
     (w₀ : LB.Iso L' (L.pull F)) (hw₀ : w₀.IsGen) (ρ' : LB.Gen (L'.pull σ)) (hρ' : ρ'.IsGen) {φ : Y ⟶ X}
     (ρ : LB.Gen (L.pull φ)) (hρ : ρ.IsGen) (h : T ⟶ Y) (e : σ ≫ F = h ≫ φ) :
@@ -115,11 +133,17 @@ structure GtMatch (g : GtCoord I D e G) (j : CanonicalRigidImages.GtIso D I e G)
   i : g.i = j.i
   t : ∀ χ, HEq (g.t χ) (j.x χ)
 
+/- English proof (translation)
+Rewrite using `[← h]`. Conclude with `congrArg (fun y => ![y.left, _, _, _]) (_root_.mul_comm g.pG (toUnit _ ≫ D.c χ))`.
+-/
 theorem Oφ_eq {g : GtCoord I D e G} {j : CanonicalRigidImages.GtIso D I e G} (h : g.q = j.q) (χ : D.X) :
     D.Oφ g.pG χ = CanonicalRigidImages.oφ D I e j.q χ := by
   rw [← h]
   exact congrArg (fun y => ![y.left, _, _, _]) (_root_.mul_comm g.pG (toUnit _ ≫ D.c χ))
 
+/- English proof (translation)
+Evaluate the decidable proposition.
+-/
 theorem Oinvε_eq : Oinvε = CanonicalRigidImages.oεinv := by decide
 
 variable {LG : RigLB G} {g : GtCoord I D e G} {j : CanonicalRigidImages.GtIso D I e G}

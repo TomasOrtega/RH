@@ -20,14 +20,25 @@ def diagG (ψ : AddChar (Fv F v) ℂ) (μ : @Measure (κ → Fv F v) (borel _)) 
   ∫ x, ψ (x ⬝ᵥ w.2) * Φ (Sum.elim (x + w.1) x) ∂μ
 
 omit [Fintype κ] in
+/- English proof (translation)
+Apply the tactic sequence `funext i; rcases i with i | i <;> rfl`.
+-/
 theorem elim_add_elim {R : Type} [AddCommGroup R] (a b c d : κ → R) :
     Sum.elim a b + Sum.elim c d = Sum.elim (a + c) (b + d) := by
   funext i; rcases i with i | i <;> rfl
 
+/- English proof (translation)
+Simplify using `[dotProduct, Fintype.sum_sum_type]`.
+-/
 theorem elim_dot_elim {R : Type} [CommRing R] (a b c d : κ → R) :
     Sum.elim a b ⬝ᵥ Sum.elim c d = a ⬝ᵥ c + b ⬝ᵥ d := by
   simp [dotProduct, Fintype.sum_sum_type]
 
+/- English proof (translation)
+Unfold `diagW diagG`. Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Simplify using `only [schr, elim_dot_elim, dotProduct_zero, zero_dotProduct, add_zero, elim_add_elim]`.
+
+Rewrite using `[AddChar.map_add_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem diagW_eq (ψ : AddChar (Fv F v) ℂ) (μ : @Measure (κ → Fv F v) (borel _)) (Φ : (κ ⊕ κ → Fv F v) → ℂ)
     (w : (κ → Fv F v) × (κ → Fv F v)) :
     diagW ψ μ Φ w = ψ (⅟(2 : Fv F v) * (w.1 ⬝ᵥ w.2)) * diagG ψ μ Φ w := by
@@ -40,9 +51,19 @@ theorem diagW_eq (ψ : AddChar (Fv F v) ℂ) (μ : @Measure (κ → Fv F v) (bor
   ring
 
 omit [Fintype κ] in
+/- English proof (translation)
+The claim follows from `continuous_pi fun i => by rcases i with i | i <;> simp only [Sum.elim_inl, Sum.elim_inr] <;> fun_prop`.
+-/
 theorem continuous_elim_add (a : κ → Fv F v) : Continuous fun x : κ → Fv F v => Sum.elim (x + a) x :=
   continuous_pi fun i => by rcases i with i | i <;> simp only [Sum.elim_inl, Sum.elim_inr] <;> fun_prop
 
+/- English proof (translation)
+Set `_ : MeasurableSpace (κ → Fv F v)` to `borel _`. Establish `_ : BorelSpace (κ → Fv F v)` using `⟨rfl⟩`. Establish `_` using `hμ`. Use `Continuous.integrable_of_hasCompactSupport ?_ ?_` and prove the remaining obligations. Conclude with `(hψ.comp (continuous_id.dotProduct continuous_const)).mul (hΦ.1.continuous.comp (continuous_elim_add w.1))`.
+
+Apply `HasCompactSupport.mul_left` to reduce the goal to its premises. Use `HasCompactSupport.intro (K := (fun y : κ ⊕ κ → Fv F v => y ∘ Sum.inr) '' tsupport Φ) (hΦ.2.image (by fun_prop)) ?_` and prove the remaining obligations. Introduce `x hx`. Apply `image_eq_zero_of_notMem_tsupport` to reduce the goal to its premises. Introduce `h`.
+
+Conclude with `hx ⟨_, h, rfl⟩`.
+-/
 theorem integrable_integrand (ψ : AddChar (Fv F v) ℂ) (hψ : Continuous ψ) (μ : @Measure (κ → Fv F v) (borel _))
     (hμ : @Measure.IsAddHaarMeasure _ _ _ (borel _) μ) (Φ : (κ ⊕ κ → Fv F v) → ℂ) (hΦ : Φ ∈ SB (κ ⊕ κ → Fv F v))
     (w : (κ → Fv F v) × (κ → Fv F v)) :
@@ -61,10 +82,16 @@ theorem integrable_integrand (ψ : AddChar (Fv F v) ℂ) (hψ : Continuous ψ) (
     intro h
     exact hx ⟨_, h, rfl⟩
 
+/- English proof (translation)
+Use function extensionality and compare the values at `w`. Simplify using `[diagG]`.
+-/
 theorem diagG_zero (ψ : AddChar (Fv F v) ℂ) (μ : @Measure (κ → Fv F v) (borel _)) :
     diagG ψ μ (0 : (κ ⊕ κ → Fv F v) → ℂ) = 0 := by
   funext w; simp [diagG]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `w`. Simplify using `only [diagG, Pi.add_apply, mul_add]`. Conclude with `integral_add (integrable_integrand ψ hψ μ hμ Φ hΦ w) (integrable_integrand ψ hψ μ hμ Ψ hΨ w)`.
+-/
 theorem diagG_add (ψ : AddChar (Fv F v) ℂ) (hψ : Continuous ψ) (μ : @Measure (κ → Fv F v) (borel _))
     (hμ : @Measure.IsAddHaarMeasure _ _ _ (borel _) μ) {Φ Ψ : (κ ⊕ κ → Fv F v) → ℂ} (hΦ : Φ ∈ SB (κ ⊕ κ → Fv F v))
     (hΨ : Ψ ∈ SB (κ ⊕ κ → Fv F v)) : diagG ψ μ (Φ + Ψ) = diagG ψ μ Φ + diagG ψ μ Ψ := by
@@ -72,12 +99,22 @@ theorem diagG_add (ψ : AddChar (Fv F v) ℂ) (hψ : Continuous ψ) (μ : @Measu
   simp only [diagG, Pi.add_apply, mul_add]
   exact integral_add (integrable_integrand ψ hψ μ hμ Φ hΦ w) (integrable_integrand ψ hψ μ hμ Ψ hΨ w)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `w`. Simplify using `only [diagG, Pi.smul_apply, smul_eq_mul, ← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem diagG_smul (ψ : AddChar (Fv F v) ℂ) (μ : @Measure (κ → Fv F v) (borel _)) (a : ℂ)
     (Φ : (κ ⊕ κ → Fv F v) → ℂ) : diagG ψ μ (a • Φ) = a • diagG ψ μ Φ := by
   funext w
   simp only [diagG, Pi.smul_apply, smul_eq_mul, ← integral_const_mul]
   congr 1; funext x; ring
 
+/- English proof (translation)
+Set `_ : MeasurableSpace (κ → Fv F v)` to `borel _`. Establish `_ : BorelSpace (κ → Fv F v)` using `⟨rfl⟩`. Establish `_` using `hμ`. Unfold `diagG`. Rewrite using `[← integral_sub_right_eq_self _ p₂, ← integral_const_mul]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `x`. Simplify using `only [schr, elim_dot_elim, elim_add_elim, Prod.fst_add, Prod.snd_add]`. Establish `e : Sum.elim (x - p₂ + w.1 + p₁) (x - p₂ + p₂) = Sum.elim (x + (w.1 + (p₁ - p₂))) x`. Apply the tactic sequence `congr 1 <;> abel`.
+
+Rewrite using `[e, ← mul_assoc, ← mul_assoc, ← AddChar.map_add_eq_mul, ← AddChar.map_add_eq_mul]`. Use `congr 2`. Simplify using `only [add_dotProduct, sub_dotProduct, dotProduct_add, dotProduct_sub]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem diagG_schr (ψ : AddChar (Fv F v) ℂ) (μ : @Measure (κ → Fv F v) (borel _))
     (hμ : @Measure.IsAddHaarMeasure _ _ _ (borel _) μ) (Φ : (κ ⊕ κ → Fv F v) → ℂ) (p₁ p₂ q₁ q₂ : κ → Fv F v)
     (w : (κ → Fv F v) × (κ → Fv F v)) :
@@ -99,15 +136,24 @@ theorem diagG_schr (ψ : AddChar (Fv F v) ℂ) (μ : @Measure (κ → Fv F v) (b
   simp only [add_dotProduct, sub_dotProduct, dotProduct_add, dotProduct_sub]
   ring
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hf.mul hg.1, hg.2.mul_left⟩`.
+-/
 theorem sb_mul {X : Type} [TopologicalSpace X] {f g : X → ℂ} (hf : IsLocallyConstant f) (hg : g ∈ SB X) :
     (fun w => f w * g w) ∈ SB X :=
   ⟨hf.mul hg.1, hg.2.mul_left⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hf.mul (hg.1.comp_continuous (continuous_add_right t)), (hg.2.comp_homeomorph (Homeomorph.addRight t)).mul_left⟩`.
+-/
 theorem sb_mul_translate {X : Type} [TopologicalSpace X] [AddGroup X] [ContinuousAdd X] {f g : X → ℂ}
     (hf : IsLocallyConstant f) (hg : g ∈ SB X) (t : X) : (fun w => f w * g (w + t)) ∈ SB X :=
   ⟨hf.mul (hg.1.comp_continuous (continuous_add_right t)), (hg.2.comp_homeomorph (Homeomorph.addRight t)).mul_left⟩
 
 omit [Fintype κ] in
+/- English proof (translation)
+Rewrite using `[IsLocallyConstant.iff_exists_open]`. Introduce `x`. Distinguish the cases in `hx : x ∈ S`. Conclude with `⟨S, hS.isOpen, hx, fun y hy => by rw [Set.indicator_of_mem hy, Set.indicator_of_mem hx]⟩`. Conclude with `⟨Sᶜ, hS.compl.isOpen, hx, fun y hy => by rw [Set.indicator_of_notMem hy, Set.indicator_of_notMem hx]⟩`.
+-/
 theorem isLocallyConstant_indicator {X : Type} [TopologicalSpace X] {S : Set X} (hS : IsClopen S) (c : ℂ) :
     IsLocallyConstant (S.indicator fun _ => c) := by
   rw [IsLocallyConstant.iff_exists_open]
@@ -116,6 +162,23 @@ theorem isLocallyConstant_indicator {X : Type} [TopologicalSpace X] {S : Set X} 
   · exact ⟨S, hS.isOpen, hx, fun y hy => by rw [Set.indicator_of_mem hy, Set.indicator_of_mem hx]⟩
   · exact ⟨Sᶜ, hS.compl.isOpen, hx, fun y hy => by rw [Set.indicator_of_notMem hy, Set.indicator_of_notMem hx]⟩
 
+/- English proof (translation)
+Introduce `F _ _ v κ _ ψ hψ h1 μ hμ Φ₀ hΦ₀ c hc U hUo hUc h0U hU Φ hΦ`. Establish `_` using `GlobalTheory.WeilM.nonarch_field (Fv F v)`. Establish `hlc` using `GlobalTheory.WeilM.isLocallyConstant_addChar ψ hψ`. Establish `hph : ∀ a : Fv F v, IsLocallyConstant fun w : (κ → Fv F v) × (κ → Fv F v) => ψ (a * (w.1 ⬝ᵥ w.2))` using `fun a => hlc.comp_continuous (continuous_const.mul (continuous_fst.dotProduct continuous_snd))`. Set `N : Submodule ℂ ((κ ⊕ κ → Fv F v) → ℂ)` to `{ carrier := {Φ | Φ ∈ SB (κ ⊕ κ → Fv F v) ∧ diagG ψ μ Φ ∈ SB ((κ → Fv F v) × (κ → Fv F v))} zero_mem' := ⟨zero_mem _, by rw [diagG_zero]; exact zero_mem _⟩ add_mem' := fun ha hb => ⟨add_mem ha.1 hb.1, by`.
+
+Rewrite using `[diagG_add ψ hψ μ hμ ha.1 hb.1]`. Conclude with `add_mem ha.2 hb.2⟩`. Use the proof step `smul_mem' := fun a Φ h => ⟨Submodule.smul_mem _ a h.1, by`. Rewrite using `[diagG_smul]`. Conclude with `Submodule.smul_mem _ a h.2⟩ }`.
+
+Establish `hNle : N ≤ SB (κ ⊕ κ → Fv F v)` using `fun Φ h => h.1`. Establish `hS : ∀ w, ∀ φ ∈ N, schr ψ w φ ∈ N`. Introduce and unpack `⟨P, Q⟩ φ ⟨hφ1, hφ2⟩`. Use `⟨GlobalTheory.SchrSBFin.schr_mem_SB v ψ hψ (P, Q) φ hφ1, ?_⟩` and prove the remaining obligations. Rewrite using `[← Sum.elim_comp_inl_inr P, ← Sum.elim_comp_inl_inr Q]`.
+
+Establish `e : diagG ψ μ (schr ψ (Sum.elim (P ∘ Sum.inl) (P ∘ Sum.inr), Sum.elim (Q ∘ Sum.inl) (Q ∘ Sum.inr)) φ) = fun w => ψ (-((P ∘ Sum.inr) ⬝ᵥ w.2) + (w.1 - P ∘ Sum.inr) ⬝ᵥ (Q ∘ Sum.inl) - (P ∘ Sum.inr) ⬝ᵥ (Q ∘ Sum.inr) + ⅟(2 : Fv F v) * ((P ∘ Sum.inl) ⬝ᵥ (Q ∘ Sum.inl) + (P ∘ Sum.inr) ⬝ᵥ …`. Use function extensionality and compare the values at `fun w => diagG_schr ψ μ hμ φ _ _ _ _ w`. Rewrite using `[e]`. Use `sb_mul_translate (hlc.comp_continuous ?_) hφ2 _` and prove the remaining obligations. Use `fun_prop`.
+
+Establish `hUcl : IsClopen U` using `⟨hUc.isClosed, hUo⟩`. Establish `hW₀ : diagW ψ μ Φ₀ ∈ SB ((κ → Fv F v) × (κ → Fv F v))`. Rewrite using `[show diagW ψ μ Φ₀ = U.indicator (fun _ => c) from funext hU]`. Conclude with `⟨isLocallyConstant_indicator hUcl c, HasCompactSupport.intro hUc fun x hx => Set.indicator_of_notMem hx _⟩`. Establish `hG : ∀ Φ : (κ ⊕ κ → Fv F v) → ℂ, diagG ψ μ Φ = fun w => ψ (-⅟(2 : Fv F v) * (w.1 ⬝ᵥ w.2)) * diagW ψ μ Φ w`.
+
+Introduce `Φ`. Use function extensionality and compare the values at `w`. Rewrite using `[diagW_eq, ← mul_assoc, ← AddChar.map_add_eq_mul, neg_mul, neg_add_cancel, AddChar.map_zero_eq_one, one_mul]`. Establish `h0N : Φ₀ ∈ N` using `⟨hΦ₀, by rw [hG]; exact sb_mul (hph _) hW₀⟩`. Establish `hne : Φ₀ ≠ 0`.
+
+Introduce and unpack `rfl`. Establish `h` using `hU 0`. Rewrite `h` using `[Set.indicator_of_mem h0U, diagW_zero]`. Simplify using `at h`. Conclude with `hc h.symm`.
+
+Establish `hN` using `GlobalTheory.SchrIrred.schr_irreducible v ψ hψ h1 N hNle hS Φ₀ h0N hne`. Establish `hΦN : Φ ∈ N` using `hN ▸ hΦ`. Rewrite using `[show diagW ψ μ Φ = fun w => ψ (⅟(2 : Fv F v) * (w.1 ⬝ᵥ w.2)) * diagG ψ μ Φ w from funext (diagW_eq ψ μ Φ)]`. Conclude with `sb_mul (hph _) hΦN.2`.
+-/
 theorem diagW_mem_SB : ∀ (F : Type) [Field F] [NumberField F] (v : Pl F) (κ : Type) [Fintype κ]
     (ψ : AddChar (Fv F v) ℂ), Continuous ψ → ψ ≠ 1 →
     ∀ (μ : @Measure (κ → Fv F v) (borel _)), @Measure.IsAddHaarMeasure _ _ _ (borel _) μ →

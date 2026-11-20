@@ -27,6 +27,11 @@ open GlobalTheory.PolDeg
 
 variable {R : Type} [CommRing R] [IsDomain R]
 
+/- English proof (translation)
+Use `exists_gen D.P.isLB ?_ (D.tau a b) (ReciprocityTheory.ChartRestriction.G.DVR.mulGen_isGen _ _ _ _ _ _ _ (ReciprocityTheory.ChartRestriction.G.DVR.mulGen_isGen _ _ _ _ _ _ _ (ReciprocityTheory.ChartRestriction.G.DVR.mulGen_isGen _ _ _ _ _ _ _ (D.psi_gen _) (ReciprocityTheory.Chart …` and prove the remaining obligations. Introduce `U _ h`. Establish `e : toUnit (TK R) ≫ D.c (a + b) = (toUnit (TK R) ≫ D.c a) * (toUnit (TK R) ≫ D.c b)`. Rewrite using `[D.c_add]`. Conclude with `MonObj.comp_mul _ _ _`.
+
+Simplify using `only [Fintype.prod_sum_type, Fin.prod_univ_four, lamPts, negε, ← e]`. Simplify using `[eSec, Hom.one_def]`.
+-/
 theorem exists_tau_four (D : DegPre R) (a b : D.X) :
     ∃ t : LB.Gen (LB.LinComb D.P.L (lamPts (toUnit (TK R) ≫ D.c a) (toUnit (TK R) ≫ D.c b)) negε), t.IsGen ∧
       ∀ (Z : Scheme.{0}) (r : Z ⟶ (TK R).left) (z : Z) (J), Good D.P.L z J → val t r z J = val (D.tau a b) r z J := by

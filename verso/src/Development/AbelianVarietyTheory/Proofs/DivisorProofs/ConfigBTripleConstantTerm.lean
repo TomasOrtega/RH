@@ -15,6 +15,27 @@ namespace GlobalTheory.ThK.ConePlane
 
 open scoped ComplexOrder in
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h0`. Establish `hp0 : p = 0` using `by omega`. Substitute `hp0` using the available equality. Take `⟨x, hx0, hxx⟩` from `hx`. Take `⟨w⟩ : Nonempty (InfinitePlace F)` from `inferInstance`.
+
+Take `⟨hrn, A, hA⟩` from `hV.sig w`. Use `set τ : E →+* ℂ := (B.emb w).1 with hτ`. Establish `hcm : ∀ y : E, τ (σ y) = star (τ y)` using `fun y => hB.cm.2.2.2 τ y`. Use `set M : Matrix (Fin a) (Fin a) ℂ := V.J.map τ with hM`. Use `set z : Fin a → ℂ := fun i => τ (x i) with hz`.
+
+Establish `hz0 : z ≠ 0`. Introduce `h`. Apply `hx0` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Use `congrFun h i` as an intermediate fact.
+
+Simplify `this` using `[z]`. Establish `key : z ⬝ᵥ M *ᵥ star z = 0`. Establish `h1 : τ (form σ V.J x x) = z ⬝ᵥ M *ᵥ star z`. Simplify using `[form, dotProduct, Matrix.mulVec, map_sum, map_mul, hcm, M, z, Matrix.map_apply]`. Rewrite using `[← h1, hxx, map_zero]`.
+
+Use `set P := M * A.map star with hP`. Establish `hA1 : Aᵀ * P = 1`. Rewrite using `[hP, ← Matrix.mul_assoc, hA]`. Use extensionality with `(i | i) (j | j)`. Simplify using `[Matrix.fromBlocks, Matrix.one_apply]`.
+
+Apply the tactic sequence `all_goals first | exact i.elim0 | exact j.elim0`. Establish `e : (Fin r ⊕ Fin 0) ≃ Fin a` using `(Equiv.sumEmpty _ _).trans (finCongr (by omega))`. Establish `hA2 : P * Aᵀ = 1` using `(Matrix.mul_eq_one_comm_of_equiv e).1 hA1`. Establish `hA3 : A * Pᵀ = 1`. Use `congrArg Matrix.transpose hA2` as an intermediate fact.
+
+Simplify `this` using `[Matrix.transpose_mul]`. Establish `hA4 : A.map star * (P.map star)ᵀ = 1`. Use `congrArg (fun Q : Matrix (Fin a) (Fin a) ℂ => Q.map star) hA3` as an intermediate fact. Simplify `this` using `[Matrix.map_mul, Matrix.transpose_map]`. Establish `hMP : M = P * (P.map star)ᵀ`.
+
+Rewrite using `[hP, Matrix.mul_assoc, hA4, Matrix.mul_one]`. Use `set u := z ᵥ* P with hu`. Establish `hstar : (P.map star)ᵀ *ᵥ star z = star u`. Use function extensionality and compare the values at `i`. Simplify using `[u, Matrix.mulVec, Matrix.vecMul, dotProduct, mul_comm]`.
+
+Establish `hval : z ⬝ᵥ M *ᵥ star z = u ⬝ᵥ star u`. Rewrite using `[hMP, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec, hstar]`. Establish `hu0 : u ≠ 0`. Introduce `h`. Apply `hz0` to reduce the goal to its premises.
+
+Establish `: z = A *ᵥ u`. Rewrite using `[hu, ← Matrix.mulVec_transpose, Matrix.mulVec_mulVec, hA3, Matrix.one_mulVec]`. Rewrite using `[this, h, Matrix.mulVec_zero]`. Rewrite `key` using `[hval]`. Conclude with `hu0 ((dotProduct_self_star_eq_zero).1 key)`.
+-/
 theorem one_le_p {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     {B : Base F E} {a r p : ℕ} {V : Spc F E a} (hB : B.IsGood σ) (hV : V.IsHerm σ B r p)
     (hx : ∃ x : Fin a → E, x ≠ 0 ∧ form σ V.J x x = 0) : 1 ≤ p := by
@@ -69,6 +90,13 @@ theorem one_le_p {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E
   rw [hval] at key
   exact hu0 ((dotProduct_self_star_eq_zero).1 key)
 
+/- English proof (translation)
+Introduce `hKP F E _ _ _ _ _ σ B a b G G₁ H H' hC X om om' om₁ om₁' hT hT₁ hx`. Establish `hB : B.IsGood σ` using `hT.base`. Establish `hV` using `hT.geo.hV`. Establish `hp : 1 ≤ G.p` using `one_le_p hB hV hx`. Establish `hr : 1 ≤ a - G.p` using `by have := hT.geo.eBig; omega`.
+
+Establish `ha : 3 ≤ a` using `by have := hT.geo.aBig; have := hT.geo.lt; omega`. Take `⟨V₂, X₁, H₀, hV₂, hX₁, hH₀⟩` from `GlobalTheory.T.exists_hyperbolicPlane_split_hermitianLatticeSpace F E σ B hB a (a - 2) (by omega) (by omega) G.V (a - G.p) G.p hr hp hV 0 1 (by omega) (by omega)`. Take `⟨M₂, hM₂⟩` from `GlobalTheory.T.exists_good_schrodinger_model F E σ B hB (a - 2) (a + b) X₁ G₁.W _ _ _ _ hX₁ hT₁.geo.hW`. Establish `hP` using `GlobalTheory.ThK.Inhab.pairV hT`. Set `M' : Model σ (reS G.V V₂) G.W` to `⟨G.M.co, G.M.vac, G.M.μ, G.M.dom⟩`.
+
+Establish `hP' : IsPair B M' X.β (X.β / X.α) om (a - G.p) G.p (a + (b + 2) - (G.p + G.q)) (G.p + G.q)` using `{ hP with herm := hV₂, good := ⟨hP.good.rat, hP.good.vac, hP.good.std, hP.good.haar, hP.good.dom⟩ }`. Take `⟨⟨e, he⟩, -⟩` from `(GlobalTheory.T.theta_evaluation_zero_cone hKP.base).2 F E σ B a (a + (b + 2)) (reS G.V V₂) G.W M' X.β (X.β / X.α) om _ _ _ _ hP' (a - 2) (a + b) X₁ G₁.W H₀ H' a (a + b + 1) 0 1 M₂ hH₀ hC.hH' hM₂`. Conclude with `⟨V₂, a - 2, X₁, H₀, 0, 1, M₂, e, hV₂, hH₀, hM₂, ⟨he.maps, he.Heisenberg₂, he.inv, he.loc⟩⟩`.
+-/
 theorem exists_plane_model_ev : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a b : ℕ) (G : Geo σ a (b + 2)) (G₁ : Geo σ a b) (H : Plane E (b + 2) b) (H' : Plane E (a + (b + 2)) (a + b)), CfgB B G G₁ H H' → ∀ (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W) (om₁ : Rep σ G₁.V G₁.W) (om₁' : Rep σ G₁.V' G₁.W), IsTriple B G X om om' → IsTriple B G₁ X om₁ om₁' → (∃ x : Fin a → E, x ≠ 0 ∧ form σ G.V.J x x = 0) → ∃ (V₂ : Spc F E a) (n₁ : ℕ) (X₁ : Spc F E n₁) (H₀ : Plane E a n₁) (j₀ j₁ : ℕ) (M₂ : Model σ X₁ G₁.W) (e₂ : Fn F a (a + (b + 2)) →ₗ[ℂ] Fn F n₁ (a + b)), (reS G.V V₂).IsHerm σ B (a - G.p) G.p ∧ H₀.IsAdapted σ B (reS G.V V₂) X₁ j₀ j₁ ∧ M₂.IsGood B.ψ ∧ IsEv B G.M M₂ H₀.ι H'.ι (isoA H₀ H') e₂ := by
   intro hKP F E _ _ _ _ _ σ B a b G G₁ H H' hC X om om' om₁ om₁' hT hT₁ hx
   have hB : B.IsGood σ := hT.base

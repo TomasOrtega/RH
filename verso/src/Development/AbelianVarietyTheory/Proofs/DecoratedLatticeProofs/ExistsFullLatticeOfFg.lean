@@ -11,6 +11,31 @@ namespace GlobalTheory.SpanLattice
 
 open Formalism.L2.GlobalTheoryTheory.HLatOps
 
+/- English proof (translation)
+Introduce `K _ _ _ n X hX N hN`. Use `set U : Submodule K (Fin n → K) := Submodule.span K (N : Set (Fin n → K)) with hU`. Set `c` to `Module.finBasis K U`. Set `e : Fin (finrank K U) → Fin n → K` to `fun i => (c i : Fin n → K)`. Set `ψ : (Fin (finrank K U) → K) →ₗ[K] (Fin n → K)` to `U.subtype ∘ₗ c.equivFun.symm.toLinearMap`.
+
+Establish `hψ : ∀ x, ψ x = ∑ i, x i • e i`. Introduce `x`. Simplify using `[ψ, e, Basis.equivFun_symm_apply]`. Establish `hinj : Function.Injective ψ` using `(Submodule.injective_subtype U).comp c.equivFun.symm.injective`. Establish `hrange : ∀ y ∈ U, ∃ x, ψ x = y` using `fun y hy => ⟨c.equivFun ⟨y, hy⟩, by simp only [ψ, LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.symm_apply_apply, Submodule.subtype_apply]⟩`.
+
+Establish `hmemU : ∀ x, ψ x ∈ U` using `fun x => (c.equivFun.symm x).2`. Establish `hsingle : ∀ i, ψ (Pi.single i 1) = e i`. Introduce `i`. Rewrite using `[hψ, Finset.sum_eq_single i]`. Simplify using the standard rewrite rules.
+
+Introduce `b _ hb`. Simplify using `[hb]`. Simplify using the standard rewrite rules. Set `L : Submodule (𝓞 K) (Fin (finrank K U) → K)` to `N.comap (ψ.restrictScalars (𝓞 K))`. Establish `hmap : L.map (ψ.restrictScalars (𝓞 K)) = N`.
+
+Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `hx`. Introduce `hy`.
+
+Take `⟨x, rfl⟩` from `hrange y (Submodule.subset_span hy)`. Conclude with `⟨x, hy, rfl⟩`. Establish `hfg : L.FG` using `Submodule.fg_of_fg_map_injective (ψ.restrictScalars (𝓞 K)) hinj (by rw [hmap]; exact hN)`. Establish `hS` using `isSesq_comp (isSesq_maj (Pi.basisFun K (Fin n)) X) ψ`. Establish `hP` using `posAt_comp (Pi.basisFun K (Fin n)) (Pi.basisFun K (Fin (finrank K U))) (isSesq_maj (Pi.basisFun K (Fin n)) X) (posAt_maj (Pi.basisFun K (Fin n)) X hX) ψ hinj`.
+
+Take `⟨h1, h2, h3⟩` from `of_form_spec K _ _ (Pi.basisFun K (Fin (finrank K U))) L _ hS hP`. Set `Y : InfinitePlace K → Matrix (Fin (finrank K U)) (Fin (finrank K U)) ℂ` to `fun v => frameOf (gramOf (Pi.basisFun K (Fin (finrank K U))) (fun x y => Formalism.HermitianLatticesTheory.majAt (Pi.basisFun K (Fin n)) X v (ψ x) (ψ y)))`. Establish `hY : ∀ v, IsUnit (Y v).det` using `h1`. Establish `hm : ∀ v x y, Formalism.HermitianLatticesTheory.majAt (Pi.basisFun K (Fin (finrank K U))) Y v x y = Formalism.HermitianLatticesTheory.majAt (Pi.basisFun K (Fin n)) X v (ψ x) (ψ y)` using `h2`. Establish `hn : ∀ v x, Formalism.HermitianLatticesTheory.normAt (Pi.basisFun K (Fin n)) X v (ψ x) = Formalism.HermitianLatticesTheory.normAt (Pi.basisFun K (Fin (finrank K U))) Y v x` using `fun v x => by`.
+
+Rewrite using `[normAt_eq_sqrt (Pi.basisFun K (Fin n)) X v (ψ x)]`. Conclude with `(h3 v x).symm`. Use `⟨finrank K U, e, Y, L, ?_, hY, ⟨hfg, ?_⟩, fun x => ?_, fun v => ?_, ?_⟩` and prove the remaining obligations. Conclude with `c.linearIndependent.map' U.subtype (Submodule.ker_subtype U)`. Rewrite using `[eq_top_iff]`.
+
+Introduce `x _`. Establish `hsp : Submodule.span K (N : Set (Fin n → K)) = (Submodule.span K (L : Set (Fin (finrank K U) → K))).map ψ`. Rewrite using `[Submodule.map_span, ← hmap]`. Both sides reduce to the same expression. Establish `hx : ψ x ∈ (Submodule.span K (L : Set (Fin (finrank K U) → K))).map ψ`.
+
+Rewrite using `[← hsp]`. Conclude with `hmemU x`. Take `⟨y, hy, hxy⟩` from `hx`. Conclude with `hinj hxy ▸ hy`. Rewrite using `[← hψ]`.
+
+Both sides reduce to the same expression. Use extensionality with `a b`. Simplify using `only [gram, Formalism.HN.gramPl, Matrix.of_apply, hm, hsingle]`. Establish `h` using `(Formalism.HN.rerealize K _ _ _ _ (Pi.basisFun K (Fin (finrank K U))) Y (Pi.basisFun K (Fin n)) X ψ hY hX hinj hn L hfg).1`. Rewrite `h` using `[hmap]`.
+
+Unfold `lcv`. Rewrite using `[h]`.
+-/
 theorem exists_fullLattice_of_fg :
     ∀ (K : Type) [Field K] [NumberField K] [StarRing K] (n : ℕ)
       (X : InfinitePlace K → Matrix (Fin n) (Fin n) ℂ), (∀ v, IsUnit (X v).det) →

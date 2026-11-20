@@ -13,6 +13,11 @@ universe u
 
 namespace FnDegRelDeg
 
+/- English proof (translation)
+Take `⟨r, hr, s, hs, rfl⟩` from `IntermediateField.mem_adjoin_iff_div.1 hz`. Set `S : Subalgebra F L` to `{ τ.rangeS with algebraMap_mem' := fun c => RingHom.mem_rangeS.2 (hF c) }`. Establish `hle : Algebra.adjoin F (Set.range τ) ≤ S` using `Algebra.adjoin_le (by rintro _ ⟨x, rfl⟩; exact RingHom.mem_rangeS.2 ⟨x, rfl⟩)`. Take `⟨x, rfl⟩` from `RingHom.mem_rangeS.1 (hle hr)`. Take `⟨y, rfl⟩` from `RingHom.mem_rangeS.1 (hle hs)`.
+
+Conclude with `⟨x, y, rfl⟩`.
+-/
 theorem exists_div_of_mem_adjoin {F R L : Type*} [Field F] [CommRing R] [Field L] [Algebra F L]
     (τ : R →+* L) (hF : ∀ c : F, ∃ x, τ x = algebraMap F L c) {z : L}
     (hz : z ∈ IntermediateField.adjoin F (Set.range τ)) : ∃ x y, z = τ x / τ y := by
@@ -24,6 +29,11 @@ theorem exists_div_of_mem_adjoin {F R L : Type*} [Field F] [CommRing R] [Field L
   obtain ⟨y, rfl⟩ := RingHom.mem_rangeS.1 (hle hs)
   exact ⟨x, y, rfl⟩
 
+/- English proof (translation)
+Set `_` to `(τ.codRestrict E hmem).toAlgebra`. Establish `hinj : Function.Injective (algebraMap R E)` using `fun a b h => hτ (congrArg Subtype.val h)`. Establish `: FaithfulSMul R E` using `(faithfulSMul_iff_algebraMap_injective R E).2 hinj`. Use `IsFractionRing.of_field R E fun z => ?_` and prove the remaining obligations. Take `⟨x, y, hxy⟩` from `hq z z.2`.
+
+Use `⟨x, y, Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[IntermediateField.coe_div]`. Conclude with `hxy`.
+-/
 theorem isFractionRing_codRestrict {R L F' : Type*} [CommRing R] [Field L] [Field F'] [Algebra F' L]
     (E : IntermediateField F' L) (τ : R →+* L) (hτ : Function.Injective τ) (hmem : ∀ x, τ x ∈ E)
     (hq : ∀ z ∈ E, ∃ x y, z = τ x / τ y) :
@@ -38,6 +48,13 @@ theorem isFractionRing_codRestrict {R L F' : Type*} [CommRing R] [Field L] [Fiel
   rw [IntermediateField.coe_div]
   exact hxy
 
+/- English proof (translation)
+Rewrite using `[IntermediateField.relfinrank_eq_finrank_of_le hEH]`. Use `set H' := IntermediateField.extendScalars hEH`. Establish `hρH' : ∀ x, ρ x ∈ H'` using `fun x => (IntermediateField.mem_extendScalars hEH).2 (hρH x)`. Set `_ : Algebra R₁ E` to `((ρ.comp (algebraMap R₁ R₂)).codRestrict E hτE).toAlgebra`. Set `_ : Algebra R₂ H'` to `(ρ.codRestrict H' hρH').toAlgebra`.
+
+Set `_ : Algebra R₁ H'` to `((algebraMap R₂ H').comp (algebraMap R₁ R₂)).toAlgebra`. Establish `: IsScalarTower R₁ R₂ H'` using `IsScalarTower.of_algebraMap_eq fun _ => rfl`. Establish `: IsScalarTower R₁ E H'` using `IsScalarTower.of_algebraMap_eq fun _ => rfl`. Establish `: IsFractionRing R₁ E` using `isFractionRing_codRestrict E _ hτ hτE hEq`. Establish `: IsFractionRing R₂ H'` using `isFractionRing_codRestrict H' ρ hρ hρH' fun z hz => hHq z ((IntermediateField.mem_extendScalars hEH).1 hz)`.
+
+Conclude with `(IsFractionRing.finrank_eq R₁ E R₂ H').symm`.
+-/
 theorem finrank_eq_relfinrank {F R₁ R₂ L : Type*} [Field F] [CommRing R₁] [CommRing R₂] [Field L]
     [Algebra F L] [Algebra R₁ R₂] (ρ : R₂ →+* L) (hρ : Function.Injective ρ)
     (E H : IntermediateField F L) (hEH : E ≤ H)
@@ -66,6 +83,11 @@ variable {F : Type u} [Field F] {K : Type} [Fintype K] [DecidableEq K] {ι : K �
 
 omit [Fintype K] [∀ k, Fintype (ι k)] in
 
+/- English proof (translation)
+Establish `: (IntNumPoint.dehom V i).range ≤ (homFracDegZero V).toSubalgebra`. Rewrite using `[IntNumPoint.dehom, aeval_range]`. Use `Algebra.adjoin_le ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨p, rfl⟩`. Conclude with `IntermediateField.subset_adjoin F _ ⟨blockWeight ι p, X p, X ⟨p.1, i p.1⟩, isWeightedHomogeneous_X (R := F) _ _, isWeightedHomogeneous_X (R := F) _ _, hi p.1, rfl⟩`.
+
+Conclude with `this ⟨f, rfl⟩`.
+-/
 theorem dehom_mem_homFracDegZero (V : Ideal (MRing ι F)) [V.IsPrime] (i : ∀ k, ι k)
     (hi : ∀ k, (X ⟨k, i k⟩ : MRing ι F) ∉ V) (f : MRing ι F) :
     IntNumPoint.dehom V i f ∈ homFracDegZero V := by
@@ -78,6 +100,9 @@ theorem dehom_mem_homFracDegZero (V : Ideal (MRing ι F)) [V.IsPrime] (i : ∀ k
         isWeightedHomogeneous_X (R := F) _ _, hi p.1, rfl⟩
   exact this ⟨f, rfl⟩
 
+/- English proof (translation)
+Rewrite using `[← IntNumPoint.cls_apply, ← IntNumPoint.cls_apply, ← IntNumPoint.dehom_mul_of_isMultiHomog i hi hf, ← IntNumPoint.dehom_mul_of_isMultiHomog i hi hg, mul_div_mul_right _ _ (IntNumPoint.chartProd_ne_zero i hi b)]`.
+-/
 theorem div_eq_dehom_div (V : Ideal (MRing ι F)) [V.IsPrime] (i : ∀ k, ι k)
     (hi : ∀ k, (X ⟨k, i k⟩ : MRing ι F) ∉ V) {b : K → ℕ} {f g : MRing ι F}
     (hf : IsMultiHomog f b) (hg : IsMultiHomog g b) :
@@ -95,6 +120,9 @@ section Contract
 variable {F : Type u} [Field F] {K K' : Type} {ι' : K' → Type} (j : K ↪ K') (P' : Ideal (MRing ι' F))
   [P'.IsPrime] (i' : ∀ k', ι' k')
 
+/- English proof (translation)
+Simplify using `[contractFracMap, contractQuot]`. Both sides reduce to the same expression.
+-/
 theorem contractFracMap_algebraMap (f : MRing (fun k => ι' (j k)) F) :
     contractFracMap j P' (algebraMap _ _ (Ideal.Quotient.mk (contractPrime j P') f)) =
       algebraMap (MRing ι' F ⧸ P') (FractionRing (MRing ι' F ⧸ P'))
@@ -102,6 +130,9 @@ theorem contractFracMap_algebraMap (f : MRing (fun k => ι' (j k)) F) :
   simp [contractFracMap, contractQuot]
   rfl
 
+/- English proof (translation)
+Use `MvPolynomial.algHom_ext fun r => ?_` and prove the remaining obligations. Simplify using `only [AlgHom.comp_apply, IntNumPoint.dehom, aeval_X, rename_X, map_div₀, IntNumPoint.xc, contractFracMap_algebraMap]`. Both sides reduce to the same expression.
+-/
 theorem contractFracMap_comp_dehom :
     (contractFracMap j P').comp (IntNumPoint.dehom (contractPrime j P') (fun k => i' (j k))) =
       (IntNumPoint.dehom P' i').comp (rename (blockIncl j ι')) := by
@@ -112,6 +143,39 @@ theorem contractFracMap_comp_dehom :
 
 end Contract
 
+/- English proof (translation)
+Introduce `F _ K K' _ _ _ _ ι _ ι' _ κ v hκv P' hP' i' hi`. Use `hP'.isPrime` as an intermediate fact. Use `set j : K ↪ K' := ⟨κ, hκv.1⟩`. Establish `hu : ∀ q : Σ k, ι k, ∃ r : ι' (j q.1), blockIncl j ι' ⟨q.1, r⟩ = v q`. Introduce `q`.
+
+Establish `h` using `hκv.2.2.1 q`. Use `revert h`. Generalize the expression as in `v q = q'`. Take `⟨k', r⟩` from `q'`. Introduce and unpack `(h : k' = κ q.1)`.
+
+Substitute `h` using the available equality. Conclude with `⟨r, rfl⟩`. Set `ucoord : (Σ k, ι k) → (Σ k, ι' (j k))` to `fun q => ⟨q.1, (hu q).choose⟩`. Establish `hucoord : blockIncl j ι' ∘ ucoord = v` using `funext fun q => (hu q).choose_spec`. Establish `hw : ∀ r : Σ k, ι' (j k), ∃ q, v q = blockIncl j ι' r` using `fun r => hκv.2.2.2 _ ⟨r.1, rfl⟩`.
+
+Set `wcoord : (Σ k, ι' (j k)) → (Σ k, ι k)` to `fun r => (hw r).choose`. Establish `hwcoord : v ∘ wcoord = blockIncl j ι'` using `funext fun r => (hw r).choose_spec`. Establish `hi0 : ∀ k, (X ⟨k, i' (j k)⟩ : MRing (fun k => ι' (j k)) F) ∉ contractPrime j P'`. Introduce `k h`. Establish `h'` using `Ideal.mem_comap.1 h`.
+
+Rewrite `h'` using `[rename_X]`. Conclude with `hi (j k) h'`. Set `ρ` to `Ideal.Quotient.liftₐ (ReciprocityTheory.ChartRestriction.G.AI.I1.chartIdeal P' i') (IntNumPoint.dehom P' i') (fun a ha => IntNumPoint.dehom_eq_zero_of_mem_chartIdeal i' hi hP'.multiHomog ha)`. Establish `hρ : ∀ f, ρ (Ideal.Quotient.mk _ f) = IntNumPoint.dehom P' i' f` using `fun f => rfl`. Establish `hρinj : Function.Injective ρ`.
+
+Use `(injective_iff_map_eq_zero ρ).2 fun a ha => ?_` and prove the remaining obligations. Take `⟨f, rfl⟩` from `Ideal.Quotient.mk_surjective a`. Rewrite `ha` using `[hρ]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 (IntNumPoint.mem_chartIdeal_of_dehom_eq_zero i' hi ha)`. Set `_` to `(ReciprocityTheory.ChartRestriction.G.AI.I1.chartMap v P' i').toAlgebra`.
+
+Establish `hτ : ∀ p : MRing ι F, ρ (ReciprocityTheory.ChartRestriction.G.AI.I1.chartMap v P' i' (Ideal.Quotient.mk _ p)) = IntNumPoint.dehom P' i' (rename v p)` using `fun p => rfl`. Establish `key : ∀ p : MRing ι F, IntNumPoint.dehom P' i' (rename v p) = contractFracMap j P' (IntNumPoint.dehom (contractPrime j P') (fun k => i' (j k)) (rename ucoord p))`. Introduce `p`. Establish `e : rename v p = rename (blockIncl j ι') (rename ucoord p)`. Rewrite using `[rename_rename, hucoord]`.
+
+Rewrite using `[e]`. Conclude with `(AlgHom.congr_fun (contractFracMap_comp_dehom j P' i') _).symm`. Establish `key2 : ∀ f, contractFracMap j P' (IntNumPoint.dehom (contractPrime j P') (fun k => i' (j k)) f) = ρ (ReciprocityTheory.ChartRestriction.G.AI.I1.chartMap v P' i' (Ideal.Quotient.mk _ (rename wcoord f)))`. Introduce `f`. Rewrite using `[hτ, rename_rename, hwcoord]`.
+
+Conclude with `AlgHom.congr_fun (contractFracMap_comp_dehom j P' i') f`. Establish `hρH : ∀ x, ρ x ∈ homFracDegZero P'`. Introduce `x`. Take `⟨f, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Conclude with `dehom_mem_homFracDegZero P' i' hi f`.
+
+Establish `hτE : ∀ x, ρ (ReciprocityTheory.ChartRestriction.G.AI.I1.chartMap v P' i' x) ∈ (homFracDegZero (contractPrime j P')).map (contractFracMap j P')`. Introduce `x`. Take `⟨p, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Rewrite using `[hτ, key]`. Conclude with `(IntermediateField.mem_map _).2 ⟨_, dehom_mem_homFracDegZero _ _ hi0 _, rfl⟩`.
+
+Establish `hHq : ∀ z ∈ homFracDegZero P', ∃ x y, z = ρ x / ρ y`. Introduce `z hz`. Use `exists_div_of_mem_adjoin ρ.toRingHom (fun c => ⟨algebraMap F _ c, ρ.commutes c⟩) ?_` and prove the remaining obligations. Use `revert z`. Use `show homFracDegZero P' ≤ _`.
+
+Unfold `homFracDegZero`. Use `IntermediateField.adjoin_le_iff.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨b, f, g, hf, hg, hgP, rfl⟩`. Rewrite using `[div_eq_dehom_div P' i' hi hf hg]`. Conclude with `div_mem (IntermediateField.subset_adjoin _ _ ⟨Ideal.Quotient.mk _ f, rfl⟩) (IntermediateField.subset_adjoin _ _ ⟨Ideal.Quotient.mk _ g, rfl⟩)`.
+
+Establish `hEq : ∀ z ∈ (homFracDegZero (contractPrime j P')).map (contractFracMap j P'), ∃ x y, z = ρ (ReciprocityTheory.ChartRestriction.G.AI.I1.chartMap v P' i' x) / ρ (ReciprocityTheory.ChartRestriction.G.AI.I1.chartMap v P' i' y)`. Introduce `z hz`. Use `exists_div_of_mem_adjoin (ρ.toRingHom.comp (ReciprocityTheory.ChartRestriction.G.AI.I1.chartMap v P' i')) (fun c => ⟨Ideal.Quotient.mk _ (C c), ?_⟩) ?_` and prove the remaining obligations. Use `show ρ (ReciprocityTheory.ChartRestriction.G.AI.I1.chartMap v P' i' (Ideal.Quotient.mk _ (C c))) = _`. Rewrite using `[hτ, rename_C]`.
+
+Conclude with `(IntNumPoint.dehom P' i').commutes c`. Use `revert z`. Use `show (homFracDegZero (contractPrime j P')).map (contractFracMap j P') ≤ _`. Unfold `homFracDegZero`. Rewrite using `[IntermediateField.adjoin_map, IntermediateField.adjoin_le_iff]`.
+
+Introduce and unpack `_ ⟨_, ⟨d, f, g, hf, hg, hgP, rfl⟩, rfl⟩`. Rewrite using `[div_eq_dehom_div _ _ hi0 hf hg, map_div₀, key2, key2]`. Conclude with `div_mem (IntermediateField.subset_adjoin _ _ ⟨Ideal.Quotient.mk _ (rename wcoord f), rfl⟩) (IntermediateField.subset_adjoin _ _ ⟨Ideal.Quotient.mk _ (rename wcoord g), rfl⟩)`. Establish `hEH : (homFracDegZero (contractPrime j P')).map (contractFracMap j P') ≤ homFracDegZero P'`. Introduce `z hz`.
+
+Take `⟨x, y, rfl⟩` from `hEq z hz`. Conclude with `div_mem (hρH _) (hρH _)`. Unfold `ReciprocityTheory.ChartRestriction.G.AI.I1.fnDeg relDeg`. Conclude with `finrank_eq_relfinrank ρ.toRingHom hρinj _ _ hEH (fun a b h => Ideal.quotientMap_injective (hρinj h)) hτE hρH hEq hHq`.
+-/
 theorem proof : FnDegRelDeg.Statement.{u} := by
   intro F _ K K' _ _ _ _ ι _ ι' _ κ v hκv P' hP' i' hi
   have := hP'.isPrime

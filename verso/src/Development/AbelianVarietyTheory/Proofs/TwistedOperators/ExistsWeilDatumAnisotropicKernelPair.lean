@@ -19,6 +19,9 @@ variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} (G : GridData L sc) (
 
 def lam (σ : ℕ) : Fin σ → D.host.E := fun a => D.host.xi0 ^ (a : ℕ)
 
+/- English proof (translation)
+The claim follows from `pow_ne_zero _ (GlobalTheory.Unf.Inhab.cmHost_imaginaryGenerator_ne_zero D)`.
+-/
 theorem lam_ne (σ : ℕ) (a : Fin σ) : lam (D := D) σ a ≠ 0 := pow_ne_zero _ (GlobalTheory.Unf.Inhab.cmHost_imaginaryGenerator_ne_zero D)
 
 def besDecAt (j σ : ℕ) (hj : j + 2 * σ + 2 = D.R.m) :
@@ -55,6 +58,9 @@ def jacAt (hM : M.Is t) (n σ : ℕ) (hn : n + 2 * σ + 1 = D.R.m) : JacLev D σ
   v0 := volAt hM (.top n) (by show n ≤ D.R.m; omega)
   vN := (GlobalTheory.Unf.Inhab.nonempty_volN _).some
 
+/- English proof (translation)
+Take `⟨om₁, h₁⟩` from `(GlobalTheory.Desc.weil_data_descend D ψ V W χV χW om h).1 V₀ ρ dV`. Conclude with `(GlobalTheory.Desc.weil_data_descend D ψ V₀ W χV χW om₁ h₁).2 W₀ σ dW`.
+-/
 theorem exists_weilDatum_anisotropicKernelPair {ψ : AddChar (AF D.host.F) ℂ} {V V₀ W W₀ : HSp D} {ρ σ : ℕ} (dV : HypDec V V₀ ρ) (dW : HypDec W W₀ σ)
     {χV χW : (AE D)ˣ →* Circle} {om : Om V W} (h : IsWeilDatumO ψ V W χV χW om) :
     ∃ om₀ : Om V₀ W₀, IsWeilDatumO ψ V₀ W₀ χV χW om₀ := by
@@ -85,12 +91,18 @@ open GlobalTheory.FunObj GlobalTheory.RowUnf
 
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} (G : GridData L sc) (Wl : G.Weil) (t : T) (M : Vol G)
 
+/- English proof (translation)
+Rewrite using `[neg_mulVec, smul_mulVec, one_mulVec]`. Use function extensionality and compare the values at `i`. Simplify using `[pow_succ, mul_comm]`.
+-/
 theorem link_map {n : ℕ} (σ : ℕ) :
     (-(D.host.xi0 • (1 : Matrix (Fin n) (Fin n) D.host.E))) *ᵥ (fun _ => D.host.xi0 ^ σ) = -fun _ => D.host.xi0 ^ (σ + 1) := by
   rw [neg_mulVec, smul_mulVec, one_mulVec]
   funext i
   simp [pow_succ, mul_comm]
 
+/- English proof (translation)
+Establish `e : (fun _ : Fin L.rank => D.host.xi0 ^ (σ + 1)) = D.host.xi0 • fun _ => D.host.xi0 ^ σ`. Use function extensionality and compare the values at `i`. Simplify using `[pow_succ, mul_comm]`. Rewrite using `[e, star_smul, mulVec_smul, dotProduct_smul, smul_dotProduct, smul_eq_mul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem link_norm (L : HSp D) (σ : ℕ) :
     star (fun _ : Fin L.rank => D.host.xi0 ^ (σ + 1)) ⬝ᵥ L.gram *ᵥ (fun _ => D.host.xi0 ^ (σ + 1)) =
       D.host.xi0 * star D.host.xi0 * (star (fun _ : Fin L.rank => D.host.xi0 ^ σ) ⬝ᵥ L.gram *ᵥ (fun _ => D.host.xi0 ^ σ)) := by
@@ -109,6 +121,11 @@ def linkAt (hM : M.Is t) (j σ : ℕ) (hj : j + 2 * (σ + 1) + 2 = D.R.m) (vN : 
   map := link_map σ
   norm := link_norm _ σ
 
+/- English proof (translation)
+Establish `hm` using `D.R.two_le_m`. Establish `h` using `G.isV (X := .grid D.R.m D.R.m) ⟨le_rfl, le_rfl⟩ fun j e => by injection e with e1`. Use linear arithmetic over natural numbers and integers. Use `GlobalTheory.SeeSaw.Inh.coCpt_of_isDefinite h.sigOK fun τ => Or.inl ?_` and prove the remaining obligations. Rewrite using `[h.sig τ, h.rank]`.
+
+Simplify using `[Node.neg]`.
+-/
 theorem cocpt_last : CoCpt (G.V (.grid D.R.m D.R.m)) := by
   have hm := D.R.two_le_m
   have h := G.isV (X := .grid D.R.m D.R.m) ⟨le_rfl, le_rfl⟩ fun j e => by
@@ -121,6 +138,9 @@ theorem cocpt_last : CoCpt (G.V (.grid D.R.m D.R.m)) := by
 def castOm {V : HSp D} {n n' : ℕ} (h : n = n') (om : Om V (G.V (.grid D.R.m n))) : Om V (G.V (.grid D.R.m n')) :=
   Eq.rec (motive := fun k _ => Om V (G.V (.grid D.R.m k))) om h
 
+/- English proof (translation)
+Substitute `h` using the available equality. Conclude with `hom`.
+-/
 theorem castOm_weil {ψ : AddChar (AF D.host.F) ℂ} {V : HSp D} {n n' : ℕ} (h : n = n') {χV χW : (AE D)ˣ →* Circle}
     {om : Om V (G.V (.grid D.R.m n))} (hom : IsWeilDatumO ψ V _ χV χW om) :
     IsWeilDatumO ψ V (G.V (.grid D.R.m n')) χV χW (castOm G h om) := by
@@ -130,6 +150,9 @@ theorem castOm_weil {ψ : AddChar (AF D.host.F) ℂ} {V : HSp D} {n n' : ℕ} (h
 def castSch {V : HSp D} {n n' : ℕ} (h : n = n') (f : WO V (G.V (.grid D.R.m n)) → ℂ) : WO V (G.V (.grid D.R.m n')) → ℂ :=
   Eq.rec (motive := fun k _ => WO V (G.V (.grid D.R.m k)) → ℂ) f h
 
+/- English proof (translation)
+Substitute `h` using the available equality. Conclude with `hf`.
+-/
 theorem castSch_theta {ψ : AddChar (AF D.host.F) ℂ} {V : HSp D} {n n' : ℕ} (h : n = n') {f : WO V (G.V (.grid D.R.m n)) → ℂ}
     (hf : IsThetaFunO ψ V _ f) : IsThetaFunO ψ V (G.V (.grid D.R.m n')) (castSch G h f) := by
   subst h
@@ -170,6 +193,9 @@ open GlobalTheory.FunObj GlobalTheory.RowUnf
 
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} (G : GridData L sc) (Wl : G.Weil) (t : T) (M : Vol G)
 
+/- English proof (translation)
+Use `D.R.two_le_m` as an intermediate fact. Take `⟨a, ha⟩` from `D.R.m_even`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem top_idx : 0 + 2 * ((D.R.m - 2) / 2) + 2 = D.R.m := by
   have := D.R.two_le_m
   obtain ⟨a, ha⟩ := D.R.m_even
@@ -204,6 +230,9 @@ def AllTheta (d : PureT G (downPath t D.R.m D.R.m)) : Prop :=
   Path.Fam.All (fun a (f : Sch G a) => IsThetaFunO Wl.ψ (G.pS a.pair) (G.pT a.pair) f) d
 
 variable {M} in
+/- English proof (translation)
+The claim follows from `| 0, j, hj, _ => ⟨getD_all _ t D.R.m D.R.m d hd j (by omega), castSch_theta G _ (getD_all _ t D.R.m D.R.m d hd (j + 1) (by omega))⟩ | σ + 1, j, hj, _ => ⟨getD_all _ t D.R.m D.R.m d hd j (by omega), getD_all _ t D.R.m D.R.m d hd (j + 1) (by omega), dataFrom_isTheta hM d hd σ (j + …`.
+-/
 theorem dataFrom_isTheta (hM : M.Is t) (d : PureT G (downPath t D.R.m D.R.m)) (hd : AllTheta G Wl t d) :
     ∀ (σ j : ℕ) (hj : j + 2 * σ + 2 = D.R.m) (vN : VolN (besDecAt G j σ hj)),
       (chainFrom G Wl t hM σ j hj vN).IsTheta (dataFrom G Wl t hM d σ j hj vN)
@@ -219,6 +248,9 @@ noncomputable def chainData (hM : M.Is t) (d : PureT G (downPath t D.R.m D.R.m))
 
 variable {M} in
 
+/- English proof (translation)
+The claim follows from `dataFrom_isTheta G Wl t hM d hd _ 0 top_idx (topVN hM)`.
+-/
 theorem chainData_isTheta (hM : M.Is t) (d : PureT G (downPath t D.R.m D.R.m)) (hd : AllTheta G Wl t d) :
     (chain G Wl t hM).IsTheta (chainData G Wl t hM d) :=
   dataFrom_isTheta G Wl t hM d hd _ 0 top_idx (topVN hM)

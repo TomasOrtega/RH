@@ -4,6 +4,19 @@ import Development.AutomorphicSpectrum.Statements.MetricStatements.AgreementIffG
 
 open MvPolynomial MeasureTheory Filter Topology ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M ReciprocityTheory.AnForm.P ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.AI ReciprocityTheory.ChartRestriction.G.AI.I1 ReciprocityTheory.ChartRestriction.G.AI.I2 ReciprocityTheory.ChartRestriction.G.AI.I4 GlobalTheory.CompanionTheory.Ar.PB GroundTheory.Heights₂.Heights GroundTheory.Heights₂.Heights.LowerBoundFree
 
+/- English proof (translation)
+Introduce `K _ ι _ Ω _ y α dβ hy hex`. Take `⟨k, hk, e, he, hne⟩` from `hex`. Use `choose i hi using hy`. Use `set D := ∑ κ, dβ κ with hDdef`. Establish `hD : ∀ κ, dβ κ ≤ D` using `fun κ => Finset.single_le_sum (f := dβ) (fun _ _ => Nat.zero_le _) (Finset.mem_univ κ)`.
+
+Use `⟨(D + 1) * k, le_trans hk (Nat.le_mul_of_pos_left k (Nat.succ_pos D)), e ^ (D + 1) * ∏ κ, y ⟨κ, i κ⟩ ^ (D - dβ κ), ?_, ?_⟩` and prove the remaining obligations. Introduce `c hc`. Establish `h1` using `he c hc`. Establish `key : e ^ (D + 1) * (∏ κ, y ⟨κ, i κ⟩ ^ (D - dβ κ)) * ∏ κ, y ⟨κ, c κ⟩ ^ (-(((1 : ℕ) : ℤ) * ((((D + 1) * k : ℕ) : ℤ) * α κ - 1 - (dβ κ : ℤ)))) = (e * ∏ κ, y ⟨κ, c κ⟩ ^ (-(((1 : ℕ) : ℤ) * ((k : ℤ) * α κ - 1)))) ^ (D + 1) * ∏ κ, (y ⟨κ, i κ⟩ / y ⟨κ, c κ⟩) ^ (D - dβ κ)`. Rewrite using `[mul_pow, ← Finset.prod_pow, mul_assoc, mul_assoc]`.
+
+Use `congr 1`. Rewrite using `[← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl (fun κ _ => ?_)` and prove the remaining obligations. Establish `hyc : y ⟨κ, c κ⟩ ≠ 0` using `hc κ`. Rewrite using `[div_pow, ← zpow_natCast (y ⟨κ, c κ⟩) (D - dβ κ), ← zpow_natCast (y ⟨κ, c κ⟩ ^ (-(((1 : ℕ) : ℤ) * ((k : ℤ) * α κ - 1)))) (D + 1), ← zpow_mul]`.
+
+Establish `hexp : -(((1 : ℕ) : ℤ) * ((((D + 1) * k : ℕ) : ℤ) * α κ - 1 - (dβ κ : ℤ))) = -(((1 : ℕ) : ℤ) * ((k : ℤ) * α κ - 1)) * ((D + 1 : ℕ) : ℤ) - ((D - dβ κ : ℕ) : ℤ)`. Rewrite using `[Nat.cast_sub (hD κ)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hexp, zpow_sub₀ hyc]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key]`. Use `Subalgebra.mul_mem _ (Subalgebra.pow_mem _ h1 _) (Subalgebra.prod_mem _ (fun κ _ => ?_))` and prove the remaining obligations. Use `Subalgebra.pow_mem _ ?_ _` and prove the remaining obligations. Unfold `chartRingZ`.
+
+Conclude with `Algebra.subset_adjoin (Set.mem_range.2 ⟨⟨κ, i κ⟩, rfl⟩)`. Conclude with `mul_ne_zero (pow_ne_zero _ hne) (Finset.prod_ne_zero_iff.2 fun κ _ => pow_ne_zero _ (hi κ))`.
+-/
 theorem PositivityTheory.Xgp.t_pol_sec : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Ω : Type) [Field Ω] (y : (Σ k, ι k) → Ω) (α : K → ℤ) (dβ : K → ℕ), (∀ k, ∃ i, y ⟨k, i⟩ ≠ 0) → (∃ k : ℕ, 1 ≤ k ∧ ∃ e ∈ chartLat y (fun κ => (k : ℤ) * α κ - 1) 1, e ≠ 0) → ∃ k : ℕ, 1 ≤ k ∧ ∃ e ∈ chartLat y (fun κ => (k : ℤ) * α κ - 1 - dβ κ) 1, e ≠ 0 := by
   intro K _ ι _ Ω _ y α dβ hy hex
   obtain ⟨k, hk, e, he, hne⟩ := hex

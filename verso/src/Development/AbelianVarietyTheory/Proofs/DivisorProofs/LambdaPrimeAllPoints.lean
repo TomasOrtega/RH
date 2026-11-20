@@ -23,13 +23,22 @@ def wd (D : D7) (j : Fin D.R.m) (τ : D.what₂.Tau) : WeightData where
 
 variable (D : D7) (j : Fin D.R.m) (τ : D.what₂.Tau)
 
+/- English proof (translation)
+The claim follows from `((D.hc τ).e_int j).choose_spec.symm`.
+-/
 theorem wd_e : ((wd D j τ).e : ℚ) = (D.hc τ).e j := ((D.hc τ).e_int j).choose_spec.symm
 
+/- English proof (translation)
+Use `show (((if h : 2 ≤ n ∧ n - 2 < D.R.k - 1 then ((D.hc τ).v_int ⟨n - 2, h.2⟩).choose else 0 : ℤ)) : ℚ) = _`. Rewrite using `[dif_pos h]`. Conclude with `((D.hc τ).v_int _).choose_spec.symm`.
+-/
 theorem wd_v (n : ℕ) (h : 2 ≤ n ∧ n - 2 < D.R.k - 1) : ((wd D j τ).v n : ℚ) = (D.hc τ).v ⟨n - 2, h.2⟩ := by
   show (((if h : 2 ≤ n ∧ n - 2 < D.R.k - 1 then ((D.hc τ).v_int ⟨n - 2, h.2⟩).choose else 0 : ℤ)) : ℚ) = _
   rw [dif_pos h]
   exact ((D.hc τ).v_int _).choose_spec.symm
 
+/- English proof (translation)
+Use `show (((if h : 1 ≤ n ∧ n - 1 < D.R.m then ((D.hc τ).b_int ⟨n - 1, h.2⟩).choose else 0 : ℤ)) : ℚ) = _`. Rewrite using `[dif_pos h]`. Conclude with `((D.hc τ).b_int _).choose_spec.symm`.
+-/
 theorem wd_b (n : ℕ) (h : 1 ≤ n ∧ n - 1 < D.R.m) : ((wd D j τ).b n : ℚ) = (D.hc τ).b ⟨n - 1, h.2⟩ := by
   show (((if h : 1 ≤ n ∧ n - 1 < D.R.m then ((D.hc τ).b_int ⟨n - 1, h.2⟩).choose else 0 : ℤ)) : ℚ) = _
   rw [dif_pos h]
@@ -43,6 +52,9 @@ open Formalism.IndefR.IndefiniteWeightData
 
 variable (D : D7) (j : Fin D.R.m) (τ : D.what₂.Tau)
 
+/- English proof (translation)
+Establish `hk : (wd D j τ).k = D.R.k` using `rfl`. Unfold `WeightData.lam`. Rewrite using `[if_pos (by rw [hk]; exact h2), wd_v D j τ (i + 1) ⟨by omega, by omega⟩]`. Conclude with `congrArg _ (Fin.ext (by simp))`.
+-/
 theorem wd_lam_lo (i : ℕ) (h1 : 1 ≤ i) (h2 : i ≤ D.R.k - 1) :
     ((wd D j τ).lam i : ℚ) = (D.hc τ).v ⟨i - 1, by omega⟩ := by
   have hk : (wd D j τ).k = D.R.k := rfl
@@ -50,6 +62,9 @@ theorem wd_lam_lo (i : ℕ) (h1 : 1 ≤ i) (h2 : i ≤ D.R.k - 1) :
   rw [if_pos (by rw [hk]; exact h2), wd_v D j τ (i + 1) ⟨by omega, by omega⟩]
   exact congrArg _ (Fin.ext (by simp))
 
+/- English proof (translation)
+Establish `hk : (wd D j τ).k = D.R.k` using `rfl`. Unfold `WeightData.lam`. Rewrite using `[if_neg (by rw [hk]; omega)]`. Use `push_cast`. Rewrite using `[hk, wd_b D j τ _ ⟨by omega, h2⟩]`.
+-/
 theorem wd_lam_hi (i : ℕ) (h1 : D.R.k - 1 < i) (h2 : i - (D.R.k - 1) - 1 < D.R.m) :
     ((wd D j τ).lam i : ℚ) = -(D.hc τ).b ⟨i - (D.R.k - 1) - 1, h2⟩ := by
   have hk : (wd D j τ).k = D.R.k := rfl
@@ -58,6 +73,25 @@ theorem wd_lam_hi (i : ℕ) (h1 : D.R.k - 1 < i) (h2 : i - (D.R.k - 1) - 1 < D.R
   push_cast
   rw [hk, wd_b D j τ _ ⟨by omega, h2⟩]
 
+/- English proof (translation)
+Establish `hR` using `D.R.m_add_three_le_k`. Establish `hm2` using `D.R.two_le_m`. Establish `hjm` using `j.2`. Establish `ht : (0 : ℚ) ≤ D.R.t` using `by positivity`. Use `set P := D.hc τ with hP`.
+
+Establish `hu : ∀ a b : Fin D.R.k, a.1 = b.1 → P.u a = P.u b` using `fun a b h => congrArg _ (Fin.ext h)`. Establish `hb : ∀ a b : Fin D.R.m, a.1 = b.1 → P.b a = P.b b` using `fun a b h => congrArg _ (Fin.ext h)`. Use `⟨show 1 ≤ D.R.k by omega, show 1 ≤ (j : ℕ) + 1 by omega, show (j : ℕ) + 1 ≤ D.R.m by omega, ?_, D.R.t_odd, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `show Odd (D.R.k + D.R.m - 1)`. Conclude with `Nat.Even.sub_odd (by omega) (D.R.k_even.add D.R.m_even) odd_one`.
+
+Introduce `i hi1 hi2`. Establish `hi2' : i < D.R.k + D.R.m - 1` using `hi2`. It suffices to establish `((wd D j τ).lam (i + 1) : ℚ) < (wd D j τ).lam i by exact_mod_cast this`. Break down `lt_trichotomy (i + 1) (D.R.k) with h | h | h` into its components or cases. Rewrite using `[wd_lam_lo D j τ (i + 1) (by omega) (by omega), wd_lam_lo D j τ i hi1 (by omega)]`.
+
+Establish `h1` using `P.u_gt_v ⟨i, by omega⟩`. Establish `h2` using `P.v_gt_u ⟨i - 1, by omega⟩`. Rewrite `h2` using `[hu ⟨i - 1 + 1, _⟩ ⟨i, by omega⟩ (by simp; omega)]`. Establish `e1 : (⟨i + 1 - 1, by omega⟩ : Fin (D.R.k - 1)) = ⟨i, by omega⟩` using `Fin.ext (by simp)`. Rewrite using `[e1]`.
+
+Conclude with `h1.trans h2`. Rewrite using `[wd_lam_hi D j τ (i + 1) (by omega) (by omega), wd_lam_lo D j τ i hi1 (by omega)]`. Establish `h1` using `P.u_last_gt (by omega) (by omega)`. Establish `h2` using `P.v_gt_u ⟨i - 1, by omega⟩`. Rewrite `h2` using `[hu ⟨i - 1 + 1, _⟩ ⟨D.R.k - 1, by omega⟩ (by simp; omega)]`.
+
+Rewrite using `[hb ⟨i + 1 - (D.R.k - 1) - 1, _⟩ ⟨0, by omega⟩ (by simp; omega)]`. Conclude with `h1.trans h2`. Rewrite using `[wd_lam_hi D j τ (i + 1) (by omega) (by omega), wd_lam_hi D j τ i (by omega) (by omega)]`. Establish `h1` using `P.gap_be ⟨i - (D.R.k - 1) - 1, by omega⟩`. Establish `h2` using `P.gap_eb ⟨i - (D.R.k - 1) - 1, by omega⟩ (by simp; omega)`.
+
+Rewrite `h2` using `[hb ⟨i - (D.R.k - 1) - 1 + 1, _⟩ ⟨i + 1 - (D.R.k - 1) - 1, by omega⟩ (by simp; omega)]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `show (((wd D j τ).b ((j : ℕ) + 1)) : ℤ) < (wd D j τ).e`. It suffices to establish `((wd D j τ).b ((j : ℕ) + 1) : ℚ) < (wd D j τ).e by exact_mod_cast this`. Rewrite using `[wd_b D j τ _ ⟨by omega, by omega⟩, wd_e, hb _ j (by simp)]`.
+
+Use `P.gap_be j` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `hj'`. Establish `hj'' : (j : ℕ) + 1 < D.R.m` using `hj'`. Use `show ((wd D j τ).e : ℤ) < (wd D j τ).b ((j : ℕ) + 1 + 1)`.
+
+It suffices to establish `((wd D j τ).e : ℚ) < (wd D j τ).b ((j : ℕ) + 1 + 1) by exact_mod_cast this`. Rewrite using `[wd_b D j τ _ ⟨by omega, by omega⟩, wd_e, hb _ ⟨(j : ℕ) + 1, hj''⟩ (by simp)]`. Use `P.gap_eb j hj''` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem wd_hyp : (wd D j τ).Hyp := by
   have hR := D.R.m_add_three_le_k
   have hm2 := D.R.two_le_m
@@ -104,6 +138,13 @@ theorem wd_hyp : (wd D j τ).Hyp := by
     have := P.gap_eb j hj''
     linarith
 
+/- English proof (translation)
+Establish `hjm` using `j.2`. Use `set P := D.hc τ with hP`. Establish `hb : ∀ a b : Fin D.R.m, a.1 = b.1 → P.b a = P.b b` using `fun a b h => congrArg _ (Fin.ext h)`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `show ((D.R.t : ℚ) + 3) / 2 ≤ ((wd D j τ).e : ℚ) - (wd D j τ).b ((j : ℕ) + 1)`.
+
+Rewrite using `[wd_b D j τ _ ⟨by omega, by omega⟩, wd_e, hb _ j (by simp)]`. Conclude with `P.gap_be j`. Introduce `hj'`. Establish `hj'' : (j : ℕ) + 1 < D.R.m` using `hj'`. Use `show ((D.R.t : ℚ) + 3) / 2 ≤ ((wd D j τ).b ((j : ℕ) + 1 + 1) : ℚ) - (wd D j τ).e`.
+
+Rewrite using `[wd_b D j τ _ ⟨by omega, by omega⟩, wd_e, hb _ ⟨(j : ℕ) + 1, hj''⟩ (by simp)]`. Conclude with `P.gap_eb j hj''`.
+-/
 theorem wd_gap : (wd D j τ).GapHyp := by
   have hjm := j.2
   set P := D.hc τ with hP
@@ -126,6 +167,21 @@ open Formalism.IndefR.IndefiniteWeightData
 
 variable (D : D7) (j : Fin D.R.m) (τ : D.what₂.Tau)
 
+/- English proof (translation)
+Establish `hjm` using `j.2`. Establish `hC` using `GlobalTheory.LowestKType.thetaSide (wd D j τ) (wd_hyp D j τ) (wd_gap D j τ)`. Establish `hint` using `hC.2.2.2.1`. Establish `hdom` using `hC.2.2.2.2.1`. Establish `hN : (Vc D j).rank = (wd D j τ).nV` using `D.sp.V_rank _ (by omega) (by omega)`.
+
+Establish `hmono : ∀ d a : ℕ, 1 ≤ a → a + d ≤ (wd D j τ).nV → (wd D j τ).lamPrime (a + d) ≤ (wd D j τ).lamPrime a`. Introduce `d`. Proceed by induction on `d with`. Consider the case `zero => intro a _ _`. Simplify using the standard rewrite rules.
+
+Consider the case `succ d ih`. Introduce `a ha had`. Use `hdom (a + d) (by omega) (by omega)` as an intermediate fact. Rewrite using `[← add_assoc]`. Conclude with `this.trans (ih a ha (by omega))`.
+
+Set `w : Fin (Vc D j).rank → ℤ` to `fun i => (hint (i.1 + 1) (by omega) (by have := i.2; omega)).choose`. Establish `hw : ∀ i, (w i : ℚ) = (wd D j τ).lamPrime (i.1 + 1)` using `fun i => (hint (i.1 + 1) (by omega) (by have := i.2; omega)).choose_spec.symm`. Establish `hanti : Antitone w`. Introduce `a b hab`. Establish `hab' : a.1 ≤ b.1` using `hab`.
+
+Use `hmono (b.1 - a.1) (a.1 + 1) (by omega) (by have := b.2; omega)` as an intermediate fact. Rewrite `this` using `[show a.1 + 1 + (b.1 - a.1) = b.1 + 1 by omega]`. Establish `h' : (w b : ℚ) ≤ w a` using `by rw [hw, hw]; exact this`. Conclude with `h'` after adjusting the coercions. Use `⟨⟨w, hanti⟩, ⟨by omega, by omega⟩, wd D j τ, rfl, rfl, rfl, rfl, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[wd_e]`. Conclude with `congrArg _ (Fin.ext (by simp))`. Introduce `a`. Rewrite using `[wd_v D j τ _ ⟨by omega, by have := a.2; omega⟩]`. Conclude with `congrArg _ (Fin.ext (by simp))`.
+
+Introduce `a`. Rewrite using `[wd_b D j τ _ ⟨by omega, by have := a.2; omega⟩]`. Conclude with `congrArg _ (Fin.ext (by simp))`. Introduce `i`. Conclude with `hw i`.
+-/
 theorem exists_isLamPrime :
     ∃ lam : DomWeight (Vc D j).rank, Formalism.IndefR.Bridge.IsLamPrime (D := D) lam ((j : ℕ) + 1) τ := by
   have hjm := j.2
@@ -166,6 +222,9 @@ theorem exists_isLamPrime :
   · intro i
     exact hw i
 
+/- English proof (translation)
+Establish `hex` using `exists_isLamPrime D j τ`. Unfold `Formalism.IndefR.Bridge.lamLdef`. Rewrite using `[dif_pos hex]`. Conclude with `hex.choose_spec`.
+-/
 theorem isLamPrime_lamLdef :
     Formalism.IndefR.Bridge.IsLamPrime (D := D)
       (Formalism.IndefR.Bridge.lamLdef (D := D) (Vc D j).rank ((j : ℕ) + 1) τ) ((j : ℕ) + 1) τ := by
@@ -176,6 +235,9 @@ theorem isLamPrime_lamLdef :
 
 end GlobalTheory.LiftWeightForced
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨1, one_pos, fun _ _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun Fm _ _ _ => EvPt.of_forall fun x _ i _ _ _ j τ => GlobalTheory.LiftWeightForced.isLamPrime_lamLdef (Fm.D x i) j τ⟩⟩`.
+-/
 theorem GlobalTheory.LiftWeightForced.atPts : GlobalTheory.BigOn.AtPts fun Fm x _ i _ => ∀ (j : Fin (Fm.D x i).R.m) τ,
     Formalism.IndefR.Bridge.IsLamPrime (D := Fm.D x i)
       (Formalism.IndefR.Bridge.lamLdef (D := Fm.D x i) (Formalism.IndefR.Links.Vc (Fm.D x i) j).rank ((j : ℕ) + 1) τ) ((j : ℕ) + 1) τ :=

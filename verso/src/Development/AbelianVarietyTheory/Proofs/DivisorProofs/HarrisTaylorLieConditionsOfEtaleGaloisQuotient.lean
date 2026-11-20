@@ -12,6 +12,9 @@ namespace GlobalTheory.UPel.HT.EtaleLie
 
 variable {S : Scheme.{0}}
 
+/- English proof (translation)
+Use `show Spec.map _ ≫ Spec.map _ = Spec.map _`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Use `congr 2`. Conclude with `RingHom.ext fun r => TrivSqZeroExt.fst_map _ r`.
+-/
 theorem fst_spMap_epsScaleR {R' : Type} [CommRing R'] (c : R') :
     spMap (TrivSqZeroExt.fstHom R' R' R').toRingHom ≫ spMap (epsScaleR c) =
       spMap (TrivSqZeroExt.fstHom R' R' R').toRingHom := by
@@ -20,6 +23,13 @@ theorem fst_spMap_epsScaleR {R' : Type} [CommRing R'] (c : R') :
   congr 2
   exact RingHom.ext fun r => TrivSqZeroExt.fst_map _ r
 
+/- English proof (translation)
+Set `π : CommRingCat.of (DualNumber R') ⟶ CommRingCat.of R'` to `CommRingCat.ofHom (TrivSqZeroExt.fstHom R' R' R').toRingHom`. Establish `hπ : Function.Surjective π` using `fun a => ⟨TrivSqZeroExt.inl a, rfl⟩`. Establish `hsq : ∀ a b : DualNumber R', a.fst = 0 → b.fst = 0 → a * b = 0` using `fun a b ha hb => by`. Apply the tactic sequence `ext <;> simp [ha, hb]`. Establish `hnil : IsNilpotent (RingHom.ker π.hom)` using `⟨2, by`.
+
+Rewrite using `[pow_two, Ideal.zero_eq_bot, eq_bot_iff, Ideal.mul_le]`. Conclude with `fun a ha b hb => hsq a b ha hb⟩`. Use `GlobalTheory.existsUnique_lift_of_etale_of_surjective ψ.left π hπ hnil _ h ?_` and prove the remaining obligations. Use `show (1 : Over.mk x ⟶ A).left ≫ ψ.left = spMap (TrivSqZeroExt.fstHom R' R' R').toRingHom ≫ h`. Rewrite using `[hh]`.
+
+Conclude with `congrArg (·.left) (MonObj.one_comp ψ)`.
+-/
 theorem existsUnique_dual_lift {R' : Type} [CommRing R'] {A B : Over S} [GrpObj A] [GrpObj B] (ψ : A ⟶ B)
     [IsMonHom ψ] [Etale ψ.left] (x : Sp R' ⟶ S) (h : Sp (DualNumber R') ⟶ B.left)
     (hh : spMap (TrivSqZeroExt.fstHom R' R' R').toRingHom ≫ h = (1 : Over.mk x ⟶ B).left) :
@@ -39,6 +49,23 @@ theorem existsUnique_dual_lift {R' : Type} [CommRing R'] {A B : Over S} [GrpObj 
   rw [hh]
   exact congrArg (·.left) (MonObj.one_comp ψ)
 
+/- English proof (translation)
+Introduce `p _ D R _ b M S s o A' _ _ act' ψ Ga _ ρ _hab hψ hG hact`. Use `haveI := hψ`. Use `haveI : Etale ψ.left := hG.etale`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `R' _ β x hx v hv`.
+
+Take `⟨l, ⟨hl₁, hl₂⟩, -⟩` from `existsUnique_dual_lift ψ x v.left hv.1`. Set `u : epsPtR x ⟶ o.A` to `Over.homMk l (by show l ≫ o.A.hom = _`. Rewrite using `[← Over.w ψ, ← Category.assoc, hl₂]`. Conclude with `Over.w v)`. Establish `hu : IsTanScal o.act x (algebraMap (𝓞 D.F) D.O D.ω) (β b.ρ) u`.
+
+Use `⟨hl₁, ?_⟩` and prove the remaining obligations. Establish `hh : spMap (TrivSqZeroExt.fstHom R' R' R').toRingHom ≫ (spMap (epsScaleR (β b.ρ)) ≫ v.left) = (1 : Over.mk x ⟶ A').left`. Rewrite using `[← Category.assoc, fst_spMap_epsScaleR, hv.1]`. Use `haveI := o.act.hom (algebraMap (𝓞 D.F) D.O D.ω)`. Use `(existsUnique_dual_lift ψ x _ hh).unique ⟨?_, ?_⟩ ⟨?_, ?_⟩` and prove the remaining obligations.
+
+Use `show _ ≫ l ≫ (o.act.act _).left = _`. Rewrite using `[← Category.assoc, hl₁]`. Establish `e : ((1 : Over.mk x ⟶ o.A) ≫ o.act.act (algebraMap (𝓞 D.F) D.O D.ω)).left = (1 : Over.mk x ⟶ o.A).left` using `congrArg Over.Hom.left (MonObj.one_comp _)`. Conclude with `e`. Use `show (l ≫ (o.act.act _).left) ≫ ψ.left = _`.
+
+Rewrite using `[Category.assoc, ← Over.comp_left, hact, Over.comp_left, ← Category.assoc, hl₂, ← hv.2]`. Both sides reduce to the same expression. Use `show _ ≫ spMap _ ≫ l = _`. Rewrite using `[← Category.assoc, fst_spMap_epsScaleR, hl₁]`. Use `show (spMap _ ≫ l) ≫ ψ.left = _`.
+
+Rewrite using `[Category.assoc, hl₂]`. Take `⟨w, hw, hvw⟩` from `o.lie R' β x hx u hu`. Use `⟨fun i => w i ≫ ψ, fun i c => ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Use `show _ ≫ (w i).left ≫ ψ.left = _`. Rewrite using `[← Category.assoc, (hw i c).1]`.
+
+Establish `e : ((1 : Over.mk x ⟶ o.A) ≫ ψ).left = (1 : Over.mk x ⟶ A').left` using `congrArg Over.Hom.left (MonObj.one_comp ψ)`. Conclude with `e`. Use `show ((w i ≫ ψ) ≫ act'.act _).left = spMap _ ≫ (w i).left ≫ ψ.left`. Rewrite using `[Category.assoc, ← hact, ← Category.assoc, Over.comp_left, (hw i c).2, Category.assoc]`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
+
+Rewrite using `[← GlobalTheory.LieEtale.ofFn_prod_comp ψ w, ← hvw]`. Conclude with `hl₂.symm`. Introduce `κ _ _ x β hx i`. Conclude with `(GlobalTheory.LieEtale.lieMult_iff_of_etale (𝓞 D.F) S o.A A' ψ (o.act.toF D) (act'.toF D) hψ hG.etale (fun c => hact _) κ x (β.comp (b.t i)) D.m).mp (o.lieRank κ x β hx i)`.
+-/
 theorem lie_of_etale : ∀ (p : ℕ) [Fact p.Prime] (D : GlobalTheory.UPel.HT.Datum p) (R : Type) [CommRing R] (b : Base D R) (M : ℕ) (S : Scheme.{0}) (s : S ⟶ Sp R) (o : Obj b M s) (A' : Over S) [GrpObj A'] [IsCommMonObj A'] (act' : OActN D.O A') (ψ : o.A ⟶ A') (Ga : Type) [Group Ga] (ρ : Ga → (o.A.left ⟶ o.A.left)), IsAbelianScheme A' → IsMonHom ψ → GlobalTheory.ZM.IsGaloisCover Ga ρ ψ.left → (∀ c' : D.O, o.act.act c' ≫ ψ = ψ ≫ act'.act c') → (∀ (R' : Type) [CommRing R'] (β : R →+* R') (x : Sp R' ⟶ S), x ≫ s = spMap β → ∀ v : epsPtR x ⟶ A', IsTanScal act' x (algebraMap (𝓞 D.F) D.O D.ω) (β b.ρ) v → ∃ w : Fin D.a → (epsPtR x ⟶ A'), (∀ i, ∀ c : 𝓞 D.F, IsTanScal act' x (algebraMap (𝓞 D.F) D.O c) (β (b.t i c)) (w i)) ∧ v = (List.ofFn w).prod) ∧ (∀ (κ : Type) [Field κ] [IsAlgClosed κ] (x : Sp κ ⟶ S) (β : R →+* κ), x ≫ s = spMap β → ∀ i, LieMult (act'.toF D) x (β.comp (b.t i)) D.m) := by
   intro p _ D R _ b M S s o A' _ _ act' ψ Ga _ ρ _hab hψ hG hact
   haveI := hψ

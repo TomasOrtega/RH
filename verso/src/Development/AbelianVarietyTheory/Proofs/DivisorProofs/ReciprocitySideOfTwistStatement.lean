@@ -6,5 +6,8 @@ import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.Ex
 import Development.AbelianVarietyTheory.PublishedTheorems.PublishedFoundations.NonemptyAlgHomOfIsRayOfDvd
 open GlobalTheory.BigTop GlobalTheory.BigOn GlobalTheory.BigOn.Exp
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.BigOn.Exp.recSide_of_twAdm | exact GlobalTheory.BigOn.Exp.recSide_of_twAdm | (intros; apply GlobalTheory.BigOn.Exp.recSide_of_twAdm <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.reciprocity_side_of_twist : TwAdm → RecSide := by
   first | exact @GlobalTheory.BigOn.Exp.recSide_of_twAdm | exact GlobalTheory.BigOn.Exp.recSide_of_twAdm | (intros; apply GlobalTheory.BigOn.Exp.recSide_of_twAdm <;> assumption)

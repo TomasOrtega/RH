@@ -8,6 +8,17 @@ noncomputable section
 
 namespace GlobalTheory.ZFin
 
+/- English proof (translation)
+Establish `hl : ‖(l : K)‖ < 1`. Rewrite using `[← map_natCast (algebraMap ℚ_[l] K), norm_algebraMap']`. Conclude with `Padic.norm_p_lt_one` after adjusting the coercions. Establish `hl0 : (l : K) ≠ 0`. Rewrite using `[← map_natCast (algebraMap ℚ_[l] K)]`.
+
+Conclude with `(map_ne_zero _).2 (Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero)`. Use `letI : NontriviallyNormedField K := { ‹NormedField K› with non_trivial := ⟨(l : K)⁻¹, by`. Rewrite using `[norm_inv]`. Conclude with `one_lt_inv₀ (norm_pos_iff.2 hl0) |>.2 hl⟩ }`. Use `haveI : ProperSpace K := FiniteDimensional.proper ℚ_[l] K`.
+
+Use `haveI : CompactSpace 𝒪[K] := by`. Establish `h1 : ((𝒪[K] : Set K)) = Metric.closedBall 0 1`. Use extensionality with `x`. Simplify using `[Valued.integer.mem_iff]`. Establish `h2 : IsCompact ((𝒪[K] : Set K))` using `h1 ▸ isCompact_closedBall 0 1`.
+
+Conclude with `(isCompact_iff_compactSpace (s := (𝒪[K] : Set K))).1 h2`. Use `haveI : IsPrincipalIdealRing 𝒪[K] := Valued.integer.isPrincipalIdealRing_of_compactSpace`. Set `f : O →+* 𝒪[K]` to `{ toFun := fun x => ⟨algebraMap O K x, Valued.integer.mem_iff.2 ((IsUnitBall.mem_range_iff _).1 ⟨x, rfl⟩)⟩ map_one' := by ext; simp map_mul' := by intros; ext; simp map_zero' := by ext; simp map_add' := by intros; ext; simp }`. Establish `hf : Function.Bijective f`. Use `⟨fun x y h => IsUnitBall.inj (O := O) (K := K) (congrArg Subtype.val h), fun y => ?_⟩` and prove the remaining obligations.
+
+Take `⟨x, hx⟩` from `(IsUnitBall.mem_range_iff (O := O) (y : K)).2 (Valued.integer.mem_iff.1 y.2)`. Conclude with `⟨x, Subtype.ext hx⟩`. Set `g` to `RingEquiv.ofBijective f hf`. Use `haveI : IsDomain O := (IsUnitBall.inj (O := O) (K := K)).isDomain (algebraMap O K)`. Conclude with `⟨inferInstance, IsPrincipalIdealRing.of_surjective (g.symm : 𝒪[K] →+* O) g.symm.surjective⟩`.
+-/
 theorem isDomain_isPrincipalIdealRing (O K : Type) [CommRing O] [NormedField K] [IsUltrametricDist K]
     [Algebra O K] [IsUnitBall O K] (l : ℕ) [Fact l.Prime] [NormedAlgebra ℚ_[l] K]
     [FiniteDimensional ℚ_[l] K] : IsDomain O ∧ IsPrincipalIdealRing O := by
@@ -42,6 +53,9 @@ theorem isDomain_isPrincipalIdealRing (O K : Type) [CommRing O] [NormedField K] 
   haveI : IsDomain O := (IsUnitBall.inj (O := O) (K := K)).isDomain (algebraMap O K)
   exact ⟨inferInstance, IsPrincipalIdealRing.of_surjective (g.symm : 𝒪[K] →+* O) g.symm.surjective⟩
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.weierstrass_division_eisensteinPow_integral O K l e n f hf`.
+-/
 theorem exists_eq_add_E_pow_mul (O K : Type) [CommRing O] [NormedField K] [IsUltrametricDist K]
     [CompleteSpace K] [Algebra O K] [IsUnitBall O K] (l e : ℕ) [Fact l.Prime] [NormedAlgebra ℚ_[l] K]
     [NeZero e] (n : ℕ) (f : K⟦X⟧) (hf : f ∈ A O K) :
@@ -58,6 +72,13 @@ variable (K l e a ι) in
 def gen (η : ℕ) (p : ZMod a × ι × Fin (e * η)) : Vec K a ι :=
   Pi.single p.1 (Pi.single p.2.1 (Ezpow K l e (-η) * X ^ (p.2.2 : ℕ)))
 
+/- English proof (translation)
+Rewrite using `[mem_divE]`. Use `mem_tot.2 fun τ => mem_vecs.2 fun i => ?_` and prove the remaining obligations. Simplify using `only [Pi.smul_apply, smul_eq_mul, gen]`. Distinguish the cases in `hτ : τ = p.1`. Substitute `hτ` using the available equality.
+
+Rewrite using `[Pi.single_eq_same]`. Distinguish the cases in `hi : i = p.2.1`. Substitute `hi` using the available equality. Rewrite using `[Pi.single_eq_same, ← mul_assoc, E_pow_mul_Ezpow_neg, one_mul]`. Conclude with `pow_mem HasU.X_mem _`.
+
+Rewrite using `[Pi.single_eq_of_ne hi, mul_zero]`. Conclude with `zero_mem _`. Rewrite using `[Pi.single_eq_of_ne hτ]`. Simplify using the standard rewrite rules.
+-/
 theorem gen_mem (P : PhiMod O K l e a ι) (η : ℕ) (p : ZMod a × ι × Fin (e * η)) :
     gen K l e a ι η p ∈ P.EM η := by
   rw [mem_divE]
@@ -73,6 +94,11 @@ theorem gen_mem (P : PhiMod O K l e a ι) (η : ℕ) (p : ZMod a × ι × Fin (e
     · rw [Pi.single_eq_of_ne hi, mul_zero]; exact zero_mem _
   · rw [Pi.single_eq_of_ne hτ]; simp
 
+/- English proof (translation)
+Simplify using `only [Finset.sum_apply, Pi.smul_apply, gen, Fintype.sum_prod_type, Finset.mul_sum]`. Simplify using `only [Pi.single_apply, ite_apply, Pi.zero_apply, smul_ite, smul_zero, Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Rewrite using `[Fintype.sum_eq_single τ (fun x hx => by simp [Ne.symm hx]), Fintype.sum_eq_single i (fun x hx => by simp [Ne.symm hx])]`. Simplify using `only [if_true]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[← algebraMap_smul K⟦X⟧ (c (τ, i, k)), algebraMap_eq_C, smul_eq_mul, mul_left_comm]`.
+-/
 theorem sum_gen_apply (η : ℕ) (c : ZMod a × ι × Fin (e * η) → O) (τ : ZMod a) (i : ι) :
     (∑ p, c p • gen K l e a ι η p) τ i =
       Ezpow K l e (-η) * ∑ k : Fin (e * η), C (algebraMap O K (c (τ, i, k))) * X ^ (k : ℕ) := by
@@ -85,6 +111,15 @@ theorem sum_gen_apply (η : ℕ) (c : ZMod a × ι × Fin (e * η) → O) (τ : 
   refine Finset.sum_congr rfl fun k _ => ?_
   rw [← algebraMap_smul K⟦X⟧ (c (τ, i, k)), algebraMap_eq_C, smul_eq_mul, mul_left_comm]
 
+/- English proof (translation)
+Set `F : (ZMod a × ι × Fin (e * η) → O) →ₗ[O] (P.EM η).restrictScalars O` to `LinearMap.codRestrict _ (Fintype.linearCombination O (gen K l e a ι η)) fun c => by`. Rewrite using `[Fintype.linearCombination_apply]`. Conclude with `sum_mem fun p _ => Submodule.smul_mem _ _ (gen_mem P η p)`. Use `Module.Finite.of_surjective ((Submodule.mkQ _).comp F) fun q => ?_` and prove the remaining obligations. Take `⟨⟨y, hy⟩, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`.
+
+Establish `hy2 : E K l e ^ η • y ∈ P.M` using `hy`. Establish `hyA (τ : ZMod a) (i : ι) : E K l e ^ η * y τ i ∈ A O K`. Use `mem_vecs.1 (mem_tot.1 hy2 τ) i` as an intermediate fact. Simplify using `using this`. Use `choose c g hg hfg using fun τ i => exists_eq_add_E_pow_mul O K l e η _ (hyA τ i)`.
+
+Use `⟨fun p => c p.1 p.2.1 p.2.2, ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.comp_apply, Submodule.mkQ_apply, Submodule.Quotient.eq]`. Express the relevant statement in the definitionally equal form `(∑ p, c p.1 p.2.1 p.2.2 • gen K l e a ι η p) - y ∈ P.M`. Use `mem_tot.2 fun τ => mem_vecs.2 fun i => ?_` and prove the remaining obligations. Rewrite using `[Pi.sub_apply, Pi.sub_apply, sum_gen_apply]`.
+
+Establish `hy' : y τ i = Ezpow K l e (-η) * (E K l e ^ η * y τ i)`. Rewrite using `[← mul_assoc, mul_comm (Ezpow K l e (-η)), E_pow_mul_Ezpow_neg, one_mul]`. Simplify using `only`. Rewrite using `[hy', hfg τ i, mul_add, sub_add_cancel_left, ← mul_assoc, mul_comm (Ezpow K l e (-η)) (E K l e ^ η), E_pow_mul_Ezpow_neg, one_mul]`. Conclude with `neg_mem (hg τ i)`.
+-/
 theorem finite_quot (P : PhiMod O K l e a ι) (η : ℕ) :
     Module.Finite O ((P.EM η).restrictScalars O ⧸
       (P.M.restrictScalars O).submoduleOf ((P.EM η).restrictScalars O)) := by
@@ -113,12 +148,20 @@ theorem finite_quot (P : PhiMod O K l e a ι) (η : ℕ) :
 
 variable [TameDescentExponentData K l e a]
 
+/- English proof (translation)
+Use `haveI : FiniteDimensional ℚ_[l] K := TameDescentExponentData.finite (l := l) (e := e) (a := a)`. Take `⟨_, _⟩` from `isDomain_isPrincipalIdealRing O K l`. Use `haveI := finite_quot D.toPhiMod η`. Conclude with `Module.Finite.equiv (D.desc.quotInvEquiv η)`.
+-/
 theorem finite_Z {η H : ℕ} (D : BKDat O K l e a ι η H) : Module.Finite O D.Z := by
   haveI : FiniteDimensional ℚ_[l] K := TameDescentExponentData.finite (l := l) (e := e) (a := a)
   obtain ⟨_, _⟩ := isDomain_isPrincipalIdealRing O K l
   haveI := finite_quot D.toPhiMod η
   exact Module.Finite.equiv (D.desc.quotInvEquiv η)
 
+/- English proof (translation)
+Use `haveI : FiniteDimensional ℚ_[l] K := TameDescentExponentData.finite (l := l) (e := e) (a := a)`. Take `⟨_, _⟩` from `isDomain_isPrincipalIdealRing O K l`. Use `haveI := finite_Z D`. Use `haveI : NoZeroSMulDivisors O D.Z := ⟨fun {c w} h => by`. Establish `h1 : c • (w : D.Pol) = 0` using `congrArg Subtype.val h`.
+
+Rewrite `h1` using `[← algebraMap_smul K c]`. Break down `smul_eq_zero.1 h1 with h2 | h2` into its components or cases. Conclude with `Or.inl (IsUnitBall.inj (O := O) (K := K) (by rw [h2, map_zero]))`. Conclude with `Or.inr (Subtype.ext h2)⟩`. Conclude with `Module.free_of_finite_type_torsion_free'`.
+-/
 theorem free_Z {η H : ℕ} (D : BKDat O K l e a ι η H) : Module.Free O D.Z := by
   haveI : FiniteDimensional ℚ_[l] K := TameDescentExponentData.finite (l := l) (e := e) (a := a)
   obtain ⟨_, _⟩ := isDomain_isPrincipalIdealRing O K l
@@ -131,6 +174,19 @@ theorem free_Z {η H : ℕ} (D : BKDat O K l e a ι η H) : Module.Free O D.Z :=
     · exact Or.inr (Subtype.ext h2)⟩
   exact Module.free_of_finite_type_torsion_free'
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Establish `hy' : y ∈ D.Mext (RpiE O K l e)` using `mem_tot.2 fun τ => mem_vecs.2 fun i => ⟨η, by`. Use `mem_vecs.1 (mem_tot.1 hy τ) i` as an intermediate fact. Simplify using `using this⟩`.
+
+Take `⟨v, hv, hd⟩` from `D.exists_sub_hatTot_mem_Mhat η ((D.smul_hatTot_mem_Mhat_iff η hy').2 hy)`. Establish `hv' : v ∈ D.Mext (RpiE O K l e)` using `mem_tot.2 fun τ => mem_vecs.2 fun i => ⟨η, by`. Use `invL_A_le_Rpi l e (mem_vecs.1 (mem_tot.1 hv τ) i)` as an intermediate fact. Simplify using `using this⟩`. Establish `hcls` using `(D.hatTot_sub_mem_Mhat_iff hy' hv').1 hd`.
+
+Establish `hl (n : ℕ) (f : K⟦X⟧) : (l : K) ^ n • f = ((l : A O K) : K⟦X⟧) ^ n * f`. Simplify using `[smul_eq_C_mul]`. Use `choose n hn using fun p : ZMod a × ι => mem_tot.1 hv p.1 p.2`. Use `⟨Finset.univ.sup n, Submodule.Quotient.mk ⟨(l : K) ^ Finset.univ.sup n • v, ?_⟩, ?_⟩` and prove the remaining obligations. Use `mem_tot.2 fun τ => mem_vecs.2 fun i => ?_` and prove the remaining obligations.
+
+Take `⟨c, hc⟩` from `Nat.exists_eq_add_of_le' (Finset.le_sup (f := n) (Finset.mem_univ (τ, i)))`. Rewrite using `[smul_comm, Pi.smul_apply, Pi.smul_apply, hl, hc, pow_add, mul_assoc]`. Conclude with `mul_mem (pow_mem (l : A O K).2 c) (hn (τ, i))`. Express the relevant statement in the definitionally equal form `D.cls ((l : K) ^ Finset.univ.sup n • v) = (l : K) ^ Finset.univ.sup n • D.cls y`. Rewrite using `[map_smul, hcls]`.
+
+Introduce and unpack `⟨n, q, hq⟩`. Take `⟨⟨y, hy⟩, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`. Establish `h1 : (l : K) ^ n • w ∈ D.PolEta η`. Rewrite using `[← hq]`. Conclude with `D.cls_mem_PolEta hy`.
+
+Establish `h2` using `(D.PolEta η).smul_mem ((l : K) ^ n)⁻¹ h1`. Rewrite `h2` using `[inv_smul_smul₀ (pow_ne_zero n (l_ne_zero (K := K) l))]`. Then use the resulting hypothesis.
+-/
 theorem exists_pow_smul_mem_range {η H : ℕ} (D : BKDat O K l e a ι η H) (w : D.Pol) :
     w ∈ D.PolEta η ↔
       ∃ n : ℕ, (l : K) ^ n • w ∈ LinearMap.range (Descent.quotToPol D.toPhiMod η) := by
@@ -162,6 +218,11 @@ theorem exists_pow_smul_mem_range {η H : ℕ} (D : BKDat O K l e a ι η H) (w 
     have h2 := (D.PolEta η).smul_mem ((l : K) ^ n)⁻¹ h1
     rwa [inv_smul_smul₀ (pow_ne_zero n (l_ne_zero (K := K) l))] at h2
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hw1, hw2⟩`. Take `⟨n, q, hq⟩` from `(exists_pow_smul_mem_range D w).1 hw1`. Take `⟨⟨y, hy⟩, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`. Use `⟨n, D.desc.mem_Z.2 ⟨⟨y, hy, hq⟩, fun g => ?_⟩⟩` and prove the remaining obligations.
+
+Rewrite using `[map_smul, hw2 g]`. Introduce and unpack `⟨n, hn⟩`. Establish `h2` using `D.Zl.smul_mem ((l : K) ^ n)⁻¹ (D.desc.mem_Zl_of_mem_Z hn)`. Rewrite `h2` using `[inv_smul_smul₀ (pow_ne_zero n (l_ne_zero (K := K) l))]`. Then use the resulting hypothesis.
+-/
 theorem mem_Zl_iff {η H : ℕ} (D : BKDat O K l e a ι η H) (w : D.Pol) :
     w ∈ D.Zl ↔ ∃ n : ℕ, (l : K) ^ n • w ∈ D.Z := by
   constructor
@@ -178,6 +239,9 @@ end GlobalTheory.ZFin
 
 open GlobalTheory.ZFin in
 
+/- English proof (translation)
+Introduce `O K _ _ _ _ _ _ l e a ι _ _ _ _ _ _ _ η H D`. Conclude with `⟨⟨free_Z D, finite_Z D⟩, Descent.quotToPol_injective (P := D.toPhiMod) η, fun w => exists_pow_smul_mem_range D w, D.desc.map_invariants_actQuot η, fun w => mem_Zl_iff D w⟩`.
+-/
 theorem GlobalTheory.ZFin.finiteFree_and_localisation : ∀ (O K : Type) [CommRing O] [NormedField K] [IsUltrametricDist K]
     [CompleteSpace K] [Algebra O K] [IsUnitBall O K] (l e a : ℕ) (ι : Type) [Fintype ι] [DecidableEq ι]
     [Fact l.Prime] [NormedAlgebra ℚ_[l] K] [NeZero e] [NeZero a] [TameDescentExponentData K l e a] (η H : ℕ)

@@ -16,6 +16,19 @@ open GlobalTheory.Doubling (absE)
 noncomputable section
 namespace GlobalTheory.ThKUniqA
 
+/- English proof (translation)
+Introduce `hKP F E _ _ _ _ _ σ B b a' G G₁ H H' hC e he X om om' om₁ om₁' hT hT₁ e' hheis hinv hpt`. Establish `hP` using `(GlobalTheory.ThK.Check.isPair_of_isTriple hT).1`. Establish `hP₁` using `(GlobalTheory.ThK.Check.isPair_of_isTriple hT₁).1`. Establish `hstd : IsStd B.ψ` using `hP.base.std`. Set `δ : Fn F b (b + a') →ₗ[ℂ] ℂ` to `LinearMap.proj 0`.
+
+Establish `hδ : δ ∈ (adeleClass F).adm (Fin b × Fin (b + a'))` using `GlobalTheory.EvZeroUniq.proj_zero_mem_adm F _`. Establish `hρ : ∀ u, ∀ Φ ∈ schA F (Fin (b + 2) × Fin (b + 2 + a')), G.M.co.rho B.ψ u Φ ∈ schA F (Fin (b + 2) × Fin (b + 2 + a'))` using `fun u Φ hΦ => GlobalTheory.EvZeroUniq.schr_mem_schA _ hstd _ hΦ`. Establish `hδe : ∀ (f : Fn F b (b + a')) x, f x = δ (G₁.M.co.rho B.ψ (G₁.M.co.e.symm (x, 0)) f)` using `fun f x => GlobalTheory.EvZeroUniq.apply_eq_rho _ _ f x`. Establish `hfix : ∀ z, (G₁.M.co.e z).1 = 0 → ∀ f : Fn F b (b + a'), δ (G₁.M.co.rho B.ψ z f) = δ f` using `fun z hz f => GlobalTheory.EvZeroUniq.rho_apply_zero _ _ f z hz`. Take `⟨Φ₀, hΦ₀, hne⟩` from `GlobalTheory.T.eigen_intertwiner_extension F E σ B _ _ _ _ G.V G.W G₁.V G₁.W G.M G₁.M H.ι H'.ι _ e hP.good hP₁.good he`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨x₀, hx₀⟩ : ∃ x, e Φ₀ x ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hne (funext h)`. Take `⟨L, hLiso, hLrank, hL⟩` from `GlobalTheory.T.config_a_triple_seesaw hKP F E σ B b a' G G₁ H H' hC X om om' om₁ om₁' hT hT₁`.
+
+Establish `hinvL : ∀ l : Fn F (b + 2) (b + 2 + a') →ₗ[ℂ] ℂ, (∀ u ∈ isoA (F` using `F) H H', ∀ Φ ∈ schA F (Fin (b + 2) × Fin (b + 2 + a')), l (G.M.co.rho B.ψ u Φ) = l Φ) → (∀ z : Matrix (Fin b) (Fin (b + a')) (AE F E), (G₁.M.co.e z).1 = 0 → ∀ Φ ∈ schA F (Fin (b + 2) × Fin (b + 2 + a')), l (G.M.co.rho B.ψ (incM F H.ι * z * (incM F H'.ι)ᵀ) Φ) = l Φ) → ∀ (t : AF F) …`. Introduce `l h1 h2 t w hw φ hφ`. Take `⟨u₁, hu₁, u₂, hu₂, z, hz, heq⟩` from `hL t w hw`. Rewrite using `[heq φ, h1 u₁ (Or.inl hu₁) _ (hρ _ _ (hρ _ φ hφ)), h1 u₂ (Or.inr hu₂) _ (hρ _ φ hφ), h2 z hz φ hφ]`. Take `⟨c, hc⟩` from `GlobalTheory.T.adelicStoneVonNeumann_lagrangian_uniqueness F B.ψ hstd (Fin (b + 2) × Fin (b + 2 + a')) L hLiso hLrank (δ ∘ₗ e') (hpt 0) (δ ∘ₗ e) (GlobalTheory.T.eigen_intertwiner_good_models F E σ B _ _ _ _ G.V G.W G₁.V G₁.W G.M G₁.M H.ι H'.ι _ e hP.good hP₁.good he δ hδ) (hinvL …`.
+
+Simplify using `only [LinearMap.comp_apply]`. Rewrite using `[he.Heisenberg₂ _ Φ₀ hΦ₀, ← hδe]`. Conclude with `hx₀⟩`. Use `⟨c, fun Φ hΦ => funext fun x => ?_⟩` and prove the remaining obligations. Establish `h1` using `hc _ (hρ (incM F H.ι * G₁.M.co.e.symm (x, 0) * (incM F H'.ι)ᵀ) Φ hΦ)`.
+
+Simplify using `only [LinearMap.comp_apply] at h1`. Rewrite `h1` using `[hheis _ Φ hΦ, he.Heisenberg₂ _ Φ hΦ, ← hδe, ← hδe]`. Simplify using `using h1`.
+-/
 theorem main : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (b a' : ℕ) (G : Geo σ (b + 2) a') (G₁ : Geo σ b a')
     (H : Plane E (b + 2) b) (H' : Plane E (b + 2 + a') (b + a')), CfgA B G G₁ H H' → ∀ e, IsEv B G.M G₁.M H.ι H'.ι (isoA H H') e →
     ∀ (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W) (om₁ : Rep σ G₁.V G₁.W) (om₁' : Rep σ G₁.V' G₁.W), IsTriple B G X om om' → IsTriple B G₁ X om₁ om₁' →

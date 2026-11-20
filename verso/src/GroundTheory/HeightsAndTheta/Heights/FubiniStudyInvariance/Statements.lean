@@ -16,6 +16,9 @@ variable {N : ℕ}
 def lineOf (v : Fin (N + 1) → ℂ) : CP N :=
   if h : v = 0 then chartInv 0 0 else Projectivization.mk ℂ v h
 
+/- English proof (translation)
+The claim follows from `dif_neg hv`.
+-/
 lemma lineOf_of_ne {v : Fin (N + 1) → ℂ} (hv : v ≠ 0) : lineOf v = Projectivization.mk ℂ v hv :=
   dif_neg hv
 
@@ -24,6 +27,9 @@ def ambDensity (v : Fin (N + 1) → ℂ) : ℝ := 1 / (1 + normSq2 v) ^ (N + 2)
 def ambMeasure (N : ℕ) : Measure (Fin (N + 1) → ℂ) :=
   volume.withDensity fun v => ENNReal.ofReal (ambDensity v)
 
+/- English proof (translation)
+Introduce `v w h`. Establish `hU : star (U : Matrix (Fin (N + 1)) (Fin (N + 1)) ℂ) * U = 1` using `Matrix.mem_unitaryGroup_iff'.mp U.2`. Establish `h'` using `congrArg (fun x => star (U : Matrix (Fin (N + 1)) (Fin (N + 1)) ℂ) *ᵥ x) h`. Simplify `h'` using `[Matrix.toLin'_apply, Matrix.mulVec_mulVec, hU]`.
+-/
 lemma unitary_injective (U : Matrix.unitaryGroup (Fin (N + 1)) ℂ) :
     Function.Injective (Matrix.toLin' (U : Matrix (Fin (N + 1)) (Fin (N + 1)) ℂ)) := by
   intro v w h
@@ -36,6 +42,9 @@ def unitaryAct (U : Matrix.unitaryGroup (Fin (N + 1)) ℂ) : CP N → CP N :=
   Projectivization.map (Matrix.toLin' (U : Matrix (Fin (N + 1)) (Fin (N + 1)) ℂ))
     (unitary_injective U)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma unitaryAct_mk (U : Matrix.unitaryGroup (Fin (N + 1)) ℂ) (v : Fin (N + 1) → ℂ) (hv : v ≠ 0) :
     unitaryAct U (Projectivization.mk ℂ v hv) =
       Projectivization.mk ℂ (Matrix.toLin' (U : Matrix (Fin (N + 1)) (Fin (N + 1)) ℂ) v)
@@ -126,19 +135,31 @@ def Definite.Statement : Prop :=
   ∀ (N n : ℕ) (P : MvPolynomial (Fin (N + 1)) ℂ), P ∈ H0 N n →
     (l2Inner (N := N) n P P = 0 ↔ P = 0)
 
+/- English proof (translation)
+Rewrite using `[LinearMap.det_smul, LinearMap.det_id]`. Evaluate the numerical expressions.
+-/
 example : LinearMap.det ((2 : ℂ) • LinearMap.id : (Fin 1 → ℂ) →ₗ[ℂ] (Fin 1 → ℂ)) ≠ 0 := by
   rw [LinearMap.det_smul, LinearMap.det_id]; norm_num
 
+/- English proof (translation)
+Simplify using `[diagUnitary]`.
+-/
 example : ((diagUnitary (N := 1) ![1, ⟨-1, by simp [Unitary.mem_iff]⟩] :
     Matrix (Fin 2) (Fin 2) ℂ) 1 1) = -1 := by
   simp [diagUnitary]
 
+/- English proof (translation)
+Use `⟨fun h => ?_, by simp⟩` and prove the remaining obligations. Use `congrArg (fun f => f 0) h` as an intermediate fact. Simplify using `at this`.
+-/
 example : (Finsupp.single (0 : Fin 2) 1) ≠ Finsupp.single 1 1 ∧
     (Finsupp.single (0 : Fin 2) 1).degree = (Finsupp.single (1 : Fin 2) 1).degree := by
   refine ⟨fun h => ?_, by simp⟩
   have := congrArg (fun f => f 0) h
   simp at this
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(mem_homogeneousSubmodule _ _).mpr (isHomogeneous_X ℂ 0), fun h => by simpa using congrFun h 0⟩`.
+-/
 example : (X 0 : MvPolynomial (Fin 2) ℂ) ∈ H0 1 1 ∧ (![1, 0] : Fin 2 → ℂ) ≠ 0 :=
   ⟨(mem_homogeneousSubmodule _ _).mpr (isHomogeneous_X ℂ 0), fun h => by
     simpa using congrFun h 0⟩

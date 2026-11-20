@@ -15,6 +15,47 @@ section Alg
 
 variable {r : ℕ}
 
+/- English proof (translation)
+Establish `hπinj : Function.Injective π` using `Function.Involutive.injective hπ`. Establish `hZ0 : ∀ c b, c ≠ π b → Z c b = 0` using `fun c b h => by`. Assume the negation of the conclusion as `h'`. Conclude with `h ((hP1 c b).1 h')`. Establish `hzne : ∀ b, Z (π b) b ≠ 0` using `fun b => (hP1 _ b).2 rfl`.
+
+Establish `hcond : ∀ k : Fin r, (π k.succ).val + 1 = (π k.castSucc).val → (π k.succ).val < r` using `fun k h => by have := (π k.castSucc).isLt; omega`. Take `⟨ψ, hψdef⟩ : ∃ ψ : Fin r → Fin r, ∀ k, ψ k = if h : (π k.succ).val + 1 = (π k.castSucc).val then ⟨(π k.succ).val, hcond k h⟩ else k` from `⟨_, fun k => rfl⟩`. Establish `hR1 : ∀ k : Fin r, (∑ c : Fin r, if c.castSucc < π k.castSucc then conj (m c (π k.castSucc)) * Z c.castSucc k.succ else 0) = U k k.succ * Z (π k.castSucc) k.castSucc`. Introduce `k`. Rewrite using `[hA, Finset.sum_eq_single k]`.
+
+Rewrite using `[if_pos (Fin.castSucc_lt_succ : k.castSucc < k.succ)]`. Introduce `c _ hck split_ifs`. Rewrite using `[hZ0 _ _ (fun e => hck (Fin.castSucc_injective r (hπinj e).symm)), mul_zero]`. Both sides reduce to the same expression. Introduce `h`.
+
+Conclude with `absurd (Finset.mem_univ k) h`. Establish `hR2 : ∀ j : Fin r, (∑ c : Fin r, if c.castSucc < π j.castSucc then U c (π j.castSucc) * Z j.succ c.castSucc else 0) = conj (m j j.succ) * Z j.castSucc (π j.castSucc)`. Introduce `j`. Rewrite using `[← hA, Finset.sum_eq_single j]`. Rewrite using `[if_pos (Fin.castSucc_lt_succ : j.castSucc < j.succ)]`.
+
+Introduce `c _ hcj split_ifs`. Rewrite using `[hZ0 _ _ (by rw [hπ]; exact fun e => hcj (Fin.castSucc_injective r e)), mul_zero]`. Both sides reduce to the same expression. Introduce `h`. Conclude with `absurd (Finset.mem_univ j) h`.
+
+Establish `hψ : Function.Involutive ψ`. Introduce `k`. Distinguish the cases in `h : (π k.succ).val + 1 = (π k.castSucc).val`. Take `⟨j, hjv⟩ : ∃ j : Fin r, j.val = (π k.succ).val` from `⟨⟨_, hcond k h⟩, rfl⟩`. Establish `hψk : ψ k = j`.
+
+Rewrite using `[hψdef, dif_pos h]`. Conclude with `Fin.ext hjv.symm`. Establish `hjc : j.castSucc = π k.succ` using `Fin.ext (by rw [Fin.coe_castSucc, hjv])`. Establish `hjs : j.succ = π k.castSucc` using `Fin.ext (by rw [Fin.val_succ, hjv]; exact h)`. Establish `h' : (π j.succ).val + 1 = (π j.castSucc).val`.
+
+Rewrite using `[hjs, hjc, hπ, hπ, Fin.coe_castSucc, Fin.val_succ]`. Rewrite using `[hψk, hψdef, dif_pos h']`. Apply `Fin.ext` to reduce the goal to its premises. Use `show (π j.succ).val = k.val`. Rewrite using `[hjs, hπ, Fin.coe_castSucc]`.
+
+Establish `hψk : ψ k = k` using `by rw [hψdef, dif_neg h]`. Rewrite using `[hψk, hψk]`. Establish `hterm : ∀ k : Fin r, (U k k.succ).re = -(m (ψ k) (ψ k).succ).re`. Introduce `k`. Distinguish the cases in `h : (π k.succ).val + 1 = (π k.castSucc).val`.
+
+Take `⟨j, hjv⟩ : ∃ j : Fin r, j.val = (π k.succ).val` from `⟨⟨_, hcond k h⟩, rfl⟩`. Establish `hψk : ψ k = j`. Rewrite using `[hψdef, dif_pos h]`. Conclude with `Fin.ext hjv.symm`. Establish `hjc : j.castSucc = π k.succ` using `Fin.ext (by rw [Fin.coe_castSucc, hjv])`.
+
+Establish `hjs : j.succ = π k.castSucc` using `Fin.ext (by rw [Fin.val_succ, hjv]; exact h)`. Establish `hz : Z (π k.succ) k.succ = - Z (π k.castSucc) k.castSucc`. Break down `hP2 k with ⟨_, hz⟩ | hlt` into its components or cases. Conclude with `hz`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hlt1 : π k.succ < π k.castSucc` using `Fin.lt_iff_val_lt_val.2 (by omega)`. Establish `eL : (∑ c : Fin r, if c.castSucc < π k.castSucc then conj (m c (π k.castSucc)) * Z c.castSucc k.succ else 0) = conj (m j j.succ) * Z (π k.succ) k.succ`. Rewrite using `[Finset.sum_eq_single j]`. Rewrite using `[hjs, hjc, if_pos hlt1]`. Introduce `c _ hcj split_ifs`.
+
+Rewrite using `[hZ0 _ _ (fun e => hcj (Fin.castSucc_injective r (e.trans hjc.symm))), mul_zero]`. Both sides reduce to the same expression. Introduce `hj`. Conclude with `absurd (Finset.mem_univ j) hj`. Establish `key` using `eL.symm.trans (hR1 k)`.
+
+Rewrite `key` using `[hz]`. Establish `hU : U k k.succ = -conj (m j j.succ)`. Apply `mul_right_cancel₀ (hzne k.castSucc)` to reduce the goal to its premises. Rewrite using `[← key]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[hψk, hU, Complex.neg_re, Complex.conj_re]`. Establish `hlt : (π k.castSucc).val < (π k.succ).val`. Break down `hP2 k with ⟨h', _⟩ | hlt` into its components or cases. Conclude with `absurd h' h`. Conclude with `hlt`.
+
+Establish `hψk : ψ k = k` using `by rw [hψdef, dif_neg h]`. Establish `eL : (∑ c : Fin r, if c.castSucc < π k.castSucc then conj (m c (π k.castSucc)) * Z c.castSucc k.succ else 0) = 0` using `Finset.sum_eq_zero fun c _ => by split_ifs with hc`. Rewrite using `[hZ0 _ _ (fun e => by rw [e, Fin.lt_iff_val_lt_val] at hc; omega), mul_zero]`. Both sides reduce to the same expression. Establish `hU : U k k.succ = 0`.
+
+Establish `key` using `eL.symm.trans (hR1 k)`. Conclude with `(mul_eq_zero.1 key.symm).resolve_right (hzne _)`. Establish `eR2 : (∑ c : Fin r, if c.castSucc < π k.castSucc then U c (π k.castSucc) * Z k.succ c.castSucc else 0) = 0` using `Finset.sum_eq_zero fun c _ => by split_ifs with hc`. Rewrite using `[hZ0 _ _ (fun e => by`. Establish `e2` using `congrArg π e`.
+
+Rewrite `e2` using `[hπ]`. Rewrite `hc` using `[← e2, Fin.lt_iff_val_lt_val]`. Use the proof step `omega), mul_zero]`. Both sides reduce to the same expression. Establish `hm : conj (m k k.succ) = 0`.
+
+Establish `key` using `eR2.symm.trans (hR2 k)`. Conclude with `(mul_eq_zero.1 key.symm).resolve_right ((hP1 _ _).2 (hπ _).symm)`. Establish `hre : (m k k.succ).re = 0` using `by rw [← Complex.conj_re, hm, Complex.zero_re]`. Rewrite using `[hψk, hU, Complex.zero_re, hre, neg_zero]`. Rewrite using `[Finset.sum_congr rfl (fun k _ => hterm k), Finset.sum_neg_distrib]`.
+
+Use `congr 1`. Conclude with `Equiv.sum_comp (Function.Involutive.toPerm ψ hψ) (fun j => (m j j.succ).re)`.
+-/
 theorem relAlg (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ) (π : Fin (r + 1) → Fin (r + 1)) (hπ : ∀ a, π (π a) = a)
     (hP1 : ∀ c b, Z c b ≠ 0 ↔ c = π b)
     (hP2 : ∀ k : Fin r, ((π k.succ).val + 1 = (π k.castSucc).val ∧
@@ -155,16 +196,28 @@ def ptSc : List (K × ℕ) → ℕ → K
   | [], _ => 0
   | (t, s) :: bs, a => if a < s then t else ptSc bs (a - s)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ptPar_cons (t : K) (s : ℕ) (bs : List (K × ℕ)) (a : ℕ) :
     ptPar ((t, s) :: bs) a = if a < s then s - 1 - a else s + ptPar bs (a - s) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ptSc_cons (t : K) (s : ℕ) (bs : List (K × ℕ)) (a : ℕ) :
     ptSc ((t, s) :: bs) a = if a < s then t else ptSc bs (a - s) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ptEntry_cons (t : K) (s : ℕ) (bs : List (K × ℕ)) (i j : ℕ) :
     ptEntry ((t, s) :: bs) i j = if i < s ∧ j < s then (if i + j + 1 = s then t else 0)
       else if s ≤ i ∧ s ≤ j then ptEntry bs (i - s) (j - s) else 0 := rfl
 
+/- English proof (translation)
+The claim follows from `| [], _, b, hb => by simp at hb | (t, s) :: bs, c, b, hb => by simp only [List.map_cons, List.sum_cons] at hb rw [ptEntry_cons] by_cases hbs : b < s · have hp : ptPar ((t, s) :: bs) b = s - 1 - b := by rw [ptPar_cons, if_pos hbs] have hq : ptSc ((t, s) :: bs) b = t := by rw [ptSc …`.
+-/
 theorem ptEntry_eq : ∀ (bs : List (K × ℕ)) (c b : ℕ), b < (bs.map Prod.snd).sum →
     ptEntry bs c b = if c = ptPar bs b then ptSc bs b else 0
   | [], _, b, hb => by simp at hb
@@ -191,6 +244,9 @@ theorem ptEntry_eq : ∀ (bs : List (K × ℕ)) (c b : ℕ), b < (bs.map Prod.sn
         · rw [if_neg h, if_neg (by omega)]
       · rw [if_neg (fun h => hcs h.1), if_neg (by omega)]
 
+/- English proof (translation)
+The claim follows from `| [], b, hb => by simp at hb | (t, s) :: bs, b, hb => by simp only [List.map_cons, List.sum_cons] at hb ⊢ rw [ptPar_cons] by_cases hbs : b < s · rw [if_pos hbs]; omega · rw [if_neg hbs]; have := ptPar_lt bs (b - s) (by omega); omega`.
+-/
 theorem ptPar_lt : ∀ (bs : List (K × ℕ)) (b : ℕ), b < (bs.map Prod.snd).sum →
     ptPar bs b < (bs.map Prod.snd).sum
   | [], b, hb => by simp at hb
@@ -201,6 +257,9 @@ theorem ptPar_lt : ∀ (bs : List (K × ℕ)) (b : ℕ), b < (bs.map Prod.snd).s
     · rw [if_pos hbs]; omega
     · rw [if_neg hbs]; have := ptPar_lt bs (b - s) (by omega); omega
 
+/- English proof (translation)
+The claim follows from `| [], b, hb => by simp at hb | (t, s) :: bs, b, hb => by simp only [List.map_cons, List.sum_cons] at hb by_cases hbs : b < s · have hp : ptPar ((t, s) :: bs) b = s - 1 - b := by rw [ptPar_cons, if_pos hbs] rw [hp, ptPar_cons, if_pos (by omega)]; omega · have hp : ptPar ((t, s) :: …`.
+-/
 theorem ptPar_invol : ∀ (bs : List (K × ℕ)) (b : ℕ), b < (bs.map Prod.snd).sum →
     ptPar bs (ptPar bs b) = b
   | [], b, hb => by simp at hb
@@ -214,6 +273,9 @@ theorem ptPar_invol : ∀ (bs : List (K × ℕ)) (b : ℕ), b < (bs.map Prod.snd
       have : s + ptPar bs (b - s) - s = ptPar bs (b - s) := by omega
       rw [this, ptPar_invol bs (b - s) (by omega)]; omega
 
+/- English proof (translation)
+The claim follows from `| [], _, b, hb => by simp at hb | (t, s) :: bs, h, b, hb => by simp only [List.map_cons, List.sum_cons] at hb rw [ptSc_cons] by_cases hbs : b < s · rw [if_pos hbs]; exact (h (t, s) (by simp)).1 · rw [if_neg hbs]; exact ptSc_ne bs (fun b hb => h b (by simp [hb])) (b - s) (by omega …`.
+-/
 theorem ptSc_ne : ∀ (bs : List (K × ℕ)), (∀ b ∈ bs, b.1 ≠ 0 ∧ 1 ≤ b.2) → ∀ b : ℕ,
     b < (bs.map Prod.snd).sum → ptSc bs b ≠ 0
   | [], _, b, hb => by simp at hb
@@ -224,6 +286,9 @@ theorem ptSc_ne : ∀ (bs : List (K × ℕ)), (∀ b ∈ bs, b.1 ≠ 0 ∧ 1 ≤
     · rw [if_pos hbs]; exact (h (t, s) (by simp)).1
     · rw [if_neg hbs]; exact ptSc_ne bs (fun b hb => h b (by simp [hb])) (b - s) (by omega)
 
+/- English proof (translation)
+The claim follows from `| [], _, k, hk => by simp at hk | (t, s) :: bs, h, k, hk => by simp only [List.map_cons, List.sum_cons] at hk have hs1 : 1 ≤ s := h (t, s) (by simp) rw [ptPar_cons, ptPar_cons, ptSc_cons, ptSc_cons] by_cases h1 : k + 1 < s · left rw [if_pos h1, if_pos (by omega), if_pos h1, if_po …`.
+-/
 theorem ptPar_consec : ∀ (bs : List (K × ℕ)), (∀ b ∈ bs, 1 ≤ b.2) → ∀ k : ℕ,
     k + 1 < (bs.map Prod.snd).sum →
     (ptPar bs (k + 1) + 1 = ptPar bs k ∧ ptSc bs (k + 1) = ptSc bs k) ∨ ptPar bs k < ptPar bs (k + 1)
@@ -254,19 +319,31 @@ open Formalism.L2.SG.HidaSetting Formalism.L2.SG.RealObj
 
 variable {n r : ℕ} (ε : Fin n → Bool)
 
+/- English proof (translation)
+Simplify using `only [hJ, Matrix.mulVec_add, dotProduct_add]`.
+-/
 theorem hJ_add_r' (x y y' : Fin n → ℂ) : hJ ε x (y + y') = hJ ε x y + hJ ε x y' := by
   simp only [hJ, Matrix.mulVec_add, dotProduct_add]
 
+/- English proof (translation)
+Simplify using `only [hJ, Matrix.mulVec_sum, Matrix.mulVec_smul, dotProduct_sum, dotProduct_smul, smul_eq_mul]`.
+-/
 theorem hJ_sum_r' {ι : Type*} [Fintype ι] (x : Fin n → ℂ) (a : ι → ℂ) (y : ι → Fin n → ℂ) :
     hJ ε x (∑ c, a c • y c) = ∑ c, a c * hJ ε x (y c) := by
   simp only [hJ, Matrix.mulVec_sum, Matrix.mulVec_smul, dotProduct_sum, dotProduct_smul, smul_eq_mul]
 
+/- English proof (translation)
+Simplify using `only [hJ, Formalism.REAL.Jm, Matrix.mulVec_diagonal, dotProduct, Pi.star_apply, RCLike.star_def, map_sum, map_mul, Complex.conj_conj]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp <;> ring`.
+-/
 theorem hJ_cj' (x y : Fin n → ℂ) : hJ ε x y = conj (hJ ε y x) := by
   simp only [hJ, Formalism.REAL.Jm, Matrix.mulVec_diagonal, dotProduct, Pi.star_apply, RCLike.star_def, map_sum,
     map_mul, Complex.conj_conj]
   refine Finset.sum_congr rfl fun a _ => ?_
   split_ifs <;> simp <;> ring
 
+/- English proof (translation)
+Rewrite using `[hJ_cj' ε (x + ∑ c, a c • y c) w, hJ_add_r', hJ_sum_r', map_add, map_sum, ← hJ_cj' ε x w]`. Use `congr 1`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, ← hJ_cj' ε (y c) w]`.
+-/
 theorem hJ_sum_l' {ι : Type*} [Fintype ι] (x : Fin n → ℂ) (a : ι → ℂ) (y : ι → Fin n → ℂ) (w : Fin n → ℂ) :
     hJ ε (x + ∑ c, a c • y c) w = hJ ε x w + ∑ c, conj (a c) * hJ ε (y c) w := by
   rw [hJ_cj' ε (x + ∑ c, a c • y c) w, hJ_add_r', hJ_sum_r', map_add, map_sum, ← hJ_cj' ε x w]
@@ -274,6 +351,19 @@ theorem hJ_sum_l' {ι : Type*} [Fintype ι] (x : Fin n → ℂ) (a : ι → ℂ)
   refine Finset.sum_congr rfl fun c _ => ?_
   rw [map_mul, ← hJ_cj' ε (y c) w]
 
+/- English proof (translation)
+Establish `hsm : ∀ (x : Fin n → ℂ) (t : ℂ) (v : Fin n → ℂ), hJ ε x (t • v) = t * hJ ε x v`. Introduce `x t v`. Simplify using `only [hJ, Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]`. Unfold `spanLt at hy`. Proceed by induction on `hy using Submodule.span_induction with`.
+
+Consider the case `mem x hx`. Take `⟨b, hb, rfl⟩` from `hx`. Establish `hb' : b.val < k` using `hb`. Simplify using `only [hfe]`. Rewrite using `[Finset.sum_eq_single b]`.
+
+Simplify using `[hb']`. Introduce `c _ hcb`. Simplify using `[Ne.symm hcb]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ b) h`.
+
+Consider the case `zero => simp [hJ]`. Consider the case `add x y' _ _ hx hy => conv_lhs => rw [hx, hy]`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[hJ_add_r']`.
+
+Apply the tactic sequence `split_ifs <;> simp [add_smul]`. Consider the case `smul t x _ hx => conv_lhs => rw [hx]`. Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[hsm]`.
+
+Apply the tactic sequence `split_ifs <;> simp [mul_smul]`.
+-/
 theorem span_expand (e f : Fin r → Fin n → ℂ) (hfe : ∀ a b, hJ ε (f a) (e b) = if b = a then 1 else 0)
     (k : ℕ) (y : Fin n → ℂ) (hy : y ∈ spanLt e k) :
     y = ∑ c : Fin r, (if c.val < k then hJ ε (f c) y else 0) • e c := by
@@ -306,12 +396,23 @@ theorem span_expand (e f : Fin r → Fin n → ℂ) (hfe : ∀ a b, hJ ε (f a) 
     rw [hsm]
     split_ifs <;> simp [mul_smul]
 
+/- English proof (translation)
+Simplify using `[fam]`.
+-/
 theorem fam_castSucc (e : Fin r → Fin n → ℂ) (z : Fin n → ℂ) (c : Fin r) : fam e z c.castSucc = e c := by
   simp [fam]
 
+/- English proof (translation)
+Simplify using `[fam]`.
+-/
 theorem fam_last (e : Fin r → Fin n → ℂ) (z : Fin n → ℂ) : fam e z (Fin.last r) = z := by
   simp [fam]
 
+/- English proof (translation)
+Unfold `nxt`. Establish `hk` using `k.isLt`. Use `split_ifs with h`. Establish `e1 : k.succ = (⟨k.val + 1, h⟩ : Fin r).castSucc` using `Fin.ext (by simp)`. Rewrite using `[e1, fam_castSucc]`.
+
+Establish `e1 : k.succ = Fin.last r` using `Fin.ext (by simp only [Fin.val_succ, Fin.val_last]; omega)`. Rewrite using `[e1, fam_last]`.
+-/
 theorem nxt_eq_fam (e : Fin r → Fin n → ℂ) (z : Fin n → ℂ) (k : Fin r) : nxt e z k = fam e z k.succ := by
   unfold nxt
   have hk := k.isLt
@@ -321,6 +422,23 @@ theorem nxt_eq_fam (e : Fin r → Fin n → ℂ) (z : Fin n → ℂ) (k : Fin r)
   · have e1 : k.succ = Fin.last r := Fin.ext (by simp only [Fin.val_succ, Fin.val_last]; omega)
     rw [e1, fam_last]
 
+/- English proof (translation)
+Establish `hmem : (g - 1) *ᵥ fam e z a ∈ spanLt e a.val`. Proceed by induction on `a using Fin.lastCases with`. Consider the case `last`. Rewrite using `[fam_last]`. Simplify using `using hg.2`.
+
+Consider the case `cast b`. Rewrite using `[fam_castSucc]`. Simplify using `using hg.1 b`. Establish `hzero : ∀ c : Fin r, c.castSucc < a → hJ ε (f c) (fam e z a) = 0`. Introduce `c hc`.
+
+Proceed by induction on `a using Fin.lastCases with`. Consider the case `last`. Rewrite using `[fam_last]`. Conclude with `hfz c`. Consider the case `cast b`.
+
+Rewrite using `[fam_castSucc, hfe, if_neg]`. Introduce `hbc`. Substitute `hbc` using the available equality. Conclude with `lt_irrefl _ hc`. Establish `hsubJ : ∀ x y y' : Fin n → ℂ, hJ ε x (y - y') = hJ ε x y - hJ ε x y'`.
+
+Introduce `x y y'`. Simplify using `only [hJ, Matrix.mulVec_sub, dotProduct_sub]`. Establish `hexp` using `span_expand ε e f hfe a.val _ hmem`. Rewrite `hexp` using `[Matrix.sub_mulVec, Matrix.one_mulVec]`. Establish `hS : (∑ c : Fin r, (if c.val < a.val then hJ ε (f c) (g *ᵥ fam e z a - fam e z a) else 0) • e c) = ∑ c : Fin r, (if c.castSucc < a then hJ ε (f c) (g *ᵥ fam e z a) else 0) • e c`.
+
+Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Distinguish the cases in `hc : c.castSucc < a`. Establish `hc' : c.val < a.val`. Rewrite `hc` using `[Fin.lt_iff_val_lt_val, Fin.coe_castSucc]`. Conclude with `hc`.
+
+Rewrite using `[if_pos hc', if_pos hc, hsubJ, hzero c hc, sub_zero]`. Establish `hc' : ¬ c.val < a.val`. Rewrite `hc` using `[Fin.lt_iff_val_lt_val, Fin.coe_castSucc]`. Conclude with `hc`. Rewrite using `[if_neg hc', if_neg hc]`.
+
+Rewrite using `[← hS, ← hexp]`. Normalize the expressions using the abelian group laws.
+-/
 theorem flag_expand (e f : Fin r → Fin n → ℂ) (z : Fin n → ℂ)
     (hfe : ∀ a b, hJ ε (f a) (e b) = if b = a then 1 else 0) (hfz : ∀ a, hJ ε (f a) z = 0)
     (g : Matrix (Fin n) (Fin n) ℂ) (hg : InS e z g) (a : Fin (r + 1)) :

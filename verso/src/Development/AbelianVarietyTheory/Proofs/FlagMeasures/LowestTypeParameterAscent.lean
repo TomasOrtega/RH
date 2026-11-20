@@ -6,6 +6,13 @@ namespace GlobalTheory.SuVPar
 
 open GlobalTheory.DSSU
 
+/- English proof (translation)
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `show Formalism.REAL.inUJ ε _`. Unfold `Formalism.REAL.inUJ Formalism.REAL.Jm`. Rewrite using `[Matrix.diagonal_conjTranspose, Matrix.diagonal_mul_diagonal, Matrix.diagonal_mul_diagonal]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `a`. Establish `h1 : star (Complex.exp ((θ a : ℂ) * Complex.I)) * Complex.exp ((θ a : ℂ) * Complex.I) = 1`. Rewrite using `[Complex.star_def, ← Complex.exp_conj, ← Complex.exp_add]`. Simplify using `[Complex.conj_ofReal]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[Matrix.det_diagonal, ← Complex.exp_sum, ← Finset.sum_mul]`. Establish `: (∑ a, (θ a : ℂ)) = 0` using `by exact_mod_cast hθ`. Rewrite using `[this, zero_mul, Complex.exp_zero]`.
+-/
 theorem diag_mem {n : ℕ} (ε : Fin n → Bool) (θ : Fin n → ℝ) (hθ : ∑ a, θ a = 0) :
     Matrix.diagonal (fun a => Complex.exp ((θ a : ℂ) * Complex.I)) ∈ SUset ε := by
   refine ⟨?_, ?_⟩
@@ -26,10 +33,24 @@ theorem diag_mem {n : ℕ} (ε : Fin n → Bool) (θ : Fin n → ℝ) (hθ : ∑
     have : (∑ a, (θ a : ℂ)) = 0 := by exact_mod_cast hθ
     rw [this, zero_mul, Complex.exp_zero]
 
+/- English proof (translation)
+Establish `h` using `diag_mem ε (fun _ => 0) (by simp)`. Simplify using `using h`.
+-/
 theorem one_mem {n : ℕ} (ε : Fin n → Bool) : (1 : Matrix (Fin n) (Fin n) ℂ) ∈ SUset ε := by
   have h := diag_mem ε (fun _ => 0) (by simp)
   simpa using h
 
+/- English proof (translation)
+Use `set A := (univ.filter fun b => lam b < lam a ∧ ε b ≠ ε a).card`. Use `set B := (univ.filter fun b => lam a < lam b ∧ ε b ≠ ε a).card`. Use `set C := (univ.filter fun b => lam b < lam a ∧ ε b = ε a).card`. Use `set D := (univ.filter fun b => lam a < lam b ∧ ε b = ε a).card`. Establish `key : (A : ℝ) + B + C + D = n - 1`.
+
+Simplify using `only [A, B, C, D, Finset.card_filter]`. Use `push_cast`. Rewrite using `[← Finset.sum_add_distrib, ← Finset.sum_add_distrib, ← Finset.sum_add_distrib]`. Establish `hpt : ∀ b : Fin n, ((if lam b < lam a ∧ ε b ≠ ε a then (1:ℝ) else 0) + (if lam a < lam b ∧ ε b ≠ ε a then (1:ℝ) else 0) + (if lam b < lam a ∧ ε b = ε a then (1:ℝ) else 0) + (if lam a < lam b ∧ ε b = ε a then (1:ℝ) else 0)) = 1 - (if a = b then 1 else 0)`. Introduce `b`.
+
+Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Simplify using the standard rewrite rules. Establish `hne : lam b ≠ lam a` using `fun h => hab (hinj h).symm`. Apply the tactic sequence `rcases lt_or_gt_of_ne hne with h | h <;> by_cases he : ε b = ε a <;>`.
+
+Simplify using `[h, he, hab, not_lt_of_gt h]`. Rewrite using `[Finset.sum_congr rfl (fun b _ => hpt b), Finset.sum_sub_distrib, Finset.sum_ite_eq]`. Simplify using the standard rewrite rules. Use `⟨(B + C : ℕ), ?_⟩` and prove the remaining obligations. Simplify using `only [rhoNh, rhoCh]`.
+
+Express the relevant statement in the definitionally equal form `((A : ℝ) - B) / 2 - ((C : ℝ) - D) / 2 = _`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem rho_diff {n : ℕ} (ε : Fin n → Bool) (lam : Fin n → ℝ) (hinj : Function.Injective lam) (a : Fin n) :
     ∃ k : ℤ, rhoNh ε lam a - rhoCh ε lam a = ((n : ℝ) - 1) / 2 - k := by
   set A := (univ.filter fun b => lam b < lam a ∧ ε b ≠ ε a).card
@@ -58,6 +79,31 @@ theorem rho_diff {n : ℕ} (ε : Fin n → Bool) (lam : Fin n → ℝ) (hinj : F
   push_cast
   linarith
 
+/- English proof (translation)
+Establish `hn0 : (n : ℝ) ≠ 0` using `by exact_mod_cast (show n ≠ 0 by omega)`. Establish `h1 : π' 1 v = v`. Use `hw (fun _ => 0) (by simp)` as an intermediate fact. Simplify using `using this`. Establish `hπ1 : π 1 = π' 1`.
+
+Use `hE 1 (by simp) 1 (one_mem ε)` as an intermediate fact. Simplify using `using this`. Use `set θ : Fin n → ℝ := fun b => (if b = a then 2 * Real.pi else 0) - 2 * Real.pi / n with hθdef`. Establish `hθ : ∑ b, θ b = 0`. Simplify using `only [hθdef, Finset.sum_sub_distrib, Finset.sum_ite_eq', Finset.mem_univ, if_true, Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]`.
+
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Use `set z : ℂ := Complex.exp (((2 * Real.pi / n : ℝ) : ℂ) * Complex.I) with hz`. Establish `hz1 : ‖z‖ = 1` using `by rw [hz, Complex.norm_exp_ofReal_mul_I]`. Establish `hzg : z • Matrix.diagonal (fun b => Complex.exp ((θ b : ℂ) * Complex.I)) = 1`.
+
+Use extensionality with `i j`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using `only [Matrix.smul_apply, Matrix.diagonal_apply_eq, Matrix.one_apply_eq, smul_eq_mul, hz]`. Rewrite using `[← Complex.exp_add]`.
+
+Rewrite using `[Complex.exp_eq_one_iff]`. Distinguish the cases in `hia : i = a`. Use `⟨1, ?_⟩` and prove the remaining obligations. Simplify using `only [hθdef, hia, if_true]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `⟨0, ?_⟩` and prove the remaining obligations. Simplify using `only [hθdef, hia, if_false]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Simplify using `[Matrix.diagonal_apply_ne _ hij, Matrix.one_apply_ne hij]`. Establish `hmain` using `hE z hz1 _ (diag_mem ε θ hθ)`. Rewrite `hmain` using `[hzg, hπ1]`. Establish `hv2` using `congrArg (fun T : H →L[ℂ] H => T v) hmain`. Simplify using `only [h1, ContinuousLinearMap.smul_apply, hw θ hθ, smul_smul] at hv2`.
+
+Establish `hsum : (∑ b, Λ b * θ b) = 2 * Real.pi * Λ a`. Simplify using `only [hθdef, mul_sub, Finset.sum_sub_distrib, mul_ite, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true, ← Finset.sum_mul, hΛ, zero_mul, sub_zero]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hv2` using `[hsum]`. Establish `hc : z ^ m * Complex.exp (((2 * Real.pi * Λ a : ℝ) : ℂ) * Complex.I) = 1`.
+
+Assume the negation of the conclusion as `hne`. Establish `: (z ^ m * Complex.exp (((2 * Real.pi * Λ a : ℝ) : ℂ) * Complex.I) - 1) • v = 0`. Rewrite using `[sub_smul, one_smul, ← hv2, sub_self]`. Break down `smul_eq_zero.mp this with h | h` into its components or cases. Conclude with `hne (sub_eq_zero.mp h)`.
+
+Conclude with `hv h`. Rewrite `hc` using `[hz, ← Complex.exp_int_mul, ← Complex.exp_add, Complex.exp_eq_one_iff]`. Take `⟨k, hk⟩` from `hc`. Use `⟨k, ?_⟩` and prove the remaining obligations. Establish `hpi : (2 * (Real.pi : ℂ) * Complex.I) ≠ 0`.
+
+Simplify using `[Real.pi_ne_zero, Complex.I_ne_zero]`. Establish `: ((Λ a + (m : ℝ) / n : ℝ) : ℂ) = (k : ℂ)`. Apply `mul_right_cancel₀ hpi` to reduce the goal to its premises. Rewrite using `[← hk]`. Use `push_cast`.
+
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Conclude with `this` after adjusting the coercions.
+-/
 theorem wt_int {n : ℕ} (hn : 1 ≤ n) (ε : Fin n → Bool) {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     (m : ℤ) (π' π : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (hE : Ext ε m π' π)
     (Λ : Fin n → ℝ) (hΛ : ∑ a, Λ a = 0) (v : H) (hv : v ≠ 0) (hw : IsWtS π' Λ v) (a : Fin n) :
@@ -129,6 +175,15 @@ end GlobalTheory.SuVPar
 
 namespace GlobalTheory.SuVPar
 
+/- English proof (translation)
+Introduce `n hn ε H _ _ m π' π hE lam' hP hS`. Take `⟨hsum0, hinj, -⟩` from `hP`. Establish `hn0 : (n : ℝ) ≠ 0` using `by exact_mod_cast (show n ≠ 0 by omega)`. Use `⟨⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `a b h`.
+
+Conclude with `hinj (add_right_cancel h)`. Introduce `a`. Take `⟨S, hΛ, -, -, -, ⟨v, -, hv, hw⟩, -⟩` from `hS`. Take `⟨k1, hk1⟩` from `wt_int hn ε m π' π hE _ hΛ v hv hw a`. Take `⟨k2, hk2⟩` from `rho_diff ε lam' hinj a`.
+
+Use `⟨k1 + k2 - n + 1, ?_⟩` and prove the remaining obligations. Establish `hl : lowCh ε lam' a = lam' a + rhoNh ε lam' a - rhoCh ε lam' a` using `rfl`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[Finset.sum_add_distrib, hsum0, Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]`.
+
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem parS_lifts : ∀ (n : ℕ), 1 ≤ n → ∀ (ε : Fin n → Bool) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] (m : ℤ) (π' π : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)), Ext ε m π' π → ∀ lam' : Fin n → ℝ, IsParS lam' → (∃ S : Submodule ℂ H, IsKTypeS ε lam' π' (lowCh ε lam') S) → IsParU (fun a => lam' a + (m : ℝ) / n) ∧ ∑ a, (lam' a + (m : ℝ) / n) = (m : ℝ) := by
   intro n hn ε H _ _ m π' π hE lam' hP hS
   obtain ⟨hsum0, hinj, -⟩ := hP

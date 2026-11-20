@@ -11,6 +11,13 @@ open Formalism.MainNotions.G Formalism.MainNotions.CovariantDegrees
 section
 variable {n : ℕ} {K V V' : Type} [Field K] [AddCommGroup V] [Module K V] [AddCommGroup V'] [Module K V']
 
+/- English proof (translation)
+Establish `hu' : u ∈ Submonoid.closure (Set.range fun ab : Fin n × Fin n => E ab.1 ab.2)` using `hu`. Use `clear hu`. Proceed by induction on `hu' using Submonoid.closure_induction with`. Consider the case `mem y hy`. Take `⟨⟨a, b⟩, rfl⟩` from `hy`.
+
+Conclude with `⟨E' a b, Submonoid.subset_closure ⟨(a, b), rfl⟩, fun z => hT a b z⟩`. Consider the case `one => exact ⟨1, one_mem _, fun z => rfl⟩`. Consider the case `mul y z _ _ hy hz`. Take `⟨y', hy', hy''⟩` from `hy`. Take `⟨z', hz', hz''⟩` from `hz`.
+
+Use `⟨y' * z', mul_mem hy' hz', fun w => ?_⟩` and prove the remaining obligations. Use `show T (y (z w)) = y' (z' (T w))`. Rewrite using `[hy'', hz'']`.
+-/
 theorem equivariant_intertwines_monoid (E : GLOps n K V) (E' : GLOps n K V') (T : V →ₗ[K] V') (hT : IsEquivariantMap E E' T)
     {u : Module.End K V} (hu : u ∈ Umon E) : ∃ u' ∈ Umon E', ∀ y, T (u y) = u' (T y) :=  by
   have hu' : u ∈ Submonoid.closure (Set.range fun ab : Fin n × Fin n => E ab.1 ab.2) := hu
@@ -27,6 +34,11 @@ theorem equivariant_intertwines_monoid (E : GLOps n K V) (E' : GLOps n K V') (T 
     show T (y (z w)) = y' (z' (T w))
     rw [hy'', hz'']
 
+/- English proof (translation)
+Take `⟨hv0, hvw, hvh⟩` from `hv`. Use `⟨h0, ?_, fun a b hab => ?_⟩` and prove the remaining obligations. Rewrite `hvw`, the goal using `[mem_weightSp_iff_diagonal_apply]`. Introduce `a`. Rewrite using `[← hT, hvw a, map_smul]`.
+
+Rewrite using `[← hT, hvh a b hab, map_zero]`.
+-/
 theorem equivariant_image_highest_vector (E : GLOps n K V) (E' : GLOps n K V') (T : V →ₗ[K] V') (hT : IsEquivariantMap E E' T)
     (mu : Fin n → ℤ) (v : V) (hv : IsHWV E mu v) (h0 : T v ≠ 0) : IsHWV E' mu (T v) :=  by
   obtain ⟨hv0, hvw, hvh⟩ := hv
@@ -36,6 +48,13 @@ theorem equivariant_image_highest_vector (E : GLOps n K V) (E' : GLOps n K V') (
     rw [← hT, hvw a, map_smul]
   · rw [← hT, hvh a b hab, map_zero]
 
+/- English proof (translation)
+Introduce `x hx`. Establish `hle : isoSub E mu ≤ (isoSub E' mu).comap T`. Unfold `isoSub`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `y ⟨u, hu, v, hv, rfl⟩`.
+
+Take `⟨u', hu', hT'⟩` from `equivariant_intertwines_monoid E E' T hT hu`. Simplify using `only [SetLike.mem_coe, Submodule.mem_comap]`. Rewrite using `[hT']`. Distinguish the cases in `h0 : T v = 0`. Rewrite using `[h0, map_zero]`.
+
+Conclude with `Submodule.zero_mem _`. Conclude with `Submodule.subset_span ⟨u', hu', T v, equivariant_image_highest_vector E E' T hT mu v hv h0, rfl⟩`. Conclude with `hle hx`.
+-/
 theorem equivariant_maps_isotypic (E : GLOps n K V) (E' : GLOps n K V') (T : V →ₗ[K] V') (hT : IsEquivariantMap E E' T)
     (mu : Fin n → ℤ) : ∀ x ∈ isoSub E mu, T x ∈ isoSub E' mu :=  by
   intro x hx
@@ -52,12 +71,22 @@ theorem equivariant_maps_isotypic (E : GLOps n K V) (E' : GLOps n K V') (T : V �
     · exact Submodule.subset_span ⟨u', hu', T v, equivariant_image_highest_vector E E' T hT mu v hv h0, rfl⟩
   exact hle hx
 
+/- English proof (translation)
+Unfold `isoSub`. Conclude with `Submodule.subset_span ⟨1, one_mem _, v, hv, rfl⟩`.
+-/
 theorem highest_vector_mem_isotypic (E : GLOps n K V) (mu : Fin n → ℤ) (v : V) (hv : IsHWV E mu v) : v ∈ isoSub E mu := by
   unfold isoSub
   exact Submodule.subset_span ⟨1, one_mem _, v, hv, rfl⟩
 
 end
 
+/- English proof (translation)
+Rewrite `hx`, the goal using `[mem_weightSp_iff_diagonal_apply]`. Introduce `c`. Establish `h1` using `congrArg (fun F : Module.End K V => F x) (hE.1 c c a b)`. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply, hx c, map_smul] at h1`. Rewrite `h1` using `[sub_eq_iff_eq_add]`.
+
+Rewrite using `[h1]`. Simplify using `only [rootW, Pi.add_apply, Pi.sub_apply, Pi.single_apply]`. Apply the tactic sequence `rcases eq_or_ne c a with rfl | hca <;> rcases eq_or_ne c b with rfl | hcb`. Simplify using the standard rewrite rules. Simplify using `[hcb, hcb.symm, add_smul]`.
+
+Normalize the expressions using the abelian group laws. Simplify using `[hca, add_smul]`. Normalize the expressions using the abelian group laws. Simplify using `[hca, hcb, hcb.symm]`.
+-/
 private theorem E_apply_mem_weightSp_add_rootW_of_isGLRep {n : ℕ} {K V : Type} [Field K] [AddCommGroup V] [Module K V]
     (E : GLOps n K V) (hE : IsGLRep E) (mu : Fin n → ℤ) (x : V) (hx : x ∈ weightSp E mu) (a b : Fin n) :
     E a b x ∈ weightSp E (mu + rootW a b) := by
@@ -76,6 +105,11 @@ private theorem E_apply_mem_weightSp_add_rootW_of_isGLRep {n : ℕ} {K V : Type}
     abel
   · simp [hca, hcb, hcb.symm]
 
+/- English proof (translation)
+Introduce `x hx`. Establish `hle : isoSub E mu ≤ (isoSub E mu).comap (E a b)`. Unfold `isoSub`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `y ⟨u, hu, v, hv, rfl⟩`.
+
+Simplify using `only [SetLike.mem_coe, Submodule.mem_comap]`. Conclude with `Submodule.subset_span ⟨E a b * u, mul_mem (Submonoid.subset_closure ⟨(a, b), rfl⟩) hu, v, hv, rfl⟩`. Conclude with `hle hx`.
+-/
 private theorem E_apply_mem_isoSub_of_mem {n : ℕ} {K V : Type} [Field K] [AddCommGroup V] [Module K V]
     (E : GLOps n K V) (mu : Fin n → ℤ) (a b : Fin n) : ∀ x ∈ isoSub E mu, E a b x ∈ isoSub E mu := by
   intro x hx
@@ -87,6 +121,29 @@ private theorem E_apply_mem_isoSub_of_mem {n : ℕ} {K V : Type} [Field K] [AddC
     exact Submodule.subset_span ⟨E a b * u, mul_mem (Submonoid.subset_closure ⟨(a, b), rfl⟩) hu, v, hv, rfl⟩
   exact hle hx
 
+/- English proof (translation)
+Introduce `n K V _ _ _ _ _ E hE`. Use `set S : Submodule K V := ⨆ mu, isoSub E mu with hSdef`. Establish `hS : ∀ a b, ∀ x ∈ S, E a b x ∈ S`. Introduce `a b x hx`. Use `Submodule.iSup_induction (fun mu => isoSub E mu) (motive := fun x => E a b x ∈ S) hx ?_ ?_ ?_` and prove the remaining obligations.
+
+Introduce `mu y hy`. Conclude with `(le_iSup (fun mu => isoSub E mu) mu) (E_apply_mem_isoSub_of_mem E mu a b y hy)`. Rewrite using `[map_zero]`. Conclude with `S.zero_mem`. Introduce `y z hy hz`.
+
+Rewrite using `[map_add]`. Conclude with `S.add_mem hy hz`. Take `⟨W', hc, hW'⟩` from `h2 K V n E hE S hS`. Establish `hW'bot : W' = ⊥`. Assume the negation of the conclusion as `hne`.
+
+Take `⟨s, π, hπ, hπW, hbot, hπwt, hsum⟩` from `weight_projections_exist E hE`. Take `⟨w, hwW, hw0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hne`. Set `T : Finset (Fin n → ℤ)` to `s.filter (fun mu => ∃ y ∈ W', y ≠ 0 ∧ y ∈ weightSp E mu)`. Establish `hT : T.Nonempty`. Assume the negation of the conclusion as `hTe`.
+
+Rewrite `hTe` using `[Finset.not_nonempty_iff_eq_empty]`. Apply `hw0` to reduce the goal to its premises. Rewrite using `[← hsum w]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `mu hmu`.
+
+Assume the negation of the conclusion as `hne0`. Establish `hmT : mu ∈ T` using `Finset.mem_filter.mpr ⟨hmu, π mu w, hπW mu W' (fun a y hy => hW' a a y hy) w hwW, hne0, hπwt mu w⟩`. Rewrite `hmT` using `[hTe]`. Conclude with `Finset.notMem_empty _ hmT`. Take `⟨mu, hmuT, hmin⟩` from `T.exists_min_image (fun nu => ∑ i : Fin n, (i.val : ℤ) * nu i) hT`.
+
+Take `⟨hmus, v, hvW, hv0, hvw⟩` from `Finset.mem_filter.mp hmuT`. Establish `hhw : IsHWV E mu v`. Use `⟨hv0, hvw, fun a b hab => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne1`. Establish `hmem : E a b v ∈ weightSp E (mu + rootW a b)` using `E_apply_mem_weightSp_add_rootW_of_isGLRep E hE mu v hvw a b`.
+
+Establish `hs' : mu + rootW a b ∈ s`. Assume the negation of the conclusion as `hns`. Rewrite `hmem` using `[hbot _ hns]`. Conclude with `hne1 ((Submodule.mem_bot K).mp hmem)`. Establish `hT' : mu + rootW a b ∈ T` using `Finset.mem_filter.mpr ⟨hs', E a b v, hW' a b v hvW, hne1, hmem⟩`.
+
+Establish `hle` using `hmin _ hT'`. Establish `hcalc : ∑ i : Fin n, (i.val : ℤ) * (mu + rootW a b) i = (∑ i : Fin n, (i.val : ℤ) * mu i) + ((a.val : ℤ) - b.val)`. Simplify using `[rootW, Pi.single_apply, mul_add, mul_sub, Finset.sum_add_distrib, Finset.sum_sub_distrib]`. Establish `hab' : (a.val : ℤ) < b.val` using `by exact_mod_cast hab`. Rewrite `hle` using `[hcalc]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hvS : v ∈ S` using `(le_iSup (fun mu => isoSub E mu) mu) (highest_vector_mem_isotypic E mu v hhw)`. Establish `hvI : v ∈ S ⊓ W'` using `⟨hvS, hvW⟩`. Rewrite `hvI` using `[hc.inf_eq_bot]`. Conclude with `hv0 ((Submodule.mem_bot K).mp hvI)`.
+
+Rewrite using `[← hc.sup_eq_top, hW'bot, sup_bot_eq]`.
+-/
 theorem isotypic_submodules_span_top (D : Formalism.BasicNotions.D7) (h2 : adm2 D) : IsotypicSubmodulesSpanTop := by
   classical
   intro n K V _ _ _ _ _ E hE
@@ -143,6 +200,41 @@ theorem isotypic_submodules_span_top (D : Formalism.BasicNotions.D7) (h2 : adm2 
     exact hv0 ((Submodule.mem_bot K).mp hvI)
   rw [← hc.sup_eq_top, hW'bot, sup_bot_eq]
 
+/- English proof (translation)
+Take `⟨hv0, hvw, hvh⟩` from `hv`. Establish `hvw' : ∀ c, E c c v = 0` using `fun c => by rw [(mem_weightSp_iff_diagonal_apply E 0 v).mp hvw c]; simp`. Break down `lt_trichotomy a b with hab | rfl | hab` into its components or cases. Conclude with `hvh a b hab`. Conclude with `hvw' a`.
+
+Establish `hne : a ≠ b` using `ne_of_gt hab`. Establish `r1 : ∀ y, E b a (E a b y) = E a b (E b a y) + (E b b y - E a a y)`. Introduce `y`. Establish `h1` using `congrArg (fun F : Module.End K V => F y) (hE.1 b a a b)`. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply, if_true] at h1`.
+
+Rewrite using `[← h1]`. Normalize the expressions using the abelian group laws. Establish `r2 : ∀ y, E b b (E a b y) = E a b (E b b y) - E a b y`. Introduce `y`. Establish `h1` using `congrArg (fun F : Module.End K V => F y) (hE.1 b b a b)`.
+
+Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply, if_true, if_neg hne.symm, zero_sub, LinearMap.neg_apply] at h1`. Rewrite `h1` using `[sub_eq_iff_eq_add]`. Rewrite using `[h1]`. Normalize the expressions using the abelian group laws. Establish `r3 : ∀ y, E a a (E a b y) = E a b (E a a y) + E a b y`.
+
+Introduce `y`. Establish `h1` using `congrArg (fun F : Module.End K V => F y) (hE.1 a a a b)`. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply, if_true, if_neg hne.symm, sub_zero] at h1`. Rewrite `h1` using `[sub_eq_iff_eq_add]`. Rewrite using `[h1]`.
+
+Normalize the expressions using the abelian group laws. Establish `hpow : ∀ (k : ℕ) (y : V), (E a b ^ (k + 1)) y = E a b ((E a b ^ k) y)` using `fun k y => by`. Rewrite using `[pow_succ']`. Both sides reduce to the same expression. Establish `H : ∀ k : ℕ, E b b ((E a b ^ k) v) - E a a ((E a b ^ k) v) = (-(2 * (k : K))) • (E a b ^ k) v`.
+
+Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => simp [hvw']`. Consider the case `succ k ih`. Rewrite using `[hpow, r2, r3]`.
+
+Establish `e1 : E a b (E b b ((E a b ^ k) v)) - E a b ((E a b ^ k) v) - (E a b (E a a ((E a b ^ k) v)) + E a b ((E a b ^ k) v)) = E a b (E b b ((E a b ^ k) v) - E a a ((E a b ^ k) v)) - (2 : K) • E a b ((E a b ^ k) v)`. Rewrite using `[map_sub, two_smul]`. Normalize the expressions using the abelian group laws. Rewrite using `[e1, ih, map_smul, ← sub_smul]`. Use `congr 1`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `Ek : ∀ k : ℕ, E b a ((E a b ^ (k + 1)) v) = (-(((k : K) + 1) * k)) • (E a b ^ k) v`. Introduce `k`. Proceed by induction on `k with`.
+
+Consider the case `zero`. Rewrite using `[hpow, r1]`. Simplify using `[hvh b a hab, hvw']`. Consider the case `succ k ih`. Rewrite using `[hpow (k + 1), r1, ih, H (k + 1), map_smul, ← hpow k, ← add_smul]`.
+
+Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Assume the negation of the conclusion as `hfv`. Establish `hall : ∀ k, (E a b ^ k) v ≠ 0`.
+
+Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => simpa using hv0`. Consider the case `succ k ih`. Introduce `h0`.
+
+Consider the cases of `k with`. Consider the case `zero`. Apply `hfv` to reduce the goal to its premises. Simplify using `using h0`. Consider the case `succ m`.
+
+Establish `h1` using `Ek (m + 1)`. Rewrite `h1` using `[h0, map_zero]`. Establish `hc : (-((((m + 1 : ℕ) : K) + 1) * ((m + 1 : ℕ) : K))) ≠ 0`. Establish `h2 : ((m + 1 : ℕ) : K) ≠ 0` using `Nat.cast_ne_zero.mpr (Nat.succ_ne_zero m)`. Establish `h3 : ((m + 1 : ℕ) : K) + 1 ≠ 0` using `by exact_mod_cast Nat.succ_ne_zero (m + 1)`.
+
+Conclude with `neg_ne_zero.mpr (mul_ne_zero h3 h2)`. Conclude with `ih ((smul_eq_zero.mp h1.symm).resolve_left hc)`. Establish `heig : ∀ k : ℕ, (E b b - E a a).HasEigenvector (-(2 * (k : K))) ((E a b ^ k) v)`. Introduce `k`. Rewrite using `[Module.End.hasEigenvector_iff, Module.End.mem_eigenspace_iff, LinearMap.sub_apply]`.
+
+Conclude with `⟨H k, hall k⟩`. Establish `hinj : Function.Injective (fun k : ℕ => -(2 * (k : K)))`. Introduce `k j hkj`. Simplify using `using hkj`. Establish `hli` using `Module.End.eigenvectors_linearIndependent' (E b b - E a a) (fun k : ℕ => -(2 * (k : K))) hinj (fun k => (E a b ^ k) v) heig`.
+
+Use `hli.finite` as an intermediate fact. Conclude with `not_finite ℕ`.
+-/
 private theorem E_apply_eq_zero_of_isHWV_zero {n : ℕ} {K V : Type} [Field K] [CharZero K] [AddCommGroup V] [Module K V]
     [FiniteDimensional K V] (E : GLOps n K V) (hE : IsGLRep E) (v : V) (hv : IsHWV E 0 v) (a b : Fin n) :
     E a b v = 0 := by
@@ -233,6 +325,17 @@ private theorem E_apply_eq_zero_of_isHWV_zero {n : ℕ} {K V : Type} [Field K] [
   have := hli.finite
   exact not_finite ℕ
 
+/- English proof (translation)
+Establish `hle : isoSub E 0 ≤ LinearMap.ker (E a b)`. Unfold `isoSub`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `y ⟨u, hu, v, hv, rfl⟩`. Establish `hP : u v = v ∨ u v = 0`.
+
+Establish `hu' : u ∈ Submonoid.closure (Set.range fun ab : Fin n × Fin n => E ab.1 ab.2)` using `hu`. Use `clear hu`. Proceed by induction on `hu' using Submonoid.closure_induction with`. Consider the case `mem y hy`. Take `⟨⟨c, d⟩, rfl⟩` from `hy`.
+
+Conclude with `Or.inr (E_apply_eq_zero_of_isHWV_zero E hE v hv c d)`. Consider the case `one => exact Or.inl rfl`. Consider the case `mul y z _ _ hy hz`. Break down `hz with hz | hz` into its components or cases. Use `show y (z v) = v ∨ y (z v) = 0`.
+
+Rewrite using `[hz]`. Conclude with `hy`. Use `right show y (z v) = 0`. Rewrite using `[hz, map_zero]`. Simplify using `only [SetLike.mem_coe, LinearMap.mem_ker]`.
+
+Apply the tactic sequence `rcases hP with h | h <;> rw [h]`. Conclude with `E_apply_eq_zero_of_isHWV_zero E hE v hv a b`. Conclude with `map_zero _`. Conclude with `hle hx`.
+-/
 theorem isotypic_zero_killed_by_operators {n : ℕ} {K V : Type} [Field K] [CharZero K] [AddCommGroup V] [Module K V] [FiniteDimensional K V]
     (E : GLOps n K V) (hE : IsGLRep E) (x : V) (hx : x ∈ isoSub E 0) (a b : Fin n) : E a b x = 0 :=  by
   have hle : isoSub E 0 ≤ LinearMap.ker (E a b) := by
@@ -261,6 +364,29 @@ theorem isotypic_zero_killed_by_operators {n : ℕ} {K V : Type} [Field K] [Char
     · exact map_zero _
   exact hle hx
 
+/- English proof (translation)
+Introduce `n K V _ _ _ _ _ E hE`. Use `set Inv : Submodule K V := ⨅ a, ⨅ b, LinearMap.ker (E a b) with hInvdef`. Establish `hInvmem : ∀ x, x ∈ Inv ↔ ∀ a b, E a b x = 0`. Introduce `x`. Simplify using `[Inv, Submodule.mem_iInf]`.
+
+Establish `hInvS : ∀ a b, ∀ x ∈ Inv, E a b x ∈ Inv`. Introduce `a b x hx`. Rewrite using `[(hInvmem x).mp hx a b]`. Conclude with `Inv.zero_mem`. Take `⟨W', hc, hW'⟩` from `h2 K V n E hE Inv hInvS`.
+
+Use `⟨Inv.projection W' hc, ?_⟩` and prove the remaining obligations. Establish `hPE : ∀ c d y, Inv.projection W' hc (E c d y) = 0`. Introduce `c d y`. Establish `hy` using `Submodule.projection_add_projection_eq_self hc y`. Rewrite using `[← hy, map_add, (hInvmem _).mp (Submodule.projection_apply_mem hc y) c d, zero_add]`.
+
+Conclude with `(Submodule.projection_apply_eq_zero_iff hc).mpr (hW' c d _ (Submodule.projection_apply_mem hc.symm y))`. Unfold `IsInvProj IsIsoProj`. Use `⟨fun x hx => ?_, fun mu hmu x hx => ?_⟩` and prove the remaining obligations. Conclude with `Submodule.projection_apply_of_mem_left hc ((hInvmem x).mpr (fun a b => isotypic_zero_killed_by_operators E hE x hx a b))`. Establish `hle : isoSub E mu ≤ LinearMap.ker (Inv.projection W' hc)`.
+
+Unfold `isoSub`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `y ⟨u, hu, v, hv, rfl⟩`. Simplify using `only [SetLike.mem_coe, LinearMap.mem_ker]`. Establish `hQ : u = 1 ∨ ∀ z, Inv.projection W' hc (u z) = 0`.
+
+Establish `hu' : u ∈ Submonoid.closure (Set.range fun ab : Fin n × Fin n => E ab.1 ab.2)` using `hu`. Use `clear hu`. Proceed by induction on `hu' using Submonoid.closure_induction with`. Consider the case `mem y hy`. Take `⟨⟨c, d⟩, rfl⟩` from `hy`.
+
+Conclude with `Or.inr (hPE c d)`. Consider the case `one => exact Or.inl rfl`. Consider the case `mul y z _ _ hy hz`. Break down `hy with rfl | hy` into its components or cases. Rewrite using `[one_mul]`.
+
+Conclude with `hz`. Use `right`. Introduce `w`. Conclude with `hy (z w)`. Break down `hQ with rfl | hQ` into its components or cases.
+
+Choose the witnesses or unpack the hypotheses as in `⟨c, hc0⟩ : ∃ c, mu c ≠ 0 := by`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Conclude with `hmu (funext hcon)`. Establish `hvw` using `(mem_weightSp_iff_diagonal_apply E mu v).mp hv.2.1 c`.
+
+Establish `hK : (mu c : K) ≠ 0` using `Int.cast_ne_zero.mpr hc0`. Establish `hv' : v = ((mu c : K))⁻¹ • E c c v`. Rewrite using `[hvw, smul_smul, inv_mul_cancel₀ hK, one_smul]`. Rewrite using `[Module.End.one_apply, hv', map_smul, hPE, smul_zero]`. Conclude with `hQ v`.
+
+Conclude with `hle hx`.
+-/
 theorem invariant_projection_exists (D : Formalism.BasicNotions.D7) (h2 : adm2 D) : InvariantProjectionExists :=  by
   intro n K V _ _ _ _ _ E hE
   set Inv : Submodule K V := ⨅ a, ⨅ b, LinearMap.ker (E a b) with hInvdef
@@ -315,6 +441,13 @@ theorem invariant_projection_exists (D : Formalism.BasicNotions.D7) (h2 : adm2 D
       · exact hQ v
     exact hle hx
 
+/- English proof (translation)
+Introduce `n K V V' _ _ _ _ _ _ _ _ E E' hE hE' T hT P P' hP hP' x`. Establish `htop` using `isotypic_submodules_span_top D h2 n K V E hE`. Establish `hx : x ∈ ⨆ mu, isoSub E mu`. Rewrite using `[htop]`. Discharge the goal by the elementary cases of `trivial`.
+
+Use `Submodule.iSup_induction (fun mu => isoSub E mu) (motive := fun x => T (P x) = P' (T x)) hx ?_ ?_ ?_` and prove the remaining obligations. Introduce `mu y hy`. Distinguish the cases in `hmu : mu = 0`. Substitute `hmu` using the available equality. Rewrite using `[hP.1 y hy, hP'.1 (T y) (equivariant_maps_isotypic E E' T hT 0 y hy)]`.
+
+Rewrite using `[hP.2 mu hmu y hy, map_zero, hP'.2 mu hmu (T y) (equivariant_maps_isotypic E E' T hT mu y hy)]`. Simplify using the standard rewrite rules. Introduce `y z hy hz`. Simplify using `only [map_add]`. Rewrite using `[hy, hz]`.
+-/
 theorem equivariant_commutes_isotypic (D : Formalism.BasicNotions.D7) (h2 : adm2 D) : EquivariantCommutesInvariantProjection :=  by
   intro n K V V' _ _ _ _ _ _ _ _ E E' hE hE' T hT P P' hP hP' x
   have htop := isotypic_submodules_span_top D h2 n K V E hE
@@ -332,6 +465,15 @@ theorem equivariant_commutes_isotypic (D : Formalism.BasicNotions.D7) (h2 : adm2
     simp only [map_add]
     rw [hy, hz]
 
+/- English proof (translation)
+Establish `htop` using `isotypic_submodules_span_top D h2 n K V E hE`. Establish `hx : x ∈ ⨆ mu, isoSub E mu`. Rewrite using `[htop]`. Discharge the goal by the elementary cases of `trivial`. Use `Submodule.iSup_induction (fun mu => isoSub E mu) (motive := fun x => P x ∈ isoSub E 0) hx ?_ ?_ ?_` and prove the remaining obligations.
+
+Introduce `mu y hy`. Distinguish the cases in `hmu : mu = 0`. Substitute `hmu` using the available equality. Rewrite using `[hP.1 y hy]`. Conclude with `hy`.
+
+Rewrite using `[hP.2 mu hmu y hy]`. Conclude with `Submodule.zero_mem _`. Rewrite using `[map_zero]`. Conclude with `Submodule.zero_mem _`. Introduce `y z hy hz`.
+
+Rewrite using `[map_add]`. Conclude with `Submodule.add_mem _ hy hz`.
+-/
 theorem invariant_projection_range_trivial (D : Formalism.BasicNotions.D7) (h2 : adm2 D) {n : ℕ} {K V : Type} [Field K] [CharZero K] [AddCommGroup V]
     [Module K V] [FiniteDimensional K V] (E : GLOps n K V) (hE : IsGLRep E) (P : Module.End K V)
     (hP : IsInvProj E P) (x : V) : P x ∈ isoSub E 0 :=  by
@@ -353,6 +495,9 @@ theorem invariant_projection_range_trivial (D : Formalism.BasicNotions.D7) (h2 :
     rw [map_add]
     exact Submodule.add_mem _ hy hz
 
+/- English proof (translation)
+Introduce `n K V _ _ _ _ _ E hE P hP x a b`. Conclude with `isotypic_zero_killed_by_operators E hE _ (invariant_projection_range_trivial D h2 E hE P hP x) a b`.
+-/
 theorem invariant_projection_kills_operators (D : Formalism.BasicNotions.D7) (h2 : adm2 D) : OperatorsKillInvariantProjection := by
   intro n K V _ _ _ _ _ E hE P hP x a b
   exact isotypic_zero_killed_by_operators E hE _ (invariant_projection_range_trivial D h2 E hE P hP x) a b

@@ -8,10 +8,18 @@ import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.NormLeO
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.MainNotions.N Formalism.BasicNotions Formalism.BasicNotions.Loc GlobalTheory.GalOfCusp Matrix IsLocalRing
 open UpperTheory.V UpperTheory.V.Base UpperTheory.V.HV UpperTheory.V.Alg UpperTheory.V.U3
 
+/- English proof (translation)
+Rewrite `h1` using `[h2, div_eq_mul_inv, ← _root_.zpow_sub]`. Then use the resulting hypothesis.
+-/
 private theorem quot_mem {H M : Type} [Group H] [CommGroup M] (U : Subgroup M) (a t : H →* M) (g : H) (i j : Fin 3)
     (h1 : a g / t g ^ wt1 i ∈ U) (h2 : a g = t g ^ wt1 j) : t g ^ (wt1 j - wt1 i) ∈ U := by
   rwa [h2, div_eq_mul_inv, ← _root_.zpow_sub] at h1
 
+/- English proof (translation)
+Take `⟨j, hj⟩` from `hroot g hg`. Establish `h` using `quot_mem U a t g i j (hred g) hj`. Rewrite `h` using `[← map_zpow]`. Establish `h'` using `hI _ (I.zpow_mem hg _) h`. Rewrite `h'` using `[map_zpow, _root_.zpow_sub, mul_inv_eq_one]`.
+
+Rewrite using `[hj, h']`.
+-/
 private theorem eq_away {H M : Type} [Group H] [CommGroup M] (U : Subgroup M) (I : Subgroup H) (a t : H →* M)
     (i : Fin 3) (hred : ∀ g, a g / t g ^ wt1 i ∈ U) (hroot : ∀ g ∈ I, ∃ j, a g = t g ^ wt1 j)
     (hI : ∀ g ∈ I, t g ∈ U → t g = 1) (g : H) (hg : g ∈ I) : a g = t g ^ wt1 i := by
@@ -22,6 +30,11 @@ private theorem eq_away {H M : Type} [Group H] [CommGroup M] (U : Subgroup M) (I
   rw [map_zpow, _root_.zpow_sub, mul_inv_eq_one] at h'
   rw [hj, h']
 
+/- English proof (translation)
+Take `⟨j, hj⟩` from `hroot`. Distinguish the cases in `hij : j = i`. Rewrite using `[hj, hij]`. It suffices to derive a contradiction. Establish `h` using `quot_mem U a t g i j hred hj`.
+
+Apply the tactic sequence `have hd : (wt1 j - wt1 i) ∣ 2 := by revert hij fin_cases i <;> fin_cases j <;> simp [wt1]`. Take `⟨m, hm⟩` from `hd`. Apply `hs` to reduce the goal to its premises. Use `U.zpow_mem h m` as an intermediate fact. Rewrite `this` using `[← _root_.zpow_mul, ← hm, zpow_ofNat]`. Then use the resulting hypothesis.
+-/
 private theorem eq_of_sq {H M : Type} [Group H] [CommGroup M] (U : Subgroup M) (a t : H →* M)
     (i : Fin 3) (g : H) (hred : a g / t g ^ wt1 i ∈ U) (hroot : ∃ j, a g = t g ^ wt1 j)
     (hs : t g ^ 2 ∉ U) : a g = t g ^ wt1 i := by
@@ -38,6 +51,11 @@ private theorem eq_of_sq {H M : Type} [Group H] [CommGroup M] (U : Subgroup M) (
   have := U.zpow_mem h m
   rwa [← _root_.zpow_mul, ← hm, zpow_ofNat] at this
 
+/- English proof (translation)
+Distinguish the cases in `h : t g ^ 2 ∈ U`. Establish `h1` using `eq_of_sq U a t i s (hred s) (hroot s hs) hs2`. Establish `h2` using `eq_of_sq U a t i (g * s) (hred _) (hroot _ (I.mul_mem hg hs)) (by`. Rewrite using `[map_mul, mul_pow]`. Conclude with `fun h' => hs2 ((U.mul_mem_cancel_left h).1 h'))`.
+
+Rewrite `h2` using `[map_mul, map_mul, mul_zpow, h1]`. Conclude with `mul_right_cancel h2`. Conclude with `eq_of_sq U a t i g (hred g) (hroot g hg) h`.
+-/
 private theorem eq_above {H M : Type} [Group H] [CommGroup M] (U : Subgroup M) (I : Subgroup H) (a t : H →* M)
     (i : Fin 3) (hred : ∀ g, a g / t g ^ wt1 i ∈ U) (hroot : ∀ g ∈ I, ∃ j, a g = t g ^ wt1 j)
     (s : H) (hs : s ∈ I) (hs2 : t s ^ 2 ∉ U) (g : H) (hg : g ∈ I) : a g = t g ^ wt1 i := by
@@ -50,6 +68,9 @@ private theorem eq_above {H M : Type} [Group H] [CommGroup M] (U : Subgroup M) (
     exact mul_right_cancel h2
   · exact eq_of_sq U a t i g (hred g) (hroot g hg) h
 
+/- English proof (translation)
+Establish `e : u = (u - 1) + 1` using `by ring`. Rewrite using `[e, IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm (by rw [norm_one]; exact h.ne), norm_one]`. Conclude with `max_eq_right h.le`.
+-/
 private theorem norm_eq_one_of {F : Type} [NormedField F] [IsUltrametricDist F] {u : F} (h : ‖u - 1‖ < 1) : ‖u‖ = 1 := by
   have e : u = (u - 1) + 1 := by ring
   rw [e, IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm (by rw [norm_one]; exact h.ne), norm_one]
@@ -75,6 +96,9 @@ private def U1 (F : Type) [NormedField F] [IsUltrametricDist F] : Subgroup Fˣ w
     rw [h]
     exact hu
 
+/- English proof (translation)
+Establish `h1` using `congrArg (Polynomial.eval (a i)) h`. Rewrite `h1` using `[Matrix.charpoly_diagonal, Matrix.charpoly_diagonal, Polynomial.eval_prod, Polynomial.eval_prod, Finset.prod_eq_zero (Finset.mem_univ i) (by simp), eq_comm, Finset.prod_eq_zero_iff]`. Take `⟨j, -, hj⟩` from `h1`. Conclude with `⟨j, by simpa [sub_eq_zero] using hj⟩`.
+-/
 private theorem root_of_charpoly {F : Type} [Field F] (a b : Fin 3 → F)
     (h : (Matrix.diagonal a).charpoly = (Matrix.diagonal b).charpoly) (i : Fin 3) : ∃ j, a i = b j := by
   have h1 := congrArg (Polynomial.eval (a i)) h
@@ -83,6 +107,13 @@ private theorem root_of_charpoly {F : Type} [Field F] (a b : Fin 3 → F)
   obtain ⟨j, -, hj⟩ := h1
   exact ⟨j, by simpa [sub_eq_zero] using hj⟩
 
+/- English proof (translation)
+Establish `hd : ∀ g : η.ker, (r g).mat = Matrix.diagonal fun i => (r g).mat i i`. Introduce `g`. Use extensionality with `i j`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality.
+
+Simplify using the standard rewrite rules. Rewrite using `[Matrix.diagonal_apply_ne _ hij]`. Break down `lt_trichotomy (wt i j) 0 with h | h | h` into its components or cases. Conclude with `hU g g.2 i j h`. Conclude with `absurd (Fin.ext (by simp only [wt, wt1] at h; omega)) hij`.
+
+Conclude with `hL g g.2 i j h`. Set `b : Fin 3 → η.ker →* R` to `fun i => { toFun := fun g => (r g).mat i i map_one' := by simp [GG.mat] map_mul' := fun g h => by`. Establish `e : (r ((g * h : η.ker) : Γ)).mat = (r g).mat * (r h).mat` using `congrArg Units.val (map_mul (glPart η r hm) g h)`. Rewrite using `[e, hd g, Matrix.diagonal_mul, Matrix.diagonal_apply_eq] }`. Conclude with `⟨fun i => (b i).toHomUnits, hd⟩`.
+-/
 private theorem exists_diag {Γ R : Type} [Group Γ] [CommRing R] (η : Γ →* ℤˣ) (r : Γ →* GG 3 R) (hm : HasMult η r)
     (hU : Upper η r) (hL : Lower η r) :
     ∃ a : Fin 3 → η.ker →* Rˣ, ∀ g : η.ker, (r g).mat = Matrix.diagonal fun i => (a i g : R) := by
@@ -106,10 +137,18 @@ private theorem exists_diag {Γ R : Type} [Group Γ] [CommRing R] (η : Γ →* 
         rw [e, hd g, Matrix.diagonal_mul, Matrix.diagonal_apply_eq] }
   exact ⟨fun i => (b i).toHomUnits, hd⟩
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.NormLeOneOfIsIntegral.norm_le_one_of_isIntegral l x hx`.
+-/
 private theorem norm_le_one_int (l : ℕ) [Fact l.Prime] (x : PadicAlgCl l) (hx : IsIntegral ℤ_[l] x) :
     ‖x‖ ≤ 1 :=
   _root_.UpperTheory.Reformulated.B.NormLeOneOfIsIntegral.norm_le_one_of_isIntegral l x hx
 
+/- English proof (translation)
+Establish `hle : ∀ y : c.O, ‖(y : PadicAlgCl l)‖ ≤ 1` using `fun y => norm_le_one_int l _ ((Algebra.IsIntegral.isIntegral (R := ℤ_[l]) y).map c.O.val)`. Take `⟨u, rfl⟩` from `hx`. Use `show ‖((u : c.O) : PadicAlgCl l)‖ = 1`. Establish `h1 : ‖((u : c.O) : PadicAlgCl l)‖ * ‖((u⁻¹ : c.Oˣ) : c.O).1‖ = 1`. Rewrite using `[← norm_mul, ← Subalgebra.coe_mul, Units.mul_inv]`.
+
+Simplify using the standard rewrite rules. Establish `h2` using `hle u`. Establish `h3` using `hle (u⁻¹ : c.Oˣ)`. Establish `h4` using `norm_nonneg ((u : c.O) : PadicAlgCl l)`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 private theorem norm_unit {l : ℕ} [Fact l.Prime] (c : Coef l) {x : c.O} (hx : IsUnit x) :
     ‖algebraMap c.O (PadicAlgCl l) x‖ = 1 := by
   have hle : ∀ y : c.O, ‖(y : PadicAlgCl l)‖ ≤ 1 := fun y =>
@@ -123,6 +162,43 @@ private theorem norm_unit {l : ℕ} [Fact l.Prime] (c : Coef l) {x : c.O} (hx : 
   have h4 := norm_nonneg ((u : c.O) : PadicAlgCl l)
   nlinarith
 
+/- English proof (translation)
+Introduce `hC Ω _ _ _ K _ _ _ l _ c N _ e ψ D U g₁ hM r h hU hL`. Take `⟨a, ha⟩` from `exists_diag D.η r h.mult hU hL`. Take `⟨-, -, -, -, -, hkill, -, -, hcont, -, hab⟩` from `dat_facts D`. Set `t : D.η.ker →* (PadicAlgCl l)ˣ` to `D.ΨQ.comp D.η.ker.subtype`. Establish `htv : ∀ g : G ℚ Ω, (D.ΨQ g : PadicAlgCl l) = algebraMap c.O (PadicAlgCl l) (D.Ψ g : c.O)` using `fun _ => rfl`.
+
+Establish `hr0 : ∀ g : D.η.ker, (r0 D.η D.ΨQ g).mat = Matrix.diagonal fun i => ((t g ^ wt1 i : (PadicAlgCl l)ˣ) : PadicAlgCl l)` using `fun _ => rfl`. Establish `hai : ∀ i (g : D.η.ker), (a i g : PadicAlgCl l) = (r g).mat i i` using `fun i g => by`. Rewrite using `[ha g, Matrix.diagonal_apply_eq]`. Establish `hred : ∀ i g, a i g / t g ^ wt1 i ∈ U1 (PadicAlgCl l)`. Introduce `i g`.
+
+Establish `h1` using `h.red g i i`. Rewrite `h1` using `[← hai, hr0, Matrix.diagonal_apply_eq]`. Establish `h2 : ‖((t g ^ wt1 i : (PadicAlgCl l)ˣ) : PadicAlgCl l)‖ = 1`. Rewrite using `[Units.val_zpow_eq_zpow_val, norm_zpow]`. Establish `: ‖(t g : PadicAlgCl l)‖ = 1` using `norm_unit c (D.Ψ g).isUnit`.
+
+Rewrite using `[this, _root_.one_zpow]`. Use `show ‖((a i g / t g ^ wt1 i : (PadicAlgCl l)ˣ) : PadicAlgCl l) - 1‖ < 1`. Rewrite using `[Units.val_div_eq_div_val, div_sub_one (Units.ne_zero _), norm_div, h2, div_one]`. Conclude with `h1`. Establish `hroot : ∀ i (g : D.η.ker), (r g).mat.charpoly = (r0 D.η D.ΨQ g).mat.charpoly → ∃ j, a i g = t g ^ wt1 j`.
+
+Introduce `i g hg`. Rewrite `hg` using `[ha, hr0]`. Take `⟨j, hj⟩` from `root_of_charpoly _ _ hg i`. Conclude with `⟨j, Units.ext hj⟩`. Establish `hine : ∀ i (A : ValuationSubring Ω) (g : D.η.ker), (g : G ℚ Ω) ∈ Ine (F` using `ℚ) A → a i g = t g ^ wt1 i := by`.
+
+Introduce `i A g hg`. Distinguish the cases in `hA : A.valuation (l : Ω) < 1`. Take `⟨hle, s, hs, hsu⟩` from `hab A hA`. Use `eq_above (U1 _) ((Ine (F := ℚ) A).subgroupOf D.η.ker) (a i) t i (hred i) (fun x hx => hroot i x ((pt_inertia_above hC D hM h A hA).1 x hx)) ⟨s, hle hs⟩ hs (fun hu => ?_) g hg` and prove the remaining obligations. Establish `h1` using `norm_unit c hsu`.
+
+Rewrite `h1` using `[map_sub, map_pow, map_one]`. Conclude with `absurd hu (not_lt.2 h1.ge)`. Take `⟨M, hMc⟩` from `pt_inertia_away D hM h A hA`. Use `eq_away (U1 _) ((Ine (F := ℚ) A).subgroupOf D.η.ker) (a i) t i (hred i) (fun x hx => hroot i x ?_) (fun x hx hu => ?_) g hg` and prove the remaining obligations. Establish `h1 : (r0 D.η D.ΨQ x).mat = (M : Matrix (Fin 3) (Fin 3) (PadicAlgCl l)) * (r x).mat * ((M⁻¹ : GL (Fin 3) (PadicAlgCl l)) : Matrix (Fin 3) (Fin 3) (PadicAlgCl l))`.
+
+Rewrite using `[hMc x hx x.2, Matrix.mul_assoc, Units.mul_inv, Matrix.mul_one]`. Rewrite using `[h1, Matrix.charpoly_mul_comm, ← Matrix.mul_assoc, Units.inv_mul, Matrix.one_mul]`. Establish `h1 : ¬ IsUnit ((D.Ψ x : c.O) - 1)` using `fun hx1 => by`. Establish `h1` using `norm_unit c hx1`. Rewrite `h1` using `[map_sub, map_one]`.
+
+Conclude with `absurd hu (not_lt.2 h1.ge)`. Establish `h2 : barChar c.O D.Ψ x = 1`. Apply `Units.ext` to reduce the goal to its premises. Use `show residue c.O (D.Ψ x : c.O) = 1`. Rewrite using `[← sub_eq_zero, ← map_one (residue c.O), ← map_sub, residue_eq_zero_iff]`.
+
+Conclude with `h1`. Establish `h3 : (x : G ℚ Ω) ∈ D.Kill`. Use `⟨A, hA, hx, SemidirectProduct.ext ?_ x.2⟩` and prove the remaining obligations. Use `show tor _ (barChar c.O D.Ψ x) = 1`. Rewrite using `[h2, map_one]`.
+
+Establish `h4` using `congrArg (fun y => GG.mat y 0 0) (hkill x h3)`. Establish `h5 : (D.Ψ x : c.O) = 1` using `by simpa [GG.mat, tor_val, wt1] using h4`. Apply `Units.ext` to reduce the goal to its premises. Use `show (D.ΨQ x : PadicAlgCl l) = 1`. Rewrite using `[htv, h5, map_one]`.
+
+Establish `hall : ∀ i g, a i g = t g ^ wt1 i`. Introduce `i g`. Establish `hk` using `char_eq_one D (a i / (zpowGroupHom (wt1 i)).comp t) ?_ (hred i) (fun A g hg => div_eq_one.2 (hine i A g hg))`. Conclude with `div_eq_one.1 (DFunLike.congr_fun hk g)`. Establish `c1 : Continuous fun g : D.η.ker => (r g).mat i i` using `(h.cont.comp continuous_subtype_val).matrix_elem i i`.
+
+Establish `c2 : Continuous fun g : D.η.ker => (t g : PadicAlgCl l)` using `Units.continuous_val.comp (hcont.comp continuous_subtype_val)`. Use `(c1.div (c2.zpow₀ (wt1 i) fun g => Or.inl (Units.ne_zero _)) fun g => zpow_ne_zero _ (Units.ne_zero _)).congr fun g => ?_` and prove the remaining obligations. Use `show _ = ((a i g / t g ^ wt1 i : (PadicAlgCl l)ˣ) : PadicAlgCl l)`. Rewrite using `[Units.val_div_eq_div_val, Units.val_zpow_eq_zpow_val, hai]`. Both sides reduce to the same expression.
+
+Establish `hker : ∀ g ∈ D.η.ker, r g = r0 D.η D.ΨQ g`. Introduce `g hg`. Use `SemidirectProduct.ext (Units.ext ?_) (h.mult g)` and prove the remaining obligations. Use `show (r (⟨g, hg⟩ : D.η.ker)).mat = (r0 D.η D.ΨQ (⟨g, hg⟩ : D.η.ker)).mat`. Rewrite using `[ha, hr0]`.
+
+Simplify using `only [hall]`. Establish `hc : r D.cc = r0 D.η D.ΨQ D.cc`. Use `SemidirectProduct.ext (Units.ext ?_) (h.mult _)` and prove the remaining obligations. Establish `h1 : D.ΨQ D.cc = 1`. Apply `Units.ext` to reduce the goal to its premises.
+
+Rewrite using `[htv, hM.Ψc]`. Simplify using the standard rewrite rules. Rewrite using `[unitaryThreeReflection_left, h1, map_one]`. Conclude with `h.norm.atc`. Use `MonoidHom.ext fun g => ?_` and prove the remaining obligations.
+
+Break down `Int.units_eq_one_or (D.η g) with hg | hg` into its components or cases. Conclude with `hker g hg`. Establish `h1 : g * D.cc ∈ D.η.ker`. Rewrite using `[MonoidHom.mem_ker, map_mul, hg, hM.ηc]`. Simplify using the standard rewrite rules.
+
+Establish `h2` using `hker _ h1`. Rewrite `h2` using `[map_mul, map_mul, hc]`. Conclude with `mul_right_cancel h2`.
+-/
 theorem UpperTheory.V.U3.pt_fixed :
     CohInp → ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {K : Type} [Field K] [NumberField K] [Algebra K Ω]
       {l : ℕ} [Fact l.Prime] {c : Coef l} {N : ℕ} [NeZero N] {e : ℕ} {ψ : DirichletCharacter c.O N} (D : Dat Ω K c e ψ) {U : D.ULoc} {g₁ : G ℚ Ω}, D.Marked g₁ → ∀ {r : G ℚ Ω →* GG 3 (PadicAlgCl l)} (h : D.IsPt U g₁ r),

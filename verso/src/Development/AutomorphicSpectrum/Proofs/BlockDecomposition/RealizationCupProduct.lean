@@ -7,6 +7,11 @@ open CrystallineSemistableComparison.Pb.Kap
 
 namespace GlobalTheory.CompanionTheory.KapRho
 
+/- English proof (translation)
+Establish `hφ : φ = ∑ s, φ (bs s) • bs.coord s`. Use `bs.ext fun t => ?_` and prove the remaining obligations. Simplify using `[LinearMap.sum_apply, Finsupp.single_apply]`. Use `conv_lhs => rw [hφ]`. Rewrite using `[map_sum]`.
+
+Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[hf, mul_comm]`.
+-/
 theorem semilinear_eq_sum_coord {K B : Type*} {V : Type*} [Field K] [CommRing B] [AddCommGroup V]
     [Module K V] (o : K →+* B) (f : Module.Dual K V →+ B)
     (hf : ∀ (k : K) φ, f (k • φ) = o k * f φ) {m : ℕ} (bs : Module.Basis (Fin m) K V)
@@ -19,6 +24,31 @@ theorem semilinear_eq_sum_coord {K B : Type*} {V : Type*} [Field K] [CommRing B]
   refine Finset.sum_congr rfl fun s _ => ?_
   rw [hf, mul_comm]
 
+/- English proof (translation)
+Introduce `Λ A B K _ _ _ _ C hC P hP i j x y f g h hf hg hh m m' bs bs' φ`. Take `⟨-, e, z, hzr, hzb⟩` from `hf`. Take `⟨-, e', w, hwr, hwb⟩` from `hg`. Take `⟨hh1, e'', u, hur, hub⟩` from `hh`. Use `haveI := hC.fin (i + j)`.
+
+Set `b` to `Module.finBasis K (C.V (i + j))`. Establish `hv : ∀ n, C.red n (i + j) (P.cZ i j z w) = ((C.ℓ : A) ^ (e + e')) • C.r n (i + j) (P.cS n i j (x n) (y n))`. Introduce `n`. Rewrite using `[hP.red, hzr, hwr, hP.r, map_smul, LinearMap.map_smul₂, smul_smul, pow_add, mul_comm]`. Establish `hd : C.b (i + j) (((C.ℓ : A) ^ (e + e')) • u - ((C.ℓ : A) ^ e'') • P.cZ i j z w) = 0`.
+
+Use `hC.sep _ _ fun n => ?_` and prove the remaining obligations. Establish `hu` using `hur n`. Simplify using `only at hu`. Rewrite using `[map_sub, map_smul, map_smul, hu, hv n, smul_smul, smul_smul, mul_comm, sub_self]`. Establish `key : ((C.ℓ : B) ^ (e + e')) • C.b (i + j) u = ((C.ℓ : B) ^ e'') • C.b (i + j) (P.cZ i j z w)`.
+
+Rewrite `hd` using `[map_sub, LinearMap.map_smulₛₗ, LinearMap.map_smulₛₗ, sub_eq_zero]`. Simplify `hd` using `only [map_pow, map_natCast]`. Set `c : Fin (Module.finrank K (C.V (i + j))) → B` to `fun t => ∑ s, ∑ s', f (bs.coord s) * g (bs'.coord s') * C.o (b.coord t (P.cV i j (bs s) (bs' s')))`. Establish `hμ : ∀ s s', P.cW i j (C.μ i (bs s)) (C.μ j (bs' s')) = ∑ t, C.o (b.coord t (P.cV i j (bs s) (bs' s'))) • C.μ (i + j) (b t)`. Introduce `s s'`.
+
+Rewrite using `[← hP.μ]`. Use `conv_lhs => rw [← b.sum_repr (P.cV i j (bs s) (bs' s'))]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.map_smulₛₗ, Module.Basis.coord_apply]`.
+
+Establish `hcup : P.cW i j (∑ s, f (bs.coord s) • C.μ i (bs s)) (∑ s', g (bs'.coord s') • C.μ j (bs' s')) = ∑ t, c t • C.μ (i + j) (b t)`. Simplify using `only [map_sum, LinearMap.sum_apply, map_smul, LinearMap.smul_apply, hμ, c, Finset.sum_smul, Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Use `symm`. Rewrite using `[Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun s' _ => Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hcoef : ∑ t, h (b.coord t) • C.μ (i + j) (b t) = ∑ t, c t • C.μ (i + j) (b t)`. Establish `hu : IsUnit ((C.ℓ : B) ^ (e + e') * (C.ℓ : B) ^ e'')` using `(hC.unit.pow _).mul (hC.unit.pow _)`. Use `(hu.smul_left_cancel).1 ?_` and prove the remaining obligations. Rewrite `key` using `[hP.b, ← hub b, ← hzb bs, ← hwb bs', map_smul, LinearMap.map_smul₂, hcup, smul_smul, smul_smul, smul_smul]`. Establish `hl : (C.ℓ : B) ^ e'' * (C.ℓ : B) ^ e' * (C.ℓ : B) ^ e = (C.ℓ : B) ^ (e + e') * (C.ℓ : B) ^ e''` using `by ring`.
+
+Rewrite `key` using `[hl]`. Then use the resulting hypothesis. Establish `hc : ∀ t, h (b.coord t) = c t`. Take `⟨g₀, -, hg₀⟩` from `hC.basis (i + j) b (∑ t, c t • C.μ (i + j) (b t))`. Establish `h1` using `hg₀ c rfl`. Establish `h2` using `hg₀ (fun t => h (b.coord t)) hcoef.symm`.
+
+Conclude with `fun t => congrFun (h2.trans h1.symm) t`. Establish `hφ : ∀ s s', C.o (φ (P.cV i j (bs s) (bs' s'))) = ∑ t, C.o (b.coord t (P.cV i j (bs s) (bs' s'))) * C.o (φ (b t))`. Introduce `s s'`. Use `conv_lhs => rw [← b.sum_repr (P.cV i j (bs s) (bs' s'))]`. Simplify using `only [map_sum, map_smul, smul_eq_mul, map_mul, Module.Basis.coord_apply]`.
+
+Use `(semilinear_eq_sum_coord C.o h hh1 b φ).trans ?_` and prove the remaining obligations. Simplify using `only [hc, c, hφ, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl fun s' _ => Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[mul_assoc]`.
+-/
 theorem rho_cup :
     ∀ {Λ A B K : Type} [CommRing Λ] [CommRing A] [CommRing B] [Field K] (C : Chain.{1} Λ A B K)
       (hC : C.Good) (P : Cup C), P.Good → ∀ {i j : ℕ} (x : ∀ n, C.S n i) (y : ∀ n, C.S n j)

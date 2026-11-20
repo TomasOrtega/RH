@@ -25,6 +25,11 @@ def DegreeZeroCocyclePullback : Prop :=
       ∀ (U : Scheme.{0}) (x : Sx E 0 U),
         ev β.1 0 0 (by simp) U x = ev α.1 0 0 (by simp) U ((f.app (op (SimplexCategory.mk 0))).app (op U) x)
 
+/- English proof (translation)
+Unfold `freeGen`. Establish `h` using `congrArg (fun f => f.hom (ModuleCat.freeMk (R := ULift.{1} R) (ULift.up x))) ((toSheafify Scheme.etaleTopology ((freeP R).obj P)).naturality g.op)`. Simplify using `only [ModuleCat.hom_comp, LinearMap.coe_comp, Function.comp_apply] at h`. Establish `hm : (((freeP R).obj P).map g.op).hom (ModuleCat.freeMk (R` using `ULift.{1} R) (ULift.up x)) = ModuleCat.freeMk (R := ULift.{1} R) (ULift.up (P.map g.op x)) := by`. Simplify using `only [freeP, Functor.whiskeringRight_obj_obj, Functor.comp_map]`.
+
+Use `erw [ModuleCat.free_map_apply]`. Both sides reduce to the same expression. Conclude with `h.symm.trans (congrArg (toSheafify Scheme.etaleTopology ((freeP R).obj P) |>.app (op V)).hom hm)`.
+-/
 theorem freeGen_nat {R : Type} [CommRing R] (P : PSh) {V U : Scheme.{0}} (g : V ⟶ U) (x : P.obj (op U)) :
     (((free R).obj P).obj.map g.op).hom (freeGen R P U x) = freeGen R P V (P.map g.op x) := by
   unfold freeGen
@@ -36,6 +41,11 @@ theorem freeGen_nat {R : Type} [CommRing R] (P : PSh) {V U : Scheme.{0}} (g : V 
     simp only [freeP, Functor.whiskeringRight_obj_obj, Functor.comp_map]; erw [ModuleCat.free_map_apply]; rfl
   exact h.symm.trans (congrArg (toSheafify Scheme.etaleTopology ((freeP R).obj P) |>.app (op V)).hom hm)
 
+/- English proof (translation)
+Introduce `R _ E I n α p s h V U g x`. Unfold `ev`. Rewrite using `[← freeGen_nat]`. Establish `key` using `congrArg (fun f => f.hom (freeGen R _ U x)) ((((chainsXIso R E p).inv ≫ α.v _ _ h).hom).naturality g.op)`. Simplify using `only [ModuleCat.hom_comp, LinearMap.coe_comp, Function.comp_apply] at key`.
+
+Conclude with `key`.
+-/
 theorem ev_nat_pf : EtaleCochainEvaluationNaturalInRestriction := by
   intro R _ E I n α p s h V U g x
   unfold ev

@@ -16,6 +16,27 @@ namespace GlobalTheory.CuspConjRad
 
 open Formalism.UG (cT)
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ n r J γ C₀ C D D' hDD' hD'D hΓ g hg`. Use `set Γ : Matrix (Fin n) (Fin n) E := (γ.1 : Matrix (Fin n) (Fin n) E) with hΓdef`. Use `set Γi : Matrix (Fin n) (Fin n) E := ((γ.1⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) with hΓidef`. Establish `h1 : Γ * Γi = 1` using `by simp [Γ, Γi]`. Establish `h2 : Γi * Γ = 1` using `by simp [Γ, Γi]`.
+
+Establish `hU : cT (σ : E →+* E) Γ * J * Γ = J` using `γ.2`. Establish `hmul : ∀ {a b c : ℕ} (X : Matrix (Fin a) (Fin b) E) (Y : Matrix (Fin b) (Fin c) E), adMat F (X * Y) = adMat F X * adMat F Y` using `fun X Y => Matrix.map_mul`. Establish `hone : adMat F (1 : Matrix (Fin n) (Fin n) E) = 1` using `Matrix.map_one _ (map_zero _) (map_one _)`. Establish `hA1 : adMat F Γ * adMat F Γi = 1` using `by rw [← hmul, h1, hone]`. Establish `hA2 : adMat F Γi * adMat F Γ = 1` using `by rw [← hmul, h2, hone]`.
+
+Establish `hC : C = Γ * C₀ * D'` using `by rw [hΓ, Matrix.mul_assoc, hDD', Matrix.mul_one]`. Establish `hΓiC : Γi * C = C₀ * D'` using `by rw [hC, ← Matrix.mul_assoc, ← Matrix.mul_assoc, h2, Matrix.one_mul]`. Establish `hTJ : cT (σ : E →+* E) Γ * J = J * Γi`. Combine the equalities or inequalities in the displayed calculation. Establish `hCJ : cT (σ : E →+* E) C * J = cT (σ : E →+* E) D' * (cT (σ : E →+* E) C₀ * J * Γi)`.
+
+Rewrite using `[hC, Formalism.UG.cT_mul, Formalism.UG.cT_mul]`. Simplify using `only [Matrix.mul_assoc, hTJ]`. Establish `hDD : cT (σ : E →+* E) D * cT (σ : E →+* E) D' = 1`. Rewrite using `[← Formalism.UG.cT_mul, hD'D, Formalism.UG.cT_one]`. Establish `hC₀J : cT (σ : E →+* E) C₀ * J * Γi = cT (σ : E →+* E) D * (cT (σ : E →+* E) C * J)`.
+
+Rewrite using `[hCJ, ← Matrix.mul_assoc, hDD, Matrix.one_mul]`. Set `c` to `MulAut.conj (ratEmb σ J γ)`. Establish `key : ∀ g : GAd σ J, (let m : Matrix (Fin n) (Fin n) (AF F ⊗[F] E)` using `(matHom _ σ J g).1 - 1 m * adMat F C₀ = 0 ∧ adMat F (cT (σ : E →+* E) C₀ * J) * m = 0 ∧ ∀ x : Fin n → E, (cT (σ : E →+* E) C₀ * J) *ᵥ x = 0 → ∃ a : Fin r → AF F ⊗[F] E, m *ᵥ (fun i => inclR (F := F) (AF F) (x i)) = adMat F C₀ *ᵥ a) → (let m : Matrix (Fin n) (Fin n) (AF F ⊗[F] E) …`. Introduce `g ⟨k1, k2, k3⟩`. Use `set m := (matHom _ σ J g).1 - 1 with hm`.
+
+Establish `hc : (matHom _ σ J (c g)).1 - 1 = adMat F Γ * m * adMat F Γi`. Establish `e : (matHom _ σ J (c g)).1 = adMat F Γ * (matHom _ σ J g).1 * adMat F Γi`. Rewrite using `[MulAut.conj_apply, ← map_inv, map_mul, map_mul]`. Both sides reduce to the same expression. Rewrite using `[e, hm, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, hA1]`.
+
+Simplify using `only [hc]`. Use `⟨?_, ?_, fun x hx => ?_⟩` and prove the remaining obligations. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← hmul Γi C, hΓiC, hmul C₀ D', ← Matrix.mul_assoc m, k1, Matrix.zero_mul, Matrix.mul_zero]`. Rewrite using `[hCJ, hmul (cT (σ : E →+* E) D') (cT (σ : E →+* E) C₀ * J * Γi), hmul (cT (σ : E →+* E) C₀ * J) Γi]`.
+
+Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (adMat F Γi) (adMat F Γ), hA2, Matrix.one_mul, ← Matrix.mul_assoc (adMat F (cT (σ : E →+* E) C₀ * J)) m, k2, Matrix.zero_mul, Matrix.mul_zero]`. Establish `hy : (cT (σ : E →+* E) C₀ * J) *ᵥ (Γi *ᵥ x) = 0`. Rewrite using `[Matrix.mulVec_mulVec, hC₀J, ← Matrix.mulVec_mulVec, hx, Matrix.mulVec_zero]`. Take `⟨a, ha⟩` from `k3 _ hy`.
+
+Use `⟨adMat F D *ᵥ a, ?_⟩` and prove the remaining obligations. Establish `hv : (fun i => inclR (F` using `F) (AF F) ((Γi *ᵥ x) i)) = adMat F Γi *ᵥ (fun i => inclR (F := F) (AF F) (x i)) :=`. Use function extensionality and compare the values at `fun i => RingHom.map_mulVec _ _ _ i`. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, ← hv, ha, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, ← hmul Γ C₀, ← hmul C D, hΓ]`. Establish `hle : unipRad σ J C₀ ≤ (unipRad σ J C).comap c.toMonoidHom`.
+
+Unfold `unipRad`. Rewrite using `[Subgroup.closure_le]`. Introduce `g hg`. Conclude with `Subgroup.subset_closure (key g hg)`. Conclude with `hle hg`.
+-/
 theorem conj_mem_unipRad : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (n r : ℕ) (J : Matrix (Fin n) (Fin n) E) (γ : GRat σ J) (C₀ C : Matrix (Fin n) (Fin r) E)
     (D D' : Matrix (Fin r) (Fin r) E), D * D' = 1 → D' * D = 1 → (γ.1 : Matrix (Fin n) (Fin n) E) * C₀ = C * D →

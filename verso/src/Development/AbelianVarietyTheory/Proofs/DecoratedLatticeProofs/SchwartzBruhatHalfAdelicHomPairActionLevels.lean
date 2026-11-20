@@ -17,6 +17,17 @@ namespace GlobalTheory.SBMove
 
 open Formalism.L2.Col in
 
+/- English proof (translation)
+Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Introduce `x`. Simplify using `only [inv_one, Units.val_one, Matrix.one_mulVec, IsEmpty.forall_iff, iff_true]`. Rewrite using `[Subsingleton.elim x 0]`. Conclude with `zero_mem _`.
+
+Use `haveI : NeZero n := ⟨hn.ne'⟩`. Establish `e : Formalism.L2.Col.stdLat E n = baseLb E n ∅`. Use extensionality with `x`. Rewrite using `[rll_mem_baseLb]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h`. Establish `h' : ∀ j, ∃ r : 𝓞 E, algebraMap (𝓞 E) E r = x j` using `fun j => (Submodule.mem_one).1 ((Submodule.mem_pi).1 h j (Set.mem_univ _))`. Use `choose r hr using h'`. Conclude with `⟨r, hr, fun P hP => absurd hP (Finset.notMem_empty _)⟩`. Introduce and unpack `⟨r, hr, -⟩`.
+
+Conclude with `(Submodule.mem_pi).2 fun j _ => (Submodule.mem_one).2 ⟨r j, hr j⟩`. Introduce `x`. Rewrite using `[e, rll_mem_hat_base, inv_one, Units.val_one, Matrix.one_mulVec]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, -⟩ i`.
+
+Conclude with `hy i ▸ (y i).2`. Conclude with `fun h => ⟨fun i => ⟨x i, h i⟩, fun _ => rfl, fun P hP => absurd hP (Finset.notMem_empty _)⟩`.
+-/
 theorem isFrame_one_std {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E]
     (n : ℕ) : Formalism.L2.DIV.IsFrame (F := F) 1 (Formalism.L2.Col.stdLat E n) := by
   rcases Nat.eq_zero_or_pos n with rfl | hn
@@ -42,11 +53,19 @@ theorem isFrame_one_std {F E : Type} [Field F] [NumberField F] [Field E] [Number
       exact hy i ▸ (y i).2
     · exact fun h => ⟨fun i => ⟨x i, h i⟩, fun _ => rfl, fun P hP => absurd hP (Finset.notMem_empty _)⟩
 
+/- English proof (translation)
+Simplify using `only [Matrix.mulVec, dotProduct]`. Conclude with `R.sum_mem fun j _ => R.mul_mem (hM i j) (hv j)`.
+-/
 theorem mulVec_mem_sub {A : Type} [CommRing A] {n : ℕ} (R : Subring A) (M : Matrix (Fin n) (Fin n) A)
     (hM : ∀ a b, M a b ∈ R) (v : Fin n → A) (hv : ∀ i, v i ∈ R) (i : Fin n) : (M *ᵥ v) i ∈ R := by
   simp only [Matrix.mulVec, dotProduct]
   exact R.sum_mem fun j _ => R.mul_mem (hM i j) (hv j)
 
+/- English proof (translation)
+Introduce `x`. Rewrite using `[hL x, inv_one, Units.val_one, Matrix.one_mulVec]`. Prove the components needed by the constructor for the conclusion. Introduce `hx i`. Conclude with `mulVec_mem_sub _ _ h2 x hx i`.
+
+Introduce `hx i`. Establish `e : x = (β : Matrix (Fin n) (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) *ᵥ (((β⁻¹ : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) : Matrix (Fin n) (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) *ᵥ x)`. Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]`. Rewrite using `[e]`. Conclude with `mulVec_mem_sub _ _ h1 _ hx i`.
+-/
 theorem isFrame_of_int {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ}
     {L : Submodule (𝓞 E) (Fin n → E)} (hL : Formalism.L2.DIV.IsFrame (F := F) 1 L)
     (β : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F))
@@ -63,6 +82,15 @@ theorem isFrame_of_int {F E : Type} [Field F] [NumberField F] [Field E] [NumberF
       rw [Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]
     rw [e]; exact mulVec_mem_sub _ _ h1 _ hx i
 
+/- English proof (translation)
+Establish `hmem : (Pi.single (Fin.cast hn b) 1 : Fin n → D.host.E) ∈ Formalism.L2.Col.stdLat D.host.E n`. Use `(Submodule.mem_pi).2 fun j _ => ?_` and prove the remaining obligations. Distinguish the cases in `hj : j = Fin.cast hn b`. Substitute `hj` using the available equality. Simplify using `only [Pi.single_eq_same]`.
+
+Conclude with `Submodule.one_le.1 le_rfl`. Rewrite using `[Pi.single_eq_of_ne hj]`. Conclude with `zero_mem _`. Establish `h'` using `(h _).1 hmem (Fin.cast hn a)`. Establish `e : (fun j => eToEAf D ((Pi.single (Fin.cast hn b) 1 : Fin n → D.host.E) j)) = Pi.single (Fin.cast hn b) 1`.
+
+Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = Fin.cast hn b`. Substitute `hj` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_eq_of_ne hj]`.
+
+Rewrite `h'` using `[e, Matrix.mulVec_single_one]`. Simplify `h'` using `[finM, Matrix.reindex_apply]`.
+-/
 theorem int_of_moves {D : D7} (V : HSp D) {n : ℕ} (hn : V.rank = n) (g : GA D V)
     (h : Moves V hn g (Formalism.L2.Col.stdLat D.host.E n)) (a b : Fin V.rank) :
     toEAf D (Formalism.L2.Theta.mt V g⁻¹ a b) ∈ Formalism.L2.Herm.intAf D.host.F D.host.E := by
@@ -85,35 +113,58 @@ end GlobalTheory.SBMove
 
 namespace GlobalTheory.SBMove
 
+/- English proof (translation)
+Simplify using `only [Formalism.L2.Theta.mt]`. Rewrite using `[← Units.val_mul, ← map_mul, mul_inv_cancel, map_one, Units.val_one]`.
+-/
 theorem mt_mul_inv_eq {D : D7} (V : HSp D) (g : GA D V) :
     Formalism.L2.Theta.mt V g * Formalism.L2.Theta.mt V g⁻¹ = 1 := by
   simp only [Formalism.L2.Theta.mt]
   rw [← Units.val_mul, ← map_mul, mul_inv_cancel, map_one, Units.val_one]
 
+/- English proof (translation)
+Simplify using `only [actO, inv_inv]`. Simplify using `only [← Matrix.mul_assoc]`. Rewrite using `[mt_mul_inv_eq, Matrix.one_mul, Matrix.mul_assoc, mt_mul_inv_eq, Matrix.mul_one]`.
+-/
 theorem actO_actO_inv {D : D7} {S T : HSp D} (g : GA D S) (h : GA D T) (x : WO S T) :
     actO S T g h (actO S T g⁻¹ h⁻¹ x) = x := by
   simp only [actO, inv_inv]
   simp only [← Matrix.mul_assoc]
   rw [mt_mul_inv_eq, Matrix.one_mul, Matrix.mul_assoc, mt_mul_inv_eq, Matrix.mul_one]
 
+/- English proof (translation)
+Simplify using `only [actO, Matrix.mul_add, Matrix.add_mul]`.
+-/
 theorem actO_add' {D : D7} {S T : HSp D} (g : GA D S) (h : GA D T) (x y : WO S T) :
     actO S T g h (x + y) = actO S T g h x + actO S T g h y := by
   simp only [actO, Matrix.mul_add, Matrix.add_mul]
 
+/- English proof (translation)
+Simplify using `only [actO, Matrix.mul_zero, Matrix.zero_mul]`.
+-/
 theorem actO_zero' {D : D7} {S T : HSp D} (g : GA D S) (h : GA D T) :
     actO S T g h 0 = 0 := by
   simp only [actO, Matrix.mul_zero, Matrix.zero_mul]
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => rw [zero_nsmul, zero_nsmul, actO_zero']`. Consider the case `succ k ih => rw [succ_nsmul, succ_nsmul, actO_add', ih]`.
+-/
 theorem actO_nsmul {D : D7} {S T : HSp D} (g : GA D S) (h : GA D T) (y : WO S T) (k : ℕ) :
     actO S T g h (k • y) = k • actO S T g h y := by
   induction k with
   | zero => rw [zero_nsmul, zero_nsmul, actO_zero']
   | succ k ih => rw [succ_nsmul, succ_nsmul, actO_add', ih]
 
+/- English proof (translation)
+Rewrite using `[actO_add', actO_nsmul]`.
+-/
 theorem actO_add_nsmul {D : D7} {S T : HSp D} (g : GA D S) (h : GA D T) (x y : WO S T) (k : ℕ) :
     actO S T g h (x + k • y) = actO S T g h x + k • actO S T g h y := by
   rw [actO_add', actO_nsmul]
 
+/- English proof (translation)
+Establish `hx' : x = e • x`. Use extensionality with `a b`. Conclude with `(hx a b).symm`. Establish `key : actO S T g h x = e • actO S T g h x` using `by conv_lhs => rw [hx']`. Simplify using `only [actO, Matrix.mul_smul, Matrix.smul_mul]`.
+
+Introduce `i j`. Use `congrFun (congrFun key i) j` as an intermediate fact. Rewrite `this` using `[Matrix.smul_apply, smul_eq_mul]`. Conclude with `this.symm`.
+-/
 theorem actO_isHalf {D : D7} {S T : HSp D} (g : GA D S) (h : GA D T) (e : AE D) {x : WO S T} (hx : IsHalf e x) :
     IsHalf e (actO S T g h x) := by
   have hx' : x = e • x := by
@@ -126,6 +177,13 @@ theorem actO_isHalf {D : D7} {S T : HSp D} (g : GA D S) (h : GA D T) (e : AE D) 
   rw [Matrix.smul_apply, smul_eq_mul] at this
   exact this.symm
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `only [SetLike.mem_coe, intVec, Set.mem_setOf_eq]`. Rewrite using `[Formalism.L2.Col.stdLat, Submodule.mem_pi]`. Use `forall_congr' fun k => ?_` and prove the remaining obligations. Simplify using `only [Set.mem_univ, true_implies, Submodule.mem_one]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy⟩`. Rewrite using `[← hy]`. Conclude with `y.isIntegral_coe`. Introduce `hk`.
+
+Conclude with `⟨⟨x k, hk⟩, rfl⟩`.
+-/
 theorem coe_stdLat {D : D7} (n : ℕ) :
     ((Formalism.L2.Col.stdLat D.host.E n : Submodule (𝓞 D.host.E) (Fin n → D.host.E)) : Set (Fin n → D.host.E)) = intVec D n := by
   ext x
@@ -137,6 +195,13 @@ theorem coe_stdLat {D : D7} (n : ℕ) :
   · rintro ⟨y, hy⟩; rw [← hy]; exact y.isIntegral_coe
   · intro hk; exact ⟨⟨x k, hk⟩, rfl⟩
 
+/- English proof (translation)
+Establish `e : stdHom S T = latO S T ((Formalism.L2.Col.stdLat D.host.E S.rank : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)) : Set (Fin S.rank → D.host.E)) ((Formalism.L2.Col.stdLat D.host.E T.rank : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)) : Set (Fin T.rank → D.host.E)) fun _ => …`. Rewrite using `[coe_stdLat, coe_stdLat]`. Rewrite `hx`, the goal using `[e]`. Establish `fr : ∀ (V : HSp D) {k : ℕ} (hk : V.rank = k) (b : GA D V), Moves V hk b (Formalism.L2.Col.stdLat D.host.E k) → Moves V hk b⁻¹ (Formalism.L2.Col.stdLat D.host.E k) → Formalism.L2.DIV.IsFrame (Matrix.GeneralLinearGroup.map (toEAf D) (matHom V b)) (Formalism.L2.Col.stdLat D.host.E V …`. Introduce `V k hk b hb hb'`.
+
+Use `isFrame_of_int (isFrame_one_std _) _ (fun a c => ?_) (fun a c => ?_)` and prove the remaining obligations. Use `int_of_moves V hk b⁻¹ hb' a c` as an intermediate fact. Rewrite `this` using `[inv_inv]`. Conclude with `this`. Rewrite using `[← map_inv, ← map_inv]`.
+
+Conclude with `int_of_moves V hk b hb a c`. Conclude with `GlobalTheory.AdelicLatMove.actO_mem_latO S T g h _ _ _ _ 1 (Matrix.GeneralLinearGroup.map (toEAf D) (matHom S g)) 1 (Matrix.GeneralLinearGroup.map (toEAf D) (matHom T h)) (isFrame_one_std _) (fr S hn g hg hg') (isFrame_one_std _) (fr T hm h hh hh') (by rw [Units.val_one, Matrix.m …`.
+-/
 theorem actO_mem_stdHom {D : D7} (S T : HSp D) {n m : ℕ} (hn : S.rank = n) (hm : T.rank = m) (g : GA D S) (h : GA D T)
     (hg : Moves S hn g (Formalism.L2.Col.stdLat D.host.E n)) (hg' : Moves S hn g⁻¹ (Formalism.L2.Col.stdLat D.host.E n))
     (hh : Moves T hm h (Formalism.L2.Col.stdLat D.host.E m)) (hh' : Moves T hm h⁻¹ (Formalism.L2.Col.stdLat D.host.E m))
@@ -163,6 +228,15 @@ end GlobalTheory.SBMove
 
 open GlobalTheory.SBMove in
 
+/- English proof (translation)
+Introduce `B X I hI hP l Z u a Ch A hA i hi α γ Φ hΦ κ κ'`. Establish `hi0 : i ≤ B.R.m` using `Nat.le_of_succ_le hi`. Establish `hU : ∀ j (hj : j ≤ B.R.m) (β : Ch j) g, g ∈ A.U j β → Moves _ (rankN (I.rec7 l Z) j hj) g (Formalism.L2.Col.stdLat B.fields.E _)` using `fun j hj β g hg => GlobalTheory.AdForm.levels_keep_stdLat I hI hP l Z u a Ch A hA j hj β g hg`. Establish `hG : ∀ x ∈ stdHom _ _, actO _ _ κ.1⁻¹ κ'.1⁻¹ x ∈ stdHom _ _` using `fun x hx => actO_mem_stdHom _ _ _ _ _ _ (hU i hi0 α _ (inv_mem κ.2)) (hU i hi0 α _ (by rw [inv_inv]; exact κ.2)) (hU (i + 1) hi γ _ (inv_mem κ'.2)) (hU (i + 1) hi γ _ (by rw [inv_inv]; exact κ'.2)) hx`. Establish `hH : ∀ x ∈ stdHom _ _, actO _ _ κ.1 κ'.1 x ∈ stdHom _ _` using `fun x hx => actO_mem_stdHom _ _ _ _ _ _ (hU i hi0 α _ κ.2) (hU i hi0 α _ (inv_mem κ.2)) (hU (i + 1) hi γ _ κ'.2) (hU (i + 1) hi γ _ (inv_mem κ'.2)) hx`.
+
+Take `⟨hsupp, k, hk, hinv, hden⟩` from `hΦ`. Use `⟨fun t ht => ?_, k, hk, fun v hv hve t => ?_, fun t ht => ?_⟩` and prove the remaining obligations. Rewrite using `[← actO_actO_inv κ.1 κ'.1 t]`. Conclude with `actO_isHalf _ _ _ (hsupp _ ht)`. Use `show Φ (actO _ _ κ.1⁻¹ κ'.1⁻¹ (t + k • v)) = Φ (actO _ _ κ.1⁻¹ κ'.1⁻¹ t)`.
+
+Rewrite using `[actO_add_nsmul]`. Conclude with `hinv _ (hG v hv) (actO_isHalf _ _ _ hve) _`. Establish `h1` using `hden _ ht`. Rewrite `h1` using `[← actO_nsmul]`. Rewrite using `[← actO_actO_inv κ.1 κ'.1 (k • t)]`.
+
+Conclude with `hH _ h1`.
+-/
 theorem GlobalTheory.SBMove.isSBHalf_actO_lev : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)), ∀ (u : B.Word) (a : I.ι) (Ch : ℕ → Type) (A : TwDat I l Z u a Ch), A.Is → ∀ (i : ℕ) (hi : i + 1 ≤ B.R.m) α γ, ∀ Φ : WO ((I.rec7 l Z).sp.X i) ((I.rec7 l Z).sp.X (i + 1)) → ℂ, IsSBHalf A.e (stdHom _ _) Φ → ∀ (κ : A.U i α) (κ' : A.U (i + 1) γ), IsSBHalf A.e (stdHom _ _) (fun z => Φ (actO _ _ κ.1⁻¹ κ'.1⁻¹ z)) := by
   intro B X I hI hP l Z u a Ch A hA i hi α γ Φ hΦ κ κ'
   have hi0 : i ≤ B.R.m := Nat.le_of_succ_le hi

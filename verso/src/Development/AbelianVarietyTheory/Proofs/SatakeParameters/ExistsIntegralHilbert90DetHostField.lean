@@ -18,8 +18,14 @@ def evP (P : HeightOneSpectrum (𝓞 E)) : FiniteAdeleRing (𝓞 E) E →+* P.ad
   map_zero' := rfl
   map_add' _ _ := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem localComponent_apply₂ (P : HeightOneSpectrum (𝓞 E)) (z : FiniteAdeleRing (𝓞 E) E) : evP P z = z P := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem localComponent_algebraMap (P : HeightOneSpectrum (𝓞 E)) (x : E) :
     evP P (algebraMap E (FiniteAdeleRing (𝓞 E) E) x) = algebraMap E (P.adicCompletion E) x := rfl
 

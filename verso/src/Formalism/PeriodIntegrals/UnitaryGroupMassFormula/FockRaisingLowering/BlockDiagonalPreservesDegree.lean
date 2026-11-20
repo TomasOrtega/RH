@@ -9,6 +9,9 @@ namespace FockRL
 
 variable {p q r s : ℕ}
 
+/- English proof (translation)
+Use `first`. Consider the case `(simp only [FockH1Action.omAct, LinearMap.coeFn_sum, Finset.sum_apply, LinearMap.smulRight_apply, Matrix.entryLinearMap_apply]; done)`. Consider the case `(simp only [FockH1Action.omAct, LinearMap.sum_apply, LinearMap.smulRight_apply, Matrix.entryLinearMap_apply]; done)`.
+-/
 theorem omAct_eq_sum (M : Matrix (FockH1Action.Ln p q r s) (FockH1Action.Ln p q r s) ℂ) :
     FockH1Action.omAct p q r s M = ∑ l, ∑ l', M l l' • FockH1Action.omE l l' := by
   first
@@ -17,11 +20,17 @@ theorem omAct_eq_sum (M : Matrix (FockH1Action.Ln p q r s) (FockH1Action.Ln p q 
   | (simp only [FockH1Action.omAct, LinearMap.sum_apply,
       LinearMap.smulRight_apply, Matrix.entryLinearMap_apply]; done)
 
+/- English proof (translation)
+Simplify using `only [FockH1Action.omE]`. Apply the tactic sequence `split_ifs <;> rfl`.
+-/
 theorem omE_apply (l l' : FockH1Action.Ln p q r s) (P : FockH1Action.Pol p q r s) :
     FockH1Action.omE l l' P = FockH1Action.raiB l (FockH1Action.lowB l' P) + if l = l' then (1 / 2 : ℂ) • P else 0 := by
   simp only [FockH1Action.omE]
   split_ifs <;> rfl
 
+/- English proof (translation)
+Use `first`. Consider the case `(rw [FockH1Action.raiB, if_pos h]; done)`. Consider the case `(rw [FockH1Action.raiB, if_pos h]; rfl)`.
+-/
 private theorem raiB_apply_of_linePos_eq_true {l : FockH1Action.Ln p q r s}
     (h : FockH1Action.linePos l = true) (P : FockH1Action.Pol p q r s) :
     FockH1Action.raiB l P = X l * P := by
@@ -29,6 +38,9 @@ private theorem raiB_apply_of_linePos_eq_true {l : FockH1Action.Ln p q r s}
   | (rw [FockH1Action.raiB, if_pos h]; done)
   | (rw [FockH1Action.raiB, if_pos h]; rfl)
 
+/- English proof (translation)
+Establish `h' : ¬ (FockH1Action.linePos l = true)` using `by simp [h]`. Use `first`. Consider the case `(rw [FockH1Action.lowB, if_neg h']; done)`. Consider the case `(rw [FockH1Action.lowB, if_neg h']; rfl)`.
+-/
 private theorem lowB_apply_of_linePos_eq_false {l : FockH1Action.Ln p q r s}
     (h : FockH1Action.linePos l = false) (P : FockH1Action.Pol p q r s) :
     FockH1Action.lowB l P = X l * P := by
@@ -37,6 +49,9 @@ private theorem lowB_apply_of_linePos_eq_false {l : FockH1Action.Ln p q r s}
   | (rw [FockH1Action.lowB, if_neg h']; done)
   | (rw [FockH1Action.lowB, if_neg h']; rfl)
 
+/- English proof (translation)
+Establish `hne : l ≠ l'`. Introduce and unpack `rfl`. Simplify the hypotheses and the goal together. Rewrite using `[omE_apply, if_neg hne, add_zero, lowB_apply_of_linePos_eq_false h2, raiB_apply_of_linePos_eq_true h1]`.
+-/
 theorem omE_pos_neg {l l' : FockH1Action.Ln p q r s} (h1 : FockH1Action.linePos l = true)
     (h2 : FockH1Action.linePos l' = false) (P : FockH1Action.Pol p q r s) :
     FockH1Action.omE l l' P = X l * (X l' * P) := by
@@ -45,6 +60,9 @@ theorem omE_pos_neg {l l' : FockH1Action.Ln p q r s} (h1 : FockH1Action.linePos 
     simp_all
   rw [omE_apply, if_neg hne, add_zero, lowB_apply_of_linePos_eq_false h2, raiB_apply_of_linePos_eq_true h1]
 
+/- English proof (translation)
+Establish `h' : ¬ (FockH1Action.linePos l = true)` using `by simp [h]`. Use `first`. Consider the case `(rw [FockH1Action.raiB, if_neg h']; done)`. Consider the case `(rw [FockH1Action.raiB, if_neg h']; rfl)`.
+-/
 private theorem raiB_apply_of_linePos_eq_false {l : FockH1Action.Ln p q r s}
     (h : FockH1Action.linePos l = false) (P : FockH1Action.Pol p q r s) :
     FockH1Action.raiB l P = -(pderiv l P) := by
@@ -53,6 +71,9 @@ private theorem raiB_apply_of_linePos_eq_false {l : FockH1Action.Ln p q r s}
   | (rw [FockH1Action.raiB, if_neg h']; done)
   | (rw [FockH1Action.raiB, if_neg h']; rfl)
 
+/- English proof (translation)
+Use `first`. Consider the case `(rw [FockH1Action.lowB, if_pos h]; done)`. Consider the case `(rw [FockH1Action.lowB, if_pos h]; rfl)`.
+-/
 private theorem lowB_apply_of_linePos_eq_true {l : FockH1Action.Ln p q r s}
     (h : FockH1Action.linePos l = true) (P : FockH1Action.Pol p q r s) :
     FockH1Action.lowB l P = pderiv l P := by
@@ -60,6 +81,9 @@ private theorem lowB_apply_of_linePos_eq_true {l : FockH1Action.Ln p q r s}
   | (rw [FockH1Action.lowB, if_pos h]; done)
   | (rw [FockH1Action.lowB, if_pos h]; rfl)
 
+/- English proof (translation)
+Establish `hne : l ≠ l'`. Introduce and unpack `rfl`. Simplify the hypotheses and the goal together. Rewrite using `[omE_apply, if_neg hne, add_zero, lowB_apply_of_linePos_eq_true h2, raiB_apply_of_linePos_eq_false h1]`.
+-/
 theorem omE_neg_pos {l l' : FockH1Action.Ln p q r s} (h1 : FockH1Action.linePos l = false)
     (h2 : FockH1Action.linePos l' = true) (P : FockH1Action.Pol p q r s) :
     FockH1Action.omE l l' P = -(pderiv l (pderiv l' P)) := by
@@ -68,17 +92,35 @@ theorem omE_neg_pos {l l' : FockH1Action.Ln p q r s} (h1 : FockH1Action.linePos 
     simp_all
   rw [omE_apply, if_neg hne, add_zero, lowB_apply_of_linePos_eq_true h2, raiB_apply_of_linePos_eq_false h1]
 
+/- English proof (translation)
+Conclude with `mem_homogeneousSubmodule d P`.
+-/
 private theorem mem_homog_iff_isHomogeneous' {σ : Type} {d : ℕ} {P : MvPolynomial σ ℂ} :
     P ∈ FockH1Action.homog σ d ↔ P.IsHomogeneous d := by
   exact mem_homogeneousSubmodule d P
 
+/- English proof (translation)
+Conclude with `isHomogeneous_X ℂ l`.
+-/
 private theorem isHomogeneous_X_complex {σ : Type} (l : σ) : (X l : MvPolynomial σ ℂ).IsHomogeneous 1 := by
   exact isHomogeneous_X ℂ l
 
+/- English proof (translation)
+Conclude with `⟨_, fun c => isHomogeneous_monomial c rfl⟩`.
+-/
 private theorem exists_forall_isHomogeneous_monomial {σ : Type} (u : σ →₀ ℕ) :
     ∃ k : ℕ, ∀ c : ℂ, (monomial u c).IsHomogeneous k := by
   exact ⟨_, fun c => isHomogeneous_monomial c rfl⟩
 
+/- English proof (translation)
+Establish `h' : P ∈ homogeneousSubmodule σ ℂ m` using `mem_homog_iff_isHomogeneous'.mpr h`. Use `first`. Consider the case `exact homogeneousComponent_of_mem h'`. Consider the case `exact homogeneousComponent_homogeneous_polynomial m n P h'`. Consider the case `(by_cases hmn : m = n`.
+
+Substitute `hmn` using the available equality. Rewrite using `[if_pos rfl]`. Use extensionality with `d`. Rewrite using `[coeff_homogeneousComponent]`. Use `split_ifs with hd`.
+
+Both sides reduce to the same expression. Conclude with `(h.coeff_eq_zero hd).symm`. Rewrite using `[if_neg hmn]`. Use extensionality with `d`. Rewrite using `[coeff_homogeneousComponent, coeff_zero]`.
+
+Use `split_ifs with hd`. Conclude with `h.coeff_eq_zero (by omega)`. Use the proof step `rfl)`.
+-/
 private theorem homogeneousComponent_eq_ite_of_isHomogeneous {σ : Type} {m n : ℕ} {P : MvPolynomial σ ℂ}
     (h : P.IsHomogeneous m) : homogeneousComponent n P = if m = n then P else 0 := by
   have h' : P ∈ homogeneousSubmodule σ ℂ m := mem_homog_iff_isHomogeneous'.mpr h
@@ -100,6 +142,17 @@ private theorem homogeneousComponent_eq_ite_of_isHomogeneous {σ : Type} {m n : 
        · exact h.coeff_eq_zero (by omega)
        · rfl)
 
+/- English proof (translation)
+Distinguish the cases in `hu : u l = 0`. Take `⟨k, hk⟩` from `exists_forall_isHomogeneous_monomial u`. Establish `h0 : pderiv l (monomial u a) = 0`. Rewrite using `[pderiv_monomial, hu]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[h0, map_zero, homogeneousComponent_eq_ite_of_isHomogeneous (hk a)]`. Use `split_ifs`. Conclude with `h0.symm`. Conclude with `(map_zero _).symm`. Take `⟨k, hk⟩` from `exists_forall_isHomogeneous_monomial (u - Finsupp.single l 1)`.
+
+Establish `huv : u - Finsupp.single l 1 + Finsupp.single l 1 = u`. Conclude with `tsub_add_cancel_of_le (Finsupp.single_le_iff.mpr (Nat.one_le_iff_ne_zero.mpr hu))`. Establish `hmul : monomial u a = monomial (u - Finsupp.single l 1) a * X l`. Rewrite using `[X, monomial_mul, huv, mul_one]`. Establish `hu' : (monomial u a).IsHomogeneous (k + 1)`.
+
+Rewrite using `[hmul]`. Conclude with `(hk a).mul (isHomogeneous_X_complex l)`. Rewrite using `[pderiv_monomial, homogeneousComponent_eq_ite_of_isHomogeneous (hk _), homogeneousComponent_eq_ite_of_isHomogeneous hu']`. Distinguish the cases in `hke : k = e`. Substitute `hke` using the available equality.
+
+Rewrite using `[if_pos rfl, if_pos rfl, pderiv_monomial]`. Rewrite using `[if_neg hke, if_neg (show ¬ (k + 1 = e + 1) by omega), map_zero]`.
+-/
 private theorem homogeneousComponent_pderiv_monomial {σ : Type} (l : σ) (e : ℕ) (u : σ →₀ ℕ) (a : ℂ) :
     homogeneousComponent e (pderiv l (monomial u a)) =
       pderiv l (homogeneousComponent (e + 1) (monomial u a)) := by
@@ -126,12 +179,18 @@ private theorem homogeneousComponent_pderiv_monomial {σ : Type} (l : σ) (e : �
       rw [if_pos rfl, if_pos rfl, pderiv_monomial]
     · rw [if_neg hke, if_neg (show ¬ (k + 1 = e + 1) by omega), map_zero]
 
+/- English proof (translation)
+Rewrite using `[P.as_sum]`. Simplify using `only [map_sum]`. Conclude with `Finset.sum_congr rfl fun u _ => homogeneousComponent_pderiv_monomial l e u _`.
+-/
 private theorem homogeneousComponent_pderiv {σ : Type} (l : σ) (e : ℕ) (P : MvPolynomial σ ℂ) :
     homogeneousComponent e (pderiv l P) = pderiv l (homogeneousComponent (e + 1) P) := by
   rw [P.as_sum]
   simp only [map_sum]
   exact Finset.sum_congr rfl fun u _ => homogeneousComponent_pderiv_monomial l e u _
 
+/- English proof (translation)
+Rewrite using `[← sum_homogeneousComponent (pderiv l P)]`. Use `Finset.sum_eq_zero fun e _ => ?_` and prove the remaining obligations. Rewrite using `[homogeneousComponent_pderiv, homogeneousComponent_eq_ite_of_isHomogeneous h, if_neg (show ¬ (0 = e + 1) by omega), map_zero]`.
+-/
 theorem pderiv_homog_zero {σ : Type} (l : σ) {P : MvPolynomial σ ℂ} (h : P.IsHomogeneous 0) :
     pderiv l P = 0 := by
   rw [← sum_homogeneousComponent (pderiv l P)]
@@ -139,9 +198,15 @@ theorem pderiv_homog_zero {σ : Type} (l : σ) {P : MvPolynomial σ ℂ} (h : P.
   rw [homogeneousComponent_pderiv, homogeneousComponent_eq_ite_of_isHomogeneous h,
     if_neg (show ¬ (0 = e + 1) by omega), map_zero]
 
+/- English proof (translation)
+The claim follows from `mem_homog_iff_isHomogeneous'.mp (Submodule.zero_mem _)`.
+-/
 private theorem isHomogeneous_zero_complex {σ : Type} (n : ℕ) : (0 : MvPolynomial σ ℂ).IsHomogeneous n :=
   mem_homog_iff_isHomogeneous'.mp (Submodule.zero_mem _)
 
+/- English proof (translation)
+Establish `hP : homogeneousComponent (n + 1) P = P`. Rewrite using `[homogeneousComponent_eq_ite_of_isHomogeneous h, if_pos rfl]`. Rewrite using `[← hP, ← homogeneousComponent_pderiv]`. Conclude with `homogeneousComponent_isHomogeneous _ _`.
+-/
 private theorem isHomogeneous_pderiv_of_isHomogeneous_succ {σ : Type} (l : σ) {n : ℕ} {P : MvPolynomial σ ℂ}
     (h : P.IsHomogeneous (n + 1)) : (pderiv l P).IsHomogeneous n := by
   have hP : homogeneousComponent (n + 1) P = P := by
@@ -149,6 +214,11 @@ private theorem isHomogeneous_pderiv_of_isHomogeneous_succ {σ : Type} (l : σ) 
   rw [← hP, ← homogeneousComponent_pderiv]
   exact homogeneousComponent_isHomogeneous _ _
 
+/- English proof (translation)
+Consider the cases of `d with`. Consider the case `zero`. Rewrite using `[pderiv_homog_zero l' h, mul_zero]`. Conclude with `isHomogeneous_zero_complex 0`. Consider the case `succ n`.
+
+Establish `h'` using `(isHomogeneous_X_complex l).mul (isHomogeneous_pderiv_of_isHomogeneous_succ l' h)`. Rewrite `h'` using `[Nat.add_comm 1 n]`. Then use the resulting hypothesis.
+-/
 theorem X_mul_pderiv_homog {σ : Type} (l l' : σ) {d : ℕ} {P : MvPolynomial σ ℂ}
     (h : P.IsHomogeneous d) : (X l * pderiv l' P).IsHomogeneous d := by
   cases d with
@@ -159,12 +229,26 @@ theorem X_mul_pderiv_homog {σ : Type} (l l' : σ) {d : ℕ} {P : MvPolynomial �
     have h' := (isHomogeneous_X_complex l).mul (isHomogeneous_pderiv_of_isHomogeneous_succ l' h)
     rwa [Nat.add_comm 1 n] at h'
 
+/- English proof (translation)
+Apply `isHomogeneous_pderiv_of_isHomogeneous_succ` to reduce the goal to its premises. Establish `h'` using `(isHomogeneous_X_complex l').mul h`. Rewrite `h'` using `[Nat.add_comm 1 d]`. Then use the resulting hypothesis.
+-/
 theorem pderiv_X_mul_homog {σ : Type} (l l' : σ) {d : ℕ} {P : MvPolynomial σ ℂ}
     (h : P.IsHomogeneous d) : (pderiv l (X l' * P)).IsHomogeneous d := by
   apply isHomogeneous_pderiv_of_isHomogeneous_succ
   have h' := (isHomogeneous_X_complex l').mul h
   rwa [Nat.add_comm 1 d] at h'
 
+/- English proof (translation)
+Introduce `p q r s M hM d P hP`. Establish `hP' : P.IsHomogeneous d` using `mem_homog_iff_isHomogeneous'.mp hP`. Rewrite using `[omAct_eq_sum]`. Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply]`. Use `Submodule.sum_mem _ fun l _ => Submodule.sum_mem _ fun l' _ => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `h0 : M l l' = 0`. Rewrite using `[h0, zero_smul]`. Conclude with `Submodule.zero_mem _`. Use `Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Establish `hll` using `hM l l' h0`.
+
+Rewrite using `[omE_apply]`. Use `Submodule.add_mem _ ?_ ?_` and prove the remaining obligations. Consider the cases of `h1 : FockH1Action.linePos l`. Establish `h2 : FockH1Action.linePos l' = false`. Conclude with `hll.symm.trans h1`.
+
+Rewrite using `[raiB_apply_of_linePos_eq_false h1, lowB_apply_of_linePos_eq_false h2]`. Conclude with `neg_mem (mem_homog_iff_isHomogeneous'.mpr (pderiv_X_mul_homog l l' hP'))`. Establish `h2 : FockH1Action.linePos l' = true`. Conclude with `hll.symm.trans h1`. Rewrite using `[raiB_apply_of_linePos_eq_true h1, lowB_apply_of_linePos_eq_true h2]`.
+
+Conclude with `mem_homog_iff_isHomogeneous'.mpr (X_mul_pderiv_homog l l' hP')`. Use `split_ifs`. Conclude with `Submodule.smul_mem _ _ hP`. Conclude with `Submodule.zero_mem _`.
+-/
 theorem blockDiagonalPreservesDegree : KCStep := by
   intro p q r s M hM d P hP
   have hP' : P.IsHomogeneous d := mem_homog_iff_isHomogeneous'.mp hP
@@ -199,6 +283,13 @@ def Lop (M : Matrix (FockH1Action.Ln p q r s) (FockH1Action.Ln p q r s) ℂ) : M
   ∑ l, ∑ l', if FockH1Action.linePos l = false ∧ FockH1Action.linePos l' = true then M l l' • FockH1Action.omE l l'
     else 0
 
+/- English proof (translation)
+Rewrite using `[omAct_eq_sum]`. Unfold `Rop Lop`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_add_distrib]`.
+
+Use `Finset.sum_congr rfl fun l' _ => ?_` and prove the remaining obligations. Distinguish the cases in `h0 : M l l' = 0`. Simplify using `[h0]`. Establish `hd` using `hM l l' h0`. Apply the tactic sequence `cases h1 : FockH1Action.linePos l <;>`.
+
+Apply the tactic sequence `cases h2 : FockH1Action.linePos l' <;> simp_all`.
+-/
 theorem omAct_eq_Rop_add_Lop (M : Matrix (FockH1Action.Ln p q r s) (FockH1Action.Ln p q r s) ℂ)
     (hM : OppSign M) : FockH1Action.omAct p q r s M = Rop M + Lop M := by
   rw [omAct_eq_sum]
@@ -213,6 +304,11 @@ theorem omAct_eq_Rop_add_Lop (M : Matrix (FockH1Action.Ln p q r s) (FockH1Action
     cases h1 : FockH1Action.linePos l <;>
       cases h2 : FockH1Action.linePos l' <;> simp_all
 
+/- English proof (translation)
+Unfold `Rop`. Simplify using `only [LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun l' _ => ?_` and prove the remaining obligations. Use `split_ifs with h`. Rewrite using `[LinearMap.smul_apply, omE_pos_neg h.1 h.2]`.
+
+Both sides reduce to the same expression.
+-/
 theorem Rop_apply (M : Matrix (FockH1Action.Ln p q r s) (FockH1Action.Ln p q r s) ℂ) (P : FockH1Action.Pol p q r s) :
     Rop M P = ∑ l, ∑ l', if FockH1Action.linePos l = true ∧ FockH1Action.linePos l' = false then
       M l l' • (X l * (X l' * P)) else 0 := by
@@ -223,6 +319,11 @@ theorem Rop_apply (M : Matrix (FockH1Action.Ln p q r s) (FockH1Action.Ln p q r s
   · rw [LinearMap.smul_apply, omE_pos_neg h.1 h.2]
   · rfl
 
+/- English proof (translation)
+Unfold `Lop`. Simplify using `only [LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun l' _ => ?_` and prove the remaining obligations. Use `split_ifs with h`. Rewrite using `[LinearMap.smul_apply, omE_neg_pos h.1 h.2]`.
+
+Both sides reduce to the same expression.
+-/
 theorem Lop_apply (M : Matrix (FockH1Action.Ln p q r s) (FockH1Action.Ln p q r s) ℂ) (P : FockH1Action.Pol p q r s) :
     Lop M P = ∑ l, ∑ l', if FockH1Action.linePos l = false ∧ FockH1Action.linePos l' = true then
       M l l' • (-(pderiv l (pderiv l' P))) else 0 := by
@@ -233,6 +334,11 @@ theorem Lop_apply (M : Matrix (FockH1Action.Ln p q r s) (FockH1Action.Ln p q r s
   · rw [LinearMap.smul_apply, omE_neg_pos h.1 h.2]
   · rfl
 
+/- English proof (translation)
+Rewrite using `[Rop_apply]`. Use `Submodule.sum_mem _ fun l _ => Submodule.sum_mem _ fun l' _ => ?_` and prove the remaining obligations. Use `split_ifs`. Use `Submodule.smul_mem _ _ (mem_homog_iff_isHomogeneous'.mpr ?_)` and prove the remaining obligations. Establish `h` using `(isHomogeneous_X_complex l).mul ((isHomogeneous_X_complex l').mul (mem_homog_iff_isHomogeneous'.mp hP))`.
+
+Rewrite `h` using `[show 1 + (1 + d) = d + 2 by omega]`. Then use the resulting hypothesis. Conclude with `Submodule.zero_mem _`.
+-/
 theorem Rop_raise (M : Matrix (FockH1Action.Ln p q r s) (FockH1Action.Ln p q r s) ℂ) (d : ℕ)
     (P : FockH1Action.Pol p q r s) (hP : P ∈ FockH1Action.homog (FockH1Action.Ln p q r s) d) :
     Rop M P ∈ FockH1Action.homog (FockH1Action.Ln p q r s) (d + 2) := by
@@ -244,10 +350,18 @@ theorem Rop_raise (M : Matrix (FockH1Action.Ln p q r s) (FockH1Action.Ln p q r s
     rwa [show 1 + (1 + d) = d + 2 by omega] at h
   · exact Submodule.zero_mem _
 
+/- English proof (translation)
+The claim follows from `homogeneousComponent_pderiv l e P`.
+-/
 theorem hc_pderiv {σ : Type} (l : σ) (e : ℕ) (P : MvPolynomial σ ℂ) :
     homogeneousComponent e (pderiv l P) = pderiv l (homogeneousComponent (e + 1) P) :=
   homogeneousComponent_pderiv l e P
 
+/- English proof (translation)
+Rewrite using `[show e + 2 = e + 1 + 1 from rfl, Lop_apply, Lop_apply, map_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun l' _ => ?_` and prove the remaining obligations. Use `split_ifs`.
+
+Rewrite using `[map_smul, map_neg, hc_pderiv, hc_pderiv]`. Conclude with `map_zero _`.
+-/
 theorem Lop_shift (M : Matrix (FockH1Action.Ln p q r s) (FockH1Action.Ln p q r s) ℂ) (e : ℕ)
     (P : FockH1Action.Pol p q r s) :
     homogeneousComponent e (Lop M P) = Lop M (homogeneousComponent (e + 2) P) := by
@@ -259,6 +373,9 @@ theorem Lop_shift (M : Matrix (FockH1Action.Ln p q r s) (FockH1Action.Ln p q r s
   · rw [map_smul, map_neg, hc_pderiv, hc_pderiv]
   · exact map_zero _
 
+/- English proof (translation)
+Introduce `p q r s M hM P`. Establish `h` using `hS _ (Rop M) (Lop M) (Rop_raise M) (Lop_shift M) P`. Rewrite using `[omAct_eq_Rop_add_Lop M hM, h.1, h.2, LinearMap.add_apply]`.
+-/
 theorem pcStep_of (hS : PMSplit) : PCStep := by
   intro p q r s M hM P
   have h := hS _ (Rop M) (Lop M) (Rop_raise M)
@@ -269,36 +386,57 @@ section Inner
 
 variable {σ : Type}
 
+/- English proof (translation)
+Simplify using `[FockH1Action.fockInner]`.
+-/
 theorem fi_zero_left (Q : MvPolynomial σ ℂ) : FockH1Action.fockInner 0 Q = 0 := by
   simp [FockH1Action.fockInner]
 
+/- English proof (translation)
+Simplify using `[FockH1Action.fockInner]`.
+-/
 theorem fi_zero_right (P : MvPolynomial σ ℂ) : FockH1Action.fockInner P 0 = 0 := by
   simp [FockH1Action.fockInner]
 
+/- English proof (translation)
+Establish `h` using `hL σ c P 0 Q`. Simplify using `only [add_zero, fi_zero_left] at h`. Conclude with `h`.
+-/
 theorem fi_smul_left (hL : FockLinL) (c : ℂ) (P Q : MvPolynomial σ ℂ) :
     FockH1Action.fockInner (c • P) Q = (starRingEnd ℂ) c * FockH1Action.fockInner P Q := by
   have h := hL σ c P 0 Q
   simp only [add_zero, fi_zero_left] at h
   exact h
 
+/- English proof (translation)
+Establish `h` using `hL σ 1 P₁ P₂ Q`. Simplify using `only [one_smul, map_one, one_mul] at h`. Conclude with `h`.
+-/
 theorem fi_add_left (hL : FockLinL) (P₁ P₂ Q : MvPolynomial σ ℂ) :
     FockH1Action.fockInner (P₁ + P₂) Q = FockH1Action.fockInner P₁ Q + FockH1Action.fockInner P₂ Q := by
   have h := hL σ 1 P₁ P₂ Q
   simp only [one_smul, map_one, one_mul] at h
   exact h
 
+/- English proof (translation)
+Establish `h` using `hR σ c P Q 0`. Simplify using `only [add_zero, fi_zero_right] at h`. Conclude with `h`.
+-/
 theorem fi_smul_right (hR : FockLinR) (c : ℂ) (P Q : MvPolynomial σ ℂ) :
     FockH1Action.fockInner P (c • Q) = c * FockH1Action.fockInner P Q := by
   have h := hR σ c P Q 0
   simp only [add_zero, fi_zero_right] at h
   exact h
 
+/- English proof (translation)
+Establish `h` using `hR σ 1 P Q₁ Q₂`. Simplify using `only [one_smul, one_mul] at h`. Conclude with `h`.
+-/
 theorem fi_add_right (hR : FockLinR) (P Q₁ Q₂ : MvPolynomial σ ℂ) :
     FockH1Action.fockInner P (Q₁ + Q₂) = FockH1Action.fockInner P Q₁ + FockH1Action.fockInner P Q₂ := by
   have h := hR σ 1 P Q₁ Q₂
   simp only [one_smul, one_mul] at h
   exact h
 
+/- English proof (translation)
+Proceed by induction on `t using Finset.induction_on`. Simplify using `only [Finset.sum_empty, fi_zero_left]`. Name the introduced variables `a t ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, fi_add_left hL, ih]`.
+-/
 theorem fi_sum_left {ι : Type} (hL : FockLinL) (t : Finset ι) (f : ι → MvPolynomial σ ℂ)
     (Q : MvPolynomial σ ℂ) :
     FockH1Action.fockInner (∑ i ∈ t, f i) Q = ∑ i ∈ t, FockH1Action.fockInner (f i) Q := by
@@ -308,12 +446,18 @@ theorem fi_sum_left {ι : Type} (hL : FockLinL) (t : Finset ι) (f : ι → MvPo
   · rename_i a t ha ih
     rw [Finset.sum_insert ha, Finset.sum_insert ha, fi_add_left hL, ih]
 
+/- English proof (translation)
+Establish `h` using `fi_smul_right hR (-1 : ℂ) P Q`. Rewrite `h` using `[neg_one_smul, neg_one_mul]`. Conclude with `h`.
+-/
 private theorem fockInner_neg_right' (hR : FockLinR) (P Q : MvPolynomial σ ℂ) :
     FockH1Action.fockInner P (-Q) = -FockH1Action.fockInner P Q := by
   have h := fi_smul_right hR (-1 : ℂ) P Q
   rw [neg_one_smul, neg_one_mul] at h
   exact h
 
+/- English proof (translation)
+Proceed by induction on `t using Finset.induction_on`. Simplify using `only [Finset.sum_empty, fi_zero_right]`. Name the introduced variables `a t ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, fi_add_right hR, ih]`.
+-/
 theorem fi_sum_right {ι : Type} (hR : FockLinR) (t : Finset ι) (f : ι → MvPolynomial σ ℂ)
     (P : MvPolynomial σ ℂ) :
     FockH1Action.fockInner P (∑ i ∈ t, f i) = ∑ i ∈ t, FockH1Action.fockInner P (f i) := by
@@ -325,6 +469,11 @@ theorem fi_sum_right {ι : Type} (hR : FockLinR) (t : Finset ι) (f : ι → MvP
 
 end Inner
 
+/- English proof (translation)
+Rewrite using `[Rop_apply, fi_sum_left hL]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[fi_sum_left hL]`. Use `Finset.sum_congr rfl fun l' _ => ?_` and prove the remaining obligations. Use `split_ifs`.
+
+Rewrite using `[fi_smul_left hL, hX _ l, hX _ l']`. Conclude with `fi_zero_left Q`.
+-/
 theorem fi_Rop (hL : FockLinL) (hX : FockXAdj)
     (M : Matrix (FockH1Action.Ln p q r s) (FockH1Action.Ln p q r s) ℂ) (P Q : FockH1Action.Pol p q r s) :
     FockH1Action.fockInner (Rop M P) Q = ∑ l, ∑ l', if FockH1Action.linePos l = true ∧ FockH1Action.linePos l' = false
@@ -337,6 +486,11 @@ theorem fi_Rop (hL : FockLinL) (hX : FockXAdj)
   · rw [fi_smul_left hL, hX _ l, hX _ l']
   · exact fi_zero_left Q
 
+/- English proof (translation)
+Rewrite using `[Lop_apply, fi_sum_right hR]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[fi_sum_right hR]`. Use `Finset.sum_congr rfl fun l' _ => ?_` and prove the remaining obligations. Use `split_ifs`.
+
+Rewrite using `[fi_smul_right hR, fockInner_neg_right' hR, mul_neg]`. Conclude with `fi_zero_right P`.
+-/
 theorem fi_Lop (hR : FockLinR)
     (M : Matrix (FockH1Action.Ln p q r s) (FockH1Action.Ln p q r s) ℂ) (P Q : FockH1Action.Pol p q r s) :
     FockH1Action.fockInner P (Lop M Q) = ∑ l, ∑ l', if FockH1Action.linePos l = false ∧ FockH1Action.linePos l' = true
@@ -349,6 +503,11 @@ theorem fi_Lop (hR : FockLinR)
   · rw [fi_smul_right hR, fockInner_neg_right' hR, mul_neg]
   · exact fi_zero_right P
 
+/- English proof (translation)
+Introduce `p q r s M M' hM hM' hA P Q`. Establish `e1` using `(hS _ (Rop M) (Lop M) (Rop_raise M) (Lop_shift M) P).1`. Establish `e2` using `(hS _ (Rop M') (Lop M') (Rop_raise M') (Lop_shift M') Q).2`. Rewrite using `[omAct_eq_Rop_add_Lop M hM, omAct_eq_Rop_add_Lop M' hM', e1, e2, fi_Rop hL hX, fi_Lop hR]`. Simplify using `only [← Finset.sum_neg_distrib]`.
+
+Use `conv_rhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun l' _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : FockH1Action.linePos l = true ∧ FockH1Action.linePos l' = false`. Rewrite using `[if_pos h, if_pos ⟨h.2, h.1⟩, hA l l' h.1 h.2, neg_neg]`. Rewrite using `[if_neg h, if_neg (fun h' => h ⟨h'.2, h'.1⟩), neg_zero]`.
+-/
 theorem adjStep_of (hS : PMSplit) (hL : FockLinL) (hR : FockLinR) (hX : FockXAdj) : AdjStep := by
   intro p q r s M M' hM hM' hA P Q
   have e1 := (hS _ (Rop M) (Lop M) (Rop_raise M)

@@ -6,6 +6,15 @@ open scoped TensorProduct
 
 namespace GlobalTheory.TensHead
 
+/- English proof (translation)
+Use `set R := Algebra.adjoin ℂ A with hR`. Use `haveI : IsSimpleModule R V := by`. Rewrite using `[isSimpleModule_iff]`. Use `{ eq_bot_or_eq_top := fun N => ?_ }` and prove the remaining obligations. Establish `h` using `hA (N.restrictScalars ℂ) (fun g hg x hx => N.smul_mem (⟨g, Algebra.subset_adjoin hg⟩ : R) hx)`.
+
+Break down `h with h | h` into its components or cases. Use `left`. Conclude with `(Submodule.restrictScalars_eq_bot_iff ℂ R V).1 h`. Use `right`. Conclude with `(Submodule.restrictScalars_eq_top_iff ℂ R V).1 h`.
+
+Establish `hsc : ∀ φ : Module.End R V, ∃ c : ℂ, ∀ x, φ x = c • x`. Introduce `φ`. Take `⟨c, hc⟩` from `GlobalTheory.dixmier_schur_of_rank_le_aleph0 V A (fun g => g.1) (LinearMap.restrictScalars ℂ φ) inferInstance hrank (fun N hN => hA N (fun g hg x hx => hN ⟨g, hg⟩ x hx)) (fun g => LinearMap.ext fun x => φ.map_smul (⟨g.1, Algebra.subset_adjoin g.2⟩ : R) x)`. Conclude with `⟨c, fun x => LinearMap.congr_fun hc x⟩`. Set `f : Module.End (Module.End R V) V` to `{ toFun := p map_add' := p.map_add map_smul' := fun φ x => by`.
+
+Take `⟨c, hc⟩` from `hsc φ`. Express the relevant statement in the definitionally equal form `p (φ x) = φ (p x)`. Rewrite using `[hc, hc, map_smul] }`. Take `⟨r, hr⟩` from `jacobson_density f s`. Conclude with `⟨r.1, r.2, hr⟩`.
+-/
 theorem exists_adjoin_agree {V : Type} [AddCommGroup V] [Module ℂ V] [Nontrivial V]
     (A : Set (Module.End ℂ V)) (hrank : Module.rank ℂ V ≤ Cardinal.aleph0)
     (hA : ∀ U : Submodule ℂ V, Stab A U → U = ⊥ ∨ U = ⊤) (p : Module.End ℂ V) (s : Finset V) :
@@ -37,6 +46,37 @@ theorem exists_adjoin_agree {V : Type} [AddCommGroup V] [Module ℂ V] [Nontrivi
   obtain ⟨r, hr⟩ := jacobson_density f s
   exact ⟨r.1, r.2, hr⟩
 
+/- English proof (translation)
+Introduce `S₀ S₁ _ _ _ _ A B hrank hA hB U hU`. Break down `eq_or_ne U ⊥ with h0 | h0` into its components or cases. Conclude with `Or.inl h0`. Use `right`. Take `⟨t, htU, ht0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot h0`.
+
+Establish `hadj : ∀ r ∈ Algebra.adjoin ℂ A, ∀ z ∈ U, TensorProduct.map r LinearMap.id z ∈ U`. Introduce `r hr`. Proceed by induction on `hr using Algebra.adjoin_induction with`. Consider the case `mem g hg => exact hU _ (Or.inl ⟨g, hg, rfl⟩)`. Consider the case `algebraMap c`.
+
+Introduce `z hz`. Rewrite using `[Algebra.algebraMap_eq_smul_one, TensorProduct.map_smul_left, LinearMap.smul_apply, Module.End.one_eq_id, TensorProduct.map_id]`. Conclude with `U.smul_mem c hz`. Consider the case `add f g _ _ hf hg`. Introduce `z hz`.
+
+Rewrite using `[TensorProduct.map_add_left]`. Conclude with `U.add_mem (hf z hz) (hg z hz)`. Consider the case `mul f g _ _ hf hg`. Introduce `z hz`. Establish `: TensorProduct.map (f * g) (LinearMap.id : S₁ →ₗ[ℂ] S₁) = (TensorProduct.map f LinearMap.id) ∘ₗ (TensorProduct.map g LinearMap.id)`.
+
+Rewrite using `[← TensorProduct.map_comp]`. Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `hf _ (hg z hz)`. Set `b` to `Module.Basis.ofVectorSpace ℂ S₀`.
+
+Use `set c := TensorProduct.equivFinsuppOfBasisLeft b t with hc`. Establish `ht : t = c.sum fun i n => b i ⊗ₜ[ℂ] n`. Rewrite using `[hc, ← TensorProduct.equivFinsuppOfBasisLeft_symm_apply, LinearEquiv.symm_apply_apply]`. Establish `hc0 : c ≠ 0`. Introduce `h`.
+
+Apply `ht0` to reduce the goal to its premises. Rewrite using `[ht, h, Finsupp.sum_zero_index]`. Take `⟨i, hi⟩` from `Finsupp.support_nonempty_iff.2 hc0`. Establish `hbi : b i ≠ 0` using `b.ne_zero i`. Use `haveI : Nontrivial S₀ := ⟨⟨b i, 0, hbi⟩⟩`.
+
+Take `⟨r, hr, hrp⟩` from `exists_adjoin_agree A hrank hA ((b.coord i).smulRight (b i)) (c.support.image b)`. Establish `h1 : b i ⊗ₜ[ℂ] c i ∈ U`. Establish `h2` using `hadj r hr t htU`. Establish `h3 : TensorProduct.map r LinearMap.id t = b i ⊗ₜ[ℂ] c i` using `by conv_lhs => rw [ht]`. Rewrite using `[Finsupp.sum, map_sum, Finset.sum_eq_single i]`.
+
+Rewrite using `[TensorProduct.map_tmul, ← hrp _ (Finset.mem_image_of_mem b hi)]`. Simplify using the standard rewrite rules. Introduce `j hj hji`. Rewrite using `[TensorProduct.map_tmul, ← hrp _ (Finset.mem_image_of_mem b hj)]`. Simplify using `[Finsupp.single_apply, hji]`.
+
+Introduce `h`. Conclude with `absurd hi h`. Rewrite `h2` using `[h3]`. Then use the resulting hypothesis. Establish `h4 : U.comap (TensorProduct.mk ℂ S₀ S₁ (b i)) = ⊤`. Use `(hB _ ?_).resolve_left ?_` and prove the remaining obligations.
+
+Introduce `g hg y hy`. Conclude with `hU _ (Or.inr ⟨g, hg, rfl⟩) _ hy`. Introduce `h`. Establish `: c i ∈ U.comap (TensorProduct.mk ℂ S₀ S₁ (b i))` using `h1`. Rewrite `this` using `[h, Submodule.mem_bot]`.
+
+Conclude with `Finsupp.mem_support_iff.1 hi this`. Establish `h5 : ∀ y, U.comap ((TensorProduct.mk ℂ S₀ S₁).flip y) = ⊤`. Introduce `y`. Use `(hA _ ?_).resolve_left ?_` and prove the remaining obligations. Introduce `g hg x hx`.
+
+Conclude with `hU _ (Or.inl ⟨g, hg, rfl⟩) _ hx`. Introduce `h`. Establish `h6 : y ∈ U.comap (TensorProduct.mk ℂ S₀ S₁ (b i))` using `by rw [h4]; trivial`. Establish `: b i ∈ U.comap ((TensorProduct.mk ℂ S₀ S₁).flip y)` using `h6`. Rewrite `this` using `[h, Submodule.mem_bot]`.
+
+Conclude with `hbi this`. Rewrite using `[eq_top_iff]`. Introduce and unpack `z -`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => exact U.zero_mem`.
+
+Consider the case `tmul x y`. Establish `: x ∈ U.comap ((TensorProduct.mk ℂ S₀ S₁).flip y)` using `by rw [h5]; trivial`. Conclude with `this`. Consider the case `add x y hx hy => exact U.add_mem hx hy`.
+-/
 theorem simple_tensor :
     ∀ {S₀ S₁ : Type} [AddCommGroup S₀] [Module ℂ S₀] [AddCommGroup S₁] [Module ℂ S₁]
     (A : Set (Module.End ℂ S₀)) (B : Set (Module.End ℂ S₁)),

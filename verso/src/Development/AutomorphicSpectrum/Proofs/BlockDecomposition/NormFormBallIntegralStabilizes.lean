@@ -11,6 +11,21 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.WeilSB
 
+/- English proof (translation)
+Introduce `H F _ _ _ _ _ _ _ χ hχ hχ1 E _ _ _ _ _ _ _ hfr hcont σ hσ η hη a`. Use `haveI : Fact (Module.finrank F E = 2) := ⟨hfr⟩`. Use `haveI : FiniteDimensional F E := Module.finite_of_finrank_pos (by omega)`. Use `haveI : ValuativeExtension F E := valuativeExtension_of_continuous hcont`. Use `haveI : Algebra.IsSeparable F E := inferInstance`.
+
+Establish `hN` using `continuous_norm_of (F := F) (E := E) hcont`. Establish `hlc` using `isLocallyConstant_char hχ hχ1`. Establish `hf : IsLocallyConstant (fun z : E => (χ (-(Algebra.norm F z) / a) : ℂ))` using `hlc.comp_continuous (hN.neg.div_const _)`. Establish `h0 : (χ (-(Algebra.norm F (0 : E)) / a) : ℂ) = 1`. Simplify using `[Algebra.norm_zero]`.
+
+Establish `hU : {z : E | (χ (-(Algebra.norm F z) / a) : ℂ) = 1} ∈ nhds (0 : E)` using `(hf.isOpen_fiber 1).mem_nhds h0`. Take `⟨m, -, hm⟩` from `hasBasis_nhds_zero_valBall.mem_iff.1 hU`. Establish `hclopen : IsClopen (valBall E m : Set E)` using `⟨isClosed_valBall m, isOpen_valBall m⟩`. Establish `hΦ₀ : (valBall E m : Set E).indicator (fun _ => (1 : ℂ)) ∈ SBE E` using `⟨by`. Establish `h : IsLocallyConstant (⇑(LocallyConstant.charFn ℂ hclopen))` using `LocallyConstant.isLocallyConstant _`.
+
+Rewrite `h` using `[LocallyConstant.coe_charFn]`. Conclude with `h,`. Use the proof step `HasCompactSupport.intro (isCompact_valBall m) fun x hx => Set.indicator_of_notMem hx _⟩`. Take `⟨n₀, hn₀⟩` from `H F χ hχ hχ1 E hfr hcont σ hσ η hη a _ hΦ₀`. Establish `hJ : ∫ z, (χ (-(Algebra.norm F z) / a) : ℂ) * (valBall E m : Set E).indicator (fun _ => (1 : ℂ)) z ∂muE E χ = (((muE E χ).real (valBall E m : Set E) : ℝ) : ℂ)`.
+
+Establish `e : (fun z => (χ (-(Algebra.norm F z) / a) : ℂ) * (valBall E m : Set E).indicator (fun _ => (1 : ℂ)) z) = (valBall E m : Set E).indicator (fun _ => (1 : ℂ))`. Use function extensionality and compare the values at `z`. Distinguish the cases in `hz : z ∈ (valBall E m : Set E)`. Rewrite using `[Set.indicator_of_mem hz, mul_one]`. Conclude with `hm hz`.
+
+Rewrite using `[Set.indicator_of_notMem hz, mul_zero]`. Rewrite using `[e, integral_indicator hclopen.isOpen.measurableSet]`. Simplify using the standard rewrite rules. Establish `hV : (muE E χ).real (valBall E m : Set E) ≠ 0` using `ENNReal.toReal_ne_zero.mpr ⟨(hclopen.isOpen.measure_pos _ ⟨0, zero_mem _⟩).ne', (isCompact_valBall m).measure_lt_top.ne⟩`. Establish `hV' : (((muE E χ).real (valBall E m : Set E) : ℝ) : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 hV`.
+
+Use `⟨(∫ u, (χ ((a : F) * Algebra.norm F u) : ℂ) * FTE E χ σ ((valBall E m : Set E).indicator (fun _ => (1 : ℂ))) u ∂muE E χ) / (((muE E χ).real (valBall E m : Set E) : ℝ) : ℂ), n₀, fun n hn => ?_⟩` and prove the remaining obligations. Rewrite using `[hn₀ n hn, hJ, mul_div_cancel_right₀ _ hV']`.
+-/
 theorem ballIntegral_stable :
     (ForEF fun F _ _ _ _ _ _ _ E _ _ _ _ _ _ _ χ σ η => ∀ (a : Fˣ), ∀ Φ ∈ SBE E, ∃ n₀ : ℤ, ∀ n ≤ n₀,
       ∫ u, (χ ((a : F) * Algebra.norm F u) : ℂ) * FTE E χ σ Φ u ∂muE E χ =

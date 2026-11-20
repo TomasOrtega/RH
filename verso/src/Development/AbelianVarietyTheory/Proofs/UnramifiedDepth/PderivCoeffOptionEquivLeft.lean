@@ -32,21 +32,38 @@ def jetS (γ : Fin dd → PowerSeries C) (F : PS C (m + 1) dd) : PowerSeries (PS
 def jet (γ : Fin dd → PowerSeries C) (n : ℕ) (F : PS C (m + 1) dd) : PS C m dd :=
   PowerSeries.coeff n (jetS γ F)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cvPt_zero (γ : Fin dd → PowerSeries C) (i : Fin dd) : cvPt γ m (0, i) = inT _ (γ i) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cvPt_succ (γ : Fin dd → PowerSeries C) (j : Fin m) (i : Fin dd) :
     cvPt γ m (j.succ, i) = X (some (j, i)) := rfl
 
+/- English proof (translation)
+Rewrite using `[inT, rename_eq_subst]`. Both sides reduce to the same expression.
+-/
 theorem inT_eq_rename (σ : Type) (f : PowerSeries C) :
     inT σ f = rename (fun _ : Unit => (none : Option σ)) f := by
   rw [inT, rename_eq_subst]
   rfl
 
+/- English proof (translation)
+Rewrite using `[inT_eq_rename, constantCoeff_rename]`. Conclude with `hf`.
+-/
 theorem constantCoeff_inT (σ : Type) {f : PowerSeries C} (hf : PowerSeries.constantCoeff f = 0) :
     constantCoeff (inT σ f) = 0 := by
   rw [inT_eq_rename, constantCoeff_rename]
   exact hf
 
+/- English proof (translation)
+Take `⟨j, i⟩` from `p`. Proceed by induction on `j using Fin.cases with`. Consider the case `zero => rw [cvPt_zero]`. Conclude with `constantCoeff_inT _ (hγ i)`. Consider the case `succ j => rw [cvPt_succ]`.
+
+Conclude with `constantCoeff_X _`.
+-/
 theorem cvPt_const {γ : Fin dd → PowerSeries C} (hγ : ∀ i, PowerSeries.constantCoeff (γ i) = 0)
     (p : Fin (m + 1) × Fin dd) : constantCoeff (cvPt γ m p) = 0 := by
   obtain ⟨j, i⟩ := p
@@ -54,6 +71,15 @@ theorem cvPt_const {γ : Fin dd → PowerSeries C} (hγ : ∀ i, PowerSeries.con
   | zero => rw [cvPt_zero]; exact constantCoeff_inT _ (hγ i)
   | succ j => rw [cvPt_succ]; exact constantCoeff_X _
 
+/- English proof (translation)
+Use extensionality with `n μ`. Rewrite using `[coeff_coeff_optionEquivLeft, PowerSeries.coeff_map, coeff_C, inT_eq_rename]`. Use `split_ifs with hμ`. Substitute `hμ` using the available equality. Set `e : Unit ↪ Option σ` to `⟨fun _ => none, fun _ _ _ => rfl⟩`.
+
+Establish `he : Finsupp.optionElim n (0 : σ →₀ ℕ) = Finsupp.embDomain e (Finsupp.single () n)`. Rewrite using `[Finsupp.embDomain_single, Finsupp.optionElim_zero]`. Both sides reduce to the same expression. Rewrite using `[he]`. Conclude with `coeff_embDomain_rename e f (Finsupp.single () n)`.
+
+Apply `coeff_rename_eq_zero` to reduce the goal to its premises. Introduce and unpack `⟨y, hy⟩`. Apply `hμ` to reduce the goal to its premises. Use extensionality with `s`. Establish `h1 : Finsupp.mapDomain (fun _ : Unit => (none : Option σ)) y (some s) = 0` using `Finsupp.mapDomain_of_notMem_range _ _ (by simp)`.
+
+Rewrite `h1` using `[hy, Finsupp.optionElim_apply_some]`. Simplify using `using h1`.
+-/
 theorem optionEquivLeft_inT (σ : Type) (f : PowerSeries C) :
     optionEquivLeft σ C (inT σ f) = PowerSeries.map (MvPowerSeries.C : C →+* MvPowerSeries σ C) f := by
   classical
@@ -76,6 +102,15 @@ theorem optionEquivLeft_inT (σ : Type) (f : PowerSeries C) :
     rw [hy, Finsupp.optionElim_apply_some] at h1
     simpa using h1
 
+/- English proof (translation)
+Use extensionality with `n μ`. Rewrite using `[coeff_coeff_optionEquivLeft, PowerSeries.coeff_C]`. Use `split_ifs with hn`. Substitute `hn` using the available equality. Establish `he : Finsupp.optionElim 0 μ = Finsupp.embDomain (Function.Embedding.some) μ`.
+
+Use extensionality with `t`. Apply the tactic sequence `cases t <;> simp`. Rewrite using `[he]`. Conclude with `coeff_embDomain_rename _ f μ`. Rewrite using `[map_zero]`.
+
+Apply `coeff_rename_eq_zero` to reduce the goal to its premises. Introduce and unpack `⟨y, hy⟩`. Apply `hn` to reduce the goal to its premises. Establish `h1 : Finsupp.mapDomain (some : σ → Option σ) y none = 0` using `Finsupp.mapDomain_of_notMem_range _ _ (by simp)`. Rewrite `h1` using `[hy, Finsupp.optionElim_apply_none]`.
+
+Conclude with `h1`.
+-/
 theorem optionEquivLeft_rename_some {σ : Type} [Finite σ] (f : MvPowerSeries σ C) :
     optionEquivLeft σ C (rename (some : σ → Option σ) f) = PowerSeries.C f := by
   ext n μ
@@ -96,6 +131,11 @@ theorem optionEquivLeft_rename_some {σ : Type} [Finite σ] (f : MvPowerSeries �
     rw [hy, Finsupp.optionElim_apply_none] at h1
     exact h1
 
+/- English proof (translation)
+Use extensionality with `μ`. Rewrite using `[coeff_pderiv, coeff_coeff_optionEquivLeft, coeff_coeff_optionEquivLeft, coeff_pderiv]`. Establish `key : Finsupp.optionElim n (μ + Finsupp.single s 1) = Finsupp.optionElim n μ + Finsupp.single (some s) 1`. Use extensionality with `t`. Apply the tactic sequence `cases t <;> simp [Finsupp.single_apply]`.
+
+Rewrite using `[key, Finsupp.optionElim_apply_some]`.
+-/
 theorem pderiv_coeff_optionEquivLeft {σ : Type} (f : MvPowerSeries (Option σ) C) (n : ℕ) (s : σ) :
     pderiv C s (PowerSeries.coeff n (optionEquivLeft σ C f)) =
       PowerSeries.coeff n (optionEquivLeft σ C (pderiv C (some s) f)) := by

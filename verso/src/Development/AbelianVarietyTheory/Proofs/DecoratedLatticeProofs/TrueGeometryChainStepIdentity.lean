@@ -18,12 +18,20 @@ noncomputable section
 namespace GlobalTheory.Fam
 namespace VolMid
 
+/- English proof (translation)
+Repeatedly rewrite using `[Subgroup.index, ← Nat.card_pi]`. Use `Nat.card_congr ((Quotient.congrRight (fun x y ↦ ?_)).trans (Setoid.piQuotientEquiv _).symm)` and prove the remaining obligations. Rewrite using `[QuotientGroup.leftRel_pi]`.
+-/
 theorem index_pi_univ' {ι : Type} [Fintype ι] {G : ι → Type} [∀ i, Group (G i)] (H : ∀ i, Subgroup (G i)) :
     (Subgroup.pi Set.univ H).index = ∏ i, (H i).index := by
   simp_rw [Subgroup.index, ← Nat.card_pi]
   refine Nat.card_congr ((Quotient.congrRight (fun x y ↦ ?_)).trans (Setoid.piQuotientEquiv _).symm)
   rw [QuotientGroup.leftRel_pi]
 
+/- English proof (translation)
+Set `ψ : Up →* ((i : ι) → K i)` to `{ toFun := fun g i => ⟨φ g.1 i, hK g.1 g.2 i⟩ map_one' := by ext i; simp map_mul' := by intro x y; ext i; simp }`. Establish `hψ : Function.Surjective ψ`. Introduce `x`. Take `⟨g, hg, e⟩` from `hs (fun i => (x i).1) (fun i => (x i).2)`. Conclude with `⟨⟨g, hg⟩, by ext i; simp [ψ, e]⟩`.
+
+Establish `e : U.subgroupOf Up = (Subgroup.pi Set.univ fun i => (H i).subgroupOf (K i)).comap ψ`. Use extensionality with `g`. Simplify using `[Subgroup.mem_subgroupOf, Subgroup.mem_pi, hU, g.2, ψ]`. Rewrite using `[Subgroup.relIndex, e, Subgroup.index_comap_of_surjective _ hψ, index_pi_univ']`. Both sides reduce to the same expression.
+-/
 theorem relIndex_eq_prod_of_pi {ι : Type} [Fintype ι] {G : Type} [Group G] {M : ι → Type} [∀ i, Group (M i)]
     (φ : G →* ((i : ι) → M i)) (Up U : Subgroup G) (K H : ∀ i, Subgroup (M i))
     (hK : ∀ g ∈ Up, ∀ i, φ g i ∈ K i) (hs : ∀ x : (i : ι) → M i, (∀ i, x i ∈ K i) → ∃ g ∈ Up, φ g = x)
@@ -46,6 +54,19 @@ end VolMid
 
 open VolMid
 
+/- English proof (translation)
+Introduce `B X I l Z L hT Gi Gl Kc Yd cX ex W hW u a ha haT j hj`. Take `⟨Up, hUpf, hUpc, hK⟩` from `GlobalTheory.T.true_geometry_step_value W hW u a ha haT j hj`. Establish `step : ∀ t (J : QJ a t), J.Reads → ∀ α : J.Ch j, (GlobalTheory.SeeSaw.volLev (a.g.x j).vol (J.A.U j (J.ι j α)) : ℂ) * J.wt j α = (GlobalTheory.SeeSaw.volLev (a.g.x j).vol Up : ℂ) ∧ J.wt j α ≠ 0 ∧ GlobalTheory.SeeSaw.volLev (a.g.x j).vol (J.A.U j (J.ι j α)) ≠ 0`. Introduce `t J hJ α`. Take `⟨H, φ, hH, hφK, hφs, hU⟩` from `hK t J hJ α`.
+
+Establish `hidx` using `relIndex_eq_prod_of_pi φ Up (J.A.U j (J.ι j α)) (fun i => KO (J.G i).k _) H hφK hφs hU`. Establish `hreps` using `(GlobalTheory.T.chartLevels_reps_represent_unitaryDoubleCosets I hW.tr.ok hW.tr.pins.some l Z u (W.P.I.tup t) J.Ch₀ J.A hJ.is j (by omega) (J.ι j α)).1`. Establish `hvol` using `GlobalTheory.T.archimedeanLevelVolume_mul_relIndex (I.rec7 l Z) _ (a.g.x j).vol (J.A.U j (J.ι j α)) Up (fun g hg => ((hU g).1 hg).1) hUpf hUpc hreps.opn`. Establish `hwt : J.wt j α = ((J.A.U j (J.ι j α)).relIndex Up : ℂ)`. Rewrite using `[hidx, QJ.wt]`.
+
+Use `push_cast`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[(hH i).2.2.2]`. Conclude with `GlobalTheory.T.inv_haarVolume_toReal_eq_relIndex_integral (J.G i) _ (J.E i) j (H i) (hH i).1 (hH i).2.1 (hH i).2.2.1`. Use `⟨?_, ?_, GlobalTheory.AdForm.PinInhab.volLev_ne_zero hW.tr.ok haT.pinX.inf j _ _ hreps⟩` and prove the remaining obligations.
+
+Rewrite using `[hwt, ← hvol]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hwt, hidx]; push_cast; exact Finset.prod_ne_zero_iff.2 fun i _ => by exact_mod_cast (hH i).2.2.1`. Distinguish the cases in `hex : ∃ t, ∃ J : QJ a t, J.Reads ∧ Nonempty (J.Ch j)`.
+
+Take `⟨t, J, hJ, ⟨α⟩⟩` from `hex`. Use `⟨GlobalTheory.SeeSaw.volLev (a.g.x j).vol Up, ?_, fun t' J' hJ' α' => (step t' J' hJ' α').1⟩` and prove the remaining obligations. Take `⟨h1, h2, h3⟩` from `step t J hJ α`. Rewrite using `[← h1]`. Conclude with `mul_ne_zero (by exact_mod_cast h3) h2`.
+
+Conclude with `⟨1, one_ne_zero, fun t J hJ α => absurd ⟨t, J, hJ, ⟨α⟩⟩ hex⟩`.
+-/
 theorem volLev_mul_wt_mid : ∀ {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} {I : TC B X} {l : I.Laws} {Z : TC.Later B (I.cols l)} {L : SizeData₂ (I.rec7 l Z)} {hT : GatTies (I.rec7 l Z)} {Gi : Formalism.MainNotions.G.Inst (I.rec7 l Z) L} {Gl : Formalism.MainNotions.G.LatInst (I.rec7 l Z)} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX (I.rec7 l Z)} {cX : ExtraC} {ex : Extra (I.rec7 l Z) L hT Gi Gl Kc Yd cX} (W : RealPack ex), AllTrue W → ∀ (u : B.Word) (a : GeoAll W u), a.Is → a.True → ∀ j, j + 2 ≤ B.R.m → ∃ v : ℂ, v ≠ 0 ∧ ∀ t (J : QJ a t), J.Reads → ∀ α, (GlobalTheory.SeeSaw.volLev (a.g.x j).vol (J.A.U j (J.ι j α)) : ℂ) * J.wt j α = v := by
   intro B X I l Z L hT Gi Gl Kc Yd cX ex W hW u a ha haT j hj
   obtain ⟨Up, hUpf, hUpc, hK⟩ := GlobalTheory.T.true_geometry_step_value W hW u a ha haT j hj

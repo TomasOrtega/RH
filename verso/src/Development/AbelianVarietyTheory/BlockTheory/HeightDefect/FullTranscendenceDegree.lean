@@ -65,20 +65,35 @@ def CurveModelExists : Prop :=
     (ka wL wF : WeightFamilies.Wt D j) (G : GlobalFamilyData (XP h j hj) ka wL wF) (S : WeightAlgebra.Scal (recB h.toLawsCore)),
     CurveModelAt h j hj hg G S
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example : XP h j hj = recPlus h j hj := rfl
 
+/- English proof (translation)
+The claim follows from `hT.1`.
+-/
 example {ka wL wF : WeightFamilies.Wt D j} (G : GlobalFamilyData (XP h j hj) ka wL wF) (S : WeightAlgebra.Scal (recB h.toLawsCore)) (a b : ℝ)
     (hT : G.TiedW S a b) : Generates h j hj S.sW G.w := hT.1
 
+/- English proof (translation)
+The claim follows from `mul_nonneg (norm_nonneg _) (pnorm_fac_nonneg _ _ _)`.
+-/
 theorem ptNorm_nonneg (σ : T.Q.c.F →+* ℂ) (u : WeightFamilies.Wt D j) (F : CuspAt h j u) (p : FPt (T.U j σ).X) :
     0 ≤ ptNorm h j σ u F p :=
   mul_nonneg (norm_nonneg _) (pnorm_fac_nonneg _ _ _)
 
+/- English proof (translation)
+The claim follows from `Real.le_sqrt_of_sq_le (Finset.single_le_sum (f := fun i => ptNorm h j σ wL (w i) p ^ 2) (fun _ _ => sq_nonneg _) (Finset.mem_univ i))`.
+-/
 theorem ptNorm_le_l2Norm (σ : T.Q.c.F →+* ℂ) {wL : WeightFamilies.Wt D j} {N : ℕ} (w : Fin N → CuspAt h j wL)
     (p : FPt (T.U j σ).X) (i : Fin N) : ptNorm h j σ wL (w i) p ≤ l2Norm h j σ w p :=
   Real.le_sqrt_of_sq_le
     (Finset.single_le_sum (f := fun i => ptNorm h j σ wL (w i) p ^ 2) (fun _ _ => sq_nonneg _) (Finset.mem_univ i))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example (σ : T.Q.c.F →+* ℂ) (u : WeightFamilies.Wt D j) (F : CuspAt h j u) :
     supE (T.U j σ).X (laU (T.U j σ) (wtA u) u.n) (rdU (T.U j σ) (F.1 : T.R j)) =
       ⨆ p, ENNReal.ofReal (ptNorm h j σ u F p) := rfl

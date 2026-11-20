@@ -3,6 +3,13 @@ open scoped TensorProduct
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `k B _ _ _ hB ⟨φ⟩`. Take `⟨t, ht⟩` from `hB.out`. Set `K : IntermediateField k (SeparableClosure k)` to `IntermediateField.adjoin k (φ '' (t : Set B))`. Establish `hfin : (φ '' (t : Set B)).Finite` using `t.finite_toSet.image φ`. Use `haveI : Finite (φ '' (t : Set B)) := hfin.to_subtype`.
+
+Establish `hfd : FiniteDimensional k K` using `IntermediateField.finiteDimensional_adjoin (fun x _ => (Algebra.IsSeparable.isSeparable k x).isIntegral)`. Establish `hsep : Algebra.IsSeparable k K` using `Algebra.IsSeparable.of_algHom k (SeparableClosure k) K.val`. Establish `hmem : ∀ b, φ b ∈ K.toSubalgebra`. Introduce `b`. Apply `IntermediateField.algebra_adjoin_le_adjoin` to reduce the goal to its premises.
+
+Rewrite using `[← AlgHom.map_adjoin, ht]`. Conclude with `⟨b, trivial, rfl⟩`. Conclude with `⟨K, inferInstance, inferInstance, hfd, hsep, ⟨φ.codRestrict K.toSubalgebra hmem⟩⟩`.
+-/
 theorem exists_finite_separable_point_of_separableClosure_point :
     ∀ (k B : Type) [Field k] [CommRing B] [Algebra k B], Algebra.FiniteType k B →
       Nonempty (B →ₐ[k] SeparableClosure k) →

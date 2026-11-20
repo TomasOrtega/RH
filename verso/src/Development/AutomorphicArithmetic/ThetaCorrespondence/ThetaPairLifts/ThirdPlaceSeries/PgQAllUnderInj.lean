@@ -22,6 +22,15 @@ namespace GlobalTheory.Fam.PlaceSep
 variable {D : D7}
 end GlobalTheory.Fam.PlaceSep
 open GlobalTheory.Fam.PlaceSep in
+/- English proof (translation)
+Introduce `D L hT Gi Gl Kc Yd cX ex W hP PP PP' hPP hPP' hu`. Establish `hL : (_root_.GlobalTheory.Fam.pk_z W).toLevCh.Is W.P.A3.A.μ0` using `hP.bot.hyp.2.2.2.1.lev`. Establish `mixed : ∀ A B : Pl D.host.E, A ∈ (_root_.GlobalTheory.Fam.pk_z W).Pg → _root_.GlobalTheory.Fam.QAllAlt W B → A.under (𝓞 D.host.F) = B.under (𝓞 D.host.F) → False`. Introduce `A B hA hB hAB`. Take `⟨k, hk⟩` from `(hL.Pg A).1 hA`.
+
+Take `⟨t, ht⟩` from `hB`. Take `⟨q, hq, hqB, hne⟩` from `twist_prime (hL.Q_pl t) ht`. Conclude with `not_two_primes_mem B (D.host.g_prime k) hq (hne k).symm (natCast_mem_of_under_eq hAB (g_mem_of_div _ hk)) hqB`. Apply the tactic sequence `rcases hPP with h1 | h1 <;> rcases hPP' with h2 | h2`. Take `⟨k, hk⟩` from `(hL.Pg PP).1 h1`.
+
+Take `⟨k', hk'⟩` from `(hL.Pg PP').1 h2`. Break down `GlobalTheory.GoodPrimes.eq_or_conj_of_under_eq hu with e | e` into its components or cases. Conclude with `e`. Conclude with `absurd (GlobalTheory.GoodPrimes.isConjPl_iff.2 e) (GlobalTheory.ProjLift.not_isConjPl_of_div _ hk' hk)`. Conclude with `(mixed PP PP' h1 h2 hu).elim`.
+
+Conclude with `(mixed PP' PP h2 h1 hu.symm).elim`. Conclude with `hP.sel PP PP' h1 h2 hu`.
+-/
 theorem GlobalTheory.Fam.pg_qAll_under_inj_alt : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} (W : _root_.GlobalTheory.MiS.RealPackAlt ex), _root_.GlobalTheory.Fam.PackageHypotheses W → ∀ PP PP' : Pl D.host.E, (PP ∈ (_root_.GlobalTheory.Fam.pk_z W).Pg ∨ _root_.GlobalTheory.Fam.QAllAlt W PP) → (PP' ∈ (_root_.GlobalTheory.Fam.pk_z W).Pg ∨ _root_.GlobalTheory.Fam.QAllAlt W PP') → PP.under (𝓞 D.host.F) = PP'.under (𝓞 D.host.F) → PP = PP' := by
   intro D L hT Gi Gl Kc Yd cX ex W hP PP PP' hPP hPP' hu
   have hL : (_root_.GlobalTheory.Fam.pk_z W).toLevCh.Is W.P.A3.A.μ0 := hP.bot.hyp.2.2.2.1.lev

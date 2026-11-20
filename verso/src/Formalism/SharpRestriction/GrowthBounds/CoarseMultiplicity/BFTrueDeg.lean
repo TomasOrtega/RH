@@ -11,6 +11,41 @@ section
 
 variable (C0 CE1 CE2 : ℝ) (X : Loc) [NeZero X.m] (j : Fin (numSeg X.TT))
 
+/- English proof (translation)
+Set `ω' : BVar (2 * segS X.TT j + 1) X.m (X.seg C0 CE1 CE2 j).t → ℕ` to `fun v => symLev X.p C0 CE1 CE2 X j v * ω (symVar C0 CE1 CE2 X j v)`. Set `ωL : Fin (2 * segS X.TT j + 1 + 1) → ℕ` to `fun a => ω' (Sum.inl (a, 0))`. Establish `h1 : ∀ a c, ω' (Sum.inl (a, c)) = ωL a`. Introduce `a c`. Simplify using `only [ω', ωL, symLev, symVar]`.
+
+Apply the tactic sequence `split_ifs <;> rw [hc _ c 0]`. Establish `e0 : ∀ i : Fin (segS X.TT j), finPos (2 * segS X.TT j + 1) (2 * (i : ℕ)) = Fin.castSucc (⟨2 * i.val, by omega⟩ : Fin (2 * segS X.TT j + 1))`. Introduce `i`. Use `i.2` as an intermediate fact. Apply `Fin.ext` to reduce the goal to its premises.
+
+Use `show min (2 * i.val) (2 * segS X.TT j + 1) = 2 * i.val`. Use linear arithmetic over natural numbers and integers. Establish `e1 : ∀ i : Fin (segS X.TT j), finPos (2 * segS X.TT j + 1) (2 * (i : ℕ) + 1) = Fin.castSucc (⟨2 * i.val + 1, by omega⟩ : Fin (2 * segS X.TT j + 1))`. Introduce `i`. Use `i.2` as an intermediate fact.
+
+Apply `Fin.ext` to reduce the goal to its premises. Use `show min (2 * i.val + 1) (2 * segS X.TT j + 1) = 2 * i.val + 1`. Use linear arithmetic over natural numbers and integers. Establish `hW : ∀ i : Fin (segS X.TT j), ωL (Fin.castSucc (⟨2 * i.val, by omega⟩ : Fin (2 * segS X.TT j + 1))) = (X.seg C0 CE1 CE2 j).P X.p i * ω ((topOdd X j i, true), Fin.succ 0)`. Introduce `i`.
+
+Simplify using `only [ωL, ω']`. Rewrite using `[symbol_variable_lower_letter, symbol_level_lower_letter]`. Establish `hE : ∀ i : Fin (segS X.TT j), ωL (Fin.castSucc (⟨2 * i.val + 1, by omega⟩ : Fin (2 * segS X.TT j + 1))) = (X.seg C0 CE1 CE2 j).P X.p i * ω ((topOdd X j i, false), Fin.succ 0)`. Introduce `i`. Simplify using `only [ωL, ω']`.
+
+Rewrite using `[sv_E, sl_E]`. Establish `hUU : ωL (Fin.castSucc (⟨2 * segS X.TT j, by omega⟩ : Fin (2 * segS X.TT j + 1))) = ω ((topEnd X j, true), Fin.succ 0)`. Simplify using `only [ωL, ω']`. Rewrite using `[sv_U, sl_U, one_mul]`. Establish `hXi : ωL (Fin.last _) = ω ((topEnd X j, false), Fin.succ 0)`.
+
+Simplify using `only [ωL, ω']`. Rewrite using `[sv_xi, sl_xi, one_mul]`. Establish `hZ : ∀ (l : Fin (X.seg C0 CE1 CE2 j).t) (β : Bool), ω' (Sum.inr (Fin.castSucc l, β)) = (X.seg C0 CE1 CE2 j).P X.p (uTop (X.seg C0 CE1 CE2 j) l) * ω ((topOdd X j (uTop (X.seg C0 CE1 CE2 j) l), !β), 0)`. Introduce `l β`. Simplify using `only [ω']`.
+
+Rewrite using `[sv_Z, sl_Z]`. Establish `hx : ∀ β : Bool, ω' (Sum.inr (Fin.last (X.seg C0 CE1 CE2 j).t, β)) = ω ((topEnd X j, !β), 0)`. Introduce `β`. Simplify using `only [ω']`. Rewrite using `[symbol_variable_last, symbol_level_last, one_mul]`.
+
+Establish `h2 : ∀ l : Fin (X.seg C0 CE1 CE2 j).t, ω' (Sum.inr (Fin.castSucc l, false)) + ω' (Sum.inr (Fin.castSucc l, true)) = ωL (finPos (2 * segS X.TT j + 1) (2 * (uTop (X.seg C0 CE1 CE2 j) l : ℕ))) + ωL (finPos (2 * segS X.TT j + 1) (2 * (uTop (X.seg C0 CE1 CE2 j) l : ℕ) + 1))`. Introduce `l`. Rewrite using `[hZ, hZ, e0, e1, hW, hE, ← mul_add, ← mul_add]`. Use `congr 1`. Conclude with `hU l`.
+
+Establish `h3 : ω' (Sum.inr (Fin.last (X.seg C0 CE1 CE2 j).t, false)) + ω' (Sum.inr (Fin.last (X.seg C0 CE1 CE2 j).t, true)) = ωL (Fin.castSucc ⟨2 * segS X.TT j, by omega⟩) + ωL (Fin.last _)`. Rewrite using `[hx, hx, hUU, hXi]`. Conclude with `hP`. Establish `hS` using `hs ω' ωL ⟨h1, h2, h3⟩`. Establish `hA` using `wh_aeval ω (symVar C0 CE1 CE2 X j) (symLev X.p C0 CE1 CE2 X j) s _ hS`.
+
+Establish `hDg : IsWeightedHomogeneous ω (digitMon (KK O) C0 CE1 CE2 X j b) (∑ i : Fin (segS X.TT j), ∑ c : Fin (X.m + 1), (b.rz i c • ω ((topOdd X j i, true), c) + b.ry i c • ω ((topOdd X j i, false), c)))` using `IsWeightedHomogeneous.prod _ _ _ (fun i _ => IsWeightedHomogeneous.prod _ _ _ (fun c _ => ((isWeightedHomogeneous_X _ ω _).pow _).mul ((isWeightedHomogeneous_X _ ω _).pow _)))`. Establish `hSt : IsWeightedHomogeneous ω (sTopMon (KK O) X.p C0 CE1 CE2 X j b) (∑ i : Fin (segS X.TT j), if (i : ℕ) < (X.seg C0 CE1 CE2 j).sigma then ((X.seg C0 CE1 CE2 j).P X.p i * (coarseA X.p (X.seg C0 CE1 CE2 j) b i - b.w i)) • ω ((topOdd X j i, true), 0) + ((X.seg C0 CE1 CE2 j).P X.p i …`. Use `IsWeightedHomogeneous.prod _ _ _ (fun i _ => ?_)` and prove the remaining obligations. Use `split_ifs`. Conclude with `((isWeightedHomogeneous_X _ ω _).pow _).mul ((isWeightedHomogeneous_X _ ω _).pow _)`.
+
+Conclude with `isWeightedHomogeneous_one _ _`. Establish `hall` using `(hDg.mul hSt).mul hA`. Use `wh_congr hall ?_` and prove the remaining obligations. Establish `E1 : ∑ l : Fin (X.seg C0 CE1 CE2 j).t, (coarseA X.p (X.seg C0 CE1 CE2 j) b (uTop (X.seg C0 CE1 CE2 j) l) - b.o (uTop (X.seg C0 CE1 CE2 j) l)) * ω' (Sum.inr (Fin.castSucc l, false)) = ∑ i : Fin (segS X.TT j), if (X.seg C0 CE1 CE2 j).sigma ≤ i.val then (coarseA X.p (X.seg C0 CE1 CE …`. Rewrite using `[← sum_uTop (X.seg C0 CE1 CE2 j) (fun i => (coarseA X.p (X.seg C0 CE1 CE2 j) b i - b.o i) * ((X.seg C0 CE1 CE2 j).P X.p i * ω ((topOdd X j i, true), 0)))]`.
+
+Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[hZ]`. Both sides reduce to the same expression. Establish `E3 : ∑ a : Fin (2 * segS X.TT j + 1), (segChain X.p (X.seg C0 CE1 CE2 j) (segATop X.TT X.aT j) b).deg a * ωL (Fin.castSucc a) = ∑ i : Fin (segS X.TT j), ((if i.val < (X.seg C0 CE1 CE2 j).sigma then b.w i else b.o i) * ((X.seg C0 CE1 CE2 j).P X.p i * ω ((topOdd X j i, true), Fin.s …`. Rewrite using `[sum_chain, hUU, chain_deg_U X.p (X.seg C0 CE1 CE2 j) (segATop X.TT X.aT j) b _ rfl]`.
+
+Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hW, hE, segment_chain_degree_even X.p (X.seg C0 CE1 CE2 j) (segATop X.TT X.aT j) b _ i rfl, chain_deg_E X.p (X.seg C0 CE1 CE2 j) (segATop X.TT X.aT j) b _ i rfl]`. Unfold `OmB TD`. Rewrite using `[E1, E3, hx, hXi]`.
+
+Simplify using `only [smul_eq_mul, Bool.not_false]`. Establish `key : ∀ i : Fin (segS X.TT j), ((∑ c : Fin (X.m + 1), (b.rz i c * ω ((topOdd X j i, true), c) + b.ry i c * ω ((topOdd X j i, false), c))) + (X.seg C0 CE1 CE2 j).P X.p i * (if (i : ℕ) < (X.seg C0 CE1 CE2 j).sigma then (coarseA X.p (X.seg C0 CE1 CE2 j) b i - b.w i) * ω ((topOdd X j …`. Introduce `i`. Distinguish the cases in `h : (i : ℕ) < (X.seg C0 CE1 CE2 j).sigma`. Rewrite using `[if_pos h, if_pos h, if_neg (not_le.2 h), if_pos h, if_pos h]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg h, if_neg h, if_pos (not_lt.1 h), if_neg h, if_neg h]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.sum_congr rfl fun i _ => key i]`. Simplify using `only [Finset.sum_add_distrib]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem ioBlock_wh' (O : Type) [CommRing O] [IsDomain O] (mm : ℝ) (b : SegBlock (segS X.TT j) X.m)
     (ω : (X.TT × Bool) × Fin (X.m + 1) → ℕ) (hc : ∀ x (c c' : Fin X.m), ω (x, c.succ) = ω (x, c'.succ))
     (hU : ∀ l : Fin (X.seg C0 CE1 CE2 j).t,
@@ -146,6 +181,9 @@ theorem ioBlock_wh' (O : Type) [CommRing O] [IsDomain O] (mm : ℝ) (b : SegBloc
   simp only [Finset.sum_add_distrib]
   ring
 
+/- English proof (translation)
+Apply `isWeightedHomogeneous_monomial` to reduce the goal to its premises. Rewrite using `[Finsupp.weight_apply, Finsupp.sum_fintype _ (fun i c => c • ω' i) (fun _ => zero_smul _ _)]`. Simplify `leading_exponent_homogeneous C0 CE1 CE2 X j b ω' ωL hB` using `[smul_eq_mul]`.
+-/
 theorem leading_exponent_weighted_homog (b : SegBlock (segS X.TT j) X.m) (ω' : BVar (2 * segS X.TT j + 1) X.m (X.seg C0 CE1 CE2 j).t → ℕ)
     (ωL : Fin (2 * segS X.TT j + 1 + 1) → ℕ) (hB : Balanced X.m (X.seg C0 CE1 CE2 j) ω' ωL) :
     IsWeightedHomogeneous ω' (monomial (mu0 C0 CE1 CE2 X j b) (1 : KK ℤ))
@@ -154,6 +192,11 @@ theorem leading_exponent_weighted_homog (b : SegBlock (segS X.TT j) X.m) (ω' : 
   rw [Finsupp.weight_apply, Finsupp.sum_fintype _ (fun i c => c • ω' i) (fun _ => zero_smul _ _)]
   simpa [smul_eq_mul] using leading_exponent_homogeneous C0 CE1 CE2 X j b ω' ωL hB
 
+/- English proof (translation)
+Establish `hwh` using `ioBlock_wh' C0 CE1 CE2 X j ℤ 0 b (wLet X x) (fun _ _ _ => rfl) (fun _ => rfl) rfl (monomial (mu0 C0 CE1 CE2 X j b) 1) (fun ω' ωL hB => leading_exponent_weighted_homog C0 CE1 CE2 X j b ω' ωL hB)`. Rewrite `hwh` using `[ioBlock_monomial]`. Establish `h1` using `hwh (by rw [coeff_monomial, if_pos rfl]; exact one_ne_zero)`. Rewrite `h1` using `[weight_wLet]`. Unfold `tdeg`.
+
+Rewrite using `[h1, TD_wLet C0 CE1 CE2 X j x b hk ho]`.
+-/
 theorem tdeg_eq (b : SegBlock (segS X.TT j) X.m) (hk : Kept X.p X.m (X.seg C0 CE1 CE2 j) (segATop X.TT X.aT j) b)
     (ho : b.oPlus ≤ segAPlus X.TT X.aT j) (x : X.TT × Bool) :
     tdeg C0 CE1 CE2 X j b x = (if segNext X.TT j = x.1.val then hhDegs X.TT X.aT X.bT x else 0) +
@@ -166,11 +209,29 @@ theorem tdeg_eq (b : SegBlock (segS X.TT j) X.m) (hk : Kept X.p X.m (X.seg C0 CE
   unfold tdeg
   rw [h1, TD_wLet C0 CE1 CE2 X j x b hk ho]
 
+/- English proof (translation)
+Introduce `i i' h`. Conclude with `topOdd_inj X j (Subtype.ext h)`. Use the proof step `@[to_additive]`.
+-/
 theorem segPos_inj : Function.Injective (segPos X.TT j) := by
   intro i i' h
   exact topOdd_inj X j (Subtype.ext h)
 
 @[to_additive]
+/- English proof (translation)
+Use `set T : Fin X.n' → Bool → ℕ := fun t β => (if segNext X.TT j = t then hhDeg X.aT X.bT t β else 0) + ∑ i, (if segPos X.TT j i = t then hhDeg X.aT X.bT t β else 0) with hT`. Establish `e : ∀ x : X.TT × Bool, tdeg C0 CE1 CE2 X j b x = T x.1.val x.2` using `fun x => tdeg_eq C0 CE1 CE2 X j b hk ho x`. Simplify using `only [e]`. Rewrite using `[Fintype.prod_prod_type]`. Simplify using `only [Fintype.prod_bool]`.
+
+Rewrite using `[Finset.prod_coe_sort X.TT (fun t => g (T t true) * g (T t false))]`. Establish `hnp : ∀ i, segPos X.TT j i ≠ segNext X.TT j` using `fun i h => (pos_mem X.TT j i).2 (h ▸ (next_mem X.TT j).2)`. Establish `hS : insert (segNext X.TT j) (Finset.univ.image (segPos X.TT j)) ⊆ X.TT`. Introduce `t ht`. Break down `Finset.mem_insert.1 ht with h | h` into its components or cases.
+
+Rewrite using `[h]`. Conclude with `(next_mem X.TT j).1`. Take `⟨i, _, rfl⟩` from `Finset.mem_image.1 h`. Conclude with `(pos_mem X.TT j i).1`. Rewrite using `[← Finset.prod_subset hS (fun t _ ht => by`.
+
+Establish `h1 : segNext X.TT j ≠ t` using `fun h => ht (h ▸ Finset.mem_insert_self _ _)`. Establish `h2 : ∀ i, segPos X.TT j i ≠ t` using `fun i h => ht (Finset.mem_insert_of_mem (Finset.mem_image.2 ⟨i, Finset.mem_univ _, h⟩))`. Simplify using `only [hT, if_neg h1, if_neg (h2 _), Finset.sum_const_zero, add_zero, hg, mul_one])]`. Rewrite using `[Finset.prod_insert (fun h => by`. Take `⟨i, _, hi⟩` from `Finset.mem_image.1 h`.
+
+Conclude with `hnp i hi), Finset.prod_image (fun i _ i' _ h => segPos_inj X j h)]`. Establish `hnext : ∀ β, T (segNext X.TT j) β = hhDeg X.aT X.bT (segNext X.TT j) β`. Introduce `β`. Use `show (if segNext X.TT j = segNext X.TT j then hhDeg X.aT X.bT (segNext X.TT j) β else 0) + ∑ i, (if segPos X.TT j i = segNext X.TT j then hhDeg X.aT X.bT (segNext X.TT j) β else 0) = _`. Rewrite using `[if_pos rfl, Finset.sum_eq_zero (fun i _ => if_neg (hnp i)), add_zero]`.
+
+Establish `hpos : ∀ i β, T (segPos X.TT j i) β = hhDeg X.aT X.bT (segPos X.TT j i) β`. Introduce `i β`. Use `show (if segNext X.TT j = segPos X.TT j i then hhDeg X.aT X.bT (segPos X.TT j i) β else 0) + ∑ i', (if segPos X.TT j i' = segPos X.TT j i then hhDeg X.aT X.bT (segPos X.TT j i) β else 0) = _`. Rewrite using `[if_neg (fun h : segNext X.TT j = segPos X.TT j i => hnp i h.symm), zero_add]`. Rewrite using `[Finset.sum_eq_single i (fun i' _ hi' => if_neg (fun h => hi' (segPos_inj X j h))) (fun h => absurd (Finset.mem_univ _) h), if_pos rfl]`.
+
+Establish `hev` using `(next_mem X.TT j).2`. Simplify using `only [hnext, hpos, hhDeg, if_true, Bool.false_eq_true, if_false, if_pos hev]`. Establish `hodd : ∀ i, ¬ Even (segPos X.TT j i).val` using `fun i => (pos_mem X.TT j i).2`. Simplify using `only [hodd, if_false]`. Rewrite using `[mul_comm (g (X.aT (segNext X.TT j)) * g (X.bT (segNext X.TT j))), mul_assoc]`.
+-/
 theorem prod_tdeg {M : Type} [CommMonoid M] (g : ℕ → M) (hg : g 0 = 1) (b : SegBlock (segS X.TT j) X.m)
     (hk : Kept X.p X.m (X.seg C0 CE1 CE2 j) (segATop X.TT X.aT j) b) (ho : b.oPlus ≤ segAPlus X.TT X.aT j) :
     ∏ x : X.TT × Bool, g (tdeg C0 CE1 CE2 X j b x) =
@@ -218,6 +279,11 @@ theorem prod_tdeg {M : Type} [CommMonoid M] (g : ℕ → M) (hg : g 0 = 1) (b : 
 
 end
 
+/- English proof (translation)
+Introduce `X _ hD1 hH hc j b hb`. Establish `ho` using `hO X hD1 hH hc j b hb`. Prove the components needed by the constructor for the conclusion. Rewrite using `[prod_tdeg C0 CE1 CE2 X j Nat.factorial rfl b hb ho]`. Both sides reduce to the same expression.
+
+Rewrite using `[sum_tdeg C0 CE1 CE2 X j (Nat.log X.p) (Nat.log_zero_right _) b hb ho]`. Unfold `lgSeg`. Rewrite using `[Finset.sum_add_distrib]`.
+-/
 theorem trueDegAt_of {C0 CYb Cde Ck CD Cb CE1 CE2 Cc : ℝ} (hO : OPlusAt C0 CYb Cde Ck CD Cb CE1 CE2 Cc) :
     TrueDegAt C0 CYb Cde Ck CD Cb CE1 CE2 Cc := by
   intro X _ hD1 hH hc j b hb

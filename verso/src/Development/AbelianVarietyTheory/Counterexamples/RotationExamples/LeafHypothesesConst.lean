@@ -53,6 +53,9 @@ def constRecord (Df : DefSide Bs) (n : ℕ) (X : InfinitePlace K → Matrix (Fin
 
 def truncZero (y : ℝ) : ℤ := if 0 ≤ y then ⌊y⌋ else ⌈y⌉
 
+/- English proof (translation)
+The claim follows from `|(truncZero y : ℝ)| ≤ |y| ∧ |((a + truncZero y : ℤ) : ℝ)| ≤ |(a : ℝ) + y| + |y| := by have key : |(truncZero y : ℝ)| ≤ |y| ∧ |(truncZero y : ℝ) - y| ≤ |y| := by unfold truncZero split_ifs with h · have h1 := Int.floor_le y have h2 : (0 : ℝ) ≤ (⌊y⌋ : ℤ) := by exact_mod_cast Int.fl …`.
+-/
 theorem abs_truncZero_le (y : ℝ) (a : ℤ) :
     |(truncZero y : ℝ)| ≤ |y| ∧ |((a + truncZero y : ℤ) : ℝ)| ≤ |(a : ℝ) + y| + |y| := by
   have key : |(truncZero y : ℝ)| ≤ |y| ∧ |(truncZero y : ℝ) - y| ≤ |y| := by

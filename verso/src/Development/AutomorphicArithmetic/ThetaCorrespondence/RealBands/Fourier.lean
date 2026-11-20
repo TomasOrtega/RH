@@ -5,6 +5,13 @@ open MeasureTheory Filter UpperTheory.Lit.Cusp
 open scoped Topology
 
 open scoped FourierTransform in
+/- English proof (translation)
+Introduce `u hc hi hz t`. Establish `hF : 𝓕 u = 0`. Use extensionality with `w`. Rewrite using `[Real.fourier_real_eq_integral_exp_smul, Pi.zero_apply, ← hz (2 * Real.pi * w)]`. Use `congr 1`.
+
+Use extensionality with `v`. Rewrite using `[smul_eq_mul]`. Use `congr 1`. Use `congr 1`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hinv` using `hc.fourierInv_fourier_eq hi (by rw [hF]; exact integrable_zero _ _ _)`. Rewrite using `[← hinv, hF]`. Simplify using `[Real.fourierInv_eq]`.
+-/
 theorem UpperTheory.Lit.Cusp.fourier_zero :
     ∀ u : ℝ → ℂ, Continuous u → Integrable u →
       (∀ s : ℝ, ∫ t : ℝ, Complex.exp (-((s * t : ℝ) * Complex.I)) * u t = 0) → ∀ t, u t = 0 := by

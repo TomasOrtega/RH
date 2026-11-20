@@ -25,6 +25,11 @@ def hsEmb : (Wq →L[ℂ] Wp) →ₗ[ℂ] HS Wq Wp where
   map_add' A B := by ext i; simp
   map_smul' c A := by ext i; simp
 
+/- English proof (translation)
+Rewrite using `[PiLp.norm_sq_eq_of_L2]`. Simplify using `only [hsNormSq, hsInner, Complex.re_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `h : (hsEmb A) i = A (stdOrthonormalBasis ℂ Wq i)` using `rfl`. Rewrite using `[h, ← inner_self_eq_norm_sq (𝕜 := ℂ)]`.
+
+Both sides reduce to the same expression.
+-/
 theorem norm_hsEmb_sq (A : Wq →L[ℂ] Wp) : ‖hsEmb A‖ ^ 2 = hsNormSq A := by
   rw [PiLp.norm_sq_eq_of_L2]
   simp only [hsNormSq, hsInner, Complex.re_sum]
@@ -100,6 +105,9 @@ def ofSData (Ri : RowIn (s.Term u u')) :
   s0 := Ri.s0
   scal := Ri.scal
 
+/- English proof (translation)
+Use `⟨norm_hsEmb_sq, fun t => rfl, fun t => Iff.rfl, fun t => ?_, fun t => Iff.rfl⟩` and prove the remaining obligations. Use `show (if s.Gterm t = 0 then (0 : ℝ) else 1) = 0 ↔ s.Gterm t = 0`. Apply the tactic sequence `split_ifs with h <;> simp [h]`.
+-/
 theorem tie_ofSData (Ri : RowIn (s.Term u u')) :
     TieAt s u u' (ofSData s u u' Ri) (Equiv.refl _) hsEmb := by
   refine ⟨norm_hsEmb_sq, fun t => rfl, fun t => Iff.rfl, fun t => ?_, fun t => Iff.rfl⟩
@@ -117,18 +125,35 @@ variable {R : Ranks} {F E : Type} [Field F] [NumberField F] [Field E] [NumberFie
   [NormedAddCommGroup H₁] [InnerProductSpace ℂ H₁]
   {X : Formalism.FourierDecayAlt.PB.Terms τ Rw I H H₁} {e : τ ≃ s.Term u u'} {J : (s.Cu u' →L[ℂ] s.Cu u) →ₗ[ℂ] H}
 
+/- English proof (translation)
+The claim follows from `J.continuous_of_finiteDimensional`.
+-/
 theorem continuous_J (J : (s.Cu u' →L[ℂ] s.Cu u) →ₗ[ℂ] H) : Continuous J := J.continuous_of_finiteDimensional
 
+/- English proof (translation)
+Use `haveI := FiniteDimensional.complete ℂ (s.Cu u' →L[ℂ] s.Cu u)`. Conclude with `Summable.of_norm habs`.
+-/
 theorem summable_aTerm (habs : KAbsConv s u u') : Summable (s.aTerm u u') := by
   haveI := FiniteDimensional.complete ℂ (s.Cu u' →L[ℂ] s.Cu u)
   exact Summable.of_norm habs
 
+/- English proof (translation)
+The claim follows from `funext hT.2.1`.
+-/
 theorem op_eq (hT : TieAt s u u' X e J) : X.op = fun t => J (s.aTerm u u' (e t)) := funext hT.2.1
 
+/- English proof (translation)
+Rewrite using `[op_eq hT]`. Conclude with `(e.summable_iff (f := fun x => J (s.aTerm u u' x))).mpr ((summable_aTerm habs).map J (continuous_J J))`.
+-/
 theorem summable_terms (hT : TieAt s u u' X e J) (habs : KAbsConv s u u') : Summable X.op := by
   rw [op_eq hT]
   exact (e.summable_iff (f := fun x => J (s.aTerm u u' x))).mpr ((summable_aTerm habs).map J (continuous_J J))
 
+/- English proof (translation)
+Use `haveI := FiniteDimensional.complete ℂ (s.Cu u' →L[ℂ] s.Cu u)`. Establish `h1 : Summable (fun t => s.aTerm u u' (e t))` using `(e.summable_iff (f := s.aTerm u u')).mpr (summable_aTerm habs)`. Establish `h2` using `(h1.indicator S).map J (continuous_J J)`. Use `h2 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `t`.
+
+Distinguish the cases in `ht : t ∈ S`. Simplify using `[ht, hT.2.1 t]`. Simplify using `[ht]`.
+-/
 theorem summable_ind (hT : TieAt s u u' X e J) (habs : KAbsConv s u u') (S : Set τ) :
     Summable (S.indicator X.op) := by
   haveI := FiniteDimensional.complete ℂ (s.Cu u' →L[ℂ] s.Cu u)
@@ -141,6 +166,9 @@ theorem summable_ind (hT : TieAt s u u' X e J) (habs : KAbsConv s u u') (S : Set
   · simp [ht, hT.2.1 t]
   · simp [ht]
 
+/- English proof (translation)
+Establish `h1 : Summable (fun t => ‖s.aTerm u u' (e t)‖)` using `(e.summable_iff (f := fun x => ‖s.aTerm u u' x‖)).mpr habs`. Use `Summable.of_nonneg_of_le (fun t => norm_nonneg _) (fun t => ?_) (h1.mul_left ‖LinearMap.toContinuousLinearMap J‖)` and prove the remaining obligations. Rewrite using `[hT.2.1 t]`. Use `(LinearMap.toContinuousLinearMap J).le_opNorm (s.aTerm u u' (e t))` as an intermediate fact. Simplify using `using this`.
+-/
 theorem summable_norm_op (hT : TieAt s u u' X e J) (habs : KAbsConv s u u') : Summable (fun t => ‖X.op t‖) := by
   have h1 : Summable (fun t => ‖s.aTerm u u' (e t)‖) :=
     (e.summable_iff (f := fun x => ‖s.aTerm u u' x‖)).mpr habs
@@ -150,6 +178,9 @@ theorem summable_norm_op (hT : TieAt s u u' X e J) (habs : KAbsConv s u u') : Su
   have := (LinearMap.toContinuousLinearMap J).le_opNorm (s.aTerm u u' (e t))
   simpa using this
 
+/- English proof (translation)
+Establish `h : HasSum (fun t => J (s.aTerm u u' (e t))) (J (Kmat s u u'))` using `(e.hasSum_iff (f := fun x => J (s.aTerm u u' x))).mpr (hexp.map J (continuous_J J))`. Use `show ∑' t, X.op t = _`. Rewrite using `[op_eq hT]`. Conclude with `h.tsum_eq`.
+-/
 theorem K_eq_Kmat (hT : TieAt s u u' X e J) (hexp : KExpansion s u u') : X.K = J (Kmat s u u') := by
   have h : HasSum (fun t => J (s.aTerm u u' (e t))) (J (Kmat s u u')) :=
     (e.hasSum_iff (f := fun x => J (s.aTerm u u' x))).mpr (hexp.map J (continuous_J J))
@@ -157,6 +188,13 @@ theorem K_eq_Kmat (hT : TieAt s u u' X e J) (hexp : KExpansion s u u') : X.K = J
   rw [op_eq hT]
   exact h.tsum_eq
 
+/- English proof (translation)
+Establish `hpt : ∀ t, X.op t = X.idSet.indicator X.op t + X.degSet.indicator X.op t + X.genSet.indicator X.op t + X.ngSet.indicator X.op t`. Introduce `t`. Distinguish the cases in `h1 : X.isId t`. Establish `h0` using `hid t h1`. Simplify using `[Formalism.FourierDecayAlt.PB.Terms.idSet, Formalism.FourierDecayAlt.PB.Terms.degSet, Formalism.FourierDecayAlt.PB.Terms.genSet, Formalism.FourierDecayAlt.PB.Terms.ngSet, Set.indicator, h1, h0]`.
+
+Distinguish the cases in `h2 : X.G t = 0`. Simplify using `[Formalism.FourierDecayAlt.PB.Terms.idSet, Formalism.FourierDecayAlt.PB.Terms.degSet, Formalism.FourierDecayAlt.PB.Terms.genSet, Formalism.FourierDecayAlt.PB.Terms.ngSet, Set.indicator, h1, h2]`. Distinguish the cases in `h3 : X.gener t`. Simplify using `[Formalism.FourierDecayAlt.PB.Terms.idSet, Formalism.FourierDecayAlt.PB.Terms.degSet, Formalism.FourierDecayAlt.PB.Terms.genSet, Formalism.FourierDecayAlt.PB.Terms.ngSet, Set.indicator, h1, h2, h3]`. Simplify using `[Formalism.FourierDecayAlt.PB.Terms.idSet, Formalism.FourierDecayAlt.PB.Terms.degSet, Formalism.FourierDecayAlt.PB.Terms.genSet, Formalism.FourierDecayAlt.PB.Terms.ngSet, Set.indicator, h1, h2, h3]`.
+
+Simplify using `only [Formalism.FourierDecayAlt.PB.Terms.K, Formalism.FourierDecayAlt.PB.Terms.part]`. Establish `hsum` using `(((hs X.idSet).hasSum.add (hs X.degSet).hasSum).add (hs X.genSet).hasSum).add (hs X.ngSet).hasSum`. Rewrite using `[← hsum.tsum_eq]`. Conclude with `tsum_congr hpt`.
+-/
 theorem K_eq_parts (hs : ∀ S : Set τ, Summable (S.indicator X.op)) (hid : X.IdDegenerate) :
     X.K = X.part X.idSet + X.part X.degSet + X.part X.genSet + X.part X.ngSet := by
   have hpt : ∀ t, X.op t = X.idSet.indicator X.op t + X.degSet.indicator X.op t +
@@ -176,15 +214,30 @@ theorem K_eq_parts (hs : ∀ S : Set τ, Summable (S.indicator X.op)) (hid : X.I
   rw [← hsum.tsum_eq]
   exact tsum_congr hpt
 
+/- English proof (translation)
+Rewrite using `[K_eq_parts hs hid, hdeg]`. Simplify using `only [Formalism.FourierDecayAlt.PB.Terms.K0]`. Normalize the expressions using the abelian group laws.
+-/
 theorem K0_eq_K_of_degSet_eq_zero (hs : ∀ S : Set τ, Summable (S.indicator X.op)) (hid : X.IdDegenerate) (hdeg : X.part X.degSet = 0) : X.K0 = X.K := by
   rw [K_eq_parts hs hid, hdeg]
   simp only [Formalism.FourierDecayAlt.PB.Terms.K0]
   abel
 
+/- English proof (translation)
+Introduce `t ht`. Conclude with `(hT.2.2.2.1 t).mpr (hid _ ((hT.2.2.1 t).mp ht))`.
+-/
 theorem idDeg_of (hT : TieAt s u u' X e J) (hid : ∀ t : s.Term u u', s.isId t → s.Gterm t = 0) : X.IdDegenerate := by
   intro t ht
   exact (hT.2.2.2.1 t).mpr (hid _ ((hT.2.2.1 t).mp ht))
 
+/- English proof (translation)
+Use `haveI := FiniteDimensional.complete ℂ (s.Cu u' →L[ℂ] s.Cu u)`. Establish `hsum : Summable ((degFam s u u').indicator (s.aTerm u u'))` using `(summable_aTerm habs).indicator _`. Establish `hK : Kpp s u u' = ∑' x, (degFam s u u').indicator (s.aTerm u u') x` using `tsum_subtype _ _`. Establish `h : HasSum (fun t => J ((degFam s u u').indicator (s.aTerm u u') (e t))) (J (Kpp s u u'))`. Rewrite using `[hK]`.
+
+Conclude with `(e.hasSum_iff (f := fun x => J ((degFam s u u').indicator (s.aTerm u u') x))).mpr (hsum.hasSum.map J (continuous_J J))`. Establish `hmem : ∀ t, t ∈ X.degSet ↔ e t ∈ degFam s u u'`. Introduce `t`. Simplify using `only [Formalism.FourierDecayAlt.PB.Terms.degSet, degFam, Set.mem_setOf_eq, hT.2.2.2.1 t, hT.2.2.1 t]`. Use `show ∑' t, X.degSet.indicator X.op t = _`.
+
+Rewrite using `[← h.tsum_eq]`. Use `tsum_congr fun t => ?_` and prove the remaining obligations. Rewrite using `[Set.indicator_apply, Set.indicator_apply]`. Distinguish the cases in `h1 : t ∈ X.degSet`. Rewrite using `[if_pos h1, if_pos ((hmem t).mp h1), hT.2.1 t]`.
+
+Rewrite using `[if_neg h1, if_neg (fun h => h1 ((hmem t).mpr h)), map_zero]`.
+-/
 theorem part_deg_eq (hT : TieAt s u u' X e J) (habs : KAbsConv s u u') :
     X.part X.degSet = J (Kpp s u u') := by
   haveI := FiniteDimensional.complete ℂ (s.Cu u' →L[ℂ] s.Cu u)
@@ -205,6 +258,9 @@ theorem part_deg_eq (hT : TieAt s u u' X e J) (habs : KAbsConv s u u') :
   · rw [if_pos h1, if_pos ((hmem t).mp h1), hT.2.1 t]
   · rw [if_neg h1, if_neg (fun h => h1 ((hmem t).mpr h)), map_zero]
 
+/- English proof (translation)
+Establish `hs` using `summable_ind hT habs`. Establish `hdeg : X.part X.degSet = 0` using `by rw [part_deg_eq hT habs, hK2, map_zero]`. Rewrite using `[K0_eq_K_of_degSet_eq_zero hs (idDeg_of hT hid) hdeg, K_eq_Kmat hT hexp]`. Conclude with `hT.1 _`.
+-/
 theorem normSq_K0_eq_hilbertSchmidt (hT : TieAt s u u' X e J) (hexp : KExpansion s u u') (habs : KAbsConv s u u')
     (hid : ∀ t : s.Term u u', s.isId t → s.Gterm t = 0) (hK2 : Kpp s u u' = 0) :
     ‖X.K0‖ ^ 2 = hsNormSq (Kmat s u u') := by
@@ -219,9 +275,15 @@ section Link
 
 variable (D : D7) (L : SizeData₂ D)
 
+/- English proof (translation)
+Rewrite using `[Real.rpow_neg hb, show (6 : ℝ) = ((6 : ℕ) : ℝ) by norm_num, Real.rpow_natCast]`.
+-/
 theorem rpow_neg_six {b : ℝ} (hb : 0 ≤ b) : b ^ (-(6 : ℝ)) = (b ^ 6)⁻¹ := by
   rw [Real.rpow_neg hb, show (6 : ℝ) = ((6 : ℕ) : ℝ) by norm_num, Real.rpow_natCast]
 
+/- English proof (translation)
+Establish `h1 : L.hsSq u u' = ‖X.K0‖ ^ 2` using `(normSq_K0_eq_hilbertSchmidt hT hexp habs hid hK2).symm`. Rewrite using `[h1, rpow_neg_six hb]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem linkS_at_data {u u' : D.what₂.Word} {τ Rw I H H₁ : Type} [Fintype I] [NormedAddCommGroup H]
     [InnerProductSpace ℂ H] [NormedAddCommGroup H₁] [InnerProductSpace ℂ H₁]
     (X : Formalism.FourierDecayAlt.PB.Terms τ Rw I H H₁) (e : τ ≃ D.s.Term u u') (J : (D.s.Cu u' →L[ℂ] D.s.Cu u) →ₗ[ℂ] H)
@@ -238,6 +300,9 @@ def SizeTie (u u' : D.what₂.Word) {ι : Type} [Fintype ι] (G : Formalism.Four
     (bb du du' : ℝ) : Prop :=
   bb = L.sc.b ∧ du = (D.duS u : ℝ) ∧ du' = (D.duS u' : ℝ) ∧ (G.size de T du).Dstar = D.what₂.Dstar
 
+/- English proof (translation)
+Take `⟨rfl, rfl, rfl, hD⟩` from `hS`. Rewrite `hPB` using `[hD]`. Conclude with `linkS_at_data D L X e J hT hexp habs hid hK2 hb hPB`.
+-/
 theorem linkS_of_terms_conclusion {u u' : D.what₂.Word} {τ Rw I H H₁ : Type} [Fintype I] [NormedAddCommGroup H]
     [InnerProductSpace ℂ H] [NormedAddCommGroup H₁] [InnerProductSpace ℂ H₁]
     (X : Formalism.FourierDecayAlt.PB.Terms τ Rw I H H₁) (e : τ ≃ D.s.Term u u') (J : (D.s.Cu u' →L[ℂ] D.s.Cu u) →ₗ[ℂ] H)
@@ -265,6 +330,9 @@ def TermRelationsExist : Prop :=
   ∀ u u', u ≠ u' →
     L.hsSq u u' ≤ (1 + L.sc.b ^ (-(6 : ℝ))) * (D.duS u : ℝ) * (D.duS u' : ℝ) / D.what₂.Dstar
 
+/- English proof (translation)
+Introduce `hb Ri h u u' hne`. Take `⟨hexp, habs, hid, hK2, ι, hι, G, de, T, du, du', hS, hP, hV, hPB⟩` from `h u u' hne`. Conclude with `linkS_of_terms_conclusion D L (ofSData D.s u u' (Ri u u')) (Equiv.refl _) hsEmb G de T L.sc.b du du' hS (tie_ofSData D.s u u' (Ri u u')) hP hV hexp habs hid hK2 hb hPB`.
+-/
 theorem packageTie : TermRelationsExist D L := by
   intro hb Ri h u u' hne
   obtain ⟨hexp, habs, hid, hK2, ι, hι, G, de, T, du, du', hS, hP, hV, hPB⟩ := h u u' hne

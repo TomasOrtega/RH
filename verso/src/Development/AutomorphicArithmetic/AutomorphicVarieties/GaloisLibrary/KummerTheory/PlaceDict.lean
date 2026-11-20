@@ -2,6 +2,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Kumm
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.LDataCardLeFinrank UpperTheory.V.Base UpperTheory.V.Kum
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hx`. Establish `h1 : (⊤ : ValuationSubring Ω).valuation x⁻¹ ≤ 1` using `(ValuationSubring.valuation_le_one_iff _ _).2 (ValuationSubring.mem_top _)`. Establish `h2` using `mul_lt_one_of_nonneg_of_lt_one_left zero_le h h1`. Rewrite `h2` using `[← map_mul, mul_inv_cancel₀ hx, map_one]`. Conclude with `lt_irrefl _ h2`.
+-/
 private theorem val_top {Ω : Type} [Field Ω] {x : Ω} (h : (⊤ : ValuationSubring Ω).valuation x < 1) : x = 0 := by
   by_contra hx
   have h1 : (⊤ : ValuationSubring Ω).valuation x⁻¹ ≤ 1 :=
@@ -10,6 +13,9 @@ private theorem val_top {Ω : Type} [Field Ω] {x : Ω} (h : (⊤ : ValuationSub
   rw [← map_mul, mul_inv_cancel₀ hx, map_one] at h2
   exact lt_irrefl _ h2
 
+/- English proof (translation)
+Establish `h : IsIntegral A b` using `hb.tower_top`. Take `⟨y, hy⟩` from `IsIntegrallyClosed.isIntegral_iff.1 h`. Rewrite using `[A.valuation_le_one_iff, ← hy]`. Conclude with `y.2`.
+-/
 private theorem int_le {Ω : Type} [Field Ω] (A : ValuationSubring Ω) {b : Ω} (hb : IsIntegral ℤ b) :
     A.valuation b ≤ 1 := by
   have h : IsIntegral A b := hb.tower_top
@@ -17,6 +23,15 @@ private theorem int_le {Ω : Type} [Field Ω] (A : ValuationSubring Ω) {b : Ω}
   rw [A.valuation_le_one_iff, ← hy]
   exact y.2
 
+/- English proof (translation)
+Establish `hm : ∀ x : 𝓞 K, algebraMap K Ω (x : K) ∈ A` using `fun x => (A.valuation_le_one_iff _).1 (int_le A (x.isIntegral_coe.map (algebraMap K Ω).toIntAlgHom))`. Set `f : 𝓞 K →+* A` to `((algebraMap K Ω).comp (algebraMap (𝓞 K) K)).codRestrict A hm`. Set `P : Ideal (𝓞 K)` to `(IsLocalRing.maximalIdeal A).comap f`. Establish `hP : ∀ x : 𝓞 K, A.valuation (algebraMap K Ω (x : K)) < 1 ↔ x ∈ P` using `fun x => (A.valuation_lt_one_iff (f x)).symm`. Use `⟨⟨P, inferInstance, fun h0 => hA ?_⟩, hP⟩` and prove the remaining obligations.
+
+Rewrite using `[eq_top_iff]`. Introduce `x _`. Establish `: CharZero Ω` using `charZero_of_injective_algebraMap (algebraMap K Ω).injective`. Establish `h1 : Algebra.IsAlgebraic ℤ K` using `(IsFractionRing.comap_isAlgebraic_iff (A := ℤ) (K := ℚ) (C := K)).2 inferInstance`. Establish `h2 : Algebra.IsAlgebraic ℤ Ω` using `Algebra.IsAlgebraic.trans ℤ K Ω`.
+
+Take `⟨n, hn, hi⟩` from `(h2.isAlgebraic x).exists_integral_multiple`. Establish `h3 : ¬ A.valuation (algebraMap K Ω ((n : 𝓞 K) : K)) < 1`. Rewrite using `[hP, h0, Ideal.mem_bot]`. Conclude with `Int.cast_ne_zero.2 hn`. Establish `h4 : A.valuation (n : Ω) = 1` using `le_antisymm (int_le A (isIntegral_algebraMap (R := ℤ) (x := n))) (by simpa using h3)`.
+
+Establish `h5` using `int_le A hi`. Rewrite `h5` using `[zsmul_eq_mul, map_mul, h4, one_mul]`. Conclude with `(A.valuation_le_one_iff x).1 h5`.
+-/
 private theorem exists_place (K Ω : Type) [Field K] [NumberField K] [Field Ω] [Algebra K Ω] [Algebra.IsAlgebraic K Ω]
     (A : ValuationSubring Ω) (hA : A ≠ ⊤) : ∃ v : HeightOneSpectrum (𝓞 K),
       ∀ x : 𝓞 K, A.valuation (algebraMap K Ω (x : K)) < 1 ↔ x ∈ v.asIdeal := by
@@ -42,6 +57,15 @@ private theorem exists_place (K Ω : Type) [Field K] [NumberField K] [Field Ω] 
   rw [zsmul_eq_mul, map_mul, h4, one_mul] at h5
   exact (A.valuation_le_one_iff x).1 h5
 
+/- English proof (translation)
+Introduce `K Ω _ _ _ _ _`. Establish `: CharZero Ω` using `charZero_of_injective_algebraMap (algebraMap K Ω).injective`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[eq_bot_iff]`. Introduce `g hg`.
+
+Rewrite using `[Subgroup.mem_bot]`. Use extensionality with `x`. Establish `h` using `hg.2 x ((ValuationSubring.valuation_le_one_iff _ _).2 (ValuationSubring.mem_top _))`. Conclude with `sub_eq_zero.1 (val_top h)`. Introduce `A hA`.
+
+Conclude with `exists_place K Ω A hA`. Introduce and unpack `A N hN h rfl`. Conclude with `hN (Nat.cast_eq_zero.1 (val_top h))`. Introduce `A v N hv`. Establish `h` using `hv (N : 𝓞 K)`.
+
+Establish `e : algebraMap K Ω ((N : 𝓞 K) : K) = (N : Ω)` using `by simp`. Rewrite using `[← e]`. Conclude with `h`.
+-/
 theorem UpperTheory.V.Kum.placeDict :
     ∀ (K Ω : Type) [Field K] [NumberField K] [Field Ω] [Algebra K Ω] [IsAlgClosure K Ω], Ine (F := K) (⊤ : ValuationSubring Ω) = ⊥ ∧ (∀ A : ValuationSubring Ω, A ≠ ⊤ → ∃ v : HeightOneSpectrum (𝓞 K), IsPlaceOver A v) ∧
     (∀ (A : ValuationSubring Ω) (N : ℕ), N ≠ 0 → A.valuation (N : Ω) < 1 → A ≠ ⊤) ∧

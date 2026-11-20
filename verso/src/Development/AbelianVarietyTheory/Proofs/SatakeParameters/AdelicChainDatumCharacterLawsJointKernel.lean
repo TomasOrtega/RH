@@ -30,6 +30,9 @@ variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : G.Inst D L} {Gl : G
   {ex : Extra D L hT Gi Gl Kc Y cX} {t : KerEntTied ex} {u : D.what₂.Word} {μ : D.what₂.Tup} {St : ChainCharts D u μ}
   {A : AdData t u μ St} {a : 𝓞 D.host.E}
 
+/- English proof (translation)
+Establish `h : (∃ p, IsPtAd A a i (Nat.le_of_succ_le hi) β x p) ∧ ∃ p', IsPtAd A a (i + 1) hi β' x' p'` using `⟨⟨p, hp⟩, ⟨p', hp'⟩⟩`. Simplify using `only [xiAd]`. Rewrite using `[dif_pos h, hW i hi β β' x x' x x' p p' _ _ hp hp' h.1.choose_spec h.2.choose_spec (fun _ _ => ⟨rfl, rfl⟩)]`.
+-/
 theorem xiAd_eq_of_isPtAd (hW : ∀ i hi, PtAway A a i hi) {i : ℕ} {hi : i + 1 ≤ D.R.m}
     {β : (St i (Nat.le_of_succ_le hi)).Ch} {β' : (St (i + 1) hi).Ch} {x : UA D i (Nat.le_of_succ_le hi)} {x' : UA D (i + 1) hi}
     {p : ChPt (R := D.R) t.sel (t.tup μ) (t.word u) i} {p' : ChPt (R := D.R) t.sel (t.tup μ) (t.word u) (i + 1)}
@@ -41,6 +44,13 @@ theorem xiAd_eq_of_isPtAd (hW : ∀ i hi, PtAway A a i hi) {i : ℕ} {hi : i + 1
   dsimp only [xiAd]
   rw [dif_pos h, hW i hi β β' x x' x x' p p' _ _ hp hp' h.1.choose_spec h.2.choose_spec (fun _ _ => ⟨rfl, rfl⟩)]
 
+/- English proof (translation)
+Establish `hU` using `det_in_unitary_one D.host.F D.host.E (sigD D) _ (gramN D k hk) (Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.bwB_gramN_det D k hk) g hg`. Use `set x := Matrix.GeneralLinearGroup.det g with hx`. Establish `hx1 : x * conjId (sigD D) x = 1` using `hU`. Establish `h2 : (x : D.host.E ⊗[D.host.F] FiniteAdeleRing (𝓞 D.host.F) D.host.F) * sigR (sigD D) _ (x : _) = 1` using `congrArg Units.val hx1`. Use `⟨⟨Units.map (Matrix.scalar (Fin 1) : _ →+* Matrix (Fin 1) (Fin 1) _).toMonoidHom x, ?_⟩, ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `cT (sigR (sigD D) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) (Matrix.scalar (Fin 1) (x : D.host.E ⊗[D.host.F] FiniteAdeleRing (𝓞 D.host.F) D.host.F)) * (1 : Matrix (Fin 1) (Fin 1) D.host.E).map (inclE (F := D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) * Matrix.scalar (Fin 1) …`. Rewrite using `[Matrix.map_one _ (map_zero _) (map_one _), Matrix.mul_one]`. Simplify using `only [cT, Matrix.scalar_apply, Matrix.diagonal_map (map_zero _), Matrix.diagonal_transpose, Matrix.diagonal_mul_diagonal]`. Rewrite using `[← Matrix.diagonal_one]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `_`. Rewrite using `[mul_comm]`. Conclude with `h2`. Apply `Units.ext` to reduce the goal to its premises. Simplify using `[Matrix.GeneralLinearGroup.val_det_apply, Matrix.det_fin_one]`.
+-/
 theorem exists_u1Af_det (k : ℕ) (hk : k ≤ D.R.m) {g : GL (Fin (D.R.N k)) (D.host.E ⊗[D.host.F] FiniteAdeleRing (𝓞 D.host.F) D.host.F)}
     (hg : g ∈ UPts (sigD D) (gramN D k hk) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) :
     ∃ y : Formalism.L2.Herm.unitaryOneFiniteAdeles D.sp.cm, Matrix.GeneralLinearGroup.det y.1 = Matrix.GeneralLinearGroup.det g := by
@@ -59,6 +69,23 @@ theorem exists_u1Af_det (k : ℕ) (hk : k ≤ D.R.m) {g : GL (Fin (D.R.N k)) (D.
 
 end Pt
 
+/- English proof (translation)
+Introduce `D L hT Gi Gl Kc Y cX ex t u μ St A dtU a hPin hTie`. Establish `hPt : PtEx A a ∧ ∀ i hi c, IsPtAd A a i hi ((St i hi).chOf c) ((St i hi).y c) (A.pt i hi c)` using `GlobalTheory.T.chartPoints_exist_and_classPoints_representatives A dtU a hPin hTie`. Establish `hE` using `hPt.1`. Establish `hCo : ∀ c, cosetOf A (t.m2 + 1) (cpl_lt t μ).le ((St _ (cpl_lt t μ).le).chOf c) (A.pt _ (cpl_lt t μ).le c) = A.yb c` using `GlobalTheory.T.couplingCoset_eq_chartPointCoset A dtU a hPin hTie`. Establish `hMu : MuLaw t u μ dtU` using `GlobalTheory.T.stepCharacterLaws_normOneIdeles_of_kernelChain A dtU a hPin hTie`.
+
+Establish `hm` using `m_eq t μ`. Establish `hW : ∀ i hi, PtAway A a i hi`. Introduce `i hi`. Break down `lt_trichotomy i t.m2 with h | h | h` into its components or cases. Conclude with `GlobalTheory.T.finiteDatum_dependsOnlyAtBadPlaces_matrixStep A dtU a hPin hTie i hi h`.
+
+Conclude with `GlobalTheory.T.finiteDatum_dependsOnlyAtBadPlaces_firstCoupledStep A dtU a hPin hTie i hi h`. Conclude with `GlobalTheory.TwV.AwayTop.ptAway_top A dtU a hPin hTie i hi (by omega)`. Establish `hLev : ∀ i hi, LevAt A dtU a i hi`. Introduce `i hi`. Break down `lt_trichotomy i t.m2 with h | h | h` into its components or cases.
+
+Conclude with `GlobalTheory.T.finiteDatum_levelEquivariance_at_matrixSteps A dtU a hPin hTie hE hMu i hi h (hW i hi)`. Conclude with `GlobalTheory.T.adelicDatum_level_equivariance_first_coupled_step A dtU a hPin hTie hE hMu i hi h (hW i hi)`. Conclude with `GlobalTheory.T.lastStep_adelicDatum_level_equivariance A dtU a hPin hTie hE hMu i hi (by omega) (hW i hi)`. Establish `hRat : RatLaw A a` using `GlobalTheory.T.finiteAdelicDatum_rationalInvariance_of_kernelChain A dtU a hPin hTie hE hW`. Establish `hSize : SizeLaw A a` using `GlobalTheory.T.adelicDatum_invariance_support_kernelChain A dtU a hPin hTie hE`.
+
+Establish `hInt : ∀ i hi β β' x x' z, IntOff (t.O u μ).S (xiAd A a i hi β β' x x' z)` using `GlobalTheory.T.adelicFiniteDatum_integralOffBadPrimes A dtU a hPin hTie hE`. Use `{ read := ?_ rat := hRat lev := fun i hi => hLev i hi away := ?_ loc := fun i hi β β' x x' => (hSize i hi β β' x x').1 supp := fun i hi β β' x x' => (hSize i hi β β' x x').2 int := hInt mu_read := fun i hi => (hMu i hi).1 mu_cls := ?_ mu_mul := fun i hi => (hMu i hi).2.1 mu_alg : …` and prove the remaining obligations. Introduce `i hi c c' z`. Rewrite using `[xiAd_eq_of_isPtAd hW (hPt.2 i _ c) (hPt.2 (i + 1) hi c')]`. Break down `lt_trichotomy i t.m2 with h | h | h` into its components or cases.
+
+Rewrite using `[hTie.chain.2.2.1 i h c c', xiPt, dif_pos h]`. Substitute `h` using the available equality. Rewrite using `[hTie.chain.2.2.2.1 c c', xiPt, dif_neg (lt_irrefl _), if_pos rfl, hCo c']`. Take `rfl : i = t.m2 + 1` from `by omega`. Rewrite using `[hTie.chain.2.2.2.2.1.2 c c', xiPt, dif_neg (by omega), if_neg (by omega), hCo c]`.
+
+Introduce `i hi β β' x x' x₁ x₁' hx`. Use function extensionality and compare the values at `z`. Take `⟨p, hp⟩` from `hE i _ β x`. Take `⟨p', hp'⟩` from `hE (i + 1) hi β' x'`. Take `⟨p₁, hp₁⟩` from `hE i _ β x₁`.
+
+Take `⟨p₁', hp₁'⟩` from `hE (i + 1) hi β' x₁'`. Rewrite using `[xiAd_eq_of_isPtAd hW hp₁ hp₁', xiAd_eq_of_isPtAd hW hp hp', hW i hi β β' x x' x₁ x₁' p p' p₁ p₁' hp hp' hp₁ hp₁' hx]`. Introduce `i hi k hk c`. Take `⟨y, hy⟩` from `exists_u1Af_det k hk ((St k hk).y c).2`. Rewrite using `[← hy, (hMu i hi).1 y, hTie.dt k hk c y hy]`.
+-/
 theorem adLawAt_xiAd : UnderTie (fun {D L hT Gi Gl Kc Y cX ex t u μ St} A dtU a => AdLawAt A dtU a (xiAd A a) (muOf t u μ dtU)) := by
   intro D L hT Gi Gl Kc Y cX ex t u μ St A dtU a hPin hTie
   have hPt : PtEx A a ∧ ∀ i hi c, IsPtAd A a i hi ((St i hi).chOf c) ((St i hi).y c) (A.pt i hi c) := GlobalTheory.T.chartPoints_exist_and_classPoints_representatives A dtU a hPin hTie

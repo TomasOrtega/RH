@@ -6,6 +6,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.An
 open IsLocalRing Matrix Filter UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.AlgebraTools UpperTheory.V.Pa UpperTheory.V.Pa.Core
 open scoped TensorProduct
 
+/- English proof (translation)
+Unfold `GDet.lam`. Use `congr 2`. Express the relevant statement in the definitionally equal form `D.D (Polynomial S) (MonoidAlgebra.mapDomainRingHom (Polynomial S) φ _) = D.D (Polynomial S) _`. Use `congr 1`. Rewrite using `[map_sub]`.
+
+Use `congr 1`. Simplify using the standard rewrite rules. Proceed by induction on `z using MonoidAlgebra.induction_linear with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`.
+
+Consider the case `single g r => simp`.
+-/
 private theorem lam_dom {n : ℕ} {S H G : Type} [CommRing S] [Group H] [Group G] (D : GDet n S G) (φ : H →* G)
     (i : ℕ) (z : MonoidAlgebra S H) : (D.comap φ).lam i z = D.lam i (MonoidAlgebra.mapDomainRingHom S φ z) := by
   unfold GDet.lam
@@ -20,6 +27,11 @@ private theorem lam_dom {n : ℕ} {S H G : Type} [CommRing S] [Group H] [Group G
     | add a b ha hb => simp only [map_add, ha, hb]
     | single g r => simp
 
+/- English proof (translation)
+Rewrite using `[map_mul, q1El, q1El, map_list_prod, List.map_ofFn]`. Use `congr 1`. Simplify using the standard rewrite rules. Use `congr 2`. Use function extensionality and compare the values at `i`.
+
+Rewrite using `[Function.comp_apply, map_sub]`. Simplify using the standard rewrite rules.
+-/
 private theorem mapDomain_single_mul_charpoly_element {n : ℕ} {S H G : Type} [CommRing S] [Group H] [Group G] (φ : H →* G) (h g : H)
     (U : Fin n → S) : MonoidAlgebra.mapDomainRingHom S φ (MonoidAlgebra.single h 1 * q1El g U) =
       MonoidAlgebra.single (φ h) 1 * q1El (φ g) U := by
@@ -31,6 +43,9 @@ private theorem mapDomain_single_mul_charpoly_element {n : ℕ} {S H G : Type} [
     rw [Function.comp_apply, map_sub]
     simp
 
+/- English proof (translation)
+Rewrite using `[map_mul, q1El, q1El, map_list_prod, List.map_ofFn, MonoidAlgebra.mapRingHom_single, map_one]`. Use `congr 3`. Use function extensionality and compare the values at `i`. Simplify using `only [Function.comp_apply, map_sub, MonoidAlgebra.mapRingHom_single, map_one]`.
+-/
 private theorem mapRingHom_single_mul_charpoly_element {n : ℕ} {R S H : Type} [CommRing R] [CommRing S] [Group H] (f : R →+* S) (h g : H)
     (U : Fin n → R) : MonoidAlgebra.mapRingHom H f (MonoidAlgebra.single h 1 * q1El g U) =
       MonoidAlgebra.single h 1 * q1El g fun i => f (U i) := by
@@ -39,6 +54,15 @@ private theorem mapRingHom_single_mul_charpoly_element {n : ℕ} {R S H : Type} 
   funext i
   simp only [Function.comp_apply, map_sub, MonoidAlgebra.mapRingHom_single, map_one]
 
+/- English proof (translation)
+Introduce `l _ L G0 T Λ n O _ _ _ _ _ r B _ _ _ u J D A W m _ a ph h hph j`. Take `⟨V, hV0, hV⟩` from `phSees l L G0 T Λ n O r B u J D A W j`. Use `filter_upwards [Λ.ker_lim V, Λ.ph_lim V] with N hk hc`. Take `⟨g', hg', hgV⟩` from `(closeLift _ _ _ (Λ.π N) Λ.πo V.toSubgroup hk).1 _ _ (ph : Λ.Ph) (hc a) (congrArg Subtype.val hph)`. Establish `hmem : g' ∈ Ph0 Λ`.
+
+Use `mul_mem ph.2 (hV0 hgV)` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel_left]`. Then use the resulting hypothesis. Set `p' : Ph0 Λ` to `⟨g', hmem⟩`. Establish `hp' : πN0 Λ N p' = T.ph N a` using `Subtype.ext hg'`. Use `⟨W.t.D.tr (MonoidAlgebra.single h 1 * q1El p' (W.t.U a)), hV 1 _ _ ?_, Or.inr fun x => ?_⟩` and prove the remaining obligations.
+
+Establish `e : QuotientGroup.mk' (V.toSubgroup.subgroupOf (Ph0 Λ)) ph = QuotientGroup.mk' (V.toSubgroup.subgroupOf (Ph0 Λ)) p'` using `QuotientGroup.eq.2 (Subgroup.mem_subgroupOf.2 hgV)`. Rewrite using `[mapDomain_single_mul_charpoly_element, mapDomain_single_mul_charpoly_element, e]`. Take `⟨hD, -, -, hU, -⟩` from `m.ρ_maps N`. Establish `e : m.ρ N (W.t.D.tr (MonoidAlgebra.single h 1 * q1El p' (W.t.U a))) = (A.A N).p.D.tr (MonoidAlgebra.single (πN0 Λ N h) 1 * q1El (T.ph N a) ((A.A N).U a))`. Establish `h1` using `((UpperTheory.V.CA.d_gmap W.t.D).2.2.1 (m.ρ N).toRingHom (MonoidAlgebra.single h 1 * q1El p' (W.t.U a))).2 1`.
+
+Rewrite `h1` using `[hD, lam_dom, mapRingHom_single_mul_charpoly_element, mapDomain_single_mul_charpoly_element, hp', funext (hU a)]`. Conclude with `h1.symm`. Rewrite using `[e]`. Conclude with `(A.m N).rel1 a _ x`.
+-/
 theorem UpperTheory.V.Pa.Core.t3Q1 :
     ∀ (l : ℕ) [Fact l.Prime] (L : Loc) (G0 : Glob l L) (T : TWGrp G0) (Λ : Lim T) (n : ℕ) (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsCoef l O] [Algebra ℤ_[l] O] (r : Resid G0.frame O n) (B : Type) [CommRing B] [Algebra O B] [IsCO O B] (u : Pair r B) (J : Ideal B) (D : ℕ) (A : TWAut u J Unit D T) (W : RRObj Λ A) (m : RMaps W), Adapted T (r := r) → ∀ (a : Fin T.q) (ph h : Ph0 Λ), πo0 Λ ph = Λ.ph a → ∀ j : ℕ, ∀ᶠ N in (Λ.U : Filter ℕ), ∃ a' : W.R, W.t.D.tr (MonoidAlgebra.single h 1 * q1El ph (W.t.U a)) - a' ∈ maximalIdeal W.R ^ j ∧ (m.ρ N a' = 0 ∨ ∀ x : (A.A N).M, (fEl (T.Nq N) (A.A N).U * m.ρ N a') ^ A.ex • x = 0) := by
   intro l _ L G0 T Λ n O _ _ _ _ _ r B _ _ _ u J D A W m _ a ph h hph j

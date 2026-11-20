@@ -10,6 +10,15 @@ namespace Formalism.MainNotions.ColumnSystems.Pf
 
 open Formalism.MainNotions.G Formalism.MainNotions.G.GLWeightTheory MvPolynomial
 
+/- English proof (translation)
+Establish `hcop : Nat.Coprime (ordCompl[p] n) p` using `(Nat.coprime_ordCompl hp hn).symm`. Establish `hunit : IsUnit ((ordCompl[p] n : ℕ) : O)`. Assume the negation of the conclusion as `hu`. Establish `h1` using `Nat.gcd_eq_gcd_ab (ordCompl[p] n) p`. Rewrite `h1` using `[hcop]`.
+
+Establish `h2 : (1 : O) = ((ordCompl[p] n : ℕ) : O) * ((Nat.gcdA (ordCompl[p] n) p : ℤ) : O) + (p : O) * ((Nat.gcdB (ordCompl[p] n) p : ℤ) : O)`. Use `congrArg (Int.cast : ℤ → O) h1` as an intermediate fact. Simplify using `only [Int.cast_add, Int.cast_mul, Int.cast_natCast, Nat.cast_one, Int.cast_one] at this`. Conclude with `this`. Establish `hm1 : ((ordCompl[p] n : ℕ) : O) ∈ IsLocalRing.maximalIdeal O` using `hu`.
+
+Establish `hm2 : (p : O) ∈ IsLocalRing.maximalIdeal O` using `hpO`. Establish `h3 : (1 : O) ∈ IsLocalRing.maximalIdeal O`. Rewrite using `[h2]`. Conclude with `Ideal.add_mem _ (Ideal.mul_mem_right _ _ hm1) (Ideal.mul_mem_right _ _ hm2)`. Conclude with `(IsLocalRing.maximalIdeal.isMaximal O).ne_top ((Ideal.eq_top_iff_one _).2 h3)`.
+
+Use `⟨hunit.unit, ?_⟩` and prove the remaining obligations. Rewrite using `[IsUnit.unit_spec, ← Nat.cast_pow, ← Nat.cast_mul, Nat.ordProj_mul_ordCompl_eq_self]`.
+-/
 theorem nat_split {O : Type} [CommRing O] [IsLocalRing O] {p : ℕ} (hp : p.Prime) (hpO : ¬ IsUnit (p : O)) {n : ℕ}
     (hn : n ≠ 0) : ∃ u : Oˣ, (n : O) = (p : O) ^ (n.factorization p) * u := by
   have hcop : Nat.Coprime (ordCompl[p] n) p := (Nat.coprime_ordCompl hp hn).symm
@@ -31,6 +40,17 @@ theorem nat_split {O : Type} [CommRing O] [IsLocalRing O] {p : ℕ} (hp : p.Prim
   refine ⟨hunit.unit, ?_⟩
   rw [IsUnit.unit_spec, ← Nat.cast_pow, ← Nat.cast_mul, Nat.ordProj_mul_ordCompl_eq_self]
 
+/- English proof (translation)
+Establish `hpO` using `p_not_unit hw h2`. Take `⟨uA, huA⟩` from `nat_split hp hpO hA`. Take `⟨uB, huB⟩` from `nat_split hp hpO hB`. Establish `hp0 : (p : O) ≠ 0` using `by rw [← h2]; exact pow_ne_zero _ hw.ne_zero`. Use `set n := E + A.factorization p - B.factorization p with hn`.
+
+Establish `h1 : (p : O) ^ n ≠ 0` using `pow_ne_zero _ hp0`. Establish `hκ : (p : O) ^ n * uA * ((uB⁻¹ : Oˣ) : O) ≠ 0` using `mul_ne_zero (mul_ne_zero h1 uA.ne_zero) (Units.ne_zero _)`. Use `⟨(p : O) ^ n * uA * ((uB⁻¹ : Oˣ) : O), hκ, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[vLEO_iff hw h2 hκ, dvr_order_mul (mul_ne_zero h1 uA.ne_zero) (Units.ne_zero _), dvr_order_mul h1 uA.ne_zero, dvr_order_pow hp0, dvr_order_unit_eq_zero uA.isUnit, dvr_order_unit_eq_zero (Units.isUnit _)]`. Establish `hv : dvrOrderNat (p : O) = 2` using `by rw [← h2, dvr_order_pow hw.ne_zero, nv_irr hw]`.
+
+Rewrite using `[hv]`. Establish `: (n : ℝ) ≤ D` using `by exact_mod_cast (by omega : n ≤ D)`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[huA, huB]`.
+
+Establish `hu : ((uB⁻¹ : Oˣ) : O) * uB = 1` using `by simp`. Establish `hpw : (p : O) ^ E * (p : O) ^ A.factorization p = (p : O) ^ n * (p : O) ^ B.factorization p`. Rewrite using `[← pow_add, ← pow_add]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers.
+
+Take the linear combination `(uA : O) * hpw - ((p : O) ^ n * (p : O) ^ B.factorization p * uA) * hu`.
+-/
 theorem kap_transport {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {p : ℕ} (hp : p.Prime) {w : O}
     (hw : Irreducible w) (h2 : w ^ 2 = (p : O)) {A B : ℕ} (hA : A ≠ 0) (hB : B ≠ 0) (E D : ℕ)
     (hlo : B.factorization p ≤ E + A.factorization p) (hhi : E + A.factorization p ≤ D + B.factorization p) :
@@ -67,6 +87,11 @@ def lvW (ℓ : ℕ) : BV C0 CE1 CE2 X j → ℕ := fun v => if symLev X.p C0 CE1
 def lvL (ℓ : ℕ) : Fin (2 * segS X.TT j + 1 + 1) → ℕ :=
   fun a => if symLev X.p C0 CE1 CE2 X j (Sum.inl (a, 0)) = ℓ then 1 else 0
 
+/- English proof (translation)
+Use `⟨fun a c => rfl, ?_, ?_⟩` and prove the remaining obligations. Introduce `l`. Establish `hi` using `(uTop (X.seg C0 CE1 CE2 j) l).2`. Establish `e0 : finPos (2 * segS X.TT j + 1) (2 * (uTop (X.seg C0 CE1 CE2 j) l : ℕ)) = Fin.castSucc (⟨2 * (uTop (X.seg C0 CE1 CE2 j) l).val, by omega⟩ : Fin (2 * segS X.TT j + 1))` using `Fin.ext (Nat.min_eq_left (by omega))`. Establish `e1 : finPos (2 * segS X.TT j + 1) (2 * (uTop (X.seg C0 CE1 CE2 j) l : ℕ) + 1) = Fin.castSucc (⟨2 * (uTop (X.seg C0 CE1 CE2 j) l).val + 1, by omega⟩ : Fin (2 * segS X.TT j + 1))` using `Fin.ext (Nat.min_eq_left (by omega))`.
+
+Unfold `lvW lvL`. Rewrite using `[sl_Z, sl_Z, e0, e1, symbol_level_lower_letter, sl_E]`. Unfold `lvW lvL`. Rewrite using `[symbol_level_last, symbol_level_last, sl_U, sl_xi]`.
+-/
 theorem lev_balanced (ℓ : ℕ) : Balanced X.m (X.seg C0 CE1 CE2 j) (lvW C0 CE1 CE2 X j ℓ) (lvL C0 CE1 CE2 X j ℓ) := by
   refine ⟨fun a c => rfl, ?_, ?_⟩
   · intro l
@@ -82,6 +107,13 @@ theorem lev_balanced (ℓ : ℕ) : Balanced X.m (X.seg C0 CE1 CE2 j) (lvW C0 CE1
   · unfold lvW lvL
     rw [symbol_level_last, symbol_level_last, sl_U, sl_xi]
 
+/- English proof (translation)
+Establish `key : ∀ ν : BV C0 CE1 CE2 X j →₀ ℕ, HomExp C0 CE1 CE2 X j b ν → ∏ v, f (symLev X.p C0 CE1 CE2 X j v) ^ ν v = ∏ ℓ ∈ Finset.univ.image (symLev X.p C0 CE1 CE2 X j), f ℓ ^ (OmB X.p (X.seg C0 CE1 CE2 j) (segATop X.TT X.aT j) (segAPlus X.TT X.aT j) b (lvW C0 CE1 CE2 X j ℓ) (lvL C0 CE1 …`. Introduce `ν hν`. Rewrite using `[← Finset.prod_fiberwise_of_maps_to (s := Finset.univ) (t := Finset.univ.image (symLev X.p C0 CE1 CE2 X j)) (g := symLev X.p C0 CE1 CE2 X j) (fun v _ => Finset.mem_image_of_mem _ (Finset.mem_univ v))]`. Use `Finset.prod_congr rfl fun ℓ _ => ?_` and prove the remaining obligations. Rewrite using `[← hν _ _ (lev_balanced C0 CE1 CE2 X j ℓ), ← Finset.prod_pow_eq_pow_sum, Finset.prod_filter]`.
+
+Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Unfold `lvW`. Use `split_ifs with h`. Rewrite using `[h, mul_one]`. Rewrite using `[mul_zero, pow_zero]`.
+
+Rewrite using `[key μ hμ, key μ' hμ']`.
+-/
 theorem lev_const (b : SegBlock (segS X.TT j) X.m) (μ μ' : BV C0 CE1 CE2 X j →₀ ℕ) (hμ : HomExp C0 CE1 CE2 X j b μ)
     (hμ' : HomExp C0 CE1 CE2 X j b μ') (f : ℕ → ℕ) :
     ∏ v, f (symLev X.p C0 CE1 CE2 X j v) ^ μ v = ∏ v, f (symLev X.p C0 CE1 CE2 X j v) ^ μ' v := by
@@ -113,6 +145,19 @@ def mu0F (b : SegBlock (segS X.TT j) X.m) : BV C0 CE1 CE2 X j → ℕ
 def mu0 (b : SegBlock (segS X.TT j) X.m) : BV C0 CE1 CE2 X j →₀ ℕ :=
   Finsupp.equivFunOnFinite.symm (mu0F C0 CE1 CE2 X j b)
 
+/- English proof (translation)
+Introduce `ω ωL hB`. Take `⟨h1, -, -⟩` from `hB`. Use `show ∑ v, mu0F C0 CE1 CE2 X j b v * ω v = _`. Rewrite using `[Fintype.sum_sum_type, Fintype.sum_prod_type, Fintype.sum_prod_type]`. Establish `a1 : ∀ a : Fin (2 * segS X.TT j + 1 + 1), ∑ c : Fin X.m, mu0F C0 CE1 CE2 X j b (Sum.inl (a, c)) * ω (Sum.inl (a, c)) = Fin.lastCases (motive` using `fun _ => ℕ) (X.seg C0 CE1 CE2 j).bPlus (fun a' => (segChain X.p (X.seg C0 CE1 CE2 j) (segATop X.TT X.aT j) b).deg a') a * ωL a := by`.
+
+Introduce `a`. Rewrite using `[Finset.sum_eq_single (0 : Fin X.m)]`. Simplify using `only [mu0F, if_true, h1]`. Introduce `c _ hc`. Simplify using `only [mu0F, if_neg hc, zero_mul]`.
+
+Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Establish `a2 : ∀ l : Fin ((X.seg C0 CE1 CE2 j).t + 1), ∑ β : Bool, mu0F C0 CE1 CE2 X j b (Sum.inr (l, β)) * ω (Sum.inr (l, β)) = Fin.lastCases (motive` using `fun _ => ℕ) (segAPlus X.TT X.aT j - b.oPlus) (fun l' => coarseA X.p (X.seg C0 CE1 CE2 j) b (uTop (X.seg C0 CE1 CE2 j) l') - b.o (uTop (X.seg C0 CE1 CE2 j) l')) l * ω (Sum.inr (l, false)) := by`. Introduce `l`. Rewrite using `[Fintype.sum_bool]`.
+
+Simplify using `only [mu0F, zero_mul, zero_add]`. Rewrite using `[Finset.sum_congr rfl fun a _ => a1 a, Finset.sum_congr rfl fun l _ => a2 l]`. Establish `s1 : ∑ a : Fin (2 * segS X.TT j + 1 + 1), Fin.lastCases (motive` using `fun _ => ℕ) (X.seg C0 CE1 CE2 j).bPlus (fun a' => (segChain X.p (X.seg C0 CE1 CE2 j) (segATop X.TT X.aT j) b).deg a') a * ωL a = ∑ a' : Fin (2 * segS X.TT j + 1), (segChain X.p (X.seg C0 CE1 CE2 j) (segATop X.TT X.aT j) b).deg a' * ωL (Fin.castSucc a') + (X.seg C0 CE1 CE2 j).bPlu …`. Rewrite using `[Fin.sum_univ_castSucc]`. Simplify using `only [Fin.lastCases_castSucc, Fin.lastCases_last]`.
+
+Establish `s2 : ∑ l : Fin ((X.seg C0 CE1 CE2 j).t + 1), Fin.lastCases (motive` using `fun _ => ℕ) (segAPlus X.TT X.aT j - b.oPlus) (fun l' => coarseA X.p (X.seg C0 CE1 CE2 j) b (uTop (X.seg C0 CE1 CE2 j) l') - b.o (uTop (X.seg C0 CE1 CE2 j) l')) l * ω (Sum.inr (l, false)) = ∑ l' : Fin (X.seg C0 CE1 CE2 j).t, (coarseA X.p (X.seg C0 CE1 CE2 j) b (uTop (X.seg C0 CE1 …`. Rewrite using `[Fin.sum_univ_castSucc]`. Simplify using `only [Fin.lastCases_castSucc, Fin.lastCases_last]`. Rewrite using `[s1, s2]`. Unfold `OmB`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem leading_exponent_homogeneous (b : SegBlock (segS X.TT j) X.m) : HomExp C0 CE1 CE2 X j b (mu0 C0 CE1 CE2 X j b) := by
   classical
   intro ω ωL hB
@@ -170,12 +215,18 @@ def KapNumAt (C0 CYb Cde Ck CD Cb CE1 CE2 Cc : ℝ) : Prop :=
       (∏ x : X.TT × Bool, (cdeg C0 CE1 CE2 X j b x).factorial).factorization X.p +
           (PhiB C0 CE1 CE2 X j b).factorization X.p ≤ lgSeg X j + (facSeg X j).factorization X.p
 
+/- English proof (translation)
+Establish `: 0 < facSeg X j`. Unfold `facSeg`. Check the signs of the components of the expression. Use linear arithmetic over natural numbers and integers.
+-/
 theorem facSeg_ne (X : Loc) (j : Fin (numSeg X.TT)) : facSeg X j ≠ 0 := by
   have : 0 < facSeg X j := by
     unfold facSeg
     positivity
   omega
 
+/- English proof (translation)
+Establish `: 0 < PhiB C0 CE1 CE2 X j b`. Unfold `PhiB Rblk`. Check the signs of the components of the expression. Use linear arithmetic over natural numbers and integers.
+-/
 theorem PhiB_ne (C0 CE1 CE2 : ℝ) (X : Loc) [NeZero X.m] (j : Fin (numSeg X.TT)) (b : SegBlock (segS X.TT j) X.m) :
     PhiB C0 CE1 CE2 X j b ≠ 0 := by
   have : 0 < PhiB C0 CE1 CE2 X j b := by
@@ -183,6 +234,21 @@ theorem PhiB_ne (C0 CE1 CE2 : ℝ) (X : Loc) [NeZero X.m] (j : Fin (numSeg X.TT)
     positivity
   omega
 
+/- English proof (translation)
+Introduce `X _ O _ _ _ w hw h2 hD1 hH hc j b hb`. Establish `hp : X.p.Prime` using `hD1.1`. Establish `hO : CharZero O` using `charZero_of_w hp hw h2`. Establish `: CharZero (KK O)` using `charZero_of_injective_algebraMap (IsFractionRing.injective O (KK O))`. Take `⟨n1, n2⟩` from `hN X hD1 hH hc j b hb`.
+
+Use `set sp := specConst X.p (X.seg C0 CE1 CE2 j) b with hsp`. Establish `hsp0 : sp ≠ 0` using `specConst_ne _ _ _`. Establish `hc0 : (∏ x : X.TT × Bool, (cdeg C0 CE1 CE2 X j b x).factorial) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun x _ => Nat.factorial_ne_zero _`. Establish `hvN : padicValNat X.p (Nblk C0 CE1 CE2 X j b) = (∏ x : X.TT × Bool, (cdeg C0 CE1 CE2 X j b x).factorial).factorization X.p + sp.factorization X.p`. Rewrite using `[← Nat.factorization_def _ hp]`.
+
+Unfold `Nblk`. Rewrite using `[Nat.factorization_mul hc0 hsp0]`. Both sides reduce to the same expression. Establish `hBf : (facSeg X j * sp).factorization X.p = (facSeg X j).factorization X.p + sp.factorization X.p`. Rewrite using `[Nat.factorization_mul (facSeg_ne X j) hsp0]`.
+
+Both sides reduce to the same expression. Take `⟨κ, hκ0, hκv, hκ⟩` from `kap_transport hp hw h2 (PhiB_ne C0 CE1 CE2 X j b) (mul_ne_zero (facSeg_ne X j) hsp0) ((X.m + 1) * lgSeg X j + padicValNat X.p (Nblk C0 CE1 CE2 X j b)) ((X.m + 2) * lgSeg X j) (by rw [hBf, hvN]; omega) (by`. Rewrite using `[hBf, hvN]`. Establish `: (X.m + 2) * lgSeg X j = (X.m + 1) * lgSeg X j + lgSeg X j` using `by ring`. Use the proof step `omega)`.
+
+Use `⟨κ, hκ0, hκv, ?_⟩` and prove the remaining obligations. Introduce `μ hμ`. Establish `hΦ : Rblk C0 CE1 CE2 X j b * ∏ v : BV C0 CE1 CE2 X j, (baseExp C0 CE1 CE2 X j b (symVar C0 CE1 CE2 X j v)).factorial * (symLev X.p C0 CE1 CE2 X j v).factorial ^ (μ v) = PhiB C0 CE1 CE2 X j b`. Unfold `PhiB`. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_mul_distrib, lev_const C0 CE1 CE2 X j b μ _ hμ (leading_exponent_homogeneous C0 CE1 CE2 X j b) Nat.factorial]`.
+
+Establish `hΦK` using `congrArg (fun n : ℕ => (n : KK O)) hΦ`. Simplify using `only [Nat.cast_mul, Nat.cast_prod, Nat.cast_pow] at hΦK`. Establish `hκK` using `congrArg (algebraMap O (KK O)) hκ`. Simplify using `only [map_mul, map_pow, map_natCast, Nat.cast_mul] at hκK`. Establish `hf0 : (facSeg X j : KK O) ≠ 0` using `Nat.cast_ne_zero.2 (facSeg_ne X j)`.
+
+Unfold `zSeg`. Rewrite using `[mul_assoc (_ * _) _ _, hΦK, div_mul_eq_mul_div, div_mul_eq_mul_div, div_eq_iff hf0, ← pow_add, hκK]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem kapAt_of {C0 CYb Cde Ck CD Cb CE1 CE2 Cc : ℝ} (hN : KapNumAt C0 CYb Cde Ck CD Cb CE1 CE2 Cc) :
     KapAt C0 CYb Cde Ck CD Cb CE1 CE2 Cc := by
   classical

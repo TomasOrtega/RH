@@ -17,6 +17,9 @@ variable (S : Scheme.{0}) (N : ℕ)
 
 def torsPts (T : Over S) : Subgroup (T ⟶ Gm S) := (powMonoidHom N).ker
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_torsPts {T : Over S} (x : T ⟶ Gm S) : x ∈ torsPts S N T ↔ x ^ N = 1 := Iff.rfl
 
 def torsFunctor : (Over S)ᵒᵖ ⥤ GrpCat.{0} where
@@ -40,6 +43,9 @@ def torsRep : (torsFunctor S N ⋙ forget _).RepresentableBy (torsion (Gm S) N) 
 
 instance grpTors : GrpObj (torsion (Gm S) N) := GrpObj.ofRepresentableBy _ _ (torsRep S N)
 
+/- English proof (translation)
+The claim follows from `congrArg Subtype.val (((yonedaGrpObjIsoOfRepresentableBy _ _ (torsRep S N)).hom.app (op T)).hom.map_mul x y)`.
+-/
 theorem mul_ι {T : Over S} (x y : T ⟶ torsion (Gm S) N) :
     (x * y) ≫ torsion.ι (Gm S) N = (x ≫ torsion.ι (Gm S) N) * (y ≫ torsion.ι (Gm S) N) :=
   congrArg Subtype.val (((yonedaGrpObjIsoOfRepresentableBy _ _ (torsRep S N)).hom.app (op T)).hom.map_mul x y)
@@ -65,6 +71,13 @@ instance isCommMonObj_cst : IsCommMonObj (cst S N) :=
 def delta (a : ZMod N) : GlobalTheory.CartierDual ZU.{0} (AddMonoidAlgebra ZU.{0} (ZMod N)) :=
   (GlobalTheory.CartierDual.addMonoidAlgebraEquiv ZU.{0} (ZMod N)).symm (Pi.single a 1)
 
+/- English proof (translation)
+Unfold `delta`. Rewrite using `[← map_mul]`. Use `split_ifs with h`. Substitute `h` using the available equality. Use `congr 1`.
+
+Use function extensionality and compare the values at `x`. Simplify using `only [Pi.mul_apply, Pi.single_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[← map_zero (GlobalTheory.CartierDual.addMonoidAlgebraEquiv ZU.{0} (ZMod N)).symm]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `x`. Simplify using `only [Pi.mul_apply, Pi.single_apply, Pi.zero_apply]`. Apply the tactic sequence `split_ifs with h1 h2 <;> simp_all`.
+-/
 theorem delta_mul (a b : ZMod N) : delta N a * delta N b = if a = b then delta N a else 0 := by
   unfold delta
   rw [← map_mul]
@@ -80,6 +93,9 @@ theorem delta_mul (a b : ZMod N) : delta N a * delta N b = if a = b then delta N
     simp only [Pi.mul_apply, Pi.single_apply, Pi.zero_apply]
     split_ifs with h1 h2 <;> simp_all
 
+/- English proof (translation)
+Unfold `delta`. Rewrite using `[← map_sum, ← map_one (GlobalTheory.CartierDual.addMonoidAlgebraEquiv ZU.{0} (ZMod N)).symm]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Simplify using `[Finset.sum_apply, Pi.single_apply]`.
+-/
 theorem sum_delta : ∑ a : ZMod N, delta N a = 1 := by
   unfold delta
   rw [← map_sum, ← map_one (GlobalTheory.CartierDual.addMonoidAlgebraEquiv ZU.{0} (ZMod N)).symm]
@@ -93,11 +109,19 @@ abbrev powRing : Type :=
 def powElt (k : ℤ) : powRing N :=
   ∑ a : ZMod N, AddMonoidAlgebra.single (ULift.up (k * (a.val : ℤ))) (1 : ZU.{0}) ⊗ₜ delta N a
 
+/- English proof (translation)
+Simplify using `only [powElt, zero_mul]`. Rewrite using `[← TensorProduct.tmul_sum, sum_delta]`. Both sides reduce to the same expression.
+-/
 theorem powElt_zero : powElt N 0 = 1 := by
   simp only [powElt, zero_mul]
   rw [← TensorProduct.tmul_sum, sum_delta]
   rfl
 
+/- English proof (translation)
+Simplify using `only [powElt, Finset.sum_mul_sum, Algebra.TensorProduct.tmul_mul_tmul, AddMonoidAlgebra.single_mul_single, mul_one]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single a (fun b _ hb => by rw [delta_mul, if_neg (Ne.symm hb), TensorProduct.tmul_zero]) (fun h => (h (Finset.mem_univ a)).elim), delta_mul, if_pos rfl]`. Use `congr 2`. Use `ext`.
+
+Simplify using `[add_mul]`.
+-/
 theorem powElt_add (k l : ℤ) : powElt N (k + l) = powElt N k * powElt N l := by
   simp only [powElt, Finset.sum_mul_sum, Algebra.TensorProduct.tmul_mul_tmul,
     AddMonoidAlgebra.single_mul_single, mul_one]
@@ -157,6 +181,9 @@ open GlobalTheory.HTSheaf
 
 variable (N : ℕ)
 
+/- English proof (translation)
+The claim follows from `congrArg Subtype.val (((yonedaGrpObjIsoOfRepresentableBy _ _ (torsRep S N)).hom.app (op T)).hom.map_one)`.
+-/
 theorem one_ι {T : Over S} : (1 : T ⟶ torsion (Gm S) N) ≫ torsion.ι (Gm S) N = 1 :=
   congrArg Subtype.val (((yonedaGrpObjIsoOfRepresentableBy _ _ (torsRep S N)).hom.app (op T)).hom.map_one)
 
@@ -172,8 +199,14 @@ instance isMonHom_ι : IsMonHom (torsion.ι (Gm S) N) where
 
 variable [NeZero N]
 
+/- English proof (translation)
+The claim follows from `lift_fst _ _`.
+-/
 theorem incl_fst : incl S N ≫ fst _ _ = 𝟙 _ := lift_fst _ _
 
+/- English proof (translation)
+The claim follows from `(lift_snd _ _).trans (Hom.one_def).symm`.
+-/
 theorem incl_snd : incl S N ≫ snd _ _ = 1 := (lift_snd _ _).trans (Hom.one_def).symm
 
 instance isMonHom_incl : IsMonHom (incl S N) := by

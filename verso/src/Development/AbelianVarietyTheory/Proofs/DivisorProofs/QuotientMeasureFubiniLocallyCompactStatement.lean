@@ -5,6 +5,9 @@ import Mathlib
 open MeasureTheory
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.HeisChart.mulEquivHaarChar_eq_mul_of_heisenberg_chart | exact GlobalTheory.HeisChart.mulEquivHaarChar_eq_mul_of_heisenberg_chart | (intros; apply GlobalTheory.HeisChart.mulEquivHaarChar_eq_mul_of_heisenberg_chart <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.quotient_measure_fubini_locally_compact : ∀ (N V L : Type) [Group N] [TopologicalSpace N] [IsTopologicalGroup N] [LocallyCompactSpace N] [T2Space N]
     [SecondCountableTopology N] [MeasurableSpace N] [BorelSpace N]
     [AddCommGroup V] [TopologicalSpace V] [IsTopologicalAddGroup V] [LocallyCompactSpace V] [T2Space V]

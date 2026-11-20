@@ -11,6 +11,9 @@ namespace ReciprocityTheory.ChartRestriction.TR.Weyl
 
 open ReciprocityTheory.ChartRestriction.DS.S7
 
+/- English proof (translation)
+The claim follows from `weyl_of (kCharGT_of (uChar_of sqChar)) blockComb`.
+-/
 theorem weyl : WeylStatement :=
   weyl_of (kCharGT_of (uChar_of sqChar)) blockComb
 

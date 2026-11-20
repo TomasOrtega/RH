@@ -32,6 +32,9 @@ section Generic
 
 variable {D : D7}
 
+/- English proof (translation)
+Take `⟨i1, i2, i3, i4, i5, -⟩` from `GlobalTheory.Ker.CongTop.adelicUnitary_top_cong D V`. Use `haveI := v.haar`. Use `haveI := v'.haar`. Use `⟨((Measure.haarScalarFactor v.μ v'.μ : ℝ) : ℂ), ?_, fun f hf => GlobalTheory.RowVal.fd_int_scale v.haar v'.haar (Measure.isMulLeftInvariant_eq_smul v.μ v'.μ) v.fund v'.fund f hf⟩` and prove the remaining obligations. Conclude with `(Measure.haarScalarFactor_pos_of_isHaarMeasure v.μ v'.μ).ne'` after adjusting the coercions.
+-/
 theorem vol_scale {V : HSp D} (v v' : GlobalTheory.Unf.Vol V) : ∃ s : ℂ, s ≠ 0 ∧ ∀ f : GA D V → ℂ, (∀ γ ∈ GQ V, ∀ x, f (γ * x) = f x) →
     ∫ x in v.𝓕, f x ∂v.μ = s * ∫ x in v'.𝓕, f x ∂v'.μ := by
   obtain ⟨i1, i2, i3, i4, i5, -⟩ := GlobalTheory.Ker.CongTop.adelicUnitary_top_cong D V
@@ -43,18 +46,43 @@ theorem vol_scale {V : HSp D} (v v' : GlobalTheory.Unf.Vol V) : ∃ s : ℂ, s �
 
 variable {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D}
 
+/- English proof (translation)
+Establish `e : ((γ * g, h) : GA D S × GA D T) = (γ, 1) * (g, h)` using `by simp`. Rewrite using `[e, map_mul, Module.End.mul_apply]`. Conclude with `hw.om_aut γ hγ 1 (one_mem _) _ (hw.om_pres _ Y hY)`.
+-/
 theorem fix_left {S T : HSp D} {χS χT} {om : Om S T} (hw : IsWeilDatumO ψ S T χS χT om) {Y : WO S T → ℂ}
     (hY : IsThetaFunO ψ S T Y) (g : GA D S) (h : GA D T) {γ : GA D S} (hγ : γ ∈ GQ S) : om (γ * g, h) Y 0 = om (g, h) Y 0 := by
   have e : ((γ * g, h) : GA D S × GA D T) = (γ, 1) * (g, h) := by simp
   rw [e, map_mul, Module.End.mul_apply]
   exact hw.om_aut γ hγ 1 (one_mem _) _ (hw.om_pres _ Y hY)
 
+/- English proof (translation)
+Establish `e : ((g, γ * h) : GA D S × GA D T) = (1, γ) * (g, h)` using `by simp`. Rewrite using `[e, map_mul, Module.End.mul_apply]`. Conclude with `hw.om_aut 1 (one_mem _) γ hγ _ (hw.om_pres _ Y hY)`.
+-/
 theorem fix_right {S T : HSp D} {χS χT} {om : Om S T} (hw : IsWeilDatumO ψ S T χS χT om) {Y : WO S T → ℂ}
     (hY : IsThetaFunO ψ S T Y) (g : GA D S) (h : GA D T) {γ : GA D T} (hγ : γ ∈ GQ T) : om (g, γ * h) Y 0 = om (g, h) Y 0 := by
   have e : ((g, γ * h) : GA D S × GA D T) = (1, γ) * (g, h) := by simp
   rw [e, map_mul, Module.End.mul_apply]
   exact hw.om_aut 1 (one_mem _) γ hγ _ (hw.om_pres _ Y hY)
 
+/- English proof (translation)
+Establish `key : ∀ b : GA D T, ∃ s : ℂ, b ∈ GinfC T → b ∈ Subgroup.center (GA D T) → ∀ (v : GlobalTheory.Unf.Vol S) (k : KerDat S T), k.Is ψ θ x y → k.vac = k₀.vac → (∀ a ∈ GinfC S, ∀ b ∈ GinfC T, ∀ f, IsThetaFunO ψ S T f → k.om (a, b) f = k₀.om (a, b) f) → ∀ P φ, GlobalTheory.Unf.IsContAut …`. Introduce `b`. Distinguish the cases in `hb : b ∈ GinfC T ∧ b ∈ Subgroup.center (GA D T)`. Use `swap`. Conclude with `⟨0, fun h1 h2 => absurd ⟨h1, h2⟩ hb⟩`.
+
+Break down `isEmpty_or_nonempty (Fin T.rank) with h0 | ⟨⟨i₀⟩⟩` into its components or cases. Establish `e : b = 1` using `Subtype.ext (Units.ext (Subsingleton.elim _ _))`. Conclude with `⟨1, fun _ _ _ _ _ _ _ _ _ _ _ h => by rw [e, mul_one, one_mul]⟩`. Take `⟨a, ha, hac, c, c', hcc, e1, e2⟩` from `GlobalTheory.CentreTarget.exists_central_realPoint_same_scalar_other_group S hy hb.1 hb.2 i₀`. Take `⟨l, hl⟩` from `GlobalTheory.CentreTarget.weilOperator_equal_scalars_acts_by_scalar_fock hθ hx hy hk₀ hcc e1 e2`.
+
+Use `⟨l * χ a, fun _ _ v k hk hv hag P φ hφ hc h => ?_⟩` and prove the remaining obligations. Take `⟨χS, χT, hW⟩` from `hk.weil`. Establish `hvt : IsThetaFunO ψ S T k.vac` using `hk.vac.2.theta`. Establish `h3 : ∀ w, actO S T a b w = w` using `fun w => by`. Unfold `actO`.
+
+Rewrite using `[e1, e2, Matrix.smul_mul, Matrix.one_mul, Matrix.mul_smul, Matrix.mul_one, smul_smul, mul_comm, hcc, one_smul]`. Establish `hF` using `GlobalTheory.GalLift.Vec.theta_pureTensorO hW.std hθ x.s x.B y.s y.B hvt P`. Establish `hcomb : ∀ g, comb ψ S T k.c g = ∑ i : Fin k.c.support.card, k.c (k.c.support.equivFin.symm i) • heisO ψ S T (k.c.support.equivFin.symm i) g`. Introduce `g`. Unfold `comb`.
+
+Rewrite using `[← Finset.sum_coe_sort]`. Conclude with `(Equiv.sum_comp k.c.support.equivFin.symm (fun u => k.c u • heisO ψ S T u g)).symm`. Establish `key1 : k.pt ψ θ x y P = comb ψ S T k.c (pureTensorO ψ θ S T x.s y.s x.B y.B k.vac P)`. Unfold `KerDat.pt`. Rewrite using `[hcomb, hcomb]`.
+
+Conclude with `(GlobalTheory.FockFiniteHeis.heis_comb_pureTensorO D ψ θ S T hW.std hθ x.s y.s x.B y.B _ hvt k.c.support.card _ _ (fun i => hk.fin _ (Finset.coe_mem _)) P).1.symm`. Establish `key2 : k.om (a, b) (k.pt ψ θ x y P) = l • k.pt ψ θ x y P`. Rewrite using `[key1]`. Unfold `comb`. Rewrite using `[map_sum, Finset.smul_sum]`.
+
+Use `Finset.sum_congr rfl fun u _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, hW.om_heis a b u _ hF, h3, hag a ha b hb.1 _ hF, hv, hl, smul_comm]`. Use `congr 1`. Use function extensionality and compare the values at `w`. Simplify using `only [heisO, Pi.smul_apply, smul_eq_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hpt` using `(GlobalTheory.SeeSaw.LiftSumProof.liftSum D ψ θ hθ S T x y hx hy k hk P).1`. Rewrite using `[liftT_apply, liftT_apply, ← GlobalTheory.ChainOnto.setIntegral_fd_mul_right D S v.μ v.𝓕 v.haar v.fund (fun g => k.om (g, h * b) (k.pt ψ θ x y P) 0 * φ g) (fun γ hγ g => by rw [fix_left hW hpt g _ hγ, hφ.1 γ hγ g]) a, ← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `g`.
+
+Establish `e : ((g * a, h * b) : GA D S × GA D T) = (g, h) * (a, b)` using `rfl`. Rewrite using `[e, map_mul, Module.End.mul_apply, key2, map_smul, hc a ha hac, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Use `choose χ' h using key`. Conclude with `⟨χ', fun v k hk hv hag P φ hφ hc b h1 h2 g => h b h1 h2 v k hk hv hag P φ hφ hc g⟩`.
+-/
 theorem lift_cen (hθ : IsInfFam θ) {S T : HSp D} {x : DefSp S} {y : DefSp T} (hx : x.Is) (hy : y.Is) {k₀ : KerDat S T}
     (hk₀ : k₀.Is ψ θ x y) (χ : GA D S → ℂ) : ∃ χ' : GA D T → ℂ, ∀ (v : GlobalTheory.Unf.Vol S) (k : KerDat S T), k.Is ψ θ x y →
       k.vac = k₀.vac → (∀ a ∈ GinfC S, ∀ b ∈ GinfC T, ∀ f, IsThetaFunO ψ S T f → k.om (a, b) f = k₀.om (a, b) f) →
@@ -115,12 +143,35 @@ theorem lift_cen (hθ : IsInfFam θ) {S T : HSp D} {x : DefSp S} {y : DefSp T} (
 
 abbrev wv {V : HSp D} (x : DefSp V) (v : GlobalTheory.Unf.Vol V) : DefSp V := ⟨x.s, x.B, x.L, v⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hx.sig, hx.cpt, hx.cart, hx.pm, hx.onb, hx.sd⟩`.
+-/
 theorem wv_is {V : HSp D} {x : DefSp V} (hx : x.Is) (v : GlobalTheory.Unf.Vol V) : (wv x v).Is :=
   ⟨hx.sig, hx.cpt, hx.cart, hx.pm, hx.onb, hx.sd⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hk.weil, hk.vac, hk.fin⟩`.
+-/
 theorem ker_wv {S T : HSp D} {x : DefSp S} {y : DefSp T} {k : KerDat S T} (hk : k.Is ψ θ x y) (v : GlobalTheory.Unf.Vol S)
     (v' : GlobalTheory.Unf.Vol T) : k.Is ψ θ (wv x v) (wv y v') := ⟨hk.weil, hk.vac, hk.fin⟩
 
+/- English proof (translation)
+Establish `hL` using `GlobalTheory.SeeSaw.LiftSumProof.liftSum D`. Take `⟨n, P, P', hF⟩` from `fockRed_uniform D (biAct_all D) (GlobalTheory.SeeSaw.CenFockPf.cenFock D) hL ψ θ hθ A S A' x y z hx hy hz k₀ k₀' hk₀ hk₀' χ C hC hs`. Take `⟨χ₁, h₁⟩` from `lift_cen hθ hx hy hk₀ χ`. Take `⟨χ₂, h₂⟩` from `lift_cen hθ hy hz hk₀' χ₁`. Use `⟨n, P, P', χ₂, fun vA vS k k' hk hk' hv hv' ha ha' φ hφ hc => ?_⟩` and prove the remaining obligations.
+
+Establish `hc1 : ∀ v i, GlobalTheory.Unf.IsContAut S (k.lift ψ θ (wv x v) y (P i) φ)` using `fun v i => (hL ψ θ hθ A S _ y (wv_is hx v) hy k (ker_wv hk v y.vol) (P i)).2.1 φ hφ`. Establish `e : biLift k.om k'.om vA vS φ (biComb ψ A S A' k.c k'.c C) = ∑ i, k'.lift ψ θ (wv y vS) z (P' i) (k.lift ψ θ (wv x vA) (wv y vS) (P i) φ)`. Take `⟨χa, χb, hW⟩` from `hk.weil`. Take `⟨χc, χd, hW'⟩` from `hk'.weil`. Take `⟨s, -, hsA⟩` from `vol_scale vA x.vol`.
+
+Take `⟨s', -, hsS⟩` from `vol_scale vS y.vol`. Establish `hG : IsBiTheta ψ A S A' (biComb ψ A S A' k.c k'.c C)` using `GlobalTheory.FrComb.biTheta_combL hW.std (GlobalTheory.FrComb.biTheta_combR hW.std (GlobalTheory.FrComb.biTheta_of_vac hx.sd hy.sd hz.sd hC hs) hk'.fin) hk.fin`. Establish `e0` using `hF k k' hk hk' hv hv' ha ha' φ hφ hc`. Establish `l1 : ∀ i, k.lift ψ θ (wv x vA) (wv y vS) (P i) φ = s • k.lift ψ θ x y (P i) φ` using `fun i => funext fun h => hsA _ fun γ hγ g => by show k.om (γ * g, h) (k.pt ψ θ x y (P i)) 0 * φ (γ * g) = k.om (g, h) (k.pt ψ θ x y (P i)) 0 * φ g`. Rewrite using `[fix_left hW (hL ψ θ hθ A S x y hx hy k hk (P i)).1 g _ hγ, hφ.1 γ hγ g]`.
+
+Establish `l2 : ∀ i, k'.lift ψ θ (wv y vS) z (P' i) (s • k.lift ψ θ x y (P i) φ) = (s' * s) • k'.lift ψ θ y z (P' i) (k.lift ψ θ x y (P i) φ)` using `fun i => funext fun h => by`. Establish `hh : ∀ φ' : GA D S → ℂ, (∀ γ ∈ GQ S, ∀ g, φ' (γ * g) = φ' g) → k'.lift ψ θ (wv y vS) z (P' i) φ' h = s' * k'.lift ψ θ y z (P' i) φ' h` using `fun φ' hφ' => hsS _ fun γ hγ g => by show k'.om (γ * g, h) (k'.pt ψ θ y z (P' i)) 0 * φ' (γ * g) = k'.om (g, h) (k'.pt ψ θ y z (P' i)) 0 * φ' g`. Rewrite using `[fix_left hW' (hL ψ θ hθ S A' y z hy hz k' hk' (P' i)).1 g _ hγ, hφ' γ hγ g]`. Rewrite using `[hh _ fun γ hγ g => by simp only [Pi.smul_apply, (hc1 x.vol i).1 γ hγ g]]`. Simplify using `only [KerDat.lift, liftT_apply, Pi.smul_apply, smul_eq_mul, mul_left_comm _ s, integral_const_mul, mul_assoc]`.
+
+Simplify using `only [l1, l2]`. Rewrite using `[← Finset.smul_sum, ← e0]`. Generalize the expression as in `biComb ψ A S A' k.c k'.c C = G at hG`. Establish `mid : ∀ p, IsThetaFunO ψ S A' fun v => k.om p (fun u => G u v) 0` using `fun p => biTheta_slice2 ((biAct_all D ψ _ _ _ _ _ _ _ k.om k'.om hW hW' G hG).1 p) 0`. Use function extensionality and compare the values at `h₂`.
+
+Establish `inner : ∀ h₁, ∫ h₀ in vA.𝓕, φ h₀ * k'.om (h₁, h₂) (fun v => k.om (h₀, h₁) (fun u => G u v) 0) 0 ∂vA.μ = s * ∫ h₀ in x.vol.𝓕, φ h₀ * k'.om (h₁, h₂) (fun v => k.om (h₀, h₁) (fun u => G u v) 0) 0 ∂x.vol.μ` using `fun h₁ => hsA _ fun γ hγ h₀ => by simp only [fun v => fix_left hW (biTheta_slice1 hG v) h₀ h₁ hγ, hφ.1 γ hγ h₀]`. Simplify using `only [biLift, inner, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[integral_const_mul, hsS]`. Expand and normalize the polynomial expressions, which then agree. Introduce `γ hγ h₁`.
+
+Use `congr 1`. Use function extensionality and compare the values at `h₀`. Use `congr 1`. Simplify using `only [fun v => fix_right hW (biTheta_slice1 hG v) h₀ h₁ hγ]`. Conclude with `fix_left hW' (mid _) h₁ h₂ hγ`.
+
+Use `⟨e, fun b hb hbc h => ?_⟩` and prove the remaining obligations. Rewrite using `[e, Finset.sum_apply, Finset.sum_apply, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => h₂ vS k' hk' hv' ha' (P' i) _ (hc1 vA i) (h₁ vA k hk hv ha (P i) φ hφ hc) b hb hbc h`.
+-/
 theorem step (hθ : IsInfFam θ) {A S A' : HSp D} {x : DefSp A} {y : DefSp S} {z : DefSp A'} (hx : x.Is) (hy : y.Is) (hz : z.Is)
     {k₀ : KerDat A S} {k₀' : KerDat S A'} (hk₀ : k₀.Is ψ θ x y) (hk₀' : k₀'.Is ψ θ y z) (χ : GA D A → ℂ)
     {C : WO A S → WO S A' → ℂ} (hC : IsBiVac ψ A S A' x.L y.L z.L C) (hs : IsBiSmooth C) :
@@ -196,6 +247,17 @@ variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} (
 def sp (j : ℕ) : DefSp (G.V (.top j)) :=
   ⟨W.cart (.top j), W.onb (.top j), G.Λ (.top j), (GlobalTheory.Unf.Inhab.nonempty_vol _).some⟩
 
+/- English proof (translation)
+Establish `hV` using `G.isV (X := .top j) hj (fun _ e => by cases e)`. Establish `hp : ∀ τ, (gramAt D (G.V (.top j)) τ).PosDef` using `fun τ => posDef_top G hj (tauE D τ)`. Establish `hc : ∀ τ, W.cart (.top j) τ = 1` using `fun τ => GlobalTheory.FockReal.cartan_eq_one (hp τ) (W.cart_is (.top j) hj τ)`. Use `⟨hV.sigOK, GlobalTheory.Unf.Inhab.coCpt_of_posDef hp, W.cart_is (.top j) hj, fun τ => Or.inl (hc τ), fun τ => ?_, hV.sd⟩` and prove the remaining obligations. Take `⟨ε, h1, h2⟩` from `W.onb_is (.top j) hj τ`.
+
+Rewrite `h2` using `[hc, Matrix.one_mul]`. Establish `hJ : Formalism.REAL.Jm ε * Formalism.REAL.Jm ε = 1`. Unfold `Formalism.REAL.Jm`. Rewrite using `[Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `a`. Apply the tactic sequence `split_ifs <;> norm_num`. Establish `h3 : (W.onb (.top j) τ)ᴴ * gramAt D (G.V (.top j)) τ * W.onb (.top j) τ = 1`. Combine the equalities or inequalities in the displayed calculation. Use `⟨(G.V (.top j)).rank, fun _ => 1, fun a => Or.inl ⟨rfl, a.2⟩, ?_, ?_⟩` and prove the remaining obligations.
+
+Use `show (W.onb (.top j) τ)ᴴ * gramAt D (G.V (.top j)) τ * W.onb (.top j) τ = _`. Rewrite using `[h3]`. Simplify using the standard rewrite rules. Use `show W.cart (.top j) τ * W.onb (.top j) τ = W.onb (.top j) τ * _`. Rewrite using `[hc]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem sp_is {j : ℕ} (hj : j ≤ D.R.m) : (sp W j).Is := by
   have hV := G.isV (X := .top j) hj (fun _ e => by cases e)
   have hp : ∀ τ, (gramAt D (G.V (.top j)) τ).PosDef := fun τ => posDef_top G hj (tauE D τ)
@@ -219,6 +281,11 @@ theorem sp_is {j : ℕ} (hj : j ≤ D.R.m) : (sp W j).Is := by
   · show W.cart (.top j) τ * W.onb (.top j) τ = W.onb (.top j) τ * _
     rw [hc]; simp
 
+/- English proof (translation)
+Establish `h2` using `D.R.two_le_m`. Establish `hV` using `G.isV (X := .grid D.R.m D.R.m) ⟨le_rfl, le_rfl⟩ (fun _ e => by injection e; omega)`. Use `GlobalTheory.Unf.Inhab.coCpt_of_posDef fun τ => ?_` and prove the remaining obligations. Use `hV.sigOK (tauE D τ)` as an intermediate fact. Rewrite `this` using `[hV.sig]`.
+
+Simplify using `only [Node.neg, Nat.sub_self, Nat.zero_div, Nat.sub_zero] at this`. Conclude with `GlobalTheory.DefiniteQuotient.posDef_of_signature this`.
+-/
 theorem coCpt_last : GlobalTheory.Unf.CoCpt (G.V (.grid D.R.m D.R.m)) := by
   have h2 := D.R.two_le_m
   have hV := G.isV (X := .grid D.R.m D.R.m) ⟨le_rfl, le_rfl⟩ (fun _ e => by injection e; omega)
@@ -243,11 +310,17 @@ def volT {M : Vol G} (hM : IsHaarDef M) {j : ℕ} (hj : j < D.R.m) : GlobalTheor
   ⟨M.ν (.top j), M.fd (.top j), (hM (.top j) hj.le fun e => by injection e; omega).1,
     (hM (.top j) hj.le fun e => by injection e; omega).2⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem Lp_succ {M : Vol G} (hM : IsHaarDef M) (t : T) (c : Combs G) {j : ℕ} (hj : j < D.R.m) (Q : Pols G) (φ : Fn G (.top 0))
     (v' : GlobalTheory.Unf.Vol (G.V (.top (j + 1)))) :
     Lp W v M t c (j + 1) Q φ = (kd W v t c j).lift W.ψ W.θ (wv (sp W j) (volT hM hj)) (wv (sp W (j + 1)) v') (Q j)
       (Lp W v M t c j Q φ) := rfl
 
+/- English proof (translation)
+Unfold `Lp`. Use `congr 2`. Use function extensionality and compare the values at `i`. Rewrite using `[h i i.2]`.
+-/
 theorem Lp_congr (M : Vol G) (t : T) (c : Combs G) (j : ℕ) {Q Q' : Pols G} (h : ∀ i, i < j → Q i = Q' i) (φ : Fn G (.top 0)) :
     Lp W v M t c j Q φ = Lp W v M t c j Q' φ := by
   unfold Lp
@@ -258,10 +331,16 @@ theorem Lp_congr (M : Vol G) (t : T) (c : Combs G) (j : ℕ) {Q Q' : Pols G} (h 
 variable {v} (hv : ∀ t j, j < D.R.m → W.IsVac (.top t j) (v j))
 include hv
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨_, _, W.om_is (.top t j) (show j + 1 ≤ D.R.m from hj)⟩, hv t j hj, hc⟩`.
+-/
 theorem kd_is (t : T) {c : Combs G} {j : ℕ} (hj : j < D.R.m) (hc : IsFinComb (c.1 j)) :
     (kd W v t c j).Is W.ψ W.θ (sp W j) (sp W (j + 1)) :=
   ⟨⟨_, _, W.om_is (.top t j) (show j + 1 ≤ D.R.m from hj)⟩, hv t j hj, hc⟩
 
+/- English proof (translation)
+The claim follows from `| 0, _ => hφ | j + 1, hj => by rw [Lp_succ W v hM t c hj Q φ (sp W (j + 1)).vol] exact (GlobalTheory.SeeSaw.LiftSumProof.liftSum D W.ψ W.θ W.θ_is _ _ _ _ (wv_is (sp_is W (by omega)) _) (wv_is (sp_is W hj) _) _ (ker_wv (kd_is W hv t hj (hc j hj)) _ _) (Q j)).2.1 _ (Lp_cont hM t hc …`.
+-/
 theorem Lp_cont {M : Vol G} (hM : IsHaarDef M) (t : T) {c : Combs G} (hc : ∀ j, j < D.R.m → IsFinComb (c.1 j)) (Q : Pols G)
     {φ : Fn G (.top 0)} (hφ : GlobalTheory.Unf.IsContAut _ φ) : ∀ j, j ≤ D.R.m → GlobalTheory.Unf.IsContAut _ (Lp W v M t c j Q φ)
   | 0, _ => hφ
@@ -270,6 +349,9 @@ theorem Lp_cont {M : Vol G} (hM : IsHaarDef M) (t : T) {c : Combs G} (hc : ∀ j
     exact (GlobalTheory.SeeSaw.LiftSumProof.liftSum D W.ψ W.θ W.θ_is _ _ _ _ (wv_is (sp_is W (by omega)) _) (wv_is (sp_is W hj) _) _
       (ker_wv (kd_is W hv t hj (hc j hj)) _ _) (Q j)).2.1 _ (Lp_cont hM t hc Q hφ j (by omega))
 
+/- English proof (translation)
+Establish `h` using `(GlobalTheory.SeeSaw.LiftSumProof.liftSum D W.ψ W.θ W.θ_is _ _ _ _ (wv_is (sp_is W hj.le) (volT hM hj)) (wv_is (sp_is W hj) v') _ (ker_wv (kd_is W hv t hj (hc j hj)) _ _) P).2.2 I Finset.univ (fun _ => 1) φ fun i _ => hφ i`. Simplify `h` using `only [one_smul]`.
+-/
 theorem lift_sum {M : Vol G} (hM : IsHaarDef M) (t : T) {c : Combs G} (hc : ∀ j, j < D.R.m → IsFinComb (c.1 j)) {j : ℕ}
     (hj : j < D.R.m) (v' : GlobalTheory.Unf.Vol (G.V (.top (j + 1)))) (P) {I : Type} [Fintype I] (φ : I → Fn G (.top j))
     (hφ : ∀ i, GlobalTheory.Unf.IsContAut _ (φ i)) :
@@ -283,6 +365,15 @@ variable (hre : ∀ t t' j, j < D.R.m → ∀ a ∈ GinfC _, ∀ b ∈ GinfC _, 
   W.om (.top t j) (a, b) f = W.om (.top t' j) (a, b) f) {C : BiFam G} (hC : IsRealFam W C) (t₀ : T)
 include hre hC t₀
 
+/- English proof (translation)
+Establish `h0 : j < D.R.m` using `by omega`. Establish `h1 : j + 1 < D.R.m` using `by omega`. Establish `hz : ∀ j, IsFinComb ((0 : Combs G).1 j)` using `fun j u hu => absurd hu (Finset.notMem_empty u)`. Take `⟨n, P, P', χ', hS⟩` from `step W.θ_is (sp_is W h0.le) (sp_is W h1.le) (sp_is W (j := j + 1 + 1) h1) (kd_is W hv t₀ h0 (hz _)) (kd_is W hv t₀ h1 (hz _)) χ (hC j he h0).1 (hC j he h0).2`. Use `⟨Fin n × I, inferInstance, fun p => Function.update (Function.update (Q p.2) j (P p.1)) (j + 1) (P' p.1), χ', fun t M hM c hc φ hφ hχ => ?_⟩` and prove the remaining obligations.
+
+Establish `hcont` using `fun i => Lp_cont W hv hM t hc (Q i) hφ j h0.le`. Establish `hsum : GlobalTheory.Unf.IsContAut _ (∑ i, Lp W v M t c j (Q i) φ)` using `⟨fun γ hγ g => by simp only [Finset.sum_apply, (hcont _).1 γ hγ g], by simpa only [Finset.sum_fn] using continuous_finset_sum _ fun i _ => (hcont i).2⟩`. Take `⟨e1, e2⟩` from `hS (volT hM h0) (volT hM h1) _ _ (kd_is W hv t h0 (hc _ h0)) (kd_is W hv t h1 (hc _ h1)) rfl rfl (hre t t₀ j h0) (hre t t₀ (j + 1) h1) _ hsum hχ`. Establish `e : biL W M t j (∑ i, Lp W v M t c j (Q i) φ) (combC W c C j) = ∑ p : Fin n × I, Lp W v M t c (j + 1 + 1) (Function.update (Function.update (Q p.2) j (P p.1)) (j + 1) (P' p.1)) φ`. Use `Eq.trans e1 ?_` and prove the remaining obligations.
+
+Rewrite using `[Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[lift_sum W hv hM t hc h0 _ _ _ hcont]`. Use `(lift_sum W hv hM t hc h1 (sp W (j + 1 + 1)).vol _ _ fun i' => (GlobalTheory.SeeSaw.LiftSumProof.liftSum D W.ψ W.θ W.θ_is _ _ _ _ (wv_is (sp_is W h0.le) _) (wv_is (sp_is W h1.le) _) _ (ker_wv (kd_is W hv t h0 (hc j h0)) _ _) (P i)).2.1 _ (hcont i')).trans (Finset.sum_congr rfl fu …` and prove the remaining obligations. Rewrite using `[Lp_succ W v hM t c h1 _ φ (sp W (j + 1 + 1)).vol, Lp_succ W v hM t c h0 _ φ (volT hM h1), Function.update_self, Function.update_of_ne (by omega), Function.update_self, Lp_congr W v M t c j (Q := Function.update (Function.update (Q i') j (P i)) (j + 1) (P' i)) (Q' := Q i') fun k …`.
+
+Rewrite using `[Function.update_of_ne (by omega), Function.update_of_ne (by omega)]]`. Conclude with `⟨e, e ▸ e2⟩`.
+-/
 theorem col_step {j : ℕ} (hj : j + 2 ≤ D.R.m) (he : Even j) (I : Type) [Fintype I] (Q : I → Pols G) (χ : GA D (G.V (.top j)) → ℂ) :
     ∃ (I' : Type) (_ : Fintype I') (Q' : I' → Pols G) (χ' : GA D (G.V (.top (j + 1 + 1))) → ℂ),
       ∀ t (M : Vol G), IsHaarDef M → ∀ c : Combs G, (∀ j, j < D.R.m → IsFinComb (c.1 j)) → ∀ φ, GlobalTheory.Unf.IsContAut _ φ →
@@ -318,12 +409,26 @@ theorem col_step {j : ℕ} (hj : j + 2 ≤ D.R.m) (he : Even j) (I : Type) [Fint
   exact ⟨e, e ▸ e2⟩
 
 omit hv hre hC t₀ in
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 theorem Lp_topEmb (M : Vol G) (t : T) (c : Combs G) (Q : Pols G) (φ : Fn G (.top 0)) {n : ℕ} (h : D.R.m = n)
     (x : GA D (G.V (.grid D.R.m D.R.m))) :
     Lp W v M t c n Q φ (GlobalTheory.RowChain.topEmb G h x) = Lp W v M t c D.R.m Q φ (stabilizerEmbedding G.sp.topDec x) := by
   subst h
   rfl
 
+/- English proof (translation)
+Introduce `σ`. Proceed by induction on `σ with`. Consider the case `zero`. Introduce `j hj he I _ Q χ`. Take `⟨I', _, Q', χ', hS⟩` from `col_step W hv hre hC t₀ (by omega) he I Q χ`.
+
+Use `⟨I', inferInstance, Q', fun t M hM c hc φ hφ hχ F hF => ?_⟩` and prove the remaining obligations. Use `show ∫ h' in M.fd (.grid D.R.m D.R.m), F h' * biL W M t j (∑ i, Lp W v M t c j (Q i) φ) (combC W c C j) (GlobalTheory.RowChain.topEmb G _ h') ∂M.ν (.grid D.R.m D.R.m) = _`. Rewrite using `[(hS t M hM c hc φ hφ hχ).1]`. Simplify using `only [Finset.sum_apply, Lp_topEmb, mul_comm (F _), Finset.sum_mul]`. Apply `integral_finset_sum` to reduce the goal to its premises.
+
+Introduce `i _`. Establish `h1` using `Lp_cont W hv hM t hc (Q' i) hφ D.R.m le_rfl`. Establish `h2` using `hM (.grid D.R.m D.R.m) ⟨le_rfl, rfl⟩ (fun e => by cases e)`. Use `(GlobalTheory.Unf.contAut_rapidDec_bounded_integrable D _ coCpt_last _ ⟨fun γ hγ g => ?_, ?_⟩).2.2 ⟨_, _, h2.1, h2.2⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.UnitaryEmbeddingProperties.unitaryEmbedding_mul, h1.1 _ (GlobalTheory.UnitaryEmbeddingProperties.unitaryEmbedding_rational _ γ hγ), hF.1 γ hγ g]`.
+
+Conclude with `(h1.2.comp (GlobalTheory.UnitaryEmbeddingProperties.continuous_unitaryEmbedding _)).mul hF.2`. Consider the case `succ σ ih`. Introduce `j hj he I _ Q χ`. Take `⟨I', _, Q', χ', hS⟩` from `col_step W hv hre hC t₀ (by omega) he I Q χ`. Take `⟨I'', _, Q'', hS'⟩` from `ih (j + 1 + 1) (by omega) (by rw [add_assoc]; exact he.add even_two) I' Q' χ'`.
+
+Use `⟨I'', inferInstance, Q'', fun t M hM c hc φ hφ hχ F hF => ?_⟩` and prove the remaining obligations. Use `show jPer W M t (combC W c C) F σ (j + 1 + 1) _ (biL W M t j (∑ i, Lp W v M t c j (Q i) φ) (combC W c C j)) = _`. Rewrite using `[(hS t M hM c hc φ hφ hχ).1]`. Conclude with `hS' t M hM c hc φ hφ (hS t M hM c hc φ hφ hχ).2 F hF`.
+-/
 theorem col_ind : ∀ σ j (hj : j + 2 * σ + 2 = D.R.m), Even j → ∀ (I : Type) [Fintype I] (Q : I → Pols G)
     (χ : GA D (G.V (.top j)) → ℂ), ∃ (I' : Type) (_ : Fintype I') (Q' : I' → Pols G),
       ∀ t (M : Vol G), IsHaarDef M → ∀ c : Combs G, (∀ j, j < D.R.m → IsFinComb (c.1 j)) → ∀ φ, GlobalTheory.Unf.IsContAut _ φ →
@@ -359,6 +464,11 @@ theorem col_ind : ∀ σ j (hj : j + 2 * σ + 2 = D.R.m), Even j → ∀ (I : Ty
 
 end Grid
 
+/- English proof (translation)
+Establish `hsc` using `GlobalTheory.CenterScalar.center_scalar D θ hθ V x hx z h1 h2`. Establish `hc : ∀ g, GlobalTheory.CoefModel.realGL θ V z * g = g * GlobalTheory.CoefModel.realGL θ V z` using `fun g => funext fun τ => by`. Take `⟨ζ, -, e⟩` from `hsc τ`. Establish `e' : (GlobalTheory.CoefModel.realGL θ V z τ).val = ζ • (1 : Matrix (Fin V.rank) (Fin V.rank) ℂ)` using `e`. Use `Units.ext ?_` and prove the remaining obligations.
+
+Rewrite using `[Pi.mul_apply, Pi.mul_apply, Units.val_mul, Units.val_mul, e', Matrix.smul_mul, Matrix.mul_smul, Matrix.one_mul, Matrix.mul_one]`. Generalize the expression as in `GlobalTheory.CoefModel.realGL θ V z = u at hc`. Establish `hi : ∀ g : D.what₂.Tau → GL (Fin V.rank) ℂ, invTrK (invTrK g) = g` using `fun g => funext fun τ => Units.ext rfl`. Use `GlobalTheory.CoefSchur.endo_scalar ℂ lam _ fun h w => ?_` and prove the remaining obligations. Rewrite using `[← Module.End.mul_apply, ← Module.End.mul_apply, ← map_mul, ← map_mul, ← hi h, ← map_mul invTrK, ← map_mul invTrK, hc]`.
+-/
 theorem rho_central {D : D7} {θ : InfFam D} (hθ : IsInfFam θ) {V : HSp D} {x : DefSp V} (hx : x.Is)
     (lam : D.what₂.Tau → DomWeight V.rank) {z : GA D V} (h1 : z ∈ GinfC V) (h2 : z ∈ Subgroup.center (GA D V)) :
     ∃ s : ℂ, ∀ w, rhoK lam (invTrK (GlobalTheory.CoefModel.realGL θ V z)) w = s • w := by
@@ -374,6 +484,11 @@ theorem rho_central {D : D7} {θ : InfFam D} (hθ : IsInfFam θ) {V : HSp D} {x 
   refine GlobalTheory.CoefSchur.endo_scalar ℂ lam _ fun h w => ?_
   rw [← Module.End.mul_apply, ← Module.End.mul_apply, ← map_mul, ← map_mul, ← hi h, ← map_mul invTrK, ← map_mul invTrK, hc]
 
+/- English proof (translation)
+Introduce `z h1 h2 h`. Establish `hz : finHom V z = 1` using `MonoidHom.mem_ker.1 h1`. Establish `hz' : (finHom V).rangeRestrict z = 1` using `Subtype.ext hz`. Establish `e : (finHom V).rangeRestrict (h * z) = (finHom V).rangeRestrict h` using `(map_mul _ _ _).trans ((congrArg ((finHom V).rangeRestrict h * ·) hz').trans (mul_one _))`. Establish `e2 : c.ρ (h * z)⁻¹ = c.ρ z⁻¹ * c.ρ h⁻¹` using `by rw [_root_.mul_inv_rev, map_mul]`.
+
+Establish `e3 : ∀ w, c.ρ (h * z)⁻¹ w = χ z • c.ρ h⁻¹ w` using `fun w => (LinearMap.congr_fun e2 w).trans (hχ z h1 h2 _)`. Use `(pairVec_apply c ξ Ψ (h * z)).trans ?_` and prove the remaining obligations. Use `(congrArg ξ (e3 _)).trans ?_` and prove the remaining obligations. Use `(ξ.map_smul _ _).trans ?_` and prove the remaining obligations. Conclude with `congrArg (fun q => χ z * ξ (c.ρ h⁻¹ (Ψ q))) e`.
+-/
 theorem pairVec_cen' {D : D7} {V : HSp D} (c : CoefA V) (χ : GA D V → ℂ)
     (hχ : ∀ z ∈ GinfC V, z ∈ Subgroup.center (GA D V) → ∀ w, c.ρ z⁻¹ w = χ z • w) (ξ : Module.Dual ℂ c.W)
     (Ψ : Bridge.Gf V → c.W) : HasCen V χ (pairVec c ξ Ψ) := by
@@ -390,6 +505,11 @@ theorem pairVec_cen' {D : D7} {V : HSp D} (c : CoefA V) (χ : GA D V → ℂ)
   exact congrArg (fun q => χ z * ξ (c.ρ h⁻¹ (Ψ q))) e
 
 open scoped ComplexOrder in
+/- English proof (translation)
+Distinguish the cases in `hz : z ∈ GinfC V ∧ z ∈ Subgroup.center (GA D V)`. Use `swap`. Conclude with `⟨0, fun h1 h2 => absurd ⟨h1, h2⟩ hz⟩`. Take `⟨s, hs⟩` from `rho_central hθ hx lam (inv_mem hz.1) (inv_mem hz.2)`. Use `⟨s, fun _ _ w => ?_⟩` and prove the remaining obligations.
+
+Take `⟨w, rfl⟩` from `(GlobalTheory.CoefModel.toHilb lam hJ).surjective w`. Rewrite using `[GlobalTheory.CoefModel.rhoH_toHilb, hs]`. Conclude with `(GlobalTheory.CoefModel.toHilb lam hJ).map_smul _ _`.
+-/
 theorem rhoH_central {D : D7} {θ : InfFam D} (hθ : IsInfFam θ) {V : HSp D} {x : DefSp V} (hx : x.Is)
     (lam : D.what₂.Tau → DomWeight V.rank) {J : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ} (hJ : ∀ τ, (J τ).PosDef)
     (z : GA D V) : ∃ s : ℂ, z ∈ GinfC V → z ∈ Subgroup.center (GA D V) →
@@ -405,6 +525,9 @@ theorem rhoH_central {D : D7} {θ : InfFam D} (hθ : IsInfFam θ) {V : HSp D} {x
 
 open scoped ComplexOrder in
 
+/- English proof (translation)
+Use `choose χ hχ using rhoH_central hθ hx lam hJ`. Conclude with `⟨χ, pairVec_cen' _ χ hχ⟩`.
+-/
 theorem pairVec_cen {D : D7} {θ : InfFam D} (hθ : IsInfFam θ) {V : HSp D} {x : DefSp V} (hx : x.Is)
     (lam : D.what₂.Tau → DomWeight V.rank) {J : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ} (hJ : ∀ τ, (J τ).PosDef) :
     ∃ χ, ∀ ξ Ψ, HasCen V χ (pairVec (GlobalTheory.CoefModel.coefOf lam hJ (invTrK.comp (GlobalTheory.CoefModel.realGL θ V))) ξ Ψ) := by
@@ -416,10 +539,20 @@ section Col
 variable {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type} {A : FamIn D.what₂.LL Γ Pl0 T D.R.m}
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks} (ch : Choice R)
 
+/- English proof (translation)
+Take `⟨χ, hχ⟩` from `pairVec_cen ch.W.θ_is (sp_is ch.W (Nat.zero_le _)) (LaP ch.G) (GlobalTheory.IndefiniteRowSideFullHecke.LevelPlusSubgroup.posDef_dual ch.G)`. Conclude with `⟨χ, fun a => hχ ch.ξ (ch.col a)⟩`.
+-/
 theorem colFn_cen : ∃ χ, ∀ a, HasCen _ χ (colFn ch a) := by
   obtain ⟨χ, hχ⟩ := pairVec_cen ch.W.θ_is (sp_is ch.W (Nat.zero_le _)) (LaP ch.G) (GlobalTheory.IndefiniteRowSideFullHecke.LevelPlusSubgroup.posDef_dual ch.G)
   exact ⟨χ, fun a => hχ ch.ξ (ch.col a)⟩
 
+/- English proof (translation)
+Introduce `v hv C hC`. Break down `isEmpty_or_nonempty T with hT | ⟨⟨t₀⟩⟩` into its components or cases. Conclude with `⟨0, fun t => hT.elim t⟩`. Take `⟨χ, hχ⟩` from `colFn_cen ch`. Take `⟨I, _, Q, h⟩` from `col_ind ch.W hv (fun t t' j hj => (hre t t' j hj).1) hC t₀ _ 0 top_idx ⟨0, rfl⟩ Unit (fun _ => 0) χ`.
+
+Use `⟨∑ i, Finsupp.single (fun j : Fin D.R.m => Q i j) 1, fun t M hM a c hfc F hF => ?_⟩` and prove the remaining obligations. Establish `e : ∑ _i : Unit, Lp ch.W v M t c 0 0 (colFn ch a) = colFn ch a` using `Fintype.sum_unique _`. Establish `h1` using `h t M hM c hfc (colFn ch a) (hc a) (e.symm ▸ hχ a) F hF`. Rewrite `h1` using `[e]`. Rewrite using `[h1, ← Finsupp.sum_finsetSum_index (fun _ => zero_mul _) (fun _ _ _ => add_mul _ _ _)]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finsupp.sum_single_index (zero_mul _), one_mul]`. Both sides reduce to the same expression.
+-/
 theorem colFock_of (hc : ∀ a, GlobalTheory.Unf.IsContAut _ (colFn ch a)) (hre : RealEqAt ch) : ColFock ch := by
   intro v hv C hC
   rcases isEmpty_or_nonempty T with hT | ⟨⟨t₀⟩⟩
@@ -437,6 +570,9 @@ theorem colFock_of (hc : ∀ a, GlobalTheory.Unf.IsContAut _ (colFn ch a)) (hre 
 
 end Col
 
+/- English proof (translation)
+The claim follows from `big_mono (fun ch h => colFock_of ch (fun a => ⟨(h.1 a).2, (h.1 a).1⟩) h.2) (Big.and GlobalTheory.RowClaim.colFn_cont_left GlobalTheory.RowRealEq.realEqAt)`.
+-/
 theorem colFock_big : Big fun ch => ColFock ch :=
   big_mono (fun ch h => colFock_of ch (fun a => ⟨(h.1 a).2, (h.1 a).1⟩) h.2)
     (Big.and GlobalTheory.RowClaim.colFn_cont_left GlobalTheory.RowRealEq.realEqAt)

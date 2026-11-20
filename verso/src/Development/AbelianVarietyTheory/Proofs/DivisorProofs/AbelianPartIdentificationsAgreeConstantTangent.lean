@@ -13,6 +13,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.RigHom
 
+/- English proof (translation)
+Use `⟨2, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_two, Ideal.zero_eq_bot, eq_bot_iff]`. Use `Submodule.mul_le.2 fun a ha b hb => ?_` and prove the remaining obligations. Rewrite `ha`, `hb` using `[RingHom.mem_ker]`. Express the relevant statement in the definitionally equal form `a.fst = 0 at ha`.
+
+Express the relevant statement in the definitionally equal form `b.fst = 0 at hb`. Rewrite using `[Submodule.mem_bot]`. Apply the tactic sequence `ext <;> simp [ha, hb]`.
+-/
 theorem isNilpotent_ker_fst (k : Type) [Field k] :
     IsNilpotent (RingHom.ker (TrivSqZeroExt.fstHom k k k).toRingHom) := by
   refine ⟨2, ?_⟩
@@ -24,6 +29,9 @@ theorem isNilpotent_ker_fst (k : Type) [Field k] :
   rw [Submodule.mem_bot]
   ext <;> simp [ha, hb]
 
+/- English proof (translation)
+Use `RingHom.ext fun x => ?_` and prove the remaining obligations. Simplify using `only [RingHom.comp_apply]`. Rewrite using `[Ideal.Quotient.eq, RingHom.mem_ker]`. Simplify using `[TrivSqZeroExt.algebraMap_eq_inl]`.
+-/
 theorem mk_ker_fst_eq (k : Type) [Field k] :
     Ideal.Quotient.mk (RingHom.ker (TrivSqZeroExt.fstHom k k k).toRingHom) =
       ((Ideal.Quotient.mk (RingHom.ker (TrivSqZeroExt.fstHom k k k).toRingHom)).comp
@@ -37,12 +45,30 @@ end GlobalTheory.RigHom
 
 namespace GlobalTheory.RigHom
 
+/- English proof (translation)
+Use `show Spec.map _ ≫ Spec.map _ = Spec.map _`. Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem spMap_comp' {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap g ≫ spMap f = spMap (g.comp f) := by
   show Spec.map _ ≫ Spec.map _ = Spec.map _
   rw [← Spec.map_comp]
   rfl
 
+/- English proof (translation)
+Introduce `R _ _ Q W₀ _ ιb B₀ _ β hβ k _ ρ hρ B' _ π₁ π₂ h₁ h₂ h0`. Establish `c₁ : IsGrpPullback B' B₀ (spMap (ρ.comp ιb)) (π₁ ≫ β)` using `(IsGrpPullback.comp h₁ hβ).congr (spMap_comp' ιb ρ) rfl`. Establish `c₂ : IsGrpPullback B' B₀ (spMap (ρ.comp ιb)) (π₂ ≫ β)`. Use `(IsGrpPullback.comp h₂ hβ).congr ?_ rfl` and prove the remaining obligations. Rewrite using `[spMap_comp', hρ]`.
+
+Both sides reduce to the same expression. Establish `hab : IsAbelianScheme B'` using `GlobalTheory.PolPull.isAbelianScheme_of_isGrpPullback Q.P.isAb h₁`. Take `⟨e₁, he₁, f₁⟩` from `grpPullback_iso c₁ (isGrpPullback_pullback B₀ (spMap (ρ.comp ιb)))`. Take `⟨e₂, he₂, f₂⟩` from `grpPullback_iso c₂ (isGrpPullback_pullback B₀ (spMap (ρ.comp ιb)))`. Set `I` to `RingHom.ker (TrivSqZeroExt.fstHom k k k).toRingHom`.
+
+Establish `hI : I ≤ nilradical (DualNumber k)`. Take `⟨n, hn⟩` from `isNilpotent_ker_fst k`. Introduce `x hx`. Conclude with `⟨n, by`. Establish `: x ^ n ∈ I ^ n` using `Ideal.pow_mem_pow hx n`.
+
+Rewrite `this` using `[hn]`. Simplify using `using this⟩`. Establish `hj : pullback.fst B'.hom (spMap (Ideal.Quotient.mk I)) ≫ π₁ = pullback.fst B'.hom (spMap (Ideal.Quotient.mk I)) ≫ π₂`. Use `h0 _ _ (pullback.snd B'.hom (spMap (Ideal.Quotient.mk I)) ≫ spMap ((Ideal.Quotient.mk I).comp (algebraMap k (DualNumber k)))) ?_` and prove the remaining obligations. Rewrite using `[pullback.condition, Category.assoc, spMap_comp']`.
+
+Use `congr 2`. Conclude with `mk_ker_fst_eq k`. Establish `key : e₁.hom = e₂.hom`. Use `GlobalTheory.NilRigidity.eq_of_eq_on_quotient I hI B' _ hab e₁.hom e₂.hom ?_ (by rw [he₁.one_hom, he₂.one_hom])` and prove the remaining obligations. Apply `pullback.hom_ext` to reduce the goal to its premises.
+
+Establish `f₁' : e₁.hom.left ≫ pullback.fst B₀.hom (spMap (ρ.comp ιb)) = π₁ ≫ β` using `f₁`. Establish `f₂' : e₂.hom.left ≫ pullback.fst B₀.hom (spMap (ρ.comp ιb)) = π₂ ≫ β` using `f₂`. Rewrite using `[Category.assoc, Category.assoc, f₁', f₂', ← Category.assoc, hj, Category.assoc]`. Establish `w₁ : e₁.hom.left ≫ pullback.snd B₀.hom (spMap (ρ.comp ιb)) = B'.hom` using `Over.w e₁.hom`. Establish `w₂ : e₂.hom.left ≫ pullback.snd B₀.hom (spMap (ρ.comp ιb)) = B'.hom` using `Over.w e₂.hom`.
+
+Rewrite using `[Category.assoc, Category.assoc, w₁, w₂]`. Rewrite using `[← f₁, ← f₂, key]`.
+-/
 theorem comp_eq_of_const : ∀ {R : Type} [CommRing R] [IsDomain R] (Q : DegPre R) {W₀ : Type} [CommRing W₀] (ιb : W₀ →+* R) (B₀ : Over (Sp W₀)) [GrpObj B₀] (β : Q.P.A.left ⟶ B₀.left), IsGrpPullback Q.P.A B₀ (spMap ιb) β → ∀ (k : Type) [Field k] (ρ : R →+* DualNumber k), ρ.comp ιb = GlobalTheory.RigChart.constHom (ρ.comp ιb) → ∀ (B' : Over (Sp (DualNumber k))) [GrpObj B'] (π₁ π₂ : B'.left ⟶ Q.P.A.left), IsGrpPullback B' Q.P.A (spMap ρ) π₁ → IsGrpPullback B' Q.P.A (spMap (GlobalTheory.RigChart.constHom ρ)) π₂ → (∀ (Z : Scheme.{0}) (x : Z ⟶ B'.left) (y : Z ⟶ Sp k), x ≫ B'.hom = y ≫ spMap (TrivSqZeroExt.fstHom k k k).toRingHom → x ≫ π₁ = x ≫ π₂) → π₁ ≫ β = π₂ ≫ β := by
   intro R _ _ Q W₀ _ ιb B₀ _ β hβ k _ ρ hρ B' _ π₁ π₂ h₁ h₂ h0
   have c₁ : IsGrpPullback B' B₀ (spMap (ρ.comp ιb)) (π₁ ≫ β) :=

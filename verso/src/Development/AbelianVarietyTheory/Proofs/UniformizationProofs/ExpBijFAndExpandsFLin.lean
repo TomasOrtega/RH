@@ -15,6 +15,11 @@ open GlobalTheory.UT
 
 namespace GlobalTheory.UT
 
+/- English proof (translation)
+Introduce `hL R _ _ _ I _ D A G _ _ _ U`. Use `⟨GlobalTheory.expansion_bijective_over_fields hL.1.globalFns R I D A G U, ?_⟩` and prove the remaining obligations. Introduce `F _ _ k w₀ t t' t'' s s' c h h' e`. Establish `key` using `GlobalTheory.FieldBaseChange.expandsF_lin U.toUnifPre F c h h'`. Establish `ext : ∀ a b : SecA A F k, (∀ j, a.f j = b.f j) → a = b`.
+
+Introduce and unpack `⟨a, _⟩ ⟨b, _⟩ hab`. Take `rfl : a = b` from `funext hab`. Both sides reduce to the same expression. Conclude with `(congrArg (fun x : SecA A F k => U.ExpandsF F k w₀ x (c • s + s')) (ext t'' _ fun j => (e j).trans rfl)).mpr key`.
+-/
 theorem expBijF_and_expandsF_lin : LL → AllU fun {R} _ _ {I} {D} {A} {G} _ _ U => ExpBijF U.toUnifPre ∧ ∀ (F : Type) [Field F] [Algebra (FractionRing R) F] (k : ℕ) (w₀ : W0 U.toUnifPre) (t t' t'' : SecA A F k) (s s' : Fam D.toPre F k) (c : F), U.ExpandsF F k w₀ t s → U.ExpandsF F k w₀ t' s' → (∀ j, t''.f j = liftFun A.A _ ((Scheme.ΓSpecIso (CommRingCat.of F)).inv.hom c) * t.f j + t'.f j) → U.ExpandsF F k w₀ t'' (c • s + s') := by
   intro hL R _ _ _ I _ D A G _ _ _ U
   refine ⟨GlobalTheory.expansion_bijective_over_fields hL.1.globalFns R I D A G U, ?_⟩

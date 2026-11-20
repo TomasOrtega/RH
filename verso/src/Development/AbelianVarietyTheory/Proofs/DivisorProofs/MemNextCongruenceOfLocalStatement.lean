@@ -9,5 +9,8 @@ open Formalism.BasicNotions Formalism.MainNotions.GlobalTheoryTheory.GenusMassVo
 open scoped TensorProduct ENNReal
 open GlobalTheory.TamSU GlobalTheory.SUVol GlobalTheory.UCls GlobalTheory.AdLat GlobalTheory.Published
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.TamCnt.LevelUp.mem_congG_succ | exact GlobalTheory.TamCnt.LevelUp.mem_congG_succ | (intros; apply GlobalTheory.TamCnt.LevelUp.mem_congG_succ <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.mem_next_congruence_of_local : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (M : ℕ) (J : Matrix (Fin M) (Fin M) E) (Λ : Submodule (𝓞 E) (Fin M → E)) (v : HeightOneSpectrum (𝓞 F)) (k : ℕ), ∀ (h : GlobalTheory.Published.SUAdelic σ J), h ∈ GlobalTheory.TamCnt.congG σ J Λ v k → GlobalTheory.TamCnt.locHom σ J v h ∈ GlobalTheory.TamCnt.locCong σ J Λ v (k + 1) → h ∈ GlobalTheory.TamCnt.congG σ J Λ v (k + 1) := by
   first | exact @GlobalTheory.TamCnt.LevelUp.mem_congG_succ | exact GlobalTheory.TamCnt.LevelUp.mem_congG_succ | (intros; apply GlobalTheory.TamCnt.LevelUp.mem_congG_succ <;> assumption)

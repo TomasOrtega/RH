@@ -8,6 +8,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.RedAdjCong
 
+/- English proof (translation)
+Establish `h2 : ∀ N : Matrix (Fin m) (Fin n) E, (d • N).map φ = φ d • N.map φ`. Introduce `N`. Use extensionality with `b a`. Simplify using the standard rewrite rules. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul, h2, Matrix.mul_smul, Matrix.smul_mul, Matrix.smul_apply, smul_eq_mul, mul_left_comm]`.
+-/
 theorem conj_smul_entry {E R : Type} [CommRing E] [CommRing R] (φ : E →+* R) {m n : ℕ} (t : R) (d : E)
     (A : Matrix (Fin m) (Fin m) R) (B : Matrix (Fin n) (Fin n) R) (G : Matrix (Fin m) (Fin m) E)
     (H : Matrix (Fin n) (Fin n) E) (M : Matrix (Fin m) (Fin n) E) (i : Fin m) (j : Fin n) :
@@ -21,6 +24,9 @@ theorem conj_smul_entry {E R : Type} [CommRing E] [CommRing R] (φ : E →+* R) 
 
 variable {D : D7} (S T : HSp D) (βS : GL (Fin S.rank) (EAf D)) (βT : GL (Fin T.rank) (EAf D)) (e : AE D)
 
+/- English proof (translation)
+Establish `h : (Matrix.of fun b a => D.sp.cm.sig ((X b + Y b) a) : Matrix (Fin S.rank) (Fin T.rank) D.host.E) = (Matrix.of fun b a => D.sp.cm.sig (X b a)) + (Matrix.of fun b a => D.sp.cm.sig (Y b a))`. Use extensionality with `b a`. Simplify using the standard rewrite rules. Unfold `uMat`. Rewrite using `[h, Matrix.mul_add, Matrix.add_mul, Matrix.map_add _ (map_add (eToEAf D)), Matrix.mul_add, Matrix.add_mul, Matrix.add_apply, mul_add]`.
+-/
 theorem adj_add (X Y : Fin S.rank → Fin T.rank → D.host.E) (i : Fin S.rank) (j : Fin T.rank) :
     uMat S T βS βT e (fun b => X b + Y b) i j = uMat S T βS βT e X i j + uMat S T βS βT e Y i j := by
   have h : (Matrix.of fun b a => D.sp.cm.sig ((X b + Y b) a) : Matrix (Fin S.rank) (Fin T.rank) D.host.E)
@@ -31,6 +37,11 @@ theorem adj_add (X Y : Fin S.rank → Fin T.rank → D.host.E) (i : Fin S.rank) 
   rw [h, Matrix.mul_add, Matrix.add_mul, Matrix.map_add _ (map_add (eToEAf D)), Matrix.mul_add, Matrix.add_mul,
     Matrix.add_apply, mul_add]
 
+/- English proof (translation)
+Establish `h : (Matrix.of fun b a => D.sp.cm.sig ((c • X b) a) : Matrix (Fin S.rank) (Fin T.rank) D.host.E) = D.sp.cm.sig c • (Matrix.of fun b a => D.sp.cm.sig (X b a))`. Use extensionality with `b a`. Simplify using the standard rewrite rules. Unfold `uMat`. Rewrite using `[h]`.
+
+Apply the tactic sequence `exact conj_smul_entry (eToEAf D) _ _ _ _ _ _ _ i j`.
+-/
 theorem adj_smul (c : D.host.E) (X : Fin S.rank → Fin T.rank → D.host.E) (i : Fin S.rank) (j : Fin T.rank) :
     uMat S T βS βT e (fun b => c • X b) i j = eToEAf D (D.sp.cm.sig c) * uMat S T βS βT e X i j := by
   have h : (Matrix.of fun b a => D.sp.cm.sig ((c • X b) a) : Matrix (Fin S.rank) (Fin T.rank) D.host.E)
@@ -47,6 +58,23 @@ namespace GlobalTheory
 
 open GlobalTheory.RedAdjCong in
 
+/- English proof (translation)
+Introduce `D S T βS βT e La _ _ ι hint J PP hJ x x' hx`. Use extensionality with `i j`. Set `f : (Fin S.rank → La) →+ Formalism.L2.Herm.intAf D.host.F D.host.E` to `AddMonoidHom.mk' (fun y => ⟨uMat S T βS βT e (fun b => ι (y b)) i j, hint y i j⟩) (by`. Introduce `y z`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Use `show uMat S T βS βT e (fun b => ι (y b + z b)) i j = _ + _`. Simplify using `only [map_add]`. Conclude with `adj_add S T βS βT e _ _ i j)`. Set `g : (Fin S.rank → La) →+ kP PP` to `(resS D.host.F PP).toAddMonoidHom.comp f`. Establish `hg : ∀ y, redM PP (uMat S T βS βT e fun b => ι (y b)) i j = g y`.
+
+Introduce `y`. Unfold `redM`. Rewrite using `[dif_pos (hint y i j)]`. Both sides reduce to the same expression. Establish `hs : ∀ a ∈ J, ∀ y : Fin S.rank → La, g (a • y) = 0`.
+
+Introduce `a ha y`. Take `⟨a', ha', hc⟩` from `hJ a ha`. Establish `h1 : f (a • y) = oToS D.host.F D.host.E a' * f y`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show uMat S T βS βT e (fun b => ι (a • y b)) i j = eToEAf D (a' : D.host.E) * uMat S T βS βT e (fun b => ι (y b)) i j`.
+
+Rewrite using `[hc]`. Simplify using `only [map_smul]`. Conclude with `adj_smul S T βS βT e (a : D.host.E) (fun b => ι (y b)) i j`. Use `show resS D.host.F PP (f (a • y)) = 0`. Rewrite using `[h1, map_mul, resS_oToS, Ideal.Quotient.eq_zero_iff_mem.2 ha', zero_mul]`.
+
+Establish `h0 : ∀ (b : Fin S.rank) (l : La), l ∈ J • (⊤ : Submodule (𝓞 D.host.E) La) → g (Pi.single b l) = 0`. Introduce `b l hl`. Use `Submodule.smul_induction_on hl ?_ ?_` and prove the remaining obligations. Introduce `a ha m _`. Rewrite using `[Pi.single_smul']`.
+
+Conclude with `hs a ha _`. Introduce `u v hu hv`. Rewrite using `[Pi.single_add, map_add, hu, hv, add_zero]`. Establish `h3 : g (x - x') = 0`. Rewrite using `[← Finset.univ_sum_single (x - x'), map_sum]`.
+
+Conclude with `Finset.sum_eq_zero fun b _ => h0 b _ (hx b)`. Rewrite using `[hg, hg]`. Rewrite `h3` using `[map_sub, sub_eq_zero]`. Conclude with `h3.symm`.
+-/
 theorem redM_adj_congr : ∀ (D : D7) (S T : HSp D) (βS : GL (Fin S.rank) (EAf D)) (βT : GL (Fin T.rank) (EAf D)) (e : AE D) (La : Type) [AddCommGroup La] [Module (𝓞 D.host.E) La] (ι : La →ₗ[𝓞 D.host.E] (Fin T.rank → D.host.E)), (∀ x : Fin S.rank → La, IsIntM (uMat S T βS βT e fun b => ι (x b))) → ∀ (J : Ideal (𝓞 D.host.E)) (PP : Pl D.host.E), (∀ a ∈ J, ∃ a' ∈ PP.asIdeal, (a' : D.host.E) = star (a : D.host.E)) → ∀ x x' : Fin S.rank → La, (∀ b, x b - x' b ∈ J • (⊤ : Submodule (𝓞 D.host.E) La)) → redM PP (uMat S T βS βT e fun b => ι (x' b)) = redM PP (uMat S T βS βT e fun b => ι (x b)) := by
   intro D S T βS βT e La _ _ ι hint J PP hJ x x' hx
   ext i j

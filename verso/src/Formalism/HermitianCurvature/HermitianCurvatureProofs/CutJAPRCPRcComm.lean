@@ -11,6 +11,9 @@ noncomputable section
 
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
+/- English proof (translation)
+Introduce `k r E _ _ D f _ hf Z₁ Z₂ h₁ h₂ g hg`. Conclude with `Qx5.RZ_comm hf hg h₁ h₂`.
+-/
 theorem radial_coefficient_commutation : RcComm := by
   intro k r E _ _ D f _ hf Z₁ Z₂ h₁ h₂ g hg
   exact Qx5.RZ_comm hf hg h₁ h₂

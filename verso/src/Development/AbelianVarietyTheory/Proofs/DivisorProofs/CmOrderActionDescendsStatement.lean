@@ -17,6 +17,9 @@ open GlobalTheory.IndefiniteRowSideFullHecke.ClassZetaValuationBounds (IsClassZe
 open TensorProduct
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.LatModel.exists_lie_end_diagonal_of_tensor | exact GlobalTheory.LatModel.exists_lie_end_diagonal_of_tensor | (intros; apply GlobalTheory.LatModel.exists_lie_end_diagonal_of_tensor <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.cm_order_action_descends : ∀ {E : Type} [Field E] [NumberField E] {I : Type} [Fintype I] {𝔠 : FracId (FR E)} {φ : I → E →+* ℂ} {L : Set E}
     (R : Subring ℂ) (X₀ : Obj (FR E) 𝔠 (Sp R)) (X : Obj (FR E) 𝔠 (Sp ℂ)) (U : Unif φ L 0 X) (p : X.A.left ⟶ X₀.A.left)
     (c : Ideal (OF E)) (cm : OAct (orderC c) X₀.A),

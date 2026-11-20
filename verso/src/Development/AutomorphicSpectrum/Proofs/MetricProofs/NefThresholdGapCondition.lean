@@ -8,11 +8,17 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 
 namespace GlobalTheory.CompanionTheory.Ar.Conj.GapThreshold
 
+/- English proof (translation)
+Unfold `GlobalTheory.CompanionTheory.Ar.Top.ent`. Rewrite using `[dif_pos h]`.
+-/
 theorem ent_of_lt {T : Type} [Fintype T] {N : ℕ} (mu : GlobalTheory.CompanionTheory.Ar.Top.Wt T N) (τ : T) {i : ℕ} (h : i < N) :
     GlobalTheory.CompanionTheory.Ar.Top.ent mu τ i = mu τ ⟨i, h⟩ := by
   unfold GlobalTheory.CompanionTheory.Ar.Top.ent
   rw [dif_pos h]
 
+/- English proof (translation)
+The claim follows from `|mu τ i| ≤ ‖mu‖ := by have h1 : ‖mu τ i‖ ≤ ‖mu τ‖ := norm_le_pi_norm (mu τ) i have h2 : ‖mu τ‖ ≤ ‖mu‖ := norm_le_pi_norm mu τ rw [Real.norm_eq_abs] at h1 exact h1.trans h2`.
+-/
 theorem abs_le_norm {T : Type} [Fintype T] {N : ℕ} (mu : GlobalTheory.CompanionTheory.Ar.Top.Wt T N) (τ : T) (i : Fin N) :
     |mu τ i| ≤ ‖mu‖ := by
   have h1 : ‖mu τ i‖ ≤ ‖mu τ‖ := norm_le_pi_norm (mu τ) i
@@ -20,6 +26,17 @@ theorem abs_le_norm {T : Type} [Fintype T] {N : ℕ} (mu : GlobalTheory.Companio
   rw [Real.norm_eq_abs] at h1
   exact h1.trans h2
 
+/- English proof (translation)
+Unfold `GlobalTheory.CompanionTheory.Ar.Top.NefThreshold GlobalTheory.CompanionTheory.Ar.Top.gap at ht`. Unfold `GlobalTheory.CompanionTheory.Ar.Top.Dominant at hd`. Establish `hp' : (0 : ℝ) < (p : ℝ) - 2`. Establish `: (2 : ℝ) < p` using `by exact_mod_cast hp`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Unfold `GapCond`. Use `⟨?_, ‖mu‖, 4 * (Fintype.card T) * ‖mu‖ / ((p : ℝ) - 2), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `τ i hi hiN`. Establish `h1 : i < N` using `by omega`. Establish `h0 : i - 1 < N` using `by omega`.
+
+Simplify using `only [Nat.add_sub_cancel]`. Rewrite using `[ent_of_lt mu τ h1, ent_of_lt mu τ h0]`. Conclude with `hd τ ⟨i - 1, h0⟩ ⟨i, h1⟩ (Fin.mk_le_mk.2 (by omega))`. Introduce `τ i hi hiN`. Establish `h0 : i - 1 < N` using `by omega`.
+
+Simplify using `only`. Rewrite using `[ent_of_lt mu τ h0]`. Conclude with `abs_le_norm mu τ _`. Introduce `τ`. Simplify using `only [Nat.add_sub_cancel]`.
+
+Rewrite using `[div_le_iff₀ hp']`. Combine the linear relations using `[ht τ, mul_comm ((p : ℝ) - 2) (GlobalTheory.CompanionTheory.Ar.Top.ent mu τ (j - 1) - GlobalTheory.CompanionTheory.Ar.Top.ent mu τ j)]`. Establish `e : ((p : ℝ) - 2) * (4 * (Fintype.card T) * ‖mu‖ / ((p : ℝ) - 2)) = 4 * (Fintype.card T) * ‖mu‖`. Clear the denominators using the available nonvanishing facts. Conclude with `e.ge`.
+-/
 theorem gapCond_of_threshold {T : Type} [Fintype T] {N j p : ℕ} (mu : GlobalTheory.CompanionTheory.Ar.Top.Wt T N)
     (hp : 2 < p) (hj : 1 ≤ j) (hjN : j < N) (hd : GlobalTheory.CompanionTheory.Ar.Top.Dominant mu)
     (ht : GlobalTheory.CompanionTheory.Ar.Top.NefThreshold j p mu) :
@@ -50,6 +67,19 @@ theorem gapCond_of_threshold {T : Type} [Fintype T] {N j p : ℕ} (mu : GlobalTh
       field_simp
     exact e.ge
 
+/- English proof (translation)
+Unfold `lmuNum`. Use `set xx : T → ℕ → ℝ := fun τ i => if h : i < N then x (τ, ⟨i, h⟩) else 0 with hxx`. Establish `hrow : ∀ τ, ∑ i : Fin N, -mu τ i * x (τ, i) = ∑ i ∈ Finset.range N, -GlobalTheory.CompanionTheory.Ar.Top.ent mu τ i * xx τ i`. Introduce `τ`. Rewrite using `[← Fin.sum_univ_eq_sum_range (fun i => -GlobalTheory.CompanionTheory.Ar.Top.ent mu τ i * xx τ i) N]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [hxx, dif_pos i.isLt, ent_of_lt mu τ i.isLt]`. Rewrite using `[Fintype.sum_prod_type, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[hrow τ, ← Finset.sum_range_add_sum_Ico _ hjN.le, Finset.sum_Ico_eq_sum_range, neg_add]`.
+
+Use `congr 1`. Rewrite using `[← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Establish `hij : i < j` using `Finset.mem_range.1 hi`. Establish `hiN : i < N` using `by omega`.
+
+Establish `hx'` using `hx τ ⟨i, hiN⟩ hij`. Simplify using `only [hxx, dif_pos hiN, Nat.add_sub_cancel, hx']`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations.
+
+Establish `hmj : m < N - j` using `Finset.mem_range.1 hm`. Establish `hiN : j + m < N` using `by omega`. Establish `hy'` using `hy τ ⟨j + m, hiN⟩ (by simp)`. Establish `e1 : N - 1 - (j + m) + 1 = N - j - m` using `by omega`. Establish `e2 : N - 1 - (j + m) = N - j - m - 1` using `by omega`.
+
+Simplify using `only [hxx, dif_pos hiN, Nat.add_sub_cancel, hy']`. Rewrite using `[e1, e2]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem lmuNum_eq_sum {T : Type} [Fintype T] {N j : ℕ} (mu : GlobalTheory.CompanionTheory.Ar.Top.Wt T N)
     (x : T × Fin N → ℝ) (w l : T → ℕ → ℝ) (hjN : j < N)
     (hx : ∀ τ (i : Fin N), (i : ℕ) < j → x (τ, i) = w τ (i + 1) - w τ i)
@@ -86,6 +116,9 @@ theorem lmuNum_eq_sum {T : Type} [Fintype T] {N j : ℕ} (mu : GlobalTheory.Comp
     rw [e1, e2]
     ring
 
+/- English proof (translation)
+Introduce `T _ N j p mu x w l hp hj hjN hd ht hx hy`. Conclude with `⟨gapCond_of_threshold mu hp hj hjN hd ht, lmuNum_eq_sum mu x w l hjN hx hy⟩`.
+-/
 theorem gapCond_and_lmuNum : ∀ (T : Type) [Fintype T] (N j p : ℕ) (mu : GlobalTheory.CompanionTheory.Ar.Top.Wt T N) (x : T × Fin N → ℝ) (w l : T → ℕ → ℝ), 2 < p → 1 ≤ j → j < N → GlobalTheory.CompanionTheory.Ar.Top.Dominant mu → GlobalTheory.CompanionTheory.Ar.Top.NefThreshold j p mu → (∀ τ (i : Fin N), (i : ℕ) < j → x (τ, i) = w τ (i + 1) - w τ i) → (∀ τ (i : Fin N), j ≤ (i : ℕ) → x (τ, i) = -(l τ (N - 1 - i + 1) - l τ (N - 1 - i))) → GapCond p j (N - j) (fun τ i => GlobalTheory.CompanionTheory.Ar.Top.ent mu τ (i - 1)) ∧ lmuNum j (N - j) (fun τ i => GlobalTheory.CompanionTheory.Ar.Top.ent mu τ (i - 1)) w l = ∑ r : T × Fin N, -mu r.1 r.2 * x r := by
   intro T _ N j p mu x w l hp hj hjN hd ht hx hy
   exact ⟨gapCond_of_threshold mu hp hj hjN hd ht, lmuNum_eq_sum mu x w l hjN hx hy⟩

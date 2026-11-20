@@ -10,6 +10,15 @@ open GlobalTheory.UT ReciprocityTheory.ChartRestriction.G.DVR
 
 namespace GlobalTheory.GSep
 
+/- English proof (translation)
+Introduce `X₁ z₁`. Use `letI : Algebra (X₁.M.Z.presheaf.stalk z₁) X₁.Ω₁ := (X₁.M.stalkHom z₁).toAlgebra`. Establish `hN` using `X₁.normal`. Use `⟨GlobalTheory.IsNormalScheme.isDomain_stalk z₁, ?_, GlobalTheory.IsNormalScheme.isIntegrallyClosed_stalk z₁, ?_⟩` and prove the remaining obligations. Establish `: FaithfulSMul (X₁.M.Z.presheaf.stalk z₁) X₁.Ω₁` using `(faithfulSMul_iff_algebraMap_injective _ _).2 (X₁.M.stalkHom_injective z₁)`.
+
+Use `IsFractionRing.of_field _ _ fun x => ?_` and prove the remaining obligations. Take `⟨a, b, -, hx⟩` from `IsFractionRing.div_surjective (A := X₁.M.O z₁) x`. Use `⟨(X₁.M.stalkEquiv z₁).symm a, (X₁.M.stalkEquiv z₁).symm b, ?_⟩` and prove the remaining obligations. Establish `h : ∀ c : X₁.M.O z₁, algebraMap (X₁.M.Z.presheaf.stalk z₁) X₁.Ω₁ ((X₁.M.stalkEquiv z₁).symm c) = c` using `fun c => by`. Express the relevant statement in the definitionally equal form `X₁.M.stalkHom z₁ _ = _`.
+
+Rewrite using `[← RatModel.coe_stalkEquiv, RingEquiv.apply_symm_apply]`. Rewrite using `[h, h, ← hx]`. Both sides reduce to the same expression. Establish `: IsDedekindDomain X₁.o₁` using `X₁.ar.ded`. Use `X₁.M.lft` as an intermediate fact.
+
+Establish `: IsLocallyNoetherian (Sp X₁.o₁)` using `inferInstanceAs (IsLocallyNoetherian (Spec (CommRingCat.of X₁.o₁)))`. Establish `: IsLocallyNoetherian X₁.M.Z` using `LocallyOfFiniteType.isLocallyNoetherian X₁.M.s`. Use `infer_instance`.
+-/
 theorem stalk_isNoetherian_normal_fractionRing : ∀ (X₁ : GlobalTheory.GSep.GSet) (z₁ : X₁.M.Z), letI : Algebra (X₁.M.Z.presheaf.stalk z₁) X₁.Ω₁ := (X₁.M.stalkHom z₁).toAlgebra; IsDomain (X₁.M.Z.presheaf.stalk z₁) ∧ IsFractionRing (X₁.M.Z.presheaf.stalk z₁) X₁.Ω₁ ∧ IsIntegrallyClosed (X₁.M.Z.presheaf.stalk z₁) ∧ IsNoetherianRing (X₁.M.Z.presheaf.stalk z₁) := by
   intro X₁ z₁
   letI : Algebra (X₁.M.Z.presheaf.stalk z₁) X₁.Ω₁ := (X₁.M.stalkHom z₁).toAlgebra

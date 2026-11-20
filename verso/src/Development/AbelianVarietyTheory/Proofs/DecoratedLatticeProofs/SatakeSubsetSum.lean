@@ -6,6 +6,21 @@ namespace GlobalTheory.SatakeSubsetSum
 
 open Finset
 
+/- English proof (translation)
+Establish `hsw : ((S ×ˢ S).filter fun p : Fin N × Fin N => p.1 < p.2).card = ((S ×ˢ S).filter fun p : Fin N × Fin N => p.2 < p.1).card`. Apply `Finset.card_bij (fun p _ => p.swap)` to reduce the goal to its premises. Introduce `p hp`. Simplify using `only [Finset.mem_filter, Finset.mem_product, Prod.fst_swap, Prod.snd_swap] at hp ⊢`. Conclude with `⟨⟨hp.1.2, hp.1.1⟩, hp.2⟩`.
+
+Introduce `p _ r _ h`. Conclude with `Prod.swap_injective h`. Introduce `r hr`. Use `⟨r.swap, ?_, by simp⟩` and prove the remaining obligations. Simplify using `only [Finset.mem_filter, Finset.mem_product, Prod.fst_swap, Prod.snd_swap] at hr ⊢`.
+
+Conclude with `⟨⟨hr.1.2, hr.1.1⟩, hr.2⟩`. Establish `hoff : S.offDiag = ((S ×ˢ S).filter fun p : Fin N × Fin N => p.1 < p.2) ∪ ((S ×ˢ S).filter fun p : Fin N × Fin N => p.2 < p.1)`. Use extensionality with `p`. Simplify using `only [Finset.mem_offDiag, Finset.mem_union, Finset.mem_filter, Finset.mem_product]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨h1, h2, h3⟩`. Break down `lt_or_gt_of_ne h3 with h | h` into its components or cases. Conclude with `Or.inl ⟨⟨h1, h2⟩, h⟩`. Conclude with `Or.inr ⟨⟨h1, h2⟩, h⟩`. Introduce and unpack `(⟨⟨h1, h2⟩, h⟩ | ⟨⟨h1, h2⟩, h⟩)`.
+
+Conclude with `⟨h1, h2, ne_of_lt h⟩`. Conclude with `⟨h1, h2, ne_of_gt h⟩`. Establish `hdisj : Disjoint ((S ×ˢ S).filter fun p : Fin N × Fin N => p.1 < p.2) ((S ×ˢ S).filter fun p : Fin N × Fin N => p.2 < p.1)`. Rewrite using `[Finset.disjoint_left]`. Introduce `p h1 h2`.
+
+Simplify using `only [Finset.mem_filter] at h1 h2`. Conclude with `lt_asymm h1.2 h2.2`. Establish `hc` using `Finset.offDiag_card S`. Rewrite `hc` using `[hoff, Finset.card_union_of_disjoint hdisj, ← hsw]`. Establish `hle : S.card ≤ S.card * S.card` using `Nat.le_mul_self _`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem two_mul_card_lt_pairs {N : ℕ} (S : Finset (Fin N)) :
     2 * ((S ×ˢ S).filter fun p : Fin N × Fin N => p.1 < p.2).card + S.card = S.card * S.card := by
   have hsw : ((S ×ˢ S).filter fun p : Fin N × Fin N => p.1 < p.2).card
@@ -43,6 +58,13 @@ theorem two_mul_card_lt_pairs {N : ℕ} (S : Finset (Fin N)) :
   have hle : S.card ≤ S.card * S.card := Nat.le_mul_self _
   omega
 
+/- English proof (translation)
+Establish `hP` using `two_mul_card_lt_pairs S`. Establish `hsplit : ((S ×ˢ S).filter fun p : Fin N × Fin N => p.1 < p.2).card + ((S ×ˢ Sᶜ).filter fun p : Fin N × Fin N => p.1 < p.2).card = ∑ a ∈ S, (Finset.Ioi a).card`. Rewrite using `[Finset.card_filter, Finset.card_filter, Finset.sum_product, Finset.sum_product, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_add_sum_compl, ← Finset.card_filter, Finset.filter_lt_eq_Ioi]`.
+
+Establish `hterm : ∀ a : Fin N, (Finset.Ioi a).card + (a : ℕ) + 1 = N`. Introduce `a`. Rewrite using `[Fin.card_Ioi]`. Use `a.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+
+Establish `hsum : ∑ a ∈ S, (Finset.Ioi a).card + ∑ a ∈ S, (a : ℕ) + S.card = S.card * N`. Establish `h0 : ∑ a ∈ S, ((Finset.Ioi a).card + (a : ℕ) + 1) = S.card * N`. Rewrite using `[Finset.sum_congr rfl fun a _ => hterm a, Finset.sum_const, smul_eq_mul]`. Rewrite `h0` using `[Finset.sum_add_distrib, Finset.sum_add_distrib, Finset.sum_const, smul_eq_mul, mul_one]`. Then use the resulting hypothesis. Use polynomial arithmetic with `[hP, hsplit, hsum]`.
+-/
 theorem count_identity {N : ℕ} (S : Finset (Fin N)) :
     2 * ((S ×ˢ Sᶜ).filter fun p : Fin N × Fin N => p.1 < p.2).card + 2 * ∑ a ∈ S, (a : ℕ)
       + S.card * (S.card + 1) = 2 * S.card * N := by
@@ -72,6 +94,9 @@ namespace GlobalTheory.SatakeSubsetSum
 
 open Finset
 
+/- English proof (translation)
+Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert b T hb ih => rw [Finset.prod_insert hb, Finset.sum_insert hb, ih, zpow_add₀ hs]`.
+-/
 theorem prod_zpow_eq {ι : Type} (s : ℂ) (hs : s ≠ 0) (S : Finset ι) (e : ι → ℤ) :
     ∏ a ∈ S, s ^ e a = s ^ (∑ a ∈ S, e a) := by
   classical
@@ -79,6 +104,11 @@ theorem prod_zpow_eq {ι : Type} (s : ℂ) (hs : s ≠ 0) (S : Finset ι) (e : �
   | empty => simp
   | insert b T hb ih => rw [Finset.prod_insert hb, Finset.sum_insert hb, ih, zpow_add₀ hs]
 
+/- English proof (translation)
+Establish `h1 : ((q : ℝ) : ℂ) ^ ((((m : ℝ) / 2 : ℝ)) : ℂ) = ((((q : ℝ) ^ ((m : ℝ) / 2) : ℝ)) : ℂ)` using `(Complex.ofReal_cpow (Nat.cast_nonneg q) _).symm`. Establish `h2 : (q : ℝ) ^ ((m : ℝ) / 2) = (Real.sqrt q) ^ m`. Rewrite using `[Real.sqrt_eq_rpow, ← Real.rpow_intCast, ← Real.rpow_mul (Nat.cast_nonneg _)]`. Put the polynomial expressions in normal form. Rewrite `h1` using `[h2]`.
+
+Move the coercions through the operations in `at h1`. Conclude with `h1`.
+-/
 theorem cpow_half_int (q : ℕ) (m : ℤ) :
     (q : ℂ) ^ ((m : ℂ) / 2) = ((Real.sqrt q : ℝ) : ℂ) ^ m := by
   have h1 : ((q : ℝ) : ℂ) ^ ((((m : ℝ) / 2 : ℝ)) : ℂ) = ((((q : ℝ) ^ ((m : ℝ) / 2) : ℝ)) : ℂ) :=
@@ -90,6 +120,9 @@ theorem cpow_half_int (q : ℕ) (m : ℤ) :
   push_cast at h1
   exact h1
 
+/- English proof (translation)
+Unfold `borelParam`. Rewrite using `[← cpow_half_int]`. Use `congr 2`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem borelParam_eq (q N : ℕ) (α : Fin N → ℂˣ) (a : Fin N) :
     borelParam q α a = (α a : ℂ) * ((Real.sqrt q : ℝ) : ℂ) ^ (2 * (a : ℤ) - N + 1) := by
   unfold borelParam
@@ -104,6 +137,17 @@ namespace GlobalTheory.SatakeSubsetSum
 
 open Finset
 
+/- English proof (translation)
+Use `set s : ℂ := ((Real.sqrt q : ℝ) : ℂ) with hsdef`. Establish `hs : s ≠ 0`. Rewrite using `[hsdef, Complex.ofReal_ne_zero, Real.sqrt_ne_zero']`. Conclude with `hq` after adjusting the coercions. Establish `hs2 : (q : ℂ) = s ^ 2`.
+
+Rewrite using `[hsdef, ← Complex.ofReal_pow, Real.sq_sqrt (Nat.cast_nonneg _)]`. Use `push_cast`. Both sides reduce to the same expression. Establish `hnN : S.card ≤ N`. Simplify using `using Finset.card_le_univ S`.
+
+Use `set inv := ((S ×ˢ Sᶜ).filter fun p : Fin N × Fin N => p.1 < p.2).card with hinv`. Establish `hcount` using `count_identity S`. Rewrite `hcount` using `[← hinv]`. Repeatedly rewrite using `[borelParam_eq]`. Rewrite using `[Finset.prod_mul_distrib, prod_zpow_eq s hs, hs2, ← pow_mul, ← zpow_natCast, ← zpow_natCast, mul_left_comm, ← zpow_add₀ hs, mul_comm]`.
+
+Use `congr 2`. Establish `hc : ((2 * inv + 2 * ∑ a ∈ S, (a : ℕ) + S.card * (S.card + 1) : ℕ) : ℤ) = ((2 * S.card * N : ℕ) : ℤ)`. Rewrite using `[hcount]`. Move the coercions through the operations in `at hc`. Move the coercions through the operations in `[Nat.cast_sub hnN]`.
+
+Simplify using `only [Finset.sum_add_distrib, Finset.sum_sub_distrib, ← Finset.mul_sum, Finset.sum_const, nsmul_eq_mul]`. Use `push_cast`. Take the linear combination `hc`.
+-/
 theorem term_eq (q N : ℕ) (hq : 0 < q) (α : Fin N → ℂˣ) (S : Finset (Fin N)) :
     (q : ℂ) ^ ((S ×ˢ Sᶜ).filter fun p : Fin N × Fin N => p.1 < p.2).card * ∏ a ∈ S, borelParam q α a
       = ((Real.sqrt q : ℝ) : ℂ) ^ (S.card * (N - S.card)) * ∏ a ∈ S, (α a : ℂ) := by
@@ -138,6 +182,11 @@ namespace GlobalTheory.SatakeSubsetSum
 
 open Finset
 
+/- English proof (translation)
+Introduce `q N hq α n`. Unfold `genVal`. Rewrite using `[Multiset.map_map, Finset.esymm_map_val, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun S hS => ?_` and prove the remaining obligations. Rewrite `hS` using `[Finset.mem_powersetCard]`.
+
+Rewrite using `[term_eq q N hq α S, hS.2, zero_mul, zero_add]`. Both sides reduce to the same expression.
+-/
 theorem satake_subset_sum : ∀ (q N : ℕ), 0 < q → ∀ (α : Fin N → ℂˣ) (n : ℕ),
     ∑ S ∈ (Finset.univ : Finset (Fin N)).powersetCard n,
       ((q : ℂ) ^ ((S ×ˢ Sᶜ).filter fun p : Fin N × Fin N => p.1 < p.2).card * ∏ a ∈ S, borelParam q α a)

@@ -17,6 +17,23 @@ open GlobalTheory.RecDict
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Introduce `D V H Dw l Xo σ' g ty F hty r hr X k φ io hW hef hemb hform`. Substitute `hr` using the available equality. Take `⟨hinj, hrange⟩` from `hemb`. Establish `hEF : ∀ x y, ((Dw.EF x y : ℤ) : ℚ) = Algebra.trace ℚ D.host.E (-(-D.host.xi0) * herm (gmW V rfl) (io x) (io y))`. Introduce `x y`.
+
+Establish `h` using `trace_herm_gmW V rfl (V.frame.equivFun.symm (io x)) (V.frame.equivFun.symm (io y))`. Rewrite `h` using `[LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply]`. Rewrite using `[hform, neg_neg, ← h]`. Both sides reduce to the same expression. Take `⟨-, P, hP⟩` from `(PeriodExists.typeFn_period_exist _ H (F.Di k)).2.1 g ty (by rw [(F.sig k).1, (F.sig k).2]; exact hty)`.
+
+Take `⟨f, h1, h2, h3, h4⟩` from `familyUnif_lattice_genus _ H Dw l Xo σ' g ty F k P hP`. Set `c : D.host.E ≃ₐ[D.host.F] D.host.E` to `AlgEquiv.ofAlgHom D.sp.cm.sig D.sp.cm.sig (AlgHom.ext fun x => star_star x) (AlgHom.ext fun x => star_star x)`. Take `⟨hfg, hsp, hlat⟩` from `comp_latG D V`. Rewrite `hfg`, `hsp`, `hlat` using `[← hrange]`. Establish `hξ : -(-D.host.xi0) ≠ 0`.
+
+Rewrite using `[← hW.2]`. Conclude with `neg_ne_zero.2 X.ξ0_ne`. Take `⟨gf, hg1, hg2, hg3⟩` from `comp_adelic_of_tower D.host.F D.host.E V.rank c (-V.gram.transpose) (-(-D.host.xi0)) hξ Dw.La (F.Di k).La (fun x y => Dw.EF x y) (fun x y => (F.Di k).EF x y) io hinj X.Λ φ hfg hsp X.Λ_fg X.Λ_span hEF (fun x y => by`. Use `hef x y` as an intermediate fact. Rewrite `this` using `[hW.1, hW.2]`.
+
+Conclude with `this) f h1 h2 h3`. Take `⟨u, hu, hug⟩` from `(GlobalTheory.T.adelicUnitary_exists_with_prescribed_parts D V).1 gf (comp_mem_HR _ _ _ c _ (fun _ => rfl) _ gf hg3)`. Establish `hc` using `(AdLat.hat_rational_points_and_approx D.host.F D.host.E V.rank X.Λ X.Λ_fg X.Λ_span).1`. Use `⟨u, ?_, fun a ha => ?_⟩` and prove the remaining obligations. Rewrite using `[(hlat u).1, hug]`.
+
+Use `Eq.trans ?_ (Set.image_id _).symm` and prove the remaining obligations. Use extensionality with `v`. Rewrite using `[AdLat.latOf, hg1]`. Conclude with `(hc v).symm`. Take `⟨e, he⟩` from `h4 a ha`.
+
+Take `⟨w, hw, hgw⟩` from `hg2 l.M (lt_of_lt_of_le (by norm_num) l.three_le) a`. Establish `hmem : ∀ z, z ∈ latGHat V u ↔ z ∈ AdLat.hat D.host.F (X.Λ : Set (Fin V.rank → D.host.E))`. Introduce `z`. Rewrite using `[← SetLike.mem_coe, (hlat u).2, hug, hg1, SetLike.mem_coe]`. Rewrite using `[hug]`.
+
+Use `⟨-(AdLat.fv D.host.F (φ e : Fin V.rank → D.host.E) + w), (hmem _).2 (neg_mem (add_mem ((hc _).2 (φ e).2) hw)), ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `AdLat.fv D.host.F (φ (F.t k a) : Fin V.rank → D.host.E) - gf.1 *ᵥ AdLat.fv D.host.F (io a) = _`. Rewrite using `[hgw, he, map_add, map_nsmul, Submodule.coe_add, Submodule.coe_smul_of_tower, AdLat.cap_fv_add, AdLat.cap_fv_nsmul]`. Conclude with `comp_sub_eq _ _ _ _`.
+-/
 theorem exists_marked_of_component : ∀ (D : D7) (V : HSp D) (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E) (Dw : Datum H) (l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H) (Xo : Moduli Dw l) (σ' : KA l →+* ℂ) (g : ℕ) (ty : Fin g → (D.host.E →+* ℂ)) (F : FamilyUnif Xo σ' ty), IsTypeFn H Dw.p Dw.q ty → ∀ (r : ℕ) (hr : V.rank = r) (X : Data D.host.E r) (i : Fin F.n) (φ : (F.Di i).La ≃ₗ[𝓞 D.host.E] X.Λ) (io : Dw.La →ₗ[𝓞 D.host.E] (Fin V.rank → D.host.E)), ModelW V hr X → (∀ a b, (((F.Di i).EF a b : ℤ) : ℚ) = Algebra.trace ℚ D.host.E (-X.ξ0 * herm X.Gm (φ a : Fin r → D.host.E) (φ b))) → LatEmb V io → FormPlus V io → ∃ h : GA D V, Marked V hr io l X.Λ (fun a => (φ (F.t i a) : Fin r → D.host.E)) h := by
   intro D V H Dw l Xo σ' g ty F hty r hr X k φ io hW hef hemb hform
   subst hr

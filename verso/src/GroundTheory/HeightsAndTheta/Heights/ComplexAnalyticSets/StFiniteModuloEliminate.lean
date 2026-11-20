@@ -9,6 +9,9 @@ open Topology Filter
 noncomputable def zeroCoordinate {τ : Type} [DecidableEq τ] (c : τ) : (τ → ℂ) →L[ℂ] (τ → ℂ) :=
   ContinuousLinearMap.pi fun c' => if c' = c then 0 else ContinuousLinearMap.proj c'
 
+/- English proof (translation)
+Apply the tactic sequence `by_cases h : c' = c <;> simp [zeroCoordinate, h]`.
+-/
 theorem zeroCoordinate_apply {τ : Type} [DecidableEq τ] (c : τ) (y : τ → ℂ) (c' : τ) :
     zeroCoordinate c y c' = if c' = c then 0 else y c' := by
   by_cases h : c' = c <;> simp [zeroCoordinate, h]

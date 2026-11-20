@@ -20,6 +20,9 @@ attribute [local instance] GlobalTheory.TorusExt.gtGroup
 
 namespace GlobalTheory.Poinc.Eq8.TorMatchLaws
 
+/- English proof (translation)
+Apply `Algebra.algebra_ext` to reduce the goal to its premises. Introduce `x`. Establish `e` using `IsLocalization.ringHom_ext (M := nonZeroDivisors R) (S := FractionRing R) (j := @algebraMap _ _ _ _ i₁) (k := @algebraMap _ _ _ _ i₂) (RingHom.ext h)`. Conclude with `RingHom.congr_fun e x`.
+-/
 theorem alg_eq {R F : Type} [CommRing R] [IsDomain R] [Field F] (i₁ i₂ : Algebra (FractionRing R) F)
     (h : ∀ r, @algebraMap _ _ _ _ i₁ (algebraMap R (FractionRing R) r) =
       @algebraMap _ _ _ _ i₂ (algebraMap R (FractionRing R) r)) : i₁ = i₂ := by
@@ -29,15 +32,24 @@ theorem alg_eq {R F : Type} [CommRing R] [IsDomain R] [Field F] (i₁ i₂ : Alg
     (j := @algebraMap _ _ _ _ i₁) (k := @algebraMap _ _ _ _ i₂) (RingHom.ext h)
   exact RingHom.congr_fun e x
 
+/- English proof (translation)
+Consider the cases of `q`. Consider the cases of `q'`. Consider the cases of `hy`. Consider the cases of `hg`. Both sides reduce to the same expression.
+-/
 theorem qk_eq {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {F : Type} [Field F] [Algebra (FractionRing R) F]
     {k : ℕ} {q q' : QkPt D F k} (hy : q.y = q'.y) (hg : q.g = q'.g) : q = q' := by
   cases q; cases q'; cases hy; cases hg; rfl
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.TorusExt.isTorusPtF_iff_eq g τ).1 ((GlobalTheory.UT.isTor_iff τ g).1 h)`.
+-/
 theorem tor_eq {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {F : Type} [Field F] [Algebra (FractionRing R) F]
     {τ : Multiplicative D.X →* Fˣ} {g : GtPtF D F} (h : GlobalTheory.UT.IsTor τ g) :
     g = GlobalTheory.TorusExt.torusPt D F (Additive.ofMul τ) :=
   (GlobalTheory.TorusExt.isTorusPtF_iff_eq g τ).1 ((GlobalTheory.UT.isTor_iff τ g).1 h)
 
+/- English proof (translation)
+Break down `Nat.eq_zero_or_pos k with h | h` into its components or cases. Substitute `h` using the available equality. Simplify using `at hk`. Conclude with `h`.
+-/
 theorem one_le_of_isUnit {R : Type} [CommRing R] [IsDomain R] {k : ℕ} (hk : IsUnit (k : R)) : 1 ≤ k := by
   rcases Nat.eq_zero_or_pos k with h | h
   · subst h; simp at hk
@@ -49,6 +61,9 @@ namespace GlobalTheory.Poinc.Eq8.TorMatchLaws
 
 variable {R : Type} [CommRing R] [IsDomain R] [IsLocalRing R]
 
+/- English proof (translation)
+Use `haveI := hR.2`. Take `⟨f, ⟨h1, -, h3, h4, -⟩, -⟩` from `GlobalTheory.TorsionIso.torsion_clause R (maximalIdeal R) hR.1 D A G hG U F k (one_le_of_isUnit hk)`. Conclude with `⟨f, h1, h3, h4⟩`.
+-/
 theorem tors_fun (hR : GlobalTheory.Mum.Base R) {G : Over (Sp R)} [GrpObj G] [IsCommMonObj G] (hG : IsSemiAbelian G)
     {D : DegData R (maximalIdeal R)} {A : PolAV (Sp (FractionRing R))} (U : Unif (maximalIdeal R) D A G)
     (F : Type) [Field F] [IsAlgClosed F] [Algebra (FractionRing R) F] {k : ℕ} (hk : IsUnit (k : R)) :
@@ -59,6 +74,9 @@ theorem tors_fun (hR : GlobalTheory.Mum.Base R) {G : Over (Sp R)} [GrpObj G] [Is
     GlobalTheory.TorsionIso.torsion_clause R (maximalIdeal R) hR.1 D A G hG U F k (one_le_of_isUnit hk)
   exact ⟨f, h1, h3, h4⟩
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.LiePull.exists_pushEquiv (GlobalTheory.ThetaBaseChange.grp_generic U.toUnifPre) (TFK (R := R) F) _ rfl`.
+-/
 theorem push {G : Over (Sp R)} [GrpObj G] [IsCommMonObj G] {D : DegData R (maximalIdeal R)} {A : PolAV (Sp (FractionRing R))}
     (U : Unif (maximalIdeal R) D A G) (F : Type) [Field F] [Algebra (FractionRing R) F] :
     ∃ e : (TFK (R := R) F ⟶ A.A) ≃* (Over.mk (jFK (R := R) F ≫ jK R) ⟶ G), ∀ x, (e x).left = x.left ≫ genMap U :=
@@ -70,6 +88,11 @@ namespace GlobalTheory.Poinc.Eq8.TorMatchLaws
 
 variable {R : Type} [CommRing R] [IsDomain R] [IsLocalRing R]
 
+/- English proof (translation)
+Introduce `F _ _ i₁ i₂ hF`. Take `rfl : i₁ = i₂` from `alg_eq i₁ i₂ hF`. Introduce `k hk τ τ' q q' a a' _ hρ hy hτ hy' hτ' hq hq'`. Take `⟨f, h1, -, -⟩` from `tors_fun hR hG U F hk`. Establish `e : τ = τ'` using `MonoidHom.ext fun x => hρ (Multiplicative.toAdd x)`.
+
+Substitute `e` using the available equality. Establish `hqq : q = q'` using `qk_eq (hy.trans hy'.symm) ((tor_eq hτ).trans (tor_eq hτ').symm)`. Substitute `hqq` using the available equality. Rewrite using `[(h1 q a).1 hq, (h1 q a').1 hq', Category.comp_id]`.
+-/
 theorem torMatch_id (hR : GlobalTheory.Mum.Base R) {G : Over (Sp R)} [GrpObj G] [IsCommMonObj G] (hG : IsSemiAbelian G)
     {D : DegData R (maximalIdeal R)} {A : PolAV (Sp (FractionRing R))} (U : Unif (maximalIdeal R) D A G) :
     TorMatch U U (RingHom.id R) (𝟙 G.left) (AddMonoidHom.id _) := by
@@ -83,6 +106,15 @@ theorem torMatch_id (hR : GlobalTheory.Mum.Base R) {G : Over (Sp R)} [GrpObj G] 
   subst hqq
   rw [(h1 q a).1 hq, (h1 q a').1 hq', Category.comp_id]
 
+/- English proof (translation)
+Introduce `F _ _ i₁ i₂ hF`. Take `rfl : i₁ = i₂` from `alg_eq i₁ i₂ hF`. Introduce `k hk τ τ' q q' a a' _ hρ hy hτ _ _ hq _`. Take `⟨f, h1, h3, h4⟩` from `tors_fun hR hG U F hk`. Establish `e : τ = 1` using `MonoidHom.ext fun x => by`.
+
+Rewrite using `[MonoidHom.one_apply]`. Use `(hρ (Multiplicative.toAdd x)).trans ?_` and prove the remaining obligations. Rewrite using `[AddMonoidHom.zero_apply, ofAdd_zero, map_one]`. Substitute `e` using the available equality. Establish `hg : q.g = 0` using `by rw [tor_eq hτ, ofMul_one, map_zero]`.
+
+Establish `hadd : QkAdd q q q` using `⟨q, by rw [hy, add_zero], (GlobalTheory.TorusExt.isAdd_iff_eq _ _ _).2 (by rw [hg, add_zero]), (h3 q q).1 rfl⟩`. Establish `ha : a = 1`. Rewrite using `[(h1 q a).1 hq]`. Conclude with `mul_eq_left.1 (h4 q q q hadd).symm`. Take `⟨eU, heU⟩` from `push U F`.
+
+Take `⟨eU', heU'⟩` from `push U' F`. Establish `key : eU a = eU' a' ≫ (1 : G' ⟶ G)` using `by rw [comp_one, ha, map_one]`. Rewrite using `[← heU, key, Over.comp_left, heU', Category.assoc]`.
+-/
 theorem torMatch_one (hR : GlobalTheory.Mum.Base R) {G : Over (Sp R)} [GrpObj G] [IsCommMonObj G] (hG : IsSemiAbelian G)
     {D : DegData R (maximalIdeal R)} {A : PolAV (Sp (FractionRing R))} (U : Unif (maximalIdeal R) D A G)
     {G' : Over (Sp R)} [GrpObj G'] [IsCommMonObj G'] {D' : DegData R (maximalIdeal R)} {A' : PolAV (Sp (FractionRing R))}
@@ -108,6 +140,19 @@ theorem torMatch_one (hR : GlobalTheory.Mum.Base R) {G : Over (Sp R)} [GrpObj G]
   have key : eU a = eU' a' ≫ (1 : G' ⟶ G) := by rw [comp_one, ha, map_one]
   rw [← heU, key, Over.comp_left, heU', Category.assoc]
 
+/- English proof (translation)
+Introduce `F _ _ i₁ i₂ hF`. Take `rfl : i₁ = i₂` from `alg_eq i₁ i₂ hF`. Introduce `k hk τ τ' q q' a a' hτk hρ hy hτ hy' hτ' hq hq'`. Take `⟨f, h1, h3, h4⟩` from `tors_fun hR hG U F hk`. Set `τ₁ : Multiplicative D.toPre.X →* Fˣ` to `τ'.comp (AddMonoidHom.toMultiplicative ρ)`.
+
+Set `τ₂ : Multiplicative D.toPre.X →* Fˣ` to `τ'.comp (AddMonoidHom.toMultiplicative ρ')`. Establish `pw : ∀ σ : D.toPre.X →+ D'.toPre.X, (τ'.comp (AddMonoidHom.toMultiplicative σ)) ^ k = 1` using `fun σ => MonoidHom.ext fun x => by`. Rewrite using `[MonoidHom.pow_apply, MonoidHom.comp_apply, ← MonoidHom.pow_apply, hτk, MonoidHom.one_apply, MonoidHom.one_apply]`. Take `⟨q₁, hy₁, hτ₁⟩` from `GlobalTheory.ZH.TorusPerp.exists_qkPt_tor D.tau_bimult τ₁ (pw ρ)`. Take `⟨q₂, hy₂, hτ₂⟩` from `GlobalTheory.ZH.TorusPerp.exists_qkPt_tor D.tau_bimult τ₂ (pw ρ')`.
+
+Establish `e₁` using `hp F hF k hk τ₁ τ' q₁ q' (f q₁) a' hτk (fun _ => rfl) hy₁ hτ₁ hy' hτ' ((h1 q₁ _).2 rfl) hq'`. Establish `e₂` using `hp' F hF k hk τ₂ τ' q₂ q' (f q₂) a' hτk (fun _ => rfl) hy₂ hτ₂ hy' hτ' ((h1 q₂ _).2 rfl) hq'`. Establish `hτe : τ = τ₁ * τ₂` using `MonoidHom.ext fun x => by`. Rewrite using `[MonoidHom.mul_apply]`. Use `(hρ (Multiplicative.toAdd x)).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[AddMonoidHom.add_apply, ofAdd_add, map_mul]`. Both sides reduce to the same expression. Establish `hg : q.g = q₁.g + q₂.g`. Rewrite using `[tor_eq hτ, tor_eq hτ₁, tor_eq hτ₂, hτe, ofMul_mul, map_add]`. Establish `hadd : QkAdd q₁ q₂ q` using `⟨q, by rw [hy, hy₁, hy₂, add_zero], (GlobalTheory.TorusExt.isAdd_iff_eq _ _ _).2 hg, (h3 q q).1 rfl⟩`.
+
+Establish `ha : a = f q₁ * f q₂` using `by rw [(h1 q a).1 hq]; exact h4 q₁ q₂ q hadd`. Take `⟨eU, heU⟩` from `push U F`. Take `⟨eU', heU'⟩` from `push U' F`. Establish `k₁ : eU (f q₁) = eU' a' ≫ p` using `Over.OverMorphism.ext (by rw [heU, e₁, Over.comp_left, heU', Category.assoc])`. Establish `k₂ : eU (f q₂) = eU' a' ≫ p'` using `Over.OverMorphism.ext (by rw [heU, e₂, Over.comp_left, heU', Category.assoc])`.
+
+Establish `key : eU a = eU' a' ≫ (p * p')` using `by rw [comp_mul, ha, map_mul, k₁, k₂]`. Rewrite using `[← heU, key, Over.comp_left, heU', Category.assoc]`.
+-/
 theorem torMatch_mul (hR : GlobalTheory.Mum.Base R) {G : Over (Sp R)} [GrpObj G] [IsCommMonObj G] (hG : IsSemiAbelian G)
     {D : DegData R (maximalIdeal R)} {A : PolAV (Sp (FractionRing R))} (U : Unif (maximalIdeal R) D A G)
     {G' : Over (Sp R)} [GrpObj G'] [IsCommMonObj G'] {D' : DegData R (maximalIdeal R)} {A' : PolAV (Sp (FractionRing R))}
@@ -151,6 +196,9 @@ namespace GlobalTheory.Poinc.Eq8
 
 open TorMatchLaws in
 
+/- English proof (translation)
+Introduce `R _ _ _ hR G _ _ hG D A U G' _ _ _ D' A' U'`. Conclude with `⟨torMatch_id hR hG U, torMatch_one hR hG U U', fun p p' ρ ρ' hp hp' => torMatch_mul hR hG U U' p p' ρ ρ' hp hp'⟩`.
+-/
 theorem torMatch_id_one_mul : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], GlobalTheory.Mum.Base R → ∀ (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ (D : DegData R (maximalIdeal R)) (A : PolAV (Sp (FractionRing R))) (U : Unif (maximalIdeal R) D A G) (G' : Over (Sp R)) [GrpObj G'] [IsCommMonObj G'], IsSemiAbelian G' → ∀ (D' : DegData R (maximalIdeal R)) (A' : PolAV (Sp (FractionRing R))) (U' : Unif (maximalIdeal R) D' A' G'), TorMatch U U (RingHom.id R) (𝟙 G.left) (AddMonoidHom.id _) ∧ TorMatch U U' (RingHom.id R) (1 : G' ⟶ G).left 0 ∧ ∀ (p p' : G' ⟶ G) ρ ρ', TorMatch U U' (RingHom.id R) p.left ρ → TorMatch U U' (RingHom.id R) p'.left ρ' → TorMatch U U' (RingHom.id R) (p * p').left (ρ + ρ') := by
   intro R _ _ _ hR G _ _ hG D A U G' _ _ _ D' A' U'
   exact ⟨torMatch_id hR hG U, torMatch_one hR hG U U', fun p p' ρ ρ' hp hp' => torMatch_mul hR hG U U' p p' ρ ρ' hp hp'⟩

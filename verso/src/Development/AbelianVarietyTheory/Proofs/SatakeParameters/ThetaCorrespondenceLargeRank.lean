@@ -15,6 +15,9 @@ open scoped TensorProduct
 
 namespace GlobalTheory.ThetaLiftGL
 
+/- English proof (translation)
+Introduce `U hU`. Take `⟨J, h1, h2, h3, -⟩` from `exists_open_normalised_subgroup_subset k (Fin n) U hU`. Conclude with `⟨J, h1, SplitFlip.isCompact_KO.of_isClosed_subset (J.isClosed_of_isOpen h1) h3, h2⟩`.
+-/
 theorem compactOpen_basis (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (n : ℕ) :
     ∀ U ∈ nhds (1 : GL (Fin n) k), ∃ K : Subgroup (GL (Fin n) k),
@@ -23,6 +26,13 @@ theorem compactOpen_basis (k : Type) [Field k] [ValuativeRel k] [TopologicalSpac
   obtain ⟨J, h1, h2, h3, -⟩ := exists_open_normalised_subgroup_subset k (Fin n) U hU
   exact ⟨J, h1, SplitFlip.isCompact_KO.of_isClosed_subset (J.isClosed_of_isOpen h1) h3, h2⟩
 
+/- English proof (translation)
+Introduce `hBZ hB hH k _ _ _ _ r t μ V _ _ W _ _ σ π hrt hμs hμu hσs hσi hσu hπs hπi hθ`. Establish `hb` using `compactOpen_basis k (r + t)`. Establish `hIi : (prod₂ σ (detRep (Fin t) μ)).IsIrreducible` using `BernsteinUnitaryProductIrreducible.prod₂_detRep hB t hσs hσi hσu hμs hμu`. Establish `hIs : IsSmooth (prod₂ σ (detRep (Fin t) μ))` using `isSmooth_prod₂ _ _`. Establish `hπa : IsAdmissible π` using `(hBZ k).1 (Fin (r + t)) W π hπs hπi`.
+
+Establish `hIa : IsAdmissible (prod₂ σ (detRep (Fin t) μ))` using `(hBZ k).1 (Fin (r + t)) _ _ hIs hIi`. Establish `hθI : ThetaPair μ σ (prod₂ σ (detRep (Fin t) μ))` using `GlobalTheory.T.theta_pair_det_twist hBZ k r t μ V σ hrt hμs hμu hσs hσi hσu`. Establish `hq : OmQuot μ σ (contra π)` using `GlobalTheory.T.theta_pair_contragredient_quotient k r (r + t) μ V W σ π hμs hπa hθ`. Establish `hqI : OmQuot μ σ (contra (prod₂ σ (detRep (Fin t) μ)))` using `GlobalTheory.T.theta_pair_contragredient_quotient k r (r + t) μ V _ σ _ hμs hIa hθI`. Establish `hc` using `GlobalTheory.T.smoothContragredient_irreducible_and_reflexive (GL (Fin (r + t)) k) hb W _ π (prod₂ σ (detRep (Fin t) μ)) hπa hIa`.
+
+Establish `hc'` using `GlobalTheory.T.smoothContragredient_irreducible_and_reflexive (GL (Fin (r + t)) k) hb _ W (prod₂ σ (detRep (Fin t) μ)) π hIa hπa`. Take `⟨e⟩` from `(hH k r (r + t) μ hμs).1 V _ _ σ (contra π) (contra (prod₂ σ (detRep (Fin t) μ))) hσs hσi (isSmooth_contra π) (hc.1 hπi) (isSmooth_contra _) (hc'.1 hIi) hq hqI`. Conclude with `hc.2.2 ⟨e⟩`.
+-/
 theorem main : BernsteinZelevinskyFiniteness → BernsteinUnitaryProductIrreducible → HoweDualityGL →
     ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (r t : ℕ)
     (μ : kˣ →* ℂˣ) (V : Type) [AddCommGroup V] [Module ℂ V] (W : Type) [AddCommGroup W] [Module ℂ W]

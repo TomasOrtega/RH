@@ -35,6 +35,39 @@ open GlobalTheory.AllWt
 
 namespace GlobalTheory.KeyPowTw
 
+/- English proof (translation)
+Establish `hwt : ∀ (m : ℤ) (τ : E →+* ℂ) (i : ℕ), i < Dw.mult τ → (wtOf Dw 0 m).1 (τ, i) = -m` using `GlobalTheory.KeyRootTw.wtOf_zero_fst E H Dw`. Establish `hex : exZ Dw (wtOf Dw 0 (-4)) = (4 : ℤ) • keyEx Dw`. Use function extensionality and compare the values at `i`. Break down `i with _ | ⟨τ, i⟩` into its components or cases. Use `show (2 * (-4) : ℤ) = 4 * (-2)`.
+
+Evaluate the numerical expressions. Use `show (wtOf Dw 0 (-4)).1 (τ, (i : ℕ)) = 4 * 1`. Rewrite using `[hwt (-4) τ i i.2]`. Evaluate the numerical expressions. Establish `hadd : wtOf Dw 0 (-4) + wtOf Dw 0 4 = 0`.
+
+Rewrite using `[← wtOf_add, add_zero, neg_add_cancel, wtOf_zero]`. Establish `hneg : -wtOf Dw 0 (-4) = wtOf Dw 0 4` using `neg_eq_of_add_eq_zero_right hadd`. Establish `hi` using `idem_mul_idem Z`. Use `set s : Rul Xo c := idem Z * (K : Rul Xo c) with hs`. Use `set s' : Rul Xo c := idem Z * ((K⁻¹ : (Rul Xo c)ˣ) : Rul Xo c) with hs'`.
+
+Establish `hsm : s ∈ secZ Xo c (exZ Dw (wtOf Dw 0 (-4)))`. Use `mul_mem_secZ (idem_mem_secZ Z) hKmem` as an intermediate fact. Rewrite `this` using `[zero_add, ← hex]`. Then use the resulting hypothesis. Establish `hsm' : s' ∈ secZ Xo c (exZ Dw (wtOf Dw 0 4))`. Use `mul_mem_secZ (idem_mem_secZ Z) (inv_mem_secZ hKmem)` as an intermediate fact.
+
+Rewrite `this` using `[zero_add, ← hex, ← exZ_neg_eq, hneg]`. Then use the resulting hypothesis. Establish `hsupp : s ∈ suppOn Z` using `by rw [hs, mul_comm]; exact mul_mem_suppOn _ (idem_mem_suppOn Z)`. Establish `hsupp' : s' ∈ suppOn Z` using `by rw [hs', mul_comm]; exact mul_mem_suppOn _ (idem_mem_suppOn Z)`. Establish `hss' : s * s' = idem Z` using `by rw [hs, hs', mul_mul_mul_comm, hi, Units.mul_inv, mul_one]`. Establish `hnorm : ∀ σ, ∀ z ∈ framesOn (U (goodOf c σ)) Z, homN (U (goodOf c σ)) x (wtOf Dw 0 (-4)) s z = C σ ∧ homN (U (goodOf c σ)) x (wtOf Dw 0 4) s' z = (C σ)⁻¹`.
+
+Introduce `σ z hz`. Take `⟨hd, hl⟩` from `hz`. Establish `h1` using `homN_idem (U (goodOf c σ)) x hd hl ((hP.1 σ).2 z ⟨hd, hl⟩ hd)`. Establish `hm : ∀ (m m' : ℤ) (f g : Rul Xo c), homN (U (goodOf c σ)) x (wtOf Dw 0 (m + m')) (f * g) z = homN (U (goodOf c σ)) x (wtOf Dw 0 m) f z * homN (U (goodOf c σ)) x (wtOf Dw 0 m') g z` using `fun m m' f g => by`. Rewrite using `[← homN_mul _ x (even_wtOf _ _) (even_wtOf _ _) f g z hd, ← wtOf_add, add_zero]`.
+
+Rewrite `h1` using `[← wtOf_zero (Dw := Dw)]`. Establish `h2 : homN (U (goodOf c σ)) x (wtOf Dw 0 (-4)) s z = C σ`. Use `hm 0 (-4) (idem Z) K` as an intermediate fact. Rewrite `this` using `[zero_add, h1, one_mul]`. Rewrite using `[hs, this, hCeq σ z.1 z.2 hd]`.
+
+Use `⟨h2, ?_⟩` and prove the remaining obligations. Establish `h5` using `hm (-4) 4 s s'`. Rewrite `h5` using `[hss', neg_add_cancel, h1, h2]`. Conclude with `eq_inv_of_mul_eq_one_left (by rw [mul_comm]; exact h5.symm)`. Establish `hgood : ∀ σ, GoodEmb c σ → goodOf c σ = σ` using `fun σ h => if_pos h`.
+
+Establish `hmono : ∀ (m : ℤ) (τ : E →+* ℂ) (i j : ℕ), i ≤ j → j < Dw.mult τ → (wtOf Dw 0 m).1 (τ, j) ≤ (wtOf Dw 0 m).1 (τ, i)` using `fun m τ i j hij hj => by`. Rewrite using `[hwt m τ i (lt_of_le_of_lt hij hj), hwt m τ j hj]`. Establish `hbd : ∀ σ, GoodEmb c σ → ∃ D : ℝ, ∀ z ∈ framesOn (U σ) Z, homN (U σ) x (wtOf Dw 0 (-4)) s z ≤ D`. Introduce `σ hσ`. Use `⟨C σ, fun z hz => ?_⟩` and prove the remaining obligations.
+
+Establish `h1` using `hnorm σ`. Rewrite `h1` using `[hgood σ hσ]`. Conclude with `(h1 z hz).1.le`. Establish `hbd' : ∀ σ, GoodEmb c σ → ∃ D : ℝ, ∀ z ∈ framesOn (U σ) Z, homN (U σ) x (wtOf Dw 0 4) s' z ≤ D`. Introduce `σ hσ`.
+
+Use `⟨(C σ)⁻¹, fun z hz => ?_⟩` and prove the remaining obligations. Establish `h1` using `hnorm σ`. Rewrite `h1` using `[hgood σ hσ]`. Conclude with `(h1 z hz).2.le`. Set `B : HeightOneSpectrum (𝓞 c.F) → ℝ` to `fun w => ∑ τ : E →+* ℂ, (Dw.mult τ : ℝ) * (ord_vw w (conjDifferent (embF c τ)) : ℝ)`.
+
+Establish `hvs : ∀ w, ∀ v ∈ valOn Z w, v s = v (K : Rul Xo c)` using `fun w v hv => by`. Rewrite using `[hs, (isVal_valOn hv).mul, val_idem hv, zero_add]`. Set `t : TwSec U x Z (wtOf Dw 0 (-4))` to `{ even := even_wtOf _ _ sig := s inv := s' sig_mem := hsm inv_mem := by rw [← exZ_neg_eq, hneg]; exact hsm' idem_sig := by rw [hs, ← mul_assoc, hi] idem_inv := by rw [hs', ← mul_assoc, hi] mul_inv := hss' cInf := C cInf_pos := hCpos norm_inf := fun σ z hz => (hnorm σ z hz).1 cusp …`. Establish `h7` using `GlobalTheory.T.mul_mem_cuspForms_of_boundedSection_component E H Dw l Xo c r U x Z (wtOf Dw 0 4) s' hks hU hpq (even_wtOf _ _) (hmono 4) hsm' hsupp' hbd' (G + wtOf Dw 0 (-4)) (hG.add (even_wtOf _ _)) f hf`. Rewrite `h7` using `[add_assoc, hadd, add_zero]`. Then use the resulting hypothesis.
+
+Use `lo := fun _ => 0`. Use `hi := fun w => 4 * B w`. Use `lo_le := fun w v hv => by`. Rewrite using `[hvs w v hv]`. Conclude with `(hval w v (valOn_subset Z w hv)).1` after adjusting the coercions.
+
+Use `le_hi := fun w v hv => by`. Rewrite using `[hvs w v hv]`. Conclude with `(hval w v (valOn_subset Z w hv)).2`. Use `finite_lo := by simp`. Use `finite_hi := by`.
+
+Use `(Set.finite_iUnion fun τ => finite_ord (embF c τ)).subset fun w hw => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hn`. Simplify using `only [Function.mem_support, Set.mem_iUnion, not_exists, not_not] at hn`. Apply `hw` to reduce the goal to its premises. Simplify using `[B, hn]`.
+
+Use `pts := hP }`. Conclude with `⟨t, fun _ => rfl, fun _ => rfl⟩`.
+-/
 theorem exists_twSec_key (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (r : ℕ) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (x : ℝ) (Z : Comp Xo c) (K : (Rul Xo c)ˣ) (C : (c.F →+* ℂ) → ℝ) (hP : HasPts U Z) (hks : Nonempty (KeySec Xo c)) (hU : ∀ σ, GoodEmb c σ → IsUnf (U σ)) (hpq : 1 ≤ Dw.p + Dw.q) (hKmem : (K : Rul Xo c) ∈ secZ Xo c ((4 : ℤ) • keyEx Dw)) (hCpos : ∀ σ, 0 < C σ) (hCeq : ∀ σ, ∀ k, ∀ y ∈ ((U (goodOf c σ)).X k).dom, homN (U (goodOf c σ)) x (wtOf Dw 0 (-4)) (K : Rul Xo c) ⟨k, y⟩ = C σ) (hval : ∀ (w : HeightOneSpectrum (𝓞 c.F)), ∀ v ∈ valSet Xo c (algCls Xo c) w, 0 ≤ v (K : Rul Xo c) ∧ v (K : Rul Xo c) ≤ ((4 * ∑ τ : E →+* ℂ, (Dw.mult τ : ℝ) * (ord_vw w (conjDifferent (embF c τ)) : ℝ) : ℝ) : EReal)) :
     ∃ t : TwSec U x Z (wtOf Dw 0 (-4)), (∀ w, t.lo w = 0) ∧ ∀ σ, t.cInf σ = C σ := by
   have hwt : ∀ (m : ℤ) (τ : E →+* ℂ) (i : ℕ), i < Dw.mult τ → (wtOf Dw 0 m).1 (τ, i) = -m :=
@@ -132,6 +165,27 @@ theorem exists_twSec_key (E : Type) [Field E] [NumberField E] [IsCMField E] (H :
       pts := hP }
   exact ⟨t, fun _ => rfl, fun _ => rfl⟩
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c r U x hU hx hF hpq hg`. Take `⟨κ, k₁, k₂, k₃, k₄, k₅, k₆, -, -⟩` from `GlobalTheory.KeyFamClosing.keyFam_one`. Set `e : Fin (Fintype.card (Σ τ : E →+* ℂ, Fin (Dw.mult τ))) ≃ Σ τ : E →+* ℂ, Fin (Dw.mult τ)` to `(Fintype.equivFin _).symm`. Take `⟨K, hKmem, hKval⟩` from `GlobalTheory.T.exists_unit_section_thetaKeyRule_weightFour κ k₁ k₂ k₆ E H Dw l Xo c _ e hpq`. Establish `hσ0` using `goodEmb_goodOf c c.F.val.toRingHom`.
+
+Take `⟨ρ, -⟩` from `GlobalTheory.T.exists_keySection_fourthRoot_perComponent κ k₁ k₂ k₆ k₄ E H Dw l Xo c _ e _ r (U _) K hσ0 (hU _ hσ0) hF hpq hKmem hKval`. Establish `hkr : GlobalTheory.IndefiniteRowSideFullHecke.FibreFramesOnModels.IsKeyRule κ`. Use `⟨?_, k₂, k₃, k₄, ?_⟩` and prove the remaining obligations. Simplify `k₁` using `only [GlobalTheory.KeyCl.Homog, mul_one]`. Simplify `k₅` using `only [GlobalTheory.KeyCl.ArchNorm, mul_one]`.
+
+Establish `hval` using `GlobalTheory.T.theta_key_section_valuation_bounds_different κ hkr E H Dw l Xo c _ e K hpq hg hKmem hKval`. Establish `hC` using `fun σ : c.F →+* ℂ => GlobalTheory.T.thetaKeySection_norm_complexPoints_eq_two_pi_pow κ k₁ k₂ k₅ E H Dw l Xo c _ e (goodOf c σ) r (U (goodOf c σ)) x K (goodEmb_goodOf c σ) (hU _ (goodEmb_goodOf c σ)) (hx _ (goodEmb_goodOf c σ)) ⟨ρ⟩ hpq hKmem hKval`. Use `choose C hCpos hClog hCeq using hC`. Establish `hgE` using `card_frame_index Dw e`. Establish `hpsi : Nat.card (Psi H) = Module.finrank ℚ E / 2` using `GlobalTheory.PeriodCoord.card_cmType H`.
+
+Establish `hCb : ∀ σ, Real.log (C σ) ≤ 2 * ((Nat.card (Psi H) * (Dw.p + Dw.q) : ℕ) : ℝ) * Real.log (2 * Real.pi)` using `fun σ => by rw [hpsi, hgE]; exact (abs_le.1 (hClog σ)).2`. Use `⟨⟨ρ⟩, fun Z m => ?_⟩` and prove the remaining obligations. Establish `hP : HasPts U Z` using `hasPts U hpq hg hU Z`. Take `⟨t₁, ht₁lo, ht₁c⟩` from `exists_twSec_key E H Dw l Xo c r U x Z K C hP ⟨ρ⟩ hU hpq hKmem hCpos hCeq hval`. Proceed by induction on `m with`.
+
+Consider the case `zero`. Establish `h0 : (0 : WTZ E) = wtOf Dw 0 (-(4 * ((0 : ℕ) : ℤ)))` using `by simp [wtOf_zero]`. Take `⟨-, h2, h3, -, -⟩` from `TwSec.const_spec (x := x) hP 1 one_ne_zero`. Use `⟨(TwSec.const x hP 1 one_ne_zero).copy h0, fun w => ?_, fun σ => ?_⟩` and prove the remaining obligations. Use `show 0 ≤ (TwSec.const x hP 1 one_ne_zero).lo w`.
+
+Rewrite using `[h3]`. Simplify using `[vAdd]`. Use `show Real.log ((TwSec.const x hP 1 one_ne_zero).cInf σ) ≤ _`. Rewrite using `[h2]`. Simplify using the standard rewrite rules.
+
+Consider the case `succ m ih`. Take `⟨t, htlo, htc⟩` from `ih`. Establish `h0 : wtOf Dw 0 (-(4 * (m : ℤ))) + wtOf Dw 0 (-4) = wtOf Dw 0 (-(4 * ((m + 1 : ℕ) : ℤ)))`. Rewrite using `[← wtOf_add, add_zero]`. Use `congr 1`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `⟨(t.mul t₁).copy h0, fun w => ?_, fun σ => ?_⟩` and prove the remaining obligations. Use `show 0 ≤ t.lo w + t₁.lo w`. Rewrite using `[ht₁lo]`.
+
+Combine the linear relations using `[htlo w]`. Use `show Real.log (t.cInf σ * t₁.cInf σ) ≤ _`. Rewrite using `[Real.log_mul (t.cInf_pos σ).ne' (t₁.cInf_pos σ).ne', ht₁c]`. Establish `h1` using `htc σ`. Establish `h2` using `hCb σ`.
+
+Move the coercions through the operations in `at h1 h2 ⊢`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem exists_twSec_keyPow : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (r : ℕ) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (x : ℝ), (∀ σ, GoodEmb c σ → IsUnf (U σ)) → (∀ σ, GoodEmb c σ → ∀ k (τ : E →+* ℂ), ‖τ ((U σ).X k).ξ0‖ = x) → FnAlgClosed Xo c → 1 ≤ Dw.p + Dw.q → (∀ p : ℕ, p.Prime → l.GoodAt p) → Nonempty (GlobalTheory.ShFam.KeySec Xo c) ∧ ∀ (Z : Comp Xo c) (m : ℕ), ∃ t : GlobalTheory.FlatTw.TwSec U x Z (wtOf Dw 0 (-(4 * (m : ℤ)))), (∀ w, 0 ≤ t.lo w) ∧ ∀ σ, Real.log (t.cInf σ) ≤ (m : ℝ) * (2 * ((Nat.card (Psi H) * (Dw.p + Dw.q) : ℕ) : ℝ) * Real.log (2 * Real.pi)) := by
   intro E _ _ _ H Dw l Xo c r U x hU hx hF hpq hg
   obtain ⟨κ, k₁, k₂, k₃, k₄, k₅, k₆, -, -⟩ := GlobalTheory.KeyFamClosing.keyFam_one

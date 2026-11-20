@@ -24,6 +24,17 @@ def castV {I I' : AutInst} (h : I = I') (x : Fin I.n → I.E) : Fin I'.n → I'.
 
 def crdY {I : AutInst} (h : I = instOf D) (x : Fin I.n → I.E) : Fin (D.sp.Y 0).rank → D.host.E := castV h x
 
+/- English proof (translation)
+Substitute `h` using the available equality. Take `⟨h1, h2⟩` from `Formalism.IndefR.RationalEmbedding.iota_symm_isBridge D (Formalism.IndefR.RationalEmbedding.iota D g)`. Establish `hs : (Formalism.IndefR.RationalEmbedding.iota D).symm (Formalism.IndefR.RationalEmbedding.iota D g) = g` using `(Formalism.IndefR.RationalEmbedding.iota D).symm_apply_apply g`. Establish `h1` using `fun v => (h1 v).trans (congrArg (fun t => Formalism.L2.SG.AdBridge.ofHAInf (instOf D) t v) hs)`. Establish `h2` using `h2.trans (congrArg (Formalism.L2.SG.AdBridge.ofHAFin (instOf D)) hs)`.
+
+Establish `hg' : Formalism.L2.SG.AdBridge.hmat (instOf D) g *ᵥ (fun i => (1 : AF (instOf D).F) ⊗ₜ[(instOf D).F] x i) = fun i => (1 : AF (instOf D).F) ⊗ₜ[(instOf D).F] x i` using `hg`. Establish `key : ∀ {R : Type} [CommRing R] (t : AF (instOf D).F ⊗[(instOf D).F] (instOf D).E →+* R), (Formalism.L2.SG.AdBridge.hmat (instOf D) g).map t *ᵥ (fun i => t ((1 : AF (instOf D).F) ⊗ₜ[(instOf D).F] x i)) = fun i => t ((1 : AF (instOf D).F) ⊗ₜ[(instOf D).F] x i)`. Introduce `R _ t`. Use function extensionality and compare the values at `i`. Use `congrArg t (congrFun hg' i)` as an intermediate fact.
+
+Rewrite `this` using `[RingHom.map_mulVec]`. Conclude with `this`. Use `⟨fun v => ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `uMat ((Formalism.IndefR.RationalEmbedding.iota D g).1 v) *ᵥ _ = _`. Establish `k` using `key (Formalism.L2.SG.AdBridge.thetaV (instOf D) v)`.
+
+Simplify using `only [Formalism.L2.SG.AdBridge.thetaV_tmul, map_one, one_mul] at k`. Establish `hP : (instOf D).P v * ((instOf D).P v)⁻¹ = 1` using `Matrix.mul_nonsing_inv _ ((Matrix.isUnit_iff_isUnit_det _).1 ((instOf D).P_unit v))`. Use `(congrArg (· *ᵥ rv (instOf D) v x) (h1 v)).trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(((instOf D).P v)⁻¹ * (Formalism.L2.SG.AdBridge.hmat (instOf D) g).map (Formalism.L2.SG.AdBridge.thetaV (instOf D) v) * (instOf D).P v) *ᵥ _ = _`. Rewrite using `[rv, Matrix.mulVec_mulVec, Matrix.mul_assoc, hP, Matrix.mul_one, ← Matrix.mulVec_mulVec, k]`.
+
+Express the relevant statement in the definitionally equal form `(instOf D).fmat (Formalism.IndefR.RationalEmbedding.iota D g).2 *ᵥ _ = _`. Establish `k` using `key (Formalism.L2.SG.AdBridge.tauF (instOf D))`. Simplify using `only [Formalism.L2.SG.AdBridge.tauF_tmul] at k`. Conclude with `(congrArg (· *ᵥ incl (instOf D) x) h2).trans k`.
+-/
 theorem fix_of_fix {I : AutInst} (h : I = instOf D) (x : Fin I.n → I.E) (g : GA D (D.sp.Y 0))
     (hg : Formalism.L2.Theta.mt (D.sp.Y 0) g *ᵥ ratV (crdY h x) = ratV (crdY h x)) :
     (∀ v, uMat ((((Formalism.IndefR.RationalEmbedding.iota D).trans (castGA h.symm)) g).1 v) *ᵥ rv I v x = rv I v x) ∧
@@ -73,6 +84,13 @@ structure IsFrame : Prop where
 
 variable {X h u d o ζ}
 
+/- English proof (translation)
+Break down `hx with (⟨b, rfl⟩ | ⟨b, rfl⟩) | rfl` into its components or cases. Establish `e : ratV (crdY h (X.eR b)) = fun i => d.jX i b` using `funext fun i => congrArg (incA D) (hF.e_eq b i).symm`. Rewrite using `[e]`. Conclude with `funext fun i => congrFun (congrFun (d.wittDecomp_anisotropicEmbedding_inclX (o.emb (a, 1))) i) b`. Establish `e : ratV (crdY h (X.fR b)) = fun i => d.jY i b` using `funext fun i => congrArg (incA D) (hF.f_eq b i).symm`.
+
+Rewrite using `[e]`. Conclude with `funext fun i => congrFun (congrFun (d.wittDecomp_anisotropicEmbedding_inclY (o.emb (a, 1))) i) b`. Establish `e : Formalism.L2.Theta.mt (D.sp.Y 0) (embA d o a) ⬝ (d.j0 ⬝ o.jB) = d.j0 ⬝ o.jB`. Rewrite using `[embA_apply, ← Matrix.mul_assoc, d.wittDecomp_anisotropicEmbedding_inclAnisotropic, Matrix.mul_assoc, o.emb_jB, mt_one, Matrix.mul_one]`. Rewrite using `[← hF.z_eq, vecB, ratV_mulVec, ratV_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec]`.
+
+Conclude with `(congrArg (· *ᵥ ratV ζ) ((Matrix.mul_assoc _ _ _).trans e)).trans (Matrix.mulVec_mulVec _ _ _).symm`.
+-/
 theorem embA_fix (hF : IsFrame X h u d o ζ) (a : GA D A) (x : Fin X.B.I.n → X.B.I.E) (hx : x ∈ fixSet X u) :
     Formalism.L2.Theta.mt (D.sp.Y 0) (embA d o a) *ᵥ ratV (crdY h x) = ratV (crdY h x) := by
   rcases hx with (⟨b, rfl⟩ | ⟨b, rfl⟩) | rfl
@@ -147,6 +165,11 @@ def Stmt : Prop :=
           ∀ Dt : Set X.B.I.GA, IsReps X u Dt →
             ∀ (T : Cu X u hK) (f : X.B.I.GA → ℂ), IsConjType X f → Unfolds hF hK ψ μ 𝓕 ν 𝓝 T f Dt c
 
+/- English proof (translation)
+Establish `e : PuFun X u hK Dt T = hm.toLp _` using `dif_pos hm`. Rewrite using `[e, L2.inner_def]`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hφ, hm.coeFn_toLp] with x h1 h2`. Rewrite using `[h1, h2]`.
+
+Simplify using `[mul_comm]`.
+-/
 example (X : HidaSetting D) (u : D.what₂.Word) (hK : X.LevelSubgroupCharacter) (Dt : Set X.B.I.GA) (T : Cu X u hK) (f : X.B.I.GA → ℂ)
     (hm : MemLp (Pser X u hK Dt T) 2 ((X.B.I.muA X.B.μf).restrict X.B.fund)) (φ : X.B.I.L2 X.B.μf X.B.fund)
     (hφ : (φ : X.B.I.GA → ℂ) =ᵐ[(X.B.I.muA X.B.μf).restrict X.B.fund] (fun x => star (f x))) :
@@ -158,6 +181,9 @@ example (X : HidaSetting D) (u : D.what₂.Word) (hK : X.LevelSubgroupCharacter)
   rw [h1, h2]
   simp [mul_comm]
 
+/- English proof (translation)
+Establish `e : iotaX X h (embA d o 1) = 1` using `by rw [map_one, map_one]`. Conclude with `Prod.ext (Subtype.ext (congrArg Prod.fst e)) (Subtype.ext (congrArg Prod.snd e))`.
+-/
 example {X : HidaSetting D} {h : X.B.I = instOf D} {u : D.what₂.Word} {V₀ A L : HSp D} {d : HypDec (D.sp.Y 0) V₀ D.R.rS}
     {o : OrthDec V₀ A L} {ζ : Fin L.rank → D.host.E} (hF : IsFrame X h u d o ζ) : toH hF 1 = 1 := by
   have e : iotaX X h (embA d o 1) = 1 := by rw [map_one, map_one]

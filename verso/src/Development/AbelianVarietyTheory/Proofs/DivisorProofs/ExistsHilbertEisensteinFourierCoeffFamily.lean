@@ -15,6 +15,11 @@ open GlobalTheory.LatJet (EisExp IsEis FR)
 
 namespace GlobalTheory.HilbFam
 
+/- English proof (translation)
+Introduce `hE F _ _ _ hf 𝔞 𝔟 s hs`. Take `⟨G, hG, -, hX⟩` from `hE F hf 𝔞 𝔟 s hs`. Take `⟨Z, a, hZ, h0, hint, hsupp, hsum⟩` from `GlobalTheory.T.hilbertEisenstein_fourier_expansion_support F (2 * s) 𝔞 𝔟 G hX`. Use `⟨Z, a, hZ, h0, hint, hsupp, fun w hw ↦ ?_⟩` and prove the remaining obligations. Establish `hv` using `GlobalTheory.T.hilbertEisensteinLatticeValue_eq_of_isValue F (2 * s) _ _ _ _ (GlobalTheory.T.isHilbertEisensteinLatticeValue_of_eisensteinSeries F (2 * s) 𝔞 𝔟 G w (even_two_mul s) hG hw)`.
+
+Establish `hne : ((2 * Real.pi * Complex.I : ℂ) ^ Module.finrank ℚ F) ^ (2 * s) ≠ 0` using `pow_ne_zero _ (pow_ne_zero _ Complex.two_pi_I_ne_zero)`. Rewrite using `[hv, mul_pow ((2 * Real.pi * Complex.I : ℂ) ^ Module.finrank ℚ F), mul_left_comm, mul_div_mul_left _ _ hne]`. Conclude with `hsum w hw`.
+-/
 theorem exists_isCoef : EisExp → ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F], 2 ≤ Module.finrank ℚ F → ∀ (𝔞 𝔟 : Frac F) (s : ℕ), 1 ≤ s → ∃ (Z : ℂ → ℂ) (a : F → ℂ), IsPartialZeta (ClassGroup.mk F 𝔞)⁻¹ Z ∧ IsCoef (2 * s) 𝔞 𝔟 ((2 : ℂ)⁻¹ ^ Module.finrank ℚ F * Z (1 - ((2 * s : ℕ) : ℂ))) a := by
   intro hE F _ _ _ hf 𝔞 𝔟 s hs
   obtain ⟨G, hG, -, hX⟩ := hE F hf 𝔞 𝔟 s hs

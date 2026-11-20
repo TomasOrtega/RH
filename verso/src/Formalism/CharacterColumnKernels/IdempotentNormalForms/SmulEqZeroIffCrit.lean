@@ -12,6 +12,9 @@ namespace IdempotentCriticalLength
 
 variable {O Λ : Type*} [CommRing O] [IsLocalRing O] [Ring Λ] [Algebra O Λ]
 
+/- English proof (translation)
+The claim follows from `Module.mem_annihilator.mp (IsSemisimpleModule.jacobson_le_annihilator (R := Λ) (M := V) ha) w`.
+-/
 lemma jac_smul {V : Type*} [AddCommGroup V] [Module Λ V] [IsSimpleModule Λ V]
     {a : Λ} (ha : a ∈ Ring.jacobson Λ) (w : V) : a • w = 0 :=
   Module.mem_annihilator.mp (IsSemisimpleModule.jacobson_le_annihilator (R := Λ) (M := V) ha) w
@@ -20,6 +23,17 @@ def Crit (O : Type*) [CommRing O] [IsLocalRing O] [Algebra O Λ] (ε x : Λ) : P
   ∀ y : Λ, ∀ c : O, ε * (y * x) * ε - algebraMap O Λ c * ε ∈ Ring.jacobson Λ →
     c ∈ IsLocalRing.maximalIdeal O
 
+/- English proof (translation)
+Establish `e2 : ∀ c : O, (algebraMap O Λ c * ε) • v = algebraMap O Λ c • v`. Introduce `c`. Rewrite using `[mul_smul, hv]`. Prove the components needed by the constructor for the conclusion. Introduce `hx y c hc`.
+
+Establish `h1` using `jac_smul hc v`. Establish `e1 : (ε * (y * x) * ε) • v = 0`. Rewrite using `[mul_smul, hv, mul_smul, mul_smul, hx, smul_zero, smul_zero]`. Rewrite `h1` using `[sub_smul, e1, e2, zero_sub, neg_eq_zero]`. Assume the negation of the conclusion as `hcm`.
+
+Establish `hu : IsUnit c`. Assume the negation of the conclusion as `hu'`. Conclude with `hcm hu'`. Conclude with `hv0 (((hu.map (algebraMap O Λ)).smul_eq_zero).mp h1)`. Introduce `hc`.
+
+Assume the negation of the conclusion as `hx`. Take `⟨y, hy⟩` from `(IsSimpleModule.toSpanSingleton_surjective Λ hx) v`. Rewrite `hy` using `[LinearMap.toSpanSingleton_apply]`. Take `⟨c, hc'⟩` from `hii (y * x)`. Establish `h1` using `jac_smul hc' v`.
+
+Establish `e1 : (ε * (y * x) * ε) • v = v`. Rewrite using `[mul_smul, hv, mul_smul, mul_smul, hy, hv]`. Rewrite `h1` using `[sub_smul, e1, e2, sub_eq_zero, jac_smul (hiii c (hc y c hc')) v]`. Conclude with `hv0 h1`.
+-/
 lemma smul_eq_zero_iff_crit {V : Type*} [AddCommGroup V] [Module Λ V] [IsSimpleModule Λ V]
     {ε : Λ} (hii : ∀ x : Λ, ∃ c : O, ε * x * ε - algebraMap O Λ c * ε ∈ Ring.jacobson Λ)
     (hiii : ∀ c ∈ IsLocalRing.maximalIdeal O, algebraMap O Λ c ∈ Ring.jacobson Λ)
@@ -49,6 +63,11 @@ lemma smul_eq_zero_iff_crit {V : Type*} [AddCommGroup V] [Module Λ V] [IsSimple
     rw [sub_smul, e1, e2, sub_eq_zero, jac_smul (hiii c (hc y c hc')) v] at h1
     exact hv0 h1
 
+/- English proof (translation)
+Take `⟨t, ht⟩` from `hV`. Take `⟨s, hs⟩` from `hW`. Establish `hv : ε • (ε • t) = ε • t` using `by rw [← mul_smul, hε.eq]`. Establish `hu : ε • (ε • s) = ε • s` using `by rw [← mul_smul, hε.eq]`. Establish `hker : LinearMap.ker (LinearMap.toSpanSingleton Λ V (ε • t)) = LinearMap.ker (LinearMap.toSpanSingleton Λ W (ε • s))`.
+
+Use extensionality with `x`. Simplify using `only [LinearMap.mem_ker, LinearMap.toSpanSingleton_apply]`. Rewrite using `[smul_eq_zero_iff_crit hii hiii ht hv, smul_eq_zero_iff_crit hii hiii hs hu]`. Conclude with `⟨(LinearMap.quotKerEquivOfSurjective _ (IsSimpleModule.toSpanSingleton_surjective Λ ht)).symm.trans ((Submodule.quotEquivOfEq _ _ hker).trans (LinearMap.quotKerEquivOfSurjective _ (IsSimpleModule.toSpanSingleton_surjective Λ hs)))⟩`.
+-/
 lemma nonempty_equiv {V W : Type*} [AddCommGroup V] [Module Λ V] [IsSimpleModule Λ V]
     [AddCommGroup W] [Module Λ W] [IsSimpleModule Λ W] {ε : Λ} (hε : IsIdempotentElem ε)
     (hii : ∀ x : Λ, ∃ c : O, ε * x * ε - algebraMap O Λ c * ε ∈ Ring.jacobson Λ)

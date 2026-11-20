@@ -30,6 +30,13 @@ section Lin
 
 variable {R : Type} [CommRing R] {M : Type} [AddCommGroup M] [Module R M] {m : ℕ}
 
+/- English proof (translation)
+Establish `ht : L.IsLowerTriangular` using `fun a b hab => hL a b hab`. Establish `hdet : IsUnit L.det`. Rewrite using `[Matrix.det_of_lowerTriangular L ht]`. Conclude with `Finset.prod_induction _ IsUnit (fun a b ha hb => ha.mul hb) isUnit_one (fun a _ => hd a)`. Use `haveI : Invertible L := Matrix.invertibleOfIsUnitDet L hdet`.
+
+Establish `hti : L⁻¹.BlockTriangular OrderDual.toDual` using `Matrix.blockTriangular_inv_of_blockTriangular ht`. Establish `hinv : ∀ a, v a = ∑ j, L⁻¹ a j • v' j` using `fun a => by`. Simplify using `only [h, Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Repeatedly rewrite using `[← Finset.sum_smul, ← Matrix.mul_apply, Matrix.nonsing_inv_mul L hdet, Matrix.one_apply]`.
+
+Simplify using the standard rewrite rules. Use `le_antisymm (initSpan_le_of_tri (B := L.transpose) (fun a b hab => hL b a hab) h i) (initSpan_le_of_tri (B := (L⁻¹).transpose) (fun a b hab => hti hab) hinv i)` and prove the remaining obligations.
+-/
 theorem initSpan_eq_of_lower {v v' : Fin m → M} (L : Matrix (Fin m) (Fin m) R)
     (hL : ∀ i j, i < j → L i j = 0) (hd : ∀ i, IsUnit (L i i))
     (h : ∀ i, v' i = ∑ j, L i j • v j) (i : ℕ) : initSpan R v' i = initSpan R v i := by
@@ -61,6 +68,9 @@ def baseVec (TF : TorFlag Xo c) (U : TF.Y.X.affineOpens) {n : ℕ} (e : (Σ τ :
     unfold LogKS.chart at this
     rwa [GlobalTheory.FlagMod.spMap_ev x U.2 hU] at this)
 
+/- English proof (translation)
+Substitute `ex` using the available equality. Establish `hc` using `h.2.2.2.2.2.2.2 K z hz hU hk hx σ i`. Conclude with `(LieMet.isComb_iff (fun j => baseVec TF U e v hv _ hU σ j) (fun j => ev z W hz ((L σ * N σ) i j)) _).1 hc`.
+-/
 theorem vecAt_eq_sum (TF : TorFlag Xo c) (Z : Comp Xo c) (U : TF.Y.X.affineOpens) {n : ℕ}
     (e : (Σ τ : E →+* ℂ, Fin (Dw.mult τ)) ≃ Fin n) (v : Fin n → (Sp (DualNumber Γ(TF.Y.X, U.1)) ⟶ TF.Y.t.G.left))
     (hv : ∀ i, IsTanAtG TF.Y.t (LogKS.chart U) (v i)) (W : (Y₀ TF.X Z).Opens) (k : TF.X.F.J)
@@ -76,6 +86,11 @@ theorem vecAt_eq_sum (TF : TorFlag Xo c) (Z : Comp Xo c) (U : TF.Y.X.affineOpens
   exact (LieMet.isComb_iff (fun j => baseVec TF U e v hv _ hU σ j)
     (fun j => ev z W hz ((L σ * N σ) i j)) _).1 hc
 
+/- English proof (translation)
+Establish `hk : ⊤ ≤ (z ≫ inc₀ TF.X Z) ⁻¹ᵁ TF.X.F.U k` using `GlobalTheory.FlagMod.le_preimage_map (inc₀ TF.X Z) h.2.2.1 hz`. Rewrite using `[TF.X.F.step_eq k _ hk hx]`. Use `initSpan_eq_of_lower (fun a b => ev z W hz (L σ a b)) (fun a b hab => by rw [h.2.2.2.1 σ a b hab, map_zero]) (fun a => (h.2.2.2.2.1 σ a).map _) (fun a => ?_) i` and prove the remaining obligations. Rewrite using `[vecAt_eq_sum TF Z U e v hv W k L N h z hz ex hU hk hx σ a]`. Simplify using `only [Matrix.mul_apply, map_sum, map_mul, Finset.smul_sum, smul_smul, Finset.sum_smul]`.
+
+Conclude with `Finset.sum_comm`.
+-/
 theorem step_eq_cell (TF : TorFlag Xo c) (Z : Comp Xo c) (U : TF.Y.X.affineOpens) {n : ℕ}
     (e : (Σ τ : E →+* ℂ, Fin (Dw.mult τ)) ≃ Fin n) (v : Fin n → (Sp (DualNumber Γ(TF.Y.X, U.1)) ⟶ TF.Y.t.G.left))
     (hv : ∀ i, IsTanAtG TF.Y.t (LogKS.chart U) (v i)) (W : (Y₀ TF.X Z).Opens) (k : TF.X.F.J)
@@ -100,6 +115,11 @@ namespace GlobalTheory.LogPole.CellQF
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l}
 
+/- English proof (translation)
+Establish `hπ : LocallyOfFiniteType (toBase TF Z)`. Establish `: IsProper TF.X.π` using `TF.X.proper`. Use `infer_instance`. Establish `h1` using `HasRingHomProperty.appLE (P := @LocallyOfFiniteType) (toBase TF Z) hπ U ⟨W, h.1⟩ h.2.1`. Rewrite using `[HasRingHomProperty.Spec_iff (P := @LocallyOfFiniteType)]`.
+
+Use `RingHom.FiniteType.of_comp_finiteType (f := (MvPolynomial.C : Γ(TF.Y.X, U.1) →+* MvPolynomial (VIx Dw) Γ(TF.Y.X, U.1))) ?_` and prove the remaining obligations. Rewrite using `[CommRingCat.hom_ofHom, MvPolynomial.eval₂Hom_comp_C]`. Conclude with `h1`.
+-/
 theorem locallyOfFiniteType_cell (TF : TorFlag Xo c) (Z : Comp Xo c) (U : TF.Y.X.affineOpens) {n : ℕ}
     (e : (Σ τ : E →+* ℂ, Fin (Dw.mult τ)) ≃ Fin n) (v : Fin n → (Sp (DualNumber Γ(TF.Y.X, U.1)) ⟶ TF.Y.t.G.left))
     (W : (Y₀ TF.X Z).Opens) (k : TF.X.F.J)
@@ -122,6 +142,27 @@ end GlobalTheory.LogPole.CellQF
 set_option maxHeartbeats 1000000 in
 open GlobalTheory.LogPole.CellQF in
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c TF Z _ U n e v hv W k L N h`. Use `haveI := locallyOfFiniteType_cell TF Z U e v W k L N h`. Use `GlobalTheory.locallyQuasiFinite_of_finite_geometric_points _ fun Ω _ _ y => ?_` and prove the remaining obligations. Establish `hfs : IsOpenImmersion h.1.fromSpec` using `IsAffineOpen.isOpenImmersion_fromSpec h.1`. Establish `hzW : ∀ x : Spec (CommRingCat.of Ω) ⟶ Spec Γ(Y₀ TF.X Z, W), ⊤ ≤ (x ≫ h.1.fromSpec) ⁻¹ᵁ W` using `fun x => GlobalTheory.FlagMod.le_preimage_comp x (GlobalTheory.FlagMod.tau_le h.1 le_rfl)`.
+
+Establish `hsp : ∀ x : Spec (CommRingCat.of Ω) ⟶ Spec Γ(Y₀ TF.X Z, W), spMap (ev (x ≫ h.1.fromSpec) W (hzW x)) = x` using `fun x => by`. Rewrite using `[← cancel_mono h.1.fromSpec]`. Conclude with `GlobalTheory.FlagMod.spMap_ev _ h.1 _`. Establish `hy : ∀ x : {x : Spec (CommRingCat.of Ω) ⟶ Spec Γ(Y₀ TF.X Z, W) // x ≫ Spec.map (CommRingCat.ofHom (MvPolynomial.eval₂Hom ((toBase TF Z).appLE U.1 W h.2.1).hom (cellCoord N))) = y}, spMap ((ev (x.1 ≫ h.1.fromSpec) W (hzW x.1)).comp (MvPolynomial.eval₂Hom ((toBase TF Z).appLE U.1 W …` using `fun x => by`. Rewrite using `[← spMap_comp', hsp]`.
+
+Conclude with `x.2`. Establish `hρ : ∀ x x' : {x : Spec (CommRingCat.of Ω) ⟶ Spec Γ(Y₀ TF.X Z, W) // x ≫ Spec.map (CommRingCat.ofHom (MvPolynomial.eval₂Hom ((toBase TF Z).appLE U.1 W h.2.1).hom (cellCoord N))) = y}, (ev (x.1 ≫ h.1.fromSpec) W (hzW x.1)).comp (MvPolynomial.eval₂Hom ((toBase TF Z).appLE U.1 W h.2 …` using `fun x x' => congrArg CommRingCat.Hom.hom (Spec.map_injective ((hy x).trans (hy x').symm))`. Establish `hN : ∀ x x' : {x : Spec (CommRingCat.of Ω) ⟶ Spec Γ(Y₀ TF.X Z, W) // x ≫ Spec.map (CommRingCat.ofHom (MvPolynomial.eval₂Hom ((toBase TF Z).appLE U.1 W h.2.1).hom (cellCoord N))) = y}, ∀ σ a b, ev (x.1 ≫ h.1.fromSpec) W (hzW x.1) (N σ a b) = ev (x'.1 ≫ h.1.fromSpec) W (hzW x'.1) ( …`. Introduce `x x' σ a b`. Break down `lt_trichotomy a b with hab | rfl | hab` into its components or cases.
+
+Establish `e1 : N σ a b = MvPolynomial.eval₂Hom ((toBase TF Z).appLE U.1 W h.2.1).hom (cellCoord N) (MvPolynomial.X ⟨σ, ⟨(a, b), hab⟩⟩)`. Rewrite using `[MvPolynomial.eval₂Hom_X']`. Both sides reduce to the same expression. Rewrite using `[e1]`. Conclude with `congrArg (fun f => f (MvPolynomial.X ⟨σ, ⟨(a, b), hab⟩⟩)) (hρ x x')`.
+
+Rewrite using `[h.2.2.2.2.2.2.1 σ a, map_one, map_one]`. Rewrite using `[h.2.2.2.2.2.1 σ a b hab]`. Conclude with `(RingHom.map_zero _).trans (RingHom.map_zero _).symm`. Establish `hUx : ∀ x : Spec (CommRingCat.of Ω) ⟶ Spec Γ(Y₀ TF.X Z, W), ⊤ ≤ ((x ≫ h.1.fromSpec) ≫ toBase TF Z) ⁻¹ᵁ U.1` using `fun x => GlobalTheory.FlagMod.le_preimage_map (toBase TF Z) h.2.1 (hzW x)`. Establish `hev : ∀ x : Spec (CommRingCat.of Ω) ⟶ Spec Γ(Y₀ TF.X Z, W), ev ((x ≫ h.1.fromSpec) ≫ toBase TF Z) U.1 (hUx x) = ((ev (x ≫ h.1.fromSpec) W (hzW x)).comp (MvPolynomial.eval₂Hom ((toBase TF Z).appLE U.1 W h.2.1).hom (cellCoord N))).comp MvPolynomial.C` using `fun x => by`.
+
+Use extensionality with `r`. Rewrite using `[← GlobalTheory.FlagMod.ev_appLE _ _ h.2.1 (hzW x)]`. Simplify using the standard rewrite rules. Establish `hB : ∀ x x' : {x : Spec (CommRingCat.of Ω) ⟶ Spec Γ(Y₀ TF.X Z, W) // x ≫ Spec.map (CommRingCat.ofHom (MvPolynomial.eval₂Hom ((toBase TF Z).appLE U.1 W h.2.1).hom (cellCoord N))) = y}, (x.1 ≫ h.1.fromSpec) ≫ toBase TF Z = (x'.1 ≫ h.1.fromSpec) ≫ toBase TF Z` using `fun x x' => by`. Use `(GlobalTheory.FlagMod.spMap_ev _ U.2 (hUx x.1)).symm.trans (Eq.trans ?_ (GlobalTheory.FlagMod.spMap_ev _ U.2 (hUx x'.1)))` and prove the remaining obligations.
+
+Rewrite using `[hev x.1, hev x'.1, hρ x x']`. Break down `isEmpty_or_nonempty {x : Spec (CommRingCat.of Ω) ⟶ Spec Γ(Y₀ TF.X Z, W) // x ≫ Spec.map (CommRingCat.ofHom (MvPolynomial.eval₂Hom ((toBase TF Z).appLE U.1 W h.2.1).hom (cellCoord N))) = y} with h0 | hne` into its components or cases. Conclude with `@Finite.of_subsingleton _ ⟨fun a => (h0.false a).elim⟩`. Take `⟨x₀⟩` from `hne`. Establish `ex₀ : (x₀.1 ≫ h.1.fromSpec) ≫ toBase TF Z = ((x₀.1 ≫ h.1.fromSpec) ≫ inc₀ TF.X Z) ≫ TF.X.π` using `(Category.assoc _ _ _).symm`.
+
+Establish `hU0 : ⊤ ≤ (((x₀.1 ≫ h.1.fromSpec) ≫ inc₀ TF.X Z) ≫ TF.X.π) ⁻¹ᵁ U.1`. Rewrite using `[← ex₀]`. Conclude with `hUx x₀.1`. Establish `hfin` using `TF.flag.fin Ω ((x₀.1 ≫ h.1.fromSpec) ≫ inc₀ TF.X Z)`. Establish `key : ∀ x : {x : Spec (CommRingCat.of Ω) ⟶ Spec Γ(Y₀ TF.X Z, W) // x ≫ Spec.map (CommRingCat.ofHom (MvPolynomial.eval₂Hom ((toBase TF Z).appLE U.1 W h.2.1).hom (cellCoord N))) = y}, ∃ hx : ((x.1 ≫ h.1.fromSpec) ≫ inc₀ TF.X Z) ≫ TF.X.π = ((x₀.1 ≫ h.1.fromSpec) ≫ inc₀ TF.X Z) ≫ TF. …` using `fun x => by`.
+
+Establish `ex : (x.1 ≫ h.1.fromSpec) ≫ toBase TF Z = ((x₀.1 ≫ h.1.fromSpec) ≫ inc₀ TF.X Z) ≫ TF.X.π` using `(hB x x₀).trans ex₀`. Establish `hx : ((x.1 ≫ h.1.fromSpec) ≫ inc₀ TF.X Z) ≫ TF.X.π = ((x₀.1 ≫ h.1.fromSpec) ≫ inc₀ TF.X Z) ≫ TF.X.π` using `(Category.assoc _ _ _).trans ex`. Use `⟨hx, fun σ i => ?_⟩` and prove the remaining obligations. Use `(step_eq_cell TF Z U e v hv.1 W k L N h _ (hzW x.1) ex hU0 hx σ i).trans ?_` and prove the remaining obligations. Use `Eq.trans ?_ (step_eq_cell TF Z U e v hv.1 W k L N h _ (hzW x₀.1) ex₀ hU0 rfl σ i).symm` and prove the remaining obligations.
+
+Simplify using `only [hN x x₀]`. Establish `hinj : Function.Injective (fun x : Spec (CommRingCat.of Ω) ⟶ Spec Γ(Y₀ TF.X Z, W) => (x ≫ h.1.fromSpec) ≫ inc₀ TF.X Z)` using `fun a b hab => (cancel_mono h.1.fromSpec).1 ((cancel_mono (inc₀ TF.X Z)).1 hab)`. Establish `hS : {x : Spec (CommRingCat.of Ω) ⟶ Spec Γ(Y₀ TF.X Z, W) | x ≫ Spec.map (CommRingCat.ofHom (MvPolynomial.eval₂Hom ((toBase TF Z).appLE U.1 W h.2.1).hom (cellCoord N))) = y}.Finite` using `(hfin.preimage hinj.injOn).subset fun x hx => key ⟨x, hx⟩`. Conclude with `hS.to_subtype`.
+-/
 theorem GlobalTheory.LogPole.locallyQuasiFinite_cellMap : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (TF : TorFlag Xo c) (Z : Comp Xo c), FnAlgClosed Xo c → ∀ (U : TF.Y.X.affineOpens) (n : ℕ) (e : (Σ τ : E →+* ℂ, Fin (Dw.mult τ)) ≃ Fin n) (v : Fin n → (Sp (DualNumber Γ(TF.Y.X, U.1)) ⟶ TF.Y.t.G.left)), IsEigBasis TF U e v → ∀ (W : (Y₀ TF.X Z).Opens) (k : TF.X.F.J) (L N : ∀ σ : E →+* ℂ, Matrix (Fin (Dw.mult σ)) (Fin (Dw.mult σ)) Γ(Y₀ TF.X Z, W)) (h : IsCell TF Z U e v W k L N), LocallyQuasiFinite (Spec.map (CommRingCat.ofHom (MvPolynomial.eval₂Hom ((toBase TF Z).appLE U.1 W h.2.1).hom (cellCoord N)))) := by
   intro E _ _ _ H Dw l Xo c TF Z _ U n e v hv W k L N h
   haveI := locallyOfFiniteType_cell TF Z U e v W k L N h

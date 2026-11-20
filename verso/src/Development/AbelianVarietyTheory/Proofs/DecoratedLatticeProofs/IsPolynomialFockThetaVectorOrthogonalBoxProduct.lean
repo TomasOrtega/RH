@@ -24,6 +24,21 @@ noncomputable section
 
 namespace GlobalTheory.Core.Rk.FockBoxT
 
+/- English proof (translation)
+Establish `w0 : ∀ l : List Q, l.foldr b 0 = 0` using `fun l => by`. Proceed by induction on `l with`. Consider the case `nil => rfl`. Consider the case `cons q l ih => rw [List.foldr_cons, ih, hb0]`. Establish `wT : ∀ (l : List Q) f, TV f → TV (l.foldr b f)` using `fun l f hf => by`.
+
+Proceed by induction on `l with`. Consider the case `nil => exact hf`. Consider the case `cons q l ih => exact hb _ _ ih`. Establish `wadd : ∀ (l : List Q) f g, TV f → TV g → l.foldr b (f + g) = l.foldr b f + l.foldr b g` using `fun l f g hf hg => by`. Proceed by induction on `l with`.
+
+Consider the case `nil => rfl`. Consider the case `cons q l ih => rw [List.foldr_cons, ih, hadd _ _ _ (wT l f hf) (wT l g hg)]`. Both sides reduce to the same expression. Establish `step : ∀ {P U : Type} [Zero U] (a : P → U → U) (M : ℕ) (f : U) (p : P), (∀ l : List P, l.length = M + 1 → l.foldr a f = 0) → ∀ l : List P, l.length = M → l.foldr a (a p f) = 0` using `fun a M f p h l hl => by`. Use `h (l ++ [p]) (by simp [hl])` as an intermediate fact.
+
+Rewrite `this` using `[List.foldr_append]`. Then use the resulting hypothesis. Proceed by induction on `N with`. Consider the case `zero`. Introduce `N₁ N₂ f g hN _ _ k₁ _ l _`. Establish `: f = 0` using `k₁ [] (by simp; omega)`.
+
+Rewrite using `[this, h1, w0]`. Consider the case `succ N ih`. Introduce `N₁ N₂ f g hN hf hg k₁ k₂ l hl`. Break down `N₁ with _ | M₁` into its components or cases. Establish `: f = 0` using `k₁ [] rfl`.
+
+Rewrite using `[this, h1, w0]`. Break down `N₂ with _ | M₂` into its components or cases. Establish `: g = 0` using `k₂ [] rfl`. Rewrite using `[this, h2, w0]`. Take `rfl | ⟨l', q, rfl⟩` from `l.eq_nil_or_concat'`.
+
+Simplify using `at hl`. Establish `hl' : l'.length = N` using `by simpa using hl`. Rewrite using `[List.foldr_append, List.foldr_cons, List.foldr_nil, hL q f g hf hg, wadd _ _ _ (hδ _ _ (ha₁ _ _ hf) hg) (hδ _ _ hf (ha₂ _ _ hg)), ih M₁ (M₂ + 1) _ _ (by omega) (ha₁ _ _ hf) hg (step _ _ _ _ k₁) k₂ l' hl', ih (M₁ + 1) M₂ _ _ (by omega) hf (ha₂ _ _ hg) k₁ (step _ _ _ _ k₂) l' hl', …`.
+-/
 theorem killed_of_leibniz₂ {P₁ P₂ Q U₁ U₂ V : Type} [Zero U₁] [Zero U₂] [AddCommGroup V] (a₁ : P₁ → U₁ → U₁)
     (a₂ : P₂ → U₂ → U₂) (b : Q → V → V) (T₁ : U₁ → Prop) (T₂ : U₂ → Prop)
     (TV : V → Prop) (δ : U₁ → U₂ → V) (c₁ : Q → P₁) (c₂ : Q → P₂) (ha₁ : ∀ p f, T₁ f → T₁ (a₁ p f))
@@ -74,6 +89,13 @@ theorem killed_of_leibniz₂ {P₁ P₂ Q U₁ U₂ V : Type} [Zero U₁] [Zero 
 
 variable {D : D7} {θ : InfFam D} {ψ : AddChar (AF D.host.F) ℂ}
 
+/- English proof (translation)
+Establish `hL` using `isLineAt_lineAt hθ τ z`. Set `L : ℝ →+ Mx D k n` to `{ toFun := fun t => HMul.hMul p (lineAt θ τ z t) map_zero' := by rw [AddMonoidHom.map_zero, Matrix.mul_zero] map_add' := fun s t => by rw [AddMonoidHom.map_add, Matrix.mul_add] }`. Establish `hL' : IsLineAt θ τ (Formalism.IndefR.Datum.compAt θ τ p * z) L`. Use `⟨continuous_const.matrix_mul hL.1, fun t => ?_, fun t τ' => ?_⟩` and prove the remaining obligations. Use `show (HMul.hMul p (lineAt θ τ z t) : Mx D k n).map (finPart D) = 0`.
+
+Rewrite using `[Matrix.map_mul, hL.2.1, Matrix.mul_zero]`. Use `show Formalism.IndefR.Datum.compAt θ τ' (HMul.hMul p (lineAt θ τ z t) : Mx D k n) = _`. Rewrite using `[GlobalTheory.OrientedHeis.compAt_mul, hL.2.2]`. Use `split_ifs with e`. Rewrite using `[e, Matrix.mul_smul]`.
+
+Rewrite using `[Matrix.mul_zero]`. Rewrite using `[GlobalTheory.RealLineAt.lineAt_unique D θ hθ _ _ τ _ _ _ (isLineAt_lineAt hθ τ _) hL']`. Both sides reduce to the same expression.
+-/
 theorem lineAt_mul_left (hθ : IsInfFam θ) {k m n : ℕ} (p : Mx D k m) (τ : D.what₂.Tau)
     (z : Matrix (Fin m) (Fin n) ℂ) (t : ℝ) :
     lineAt θ τ (Formalism.IndefR.Datum.compAt θ τ p * z) t = (HMul.hMul p (lineAt θ τ z t) : Mx D k n) := by
@@ -96,16 +118,27 @@ theorem lineAt_mul_left (hθ : IsInfFam θ) {k m n : ℕ} (p : Mx D k m) (τ : D
 
 variable {A B W H : HSp D} (o : OrthDec B W H)
 
+/- English proof (translation)
+Use extensionality with `i j`. Conclude with `GlobalTheory.FockCompare.comp_incA hθ τ _`.
+-/
 theorem compAt_pA (hθ : IsInfFam θ) (τ : D.what₂.Tau) :
     Formalism.IndefR.Datum.compAt θ τ o.pA = o.qA.map (tauE D τ) := by
   ext i j
   exact GlobalTheory.FockCompare.comp_incA hθ τ _
 
+/- English proof (translation)
+Use extensionality with `i j`. Conclude with `GlobalTheory.FockCompare.comp_incA hθ τ _`.
+-/
 theorem compAt_pB (hθ : IsInfFam θ) (τ : D.what₂.Tau) :
     Formalism.IndefR.Datum.compAt θ τ o.pB = o.qB.map (tauE D τ) := by
   ext i j
   exact GlobalTheory.FockCompare.comp_incA hθ τ _
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Establish `d` using `(hasDerivAt_dRho hθ hψ τ (o.qA.map (tauE D τ) * z) hf (o.resT A x).1).mul (hasDerivAt_dRho hθ hψ τ (o.qB.map (tauE D τ) * z) hg (o.resT A x).2)`. Simplify using `only [map_zero, heisO_zero] at d`. Use `Eq.trans ?_ d.deriv` and prove the remaining obligations. Unfold `Formalism.IndefR.Datum.dRho`.
+
+Use `congr 1`. Use function extensionality and compare the values at `t`. Rewrite using `[o.heisO_boxT, Pi.mul_apply, ← compAt_pA o hθ, ← compAt_pB o hθ, lineAt_mul_left hθ, lineAt_mul_left hθ]`. Both sides reduce to the same expression.
+-/
 theorem dRho_boxT (hθ : IsInfFam θ) (hψ : IsStdChar D ψ (-1)) (τ : D.what₂.Tau)
     (z : Matrix (Fin B.rank) (Fin A.rank) ℂ) {f : WO A W → ℂ} {g : WO A H → ℂ} (hf : IsThetaFunO ψ A W f)
     (hg : IsThetaFunO ψ A H g) :
@@ -123,22 +156,34 @@ theorem dRho_boxT (hθ : IsInfFam θ) (hψ : IsStdChar D ψ (-1)) (τ : D.what�
   rw [o.heisO_boxT, Pi.mul_apply, ← compAt_pA o hθ, ← compAt_pB o hθ, lineAt_mul_left hθ, lineAt_mul_left hθ]
   rfl
 
+/- English proof (translation)
+Simplify using `only [sumMat_apply, Matrix.mul_add, ← Matrix.mul_assoc, ← Matrix.map_mul, o.qA_iA, o.qA_iB, Matrix.map_one _ (map_zero _) (map_one _), Matrix.map_zero _ (map_zero _), Matrix.one_mul, Matrix.zero_mul, add_zero]`.
+-/
 theorem qA_sumMat (sW : RealMat W) (sH : RealMat H) (τ : D.what₂.Tau) :
     o.qA.map (tauE D τ) * sumMat o sW sH τ = sW τ * o.qA.map (tauE D τ) := by
   simp only [sumMat_apply, Matrix.mul_add, ← Matrix.mul_assoc, ← Matrix.map_mul, o.qA_iA, o.qA_iB,
     Matrix.map_one _ (map_zero _) (map_one _), Matrix.map_zero _ (map_zero _), Matrix.one_mul, Matrix.zero_mul, add_zero]
 
+/- English proof (translation)
+Simplify using `only [sumMat_apply, Matrix.mul_add, ← Matrix.mul_assoc, ← Matrix.map_mul, o.qB_iA, o.qB_iB, Matrix.map_one _ (map_zero _) (map_one _), Matrix.map_zero _ (map_zero _), Matrix.one_mul, Matrix.zero_mul, zero_add]`.
+-/
 theorem qB_sumMat (sW : RealMat W) (sH : RealMat H) (τ : D.what₂.Tau) :
     o.qB.map (tauE D τ) * sumMat o sW sH τ = sH τ * o.qB.map (tauE D τ) := by
   simp only [sumMat_apply, Matrix.mul_add, ← Matrix.mul_assoc, ← Matrix.map_mul, o.qB_iA, o.qB_iB,
     Matrix.map_one _ (map_zero _) (map_one _), Matrix.map_zero _ (map_zero _), Matrix.one_mul, Matrix.zero_mul, zero_add]
 
+/- English proof (translation)
+Unfold `cplxO`. Rewrite using `[Matrix.mul_smul, ← Matrix.mul_assoc, ← Matrix.mul_assoc, h, Matrix.mul_assoc s']`.
+-/
 theorem mul_cplxO {k m n : ℕ} {q : Matrix (Fin k) (Fin m) ℂ} {s : Matrix (Fin m) (Fin m) ℂ}
     {s' : Matrix (Fin k) (Fin k) ℂ} (h : q * s = s' * q) (r : Matrix (Fin n) (Fin n) ℂ) (z : Matrix (Fin m) (Fin n) ℂ) :
     q * cplxO r s z = cplxO r s' (q * z) := by
   unfold cplxO
   rw [Matrix.mul_smul, ← Matrix.mul_assoc, ← Matrix.mul_assoc, h, Matrix.mul_assoc s']
 
+/- English proof (translation)
+Unfold `annih`. Rewrite using `[dRho_boxT o hθ hψ τ _ hf hg, dRho_boxT o hθ hψ τ _ hf hg, mul_cplxO (qA_sumMat o sW sH τ), mul_cplxO (qB_sumMat o sW sH τ)]`. Use function extensionality and compare the values at `x`. Simplify using `only [OrthDec.boxT, Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem annih_boxT (hθ : IsInfFam θ) (hψ : IsStdChar D ψ (-1)) (τ : D.what₂.Tau)
     (s : Matrix (Fin A.rank) (Fin A.rank) ℂ) (sW : RealMat W) (sH : RealMat H)
     (z : Matrix (Fin B.rank) (Fin A.rank) ℂ) {f : WO A W → ℂ} {g : WO A H → ℂ} (hf : IsThetaFunO ψ A W f)
@@ -153,6 +198,13 @@ theorem annih_boxT (hθ : IsInfFam θ) (hψ : IsStdChar D ψ (-1)) (τ : D.what�
   simp only [OrthDec.boxT, Pi.add_apply, Pi.smul_apply, smul_eq_mul]
   ring
 
+/- English proof (translation)
+Introduce `D ψ θ A B W H o sA sW sH hψ hθ Φ₁ Φ₂ ⟨t₁, N₁, k₁⟩ ⟨t₂, N₂, k₂⟩`. Establish `hT : ∀ (S : HSp D) τ J z f, IsThetaFunO ψ A S f → IsThetaFunO ψ A S (annih (heisO ψ A S) θ τ J z f)` using `fun S τ J z f hf => theta_add (theta_dRho hθ hψ τ z hf) (theta_smul _ (theta_dRho hθ hψ τ _ hf))`. Use `⟨o.isThetaFunO_boxT t₁ t₂, N₁ + N₂, ?_⟩` and prove the remaining obligations. Use `killed_of_leibniz₂ (P₁ := D.what₂.Tau × Matrix (Fin W.rank) (Fin A.rank) ℂ) (P₂ := D.what₂.Tau × Matrix (Fin H.rank) (Fin A.rank) ℂ) (Q := D.what₂.Tau × Matrix (Fin B.rank) (Fin A.rank) ℂ) (fun p f => annih (heisO ψ A W) θ p.1 (cplxO (sA p.1) (sW p.1)) p.2 f) (fun p f => annih (h …` and prove the remaining obligations. Simplify using `only [annih]`.
+
+Rewrite using `[GlobalTheory.Core.Rk.FockBox.dRho_add hθ hψ _ _ hf hg, GlobalTheory.Core.Rk.FockBox.dRho_add hθ hψ _ _ hf hg, smul_add]`. Normalize the expressions using the abelian group laws. Use function extensionality and compare the values at `x`. Simplify using `[annih, Formalism.IndefR.Datum.dRho, heisO]`. Use function extensionality and compare the values at `x`.
+
+Simplify using `[OrthDec.boxT]`. Use function extensionality and compare the values at `x`. Simplify using `[OrthDec.boxT]`.
+-/
 theorem isFockVec_boxT : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (A B W H : HSp D) (o : OrthDec B W H) (sA : RealMat A) (sW : RealMat W) (sH : RealMat H), IsStdChar D ψ (-1) → IsInfFam θ → ∀ Φ Φ', IsFockVec ψ θ A W sA sW Φ → IsFockVec ψ θ A H sA sH Φ' → IsFockVec ψ θ A B sA (sumMat o sW sH) (o.boxT A Φ Φ') := by
   intro D ψ θ A B W H o sA sW sH hψ hθ Φ₁ Φ₂ ⟨t₁, N₁, k₁⟩ ⟨t₂, N₂, k₂⟩
   have hT : ∀ (S : HSp D) τ J z f, IsThetaFunO ψ A S f → IsThetaFunO ψ A S (annih (heisO ψ A S) θ τ J z f) :=

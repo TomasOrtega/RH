@@ -12,6 +12,13 @@ noncomputable section
 
 namespace GlobalTheory.ThKWitt
 
+/- English proof (translation)
+Introduce `_ F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP d₁ W₁ H' i₀ i₁ hH' d₂ H _ V₁ M₁ e _ _ _ w hw0 hw`. Establish `hσ : ∀ x, σ (σ x) = x` using `GlobalTheory.IndLine.LeviK.sigma_sigma hP.base`. Establish `hsk : ∀ i j, σ (W.J j i) = -W.J i j` using `hP.skew.skew`. Establish `hd : W.J.det ≠ 0` using `GlobalTheory.ThK.DescB.Nondeg.det_ne_zero_of_cartan B W hP.skew.cartan`. Establish `hx0 : H'.x ≠ 0` using `fun h0 => by`.
+
+Use `hH'.xy` as an intermediate fact. Rewrite `this` using `[h0]`. Simplify using `[form] at this`. Take `⟨T, hT, hTx⟩` from `GlobalTheory.LineCuspAll.exists_isom hσ hsk hd hw0 hx0 hw hH'.xx`. Take `⟨γ, hγ, hm⟩` from `GlobalTheory.LineCuspAll.exists_ratU hd (GlobalTheory.LineCuspAll.gram_of_isom hT)`.
+
+Conclude with `⟨γ, hγ, by rw [hm, ← GlobalTheory.ThKLineCusp.incV_mulVec, hTx]⟩`.
+-/
 theorem exists_ratU_to_plane : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ),
     IsPair B M χX χW om r s r' s' →

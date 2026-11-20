@@ -16,6 +16,9 @@ open Semi Inh
 
 def gv {Y : Scheme.{0}} (a : Γ(Y, ⊤)ˣ) (V : Y.Opens) : Γ(Y, V)ˣ := res le_top a
 
+/- English proof (translation)
+Use `first`. Consider the case `(show ((Y.presheaf.map (homOfLE h').op) ≫ (Y.presheaf.map (homOfLE h).op)).hom y = _; rw [← Functor.map_comp] <;> rfl)`. Consider the case `(rw [← CommRingCat.comp_apply, ← Functor.map_comp] <;> rfl)`.
+-/
 private theorem map_map_lemma {Y : Scheme.{0}} {U V W : Y.Opens} (h : W ≤ V) (h' : V ≤ U)
     (y : Γ(Y, U)) :
     (Y.presheaf.map (homOfLE h).op).hom ((Y.presheaf.map (homOfLE h').op).hom y) =
@@ -24,11 +27,17 @@ private theorem map_map_lemma {Y : Scheme.{0}} {U V W : Y.Opens} (h : W ≤ V) (
     | (show ((Y.presheaf.map (homOfLE h').op) ≫ (Y.presheaf.map (homOfLE h).op)).hom y = _; rw [← Functor.map_comp] <;> rfl)
     | (rw [← CommRingCat.comp_apply, ← Functor.map_comp] <;> rfl)
 
+/- English proof (translation)
+Use `ext`. Conclude with `map_map_lemma h h' _`.
+-/
 theorem res_res {Y : Scheme.{0}} {U V W : Y.Opens} (h : W ≤ V) (h' : V ≤ U) (x : Γ(Y, U)ˣ) :
     res h (res h' x) = res (h.trans h') x := by
   ext
   exact map_map_lemma h h' _
 
+/- English proof (translation)
+Use `first`. Consider the case `exact res_res h le_top a`. Consider the case `(ext; exact map_map_lemma h le_top _)`.
+-/
 theorem res_gv {Y : Scheme.{0}} (a : Γ(Y, ⊤)ˣ) {V W : Y.Opens} (h : W ≤ V) :
     res h (gv a V) = gv a W := by
   first
@@ -37,6 +46,9 @@ theorem res_gv {Y : Scheme.{0}} (a : Γ(Y, ⊤)ˣ) {V W : Y.Opens} (h : W ≤ V)
 
 def pullTop {X Y : Scheme.{0}} (f : Y ⟶ X) : Γ(X, ⊤)ˣ →* Γ(Y, ⊤)ˣ := Units.map f.appTop.hom
 
+/- English proof (translation)
+Use `first`. Consider the case `(show ((X.presheaf.map (homOfLE le_top).op) ≫ f.app V).hom y = (f.appTop ≫ Y.presheaf.map (homOfLE le_top).op).hom y; rw [Scheme.Hom.naturality] <;> rfl)`. Consider the case `(rw [← CommRingCat.comp_apply, Scheme.Hom.naturality, CommRingCat.comp_apply] <;> rfl)`. Consider the case `simp [← CommRingCat.comp_apply, Scheme.Hom.naturality]`.
+-/
 private theorem app_res_lemma_2 {X Y : Scheme.{0}} (f : Y ⟶ X) (y : Γ(X, ⊤)) (V : X.Opens) :
     (f.app V).hom ((X.presheaf.map (homOfLE le_top).op).hom y) =
       (Y.presheaf.map (homOfLE le_top).op).hom (f.appTop.hom y) := by
@@ -45,22 +57,34 @@ private theorem app_res_lemma_2 {X Y : Scheme.{0}} (f : Y ⟶ X) (y : Γ(X, ⊤)
     | (rw [← CommRingCat.comp_apply, Scheme.Hom.naturality, CommRingCat.comp_apply] <;> rfl)
     | simp [← CommRingCat.comp_apply, Scheme.Hom.naturality]
 
+/- English proof (translation)
+Use `ext`. Conclude with `app_res_lemma_2 f (a : Γ(X, ⊤)) V`.
+-/
 theorem pullU_gv {X Y : Scheme.{0}} (f : Y ⟶ X) (a : Γ(X, ⊤)ˣ) (V : X.Opens) :
     pullU f V (gv a V) = gv (pullTop f a) (f ⁻¹ᵁ V) := by
   ext
   exact app_res_lemma_2 f (a : Γ(X, ⊤)) V
 
+/- English proof (translation)
+Apply the tactic sequence `rw [app_res_lemma_2 f y V, map_map_lemma] <;> rfl`.
+-/
 theorem app_res {X Y : Scheme.{0}} (f : Y ⟶ X) (y : Γ(X, ⊤)) (V : X.Opens) (W : Y.Opens)
     (h : W ≤ f ⁻¹ᵁ V) :
     (Y.presheaf.map (homOfLE h).op).hom ((f.app V).hom ((X.presheaf.map (homOfLE le_top).op).hom y)) =
       (Y.presheaf.map (homOfLE le_top).op).hom (f.appTop.hom y) := by
   rw [app_res_lemma_2 f y V, map_map_lemma] <;> rfl
 
+/- English proof (translation)
+The claim follows from `app_res_lemma_2 f y V`.
+-/
 theorem app_res' {X Y : Scheme.{0}} (f : Y ⟶ X) (y : Γ(X, ⊤)) (V : X.Opens) :
     (f.app V).hom ((X.presheaf.map (homOfLE le_top).op).hom y) =
       (Y.presheaf.map (homOfLE le_top).op).hom (f.appTop.hom y) :=
   app_res_lemma_2 f y V
 
+/- English proof (translation)
+The claim follows from `map_map_lemma h h' y`.
+-/
 theorem map_map {Y : Scheme.{0}} {U V W : Y.Opens} (h : W ≤ V) (h' : V ≤ U) (y : Γ(Y, U)) :
     (Y.presheaf.map (homOfLE h).op).hom ((Y.presheaf.map (homOfLE h').op).hom y) =
       (Y.presheaf.map (homOfLE (h.trans h')).op).hom y :=
@@ -69,6 +93,9 @@ theorem map_map {Y : Scheme.{0}} {U V W : Y.Opens} (h : W ≤ V) (h' : V ≤ U) 
 def IsConst {Y : Scheme.{0}} {L : LB Y} (t : LB.Gen L) (a : Γ(Y, ⊤)ˣ) : Prop :=
   ∀ j, t.s j = gv a (L.U j)
 
+/- English proof (translation)
+Substitute `e` using the available equality. Conclude with `h`.
+-/
 theorem IsConst.of_eq {Y : Scheme.{0}} {L : LB Y} {t : LB.Gen L} {a b : Γ(Y, ⊤)ˣ}
     (h : IsConst t a) (e : a = b) : IsConst t b := by
   subst e
@@ -78,6 +105,9 @@ section Ops
 
 variable {X Y Z : Scheme.{0}} {L : LB X} {K K' : Type} [Fintype K] [Fintype K']
 
+/- English proof (translation)
+Introduce `j`. Establish `e1 : t.s j = gv a (LB.wchart L φ j)` using `ht j`. Use `show res _ (pullU h (LB.wchart L φ j) (t.s j)) = gv (pullTop h a) (LB.wchart L (fun k => h ≫ φ k) j)`. Rewrite using `[e1, pullU_gv]`. Conclude with `res_gv _ _`.
+-/
 theorem isConst_pullGen {φ : K → (Y ⟶ X)} {ε : K → ℤ} {t : LB.Gen (LB.LinComb L φ ε)}
     {a : Γ(Y, ⊤)ˣ} (ht : IsConst t a) (h : Z ⟶ Y) :
     IsConst (LB.pullGen L φ ε t h) (pullTop h a) := by
@@ -87,6 +117,11 @@ theorem isConst_pullGen {φ : K → (Y ⟶ X)} {ε : K → ℤ} {t : LB.Gen (LB.
   rw [e1, pullU_gv]
   exact res_gv _ _
 
+/- English proof (translation)
+Introduce `j`. Establish `e1 : t.s (j ∘ Sum.inl) = gv a (LB.wchart L φ (j ∘ Sum.inl))` using `ht _`. Establish `e2 : t'.s (j ∘ Sum.inr) = gv b (LB.wchart L φ' (j ∘ Sum.inr))` using `ht' _`. Use `show res (U := LB.wchart L φ (j ∘ Sum.inl)) _ (t.s (j ∘ Sum.inl)) * res (U := LB.wchart L φ' (j ∘ Sum.inr)) _ (t'.s (j ∘ Sum.inr)) = gv (a * b) (LB.wchart L (Sum.elim φ φ') j)`. Rewrite using `[e1, e2]`.
+
+Conclude with `(congrArg₂ (· * ·) (res_gv _ _) (res_gv _ _)).trans (map_mul (res le_top) a b).symm`.
+-/
 theorem isConst_mulGen {φ : K → (Y ⟶ X)} {ε : K → ℤ} {φ' : K' → (Y ⟶ X)} {ε' : K' → ℤ}
     {t : LB.Gen (LB.LinComb L φ ε)} {t' : LB.Gen (LB.LinComb L φ' ε')} {a b : Γ(Y, ⊤)ˣ}
     (ht : IsConst t a) (ht' : IsConst t' b) :
@@ -100,6 +135,11 @@ theorem isConst_mulGen {φ : K → (Y ⟶ X)} {ε : K → ℤ} {φ' : K' → (Y 
   rw [e1, e2]
   exact (congrArg₂ (· * ·) (res_gv _ _) (res_gv _ _)).trans (map_mul (res le_top) a b).symm
 
+/- English proof (translation)
+Introduce `j`. Establish `e1 : t.s j = gv a (LB.wchart L φ j)` using `ht j`. Use `show (t.s j)⁻¹ = gv a⁻¹ (LB.wchart L φ j)`. Rewrite using `[e1]`. Use `first`.
+
+Consider the case `exact (map_inv (res le_top) a).symm`. Consider the case `simp [gv, map_inv]`.
+-/
 theorem isConst_invGen {φ : K → (Y ⟶ X)} {ε : K → ℤ} {t : LB.Gen (LB.LinComb L φ ε)}
     {a : Γ(Y, ⊤)ˣ} (ht : IsConst t a) : IsConst (LB.invGen L φ ε t) a⁻¹ := by
   intro j
@@ -110,6 +150,11 @@ theorem isConst_invGen {φ : K → (Y ⟶ X)} {ε : K → ℤ} {t : LB.Gen (LB.L
     | exact (map_inv (res le_top) a).symm
     | simp [gv, map_inv]
 
+/- English proof (translation)
+Introduce `j`. Establish `e1 : t.s j = gv a (LB.wchart L φ j)` using `ht j`. Use `show (t.s j) ^ n = gv (a ^ n) (LB.wchart L φ j)`. Rewrite using `[e1]`. Use `first`.
+
+Consider the case `exact (map_pow (res le_top) a n).symm`. Consider the case `simp [gv, map_pow]`.
+-/
 theorem isConst_powGen {φ : K → (Y ⟶ X)} {ε : K → ℤ} {t : LB.Gen (LB.LinComb L φ ε)}
     {a : Γ(Y, ⊤)ˣ} (ht : IsConst t a) (n : ℕ) : IsConst (GeneratorPullback.powGen L φ ε t n) (a ^ n) := by
   intro j
@@ -120,12 +165,18 @@ theorem isConst_powGen {φ : K → (Y ⟶ X)} {ε : K → ℤ} {t : LB.Gen (LB.L
     | exact (map_pow (res le_top) a n).symm
     | simp [gv, map_pow]
 
+/- English proof (translation)
+Introduce `j`. Use `first`. Consider the case `exact (map_one (res le_top)).symm`. Consider the case `(show (1 : Γ(Y, _)ˣ) = res le_top 1; simp)`.
+-/
 theorem isConst_oneGen (L : LB X) : IsConst (LB.oneGen L (Y := Y)) 1 := by
   intro j
   first
     | exact (map_one (res le_top)).symm
     | (show (1 : Γ(Y, _)ˣ) = res le_top 1; simp)
 
+/- English proof (translation)
+Introduce `j j' _ _ _`. Establish `e1 : t.s j = gv a (LB.wchart L φ j)` using `ht j`. Establish `e2 : t'.s j' = gv a (LB.wchart L φ' j')` using `ht' j'`. Rewrite using `[e1, e2]`. Conclude with `(res_gv _ _).trans (res_gv _ _).symm`.
+-/
 theorem corr_of_isConst {φ : K → (Y ⟶ X)} {ε : K → ℤ} {φ' : K' → (Y ⟶ X)} {ε' : K' → ℤ}
     {t : LB.Gen (LB.LinComb L φ ε)} {t' : LB.Gen (LB.LinComb L φ' ε')} {a : Γ(Y, ⊤)ˣ}
     (ht : IsConst t a) (ht' : IsConst t' a) : LB.Gen.Corr L φ ε φ' ε' t t' := by
@@ -141,9 +192,15 @@ def cg {X Y : Scheme.{0}} {K : Type} [Fintype K] (φ : K → (Y ⟶ X)) (ε : K 
     LB.Gen (LB.LinComb (trivLB X) φ ε) :=
   ⟨fun _ => gv a _⟩
 
+/- English proof (translation)
+Introduce `_` and use `rfl`.
+-/
 theorem cg_isConst {X Y : Scheme.{0}} {K : Type} [Fintype K] (φ : K → (Y ⟶ X)) (ε : K → ℤ)
     (a : Γ(Y, ⊤)ˣ) : IsConst (cg φ ε a) a := fun _ => rfl
 
+/- English proof (translation)
+Use `first`. Consider the case `(simp only [LB.LinComb, hL, map_one]; refine Finset.prod_eq_one fun k _ => ?_; erw [map_one]; exact one_zpow _)`. Consider the case `(refine Finset.prod_eq_one fun k _ => ?_; rw [hL]; erw [map_one, map_one]; exact one_zpow _)`. Consider the case `(simp only [LB.LinComb, hL, map_one]; refine Finset.prod_eq_one fun k _ => ?_; simp [res])`.
+-/
 private theorem linComb_g_lemma_3 {X Y : Scheme.{0}} {L : LB X} {K : Type} [Fintype K]
     (φ : K → (Y ⟶ X)) (ε : K → ℤ) (hL : ∀ i j, L.g i j = 1) (i j : (LB.LinComb L φ ε).ι) :
     (LB.LinComb L φ ε).g i j = 1 := by
@@ -152,6 +209,11 @@ private theorem linComb_g_lemma_3 {X Y : Scheme.{0}} {L : LB X} {K : Type} [Fint
     | (refine Finset.prod_eq_one fun k _ => ?_; rw [hL]; erw [map_one, map_one]; exact one_zpow _)
     | (simp only [LB.LinComb, hL, map_one]; refine Finset.prod_eq_one fun k _ => ?_; simp [res])
 
+/- English proof (translation)
+Introduce `i j`. Establish `hg : (LB.LinComb (trivLB X) φ ε).g i j = 1`. Conclude with `linComb_g_lemma_3 φ ε (fun _ _ => rfl) i j`. Rewrite using `[hg, _root_.one_mul]`. Use `show res _ (gv a _) = res _ (gv a _)`.
+
+Conclude with `(res_gv _ _).trans (res_gv _ _).symm`.
+-/
 theorem cg_isGen {X Y : Scheme.{0}} {K : Type} [Fintype K] (φ : K → (Y ⟶ X)) (ε : K → ℤ)
     (a : Γ(Y, ⊤)ˣ) : (cg φ ε a).IsGen := by
   intro i j
@@ -196,16 +258,25 @@ def tatePre : DegPre R where
   psi := fun n => cg _ _ (pi0 ^ (n ^ 2))
   psi_gen := fun _ => cg_isGen _ _ _
 
+/- English proof (translation)
+Use `first`. Consider the case `exact fun _ => rfl`. Consider the case `exact cg_isConst _ _ _`.
+-/
 theorem psi_isConst (n : ℤ) : IsConst (tatePre.psi n) (pi0 ^ (n ^ 2)) := by
   first
     | exact fun _ => rfl
     | exact cg_isConst _ _ _
 
+/- English proof (translation)
+Use `first`. Consider the case `exact (isConst_pullGen (cg_isConst _ _ 1) _).of_eq (map_one _)`. Consider the case `(intro j; show res _ (pullU _ _ (gv 1 _)) = gv 1 _; rw [pullU_gv, res_gv, map_one] <;> rfl)`.
+-/
 theorem rigK_isConst : IsConst tatePre.rigK 1 := by
   first
     | exact (isConst_pullGen (cg_isConst _ _ 1) _).of_eq (map_one _)
     | (intro j; show res _ (pullU _ _ (gv 1 _)) = gv 1 _; rw [pullU_gv, res_gv, map_one] <;> rfl)
 
+/- English proof (translation)
+Establish `h` using `isConst_mulGen (isConst_mulGen (isConst_mulGen (psi_isConst (a + b)) (isConst_invGen (psi_isConst a))) (isConst_invGen (psi_isConst b))) (isConst_invGen rigK_isConst)`. Use `h.of_eq ?_` and prove the remaining obligations. Use `first`. Consider the case `(rw [inv_one, _root_.mul_one, ← zpow_neg, ← zpow_neg, ← zpow_add, ← zpow_add]; congr 1; ring)`. Consider the case `group`.
+-/
 theorem tau_isConst (a b : ℤ) : IsConst (tatePre.tau a b) (pi0 ^ (2 * a * b)) := by
   have h := isConst_mulGen (isConst_mulGen (isConst_mulGen (psi_isConst (a + b))
     (isConst_invGen (psi_isConst a))) (isConst_invGen (psi_isConst b)))
@@ -215,6 +286,11 @@ theorem tau_isConst (a b : ℤ) : IsConst (tatePre.tau a b) (pi0 ^ (2 * a * b)) 
     | (rw [inv_one, _root_.mul_one, ← zpow_neg, ← zpow_neg, ← zpow_add, ← zpow_add]; congr 1; ring)
     | group
 
+/- English proof (translation)
+Introduce `χ`. Establish `h1 : IsConst tatePre.sym 1` using `cg_isConst _ _ 1`. Establish `h2` using `(isConst_pullGen h1 (tatePre.xK χ)).of_eq (map_one _)`. Establish `h3` using `isConst_mulGen (psi_isConst (-χ)) h2`. Establish `key : ∀ z : ℤ, pi0 ^ ((-z) ^ 2) * 1 = pi0 ^ (z ^ 2)` using `fun z => by`.
+
+Rewrite using `[_root_.mul_one, neg_sq]`. Conclude with `corr_of_isConst (h3.of_eq (key χ)) (psi_isConst χ)`.
+-/
 theorem psiEven : tatePre.PsiEven := by
   intro χ
   have h1 : IsConst tatePre.sym 1 := cg_isConst _ _ 1
@@ -224,6 +300,11 @@ theorem psiEven : tatePre.PsiEven := by
     rw [_root_.mul_one, neg_sq]
   exact corr_of_isConst (h3.of_eq (key χ)) (psi_isConst χ)
 
+/- English proof (translation)
+Introduce `a a' b`. Establish `h1 : IsConst tatePre.cub.t 1` using `cg_isConst _ _ 1`. Establish `h2` using `(isConst_pullGen h1 (tatePre.pt3 a a' b)).of_eq (map_one _)`. Establish `h3` using `isConst_mulGen (tau_isConst (a + a') b) h2`. Establish `h4` using `isConst_mulGen (tau_isConst a b) (tau_isConst a' b)`.
+
+Establish `key : ∀ x y z : ℤ, pi0 ^ (2 * (x + y) * z) * 1 = pi0 ^ (2 * x * z) * pi0 ^ (2 * y * z)` using `fun x y z => by`. Rewrite using `[_root_.mul_one, ← zpow_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Conclude with `corr_of_isConst (h3.of_eq (key a a' b)) h4`.
+-/
 theorem tauBimult : tatePre.TauBimult := by
   intro a a' b
   have h1 : IsConst tatePre.cub.t 1 := cg_isConst _ _ 1
@@ -237,6 +318,9 @@ theorem tauBimult : tatePre.TauBimult := by
     ring
   exact corr_of_isConst (h3.of_eq (key a a' b)) h4
 
+/- English proof (translation)
+Establish `e : (jK R).appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom x) = (Scheme.ΓSpecIso (CommRingCat.of (FractionRing R))).inv.hom (algebraMap R (FractionRing R) x)` using `by first`. Consider the case `(show ((Scheme.ΓSpecIso (CommRingCat.of R)).inv ≫ (jK R).appTop).hom x = ((CommRingCat.ofHom (algebraMap R (FractionRing R))) ≫ (Scheme.ΓSpecIso (CommRingCat.of (FractionRing R))).inv).hom x; rw [Scheme.ΓSpecIso_inv_naturality] <;> rfl)`. Consider the case `(rw [← CommRingCat.comp_apply, ← Scheme.ΓSpecIso_inv_naturality] <;> rfl)`. Use `show ((jK R).app V).hom ((S.presheaf.map (homOfLE le_top).op).hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom x)) = _`. Apply the tactic sequence `rw [app_res_lemma_2, e] <;> rfl`.
+-/
 theorem jK_toOpen (V : S.Opens) (x : R) :
     ((jK R).app V).hom (DegPre.toOpen V x) =
       ((TK R).left.presheaf.map (homOfLE le_top).op).hom
@@ -252,6 +336,13 @@ theorem jK_toOpen (V : S.Opens) (x : R) :
 
 abbrev I : Ideal R := Ideal.span {PowerSeries.X}
 
+/- English proof (translation)
+Introduce `j V _ _ h`. Establish `hk : n ^ 2 = ((n.natAbs ^ 2 : ℕ) : ℤ)` using `by first`. Consider the case `(push_cast; exact (sq_abs n).symm)`. Consider the case `(rw [Nat.cast_pow]; exact (Int.natAbs_sq n).symm)`. Use `⟨DegPre.toOpen V (PowerSeries.X ^ (n.natAbs ^ 2)), Ideal.mem_map_of_mem _ ?_, ?_⟩` and prove the remaining obligations.
+
+Conclude with `Ideal.pow_le_pow_right hm (Ideal.pow_mem_pow (Ideal.subset_span (Set.mem_singleton _)) _)`. Establish `e2 : (Scheme.ΓSpecIso (CommRingCat.of (FractionRing R))).inv.hom (algebraMap R (FractionRing R) (PowerSeries.X ^ (n.natAbs ^ 2))) = ((pi0 ^ (n ^ 2) : Γ((TK R).left, ⊤)ˣ) : Γ((TK R).left, ⊤))`. Rewrite using `[hk, zpow_natCast, Units.val_pow_eq_pow_val, map_pow, map_pow]`. Both sides reduce to the same expression. Establish `hv : ((tatePre.psi n).s j).val = ((TK R).left.presheaf.map (homOfLE le_top).op).hom ((pi0 ^ (n ^ 2) : Γ((TK R).left, ⊤)ˣ) : Γ((TK R).left, ⊤))` using `rfl`.
+
+Apply the tactic sequence `rw [jK_toOpen, hv, map_map_lemma, ← e2] <;> rfl`.
+-/
 theorem psiIn (n : ℤ) (m : ℕ) (hm : m ≤ n.natAbs ^ 2) : tatePre.PsiIn n (I ^ m) := by
   intro j V _ _ h
   have hk : n ^ 2 = ((n.natAbs ^ 2 : ℕ) : ℤ) := by

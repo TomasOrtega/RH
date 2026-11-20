@@ -11,6 +11,9 @@ namespace GlobalTheory.Katz.ModHom
 
 variable (p : ℕ) [Fact p.Prime] {k : Type} [Field k] [CharP k p]
 
+/- English proof (translation)
+Introduce `α`. Conclude with `⟨WittVector.teichmuller p (coeff α g), coeff_lift p g α, by`. Simplify using `[WittVector.constantCoeff_apply]⟩`.
+-/
 theorem red_lift {σ : Type} (g : MvPowerSeries σ k) : Red p (Katz.lift p g) g := by
   intro α
   exact ⟨WittVector.teichmuller p (coeff α g), coeff_lift p g α, by
@@ -42,6 +45,9 @@ def modMap {d e : ℕ} {μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) k}
       exact (GlobalTheory.T.isIntegralReducingToMvPowerSeries_subst p k (Fin e) (Fin d) _ φ (fun j => constantCoeff_lift p (hφ.const j))
         (fun j => red_lift p (φ j))).2 1 f.1 hf)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨_, rfl, rfl⟩`.
+-/
 theorem modMap_mk {d e : ℕ} {μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) k}
     {ν : Fin e → MvPowerSeries (Fin e ⊕ Fin e) k} (hμ : IsLaw μ) (hν : IsLaw ν)
     {φ : Fin e → MvPowerSeries (Fin d) k} (hφ : IsHom μ ν φ) (f : quasiLog p hν) :
@@ -51,6 +57,9 @@ theorem modMap_mk {d e : ℕ} {μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) k}
 
 end GlobalTheory.Katz.ModHom
 
+/- English proof (translation)
+Introduce `p _ k _ _ _ d e μ ν hμ hν φ hφ`. Conclude with `⟨GlobalTheory.Katz.ModHom.modMap p hμ hν hφ, GlobalTheory.Katz.ModHom.modMap_mk p hμ hν hφ⟩`.
+-/
 theorem GlobalTheory.Katz.ModHom.map_exists : ∀ (p : ℕ) [Fact p.Prime] (k : Type) [Field k] [CharP k p] [PerfectRing k p] (d e : ℕ) (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) k) (ν : Fin e → MvPowerSeries (Fin e ⊕ Fin e) k) (hμ : IsLaw μ) (hν : IsLaw ν) (φ : Fin e → MvPowerSeries (Fin d) k), IsHom μ ν φ → ∃ m : Mod p hν →ₗ[WittVector p k] Mod p hμ, ∀ f : quasiLog p hν, ∃ g : quasiLog p hμ, g.1 = subst (fun j => Katz.lift p (φ j)) f.1 ∧ m (Submodule.Quotient.mk f) = Submodule.Quotient.mk g := by
   intro p _ k _ _ _ d e μ ν hμ hν φ hφ
   exact ⟨GlobalTheory.Katz.ModHom.modMap p hμ hν hφ, GlobalTheory.Katz.ModHom.modMap_mk p hμ hν hφ⟩

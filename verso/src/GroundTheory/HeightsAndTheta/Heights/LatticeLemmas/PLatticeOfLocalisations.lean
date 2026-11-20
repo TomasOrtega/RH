@@ -22,6 +22,9 @@ section Place
 
 variable (v : HeightOneSpectrum (𝓞 K))
 
+/- English proof (translation)
+Establish `h` using `P.smul_mem (⟨k, hk⟩ : v.adicCompletionIntegers K) hw`. Rewrite `h` using `[← algebraMap_smul (v.adicCompletion K)]`. Then use the resulting hypothesis.
+-/
 theorem smul_mem_of_mem_integers
     (P : Submodule (v.adicCompletionIntegers K) (v.adicCompletion K ⊗[K] V))
     {k : v.adicCompletion K} (hk : k ∈ v.adicCompletionIntegers K)
@@ -29,11 +32,17 @@ theorem smul_mem_of_mem_integers
   have h := P.smul_mem (⟨k, hk⟩ : v.adicCompletionIntegers K) hw
   rwa [← algebraMap_smul (v.adicCompletion K)] at h
 
+/- English proof (translation)
+Rewrite using `[toLocal_smul, ← algebraMap_smul (v.adicCompletion K)]`. Both sides reduce to the same expression.
+-/
 theorem toLocal_smul' (d : 𝓞 K) (x : V) :
     toLocal v (d • x) = algebraMap K (v.adicCompletion K) (d : K) • toLocal v x := by
   rw [toLocal_smul, ← algebraMap_smul (v.adicCompletion K)]
   rfl
 
+/- English proof (translation)
+Take `⟨k, rfl⟩` from `h`. Rewrite using `[show ((d * k : 𝓞 K) : K) = (k : K) * (d : K) by push_cast; ring, map_mul, mul_smul]`. Conclude with `smul_mem_of_mem_integers v P (Theta.Ex1GL.algebraMap_integer_mem v k) hy`.
+-/
 theorem smul_mem_of_dvd
     (P : Submodule (v.adicCompletionIntegers K) (v.adicCompletion K ⊗[K] V))
     {d D : 𝓞 K} (h : d ∣ D) {y : v.adicCompletion K ⊗[K] V}
@@ -43,6 +52,11 @@ theorem smul_mem_of_dvd
   rw [show ((d * k : 𝓞 K) : K) = (k : K) * (d : K) by push_cast; ring, map_mul, mul_smul]
   exact smul_mem_of_mem_integers v P (Theta.Ex1GL.algebraMap_integer_mem v k) hy
 
+/- English proof (translation)
+Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx => exact hs x hx`. Consider the case `zero => rw [smul_zero]`. Conclude with `zero_mem _`. Consider the case `add x z _ _ hx hz => rw [smul_add]`.
+
+Conclude with `add_mem hx hz`. Consider the case `smul o x _ hx`. Rewrite using `[← algebraMap_smul (v.adicCompletion K) o x, smul_smul, mul_comm, ← smul_smul, algebraMap_smul]`. Conclude with `P.smul_mem o hx`.
+-/
 theorem smul_mem_of_mem_span
     (P : Submodule (v.adicCompletionIntegers K) (v.adicCompletion K ⊗[K] V))
     (k : v.adicCompletion K) {s : Set (v.adicCompletion K ⊗[K] V)} (hs : ∀ y ∈ s, k • y ∈ P)
@@ -56,6 +70,15 @@ theorem smul_mem_of_mem_span
       algebraMap_smul]
     exact P.smul_mem o hx
 
+/- English proof (translation)
+Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx => exact ⟨1, one_ne_zero, by simpa using hx⟩`. Consider the case `zero => exact ⟨1, one_ne_zero, by simp⟩`. Consider the case `add x z _ _ hx hz`. Take `⟨d₁, hd₁, h₁⟩` from `hx`.
+
+Take `⟨d₂, hd₂, h₂⟩` from `hz`. Use `⟨d₁ * d₂, mul_ne_zero hd₁ hd₂, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add]`. Conclude with `add_mem (smul_mem_of_dvd v P (dvd_mul_right d₁ d₂) h₁) (smul_mem_of_dvd v P (dvd_mul_left d₂ d₁) h₂)`. Consider the case `smul a x _ hx`.
+
+Take `⟨d, hd, h⟩` from `hx`. Take `⟨b, hb, hab⟩` from `HeightOneSpectrum.adicCompletion.mul_nonZeroDivisor_mem_adicCompletionIntegers v a`. Use `⟨b * d, mul_ne_zero (nonZeroDivisors.ne_zero hb) hd, ?_⟩` and prove the remaining obligations. Establish `e : algebraMap K (v.adicCompletion K) ((b * d : 𝓞 K) : K) • a • x = (a * algebraMap (𝓞 K) (v.adicCompletion K) b) • algebraMap K (v.adicCompletion K) (d : K) • x`. Rewrite using `[smul_smul, smul_smul]`.
+
+Use `congr 1`. Rewrite using `[IsScalarTower.algebraMap_apply (𝓞 K) K (v.adicCompletion K), ← RingOfIntegers.coe_eq_algebraMap, show ((b * d : 𝓞 K) : K) = (b : K) * (d : K) by push_cast; ring, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `smul_mem_of_mem_integers v P hab h`.
+-/
 theorem exists_smul_mem_of_mem_span_field
     (P : Submodule (v.adicCompletionIntegers K) (v.adicCompletion K ⊗[K] V))
     {y : v.adicCompletion K ⊗[K] V} (hy : y ∈ span (v.adicCompletion K) (P : Set _)) :
@@ -87,6 +110,13 @@ theorem exists_smul_mem_of_mem_span_field
     rw [e]
     exact smul_mem_of_mem_integers v P hab h
 
+/- English proof (translation)
+Take `⟨s, rfl⟩` from `hP`. Establish `hs : ∀ t : Finset (v.adicCompletion K ⊗[K] V), ∃ d : 𝓞 K, d ≠ 0 ∧ ∀ y ∈ t, algebraMap K (v.adicCompletion K) (d : K) • y ∈ Q`. Introduce `t`. Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty => exact ⟨1, one_ne_zero, by simp⟩`.
+
+Consider the case `insert a t _ ih`. Take `⟨d, hd, h⟩` from `ih`. Take `⟨e, he, h'⟩` from `exists_smul_mem_of_mem_span_field v Q (y := a) (by rw [hQ]; trivial)`. Use `⟨d * e, mul_ne_zero hd he, fun y hy => ?_⟩` and prove the remaining obligations. Break down `Finset.mem_insert.1 hy with rfl | hy` into its components or cases.
+
+Conclude with `smul_mem_of_dvd v Q (dvd_mul_left e d) h'`. Conclude with `smul_mem_of_dvd v Q (dvd_mul_right d e) (h y hy)`. Take `⟨d, hd, h⟩` from `hs s`. Conclude with `⟨d, hd, fun y hy => smul_mem_of_mem_span v Q _ (fun z hz => h z hz) hy⟩`.
+-/
 theorem exists_smul_le
     (P Q : Submodule (v.adicCompletionIntegers K) (v.adicCompletion K ⊗[K] V)) (hP : P.FG)
     (hQ : span (v.adicCompletion K) (Q : Set (v.adicCompletion K ⊗[K] V)) = ⊤) :
@@ -108,6 +138,11 @@ theorem exists_smul_le
   obtain ⟨d, hd, h⟩ := hs s
   exact ⟨d, hd, fun y hy => smul_mem_of_mem_span v Q _ (fun z hz => h z hz) hy⟩
 
+/- English proof (translation)
+Use `le_antisymm (span_le.mpr ?_) (span_mono (Set.image_mono subset_span))` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx => exact subset_span ⟨x, hx, rfl⟩`. Consider the case `zero => rw [map_zero]`.
+
+Conclude with `zero_mem _`. Consider the case `add x z _ _ hx hz => rw [map_add]`. Conclude with `add_mem hx hz`. Consider the case `smul a x _ hx => rw [toLocal_smul]`. Conclude with `smul_mem _ _ hx`.
+-/
 theorem localLattice_span (s : Set V) :
     localLattice v (span (𝓞 K) s) = span (v.adicCompletionIntegers K) (toLocal v '' s) := by
   refine le_antisymm (span_le.mpr ?_) (span_mono (Set.image_mono subset_span))
@@ -118,6 +153,13 @@ theorem localLattice_span (s : Set V) :
   | add x z _ _ hx hz => rw [map_add]; exact add_mem hx hz
   | smul a x _ hx => rw [toLocal_smul]; exact smul_mem _ _ hx
 
+/- English proof (translation)
+Rewrite using `[eq_top_iff]`. Introduce and unpack `w -`. Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => exact zero_mem _`. Consider the case `tmul a x`.
+
+Establish `hx : toLocal v x ∈ (span (v.adicCompletion K) (localLattice v L : Set (v.adicCompletion K ⊗[K] V))).restrictScalars K`. Use `span_le_restrictScalars K (v.adicCompletion K) _ ?_` and prove the remaining obligations. Use `span_mono (subset_span (R := v.adicCompletionIntegers K)) ?_` and prove the remaining obligations. Rewrite using `[← Submodule.map_span]`. Conclude with `mem_map_of_mem (by rw [hL]; trivial)`.
+
+Establish `e : a ⊗ₜ[K] x = a • toLocal v x`. Simplify using `[toLocal, TensorProduct.smul_tmul']`. Rewrite using `[e]`. Conclude with `smul_mem _ a hx`. Consider the case `add w z hw hz => exact add_mem hw hz`.
+-/
 theorem span_localLattice_eq_top (L : Submodule (𝓞 K) V) (hL : span K (L : Set V) = ⊤) :
     span (v.adicCompletion K) (localLattice v L : Set (v.adicCompletion K ⊗[K] V)) = ⊤ := by
   rw [eq_top_iff]
@@ -147,11 +189,17 @@ def intCoords {ι : Type*} (e : Module.Basis ι K V) :
     rw [← algebraMap_smul (v.adicCompletion K) o w, map_smul, Finsupp.smul_apply, smul_eq_mul]
     exact mul_mem o.2 (hw i)
 
+/- English proof (translation)
+Simplify using `[toLocal, Algebra.TensorProduct.basis_repr_tmul]`.
+-/
 theorem repr_toLocal {ι : Type*} (e : Module.Basis ι K V) (x : V) (i : ι) :
     (Algebra.TensorProduct.basis (v.adicCompletion K) e).repr (toLocal v x) i =
       algebraMap K (v.adicCompletion K) (e.repr x i) := by
   simp [toLocal, Algebra.TensorProduct.basis_repr_tmul]
 
+/- English proof (translation)
+Rewrite using `[localLattice_span, span_le]`. Introduce and unpack `_ ⟨_, ⟨i, rfl⟩, rfl⟩ j`. Use `show _ ∈ _`. Rewrite using `[repr_toLocal, e.repr_self, Finsupp.single_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem localLattice_le_intCoords {ι : Type*} (e : Module.Basis ι K V) :
     localLattice v (span (𝓞 K) (Set.range e)) ≤ intCoords v e := by
   classical
@@ -163,6 +211,11 @@ theorem localLattice_le_intCoords {ι : Type*} (e : Module.Basis ι K V) :
 
 end Place
 
+/- English proof (translation)
+Rewrite using `[e.mem_span_iff_repr_mem (𝓞 K)]`. Introduce `i`. Take `⟨z, hz⟩` from `GroundTheory.Global.exists_eq_of_forall_mem_adicCompletionIntegers K (e.repr x i) fun v => by`. Establish `h` using `localLattice_le_intCoords v e (hx v) i`. Rewrite `h` using `[repr_toLocal]`.
+
+Conclude with `h`. Conclude with `⟨z, hz⟩`.
+-/
 theorem mem_span_of_forall_toLocal_mem {ι : Type*} (e : Module.Basis ι K V) {x : V}
     (hx : ∀ v, toLocal v x ∈ localLattice v (span (𝓞 K) (Set.range e))) :
     x ∈ span (𝓞 K) (Set.range e) := by
@@ -175,6 +228,15 @@ theorem mem_span_of_forall_toLocal_mem {ι : Type*} (e : Module.Basis ι K V) {x
       exact h
   exact ⟨z, hz⟩
 
+/- English proof (translation)
+Take `⟨⟨c, hc⟩, hcint⟩` from `IsLocalization.exist_integer_multiples (nonZeroDivisors (𝓞 K)) (Finset.univ : Finset (ι × Fin n)) (fun p => e.repr (g p.2) p.1)`. Use `⟨c, nonZeroDivisors.ne_zero hc, fun m hm => ?_⟩` and prove the remaining obligations. Proceed by induction on `hm using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨j, rfl⟩` from `hx`.
+
+Rewrite using `[e.mem_span_iff_repr_mem (𝓞 K)]`. Introduce `i`. Take `⟨r, hr⟩` from `hcint (i, j) (Finset.mem_univ _)`. Use `⟨r, ?_⟩` and prove the remaining obligations. Rewrite using `[hr, ← algebraMap_smul K c (g j), map_smul, Finsupp.smul_apply]`.
+
+Simplify using `[Algebra.smul_def]`. Consider the case `zero => simp`. Consider the case `add x z _ _ hx hz => rw [smul_add]`. Conclude with `add_mem hx hz`. Consider the case `smul a x _ hx => rw [smul_comm]`.
+
+Conclude with `smul_mem _ a hx`.
+-/
 theorem exists_smul_mem_span_basis {ι : Type*} [Fintype ι] (e : Module.Basis ι K V) {n : ℕ}
     (g : Fin n → V) :
     ∃ c : 𝓞 K, c ≠ 0 ∧ ∀ m ∈ span (𝓞 K) (Set.range g), c • m ∈ span (𝓞 K) (Set.range e) := by
@@ -195,6 +257,15 @@ theorem exists_smul_mem_span_basis {ι : Type*} [Fintype ι] (e : Module.Basis �
   | add x z _ _ hx hz => rw [smul_add]; exact add_mem hx hz
   | smul a x _ hx => rw [smul_comm]; exact smul_mem _ a hx
 
+/- English proof (translation)
+Take `⟨n, g, hg⟩` from `Submodule.fg_iff_exists_fin_generating_family.mp M₁.fg`. Establish `hloc : ∀ v : HeightOneSpectrum (𝓞 K), ∃ d : 𝓞 K, d ≠ 0 ∧ (∀ y ∈ N v, algebraMap K (v.adicCompletion K) (d : K) • y ∈ localLattice v M₁.carrier) ∧ (∀ y ∈ localLattice v M₁.carrier, algebraMap K (v.adicCompletion K) (d : K) • y ∈ N v)`. Introduce `v`. Take `⟨d₁, hd₁, h₁⟩` from `exists_smul_le v (N v) (localLattice v M₁.carrier) (hN v).1 (span_localLattice_eq_top v M₁.carrier M₁.span_eq)`. Take `⟨d₂, hd₂, h₂⟩` from `exists_smul_le v (localLattice v M₁.carrier) (N v) (by rw [← hg, localLattice_span]; exact fg_span ((Set.finite_range g).image _)) (hN v).2`.
+
+Conclude with `⟨d₁ * d₂, mul_ne_zero hd₁ hd₂, fun y hy => smul_mem_of_dvd v _ (dvd_mul_right _ _) (h₁ y hy), fun y hy => smul_mem_of_dvd v _ (dvd_mul_left _ _) (h₂ y hy)⟩`. Use `choose d hd hdN hdM using hloc`. Use `⟨∏ v ∈ hfin.toFinset, d v, Finset.prod_ne_zero_iff.mpr fun v _ => hd v, fun v => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hv : v ∈ hfin.toFinset`. Conclude with `⟨fun y hy => smul_mem_of_dvd v _ (Finset.dvd_prod_of_mem d hv) (hdN v y hy), fun y hy => smul_mem_of_dvd v _ (Finset.dvd_prod_of_mem d hv) (hdM v y hy)⟩`.
+
+Establish `hNv : N v = localLattice v M₁.carrier` using `by simpa using hv`. Use `⟨fun y hy => ?_, fun y hy => ?_⟩` and prove the remaining obligations. Rewrite using `[← hNv]`. Conclude with `smul_mem_of_mem_integers v _ (Theta.Ex1GL.algebraMap_integer_mem v _) hy`. Rewrite using `[hNv]`.
+
+Conclude with `smul_mem_of_mem_integers v _ (Theta.Ex1GL.algebraMap_integer_mem v _) hy`.
+-/
 theorem exists_common_scale (M₁ : FullLattice K V)
     (N : ∀ v : HeightOneSpectrum (𝓞 K),
       Submodule (v.adicCompletionIntegers K) (v.adicCompletion K ⊗[K] V))
@@ -227,6 +298,9 @@ theorem exists_common_scale (M₁ : FullLattice K V)
     · rw [hNv]
       exact smul_mem_of_mem_integers v _ (Theta.Ex1GL.algebraMap_integer_mem v _) hy
 
+/- English proof (translation)
+Use `smul_mem_of_mem_span v _ _ ?_ hy` and prove the remaining obligations. Introduce and unpack `_ ⟨m, hm, rfl⟩`. Rewrite using `[← toLocal_smul']`. Conclude with `subset_span ⟨_, h m hm, rfl⟩`.
+-/
 theorem smul_localLattice_mem (v : HeightOneSpectrum (𝓞 K)) {L L' : Submodule (𝓞 K) V} (D : 𝓞 K)
     (h : ∀ m ∈ L, D • m ∈ L') {y : v.adicCompletion K ⊗[K] V} (hy : y ∈ localLattice v L) :
     algebraMap K (v.adicCompletion K) (D : K) • y ∈ localLattice v L' := by
@@ -235,6 +309,39 @@ theorem smul_localLattice_mem (v : HeightOneSpectrum (𝓞 K)) {L L' : Submodule
   rw [← toLocal_smul']
   exact subset_span ⟨_, h m hm, rfl⟩
 
+/- English proof (translation)
+Take `⟨n, g, hg⟩` from `Submodule.fg_iff_exists_fin_generating_family.mp M₁.fg`. Establish `hMv : ∀ u : HeightOneSpectrum (𝓞 K), localLattice u M₁.carrier = span (u.adicCompletionIntegers K) (Set.range fun i => toLocal u (g i))` using `fun u => by`. Rewrite using `[← hg, localLattice_span, ← Set.range_comp]`. Both sides reduce to the same expression. Establish `hDK : (D : K) ≠ 0` using `by exact_mod_cast hD`.
+
+Establish `ha : ∀ u : HeightOneSpectrum (𝓞 K), algebraMap K (u.adicCompletion K) (D : K) ≠ 0` using `fun u => (map_ne_zero _).mpr hDK`. Establish `hDy` using `hDN v y hy`. Rewrite `hDy` using `[hMv v]`. Take `⟨cc, hcc⟩` from `(mem_span_range_iff_exists_fun (v.adicCompletionIntegers K)).mp hDy`. Establish `hT₀ : {u : HeightOneSpectrum (𝓞 K) | D ∈ u.asIdeal}.Finite`.
+
+Use `(Ideal.finite_factors (I := Ideal.span {D}) (by simpa [Ideal.span_singleton_eq_bot] using hD)).subset fun u hu => ?_` and prove the remaining obligations. Conclude with `Ideal.dvd_span_singleton.mpr hu`. Use `set T : Finset (HeightOneSpectrum (𝓞 K)) := hfin.toFinset ∪ hT₀.toFinset`. Establish `happ` using `fun i => Theta.Ex1GL.exists_approx v T (D * D) (mul_ne_zero hD hD) (cc i).2`. Use `choose b hbv hbT using happ`.
+
+Use `choose o ho hov using hbv`. Use `set x : V := (D : K)⁻¹ • ∑ i, b i • g i with hx_def`. Establish `hx : ∀ u : HeightOneSpectrum (𝓞 K), toLocal u x = (algebraMap K (u.adicCompletion K) (D : K))⁻¹ • ∑ i, algebraMap K (u.adicCompletion K) (b i : K) • toLocal u (g i)`. Introduce `u`. Rewrite using `[hx_def, map_smul, map_sum, ← algebraMap_smul (u.adicCompletion K) (D : K)⁻¹, map_inv₀]`.
+
+Simplify using `only [toLocal_smul']`. Use `set m : v.adicCompletion K ⊗[K] V := ∑ i, o i • toLocal v (g i) with hm_def`. Establish `hm : m ∈ localLattice v M₁.carrier`. Rewrite using `[hMv v]`. Conclude with `sum_mem fun i _ => smul_mem_of_mem_integers v _ (ho i) (subset_span ⟨i, rfl⟩)`.
+
+Establish `hxv : toLocal v x = y + algebraMap K (v.adicCompletion K) (D : K) • m` using `by set a := algebraMap K (v.adicCompletion K) (D : K) with ha_def`. Establish `hterm : ∀ i, algebraMap K (v.adicCompletion K) (b i : K) • toLocal v (g i) = ((cc i : v.adicCompletion K) • toLocal v (g i)) + a • a • (o i • toLocal v (g i))`. Introduce `i`. Rewrite using `[smul_smul, smul_smul, ← add_smul]`. Use `congr 1`.
+
+Establish `h` using `hov i`. Rewrite `h` using `[show ((D * D : 𝓞 K) : K) = (D : K) * (D : K) by push_cast; ring, map_mul]`. Take the linear combination `h`. Establish `hcc' : ∑ i, (cc i : v.adicCompletion K) • toLocal v (g i) = a • y`. Rewrite using `[← hcc]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← algebraMap_smul (v.adicCompletion K) (cc i)]`. Both sides reduce to the same expression. Rewrite using `[hx v, Finset.sum_congr rfl fun i _ => hterm i, Finset.sum_add_distrib, hcc', ← Finset.smul_sum, ← Finset.smul_sum, ← hm_def, smul_add, smul_smul, inv_mul_cancel₀ (ha v), one_smul, smul_smul, inv_mul_cancel₀ (ha v), one_smul]`. Establish `hxM : x ∈ latticeOfLocal N`.
+
+Introduce `u`. Distinguish the cases in `huv : u = v`. Substitute `huv` using the available equality. Rewrite using `[hxv]`. Conclude with `add_mem hy (hDM u _ hm)`.
+
+Distinguish the cases in `huT : u ∈ T`. Use `choose o' ho' hou' using fun i => hbT i u huT huv`. Establish `e : toLocal u x = algebraMap K (u.adicCompletion K) (D : K) • ∑ i, o' i • toLocal u (g i)`. Rewrite using `[hx u, Finset.smul_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[smul_smul, smul_smul, hou' i]`. Use `congr 1`. Rewrite using `[show ((D * D : 𝓞 K) : K) = (D : K) * (D : K) by push_cast; ring, map_mul]`. Clear denominators, using `[ha u]` for the nonvanishing conditions. Rewrite using `[e]`.
+
+Use `hDM u _ ?_` and prove the remaining obligations. Rewrite using `[hMv u]`. Conclude with `sum_mem fun i _ => smul_mem_of_mem_integers u _ (ho' i) (subset_span ⟨i, rfl⟩)`. Establish `hDu : D ∉ u.asIdeal` using `fun h => huT (Finset.mem_union_right _ (hT₀.mem_toFinset.mpr h))`. Establish `hNu : N u = localLattice u M₁.carrier`.
+
+Assume the negation of the conclusion as `h`. Conclude with `huT (Finset.mem_union_left _ (hfin.mem_toFinset.mpr h))`. Rewrite using `[hx u, hNu, Finset.smul_sum]`. Use `sum_mem fun i _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul]`.
+
+Use `smul_mem_of_mem_integers u _ (mul_mem (Theta.Ex1GL.inv_mem_of_notMem u hDu) (Theta.Ex1GL.algebraMap_integer_mem u (b i))) ?_` and prove the remaining obligations. Rewrite using `[hMv u]`. Conclude with `subset_span ⟨i, rfl⟩`. Establish `h1 : toLocal v x ∈ localLattice v (latticeOfLocal N)` using `subset_span ⟨x, hxM, rfl⟩`. Establish `h2 : algebraMap K (v.adicCompletion K) (D : K) • m ∈ localLattice v (latticeOfLocal N)` using `smul_localLattice_mem v D (fun m' hm' u => by`.
+
+Rewrite using `[toLocal_smul']`. Conclude with `hDM u _ (subset_span ⟨m', hm', rfl⟩)) hm`. Establish `e : y = toLocal v x - algebraMap K (v.adicCompletion K) (D : K) • m`. Rewrite using `[hxv]`. Normalize the expressions using the abelian group laws.
+
+Rewrite using `[e]`. Conclude with `sub_mem h1 h2`.
+-/
 theorem mem_localLattice_latticeOfLocal (M₁ : FullLattice K V)
     (N : ∀ v : HeightOneSpectrum (𝓞 K),
       Submodule (v.adicCompletionIntegers K) (v.adicCompletion K ⊗[K] V))
@@ -336,6 +443,23 @@ theorem mem_localLattice_latticeOfLocal (M₁ : FullLattice K V)
   rw [e]
   exact sub_mem h1 h2
 
+/- English proof (translation)
+Take `⟨D, hD, hDNM⟩` from `exists_common_scale M₁ N hN hfin`. Establish `hDN` using `fun v => (hDNM v).1`. Establish `hDM` using `fun v => (hDNM v).2`. Take `⟨n, g, hg⟩` from `Submodule.fg_iff_exists_fin_generating_family.mp M₁.fg`. Establish `hP3 : ∀ m ∈ M₁.carrier, D • m ∈ latticeOfLocal N` using `fun m hm u => by`.
+
+Rewrite using `[toLocal_smul']`. Conclude with `hDM u _ (subset_span ⟨m, hm, rfl⟩)`. Establish `hgK : span K (Set.range g) = ⊤`. Rewrite using `[eq_top_iff, ← M₁.span_eq, span_le, ← hg]`. Conclude with `fun x hx => span_le_restrictScalars (𝓞 K) K (Set.range g) hx`.
+
+Establish `: Module.Finite K V` using `⟨⟨Finset.univ.image g, by rw [Finset.coe_image, Finset.coe_univ, Set.image_univ, hgK]⟩⟩`. Set `e` to `Module.finBasis K V`. Take `⟨c, hc, hcF⟩` from `exists_smul_mem_span_basis e g`. Establish `hM'F : ∀ x ∈ latticeOfLocal N, (c * D) • x ∈ span (𝓞 K) (Set.range e)`. Introduce `x hx`.
+
+Use `mem_span_of_forall_toLocal_mem e fun u => ?_` and prove the remaining obligations. Rewrite using `[mul_smul, toLocal_smul', toLocal_smul']`. Use `smul_mem_of_mem_span u _ _ ?_ (hDN u _ (hx u))` and prove the remaining obligations. Introduce and unpack `_ ⟨m, hm, rfl⟩`. Rewrite using `[← toLocal_smul']`.
+
+Conclude with `subset_span ⟨_, hcF m (by rw [hg]; exact hm), rfl⟩`. Use `⟨?_, ?_, fun v => le_antisymm ?_ fun y hy => mem_localLattice_latticeOfLocal M₁ N hfin hD hDN hDM v hy⟩` and prove the remaining obligations. Set `f : V →ₗ[𝓞 K] V` to `(c * D) • LinearMap.id`. Establish `hf : Function.Injective f`. Introduce `x z h`.
+
+Express the relevant statement in the definitionally equal form `(c * D) • x = (c * D) • z at h`. Rewrite `h` using `[← algebraMap_smul K (c * D) x, ← algebraMap_smul K (c * D) z]`. Conclude with `smul_right_injective V ((map_ne_zero_iff _ (FaithfulSMul.algebraMap_injective (𝓞 K) K)).mpr (mul_ne_zero hc hD)) h`. Use `fg_of_fg_map_injective f hf (FG.of_le (fg_span (Set.finite_range e)) ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`.
+
+Conclude with `hM'F x hx`. Rewrite using `[eq_top_iff, ← M₁.span_eq, span_le]`. Introduce `m hm`. Establish `e' : m = (D : K)⁻¹ • (D • m)`. Rewrite using `[← algebraMap_smul K D m, smul_smul, ← RingOfIntegers.coe_eq_algebraMap, inv_mul_cancel₀ (by exact_mod_cast hD), one_smul]`.
+
+Rewrite using `[e']`. Conclude with `smul_mem _ _ (subset_span (hP3 m hm))`. Rewrite using `[localLattice, span_le]`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `hx v`.
+-/
 theorem latticeOfLocal_spec (M₁ : FullLattice K V)
     (N : ∀ v : HeightOneSpectrum (𝓞 K),
       Submodule (v.adicCompletionIntegers K) (v.adicCompletion K ⊗[K] V))
@@ -391,6 +515,11 @@ theorem latticeOfLocal_spec (M₁ : FullLattice K V)
 
 end LatticeOfLocalisations
 
+/- English proof (translation)
+Introduce `K _ _ V _ _ _ _ M₁ N N'' hN hNfin hN'' hN''fin`. Take `⟨hfg, hspan, hloc⟩` from `LatticeOfLocalisations.latticeOfLocal_spec M₁ N hN hNfin`. Take `⟨-, -, hloc''⟩` from `LatticeOfLocalisations.latticeOfLocal_spec M₁ N'' hN'' hN''fin`. Use `⟨hfg, hspan, hloc, fun h v => ?_, fun h x hx v => h v (hx v)⟩` and prove the remaining obligations. Rewrite using `[← hloc v, ← hloc'' v]`.
+
+Conclude with `span_mono (Set.image_mono h)`.
+-/
 theorem LatticeOfLocalisations.proof : LatticeOfLocalisations.Statement := by
   intro K _ _ V _ _ _ _ M₁ N N'' hN hNfin hN'' hN''fin
   obtain ⟨hfg, hspan, hloc⟩ := LatticeOfLocalisations.latticeOfLocal_spec M₁ N hN hNfin

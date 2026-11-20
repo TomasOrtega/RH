@@ -5,6 +5,9 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.EqOfHasValueAtInfin
 
 namespace UpperTheory.ConvolutionTheory.Sph
 
+/- English proof (translation)
+Establish `h0 : Ideal.absNorm v.asIdeal ≠ 0` using `fun e => v.ne_bot (Ideal.absNorm_eq_zero_iff.1 e)`. Establish `h1 : Ideal.absNorm v.asIdeal ≠ 1` using `fun e => v.isPrime.ne_top (Ideal.absNorm_eq_one_iff.1 e)`. Establish `h2 : 1 < Ideal.absNorm v.asIdeal` using `by omega`. Establish `h3 : (1 : ℝ) < (Ideal.absNorm v.asIdeal : ℝ)` using `by exact_mod_cast h2`. Conclude with `zpow_right_injective₀ (by linarith) h3.ne' h`.
+-/
 private theorem zpow_inj_of_absNorm {F : Type} [Field F] [NumberField F] (v : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers F)) {a b : ℤ}
     (h : (Ideal.absNorm v.asIdeal : ℝ) ^ a = (Ideal.absNorm v.asIdeal : ℝ) ^ b) : a = b := by
   have h0 : Ideal.absNorm v.asIdeal ≠ 0 := fun e => v.ne_bot (Ideal.absNorm_eq_zero_iff.1 e)
@@ -13,6 +16,11 @@ private theorem zpow_inj_of_absNorm {F : Type} [Field F] [NumberField F] (v : Is
   have h3 : (1 : ℝ) < (Ideal.absNorm v.asIdeal : ℝ) := by exact_mod_cast h2
   exact zpow_right_injective₀ (by linarith) h3.ne' h
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ v w σw l N hN hq a`. Use `MonoidHom.ext fun x => ?_` and prove the remaining obligations. Establish `h` using `hN.abs x`. Rewrite `h` using `[GlobalTheory.LGrp.nabs_eq_zpow, GlobalTheory.LGrp.nabs_eq_zpow, GlobalTheory.T.residue_card_eq_abs_norm F v, GlobalTheory.T.residue_card_eq_abs_norm E w.1, hq]`. Establish `h'` using `zpow_inj_of_absNorm v h`.
+
+Establish `h''` using `neg_injective h'`. Simplify using `only [MonoidHom.comp_apply, GlobalTheory.SmGL.unrChar_apply, h'']`.
+-/
 theorem unrNorm : UnrNorm := by
   intro F E _ _ _ _ _ v w σw l N hN hq a
   refine MonoidHom.ext fun x => ?_

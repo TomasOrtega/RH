@@ -17,6 +17,13 @@ namespace GlobalTheory.BigOn.Exp.TwAdmProof
 variable {D : D7}
 end GlobalTheory.BigOn.Exp.TwAdmProof
 open GlobalTheory.BigOn.Exp.TwAdmProof in
+/- English proof (translation)
+Unfold `_root_.GlobalTheory.BigOn.Exp.TwAdmAlt _root_.GlobalTheory.BigOn.Exp.TwistConditions _root_.GlobalTheory.BigOn.AtPtsAlt`. Use `⟨1, one_pos, fun eps _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun Fm CH _ _ => _root_.GlobalTheory.BigTop.EventuallyAtPoints.of_forall fun x hx i p hR _ w hw _ => ?_⟩⟩` and prove the remaining obligations. Establish `hmu` using `(p.tw_iff w).1 hw`. Take `⟨-, N0, S, hG⟩` from `hR.ties.twist`. Take `⟨-, hall⟩` from `hG w hmu`.
+
+Establish `h1` using `hall 1 (by simp)`. Rewrite `h1` using `[zpow_one]`. Establish `hpsi` using `h1.1`. Use `⟨?_, ?_, GlobalTheory.Mem.Top.twistedPlaceIndex_mem_firstPair_of_compatibleChoice _ _ (Fm.ex x hx i).nch_tie (Fm.ties x i).baseField_isGalois w hmu⟩` and prove the remaining obligations. Establish `h2` using `Formalism.MainNotions.IntegralHeckeForms.TwOK_psiAt ((Fm.ex x hx i).nch.sd w) (Formalism.MainNotions.IntegralHeckeForms.TwOK_of_PsiOk hpsi)`.
+
+Rewrite `h2` using `[psiAt_comp, Formalism.MainNotions.psiAt_psiAt]`. Conclude with `h2`. Introduce `P hP`. Take `⟨-, hin, he⟩` from `hpsi.1 P hP`. Conclude with `exists_splitK_of P hin he`.
+-/
 theorem GlobalTheory.BigOn.Exp.twAdm_alt : _root_.GlobalTheory.BigOn.Exp.TwAdmAlt := by
   unfold _root_.GlobalTheory.BigOn.Exp.TwAdmAlt _root_.GlobalTheory.BigOn.Exp.TwistConditions _root_.GlobalTheory.BigOn.AtPtsAlt
   refine ⟨1, one_pos, fun eps _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun Fm CH _ _ =>

@@ -13,5 +13,8 @@ open GlobalTheory.PrimIn
 open GlobalTheory.Mem GlobalTheory.Mem.Top GlobalTheory.Mem.Top.Bl GlobalTheory.Mem.Col2
 open GlobalTheory.Mem.R3 GlobalTheory.Mem.R3.Rw
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.Mem.R3.LiftsAt.holdsLU | exact GlobalTheory.Mem.R3.LiftsAt.holdsLU | (intros; apply GlobalTheory.Mem.R3.LiftsAt.holdsLU <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.holds_of_multiplicity_equal : Hypotheses3 → GlobalTheory.Published.RegularisedSiegelWeilFirstTerm → GlobalTheory.Published.HeckeLPartialContinuation → (StepW Pinned fun _ B f T w => ∀ (Z : w.Lt) (hX : B.fields.Ok) (Wt : Set B.places.Pl) (z : GlobalTheory.Mem.R3.Dat (w.st Z) w.I hX T Wt), GrpTrue Z.N f → GlobalTheory.Mem.R3.GrpAt (w.st Z) w.I → z.R.toRealDat.ExAt → GlobalTheory.RealGeo.InGeo z.geo → GlobalTheory.CuspMult.MultEq z.R.toRealDat) → LowerUnitaryCaseCondition := by
   first | exact @GlobalTheory.Mem.R3.LiftsAt.holdsLU | exact GlobalTheory.Mem.R3.LiftsAt.holdsLU | (intros; apply GlobalTheory.Mem.R3.LiftsAt.holdsLU <;> assumption)

@@ -15,15 +15,42 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     [CommRing O] [Algebra O LL] {v : AddValuation LL (WithTop ℚ)} {n : ℕ}
     (W : LocWach PD LL O v n)
 
+/- English proof (translation)
+Conclude with `congrFun (Units.mul_inv w) i`.
+-/
 theorem unit_comp (w : (LetA O n)ˣ) (i : ZMod n) :
     (w : LetA O n) i * ((w⁻¹ : (LetA O n)ˣ) : LetA O n) i = 1 := by
   exact congrFun (Units.mul_inv w) i
 
+/- English proof (translation)
+Rewrite using `[hπ]`. Both sides reduce to the same expression.
+-/
 theorem π_at (s' : ℕ) (π' : LetA O n) (w₁ : (LetA O n)ˣ) (hπ : π' = w₁ * (letπ : LetA O n) ^ s') (i : ZMod n) :
     π' i = (w₁ : LetA O n) i * PowerSeries.X ^ s' := by
   rw [hπ]
   rfl
 
+/- English proof (translation)
+Introduce and unpack `a ha u ⟨g, hg, hgu⟩ ⟨h, hh, hhu⟩`. Establish `hA : π' * ((letE c : LetA O n) * h) = algebraMap O (LetA O n) a * ((letE c : LetA O n) * g)`. Apply `W.EE_inj` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Algebra.smul_def, IsScalarTower.algebraMap_apply O (LetA O n) W.EE, ← map_mul]`.
+
+Establish `hc : π' c * h c = a • g c`. Use `congrFun hA c` as an intermediate fact. Rewrite using `[Algebra.smul_def]`. Simplify `this` using `[letE]`. Establish `hdvd : PowerSeries.X ^ s' ∣ g c`.
+
+Rewrite using `[PowerSeries.X_pow_dvd_iff]`. Introduce `m hm`. Establish `h1` using `congrArg (PowerSeries.coeff m) hc`. Rewrite `h1` using `[π_at s' π' w₁ hπ c, mul_comm ((w₁ : LetA O n) c), mul_assoc, PowerSeries.coeff_X_pow_mul', if_neg (by omega), map_smul, smul_eq_mul]`. Conclude with `(mul_eq_zero.mp h1.symm).resolve_left ha`.
+
+Take `⟨G', hG'⟩` from `hdvd`. Use `set g' : LetA O n := (letE c : LetA O n) * (fun _ => ((w₁⁻¹ : (LetA O n)ˣ) : LetA O n) c * G') with hg'`. Establish `hπg' : π' * g' = (letE c : LetA O n) * g`. Use function extensionality and compare the values at `i`. Distinguish the cases in `hi : i = c`.
+
+Substitute `hi` using the available equality. Simplify using `only [Pi.mul_apply, hg', letE, Pi.single_eq_same, one_mul]`. Rewrite using `[π_at s' π' w₁ hπ i, hG']`. Take the linear combination `(PowerSeries.X ^ s' * G') * unit_comp w₁ i`. Simplify using `[hg', letE, Pi.single_apply, hi]`.
+
+Establish `hcancel : ∀ x y : LetA O n, π' * x = π' * y → x = y`. Introduce `x y hxy`. Use function extensionality and compare the values at `i`. Establish `hxi` using `congrFun hxy i`. Simplify using `only [Pi.mul_apply] at hxi`.
+
+Rewrite `hxi` using `[π_at s' π' w₁ hπ i]`. Establish `hne : (w₁ : LetA O n) i * PowerSeries.X ^ s' ≠ 0`. Establish `hw : (w₁ : LetA O n) i ≠ 0`. Introduce `h0`. Use `unit_comp w₁ i` as an intermediate fact.
+
+Rewrite `this` using `[h0, zero_mul]`. Conclude with `zero_ne_one this`. Conclude with `mul_ne_zero hw (pow_ne_zero _ PowerSeries.X_ne_zero)`. Conclude with `mul_left_cancel₀ hne hxi`. Establish `hπΔ' : ∀ δ ∈ W.DelF, W.γA δ π' = π'` using `hπΔ`.
+
+Establish `hm : (letE c : LetA O n) * g ∈ W.AΔ` using `mul_mem (letE_mem W c) hg`. Establish `hm' : ∀ δ ∈ W.DelF, W.γA δ ((letE c : LetA O n) * g) = (letE c : LetA O n) * g` using `hm`. Establish `hg'Δ : g' ∈ W.AΔ` using `by show ∀ δ ∈ W.DelF, W.γA δ g' = g'`. Introduce `δ hδ`. Apply `hcancel` to reduce the goal to its premises.
+
+Combine the equalities or inequalities in the displayed calculation. Use `⟨g', hg'Δ, ?_⟩` and prove the remaining obligations. Establish `hle : (letE c : LetA O n) * g' = g'` using `by rw [hg', ← mul_assoc, letE_mul_self']`. Rewrite using `[hle]`. Conclude with `hπu.mul_left_cancel (by rw [hgu, ← hπg', map_mul])`.
+-/
 theorem hlet_of [IsDomain O] (s' : ℕ) (hs : 1 ≤ s') (π' : LetA O n) (w₁ : (LetA O n)ˣ)
     (hπ : π' = w₁ * (letπ : LetA O n) ^ s') (hπΔ : π' ∈ W.AΔ) (hπu : IsUnit (algebraMap (LetA O n) W.EE π'))
     (c : ZMod n) :
@@ -93,6 +120,9 @@ theorem hlet_of [IsDomain O] (s' : ℕ) (hs : 1 ≤ s') (π' : LetA O n) (w₁ :
   rw [hle]
   exact hπu.mul_left_cancel (by rw [hgu, ← hπg', map_mul])
 
+/- English proof (translation)
+Conclude with `Formalism.MainNotions.LiftingTheory.liftb_q_unit W`.
+-/
 theorem q_unit (hp : PD.p.Prime) : IsUnit (algebraMap (LetA O n) W.EE W.q) := by
   exact Formalism.MainNotions.LiftingTheory.liftb_q_unit W
 

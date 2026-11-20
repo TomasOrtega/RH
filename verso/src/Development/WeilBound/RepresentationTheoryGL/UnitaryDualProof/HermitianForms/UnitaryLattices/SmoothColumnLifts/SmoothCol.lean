@@ -25,6 +25,9 @@ def perp (ψ : AddChar k Circle) {n : ℕ} (A : AddSubgroup (Fin n → k)) : Add
     intro x hx a ha
     rw [neg_dotProduct, AddChar.map_neg_eq_inv, hx a ha, inv_one]
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_perp (ψ : AddChar k Circle) {n : ℕ} (A : AddSubgroup (Fin n → k)) (ξ : Fin n → k) :
     ξ ∈ perp ψ A ↔ ∀ a ∈ A, ψ (ξ ⬝ᵥ a) = 1 := Iff.rfl
 

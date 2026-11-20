@@ -4,6 +4,17 @@ open scoped TensorProduct
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `O _ k _ p ϖ hp hred`. Use `set I : Ideal O := Ideal.span {(p : O), ϖ}`. Use `set f := Algebra.TensorProduct.map (AlgHom.id ℤ k) (Ideal.Quotient.mkₐ ℤ I) with hf`. Establish `hker : RingHom.ker f.toRingHom = Ideal.span {(1 : k) ⊗ₜ[ℤ] ϖ}`. Establish `h` using `Algebra.TensorProduct.lTensor_ker (A := k) (Ideal.Quotient.mkₐ ℤ I) (Ideal.Quotient.mkₐ_surjective ℤ I)`.
+
+Establish `hk : RingHom.ker (Ideal.Quotient.mkₐ ℤ I) = I` using `Ideal.Quotient.mkₐ_ker ℤ I`. Establish `h0 : (Algebra.TensorProduct.includeRight : O →ₐ[ℤ] k ⊗[ℤ] O) (p : O) = 0`. Rewrite using `[map_natCast]`. Establish `: ((p : ℕ) : k ⊗[ℤ] O) = (Algebra.TensorProduct.includeLeft : k →ₐ[ℤ] k ⊗[ℤ] O) (p : k)`. Rewrite using `[map_natCast]`.
+
+Rewrite using `[this, hp, map_zero]`. Establish `h1 : (Algebra.TensorProduct.includeRight : O →ₐ[ℤ] k ⊗[ℤ] O) ϖ = (1 : k) ⊗ₜ[ℤ] ϖ` using `rfl`. Establish `e` using `h`. Rewrite `e` using `[hk]`. Express the relevant statement in the definitionally equal form `RingHom.ker f.toRingHom = _ at e`.
+
+Rewrite using `[e, Ideal.map_span, Set.image_pair]`. Use `erw [h0, h1]`. Conclude with `Ideal.span_insert_zero`. Establish `hinj : Function.Injective (RingHom.kerLift f.toRingHom)` using `RingHom.kerLift_injective _`. Establish `hR : IsReduced (k ⊗[ℤ] O ⧸ RingHom.ker f.toRingHom)` using `isReduced_of_injective _ hinj`.
+
+Rewrite `hR` using `[hker]`. Conclude with `hR`.
+-/
 theorem reduced_quot_tensor_of_reduced_modp :
     ∀ (O : Type) [CommRing O] (k : Type) [Field k] (p : ℕ) (ϖ : O), (p : k) = 0 →
       IsReduced (k ⊗[ℤ] (O ⧸ Ideal.span {(p : O), ϖ})) →

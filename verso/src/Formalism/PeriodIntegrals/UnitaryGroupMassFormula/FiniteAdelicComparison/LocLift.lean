@@ -18,6 +18,9 @@ def liftOne (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F)) (y : Formalism.Main
     fun j c => Module.Basis.ofVectorSpace I.F I.E j ⊗ₜ[I.F] Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.singleV I.F v c
 
 open Classical in
+/- English proof (translation)
+Use `first`. Consider the case `(simp [Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV, Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.singleV]; done)`. Consider the case `(simp [Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV, Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.singleV, RestrictedProduct.single]; done)`. Consider the case `exact Pi.single_eq_same (M := fun w : HeightOneSpectrum (𝓞 I.F) => w.adicCompletion I.F) v c`.
+-/
 theorem evalV_singleV_same (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F))
     (c : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv I.F v) :
     Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV I.F v (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.singleV I.F v c) = c := by
@@ -27,6 +30,9 @@ theorem evalV_singleV_same (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F))
   | exact Pi.single_eq_same (M := fun w : HeightOneSpectrum (𝓞 I.F) => w.adicCompletion I.F) v c
 
 open Classical in
+/- English proof (translation)
+Use `first`. Consider the case `(simp [Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV, Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.singleV, hw]; done)`. Consider the case `(simp [Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV, Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.singleV, RestrictedProduct.single, hw]; done)`. Consider the case `exact Pi.single_eq_of_ne (M := fun w : HeightOneSpectrum (𝓞 I.F) => w.adicCompletion I.F) hw c`.
+-/
 theorem evalV_singleV_ne (I : AutInst) {v w : HeightOneSpectrum (𝓞 I.F)} (hw : w ≠ v)
     (c : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv I.F v) :
     Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV I.F w (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.singleV I.F v c) = 0 := by
@@ -35,6 +41,9 @@ theorem evalV_singleV_ne (I : AutInst) {v w : HeightOneSpectrum (𝓞 I.F)} (hw 
   | (simp [Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV, Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.singleV, RestrictedProduct.single, hw]; done)
   | exact Pi.single_eq_of_ne (M := fun w : HeightOneSpectrum (𝓞 I.F) => w.adicCompletion I.F) hw c
 
+/- English proof (translation)
+Establish `hy : (TensorProduct.equivFinsuppOfBasisRight (Module.Basis.ofVectorSpace I.F I.E)).symm (TensorProduct.equivFinsuppOfBasisRight (Module.Basis.ofVectorSpace I.F I.E) y) = y` using `LinearEquiv.symm_apply_apply _ y`. Use `conv_rhs => rw [← hy]`. Rewrite using `[TensorProduct.equivFinsuppOfBasisRight_symm_apply, liftOne, Finsupp.sum, Finsupp.sum, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `[psiV, evalV_singleV_same]`.
+-/
 theorem psiV_liftOne_same (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F))
     (y : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv I.F v ⊗[I.F] I.E) : psiV I v (liftOne I v y) = y := by
   classical
@@ -47,12 +56,20 @@ theorem psiV_liftOne_same (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F))
   refine Finset.sum_congr rfl fun j _ => ?_
   simp [psiV, evalV_singleV_same]
 
+/- English proof (translation)
+Rewrite using `[liftOne, Finsupp.sum, map_sum]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Simplify using `[psiV, evalV_singleV_ne I hw]`.
+-/
 theorem psiV_liftOne_ne (I : AutInst) {v w : HeightOneSpectrum (𝓞 I.F)} (hw : w ≠ v)
     (y : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv I.F v ⊗[I.F] I.E) : psiV I w (liftOne I v y) = 0 := by
   rw [liftOne, Finsupp.sum, map_sum]
   refine Finset.sum_eq_zero fun j _ => ?_
   simp [psiV, evalV_singleV_ne I hw]
 
+/- English proof (translation)
+Introduce `I v y`. Use `⟨fun i => liftOne I v (y i), ?_, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Conclude with `psiV_liftOne_same I v (y i)`. Introduce `w hw`.
+
+Use function extensionality and compare the values at `i`. Conclude with `psiV_liftOne_ne I hw (y i)`.
+-/
 theorem local_vector_lift : LiftV := by
   intro I v y
   refine ⟨fun i => liftOne I v (y i), ?_, ?_⟩

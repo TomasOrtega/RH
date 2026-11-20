@@ -6,6 +6,11 @@ namespace Formalism.MainNotions.G.SymmetricFormBlocks
 
 open MvPolynomial Finset Formalism.GM Formalism.GM.M Formalism.GM.ProjS
 
+/- English proof (translation)
+Establish `hm' : (m : ℚ_[p]) ≠ 0` using `by exact_mod_cast hm`. Establish `hn : ‖(m : ℚ_[p])‖ = (p : ℝ) ^ (-(padicValNat p m : ℤ))`. Rewrite using `[Padic.norm_eq_zpow_neg_valuation hm', Padic.valuation_natCast]`. Establish `hp1 : (1 : ℝ) ≤ (p : ℝ)` using `by exact_mod_cast hp.out.one_lt.le`. Establish `hp0 : (0 : ℝ) < (p : ℝ)` using `by linarith`.
+
+Use `⟨⟨(p : ℚ_[p]) ^ Mx / m, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[norm_div, norm_pow, Padic.norm_p, hn, div_le_one (zpow_pos hp0 _), inv_pow, ← zpow_natCast, ← zpow_neg]`. Conclude with `zpow_le_zpow_right₀ hp1 (by omega)`. Use `show (p : ℚ_[p]) ^ Mx / m * m = _`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem exists_scal (p : ℕ) [hp : Fact p.Prime] (m Mx : ℕ) (hm : m ≠ 0) (h : padicValNat p m ≤ Mx) :
     ∃ c : ℤ_[p], (c : ℚ_[p]) * (m : ℚ_[p]) = (p : ℚ_[p]) ^ Mx := by
   have hm' : (m : ℚ_[p]) ≠ 0 := by exact_mod_cast hm
@@ -27,6 +32,9 @@ def expU (a : ℕ) : ℕ := (G.T.t + 1) * ⌈((r : ℝ) + 1) * lgV2 p a r⌉₊
 
 def expM : ℕ := (levels G).sup fun l => padicValNat p (lvC (r := r) G l.1 l.2 * degFact G l.1 l.2)
 
+/- English proof (translation)
+Unfold `lvC`. Use `mul_ne_zero (pow_ne_zero 2 (mul_ne_zero (Finset.prod_ne_zero_iff.mpr fun i _ => Nat.factorial_ne_zero _) (Nat.factorial_ne_zero _))) (mul_ne_zero (Finset.prod_ne_zero_iff.mpr fun i _ => mul_ne_zero ?_ (Nat.factorial_ne_zero _)) (mul_ne_zero ?_ (Nat.factorial_ne_zero _)))` and prove the remaining obligations. Conclude with `(Nat.choose_pos (by omega)).ne'`. Conclude with `(Nat.choose_pos (by omega)).ne'`.
+-/
 theorem lvC_ne_zero (j : Fin G.T.t → ℕ) (jp : ℕ) : lvC (r := r) G j jp ≠ 0 := by
   unfold lvC
   refine mul_ne_zero (pow_ne_zero 2 (mul_ne_zero (Finset.prod_ne_zero_iff.mpr fun i _ => Nat.factorial_ne_zero _)
@@ -35,6 +43,9 @@ theorem lvC_ne_zero (j : Fin G.T.t → ℕ) (jp : ℕ) : lvC (r := r) G j jp ≠
   · exact (Nat.choose_pos (by omega)).ne'
   · exact (Nat.choose_pos (by omega)).ne'
 
+/- English proof (translation)
+Unfold `degFact`. Conclude with `mul_ne_zero (Finset.prod_ne_zero_iff.mpr fun i _ => Nat.factorial_ne_zero _) (Nat.factorial_ne_zero _)`.
+-/
 theorem degFact_ne_zero (j : Fin G.T.t → ℕ) (jp : ℕ) : degFact G j jp ≠ 0 := by
   unfold degFact
   exact mul_ne_zero (Finset.prod_ne_zero_iff.mpr fun i _ => Nat.factorial_ne_zero _) (Nat.factorial_ne_zero _)
@@ -42,6 +53,11 @@ theorem degFact_ne_zero (j : Fin G.T.t → ℕ) (jp : ℕ) : degFact G j jp ≠ 
 def nLv (D : ℤ) (l : (Fin G.T.t → ℕ) × ℕ) : ℕ :=
   goodCount p (bejj p (r := r) G l.1 l.2) (Ljj p (r := r) G l.1 l.2) D
 
+/- English proof (translation)
+Take `⟨x, y, hx, hy, hxy⟩` from `goodCount_mem p (bejj p (r := r) G l.1 l.2) (Ljj p (r := r) G l.1 l.2) D`. Use `⟨x, y, hx, hy, fun i j => ?_⟩` and prove the remaining obligations. Establish `hd : (degFact G l.1 l.2 : ℚ_[p]) ≠ 0` using `by exact_mod_cast degFact_ne_zero G _ _`. Establish `h` using `hxy i j`. Unfold `bejj at h`.
+
+Rewrite `h` using `[div_eq_iff hd]`. Conclude with `h`.
+-/
 theorem nLv_mem (D : ℤ) (l : (Fin G.T.t → ℕ) × ℕ) :
     ∃ x y : Fin (nLv p (r := r) G D l) → MvPolynomial (M.BVar N r G.T.t) ℚ_[p],
       (∀ i, x i ∈ Ljj p (r := r) G l.1 l.2) ∧ (∀ i, y i ∈ Ljj p (r := r) G l.1 l.2) ∧
@@ -55,6 +71,31 @@ theorem nLv_mem (D : ℤ) (l : (Fin G.T.t → ℕ) × ℕ) :
   rw [div_eq_iff hd] at h
   exact h
 
+/- English proof (translation)
+Establish `hp0 : (p : ℚ_[p]) ≠ 0` using `by exact_mod_cast (Fact.out : p.Prime).ne_zero`. Establish `hw` using `fun l : (Fin G.T.t → ℕ) × ℕ => nLv_mem p (r := r) G D l`. Use `choose u v hu hv huv using hw`. Establish `hsc : ∀ l : ↥(levels G), ∃ c : ℤ_[p], (c : ℚ_[p]) * ((lvC (r` using `r) G l.1.1 l.1.2 * degFact G l.1.1 l.1.2 : ℕ) : ℚ_[p]) = (p : ℚ_[p]) ^ Mx := by`. Introduce `l`.
+
+Conclude with `exists_scal p _ Mx (mul_ne_zero (lvC_ne_zero G _ _) (degFact_ne_zero G _ _)) (hM l.1 l.2)`. Use `choose sc hsc' using hsc`. Establish `hok : ∀ l : ↥(levels G), G.LevelOK l.1.1 l.1.2` using `fun l => (Finset.mem_filter.1 l.2).2`. Set `I` to `Σ l : ↥(levels G), Fin (nLv p (r := r) G D l.1)`. Set `Xf : I → MvPolynomial (M.BVar N r G.T.t) ℚ_[p]` to `fun a => ((p : ℚ_[p]) ^ U) • Th p G a.1.1.1 a.1.1.2 (v a.1.1 a.2)`.
+
+Set `Yf : I → MvPolynomial (M.BVar N r G.T.t) ℚ_[p]` to `fun a => sc a.1 • (((p : ℚ_[p]) ^ U) • Th p G a.1.1.1 a.1.1.2 (u a.1.1 a.2))`. Establish `hX : ∀ a, Xf a ∈ G.SSZ p (r` using `r) := fun a => hLL _ (Th_mem_PSZ p G _ _ (hok a.1) _ (hv _ _))`. Establish `hY : ∀ a, Yf a ∈ G.SSZ p (r` using `r) := fun a => Submodule.smul_mem _ _ (hLL _ (Th_mem_PSZ p G _ _ (hok a.1) _ (hu _ _)))`. Establish `hXY : ∀ a b : I, fockK (Xf a) (Yf b) = if a = b then (p : ℚ_[p]) ^ (D + 2 * (U : ℤ) + (Mx : ℤ)) else 0`. Introduce and unpack `⟨l, i⟩ ⟨l', k⟩`.
+
+Simplify using `only [Xf, Yf]`. Rewrite using `[zsmul_eq, fockK_smul_left, fockK_smul_right, fockK_smul_right]`. Distinguish the cases in `hll : l = l'`. Substitute `hll` using the available equality. Rewrite using `[Th_fock p G hB hr _ _ (hok l) _ _ (hv _ _) (hu _ _), fockK_symm]`.
+
+Establish `h1` using `huv l.1 k i`. Establish `h2` using `hsc' l`. Move the coercions through the operations in `at h2`. Distinguish the cases in `hik : i = k`. Substitute `hik` using the available equality.
+
+Rewrite `h1` using `[if_pos rfl]`. Rewrite using `[h1, if_pos rfl]`. Rewrite using `[zpow_add₀ hp0, zpow_add₀ hp0, zpow_natCast, ← h2, two_mul, zpow_add₀ hp0, zpow_natCast]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h1` using `[if_neg (fun h => hik h.symm)]`.
+
+Rewrite using `[h1, if_neg]`. Expand and normalize the polynomial expressions, which then agree. Introduce `h`. Rewrite `h` using `[Sigma.mk.inj_iff]`. Conclude with `hik (eq_of_heq h.2)`.
+
+Establish `hne : (l.1.1, l.1.2) ≠ (l'.1.1, l'.1.2)`. Introduce `h`. Conclude with `hll (Subtype.ext h)`. Rewrite using `[Th_orth p G hB hr _ _ _ _ (hok l) (hok l') hne _ _ (hv _ _) (hu _ _), if_neg]`. Expand and normalize the polynomial expressions, which then agree.
+
+Introduce `h`. Rewrite `h` using `[Sigma.mk.inj_iff]`. Conclude with `hll h.1`. Set `e : I ≃ Fin (Fintype.card I)` to `Fintype.equivFin I`. Use `⟨Fintype.card I, fun i => Xf (e.symm i), fun i => Yf (e.symm i), fun i => hX _, fun i => hY _, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `i j`. Rewrite using `[hXY]`. Simplify using `only [e.symm.injective.eq_iff]`. Establish `hc : Fintype.card I = ∑ l ∈ levels G, nLv p (r` using `r) G D l := by`. Rewrite using `[Fintype.card_sigma]`.
+
+Simplify using `only [Fintype.card_fin]`. Conclude with `Finset.sum_coe_sort (levels G) (nLv p (r := r) G D)`. Rewrite using `[hc, ← Finset.sum_add_distrib]`. Use `Finset.sum_le_sum fun l _ => ?_` and prove the remaining obligations. Unfold `badLvl bad nLv`.
+
+Conclude with `le_add_tsub`.
+-/
 theorem blkZ_gen (hB : G.BlockOK) (hr : 1 ≤ r) (U Mx : ℕ)
     (hLL : ∀ x ∈ G.PSZ p (r := r), ((p : ℚ_[p]) ^ U) • x ∈ G.SSZ p (r := r))
     (hM : ∀ l ∈ levels G, padicValNat p (lvC (r := r) G l.1 l.2 * degFact G l.1 l.2) ≤ Mx) (D : ℤ) :

@@ -29,6 +29,9 @@ structure PreChar : Prop where
   chain : R.IsChain
   thP : R.IsThP
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.lev, h.grp.red_R, h.grp.red_L, h.grp.record, h.fam, h.models, h.chain, h.thP⟩`.
+-/
 theorem PreChar.of_char {F : Face D A} (h : R.Char F) : PreChar R :=
   ⟨h.lev, h.grp.red_R, h.grp.red_L, h.grp.record, h.fam, h.models, h.chain, h.thP⟩
 

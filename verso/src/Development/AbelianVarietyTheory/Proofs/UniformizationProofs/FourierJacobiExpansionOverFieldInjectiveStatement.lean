@@ -11,5 +11,8 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.UU
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.UU.ExpFUniq.main | exact GlobalTheory.UU.ExpFUniq.main | (intros; apply GlobalTheory.UU.ExpFUniq.main <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.fourierJacobiExpansion_overField_injective : (AllPre fun {V} _ _ _ {_} {_} {_} _ _ U => ∀ (F : Type) [Field F] [Algebra (FractionRing V) F] (k : ℕ) t t' s s', U.ExpF F k t s → U.ExpF F k t' s' → (t = t' ↔ s = s')) := by
   first | exact @GlobalTheory.UU.ExpFUniq.main | exact GlobalTheory.UU.ExpFUniq.main | (intros; apply GlobalTheory.UU.ExpFUniq.main <;> assumption)

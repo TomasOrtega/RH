@@ -4,6 +4,25 @@ namespace GlobalTheory
 
 open Polynomial
 
+/- English proof (translation)
+Introduce `p _ E _ _ ι`. Use `haveI : CharZero E := ι.charZero`. Rewrite using `[Metric.denseRange_iff]`. Introduce `z δ δpos`. Take `⟨a, ha⟩` from `Metric.denseRange_iff.1 (UniformSpace.Completion.denseRange_coe (α := PadicAlgCl p)) z (δ / 2) (by positivity)`.
+
+Establish `hint : IsIntegral ℚ_[p] a` using `(Algebra.IsAlgebraic.isAlgebraic a).isIntegral`. Use `set f : ℚ_[p][X] := minpoly ℚ_[p] a with hf`. Establish `fmon : f.Monic` using `minpoly.monic hint`. Establish `fnatdeg0 : f.natDegree ≠ 0` using `(minpoly.natDegree_pos hint).ne'`. Establish `fa0 : f.aeval a = 0` using `minpoly.aeval _ _`.
+
+Establish `hi : DenseRange (algebraMap ℚ ℚ_[p])` using `Padic.denseRange_ratCast p`. Establish `hε : ((δ / 2) / (max ‖a‖ 1)) ^ f.natDegree / (f.natDegree + 1) > 0` using `by positivity`. Take `⟨g, gmon, gdeg, gcoeff⟩` from `exists_monic_and_natDegree_eq_and_norm_map_algebraMap_coeff_sub_lt hi fmon hε`. Take `⟨b, hb, hab⟩` from `exists_aroots_norm_sub_lt_of_norm_coeff_sub_lt hε fa0 fmon (gmon.map _) (gdeg ▸ (g.natDegree_map _)) gcoeff (IsAlgClosed.splits _)`. Establish `hab : ‖a - b‖ < δ / 2`.
+
+Rewrite `hab` using `[← Real.rpow_natCast, ← mul_comm_div, div_self, one_mul, ← Real.rpow_mul (div_pos (half_pos δpos) (by positivity)).le, mul_inv_cancel₀]`. Simplify `hab` using `[mul_assoc, div_mul_cancel₀ _ (by positivity : (max ‖a‖ 1) > 0).ne']`. Simplify using `[fnatdeg0]`. Check the signs of the components of the expression. Set `c : PadicAlgCl p →+* ℂ_[p]` to `UniformSpace.Completion.coeRingHom`.
+
+Establish `hb' : b ∈ (g.map (algebraMap ℚ (PadicAlgCl p))).roots`. Establish `e : (g.map (algebraMap ℚ ℚ_[p])).map (algebraMap ℚ_[p] (PadicAlgCl p)) = g.map (algebraMap ℚ (PadicAlgCl p))`. Rewrite using `[Polynomial.map_map, ← IsScalarTower.algebraMap_eq]`. Rewrite `hb` using `[Polynomial.aroots_def, e]`. Then use the resulting hypothesis. Establish `gne : g.map (algebraMap ℚ (PadicAlgCl p)) ≠ 0` using `(gmon.map _).ne_zero`.
+
+Establish `hroot : IsRoot (g.map (algebraMap ℚ (PadicAlgCl p))) b` using `(mem_roots gne).1 hb'`. Establish `he : (g.map (algebraMap ℚ E)).map ι = g.map (c.comp (algebraMap ℚ (PadicAlgCl p)))`. Rewrite using `[Polynomial.map_map]`. Use `congr 1`. Conclude with `Subsingleton.elim _ _`.
+
+Establish `hne : (g.map (algebraMap ℚ E)).map ι ≠ 0` using `((gmon.map _).map _).ne_zero`. Establish `hcb : c b ∈ ((g.map (algebraMap ℚ E)).map ι).roots`. Rewrite using `[mem_roots hne, he, ← Polynomial.map_map, IsRoot, eval_map, eval₂_hom, hroot.eq_zero, map_zero]`. Rewrite `hcb` using `[Splits.roots_map (IsAlgClosed.splits _), Multiset.mem_map]`. Take `⟨e, -, hec⟩` from `hcb`.
+
+Use `⟨e, ?_⟩` and prove the remaining obligations. Rewrite using `[hec]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[UniformSpace.Completion.dist_eq, dist_eq_norm]`. Conclude with `hab`.
+
+Use `_ = δ := add_halves δ`.
+-/
 theorem denseRange_of_isAlgClosed_padicComplex :
     ∀ (p : ℕ) [Fact p.Prime] (E : Type) [Field E] [IsAlgClosed E] (ι : E →+* ℂ_[p]), DenseRange ι := by
   intro p _ E _ _ ι

@@ -13,6 +13,9 @@ namespace GlobalTheory.FixedCx
 
 open Cardinal
 
+/- English proof (translation)
+Establish `h1 : #S ≤ #(Algebra.EssFiniteType.subalgebra R S)` using `IsLocalization.cardinalMk_le (Algebra.EssFiniteType.submonoid R S)`. Establish `h2` using `Algebra.cardinalMk_adjoin_le R ((Algebra.EssFiniteType.finset R S : Finset S) : Set S)`. Establish `h3 : #(((Algebra.EssFiniteType.finset R S : Finset S) : Set S)) ≤ ℵ₀` using `(Cardinal.lt_aleph0_of_finite _).le`. Use `h1.trans (h2.trans ?_)` and prove the remaining obligations. Conclude with `max_le (max_le (le_max_left _ _) (h3.trans (le_max_right _ _))) (le_max_right _ _)`.
+-/
 theorem mk_le_of_essFiniteType {R S : Type} [CommRing R] [CommRing S] [Algebra R S] [Algebra.EssFiniteType R S] :
     #S ≤ max #R ℵ₀ := by
   have h1 : #S ≤ #(Algebra.EssFiniteType.subalgebra R S) :=
@@ -23,6 +26,13 @@ theorem mk_le_of_essFiniteType {R S : Type} [CommRing R] [CommRing S] [Algebra R
   refine h1.trans (h2.trans ?_)
   exact max_le (max_le (le_max_left _ _) (h3.trans (le_max_right _ _))) (le_max_right _ _)
 
+/- English proof (translation)
+Establish `hP1 : #(MvPolynomial ℝ K) ≤ 𝔠` using `MvPolynomial.cardinalMk_le_max.trans (max_le (max_le h (Cardinal.mk_real).le) Cardinal.aleph0_le_continuum)`. Establish `hP2 : 𝔠 ≤ #(MvPolynomial ℝ K)`. Rewrite using `[← Cardinal.mk_real]`. Conclude with `Cardinal.mk_le_of_injective (MvPolynomial.X_injective (σ := ℝ) (R := K))`. Establish `hF : #(FractionRing (MvPolynomial ℝ K)) = 𝔠` using `(FractionRing.cardinalMk (MvPolynomial ℝ K)).trans (le_antisymm hP1 hP2)`.
+
+Use `haveI : CharZero (FractionRing (MvPolynomial ℝ K)) := charZero_of_injective_ringHom (f := (algebraMap (MvPolynomial ℝ K) (FractionRing (MvPolynomial ℝ K))).comp MvPolynomial.C) ((IsFractionRing.injective (MvPolynomial ℝ K) (FractionRing (MvPolynomial ℝ K))).comp (MvPolynomial.C_i …`. Use `haveI : CharZero (AlgebraicClosure (FractionRing (MvPolynomial ℝ K))) := charZero_of_injective_ringHom (algebraMap (FractionRing (MvPolynomial ℝ K)) (AlgebraicClosure (FractionRing (MvPolynomial ℝ K)))).injective`. Establish `hΩ1 : #(AlgebraicClosure (FractionRing (MvPolynomial ℝ K))) ≤ 𝔠` using `(Algebra.IsAlgebraic.cardinalMk_le_max (FractionRing (MvPolynomial ℝ K)) (AlgebraicClosure (FractionRing (MvPolynomial ℝ K)))).trans (max_le hF.le Cardinal.aleph0_le_continuum)`. Establish `hΩ2 : 𝔠 ≤ #(AlgebraicClosure (FractionRing (MvPolynomial ℝ K)))` using `hF ▸ Cardinal.mk_le_of_injective (algebraMap (FractionRing (MvPolynomial ℝ K)) (AlgebraicClosure (FractionRing (MvPolynomial ℝ K)))).injective`. Establish `hΩ : #(AlgebraicClosure (FractionRing (MvPolynomial ℝ K))) = #ℂ` using `(le_antisymm hΩ1 hΩ2).trans Cardinal.mk_complex.symm`.
+
+Take `⟨e⟩` from `IsAlgClosed.ringEquiv_of_equiv_of_charZero (K := AlgebraicClosure (FractionRing (MvPolynomial ℝ K))) (L := ℂ) (by rw [hΩ, Cardinal.mk_complex]; exact Cardinal.aleph0_lt_continuum) (Cardinal.eq.1 hΩ)`. Conclude with `⟨e.toRingHom.comp ((algebraMap (FractionRing (MvPolynomial ℝ K)) (AlgebraicClosure (FractionRing (MvPolynomial ℝ K)))).comp ((algebraMap (MvPolynomial ℝ K) (FractionRing (MvPolynomial ℝ K))).comp MvPolynomial.C))⟩`.
+-/
 theorem nonempty_ringHom_complex (K : Type) [Field K] [CharZero K] (h : #K ≤ 𝔠) : Nonempty (K →+* ℂ) := by
   have hP1 : #(MvPolynomial ℝ K) ≤ 𝔠 := MvPolynomial.cardinalMk_le_max.trans
     (max_le (max_le h (Cardinal.mk_real).le) Cardinal.aleph0_le_continuum)
@@ -42,6 +52,13 @@ theorem nonempty_ringHom_complex (K : Type) [Field K] [CharZero K] (h : #K ≤ �
     (by rw [hΩ, Cardinal.mk_complex]; exact Cardinal.aleph0_lt_continuum) (Cardinal.eq.1 hΩ)
   exact ⟨e.toRingHom.comp ((algebraMap (FractionRing (MvPolynomial ℝ K)) (AlgebraicClosure (FractionRing (MvPolynomial ℝ K)))).comp ((algebraMap (MvPolynomial ℝ K) (FractionRing (MvPolynomial ℝ K))).comp MvPolynomial.C))⟩
 
+/- English proof (translation)
+Take `⟨⟨p, α⟩, rfl⟩` from `(Scheme.SpecToEquivOfField L X).symm.surjective a`. Take `⟨⟨q, β⟩, rfl⟩` from `(Scheme.SpecToEquivOfField L X).symm.surjective b`. Simplify using `only [Scheme.SpecToEquivOfField_symm_apply] at h ⊢`. Rewrite `h` using `[← Category.assoc, ← Category.assoc, ← Spec.map_comp, ← Spec.map_comp]`. Take `⟨e, he⟩` from `GlobalTheory.SS.residue_embedding_unique _ _ h`.
+
+Substitute `e` using the available equality. Simplify using `only [Scheme.residueFieldCongr_refl, Iso.refl_hom, Category.id_comp] at he`. Establish `: α = β`. Use extensionality with `c`. Conclude with `φ.injective (congrArg (fun g => g.hom c) he)`.
+
+Rewrite using `[this]`.
+-/
 theorem cancel_spec_field {K L : Type} [Field K] [Field L] (φ : L →+* K) {X : Scheme.{0}} (a b : Sp L ⟶ X)
     (h : spMap φ ≫ a = spMap φ ≫ b) : a = b := by
   obtain ⟨⟨p, α⟩, rfl⟩ := (Scheme.SpecToEquivOfField L X).symm.surjective a
@@ -60,6 +77,15 @@ end GlobalTheory.FixedCx
 
 open GlobalTheory.FixedCx Cardinal in
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo k _ x ρ hx`. Take `⟨⟨p, φ⟩, rfl⟩` from `(Scheme.SpecToEquivOfField k Xo.X).symm.surjective x`. Simplify using `only [Scheme.SpecToEquivOfField_symm_apply] at hx`. Establish `hι : Xo.X.fromSpecResidueField p ≫ ρ = Xo.X.fromSpecResidueField p` using `cancel_spec_field φ.hom _ _ (by rw [Category.assoc] at hx; exact hx)`. Use `haveI := Xo.smooth`.
+
+Use `haveI := SmoothOfRelativeDimension.smooth Dw.dim Xo.s`. Take `⟨ψ, hψ⟩` from `Spec.map_surjective (Xo.X.fromSpecResidueField p ≫ Xo.s)`. Establish `hess` using `GlobalTheory.SS.essFiniteType_residueField_of_locallyOfFiniteType Xo.s p ψ hψ`. Use `letI : Algebra (KA l) (Xo.X.residueField p) := ψ.hom.toAlgebra`. Use `haveI : Algebra.EssFiniteType (KA l) (Xo.X.residueField p) := hess`.
+
+Use `haveI : CharZero (KA l) := charZero_of_injective_ringHom (algebraMap ℚ (KA l)).injective`. Use `haveI : CharZero (Xo.X.residueField p) := charZero_of_injective_ringHom ψ.hom.injective`. Establish `hK : #(KA l) ≤ 𝔠` using `(Cardinal.mk_subtype_le _).trans Cardinal.mk_complex.le`. Establish `hc : #(Xo.X.residueField p) ≤ 𝔠` using `mk_le_of_essFiniteType.trans (max_le hK Cardinal.aleph0_le_continuum)`. Take `⟨j⟩` from `nonempty_ringHom_complex (Xo.X.residueField p) hc`.
+
+Conclude with `⟨Spec.map (CommRingCat.ofHom j) ≫ Xo.X.fromSpecResidueField p, by rw [Category.assoc, hι]⟩`.
+-/
 theorem GlobalTheory.FixedCx.exists_fixed_complex_point : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (k : Type) [Field k] (x : Sp k ⟶ Xo.X) (ρ : Xo.X ⟶ Xo.X), x ≫ ρ = x → ∃ x' : Sp ℂ ⟶ Xo.X, x' ≫ ρ = x' := by
   intro E _ _ _ H Dw l Xo k _ x ρ hx
   obtain ⟨⟨p, φ⟩, rfl⟩ := (Scheme.SpecToEquivOfField k Xo.X).symm.surjective x

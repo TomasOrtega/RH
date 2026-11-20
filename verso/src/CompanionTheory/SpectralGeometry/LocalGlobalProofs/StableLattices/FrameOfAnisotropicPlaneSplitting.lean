@@ -12,13 +12,22 @@ section Steps
 variable {L : Type} [NontriviallyNormedField L] {V : Type} [AddCommGroup V] [Module L V]
   {s : L →+* L} {h : V → V → L}
 
+/- English proof (translation)
+Take `⟨_, h2, h3, _⟩` from `hh`. Rewrite using `[h3 y (a • x), h2, map_mul, ← h3 y x]`.
+-/
 theorem herm_smul_left (hh : IsHerm s h) (a : L) (x y : V) : h (a • x) y = s a * h x y := by
   obtain ⟨_, h2, h3, _⟩ := hh
   rw [h3 y (a • x), h2, map_mul, ← h3 y x]
 
+/- English proof (translation)
+Rewrite using `[hh.2.2.1 x y, hxy, map_zero]`.
+-/
 theorem herm_symm_zero (hh : IsHerm s h) {x y : V} (hxy : h x y = 0) : h y x = 0 := by
   rw [hh.2.2.1 x y, hxy, map_zero]
 
+/- English proof (translation)
+Use `hh.2.1 (0 : L) x 0` as an intermediate fact. Simplify using `using this`.
+-/
 theorem herm_right_zero (hh : IsHerm s h) (x : V) : h x 0 = 0 := by
   have := hh.2.1 (0 : L) x 0
   simpa using this
@@ -33,6 +42,31 @@ def orthPair (hh : IsHerm s h) (e f : V) : Submodule L V where
     intro c x hx
     exact ⟨by rw [hh.2.1, hx.1, mul_zero], by rw [hh.2.1, hx.2, mul_zero]⟩
 
+/- English proof (translation)
+Take `⟨a1, a2, a3, a4, a5, a6⟩` from `hfr`. Establish `heU : ∀ x ∈ U, h e x = 0` using `fun x hx => ((hU x).1 hx).1`. Establish `hfU : ∀ x ∈ U, h f x = 0` using `fun x hx => ((hU x).1 hx).2`. Establish `heU' : ∀ x ∈ U, h x e = 0` using `fun x hx => herm_symm_zero hh (heU x hx)`. Establish `hfU' : ∀ x ∈ U, h x f = 0` using `fun x hx => herm_symm_zero hh (hfU x hx)`.
+
+Use `⟨?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i j`. Proceed by induction on `i using Fin.cases with`. Consider the case `zero`. Proceed by induction on `j using Fin.cases with`.
+
+Consider the case `zero => simpa using hee`. Consider the case `succ j => simpa using heU _ (e' j).2`. Consider the case `succ i`. Proceed by induction on `j using Fin.cases with`. Consider the case `zero => simpa using heU' _ (e' i).2`.
+
+Consider the case `succ j => simpa using a1 i j`. Introduce `i j`. Proceed by induction on `i using Fin.cases with`. Consider the case `zero`. Proceed by induction on `j using Fin.cases with`.
+
+Consider the case `zero => simpa using hff`. Consider the case `succ j => simpa using hfU _ (f' j).2`. Consider the case `succ i`. Proceed by induction on `j using Fin.cases with`. Consider the case `zero => simpa using hfU' _ (f' i).2`.
+
+Consider the case `succ j => simpa using a2 i j`. Introduce `i j`. Proceed by induction on `i using Fin.cases with`. Consider the case `zero`. Proceed by induction on `j using Fin.cases with`.
+
+Consider the case `zero => simpa using hef`. Consider the case `succ j`. Simplify `heU _ (f' j).2` using `[Ne.symm (Fin.succ_ne_zero j)]`. Consider the case `succ i`. Proceed by induction on `j using Fin.cases with`.
+
+Consider the case `zero => simpa [Fin.succ_ne_zero i] using hfU' _ (e' i).2`. Consider the case `succ j => simpa using a3 i j`. Introduce `w hw i`. Take `⟨w', hw', rfl⟩` from `Submodule.mem_map.1 hw`. Proceed by induction on `i using Fin.cases with`.
+
+Consider the case `zero => simpa using And.intro (heU _ w'.2) (hfU _ w'.2)`. Consider the case `succ i => simpa using a4 w' hw' i`. Introduce `w hw h0`. Take `⟨w', hw', rfl⟩` from `Submodule.mem_map.1 hw`. Establish `: w' = 0` using `a5 w' hw' h0`.
+
+Simplify using `[this]`. Introduce `x`. Take `⟨a, b, w, hw, rfl⟩` from `hdec x`. Take `⟨a', b', w', hw', hEq⟩` from `a6 ⟨w, hw⟩`. Use `⟨Fin.cons a a', Fin.cons b b', U.subtype w', Submodule.mem_map_of_mem hw', ?_⟩` and prove the remaining obligations.
+
+Establish `hw2 : w = ∑ i, a' i • (e' i : V) + ∑ i, b' i • (f' i : V) + (w' : V)`. Use `congrArg Subtype.val hEq` as an intermediate fact. Simplify using `using this`. Rewrite using `[Fin.sum_univ_succ, Fin.sum_univ_succ]`. Simplify using `only [Fin.cons_zero, Fin.cons_succ, Submodule.subtype_apply]`.
+
+Rewrite using `[hw2]`. Normalize the expressions using the abelian group laws.
+-/
 theorem frame_cons (hh : IsHerm s h) {δ : L} {e f : V} {U : Submodule L V}
     (hU : ∀ x, x ∈ U ↔ h e x = 0 ∧ h f x = 0) (hee : h e e = 0) (hff : h f f = 0) (hef : h e f = δ)
     (hdec : ∀ x, ∃ (a b : L), ∃ w ∈ U, x = a • e + b • f + w) {l : ℕ} {e' f' : Fin l → U}
@@ -97,6 +131,15 @@ theorem frame_cons (hh : IsHerm s h) {δ : L} {e f : V} {U : Submodule L V}
     rw [hw2]
     abel
 
+/- English proof (translation)
+Introduce `a b w hw`. Take `⟨w', hw', rfl⟩` from `Submodule.mem_map.1 hw`. Establish `hc` using `had (fun i => a i.succ) (fun i => b i.succ) w' hw'`. Take `⟨w0, hw0⟩ : ∃ w0 : U, w0 = ∑ i, a i.succ • e' i + ∑ i, b i.succ • f' i + w'` from `⟨_, rfl⟩`. Rewrite `hc` using `[← hw0]`.
+
+Establish `hval : (w0 : V) = ∑ i, a i.succ • (e' i : V) + ∑ i, b i.succ • (f' i : V) + (w' : V)`. Rewrite using `[hw0]`. Simplify using the standard rewrite rules. Establish `hrw : ∑ i, a i • (Fin.cons e (fun i => (e' i : V)) : Fin (l + 1) → V) i + ∑ i, b i • (Fin.cons f (fun i => (f' i : V)) : Fin (l + 1) → V) i + U.subtype w' = a 0 • e + b 0 • f + (w0 : V)`. Rewrite using `[Fin.sum_univ_succ, Fin.sum_univ_succ, hval]`.
+
+Simplify using `only [Fin.cons_zero, Fin.cons_succ, Submodule.subtype_apply]`. Normalize the expressions using the abelian group laws. Establish `hc' : (w0 : V) ∈ Λ ↔ (∀ i, ‖a i.succ‖ ≤ ‖u' i‖) ∧ (∀ i, ‖b i.succ‖ ≤ ‖u' i‖⁻¹) ∧ ‖h w' w'‖ ≤ 1` using `hc`. Rewrite using `[hrw, hsp _ _ _ w0.2, hc']`. Simplify using `only [Fin.forall_fin_succ, Fin.cons_zero, Fin.cons_succ, Submodule.subtype_apply]`.
+
+The claim follows by propositional logic.
+-/
 theorem adapted_cons {U : Submodule L V} {e f : V} {l : ℕ} {e' f' : Fin l → U} {W' : Submodule L U}
     {u0 : L} {u' : Fin l → L} {Λ : AddSubgroup V}
     (hsp : ∀ (a b : L), ∀ w ∈ U, (a • e + b • f + w ∈ Λ ↔ ‖a‖ ≤ ‖u0‖ ∧ ‖b‖ ≤ ‖u0‖⁻¹ ∧ w ∈ Λ))
@@ -126,6 +169,31 @@ theorem adapted_cons {U : Submodule L V} {e f : V} {l : ℕ} {e' f' : Fin l → 
 
 end Steps
 
+/- English proof (translation)
+Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Introduce `V _ _ _ h hn hh Λ Λ' hΛ hΛ'`. Distinguish the cases in `hiso : ∃ x, x ≠ 0 ∧ h x x = 0`. Take `⟨e, f, u, hu, hee, hff, hef, he, hf, hue, hvf⟩` from `hP L s hs δ hδ V h hh hiso Λ Λ' hΛ hΛ'`.
+
+Establish `hUm : ∀ x, x ∈ orthPair hh e f ↔ h e x = 0 ∧ h f x = 0` using `fun x => Iff.rfl`. Take `⟨hUh, hdec, hUtop, hmax⟩` from `hS L s hs δ hδ V h hh e f (orthPair hh e f) hee hff hef hUm`. Establish `hsu : s u ≠ 0` using `(map_ne_zero s).2 hu`. Establish `hee' : h (u • e) (u • e) = 0`. Rewrite using `[herm_smul_left hh, hh.2.1, hee, mul_zero, mul_zero]`.
+
+Establish `hff' : h ((s u)⁻¹ • f) ((s u)⁻¹ • f) = 0`. Rewrite using `[herm_smul_left hh, hh.2.1, hff, mul_zero, mul_zero]`. Establish `hef' : h (u • e) ((s u)⁻¹ • f) = δ`. Rewrite using `[herm_smul_left hh, hh.2.1, hef, ← mul_assoc, mul_inv_cancel₀ hsu, one_mul]`. Establish `hUm' : ∀ x, x ∈ orthPair hh e f ↔ h (u • e) x = 0 ∧ h ((s u)⁻¹ • f) x = 0`.
+
+Introduce `x`. Rewrite using `[hUm, herm_smul_left hh, herm_smul_left hh]`. Establish `hsi' : s ((s u)⁻¹) ≠ 0` using `(map_ne_zero s).2 (inv_ne_zero hsu)`. Simplify using `[hsu, hsi']`. Take `⟨-, -, -, hmax'⟩` from `hS L s hs δ hδ V h hh (u • e) ((s u)⁻¹ • f) (orthPair hh e f) hee' hff' hef' hUm'`.
+
+Take `⟨m1, p1⟩` from `hmax Λ hΛ he hf`. Take `⟨m2, p2⟩` from `hmax' Λ' hΛ' hue hvf`. Establish `hlt : Module.finrank L (orthPair hh e f) < n` using `hn ▸ Submodule.finrank_lt hUtop`. Take `⟨l, e', f', W', u', hu', hfr, ad1, ad2⟩` from `ih _ hlt (orthPair hh e f) (fun x y => h x y) rfl hUh _ _ m1 m2`. Establish `hsp1 : ∀ (a b : L), ∀ w ∈ orthPair hh e f, (a • e + b • f + w ∈ Λ ↔ ‖a‖ ≤ ‖(1 : L)‖ ∧ ‖b‖ ≤ ‖(1 : L)‖⁻¹ ∧ w ∈ Λ)`.
+
+Introduce `a b w hw`. Simplify using `only [norm_one, inv_one]`. Conclude with `p1 a b w hw`. Establish `hpos : 0 < ‖u‖` using `norm_pos_iff.2 hu`. Establish `hsp2 : ∀ (a b : L), ∀ w ∈ orthPair hh e f, (a • e + b • f + w ∈ Λ' ↔ ‖a‖ ≤ ‖u‖ ∧ ‖b‖ ≤ ‖u‖⁻¹ ∧ w ∈ Λ')`.
+
+Introduce `a b w hw`. Establish `key` using `p2 (a * u⁻¹) (b * s u) w hw`. Establish `e1 : (a * u⁻¹) • (u • e) + (b * s u) • ((s u)⁻¹ • f) + w = a • e + b • f + w`. Rewrite using `[smul_smul, smul_smul, mul_assoc, mul_assoc, inv_mul_cancel₀ hu, mul_inv_cancel₀ hsu, mul_one, mul_one]`. Rewrite `key` using `[e1]`.
+
+Rewrite using `[key, norm_mul, norm_mul, norm_inv, hs.2.1 u, ← div_eq_mul_inv, div_le_one hpos, ← one_div, le_div_iff₀ hpos]`. Establish `h1 : (fun _ : Fin (l + 1) => (1 : L)) = Fin.cons 1 (fun _ : Fin l => (1 : L))`. Use function extensionality and compare the values at `i`. Proceed by induction on `i using Fin.cases with`. Consider the case `zero => rfl`.
+
+Consider the case `succ i => rfl`. Use `⟨l + 1, Fin.cons e fun i => (e' i : V), Fin.cons f fun i => (f' i : V), W'.map (orthPair hh e f).subtype, Fin.cons u u', ?_, frame_cons hh hUm hee hff hef hdec hfr, ?_, adapted_cons hsp2 ad2⟩` and prove the remaining obligations. Introduce `i`. Proceed by induction on `i using Fin.cases with`. Consider the case `zero => simpa using hu`.
+
+Consider the case `succ i => simpa using hu' i`. Rewrite using `[h1]`. Conclude with `adapted_cons hsp1 ad1`. Establish `hiso' : ∀ x, h x x = 0 → x = 0`. Introduce `x hx`.
+
+Assume the negation of the conclusion as `hne`. Conclude with `hiso ⟨x, hne, hx⟩`. Establish `hm : ∀ M : AddSubgroup V, IsMax h M → ∀ x, x ∈ M ↔ ‖h x x‖ ≤ 1` using `fun M hM => hA L s hs δ hδ V h hh hiso' M hM`. Use `⟨0, Fin.elim0, Fin.elim0, ⊤, Fin.elim0, fun i => i.elim0, ⟨fun i => i.elim0, fun i => i.elim0, fun i => i.elim0, fun _ _ i => i.elim0, fun w _ hw => hiso' w hw, fun x => ⟨Fin.elim0, Fin.elim0, x, trivial, by simp⟩⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce `a b w _`.
+
+Simplify using `[hm Λ hΛ]`. Introduce `a b w _`. Simplify using `[hm Λ' hΛ']`.
+-/
 theorem exists_adapted_frame_with_unit_scaling (hA : StAniso) (hP : StPlane) (hS : StSplit)
     (L : Type) [NontriviallyNormedField L] [IsUltrametricDist L] [ProperSpace L] [CharZero L]
     (s : L →+* L) (hs : IsInv s) (δ : L) (hδ : IsDelta s δ) (n : ℕ) :
@@ -204,6 +272,9 @@ theorem exists_adapted_frame_with_unit_scaling (hA : StAniso) (hP : StPlane) (hS
     · intro a b w _
       simp [hm Λ' hΛ']
 
+/- English proof (translation)
+Introduce `hA hP hS L _ _ _ _ s hs δ hδ V _ _ _ h hh`. Conclude with `exists_adapted_frame_with_unit_scaling hA hP hS L s hs δ hδ _ V h rfl hh`.
+-/
 theorem stFrame_of : StAniso → StPlane → StSplit → StFrame := by
   intro hA hP hS L _ _ _ _ s hs δ hδ V _ _ _ h hh
   exact exists_adapted_frame_with_unit_scaling hA hP hS L s hs δ hδ _ V h rfl hh

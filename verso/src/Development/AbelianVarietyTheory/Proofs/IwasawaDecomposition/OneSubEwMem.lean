@@ -12,6 +12,9 @@ open GlobalTheory.Mem.SymFrame
 
 variable {D : D7}
 
+/- English proof (translation)
+Unfold `Ranks.r Ranks.rS`. Take `⟨t, ht⟩` from `D.R.m_even`. Use `D.R.two_le_m` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem rank_eq (D : D7) : D.R.r = D.R.k + 2 * D.R.rS + 1 := by
   unfold Ranks.r Ranks.rS
   obtain ⟨t, ht⟩ := D.R.m_even
@@ -25,6 +28,9 @@ def posB (D : D7) (i : Fin D.R.k) : Fin D.R.r := ⟨D.R.rS + i.1, by have := ran
 def posN (D : D7) (a : Fin D.R.rS) : Fin D.R.r :=
   ⟨if a.1 + 1 < D.R.rS then a.1 + 1 else D.R.rS + D.R.k, by have := rank_eq D; split_ifs <;> omega⟩
 
+/- English proof (translation)
+Unfold `symVec GlobalTheory.SeeConjRead.flagV posN nxt`. Distinguish the cases in `h : a.1 + 1 < D.R.rS`. Simplify using `[h]`. Establish `h2 : ¬ (D.R.rS + D.R.k < D.R.rS)` using `by omega`. Simplify using `[h]`.
+-/
 theorem symVec_posN (X : HidaSetting D) (w : HeightOneSpectrum (𝓞 D.host.E)) (a : Fin D.R.rS) :
     symVec X w (posN D a) = nxt X.e0 X.z0 a := by
   unfold symVec GlobalTheory.SeeConjRead.flagV posN nxt
@@ -33,6 +39,9 @@ theorem symVec_posN (X : HidaSetting D) (w : HeightOneSpectrum (𝓞 D.host.E)) 
   · have h2 : ¬ (D.R.rS + D.R.k < D.R.rS) := by omega
     simp [h]
 
+/- English proof (translation)
+Unfold `symVec GlobalTheory.SeeConjRead.flagV posB epsW`. Establish `h1 : ¬ (D.R.rS + i.1 < D.R.rS)` using `by omega`. Establish `h2 : D.R.rS + i.1 < D.R.rS + D.R.k` using `by omega`. Simplify using `[h1, h2, hw]`.
+-/
 theorem symVec_posB (X : HidaSetting D) (w : HeightOneSpectrum (𝓞 D.host.E)) (hw : EwAt X w) (i : Fin D.R.k) :
     symVec X w (posB D i) = X.bw i := by
   unfold symVec GlobalTheory.SeeConjRead.flagV posB epsW
@@ -40,6 +49,11 @@ theorem symVec_posB (X : HidaSetting D) (w : HeightOneSpectrum (𝓞 D.host.E)) 
   have h2 : D.R.rS + i.1 < D.R.rS + D.R.k := by omega
   simp [h1, h2, hw]
 
+/- English proof (translation)
+Establish `h` using `hA_isMatIn X w hN hy i`. Establish `hs : (∑ j, (((N j i).val : ℕ) : X.B.I.E ⊗[X.B.I.F] Formalism.MainNotions.S.Af X.B.I.F) * (hA X.B.I y (u j) - (if j = i₀ then 1 else 0))) ∈ wInt X w`. Use `Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Conclude with `(wInt X w).smul_mem (⟨_, natCast_mem _ (N j i).val⟩ : Formalism.MainNotions.S.IntAf X.B.I.F X.B.I.E) (hd j)`. Establish `e : (∑ j, (((N j i).val : ℕ) : X.B.I.E ⊗[X.B.I.F] Formalism.MainNotions.S.Af X.B.I.F) * (hA X.B.I y (u j) - (if j = i₀ then 1 else 0))) = (∑ j, (((N j i).val : ℕ) : X.B.I.E ⊗[X.B.I.F] Formalism.MainNotions.S.Af X.B.I.F) * hA X.B.I y (u j)) - (((N i₀ i).val : ℕ) : X.B.I.E ⊗[X.B.I. …`.
+
+Simplify using `only [mul_sub, Finset.sum_sub_distrib, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Rewrite `hs` using `[e]`. Use `add_mem h hs` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Normalize the expressions using the abelian group laws.
+-/
 theorem dual_row (X : HidaSetting D) (w : HeightOneSpectrum (𝓞 D.host.E)) {g : ℕ} {u : Fin D.R.r → VA X.B.I}
     {x : X.B.I.Gf} {N : Matrix (Fin D.R.r) (Fin D.R.r) (ZMod g)} (hN : IsMatIn X w u x N)
     {y : VA X.B.I} (hy : y ∈ X.B.I.Lf) (i₀ : Fin D.R.r)
@@ -63,6 +77,9 @@ theorem dual_row (X : HidaSetting D) (w : HeightOneSpectrum (𝓞 D.host.E)) {g 
   convert this using 1
   abel
 
+/- English proof (translation)
+Use `Submodule.subset_span ⟨(D.host.g k : 𝓞 X.B.I.E), ⟨_, hg, ?_⟩, ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+-/
 theorem natCast_g_mem (X : HidaSetting D) {w : HeightOneSpectrum (𝓞 D.host.E)} (k : Fin 2)
     (hg : ((D.host.g k : ℕ) : 𝓞 D.host.E) ∈ w.asIdeal) :
     ((D.host.g k : ℕ) : X.B.I.E ⊗[X.B.I.F] Formalism.MainNotions.S.Af X.B.I.F) ∈ wInt X w := by
@@ -70,6 +87,11 @@ theorem natCast_g_mem (X : HidaSetting D) {w : HeightOneSpectrum (𝓞 D.host.E)
   · simp
   · simp
 
+/- English proof (translation)
+Establish `hz : X.z0 ∈ X.B.I.Lf` using `X.vectorsInLattice.2.1`. Establish `h1` using `hA_mem_wInt X w hz (hw X.z0 hz)`. Rewrite `h1` using `[hA_smul_right']`. Establish `h2` using `wInt_of_zmod X k hg X.formsAtZero.1`. Establish `hint : 1 - X.ew ∈ Formalism.MainNotions.S.IntAf X.B.I.F X.B.I.E` using `sub_mem (one_mem _) X.ew_int`.
+
+Establish `h3 : (1 - X.ew) * (hA X.B.I X.z0 X.z0 + 1) ∈ wInt X w` using `(wInt X w).smul_mem (⟨_, hint⟩ : Formalism.MainNotions.S.IntAf X.B.I.F X.B.I.E) h2`. Use `sub_mem h3 h1` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem one_sub_ew_mem (X : HidaSetting D) {w : HeightOneSpectrum (𝓞 D.host.E)} (k : Fin 2)
     (hg : ((D.host.g k : ℕ) : 𝓞 D.host.E) ∈ w.asIdeal) (hw : EwAt X w) : 1 - X.ew ∈ wInt X w := by
   have hz : X.z0 ∈ X.B.I.Lf := X.vectorsInLattice.2.1

@@ -16,6 +16,13 @@ section Line
 
 variable {G Qp LL R : Type} [Group G] [Field Qp] [Field LL] [Algebra Qp LL] [CommRing R] [Algebra Qp R]
 
+/- English proof (translation)
+Take `⟨y, hy⟩` from `h`. Take `⟨φ, hφ⟩` from `Module.Projective.exists_dual_eq_one Qp hv`. Set `m : LL ⊗[Qp] R →ₗ[Qp] R` to `(TensorProduct.lid Qp R).toLinearMap ∘ₗ φ.rTensor R`. Establish `hm : ∀ y, m (AlgebraTensorModule.map (LinearMap.id : LL →ₗ[LL] LL) S.subtype y) ∈ S`. Introduce `y`.
+
+Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v c => simpa [m] using S.smul_mem (φ v) c.2`. Consider the case `add a b ha hb => simpa only [map_add] using Submodule.add_mem _ ha hb`. Use `hm y` as an intermediate fact.
+
+Rewrite `this` using `[hy]`. Simplify `this` using `[m, hφ]`.
+-/
 theorem mem_of_tmul_mem (S : Submodule Qp R) {v : LL} (hv : v ≠ 0) {r : R}
     (h : v ⊗ₜ[Qp] r ∈ LinearMap.range
       (AlgebraTensorModule.map (LinearMap.id : LL →ₗ[LL] LL) S.subtype)) : r ∈ S := by
@@ -32,11 +39,29 @@ theorem mem_of_tmul_mem (S : Submodule Qp R) {v : LL} (hv : v ≠ 0) {r : R}
   rw [hy] at this
   simpa [m, hφ] using this
 
+/- English proof (translation)
+The claim follows from `finrank_span_singleton fun h => hr (mem_of_tmul_mem (LL := LL) (⊥ : Submodule Qp R) one_ne_zero (by rw [h]; exact zero_mem _))`.
+-/
 theorem finrank_line {r : R} (hr : r ≠ 0) :
     finrank LL ↥(Submodule.span LL {(1 : LL) ⊗ₜ[Qp] r}) = 1 :=
   finrank_span_singleton fun h => hr (mem_of_tmul_mem (LL := LL) (⊥ : Submodule Qp R) one_ne_zero
     (by rw [h]; exact zero_mem _))
 
+/- English proof (translation)
+Establish `ht : ∀ g (v : LL) (r : R), AlgebraTensorModule.map (charRep θ g) (act g) (v ⊗ₜ[Qp] r) = v ⊗ₜ[Qp] (c g • act g r)`. Introduce `g v r`. Rewrite using `[AlgebraTensorModule.map_tmul, ← smul_tmul]`. Use `congr 1`. Express the relevant statement in the definitionally equal form `(θ g : LL) • v = _`.
+
+Rewrite using `[hθ, algebraMap_smul]`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Set `b` to `Module.Basis.ofVectorSpace Qp LL`. Set `e` to `TensorProduct.equivFinsuppOfBasisLeft (N := R) b`.
+
+Establish `he : ∀ g y i, e (AlgebraTensorModule.map (charRep θ g) (act g) y) i = c g • act g (e y i)`. Introduce `g y i`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v r`.
+
+Rewrite using `[ht]`. Simplify using `only [e, equivFinsuppOfBasisLeft_apply_tmul_apply, map_smul]`. Rewrite using `[smul_comm]`. Consider the case `add a b ha hb => simp only [map_add, Finsupp.add_apply, ha, hb, smul_add]`. Establish `hx' : x = (e x).sum fun i c => b i ⊗ₜ[Qp] c`.
+
+Rewrite using `[← TensorProduct.equivFinsuppOfBasisLeft_symm_apply]`. Conclude with `(e.symm_apply_apply x).symm`. Rewrite using `[hx']`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Take `⟨z, hz⟩ : ∃ z, e x i = z * u` from `⟨e x i * ↑hu.unit⁻¹, by simp [mul_assoc]⟩`.
+
+Take `⟨q, rfl⟩` from `hinv z fun g => hu.mul_right_cancel (by`. Establish `h` using `he g x i`. Rewrite `h` using `[hx, hz, hmul, ← mul_smul_comm, hc]`. Conclude with `h.symm)`. Use `Submodule.mem_span_singleton.2 ⟨q • b i, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hz, ← Algebra.smul_def, smul_tmul', smul_eq_mul, mul_one, smul_tmul]`. Introduce `hx g`. Take `⟨v, rfl⟩` from `Submodule.mem_span_singleton.1 hx`. Rewrite using `[map_smul, ht, hc]`.
+-/
 theorem fixed_iff (act : G → R →ₗ[Qp] R) (hmul : ∀ g x y, act g (x * y) = act g x * act g y)
     (hinv : ∀ b, (∀ g, act g b = b) → ∃ q : Qp, algebraMap Qp R q = b) {u : R} (hu : IsUnit u)
     (c : G → Qp) (hc : ∀ g, c g • act g u = u) (θ : G →* LLˣ)
@@ -91,11 +116,23 @@ variable {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field 
     [IsScalarTower K₀ K BdR] [IsScalarTower Qp K₀ BdR]
     (PD : PeriodData G Qp K₀ K B BdR) {LL : Type} [Field LL] [Algebra Qp LL]
 
+/- English proof (translation)
+Rewrite using `[map_pow, PD.t_act, smul_pow, smul_smul, ← Units.val_pow_eq_pow_val, ← Units.val_mul, ← mul_pow]`. Simplify using the standard rewrite rules.
+-/
 theorem act_t_pow (a : ℕ) (g : G) :
     (((PD.χ g)⁻¹ ^ a : Qpˣ) : Qp) • PD.actB g (PD.t ^ a) = PD.t ^ a := by
   rw [map_pow, PD.t_act, smul_pow, smul_smul, ← Units.val_pow_eq_pow_val, ← Units.val_mul, ← mul_pow]
   simp
 
+/- English proof (translation)
+Take `⟨s, hs, e⟩` from `hs`. Establish `h1 : ∀ a : ℕ, PD.ι (PD.t ^ a) ∈ PD.Fil a`. Introduce `a`. Proceed by induction on `a with`. Consider the case `zero => simpa using PD.one_mem`.
+
+Consider the case `succ a ih`. Rewrite using `[pow_succ, map_mul, Nat.cast_succ]`. Conclude with `PD.Fil_mul _ _ _ _ ih PD.mem_filtration_one`. Establish `h2 : ∀ a : ℕ, PD.ι (PD.t ^ a) ∉ PD.Fil (a + 1)`. Introduce `a`.
+
+Proceed by induction on `a with`. Consider the case `zero => simpa using GlobalTheory.Survey.SlowDecayFunctions.one_notMem PD`. Consider the case `succ a ih`. Introduce `h`. Use `PD.Fil_mul _ _ _ _ h hs` as an intermediate fact.
+
+Rewrite `this` using `[pow_succ, map_mul, mul_assoc, e, mul_one, show ((a + 1 : ℕ) : ℤ) + 1 + -1 = a + 1 by push_cast; ring]`. Conclude with `ih this`. Use `⟨fun h => ?_, fun h => GlobalTheory.Survey.SlowDecayFunctions.fil_antitone PD h (h1 a)⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hb`. Conclude with `h2 a (GlobalTheory.Survey.SlowDecayFunctions.fil_antitone PD (by omega) h)`.
+-/
 theorem t_pow_mem_iff (hs : ∃ s ∈ PD.Fil (-1), PD.ι PD.t * s = 1) (a : ℕ) (b : ℤ) :
     PD.ι (PD.t ^ a) ∈ PD.Fil b ↔ b ≤ a := by
   obtain ⟨s, hs, e⟩ := hs
@@ -124,12 +161,22 @@ variable (hK : Function.Surjective (algebraMap Qp K)) (a : ℕ) (θ : G →* LL�
   (hθ : ∀ g, (θ g : LL) = algebraMap Qp LL (((PD.χ g)⁻¹ ^ a : Qpˣ) : Qp))
 
 include hK in
+/- English proof (translation)
+Introduce `x` and use `by obtain ⟨q, hq⟩ := hK (algebraMap K₀ K x) exact ⟨q, (algebraMap K₀ K).injective (by rw [← hq, ← IsScalarTower.algebraMap_apply])⟩`.
+-/
 theorem surj_K₀ : Function.Surjective (algebraMap Qp K₀) := fun x => by
   obtain ⟨q, hq⟩ := hK (algebraMap K₀ K x)
   exact ⟨q, (algebraMap K₀ K).injective (by rw [← hq, ← IsScalarTower.algebraMap_apply])⟩
 
 include hK hθ
 
+/- English proof (translation)
+Establish `h0` using `surj_K₀ (K₀ := K₀) hK`. Establish `hD : Dcris PD (charRep θ) = Submodule.span LL {(1 : LL) ⊗ₜ[Qp] (PD.t ^ a)}`. Use extensionality with `x`. Simplify using `only [Dcris, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, sub_eq_zero]`. Use `fixed_iff (fun g => (PD.actB g).toAlgHom.toLinearMap.restrictScalars Qp) (fun g x y => map_mul (PD.actB g) x y) (fun b hb => ?_) (PD.t_unit.pow a) _ (act_t_pow PD a) θ hθ x` and prove the remaining obligations.
+
+Take `⟨c, rfl⟩` from `PD.invB b hb`. Take `⟨q, rfl⟩` from `h0 c`. Conclude with `⟨q, IsScalarTower.algebraMap_apply _ _ _ q⟩`. Establish `hne : PD.t ^ a ≠ 0` using `fun h => by`. Establish `h1 : (1 : B) = 0` using `isUnit_zero_iff.1 (h ▸ PD.t_unit.pow a) |>.symm`.
+
+Conclude with `GlobalTheory.Survey.SlowDecayFunctions.one_notMem PD (by rw [← map_one PD.ι, h1, map_zero]; exact zero_mem _)`. Establish `hf : finrank Qp K₀ = 1`. Rewrite using `[← (LinearEquiv.ofBijective (Algebra.linearMap Qp K₀) ⟨(algebraMap Qp K₀).injective, h0⟩).finrank_eq, finrank_self]`. Rewrite using `[IsCrys, hD, finrank_line hne, hf, finrank_self]`.
+-/
 theorem isCrys_pow : IsCrys PD (charRep θ) := by
   have h0 := surj_K₀ (K₀ := K₀) hK
   have hD : Dcris PD (charRep θ) = Submodule.span LL {(1 : LL) ⊗ₜ[Qp] (PD.t ^ a)} := by
@@ -150,6 +197,15 @@ theorem isCrys_pow : IsCrys PD (charRep θ) := by
       ⟨(algebraMap Qp K₀).injective, h0⟩).finrank_eq, finrank_self]
   rw [IsCrys, hD, finrank_line hne, hf, finrank_self]
 
+/- English proof (translation)
+Establish `hD : DdR PD (charRep θ) = Submodule.span LL {(1 : LL) ⊗ₜ[Qp] PD.ι (PD.t ^ a)}`. Use extensionality with `x`. Simplify using `only [DdR, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, sub_eq_zero]`. Use `fixed_iff (fun g => (PD.actdR g).toAlgHom.toLinearMap.restrictScalars Qp) (fun g x y => map_mul (PD.actdR g) x y) (fun b hb => ?_) ((PD.t_unit.pow a).map PD.ι) _ (fun g => ?_) θ hθ x` and prove the remaining obligations. Take `⟨c, rfl⟩` from `PD.invdR b hb`.
+
+Take `⟨q, rfl⟩` from `hK c`. Conclude with `⟨q, IsScalarTower.algebraMap_apply _ _ _ q⟩`. Express the relevant statement in the definitionally equal form `_ • PD.actdR g (PD.ι (PD.t ^ a)) = _`. Rewrite using `[← PD.ι_comm]`. Conclude with `((PD.ι.toLinearMap.restrictScalars Qp).map_smul _ _).symm.trans (congrArg PD.ι (act_t_pow PD a g))`.
+
+Rewrite using `[DdRE, hD, inf_eq_left, Submodule.span_le, Set.singleton_subset_iff]`. Simplify using `only [SetLike.mem_coe, Submodule.mem_iInf, LinearMap.mem_ker]`. Introduce `c`. Take `⟨q, rfl⟩` from `hK c`. Simplify using `only [mulVdR, LinearMap.sub_apply, AlgebraTensorModule.map_tmul, LinearMap.id_apply, LinearMap.mulLeft_apply, LinearMap.smul_apply, AlgHom.commutes, sub_eq_zero, ← IsScalarTower.algebraMap_apply, algebraMap_smul]`.
+
+Rewrite using `[← Algebra.smul_def, tmul_smul]`.
+-/
 theorem ddRE_pow (τ : K →ₐ[Qp] LL) :
     DdRE PD (charRep θ) τ = Submodule.span LL {(1 : LL) ⊗ₜ[Qp] PD.ι (PD.t ^ a)} := by
   have hD : DdR PD (charRep θ) = Submodule.span LL {(1 : LL) ⊗ₜ[Qp] PD.ι (PD.t ^ a)} := by
@@ -175,6 +231,15 @@ theorem ddRE_pow (τ : K →ₐ[Qp] LL) :
     ← IsScalarTower.algebraMap_apply, algebraMap_smul]
   rw [← Algebra.smul_def, tmul_smul]
 
+/- English proof (translation)
+Establish `hne : PD.ι (PD.t ^ a) ≠ 0` using `fun h => by`. Use `(t_pow_mem_iff PD hs a (a + 1)).1 (by rw [h]; exact zero_mem _)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hF : ∀ b : ℤ, finrank LL ↥(FildR PD (charRep θ) τ b) = if b ≤ a then 1 else 0`. Introduce `b`.
+
+Rewrite using `[FildR, ddRE_pow PD hK a θ hθ]`. Use `split_ifs with h`. Rewrite using `[inf_eq_left.2, finrank_line hne]`. Rewrite using `[Submodule.span_le, Set.singleton_subset_iff]`. Conclude with `⟨1 ⊗ₜ ⟨_, (t_pow_mem_iff PD hs a b).2 h⟩, rfl⟩`.
+
+Rewrite using `[Submodule.finrank_eq_zero.2]`. Rewrite using `[eq_bot_iff]`. Introduce and unpack `x ⟨hx, hx'⟩`. Take `⟨v, rfl⟩` from `Submodule.mem_span_singleton.1 hx`. Distinguish the cases in `hv : v = 0`.
+
+Simplify using `[hv]`. Rewrite `hx'` using `[smul_tmul', smul_eq_mul, mul_one]`. Conclude with `absurd ((t_pow_mem_iff PD hs a b).1 (mem_of_tmul_mem ((PD.Fil b).restrictScalars Qp) hv hx')) h`. Rewrite using `[multV, hF, hF, Multiset.count_singleton]`. Apply the tactic sequence `split_ifs <;> simp <;> omega`.
+-/
 theorem multV_pow (hs : ∃ s ∈ PD.Fil (-1), PD.ι PD.t * s = 1) (τ : K →ₐ[Qp] LL) (b : ℤ) :
     multV PD (charRep θ) τ b = (({(a : ℤ)} : Multiset ℤ).count b : ℤ) := by
   have hne : PD.ι (PD.t ^ a) ≠ 0 := fun h => by
@@ -219,6 +284,13 @@ def lowData (t : ℕ) (h1 : 1 ≤ t) (h4 : t ≤ 4) : TopData 1 1 where
   lowBd := fun _ h => by cases h
   cloudBd := fun _ h => by cases h
 
+/- English proof (translation)
+Establish `hl' : (17 : ℝ) ≤ l` using `by exact_mod_cast hl`. Establish `hi : (l : ℝ)⁻¹ ≤ 17⁻¹` using `inv_anti₀ (by norm_num) hl'`. Establish `h0 : (0 : ℝ) ≤ (l : ℝ)⁻¹` using `by positivity`. Establish `h : ∀ j : ℕ, ((12 : ℕ) : ℝ) / (l : ℝ) ^ (j + 1) = (12 * (l : ℝ)⁻¹) * ((l : ℝ)⁻¹) ^ j`. Introduce `j`.
+
+Use `push_cast`. Rewrite using `[div_eq_mul_inv, ← inv_pow]`. Expand and normalize the polynomial expressions, which then agree. Express the relevant statement in the definitionally equal form `⌊∑' j : ℕ, ((12 : ℕ) : ℝ) / (l : ℝ) ^ (j + 1)⌋₊ = 0`. Repeatedly rewrite using `[h]`.
+
+Rewrite using `[tsum_mul_left, tsum_geometric_of_lt_one h0 (by linarith), Nat.floor_eq_zero, mul_inv_lt_iff₀ (by linarith)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem lowData_sg {t : ℕ} (h1 : 1 ≤ t) (h4 : t ≤ 4) {l : ℕ} (hl : 17 ≤ l) (i : ZMod 1) :
     (lowData t h1 h4).sg l i = 0 := by
   have hl' : (17 : ℝ) ≤ l := by exact_mod_cast hl
@@ -232,6 +304,11 @@ theorem lowData_sg {t : ℕ} (h1 : 1 ≤ t) (h4 : t ≤ 4) {l : ℕ} (hl : 17 �
     mul_inv_lt_iff₀ (by linarith)]
   linarith
 
+/- English proof (translation)
+Use `⟨fun i => ?_, fun i u hu β hβ => ?_, fun i u hu => ?_⟩` and prove the remaining obligations. Rewrite using `[lowData_sg h1 h4 hl]`. Express the relevant statement in the definitionally equal form `10 + 4 * 0 + 6 < l`. Use linear arithmetic over natural numbers and integers. Rewrite using `[lowData_sg h1 h4 hl]`.
+
+Simplify using `only [lowData, TopData.B, mem_block, Multiset.mem_singleton] at hu hβ`. Rewrite using `[lt_abs]`. Use `push_cast`. Use linear arithmetic over natural numbers and integers. Simplify using `[lowData] at hu`.
+-/
 theorem lowData_T1_T2_T3_of_seventeen_le {t : ℕ} (h1 : 1 ≤ t) (h4 : t ≤ 4) {l : ℕ} (hl : 17 ≤ l) :
     (lowData t h1 h4).T1 l ∧ (lowData t h1 h4).T2 l ∧ (lowData t h1 h4).T3 l := by
   refine ⟨fun i => ?_, fun i u hu β hβ => ?_, fun i u hu => ?_⟩
@@ -251,15 +328,24 @@ def cycO (P : LocPrime l) (K LL : FinExt l) : ↥(GK K) →* (↥(OL LL))ˣ :=
       map_one' := Subtype.ext (by simp)
       map_mul' := fun g h => Subtype.ext (by simp) }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cycO_val (P : LocPrime l) (K LL : FinExt l) (g : ↥(GK K)) :
     algebraMap ↥(OL LL) ↥LL.1 (cycO P K LL g) = algebraMap ℚ_[l] ↥LL.1 ((P.PD K).χ g) := rfl
 
+/- English proof (translation)
+Rewrite using `[MonoidHom.pow_apply, MonoidHom.inv_apply, ← map_inv, ← map_inv, Units.val_pow_eq_pow_val, Units.val_pow_eq_pow_val, map_pow, map_pow, cycO_val]`.
+-/
 theorem cycO_inv_pow (P : LocPrime l) (K LL : FinExt l) (a : ℕ) (g : ↥(GK K)) :
     algebraMap ↥(OL LL) ↥LL.1 (((cycO P K LL)⁻¹ ^ a) g) =
       algebraMap ℚ_[l] ↥LL.1 ((((P.PD K).χ g)⁻¹ ^ a : ℚ_[l]ˣ) : ℚ_[l]) := by
   rw [MonoidHom.pow_apply, MonoidHom.inv_apply, ← map_inv, ← map_inv, Units.val_pow_eq_pow_val,
     Units.val_pow_eq_pow_val, map_pow, map_pow, cycO_val]
 
+/- English proof (translation)
+Establish `h` using `((GlobalTheory.Survey.SlowDecayFunctions.continuous_cyc P K LL).comp continuous_inv).pow a`. Use `h.congr fun g => ?_` and prove the remaining obligations. Rewrite using `[cycO_inv_pow, ← map_inv, Units.val_pow_eq_pow_val, map_pow]`. Both sides reduce to the same expression.
+-/
 theorem continuous_cycO_inv_pow (P : LocPrime l) (K LL : FinExt l) (a : ℕ) :
     Continuous fun g => algebraMap ↥(OL LL) ↥LL.1 (((cycO P K LL)⁻¹ ^ a) g) := by
   have h := ((GlobalTheory.Survey.SlowDecayFunctions.continuous_cyc P K LL).comp continuous_inv).pow a
@@ -267,10 +353,16 @@ theorem continuous_cycO_inv_pow (P : LocPrime l) (K LL : FinExt l) (a : ℕ) :
   rw [cycO_inv_pow, ← map_inv, Units.val_pow_eq_pow_val, map_pow]
   rfl
 
+/- English proof (translation)
+Introduce `x` and use `by obtain ⟨q, hq⟩ := IntermediateField.mem_bot.1 x.2 exact ⟨q, Subtype.ext hq⟩`.
+-/
 theorem surj_bot : Function.Surjective (algebraMap ℚ_[l] ↥(Formalism.MainNotions.LocalSituation.botExt l).1) := fun x => by
   obtain ⟨q, hq⟩ := IntermediateField.mem_bot.1 x.2
   exact ⟨q, Subtype.ext hq⟩
 
+/- English proof (translation)
+Use `⟨continuous_cycO_inv_pow P _ LL a, isCrys_pow _ surj_bot a _ (cycO_inv_pow P _ LL a), fun i τ _ b => multV_pow _ surj_bot a _ (cycO_inv_pow P _ LL a) ?_ τ b⟩` and prove the remaining obligations. Rewrite using `[P.PD_ι, P.period_datum_t_eq]`. Conclude with `GlobalTheory.ThetaTie.exists_inverse_fontaineElement_mem_fil_neg_one T`.
+-/
 theorem isCrysChar_inv_pow {P : LocPrime l} {AI : LocAinf l P} (T : LocTied l P AI) (LL : FinExt l) {n : ℕ}
     (emb : ZMod n → (↥(K0 (Formalism.MainNotions.LocalSituation.botExt l)) →ₐ[ℚ_[l]] ↥LL.1)) (a : ℕ) :
     IsCrysChar (P.PD (Formalism.MainNotions.LocalSituation.botExt l)) emb ((cycO P (Formalism.MainNotions.LocalSituation.botExt l) LL)⁻¹ ^ a)
@@ -280,6 +372,11 @@ theorem isCrysChar_inv_pow {P : LocPrime l} {AI : LocAinf l P} (T : LocTied l P 
   rw [P.PD_ι, P.period_datum_t_eq]
   exact GlobalTheory.ThetaTie.exists_inverse_fontaineElement_mem_fil_neg_one T
 
+/- English proof (translation)
+Take `⟨LL, hL⟩` from `GlobalTheory.MemLoc.exists_good_situation l (Formalism.MainNotions.LocalSituation.botExt l) 1 le_rfl (fun h => by omega) bot_le`. Take `⟨_, -⟩` from `GlobalTheory.FinExtIntegers.dvr_complete LL`. Take `⟨lam, hlam⟩` from `IsDiscreteValuationRing.exists_irreducible ↥(OL LL)`. Establish `h0 : Function.Surjective (algebraMap ℚ_[l] ↥(K0 (Formalism.MainNotions.LocalSituation.botExt l)))` using `surj_K₀ surj_bot`. Establish `hsub : ∀ f g : ↥(K0 (Formalism.MainNotions.LocalSituation.botExt l)) →ₐ[ℚ_[l]] ↥LL.1, f = g` using `fun f g => AlgHom.ext fun x => by`.
+
+Take `⟨q, rfl⟩` from `h0 x`. Rewrite using `[f.commutes, g.commutes]`. Set `e` to `AlgEquiv.ofBijective (Algebra.ofId ℚ_[l] ↥(K0 (Formalism.MainNotions.LocalSituation.botExt l))) ⟨(algebraMap ℚ_[l] _).injective, h0⟩`. Use `⟨LL, fun _ => (Algebra.ofId ℚ_[l] ↥LL.1).comp e.symm.toAlgHom, lam, hl, ⟨bot_le, by omega, hL LL le_rfl⟩, IntermediateField.finrank_bot.symm, ⟨fun _ _ _ => Subsingleton.elim _ _, fun f => ⟨0, hsub _ _⟩⟩, fun _ => hsub _ _, hlam⟩` and prove the remaining obligations.
+-/
 theorem exists_standing (hl : 5 ≤ l) (P : LocPrime l) :
     ∃ (LL : FinExt l) (emb : ZMod 1 → (↥(K0 (Formalism.MainNotions.LocalSituation.botExt l)) →ₐ[ℚ_[l]] ↥LL.1)) (lam : ↥(OL LL)),
       Standing P (Formalism.MainNotions.LocalSituation.botExt l) LL emb lam := by
@@ -298,6 +395,9 @@ theorem exists_standing (hl : 5 ≤ l) (P : LocPrime l) :
     ⟨bot_le, by omega, hL LL le_rfl⟩, IntermediateField.finrank_bot.symm,
     ⟨fun _ _ _ => Subsingleton.elim _ _, fun f => ⟨0, hsub _ _⟩⟩, fun _ => hsub _ _, hlam⟩
 
+/- English proof (translation)
+Take `⟨T⟩` from `hT`. Take `⟨LL, emb, lam, hS⟩` from `exists_standing (by omega) P`. Establish `h7` using `isCrysChar_inv_pow T LL emb 7`. Use `⟨Formalism.MainNotions.LocalSituation.botExt l, LL, emb, lowData t h1 h4, ⟨lam, charLat ℚ_[l] Subtype.val_injective _ h7.1, (cycO P _ LL)⁻¹ ^ 1, cycO P _ LL⟩, rfl, hS, ⟨finrank_self ↥LL.1, h7.2, isCrysChar_inv_pow T LL emb 1, cycO_val P _ LL⟩, lowData_T1_T2_T3_of_seventeen_le h1 …` and prove the remaining obligations.
+-/
 theorem exists_premises_block (hl : 17 ≤ l) (P : LocPrime l) (AI : LocAinf l P)
     (hT : Nonempty (LocTied l P AI)) (t : ℕ) (h1 : 1 ≤ t) (h4 : t ≤ 4) :
     ∃ (K LL : FinExt l) (emb : ZMod 1 → (↥(K0 K) →ₐ[ℚ_[l]] ↥LL.1)) (D : TopData 1 1)

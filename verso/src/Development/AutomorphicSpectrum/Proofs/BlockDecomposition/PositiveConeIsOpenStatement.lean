@@ -10,5 +10,8 @@ open PositivityTheory.RgBcC
 open GlobalTheory.CompanionTheory.ConeHaar
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.ConeHaar.isOpen_cone | exact GlobalTheory.CompanionTheory.ConeHaar.isOpen_cone | (intros; apply GlobalTheory.CompanionTheory.ConeHaar.isOpen_cone <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.positive_cone_isOpen : ∀ n : ℕ, IsOpen (PositivityTheory.RgBcC.cone n) := by
   first | exact @GlobalTheory.CompanionTheory.ConeHaar.isOpen_cone | exact GlobalTheory.CompanionTheory.ConeHaar.isOpen_cone | (intros; apply GlobalTheory.CompanionTheory.ConeHaar.isOpen_cone <;> assumption)

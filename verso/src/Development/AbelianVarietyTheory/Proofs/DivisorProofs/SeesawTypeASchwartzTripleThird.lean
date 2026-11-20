@@ -30,6 +30,11 @@ def evAt {Y : Type} (e : ((κ → AF F) → ℂ) →ₗ[ℂ] (Y → ℂ)) (g : (
     have : pureA F (c • h : SInf F κ) g = c • pureA F h g := funext fun _ => mul_assoc _ _ _
     rw [this, map_smul, Pi.smul_apply, RingHom.id_apply]
 
+/- English proof (translation)
+Set `P : Y → Seminorm ℂ V` to `fun y => (normSeminorm ℂ ℂ).comp (l y)`. Establish `hB : BddAbove (Set.range P)` using `⟨q, by rintro _ ⟨y, rfl⟩; exact hb y⟩`. Establish `hap : ∀ h, (⨆ y, P y) h = ⨆ y, ‖l y h‖` using `fun h => Seminorm.iSup_apply hB`. Establish `hle : (⨆ y, P y) ≤ q` using `fun h => by`. Rewrite using `[hap]`.
+
+Conclude with `Real.iSup_le (fun y => hb y h) (apply_nonneg q h)`. Use `⟨⨆ y, P y, Seminorm.continuous_of_le hq hle, fun y h => ?_, fun h hh => ?_⟩` and prove the remaining obligations. Conclude with `le_ciSup hB y h`. Rewrite using `[hap]`. Simplify using `[hh]`.
+-/
 theorem exists_sup_seminorm {V Y : Type} [AddCommGroup V] [Module ℂ V] [TopologicalSpace V] [IsTopologicalAddGroup V]
     (l : Y → V →ₗ[ℂ] ℂ) (q : Seminorm ℂ V) (hq : Continuous q) (hb : ∀ y h, ‖l y h‖ ≤ q h) :
     ∃ p : Seminorm ℂ V, Continuous p ∧ (∀ y h, ‖l y h‖ ≤ p h) ∧ ∀ h, (∀ y, l y h = 0) → p h = 0 := by
@@ -44,6 +49,25 @@ theorem exists_sup_seminorm {V Y : Type} [AddCommGroup V] [Module ℂ V] [Topolo
   · rw [hap]
     simp [hh]
 
+/- English proof (translation)
+Take `⟨C₀, hC₀⟩` from `GlobalTheory.ArchHalfTurn.halfturn F ψ hψ ι`. Take `⟨p, hp, hpl, hp0⟩` from `exists_sup_seminorm (evAt e g) q₀ hq₀ hb`. Take `⟨q, hq, hdec⟩` from `(tame_archOp (F := F) (κ := κ)).decay p hp (∑ i, ‖archW (S i)‖) (C₀ * ∑ i, ‖archW (U i)‖) N`. Use `⟨q, hq, fun f x hx y => ?_⟩` and prove the remaining obligations. Use `set s := ∑ i, x i • S i with hs`.
+
+Use `set r := ∑ i, ∑ v : InfinitePlace F, ‖(x i).1 v‖ with hr`. Establish `hr0 : 0 ≤ r` using `by positivity`. Establish `hfin : finOp ψ g s = g` using `by rw [← hx, finOp_arch]`. Establish `hLs : ∀ (h : SInf F κ) y, evAt e g y (archOp (archW s) h) = e (schr ψ s (pureA F h g)) y` using `fun h y => by`. Rewrite using `[schr_pureA ψ hψ, hfin]`.
+
+Both sides reduce to the same expression. Rewrite using `[← hLs]`. Use `(hpl y _).trans (hdec (archW s) r hr0 ?_ (fun hr1 => ?_) f)` and prove the remaining obligations. Rewrite using `[hs, archW_sum, Finset.sum_mul]`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun i _ => ?_)` and prove the remaining obligations.
+
+Rewrite using `[archW_smul, mul_comm]`. Use `(norm_smul_le _ _).trans ?_` and prove the remaining obligations. Use `gcongr`. Conclude with `(norm_qA_le _).trans (Finset.single_le_sum (f := fun i => ∑ v : InfinitePlace F, ‖(x i).1 v‖) (fun _ _ => by positivity) (Finset.mem_univ i))`. Take `⟨i, a, ha, ha'⟩` from `hC₀ x hr1`.
+
+Use `⟨archW (mk a 0 • U i), ?_, fun h => ?_⟩` and prove the remaining obligations. Rewrite using `[archW_smul]`. Establish `h1 : ‖archW (U i)‖ ≤ ∑ i, ‖archW (U i)‖` using `Finset.single_le_sum (f := fun i => ‖archW (U i)‖) (fun _ _ => norm_nonneg _) (Finset.mem_univ i)`. Combine the equalities or inequalities in the displayed calculation. Use `hp0 _ fun y => ?_` and prove the remaining obligations.
+
+Establish `hΦ : pureA F h g ∈ schA F κ` using `Submodule.subset_span ⟨h, g, hg, rfl⟩`. Establish `hω : s.1 ⬝ᵥ (mk a 0 • U i).2 - (mk a 0 • U i).1 ⬝ᵥ s.2 = x i * mk a 0`. Establish `: ∀ j, (x j • S j).1 ⬝ᵥ (mk a 0 • U i).2 - (mk a 0 • U i).1 ⬝ᵥ (x j • S j).2 = if i = j then x j * mk a 0 else 0` using `fun j => by`. Simplify using `only [Prod.smul_fst, Prod.smul_snd, smul_dotProduct, dotProduct_smul, smul_eq_mul]`. Use `hSU i j` as an intermediate fact.
+
+Use `split_ifs at this ⊢`. Take the linear combination `(x j * mk a 0) * this`. Take the linear combination `(x j * mk a 0) * this`. Rewrite using `[hs, Prod.fst_sum, Prod.snd_sum, sum_dotProduct, dotProduct_sum, ← Finset.sum_sub_distrib]`. Simplify using `only [this, Finset.sum_ite_eq, Finset.mem_univ, if_true]`.
+
+Establish `h1 : pureA F (archOp (archW (mk a 0 • U i)) h + h : SInf F κ) g = schr ψ (mk a 0 • U i) (pureA F h g) + pureA F h g`. Rewrite using `[schr_pureA ψ hψ, finOp_arch]`. Conclude with `GlobalTheory.XTermDecay.pureA_add _ _ _`. Establish `h2 : e (schr ψ s (pureA F (archOp (archW (mk a 0 • U i)) h + h : SInf F κ) g)) = 0`. Rewrite using `[h1]`.
+
+Express the relevant statement in the definitionally equal form `e (schrL ψ s _) = 0`. Rewrite using `[map_add, map_add]`. Express the relevant statement in the definitionally equal form `e (schr ψ s _) + e (schr ψ s _) = 0`. Rewrite using `[schr_comm, map_smul, hinv _ _ _ (schr_mem_schA ψ hψ s _ hΦ), hω, ha, neg_one_smul, neg_add_cancel]`. Rewrite using `[hLs, h2, Pi.zero_apply]`.
+-/
 theorem core_decay {Y ι : Type} [Fintype ι] (ψ : AddChar (AF F) ℂ) (hψ : IsStd ψ)
     (S U : ι → (κ → AF F) × (κ → AF F)) (hSU : ∀ i j, (S j).1 ⬝ᵥ (U i).2 - (U i).1 ⬝ᵥ (S j).2 = if i = j then 1 else 0)
     (e : ((κ → AF F) → ℂ) →ₗ[ℂ] (Y → ℂ))
@@ -106,6 +130,15 @@ theorem core_decay {Y ι : Type} [Fintype ι] (ψ : AddChar (AF F) ℂ) (hψ : I
         rw [schr_comm, map_smul, hinv _ _ _ (schr_mem_schA ψ hψ s _ hΦ), hω, ha, neg_one_smul, neg_add_cancel]
       rw [hLs, h2, Pi.zero_apply]
 
+/- English proof (translation)
+Take `⟨ι, _, P, k, hk, hP⟩` from `he`. Establish `hkb : ∀ j, ∃ C : ℝ, ∀ z, ‖k j z‖ ≤ C` using `fun j => (hk j).1.continuous.bounded_above_of_compact_support (hk j).2`. Use `choose C hC using hkb`. Establish `hc : ∀ j, Continuous ((SchwartzMap.seminorm ℂ 0 0).comp (P j).toLinearMap : Seminorm ℂ (SInf F κ))` using `fun j => ((schwartz_withSeminorms ℂ (κ' → mixedEmbedding.mixedSpace F) ℂ).continuous_seminorm (0, 0)).comp (P j).continuous`. Use `choose q hq hqe using fun j => continuous_smul_semi (C j) _ (hc j)`.
+
+Establish `hsum : ∀ h, (∑ j, q j) h = ∑ j, q j h` using `fun h => by`. Proceed by induction on `(Finset.univ : Finset ι) using Finset.induction_on with`. Consider the case `empty => rw [Finset.sum_empty, Finset.sum_empty]`. Both sides reduce to the same expression. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, Seminorm.add_apply, ih]`.
+
+Use `⟨∑ j, q j, ?_, fun y h => ?_⟩` and prove the remaining obligations. Rewrite using `[show (⇑(∑ j, q j) : SInf F κ → ℝ) = fun h => ∑ j, q j h from funext hsum]`. Conclude with `continuous_finset_sum _ fun j _ => hq j`. Rewrite using `[hsum, hP, Finset.sum_apply]`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun j _ => ?_)` and prove the remaining obligations.
+
+Rewrite using `[hqe, pureA, norm_mul, mul_comm]`. Conclude with `mul_le_mul ((hC j _).trans (le_abs_self _)) (SchwartzMap.norm_le_seminorm ℂ (P j h) _) (norm_nonneg _) (abs_nonneg _)`.
+-/
 theorem exists_bound_of_exp {κ' : Type} [Fintype κ'] {e : ((κ → AF F) → ℂ) →ₗ[ℂ] ((κ' → AF F) → ℂ)}
     {g : (κ → Af F) → ℂ} (he : GlobalTheory.EvTame.HasTameExp e g) :
     ∃ q₀ : Seminorm ℂ (SInf F κ), Continuous q₀ ∧ ∀ y (h : SInf F κ), ‖e (pureA F h g) y‖ ≤ q₀ h := by
@@ -129,6 +162,21 @@ theorem exists_bound_of_exp {κ' : Type} [Fintype κ'] {e : ((κ → AF F) → �
     exact mul_le_mul ((hC j _).trans (le_abs_self _)) (SchwartzMap.norm_le_seminorm ℂ (P j h) _) (norm_nonneg _)
       (abs_nonneg _)
 
+/- English proof (translation)
+Introduce `_ F E _ _ _ _ _ σ B b a' G G₁ H H' hC e he X om om' om₁ om₁' hT hT₁ g hg K hK N`. Use `haveI : FiniteDimensional F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Take `⟨q₀, hq₀, hb₀⟩` from `exists_bound_of_exp (e := e) (g := g) (GlobalTheory.EvTame.isTame_of_isEv F E σ B _ _ _ _ _ _ _ _ G.M G₁.M H.ι H'.ι _ e hT.geo.hM hT₁.geo.hM he g hg)`. Take `⟨τ, hτ⟩` from `GlobalTheory.ArchDualPair.dualPair F E σ _ _ G.V.J G.W.J H.x H.y H'.x H'.y hC.hH.xy (by`. Rewrite using `[form_swap hT.base.cm hT.geo.hW.skew, hC.hH'.xy, map_one])`.
+
+Set `S` to `fun j => G.M.co.e (inclR (F := F) (AF F) (Module.finBasis F E j) • Matrix.vecMulVec (incV F H.x) (incV F H'.y))`. Set `U` to `fun i => G.M.co.e (Matrix.vecMulVec (inclR (F := F) (AF F) (τ i) • incV F H.y) (incV F H'.x))`. Take `⟨q, hq, hdec⟩` from `core_decay B.ψ hT.base.std S U (fun i j => by rw [← G.M.co.form]; convert hτ i j) e (fun i a Ψ hΨ => by`. Use `he.inv (Matrix.vecMulVec (a • inclR (F := F) (AF F) (τ i) • incV F H.y) (incV F H'.x)) (Or.inl ⟨_, rfl⟩) Ψ hΨ` as an intermediate fact. Rewrite `this` using `[Matrix.smul_vecMulVec, Darboux.rho, map_smul]`.
+
+Conclude with `this) hg q₀ hq₀ hb₀ N`. Take `⟨C, hCb⟩` from `hK.exists_bound_of_continuousOn hq.continuousOn`. Use `⟨C, fun f hf t ht y => ?_⟩` and prove the remaining obligations. Establish `hS : G.M.co.e (t • Matrix.vecMulVec (incV F H.x) (incV F H'.y)) = ∑ i, GlobalTheory.IdeleDecay.coord F E t i • S i`. Simplify using `only [S, ← map_smul, ← map_sum, ← smul_assoc, ← Finset.sum_smul]`.
+
+Use `congr 2`. Use `((Algebra.TensorProduct.basis (AF F) (Module.finBasis F E)).sum_equivFun t).symm.trans ?_` and prove the remaining obligations. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.TensorProduct.basis_apply]`. Both sides reduce to the same expression.
+
+Establish `hx : (mk 1 0 : AF F) • ∑ i, GlobalTheory.IdeleDecay.coord F E t i • S i = ∑ i, GlobalTheory.IdeleDecay.coord F E t i • S i`. Rewrite using `[← hS, ← map_smul, ← smul_assoc]`. Use `congr 2`. Rewrite using `[Darboux.rho, hS]`. Use `(hdec f _ hx y).trans ?_` and prove the remaining obligations.
+
+Establish `hsz : GlobalTheory.IdeleDecay.size F E t ≤ ∑ i, ∑ v : InfinitePlace F, ‖(GlobalTheory.IdeleDecay.coord F E t i).1 v‖` using `Finset.sum_le_sum fun i _ => norm_qA_le _`. Establish `h0` using `GlobalTheory.IdeleDecay.size_nonneg (F := F) (E := E) t`. Establish `hqC : q f ≤ C` using `(le_abs_self _).trans (hCb f hf)`. Rewrite using `[Real.rpow_neg (by linarith), Real.rpow_natCast]`. Use `mul_le_mul hqC ?_ (by positivity) ((apply_nonneg q f).trans hqC)` and prove the remaining obligations.
+
+Use `gcongr`.
+-/
 theorem norm_ev_shift_arch_le : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (b a' : ℕ) (G : Geo σ (b + 2) a') (G₁ : Geo σ b a')
     (H : Plane E (b + 2) b) (H' : Plane E (b + 2 + a') (b + a')), CfgA B G G₁ H H' →
     ∀ e, IsEv B G.M G₁.M H.ι H'.ι (isoA H H') e → ∀ X om om' om₁ om₁', IsTriple B G X om om' → IsTriple B G₁ X om₁ om₁' →

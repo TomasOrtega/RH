@@ -8,6 +8,31 @@ open scoped ComplexConjugate
 
 variable {E : Type} [Field E] [NumberField E] [NumberField.IsCMField E] {r : ℕ}
 
+/- English proof (translation)
+Take `⟨hΛ, hξ0, -⟩ : ξ ∈ X.Λ ∧ herm X.Gm ξ ξ = 0 ∧ ξ ≠ 0` from `hξ`. Unfold `Data.fj`. Distinguish the cases in `hc : ∀ p ∈ X.periods la, ∃ k : ℤ, 2 * ∑ τ, ν τ * p τ = k`. Use `swap`. Rewrite using `[if_neg hc, if_neg hc, mul_zero]`.
+
+Rewrite using `[if_pos hc, if_pos hc]`. Distinguish the cases in `hD : ∃ D : Set (X.Ψ → ℝ), MeasurableSet D ∧ IsAddFundamentalDomain (X.periods la) D volume ∧ 0 < volume D ∧ volume D < ⊤`. Use `swap`. Rewrite using `[dif_neg hD, dif_neg hD, mul_zero]`. Rewrite using `[dif_pos hD, dif_pos hD]`.
+
+Establish `hFD : IsAddFundamentalDomain (X.periods la) hD.choose volume` using `hD.choose_spec.2.1`. Use `set F : (X.Ψ → ℝ) → ℂ := fun t => P (X.flow ξ (fun τ => (t τ : ℂ)) x) * cexp (-(4 * Real.pi * I) * ∑ τ, (ν τ : ℂ) * t τ) with hF`. Establish `hsum : ∀ a b : X.Ψ → ℝ, ∑ τ, (ν τ : ℂ) * (((a + b) τ : ℝ) : ℂ) = ∑ τ, (ν τ : ℂ) * a τ + ∑ τ, (ν τ : ℂ) * b τ`. Introduce `a b`. Rewrite using `[← Finset.sum_add_distrib]`.
+
+Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Simplify using `only [Pi.add_apply, Complex.ofReal_add]`. Expand and normalize the polynomial expressions, which then agree. Establish `hFper : ∀ p ∈ X.periods la, ∀ t, F (p + t) = F t`. Introduce `p hp t`.
+
+Simplify using `only [hF]`. Establish `hfl : (fun τ => (((p + t) τ : ℝ) : ℂ)) = cR X p + (fun τ => (t τ : ℂ))`. Use function extensionality and compare the values at `τ`. Simplify using `only [cR, Pi.add_apply, Complex.ofReal_add]`. Establish `hdom : X.flow ξ (fun τ => (t τ : ℂ)) x ∈ X.dom` using `flow_real_mem_dom (X := X) hξ0 t x hx`.
+
+Rewrite using `[hfl, ← flow_flow (X := X) hξ0, sec_periodic (X := X) la P hP hΛ hξ0 hp _ hdom]`. Take `⟨k, hk⟩` from `hc p hp`. Establish `h1 : cexp (-(4 * Real.pi * I) * ∑ τ, (ν τ : ℂ) * p τ) = 1`. Establish `hk' : ∑ τ, (ν τ : ℂ) * p τ = (k : ℂ) / 2`. Establish `h2` using `congrArg (fun y : ℝ => (y : ℂ)) hk`.
+
+Move the coercions through the operations in `at h2`. Take the linear combination `h2 / 2`. Rewrite using `[hk', show -(4 * Real.pi * I) * ((k : ℂ) / 2) = ((-k : ℤ) : ℂ) * (2 * Real.pi * I) by push_cast; ring]`. Conclude with `Complex.exp_int_mul_two_pi_mul_I (-k)`. Rewrite using `[hsum p t, mul_add, Complex.exp_add, h1, one_mul]`.
+
+Establish `hstep : ∀ t : X.Ψ → ℝ, P (X.flow ξ (fun τ => (t τ : ℂ)) (X.flow ξ (fun τ => (s τ : ℂ)) x)) * cexp (-(4 * Real.pi * I) * ∑ τ, (ν τ : ℂ) * t τ) = cexp (4 * Real.pi * I * ∑ τ, (ν τ : ℂ) * s τ) * F (s + t)`. Introduce `t`. Establish `hfl : (fun τ => (t τ : ℂ)) + (fun τ => (s τ : ℂ)) = fun τ => (((s + t) τ : ℝ) : ℂ)`. Use function extensionality and compare the values at `τ`. Simplify using `only [Pi.add_apply, Complex.ofReal_add]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[flow_flow (X := X) hξ0, hfl]`. Simplify using `only [hF]`. Rewrite using `[hsum s t]`. Establish `he : cexp (-(4 * Real.pi * I) * ∑ τ, (ν τ : ℂ) * t τ) = cexp (4 * Real.pi * I * ∑ τ, (ν τ : ℂ) * s τ) * cexp (-(4 * Real.pi * I) * (∑ τ, (ν τ : ℂ) * s τ + ∑ τ, (ν τ : ℂ) * t τ))`.
+
+Rewrite using `[← Complex.exp_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[he]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hint : ∫ t in hD.choose, P (X.flow ξ (fun τ => (t τ : ℂ)) (X.flow ξ (fun τ => (s τ : ℂ)) x)) * cexp (-(4 * Real.pi * I) * ∑ τ, (ν τ : ℂ) * t τ) = cexp (4 * Real.pi * I * ∑ τ, (ν τ : ℂ) * s τ) * ∫ t in hD.choose, F t`. Repeatedly rewrite using `[hstep]`. Rewrite using `[MeasureTheory.integral_const_mul]`. Use `congr 1`. Conclude with `fd_translate (X.periods la) hD.choose hFD F hFper s`.
+
+Rewrite using `[hint]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem Data.fj_flow_real (X : Data E r) (la : Wt X.Ψ r) (ξ : Fin r → E) (hξ : X.IsIso ξ) (ν : X.Ψ → ℝ)
     (P : Frame X.Ψ r → ℂ) (hP : X.IsSec la P) (hbdd : ∃ C, ∀ x ∈ X.dom, X.pnorm la P x ≤ C)
     (x : Frame X.Ψ r) (hx : x ∈ X.dom) (s : X.Ψ → ℝ) :

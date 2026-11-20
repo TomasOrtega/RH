@@ -6,6 +6,9 @@ open NumberField IsDedekindDomain GlobalTheory.CuspRep Filter Topology Matrix
 
 namespace UpperTheory.V.Af.GlobalFixedVectors
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.SubgroupFixed.sub_fixed σ hσ τ h W hW h0 K hK`.
+-/
 theorem sub_fixed {Γ X V : Type} [Group Γ] [AddCommGroup X] [Module ℂ X] [AddCommGroup V] [Module ℂ V]
     (σ : Representation ℂ Γ X) (hσ : σ.IsIrreducible) (τ : Representation ℂ Γ V)
     (h : ⨆ f : {f : X →ₗ[ℂ] V // ∀ g v, f (σ g v) = τ g (f v)}, LinearMap.range f.1 = ⊤)
@@ -15,22 +18,37 @@ theorem sub_fixed {Γ X V : Type} [Group Γ] [AddCommGroup X] [Module ℂ X] [Ad
 
 variable {F : Type} [Field F] [NumberField F] {n M : ℕ}
 
+/- English proof (translation)
+Simplify using `[Ohat, Subring.mem_iInf]`.
+-/
 theorem mem_Ohat {x : Af F} : x ∈ Ohat F ↔ ∀ w : HeightOneSpectrum (𝓞 F), pLoc F w x ∈ w.adicCompletionIntegers F := by
   simp [Ohat, Subring.mem_iInf]
 
+/- English proof (translation)
+Use extensionality with `i j : 2`. Conclude with `FiniteAdeleRing.ext _ fun w => congrArg (fun x : GL (Fin n) (w.adicCompletion F) => x i j) (e w)`.
+-/
 theorem gl_ext {g h : GL (Fin n) (Af F)}
     (e : ∀ w, GeneralLinearGroup.map (pLoc F w) g = GeneralLinearGroup.map (pLoc F w) h) : g = h := by
   ext i j : 2
   exact FiniteAdeleRing.ext _ fun w => congrArg (fun x : GL (Fin n) (w.adicCompletion F) => x i j) (e w)
 
+/- English proof (translation)
+Conclude with `Pi.single_eq_same (M := fun v : HeightOneSpectrum (𝓞 F) => v.adicCompletion F) w x`.
+-/
 theorem pLoc_sLoc (w : HeightOneSpectrum (𝓞 F)) (x : w.adicCompletion F) : pLoc F w (sLoc F w x) = x := by
   classical
   exact Pi.single_eq_same (M := fun v : HeightOneSpectrum (𝓞 F) => v.adicCompletion F) w x
 
+/- English proof (translation)
+Conclude with `Pi.single_eq_of_ne (M := fun v : HeightOneSpectrum (𝓞 F) => v.adicCompletion F) h x`.
+-/
 theorem pLoc_sLoc_of_ne {v w : HeightOneSpectrum (𝓞 F)} (h : v ≠ w) (x : w.adicCompletion F) : pLoc F v (sLoc F w x) = 0 := by
   classical
   exact Pi.single_eq_of_ne (M := fun v : HeightOneSpectrum (𝓞 F) => v.adicCompletion F) h x
 
+/- English proof (translation)
+The claim follows from `mem_Ohat.2 fun v => by by_cases h : v = w · subst h; rw [pLoc_sLoc]; exact mem_Ohat.1 hx v · rw [pLoc_sLoc_of_ne h]; exact zero_mem _`.
+-/
 theorem sLoc_mem (w : HeightOneSpectrum (𝓞 F)) {x : Af F} (hx : x ∈ Ohat F) : sLoc F w (pLoc F w x) ∈ Ohat F :=
   mem_Ohat.2 fun v => by
     by_cases h : v = w
@@ -43,6 +61,11 @@ noncomputable def eLoc (w : HeightOneSpectrum (𝓞 F)) : Ohat F →ₙ+* Ohat F
   map_zero' := Subtype.ext (by simp)
   map_add' x y := Subtype.ext (by simp)
 
+/- English proof (translation)
+Use `Subtype.ext (FiniteAdeleRing.ext _ fun v => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `pLoc F v (sLoc F w (pLoc F w x)) = pLoc F v (sLoc F w (pLoc F w (1 : Ohat F)) * x)`. Rewrite using `[map_mul]`. Distinguish the cases in `h : v = w`. Substitute `h` using the available equality.
+
+Simplify using `[pLoc_sLoc]`. Simplify using `[pLoc_sLoc_of_ne h]`.
+-/
 theorem eLoc_eq (w : HeightOneSpectrum (𝓞 F)) (x : Ohat F) : eLoc w x = eLoc w 1 * x := by
   refine Subtype.ext (FiniteAdeleRing.ext _ fun v => ?_)
   change pLoc F v (sLoc F w (pLoc F w x)) = pLoc F v (sLoc F w (pLoc F w (1 : Ohat F)) * x)
@@ -51,6 +74,13 @@ theorem eLoc_eq (w : HeightOneSpectrum (𝓞 F)) (x : Ohat F) : eLoc w x = eLoc 
   · subst h; simp [pLoc_sLoc]
   · simp [pLoc_sLoc_of_ne h]
 
+/- English proof (translation)
+Take `⟨g, hg, rfl⟩` from `hk`. Use `⟨cornerGL n (eLoc w) g, ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Establish `h1` using `congrArg (fun x : GL (Fin n) (Ohat F ⧸ Ideal.span {(M : ↥(Ohat F))}) => x i j) (MonoidHom.mem_ker.1 hg)`. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk _ (g i j) = (1 : Matrix (Fin n) (Fin n) _) i j at h1`.
+
+Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk _ ((1 : Matrix (Fin n) (Fin n) (Ohat F)) i j - eLoc w ((1 : Matrix (Fin n) (Fin n) (Ohat F)) i j) + eLoc w (g i j)) = (1 : Matrix (Fin n) (Fin n) _) i j`. Rewrite using `[eLoc_eq w (g i j), eLoc_eq w (_ : Ohat F)]`. Simplify using `[h1, Matrix.one_apply, apply_ite (Ideal.Quotient.mk (Ideal.span {(M : ↥(Ohat F))}))]`. Use extensionality with `i j : 2`. Express the relevant statement in the definitionally equal form `((1 : Matrix (Fin n) (Fin n) (Ohat F)) i j : Af F) - sLoc F w (pLoc F w ((1 : Matrix (Fin n) (Fin n) (Ohat F)) i j : Ohat F)) + sLoc F w (pLoc F w (g i j)) = (1 : Matrix (Fin n) (Fin n) (Af F)) i j - sLoc F w ((1 : Matrix (Fin n) (Fin n) (w.adicCompletion F)) i j) + sLoc F w (pLo …`.
+
+Apply the tactic sequence `by_cases h : i = j <;> simp [Matrix.one_apply, h]`.
+-/
 theorem loc_mem (w : HeightOneSpectrum (𝓞 F)) {k : GL (Fin n) (Af F)} (hk : k ∈ KLev F n M) :
     GeneralLinearGroup.map (pLoc F w) k ∈ KLoc F w n M := by
   obtain ⟨g, hg, rfl⟩ := hk
@@ -69,6 +99,13 @@ theorem loc_mem (w : HeightOneSpectrum (𝓞 F)) {k : GL (Fin n) (Af F)} (hk : k
         sLoc F w (pLoc F w (g i j))
     by_cases h : i = j <;> simp [Matrix.one_apply, h]
 
+/- English proof (translation)
+Set `s` to `RestrictedProduct.structureMap (fun v : HeightOneSpectrum (𝓞 F) => v.adicCompletion F) (fun v => (v.adicCompletionIntegers F : Set (v.adicCompletion F))) cofinite`. Establish `hs : Continuous s` using `RestrictedProduct.isEmbedding_structureMap.continuous`. Set `lift : Af F → ∀ v : HeightOneSpectrum (𝓞 F), (v.adicCompletionIntegers F : Set (v.adicCompletion F))` to `fun y v => if h : y ∈ Ohat F then ⟨pLoc F v y, mem_Ohat.1 h v⟩ else ⟨0, zero_mem _⟩`. Establish `hl : ∀ y ∈ Ohat F, s (lift y) = y` using `fun y hy => FiniteAdeleRing.ext _ fun v => by`. Express the relevant statement in the definitionally equal form `((lift y v : _) : v.adicCompletion F) = pLoc F v y`.
+
+Simplify using `[lift, hy]`. Establish `h1 : Tendsto (fun a => lift (f a)) 𝓕 (𝓝 (lift x))` using `tendsto_pi_nhds.2 fun v => tendsto_const_nhds.congr' <| by filter_upwards [hf, h v] with a ha hav`. Simplify using `[lift, ha, hx, hav]`. Establish `h2` using `(hs.tendsto _).comp h1`. Rewrite `h2` using `[hl x hx]`.
+
+Conclude with `h2.congr' (hf.mono fun a ha => hl _ ha)`.
+-/
 theorem tendsto_of_loc {α : Type} {𝓕 : Filter α} {f : α → Af F} {x : Af F} (hx : x ∈ Ohat F) (hf : ∀ᶠ a in 𝓕, f a ∈ Ohat F)
     (h : ∀ w, ∀ᶠ a in 𝓕, pLoc F w (f a) = pLoc F w x) : Tendsto f 𝓕 (𝓝 x) := by
   classical
@@ -88,6 +125,9 @@ theorem tendsto_of_loc {α : Type} {𝓕 : Filter α} {f : α → Af F} {x : Af 
   rw [hl x hx] at h2
   exact h2.congr' (hf.mono fun a ha => hl _ ha)
 
+/- English proof (translation)
+Take `⟨g, -, rfl⟩` from `hk`. Conclude with `(g i j).2`.
+-/
 theorem entry_mem {k : GL (Fin n) (Af F)} (hk : k ∈ KLev F n M) (i j : Fin n) : k i j ∈ Ohat F := by
   obtain ⟨g, -, rfl⟩ := hk
   exact (g i j).2
@@ -97,10 +137,20 @@ variable (n M) in
 noncomputable def KAway (S : Finset (HeightOneSpectrum (𝓞 F))) : Subgroup (GL (Fin n) (Af F)) :=
   KLev F n M ⊓ ⨅ w ∈ S, (GeneralLinearGroup.map (pLoc F w)).ker
 
+/- English proof (translation)
+Simplify using `[KAway, Subgroup.mem_iInf]`.
+-/
 theorem mem_KAway {S : Finset (HeightOneSpectrum (𝓞 F))} {k : GL (Fin n) (Af F)} :
     k ∈ KAway n M S ↔ k ∈ KLev F n M ∧ ∀ w ∈ S, GeneralLinearGroup.map (pLoc F w) k = 1 := by
   simp [KAway, Subgroup.mem_iInf]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hn`. Use `push Not at hn`. Use `choose k hk hkU using fun S => Set.not_subset.1 (hn S)`. Establish `ent : ∀ k : Finset (HeightOneSpectrum (𝓞 F)) → GL (Fin n) (Af F), (∀ S, k S ∈ KAway n M S) → Tendsto (fun S => (k S).val) atTop (𝓝 1)` using `fun k hk => tendsto_pi_nhds.2 fun i => tendsto_pi_nhds.2 fun j => tendsto_of_loc (entry_mem (one_mem (KLev F n M)) i j) (.of_forall fun S => entry_mem (mem_KAway.1 (hk S)).1 i j) fun w => by filter_upwards [eventually_ge_atTop {w}] with S hS`. Establish `e` using `(mem_KAway.1 (hk S)).2 w (hS (Finset.mem_singleton_self w))`.
+
+Rewrite `e` using `[← map_one (GeneralLinearGroup.map (pLoc F w))]`. Conclude with `congrArg (fun x : GL (Fin n) (w.adicCompletion F) => x i j) e`. Establish `ht : Tendsto k atTop (𝓝 1)`. Rewrite using `[Units.isEmbedding_embedProduct.tendsto_nhds_iff]`. Conclude with `(ent k hk).prodMk_nhds ((MulOpposite.continuous_op.tendsto _).comp (ent (fun S => (k S)⁻¹) fun S => inv_mem (hk S)))`.
+
+Take `⟨S, hS⟩` from `(ht.eventually hU).exists`. Conclude with `hkU S hS`.
+-/
 theorem exists_KAway_subset {U : Set (GL (Fin n) (Af F))} (hU : U ∈ 𝓝 (1 : GL (Fin n) (Af F))) :
     ∃ S : Finset (HeightOneSpectrum (𝓞 F)), (KAway n M S : Set (GL (Fin n) (Af F))) ⊆ U := by
   classical
@@ -125,6 +175,23 @@ theorem exists_KAway_subset {U : Set (GL (Fin n) (Af F))} (hU : U ∈ 𝓝 (1 : 
 end UpperTheory.V.Af.GlobalFixedVectors
 
 open UpperTheory.V.Af UpperTheory.V.Af.GlobalFixedVectors in
+/- English proof (translation)
+Introduce `_ F _ _ n M _ V _ _ ρ hρ h`. Establish `key : ∀ S : Finset (HeightOneSpectrum (𝓞 F)), HasFixed ρ (KAway n M S) → HasFixed ρ (KAway n M ∅)`. Introduce `S`. Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => exact id`.
+
+Consider the case `insert w S hw ih`. Introduce and unpack `⟨v, hv0, hv⟩`. Take `⟨σ, ⟨-, hσ⟩, hfix⟩` from `h w`. Set `W : Submodule ℂ V` to `⨅ k : KAway n M (insert w S), LinearMap.ker (ρ k - 1)`. Establish `hWm : ∀ x, x ∈ W ↔ ∀ k ∈ KAway n M (insert w S), ρ k x = x` using `fun x => by`.
+
+Simplify using `[W, Submodule.mem_iInf, sub_eq_zero]`. Take `⟨x, hxW, hx0, hx⟩` from `sub_fixed σ.ρ σ.irred (ρ.comp (locGL F n w)) hσ W (fun g x hx => (hWm _).2 fun k hk => by`. Establish `e : k * locGL F n w g = locGL F n w g * k` using `gl_ext fun u => by`. Distinguish the cases in `hu : u = w`. Substitute `hu` using the available equality.
+
+Simplify using `[(mem_KAway.1 hk).2 u (Finset.mem_insert_self _ _)]`. Simplify using `[pLoc_locGL_of_ne hu]`. Express the relevant statement in the definitionally equal form `ρ k (ρ (locGL F n w g) x) = ρ (locGL F n w g) x`. Rewrite using `[← Module.End.mul_apply, ← map_mul, e, map_mul, Module.End.mul_apply, (hWm x).1 hx k hk])`. Use the proof step `(fun e => hv0 (by simpa [e] using (hWm v).2 hv)) _ hfix`.
+
+Use `ih ⟨x, hx0, fun k hk => ?_⟩` and prove the remaining obligations. Establish `h1` using `loc_mem w (mem_KAway.1 hk).1`. Establish `h2 : k * (locGL F n w (GeneralLinearGroup.map (pLoc F w) k))⁻¹ ∈ KAway n M (insert w S)`. Use `mem_KAway.2 ⟨mul_mem (mem_KAway.1 hk).1 (inv_mem h1), fun u hu => ?_⟩` and prove the remaining obligations. Distinguish the cases in `huw : u = w`.
+
+Substitute `huw` using the available equality. Simplify using `[pLoc_locGL]`. Simplify using `[pLoc_locGL_of_ne huw, (mem_KAway.1 hk).2 u ((Finset.mem_insert.1 hu).resolve_left huw)]`. Establish `h3 : ρ (locGL F n w (GeneralLinearGroup.map (pLoc F w) k)) x = x` using `hx _ h1`. Establish `h4` using `(hWm x).1 hxW _ h2`.
+
+Rewrite `h4` using `[← h3, ← Module.End.mul_apply, ← map_mul, inv_mul_cancel_right, h3]`. Then use the resulting hypothesis. Choose the witnesses or unpack the hypotheses as in `⟨w⟩ : Nonempty (HeightOneSpectrum (𝓞 F)) := by`. Take `⟨m, hm⟩` from `Ideal.exists_maximal (𝓞 F)`. Conclude with `⟨⟨m, hm.isPrime, Ring.ne_bot_of_isMaximal_of_not_isField hm (RingOfIntegers.not_isField F)⟩⟩`. Take `⟨σ, ⟨hV, -⟩, -⟩` from `h w`.
+
+Take `⟨v, hv⟩` from `exists_ne (0 : V)`. Take `⟨S, hS⟩` from `exists_KAway_subset (M := M) ((hρ v).mem_nhds (by simp))`. Take `⟨x, hx0, hx⟩` from `key S ⟨v, hv, fun k hk => hS hk⟩`. Conclude with `⟨x, hx0, fun k hk => hx k (mem_KAway.2 ⟨hk, by simp⟩)⟩`.
+-/
 theorem UpperTheory.V.Af.globFixed :
     UpperTheory.V.Af.Hypotheses₂ → UpperTheory.V.Af.GlobFixed := by
   classical

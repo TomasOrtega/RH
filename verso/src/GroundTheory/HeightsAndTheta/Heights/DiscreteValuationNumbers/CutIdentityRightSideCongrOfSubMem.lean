@@ -85,6 +85,9 @@ def cutIdentityRightSide (ϖ : O) (P : Ideal (MRing ι O)) (b : K → ℤ) (f g 
   cycEval (fun W => if (C ϖ : MRing ι O) ∈ W then vNum W (Matrix.vecCons b L)
       else cycEval (fun G => vNum G L) (ratDiv W f g)) (divCycle P s)
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem cutIdentity_iff (ϖ : O) (P : Ideal (MRing ι O)) (b : K → ℤ) (f g : MRing ι O) (c : K → ℕ)
     (s : MRing ι O) {d : ℕ} (L : Fin d → K → ℤ) :
     cutIdentity ϖ P b f g c s L ↔ cutIdentityLeftSide P f g c L = cutIdentityRightSide ϖ P b f g s L :=
@@ -255,6 +258,15 @@ end Lemmas
 
 section Helpers
 
+/- English proof (translation)
+Establish `h1 : s ∈ P ⊔ Ideal.span {s'}`. Establish `e : s = (s - s') + s'` using `by ring`. Rewrite using `[e]`. Conclude with `Ideal.add_mem _ (Ideal.mem_sup_left h) (Ideal.mem_sup_right (Ideal.mem_span_singleton_self _))`. Establish `h2 : s' ∈ P ⊔ Ideal.span {s}`.
+
+Establish `e : s' = s - (s - s')` using `by ring`. Rewrite using `[e]`. Conclude with `Ideal.sub_mem _ (Ideal.mem_sup_right (Ideal.mem_span_singleton_self _)) (Ideal.mem_sup_left h)`. Establish `e : P ⊔ Ideal.span {s} = P ⊔ Ideal.span {s'}` using `le_antisymm (sup_le le_sup_left ((Ideal.span_singleton_le_iff_mem _).mpr h1)) (sup_le le_sup_left ((Ideal.span_singleton_le_iff_mem _).mpr h2))`. Use function extensionality and compare the values at `W`.
+
+Unfold `divCycle`. Distinguish the cases in `hc : W ∈ (P ⊔ Ideal.span {s}).minimalPrimes ∧ IsRelevant W`. Establish `hc' : W ∈ (P ⊔ Ideal.span {s'}).minimalPrimes ∧ IsRelevant W` using `e ▸ hc`. Rewrite using `[dif_pos hc, dif_pos hc', e]`. Establish `hc' : ¬ (W ∈ (P ⊔ Ideal.span {s'}).minimalPrimes ∧ IsRelevant W)` using `e ▸ hc`.
+
+Rewrite using `[dif_neg hc, dif_neg hc']`.
+-/
 theorem divCycle_congr_of_sub_mem {K : Type*} {ι : K → Type*} {R : Type*} [CommRing R]
     {P : Ideal (MRing ι R)} {s s' : MRing ι R} (h : s - s' ∈ P) : divCycle P s = divCycle P s' := by
   have h1 : s ∈ P ⊔ Ideal.span {s'} := by
@@ -276,6 +288,9 @@ theorem divCycle_congr_of_sub_mem {K : Type*} {ι : K → Type*} {R : Type*} [Co
   · have hc' : ¬ (W ∈ (P ⊔ Ideal.span {s'}).minimalPrimes ∧ IsRelevant W) := e ▸ hc
     rw [dif_neg hc, dif_neg hc']
 
+/- English proof (translation)
+Unfold `cutIdentityRightSide`. Rewrite using `[divCycle_congr_of_sub_mem h]`.
+-/
 theorem cutIdentityRightSide_congr_of_sub_mem {K : Type*} [DecidableEq K] {ι : K → Type*} {O : Type*} [CommRing O]
     [IsDomain O] [IsDiscreteValuationRing O] (ϖ : O) (P : Ideal (MRing ι O)) (b : K → ℤ)
     (f g : MRing ι O) {s s' : MRing ι O} (h : s - s' ∈ P) {d : ℕ} (L : Fin d → K → ℤ) :
@@ -283,6 +298,9 @@ theorem cutIdentityRightSide_congr_of_sub_mem {K : Type*} [DecidableEq K] {ι : 
   unfold cutIdentityRightSide
   rw [divCycle_congr_of_sub_mem h]
 
+/- English proof (translation)
+Establish `e : (aeval (blowUpSubst P u)).comp (liftForm : MRing ι R →ₐ[R] MRing (extIdx ι J) R) = (Polynomial.CAlgHom).comp (Ideal.Quotient.mkₐ R P)`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `v`. Simplify using `[liftForm, blowUpSubst]`. Conclude with `DFunLike.congr_fun e p`.
+-/
 theorem aeval_blowUpSubst_liftForm {K : Type*} {ι : K → Type} {J : Type} {R : Type*} [CommRing R]
     (P : Ideal (MRing ι R)) (u : J → MRing ι R) (p : MRing ι R) :
     aeval (blowUpSubst P u) (liftForm p) = Polynomial.C (Ideal.Quotient.mk P p) := by
@@ -293,6 +311,9 @@ theorem aeval_blowUpSubst_liftForm {K : Type*} {ι : K → Type} {J : Type} {R :
     simp [liftForm, blowUpSubst]
   exact DFunLike.congr_fun e p
 
+/- English proof (translation)
+Rewrite using `[blowUpOf, RingHom.mem_ker]`. Simplify using `only [map_sub, map_mul, aeval_blowUpSubst_liftForm, newVar, aeval_X, blowUpSubst, blowUpGens]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem blowUp_relation {K : Type} [Fintype K] {ι : K → Type} {R : Type*} [CommRing R]
     (P : Ideal (MRing ι R)) (s g f m : MRing ι R) (e : K → ℕ) :
     liftForm (s * g) * newVar (some none) - liftForm (f * m) * newVar none ∈
@@ -305,6 +326,9 @@ end Helpers
 
 section Examples
 
+/- English proof (translation)
+Introduce `S`. Take `⟨hmodel, hX0, -⟩` from `lemmas_hypotheses_example`. Conclude with `⟨hmodel, fun j => isWeightedHomogeneous_X _ _ _, 0, hX0⟩`.
+-/
 theorem blowUpModel_hypotheses_example :
     let S := MRing (fun _ : Unit => Fin 2) ℤ_[2]
     IsModelOver (⊥ : Ideal S) 1 ∧ (∀ j : Fin 2, IsMultiHomog (X ⟨(), j⟩ : S) (Pi.single () 1)) ∧

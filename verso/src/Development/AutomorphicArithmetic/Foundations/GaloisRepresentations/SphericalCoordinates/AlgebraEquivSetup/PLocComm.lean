@@ -8,6 +8,23 @@ open GlobalTheory.SplitPts (conjE)
 open GroundTheory.Global.AdeleBaseChange (finiteAdeleMap)
 open scoped TensorProduct
 
+/- English proof (translation)
+Introduce `E _ _ _ n w hw x g hg`. Establish `key : ∀ u : Plc E, comp u (UpperTheory.Gal.CertificateRingHomMap.loc hw x) * comp u g = comp u g * comp u (UpperTheory.Gal.CertificateRingHomMap.loc hw x)`. Introduce `u`. Distinguish the cases in `hu : GlobalTheory.Cong.Apart u w`. Rewrite using `[UpperTheory.Gal.CertificateRingHomMap.comp_loc_of_apart hw hu, one_mul, mul_one]`.
+
+Establish `hu' : u.under (𝓞 (maximalRealSubfield E)) = w.under (𝓞 (maximalRealSubfield E))`. Assume the negation of the conclusion as `h`. Conclude with `hu h`. Take `rfl | rfl` from `GlobalTheory.BCT.GlobLev.eq_or_eq_conjSrc hu'`. Rewrite using `[hg, one_mul, mul_one]`.
+
+Establish `hmem : ((mat g).val.map (conjFin (conjE E)))ᵀ * (mat g).val = finiteAdeleMap ℚ E (sim g : AfQˣ) • (1 : Matrix (Fin n) (Fin n) (Af E))` using `g.2`. Establish `h2` using `congrArg (RingHom.mapMatrix (pLoc E w)) hmem`. Establish `e1 : RingHom.mapMatrix (pLoc E w) (((mat g).val.map (conjFin (conjE E)))ᵀ) = ((comp (conjSrc (conjE E) w) g).val.map (conjLoc (conjE E) w))ᵀ`. Use `Matrix.ext fun i k => ?_` and prove the remaining obligations. Conclude with `pLoc_conjFin (conjE E) _ w`.
+
+Establish `e2 : RingHom.mapMatrix (pLoc E w) (mat g).val = 1`. Establish `: (comp w g).val = 1` using `by rw [hg]; rfl`. Conclude with `this`. Establish `e3 : RingHom.mapMatrix (pLoc E w) (finiteAdeleMap ℚ E (sim g : AfQˣ) • (1 : Matrix (Fin n) (Fin n) (Af E))) = pLoc E w (finiteAdeleMap ℚ E (sim g : AfQˣ)) • (1 : Matrix (Fin n) (Fin n) (w.adicCompletion E))`. Use extensionality with `i k`.
+
+Apply the tactic sequence `by_cases hik : i = k <;> simp [hik, Matrix.one_apply]`. Rewrite `h2` using `[map_mul, e1, e2, mul_one, e3]`. Establish `hM : RingHom.mapMatrix (conjLoc (conjE E) w) (comp (conjSrc (conjE E) w) g).val = pLoc E w (finiteAdeleMap ℚ E (sim g : AfQˣ)) • (1 : Matrix (Fin n) (Fin n) (w.adicCompletion E))`. Use `congrArg Matrix.transpose h2` as an intermediate fact. Rewrite `this` using `[Matrix.transpose_transpose, Matrix.transpose_smul, Matrix.transpose_one]`.
+
+Conclude with `this`. Establish `hinj : Function.Injective (RingHom.mapMatrix (conjLoc (conjE E) w) : Matrix (Fin n) (Fin n) _ →+* Matrix (Fin n) (Fin n) _)`. Introduce `a b hab`. Use `Matrix.ext fun i k => ?_` and prove the remaining obligations. Conclude with `(conjLoc (conjE E) w).injective (congrFun (congrFun hab i) k)`.
+
+Apply `Units.ext` to reduce the goal to its premises. Apply `hinj` to reduce the goal to its premises. Rewrite using `[Units.val_mul, Units.val_mul, map_mul, map_mul, hM, Matrix.smul_mul, Matrix.mul_smul, Matrix.one_mul, Matrix.mul_one]`. Use `Subtype.ext (Prod.ext (Units.ext (GlobalTheory.EulerTw.matrix_ext_pLoc E n fun v => ?_)) ?_)` and prove the remaining obligations. Establish `h3 : (comp v (UpperTheory.Gal.CertificateRingHomMap.loc hw x * g)).val = (comp v (g * UpperTheory.Gal.CertificateRingHomMap.loc hw x)).val`.
+
+Rewrite using `[map_mul, map_mul, key v]`. Conclude with `h3`. Conclude with `mul_comm (sim (UpperTheory.Gal.CertificateRingHomMap.loc hw x)) (sim g)`.
+-/
 theorem UpperTheory.Gal.W2.Seed.pLocComm :
     LocComm := by
   intro E _ _ _ n w hw x g hg

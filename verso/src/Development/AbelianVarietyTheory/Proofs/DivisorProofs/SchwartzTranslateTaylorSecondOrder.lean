@@ -9,6 +9,11 @@ namespace GlobalTheory.SchwartzTranslateUnif
 
 open GlobalTheory.SchwartzTranslate
 
+/- English proof (translation)
+Use `SchwartzMap.seminorm_le_bound ℂ k n _ (by positivity) fun x => ?_` and prove the remaining obligations. Establish `e : ⇑(LineDeriv.lineDerivOpCLM ℂ 𝓢(V, ℂ) a g) = fun y => fderiv ℝ g y a`. Use function extensionality and compare the values at `y`. Rewrite using `[LineDeriv.lineDerivOpCLM_apply, SchwartzMap.lineDerivOp_apply_eq_fderiv]`. Rewrite using `[e]`.
+
+Establish `h1 : ‖iteratedFDeriv ℝ n (fun y => fderiv ℝ g y a) x‖ ≤ ‖a‖ * ‖iteratedFDeriv ℝ (n + 1) g x‖`. Rewrite using `[← norm_iteratedFDeriv_fderiv]`. Conclude with `norm_iteratedFDeriv_clm_apply_const (g.smooth'.fderiv_right (m := ∞) le_rfl).contDiffAt (by exact_mod_cast le_top)`. Establish `h2` using `SchwartzMap.le_seminorm ℂ k (n + 1) g x`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem seminorm_lineDerivOp_le {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] (a : V)
     (g : 𝓢(V, ℂ)) (k n : ℕ) :
     SchwartzMap.seminorm ℂ k n (LineDeriv.lineDerivOpCLM ℂ 𝓢(V, ℂ) a g)
@@ -29,6 +34,25 @@ theorem seminorm_lineDerivOp_le {V : Type} [NormedAddCommGroup V] [NormedSpace �
     _ = ‖a‖ * (‖x‖ ^ k * ‖iteratedFDeriv ℝ (n + 1) g x‖) := by ring
     _ ≤ _ := by gcongr
 
+/- English proof (translation)
+Use `set f1 : 𝓢(V, ℂ) := LineDeriv.lineDerivOpCLM ℂ 𝓢(V, ℂ) a f with hf1`. Use `set f2 : 𝓢(V, ℂ) := LineDeriv.lineDerivOpCLM ℂ 𝓢(V, ℂ) a f1 with hf2`. Establish `e1 : (fun y => fderiv ℝ f y a) = f1`. Use function extensionality and compare the values at `y`. Rewrite using `[hf1, LineDeriv.lineDerivOpCLM_apply, SchwartzMap.lineDerivOp_apply_eq_fderiv]`.
+
+Establish `e2 : (fun y => fderiv ℝ f1 y a) = f2`. Use function extensionality and compare the values at `y`. Rewrite using `[hf2, LineDeriv.lineDerivOpCLM_apply, SchwartzMap.lineDerivOp_apply_eq_fderiv]`. Use `SchwartzMap.seminorm_le_bound ℂ k n _ (by positivity) fun x => ?_` and prove the remaining obligations. Establish `hn : ((n : ℕ) : WithTop ℕ∞) ≤ ∞` using `by exact_mod_cast le_top`.
+
+Establish `c0 : ContDiff ℝ ∞ f` using `f.smooth'`. Establish `c1 : ContDiff ℝ ∞ f1` using `f1.smooth'`. Establish `ct : ContDiff ℝ ∞ (fun z => f (z + t • a))` using `c0.comp (contDiff_id.add contDiff_const)`. Establish `efun : ⇑(SchwartzMap.compSubConstCLM ℂ (-(t • a)) f - f - (t : ℂ) • f1) = (fun z => f (z + t • a)) - ⇑f - t • ⇑f1`. Use function extensionality and compare the values at `z`.
+
+Simplify using the standard rewrite rules. Establish `eit : iteratedFDeriv ℝ n ⇑(SchwartzMap.compSubConstCLM ℂ (-(t • a)) f - f - (t : ℂ) • f1) x = iteratedFDeriv ℝ n f (x + t • a) - iteratedFDeriv ℝ n f x - t • iteratedFDeriv ℝ n f1 x`. Rewrite using `[efun, iteratedFDeriv_sub_apply (f := (fun z => f (z + t • a)) - ⇑f) (g := t • ⇑f1) ((ct.sub c0).of_le hn).contDiffAt ((c1.const_smul t).of_le hn).contDiffAt, iteratedFDeriv_sub_apply (ct.of_le hn).contDiffAt (c0.of_le hn).contDiffAt, iteratedFDeriv_const_smul_apply (c1.of_le hn) …`. Establish `key` using `taylor_two (fun s : ℝ => ‖x‖ ^ k • iteratedFDeriv ℝ n f (x + s • a)) (fun s : ℝ => ‖x‖ ^ k • iteratedFDeriv ℝ n f1 (x + s • a)) (fun s : ℝ => ‖x‖ ^ k • iteratedFDeriv ℝ n f2 (x + s • a)) (fun s => by`. Use `hasDerivAt_iteratedFDeriv_line a n f c0 x s` as an intermediate fact.
+
+Rewrite `this` using `[e1]`. Conclude with `this.const_smul (‖x‖ ^ k))`. Use the proof step `(fun s => by`. Use `hasDerivAt_iteratedFDeriv_line a n f1 c1 x s` as an intermediate fact. Rewrite `this` using `[e2]`.
+
+Conclude with `this.const_smul (‖x‖ ^ k))`. Use the proof step `(2 ^ (k - 1) * (SchwartzMap.seminorm ℂ k n f2 + ‖a‖ ^ k * SchwartzMap.seminorm ℂ 0 n f2))`. Use the proof step `(fun s hs => by`. Establish `hx : ‖x‖ ≤ ‖x + s • a‖ + ‖a‖`. Establish `h3 : ‖s • a‖ ≤ ‖a‖`.
+
+Rewrite using `[norm_smul, Real.norm_eq_abs]`. Conclude with `mul_le_of_le_one_left (norm_nonneg _) hs`. Establish `h4` using `norm_sub_le (x + s • a) (s • a)`. Rewrite `h4` using `[add_sub_cancel_right]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hp : ‖x‖ ^ k ≤ 2 ^ (k - 1) * (‖x + s • a‖ ^ k + ‖a‖ ^ k)` using `(pow_le_pow_left₀ (norm_nonneg _) hx k).trans (add_pow_le (norm_nonneg _) (norm_nonneg _) k)`. Establish `b1` using `SchwartzMap.le_seminorm ℂ k n f2 (x + s • a)`. Establish `b2` using `SchwartzMap.le_seminorm ℂ 0 n f2 (x + s • a)`. Rewrite `b2` using `[pow_zero, one_mul]`. Rewrite using `[norm_smul, Real.norm_of_nonneg (by positivity)]`.
+
+Combine the equalities or inequalities in the displayed calculation. Simplify using `only [zero_smul, add_zero] at key`. Rewrite `key` using `[smul_comm t, ← smul_sub, ← smul_sub, norm_smul, Real.norm_of_nonneg (by positivity)]`. Rewrite using `[eit]`. Conclude with `key`.
+-/
 theorem seminorm_translate_sub_le_explicit {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V]
     (a : V) (f : 𝓢(V, ℂ)) (k n : ℕ) (t : ℝ) (ht : |t| ≤ 1) :
     SchwartzMap.seminorm ℂ k n (SchwartzMap.compSubConstCLM ℂ (-(t • a)) f - f
@@ -99,6 +123,13 @@ theorem seminorm_translate_sub_le_explicit {V : Type} [NormedAddCommGroup V] [No
   rw [eit]
   exact key
 
+/- English proof (translation)
+Use `⟨2 ^ (k - 1) * (SchwartzMap.seminorm ℂ k (n + 2) f + SchwartzMap.seminorm ℂ 0 (n + 2) f), fun a ha => ?_⟩` and prove the remaining obligations. Establish `h` using `seminorm_translate_sub_le_explicit a f k n 1 (by simp)`. Simplify using `only [one_smul, Complex.ofReal_one, one_pow, mul_one] at h`. Use `h.trans ?_` and prove the remaining obligations. Establish `hA : ∀ j, SchwartzMap.seminorm ℂ j n (LineDeriv.lineDerivOpCLM ℂ 𝓢(X, ℂ) a (LineDeriv.lineDerivOpCLM ℂ 𝓢(X, ℂ) a f)) ≤ ‖a‖ ^ 2 * SchwartzMap.seminorm ℂ j (n + 2) f`.
+
+Introduce `j`. Combine the equalities or inequalities in the displayed calculation. Establish `hak : ‖a‖ ^ k ≤ 1` using `pow_le_one₀ (norm_nonneg _) ha`. Establish `h0` using `hA 0`. Establish `hk` using `hA k`.
+
+Establish `s0 : 0 ≤ SchwartzMap.seminorm ℂ 0 n (LineDeriv.lineDerivOpCLM ℂ 𝓢(X, ℂ) a (LineDeriv.lineDerivOpCLM ℂ 𝓢(X, ℂ) a f))` using `apply_nonneg _ _`. Establish `hmul : ‖a‖ ^ k * SchwartzMap.seminorm ℂ 0 n (LineDeriv.lineDerivOpCLM ℂ 𝓢(X, ℂ) a (LineDeriv.lineDerivOpCLM ℂ 𝓢(X, ℂ) a f)) ≤ ‖a‖ ^ 2 * SchwartzMap.seminorm ℂ 0 (n + 2) f` using `(mul_le_of_le_one_left s0 hak).trans h0`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem seminorm_translate_sub_lineDeriv_le {X : Type} [NormedAddCommGroup X] [NormedSpace ℝ X]
     (f : 𝓢(X, ℂ)) (k n : ℕ) : ∃ C : ℝ, ∀ a : X, ‖a‖ ≤ 1 →
       SchwartzMap.seminorm ℂ k n (SchwartzMap.compSubConstCLM ℂ (-a) f - f

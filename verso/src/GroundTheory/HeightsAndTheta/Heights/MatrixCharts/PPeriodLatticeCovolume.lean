@@ -12,6 +12,11 @@ noncomputable section
 
 namespace PeriodLatticeCovolume
 
+/- English proof (translation)
+Unfold `hermPair`. Simplify using `only [star_sum, star_smul, Complex.star_def, Complex.conj_ofReal, mulVec_sum, mulVec_smul, sum_dotProduct, dotProduct_sum, smul_dotProduct, dotProduct_smul, smul_eq_mul, Complex.re_sum, Complex.re_ofReal_mul]`. Simplify using `only [Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hermPair_comb {ι : Type*} [Fintype ι] {m : ℕ} (A : Matrix ι ι ℝ) (b : Fin m → ι → ℂ)
     (x y : Fin m → ℝ) :
     hermPair A (∑ a, (x a : ℂ) • b a) (∑ c, (y c : ℂ) • b c) =
@@ -25,6 +30,13 @@ theorem hermPair_comb {ι : Type*} [Fintype ι] {m : ℕ} (A : Matrix ι ι ℝ)
   refine Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun c _ => ?_
   ring
 
+/- English proof (translation)
+Rewrite using `[Fin.sum_univ_add]`. Simplify using `only [periodBasis, Fin.append_left, Fin.append_right]`. Use `congr 1`. Use extensionality with `l`. Simplify using `[intVecC, Finset.sum_apply, Pi.single_apply]`.
+
+Establish `hs : ∀ x, ((n x : ℤ) : ℂ) • (τ *ᵥ Pi.single x (1 : ℂ)) = τ *ᵥ (((n x : ℤ) : ℂ) • Pi.single x (1 : ℂ))` using `fun x => (mulVec_smul _ _ _).symm`. Simplify using `only [hs]`. Rewrite using `[← mulVec_sum]`. Use `congr 1`. Use extensionality with `l`.
+
+Simplify using `[intVecC, Finset.sum_apply, Pi.single_apply]`.
+-/
 theorem sum_periodBasis {g : ℕ} (τ : Matrix (Fin g) (Fin g) ℂ) (a n : Fin g → ℤ) :
     ∑ i, ((Fin.append a n i : ℤ) : ℂ) • periodBasis τ i = intVecC a + τ *ᵥ intVecC n := by
   rw [Fin.sum_univ_add]
@@ -44,6 +56,23 @@ end PeriodLatticeCovolume
 
 open PeriodLatticeCovolume in
 
+/- English proof (translation)
+Introduce `g τ k v hv hind`. Use `choose a n han using hv`. Set `N : Matrix (Fin (g + g)) (Fin k) ℤ` to `fun i j => Fin.append (a j) (n j) i`. Establish `hN : ∀ j, v j = ∑ i, (N i j : ℂ) • periodBasis τ i` using `fun j => by`. Rewrite using `[han j]`.
+
+Conclude with `(sum_periodBasis τ (a j) (n j)).symm`. Use `⟨N, hN, ?_, ?_⟩` and prove the remaining obligations. Introduce `c hc`. Rewrite `hind` using `[Fintype.linearIndependent_iff]`. Use function extensionality and compare the values at `j`.
+
+Use `hind c ?_ j` and prove the remaining obligations. Establish `: ∀ j, c j • v j = ∑ i, ((c j : ℂ) * (N i j : ℂ)) • periodBasis τ i` using `fun j => by`. Rewrite using `[hN j, ← Int.cast_smul_eq_zsmul ℂ, Finset.smul_sum]`. Simplify using `only [smul_smul]`. Simplify using `only [this]`.
+
+Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_smul]`. Establish `hi` using `congrFun hc i`. Simplify using `only [mulVec, dotProduct, Pi.zero_apply] at hi`.
+
+Establish `: ∑ j, (c j : ℂ) * (N i j : ℂ) = ((∑ j, N i j * c j : ℤ) : ℂ)`. Use `push_cast`. Conclude with `Finset.sum_congr rfl fun j _ => mul_comm _ _`. Rewrite using `[this, hi]`. Simplify using the standard rewrite rules.
+
+Unfold `covolume`. Use `congr 2`. Use extensionality with `j l`. Rewrite using `[Matrix.of_apply, hN j, hN l]`. Establish `h1 : ∀ j, ∑ i, (N i j : ℂ) • periodBasis τ i = ∑ i, (((N i j : ℝ)) : ℂ) • periodBasis τ i` using `fun j => by`.
+
+Simplify using the standard rewrite rules. Rewrite using `[h1 j, h1 l, hermPair_comb]`. Simplify using `only [intGram, mul_apply, transpose_apply, map_apply, periodGram, Matrix.of_apply, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem PeriodLatticeCovolume.proof : PeriodLatticeCovolume.Statement := by
   intro g τ k v hv hind
   choose a n han using hv

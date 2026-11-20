@@ -12,6 +12,13 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (ψ : AddChar (AF F) ℂ)
   (v : HeightOneSpectrum (𝓞 F)) (Λ : Set (Fin n → E))
 
+/- English proof (translation)
+Unfold `omAt`. Use `split_ifs with hT`. Unfold `omFam split_ifs with hf`. Establish `h1` using `(hf.choose_spec).1 ⟨T, hT⟩`. Use `measure_mono_null (fun X hX => ?_) h1` and prove the remaining obligations.
+
+Simplify using `only [Set.mem_compl_iff, Set.mem_ofPred_eq] at hX`. Simplify using `only [Set.mem_compl_iff, Set.mem_inter_iff, Set.mem_preimage, Set.mem_singleton_iff, not_and]`. Introduce `h`. Conclude with `absurd h hX`. Simplify using the standard rewrite rules.
+
+Simplify using the standard rewrite rules.
+-/
 theorem omAt_compl_zero {a : ℕ} (T : Matrix (Fin a) (Fin a) (Fv F v ⊗[F] E)) :
     omAt σ J ψ v T {X | gramR (Fv F v) σ J X = T}ᶜ = 0 := by
   unfold omAt
@@ -26,17 +33,28 @@ theorem omAt_compl_zero {a : ℕ} (T : Matrix (Fin a) (Fin a) (Fv F v ⊗[F] E))
     · simp
   · simp
 
+/- English proof (translation)
+Introduce `i`. Conclude with `(hk (Y i)).1 (hY i)`.
+-/
 theorem smul_mem_LamT {a : ℕ} (k : HA (Fv F v) σ J) (hk : k ∈ Formalism.L2.SG.TypedSets.Kv σ J Λ v)
     (Y : TupV (E := E) v n a) (hY : Y ∈ LamT v Λ a) : k • Y ∈ LamT v Λ a := by
   intro i
   exact (hk (Y i)).1 (hY i)
 
+/- English proof (translation)
+Unfold `qv`. Establish `: Ideal.absNorm v.asIdeal ≠ 0`. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff]`. Conclude with `v.ne_bot`. Conclude with `Nat.pos_of_ne_zero this` after adjusting the coercions.
+-/
 theorem qv_pos : 0 < qv v := by
   unfold qv
   have : Ideal.absNorm v.asIdeal ≠ 0 := by
     rw [Ne, Ideal.absNorm_eq_zero_iff]; exact v.ne_bot
   exact_mod_cast Nat.pos_of_ne_zero this
 
+/- English proof (translation)
+Establish `hd : dV v ≠ 0`. Unfold `dV`. Use `split_ifs with h`. Conclude with `h.choose_spec.1`. Conclude with `one_ne_zero`.
+
+Unfold `absV`. Rewrite using `[dif_neg (by simpa using hd)]`. Conclude with `zpow_pos (qv_pos v) _`.
+-/
 theorem absV_dV_pos : 0 < absV v (dV v) := by
   have hd : dV v ≠ 0 := by
     unfold dV; split_ifs with h
@@ -46,6 +64,21 @@ theorem absV_dV_pos : 0 < absV v (dV v) := by
   rw [dif_neg (by simpa using hd)]
   exact zpow_pos (qv_pos v) _
 
+/- English proof (translation)
+Introduce `hS hL hSD hUn ha hP hdet`. Establish `hG : GoodY σ J ψ v Λ a Y` using `⟨hS, hL, hSD, hUn, ha, hP, hdet⟩`. Take `⟨ϖ, hϖ⟩` from `hU`. Take `⟨hW, hH⟩` from `hSd hS`. Use `set T := gramR (Fv F v) σ J Y with hTdef`.
+
+Use `set ω := omAt σ J ψ v T with hω`. Use `set O := {X | ∃ k ∈ Formalism.L2.SG.TypedSets.Kv σ J Λ v, X = k • Y} with hO`. Establish `hYL : Y ∈ LamT v Λ a` using `hP.1`. Establish `hsub : O ⊆ LamT v Λ a`. Introduce and unpack `X ⟨k, hk, rfl⟩`.
+
+Conclude with `smul_mem_LamT σ J v Λ k hk Y hYL`. Establish `hsup : LamT v Λ a ⊆ O ∪ {X | gramR (Fv F v) σ J X = T}ᶜ`. Introduce `X hX`. Distinguish the cases in `hg : gramR (Fv F v) σ J X = T`. Conclude with `Or.inl (h1 hG X hX hg)`.
+
+Conclude with `Or.inr hg`. Establish `hEq : ω O = ω (LamT v Λ a)`. Apply `le_antisymm (measure_mono hsub)` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Use `show ω O = _`.
+
+Rewrite using `[hEq, hω, h2 hG (hOm hS).1 ϖ hϖ, h3 hG hW ϖ hϖ, h4 hS hL hSD hUn hW, h5 hS hUn hH ϖ hϖ]`. Establish `hq` using `qv_pos v`. Establish `hd` using `absV_dV_pos v`. Rewrite using `[← ENNReal.ofReal_mul' (Real.rpow_nonneg hd.le _), ← ENNReal.ofReal_div_of_pos (by positivity)]`. Use `congr 1`.
+
+Establish `e : absV v (dV v) ^ ((n : ℝ) * a - (a : ℝ) ^ 2 / 2) = absV v (dV v) ^ ((n : ℝ) * a) / absV v (dV v) ^ ((a : ℝ) ^ 2 / 2)` using `Real.rpow_sub hd _ _`. Rewrite using `[e]`. Unfold `prodEta`. Establish `: (0 : ℝ) < qv v ^ (-((a : ℤ) ^ 2))` using `zpow_pos hq _`. Establish `: (0 : ℝ) < absV v (dV v) ^ ((a : ℝ) ^ 2 / 2)` using `Real.rpow_pos_of_pos hd _`.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem omLocU_of (a : ℕ) (Y : TupV (E := E) v n a)
     (hSd : (StdHyp σ J ψ → (∃ μ, SdW F E σ n J (Fv F v) (psiV F ψ v) a μ) ∧ ∃ ν, SdHerm F E σ (Fv F v) (psiV F ψ v) a ν))
     (hOm : OmUnique σ J ψ v a) (hU : UnifEx v)

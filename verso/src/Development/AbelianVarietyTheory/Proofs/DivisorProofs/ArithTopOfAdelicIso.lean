@@ -28,12 +28,18 @@ def modelOfIso (M' : Model Y') (φ : Y.X ≅ Y'.X) (hs : φ.hom ≫ Y'.str = Y.s
 
 omit [NumberField F] in
 
+/- English proof (translation)
+Take `⟨z, rfl⟩` from `ha`. Take `⟨z', rfl⟩` from `hb`. Rewrite using `[← map_mul, Base.valAt_stalk, Base.valAt_stalk, Base.valAt_stalk, map_mul]`.
+-/
 theorem valAt_mul' {K : Type} [Field K] {Z : Scheme.{0}} [IsIntegral Z] (y : Sp K ⟶ Z) {a b : Z.functionField}
     (ha : RegAt (below y) a) (hb : RegAt (below y) b) : valAt y (a * b) = valAt y a * valAt y b := by
   obtain ⟨z, rfl⟩ := ha
   obtain ⟨z', rfl⟩ := hb
   rw [← map_mul, Base.valAt_stalk, Base.valAt_stalk, Base.valAt_stalk, map_mul]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => Set.mem_iInter.2 fun k => Set.mem_iInter.1 h k, fun h => Set.mem_iInter.2 fun k => Set.mem_iInter.1 h k⟩`.
+-/
 theorem mem_pull_comp {T T' Z : Scheme.{0}} (B : LB Z) (f : T ⟶ T') (j : T' ⟶ Z) (i : (B.pull j).ι) (x : T) :
     x ∈ (B.pull (f ≫ j)).U i ↔ f x ∈ (B.pull j).U i :=
   ⟨fun h => Set.mem_iInter.2 fun k => Set.mem_iInter.1 h k,
@@ -41,6 +47,9 @@ theorem mem_pull_comp {T T' Z : Scheme.{0}} (B : LB Z) (f : T ⟶ T') (j : T' �
 
 omit [NumberField F] in
 
+/- English proof (translation)
+Rewrite using `[← algebraMap_germ (U := U') (x := f (genericPoint Y.X)) (l h) a, ← algebraMap_germ h, map_alg hg]`. Use `congr 1`. Use `(Scheme.Hom.germ_stalkMap_apply f U' (genericPoint Y.X) (l h) a).trans ?_` and prove the remaining obligations. Rewrite using `[Scheme.Hom.appLE, CommRingCat.comp_apply]`. Conclude with `(TopCat.Presheaf.germ_res_apply _ _ _ _ _).symm`.
+-/
 theorem map_fnOf {f : Y.X ⟶ Y'.X} {ψ : Y'.Fn →+* Y.Fn} (hg : genericPt Y ≫ f = spMap ψ ≫ genericPt Y')
     {U' : Y'.X.Opens} {U : Y.X.Opens} (l : U ≤ f ⁻¹ᵁ U') (h : genericPoint Y.X ∈ U)
     (h' : genericPoint Y'.X ∈ U') (a : Γ(Y'.X, U')) :
@@ -53,6 +62,11 @@ theorem map_fnOf {f : Y.X ⟶ Y'.X} {ψ : Y'.Fn →+* Y.Fn} (hg : genericPt Y �
 
 omit [NumberField F] in
 
+/- English proof (translation)
+Introduce `i i' h`. Establish `l : (B.pull (f ≫ j)).U i ⊓ (B.pull (f ≫ j)).U i' ≤ f ⁻¹ᵁ ((B.pull j).U i ⊓ (B.pull j).U i')` using `fun _ hx => ⟨(mem_pull_comp B f j i _).1 hx.1, (mem_pull_comp B f j i' _).1 hx.2⟩`. Establish `h' : genericPoint Y'.X ∈ (B.pull j).U i ⊓ (B.pull j).U i'` using `gen_mem (X := Y'.X) (U := (B.pull j).U i ⊓ (B.pull j).U i') (x := f (genericPoint Y.X)) (l h)`. Simplify using `only [Units.val_mul, Units.coe_map, MonoidHom.coe_coe]`. Rewrite using `[hr i i' h', map_mul, map_fnOf hg l h h', mul_assoc]`.
+
+Use `congr 2`. Rewrite using `[val_pull_g B j i i' (inf_le B j i i'), val_pull_g B (f ≫ j) i i' (inf_le B (f ≫ j) i i')]`. Establish `e` using `Scheme.Hom.appLE_comp_appLE f j _ _ _ (inf_le B j i i') l`. Conclude with `RingHom.congr_fun (congrArg CommRingCat.Hom.hom e) _`.
+-/
 theorem isRatSec_pull_comp {Z : Scheme.{0}} (B : LB Z) (j : Y'.X ⟶ Z) {f : Y.X ⟶ Y'.X} {ψ : Y'.Fn →+* Y.Fn}
     (hg : genericPt Y ≫ f = spMap ψ ≫ genericPt Y') {r' : (B.pull j).ι → Y'.Fnˣ}
     (hr : IsRatSec (B.pull j) r') (c : Y.Fnˣ) :
@@ -71,6 +85,11 @@ theorem isRatSec_pull_comp {Z : Scheme.{0}} (B : LB Z) (j : Y'.X ⟶ Z) {f : Y.X
 
 omit [NumberField F] in
 
+/- English proof (translation)
+Use `⟨LB.isLB_pull hB _, isRatSec_pull_comp B j h.2.1 hr.isRatSec _, fun i x hx => ?_⟩` and prove the remaining obligations. Establish `hg` using `Base.isEqn_eqn D' (φ.hom x)`. Establish `e'` using `(hg.nsmul k).iff_unitAt.1 (hr.isEqn i (φ.hom x) ((mem_pull_comp B φ.hom j i x).1 hx))`. Use `((h.2.2.2 x _ hg).nsmul k).iff_unitAt.2 ?_` and prove the remaining obligations. Use `unitAt_map h.2.1 e'` as an intermediate fact.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Simplify using `only [Units.val_mul, Units.val_pow_eq_pow_val, Units.coe_map, MonoidHom.coe_coe, map_div₀, map_pow, mul_pow]`. Conclude with `mul_div_mul_right _ _ (pow_ne_zero _ u.ne_zero)`.
+-/
 theorem presents_pull_comp {Z : Scheme.{0}} {B : LB Z} (hB : B.IsLB) (j : Y'.X ⟶ Z) {D : Y.Dv}
     {D' : Y'.Dv} {φ : Y.X ≅ Y'.X} {ψ : Y'.Fn →+* Y.Fn} {u : Y.Fnˣ} (h : DivIso D D' φ ψ u) (k : ℕ)
     {r' : (B.pull j).ι → Y'.Fnˣ} (hr : Presents (k • D') (B.pull j) r') :
@@ -86,6 +105,13 @@ theorem presents_pull_comp {Z : Scheme.{0}} {B : LB Z} (hB : B.IsLB) (j : Y'.X �
 
 omit [NumberField F] in
 
+/- English proof (translation)
+Take `⟨U', hU', b, rfl⟩` from `ha.exists_fnOf`. Establish `hx : under y ∈ f ⁻¹ᵁ U'`. Establish `e : under y' = f (under y)` using `by show y'.1 _ = f (y.1 _)`. Rewrite using `[hy]`. Both sides reduce to the same expression.
+
+Use `show f (under y) ∈ U'`. Conclude with `e ▸ hU'`. Establish `hy' : y' ∈ ptsIn Y'.str σ U'` using `mem_ptsIn.2 hU'`. Rewrite using `[map_fnOf hg le_rfl (gen_mem hx), ratVal_fnOf (mem_ptsIn.2 hx), ratVal_fnOf hy', ← Scheme.Hom.app_eq_appLE, ev_app f hs]`. Use `congr 1`.
+
+Conclude with `Subtype.ext hy.symm`.
+-/
 theorem ratVal_map {f : Y.X ⟶ Y'.X} {ψ : Y'.Fn →+* Y.Fn} (hg : genericPt Y ≫ f = spMap ψ ≫ genericPt Y')
     (hs : f ≫ Y'.str = Y.str) {σ : F →+* ℂ} (y : Pts Y σ) (y' : Pts Y' σ) (hy : y'.1 = y.1 ≫ f)
     {a : Y'.Fn} (ha : RegAt (under y') a) : ratVal (ψ a) y = ratVal a y' := by
@@ -105,6 +131,39 @@ theorem ratVal_map {f : Y.X ⟶ Y'.X} {ψ : Y'.Fn →+* Y.Fn} (hg : genericPt Y 
 
 variable {C : CxSt F}
 
+/- English proof (translation)
+Take `⟨⟨hs, hg, hd, hD⟩, hn, hci, harch, hfin⟩` from `h`. Take `⟨h₀, r', hr, h₁, h₂⟩` from `hI`. Use `⟨h₀, fun i => Units.map (ψ : Y'.Fn →* Y.Fn) (r' i) * u ^ (k : ℕ), presents_pull_comp L.isLB M'.j ⟨hs, hg, hd, hD⟩ k hr, ?_, ?_⟩` and prove the remaining obligations. Introduce `σ y y' i f hy hi hf`. Set `y₂ : Pts Y' σ` to `⟨y.1 ≫ φ.hom, by rw [Category.assoc, hs, y.2]⟩`.
+
+Establish `hi' : under y₂ ∈ (L.B.pull M'.j).U i` using `(mem_pull_comp L.B φ.hom M'.j i _).1 hi`. Establish `hy' : y'.1 = y₂.1 ≫ M'.j` using `hy.trans (Category.assoc _ _ _).symm`. Take `⟨g, hg'⟩ : ∃ g, A'.D.IsEqn (under y₂) g` from `⟨_, Base.isEqn_eqn _ _⟩`. Establish `hG : A.D.IsEqn (under y) (Units.map (ψ : Y'.Fn →* Y.Fn) g * u)` using `hD _ g hg'`. Establish `hk` using `hG.nsmul (k : ℕ)`.
+
+Establish `hk'` using `hg'.nsmul (k : ℕ)`. Establish `ha` using `hk.regularAt_iff.1 hf`. Establish `hreg : ((k : ℕ) • A.D).RegularAt (under y) (((Units.map (ψ : Y'.Fn →* Y.Fn) g * u : Y.Fnˣ) : Y.Fn)⁻¹ ^ (k : ℕ))`. Use `hk.regularAt_iff.2 ?_` and prove the remaining obligations. Rewrite using `[Units.val_pow_eq_pow_val, ← mul_pow, inv_mul_cancel₀ (Units.ne_zero _), one_pow]`.
+
+Conclude with `(unitAt_one _).regAt`. Establish `hreg' : ((k : ℕ) • A'.D).RegularAt (under y₂) ((g : Y'.Fn)⁻¹ ^ (k : ℕ))`. Use `hk'.regularAt_iff.2 ?_` and prove the remaining obligations. Rewrite using `[Units.val_pow_eq_pow_val, ← mul_pow, inv_mul_cancel₀ (Units.ne_zero _), one_pow]`. Conclude with `(unitAt_one _).regAt`.
+
+Establish `hb : UnitAt (under y₂) ((g : Y'.Fn)⁻¹ ^ (k : ℕ) * (r' i : Y'.Fn))`. Use `hk'.iff_unitAt.1 (hr.isEqn i _ hi')` as an intermediate fact. Rewrite `this` using `[Units.val_pow_eq_pow_val, div_eq_mul_inv, mul_comm, ← inv_pow]`. Then use the resulting hypothesis. Establish `e1` using `harch σ y y₂ rfl g hg'`. Rewrite `e1` using `[Units.val_inv_eq_inv_val, Units.val_inv_eq_inv_val]`.
+
+Establish `e2` using `h₁ σ y₂ y' i _ hy' hi' hreg'`. Rewrite `e2` using `[← hn, ← hci]`. Establish `e3` using `C.pn_mPow Y σ A.D k (A.m σ) _ y (CartierDiv.isEqn_iff_generatesAt_inv.1 hG)`. Establish `e4` using `C.pn_mPow Y' σ A'.D k (A'.m σ) _ y₂ (CartierDiv.isEqn_iff_generatesAt_inv.1 hg')`. Establish `e5` using `C.pn_mul Y σ _ (C.mPow Y σ A.D k (A.m σ)) _ _ y ha hreg`.
+
+Establish `e6` using `ratVal_mul ha (unitAt_map hg hb).regAt`. Establish `e7` using `ratVal_map hg hs y y₂ rfl hb.regAt`. Establish `hf_eq : f = f * ((Units.map (ψ : Y'.Fn →* Y.Fn) g * u) ^ (k : ℕ) : Y.Fnˣ) * ((Units.map (ψ : Y'.Fn →* Y.Fn) g * u : Y.Fnˣ) : Y.Fn)⁻¹ ^ (k : ℕ)`. Rewrite using `[Units.val_pow_eq_pow_val, mul_assoc, ← mul_pow, mul_inv_cancel₀ (Units.ne_zero _), one_pow, mul_one]`. Establish `hr_eq : f * ((Units.map (ψ : Y'.Fn →* Y.Fn) (r' i) * u ^ (k : ℕ) : Y.Fnˣ) : Y.Fn) = f * ((Units.map (ψ : Y'.Fn →* Y.Fn) g * u) ^ (k : ℕ) : Y.Fnˣ) * ψ ((g : Y'.Fn)⁻¹ ^ (k : ℕ) * (r' i : Y'.Fn))`.
+
+Establish `hψ : ψ (g : Y'.Fn) ≠ 0` using `(Units.map (ψ : Y'.Fn →* Y.Fn) g).ne_zero`. Establish `hh : ψ (g : Y'.Fn) ^ (k : ℕ) * (ψ (g : Y'.Fn))⁻¹ ^ (k : ℕ) = 1`. Rewrite using `[← mul_pow, mul_inv_cancel₀ hψ, one_pow]`. Simplify using `only [Units.val_mul, Units.val_pow_eq_pow_val, Units.coe_map, MonoidHom.coe_coe, map_mul, map_pow, map_inv₀, mul_pow]`. Take the linear combination `(-(f * ψ (r' i : Y'.Fn) * (u : Y.Fn) ^ (k : ℕ))) * hh`.
+
+Use `conv_lhs => rw [hf_eq]`. Rewrite `e2` using `[e4]`. Rewrite using `[e5, e3, e1, hr_eq, e6, e7, norm_mul, mul_pow, mul_left_comm, e2]`. Expand and normalize the polynomial expressions, which then agree. Introduce `v e y yt i hy hi`.
+
+Set `y₂ : AlgPt Y'` to `⟨y.1 ≫ φ.hom, by rw [Category.assoc, hs, y.2]⟩`. Establish `e2` using `h₂ v e y₂ yt i (hy.trans (Category.assoc _ _ _).symm) hi`. Establish `e1` using `hfin v e y y₂ rfl`. Rewrite `e2` using `[← hn]`. Establish `hg'` using `Base.isEqn_eqn A'.D (below y₂.1)`.
+
+Establish `hgA` using `Base.isEqn_eqn A.D (below y.1)`. Establish `hc : UnitAt (below y.1) (((Units.map (ψ : Y'.Fn →* Y.Fn) (eqn A'.D (below y₂.1)) * u * (eqn A.D (below y.1))⁻¹ : Y.Fnˣ) : Y.Fn))`. Use `hgA.iff_unitAt.1 (hD _ _ hg')` as an intermediate fact. Rewrite using `[Units.val_mul _ (eqn A.D (below y.1))⁻¹, Units.val_inv_eq_inv_val, ← div_eq_mul_inv]` and apply the resulting hypothesis. Establish `hmem : below y₂.1 ∈ (L.B.pull M'.j).U i`.
+
+Use `Set.mem_iInter.2 fun _ => ?_` and prove the remaining obligations. Establish `hy2 : spMap e.O.subtype ≫ yt = y₂.1 ≫ M'.j` using `hy.trans (Category.assoc _ _ _).symm`. Establish `h3 : (y₂.1 ≫ M'.j) (IsLocalRing.closedPoint _) ∈ L.B.U (i PUnit.unit)`. Rewrite using `[← hy2]`. Conclude with `hi (show (spMap e.O.subtype) (IsLocalRing.closedPoint _) ∈ (⊤ : Scheme.Opens _) from trivial)`.
+
+Conclude with `h3`. Establish `hb : UnitAt (below y₂.1) (((eqn A'.D (below y₂.1))⁻¹ ^ (k : ℕ) * r' i : Y'.Fnˣ) : Y'.Fn)`. Use `(hg'.nsmul (k : ℕ)).iff_unitAt.1 (hr.isEqn i _ hmem)` as an intermediate fact. Rewrite using `[Units.val_mul, Units.val_pow_eq_pow_val, Units.val_inv_eq_inv_val, inv_pow, inv_mul_eq_div, ← Units.val_pow_eq_pow_val]` and apply the resulting hypothesis. Establish `hcr : RegAt (below y.1) ((((Units.map (ψ : Y'.Fn →* Y.Fn) (eqn A'.D (below y₂.1)) * u * (eqn A.D (below y.1))⁻¹ : Y.Fnˣ) : Y.Fn)) ^ (k : ℕ))`.
+
+Take `⟨z, -, hz⟩` from `hc`. Conclude with `⟨z ^ (k : ℕ), by rw [map_pow, hz]⟩`. Establish `key : (((eqn A.D (below y.1))⁻¹ ^ (k : ℕ) * (Units.map (ψ : Y'.Fn →* Y.Fn) (r' i) * u ^ (k : ℕ)) : Y.Fnˣ) : Y.Fn) = ψ (((eqn A'.D (below y₂.1))⁻¹ ^ (k : ℕ) * r' i : Y'.Fnˣ) : Y'.Fn) * (((Units.map (ψ : Y'.Fn →* Y.Fn) (eqn A'.D (below y₂.1)) * u * (eqn A.D (below y.1))⁻¹ : Y.Fnˣ) …`. Establish `hψ : ψ (eqn A'.D (below y₂.1) : Y'.Fn) ≠ 0` using `(Units.map (ψ : Y'.Fn →* Y.Fn) _).ne_zero`. Establish `hh : ψ (eqn A'.D (below y₂.1) : Y'.Fn) ^ (k : ℕ) * (ψ (eqn A'.D (below y₂.1) : Y'.Fn))⁻¹ ^ (k : ℕ) = 1`.
+
+Rewrite using `[← mul_pow, mul_inv_cancel₀ hψ, one_pow]`. Simplify using `only [Units.val_mul, Units.val_pow_eq_pow_val, Units.val_inv_eq_inv_val, Units.coe_map, MonoidHom.coe_coe, map_mul, map_pow, map_inv₀, mul_pow, inv_pow]`. Take the linear combination `(-(((eqn A.D (below y.1) : Y.Fn) ^ (k : ℕ))⁻¹ * ψ (r' i : Y'.Fn) * (u : Y.Fn) ^ (k : ℕ))) * hh`. Establish `hck` using `(Base.valAt_zpow y.1 hc).2 (k : ℕ)`. Simplify using `only [zpow_natCast] at hck`.
+
+Establish `hb0` using `(Base.valAt_zpow y₂.1 hb).1`. Establish `hc0` using `(Base.valAt_zpow y.1 hc).1`. Rewrite using `[key, valAt_mul' y.1 (unitAt_map hg hb).regAt hcr, valAt_map hg y.1 hb.regAt, hck, map_mul, map_pow, Real.log_mul (e.w.pos hb0).ne' (pow_pos (e.w.pos hc0) _).ne', Real.log_pow]`. Take the linear combination `((k : ℕ) : ℝ) * e1 + e2`.
+-/
 theorem induced_of_adlIso {A : Adl C Y} {A' : Adl C Y'} {φ : Y.X ≅ Y'.X} {ψ : Y'.Fn →+* Y.Fn} {u : Y.Fnˣ}
     (h : AdlIso A A' φ ψ u) {M' : Model Y'} {L : HermLB M'.p} {k : ℕ+} {cf : HeightOneSpectrum (𝓞 F) → ℝ}
     (hI : A'.Induced M' L k cf) : A.Induced (modelOfIso M' φ h.1.1 h.1.2.2.1) L k cf := by
@@ -204,6 +263,9 @@ theorem induced_of_adlIso {A : Adl C Y} {A' : Adl C Y'} {φ : Y.X ≅ Y'.X} {ψ 
 
 end IsoTransport
 
+/- English proof (translation)
+Introduce `F _ _ C Y Y' A A' φ ψ u h hdeg t ht`. Take `⟨M', L, k, cf, a, hI, ha, rfl⟩` from `ht`. Use `⟨modelOfIso M' φ h.1.1 h.1.2.2.1, L, k, cf, a, induced_of_adlIso h hI, ha, ?_⟩` and prove the remaining obligations. Rewrite using `[hdeg, h.2.1, h.1.2.2.1]`.
+-/
 theorem isArTop_of_adlIso : ∀ (F : Type) [Field F] [NumberField F] (C : GlobalTheory.TrueGeo.CxSt F) (Y Y' : Var F) (A : GlobalTheory.TrueGeo.Adl C Y) (A' : GlobalTheory.TrueGeo.Adl C Y') (φ : Y.X ≅ Y'.X) (ψ : Y'.Fn →+* Y.Fn) (u : Y.Fnˣ), AdlIso A A' φ ψ u → A.deg = A'.deg → ∀ t : ℝ, A'.IsArTop t → A.IsArTop t := by
   intro F _ _ C Y Y' A A' φ ψ u h hdeg t ht
   obtain ⟨M', L, k, cf, a, hI, ha, rfl⟩ := ht

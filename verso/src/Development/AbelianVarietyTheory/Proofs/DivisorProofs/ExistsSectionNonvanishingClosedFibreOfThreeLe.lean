@@ -15,6 +15,13 @@ open GlobalTheory.Mum
 noncomputable section
 namespace GlobalTheory.Mum.ClosedFibreBpf
 
+/- English proof (translation)
+Use `show (Spec.map _).base z = _`. Rewrite using `[Spec.map_base]`. Apply `PrimeSpectrum.ext` to reduce the goal to its premises. Use `show Ideal.comap _ z.asIdeal = maximalIdeal R`. Use `symm`.
+
+Apply `(IsLocalRing.maximalIdeal.isMaximal R).eq_of_le (by haveI := z.isPrime` to reduce the goal to its premises. Conclude with `Ideal.IsPrime.ne_top inferInstance)`. Introduce `a ha`. Use `show _ ∈ z.asIdeal`. Establish `: (Ideal.Quotient.mk (maximalIdeal R ^ (0 + 1))) a = 0`.
+
+Rewrite using `[Ideal.Quotient.eq_zero_iff_mem]`. Simplify using `using ha`. Rewrite using `[show (CommRingCat.ofHom (Ideal.Quotient.mk (maximalIdeal R ^ (0 + 1)))).hom a = 0 from this]`. Conclude with `z.asIdeal.zero_mem`.
+-/
 theorem thick_zero_apply (R : Type) [CommRing R] [IsLocalRing R]
     (z : Spec (CommRingCat.of (R ⧸ maximalIdeal R ^ (0 + 1)))) :
     thick R (maximalIdeal R) 0 z = closedPoint R := by
@@ -33,6 +40,13 @@ theorem thick_zero_apply (R : Type) [CommRing R] [IsLocalRing R]
   rw [show (CommRingCat.ofHom (Ideal.Quotient.mk (maximalIdeal R ^ (0 + 1)))).hom a = 0 from this]
   exact z.asIdeal.zero_mem
 
+/- English proof (translation)
+Introduce `R _ _ _ hB D A G _ _ hG U k hk y`. Take `⟨σ, j, hx⟩` from `GlobalTheory.T.exists_weightZero_section_not_vanishing_closedFibre R hB D k (by omega) ((U.gt 0).pG.left y) (by`. Establish `h` using `congrArg (fun f => f.base y) (Over.w (U.gt 0).pG)`. Simplify using `only [Scheme.Hom.comp_base, TopCat.comp_app] at h`. Conclude with `h.trans (thick_zero_apply R _))`.
+
+Take `⟨s, f, hf0, hfα, hexp⟩` from `GlobalTheory.T.exists_section_expansion_weightZero_coefficient R hB D A G hG U k (by omega) σ`. Take `⟨i, hi⟩` from `GlobalTheory.T.section_nonzero_of_expansion_mod_maximalIdeal R D A G U.toUnifPre k s f hexp hfα y ⟨j, by`. Substitute `hf0` using the available equality. Rewrite using `[← Scheme.preimage_basicOpen]`. Conclude with `hx⟩`.
+
+Conclude with `⟨s, i, hi⟩`.
+-/
 theorem exists_sec_ne_zero_at : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (D : DegData R (maximalIdeal R)) (A : PolAV (Sp (FractionRing R))) (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ U : Unif (maximalIdeal R) D A G, ∀ k : ℕ, 3 ≤ k → ∀ y : (thickObj R (maximalIdeal R) 0 G).left, ∃ (s : H0 U.LG.L k) (i : Fin 1 → U.LG.L.ι), y ∈ (thickObj R (maximalIdeal R) 0 G).left.basicOpen (((fstG (maximalIdeal R) 0 G).left.app (secChart U.LG.L i)).hom (s.f i)) := by
   intro R _ _ _ hB D A G _ _ hG U k hk y
   obtain ⟨σ, j, hx⟩ := GlobalTheory.T.exists_weightZero_section_not_vanishing_closedFibre R hB D k (by omega) ((U.gt 0).pG.left y) (by

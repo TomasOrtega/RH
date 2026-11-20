@@ -35,6 +35,15 @@ open GlobalTheory.ProjSpace GlobalTheory.ZJ Matrix
 variable {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] {S : ThetaSys o Ω} {ρ : S.Real} {M : RatModel o Ω}
   {U₀ : M.Z.Opens} {EE : M.Lat S.J}
 
+/- English proof (translation)
+Take `⟨m, cl, hm, hcl, hcl0, hmw, hmv⟩` from `exists_matrix hB Q hAA hwt g c tm hU hl hT hO`. Establish `: IsAlgClosed (ZH.kb p)` using `(GlobalTheory.ZJ.kb_isAlgClosed_and_conj p).1`. Use `g.mod.smooth` as an intermediate fact. Establish `: Smooth g.u.G.hom` using `SmoothOfRelativeDimension.smooth S.g _`. Establish `: Smooth g.mod.Φ.G.hom` using `MorphismProperty.of_isPullback g.mod.cart.1 this`.
+
+Establish `: IsReduced g.mod.Φ.G.left` using `GlobalTheory.isReduced_of_smooth_of_isReduced g.mod.Φ.G.hom`. Use `choose F hF using fun i => (GlobalTheory.SecRatio.existsUnique_isLin g.mod.Φ.G.hom g.mod.F (m i)).exists`. Establish `hlr` using `locus_ratio g.mod.Φ.G.hom φ s F fun u hu => by`. Take `⟨v, hv⟩` from `CrdCalc.crd_exists (g.mod.Φ.H_isLB 1) g.mod.F u`. Take `⟨x', hx', hc⟩` from `hcrd _ (u ≫ φ)`.
+
+Take `⟨w, hw⟩` from `CrdCalc.crd_exists (LB.isLB_pull Q.isLB _) (Q.σ l) x'`. Rewrite `hx'` using `[Category.assoc, hφ1]`. Take `⟨k, hk⟩` from `hmv u x' v w hu hx' hv hw`. Establish `h3` using `hc w hw`. Rewrite `h3` using `[Category.assoc, hφ2, reassoc_of% hu, hk]`.
+
+Establish `h4` using `crd_lin hF (ψ := RingHom.id _) (hu.trans (Spec.map_id _).symm) hv`. Conclude with `⟨_, CrdCalc.crd_smul k h4, h3⟩`. Conclude with `⟨_, le_of_add_le_right g.mod.dim.le, GlobalTheory.T.exists_torus_action_weighted_charts hL.1 hL.2.1 _ g.mod.Φ S.g S.N (S.r * S.N) _ S.J _ g.mod.F F g.mod.pol m ((ofSec wt 0 s haff hcov).pull φ) (Equiv.refl _) (fun α => cl (g.mod.xe α)) ⟨(GlobalTheory.ZH.utest_dim_and_split hL o Ω …`.
+-/
 theorem split_geoTest (hL : GlobalTheory.UT.LL) [ArithBase o Ω] (hB : BaseFacts S M U₀ EE) (Q : Clos ρ M U₀ EE) (hBig : S.Big)
     {l : Q.Λ} {A A' : Matrix S.J S.J Ω} (hAA : A' * A = 1) {T : AddSubgroup S.Gam} [Finite (T →+ ZMod S.N)]
     {wt : S.J → (T →+ ZMod S.N)}
@@ -77,6 +86,21 @@ theorem split_geoTest (hL : GlobalTheory.UT.LL) [ArithBase o Ω] (hB : BaseFacts
     (fun i j hij => (hmw i j hij).trans (congrArg cl (g.mod.xe.apply_symm_apply _).symm))
     fun i => hlr i.1⟩
 
+/- English proof (translation)
+Introduce `hL o Ω _ _ _ hA S ρ M U₀ EE hB Q ex hBig hGeo hFib z`. Express the relevant statement in the definitionally equal form `M.Z at z`. Take `⟨W, l, A, A', wt, hW, hz, hle, hsup, hO, hAA, hwt⟩` from `exists_adapted hB Q z`. Take `⟨R, _, _, t, ht, htz, htW⟩` from `exists_immersion hW hz`. Establish `hT : ∀ q, S.TT M z = S.TT M (t q)` using `fun q => by`.
+
+Establish `h1 : z ⤳ t q` using `htz ▸ ((PrimeSpectrum.le_iff_specializes ⊥ q).1 bot_le).map t.continuous`. Establish `h2 : S.supI M z = S.supI M (t q)` using `(hsup _ (htW (Set.mem_univ q))).antisymm fun a ha => RatModel.Div.of_specializes ha h1`. Conclude with `congrArg (fun I => S.perp (AddSubgroup.closure I)) h2`. Take `⟨H, s, haff, hcov, hcrd⟩` from `exists_sections hB Q hAA hwt ⟨z, hz⟩ hle hO t htW hT`. Use `FreeNear.finite_char S (S.TT M z)` as an intermediate fact.
+
+Use `⟨R, inferInstance, inferInstance, t, ht, htz, ofSec wt 0 s haff hcov, fun p _ y τ x hx h hh h1 h2 => ?_⟩` and prove the remaining obligations. Establish `hU` using `cl_of_test τ`. Take `⟨y₀, g, c, ⟨tm⟩⟩` from `(GlobalTheory.T.exists_geometricTest_map_classicalPoint hL o Ω S ρ M U₀ EE hB Q hBig hGeo).1 p y hU`. Take `⟨e, he, hef⟩` from `GlobalTheory.T.exists_iso_special_fibre_test_geometric_test hL o Ω S ρ M U₀ EE hB Q ex p y y₀ g c tm τ hBig hFib`. Establish `hy : t (x (IsLocalRing.closedPoint _)) = y (ZH.cPt p)` using `(congrArg (fun f => f (IsLocalRing.closedPoint (ZH.kb p))) hx).trans (congrArg y (IsLocalRing.comap_closedPoint (IsLocalRing.residue (ZH.OO p))))`.
+
+Establish `hyW` using `(congrArg (· ∈ W) hy).mp (htW (Set.mem_univ _))`. Establish `: IsIso e.inv.left` using `inferInstanceAs (IsIso ((Over.forget _).map e.inv))`. Establish `hei : e.inv.left ≫ e.hom.left = 𝟙 _` using `by rw [← Over.comp_left, e.inv_hom_id, Over.id_left]`. Establish `hie : e.hom.left ≫ e.inv.left = 𝟙 _` using `by rw [← Over.comp_left, e.hom_inv_id, Over.id_left]`. Take `⟨h', hh'⟩ : ∃ h' : ((Over.pullback (ZJ.rPt p ≫ spMap τ.j)).obj τ.H).left ⟶ pullback (Q.G.ι ≫ Q.P.hom) t, h' = h` from `⟨h, rfl⟩`.
+
+Substitute `hh'` using the available equality. Establish `: IsAffineHom h'` using `hh`. Establish `hφ1 : (e.inv.left ≫ h') ≫ pullback.fst _ _ ≫ Q.G.ι = g.mod.r ≫ tm.f ≫ (Q.P.hom ⁻¹ᵁ Q.W tm.l).ι`. Establish `h3 : h' ≫ pullback.fst (Q.G.ι ≫ Q.P.hom) t ≫ Q.G.ι = e.hom.left ≫ g.mod.r ≫ tm.f ≫ (Q.P.hom ⁻¹ᵁ Q.W tm.l).ι` using `((Category.assoc _ _ _).symm.trans ((congrArg (· ≫ Q.G.ι) h1).trans (Category.assoc _ _ _))).trans hef.symm`. Rewrite using `[Category.assoc, h3, reassoc_of% hei]`.
+
+Establish `hφ2 : (e.inv.left ≫ h') ≫ pullback.snd _ _ ≫ t = g.mod.Φ.G.hom ≫ ZH.rPt p ≫ y`. Establish `h3 : h' ≫ pullback.snd (Q.G.ι ≫ Q.P.hom) t ≫ t = ((Over.pullback (ZJ.rPt p ≫ spMap τ.j)).obj τ.H).hom ≫ ZH.rPt p ≫ y` using `(Category.assoc _ _ _).symm.trans ((congrArg (· ≫ t) h2).trans ((Category.assoc _ _ _).trans (congrArg (_ ≫ ·) hx)))`. Rewrite using `[Category.assoc, h3]`. Conclude with `(Category.assoc _ _ _).symm.trans (congrArg (· ≫ ZH.rPt p ≫ y) (Over.w e.inv))`. Take `⟨d, hd, cc, hs⟩` from `split_geoTest hL hB Q hBig hAA hwt _ _ haff hcov hcrd g c tm hU (hle hyW) ((hT _).trans (congrArg (S.TT M) hy)) (hO _ hyW) (e.inv.left ≫ h') hφ1 hφ2`.
+
+Conclude with `⟨d, hd, cc, split_pull_of_comp e _ h' _ (by rw [reassoc_of% hie]) hs⟩`.
+-/
 theorem hasCharts : GlobalTheory.UT.LL → ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω] (S : ThetaSys o Ω) (ρ : S.Real) (M : RatModel o Ω) (U₀ : M.Z.Opens) (EE : M.Lat S.J), BaseFacts S M U₀ EE → ∀ (Q : Clos ρ M U₀ EE) (ex : Q.Ext), S.Big → ρ.HasGeo → ex.core.Fib → ex.core.HasCharts := by
   intro hL o Ω _ _ _ hA S ρ M U₀ EE hB Q ex hBig hGeo hFib z
   change M.Z at z

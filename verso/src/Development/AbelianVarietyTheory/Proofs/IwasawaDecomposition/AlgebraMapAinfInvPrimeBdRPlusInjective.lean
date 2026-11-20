@@ -10,6 +10,13 @@ open scoped Formalism.Per
 
 namespace GlobalTheory.MemLoc
 
+/- English proof (translation)
+Take `⟨ζ, ε, h0, -, h1, h⟩` from `GlobalTheory.MemLoc.exists_zeta_eps l`. Use `⟨ε, ?_, ?_⟩` and prove the remaining obligations. Use `h 0` as an intermediate fact. Rewrite `this` using `[h0, map_one]`. Conclude with `Subtype.ext this`.
+
+Introduce `hh`. Use `h 1` as an intermediate fact. Apply `h1` to reduce the goal to its premises. Apply `(algebraMap (Om l) ℂ_[l]).injective` to reduce the goal to its premises. Rewrite using `[← this, map_one]`.
+
+Conclude with `congrArg Subtype.val hh`.
+-/
 theorem exists_isEps_for_inj (l : ℕ) [Fact l.Prime] : ∃ e : Per.Fl l, IsEps e := by
   obtain ⟨ζ, ε, h0, -, h1, h⟩ := GlobalTheory.MemLoc.exists_zeta_eps l
   refine ⟨ε, ?_, ?_⟩
@@ -23,6 +30,17 @@ theorem exists_isEps_for_inj (l : ℕ) [Fact l.Prime] : ∃ e : Per.Fl l, IsEps 
     rw [← this, map_one]
     exact congrArg Subtype.val hh
 
+/- English proof (translation)
+Establish `hs' : ∀ n m : ℕ, ∀ a : A, ξ ^ n ∣ r ^ m * a → ξ ^ n ∣ a`. Introduce `n m`. Proceed by induction on `m with`. Consider the case `zero => intro a ha`. Simplify using `using ha`.
+
+Consider the case `succ m ih`. Introduce `a ha`. Apply `ih` to reduce the goal to its premises. Apply `hs` to reduce the goal to its premises. Rewrite using `[← mul_assoc, ← pow_succ']` and apply the resulting hypothesis.
+
+Take `⟨⟨a, s⟩, rfl⟩` from `IsLocalization.mk'_surjective (Submonoid.powers r) x`. Establish `ha : a = 0`. Apply `hh` to reduce the goal to its premises. Introduce `n`. Establish `h1 : algebraMap A B a ∈ Ideal.map (algebraMap A B) (Ideal.span {ξ ^ n})`.
+
+Rewrite using `[Ideal.map_span, Set.image_singleton, map_pow, ← Ideal.span_singleton_pow, ← IsLocalization.mk'_spec B a s]`. Conclude with `Ideal.mul_mem_right _ _ (hx n)`. Rewrite `h1` using `[IsLocalization.algebraMap_mem_map_algebraMap_iff (Submonoid.powers r)]`. Take `⟨_, ⟨m, rfl⟩, hm⟩` from `h1`. Conclude with `hs' n m a (Ideal.mem_span_singleton.1 hm)`.
+
+Simplify using `[ha]`.
+-/
 theorem eq_zero_of_mem_span_pow_away {A B : Type*} [CommRing A] [CommRing B] [Algebra A B] (r ξ : A)
     [IsLocalization.Away r B] (hs : ∀ n : ℕ, ∀ a : A, ξ ^ n ∣ r * a → ξ ^ n ∣ a)
     (hh : ∀ a : A, (∀ n : ℕ, ξ ^ n ∣ a) → a = 0) (x : B)
@@ -49,6 +67,11 @@ theorem eq_zero_of_mem_span_pow_away {A B : Type*} [CommRing A] [CommRing B] [Al
     exact hs' n m a (Ideal.mem_span_singleton.1 hm)
   simp [ha]
 
+/- English proof (translation)
+Take `⟨e, he⟩` from `exists_isEps_for_inj l`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Use `eq_zero_of_mem_span_pow_away (l : Per.Ainf l) (xi e) (fun n a h => XiHaus.xi_sat he n a h) (GlobalTheory.MemLoc.eq_zero_of_forall_xi_pow_dvd l e he) x fun n => ?_` and prove the remaining obligations. Rewrite using `[← GlobalTheory.T.kerThetaLocalized_eq_span_fontaineXiElement l e he, ← Ideal.Quotient.eq_zero_iff_mem]`.
+
+Establish `h1 : Per.ev l n (algebraMap (Per.AinfP l) (Per.BdRp l) x) = Ideal.Quotient.mk _ x` using `GlobalTheory.RingIface.ev_alg l n x`. Rewrite using `[← h1, hx, map_zero]`.
+-/
 theorem algebraMap_AinfP_BdRp_injective (l : ℕ) [Fact l.Prime] :
     Function.Injective (algebraMap (Per.AinfP l) (Per.BdRp l)) := by
   obtain ⟨e, he⟩ := exists_isEps_for_inj l

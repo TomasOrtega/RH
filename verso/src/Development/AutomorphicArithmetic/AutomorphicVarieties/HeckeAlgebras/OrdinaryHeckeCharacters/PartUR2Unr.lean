@@ -13,15 +13,32 @@ open scoped TensorProduct
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option synthInstance.maxHeartbeats 200000
 
+/- English proof (translation)
+Use extensionality with `x`. Conclude with `(s.hw v (algebraMap (𝓞 (Lp L)) (𝓞 L) x)).symm.trans (s.hA v x)`.
+-/
 private theorem unr_under {l : ℕ} [Fact l.Prime] {L Ω : Type} [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω]
     [IsAlgClosure L Ω] (s : HidaSetting l L Ω) (v : Plc (Lp L)) : (s.w v).under (𝓞 (Lp L)) = v := by
   ext x
   exact (s.hw v (algebraMap (𝓞 (Lp L)) (𝓞 L) x)).symm.trans (s.hA v x)
 
+/- English proof (translation)
+Simplify using `[Matrix.one_apply]`.
+-/
 private theorem unr_sum {M : Type} [AddCommGroup M] [Module ℂ M] {m : ℕ} {H : Type} [Group H] (t : H →* GL (Fin m) ℂ)
     (f : Fin m → M) (i : Fin m) : ∑ j : Fin m, t 1 i j • f j = f i := by
   simp [Matrix.one_apply]
 
+/- English proof (translation)
+Introduce `l _ L Ω _ _ _ _ _ _ s n hn V Q c ι m τ₀ lam d e ξ hξ σ _ hY w hw`. Take `⟨F, hF, hF0⟩` from `(Submodule.ne_bot_iff _).1 hY`. Take `⟨hB, hσ⟩` from `(partUR2Mem l L Ω s n hn V Q c ι m τ₀ lam d e ξ σ F).1 hF`. Take `⟨i, hi⟩` from `Function.ne_iff.1 hF0`. Establish `hA : F i ∈ (hset Q τ₀).X.AF ξ` using `hB.1 i (Set.mem_univ _)`.
+
+Establish `h1` using `(formU l L Ω s n hn V Q c m τ₀ ι lam d e ξ hξ _ fun _ => rfl).1 (F i) hA`. Take `⟨ℓ, hℓ⟩` from `not_forall.1 (mt h1 hi)`. Use `⟨_, hσ i ℓ, hℓ, fun x hx hk => ?_⟩` and prove the remaining obligations. Establish `hne : ∀ u : Plc L, u.under (𝓞 (Lp L)) ∈ V.S' → cLoc u x = 1` using `fun u hu => GlobalTheory.DefU.LocRet.mem_locU_ne hx fun h => hw (h ▸ hu)`. Establish `hS : ∀ v ∈ s.S, cLoc (s.w v) x = 1` using `fun v hv => hne _ ((unr_under s v).symm ▸ V.sub hv)`.
+
+Establish `hK : cLoc w x ∈ KO (w.adicCompletion L) (Fin n)`. Rewrite using `[GlobalTheory.SmGL.SphCompletion.KO_completion w n]`. Conclude with `hk`. Establish `h2` using `partUR2Fix l L Ω s n hn V Q c ι m τ₀ lam d e ξ hξ F hB x (Subgroup.mem_inf.1 hx).1 (fun v => hS v.1 (Or.inl v.2)) 1 (fun u => (hS u.1 (Or.inr (Or.inl u.2))).symm) (by`. Rewrite using `[hS s.v0 (Or.inr (Or.inr rfl))]`.
+
+Conclude with `one_mem _)`. Use the proof step `(fun u _ => by`. Distinguish the cases in `h : u.under (𝓞 (Lp L)) = w.under (𝓞 (Lp L))`. Conclude with `UpperTheory.mem_maximalCompact_of_under_eq L n x w u h hK`. Rewrite using `[show cLoc u x = 1 from GlobalTheory.DefU.LocRet.mem_locU_ne hx h]`.
+
+Conclude with `one_mem _)`. Use the proof step `(fun q => hne _ (Q.range.ge (Or.inr ⟨q, rfl⟩))) i ℓ`. Conclude with `(unr_sum _ (fun j => RU L n x (toForm ι e (F j) ℓ)) i).symm.trans h2`.
+-/
 theorem UpperTheory.V.Hi.partUR2Unr :
     ∀ (l : ℕ) [Fact l.Prime] (L Ω : Type) [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] (s : HidaSetting l L Ω) (n : ℕ), 1 ≤ n →
     ∀ (V : s.Lev) (Q : QData V) (c : Coef l) (ι : Qbar l ≃+* ℂ) (m : ℕ) (τ₀ : KT n (wt s) →* GL (Fin m) c.O)

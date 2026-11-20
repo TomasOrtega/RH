@@ -18,12 +18,24 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 variable {n : ℕ}
 
+/- English proof (translation)
+The claim follows from `(Matrix.isUnits_det_units y).ne_zero`.
+-/
 theorem val_mem (y : G n) : y.val ∈ GLs n := (Matrix.isUnits_det_units y).ne_zero
 
+/- English proof (translation)
+Simplify using `[bs]`.
+-/
 theorem basis_true_eq_single (a c : Fin n) : bs (true, a, c) = Matrix.single a c (1 : ℂ) := by simp [bs]
 
+/- English proof (translation)
+Simplify using `[bs]`.
+-/
 theorem bs_f (a c : Fin n) : bs (false, a, c) = Matrix.single a c Complex.I := by simp [bs]
 
+/- English proof (translation)
+Proceed by induction on `w with`. Consider the case `nil => rfl`. Consider the case `cons q w ih => show Rd (bs q) (Rw (w ++ [p]) f) = Rd (bs q) (Rw w (Rd (bs p) f))`. Rewrite using `[ih]`.
+-/
 theorem Rw_append {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] (w : List (Bool × Fin n × Fin n))
     (p : Bool × Fin n × Fin n) (f : Mat n → V) : Rw (w ++ [p]) f = Rw w (Rd (bs p) f) := by
   induction w with
@@ -32,23 +44,38 @@ theorem Rw_append {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] (w : Lis
     show Rd (bs q) (Rw (w ++ [p]) f) = Rd (bs q) (Rw w (Rd (bs p) f))
     rw [ih]
 
+/- English proof (translation)
+Simplify using `[Rd, mul_sub]`.
+-/
 theorem Rd_sub {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] (X X' : Mat n) (f : Mat n → V) (g : Mat n) :
     Rd (X - X') f g = Rd X f g - Rd X' f g := by
   simp [Rd, mul_sub]
 
+/- English proof (translation)
+Simplify using `[Rd, mul_add]`.
+-/
 theorem Rd_add {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] (X X' : Mat n) (f : Mat n → V) (g : Mat n) :
     Rd (X + X') f g = Rd X f g + Rd X' f g := by
   simp [Rd, mul_add]
 
+/- English proof (translation)
+Use extensionality with `x y`. Simplify using `only [Matrix.conjTranspose_apply, Matrix.single_apply]`. Apply the tactic sequence `by_cases h1 : a = y <;> by_cases h2 : b = x <;> simp [h1, h2]`.
+-/
 theorem single_conj (a b : Fin n) (c : ℂ) : (Matrix.single a b c)ᴴ = Matrix.single b a (star c) := by
   ext x y
   simp only [Matrix.conjTranspose_apply, Matrix.single_apply]
   by_cases h1 : a = y <;> by_cases h2 : b = x <;> simp [h1, h2]
 
+/- English proof (translation)
+Simplify using `[Matrix.conjTranspose_sub, single_conj]`.
+-/
 theorem skewY (a c : Fin n) :
     (Matrix.single a c (1 : ℂ) - Matrix.single c a (1 : ℂ) : Mat n)ᴴ = -(Matrix.single a c (1 : ℂ) - Matrix.single c a 1) := by
   simp [Matrix.conjTranspose_sub, single_conj]
 
+/- English proof (translation)
+Simplify using `[Matrix.conjTranspose_add, single_conj, Matrix.single_neg, add_comm]`.
+-/
 theorem skewZ (a c : Fin n) :
     (Matrix.single a c Complex.I + Matrix.single c a Complex.I : Mat n)ᴴ =
       -(Matrix.single a c Complex.I + Matrix.single c a Complex.I) := by
@@ -58,12 +85,21 @@ section L2
 
 variable [MeasurableSpace (G n)] (μ : Measure (G n)) {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V]
 
+/- English proof (translation)
+The claim follows from `dif_pos h`.
+-/
 theorem cls_eq {f : Mat n → V} (h : MemLp (fun y : G n => f y.val) 2 μ) : cls μ f = h.toLp _ := dif_pos h
 
+/- English proof (translation)
+Rewrite using `[cls_eq μ h]`. Conclude with `h.coeFn_toLp`.
+-/
 theorem cls_ae {f : Mat n → V} (h : MemLp (fun y : G n => f y.val) 2 μ) : cls μ f =ᵐ[μ] fun y => f y.val := by
   rw [cls_eq μ h]
   exact h.coeFn_toLp
 
+/- English proof (translation)
+Establish `e' : (fun y : G n => f y.val) = fun y => f' y.val` using `funext fun y => e _ (val_mem y)`. Establish `h' : MemLp (fun y : G n => f' y.val) 2 μ` using `e' ▸ h`. Rewrite using `[cls_eq μ h, cls_eq μ h']`. Conclude with `MemLp.toLp_congr h h' (by rw [e'])`.
+-/
 theorem cls_congr {f f' : Mat n → V} (h : MemLp (fun y : G n => f y.val) 2 μ) (e : ∀ g ∈ GLs n, f g = f' g) :
     cls μ f = cls μ f' := by
   have e' : (fun y : G n => f y.val) = fun y => f' y.val := funext fun y => e _ (val_mem y)
@@ -71,11 +107,21 @@ theorem cls_congr {f f' : Mat n → V} (h : MemLp (fun y : G n => f y.val) 2 μ)
   rw [cls_eq μ h, cls_eq μ h']
   exact MemLp.toLp_congr h h' (by rw [e'])
 
+/- English proof (translation)
+Rewrite using `[cls_eq μ h, cls_eq μ h', cls_eq μ (h.sub h')]`. Conclude with `MemLp.toLp_sub h h'`.
+-/
 theorem cls_sub {f f' : Mat n → V} (h : MemLp (fun y : G n => f y.val) 2 μ) (h' : MemLp (fun y : G n => f' y.val) 2 μ) :
     cls μ (fun g => f g - f' g) = cls μ f - cls μ f' := by
   rw [cls_eq μ h, cls_eq μ h', cls_eq μ (h.sub h')]
   exact MemLp.toLp_sub h h'
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Establish `h0 : MemLp (fun _ : G n => (0 : V)) 2 μ` using `MemLp.zero`. Use `⟨by simpa using h0, ?_⟩` and prove the remaining obligations. Simplify using `only [Finset.sum_empty]`.
+
+Rewrite using `[cls_eq μ h0]`. Conclude with `MemLp.toLp_zero h0`. Consider the case `insert i s hi ih`. Take `⟨m, e⟩` from `ih fun j hj => h j (Finset.mem_insert_of_mem hj)`. Establish `hi'` using `h i (Finset.mem_insert_self i s)`.
+
+Simplify using `only [Finset.sum_insert hi]`. Use `⟨hi'.add m, ?_⟩` and prove the remaining obligations. Rewrite using `[← e, cls_eq μ hi', cls_eq μ (f := fun g => ∑ i ∈ s, F i g) m, cls_eq μ (f := fun g => F i g + ∑ i ∈ s, F i g) (hi'.add m)]`. Conclude with `MemLp.toLp_add hi' m`.
+-/
 theorem cls_sum {ι : Type} (s : Finset ι) (F : ι → Mat n → V)
     (h : ∀ i ∈ s, MemLp (fun y : G n => F i y.val) 2 μ) :
     MemLp (fun y : G n => ∑ i ∈ s, F i y.val) 2 μ ∧ cls μ (fun g => ∑ i ∈ s, F i g) = ∑ i ∈ s, cls μ (F i) := by
@@ -96,6 +142,9 @@ theorem cls_sum {ι : Type} (s : Finset ι) (F : ι → Mat n → V)
       cls_eq μ (f := fun g => F i g + ∑ i ∈ s, F i g) (hi'.add m)]
     exact MemLp.toLp_add hi' m
 
+/- English proof (translation)
+Use `Lp.norm_le_mul_norm_of_ae_le_mul ?_` and prove the remaining obligations. Use `filter_upwards [e, cls_ae μ h] with y h1 h2`. Rewrite using `[h1, h2]`. Conclude with `C.le_opNorm _`.
+-/
 theorem norm_le_of_ae {f : Mat n → V} (h : MemLp (fun y : G n => f y.val) 2 μ) (x : Lp V 2 μ) (C : V →L[ℂ] V)
     (e : ∀ᵐ y ∂μ, x y = C (f (y : G n).val)) : ‖x‖ ≤ ‖C‖ * ‖cls μ f‖ := by
   refine Lp.norm_le_mul_norm_of_ae_le_mul ?_
@@ -105,6 +154,9 @@ theorem norm_le_of_ae {f : Mat n → V} (h : MemLp (fun y : G n => f y.val) 2 μ
 
 end L2
 
+/- English proof (translation)
+Establish `h1` using `@norm_add_sq ℂ _ _ _ _ u v`. Establish `h2` using `@norm_sub_sq ℂ _ _ _ _ u v`. Establish `h3` using `@inner_re_symm ℂ _ _ _ _ u v`. Simplify using `only [RCLike.re_eq_complex_re] at h1 h2 h3`. Use polynomial arithmetic with `[sq_nonneg ‖u + v‖]`.
+-/
 theorem pol_sub {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] (u v : H) :
     -(⟪v, u⟫_ℂ).re ≤ ‖u - v‖ ^ 2 / 4 := by
   have h1 := @norm_add_sq ℂ _ _ _ _ u v
@@ -113,6 +165,9 @@ theorem pol_sub {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] (u v
   simp only [RCLike.re_eq_complex_re] at h1 h2 h3
   nlinarith [sq_nonneg ‖u + v‖]
 
+/- English proof (translation)
+Establish `h1` using `@norm_add_sq ℂ _ _ _ _ u v`. Establish `h2` using `@norm_sub_sq ℂ _ _ _ _ u v`. Establish `h3` using `@inner_re_symm ℂ _ _ _ _ u v`. Simplify using `only [RCLike.re_eq_complex_re] at h1 h2 h3`. Use polynomial arithmetic with `[sq_nonneg ‖u - v‖]`.
+-/
 theorem pol_add {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] (u v : H) :
     (⟪v, u⟫_ℂ).re ≤ ‖u + v‖ ^ 2 / 4 := by
   have h1 := @norm_add_sq ℂ _ _ _ _ u v
@@ -126,18 +181,48 @@ section Main
 variable [MeasurableSpace (G n)] [BorelSpace (G n)] (μ : Measure (G n)) [μ.IsHaarMeasure]
   {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨((hR n).1 V f hS.1).1 _, fun w => by have := hS.2 (w ++ [p]) rwa [Rw_append] at this⟩`.
+-/
 theorem sob_Rd (hR : RCalc) {f : Mat n → V} (hS : Sob μ f) (p : Bool × Fin n × Fin n) : Sob μ (Rd (bs p) f) :=
   ⟨((hR n).1 V f hS.1).1 _, fun w => by
     have := hS.2 (w ++ [p])
     rwa [Rw_append] at this⟩
 
+/- English proof (translation)
+The claim follows from `hS.2 [p]`.
+-/
 theorem mem1 {f : Mat n → V} (hS : Sob μ f) (p : Bool × Fin n × Fin n) :
     MemLp (fun y : G n => Rd (bs p) f y.val) 2 μ := hS.2 [p]
 
+/- English proof (translation)
+The claim follows from `hS.2 []`.
+-/
 theorem mem0 {f : Mat n → V} (hS : Sob μ f) : MemLp (fun y : G n => f y.val) 2 μ := hS.2 []
 
 end Main
 
+/- English proof (translation)
+Introduce `n _ _ μ _ E hL hU hR`. Use `choose BY hBY using fun a c : Fin n => GlobalTheory.CompanionTheory.WaveSpd.rd_skew_eq_const E _ (skewY a c)`. Use `choose BZ hBZ using fun a c : Fin n => GlobalTheory.CompanionTheory.WaveSpd.rd_skew_eq_const E _ (skewZ a c)`. Use `⟨∑ a, ∑ c, (‖BY a c‖ ^ 2 + ‖BZ a c‖ ^ 2) / 4, fun f hS hsec => ?_⟩` and prove the remaining obligations. Establish `hCE : f ∈ CE E` using `⟨hS.1, hsec⟩`.
+
+Use `set x := cls μ f with hx`. Establish `hf0` using `mem0 μ hS`. Establish `hd : ∀ p q : Bool × Fin n × Fin n, MemLp (fun y : G n => Rd (bs p) (Rd (bs q) f) y.val) 2 μ` using `fun p q => mem1 μ (sob_Rd μ hR hS q) p`. Establish `hip : ∀ p q : Bool × Fin n × Fin n, ⟪cls μ (Rd (bs p) (Rd (bs q) f)), x⟫_ℂ = -⟪cls μ (Rd (bs q) f), cls μ (Rd (bs p) f)⟫_ℂ` using `fun p q => hI n μ E.V hL hU hR _ _ (sob_Rd μ hR hS q) hS (bs p)`. Set `T : Fin n → Fin n → Mat n → E.V` to `fun a c g => Rd (bs (true, a, c)) (Rd (bs (true, c, a)) f) g - Rd (bs (false, a, c)) (Rd (bs (false, c, a)) f) g`.
+
+Establish `hT : ∀ a c, MemLp (fun y : G n => T a c y.val) 2 μ` using `fun a c => (hd _ _).sub (hd _ _)`. Establish `hOm : ∀ g ∈ GLs n, Om f g = ∑ a, ∑ c, T a c g`. Introduce `g hg`. Rewrite using `[GlobalTheory.CompanionTheory.Casimir.omFormula n E.V f hS.1 g hg]`. Simplify using `only [T, basis_true_eq_single, bs_f]`.
+
+Establish `hsumc : ∀ a, MemLp (fun y : G n => ∑ c, T a c y.val) 2 μ ∧ cls μ (fun g => ∑ c, T a c g) = ∑ c, cls μ (T a c)` using `fun a => cls_sum μ _ (T a) fun c _ => hT a c`. Establish `hsum` using `cls_sum μ Finset.univ (fun a g => ∑ c, T a c g) fun a _ => (hsumc a).1`. Establish `hcls : cls μ (Om f) = ∑ a, ∑ c, cls μ (T a c)`. Establish `h1 : cls μ (fun g => ∑ a, ∑ c, T a c g) = cls μ (Om f)` using `cls_congr μ hsum.1 fun g hg => (hOm g hg).symm`. Rewrite using `[← h1, hsum.2]`.
+
+Conclude with `Finset.sum_congr rfl fun a _ => (hsumc a).2`. Establish `hterm : ∀ a c, (⟪cls μ (T a c), x⟫_ℂ).re ≤ (‖BY a c‖ ^ 2 + ‖BZ a c‖ ^ 2) / 4 * ‖x‖ ^ 2`. Introduce `a c`. Use `set u := cls μ (Rd (bs (true, a, c)) f) with hu`. Use `set u' := cls μ (Rd (bs (true, c, a)) f) with hu'`.
+
+Use `set v := cls μ (Rd (bs (false, a, c)) f) with hv`. Use `set v' := cls μ (Rd (bs (false, c, a)) f) with hv'`. Establish `e1 : (⟪cls μ (T a c), x⟫_ℂ).re = -(⟪u', u⟫_ℂ).re + (⟪v', v⟫_ℂ).re`. Establish `: cls μ (T a c) = _` using `cls_sub μ (hd (true, a, c) (true, c, a)) (hd (false, a, c) (false, c, a))`. Rewrite using `[this, inner_sub_left, hip, hip]`.
+
+Simplify using `[hu, hu', hv, hv']`. Establish `b1 : ‖u - u'‖ ≤ ‖BY a c‖ * ‖x‖`. Use `norm_le_of_ae μ hf0 _ _ ?_` and prove the remaining obligations. Use `filter_upwards [Lp.coeFn_sub u u', cls_ae μ (mem1 μ hS (true, a, c)), cls_ae μ (mem1 μ hS (true, c, a))] with y h1 h2 h3`. Rewrite using `[h1, Pi.sub_apply, h2, h3, ← hBY a c f hCE _ (val_mem y), Rd_sub, basis_true_eq_single, basis_true_eq_single]`.
+
+Establish `b2 : ‖v + v'‖ ≤ ‖BZ a c‖ * ‖x‖`. Use `norm_le_of_ae μ hf0 _ _ ?_` and prove the remaining obligations. Use `filter_upwards [Lp.coeFn_add v v', cls_ae μ (mem1 μ hS (false, a, c)), cls_ae μ (mem1 μ hS (false, c, a))] with y h1 h2 h3`. Rewrite using `[h1, Pi.add_apply, h2, h3, ← hBZ a c f hCE _ (val_mem y), Rd_add, bs_f, bs_f]`. Establish `p1` using `pol_sub u u'`.
+
+Establish `p2` using `pol_add v v'`. Establish `s1 : ‖u - u'‖ ^ 2 ≤ (‖BY a c‖ * ‖x‖) ^ 2` using `pow_le_pow_left₀ (norm_nonneg _) b1 2`. Establish `s2 : ‖v + v'‖ ^ 2 ≤ (‖BZ a c‖ * ‖x‖) ^ 2` using `pow_le_pow_left₀ (norm_nonneg _) b2 2`. Rewrite using `[e1]`. Use the polynomial consequences of the given equalities and inequalities.
+
+Rewrite using `[hcls, sum_inner, Complex.re_sum, Finset.sum_mul]`. Use `Finset.sum_le_sum fun a _ => ?_` and prove the remaining obligations. Rewrite using `[sum_inner, Complex.re_sum, Finset.sum_mul]`. Conclude with `Finset.sum_le_sum fun c _ => hterm a c`.
+-/
 theorem secBound (hI : IbpSob) : SecBound := by
   intro n _ _ μ _ E hL hU hR
   choose BY hBY using fun a c : Fin n => GlobalTheory.CompanionTheory.WaveSpd.rd_skew_eq_const E _ (skewY a c)
@@ -199,6 +284,9 @@ theorem secBound (hI : IbpSob) : SecBound := by
   rw [sum_inner, Complex.re_sum, Finset.sum_mul]
   exact Finset.sum_le_sum fun c _ => hterm a c
 
+/- English proof (translation)
+The claim follows from `secBound GlobalTheory.T.sobolev_integration_by_parts`.
+-/
 theorem secBound_main : SecBound := secBound GlobalTheory.T.sobolev_integration_by_parts
 
 end GlobalTheory.CompanionTheory.SecBd

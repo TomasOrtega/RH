@@ -14,6 +14,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.LocOver
 
+/- English proof (translation)
+Establish `hx : x ∈ Submodule.span (D.s.atP p).Ep (Set.range (baseChange₂ D p))`. Rewrite using `[span_baseChange_eq_top p]`. Conclude with `Submodule.mem_top`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`.
+
+Take `⟨z, rfl⟩` from `hy`. Conclude with `h z`. Consider the case `zero`. Rewrite using `[map_zero, (locH Z p).h_zero_left, (locH Z p).h_zero_left]`. Consider the case `add y y' _ _ hy hy'`.
+
+Rewrite using `[map_add, (locH Z p).h_add_left, (locH Z p).h_add_left, hy, hy']`. Consider the case `smul a y _ hy`. Rewrite using `[map_smul, (locH Z p).h_smul_left, (locH Z p).h_smul_left, hy]`.
+-/
 theorem form_ext_left {D : D7} (Z : LocDat D) (p : PlF D) (g : Vp D p ≃ₗ[(D.s.atP p).Ep] Vp D p) (w w' : Vp D p)
     (h : ∀ x, (locH Z p).h (g (baseChange₂ D p x)) w' = (locH Z p).h (baseChange₂ D p x) w) (x : Vp D p) :
     (locH Z p).h (g x) w' = (locH Z p).h x w := by
@@ -32,6 +39,17 @@ theorem form_ext_left {D : D7} (Z : LocDat D) (p : PlF D) (g : Vp D p ≃ₗ[(D.
   | smul a y _ hy =>
     rw [map_smul, (locH Z p).h_smul_left, (locH Z p).h_smul_left, hy]
 
+/- English proof (translation)
+Introduce `D Z p ρ hρ`. Take `⟨g, hg⟩` from `GlobalTheory.HL.RatExt.exists_equiv (D.s.atP p).ιE ((VS D).frame.equivFun.symm.trans (ρ.trans (VS D).frame.equivFun))`. Establish `hext : GlobalTheory.LocOver.Ext p ρ g`. Introduce `x`. Establish `h1` using `hg ((VS D).frame.equivFun x)`.
+
+Simplify using `only [LinearEquiv.trans_apply, LinearEquiv.symm_apply_apply] at h1`. Conclude with `h1`. Establish `hρ' : ∀ x y, (VS D).hT (ρ x) (ρ y) = (VS D).hT x y` using `hρ`. Establish `hA : ∀ a b, (locH Z p).h (g (baseChange₂ D p a)) (g (baseChange₂ D p b)) = (locH Z p).h (baseChange₂ D p a) (baseChange₂ D p b)`. Introduce `a b`.
+
+Rewrite using `[hext a, hext b]`. Use `show LocFacts₂ Z.M p _ _ = LocFacts₂ Z.M p _ _`. Rewrite using `[baseChangeAt_form Z.M p (Z.hcj p), baseChangeAt_form Z.M p (Z.hcj p)]`. Conclude with `congrArg _ (hρ' b a)`. Establish `hB : ∀ b x, (locH Z p).h (g x) (g (baseChange₂ D p b)) = (locH Z p).h x (baseChange₂ D p b)` using `fun b x => form_ext_left Z p g (baseChange₂ D p b) (g (baseChange₂ D p b)) (fun a => hA a b) x`.
+
+Establish `hC : ∀ a y, (locH Z p).h (g (baseChange₂ D p a)) (g y) = (locH Z p).h (baseChange₂ D p a) y`. Introduce `a y`. Rewrite using `[(locH Z p).h_herm (g y) (g (baseChange₂ D p a)), (locH Z p).h_herm y (baseChange₂ D p a), hB]`. Use `⟨g, hext, ?_⟩` and prove the remaining obligations. Introduce `x y`.
+
+Conclude with `form_ext_left Z p g y (g y) (fun a => hC a y) x`.
+-/
 theorem exists_ext_unitary : ∀ (D : D7) (Z : LocDat D) (p : PlF D) (ρ : (VS D).V ≃ₗ[D.host.E] (VS D).V), ρ ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT → ∃ g : Vp D p ≃ₗ[(D.s.atP p).Ep] Vp D p, GlobalTheory.LocOver.Ext p ρ g ∧ Formalism.MainNotions.S.LocNG.IsUnitary (locH Z p) g := by
   intro D Z p ρ hρ
 

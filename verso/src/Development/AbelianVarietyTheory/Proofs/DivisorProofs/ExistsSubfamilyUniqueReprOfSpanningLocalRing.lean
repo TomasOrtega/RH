@@ -13,6 +13,23 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce and unpack `⟨b⟩ w hw`. Use `haveI : Module.Finite R M := Module.Finite.of_basis b`. Set `V` to `IsLocalRing.ResidueField R ⊗[R] M`. Set `v : Fin g → V` to `fun a => (1 : IsLocalRing.ResidueField R) ⊗ₜ[R] w a`. Establish `hsp : Submodule.span (IsLocalRing.ResidueField R) (Set.range v) = ⊤`.
+
+Rewrite using `[eq_top_iff]`. Introduce and unpack `x -`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => exact Submodule.zero_mem _`. Consider the case `tmul c m`.
+
+Take `⟨cf, rfl⟩` from `hw m`. Establish `: c ⊗ₜ[R] (∑ a, cf a • w a) = c • ∑ a, cf a • v a`. Simplify using `only [v, TensorProduct.tmul_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[TensorProduct.tmul_smul, TensorProduct.smul_tmul', TensorProduct.smul_tmul', TensorProduct.smul_tmul', smul_comm c (cf a) (1 : IsLocalRing.ResidueField R), smul_eq_mul, _root_.mul_one]`.
+
+Rewrite using `[this]`. Use `Submodule.smul_mem _ _ (Submodule.sum_mem _ fun a _ => ?_)` and prove the remaining obligations. Conclude with `Submodule.smul_of_tower_mem _ _ (Submodule.subset_span ⟨a, rfl⟩)`. Consider the case `add x y hx hy => exact Submodule.add_mem _ hx hy`. Take `⟨κ, a, ha, hspa, hli⟩` from `exists_linearIndependent' (IsLocalRing.ResidueField R) v`.
+
+Set `bk : Module.Basis κ (IsLocalRing.ResidueField R) V` to `Module.Basis.mk hli (by rw [hspa, hsp])`. Set `bV : Module.Basis (Fin d) (IsLocalRing.ResidueField R) V` to `Algebra.TensorProduct.basis (IsLocalRing.ResidueField R) b`. Set `eq : Fin d ≃ κ` to `bV.indexEquiv bk`. Use `⟨a ∘ eq, ?_⟩` and prove the remaining obligations. Establish `hspR : Submodule.span R (Set.range (w ∘ a ∘ eq)) = ⊤` using `IsLocalRing.span_eq_top_of_tmul_eq_basis (w ∘ a ∘ eq) (bk.reindex eq.symm) (fun i => by`.
+
+Simplify using `[bk, v])`. Set `f : (Fin d → R) →ₗ[R] M` to `Fintype.linearCombination R (w ∘ a ∘ eq)`. Establish `hf : Function.Surjective f`. Rewrite using `[← LinearMap.range_eq_top, Fintype.range_linearCombination]`. Conclude with `hspR`.
+
+Establish `hfi : Function.Injective f` using `OrzechProperty.injective_of_surjective_of_injective b.equivFun.symm.toLinearMap f b.equivFun.symm.injective hf`. Introduce `u`. Take `⟨cf, hcf⟩` from `hf u`. Use `⟨cf, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hcf]`.
+
+Simplify using `[f, Fintype.linearCombination_apply]`. Introduce `cf' hcf'`. Apply `hfi` to reduce the goal to its premises. Rewrite using `[hcf]`. Simplify using `[f, Fintype.linearCombination_apply, hcf']`.
+-/
 theorem exists_subfamily_unique_repr_of_spanning_localRing
     (R : Type) [CommRing R] [IsLocalRing R] (M : Type) [AddCommGroup M] [Module R M] (d g : ℕ) :
     Nonempty (Module.Basis (Fin d) R M) → ∀ w : Fin g → M,

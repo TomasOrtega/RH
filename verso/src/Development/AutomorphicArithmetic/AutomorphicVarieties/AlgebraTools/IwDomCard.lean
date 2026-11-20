@@ -13,6 +13,13 @@ section SlopeTestRemainingChoices
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n : ℕ}
 
+/- English proof (translation)
+Take `⟨p, hp, e⟩` from `hx`. Establish `hI` using `Valuation.integer.integers (valuation k)`. Establish `h1 : valuation k (x : k) < 1`. Rewrite using `[← e]`. Use `lt_of_le_of_ne p.2 fun h => hp.not_isUnit (hI.isUnit_iff_valuation_eq_one.2 h)` and prove the remaining obligations.
+
+Use `⟨fun h => ?_, fun h => h.trans_lt h1⟩` and prove the remaining obligations. Set `z : 𝒪[k]` to `⟨y, h.le⟩`. Establish `hz : z ∈ IsLocalRing.maximalIdeal 𝒪[k]` using `fun hu => h.ne (hI.isUnit_iff_valuation_eq_one.1 hu)`. Rewrite `hz` using `[hp.maximalIdeal_eq, Ideal.mem_span_singleton]`. Rewrite using `[← e]`.
+
+Conclude with `hI.le_of_dvd hz`.
+-/
 private theorem unif_lt {x : kˣ} (hx : IsUnif x) (y : k) :
     valuation k y < 1 ↔ valuation k y ≤ valuation k (x : k) := by
   obtain ⟨p, hp, e⟩ := hx
@@ -30,6 +37,15 @@ private theorem unif_lt {x : kˣ} (hx : IsUnif x) (y : k) :
 private def Bd (x : kˣ) (g : GL (Fin n) k) : Prop :=
   ∀ i j, valuation k ((g : Matrix (Fin n) (Fin n) k) i j) ≤ valuation k (x : k) ^ (if j < i then 1 else 0 : ℤ)
 
+/- English proof (translation)
+Establish `h1 : valuation k (x : k) ≤ 1` using `((unif_lt hx x).2 le_rfl).le`. Establish `A : ∀ g ∈ iwahori k (Fin n), Bd x g`. Introduce `g hg i j`. Establish `hg'` using `mem_iwahori.1 hg`. Use `split_ifs with h`.
+
+Simplify using `using (unif_lt hx _).1 (hg'.2 i j h)`. Rewrite using `[zpow_zero]`. Conclude with `((GlobalTheory.SplitFlip.mem_KO_iff g).1 hg'.1).1 i j`. Establish `B : ∀ g : GL (Fin n) k, Bd x g → ∀ i j, valuation k ((g : Matrix (Fin n) (Fin n) k) i j) ≤ 1`. Introduce `g hg i j`.
+
+Use `hg i j` as an intermediate fact. Use `split_ifs at this with h`. Conclude with `le_trans (by simpa using this) h1`. Simplify using `using this`. Use `⟨fun hg => ⟨A g hg, A _ (inv_mem hg)⟩, fun ⟨ha, hb⟩ => mem_iwahori.2 ⟨(GlobalTheory.SplitFlip.mem_KO_iff g).2 ⟨B _ ha, B _ hb⟩, fun i j h => (unif_lt hx _).2 ?_⟩⟩` and prove the remaining obligations.
+
+Simplify `ha i j` using `[h]`.
+-/
 private theorem mem_iw_iff {x : kˣ} (hx : IsUnif x) (g : GL (Fin n) k) :
     g ∈ iwahori k (Fin n) ↔ Bd x g ∧ Bd x g⁻¹ := by
   have h1 : valuation k (x : k) ≤ 1 := ((unif_lt hx x).2 le_rfl).le
@@ -50,6 +66,13 @@ private theorem mem_iw_iff {x : kˣ} (hx : IsUnif x) (g : GL (Fin n) k) :
     ⟨(GlobalTheory.SplitFlip.mem_KO_iff g).2 ⟨B _ ha, B _ hb⟩, fun i j h => (unif_lt hx _).2 ?_⟩⟩
   simpa [h] using ha i j
 
+/- English proof (translation)
+Establish `e : pm k n w * pw x a * g * (pm k n w * pw x a)⁻¹ = pm k n w * (pw x a * g * diagT k (Fin n) (fun i => x ^ a i)⁻¹) * pm k n w⁻¹`. Rewrite using `[map_inv, map_inv, pw]`. Use `group`. Rewrite using `[e]`. Simplify using `only [Units.val_mul, pw, val_diagT]`.
+
+Generalize the expression as in `hM : (diagonal (fun i => ((x ^ a i : kˣ) : k)) * (g : Matrix (Fin n) (Fin n) k) * diagonal fun i => (((fun i => x ^ a i)⁻¹ i : kˣ) : k)) = M`. Establish `hM' : M i j = (x : k) ^ (a i - a j) * (g : Matrix (Fin n) (Fin n) k) i j`. Rewrite using `[← hM, mul_diagonal, diagonal_mul, zpow_sub₀ x.ne_zero]`. Simplify using `only [Pi.inv_apply, Units.val_inv_eq_inv_val, Units.val_zpow_eq_zpow_val]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[← hM']`. Simplify using `only [Matrix.mul_apply, pm_apply]`. Simplify using the standard rewrite rules.
+-/
 private theorem conj_entry (x : kˣ) (a : Fin n → ℤ) (w : Equiv.Perm (Fin n)) (g : GL (Fin n) k) (i j : Fin n) :
     ((pm k n w * pw x a * g * (pm k n w * pw x a)⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) (w i) (w j) =
       (x : k) ^ (a i - a j) * (g : Matrix (Fin n) (Fin n) k) i j := by
@@ -68,6 +91,9 @@ private theorem conj_entry (x : kˣ) (a : Fin n → ℤ) (w : Equiv.Perm (Fin n)
   simp only [Matrix.mul_apply, pm_apply]
   simp
 
+/- English proof (translation)
+Establish `h0 : 0 < valuation k (x : k)` using `zero_lt_iff.2 (by simp)`. Unfold `Bd`. Rewrite using `[w.surjective.forall₂]`. Use `forall₂_congr fun i j => ?_` and prove the remaining obligations. Rewrite using `[conj_entry, hw, map_mul, map_zpow₀, zpow_add₀ h0.ne', mul_le_mul_iff_right₀ (zpow_pos h0 _)]`.
+-/
 private theorem bd_conj (x : kˣ) (a : Fin n → ℤ) (w : Equiv.Perm (Fin n))
     (hw : ∀ i j, (if w j < w i then 1 else 0 : ℤ) = (a i - a j) + (if j < i then 1 else 0)) (g : GL (Fin n) k) :
     Bd x (pm k n w * pw x a * g * (pm k n w * pw x a)⁻¹) ↔ Bd x g := by
@@ -77,6 +103,13 @@ private theorem bd_conj (x : kˣ) (a : Fin n → ℤ) (w : Equiv.Perm (Fin n))
   refine forall₂_congr fun i j => ?_
   rw [conj_entry, hw, map_mul, map_zpow₀, zpow_add₀ h0.ne', mul_le_mul_iff_right₀ (zpow_pos h0 _)]
 
+/- English proof (translation)
+Set `f : Fin n → Fin n` to `fun i => ⟨if (i : ℕ) < m then n - m + i else i - m, by`. Apply the tactic sequence `have := i.2; split_ifs <;> omega⟩`. Establish `hf : Function.Injective f`. Introduce `i j h`. Establish `h'` using `congrArg Fin.val h`.
+
+Use `i.2` as an intermediate fact. Use `j.2` as an intermediate fact. Simplify using `only [f] at h'`. Use `ext`. Apply the tactic sequence `split_ifs at h' <;> omega`.
+
+Use `⟨Equiv.ofBijective f (Finite.injective_iff_bijective.1 hf), fun i j => ?_⟩` and prove the remaining obligations. Use `i.2` as an intermediate fact. Use `j.2` as an intermediate fact. Simplify using `only [Equiv.ofBijective_apply, f, fund, Fin.lt_def]`. Apply the tactic sequence `split_ifs <;> omega`.
+-/
 private theorem exists_rot (n m : ℕ) (hm : m ≤ n) : ∃ w : Equiv.Perm (Fin n),
     ∀ i j, (if w j < w i then 1 else 0 : ℤ) = (fund n m i - fund n m j) + (if j < i then 1 else 0) := by
   let f : Fin n → Fin n := fun i => ⟨if (i : ℕ) < m then n - m + i else i - m, by
@@ -93,12 +126,20 @@ private theorem exists_rot (n m : ℕ) (hm : m ≤ n) : ∃ w : Equiv.Perm (Fin 
   simp only [Equiv.ofBijective_apply, f, fund, Fin.lt_def]
   split_ifs <;> omega
 
+/- English proof (translation)
+Introduce `i j hij`. Establish `h0 : 0 < valuation k (x : k)` using `zero_lt_iff.2 ((Valuation.ne_zero_iff _).2 x.ne_zero)`. Simplify using `only [Units.val_zpow_eq_zpow_val, map_zpow₀]`. Conclude with `(zpow_le_zpow_iff_right_of_lt_one₀ h0 ((unif_lt hx x).2 le_rfl)).2 (ha hij)`.
+-/
 private theorem dom_zpow {x : kˣ} (hx : IsUnif x) {a : Fin n → ℤ} (ha : Antitone a) : Dom fun i => x ^ a i := by
   intro i j hij
   have h0 : 0 < valuation k (x : k) := zero_lt_iff.2 ((Valuation.ne_zero_iff _).2 x.ne_zero)
   simp only [Units.val_zpow_eq_zpow_val, map_zpow₀]
   exact (zpow_le_zpow_iff_right_of_lt_one₀ h0 ((unif_lt hx x).2 le_rfl)).2 (ha hij)
 
+/- English proof (translation)
+Establish `hex : ∃ m : ℕ, ∀ i : Fin n, m ≤ (i : ℕ) → a i ≤ c` using `⟨n, fun i hi => absurd i.2 (not_lt.2 hi)⟩`. Use `⟨Nat.find hex, Nat.find_min' hex fun i hi => absurd i.2 (not_lt.2 hi), fun i => ⟨fun hi => ?_, fun hi => ?_⟩⟩` and prove the remaining obligations. Use `Nat.find_min hex hi push Not at this` as an intermediate fact. Take `⟨j, hj, hc⟩` from `this`. Conclude with `hc.trans_le (ha (Fin.le_def.2 hj))`.
+
+Assume the negation of the conclusion as `h`. Conclude with `absurd (Nat.find_spec hex i (not_lt.1 h)) (not_le.2 hi)`.
+-/
 private theorem exists_cut (a : Fin n → ℤ) (ha : Antitone a) (c : ℤ) :
     ∃ m ≤ n, ∀ i : Fin n, (i : ℕ) < m ↔ c < a i := by
   classical
@@ -111,12 +152,20 @@ private theorem exists_cut (a : Fin n → ℤ) (ha : Antitone a) (c : ℤ) :
   · by_contra h
     exact absurd (Nat.find_spec hex i (not_lt.1 h)) (not_le.2 hi)
 
+/- English proof (translation)
+Rewrite using `[Subgroup.mem_center_iff]`. Introduce `g`. Use extensionality with `i j`. Simplify using `only [Units.val_mul, val_diagT, mul_diagonal, diagonal_mul, mul_comm]`.
+-/
 private theorem const_central (y : kˣ) : diagT k (Fin n) (fun _ => y) ∈ Subgroup.center (GL (Fin n) k) := by
   rw [Subgroup.mem_center_iff]
   intro g
   ext i j
   simp only [Units.val_mul, val_diagT, mul_diagonal, diagonal_mul, mul_comm]
 
+/- English proof (translation)
+Use `Subgroup.mem_normalizer_iff.2 fun g => ?_` and prove the remaining obligations. Establish `e : (pm k n w * pw x a * g * (pm k n w * pw x a)⁻¹)⁻¹ = pm k n w * pw x a * g⁻¹ * (pm k n w * pw x a)⁻¹` using `by group`. Rewrite using `[(memIwC k n C).1, (memIwC k n C).1, mem_iw_iff hx, mem_iw_iff hx, e, bd_conj x _ w hw, bd_conj x _ w hw]`. Use `and_congr Iff.rfl ?_` and prove the remaining obligations. Use `conv_rhs => rw [w.surjective.forall]`.
+
+Simplify using `only [conj_entry, sub_self, zpow_zero, one_mul]`.
+-/
 private theorem rot_norm (C : Subgroup 𝓀[k]ˣ) {x : kˣ} (hx : IsUnif x) (a : Fin n → ℤ) (w : Equiv.Perm (Fin n))
     (hw : ∀ i j, (if w j < w i then 1 else 0 : ℤ) = (a i - a j) + (if j < i then 1 else 0)) :
     pm k n w * pw x a ∈ Subgroup.normalizer (iwC k n C : Set (GL (Fin n) k)) := by
@@ -128,6 +177,11 @@ private theorem rot_norm (C : Subgroup 𝓀[k]ˣ) {x : kˣ} (hx : IsUnif x) (a :
   conv_rhs => rw [w.surjective.forall]
   simp only [conj_entry, sub_self, zpow_zero, one_mul]
 
+/- English proof (translation)
+Unfold `invLen`. Use `Finset.card_bij' (fun p _ => (w⁻¹ p.2, w⁻¹ p.1)) (fun p _ => (w p.2, w p.1)) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `p hp`. Simplify `hp` using `[and_comm]`. Introduce `p hp`.
+
+Simplify `hp` using `[and_comm]`. Introduce `p _`. Simplify using the standard rewrite rules. Introduce `p _`. Simplify using the standard rewrite rules.
+-/
 private theorem invLen_inv (w : Equiv.Perm (Fin n)) : invLen w⁻¹ = invLen w := by
   unfold invLen
   refine Finset.card_bij' (fun p _ => (w⁻¹ p.2, w⁻¹ p.1)) (fun p _ => (w p.2, w p.1)) ?_ ?_ ?_ ?_
@@ -140,6 +194,11 @@ private theorem invLen_inv (w : Equiv.Perm (Fin n)) : invLen w⁻¹ = invLen w :
   · intro p _
     simp
 
+/- English proof (translation)
+Rewrite using `[invLen, ← Finset.filter_filter, Finset.card_filter]`. Use `Finset.sum_congr rfl fun p hp => ?_` and prove the remaining obligations. Establish `h` using `hw p.1 p.2`. Rewrite `h` using `[if_neg (lt_asymm (Finset.mem_filter.1 hp).2), add_zero]`. Rewrite using `[← h]`.
+
+Apply the tactic sequence `split_ifs <;> rfl`.
+-/
 private theorem invLen_eq (a : Fin n → ℤ) (w : Equiv.Perm (Fin n))
     (hw : ∀ i j, (if w j < w i then 1 else 0 : ℤ) = (a i - a j) + (if j < i then 1 else 0)) :
     invLen w = ∑ p ∈ Finset.univ.filter (fun p : Fin n × Fin n => p.1 < p.2), (a p.1 - a p.2).toNat := by
@@ -150,6 +209,9 @@ private theorem invLen_eq (a : Fin n → ℤ) (w : Equiv.Perm (Fin n))
   rw [← h]
   split_ifs <;> rfl
 
+/- English proof (translation)
+Establish `: Finite (MulAction.orbit I (x : G ⧸ I))` using `hI x`. Use `Fintype.ofFinite (MulAction.orbit I (x : G ⧸ I))` as an intermediate fact. Use extensionality with `v`. Rewrite using `[hk, (hkApply ℤ G _ (Representation.trivial ℤ G ℤ) I I x (hI x)).1 v, dc, finsum_eq_sum_of_fintype, LinearMap.sum_apply, ← Nat.card_coe_set_eq, Nat.card_eq_fintype_card]`. Simplify using the standard rewrite rules.
+-/
 private theorem hk_triv {G : Type} [Group G] (I : Subgroup G) (hI : HeckePair I) (x : G) :
     hk (Representation.trivial ℤ G ℤ) I x = ((MulAction.orbit I (x : G ⧸ I)).ncard : Module.End ℤ _) := by
   have : Finite (MulAction.orbit I (x : G ⧸ I)) := hI x
@@ -159,11 +221,17 @@ private theorem hk_triv {G : Type} [Group G] (I : Subgroup G) (hI : HeckePair I)
     LinearMap.sum_apply, ← Nat.card_coe_set_eq, Nat.card_eq_fintype_card]
   simp
 
+/- English proof (translation)
+Use `congrArg Subtype.val (LinearMap.congr_fun h ⟨1, fun _ _ => rfl⟩)` as an intermediate fact. Simplify using `using this`.
+-/
 private theorem endCast_inj {G : Type} [Group G] (I : Subgroup G) {a b : ℕ}
     (h : (a : Module.End ℤ (fixd (Representation.trivial ℤ G ℤ) I)) = b) : a = b := by
   have := congrArg Subtype.val (LinearMap.congr_fun h ⟨1, fun _ _ => rfl⟩)
   simpa using this
 
+/- English proof (translation)
+Use extensionality with `v`. Rewrite using `[(hkNorm ℤ G ℤ _ I u hI hu).1 v]`. Simplify using the standard rewrite rules.
+-/
 private theorem hk_norm {G : Type} [Group G] (I : Subgroup G) (hI : HeckePair I) (u : G)
     (hu : u ∈ Subgroup.normalizer (I : Set G)) : hk (Representation.trivial ℤ G ℤ) I u = 1 := by
   ext v
@@ -172,6 +240,35 @@ private theorem hk_norm {G : Type} [Group G] (I : Subgroup G) (hI : HeckePair I)
 
 end SlopeTestRemainingChoices
 
+/- English proof (translation)
+Introduce `k _ _ _ _ n C x hx a ha`. Establish `hH` using `(heckePairIwC k n C).1`. Establish `hmul` using `(domMul k n C ℤ ℤ (Representation.trivial ℤ (GL (Fin n) k) ℤ)).1`. Use `endCast_inj (iwC k n C) ?_` and prove the remaining obligations. Rewrite using `[← hk_triv _ hH]`.
+
+Establish `hfund : ∀ m ≤ n, hk (Representation.trivial ℤ (GL (Fin n) k) ℤ) (iwC k n C) (pw x (fund n m)) = ((resCard k ^ (∑ p ∈ Finset.univ.filter (fun p : Fin n × Fin n => p.1 < p.2), (fund n m p.1 - fund n m p.2).toNat) : ℕ) : Module.End ℤ _)`. Introduce `m hm`. Take `⟨w, hw⟩` from `exists_rot n m hm`. Establish `hn` using `rot_norm C hx _ w hw`. Establish `e : pw x (fund n m) = pm k n w⁻¹ * (pm k n w * pw x (fund n m))`.
+
+Rewrite using `[map_inv, inv_mul_cancel_left]`. Rewrite using `[e, ((hkNorm ℤ _ ℤ _ _ _ hH hn).2.2.2 _).2, hk_norm _ hH _ hn, mul_one, hk_triv _ hH, permCard, invLen_inv, invLen_eq _ w hw]`. Establish `key : ∀ (c : ℤ) (N : ℕ) (a : Fin n → ℤ), Antitone a → (∀ i, c ≤ a i ∧ a i ≤ c + N) → hk (Representation.trivial ℤ (GL (Fin n) k) ℤ) (iwC k n C) (pw x a) = ((resCard k ^ (∑ p ∈ Finset.univ.filter (fun p : Fin n × Fin n => p.1 < p.2), (a p.1 - a p.2).toNat) : ℕ) : Module.End ℤ _)`. Introduce `c N`. Proceed by induction on `N with`.
+
+Consider the case `zero`. Introduce `a _ hb`. Establish `e : a = fun _ : Fin n => c`. Use function extensionality and compare the values at `i`. Use `hb i` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Rewrite using `[e, pw, hk_norm _ hH _ (Subgroup.center_le_normalizer _ (const_central _))]`. Simplify using the standard rewrite rules. Consider the case `succ N ih`. Introduce `a ha hb`.
+
+Take `⟨m, hm, hc⟩` from `exists_cut a ha c`. Establish `hfa : Antitone (fund n m)`. Introduce `i j hij`. Use `Fin.le_def.1 hij` as an intermediate fact. Simplify using `only [fund]`.
+
+Apply the tactic sequence `split_ifs <;> omega`. Establish `ha' : Antitone (a - fund n m)`. Introduce `i j hij`. Establish `h1` using `ha hij`. Establish `h2` using `hc i`.
+
+Establish `h3` using `hc j`. Establish `h4` using `hb i`. Establish `h5` using `hb j`. Simplify using `only [fund, Pi.sub_apply]`. Apply the tactic sequence `split_ifs <;> omega`.
+
+Establish `hb' : ∀ i, c ≤ (a - fund n m) i ∧ (a - fund n m) i ≤ c + N`. Introduce `i`. Establish `h2` using `hc i`. Establish `h4` using `hb i`. Simplify using `only [fund, Pi.sub_apply]`.
+
+Apply the tactic sequence `split_ifs <;> omega`. Establish `e : (fun i => x ^ a i) = (fun i => x ^ (a - fund n m) i) * fun i => x ^ fund n m i`. Use function extensionality and compare the values at `i`. Simplify using `only [Pi.mul_apply, Pi.sub_apply, ← _root_.zpow_add, sub_add_cancel]`. Establish `h1` using `ih _ ha' hb'`.
+
+Establish `h2` using `hfund m hm`. Rewrite `h1`, `h2`, the goal using `[pw]`. Rewrite using `[e, ← hmul _ _ (dom_zpow hx ha') (dom_zpow hx hfa), h1, h2, ← Nat.cast_mul, ← pow_add, ← Finset.sum_add_distrib]`. Use `congr 2`. Use `Finset.sum_congr rfl fun p hp => ?_` and prove the remaining obligations.
+
+Establish `hp'` using `(Finset.mem_filter.1 hp).2.le`. Establish `h3` using `ha' hp'`. Establish `h4` using `hfa hp'`. Simplify using `only [Pi.sub_apply] at h3 ⊢`. Use linear arithmetic over natural numbers and integers.
+
+Take `⟨c, hc⟩` from `(Set.finite_range a).bddBelow`. Take `⟨d, hd⟩` from `(Set.finite_range a).bddAbove`. Conclude with `key c (d - c).toNat a ha fun i => by`. Establish `h1 : c ≤ a i` using `hc ⟨i, rfl⟩`. Establish `h2 : a i ≤ d` using `hd ⟨i, rfl⟩`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem UpperTheory.V.AlgebraTools.domCard :
     ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : ℕ) (C : Subgroup 𝓀[k]ˣ) (x : kˣ), IsUnif x → ∀ a : Fin n → ℤ, Antitone a → (MulAction.orbit (iwC k n C) ((pw x a : GL (Fin n) k) : GL (Fin n) k ⧸ iwC k n C)).ncard = resCard k ^ (∑ p ∈ Finset.univ.filter (fun p : Fin n × Fin n => p.1 < p.2), (a p.1 - a p.2).toNat) := by
   intro k _ _ _ _ n C x hx a ha

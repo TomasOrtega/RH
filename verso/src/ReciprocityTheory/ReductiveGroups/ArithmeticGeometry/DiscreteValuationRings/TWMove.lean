@@ -15,6 +15,9 @@ namespace ReciprocityTheory.ChartRestriction.G.DVR.TWM
 
 open ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor IsLocalRing TWO SectionScalarValuation
 
+/- English proof (translation)
+Establish `e` using `congrArg (fun φ => φ.hom r) (Scheme.ΓSpecIso_naturality g)`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply] at e`. Rewrite using `[← e]`. Simplify using the standard rewrite rules.
+-/
 theorem appTop_specMap {R S : CommRingCat} (g : R ⟶ S) (r : Γ(Spec R, ⊤)) :
     (Spec.map g).appTop.hom r = (Scheme.ΓSpecIso S).inv.hom (g.hom ((Scheme.ΓSpecIso R).hom.hom r)) := by
   have e := congrArg (fun φ => φ.hom r) (Scheme.ΓSpecIso_naturality g)
@@ -36,9 +39,15 @@ abbrev ιS : TF (R := V) F ⟶ TO hϖ hv :=
 
 abbrev jO : DegPre.BF D.toPre F ⟶ TO hϖ hv ⊗ D.toPre.P.A := ιS hϖ hv ▷ D.toPre.P.A
 
+/- English proof (translation)
+Rewrite using `[← Over.comp_left, whiskerRight_snd]`.
+-/
 theorem jO_snd : (jO hϖ hv (D := D)).left ≫ (snd (TO hϖ hv) D.toPre.P.A).left = (DegPre.prB D.toPre F).left := by
   rw [← Over.comp_left, whiskerRight_snd]
 
+/- English proof (translation)
+Rewrite using `[← Over.comp_left, whiskerRight_fst, Over.comp_left]`.
+-/
 theorem jO_fst : (jO hϖ hv (D := D)).left ≫ (fst (TO hϖ hv) D.toPre.P.A).left =
     (fst (TF (R := V) F) D.toPre.P.A).left ≫ (ιS hϖ hv).left := by
   rw [← Over.comp_left, whiskerRight_fst, Over.comp_left]
@@ -46,8 +55,16 @@ theorem jO_fst : (jO hϖ hv (D := D)).left ≫ (fst (TO hϖ hv) D.toPre.P.A).lef
 abbrev ιr (r : Γ(Spec (CommRingCat.of (Ov v)), ⊤)) : F :=
   algebraMap (Ov v) F ((Scheme.ΓSpecIso (CommRingCat.of (Ov v))).hom.hom r)
 
+/- English proof (translation)
+The claim follows from `v_nonneg v _`.
+-/
 theorem v_ιr (r : Γ(Spec (CommRingCat.of (Ov v)), ⊤)) : (0 : WithTop ℚ) ≤ v (ιr (v := v) r) := v_nonneg v _
 
+/- English proof (translation)
+Establish `e1 : gs (ρ ≫ (jO hϖ hv (D` using `D)).left) z ⊤ ((fst (TO hϖ hv) D.toPre.P.A).left.appTop.hom r) = gs ((ρ ≫ (jO hϖ hv (D := D)).left) ≫ (fst (TO hϖ hv) D.toPre.P.A).left) z ⊤ r := gs_pull _ _ z ⊤ trivial r`. Rewrite using `[e1, Category.assoc, jO_fst, ← Category.assoc]`. Establish `e2 : gs ((ρ ≫ (fst (TF (R` using `V) F) D.toPre.P.A).left) ≫ (ιS hϖ hv).left) z ⊤ r = gs (ρ ≫ (fst (TF (R := V) F) D.toPre.P.A).left) z ⊤ ((ιS hϖ hv).left.appTop.hom r) := (gs_pull _ _ z ⊤ trivial r).symm`. Establish `e3 : gs ρ z ⊤ (gF D.toPre F (ιr (v` using `v) r)) = gs (ρ ≫ (fst (TF (R := V) F) D.toPre.P.A).left) z ⊤ ((Scheme.ΓSpecIso (CommRingCat.of F)).inv.hom (ιr (v := v) r)) := gs_pull _ _ z ⊤ trivial _`. Rewrite using `[e2, e3, show (ιS hϖ hv).left = Spec.map (CommRingCat.ofHom (algebraMap (Ov v) F)) from rfl, appTop_specMap]`.
+
+Both sides reduce to the same expression.
+-/
 theorem gs_jO {Z : Scheme.{0}} (ρ : Z ⟶ (DegPre.BF D.toPre F).left) (z : Z) (r : Γ(Spec (CommRingCat.of (Ov v)), ⊤)) :
     gs (ρ ≫ (jO hϖ hv (D := D)).left) z ⊤ ((fst (TO hϖ hv) D.toPre.P.A).left.appTop.hom r) =
       gs ρ z ⊤ (gF D.toPre F (ιr (v := v) r)) := by
@@ -61,6 +78,35 @@ theorem gs_jO {Z : Scheme.{0}} (ρ : Z ⟶ (DegPre.BF D.toPre F).left) (z : Z) (
   rw [e2, e3, show (ιS hϖ hv).left = Spec.map (CommRingCat.ofHom (algebraMap (Ov v) F)) from rfl, appTop_specMap]
   rfl
 
+/- English proof (translation)
+Establish `hL` using `D.toPre.P.isLB`. Take `⟨n, a, σ, σF, hscal, hva, hsum⟩` from `hs`. Establish `e1 : ∀ i, ∃ t : LB.Sec (LB.LinComb D.toPre.P.L (fun j => (snd (TO hϖ hv) D.toPre.P.A).left ≫ D.toPre.famφB χ j) (DegPre.famε k)), ∀ (Z : Scheme.{0}) (ρ : Z ⟶ (TO hϖ hv ⊗ D.toPre.P.A).left) (z : Z) (J), Good D.toPre.P.L z J → sval t ρ z J = sval (σ i) (ρ ≫ H ≫ (snd (TO hϖ hv) D.to …` using `fun i => by`. Take `⟨t, ht⟩` from `exists_sec hL hform (pullMulSec (σ i) (H ≫ (snd (TO hϖ hv) D.toPre.P.A).left) eO heO)`. Conclude with `⟨t, fun Z ρ z J hJ => (ht Z ρ z J hJ).trans (sval_pullMulSec _ _ _ heO ρ z hJ)⟩`.
+
+Use `choose S hS using e1`. Establish `e2` using `fun i => hTW V D.toPre k hk χ (Ov v) (fO v hϖ hv) inferInstance (S i)`. Use `choose m rr σ' hsp using e2`. Establish `hformF : FormEq (fun i => (DegPre.prB D.toPre F).left ≫ D.toPre.famφB χ i) (DegPre.famε k) (DegPre.famφ D.toPre F χ) (DegPre.famε k)` using `fun U _ g => Finset.prod_congr rfl fun i _ => by rw [GC.famφ_eq]`. Establish `e3 : ∀ (i : Fin n) (l : Fin (m i)), ∃ t : LB.Sec (LB.LinComb D.toPre.P.L (DegPre.famφ D.toPre F χ) (DegPre.famε k)), ∀ (Z : Scheme.{0}) (ρ : Z ⟶ (DegPre.BF D.toPre F).left) (z : Z) (J), Good D.toPre.P.L z J → sval t ρ z J = sval (σ' i l) (ρ ≫ (DegPre.prB D.toPre F).left) z J` using `fun i l => by`.
+
+Take `⟨t, ht⟩` from `exists_sec hL hformF (pullSec D.toPre.P.L _ _ (σ' i l) (DegPre.prB D.toPre F).left)`. Conclude with `⟨t, fun Z ρ z J hJ => (ht Z ρ z J hJ).trans (sval_pullSec _ _ _ _ ρ z hJ)⟩`. Use `choose σ'F hσ'F using e3`. Set `eqv` to `(finSigmaFinEquiv (n := m)).symm`. Set `co : Fin (∑ i, m i) → F` to `fun t => c * a (eqv t).1 * ιr (v := v) (rr (eqv t).1 (eqv t).2)`.
+
+Establish `hprB : h ≫ (DegPre.prB D.toPre F).left = (jO hϖ hv).left ≫ H ≫ (snd (TO hϖ hv) D.toPre.P.A).left`. Rewrite using `[← jO_snd hϖ hv, ← Category.assoc, hh, Category.assoc]`. Establish `CORE : ∀ (y : (DegPre.BF D.toPre F).left) (I), Good D.toPre.P.L y I → sval s' (𝟙 _) y I = ∑ t, gs (𝟙 _) y ⊤ (gF D.toPre F (co t)) * sval (σ'F (eqv t).1 (eqv t).2) (𝟙 _) y I`. Introduce `y I hIy`. Establish `H1` using `(secRel_iff hL _ _ s' _ _ s h _ _ u).1 hrel _ (𝟙 _) y I hIy`.
+
+Establish `H2` using `sval_lin (fun i => gF D.toPre F (a i)) σF (fun j => hsum j) (𝟙 _ ≫ h) y hIy`. Rewrite using `[H1, H2, hc y I hIy, Finset.sum_mul]`. Rewrite using `[← (Equiv.sum_comp eqv.symm _), Fintype.sum_sigma]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `A1 : gs (𝟙 _ ≫ h) y ⊤ (gF D.toPre F (a i)) = gs (𝟙 _) y ⊤ (gF D.toPre F (a i))`.
+
+Rewrite using `[Category.id_comp]`. Conclude with `gs_gF_comp hfst y (a i)`. Establish `A2 : sval (σF i) (𝟙 _ ≫ h) y I = sval (σ i) ((jO hϖ hv).left ≫ H ≫ (snd (TO hϖ hv) D.toPre.P.A).left) y I`. Rewrite using `[← secScal_sval (hscal i) (𝟙 _ ≫ h) y hIy, Category.assoc, hprB, Category.id_comp]`. Establish `A3` using `hS i _ (jO hϖ hv).left y I hIy`.
+
+Establish `A4` using `sval_lin (fun l => (fst (TO hϖ hv) D.toPre.P.A).left.appTop.hom (rr i l)) (fun l => pullSec D.toPre.P.L _ _ (σ' i l) (snd (TO hϖ hv) D.toPre.P.A).left) (fun j => hsp i j) (jO hϖ hv).left y hIy`. Rewrite using `[A1, A2]`. Establish `A5 : sval (σ i) ((jO hϖ hv).left ≫ H ≫ (snd (TO hϖ hv) D.toPre.P.A).left) y I * (val eO (jO hϖ hv).left y I).val = ∑ l, gs (𝟙 _) y ⊤ (gF D.toPre F (ιr (v` using `v) (rr i l))) * sval (σ'F i l) (𝟙 _) y I := by`. Rewrite using `[← A3, A4]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[sval_pullSec _ _ _ _ _ y hIy, jO_snd, hσ'F i l _ (𝟙 _) y I hIy, Category.id_comp]`. Use `congr 1`. Use `gs_jO hϖ hv (D := D) (𝟙 _) y (rr i l)` as an intermediate fact. Rewrite `this` using `[Category.id_comp]`. Then use the resulting hypothesis. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[A5, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Simplify using `only [co, eqv, Equiv.symm_symm, map_mul]`. Rewrite using `[show finSigmaFinEquiv.symm (finSigmaFinEquiv (⟨i, l⟩ : (i : Fin n) × Fin (m i))) = ⟨i, l⟩ from Equiv.symm_apply_apply _ _, gs_mul _ y ⊤ trivial, gs_mul _ y ⊤ trivial]`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `⟨∑ i, m i, co, fun t => σ' (eqv t).1 (eqv t).2, fun t => σ'F (eqv t).1 (eqv t).2, fun t => ?_, fun t => ?_, fun j => ?_⟩` and prove the remaining obligations. Conclude with `secScal_of_sval hL fun y J hJ => (hσ'F _ _ _ (𝟙 _) y J hJ).symm`. Use `show ((r + q : ℚ) : WithTop ℚ) ≤ v (c * a (eqv t).1 * ιr (v := v) (rr (eqv t).1 (eqv t).2))`. Rewrite using `[AddValuation.map_mul, AddValuation.map_mul, WithTop.coe_add]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[add_zero, add_comm]`. Use `_ ≤ _ := add_le_add (add_le_add hq (hva _)) (v_ιr _)`. Use `show s'.f j = ∑ t, resTop _ (gF D.toPre F (co t)) * (σ'F (eqv t).1 (eqv t).2).f j`. Use `fn_ext fun y hy => ?_` and prove the remaining obligations. Use `choose I hI using fun ψ : (DegPre.BF D.toPre F).left ⟶ D.toPre.P.A.left => Geo.Tor.exists_chart hL (ψ y)`.
+
+Establish `hIy : Good D.toPre.P.L y I` using `hI`. Establish `mm` using `hIy.mem (DegPre.famφ D.toPre F χ) (𝟙 _)`. Establish `hy' : y ∈ LB.wchart D.toPre.P.L (DegPre.famφ D.toPre F χ) j` using `hy`. Establish `T0` using `sec_trans s' (𝟙 _) y hy' mm`. Use `set τ := (Geo.Tor.trF (DegPre.famφ D.toPre F χ) (DegPre.famε k) (𝟙 _) y j (fun k => I (𝟙 _ ≫ DegPre.famφ D.toPre F χ k))).val with hτ`.
+
+Establish `RHS : gs (𝟙 _) y (LB.wchart D.toPre.P.L (DegPre.famφ D.toPre F χ) j) (∑ t, resTop (LB.wchart D.toPre.P.L (DegPre.famφ D.toPre F χ) j) (gF D.toPre F (co t)) * (show Γ((DegPre.BF D.toPre F).left, LB.wchart D.toPre.P.L (DegPre.famφ D.toPre F χ) j) from (σ'F (eqv t).1 (eqv t).2).f j) …`. Rewrite using `[gs_sum _ y _ hy', Finset.mul_sum]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Establish `S1 : gs (𝟙 _) y (LB.wchart D.toPre.P.L (DegPre.famφ D.toPre F χ) j) (resTop (LB.wchart D.toPre.P.L (DegPre.famφ D.toPre F χ) j) (gF D.toPre F (co t))) = gs (𝟙 _) y ⊤ (gF D.toPre F (co t))` using `gs_res _ y le_top hy' _`. Rewrite using `[gs_mul _ y _ hy', S1, sec_trans (σ'F (eqv t).1 (eqv t).2) (𝟙 _) y hy' mm, hτ]`.
+
+Conclude with `mul_left_comm _ _ _`. Conclude with `T0.trans ((congrArg (fun x => τ * x) (CORE y I hIy)).trans RHS.symm)`.
+-/
 theorem vge_moveO (hTW : TwistBCSpanStatement) {k : ℕ} (hk : 1 ≤ k) {α χ : D.toPre.X}
     {s : LB.Sec (LB.LinComb D.toPre.P.L (DegPre.famφ D.toPre F α) (DegPre.famε k))}
     {s' : LB.Sec (LB.LinComb D.toPre.P.L (DegPre.famφ D.toPre F χ) (DegPre.famε k))}

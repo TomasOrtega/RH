@@ -11,6 +11,17 @@ noncomputable section
 
 namespace GlobalTheory.GoodTop
 
+/- English proof (translation)
+Introduce `n Y κ _ _ _ _ e hd hcov S hS d e' W g hW hWe hd' hT h0 hg hint`. Establish `hSW : MeasurableSet (S ∩ W)` using `hS.inter hW.measurableSet`. Establish `hsub : S ∩ W ⊆ e'.source` using `Set.inter_subset_right.trans hWe`. Establish `key : ∀ ε : ℝ, glueMeas e (fun i y => ENNReal.ofReal (ε * d i y)) S = ∫⁻ v in e' '' (S ∩ W), ENNReal.ofReal (ε * g v)`. Introduce `ε`.
+
+Establish `hD : MeasurableSet (S \ W)` using `hS.diff hW.measurableSet`. Establish `hz` using `GlobalTheory.ChernScale.glueMeas_restrict_eq e (ρ := fun i y => ENNReal.ofReal (ε * d i y)) (ρ' := fun i y => ENNReal.ofReal (ε * d i y)) (c := 0) ENNReal.zero_ne_top hD (fun i y hi hy => by rw [h0 i y hy.1 hy.2 hi]; simp)`. Establish `hz' : glueMeas e (fun i y => ENNReal.ofReal (ε * d i y)) (S \ W) = 0`. Use `congrArg (fun μ : Measure Y => μ (S \ W)) hz` as an intermediate fact. Simplify `this` using `only [Measure.restrict_apply_self, zero_smul, Measure.coe_zero, Pi.zero_apply]`.
+
+Rewrite using `[← measure_inter_add_diff S hW.measurableSet, hz', add_zero, glueMeas_eq_chartMeas_of_compat_on e hd hcov hSW e' (fun y => ENNReal.ofReal (ε * g (e' y))) hsub hd' (fun i j y hy hi hj => by`. Rewrite using `[hT.trans i j y hy.1 hi hj, ← ENNReal.ofReal_mul (sq_nonneg _), mul_left_comm])`. Use the proof step `(fun j y hy hj => by`. Rewrite using `[hg j y hy.1 hy.2 hj, ← ENNReal.ofReal_mul (sq_nonneg _), mul_left_comm]),`. Use `chartMeas_apply_of_subset _ _ hSW hsub]`.
+
+Use `setLIntegral_congr_fun (measurableSet_image e' hSW hsub) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Simplify using `only [e'.left_inv (hsub hy)]`. Use `⟨fun ε => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[key]`.
+
+Conclude with `(Integrable.const_mul hint _).lintegral_lt_top.ne`. Rewrite using `[measureReal_def, measureReal_def, key, key, integral_eq_lintegral_pos_part_sub_lintegral_neg_part hint]`. Simplify using the standard rewrite rules.
+-/
 theorem hasInt_of_chart : ∀ {n : ℕ} {Y κ : Type} [TopologicalSpace Y] [MeasurableSpace Y] [BorelSpace Y] [SecondCountableTopology Y] (e : κ → OpenPartialHomeomorph Y (V n)), (∀ i j, DifferentiableOn ℂ (e j ∘ (e i).symm) ((e i).target ∩ (e i).symm ⁻¹' (e j).source)) → (∀ y, ∃ i, y ∈ (e i).source) → ∀ {S : Set Y}, MeasurableSet S → ∀ {d : κ → Y → ℝ} (e' : OpenPartialHomeomorph Y (V n)) (W : Set Y) (g : V n → ℝ), IsOpen W → W ⊆ e'.source → (∀ j, DifferentiableOn ℂ (e j ∘ e'.symm) (e'.target ∩ e'.symm ⁻¹' (e j).source)) → IsTopForm e d S → (∀ i y, y ∈ S → y ∉ W → y ∈ (e i).source → d i y = 0) → (∀ j y, y ∈ S → y ∈ W → y ∈ (e j).source → g (e' y) = ‖transDet e' (e j) y‖ ^ 2 * d j y) → IntegrableOn g (e' '' (S ∩ W)) → HasInt e d S (∫ v in e' '' (S ∩ W), g v) := by
   intro n Y κ _ _ _ _ e hd hcov S hS d e' W g hW hWe hd' hT h0 hg hint
   have hSW : MeasurableSet (S ∩ W) := hS.inter hW.measurableSet

@@ -24,6 +24,9 @@ open CategoryTheory AlgebraicGeometry IsDedekindDomain GlobalTheory.TrueGeo Glob
 open Classical GlobalTheory.HtAdd
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.HtAdd.ProdFormulaPts.main | exact GlobalTheory.HtAdd.ProdFormulaPts.main | (intros; apply GlobalTheory.HtAdd.ProdFormulaPts.main <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.product_formula_rational_function : ∀ (F : Type) [Field F] [NumberField F] (Y : Var F) (x : Y.X), IsClosed ({x} : Set Y.X) →
     ∀ g : Y.Fn, UnitAt x g →
     (Function.support fun v : HeightOneSpectrum (𝓞 F) => if h : Nonempty (Ext v) then

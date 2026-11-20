@@ -9,6 +9,19 @@ namespace Formalism.FourierDecayAlt.P.CutMP
 
 noncomputable section
 
+/- English proof (translation)
+Introduce `J hJ Y`. Take `⟨hF, hres, hcv⟩` from `Gauge.gauge_transition_chain_holds Wp Wq P Bs hpl hk J hJ`. Use `set Φ := Q.resG P.k P.r (Fin.last P.r) J with hΦ`. Establish `hJe : Gauge.trJB P Bs e J = fun ρ => MA.toSm P (Gauge.rawR P Bs.μsec e Φ ρ)`. Use function extensionality and compare the values at `ρ`.
+
+Conclude with `congrArg (MA.toSm P) (hres e ρ)`. Establish `hpair : ∀ a b : Fin 2, (∀ ρ, Gauge.rawR P Bs.μsec e (Q.crd (Q.cmp (Q.vABs P.r (Y : ℂ) P.r) a) (Q.QL P.k P.r Bs.z Bs.z' (Fin.last P.r) (Y : ℂ) a b (Q.crd (Q.cmp (Q.vAB P.r (Y : ℂ) P.r) b) Φ))) ρ ∈ MA.smSub P.r P.TT) ∧ ∀ ρ, MA.toSm P (Gauge.rawR P Bs.μsec e (Q.crd (Q.cmp (Q.vABs P. …`. Introduce `a b`. Take `⟨hF1, hV1⟩` from `Gauge.gauge_vector_transition_holds Wp Wq P Bs hpl hk e he _ Φ hF Y b`. Establish `hF2` using `Gauge.quadratic_local_family_holds Wp Wq P Bs hpl hk _ _ hF1 Y a b`.
+
+Take `⟨hF3, hV2⟩` from `Gauge.gauge_conj_vector_transition Wp Wq P Bs hpl hk e he _ _ hF2 Y a`. Use `⟨fun ρ => Gauge.raw_gauge_smoothness_holds Wp Wq P Bs hpl hk e he _ _ hF3 ρ, fun ρ => ?_⟩` and prove the remaining obligations. Establish `hin : (fun ρ' => MA.toSm P (Gauge.rawR P Bs.μsec e (Q.crd (Q.cmp (Q.vAB P.r (Y : ℂ) P.r) b) Φ) ρ')) = MA.actA P (Wd.v0 (MA.sites P (MA.DQ P)) (Y : ℂ) b) (Gauge.trJB P Bs e J)`. Use function extensionality and compare the values at `ρ'`. Rewrite using `[hV1 ρ', hJe]`.
+
+Establish `hmid : (fun ρ' => MA.toSm P (Gauge.rawR P Bs.μsec e (Q.QL P.k P.r Bs.z Bs.z' (Fin.last P.r) (Y : ℂ) a b (Q.crd (Q.cmp (Q.vAB P.r (Y : ℂ) P.r) b) Φ)) ρ')) = MA.actA P (MA.QQr P (MA.DQ P) (Y : ℂ) a b) (MA.actA P (Wd.v0 (MA.sites P (MA.DQ P)) (Y : ℂ) b) (Gauge.trJB P Bs e J))`. Use function extensionality and compare the values at `ρ'`. Rewrite using `[hcore _ _ hF1 Y a b ρ', hin]`. Rewrite using `[hV2 ρ, Gauge.actA_mul, Gauge.actA_mul, hmid]`. Use function extensionality and compare the values at `ρ`.
+
+Use `show MA.toSm P (Gauge.rawJ P Bs e (Q.CV P.k P.r (Y : ℂ) J) ρ) = _`. Rewrite using `[hcv e ρ Y]`. Rewrite using `[show Wd.C0 (MA.QQr P (MA.DQ P)) (MA.sites P (MA.DQ P)) (Y : ℂ) = ∑ a, ∑ b, star (Wd.v0 (MA.sites P (MA.DQ P)) (Y : ℂ) a) * MA.QQr P (MA.DQ P) (Y : ℂ) a b * Wd.v0 (MA.sites P (MA.DQ P)) (Y : ℂ) b from rfl]`. Simplify using `only [Gauge.actA_sum, Finset.sum_apply]`. Rewrite using `[Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ((hpair a b).2 ρ).symm]`.
+
+Rewrite using `[Gauge.toSm_of_mem P (Subalgebra.sum_mem _ fun a _ => Subalgebra.sum_mem _ fun b _ => (hpair a b).1 ρ)]`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [AddSubmonoidClass.coe_finset_sum]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[Gauge.toSm_of_mem P ((hpair a b).1 ρ)]`.
+-/
 theorem jdg_gauge_of_core {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
     [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] (P : M.Par) (Bs : B.RealPlaceData P.k P.r Wp Wq)
     (hpl : Q.IsPlace P Bs.z Bs.z' Bs.π Bs.π') (hk : 2 ≤ P.k) (e : M.Ty P → ℂ → (Wq →L[ℂ] Wp)) (he : Gauge.IsFrameB P Bs e)
@@ -66,6 +79,9 @@ theorem jdg_gauge_of_core {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSp
   refine Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_
   rw [Gauge.toSm_of_mem P ((hpair a b).1 ρ)]
 
+/- English proof (translation)
+Take `⟨hBP, -, -, -⟩` from `hB`. Take `⟨-, -, -, hIB, -, -, -, -, -, -, hk2, -, -⟩` from `hBP`. Take `⟨-, -, -, hpl, -, -⟩` from `hIB.2 v`. Take `⟨e, he, hc⟩` from `hK (Wp (S.pl v)) (Wq (S.pl v)) (D.parOf S v) (T v).base hpl hk2`. Conclude with `⟨e, he, jdg_gauge_of_core (D.parOf S v) (T v).base hpl hk2 e he hc, hc⟩`.
+-/
 theorem jdg_exists_of_gCore (hK : Gauge.GCore) (Cc : ℝ) (E : Type) [Field E] [NumberField E] [IsCMField E]
     (Wp Wq : InfinitePlace E → Type)
     [∀ x, NormedAddCommGroup (Wp x)] [∀ x, InnerProductSpace ℂ (Wp x)]

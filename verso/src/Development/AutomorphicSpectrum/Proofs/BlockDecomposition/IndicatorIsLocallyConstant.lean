@@ -18,6 +18,13 @@ namespace GlobalTheory.CompanionTheory.TorSB
 
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
 
+/- English proof (translation)
+Establish `h` using `isTrivialOn_addCharConductor hψ.1 hψ.2.1`. Rewrite `h` using `[hψ.2.2]`. Rewrite using `[IsLocallyConstant.iff_exists_open]`. Introduce `x`. Use `⟨(fun y => y - x) ⁻¹' (valBall F 0 : Set F), (isOpen_valBall 0).preimage (continuous_id.sub continuous_const), ?_, fun y hy => ?_⟩` and prove the remaining obligations.
+
+Use `show x - x ∈ valBall F 0`. Rewrite using `[sub_self]`. Conclude with `(valBall F 0).zero_mem`. Establish `h1 : ψ (y - x) = 1` using `h _ hy`. Establish `h2 : y = x + (y - x)` using `by ring`.
+
+Use `show ((ψ y : Circle) : ℂ) = ((ψ x : Circle) : ℂ)`. Rewrite using `[h2, AddChar.map_add_eq_mul, h1, mul_one]`.
+-/
 theorem psi_isLocallyConstant {ψ : AddChar F Circle} (hψ : IsStd ψ) :
     IsLocallyConstant fun r : F => ((ψ r : Circle) : ℂ) := by
   have h := isTrivialOn_addCharConductor hψ.1 hψ.2.1
@@ -34,6 +41,11 @@ theorem psi_isLocallyConstant {ψ : AddChar F Circle} (hψ : IsStd ψ) :
     show ((ψ y : Circle) : ℂ) = ((ψ x : Circle) : ℂ)
     rw [h2, AddChar.map_add_eq_mul, h1, mul_one]
 
+/- English proof (translation)
+Establish `h` using `(LocallyConstant.indicator (⟨f, hf⟩ : LocallyConstant X ℂ) hS).isLocallyConstant`. Establish `e : S.indicator f = ((LocallyConstant.indicator (⟨f, hf⟩ : LocallyConstant X ℂ) hS) : X → ℂ)`. Use function extensionality and compare the values at `x`. Distinguish the cases in `hx : x ∈ S`. Rewrite using `[Set.indicator_of_mem hx, LocallyConstant.indicator_of_mem _ hS hx]`.
+
+Both sides reduce to the same expression. Rewrite using `[Set.indicator_of_notMem hx, LocallyConstant.indicator_of_notMem _ hS hx]`. Rewrite using `[e]`. Conclude with `h`.
+-/
 theorem indicator_isLocallyConstant {X : Type} [TopologicalSpace X] {S : Set X} (hS : IsClopen S)
     {f : X → ℂ} (hf : IsLocallyConstant f) : IsLocallyConstant (S.indicator f) := by
   have h := (LocallyConstant.indicator (⟨f, hf⟩ : LocallyConstant X ℂ) hS).isLocallyConstant
@@ -46,6 +58,13 @@ theorem indicator_isLocallyConstant {X : Type} [TopologicalSpace X] {S : Set X} 
   rw [e]
   exact h
 
+/- English proof (translation)
+Establish `hcont : Continuous fun x : F => x - 1` using `continuous_id.sub continuous_const`. Establish `hcl : IsClopen ({x : F | x - 1 ∈ valBall F (n : ℤ)} : Set F)` using `⟨(isClosed_valBall (n : ℤ)).preimage hcont, (isOpen_valBall (n : ℤ)).preimage hcont⟩`. Establish `hK : IsCompact ({x : F | x - 1 ∈ valBall F (n : ℤ)} : Set F)`. Establish `: ({x : F | x - 1 ∈ valBall F (n : ℤ)} : Set F) = (fun y : F => y + 1) '' (valBall F (n : ℤ) : Set F)`. Use extensionality with `x`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hx`. Conclude with `⟨x - 1, hx, by ring⟩`. Introduce and unpack `⟨y, hy, rfl⟩ show y + 1 - 1 ∈ valBall F (n : ℤ)`. Simplify using `using hy`.
+
+Rewrite using `[this]`. Conclude with `(isCompact_valBall (n : ℤ)).image (continuous_id.add continuous_const)`. Use `⟨indicator_isLocallyConstant hcl (IsLocallyConstant.const (1 : ℂ)), ?_⟩` and prove the remaining obligations. Conclude with `HasCompactSupport.intro hK fun x hx => Set.indicator_of_notMem hx _`.
+-/
 theorem torF_mem (n : ℕ) : torF F n ∈ schwartzBruhat F := by
   have hcont : Continuous fun x : F => x - 1 := continuous_id.sub continuous_const
   have hcl : IsClopen ({x : F | x - 1 ∈ valBall F (n : ℤ)} : Set F) :=
@@ -65,6 +84,9 @@ theorem torF_mem (n : ℕ) : torF F n ∈ schwartzBruhat F := by
   refine ⟨indicator_isLocallyConstant hcl (IsLocallyConstant.const (1 : ℂ)), ?_⟩
   exact HasCompactSupport.intro hK fun x hx => Set.indicator_of_notMem hx _
 
+/- English proof (translation)
+Establish `hcl : IsClopen (valBall F (-(n : ℤ)) : Set F)` using `⟨isClosed_valBall _, isOpen_valBall _⟩`. Use `⟨indicator_isLocallyConstant hcl (psi_isLocallyConstant hψ), ?_⟩` and prove the remaining obligations. Conclude with `HasCompactSupport.intro (isCompact_valBall (-(n : ℤ))) fun x hx => Set.indicator_of_notMem hx _`.
+-/
 theorem torG_mem {ψ : AddChar F Circle} (hψ : IsStd ψ) (n : ℕ) : torG ψ n ∈ schwartzBruhat F := by
   have hcl : IsClopen (valBall F (-(n : ℤ)) : Set F) :=
     ⟨isClosed_valBall _, isOpen_valBall _⟩
@@ -72,6 +94,11 @@ theorem torG_mem {ψ : AddChar F Circle} (hψ : IsStd ψ) (n : ℕ) : torG ψ n 
   exact HasCompactSupport.intro (isCompact_valBall (-(n : ℤ)))
     fun x hx => Set.indicator_of_notMem hx _
 
+/- English proof (translation)
+Use `GodementSectionLocal.mem_schwartzBruhat2.2 ⟨(hf.1.comp_continuous (continuous_apply 0)).mul (hg.1.comp_continuous (continuous_apply 1)), ?_⟩` and prove the remaining obligations. Use `HasCompactSupport.intro ((hf.2.isCompact.prod hg.2.isCompact).image (Homeomorph.finTwoArrow (X := F)).symm.continuous) fun x hx => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Use `hx ⟨(x 0, x 1), ⟨subset_tsupport _ fun h => hne ?_, subset_tsupport _ fun h => hne ?_⟩, ?_⟩` and prove the remaining obligations. Simplify using `[Ad3.SchwartzSpaceL2.pt, h]`.
+
+Simplify using `[Ad3.SchwartzSpaceL2.pt, h]`. Apply the tactic sequence `ext j fin_cases j <;> simp`.
+-/
 theorem pt_mem {f g : F → ℂ} (hf : f ∈ schwartzBruhat F) (hg : g ∈ schwartzBruhat F) :
     Ad3.SchwartzSpaceL2.pt f g ∈ GodementSectionLocal.schwartzBruhat2 F := by
   refine GodementSectionLocal.mem_schwartzBruhat2.2
@@ -86,6 +113,9 @@ theorem pt_mem {f g : F → ℂ} (hf : f ∈ schwartzBruhat F) (hg : g ∈ schwa
   · ext j
     fin_cases j <;> simp
 
+/- English proof (translation)
+Introduce `F _ _ _ _ _ _ ψ hψ n _`. Conclude with `⟨torF_mem n, torG_mem hψ n, pt_mem (torF_mem n) (torG_mem hψ n)⟩`.
+-/
 theorem tor_schwartzBruhat : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] (ψ : AddChar F Circle), IsStd ψ → ∀ n : ℕ, 1 ≤ n →
   torF F n ∈ schwartzBruhat F ∧ torG ψ n ∈ schwartzBruhat F ∧ Ad3.SchwartzSpaceL2.pt (torF F n) (torG ψ n) ∈ GodementSectionLocal.schwartzBruhat2 F := by
   intro F _ _ _ _ _ _ ψ hψ n _

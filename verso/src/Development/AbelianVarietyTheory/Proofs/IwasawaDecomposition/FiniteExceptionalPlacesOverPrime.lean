@@ -6,6 +6,11 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 
 namespace GlobalTheory.PlacesExc
 
+/- English proof (translation)
+Introduce `D l hl`. Establish `h1 : (placesOver D.host.E l).Finite` using `Formalism.L2.Fam.NPC.placesOver_fin D.host l hl`. Establish `h2 : (placesS D l).Finite` using `Formalism.L2.Fam.NPC.exceptional_places_finite D.host l`. Use `⟨(h1.union h2).toFinset, fun v hv => ?_⟩` and prove the remaining obligations. Rewrite `hv` using `[Set.Finite.mem_toFinset]`.
+
+Conclude with `⟨fun h => hv (Or.inl h), fun h => hv (Or.inr h)⟩`.
+-/
 theorem finite_exceptional : ∀ (D : D7) (l : ℕ), l.Prime → ∃ F : Finset (PlE D.host), ∀ v, v ∉ F → v ∉ placesOver D.host.E l ∧ v ∉ placesS D l := by
   intro D l hl
   have h1 : (placesOver D.host.E l).Finite := Formalism.L2.Fam.NPC.placesOver_fin D.host l hl

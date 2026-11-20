@@ -1,5 +1,8 @@
 import Mathlib
 
+/- English proof (translation)
+Introduce `Ω inst`. Use `infer_instance`.
+-/
 theorem UpperTheory.Reformulated.B.RegularUnitPoints.aux1 :
     ∀ {Ω : Type} [inst : Field Ω],
       @IsLocalRing Ω (@CommSemiring.toSemiring Ω (@CommRing.toCommSemiring Ω (@Field.toCommRing Ω inst))) := by
@@ -46,6 +49,9 @@ noncomputable def UpperTheory.Reformulated.B.RegularUnitPoints.Cpt :
             X.toSheafedSpace)
           (@UpperTheory.Reformulated.B.RegularUnitPoints.genPt X Ω inst ξ) p
 
+/- English proof (translation)
+Introduce `X Ω inst ξ p`. Conclude with `p.2`.
+-/
 theorem UpperTheory.Reformulated.B.RegularUnitPoints.aux4 :
     ∀ {X : AlgebraicGeometry.Scheme} {Ω : Type} [inst : Field Ω]
       (ξ :
@@ -68,6 +74,9 @@ theorem UpperTheory.Reformulated.B.RegularUnitPoints.aux4 :
   intro X Ω inst ξ p
   exact p.2
 
+/- English proof (translation)
+Introduce `Ω inst`. Use `show IsLocalRing Ω`. Use `infer_instance`.
+-/
 theorem UpperTheory.Reformulated.B.RegularUnitPoints.aux5 :
     ∀ {Ω : Type} [inst : Field Ω],
       @IsLocalRing (↑(@CommRingCat.of Ω (@Field.toCommRing Ω inst)) : Type)
@@ -388,6 +397,21 @@ noncomputable def UpperTheory.Reformulated.B.RegularUnitPoints.InFibre :
                 (@Ring.toAddGroupWithOne Ω (@DivisionRing.toRing Ω (@Field.toDivisionRing Ω inst)))))
             p))
 
+/- English proof (translation)
+Introduce `X Ω inst ξ q hq n hn`. Establish `key : ∀ m : ℕ, m ≠ 0 → UpperTheory.Reformulated.B.RegularUnitPoints.unitAt ξ q (m : Ω)`. Introduce `m`. Proceed by induction on `m using Nat.recOnMul with`. Consider the case `zero => intro h`.
+
+Conclude with `absurd rfl h`. Consider the case `one`. Introduce `_`. Use `⟨by simp, ?_, ?_⟩` and prove the remaining obligations. Simplify using `[(UpperTheory.Reformulated.B.RegularUnitPoints.regAt ξ q).one_mem]`.
+
+Simplify using `[(UpperTheory.Reformulated.B.RegularUnitPoints.regAt ξ q).one_mem]`. Consider the case `prime p hp`. Introduce `_`. Use `hq p hp` as an intermediate fact. Unfold `UpperTheory.Reformulated.B.RegularUnitPoints.InFibre at this`.
+
+Conclude with `not_not.mp this`. Consider the case `mul a b ha hb`. Introduce `hab`. Establish `ha0 : a ≠ 0` using `by rintro rfl; simp at hab`. Establish `hb0 : b ≠ 0` using `by rintro rfl; simp at hab`.
+
+Take `⟨a1, a2, a3⟩` from `ha ha0`. Take `⟨b1, b2, b3⟩` from `hb hb0`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Use `push_cast`. Conclude with `mul_ne_zero a1 b1`.
+
+Use `push_cast`. Conclude with `Subring.mul_mem _ a2 b2`. Use `push_cast`. Rewrite using `[mul_inv]`. Conclude with `Subring.mul_mem _ a3 b3`.
+
+Conclude with `key n hn`.
+-/
 theorem UpperTheory.Reformulated.B.RegularUnitPoints.main :
     ∀ {X : AlgebraicGeometry.Scheme} {Ω : Type} [inst : Field Ω]
       {ξ :

@@ -5,6 +5,15 @@ namespace PI.EF.PK
 
 open Complex MeasureTheory intervalIntegral Real
 
+/- English proof (translation)
+Simplify using `only [sub_zero]`. Use `set z1 : ℂ := (c : ℂ) + T * I with hz1`. Use `set z2 : ℂ := (c : ℂ) + ((-T : ℝ) : ℂ) * I with hz2`. Establish `hconj : (starRingEnd ℂ) z1 = z2`. Rewrite using `[hz1, hz2, map_add, map_mul, Complex.conj_ofReal, Complex.conj_ofReal, Complex.conj_I]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hn : ‖z1‖ = ‖z2‖` using `by rw [← hconj, Complex.norm_conj]`. Establish `hre1 : 0 ≤ z1.re` using `by simp [hz1]; linarith`. Establish `hre2 : 0 ≤ z2.re` using `by simp [hz2]; linarith`.
+
+Establish `ha1` using `Complex.abs_arg_le_pi_div_two_iff.mpr hre1`. Establish `ha2` using `Complex.abs_arg_le_pi_div_two_iff.mpr hre2`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Complex.sub_re, Complex.sub_im, Complex.log_re, Complex.log_re, hn, sub_self, abs_zero, zero_add, Complex.log_im, Complex.log_im]`. Use `_ ≤ |Complex.arg z1| + |Complex.arg z2| := abs_sub _ _`.
+
+Use `_ ≤ π := by linarith`.
+-/
 lemma norm_log_sub_log_le (c T : ℝ) (hc : 0 < c) :
     ‖Complex.log (((c : ℂ) + (T : ℂ) * I) - 0) - Complex.log (((c : ℂ) + ((-T : ℝ) : ℂ) * I) - 0)‖ ≤ π := by
   simp only [sub_zero]
@@ -28,12 +37,32 @@ lemma norm_log_sub_log_le (c T : ℝ) (hc : 0 < c) :
     _ ≤ |Complex.arg z1| + |Complex.arg z2| := abs_sub _ _
     _ ≤ π := by linarith
 
+/- English proof (translation)
+Introduce `h`. Establish `h1` using `congrArg Complex.re h`. Simplify using `at h1`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 lemma line_ne_zero (c : ℝ) (hc : 0 < c) (t : ℝ) : (c : ℂ) + t * I ≠ 0 := by
   intro h
   have h1 := congrArg Complex.re h
   simp at h1
   linarith
 
+/- English proof (translation)
+Establish `hdec : (fun t : ℝ => ker l ((c : ℂ) + t * I)) = fun t : ℝ => cexp (l * c) * (1 / (((c : ℂ) + t * I) - 0)) + cexp (l * c) * ((cexp (I * ((l * t : ℝ) : ℂ)) - 1) / ((c : ℂ) + t * I))`. Use function extensionality and compare the values at `t`. Establish `hexp : cexp (l * ((c : ℂ) + t * I)) = cexp (l * c) * cexp (I * ((l * t : ℝ) : ℂ))`. Rewrite using `[← Complex.exp_add]`. Use `congr 1`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Unfold `ker`. Rewrite using `[hexp, sub_zero]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hc1 : Continuous fun t : ℝ => (1 : ℂ) / (((c : ℂ) + t * I) - 0)` using `continuous_const.div (by fun_prop) (fun t => by simpa using line_ne_zero c hc t)`. Establish `hc2 : Continuous fun t : ℝ => (cexp (I * ((l * t : ℝ) : ℂ)) - 1) / ((c : ℂ) + t * I)` using `Continuous.div (by fun_prop) (by fun_prop) (line_ne_zero c hc)`. Rewrite using `[hdec, intervalIntegral.integral_add ((hc1.const_mul _).intervalIntegrable _ _) ((hc2.const_mul _).intervalIntegrable _ _), intervalIntegral.integral_const_mul, intervalIntegral.integral_const_mul, ← mul_add, norm_mul]`. Establish `hE : ‖cexp (l * c)‖ = Real.exp (l * c)`. Rewrite using `[Complex.norm_exp]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[hE]`. Establish `hP : ‖∫ t : ℝ in -T..T, (1 : ℂ) / (((c : ℂ) + t * I) - 0)‖ ≤ π`. Establish `h` using `vert_inv_right (-T) T c 0 (by rw [Complex.zero_re]; exact hc)`. Establish `h2` using `norm_log_sub_log_le c T hc`.
+
+Rewrite `h2` using `[← h, norm_smul, norm_I, one_mul]`. Conclude with `h2`. Establish `hQ : ‖∫ t : ℝ in -T..T, (cexp (I * ((l * t : ℝ) : ℂ)) - 1) / ((c : ℂ) + t * I)‖ ≤ |l| * (2 * T)`. Establish `h1 : ∀ t ∈ Set.uIoc (-T) T, ‖(cexp (I * ((l * t : ℝ) : ℂ)) - 1) / ((c : ℂ) + t * I)‖ ≤ |l|`. Introduce `t _`.
+
+Rewrite using `[norm_div, div_le_iff₀ (norm_pos_iff.mpr (line_ne_zero c hc t))]`. Establish `a1 : ‖cexp (I * ((l * t : ℝ) : ℂ)) - 1‖ ≤ ‖l * t‖` using `Real.norm_exp_I_mul_ofReal_sub_one_le`. Establish `a2 : |t| ≤ ‖(c : ℂ) + t * I‖`. Use `Complex.abs_im_le_norm ((c : ℂ) + t * I)` as an intermediate fact. Simplify using `using this`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `h2` using `norm_integral_le_of_norm_le_const h1`. Establish `e3 : |T - -T| = 2 * T`. Rewrite using `[abs_of_nonneg (by linarith)]; ring`. Rewrite `h2` using `[e3]`. Then use the resulting hypothesis.
+
+Establish `hE0` using `(Real.exp_pos (l * c)).le`. Combine the equalities or inequalities in the displayed calculation. Conclude with `norm_add_le _ _`. Use `_ ≤ Real.exp (l * c) * (π + |l| * (2 * T)) := by gcongr`.
+-/
 lemma line_bound_small (l c T : ℝ) (hc : 0 < c) (hT : 0 < T) :
     ‖∫ t : ℝ in -T..T, ker l ((c : ℂ) + t * I)‖ ≤ Real.exp (l * c) * (π + |l| * (2 * T)) := by
   have hdec : (fun t : ℝ => ker l ((c : ℂ) + t * I)) = fun t : ℝ =>
@@ -89,6 +118,37 @@ lemma line_bound_small (l c T : ℝ) (hc : 0 < c) (hT : 0 < T) :
         exact norm_add_le _ _
     _ ≤ Real.exp (l * c) * (π + |l| * (2 * T)) := by gcongr
 
+/- English proof (translation)
+Introduce `y c T hy hc hT`. Take `⟨l, hl⟩ : ∃ l, l = Real.log y` from `⟨_, rfl⟩`. Take `⟨E, hE⟩ : ∃ E, E = y ^ c` from `⟨_, rfl⟩`. Take `⟨J, hJ⟩ : ∃ J, J = ∫ t : ℝ in -T..T, ker l ((c : ℂ) + t * I)` from `⟨_, rfl⟩`. Take `⟨r, hr⟩ : ∃ r : ℝ, r = 1 / (2 * π)` from `⟨_, rfl⟩`.
+
+Establish `hpi : 3 < π` using `Real.pi_gt_three`. Establish `hr0 : 0 < r` using `by rw [hr]; positivity`. Establish `hr1 : r * (2 * π) = 1` using `by rw [hr]; field_simp`. Establish `hEe : E = Real.exp (l * c)` using `by rw [hE, hl]; exact Real.rpow_def_of_pos hy c`. Establish `hE0 : 0 < E` using `by rw [hEe]; exact Real.exp_pos _`.
+
+Establish `hK : perronK y c T = (r : ℂ) * J`. Unfold `perronK`. Rewrite using `[hr, hJ, Complex.ofReal_div, Complex.ofReal_one, Complex.ofReal_mul, Complex.ofReal_ofNat]`. Use `congr 1`. Apply `intervalIntegral.integral_congr` to reduce the goal to its premises.
+
+Introduce `t _`. Simplify using `only [ker]`. Rewrite using `[Complex.cpow_def_of_ne_zero (by exact_mod_cast hy.ne'), ← Complex.ofReal_log hy.le, ← hl]`. Rewrite using `[← hl, ← hE, hK]`. Take `⟨X, hX⟩ : ∃ X, X = ‖(r : ℂ) * J - (if 1 ≤ y then 1 else 0)‖` from `⟨_, rfl⟩`.
+
+Rewrite using `[← hX]`. Establish `hX0 : 0 ≤ X` using `by rw [hX]; exact norm_nonneg _`. Establish `hnr : ‖(r : ℂ)‖ = r` using `by rw [Complex.norm_real, Real.norm_of_nonneg hr0.le]`. Establish `hb : T * |l| * X ≤ E`. Break down `lt_trichotomy l 0 with hneg | hzero | hpos` into its components or cases.
+
+Establish `hy1 : y < 1` using `(Real.log_neg_iff hy).mp (hl ▸ hneg)`. Establish `h1` using `line_bound_neg l c T hneg hc hT`. Rewrite `h1` using `[← hJ, ← hEe]`. Establish `hXe : X = r * ‖J‖`. Rewrite using `[hX, if_neg (not_le.mpr hy1), sub_zero, norm_mul, hnr]`.
+
+Rewrite using `[hXe, abs_of_neg hneg]`. Establish `hl' : 0 < -l` using `by linarith`. Combine the equalities or inequalities in the displayed calculation. Establish `hl0 : l ≠ 0` using `hneg.ne`. Clear the denominators using the available nonvanishing facts.
+
+Use `_ ≤ 1 * E := by gcongr`. Use the polynomial consequences of the given equalities and inequalities. Use `_ = E := one_mul _`. Rewrite using `[hzero]`. Simplify using `[hE0.le]`.
+
+Establish `hy1 : 1 ≤ y` using `((Real.log_pos_iff hy.le).mp (hl ▸ hpos)).le`. Establish `h1` using `line_bound_pos l c T hpos hc hT`. Rewrite `h1` using `[← hJ, ← hEe]`. Establish `hXe : X = r * ‖J - 2 * π‖`. Rewrite using `[hX, if_pos hy1, ← hnr, ← norm_mul, hnr]`.
+
+Use `congr 1`. Establish `: (r : ℂ) * (2 * π) = 1` using `by exact_mod_cast hr1`. Take the linear combination `this`. Rewrite using `[hXe, abs_of_pos hpos]`. Combine the equalities or inequalities in the displayed calculation.
+
+Use the polynomial consequences of the given equalities and inequalities. Use `_ = E := one_mul _`. Use `⟨?_, hb⟩` and prove the remaining obligations. Distinguish the cases in `hsm : T * |l| ≤ 1`. Establish `h1` using `line_bound_small l c T hc hT`.
+
+Rewrite `h1` using `[← hJ, ← hEe]`. Establish `hind : ‖(if 1 ≤ y then 1 else 0 : ℂ)‖ ≤ E` using `by split_ifs with hy1`. Rewrite using `[norm_one, hE]`. Conclude with `Real.one_le_rpow hy1 hc.le`. Rewrite using `[norm_zero]`.
+
+Conclude with `hE0.le`. Establish `h2 : r * ‖J‖ ≤ E`. Combine the equalities or inequalities in the displayed calculation. Use the polynomial consequences of the given equalities and inequalities. Use `_ ≤ r * (E * (2 * π)) := by gcongr`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Use `_ = (r * (2 * π)) * E := by ring`. Use `_ = E := by rw [hr1, one_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite `hsm` using `[not_le]`.
+
+Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem perron_kernel_single_term : PerronKernel := by
   intro y c T hy hc hT
   obtain ⟨l, hl⟩ : ∃ l, l = Real.log y := ⟨_, rfl⟩

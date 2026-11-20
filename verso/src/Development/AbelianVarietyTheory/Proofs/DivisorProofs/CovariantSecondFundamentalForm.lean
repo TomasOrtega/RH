@@ -25,10 +25,16 @@ variable {k : Type*} {u u' v v' : V → k → ℂ} {z : V}
 
 omit [NormedSpace ℂ V] [IsScalarTower ℝ ℂ V] in
 
+/- English proof (translation)
+The claim follows from `funext fun a => (h a).1`.
+-/
 theorem SameJet.val (h : SameJet u u' z) : u z = u' z := funext fun a => (h a).1
 
 omit [NormedSpace ℂ V] [IsScalarTower ℝ ℂ V] in
 
+/- English proof (translation)
+Introduce `a` and use `by obtain ⟨e, D, h1, h2⟩ := h a obtain ⟨e', D', h1', h2'⟩ := h' a exact ⟨by simp [e, e'], D + D', h1.add h1', h2.add h2'⟩`.
+-/
 theorem SameJet.add (h : SameJet u u' z) (h' : SameJet v v' z) :
     SameJet (fun x => u x + v x) (fun x => u' x + v' x) z := fun a => by
   obtain ⟨e, D, h1, h2⟩ := h a
@@ -37,6 +43,9 @@ theorem SameJet.add (h : SameJet u u' z) (h' : SameJet v v' z) :
 
 omit [NormedSpace ℂ V] [IsScalarTower ℝ ℂ V] in
 
+/- English proof (translation)
+Introduce `a` and use `by choose e D h1 h2 using h refine ⟨by simp [Matrix.mulVec, dotProduct, e], ∑ b, (M z a b • D b + u' z b • fderiv ℝ (fun x => M x a b) z), ?_, ?_⟩ · simp only [← e] exact HasFDerivAt.fun_sum fun b _ => (hM.diff a b).hasFDerivAt.mul (h1 b) · exact HasFDerivAt.fun_sum fun b _ => (h …`.
+-/
 theorem SameJet.mulVec [Fintype k] {p : Type*} {M : V → Matrix p k ℂ} (hM : MContDiffAt 1 M z)
     (h : SameJet u u' z) : SameJet (fun x => M x *ᵥ u x) (fun x => M x *ᵥ u' x) z := fun a => by
   choose e D h1 h2 using h
@@ -46,6 +55,9 @@ theorem SameJet.mulVec [Fintype k] {p : Type*} {M : V → Matrix p k ℂ} (hM : 
     exact HasFDerivAt.fun_sum fun b _ => (hM.diff a b).hasFDerivAt.mul (h1 b)
   · exact HasFDerivAt.fun_sum fun b _ => (hM.diff a b).hasFDerivAt.mul (h2 b)
 
+/- English proof (translation)
+Rewrite using `[HermFrame.covDel, HermFrame.covDel, h.val]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Take `⟨-, D, h1, h2⟩` from `h a`. Rewrite using `[del_eq_of_hasFDerivAt h1, del_eq_of_hasFDerivAt h2]`.
+-/
 theorem SameJet.covDel [Fintype k] [DecidableEq k] (h : SameJet u u' z) (K : V → Matrix k k ℂ)
     (ξ : V) : covDel K u z ξ = covDel K u' z ξ := by
   rw [HermFrame.covDel, HermFrame.covDel, h.val]
@@ -54,6 +66,9 @@ theorem SameJet.covDel [Fintype k] [DecidableEq k] (h : SameJet u u' z) (K : V �
   obtain ⟨-, D, h1, h2⟩ := h a
   rw [del_eq_of_hasFDerivAt h1, del_eq_of_hasFDerivAt h2]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a`. Take `⟨-, D, h1, h2⟩` from `h a`. Rewrite using `[HermitianCurvatureForms.secDbar, HermitianCurvatureForms.secDbar, dbar_eq_of_hasFDerivAt h1, dbar_eq_of_hasFDerivAt h2]`.
+-/
 theorem SameJet.secDbar (h : SameJet u u' z) (ξ : V) :
     HermitianCurvatureForms.secDbar u z ξ = HermitianCurvatureForms.secDbar u' z ξ := by
   funext a
@@ -66,6 +81,9 @@ variable {U : Set V} {H : V → Matrix (m ⊕ l) (m ⊕ l) ℂ} {z : V}
 
 omit [NormedSpace ℂ V] [IsScalarTower ℝ ℂ V] in
 
+/- English proof (translation)
+Establish `hc : MContDiffAt k (fun x => orthCoeff (H x)) z` using `(h.subGram.transpose.inv (by rwa [det_transpose])).mul (h.submatrix Sum.inr Sum.inl).transpose`. Introduce and unpack `(a | a) b`. Use `exacts [hc.neg a b, contDiffAt_const]`.
+-/
 theorem mContDiffAt_orthLift {k : WithTop ℕ∞} (h : MContDiffAt k H z)
     (hs : IsUnit (subGram (H z)).det) : MContDiffAt k (fun x => orthLift (H x)) z := by
   have hc : MContDiffAt k (fun x => orthCoeff (H x)) z :=
@@ -73,6 +91,9 @@ theorem mContDiffAt_orthLift {k : WithTop ℕ∞} (h : MContDiffAt k H z)
   rintro (a | a) b
   exacts [hc.neg a b, contDiffAt_const]
 
+/- English proof (translation)
+Rewrite using `[blockSS, blockQQ, trace_mul_cycle, trace_mul_cycle (quotMap m l), ← trace_add, ← Matrix.add_mul, incl_mul_orthProj_add, Matrix.one_mul]`.
+-/
 theorem trace_eq_blocks (K T : Matrix (m ⊕ l) (m ⊕ l) ℂ) :
     T.trace = (blockSS K T).trace + (blockQQ K T).trace := by
   rw [blockSS, blockQQ, trace_mul_cycle, trace_mul_cycle (quotMap m l), ← trace_add,
@@ -97,6 +118,9 @@ def BodyB (U : Set V) (H : V → Matrix (m ⊕ l) (m ⊕ l) ℂ) : Prop :=
 
 omit [NormedSpace ℂ V] [IsScalarTower ℝ ℂ V] in
 
+/- English proof (translation)
+The claim follows from `h.sub.isHermFrame.isUnit z hz`.
+-/
 theorem isUnit_sub (h : IsPosFrame U H) (z : V) (hz : z ∈ U) : IsUnit (subGram (H z)).det :=
   h.sub.isHermFrame.isUnit z hz
 
@@ -121,14 +145,23 @@ include h hs hz
 
 omit hs in
 
+/- English proof (translation)
+The claim follows from `((mContDiffAt_const _).mul ((h.mContDiffAt hz).conn (h.isUnit z hz) le_rfl ξ)).mul (mContDiffAt_const _)`.
+-/
 theorem smooth_secondForm (ξ : V) : MContDiffAt ∞ (fun x => secondForm H x ξ) z :=
   ((mContDiffAt_const _).mul ((h.mContDiffAt hz).conn (h.isUnit z hz) le_rfl ξ)).mul
     (mContDiffAt_const _)
 
+/- English proof (translation)
+The claim follows from `((((h.sub hs).mContDiffAt hz).transpose.inv (by rw [det_transpose]; exact hs z hz)).mul (smooth_secondForm h hz ξ).conjTranspose).mul ((h.quot hs).mContDiffAt hz).transpose`.
+-/
 theorem smooth_secondFormAdj (ξ : V) : MContDiffAt ∞ (fun x => secondFormAdj H x ξ) z :=
   ((((h.sub hs).mContDiffAt hz).transpose.inv (by rw [det_transpose]; exact hs z hz)).mul
     (smooth_secondForm h hz ξ).conjTranspose).mul ((h.quot hs).mContDiffAt hz).transpose
 
+/- English proof (translation)
+Establish `hl` using `mContDiffAt_orthLift (h.mContDiffAt hz) (hs z hz)`. Simplify using `only [extForm_eq_neg_mdbar]`. Establish `hc : MContDiffAt ∞ (fun x => orthCoeff (H x)) z` using `fun a b => by`. Simplify `hl.neg (.inl a) b` using `[orthLift]`. Conclude with `(hc.mdbar le_rfl ξ).neg`.
+-/
 theorem smooth_extForm (ξ : V) : MContDiffAt ∞ (fun x => extForm H x ξ) z := by
   have hl := mContDiffAt_orthLift (h.mContDiffAt hz) (hs z hz)
   simp only [extForm_eq_neg_mdbar]
@@ -136,6 +169,9 @@ theorem smooth_extForm (ξ : V) : MContDiffAt ∞ (fun x => extForm H x ξ) z :=
     simpa [orthLift] using hl.neg (.inl a) b
   exact (hc.mdbar le_rfl ξ).neg
 
+/- English proof (translation)
+The claim follows from `((((h.quot hs).mContDiffAt hz).transpose.inv (by rw [det_transpose]; exact (h.quot hs).isUnit z hz)).mul (smooth_extForm h hs hz ξ).conjTranspose).mul ((h.sub hs).mContDiffAt hz).transpose`.
+-/
 theorem smooth_extFormAdj (ξ : V) : MContDiffAt ∞ (fun x => extFormAdj H x ξ) z :=
   ((((h.quot hs).mContDiffAt hz).transpose.inv
     (by rw [det_transpose]; exact (h.quot hs).isUnit z hz)).mul

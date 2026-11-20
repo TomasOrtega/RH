@@ -9,6 +9,9 @@ open NormTraceLemmas
 
 variable {P Q : Type} [Group P] [Group Q]
 
+/- English proof (translation)
+Proceed by induction on `n generalizing x with`. Consider the case `zero => rfl`. Consider the case `succ n ih`. Rewrite using `[pow_succ, Module.End.mul_apply, ih, pow_succ, Module.End.mul_apply]`. Both sides reduce to the same expression.
+-/
 theorem pow_slice (t : P) {a b : ℕ} (n : ℕ) (x : Bi P Q a b) (x' : Fin a → Q) :
     ((TcL t a b ^ n) x) x' = (mapOp (fun y => t⁻¹ * y * t) b ^ n) (x x') := by
   induction n generalizing x with
@@ -17,6 +20,9 @@ theorem pow_slice (t : P) {a b : ℕ} (n : ℕ) (x : Bi P Q a b) (x' : Fin a →
     rw [pow_succ, Module.End.mul_apply, ih, pow_succ, Module.End.mul_apply]
     rfl
 
+/- English proof (translation)
+Proceed by induction on `f using Polynomial.induction_on' with`. Consider the case `add p r hp hr`. Simplify using `only [map_add, LinearMap.add_apply, Pi.add_apply, hp, hr]`. Consider the case `monomial n c`. Simplify using `only [Polynomial.aeval_monomial, Module.End.mul_apply, Module.algebraMap_end_apply, Pi.smul_apply, pow_slice]`.
+-/
 theorem aeval_slice (t : P) {a b : ℕ} (f : Polynomial ℝ) (x : Bi P Q a b) (x' : Fin a → Q) :
     (Polynomial.aeval (TcL t a b) f x) x' = Polynomial.aeval (mapOp (fun y => t⁻¹ * y * t) b) f (x x') := by
   induction f using Polynomial.induction_on' with
@@ -26,6 +32,11 @@ theorem aeval_slice (t : P) {a b : ℕ} (f : Polynomial ℝ) (x : Bi P Q a b) (x
     simp only [Polynomial.aeval_monomial, Module.End.mul_apply, Module.algebraMap_end_apply,
       Pi.smul_apply, pow_slice]
 
+/- English proof (translation)
+Introduce `g x y`. Establish `hp : pr ((s u)⁻¹ * g * s u) = pr g`. Rewrite using `[map_mul, map_mul, map_inv, hs, mul_assoc, hu (pr g), inv_mul_cancel_left]`. Establish `key` using `hF ((s u)⁻¹ * g * s u) x (fun j => (s u)⁻¹ * y j * s u)`. Rewrite `key` using `[hp]`.
+
+Use `show F (fun i => pr g * x i) (fun j => (s u)⁻¹ * (g * y j) * s u) = F x (fun j => (s u)⁻¹ * y j * s u)`. Rewrite using `[← key]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Use `group`.
+-/
 theorem pinv_Tc (pr : P →* Q) (s : Q →* P) (hs : ∀ g, pr (s g) = g) (u : Q) (hu : ∀ g, g * u = u * g)
     {a b : ℕ} {F : Bi P Q a b} (hF : PInv pr F) : PInv pr (Tc (s u) F) := by
   intro g x y
@@ -49,6 +60,13 @@ def pinvT (pr : P →* Q) (a b : ℕ) : Submodule ℝ (Bi P Q a b) where
     change c • F _ _ = c • F x y
     rw [hF g x y]
 
+/- English proof (translation)
+Establish `hpow : ∀ n : ℕ, PInv pr ((TcL (s u) a b ^ n) F)`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => simpa using hF`. Consider the case `succ n ih`.
+
+Rewrite using `[pow_succ', Module.End.mul_apply]`. Conclude with `pinv_Tc pr s hs u hu ih`. Proceed by induction on `f using Polynomial.induction_on' with`. Consider the case `add p r hp hr`. Rewrite using `[map_add, LinearMap.add_apply]`.
+
+Conclude with `(pinvT pr a b).add_mem hp hr`. Consider the case `monomial n c`. Rewrite using `[Polynomial.aeval_monomial, Module.End.mul_apply, Module.algebraMap_end_apply]`. Conclude with `(pinvT pr a b).smul_mem c (hpow n)`.
+-/
 theorem pinv_aeval (pr : P →* Q) (s : Q →* P) (hs : ∀ g, pr (s g) = g) (u : Q) (hu : ∀ g, g * u = u * g)
     {a b : ℕ} (f : Polynomial ℝ) {F : Bi P Q a b} (hF : PInv pr F) :
     PInv pr (Polynomial.aeval (TcL (s u) a b) f F) := by
@@ -75,6 +93,19 @@ open PolynomialPseudoInverse
 
 variable {P Q : Type} [Group P] [Group Q]
 
+/- English proof (translation)
+Establish `hX : PInv pr (Polynomial.aeval (TcL (s u) (a + 1) (q + 2)) f x)` using `pinv_aeval pr s hs u hu f hx`. Establish `hinv : ∀ z : Fin (a + 1) → Q, InvS (pr.ker : Set P) (x z)`. Introduce `z g hg y`. Establish `hg' : pr g = 1` using `hg`. Establish `h` using `hx g z y`.
+
+Simplify `h` using `[hg']`. Establish `hdz : ∀ z : Fin (a + 1) → Q, dc (x z) = 0` using `fun z => congrFun hv z`. Use `choose e he1 he2 using fun z => hf (x z) (hinv z) (hdz z)`. Use `⟨fun x' y => e (fun i => (x' 0)⁻¹ * x' i) (fun j => (s (x' 0))⁻¹ * y j), ?_, ?_⟩` and prove the remaining obligations. Introduce `g x' y show e (fun i => (pr g * x' 0)⁻¹ * (pr g * x' i)) (fun j => (s (pr g * x' 0))⁻¹ * (g * y j)) = e (fun i => (x' 0)⁻¹ * x' i) (fun j => (s (x' 0))⁻¹ * y j)`.
+
+Establish `hn : (fun i => (pr g * x' 0)⁻¹ * (pr g * x' i)) = fun i => (x' 0)⁻¹ * x' i`. Use function extensionality and compare the values at `i`. Use `group`. Rewrite using `[hn]`. Establish `hk : (s (x' 0))⁻¹ * (s (pr g))⁻¹ * g * s (x' 0) ∈ (pr.ker : Set P)` using `by show pr ((s (x' 0))⁻¹ * (s (pr g))⁻¹ * g * s (x' 0)) = 1`.
+
+Simplify using `only [map_mul, map_inv, hs]`. Use `group`. Rewrite using `[← he1 _ _ hk (fun j => (s (x' 0))⁻¹ * y j)]`. Use `congr 1`. Use function extensionality and compare the values at `j`.
+
+Rewrite using `[map_mul]`. Use `group`. Use function extensionality and compare the values at `x' y`. Establish `hpr : pr (s (x' 0))⁻¹ = (x' 0)⁻¹` using `by rw [map_inv, hs]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[hpr, aeval_slice]`. Use `_ = dc (e (fun i => (x' 0)⁻¹ * x' i)) (fun j => (s (x' 0))⁻¹ * y j) := by`. Rewrite using `[he2]`. Use `_ = _ := rfl`.
+-/
 theorem colKill (pr : P →* Q) (s : Q →* P) (hs : ∀ g, pr (s g) = g) (u : Q) (hu : ∀ g, g * u = u * g)
     (q : ℕ) (f : Polynomial ℝ)
     (hf : ∀ c : (Fin (q + 2) → P) → ℝ, InvS (pr.ker : Set P) c → dc c = 0 →

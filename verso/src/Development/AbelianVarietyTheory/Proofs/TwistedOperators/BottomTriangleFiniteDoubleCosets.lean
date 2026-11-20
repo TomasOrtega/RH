@@ -35,14 +35,28 @@ variable {D : D7}
 
 def finPart (V : HSp D) (g : GA D V) : GA D V := ((GlobalTheory.AdelicSplit.splitEquiv V).symm g).2.1
 
+/- English proof (translation)
+The claim follows from `continuous_subtype_val.comp (continuous_snd.comp (GlobalTheory.AdelicSplit.splitEquiv V).symm.continuous)`.
+-/
 theorem continuous_finPart (V : HSp D) : Continuous (finPart V) :=
   continuous_subtype_val.comp (continuous_snd.comp (GlobalTheory.AdelicSplit.splitEquiv V).symm.continuous)
 
+/- English proof (translation)
+The claim follows from `((GlobalTheory.AdelicSplit.splitEquiv V).symm g).2.2`.
+-/
 theorem finPart_mem (V : HSp D) (g : GA D V) : finPart V g ∈ GfC V := ((GlobalTheory.AdelicSplit.splitEquiv V).symm g).2.2
 
+/- English proof (translation)
+Simplify using `[finPart, map_one]`.
+-/
 theorem finPart_one (V : HSp D) : finPart V 1 = 1 := by
   simp [finPart, map_one]
 
+/- English proof (translation)
+Use `set p := (GlobalTheory.AdelicSplit.splitEquiv V).symm g with hp`. Establish `e : g = p.1.1 * p.2.1` using `((GlobalTheory.AdelicSplit.splitEquiv V).apply_symm_apply g).symm`. Establish `h1 : finHom V p.1.1 = 1` using `p.1.2`. Use `conv_rhs => rw [e]`. Rewrite using `[map_mul, h1, one_mul]`.
+
+Both sides reduce to the same expression.
+-/
 theorem finHom_finPart (V : HSp D) (g : GA D V) : finHom V (finPart V g) = finHom V g := by
   set p := (GlobalTheory.AdelicSplit.splitEquiv V).symm g with hp
   have e : g = p.1.1 * p.2.1 := ((GlobalTheory.AdelicSplit.splitEquiv V).apply_symm_apply g).symm
@@ -51,6 +65,21 @@ theorem finHom_finPart (V : HSp D) (g : GA D V) : finHom V (finPart V g) = finHo
   rw [map_mul, h1, one_mul]
   rfl
 
+/- English proof (translation)
+Use `haveI := (GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D V).2.2.2.2.1`. Use `set L : Subgroup (Bridge.Gf V) := (J ⊓ GfC V).map (finHom V).rangeRestrict with hL`. Establish `hO : GlobalTheory.IndefiniteRowSideFullHecke.SublevelSplitting.IsOpenLev V L`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.SublevelSplitting.IsOpenLev`. Use `Subgroup.isOpen_of_mem_nhds (g := (1 : GA D V)) _ ?_` and prove the remaining obligations.
+
+Establish `h1 : (finPart V) ⁻¹' (J : Set (GA D V)) ∈ nhds (1 : GA D V)`. Use `(hJ.preimage (continuous_finPart V)).mem_nhds ?_` and prove the remaining obligations. Use `show finPart V 1 ∈ J`. Rewrite using `[finPart_one]`. Conclude with `J.one_mem`.
+
+Use `Filter.mem_of_superset h1 fun g hg => ?_` and prove the remaining obligations. Use `Subgroup.mem_comap.2 (Subgroup.mem_map.2 ⟨finPart V g, ⟨hg, finPart_mem V g⟩, ?_⟩)` and prove the remaining obligations. Conclude with `Subtype.ext (finHom_finPart V g)`. Take `⟨m, c, hc⟩` from `GlobalTheory.RepsObj.exists_cover V hV L hO`. Use `choose x hx using fun a => GlobalTheory.FunObj.ClassFin.gfcToGf_surjective V (c a)`.
+
+Use `⟨Finset.univ.image fun a => (x a).1, ?_, ?_⟩` and prove the remaining obligations. Introduce `h hh`. Take `⟨a, -, rfl⟩` from `Finset.mem_image.1 hh`. Conclude with `(x a).2`. Introduce `h hh`.
+
+Take `⟨a, γ, k, e⟩` from `hc ((finHom V).rangeRestrict h)`. Take `⟨κ, ⟨hκJ, hκf⟩, hκ⟩` from `Subgroup.mem_map.1 k.2`. Establish `ex : finHom V (x a).1 = (c a).1` using `congrArg Subtype.val (hx a)`. Establish `ek : finHom V κ = k.1.1` using `congrArg Subtype.val hκ`. Establish `eγ : ((Bridge.ratF V γ : Bridge.Gf V) : _) = finHom V γ.1` using `rfl`.
+
+Establish `e' : finHom V h = finHom V γ.1 * finHom V (x a).1 * finHom V κ`. Use `congrArg Subtype.val e` as an intermediate fact. Rewrite using `[ex, ek, ← eγ]`. Conclude with `this`. Use `⟨γ.1, γ.2, γ.1⁻¹ * h * κ⁻¹ * (x a).1⁻¹, ?_, (x a).1, Finset.mem_image.2 ⟨a, Finset.mem_univ _, rfl⟩, κ, hκJ, hκf, by group⟩` and prove the remaining obligations.
+
+Use `show finHom V _ = 1`. Simplify using `only [map_mul, map_inv, e']`. Use `group`.
+-/
 theorem exists_reps_of_open (V : HSp D) (hV : ∀ τ, (gramAt D V τ).PosDef) (J : Subgroup (GA D V))
     (hJ : IsOpen (J : Set (GA D V))) :
     ∃ H : Finset (GA D V), (∀ h ∈ H, h ∈ GfC V) ∧
@@ -90,6 +119,13 @@ theorem exists_reps_of_open (V : HSp D) (hV : ∀ τ, (gramAt D V τ).PosDef) (J
     simp only [map_mul, map_inv, e']
     group
 
+/- English proof (translation)
+Introduce `D T _ L μ₀ sc G W i j A A' WW X _ _ _ hX J hJ`. Establish `hg : WW.gram = 1` using `hX.stdW.1`. Establish `hV : ∀ τ, (gramAt D WW τ).PosDef`. Introduce `τ`. Establish `: gramAt D WW τ = 1`.
+
+Unfold `gramAt`. Rewrite using `[hg]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`. Rewrite using `[this]`. Conclude with `Matrix.PosDef.one`.
+
+Conclude with `exists_reps_of_open WW hV J hJ`.
+-/
 theorem exists_reps : ∀ {D : D7} {T : Type} [Finite T] {L : LevCh D T} {μ₀ : T} {sc : Consts} {G : GridData L sc} {W : G.Weil}
     {i j : Fin D.R.m} {A A' WW : HSp D} {X : Tri T A A' WW}, GlobalTheory.FunPr.Hypotheses₂ → (∀ D, GlobalTheory.NormSum.Inp D) → L.Is μ₀ →
     IsBottomTri W i j X →

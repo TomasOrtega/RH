@@ -14,12 +14,22 @@ private noncomputable def UpperTheory.matrixLeftMulLinearMap (n : ℕ) (a : Fin 
     (LinearMap.pi fun j : Fin n => (Matrix.toLin' (Matrix.of a)).comp (LinearMap.proj j)) ∘ₗ
     (UpperTheory.matrixSpaceLinearEquiv n).symm.toLinearMap
 
+/- English proof (translation)
+Unfold `UpperTheory.matrixLeftMulLinearMap`. Rewrite using `[LinearMap.det_conj, LinearMap.det_pi]`. Simplify using the standard rewrite rules.
+-/
 private theorem UpperTheory.det_leftMulLinearMap (n : ℕ) (a : Fin n → Fin n → ℂ) :
     LinearMap.det (UpperTheory.matrixLeftMulLinearMap n a) = (Matrix.of a).det ^ n := by
   unfold UpperTheory.matrixLeftMulLinearMap
   rw [LinearMap.det_conj, LinearMap.det_pi]
   simp
 
+/- English proof (translation)
+Introduce `n a ha`. Establish `hf : (fun x : Fin n → Fin n → ℂ => Matrix.of.symm (Matrix.of a * Matrix.of x)) = ⇑((UpperTheory.matrixLeftMulLinearMap n a).restrictScalars ℝ)`. Use function extensionality and compare the values at `x i j`. Both sides reduce to the same expression. Establish `hd : LinearMap.det ((UpperTheory.matrixLeftMulLinearMap n a).restrictScalars ℝ) = 1`.
+
+Rewrite using `[LinearMap.det_restrictScalars, UpperTheory.det_leftMulLinearMap, Algebra.norm_complex_apply, map_pow, Complex.normSq_eq_norm_sq, ha]`. Simplify using the standard rewrite rules. Use `haveI h1 : (MeasureTheory.volume : MeasureTheory.Measure (Fin n → ℂ)).IsAddHaarMeasure := MeasureTheory.Measure.pi.isAddHaarMeasure _`. Use `haveI h2 : (MeasureTheory.volume : MeasureTheory.Measure (Fin n → Fin n → ℂ)).IsAddHaarMeasure := MeasureTheory.Measure.pi.isAddHaarMeasure _`. Rewrite using `[hf, MeasureTheory.Measure.map_linearMap_addHaar_eq_smul_addHaar _ (by rw [hd]; exact one_ne_zero), hd]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem UpperTheory.map_left_mul_volume_eq :
     ∀ (n : ℕ) (a : Fin n → Fin n → ℂ), ‖(Matrix.of a).det‖ = 1 →
         MeasureTheory.Measure.map (fun x : Fin n → Fin n → ℂ => Matrix.of.symm (Matrix.of a * Matrix.of x))

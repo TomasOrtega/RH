@@ -15,6 +15,11 @@ attribute [local instance] SplitExt.free SplitExt.finite MvPolynomial.gradedAlge
 noncomputable section
 namespace GlobalTheory.ZH.InFibChart
 
+/- English proof (translation)
+Rewrite using `[MvPolynomial.eval_eq, MvPolynomial.eval_eq, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations. Establish `hd : ∑ i ∈ m.support, m i = d`. Use `hF (MvPolynomial.mem_support_iff.1 hm)` as an intermediate fact. Simplify `this` using `[Finsupp.weight_apply, Finsupp.sum]`.
+
+Simplify using `only [mul_pow, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum, hd]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem eval_scale {K J : Type} [CommRing K] (c : K) (x : J → K) {F : MvPolynomial J K} {d : ℕ}
     (hF : F.IsHomogeneous d) :
     MvPolynomial.eval (fun j => c * x j) F = c ^ d * MvPolynomial.eval x F := by
@@ -26,6 +31,11 @@ theorem eval_scale {K J : Type} [CommRing K] (c : K) (x : J → K) {F : MvPolyno
   simp only [mul_pow, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum, hd]
   ring
 
+/- English proof (translation)
+Use `⟨MvPolynomial.aeval (fun i => ∑ j, MvPolynomial.C (g i j) * MvPolynomial.X j) F, ?_, fun v => ?_⟩` and prove the remaining obligations. Use `hF.aeval (n := 1) (fun i => ∑ j, MvPolynomial.C (g i j) * (MvPolynomial.X j : MvPolynomial J K)) (fun i => MvPolynomial.IsHomogeneous.sum _ _ _ fun j _ => MvPolynomial.isHomogeneous_C_mul_X _ _)` as an intermediate fact. Simplify using `using this`. Use `clear hF`. Proceed by induction on `F using MvPolynomial.induction_on with`.
+
+Consider the case `C a => simp`. Consider the case `add p q hp hq => rw [map_add, map_add, map_add, hp, hq]`. Consider the case `mul_X p i hp`. Rewrite using `[map_mul, map_mul, map_mul, hp]`. Simplify using `[Matrix.mulVec, dotProduct]`.
+-/
 theorem exists_subst {K J : Type} [CommRing K] [Fintype J] (g : Matrix J J K) {F : MvPolynomial J K} {d : ℕ}
     (hF : F.IsHomogeneous d) :
     ∃ F' : MvPolynomial J K, F'.IsHomogeneous d ∧
@@ -45,6 +55,13 @@ theorem exists_subst {K J : Type} [CommRing K] [Fintype J] (g : Matrix J J K) {F
 variable {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] {S : ThetaSys o Ω} {ρ : S.Real} {M : RatModel o Ω}
   {U₀ : M.Z.Opens} {EE : M.Lat S.J} (Q : Clos ρ M U₀ EE)
 
+/- English proof (translation)
+Establish `hg : genericPoint M.Z ∈ U₀` using `(genericPoint_specializes hU.some).mem_open U₀.isOpen hU.some_mem`. Establish `hw : η[ρ.P.A].left ≫ ρ.P.A.hom = 𝟙 _` using `Over.w η[ρ.P.A]`. Set `s : U₀.toScheme ⟶ pullback ρ.P.A.hom Q.u₀` to `pullback.lift (Q.u₀ ≫ η[ρ.P.A].left) (𝟙 _) (by`. Rewrite using `[Category.assoc, Category.id_comp]`. Conclude with `(congrArg (Q.u₀ ≫ ·) hw).trans (Category.comp_id _))`.
+
+Establish `hs : (s ≫ Q.a₀) ≫ Q.P.hom = U₀.ι`. Rewrite using `[Category.assoc, Q.cart.w, pullback.lift_snd_assoc, Category.id_comp]`. Establish `h1 : Q.P.hom ((s ≫ Q.a₀) ⟨_, hg⟩) = genericPoint M.Z` using `(Scheme.Hom.comp_apply _ _ _).symm.trans (congrArg (fun f : U₀.toScheme ⟶ M.Z => f ⟨_, hg⟩) hs)`. Establish `h2` using `(genericPoint_specializes ((s ≫ Q.a₀) ⟨_, hg⟩)).map Q.P.hom.continuous`. Rewrite `h2` using `[h1]`.
+
+Conclude with `(h2.antisymm (genericPoint_specializes _)).eq`.
+-/
 theorem hom_genericPoint (hU : (U₀ : Set M.Z).Nonempty) :
     Q.P.hom (genericPoint Q.P.left) = genericPoint M.Z := by
   have hg : genericPoint M.Z ∈ U₀ := (genericPoint_specializes hU.some).mem_open U₀.isOpen hU.some_mem
@@ -60,6 +77,13 @@ theorem hom_genericPoint (hU : (U₀ : Set M.Z).Nonempty) :
   rw [h1] at h2
   exact (h2.antisymm (genericPoint_specializes _)).eq
 
+/- English proof (translation)
+Establish `h : ∀ i, ∃ a : S.J → M.O z, ∑ j, a j • Q.B l j = Q.B l' i` using `fun i => by`. Use `(Submodule.mem_span_range_iff_exists_fun (M.O z) (v := fun j k => Q.B l j k)).1 ?_` and prove the remaining obligations. Use `(Q.basis l z hl).le ((Q.basis l' z hl').ge ?_)` and prove the remaining obligations. Conclude with `Submodule.subset_span ⟨i, rfl⟩`. Use `choose a ha using h`.
+
+Establish `e : Q.B l' = (Matrix.of a).map (↑) * Q.B l`. Use extensionality with `i k`. Rewrite using `[← ha i]`. Simplify using `[Matrix.mul_apply, Finset.sum_apply, Subalgebra.smul_def]`. Use `⟨Matrix.of a, e, ?_⟩` and prove the remaining obligations.
+
+Establish `h1` using `mul_eq_one_comm.1 (Q.c_inv l)`. Establish `h2` using `Q.c_inv l'`. Rewrite `h2` using `[e]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem exists_change (l l' : Q.Λ) {z : M.Z} (hl : z ∈ Q.W l) (hl' : z ∈ Q.W l') :
     ∃ g : Matrix S.J S.J (M.O z), Q.B l' = g.map (↑) * Q.B l ∧
       (Q.c l).map (valF M.pt (Q.W l)) = (Q.c l').map (valF M.pt (Q.W l')) * g.map (↑) := by
@@ -80,6 +104,29 @@ theorem exists_change (l l' : Q.Λ) {z : M.Z} (hl : z ∈ Q.W l) (hl' : z ∈ Q.
         (Q.c l).map (valF M.pt (Q.W l)) := by rw [h2, Matrix.one_mul]
     _ = _ := by rw [Matrix.mul_assoc, Matrix.mul_assoc, h1, Matrix.mul_one]
 
+/- English proof (translation)
+Establish `ht' : y' ≫ (Q.P.hom ⁻¹ᵁ Q.W l').ι ≫ Q.P.hom = t`. Rewrite using `[← Category.assoc, hy, Category.assoc, ht]`. Establish `h1` using `Q.rel l R y w hw`. Establish `h2` using `Q.rel l' R y' w' hw'`. Rewrite `h1` using `[ht]`.
+
+Rewrite `h2` using `[ht', hy]`. Take `⟨u, hu⟩` from `CrdCalc.crd_unique h1 h2`. Use `⟨u, ?_⟩` and prove the remaining obligations. Set `C : Matrix S.J S.J (M.O z)` to `Matrix.of fun i j => ⟨_, RatModel.valF_mem_O hl (Q.c l i j)⟩`. Set `C' : Matrix S.J S.J (M.O z)` to `Matrix.of fun i j => ⟨_, RatModel.valF_mem_O hl' (Q.c l' i j)⟩`.
+
+Establish `hC : C = C' * g`. Use extensionality with `i j`. Use `congrFun (congrFun hg i) j` as an intermediate fact. Simplify `this` using `[Matrix.mul_apply, C, C']`. Establish `e1 : (Q.c l).map (valR t (Q.W l)) = C.map (RatModel.valLoc t z hz)`.
+
+Use extensionality with `i j`. Conclude with `(RatModel.valLoc_valF t hz hl _).symm`. Establish `e2 : (Q.c l').map (valR t (Q.W l')) = C'.map (RatModel.valLoc t z hz)`. Use extensionality with `i j`. Conclude with `(RatModel.valLoc_valF t hz hl' _).symm`.
+
+Establish `hW : ⊤ ≤ t ⁻¹ᵁ Q.W l'` using `(CrdCalc.top_le_iff t _).2 (hz.mem_open (Q.W l').isOpen hl')`. Establish `hdet : ((Q.c l').map (valR t (Q.W l'))).det ≠ 0`. Establish `e3 : (Q.c l').map (valR t (Q.W l')) = (CrdCalc.valHom t _ hW).mapMatrix (Q.c l')`. Use extensionality with `i j`. Conclude with `CrdCalc.valR_eq t _ hW _`.
+
+Rewrite using `[e3, ← RingHom.map_det]`. Introduce `h0`. Establish `hpt : ⊤ ≤ M.pt ⁻¹ᵁ Q.W l'` using `M.top_le_preimage_pt (Q.ne l')`. Establish `e4 : (Q.c l').map (valF M.pt (Q.W l')) = (CrdCalc.valHom M.pt _ hpt).mapMatrix (Q.c l')`. Use extensionality with `i j`.
+
+Conclude with `CrdCalc.valR_eq M.pt _ hpt _`. Establish `h5 : IsUnit (valR M.pt (Q.W l') (Q.c l').det)`. Rewrite using `[CrdCalc.valR_eq M.pt _ hpt, RingHom.map_det, ← e4]`. Conclude with `Matrix.isUnit_det_of_right_inverse (Q.c_inv l')`. Establish `h6 : genericPoint M.Z ∈ M.Z.basicOpen (Q.c l').det`.
+
+Rewrite using `[← M.pt_apply (IsLocalRing.closedPoint Ω)]`. Conclude with `(CrdCalc.isUnit_valR_iff M.pt _ hpt _).1 h5 (Set.mem_univ _)`. Establish `h7 : (t.appLE (Q.W l') ⊤ hW).hom (Q.c l').det = 0` using `(Scheme.ΓSpecIso (CommRingCat.of R)).commRingCatIsoToRingEquiv.injective (h0.trans (map_zero _).symm)`. Establish `b` using `Scheme.basicOpen_appLE t ⊤ (Q.W l') hW (Q.c l').det`. Establish `h8 : q ∈ (Sp R).basicOpen ((t.appLE (Q.W l') ⊤ hW).hom (Q.c l').det)` using `b.ge ⟨trivial, show t q ∈ _ from hq ▸ h6⟩`.
+
+Rewrite `h8` using `[h7, Scheme.basicOpen_zero]`. Conclude with `h8`. Establish `h9 : ((Q.c l').map (valR t (Q.W l'))).mulVec (w' - (u : R) • (g.map (RatModel.valLoc t z hz)).mulVec w) = 0`. Rewrite using `[Matrix.mulVec_sub, Matrix.mulVec_smul, Matrix.mulVec_mulVec, sub_eq_zero]`. Use function extensionality and compare the values at `j`.
+
+Rewrite using `[hu j, e1, e2, hC, Matrix.map_mul]`. Both sides reduce to the same expression. Establish `h10` using `sub_eq_zero.1 (Matrix.eq_zero_of_mulVec_eq_zero hdet h9)`. Introduce `j`. Rewrite using `[h10]`.
+
+Both sides reduce to the same expression.
+-/
 theorem crd_change_loc (l l' : Q.Λ) {R : Type} [CommRing R] [IsDomain R] [IsLocalRing R]
     (y : Sp R ⟶ (Q.P.hom ⁻¹ᵁ Q.W l).toScheme) (y' : Sp R ⟶ (Q.P.hom ⁻¹ᵁ Q.W l').toScheme) (t : Sp R ⟶ M.Z)
     (hy : y' ≫ (Q.P.hom ⁻¹ᵁ Q.W l').ι = y ≫ (Q.P.hom ⁻¹ᵁ Q.W l).ι)
@@ -145,6 +192,25 @@ theorem crd_change_loc (l l' : Q.Λ) {R : Type} [CommRing R] [IsDomain R] [IsLoc
   rw [h10]
   rfl
 
+/- English proof (translation)
+Take `⟨X, hX⟩ : ∃ X : Sp K ⟶ Q.P.left, X = x ≫ (Q.P.hom ⁻¹ᵁ Q.W l).ι` from `⟨_, rfl⟩`. Establish `hXt : X ≫ Q.P.hom = t` using `by rw [hX, Category.assoc, ht]`. Set `p : Q.P.left` to `X (IsLocalRing.closedPoint K)`. Establish `hp : Q.P.hom p = z`. Rewrite using `[← hz, ← hXt]`.
+
+Conclude with `(Scheme.Hom.comp_apply _ _ _).symm`. Set `R : Type` to `Q.P.left.presheaf.stalk p`. Set `Y : Sp R ⟶ Q.P.left` to `Q.P.left.fromSpecStalk p`. Set `φ : R →+* K` to `(Scheme.stalkClosedPointTo (R := .of K) X).hom`. Establish `hφ : spMap φ ≫ Y = X` using `Scheme.Spec_stalkClosedPointTo_fromSpecStalk (R := .of K) X`.
+
+Establish `hr : Set.range Y = {ξ | ξ ⤳ p}` using `Scheme.range_fromSpecStalk`. Establish `hlift : ∀ k : Q.Λ, z ∈ Q.W k → ∃ y : Sp R ⟶ (Q.P.hom ⁻¹ᵁ Q.W k).toScheme, y ≫ (Q.P.hom ⁻¹ᵁ Q.W k).ι = Y` using `fun k hk => ⟨IsOpenImmersion.lift _ Y (by`. Rewrite using `[Scheme.Opens.range_ι, hr]`. Conclude with `fun ξ hξ => Specializes.mem_open hξ (Q.P.hom ⁻¹ᵁ Q.W k).isOpen (show Q.P.hom p ∈ Q.W k from hp ▸ hk)),`. Use the proof step `IsOpenImmersion.lift_fac _ _ _⟩`.
+
+Take `⟨y, hy⟩` from `hlift l hl`. Take `⟨y', hy'⟩` from `hlift l' hl'`. Establish `hxy : spMap φ ≫ y = x`. Rewrite using `[← cancel_mono (Q.P.hom ⁻¹ᵁ Q.W l).ι, Category.assoc, hy, hφ, hX]`. Establish `hxy' : spMap φ ≫ y' = x'`.
+
+Rewrite using `[← cancel_mono (Q.P.hom ⁻¹ᵁ Q.W l').ι, Category.assoc, hy', hφ, hX, hx]`. Take `⟨q, hq⟩ : genericPoint Q.P.left ∈ Set.range Y` from `hr ▸ genericPoint_specializes p`. Establish `hq' : (Y ≫ Q.P.hom) q = genericPoint M.Z`. Rewrite using `[Scheme.Hom.comp_apply, hq, hom_genericPoint Q hU]`. Establish `hc : (Y ≫ Q.P.hom) (IsLocalRing.closedPoint R) ⤳ z`.
+
+Establish `: Y (IsLocalRing.closedPoint R) = p` using `Scheme.fromSpecStalk_closedPoint`. Conclude with `specializes_of_eq ((Scheme.Hom.comp_apply _ _ _).trans ((congrArg Q.P.hom this).trans hp))`. Take `⟨v, hv⟩` from `CrdCalc.crd_exists (LB.isLB_pull Q.isLB _) (Q.σ l) y`. Take `⟨v', hv'⟩` from `CrdCalc.crd_exists (LB.isLB_pull Q.isLB _) (Q.σ l') y'`. Take `⟨u, hu⟩` from `crd_change_loc Q l l' y y' (Y ≫ Q.P.hom) (hy'.trans hy.symm) (by rw [← Category.assoc, hy]) q hq' hc hl hl' g hg hv hv'`.
+
+Establish `k1` using `CrdCalc.crd_map φ hv`. Establish `k2` using `CrdCalc.crd_map φ hv'`. Rewrite `k1` using `[hxy]`. Rewrite `k2` using `[hxy']`. Take `⟨a, ha⟩` from `CrdCalc.crd_unique hw k1`.
+
+Take `⟨b, hb⟩` from `CrdCalc.crd_unique k2 hw'`. Use `⟨b * φ u * a, funext fun j => ?_⟩` and prove the remaining obligations. Establish `hval : ∀ c : M.O z, φ (RatModel.valLoc (Y ≫ Q.P.hom) z hc c) = M.val t c` using `fun c => by`. Rewrite using `[← RatModel.val_spMap_comp, ← Category.assoc, hφ, hXt]`. Rewrite using `[hb j]`.
+
+Simplify using `only [hu j, map_mul, Matrix.mulVec, dotProduct, map_sum, Matrix.map_apply, hval, ha, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun k _ => by ring`.
+-/
 theorem crd_change (hU : (U₀ : Set M.Z).Nonempty) (l l' : Q.Λ) {K : Type} [Field K]
     (x : Sp K ⟶ (Q.P.hom ⁻¹ᵁ Q.W l).toScheme) (x' : Sp K ⟶ (Q.P.hom ⁻¹ᵁ Q.W l').toScheme) (t : Sp K ⟶ M.Z)
     (hx : x' ≫ (Q.P.hom ⁻¹ᵁ Q.W l').ι = x ≫ (Q.P.hom ⁻¹ᵁ Q.W l).ι)
@@ -201,6 +267,13 @@ theorem crd_change (hU : (U₀ : Set M.Z).Nonempty) (l l' : Q.Λ) {K : Type} [Fi
   simp only [hu j, map_mul, Matrix.mulVec, dotProduct, map_sum, Matrix.map_apply, hval, ha, Finset.mul_sum]
   exact Finset.sum_congr rfl fun k _ => by ring
 
+/- English proof (translation)
+Take `⟨z', ⟨w, hw⟩, x₀, hx₀, h, hh, rfl⟩` from `hv`. Establish `hzz : z' = z` using `by rw [← hw, ← hz, Subsingleton.elim w (IsLocalRing.closedPoint K)]`. Substitute `hzz` using the available equality. Use `⟨z', ⟨w, hw⟩, x₀, hx₀, h, hh, funext fun i => ?_⟩` and prove the remaining obligations. Establish `hr : Set.range t = {z'}` using `hw ▸ RatModel.range_eq_singleton t w`.
+
+Set `a : S.J → M.O z'` to `fun j => ⟨(Q.B l j ⬝ᵥ S.ev h) / S.th x₀, (hB.sec z' x₀ hx₀ h hh).1 _ ((Q.basis l z' hl).ge (Submodule.subset_span ⟨j, rfl⟩))⟩`. Establish `e : (Q.B l' i ⬝ᵥ S.ev h) / S.th x₀ = ((∑ j, g i j * a j : M.O z') : Ω)`. Establish `e1 : Q.B l' i ⬝ᵥ S.ev h = (Q.B l').mulVec (S.ev h) i` using `rfl`. Rewrite using `[e1, hg, ← Matrix.mulVec_mulVec]`. Simplify using `[a, Matrix.mulVec, dotProduct, Finset.sum_div, mul_div_assoc]`.
+
+Rewrite using `[e, ← RatModel.valHom_apply t z' hr, map_sum]`. Simplify using `only [map_mul, RatModel.valHom_apply]`. Both sides reduce to the same expression.
+-/
 theorem tors_change (hB : BaseFacts S M U₀ EE) (l l' : Q.Λ) {K : Type} [Field K] (t : Sp K ⟶ M.Z)
     {z : M.Z} (hz : t (IsLocalRing.closedPoint K) = z) (hl : z ∈ Q.W l)
     (g : Matrix S.J S.J (M.O z)) (hg : Q.B l' = g.map (↑) * Q.B l) {v : S.J → K} (hv : v ∈ Q.Tors t l) :
@@ -220,6 +293,15 @@ theorem tors_change (hB : BaseFacts S M U₀ EE) (l l' : Q.Λ) {K : Type} [Field
   simp only [map_mul, RatModel.valHom_apply]
   rfl
 
+/- English proof (translation)
+Introduce `o Ω _ _ _ _ S ρ M U₀ EE hB Q K _ l x w hw H l' x' w' hx hw' d Pf hd hPf hT`. Rewrite `hT` using `[Category.assoc]`. Take `⟨t, ht⟩ : ∃ t, x ≫ (Q.P.hom ⁻¹ᵁ Q.W l).ι ≫ Q.P.hom = t` from `⟨_, rfl⟩`. Establish `ht' : x' ≫ (Q.P.hom ⁻¹ᵁ Q.W l').ι ≫ Q.P.hom = t` using `by rw [← Category.assoc, hx, Category.assoc, ht]`. Rewrite `hT`, `H` using `[ht]`.
+
+Establish `hl : t (IsLocalRing.closedPoint K) ∈ Q.W l`. Rewrite using `[← ht]`. Conclude with `(x (IsLocalRing.closedPoint K)).2`. Establish `hl' : t (IsLocalRing.closedPoint K) ∈ Q.W l'`. Rewrite using `[← ht']`.
+
+Conclude with `(x' (IsLocalRing.closedPoint K)).2`. Take `⟨g, hg, hc⟩` from `exists_change Q l l' hl hl'`. Take `⟨u, rfl⟩` from `crd_change Q hB.ov.ne l l' x x' t hx ht rfl hl hl' g hc hw hw'`. Take `⟨F, hF, hev⟩` from `exists_subst (g.map fun a => M.val t a) hPf`. Establish `h0` using `H d F hd hF fun v hv => by`.
+
+Rewrite using `[hev]`. Conclude with `hT _ (tors_change Q hB l l' t rfl hl g hg hv)`. Rewrite using `[eval_scale u _ hPf, ← hev, h0, mul_zero]`.
+-/
 theorem inFib_of_chart : ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω] (S : ThetaSys o Ω) (ρ : S.Real) (M : RatModel o Ω) (U₀ : M.Z.Opens) (EE : M.Lat S.J), BaseFacts S M U₀ EE → ∀ (Q : Clos ρ M U₀ EE) (K : Type) [Field K] (l : Q.Λ) (x' : Sp K ⟶ (Q.P.hom ⁻¹ᵁ Q.W l).toScheme) (w : S.J → K), Crd (Q.O1.pull (Q.P.hom ⁻¹ᵁ Q.W l).ι) (Q.σ l) x' w → (∀ (d : ℕ) (Pf : MvPolynomial S.J K), d ≤ S.N ^ S.g * S.g.factorial → Pf.IsHomogeneous d → (∀ v ∈ Q.Tors (x' ≫ (Q.P.hom ⁻¹ᵁ Q.W l).ι ≫ Q.P.hom) l, MvPolynomial.eval v Pf = 0) → MvPolynomial.eval w Pf = 0) → Q.InFib (x' ≫ (Q.P.hom ⁻¹ᵁ Q.W l).ι) := by
   intro o Ω _ _ _ _ S ρ M U₀ EE hB Q K _ l x w hw H l' x' w' hx hw' d Pf hd hPf hT
   rw [Category.assoc] at hT

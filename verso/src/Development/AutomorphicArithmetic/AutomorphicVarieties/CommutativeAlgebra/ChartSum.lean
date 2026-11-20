@@ -8,6 +8,11 @@ section
 
 variable {O E σ τ : Type} [CommRing O] [CommRing E] [Algebra O E]
 
+/- English proof (translation)
+Apply `AlgHom.ext` to reduce the goal to its premises. Introduce `p`. Use extensionality with `d`. Establish `hJ : ∀ n : ℕ, f p - g p ∈ GlobalTheory.germIdeal τ E ^ n` using `fun n => GlobalTheory.algHom_sub_mem_pow f g (J := GlobalTheory.germIdeal τ E) (fun s => RingHom.mem_ker.mpr (h0 s)) (fun s => RingHom.mem_ker.mpr (by rw [← h s]; exact h0 s)) (fun s => by rw [h s, sub_self]; exact Submodule.zero_mem _) p`. Establish `hd` using `(GlobalTheory.mem_germIdeal_pow_iff.mp (hJ (Finsupp.degree d + 1))) d (Nat.lt_succ_self _)`.
+
+Rewrite `hd` using `[map_sub, sub_eq_zero]`. Then use the resulting hypothesis.
+-/
 private theorem cs_ext [Finite σ] [Finite τ] (f g : MvPowerSeries σ O →ₐ[O] MvPowerSeries τ E)
     (h0 : ∀ s, constantCoeff (f (X s)) = 0) (h : ∀ s, f (X s) = g (X s)) : f = g := by
   apply AlgHom.ext
@@ -20,6 +25,13 @@ private theorem cs_ext [Finite σ] [Finite τ] (f g : MvPowerSeries σ O →ₐ[
   have hd := (GlobalTheory.mem_germIdeal_pow_iff.mp (hJ (Finsupp.degree d + 1))) d (Nat.lt_succ_self _)
   rwa [map_sub, sub_eq_zero] at hd
 
+/- English proof (translation)
+Establish `hp' : ∀ n, Finsupp.weight w' n ≠ i → coeff n p = 0` using `hp`. Establish `hq' : ∀ n, Finsupp.weight w' n ≠ j → coeff n q = 0` using `hq`. Introduce `n hn`. Rewrite using `[coeff_mul]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises.
+
+Introduce and unpack `⟨b, c⟩ hbc`. Establish `hbc' : b + c = n` using `Finset.HasAntidiagonal.mem_antidiagonal.mp hbc`. Simplify using `only`. Distinguish the cases in `hb : Finsupp.weight w' b = i`. Establish `hc : Finsupp.weight w' c ≠ j`.
+
+Introduce `hc`. Apply `hn` to reduce the goal to its premises. Rewrite using `[← hbc', map_add, hb, hc]`. Rewrite using `[hq' c hc, mul_zero]`. Rewrite using `[hp' b hb, zero_mul]`.
+-/
 private theorem mul_mem_wtPart' {ι A G : Type} [CommRing A] [AddCommGroup G] (w' : ι → G)
     {p q : MvPowerSeries ι A} {i j : G} (hp : p ∈ wtPart A w' i) (hq : q ∈ wtPart A w' j) :
     p * q ∈ wtPart A w' (i + j) := by
@@ -40,6 +52,9 @@ private theorem mul_mem_wtPart' {ι A G : Type} [CommRing A] [AddCommGroup G] (w
     rw [hq' c hc, mul_zero]
   · rw [hp' b hb, zero_mul]
 
+/- English proof (translation)
+Introduce `n hn`. Rewrite using `[coeff_one, if_neg]`. Introduce and unpack `rfl`. Conclude with `hn (map_zero _)`.
+-/
 private theorem one_mem_wtPart_zero {ι A G : Type} [CommRing A] [AddCommGroup G] (w' : ι → G) :
     (1 : MvPowerSeries ι A) ∈ wtPart A w' 0 := by
   classical
@@ -48,6 +63,9 @@ private theorem one_mem_wtPart_zero {ι A G : Type} [CommRing A] [AddCommGroup G
   rintro rfl
   exact hn (map_zero _)
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => simpa using one_mem_wtPart_zero (A := A) w'`. Consider the case `succ k ih`. Rewrite using `[pow_succ, succ_nsmul]`. Conclude with `mul_mem_wtPart' w' ih hp`.
+-/
 private theorem pow_mem_wtPart {ι A G : Type} [CommRing A] [AddCommGroup G] (w' : ι → G)
     {p : MvPowerSeries ι A} {i : G} (hp : p ∈ wtPart A w' i) (k : ℕ) :
     p ^ k ∈ wtPart A w' (k • i) := by
@@ -57,6 +75,11 @@ private theorem pow_mem_wtPart {ι A G : Type} [CommRing A] [AddCommGroup G] (w'
     rw [pow_succ, succ_nsmul]
     exact mul_mem_wtPart' w' ih hp
 
+/- English proof (translation)
+Rewrite using `[Finsupp.weight_apply]`. Unfold `Finsupp.prod Finsupp.sum`. Proceed by induction on `d.support using Finset.induction_on with`. Consider the case `empty => simpa using one_mem_wtPart_zero (A := A) w'`. Consider the case `insert s S hs ih`.
+
+Rewrite using `[Finset.prod_insert hs, Finset.sum_insert hs]`. Conclude with `mul_mem_wtPart' w' (pow_mem_wtPart w' (hw s) (d s)) ih`.
+-/
 private theorem finsupp_prod_pow_mem_wtPart_weight {ι κ A G : Type} [CommRing A] [AddCommGroup G] (w : κ → G) (w' : ι → G)
     (a : κ → MvPowerSeries ι A) (hw : ∀ s, a s ∈ wtPart A w' (w s)) (d : κ →₀ ℕ) :
     (d.prod fun s e => a s ^ e) ∈ wtPart A w' (Finsupp.weight w d) := by
@@ -69,6 +92,13 @@ private theorem finsupp_prod_pow_mem_wtPart_weight {ι κ A G : Type} [CommRing 
     rw [Finset.prod_insert hs, Finset.sum_insert hs]
     exact mul_mem_wtPart' w' (pow_mem_wtPart w' (hw s) (d s)) ih
 
+/- English proof (translation)
+Establish `ha : HasSubst a` using `hasSubst_of_constantCoeff_zero h0`. Use `⟨substAlgHom (R := O) ha, fun s => ?_, fun j f hf => ?_⟩` and prove the remaining obligations. Rewrite using `[coe_substAlgHom, subst_X ha]`. Rewrite using `[coe_substAlgHom]`. Establish `hf' : ∀ n, Finsupp.weight w n ≠ j → coeff n f = 0` using `hf`.
+
+Introduce `n hn`. Rewrite using `[coeff_subst ha]`. Apply `finsum_eq_zero_of_forall_eq_zero` to reduce the goal to its premises. Introduce `d`. Distinguish the cases in `hd : Finsupp.weight w d = j`.
+
+Establish `hp' : ∀ m, Finsupp.weight w' m ≠ Finsupp.weight w d → coeff m (d.prod fun s e => a s ^ e) = 0` using `finsupp_prod_pow_mem_wtPart_weight w w' a hw d`. Rewrite using `[hp' n (hd ▸ hn), smul_zero]`. Rewrite using `[hf' d hd, zero_smul]`.
+-/
 private theorem cs_ex [Finite σ] {G : Type} [AddCommGroup G] (w : σ → G) (w' : τ → G)
     (a : σ → MvPowerSeries τ E) (h0 : ∀ s, constantCoeff (a s) = 0) (hw : ∀ s, a s ∈ wtPart E w' (w s)) :
     ∃ F : MvPowerSeries σ O →ₐ[O] MvPowerSeries τ E, (∀ s, F (X s) = a s) ∧
@@ -89,6 +119,13 @@ private theorem cs_ex [Finite σ] {G : Type} [AddCommGroup G] (w : σ → G) (w'
       rw [hp' n (hd ▸ hn), smul_zero]
     · rw [hf' d hd, zero_smul]
 
+/- English proof (translation)
+Establish `hf' : ∀ n, Finsupp.weight (fun s => w' (u s)) n ≠ j → coeff n f = 0` using `hf`. Introduce `n hn`. Rewrite using `[coeff_rename]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `y hy`.
+
+Simplify using `only [Set.Finite.mem_toFinset, Set.mem_preimage, Set.mem_singleton_iff] at hy`. Apply `hf' y` to reduce the goal to its premises. Introduce `hyj`. Apply `hn` to reduce the goal to its premises. Rewrite using `[← hy, ← hyj]`.
+
+Simplify using `only [Finsupp.weight_apply]`. Rewrite using `[Finsupp.sum_mapDomain_index (by simp) (by intros; simp [add_smul])]`.
+-/
 private theorem cs_rename_mem [Finite σ] {G : Type} [AddCommGroup G] (w' : τ → G) (u : σ → τ) {j : G}
     {f : MvPowerSeries σ E} (hf : f ∈ wtPart E (fun s => w' (u s)) j) : rename u f ∈ wtPart E w' j := by
   have hf' : ∀ n, Finsupp.weight (fun s => w' (u s)) n ≠ j → coeff n f = 0 := hf
@@ -104,12 +141,20 @@ private theorem cs_rename_mem [Finite σ] {G : Type} [AddCommGroup G] (w' : τ �
   simp only [Finsupp.weight_apply]
   rw [Finsupp.sum_mapDomain_index (by simp) (by intros; simp [add_smul])]
 
+/- English proof (translation)
+Establish `hc` using `coeff_embDomain_rename (R := E) ⟨Sigma.mk v, sigma_mk_injective⟩ f (Finsupp.single i 1)`. Simplify `hc` using `[Finsupp.embDomain_single]`.
+-/
 private theorem cs_coeff_same {T : Type} {τ : T → Type} [∀ v, Finite (τ v)] (v : T) (i : τ v)
     (f : MvPowerSeries (τ v) E) :
     coeff (Finsupp.single (⟨v, i⟩ : Σ v, τ v) 1) (rename (Sigma.mk v) f) = coeff (Finsupp.single i 1) f := by
   have hc := coeff_embDomain_rename (R := E) ⟨Sigma.mk v, sigma_mk_injective⟩ f (Finsupp.single i 1)
   simpa [Finsupp.embDomain_single] using hc
 
+/- English proof (translation)
+Apply `coeff_rename_eq_zero` to reduce the goal to its premises. Introduce and unpack `⟨y, hy⟩`. Establish `h1` using `congrArg (fun g => g ⟨v', i⟩) hy`. Simplify using `only [Finsupp.single_eq_same] at h1`. Rewrite `h1` using `[Finsupp.mapDomain_notin_range]`.
+
+Conclude with `zero_ne_one h1`. Introduce and unpack `⟨j, hj⟩`. Conclude with `h (congrArg Sigma.fst hj).symm`.
+-/
 private theorem cs_coeff_ne {T : Type} {τ : T → Type} [∀ v, Finite (τ v)] {v v' : T} (h : v' ≠ v) (i : τ v')
     (f : MvPowerSeries (τ v) E) :
     coeff (Finsupp.single (⟨v', i⟩ : Σ v, τ v) 1) (rename (Sigma.mk v) f) = 0 := by
@@ -122,6 +167,15 @@ private theorem cs_coeff_ne {T : Type} {τ : T → Type} [∀ v, Finite (τ v)] 
   · rintro ⟨j, hj⟩
     exact h (congrArg Sigma.fst hj).symm
 
+/- English proof (translation)
+Establish `hne : d ≠ 0`. Introduce and unpack `rfl`. Simplify using `at hd`. Take `⟨t, ht⟩` from `Finsupp.support_nonempty_iff.mpr hne`. Use `⟨t, ?_⟩` and prove the remaining obligations.
+
+Establish `hsum : d t + ∑ i ∈ d.support.erase t, d i = 1`. Rewrite using `[Finset.add_sum_erase _ _ ht, ← hd]`. Both sides reduce to the same expression. Establish `hpos : 0 < d t` using `Nat.pos_of_ne_zero (Finsupp.mem_support_iff.mp ht)`. Establish `hrest : ∑ i ∈ d.support.erase t, d i = 0` using `by omega`.
+
+Establish `ht1 : d t = 1` using `by omega`. Use extensionality with `i`. Distinguish the cases in `hi : i = t`. Substitute `hi` using the available equality. Simplify using `[ht1]`.
+
+Establish `hdi : d i = 0`. Assume the negation of the conclusion as `hc`. Conclude with `hc (Finset.sum_eq_zero_iff.mp hrest i (Finset.mem_erase.mpr ⟨hi, Finsupp.mem_support_iff.mpr hc⟩))`. Simplify using `[Finsupp.single_apply, Ne.symm hi, hdi]`.
+-/
 private theorem exists_single_of_degree_eq_one {σ : Type} (d : σ →₀ ℕ) (hd : Finsupp.degree d = 1) :
     ∃ t, d = Finsupp.single t 1 := by
   classical
@@ -145,6 +199,11 @@ private theorem exists_single_of_degree_eq_one {σ : Type} (d : σ →₀ ℕ) (
       exact hc (Finset.sum_eq_zero_iff.mp hrest i (Finset.mem_erase.mpr ⟨hi, Finsupp.mem_support_iff.mpr hc⟩))
     simp [Finsupp.single_apply, Ne.symm hi, hdi]
 
+/- English proof (translation)
+Use `MvPowerSeries.nat_le_order (fun d hd => ?_)` and prove the remaining obligations. Simplify using `only [map_sub, map_sum, coeff_smul, coeff_X, smul_eq_mul, mul_ite, mul_one, mul_zero]`. Break down `(Nat.lt_succ_iff.mp hd).lt_or_eq with hlt | h1` into its components or cases. Establish `hd0 : d = 0` using `(Finsupp.degree_eq_zero_iff d).mp (by omega)`. Substitute `hd0` using the available equality.
+
+Simplify using `[h0, eq_comm]`. Take `⟨t, rfl⟩` from `exists_single_of_degree_eq_one d h1`. Simplify using `[Finsupp.single_eq_single_iff]`.
+-/
 private theorem cs_lin [Fintype σ] (g : MvPowerSeries σ O) (h0 : constantCoeff g = 0) :
     ((2 : ℕ) : ℕ∞) ≤ (g - ∑ s, coeff (Finsupp.single s 1) g • X s).order := by
   classical
@@ -157,6 +216,13 @@ private theorem cs_lin [Fintype σ] (g : MvPowerSeries σ O) (h0 : constantCoeff
   · obtain ⟨t, rfl⟩ := exists_single_of_degree_eq_one d h1
     simp [Finsupp.single_eq_single_iff]
 
+/- English proof (translation)
+Take `⟨c, hc, hca⟩` from `ha`. Use `⟨c, hc, ?_⟩` and prove the remaining obligations. Establish `hle : Ideal.map i (RingHom.ker x) ≤ RingHom.ker x'`. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `b hb`.
+
+Simplify using `only [Ideal.mem_comap, RingHom.mem_ker] at hb ⊢`. Rewrite using `[h]`. Conclude with `hb`. Establish `hm` using `Ideal.mem_map_of_mem i hca`. Rewrite `hm` using `[Ideal.map_pow, map_smul]`.
+
+Conclude with `Ideal.pow_right_mono hle 2 hm`.
+-/
 private theorem cs_sat [IsDomain O] {A A' : Type} [CommRing A] [Algebra O A] [CommRing A'] [Algebra O A']
     (x : A →ₐ[O] O) (x' : A' →ₐ[O] O) (i : A →ₐ[O] A') (h : ∀ a, x' (i a) = x a) {a : A} (ha : a ∈ satSq x) :
     i a ∈ satSq x' := by
@@ -175,6 +241,73 @@ private theorem cs_sat [IsDomain O] {A A' : Type} [CommRing A] [Algebra O A] [Co
 end
 
 set_option maxHeartbeats 800000 in
+/- English proof (translation)
+Introduce `O X _ _ _ T _ B _ _ WB hB τ _ wt φ hφ R _ _ W e he hker`. Use `haveI : Fintype W.σ := W.fin`. Use `haveI : ∀ v, Fintype (WB v).σ := fun v => (WB v).fin`. Establish `hO : W.HasOrigin`. Introduce `f hf`.
+
+Establish `hf' : f ∈ RingHom.ker W.π` using `RingHom.mem_ker.mpr hf`. Rewrite `hf'` using `[hker]`. Establish `hle : (⨆ v, (RingHom.ker (WB v).π).map (MvPowerSeries.rename fun s => e ⟨v, s⟩)) ≤ RingHom.ker (constantCoeff (σ` using `W.σ) (R := O)) := by`. Use `iSup_le fun v => ?_` and prove the remaining obligations. Rewrite using `[Ideal.map_le_iff_le_comap]`.
+
+Introduce `g hg`. Rewrite `hg` using `[RingHom.mem_ker]`. Simplify using `only [Ideal.mem_comap, RingHom.mem_ker]`. Simplify using `using hB v g hg`. Conclude with `RingHom.mem_ker.mp (hle hf')`.
+
+Set `a : W.σ → MvPowerSeries (Σ v, τ v) (FractionRing O)` to `fun t => MvPowerSeries.rename (Sigma.mk (e.symm t).1) (φ (e.symm t).1 ((WB (e.symm t).1).z (e.symm t).2))`. Establish `hae' : ∀ p : Σ v, (WB v).σ, a (e p) = MvPowerSeries.rename (Sigma.mk p.1) (φ p.1 ((WB p.1).z p.2))`. Introduce `p`. Use `show (fun q : Σ v, (WB v).σ => MvPowerSeries.rename (Sigma.mk q.1) (φ q.1 ((WB q.1).z q.2))) (e.symm (e p)) = _`. Rewrite using `[e.symm_apply_apply]`.
+
+Establish `hae : ∀ v s, a (e ⟨v, s⟩) = MvPowerSeries.rename (Sigma.mk v) (φ v ((WB v).z s))` using `fun v s => hae' ⟨v, s⟩`. Establish `ha0 : ∀ t, constantCoeff (a t) = 0`. Introduce `t`. Take `⟨⟨v, s⟩, rfl⟩` from `e.surjective t`. Rewrite using `[hae, constantCoeff_rename, (hφ v).const, WPres.z, WPres.origin_π, constantCoeff_X, map_zero]`.
+
+Establish `haw : ∀ t, a t ∈ wtPart (FractionRing O) (fun p => wt p.1 p.2) (W.wt t)`. Introduce `t`. Take `⟨⟨v, s⟩, rfl⟩` from `e.surjective t`. Rewrite using `[hae, he]`. Establish `h1 : φ v ((WB v).z s) ∈ wtPart (FractionRing O) (wt v) ((WB v).wt s)` using `(hφ v).graded _ _ (WPres.z_mem _ s)`.
+
+Conclude with `cs_rename_mem (E := FractionRing O) (fun p : (Σ v, τ v) => wt p.1 p.2) (Sigma.mk v) h1`. Take `⟨Φ, hΦX, hΦw⟩` from `cs_ex (O := O) (E := FractionRing O) (σ := W.σ) (τ := Σ v, τ v) (G := X) W.wt (fun p => wt p.1 p.2) a ha0 haw`. Establish `hΦg : ∀ t, Φ (MvPowerSeries.X t) ∈ GlobalTheory.germIdeal (Σ v, τ v) (FractionRing O)` using `fun t => RingHom.mem_ker.mpr (by rw [hΦX]; exact ha0 t)`. Establish `hcomp : ∀ v, Φ.comp (MvPowerSeries.rename (R` using `O) fun s => e ⟨v, s⟩) = ((MvPowerSeries.rename (R := FractionRing O) (Sigma.mk v)).restrictScalars O).comp ((φ v).comp (WB v).π) := by`. Introduce `v`.
+
+Apply `cs_ext` to reduce the goal to its premises. Introduce `s`. Rewrite using `[AlgHom.comp_apply, rename_X, hΦX]`. Conclude with `ha0 _`. Introduce `s`.
+
+Rewrite using `[AlgHom.comp_apply, rename_X, hΦX, hae]`. Both sides reduce to the same expression. Establish `hca : ∀ v p, Φ (MvPowerSeries.rename (fun s => e ⟨v, s⟩) p) = MvPowerSeries.rename (Sigma.mk v) (φ v ((WB v).π p))` using `fun v p => AlgHom.congr_fun (hcomp v) p`. Establish `hkerΦ : ∀ g ∈ RingHom.ker W.π, Φ g = 0`. Introduce `g hg`.
+
+Rewrite `hg` using `[hker]`. Establish `hle : (⨆ v, (RingHom.ker (WB v).π).map (MvPowerSeries.rename (R` using `O) fun s => e ⟨v, s⟩)) ≤ RingHom.ker Φ := by`. Use `iSup_le fun v => ?_` and prove the remaining obligations. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `p hp`.
+
+Rewrite `hp` using `[RingHom.mem_ker]`. Rewrite using `[Ideal.mem_comap, RingHom.mem_ker]`. Rewrite using `[hca, hp, map_zero, map_zero]`. Conclude with `RingHom.mem_ker.mp (hle hg)`. Set `ψ : R →ₐ[O] MvPowerSeries (Σ v, τ v) (FractionRing O)` to `(Ideal.Quotient.liftₐ (RingHom.ker W.π) Φ hkerΦ).comp ↑(Ideal.quotientKerAlgEquivOfSurjective W.surj).symm`.
+
+Establish `hψ : ∀ g, ψ (W.π g) = Φ g`. Introduce `g`. Establish `hq : (Ideal.quotientKerAlgEquivOfSurjective W.surj).symm (W.π g) = Ideal.Quotient.mk _ g`. Rewrite using `[AlgEquiv.symm_apply_eq]`. Both sides reduce to the same expression.
+
+Use `show Ideal.Quotient.liftₐ (RingHom.ker W.π) Φ hkerΦ ((Ideal.quotientKerAlgEquivOfSurjective W.surj).symm (W.π g)) = Φ g`. Rewrite using `[hq]`. Both sides reduce to the same expression. Use `⟨hO, ψ, ⟨?_, ?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `j f hf`.
+
+Take `⟨g, hg, rfl⟩` from `hf`. Use `show ψ (W.π g) ∈ _`. Rewrite using `[hψ]`. Conclude with `hΦw j g hg`. Introduce `f`.
+
+Take `⟨g, rfl⟩` from `W.surj f`. Rewrite using `[hψ, WPres.origin_π]`. Establish `hm` using `GlobalTheory.algHom_sub_constantCoeff_mem Φ hΦg g`. Rewrite `hm` using `[GlobalTheory.germIdeal, RingHom.mem_ker, map_sub, sub_eq_zero]`. Rewrite using `[hm, MvPowerSeries.algebraMap_apply, constantCoeff_C]`.
+
+Introduce and unpack `⟨v, k⟩`. Take `⟨fv, hfv1, hfv2⟩` from `(hφ v).onto k`. Take `⟨g, rfl⟩` from `(WB v).surj fv`. Establish `hval : ψ (W.π (MvPowerSeries.rename (fun s => e ⟨v, s⟩) g)) = MvPowerSeries.rename (Sigma.mk v) (φ v ((WB v).π g))`. Rewrite using `[hψ, hca]`.
+
+Use `⟨W.π (MvPowerSeries.rename (fun s => e ⟨v, s⟩) g), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hval, cs_coeff_same]`. Conclude with `hfv1`. Introduce and unpack `⟨v', k'⟩ hne`. Rewrite using `[hval]`.
+
+Distinguish the cases in `hv : v' = v`. Substitute `hv` using the available equality. Rewrite using `[cs_coeff_same]`. Conclude with `hfv2 k' (fun h => hne (by rw [h]))`. Conclude with `cs_coeff_ne hv k' _`.
+
+Introduce `f hf0 hf1`. Take `⟨g, rfl⟩` from `W.surj f`. Rewrite `hf0` using `[WPres.origin_π]`. Simplify using `only [hψ] at hf1`. Take `⟨ℓ, hℓ⟩ : ∃ ℓ : MvPowerSeries W.σ O, ℓ = ∑ t, coeff (Finsupp.single t 1) g • MvPowerSeries.X t` from `⟨_, rfl⟩`.
+
+Establish `hord` using `cs_lin g hf0`. Rewrite `hord` using `[← hℓ]`. Establish `hq : W.π (g - ℓ) ∈ satSq (W.origin hO)`. Use `⟨1, one_ne_zero, ?_⟩` and prove the remaining obligations. Rewrite using `[one_smul]`.
+
+Conclude with `GlobalTheory.algHom_mem_pow_of_le_order W.π (K := RingHom.ker (W.origin hO)) (fun t => by rw [RingHom.mem_ker, WPres.origin_π, constantCoeff_X]) hord`. Establish `hΦl : ∀ i, coeff (Finsupp.single i 1) (Φ ℓ) = 0`. Introduce `i`. Establish `hm` using `GlobalTheory.algHom_mem_pow_of_le_order Φ hΦg hord`. Establish `h2` using `GlobalTheory.mem_germIdeal_pow_iff.mp hm (Finsupp.single i 1) (by simp)`.
+
+Establish `h3` using `hf1 i`. Rewrite `h3` using `[show g = ℓ + (g - ℓ) by ring, map_add, map_add, h2, add_zero]`. Conclude with `h3`. Set `ℓv : ∀ v, MvPowerSeries (WB v).σ O` to `fun v => ∑ s, coeff (Finsupp.single (e ⟨v, s⟩) 1) g • MvPowerSeries.X s`. Establish `hℓsum : ℓ = ∑ v, MvPowerSeries.rename (fun s => e ⟨v, s⟩) (ℓv v)`.
+
+Rewrite using `[hℓ]`. Simplify using `only [ℓv, map_sum, map_smul, rename_X]`. Rewrite using `[← Fintype.sum_sigma (fun p : Σ v, (WB v).σ => coeff (Finsupp.single (e p) 1) g • MvPowerSeries.X (e p))]`. Conclude with `(Fintype.sum_equiv e _ _ (fun _ => rfl)).symm`. Establish `hmapv : ∀ v, (RingHom.ker (WB v).π).map (MvPowerSeries.rename (R` using `O) fun s => e ⟨v, s⟩) ≤ RingHom.ker W.π := by`.
+
+Introduce `v`. Rewrite using `[hker]`. Conclude with `le_iSup (fun v => (RingHom.ker (WB v).π).map (MvPowerSeries.rename (R := O) fun s => e ⟨v, s⟩)) v`. Establish `hiv_ker : ∀ v, ∀ p ∈ RingHom.ker (WB v).π, (W.π.comp (MvPowerSeries.rename (R` using `O) fun s => e ⟨v, s⟩)) p = 0 := by`. Introduce `v p hp`.
+
+Rewrite using `[AlgHom.comp_apply, ← RingHom.mem_ker]`. Conclude with `hmapv v (Ideal.mem_map_of_mem _ hp)`. Establish `hv : ∀ v, W.π (MvPowerSeries.rename (fun s => e ⟨v, s⟩) (ℓv v)) ∈ satSq (W.origin hO)`. Introduce `v`. Set `iv : B v →ₐ[O] R` to `(Ideal.Quotient.liftₐ (RingHom.ker (WB v).π) (W.π.comp (MvPowerSeries.rename (R := O) fun s => e ⟨v, s⟩)) (hiv_ker v)).comp ↑(Ideal.quotientKerAlgEquivOfSurjective (WB v).surj).symm`.
+
+Establish `hivπ : ∀ p, iv ((WB v).π p) = W.π (MvPowerSeries.rename (fun s => e ⟨v, s⟩) p)`. Introduce `p`. Establish `hq' : (Ideal.quotientKerAlgEquivOfSurjective (WB v).surj).symm ((WB v).π p) = Ideal.Quotient.mk _ p`. Rewrite using `[AlgEquiv.symm_apply_eq]`. Both sides reduce to the same expression.
+
+Use `show Ideal.Quotient.liftₐ _ _ (hiv_ker v) ((Ideal.quotientKerAlgEquivOfSurjective (WB v).surj).symm ((WB v).π p)) = _`. Rewrite using `[hq']`. Both sides reduce to the same expression. Establish `hiv : ∀ b, W.origin hO (iv b) = (WB v).origin (hB v) b`. Introduce `b`.
+
+Take `⟨p, rfl⟩` from `(WB v).surj b`. Rewrite using `[hivπ, WPres.origin_π, WPres.origin_π, constantCoeff_rename]`. Establish `hc0 : (WB v).origin (hB v) ((WB v).π (ℓv v)) = 0`. Rewrite using `[WPres.origin_π]`. Simplify using `[ℓv]`.
+
+Establish `hc1 : ∀ k, coeff (Finsupp.single k 1) (φ v ((WB v).π (ℓv v))) = 0`. Introduce `k`. Establish `h1` using `hΦl ⟨v, k⟩`. Rewrite `h1` using `[hℓsum, map_sum, map_sum, Finset.sum_eq_single v]`. Rewrite `h1` using `[hca, cs_coeff_same]`.
+
+Conclude with `h1`. Introduce `v' _ hv'`. Rewrite using `[hca]`. Conclude with `cs_coeff_ne (fun h => hv' h.symm) k _`. Introduce `h`.
+
+Conclude with `absurd (Finset.mem_univ v) h`. Establish `hsat` using `(hφ v).inj _ hc0 hc1`. Establish `hfin` using `cs_sat ((WB v).origin (hB v)) (W.origin hO) iv hiv hsat`. Rewrite `hfin` using `[hivπ]`. Then use the resulting hypothesis. Establish `hl : W.π ℓ ∈ satSq (W.origin hO)`.
+
+Rewrite using `[hℓsum, map_sum]`. Conclude with `Submodule.sum_mem _ (fun v _ => hv v)`. Rewrite using `[show g = ℓ + (g - ℓ) by ring, map_add]`. Conclude with `Submodule.add_mem _ hl hq`. Introduce `v s`.
+
+Rewrite using `[WPres.z, hψ, hΦX, hae]`.
+-/
 theorem UpperTheory.V.Alg.chart_sum :
     ∀ (O X : Type) [CommRing O] [IsDomain O] [AddCommGroup X] (T : Type) [Fintype T] (B : T → Type) [∀ v, CommRing (B v)] [∀ v, Algebra O (B v)] (WB : ∀ v, WPres O X (B v)) (hB : ∀ v, (WB v).HasOrigin)
       (τ : T → Type) [∀ v, Fintype (τ v)] (wt : ∀ v, τ v → X) (φ : ∀ v, B v →ₐ[O] MvPowerSeries (τ v) (FractionRing O)), (∀ v, IsChart (WB v).part ((WB v).origin (hB v)) (wt v) (φ v)) →

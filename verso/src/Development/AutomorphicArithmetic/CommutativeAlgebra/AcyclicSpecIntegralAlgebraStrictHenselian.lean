@@ -24,6 +24,9 @@ private noncomputable def FC : Cocone (FD O R) where
 
 variable {O R}
 
+/- English proof (translation)
+Use `haveI := S.2`. Use `haveI := T.2`. Conclude with `Subalgebra.finite_sup S.1 T.1`.
+-/
 private theorem finite_sup (S T : FJ O R) : Module.Finite O ↥(S.1 ⊔ T.1) := by
   haveI := S.2
   haveI := T.2
@@ -34,11 +37,17 @@ private instance : IsDirected (FJ O R) (· ≤ ·) :=
 
 variable [Algebra.IsIntegral O R]
 
+/- English proof (translation)
+The claim follows from `Module.Finite.iff_fg.mpr (IsIntegral.fg_adjoin_singleton (Algebra.IsIntegral.isIntegral x))`.
+-/
 private theorem finite_adjoin (x : R) : Module.Finite O ↥(Algebra.adjoin O ({x} : Set R)) :=
   Module.Finite.iff_fg.mpr (IsIntegral.fg_adjoin_singleton (Algebra.IsIntegral.isIntegral x))
 
 private noncomputable def gen (x : R) : FJ O R := ⟨Algebra.adjoin O {x}, finite_adjoin x⟩
 
+/- English proof (translation)
+The claim follows from `Algebra.subset_adjoin rfl`.
+-/
 private theorem mem_gen (x : R) : x ∈ (gen (O := O) x).1 := Algebra.subset_adjoin rfl
 
 private instance : Nonempty (FJ O R) := ⟨gen 0⟩
@@ -48,6 +57,11 @@ private instance : IsFiltered (FJ O R) := inferInstance
 private noncomputable def descFun (s : Cocone (FD O R)) (x : R) : s.pt :=
   (s.ι.app (gen x)).hom (⟨x, mem_gen x⟩ : (gen (O := O) x).1)
 
+/- English proof (translation)
+Set `U : FJ O R` to `⟨S.1 ⊔ (gen x).1, finite_sup S (gen x)⟩`. Establish `hS : S ≤ U` using `le_sup_left (a := S.1)`. Establish `hG : gen x ≤ U` using `le_sup_right (a := S.1)`. Unfold `descFun`. Rewrite using `[← s.w (homOfLE hS), ← s.w (homOfLE hG)]`.
+
+Both sides reduce to the same expression.
+-/
 private theorem descFun_eq (s : Cocone (FD O R)) (S : FJ O R) (x : R) (hx : x ∈ S.1) :
     (s.ι.app S).hom (⟨x, hx⟩ : S.1) = descFun s x := by
   let U : FJ O R := ⟨S.1 ⊔ (gen x).1, finite_sup S (gen x)⟩
@@ -62,6 +76,9 @@ end UpperTheory.IntegralColim
 namespace UpperTheory.IntegralColim
 variable {O R : Type} [CommRing O] [CommRing R] [Algebra O R] [Algebra.IsIntegral O R]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨(gen (O := O) x).1 ⊔ (gen (O := O) y).1, finite_sup _ _⟩, (le_sup_left : (gen (O := O) x).1 ≤ _) (mem_gen x), (le_sup_right : (gen (O := O) y).1 ≤ _) (mem_gen y)⟩`.
+-/
 private theorem two (x y : R) : ∃ S : FJ O R, x ∈ S.1 ∧ y ∈ S.1 :=
   ⟨⟨(gen (O := O) x).1 ⊔ (gen (O := O) y).1, finite_sup _ _⟩,
     (le_sup_left : (gen (O := O) x).1 ≤ _) (mem_gen x),
@@ -98,6 +115,13 @@ private noncomputable def isColim : IsColimit (FC O R) where
 
 end UpperTheory.IntegralColim
 
+/- English proof (translation)
+Introduce `q O R _ _ _ _ hO hq n i hn`. Establish `hqR : IsUnit (q : R)`. Simplify using `using hq.map (algebraMap O R)`. Establish `hz : ∀ x : Ht q (sp R) n i, x = 0`. Introduce `x`.
+
+Take `⟨j, y, hy⟩` from `(UpperTheory.twistCohomology_commutes_with_filtered_colimits q (UpperTheory.IntegralColim.FD O R) (UpperTheory.IntegralColim.FC O R) UpperTheory.IntegralColim.isColim n i).1 x hqR`. Use `haveI := j.2`. Establish `hA : Acyc q (sp j.1)` using `UpperTheory.acyclic_spec_finite_algebra_strictHenselian q O j.1 hO hq`. Use `haveI := hA n i hn`. Establish `hy0 : y = 0` using `Subsingleton.elim (α := Ht q (sp j.1) n i) y 0`.
+
+Rewrite using `[← hy, hy0]`. Conclude with `map_zero _`. Conclude with `⟨fun a b => (hz a).trans (hz b).symm⟩`.
+-/
 theorem UpperTheory.acyclic_spec_integral_algebra_strictHenselian :
     ∀ (q : ℕ) (O R : Type) [CommRing O] [CommRing R] [Algebra O R] [Algebra.IsIntegral O R], SH O → IsUnit (q : O) → Acyc q (sp R) := by
   intro q O R _ _ _ _ hO hq n i hn

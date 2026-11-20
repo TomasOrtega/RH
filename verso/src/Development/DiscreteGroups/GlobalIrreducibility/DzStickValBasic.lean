@@ -6,6 +6,11 @@ namespace DiscreteGroups.sglob.Stick
 
 open IsDedekindDomain
 
+/- English proof (translation)
+Establish `: Fact p.Prime` using `⟨hp⟩`. Establish `: NeZero p` using `⟨hp.ne_zero⟩`. Use `symm`. Rewrite using `[← Polynomial.eval_one_cyclotomic_prime (R := A) (p := p), Polynomial.cyclotomic_eq_prod_X_sub_primitiveRoots hζ, Polynomial.eval_prod]`. Simplify using `only [Polynomial.eval_sub, Polynomial.eval_X, Polynomial.eval_C]`.
+
+Rewrite using `[← Nat.totient_prime hp, ← hζ.card_primitiveRoots, ← Finset.prod_const]`. Use `Associated.prod _ _ _ fun η hη ↦ ?_` and prove the remaining obligations. Take `⟨i, -, hi, rfl⟩` from `hζ.isPrimitiveRoot_iff.mp (isPrimitiveRoot_of_mem_primitiveRoots hη)`. Simplify using `using (hζ.associated_sub_one_pow_sub_one_of_coprime hi).neg_right`.
+-/
 theorem associated_prime_pow {A : Type*} [CommRing A] [IsDomain A] {p : ℕ} (hp : p.Prime) {ζ : A}
     (hζ : IsPrimitiveRoot ζ p) : Associated (p : A) ((ζ - 1) ^ (p - 1)) := by
   have : Fact p.Prime := ⟨hp⟩
@@ -19,11 +24,17 @@ theorem associated_prime_pow {A : Type*} [CommRing A] [IsDomain A] {p : ℕ} (hp
   obtain ⟨i, -, hi, rfl⟩ := hζ.isPrimitiveRoot_iff.mp (isPrimitiveRoot_of_mem_primitiveRoots hη)
   simpa using (hζ.associated_sub_one_pow_sub_one_of_coprime hi).neg_right
 
+/- English proof (translation)
+Simplify using `[psi, AddChar.zmodChar_apply]`.
+-/
 theorem psi_apply (p : ℕ) [Fact p.Prime] (k : Type*) [Field k] [Algebra (ZMod p) k] {A : Type*}
     [CommRing A] (ζ : A) (hζ : ζ ^ p = 1) (x : k) :
     psi p k ζ hζ x = ζ ^ (Algebra.trace (ZMod p) k x).val := by
   simp [psi, AddChar.zmodChar_apply]
 
+/- English proof (translation)
+Apply `AddChar.IsPrimitive.of_ne_one` to reduce the goal to its premises. Take `⟨a, ha⟩` from `Algebra.trace_surjective (ZMod p) k 1`. Use `AddChar.ne_one_iff.2 ⟨a, fun hf => ?_⟩` and prove the remaining obligations. Rewrite `hf` using `[psi_apply, ha, ZMod.val_one, pow_one]`. Conclude with `hζ.ne_one (Fact.out : p.Prime).one_lt hf`.
+-/
 theorem psi_isPrimitive (p : ℕ) [Fact p.Prime] (k : Type*) [Field k] [Finite k] [Algebra (ZMod p) k]
     {A : Type*} [CommRing A] [IsDomain A] (ζ : A) (hζ : IsPrimitiveRoot ζ p) :
     (psi p k ζ hζ.pow_eq_one).IsPrimitive := by
@@ -33,6 +44,11 @@ theorem psi_isPrimitive (p : ℕ) [Fact p.Prime] (k : Type*) [Field k] [Finite k
   rw [psi_apply, ha, ZMod.val_one, pow_one] at hf
   exact hζ.ne_one (Fact.out : p.Prime).one_lt hf
 
+/- English proof (translation)
+Establish `: CharP k p` using `charP_of_injective_algebraMap' (ZMod p) p`. Establish `: ExpChar k p` using `.prime Fact.out`. Rewrite using `[psi_apply, psi_apply]`. Establish `h` using `Algebra.trace_eq_of_algEquiv (FiniteField.frobeniusAlgEquiv (ZMod p) k p) x`. Establish `h2 : FiniteField.frobeniusAlgEquiv (ZMod p) k p x = x ^ p`.
+
+Simplify using `[FiniteField.frobeniusAlgEquiv_apply, ZMod.card]`. Rewrite `h` using `[h2]`. Rewrite using `[h]`.
+-/
 theorem psi_pow (p : ℕ) [Fact p.Prime] (k : Type*) [Field k] [Finite k] [Algebra (ZMod p) k]
     {A : Type*} [CommRing A] (ζ : A) (hζ : ζ ^ p = 1) (x : k) :
     psi p k ζ hζ (x ^ p) = psi p k ζ hζ x := by
@@ -53,10 +69,18 @@ variable {p f : ℕ} [Fact p.Prime] {k : Type*} [Field k] [Fintype k] [Algebra (
 
 include D in
 
+/- English proof (translation)
+Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_natCast, ← map_natCast D.ι, ← map_natCast (algebraMap (ZMod p) k), ZMod.natCast_self, map_zero, map_zero]`.
+-/
 theorem p_mem : (p : A) ∈ Q.asIdeal := by
   rw [← Ideal.Quotient.eq_zero_iff_mem, map_natCast, ← map_natCast D.ι,
     ← map_natCast (algebraMap (ZMod p) k), ZMod.natCast_self, map_zero, map_zero]
 
+/- English proof (translation)
+Establish `hp : p.Prime` using `Fact.out`. Take `⟨u, hu⟩` from `(associated_prime_pow hp D.prim)`. Establish `h : (D.ζ - 1) ^ (p - 1) ∈ Q.asIdeal`. Rewrite using `[← hu]`. Conclude with `Ideal.mul_mem_right _ _ (p_mem D)`.
+
+Conclude with `Q.isPrime.mem_of_pow_mem _ h`.
+-/
 theorem ζ_sub_one_mem : D.ζ - 1 ∈ Q.asIdeal := by
   have hp : p.Prime := Fact.out
   obtain ⟨u, hu⟩ := (associated_prime_pow hp D.prim)
@@ -65,6 +89,11 @@ theorem ζ_sub_one_mem : D.ζ - 1 ∈ Q.asIdeal := by
     exact Ideal.mul_mem_right _ _ (p_mem D)
   exact Q.isPrime.mem_of_pow_mem _ h
 
+/- English proof (translation)
+Establish `hp : p.Prime` using `Fact.out`. Take `⟨u, hu⟩` from `(associated_prime_pow hp D.prim)`. Establish `h1 : Q.intValuation (u : A) = 1`. Rewrite using `[HeightOneSpectrum.intValuation_eq_one_iff]`. Introduce `h`.
+
+Conclude with `Q.isPrime.ne_top (Ideal.eq_top_of_isUnit_mem _ h u.isUnit)`. Rewrite using `[← map_pow, ← hu, map_mul, h1, mul_one]`.
+-/
 theorem val_p : Q.intValuation (p : A) = Q.intValuation (D.ζ - 1) ^ (p - 1) := by
   have hp : p.Prime := Fact.out
   obtain ⟨u, hu⟩ := (associated_prime_pow hp D.prim)
@@ -74,15 +103,28 @@ theorem val_p : Q.intValuation (p : A) = Q.intValuation (D.ζ - 1) ^ (p - 1) := 
     exact Q.isPrime.ne_top (Ideal.eq_top_of_isUnit_mem _ h u.isUnit)
   rw [← map_pow, ← hu, map_mul, h1, mul_one]
 
+/- English proof (translation)
+Establish `hp : p.Prime` using `Fact.out`. Conclude with `Q.intValuation_ne_zero _ (sub_ne_zero.2 (D.prim.ne_one hp.one_lt))`.
+-/
 theorem val_ζ_sub_one_ne_zero : Q.intValuation (D.ζ - 1) ≠ 0 := by
   have hp : p.Prime := Fact.out
   exact Q.intValuation_ne_zero _ (sub_ne_zero.2 (D.prim.ne_one hp.one_lt))
 
+/- English proof (translation)
+Rewrite using `[← D.card_eq, ← Fintype.card_units]`. Conclude with `D.ω.pow_card_eq_one`.
+-/
 theorem ω_pow_card : D.ω ^ (p ^ f - 1) = 1 := by
   classical
   rw [← D.card_eq, ← Fintype.card_units]
   exact D.ω.pow_card_eq_one
 
+/- English proof (translation)
+Introduce `h`. Take `⟨x, hx⟩` from `IsCyclic.exists_generator (α := kˣ)`. Establish `hord : orderOf x = p ^ f - 1`. Rewrite using `[orderOf_eq_card_of_forall_mem_zpowers hx, Nat.card_eq_fintype_card, Fintype.card_units, D.card_eq]`. Establish `h1 : (D.ω ^ a) (x : k) = 1` using `by rw [h, MulChar.one_apply_coe]`.
+
+Rewrite `h1` using `[MulChar.pow_apply_coe, ← map_pow]`. Establish `h2 : D.ι ((x : k) ^ a) = D.ι 1`. Rewrite using `[← D.mk_ω, h1, map_one, map_one]`. Establish `h3 : (x : k) ^ a = 1` using `D.ι.injective h2`. Establish `h4 : x ^ a = 1` using `by ext; simpa using h3`.
+
+Use `Nat.le_of_dvd h0 (orderOf_dvd_of_pow_eq_one h4)` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem ω_pow_ne_one {a : ℕ} (h0 : 0 < a) (ha : a < p ^ f - 1) : D.ω ^ a ≠ 1 := by
   classical
   intro h
@@ -100,6 +142,11 @@ theorem ω_pow_ne_one {a : ℕ} (h0 : 0 < a) (ha : a < p ^ f - 1) : D.ω ^ a ≠
   have := Nat.le_of_dvd h0 (orderOf_dvd_of_pow_eq_one h4)
   omega
 
+/- English proof (translation)
+Establish `hprim : D.ψ.IsPrimitive` using `psi_isPrimitive p k D.ζ D.prim`. Establish `hne : D.ψ ≠ 1`. Use `hprim (a := 1) one_ne_zero` as an intermediate fact. Rewrite `this` using `[AddChar.mulShift_one]`. Then use the resulting hypothesis. Unfold `GSDatum.g`.
+
+Rewrite using `[pow_zero, inv_one]`. Conclude with `gaussSum_one_left hne`.
+-/
 theorem g_zero : D.g 0 = -1 := by
   have hprim : D.ψ.IsPrimitive := psi_isPrimitive p k D.ζ D.prim
   have hne : D.ψ ≠ 1 := by

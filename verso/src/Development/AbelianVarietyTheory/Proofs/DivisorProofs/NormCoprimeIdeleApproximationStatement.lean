@@ -19,6 +19,9 @@ set_option autoImplicit false
 set_option autoImplicit false
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CMVal.NormCongr.absNorm_eq_div_modF | exact GlobalTheory.CMVal.NormCongr.absNorm_eq_div_modF | (intros; apply GlobalTheory.CMVal.NormCongr.absNorm_eq_div_modF <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.norm_coprime_idele_approximation : ∀ {K : Type} [Field K] [NumberField K] (t : (Af K)ˣ) (k n : ℕ), 0 < n → k ∣ n → ∀ m : K, m ≠ 0 →
     (∀ v : HeightOneSpectrum (𝓞 K),
       (algebraMap K (Af K) (n : K)⁻¹ * (((t⁻¹ : (Af K)ˣ) : Af K) * algebraMap K (Af K) m - 1)) v ∈

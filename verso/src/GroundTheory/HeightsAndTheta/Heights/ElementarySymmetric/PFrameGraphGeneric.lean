@@ -10,6 +10,17 @@ noncomputable section
 
 open MvPolynomial
 
+/- English proof (translation)
+Introduce `n d J hJ hd b`. Take `⟨I₀, f, s, hcard, hfJ, hs, hM, hgen⟩` from `hA n d J hJ hd b`. Use `⟨I₀, frameJacobianDet b I₀ f * s, hcard, fun h => (hJ.mem_or_mem h).elim hM hs, ?_⟩` and prove the remaining obligations. Introduce `z hz hq`. Rewrite `hq` using `[map_mul]`.
+
+Use `set W : Set (EuclideanSpace ℂ (Fin n)) := {x | eval (fun i => x i) s ≠ 0} with hWdef`. Establish `hW : IsOpen W` using `isOpen_ne_fun ((MvPolynomial.continuous_eval s).comp (by fun_prop : Continuous fun x : EuclideanSpace ℂ (Fin n) => fun i => x i)) continuous_const`. Take `⟨Ω, V, g, hΩ, hV, hzV, hVW, hg, hproj, hgraph⟩` from `hB n b I₀ f z (fun k => hz _ (hfJ k)) (left_ne_zero_of_mul hq) W hW (right_ne_zero_of_mul hq)`. Use `⟨Ω, V, g, hΩ, hV, hzV, hg, hproj, ?_⟩` and prove the remaining obligations. Rewrite using `[← hgraph]`.
+
+Use extensionality with `x`. Simplify using `only [zeroSetEuc, Set.mem_inter_iff, Set.mem_ofPred_eq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hx, hxV⟩`. Conclude with `⟨fun k => hx _ (hfJ k), hxV⟩`.
+
+Introduce and unpack `⟨hx, hxV⟩`. Use `⟨fun p hp => ?_, hxV⟩` and prove the remaining obligations. Establish `hle : Ideal.span (Set.range f) ≤ RingHom.ker (eval fun i => x i)` using `Ideal.span_le.mpr (by rintro _ ⟨k, rfl⟩; exact RingHom.mem_ker.mpr (hx k))`. Establish `h0` using `RingHom.mem_ker.mp (hle (hgen p hp))`. Rewrite `h0` using `[map_mul]`.
+
+Conclude with `(mul_eq_zero.mp h0).resolve_left (hVW hxV)`.
+-/
 theorem FrameGraphGeneric.proof (hA : FrameJacobianGeneric.Statement) (hB : FrameImplicitGraph.Statement) :
     FrameGraphGeneric.Statement := by
   intro n d J hJ hd b

@@ -17,10 +17,20 @@ variable {F : Type} [Field F] [NumberField F]
 def toA {κ : Type} (w : (κ → F) × (κ → F)) : (κ → AF F) × (κ → AF F) :=
   ((fun k => algebraMap F (AF F) (w.1 k)), (fun k => algebraMap F (AF F) (w.2 k)))
 
+/- English proof (translation)
+Simplify using `[dotProduct, map_sum, map_mul]`.
+-/
 theorem toA_dot {κ : Type} [Fintype κ] (a b : κ → F) :
     (fun k => algebraMap F (AF F) (a k)) ⬝ᵥ (fun k => algebraMap F (AF F) (b k)) = algebraMap F (AF F) (a ⬝ᵥ b) := by
   simp [dotProduct, map_sum, map_mul]
 
+/- English proof (translation)
+Introduce `p hp q hq`. Proceed by induction on `hp using Submodule.span_induction generalizing q with`. Consider the case `mem x hx`. Proceed by induction on `hq using Submodule.span_induction with`. Consider the case `mem y hy`.
+
+Take `⟨a, ha, rfl⟩` from `hx`. Take `⟨b, hb, rfl⟩` from `hy`. Simplify using `only [toA, toA_dot, hΛ a ha b hb]`. Consider the case `zero => simp`. Consider the case `add y z _ _ h1 h2 => simp [add_dotProduct, dotProduct_add, h1, h2]`.
+
+Consider the case `smul c y _ h => simp [smul_dotProduct, dotProduct_smul, h]`. Consider the case `zero => simp`. Consider the case `add x y _ _ h1 h2 => simp [add_dotProduct, dotProduct_add, h1 q hq, h2 q hq]`. Consider the case `smul c x _ h => simp [smul_dotProduct, dotProduct_smul, h q hq]`.
+-/
 theorem iso_span {κ : Type} [Fintype κ] (Λ : Submodule F ((κ → F) × (κ → F)))
     (hΛ : ∀ a ∈ Λ, ∀ b ∈ Λ, a.1 ⬝ᵥ b.2 = b.1 ⬝ᵥ a.2) :
     ∀ p ∈ Submodule.span (AF F) (toA '' (Λ : Set ((κ → F) × (κ → F)))),
@@ -40,6 +50,23 @@ theorem iso_span {κ : Type} [Fintype κ] (Λ : Submodule F ((κ → F) × (κ �
   | add x y _ _ h1 h2 => simp [add_dotProduct, dotProduct_add, h1 q hq, h2 q hq]
   | smul c x _ h => simp [smul_dotProduct, dotProduct_smul, h q hq]
 
+/- English proof (translation)
+Introduce `F _ _ ψ κ _ Λ hΛ r u hu hP μ hμ t v hv φ`. Take `⟨c, hc⟩` from `hP v hv`. Use `letI : MeasurableSpace (Fin r → AF F) := borel _`. Use `haveI : BorelSpace (Fin r → AF F) := ⟨rfl⟩`. Express the relevant statement in the definitionally equal form `∫ x, schr ψ (∑ j, x j • toA (u j)) (schr ψ (t • toA v) φ) 0 ∂μ = ∫ x, schr ψ (∑ j, x j • toA (u j)) φ 0 ∂μ`.
+
+Use `set M := Submodule.span (AF F) (toA '' (Λ : Set ((κ → F) × (κ → F)))) with hM`. Establish `hiso` using `iso_span Λ hΛ`. Establish `hUM : ∀ j, toA (u j) ∈ M` using `fun j => Submodule.subset_span ⟨u j, hu j, rfl⟩`. Establish `hVM : toA v ∈ M` using `Submodule.subset_span ⟨v, hv, rfl⟩`. Use `set c' : Fin r → AF F := fun j => algebraMap F (AF F) (c j) with hc'`.
+
+Use `set C : (κ → AF F) × (κ → AF F) := ∑ j, c' j • toA (u j) with hCdef`. Establish `hCM : C ∈ M` using `Submodule.sum_mem _ (fun j _ => Submodule.smul_mem _ _ (hUM j))`. Establish `hC1 : C.1 = (toA v).1`. Use function extensionality and compare the values at `k`. Simplify using `[hCdef, toA, hc, Prod.fst_sum, Finset.sum_apply, map_sum, hc', Algebra.smul_def]`.
+
+Establish `key : ∀ x : Fin r → AF F, schr ψ (∑ j, x j • toA (u j)) (schr ψ (t • toA v) φ) 0 = schr ψ (∑ j, (x + t • c') j • toA (u j)) φ 0`. Introduce `x`. Use `set a := ∑ j, x j • toA (u j) with ha`. Establish `haM : a ∈ M` using `Submodule.sum_mem _ (fun j _ => Submodule.smul_mem _ _ (hUM j))`. Establish `ha' : ∑ j, (x + t • c') j • toA (u j) = a + t • C`.
+
+Simplify using `[ha, hCdef, add_smul, Finset.sum_add_distrib, Finset.smul_sum, mul_smul]`. Rewrite using `[ha']`. Use `set V := toA v with hV`. Establish `e1` using `hiso a haM V hVM`. Establish `e2` using `hiso a haM C hCM`.
+
+Establish `e3` using `hiso C hCM V hVM`. Rewrite `e2`, `e3` using `[hC1]`. Simplify using `only [schr, zero_dotProduct, zero_add, Prod.smul_fst, Prod.smul_snd, Prod.fst_add, Prod.snd_add, hC1]`. Rewrite using `[← mul_assoc, ← AddChar.map_add_eq_mul]`. Use `congr 2`.
+
+Simplify using `only [dotProduct_add, add_dotProduct, smul_dotProduct, dotProduct_smul, smul_eq_mul]`. Establish `hh : (2 : AF F) * ⅟(2 : AF F) = 1` using `mul_invOf_self 2`. Rewrite using `[e1, e2, ← e3]`. Take the linear combination `(-(t * (V.1 ⬝ᵥ a.2))) * hh`. Repeatedly rewrite using `[key]`.
+
+Conclude with `integral_add_right_eq_self (μ := μ) (fun x => schr ψ (∑ j, x j • toA (u j)) φ 0) (t • c')`.
+-/
 theorem lagrForm_schr_invariant : ∀ (F : Type) [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ) (κ : Type) [Fintype κ] (Λ : Submodule F ((κ → F) × (κ → F))),
     (∀ a ∈ Λ, ∀ b ∈ Λ, a.1 ⬝ᵥ b.2 = b.1 ⬝ᵥ a.2) → ∀ (r : ℕ) (u : Fin r → (κ → F) × (κ → F)), (∀ j, u j ∈ Λ) →
     (∀ v ∈ Λ, ∃ c : Fin r → F, v.1 = ∑ j, c j • (u j).1) →

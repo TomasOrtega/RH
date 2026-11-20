@@ -11,6 +11,9 @@ open scoped TensorProduct
 
 variable {D : D7} (X : HidaSetting D) (u' : D.what₂.Word)
 
+/- English proof (translation)
+Use `show crdOf X.B.I X.ιE X.bas y ∈ X.B.I.L`. Rewrite using `[X.L_eq]`. Simplify using `only [crdOf, RingEquiv.apply_symm_apply]`. Rewrite using `[X.bas.sum_repr]`. Conclude with `hy`.
+-/
 theorem crdOf_mem {y : (VS D).V} (hy : y ∈ (VS D).L0) : crdOf X.B.I X.ιE X.bas y ∈ abelian₂ X := by
   show crdOf X.B.I X.ιE X.bas y ∈ X.B.I.L
   rw [X.L_eq]
@@ -18,10 +21,20 @@ theorem crdOf_mem {y : (VS D).V} (hy : y ∈ (VS D).L0) : crdOf X.B.I X.ιE X.ba
   rw [X.bas.sum_repr]
   exact hy
 
+/- English proof (translation)
+Rewrite using `[X.Lam_split]`. Conclude with `Submodule.mem_sup_left (Submodule.mem_sup_right (X.zu_Lb u'))`.
+-/
 theorem frame_vector_mem_base_lattice : X.zu u' ∈ (VS D).L0 := by
   rw [X.Lam_split]
   exact Submodule.mem_sup_left (Submodule.mem_sup_right (X.zu_Lb u'))
 
+/- English proof (translation)
+Establish `hs : scl X v (zi (D` using `D)) = 1 := by`. Simplify using `only [scl, zi, Fin.append_left]`. Conclude with `alp_last v D.R.rS`. Establish `h1 : yTup X u' v (zi (D` using `D)) = ratV (F := X.B.I.F) (Fv X.B.I.F v) (tupH (frameOf X u') (zi (D := D))) := by`. Use function extensionality and compare the values at `i`.
+
+Express the relevant statement in the definitionally equal form `sc (E := X.B.I.E) v (scl X v (zi (D := D))) * _ = _`. Rewrite using `[hs]`. Simplify using `only [sc, ← Algebra.TensorProduct.one_def, one_mul]`. Both sides reduce to the same expression. Rewrite using `[h1, tupH_eq]`.
+
+Use `Submodule.subset_span ⟨_, crdOf_mem X ?_, rfl⟩` and prove the remaining obligations. Simplify using `only [hv, zi, Fin.append_left, Fin.snoc_last]`. Conclude with `frame_vector_mem_base_lattice X u'`.
+-/
 theorem yTup_z_mem (v : PlX X) : yTup X u' v (zi (D := D)) ∈ latLoc (E := X.B.I.E) v (abelian₂ X) := by
   have hs : scl X v (zi (D := D)) = 1 := by
     simp only [scl, zi, Fin.append_left]; exact alp_last v D.R.rS
@@ -39,6 +52,9 @@ theorem yTup_z_mem (v : PlX X) : yTup X u' v (zi (D := D)) ∈ latLoc (E := X.B.
 def OmVMemEF : Prop :=
   ∀ (v : PlX X) (i : Fin (D.R.rS + 1 + D.R.rS)), i ≠ zi (D := D) → yTup X u' v i ∈ latLoc (E := X.B.I.E) v (abelian₂ X)
 
+/- English proof (translation)
+Introduce `v i`. Distinguish the cases in `hi : i = zi (D := D)`. Substitute `hi` using the available equality. Conclude with `yTup_z_mem X u' v`. Conclude with `h v i hi`.
+-/
 theorem omVMem_of (h : OmVMemEF X u') : OmVMem X u' := by
   intro v i
   by_cases hi : i = zi (D := D)

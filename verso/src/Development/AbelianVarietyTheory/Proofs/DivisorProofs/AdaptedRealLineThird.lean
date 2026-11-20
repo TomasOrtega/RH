@@ -17,10 +17,20 @@ namespace GlobalTheory.AdaptedFrameLevi
 
 open Matrix
 
+/- English proof (translation)
+Simplify using `[Matrix.mul_apply, Matrix.mulVec, dotProduct]`.
+-/
 theorem col_mul {R ι : Type} [CommRing R] [Fintype ι] {d : ℕ} (M : Matrix (Fin d) (Fin d) R) (C : Matrix (Fin d) ι R)
     (i : Fin d) (a : ι) : (M * C) i a = (M *ᵥ fun j => C j a) i := by
   simp [Matrix.mul_apply, Matrix.mulVec, dotProduct]
 
+/- English proof (translation)
+Establish `key : K * I * P * C = I * P * C`. Use extensionality with `i a`. Rewrite using `[col_mul, col_mul]`. Distinguish the cases in `h : S a`. Simplify using `only [← mulVec_mulVec, hS a h, mulVec_zero]`.
+
+Take `⟨⟨z, hz⟩, hK⟩` from `hT a h`. Establish `h1 : (I *ᵥ (P *ᵥ fun j => C j a)) = fun j => C j a`. Rewrite using `[hz, show P *ᵥ (I *ᵥ z) = z by rw [mulVec_mulVec, hP, one_mulVec]]`. Simplify using `only [← mulVec_mulVec, h1, hK]`. Establish `k2 : K * I * P = I * P`.
+
+Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem mul_eq_of_cols {R ι : Type} [CommRing R] [Fintype ι] {d d₁ : ℕ} (K : Matrix (Fin d) (Fin d) R)
     (C : Matrix (Fin d) ι R) (C' : Matrix ι (Fin d) R) (hC : C * C' = 1) (I : Matrix (Fin d) (Fin d₁) R)
     (P : Matrix (Fin d₁) (Fin d) R) (hP : P * I = 1) (S : ι → Prop)
@@ -46,6 +56,11 @@ theorem mul_eq_of_cols {R ι : Type} [CommRing R] [Fintype ι] {d d₁ : ℕ} (K
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Use extensionality with `i j`. Use `sub_eq_zero.1 (GlobalTheory.RealLift.KLineProof.eq_zero_of_piInf hCM τ _ (fun u hu => ?_) (fun w => ?_))` and prove the remaining obligations. Use `congrFun (congrFun (hA u hu) i) j` as an intermediate fact. Simplify using `using this`. Rewrite using `[map_sub, sub_eq_zero]`.
+
+Conclude with `congrFun (congrFun (h w) i) j`.
+-/
 theorem mat_eq_of_piInf {σ : E →ₐ[F] E} (hCM : IsCMExt F E σ) (τ : ∀ w : InfinitePlace F, EmbOver E w) {m n : Type}
     (A A' : Matrix m n (AE F E)) (hA : At (evI F) (A - A')) (h : ∀ w, A.map (piInf (τ w)) = A'.map (piInf (τ w))) :
     A = A' := by
@@ -56,6 +71,11 @@ theorem mat_eq_of_piInf {σ : E →ₐ[F] E} (hCM : IsCMExt F E σ) (τ : ∀ w 
   · rw [map_sub, sub_eq_zero]
     exact congrFun (congrFun (h w) i) j
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Use `sub_eq_zero.1 (GlobalTheory.RealLift.KLineProof.eq_zero_of_piInf hCM τ _ (fun u hu => ?_) (fun w => ?_))` and prove the remaining obligations. Use `congrFun (hA u hu) i` as an intermediate fact. Simplify using `using this`. Rewrite using `[map_sub, sub_eq_zero]`.
+
+Conclude with `h w i`.
+-/
 theorem vec_eq_of_piInf {σ : E →ₐ[F] E} (hCM : IsCMExt F E σ) (τ : ∀ w : InfinitePlace F, EmbOver E w) {m : Type}
     (v v' : m → AE F E) (hA : At (evI F) (v - v')) (h : ∀ w i, piInf (τ w) (v i) = piInf (τ w) (v' i)) : v = v' := by
   funext i
@@ -71,6 +91,57 @@ namespace GlobalTheory.AdaptedFrameLevi
 
 open Matrix
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B d d₁ i₀ i₁ r s r₁ s₁ W W₁ H' hB hW hW₁ hA Rn Sn r₀ s₀ C hF hθC hAF u hu k hk hK`. Establish `hCM` using `hB.cm`. Establish `hu0 : ∀ w, u w ≠ 0` using `fun w h => by`. Use `hu w` as an intermediate fact. Rewrite `this` using `[h, norm_zero]`.
+
+Conclude with `zero_ne_one this`. Take `⟨t, ht, htw⟩` from `GlobalTheory.ThK.exists_unit_at_evI_piInf_eq σ B.emb u hCM hu0`. Take `⟨π, p1, -, -, p4, p5⟩` from `GlobalTheory.LeviUnitary.exists_proj hB hW hW₁ hA`. Establish `hkA : At (evI F) (mat k - 1)` using `hk`. Establish `hKr : ∀ w, ((mat k).map (piInf (B.emb w)) *ᵥ fun j => C w j (.inl r₀)) = u w • fun j => C w j (.inl r₀)`.
+
+Introduce `w`. Use function extensionality and compare the values at `i`. Rewrite using `[← col_mul, (hK w).1 i]`. Both sides reduce to the same expression. Establish `hKs : ∀ w, ((mat k).map (piInf (B.emb w)) *ᵥ fun j => C w j (.inr s₀)) = u w • fun j => C w j (.inr s₀)`.
+
+Introduce `w`. Use function extensionality and compare the values at `i`. Rewrite using `[← col_mul, (hK w).2.1 i]`. Both sides reduce to the same expression. Establish `hKo : ∀ w a, a ≠ .inl r₀ → a ≠ .inr s₀ → ((mat k).map (piInf (B.emb w)) *ᵥ fun j => C w j a) = fun j => C w j a`.
+
+Introduce `w a h1 h2`. Use function extensionality and compare the values at `i`. Rewrite using `[← col_mul, (hK w).2.2 a h1 h2 i]`. Establish `hKx : ∀ w, ((mat k).map (piInf (B.emb w)) *ᵥ fun i => (B.emb w).1 (H'.x i)) = u w • fun i => (B.emb w).1 (H'.x i)`. Introduce `w`.
+
+Take `⟨c, -, hc⟩` from `(hAF w).1`. Establish `e : (fun i => (B.emb w).1 (H'.x i)) = c • ((fun j => C w j (.inl r₀)) + fun j => C w j (.inr s₀))`. Use function extensionality and compare the values at `fun i => by simp [hc i]`. Rewrite using `[e, mulVec_smul, mulVec_add, hKr, hKs, ← smul_add, smul_comm]`. Establish `hKy : ∀ w, ((mat k).map (piInf (B.emb w)) *ᵥ fun i => (B.emb w).1 (H'.y i)) = u w • fun i => (B.emb w).1 (H'.y i)`.
+
+Introduce `w`. Take `⟨c₁, c₂, hc⟩` from `(hAF w).2.1`. Establish `e : (fun i => (B.emb w).1 (H'.y i)) = c₁ • (fun j => C w j (.inl r₀)) + c₂ • fun j => C w j (.inr s₀)`. Use function extensionality and compare the values at `fun i => by simp [hc i]`. Rewrite using `[e, mulVec_add, mulVec_smul, mulVec_smul, hKr, hKs, smul_add, smul_comm c₁, smul_comm c₂]`.
+
+Establish `hKι : ∀ w, (mat k).map (piInf (B.emb w)) * H'.ι.map (B.emb w).1 = H'.ι.map (B.emb w).1`. Introduce `w`. Take `⟨C', hC'⟩` from `(hF w).2`. Establish `hP : π.map (B.emb w).1 * H'.ι.map (B.emb w).1 = 1`. Rewrite using `[← Matrix.map_mul, p1, Matrix.map_one _ (map_zero _) (map_one _)]`.
+
+Establish `hPx` using `GlobalTheory.LeviKInf.map_mulVec_zero (B.emb w).1 π _ p4`. Establish `hPy` using `GlobalTheory.LeviKInf.map_mulVec_zero (B.emb w).1 π _ p5`. Take `⟨c, hc0, hc⟩` from `(hAF w).1`. Take `⟨-, c', hc'0, hy⟩` from `hA.cartan w`. Establish `hθr : (W.θ w *ᵥ fun j => C w j (.inl r₀)) = fun j => C w j (.inl r₀)`.
+
+Use function extensionality and compare the values at `i`. Rewrite using `[← col_mul, hθC w]`. Simplify using `[Matrix.mul_apply, Formalism.BasicNotions.TH.Jm, Formalism.UG.Jpq, Fintype.sum_sum_type, Matrix.one_apply]`. Establish `hθs : (W.θ w *ᵥ fun j => C w j (.inr s₀)) = -fun j => C w j (.inr s₀)`. Use function extensionality and compare the values at `i`.
+
+Rewrite using `[← col_mul, hθC w]`. Simplify using `[Matrix.mul_apply, Formalism.BasicNotions.TH.Jm, Formalism.UG.Jpq, Fintype.sum_sum_type, Matrix.one_apply]`. Establish `hx : (fun i => (B.emb w).1 (H'.x i)) = c • ((fun j => C w j (.inl r₀)) + fun j => C w j (.inr s₀))`. Use function extensionality and compare the values at `fun i => by simp [hc i]`. Rewrite `hPx` using `[hx, mulVec_smul, mulVec_add]`.
+
+Rewrite `hPy` using `[hy, hx, mulVec_smul, mulVec_smul, mulVec_add, hθr, hθs, mulVec_smul, mulVec_add, mulVec_neg]`. Establish `e1` using `(smul_eq_zero.1 hPx).resolve_left hc0`. Establish `e2` using `(smul_eq_zero.1 ((smul_eq_zero.1 hPy).resolve_left hc'0)).resolve_left hc0`. Establish `hr0 : (π.map (B.emb w).1 *ᵥ fun j => C w j (.inl r₀)) = 0` using `funext fun j => by`. Establish `a` using `congrFun e1 j`.
+
+Establish `b` using `congrFun e2 j`. Simplify using `only [Pi.add_apply, Pi.neg_apply, Pi.zero_apply] at a b`. Simplify using `only [Pi.zero_apply]`. Take the linear combination `(a + b) / 2`. Establish `hs0 : (π.map (B.emb w).1 *ᵥ fun j => C w j (.inr s₀)) = 0` using `funext fun j => by`.
+
+Establish `a` using `congrFun e1 j`. Establish `b` using `congrFun e2 j`. Simplify using `only [Pi.add_apply, Pi.neg_apply, Pi.zero_apply] at a b`. Simplify using `only [Pi.zero_apply]`. Take the linear combination `(a - b) / 2`.
+
+Use `mul_eq_of_cols _ (C w) C' hC' _ _ hP (fun a => a = .inl r₀ ∨ a = .inr s₀) ?_ ?_` and prove the remaining obligations. Introduce and unpack `a (rfl | rfl) exacts [hr0, hs0]`. Introduce `a ha`. Establish `h1 : a ≠ .inl r₀` using `fun h => ha (Or.inl h)`. Establish `h2 : a ≠ .inr s₀` using `fun h => ha (Or.inr h)`.
+
+Take `⟨z, hz⟩` from `(hAF w).2.2 a h1 h2`. Conclude with `⟨⟨z, funext hz⟩, hKo w a h1 h2⟩`. Establish `hv : ∀ w (x : Fin d → E), (piInf (B.emb w)) ∘ incV F x = fun i => (B.emb w).1 (x i)` using `fun w x => funext fun i => GlobalTheory.IwaAdelicIso.piInf_inclR _ _`. Establish `hti : At (evI F) (((t⁻¹ : (AE F E)ˣ) : AE F E) - 1)` using `fun a ha => by`. Establish `e : ((t⁻¹ : (AE F E)ˣ) : AE F E) - 1 = -(((t⁻¹ : (AE F E)ˣ) : AE F E) * ((t : AE F E) - 1))`.
+
+Rewrite using `[mul_sub, Units.inv_mul, mul_one, neg_sub]`. Rewrite using `[e, smul_neg, ← mul_smul_comm, ht a ha, mul_zero, neg_zero]`. Establish `hcA : At (evI F) (cA σ ((t⁻¹ : (AE F E)ˣ) : AE F E) - 1)` using `fun a ha => by`. Rewrite using `[← map_one (cA σ), ← map_sub, ← map_smul, hti a ha, map_zero]`. Establish `hstar : ∀ w, piInf (B.emb w) (cA σ ((t⁻¹ : (AE F E)ˣ) : AE F E)) = u w`.
+
+Introduce `w`. Establish `h1 : piInf (B.emb w) ((t⁻¹ : (AE F E)ˣ) : AE F E) = (u w)⁻¹`. Use `congrArg (piInf (B.emb w)) (Units.inv_mul t)` as an intermediate fact. Rewrite `this` using `[map_mul, map_one, htw]`. Conclude with `eq_inv_of_mul_eq_one_left this`.
+
+Establish `h2 : star (u w) = (u w)⁻¹`. Rewrite using `[Complex.inv_def, Complex.normSq_eq_norm_sq, hu w]`. Simplify using the standard rewrite rules. Rewrite using `[GlobalTheory.RealLift.KLineProof.piInf_cA hCM, h1, ← h2, star_star]`. Use `⟨t, ⟨?_, ?_, ?_⟩, htw⟩` and prove the remaining obligations.
+
+Apply `vec_eq_of_piInf hCM B.emb` to reduce the goal to its premises. Introduce `a ha`. Establish `e : mat k *ᵥ incV F H'.x - t.1 • incV F H'.x = (mat k - 1) *ᵥ incV F H'.x - (t.1 - 1) • incV F H'.x`. Rewrite using `[sub_mulVec, one_mulVec, sub_smul, one_smul]`. Normalize the expressions using the abelian group laws.
+
+Rewrite using `[e, smul_sub, ← Matrix.smul_mulVec, hkA a ha, zero_mulVec, ← smul_assoc, ht a ha, zero_smul, sub_zero]`. Introduce `w i`. Rewrite using `[RingHom.map_mulVec, hv, hKx w, Pi.smul_apply, Pi.smul_apply, smul_eq_mul, smul_eq_mul, map_mul, htw]`. Simplify using `[incV, GlobalTheory.IwaAdelicIso.piInf_inclR]`. Apply `vec_eq_of_piInf hCM B.emb` to reduce the goal to its premises.
+
+Introduce `a ha`. Establish `e : mat k *ᵥ incV F H'.y - cA σ ((t⁻¹ : (AE F E)ˣ) : AE F E) • incV F H'.y = (mat k - 1) *ᵥ incV F H'.y - (cA σ ((t⁻¹ : (AE F E)ˣ) : AE F E) - 1) • incV F H'.y`. Rewrite using `[sub_mulVec, one_mulVec, sub_smul, one_smul]`. Normalize the expressions using the abelian group laws. Rewrite using `[e, smul_sub, ← Matrix.smul_mulVec, hkA a ha, zero_mulVec, ← smul_assoc, hcA a ha, zero_smul, sub_zero]`.
+
+Introduce `w i`. Rewrite using `[RingHom.map_mulVec, hv, hKy w, Pi.smul_apply, Pi.smul_apply, smul_eq_mul, smul_eq_mul, map_mul, hstar]`. Simplify using `[incV, GlobalTheory.IwaAdelicIso.piInf_inclR]`. Establish `h1 : mat (1 : UA σ W₁.J) = 1` using `rfl`. Rewrite using `[h1, Matrix.mul_one]`.
+
+Apply `mat_eq_of_piInf hCM B.emb` to reduce the goal to its premises. Introduce `a ha`. Rewrite using `[show mat k * incM F H'.ι - incM F H'.ι = (mat k - 1) * incM F H'.ι by rw [Matrix.sub_mul, Matrix.one_mul], ← Matrix.smul_mul, hkA a ha, Matrix.zero_mul]`. Introduce `w`. Rewrite using `[Matrix.map_mul, GlobalTheory.LeviKInf.incM_map_piInf]`.
+
+Conclude with `hKι w`.
+-/
 theorem exists_isLevi_of_adaptedFrame : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (d d₁ i₀ i₁ r s r₁ s₁ : ℕ) (W : Spc F E d) (W₁ : Spc F E d₁) (H' : Plane E d d₁), B.IsGood σ → W.IsSkew σ B r s →
     W₁.IsSkew σ B r₁ s₁ → H'.IsAdapted σ B W W₁ i₀ i₁ →

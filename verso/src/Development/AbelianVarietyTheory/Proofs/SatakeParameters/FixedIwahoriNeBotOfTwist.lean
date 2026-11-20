@@ -25,6 +25,13 @@ namespace GlobalTheory.AboveL.IwaFix
 
 open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.LocGL
 
+/- English proof (translation)
+Take `⟨y, hy, h0⟩` from `(Submodule.ne_bot_iff _).1 h`. Take `⟨x, rfl⟩` from `T.toLinearEquiv.surjective y`. Use `(Submodule.ne_bot_iff _).2 ⟨x, GlobalTheory.Parabolic.mem_fixed.2 fun g hg => ?_, fun hx => h0 (by simp [hx])⟩` and prove the remaining obligations. Establish `e` using `T.toIntertwiningMap.isIntertwining _ _ g x`. Establish `hd : absPow k s (Matrix.GeneralLinearGroup.det g) = 1`.
+
+Establish `h1` using `GlobalTheory.SmGL.LeviInt.nabs_det_eq_one (iwahori_le_KO k (Fin n) hg)`. Use `ext`. Simplify using `[absPow, h1]`. Rewrite `e` using `[twist_apply, detChar_apply, hd, Units.val_one, one_smul]`. Establish `hy'` using `GlobalTheory.Parabolic.mem_fixed.1 hy g hg`.
+
+Conclude with `T.toLinearEquiv.injective (e.trans hy')`.
+-/
 theorem fixed_iwahori_ne_bot_of_twist {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] {n : ℕ} {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
     {ρ : Representation ℂ (GL (Fin n) k) V} {ρ' : Representation ℂ (GL (Fin n) k) W} (s : ℂ)

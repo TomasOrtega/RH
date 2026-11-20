@@ -23,6 +23,21 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace PositivityTheory.Rg.Rsw.L
 
+/- English proof (translation)
+Introduce `D n V ψ hψ χ hχ hr θ hθ μ hμ' ω hω Φ`. Take `⟨𝓕, hμ⟩` from `hμ'`. Use `⟨GlobalTheory.T.weil_representation_continuity D n V ψ hψ χ hχ hr θ hθ μ 𝓕 hμ ω hω Φ, fun C hC => ?_⟩` and prove the remaining obligations. Set `A : HSp D` to `Formalism.BasicNotions.Examples₂.posSpace (E := D.host.E) Formalism.BasicNotions.Examples₂.star_isIntegral n`. Take `⟨ψ₀, μ', lam, κ, omh, hstd, hsk, _, _, hκ, hW, hT⟩` from `GlobalTheory.T.exists_weilDatum_doubled_of_schrodingerFormulas D A V ψ hψ χ hχ hr θ hθ μ 𝓕 hμ ω hω`.
+
+Take `⟨f, hf, hfΦ⟩` from `(GlobalTheory.SchSchwartzAll.schSchwartz D ψ₀ hstd θ hθ A V μ 𝓕 hμ).2.1 Φ.1 Φ.2`. Establish `key : ∀ g : G D n, (ω g Φ).1 = sch ψ₀ A V μ 𝓕 (omh (κ.symm g, 1) f)`. Introduce `g`. Establish `h` using `hT (κ.symm g) f hf Φ hfΦ.symm`. Rewrite `h` using `[κ.apply_symm_apply g]`. Then use the resulting hypothesis.
+
+Establish `hC' : IsCompact (κ.symm '' C)` using `hC.image (GlobalTheory.StdUnn.chart_continuous D A μ' hsk κ hκ).2`. Take `⟨U, hU, hlev⟩` from `LWMaj.unifLevel hW hf _ hC'`. Take `⟨K, hK, hbox⟩` from `GlobalTheory.Unf.mixS_support_inBox D ψ₀ hstd (dblSp A) _ V A.rank (GlobalTheory.Core.Rk.SWLaw.dblDec A) (GlobalTheory.SchwartzSch.volOf μ 𝓕 hμ) U hU`. Establish `hsupp : ∀ u ∈ {u | ∃ g ∈ C, u = (ω g Φ).1}, ∀ x, u x ≠ 0 → GlobalTheory.Unf.InBox K x`. Introduce and unpack `u ⟨g, hg, rfl⟩ x hx`.
+
+Rewrite `hx` using `[key]`. Conclude with `hbox _ (hlev _ ⟨g, hg, rfl⟩) x 0 hx`. Establish `hdec : ∀ N : ℕ, ∃ B : ℝ, ∀ u ∈ {u | ∃ g ∈ C, u = (ω g Φ).1}, ∀ x, ‖u x‖ * (1 + GlobalTheory.Unf.realSize θ x) ^ N ≤ B`. Introduce `N`. Take `⟨C₂, hC₂⟩` from `GlobalTheory.Unf.mixS_decay D ψ₀ hstd θ hθ (dblSp A) _ V A.rank (GlobalTheory.Core.Rk.SWLaw.dblDec A) (GlobalTheory.SchwartzSch.volOf μ 𝓕 hμ) N`.
+
+Take `⟨B, hB⟩` from `LWMaj.unifSob hstd hθ hW hf _ hC' N`. Establish `hne : (C₂ : ℝ≥0∞) * (B : ℝ≥0∞) ≠ ⊤` using `ENNReal.mul_ne_top ENNReal.coe_ne_top ENNReal.coe_ne_top`. Use `⟨((C₂ : ℝ≥0∞) * (B : ℝ≥0∞)).toReal, ?_⟩` and prove the remaining obligations. Introduce and unpack `u ⟨g, hg, rfl⟩ x`. Establish `h` using `hC₂ (omh (κ.symm g, 1) f) (hW.om_pres _ _ hf) x 0`.
+
+Express the relevant statement in the definitionally equal form `‖sch ψ₀ A V μ 𝓕 (omh (κ.symm g, 1) f) x‖ₑ * _ ≤ _ at h`. Establish `h2 : (C₂ : ℝ≥0∞) * GlobalTheory.Unf.supSob ψ₀ θ N (omh (κ.symm g, 1) f) ≤ C₂ * B` using `mul_le_mul' le_rfl (hB _ ⟨g, hg, rfl⟩)`. Rewrite using `[key]`. Establish `h3 : ENNReal.ofReal (‖sch ψ₀ A V μ 𝓕 (omh (κ.symm g, 1) f) x‖ * (1 + GlobalTheory.Unf.realSize θ x) ^ N) ≤ (C₂ : ℝ≥0∞) * B`. Rewrite using `[ENNReal.ofReal_mul (norm_nonneg _), ofReal_norm]`.
+
+Conclude with `h.trans h2`. Conclude with `(ENNReal.ofReal_le_iff_le_toReal hne).1 h3`. Take `⟨M, hM, hle⟩` from `LWMaj.adMaj θ hθ K hK _ hsupp hdec`. Conclude with `⟨M, hM, fun g hg x => hle _ ⟨g, hg, rfl⟩ x⟩`.
+-/
 theorem wMaj : WMaj := by
   intro D n V ψ hψ χ hχ hr θ hθ μ hμ' ω hω Φ
   obtain ⟨𝓕, hμ⟩ := hμ'

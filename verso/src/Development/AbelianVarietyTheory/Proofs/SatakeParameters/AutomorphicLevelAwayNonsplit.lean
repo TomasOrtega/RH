@@ -28,6 +28,13 @@ namespace GlobalTheory.CongL.UnitLim
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
+/- English proof (translation)
+Take `⟨φ, hφ, hφ0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hU.ne_bot`. Set `L : Subgroup (finU E a)` to `{ carrier := {k | RU E a k φ = φ} one_mem' := by simp mul_mem' := by`. Introduce `x y hx hy`. Simplify using `only [Set.mem_setOf_eq] at *`. Rewrite using `[Subgroup.coe_mul, map_mul, Module.End.mul_apply, hy, hx]`.
+
+Use the proof step `inv_mem' := by`. Introduce `x hx`. Simplify using `only [Set.mem_setOf_eq] at *`. Use `conv_lhs => rw [← hx]`. Rewrite using `[← Module.End.mul_apply, ← map_mul, Subgroup.coe_inv, inv_mul_cancel, map_one, Module.End.one_apply] }`.
+
+Establish `hLo : IsOpen (L : Set (finU E a))` using `(hU.aut φ hφ).level`. Establish `hev : ∀ᶠ w in Filter.cofinite, IsSplitAt w → ∃ B, SatU U w B` using `by filter_upwards [GlobalTheory.BCT.GlobLev.eventually_locU_mem E a L hLo] with w hw hs`. Take `⟨σ, B, hc, hB, -⟩` from `GlobalTheory.FrameAut.exists_locComp_hasSatGL_heckeVec E a U hU w hs φ hφ hφ0 fun x hx hxK => hw x hx hxK hx.1`. Conclude with `⟨B, σ, hc, hB⟩`. Conclude with `(Filter.eventually_cofinite.1 hev).subset fun w hw h => hw.2 (h hw.1)`.
+-/
 theorem finite_not_sph (a : ℕ) (U : Submodule ℂ (UA E a → ℂ)) (hU : IsAutRepU U) :
     {w : HeightOneSpectrum (𝓞 E) | IsSplitAt w ∧ ¬ ∃ B, SatU U w B}.Finite := by
   obtain ⟨φ, hφ, hφ0⟩ := Submodule.exists_mem_ne_zero_of_ne_bot hU.ne_bot
@@ -51,6 +58,19 @@ theorem finite_not_sph (a : ℕ) (U : Submodule ℂ (UA E a → ℂ)) (hU : IsAu
     exact ⟨B, σ, hc, hB⟩
   exact (Filter.eventually_cofinite.1 hev).subset fun w hw h => hw.2 (h hw.1)
 
+/- English proof (translation)
+Use `set M : ℕ := l * (2 * d) * ∏ u ∈ X, Ideal.absNorm u.asIdeal with hM`. Establish `hM0 : M ≠ 0`. Use `mul_ne_zero (mul_ne_zero hl.ne_zero (mul_ne_zero two_ne_zero hd.1.ne')) ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_ne_zero_iff]`. Introduce `u _`.
+
+Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff]`. Conclude with `u.ne_bot`. Establish `hS1 : {w : HeightOneSpectrum (𝓞 E) | w.asIdeal ∣ Ideal.span {((M : ℕ) : 𝓞 E)}}.Finite`. Use `Ideal.finite_factors ?_` and prove the remaining obligations. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`.
+
+Conclude with `hM0` after adjusting the coercions. Establish `hS3` using `(GlobalTheory.absNorm_prime_iff_inertiaDeg_eq_one_and_finite_ramified E).2`. Use `set S := {w : HeightOneSpectrum (𝓞 E) | w.asIdeal ∣ Ideal.span {((M : ℕ) : 𝓞 E)}} ∪ {P : HeightOneSpectrum (𝓞 E) | P.asIdeal.ramificationIdx ℤ ≠ 1} with hSdef`. Establish `hS : S.Finite` using `hS1.union hS3`. Establish `hdense` using `GlobalTheory.Published.chebotarevDegreeOne'.dense (F := E) (Ω := Ω) hS`.
+
+Use `hdense.mono ?_` and prove the remaining obligations. Introduce and unpack `g ⟨w, hwS, hdeg, A, hA, hg⟩`. Simplify using `only [hSdef, Set.mem_union, Set.mem_setOf_eq, not_or, not_not] at hwS`. Take `⟨hM', hram⟩` from `hwS`. Establish `hMw : ((M : ℕ) : 𝓞 E) ∉ w.asIdeal` using `fun h => hM' (Ideal.dvd_span_singleton.2 h)`.
+
+Establish `hp` using `((GlobalTheory.absNorm_prime_iff_inertiaDeg_eq_one_and_finite_ramified E).1 w).2 hdeg`. Establish `hX : ∀ u ∈ X, ((Ideal.absNorm u.asIdeal : ℕ) : 𝓞 E) ∉ w.asIdeal` using `fun u hu h => hMw (GlobalTheory.DenseUsable.natCast_mem_of_dvd w (Dvd.dvd.mul_left (Finset.dvd_prod_of_mem _ hu) _) h)`. Use `⟨w, fun hwX => hX w hwX (Ideal.absNorm_mem _), ?_, ?_, ?_, A, hA, hg⟩` and prove the remaining obligations. Use `GlobalTheory.DenseUsable.usPl_of_absNorm_prime hd w hp hram fun h => hMw ?_` and prove the remaining obligations. Conclude with `GlobalTheory.DenseUsable.natCast_mem_of_dvd w (Dvd.dvd.mul_right (dvd_mul_left _ _) _) h`.
+
+Conclude with `fun h => hMw (GlobalTheory.DenseUsable.natCast_mem_of_dvd w (Dvd.dvd.mul_right (dvd_mul_right _ _) _) h)`. Introduce `u hu hwu`. Conclude with `hX u hu (GlobalTheory.DenseUsable.absNorm_mem_of_under_eq w u hwu)`.
+-/
 theorem dense_frob_usable_off (E Ω : Type) [Field E] [NumberField E] [IsCMField E] [Field Ω] [Algebra E Ω]
     [IsAlgClosure E Ω] (l : ℕ) (hl : l.Prime) (d : ℕ) (hd : ImQ E d) (X : Finset (HeightOneSpectrum (𝓞 E))) :
     Dense {g : G E Ω | ∃ w : HeightOneSpectrum (𝓞 E), w ∉ X ∧ UsPl d w ∧ ((l : ℕ) : 𝓞 E) ∉ w.asIdeal ∧ ApartAll X w ∧

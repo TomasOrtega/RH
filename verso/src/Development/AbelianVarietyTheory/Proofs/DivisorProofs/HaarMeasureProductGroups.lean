@@ -4,6 +4,29 @@ open scoped NNReal ENNReal
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Use `set μA : Measure A := Measure.addHaar`. Use `set μB : Measure B := Measure.addHaar`. Use `set ρ : Measure (A × B) := μA.prod μB`. Establish `hΨm : Measurable Ψ` using `Ψ.continuous.measurable`. Establish `hT : ∀ (a' : A) (b' : B), MeasurePreserving (fun p : A × B => (a' + p.1, b' + p.2 + ω a' p.1)) ρ ρ`.
+
+Introduce `a' b'`. Establish `h1 : Continuous (fun a : A => ω a' a)` using `hω.comp (Continuous.prodMk continuous_const continuous_id)`. Establish `hg : Measurable (Function.uncurry fun (a : A) (b : B) => b' + b + ω a' a)`. Establish `: Continuous (fun p : A × B => b' + p.2 + ω a' p.1)` using `(continuous_const.add continuous_snd).add (h1.comp continuous_fst)`. Conclude with `this.measurable`.
+
+Use `(measurePreserving_add_left μA a').skew_product hg (Filter.Eventually.of_forall fun a => ?_)` and prove the remaining obligations. Establish `: (fun b : B => b' + b + ω a' a) = fun b => (b' + ω a' a) + b`. Use function extensionality and compare the values at `b`. Normalize the expressions using the abelian group laws. Rewrite using `[this]`.
+
+Conclude with `(measurePreserving_add_left μB _).map_eq`. Use `set μ : Measure N := ρ.map Ψ`. Establish `hinv : μ.IsMulLeftInvariant`. Prove the components needed by the constructor for the conclusion. Introduce `g`.
+
+Take `⟨⟨a', b'⟩, rfl⟩` from `Ψ.surjective g`. Establish `hcomp : (fun x => Ψ (a', b') * x) ∘ Ψ = Ψ ∘ (fun p : A × B => (a' + p.1, b' + p.2 + ω a' p.1))`. Use function extensionality and compare the values at `p`. Break down `p with ⟨a, b⟩` into its components or cases. Conclude with `hlaw a' b' a b`.
+
+Express the relevant statement in the definitionally equal form `Measure.map (fun x => Ψ (a', b') * x) (ρ.map Ψ) = ρ.map Ψ`. Rewrite using `[Measure.map_map (continuous_mul_left _).measurable hΨm, hcomp, ← Measure.map_map hΨm (hT a' b').measurable, (hT a' b').map_eq]`. Use `haveI : IsFiniteMeasureOnCompacts μ := Measure.IsFiniteMeasureOnCompacts.map _ Ψ`. Use `haveI : μ.IsOpenPosMeasure := Ψ.continuous.isOpenPosMeasure_map Ψ.surjective`. Use `haveI : μ.IsHaarMeasure := ⟨⟩`.
+
+Use `haveI : μ.Regular := Measure.Regular.map Ψ`. Establish `hchart : μ.map φ = ((μA.map L₁).prod (μB.map L₂)).map Ψ`. Establish `hcomp : (φ : N → N) ∘ Ψ = Ψ ∘ Prod.map L₁ L₂`. Use function extensionality and compare the values at `p`. Break down `p with ⟨a, b⟩` into its components or cases.
+
+Conclude with `hφ a b`. Express the relevant statement in the definitionally equal form `Measure.map φ (ρ.map Ψ) = _`. Establish `hL₁ : Measurable (L₁ : A → A)` using `(map_continuous L₁).measurable`. Establish `hL₂ : Measurable (L₂ : B → B)` using `(map_continuous L₂).measurable`. Rewrite using `[Measure.map_map (map_continuous φ).measurable hΨm, hcomp, ← Measure.map_map hΨm (hL₁.prodMap hL₂), Measure.map_prod_map μA μB hL₁ hL₂]`.
+
+Establish `h1` using `addEquivAddHaarChar_smul_map μA L₁`. Establish `h2` using `addEquivAddHaarChar_smul_map μB L₂`. Establish `h` using `mulEquivHaarChar_smul_map μ φ`. Establish `hc : (addEquivAddHaarChar L₁ * addEquivAddHaarChar L₂) • μ.map φ = μ`. Rewrite using `[hchart, ← Measure.map_smul, mul_smul, ← Measure.prod_smul_right, ← Measure.prod_smul_left, h1, h2]`.
+
+Take `⟨K, hK, hK0⟩` from `exists_compact_mem_nhds (1 : N)`. Establish `hpos : (μ.map φ) K ≠ 0` using `by haveI : (μ.map φ).IsHaarMeasure := φ.isHaarMeasure_map μ`. Conclude with `(Measure.measure_pos_of_mem_nhds _ hK0).ne'`. Establish `hfin : (μ.map φ) K ≠ ∞` using `by haveI : (μ.map φ).IsHaarMeasure := φ.isHaarMeasure_map μ`. Conclude with `hK.measure_lt_top.ne`.
+
+Establish `key` using `congrArg (fun m : Measure N => m K) (h.trans hc.symm)`. Simplify using `only [Measure.smul_apply, Measure.nnreal_smul_coe_apply] at key`. Use `(ENNReal.mul_left_inj hpos hfin).1 key` as an intermediate fact. Conclude with `this` after adjusting the coercions.
+-/
 theorem mulEquivHaarChar_heisenberg_chart (N A B : Type) [Group N] [TopologicalSpace N]
     [IsTopologicalGroup N] [LocallyCompactSpace N]
     [SecondCountableTopology N] [T2Space N] [MeasurableSpace N] [BorelSpace N]

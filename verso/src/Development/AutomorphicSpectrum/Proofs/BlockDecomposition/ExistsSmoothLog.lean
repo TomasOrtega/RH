@@ -6,6 +6,9 @@ open scoped ContDiff Matrix.Norms.Elementwise
 noncomputable section
 namespace GlobalTheory.CompanionTheory.SmoothLog
 
+/- English proof (translation)
+Set `e` to `CompanionTheory.D.Upq.expPartialHomeomorph ℝ A`. Use `⟨e.target, e.symm, e.open_target, CompanionTheory.D.Upq.one_mem_expPartialHomeomorph_target ℝ A, CompanionTheory.D.Upq.contDiffOn_expPartialHomeomorph_symm ℝ A, CompanionTheory.D.Upq.expPartialHomeomorph_symm_one ℝ A, fun g hg => e.right_inv hg, ?_⟩` and prove the remaining obligations. Use `filter_upwards [e.open_source.mem_nhds (CompanionTheory.D.Upq.zero_mem_expPartialHomeomorph_source ℝ A)] with X hX using e.left_inv hX`.
+-/
 theorem exists_log_banach (A : Type*) [NormedRing A] [NormedAlgebra ℝ A] [CompleteSpace A] :
     ∃ (U : Set A) (L : A → A), IsOpen U ∧ (1 : A) ∈ U ∧ ContDiffOn ℝ ∞ L U ∧ L 1 = 0 ∧
       (∀ g ∈ U, NormedSpace.exp (L g) = g) ∧
@@ -28,6 +31,15 @@ instance (n : ℕ) : CompleteSpace (OpMat n) := FiniteDimensional.complete ℝ _
 def toOp (n : ℕ) : Matrix (Fin n) (Fin n) ℂ ≃L[ℝ] OpMat n :=
   LinearEquiv.toContinuousLinearEquiv (LinearEquiv.refl ℝ (Matrix (Fin n) (Fin n) ℂ))
 
+/- English proof (translation)
+Introduce `n`. Take `⟨U, L, hU, h1, hL, hL1, hexp, hev⟩` from `exists_log_banach (OpMat n)`. Set `φ` to `toOp n`. Establish `hφexp : ∀ X, NormedSpace.exp (φ X) = φ (NormedSpace.exp X)` using `fun _ => rfl`. Use `⟨φ ⁻¹' U, fun g => φ.symm (L (φ g)), hU.preimage φ.continuous, h1, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Conclude with `φ.symm.contDiff.comp_contDiffOn (hL.comp φ.contDiff.contDiffOn fun _ hx => hx)`. Express the relevant statement in the definitionally equal form `φ.symm (L 1) = 0`. Rewrite using `[hL1, map_zero]`. Introduce `g hg`. Apply `φ.injective` to reduce the goal to its premises.
+
+Rewrite using `[← hφexp, φ.apply_symm_apply]`. Conclude with `hexp _ hg`. Establish `ht : Tendsto φ (𝓝 0) (𝓝 0)`. Simplify using `using φ.continuous.tendsto 0`. Use `filter_upwards [ht.eventually hev] with X hX`.
+
+Express the relevant statement in the definitionally equal form `φ.symm (L (φ (NormedSpace.exp X))) = X`. Rewrite using `[← hφexp, hX, φ.symm_apply_apply]`. Conclude with `φ.symm.contDiff.comp ((CompanionTheory.D.Upq.contDiff_exp ℝ (OpMat n)).comp φ.contDiff)`.
+-/
 theorem exists_smooth_log : ∀ (n : ℕ), ∃ (U : Set (Matrix (Fin n) (Fin n) ℂ)) (L : Matrix (Fin n) (Fin n) ℂ → Matrix (Fin n) (Fin n) ℂ), IsOpen U ∧ (1 : Matrix (Fin n) (Fin n) ℂ) ∈ U ∧ ContDiffOn ℝ ∞ L U ∧ L 1 = 0 ∧ (∀ g ∈ U, NormedSpace.exp (L g) = g) ∧ (∀ᶠ X in 𝓝 (0 : Matrix (Fin n) (Fin n) ℂ), L (NormedSpace.exp X) = X) ∧ ContDiff ℝ ∞ (fun X : Matrix (Fin n) (Fin n) ℂ => NormedSpace.exp X) := by
   intro n
   obtain ⟨U, L, hU, h1, hL, hL1, hexp, hev⟩ := exists_log_banach (OpMat n)

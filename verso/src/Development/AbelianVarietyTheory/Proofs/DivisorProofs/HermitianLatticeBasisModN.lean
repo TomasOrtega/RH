@@ -14,16 +14,25 @@ namespace GlobalTheory.OrthoFrame
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.exists_represent_mod_ringOfIntegers N hN T hT f`.
+-/
 theorem represent (N : ℕ) (hN : 0 < N) (T : 𝓞 E →+ ℤ)
     (hT : ∀ c : 𝓞 E, (∀ d : 𝓞 E, (N : ℤ) ∣ T (c * d)) → ∃ b : 𝓞 E, c = N • b)
     (f : 𝓞 E →+ ℤ) : ∃ x : 𝓞 E, ∀ c : 𝓞 E, (N : ℤ) ∣ f c - T (c * x) :=
   GlobalTheory.exists_represent_mod_ringOfIntegers N hN T hT f
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.exists_lift_basis_modN H D N hN`.
+-/
 theorem freeModN (H : Host E) (D : Datum H) (N : ℕ) (hN : 0 < N) :
     ∃ e : Fin (D.p + D.q) → D.La, (∀ a : D.La, ∃ c : Fin (D.p + D.q) → 𝓞 E, D.ModN N (a - ∑ i, c i • e i)) ∧
       ∀ c : Fin (D.p + D.q) → 𝓞 E, D.ModN N (∑ i, c i • e i) → ∀ i, ∃ b : 𝓞 E, c i = N • b :=
   GlobalTheory.exists_lift_basis_modN H D N hN
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.FiniteHermitian.exists_orthonormal_of_finite R s hs hτ hn n Q hQ hu`.
+-/
 theorem orthoFinite (R : Type) [CommRing R] [Finite R] (s : R →+* R) (hs : ∀ x, s (s x) = x)
     (hτ : ∃ τ : R, τ + s τ = 1) (hn : ∀ u : R, IsUnit u → s u = u → ∃ x : R, s x * x = u)
     (n : ℕ) (Q : Matrix (Fin n) (Fin n) R) (hQ : (Q.map s).transpose = Q) (hu : IsUnit Q) :
@@ -32,6 +41,9 @@ theorem orthoFinite (R : Type) [CommRing R] [Finite R] (s : R →+* R) (hs : ∀
 
 abbrev idealN (E : Type) [Field E] [NumberField E] (N : ℕ) : Ideal (𝓞 E) := Ideal.span {((N : ℕ) : 𝓞 E)}
 
+/- English proof (translation)
+Rewrite using `[Ideal.Quotient.eq_zero_iff_mem, Ideal.mem_span_singleton']`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, rfl⟩; exact ⟨a, by rw [nsmul_eq_mul, mul_comm]⟩`. Introduce and unpack `⟨b, rfl⟩; exact ⟨b, by rw [nsmul_eq_mul, mul_comm]⟩`.
+-/
 theorem mk_eq_zero_iff (N : ℕ) (x : 𝓞 E) :
     Ideal.Quotient.mk (idealN E N) x = 0 ↔ ∃ b : 𝓞 E, x = N • b := by
   rw [Ideal.Quotient.eq_zero_iff_mem, Ideal.mem_span_singleton']
@@ -42,18 +54,32 @@ theorem mk_eq_zero_iff (N : ℕ) (x : 𝓞 E) :
 section ModN
 variable {H : Host E} {D : Datum H} {N : ℕ}
 
+/- English proof (translation)
+Take `⟨a, rfl⟩` from `hx; obtain ⟨b, rfl⟩ := hy; exact ⟨a + b, by rw [smul_add]⟩`.
+-/
 theorem modN_add {x y : D.La} (hx : D.ModN N x) (hy : D.ModN N y) : D.ModN N (x + y) := by
   obtain ⟨a, rfl⟩ := hx; obtain ⟨b, rfl⟩ := hy; exact ⟨a + b, by rw [smul_add]⟩
 
+/- English proof (translation)
+Take `⟨b, rfl⟩` from `hc; exact ⟨b • x, by rw [smul_assoc]⟩`.
+-/
 theorem modN_smul_of (c : 𝓞 E) (x : D.La) (hc : ∃ b : 𝓞 E, c = N • b) : D.ModN N (c • x) := by
   obtain ⟨b, rfl⟩ := hc; exact ⟨b • x, by rw [smul_assoc]⟩
 
+/- English proof (translation)
+The claim follows from `Finset.sum_induction f (D.ModN N) (fun _ _ => modN_add) ⟨0, by simp⟩ h`.
+-/
 theorem modN_sum {ι : Type} (s : Finset ι) (f : ι → D.La) (h : ∀ i ∈ s, D.ModN N (f i)) :
     D.ModN N (∑ i ∈ s, f i) :=
   Finset.sum_induction f (D.ModN N) (fun _ _ => modN_add) ⟨0, by simp⟩ h
 
 end ModN
 
+/- English proof (translation)
+Set `φ : D.La →ₗ[ℤ] ℤ` to `{ toFun := fun b => D.EF a b / N map_add' := fun x y => by simp only [map_add]; rw [Int.add_ediv_of_dvd_left (h x)] map_smul' := fun k x => by`. Simplify using `only [map_zsmul, smul_eq_mul, RingHom.id_apply]`. Rewrite using `[Int.mul_ediv_assoc _ (h x)] }`. Take `⟨a', ha'⟩` from `D.unimod.2 φ`. Use `⟨a', D.unimod.1 ?_⟩` and prove the remaining obligations.
+
+Use extensionality with `b`. Establish `hb : D.EF a' b = D.EF a b / N` using `by rw [ha']; rfl`. Rewrite using `[map_nsmul, LinearMap.smul_apply, nsmul_eq_mul, hb, Int.mul_ediv_cancel' (h b)]`.
+-/
 theorem modN_of_dvd {H : Host E} (D : Datum H) (N : ℕ) (a : D.La)
     (h : ∀ b, (N : ℤ) ∣ D.EF a b) : D.ModN N a := by
   let φ : D.La →ₗ[ℤ] ℤ :=
@@ -67,6 +93,9 @@ theorem modN_of_dvd {H : Host E} (D : Datum H) (N : ℕ) (a : D.La)
   have hb : D.EF a' b = D.EF a b / N := by rw [ha']; rfl
   rw [map_nsmul, LinearMap.smul_apply, nsmul_eq_mul, hb, Int.mul_ediv_cancel' (h b)]
 
+/- English proof (translation)
+Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem calc_gram {R : Type} [CommRing R] (s : R →+* R) {n : ℕ} (a G : Matrix (Fin n) (Fin n) R) (k l : Fin n) :
     ∑ i, a i k * ∑ j, s (a j l) * G i j = (a.transpose * G * a.map s) k l := by
   simp only [Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Finset.mul_sum, Finset.sum_mul]
@@ -74,6 +103,11 @@ theorem calc_gram {R : Type} [CommRing R] (s : R →+* R) {n : ℕ} (a G : Matri
   refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_
   ring
 
+/- English proof (translation)
+Establish `: ∑ k, (∑ j, x j * b k j) * a i k = ∑ j, x j * (a * b) i j`. Simplify using `only [Matrix.mul_apply, Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[this, hab]`. Simplify using `[Matrix.one_apply]`.
+-/
 theorem calc_inv {R : Type} [CommRing R] {n : ℕ} (x : Fin n → R) (a b : Matrix (Fin n) (Fin n) R)
     (hab : a * b = 1) (i : Fin n) : x i - ∑ k, (∑ j, x j * b k j) * a i k = 0 := by
   have : ∑ k, (∑ j, x j * b k j) * a i k = ∑ j, x j * (a * b) i j := by
@@ -84,10 +118,96 @@ theorem calc_inv {R : Type} [CommRing R] {n : ℕ} (x : Fin n → R) (a b : Matr
   rw [this, hab]
   simp [Matrix.one_apply]
 
+/- English proof (translation)
+Simplify using `[Matrix.one_apply]`.
+-/
 theorem calc_one {R : Type} [CommRing R] {n : ℕ} (x y : Fin n → R) :
     ∑ i, x i * ∑ j, y j * (1 : Matrix (Fin n) (Fin n) R) i j = ∑ i, x i * y i := by
   simp [Matrix.one_apply]
 
+/- English proof (translation)
+Use `set r := D.p + D.q`. Use `set I := idealN E N`. Use `set π := Ideal.Quotient.mk I`. Establish `hπ : ∀ x, π x = 0 ↔ ∃ b : 𝓞 E, x = N • b` using `mk_eq_zero_iff N`. Use `haveI : Finite (𝓞 E ⧸ I) := Ideal.finiteQuotientOfFreeOfNeBot _ (by`.
+
+Rewrite using `[Ne, Ideal.span_singleton_eq_bot]`. Conclude with `hN.ne')` after adjusting the coercions. Establish `hIb : I ≤ I.comap (H.bar : 𝓞 E →+* 𝓞 E)`. Rewrite using `[Ideal.span_le, Set.singleton_subset_iff]`. Use `show (H.bar : 𝓞 E →+* 𝓞 E) (N : 𝓞 E) ∈ I`.
+
+Rewrite using `[map_natCast]`. Conclude with `Ideal.mem_span_singleton_self _`. Use `set s : (𝓞 E ⧸ I) →+* (𝓞 E ⧸ I) := Ideal.quotientMap I (H.bar : 𝓞 E →+* 𝓞 E) hIb`. Establish `hs : ∀ x, s (π x) = π (H.bar x)` using `fun x => Ideal.quotientMap_mk`. Establish `hss : ∀ y, s (s y) = y`.
+
+Introduce `y`. Take `⟨x, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Rewrite using `[hs, hs, GlobalTheory.HostModel.bar_bar]`. Establish `perf : ∀ x : 𝓞 E, (∀ c, (N : ℤ) ∣ T (c * x)) → π x = 0`. Introduce `x hx; rw [hπ]; exact hperf x (fun d => by rw [mul_comm]; exact hx d)`.
+
+Establish `hskEF : ∀ x y, D.EF x y = - D.EF y x`. Introduce `x y`. Use `D.alt (x + y)` as an intermediate fact. Simplify using `only [map_add, LinearMap.add_apply, D.alt] at this`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hrep` using `fun (a b : D.La) => represent N hN T hperf (AddMonoidHom.mk' (fun c : 𝓞 E => D.EF (c • a) b) (fun c c' => by simp [add_smul]))`. Use `choose h hh using hrep`. Establish `hh' : ∀ a b c, (N : ℤ) ∣ D.EF (c • a) b - T (c * h a b)` using `fun a b c => by`. Use `hh a b c` as an intermediate fact. Rewrite `this` using `[AddMonoidHom.mk'_apply]`. Then use the resulting hypothesis.
+
+Establish `Hadd : ∀ a a' b, π (h (a + a') b) = π (h a b) + π (h a' b)`. Introduce `a a' b`. Rewrite using `[← map_add, ← sub_eq_zero, ← map_sub]`. Apply `perf` to reduce the goal to its premises. Introduce `c`.
+
+Establish `e1` using `hh' (a + a') b c`. Establish `e2` using `hh' a b c`. Establish `e3` using `hh' a' b c`. Establish `: T (c * (h (a + a') b - (h a b + h a' b))) = -((D.EF (c • (a + a')) b - T (c * h (a + a') b)) - (D.EF (c • a) b - T (c * h a b)) - (D.EF (c • a') b - T (c * h a' b)))`. Rewrite using `[smul_add, map_add, LinearMap.add_apply, mul_sub, mul_add, map_sub, map_add]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `((e1.sub e2).sub e3).neg_right`. Establish `Hsmul : ∀ (x : 𝓞 E) a b, π (h (x • a) b) = π x * π (h a b)`. Introduce `x a b`.
+
+Rewrite using `[← map_mul, ← sub_eq_zero, ← map_sub]`. Apply `perf` to reduce the goal to its premises. Introduce `c`. Establish `e1` using `hh' (x • a) b c`. Establish `e2` using `hh' a b (c * x)`.
+
+Establish `: T (c * (h (x • a) b - x * h a b)) = (D.EF (c • x • a) b - T (c * h (x • a) b)) * (-1) + (D.EF ((c * x) • a) b - T (c * x * h a b))`. Rewrite using `[smul_smul, mul_sub, map_sub, ← mul_assoc]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `(dvd_mul_of_dvd_left e1 _).add e2`.
+
+Establish `Hherm : ∀ a b, π (h b a) = s (π (h a b))`. Introduce `a b`. Rewrite using `[hs, ← sub_eq_zero, ← map_sub]`. Apply `perf` to reduce the goal to its premises. Introduce `c`.
+
+Establish `e1` using `hh' b a c`. Establish `e2` using `hh' a b (H.bar c)`. Establish `hEF : D.EF (c • b) a = - D.EF (H.bar c • a) b`. Rewrite using `[hskEF (c • b) a, D.adj (H.bar c) a b, GlobalTheory.HostModel.bar_bar]`. Establish `hT : T (c * H.bar (h a b)) = - T (H.bar c * h a b)`.
+
+Rewrite using `[← hskew (H.bar c * h a b)]`. Use `congr 1`. Rewrite using `[map_mul, GlobalTheory.HostModel.bar_bar]`. Establish `: T (c * (h b a - H.bar (h a b))) = (D.EF (c • b) a - T (c * h b a)) * (-1) + (-(D.EF (H.bar c • a) b - T (H.bar c * h a b)))`. Rewrite using `[mul_sub, map_sub, hT, hEF]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `(dvd_mul_of_dvd_left e1 _).add e2.neg_right`. Establish `Hzero : ∀ a b, D.ModN N a → π (h a b) = 0`. Introduce and unpack `a b ⟨a', rfl⟩`.
+
+Apply `perf` to reduce the goal to its premises. Introduce `c`. Establish `e1` using `hh' (N • a') b c`. Establish `: T (c * h (N • a') b) = (N : ℤ) * D.EF (c • a') b - (D.EF (c • N • a') b - T (c * h (N • a') b))`. Rewrite using `[smul_comm, map_nsmul, LinearMap.smul_apply, nsmul_eq_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `(dvd_mul_right _ _).sub e1`. Establish `Hzero_right : ∀ a b, D.ModN N b → π (h a b) = 0`. Introduce `a b hb`.
+
+Rewrite using `[Hherm b a, Hzero b a hb, map_zero]`. Establish `Hadd_right : ∀ a b b', π (h a (b + b')) = π (h a b) + π (h a b')`. Introduce `a b b'`. Rewrite using `[Hherm (b + b') a, Hadd, map_add, ← Hherm b a, ← Hherm b' a]`. Establish `Hsum_left : ∀ (c : Fin r → 𝓞 E) (v : Fin r → D.La) b, π (h (∑ i, c i • v i) b) = ∑ i, π (c i) * π (h (v i) b)`.
+
+Introduce `c v b`. Set `F : D.La →+ (𝓞 E ⧸ I)` to `AddMonoidHom.mk' (fun a => π (h a b)) (fun a a' => Hadd a a' b)`. Use `map_sum F (fun i => c i • v i) Finset.univ` as an intermediate fact. Simplify using `only [F, AddMonoidHom.mk'_apply] at this`. Rewrite using `[this]`.
+
+Conclude with `Finset.sum_congr rfl fun i _ => Hsmul _ _ _`. Establish `Hsum_right : ∀ (a : D.La) (d : Fin r → 𝓞 E) (v : Fin r → D.La), π (h a (∑ j, d j • v j)) = ∑ j, s (π (d j)) * π (h a (v j))`. Introduce `a d v`. Rewrite using `[Hherm (∑ j, d j • v j) a, Hsum_left, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_mul, Hherm a (v j), hss]`. Take `⟨e₀, hspan, hind⟩` from `freeModN H D N hN`. Use `set G : Matrix (Fin r) (Fin r) (𝓞 E ⧸ I) := Matrix.of fun i j => π (h (e₀ i) (e₀ j)) with hG`. Establish `hGu : IsUnit G`. Establish `key : ∀ x : Fin r → (𝓞 E ⧸ I), Matrix.vecMul x G = 0 → x = 0`.
+
+Introduce `x hx`. Use `choose xl hxl using fun i => Ideal.Quotient.mk_surjective (I := I) (x i)`. Establish `h1 : ∀ j, π (h (∑ i, xl i • e₀ i) (e₀ j)) = 0`. Introduce `j`. Rewrite using `[Hsum_left]`.
+
+Use `congrFun hx j` as an intermediate fact. Simplify using `only [Matrix.vecMul, dotProduct, G, Matrix.of_apply, Pi.zero_apply] at this`. Rewrite using `[← this]`. Simplify using `only [π, hxl]`. Establish `h2 : ∀ b, π (h (∑ i, xl i • e₀ i) b) = 0`.
+
+Introduce `b`. Take `⟨c, hc⟩` from `hspan b`. Establish `: π (h (∑ i, xl i • e₀ i) b) = π (h (∑ i, xl i • e₀ i) (∑ j, c j • e₀ j)) + π (h (∑ i, xl i • e₀ i) (b - ∑ j, c j • e₀ j))`. Rewrite using `[← Hadd_right, add_sub_cancel]`. Rewrite using `[this, Hsum_right, Hzero_right _ _ hc]`.
+
+Simplify using `[h1]`. Establish `h3 : D.ModN N (∑ i, xl i • e₀ i)` using `modN_of_dvd D N _ (fun b => by`. Take `⟨z, hz⟩` from `(hπ _).1 (h2 b)`. Use `hh' (∑ i, xl i • e₀ i) b 1` as an intermediate fact. Rewrite `this` using `[one_smul, one_mul, hz, map_nsmul, nsmul_eq_mul]`.
+
+Use `this.add (dvd_mul_right (N : ℤ) (T z))` as an intermediate fact. Simplify using `using this)`. Use function extensionality and compare the values at `i`. Take `⟨b, hb⟩` from `hind xl h3 i`. Rewrite using `[← hxl i, hb, Pi.zero_apply, hπ]`.
+
+Conclude with `⟨b, rfl⟩`. Rewrite using `[← Matrix.vecMul_surjective_iff_isUnit]`. Apply `Finite.surjective_of_injective` to reduce the goal to its premises. Introduce `x y hxy`. Establish `hxy' : Matrix.vecMul x G = Matrix.vecMul y G` using `hxy`.
+
+Use `key (x - y) (by rw [Matrix.sub_vecMul, hxy', sub_self])` as an intermediate fact. Conclude with `sub_eq_zero.mp this`. Establish `hτ : ∃ τ, τ + s τ = 1` using `⟨π H.w0, by`. Rewrite using `[hs, GlobalTheory.HostModel.cmHost_bar_halfIntegerGenerator, ← map_add, add_sub_cancel, map_one]⟩`. Establish `hnorm : ∀ u, IsUnit u → s u = u → ∃ x, s x * x = u`.
+
+Introduce `u hu hsu`. Take `⟨ul, rfl⟩` from `Ideal.Quotient.mk_surjective (I := I) u`. Take `⟨w, hw⟩` from `hu`. Take `⟨vl, hvl⟩` from `Ideal.Quotient.mk_surjective (I := I) (↑w⁻¹ : 𝓞 E ⧸ I)`. Establish `h1 : ∃ b : 𝓞 E, H.bar ul - ul = N • b`.
+
+Rewrite using `[← hπ, map_sub, ← hs]`. Conclude with `sub_eq_zero.mpr hsu`. Establish `h2 : ∃ v b : 𝓞 E, ul * v - 1 = N • b` using `⟨vl, by`. Rewrite using `[← hπ, map_sub, map_mul, hvl, map_one, ← hw, Units.mul_inv, sub_self]⟩`. Take `⟨x, b, hx⟩` from `GlobalTheory.NormSurjMod.exists_mul_bar_sub_eq_nsmul H N hN ul h1 h2`.
+
+Use `⟨π x, ?_⟩` and prove the remaining obligations. Rewrite using `[hs, ← map_mul, ← sub_eq_zero, ← map_sub, mul_comm, hπ]`. Conclude with `⟨b, hx⟩`. Establish `hGh : Matrix.transpose (G.transpose.map s) = G.transpose`. Use extensionality with `i j`.
+
+Simplify using `only [Matrix.transpose_apply, Matrix.map_apply, G, Matrix.of_apply]`. Conclude with `(Hherm (e₀ i) (e₀ j)).symm`. Take `⟨a, ha⟩` from `orthoFinite (𝓞 E ⧸ I) s hss hτ hnorm r G.transpose hGh ((Matrix.isUnit_transpose _).2 hGu)`. Establish `ha' : a.1.transpose * G * (a.1.map s) = 1`. Use `congrArg Matrix.transpose ha` as an intermediate fact.
+
+Rewrite `this` using `[Matrix.transpose_mul, Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.transpose_transpose, Matrix.transpose_one, ← Matrix.mul_assoc]`. Then use the resulting hypothesis. Use `choose A hA using fun i k => Ideal.Quotient.mk_surjective (I := I) (a.1 i k)`. Use `choose B hB using fun k j => Ideal.Quotient.mk_surjective (I := I) ((a⁻¹ : GL (Fin r) (𝓞 E ⧸ I)).1 k j)`. Use `replace hA : ∀ i k, π (A i k) = a.1 i k := hA`. Use `replace hB : ∀ k j, π (B k j) = (a⁻¹ : GL (Fin r) (𝓞 E ⧸ I)).1 k j := hB`.
+
+Take `⟨e, he⟩ : ∃ e : Fin r → D.La, ∀ k, e k = ∑ i, A i k • e₀ i` from `⟨_, fun _ => rfl⟩`. Establish `hON : ∀ k l, π (h (e k) (e l)) = (1 : Matrix (Fin r) (Fin r) (𝓞 E ⧸ I)) k l`. Introduce `k l`. Rewrite using `[← ha', he, he, Hsum_left]`. Simplify using `only [Hsum_right, hA]`.
+
+Conclude with `calc_gram s a.1 G k l`. Use `⟨e, ?_, ?_⟩` and prove the remaining obligations. Introduce `b`. Take `⟨c0, hc0⟩` from `hspan b`. Use `⟨fun k => ∑ j, c0 j * B k j, ?_⟩` and prove the remaining obligations.
+
+Establish `hre : ∑ k, (∑ j, c0 j * B k j) • e k = ∑ i, (∑ k, (∑ j, c0 j * B k j) * A i k) • e₀ i`. Simplify using `only [he, Finset.smul_sum, smul_smul, Finset.sum_smul]`. Rewrite using `[Finset.sum_comm]`. Establish `: b - ∑ k, (∑ j, c0 j * B k j) • e k = (b - ∑ j, c0 j • e₀ j) + ∑ i, (c0 i - ∑ k, (∑ j, c0 j * B k j) * A i k) • e₀ i`. Rewrite using `[hre, ← sub_add_sub_cancel b (∑ j, c0 j • e₀ j), ← Finset.sum_sub_distrib]`.
+
+Simplify using `only [sub_smul]`. Rewrite using `[this]`. Use `modN_add hc0 (modN_sum _ _ fun i _ => modN_smul_of _ _ ?_)` and prove the remaining obligations. Rewrite using `[← hπ]`. Simplify using `only [map_sub, map_sum, map_mul, hA, hB]`.
+
+Conclude with `calc_inv (fun j => π (c0 j)) a.1 (a⁻¹ : GL (Fin r) (𝓞 E ⧸ I)).1 (Units.mul_inv a) i`. Introduce `c d`. Establish `h1` using `hh' (∑ i, c i • e i) (∑ i, d i • e i) 1`. Rewrite `h1` using `[one_smul, one_mul]`. Establish `h2 : π (h (∑ i, c i • e i) (∑ i, d i • e i)) = π (∑ i, c i * H.bar (d i))`.
+
+Rewrite using `[Hsum_left, map_sum]`. Simplify using `only [Hsum_right, hON]`. Rewrite using `[calc_one]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, hs]`.
+
+Take `⟨z, hz⟩` from `(hπ (h (∑ i, c i • e i) (∑ i, d i • e i) - ∑ i, c i * H.bar (d i))).1 (by rw [map_sub, h2, sub_self])`. Establish `hT' : T (h (∑ i, c i • e i) (∑ i, d i • e i)) = T (N • z) + T (∑ i, c i * H.bar (d i))`. Rewrite using `[← map_add, ← hz, sub_add_cancel]`. Rewrite `hT'` using `[map_sum, map_nsmul, nsmul_eq_mul]`. Rewrite `h1` using `[hT']`.
+
+Establish `e3 : D.EF (∑ i, c i • e i) (∑ i, d i • e i) - ∑ i, T (c i * H.bar (d i)) = D.EF (∑ i, c i • e i) (∑ i, d i • e i) - ((N : ℤ) * T z + ∑ i, T (c i * H.bar (d i))) + (N : ℤ) * T z`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e3]`. Conclude with `h1.add (dvd_mul_right _ _)`.
+-/
 theorem frame (H : Host E) (D : Datum H) (N : ℕ) (hN : 0 < N) (T : 𝓞 E →+ ℤ)
     (hskew : ∀ c, T (H.bar c) = - T c)
     (hperf : ∀ c : 𝓞 E, (∀ d : 𝓞 E, (N : ℤ) ∣ T (c * d)) → ∃ b : 𝓞 E, c = N • b) :

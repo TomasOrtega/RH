@@ -15,6 +15,9 @@ open AdelicGLn AutomorphicForm
 
 variable {N : ℕ} [NeZero N] {k : ℤ}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(liftEquiv N k f).2.isLeftInvariant, isSmooth_adelicLift (fun γ hγ => SlashInvariantForm.slash_action_eqn f γ hγ) hhol, (liftEquiv N k f).2.isKFinite⟩`.
+-/
 theorem liftEquiv_spec_of_mdifferentiable
     (f : SlashInvariantForm (Gamma0 N : Subgroup (GL (Fin 2) ℝ)) k) (hhol : MDiff (f : ℍ → ℂ)) :
     IsLeftInvariant (liftEquiv N k f : AdelicGL ℚ 2 → ℂ) ∧
@@ -23,6 +26,9 @@ theorem liftEquiv_spec_of_mdifferentiable
     isSmooth_adelicLift (fun γ hγ => SlashInvariantForm.slash_action_eqn f γ hγ) hhol,
     (liftEquiv N k f).2.isKFinite⟩
 
+/- English proof (translation)
+Take `⟨h1, h2, h3⟩` from `liftEquiv_spec_of_mdifferentiable f.toSlashInvariantForm f.holo'`. Conclude with `⟨h1, h2, h3, hasModerateGrowth_liftEquiv_cuspForm f, isCuspidal_liftEquiv_cuspForm f⟩`.
+-/
 theorem liftEquiv_cuspForm_spec (f : CuspForm (Gamma0 N : Subgroup (GL (Fin 2) ℝ)) k) :
     IsLeftInvariant (liftEquiv N k f.toSlashInvariantForm : AdelicGL ℚ 2 → ℂ) ∧
       IsSmooth (liftEquiv N k f.toSlashInvariantForm : AdelicGL ℚ 2 → ℂ) ∧
@@ -32,6 +38,9 @@ theorem liftEquiv_cuspForm_spec (f : CuspForm (Gamma0 N : Subgroup (GL (Fin 2) �
   obtain ⟨h1, h2, h3⟩ := liftEquiv_spec_of_mdifferentiable f.toSlashInvariantForm f.holo'
   exact ⟨h1, h2, h3, hasModerateGrowth_liftEquiv_cuspForm f, isCuspidal_liftEquiv_cuspForm f⟩
 
+/- English proof (translation)
+Take `⟨h1, h2, h3, h4, h5⟩` from `liftEquiv_cuspForm_spec f`. Conclude with `⟨⟨h1, h2, h3, hZ, h4⟩, h5⟩`.
+-/
 theorem mem_cuspForms_of_isZFinite (f : CuspForm (Gamma0 N : Subgroup (GL (Fin 2) ℝ)) k)
     (hZ : IsZFinite (⟨(liftEquiv N k f.toSlashInvariantForm : AdelicGL ℚ 2 → ℂ),
       (liftEquiv_cuspForm_spec f).2.1.1⟩ : archSmooth ℚ 2)) :

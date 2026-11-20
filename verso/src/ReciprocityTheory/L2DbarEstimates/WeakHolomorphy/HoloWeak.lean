@@ -6,11 +6,39 @@ namespace ReciprocityTheory.L2DbarEstimates.C
 open MeasureTheory Metric Set Filter Topology Complex
 open scoped ENNReal
 
+/- English proof (translation)
+Apply the tactic sequence `first | exact Bl.SecondBlockLemmaG.goal1 .. | (apply Bl.SecondBlockLemmaG.goal1 <;> assumption) | (intros; apply Bl.SecondBlockLemmaG.goal1 <;> assumption)`.
+-/
 theorem holoWeak_bound {n : ℕ} {Ω K : Set (V n)} {u : V n → ℂ} (hΩ : IsOpen Ω)
     (hu : DifferentiableOn ℂ u Ω) (hK : IsCompact K) (hKΩ : K ⊆ Ω) (v : V n) :
     ∃ C : ℝ, ∀ x ∈ K, ‖fderiv ℝ u x v‖ ≤ C := by
   first | exact Bl.SecondBlockLemmaG.goal1 .. | (apply Bl.SecondBlockLemmaG.goal1 <;> assumption) | (intros; apply Bl.SecondBlockLemmaG.goal1 <;> assumption)
 
+/- English proof (translation)
+Introduce `n Ω u hΩ hu`. Use `⟨hu.continuousOn.locallyIntegrableOn hΩ.measurableSet, ?_⟩` and prove the remaining obligations. Introduce `g hg v`. Take `⟨hgs, hgc, hgΩ⟩` from `hg`. Establish `hK : IsCompact (tsupport g)` using `hgc`.
+
+Establish `huK : ContinuousOn u (tsupport g)` using `hu.continuousOn.mono hgΩ`. Establish `hg1 : ContDiff ℝ 1 g` using `hgs.of_le (by exact_mod_cast le_top)`. Establish `hgd : Differentiable ℝ g` using `hg1.differentiable one_ne_zero`. Establish `hg'c : ∀ w : V n, Continuous fun x => fderiv ℝ g x w` using `fun w => (hg1.continuous_fderiv one_ne_zero).clm_apply continuous_const`. Establish `hzero : ∀ x, x ∉ tsupport g → g x = 0` using `fun x hx => image_eq_zero_of_notMem_tsupport hx`.
+
+Establish `hzero' : ∀ w x, x ∉ tsupport g → fderiv ℝ g x w = 0` using `fun w x hx => by`. Rewrite using `[fderiv_of_notMem_tsupport ℝ hx]`. Both sides reduce to the same expression. Establish `hint : ∀ h : V n → ℂ, Continuous h → (∀ x, x ∉ tsupport g → h x = 0) → Integrable (fun x => u x * h x)`. Introduce `h hh hh0`.
+
+Use `IntegrableOn.integrable_of_forall_notMem_eq_zero (s := tsupport g) ?_ ?_` and prove the remaining obligations. Conclude with `(huK.mul hh.continuousOn).integrableOn_compact hK`. Introduce `x hx`. Simplify using `[hh0 x hx]`. Establish `hgi : Integrable g` using `hgs.continuous.integrable_of_hasCompactSupport hgc`.
+
+Establish `hibp : ∀ w : V n, ∫ x, u x * fderiv ℝ g x w = - ∫ x, fderiv ℝ u x w * g x`. Introduce `w`. Take `⟨C, hC⟩` from `holoWeak_bound hΩ hu hK hgΩ w`. Apply `integral_mul_fderiv_eq_neg_fderiv_mul_of_integrable` to reduce the goal to its premises. Use `Integrable.mono' (hgi.norm.const_mul C) ?_ (Eventually.of_forall fun x => ?_)` and prove the remaining obligations.
+
+Conclude with `(measurable_fderiv_apply_const ℝ u w).aestronglyMeasurable.mul hgs.continuous.aestronglyMeasurable`. Distinguish the cases in `hx : x ∈ tsupport g`. Rewrite using `[norm_mul]`. Conclude with `mul_le_mul_of_nonneg_right (hC x hx) (norm_nonneg _)`. Simplify using `[hzero x hx]`.
+
+Conclude with `hint _ (hg'c w) (hzero' w)`. Conclude with `hint _ hgs.continuous hzero`. Introduce `x hx`. Conclude with `((hu x (hgΩ hx)).differentiableAt (hΩ.mem_nhds (hgΩ hx))).restrictScalars ℝ`. Introduce `x _`.
+
+Conclude with `hgd x`. Establish `hlin : ∀ x, fderiv ℝ u x (I • v) * g x = I * (fderiv ℝ u x v * g x)`. Introduce `x`. Distinguish the cases in `hx : x ∈ tsupport g`. Establish `hux : DifferentiableAt ℂ u x` using `(hu x (hgΩ hx)).differentiableAt (hΩ.mem_nhds (hgΩ hx))`.
+
+Rewrite using `[hux.fderiv_restrictScalars (𝕜 := ℝ)]`. Simplify using `only [ContinuousLinearMap.coe_restrictScalars', map_smul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `[hzero x hx]`. Establish `hΩ0 : ∀ x, x ∉ Ω → u x * dbarDir g x v = 0`.
+
+Introduce `x hx`. Establish `hx' : x ∉ tsupport g` using `fun h => hx (hgΩ h)`. Simplify using `[dbarDir, fderiv_of_notMem_tsupport ℝ hx']`. Rewrite using `[setIntegral_eq_integral_of_forall_compl_eq_zero hΩ0]`. Establish `e1 : (fun x => u x * dbarDir g x v) = fun x => u x * fderiv ℝ g x (I • v) - I * (u x * fderiv ℝ g x v)`.
+
+Use function extensionality and compare the values at `x`. Simplify using `only [dbarDir]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, integral_sub (hint _ (hg'c _) (hzero' _)) ((hint _ (hg'c _) (hzero' _)).const_mul I), integral_const_mul, hibp (I • v), hibp v]`. Simplify using `only [hlin]`.
+
+Rewrite using `[integral_const_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem holoWeak : HoloWeakStatement := by
   intro n Ω u hΩ hu
   refine ⟨hu.continuousOn.locallyIntegrableOn hΩ.measurableSet, ?_⟩

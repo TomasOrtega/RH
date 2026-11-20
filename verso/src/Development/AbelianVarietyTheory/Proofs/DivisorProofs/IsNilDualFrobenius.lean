@@ -21,6 +21,37 @@ noncomputable section
 
 open MvPowerSeries GlobalTheory GlobalTheory.Katz GlobalTheory.QLog GlobalTheory.PDivGroup GlobalTheory.Sandwich GlobalTheory.IndefiniteRowSideFullHecke.EpsilonPairingZeta GlobalTheory.PDivLat GlobalTheory.LawDer
 
+/- English proof (translation)
+Introduce `p _ C _ _ _ v O _ _ _ _ _ hv ε hε F G d c μ' hL hμ k e hB hA hconn U hU hfr`. Take `⟨m, hmax, hpm⟩` from `Ideal.exists_le_maximal (Ideal.span {(p : O)}) (by`. Rewrite using `[Ne, Ideal.span_singleton_eq_top]`. Conclude with `Fact.out)`. Establish `hp : (p : O) ∈ m` using `hpm (Ideal.mem_span_singleton_self _)`.
+
+Take `⟨c', hc'⟩` from `GlobalTheory.T.coeff_p_logarithms_congr_inv_frobenius_matrix_mod_p p F.B F.Q F.s F.σ F.s_alg F.frame.inj d k e U hU hfr (fun a => (hA a).2) (fun r j => by obtain ⟨b, -, hb⟩ := (hB.1 r).2.1 j; exact ⟨b, hb⟩)`. Use `GlobalTheory.T.isNilpotent_dualFrobenius_of_block F.B O F.θ F.σ p m (by rw [map_natCast]; exact hp) hmax.ne_top (fun b => by obtain ⟨c, hc⟩ := F.σ_pow b; exact ⟨c, hc⟩) d k U c' (fun a j => (hc' a j).2) ?_` and prove the remaining obligations. Use `set Sh : (Fin d → O ⧸ m) → (Fin d → O ⧸ m) := fun w a => ∑ j, Ideal.Quotient.mk m (F.θ (c' a j)) * w j ^ p with hSh`. Take `⟨n, hlift⟩` from `GlobalTheory.T.exists_cartierDual_lift_linearCoefficients_mod p O G d c m hp`. Take `⟨r, hr⟩` from `GlobalTheory.T.exists_uniform_convolution_pow_apply_mem_localDual p O G n m hmax (hconn n)`.
+
+Establish `hθ : ∀ x ∈ RingHom.ker F.θ ⊔ Ideal.span {(p : F.B)}, F.θ x ∈ m`. Introduce `x hx`. Take `⟨y, hy, z, hz, rfl⟩` from `Submodule.mem_sup.1 hx`. Take `⟨w, rfl⟩` from `Ideal.mem_span_singleton'.1 hz`. Rewrite using `[map_add, RingHom.mem_ker.1 hy, zero_add, map_mul, map_natCast]`.
+
+Conclude with `m.mul_mem_left _ hp`. Establish `step : ∀ (u : Fin d → O) (φ : G.dual.A n), (∀ Fs, φ (c.ev n Fs) - ∑ i, u i * lin Fs i ∈ m) → ∃ u' : Fin d → O, (∀ Fs, (φ ^ p) (c.ev n Fs) - ∑ i, u' i * lin Fs i ∈ m) ∧ (fun a => Ideal.Quotient.mk m (u' a)) = Sh (fun a => Ideal.Quotient.mk m (u a))`. Introduce `u φ hφ`. Use `⟨fun a => constantCoeff ((invDer c.μ u)^[p] (X a)), fun Fs => ?_, ?_⟩` and prove the remaining obligations. Take `⟨t, ht⟩` from `GlobalTheory.T.constantCoeff_iterate_invariant_derivation_linear p O d c.μ c.isLaw.const c.isLaw.unit c.isLaw.comm u Fs`.
+
+Establish `h1` using `GlobalTheory.T.convPow_ofConv_sub_constantCoeff_invariantDerivation p O G d c n m hp u φ hφ p Fs`. Establish `h2 : (p : O) * t ∈ m` using `m.mul_mem_right t hp`. Establish `e1 : (φ ^ p) (c.ev n Fs) - ∑ i, constantCoeff ((invDer c.μ u)^[p] (X i)) * lin Fs i = ((φ ^ p) (c.ev n Fs) - constantCoeff ((invDer c.μ u)^[p] Fs)) + p * t`. Rewrite using `[← ht]`. Simplify using `only [lin]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1]`. Conclude with `m.add_mem h1 h2`. Use function extensionality and compare the values at `a choose ũ hũ using fun i => F.frame.surj (u i)`. Establish `hnat` using `GlobalTheory.T.map_invariantDerivationFormalGroupLaw_iterate F.B O F.θ d μ' hL.const ũ p (X a)`.
+
+Establish `hmu : (fun i => map F.θ (μ' i)) = c.μ` using `funext hμ`. Establish `hu : (fun i => F.θ (ũ i)) = u` using `funext hũ`. Rewrite `hnat` using `[hmu, hu, map_X]`. Establish `key` using `hθ _ (GlobalTheory.T.constantCoeff_pIterate_invariantDerivation_coord p F.B O F.Q F.θ F.frame d μ' hL (e (Sum.inl a)) a (hB.1 _) (hA a).1 (hA a).2 (c' a) (fun i => (hc' a i).1) ũ)`. Establish `hcc : constantCoeff ((invDer c.μ u)^[p] (X a)) = F.θ (constantCoeff ((invDer μ' ũ)^[p] (X a)))`.
+
+Rewrite using `[← hnat, ← coeff_zero_eq_constantCoeff_apply, coeff_map, coeff_zero_eq_constantCoeff_apply]`. Simplify using `only [hSh]`. Rewrite using `[hcc, ← hu]`. Simplify using `only [← map_pow, ← map_mul, ← map_sum]`. Rewrite using `[Ideal.Quotient.eq]`.
+
+Simplify `key` using `[map_sub, map_sum, map_mul, map_pow]`. Establish `iter : ∀ t (u : Fin d → O) (φ : G.dual.A n), (∀ Fs, φ (c.ev n Fs) - ∑ i, u i * lin Fs i ∈ m) → ∃ u' : Fin d → O, (∀ Fs, (φ ^ (p ^ t)) (c.ev n Fs) - ∑ i, u' i * lin Fs i ∈ m) ∧ (fun a => Ideal.Quotient.mk m (u' a)) = Sh^[t] (fun a => Ideal.Quotient.mk m (u a))`. Introduce `t`. Proceed by induction on `t with`. Consider the case `zero => intro u φ hφ; exact ⟨u, by simpa using hφ, rfl⟩`.
+
+Consider the case `succ t ih`. Introduce `u φ hφ`. Take `⟨u1, h1, e1⟩` from `ih u φ hφ`. Take `⟨u2, h2, e2⟩` from `step u1 _ h1`. Use `⟨u2, fun Fs => ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[pow_succ, pow_mul]`. Conclude with `h2 Fs`. Rewrite using `[e2, e1, Function.iterate_succ_apply']`. Use `⟨r, fun w => ?_⟩` and prove the remaining obligations. Take `⟨u, rfl⟩ : ∃ u : Fin d → O, (fun a => Ideal.Quotient.mk m (u a)) = w` from `⟨fun a => (Ideal.Quotient.mk_surjective (w a)).choose,`.
+
+Use function extensionality and compare the values at `fun a => (Ideal.Quotient.mk_surjective (w a)).choose_spec⟩`. Take `⟨φ, hφ⟩` from `hlift u`. Take `⟨u', h', e'⟩` from `iter r u φ hφ`. Rewrite using `[← e']`. Use function extensionality and compare the values at `a`.
+
+Establish `h1 : φ 1 ∈ m`. Use `hφ 1` as an intermediate fact. Simplify `this` using `[lin, coeff_one]`. Establish `hle : r ≤ p ^ r` using `(Nat.lt_pow_self (Fact.out : p.Prime).one_lt).le`. Establish `h3` using `hr φ h1 (p ^ r) hle (c.x n a)`.
+
+Establish `h4` using `h' (X a)`. Rewrite `h4` using `[(c.isEval n).1 a]`. Establish `hs : ∑ i, u' i * lin (X a : MvPowerSeries (Fin d) O) i = u' a`. Simplify using `[lin, coeff_X, Finsupp.single_eq_single_iff]`. Rewrite `h4` using `[hs]`.
+
+Establish `h5 : u' a ∈ m`. Use `m.sub_mem h3 h4` as an intermediate fact. Simplify using `using this`. Simplify `h5` using `[Ideal.Quotient.eq_zero_iff_mem]`.
+-/
 theorem GlobalTheory.DualFrobNil.isNil_dual_frobenius : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] [IsDomain O], v.Integers O → ∀ (ε : PreTilt O p) (hε : IsPrimitiveSystem ε), ∀ F : BFrame ε, ∀ (G : PDivGroup p O) (d : ℕ) (c : QLog.Chart G d) (μ' : Fin d → MvPowerSeries (Fin d ⊕ Fin d) F.B), IsLift F.θ μ' → (∀ i, map F.θ (μ' i) = c.μ i) → ∀ (k : ℕ) (e : Fin d ⊕ Fin k → MvPowerSeries (Fin d) F.Q), IsBasis μ' e → IsAdapted F.θ μ' e → IsConn G.dual → ∀ U : Matrix (Fin d ⊕ Fin k) (Fin d ⊕ Fin k) F.B, IsUnit U → (∀ i, In (⊤ : Ideal F.B) (frob p F.s (e i) - comb (fun l => (U * blk d k (p : F.B) 1) l i) e) ∧ ∀ i', i = Sum.inl i' → In (Ideal.span {(p : F.B)}) (frob p F.s (e i) - comb (fun l => (U * blk d k (p : F.B) 1) l i) e)) → IsNil F.θ F.σ (U.transpose⁻¹ * blk d k 1 (p : F.B)) := by
   intro p _ C _ _ _ v O _ _ _ _ _ hv ε hε F G d c μ' hL hμ k e hB hA hconn U hU hfr
   obtain ⟨m, hmax, hpm⟩ := Ideal.exists_le_maximal (Ideal.span {(p : O)}) (by

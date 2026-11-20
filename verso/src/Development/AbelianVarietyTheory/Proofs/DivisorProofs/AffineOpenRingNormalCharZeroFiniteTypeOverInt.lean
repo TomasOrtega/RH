@@ -12,6 +12,11 @@ open Classical
 
 namespace GlobalTheory.KeyVals
 
+/- English proof (translation)
+Introduce `S _ s W hW hne hN hs hc`. Use `haveI : Nonempty W := hne.to_subtype`. Use `haveI : GlobalTheory.IsNormalScheme S := (GlobalTheory.isNormalScheme_iff_pred S).2 hN`. Use `⟨GlobalTheory.IsNormalScheme.isIntegrallyClosed_of_isAffineOpen hW, ?_, ?_⟩` and prove the remaining obligations. Conclude with `charZero_of_injective_ringHom (map_injective_of_isIntegral S (homOfLE (le_top : W ≤ ⊤)))`.
+
+Establish `h₁ : (s.appLE ⊤ W le_top).hom.FiniteType` using `HasRingHomProperty.appLE (P := @LocallyOfFiniteType) s hs ⟨⊤, isAffineOpen_top _⟩ ⟨W, hW⟩ le_top`. Establish `h₂ : ((Scheme.ΓSpecIso (CommRingCat.of ℤ)).inv.hom).FiniteType` using `RingHom.FiniteType.of_surjective _ (Scheme.ΓSpecIso (CommRingCat.of ℤ)).symm.commRingCatIsoToRingEquiv.surjective`. Establish `h₃` using `h₁.comp h₂`. Rewrite using `[← RingHom.finiteType_algebraMap, RingHom.ext_int (algebraMap ℤ Γ(S, W)) ((s.appLE ⊤ W le_top).hom.comp (Scheme.ΓSpecIso (CommRingCat.of ℤ)).inv.hom)]`. Conclude with `h₃`.
+-/
 theorem ring_of_isAffineOpen : ∀ (S : Scheme.{0}) [IsIntegral S] (s : S ⟶ Sp ℤ) (W : S.Opens), IsAffineOpen W → (W : Set S).Nonempty →
     Geo.Tor.IsNormalScheme S → LocallyOfFiniteType s → CharZero Γ(S, ⊤) →
     IsIntegrallyClosed Γ(S, W) ∧ CharZero Γ(S, W) ∧ Algebra.FiniteType ℤ Γ(S, W) := by

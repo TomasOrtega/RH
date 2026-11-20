@@ -25,6 +25,17 @@ import Formalism.TameInertiaTowers.CentralOrderTwo.ConjEqInvOfPowEqOne
 
 namespace Bl.general_b_fact_third''''
 
+/- English proof (translation)
+Introduce `E _ _ _ S Λ hL x`. Establish `hx : x ∈ Submodule.span E (Λ : Set S.V)`. Rewrite using `[hL.2]`. Conclude with `Submodule.mem_top`. Proceed by induction on `hx using Submodule.span_induction with`.
+
+Consider the case `mem y hy => exact ⟨1, one_ne_zero, by rw [one_smul]; exact hy⟩`. Consider the case `zero => exact ⟨1, one_ne_zero, by rw [smul_zero]; exact Λ.zero_mem⟩`. Consider the case `add y z _ _ hy hz`. Take `⟨a, ha, hay⟩` from `hy`. Take `⟨b, hb, hbz⟩` from `hz`.
+
+Use `⟨a * b, mul_ne_zero ha hb, ?_⟩` and prove the remaining obligations. Establish `h1 : (a * b) • y = b • (a • y)` using `by rw [mul_comm, mul_smul]`. Establish `h2 : (a * b) • z = a • (b • z)` using `by rw [mul_smul]`. Rewrite using `[smul_add, h1, h2]`. Conclude with `Λ.add_mem (Λ.smul_mem b hay) (Λ.smul_mem a hbz)`.
+
+Consider the case `smul c y _ hy`. Take `⟨a, ha, hay⟩` from `hy`. Take `⟨w, hw⟩` from `IsLocalization.surj (nonZeroDivisors (NumberField.RingOfIntegers E)) c`. Use `⟨(w.2 : NumberField.RingOfIntegers E) * a, mul_ne_zero (nonZeroDivisors.ne_zero w.2.2) ha, ?_⟩` and prove the remaining obligations. Establish `key : ((w.2 : NumberField.RingOfIntegers E) * a) • (c • y) = w.1 • (a • y)`.
+
+Rewrite using `[← algebraMap_smul E ((w.2 : NumberField.RingOfIntegers E) * a), ← algebraMap_smul E w.1, ← algebraMap_smul E a, smul_smul, smul_smul, ← hw, map_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key]`. Conclude with `Λ.smul_mem w.1 hay`.
+-/
 theorem goal1 :
   ∀ {E : Type} [inst : Field.{0} E] [inst_1 : NumberField.{0} E] [inst_2 : StarRing.{0} E] (S : Formalism.BasicNotions.HSpace E)
   (Λ : Submodule.{0, 0} (NumberField.RingOfIntegers.{0} E) S.V),

@@ -6,6 +6,13 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace GlobalTheory.LevelType
 
+/- English proof (translation)
+Set `e : n ≃ n` to `φ'.symm.trans φ`. Establish `h1 : ((e.symm.toPEquiv.toMatrix : Matrix n n R) * e.toPEquiv.toMatrix) = 1`. Rewrite using `[← PEquiv.toMatrix_trans, ← Equiv.toPEquiv_trans, Equiv.symm_trans_self, Equiv.toPEquiv_refl, PEquiv.toMatrix_refl]`. Establish `h2 : ((e.toPEquiv.toMatrix : Matrix n n R) * e.symm.toPEquiv.toMatrix) = 1`. Rewrite using `[← PEquiv.toMatrix_trans, ← Equiv.toPEquiv_trans, Equiv.self_trans_symm, Equiv.toPEquiv_refl, PEquiv.toMatrix_refl]`.
+
+Set `w : GL n R` to `⟨e.symm.toPEquiv.toMatrix, e.toPEquiv.toMatrix, h1, h2⟩`. Use `⟨w, fun g => ?_⟩` and prove the remaining obligations. Establish `key : (reix R φ g).val = w.val * (reix R φ' g).val * w⁻¹.val`. Express the relevant statement in the definitionally equal form `_ = e.symm.toPEquiv.toMatrix * _ * e.toPEquiv.toMatrix`. Rewrite using `[PEquiv.toMatrix_toPEquiv_mul, PEquiv.mul_toMatrix_toPEquiv]`.
+
+Use extensionality with `i j`. Simplify using `[val_reix, e]`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_mul, key, mul_assoc, Units.inv_mul, mul_one, Units.val_mul]`.
+-/
 theorem reix_eq_conj (R : Type) [CommRing R] {m n : Type} [Fintype m] [DecidableEq m] [Fintype n] [DecidableEq n]
     (φ φ' : m ≃ n) : ∃ w : GL n R, ∀ g : GL m R, reix R φ g * w = w * reix R φ' g := by
   let e : n ≃ n := φ'.symm.trans φ
@@ -25,6 +32,11 @@ theorem reix_eq_conj (R : Type) [CommRing R] {m n : Type} [Fintype m] [Decidable
   apply Units.ext
   rw [Units.val_mul, key, mul_assoc, Units.inv_mul, mul_one, Units.val_mul]
 
+/- English proof (translation)
+Take `⟨w, hw⟩` from `reix_eq_conj R φ φ'`. Use `IsSubquotient.of_surjective ⟨σ w, fun g => ?_⟩ fun v => ⟨σ w⁻¹ v, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `σ w * σ (reix R φ' g) = σ (reix R φ g) * σ w`. Rewrite using `[← map_mul, ← map_mul, hw]`. Express the relevant statement in the definitionally equal form `σ w (σ w⁻¹ v) = v`.
+
+Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`.
+-/
 theorem subquotient_reix (R : Type) [CommRing R] (m n : Type) [Fintype m] [DecidableEq m] [Fintype n] [DecidableEq n]
     (φ φ' : m ≃ n) (V : Type) [AddCommGroup V] [Module ℂ V] (σ : Representation ℂ (GL n R) V) :
     IsSubquotient (σ.comp (reix R φ) : Representation ℂ (GL m R) V) (σ.comp (reix R φ') : Representation ℂ (GL m R) V) := by

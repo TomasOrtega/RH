@@ -8,6 +8,17 @@ namespace Formalism.FourierDecayAlt.P.CutSE
 
 open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt.Q Formalism.FourierDecayAlt.Wd Formalism.FourierDecayAlt.P5
 
+/- English proof (translation)
+Introduce `k r z z' Wp Wq _ _ _ _ _ _ π π' μ Φ Ψ c`. Establish `hmp` using `volume_measurePreserving_piCongrLeft (fun _ : Fin r => ℂ) (Equiv.subtypeUnivEquiv (p := fun l : Fin r => ((0 : Fin (r + 1)) : ℕ) ≤ l) (fun l => Nat.zero_le _))`. Use `set e := MeasurableEquiv.piCongrLeft (fun _ : Fin r => ℂ) (Equiv.subtypeUnivEquiv (p := fun l : Fin r => ((0 : Fin (r + 1)) : ℕ) ≤ l) (fun l => Nat.zero_le _)) with he`. Establish `happ : ∀ (c' : Cf r 0) (l : {l : Fin r // ((0 : Fin (r + 1)) : ℕ) ≤ l}), e c' l.1 = c' l`. Introduce `c' l`.
+
+Rewrite using `[he]`. Conclude with `MeasurableEquiv.piCongrLeft_apply_apply (β := fun _ : Fin r => ℂ) (Equiv.subtypeUnivEquiv (p := fun l : Fin r => ((0 : Fin (r + 1)) : ℕ) ≤ l) (fun l => Nat.zero_le _)) c' l`. Establish `hglue : ∀ c' : Cf r 0, glue 0 c c' = e c'` using `fun c' => funext fun l => by`. Simplify using `only [glue]`. Rewrite using `[dif_pos (show ((0 : Fin (r + 1)) : ℕ) ≤ (l : ℕ) from Nat.zero_le _)]`.
+
+Conclude with `(happ c' ⟨l, Nat.zero_le _⟩).symm`. Establish `hprod : ∀ c' : Cf r 0, (∏ l : {l : Fin r // ((0 : Fin (r + 1)) : ℕ) ≤ l}, ‖c' l‖ ^ (-2 : ℤ)) = ∏ l : Fin r, (‖e c' l‖ ^ 2)⁻¹`. Introduce `c'`. Use `Fintype.prod_equiv (Equiv.subtypeUnivEquiv (fun l => Nat.zero_le _)) _ _ (fun l => ?_)` and prove the remaining obligations. Use `show ‖c' l‖ ^ (-2 : ℤ) = (‖e c' l.1‖ ^ 2)⁻¹`.
+
+Rewrite using `[happ c' l, zpow_neg]`. Use `norm_cast`. Unfold `radIp LocFacts₂ pairAt dxc`. Simplify using `only [B.hsInner]`. Rewrite using `[integral_withDensity_eq_integral_toReal_smul (by fun_prop) (ae_of_all _ fun _ => ENNReal.ofReal_lt_top)]`.
+
+Rewrite using `[← hmp.integral_comp']`. Use `integral_congr_ae (ae_of_all _ fun c' => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[hglue c', ENNReal.toReal_ofReal (Finset.prod_nonneg fun _ _ => by positivity), Complex.real_smul, hprod c']`.
+-/
 theorem spectral_pairing_inner_swap : RDSPIpSwap := by
   intro k r z z' Wp Wq _ _ _ _ _ _ π π' μ Φ Ψ c
   have hmp := volume_measurePreserving_piCongrLeft (fun _ : Fin r => ℂ)

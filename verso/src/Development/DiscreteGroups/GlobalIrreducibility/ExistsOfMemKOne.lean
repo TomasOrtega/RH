@@ -14,6 +14,9 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 variable {E : Type} [Field E] [NumberField E] {w : HeightOneSpectrum (𝓞 E)}
 
+/- English proof (translation)
+Establish `: (Valued.v : Valuation (w.adicCompletion E) (WithZero (Multiplicative ℤ))).Compatible` using `Valuation.Compatible.ofValuation _`. Establish `he` using `isEquiv (valuation (w.adicCompletion E)) (Valued.v : Valuation (w.adicCompletion E) (WithZero (Multiplicative ℤ)))`. Rewrite using `[he.lt_one_iff_lt_one, Valued.toNormedField.norm_lt_one_iff]`.
+-/
 theorem val_lt_iff (y : w.adicCompletion E) : valuation (w.adicCompletion E) y < 1 ↔ ‖y‖ < 1 := by
   have : (Valued.v : Valuation (w.adicCompletion E) (WithZero (Multiplicative ℤ))).Compatible :=
     Valuation.Compatible.ofValuation _
@@ -21,6 +24,9 @@ theorem val_lt_iff (y : w.adicCompletion E) : valuation (w.adicCompletion E) y <
     (Valued.v : Valuation (w.adicCompletion E) (WithZero (Multiplicative ℤ)))
   rw [he.lt_one_iff_lt_one, Valued.toNormedField.norm_lt_one_iff]
 
+/- English proof (translation)
+Establish `: (Valued.v : Valuation (w.adicCompletion E) (WithZero (Multiplicative ℤ))).Compatible` using `Valuation.Compatible.ofValuation _`. Establish `he` using `isEquiv (valuation (w.adicCompletion E)) (Valued.v : Valuation (w.adicCompletion E) (WithZero (Multiplicative ℤ)))`. Rewrite using `[he.le_one_iff_le_one, Valued.toNormedField.norm_le_one_iff]`.
+-/
 theorem val_le_iff (y : w.adicCompletion E) : valuation (w.adicCompletion E) y ≤ 1 ↔ ‖y‖ ≤ 1 := by
   have : (Valued.v : Valuation (w.adicCompletion E) (WithZero (Multiplicative ℤ))).Compatible :=
     Valuation.Compatible.ofValuation _
@@ -31,6 +37,11 @@ theorem val_le_iff (y : w.adicCompletion E) : valuation (w.adicCompletion E) y �
 variable {g : ℕ} [Fact g.Prime] (i : ℚ_[g] ≃+* w.adicCompletion E) (hi : Continuous i)
 include hi
 
+/- English proof (translation)
+Establish `h1 : Tendsto (fun k : ℕ => x ^ k) atTop (𝓝 0)` using `tendsto_pow_atTop_nhds_zero_of_norm_lt_one hx`. Establish `h0 : Tendsto i (𝓝 0) (𝓝 0)` using `by simpa using hi.tendsto 0`. Establish `h2 : Tendsto (fun k : ℕ => ‖i x‖ ^ k) atTop (𝓝 0)`. Use `(h0.comp h1).norm` as an intermediate fact. Simplify `this` using `[Function.comp_def, map_pow, norm_pow]`.
+
+Assume the negation of the conclusion as `hc`. Rewrite `hc` using `[not_lt]`. Take `⟨k, hk⟩` from `(h2.eventually (gt_mem_nhds one_pos)).exists`. Conclude with `absurd hk (not_lt.2 (one_le_pow₀ hc))`.
+-/
 theorem norm_lt_of_lt {x : ℚ_[g]} (hx : ‖x‖ < 1) : ‖i x‖ < 1 := by
   have h1 : Tendsto (fun k : ℕ => x ^ k) atTop (𝓝 0) := tendsto_pow_atTop_nhds_zero_of_norm_lt_one hx
   have h0 : Tendsto i (𝓝 0) (𝓝 0) := by simpa using hi.tendsto 0
@@ -42,9 +53,17 @@ theorem norm_lt_of_lt {x : ℚ_[g]} (hx : ‖x‖ < 1) : ‖i x‖ < 1 := by
   obtain ⟨k, hk⟩ := (h2.eventually (gt_mem_nhds one_pos)).exists
   exact absurd hk (not_lt.2 (one_le_pow₀ hc))
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.TypeRec.Model.emb_le w g i.toRingHom hi x hx`.
+-/
 theorem norm_le_of_le {x : ℚ_[g]} (hx : ‖x‖ ≤ 1) : ‖i x‖ ≤ 1 :=
   GlobalTheory.TypeRec.Model.emb_le w g i.toRingHom hi x hx
 
+/- English proof (translation)
+Use `⟨fun h => ?_, norm_lt_of_lt i hi⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hc`. Rewrite `hc` using `[not_lt]`. Establish `hx0 : x ≠ 0` using `fun e => by rw [e, norm_zero] at hc; exact absurd hc (by norm_num)`. Establish `h1 : ‖x⁻¹‖ ≤ 1` using `by rw [norm_inv]; exact inv_le_one_of_one_le₀ hc`.
+
+Establish `h2` using `norm_le_of_le i hi h1`. Rewrite `h2` using `[map_inv₀, norm_inv]`. Establish `hpos : 0 < ‖i x‖` using `norm_pos_iff.2 ((map_ne_zero i).2 hx0)`. Use `(inv_le_one₀ hpos).1 h2` as an intermediate fact. Conclude with `absurd h (not_lt.2 this)`.
+-/
 theorem norm_lt_iff (x : ℚ_[g]) : ‖i x‖ < 1 ↔ ‖x‖ < 1 := by
   refine ⟨fun h => ?_, norm_lt_of_lt i hi⟩
   by_contra hc
@@ -57,6 +76,11 @@ theorem norm_lt_iff (x : ℚ_[g]) : ‖i x‖ < 1 ↔ ‖x‖ < 1 := by
   have := (inv_le_one₀ hpos).1 h2
   exact absurd h (not_lt.2 this)
 
+/- English proof (translation)
+Use `⟨fun h => ?_, norm_le_of_le i hi⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hc`. Rewrite `hc` using `[not_le]`. Establish `hx0 : x ≠ 0` using `fun e => by rw [e, norm_zero] at hc; exact absurd hc (by norm_num)`. Establish `h1 : ‖x⁻¹‖ < 1` using `by rw [norm_inv]; exact inv_lt_one_of_one_lt₀ hc`.
+
+Establish `h2` using `norm_lt_of_lt i hi h1`. Rewrite `h2` using `[map_inv₀, norm_inv]`. Establish `hpos : 0 < ‖i x‖` using `norm_pos_iff.2 ((map_ne_zero i).2 hx0)`. Use `(inv_lt_one₀ hpos).1 h2` as an intermediate fact. Conclude with `absurd h (not_le.2 this)`.
+-/
 theorem norm_le_iff (x : ℚ_[g]) : ‖i x‖ ≤ 1 ↔ ‖x‖ ≤ 1 := by
   refine ⟨fun h => ?_, norm_le_of_le i hi⟩
   by_contra hc
@@ -69,20 +93,51 @@ theorem norm_le_iff (x : ℚ_[g]) : ‖i x‖ ≤ 1 ↔ ‖x‖ ≤ 1 := by
   have := (inv_lt_one₀ hpos).1 h2
   exact absurd h (not_le.2 this)
 
+/- English proof (translation)
+The claim follows from `(val_lt_iff _).trans (norm_lt_iff i hi x)`.
+-/
 theorem valuation_lt_iff (x : ℚ_[g]) : valuation (w.adicCompletion E) (i x) < 1 ↔ ‖x‖ < 1 :=
   (val_lt_iff _).trans (norm_lt_iff i hi x)
 
+/- English proof (translation)
+The claim follows from `(val_le_iff _).trans (norm_le_iff i hi x)`.
+-/
 theorem valuation_le_iff (x : ℚ_[g]) : valuation (w.adicCompletion E) (i x) ≤ 1 ↔ ‖x‖ ≤ 1 :=
   (val_le_iff _).trans (norm_le_iff i hi x)
 
+/- English proof (translation)
+The claim follows from `Valued.toNormedField.norm_lt_one_iff.symm.trans (norm_lt_iff i hi x)`.
+-/
 theorem v_lt_iff (x : ℚ_[g]) : Valued.v (i x) < 1 ↔ ‖x‖ < 1 :=
   Valued.toNormedField.norm_lt_one_iff.symm.trans (norm_lt_iff i hi x)
 
+/- English proof (translation)
+The claim follows from `Valued.toNormedField.norm_le_one_iff.symm.trans (norm_le_iff i hi x)`.
+-/
 theorem v_le_iff (x : ℚ_[g]) : Valued.v (i x) ≤ 1 ↔ ‖x‖ ≤ 1 :=
   Valued.toNormedField.norm_le_one_iff.symm.trans (norm_le_iff i hi x)
 
 omit hi in
 
+/- English proof (translation)
+Establish `hM : ∀ a b, ‖M a b‖ ≤ 1`. Introduce `a b`. Establish `h1` using `h a b`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality.
+
+Rewrite `h1` using `[Matrix.one_apply_eq]`. Use `IsUltrametricDist.norm_add_le_max (M a a - 1) (1 : ℚ_[g])` as an intermediate fact. Rewrite `this` using `[sub_add_cancel, norm_one]`. Conclude with `this.trans (max_le h1.le le_rfl)`. Rewrite `h1` using `[Matrix.one_apply_ne hab, sub_zero]`.
+
+Conclude with `h1.le`. Set `A : Matrix (Fin n) (Fin n) ℤ_[g]` to `fun a b => ⟨M a b, hM a b⟩`. Establish `hA : (PadicInt.toZMod (p` using `g)).mapMatrix A = 1 := by`. Use extensionality with `a b`. Establish `hmem : A a b - (1 : Matrix (Fin n) (Fin n) ℤ_[g]) a b ∈ RingHom.ker (PadicInt.toZMod (p` using `g)) := by`.
+
+Establish `hc : ((A a b - (1 : Matrix (Fin n) (Fin n) ℤ_[g]) a b : ℤ_[g]) : ℚ_[g]) = M a b - (1 : Matrix (Fin n) (Fin n) ℚ_[g]) a b`. Rewrite using `[PadicInt.coe_sub]`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Rewrite using `[Matrix.one_apply_eq, Matrix.one_apply_eq, PadicInt.coe_one]`.
+
+Rewrite using `[Matrix.one_apply_ne hab, Matrix.one_apply_ne hab, PadicInt.coe_zero]`. Rewrite using `[PadicInt.ker_toZMod, IsLocalRing.mem_maximalIdeal, PadicInt.mem_nonunits, PadicInt.norm_def, hc]`. Conclude with `h a b`. Rewrite `hmem` using `[RingHom.mem_ker, map_sub, sub_eq_zero]`. Rewrite using `[RingHom.mapMatrix_apply, Matrix.map_apply, hmem]`.
+
+Apply the tactic sequence `by_cases hab : a = b <;> simp [hab, Matrix.one_apply]`. Establish `hd : IsUnit A.det`. Assume the negation of the conclusion as `hn`. Establish `hk : A.det ∈ RingHom.ker (PadicInt.toZMod (p` using `g)) := by`. Rewrite using `[PadicInt.ker_toZMod, IsLocalRing.mem_maximalIdeal]`.
+
+Conclude with `mem_nonunits_iff.2 hn`. Rewrite `hk` using `[RingHom.mem_ker, RingHom.map_det, hA, Matrix.det_one]`. Conclude with `one_ne_zero hk`. Take `⟨u, hu⟩` from `(Matrix.isUnit_iff_isUnit_det A).2 hd`. Use `⟨u, Units.ext ?_, ?_⟩` and prove the remaining obligations.
+
+Use `show (PadicInt.toZMod (p := g)).mapMatrix (u : Matrix (Fin n) (Fin n) ℤ_[g]) = 1`. Rewrite using `[hu, hA]`. Use `show (algebraMap ℤ_[g] ℚ_[g]).mapMatrix (u : Matrix (Fin n) (Fin n) ℤ_[g]) = M`. Rewrite using `[hu]`. Use extensionality with `a b`.
+
+Both sides reduce to the same expression.
+-/
 theorem exists_ker_red {n : ℕ} (M : Matrix (Fin n) (Fin n) ℚ_[g])
     (h : ∀ a b, ‖M a b - (1 : Matrix (Fin n) (Fin n) ℚ_[g]) a b‖ < 1) :
     ∃ k : GL (Fin n) ℤ_[g], red g n k = 1 ∧ (inc g n k : Matrix (Fin n) (Fin n) ℚ_[g]) = M := by
@@ -128,6 +183,17 @@ theorem exists_ker_red {n : ℕ} (M : Matrix (Fin n) (Fin n) ℚ_[g])
     ext a b
     rfl
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.StepData.mem_KOne]`. Introduce `a b`. Establish `hk' : PadicInt.toZMod (k.val a b) = (1 : Matrix (Fin n) (Fin n) (ZMod g)) a b` using `congrArg (fun x : GL (Fin n) (ZMod g) => (x : Matrix (Fin n) (Fin n) (ZMod g)) a b) hk`. Establish `hn : ‖((k.val a b : ℤ_[g]) : ℚ_[g]) - (1 : Matrix (Fin n) (Fin n) ℚ_[g]) a b‖ < 1`. Establish `hmem : k.val a b - (1 : Matrix (Fin n) (Fin n) ℤ_[g]) a b ∈ RingHom.ker (PadicInt.toZMod (p` using `g)) := by`.
+
+Rewrite using `[RingHom.mem_ker, map_sub, hk']`. Apply the tactic sequence `by_cases hab : a = b <;> simp [Matrix.one_apply, hab]`. Establish `hc : ((k.val a b - (1 : Matrix (Fin n) (Fin n) ℤ_[g]) a b : ℤ_[g]) : ℚ_[g]) = ((k.val a b : ℤ_[g]) : ℚ_[g]) - (1 : Matrix (Fin n) (Fin n) ℚ_[g]) a b`. Rewrite using `[PadicInt.coe_sub]`. Distinguish the cases in `hab : a = b`.
+
+Substitute `hab` using the available equality. Rewrite using `[Matrix.one_apply_eq, Matrix.one_apply_eq, PadicInt.coe_one]`. Rewrite using `[Matrix.one_apply_ne hab, Matrix.one_apply_ne hab, PadicInt.coe_zero]`. Rewrite `hmem` using `[PadicInt.ker_toZMod, IsLocalRing.mem_maximalIdeal, PadicInt.mem_nonunits, PadicInt.norm_def, hc]`. Conclude with `hmem`.
+
+Establish `hv` using `(valuation_lt_iff i hi _).2 hn`. Establish `e : ((Matrix.GeneralLinearGroup.map i.toRingHom (inc g n k)).val - 1) a b = i (((k.val a b : ℤ_[g]) : ℚ_[g]) - (1 : Matrix (Fin n) (Fin n) ℚ_[g]) a b)`. Rewrite using `[Matrix.sub_apply, map_sub]`. Use `congrArg₂ (· - ·) rfl ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases hab : a = b <;> simp [Matrix.one_apply, hab]`.
+
+Rewrite using `[e]`. Conclude with `hv`.
+-/
 theorem map_mem_KOne {n : ℕ} (k : GL (Fin n) ℤ_[g]) (hk : red g n k = 1) :
     Matrix.GeneralLinearGroup.map i.toRingHom (inc g n k) ∈ KOne (w.adicCompletion E) (Fin n) := by
   rw [GlobalTheory.StepData.mem_KOne]
@@ -155,6 +221,11 @@ theorem map_mem_KOne {n : ℕ} (k : GL (Fin n) ℤ_[g]) (hk : red g n k = 1) :
   rw [e]
   exact hv
 
+/- English proof (translation)
+Establish `h1` using `GlobalTheory.StepData.mem_KOne.1 hm`. Take `⟨k, hk, hk'⟩` from `exists_ker_red (i.symm.toRingHom.mapMatrix m.val) (fun a b => by`. Establish `e : (i.symm.toRingHom.mapMatrix m.val) a b - (1 : Matrix (Fin n) (Fin n) ℚ_[g]) a b = i.symm ((m.val - 1) a b)`. Apply the tactic sequence `by_cases hab : a = b <;> simp [Matrix.one_apply, hab, map_sub]`. Rewrite using `[e, ← valuation_lt_iff i hi, RingEquiv.apply_symm_apply]`.
+
+Conclude with `h1 a b)`. Use `⟨k, hk, Units.ext (Matrix.ext fun a b => ?_)⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `i ((inc g n k : Matrix (Fin n) (Fin n) ℚ_[g]) a b) = m.val a b`. Rewrite using `[hk']`. Simplify using the standard rewrite rules.
+-/
 theorem exists_of_mem_KOne {n : ℕ} {m : GL (Fin n) (w.adicCompletion E)}
     (hm : m ∈ KOne (w.adicCompletion E) (Fin n)) :
     ∃ k : GL (Fin n) ℤ_[g], red g n k = 1 ∧ Matrix.GeneralLinearGroup.map i.toRingHom (inc g n k) = m := by
@@ -170,6 +241,11 @@ theorem exists_of_mem_KOne {n : ℕ} {m : GL (Fin n) (w.adicCompletion E)}
   rw [hk']
   simp
 
+/- English proof (translation)
+Use extensionality with `m`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨k, hk, rfl⟩, rfl⟩`. Conclude with `map_mem_KOne i hi k (MonoidHom.mem_ker.1 hk)`. Introduce `hm`.
+
+Take `⟨k, hk, rfl⟩` from `exists_of_mem_KOne i hi hm`. Conclude with `⟨_, ⟨k, MonoidHom.mem_ker.2 hk, rfl⟩, rfl⟩`.
+-/
 theorem map_ker_red (n : ℕ) :
     ((red g n).ker.map (inc g n)).map (Matrix.GeneralLinearGroup.map i.toRingHom) =
       KOne (w.adicCompletion E) (Fin n) := by

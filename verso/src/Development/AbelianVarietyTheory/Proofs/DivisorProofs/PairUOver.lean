@@ -31,6 +31,9 @@ def pairU (N : Near π G) : (Desc.UT N ⊗ Desc.UT N).left ⟶ (N.U ⊗ N.U).lef
 abbrev VT (N : Near π G) (V : (N.U ⊗ N.U).left.Opens) : (Desc.UT N ⊗ Desc.UT N).left.Opens :=
   pairU N ⁻¹ᵁ V
 
+/- English proof (translation)
+The claim follows from `Over.w (lift (fstU N) (sndU N))`.
+-/
 theorem pairU_over (N : Near π G) :
     pairU N ≫ (N.U ⊗ N.U).hom = (Desc.UT N ⊗ Desc.UT N).hom ≫ pullback.fst π π ≫ π :=
   Over.w (lift (fstU N) (sndU N))
@@ -77,15 +80,27 @@ def q3 (N : Near π G) (p : pullback π π ⟶ S) (hp : p ≫ π = pullback.fst 
     Pk N p hp ⟶ (Desc.UT N ⊗ Desc.UT N) ⊗ Desc.UT N :=
   Over.homMk (pullback.snd _ _) rfl
 
+/- English proof (translation)
+The claim follows from `Over.OverMorphism.ext rfl`.
+-/
 theorem abP_eq (N : Near π G) (p : pullback π π ⟶ S) (hp : p ≫ π = pullback.fst π π ≫ π) :
     abP N p hp = q3 N p hp ≫ fst _ _ := Over.OverMorphism.ext rfl
 
+/- English proof (translation)
+The claim follows from `Over.OverMorphism.ext rfl`.
+-/
 theorem indicatorIdempotent_eq_add_sum (N : Near π G) (p : pullback π π ⟶ S) (hp : p ≫ π = pullback.fst π π ≫ π) :
     cP N p hp = q3 N p hp ≫ snd _ _ := Over.OverMorphism.ext rfl
 
+/- English proof (translation)
+The claim follows from `Over.OverMorphism.ext pullback.condition`.
+-/
 theorem dP_emb (N : Near π G) (p : pullback π π ⟶ S) (hp : p ≫ π = pullback.fst π π ≫ π) :
     dP N p hp ≫ Desc.emb N p hp = q3 N p hp ≫ trip N p hp := Over.OverMorphism.ext pullback.condition
 
+/- English proof (translation)
+Establish `e4 : cdP N p hp ≫ Desc.sum N p hp = (cP N p hp ≫ Desc.emb N p hp) * (dP N p hp ≫ Desc.emb N p hp)`. Rewrite using `[cdP, Desc.sum, comp_mul, ← Category.assoc, lift_fst, ← Category.assoc, lift_snd]`. Rewrite using `[e4, dP_emb, trip, comp_mul, GrpObj.comp_inv, indicatorIdempotent_eq_add_sum, abP_eq]`. Simplify using `only [Category.assoc]`. Conclude with `(mul_inv_cancel_left _ _).symm`.
+-/
 theorem abP_sum (N : Near π G) (p : pullback π π ⟶ S) (hp : p ≫ π = pullback.fst π π ≫ π) :
     abP N p hp ≫ Desc.sum N p hp = cdP N p hp ≫ Desc.sum N p hp := by
   have e4 : cdP N p hp ≫ Desc.sum N p hp = (cP N p hp ≫ Desc.emb N p hp) * (dP N p hp ≫ Desc.emb N p hp) := by
@@ -94,6 +109,17 @@ theorem abP_sum (N : Near π G) (p : pullback π π ⟶ S) (hp : p ≫ π = pull
   simp only [Category.assoc]
   exact (mul_inv_cancel_left _ _).symm
 
+/- English proof (translation)
+Set `FinalForm : Over (pullback π π)` to `Over.mk (g ≫ (Desc.UT N ⊗ Desc.UT N).hom)`. Establish `hw : g' ≫ (Desc.UT N ⊗ Desc.UT N).hom = g ≫ (Desc.UT N ⊗ Desc.UT N).hom`. Rewrite using `[← Over.w (Desc.sum N p hp), ← Category.assoc, ← h, Category.assoc]`. Set `a : FinalForm ⟶ Desc.UT N ⊗ Desc.UT N` to `Over.homMk g rfl`. Set `b : FinalForm ⟶ Desc.UT N ⊗ Desc.UT N` to `Over.homMk g' hw`.
+
+Establish `hab : a ≫ Desc.sum N p hp = b ≫ Desc.sum N p hp` using `Over.OverMorphism.ext h`. Set `t : FinalForm ⟶ (Desc.UT N ⊗ Desc.UT N) ⊗ Desc.UT N` to `lift a (b ≫ fst _ _)`. Establish `ht : (b ≫ snd _ _) ≫ Desc.emb N p hp = t ≫ trip N p hp`. Rewrite using `[trip, comp_mul, GrpObj.comp_inv, ← Category.assoc, lift_snd, ← Category.assoc t, lift_fst, hab, Desc.sum, comp_mul]`. Simplify using `only [Category.assoc]`.
+
+Conclude with `(inv_mul_cancel_left _ _).symm`. Set `zo : FinalForm ⟶ Pk N p hp` to `Over.homMk (pullback.lift (b ≫ snd _ _).left t.left (congrArg Over.Hom.left ht)) (by show pullback.lift _ _ _ ≫ pullback.snd _ _ ≫ _ = _`. Rewrite using `[← Category.assoc, pullback.lift_snd]`. Conclude with `Over.w t)`. Establish `h1 : zo ≫ abP N p hp = a` using `by rw [abP_eq, ← Category.assoc]; exact (congrArg (· ≫ fst _ _) (Over.OverMorphism.ext (pullback.lift_snd _ _ _) : zo ≫ q3 N p hp = t)).trans (lift_fst _ _)`.
+
+Establish `h2 : zo ≫ cdP N p hp = b`. Establish `hc : zo ≫ cP N p hp = b ≫ fst _ _`. Rewrite using `[indicatorIdempotent_eq_add_sum, ← Category.assoc]`. Conclude with `(congrArg (· ≫ snd _ _) (Over.OverMorphism.ext (pullback.lift_snd _ _ _) : zo ≫ q3 N p hp = t)).trans (lift_snd _ _)`. Establish `hd : zo ≫ dP N p hp = b ≫ snd _ _` using `Over.OverMorphism.ext (pullback.lift_fst _ _ _)`.
+
+Rewrite using `[cdP, comp_lift, hc, hd]`. Conclude with `(lift_comp_fst_snd b)`. Conclude with `⟨zo.left, congrArg Over.Hom.left h1, congrArg Over.Hom.left h2⟩`.
+-/
 theorem exists_lift (N : Near π G) (p : pullback π π ⟶ S) (hp : p ≫ π = pullback.fst π π ≫ π) (Z : Scheme.{0})
     (g g' : Z ⟶ (Desc.UT N ⊗ Desc.UT N).left) (h : g ≫ (Desc.sum N p hp).left = g' ≫ (Desc.sum N p hp).left) :
     ∃ z : Z ⟶ (Pk N p hp).left, z ≫ (abP N p hp).left = g ∧ z ≫ (cdP N p hp).left = g' := by

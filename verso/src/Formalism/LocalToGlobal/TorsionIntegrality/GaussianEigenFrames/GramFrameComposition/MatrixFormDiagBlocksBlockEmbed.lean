@@ -14,20 +14,34 @@ open Formalism.L2.Th1.D.GaussNormEstimates (normZ_le normZ_one)
 
 namespace GramFrameLatticeLemmas
 
+/- English proof (translation)
+Rewrite using `[mul_pow, Complex.I_sq, ← Complex.ofReal_pow, Real.sq_sqrt (Nat.cast_nonneg d)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma sqrt_sq_c (d : ℕ) : (Complex.I * ((Real.sqrt d : ℝ) : ℂ)) ^ 2 = -(d : ℂ) := by
   rw [mul_pow, Complex.I_sq, ← Complex.ofReal_pow, Real.sq_sqrt (Nat.cast_nonneg d)]
   push_cast
   ring
 
+/- English proof (translation)
+Rewrite using `[omegaK, map_div₀, map_add, map_one, map_mul, Complex.conj_I, Complex.conj_ofReal, map_ofNat]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma conj_omega (d : ℕ) : conj (omegaK d) = 1 - omegaK d := by
   rw [omegaK, map_div₀, map_add, map_one, map_mul, Complex.conj_I, Complex.conj_ofReal, map_ofNat]
   ring
 
 def emb {n : Type} (b : Fin 4) (v : n → ℂ) : Fin 4 × n → ℂ := fun w => if w.1 = b then v w.2 else 0
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma matH_apply' {n : Type} [Fintype n] (h : Matrix n n ℂ) (z w : n → ℂ) :
     matH h z w = ∑ i, ∑ j, z i * h i j * conj (w j) := rfl
 
+/- English proof (translation)
+Rewrite using `[stdH, matH_apply', Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single i]`. Apply the tactic sequence `simp [Matrix.smul_apply, Matrix.one_apply] <;> ring`. Introduce `j _ hj`.
+
+Simplify using `[Matrix.smul_apply, Matrix.one_apply, Ne.symm hj]`. Simplify using the standard rewrite rules.
+-/
 lemma stdH_apply' (L : PeriodPair) {n : Type} [Fintype n] [DecidableEq n] (z w : n → ℂ) :
     stdH L n z w = ((Formalism.L2.Th1.F.area L : ℝ) : ℂ)⁻¹ * ∑ i, z i * conj (w i) := by
   rw [stdH, matH_apply', Finset.mul_sum]
@@ -38,6 +52,19 @@ lemma stdH_apply' (L : PeriodPair) {n : Type} [Fintype n] [DecidableEq n] (z w :
     simp [Matrix.smul_apply, Matrix.one_apply, Ne.symm hj]
   · simp
 
+/- English proof (translation)
+Rewrite using `[matH_apply']`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Rewrite using `[if_pos rfl, matH_apply', Fintype.sum_prod_type, Finset.sum_eq_single a]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Fintype.sum_prod_type, Finset.sum_eq_single a]`. Simplify using `[emb, blk4]`. Introduce `c _ hc`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `j _`.
+
+Simplify using `[emb, hc]`. Simplify using the standard rewrite rules. Introduce `c _ hc`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `i _`.
+
+Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `w _`. Simplify using `[emb, hc]`. Simplify using the standard rewrite rules. Rewrite using `[if_neg hab]`.
+
+Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `x _`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `y _`. Simplify using `only [emb, blk4]`.
+
+Apply the tactic sequence `split_ifs <;> simp_all`.
+-/
 lemma matrixForm_diagBlocks_blockEmbed {n : Type} [Fintype n] [DecidableEq n] (h : Matrix n n ℂ) (a b : Fin 4) (v v' : n → ℂ) :
     matH (blk4 h) (emb a v) (emb b v') = if a = b then matH h v v' else 0 := by
   rw [matH_apply']
@@ -67,6 +94,13 @@ lemma matrixForm_diagBlocks_blockEmbed {n : Type} [Fintype n] [DecidableEq n] (h
     simp only [emb, blk4]
     split_ifs <;> simp_all
 
+/- English proof (translation)
+Use `show ∀ a, slice a (ω • emb b v) ∈ Λ`. Introduce `a`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Establish `h1 : slice a (ω • emb a v) = ω • v`.
+
+Use extensionality with `i`. Simplify using `[slice, emb]`. Rewrite using `[h1]`. Conclude with `hv ω hω`. Establish `h1 : slice a (ω • emb b v) = 0`.
+
+Use extensionality with `i`. Simplify using `[slice, emb, hab]`. Rewrite using `[h1]`. Conclude with `Λ.zero_mem`.
+-/
 lemma smul_emb_mem {L : PeriodPair} {n : Type} {Λ : AddSubgroup (n → ℂ)} {v : n → ℂ} (hv : InMul L Λ v) (b : Fin 4)
     {ω : ℂ} (hω : ω ∈ L.lattice) : ω • emb b v ∈ pow4 Λ := by
   show ∀ a, slice a (ω • emb b v) ∈ Λ
@@ -84,6 +118,9 @@ lemma smul_emb_mem {L : PeriodPair} {n : Type} {Λ : AddSubgroup (n → ℂ)} {v
     rw [h1]
     exact Λ.zero_mem
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `[Pi.single_apply]`.
+-/
 lemma eq_sum_single {W : Type} [Fintype W] [DecidableEq W] (y : W → ℂ) :
     y = ∑ w, y w • (Pi.single w 1 : W → ℂ) := by
   ext x
@@ -93,6 +130,27 @@ end GramFrameLatticeLemmas
 
 open GramFrameLatticeLemmas
 
+/- English proof (translation)
+Introduce `d hd p _ ι`. Use `set s : ℂ := Complex.I * ((Real.sqrt d : ℝ) : ℂ) with hs`. Establish `hs2 : s ^ 2 = -(d : ℂ)` using `sqrt_sq_c d`. Establish `hω : omegaK d = (1 + s) / 2` using `rfl`. Establish `hns : ‖ι s‖ ^ 2 = ‖(d : ℂ_[p])‖`.
+
+Rewrite using `[← norm_pow, ← map_pow, hs2, map_neg, map_natCast, norm_neg]`. Establish `hnat : ∀ k : ℕ, ‖(k : ℂ_[p])‖ ≤ 1`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => simp`.
+
+Consider the case `succ k ih`. Rewrite using `[Nat.cast_succ]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le ih (by simp))`. Establish `hint : ∀ k : ℤ, ‖(k : ℂ_[p])‖ ≤ 1`. Introduce `k`.
+
+Take `⟨j, rfl | rfl⟩` from `Int.eq_nat_or_neg k`. Simplify using `using hnat j`. Simplify using `using hnat j`. Establish `hk : (d : ℂ) + 1 = 4 * (((d + 1) / 4 : ℕ) : ℂ)`. Establish `h4 : d + 1 = 4 * ((d + 1) / 4)` using `by omega`.
+
+Conclude with `h4` after adjusting the coercions. Establish `hω2 : omegaK d ^ 2 = omegaK d - (((d + 1) / 4 : ℕ) : ℂ)`. Rewrite using `[hω]`. Take the linear combination `(1 / 4 : ℂ) * hs2 - (1 / 4 : ℂ) * hk`. Establish `hx2 : ι (omegaK d) ^ 2 = ι (omegaK d) - (((d + 1) / 4 : ℕ) : ℂ_[p])`.
+
+Rewrite using `[← map_pow, hω2, map_sub, map_natCast]`. Establish `hx : ‖ι (omegaK d)‖ ≤ 1`. Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`. Establish `h1 : ‖ι (omegaK d)‖ ^ 2 ≤ ‖ι (omegaK d)‖`.
+
+Rewrite using `[← norm_pow, hx2, sub_eq_add_neg]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le le_rfl ?_)` and prove the remaining obligations. Rewrite using `[norm_neg]`. Conclude with `(hnat _).trans hlt.le`. Use the polynomial consequences of the given equalities and inequalities.
+
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hns, ← Real.sqrt_eq_rpow, Real.sqrt_sq (norm_nonneg _)]`. Introduce `m n`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, map_mul, map_intCast, map_intCast]`.
+
+Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le (hint m) ?_)` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_one₀ (hint n) (norm_nonneg _) hx`. Rewrite using `[← map_sub]`. Establish `h1 : ((m : ℂ) + (n : ℂ) * omegaK d) - conj ((m : ℂ) + (n : ℂ) * omegaK d) = s * (n : ℂ)`.
+
+Rewrite using `[map_add, map_mul, conj_omega, map_intCast, map_intCast, hω]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h1, map_mul, map_intCast]`.
+-/
 theorem IotaOK_proof : IotaOK := by
   intro d hd p _ ι
   set s : ℂ := Complex.I * ((Real.sqrt d : ℝ) : ℂ) with hs
@@ -143,6 +201,49 @@ theorem IotaOK_proof : IotaOK := by
         ring
       rw [h1, map_mul, map_intCast]
 
+/- English proof (translation)
+Introduce `a b c d ha hd lam hlam hcm n _ _ h Λ g hiso p _ ι hp J _ v hv`. Use `set L := cmL a b d ha hd lam hlam with hL`. Use `set N := relIdx (stdLat L (Fin 4 × n)) (imgLat (g : (Fin 4 × n → ℂ) →ₗ[ℂ] (Fin 4 × n → ℂ)) (pow4 Λ)) with hNdef`. Establish `hd3 : d % 4 = 3`. Use `hcm.2.2.1` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Establish `hNn1 : ‖(N : ℂ_[p])‖ = 1` using `Formalism.L2.Th1.E.Tor.norm_natCast p hp`. Establish `hN0 : (N : ℂ_[p]) ≠ 0`. Introduce `h0`. Rewrite `hNn1` using `[h0, norm_zero]`.
+
+Conclude with `zero_ne_one hNn1`. Establish `hnat : ∀ k : ℕ, ‖(k : ℂ_[p])‖ ≤ 1`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => simp`.
+
+Consider the case `succ k ih`. Rewrite using `[Nat.cast_succ]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le ih (by simp))`. Establish `hint : ∀ k : ℤ, ‖(k : ℂ_[p])‖ ≤ 1`. Introduce `k`.
+
+Take `⟨j, rfl | rfl⟩` from `Int.eq_nat_or_neg k`. Simplify using `using hnat j`. Simplify using `using hnat j`. Take `⟨Y, hY⟩ : ∃ Y : Fin 4 × J → Fin 4 × n → ℂ, ∀ x, Y x = g (emb x.1 (v x.2))` from `⟨_, fun _ => rfl⟩`. Establish `hkey : ∀ y ∈ imgLat (g : (Fin 4 × n → ℂ) →ₗ[ℂ] (Fin 4 × n → ℂ)) (pow4 Λ), N • y ∈ stdLat L (Fin 4 × n)`.
+
+Introduce `y hy`. Establish `h1` using `AddSubgroup.nsmul_index_mem ((stdLat L (Fin 4 × n)).addSubgroupOf (imgLat (g : (Fin 4 × n → ℂ) →ₗ[ℂ] (Fin 4 × n → ℂ)) (pow4 Λ))) ⟨y, hy⟩`. Rewrite `h1` using `[AddSubgroup.mem_addSubgroupOf]`. Simplify `h1` using `[hNdef, relIdx, AddSubgroup.relIndex]`. Establish `hmemimg : ∀ (x : Fin 4 × J) (ω : ℂ), ω ∈ L.lattice → ω • Y x ∈ imgLat (g : (Fin 4 × n → ℂ) →ₗ[ℂ] (Fin 4 × n → ℂ)) (pow4 Λ)`.
+
+Introduce `x ω hω`. Use `AddSubgroup.mem_map.mpr ⟨ω • emb x.1 (v x.2), smul_emb_mem (hv x.2) x.1 hω, ?_⟩` and prove the remaining obligations. Rewrite using `[hY]`. Simplify using `[map_smul]`. Establish `hrep : ∀ x w, ∃ m n' : ℤ, (N : ℂ) * Y x w = m + n' * omegaK d`.
+
+Introduce `x w`. Apply `hM a b c d ha hd lam hlam hcm` to reduce the goal to its premises. Introduce `ω hω`. Establish `h1` using `hkey _ (hmemimg x ω hω)`. Rewrite `h1` using `[stdLat, AddSubgroup.mem_pi]`.
+
+Establish `h2` using `h1 w (Set.mem_univ w)`. Establish `h3 : (N • (ω • Y x)) w = (N : ℂ) * Y x w * ω`. Simplify using `only [Pi.smul_apply, smul_eq_mul, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h2` using `[h3]`.
+
+Conclude with `h2`. Use `choose M Nn hMN using hrep`. Establish `hI` using `IotaOK_proof d hd3 p ι`. Establish `hD : ∀ w x, ‖ι (Y x w)‖ ≤ 1`. Introduce `w x`.
+
+Establish `h1 : ι (Y x w) * (N : ℂ_[p]) = ι ((M x w : ℂ) + (Nn x w : ℂ) * omegaK d)`. Rewrite using `[← hMN, map_mul, map_natCast, mul_comm]`. Establish `h2` using `congrArg norm h1`. Rewrite `h2` using `[norm_mul, hNn1, mul_one]`. Rewrite using `[h2]`.
+
+Conclude with `(hI.2 (M x w) (Nn x w)).1`. Establish `hconj : ∀ y w, ι (Y y w) = ι (conj (Y y w)) + ι (Complex.I * ((Real.sqrt d : ℝ) : ℂ)) * (Nn y w : ℂ_[p]) / (N : ℂ_[p])`. Introduce `y w`. Establish `h3` using `(hI.2 (M y w) (Nn y w)).2`. Rewrite `h3` using `[← hMN y w, map_mul ι, map_mul (starRingEnd ℂ), map_mul ι, map_natCast (starRingEnd ℂ), map_natCast ι]`.
+
+Establish `h4 : ι (Complex.I * ((Real.sqrt d : ℝ) : ℂ)) * (Nn y w : ℂ_[p]) / (N : ℂ_[p]) = ι (Y y w) - ι (conj (Y y w))`. Rewrite using `[div_eq_iff hN0]`. Take the linear combination `-h3`. Rewrite using `[h4]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `harea : ((Formalism.L2.Th1.F.area L : ℝ) : ℂ) ≠ 0`. Conclude with `(Formalism.L2.Th1.F.PeriodAreaSignLemmas.area_pos L).ne'` after adjusting the coercions. Establish `hgram : ∀ x y : Fin 4 × J, ∑ w, Y x w * conj (Y y w) = if x.1 = y.1 then hOK L h (v x.2) (v y.2) else 0`. Introduce `x y`. Establish `h1` using `hiso (emb x.1 (v x.2)) (emb y.1 (v y.2))`.
+
+Rewrite `h1` using `[stdH_apply', matrixForm_diagBlocks_blockEmbed]`. Simplify using `only [LinearEquiv.coe_coe] at h1`. Rewrite `h1` using `[← hY x, ← hY y]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_assoc, mul_inv_cancel₀ harea, one_mul]`.
+
+Use `_ = _ := by`. Rewrite using `[h1]`. Apply the tactic sequence `by_cases hxy : x.1 = y.1 <;> simp [hxy, hOK]`. Establish `hsum : ∀ (z : Fin 4 × n → ℂ) (q : Fin 4 × n), ∑ w, g.symm (Pi.single w 1) q * z w = g.symm z q`. Introduce `z q`.
+
+Use `conv_rhs => rw [eq_sum_single z]`. Rewrite using `[map_sum, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, Pi.smul_apply, smul_eq_mul, mul_comm]`. Use `⟨fun w x => ι (Y x w), fun x y => ∑ w, ι (Y x w) * (Nn y w : ℂ_[p]) / (N : ℂ_[p]), ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Conclude with `hD`. Introduce `x y`. Apply `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one` to reduce the goal to its premises. Introduce `w _`. Rewrite using `[norm_div, norm_mul, hNn1, div_one]`.
+
+Conclude with `mul_le_one₀ (hD w x) (norm_nonneg _) (hint _)`. Introduce `a' i b' j show ∑ w, ι (g.symm (Pi.single w 1) (a', i)) * ι (Y (b', j) w) = _`. Repeatedly rewrite using `[← map_mul]`. Rewrite using `[← map_sum, hsum, hY, LinearEquiv.symm_apply_apply]`. Apply the tactic sequence `by_cases hab : a' = b' <;> simp [emb, hab]`.
+
+Introduce `x y show ∑ w, ι (Y x w) * ι (Y y w) = _`. Establish `e1 : ∑ w, ι (Y x w) * ι (Y y w) = ∑ w, ι (Y x w * conj (Y y w)) + ι (Complex.I * ((Real.sqrt d : ℝ) : ℂ)) * ∑ w, ι (Y x w) * (Nn y w : ℂ_[p]) / (N : ℂ_[p])`. Rewrite using `[Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[hconj y w, map_mul ι (Y x w)]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, ← map_sum, hgram x y]`. Apply the tactic sequence `by_cases hxy : x.1 = y.1 <;> simp [hxy]`.
+-/
 theorem GramTransfer_of (hM : MulRing) (hI : IotaOK) : GramTransfer := by
   intro a b c d ha hd lam hlam hcm n _ _ h Λ g hiso p _ ι hp J _ v hv
   set L := cmL a b d ha hd lam hlam with hL

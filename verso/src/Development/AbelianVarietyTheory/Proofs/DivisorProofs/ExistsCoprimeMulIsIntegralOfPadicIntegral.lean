@@ -5,6 +5,15 @@ open Polynomial
 
 namespace GlobalTheory.IntegralDescent
 
+/- English proof (translation)
+Take `⟨p, hpm, hp⟩` from `hw`. Establish `hzi : IsIntegral ℚ_[ℓ] ((1 : ℚ_[ℓ]) ⊗ₜ[ℚ] w)` using `IsIntegral.of_finite _ _`. Establish `hdvd : minpoly ℚ_[ℓ] ((1 : ℚ_[ℓ]) ⊗ₜ[ℚ] w) ∣ p.map (algebraMap ℤ_[ℓ] ℚ_[ℓ])`. Apply `minpoly.dvd` to reduce the goal to its premises. Rewrite using `[aeval_def, eval₂_map]`.
+
+Conclude with `hp`. Take `⟨g, hg⟩` from `IsIntegrallyClosed.eq_map_mul_C_of_dvd ℚ_[ℓ] hpm hdvd`. Rewrite `hg` using `[(minpoly.monic hzi).leadingCoeff, C_1, mul_one, GlobalTheory.DescCoeff.minpoly_one_tmul_eq]`. Establish `hc` using `congrArg (fun q => q.coeff i) hg`. Simplify using `only [coeff_map] at hc`.
+
+Establish `hn : ‖(((minpoly ℚ w).coeff i : ℚ) : ℚ_[ℓ])‖ ≤ 1`. Rewrite using `[← eq_ratCast (algebraMap ℚ ℚ_[ℓ]), ← hc]`. Conclude with `(g.coeff i).2`. Introduce `hd`. Establish `hu` using `PadicInt.isUnit_den _ hn`.
+
+Conclude with `PadicInt.irreducible_p.not_isUnit (isUnit_of_dvd_unit (Nat.cast_dvd_cast (α := ℤ_[ℓ]) hd) hu)`.
+-/
 theorem not_dvd_den_coeff_minpoly (E : Type) [CommRing E] [Algebra ℚ E] [FiniteDimensional ℚ E]
     (ℓ : ℕ) [Fact ℓ.Prime] (w : E) (hw : IsIntegral ℤ_[ℓ] ((1 : ℚ_[ℓ]) ⊗ₜ[ℚ] w)) (i : ℕ) :
     ¬ ℓ ∣ ((minpoly ℚ w).coeff i).den := by
@@ -26,6 +35,21 @@ theorem not_dvd_den_coeff_minpoly (E : Type) [CommRing E] [Algebra ℚ E] [Finit
   exact PadicInt.irreducible_p.not_isUnit
     (isUnit_of_dvd_unit (Nat.cast_dvd_cast (α := ℤ_[ℓ]) hd) hu)
 
+/- English proof (translation)
+Introduce `E _ _ _ ℓ hℓ w hw`. Use `set f := minpoly ℚ w with hf`. Establish `hfm : f.Monic` using `minpoly.monic (IsIntegral.of_finite ℚ w)`. Use `set d : ℕ := ∏ i ∈ Finset.range f.natDegree, (f.coeff i).den with hd`. Use `⟨d, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `h`. Take `⟨i, -, hi⟩` from `(hℓ.out.prime.dvd_finsetProd_iff _).mp h`. Conclude with `not_dvd_den_coeff_minpoly E ℓ w hw i hi`. Establish `hroot : aeval ((d : E) * w) (f.scaleRoots (d : ℚ)) = 0`. Use `scaleRoots_aeval_eq_zero (r := (d : ℚ)) (minpoly.aeval ℚ w)` as an intermediate fact.
+
+Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Establish `hlift : f.scaleRoots (d : ℚ) ∈ Polynomial.lifts (algebraMap ℤ ℚ)`. Rewrite using `[lifts_iff_coeff_lifts]`. Introduce `i`. Rewrite using `[coeff_scaleRoots]`.
+
+Break down `lt_trichotomy i f.natDegree with hi | hi | hi` into its components or cases. Take `⟨c, hc⟩ : (f.coeff i).den ∣ d` from `Finset.dvd_prod_of_mem (fun j => (f.coeff j).den) (Finset.mem_range.mpr hi)`. Take `⟨k, hk⟩ : ∃ k, f.natDegree - i = k + 1` from `⟨f.natDegree - i - 1, by omega⟩`. Use `⟨(f.coeff i).num * c * (d : ℤ) ^ k, ?_⟩` and prove the remaining obligations. Rewrite using `[hk, pow_succ]`.
+
+Establish `h1 : (d : ℚ) = ((f.coeff i).den : ℚ) * c` using `by exact_mod_cast hc`. Establish `h2 : f.coeff i * ((f.coeff i).den : ℚ) = (f.coeff i).num` using `Rat.mul_den_eq_num _`. Simplify using `only [eq_intCast, Int.cast_mul, Int.cast_pow, Int.cast_natCast]`. Rewrite using `[← h2]`. Take the linear combination `(-(f.coeff i) * (d : ℚ) ^ k) * h1`.
+
+Substitute `hi` using the available equality. Conclude with `⟨1, by simp [hfm.coeff_natDegree]⟩`. Conclude with `⟨0, by simp [coeff_eq_zero_of_natDegree_lt hi]⟩`. Take `⟨q, hq, -, hqm⟩` from `lifts_and_natDegree_eq_and_monic hlift ((monic_scaleRoots_iff _).mpr hfm)`. Use `⟨q, hqm, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← aeval_def, ← aeval_map_algebraMap ℚ, hq]`. Conclude with `hroot`.
+-/
 theorem exists_not_dvd_isIntegral_mul : ∀ (E : Type) [CommRing E] [Algebra ℚ E] [FiniteDimensional ℚ E] (ℓ : ℕ) [Fact ℓ.Prime] (w : E), IsIntegral ℤ_[ℓ] ((1 : ℚ_[ℓ]) ⊗ₜ[ℚ] w) → ∃ d : ℕ, ¬ ℓ ∣ d ∧ IsIntegral ℤ ((d : E) * w) := by
   intro E _ _ _ ℓ hℓ w hw
   set f := minpoly ℚ w with hf

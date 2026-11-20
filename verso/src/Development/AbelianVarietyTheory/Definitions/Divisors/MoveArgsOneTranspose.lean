@@ -15,21 +15,36 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
 
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨List.Nodup.product (List.nodup_range (n := m)) (List.nodup_range (n := m)), fun i j => by simp [flipOrder]⟩`.
+-/
 theorem flipOrder_nodup (m : ℕ) : (flipOrder m).Nodup ∧ ∀ i j, (i, j) ∈ flipOrder m ↔ i < m ∧ j < m :=
   ⟨List.Nodup.product (List.nodup_range (n := m)) (List.nodup_range (n := m)), fun i j => by simp [flipOrder]⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨inferInstance, inferInstance⟩`.
+-/
 example : Module.Free (AF D.host.F) (AE D) ∧ Module.Finite (AF D.host.F) (AE D) := ⟨inferInstance, inferInstance⟩
 
+/- English proof (translation)
+Simplify using `only [Grid.moveArgs, Assignment.read, invT_inv_val, invT_val, transpose_mul, transpose_transpose, Matrix.mul_assoc]`.
+-/
 theorem moveArgs_one_transpose {k : Type*} [Field k] (Γ : Grid k) (g : Γ.VertexGroup) (x : Γ.Args) (b : Edge) :
     (Γ.moveArgs .one g x b)ᵀ = ((g b.src)⁻¹).val * (x b)ᵀ * (g b.tgt).val := by
   simp only [Grid.moveArgs, Assignment.read, invT_inv_val, invT_val, transpose_mul, transpose_transpose, Matrix.mul_assoc]
 
+/- English proof (translation)
+Rewrite using `[stepFn, if_neg h1, if_pos h2, parPhi_fromBlocks _ hg rfl maxM_zero intM_zero intM_zero]`. Simplify using the standard rewrite rules.
+-/
 theorem stepFn_twist (t : T) (w : Pl D.host.E) (h1 : w ∉ L.Pg) (h2 : w ∈ L.Q t) (j : ℕ)
     {g : GL (Fin D.R.r) (Kw w)} (hg : g ∈ KO (Kw w) _) :
     stepFn L t w j (fromBlocks g.val 0 0 0) = ((L.xiH t).loc w (GeneralLinearGroup.det g) : ℂˣ) := by
   rw [stepFn, if_neg h1, if_pos h2, parPhi_fromBlocks _ hg rfl maxM_zero intM_zero intM_zero]
   simp
 
+/- English proof (translation)
+Establish `e : ((locGrid G t w).mu (j + 1))⁻¹ = ((muBase L (j + 1)).loc w)⁻¹ * ((L.xiH t).loc w)⁻¹`. Rewrite using `[← mul_inv]`. Both sides reduce to the same expression. Rewrite using `[e, stepFn, if_neg h1, if_pos h2]`. Conclude with `hasTypes_parPhi hξ hμ`.
+-/
 theorem hasTypes_twist (G : GridData L sc) (t : T) (w : Pl D.host.E) (h1 : w ∉ L.Pg) (h2 : w ∈ L.Q t) (j : ℕ)
     (hξ : IsTame ((L.xiH t).loc w)⁻¹) (hμ : IsUnram ((muBase L (j + 1)).loc w)⁻¹) :
     HasTypes ((locGrid G t w).mu (j + 1))⁻¹ (parahoric _ _ _ hξ).toLevel (parahoric _ _ _ hξ).toLevel (stepFn L t w j) := by
@@ -38,10 +53,20 @@ theorem hasTypes_twist (G : GridData L sc) (t : T) (w : Pl D.host.E) (h1 : w ∉
   rw [e, stepFn, if_neg h1, if_pos h2]
   exact hasTypes_parPhi hξ hμ
 
+/- English proof (translation)
+Rewrite using `[stepGroup, if_neg h1, if_pos h2]`. Both sides reduce to the same expression.
+-/
 theorem stepGroup_twist (t : T) (w : Pl D.host.E) (h1 : w ∉ L.Pg) (h2 : w ∈ L.Q t) (j : ℕ)
     (hξ : IsTame ((L.xiH t).loc w)⁻¹) : stepGroup L t w j = (parahoric _ _ _ hξ).J := by
   rw [stepGroup, if_neg h1, if_pos h2]; rfl
 
+/- English proof (translation)
+Unfold `stepFn at h`. Use `split_ifs at h`. Introduce `i l`. Simplify using `using TypeDatum.intM_of_Phi_ne_zero _ _ h ((ixSucc _ _ j).symm i) l`. Take `⟨⟨g, hg, e⟩, h21, h12, h22⟩` from `(parPhi_ne_zero_iff _).1 h`.
+
+Introduce and unpack `(i | i) (l | l)`. Use `intM_of_mem_KO hg i l` as an intermediate fact. Rewrite `this` using `[e]`. Then use the resulting hypothesis. Conclude with `h12 i l`. Conclude with `(h21 i l).le`.
+
+Conclude with `h22 i l`. Assume the negation of the conclusion as `hx`. Conclude with `h (Set.indicator_of_notMem (s := {x | IntM x}) hx _)`.
+-/
 theorem intM_of_stepFn (t : T) (w : Pl D.host.E) (j : ℕ) {x} (h : stepFn L t w j x ≠ 0) : IntM x := by
   unfold stepFn at h
   split_ifs at h
@@ -57,6 +82,13 @@ theorem intM_of_stepFn (t : T) (w : Pl D.host.E) (j : ℕ) {x} (h : stepFn L t w
   · by_contra hx
     exact h (Set.indicator_of_notMem (s := {x | IntM x}) hx _)
 
+/- English proof (translation)
+Use `⟨exists_givenStage_eq_one t w B Φ, fun _ => Matrix.of fun _ _ => ((unifAt w)⁻¹ : (Kw w)ˣ), ?_⟩` and prove the remaining obligations. Establish `hm` using `D.R.two_le_m`. Use `List.prod_eq_zero (List.mem_map.2 ⟨.theta 0 0, by simp [givenPath]; omega, ?_⟩)` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Establish `hr : 0 < D.R.r` using `(odd_r D).pos`.
+
+Establish `h1` using `intM_of_stepFn t w 0 h (.inl ⟨0, hr⟩) (.inl ⟨0, hr⟩)`. Establish `h2 : valuation (Kw w) ((unifAt w : (Kw w)ˣ) : Kw w) < 1` using `(isUnif_unifAt w) ▸ uniformizer_lt_one`. Establish `h3 : valuation (Kw w) (((unifAt w)⁻¹ : (Kw w)ˣ) : Kw w) ≤ 1` using `h1`. Establish `h4` using `mul_lt_one_of_lt_of_le h2 h3`. Rewrite `h4` using `[← map_mul, Units.mul_inv, map_one]`.
+
+Conclude with `lt_irrefl _ h4`.
+-/
 theorem givenStage_not_const {G : GridData L sc} (t : T) (w : Pl D.host.E) (B : Frames G) (Φ : G.Datum) :
     (∃ x, (givenStage t w B Φ).tensor x = 1) ∧ ∃ x, (givenStage t w B Φ).tensor x = 0 := by
   refine ⟨exists_givenStage_eq_one t w B Φ, fun _ => Matrix.of fun _ _ => ((unifAt w)⁻¹ : (Kw w)ˣ), ?_⟩
@@ -71,6 +103,11 @@ theorem givenStage_not_const {G : GridData L sc} (t : T) (w : Pl D.host.E) (B : 
   rw [← map_mul, Units.mul_inv, map_one] at h4
   exact lt_irrefl _ h4
 
+/- English proof (translation)
+Rewrite using `[Grid.PiLocalization₂.flips, List.foldl_append]`. Express the relevant statement in the definitionally equal form `invFourierSum _ _ _ _ _ _ = 0`. Rewrite using `[invFourierSum_apply, if_neg]`. Introduce `h`. Use `hx (mem_matLat_stdLat.2 fun a b => ?_)` and prove the remaining obligations.
+
+Conclude with `h b (.inr a) (by simp [Assignment.block])`.
+-/
 theorem flips_eq_zero {k : Type*} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     [MeasurableSpace k] [BorelSpace k] {Γ : Grid k} (ψ : AddChar k Circle) (ϖ : kˣ) (e : ℕ) (l : List (ℕ × ℕ)) (S : Γ.PiLocalization₂)
     (i j : ℕ) (x : Γ.Args) (hx : x (.theta (i + 1) j) ∉ matLat _ (stdLat k _)) :
@@ -82,6 +119,11 @@ theorem flips_eq_zero {k : Type*} [Field k] [ValuativeRel k] [TopologicalSpace k
   refine hx (mem_matLat_stdLat.2 fun a b => ?_)
   exact h b (.inr a) (by simp [Assignment.block])
 
+/- English proof (translation)
+Establish `e : ∃ l, flipOrder D.R.m = l ++ [(n, n)]`. Rewrite using `[hn, flipOrder, List.range_succ, List.flatMap_append, List.flatMap_singleton, List.map_append, ← List.append_assoc]`. Conclude with `⟨_, rfl⟩`. Take `⟨l, e⟩` from `e`. Rewrite using `[Tflip, flipStage, e]`.
+
+Conclude with `flips_eq_zero _ _ _ _ _ _ _ _ hx`.
+-/
 theorem Tflip_eq_zero {G : GridData L sc} (W : G.Weil) (B : Frames G) (t : T) (Φ : G.Datum) (w : Pl D.host.E) {n : ℕ}
     (hn : D.R.m = n + 1) (x : (locGrid G t w).Args) (hx : x (.theta (n + 1) n) ∉ matLat _ (stdLat (Kw w) _)) :
     Tflip W B t Φ w x = 0 := by
@@ -92,6 +134,11 @@ theorem Tflip_eq_zero {G : GridData L sc} (W : G.Weil) (B : Frames G) (t : T) (�
   rw [Tflip, flipStage, e]
   exact flips_eq_zero _ _ _ _ _ _ _ _ hx
 
+/- English proof (translation)
+Establish `h1 : ∀ X, Γ.eta (gdet (g X)) = 1` using `fun X => hη _ (valuation_gdet_of_mem_KO (hg X))`. Rewrite using `[om_of_mem_KO _ (hg _) (hg _), moveArgs_one_transpose]`. Simplify using `only [Grid.edgeFactor, apow_of_valuation_eq_one (valuation_gdet_of_mem_KO (Assignment.one.read_mem_KO (hg _)))]`. Establish `h2 : ∀ X, Γ.kappa (.theta i j) X (gdet (g X)) = Γ.mu (j + 1) (gdet (g X))` using `fun X => by`. Simplify using `[Grid.kappa, Grid.blockChar, h1]`.
+
+Rewrite using `[h2, h2, MonoidHom.inv_apply, MonoidHom.inv_apply, inv_inv, mul_one, mul_one, mul_comm (Γ.mu _ _ : ℂ)]`.
+-/
 theorem edgeFactor_theta {k : Type*} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (Γ : Grid k) (hη : IsUnram Γ.eta) (g : Γ.VertexGroup) (hg : ∀ X, g X ∈ KO k _) (i j : ℕ)
     (Φ : Matrix (Fin (Γ.rank (i, j + 1))) (Fin (Γ.rank (i, j))) k → ℂ) (x : Γ.Args) :

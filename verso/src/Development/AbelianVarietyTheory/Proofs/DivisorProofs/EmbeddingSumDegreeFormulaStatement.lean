@@ -7,5 +7,8 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped CategoryTheory.Obj
 open GlobalTheory GlobalTheory.IndefiniteRowSideFullHecke GlobalTheory.CM GlobalTheory.FlatDegreeCompare
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.finrank_mul_sum_embeddings_comp | exact GlobalTheory.finrank_mul_sum_embeddings_comp | (intros; apply GlobalTheory.finrank_mul_sum_embeddings_comp <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.embedding_sum_degree_formula : ∀ (k k' : Type) [Field k] [NumberField k] [Field k'] [NumberField k'] (i : k →+* k') (f : (k →+* ℂ) → ℝ), (Module.finrank ℚ k : ℝ) * ∑ σ : k' →+* ℂ, f (σ.comp i) = (Module.finrank ℚ k' : ℝ) * ∑ σ : k →+* ℂ, f σ := by
   first | exact @GlobalTheory.finrank_mul_sum_embeddings_comp | exact GlobalTheory.finrank_mul_sum_embeddings_comp | (intros; apply GlobalTheory.finrank_mul_sum_embeddings_comp <;> assumption)

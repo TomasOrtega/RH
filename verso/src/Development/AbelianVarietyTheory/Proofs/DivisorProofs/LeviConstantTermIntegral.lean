@@ -19,6 +19,27 @@ noncomputable section
 
 namespace GlobalTheory.UnipCT
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ n n₁ W W₁ H γ m hm hL Φ hΦ μ 𝓕 hμ h𝓕 h1`. Take `⟨hLx, -, hLι⟩` from `hL`. Establish `hx : mat m *ᵥ incV F H.x = incV F H.x` using `by simpa using hLx`. Establish `hx' : mat m⁻¹ *ᵥ incV F H.x = incV F H.x` using `by conv_lhs => rw [← hx]`. Rewrite using `[Matrix.mulVec_mulVec, mat_inv_mul', Matrix.one_mulVec]`.
+
+Establish `hι' : mat m⁻¹ * incM F H.ι = incM F H.ι * mat γ⁻¹`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_assoc (mat m⁻¹), Matrix.mul_assoc (incM F H.ι), mat_mul_inv', Matrix.mul_one]`. Use `_ = incM F H.ι * mat γ⁻¹ := by`. Rewrite using `[← hLι, ← Matrix.mul_assoc, mat_inv_mul', Matrix.one_mul]`.
+
+Establish `hN : ∀ u ∈ unip σ W H, m⁻¹ * u * m ∈ unip σ W H ∧ m * u * m⁻¹ ∈ unip σ W H`. Introduce `u hu`. Rewrite `hu`, the goal using `[unip_eq]`. Use `⟨conj_mem_unipSet H m γ hx hLι u hu, ?_⟩` and prove the remaining obligations. Simplify using `using conj_mem_unipSet H m⁻¹ γ⁻¹ hx' hι' u hu`.
+
+Take `⟨i1, i2, i3, i4⟩` from `topFacts (F := F) σ W.J`. Use `haveI : BorelSpace (UA σ W.J) := ⟨rfl⟩`. Use `haveI : LocallyCompactSpace (unip σ W H) := (isClosed_unip σ W H).isClosedEmbedding_subtypeVal.locallyCompactSpace`. Use `haveI := countable_ratU (σ := σ) W.J`. Set `Γ : Subgroup (unip σ W H)` to `(ratU σ W.J).subgroupOf (unip σ W H)`.
+
+Use `haveI : Countable Γ := Function.Injective.countable (f := fun g : Γ => (⟨g.1.1, g.2⟩ : ratU σ W.J)) fun g h hgh => by`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `using congrArg Subtype.val hgh`. Set `cφ : unip σ W H ≃ₜ* unip σ W H` to `{ toFun := fun u => ⟨m * u * m⁻¹, (hN u u.2).2⟩ invFun := fun u => ⟨m⁻¹ * u * m, (hN u u.2).1⟩ left_inv := fun u => Subtype.ext (by simp [mul_assoc]) right_inv := fun u => Subtype.ext (by simp [mul_assoc]) map_mul' := fun a b => Subtype.ext (by simp [mul_assoc]) continuous_toFun …`.
+
+Establish `hc1 : ∀ u : unip σ W H, (cφ u : UA σ W.J) = m * u * m⁻¹` using `fun _ => rfl`. Establish `hc2 : ∀ u : unip σ W H, (cφ.symm u : UA σ W.J) = m⁻¹ * u * m` using `fun _ => rfl`. Establish `hΓ1 : ∀ a ∈ Γ, cφ a ∈ Γ` using `fun a ha => by`. Rewrite `ha`, the goal using `[Subgroup.mem_subgroupOf]`. Rewrite using `[hc1]`.
+
+Conclude with `(ratU σ W.J).mul_mem ((ratU σ W.J).mul_mem hm ha) ((ratU σ W.J).inv_mem hm)`. Establish `hΓ2 : ∀ a ∈ Γ, cφ.symm a ∈ Γ` using `fun a ha => by`. Rewrite `ha`, the goal using `[Subgroup.mem_subgroupOf]`. Rewrite using `[hc2]`. Conclude with `(ratU σ W.J).mul_mem ((ratU σ W.J).mul_mem ((ratU σ W.J).inv_mem hm) ha) hm`.
+
+Set `cq : Γ ≃ Γ` to `{ toFun := fun a => ⟨cφ a, hΓ1 a a.2⟩ invFun := fun a => ⟨cφ.symm a, hΓ2 a a.2⟩ left_inv := fun a => Subtype.ext (cφ.symm_apply_apply _) right_inv := fun a => Subtype.ext (cφ.apply_symm_apply _) }`. Set `cm : unip σ W H ≃ᵐ unip σ W H` to `cφ.toHomeomorph.toMeasurableEquiv`. Establish `hmp : MeasurePreserving cm μ (μ.map cm)` using `cm.measurable.measurePreserving _`. Use `haveI hν : (μ.map cm).IsHaarMeasure := cφ.isHaarMeasure_map μ`. Establish `h𝓕' : IsFundamentalDomain Γ (cm.symm ⁻¹' 𝓕) (μ.map cm)` using `h𝓕.preimage_of_equiv (hmp.symm cm).quasiMeasurePreserving (e := cq) cq.bijective fun a u => by show cφ.symm (cφ a * u) = a * cφ.symm u`.
+
+Rewrite using `[map_mul, cφ.symm_apply_apply]`. Establish `hm1 : (μ.map cm) (cm.symm ⁻¹' 𝓕) = 1`. Rewrite using `[cm.map_apply, ← Set.preimage_comp, cm.symm_comp_self, Set.preimage_id, h1]`. Establish `key` using `setIntegral_fd_eq Γ (fun u => Φ u.1) (fun δ hδ x => hΦ δ.1 ⟨Subgroup.mem_subgroupOf.1 hδ, δ.2⟩ x.1 x.2) (μ.map cm) μ (cm.symm ⁻¹' 𝓕) 𝓕 h𝓕' h𝓕 hm1 h1`. Rewrite using `[← key, setIntegral_map_equiv, ← Set.preimage_comp, cm.symm_comp_self, Set.preimage_id]`.
+
+Both sides reduce to the same expression.
+-/
 theorem setIntegral_conj_levi_of_unip_invariant : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n n₁ : ℕ)
     (W : Spc F E n) (W₁ : Spc F E n₁) (H : Plane E n n₁) (γ : UA σ W₁.J) (m : UA σ W.J),
     m ∈ ratU σ W.J → IsLevi H 1 γ m → ∀ Φ : UA σ W.J → ℂ,

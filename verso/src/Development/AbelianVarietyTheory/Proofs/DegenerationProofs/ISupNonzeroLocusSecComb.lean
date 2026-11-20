@@ -20,6 +20,9 @@ noncomputable section
 namespace GlobalTheory.ZH.PreSec
 open GlobalTheory.Points GlobalTheory.ExpansionLinear
 
+/- English proof (translation)
+Use `eq_zero_of_basicOpen_eq_bot f (le_bot_iff.1 (ComplexPoints.opens_le_of_geomPoints p (𝟙 _) _ _ ?_))` and prove the remaining obligations. Introduce `x hx hxf`. Establish `hxU : ⊤ ≤ x ⁻¹ᵁ U` using `fun a ha => X.basicOpen_le f (hxf ha)`. Conclude with `absurd (h x hx hxU) ((le_preimage_basicOpen_iff x hxU f).1 hxf).ne_zero`.
+-/
 theorem eq_zero_of_valR {K : Type} [Field K] [IsAlgClosed K] {X : Scheme.{0}} (p : X ⟶ Sp K) [LocallyOfFiniteType p]
     [IsReduced X] (U : X.Opens) (f : Γ(X, U))
     (h : ∀ x : Sp K ⟶ X, x ≫ p = 𝟙 _ → ⊤ ≤ x ⁻¹ᵁ U → valR x U f = 0) : f = 0 := by
@@ -28,6 +31,17 @@ theorem eq_zero_of_valR {K : Type} [Field K] [IsAlgClosed K] {X : Scheme.{0}} (p
   have hxU : ⊤ ≤ x ⁻¹ᵁ U := fun a ha => X.basicOpen_le f (hxf ha)
   exact absurd (h x hx hxU) ((le_preimage_basicOpen_iff x hxU f).1 hxf).ne_zero
 
+/- English proof (translation)
+Distinguish the cases in `hW : (W : Set M.Z).Nonempty`. Use `swap`. Conclude with `⟨1, 1, _root_.mul_one _, fun h => absurd h hW⟩`. Establish `h1 : ∀ z ∈ W, ∃ c : Matrix J J Ω, (∀ i l, c i l ∈ M.O z) ∧ c * b = 1` using `fun z hz => by`. Establish `: ∀ i, ∃ c : J → M.O z, ∑ l, c l • b l = Pi.single i 1` using `fun i => (Submodule.mem_span_range_iff_exists_fun _).1 (hb z hz ▸ Submodule.subset_span ⟨i, rfl⟩)`.
+
+Use `choose c hc using this`. Use `⟨Matrix.of fun i l => (c i l : Ω), fun i l => (c i l).2, Matrix.ext fun i j => ?_⟩` and prove the remaining obligations. Use `congrFun (hc i) j` as an intermediate fact. Rewrite `this` using `[Finset.sum_apply]`. Rewrite using `[Matrix.mul_apply, Matrix.one_apply]`.
+
+Conclude with `this.trans (by rw [Pi.single_apply]; exact if_congr eq_comm rfl rfl)`. Take `⟨c, -, hc⟩` from `h1 _ hW.some_mem`. Establish `h2 : ∀ i l, c i l ∈ M.ringOn W` using `fun i l => RatModel.mem_ringOn.2 fun z hz => by`. Take `⟨c', h, h'⟩` from `h1 z hz`. Rewrite using `[Matrix.left_inv_eq_left_inv hc h']`.
+
+Conclude with `h i l`. Establish `h3 : ∀ i l, b i l ∈ M.ringOn W` using `fun i l => RatModel.mem_ringOn.2 fun z hz => (RatModel.Lat.mem_const_iff M).1 (hb z hz ▸ Submodule.subset_span ⟨i, rfl⟩) l`. Use `choose B hB using fun i l => (RatModel.mem_ringOn_iff_exists hW).1 (h3 i l)`. Use `choose C hC using fun i l => (RatModel.mem_ringOn_iff_exists hW).1 (h2 i l)`. Use `⟨Matrix.of B, Matrix.of C, Matrix.ext fun i j => M.res_injective W hW ?_, fun _ => hB⟩` and prove the remaining obligations.
+
+Use `congrFun (congrFun hc i) j` as an intermediate fact. Rewrite `this`, the goal using `[Matrix.mul_apply]`. Rewrite using `[map_sum, Matrix.one_apply, apply_ite (M.res W hW), map_one, map_zero, ← Matrix.one_apply, ← this]`. Conclude with `Finset.sum_congr rfl fun l _ => by`. Rewrite using `[map_mul, M.res_apply, M.res_apply, Matrix.of_apply, Matrix.of_apply, hB, hC]`.
+-/
 theorem exists_matrix {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] (M : RatModel o Ω) {J : Type} [Fintype J]
     [DecidableEq J] (W : M.Z.Opens) (b : Matrix J J Ω)
     (hb : ∀ z ∈ W, (RatModel.Lat.const M J).E z = Submodule.span (M.O z) (Set.range b)) :
@@ -62,6 +76,21 @@ theorem exists_matrix {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] (M : 
 
 open GlobalTheory.SecAff in
 
+/- English proof (translation)
+Take `⟨V, hV, b, hb⟩` from `hS S P n hn (x (IsLocalRing.closedPoint K))`. Take `⟨t₀, ht₀⟩` from `exists_lift (T := baseOver S) (T' := Over.mk x) (Over.homMk x (Category.comp_id _)) V (fun y => by rw [Subsingleton.elim (α := PrimeSpectrum K) y (IsLocalRing.closedPoint K)]; exact hV)`. Set `t : Spec (CommRingCat.of K) ⟶ (overRes (T` to `baseOver S) V).left := t₀.left`. Establish `ht : (baseAt t).hom = x` using `Over.w t₀`. Establish `hA : IsAffine (baseAt t).left` using `inferInstanceAs (IsAffine (Spec (CommRingCat.of K)))`.
+
+Establish `: Nontrivial Γ((baseAt t).left, ⊤)` using `(Scheme.ΓSpecIso (CommRingCat.of K)).commRingCatIsoToRingEquiv.toEquiv.nontrivial`. Take `⟨h₁, h₂⟩` from `hb K t (fun i => SecM.toSec P.A (pull P.A P.L n (homAt t) (SecM.ofSec P.A (b i)))) (fun i => (isPullSec_iff P.A P.L n _ _ _).2 rfl)`. Establish `hrk` using `(Module.finrank_eq_card_basis (Module.Basis.mk h₁ h₂.ge)).trans (Fintype.card_fin _)`. Set `k : baseAt t ⟶ baseOver S` to `Over.homMk (baseAt t).hom (Category.comp_id _)`. Take `⟨m, b₀, hb₀⟩` from `GlobalTheory.exists_sections_span_affine hS S P n hn ⊤ (isAffineOpen_top S)`.
+
+Take `⟨e, -⟩` from `exists_lift (T := baseOver S) (𝟙 _) ⊤ (fun _ => trivial)`. Establish `h₃` using `hb₀ (baseAt t) (k ≫ e) (fun i => SecM.toSec P.A (pull P.A P.L n (k ≫ e) (SecM.ofSec P.A (b₀ i)))) (fun i => (isPullSec_iff P.A P.L n _ _ _).2 rfl)`. Establish `hcomb : ∀ (T : Over S) (d : J → Γ(T.left, ⊤)) (v : J → SecM P.A P.L n T) (j), (∑ l, d l • v l).1 j = ∑ l, liftFun P.A _ (d l) * (v l).1 j` using `fun T d v j => by`. Rewrite using `[Submodule.coe_sum, Finset.sum_apply]`. Both sides reduce to the same expression.
+
+Establish `h₄ : ⊤ ≤ Submodule.span Γ((baseAt t).left, ⊤) (Set.range fun l => pull P.A P.L n k (SecM.ofSec P.A (s l)))`. Use `h₃.ge.trans (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩`. Take `⟨d, hd⟩` from `hs (SecM.toSec P.A (pull P.A P.L n e (SecM.ofSec P.A (b₀ i))))`. Use `map_mem_span (pull P.A P.L n k) (fun l => SecM.ofSec P.A (s l)) (pull P.A P.L n e (SecM.ofSec P.A (b₀ i))) ((Submodule.mem_span_range_iff_exists_fun _).2 ⟨d, Subtype.ext (funext fun j => (hcomb _ d _ j).trans (hd j).symm)⟩)` as an intermediate fact.
+
+Rewrite `this` using `[pull_pull]`. Conclude with `this`. Establish `hli` using `linearIndependent_of_top_le_span_of_card_eq_finrank h₄ (hJ.trans hrk.symm)`. Use `P.isAb.smooth` as an intermediate fact. Establish `hsm : Smooth (fst (baseAt t) P.A).left` using `inferInstanceAs (Smooth (pullback.fst (baseAt t).hom P.A.hom))`.
+
+Establish `: IsReduced (baseAt t ⊗ P.A).left` using `isReduced_scheme_of_smooth_of_isIntegrallyClosed K (fst (baseAt t) P.A).left`. Establish `h0` using `Fintype.linearIndependent_iff.1 hli (fun l => (Scheme.ΓSpecIso (CommRingCat.of K)).inv.hom (c l)) (Subtype.ext (funext fun j => (hcomb _ _ _ j).trans (eq_zero_of_valR (K := K) (fst (baseAt t) P.A).left _ _ fun p hp hU => ?_)))`. Use function extensionality and compare the values at `l`. Conclude with `(ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of K)).inv).1 ((h0 l).trans (map_zero _).symm)`. Use `Eq.trans ?_ (hc (p ≫ (k ▷ P.A).left) j ?_ (le_preimage_comp p _ (chart_le P.A P.L n k j) hU))` and prove the remaining obligations.
+
+Use `(valR_eq p _ hU _).trans ((map_sum _ _ _).trans (Finset.sum_congr rfl fun l _ => (map_mul _ _ _).trans ?_))` and prove the remaining obligations. Use `congrArg₂ (· * ·) ((valR_eq p _ hU _).symm.trans ?_) ((valR_eq p _ hU _).symm.trans (valR_appLE p _ (chart_le P.A P.L n k j) hU _))` and prove the remaining obligations. Conclude with `valR_constFn_of_section (fst (baseAt t) P.A).left p hp _ hU (c l)`. Rewrite using `[Category.assoc, whisker_fst_left, ← Category.assoc, hp, Category.id_comp]`. Conclude with `ht`.
+-/
 theorem indep_fibre (hS : SecBaseChangeSt) {S : Scheme.{0}} [IsLocallyNoetherian S] [IsAffine S] (P : PolAV S) {n : ℕ}
     (hn : 1 ≤ n) {J : Type} [Fintype J] (hJ : Fintype.card J = n ^ P.g)
     (s : J → LB.Sec (LPow P.A P.L n (baseOver S)))
@@ -131,6 +160,15 @@ def chartPullOne {X Y Y' : Scheme.{0}} (L : LB X) (a : Y ⟶ X) (k : Y' ⟶ Y) (
         (gm_linComb L (fun _ : Fin 1 => a) (fun _ => 1) k y _ _ (le j hj) (le j' hj')).symm)
       rw [Fintype.prod_unique, Fintype.prod_unique, Category.id_comp, e] }
 
+/- English proof (translation)
+Use `P.isAb.smooth` as an intermediate fact. Use `P.isAb.geomConnected` as an intermediate fact. Establish `: GeometricallyIntegral P.A.hom` using `geometricallyIntegral_of_smooth _`. Take `⟨V, hV, θ, hθ⟩` from `SepPoints.exists_sec_meetsFibres hS P z`. Substitute `hψ` using the available equality.
+
+Set `i` to `((ψ ≫ P.A.hom) ⁻¹ᵁ V).ι`. Establish `sq : IsPullback (i ≫ ψ) ((ψ ≫ P.A.hom) ∣_ V) P.A.hom (V.ι ≫ 𝟙 S)` using `(isPullback_morphismRestrict (ψ ≫ P.A.hom) V).flip.paste_horiz (IsPullback.of_horiz_isIso ⟨(Category.comp_id _).symm⟩ : IsPullback ψ (ψ ≫ P.A.hom) P.A.hom (𝟙 S))`. Set `k : _ ⟶ (overRes (T` to `baseOver S) V ⊗ P.A).left := sq.flip.isoPullback.hom`. Establish `k₁ : k ≫ (fst (overRes (T` using `baseOver S) V) P.A).left = (ψ ≫ P.A.hom) ∣_ V := sq.flip.isoPullback_hom_fst`. Establish `k₂ : k ≫ (snd (overRes (T` using `baseOver S) V) P.A).left = i ≫ ψ := sq.flip.isoPullback_hom_snd`.
+
+Establish `hk : Function.Surjective k` using `sq.flip.isoPullback.hom.homeomorph.surjective`. Take `⟨σ, hσ⟩` from `exists_sec_nonzeroLocus_eq_of_lbIso (LB.isLB_pull hL i) (LB.isLB_pull P.isLB (i ≫ ψ)) (LBIso.chartPull (chartPullPull L i) (chartPullSame P.L _ _ _ i fun _ => rfl) H) (chartSec (chartPullOne P.L _ k _ k₂.symm) θ)`. Rewrite `hσ` using `[nonzeroLocus_chartSec _ _ fun y _ _ => exists_chart (LB.isLB_pull P.isLB (i ≫ ψ)) y]`. Use `⟨V, σ, hV, fun z' hz' => ?_⟩` and prove the remaining obligations. Take `⟨x, hx, e⟩` from `hθ ⟨z', hz'⟩`.
+
+Take `⟨y, rfl⟩` from `hk x`. Use `⟨y, hσ.ge hx, ?_⟩` and prove the remaining obligations. Establish `e₁ : ((ψ ≫ P.A.hom) ∣_ V) y = ⟨z', hz'⟩` using `(congrArg (fun q => q y) k₁).symm.trans e`. Conclude with `(congrArg (fun q => q y) (morphismRestrict_ι (ψ ≫ P.A.hom) V)).symm.trans (congrArg V.ι e₁)`.
+-/
 theorem exists_theta (hS : SecBaseChangeSt) {S X : Scheme.{0}} [IsLocallyNoetherian S] (P : PolAV S) (p : X ⟶ S)
     (ψ : X ⟶ P.A.left) [IsIso ψ] (hψ : ψ ≫ P.A.hom = p) (L : LB X) (hL : L.IsLB) (H : LBIso L (P.L.pull ψ)) (z : S) :
     ∃ (N : S.Opens) (σ : LB.Sec (L.pull (p ⁻¹ᵁ N).ι)), z ∈ N ∧
@@ -162,6 +200,9 @@ theorem exists_theta (hS : SecBaseChangeSt) {S X : Scheme.{0}} [IsLocallyNoether
 variable {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] {S : ThetaSys o Ω} {ρ : S.Real}
   [Algebra.FiniteType o S.R] [IsFractionRing S.R Ω]
 
+/- English proof (translation)
+Set `M` to `RatModel.ofAffine o Ω S.R`. Establish `h : (M.pt ≫ M.Z.topIso.inv) ≫ (⊤ : M.Z.Opens).ι = M.pt` using `(Category.assoc _ _ _).trans ((congrArg (M.pt ≫ ·) M.Z.topIso.inv_hom_id).trans (Category.comp_id _))`. Establish `e : M.Z.topIso.inv ≫ Q.u₀ = 𝟙 M.Z` using `ext_of_isDominant M.pt ((Category.assoc _ _ _).symm.trans ((Q.u₀_gen _ h).trans (Category.comp_id _).symm))`. Conclude with `(M.Z.topIso.hom_inv_id_assoc Q.u₀).symm.trans ((congrArg (M.Z.topIso.hom ≫ ·) e).trans (Category.comp_id _))`.
+-/
 theorem u₀_eq (Q : ZHPre ρ (RatModel.ofAffine o Ω S.R) ⊤) : Q.u₀ = (⊤ : (Sp S.R).Opens).ι := by
   let M := RatModel.ofAffine o Ω S.R
   have h : (M.pt ≫ M.Z.topIso.inv) ≫ (⊤ : M.Z.Opens).ι = M.pt :=
@@ -170,6 +211,11 @@ theorem u₀_eq (Q : ZHPre ρ (RatModel.ofAffine o Ω S.R) ⊤) : Q.u₀ = (⊤ 
     ext_of_isDominant M.pt ((Category.assoc _ _ _).symm.trans ((Q.u₀_gen _ h).trans (Category.comp_id _).symm))
   exact (M.Z.topIso.hom_inv_id_assoc Q.u₀).symm.trans ((congrArg (M.Z.topIso.hom ≫ ·) e).trans (Category.comp_id _))
 
+/- English proof (translation)
+Establish `h₀ : IsIso (⊤ : (Sp S.R).Opens).ι` using `inferInstanceAs (IsIso (Sp S.R).topIso.hom)`. Establish `h₁ : IsIso Q.φ` using `MorphismProperty.of_isPullback (P := .isomorphisms _) Q.cart.1.flip h₀`. Establish `h₂ : IsIso Q.u₀` using `by rw [u₀_eq]; exact h₀`. Use `⟨inv Q.φ ≫ pullback.fst _ _, inferInstance, ?_, IsIso.hom_inv_id_assoc _ _, ?_⟩` and prove the remaining obligations. Use `(Category.assoc _ _ _).trans ((IsIso.inv_comp_eq _).2 (pullback.condition.trans ?_))` and prove the remaining obligations.
+
+Conclude with `(congrArg (pullback.snd ρ.P.A.hom Q.u₀ ≫ ·) (u₀_eq Q)).trans Q.cart.1.w.symm`. Use `LBIso.trans Q.L.isLB (LB.isLB_pull Q.L.isLB (𝟙 _)) (LB.isLB_pull ρ.P.isLB _) (lbIso_of_chartPull (chartPullUnpull Q.L.L _ rfl) (LB.isLB_pull Q.L.isLB (𝟙 _))) ?_` and prove the remaining obligations. Conclude with `LBIso.chartPull (chartPullSame Q.L.L _ _ _ (inv Q.φ) fun _ => (IsIso.inv_hom_id _).symm) (chartPullSame ρ.P.L _ _ _ (inv Q.φ) fun _ => rfl) ⟨Q.w, Q.w_gen⟩`.
+-/
 theorem exists_iso (Q : ZHPre ρ (RatModel.ofAffine o Ω S.R) ⊤) : ∃ ψ : Q.G.left ⟶ ρ.P.A.left, IsIso ψ ∧
     ψ ≫ ρ.P.A.hom = Q.G.hom ∧ Q.φ ≫ ψ = pullback.fst _ _ ∧ LBIso Q.L.L (ρ.P.L.pull ψ) := by
   have h₀ : IsIso (⊤ : (Sp S.R).Opens).ι := inferInstanceAs (IsIso (Sp S.R).topIso.hom)

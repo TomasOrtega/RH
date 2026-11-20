@@ -12,6 +12,17 @@ set_option synthInstance.maxHeartbeats 400000
 
 variable {R : Ranks} {H : Host R} {what₂ : Rows.Data R} {B : LocBase0 H what₂}
 
+/- English proof (translation)
+Take `⟨t, ht⟩` from `t`. Proceed by induction on `ht using Algebra.adjoin_induction with`. Consider the case `mem e he`. Take `⟨v, k, hvk, rfl⟩` from `he`. Establish `h1` using `NCov.W_le _ _ (⟨_, Algebra.subset_adjoin ⟨v, k, hvk, rfl⟩⟩ : hAlg B i) hx`.
+
+Establish `hs` using `hss (jOf B i) (wOf B i) i.2.2.2.1 i.2.2.2.2.1 i.2.2.2.2.2 v k hvk`. Rewrite `h1` using `[hs.isFinitelySemisimple.maxGenEigenspace_eq_eigenspace]`. Conclude with `Module.End.mem_eigenspace_iff.1 h1`. Consider the case `algebraMap r`. Establish `e : ψ ⟨algebraMap (OOf B i) _ r, Subalgebra.algebraMap_mem _ r⟩ = r` using `ψ.commutes r`.
+
+Rewrite using `[e]`. Use `show (algebraMap (OOf B i) (Module.End (FractionRing (OOf B i)) (B.V (jOf B i) (wOf B i))) r) x = _`. Rewrite using `[Module.algebraMap_end_apply, algebraMap_smul]`. Consider the case `add a b ha hb iha ihb`. Establish `e : ψ ⟨a + b, add_mem ha hb⟩ = ψ ⟨a, ha⟩ + ψ ⟨b, hb⟩` using `map_add ψ ⟨a, ha⟩ ⟨b, hb⟩`.
+
+Express the relevant statement in the definitionally equal form `a x = _ at iha`. Express the relevant statement in the definitionally equal form `b x = _ at ihb`. Use `show (a + b) x = _`. Rewrite using `[e, LinearMap.add_apply, iha, ihb, map_add, add_smul]`. Consider the case `mul a b ha hb iha ihb`.
+
+Establish `e : ψ ⟨a * b, mul_mem ha hb⟩ = ψ ⟨a, ha⟩ * ψ ⟨b, hb⟩` using `map_mul ψ ⟨a, ha⟩ ⟨b, hb⟩`. Express the relevant statement in the definitionally equal form `a x = _ at iha`. Express the relevant statement in the definitionally equal form `b x = _ at ihb`. Use `show (a * b) x = _`. Rewrite using `[e, Module.End.mul_apply, ihb, map_smul, iha, smul_smul, map_mul, mul_comm]`.
+-/
 theorem apply_eq_smul (hss : SemisimpleTw B) (i : LocT B) (ψ : hAlg B i →ₐ[OOf B i] OOf B i)
     {x : B.V (jOf B i) (wOf B i)} (hx : x ∈ NCov.W (hAlg B i) (NCov.pt ψ)) (t : hAlg B i) :
     (t : Module.End (FractionRing (OOf B i)) (B.V (jOf B i) (wOf B i))) x =
@@ -45,12 +56,18 @@ theorem apply_eq_smul (hss : SemisimpleTw B) (i : LocT B) (ψ : hAlg B i →ₐ[
 section Gen
 variable {K V : Type*} [Field K] [AddCommGroup V] [Module K V]
 
+/- English proof (translation)
+Establish `hle : (⨆ (a) (_ : P a), p a) ≤ (⨆ (a) (_ : P a), p a).comap f` using `iSup₂_le fun a ha x hx => le_iSup₂ (f := fun a (_ : P a) => p a) a ha (h a ha x hx)`. Conclude with `hle hy`.
+-/
 theorem mem_iSup₂_of_mapsTo {ι : Type*} (p : ι → Submodule K V) (P : ι → Prop) (f : Module.End K V)
     (h : ∀ a, P a → ∀ x ∈ p a, f x ∈ p a) {y : V} (hy : y ∈ ⨆ (a) (_ : P a), p a) : f y ∈ ⨆ (a) (_ : P a), p a := by
   have hle : (⨆ (a) (_ : P a), p a) ≤ (⨆ (a) (_ : P a), p a).comap f :=
     iSup₂_le fun a ha x hx => le_iSup₂ (f := fun a (_ : P a) => p a) a ha (h a ha x hx)
   exact hle hy
 
+/- English proof (translation)
+Establish `hle : (⨆ (a) (_ : P a), p a) ≤ LinearMap.ker f` using `iSup₂_le fun a ha x hx => h a ha x hx`. Conclude with `hle hy`.
+-/
 theorem eq_zero_of_iSup₂ {ι : Type*} (p : ι → Submodule K V) (P : ι → Prop) (f : Module.End K V)
     (h : ∀ a, P a → ∀ x ∈ p a, f x = 0) {y : V} (hy : y ∈ ⨆ (a) (_ : P a), p a) : f y = 0 := by
   have hle : (⨆ (a) (_ : P a), p a) ≤ LinearMap.ker f := iSup₂_le fun a ha x hx => h a ha x hx
@@ -58,6 +75,9 @@ theorem eq_zero_of_iSup₂ {ι : Type*} (p : ι → Submodule K V) (P : ι → P
 
 end Gen
 
+/- English proof (translation)
+The claim follows from `mem_iSup₂_of_mapsTo (fun ψ : hAlg B i →ₐ[OOf B i] OOf B i => NCov.W (hAlg B i) (NCov.pt ψ)) (fun ψ => NCov.cls ψ = i.2.1) _ (fun ψ _ z hz => by rw [apply_eq_smul hss i ψ hz t] exact Submodule.smul_mem _ _ hz) hy`.
+-/
 theorem mem_part (hss : SemisimpleTw B) (i : LocT B) (t : hAlg B i) {y : B.V (jOf B i) (wOf B i)}
     (hy : y ∈ partOf B i) : (t : Module.End (FractionRing (OOf B i)) (B.V (jOf B i) (wOf B i))) y ∈ partOf B i :=
   mem_iSup₂_of_mapsTo (fun ψ : hAlg B i →ₐ[OOf B i] OOf B i => NCov.W (hAlg B i) (NCov.pt ψ)) (fun ψ => NCov.cls ψ = i.2.1) _
@@ -65,6 +85,9 @@ theorem mem_part (hss : SemisimpleTw B) (i : LocT B) (t : hAlg B i) {y : B.V (jO
       rw [apply_eq_smul hss i ψ hz t]
       exact Submodule.smul_mem _ _ hz) hy
 
+/- English proof (translation)
+The claim follows from `mem_iSup₂_of_mapsTo (fun ψ : hAlg B i →ₐ[OOf B i] OOf B i => NCov.W (hAlg B i) (NCov.pt ψ)) (fun ψ => NCov.cls ψ ≠ i.2.1) _ (fun ψ _ z hz => by rw [apply_eq_smul hss i ψ hz t] exact Submodule.smul_mem _ _ hz) hy`.
+-/
 theorem mem_off (hss : SemisimpleTw B) (i : LocT B) (t : hAlg B i) {y : B.V (jOf B i) (wOf B i)}
     (hy : y ∈ offOf B i) : (t : Module.End (FractionRing (OOf B i)) (B.V (jOf B i) (wOf B i))) y ∈ offOf B i :=
   mem_iSup₂_of_mapsTo (fun ψ : hAlg B i →ₐ[OOf B i] OOf B i => NCov.W (hAlg B i) (NCov.pt ψ)) (fun ψ => NCov.cls ψ ≠ i.2.1) _
@@ -72,6 +95,9 @@ theorem mem_off (hss : SemisimpleTw B) (i : LocT B) (t : hAlg B i) {y : B.V (jOf
       rw [apply_eq_smul hss i ψ hz t]
       exact Submodule.smul_mem _ _ hz) hy
 
+/- English proof (translation)
+The claim follows from `eq_zero_of_iSup₂ (fun ψ : hAlg B i →ₐ[OOf B i] OOf B i => NCov.W (hAlg B i) (NCov.pt ψ)) (fun ψ => NCov.cls ψ = i.2.1) _ (fun ψ hψ z hz => by rw [apply_eq_smul hss i ψ hz t] by_cases hW : NCov.W (hAlg B i) (NCov.pt ψ) = ⊥ · rw [hW] at hz rw [(Submodule.mem_bot _).1 hz, smul_zero] …`.
+-/
 theorem eq_zero_of_pts (hss : SemisimpleTw B) (i : LocT B) (t : hAlg B i) (ht : ∀ x : XOf B i, x.1 t = 0)
     {y : B.V (jOf B i) (wOf B i)} (hy : y ∈ partOf B i) :
     (t : Module.End (FractionRing (OOf B i)) (B.V (jOf B i) (wOf B i))) y = 0 :=
@@ -83,6 +109,11 @@ theorem eq_zero_of_pts (hss : SemisimpleTw B) (i : LocT B) (t : hAlg B i) (ht : 
         rw [(Submodule.mem_bot _).1 hz, smul_zero]
       · rw [ht ⟨ψ, hψ, hW⟩, map_zero, zero_smul]) hy
 
+/- English proof (translation)
+Establish `hq : y - ((projOf B hC i y : partOf B i) : B.V (jOf B i) (wOf B i)) ∈ offOf B i` using `Submodule.sub_projection_mem (hC i) y`. Establish `e : (t : Module.End (FractionRing (OOf B i)) (B.V (jOf B i) (wOf B i))) y = (t : Module.End (FractionRing (OOf B i)) (B.V (jOf B i) (wOf B i))) (projOf B hC i y) + (t : Module.End (FractionRing (OOf B i)) (B.V (jOf B i) (wOf B i))) (y - (projOf B hC i y : B.V (jOf B i) (wOf B i)) …`. Rewrite using `[← map_add, add_sub_cancel]`. Establish `h1 : projOf B hC i ((t : Module.End (FractionRing (OOf B i)) (B.V (jOf B i) (wOf B i))) (projOf B hC i y)) = ⟨_, mem_part hss i t (projOf B hC i y).2⟩` using `Submodule.projectionOnto_apply_of_mem_left (hC i) _`. Establish `h2 : projOf B hC i ((t : Module.End (FractionRing (OOf B i)) (B.V (jOf B i) (wOf B i))) (y - (projOf B hC i y : B.V (jOf B i) (wOf B i)))) = 0` using `Submodule.projectionOnto_apply_of_mem_right (hC i) (mem_off hss i t hq)`.
+
+Rewrite using `[e, map_add, h1, h2, add_zero]`.
+-/
 theorem projOf_apply (hss : SemisimpleTw B) (hC : PartCompl B) (i : LocT B) (t : hAlg B i) (y : B.V (jOf B i) (wOf B i)) :
     ((projOf B hC i ((t : Module.End (FractionRing (OOf B i)) (B.V (jOf B i) (wOf B i))) y) : partOf B i) :
       B.V (jOf B i) (wOf B i)) = (t : Module.End (FractionRing (OOf B i)) (B.V (jOf B i) (wOf B i))) (projOf B hC i y) := by
@@ -103,6 +134,15 @@ theorem projOf_apply (hss : SemisimpleTw B) (hC : PartCompl B) (i : LocT B) (t :
 def lat0 (i : LocT B) : Submodule (OOf B i) (B.V (jOf B i) (wOf B i)) :=
   Submodule.span (OOf B i) (B.iV (jOf B i) (wOf B i) '' latL B i)
 
+/- English proof (translation)
+Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨x, hx, rfl⟩` from `hz`. Take `⟨F, c, hF, hc, he⟩` from `hI (jOf B i) (wOf B i) i.2.2.2.1 i.2.2.2.2.1 i.2.2.2.2.2 v k hvk x hx`. Rewrite using `[B.hK_def, he, map_sum]`.
+
+Use `Submodule.sum_mem _ fun y hy => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.map_smulₛₗ]`. Take `⟨o, ho⟩` from `(B.ec_w (jOf B i) (wOf B i) (c y)).1 (hc y hy)`. Rewrite using `[← ho, algebraMap_smul]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨y, hF hy, rfl⟩)`.
+
+Consider the case `zero => rw [map_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add a b _ _ ha hb => rw [map_add]`. Conclude with `Submodule.add_mem _ ha hb`. Consider the case `smul o a _ ha => rw [LinearMap.map_smul_of_tower]`.
+
+Conclude with `Submodule.smul_mem _ _ ha`.
+-/
 theorem heckeGenerator_mapsTo_localisationLatticeSpan (hI : HeckeIntTw B) (i : LocT B) {v : HeightOneSpectrum (𝓞 H.E)} {k : ℕ}
     (hvk : GenAt0 H (what₂.places.resChar (wOf B i)) (B.Qw (wOf B i)) v k) {z : B.V (jOf B i) (wOf B i)}
     (hz : z ∈ lat0 i) : B.hK (jOf B i) (wOf B i) v k z ∈ lat0 i := by
@@ -120,6 +160,13 @@ theorem heckeGenerator_mapsTo_localisationLatticeSpan (hI : HeckeIntTw B) (i : L
   | add a b _ _ ha hb => rw [map_add]; exact Submodule.add_mem _ ha hb
   | smul o a _ ha => rw [LinearMap.map_smul_of_tower]; exact Submodule.smul_mem _ _ ha
 
+/- English proof (translation)
+Take `⟨t, ht⟩` from `t`. Use `show t z ∈ lat0 i`. Proceed by induction on `ht using Algebra.adjoin_induction generalizing z with`. Consider the case `mem e he`. Take `⟨v, k, hvk, rfl⟩` from `he`.
+
+Conclude with `heckeGenerator_mapsTo_localisationLatticeSpan hI i hvk hz`. Consider the case `algebraMap r`. Rewrite using `[Module.algebraMap_end_apply]`. Conclude with `Submodule.smul_of_tower_mem _ r hz`. Consider the case `add a b _ _ ha hb => rw [LinearMap.add_apply]`.
+
+Conclude with `Submodule.add_mem _ (ha hz) (hb hz)`. Consider the case `mul a b _ _ ha hb => rw [Module.End.mul_apply]`. Conclude with `ha (hb hz)`.
+-/
 theorem heckeAlgebra_mapsTo_localisationLatticeSpan (hI : HeckeIntTw B) (i : LocT B) (t : hAlg B i) {z : B.V (jOf B i) (wOf B i)}
     (hz : z ∈ lat0 i) : (t : Module.End (FractionRing (OOf B i)) (B.V (jOf B i) (wOf B i))) z ∈ lat0 i := by
   obtain ⟨t, ht⟩ := t
@@ -134,6 +181,11 @@ theorem heckeAlgebra_mapsTo_localisationLatticeSpan (hI : HeckeIntTw B) (i : Loc
   | add a b _ _ ha hb => rw [LinearMap.add_apply]; exact Submodule.add_mem _ (ha hz) (hb hz)
   | mul a b _ _ ha hb => rw [Module.End.mul_apply]; exact ha (hb hz)
 
+/- English proof (translation)
+Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨x, hx, rfl⟩` from `hz`. Conclude with `Submodule.subset_span ⟨x, hx, rfl⟩`. Consider the case `zero => rw [map_zero]`.
+
+Conclude with `Submodule.zero_mem _`. Consider the case `add a b _ _ ha hb => rw [map_add]`. Conclude with `Submodule.add_mem _ ha hb`. Consider the case `smul o a _ ha => rw [LinearMap.map_smul_of_tower]`. Conclude with `Submodule.smul_mem _ _ ha`.
+-/
 theorem projOf_mem (hC : PartCompl B) (i : LocT B) {z : B.V (jOf B i) (wOf B i)} (hz : z ∈ lat0 i) :
     projOf B hC i z ∈ MtSub B hC i := by
   induction hz using Submodule.span_induction with
@@ -144,6 +196,15 @@ theorem projOf_mem (hC : PartCompl B) (i : LocT B) {z : B.V (jOf B i) (wOf B i)}
   | add a b _ _ ha hb => rw [map_add]; exact Submodule.add_mem _ ha hb
   | smul o a _ ha => rw [LinearMap.map_smul_of_tower]; exact Submodule.smul_mem _ _ ha
 
+/- English proof (translation)
+Proceed by induction on `hm using Submodule.span_induction with`. Consider the case `mem m hm`. Take `⟨x, hx, rfl⟩` from `hm`. Establish `e : (⟨(t : Module.End (FractionRing (OOf B i)) (B.V (jOf B i) (wOf B i))) (projOf B hC i (B.iV (jOf B i) (wOf B i) x)), mem_part hss i t (projOf B hC i _).2⟩ : partOf B i) = projOf B hC i ((t : Module.End (FractionRing (OOf B i)) (B.V (jOf B i) (wOf B i))) (B.iV (jOf B i) (wOf B …` using `Subtype.ext (projOf_apply hss hC i t _).symm`. Rewrite using `[e]`.
+
+Conclude with `projOf_mem hC i (heckeAlgebra_mapsTo_localisationLatticeSpan hI i t (Submodule.subset_span ⟨x, hx, rfl⟩))`. Consider the case `zero`. Establish `e : (⟨(t : Module.End (FractionRing (OOf B i)) (B.V (jOf B i) (wOf B i))) ((0 : partOf B i) : B.V (jOf B i) (wOf B i)), mem_part hss i t (0 : partOf B i).2⟩ : partOf B i) = 0` using `Subtype.ext (by simp)`. Rewrite using `[e]`. Conclude with `Submodule.zero_mem _`.
+
+Consider the case `add a b _ _ ha hb`. Establish `e : (⟨(t : Module.End (FractionRing (OOf B i)) (B.V (jOf B i) (wOf B i))) ((a + b : partOf B i) : B.V (jOf B i) (wOf B i)), mem_part hss i t (a + b).2⟩ : partOf B i) = ⟨(t : Module.End (FractionRing (OOf B i)) (B.V (jOf B i) (wOf B i))) a, mem_part hss i t a.2⟩ + ⟨(t : Module.End …` using `Subtype.ext (by simp)`. Rewrite using `[e]`. Conclude with `Submodule.add_mem _ ha hb`. Consider the case `smul o a _ ha`.
+
+Establish `e : (⟨(t : Module.End (FractionRing (OOf B i)) (B.V (jOf B i) (wOf B i))) ((o • a : partOf B i) : B.V (jOf B i) (wOf B i)), mem_part hss i t (o • a).2⟩ : partOf B i) = o • (⟨(t : Module.End (FractionRing (OOf B i)) (B.V (jOf B i) (wOf B i))) a, mem_part hss i t a.2⟩ : partOf B i)` using `Subtype.ext (by simp [Submodule.coe_smul_of_tower, LinearMap.map_smul_of_tower])`. Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ _ ha`.
+-/
 theorem mem_MtSub (hss : SemisimpleTw B) (hI : HeckeIntTw B) (hC : PartCompl B) (i : LocT B) (t : hAlg B i)
     {m : partOf B i} (hm : m ∈ MtSub B hC i) :
     (⟨(t : Module.End (FractionRing (OOf B i)) (B.V (jOf B i) (wOf B i))) m, mem_part hss i t m.2⟩ : partOf B i) ∈
@@ -186,6 +247,9 @@ def resL (hss : SemisimpleTw B) (hI : HeckeIntTw B) (hC : PartCompl B) (i : LocT
     apply Subtype.ext; apply Subtype.ext
     simp [Submodule.coe_smul_of_tower, LinearMap.map_smul_of_tower]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem resL_apply (hss : SemisimpleTw B) (hI : HeckeIntTw B) (hC : PartCompl B) (i : LocT B) (t : hAlg B i)
     (m : MtSub B hC i) : (((resL hss hI hC i t m : MtSub B hC i) : partOf B i) : B.V (jOf B i) (wOf B i)) =
       (t : Module.End (FractionRing (OOf B i)) (B.V (jOf B i) (wOf B i))) ((m : partOf B i) : B.V (jOf B i) (wOf B i)) := rfl
@@ -212,12 +276,22 @@ def evA (i : LocT B) : hAlg B i →ₐ[OOf B i] (XOf B i → OOf B i) where
   map_add' a b := by funext x; exact map_add x.1 a b
   commutes' r := by funext x; exact x.1.commutes r
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `[evA, hTfun, dif_pos hvk]`.
+-/
 theorem evA_gen (i : LocT B) {v : HeightOneSpectrum (𝓞 H.E)} {k : ℕ}
     (hvk : GenAt0 H (lOf B i) (B.Qw (wOf B i)) v k) :
     evA i ⟨B.hK (jOf B i) (wOf B i) v k, Algebra.subset_adjoin ⟨v, k, hvk, rfl⟩⟩ = hTfun B i v k := by
   funext x
   simp [evA, hTfun, dif_pos hvk]
 
+/- English proof (translation)
+Establish `hle : (Algebra.adjoin (OOf B i) (((↑) : hAlg B i → Module.End (FractionRing (OOf B i)) (B.V (jOf B i) (wOf B i))) ⁻¹' {f | ∃ v k, GenAt0 H (what₂.places.resChar (wOf B i)) (B.Qw (wOf B i)) v k ∧ f = B.hK (jOf B i) (wOf B i) v k})).map (evA i) ≤ TOf B i`. Rewrite using `[AlgHom.map_adjoin]`. Use `Algebra.adjoin_le ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨z, hz, rfl⟩`. Take `⟨v, k, hvk, he⟩` from `hz`.
+
+Establish `e : z = ⟨B.hK (jOf B i) (wOf B i) v k, Algebra.subset_adjoin ⟨v, k, hvk, rfl⟩⟩` using `Subtype.ext he`. Rewrite using `[e, evA_gen i hvk]`. Conclude with `Algebra.subset_adjoin ⟨v, k, hvk, rfl⟩`. Apply `hle` to reduce the goal to its premises. Use `Subalgebra.mem_map.2 ⟨t, ?_, rfl⟩` and prove the remaining obligations.
+
+Rewrite using `[Algebra.adjoin_adjoin_coe_preimage]`. Conclude with `Algebra.mem_top`.
+-/
 theorem evA_mem (i : LocT B) (t : hAlg B i) : evA i t ∈ TOf B i := by
   have hle : (Algebra.adjoin (OOf B i) (((↑) : hAlg B i → Module.End (FractionRing (OOf B i)) (B.V (jOf B i) (wOf B i))) ⁻¹'
       {f | ∃ v k, GenAt0 H (what₂.places.resChar (wOf B i)) (B.Qw (wOf B i)) v k ∧ f = B.hK (jOf B i) (wOf B i) v k})).map (evA i) ≤
@@ -236,6 +310,11 @@ theorem evA_mem (i : LocT B) (t : hAlg B i) : evA i t ∈ TOf B i := by
 
 def evT (i : LocT B) : hAlg B i →ₐ[OOf B i] TOf B i := (evA i).codRestrict (TOf B i) (evA_mem i)
 
+/- English proof (translation)
+Introduce `f`. Establish `hle : TOf B i ≤ (evA i).range`. Use `Algebra.adjoin_le ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨v, k, hvk, rfl⟩`. Conclude with `⟨_, evA_gen i hvk⟩`.
+
+Take `⟨t, ht⟩` from `hle f.2`. Conclude with `⟨t, Subtype.ext ht⟩`.
+-/
 theorem evT_surjective (i : LocT B) : Function.Surjective (evT i) := by
   intro f
   have hle : TOf B i ≤ (evA i).range := by
@@ -254,6 +333,9 @@ def actR (hss : SemisimpleTw B) (hI : HeckeIntTw B) (hC : PartCompl B) (i : LocT
       ext m
       exact eq_zero_of_pts hss i t h0 (m : partOf B i).2⟩
 
+/- English proof (translation)
+The claim follows from `RingHom.liftOfRightInverse_comp_apply _ _ _ _ t`.
+-/
 theorem actR_evT (hss : SemisimpleTw B) (hI : HeckeIntTw B) (hC : PartCompl B) (i : LocT B) (t : hAlg B i) :
     actR hss hI hC i (evT i t) = resA hss hI hC i t :=
   RingHom.liftOfRightInverse_comp_apply _ _ _ _ t
@@ -266,10 +348,28 @@ def actA (hss : SemisimpleTw B) (hI : HeckeIntTw B) (hC : PartCompl B) (i : LocT
     show actR hss hI hC i (algebraMap (OOf B i) (TOf B i) r) = _
     rw [e, actR_evT, AlgHom.commutes]
 
+/- English proof (translation)
+The claim follows from `actR_evT hss hI hC i t`.
+-/
 theorem actA_evT (hss : SemisimpleTw B) (hI : HeckeIntTw B) (hC : PartCompl B) (i : LocT B) (t : hAlg B i) :
     actA hss hI hC i (evT i t) = resA hss hI hC i t :=
   actR_evT hss hI hC i t
 
+/- English proof (translation)
+Introduce `R H what₂ B hs hd hL hI hss i`. Use `⟨actA hss hI (partCompl_of hs hd) i, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `f hf`. Take `⟨t, rfl⟩` from `evT_surjective i f`.
+
+Rewrite `hf` using `[actA_evT]`. Establish `hkill : ∀ y ∈ partOf B i, (t : Module.End (FractionRing (OOf B i)) (B.V (jOf B i) (wOf B i))) y = 0`. Introduce `y hy`. Use `haveI := hL i`. Take `⟨⟨m, s⟩, hsm⟩` from `IsLocalizedModule.surj (nonZeroDivisors (OOf B i)) (MtSub B (partCompl_of hs hd) i).subtype (⟨y, hy⟩ : partOf B i)`.
+
+Establish `hsm' : (s : OOf B i) • y = ((m : partOf B i) : B.V (jOf B i) (wOf B i))` using `congrArg Subtype.val hsm`. Establish `hm0 : (t : Module.End (FractionRing (OOf B i)) (B.V (jOf B i) (wOf B i))) ((m : partOf B i) : B.V (jOf B i) (wOf B i)) = 0`. Rewrite using `[← resL_apply hss hI (partCompl_of hs hd) i t m]`. Use `show (((resA hss hI (partCompl_of hs hd) i t m : MtSub B (partCompl_of hs hd) i) : partOf B i) : B.V (jOf B i) (wOf B i)) = 0`. Rewrite using `[hf]`.
+
+Both sides reduce to the same expression. Rewrite `hm0` using `[← hsm', LinearMap.map_smul_of_tower, ← algebraMap_smul (FractionRing (OOf B i))]`. Conclude with `(smul_eq_zero.1 hm0).resolve_left (IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors s.2)`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `x`.
+
+Use `show x.1 t = 0`. Take `⟨z, hz, hz0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot x.2.2`. Establish `hzp : z ∈ partOf B i` using `le_iSup₂ (f := fun (ψ : hAlg B i →ₐ[OOf B i] OOf B i) (_ : NCov.cls ψ = i.2.1) => NCov.W (hAlg B i) (NCov.pt ψ)) x.1 x.2.1 hz`. Establish `h1` using `hkill z hzp`. Rewrite `h1` using `[apply_eq_smul hss i x.1 hz t]`.
+
+Conclude with `(IsFractionRing.to_map_eq_zero_iff (K := FractionRing (OOf B i))).1 ((smul_eq_zero.1 h1).resolve_right hz0)`. Introduce `v k hvk m`. Establish `e : hTOf B i v k = evT i ⟨B.hK (jOf B i) (wOf B i) v k, Algebra.subset_adjoin ⟨v, k, hvk, rfl⟩⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[show ((evT i ⟨B.hK (jOf B i) (wOf B i) v k, Algebra.subset_adjoin ⟨v, k, hvk, rfl⟩⟩ : TOf B i) : XOf B i → OOf B i) = hTfun B i v k from evA_gen i hvk]`.
+
+Simplify using `[hTOf, dif_pos hvk]`. Rewrite using `[e, actA_evT]`. Both sides reduce to the same expression.
+-/
 theorem actEx_of : ∀ {R : Ranks} {H : Host R} {what₂ : Rows.Data R} (B : LocBase0 H what₂) (hs : HeckeStd0 B) (hd : FinDimV B),
     MtLoc B (partCompl_of hs hd) → HeckeIntTw B → SemisimpleTw B → ActEx B (partCompl_of hs hd) := by
   intro R H what₂ B hs hd hL hI hss i

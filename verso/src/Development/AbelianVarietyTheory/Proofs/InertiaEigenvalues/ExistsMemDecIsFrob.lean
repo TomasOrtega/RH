@@ -9,6 +9,9 @@ open GlobalTheory.TripleGal Formalism Formalism.BasicNotions Formalism.BasicNoti
 
 namespace GlobalTheory.TripleGal
 
+/- English proof (translation)
+Introduce `D v A hA`. Take `⟨σ, hσ⟩` from `ReciprocityTheory.Gal.exists_isFrob (F := D.host.E) hA`. Conclude with `⟨σ, hσ.1, hσ⟩`.
+-/
 theorem exists_mem_Dec_isFrob : ∀ (D : D7) (v : HeightOneSpectrum (𝓞 D.host.E)) (A : ValuationSubring D.nd.Om), IsPlaceOver (F := D.host.E) A v → ∃ σ : Gen.GE D.nd, σ ∈ Dec (F := D.host.E) A ∧ IsFrob (F := D.host.E) A (normV v) σ := by
   intro D v A hA
   obtain ⟨σ, hσ⟩ := ReciprocityTheory.Gal.exists_isFrob (F := D.host.E) hA

@@ -10,6 +10,15 @@ open GlobalTheory GlobalTheory.CM
 
 namespace GlobalTheory.CM
 
+/- English proof (translation)
+Use `set W := Submodule.span ℂ {v : Fin g → ℂ | ∃ (ε : ℤˣ) (a : PureType.lat hP (((ε : ℤ) : ℂ) * H.rt0)), Pe a = v}`. Take `⟨n, hn, h⟩` from `Z.span`. Establish `key : ∀ a, Pe a ∈ W`. Introduce `a`. Take `⟨x, hx⟩` from `h a`.
+
+Establish `h1 : (n : ℂ) • Pe a ∈ W`. Rewrite using `[Nat.cast_smul_eq_nsmul, ← map_nsmul, hx, map_sum]`. Use `W.sum_mem fun j _ => Submodule.subset_span ?_` and prove the remaining obligations. Establish `h2` using `Z.pure j (x j)`. Break down `j with j | j` into its components or cases.
+
+Conclude with `⟨1, ⟨_, by simpa using h2⟩, rfl⟩`. Conclude with `⟨-1, ⟨_, by simpa using h2⟩, rfl⟩`. Conclude with `(W.smul_mem_iff (Nat.cast_ne_zero.2 hn.ne')).1 h1`. Establish `h3 : Submodule.span ℝ (Set.range Pe) ≤ W.restrictScalars ℝ` using `Submodule.span_le.2 (by rintro _ ⟨a, rfl⟩; exact key a)`. Rewrite `h3` using `[hP.2.2.2.1]`.
+
+Conclude with `eq_top_iff.2 fun v _ => h3 Submodule.mem_top`.
+-/
 theorem span_pure_periods_eq_top {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {g : ℕ}
     {ty : Fin g → (E →+* ℂ)} {Pe : D.La →+ (Fin g → ℂ)} (hP : IsPeriod D ty Pe) {p q : ℕ} (Z : CMLat hP p q) :
     Submodule.span ℂ {v : Fin g → ℂ | ∃ (ε : ℤˣ) (a : PureType.lat hP (((ε : ℤ) : ℂ) * H.rt0)), Pe a = v} = ⊤ := by
@@ -31,6 +40,13 @@ theorem span_pure_periods_eq_top {E : Type} [Field E] [NumberField E] [IsCMField
   rw [hP.2.2.2.1] at h3
   exact eq_top_iff.2 fun v _ => h3 Submodule.mem_top
 
+/- English proof (translation)
+Introduce `E _ _ _ H D g ty Pe hP p q Z`. Establish `h1` using `(FibreExp.free_finite_finrank_of_isPeriod hP).2.2`. Rewrite `h1` using `[datum_finrank_int D]`. Establish `hs` using `span_pure_periods_eq_top hP Z`. Establish `h2` using `Submodule.exists_fun_fin_finrank_span_eq ℂ {v : Fin g → ℂ | ∃ (ε : ℤˣ) (a : PureType.lat hP (((ε : ℤ) : ℂ) * H.rt0)), Pe a = v}`.
+
+Rewrite `h2` using `[hs, finrank_top, Module.finrank_fin_fun]`. Establish `hg : Module.finrank ℚ E / 2 * (D.p + D.q) = g` using `by omega`. Rewrite using `[hg]`. Take `⟨f, hf, hsp, -⟩` from `h2`. Use `choose ε a ha using hf`.
+
+Use `⟨ε, a, fun z => ?_⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun ℂ).1 (hsp ▸ Submodule.mem_top (x := z))`. Conclude with `⟨c, by simp [ha, hc]⟩`.
+-/
 theorem exists_pure_vectors_periods_span :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (g : ℕ) (ty : Fin g → (E →+* ℂ)) (Pe : D.La →+ (Fin g → ℂ)) (hP : IsPeriod D ty Pe) (p q : ℕ) (Z : CMLat hP p q), ∃ (ε : Fin (Module.finrank ℚ E / 2 * (D.p + D.q)) → ℤˣ) (a : ∀ i, PureType.lat hP (((ε i : ℤ) : ℂ) * H.rt0)), ∀ z : Fin g → ℂ, ∃ c : Fin (Module.finrank ℚ E / 2 * (D.p + D.q)) → ℂ, z = ∑ i, c i • Pe (a i) := by
   intro E _ _ _ H D g ty Pe hP p q Z

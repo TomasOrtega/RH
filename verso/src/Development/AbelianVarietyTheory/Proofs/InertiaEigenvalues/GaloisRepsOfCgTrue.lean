@@ -15,6 +15,17 @@ namespace GlobalTheory.GalAway
 open GlobalTheory.TripleGal Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions Formalism.MainNotions.N Formalism.MainNotions.BlochKatoReduction Formalism.MainNotions.BlochKatoReduction.Gen Formalism.ConjugateSelfDual ReciprocityTheory.Gal NumberField IsDedekindDomain Polynomial Neutral.B1 Formalism.L2.Host GlobalTheory.HeckeGal GlobalTheory.Pst
 open GlobalTheory.CuspRep GlobalTheory.WeilDeligne GlobalTheory.HeightCounting
 
+/- English proof (translation)
+Introduce `hL hF hG D T C π hc hr l _ ι`. Use `host_isCMField D.host` as an intermediate fact. Establish `ha : 1 ≤ D.R.r`. Use `D.R.two_le_m` as an intermediate fact. Use `D.R.m_add_three_le_k` as an intermediate fact.
+
+Unfold `Ranks.r`. Use linear arithmetic over natural numbers and integers. Establish `hr' : (C.e _ π).1.IsRegAlg` using `(GlobalTheory.CuspRep.CG.isRegAlg_iff _).2 fun τ => by`. Use `(D.naut.ralg_def π).1 hr τ` as an intermediate fact. Rewrite `this` using `[C.inf]`. Then use the resulting hypothesis.
+
+Take `⟨r, h1, h2, h3⟩` from `exists_wdOf_eq_locPar hL hF hG D.nd.Om ι ha (C.e _ π).1 ((C.csd _ π).1 hc) hr'`. Use `⟨r, h1, h2, fun w hw => ?_⟩` and prove the remaining obligations. Establish `hl : ((l : ℕ) : 𝓞 D.host.E) ∉ w.asIdeal` using `hw`. Establish `e : T.e w (D.naut.lpTw (D.naut.locG π w) ((1 - (D.R.r : ℝ)) / 2)) = wdOf (D.nd.plOm.2 w) hl ι r`. Rewrite using `[T.tw, C.loc, h3]`.
+
+Both sides reduce to the same expression. Use `⟨fun s hs => ?_, ?_, fun hu B s hB hs => ?_⟩` and prove the remaining obligations. Rewrite using `[T.inePol w _ s hs, e]`. Conclude with `inePol_wdOf hl ι h1 hs`. Rewrite using `[T.mono0, e]`.
+
+Conclude with `weilDeligneParam_monodromy_eq_zero_iff hl ι h1`. Establish `hu'` using `(D.naut.unr_tw _ ((1 - (D.R.r : ℝ)) / 2)).2 hu`. Rewrite using `[galPol, T.frobEig w _ hu', e]`. Conclude with `frobEig_wdOf hl ι h1 (e ▸ (T.unr w _).1 hu') hB hs`.
+-/
 theorem galoisReps_of_cgTrue : ∀ hL : GlobalTheory.Published.LocalLanglandsGL, GlobalTheory.Published.AutomorphicFormsFiniteGL → GlobalTheory.Published.GaloisRepOfPolarizedCuspidal → ∀ (D : D7) (T : GlobalTheory.RowTie.WDTie D.nd D.naut), GlobalTheory.HeightCounting.CGTrue hL D T → GlobalTheory.IndefiniteRowSideFullHecke.RayClassPrimeCounting.GaloisReps D := by
   intro hL hF hG D T C π hc hr l _ ι
   have := host_isCMField D.host

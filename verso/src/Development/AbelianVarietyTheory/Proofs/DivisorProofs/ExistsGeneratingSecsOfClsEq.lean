@@ -13,6 +13,11 @@ open GlobalTheory GlobalTheory.Cartier GlobalTheory.CxPts GlobalTheory.Points Gl
 
 namespace GlobalTheory.CechPic
 
+/- English proof (translation)
+Introduce `X L A hL hA h ι u hu`. Establish `hiso : LBIso A L` using `(cls_eq_iff hA hL).1 h.symm`. Use `choose v hv using fun i => GlobalTheory.exists_sec_nonzeroLocus_eq_of_lbIso hA hL hiso (u i)`. Use `⟨v, ?_⟩` and prove the remaining obligations. Simplify using `only [hv]`.
+
+Conclude with `hu`.
+-/
 theorem exists_generating_secs_of_cls_eq : ∀ (X : Scheme.{0}) (L A : LB X) (hL : L.IsLB) (hA : A.IsLB), cls L hL = cls A hA → ∀ (ι : Type) (u : ι → L.Sec), ⨆ i, nonzeroLocus (u i) = ⊤ → ∃ v : ι → A.Sec, ⨆ i, nonzeroLocus (v i) = ⊤ := by
   intro X L A hL hA h ι u hu
   have hiso : LBIso A L := (cls_eq_iff hA hL).1 h.symm

@@ -13,6 +13,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.RealMult
 
+/- English proof (translation)
+Introduce `F _ _ 𝔠 X₀ X p hp α _`. Use `haveI : Countable Qb := (Algebraic.countable ℚ ℂ).mono (fun z hz => mem_algebraicClosure_iff.1 hz) |>.to_subtype`. Use `haveI : IsAlgClosed Qb := (algebraicClosure.isAlgClosure ℚ ℂ).isAlgClosed`. Take `⟨L, u, -⟩` from `Obj.exists_holUnif_ringHom_lift F 𝔠 X`. Conclude with `GlobalTheory.CMLiePeriod.descend X₀.ab X₀.ab X.ab X.ab X.dim X.dim u u hp.grp hp.grp α`.
+-/
 theorem Obj.exists_end_descend_algebraic :
     ∀ (F : Type) [Field F] [NumberField F] (𝔠 : FracId F) (X₀ : Obj F 𝔠 (Sp Qb)) (X : Obj F 𝔠 (Sp ℂ))
     (p : X.A.left ⟶ X₀.A.left), X.IsPullBy X₀ (spMap (algebraMap Qb ℂ)) p →

@@ -17,6 +17,31 @@ variable {W : Type*} [AddCommGroup W] [Module E W] {ι : Type*} [Fintype ι] [De
 
 omit [NumberField F] [IsTotallyReal F] [IsTotallyComplex E] in
 
+/- English proof (translation)
+Introduce `M D t ht`. Take `⟨c, hc⟩` from `hA D`. Take `⟨d, κ, hκ⟩` from `hT M`. Take `⟨C, hC⟩` from `hR d t (|κ| * c) ht`. Use `⟨d, C, fun La g hLa hmin => ?_⟩` and prove the remaining obligations.
+
+Take `⟨_, _, hcov⟩` from `hc La hLa`. Take `⟨T, hTn, hTc⟩` from `hκ g`. Set `Φ : W →+ EuclideanSpace ℝ (Fin d)` to `((T : (InfinitePlace E → ι → ℂ) →L[ℝ] EuclideanSpace ℝ (Fin d)) : _ →ₗ[ℝ] _).toAddMonoidHom.comp (vecAtHom v)`. Establish `hΦ : ∀ x, Φ x = T (vecAt v x)` using `fun x => rfl`. Establish `hvec : Function.Injective (vecAt v)`.
+
+Introduce `x y hxy`. Take `⟨w⟩` from `(inferInstance : Nonempty (InfinitePlace E))`. Apply `v.repr.injective` to reduce the goal to its premises. Use extensionality with `i`. Conclude with `w.embedding.injective (congrFun (congrFun hxy w) i)`.
+
+Establish `hΦinj : Function.Injective Φ` using `T.injective.comp hvec`. Set `L` to `ZLattice.comap ℝ (archLattice v La) T.symm.toLinearMap`. Establish `hmemL : ∀ z, z ∈ L ↔ ∃ x ∈ La, Φ x = z`. Introduce `z`. Rewrite using `[← SetLike.mem_coe, ZLattice.coe_comap, Set.mem_preimage, SetLike.mem_coe, mem_archLattice]`.
+
+Use `exists_congr fun x => and_congr_right fun _ => ?_` and prove the remaining obligations. Rewrite using `[hΦ]`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Rewrite using `[hx]`.
+
+Simplify using the standard rewrite rules. Introduce `hx`. Rewrite using `[← hx]`. Simplify using the standard rewrite rules. Establish `hLmin : ∀ z ∈ L, z ≠ 0 → t ≤ ‖z‖`.
+
+Introduce `z hz hz0`. Take `⟨x, hx, rfl⟩` from `(hmemL z).1 hz`. Establish `hx0 : x ≠ 0` using `by rintro rfl; exact hz0 (map_zero Φ)`. Rewrite using `[hΦ, hTn]`. Conclude with `hmin x hx hx0`.
+
+Establish `hLcov : ZLattice.covolume L ≤ |κ| * c`. Rewrite using `[hTc]`. Establish `h0 : 0 ≤ ZLattice.covolume (archLattice v La)` using `ENNReal.toReal_nonneg`. Conclude with `(mul_le_mul_of_nonneg_right (le_abs_self κ) h0).trans (mul_le_mul_of_nonneg_left hcov (abs_nonneg κ))`. Take `⟨b, hb⟩` from `hC L hLmin hLcov`.
+
+Use `choose e he heb using fun i => (hmemL (b i)).1 (b i).2`. Use `⟨e, le_antisymm ((AddSubgroup.closure_le La).2 (Set.range_subset_iff.2 he)) ?_, fun i => ?_⟩` and prove the remaining obligations. Introduce `x hx`. Establish `hxL : Φ x ∈ L` using `(hmemL _).2 ⟨x, hx, rfl⟩`. Establish `hsum` using `congrArg Subtype.val (b.sum_repr ⟨Φ x, hxL⟩)`.
+
+Simplify using `only [Submodule.coe_sum, Submodule.coe_smul] at hsum`. Use `set r := b.repr ⟨Φ x, hxL⟩`. Establish `hx' : x = ∑ i, r i • e i`. Apply `hΦinj` to reduce the goal to its premises. Rewrite using `[← hsum, map_sum]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul, heb i]`. Rewrite using `[hx']`. Conclude with `AddSubgroup.sum_mem _ fun i _ => AddSubgroup.zsmul_mem _ (AddSubgroup.subset_closure (Set.mem_range_self i)) _`. Rewrite using `[← hTn, ← hΦ, heb i]`.
+
+Conclude with `hb i`.
+-/
 theorem BoundedGenerators.proof (h : HermitianForm F E W) (v : Basis ι E W)
     (hR : ReducedBasisBound.Statement) (hA : ArchCovolumeBound.Statement h v)
     (hT : MajorantTransport.Statement h v) : BoundedGenerators.Statement h v := by

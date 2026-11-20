@@ -17,6 +17,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `hne : l.Mb ≠ ⊥`. Introduce `h`. Establish `h2` using `l.prod`. Rewrite `h2` using `[h, Ideal.bot_mul, eq_comm, Ideal.span_singleton_eq_bot]`. Establish `h3 : (l.M : 𝓞 E) ≠ 0` using `Nat.cast_ne_zero.mpr (by have := l.three_le; omega)`.
+
+Conclude with `h3 h2`. Establish `: Finite (𝓞 E ⧸ l.Mb)` using `Ideal.finiteQuotientOfFreeOfNeBot l.Mb hne`. Establish `: Module.Finite (𝓞 E) Dw.La` using `Dw.fin`. Establish `: Module.Finite (𝓞 E ⧸ l.Mb) (LevQ Dw l)` using `Module.Finite.of_restrictScalars_finite (𝓞 E) (𝓞 E ⧸ l.Mb) (LevQ Dw l)`. Conclude with `Module.finite_of_finite (𝓞 E ⧸ l.Mb)`.
+-/
 theorem finite_levQ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} (Dw : Datum H) (l : Level H) :
     Finite (LevQ Dw l) := by
   have hne : l.Mb ≠ ⊥ := by
@@ -31,6 +36,27 @@ theorem finite_levQ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host
     Module.Finite.of_restrictScalars_finite (𝓞 E) (𝓞 E ⧸ l.Mb) (LevQ Dw l)
   exact Module.finite_of_finite (𝓞 E ⧸ l.Mb)
 
+/- English proof (translation)
+Introduce `hL E _ _ _ H Dw l Xo c n Λ N hU hT hN S _ _ y`. Establish `hN0 : 0 < N` using `hN.1.pos`. Establish `hle : Ideal.span {(N : 𝓞 E)} • stdLat E n ≤ Λ.La` using `le_trans hN.2.2 inf_le_left`. Establish `hlev : ∀ {R R' : Type} [CommRing R] [CommRing R'] (x : Sp R ⟶ Xo.X) (x' : Sp R' ⟶ Xo.X) (h : ptO Xo x' ⟶ ptO Xo x) (a : Dw.La), h ≫ levPt Xo x a = levPt Xo x' a`. Introduce `R R' _ _ x x' h a`.
+
+Rewrite using `[levPt, levPt, ← Category.assoc, comp_toUnit]`. Establish `hkill : ∀ {R : Type} [CommRing R] (x : Sp R ⟶ Xo.X) (a : Dw.La), KilledBy Xo l.Mb (levPt Xo x a)`. Introduce `R _ x a b hb`. Rewrite using `[levPt, Category.assoc, (moduli_univ_eta_killed hL E H Dw l Xo a).1 b hb, MonObj.comp_one]`. Establish `hpowM : ∀ {R : Type} [CommRing R] (x : Sp R ⟶ Xo.X) (a : Dw.La), levPt Xo x a ^ l.M = 1`.
+
+Introduce `R _ x a`. Rewrite using `[levPt, ← MonObj.comp_pow, (moduli_univ_eta_killed hL E H Dw l Xo a).2.2, MonObj.comp_one]`. Establish `hpowN : ∀ {R : Type} [CommRing R] (x : Sp R ⟶ Xo.X) (a : Dw.La), levPt Xo x a ^ N = 1`. Introduce `R _ x a`. Take `⟨k, hk⟩` from `hN.2.1`.
+
+Rewrite using `[hk, pow_mul, hpowM, one_pow]`. Establish `: Finite (LevQ Dw l)` using `finite_levQ Dw l`. Set `_ : Fintype ((Fin n → LevQ Dw l) × Fin n)` to `Fintype.ofFinite _`. Take `⟨B1, _, φ1, w, hφ1, hw⟩` from `GlobalTheory.T.exists_faithfullyFlat_nthRoots_of_torsion hL E H Dw l Xo S y.x N l.M hN0 (by have := l.three_le; omega) ((Fin n → LevQ Dw l) × Fin n) (fun j => levPt Xo y.x (levRep (j.1 j.2))) (fun j => hpowM _ _)`. Establish `hw' : ∀ j, w j ^ N = levPt Xo (spMap φ1 ≫ y.x) (levRep (j.1 j.2))`.
+
+Introduce `j`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[hw j, ← hlev y.x (spMap φ1 ≫ y.x) (Over.homMk (spMap φ1) rfl), Over.comp_left]`. Both sides reduce to the same expression. Establish `hroot` using `fun j => (exists_root_killedBy_pow E H Dw l Xo (ptO Xo (spMap φ1 ≫ y.x)) (levPt Xo (spMap φ1 ≫ y.x) (levRep (j.1 j.2))) (w j) N hN0 (hkill _ _) (hw' j)).1`.
+
+Use `choose tp1 htp1 htp1k using hroot`. Take `⟨B2, _, φ2, z, hφ2, hz, hzg⟩` from `GlobalTheory.T.exists_faithfullyFlat_split_isotropicGroup hL E H Dw l Xo B1 (spMap φ1 ≫ y.x) n Λ N hU hN0 hle`. Set `_ : Algebra c.F B2` to `((φ2.comp φ1).comp (algebraMap c.F S)).toAlgebra`. Set `φA : S →ₐ[c.F] B2` to `{ toRingHom := φ2.comp φ1, commutes' := fun _ => rfl }`. Take `⟨y', hy'⟩` from `FramedBaseChange.exists_frMap hL E H Dw l Xo c S B2 φA y`.
+
+Establish `hyx : y'.x = spMap φ2 ≫ spMap φ1 ≫ y.x`. Rewrite using `[hy'.1, ← Category.assoc, FramedBaseChange.spMap_spMap]`. Set `hA : ptO Xo y'.x ⟶ ptO Xo (spMap φ1 ≫ y.x)` to `Over.homMk (spMap φ2) hyx.symm`. Set `hB : ptO Xo y'.x ⟶ ptO Xo (spMap φ2 ≫ spMap φ1 ≫ y.x)` to `Over.homMk (𝟙 _) (by rw [Category.id_comp]; exact hyx.symm)`. Establish `hI` using `GlobalTheory.T.inZh_geoInj_stable_alt E H Dw l Xo n Λ N`.
+
+Establish `hz' : ∀ i, InZh Xo Λ N (fun b => hB ≫ z i b)` using `fun i => hI.1 _ _ hB (z i) (hz i)`. Establish `htpN : ∀ q b, (hA ≫ tp1 (q, b)) ^ N = levPt Xo y'.x (levRep (q b))`. Introduce `q b`. Rewrite using `[← MonObj.comp_pow, htp1, hlev]`. Establish `hUU` using `(exists_isVtOver_and_existsUnique_isUUOver hL E H Dw l Xo N hN.1 (ptO Xo y'.x) y'.s).2`.
+
+Establish `hF : ∀ (q : Fin n → LevQ Dw l) (i : Fin (Λ.zCard N (Dw.p + Dw.q))) (b : Fin n), ∃ F, IsUUOver Xo.univ.t.G Xo.univ.t.PP N y'.s (hB ≫ z i b) (hA ≫ tp1 (q, b)) F`. Introduce `q i b`. Use `(hUU _ _ ((hz' i).1 b) ?_).exists` and prove the remaining obligations. Rewrite using `[pow_two, pow_mul, htpN, hpowN]`. Use `choose F hF using hF`.
+
+Use `⟨B2, inferInstance, inferInstance, φA, y', fun i b => hB ≫ z i b, fun q b => hA ≫ tp1 (q, b), F, RingHom.FaithfullyFlat.stableUnderComposition φ1 φ2 hφ1 hφ2, hy', hz', ?_, ?_, hF⟩` and prove the remaining obligations. Conclude with `hI.2.2.1 B2 B2 _ y'.x (RingHom.id B2) hB (Spec.map_id (CommRingCat.of B2)).symm _ z hzg`. Introduce `q b`. Take `⟨j, hj⟩` from `htp1k (q, b)`. Conclude with `⟨htpN q b, j, fun a ha => by rw [Category.assoc, hj a ha, MonObj.comp_one]⟩`.
+-/
 theorem exists_cover_shortVal_data :
     Laws → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (n : ℕ) (Λ : GenLat E n) (N : ℕ), Λ.Unimod → Λ.TrivAt l.M → Λ.LevOK N l.M → ∀ (S : Type) [CommRing S] [Algebra c.F S] (y : FrPt Xo c S), ∃ (S' : Type) (_ : CommRing S') (_ : Algebra c.F S') (φ : S →ₐ[c.F] S') (y' : FrPt Xo c S') (z : Fin (Λ.zCard N (Dw.p + Dw.q)) → Fin n → (ptO Xo y'.x ⟶ Xo.univ.t.G)) (tp : (Fin n → LevQ Dw l) → Fin n → (ptO Xo y'.x ⟶ Xo.univ.t.G)) (F : (Fin n → LevQ Dw l) → Fin (Λ.zCard N (Dw.p + Dw.q)) → Fin n → LB.Sec (LPow Xo.univ.t.G Xo.univ.t.PP.L ((N : ℤ) ^ 2) (ptO Xo y'.x))), φ.toRingHom.FaithfullyFlat ∧ FrMap φ y y' ∧ (∀ i, InZh Xo Λ N (z i)) ∧ GeoInj Xo y'.x z ∧ (∀ q b, tp q b ^ N = levPt Xo y'.x (levRep (q b)) ∧ ∃ j : ℕ, KilledBy Xo (l.Mb ^ j) (tp q b)) ∧ (∀ q i b, IsUUOver Xo.univ.t.G Xo.univ.t.PP N y'.s (z i b) (tp q b) (F q i b)) := by
   intro hL E _ _ _ H Dw l Xo c n Λ N hU hT hN S _ _ y

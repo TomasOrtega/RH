@@ -23,12 +23,20 @@ namespace GlobalTheory.LocLanglands.Unique
 variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
   {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w}
 
+/- English proof (translation)
+Unfold `segSum`. Use `congr 1`. Conclude with `List.map_congr_left fun Δ hΔ => by rw [H Δ hΔ]`.
+-/
 theorem segSum_congr (rc rc' : IrrGL (w.adicCompletion E) → WD h) (l : List (Segment (w.adicCompletion E)))
     (H : ∀ Δ ∈ l, rc Δ.first = rc' Δ.first) : segSum rc l = segSum rc' l := by
   unfold segSum
   congr 1
   exact List.map_congr_left fun Δ hΔ => by rw [H Δ hΔ]
 
+/- English proof (translation)
+Take `⟨_, xs, hd, ⟨Δs, ⟨hmap, -⟩, hLs⟩, -⟩` from `hL`. Rewrite `hΔ` using `[← hmap]`. Take `⟨i, -, rfl⟩` from `Multiset.mem_map.1 hΔ`. Establish `h1` using `(hLs i).deg_eq`. Establish `h2 : (xs i).1 ≤ ∑ a, (xs a).1` using `Finset.single_le_sum (f := fun a => (xs a).1) (fun _ _ => Nat.zero_le _) (Finset.mem_univ i)`.
+
+Establish `h3 : (Δs i).d ≤ (Δs i).deg` using `Nat.le_mul_of_pos_left _ (Δs i).len_pos`. Use `show (Δs i).d ≤ N`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem first_fst_le_of_isL {k V : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     [AddCommGroup V] [Module ℂ V] {N : ℕ} {π : Representation ℂ (GL (Fin N) k) V} {𝔪 : Multiset (Segment k)}
     (hL : IsL 𝔪 π) {Δ : Segment k} (hΔ : Δ ∈ 𝔪) : Δ.first.1 ≤ N := by
@@ -41,6 +49,19 @@ theorem first_fst_le_of_isL {k V : Type} [Field k] [ValuativeRel k] [Topological
   show (Δs i).d ≤ N
   omega
 
+/- English proof (translation)
+Use `haveI : CharZero (w.adicCompletion E) := charZero_of_injective_algebraMap (algebraMap E (w.adicCompletion E)).injective`. Take `⟨n, c⟩` from `x`. Take `⟨hn, hc⟩` from `hx`. Break down `n with _ | m` into its components or cases. Conclude with `absurd hn (lt_irrefl 0)`.
+
+Break down `m with _ | m` into its components or cases. Take `⟨χ, hχ, hx⟩` from `GlobalTheory.T.irreducible_GL1_is_character hBZ _ ⟨1, c⟩ rfl`. Rewrite using `[hx, H.one, H'.one]`. Take `⟨x', hx'⟩` from `H'.bij.2 (rc ⟨m + 2, c⟩)`. Establish `hd : x'.1 = m + 2`.
+
+Use `H'.dim x'` as an intermediate fact. Rewrite `this` using `[hx', H.dim]`. Conclude with `this.symm`. Establish `hcx' : x'.IsCusp` using `(H'.cusp x').2 (hx' ▸ (H.cusp _).1 ⟨hn, hc⟩)`. Take `⟨n', c'⟩` from `x'`.
+
+Take `rfl : n' = m + 2` from `hd`. Establish `hcls : ∀ d : IrrCl (GL (Fin (m + 2)) (w.adicCompletion E)), cls d.rep = ⟨m + 2, d⟩` using `fun d => by`. Simplify using `[cls, IrrCl.cl_rep]`. Establish `key : c = c'`. Rewrite using `[← c.cl_rep, ← c'.cl_rep]`.
+
+Use `IrrRep.cl_eq_iff.2 ?_` and prove the remaining obligations. Use `hLC _ ψ hψc hψ (m + 1) (Nat.succ_pos m) c.rep c'.rep hc hcx'.2 fun τ => ?_` and prove the remaining obligations. Establish `h2 : rc (cls τ) = rc' (cls τ)` using `ih _ (by show m + 1 < m + 2; omega)`. Use `⟨_, H.eps ψ hψc hψ (m + 1) c.rep τ hc, ?_⟩` and prove the remaining obligations. Establish `h1` using `H'.eps ψ hψc hψ (m + 1) c'.rep τ hcx'.2`.
+
+Rewrite `h1`, the goal using `[hcls]`. Rewrite using `[he, ← hx', h2]`. Conclude with `h1`. Substitute `key` using the available equality. Conclude with `hx'.symm`.
+-/
 theorem eq_of_isCusp (hLC : LocalConverseGL) (hBZ : BernsteinZelevinskyFiniteness)
     {a : Weil h →* (w.adicCompletion E)ˣ} {ha : IsLocalArtin h a}
     {e e' : AddChar (w.adicCompletion E) Circle → WD h → ℂˣ} {rc rc' : IrrGL (w.adicCompletion E) → WD h}
@@ -79,6 +100,13 @@ theorem eq_of_isCusp (hLC : LocalConverseGL) (hBZ : BernsteinZelevinskyFinitenes
     subst key
     exact hx'.symm
 
+/- English proof (translation)
+Introduce `hLC hEx hBZ E Ω _ _ _ _ _ A w h a ha e rc rc' ψ e' hψc hψ he H H'`. Use `haveI : CharZero (w.adicCompletion E) := charZero_of_injective_algebraMap (algebraMap E (w.adicCompletion E)).injective`. Establish `main : ∀ n, ∀ x : IrrGL (w.adicCompletion E), x.1 = n → rc x = rc' x`. Introduce `n`. Proceed by induction on `n using Nat.strong_induction_on with`.
+
+Consider the case `_ n ih`. Introduce `x hxn`. Take `⟨𝔪, h𝔪⟩` from `hEx _ x`. Establish `hL : IsL ((𝔪.toList : List _) : Multiset _) x.rep` using `by rwa [Multiset.coe_toList]`. Rewrite using `[H.langlands _ x hL, H'.langlands _ x hL]`.
+
+Use `segSum_congr rc rc' _ fun Δ hΔ => ?_` and prove the remaining obligations. Establish `hle : Δ.first.1 ≤ n` using `hxn ▸ first_fst_le_of_isL h𝔪 (Multiset.mem_toList.1 hΔ)`. Conclude with `eq_of_isCusp hLC hBZ hψc hψ he H H' Δ.first Δ.isCusp_first fun y hy => ih y.1 (by omega) y rfl`. Use function extensionality and compare the values at `x`. Conclude with `main _ x rfl`.
+-/
 theorem eq_of_lawsMin : LocalConverseGL → LanglandsExhaustionGL → BernsteinZelevinskyFiniteness → ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (A : ValuationSubring Ω) (w : HeightOneSpectrum (𝓞 E)) (h : IsPlaceOver A w) (a : Weil h →* (w.adicCompletion E)ˣ) (ha : IsLocalArtin h a) (e : AddChar (w.adicCompletion E) Circle → WD h → ℂˣ) (rc : IrrGL (w.adicCompletion E) → WD h) (rc' : IrrGL (w.adicCompletion E) → WD h) (ψ : AddChar (w.adicCompletion E) Circle) (e' : AddChar (w.adicCompletion E) Circle → WD h → ℂˣ), Continuous ψ → ψ ≠ 1 → e ψ = e' ψ → LawsMin a ha e rc → LawsMin a ha e' rc' → rc = rc' := by
   intro hLC hEx hBZ E Ω _ _ _ _ _ A w h a ha e rc rc' ψ e' hψc hψ he H H'
   haveI : CharZero (w.adicCompletion E) :=

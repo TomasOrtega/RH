@@ -24,6 +24,15 @@ def idTerm (k r : ℕ) (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace
   word_lie := by simp
   adj_id := by intros; rfl
 
+/- English proof (translation)
+Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `T hT`. Simplify using `only [List.mem_singleton] at hT`. Substitute `hT` using the available equality. Apply the tactic sequence `constructor <;> intro g₀ _ <;>`.
+
+Conclude with `⟨Set.univ, fun _ => ContinuousLinearMap.id ℂ _, isOpen_univ, trivial, contDiffOn_const, fun _ _ _ => rfl⟩`. Introduce `p _ f _ g _`. Simplify using `[B.opApply, B.Rw, B.rho, idTerm]`. Introduce `T hT`. Simplify using `only [List.mem_singleton] at hT`.
+
+Substitute `hT` using the available equality. Use `⟨fun _ => 1, fun _ => 0, fun _ => 0, 0, [], ?_, ?_, by simp [idTerm], by simp, ?_⟩` and prove the remaining obligations. Conclude with `⟨MvPolynomial.C 1, by simp, fun g => by simp⟩`. Introduce `l _ _`. Conclude with `⟨rfl, rfl⟩`.
+
+Introduce `g _`. Simplify using `[C6.monoM, C6.Epart, idTerm]`. Both sides reduce to the same expression.
+-/
 theorem id_inDDPlus (D : B.RealPlaceData k r Wp Wq) {nf : ℕ} (fib : Fin nf → B.Mat k r → C6.EndH Wp Wq)
     (L : Finset (Fin (r + 2))) : C6.InDDPlus D fib L 0 0 [idTerm k r Wp Wq] := by
   refine ⟨?_, ?_, ?_⟩
@@ -44,9 +53,17 @@ theorem id_inDDPlus (D : B.RealPlaceData k r Wp Wq) {nf : ℕ} (fib : Fin nf →
       simp [C6.monoM, C6.Epart, idTerm]
       rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `g`. Simplify using `[B.opApply, B.Rw, idTerm]`.
+-/
 theorem opApply_id (F : B.Mat k r → (Wq →L[ℂ] Wp)) : B.opApply [idTerm k r Wp Wq] F = F := by
   funext g; simp [B.opApply, B.Rw, idTerm]
 
+/- English proof (translation)
+Establish `hw : ∀ T ∈ Θ, T.word.length ≤ o` using `fun T hT => by`. Take `⟨P, a, b, c, es, hP, hab, hlen, hlie, hco⟩` from `h.2.2 T hT`. Use linear arithmetic over natural numbers and integers. Unfold `B.opOrder`. Use `clear h`.
+
+Proceed by induction on `Θ with`. Consider the case `nil => simp`. Consider the case `cons T Θ ih`. Simplify using `only [List.map_cons, List.foldr_cons]`. Conclude with `max_le (hw T (by simp)) (ih (fun T' hT' => hw T' (by simp [hT'])))`.
+-/
 theorem opOrder_le (D : B.RealPlaceData k r Wp Wq) {nf : ℕ} (fib : Fin nf → B.Mat k r → C6.EndH Wp Wq)
     (L : Finset (Fin (r + 2))) (o κ : ℕ) (Θ : B.DiffOp k r Wp Wq) (h : C6.InDDPlus D fib L o κ Θ) :
     B.opOrder Θ ≤ o := by
@@ -61,22 +78,41 @@ theorem opOrder_le (D : B.RealPlaceData k r Wp Wq) {nf : ℕ} (fib : Fin nf → 
     simp only [List.map_cons, List.foldr_cons]
     exact max_le (hw T (by simp)) (ih (fun T' hT' => hw T' (by simp [hT'])))
 
+/- English proof (translation)
+Introduce `_ hg` and use `⟨hg.1, hg.2.1, fun l _ => hg.2.2 l (Finset.mem_univ l)⟩`.
+-/
 theorem bigPos_sub (D : B.RealPlaceData k r Wp Wq) (L : Finset (Fin (r + 2))) : C6.bigPos D ⊆ C6.domL D L :=
   fun _ hg => ⟨hg.1, hg.2.1, fun l _ => hg.2.2 l (Finset.mem_univ l)⟩
 
+/- English proof (translation)
+Introduce `T hT` and use `⟨fun g hg => (h T hT).1 g (hUV hg), fun g hg => (h T hT).2 g (hUV hg)⟩`.
+-/
 theorem smoothCoef_mono {U V : Set (B.Mat k r)} (hUV : U ⊆ V) {Θ : B.DiffOp k r Wp Wq}
     (h : B.SmoothCoef V Θ) : B.SmoothCoef U Θ :=
   fun T hT => ⟨fun g hg => (h T hT).1 g (hUV hg), fun g hg => (h T hT).2 g (hUV hg)⟩
 
+/- English proof (translation)
+Introduce `p hp f hf g hg` and use `h p hp f hf g (hUV hg)`.
+-/
 theorem commutes_mono (D : B.RealPlaceData k r Wp Wq) {U V : Set (B.Mat k r)} (hUV : U ⊆ V)
     {Θ : B.DiffOp k r Wp Wq} (h : B.Commutes D V Θ) : B.Commutes D U Θ :=
   fun p hp f hf g hg => h p hp f hf g (hUV hg)
 
+/- English proof (translation)
+Take `⟨c, hck, hb⟩` from `hF`. Conclude with `⟨c, B5.ckOn_mono (by exact_mod_cast hm) hck, fun u v hu hv hl g hg => hb u v hu hv (le_trans hl hm) g hg⟩`.
+-/
 theorem inCC_mono {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] {A : ℝ} {m m' : ℕ} (hm : m' ≤ m)
     {F : B.Mat k r → E} (hF : B.InCC A m F) : B.InCC A m' F := by
   obtain ⟨c, hck, hb⟩ := hF
   exact ⟨c, B5.ckOn_mono (by exact_mod_cast hm) hck, fun u v hu hv hl g hg => hb u v hu hv (le_trans hl hm) g hg⟩
 
+/- English proof (translation)
+Take `⟨q, _, hq⟩` from `P.gram_function_polynomial k r z z'`. Establish `h1 : Continuous fun g : B.Mat k r => ((Gf k r z z' g : ℝ) : ℂ)`. Establish `e : (fun g : B.Mat k r => ((Gf k r z z' g : ℝ) : ℂ)) = fun g => MvPolynomial.eval (Sum.elim (fun x => g x.1 x.2) (fun x => star (g x.1 x.2))) q` using `funext hq`. Rewrite using `[e]`. Use `(MvPolynomial.continuous_eval q).comp ?_` and prove the remaining obligations.
+
+Use `continuous_pi fun i => ?_` and prove the remaining obligations. Break down `i with ⟨a, b⟩ | ⟨a, b⟩` into its components or cases. Simplify using `only [Sum.elim_inl]`. Conclude with `continuous_id.matrix_elem a b`. Simplify using `only [Sum.elim_inr]`.
+
+Conclude with `continuous_star.comp (continuous_id.matrix_elem a b)`. Use `Complex.continuous_re.comp h1` as an intermediate fact. Use `this.congr fun g => ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+-/
 theorem gf_cont (k r : ℕ) (z z' : Fin (2 * r + k + 1) → ℂ) : Continuous fun g : B.Mat k r => Gf k r z z' g := by
   obtain ⟨q, _, hq⟩ := P.gram_function_polynomial k r z z'
   have h1 : Continuous fun g : B.Mat k r => ((Gf k r z z' g : ℝ) : ℂ) := by
@@ -92,6 +128,15 @@ theorem gf_cont (k r : ℕ) (z z' : Fin (2 * r + k + 1) → ℂ) : Continuous fu
   refine this.congr fun g => ?_
   simp
 
+/- English proof (translation)
+Introduce `v`. Proceed by induction on `v with`. Consider the case `nil`. Introduce `_ g hg hlt`. Assume the negation of the conclusion as `h`.
+
+Conclude with `absurd (hG g hg h) (not_le.2 hlt)`. Consider the case `cons X v ih`. Introduce `hv g hg hlt`. Establish `hX : B.inLie k r X` using `hv X (by simp)`. Establish `hv' : ∀ Y ∈ v, B.inLie k r Y` using `fun Y hY => hv Y (by simp [hY])`.
+
+Simplify using `only [B.Rw, List.foldr_cons]`. Use `show deriv (fun t : ℝ => List.foldr RdV G v (g * NormedSpace.exp ((t : ℂ) • X))) 0 = 0`. Establish `hc : Continuous fun t : ℝ => Gf k r D.z D.z' (g * NormedSpace.exp ((t : ℂ) • X))` using `(gf_cont k r D.z D.z').comp (B5.curve_contDiff g X).continuous`. Establish `h0 : (fun t : ℝ => Gf k r D.z D.z' (g * NormedSpace.exp ((t : ℂ) • X))) 0 < ε` using `by show Gf k r D.z D.z' (g * NormedSpace.exp (((0 : ℝ) : ℂ) • X)) < ε`. Rewrite using `[B5.curve_zero]`.
+
+Conclude with `hlt`. Establish `hev` using `(hc.tendsto 0).eventually (gt_mem_nhds h0)`. Establish `: (fun t : ℝ => List.foldr RdV G v (g * NormedSpace.exp ((t : ℂ) • X))) =ᶠ[𝓝 0] fun _ => 0` using `hev.mono fun t ht => ih hv' _ (B5.curve_mem hg hX t) ht`. Rewrite using `[this.deriv_eq, deriv_const]`.
+-/
 theorem rw_zero (D : B.RealPlaceData k r Wp Wq) {ε : ℝ} (G : B.Mat k r → (Wq →L[ℂ] Wp))
     (hG : ∀ g ∈ B.GV k r, G g ≠ 0 → ε ≤ Gf k r D.z D.z' g) :
     ∀ v : List (B.Mat k r), (∀ X ∈ v, B.inLie k r X) →
@@ -118,6 +163,11 @@ theorem rw_zero (D : B.RealPlaceData k r Wp Wq) {ε : ℝ} (G : B.Mat k r → (W
       hev.mono fun t ht => ih hv' _ (B5.curve_mem hg hX t) ht
     rw [this.deriv_eq, deriv_const]
 
+/- English proof (translation)
+Introduce `g hg hne`. Assume the negation of the conclusion as `hlt`. Use `push Not at hlt`. Apply `hne` to reduce the goal to its premises. Unfold `B.opApply`.
+
+Apply `List.sum_eq_zero` to reduce the goal to its premises. Introduce `x hx`. Take `⟨T, _, rfl⟩` from `List.mem_map.1 hx`. Rewrite using `[rw_zero D G hG T.word T.word_lie g hg hlt, map_zero]`.
+-/
 theorem op_supp (D : B.RealPlaceData k r Wp Wq) {ε : ℝ} (Θ : B.DiffOp k r Wp Wq) (G : B.Mat k r → (Wq →L[ℂ] Wp))
     (hG : ∀ g ∈ B.GV k r, G g ≠ 0 → ε ≤ Gf k r D.z D.z' g) :
     ∀ g ∈ B.GV k r, B.opApply Θ G g ≠ 0 → ε ≤ Gf k r D.z D.z' g := by
@@ -131,6 +181,9 @@ theorem op_supp (D : B.RealPlaceData k r Wp Wq) {ε : ℝ} (Θ : B.DiffOp k r Wp
   obtain ⟨T, _, rfl⟩ := List.mem_map.1 hx
   rw [rw_zero D G hG T.word T.word_lie g hg hlt, map_zero]
 
+/- English proof (translation)
+Introduce `g hg hne`. Apply `hF g hg` to reduce the goal to its premises. Introduce `h0`. Apply `hne` to reduce the goal to its premises. Simplify using `[C6.cutAll, h0]`.
+-/
 theorem cut_supp (D : B.RealPlaceData k r Wp Wq) {ε : ℝ} (χ₀ : ℝ → ℝ) (de : ℝ) (L : Finset (Fin (r + 2)))
     (F : B.Mat k r → (Wq →L[ℂ] Wp)) (hF : ∀ g ∈ B.GV k r, F g ≠ 0 → ε ≤ Gf k r D.z D.z' g) :
     ∀ g ∈ B.GV k r, C6.cutAll D χ₀ de L F g ≠ 0 → ε ≤ Gf k r D.z D.z' g := by
@@ -148,6 +201,11 @@ namespace Formalism.FourierDecayAlt.P
 
 open DifferentialOperatorClasses
 
+/- English proof (translation)
+Introduce `hJ`. Take `⟨c₃, hc₃, hJ⟩` from `hJ`. Use `⟨c₃, hc₃, ?_⟩` and prove the remaining obligations. Introduce `k r Wp Wq _ _ _ _ _ _ D Θ A F hS hC hR hA hF g hg`. Take `⟨h1, h2, h3⟩` from `hJ k r Wp Wq D Θ A F hS hC hA hF`.
+
+Rewrite using `[h3 g hg]`. Conclude with `hR _ h1 h2 g hg`.
+-/
 theorem big_cell_vanishing_of_commute' : C6.BigCellVanishingOfCommute := by
   intro hJ
   obtain ⟨c₃, hc₃, hJ⟩ := hJ
@@ -157,6 +215,33 @@ theorem big_cell_vanishing_of_commute' : C6.BigCellVanishingOfCommute := by
   rw [h3 g hg]
   exact hR _ h1 h2 g hg
 
+/- English proof (translation)
+Introduce `hV0 hBC hBA hVT hLD Cb hCb`. Take `⟨c₃, hc₃, hV0⟩` from `hV0`. Take `⟨CV, hLD⟩` from `hLD`. Take `⟨C₁, hC₁⟩` from `hBA Cb CV hCb`. Take `⟨C₂, hC₂⟩` from `hVT c₃ Cb hc₃ hCb`.
+
+Use `⟨3 * (max C₁ 0 + max C₂ 0), ?_⟩` and prove the remaining obligations. Introduce `k r Wp Wq _ _ _ _ _ _ D nf fib L o κ N As Θ ε de χ₀ A₀ F γ O hr hε hde hχ hfib hΘ hrad ho hκ hAs1 hAs2 hA₀ hF hsupp hrel hG`. Use `set n : ℕ := 2 * r + k + 1 with hn`. Establish `hn3 : 3 ≤ n` using `by omega`. Establish `hn' : 2 * r + 2 ≤ n + 1` using `by omega`.
+
+Establish `hsq : (n + 1) ^ 2 ≤ 3 * n ^ 2` using `by nlinarith`. Establish `hcu : (n + 1) ^ 3 ≤ 3 * n ^ 3` using `by nlinarith`. Establish `hA1 : N * (n + 1) ^ 2 ≤ 3 * As`. Combine the equalities or inequalities in the displayed calculation. Establish `hA2 : (n + 1) ^ 3 ≤ 3 * As` using `le_trans hcu (Nat.mul_le_mul_left _ hAs2)`.
+
+Establish `hNn : (0 : ℝ) ≤ Cb * N` using `by positivity`. Establish `ho' : (o : ℝ) ≤ Cb * N * ((n + 1 : ℕ) : ℝ)`. Use `le_trans ho ?_` and prove the remaining obligations. Establish `: ((2 * r + k + 1 : ℕ) : ℝ) ≤ ((n + 1 : ℕ) : ℝ)` using `by exact_mod_cast Nat.le_succ n`. Conclude with `mul_le_mul_of_nonneg_left this hNn`.
+
+Establish `hP : (0 : ℝ) ≤ ((r : ℝ) + 1) ^ 4 * As` using `by positivity`. Establish `hAs3 : ((3 * As : ℕ) : ℝ) = 3 * (As : ℝ)` using `by push_cast; ring`. Establish `hC1 : C₁ * ((r : ℝ) + 1) ^ 4 * ((3 * As : ℕ) : ℝ) ≤ A₀`. Rewrite using `[hAs3]`. Establish `: C₁ * ((r : ℝ) + 1) ^ 4 * (3 * (As : ℝ)) ≤ 3 * (max C₁ 0 + max C₂ 0) * ((r : ℝ) + 1) ^ 4 * As`.
+
+Establish `: C₁ * (((r : ℝ) + 1) ^ 4 * As) ≤ (max C₁ 0 + max C₂ 0) * (((r : ℝ) + 1) ^ 4 * As)` using `mul_le_mul_of_nonneg_right (by have := le_max_left C₁ 0; have := le_max_right C₂ 0; linarith) hP`. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hC2 : C₂ * ((r : ℝ) + 1) ^ 4 * ((3 * As : ℕ) : ℝ) ≤ A₀`. Rewrite using `[hAs3]`.
+
+Establish `: C₂ * ((r : ℝ) + 1) ^ 4 * (3 * (As : ℝ)) ≤ 3 * (max C₁ 0 + max C₂ 0) * ((r : ℝ) + 1) ^ 4 * As`. Establish `: C₂ * (((r : ℝ) + 1) ^ 4 * As) ≤ (max C₁ 0 + max C₂ 0) * (((r : ℝ) + 1) ^ 4 * As)` using `mul_le_mul_of_nonneg_right (by have := le_max_left C₂ 0; have := le_max_right C₁ 0; linarith) hP`. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hBud` using `hC₁ r (n + 1) N o κ (3 * As) A₀ hr hn' hA1 hA2 ho' hκ hC1`.
+
+Establish `hThr` using `hC₂ r (n + 1) N o (3 * As) A₀ hr hn' hA1 hA2 ho' hC2`. Establish `hcut : B.InCC (A₀ - 3 * ((r : ℝ) + 1) * ((o : ℝ) + 1)) (o + 1) (C6.cutAll D χ₀ de L F)`. Use `hBC k r Wp Wq D nf fib L 0 0 [idTerm k r Wp Wq] ε de χ₀ A₀ F hε hde hχ hfib (id_inDDPlus D fib L) hF hsupp (o + 1)` as an intermediate fact. Rewrite `this` using `[opApply_id]`. Establish `e : A₀ - ((0 : ℕ) : ℝ) - 3 * ((r : ℝ) + 1) * (((o + 1 : ℕ) : ℝ) + ((0 : ℕ) : ℝ)) = A₀ - 3 * ((r : ℝ) + 1) * ((o : ℝ) + 1)` using `by push_cast; ring`.
+
+Rewrite `this` using `[e]`. Conclude with `this`. Establish `hord` using `opOrder_le D fib L o κ Θ hΘ`. Establish `hbig : ∀ g ∈ C6.bigPos D, B.JF D (B.opApply Θ (C6.cutAll D χ₀ de L F)) g = 0`. Use `hV0 k r Wp Wq D Θ (A₀ - 3 * ((r : ℝ) + 1) * ((o : ℝ) + 1)) (C6.cutAll D χ₀ de L F) (smoothCoef_mono (bigPos_sub D L) hΘ.1) (commutes_mono D (bigPos_sub D L) hΘ.2.1) hrad ?_ (inCC_mono (by omega) hcut)` and prove the remaining obligations.
+
+Establish `h1 : (B.opOrder Θ : ℝ) ≤ o` using `by exact_mod_cast hord`. Establish `h2 : ((2 * r + k + 1 : ℕ) : ℝ) ≤ ((n + 1 : ℕ) : ℝ)` using `by exact_mod_cast Nat.le_succ n`. Establish `h3 : (B.opOrder Θ : ℝ) + r * ((2 * r + k + 1 : ℕ) : ℝ) + 1 ≤ (o : ℝ) + r * ((n + 1 : ℕ) : ℝ) + 1`. Use `mul_le_mul_of_nonneg_left h2 (Nat.cast_nonneg (α := ℝ) r)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `h4` using `mul_le_mul_of_nonneg_left h3 (by positivity : (0 : ℝ) ≤ c₃ * ((r : ℝ) + 1) ^ 2)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hcl` using `hBC k r Wp Wq D nf fib L o κ Θ ε de χ₀ A₀ F hε hde hχ hfib hΘ hF hsupp (C6.mmV CV r)`. Use `hLD k r Wp Wq D (A₀ - κ - 3 * ((r : ℝ) + 1) * (((C6.mmV CV r : ℕ) : ℝ) + o)) ε (C6.mmV CV r) (B.opApply Θ (C6.cutAll D χ₀ de L F)) γ O hr hε ?_ le_rfl hcl (op_supp D Θ _ (cut_supp D χ₀ de L F hsupp)) hbig hrel hG` and prove the remaining obligations. Use `le_trans ?_ hBud` and prove the remaining obligations.
+
+Apply `mul_le_mul_of_nonneg_left _ (Nat.cast_nonneg (α := ℝ) r)` to reduce the goal to its premises. Unfold `C6.AV`. Apply `mul_le_mul_of_nonneg_left _ (Nat.cast_nonneg (α := ℝ) CV)` to reduce the goal to its premises. Establish `h2 : ((2 * r + k + 1 : ℕ) : ℝ) ≤ ((n + 1 : ℕ) : ℝ)` using `by exact_mod_cast Nat.le_succ n`. Establish `h0 : (0 : ℝ) ≤ ((2 * r + k + 1 : ℕ) : ℝ)` using `Nat.cast_nonneg _`.
+
+Use `mul_le_mul_of_nonneg_left h2 (by positivity : (0 : ℝ) ≤ (r : ℝ) ^ 3)` as an intermediate fact. Use `mul_le_mul h2 h2 h0 (by positivity)` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem vanishing_of_components_true : C6.VanishingOfParts := by
   intro hV0 hBC hBA hVT hLD Cb hCb
   obtain ⟨c₃, hc₃, hV0⟩ := hV0

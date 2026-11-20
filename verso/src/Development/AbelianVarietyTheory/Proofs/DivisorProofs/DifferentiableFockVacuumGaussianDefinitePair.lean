@@ -27,17 +27,26 @@ def entryR {m n : ℕ} (τ : D.what₂.Tau) (a : Fin m) (b : Fin n) : (D.what₂
     ((ContinuousLinearMap.proj (R := ℝ) (φ := fun _ : Fin m => Fin n → ℂ) a).comp
       (ContinuousLinearMap.proj (R := ℝ) (φ := fun _ : D.what₂.Tau => Fin m → Fin n → ℂ) τ))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem entryR_apply {m n : ℕ} (τ : D.what₂.Tau) (a : Fin m) (b : Fin n) (Z : D.what₂.Tau → Fin m → Fin n → ℂ) :
     entryR τ a b Z = Z τ a b := rfl
 
 def dSq {m n : ℕ} (Z : D.what₂.Tau → Fin m → Fin n → ℂ) : (D.what₂.Tau → Fin m → Fin n → ℂ) →L[ℝ] ℝ :=
   ∑ τ, ∑ a, ∑ b, (2 : ℕ) • (innerSL ℝ (Z τ a b)).comp (entryR τ a b)
 
+/- English proof (translation)
+Simplify using `[dSq, ContinuousLinearMap.sum_apply, entryR_apply, Complex.inner, two_mul]`. Use `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring` and prove the remaining obligations.
+-/
 theorem dSq_apply {m n : ℕ} (Z V : D.what₂.Tau → Fin m → Fin n → ℂ) :
     dSq Z V = ∑ τ, ∑ a, ∑ b, 2 * (V τ a b * starRingEnd ℂ (Z τ a b)).re := by
   simp [dSq, ContinuousLinearMap.sum_apply, entryR_apply, Complex.inner, two_mul]
   refine Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring
 
+/- English proof (translation)
+Unfold `sqSum dSq`. Use `HasFDerivAt.fun_sum (𝕜 := ℝ) (u := Finset.univ) (A := fun τ (Z : D.what₂.Tau → Fin m → Fin n → ℂ) => ∑ a, ∑ b, ‖Z τ a b‖ ^ 2) fun τ _ => ?_` and prove the remaining obligations. Use `HasFDerivAt.fun_sum (𝕜 := ℝ) (u := Finset.univ) (A := fun a (Z : D.what₂.Tau → Fin m → Fin n → ℂ) => ∑ b, ‖Z τ a b‖ ^ 2) fun a _ => ?_` and prove the remaining obligations. Use `HasFDerivAt.fun_sum (𝕜 := ℝ) (u := Finset.univ) (A := fun b (Z : D.what₂.Tau → Fin m → Fin n → ℂ) => ‖Z τ a b‖ ^ 2) fun b _ => ?_` and prove the remaining obligations. Conclude with `(entryR τ a b).hasFDerivAt.norm_sq`.
+-/
 theorem hasFDerivAt_sqSum {m n : ℕ} (Z : D.what₂.Tau → Fin m → Fin n → ℂ) :
     HasFDerivAt (fun Z : D.what₂.Tau → Fin m → Fin n → ℂ => sqSum Z) (dSq Z) Z := by
   unfold sqSum dSq
@@ -63,6 +72,9 @@ def frL {m n : ℕ} (B : D.what₂.Tau → Matrix (Fin n) (Fin n) ℂ) (B' : D.w
         rw [show Matrix.of (c • x τ) = c • Matrix.of (x τ) from rfl, Matrix.mul_smul, Matrix.smul_mul] }
   ⟨l, LinearMap.continuous_of_finiteDimensional l⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem frL_apply {m n : ℕ} (B : D.what₂.Tau → Matrix (Fin n) (Fin n) ℂ) (B' : D.what₂.Tau → Matrix (Fin m) (Fin m) ℂ)
     (Z : D.what₂.Tau → Fin m → Fin n → ℂ) : frL B B' Z = frPt B B' Z := rfl
 
@@ -82,6 +94,9 @@ def toCLin {m n : ℕ} (L : (D.what₂.Tau → Fin m → Fin n → ℂ) →L[ℝ
         ring }
   ⟨l, LinearMap.continuous_of_finiteDimensional l⟩
 
+/- English proof (translation)
+Use extensionality with `v`. Both sides reduce to the same expression.
+-/
 theorem toCLin_restrict {m n : ℕ} (L : (D.what₂.Tau → Fin m → Fin n → ℂ) →L[ℝ] ℂ)
     (hL : ∀ v, L (Complex.I • v) = Complex.I * L v) : (toCLin L hL).restrictScalars ℝ = L := by
   ext v; rfl
@@ -94,6 +109,11 @@ open GlobalTheory.FockCompare GlobalTheory.VacUnique
 
 variable {D : D7}
 
+/- English proof (translation)
+Establish `hre` using `GlobalTheory.RealSymplForm.realPlace_imaginaryGenerator_re_eq_zero D τ`. Establish `him` using `Formalism.L2.Theta.xi_zero_im_pos D τ`. Establish `hn` using `ReciprocityTheory.ChartRestriction.G.PullbackSections.PfModelLatB.norm_embedding_hostFormConstant_eq D (tauE D τ)`. Establish `e : tauE D τ D.host.xi0 = (((tauE D τ D.host.xi0).im : ℝ) : ℂ) * Complex.I`. Apply the tactic sequence `apply Complex.ext <;> simp [hre]`.
+
+Rewrite `hn` using `[e, norm_mul, Complex.norm_I, mul_one, Complex.norm_real, Real.norm_eq_abs, abs_of_pos him]`. Rewrite using `[e, hn]`.
+-/
 theorem realPlace_cmTrace_zero_element_eq_I_mul_abs (τ : D.what₂.Tau) : tauE D τ D.host.xi0 = ((Formalism.L2.Pj.xiR D : ℝ) : ℂ) * Complex.I := by
   have hre := GlobalTheory.RealSymplForm.realPlace_imaginaryGenerator_re_eq_zero D τ
   have him := Formalism.L2.Theta.xi_zero_im_pos D τ
@@ -103,6 +123,17 @@ theorem realPlace_cmTrace_zero_element_eq_I_mul_abs (τ : D.what₂.Tau) : tauE 
   rw [e, norm_mul, Complex.norm_I, mul_one, Complex.norm_real, Real.norm_eq_abs, abs_of_pos him] at hn
   rw [e, hn]
 
+/- English proof (translation)
+Use `set B := GlobalTheory.FockPos.frAt frS τ`. Use `set B' := GlobalTheory.FockPos.frAt frT τ`. Establish `h1 : Bᴴ * gramAt D S τ * B = 1` using `GlobalTheory.FockPos.frAt_on frS hS τ`. Establish `h2 : B'ᴴ * gramAt D T τ * B' = 1` using `GlobalTheory.FockPos.frAt_on frT hT τ`. Establish `hBd : IsUnit B.det` using `isUnit_iff_ne_zero.2 (GlobalTheory.FockPos.frAt_det_ne frS τ)`.
+
+Establish `hGi : (gramAt D S τ)⁻¹ = B * Bᴴ`. Apply `Matrix.inv_eq_right_inv` to reduce the goal to its premises. Establish `e1 : Bᴴ * (gramAt D S τ * B) = 1` using `by rw [← Matrix.mul_assoc]; exact h1`. Rewrite using `[← Matrix.mul_assoc]`. Conclude with `mul_eq_one_comm.1 e1`.
+
+Establish `hBB : Bᴴ * (B⁻¹)ᴴ = 1`. Rewrite using `[← Matrix.conjTranspose_mul, Matrix.nonsing_inv_mul _ hBd, Matrix.conjTranspose_one]`. Establish `e : (gramAt D S τ)⁻¹ * (B' * Matrix.of V * B⁻¹)ᴴ * gramAt D T τ * (B' * Matrix.of Z * B⁻¹) = B * ((Matrix.of V)ᴴ * Matrix.of Z * B⁻¹)`. Rewrite using `[hGi]`. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = B * ((Matrix.of V)ᴴ * Matrix.of Z * B⁻¹) := by`. Rewrite using `[hBB, h2, Matrix.one_mul, Matrix.mul_one]`. Unfold `hAt`. Rewrite using `[e, Matrix.trace_mul_comm, Matrix.nonsing_inv_mul_cancel_right _ _ hBd]`.
+
+Simplify using `only [Matrix.trace, Matrix.diag, Matrix.mul_apply, Matrix.conjTranspose_apply, Matrix.of_apply, RCLike.star_def]`. Conclude with `Finset.sum_comm`.
+-/
 theorem hAt_frame {S T : HSp D} (frS : GL (Fin S.rank) D.host.E) (frT : GL (Fin T.rank) D.host.E)
     (hS : Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) frS.1 * S.gram * frS.1 = 1)
     (hT : Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) frT.1 * T.gram * frT.1 = 1) (τ : D.what₂.Tau)
@@ -143,6 +174,9 @@ open GlobalTheory.FockCompare GlobalTheory.VacUnique
 
 variable {D : D7}
 
+/- English proof (translation)
+Rewrite using `[omO_apply]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Unfold `GlobalTheory.VacUnique.omAt`. Rewrite using `[frPt, frPt, hAt_frame frS frT hS hT τ (Z τ) (V τ), realPlace_cmTrace_zero_element_eq_I_mul_abs]`. Simplify using `only [Finset.mul_sum, Complex.re_sum]`.
+-/
 theorem omO_frame {S T : HSp D} (frS : GL (Fin S.rank) D.host.E) (frT : GL (Fin T.rank) D.host.E)
     (hS : Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) frS.1 * S.gram * frS.1 = 1)
     (hT : Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) frT.1 * T.gram * frT.1 = 1) (Z V : RW T S) :
@@ -155,6 +189,23 @@ theorem omO_frame {S T : HSp D} (frS : GL (Fin S.rank) D.host.E) (frT : GL (Fin 
   rw [frPt, frPt, hAt_frame frS frT hS hT τ (Z τ) (V τ), realPlace_cmTrace_zero_element_eq_I_mul_abs]
   simp only [Finset.mul_sum, Complex.re_sum]
 
+/- English proof (translation)
+Take `rfl` from `GlobalTheory.FockPos.cart_one frS hS hcS`. Take `rfl` from `GlobalTheory.FockPos.cart_one frT hT hcT`. Take `⟨hd, hann⟩` from `GlobalTheory.T.fockVacuum_annihilation_equation_real_coordinates D θ σ h ψ hψ S T _ _ f hf hfock`. Establish `hJ : ∀ z : RW T S, jO S T (fun _ => (1 : Matrix (Fin S.rank) (Fin S.rank) ℂ)) (fun _ => (1 : Matrix (Fin T.rank) (Fin T.rank) ℂ)) z = Complex.I • z` using `fun z => by`. Use function extensionality and compare the values at `τ i k`.
+
+Simplify using `[jO_apply, cplxO, Matrix.mul_apply, Matrix.one_apply, Pi.mul_apply, Pi.one_apply]`. Use `first`. Consider the case `exact congrFun (congrFun (Matrix.one_mul (M := (z τ : Matrix (Fin T.rank) (Fin S.rank) ℂ))) i) k`. Consider the case `(erw [Matrix.mul_apply]; simp [Matrix.one_apply])`. Consider the case `(rw [Matrix.one_mul])`.
+
+Use `set F : RW T S → ℂ := fun z => f (iotaW σ T S z) with hF`. Use `set Φ := frL (fun τ => GlobalTheory.FockPos.frAt frS τ) (fun τ => GlobalTheory.FockPos.frAt frT τ) with hΦ`. Introduce `Z`. Establish `h1 : HasFDerivAt (fun Z => F (Φ Z)) ((fderiv ℝ F (Φ Z)).comp (Φ.restrictScalars ℝ)) Z` using `(hd (Φ Z)).hasFDerivAt.comp Z (Φ.restrictScalars ℝ).hasFDerivAt`. Establish `h2 : HasFDerivAt (fun Z : RW T S => Complex.exp ((Real.pi * Formalism.L2.Pj.xiR D * sqSum Z : ℝ) : ℂ)) (Complex.exp ((Real.pi * Formalism.L2.Pj.xiR D * sqSum Z : ℝ) : ℂ) • Complex.ofRealCLM.comp ((Real.pi * Formalism.L2.Pj.xiR D) • dSq Z)) Z` using `(Complex.ofRealCLM.hasFDerivAt.comp Z ((hasFDerivAt_sqSum Z).const_mul (Real.pi * Formalism.L2.Pj.xiR D))).cexp`.
+
+Establish `h3` using `h1.mul h2`. Use `(hasFDerivAt_of_restrictScalars ℝ h3 (toCLin_restrict _ ?_)).differentiableAt` and prove the remaining obligations. Introduce `v`. Establish `hω1 : omO S T (Φ Z) (Φ v) = -(Formalism.L2.Pj.xiR D * dSq Z (Complex.I • v))`. Rewrite using `[hΦ, frL_apply, frL_apply, omO_frame frS frT hS hT, dSq_apply]`.
+
+Simplify using `only [Finset.mul_sum, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => ?_` and prove the remaining obligations. Simplify using `[Complex.mul_re, Complex.mul_im]`. Expand and normalize the polynomial expressions, which then agree. Establish `hω2 : omO S T (Φ Z) (Complex.I • Φ v) = Formalism.L2.Pj.xiR D * dSq Z v`.
+
+Rewrite using `[← map_smul, hΦ, frL_apply, frL_apply, omO_frame frS frT hS hT, dSq_apply]`. Simplify using `only [Finset.mul_sum]`. Use `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => ?_` and prove the remaining obligations. Simplify using `[Complex.mul_re, Complex.mul_im]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `ha` using `hann (Φ Z) (Φ v)`. Rewrite `ha` using `[hJ, hω1, hω2, show f (iotaW σ T S (Φ Z)) = F (Φ Z) from rfl]`. Simplify using `only [ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, ContinuousLinearMap.comp_apply, ContinuousLinearMap.coe_restrictScalars', map_smul, Complex.ofRealCLM_apply, smul_eq_mul]`. Move the coercions through the operations in `at ha ⊢`. Generalize the expression as in `Complex.exp ((Real.pi : ℂ) * (Formalism.L2.Pj.xiR D : ℂ) * (sqSum Z : ℂ)) = E`.
+
+Generalize the expression as in `(fderiv ℝ F (Φ Z)) (Complex.I • Φ v) = b at ha ⊢`. Generalize the expression as in `(fderiv ℝ F (Φ Z)) (Φ v) = a at ha ⊢`. Take the linear combination `(-Complex.I * E) * ha + (F (Φ Z) * E * Real.pi * Formalism.L2.Pj.xiR D * ((dSq Z (Complex.I • v) : ℝ) : ℂ) + E * b - Complex.I * F (Φ Z) * E * Real.pi * Formalism.L2.Pj.xiR D * ((dSq Z v : ℝ) : ℂ)) * Complex.I_sq`.
+-/
 theorem differentiable_gZ_of_frames {θ : InfFam D} {σ : (D.what₂.Tau → ℂ) →+ AE D} (h : Chart θ σ)
     {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) (S T : HSp D) (frS : GL (Fin S.rank) D.host.E)
     (frT : GL (Fin T.rank) D.host.E)
@@ -214,6 +265,9 @@ end GlobalTheory.VacRealForm
 
 namespace GlobalTheory.VacRealForm
 
+/- English proof (translation)
+Introduce `D T L sc G W U N σ hσ t j hj f hf`. Conclude with `differentiable_gZ_of_frames hσ hf.1 _ _ (N.fr (.top j)) (N.fr (.top (j + 1))) (N.fr_on (.top j) (show j ≤ D.R.m by omega)) (N.fr_on (.top (j + 1)) (show j + 1 ≤ D.R.m from hj)) _ _ (W.cart_is (.top j) (show j ≤ D.R.m by omega)) (W.cart_is (.top (j + 1)) (show j + 1 ≤ D.R.m from h …`.
+-/
 theorem differentiable_gZ_top : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GlobalTheory.ChiGrid.GridData L sc} (W : G.Weil) {U : Set T} (N : GlobalTheory.FunObj.Std G U) (σ : (D.what₂.Tau → ℂ) →+ AE D), GlobalTheory.FockCompare.Chart W.θ σ → ∀ (t : T) (j : ℕ), j + 1 ≤ D.R.m → ∀ f, IsVacO W.ψ W.θ _ _ (G.cartS W.cart (.top t j)) (G.onT W.cart (.top t j)) (N.latS (.top t j) : Set _) (N.latT (.top t j) : Set _) f → Differentiable ℂ (GlobalTheory.VacRealForm.gZ σ (G.pS (.top t j)) (G.pT (.top t j)) (N.frC (.top j)) (N.frC (.top (j + 1))) f) := by
   intro D T L sc G W U N σ hσ t j hj f hf
   exact differentiable_gZ_of_frames hσ hf.1 _ _ (N.fr (.top j)) (N.fr (.top (j + 1)))

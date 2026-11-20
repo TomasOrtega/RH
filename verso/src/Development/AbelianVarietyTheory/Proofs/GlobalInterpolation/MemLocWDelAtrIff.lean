@@ -10,6 +10,11 @@ noncomputable section
 
 namespace GlobalTheory.WeylLocOnePlace
 
+/- English proof (translation)
+Establish `e : (invTrK.comp (embGL emb)) B⁻¹ = (vlBdF emb (fun _ : ι => B))⁻¹`. Rewrite using `[map_inv]`. Both sides reduce to the same expression. Use `show (rhoK lam ((invTrK.comp (embGL emb)) B⁻¹) F).1 = _`. Rewrite using `[e]`.
+
+Both sides reduce to the same expression.
+-/
 theorem rhoVr_inv_coe {E K ι : Type} [Field E] [NumberField E] [Field K] [NumberField K] [Fintype ι]
     (emb : ι → E →+* K) {n : ℕ} (lam : ι → DomWeight n) (B : GL (Fin n) E) (F : Formalism.L2.DIV.VV K lam) :
     (rhoVr emb lam B⁻¹ F).1 = actP lam (vlBdF emb (fun _ : ι => B))⁻¹ F.1 := by
@@ -20,6 +25,19 @@ theorem rhoVr_inv_coe {E K ι : Type} [Field E] [NumberField E] [Field K] [Numbe
   rw [e]
   rfl
 
+/- English proof (translation)
+Introduce `E K ι _ _ _ _ _ _ _ emb σ Pl pw hval n lam lam' hn M hM w B hB F`. Establish `hbas : ∀ τ, IsBasisAt (pw w) (dualFr (tauLat emb τ M)) (vlBdF emb (fun _ : ι => B) τ)` using `fun τ => pb_isBasisAt_dualFr (pw w) _ (tauLatticeLattice_holds E K ι n emb τ M hM).fg _ (vl_isBasisAt_tauLat Pl pw hval emb τ w M B hB)`. Establish `hlat : ∀ τ, Submodule.IsLattice K (dualFr (tauLat emb τ M))` using `fun τ => du_dualFr_lattice latticeBasisExists_holds _ (tauLatticeLattice_holds E K ι n emb τ M hM)`. Establish `h0 : F ∈ locW Pl w (delAtr emb lam M) ↔ F ∈ Formalism.HermitianLatticesTheory.localization₂ (pw w).asIdeal (delAtr emb lam M)` using `vl_mem_span_intW_iff Pl pw hval w _ F`. Establish `hmem : F ∈ Formalism.HermitianLatticesTheory.localization₂ (pw w).asIdeal (delAtr emb lam M) ↔ actP lam (vlBdF emb (fun _ : ι => B))⁻¹ F.1 ∈ Formalism.HermitianLatticesTheory.localization₂ (pw w).asIdeal (delStd K lam)`.
+
+Establish `h1 : F ∈ Formalism.HermitianLatticesTheory.localization₂ (pw w).asIdeal (delAtr emb lam M) ↔ F.1 ∈ Formalism.HermitianLatticesTheory.localization₂ (pw w).asIdeal (delP lam fun τ => dualFr (tauLat emb τ M))` using `Iff.rfl`. Rewrite using `[h1, (nablaDeltaLocal_holds K ι n lam _ hlat (pw w) _ hbas).2]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨G, hG, hGF⟩`. Establish `e : actP lam (vlBdF emb (fun _ : ι => B))⁻¹ F.1 = G`.
+
+Rewrite using `[← hGF]`. Use `show actP lam (vlBdF emb (fun _ : ι => B))⁻¹ (actP lam (vlBdF emb (fun _ : ι => B)) G) = G`. Rewrite using `[← polyAction_mul, inv_mul_cancel, polyAction_one₂]`. Rewrite using `[e]`. Conclude with `hG`.
+
+Introduce `h`. Use `⟨_, h, ?_⟩` and prove the remaining obligations. Use `show actP lam (vlBdF emb (fun _ : ι => B)) (actP lam (vlBdF emb (fun _ : ι => B))⁻¹ F.1) = F.1`. Rewrite using `[← polyAction_mul, mul_inv_cancel, polyAction_one₂]`. Rewrite using `[h0, hmem, rhoVr_inv_coe]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `vl_map_mem_intSpan Pl pw hval σ w lam lam' hn h`. Introduce `h`. Take `⟨G, hG, hGe⟩` from `vl_exists_of_mem_intSpan Pl pw hval σ w lam lam' hn h`.
+
+Establish `hG' : actP lam (vlBdF emb (fun _ : ι => B))⁻¹ F.1 = G` using `(MvPolynomial.map_injective σ σ.injective hGe).symm`. Rewrite using `[hG']`. Conclude with `hG`.
+-/
 theorem mem_locW_delAtr_iff : ∀ {E K ι : Type} [Field E] [NumberField E] [StarRing E] [Field K] [NumberField K] [StarRing K] [Fintype ι] (emb : ι → E →+* K) (σ : K →+* ℂ) (Pl : Rows.Places K) (pw : Pl.Pl → HeightOneSpectrum (𝓞 K)), (∀ w (x : K), x ≠ 0 → Pl.val w x = ((vAdd (pw w) x : ℤ) : WithTop ℤ)) → ∀ {n : ℕ} (lam lam' : ι → DomWeight n), (∀ τ, (lam τ).natW = (lam' τ).natW) → ∀ (M : Submodule (𝓞 E) (Fin n → E)), Submodule.IsLattice E M → ∀ (w : Pl.Pl) (B : GL (Fin n) E), IsLocBasis (Pl.resChar w) (M : Set (Fin n → E)) B → ∀ F : Formalism.L2.DIV.VV K lam, F ∈ locW Pl w (delAtr emb lam M) ↔ MvPolynomial.map σ (rhoVr emb lam B⁻¹ F).1 ∈ vlIntSpan σ Pl w lam' := by
   intro E K ι _ _ _ _ _ _ _ emb σ Pl pw hval n lam lam' hn M hM w B hB F
   have hbas : ∀ τ, IsBasisAt (pw w) (dualFr (tauLat emb τ M)) (vlBdF emb (fun _ : ι => B) τ) := fun τ =>

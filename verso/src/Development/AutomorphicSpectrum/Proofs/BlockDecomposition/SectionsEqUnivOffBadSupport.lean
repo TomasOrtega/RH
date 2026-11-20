@@ -13,6 +13,9 @@ noncomputable section
 
 variable {X : Scheme.{0}}
 
+/- English proof (translation)
+Establish `hunit : IsUnit (resO (X.basicOpen_le f) f)` using `X.toRingedSpace.isUnit_res_basicOpen f`. Take `⟨e, m', hm'⟩` from `qcoh_exists_res_eq F hV f m`. Use `eq_zero_of_isUnit_smul (hunit.pow e) ?_` and prove the remaining obligations. Rewrite using `[← hm', h0 m', map_zero]`.
+-/
 lemma eq_zero_basicOpen_of_affine (F : X.Modules) [F.IsQuasicoherent] {V : X.Opens}
     (hV : IsAffineOpen V) (h0 : ∀ s : Γ(F, V), s = 0) (f : Γ(X, V)) (m : Γ(F, X.basicOpen f)) :
     m = 0 := by
@@ -21,6 +24,11 @@ lemma eq_zero_basicOpen_of_affine (F : X.Modules) [F.IsQuasicoherent] {V : X.Ope
   refine eq_zero_of_isUnit_smul (hunit.pow e) ?_
   rw [← hm', h0 m', map_zero]
 
+/- English proof (translation)
+Use `TopCat.Sheaf.eq_of_locally_eq' (⟨F.presheaf, F.isSheaf⟩ : TopCat.Sheaf Ab X) (fun i : {f : Γ(X, V) // X.basicOpen f ≤ W} => X.basicOpen i.1) W (fun i => homOfLE i.2) ?_ m 0 ?_` and prove the remaining obligations. Introduce `x hx`. Take `⟨f, hfW, hxf⟩` from `hV.exists_basicOpen_le (V := W) ⟨x, hx⟩ (hW hx)`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨⟨f, hfW⟩, hxf⟩`. Introduce `i`.
+
+Rewrite using `[map_zero]`. Conclude with `eq_zero_basicOpen_of_affine F hV h0 i.1 _`.
+-/
 lemma eq_zero_of_le_affine (F : X.Modules) [F.IsQuasicoherent] {V W : X.Opens}
     (hV : IsAffineOpen V) (h0 : ∀ s : Γ(F, V), s = 0) (hW : W ≤ V) (m : Γ(F, W)) : m = 0 := by
   refine TopCat.Sheaf.eq_of_locally_eq' (⟨F.presheaf, F.isSheaf⟩ : TopCat.Sheaf Ab X)
@@ -33,6 +41,9 @@ lemma eq_zero_of_le_affine (F : X.Modules) [F.IsQuasicoherent] {V W : X.Opens}
     rw [map_zero]
     exact eq_zero_basicOpen_of_affine F hV h0 i.1 _
 
+/- English proof (translation)
+Take `⟨y, rfl⟩` from `surjective_cokernel_π_app S.arrow hV s`. Establish `hmem : y ∈ secs S V` using `by rw [hS]; trivial`. Conclude with `(mem_range_app_iff S.arrow hV y).1 hmem`.
+-/
 lemma cokernel_sections_eq_zero {P : X.Modules} [P.IsQuasicoherent] (S : Subobject P)
     [(S : X.Modules).IsQuasicoherent] {V : X.Opens} (hV : IsAffineOpen V)
     (hS : secs S V = Set.univ) (s : Γ(cokernel S.arrow, V)) : s = 0 := by
@@ -40,6 +51,13 @@ lemma cokernel_sections_eq_zero {P : X.Modules} [P.IsQuasicoherent] (S : Subobje
   have hmem : y ∈ secs S V := by rw [hS]; trivial
   exact (mem_range_app_iff S.arrow hV y).1 hmem
 
+/- English proof (translation)
+Introduce `U hU s`. Use `TopCat.Sheaf.eq_of_locally_eq' (⟨(cokernel S.arrow).presheaf, (cokernel S.arrow).isSheaf⟩ : TopCat.Sheaf Ab X) (fun i : {V : X.affineOpens // secs S (V : X.Opens) = Set.univ} => U ⊓ (i.1 : X.Opens)) U (fun i => homOfLE inf_le_left) ?_ s 0 ?_` and prove the remaining obligations. Introduce `x hx`. Establish `hxb : x ∉ badSet S` using `fun hb => Set.disjoint_left.1 hU hx hb`. Establish `hxc : x ∈ (badSet S)ᶜ` using `hxb`.
+
+Rewrite `hxc` using `[badSet_compl_eq]`. Simplify using `only [Set.mem_iUnion, exists_prop] at hxc`. Take `⟨V, hV, hxV⟩` from `hxc`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨⟨V, hV⟩, ⟨hx, hxV⟩⟩`. Introduce `i`.
+
+Rewrite using `[map_zero]`. Conclude with `eq_zero_of_le_affine _ i.1.2 (cokernel_sections_eq_zero S i.1.2 i.2) inf_le_right _`.
+-/
 lemma supportedIn_badSet {P : X.Modules} [P.IsQuasicoherent] (S : Subobject P)
     [(S : X.Modules).IsQuasicoherent] :
     Scheme.Modules.SupportedIn (cokernel S.arrow) (badSet S) := by
@@ -59,6 +77,9 @@ lemma supportedIn_badSet {P : X.Modules} [P.IsQuasicoherent] (S : Subobject P)
     rw [map_zero]
     exact eq_zero_of_le_affine _ i.1.2 (cokernel_sections_eq_zero S i.1.2 i.2) inf_le_right _
 
+/- English proof (translation)
+Use `haveI : P.IsQuasicoherent := hP`. Use `haveI : (S : X.Modules).IsQuasicoherent := hS`. Conclude with `GlobalTheory.CompanionTheory.GE.Comb.secs_eq_univ_of_supportedIn hP hS (supportedIn_badSet S) hU hd`.
+-/
 theorem secs_eq_univ_of_disjoint_badSet {X : Scheme.{0}} {P : X.Modules} (hP : P.IsQuasicoherent)
     (S : Subobject P) (hS : (S : X.Modules).IsQuasicoherent) (U : X.Opens) (hU : IsAffineOpen U)
     (hd : Disjoint (U : Set X) (badSet S)) : secs S U = Set.univ := by

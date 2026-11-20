@@ -9,6 +9,13 @@ noncomputable section
 namespace GlobalTheory.MumCmp.SamePolIso
 variable {R : Type} [CommRing R] [IsDomain R]
 
+/- English proof (translation)
+Establish `hs : spMap (RingHom.id R) = 𝟙 (Sp R)` using `Spec.map_id _`. Establish `h1` using `h.1`. Rewrite `h1` using `[hs]`. Establish `: IsIso β` using `h1.isIso_fst_of_isIso`. Set `f : B ⟶ Q` to `Over.homMk β (by simpa using h1.w)`.
+
+Establish `: IsIso ((Over.forget (Sp R)).map f)` using `(inferInstance : IsIso β)`. Establish `: IsIso f` using `isIso_of_reflects_iso f (Over.forget _)`. Use `⟨asIso f, rfl, isMonHom_of_mul _ fun T x y => ?_⟩` and prove the remaining obligations. Set `ρ : Over.mk (T.hom ≫ spMap (RingHom.id R)) ⟶ T` to `Over.homMk (𝟙 T.left) (by simp [hs])`. Establish `e` using `h.2 T x y (ρ ≫ x ≫ f) (ρ ≫ y ≫ f) (by simp [ρ, f]) (by simp [ρ, f])`.
+
+Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite `e` using `[← MonObj.comp_mul]`. Simplify `e.symm` using `[ρ, f]`.
+-/
 theorem grp_iso {B Q : Over (Sp R)} [GrpObj B] [GrpObj Q] {β : B.left ⟶ Q.left}
     (h : IsGrpPullback B Q (spMap (RingHom.id R)) β) : ∃ f : B ≅ Q, f.hom.left = β ∧ IsMonHom f.hom := by
   have hs : spMap (RingHom.id R) = 𝟙 (Sp R) := Spec.map_id _
@@ -25,11 +32,35 @@ theorem grp_iso {B Q : Over (Sp R)} [GrpObj B] [GrpObj Q] {β : B.left ⟶ Q.lef
   rw [← MonObj.comp_mul] at e
   simpa [ρ, f] using e.symm
 
+/- English proof (translation)
+Substitute `hf hj hk` using the available equality. Both sides reduce to the same expression.
+-/
 theorem gw_congr {X X' Y : Scheme.{0}} {L : LB X} {L' : LB X'} {F : X' ⟶ X} (w : LB.Iso L' (L.pull F))
     {f f' : Y ⟶ X'} (hf : f = f') (y : Y) {j j' : L.ι} (hj : j = j') {k k' : L'.ι} (hk : k = k') :
     gw w f y j k = gw w f' y j' k' := by
   subst hf hj hk; rfl
 
+/- English proof (translation)
+Introduce `R _ _ D₀ D h`. Take `⟨Q, e₀, e, ⟨β₀, β₂₀, w₀, p₀, s₀, g₀, c₀, t₀⟩, ⟨β₁, β₂₁, w₁, p₁, s₁, g₁, c₁, t₁⟩⟩` from `h`. Establish `hs : spMap (RingHom.id R) = 𝟙 (Sp R)` using `Spec.map_id _`. Take `⟨f₀, hf₀, m₀⟩` from `grp_iso p₀`. Take `⟨f₁, hf₁, m₁⟩` from `grp_iso p₁`.
+
+Establish `cc₀ : ∀ a, D₀.c a ≫ f₀.hom = Q.c (e₀ a)` using `fun a => Over.OverMorphism.ext (by`. Rewrite using `[Over.comp_left, hf₀, c₀ a, hs, Category.id_comp])`. Establish `cc₁ : ∀ a, D.c a ≫ f₁.hom = Q.c (e a)` using `fun a => Over.OverMorphism.ext (by`. Rewrite using `[Over.comp_left, hf₁, c₁ a, hs, Category.id_comp])`. Establish `ea : ∀ x, e ((e₀.trans e.symm) x) = e₀ x` using `fun x => by simp`.
+
+Establish `hcβ : ∀ χ, D₀.c χ ≫ (f₀ ≪≫ f₁.symm).hom = D.c ((e₀.trans e.symm) χ)` using `fun χ => by`. Rewrite using `[Iso.trans_hom, Iso.symm_hom, ← Category.assoc, cc₀, Iso.comp_inv_eq, cc₁, ea]`. Establish `hF : (lift (fst D₀.P.A D₀.P.A ≫ (f₀ ≪≫ f₁.symm).hom) (snd D₀.P.A D₀.P.A ≫ (f₀ ≪≫ f₁.symm).hom) : G2 D₀.P.A ⟶ G2 D.P.A).left ≫ β₂₁ = β₂₀`. Apply `pullback.hom_ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `_ ≫ β₂₁ ≫ (fst Q.B Q.B).left = β₂₀ ≫ (fst Q.B Q.B).left`.
+
+Rewrite using `[s₁.1, s₀.1, ← Category.assoc, ← Over.comp_left, lift_fst, ← hf₁, ← hf₀, ← Over.comp_left, ← Over.comp_left]`. Simplify using the standard rewrite rules. Express the relevant statement in the definitionally equal form `_ ≫ β₂₁ ≫ (snd Q.B Q.B).left = β₂₀ ≫ (snd Q.B Q.B).left`. Rewrite using `[s₁.2, s₀.2, ← Category.assoc, ← Over.comp_left, lift_snd, ← hf₁, ← hf₀, ← Over.comp_left, ← Over.comp_left]`. Simplify using the standard rewrite rules.
+
+Substitute `hF` using the available equality. Establish `hLQ : (abelian₂ Q.B Q.M.L).IsLB` using `DVR.linComb_isLB _ Q.M.isLB _ _`. Establish `hLD : (abelian₂ D.P.A D.P.L).IsLB` using `DVR.linComb_isLB _ D.P.isLB _ _`. Establish `hLD₀ : (abelian₂ D₀.P.A D₀.P.L).IsLB` using `DVR.linComb_isLB _ D₀.P.isLB _ _`. Take `⟨wΛ, T⟩` from `exists_cancel hLQ w₁ w₀ ((isGen_iff _).1 g₁) ((isGen_iff _).1 g₀) hLD hLD₀`.
+
+Use `⟨f₀ ≪≫ f₁.symm, e₀.trans e.symm, ?_, hcβ, wΛ, (isGen_iff _).2 (T.pgen_cancel hLQ ((isGen_iff _).1 g₁) ((isGen_iff _).1 g₀)), ?_⟩` and prove the remaining obligations. Use `show IsMonHom (f₀.hom ≫ f₁.inv) infer_instance`. Introduce `a a' z J J' hJ hJ'`. Use `choose d hd using fun χ : (TK R).left ⟶ Q.B.left => exists_chart Q.M.isLB (χ z)`. Establish `hκ : 𝟙 (TK R).left ≫ jK R = jK R ≫ spMap (RingHom.id R)` using `by rw [hs]; simp`.
+
+Establish `A₀` using `t₀ (𝟙 _) hκ a a' z d J' hd hJ'`. Establish `A₁` using `t₁ (𝟙 _) hκ ((e₀.trans e.symm) a) ((e₀.trans e.symm) a') z d J hd hJ`. Rewrite `A₁` using `[ea, ea]`. Establish `hP : (lift (toUnit (TK R) ≫ D₀.c a) (toUnit (TK R) ≫ D₀.c a')).left ≫ (lift (fst D₀.P.A D₀.P.A ≫ (f₀ ≪≫ f₁.symm).hom) (snd D₀.P.A D₀.P.A ≫ (f₀ ≪≫ f₁.symm).hom) : G2 D₀.P.A ⟶ G2 D.P.A).left = (lift (toUnit (TK R) ≫ D.c ((e₀.trans e.symm) a)) (toUnit (TK R) ≫ D.c ((e₀.trans e.symm) …`. Rewrite using `[← Over.comp_left, comp_lift, lift_fst_assoc, lift_snd_assoc, Category.assoc, Category.assoc, hcβ, hcβ]`.
+
+Establish `m₁ : β₂₁ ((lift (fst D₀.P.A D₀.P.A ≫ (f₀ ≪≫ f₁.symm).hom) (snd D₀.P.A D₀.P.A ≫ (f₀ ≪≫ f₁.symm).hom) : G2 D₀.P.A ⟶ G2 D.P.A).left ((lift (toUnit (TK R) ≫ D₀.c a) (toUnit (TK R) ≫ D₀.c a')).left z)) ∈ (abelian₂ Q.B Q.M.L).U (fun I => d ((lift (toUnit (TK R) ≫ D₀.c a) (toUnit (TK R) …`. Use `Good.mem (L := Q.M.L) hd (fun I : ULift (Finset (Fin 2)) => (psum Q.B (x2 Q.B) I.down).left) ((lift (toUnit (TK R) ≫ D₀.c a) (toUnit (TK R) ≫ D₀.c a')).left ≫ (lift (fst D₀.P.A D₀.P.A ≫ (f₀ ≪≫ f₁.symm).hom) (snd D₀.P.A D₀.P.A ≫ (f₀ ≪≫ f₁.symm).hom) : G2 D₀.P.A ⟶ G2 D.P.A).left ≫ …` as an intermediate fact. Simplify using `only [Category.assoc] at this ⊢`. Conclude with `this`. Establish `m₂ : (lift (fst D₀.P.A D₀.P.A ≫ (f₀ ≪≫ f₁.symm).hom) (snd D₀.P.A D₀.P.A ≫ (f₀ ≪≫ f₁.symm).hom) : G2 D₀.P.A ⟶ G2 D.P.A).left ((lift (toUnit (TK R) ≫ D₀.c a) (toUnit (TK R) ≫ D₀.c a')).left z) ∈ (abelian₂ D.P.A D.P.L).U (fun I => J ((lift (toUnit (TK R) ≫ D₀.c a) (toUnit (TK R) ≫ D …`.
+
+Use `Good.mem (L := D.P.L) hJ (fun I : ULift (Finset (Fin 2)) => (psum D.P.A (x2 D.P.A) I.down).left) ((lift (toUnit (TK R) ≫ D₀.c a) (toUnit (TK R) ≫ D₀.c a')).left ≫ (lift (fst D₀.P.A D₀.P.A ≫ (f₀ ≪≫ f₁.symm).hom) (snd D₀.P.A D₀.P.A ≫ (f₀ ≪≫ f₁.symm).hom) : G2 D₀.P.A ⟶ G2 D.P.A).lef …` as an intermediate fact. Simplify using `only [Category.assoc] at this`. Conclude with `this`. Establish `m₃ : (lift (toUnit (TK R) ≫ D₀.c a) (toUnit (TK R) ≫ D₀.c a')).left z ∈ (abelian₂ D₀.P.A D₀.P.L).U (fun I => J' ((lift (toUnit (TK R) ≫ D₀.c a) (toUnit (TK R) ≫ D₀.c a')).left ≫ (psum D₀.P.A (x2 D₀.P.A) I.down).left))` using `Good.mem (L := D₀.P.L) hJ' (fun I : ULift (Finset (Fin 2)) => (psum D₀.P.A (x2 D₀.P.A) I.down).left) (lift (toUnit (TK R) ≫ D₀.c a) (toUnit (TK R) ≫ D₀.c a')).left`. Establish `key` using `T _ (lift (toUnit (TK R) ≫ D₀.c a) (toUnit (TK R) ≫ D₀.c a')).left z _ _ _ m₁ m₂ m₃`.
+
+Establish `k₁ : gw w₁ ((lift (toUnit (TK R) ≫ D₀.c a) (toUnit (TK R) ≫ D₀.c a')).left ≫ (lift (fst D₀.P.A D₀.P.A ≫ (f₀ ≪≫ f₁.symm).hom) (snd D₀.P.A D₀.P.A ≫ (f₀ ≪≫ f₁.symm).hom) : G2 D₀.P.A ⟶ G2 D.P.A).left) z (fun I => d ((lift (toUnit (TK R) ≫ D₀.c a) (toUnit (TK R) ≫ D₀.c a')).left ≫ ((l …` using `gw_congr w₁ hP z (funext fun I => by rw [← hP]; simp only [Category.assoc]) (funext fun I => by rw [← hP]; simp only [Category.assoc])`. Rewrite `key` using `[k₁]`. Rewrite using `[A₀, A₁]`. Express the relevant statement in the definitionally equal form `gw w₀ (lift (toUnit (TK R) ≫ D₀.c a) (toUnit (TK R) ≫ D₀.c a')).left z _ _ * _ = gw wΛ (lift (toUnit (TK R) ≫ D₀.c a) (toUnit (TK R) ≫ D₀.c a')).left z _ _ * _`. Rewrite using `[key, _root_.mul_assoc, _root_.mul_left_comm]`.
+-/
 theorem exists_iso : ∀ (R : Type) [CommRing R] [IsDomain R] (D₀ D : DegPre R), SamePol D₀ D →
   ∃ (β : D₀.P.A ≅ D.P.A) (xe : D₀.X ≃+ D.X), IsMonHom β.hom ∧ (∀ χ, D₀.c χ ≫ β.hom = D.c (xe χ)) ∧
     ∃ wΛ : LB.Iso (abelian₂ D₀.P.A D₀.P.L)

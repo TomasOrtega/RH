@@ -10,6 +10,15 @@ namespace GroundTheory.Heights₂.Heights
 
 open MvPolynomial
 
+/- English proof (translation)
+Introduce `n e`. Proceed by induction on `e with`. Consider the case `zero`. Introduce `δ h W f hW hf hδ`. Take `⟨j, hj⟩` from `hW.isRelevant`.
+
+Establish `hℓ : linForm (Pi.single j (1 : ℂ)) ∉ W` using `by rwa [linForm_single]`. Rewrite using `[hCP n 0 h W f (Pi.single j 1) (fun _ => 1) hW hf hℓ (fun _ _ _ => rfl) continuousOn_const]`. Conclude with `hP n δ h W f _ hW hf hδ hℓ`. Consider the case `succ e ih`. Introduce `δ h J f hJ hf hδ`.
+
+Take `⟨j, hj⟩` from `hJ.isRelevant`. Establish `hu : linForm (Pi.single j (1 : ℂ)) ∉ J` using `by rwa [linForm_single]`. Take `⟨ℓ, hℓ, hℓW⟩` from `hA n J (Pi.single j 1) hJ`. Take `⟨g, δW, hW, hsum⟩` from `hD ℂ n e δ J f (Pi.single j 1) hJ hf hδ hu`. Rewrite using `[hCP n (e + 1) h J f ℓ (fun _ => 1) hJ hf hℓ (fun _ _ _ => rfl) continuousOn_const, hS n e h J f (Pi.single j 1) ℓ hJ hf hu hℓ hℓW, hsum]`.
+
+Use `push_cast`. Use `Finset.sum_congr rfl fun W hWm => ?_` and prove the remaining obligations. Take `⟨hWp, hWc, hWδ⟩` from `hW W hWm`. Rewrite using `[← hCP n e h W (g W) ℓ (fun _ => 1) hWp hWc (hℓW W hWm) (fun _ _ _ => rfl) continuousOn_const, ih (δW W) h W (g W) hWp hWc hWδ]`.
+-/
 theorem ConeIntegralMass.of_slices (hCP : ConeToProjective.Statement)
     (hS : SliceSectionMass.Statement) (hA : SectionHyperplaneAvoid.Statement)
     (hD : SectionDegreeSum.Statement) (hP : PointSliceMass.Statement) :
@@ -36,6 +45,9 @@ theorem ConeIntegralMass.of_slices (hCP : ConeToProjective.Statement)
     rw [← hCP n e h W (g W) ℓ (fun _ => 1) hWp hWc (hℓW W hWm) (fun _ _ _ => rfl)
       continuousOn_const, ih (δW W) h W (g W) hWp hWc hWδ]
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ hCP _` and use `ConeIntegralMass.of_slices hCP hS hA hD hP`.
+-/
 theorem MassFromLelong.proof (hS : SliceSectionMass.Statement)
     (hA : SectionHyperplaneAvoid.Statement) (hD : SectionDegreeSum.Statement)
     (hP : PointSliceMass.Statement) : MassFromLelong.Statement :=

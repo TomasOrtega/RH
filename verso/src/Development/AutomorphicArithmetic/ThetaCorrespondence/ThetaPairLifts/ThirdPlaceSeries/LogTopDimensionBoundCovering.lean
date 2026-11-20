@@ -21,6 +21,31 @@ open scoped TensorProduct
 set_option autoImplicit false
 noncomputable section
 namespace GlobalTheory.CovTop.DimLogTop
+/- English proof (translation)
+Introduce `hP hSz`. Take `⟨Cb, -, hB⟩` from `_root_.UpperTheory.Lit.Tam.tamagawa_number_formula hP`. Establish `hG` using `_root_.GlobalTheory.CovTop.GoodDom.covering_regular_at_domain hP`. Establish `hQ` using `_root_.GlobalTheory.QuoWt.weights_at_point_alt hSz`. Establish `hS` using `_root_.GlobalTheory.CovTop.CovSz.size_rows_alt hSz`.
+
+Establish `hW` using `_root_.GlobalTheory.HSApp.wtBig_run_alt`. Use `Closed.imp (Closed.and (Closed.and hQ hS) hW) ?_` and prove the remaining obligations. Introduce `eps Fm CH heps hh`. Take `⟨⟨⟨C1, -, x1, h1⟩, ⟨C2, -, x2, h2⟩⟩, ⟨C3, -, x3, h3⟩⟩` from `hh`. Use `⟨0, le_rfl, max (max (max x1 x2) x3) ((max Cb 1) ^ eps⁻¹), ?_⟩` and prove the remaining obligations.
+
+Introduce `x hx hle ι p hp i hi Y hY Z`. Establish `hle1 : max (max x1 x2) x3 ≤ x` using `(le_max_left _ _).trans hle`. Establish `hq` using `h1 x hx ((le_max_left _ _).trans ((le_max_left _ _).trans hle1)) ι p hp i hi`. Establish `hs` using `h2 x hx ((le_max_right _ _).trans ((le_max_left _ _).trans hle1)) ι p hp i hi Y hY`. Establish `hwb` using `h3 x hx ((le_max_right _ _).trans hle1) ι p hp i hi`.
+
+Take `⟨hp1, hq1, hE, -, hstr, -, -⟩` from `hq`. Take `⟨hLJ, hInR, hL1, hM, hfs, hfr, -, -, hf8, hr100, -, hkap, hZ12, -, -, -, -, hwt⟩` from `hs`. Use `set PP := (Fm.parT x hx ι).PP with hPP`. Establish `hx1 : Fm.x1 < x` using `hx`. Establish `hLx : (Fm.L x ι).sc.L = x ^ eps`.
+
+Unfold `Scale.L`. Rewrite using `[Fm.L_x x ι hx1, Fm.L_eps x ι]`. Establish `hLC : max Cb 1 ≤ (Fm.L x ι).sc.L`. Rewrite using `[hLx]`. Establish `h0 : (0 : ℝ) ≤ (max Cb 1) ^ eps⁻¹` using `Real.rpow_nonneg (by positivity) _`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hT2 : 2 ≤ GlobalTheory.FlagTan.dimFlag (dat p i) + lenT p i PP`. Establish `hT1` using `hwb.le_T`. Establish `hD1` using `hwb.one_le`. Express the relevant statement in the definitionally equal form `1 ≤ GlobalTheory.FlagTan.dimFlag (dat p i) at hD1`.
+
+Express the relevant statement in the definitionally equal form `GlobalTheory.FlagTan.dimFlag (dat p i) + 1 ≤ lenT p i PP at hT1`. Use linear arithmetic over natural numbers and integers. Establish `hanti` using `GlobalTheory.CompHS.WtPar.antitone_wt_gap_bar (dat p i) (⟨uW p i, cZero (Fm.D x ι) ((i : ℕ) + 1), (Fm.D x ι).R.k - 2, lenT p i PP⟩ : WtPar (dat p i)) (lenT p i PP) (fun τ => (hstr τ).1) hT2 hp1 hq1`. Establish `hsum` using `hwt (lenT p i PP) le_rfl`. Establish `hsize : Real.log (∑ τ, ∑ k, |(((⟨uW p i, cZero (Fm.D x ι) ((i : ℕ) + 1), (Fm.D x ι).R.k - 2, lenT p i PP⟩ : WtPar (dat p i)).wt (lenT p i PP)) τ k : ℝ)|) ≤ 20 * (Fm.L x ι).sc.L`.
+
+Use `GlobalTheory.CovTop.DimLogTop.log_size_le ((Fm.D x ι).R.f : ℝ) ((Fm.D x ι).R.r : ℝ) (Fm.L x ι).sc.L (kap p i) _ (by exact_mod_cast (by omega : 1 ≤ (Fm.D x ι).R.f)) (by exact_mod_cast (by omega : 1 ≤ (Fm.D x ι).R.r)) hL1 (sizeK_nonneg _ _ _) hkap hfr (by positivity) ?_` and prove the remaining obligations. Establish `: (0 : ℝ) ≤ 6 * ((Fm.D x ι).R.f : ℝ) * ((Fm.D x ι).R.r : ℝ) ^ 2` using `by positivity`. Establish `e : zBase (Fm.L x ι) = ((Fm.D x ι).R.f : ℝ) * ((Fm.D x ι).R.r : ℝ) * (Fm.L x ι).sc.L` using `by unfold zBase; ring`. Rewrite using `[← e]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hBr` using `(hB (Fm.D x ι) p.T hLJ ((i : ℕ) + 1) hp1 hq1 hE hInR Y (expL (Fm.L x ι).sc.L) (391 * zBase (Fm.L x ι) ^ 2) hY.1 (Fm.L x ι).sc.L hL1 hM hfs hfr (by unfold zBase; exact le_rfl) _ (fun τ => (hanti τ).1) hsize Z).2.2`. Establish `hGd` using `(hG (Fm.D x ι) p.T hLJ ((i : ℕ) + 1) hp1 hq1 hE hInR Y (expL (Fm.L x ι).sc.L) (391 * zBase (Fm.L x ι) ^ 2) hY.1 _ (fun τ => (hanti τ).1) (fun τ => (hanti τ).2)).2 Z`. Establish `hrk : Y.rkC ((⟨uW p i, cZero (Fm.D x ι) ((i : ℕ) + 1), (Fm.D x ι).R.k - 2, lenT p i PP⟩ : WtPar (dat p i)).wt (lenT p i PP)) Z = (Module.finrank Y.d.c₂.F (cuspOn Y.U Z (wtOf (dat p i) ((⟨uW p i, cZero (Fm.D x ι) ((i : ℕ) + 1), (Fm.D x ι).R.k - 2, lenT p i PP⟩ : WtPar (dat p i)).w …` using `by show ((rankOn Y.U Z _ : ℕ) : ℝ) = _`. Unfold `rankOn`. Rewrite using `[rkK_eq_finrank_of_span_top _ hGd.2.2]`.
+
+Rewrite using `[← hrk]`. Establish `hfr1 : (1 : ℝ) ≤ ((Fm.D x ι).R.f : ℝ) * ((Fm.D x ι).R.r : ℝ)`. Establish `: 1 ≤ (Fm.D x ι).R.f * (Fm.D x ι).R.r` using `Nat.one_le_iff_ne_zero.2 (by positivity)`. Conclude with `this` after adjusting the coercions. Establish `hLZ : (Fm.L x ι).sc.L ≤ zBase (Fm.L x ι)`.
+
+Unfold `zBase`. Use the polynomial consequences of the given equalities and inequalities. Establish `hcube` using `GlobalTheory.CovTop.DimLogTop.cube_le Cb (Fm.L x ι).sc.L (zBase (Fm.L x ι)) ((le_max_left _ _).trans hLC) hL1 hLZ`. Establish `h2 : Cb * (((Fm.D x ι).R.f : ℝ) * (Fm.D x ι).R.r * (Fm.L x ι).sc.L) ^ 3 = Cb * zBase (Fm.L x ι) ^ 3`. Unfold `zBase`.
+
+Expand and normalize the polynomial expressions, which then agree. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem log_top_dimension_le_alt : _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → _root_.GlobalTheory.CovTop.SizeCondition → _root_.GlobalTheory.CovTop.CoversCondition fun Fm x _ ι p i Y PP _ => ∀ Z, Real.log (Module.finrank Y.d.c₂.F (cuspOn Y.U Z (wtOf (dat p i) ((⟨uW p i, cZero (Fm.D x ι) ((i : ℕ) + 1), (Fm.D x ι).R.k - 2, lenT p i PP⟩ : WtPar (dat p i)).wt (lenT p i PP)) 0)) : ℝ) ≤ PP := by
   intro hP hSz
   obtain ⟨Cb, -, hB⟩ := _root_.UpperTheory.Lit.Tam.tamagawa_number_formula hP
@@ -102,6 +127,9 @@ open GlobalTheory.IndefiniteRowSideFullHecke.LevelStructureAutomorphisms (LevelA
 open GlobalTheory.BadCount
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.CovTop.DimLogTop.log_top_dimension_le_alt | exact _root_.GlobalTheory.CovTop.DimLogTop.log_top_dimension_le_alt | (intros; apply _root_.GlobalTheory.CovTop.DimLogTop.log_top_dimension_le_alt <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.log_finrank_cuspOn_le : _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → _root_.GlobalTheory.CovTop.SizeCondition → _root_.GlobalTheory.CovTop.CoversCondition fun Fm x _ ι p i Y PP _ => ∀ Z, Real.log (Module.finrank Y.d.c₂.F (cuspOn Y.U Z (wtOf (dat p i) ((⟨uW p i, cZero (Fm.D x ι) ((i : ℕ) + 1), (Fm.D x ι).R.k - 2, lenT p i PP⟩ : WtPar (dat p i)).wt (lenT p i PP)) 0)) : ℝ) ≤ PP := by
   first | exact @_root_.GlobalTheory.CovTop.DimLogTop.log_top_dimension_le_alt | exact _root_.GlobalTheory.CovTop.DimLogTop.log_top_dimension_le_alt | (intros; apply _root_.GlobalTheory.CovTop.DimLogTop.log_top_dimension_le_alt <;> assumption)
 end

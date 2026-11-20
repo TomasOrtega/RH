@@ -8,16 +8,28 @@ open Formalism.BasicNotions.TH GlobalTheory.RealLift GlobalTheory.FockQuot Recip
 
 namespace PositivityTheory.KRealA
 
+/- English proof (translation)
+Use function extensionality and compare the values at `l`. Apply the tactic sequence `rcases l with ⟨_ | _, _ | _⟩ <;> rfl`.
+-/
 theorem linePos_eq {P Q R S : ℕ} : @FockH1Action.linePos P Q R S = @linePos P Q R S := by
   funext l
   rcases l with ⟨_ | _, _ | _⟩ <;> rfl
 
+/- English proof (translation)
+Simplify using `only [FockH1Action.omAct, omAct, FockH1Action.omE, omE, FockH1Action.raiB, raiB, FockH1Action.lowB, lowB, linePos_eq]`.
+-/
 theorem omAct_eq (P Q R S : ℕ) : FockH1Action.omAct P Q R S = omAct P Q R S := by
   simp only [FockH1Action.omAct, omAct, FockH1Action.omE, omE, FockH1Action.raiB, raiB, FockH1Action.lowB, lowB, linePos_eq]
 
+/- English proof (translation)
+Rewrite using `[FockH1Action.fockAct1, fockAct1, omAct_eq]`.
+-/
 theorem fockAction_first_eq (P Q R S : ℕ) : FockH1Action.fockAct1 P Q R S = fockAct1 P Q R S := by
   rw [FockH1Action.fockAct1, fockAct1, omAct_eq]
 
+/- English proof (translation)
+Rewrite using `[FockH1Action.fockAct2, fockAct2, omAct_eq]`.
+-/
 theorem fock_second_action_eq_derivation (P Q R S : ℕ) : FockH1Action.fockAct2 P Q R S = fockAct2 P Q R S := by
   rw [FockH1Action.fockAct2, fockAct2, omAct_eq]
 
@@ -37,8 +49,14 @@ def actL : Mat R S →ₗ[ℂ] Module.End ℂ V where
     obtain ⟨f, rfl⟩ := hp v
     simp only [LinearMap.smul_apply, h, map_smul, RingHom.id_apply]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem actL_apply (W : Mat R S) : actL p hp act h W = act W := rfl
 
+/- English proof (translation)
+Simplify using `only [wtSub, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, sub_eq_zero] at hg ⊢`. Introduce `a`. Rewrite using `[actL_apply, h, hg a]`. Simplify using the standard rewrite rules.
+-/
 theorem actL_wt (μ : Ix R S → ℚ) (g : Pol P Q R S) (hg : g ∈ wtSub (fockAct2 P Q R S) μ) :
     p g ∈ wtSub (actL p hp act h) μ := by
   simp only [wtSub, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, sub_eq_zero] at hg ⊢
@@ -75,6 +93,15 @@ def gkImage : GKMod R S where
 
 end Image
 
+/- English proof (translation)
+Introduce `T hT`. Use `hi.1` as an intermediate fact. Set `B : Subalgebra ℂ (Module.End ℂ M.V)` to `Subalgebra.centralizer ℂ {T}`. Establish `hB : ∀ b : Module.End ℂ M.V, b ∈ B ↔ T * b = b * T` using `fun b => by`. Simplify using `only [B, Subalgebra.mem_centralizer_iff, Set.mem_singleton_iff, forall_eq]`.
+
+Establish `hs : IsSimpleModule B M.V`. Rewrite using `[isSimpleModule_iff]`. Use `{ eq_bot_or_eq_top := fun N => ?_ }` and prove the remaining obligations. Break down `hi.2 (N.restrictScalars ℂ) (fun Z x hx => N.smul_mem (⟨M.act Z, (hB _).2 (hT Z)⟩ : B) hx) with h1 | h1` into its components or cases. Conclude with `Or.inl ((Submodule.restrictScalars_eq_bot_iff ℂ B M.V).1 h1)`.
+
+Conclude with `Or.inr ((Submodule.restrictScalars_eq_top_iff ℂ B M.V).1 h1)`. Set `g : Module.End B M.V` to `{ toFun := T map_add' := T.map_add map_smul' := fun b x => LinearMap.congr_fun ((hB b).1 b.2) x }`. Take `⟨c, hc⟩` from `PositivityTheory.KReal.schur_countable hr g`. Use `⟨c, LinearMap.ext fun x => ?_⟩` and prove the remaining obligations. Establish `e : g x = T x` using `rfl`.
+
+Rewrite using `[← e, ← hc]`. Simplify using the standard rewrite rules.
+-/
 theorem scalarEnd_of {R S : ℕ} (M : GKMod R S) (hi : Formalism.MainNotions.SchurIrreducible.IrrGK M) (hr : Module.rank ℂ M.V ≤ Cardinal.aleph0) :
     ScalarEnd M := by
   intro T hT
@@ -98,16 +125,35 @@ theorem scalarEnd_of {R S : ℕ} (M : GKMod R S) (hi : Formalism.MainNotions.Sch
   rw [← e, ← hc]
   simp
 
+/- English proof (translation)
+Rewrite using `[MvPolynomial.rank_eq_lift]`. Conclude with `(Cardinal.lift_id _).le.trans Cardinal.mk_le_aleph0`.
+-/
 theorem rank_pol (P Q R S : ℕ) : Module.rank ℂ (Pol P Q R S) ≤ Cardinal.aleph0 := by
   rw [MvPolynomial.rank_eq_lift]
   exact (Cardinal.lift_id _).le.trans Cardinal.mk_le_aleph0
 
+/- English proof (translation)
+Rewrite using `[← map_smul, ← sub_eq_zero, ← map_sub]`. Use `(Submodule.Quotient.mk_eq_zero _).2 (Submodule.mem_iSup_of_mem X ⟨f, ?_⟩)` and prove the remaining obligations. Simplify using `[act1, chiTr, fockAction_first_eq]`.
+-/
 theorem thetaMk_first_action_trace {P Q R S : ℕ} (c : ℂ) (X : Mat P Q) (f : Pol P Q R S) :
     thMkC P Q R S c (fockAct1 P Q R S X f) = (c * X.trace) • thMkC P Q R S c f := by
   rw [← map_smul, ← sub_eq_zero, ← map_sub]
   refine (Submodule.Quotient.mk_eq_zero _).2 (Submodule.mem_iSup_of_mem X ⟨f, ?_⟩)
   simp [act1, chiTr, fockAction_first_eq]
 
+/- English proof (translation)
+Take `⟨Pi, _, _, act, π, π', hπ, hπ', h1, h2, hn, hirr⟩` from `PositivityTheory.KReal.coreLM D h`. Establish `c1 : (((D.κ : ℚ) / 2 : ℚ) : ℂ) = (D.κ : ℂ) / 2` using `by push_cast; rfl`. Establish `c2 : ((-((D.κ : ℚ) / 2) : ℚ) : ℂ) = -((D.κ : ℂ) / 2)` using `by push_cast; rfl`. Set `p : Pol D.P D.Q D.R D.S →ₗ[ℂ] Pi` to `π ∘ₗ thMkC _ _ _ _ _`. Set `p' : Pol D.P' D.Q' D.R D.S →ₗ[ℂ] Pi` to `π' ∘ₗ thMkC _ _ _ _ _`.
+
+Establish `hp : Function.Surjective p` using `hπ.comp (Submodule.mkQ_surjective _)`. Establish `hp' : Function.Surjective p'` using `hπ'.comp (Submodule.mkQ_surjective _)`. Establish `ha : ∀ W f, act W (p f) = p (fockAct2 _ _ _ _ W f)` using `fun W f => by`. Rewrite using `[← fock_second_action_eq_derivation]`. Conclude with `(h1 W _).symm`.
+
+Establish `ha' : ∀ W f, act W (p' f) = p' (fockAct2 _ _ _ _ W f) + ((D.κ : ℂ) / 2 * W.trace) • p' f` using `fun W f => by`. Rewrite using `[← fock_second_action_eq_derivation]`. Use `(h2 W _).symm.trans ?_` and prove the remaining obligations. Establish `e : PositivityTheory.KReal.opV' D W (thMkC _ _ _ _ _ f) = thMkC _ _ _ _ _ (FockH1Action.fockAct2 _ _ _ _ W f) + ((D.κ : ℂ) / 2 * W.trace) • thMkC _ _ _ _ _ f` using `rfl`. Rewrite using `[e, map_add, map_smul]`.
+
+Both sides reduce to the same expression. Establish `hI : Formalism.MainNotions.SchurIrreducible.IrrGK (gkImage p hp act ha)` using `⟨hn, hirr⟩`. Use `⟨gkImage p hp act ha, p, p', ⟨hp, fun X f => ?_, fun Y f => ?_⟩, ⟨hp', fun X f => ?_, fun Y f => ?_⟩, hI, scalarEnd_of _ hI ((LinearMap.rank_le_of_surjective p hp).trans (rank_pol _ _ _ _))⟩` and prove the remaining obligations. Rewrite using `[c1]`. Conclude with `(congrArg π (thetaMk_first_action_trace _ X f)).trans (map_smul π _ _)`.
+
+Rewrite using `[Rat.cast_zero, zero_mul, zero_smul, add_zero]`. Conclude with `ha Y f`. Rewrite using `[c2]`. Conclude with `(congrArg π' (thetaMk_first_action_trace _ X f)).trans (map_smul π' _ _)`. Rewrite using `[c1]`.
+
+Conclude with `ha' Y f`.
+-/
 theorem onePlaceD (D : RealData) (h : D.Hyp) :
     ∃ (N : GKMod D.R D.S) (p : Pol D.P D.Q D.R D.S →ₗ[ℂ] N.V) (p' : Pol D.P' D.Q' D.R D.S →ₗ[ℂ] N.V),
       IsLift ((D.κ : ℚ) / 2) 0 N p ∧ IsLift (-((D.κ : ℚ) / 2)) ((D.κ : ℚ) / 2) N p' ∧ Formalism.MainNotions.SchurIrreducible.IrrGK N ∧ ScalarEnd N := by
@@ -140,6 +186,11 @@ theorem onePlaceD (D : RealData) (h : D.Hyp) :
   · rw [c1]
     exact ha' Y f
 
+/- English proof (translation)
+Take `⟨k, rfl⟩` from `Int.eq_ofNat_of_zero_le (show 0 ≤ κ by omega)`. Take `⟨m, hm⟩` from `he`. Take `⟨n, hn⟩` from `hκe`. Establish `hD : RealData.Hyp ⟨a, a', p, q, k⟩`. Apply the tactic sequence `constructor <;> dsimp only <;> omega`.
+
+Rewrite using `[Int.cast_natCast]`. Conclude with `onePlaceD ⟨a, a', p, q, k⟩ hD`.
+-/
 theorem onePlace (a a' p q : ℕ) (κ : ℤ) (he : Even (a + a')) (hκ : ((a + a' : ℕ) : ℤ) < κ) (hκe : Even κ)
     (hE : 2 * (p + q) + 1 < (a - a') / 2) (hA : 2 * (p + q) + 1 < a') :
     ∃ (N : GKMod (a + a' - (p + q)) (p + q)) (π : Pol (a - p) p (a + a' - (p + q)) (p + q) →ₗ[ℂ] N.V)

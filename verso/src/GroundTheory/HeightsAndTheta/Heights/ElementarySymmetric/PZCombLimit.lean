@@ -7,6 +7,9 @@ set_option maxSynthPendingDepth 1
 
 namespace GroundTheory.Heights₂.Heights.Swarm
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.ZCombLimit.proof (GroundTheory.Heights₂.Heights.HilbertSamuel.MixedNumberPolynomial.proof (GroundTheory.Heights₂.Heights.HilbertSamuel.MultigradedHilbertPolynomial.proof GroundTheory.Heights₂.Heights.HilbertSamuel.EventualPolynomial.pro …`.
+-/
 theorem ZCombLimit.proof : GroundTheory.Heights₂.Heights.HilbertSamuel.ZCombLimit.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.ZCombLimit.proof
     (GroundTheory.Heights₂.Heights.HilbertSamuel.MixedNumberPolynomial.proof

@@ -30,6 +30,9 @@ def down {S : Scheme.{0}} {T' : Over S} [GrpObj T'] {f : S ⟶ Z} {φ : T'.left 
       subst hb
       exact Over.OverMorphism.ext (h.2 Y x y _ _ rfl rfl).symm
 
+/- English proof (translation)
+Use `⟨fun x y e => Over.OverMorphism.ext (h.1.hom_ext (congrArg Over.Hom.left e) ((Over.w x).trans (Over.w y).symm)), fun z => ?_⟩` and prove the remaining obligations. Establish `e : z.left ≫ T.hom = Y.hom ≫ f` using `(Over.w z).trans hb.symm`. Conclude with `⟨Over.homMk (h.1.lift _ _ e) (h.1.lift_snd _ _ e), Over.OverMorphism.ext (h.1.lift_fst _ _ e)⟩`.
+-/
 theorem down_bijective {S : Scheme.{0}} {T' : Over S} [GrpObj T'] {f : S ⟶ Z} {φ : T'.left ⟶ T.left}
     (h : IsGrpPullback T' T f φ) (Y : Over S) (b : Y.left ⟶ Z) (hb : Y.hom ≫ f = b) :
     Function.Bijective (down h Y b hb) := by
@@ -38,6 +41,9 @@ theorem down_bijective {S : Scheme.{0}} {T' : Over S} [GrpObj T'] {f : S ⟶ Z} 
   have e : z.left ≫ T.hom = Y.hom ≫ f := (Over.w z).trans hb.symm
   exact ⟨Over.homMk (h.1.lift _ _ e) (h.1.lift_snd _ _ e), Over.OverMorphism.ext (h.1.lift_fst _ _ e)⟩
 
+/- English proof (translation)
+Take `⟨y, hy⟩` from `(down_bijective h₂ (SpAlg R₂ B) _ hB.symm).2 (down h₁ (SpAlg R₁ B) _ rfl z.1)`. Use `⟨⟨y, (down_bijective h₂ (SpAlg R₂ B) _ hB.symm).1 ?_⟩, (congrArg Over.Hom.left hy).symm⟩` and prove the remaining obligations. Rewrite using `[map_pow, hy, ← map_pow, z.2, map_one, map_one]`.
+-/
 theorem exists_tors {R₁ R₂ : Type} [CommRing R₁] [CommRing R₂] {T₁ : Over (Sp R₁)} [GrpObj T₁] {T₂ : Over (Sp R₂)} [GrpObj T₂]
     {f₁ : Sp R₁ ⟶ Z} {f₂ : Sp R₂ ⟶ Z} {φ₁ : T₁.left ⟶ T.left} {φ₂ : T₂.left ⟶ T.left}
     (h₁ : IsGrpPullback T₁ T f₁ φ₁) (h₂ : IsGrpPullback T₂ T f₂ φ₂) (B : Type) [CommRing B] [Algebra R₁ B] [Algebra R₂ B]
@@ -53,6 +59,9 @@ def push {R : Type} [CommRing R] {G : Over (Sp R)} [GrpObj G] {N : ℕ} {B C : T
     [CommRing C] [Algebra R C] (φ : B →ₐ[R] C) (z : Tors G N B) : Tors G N C :=
   ⟨spOver φ ≫ z.1, by rw [← MonObj.comp_pow, z.2, MonObj.comp_one]⟩
 
+/- English proof (translation)
+Introduce and unpack `_ ⟨x, rfl⟩`. Establish `h1 : f ⁻¹ᵁ V = ⊤` using `(IsLocalRing.closedPoint_mem_iff (R := B) (f ⁻¹ᵁ V)).1 h`. Establish `: x ∈ f ⁻¹ᵁ V` using `h1 ▸ trivial`. Conclude with `this`.
+-/
 theorem range_subset_of_local {B : Type} [CommRing B] [IsLocalRing B] {Y : Scheme.{0}} (f : Sp B ⟶ Y) (V : Y.Opens)
     (h : f (IsLocalRing.closedPoint B) ∈ V) : Set.range f ⊆ V := by
   rintro _ ⟨x, rfl⟩
@@ -60,6 +69,25 @@ theorem range_subset_of_local {B : Type} [CommRing B] [IsLocalRing B] {Y : Schem
   have : x ∈ f ⁻¹ᵁ V := h1 ▸ trivial
   exact this
 
+/- English proof (translation)
+Establish `hf` using `(GlobalTheory.SemiAbMulFlat.flat_and_locallyQuasiFinite_pow _ G hG N hN).1`. Set `ml` to `((𝟙 G) ^ N : G ⟶ G).left`. Set `η₀ : Sp R ⟶ G.left` to `(η[G]).left`. Set `P` to `pullback ml η₀`. Establish `key : ∀ (Y : Over (Sp R)) (y : Y ⟶ G), y ^ N = 1 ↔ y.left ≫ ml = Y.hom ≫ η₀` using `fun Y y => by`.
+
+Establish `h1 : y ^ N = y ≫ (𝟙 G) ^ N` using `by rw [MonObj.comp_pow, Category.comp_id]`. Rewrite using `[h1, Over.OverMorphism.ext_iff]`. Establish `h2 : (1 : Y ⟶ G).left = Y.hom ≫ η₀`. Rewrite using `[Hom.one_def, Over.comp_left, Over.toUnit_left]`. Rewrite using `[h2]`.
+
+Both sides reduce to the same expression. Set `l : Sp B ⟶ P` to `pullback.lift z.1.left (spMap (algebraMap R B)) ((key _ _).1 z.2)`. Take `⟨_, ⟨W, hW, rfl⟩, hx, -⟩` from `P.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ (l (IsLocalRing.closedPoint B))) isOpen_univ`. Establish `hW : IsAffineOpen W` using `hW`. Establish `hr : Set.range l ⊆ Set.range hW.fromSpec`.
+
+Rewrite using `[hW.range_fromSpec]`. Conclude with `range_subset_of_local l W hx`. Set `k : Sp B ⟶ Spec Γ(P, W)` to `IsOpenImmersion.lift hW.fromSpec l hr`. Establish `hk : k ≫ hW.fromSpec = l` using `IsOpenImmersion.lift_fac _ _ _`. Set `q : Spec Γ(P, W) ⟶ Sp R` to `hW.fromSpec ≫ pullback.snd ml η₀`.
+
+Establish `hq : Flat q` using `inferInstance`. Take `⟨a, ha⟩` from `Spec.map_surjective q`. Take `⟨c, hc⟩` from `Spec.map_surjective k`. Use `letI : Algebra R Γ(P, W) := a.hom.toAlgebra`. Establish `hfl : Module.Flat R Γ(P, W)`.
+
+Rewrite `hq` using `[← ha, Flat.SpecMap_iff]`. Conclude with `hq`. Establish `hac : a ≫ c = CommRingCat.ofHom (algebraMap R B)` using `Spec.map_injective (by`. Rewrite using `[Spec.map_comp, ha, hc, ← Category.assoc, hk]`. Conclude with `pullback.lift_snd _ _ _)`.
+
+Establish `hη : η₀ ≫ G.hom = 𝟙 _` using `Over.w η[G]`. Establish `hml : ml ≫ G.hom = G.hom` using `Over.w _`. Establish `hw : (hW.fromSpec ≫ pullback.fst ml η₀) ≫ G.hom = spMap (algebraMap R Γ(P, W))`. Rewrite using `[← hml, Category.assoc, pullback.condition_assoc, hη, Category.comp_id]`. Conclude with `ha.symm`.
+
+Use `⟨Γ(P, W), inferInstance, inferInstance, hfl, ⟨Over.homMk (hW.fromSpec ≫ pullback.fst ml η₀) hw, (key _ _).2 ?_⟩, { c.hom with commutes' := fun r => DFunLike.congr_fun (congrArg CommRingCat.Hom.hom hac) r }, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(hW.fromSpec ≫ pullback.fst ml η₀) ≫ ml = Spec.map a ≫ η₀`. Rewrite using `[ha, Category.assoc, pullback.condition, Category.assoc]`. Use `Over.OverMorphism.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `z.1.left = Spec.map c ≫ hW.fromSpec ≫ pullback.fst ml η₀`.
+
+Rewrite using `[hc, ← Category.assoc, hk]`. Conclude with `(pullback.lift_fst _ _ _).symm`.
+-/
 theorem exists_flat {R : Type} [CommRing R] {G : Over (Sp R)} [GrpObj G] [IsCommMonObj G] (hG : IsSemiAbelian G) {N : ℕ}
     (hN : N ≠ 0) (B : Type) [CommRing B] [IsLocalRing B] [Algebra R B] (z : Tors G N B) :
     ∃ (D : Type) (_ : CommRing D) (_ : Algebra R D) (_ : Module.Flat R D) (w : Tors G N D) (φ : D →ₐ[R] B),
@@ -108,6 +136,19 @@ theorem exists_flat {R : Type} [CommRing R] {G : Over (Sp R)} [GrpObj G] [IsComm
     rw [hc, ← Category.assoc, hk]
     exact (pullback.lift_fst _ _ _).symm
 
+/- English proof (translation)
+Take `⟨q, hq, hqm⟩` from `Ideal.exists_minimalPrimes_le (I := (⊥ : Ideal B)) (J := m) bot_le`. Use `haveI : q.IsPrime := hq.1.1`. Establish `hinj : Function.Injective (algebraMap S (B ⧸ q))`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `s hs`.
+
+Assume the negation of the conclusion as `h0`. Establish `h1 : algebraMap S B s ∈ q` using `Ideal.Quotient.eq_zero_iff_mem.1 hs`. Use `Set.disjoint_left.1 (Ideal.disjoint_nonZeroDivisors_of_mem_minimalPrimes hq) h1 ?_` and prove the remaining obligations. Use `mem_nonZeroDivisors_iff_right.2 fun x hx => hj ?_` and prove the remaining obligations. Establish `hu : IsUnit (algebraMap S C s)`.
+
+Rewrite using `[IsScalarTower.algebraMap_apply S K C]`. Conclude with `(IsUnit.mk0 _ ((map_ne_zero_iff _ (IsFractionRing.injective S K)).2 h0)).map _`. Establish `h2` using `congrArg j hx`. Rewrite `h2` using `[map_mul, j.commutes, map_zero]`. Rewrite using `[map_zero]`.
+
+Conclude with `hu.mul_left_eq_zero.1 h2`. Use `haveI : FaithfulSMul S (B ⧸ q) := (faithfulSMul_iff_algebraMap_injective _ _).2 hinj`. Take `⟨g, -⟩` from `exists_algHom_comp_eq (A := S) (K := K) (IsAlgClosed.lift (R := S) (S := B ⧸ q) (M := K))`. Establish `hg : RingHom.ker g = ⊥` using `Ideal.eq_bot_of_comap_eq_bot (R := S) (by`. Rewrite using `[eq_bot_iff]`.
+
+Introduce `s hs`. Establish `: g (algebraMap S _ s) = 0` using `hs`. Rewrite `this` using `[g.commutes]`. Conclude with `this)`. Use `⟨g.comp (Ideal.Quotient.mkₐ S q), fun b hb => hqm ?_⟩` and prove the remaining obligations.
+
+Establish `h3 : Ideal.Quotient.mk q b ∈ RingHom.ker g` using `hb`. Rewrite `h3` using `[hg]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.1 h3`.
+-/
 theorem exists_section {S K B C : Type} [CommRing S] [IsDomain S] [IsIntegrallyClosed S] [Field K] [IsAlgClosed K] [Algebra S K]
     [IsFractionRing S K] [CommRing B] [Algebra S B] [Algebra.IsIntegral S B] [CommRing C] [Algebra S C] [Algebra K C]
     [IsScalarTower S K C] (j : B →ₐ[S] C) (hj : Function.Injective j) (m : Ideal B) [m.IsPrime] :
@@ -145,12 +186,22 @@ section Key
 
 variable {p : ℕ} [Fact p.Prime] {La : Type} [AddCommGroup La]
 
+/- English proof (translation)
+Establish `h` using `map_mul (ptsPush (G.A n) (Algebra.ofId R B)) ((τ (-x)).conv n) ((τ x).conv n)`. Rewrite `h` using `[← TateOver.add_conv, ← map_add, neg_add_cancel, map_zero, TateOver.zero_conv, map_one]`. Conclude with `h.symm`.
+-/
 theorem tatePt_add {R : Type} [CommRing R] {G : PDivGroup p R} (τ : La →+ G.Tate) (n : ℕ) (B : Type) [CommRing B] [Algebra R B]
     (x : La) : toConv (tatePt (τ (-x)) n B) * toConv (tatePt (τ x) n B) = 1 := by
   have h := map_mul (ptsPush (G.A n) (Algebra.ofId R B)) ((τ (-x)).conv n) ((τ x).conv n)
   rw [← TateOver.add_conv, ← map_add, neg_add_cancel, map_zero, TateOver.zero_conv, map_one] at h
   exact h.symm
 
+/- English proof (translation)
+Take `⟨U, V, hU, hb⟩` from `hθ n`. Set `k` to `IsLocalRing.ResidueField L`. Establish `h1` using `(hb k).mapsTo (x := ⟨1, one_pow _⟩) (by`. Express the relevant statement in the definitionally equal form `Set.range (1 : SpAlg R k ⟶ T).left ⊆ U`. Rewrite using `[Hom.one_def, Over.comp_left]`.
+
+Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `hU ⟨_, rfl⟩)`. Establish `h2 : θ.pt n k ⟨1, one_pow _⟩ = (IsScalarTower.toAlgHom R L k).comp w` using `congrArg ofConv ((θ.pt_one n k (Fact.out : p.Prime).ne_zero).trans hw.symm)`. Rewrite `h1` using `[h2]`. Establish `h3 : Set.range (spMap (w : G.A n →+* L)) ⊆ V` using `range_subset_of_local _ V (by`.
+
+Rewrite using `[← IsLocalRing.comap_closedPoint (IsLocalRing.residue L)]`. Conclude with `h1 ⟨IsLocalRing.closedPoint k, rfl⟩)`. Take `⟨z, -, hz⟩` from `(hb L).surjOn h3`. Conclude with `⟨z, hz⟩`.
+-/
 theorem exists_pt_eq {R : Type} [CommRing R] {T : Over (Sp R)} [GrpObj T] {G : PDivGroup p R} {θ : TorsionMap T G}
     (hθ : θ.IsOpenNearZero) (n : ℕ) (L : Type) [CommRing L] [IsLocalRing L] [Algebra R L] (w : G.A n →ₐ[R] L)
     (hw : ptsPush (G.A n) (IsScalarTower.toAlgHom R L (IsLocalRing.ResidueField L)) (toConv w) = 1) :
@@ -186,6 +237,11 @@ def Link (φ₁ : T₁.left ⟶ T.left) (θ₁ : TorsionMap T₁ G₁) (τ₁ : 
       (z : Tors T₁ (p ^ n) B) (z' : Tors T₀ (p ^ n) B), z.1.left ≫ φ₁ = z'.1.left ≫ φ₀ →
         ∀ a, θ₁.pt n B z a = θ₀.pt n B z' (s.app n a)
 
+/- English proof (translation)
+Establish `h1` using `map_mul (ptsPush (G₁.A n) κ) (toConv (θ₁.pt n L z)) (toConv (tatePt (τ₁ x) n L))`. Establish `h2` using `map_mul ((s.app n).pts C (IsScalarTower.algebraMap_apply R₁ K C)) (toConv (θ₀.pt n C z')) (toConv (tatePt (τ₀ x) n C))`. Establish `h3 : ptsPush (G₁.A n) κ (toConv (θ₁.pt n L z)) = (s.app n).pts C (IsScalarTower.algebraMap_apply R₁ K C) (toConv (θ₀.pt n C z'))` using `ofConv_injective (AlgHom.ext fun a => (DFunLike.congr_fun (θ₁.nat n L C κ z (push κ z) rfl) a).symm.trans (l.2 n C (push κ z) z' ((Category.assoc ..).trans h) a))`. Establish `h4 : ptsPush (G₁.A n) κ (toConv (tatePt (τ₁ x) n L)) = (s.app n).pts C (IsScalarTower.algebraMap_apply R₁ K C) (toConv (tatePt (τ₀ x) n C))` using `ofConv_injective (AlgHom.ext fun a => (κ.commutes _).trans ((IsScalarTower.algebraMap_apply R₁ K C _).trans (congrArg (algebraMap K C) (l.1 x n a).symm)))`. Rewrite `h1` using `[h3, h4, ← h2]`.
+
+Conclude with `DFunLike.congr_fun (congrArg ofConv h1) a`.
+-/
 theorem Link.mul {s : SemiHom (algebraMap R₁ K) G₀ G₁} (l : Link φ₁ θ₁ τ₁ φ₀ θ₀ τ₀ s) (n : ℕ) (L C : Type) [CommRing L]
     [Algebra R₁ L] [CommRing C] [Algebra R₁ C] [Algebra K C] [IsScalarTower R₁ K C] (κ : L →ₐ[R₁] C)
     (z : Tors T₁ (p ^ n) L) (z' : Tors T₀ (p ^ n) C) (h : spMap (κ : L →+* C) ≫ z.1.left ≫ φ₁ = z'.1.left ≫ φ₀) (x : La)
@@ -212,6 +268,17 @@ variable (h₁ : IsGrpPullback T₁ T f₁ φ₁) (h₂ : IsGrpPullback T₂ T f
 
 include h₁ h₂ h₀ hf l₁ l₂ hθ hs in
 
+/- English proof (translation)
+Use `letI : Algebra R₁ C := ((algebraMap K C).comp (algebraMap R₁ K)).toAlgebra`. Use `letI : Algebra R₂ C := ((algebraMap K C).comp (algebraMap R₂ K)).toAlgebra`. Use `haveI : IsScalarTower R₁ K C := .of_algebraMap_eq fun _ => rfl`. Use `haveI : IsScalarTower R₂ K C := .of_algebraMap_eq fun _ => rfl`. Set `κ₁ : L →ₐ[R₁] C` to `{ κ with commutes' := hκ₁ }`.
+
+Set `κ₂ : L →ₐ[R₂] C` to `{ κ with commutes' := hκ₂ }`. Take `⟨z₁, hz₁⟩` from `exists_pt_eq hθ n L (toConv u * toConv (tatePt (τ₁ (-x)) n L)).ofConv (by`. Rewrite using `[toConv_ofConv, map_mul, _root_.mul_comm, ← tatePt_add τ₁ n (IsLocalRing.ResidueField L) x]`. Use `congrArg₂ _ ?_ ?_` and prove the remaining obligations. Conclude with `ofConv_injective (AlgHom.ext fun a => AlgHom.commutes (IsScalarTower.toAlgHom R₁ L (IsLocalRing.ResidueField L)) _)`.
+
+Conclude with `ofConv_injective (AlgHom.ext fun a => ((Ideal.Quotient.eq.2 (hx a)).trans (AlgHom.commutes (IsScalarTower.toAlgHom R₁ L (IsLocalRing.ResidueField L)) _))))`. Take `⟨z₂, hz₂⟩` from `exists_tors h₁ h₂ L hL _ z₁`. Take `⟨z₀, hz₀⟩` from `exists_tors h₁ h₀ C (by rw [← hf, ← Category.assoc, ← Cris.spMap_comp]) _ (push κ₁ z₁)`. Establish `e₁` using `l₁.mul n L C κ₁ z₁ z₀ ((Category.assoc ..).symm.trans hz₀) x`. Establish `e₂` using `l₂.mul n L C κ₂ z₂ z₀ ((congrArg (spMap κ ≫ ·) hz₂.symm).trans ((Category.assoc ..).symm.trans hz₀)) x`.
+
+Rewrite `e₁` using `[hz₁, toConv_ofConv, _root_.mul_assoc, tatePt_add, _root_.mul_one]`. Establish `e₃ : (toConv (θ₀.pt n C z₀) * toConv (tatePt (τ₀ x) n C)).ofConv = u₀` using `AlgHom.ext fun y => by`. Take `⟨y, rfl⟩` from `hs y`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`.
+
+Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul r a => rw [SemiHom.lift_app, map_smul, map_smul, hu, ← e₁]`. Both sides reduce to the same expression. Rewrite `e₂` using `[e₃]`. Conclude with `⟨_, e₂ a⟩`.
+-/
 theorem local_step (L C : Type) [CommRing L] [IsLocalRing L] [Algebra R₁ L] [Algebra R₂ L]
     (hL : spMap (algebraMap R₁ L) ≫ f₁ = spMap (algebraMap R₂ L) ≫ f₂) [CommRing C] [Algebra K C] (κ : L →+* C)
     (hκ₁ : ∀ r, κ (algebraMap R₁ L r) = algebraMap K C (algebraMap R₁ K r))
@@ -246,6 +313,27 @@ theorem local_step (L C : Type) [CommRing L] [IsLocalRing L] [Algebra R₁ L] [A
 
 include h₁ h₂ h₀ hf l₁ l₂ hθ hs in
 
+/- English proof (translation)
+Set `I : Ideal B` to `{ carrier := {b | ∃ c, j c = j b * u₀ (s₂.app n a)} zero_mem' := ⟨0, by simp⟩ add_mem' := by`. Introduce and unpack `b b' ⟨c, hc⟩ ⟨c', hc'⟩`. Conclude with `⟨c + c', by rw [map_add, map_add, hc, hc', add_mul]⟩`. Use the proof step `smul_mem' := by`. Introduce and unpack `r b ⟨c, hc⟩`.
+
+Conclude with `⟨r * c, by rw [smul_eq_mul, map_mul, map_mul, hc, _root_.mul_assoc]⟩ }`. It suffices to establish `hI : I = ⊤ by`. Take `⟨c, hc⟩ : (1 : B) ∈ I` from `hI ▸ Submodule.mem_top`. Conclude with `⟨c, by rw [hc, map_one, _root_.one_mul]⟩`. Assume the negation of the conclusion as `hI`.
+
+Take `⟨m, hm, hIm⟩` from `Ideal.exists_le_maximal I hI`. Take `⟨σ, hσ⟩` from `exists_section (K := K) j hj m`. Take `⟨x, hx⟩` from `honto ((IsScalarTower.toAlgHom R₁ S K).comp ((σ.restrictScalars R₁).comp u))`. Set `L` to `Localization.AtPrime m`. Set `M : Submonoid C` to `m.primeCompl.map j`.
+
+Set `C'` to `Localization M`. Set `κ : L →+* C'` to `IsLocalization.map C' (j : B →+* C) (T := M) (m.primeCompl.le_comap_map (f := j))`. Establish `hκ : ∀ b, κ (algebraMap B L b) = algebraMap C C' (j b)` using `fun b => IsLocalization.map_eq _ _`. Establish `hκS : ∀ r, κ (algebraMap S L r) = algebraMap K C' (algebraMap S K r)` using `fun r => by`. Rewrite using `[IsScalarTower.algebraMap_apply S B L, hκ, j.commutes, IsScalarTower.algebraMap_apply S K C, ← IsScalarTower.algebraMap_apply K C C']`.
+
+Use `letI : Algebra R₂ L := ((algebraMap S L).comp (algebraMap R₂ S)).toAlgebra`. Establish `hR₁ : algebraMap R₁ L = (algebraMap S L).comp (algebraMap R₁ S)` using `IsScalarTower.algebraMap_eq R₁ S L`. Take `⟨b, hb⟩` from `local_step h₁ h₂ h₀ hf l₁ l₂ hθ n hs L C' (by`. Rewrite using `[hR₁, Cris.spMap_comp, Category.assoc, hS, ← Category.assoc, ← Cris.spMap_comp]) κ`. Use the proof step `(fun r => by rw [hR₁, RingHom.comp_apply, hκS, ← IsScalarTower.algebraMap_apply R₁ S K])`.
+
+Use the proof step `(fun r => (hκS _).trans (by rw [← IsScalarTower.algebraMap_apply R₂ S K]))`. Use the proof step `((IsScalarTower.toAlgHom R₁ B L).comp u) x`. Use the proof step `(fun a => by`. Establish `h1 : algebraMap R₁ S ((τ₁ x).pt n a) = σ (u a)` using `IsFractionRing.injective S K (by`. Rewrite using `[← IsScalarTower.algebraMap_apply]`.
+
+Conclude with `DFunLike.congr_fun hx a)`. Establish `h2 : u a - algebraMap R₁ B ((τ₁ x).pt n a) ∈ m` using `hσ (by`. Rewrite using `[RingHom.mem_ker, map_sub, IsScalarTower.algebraMap_apply R₁ S B, σ.commutes, h1]`. Conclude with `sub_self _)`. Establish `h3` using `(IsLocalization.AtPrime.to_map_mem_maximal_iff L m _).2 h2`.
+
+Rewrite `h3` using `[map_sub, ← IsScalarTower.algebraMap_apply]`. Conclude with `h3)`. Use the proof step `((IsScalarTower.toAlgHom K C C').comp u₀)`. Use the proof step `(fun a => (congrArg (algebraMap C C') (hu a)).trans (hκ _).symm) a`. Take `⟨⟨y, t⟩, hy⟩` from `IsLocalization.surj m.primeCompl b`.
+
+Establish `h4` using `congrArg κ hy`. Rewrite `h4` using `[map_mul, hκ, hκ, hb]`. Express the relevant statement in the definitionally equal form `algebraMap C C' _ * _ = _ at h4`. Rewrite `h4` using `[← map_mul]`. Take `⟨⟨_, c, hc, rfl⟩, h5⟩` from `(IsLocalization.eq_iff_exists M C').1 h4`.
+
+Use `(m.primeCompl.mul_mem hc t.2) (hIm ⟨c * y, ?_⟩)` and prove the remaining obligations. Rewrite using `[map_mul, map_mul]`. Use `h5.symm.trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `j c * (u₀ (s₂.app n a) * j t) = _`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem global_step (S : Type) [CommRing S] [IsDomain S] [IsIntegrallyClosed S] [IsAlgClosed K] [Algebra S K]
     [IsFractionRing S K] [Algebra R₁ S] [Algebra R₂ S] [IsScalarTower R₁ S K] [IsScalarTower R₂ S K]
     (hS : spMap (algebraMap R₁ S) ≫ f₁ = spMap (algebraMap R₂ S) ≫ f₂)
@@ -317,12 +405,22 @@ section Descent
 variable {R S K A A' A₀ : Type} [CommRing R] [CommRing S] [Field K] [Algebra R S] [Algebra S K] [Algebra R K]
   [IsScalarTower R S K] [CommRing A] [Bialgebra R A] [CommRing A'] [Bialgebra S A'] [CommRing A₀] [Bialgebra K A₀]
 
+/- English proof (translation)
+Introduce `a b h` and use `Algebra.TensorProduct.includeRight_injective (A := K) hK (hs (by change s.liftBC (1 ⊗ₜ a) = s.liftBC (1 ⊗ₜ b) rw [SemiBialgHom.liftBC_tmul, SemiBialgHom.liftBC_tmul, h]))`.
+-/
 theorem semi_injective [Module.Flat S A'] (hK : Function.Injective (algebraMap S K)) (s : SemiBialgHom (algebraMap S K) A' A₀)
     (hs : Function.Injective s.liftBC) : Function.Injective s := fun a b h =>
   Algebra.TensorProduct.includeRight_injective (A := K) hK (hs (by
     change s.liftBC (1 ⊗ₜ a) = s.liftBC (1 ⊗ₜ b)
     rw [SemiBialgHom.liftBC_tmul, SemiBialgHom.liftBC_tmul, h]))
 
+/- English proof (translation)
+Set `g : K ⊗[S] A' →ₗ[K] A₀` to `s.liftBC`. Establish `h1 : Function.Injective (TensorProduct.map g g)` using `TensorProduct.map_injective_of_flat_flat _ _ hs hs`. Establish `h2 : Function.Injective (Algebra.TensorProduct.includeRight : A' ⊗[S] A' →ₐ[S] K ⊗[S] (A' ⊗[S] A'))` using `Algebra.TensorProduct.includeRight_injective hK`. Establish `h3 : ∀ c, s.two c = TensorProduct.map g g (TensorProduct.AlgebraTensorModule.distribBaseChange S K A' A' (1 ⊗ₜ c))` using `fun c => by`. Proceed by induction on `c with`.
+
+Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, TensorProduct.tmul_add, hx, hy]`. Consider the case `tmul a b => simp [g]`. Introduce `x y h`. Rewrite `h` using `[h3, h3]`.
+
+Conclude with `h2 ((TensorProduct.AlgebraTensorModule.distribBaseChange S K A' A').injective (h1 h))`.
+-/
 theorem two_injective [Module.Flat S A'] (hK : Function.Injective (algebraMap S K)) (s : SemiBialgHom (algebraMap S K) A' A₀)
     (hs : Function.Injective s.liftBC) : Function.Injective s.two := by
   let g : K ⊗[S] A' →ₗ[K] A₀ := s.liftBC
@@ -339,6 +437,13 @@ theorem two_injective [Module.Flat S A'] (hK : Function.Injective (algebraMap S 
   rw [h3, h3] at h
   exact h2 ((TensorProduct.AlgebraTensorModule.distribBaseChange S K A' A').injective (h1 h))
 
+/- English proof (translation)
+Use `choose f hf using h`. Establish `hi` using `semi_injective hK s' hs`. Set `g : A →+* A'` to `{ toFun := f map_one' := hi (by rw [hf, map_one, map_one]) map_mul' := fun a b => hi (by rw [hf, map_mul, map_mul, hf, hf]) map_zero' := hi (by rw [hf, map_zero, map_zero]) map_add' := fun a b => hi (by rw [hf, map_add, map_add, hf, hf]) }`. Establish `hg : ∀ a, s' (g a) = s a` using `hf`. Use `⟨⟨g, fun r a => hi ?_, fun a => hK ?_, fun a => two_injective hK s' hs ?_⟩, hf⟩` and prove the remaining obligations.
+
+Rewrite using `[hg, s.smul_map, s'.smul_map, hg, ← IsScalarTower.algebraMap_apply R S K]`. Rewrite using `[← s'.counit_map, hg, s.counit_map, ← IsScalarTower.algebraMap_apply R S K]`. Rewrite using `[s'.two_comul, hg, ← s.two_comul]`. Generalize the expression as in `Coalgebra.comul (R := R) a = c`. Proceed by induction on `c with`.
+
+Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul a b => simp [hg]`.
+-/
 theorem exists_semi [Module.Flat S A'] (hK : Function.Injective (algebraMap S K)) (s : SemiBialgHom (algebraMap R K) A A₀)
     (s' : SemiBialgHom (algebraMap S K) A' A₀) (hs : Function.Injective s'.liftBC) (h : ∀ a, ∃ b, s' b = s a) :
     ∃ v : SemiBialgHom (algebraMap R S) A A', ∀ a, s' (v a) = s a := by
@@ -374,6 +479,9 @@ def isoOfBijective {p : ℕ} {R : Type} [CommRing R] {G G' : PDivGroup p R} (f :
   hom_inv_id := hom_ext fun n => BialgHom.ext fun a => (BialgEquiv.ofBijective (f.app n) (h n)).apply_symm_apply a
   inv_hom_id := hom_ext fun n => BialgHom.ext fun a => (BialgEquiv.ofBijective (f.app n) (h n)).symm_apply_apply a
 
+/- English proof (translation)
+The claim follows from `Function.bijective_iff_has_inverse.2 ⟨e.inv.app n, fun a => congrArg (fun f => Hom.app f n a) e.inv_hom_id, fun a => congrArg (fun f => Hom.app f n a) e.hom_inv_id⟩`.
+-/
 theorem iso_bijective {p : ℕ} {R : Type} [CommRing R] {G G' : PDivGroup p R} (e : G ≅ G') (n : ℕ) :
     Function.Bijective (e.hom.app n) :=
   Function.bijective_iff_has_inverse.2 ⟨e.inv.app n, fun a => congrArg (fun f => Hom.app f n a) e.inv_hom_id,
@@ -398,6 +506,21 @@ variable {p : ℕ} [Fact p.Prime] {La : Type} [AddCommGroup La]
 
 include h₁ h₂ h₀ hf₁ hf₂ l₁ l₂ hs₁ hs₂ in
 
+/- English proof (translation)
+Establish `hK` using `IsFractionRing.injective S K`. Establish `hf₀ : spMap (algebraMap R K) ≫ f₁ = f₀`. Rewrite using `[IsScalarTower.algebraMap_eq R S K, Cris.spMap_comp, Category.assoc, hf₁, hf₂]`. Establish `hSS : spMap (algebraMap S S) ≫ f₂ = spMap (algebraMap R S) ≫ f₁`. Rewrite using `[hf₁]`.
+
+Conclude with `(congrArg (· ≫ f₂) (Cris.spMap_id S)).trans (Category.id_comp _)`. Establish `k1 : ∀ n a, ∃ b, s₂.app n b = s₁.app n a` using `fun n a => by`. Use `letI : Algebra S (G₀.A n) := ((algebraMap K _).comp (algebraMap S K)).toAlgebra`. Use `haveI : IsScalarTower S K (G₀.A n) := .of_algebraMap_eq fun _ => rfl`. Conclude with `global_step h₂ h₁ h₀ hf₂ l₂ l₁ hθ₂ n (hs₂ n).2 S hSS (o₂ n) (G₂.A n) (G₀.A n) { (s₂.app n).toRingHom with commutes' := (s₂.app n).map_algebraMap } (semi_injective hK _ (hs₂ n).1) (AlgHom.id _ _) (AlgHom.id _ _) (fun _ => rfl) a`.
+
+Use `choose v hv using fun n => exists_semi hK (s₁.app n) (s₂.app n) (hs₂ n).1 (k1 n)`. Set `V : SemiHom (algebraMap R S) G₂ G₁` to `⟨v, fun n a => semi_injective hK _ (hs₂ n).1 (by`. Rewrite using `[← s₂.res_app, hv, hv, s₁.res_app])⟩`. Use `⟨isoOfBijective V.lift fun n => ?_, fun n a => ?_⟩` and prove the remaining obligations. Use `letI : Algebra S (G₀.A n) := ((algebraMap K _).comp (algebraMap S K)).toAlgebra haveI : IsScalarTower S K (G₀.A n) := .of_algebraMap_eq fun _ => rfl`.
+
+Set `j : S ⊗[R] G₁.A n →ₐ[S] G₀.A n` to `AlgHom.comp { (s₂.app n).toRingHom with commutes' := (s₂.app n).map_algebraMap } (V.lift.app n)`. Establish `hj1 : ∀ y, j y = s₁.lift.app n (LinearMap.rTensor _ (IsScalarTower.toAlgHom R S K).toLinearMap y)` using `fun y => by`. Proceed by induction on `y with`. Consider the case `zero => simp only [map_zero]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+
+Consider the case `tmul r a`. Use `(congrArg (s₂.app n) (V.lift_app n r a)).trans ?_` and prove the remaining obligations. Rewrite using `[(s₂.app n).smul_map, LinearMap.rTensor_tmul, SemiHom.lift_app]`. Conclude with `congrArg _ (hv n a)`. Establish `hj : Function.Injective j` using `fun x y h => by`.
+
+Rewrite `h` using `[hj1, hj1]`. Conclude with `Module.Flat.rTensor_preserves_injective_linearMap _ hK ((hs₁ n).1 h)`. Use `⟨fun x y h => hj (congrArg (s₂.app n) h), fun b => ?_⟩` and prove the remaining obligations. Take `⟨y, hy⟩` from `global_step h₁ h₂ h₀ hf₀ l₁ l₂ hθ₁ n (hs₁ n).2 S hSS.symm (o₁ n) (S ⊗[R] G₁.A n) (G₀.A n) j hj Algebra.TensorProduct.includeRight (AlgHom.id _ _) (fun a => by`. Use `(hv n a).symm.trans (congrArg (s₂.app n) ?_)` and prove the remaining obligations.
+
+Conclude with `((V.lift_app n 1 a).trans (one_smul _ _)).symm) b`. Conclude with `⟨y, semi_injective hK _ (hs₂ n).1 hy⟩`. Conclude with `(congrArg (s₂.app n) ((V.lift_app n 1 a).trans (one_smul _ _))).trans (hv n a)`.
+-/
 theorem exists_iso (hθ₁ : θ₁.IsOpenNearZero) (hθ₂ : θ₂.IsOpenNearZero)
     (o₁ : ∀ n (φ : G₁.A n →ₐ[R] K), ∃ x, tatePt (τ₁ x) n K = φ) (o₂ : ∀ n (φ : G₂.A n →ₐ[S] K), ∃ x, tatePt (τ₂ x) n K = φ) :
     ∃ e : G₂ ≅ G₁.baseChange S, ∀ n a, s₂.app n (e.hom.app n (1 ⊗ₜ a)) = s₁.app n a := by
@@ -443,6 +566,19 @@ theorem exists_iso (hθ₁ : θ₁.IsOpenNearZero) (hθ₂ : θ₂.IsOpenNearZer
 omit [IsIntegrallyClosed S] [IsAlgClosed K] in
 include h₁ h₂ h₀ hf₁ hf₂ l₁ l₂ in
 
+/- English proof (translation)
+Establish `hK` using `IsFractionRing.injective S K`. Establish `flat : ∀ (D : Type) [CommRing D] [Algebra R D] [Algebra S D] [IsScalarTower R S D] [Module.Flat S D] (w : Tors T₁ (p ^ n) D) (w' : Tors T₂ (p ^ n) D), w.1.left ≫ φ₁ = w'.1.left ≫ φ₂ → θ₁.pt n D w a = θ₂.pt n D w' a'` using `fun D _ _ _ _ _ w w' hw => by`. Set `i : D →ₐ[S] K ⊗[S] D` to `Algebra.TensorProduct.includeRight`. Take `⟨w₀, hw₀⟩` from `exists_tors h₂ h₀ (K ⊗[S] D) (by`. Rewrite using `[← hf₂, ← Category.assoc, ← Cris.spMap_comp, ← IsScalarTower.algebraMap_eq]) _ (push i w')`.
+
+Use `Algebra.TensorProduct.includeRight_injective (A := K) hK ?_` and prove the remaining obligations. Establish `e₁` using `l₁.2 n _ (push (i.restrictScalars R) w) w₀ (((Category.assoc ..).trans ((congrArg (spMap (i : D →+* K ⊗[S] D) ≫ ·) hw).trans (Category.assoc ..).symm)).trans hw₀) a`. Establish `e₂` using `l₂.2 n _ (push i w') w₀ hw₀ a'`. Rewrite `e₁` using `[θ₁.nat n D _ (i.restrictScalars R) w _ rfl]`. Rewrite `e₂` using `[θ₂.nat n D _ i w' _ rfl, ha]`.
+
+Conclude with `e₁.trans e₂.symm`. Use `sub_eq_zero.1 (eq_zero_of_localization _ fun m hm => ?_)` and prove the remaining obligations. Rewrite using `[map_sub, sub_eq_zero]`. Set `L` to `Localization.AtPrime m`. Set `i : B →ₐ[S] L` to `IsScalarTower.toAlgHom S B L`.
+
+Take `⟨D, _, _, _, w', c, hc⟩` from `exists_flat hT (pow_ne_zero n (Fact.out : p.Prime).ne_zero) L (push i z')`. Use `letI : Algebra R D := ((algebraMap S D).comp (algebraMap R S)).toAlgebra`. Use `haveI : IsScalarTower R S D := .of_algebraMap_eq fun _ => rfl`. Take `⟨w, hw⟩` from `exists_tors h₂ h₁ D (by rw [← hf₁, ← Category.assoc, ← Cris.spMap_comp]) _ w'`. Establish `e₀` using `congrArg c (flat D w w' hw.symm)`.
+
+Establish `e₁ : (push (i.restrictScalars R) z).1 = spOver (c.restrictScalars R) ≫ w.1` using `Over.OverMorphism.ext (h₁.1.hom_ext (by`. Establish `hc' : spMap (i : B →+* L) ≫ z'.1.left = spMap (c : D →+* L) ≫ w'.1.left` using `congrArg Over.Hom.left hc`. Express the relevant statement in the definitionally equal form `(spMap (i : B →+* L) ≫ z.1.left) ≫ φ₁ = (spMap (c : D →+* L) ≫ w.1.left) ≫ φ₁`. Rewrite using `[Category.assoc, Category.assoc, hz, ← hw, ← Category.assoc, hc', Category.assoc])`. Use the proof step `((Over.w _).trans (Over.w _).symm))`.
+
+Establish `e₂` using `(θ₁.nat n B L (i.restrictScalars R) z _ rfl).symm.trans (θ₁.nat n D L (c.restrictScalars R) w _ e₁)`. Establish `e₃` using `(θ₂.nat n B L i z' _ rfl).symm.trans (θ₂.nat n D L c w' _ hc)`. Conclude with `(DFunLike.congr_fun e₂ a).trans (e₀.trans (DFunLike.congr_fun e₃ a').symm)`.
+-/
 theorem pt_eq [IsCommMonObj T₂] (hT : IsSemiAbelian T₂) (n : ℕ) (a : G₁.A n) (a' : G₂.A n) (ha : s₂.app n a' = s₁.app n a)
     (B : Type) [CommRing B] [Algebra R B] [Algebra S B] [IsScalarTower R S B] (z : Tors T₁ (p ^ n) B) (z' : Tors T₂ (p ^ n) B)
     (hz : z.1.left ≫ φ₁ = z'.1.left ≫ φ₂) : θ₁.pt n B z a = θ₂.pt n B z' a' := by
@@ -481,6 +617,25 @@ theorem pt_eq [IsCommMonObj T₂] (hT : IsSemiAbelian T₂) (n : ℕ) (a : G₁.
 
 end Main
 
+/- English proof (translation)
+Take `⟨hε₁, e₁, ha₁, hp₁, hτ₁, hθ₁⟩` from `r₁`. Take `⟨hε₂, e₂, ha₂, hp₂, hτ₂, hθ₂⟩` from `r₂`. Establish `hK` using `IsFractionRing.injective S K`. Set `s₁` to `(semiHomEquiv GG GG₀).symm e₁.hom`. Set `s₂` to `(semiHomEquiv GG' GG₀).symm e₂.hom`.
+
+Establish `hs₁ : ∀ n, Function.Bijective (s₁.lift.app n)` using `fun n => by`. Rewrite using `[show s₁.lift = e₁.hom from (semiHomEquiv GG GG₀).apply_symm_apply _]`. Conclude with `iso_bijective e₁ n`. Establish `hs₂ : ∀ n, Function.Bijective (s₂.lift.app n)` using `fun n => by`. Rewrite using `[show s₂.lift = e₂.hom from (semiHomEquiv GG' GG₀).apply_symm_apply _]`.
+
+Conclude with `iso_bijective e₂ n`. Establish `l₁ : Link m.φ θ τ m₀.φ θ₀ τ₀ s₁` using `⟨fun x n a => (congrArg (fun y => TateOver.pt y n (1 ⊗ₜ a)) (hτ₁ x)).trans (_root_.one_mul _), hθ₁⟩`. Establish `l₂ : Link m'.φ θ' τ' m₀.φ θ₀ τ₀ s₂` using `⟨fun x n a => (congrArg (fun y => TateOver.pt y n (1 ⊗ₜ a)) (hτ₂ x)).trans (_root_.one_mul _), hθ₂⟩`. Take `⟨e, he⟩` from `exists_iso m.cart m'.cart m₀.cart hf₁ hf₂ l₁ l₂ hs₁ hs₂ hG.nearZero hG'.nearZero (fun n => hG.onto n _ hp) (fun n => hG'.onto n _ hp)`. Establish `he' : ∀ n a, e₂.hom.app n (1 ⊗ₜ e.hom.app n (1 ⊗ₜ a)) = e₁.hom.app n (1 ⊗ₜ a)` using `he`.
+
+Establish `hi : ∀ n (a b : GG'.A n), e₂.hom.app n (1 ⊗ₜ a) = e₂.hom.app n (1 ⊗ₜ b) → a = b` using `fun n a b k => semi_injective hK (s₂.app n) (hs₂ n).1 k`. Use `⟨fun n => hK ((hε₂ n).symm.trans ((hε₁ n).trans (IsScalarTower.algebraMap_apply R S K _))), e, fun c => baseChange_hom_ext fun n a => hi n _ _ ?_, baseChange_hom_ext fun n φ => hi n _ _ ?_, fun x => ?_, fun n B _ _ _ _ z z' hz a => ?_⟩` and prove the remaining obligations. Establish `k₁` using `congrArg (fun f => Hom.app f n (1 ⊗ₜ a)) (ha₁ c)`. Establish `k₂` using `congrArg (fun f => Hom.app f n (1 ⊗ₜ e.hom.app n (1 ⊗ₜ a))) (ha₂ c)`. Conclude with `k₂.symm.trans ((congrArg (Hom.app (act₀ c : GG₀ ⟶ GG₀) n) (he' n a)).trans (k₁.trans (he' n _).symm))`.
+
+Set `ψ : CartierDual S (GG'.A n)` to `CartierDual.map (e.inv.app n) (CartierDual.baseChange R S (GG.A n) (1 ⊗ₜ φ))`. Establish `k₁` using `congrArg (fun f => Hom.app f n (1 ⊗ₜ φ)) hp₁`. Establish `k₂` using `congrArg (fun f => Hom.app f n (1 ⊗ₜ ψ)) hp₂`. Use `k₂.symm.trans ((congrArg (pol₀.hom.app n) ?_).trans (k₁.trans (he' n _).symm))` and prove the remaining obligations. Use `CartierDual.ext_apply fun y => ?_` and prove the remaining obligations.
+
+Take `⟨y, rfl⟩` from `(iso_bijective e₁ n).2 y`. Express the relevant statement in the definitionally equal form `CartierDual.baseChange S K (GG'.A n) (1 ⊗ₜ ψ) (e₂.inv.app n (e₁.hom.app n y)) = CartierDual.baseChange R K (GG.A n) (1 ⊗ₜ φ) (e₁.inv.app n (e₁.hom.app n y))`. Establish `i₁ : ∀ y, e₁.inv.app n (e₁.hom.app n y) = y` using `fun y => congrArg (fun f => Hom.app f n y) e₁.inv_hom_id`. Establish `i₂ : ∀ y, e₂.inv.app n (e₂.hom.app n y) = y` using `fun y => congrArg (fun f => Hom.app f n y) e₂.inv_hom_id`. Establish `i₀ : ∀ y, e.inv.app n (e.hom.app n y) = y` using `fun y => congrArg (fun f => Hom.app f n y) e.inv_hom_id`.
+
+Rewrite using `[i₁]`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul r a`.
+
+Establish `k : ψ (e.hom.app n (1 ⊗ₜ a)) = algebraMap R S (φ a)`. Express the relevant statement in the definitionally equal form `CartierDual.baseChange R S (GG.A n) (1 ⊗ₜ φ) (e.inv.app n (e.hom.app n (1 ⊗ₜ a))) = _`. Rewrite using `[i₀, CartierDual.baseChange_tmul_tmul, _root_.one_mul, Algebra.algebraMap_eq_smul_one]`. Rewrite using `[← _root_.mul_one r, ← smul_eq_mul, ← TensorProduct.smul_tmul', map_smul, map_smul, map_smul, map_smul, ← he', i₂, CartierDual.baseChange_tmul_tmul, CartierDual.baseChange_tmul_tmul, k, algebraMap_smul]`. Use `TateOver.ext (funext fun n => Algebra.TensorProduct.ext (Subsingleton.elim _ _) (AlgHom.ext fun a => hK ?_))` and prove the remaining obligations.
+
+Use `(l₂.1 x n _).symm.trans ((congrArg ((τ₀ x).pt n) (he n a)).trans ((l₁.1 x n a).trans ?_))` and prove the remaining obligations. Conclude with `(IsScalarTower.algebraMap_apply R S K _).trans (congrArg _ (_root_.one_mul _).symm)`. Conclude with `pt_eq m.cart m'.cart m₀.cart hf₁ hf₂ l₁ l₂ t'.semi n a _ (he n a) B z z' hz`.
+-/
 theorem isRestr_of_isRestr {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {p : ℕ} [Fact p.Prime]
     {R S K : Type} [CommRing R] [CommRing S] [Field K] [Algebra R S] [Algebra S K] [Algebra R K] [IsScalarTower R S K]
     [IsDomain S] [IsIntegrallyClosed S] [IsAlgClosed K] [IsFractionRing S K] (hp : (p : K) ≠ 0)
@@ -546,6 +701,13 @@ theorem isRestr_of_isRestr {E : Type} [Field E] [NumberField E] [IsCMField E] {H
     exact (IsScalarTower.algebraMap_apply R S K _).trans (congrArg _ (_root_.one_mul _).symm)
   · exact pt_eq m.cart m'.cart m₀.cart hf₁ hf₂ l₁ l₂ t'.semi n a _ (he n a) B z z' hz
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw p _ X Z _ _ g tZ _ t₀ m₀ hty GG₀ act₀ pol₀ θ₀ ε₀ τ₀ _ U U' h t m t' m' GG act pol θ ε τ GG' act' pol' θ' ε' τ' hG r₁ hG' r₂`. Use `letI := (AffOp.res h).toAlgebra`. Use `haveI : IsScalarTower U.Bp U'.Bp (Kbar X) := .of_algebraMap_eq fun _ => rfl`. Use `haveI := hty.charZero`. Establish `hp : (p : Kbar X) ≠ 0` using `Nat.cast_ne_zero.2 (Fact.out : p.Prime).ne_zero`.
+
+Establish `hf₁ : spMap (algebraMap U.Bp U'.Bp) ≫ U.toX ≫ g = U'.toX ≫ g`. Rewrite using `[← Category.assoc]`. Conclude with `congrArg (· ≫ g) (AffOp.res_toX h)`. Establish `hf₂ : spMap (algebraMap U'.Bp (Kbar X)) ≫ U'.toX ≫ g = genPt X ≫ g`. Rewrite using `[← Category.assoc, AffOp.val_toX]`.
+
+Conclude with `isRestr_of_isRestr hp hf₁ hf₂ m₀ m m' hG r₁ hG' r₂`.
+-/
 theorem isRestr_of_generic : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (p : ℕ) [Fact p.Prime]
     (X Z : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X] (g : X ⟶ Z) (tZ : SAB H Z), GlobalTheory.IsNormalScheme X →
     ∀ (t₀ : SAB H (Sp (Kbar X))) (m₀ : SABMap t₀ tZ (genPt X ≫ g)), IsOfType Dw t₀ →

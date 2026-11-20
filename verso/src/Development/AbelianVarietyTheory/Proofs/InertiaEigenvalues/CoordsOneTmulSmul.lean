@@ -10,6 +10,13 @@ set_option maxHeartbeats 1600000
 
 namespace GlobalTheory.WeakTop
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [smul_add, map_add, Pi.add_apply, hx, hy, mul_add]`. Consider the case `tmul r t`. Proceed by induction on `r using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp`. Consider the case `add x y hx hy`. Simplify using `only [add_tmul, smul_add, map_add, Pi.add_apply, hx, hy, mul_add]`. Consider the case `tmul a w'`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, Algebra.TensorProduct.tmul_mul_tmul, one_mul, coords_tmul, coords_tmul]`.
+
+Simplify using `only [Algebra.smul_def]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem coords_one_tmul_smul {R O W T ι : Type} [CommRing R] [CommRing O] [Algebra R O] [CommRing W] [Algebra R W] [AddCommGroup T] [Module O T] [Module R T] [IsScalarTower R O T] [Fintype ι] [DecidableEq ι] (b : Module.Basis ι R T) (w : W) (z : (O ⊗[R] W) ⊗[O] T) (i : ι) :
     GlobalTheory.WeakTop.coords W O b (((1 : O) ⊗ₜ[R] w) • z) i = w * GlobalTheory.WeakTop.coords W O b z i := by
   induction z using TensorProduct.induction_on with

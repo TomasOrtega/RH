@@ -18,6 +18,13 @@ namespace GlobalTheory.ThetaDoubling
 
 variable {k : Type} [CommRing k] {S : Scheme.{0}} {p : S ⟶ Sp k}
 
+/- English proof (translation)
+Take `⟨-, -, H⟩` from `hc`. Take `⟨h1, h2, -, -, -⟩` from `H v hv`. Set `x : Over.mk (c.e.symm v).1 ⟶ P.A` to `Over.homMk (ex (v, z)).1 (h1 z)`. Establish `e` using `h2 z z x x rfl rfl`. Establish `e2 : x ≫ ReciprocityTheory.ChartRestriction.G.Out.mulA P.A 2 = x * x`.
+
+Rewrite using `[ReciprocityTheory.ChartRestriction.G.Out.mulA, MonObj.comp_pow, Category.comp_id, pow_two]`. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(ex (v, (2:ℤ) • z)).1 = (ex (v, z)).1 ≫ dbl P`. Establish `: (2:ℤ) • z = z + z` using `by rw [two_zsmul]`. Rewrite using `[this, ← e, ← e2]`.
+
+Both sides reduce to the same expression.
+-/
 theorem ex_dbl (P : PPAS S) {h : VMetric p (omega P.A) P.g} {σ : k →+* ℂ} {c : AlgChart p σ 1}
     {τ : V 1 → Matrix (Fin P.g) (Fin P.g) ℂ} {ex : Pt (V 1) P.g → CxPts (P.A.hom ≫ p) σ}
     (hc : IsPeriodChart h c τ ex) {v : V 1} (hv : v ∈ c.e.target) (z : Fin P.g → ℂ) :
@@ -34,6 +41,13 @@ theorem ex_dbl (P : PPAS S) {h : VMetric p (omega P.A) P.g} {σ : k →+* ℂ} {
   rw [this, ← e, ← e2]
   rfl
 
+/- English proof (translation)
+Take `⟨-, -, H⟩` from `hc`. Take `⟨h1, h2, -, h4, -⟩` from `H v hv`. Set `x : Over.mk (c.e.symm v).1 ⟶ P.A` to `Over.homMk (ex (v, z)).1 (h1 z)`. Establish `hy : (1 : Over.mk (c.e.symm v).1 ⟶ P.A).left = (ex (v, GlobalTheory.IndefiniteRowSideFullHecke.SiegelReframe.per (τ v) l)).1`. Rewrite using `[(h4 _).2 ⟨l, hl, rfl⟩]`.
+
+Both sides reduce to the same expression. Establish `e` using `h2 z _ x 1 rfl hy`. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(ex (v, z + GlobalTheory.IndefiniteRowSideFullHecke.SiegelReframe.per (τ v) l)).1 = (ex (v, z)).1`. Rewrite using `[← e, _root_.mul_one]`.
+
+Both sides reduce to the same expression.
+-/
 theorem ex_transl (P : PPAS S) {h : VMetric p (omega P.A) P.g} {σ : k →+* ℂ} {c : AlgChart p σ 1}
     {τ : V 1 → Matrix (Fin P.g) (Fin P.g) ℂ} {ex : Pt (V 1) P.g → CxPts (P.A.hom ≫ p) σ}
     (hc : IsPeriodChart h c τ ex) {v : V 1} (hv : v ∈ c.e.target) (z : Fin P.g → ℂ)
@@ -51,17 +65,28 @@ theorem ex_transl (P : PPAS S) {h : VMetric p (omega P.A) P.g} {σ : k →+* ℂ
   rw [← e, _root_.mul_one]
   rfl
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem alg4 {x y g G F F' : ℂ} (hg : g ≠ 0) (h : x * G = g ^ 4 * y) :
     x * (G * F) / (g * F') ^ 4 = y * F / F' ^ 4 := by
   calc x * (G * F) / (g * F') ^ 4 = (x * G) * F / (g ^ 4 * F' ^ 4) := by ring
     _ = g ^ 4 * (y * F) / (g ^ 4 * F' ^ 4) := by rw [h]; ring
     _ = y * F / F' ^ 4 := mul_div_mul_left _ _ (pow_ne_zero 4 hg)
 
+/- English proof (translation)
+Rewrite using `[mul_pow, ← mul_div_assoc, mul_div_mul_left _ _ (pow_ne_zero 4 hJ)]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem alg5 {x A B J J2 : ℂ} (hJ : J ≠ 0) :
     x * A / B ^ 4 * J2 = J ^ 4 * (x * (J2 * A) / (J * B) ^ 4) := by
   rw [mul_pow, ← mul_div_assoc, mul_div_mul_left _ _ (pow_ne_zero 4 hJ)]
   ring
 
+/- English proof (translation)
+Establish `hX2 : 0 < ‖Xv‖ ^ 2` using `by positivity`. Establish `key : Real.exp (-φb) * Real.exp (-ub) = Real.exp (-φa) ^ 4 * Real.exp (-ua) ^ 4 * ‖Xv‖ ^ 2`. Rewrite using `[← Real.exp_log hX2, ← Real.exp_add, ← Real.exp_nat_mul, ← Real.exp_nat_mul, ← Real.exp_add, ← Real.exp_add]`. Use `congr 1`. Use `push_cast`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hFa' : ‖Fa‖ ≠ 0` using `norm_ne_zero_iff.2 hFa`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[norm_div, norm_mul, norm_pow]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem alg6 {Fa Fb Xv : ℂ} {φa φb ua ub : ℝ} (hX : Xv ≠ 0) (hFa : Fa ≠ 0)
     (h : 4 * φa + 4 * ua = φb + ub + Real.log (‖Xv‖ ^ 2)) :
     ‖Fb‖ ^ 2 * Real.exp (-φb) * Real.exp (-ub) =
@@ -80,6 +105,11 @@ theorem alg6 {Fa Fb Xv : ℂ} {φa φb ua ub : ℝ} (hX : Xv ≠ 0) (hFa : Fa �
       rw [norm_div, norm_mul, norm_pow]
       field_simp
 
+/- English proof (translation)
+Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.SiegelReframe.mulN, GlobalTheory.IndefiniteRowSideFullHecke.SiegelReframe.transl, GlobalTheory.IndefiniteRowSideFullHecke.SiegelReframe.per, smul_add]`. Use `Prod.ext rfl ?_` and prove the remaining obligations. Simplify using `only [add_right_inj]`. Use extensionality with `i`. Simplify using `[Matrix.vecMul, dotProduct, Finset.mul_sum]`.
+
+Put the polynomial expressions in normal form.
+-/
 theorem mulN_transl {g : ℕ} (τ : V 1 → Matrix (Fin g) (Fin g) ℂ) (l : Fl g) (Q : Pt (V 1) g) :
     GlobalTheory.IndefiniteRowSideFullHecke.SiegelReframe.mulN 2 (GlobalTheory.IndefiniteRowSideFullHecke.SiegelReframe.transl τ l Q) =
       GlobalTheory.IndefiniteRowSideFullHecke.SiegelReframe.transl τ ((2:ℤ) • l) (GlobalTheory.IndefiniteRowSideFullHecke.SiegelReframe.mulN 2 Q) := by
@@ -92,6 +122,47 @@ theorem mulN_transl {g : ℕ} (τ : V 1 → Matrix (Fin g) (Fin g) ℂ) (l : Fl 
 
 open GlobalTheory.IndefiniteRowSideFullHecke.SiegelReframe (mulN transl per mulPullFactor IsBundleIso) in
 
+/- English proof (translation)
+Introduce `k _ S p _ P _ h L _ w hw u hT σ c τ ex j m hc hF _ v hv`. Use `⟨c.e.target, subset_rfl, hc.1.1, hv, ?_⟩` and prove the remaining obligations. Take `⟨fr, hfr⟩` from `hF`. Use `set dm : CxPts (P.A.hom ≫ p) σ → CxPts (P.A.hom ≫ p) σ := PtsOver.map (dbl P) (dbl_comp P p) _ with hdm`. Establish `hcov : ∀ Q : Pt (V 1) P.g, Q ∈ cov c.e.target P.g ↔ Q.1 ∈ c.e.target` using `fun Q => by`.
+
+Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.SiegelReframe.cov]`. Establish `ex2 : ∀ Q ∈ cov c.e.target P.g, ex (mulN 2 Q) = dm (ex Q)` using `fun Q hQ => ex_dbl P hc ((hcov Q).1 hQ) Q.2`. Establish `mp4 : ∀ (y : CxPts (P.A.hom ≫ p) σ) (a : L.B.ι), y ∈ ptsIn _ σ ((L.pow 4).B.U (fun _ => a)) ↔ y ∈ ptsIn _ σ (L.B.U a)` using `fun y a => mem_pow_iff`. Establish `mpl : ∀ (y : CxPts (P.A.hom ≫ p) σ) (b : L.B.ι), y ∈ ptsIn _ σ ((L.pull (dbl P) (dbl_comp P p)).B.U (fun _ => b)) ↔ dm y ∈ ptsIn _ σ (L.B.U b)`. Introduce `y b`.
+
+Use `⟨fun hy => mem_of_mem_linComb (m := fun _ => dm y) (fun _ => rfl) hy PUnit.unit, fun hy => ?_⟩` and prove the remaining obligations. Introduce `z hz`. Conclude with `Set.mem_iInter.2 fun _ => hy hz`. Set `X : (PUnit → L.B.ι) → (PUnit → L.B.ι) → CxPts (P.A.hom ≫ p) σ → ℂ` to `fun a b y => ev (P.A.hom ≫ p) σ _ (w.s (a, b)).val y`. Establish `K : ∀ Q ∈ cov c.e.target P.g, ∀ a b a' b', ex Q ∈ ptsIn _ σ (L.B.U a) → ex Q ∈ ptsIn _ σ (L.B.U a') → dm (ex Q) ∈ ptsIn _ σ (L.B.U b) → dm (ex Q) ∈ ptsIn _ σ (L.B.U b') → X (fun _ => a) (fun _ => b) (ex Q) * fr b (mulN 2 Q) / fr a Q ^ 4 = X (fun _ => a') (fun _ => b') (ex Q) * fr …`.
+
+Introduce `Q hQ a b a' b' ha ha' hb hb'`. Establish `hQ2 : mulN 2 Q ∈ cov c.e.target P.g` using `(hcov _).2 ((hcov _).1 hQ)`. Establish `e2` using `ex2 Q hQ`. Establish `rel` using `ev_iso_rel hw ((mpl _ b).2 hb) ((mpl _ b').2 hb') ((mp4 _ a).2 ha) ((mp4 _ a').2 ha')`. Establish `g1 : gv (P.A.hom ≫ p) σ (L.pull (dbl P) (dbl_comp P p)).B (fun _ => b) (fun _ => b') (ex Q) = gv (P.A.hom ≫ p) σ L.B b b' (dm (ex Q))` using `(gv_linComb (m := fun _ => dm (ex Q)) (fun _ => rfl) ((mpl _ b).2 hb) ((mpl _ b').2 hb')).trans (by simp)`.
+
+Establish `g4 : gv (P.A.hom ≫ p) σ (L.pow 4).B (fun _ => a) (fun _ => a') (ex Q) = gv (P.A.hom ≫ p) σ L.B a a' (ex Q) ^ 4` using `(gv_pow ha ha').trans (by simp)`. Rewrite `rel` using `[g1, g4]`. Establish `hfa` using `((hfr a).2 Q hQ ha).2.1 a' ha'`. Establish `hfb` using `((hfr b).2 _ hQ2 (e2 ▸ hb)).2.1 b' (e2 ▸ hb')`. Rewrite `hfb` using `[e2]`.
+
+Establish `hga` using `gv_ne_zero ha ha'`. Establish `hfa'` using `((hfr a').2 Q hQ ha').1`. Establish `rel' : X (fun _ => a) (fun _ => b) (ex Q) * gv (P.A.hom ≫ p) σ L.B b b' (dm (ex Q)) = gv (P.A.hom ≫ p) σ L.B a a' (ex Q) ^ 4 * X (fun _ => a') (fun _ => b') (ex Q)` using `rel`. Rewrite using `[hfa, hfb]`. Conclude with `alg4 hga rel'`.
+
+Establish `hpk : ∀ y : CxPts (P.A.hom ≫ p) σ, y ∈ ptsIn _ σ (L.B.U (pick L.isLB y))` using `fun y => mem_pick L.isLB y`. Set `F : Pt (V 1) P.g → ℂ` to `fun Q => X (fun _ => pick L.isLB (ex Q)) (fun _ => pick L.isLB (dm (ex Q))) (ex Q) * fr (pick L.isLB (dm (ex Q))) (mulN 2 Q) / fr (pick L.isLB (ex Q)) Q ^ 4`. Establish `KF : ∀ Q ∈ cov c.e.target P.g, ∀ a b, ex Q ∈ ptsIn _ σ (L.B.U a) → dm (ex Q) ∈ ptsIn _ σ (L.B.U b) → F Q = X (fun _ => a) (fun _ => b) (ex Q) * fr b (mulN 2 Q) / fr a Q ^ 4` using `fun Q hQ a b ha hb => K Q hQ _ _ a b (hpk _) ha (hpk _) hb`. Establish `hXne : ∀ (y : CxPts (P.A.hom ≫ p) σ) a b, y ∈ ptsIn _ σ (L.B.U a) → dm y ∈ ptsIn _ σ (L.B.U b) → X (fun _ => a) (fun _ => b) y ≠ 0` using `fun y a b ha hb => ev_iso_ne_zero w ((mpl _ b).2 hb) ((mp4 _ a).2 ha)`. Establish `hQ2 : ∀ Q ∈ cov c.e.target P.g, mulN 2 Q ∈ cov c.e.target P.g` using `fun Q hQ => (hcov _).2 ((hcov _).1 hQ)`.
+
+Establish `hmd : Differentiable ℂ (mulN 2 : Pt (V 1) P.g → Pt (V 1) P.g)` using `by show Differentiable ℂ (fun Q : Pt (V 1) P.g => (Q.1, (2:ℤ) • Q.2))`. Conclude with `differentiable_fst.prodMk (differentiable_snd.const_smul (2:ℤ))`. Use `⟨F, ⟨?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `Q0 hQ0`. Take `⟨hO, hXd⟩` from `hc.2.1 (((L.pow 4).B.div (L.pull (dbl P) (dbl_comp P p)).B).U ((fun _ => pick L.isLB (ex Q0)), (fun _ => pick L.isLB (dm (ex Q0))))) (w.s ((fun _ => pick L.isLB (ex Q0)), (fun _ => pick L.isLB (dm (ex Q0))))).val`.
+
+Use `set a := pick L.isLB (ex Q0)`. Use `set b := pick L.isLB (dm (ex Q0))`. Use `set O := {Q ∈ cov c.e.target P.g | ⊤ ≤ (ex Q).1 ⁻¹ᵁ (((L.pow 4).B.div (L.pull (dbl P) (dbl_comp P p)).B).U ((fun _ => a), (fun _ => b)))} with hOdef`. Establish `hmem : ∀ Q ∈ O, Q ∈ cov c.e.target P.g ∧ ex Q ∈ ptsIn _ σ (L.B.U a) ∧ dm (ex Q) ∈ ptsIn _ σ (L.B.U b)`. Introduce `Q hQ`.
+
+Establish `h2 : ex Q ∈ ptsIn _ σ (((L.pow 4).B.div (L.pull (dbl P) (dbl_comp P p)).B).U ((fun _ => a), (fun _ => b)))` using `hQ.2`. Establish `h3` using `mem_ptsIn_inf.1 h2`. Conclude with `⟨hQ.1, (mp4 _ a).1 h3.1, (mpl _ b).1 h3.2⟩`. Establish `hQ0O : Q0 ∈ O`. Use `⟨hQ0, ?_⟩` and prove the remaining obligations.
+
+Use `show ex Q0 ∈ ptsIn _ σ (((L.pow 4).B.div (L.pull (dbl P) (dbl_comp P p)).B).U ((fun _ => a), (fun _ => b)))`. Conclude with `mem_ptsIn_inf.2 ⟨(mp4 _ a).2 (hpk _), (mpl _ b).2 (hpk _)⟩`. Establish `hXd' : DifferentiableOn ℂ (fun Q => X (fun _ => a) (fun _ => b) (ex Q)) O` using `hXd`. Establish `hfb : DifferentiableOn ℂ (fun Q => fr b (mulN 2 Q)) O`. Use `(hfr b).1.comp hmd.differentiableOn fun Q hQ => ?_` and prove the remaining obligations.
+
+Take `⟨h1, -, h3⟩` from `hmem Q hQ`. Use `⟨hQ2 Q h1, ?_⟩` and prove the remaining obligations. Use `show ex (mulN 2 Q) ∈ ptsIn _ σ (L.B.U b)`. Rewrite using `[ex2 Q h1]`. Conclude with `h3`.
+
+Establish `hfa : DifferentiableOn ℂ (fun Q => fr a Q) O` using `(hfr a).1.mono fun Q hQ => ⟨(hmem Q hQ).1, (hmem Q hQ).2.1⟩`. Establish `hG : DifferentiableOn ℂ (fun Q => X (fun _ => a) (fun _ => b) (ex Q) * fr b (mulN 2 Q) / fr a Q ^ 4) O` using `((hXd'.mul hfb).mul ((hfa.fun_pow 4).inv fun Q hQ => pow_ne_zero 4 ((hfr a).2 Q (hmem Q hQ).1 (hmem Q hQ).2.1).1)).congr fun Q _ => div_eq_mul_inv _ _`. Use `((hG.differentiableAt (hO.mem_nhds hQ0O)).congr_of_eventuallyEq ?_).differentiableWithinAt` and prove the remaining obligations. Conclude with `Filter.eventually_of_mem (hO.mem_nhds hQ0O) fun Q hQ => KF Q (hmem Q hQ).1 a b (hmem Q hQ).2.1 (hmem Q hQ).2.2`. Introduce `Q hQ`.
+
+Establish `hb : ex (mulN 2 Q) ∈ ptsIn _ σ (L.B.U (pick L.isLB (dm (ex Q))))`. Rewrite using `[ex2 Q hQ]`. Conclude with `hpk _`. Conclude with `div_ne_zero (mul_ne_zero (hXne _ _ _ (hpk _) (hpk _)) ((hfr _).2 _ (hQ2 Q hQ) hb).1) (pow_ne_zero 4 ((hfr _).2 Q hQ (hpk _)).1)`. Introduce `l hl Q hQ`.
+
+Establish `et : ex (transl τ l Q) = ex Q` using `ex_transl P hc ((hcov Q).1 hQ) Q.2 hl`. Establish `hQt : transl τ l Q ∈ cov c.e.target P.g` using `(hcov _).2 ((hcov _).1 hQ)`. Establish `ha : ex Q ∈ ptsIn _ σ (L.B.U (pick L.isLB (ex Q)))` using `hpk _`. Establish `hb : dm (ex Q) ∈ ptsIn _ σ (L.B.U (pick L.isLB (dm (ex Q))))` using `hpk _`. Establish `hb2 : ex (mulN 2 Q) ∈ ptsIn _ σ (L.B.U (pick L.isLB (dm (ex Q))))`.
+
+Rewrite using `[ex2 Q hQ]`. Conclude with `hb`. Rewrite using `[KF (transl τ l Q) hQt (pick L.isLB (ex Q)) (pick L.isLB (dm (ex Q))) (by rw [et]; exact ha) (by rw [et]; exact hb), et, mulN_transl τ l Q]`. Establish `e2l` using `((hfr _).2 _ (hQ2 Q hQ) hb2).2.2.2 _ ((stdLat P.g).smul_mem (2:ℤ) hl)`. Establish `e1l` using `((hfr _).2 Q hQ ha).2.2.2 l hl`.
+
+Establish `hne` using `((hfr _).2 Q hQ ha).1`. Rewrite `hne` using `[e1l]`. Use `show _ = j l Q ^ 4 * (X _ _ (ex Q) * fr (pick L.isLB (dm (ex Q))) (mulN 2 Q) / fr (pick L.isLB (ex Q)) Q ^ 4)`. Rewrite using `[e2l, e1l]`. Conclude with `alg5 (left_ne_zero_of_mul hne)`.
+
+Introduce `Q hQ`. Establish `ha : ex Q ∈ ptsIn _ σ (L.B.U (pick L.isLB (ex Q)))` using `hpk _`. Establish `hb : dm (ex Q) ∈ ptsIn _ σ (L.B.U (pick L.isLB (dm (ex Q))))` using `hpk _`. Establish `hb2 : ex (mulN 2 Q) ∈ ptsIn _ σ (L.B.U (pick L.isLB (dm (ex Q))))`. Rewrite using `[ex2 Q hQ]`.
+
+Conclude with `hb`. Establish `hm2` using `((hfr _).2 _ (hQ2 Q hQ) hb2).2.2.1`. Establish `hm1` using `((hfr _).2 Q hQ ha).2.2.1`. Establish `ht` using `hT σ (fun _ => pick L.isLB (ex Q)) (fun _ => pick L.isLB (dm (ex Q))) (ex Q) ((mp4 _ _).2 ha) ((mpl _ _).2 hb)`. Establish `e1 : ((L.pow 4).φ σ).φ (fun _ => pick L.isLB (ex Q)) (ex Q) = 4 * (L.φ σ).φ (pick L.isLB (ex Q)) (ex Q)` using `((L.φ σ).zpow_φ _ _ (ex Q)).trans (by push_cast; ring)`.
+
+Establish `e2 : ((L.pull (dbl P) (dbl_comp P p)).φ σ).φ (fun _ => pick L.isLB (dm (ex Q))) (ex Q) = (L.φ σ).φ (pick L.isLB (dm (ex Q))) (dm (ex Q))` using `(L.φ σ).pull_φ _ _ _ _`. Rewrite `ht` using `[e1, e2]`. Rewrite using `[hm2, hm1, ex2 Q hQ]`. Conclude with `alg6 (hXne _ _ _ ha hb) ((hfr _).2 Q hQ ha).1 ht`.
+-/
 theorem exists_bundleIso_doubling : ∀ (k : Type) [CommRing k] (S : Scheme.{0}) (p : S ⟶ Sp k), IsRegSurf p → ∀ (P : PPAS S), IsArithVar (P.A.hom ≫ p) (P.g + 1) → ∀ (h : VMetric p (omega P.A) P.g) (L : HermLB (P.A.hom ≫ p)), IsTheta P L.B → ∀ (w : LB.Iso (L.pull (dbl P) (dbl_comp P p)).B (L.pow 4).B), w.IsGen → ∀ u : ∀ σ : k →+* ℂ, CxPts (P.A.hom ≫ p) σ → ℝ, IsTate (dbl P) (dbl_comp P p) L w u → ∀ (σ : k →+* ℂ) (c : AlgChart p σ 1) (τ : V 1 → Matrix (Fin P.g) (Fin P.g) ℂ) (ex : Pt (V 1) P.g → CxPts (P.A.hom ≫ p) σ) (j : Fl P.g → Pt (V 1) P.g → ℂ) (m : Pt (V 1) P.g → ℝ), IsPeriodChart h c τ ex → IsFramed L c.e.target τ ex j m → IsDatum c.e.target τ (stdLat P.g) j m → ∀ v ∈ c.e.target, ∃ B' ⊆ c.e.target, IsOpen B' ∧ v ∈ B' ∧ ∃ φ, GlobalTheory.IndefiniteRowSideFullHecke.SiegelReframe.IsBundleIso B' τ (stdLat P.g) (GlobalTheory.IndefiniteRowSideFullHecke.SiegelReframe.mulPullFactor 2 j) (fun l Q => j l Q ^ 4) φ ∧ ∀ Q ∈ cov B' P.g, m (GlobalTheory.IndefiniteRowSideFullHecke.SiegelReframe.mulN 2 Q) * Real.exp (-u σ (ex (GlobalTheory.IndefiniteRowSideFullHecke.SiegelReframe.mulN 2 Q))) = (m Q * Real.exp (-u σ (ex Q))) ^ 4 * ‖φ Q‖ ^ 2 := by
   intro k _ S p _ P _ h L _ w hw u hT σ c τ ex j m hc hF _ v hv
   refine ⟨c.e.target, subset_rfl, hc.1.1, hv, ?_⟩

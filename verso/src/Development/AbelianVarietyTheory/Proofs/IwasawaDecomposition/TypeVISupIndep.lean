@@ -9,6 +9,9 @@ namespace GlobalTheory.HeightCounting.MtIndep
 section rep
 variable {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ}
 
+/- English proof (translation)
+Take `⟨T, hT⟩` from `h₁`. Take `⟨U, hU⟩` from `h₂`. Conclude with `⟨T.trans U, fun h f f' e => hU h (T f) (T f') (hT h f f' e)⟩`.
+-/
 theorem isoRep_trans {W₁ W₂ W₃ : Type} [AddCommGroup W₁] [Module ℂ W₁] [AddCommGroup W₂] [Module ℂ W₂]
     [AddCommGroup W₃] [Module ℂ W₃] {S₁ : Submodule ℂ (GAf L n → W₁)} {S₂ : Submodule ℂ (GAf L n → W₂)}
     {S₃ : Submodule ℂ (GAf L n → W₃)} (h₁ : NG.IsoRep S₁ S₂) (h₂ : NG.IsoRep S₂ S₃) : NG.IsoRep S₁ S₃ := by
@@ -16,6 +19,11 @@ theorem isoRep_trans {W₁ W₂ W₃ : Type} [AddCommGroup W₁] [Module ℂ W�
   obtain ⟨U, hU⟩ := h₂
   exact ⟨T.trans U, fun h f f' e => hU h (T f) (T f') (hT h f f' e)⟩
 
+/- English proof (translation)
+Take `⟨T, hT⟩` from `h`. Use `⟨T.symm, fun h g g' e => ?_⟩` and prove the remaining obligations. Establish `hm : NG.rt L n h ((T.symm g : S₁) : GAf L n → W) ∈ S₁` using `hs.stable h _ (T.symm g).2`. Establish `key` using `hT h (T.symm g) ⟨_, hm⟩ rfl`. Rewrite `key` using `[LinearEquiv.apply_symm_apply]`.
+
+Establish `hg : T ⟨_, hm⟩ = g'` using `Subtype.ext (key.trans e.symm)`. Rewrite using `[← hg, LinearEquiv.symm_apply_apply]`.
+-/
 theorem isoRep_symm {W W' : Type} [AddCommGroup W] [Module ℂ W] [AddCommGroup W'] [Module ℂ W']
     {ρ : Representation ℂ (GQ L n) W} {S₁ : Submodule ℂ (GAf L n → W)} {S₂ : Submodule ℂ (GAf L n → W')}
     (hs : NG.IsSubrep ρ S₁) (h : NG.IsoRep S₁ S₂) : NG.IsoRep S₂ S₁ := by
@@ -27,6 +35,9 @@ theorem isoRep_symm {W W' : Type} [AddCommGroup W] [Module ℂ W] [AddCommGroup 
   have hg : T ⟨_, hm⟩ = g' := Subtype.ext (key.trans e.symm)
   rw [← hg, LinearEquiv.symm_apply_apply]
 
+/- English proof (translation)
+Unfold `NG.isoTyp`. Use `congr 1`. Use extensionality with `S'`. Simplify using `only [Set.mem_setOf_eq]`. Conclude with `and_congr_right fun _ => ⟨fun h' => isoRep_trans (isoRep_symm hs h) h', fun h' => isoRep_trans h h'⟩`.
+-/
 theorem isoTyp_eq {W : Type} [AddCommGroup W] [Module ℂ W] {ρ : Representation ℂ (GQ L n) W}
     {S₁ S₂ : Submodule ℂ (GAf L n → W)} (hs : NG.IsSubrep ρ S₁) (h : NG.IsoRep S₁ S₂) :
     NG.isoTyp ρ S₁ = NG.isoTyp ρ S₂ := by
@@ -63,6 +74,9 @@ def Phi {cf : CharFrame D} {jE : D.host.E →+* Qb} (X : LocNd (lay0 D)) (Y : Lo
     (_ : Good X Y σ' c j (A.au.cls j h1 h2 { (M μ j h1 h2).wt with S := S', irrS := h })),
     (NG.isoTyp (M μ j h1 h2).wt.ρ S').comap (M μ j h1 h2).real
 
+/- English proof (translation)
+Substitute `hμ hj` using the available equality. Both sides reduce to the same expression.
+-/
 theorem phi_heq {cf : CharFrame D} {jE : D.host.E →+* Qb} (X : LocNd (lay0 D)) (Y : LocAut X) (A : SideA D cf jE)
     (M : MtFam D) (σ' : D.ntypes.Par) (c : Y.naut.CG 1) {μ μ' : D.what₂.Tup} {j j' : ℕ} (h1 : 1 ≤ j) (h2 : j ≤ D.R.m)
     (h1' : 1 ≤ j') (h2' : j' ≤ D.R.m) (hμ : μ = μ') (hj : j = j') :
@@ -80,6 +94,17 @@ variable {D : D7} {cf : CharFrame D} {jE : D.host.E →+* Qb} {A : SideA D cf jE
   {tup : D.what₂.Tup → Fin D.R.m → HChar D.host.E} {X : LocNd (lay0 D)}
   {iq : ∀ i : X.nd.Loc, FractionRing (X.nd.O i) →+* Qbar (X.nd.l i)} {Y : LocAut X} {Cb : LocBC Y}
 
+/- English proof (translation)
+Establish `hc : ∀ P, (∃ Sig, (∀ w, isoLoc X.nd Y.naut Sig w = D.ntypes.locPar σ' w) ∧ IsBCV X.nd Y.naut i P (twistIso X.nd Y.naut (Sig ++ [muPart X.nd Y.naut i]) Y.naut.etaTinv)) ↔ Good X Y σ' (Y.muC i) (X.nd.j i) (A.au.cls (X.nd.j i) (X.nd.j_range i).1 (X.nd.j_range i).2 { (mlX M X i).wt w …` using `hS.S i P, irrS := hS.irr i P }) := by`. Introduce `P`. Establish `hl : Y.naut.locV i P = fun w => D.nbc.locAU (X.nd.j i) (Cb.embAV i P) w` using `funext (Cb.embAV_loc i P)`. Establish `hs : Y.naut.satV i P = D.nbc.satAU (X.nd.j i) (Cb.embAV i P)` using `funext (Cb.embAV_sat i P)`. Establish `hf : Y.naut.infWt i = D.nbc.infW (X.nd.j i) (D.nbc.wtAU (X.nd.j i) (Cb.embAV i P))` using `Cb.embAV_inf i P`.
+
+Rewrite using `[← hS.emb i P]`. Unfold `Good`. Use `exists_congr fun Sig => and_congr_right fun _ => ?_` and prove the remaining obligations. Unfold `IsBCV BCd`. Rewrite using `[hl, hs, hf]`.
+
+Conclude with `Iff.rfl`. Apply `le_antisymm` to reduce the goal to its premises. Use `iSup₂_le fun P hP => ?_` and prove the remaining obligations. Rewrite using `[hS.typeV i P]`. Conclude with `le_iSup_of_le (hS.S i P) (le_iSup_of_le (hS.irr i P) (le_iSup_of_le ((hc P).1 hP) le_rfl))`.
+
+Use `iSup_le fun S' => iSup_le fun hirr => iSup_le fun hg => ?_` and prove the remaining obligations. Distinguish the cases in `hb : (NG.isoTyp (mlX M X i).wt.ρ S').comap (mlX M X i).real = ⊥`. Conclude with `hb.le.trans bot_le`. Take `⟨P, hP⟩` from `hS.surj i S' hirr hb`. Establish `ht : Y.naut.typeV i P = (NG.isoTyp (mlX M X i).wt.ρ S').comap (mlX M X i).real`.
+
+Rewrite using `[hS.typeV i P, isoTyp_eq (hS.irr i P).1 hP]`. Establish `hcl : A.au.cls (X.nd.j i) (X.nd.j_range i).1 (X.nd.j_range i).2 { (mlX M X i).wt with S` using `hS.S i P, irrS := hS.irr i P } = A.au.cls (X.nd.j i) (X.nd.j_range i).1 (X.nd.j_range i).2 { (mlX M X i).wt with S := S', irrS := hirr } := (A.au.iso _ _ _ _ _).2 ⟨⟨LinearEquiv.refl _ _, fun _ _ => rfl⟩, hP⟩`. Establish `hP' : P ∈ {P | ∃ Sig, (∀ w, isoLoc X.nd Y.naut Sig w = D.ntypes.locPar σ' w) ∧ IsBCV X.nd Y.naut i P (twistIso X.nd Y.naut (Sig ++ [muPart X.nd Y.naut i]) Y.naut.etaTinv)}` using `(hc P).2 (hcl ▸ hg)`. Conclude with `le_iSup₂_of_le (f := fun P _ => Y.naut.typeV i P) P hP' ht.ge`.
+-/
 theorem iSup_eq_phi (hS : AutSpec A M tup iq Y Cb) (σ' : D.ntypes.Par) (i : X.nd.Loc) :
     (⨆ P ∈ {P | ∃ Sig, (∀ w, isoLoc X.nd Y.naut Sig w = D.ntypes.locPar σ' w) ∧ IsBCV X.nd Y.naut i P (twistIso X.nd Y.naut (Sig ++ [muPart X.nd Y.naut i]) Y.naut.etaTinv)}, Y.naut.typeV i P) =
     Phi X Y A M σ' (Y.muC i) (X.nd.mu i) (X.nd.j i) (X.nd.j_range i).1 (X.nd.j_range i).2 := by
@@ -117,6 +142,11 @@ theorem iSup_eq_phi (hS : AutSpec A M tup iq Y Cb) (σ' : D.ntypes.Par) (i : X.n
 
 end loc2
 
+/- English proof (translation)
+Introduce `D cf jE A low Pq S hL eig θ Bs M C tp _ _ _ _ _ _ big X T Sp Y Cb hS i i' σ' hmu hj`. Rewrite using `[iSup_eq_phi hS σ' i, iSup_eq_phi hS σ' i']`. Establish `hc : Y.muC i = Y.muC i'`. Take `⟨h1, h2⟩` from `X.nd.j_range i`. Establish `e` using `hS.muC i ⟨X.nd.j i - 1, by omega⟩ (by simp only; omega)`.
+
+Establish `e'` using `hS.muC i' ⟨X.nd.j i - 1, by omega⟩ (by simp only; omega)`. Rewrite `e` using `[hmu]`. Conclude with `A.chr.e1.injective (Subtype.ext (e.trans e'.symm))`. Rewrite using `[hc]`. Conclude with `phi_heq X Y A M σ' _ _ _ _ _ hmu hj`.
+-/
 theorem typeV_iSup_indep : ∀ (D : D7) (cf : CharFrame D) (jE : D.host.E →+* Qb) (A : SideA D cf jE) (low : Finset ℕ) (Pq : HeightOneSpectrum (𝓞 (maximalRealSubfield D.host.E)) → PlE D.host) (S : RatDat D.ntw) (hL : ∀ j, ℕ → PlE D.host → Module.End D.what₂.LL (S.WL j)) (eig : ℕ → D.what₂.FT → ℕ → PlE D.host → ↥D.LL0) (θ : ∀ kk : Fin 2, Multiplicative (ZMod (D.host.g kk)) →* (↥D.LL0)ˣ) (Bs : SideB D cf A.row low Pq S hL eig θ) (M : MtFam D) (C : NChoice D) (tp : TupTied D cf C), ChoiceSide D cf M Bs.exp C tp → MtInput D M tp.tup C.Q → (∀ x : D.LL0, star (x : D.what₂.LL) ∈ D.LL0) → (∀ j g, ∃ z : ℤ, eExp D j g = z) → (∀ v, v ∈ placesOver D.host.E D.host.pde ∨ v ∈ placesOver D.host.E D.host.pde' → IsSplitPl D.host v) → GlobalTheory.RowTie.ChebSplit D.nd → ∀ (big : D.what₂.places.Pl → Finset ℂ) (X : LocNd (lay0 D)) (T : LocTw X) (Sp : NdSpec A.pl M C big X T), ∀ (Y : LocAut X) (Cb : LocBC Y), AutSpec A M tp.tup Sp.iq Y Cb → ∀ (i i' : X.nd.Loc) (σ' : D.ntypes.Par), X.nd.mu i = X.nd.mu i' → X.nd.j i = X.nd.j i' → HEq (⨆ P ∈ {P | ∃ Sig, (∀ w, isoLoc X.nd Y.naut Sig w = D.ntypes.locPar σ' w) ∧ IsBCV X.nd Y.naut i P (twistIso X.nd Y.naut (Sig ++ [muPart X.nd Y.naut i]) Y.naut.etaTinv)}, Y.naut.typeV i P) (⨆ P ∈ {P | ∃ Sig, (∀ w, isoLoc X.nd Y.naut Sig w = D.ntypes.locPar σ' w) ∧ IsBCV X.nd Y.naut i' P (twistIso X.nd Y.naut (Sig ++ [muPart X.nd Y.naut i']) Y.naut.etaTinv)}, Y.naut.typeV i' P) := by
   intro D cf jE A low Pq S hL eig θ Bs M C tp _ _ _ _ _ _ big X T Sp Y Cb hS i i' σ' hmu hj
   rw [iSup_eq_phi hS σ' i, iSup_eq_phi hS σ' i']

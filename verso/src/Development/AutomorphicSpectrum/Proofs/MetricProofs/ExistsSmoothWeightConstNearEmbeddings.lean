@@ -17,6 +17,35 @@ namespace GlobalTheory.CompanionTheory.Ar.Giv
 open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.ArakelovGeometry Filter Topology NumberField
 open Set Manifold GroundTheory.Heights₂.Heights.HilbertSamuel GroundTheory.Heights₂.Heights.HilbertSamuel.EmbeddingWeight
 
+/- English proof (translation)
+Introduce `K _ ι _ Ω _ F _ _ _ y Λ hpos huniq`. Set `S : (F →+* ℂ) → Set ((Σ k, ι k) → ℂ)` to `fun sg => {z | z ∈ mcPts (mCoordIdeal y) ∧ LiesOver y sg z}`. Set `C : (F →+* ℂ) → Set ((Σ k, ι k × ι k) → ℂ)` to `fun sg => projPt '' S sg`. Establish `hSmul : ∀ sg z (c : K → ℂ), (∀ k, c k ≠ 0) → z ∈ S sg → (fun p => c p.1 * z p) ∈ S sg` using `fun sg z c hc hz => ⟨mcPts_smul (GroundTheory.Heights₂.Heights.CoordinateConeArithVar.isMultiHomogIdeal y) c hc hz.1, liesOver_smul hz.2 c⟩`. Establish `hC : ∀ sg, IsCompact (C sg)`.
+
+Introduce `sg`. Establish `hK : IsCompact (S sg ∩ {z | ∀ k, blockNormSq z k = 1})`. Use `isCompact_sphere.of_isClosed_subset ?_ inter_subset_right` and prove the remaining obligations. Establish `: S sg ∩ {z | ∀ k, blockNormSq z k = 1} = ({z | ∀ f ∈ mCoordIdeal y, eval z (map (Int.castRingHom ℂ) f) = 0} ∩ {z | LiesOver y sg z}) ∩ {z | ∀ k, blockNormSq z k = 1}`. Use extensionality with `z`.
+
+Simplify using `only [S, mcPts, mem_inter_iff, mem_setOf_eq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨⟨-, h1⟩, h2⟩, h3⟩`. Conclude with `⟨⟨h1, h2⟩, h3⟩`. Introduce and unpack `⟨⟨h1, h2⟩, h3⟩`.
+
+Use `⟨⟨⟨fun k => ?_, h1⟩, h2⟩, h3⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Use `h3 k` as an intermediate fact. Simplify using `[blockNormSq, hcon] at this`.
+
+Rewrite using `[this]`. Conclude with `((isClosed_zeros _).inter (isClosed_liesOver y sg)).inter isCompact_sphere.isClosed`. Establish `heq : C sg = projPt '' (S sg ∩ {z | ∀ k, blockNormSq z k = 1})`. Use `Subset.antisymm ?_ (image_mono inter_subset_left)` and prove the remaining obligations. Introduce and unpack `e ⟨z, hz, rfl⟩`.
+
+Take `⟨c, hc, hc1⟩` from `exists_smul_sphere hz.1.1`. Conclude with `⟨_, ⟨hSmul sg z c hc hz, hc1⟩, projPt_smul c hc z⟩`. Rewrite using `[heq]`. Conclude with `hK.image_of_continuousOn (contDiffOn_projPt.continuousOn.mono fun z hz => hz.1.1.1)`. Establish `hdisj : ∀ sg tg, sg ≠ tg → Disjoint (C sg) (C tg)`.
+
+Introduce `sg tg hne`. Rewrite using `[Set.disjoint_left]`. Introduce and unpack `e ⟨z, ⟨hzP, hzs⟩, rfl⟩ ⟨w, ⟨hwP, hwt⟩, hw⟩`. Take `⟨c, hc, rfl⟩` from `exists_smul_of_projPt_eq hzP.1 hwP.1 hw.symm`. Conclude with `hne ((huniq _ hwP).unique (liesOver_smul hzs c) hwt)`.
+
+Establish `hsep : ∀ sg, ∃ χ : ((Σ k, ι k × ι k) → ℂ) → ℝ, ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) χ ∧ (∀ᶠ e in 𝓝ˢ (⋃ tg ∈ Finset.univ.erase sg, C tg), χ e = 0) ∧ (∀ᶠ e in 𝓝ˢ (C sg), χ e = 1)`. Introduce `sg`. Take `⟨f, h0, h1, -⟩` from `exists_contMDiffMap_zero_one_nhds_of_isClosed 𝓘(ℝ, (Σ k, ι k × ι k) → ℂ) (n := ⊤) (isClosed_biUnion_finset fun tg _ => (hC tg).isClosed) (hC sg).isClosed (Set.disjoint_iUnion₂_left.2 fun tg htg => hdisj tg sg (Finset.ne_of_mem_erase htg))`. Conclude with `⟨f, contMDiff_iff_contDiff.mp f.contMDiff, h0, h1⟩`. Use `choose χ hχs hχ0 hχ1 using hsep`.
+
+Set `g : ((Σ k, ι k × ι k) → ℂ) → ℝ` to `fun e => ∑ sg, Real.log (Λ sg) * χ sg e`. Establish `hg : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) g` using `ContDiff.sum fun sg _ => contDiff_const.mul (hχs sg)`. Establish `hloc : ∀ sg, ∀ e ∈ C sg, ∀ᶠ e' in 𝓝 e, g e' = Real.log (Λ sg)`. Introduce `sg e he`. Establish `: ∀ tg, ∀ᶠ e' in 𝓝 e, χ tg e' = if tg = sg then 1 else 0`.
+
+Introduce `tg`. Distinguish the cases in `htg : tg = sg`. Substitute `htg` using the available equality. Simplify using `using (hχ1 tg).filter_mono (nhds_le_nhdsSet he)`. Simplify using `only [htg, if_false]`.
+
+Conclude with `(hχ0 tg).filter_mono (nhds_le_nhdsSet (Set.mem_iUnion₂.2 ⟨sg, Finset.mem_erase.2 ⟨Ne.symm htg, Finset.mem_univ _⟩, he⟩))`. Use `filter_upwards [Filter.eventually_all.2 this] with e' he'`. Simplify using `only [g, he', mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Set `u : ((Σ k, ι k) → ℂ) → ℝ` to `fun z => g (projPt z)`. Establish `hu_smul : ∀ (c : K → ℂ) z, (∀ k, c k ≠ 0) → (fun z => -u z) (fun p => c p.1 * z p) = (fun z => -u z) z`.
+
+Introduce `c z hc`. Simplify using `only [u, projPt_smul c hc]`. Use `⟨HermLine.ofWeight (fun z => -u z) hu_smul, rfl, ?_, ?_⟩` and prove the remaining obligations. Establish `h1` using `hg.comp_contDiffOn (contDiffOn_projPt (ι := ι))`. Establish `hu` using `h1.neg.neg`.
+
+Conclude with `Real.contDiff_exp.comp_contDiffOn hu`. Introduce `z hz sg hsg`. Establish `hzC : projPt z ∈ C sg` using `⟨z, ⟨hz, hsg⟩, rfl⟩`. Establish `hcont : ContinuousAt projPt z` using `contDiffOn_projPt.continuousOn.continuousAt (isOpen_blockNonzero.mem_nhds hz.1)`. Use `filter_upwards [Filter.Tendsto.eventually hcont (hloc sg _ hzC)] with w hw1`.
+
+Express the relevant statement in the definitionally equal form `Real.exp (-(-u w)) = Λ sg`. Simplify using `only [u, hw1, neg_neg, Real.exp_log (hpos sg)]`.
+-/
 theorem exists_smooth_weight_const_near_embeddings :
     ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Ω : Type) [Field Ω] (F : Type) [Field F]
       [NumberField F] [Algebra F Ω] (y : (Σ k, ι k) → Ω) (Λ : (F →+* ℂ) → ℝ), (∀ sg, 0 < Λ sg) →

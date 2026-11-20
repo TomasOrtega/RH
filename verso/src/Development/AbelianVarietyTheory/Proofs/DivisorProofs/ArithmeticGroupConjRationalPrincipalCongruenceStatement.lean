@@ -16,6 +16,9 @@ open scoped TensorProduct Matrix
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.MsRepsFwd.conj_rat_congr | exact GlobalTheory.MsRepsFwd.conj_rat_congr | (intros; apply GlobalTheory.MsRepsFwd.conj_rat_congr <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.arithmeticGroup_conj_rational_principalCongruence : ∀ (D : D7) (V : Formalism.BasicNotions.TH.HSp D) (Comp : Type) (X : Comp → Data D.host.E V.rank)
     (dict : GA D V → Σ k, Frame (X k).Ψ V.rank) (Kf : Subgroup (GA D V))
     (th : ∀ c, (X c).Ψ → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)) (M : ℕ) (x0 : ∀ c, Frame (X c).Ψ V.rank),

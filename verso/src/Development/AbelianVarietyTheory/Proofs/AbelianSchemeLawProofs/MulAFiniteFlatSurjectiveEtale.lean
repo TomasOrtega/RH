@@ -10,6 +10,11 @@ open scoped CategoryTheory.Obj
 
 namespace GlobalTheory.AbLaw.MulN
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero`. Express the relevant statement in the definitionally equal form `IsMonHom (𝟙 A ^ 0)`. Rewrite using `[pow_zero]`. Conclude with `inferInstanceAs (IsMonHom (toUnit A ≫ η[A]))`.
+
+Consider the case `succ n ih`. Express the relevant statement in the definitionally equal form `IsMonHom (𝟙 A ^ (n + 1))`. Rewrite using `[pow_succ]`. Conclude with `inferInstanceAs (IsMonHom (lift (mulA A n) (𝟙 A) ≫ μ[A]))`.
+-/
 theorem isMonHom_mulA {S : Scheme.{0}} (A : Over S) [GrpObj A] [IsCommMonObj A] (n : ℕ) :
     IsMonHom (mulA A n) := by
   induction n with
@@ -22,6 +27,9 @@ theorem isMonHom_mulA {S : Scheme.{0}} (A : Over S) [GrpObj A] [IsCommMonObj A] 
     rw [pow_succ]
     exact inferInstanceAs (IsMonHom (lift (mulA A n) (𝟙 A) ≫ μ[A]))
 
+/- English proof (translation)
+Use `IsPullback.of_bot (v₂₁ := pullback.snd Y.hom t) (v₂₂ := Y.hom) (h₃₁ := t) ?_ ?_ (IsPullback.of_hasPullback Y.hom t)` and prove the remaining obligations. Establish `h1 : ((Over.pullback t).map f).left ≫ pullback.snd Y.hom t = pullback.snd X.hom t` using `pullback.lift_snd _ _ _`. Rewrite using `[h1, Over.w f]`. Conclude with `IsPullback.of_hasPullback X.hom t`. Conclude with `(pullback.lift_fst _ _ _).symm`.
+-/
 theorem isPullback_baseChange {S T : Scheme.{0}} (t : T ⟶ S) {X Y : Over S} (f : X ⟶ Y) :
     IsPullback (pullback.fst X.hom t) ((Over.pullback t).map f).left f.left
       (pullback.fst Y.hom t) := by
@@ -33,6 +41,15 @@ theorem isPullback_baseChange {S T : Scheme.{0}} (t : T ⟶ S) {X Y : Over S} (f
     exact IsPullback.of_hasPullback X.hom t
   · exact (pullback.lift_fst _ _ _).symm
 
+/- English proof (translation)
+Use `⟨fun y => ?_⟩` and prove the remaining obligations. Set `K` to `AlgebraicClosure (Y.left.residueField y)`. Set `u : Spec (CommRingCat.of K) ⟶ Y.left` to `Spec.map (CommRingCat.ofHom (algebraMap (Y.left.residueField y) K)) ≫ Y.left.fromSpecResidueField y`. Set `t` to `u ≫ Y.hom`. Establish `hs` using `h K t`.
+
+Set `p : Spec (CommRingCat.of K)` to `(⊥ : PrimeSpectrum K)`. Set `v : Spec (CommRingCat.of K) ⟶ pullback Y.hom t` to `pullback.lift u (𝟙 _) (by simp [t])`. Take `⟨x, hx⟩` from `((Over.pullback t).map f).left.surjective (v p)`. Use `⟨pullback.fst X.hom t x, ?_⟩` and prove the remaining obligations. Establish `e` using `(isPullback_baseChange t f).w`.
+
+Establish `e1 : f.left (pullback.fst X.hom t x) = pullback.fst Y.hom t (((Over.pullback t).map f).left x)`. Rewrite using `[← Scheme.Hom.comp_apply, e, Scheme.Hom.comp_apply]`. Rewrite using `[e1, hx, ← Scheme.Hom.comp_apply]`. Establish `: v ≫ pullback.fst Y.hom t = u` using `pullback.lift_fst _ _ _`. Rewrite using `[this]`.
+
+Conclude with `(Scheme.Hom.comp_apply _ _ p).trans (Scheme.fromSpecResidueField_apply y _)`.
+-/
 theorem surjective_of_geomFibres {S : Scheme.{0}} {X Y : Over S} (f : X ⟶ Y)
     (h : ∀ (K : Type) [Field K] [IsAlgClosed K] (t : Spec (CommRingCat.of K) ⟶ S),
       Surjective ((Over.pullback t).map f).left) : Surjective f.left := by
@@ -56,6 +73,13 @@ theorem surjective_of_geomFibres {S : Scheme.{0}} {X Y : Over S} (f : X ⟶ Y)
   rw [this]
   exact (Scheme.Hom.comp_apply _ _ p).trans (Scheme.fromSpecResidueField_apply y _)
 
+/- English proof (translation)
+Introduce `hfin hK hfib hunr S _ P n hn`. Establish `hc` using `P.isAb.comm`. Establish `hsm` using `P.isAb.smooth`. Establish `hf` using `hfin S P n hn`. Establish `hm` using `isMonHom_mulA P.A n`.
+
+Establish `hgeo : ∀ (K : Type) [Field K] [IsAlgClosed K] (t : Spec (CommRingCat.of K) ⟶ S), Flat ((Over.pullback t).map (mulA P.A n)).left ∧ Surjective ((Over.pullback t).map (mulA P.A n)).left` using `fun K _ _ t => hK K _ (TLinPf.isAb_pullback t P.A P.isAb) _ inferInstance (MorphismProperty.of_isPullback (P := @IsFinite) (isPullback_baseChange t _) hf)`. Establish `hflat : Flat (mulA P.A n).left` using `hfib S _ _ _ inferInstance inferInstance hf fun K _ _ t => (hgeo K t).1`. Use `⟨hf, hflat, surjective_of_geomFibres _ fun K _ _ t => (hgeo K t).2, fun hu => ?_⟩` and prove the remaining obligations. Use `hunr S P.A n hu` as an intermediate fact. Establish `: IsLocallyNoetherian P.A.left` using `LocallyOfFiniteType.isLocallyNoetherian P.A.hom`.
+
+Conclude with `Etale.of_formallyUnramified_of_flat _`.
+-/
 theorem mulA_finite_flat_surjective_etale :
     (∀ (S : Scheme.{0}) (P : PolAV S) (n : ℕ), 1 ≤ n → IsFinite (mulA P.A n).left) → (∀ (K : Type) [Field K] [IsAlgClosed K] (A : Over (Spec (CommRingCat.of K))) [GrpObj A], IsAbelianScheme A → ∀ f : A ⟶ A, IsMonHom f → IsFinite f.left → Flat f.left ∧ Surjective f.left) → (∀ (S : Scheme.{0}) [IsLocallyNoetherian S] (X Y : Over S) (f : X ⟶ Y), Flat X.hom → LocallyOfFiniteType Y.hom → IsFinite f.left → (∀ (K : Type) [Field K] [IsAlgClosed K] (t : Spec (CommRingCat.of K) ⟶ S), Flat ((Over.pullback t).map f).left) → Flat f.left) → (∀ (S : Scheme.{0}) (G : Over S) [GrpObj G] [IsCommMonObj G] (n : ℕ), IsUnit (n : Γ(S, ⊤)) → FormallyUnramified (mulA G n).left) → ∀ (S : Scheme.{0}) [IsLocallyNoetherian S] (P : PolAV S) (n : ℕ), 1 ≤ n → IsFinite (mulA P.A n).left ∧ Flat (mulA P.A n).left ∧ Surjective (mulA P.A n).left ∧ (IsUnit (n : Γ(S, ⊤)) → Etale (mulA P.A n).left) := by
   intro hfin hK hfib hunr S _ P n hn

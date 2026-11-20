@@ -2,6 +2,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws GlobalTheory.CuspRep GlobalTheory.GalOfCusp
 
+/- English proof (translation)
+Establish `e : (x * y ^ n) ^ 2 * z ^ (-(2 * a + n * b)) = (x * z ^ (-a)) ^ 2 * (y ^ 2 * z ^ (-b)) ^ n`. Simplify using `only [mul_pow, ← zpow_natCast, ← zpow_mul, mul_zpow]`. Rewrite using `[show -(2 * a + (n:ℤ) * b) = -a * 2 + -b * n by ring, zpow_add]`. Use `push_cast`. Rewrite using `[mul_comm (n:ℤ) 2]`.
+
+The two sides agree by associativity and commutativity. Rewrite using `[e, mul_pow, ← pow_mul, ← pow_mul, mul_comm 2 k, mul_comm n k, pow_mul, pow_mul, h1, h2, one_pow, one_pow, one_mul]`.
+-/
 private theorem aux {M : Type} [CommGroup M] (x y z : M) (a b : ℤ) (k n : ℕ) (h1 : (x * z ^ (-a)) ^ k = 1)
     (h2 : (y ^ 2 * z ^ (-b)) ^ k = 1) : ((x * y ^ n) ^ 2 * z ^ (-(2 * a + n * b))) ^ k = 1 := by
   have e : (x * y ^ n) ^ 2 * z ^ (-(2 * a + n * b)) = (x * z ^ (-a)) ^ 2 * (y ^ 2 * z ^ (-b)) ^ n := by
@@ -13,6 +18,13 @@ private theorem aux {M : Type} [CommGroup M] (x y z : M) (a b : ℤ) (k n : ℕ)
   rw [e, mul_pow, ← pow_mul, ← pow_mul, mul_comm 2 k, mul_comm n k, pow_mul, pow_mul, h1, h2, one_pow, one_pow,
     one_mul]
 
+/- English proof (translation)
+Introduce `Ω _ _ _ l _ c D T c' h K n A hA`. Take `⟨a, b, k, hk, hb, hg⟩` from `K.cyc A hA`. Use `⟨2 * a + n * b, k, hk, ?_, fun g hgA => ?_⟩` and prove the remaining obligations. Take `⟨m, rfl⟩` from `hb`. Conclude with `⟨a + n * m + n, by ring⟩`.
+
+Take `⟨h1, h2⟩` from `hg g hgA`. Establish `hc : cycBar T.L Ω l g = Units.map (algebraMap c'.O (PadicAlgCl l) : c'.O →* PadicAlgCl l) (chiO T.L Ω l c'.O g)`. Use `ext`. Express the relevant statement in the definitionally equal form `algebraMap ℚ_[l] (PadicAlgCl l) (PadicInt.Coe.ringHom ((cycZ T.L Ω l g : ℤ_[l]ˣ) : ℤ_[l])) = algebraMap c'.O (PadicAlgCl l) (algebraMap ℤ_[l] c'.O ((cycZ T.L Ω l g : ℤ_[l]ˣ) : ℤ_[l]))`. Rewrite using `[← IsScalarTower.algebraMap_apply ℤ_[l] c'.O (PadicAlgCl l), IsScalarTower.algebraMap_apply ℤ_[l] ℚ_[l] (PadicAlgCl l)]`.
+
+Both sides reduce to the same expression. Establish `ht : K.twc n g = Units.map (algebraMap c'.O (PadicAlgCl l) : c'.O →* PadicAlgCl l) (K.κ g * K.β g ^ n)` using `rfl`. Rewrite using `[hc, ht, ← map_pow, ← map_zpow, ← map_mul, ← map_pow, aux _ _ _ a b k n h1 h2, map_one]`.
+-/
 theorem UpperTheory.V.Ws.Pt.twWts :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} {D : Raw Ω c} {T : Tower D} {c' : Coef l} {h : c.O ≤ c'.O} (K : Link T c' h) (n : ℕ) (A : ValuationSubring Ω), A.valuation (l : Ω) < 1 → ∃ (e : ℤ) (k : ℕ), 0 < k ∧ Even (e + n) ∧ ∀ g ∈ Ine (F := T.L) A, (K.twc n g ^ 2 * cycBar T.L Ω l g ^ (-e)) ^ k = 1 := by
   intro Ω _ _ _ l _ c D T c' h K n A hA

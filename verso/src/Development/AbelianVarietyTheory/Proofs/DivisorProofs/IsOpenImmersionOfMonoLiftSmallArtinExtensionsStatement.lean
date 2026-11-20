@@ -9,5 +9,8 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ArtinOpen.isOpenImmersion_of_lift | exact GlobalTheory.ArtinOpen.isOpenImmersion_of_lift | (intros; apply GlobalTheory.ArtinOpen.isOpenImmersion_of_lift <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.isOpenImmersion_of_mono_lift_smallArtinExtensions : ∀ {X Y : Scheme.{0}} (f : X ⟶ Y) [IsLocallyNoetherian Y] [LocallyOfFiniteType f] [Mono f], (∀ (B : Type) [CommRing B] [IsLocalRing B] [IsArtinianRing B] (I : Ideal B), I ≤ IsLocalRing.maximalIdeal B → IsLocalRing.maximalIdeal B * I = ⊥ → ∀ (a : Spec (CommRingCat.of (B ⧸ I)) ⟶ X) (b : Spec (CommRingCat.of B) ⟶ Y), a ≫ f = Spec.map (CommRingCat.ofHom (Ideal.Quotient.mk I)) ≫ b → ∃ l : Spec (CommRingCat.of B) ⟶ X, Spec.map (CommRingCat.ofHom (Ideal.Quotient.mk I)) ≫ l = a ∧ l ≫ f = b) → IsOpenImmersion f := by
   first | exact @GlobalTheory.ArtinOpen.isOpenImmersion_of_lift | exact GlobalTheory.ArtinOpen.isOpenImmersion_of_lift | (intros; apply GlobalTheory.ArtinOpen.isOpenImmersion_of_lift <;> assumption)

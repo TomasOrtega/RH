@@ -8,6 +8,13 @@ open Formalism.FourierDecayAlt Formalism.QuantumDeterminants
 
 noncomputable section
 
+/- English proof (translation)
+Introduce `i hi`. Use `(Module.forall_dual_apply_eq_zero_iff ℂ (a i)).mp fun f => ?_` and prove the remaining obligations. Establish `hp : (∑ j ∈ Finset.range M, Polynomial.C (f (a j)) * Polynomial.X ^ j) = 0`. Apply `Polynomial.eq_zero_of_infinite_isRoot` to reduce the goal to its premises. Use `Set.Infinite.mono ?_ hS` and prove the remaining obligations.
+
+Introduce `s hs`. Establish `hfs` using `congrArg f (h s hs)`. Simplify using `only [map_sum, map_smul, map_zero, smul_eq_mul] at hfs`. Simplify using `only [Set.mem_setOf_eq, Polynomial.IsRoot.def, Polynomial.eval_finset_sum, Polynomial.eval_mul, Polynomial.eval_C, Polynomial.eval_pow, Polynomial.eval_X]`. Rewrite using `[← hfs]`.
+
+Conclude with `Finset.sum_congr rfl fun j _ => mul_comm _ _`. Establish `hc` using `congrArg (fun q => Polynomial.coeff q i) hp`. Simplify `hc` using `[Polynomial.finset_sum_coeff, Polynomial.coeff_C_mul_X_pow, Finset.mem_range.mpr hi]`.
+-/
 theorem nf_coef_unique {E : Type*} [AddCommGroup E] [Module ℂ E] (M : ℕ) (a : ℕ → E) (S : Set ℂ)
     (hS : S.Infinite) (h : ∀ s ∈ S, ∑ i ∈ Finset.range M, s ^ i • a i = 0) : ∀ i < M, a i = 0 := by
   intro i hi
@@ -30,6 +37,13 @@ section scoef
 variable {P : M.Par} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]
 
+/- English proof (translation)
+Establish `h1 : ∑ i ∈ Finset.range (Q + 1), x ^ i • (if h : i < Q + 1 then u ⟨i, h⟩ else 0) = ∑ q : Fin (Q + 1), x ^ (q : ℕ) • u q`. Rewrite using `[Finset.sum_range]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Simplify using `[q.isLt]`. Rewrite using `[← h1]`.
+
+Use `symm`. Apply `Finset.sum_subset` to reduce the goal to its premises. Introduce `i hi`. Simplify using `only [Finset.mem_range] at hi ⊢`. Use linear arithmetic over natural numbers and integers.
+
+Introduce `i _ hi`. Establish `hi' : ¬ i < Q + 1` using `by simpa using hi`. Rewrite using `[dif_neg hi', smul_zero]`.
+-/
 theorem nf_sum_pad {E : Type*} [AddCommGroup E] [Module ℂ E] {Q M : ℕ} (hQ : Q + 1 ≤ M) (x : ℂ)
     (u : Fin (Q + 1) → E) :
     ∑ i ∈ Finset.range M, x ^ i • (if h : i < Q + 1 then u ⟨i, h⟩ else 0) = ∑ q : Fin (Q + 1), x ^ (q : ℕ) • u q := by
@@ -48,6 +62,17 @@ theorem nf_sum_pad {E : Type*} [AddCommGroup E] [Module ℂ E] {Q M : ℕ} (hQ :
     have hi' : ¬ i < Q + 1 := by simpa using hi
     rw [dif_neg hi', smul_zero]
 
+/- English proof (translation)
+Establish `hq1 : Q + 1 ≤ max Q Q' + 1` using `Nat.succ_le_succ (le_max_left _ _)`. Establish `hq2 : Q' + 1 ≤ max Q Q' + 1` using `Nat.succ_le_succ (le_max_right _ _)`. Establish `key : ∀ s : ℝ, ∑ q : Fin (Q + 1), (s : ℂ) ^ (q : ℕ) • B.opApply (L q) F g = ∑ q : Fin (Q' + 1), (s : ℂ) ^ (q : ℕ) • B.opApply (L' q) F g`. Introduce `s`. Establish `h1` using `hS s F hF g hg`.
+
+Establish `h2` using `hS' s F hF g hg`. Rewrite `h2` using `[h1]`. Simplify `h2` using `[Complex.ofReal_pow]`. Establish `hz` using `nf_coef_unique (max Q Q' + 1) (fun i => (if h : i < Q + 1 then B.opApply (L ⟨i, h⟩) F g else 0) - (if h : i < Q' + 1 then B.opApply (L' ⟨i, h⟩) F g else 0)) (Set.range (fun s : ℝ => (s : ℂ))) (Set.infinite_range_of_injective Complex.ofReal_injective) ?_ qq (lt_of_lt_of_le qq.isLt …`. Simplify using `only [sub_eq_zero] at hz`.
+
+Rewrite `hz` using `[dif_pos qq.isLt]`. Distinguish the cases in `hq : (qq : ℕ) ≤ Q'`. Rewrite using `[dif_pos hq]`. Rewrite `hz` using `[dif_pos (by omega : (qq : ℕ) < Q' + 1)]`. Conclude with `hz`.
+
+Rewrite using `[dif_neg hq]`. Rewrite `hz` using `[dif_neg (by omega : ¬ (qq : ℕ) < Q' + 1)]`. Conclude with `hz`. Introduce and unpack `_ ⟨s, rfl⟩`. Establish `e1 : ∑ i ∈ Finset.range (max Q Q' + 1), (s : ℂ) ^ i • (if h : i < Q + 1 then B.opApply (L ⟨i, h⟩) F g else 0) = ∑ q : Fin (Q + 1), (s : ℂ) ^ (q : ℕ) • B.opApply (L q) F g` using `nf_sum_pad hq1 (s : ℂ) (fun q => B.opApply (L q) F g)`.
+
+Establish `e2 : ∑ i ∈ Finset.range (max Q Q' + 1), (s : ℂ) ^ i • (if h : i < Q' + 1 then B.opApply (L' ⟨i, h⟩) F g else 0) = ∑ q : Fin (Q' + 1), (s : ℂ) ^ (q : ℕ) • B.opApply (L' q) F g` using `nf_sum_pad hq2 (s : ℂ) (fun q => B.opApply (L' q) F g)`. Simplify using `only [smul_sub, Finset.sum_sub_distrib]`. Rewrite using `[e1, e2, key s, sub_self]`.
+-/
 theorem nf_scoef_unique (p : KB.Pl P Wp Wq) (w : List C.Letter) (e : Wd.Ix (Fin w.length)) {Q Q' : ℕ}
     {L : Fin (Q + 1) → B.DiffOp P.k P.r Wp Wq} {L' : Fin (Q' + 1) → B.DiffOp P.k P.r Wp Wq}
     (hS : IsSCoef p w e Q L) (hS' : IsSCoef p w e Q' L') (F : B.Mat P.k P.r → (Wq →L[ℂ] Wp))
@@ -95,6 +120,11 @@ section extract
 variable {P : M.Par} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Use `show x * deriv (fun x : ℝ => x ^ b) x = (b : ℝ) * x ^ b`. Rewrite using `[(hasDerivAt_pow b x).deriv]`. Break down `b with _ | b` into its components or cases. Simplify using the standard rewrite rules.
+
+Simplify using `only [Nat.add_sub_cancel]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem nf_xD_pow (b : ℕ) : xD (fun x : ℝ => x ^ b) = fun x => (b : ℝ) * x ^ b := by
   funext x
   show x * deriv (fun x : ℝ => x ^ b) x = (b : ℝ) * x ^ b
@@ -105,12 +135,20 @@ theorem nf_xD_pow (b : ℕ) : xD (fun x : ℝ => x ^ b) = fun x => (b : ℝ) * x
     push_cast
     ring
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Use `show x * deriv (fun x => c * φ x) x = c * (x * deriv φ x)`. Rewrite using `[deriv_const_mul_field]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem nf_xD_const_mul (c : ℝ) (φ : ℝ → ℝ) : xD (fun x => c * φ x) = fun x => c * xD φ x := by
   funext x
   show x * deriv (fun x => c * φ x) x = c * (x * deriv φ x)
   rw [deriv_const_mul_field]
   ring
 
+/- English proof (translation)
+Proceed by induction on `q with`. Consider the case `zero => funext x`. Simplify using the standard rewrite rules. Consider the case `succ q ih`. Rewrite using `[Function.iterate_succ_apply', ih]`.
+
+Establish `h1` using `nf_xD_const_mul ((b : ℝ) ^ q) (fun x => x ^ b)`. Rewrite using `[h1, nf_xD_pow]`. Use function extensionality and compare the values at `x`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem nf_xD_iter_pow (b q : ℕ) : xD^[q] (fun x : ℝ => x ^ b) = fun x => (b : ℝ) ^ q * x ^ b := by
   induction q with
   | zero => funext x; simp
@@ -122,6 +160,13 @@ theorem nf_xD_iter_pow (b q : ℕ) : xD^[q] (fun x : ℝ => x ^ b) = fun x => (b
     push_cast
     ring
 
+/- English proof (translation)
+Rewrite using `[Fin.sum_univ_eq_sum_range (fun q => s ^ q * ((Nat.choose j q * p₀ ^ ((j : ℕ) - q) : ℕ) : ℂ)), show (p₀ : ℂ) + s = s + p₀ from add_comm _ _, add_pow]`. Establish `hterm : ∀ m, s ^ m * ((Nat.choose j m * p₀ ^ ((j : ℕ) - m) : ℕ) : ℂ) = s ^ m * (p₀ : ℂ) ^ ((j : ℕ) - m) * (Nat.choose j m : ℂ)`. Introduce `m`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Simplify using `only [hterm]`. Use `symm`. Apply `Finset.sum_subset` to reduce the goal to its premises. Introduce `i hi`. Simplify using `only [Finset.mem_range] at hi ⊢`.
+
+Use linear arithmetic over natural numbers and integers. Introduce `i _ hi`. Establish `hji : (j : ℕ) < i` using `by simpa using hi`. Simplify using `[Nat.choose_eq_zero_of_lt hji]`.
+-/
 private theorem sum_pow_mul_choose_eq_add_pow (Q' p₀ : ℕ) (s : ℂ) (j : Fin (Q' + 1)) :
     ∑ q : Fin (Q' + 1), s ^ (q : ℕ) * ((Nat.choose j q * p₀ ^ ((j : ℕ) - q) : ℕ) : ℂ) =
       ((p₀ : ℂ) + s) ^ (j : ℕ) := by
@@ -142,6 +187,11 @@ private theorem sum_pow_mul_choose_eq_add_pow (Q' p₀ : ℕ) (s : ℂ) (j : Fin
     have hji : (j : ℕ) < i := by simpa using hi
     simp [Nat.choose_eq_zero_of_lt hji]
 
+/- English proof (translation)
+Establish `hS : (Set.range (Nat.cast : ℕ → ℂ)).Infinite` using `Set.infinite_range_of_injective Nat.cast_injective`. Use `nf_coef_unique (Q' + 1) (fun i => if hi : i < Q' + 1 then w ⟨i, hi⟩ else 0) _ hS (fun x hx => by` as an intermediate fact. Take `⟨s, rfl⟩` from `hx`. Rewrite using `[nf_sum_pad le_rfl]`. Conclude with `h s) qq qq.isLt`.
+
+Simplify `this` using `[Nat.lt_succ_iff.mp qq.isLt]`.
+-/
 private theorem coeff_eq_zero_of_sum_pow_smul_eq_zero_nat {E : Type*} [AddCommGroup E] [Module ℂ E] {Q' : ℕ}
     (w : Fin (Q' + 1) → E) (h : ∀ s : ℕ, ∑ q : Fin (Q' + 1), ((s : ℂ) ^ (q : ℕ)) • w q = 0)
     (qq : Fin (Q' + 1)) : w qq = 0 := by
@@ -154,6 +204,25 @@ private theorem coeff_eq_zero_of_sum_pow_smul_eq_zero_nat {E : Type*} [AddCommGr
       exact h s) qq qq.isLt
   simpa [Nat.lt_succ_iff.mp qq.isLt] using this
 
+/- English proof (translation)
+Establish `hfp` using `fpm_id p f p₀`. Rewrite using `[hfp]`. Establish `hthr0 : CcL * ((P.r : ℝ) + 1) ^ 4 * ((w.length : ℝ) * (2 * (P.r : ℝ) + P.k + 1) ^ 2 + (2 * (P.r : ℝ) + P.k + 1) ^ 3) ≤ A₀` using `hthr.trans (sub_le_self _ (Nat.cast_nonneg _))`. Establish `hck : B.CkOn ⊤ (B.GV P.k P.r) (fun g => ((Gf P.k P.r p.T.base.z p.T.base.z' g ^ p₀ : ℝ) : ℂ) • f g)` using `ckOn_Gpow_smul _ _ p₀ hf`. Establish `hcc'` using `inCC_fpm_id p p₀ hcc`.
+
+Rewrite `hcc'` using `[hfp]`. Establish `hG0 : ((TBB.Gp p γ : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast hG.ne'`. Establish `hsum_c : ∀ s : ℕ, ∑ q : Fin (Q' + 1), ((s : ℂ) ^ (q : ℕ)) • (((TBB.Gp p γ ^ p₀ : ℝ) : ℂ) • ∑ j : Fin (Q' + 1), (((Nat.choose j q * p₀ ^ ((j : ℕ) - q) : ℕ) : ℂ)) • p.V (B.opApply (L' j) f) γ) = ((TBB.Gp p γ ^ p₀ : ℝ) : ℂ) • ∑ j : Fin (Q' + 1), (((p₀ : ℂ) + s) ^ (j : ℕ)) • p.V (B.o …`. Introduce `s`. Simplify using `only [Finset.smul_sum, smul_smul]`.
+
+Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← sum_pow_mul_choose_eq_add_pow Q' p₀ (s : ℂ) j, Finset.mul_sum, Finset.sum_smul]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `key : ∀ s : ℕ, ∑ q : Fin (Q' + 1), ((s : ℂ) ^ (q : ℕ)) • (p.V (B.opApply (L' q) (fun g => ((Gf P.k P.r p.T.base.z p.T.base.z' g ^ p₀ : ℝ) : ℂ) • f g)) γ - ((TBB.Gp p γ ^ p₀ : ℝ) : ℂ) • ∑ j : Fin (Q' + 1), (((Nat.choose j q * p₀ ^ ((j : ℕ) - q) : ℕ) : ℂ)) • p.V (B.opApply (L' j) f …`. Introduce `s`. Establish `e1` using `hLe (fun x => x ^ s) (contDiff_id.pow s) _ _ hck hcc' hthr γ hl hG`. Establish `e2` using `hLe (fun x => x ^ (p₀ + s)) (contDiff_id.pow _) f A₀ hf hcc hthr0 γ hl hG`.
+
+Simplify using `only [nf_xD_iter_pow] at e1 e2`. Establish `hH : (fun g => (((Gf P.k P.r p.T.base.z p.T.base.z' g) ^ s : ℝ) : ℂ) • ((Gf P.k P.r p.T.base.z p.T.base.z' g ^ p₀ : ℝ) : ℂ) • f g) = (fun g => (((Gf P.k P.r p.T.base.z p.T.base.z' g) ^ (p₀ + s) : ℝ) : ℂ) • f g)`. Use function extensionality and compare the values at `g`. Rewrite using `[smul_smul, ← Complex.ofReal_mul, ← pow_add, add_comm]`. Rewrite `e1` using `[hH, e2]`.
+
+Simplify using `only [smul_sub, Finset.sum_sub_distrib]`. Rewrite using `[hsum_c s, sub_eq_zero]`. Apply `smul_right_injective _ (pow_ne_zero s hG0)` to reduce the goal to its premises. Simplify using `only [Finset.smul_sum, smul_smul]`. Establish `h3 : ∀ x : Fin (Q' + 1), ((TBB.Gp p γ : ℝ) : ℂ) ^ s * (s : ℂ) ^ (x : ℕ) = (((s : ℝ) ^ (x : ℕ) * TBB.Gp p γ ^ s : ℝ) : ℂ)`.
+
+Introduce `x`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `h4 : ∀ x : Fin (Q' + 1), ((TBB.Gp p γ : ℝ) : ℂ) ^ s * (((TBB.Gp p γ ^ p₀ : ℝ) : ℂ) * ((p₀ : ℂ) + s) ^ (x : ℕ)) = (((((p₀ + s : ℕ) : ℝ)) ^ (x : ℕ) * TBB.Gp p γ ^ (p₀ + s) : ℝ) : ℂ)`. Introduce `x`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [h3, h4]`. Conclude with `e1.symm`. Use `coeff_eq_zero_of_sum_pow_smul_eq_zero_nat _ key qq` as an intermediate fact.
+
+Conclude with `sub_eq_zero.mp this`.
+-/
 theorem nf_vExtract (p : KB.Pl P Wp Wq) (w : List C.Letter) (e : Wd.Ix (Fin w.length)) {Q' : ℕ}
     (L' : Fin (Q' + 1) → B.DiffOp P.k P.r Wp Wq) (CcL : ℝ)
     (hLe : ∀ φ : ℝ → ℝ, ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) φ → ∀ (F : B.Mat P.k P.r → (Wq →L[ℂ] Wp)) (A : ℝ),

@@ -22,6 +22,11 @@ open ReciprocityTheory.ChartRestriction.G.TB (colM dAct)
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero`. Establish `h` using `t.act.add 0 0`. Rewrite `h` using `[add_zero]`. Establish `h0 : t.act.act 0 = 1` using `by simpa using h`.
+
+Rewrite using `[Nat.cast_zero, pow_zero, h0, MonObj.comp_one]`. Consider the case `succ n ih => rw [Nat.cast_succ, t.act.add, MonObj.comp_mul, ih, t.act.one, Category.comp_id, pow_succ]`.
+-/
 theorem LevelPoints.comp_act_natCast {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
     {S : Scheme.{0}} (t : SAB H S) {T : Over S} (x : T ⟶ t.G) (n : ℕ) :
     x ≫ t.act.act (n : 𝓞 E) = x ^ n := by
@@ -33,6 +38,13 @@ theorem LevelPoints.comp_act_natCast {E : Type} [Field E] [NumberField E] [IsCMF
     rw [Nat.cast_zero, pow_zero, h0, MonObj.comp_one]
   | succ n ih => rw [Nat.cast_succ, t.act.add, MonObj.comp_mul, ih, t.act.one, Category.comp_id, pow_succ]
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c F _ _ _ yF t ht`. Take `⟨-, I, -, -, hI⟩` from `Xo.univ.geom F yF.x (Spec.preimage (yF.x ≫ Xo.s)).hom (Spec.map_preimage _).symm`. Establish `hM : 0 < l.M` using `lt_of_lt_of_le (by norm_num) l.three_le`. Establish `hpow : t ^ l.M = 1`. Rewrite using `[← LevelPoints.comp_act_natCast]`.
+
+Conclude with `ht _ (LevelPoints.natCast_mem l)`. Take `⟨a, ha⟩` from `(I.onto l.M hM t).1 hpow`. Take `⟨u, hu, v, hv, huv⟩` from `Submodule.mem_sup.mp (l.coprime ▸ Submodule.mem_top : (1 : 𝓞 E) ∈ l.Mb ⊔ l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E))`. Use `⟨v • a, (hI _ (Submodule.smul_mem_smul hv Submodule.mem_top)).trans ?_⟩` and prove the remaining obligations. Establish `h1 : I.ev l.M (u • a) = 1`.
+
+Rewrite using `[I.lin, ha]`. Conclude with `ht u hu`. Establish `h2` using `I.add l.M (u • a) (v • a)`. Rewrite `h2` using `[← add_smul, huv, one_smul, h1, _root_.one_mul]`. Conclude with `h2.symm.trans ha`.
+-/
 theorem exists_levPt_eq_of_killedBy : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), letI := H.starRing; ∀ (F : Type) [Field F] [IsAlgClosed F] [Algebra c.F F] (yF : FrPt Xo c F) (t : ptO Xo yF.x ⟶ Xo.univ.t.G), KilledBy Xo l.Mb t → ∃ a : Dw.La, levPt Xo yF.x a = t := by
   intro E _ _ _ H Dw l Xo c F _ _ _ yF t ht
   obtain ⟨-, I, -, -, hI⟩ := Xo.univ.geom F yF.x (Spec.preimage (yF.x ≫ Xo.s)).hom (Spec.map_preimage _).symm

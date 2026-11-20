@@ -11,6 +11,39 @@ open MeasureTheory Topology Matrix
 
 namespace GlobalTheory.InvFormBdd
 
+/- English proof (translation)
+Set `A : Set (Matrix ι ι ℂ)` to `Set.pi Set.univ fun _ => Set.pi Set.univ fun _ => Metric.closedBall (0:ℂ) C`. Establish `hA : IsCompact A` using `isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => isCompact_closedBall _ _`. Set `S : Set (Matrix.GeneralLinearGroup ι ℂ)` to `Units.embedProduct (Matrix ι ι ℂ) ⁻¹' (A ×ˢ (MulOpposite.op '' A))`. Establish `hS : IsCompact S` using `Units.isClosedEmbedding_embedProduct.isCompact_preimage (hA.prod (hA.image MulOpposite.continuous_op))`. Establish `hHS : (H : Set (Matrix.GeneralLinearGroup ι ℂ)) ⊆ S`.
+
+Introduce `h hh`. Use `⟨fun i _ j _ => ?_, ⟨(h⁻¹ : Matrix.GeneralLinearGroup ι ℂ).val, fun i _ j _ => ?_, rfl⟩⟩` and prove the remaining obligations. Simplify using `using hC h hh i j`. Simplify using `using hC _ (H.inv_mem hh) i j`. Set `K` to `H.topologicalClosure`.
+
+Establish `hK : IsCompact (K : Set (Matrix.GeneralLinearGroup ι ℂ))` using `hS.of_isClosed_subset H.isClosed_topologicalClosure (closure_minimal hHS hS.isClosed)`. Use `haveI : CompactSpace K := isCompact_iff_compactSpace.mp hK`. Use `letI : MeasurableSpace K := borel K`. Use `haveI : BorelSpace K := ⟨rfl⟩`. Set `μ : Measure K` to `Measure.haar`.
+
+Set `N : K → Matrix ι ι ℂ` to `fun k => ((k⁻¹ : K) : Matrix.GeneralLinearGroup ι ℂ).val`. Establish `hN : Continuous N` using `Units.continuous_val.comp (continuous_subtype_val.comp continuous_inv)`. Set `φ : K → (ι → ℂ) → (ι → ℂ) → ℂ` to `fun k x y => star (N k *ᵥ x) ⬝ᵥ (N k *ᵥ y)`. Establish `hφc : ∀ x y, Continuous fun k => φ k x y`. Introduce `x y`.
+
+Establish `h1 : Continuous fun k => N k *ᵥ x` using `hN.matrix_mulVec continuous_const`. Establish `h2 : Continuous fun k => N k *ᵥ y` using `hN.matrix_mulVec continuous_const`. Conclude with `(continuous_star.comp h1).dotProduct h2`. Establish `hφi : ∀ x y, Integrable (fun k => φ k x y) μ` using `fun x y => (hφc x y).integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace _)`. Set `β : (ι → ℂ) →ₗ⋆[ℂ] (ι → ℂ) →ₗ[ℂ] ℂ` to `LinearMap.mk₂'ₛₗ (starRingEnd ℂ) (RingHom.id ℂ) (fun x y => ∫ k, φ k x y ∂μ) (fun x x' y => by`.
+
+Rewrite using `[← integral_add (hφi x y) (hφi x' y)]`. Use `congr 1`. Use function extensionality and compare the values at `k`. Simplify using `[φ, Matrix.mulVec_add, add_dotProduct])`. Use the proof step `(fun c x y => by`.
+
+Rewrite using `[smul_eq_mul, ← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `k`. Simplify using `[φ, Matrix.mulVec_smul, smul_dotProduct])`. Use the proof step `(fun x y y' => by`.
+
+Rewrite using `[← integral_add (hφi x y) (hφi x y')]`. Use `congr 1`. Use function extensionality and compare the values at `k`. Simplify using `[φ, Matrix.mulVec_add, dotProduct_add])`. Use the proof step `(fun c x y => by`.
+
+Rewrite using `[RingHom.id_apply, smul_eq_mul, ← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `k`. Simplify using `[φ, Matrix.mulVec_smul, dotProduct_smul])`. Use `⟨β, fun x y => ?_, fun x hx => ?_, fun h hh x y => ?_⟩` and prove the remaining obligations.
+
+Use `show ∫ k, φ k x y ∂μ = starRingEnd ℂ (∫ k, φ k y x ∂μ)`. Rewrite using `[← integral_conj]`. Use `congr 1`. Use function extensionality and compare the values at `k`. Simplify using `[φ, dotProduct, map_sum, mul_comm]`.
+
+Use `show 0 < (∫ k, φ k x x ∂μ).re`. Establish `e` using `integral_re (hφi x x)`. Simplify using `only [RCLike.re_to_complex] at e`. Rewrite using `[← e]`. Establish `hre : ∀ k, (φ k x x).re = ∑ i, ‖(N k *ᵥ x) i‖ ^ 2`.
+
+Introduce `k`. Simplify using `only [φ, dotProduct, Pi.star_apply, Complex.re_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.star_def, Complex.conj_mul']`. Use `norm_cast`.
+
+Use `Continuous.integral_pos_of_hasCompactSupport_nonneg_nonzero (x := 1) (Complex.continuous_re.comp (hφc x x)) (HasCompactSupport.of_compactSpace _) ?_ ?_` and prove the remaining obligations. Introduce `k`. Simplify using `only [Pi.zero_apply, Function.comp_apply, hre]`. Conclude with `Finset.sum_nonneg fun i _ => sq_nonneg _`. Simplify using `only [Function.comp_apply, hre]`.
+
+Establish `hN1 : N 1 = 1` using `by simp [N]`. Rewrite using `[hN1, Matrix.one_mulVec]`. Take `⟨i, hi⟩` from `Function.ne_iff.mp hx`. Use `ne_of_gt (Finset.sum_pos' (fun j _ => sq_nonneg _) ⟨i, Finset.mem_univ _, ?_⟩)` and prove the remaining obligations. Establish `: x i ≠ 0` using `hi`.
+
+Check the signs of the components of the expression. Use `show ∫ k, φ k ((h : Matrix ι ι ℂ) *ᵥ x) ((h : Matrix ι ι ℂ) *ᵥ y) ∂μ = ∫ k, φ k x y ∂μ`. Establish `hhK : h ∈ K` using `H.le_topologicalClosure hh`. Rewrite using `[← integral_mul_left_eq_self (μ := μ) (fun k => φ k x y) (⟨h, hhK⟩⁻¹ : K)]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `k`. Simplify using `only [φ, N, _root_.mul_inv_rev, inv_inv, Subgroup.coe_mul, Units.val_mul, ← Matrix.mulVec_mulVec]`.
+-/
 theorem exists_form_of_bounded {ι : Type} [Fintype ι] [DecidableEq ι]
     (H : Subgroup (Matrix.GeneralLinearGroup ι ℂ)) (C : ℝ)
     (hC : ∀ h ∈ H, ∀ i j, ‖(h : Matrix ι ι ℂ) i j‖ ≤ C) :
@@ -100,6 +133,11 @@ open MeasureTheory Topology Matrix
 
 namespace GlobalTheory.InvFormBdd
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.EvalNormCoefficientBound.norm_eval_le_sum_norm_coeff`. Consider the case `exact _root_.GlobalTheory.EvalNormCoefficientBound.norm_eval_le_sum_norm_coeff`. Consider the case `(apply _root_.GlobalTheory.EvalNormCoefficientBound.norm_eval_le_sum_norm_coeff <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.EvalNormCoefficientBound.norm_eval_le_sum_norm_coeff <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.EvalNormCoefficientBound.norm_eval_le_sum_norm_coeff <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.EvalNormCoefficientBound.norm_eval_le_sum_norm_coeff ..)`.
+-/
 theorem norm_eval_le {σ : Type} (P : MvPolynomial σ ℂ) (v : σ → ℂ) (hv : ∀ s, ‖v s‖ ≤ 1) :
     ‖MvPolynomial.eval v P‖ ≤ ∑ d ∈ P.support, ‖MvPolynomial.coeff d P‖ := by
   first
@@ -110,6 +148,13 @@ theorem norm_eval_le {σ : Type} (P : MvPolynomial σ ℂ) (v : σ → ℂ) (hv 
   | (intros; apply @_root_.GlobalTheory.EvalNormCoefficientBound.norm_eval_le_sum_norm_coeff <;> first | assumption | infer_instance)
   | (intros; exact _root_.GlobalTheory.EvalNormCoefficientBound.norm_eval_le_sum_norm_coeff ..)
 
+/- English proof (translation)
+Establish `h1 : (g : Matrix (Fin n) (Fin n) L) * conjT (IsCMField.complexConj L : L →+* L) (g : Matrix (Fin n) (Fin n) L) = 1` using `hg`. Establish `h2` using `congrFun (congrFun h1 i) i`. Simplify using `only [Matrix.mul_apply, conjT, Matrix.transpose_apply, Matrix.map_apply, Matrix.one_apply_eq] at h2`. Establish `h3` using `congrArg τ h2`. Simplify using `only [map_sum, map_mul, map_one] at h3`.
+
+Establish `h4 : ∑ k, (‖τ ((g : Matrix (Fin n) (Fin n) L) i k)‖ ^ 2 : ℝ) = 1`. Establish `: ∑ k, ((‖τ ((g : Matrix (Fin n) (Fin n) L) i k)‖ ^ 2 : ℝ) : ℂ) = 1`. Rewrite using `[← h3]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[RingHom.coe_coe, IsCMField.complexEmbedding_complexConj, Complex.mul_conj']`.
+
+Use `push_cast`. Both sides reduce to the same expression. Conclude with `this` after adjusting the coercions. Establish `h5 : ‖τ ((g : Matrix (Fin n) (Fin n) L) i j)‖ ^ 2 ≤ 1` using `h4 ▸ Finset.single_le_sum (f := fun k => ‖τ ((g : Matrix (Fin n) (Fin n) L) i k)‖ ^ 2) (fun k _ => sq_nonneg _) (Finset.mem_univ j)`. Use polynomial arithmetic with `[norm_nonneg (τ ((g : Matrix (Fin n) (Fin n) L) i j))]`.
+-/
 theorem norm_emb_le_one {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ}
     (g : Matrix.GeneralLinearGroup (Fin n) L) (hg : g ∈ GQ0 L n) (τ : L →+* ℂ) (i j : Fin n) :
     ‖τ ((g : Matrix (Fin n) (Fin n) L) i j)‖ ≤ 1 := by
@@ -134,6 +179,21 @@ end GlobalTheory.InvFormBdd
 
 open GlobalTheory.InvFormBdd in
 
+/- English proof (translation)
+Introduce `L _ _ _ n a`. Take `⟨_, ι, _, _, b, P, hP⟩` from `a.alg`. Set `f : GQ L n →* Matrix.GeneralLinearGroup ι ℂ` to `(Units.map (LinearMap.toMatrixAlgEquiv b).toMonoidHom).comp a.ρ.asGroupHom`. Establish `hf : ∀ γ, ((f γ : Matrix.GeneralLinearGroup ι ℂ) : Matrix ι ι ℂ) = LinearMap.toMatrix b b (a.ρ γ)`. Introduce `γ`.
+
+Use extensionality with `i j`. Simplify using `[f, LinearMap.toMatrixAlgEquiv_apply, LinearMap.toMatrix_apply, Representation.asGroupHom_apply]`. Set `C : ℝ` to `∑ i, ∑ j, ∑ d ∈ (P i j).support, ‖MvPolynomial.coeff d (P i j)‖`. Establish `hC : ∀ h ∈ f.range, ∀ i j, ‖(h : Matrix ι ι ℂ) i j‖ ≤ C`. Introduce and unpack `_ ⟨γ, rfl⟩ i j`.
+
+Establish `hγ` using `γ.2`. Unfold `GQ at hγ`. Rewrite `hγ` using `[Subgroup.mem_subgroupOf, Subgroup.mem_map]`. Take `⟨g, hg, e⟩` from `hγ`. Establish `e' : (((γ : GAf L n) : GL (Fin n) (AL L)) : Matrix (Fin n) (Fin n) (AL L)) = (g : Matrix (Fin n) (Fin n) L).map (Algebra.TensorProduct.includeLeftRingHom)`.
+
+Rewrite using `[← e]`. Both sides reduce to the same expression. Rewrite using `[hf, hP γ g e']`. Use `(norm_eval_le _ _ fun p => norm_emb_le_one g hg _ _ _).trans ?_` and prove the remaining obligations. Use `le_trans ?_ (Finset.single_le_sum (f := fun i => ∑ j, ∑ d ∈ (P i j).support, ‖MvPolynomial.coeff d (P i j)‖) (fun i _ => Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _) (Finset.mem_univ i))` and prove the remaining obligations.
+
+Conclude with `Finset.single_le_sum (f := fun j => ∑ d ∈ (P i j).support, ‖MvPolynomial.coeff d (P i j)‖) (fun _ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _) (Finset.mem_univ j)`. Take `⟨β₀, h1, h2, h3⟩` from `exists_form_of_bounded f.range C hC`. Set `e : a.W →ₗ[ℂ] (ι → ℂ)` to `b.equivFun.toLinearMap`. Use `⟨(β₀.comp e).compl₂ e, fun x y => ?_, fun x hx => ?_, fun γ x y => ?_⟩` and prove the remaining obligations. Conclude with `h1 _ _`.
+
+Use `h2 _ ?_` and prove the remaining obligations. Simplify `hx` using `[e]`. Use `show β₀ (e (a.ρ γ x)) (e (a.ρ γ y)) = β₀ (e x) (e y)`. Establish `hv : ∀ z, e (a.ρ γ z) = ((f γ : Matrix.GeneralLinearGroup ι ℂ) : Matrix ι ι ℂ) *ᵥ e z`. Introduce `z`.
+
+Rewrite using `[hf]`. Conclude with `(LinearMap.toMatrix_mulVec_repr b b (a.ρ γ) z).symm`. Rewrite using `[hv, hv]`. Conclude with `h3 _ ⟨γ, rfl⟩ _ _`.
+-/
 theorem GlobalTheory.InvFormBdd.exists_isInvForm : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (a : NG.AlgWt L n),
     ∃ β, IsInvForm a β := by
   intro L _ _ _ n a

@@ -6,6 +6,23 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 open scoped Matrix TensorProduct Classical
 namespace GlobalTheory.SchrCharPure
 
+/- English proof (translation)
+Introduce `F _ _ ψ hψ κ _ a ha b hb f f' hf'`. Use function extensionality and compare the values at `x`. Simplify using `only [schr, pureA, add_zero, zero_dotProduct, mul_zero]`. Rewrite using `[hf']`. Distinguish the cases in `hz : (fun i => (x i).2) ∈ GlobalTheory.EvAdm.scaledInt F κ a`.
+
+Rewrite using `[Set.indicator_of_mem (s := (GlobalTheory.EvAdm.scaledInt F κ a : Set (κ → FiniteAdeleRing (𝓞 F) F))) hz] set u : AF F := x ⬝ᵥ fun i => algebraMap F (AF F) (b i) with hu`. Establish `hsplit : u = (show AF F from (u.1, 0)) + (show AF F from (0, u.2))` using `by show u = ((u.1 + 0, 0 + u.2) : InfiniteAdeleRing F × FiniteAdeleRing (𝓞 F) F)`. Rewrite using `[add_zero, zero_add]`. Both sides reduce to the same expression. Establish `hu2 : u.2 = ∑ i, (x i).2 * algebraMap F (FiniteAdeleRing (𝓞 F) F) (b i)`.
+
+Establish `e : u.2 = (RingHom.snd (InfiniteAdeleRing F) (FiniteAdeleRing (𝓞 F) F)) u` using `rfl`. Rewrite using `[e, hu, dotProduct]`. Conclude with `(map_sum (RingHom.snd (InfiniteAdeleRing F) (FiniteAdeleRing (𝓞 F) F)) (fun i => x i * algebraMap F (AF F) (b i)) Finset.univ).trans (Finset.sum_congr rfl fun i _ => rfl)`. Establish `hu1 : u.1 = ∑ i, (x i).1 * algebraMap F (InfiniteAdeleRing F) (b i)`. Establish `e : u.1 = (RingHom.fst (InfiniteAdeleRing F) (FiniteAdeleRing (𝓞 F) F)) u` using `rfl`.
+
+Rewrite using `[e, hu, dotProduct]`. Conclude with `(map_sum (RingHom.fst (InfiniteAdeleRing F) (FiniteAdeleRing (𝓞 F) F)) (fun i => x i * algebraMap F (AF F) (b i)) Finset.univ).trans (Finset.sum_congr rfl fun i _ => rfl)`. Establish `hfin : ψ (show AF F from (0, u.2)) = 1`. Use `GlobalTheory.T.scaled_lattice_character_trivial F ψ hψ κ a ha b hb _ hz` as an intermediate fact. Rewrite `this` using `[← hu2]`.
+
+Conclude with `this`. Establish `hAt : At (evI F) (show AF F from (u.1, 0))`. Introduce `w hw`. Establish `h1 : w.1 = 0`. Establish `: InfiniteAdeleRing.ringEquiv_mixedSpace F w.1 = 0` using `hw`.
+
+Conclude with `(map_eq_zero_iff _ (InfiniteAdeleRing.ringEquiv_mixedSpace F).injective).mp this`. Use `show ((w.1 * u.1, w.2 * 0) : InfiniteAdeleRing F × FiniteAdeleRing (𝓞 F) F) = (0, 0)`. Rewrite using `[h1, zero_mul, mul_zero]`. Establish `hinf` using `hψ.2.2 _ hAt`. Establish `hev : evI F (show AF F from (u.1, 0)) = ∑ i, InfiniteAdeleRing.ringEquiv_mixedSpace F (x i).1 * mixedEmbedding F (b i)` using `by show InfiniteAdeleRing.ringEquiv_mixedSpace F u.1 = _`.
+
+Rewrite using `[hu1, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[InfiniteAdeleRing.mixedEmbedding_eq_algebraMap_comp, map_mul]`. Rewrite using `[hsplit, AddChar.map_add_eq_mul, hfin, hinf, hev]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[Set.indicator_of_notMem (s := (GlobalTheory.EvAdm.scaledInt F κ a : Set (κ → FiniteAdeleRing (𝓞 F) F))) hz]`. Simplify using the standard rewrite rules.
+-/
 theorem main : ∀ (F : Type) [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ), IsStd ψ → ∀ (κ : Type) [Fintype κ] (a : F), a ≠ 0 →
     ∀ b : κ → F, (∀ ξ : κ → F, (fun i => algebraMap F (FiniteAdeleRing (𝓞 F) F) (ξ i)) ∈ GlobalTheory.EvAdm.scaledInt F κ a →
         ∃ k : ℤ, Algebra.trace ℚ F (∑ i, ξ i * b i) = k) →

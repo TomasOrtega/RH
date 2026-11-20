@@ -31,6 +31,33 @@ namespace PositivityTheory.Rg.Sw.Glob.RhoH
 set_option maxHeartbeats 2000000
 set_option synthInstance.maxHeartbeats 400000
 
+/- English proof (translation)
+Introduce `D n V ψ hψ χ hχ hr θ hθ μ 𝓕 hμ ω hω l hl s hs Φ hΦ Λ`. Set `A : HSp D` to `Formalism.BasicNotions.Examples₂.posSpace (E := D.host.E) Formalism.BasicNotions.Examples₂.star_isIntegral n`. Take `⟨ψ₀, μ', lam, κ, omh, hstd, hsk, hlam, hψeq, hchart, hdat, htr⟩` from `GlobalTheory.T.exists_weilDatum_doubled_of_schrodingerFormulas D A V ψ hψ χ hχ hr θ hθ μ 𝓕 hμ ω hω`. Take `⟨lam', hlam', -, l', hl', habs⟩` from `GlobalTheory.StdUnn.shift_char_realPar D ψ₀ hstd θ hθ μ' hsk`. Establish `hll : lam' = lam` using `(algebraMap D.host.F D.host.E).injective (hlam'.trans hlam.symm)`.
+
+Substitute `hll` using the available equality. Establish `hl'' : HasRealPar ψ θ l'` using `hψeq ▸ hl'`. Establish `hleq : l = l'` using `GlobalTheory.T.archimedean_parameters_addChar_unique D ψ θ hθ l l' hl hl''`. Substitute `hleq` using the available equality. Take `⟨hschS, hsurj, -⟩` from `GlobalTheory.T.schrodingerTheta_eq_schwartzBruhat D ψ₀ hstd θ hθ A V μ 𝓕 hμ`.
+
+Take `⟨f, hf, hfΦ⟩` from `hsurj Φ.1 Φ.2`. Take `⟨s', hstd', hcomm⟩` from `GlobalTheory.T.exists_standardCartanInvolution_commute_compact D A μ' hsk κ hchart θ hθ`. Establish `hfock : IsFockVec ψ₀ θ (dblSp A) V s' s f` using `GlobalTheory.T.isFockVector_of_schrodinger_mem_fockSpace D ψ₀ hstd θ hθ A V μ 𝓕 hμ μ' hsk s' s hstd' hs l habs f hf (hfΦ ▸ hΦ)`. Establish `hcont` using `GlobalTheory.StdUnn.chart_continuous D A μ' hsk κ hchart`. Set `K' : Subgroup (GA D (dblSp A))` to `(K D A.rank).comap κ.toMonoidHom`.
+
+Establish `hK' : IsCompact (K' : Set (GA D (dblSp A)))`. Establish `h1 : (K' : Set (GA D (dblSp A))) = κ.symm '' (K D A.rank : Set (G D A.rank))`. Use extensionality with `g`. Simplify using `only [K', Subgroup.coe_comap, Set.mem_preimage, SetLike.mem_coe, MulEquiv.coe_toMonoidHom]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hg`. Conclude with `⟨κ g, hg, κ.symm_apply_apply g⟩`. Introduce and unpack `⟨k, hk, rfl⟩`. Simplify using `using hk`. Rewrite using `[h1]`.
+
+Conclude with `(GlobalTheory.StdUnn.HeightExists.isCompact_K).image hcont.2`. Establish `hkf : GlobalTheory.IndefiniteRowSideFullHecke.SphericalZero.IsKFinVec omh K' f` using `GlobalTheory.Core.Rk.IP.isKFinVec_of_isFockVec D ψ₀ θ (dblSp A) V 1 χ⁻¹ omh s' s hdat hθ (GlobalTheory.CartStd.isCartanInv_stdInv D A μ' hsk s' hstd') hs K' hK' (fun k hk τ => hcomm k hk τ) f hfock`. Set `Vf : Submodule ℂ (WO (dblSp A) V → ℂ)` to `Submodule.span ℂ {g | ∃ k ∈ K', g = omh (k, 1) f}`. Establish `: FiniteDimensional ℂ Vf` using `hkf`. Establish `hVth : ∀ v ∈ Vf, IsThetaFunO ψ₀ (dblSp A) V v`.
+
+Introduce `v hv`. Establish `hle : Vf ≤ Formalism.IndefR.Eqv.thetaSubO ψ₀ (dblSp A) V`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨k, -, rfl⟩`. Conclude with `hdat.om_pres _ f hf`.
+
+Conclude with `hle hv`. Set `Sv : Vf →ₗ[ℂ] schwartzA θ V.rank n` to `{ toFun := fun v => ⟨sch ψ₀ A V μ 𝓕 v.1, hschS v.1 (hVth v.1 v.2)⟩ map_add' := fun v w => Subtype.ext (GlobalTheory.StdUnn.sch_linear D ψ₀ hstd A V μ 𝓕 hμ v.1 w.1 (hVth v.1 v.2) (hVth w.1 w.2) 1).2.2.1 map_smul' := fun c v => Subtype.ext (GlobalTheory.StdUnn.sch_linear D ψ₀ hstd …`. Establish `hΛc : Continuous (Λ ∘ₗ Sv)` using `LinearMap.continuous_of_finiteDimensional _`. Establish `hmemK : ∀ g : G D A.rank, g ∈ K D A.rank → κ.symm g ∈ K'`. Introduce `g hg`.
+
+Use `show κ (κ.symm g) ∈ K D A.rank`. Rewrite using `[κ.apply_symm_apply]`. Conclude with `hg`. Set `o : Set.Elem (((K D n : Subgroup (G D n)) : Set (G D n))) → Vf` to `fun g => ⟨omh (κ.symm g.1, 1) f, Submodule.subset_span ⟨κ.symm g.1, hmemK g.1 g.2, rfl⟩⟩`. Establish `hκs : Continuous (fun g : G D n => κ.symm g)` using `hcont.2`.
+
+Establish `hval : Continuous (fun g : Set.Elem (((K D n : Subgroup (G D n)) : Set (G D n))) => (g.1 : G D n))` using `continuous_subtype_val`. Establish `ho : Continuous o`. Use `Continuous.subtype_mk ?_ _` and prove the remaining obligations. Use `continuous_pi fun w => ?_` and prove the remaining obligations. Conclude with `(hdat.om_cont f hf w).comp ((hκs.comp hval).prodMk continuous_const)`.
+
+Establish `heq : ∀ g : Set.Elem (((K D n : Subgroup (G D n)) : Set (G D n))), Λ (ω g.1 Φ) = (Λ ∘ₗ Sv) (o g)`. Introduce `g`. Simplify using `only [LinearMap.coe_comp, Function.comp_apply]`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Use `htr (κ.symm g.1) f hf Φ hfΦ.symm` as an intermediate fact. Rewrite `this` using `[show κ (κ.symm g.1) = g.1 from κ.apply_symm_apply g.1]`. Conclude with `this`. Rewrite using `[continuousOn_iff_continuous_domRestrict]`. Establish `: (Set.domRestrict (K D n : Set (G D n)) fun g => Λ (ω g Φ)) = (Λ ∘ₗ Sv) ∘ o` using `funext heq`.
+
+Rewrite using `[this]`. Conclude with `hΛc.comp ho`.
+-/
 theorem orbit_cont : ∀ (D : D7) (n : ℕ) (V : HSp D) (ψ : AddChar (AF D.host.F) ℂ), IsCharAF D.host.F ψ →
     ∀ χ : (AE D)ˣ →* Circle, IsHeckeChar D χ → ResEta D χ V.rank → ∀ θ : InfFam D, IsInfFam θ →
     ∀ (μ : Measure (Mx D V.rank n)) (𝓕 : Set (Mx D V.rank n)), IsCovolOne (ratMx D V.rank n) μ 𝓕 →

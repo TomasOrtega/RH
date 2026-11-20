@@ -16,6 +16,19 @@ noncomputable section
 
 namespace GlobalTheory.WeakClosed
 
+/- English proof (translation)
+Set `Φ : LetA O n →+ M` to `{ toFun := fun a => inc (io a) • y map_zero' := by simp map_add' := fun a c => by simp [add_smul] }`. Use `GlobalTheory.T.continuous_of_tail_small_of_monomial_continuous Φ ?_ ?_` and prove the remaining obligations. Introduce `U hU`. Take `⟨k, hk⟩` from `hsmall U hU`. Use `⟨k, fun r => ?_⟩` and prove the remaining obligations.
+
+Establish `hΦ : Φ (letπ ^ k * r) = inc (πA ^ k * io r) • y` using `by show inc (io (letπ ^ k * r)) • y = _`. Rewrite using `[map_mul, map_pow, hπ]`. Rewrite using `[hΦ]`. Conclude with `hk _`. Introduce `j`.
+
+Set `f : (ZMod n → O) →ₗ[O] M` to `{ toFun := fun c => inc (io (fun i => PowerSeries.C (c i))) • (inc (io letπ) ^ j • y) map_add' := fun c c' => by`. Establish `: (fun i => PowerSeries.C ((c + c') i)) = (fun i => PowerSeries.C (c i)) + fun i => PowerSeries.C (c' i)`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Simplify using `only [this, map_add, add_smul]`.
+
+Use the proof step `map_smul' := fun o c => by`. Establish `: (fun i => PowerSeries.C ((o • c) i)) = o • (fun i => PowerSeries.C (c i))`. Use function extensionality and compare the values at `i`. Simplify using `[PowerSeries.smul_eq_C_mul, map_mul]`. Simplify using `only [this, map_smul, smul_assoc, RingHom.id_apply] }`.
+
+Use `(hlin f).congr fun c => ?_` and prove the remaining obligations. Establish `hc : (fun i => PowerSeries.C (c i) * PowerSeries.X ^ j : LetA O n) = (fun i => PowerSeries.C (c i)) * letπ ^ j`. Use function extensionality and compare the values at `i`. Simplify using `[letπ]`. Use `show inc (io (fun i => PowerSeries.C (c i))) • (inc (io letπ) ^ j • y) = inc (io (fun i => PowerSeries.C (c i) * PowerSeries.X ^ j)) • y`.
+
+Rewrite using `[hc, map_mul, map_mul, mul_smul, map_pow, map_pow]`.
+-/
 theorem continuous_io_smul_of {O RA RW M : Type} [CommRing O] [TopologicalSpace O] [CommRing RA]
     [Algebra O RA] [CommRing RW] [Algebra O RW] [AddCommGroup M] [Module RW M] [Module O M]
     [IsScalarTower O RW M] [TopologicalSpace M] [IsTopologicalAddGroup M] {n : ℕ}
@@ -60,6 +73,11 @@ end GlobalTheory.WeakClosed
 
 namespace GlobalTheory.WeakClosed
 
+/- English proof (translation)
+Use `letI := cbValued l`. Use `letI := zlMod T`. Use `haveI := zlTower T`. Use `letI : TopologicalSpace (WCb l) := wTop l`. Use `letI : TopologicalSpace (TW (RW LL) T) := twTop T b`.
+
+Use `haveI : IsTopologicalRing (Cb l) := inferInstance`. Use `haveI : IsTopologicalRing (WCb l) := GlobalTheory.WeakTop.isTopologicalRing_witt`. Conclude with `Topology.IsInducing.topologicalAddGroup (GlobalTheory.WeakTop.coords (WCb l) ↥(OL LL) b) ⟨rfl⟩`.
+-/
 theorem isTopologicalAddGroup_twTop {l : ℕ} [Fact l.Prime] {K LL : FinExt l} (T : Lt K LL) {d : ℕ}
     (b : LatB T d) : letI := twTop T b; IsTopologicalAddGroup (TW (RW LL) T) := by
   letI := cbValued l
@@ -71,6 +89,9 @@ theorem isTopologicalAddGroup_twTop {l : ℕ} [Fact l.Prime] {K LL : FinExt l} (
   haveI : IsTopologicalRing (WCb l) := GlobalTheory.WeakTop.isTopologicalRing_witt
   exact Topology.IsInducing.topologicalAddGroup (GlobalTheory.WeakTop.coords (WCb l) ↥(OL LL) b) ⟨rfl⟩
 
+/- English proof (translation)
+Use `haveI : FiniteDimensional ℚ_[l] K.1 := K.2`. Use `haveI : FiniteDimensional ℚ_[l] (K0 K) := FiniteDimensional.of_injective (IntermediateField.inclusion (inf_le_left : K0 K ≤ K.1)).toLinearMap (RingHom.injective _)`. Conclude with `Module.finrank_pos`.
+-/
 theorem finrank_maxUnramifiedSubfield_pos {l : ℕ} [Fact l.Prime] (K : FinExt l) : 0 < Module.finrank ℚ_[l] ↥(K0 K) := by
   haveI : FiniteDimensional ℚ_[l] K.1 := K.2
   haveI : FiniteDimensional ℚ_[l] (K0 K) :=
@@ -78,6 +99,11 @@ theorem finrank_maxUnramifiedSubfield_pos {l : ℕ} [Fact l.Prime] (K : FinExt l
       (RingHom.injective _)
   exact Module.finrank_pos
 
+/- English proof (translation)
+Introduce `l _ P AI K s LL h W E T d e b bO y`. Use `letI tT : TopologicalSpace (TW (RW LL) T) := twTop T b`. Use `letI tO : TopologicalSpace ↥(OL LL) := oTop bO`. Use `haveI := isTopologicalAddGroup_twTop T b`. Use `haveI : NeZero (Module.finrank ℚ_[l] ↥(K0 K)) := ⟨(finrank_maxUnramifiedSubfield_pos K).ne'⟩`.
+
+Establish `hlin : ∀ f : (ZMod (Module.finrank ℚ_[l] ↥(K0 K)) → ↥(OL LL)) →ₗ[↥(OL LL)] TW (RW LL) T, Continuous f` using `fun f => GlobalTheory.T.continuous_linearMap_pi_of_continuous_coord bO (GlobalTheory.T.continuous_padicInt_smul_latB T b) f`. Conclude with `continuous_io_smul_of E.tie.io (inclR LL) y _ E.tie.io_π (GlobalTheory.T.exists_pow_inclR_smul_mem' AI s T b y) hlin`.
+-/
 theorem continuous_inclR_io_smul : ∀ {l : ℕ} [Fact l.Prime] {P : LocPrime l} {AI : LocAinf l P} {K : FinExt l} {s : ℕ} {LL : FinExt l} {h : Good K s LL} {W : LocWach (P.PD K) ↥LL.1 ↥(OL LL) (P.v LL) (Module.finrank ℚ_[l] ↥(K0 K))} (E : EtSit P AI K s LL h W) (T : Lt K LL) {d e : ℕ} (b : LatB T d) (bO : Module.Basis (Fin e) ℤ_[l] ↥(OL LL)) (y : TW (RW LL) T), letI := twTop T b; letI := aTop (K := K) bO; Continuous fun a : AA K LL => inclR LL (E.tie.io a) • y := by
   intro l _ P AI K s LL h W E T d e b bO y
   letI tT : TopologicalSpace (TW (RW LL) T) := twTop T b

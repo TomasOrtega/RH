@@ -18,6 +18,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.Fc.RL.LamLinked
 
+/- English proof (translation)
+Use `EvP.of_ev ⟨1, one_pos, fun eps C8 he _ he52 _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun C hStd _ _ => ?_⟩⟩` and prove the remaining obligations. Take `⟨c1, hN⟩` from `szRow_numAt eps he he52 C hStd`. Use `⟨c1, fun cD hcD => ?_⟩` and prove the remaining obligations. Take `⟨c2, hN⟩` from `hN cD hcD`. Use `⟨c2, fun ch hch => ?_⟩` and prove the remaining obligations.
+
+Take `⟨x0, hN⟩` from `hN ch hch`. Use `⟨x0, fun K h1 h2 h3 h4 hx β => ?_⟩` and prove the remaining obligations. Establish `hsc : β.O.L.sc = K.s` using `β.sc`. Establish `hv : Val C cD ch β.O.L`. Rewrite using `[← h1, ← h2, ← h3]`.
+
+Conclude with `β.p.pt_val β.val`. Take `⟨⟨N⟩, -, -⟩` from `hN _ _ (by rw [hsc, h4]) (by rw [hsc]; exact hx) hv (GlobalTheory.Plug.hostArith_bpt β)`. Conclude with `⟨N.params⟩`.
+-/
 theorem evP_params : EvP fun _ K => ∀ β : BPt K, Nonempty (ParameterChoice' β.D β.O.L) := by
   refine EvP.of_ev ⟨1, one_pos, fun eps C8 he _ he52 _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun C hStd _ _ => ?_⟩⟩
   obtain ⟨c1, hN⟩ := szRow_numAt eps he he52 C hStd
@@ -35,6 +42,11 @@ theorem evP_params : EvP fun _ K => ∀ β : BPt K, Nonempty (ParameterChoice' �
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Establish `hGS : Formalism.L2.DIV.GoodStable q.x.what₂.r.z.Xg`. Establish `hI` using `GlobalTheory.DimPartsCompare.TameTie.idemTie hG (GlobalTheory.DimPartsCompare.tameTie_of_typesTrue (D := (q.w.st q.Z).toD7) q.x.what₂.grp).2.1`. Use `GlobalTheory.Mem.R3.GoodDual.goodStable_of_coeff (q.w.st q.Z).B.embLL q.x.what₂.r.z.Xg q.x.what₂.r.z.good.irr fun g => ?_` and prove the remaining obligations. Apply `(q.w.st q.Z).B.embLL.injective` to reduce the goal to its premises. Rewrite using `[q.x.what₂.r.z.good.2, q.x.what₂.r.z.good.2, map_inv, GlobalTheory.Mem.R3.GoodDual.goodIdempotent_coeff_inv_eq_coeff hI]`.
+
+Establish `hT : TypesTrue (q.w.st q.Z).toD7.ntypes q.x.what₂.r.z.R.C.P q.x.what₂.r.z.R.C.W`. Rewrite using `[q.x.what₂.r.z.lev.C, q.w.C_eq]`. Conclude with `q.x.what₂.grp`. Establish `hME` using `GlobalTheory.T.multiplicity_equality_statement a1 a2 h4 h3 a5 a6 a7 a8 a9 a10 a11 a12 a13 hG q.x.what₂.r.z.R q.x.what₂.r.z.F q.x.what₂.r.intersectionNumber_baseChange.ok q.x.what₂.r.z.pins.char q.x.what₂.exAt hH hp q.B.ccK_top q.x.what₂.r.z.pins.keep.guard (GlobalTheory.LiftRows. …`. Conclude with `GlobalTheory.Mem.R3.isotRank_of_multEq h1 h2 h3 h4 _ _ _ _ _ _ _ q.x.what₂.r.z.R q.x.what₂.r.z.F q.x.what₂.r.z.cG _ q.x.what₂.r.Y q.x.what₂.r.z.pins q.x.what₂.r.intersectionNumber_baseChange hH hGS (GlobalTheory.CuspDec.cuspDecomp h3 h4 _) hME`.
+-/
 theorem isotRank_of_wit (h1 : GlobalTheory.Published.WeilRepresentationUnitaryPair) (h2 : GlobalTheory.Published.DiscreteSeriesExists)
     (h3 : GlobalTheory.Published.HarishChandraFinite) (h4 : GlobalTheory.Published.CuspRapidDecay)
     (a1 : GlobalTheory.Published.HarishChandraAnalyticity) (a2 : GlobalTheory.Published.DiscreteSeriesClassification) (a5 : GlobalTheory.Published.CuspTraceClass)
@@ -65,6 +77,11 @@ namespace GlobalTheory.Fc.RL
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Introduce `h1 h2 h3 h4 a1 a2 a5 a6 a7 a8 a9 a10 a11 a12 a13 hG hL N S Γ`. Use `At.of_row (RowE.row (EvP.mono (fun κ K _ H β _ c b hl => ?_) LamLinked.evP_params))` and prove the remaining obligations. Take `⟨q, b', ⟨w⟩, he⟩` from `hl`. Establish `e1` using `congrArg (fun s : Σ (D : D7) (O : Obj D), Bundle D O c => Nonempty (ParameterChoice' s.1 s.2.1.L)) he`. Establish `e2` using `congrArg (fun s : Σ (D : D7) (O : Obj D), Bundle D O c => R1.P_hLamP s.1 s.2.1 c s.2.2) he`.
+
+Use `cast e2.symm ?_` and prove the remaining obligations. Establish `hIR` using `LamLinked.isotRank_of_wit h1 h2 h3 h4 a1 a2 a5 a6 a7 a8 a9 a10 a11 a12 a13 hG q w.y.y.host ⟨_, cast e1 (H β)⟩`. Use `show Formalism.L2.Rows.RowsHoldLam3 b'.P`. Rewrite using `[show b'.P = R3.divisionPairOfAdelicFormsFaceColumnsData w.x from congrArg RPk.P w.y.eq]`. Conclude with `(GlobalTheory.Mem.R3.rowConditions_at_companion_from_readings _ _ _ _ _ _ _ _ _ w.x).1 (GlobalTheory.T.finiteTypes_via_full_heckeAlgebra_eigensystems h1 h2 h3 h4 _ _ _ _ _ w.x.A3 _ w.x.R w.x.F w.x.cG q.O.ex.p0 w.x.Y w.x.Z w.x.pins w.y.intersectionNumber_baseChange w.y.y.host hIR)`.
+-/
 theorem at_row_hLamP : GlobalTheory.Published.WeilRepresentationUnitaryPair → GlobalTheory.Published.DiscreteSeriesExists → GlobalTheory.Published.HarishChandraFinite → GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.HarishChandraAnalyticity → GlobalTheory.Published.DiscreteSeriesClassification → GlobalTheory.Published.CuspTraceClass → GlobalTheory.Published.DixmierMalliavinFactorisation → GlobalTheory.Published.FlathFactorisation → GlobalTheory.Published.PseudoCoefficientUpq → GlobalTheory.Published.HarishChandraCharacters → GlobalTheory.Published.LanglandsClassification → GlobalTheory.Published.LabesseWaldspurger → GlobalTheory.Published.ZelevinskyPolynomialRing → GlobalTheory.Published.GeometricLemma → GlobalTheory.Published.GreenCuspidal → ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (N : NExt hL) (S : SExt) (Γ : GeoP), RL.At (prmR N S Γ) R1.LambdaPositivityAtBundlePoints := by
   intro h1 h2 h3 h4 a1 a2 a5 a6 a7 a8 a9 a10 a11 a12 a13 hG hL N S Γ
   refine At.of_row (RowE.row (EvP.mono (fun κ K _ H β _ c b hl => ?_) LamLinked.evP_params))

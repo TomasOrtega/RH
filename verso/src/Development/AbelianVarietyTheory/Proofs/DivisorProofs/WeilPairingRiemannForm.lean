@@ -27,6 +27,9 @@ open scoped BigOperators Real
 
 namespace GlobalTheory.AHWeilAny
 
+/- English proof (translation)
+Take `⟨r, hr⟩` from `ReciprocityTheory.ChartRestriction.G.DVR.exists_gen_of_isLB_local (V := ℂ) (L.pull (eSec A)) (pull_isLB hL _)`. Set `M : RigLB A` to `⟨L, r, hL, hr⟩`. Take `⟨t, ht⟩` from `GlobalTheory.AbLaw.CubeProj.exists_gen_theta_abelianVariety GlobalTheory.globalFns_holds ℂ A hA (GlobalTheory.AbelianProjective.isProjBy_of_isAbelianScheme ℂ A hA) L hL`. Take `⟨t', ht', hn⟩` from `GlobalTheory.AbLaw.Cube.exists_normalised hL t ht`. Conclude with `⟨M, rfl, ⟨GlobalTheory.AbLaw.Cube.cubicalOfNormalised GlobalTheory.globalFns_holds hA M t' ht' hn⟩⟩`.
+-/
 theorem exists_cubical (A : Over (Sp ℂ)) [GrpObj A] [IsCommMonObj A] (hA : IsAbelianScheme A) (L : LB A.left)
     (hL : L.IsLB) : ∃ M : RigLB A, M.L = L ∧ Nonempty (CubicalStr A M) := by
   obtain ⟨r, hr⟩ := ReciprocityTheory.ChartRestriction.G.DVR.exists_gen_of_isLB_local (V := ℂ) (L.pull (eSec A)) (pull_isLB hL _)
@@ -36,6 +39,11 @@ theorem exists_cubical (A : Over (Sp ℂ)) [GrpObj A] [IsCommMonObj A] (hA : IsA
   obtain ⟨t', ht', hn⟩ := GlobalTheory.AbLaw.Cube.exists_normalised hL t ht
   exact ⟨M, rfl, ⟨GlobalTheory.AbLaw.Cube.cubicalOfNormalised GlobalTheory.globalFns_holds hA M t' ht' hn⟩⟩
 
+/- English proof (translation)
+Take `⟨M, rfl, ⟨c⟩⟩` from `exists_cubical A hA L hL`. Use `haveI : Subsingleton (Sp ℂ) := inferInstanceAs (Subsingleton (PrimeSpectrum ℂ))`. Set `p₀ : (Out.overRes (⊤ : (𝟙_ (Over (Sp ℂ))).left.Opens)).left` to `⟨(default : PrimeSpectrum ℂ), trivial⟩`. Establish `hT : ∀ p : (Out.overRes (⊤ : (𝟙_ (Over (Sp ℂ))).left.Opens)).left, p = p₀` using `fun p => Subtype.ext (Subsingleton.elim (α := PrimeSpectrum ℂ) _ _)`. Take `⟨θ, hθ, -⟩` from `GlobalTheory.DescentPairing.exists_theta c p₀ hT k (Out.overResι ⊤ ≫ x) (by rw [← MonObj.comp_pow, hx, MonObj.comp_one])`.
+
+Conclude with `⟨θ, hθ⟩`.
+-/
 theorem exists_thetaGrp (A : Over (Sp ℂ)) [GrpObj A] [IsCommMonObj A] (hA : IsAbelianScheme A) (L : LB A.left)
     (hL : L.IsLB) (k : ℕ) (x : 𝟙_ (Over (Sp ℂ)) ⟶ A) (hx : x ^ k = 1) :
     ∃ θ : Out.ThetaGrp A L k (Out.overRes (⊤ : (𝟙_ (Over (Sp ℂ))).left.Opens)),
@@ -49,6 +57,11 @@ theorem exists_thetaGrp (A : Over (Sp ℂ)) [GrpObj A] [IsCommMonObj A] (hA : Is
     (by rw [← MonObj.comp_pow, hx, MonObj.comp_one])
   exact ⟨θ, hθ⟩
 
+/- English proof (translation)
+Establish `hv` using `GlobalTheory.valAt'_rules`. Establish `: (show Sp ℂ ⟶ A.left from x.left) (default : PrimeSpectrum ℂ) ∈ ⨆ i, L.U i`. Rewrite using `[hL.cover]`. Discharge the goal by the elementary cases of `trivial`. Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 this`.
+
+Conclude with `⟨i, ((hv _ x.left).1 _).2 hi⟩`.
+-/
 theorem exists_chart_at {A : Over (Sp ℂ)} [GrpObj A] {L : LB A.left} (hL : L.IsLB) (x : 𝟙_ (Over (Sp ℂ)) ⟶ A) :
     ∃ i, ⊤ ≤ x.left ⁻¹ᵁ L.U i := by
   have hv := GlobalTheory.valAt'_rules
@@ -57,6 +70,25 @@ theorem exists_chart_at {A : Over (Sp ℂ)} [GrpObj A] {L : LB A.left} (hL : L.I
   obtain ⟨i, hi⟩ := TopologicalSpace.Opens.mem_iSup.1 this
   exact ⟨i, ((hv _ x.left).1 _).2 hi⟩
 
+/- English proof (translation)
+Take `⟨hH, -, hχ, hfr⟩` from `h`. Take `⟨i, hi⟩` from `exists_chart_at hL (u.ex 0)`. Establish `hl : ∀ z, ∀ w ∈ u.Λ, u.ex (z + w) = u.ex z` using `fun z w hw => by`. Rewrite using `[u.ex_add, (u.ker w).2 hw, _root_.mul_one]`. Establish `mem : ∀ w ∈ u.Λ, ⊤ ≤ (u.ex w).left ⁻¹ᵁ L.U i` using `fun w hw => by`.
+
+Establish `e` using `hl 0 w hw`. Rewrite `e` using `[zero_add]`. Rewrite using `[e]`. Conclude with `hi`. Establish `lm : (l : Fin n → ℂ) + m ∈ u.Λ` using `u.Λ.add_mem l.2 m.2`.
+
+Establish `f1` using `hfr l i 0 hi`. Establish `f2` using `hfr m i l (mem _ l.2)`. Establish `f3` using `hfr m i 0 hi`. Establish `f4` using `hfr l i m (mem _ m.2)`. Establish `n0` using `u.fr_ne i _ (mem _ lm)`.
+
+Rewrite `f1`, `f3` using `[zero_add]`. Rewrite `f4` using `[add_comm (m : Fin n → ℂ) l]`. Rewrite `f1` using `[f2]`. Rewrite `f3` using `[f4]`. Establish `nl : χ l ≠ 0` using `fun h0 => by simpa [h0] using hχ l`.
+
+Establish `nm : χ m ≠ 0` using `fun h0 => by simpa [h0] using hχ m`. Simplify using `only [zero_dotProduct, mul_zero, zero_add, Complex.exp_add] at f1 f3`. Establish `key : cexp (Real.pi * ((l : Fin n → ℂ) ⬝ᵥ Hm.mulVec (star (m : Fin n → ℂ)))) = cexp (Real.pi * ((m : Fin n → ℂ) ⬝ᵥ Hm.mulVec (star (l : Fin n → ℂ))))`. Establish `nz : χ l * χ m * cexp (Real.pi / 2 * ((l : Fin n → ℂ) ⬝ᵥ Hm.mulVec (star (l : Fin n → ℂ)))) * cexp (Real.pi / 2 * ((m : Fin n → ℂ) ⬝ᵥ Hm.mulVec (star (m : Fin n → ℂ)))) * u.fr i ((l : Fin n → ℂ) + m) ≠ 0`. Use `Complex.exp_ne_zero` as an intermediate fact.
+
+Simplify using `only [ne_eq, mul_eq_zero, not_or]`. Conclude with `⟨⟨⟨⟨nl, nm⟩, Complex.exp_ne_zero _⟩, Complex.exp_ne_zero _⟩, n0⟩`. Apply `mul_right_cancel₀ nz` to reduce the goal to its premises. Take the linear combination `f3 - f1`. Establish `h1 : (m : Fin n → ℂ) ⬝ᵥ Hm.mulVec (star (l : Fin n → ℂ)) = star ((l : Fin n → ℂ) ⬝ᵥ Hm.mulVec (star (m : Fin n → ℂ)))`.
+
+Rewrite using `[← star_dotProduct_star, star_mulVec, star_star, hH.eq, dotProduct_mulVec]`. Rewrite `key` using `[h1, Complex.exp_eq_exp_iff_exists_int]`. Take `⟨N, hN⟩` from `key`. Use `⟨N, ?_⟩` and prove the remaining obligations. Generalize the expression as in `((l : Fin n → ℂ) ⬝ᵥ Hm.mulVec (star (m : Fin n → ℂ))) = w at hN ⊢`.
+
+Establish `hi'` using `congrArg Complex.im hN`. Simplify using `[Complex.mul_im] at hi'`. Establish `hp` using `Real.pi_pos`. Establish `h2 : Real.pi * (2 * (w.im - N)) = 0` using `by linarith`. Break down `mul_eq_zero.1 h2 with h3 | h3` into its components or cases.
+
+Conclude with `absurd h3 hp.ne'`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem im_hermForm_int {A : Over (Sp ℂ)} [GrpObj A] {L : LB A.left} (hL : L.IsLB) {n : ℕ} (u : HolUnif A L n)
     {Hm : Matrix (Fin n) (Fin n) ℂ} {χ : u.Λ → ℂ} (h : u.IsAH Hm χ) (l m : u.Λ) :
     ∃ e : ℤ, (e : ℝ) = ((l : Fin n → ℂ) ⬝ᵥ Hm.mulVec (star (m : Fin n → ℂ))).im := by
@@ -106,6 +138,41 @@ theorem im_hermForm_int {A : Over (Sp ℂ)} [GrpObj A] {L : LB A.left} (hL : L.I
   · exact absurd h3 hp.ne'
   · linarith
 
+/- English proof (translation)
+Establish `hv` using `GlobalTheory.valAt'_rules`. Establish `hp` using `GlobalTheory.holFamily_lift hv`. Establish `hint` using `im_hermForm_int hL u hAH`. Establish `hk' : (k : ℂ) ≠ 0` using `by exact_mod_cast hk.ne'`. Take `⟨hH, -, hχ, hfr⟩` from `hAH`.
+
+Use `set b : Fin n → ℂ := (k : ℂ)⁻¹ • (a : Fin n → ℂ) with hb`. Establish `h₀ : ∀ z, (lift p (u.ex z)).left ≫ (snd T A).left = (u.ex z).left` using `fun z => by`. Rewrite using `[← Over.comp_left, lift_snd]`. Establish `h₁ : ∀ z, (lift p (u.ex z)).left ≫ (Out.translPt A θ.pt).left = (u.ex (z + b)).left` using `fun z => by rw [← Over.comp_left, ThetaGroupFrame.lift_translPt, hθ, ← u.ex_add, add_comm]`. Establish `hl : ∀ z, ∀ l ∈ u.Λ, u.ex (z + l) = u.ex z` using `fun z l hl => by`.
+
+Rewrite using `[u.ex_add, (u.ker l).2 hl, _root_.mul_one]`. Establish `hl' : ∀ z, ∀ l ∈ u.Λ, u.ex (z + l + b) = u.ex (z + b)` using `fun z l h => by`. Rewrite using `[add_right_comm, hl _ _ h]`. Set `V : L.ι → Set (Fin n → ℂ)` to `fun i => {z | ⊤ ≤ (u.ex z).left ⁻¹ᵁ L.U i}`. Establish `hV : ∀ i, IsOpen (V i)` using `fun i => (u.hol _ 0).1`.
+
+Establish `hVc : ∀ z, ∃ i, z ∈ V i` using `fun z => exists_chart_at hL (u.ex z)`. Set `D : (Fin 2 → L.ι) → Set (Fin n → ℂ)` to `fun j => V (j 0) ∩ (fun z => z + b) ⁻¹' V (j 1)`. Set `F : (Fin 2 → L.ι) → (Fin n → ℂ) → ℂ` to `fun j z => valAt' (lift p (u.ex z)).left _ (θ.φ.s j).val`. Establish `hF : ∀ j, DifferentiableOn ℂ (F j) (D j)` using `fun j => by`. Establish `h` using `(hp (Fin n → ℂ) Set.univ T A (fun _ => p) u.ex (fun U f => ⟨by simpa using isOpen_const, differentiableOn_const _⟩) (fun U f => by simpa using u.hol U f) _ (θ.φ.s j).val).2`.
+
+Use `h.mono fun z hz => ⟨trivial, ?_⟩` and prove the remaining obligations. Conclude with `(ThetaGroupFrame.top_le_wchart_two L _ _ j _ _ _ (h₀ z) (h₁ z)).2 hz`. Set `G : (Fin 2 → L.ι) → (Fin n → ℂ) → ℂ` to `fun j z => F j z * u.fr (j 1) (z + b) ^ k / u.fr (j 0) z ^ k * cexp (Real.pi * (z ⬝ᵥ Hm.mulVec (star (a : Fin n → ℂ))))`. Take `⟨C, hC⟩` from `ThetaGroupFrame.exists_const_of_cover D G (fun j => (hV _).inter ((hV _).preimage (by fun_prop))) (fun z => by`. Take `⟨i, hi⟩` from `hVc z`.
+
+Take `⟨i', hi'⟩` from `hVc (z + b)`. Conclude with `⟨![i, i'], hi, hi'⟩)`. Use the proof step `(fun j => by`. Establish `d0 : DifferentiableOn ℂ (u.fr (j 0)) (D j)` using `(u.fr_hol _).mono Set.inter_subset_left`. Establish `d1 : DifferentiableOn ℂ (fun z => u.fr (j 1) (z + b)) (D j)` using `(u.fr_hol (j 1)).comp (f := fun z => z + b) (by fun_prop) (fun z hz => hz.2)`.
+
+Establish `d2 : DifferentiableOn ℂ (fun z => F j z * u.fr (j 1) (z + b) ^ k * (u.fr (j 0) z ^ k)⁻¹) (D j)` using `((hF j).mul (d1.pow k)).mul ((d0.pow k).inv (fun z hz => pow_ne_zero _ (u.fr_ne _ _ hz.1)))`. Use `DifferentiableOn.mul d2 ?_` and prove the remaining obligations. Use `Differentiable.differentiableOn ?_` and prove the remaining obligations. Unfold `dotProduct`. Use the proof step `fun_prop)`.
+
+Use the proof step `(fun j j' z hz hz' => by`. Establish `e` using `ThetaGroupFrame.valAt'_gen_two hv L _ _ k θ.φ θ.isGen _ _ _ (h₀ z) (h₁ z) j j' hz.1 hz.2 hz'.1 hz'.2`. Establish `c0` using `u.fr_compat _ _ z (ThetaGroupFrame.top_le_inf _ hz.1 hz'.1)`. Establish `c1` using `u.fr_compat _ _ (z + b) (ThetaGroupFrame.top_le_inf _ hz.2 hz'.2)`. Establish `n0` using `ThetaGroupFrame.valAt'_unit_ne_zero hv _ _ (ThetaGroupFrame.top_le_inf _ hz.1 hz'.1) (L.g (j 0) (j' 0))`.
+
+Establish `n1` using `ThetaGroupFrame.valAt'_unit_ne_zero hv _ _ (ThetaGroupFrame.top_le_inf _ hz.2 hz'.2) (L.g (j 1) (j' 1))`. Establish `n2` using `u.fr_ne _ _ hz'.1`. Establish `e' : F j z = _ * F j' z` using `e`. Simplify using `only [G]`. Rewrite using `[e', c0, c1]`.
+
+Generalize the expression as in `valAt' (u.ex z).left _ (L.g (j 0) (j' 0)).val = g0 at *`. Generalize the expression as in `valAt' (u.ex (z + b)).left _ (L.g (j 1) (j' 1)).val = g1 at *`. Clear the denominators using the available nonvanishing facts. Use the proof step `ring)`. Use the proof step `u.full`.
+
+Use the proof step `(fun j z hz l hlm => by`. Establish `m0 : z + l ∈ V (j 0)`. Express the relevant statement in the definitionally equal form `⊤ ≤ (u.ex (z + l)).left ⁻¹ᵁ _`. Rewrite using `[hl z l hlm]`. Conclude with `hz.1`.
+
+Establish `m1 : z + l + b ∈ V (j 1)`. Express the relevant statement in the definitionally equal form `⊤ ≤ (u.ex (z + l + b)).left ⁻¹ᵁ _`. Rewrite using `[hl' z l hlm]`. Conclude with `hz.2`. Use `⟨⟨m0, m1⟩, ?_⟩` and prove the remaining obligations.
+
+Establish `eF : F j (z + l) = F j z` using `by simp only [F]; rw [hl z l hlm]`. Establish `f0` using `hfr ⟨l, hlm⟩ _ z hz.1`. Establish `f1` using `hfr ⟨l, hlm⟩ _ (z + b) hz.2`. Establish `nχ : χ ⟨l, hlm⟩ ≠ 0` using `fun h => by simpa [h] using hχ ⟨l, hlm⟩`. Establish `n0` using `u.fr_ne _ _ m0`.
+
+Take `⟨N, hN⟩` from `hint ⟨l, hlm⟩ a`. Establish `ee` using `ThetaGroupFrame.exp_herm_eq hH l a N hN`. Establish `eb : cexp (Real.pi * (b ⬝ᵥ Hm.mulVec (star l))) ^ k = cexp (Real.pi * ((a : Fin n → ℂ) ⬝ᵥ Hm.mulVec (star l)))`. Rewrite using `[← Complex.exp_nat_mul, hb, smul_dotProduct, smul_eq_mul]`. Use `congr 1`.
+
+Clear the denominators using the available nonvanishing facts. Simplify using `only [G]`. Rewrite using `[eF, f0, f1, add_right_comm z l b]`. Simplify using `only [add_dotProduct, mul_add, Complex.exp_add, mul_pow, ee, eb]`. Use the proof step `field_simp)`.
+
+Use `⟨C, fun j z hz hz' => ?_⟩` and prove the remaining obligations. Establish `h` using `hC j z ⟨hz, hz'⟩`. Establish `n0` using `u.fr_ne _ _ hz`. Rewrite using `[← h, Complex.exp_neg]`. Simplify using `only [G, F]`.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem thetaGrp_in_frame {A : Over (Sp ℂ)} [GrpObj A] {L : LB A.left} (hL : L.IsLB) {n : ℕ} (u : HolUnif A L n)
     {Hm : Matrix (Fin n) (Fin n) ℂ} {χ : u.Λ → ℂ} (hAH : u.IsAH Hm χ) (k : ℕ) (a : u.Λ) (hk : 0 < k)
     (T : Over (Sp ℂ)) (p : 𝟙_ (Over (Sp ℂ)) ⟶ T) (θ : Out.ThetaGrp A L k T)
@@ -211,6 +278,43 @@ theorem thetaGrp_in_frame {A : Over (Sp ℂ)} [GrpObj A] {L : LB A.left} (hL : L
 
 open GlobalTheory.WeilExp in
 
+/- English proof (translation)
+Introduce `A _ _ hA L hL n u Hm χ hAH k a₀ b₀ c hk ha hb hc p₀`. Take `⟨a, rfl⟩ : ∃ a : u.Λ, (a : Fin n → ℂ) = a₀` from `⟨⟨a₀, ha⟩, rfl⟩`. Take `⟨b, rfl⟩ : ∃ b : u.Λ, (b : Fin n → ℂ) = b₀` from `⟨⟨b₀, hb⟩, rfl⟩`. Establish `hv` using `GlobalTheory.valAt'_rules`. Establish `hext` using `GlobalTheory.eq_of_valAt'_eq hv GlobalTheory.existsUnique_point_of_ringHom`.
+
+Establish `hred` using `GlobalTheory.isReduced_of_smooth_complex`. Use `hA.smooth` as an intermediate fact. Establish `hk0 : (k : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hk.ne'`. Establish `hex0 : u.ex 0 = 1` using `(u.ker 0).2 u.Λ.zero_mem`. Establish `hpow : ∀ (m : ℕ) w, u.ex w ^ m = u.ex ((m : ℂ) • w)`.
+
+Introduce `m w`. Proceed by induction on `m with`. Consider the case `zero => simp [hex0]`. Consider the case `succ m ih => rw [pow_succ, ih, ← u.ex_add, Nat.cast_succ, add_smul, one_smul]`. Establish `htor : ∀ l : u.Λ, u.ex ((k : ℂ)⁻¹ • (l : Fin n → ℂ)) ^ k = 1`.
+
+Introduce `l`. Rewrite using `[hpow, smul_smul, mul_inv_cancel₀ hk0, one_smul]`. Conclude with `(u.ker _).2 l.2`. Take `⟨E, hE⟩` from `im_hermForm_int hL u hAH a b`. Establish `hcE : (c : ℂ) = cexp (-(2 * Real.pi * Complex.I) * (E : ℂ) / k)`.
+
+Rewrite using `[hc, ← hE, Complex.ofReal_intCast]`. Use `⟨⊤, trivial, ?_, fun θx θy hx hy => ?_⟩` and prove the remaining obligations. Take `⟨θx, hx⟩` from `exists_thetaGrp A hA L hL k _ (htor a)`. Take `⟨θy, hy⟩` from `exists_thetaGrp A hA L hL k _ (htor b)`. Conclude with `⟨θx, θy, hx, hy⟩`.
+
+Introduce `j j' _ _ hjj`. Establish `hsm : Smooth (Out.overRes (⊤ : (𝟙_ (Over (Sp ℂ))).left.Opens) ⊗ A).hom`. Rewrite using `[← Over.w (fst (Out.overRes (⊤ : (𝟙_ (Over (Sp ℂ))).left.Opens)) A)]`. Establish `h1 : Smooth (fst (Out.overRes (⊤ : (𝟙_ (Over (Sp ℂ))).left.Opens)) A).left` using `by show Smooth (pullback.fst (Out.overRes (⊤ : (𝟙_ (Over (Sp ℂ))).left.Opens)).hom A.hom) infer_instance`. Establish `h2 : Smooth (Out.overRes (⊤ : (𝟙_ (Over (Sp ℂ))).left.Opens)).hom` using `by show Smooth ((⊤ : (𝟙_ (Over (Sp ℂ))).left.Opens).ι ≫ 𝟙 _) infer_instance`.
+
+Use `infer_instance`. Apply `Units.ext` to reduce the goal to its premises. Use `hext (Out.overRes (⊤ : (𝟙_ (Over (Sp ℂ))).left.Opens) ⊗ A) (hred _ _ hsm) inferInstance _ _ _ fun x hxU => ?_` and prove the remaining obligations. Establish `hxj` using `hxU.trans (x.left.preimage_mono inf_le_left)`. Establish `hxj'` using `hxU.trans (x.left.preimage_mono inf_le_right)`.
+
+Use `(val_res hv _ _ _ hxU).trans (Eq.trans ?_ (val_res hv _ _ _ hxU).symm)` and prove the remaining obligations. Take `⟨z, hz⟩` from `u.ex_onto (x ≫ snd _ _)`. Apply the tactic sequence `obtain ⟨p, rfl⟩ : ∃ p, x = lift p (u.ex z) := ⟨x ≫ fst _ _, by rw [hz]; ext <;> simp⟩`. Establish `hp : ∀ y : 𝟙_ (Over (Sp ℂ)) ⟶ A, p ≫ Out.overResι (⊤ : (𝟙_ (Over (Sp ℂ))).left.Opens) ≫ y = y`. Introduce `y`.
+
+Rewrite using `[← Category.assoc, Subsingleton.elim (p ≫ Out.overResι _) (𝟙 _), Category.id_comp]`. Establish `hpx : p ≫ θx.pt = u.ex ((k : ℂ)⁻¹ • (a : Fin n → ℂ))` using `by rw [hx, hp]`. Establish `hpy : p ≫ θy.pt = u.ex ((k : ℂ)⁻¹ • (b : Fin n → ℂ))` using `by rw [hy, hp]`. Take `⟨Ca, hCa⟩` from `thetaGrp_in_frame hL u hAH k a hk _ p θx hpx`. Take `⟨Cb, hCb⟩` from `thetaGrp_in_frame hL u hAH k b hk _ p θy hpy`.
+
+Establish `tr : ∀ (θ : Out.ThetaGrp A L k (Out.overRes (⊤ : (𝟙_ (Over (Sp ℂ))).left.Opens))) (v : Fin n → ℂ), p ≫ θ.pt = u.ex v → ∀ w, (lift p (u.ex w)).left ≫ (Out.translT A θ.pt).left = (lift p (u.ex (w + v))).left ∧ (lift p (u.ex w)).left ≫ (Out.translPt A θ.pt).left = (u.ex (w + v)).lef …`. Introduce `θ v h w`. Rewrite using `[← Over.comp_left, ← Over.comp_left, lift_translT, lift_translPt, h, ← u.ex_add, add_comm v w]`. Conclude with `⟨rfl, rfl⟩`. Establish `sn : ∀ w, (lift p (u.ex w)).left ≫ (snd (Out.overRes (⊤ : (𝟙_ (Over (Sp ℂ))).left.Opens)) A).left = (u.ex w).left`.
+
+Introduce `w`. Rewrite using `[← Over.comp_left, lift_snd]`. Establish `m` using `(le_wchart_iff _ _ _ _).1 hxj`. Establish `m'` using `(le_wchart_iff _ _ _ _).1 hxj'`. Establish `m₁ : ⊤ ≤ (u.ex z).left ⁻¹ᵁ L.U (j (.inl 0))`.
+
+Rewrite using `[← sn]`. Conclude with `m (.inl 0)`. Establish `m₂ : ⊤ ≤ (u.ex (z + (k : ℂ)⁻¹ • (a : Fin n → ℂ))).left ⁻¹ᵁ L.U (j (.inl 1))`. Rewrite using `[← (tr θx _ hpx z).2]`. Conclude with `m (.inl 1)`.
+
+Establish `m₃ : ⊤ ≤ (u.ex (z + (k : ℂ)⁻¹ • (b : Fin n → ℂ))).left ⁻¹ᵁ L.U (j' (.inl (.inl 1)))`. Rewrite using `[← (tr θy _ hpy z).2]`. Conclude with `m' (.inl (.inl 1))`. Establish `m₄ : ⊤ ≤ (u.ex (z + (k : ℂ)⁻¹ • (a : Fin n → ℂ) + (k : ℂ)⁻¹ • (b : Fin n → ℂ))).left ⁻¹ᵁ L.U (j (.inr 1))`. Rewrite using `[← (tr θy _ hpy _).2, ← (tr θx _ hpx z).1, Category.assoc]`.
+
+Conclude with `m (.inr 1)`. Establish `e₁ : j (.inl 0) = j' (.inl (.inl 0))` using `hjj _ _ rfl`. Establish `e₂ : j (.inl 1) = j (.inr 0)` using `‹LB.Coh L _ j› _ _ (translT_snd θx.pt).symm`. Establish `e₃ : j' (.inl (.inl 1)) = j' (.inl (.inr 0))` using `‹LB.Coh L _ j'› _ _ (translT_snd θy.pt).symm`. Establish `e₄ : j (.inr 1) = j' (.inl (.inr 1))` using `hjj _ _ (translT_translPt_comm θx.pt θy.pt)`.
+
+Establish `ec : z + (k : ℂ)⁻¹ • (b : Fin n → ℂ) + (k : ℂ)⁻¹ • (a : Fin n → ℂ) = z + (k : ℂ)⁻¹ • (a : Fin n → ℂ) + (k : ℂ)⁻¹ • (b : Fin n → ℂ)` using `add_right_comm _ _ _`. Establish `h₁` using `hCa (j ∘ Sum.inl) z m₁ m₂`. Establish `h₂` using `hCb (j ∘ Sum.inr) _ (e₂ ▸ m₂ :) m₄`. Establish `h₃` using `hCb ((j' ∘ Sum.inl) ∘ Sum.inl) z (e₁ ▸ m₁ :) m₃`. Establish `h₄` using `hCa ((j' ∘ Sum.inl) ∘ Sum.inr) _ (e₃ ▸ m₃ :) (by rw [ec]; exact (e₄ ▸ m₄ :))`.
+
+Simplify using `only [Function.comp_apply] at h₁ h₂ h₃ h₄`. Rewrite `h₂` using `[← e₂]`. Rewrite `h₃` using `[← e₁]`. Rewrite `h₄` using `[← e₃, ← e₄, ec]`. Establish `key` using `cancel_frames (pow_ne_zero k (u.fr_ne _ _ m₂)) (pow_ne_zero k (u.fr_ne _ _ m₃)) (pow_ne_zero k (u.fr_ne _ _ m₄)) h₁ h₂ h₃ h₄ (by rw [hcE]; exact exp_comm Hm hAH.1 k a b z E hE : _ = _ * _ * (c : ℂ))`.
+
+Establish `n₁` using `(le_wchart_iff _ _ (j ∘ Sum.inr) _).2 fun i => m (.inr i)`. Establish `n₂` using `(le_wchart_iff _ _ (j' ∘ Sum.inl) _).2 fun i => m' (.inl i)`. Establish `n₃` using `(le_wchart_iff _ _ ((j' ∘ Sum.inl) ∘ Sum.inr) _).2 fun i => m' (.inl (.inr i))`. Use `(val_mulGen hv _ _ _ _ _ _ _ _ _ hxj).trans (Eq.trans ?_ (val_mulGen hv _ _ _ _ _ _ _ _ _ hxj').symm)` and prove the remaining obligations. Use `Eq.trans ?_ (congrArg₂ (· * ·) (val_mulGen hv _ _ _ _ _ _ _ _ _ n₂) (val_constGen hv L ⊤ c _ _)).symm` and prove the remaining obligations.
+
+Use `(congrArg (_ * ·) (val_pullGen hv _ _ _ _ _ _ _ n₁)).trans (Eq.trans ?_ (congrArg (_ * · * (c : ℂ)) (val_pullGen hv _ _ _ _ _ _ _ n₃).symm))` and prove the remaining obligations. Rewrite using `[(tr θx _ hpx z).1, (tr θy _ hpy z).1]`. Conclude with `key`.
+-/
 theorem weilIs_exp_riemannForm : ∀ (A : Over (Sp ℂ)) [GrpObj A] [IsCommMonObj A], IsAbelianScheme A →
     ∀ (L : LB A.left), L.IsLB →
     ∀ (n : ℕ) (u : HolUnif A L n) (Hm : Matrix (Fin n) (Fin n) ℂ) (χ : u.Λ → ℂ), u.IsAH Hm χ →

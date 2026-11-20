@@ -17,6 +17,9 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 
 omit [NumberField F] [NumberField E] in
 
+/- English proof (translation)
+Use extensionality with `i j`. Use `congrFun (congrFun hX 0) 0` as an intermediate fact. Simplify `this` using `[cT, col0, Matrix.mul_apply]`.
+-/
 theorem isotropic_frame_first_column_isotropic {n r : ℕ} {σ : E →ₐ[F] E} {J : Matrix (Fin n) (Fin n) E}
     {X : Matrix (Fin n) (Fin (r + 1)) E} (hX : cT (σ : E →+* E) X * J * X = 0) :
     cT (σ : E →+* E) (col0 X) * J * col0 X = 0 := by
@@ -24,6 +27,13 @@ theorem isotropic_frame_first_column_isotropic {n r : ℕ} {σ : E →ₐ[F] E} 
   have := congrFun (congrFun hX 0) 0
   simpa [cT, col0, Matrix.mul_apply] using this
 
+/- English proof (translation)
+Take `⟨l, hl⟩` from `hg`. Establish `h0 : (matHom _ σ J g⁻¹).1 * ((matHom _ σ J g).1 * adMat F x) = adMat F x`. Rewrite using `[← Matrix.mul_assoc, ← Units.val_mul, ← map_mul, inv_mul_cancel, map_one, Units.val_one, Matrix.one_mul]`. Rewrite `h0` using `[hl, Matrix.mul_smul]`. Establish `h1 : (matHom _ σ J g⁻¹).1 * adMat F x = (l⁻¹ : (AF F ⊗[F] E)ˣ).1 • adMat F x`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[smul_smul, ← Units.val_mul, inv_mul_cancel, Units.val_one, one_smul]`. Use `_ = _ := by rw [h0]`. Unfold `OrthL`. Rewrite using `[Matrix.mul_assoc, h1, Matrix.mul_smul, adMat, adMat, ← Matrix.map_mul, hx]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem orthL_of_stabL {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {x : Matrix (Fin n) (Fin 1) E}
     (hx : cT (σ : E →+* E) x * J * x = 0) {g : GAd σ J} (hg : StabL σ J x g) : OrthL σ J x g := by
   obtain ⟨l, hl⟩ := hg
@@ -43,6 +53,17 @@ end GlobalTheory.EisCT
 
 open GlobalTheory.EisCT in
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ n J r X Y L a h Eis hS hE T hT s hs g`. Establish `hW : IsWittFrame σ J X Y` using `hS.2.2.2.2.1`. Establish `hx` using `isotropic_frame_first_column_isotropic (σ := σ) (J := J) hW.xx`. Establish `hser` using `hE T hT s hs g`. Use `set f : ratPts σ J → ℂ := fun t => fs σ J h s (t.1 * g) with hf`.
+
+Establish `hsum : Summable (f ∘ ((↑) : T → ratPts σ J))` using `hser.summable`. Establish `hsub : ∀ S ⊆ T, Summable (f ∘ ((↑) : S → ratPts σ J))`. Introduce `S hST`. Establish `hind : Summable (T.indicator f)` using `summable_subtype_iff_indicator.1 hsum`. Conclude with `(hind.subtype S).congr fun t => Set.indicator_of_mem (hST t.2) f`.
+
+Establish `hLT : lineSet σ J (col0 X) T ⊆ T` using `fun t ht => ht.1`. Establish `hMT : midSet σ J (col0 X) T ⊆ T` using `fun t ht => ht.1`. Establish `hBT : bigSet σ J (col0 X) T ⊆ T` using `fun t ht => ht.1`. Establish `hdisj1 : Disjoint (lineSet σ J (col0 X) T) (midSet σ J (col0 X) T)` using `Set.disjoint_left.2 fun t h1 h2 => h2.2.1 h1.2`. Establish `hdisj2 : Disjoint (lineSet σ J (col0 X) T ∪ midSet σ J (col0 X) T) (bigSet σ J (col0 X) T)` using `Set.disjoint_left.2 fun t h1 h2 => by`.
+
+Break down `h1 with h1 | h1` into its components or cases. Conclude with `h2.2 (orthL_of_stabL hx h1.2)`. Conclude with `h2.2 h1.2.2`. Establish `hunion : T = lineSet σ J (col0 X) T ∪ midSet σ J (col0 X) T ∪ bigSet σ J (col0 X) T`. Use extensionality with `t`.
+
+Simplify using `only [lineSet, midSet, bigSet, Set.mem_union, Set.mem_setOf_eq]`. Apply the tactic sequence `by_cases h1 : StabL σ J (col0 X) t.1 <;> by_cases h2 : OrthL σ J (col0 X) t.1 <;> tauto`. Establish `e1 : Eis s g = ∑' t : T, f t` using `hser.tsum_eq.symm`. Rewrite using `[e1, tsum_congr_set_coe f hunion, Summable.tsum_union_disjoint hdisj2 (hsub _ (Set.union_subset hLT hMT)) (hsub _ hBT), Summable.tsum_union_disjoint hdisj1 (hsub _ hLT) (hsub _ hMT)]`. Both sides reduce to the same expression.
+-/
 theorem GlobalTheory.EisCT.eis_eq_three_sums : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ)
     (J : Matrix (Fin n) (Fin n) E) (r : ℕ) (X Y : Matrix (Fin n) (Fin (r + 1)) E) (L : Submodule (𝓞 E) (Fin n → E))
     (a : GL (Fin n) (AF F ⊗[F] E)) (h : GAd σ J → ℝ) (Eis : ℂ → GAd σ J → ℂ), HidaSetting σ J X Y L a h → IsSerG σ J (col0 X) h Eis →

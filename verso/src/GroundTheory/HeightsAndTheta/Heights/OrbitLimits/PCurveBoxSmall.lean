@@ -7,6 +7,9 @@ namespace GroundTheory.Heights₂.Heights.Targets
 
 open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo GroundTheory.Heights₂.Heights.Inter
 
+/- English proof (translation)
+Combine the equalities or inequalities in the calculation `calc t ^ n * t ^ (-n).toNat = t ^ ((n.toNat : ℤ) - ((-n).toNat : ℤ)) * t ^ (-n).toNat := by rw [Int.toNat_sub_toNat_neg] _ = t ^ n.toNat := by rw [zpow_sub₀ ht, zpow_natCast, zpow_natCast, div_mul_cancel₀ _ (pow_ne_zero _ ht)]`.
+-/
 theorem CurveBoxSmall.zpow_mul_toNat_neg {F : Type} [Field F] {t : F} (ht : t ≠ 0) (n : ℤ) :
     t ^ n * t ^ (-n).toNat = t ^ n.toNat :=
   calc t ^ n * t ^ (-n).toNat = t ^ ((n.toNat : ℤ) - ((-n).toNat : ℤ)) * t ^ (-n).toNat := by
@@ -14,6 +17,27 @@ theorem CurveBoxSmall.zpow_mul_toNat_neg {F : Type} [Field F] {t : F} (ht : t �
     _ = t ^ n.toNat := by
         rw [zpow_sub₀ ht, zpow_natCast, zpow_natCast, div_mul_cancel₀ _ (pow_ne_zero _ ht)]
 
+/- English proof (translation)
+Introduce `K _ ι _ Ω _ y A c hP hB hc τ s`. Establish `hU : ∀ σ : Ω →+* ℂ, ‖σ (chartUnit y c A.a τ)‖ = (∏ k, ‖σ (y ⟨k, c k⟩)‖ ^ A.a k) ^ τ` using `fun σ => by`. Rewrite using `[chartUnit, map_prod, norm_prod, ← Finset.prod_pow]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_zpow₀, norm_zpow, ← zpow_natCast (_ ^ A.a k), ← zpow_mul, mul_comm (A.a k)]`.
+
+Establish `hQ : ∀ σ : Ω →+* ℂ, 0 < (∏ k, ‖σ (y ⟨k, c k⟩)‖ ^ A.a k) ^ τ` using `fun σ => pow_pos (Finset.prod_pos fun k _ => zpow_pos (norm_pos_iff.mpr ((map_ne_zero σ).mpr (hc k))) _) _`. Prove the components needed by the constructor for the conclusion. Introduce `hS σ`. Take `⟨d, g, h, hg, hh, hh0, hgh⟩` from `hB (s / chartUnit y c A.a τ)`. Set `ap : K → ℕ` to `fun k => ((τ : ℤ) * A.a k).toNat`.
+
+Set `am : K → ℕ` to `fun k => (-((τ : ℤ) * A.a k)).toNat`. Establish `hU0 : chartUnit y c A.a τ ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun k _ => zpow_ne_zero _ (hc k)`. Establish `hu : chartUnit y c A.a τ * ∏ k, y ⟨k, c k⟩ ^ am k = ∏ k, y ⟨k, c k⟩ ^ ap k`. Rewrite using `[chartUnit, ← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_congr rfl fun k _ => CurveBoxSmall.zpow_mul_toNat_neg (hc k) _`.
+
+Establish `hdeg : ∀ k, (((d + ap) k : ℕ) : ℤ) = ((d + am) k : ℕ) + τ * A.a k` using `fun k => by`. Use `Int.toNat_sub_toNat_neg ((τ : ℤ) * A.a k)` as an intermediate fact. Simplify using `only [Pi.add_apply, Nat.cast_add, ap, am]`. Use linear arithmetic over natural numbers and integers. Establish `hval : aeval y (g * curveChartMono c ap) = s * aeval y (h * curveChartMono c am)`.
+
+Simplify using `only [map_mul, curveChartMono, map_prod, map_pow, aeval_X]`. Rewrite using `[← hu, hgh]`. Clear the denominators using the available nonvanishing facts. Establish `hS'` using `hS _ _ _ _ _ (CurveOrbit.isMultiHomog_mul hg (isMultiHomog_curveChartMono c ap)) (CurveOrbit.isMultiHomog_mul hh (isMultiHomog_curveChartMono c am)) hdeg hval (CurveOrbit.mem_mcPts σ y hc)`. Rewrite `hS'` using `[CurveOrbit.eval_comp, CurveOrbit.eval_comp]`.
+
+Simplify using `only [map_mul, curveChartMono, map_prod, map_pow, aeval_X, norm_mul, norm_prod, norm_pow] at hS'`. Establish `hsu : s / chartUnit y c A.a τ = aeval y g / aeval y h` using `eq_div_of_mul_eq hh0 hgh.symm`. Establish `hσh : 0 < ‖σ (aeval y h)‖` using `norm_pos_iff.mpr ((map_ne_zero σ).mpr hh0)`. Establish `ht : ∀ k, ‖σ (y ⟨k, c k⟩)‖ ≠ 0` using `fun k => norm_ne_zero_iff.mpr ((map_ne_zero σ).mpr (hc k))`. Establish `hR : (∏ k, ‖σ (y ⟨k, c k⟩)‖ ^ A.a k) ^ τ * ∏ k, ‖σ (y ⟨k, c k⟩)‖ ^ am k = ∏ k, ‖σ (y ⟨k, c k⟩)‖ ^ ap k`.
+
+Rewrite using `[← Finset.prod_pow, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← zpow_natCast (_ ^ A.a k), ← zpow_mul, mul_comm (A.a k)]`. Conclude with `CurveBoxSmall.zpow_mul_toNat_neg (ht k) _`. Establish `hRm : 0 < ∏ k, ‖σ (y ⟨k, c k⟩)‖ ^ am k` using `Finset.prod_pos fun k _ => pow_pos (lt_of_le_of_ne (norm_nonneg _) (ht k).symm) _`.
+
+Rewrite using `[hsu, map_div₀, norm_div, chartRadius, div_pow, div_le_div_iff₀ hσh (hQ σ)]`. Use `le_of_mul_le_mul_right ?_ hRm` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Introduce `hbox dg dh g h z hg hh hdeg hgs hz`. Take `⟨σ, l, hl, rfl⟩` from `CurveOrbit.exists_sameOrbit hP hB hz`.
+
+Use `beta_reduce`. Establish `hb` using `hbox σ`. Rewrite `hb` using `[map_div₀, norm_div, chartRadius, div_pow, hU σ, div_le_div_iff_of_pos_right (hQ σ)]`. Establish `hlam : ‖∏ k, l k ^ dg k‖ = ‖∏ k, l k ^ dh k‖ * (∏ k, ‖l k‖ ^ A.a k) ^ τ`. Rewrite using `[norm_prod, norm_prod, ← Finset.prod_pow, ← Finset.prod_mul_distrib]`.
+
+Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Establish `hlk : ‖l k‖ ≠ 0` using `norm_ne_zero_iff.mpr (hl k)`. Rewrite using `[norm_pow, norm_pow, ← zpow_natCast (‖l k‖) (dg k), hdeg k, zpow_add₀ hlk, zpow_natCast, ← zpow_natCast (_ ^ A.a k), ← zpow_mul, mul_comm (A.a k)]`. Rewrite using `[CurveOrbit.eval_smul _ l hg, CurveOrbit.eval_smul _ l hh, A.smul l _ hl, CurveOrbit.eval_comp, CurveOrbit.eval_comp, hgs, map_mul, norm_mul, norm_mul, norm_mul, hlam, mul_pow]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem CurveBoxSmall.proof : CurveBoxSmall.Statement := by
   intro K _ ι _ Ω _ y A c hP hB hc τ s
   classical

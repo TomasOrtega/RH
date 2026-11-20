@@ -21,6 +21,15 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 def blk (X : Data E r) (b : Frame X.Ψ r) (τ : X.Ψ) : Matrix (Fin X.p0) (Fin X.p0) ℂ :=
   Matrix.of fun k a => b τ (Fin.castLE X.p0_le k) (Fin.castLE X.p0_le a)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Establish `e1 : X.colP (rmul y b) τ a i = ∑ j, y τ i j * b τ j (Fin.castLE X.p0_le a)` using `by show (mat y τ * mat b τ : Matrix (Fin r) (Fin r) ℂ) i (Fin.castLE X.p0_le a) = _`. Rewrite using `[Matrix.mul_apply]`. Both sides reduce to the same expression. Rewrite using `[e1, Finset.sum_apply]`.
+
+Use `symm`. Use `Finset.sum_of_injOn (Fin.castLE X.p0_le) ((Fin.castLE_injective _).injOn) (fun _ _ => Finset.mem_coe.mpr (Finset.mem_univ _)) (fun j _ hj => ?_) (fun c _ => ?_)` and prove the remaining obligations. Establish `hj' : X.p0 ≤ (j : ℕ)`. Assume the negation of the conclusion as `h`. Conclude with `hj ⟨⟨j, not_le.mp h⟩, by simp, by ext; simp⟩`.
+
+Rewrite using `[(hb τ).2 j _ (by show ((Fin.castLE X.p0_le a : Fin r) : ℕ) < j`. Use `a.isLt` as an intermediate fact. Simplify using `only [Fin.val_castLE]`. Use the proof step `omega), mul_zero]`. Use `show blk X b τ c a * y τ i _ = _`.
+
+Simplify using `only [blk, Matrix.of_apply]`. Rewrite using `[mul_comm]`.
+-/
 theorem colP_rmul_eq (X : Data E r) (y : Frame X.Ψ r) {b : Frame X.Ψ r} (hb : b ∈ Bor X.Ψ r)
     (τ : X.Ψ) (a : Fin X.p0) :
     X.colP (rmul y b) τ a = ∑ k, blk X b τ k a • X.colP y τ k := by
@@ -44,6 +53,11 @@ theorem colP_rmul_eq (X : Data E r) (y : Frame X.Ψ r) {b : Frame X.Ψ r} (hb : 
     simp only [blk, Matrix.of_apply]
     rw [mul_comm]
 
+/- English proof (translation)
+Establish `hup : (mat b τ).BlockTriangular id` using `fun a c h => (hb τ).2 a c h`. Establish `hd` using `(hb τ).1`. Rewrite `hd` using `[Matrix.det_of_upperTriangular hup]`. Establish `hup' : (blk X b τ).BlockTriangular id` using `fun a c h => by`. Simplify using `only [blk, Matrix.of_apply]`.
+
+Conclude with `(hb τ).2 _ _ (by rw [Fin.lt_def]; simp only [Fin.val_castLE]; exact h)`. Rewrite using `[Matrix.det_of_upperTriangular hup', Finset.prod_ne_zero_iff]`. Introduce `k _`. Rewrite `hd` using `[Finset.prod_ne_zero_iff]`. Conclude with `hd _ (Finset.mem_univ _)`.
+-/
 theorem blk_det_ne (X : Data E r) {b : Frame X.Ψ r} (hb : b ∈ Bor X.Ψ r) (τ : X.Ψ) :
     (blk X b τ).det ≠ 0 := by
   have hup : (mat b τ).BlockTriangular id := fun a c h => (hb τ).2 a c h
@@ -66,6 +80,9 @@ open scoped ComplexConjugate
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
+/- English proof (translation)
+Use extensionality with `a c`. Rewrite using `[Data.gramPos_apply, colP_rmul_eq X y hb, colP_rmul_eq X y hb, hermC_sum_left]`. Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Data.gramPos_apply, hermC_smul_left, hermC_sum_right, hermC_smul_right, Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun k _ => by ring` and prove the remaining obligations.
+-/
 theorem gramPos_rmul (X : Data E r) (y : Frame X.Ψ r) {b : Frame X.Ψ r} (hb : b ∈ Bor X.Ψ r) (τ : X.Ψ) :
     X.gramPos (rmul y b) τ = (blk X b τ)ᵀ * X.gramPos y τ * (blk X b τ).map (starRingEnd ℂ) := by
   ext a c
@@ -75,6 +92,11 @@ theorem gramPos_rmul (X : Data E r) (y : Frame X.Ψ r) {b : Frame X.Ψ r} (hb : 
   rw [Finset.sum_comm]
   refine Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun k _ => by ring
 
+/- English proof (translation)
+Unfold `Data.posPart`. Use `congr 1`. Simplify using `only [dotProduct, mulVec, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[mul_assoc]`.
+
+Both sides reduce to the same expression.
+-/
 theorem posPart_eq_dot (X : Data E r) (y : Frame X.Ψ r) (τ : X.Ψ) (v : Fin r → ℂ) :
     X.posPart y τ v = ((fun a => hermC τ.1 X.Gm v (X.colP y τ a)) ⬝ᵥ
       ((X.gramPos y τ)⁻¹ *ᵥ (fun a => conj (hermC τ.1 X.Gm v (X.colP y τ a))))).re := by
@@ -84,6 +106,15 @@ theorem posPart_eq_dot (X : Data E r) (y : Frame X.Ψ r) (τ : X.Ψ) (v : Fin r 
   refine Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun c _ => ?_
   rw [mul_assoc]; rfl
 
+/- English proof (translation)
+Unfold `Data.maj`. Use `congr 2`. Rewrite using `[posPart_eq_dot, posPart_eq_dot]`. Use `set B := blk X b τ`. Establish `hB` using `blk_det_ne X hb τ`.
+
+Establish `hc : (fun a => hermC τ.1 X.Gm v (X.colP (rmul y b) τ a)) = (fun a => hermC τ.1 X.Gm v (X.colP y τ a)) ᵥ* B.map (starRingEnd ℂ)`. Use function extensionality and compare the values at `a`. Rewrite using `[colP_rmul_eq X y hb, hermC_sum_right]`. Simplify using `only [vecMul, dotProduct, hermC_smul_right, Matrix.map_apply]`. Use `Finset.sum_congr rfl fun k _ => by ring` and prove the remaining obligations.
+
+Establish `hw : (fun a => conj (hermC τ.1 X.Gm v (X.colP (rmul y b) τ a))) = Bᵀ *ᵥ (fun a => conj (hermC τ.1 X.Gm v (X.colP y τ a)))`. Use function extensionality and compare the values at `a`. Rewrite using `[colP_rmul_eq X y hb, hermC_sum_right]`. Simplify using `only [mulVec, dotProduct, hermC_smul_right, Matrix.transpose_apply, map_sum, map_mul, Complex.conj_conj]`. Both sides reduce to the same expression.
+
+Establish `hB1 : IsUnit (B.map (starRingEnd ℂ)).det`. Rewrite using `[show B.map (starRingEnd ℂ) = (starRingEnd ℂ).mapMatrix B from rfl, ← RingHom.map_det]`. Conclude with `(Ne.isUnit hB).map _`. Establish `hB2 : IsUnit Bᵀ.det` using `by rw [Matrix.det_transpose]; exact Ne.isUnit hB`. Rewrite using `[hc, hw, gramPos_rmul X y hb, Matrix.mul_inv_rev, Matrix.mul_inv_rev, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hB1, Matrix.one_mul, Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hB2, Matrix.mul_one]`.
+-/
 theorem maj_rmul_any (X : Data E r) (y : Frame X.Ψ r) {b : Frame X.Ψ r} (hb : b ∈ Bor X.Ψ r)
     (τ : X.Ψ) (v : Fin r → ℂ) : X.maj (rmul y b) τ v = X.maj y τ v := by
   unfold Data.maj
@@ -120,11 +151,19 @@ open Matrix
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a`. Simplify using `[Data.emb, Matrix.mulVec, dotProduct, map_sum]`.
+-/
 theorem emb_mulVec' {r : ℕ} (τ : E →+* ℂ) (M : Matrix (Fin r) (Fin r) E) (v : Fin r → E) :
     Data.emb τ (M *ᵥ v) = (M.map τ) *ᵥ Data.emb τ v := by
   funext a
   simp [Data.emb, Matrix.mulVec, dotProduct, map_sum]
 
+/- English proof (translation)
+Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_le_sum fun τ _ => ?_` and prove the remaining obligations. Establish `hr2 : (0 : ℝ) ≤ (r : ℝ) ^ 2` using `by positivity`. Establish `hs : ∀ w : V (nd X.toData), ‖w‖ ≤ ρ → (r : ℝ) ^ 2 * ‖w‖ ≤ 1 / 100` using `fun w hw => (mul_le_mul_of_nonneg_left hw hr2).trans hρ`. Establish `h1` using `(GlobalTheory.T.majorant_chart_point_centre_factor_two E r X.toData x z' hx (hs z' hz') τ (Data.emb τ.1 ((γ : Matrix (Fin r) (Fin r) E) *ᵥ v))).2`.
+
+Establish `h2` using `(GlobalTheory.T.majorant_chart_point_centre_factor_two E r X.toData x z hx (hs z hz) τ (Data.emb τ.1 v)).1`. Establish `e1 : X.maj (cpt X.toData x z') τ (Data.emb τ.1 ((γ : Matrix (Fin r) (Fin r) E) *ᵥ v)) = X.maj (cpt X.toData x z) τ (Data.emb τ.1 v)`. Rewrite using `[← maj_rmul_any X.toData _ hb, ← heq, emb_mulVec', GlobalTheory.MajInv.maj_lact X.toData (X.Γ_stab γ hγ)]`. Rewrite `h1` using `[e1]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem maj_le_four {r : ℕ} (X : DataX E r) {x : Frame X.Ψ r} (hx : IsOrth X.toData x) {ρ : ℝ}
     (hρ : (r : ℝ) ^ 2 * ρ ≤ 1 / 100) {γ : GL (Fin r) E} (hγ : γ ∈ X.Γ) {z z' : V (nd X.toData)}
     (hz : ‖z‖ ≤ ρ) (hz' : ‖z'‖ ≤ ρ) {b : Frame X.Ψ r} (hb : b ∈ Bor X.Ψ r)
@@ -152,6 +191,29 @@ namespace GlobalTheory
 
 open Matrix
 
+/- English proof (translation)
+Introduce `E _ _ _ r X x ε ρ hr hx hε hρ hL hmin`. Establish `hdom : x ∈ X.dom` using `ReciprocityTheory.ChartRestriction.G.AR.Up.ModeHalfA.dom_of_orth X.toData hx`. Take `⟨w, hwL, hli, hwB⟩` from `exists_short_basis_at X x hdom ε hε hmin`. Use `set Bd : ℝ := (2 * fdeg E * r : ℝ) ^ 4 * dE E ^ 2 / (4 * ε) with hBd`. Establish `hd : 0 ≤ dE E` using `abs_nonneg _`.
+
+Establish `hBd0 : 0 ≤ Bd` using `by positivity`. Use `set T : Set (Fin r → E) := {v | v ∈ X.L' ∧ ∑ τ, X.maj x τ (Data.emb τ.1 v) ≤ 4 * Bd} with hT`. Establish `hTc` using `GlobalTheory.T.encard_selfDualLattice_bounded_majorant_le E r X x ε (4 * Bd) hdom hε (by positivity) hmin`. Establish `hTfin : T.Finite`. Rewrite using `[← Set.encard_ne_top_iff]`.
+
+Introduce `htop`. Rewrite `hTc` using `[htop]`. Simplify using `at hTc`. Use `set Tf := hTfin.toFinset`. Use `set S := {γ : GL (Fin r) E | γ ∈ X.Γ ∧ ∃ z z' : V (nd X.toData), ‖z‖ ≤ ρ ∧ ‖z'‖ ≤ ρ ∧ ∃ b ∈ Bor X.Ψ r, lact γ (cpt X.toData x z) = rmul (cpt X.toData x z') b}`.
+
+Set `f : GL (Fin r) E → Fin r → Fin r → E` to `fun γ i => (γ : Matrix (Fin r) (Fin r) E) *ᵥ w i`. Establish `hmaps : Set.MapsTo f S (↑(Fintype.piFinset fun _ : Fin r => Tf))`. Introduce and unpack `γ ⟨hγ, z, z', hz, hz', b, hb, heq⟩`. Rewrite using `[Fintype.coe_piFinset]`. Introduce `i _`.
+
+Simplify using `only [Tf, Set.Finite.coe_toFinset]`. Use `⟨hL γ hγ _ (hwL i), ?_⟩` and prove the remaining obligations. Use `ChartMult.maj_le_four X hx hρ hγ hz hz' hb heq (w i)` as an intermediate fact. Use `hwB i` as an intermediate fact. Use `show ∑ τ, X.maj x τ (Data.emb τ.1 ((γ : Matrix (Fin r) (Fin r) E) *ᵥ w i)) ≤ 4 * Bd`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hinj : Set.InjOn f S`. Introduce `γ _ γ' _ h`. Use `haveI : Nonempty (Fin r) := ⟨⟨0, hr⟩⟩`. Set `bw` to `basisOfLinearIndependentOfCardEqFinrank hli (by simp)`.
+
+Establish `hlin : Matrix.toLin' (γ : Matrix (Fin r) (Fin r) E) = Matrix.toLin' (γ' : Matrix (Fin r) (Fin r) E)` using `bw.ext fun i => by`. Simplify using `only [bw, coe_basisOfLinearIndependentOfCardEqFinrank, Matrix.toLin'_apply]`. Conclude with `congrFun h i`. Conclude with `Units.ext (Matrix.toLin'.injective hlin)`. Establish `hS` using `Set.encard_le_encard_of_injOn hmaps hinj`.
+
+Rewrite `hS` using `[Set.encard_coe_eq_coe_finsetCard, Fintype.card_piFinset, Finset.prod_const, Finset.card_univ, Fintype.card_fin]`. Establish `hTe : T.encard = (Tf.card : ℕ∞)` using `hTfin.encard_eq_coe_toFinset_card`. Rewrite `hTc` using `[hTe, ENat.toENNReal_coe]`. Use `set a : ℝ := (1 + 2 * Real.sqrt (4 * Bd / ε)) ^ (2 * fdeg E * r) with ha`. Establish `ha0 : 0 ≤ a` using `by positivity`.
+
+Establish `hsq : Real.sqrt (4 * Bd / ε) = 2 * fdeg E * r * (2 * fdeg E * r) * dE E / ε`. Rewrite using `[show 4 * Bd / ε = (2 * fdeg E * r * (2 * fdeg E * r) * dE E / ε) ^ 2 by`. Rewrite using `[hBd]`. Use the proof step `field_simp]`. Conclude with `Real.sqrt_sq (by positivity)`.
+
+Establish `hmult : a ^ r = multBd E r ε`. Rewrite using `[ha, hsq, multBd, ← pow_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Expand and normalize the polynomial expressions, which then agree.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem chart_mult_le : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : DataX E r) (x : Frame X.Ψ r) (ε ρ : ℝ), 0 < r → IsOrth X.toData x → 0 < ε → (r : ℝ) ^ 2 * ρ ≤ 1 / 100 → (∀ γ ∈ X.Γ, ∀ v ∈ X.L', (γ : Matrix (Fin r) (Fin r) E).mulVec v ∈ X.L') → (∀ v ∈ X.L', v ≠ 0 → ε ≤ ∑ τ, X.maj x τ (Data.emb τ.1 v)) → ({γ : GL (Fin r) E | γ ∈ X.Γ ∧ ∃ z z' : V (nd X.toData), ‖z‖ ≤ ρ ∧ ‖z'‖ ≤ ρ ∧ ∃ b ∈ Bor X.Ψ r, lact γ (cpt X.toData x z) = rmul (cpt X.toData x z') b}.encard : ℝ≥0∞) ≤ ENNReal.ofReal (multBd E r ε) := by
   intro E _ _ _ r X x ε ρ hr hx hε hρ hL hmin
   classical

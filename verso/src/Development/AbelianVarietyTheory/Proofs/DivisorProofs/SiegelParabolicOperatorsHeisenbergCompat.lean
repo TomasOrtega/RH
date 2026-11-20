@@ -7,6 +7,27 @@ open GlobalTheory.SplitWeil (SB nabs)
 
 namespace GlobalTheory.KSp
 
+/- English proof (translation)
+Introduce `F _ _ _ _ _ E _ _ _ _ c δ hE α _ _ ν _ _ Q hQ ψ _ _ _ χ _ _ p hp w φ`. Establish `hc : ∀ z, c (c z) = z` using `hE.invol`. Establish `hp0 : (mat c p).toBlocks₂₁ = 0` using `hp`. Use `set A := (mat c p).toBlocks₁₁ with hA`. Use `set B := (mat c p).toBlocks₁₂ with hB`.
+
+Use `set D := (mat c p).toBlocks₂₂ with hD`. Establish `key : ∀ x y : Matrix α ν E, fromCols x y * mat c p = fromCols (x * A) (x * B + y * D)`. Introduce `x y`. Use `conv_lhs => rw [← fromBlocks_toBlocks (mat c p)]`. Rewrite using `[fromCols_mul_fromBlocks, hp0]`.
+
+Simplify using `[hA, hB, hD]`. Establish `spl : ∀ u v : Matrix α ν E, fromCols u v = fromCols u 0 + fromCols 0 v` using `fun u v => by`. Apply the tactic sequence `ext i (j | j) <;> simp`. Establish `e1 : ∀ x x' : Matrix α ν E, fromCols (x + x') (0 : Matrix α ν E) = fromCols x 0 + fromCols x' 0` using `fun x x' => by`. Apply the tactic sequence `ext i (j | j) <;> simp`.
+
+Establish `e2 : ∀ y y' : Matrix α ν E, fromCols (0 : Matrix α ν E) (y + y') = fromCols 0 y + fromCols 0 y'` using `fun x x' => by`. Apply the tactic sequence `ext i (j | j) <;> simp`. Establish `h1 : ∀ x y : Matrix α ν E, form c Q (fromCols (x * A) 0) (fromCols 0 (y * D)) = form c Q (fromCols x 0) (fromCols 0 y)`. Introduce `x y`. Establish `h` using `form_mul c Q p (fromCols x 0) (fromCols 0 y)`.
+
+Express the relevant statement in the definitionally equal form `form c Q (fromCols x 0 * mat c p) (fromCols 0 y * mat c p) = _ at h`. Rewrite `h` using `[key, key]`. Simplify using `only [Matrix.zero_mul, add_zero, zero_add] at h`. Rewrite `h` using `[spl (x * A) (x * B), form_add_left, form_right_right, add_zero]`. Conclude with `h`.
+
+Establish `h2 : ∀ x x' : Matrix α ν E, form c Q (fromCols (x' * A) 0) (fromCols 0 (x * B)) = form c Q (fromCols (x * A) 0) (fromCols 0 (x' * B))`. Introduce `x x'`. Establish `h` using `form_mul c Q p (fromCols x' 0) (fromCols x 0)`. Express the relevant statement in the definitionally equal form `form c Q (fromCols x' 0 * mat c p) (fromCols x 0 * mat c p) = _ at h`. Rewrite `h` using `[key, key]`.
+
+Simplify using `only [Matrix.zero_mul, add_zero, zero_add] at h`. Rewrite `h` using `[spl (x' * A) (x' * B), spl (x * A) (x * B), form_add_left, form_add_right, form_add_right, form_left_left, form_left_left, form_right_right, form_swap c hc hQ (fromCols (x * A) 0) (fromCols 0 (x' * B))]`. Take the linear combination `h`. Establish `hw : w * mat c p = fromCols (w.toCols₁ * A) (w.toCols₁ * B + w.toCols₂ * D)` using `by conv_lhs => rw [← fromCols_toCols w]`. Conclude with `key _ _`.
+
+Use function extensionality and compare the values at `x`. Simplify using `only [heisFun, parFun, pr, hw, toCols₁_fromCols, toCols₂_fromCols]`. Rewrite using `[← hA, ← hB]`. Establish `key2 : ∀ (a b c d : F) (s t : ℂ), a + b = c + d → ψ a * (s * (ψ b * t)) = s * (ψ c * (ψ d * t))`. Introduce `a b c d s t h`.
+
+Rewrite using `[show ψ a * (s * (ψ b * t)) = s * (ψ (a + b) * t) by rw [AddChar.map_add_eq_mul]; ring, h, AddChar.map_add_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Matrix.add_mul x w.toCols₁ A, Matrix.add_mul x w.toCols₁ B]`. Simplify using `only [e1, e2, form_add_left, form_add_right, h1]`. Rewrite using `[h2 x w.toCols₁]`.
+
+Apply `key2` to reduce the goal to its premises. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem heisFun_parFun : ∀ (F : Type) [Field F] [CharZero F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] (E : Type) [Field E] [Algebra F E] [TopologicalSpace E] [IsModuleTopology F E] (c : E →ₐ[F] E) (δ : E) (hE : IsQuad c δ) (α : Type) [Fintype α] [DecidableEq α] (ν : Type) [Fintype ν] [DecidableEq ν] (Q : Matrix α α E) (_ : IsHerm c Q) (ψ : AddChar F ℂ) (hψ : Continuous ψ) (_ : ∀ t, ‖ψ t‖ = 1) (_ : ψ ≠ 1) (χ : Eˣ →* Circle) (_ : Continuous χ) (_ : ResEtaPow (R := F) ⊥ χ (Fintype.card α)) (p : UG c (stdJ ν E)), p ∈ sieg c ν → ∀ (w : Matrix α (ν ⊕ ν) E) (φ : Matrix α ν E → ℂ), heisFun c ψ Q w (parFun c ψ χ Q (mat c p) φ) = parFun c ψ χ Q (mat c p) (heisFun c ψ Q (w * mat c p) φ) := by
   intro F _ _ _ _ _ E _ _ _ _ c δ hE α _ _ ν _ _ Q hQ ψ _ _ _ χ _ _ p hp w φ
   have hc : ∀ z, c (c z) = z := hE.invol

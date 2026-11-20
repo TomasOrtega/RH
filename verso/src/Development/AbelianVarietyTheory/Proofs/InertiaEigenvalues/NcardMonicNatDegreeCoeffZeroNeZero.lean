@@ -5,6 +5,9 @@ open scoped Classical
 
 namespace GlobalTheory.GrPolys
 
+/- English proof (translation)
+Establish `e : {f : (ZMod g)[X] | f.Monic ∧ f.natDegree = n} ≃ (Fin n → ZMod g)` using `(monicEquivDegreeLT n).trans (degreeLTEquiv (ZMod g) n).toEquiv`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← Nat.card_coe_set_eq, Nat.card_congr e, Nat.card_eq_fintype_card, Fintype.card_fun, ZMod.card, Fintype.card_fin]`. Use `haveI : Finite {f : (ZMod g)[X] | f.Monic ∧ f.natDegree = n} := Finite.of_equiv _ e.symm`. Conclude with `Set.toFinite _`.
+-/
 theorem monic_deg_equiv_card (g : ℕ) [Fact g.Prime] (n : ℕ) :
     Set.ncard {f : (ZMod g)[X] | f.Monic ∧ f.natDegree = n} = g ^ n ∧
       Set.Finite {f : (ZMod g)[X] | f.Monic ∧ f.natDegree = n} := by
@@ -16,6 +19,13 @@ theorem monic_deg_equiv_card (g : ℕ) [Fact g.Prime] (n : ℕ) :
   · haveI : Finite {f : (ZMod g)[X] | f.Monic ∧ f.natDegree = n} := Finite.of_equiv _ e.symm
     exact Set.toFinite _
 
+/- English proof (translation)
+Use extensionality with `f`. Simplify using `only [Set.mem_setOf_eq, Set.mem_image]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hm, hd, h0⟩`. Take `⟨h, rfl⟩` from `X_dvd_iff.mpr h0`.
+
+Establish `hmh : h.Monic` using `Monic.of_mul_monic_left monic_X hm`. Use `⟨h, ⟨hmh, ?_⟩, rfl⟩` and prove the remaining obligations. Rewrite `hd` using `[natDegree_X_mul hmh.ne_zero]`. Use linear arithmetic over natural numbers and integers. Introduce and unpack `⟨h, ⟨hm, hd⟩, rfl⟩`.
+
+Use `⟨monic_X.mul hm, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[natDegree_X_mul hm.ne_zero]`. Use linear arithmetic over natural numbers and integers. Simplify using `[mul_coeff_zero]`.
+-/
 theorem zero_part_eq (g : ℕ) [Fact g.Prime] (n : ℕ) (hn : 0 < n) :
     {f : (ZMod g)[X] | f.Monic ∧ f.natDegree = n ∧ f.coeff 0 = 0} =
       (fun h => X * h) '' {f : (ZMod g)[X] | f.Monic ∧ f.natDegree = n - 1} := by
@@ -35,6 +45,17 @@ theorem zero_part_eq (g : ℕ) [Fact g.Prime] (n : ℕ) (hn : 0 < n) :
 
 end GlobalTheory.GrPolys
 
+/- English proof (translation)
+Introduce `g _ n hn`. Take `⟨hcS, hfS⟩` from `GlobalTheory.GrPolys.monic_deg_equiv_card g n`. Take `⟨hcT, hfT⟩` from `GlobalTheory.GrPolys.monic_deg_equiv_card g (n - 1)`. Use `set S := {f : (ZMod g)[X] | f.Monic ∧ f.natDegree = n}`. Use `set A := {f : (ZMod g)[X] | f.Monic ∧ f.natDegree = n ∧ f.coeff 0 ≠ 0}`.
+
+Use `set B := {f : (ZMod g)[X] | f.Monic ∧ f.natDegree = n ∧ f.coeff 0 = 0}`. Establish `hAS : A ⊆ S` using `fun f hf => ⟨hf.1, hf.2.1⟩`. Establish `hBS : B ⊆ S` using `fun f hf => ⟨hf.1, hf.2.1⟩`. Establish `hfA : A.Finite` using `hfS.subset hAS`. Establish `hfB : B.Finite` using `hfS.subset hBS`.
+
+Establish `hU : A ∪ B = S`. Use extensionality with `f`. Simplify using `only [A, B, S, Set.mem_union, Set.mem_setOf_eq]`. The claim follows by propositional logic. Establish `hD : Disjoint A B`.
+
+Rewrite using `[Set.disjoint_left]`. Introduce `f hA hB`. Conclude with `hA.2.2 hB.2.2`. Establish `hB : B.ncard = g ^ (n - 1)`. Rewrite using `[show B = _ from GlobalTheory.GrPolys.zero_part_eq g n hn, Set.ncard_image_of_injective _ (fun a b h => mul_left_cancel₀ X_ne_zero h), hcT]`.
+
+Use `Set.ncard_union_eq hD hfA hfB` as an intermediate fact. Rewrite `this` using `[hU, hcS, hB]`. Conclude with `⟨by omega, hfA⟩`.
+-/
 theorem GlobalTheory.GrPolys.card_monic_coeff_zero_ne_zero :
     ∀ (g : ℕ) [Fact g.Prime] (n : ℕ), 0 < n → Set.ncard {f : (ZMod g)[X] | f.Monic ∧ f.natDegree = n ∧ f.coeff 0 ≠ 0} = g ^ n - g ^ (n - 1) ∧ Set.Finite {f : (ZMod g)[X] | f.Monic ∧ f.natDegree = n ∧ f.coeff 0 ≠ 0} := by
   intro g _ n hn

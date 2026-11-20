@@ -12,8 +12,17 @@ namespace Formalism.FG
 
 universe u v w
 
+/- English proof (translation)
+The claim follows from `additive_law_example`.
+-/
 theorem addLawExample : AddLawExample := additive_law_example
+/- English proof (translation)
+The claim follows from `not_a_law_example`.
+-/
 theorem notLawExample : NotLawExample := not_a_law_example
+/- English proof (translation)
+The claim follows from `functional_equation_hom_vector`.
+-/
 theorem funEqHomV : FunEqHomV.{u, v, w} := functional_equation_hom_vector
 
 end Formalism.FG

@@ -28,11 +28,19 @@ variable {l : ℕ} [hl : Fact l.Prime] {a : ℕ} [NeZero a] {e : ℕ} [NeZero e]
   {ι : Type} [Fintype ι] [DecidableEq ι]
   {G : Type} [Group G] [TopologicalSpace G]
 
+/- English proof (translation)
+Rewrite using `[inclL_apply, inclL_apply, ← Matrix.mulVec_smul]`. Conclude with `congrArg _ (funext fun i => map_mul _ _ _)`.
+-/
 theorem inclL_smul (P : PhiMod O K l e a ι) (r : OA l O) (d : ι → OA l O) :
     inclL t ϖ P (r • d) = inclO l O r • inclL t ϖ P d := by
   rw [inclL_apply, inclL_apply, ← Matrix.mulVec_smul]
   exact congrArg _ (funext fun i => map_mul _ _ _)
 
+/- English proof (translation)
+Take `⟨m, c, hm, h1, h2⟩` from `h`. Take `⟨m', c', hm', h1', h2'⟩` from `h'`. Use `⟨m * m', m' • c + m • c', by rw [map_mul]; exact hm.mul hm', ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, inclL_smul, inclL_smul, ← h1, ← h1', map_mul, smul_add, mul_smul, mul_smul, smul_comm (inclO l O m) (inclO l O m') w]`. Establish `e1 : (fun i => toB l O ((m' • c + m • c') i)) = toB l O m' • (fun i => toB l O (c i)) + toB l O m • (fun i => toB l O (c' i))`.
+
+Use function extensionality and compare the values at `i`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, map_add, map_mul]`. Rewrite using `[e1, map_add, map_smul, map_smul, ← h2, ← h2', map_mul, smul_add, mul_smul, mul_smul, smul_comm (toB l O m) (toB l O m') b]`.
+-/
 theorem isCrisVal_add {P : PhiMod O K l e a ι} {T : LocLat G ℚ_[l] K O}
     {jB : (ι → OB l O) ≃ₗ[OB l O] TW (OB l O) T} {w w' : ι → OW l O} {b b' : TW (OB l O) T}
     (h : IsCrisVal t ϖ P jB w b) (h' : IsCrisVal t ϖ P jB w' b') :
@@ -49,6 +57,9 @@ theorem isCrisVal_add {P : PhiMod O K l e a ι} {T : LocLat G ℚ_[l] K O}
     rw [e1, map_add, map_smul, map_smul, ← h2, ← h2', map_mul, smul_add, mul_smul, mul_smul,
       smul_comm (toB l O m) (toB l O m') b]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨1, 0, by rw [map_one]; exact isUnit_one, by rw [smul_zero, map_zero], by rw [smul_zero] have e0 : (fun i => toB l O ((0 : ι → OA l O) i)) = 0 := funext fun i => map_zero (toB l O) rw [e0, map_zero]⟩`.
+-/
 theorem isCrisVal_zero {P : PhiMod O K l e a ι} {T : LocLat G ℚ_[l] K O}
     {jB : (ι → OB l O) ≃ₗ[OB l O] TW (OB l O) T} : IsCrisVal t ϖ P jB 0 0 :=
   ⟨1, 0, by rw [map_one]; exact isUnit_one, by rw [smul_zero, map_zero], by
@@ -56,6 +67,9 @@ theorem isCrisVal_zero {P : PhiMod O K l e a ι} {T : LocLat G ℚ_[l] K O}
     have e0 : (fun i => toB l O ((0 : ι → OA l O) i)) = 0 := funext fun i => map_zero (toB l O)
     rw [e0, map_zero]⟩
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => rw [zero_smul, zero_smul]`. Conclude with `isCrisVal_zero`. Consider the case `succ n ih => rw [succ_nsmul, succ_nsmul]`. Conclude with `isCrisVal_add ih h`.
+-/
 theorem isCrisVal_nsmul {P : PhiMod O K l e a ι} {T : LocLat G ℚ_[l] K O}
     {jB : (ι → OB l O) ≃ₗ[OB l O] TW (OB l O) T} {w : ι → OW l O} {b : TW (OB l O) T}
     (h : IsCrisVal t ϖ P jB w b) (n : ℕ) : IsCrisVal t ϖ P jB (n • w) (n • b) := by
@@ -65,6 +79,13 @@ theorem isCrisVal_nsmul {P : PhiMod O K l e a ι} {T : LocLat G ℚ_[l] K O}
 
 variable [TameDescentExponentData K l e a] {s : G →* GQ l} {η H : ℕ} {D : BKDat O K l e a ι η H} {T : LocLat G ℚ_[l] K O}
 
+/- English proof (translation)
+Take `⟨hy, m₀, σ, b₀, h1, h2, h3, h4, h5⟩` from `h`. Take `⟨hy', m₀', σ', b₀', h1', h2', h3', h4', h5'⟩` from `h'`. Use `⟨add_mem hy hy', m₀ + m₀', σ + σ', b₀ + b₀', ?_, add_mem h2 h2', ?_, ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = toW t ϖ D.toPhiMod (⟨y, hy⟩ + ⟨y', hy'⟩)`. Rewrite using `[map_add, map_add, ← h1, ← h1']`.
+
+Normalize the expressions using the abelian group laws. Rewrite using `[Submodule.coe_add, map_add, map_add, h3, h3']`. Rewrite using `[map_add]`. Conclude with `isCrisVal_add h4 h4'`. Rewrite using `[h5, h5', map_add, map_add]`.
+
+Normalize the expressions using the abelian group laws.
+-/
 theorem isPotential_add (R : GalDat t ϖ s D T) {y y' : Vec K a ι} {b b' : TW (OB l O) T}
     (h : R.IsPotential y b) (h' : R.IsPotential y' b') : R.IsPotential (y + y') (b + b') := by
   obtain ⟨hy, m₀, σ, b₀, h1, h2, h3, h4, h5⟩ := h
@@ -79,6 +100,11 @@ theorem isPotential_add (R : GalDat t ϖ s D T) {y y' : Vec K a ι} {b b' : TW (
   · rw [h5, h5', map_add, map_add]
     abel
 
+/- English proof (translation)
+Take `⟨hy, m₀, σ, b₀, h1, h2, h3, h4, h5⟩` from `h`. Use `⟨(ME D.toPhiMod).nsmul_mem hy n, n • m₀, n • σ, n • b₀, ?_, D.desc.inv.nsmul_mem h2 n, ?_, ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = toW t ϖ D.toPhiMod (n • ⟨y, hy⟩)`. Rewrite using `[map_nsmul, map_nsmul, ← h1, smul_sub]`. Use `show D.conn (n • σ.1) = _`.
+
+Rewrite using `[map_nsmul, map_nsmul, h3]`. Rewrite using `[map_nsmul]`. Conclude with `isCrisVal_nsmul h4 n`. Rewrite using `[h5, map_nsmul, map_nsmul, nsmul_sub]`.
+-/
 theorem isPotential_nsmul (R : GalDat t ϖ s D T) {y : Vec K a ι} {b : TW (OB l O) T}
     (h : R.IsPotential y b) (n : ℕ) : R.IsPotential (n • y) (n • b) := by
   obtain ⟨hy, m₀, σ, b₀, h1, h2, h3, h4, h5⟩ := h
@@ -91,16 +117,27 @@ theorem isPotential_nsmul (R : GalDat t ϖ s D T) {y : Vec K a ι} {b : TW (OB l
     exact isCrisVal_nsmul h4 n
   · rw [h5, map_nsmul, map_nsmul, nsmul_sub]
 
+/- English proof (translation)
+Introduce `g n x hx`. Establish `h1` using `h g (n + k) x (by rw [hx, Pi.smul_apply, smul_smul, pow_add])`. Rewrite using `[h1, map_nsmul, ← nsmul_sub, ← Nat.cast_smul_eq_nsmul O, smul_smul, Nat.cast_pow, pow_add]`.
+-/
 theorem isCobOf_pow {b : TW (OB l O) T} {c : G → T.V} (h : IsCobOf s T b c) (k : ℕ) :
     IsCobOf s T ((l ^ k : ℕ) • b) ((l : K) ^ k • c) := by
   intro g n x hx
   have h1 := h g (n + k) x (by rw [hx, Pi.smul_apply, smul_smul, pow_add])
   rw [h1, map_nsmul, ← nsmul_sub, ← Nat.cast_smul_eq_nsmul O, smul_smul, Nat.cast_pow, pow_add]
 
+/- English proof (translation)
+Take `⟨ε, h1, h2⟩` from `GlobalTheory.MemLoc.Model.exists_isEps l`. Conclude with `⟨ε, h1, (frobeniusEquiv (Per.Fl l) l).symm ε, frobeniusEquiv_symm_pow_p _ _ _, h2⟩`.
+-/
 theorem exists_isEps : ∃ ε : OCb l, IsEps ε := by
   obtain ⟨ε, h1, h2⟩ := GlobalTheory.MemLoc.Model.exists_isEps l
   exact ⟨ε, h1, (frobeniusEquiv (Per.Fl l) l).symm ε, frobeniusEquiv_symm_pow_p _ _ _, h2⟩
 
+/- English proof (translation)
+Take `⟨δ, hδ, -⟩` from `hε.2`. Establish `hu : IsUnit (acrisToBcris l (ainfToAcris l (muOf ε)))` using `((GlobalTheory.T.teichmullerSubOneAinf_properties_compatibleRoots l).2 ε δ hε hδ).2.2.2.1`. Establish `e1 : toB l O ((1 : O) ⊗ₜ[ℤ_[l]] (muOf ε ^ n)) = (Algebra.TensorProduct.includeRight : Per.Bcris l →ₐ[ℤ_[l]] OB l O) (acrisToBcris l (ainfToAcris l (muOf ε)) ^ n)`. Simplify using `only [toB, toOB, toOCr, AlgHom.comp_apply, Algebra.TensorProduct.map_tmul, AlgHom.id_apply, Algebra.TensorProduct.includeRight_apply, map_pow, Algebra.TensorProduct.tmul_pow, one_pow]`. Rewrite using `[e1]`.
+
+Conclude with `(hu.pow n).map _`.
+-/
 theorem isUnit_toB_muOf {ε : OCb l} (hε : IsEps ε) (n : ℕ) :
     IsUnit (toB l O ((1 : O) ⊗ₜ[ℤ_[l]] (muOf ε ^ n))) := by
   obtain ⟨δ, hδ, -⟩ := hε.2
@@ -114,6 +151,13 @@ theorem isUnit_toB_muOf {ε : OCb l} (hε : IsEps ε) (n : ℕ) :
   rw [e1]
   exact (hu.pow n).map _
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul w x`. Establish `hw : galOB O (s (g * g')) w = galOB O (s g) (galOB O (s g') w)`.
+
+Rewrite using `[map_mul]`. Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `add u v hu hv => simp only [map_add, hu, hv]`. Consider the case `tmul o c`.
+
+Simplify using `only [galOB, Algebra.TensorProduct.map_tmul, AlgHom.id_apply]`. Conclude with `congrArg (fun z : Per.Bcris l => o ⊗ₜ[ℤ_[l]] z) ((GlobalTheory.MemLoc.ActLaws.act_laws l).1 _ _ c)`. Establish `hx : T.actT (g * g') x = T.actT g (T.actT g' x)` using `Subtype.ext (LinearMap.congr_fun (map_mul T.ρ g g') (x : T.V))`. Simplify using `only [actB, TWact, TensorProduct.map_tmul, AlgHom.toLinearMap_apply, hw, hx]`.
+-/
 theorem actB_mul (s : G →* GQ l) (T : LocLat G ℚ_[l] K O) (g g' : G) (z : TW (OB l O) T) :
     actB s T (g * g') z = actB s T g (actB s T g' z) := by
   induction z using TensorProduct.induction_on with
@@ -132,6 +176,19 @@ theorem actB_mul (s : G →* GQ l) (T : LocLat G ℚ_[l] K O) (g g' : G) (z : TW
       Subtype.ext (LinearMap.congr_fun (map_mul T.ρ g g') (x : T.V))
     simp only [actB, TWact, TensorProduct.map_tmul, AlgHom.toLinearMap_apply, hw, hx]
 
+/- English proof (translation)
+Use `⟨-(x : T.V), neg_mem x.2, funext fun g => ?_⟩` and prove the remaining obligations. Take `⟨n₁, hn₁⟩` from `GlobalTheory.T.exists_prime_pow_smul_mem_localLattice l O K G T (c g)`. Take `⟨n₂, hn₂⟩` from `GlobalTheory.T.exists_prime_pow_smul_mem_localLattice l O K G T (c' g)`. Take `⟨x₁, hx₁⟩` from `hn₁ (max n₁ n₂) (le_max_left _ _)`. Take `⟨x₂, hx₂⟩` from `hn₂ (max n₁ n₂) (le_max_right _ _)`.
+
+Establish `e1` using `hb g _ x₁ hx₁`. Establish `e2` using `hb' g _ x₂ hx₂`. Establish `hact : actB s T g ((1 : OB l O) ⊗ₜ[O] x) = (1 : OB l O) ⊗ₜ[O] (T.actT g x)`. Rewrite using `[actB, TWact, TensorProduct.map_tmul, AlgHom.toLinearMap_apply, map_one]`. Establish `hbb : b = b' + (ξ - (1 : OB l O) ⊗ₜ[O] x)` using `by rw [← h]; abel`.
+
+Establish `e3 : (1 : OB l O) ⊗ₜ[O] (x₁ - x₂) = (1 : OB l O) ⊗ₜ[O] (((l : O) ^ max n₁ n₂) • (x - T.actT g x))`. Rewrite using `[TensorProduct.tmul_sub, e1, e2, ← smul_sub, TensorProduct.tmul_smul, TensorProduct.tmul_sub, ← hact, hbb, map_add, map_sub, hξ]`. Use `congr 1`. Normalize the expressions using the abelian group laws. Establish `e4` using `congrArg (fun z : ↥T.L.T => (z : T.V)) (GlobalTheory.T.one_tmul_injective_locLat l O K G T e3)`.
+
+Simplify using `only [Submodule.coe_sub, Submodule.coe_smul] at e4`. Establish `eO : ∀ v : T.V, ((l : O) ^ max n₁ n₂) • v = (l : K) ^ max n₁ n₂ • v` using `fun v => by`. Rewrite using `[← algebraMap_smul K ((l : O) ^ max n₁ n₂) v, map_pow, map_natCast]`. Rewrite `e4` using `[hx₁, hx₂, ← smul_sub, eO]`. Establish `hl0 : (l : K) ≠ 0`.
+
+Rewrite using `[← map_natCast (algebraMap ℚ_[l] K)]`. Conclude with `(map_ne_zero _).2 (Nat.cast_ne_zero.2 hl.out.ne_zero)`. Establish `e5` using `(smul_right_inj (pow_ne_zero (max n₁ n₂) hl0)).1 e4`. Simplify using `only [LinearMap.restrictScalars_apply, Pi.sub_apply]`. Rewrite using `[e5]`.
+
+Express the relevant statement in the definitionally equal form `T.ρ g (-(x : T.V)) - (-(x : T.V)) = (x : T.V) - T.ρ g (x : T.V)`. Rewrite using `[map_neg]`. Normalize the expressions using the abelian group laws.
+-/
 theorem sub_mem_B1T {s : G →* GQ l} {T : LocLat G ℚ_[l] K O} {b b' ξ : TW (OB l O) T} {c c' : G → T.V}
     (x : ↥T.L.T) (hb : IsCobOf s T b c) (hb' : IsCobOf s T b' c') (hξ : ∀ g, actB s T g ξ = ξ)
     (h : b - b' = ξ - (1 : OB l O) ⊗ₜ[O] x) : c - c' ∈ latticeCoboundaries T.L := by
@@ -170,6 +227,11 @@ section Ql
 
 variable [TameDescentExponentData K l e a] {η H : ℕ} {D : BKDat O K l e a ι η H} {T : LocLat (Gl l) ℚ_[l] K O}
 
+/- English proof (translation)
+Take `⟨ε, hε⟩` from `exists_isEps (l := l)`. Take `⟨δ, hδ, -⟩` from `hε.2`. Take `⟨c, hc⟩` from `(GlobalTheory.T.breuilKisin_mu_pow_smul_frobenius_mem_ainf l a e O K t ϖ ι D.toPhiMod T R.I η H D.upper D.lower ε δ hε hδ ⟨y, hy⟩ hyY.1 m₀ h).2`. Take `⟨u, hu⟩` from `isUnit_toB_muOf (O := O) hε (H + η)`. Use `⟨(↑u⁻¹ : OB l O) • R.jB (fun i => toB l O (c i)), (1 : O) ⊗ₜ[ℤ_[l]] (muOf ε ^ (H + η)), c, ⟨u, hu⟩, hc.symm, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← hu, smul_smul, Units.mul_inv, one_smul]`.
+-/
 theorem exists_isCrisVal (R : GalDat t ϖ (sQ l) D T) {y : Vec K a ι} (hyY : y ∈ D.Y) (hy : y ∈ ME D.toPhiMod)
     (m₀ : ι → OW l O) (h : phiW t ϖ D.toPhiMod m₀ - m₀ = toW t ϖ D.toPhiMod ⟨y, hy⟩) :
     ∃ b₀, IsCrisVal t ϖ D.toPhiMod R.jB (phiW t ϖ D.toPhiMod m₀) b₀ := by
@@ -182,6 +244,11 @@ theorem exists_isCrisVal (R : GalDat t ϖ (sQ l) D T) {y : Vec K a ι} (hyY : y 
     ⟨u, hu⟩, hc.symm, ?_⟩
   rw [← hu, smul_smul, Units.mul_inv, one_smul]
 
+/- English proof (translation)
+Take `⟨h, k, rfl, hh, γ, hk⟩` from `GlobalTheory.T.exists_galois_decomp_tameCover_action l a e O K t ϖ g`. Establish `hx` using `GlobalTheory.T.eq_xi_red_of_conn_eq_zero' O K l e a ι D.toPhiMod σ.1 hc`. Establish `hm : D.xi (red σ.1) ∈ D.MMl` using `by rw [← hx]; exact σ.2`. Establish `hσ : (⟨D.xi (red σ.1), hm⟩ : D.MMl) = σ` using `Subtype.ext hx.symm`. Establish `h2` using `R.horiz h hh (red σ.1) hm`.
+
+Rewrite `h2` using `[hσ]`. Establish `h3` using `GlobalTheory.T.kisinInfGalois_acts_through_descentDatum l a e O K t ϖ ι D.toPhiMod T R.I R.jB D.desc R.cmp R.desc k γ hk σ σ (hinv γ).symm`. Rewrite using `[actB_mul, h3, h2]`.
+-/
 theorem fix_of_horiz (R : GalDat t ϖ (sQ l) D T) (σ : D.MMl) (hinv : σ.1 ∈ D.desc.inv)
     (hc : D.conn σ.1 = 0) (g : Gl l) :
     actB (sQ l) T g (R.jB (toBcris t ϖ D.toPhiMod σ)) = R.jB (toBcris t ϖ D.toPhiMod σ) := by
@@ -196,6 +263,21 @@ theorem fix_of_horiz (R : GalDat t ϖ (sQ l) D T) (σ : D.MMl) (hinv : σ.1 ∈ 
 
 end Ql
 
+/- English proof (translation)
+Introduce `l _ a e _ _ O K _ _ _ _ _ _ _ _ _ _ t ϖ ι _ _ η H D T R`. Use `haveI : FiniteDimensional ℚ_[l] K := TameDescentExponentData.finite (K := K) (l := l) (e := e) (a := a)`. Use `haveI : CompleteSpace K := FiniteDimensional.complete ℚ_[l] K`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `y hyY`.
+
+Establish `hy : y ∈ ME D.toPhiMod` using `BKDat.mem_invE_of_mem_Y hyY`. Take `⟨m₀, hm₀⟩` from `R.I.exists_phiW_sub (toW t ϖ D.toPhiMod ⟨y, hy⟩)`. Establish `hYl : y ∈ D.Yl` using `D.desc.mem_Yl_iff.2 ⟨0, by rw [pow_zero, one_smul]; exact hyY⟩`. Take `⟨⟨σ, hσ, hinv, hconn, -⟩, -⟩` from `GlobalTheory.T.monodromy_mem_range_of_invariant_vector O K l e a ι η H D y hYl`. Take `⟨b₀, hb₀⟩` from `exists_isCrisVal R hyY hy m₀ hm₀`.
+
+Conclude with `⟨_, hy, m₀, ⟨σ, hσ⟩, b₀, hm₀, hinv, hconn, hb₀, rfl⟩`. Introduce and unpack `y c c' ⟨b, ⟨hy, m₀, σ, b₀, h1, h2, h3, h4, h5⟩, hc⟩ ⟨b', ⟨hy', m₀', σ', b₀', h1', h2', h3', h4', h5'⟩, hc'⟩`. Establish `hT : m₀ - m₀' ∈ Treal t ϖ D.toPhiMod`. Rewrite using `[mem_Treal, map_sub]`. Conclude with `sub_eq_sub_iff_sub_eq_sub.1 (h1.trans h1'.symm)`.
+
+Take `⟨x, hx⟩ : m₀ - m₀' ∈ LinearMap.range R.I.ofT` from `by rw [R.I.range_ofT]; exact hT`. Establish `hphi : phiW t ϖ D.toPhiMod m₀' + R.I.ofT x = phiW t ϖ D.toPhiMod m₀`. Rewrite using `[hx, ← mem_Treal.1 hT, map_sub]`. Normalize the expressions using the abelian group laws. Establish `hof` using `((GlobalTheory.T.breuilKisin_bcris_comparison_frobenius_naturality l a e O K t ϖ ι D.toPhiMod T R.I).2 R.jB R.cmp).2.2.2.1 x`.
+
+Establish `hsum` using `isCrisVal_add h4' hof`. Rewrite `hsum` using `[hphi]`. Establish `hb₀ : b₀ = b₀' + (1 : OB l O) ⊗ₜ[O] x` using `UnitModel.isCrisVal_unique t ϖ h4 hsum`. Use `sub_mem_B1T x hc hc' (fix_of_horiz R (σ - σ') (sub_mem h2 h2') ?_) ?_` and prove the remaining obligations. Use `show D.conn (σ.1 - σ'.1) = 0`.
+
+Rewrite using `[map_sub, h3, h3', sub_self]`. Rewrite using `[h5, h5', hb₀, map_sub, map_sub]`. Normalize the expressions using the abelian group laws. Introduce and unpack `y c k ⟨b, hb, hc⟩`. Use `⟨(l ^ k : ℕ) • b, ?_, isCobOf_pow hc k⟩` and prove the remaining obligations.
+
+Use `isPotential_nsmul R hb (l ^ k)` as an intermediate fact. Rewrite `this` using `[← Nat.cast_smul_eq_nsmul K, Nat.cast_pow]`. Then use the resulting hypothesis. Introduce and unpack `y c m hm ⟨b, hb, hc⟩`. Conclude with `⟨b + 0, isPotential_add R hb (UnitModel.isPotential_phi_sub t ϖ R hm), by rwa [add_zero]⟩`.
+-/
 theorem potential_class : ∀ (l : ℕ) [Fact l.Prime] (a e : ℕ) [NeZero a] [NeZero e] (O K : Type) [CommRing O] [Algebra ℤ_[l] O] [Module.Free ℤ_[l] O] [Module.Finite ℤ_[l] O] [NormedField K] [IsUltrametricDist K] [Algebra O K] [IsUnitBall O K] [NormedAlgebra ℚ_[l] K] [TameDescentExponentData K l e a] (t : Wq l a →ₐ[ℤ_[l]] O) (ϖ : PiSys l e) (ι : Type) [Fintype ι] [DecidableEq ι] (η H : ℕ) (D : BKDat O K l e a ι η H) (T : LocLat (Gl l) ℚ_[l] K O) (R : GalDat t ϖ (sQ l) D T), (∀ y ∈ D.Y, ∃ b, R.IsPotential y b) ∧ (∀ y c c', R.ClassOf y c → R.ClassOf y c' → c - c' ∈ latticeCoboundaries T.L) ∧ (∀ y c (k : ℕ), R.ClassOf y c → R.ClassOf ((l : K) ^ k • y) ((l : K) ^ k • c)) ∧ ∀ y c, ∀ m ∈ D.Minv, R.ClassOf y c → R.ClassOf (y + (D.phi m - m)) c := by
   intro l _ a e _ _ O K _ _ _ _ _ _ _ _ _ _ t ϖ ι _ _ η H D T R
   haveI : FiniteDimensional ℚ_[l] K := TameDescentExponentData.finite (K := K) (l := l) (e := e) (a := a)

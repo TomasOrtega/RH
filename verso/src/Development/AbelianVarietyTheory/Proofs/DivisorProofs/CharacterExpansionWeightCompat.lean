@@ -11,6 +11,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.HolRead.ToHol
 
+/- English proof (translation)
+Introduce `h0`. Use `congrArg Matrix.det h` as an intermediate fact. Rewrite `this` using `[det_mul, h0, mul_zero, det_diagonal]`. Use `(Finset.prod_ne_zero_iff.2 fun c _ => ?_) this.symm` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> norm_num`.
+-/
 theorem det_ne_of_frame {n : ℕ} (q : ℕ) (G x : Matrix (Fin n) (Fin n) ℂ)
     (h : xᴴ * G * x = diagonal fun c : Fin n => if (c : ℕ) < q then (-1 : ℂ) else 1) : x.det ≠ 0 := by
   intro h0
@@ -19,6 +22,11 @@ theorem det_ne_of_frame {n : ℕ} (q : ℕ) (G x : Matrix (Fin n) (Fin n) ℂ)
   refine (Finset.prod_ne_zero_iff.2 fun c _ => ?_) this.symm
   split_ifs <;> norm_num
 
+/- English proof (translation)
+Establish `hu : IsUnit x.det` using `hx.isUnit`. Establish `h1 : x * x⁻¹ = 1` using `mul_nonsing_inv x hu`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = (x * x⁻¹)ᴴ * G * (x * x⁻¹) := by`.
+
+Rewrite using `[h]`. Simplify using `only [conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = G := by rw [h1]; simp`.
+-/
 theorem unitary_of_frames {n : ℕ} (G x x₀ : Matrix (Fin n) (Fin n) ℂ) (hx : x.det ≠ 0)
     (h : x₀ᴴ * G * x₀ = xᴴ * G * x) : (x₀ * x⁻¹)ᴴ * G * (x₀ * x⁻¹) = G := by
   have hu : IsUnit x.det := hx.isUnit
@@ -29,11 +37,19 @@ theorem unitary_of_frames {n : ℕ} (G x x₀ : Matrix (Fin n) (Fin n) ℂ) (hx 
         rw [h]; simp only [conjTranspose_mul, Matrix.mul_assoc]
     _ = G := by rw [h1]; simp
 
+/- English proof (translation)
+Simplify using `only [det_apply', mat, of_apply]`. Use `fun_prop`.
+-/
 theorem differentiable_det {E : Type} [Field E] {Ψ : Finset (E →+* ℂ)} {r : ℕ} (τ : Ψ) :
     Differentiable ℂ fun y : Frame Ψ r => (mat y τ).det := by
   simp only [det_apply', mat, of_apply]
   fun_prop
 
+/- English proof (translation)
+Unfold `bchar`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Establish `hd : (mat b τ).det = ∏ i, b τ i i` using `det_of_upperTriangular (M := mat b τ) fun a c h => (hb τ).2 a c h`. Establish `hne : ∀ i, b τ i i ≠ 0` using `fun i => Finset.prod_ne_zero_iff.1 (fun h => (hb τ).1 (hd.trans h)) i (Finset.mem_univ _)`.
+
+Rewrite using `[hd, ← Finset.prod_zpow, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← zpow_add₀ (hne i), sub_add_cancel]`.
+-/
 theorem bchar_shift {E : Type} [Field E] {Ψ : Finset (E →+* ℂ)} {r : ℕ} (la : ReciprocityTheory.ChartRestriction.G.FD.Wt Ψ r) (e : Ψ → ℤ)
     (b : Frame Ψ r) (hb : b ∈ Bor Ψ r) :
     bchar la b = bchar (fun τ i => la τ i - e τ) b * ∏ τ, (mat b τ).det ^ e τ := by
@@ -48,11 +64,39 @@ theorem bchar_shift {E : Type} [Field E] {Ψ : Finset (E →+* ℂ)} {r : ℕ} (
   refine Finset.prod_congr rfl fun i _ => ?_
   rw [← zpow_add₀ (hne i), sub_add_cancel]
 
+/- English proof (translation)
+Unfold `archM`. Rewrite using `[map_mul, Units.val_mul, Matrix.map_mul]`.
+-/
 theorem archM_mul' {D : D7} (V : HSp D) (θ : Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ) (a b : GA D V) :
     archM V θ (a * b) = archM V θ a * archM V θ b := by
   unfold archM
   rw [map_mul, Units.val_mul, Matrix.map_mul]
 
+/- English proof (translation)
+Introduce `D θ V r hr Comp X dict Kf x₀ la x q w e mu hθ hB hKf hq hx hmul hnorm hQ hK hinf hla hχ hsep`. Establish `hx₀ : NegFirst V q x₀` using `hq (dict 1).1 ▸ (hB.1 (dict 1).1).2.1`. Establish `hdx : ∀ ρ, (x ρ).det ≠ 0` using `fun ρ => det_ne_of_frame q _ _ (hx ρ)`. Establish `hdx₀ : ∀ ρ, (x₀ ρ).det ≠ 0` using `fun ρ => det_ne_of_frame q _ _ (hx₀ ρ)`. Take `⟨a, ha, haM⟩` from `(GlobalTheory.SmoothForms.RealPts.glue θ hθ V).2 (fun ρ => x₀ ρ * (x ρ)⁻¹) (fun ρ => unitary_of_frames _ _ _ (hdx ρ) ((hx₀ ρ).trans (hx ρ).symm))`.
+
+Establish `haM' : ∀ ρ, archM V (θ ρ) a * x ρ = x₀ ρ` using `fun ρ => by`. Establish `: archM V (θ ρ) a = x₀ ρ * (x ρ)⁻¹` using `haM ρ`. Rewrite using `[this, Matrix.mul_assoc, nonsing_inv_mul _ (hdx ρ).isUnit, Matrix.mul_one]`. Establish `hcomm` using `(GlobalTheory.UnitarySplit.real_finite_split D V).2.1`. Establish `hmu0 : ∀ g, mu g ≠ 0` using `fun g h => by simpa [h] using hnorm g`.
+
+Use `⟨a, fun φ hφ hl hk ⟨C, hC⟩ => ?_⟩` and prove the remaining obligations. Take `⟨P, hP, hPe, hPb⟩` from `GlobalTheory.T.automorphic_expansion_in_dictionary D θ V r hr Comp X dict Kf x₀ la (fun g => φ (g * a) / mu g) hθ hB hχ (fun γ hγ g => by simp only [mul_assoc, hl γ hγ, hmul, hQ γ hγ, one_mul]) (fun k hk' g => by`. Simplify using `only [hmul, hK k hk', mul_one]`. Rewrite using `[mul_assoc, ← hcomm a ha k (hKf hk'), ← mul_assoc, hk k hk'])`. Use the proof step `(fun k g => by`.
+
+Establish `hM` using `(hB.1 k).1`. Use `choose s hs using fun τ : (X k).Ψ => (hM.1 τ.1).1 τ.2`. Establish `hsρ : ∀ (ρ : D.what₂.Tau) (τ : (X k).Ψ), τ.1 = tauE D ρ → s τ = ρ` using `fun ρ τ h => GlobalTheory.SmoothForms.RealPts.tauE_injective D ((hs τ).symm.trans h)`. Establish `hsb : Function.Bijective s`. Use `⟨fun τ τ' h => Subtype.ext (by rw [hs τ, hs τ', h]), fun ρ => ?_⟩` and prove the remaining obligations.
+
+Conclude with `⟨⟨tauE D ρ, (hM.1 _).2 ⟨ρ, rfl⟩⟩, hsρ ρ _ rfl⟩`. Take `⟨Q, hQd, hQb, hQe⟩` from `GlobalTheory.T.holomorphic_form_frame_expansion D θ V r hr (X k) x w (fun τ i => la k τ i - e (s τ)) φ hθ hM ((hq k).symm ▸ hx) (fun ρ τ h c => by simp only [hla k ρ τ h c, hsρ ρ τ h, add_sub_cancel_right]) hφ g`. Use `⟨fun y => Q y * (∏ τ, (mat y τ).det ^ e (s τ)) * ((mu g)⁻¹ * ∏ τ, (x₀ (s τ)).det ^ (-e (s τ))), ?_, ?_, ?_⟩` and prove the remaining obligations. Use `DifferentiableOn.mul_const (hQd.mul ?_) _` and prove the remaining obligations. Introduce `y hy`.
+
+Use `DifferentiableAt.differentiableWithinAt ?_` and prove the remaining obligations. Conclude with `(HasFDerivAt.finset_prod (u := Finset.univ) (g := fun τ (y : Frame (X k).Ψ r) => (mat y τ).det ^ e (s τ)) fun τ _ => (((differentiable_det τ) y).zpow (Or.inl (hy τ).1)).hasFDerivAt).differentiableAt`. Introduce `y hy b hb`. Establish `hm : ∀ τ, mat (rmul y b) τ = mat y τ * mat b τ` using `fun τ => rfl`. Simplify using `only [hQb y hy b hb, hm, det_mul, mul_zpow, Finset.prod_mul_distrib]`.
+
+Rewrite using `[bchar_shift (la k) (fun τ => e (s τ)) b hb]`. Expand and normalize the polynomial expressions, which then agree. Introduce `u hu y hy`. Establish `hy' : FrIs θ V hr (X k) x (u * a) y` using `fun ρ τ h => by`. Rewrite using `[hy ρ τ h, archM_mul', Matrix.mul_assoc, haM']`.
+
+Establish `hd : ∀ τ, (mat y τ).det = (archM V (θ (s τ)) u).det * (x₀ (s τ)).det` using `fun τ => by`. Rewrite using `[hy (s τ) τ (hs τ), det_reindex_self, det_mul]`. Establish `hu' : mu u = ∏ τ, (archM V (θ (s τ)) u).det ^ (-(e (s τ)))`. Rewrite using `[hinf u hu]`. Conclude with `(hsb.prod_comp fun ρ => (archM V (θ ρ) u).det ^ (-(e ρ))).symm`.
+
+Establish `h1 : (∏ τ, (x₀ (s τ)).det ^ e (s τ)) * ∏ τ, (x₀ (s τ)).det ^ (-e (s τ)) = 1`. Rewrite using `[← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_eq_one fun τ _ => by rw [← zpow_add₀ (hdx₀ _), add_neg_cancel, zpow_zero]`. Establish `h2 : (∏ τ, (archM V (θ (s τ)) u).det ^ e (s τ)) = (mu u)⁻¹`. Rewrite using `[hu', ← Finset.prod_inv_distrib]`.
+
+Conclude with `Finset.prod_congr rfl fun τ _ => by rw [_root_.zpow_neg, inv_inv]`. Simplify using `only [hQe (u * a) (mul_mem hu ha) y hy', hd, mul_zpow, Finset.prod_mul_distrib, h2, hmul, mul_assoc g u a]`. Rewrite using `[div_eq_mul_inv, mul_inv]`. Take the linear combination `(φ (g * (u * a)) * (mu u)⁻¹ * (mu g)⁻¹) * h1)`. Use `⟨P, fun k => ?_, fun g => ?_⟩` and prove the remaining obligations.
+
+Use `GlobalTheory.T.bounded_section_in_span_of_gap _ r (X k) (la k) (P k) ⟨hP k, C, hPb C (fun g => ?_) k⟩ ?_` and prove the remaining obligations. Simplify `hC _` using `only [norm_div, hnorm, div_one]`. Introduce `τ a b h1 h2`. Rewrite `h1`, `h2` using `[hq k]`. Conclude with `hsep k τ a b h1 h2`.
+
+Rewrite using `[← hPe g]`. Clear denominators, using `[hmu0 g]` for the nonvanishing conditions.
+-/
 theorem exists_holCusp : ∀ (D : D7) (θ : InfFam D) (V : HSp D) (r : ℕ) (hr : V.rank = r) (Comp : Type) (X : Comp → Data D.host.E r) (dict : GA D V → Σ k, Frame (X k).Ψ r) (Kf : Subgroup (GA D V)) (x₀ : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ) (la : ∀ k, ReciprocityTheory.ChartRestriction.G.FD.Wt (X k).Ψ r) (x : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ) (q : ℕ) (w : D.what₂.Tau → Fin V.rank → ℤ) (e : D.what₂.Tau → ℤ) (mu : GA D V → ℂ), IsInfFam θ → BaseDict θ V hr X dict Kf x₀ → Kf ≤ GfC V → (∀ k, (X k).p0 = q) → NegFirst V q x → (∀ g g', mu (g * g') = mu g * mu g') → (∀ g, ‖mu g‖ = 1) → (∀ γ ∈ GQ V, mu γ = 1) → (∀ k ∈ Kf, mu k = 1) → (∀ u ∈ GinfC V, mu u = ∏ ρ, (archM V (θ ρ) u).det ^ (-(e ρ))) → (∀ k (ρ : D.what₂.Tau) (τ : (X k).Ψ), τ.1 = tauE D ρ → ∀ c : Fin V.rank, la k τ (Fin.cast hr c) = w ρ c + e ρ) → (∀ k, ∀ γ ∈ (X k).Γ, (X k).χ (la k) γ = 1) → (∀ k (τ : (X k).Ψ) (a b : Fin r), (a : ℕ) < q → q ≤ (b : ℕ) → la k τ a < la k τ b) → ∃ a : GA D V, ∀ φ : GA D V → ℂ, IsHolFor θ V x w φ → (∀ γ ∈ GQ V, ∀ g, φ (γ * g) = φ g) → (∀ k ∈ Kf, ∀ g, φ (g * k) = φ g) → (∃ C : ℝ, ∀ g, ‖φ g‖ ≤ C) → ∃ P : FDSec X, IsHolCusp X la P ∧ ∀ g, φ (g * a) = mu g * P (dict g).1 (dict g).2 := by
   intro D θ V r hr Comp X dict Kf x₀ la x q w e mu hθ hB hKf hq hx hmul hnorm hQ hK hinf hla hχ hsep
   have hx₀ : NegFirst V q x₀ := hq (dict 1).1 ▸ (hB.1 (dict 1).1).2.1

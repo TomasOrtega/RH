@@ -6,6 +6,9 @@ open scoped Real ContDiff ContinuousMap
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `g E _ _ B hB`. Use `haveI : ContractibleSpace (Set.univ : Set (Fin g → ℂ)) := (convex_univ (𝕜 := ℝ)).contractibleSpace ⟨0, trivial⟩`. Take `⟨h⟩` from `ContractibleSpace.hequiv_unit (Set.univ : Set (Fin g → ℂ))`. Establish `e : (GlobalTheory.IndefiniteRowSideFullHecke.SiegelReframe.cov B g) ≃ₕ B` using `(Homeomorph.Set.prod B (Set.univ : Set (Fin g → ℂ))).toHomotopyEquiv.trans (((ContinuousMap.HomotopyEquiv.refl B).prodCongr h).trans (Homeomorph.prodPUnit B).toHomotopyEquiv)`. Conclude with `e.simplyConnectedSpace`.
+-/
 theorem simplyConnected_cov : ∀ {g : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E]
     {B : Set E}, SimplyConnectedSpace B → SimplyConnectedSpace (GlobalTheory.IndefiniteRowSideFullHecke.SiegelReframe.cov B g) := by
   intro g E _ _ B hB

@@ -7,6 +7,39 @@ open IsLocalRing
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Use `set A := Algebra.adjoin K (gens : Set Ω) with hAdef`. Establish `hfrac : ∀ z : Ω, ∃ a ∈ A, ∃ b ∈ A, b ≠ 0 ∧ z * b = a`. Introduce `z`. Establish `hz : z ∈ Subfield.closure (Set.range (algebraMap K Ω) ∪ (gens : Set Ω))` using `hcl ▸ trivial`. Take `⟨a, ha, b, hb, rfl⟩` from `Subfield.mem_closure_iff.mp hz`.
+
+Establish `hc : Subring.closure (Set.range (algebraMap K Ω) ∪ (gens : Set Ω)) = A.toSubring` using `(Algebra.adjoin_eq_ring_closure _).symm`. Rewrite `ha`, `hb` using `[hc]`. Break down `eq_or_ne b 0 with rfl | hb0` into its components or cases. Conclude with `⟨0, A.zero_mem, 1, A.one_mem, one_ne_zero, by simp⟩`. Conclude with `⟨a, ha, b, hb, hb0, div_mul_cancel₀ a hb0⟩`.
+
+Establish `hKc : Countable K` using `(Module.finBasis ℚ K).equivFun.injective.countable`. Establish `hΩc : Countable Ω`. Establish `hs : (Set.range (algebraMap K Ω) ∪ (gens : Set Ω)).Countable` using `(Set.countable_range _).union gens.finite_toSet.countable`. Establish `h1 : Cardinal.mk (Subfield.closure (Set.range (algebraMap K Ω) ∪ (gens : Set Ω))) ≤ Cardinal.aleph0` using `(Subfield.cardinalMk_closure_le_max _).trans (max_le (Cardinal.mk_le_aleph0_iff.2 hs.to_subtype) le_rfl)`. Establish `h2` using `Cardinal.mk_le_aleph0_iff.1 h1`.
+
+Rewrite `h2` using `[hcl]`. Conclude with `Function.Injective.countable (f := fun (z : Ω) => (⟨z, trivial⟩ : (⊤ : Subfield Ω))) fun a b h => congrArg Subtype.val h`. Establish `hAft : Algebra.FiniteType K A` using `.adjoin_of_finite gens.finite_toSet`. Establish `hAn : IsNoetherianRing A` using `Algebra.FiniteType.isNoetherianRing K A`. Establish `hess : Algebra.EssFiniteType A Ω`.
+
+Use `(Algebra.essFiniteType_iff A Ω).mpr ⟨∅, fun z => ?_⟩` and prove the remaining obligations. Take `⟨a, ha, b, hb, hb0, hab⟩` from `hfrac z`. Simplify using `only [Finset.coe_empty, Algebra.adjoin_empty, Algebra.mem_bot]`. Conclude with `⟨b, ⟨⟨b, hb⟩, rfl⟩, isUnit_iff_ne_zero.mpr hb0, ⟨⟨a, ha⟩, hab.symm⟩⟩`. Assume the negation of the conclusion as `hni`.
+
+Establish `hx0 : x ≠ 0`. Introduce and unpack `rfl`. Conclude with `hni isIntegral_zero`. Use `letI := invertibleOfNonzero (inv_ne_zero hx0)`. Set `B` to `Algebra.adjoin A {x⁻¹}`.
+
+Set `xinv : B` to `⟨x⁻¹, Algebra.subset_adjoin rfl⟩`. Establish `hne : (⊥ : Ideal A).map (algebraMap A B) ⊔ Ideal.span {xinv} ≠ ⊤`. Introduce `heq`. Take `⟨p, hp, hpx⟩` from `Algebra.exists_aeval_invOf_eq_zero_of_idealMap_adjoin_sup_span_eq_top x⁻¹ (⊥ : Ideal A) bot_ne_top heq`. Establish `hm : p.Monic`.
+
+Rewrite `hp` using `[Ideal.mem_bot, sub_eq_zero]`. Conclude with `hp`. Rewrite `hpx` using `[invOf_eq_inv, inv_inv]`. Conclude with `hni ⟨p, hm, by rw [← Polynomial.aeval_def, hpx]⟩`. Take `⟨W, hW, hW'⟩` from `Ideal.image_subset_nonunits_valuationSubring (A := B.toSubring) _ hne`.
+
+Establish `hxW : x⁻¹ ∈ W.nonunits` using `hW' ⟨xinv, Ideal.mem_sup_right (Ideal.subset_span rfl), rfl⟩`. Take `⟨V, hV, hAV, -, hxV⟩` from `exists_discreteValuationSubring_of_valuationSubring (R := A) W (fun r => hW (B.algebraMap_mem r)) (s := ∅) (t := {x⁻¹}) Set.finite_empty (Set.finite_singleton _) (by simp) (by simpa using hxW) ⟨x⁻¹, rfl, inv_ne_zero hx0⟩`. Establish `hxV' : x⁻¹ ∈ V.nonunits` using `hxV _ rfl`. Establish `hKV : ∀ k : K, algebraMap K Ω k ∈ V` using `fun k => hAV (algebraMap K A k)`. Establish `hgV : ∀ g ∈ gens, g ∈ V` using `fun g hg => hAV ⟨g, Algebra.subset_adjoin hg⟩`.
+
+Set `ι` to `algebraMap V (AdicCompletion (maximalIdeal V) V)`. Establish `hch : CharZero (AdicCompletion (maximalIdeal V) V)` using `(RingHom.charZero_iff (ι.comp ((algebraMap K Ω).codRestrict V hKV)).injective).1 inferInstance`. Set `T : CDVR` to `{ V := AdicCompletion (maximalIdeal V) V, ch0 := hch }`. Establish `hVc : Countable V` using `Subtype.countable`. Establish `hres : Countable (ResidueField T.V)`.
+
+Establish `hsurj : Function.Surjective ((residue T.V).comp ι)`. Introduce `t0`. Take `⟨t, rfl⟩` from `residue_surjective t0`. Take `⟨r, hr⟩` from `Ideal.Quotient.mk_surjective (AdicCompletion.evalₐ (maximalIdeal V) 1 t)`. Use `⟨r, ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `residue T.V (ι r) = residue T.V t`. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk _ (ι r) = Ideal.Quotient.mk _ t`. Rewrite using `[Ideal.Quotient.eq]`. Introduce `hu`. Establish `hnt : Nontrivial (V ⧸ maximalIdeal V ^ 1)`.
+
+Rewrite using `[pow_one]`. Use `infer_instance`. Establish `h1` using `hu.map (AdicCompletion.evalₐ (maximalIdeal V) 1)`. Rewrite `h1` using `[map_sub]`. Express the relevant statement in the definitionally equal form `IsUnit ((AdicCompletion.evalₐ (maximalIdeal V) 1) (AdicCompletion.of _ _ r) - _) at h1`.
+
+Rewrite `h1` using `[AdicCompletion.evalₐ_of, hr, sub_self]`. Conclude with `not_isUnit_zero h1`. Conclude with `hsurj.countable`. Establish `hg : Function.Injective ((algebraMap T.V T.Fr).comp ι)` using `(IsFractionRing.injective T.V T.Fr).comp (algebraMap_adicCompletion_injective_of_dvr V)`. Set `φ : Ω →+* T.Fr` to `IsFractionRing.lift (A := V) hg`.
+
+Establish `hφ : ∀ v : V, φ v = algebraMap T.V T.Fr (ι v)` using `fun v => IsFractionRing.lift_algebraMap hg v`. Take `⟨t, ht⟩` from `hx T hres φ (fun k => ⟨ι ⟨_, hKV k⟩, (hφ ⟨_, hKV k⟩).symm⟩) (fun g hg' => ⟨ι ⟨g, hgV g hg'⟩, (hφ ⟨g, hgV g hg'⟩).symm⟩)`. Set `y : V` to `⟨x⁻¹, V.nonunits_subset hxV'⟩`. Establish `h1 : algebraMap T.V T.Fr (t * ι y) = 1`. Rewrite using `[map_mul, ht, ← hφ y]`.
+
+Express the relevant statement in the definitionally equal form `φ x * φ x⁻¹ = 1`. Rewrite using `[← map_mul, mul_inv_cancel₀ hx0, map_one]`. Establish `h2 : t * ι y = 1` using `IsFractionRing.injective T.V T.Fr (h1.trans (map_one _).symm)`. Establish `h3 : IsUnit (ι y)` using `isUnit_iff_exists_inv.mpr ⟨t, by rw [mul_comm]; exact h2⟩`. Conclude with `(ValuationSubring.coe_mem_nonunits_iff (a := y)).mp hxV' (isUnit_of_map_unit ι y h3)`.
+-/
 theorem isIntegral_adjoin_of_forall_cdvr (K Ω : Type) [Field K] [NumberField K] [Field Ω]
     [Algebra K Ω] (gens : Finset Ω)
     (hcl : Subfield.closure (Set.range (algebraMap K Ω) ∪ (gens : Set Ω)) = ⊤) (x : Ω)

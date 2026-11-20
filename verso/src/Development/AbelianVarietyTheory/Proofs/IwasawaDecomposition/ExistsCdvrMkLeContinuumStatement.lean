@@ -8,5 +8,8 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory.FlagMod (GChart ev tau tau_le le_preimage_comp)
 open scoped LaurentSeries
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CountableCompletion.exists_cdvr_mk_le_continuum | exact GlobalTheory.CountableCompletion.exists_cdvr_mk_le_continuum | (intros; apply GlobalTheory.CountableCompletion.exists_cdvr_mk_le_continuum <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_complete_dvr_local_extension_of_countable : ∀ (R : Type) [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] [CharZero R], Countable R → ∃ (T : CDVR) (i : R →+* T.V), Function.Injective i ∧ IsLocalHom i ∧ Cardinal.mk T.V ≤ Cardinal.continuum := by
   first | exact @GlobalTheory.CountableCompletion.exists_cdvr_mk_le_continuum | exact GlobalTheory.CountableCompletion.exists_cdvr_mk_le_continuum | (intros; apply GlobalTheory.CountableCompletion.exists_cdvr_mk_le_continuum <;> assumption)

@@ -5,6 +5,17 @@ open scoped Kronecker ComplexOrder TensorProduct
 
 namespace GlobalTheory.ClassFin
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero`. Introduce `d hd`. Rewrite `hd` using `[Finsupp.degree_eq_zero_iff]`. Substitute `hd` using the available equality.
+
+Conclude with `⟨Fin.elim0, by simp⟩`. Consider the case `succ n ih`. Introduce `d hd`. Establish `hne : d ≠ 0`. Introduce and unpack `rfl`.
+
+Simplify using `at hd`. Take `⟨i, hi⟩` from `Finsupp.ne_iff.mp hne`. Establish `hle : Finsupp.single i 1 ≤ d`. Rewrite using `[Finsupp.single_le_iff]`. Conclude with `Nat.one_le_iff_ne_zero.mpr hi`.
+
+Take `⟨d', rfl⟩` from `exists_add_of_le hle`. Establish `hd' : d'.degree = n`. Rewrite `hd` using `[map_add, Finsupp.degree_single]`. Use linear arithmetic over natural numbers and integers. Take `⟨a, ha⟩` from `ih d' hd'`.
+
+Use `⟨Fin.cons i a, ?_⟩` and prove the remaining obligations. Rewrite using `[Fin.prod_univ_succ]`. Simplify using `only [Fin.cons_zero, Fin.cons_succ]`. Rewrite using `[← ha, MvPolynomial.X, MvPolynomial.monomial_mul, one_mul]`.
+-/
 theorem exists_monomial_eq_prod_X {σ : Type} (n : ℕ) : ∀ d : σ →₀ ℕ, d.degree = n →
     ∃ a : Fin n → σ, (MvPolynomial.monomial d (1 : ℂ)) = ∏ k, MvPolynomial.X (a k) := by
   classical
@@ -35,6 +46,11 @@ theorem exists_monomial_eq_prod_X {σ : Type} (n : ℕ) : ∀ d : σ →₀ ℕ,
 
 variable {ι : Type} [Fintype ι] [DecidableEq ι]
 
+/- English proof (translation)
+Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a => simp [evC, ltr]`. Consider the case `add p q hp hq`. Simplify using `only [evC, map_add] at *`. Rewrite using `[hp, hq]`.
+
+Consider the case `mul_X p i hp`. Simplify using `only [evC, map_mul] at *`. Rewrite using `[hp]`. Simplify using `[ltr, Matrix.mul_apply]`.
+-/
 theorem evC_ltr (g y : Matrix ι ι ℂ) (f : MvPolynomial (ι × ι) ℂ) : evC (ltr g f) y = evC f (g * y) := by
   induction f using MvPolynomial.induction_on with
   | C a => simp [evC, ltr]
@@ -47,11 +63,17 @@ theorem evC_ltr (g y : Matrix ι ι ℂ) (f : MvPolynomial (ι × ι) ℂ) : evC
     simp [ltr, Matrix.mul_apply]
 
 omit [Fintype ι] [DecidableEq ι] in
+/- English proof (translation)
+Apply `MvPolynomial.funext` to reduce the goal to its premises. Introduce `x`. Conclude with `h (Matrix.of fun i j => x (i, j))`.
+-/
 theorem evC_ext {f f' : MvPolynomial (ι × ι) ℂ} (h : ∀ y, evC f y = evC f' y) : f = f' := by
   apply MvPolynomial.funext
   intro x
   exact h (Matrix.of fun i j => x (i, j))
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `only [tpow, Matrix.mul_apply, Matrix.of_apply]`. Rewrite using `[Finset.prod_univ_sum]`. Simplify using `[Finset.prod_mul_distrib]`.
+-/
 theorem tpow_mul_complex (n : ℕ) (y z : Matrix ι ι ℂ) : tpow n (y * z) = tpow n y * tpow n z := by
   ext a b
   simp only [tpow, Matrix.mul_apply, Matrix.of_apply]
@@ -61,15 +83,40 @@ theorem tpow_mul_complex (n : ℕ) (y z : Matrix ι ι ℂ) : tpow n (y * z) = t
 noncomputable def tensorForm (n : ℕ) (b : Fin n → ι) : ((Fin n → ι) → ℂ) →ₗ[ℂ] MvPolynomial (ι × ι) ℂ :=
   ∑ a : Fin n → ι, (LinearMap.proj a).smulRight (∏ k, MvPolynomial.X (a k, b k))
 
+/- English proof (translation)
+Simplify using `[tensorForm, LinearMap.sum_apply]`.
+-/
 theorem tensorForm_apply (n : ℕ) (b : Fin n → ι) (l : (Fin n → ι) → ℂ) :
     tensorForm n b l = ∑ a : Fin n → ι, l a • ∏ k, MvPolynomial.X (a k, b k) := by
   simp [tensorForm, LinearMap.sum_apply]
 
+/- English proof (translation)
+Rewrite using `[tensorForm_apply]`. Simplify using `[evC, tpow, Matrix.vecMul, dotProduct, map_sum, map_prod]`.
+-/
 theorem evC_tensorForm (n : ℕ) (b : Fin n → ι) (l : (Fin n → ι) → ℂ) (y : Matrix ι ι ℂ) :
     evC (tensorForm n b l) y = (l ᵥ* tpow n y) b := by
   rw [tensorForm_apply]
   simp [evC, tpow, Matrix.vecMul, dotProduct, map_sum, map_prod]
 
+/- English proof (translation)
+Introduce `ι _ _`. Use `⟨evC_ltr, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `Γ f`. Prove the components needed by the constructor for the conclusion. Introduce `h g hg`.
+
+Conclude with `evC_ext fun y => by rw [evC_ltr, h g hg]`. Introduce `h g hg y`. Rewrite using `[← evC_ltr, h g hg]`. Introduce `g n f hf`. Use `hf.aeval (S := ℂ) (n := 1) (fun ij : ι × ι => ∑ k, MvPolynomial.C (g ij.1 k) * MvPolynomial.X (k, ij.2)) (fun ij => MvPolynomial.IsHomogeneous.sum _ _ _ fun k _ => MvPolynomial.isHomogeneous_C_mul_X _ _)` as an intermediate fact.
+
+Rewrite `this` using `[one_mul]`. Conclude with `this`. Introduce `n`. Use `⟨tensorForm n, evC_tensorForm n, ?_, ?_⟩` and prove the remaining obligations. Introduce `b l g`.
+
+Apply `evC_ext` to reduce the goal to its premises. Introduce `y`. Rewrite using `[evC_ltr, evC_tensorForm, evC_tensorForm, tpow_mul_complex, Matrix.vecMul_vecMul]`. Introduce `f hf`. Set `Φ : ((Fin n → ι) → (Fin n → ι) → ℂ) →ₗ[ℂ] MvPolynomial (ι × ι) ℂ` to `∑ b, (tensorForm n b).comp (LinearMap.proj b)`.
+
+Establish `hΦ : ∀ l, Φ l = ∑ b, tensorForm n b (l b)`. Introduce `l`. Simplify using `[Φ, LinearMap.sum_apply]`. It suffices to establish `h : f ∈ LinearMap.range Φ by`. Take `⟨l, hl⟩` from `h`.
+
+Conclude with `⟨l, by rw [← hΦ, hl]⟩`. Rewrite using `[f.as_sum]`. Use `Submodule.sum_mem _ fun d hd => ?_` and prove the remaining obligations. Establish `hdeg : d.degree = n`. Assume the negation of the conclusion as `h`.
+
+Conclude with `(MvPolynomial.mem_support_iff.mp hd) (hf.coeff_eq_zero h)`. Take `⟨a, ha⟩` from `exists_monomial_eq_prod_X n d hdeg`. Establish `h1 : MvPolynomial.monomial d (f.coeff d) = f.coeff d • MvPolynomial.monomial d (1 : ℂ)`. Rewrite using `[MvPolynomial.smul_monomial, smul_eq_mul, mul_one]`. Rewrite using `[h1, ha]`.
+
+Use `Submodule.smul_mem _ _ ⟨Pi.single (fun k => (a k).2) (Pi.single (fun k => (a k).1) 1), ?_⟩` and prove the remaining obligations. Rewrite using `[hΦ, Finset.sum_eq_single (fun k => (a k).2)]`. Rewrite using `[Pi.single_eq_same, tensorForm_apply, Finset.sum_eq_single (fun k => (a k).1)]`. Simplify using the standard rewrite rules. Introduce `c _ hc`.
+
+Simplify using `[hc]`. Simplify using the standard rewrite rules. Introduce `c _ hc`. Simplify using `[hc]`. Simplify using the standard rewrite rules.
+-/
 theorem ltr_tensorForms : ∀ (ι : Type) [Fintype ι] [DecidableEq ι], (∀ (g y : Matrix ι ι ℂ) (f : MvPolynomial (ι × ι) ℂ), evC (ltr g f) y = evC f (g * y)) ∧ (∀ (Γ : Set (Matrix ι ι ℂ)) (f : MvPolynomial (ι × ι) ℂ), IsInv Γ f ↔ ∀ g ∈ Γ, ltr g f = f) ∧ (∀ (g : Matrix ι ι ℂ) (n : ℕ) (f : MvPolynomial (ι × ι) ℂ), f.IsHomogeneous n → (ltr g f).IsHomogeneous n) ∧ ∀ n : ℕ, ∃ p : (Fin n → ι) → ((Fin n → ι) → ℂ) →ₗ[ℂ] MvPolynomial (ι × ι) ℂ, (∀ b l (y : Matrix ι ι ℂ), evC (p b l) y = (l ᵥ* tpow n y) b) ∧ (∀ b l (g : Matrix ι ι ℂ), ltr g (p b l) = p b (l ᵥ* tpow n g)) ∧ ∀ f : MvPolynomial (ι × ι) ℂ, f.IsHomogeneous n → ∃ l : (Fin n → ι) → (Fin n → ι) → ℂ, f = ∑ b, p b (l b) := by
   intro ι _ _
   refine ⟨evC_ltr, ?_, ?_, ?_⟩

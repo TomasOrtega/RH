@@ -28,6 +28,13 @@ open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor (Sp PSpace resG)
 open GlobalTheory.ProjSpace (toProj O1 coord)
 
+/- English proof (translation)
+Use `top_unique fun y _ => ?_` and prove the remaining obligations. Take `⟨i, hi⟩` from `Opens.mem_iSup.1 (hs.ge (Set.mem_univ y))`. Take `⟨k, hk⟩` from `GlobalTheory.exists_chart_of_mem_nonzeroLocus hi`. Assume the negation of the conclusion as `hne`. Establish `hnu : ∀ j, ¬ IsUnit (X.presheaf.germ (H.U k) y hk ((t j).f k))` using `fun j hu => hne (Opens.mem_iSup.2 ⟨j, (GlobalTheory.mem_nonzeroLocus_iff_basicOpen _ hk).2 ((X.mem_basicOpen _ y hk).2 hu)⟩)`.
+
+Establish `hu` using `(X.mem_basicOpen _ y hk).1 ((GlobalTheory.mem_nonzeroLocus_iff_basicOpen _ hk).1 hi)`. Establish `e : (s i).f k = ∑ j, GlobalTheory.AbLaw.cst f (H.U k) (a i j) * (t j).f k`. Rewrite using `[hst i, GlobalTheory.LinChange.sum_f]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.LB.smul_f, GlobalTheory.LinChange.resG_cst]`.
+
+Rewrite `hu` using `[e, map_sum]`. Use `(IsLocalRing.mem_maximalIdeal _).1 (Ideal.sum_mem _ fun j _ => ?_) hu` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `Ideal.mul_mem_left _ _ ((IsLocalRing.mem_maximalIdeal _).2 (hnu j))`.
+-/
 theorem iSup_nonzeroLocus_of_span {R : Type} [CommRing R] {X : Scheme.{0}} (f : X ⟶ Sp R) {H : LB X} {m N : ℕ}
     {s : Fin (m + 1) → H.Sec} {t : Fin (N + 1) → H.Sec} {a : Matrix (Fin (m + 1)) (Fin (N + 1)) R}
     (hs : ⨆ i, nonzeroLocus (s i) = ⊤) (hst : ∀ i, s i = ∑ j, GlobalTheory.AbLaw.cst f ⊤ (a i j) • t j) :
@@ -48,6 +55,11 @@ theorem iSup_nonzeroLocus_of_span {R : Type} [CommRing R] {X : Scheme.{0}} (f : 
   rw [map_mul]
   exact Ideal.mul_mem_left _ _ ((IsLocalRing.mem_maximalIdeal _).2 (hnu j))
 
+/- English proof (translation)
+Establish `: IsSeparated (ψ ≫ q)` using `by rw [hq]; infer_instance`. Establish `: IsSeparated ψ` using `IsSeparated.of_comp ψ q`. Establish `: IsClosedImmersion φ` using `IsClosedImmersion.of_comp φ ψ`. Establish `: IsProper ((φ ≫ U.ι) ≫ p)` using `by rw [Category.assoc]; exact hpr`. Establish `: IsProper (φ ≫ U.ι)` using `IsProper.of_comp _ p`.
+
+Conclude with `IsClosedImmersion.of_isPreimmersion _ (φ ≫ U.ι).isClosedMap.isClosed_range`.
+-/
 theorem isClosedImmersion_of_comp_open {X P Q S : Scheme.{0}} (U : P.Opens) (φ : X ⟶ U.toScheme)
     (ψ : U.toScheme ⟶ Q) (p : P ⟶ S) (q : Q ⟶ S) (hc : IsClosedImmersion (φ ≫ ψ)) (hp : IsSeparated p)
     (hq : ψ ≫ q = U.ι ≫ p) (hpr : IsProper (φ ≫ U.ι ≫ p)) : IsClosedImmersion (φ ≫ U.ι) := by
@@ -62,6 +74,13 @@ end GlobalTheory.SpanVA
 
 open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus) in
 
+/- English proof (translation)
+Introduce `R _ X f H m N s t a hH hv hst`. Take `⟨hs, hci⟩` from `(GlobalTheory.ProjSpace.veryAmpleBy_iff f s).1 hv`. Establish `ht` using `GlobalTheory.SpanVA.iSup_nonzeroLocus_of_span f hs hst`. Use `(GlobalTheory.ProjSpace.veryAmpleBy_iff f t).2 ⟨ht, ?_⟩` and prove the remaining obligations. Establish `hpre : GlobalTheory.ProjSpace.toProj f t ht ⁻¹ᵁ GlobalTheory.SpanVA.dom a = ⊤`.
+
+Rewrite using `[GlobalTheory.SpanVA.dom, Scheme.Hom.preimage_iSup]`. Simplify using `only [GlobalTheory.T.morphismToProjSpace_preimage_nonzeroLocus_linearForm R X f H m N s t a hH ht hst]`. Conclude with `hs`. Establish `e` using `GlobalTheory.T.morphismToProjSpace_eq_linearProjection_comp R X f H m N s t a hH hs ht hst hpre`. Rewrite using `[← GlobalTheory.SpanVA.liftDom_fac a _ hpre]`.
+
+Establish `hp : IsSeparated (PSpace.str R N)` using `by unfold PSpace.str; infer_instance`. Use `GlobalTheory.SpanVA.isClosedImmersion_of_comp_open _ _ (GlobalTheory.SpanVA.proj a) (PSpace.str R N) (PSpace.str R m) (e ▸ hci) hp (GlobalTheory.ProjSpace.toProj_str _ _ _) ?_` and prove the remaining obligations. Rewrite using `[← Category.assoc, GlobalTheory.SpanVA.liftDom_fac, GlobalTheory.ProjSpace.toProj_str]`. Conclude with `GlobalTheory.isProper_of_veryAmpleBy hv`.
+-/
 theorem GlobalTheory.veryAmpleBy_of_span : ∀ (R : Type) [CommRing R] (X : Scheme.{0}) (f : X ⟶ Spec (CommRingCat.of R)) (H : LB X) (m N : ℕ) (s : Fin (m + 1) → LB.Sec H) (t : Fin (N + 1) → LB.Sec H) (a : Matrix (Fin (m + 1)) (Fin (N + 1)) R), H.IsLB → GlobalTheory.AbLaw.VeryAmpleBy f H s → (∀ i, s i = ∑ j, GlobalTheory.AbLaw.cst f ⊤ (a i j) • t j) → GlobalTheory.AbLaw.VeryAmpleBy f H t := by
   intro R _ X f H m N s t a hH hv hst
   obtain ⟨hs, hci⟩ := (GlobalTheory.ProjSpace.veryAmpleBy_iff f s).1 hv

@@ -6,6 +6,27 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.HermitianLatt
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Unfold `latSum`. Use `set r : (↥D ⧸ C.comap D.subtype) → ↥D := Function.surjInv (Submodule.Quotient.mk_surjective (C.comap D.subtype)) with hr`. Use `set s : (↥As ⧸ B.comap As.subtype) → ↥As := Function.surjInv (Submodule.Quotient.mk_surjective (B.comap As.subtype)) with hs`. Establish `hr' : ∀ z, Submodule.Quotient.mk (r z) = z` using `fun z => Function.surjInv_eq _ z`. Establish `hs' : ∀ z, Submodule.Quotient.mk (s z) = z` using `fun z => Function.surjInv_eq _ z`.
+
+Establish `hex : ∀ x : ↥D, ∃ t : ↥As, (t : W) - x ∈ C`. Introduce `x`. Take `⟨a, ha, c, hc, h⟩` from `Submodule.mem_sup.1 (hD x.2)`. Use `⟨⟨a, ha⟩, ?_⟩` and prove the remaining obligations. Establish `: a - (x : W) = -c` using `by rw [← h]; abel`.
+
+Simplify `hc` using `[this]`. Use `choose τ hτ using hex`. Establish `keyA : ∀ t u : ↥As, (Submodule.Quotient.mk t : ↥As ⧸ B.comap As.subtype) = Submodule.Quotient.mk u ↔ (t : W) - u ∈ C`. Introduce `t u`. Rewrite using `[Submodule.Quotient.eq, Submodule.mem_comap]`.
+
+Conclude with `hB _ (t - u).2`. Establish `keyD : ∀ t u : ↥D, (Submodule.Quotient.mk t : ↥D ⧸ C.comap D.subtype) = Submodule.Quotient.mk u ↔ (t : W) - u ∈ C`. Introduce `t u`. Rewrite using `[Submodule.Quotient.eq, Submodule.mem_comap]`. Both sides reduce to the same expression.
+
+Set `φ : (↥D ⧸ C.comap D.subtype) → (↥As ⧸ B.comap As.subtype)` to `fun z => Submodule.Quotient.mk (τ (r z))`. Establish `hφ : ∀ z, (s (φ z) : W) - r z ∈ C`. Introduce `z`. Establish `h1 : (s (φ z) : W) - τ (r z) ∈ C` using `(keyA _ _).1 (hs' _)`. Use `C.add_mem h1 (hτ (r z))` as an intermediate fact.
+
+Simplify using `using this`. Establish `hinj : Function.Injective φ`. Introduce `z w h`. Rewrite using `[← hr' z, ← hr' w, keyD]`. Establish `h1` using `hφ z`.
+
+Establish `h2` using `hφ w`. Rewrite `h1` using `[h]`. Use `C.sub_mem h2 h1` as an intermediate fact. Simplify using `using this`. Establish `e1 : ∑ᶠ z, f (r z : W) = ∑ᶠ z, (fun y => g (s y : W)) (φ z)` using `finsum_congr fun z => hfg _ (r z).2 _ (s (φ z)).2 (hφ z)`.
+
+Rewrite using `[e1, ← finsum_mem_range (f := fun y => g (s y : W)) hinj, ← finsum_mem_univ (fun y => g (s y : W))]`. Apply `finsum_mem_inter_support_eq'` to reduce the goal to its premises. Introduce `y hy`. Simplify using `only [Set.mem_univ, iff_true]`. Establish `hyD : (s y : W) ∈ D`.
+
+Assume the negation of the conclusion as `h`. Conclude with `hy (hg _ (s y).2 h)`. Use `⟨Submodule.Quotient.mk ⟨_, hyD⟩, ?_⟩` and prove the remaining obligations. Establish `h1` using `hφ (Submodule.Quotient.mk ⟨_, hyD⟩)`. Establish `h2 : (r (Submodule.Quotient.mk ⟨_, hyD⟩) : W) - s y ∈ C` using `(keyD _ ⟨_, hyD⟩).1 (hr' _)`.
+
+Establish `h3` using `C.add_mem h1 h2`. Establish `h4` using `(keyA (s (φ (Submodule.Quotient.mk ⟨_, hyD⟩))) (s y)).2 (by simpa using h3)`. Rewrite `h4` using `[hs', hs']`. Then use the resulting hypothesis.
+-/
 theorem latSum_reindex_of_le_sup (E : Type) [Field E] [NumberField E] (W : Type) [AddCommGroup W] [Module (𝓞 E) W]
     (D C As B : Submodule (𝓞 E) W) (f g : W → ℂ) (hCD : C ≤ D) (hB : ∀ t ∈ As, t ∈ B ↔ t ∈ C) (hD : D ≤ As ⊔ C)
     (hfg : ∀ x ∈ D, ∀ t ∈ As, t - x ∈ C → f x = g t) (hg : ∀ t ∈ As, t ∉ D → g t = 0) :

@@ -9,6 +9,9 @@ open UpperTheory.V.Af (FrobEig algSat RepIso tw)
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 open UpperTheory.Gal.TP.Sub
 
+/- English proof (translation)
+Introduce `E Ω _ _ _ _ _ l _ ι a r w hl S J`. Use `⟨fun h => h.1 hl, fun h => ⟨fun _ => h, ?_⟩⟩` and prove the remaining obligations. Introduce `P AI _ A hA O _ _ _ Bw hj`. Conclude with `absurd (hj.mem_placesOver hA) hl`.
+-/
 theorem UpperTheory.Gal.TP.Sub.clAway_holds :
     ClAway := by
   intro E Ω _ _ _ _ _ l _ ι a r w hl S J

@@ -10,6 +10,9 @@ namespace PositivityTheory.Lit1.PTN
 
 attribute [local instance 2000] Rep.hV2
 
+/- English proof (translation)
+Use `⟨HomologicalComplex.cyclesMap (cochainsMap μ) 2 (cupCocycles (rfl : 0 + 2 = 2) x x'), fun s => ?_, (cupPairing_cohomologyπ μ rfl x x').symm⟩` and prove the remaining obligations. Rewrite using `[cochainOf_cocycleι_cyclesMap_cupCocycles, hx, hx', cupCocycleH0Z2_apply, hbμ]`. Establish `h0 : Fin.partialProd s ⟨0, by omega⟩ = 1` using `Fin.partialProd_zero s`. Rewrite using `[h0, map_one]`. Both sides reduce to the same expression.
+-/
 theorem cup_compare_degree_zero_two {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] {R : Type}
     [CommRing R] {M M' P : Type} [AddCommGroup M] [Module R M] [TopologicalSpace M]
     [IsTopologicalAddGroup M] [ContinuousConstSMul R M] [AddCommGroup M'] [Module R M']
@@ -36,6 +39,9 @@ theorem cup_compare_degree_zero_two {G : Type} [Group G] [TopologicalSpace G] [I
   rw [h0, map_one]
   rfl
 
+/- English proof (translation)
+Use `⟨HomologicalComplex.cyclesMap (cochainsMap μ) 2 (cupCocycles (rfl : 2 + 0 = 2) x x'), fun s => ?_, (cupPairing_cohomologyπ μ rfl x x').symm⟩` and prove the remaining obligations. Rewrite using `[cochainOf_cocycleι_cyclesMap_cupCocycles, hx, hx', cupCocycleZ2H0_apply, hbμ, ← heB, (mem_riemannRochSpace_iff_regularAt_everywhere rho' m.1).1 m.2]`.
+-/
 theorem cup_compare_degree_two_zero {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] {R : Type}
     [CommRing R] {M M' P : Type} [AddCommGroup M] [Module R M] [TopologicalSpace M]
     [IsTopologicalAddGroup M] [ContinuousConstSMul R M] [AddCommGroup M'] [Module R M']

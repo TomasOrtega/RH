@@ -9,6 +9,9 @@ namespace GlobalTheory.IdxInt
 
 open scoped Pointwise Classical in
 variable {W : Type} [AddCommGroup W] in
+/- English proof (translation)
+Establish `hxy : -x + y ∈ B` using `QuotientAddGroup.eq.mp h`. Take `⟨z, _, hz⟩` from `hR y (hRA y hy)`. Establish `h1` using `hz y ⟨hy, by simp⟩`. Establish `h2` using `hz x ⟨hx, by rwa [sub_eq_neg_add]⟩`. Conclude with `h2.trans h1.symm`.
+-/
 private lemma eq_of_mem_finset_of_mk_eq {A B : AddSubgroup W} {R : Finset W}
     (hRA : ∀ w ∈ R, w ∈ A) (hR : ∀ w ∈ A, ∃! x, x ∈ R ∧ w - x ∈ B)
     {x y : W} (hx : x ∈ R) (hy : y ∈ R) (h : (x : W ⧸ B) = y) : x = y := by
@@ -20,6 +23,9 @@ private lemma eq_of_mem_finset_of_mk_eq {A B : AddSubgroup W} {R : Finset W}
 
 open scoped Pointwise Classical in
 variable {W : Type} [AddCommGroup W] in
+/- English proof (translation)
+Take `⟨x, ⟨hx, hwx⟩, _⟩` from `hR w hw`. Use `⟨x, hx, QuotientAddGroup.eq.mpr ?_⟩` and prove the remaining obligations. Rewrite using `[← sub_eq_neg_add]`. Conclude with `hwx`.
+-/
 private lemma exists_mem_finset_mk_eq_of_mem {A B : AddSubgroup W} {R : Finset W}
     (hR : ∀ w ∈ A, ∃! x, x ∈ R ∧ w - x ∈ B) {w : W} (hw : w ∈ A) :
     ∃ x ∈ R, (x : W ⧸ B) = w := by
@@ -30,6 +36,9 @@ private lemma exists_mem_finset_mk_eq_of_mem {A B : AddSubgroup W} {R : Finset W
 
 open scoped Pointwise Classical in
 variable {W : Type} [AddCommGroup W] in
+/- English proof (translation)
+Establish `hb : -u + v ∈ B` using `QuotientAddGroup.eq.mp h`. Use `hinv u (-u + v) hb` as an intermediate fact. Rewrite `this` using `[add_neg_cancel_left, eq_comm]`. Then use the resulting hypothesis.
+-/
 private lemma apply_eq_of_quotient_mk_eq_of_invariant {B : AddSubgroup W} {φ : W → ℂ}
     (hinv : ∀ w, ∀ b ∈ B, φ (w + b) = φ w) {u v : W} (h : (u : W ⧸ B) = v) : φ u = φ v := by
   have hb : -u + v ∈ B := QuotientAddGroup.eq.mp h
@@ -39,6 +48,25 @@ private lemma apply_eq_of_quotient_mk_eq_of_invariant {B : AddSubgroup W} {φ : 
 open scoped Pointwise Classical in
 variable {W : Type} [AddCommGroup W] in
 
+/- English proof (translation)
+Establish `hmemA : ∀ w, φ w ≠ 0 → w ∈ A` using `fun w hw => by`. Assume the negation of the conclusion as `h`. Conclude with `hw (hsupp w h)`. Establish `hcard : (R.card : ℕ) = B.relIndex A`. Set `f : R → A ⧸ B.addSubgroupOf A` to `fun x => ((⟨x.1, hRA x.1 x.2⟩ : A) : A ⧸ B.addSubgroupOf A)`.
+
+Establish `hf : Function.Bijective f`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx⟩ ⟨y, hy⟩ h`. Establish `h' : -(⟨x, hRA x hx⟩ : A) + ⟨y, hRA y hy⟩ ∈ B.addSubgroupOf A` using `QuotientAddGroup.eq.mp h`. Rewrite `h'` using `[AddSubgroup.mem_addSubgroupOf]`.
+
+Establish `h'' : -x + y ∈ B` using `by simpa using h'`. Conclude with `Subtype.ext (eq_of_mem_finset_of_mk_eq hRA hR hx hy (QuotientAddGroup.eq.mpr h''))`. Introduce `c`. Proceed by induction on `c using QuotientAddGroup.induction_on with`. Consider the case `H a`.
+
+Take `⟨x, ⟨hx, hax⟩, _⟩` from `hR a.1 a.2`. Use `⟨⟨x, hx⟩, QuotientAddGroup.eq.mpr ?_⟩` and prove the remaining obligations. Rewrite using `[AddSubgroup.mem_addSubgroupOf]`. Establish `: -x + a.1 ∈ B` using `by rwa [← sub_eq_neg_add]`. Simplify using `using this`.
+
+Rewrite using `[AddSubgroup.relIndex, AddSubgroup.index, ← Nat.card_congr (Equiv.ofBijective f hf), Nat.card_eq_fintype_card, Fintype.card_coe]`. Establish `hne : R.card ≠ 0`. Take `⟨x, ⟨hx, _⟩, _⟩` from `hR 0 A.zero_mem`. Conclude with `Finset.card_ne_zero_of_mem hx`. Establish `hfine : _root_.GlobalTheory.IdxInt.Fine A φ B`.
+
+Unfold `_root_.GlobalTheory.IdxInt.Fine`. Use `⟨hBA, hcard ▸ hne, fun w b hb => hinv w b hb, ?_⟩` and prove the remaining obligations. Use `(R.finite_toSet.image (QuotientAddGroup.mk : W → W ⧸ B)).subset ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨w, hw, rfl⟩`. Take `⟨x, hx, hxw⟩` from `exists_mem_finset_mk_eq_of_mem hR (hmemA w hw)`.
+
+Conclude with `⟨x, hx, hxw⟩`. Use `⟨hfine, hcard, ?_⟩` and prove the remaining obligations. Establish `hsum : ∑ᶠ c : W ⧸ B, φ (Quotient.out c) = ∑ w ∈ R, φ w`. Rewrite using `[finsum_eq_sum_of_support_subset (s := R.image (QuotientAddGroup.mk : W → W ⧸ B)) _ ?_]`. Rewrite using `[Finset.sum_image (fun x hx y hy h => eq_of_mem_finset_of_mk_eq hRA hR hx hy h)]`.
+
+Conclude with `Finset.sum_congr rfl fun x _ => apply_eq_of_quotient_mk_eq_of_invariant hinv (QuotientAddGroup.out_eq' _)`. Introduce `c hc`. Take `⟨x, hx, hxc⟩` from `exists_mem_finset_mk_eq_of_mem hR (hmemA _ hc)`. Simplify using `only [Finset.coe_image, Set.mem_image, Finset.mem_coe]`. Conclude with `⟨x, hx, hxc.trans (QuotientAddGroup.out_eq' c)⟩`.
+
+Rewrite using `[_root_.GlobalTheory.IdxInt.cint_eq_of_fine A B φ hfine, hsum, ← hcard]`.
+-/
 theorem _root_.GlobalTheory.IdxInt.cint_eq_mean_reps {W : Type} [AddCommGroup W]
     (A B : AddSubgroup W) (φ : W → ℂ) (R : Finset W)
     (hBA : B ≤ A) (hinv : ∀ w, ∀ b ∈ B, φ (w + b) = φ w) (hsupp : ∀ w, w ∉ A → φ w = 0)

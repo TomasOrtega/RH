@@ -15,6 +15,13 @@ noncomputable section
 
 namespace GlobalTheory.FieldPair
 
+/- English proof (translation)
+Use extensionality with `a`. Establish `n` using `congrArg (fun φ => φ.hom ((Scheme.ΓSpecIso (.of k)).inv a)) (Scheme.ΓSpecIso_naturality (Spec.preimage (X.fromSpecStalk (genericPoint X) ≫ p)))`. Simplify using `only [Spec.map_preimage, Scheme.Hom.comp_appTop, Scheme.fromSpecStalk_appTop, CommRingCat.hom_comp, RingHom.comp_apply, Iso.inv_hom_id_apply] at n`. Rewrite using `[← n]`. Establish `hid : (Spec (X.presheaf.stalk (genericPoint X))).presheaf.map (homOfLE (le_top : (⊤ : (Spec (X.presheaf.stalk (genericPoint X))).Opens) ≤ ⊤)).op = 𝟙 _`.
+
+Rewrite using `[show (homOfLE (le_top : (⊤ : (Spec (X.presheaf.stalk (genericPoint X))).Opens) ≤ ⊤)) = 𝟙 _ from rfl, op_id, CategoryTheory.Functor.map_id]`. Rewrite using `[hid, CommRingCat.id_apply, Iso.inv_hom_id_apply]`. Establish `e2 : Scheme.Hom.appLE p ⊤ ⊤ (by simp) = Scheme.Hom.appTop p`. Rewrite using `[Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]`. Use `congr 1`.
+
+Simplify using `only [Cartier.constFn, Cartier.fnOf, algX, e2, RingHom.comp_apply]`.
+-/
 theorem preimage_fromSpecStalk_eq_constFn {k : Type} [Field k] (X : Scheme.{0}) [IsIntegral X]
     (p : X ⟶ Sp k) :
     (Spec.preimage (X.fromSpecStalk (genericPoint X) ≫ p)).hom = Cartier.constFn p := by
@@ -34,6 +41,19 @@ theorem preimage_fromSpecStalk_eq_constFn {k : Type} [Field k] (X : Scheme.{0}) 
     congr 1
   simp only [Cartier.constFn, Cartier.fnOf, algX, e2, RingHom.comp_apply]
 
+/- English proof (translation)
+Use `⟨isLocModel_locRing x, ?_⟩` and prove the remaining obligations. Take `⟨_, ⟨U, hU, rfl⟩, hxU, -⟩` from `X.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ x) isOpen_univ`. Establish `hU : IsAffineOpen U` using `hU`. Establish `hne : (U : Set X).Nonempty` using `⟨x, hxU⟩`. Take `⟨d, h₁, h₂⟩` from `GlobalTheory.OpenDim.ringKrullDim_affineOpen k p hU hne`.
+
+Establish `e₁` using `GlobalTheory.OpenDim.topologicalKrullDim_open k p U hne`. Establish `e₂ : topologicalKrullDim (U : Set X) = ringKrullDim Γ(X, U)`. Rewrite using `[← PrimeSpectrum.topologicalKrullDim_eq_ringKrullDim]`. Conclude with `topologicalKrullDim_eq_of_isEmbedding hU.fromSpec.isOpenEmbedding.isEmbedding hU.range_fromSpec`. Establish `hdn : d = n`.
+
+Establish `: ((d : ℕ) : WithBot ℕ∞) = (n : WithBot ℕ∞)` using `by rw [← h₁, ← e₂, e₁, hn]`. Conclude with `this` after adjusting the coercions. Substitute `hdn` using the available equality. Rewrite `h₂` using `[preimage_fromSpecStalk_eq_constFn]`. Use `letI := (Cartier.constFn p).toAlgebra`.
+
+Take `⟨s, hs⟩` from `exists_isTranscendenceBasis k X.functionField`. Establish `hc : Cardinal.mk s = (d : Cardinal)` using `hs.cardinalMk_eq_trdeg.trans h₂`. Establish `hfin : Fintype s` using `(Cardinal.lt_aleph0_iff_fintype.mp (hc ▸ Cardinal.nat_lt_aleph0 d)).some`. Establish `hcard : Fintype.card s = d`. Use `hc` as an intermediate fact.
+
+Rewrite `this` using `[Cardinal.mk_fintype]`. Conclude with `this` after adjusting the coercions. Set `e : Fin d ≃ s` to `(Fintype.equivFinOfCardEq hcard).symm`. Use `⟨fun i => (e i : X.functionField), ?_⟩` and prove the remaining obligations. Unfold `TrBasis`.
+
+Conclude with `hs.comp_equiv e`.
+-/
 theorem isLocModel_locRing_and_exists_trBasis {k : Type} [Field k] (X : Scheme.{0}) [IsIntegral X]
     (p : X ⟶ Sp k) [LocallyOfFiniteType p] (n : ℕ) (x : X) (hn : topologicalKrullDim X = n) :
     IsLocModel (Cartier.constFn p) (locRing x) ∧

@@ -19,6 +19,9 @@ variable {X Y Y' Z : Scheme.{0}} {L : LB X}
 section Prod
 variable {K I : Type} [Fintype K] [Fintype I] (φ : K → I → (Y ⟶ X)) (ε : I → ℤ) (n : K → ℤ)
 
+/- English proof (translation)
+Introduce `_ hy` and use `Set.mem_iInter.2 fun i => Set.mem_iInter.1 hy (k, i)`.
+-/
 theorem prod_le (j : K × I → L.ι) (k : K) :
     LB.wchart L (fun p : K × I => φ p.1 p.2) j ≤ LB.wchart L (φ k) (fun i => j (k, i)) := fun _ hy =>
   Set.mem_iInter.2 fun i => Set.mem_iInter.1 hy (k, i)
@@ -27,6 +30,9 @@ def prodGen (t : ∀ k, LB.Gen (LB.LinComb L (φ k) ε)) :
     LB.Gen (LB.LinComb L (fun p : K × I => φ p.1 p.2) (fun p => n p.1 * ε p.2)) :=
   ⟨fun j => ∏ k, res (prod_le φ j k) ((t k).s (fun i => j (k, i))) ^ n k⟩
 
+/- English proof (translation)
+The claim follows from `(map_prod _ _ _).trans (Finset.prod_congr rfl fun k _ => (map_zpow _ _ _).trans (congrArg (· ^ n k) (gm_res r z _ hj _)))`.
+-/
 theorem gm_prodGen (t : ∀ k, LB.Gen (LB.LinComb L (φ k) ε)) (r : Z ⟶ Y) (z : Z) (j : K × I → L.ι)
     (hj : r z ∈ LB.wchart L (fun p : K × I => φ p.1 p.2) j) :
     gm r z (LB.wchart L (fun p : K × I => φ p.1 p.2) j) ((prodGen φ ε n t).s j) =
@@ -34,6 +40,11 @@ theorem gm_prodGen (t : ∀ k, LB.Gen (LB.LinComb L (φ k) ε)) (r : Z ⟶ Y) (z
   (map_prod _ _ _).trans (Finset.prod_congr rfl fun k _ =>
     (map_zpow _ _ _).trans (congrArg (· ^ n k) (gm_res r z _ hj _)))
 
+/- English proof (translation)
+Use `isGen_of_gm _ fun y j j' h h' => ?_` and prove the remaining obligations. Rewrite using `[gm_prodGen φ ε n t _ y j h, gm_prodGen φ ε n t _ y j' h', trF, Fintype.prod_prod_type, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[gen_trans (ht k) (𝟙 Y) y (prod_le φ j k h) (prod_le φ j' k h'), mul_zpow, trF, ← Finset.prod_zpow]`. Use `congr 1`.
+
+Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← zpow_mul, mul_comm (ε i)]`.
+-/
 theorem prodGen_isGen (t : ∀ k, LB.Gen (LB.LinComb L (φ k) ε)) (ht : ∀ k, (t k).IsGen) :
     (prodGen φ ε n t).IsGen := by
   refine isGen_of_gm _ fun y j j' h h' => ?_
@@ -45,6 +56,9 @@ theorem prodGen_isGen (t : ∀ k, LB.Gen (LB.LinComb L (φ k) ε)) (ht : ∀ k, 
   refine Finset.prod_congr rfl fun i _ => ?_
   rw [← zpow_mul, mul_comm (ε i)]
 
+/- English proof (translation)
+The claim follows from `gm_prodGen φ ε n t r z _ (hJ.mem _ r)`.
+-/
 theorem val_prodGen (t : ∀ k, LB.Gen (LB.LinComb L (φ k) ε)) (r : Z ⟶ Y) (z : Z) {J : (Z ⟶ X) → L.ι}
     (hJ : Good L z J) : val (prodGen φ ε n t) r z J = ∏ k, val (t k) r z J ^ n k :=
   gm_prodGen φ ε n t r z _ (hJ.mem _ r)
@@ -54,6 +68,9 @@ end Prod
 section Nest
 variable {K I : Type} [Fintype K] [Fintype I] (φ : K → (Y ⟶ X)) (ε : K → ℤ) (ψ : I → (Y' ⟶ Y)) (δ : I → ℤ)
 
+/- English proof (translation)
+Introduce `_ hy` and use `Set.mem_iInter.2 fun p => Set.mem_iInter.1 (Set.mem_iInter.1 hy p.1) p.2`.
+-/
 theorem nest_le (jj : I → K → L.ι) :
     LB.wchart (LB.LinComb L φ ε) ψ jj ≤
       LB.wchart L (fun p : I × K => ψ p.1 ≫ φ p.2) (fun p => jj p.1 p.2) := fun _ hy =>
@@ -63,6 +80,11 @@ def nestGen (v : LB.Gen (LB.LinComb L (fun p : I × K => ψ p.1 ≫ φ p.2) (fun
     LB.Gen (LB.LinComb (LB.LinComb L φ ε) ψ δ) :=
   ⟨fun jj => res (nest_le φ ε ψ jj) (v.s (fun p => jj p.1 p.2))⟩
 
+/- English proof (translation)
+Use `isGen_of_gm _ fun y jj jj' h h' => ?_` and prove the remaining obligations. Use `(gm_res (𝟙 _) y _ h _).trans ((gen_trans hv (𝟙 _) y (nest_le φ ε ψ jj h) (nest_le φ ε ψ jj' h')).trans (congrArg₂ (· * ·) ?_ (gm_res (𝟙 _) y _ h' _).symm))` and prove the remaining obligations. Unfold `trF`. Rewrite using `[Fintype.prod_prod_type]`. Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations.
+
+Use `Eq.trans ?_ (congrArg (· ^ δ a) (gm_linComb L φ ε (𝟙 _ ≫ ψ a) y (jj a) (jj' a) (Set.mem_iInter.1 h a) (Set.mem_iInter.1 h' a))).symm` and prove the remaining obligations. Rewrite using `[← Finset.prod_zpow]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← zpow_mul, Category.assoc]`.
+-/
 theorem nestGen_isGen (v : LB.Gen (LB.LinComb L (fun p : I × K => ψ p.1 ≫ φ p.2) (fun p => ε p.2 * δ p.1)))
     (hv : v.IsGen) : (nestGen φ ε ψ δ v).IsGen := by
   refine isGen_of_gm _ fun y jj jj' h h' => ?_
@@ -80,6 +102,11 @@ theorem nestGen_isGen (v : LB.Gen (LB.LinComb L (fun p : I × K => ψ p.1 ≫ φ
 def chg (JM : (Z ⟶ Y) → (K → L.ι)) (J : (Z ⟶ X) → L.ι) (z : Z) (χ : Z ⟶ Y) : (Z.presheaf.stalk z)ˣ :=
   ∏ k, gm (χ ≫ φ k) z _ (L.g (JM χ k) (J (χ ≫ φ k))) ^ ε k
 
+/- English proof (translation)
+Establish `h₁ : r z ∈ LB.wchart (LB.LinComb L φ ε) ψ (fun i => JM (r ≫ ψ i))` using `hM.mem ψ r`. Establish `h₂` using `hJ.mem (fun p : I × K => ψ p.1 ≫ φ p.2) r`. Use `(gm_res r z _ h₁ _).trans ((gen_trans hv r z (nest_le φ ε ψ _ h₁) h₂).trans (congrArg (· * _) ?_))` and prove the remaining obligations. Unfold `trF chg`. Rewrite using `[Fintype.prod_prod_type]`.
+
+Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.prod_zpow]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← zpow_mul, Category.assoc]`.
+-/
 theorem val_nestGen (v : LB.Gen (LB.LinComb L (fun p : I × K => ψ p.1 ≫ φ p.2) (fun p => ε p.2 * δ p.1)))
     (hv : v.IsGen) (r : Z ⟶ Y') (z : Z) {JM : (Z ⟶ Y) → (K → L.ι)} {J : (Z ⟶ X) → L.ι}
     (hM : Good (LB.LinComb L φ ε) z JM) (hJ : Good L z J) :
@@ -99,11 +126,17 @@ end Nest
 section Cub
 variable {A A' U : Type} [CommGroup A] [CommGroup A'] [CommGroup U]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun x y => by simp only [map_one, h.face], fun x y z => h.s01 _ _ _, fun x y z => h.s12 _ _ _, fun x x' x'' y => by simp only [map_mul]; exact h.coc _ _ _ _⟩`.
+-/
 theorem isCub_comp {θ : A → A → A → U} (h : IsCub θ) (β : A' →* A) :
     IsCub (fun a b c => θ (β a) (β b) (β c)) :=
   ⟨fun x y => by simp only [map_one, h.face], fun x y z => h.s01 _ _ _, fun x y z => h.s12 _ _ _,
     fun x x' x'' y => by simp only [map_mul]; exact h.coc _ _ _ _⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun x y => Finset.prod_eq_one fun k _ => by rw [(h k).face, one_zpow], fun x y z => Finset.prod_congr rfl fun k _ => by rw [(h k).s01], fun x y z => Finset.prod_congr rfl fun k _ => by rw [(h k).s12], fun x x' x'' y => by rw [← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib] …`.
+-/
 theorem isCub_prod {K : Type} [Fintype K] {θ : K → A → A → A → U} (h : ∀ k, IsCub (θ k)) (n : K → ℤ) :
     IsCub (fun a b c => ∏ k, θ k a b c ^ n k) :=
   ⟨fun x y => Finset.prod_eq_one fun k _ => by rw [(h k).face, one_zpow],
@@ -127,6 +160,9 @@ variable {S : Scheme.{0}} {G₀ H : Over S} [GrpObj G₀] [IsCommMonObj G₀] [G
 def postHom (g : H ⟶ G₀) [IsMonHom g] (T : Over S) : (T ⟶ H) →* (T ⟶ G₀) :=
   MonoidHom.mk' (· ≫ g) fun x y => MonObj.mul_comp x y g
 
+/- English proof (translation)
+Introduce `U _ h`. Rewrite using `[Fintype.prod_prod_type, Fintype.prod_prod_type_right]`. Conclude with `Finset.prod_congr rfl fun k _ => Finset.prod_congr rfl fun i _ => by simp only [e]`.
+-/
 theorem formEq_swap {X Y : Scheme.{0}} {K I : Type} [Fintype K] [Fintype I] {α β : K → I → (Y ⟶ X)}
     (e : ∀ k i, α k i = β k i) (n : K → ℤ) (ε : I → ℤ) :
     FormEq (fun p : K × I => α p.1 p.2) (fun p => n p.1 * ε p.2) (fun p : I × K => β p.2 p.1)
@@ -138,6 +174,35 @@ theorem formEq_swap {X Y : Scheme.{0}} {K I : Type} [Fintype K] [Fintype I] {α 
 abbrev cpLB (P : UU.CP G₀) {K : Type} [Fintype K] (f : K → (H ⟶ G₀)) (ε : K → ℤ) : LB H.left :=
   LB.LinComb P.L.L (fun k => (f k).left) ε
 
+/- English proof (translation)
+Establish `hM : (cpLB P f ε).IsLB` using `LB.isLB_linComb P.L.isLB _ _`. Establish `he : ∀ k, eSec H ≫ (f k).left = eSec G₀` using `fun k => by`. Rewrite using `[eSec, eSec, ← Over.comp_left, IsMonHom.one_hom]`. Take `⟨vr, hvr, -⟩` from `exists_gen P.L.isLB (formEq_swap (α := fun (_ : K) (_ : PUnit) => eSec G₀) (β := fun k _ => eSec H ≫ (f k).left) (fun k _ => (he k).symm) ε (fun _ => 1)) (prodGen (fun (_ : K) (_ : PUnit) => eSec G₀) (fun _ => 1) ε (fun _ => P.L.rig)) (prodGen_isGen _ _ _ _ fun _ => P.L.rigGen)`. Set `rig : LB.Gen (LB.LinComb (cpLB P f ε) (fun _ : PUnit => eSec H) (fun _ => 1))` to `nestGen (fun k => (f k).left) ε (fun _ : PUnit => eSec H) (fun _ => 1) vr`.
+
+Establish `rigGen : rig.IsGen` using `nestGen_isGen (fun k => (f k).left) ε (fun _ : PUnit => eSec H) (fun _ => 1) vr hvr`. Set `L' : RigLB H` to `⟨cpLB P f ε, rig, hM, rigGen⟩`. Establish `hc : ∀ k (I : thK.{0}), (f k ⊗ₘ f k ⊗ₘ f k).left ≫ thφ G₀ (x3 G₀) I = thφ H (x3 H) I ≫ (f k).left` using `fun k I => ((CubeMap.ofHom (f k)).psum_comm I.down).symm`. Take `⟨vc, hvc, Hvc⟩` from `exists_gen P.L.isLB (formEq_swap hc ε thε) (prodGen (fun k I => (f k ⊗ₘ f k ⊗ₘ f k).left ≫ thφ G₀ (x3 G₀) I) thε ε (fun k => LB.pullGen P.L.L _ _ P.c.t (f k ⊗ₘ f k ⊗ₘ f k).left)) (prodGen_isGen _ _ _ _ fun k => DVR.pullGen_isGen _ _ _ _ P.c.isGen _)`. Establish `vcub : ∀ {T : Over S} {z : T.left} {JL}, Good P.L.L z JL → ∀ k (a b d : T ⟶ H), val (LB.pullGen P.L.L (thφ G₀ (x3 G₀)) thε P.c.t (f k ⊗ₘ f k ⊗ₘ f k).left) (lift a (lift b d)).left z JL = cubV P.c z JL (a ≫ f k) (b ≫ f k) (d ≫ f k)` using `fun hJL k a b d => by`.
+
+Use `(val_pull hJL _ _ _).trans ?_` and prove the remaining obligations. Rewrite using `[← Over.comp_left, lift_map, lift_map]`. Both sides reduce to the same expression. Take `⟨t, ht, vt⟩ : ∃ t : LB.Gen (Theta H (cpLB P f ε)), t.IsGen ∧ ∀ (T : Over S) (z : T.left) (J JL), Good (cpLB P f ε) z J → Good P.L.L z JL → ∀ a b d : T ⟶ H, val (L` from `cpLB P f ε) (φ := thφ H (x3 H)) (ε := thε) t (lift a (lift b d)).left z J = (chg (fun k => (f k).left) ε J JL z (a * b * d).left * (chg (fun k => (f k).left) ε J JL z (a * b).left)⁻¹ * (chg (fun k => (f k).left) ε J JL z (a * d).left)⁻¹ * (chg (fun k => (f k).left) ε J JL z (b * …`. Use `(val_nestGen (fun k => (f k).left) ε (thφ H (x3 H)) thε vc hvc (lift a (lift b d)).left z hJ hJL).trans (congrArg₂ (· * ·) (prod_cub a b d (chg (fun k => (f k).left) ε J JL z)) ((Hvc _ _ z JL hJL).trans ((val_prodGen (fun k I => (f k ⊗ₘ f k ⊗ₘ f k).left ≫ thφ G₀ (x3 G₀) I) thε ε …` and prove the remaining obligations.
+
+Establish `hι : ∀ k (i : Fin 2), (f k).left ≫ ![(ι[G₀]).left, 𝟙 G₀.left] i = ![(ι[H]).left, 𝟙 H.left] i ≫ (f k).left`. Introduce `k i`. Use `fin_cases i`. Use `show (f k).left ≫ (ι[G₀]).left = (ι[H]).left ≫ (f k).left`. Rewrite using `[← Over.comp_left, ← Over.comp_left, GrpObj.inv_hom]`.
+
+Use `show (f k).left ≫ 𝟙 _ = 𝟙 _ ≫ (f k).left`. Rewrite using `[Category.comp_id, Category.id_comp]`. Take `⟨vs, hvs, Hvs⟩` from `exists_gen P.L.isLB (formEq_swap hι ε ![1, -1]) (prodGen (fun k i => (f k).left ≫ ![(ι[G₀]).left, 𝟙 G₀.left] i) ![1, -1] ε (fun k => LB.pullGen P.L.L _ _ P.sym (f k).left)) (prodGen_isGen (fun k i => (f k).left ≫ ![(ι[G₀]).left, 𝟙 G₀.left] i) ![1, -1] ε _ fun k => DVR.pullGen_isG …`. Set `sym : LB.Gen (LB.LinComb (cpLB P f ε) (K` to `Fin 2) ![(ι[H]).left, 𝟙 H.left] ![1, -1]) := nestGen (fun k => (f k).left) ε ![(ι[H]).left, 𝟙 H.left] ![1, -1] vs`. Establish `symGen : sym.IsGen` using `nestGen_isGen (fun k => (f k).left) ε ![(ι[H]).left, 𝟙 H.left] ![1, -1] vs hvs`.
+
+Establish `vsym : ∀ {Z : Scheme.{0}} (r : Z ⟶ H.left) (z : Z) (J JL), Good (cpLB P f ε) z J → Good P.L.L z JL → val sym r z J = (chg (fun k => (f k).left) ε J JL z (r ≫ (ι[H]).left) * (chg (fun k => (f k).left) ε J JL z r)⁻¹) * ∏ k, val P.sym (r ≫ (f k).left) z JL ^ ε k` using `fun r z J JL hJ hJL => (val_nestGen (fun k => (f k).left) ε ![(ι[H]).left, 𝟙 H.left] ![1, -1] vs hvs r z hJ hJL).trans (congrArg₂ (· * ·) (by simp [Fin.prod_univ_two]) ((Hvs _ _ z JL hJL).trans ((val_prodGen (fun k i => (f k).left ≫ ![(ι[G₀]).left, 𝟙 G₀.left] i) ![1, -1] ε (fun k …`. Establish `hcub : ∀ (T : Over S) (z : T.left) (J), Good L'.L z J → IsCub (CubTransport.thV (L` using `L') t z J) := by`. Introduce `T z J hJ`. Take `⟨JL, hJL⟩` from `UU.exists_good_pt P.L.isLB z`. Use `CubTransport.isCub_of_twist (isCub_prod (fun k => isCub_comp (isCub_cubV P.c hJL) (postHom (f k) T)) ε) (MonoidHom.id _) (fun p => (chg (fun k => (f k).left) ε J JL z p.left)⁻¹) fun a b d => ?_` and prove the remaining obligations.
+
+Rewrite using `[show CubTransport.thV (L := L') t z J a b d = _ from vt T z J JL hJ hJL a b d]`. Simplify using `only [MonoidHom.id_apply, postHom, MonoidHom.mk'_apply]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`. Normalize the expressions using the abelian group laws.
+
+Set `c : CubicalStr H L'` to `CubTransport.cubicalOfVal t ht hcub`. Use `⟨⟨L', c, sym, symGen, ?_, ?_⟩, rfl⟩` and prove the remaining obligations. Use `corr_of_val hM fun y J hJ => ?_` and prove the remaining obligations. Take `⟨JL, hJL⟩` from `UU.exists_good_pt P.L.isLB y`. Use `(val_pull hJ _ _ _).trans ((vsym _ y J JL hJ hJL).trans (Eq.trans ?_ (val_one _).symm))` and prove the remaining obligations.
+
+Establish `e₂ : eSec H ≫ (ι[H]).left = eSec H` using `by rw [eSec, ← Over.comp_left, GrpObj.one_inv]`. Establish `s1 : val P.sym (eSec G₀) y JL = 1`. Use `(val_pull hJL P.sym (eSec G₀) (𝟙 _)).symm.trans ((val_corr hJL P.sym_rig (𝟙 _)).trans (val_one _))` as an intermediate fact. Rewrite `this` using `[Category.id_comp]`. Then use the resulting hypothesis. Simplify using `only [Category.id_comp, Category.assoc, e₂, he, s1, one_zpow, Finset.prod_const_one, mul_inv_cancel, _root_.mul_one]`.
+
+Introduce `T x y u z J hJ`. Take `⟨JL, hJL⟩` from `UU.exists_good_pt P.L.isLB z`. Establish `hC : ∀ a b d : T ⟶ H, cubV c z J a b d = (chg (fun k => (f k).left) ε J JL z (a * b * d).left * (chg (fun k => (f k).left) ε J JL z (a * b).left)⁻¹ * (chg (fun k => (f k).left) ε J JL z (a * d).left)⁻¹ * (chg (fun k => (f k).left) ε J JL z (b * d).left)⁻¹ * chg (fun k => (f k).le …` using `fun a b d => vt T z J JL hJ hJL a b d`. Establish `hinv : ∀ a : T ⟶ H, a.left ≫ (ι[H]).left = (a⁻¹).left` using `fun a => by rw [Hom.inv_def]; rfl`. Establish `hS : ∀ a : T ⟶ H, val sym a.left z J = (chg (fun k => (f k).left) ε J JL z (a⁻¹).left * (chg (fun k => (f k).left) ε J JL z a.left)⁻¹) * ∏ k, val P.sym (a ≫ f k).left z JL ^ ε k` using `fun a => (vsym a.left z J JL hJ hJL).trans (by rw [hinv]; rfl)`.
+
+Establish `hP : (∏ k, cubV P.c z JL (x⁻¹ ≫ f k) (y⁻¹ ≫ f k) (u⁻¹ ≫ f k) ^ ε k) * (∏ k, val P.sym ((x * y) ≫ f k).left z JL ^ ε k) * (∏ k, val P.sym ((x * u) ≫ f k).left z JL ^ ε k) * (∏ k, val P.sym ((y * u) ≫ f k).left z JL ^ ε k) = (∏ k, cubV P.c z JL (x ≫ f k) (y ≫ f k) (u ≫ f k) ^ ε k) …`. Simplify using `only [← Finset.prod_mul_distrib, ← mul_zpow]`. Use `Finset.prod_congr rfl fun k _ => congrArg (· ^ ε k) ?_` and prove the remaining obligations. Establish `m : ∀ a b : T ⟶ H, (a * b) ≫ f k = (a ≫ f k) * (b ≫ f k)` using `fun a b => MonObj.mul_comp a b (f k)`. Establish `i : ∀ a : T ⟶ H, a⁻¹ ≫ f k = (a ≫ f k)⁻¹` using `fun a => map_inv (postHom (f k) T) a`.
+
+Simplify using `only [m, i]`. Conclude with `P.sym_cub T (x ≫ f k) (y ≫ f k) (u ≫ f k) z JL hJL`. Rewrite using `[hC, hC, hS, hS, hS, hS, hS, hS, hS]`. Establish `p4 : x⁻¹ * y⁻¹ * u⁻¹ = (x * y * u)⁻¹` using `by rw [mul_inv, mul_inv]`. Establish `p1 : x⁻¹ * y⁻¹ = (x * y)⁻¹` using `(mul_inv x y).symm`.
+
+Establish `p2 : x⁻¹ * u⁻¹ = (x * u)⁻¹` using `(mul_inv x u).symm`. Establish `p3 : y⁻¹ * u⁻¹ = (y * u)⁻¹` using `(mul_inv y u).symm`. Rewrite using `[p4, p1, p2, p3]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Establish `hP'` using `congrArg Additive.ofMul hP`.
+
+Simplify using `only [ofMul_mul, ofMul_inv] at hP' ⊢`. Take the linear combination `(norm := abel) hP'`.
+-/
 theorem exists_cp_linComb (P : UU.CP G₀) {K : Type} [Fintype K] (f : K → (H ⟶ G₀)) [∀ k, IsMonHom (f k)]
     (ε : K → ℤ) : ∃ Q : UU.CP H, Q.L.L = cpLB P f ε := by
   have hM : (cpLB P f ε).IsLB := LB.isLB_linComb P.L.isLB _ _

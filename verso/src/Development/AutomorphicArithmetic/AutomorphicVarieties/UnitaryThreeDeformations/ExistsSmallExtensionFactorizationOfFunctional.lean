@@ -2,6 +2,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.UnitaryThreeDeform
 
 open Matrix IsLocalRing ReciprocityTheory.Gal UpperTheory.V.U3 UpperTheory.V.Alg UpperTheory.V.UnitaryThreeInertia
 
+/- English proof (translation)
+Use `haveI : IsLocalRing S := IsLocalRing.of_surjective' (f : R →+* S) hf`. Use `haveI : Finite S := Finite.of_surjective f hf`. Use `haveI hl : IsLocalHom (f : R →+* S) := IsLocalHom.of_surjective (f : R →+* S) hf`. Establish `hm : ∀ x : R, f x ∈ maximalIdeal S ↔ x ∈ maximalIdeal R` using `fun x => ⟨fun h hu => h (hu.map f), fun h hu => h (hl.map_nonunit x hu)⟩`. Use `haveI : IsArtinianRing S := inferInstance`.
+
+Use `⟨{ complete := inferInstance, isLocalHom := ⟨fun a ha => ?_⟩, res_surj := fun y => ?_ }, hm⟩` and prove the remaining obligations. Rewrite `ha` using `[← f.commutes]`. Conclude with `IsLocalHom.map_nonunit (f := algebraMap O R) a (hl.map_nonunit _ ha)`. Take `⟨x, rfl⟩` from `hf y`. Take `⟨a, ha⟩` from `IsCO.res_surj (O := O) x`.
+
+Use `⟨a, ?_⟩` and prove the remaining obligations. Rewrite using `[← f.commutes, ← map_sub]`. Conclude with `(hm _).2 ha`.
+-/
 private theorem isCO_of_surj {O : Type} [CommRing O] [IsLocalRing O] {R S : Type} [CommRing R] [Algebra O R]
     [IsCO O R] [Finite R] [CommRing S] [Algebra O S] [Nontrivial S] (f : R →ₐ[O] S)
     (hf : Function.Surjective f) :
@@ -21,6 +28,31 @@ private theorem isCO_of_surj {O : Type} [CommRing O] [IsLocalRing O] {R S : Type
     rw [← f.commutes, ← map_sub]
     exact (hm _).2 ha
 
+/- English proof (translation)
+Introduce `O _ _ R R' _ _ _ _ _ _ p hmul hle φ hφ`. Establish `hz : ∀ m ∈ maximalIdeal R, ∀ x ∈ RingHom.ker p, m * x = 0` using `fun m hm x hx => by`. Use `Ideal.mul_mem_mul hm hx` as an intermediate fact. Rewrite `this` using `[hmul, Ideal.mem_bot]`. Then use the resulting hypothesis. Set `J : Ideal R` to `{ carrier := {x | ∃ h : x ∈ RingHom.ker p, φ ⟨x, h⟩ = 0} add_mem' := by`.
+
+Introduce and unpack `a b ⟨ha, ha'⟩ ⟨hb, hb'⟩`. Use `⟨add_mem ha hb, ?_⟩` and prove the remaining obligations. Establish `: (⟨a + b, add_mem ha hb⟩ : RingHom.ker p) = ⟨a, ha⟩ + ⟨b, hb⟩` using `rfl`. Rewrite using `[this, map_add, ha', hb', add_zero]`. Use the proof step `zero_mem' := ⟨zero_mem _, map_zero φ⟩`.
+
+Use the proof step `smul_mem' := by`. Introduce and unpack `r x ⟨hx, hx'⟩`. Use `⟨Ideal.mul_mem_left _ r hx, ?_⟩` and prove the remaining obligations. Take `⟨a, ha⟩` from `IsCO.res_surj (O := O) r`. Establish `: (⟨r • x, Ideal.mul_mem_left _ r hx⟩ : RingHom.ker p) = a • ⟨x, hx⟩`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Establish `h` using `hz _ ha x hx`. Rewrite `h` using `[sub_mul, sub_eq_zero]`. Use `show r * x = a • x`. Rewrite using `[h, Algebra.smul_def]`.
+
+Rewrite using `[this, map_smul, hx', smul_zero] }`. Establish `hJ : ∀ x : RingHom.ker p, (x : R) ∈ J ↔ φ x = 0` using `fun x => ⟨fun ⟨_, h⟩ => h, fun h => ⟨x.2, h⟩⟩`. Establish `hJp : ∀ x ∈ J, p x = 0` using `fun x ⟨h, _⟩ => h`. Choose the witnesses or unpack the hypotheses as in `⟨x0, hx0⟩ : ∃ x, φ x ≠ 0 := by`. Assume the negation of the conclusion as `h`.
+
+Use `push Not at h`. Conclude with `hφ (LinearMap.ext h)`. Establish `hsurj : Function.Surjective φ` using `fun y => by`. Take `⟨a, ha⟩` from `residue_surjective (y * (φ x0)⁻¹)`. Use `⟨a • x0, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_smul, Algebra.smul_def, ResidueField.algebraMap_eq, ha, inv_mul_cancel_right₀ hx0]`. Establish `hJtop : J ≠ ⊤` using `fun h => hx0 ((hJ x0).1 (h ▸ Submodule.mem_top))`. Use `haveI : Nontrivial (R ⧸ J) := Ideal.Quotient.nontrivial_iff.2 hJtop`. Establish `hp1 : Function.Surjective (Ideal.Quotient.mkₐ O J)` using `Ideal.Quotient.mkₐ_surjective O J`. Take `⟨inst, hm⟩` from `isCO_of_surj (Ideal.Quotient.mkₐ O J) hp1`.
+
+Set `ψ : RingHom.ker p →ₗ[O] R ⧸ J` to `(Ideal.Quotient.mkₐ O J).toLinearMap ∘ₗ ((RingHom.ker p).subtype.restrictScalars O)`. Establish `hψ : ∀ x : RingHom.ker p, ψ x = Ideal.Quotient.mkₐ O J x` using `fun _ => rfl`. Establish `hker : LinearMap.ker φ ≤ LinearMap.ker ψ` using `fun x hx => Ideal.Quotient.eq_zero_iff_mem.2 ((hJ x).2 hx)`. Set `ε : ResidueField O →ₗ[O] R ⧸ J` to `(LinearMap.ker φ).liftQ ψ hker ∘ₗ (φ.quotKerEquivOfSurjective hsurj).symm.toLinearMap`. Establish `hε : ∀ x : RingHom.ker p, ε (φ x) = Ideal.Quotient.mkₐ O J x` using `fun x => by`.
+
+Establish `: (φ.quotKerEquivOfSurjective hsurj).symm (φ x) = Submodule.Quotient.mk x`. Rewrite using `[LinearEquiv.symm_apply_eq]`. Both sides reduce to the same expression. Use `show (LinearMap.ker φ).liftQ ψ hker ((φ.quotKerEquivOfSurjective hsurj).symm (φ x)) = _`. Rewrite using `[this, Submodule.liftQ_apply, hψ]`.
+
+Establish `hq : ∀ x : R, Ideal.Quotient.liftₐ J p hJp (Ideal.Quotient.mkₐ O J x) = p x` using `fun _ => rfl`. Use `⟨R ⧸ J, inferInstance, inferInstance, inst, Ideal.Quotient.mkₐ O J, Ideal.Quotient.liftₐ J p hJp, ε, hp1, AlgHom.ext hq, fun hinj => ?_, fun x => (hε x).symm, fun y => ?_, fun y => ?_, fun x hx y => ?_⟩` and prove the remaining obligations. Establish `h : Ideal.Quotient.mkₐ O J (x0 : R) = 0` using `hinj (by rw [hq, map_zero]; exact x0.2)`. Conclude with `hx0 ((hJ x0).1 (Ideal.Quotient.eq_zero_iff_mem.1 h))`. Take `⟨x, rfl⟩` from `hsurj y`.
+
+Rewrite using `[hε, hq]`. Conclude with `x.2`. Take `⟨x, rfl⟩` from `hsurj y`. Rewrite using `[hε]`. Conclude with `(hm _).2 (hle x.2)`.
+
+Take `⟨z, rfl⟩` from `hsurj y`. Take `⟨w, rfl⟩` from `hp1 x`. Rewrite using `[hε, ← map_mul, hz w ((hm w).1 hx) _ z.2, map_zero]`.
+-/
 theorem UpperTheory.exists_small_extension_factorization_of_functional :
     ∀ {O : Type} [CommRing O] [IsLocalRing O] {R R' : Type} [CommRing R] [Algebra O R] [IsCO O R] [Finite R] [CommRing R'] [Algebra O R'] (p : R →ₐ[O] R'), maximalIdeal R * RingHom.ker p = ⊥ → RingHom.ker p ≤ maximalIdeal R → ∀ φ : RingHom.ker p →ₗ[O] ResidueField O, φ ≠ 0 →
      ∃ (R'' : Type) (_ : CommRing R'') (_ : Algebra O R'') (_ : IsCO O R'') (p₁ : R →ₐ[O] R'') (q : R'' →ₐ[O] R') (ε : ResidueField O →ₗ[O] R''), Function.Surjective p₁ ∧ q.comp p₁ = p ∧ ¬ Function.Injective q ∧ (∀ x : RingHom.ker p, p₁ x = ε (φ x)) ∧ (∀ y, q (ε y) = 0) ∧ (∀ y, ε y ∈ maximalIdeal R'') ∧ ∀ x ∈ maximalIdeal R'', ∀ y, x * ε y = 0 := by

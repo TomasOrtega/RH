@@ -12,6 +12,9 @@ namespace PositivityTheory.Rg.Rsw.Em
 
 open PositivityTheory.Rg.Rsw PositivityTheory.Rg.Rsw.L
 
+/- English proof (translation)
+Introduce `hI hB hM hW hT hP hC hF hR hE hA` and use `have hX := GlobalTheory.CompanionTheory.RswEmTop.topX have hRi := GlobalTheory.CompanionTheory.AlgRich.algRich hI hB hX have hS := GlobalTheory.CompanionTheory.SigL.main hI hX GlobalTheory.CompanionTheory.EisE.eisMeas hI hB hM hW hT hP hC hF hR hX hRi hS (GlobalTheory.CompanionTh …`.
+-/
 theorem eisMeas : IdemEx → BumpEx → Major → FixW → FixTh → ThProd → MuCell → FibEx → RCell → PosExt → ApproxId → EisMeas :=
   fun hI hB hM hW hT hP hC hF hR hE hA =>
   have hX := GlobalTheory.CompanionTheory.RswEmTop.topX

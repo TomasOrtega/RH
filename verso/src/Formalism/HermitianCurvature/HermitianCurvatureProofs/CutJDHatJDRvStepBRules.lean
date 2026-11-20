@@ -16,6 +16,9 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 variable {k r : ℕ}
 
+/- English proof (translation)
+The claim follows from `| 0, i, hi => by have : i = b.succ := Fin.ext (by simp [hi]) subst this refine ⟨1, by simp, glev_one _, fun a _ => by simp, fun a h1 h2 => ?_⟩ simp at h2 omega | n + 1, i, hi => by have hl : b.val + 1 + n < r := by have := i.isLt; omega set l : Fin r := ⟨b.val + 1 + n, hl⟩ with h …`.
+-/
 theorem exists_wCell_eq_wCell_succ_mul_tail_factor (c : Fin r → ℂ) (hc : ∀ a, c a ≠ 0) (b : Fin r) : ∀ n : ℕ, ∀ i : Fin (r + 1), i.val = b.val + 1 + n →
     ∃ T : Mx k r, wCell k r i c = wCell k r b.succ c * T ∧ T ∈ Glev k r b.succ ∧
       (∀ a : Fin r, i.val ≤ a.val → T *ᵥ bvec (eI k r a) = bvec (eI k r a)) ∧
@@ -59,6 +62,19 @@ section rules
 
 variable {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E]
 
+/- English proof (translation)
+Establish `hc : Continuous fun x : Mx k r => g * x` using `cont_lmul g`. Establish `hD' : IsOpen {x : Mx k r | g * x ∈ D}` using `hD.preimage hc`. Establish `hS' : SmoothLev k r a.castSucc {x | g * x ∈ D} (fun x => f (g * x))` using `smooth_left g (fun x hx => glev0 hg.1 hx) hS`. Establish `hR' : RightEq k r z' a.castSucc {x | g * x ∈ D} (fun x => f (g * x))`. Introduce `x hx n hn`.
+
+Use `hR (g * x) ⟨glev0 hg.1 hx.1, hx.2⟩ n (nlev_mono (zero_le' _) hn)` as an intermediate fact. Simplify `this` using `[Matrix.mul_assoc]`. Establish `h1 : (1 : Mx k r) ∈ Glev k r a.castSucc ∩ {x | g * x ∈ D}` using `⟨glev_one _, by simpa using hg.2⟩`. Establish `hrule` using `(Formalism.FourierDecayAlt.P.right_action_rule E k r z' a {x | g * x ∈ D} (fun x => f (g * x)) hz' hD' hS' hR' 1 h1).2.1`. Establish `hjlt : r + w.val - a.val - 1 < mdim k r a.succ` using `by simp [mdim]; omega`.
+
+Establish `hpos : posL k r a.succ ⟨r + w.val - a.val - 1, hjlt⟩ = wI k r w`. Simplify using `[posL, wI, Fin.ext_iff]`. Use linear arithmetic over natural numbers and integers. Establish `h` using `hrule ⟨r + w.val - a.val - 1, hjlt⟩`. Rewrite `h` using `[hpos, eH_left, Matrix.mul_one]`.
+
+Rewrite using `[h]`. Establish `hx : xbv k r z' a.succ ⟨r + w.val - a.val - 1, hjlt⟩ = 0`. Simplify using `only [xbv, fvec, hpos]`. Rewrite using `[dif_pos (show (a.succ : Fin (r + 1)).val < r by simp; omega), Formalism.FourierDecayAlt.P.SignAntidiagonal.herm_bvec_eI]`. Simplify using `only [bvec, Pi.single_apply]`.
+
+Rewrite using `[if_neg]`. Introduce `h'`. Use `congrArg Fin.val h'` as an intermediate fact. Simplify using `[wI, esI] at this`. Use linear arithmetic over natural numbers and integers.
+
+Rewrite using `[hx, zero_smul]`.
+-/
 theorem rightRuleBv (z' : Fin (2 * r + k + 1) → ℂ) (D : Set (Mx k r)) (f : Mx k r → E) (hz' : inWb k r z')
     (hD : IsOpen D) (hS : SmoothLev k r 0 D f) (hR : RightEq k r z' 0 D f) (g : Mx k r) (hg : g ∈ Glev k r 0 ∩ D)
     (a : Fin r) (ha : a.val + 1 < r) (w : Fin (k + 1)) : EH k r (wI k r w) (esI k r a) f g = 0 := by
@@ -91,6 +107,27 @@ theorem rightRuleBv (z' : Fin (2 * r + k + 1) → ℂ) (D : Set (Mx k r)) (f : M
     omega
   rw [hx, zero_smul]
 
+/- English proof (translation)
+Establish `hcne : ∀ l, c l ≠ 0` using `hc`. Take `⟨hW0, hWcomm⟩` from `head_comm (k := k) c hcne b.val b.castSucc (by simp)`. Take `⟨T, hT, hTG, -, hTs⟩` from `exists_wCell_eq_wCell_succ_mul_tail_factor (k := k) c hcne b (r - b.val - 1) (Fin.last r) (by simp; omega)`. Establish `hg₁ : T * g ∈ Glev k r b.succ` using `glev_mul hTG (glev_mono (Fin.le_last _) hg)`. Establish `hsplit : wCell k r (Fin.last r) c * g = wCell k r b.castSucc c * (w1 k r b (c b) * (T * g))`.
+
+Simplify using `only [hT, Formalism.FourierDecayAlt.P.Qx6.wCell_succ, Matrix.mul_assoc]`. Establish `hWx : ∀ x ∈ Glev k r b.castSucc, wCell k r b.castSucc c * x ∈ Glev k r 0` using `fun x hx => glev0 hW0 hx`. Establish `hS'` using `smooth_left (E := E) (f := f) (D := D) (wCell k r b.castSucc c) hWx hS`. Establish `hcont : Continuous fun x : Mx k r => wCell k r b.castSucc c * x` using `cont_lmul _`. Establish `hD' : IsOpen {x : Mx k r | wCell k r b.castSucc c * x ∈ D}` using `hD.preimage hcont`.
+
+Establish `hN' : ∀ x ∈ Glev k r b.castSucc ∩ {x | wCell k r b.castSucc c * x ∈ D}, ∀ n ∈ Nlev k r b.castSucc, n * x ∈ {x | wCell k r b.castSucc c * x ∈ D}`. Introduce `x hx n hn`. Use `show wCell k r b.castSucc c * (n * x) ∈ D`. Rewrite using `[← Matrix.mul_assoc, hWcomm b.castSucc le_rfl n hn.2, Matrix.mul_assoc]`. Conclude with `hDN _ ⟨hWx x hx.1, hx.2⟩ n (nlev_mono (zero_le' _) hn)`.
+
+Establish `hL' : LeftEq k r z b.castSucc {x | wCell k r b.castSucc c * x ∈ D} (fun x => f (wCell k r b.castSucc c * x))`. Introduce `x hx n hn`. Use `show f (wCell k r b.castSucc c * (n * x)) = _ • f (wCell k r b.castSucc c * x)`. Rewrite using `[← Matrix.mul_assoc, hWcomm b.castSucc le_rfl n hn.2, Matrix.mul_assoc]`. Conclude with `hL _ ⟨hWx x hx.1, hx.2⟩ n (nlev_mono (zero_le' _) hn)`.
+
+Establish `hpt : w1 k r b (c b) * (T * g) ∈ {x | wCell k r b.castSucc c * x ∈ D}` using `by show _ ∈ D`. Rewrite using `[← hsplit]`. Conclude with `hWD`. Establish `hrule` using `(Formalism.FourierDecayAlt.P.left_action_rule E k r z b {x | wCell k r b.castSucc c * x ∈ D} (fun x => f (wCell k r b.castSucc c * x)) hz hD' hS' hN' hL' (c b) (hcne b) (T * g) hg₁ hpt).2.1`. Establish `hjlt : r + v.val - b.val - 1 < mdim k r b.succ` using `by simp [mdim]; omega`.
+
+Establish `hpos : posL k r b.succ ⟨r + v.val - b.val - 1, hjlt⟩ = wI k r v`. Simplify using `[posL, wI, Fin.ext_iff]`. Use linear arithmetic over natural numbers and integers. Establish `h` using `hrule ⟨r + v.val - b.val - 1, hjlt⟩`. Rewrite `h` using `[hpos, eH_left, ← hsplit]`.
+
+Rewrite using `[h]`. Establish `hb1 : (b.succ : Fin (r + 1)).val < r` using `by simp; omega`. Use `set b1 : Fin r := ⟨b.val + 1, by omega⟩ with hb1def`. Establish `hU : T * g ∈ UH (Hpk k r)` using `hg₁.1`. Establish `hgs : g *ᵥ bvec (esI k r b1) = bvec (esI k r b1)` using `(hg.2 b1 (by simp)).2`.
+
+Establish `hx : (T * g) *ᵥ (star (c b1) • bvec (esI k r b1)) = bvec (eI k r b1)`. Rewrite using `[Matrix.mulVec_smul, ← Matrix.mulVec_mulVec, hgs, hTs b1 (by simp [b1]) (by simp [b1]; omega), smul_smul, mul_inv_cancel₀ (star_ne_zero.2 (hcne b1)), one_smul]`. Establish `hinv : (T * g)⁻¹ *ᵥ bvec (eI k r b1) = star (c b1) • bvec (esI k r b1)`. Rewrite using `[← hx, Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ (Formalism.QuantumDeterminants.WeylGroupFacts.isUnit_of_uh hU), Matrix.one_mulVec]`. Establish `hy : yv k r z b.succ (T * g) ⟨r + v.val - b.val - 1, hjlt⟩ = 0`.
+
+Simplify using `only [yv, hpos, fvec, dif_pos hb1]`. Establish `e1 : (eI k r ⟨(b.succ : Fin (r + 1)).val, hb1⟩) = eI k r b1` using `by simp [b1, eI]`. Rewrite using `[e1, hinv]`. Simplify using `only [Pi.smul_apply, bvec, Pi.single_apply, smul_eq_mul]`. Rewrite using `[if_neg, mul_zero]`.
+
+Introduce `h'`. Use `congrArg Fin.val h'` as an intermediate fact. Simplify using `[wI, esI, b1] at this`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hy, mul_zero, zero_smul]`.
+-/
 theorem leftRuleBv (z : Fin (2 * r + k + 1) → ℂ) (D : Set (Mx k r)) (f : Mx k r → E) (hz : inWb k r z)
     (hD : IsOpen D) (hDN : ∀ g ∈ Glev k r 0 ∩ D, ∀ n ∈ Nlev k r 0, n * g ∈ D) (hS : SmoothLev k r 0 D f)
     (hL : LeftEq k r z 0 D f) (c : Fin r → ℂ) (hc : c ∈ OmX r) (g : Mx k r) (hg : g ∈ Glev k r (Fin.last r))
@@ -154,6 +191,13 @@ end rules
 
 section gauge
 
+/- English proof (translation)
+Establish `h1 : (1 * conj z).re = z.re` using `by simp`. Establish `h2 : (Complex.I * conj z).re = z.im` using `by simp`. Apply the tactic sequence `have hc : ((z.re : ℂ)) + Complex.I * (z.im : ℂ) = z := by apply Complex.ext <;> simp`. Establish `hzz : star z * z = (‖z‖ : ℂ) ^ 2`. Rewrite using `[mul_comm, show star z = conj z from rfl, Complex.mul_conj, Complex.normSq_eq_norm_sq]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hN0 : (‖z‖ : ℂ) ^ 2 ≠ 0` using `by exact_mod_cast pow_ne_zero 2 (norm_ne_zero_iff.mpr hz)`. Rewrite using `[h1, h2]`. Use `push_cast`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hN1 : (‖z‖ : ℂ) ≠ 0` using `by exact_mod_cast norm_ne_zero_iff.mpr hz`. Rewrite using `[hc, hzz]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem gauge_scalar_bar (z : ℂ) (hz : z ≠ 0) (m : ℕ) (P : ℝ) :
     star z * ((1 / 2 : ℂ) * ((((m : ℝ) * P * ((1 * conj z).re / ‖z‖ ^ 2) : ℝ) : ℂ) +
       Complex.I * (((m : ℝ) * P * ((Complex.I * conj z).re / ‖z‖ ^ 2) : ℝ) : ℂ))) = (P : ℂ) * ((m : ℂ) / 2) := by
@@ -170,6 +214,15 @@ theorem gauge_scalar_bar (z : ℂ) (hz : z ≠ 0) (m : ℕ) (P : ℝ) :
       have hN1 : (‖z‖ : ℂ) ≠ 0 := by exact_mod_cast norm_ne_zero_iff.mpr hz
       rw [hc, hzz]; field_simp
 
+/- English proof (translation)
+Take `⟨hψ, hψ'⟩` from `Formalism.FourierDecayAlt.P.GaugeNormPower.fderiv_prodPow r n c hc l 1`. Take `⟨-, hψI⟩` from `Formalism.FourierDecayAlt.P.GaugeNormPower.fderiv_prodPow r n c hc l Complex.I`. Establish `hfun : (fun c' : Fin r → ℂ => ((∏ a, ‖c' a‖ ^ n a : ℝ) : ℂ) • H c') = (fun x : Fin r → ℂ => ∏ a, ‖x a‖ ^ n a) • H`. Use function extensionality and compare the values at `c'`. Conclude with `Complex.coe_smul _ _`.
+
+Rewrite using `[hfun]`. Establish `hD : ∀ w, fderiv ℝ ((fun x : Fin r → ℂ => ∏ a, ‖x a‖ ^ n a) • H) c w = (∏ a, ‖c a‖ ^ n a) • fderiv ℝ H c w + fderiv ℝ (fun x : Fin r → ℂ => ∏ a, ‖x a‖ ^ n a) c w • H c`. Introduce `w`. Rewrite using `[(hψ.hasFDerivAt.smul hH.hasFDerivAt).fderiv]`. Simplify using the standard rewrite rules.
+
+Establish `hs : star (c l) * ((1 / 2 : ℂ) * (((fderiv ℝ (fun x : Fin r → ℂ => ∏ a, ‖x a‖ ^ n a) c (Pi.single l 1) : ℝ) : ℂ) + Complex.I * ((fderiv ℝ (fun x : Fin r → ℂ => ∏ a, ‖x a‖ ^ n a) c (Pi.single l Complex.I) : ℝ) : ℂ))) = ((∏ a, ‖c a‖ ^ n a : ℝ) : ℂ) * ((n l : ℂ) / 2)`. Rewrite using `[hψ', hψI]`. Conclude with `gauge_scalar_bar (c l) (hc l) (n l) _`. Simplify using `only [pbOp, if_pos hc, wirtBar]`. Rewrite using `[hD, hD]`.
+
+Simplify using `only [← Complex.coe_smul]`. Take the linear combination `(norm := module) hs • H c`.
+-/
 theorem gaugePb {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] (r : ℕ) (n : Fin r → ℕ) (H : (Fin r → ℂ) → E)
     (c : Fin r → ℂ) (hc : c ∈ OmX r) (hH : DifferentiableAt ℝ H c) (l : Fin r) :
     pbOp l (fun c' => ((∏ a, ‖c' a‖ ^ n a : ℝ) : ℂ) • H c') c =
@@ -199,6 +252,13 @@ end gauge
 
 section ring
 
+/- English proof (translation)
+Unfold `qminor`. Use `Commute.sum_right _ _ _ fun σ _ => ?_` and prove the remaining obligations. Use `((Int.cast_commute _ _).symm).mul_right ?_` and prove the remaining obligations. Apply `Commute.list_prod_right` to reduce the goal to its premises. Introduce `T hT`.
+
+Rewrite `hT` using `[List.mem_ofFn]`. Take `⟨i, rfl⟩` from `hT`. Unfold `Tm`. Use `Commute.add_right ?_ ?_` and prove the remaining obligations. Use `split_ifs`.
+
+Conclude with `Algebra.commute_algebraMap_right _ _`. Conclude with `Commute.zero_right _`. Establish `h` using `hE p p (a (σ i)) (b i)`. Rewrite `h` using `[if_neg (Ne.symm (ha _)), if_neg (hb _), sub_zero]`. Conclude with `sub_eq_zero.1 h`.
+-/
 theorem comm_qminor {A : Type} [Ring A] [Algebra ℂ A] {n t : ℕ} (E : Fin n → Fin n → A) (hE : GlRel E) (p : Fin n)
     {a b : Fin t → Fin n} (ha : ∀ i, a i ≠ p) (hb : ∀ i, b i ≠ p) (w : ℂ) : Commute (E p p) (qminor E a b w) := by
   unfold qminor
@@ -217,6 +277,33 @@ theorem comm_qminor {A : Type} [Ring A] [Algebra ℂ A] {n t : ℕ} (E : Fin n �
     rw [if_neg (Ne.symm (ha _)), if_neg (hb _), sub_zero] at h
     exact sub_eq_zero.1 h
 
+/- English proof (translation)
+Use `set a' : Fin (t + 1) → Fin n := a ∘ (Fin.last t).castSucc.succAbove with ha'`. Use `set b' : Fin (t + 1) → Fin n := b ∘ Fin.castSucc with hb'`. Use `set a'' : Fin (t + 1) → Fin n := Fin.cons q0 (a' ∘ Fin.castSucc) with ha''`. Use `set τ : Equiv.Perm (Fin (t + 1)) := (Fin.last t).cycleRange with hτ`. Establish `hsq : ((Equiv.Perm.sign τ : ℤ) : A) * ((Equiv.Perm.sign τ : ℤ) : A) = 1`.
+
+Rewrite using `[← Int.cast_mul, ← Units.val_mul, Int.units_mul_self, Units.val_one, Int.cast_one]`. Establish `hsg : ((Equiv.Perm.sign τ : ℤ) : A) = (((-1 : ℤ) ^ t : ℤ) : A)`. Rewrite using `[hτ, Fin.sign_cycleRange]`. Simplify using the standard rewrite rules. Establish `hperm : a'' ∘ τ = a'`.
+
+Use function extensionality and compare the values at `j`. Use `Fin.lastCases ?_ (fun i => ?_) j` and prove the remaining obligations. Simplify using `only [Function.comp_apply, hτ, Fin.cycleRange_self, ha'', Fin.cons_zero, ha']`. Rewrite using `[Fin.succAbove_of_le_castSucc _ _ le_rfl, Fin.succ_last, ha0]`. Simplify using `only [Function.comp_apply, hτ]`.
+
+Rewrite using `[Fin.cycleRange_of_lt (Fin.castSucc_lt_last i), Fin.coeSucc_eq_succ, ha'', Fin.cons_succ]`. Both sides reduce to the same expression. Establish `hcs2 : a' ∘ Fin.castSucc = a ∘ Fin.castSucc ∘ Fin.castSucc`. Use function extensionality and compare the values at `i`. Simplify using `only [Function.comp_apply, ha']`.
+
+Rewrite using `[Fin.succAbove_of_castSucc_lt _ _ (by rw [Fin.castSucc_lt_castSucc_iff]; exact Fin.castSucc_lt_last i)]`. Establish `hQ' : Λ (qminor E a' b' u) = κ • Λ (qminor E (a ∘ Fin.castSucc ∘ Fin.castSucc) (b ∘ Fin.castSucc ∘ Fin.castSucc) u)`. Establish `hsk` using `Formalism.REAL.quantumMinorRowSkew_holds A n (t + 1) E a'' b' τ u`. Rewrite `hsk` using `[hperm]`. Rewrite using `[hsk, Formalism.FourierDecayAlt.P.expansion_first_line A n t E hE a'' b' u, Finset.mul_sum, map_sum, Fin.sum_univ_castSucc]`.
+
+Establish `hrest : ∀ m : Fin t, Λ (((Equiv.Perm.sign τ : ℤ) : A) * ((((-1 : ℤ) ^ ((m.castSucc : Fin (t + 1)) : ℕ) : ℤ) : A) * (Tm E (u - (t : ℂ)) (a'' 0) (b' m.castSucc) * qminor E (a'' ∘ Fin.succ) (b' ∘ m.castSucc.succAbove) u))) = 0`. Introduce `m`. Establish `hbm : b' m.castSucc = b m.castSucc.castSucc` using `rfl`. Rewrite using `[hbm, ha'', Fin.cons_zero]`. Unfold `Tm`.
+
+Rewrite using `[if_neg (Ne.symm (hbR m)), zero_add, zcomm _ (E q0 _), zcomm _ (E q0 _)]`. Conclude with `hL0 m _`. Rewrite using `[Finset.sum_eq_zero (fun m _ => hrest m), zero_add]`. Establish `hbl : b' (Fin.last t) = q1` using `hb1`. Rewrite using `[hbl, ha'', Fin.cons_zero]`.
+
+Unfold `Tm`. Rewrite using `[if_neg h01, zero_add, zcomm _ (E q0 q1), zcomm _ (E q0 q1), hL1, ← mul_assoc, hsg, ← Int.cast_mul]`. Establish `h11 : ((-1 : ℤ) ^ t * (-1) ^ ((Fin.last t : Fin (t + 1)) : ℕ)) = 1`. Rewrite using `[Fin.val_last, ← pow_add, ← two_mul, pow_mul]`. Evaluate the numerical expressions.
+
+Rewrite using `[h11, Int.cast_one, one_mul, Fin.succAbove_last]`. Use `congr 3`. Apply the tactic sequence `all_goals (funext i; simp only [Function.comp_apply, Fin.cons_succ]; exact congrFun hcs2 i)`. Rewrite using `[Formalism.FourierDecayAlt.P.expansion_last_column A n (t + 1) E a b u, map_sum, Fin.sum_univ_castSucc, Fin.sum_univ_castSucc]`. Establish `hrest : ∀ m : Fin t, Λ ((((-1 : ℤ) ^ (t + 1 + ((m.castSucc.castSucc : Fin (t + 2)) : ℕ)) : ℤ) : A) * (qminor E (a ∘ m.castSucc.castSucc.succAbove) (b ∘ Fin.castSucc) u * Tm E (u - ((t + 1 : ℕ) : ℂ)) (a m.castSucc.castSucc) (b (Fin.last (t + 1))))) = 0`.
+
+Introduce `m`. Rewrite using `[hb0]`. Unfold `Tm`. Rewrite using `[if_neg (haR m), zero_add, ← mul_assoc]`. Conclude with `hR0 m _`.
+
+Rewrite using `[Finset.sum_eq_zero (fun m _ => hrest m), zero_add]`. Establish `hsl : Λ ((((-1 : ℤ) ^ (t + 1 + (((Fin.last t).castSucc : Fin (t + 2)) : ℕ)) : ℤ) : A) * (qminor E (a ∘ (Fin.last t).castSucc.succAbove) (b ∘ Fin.castSucc) u * Tm E (u - ((t + 1 : ℕ) : ℂ)) (a (Fin.last t).castSucc) (b (Fin.last (t + 1))))) = -Λ (qminor E a' b' u)`. Rewrite using `[ha1, hb0]`. Unfold `Tm`. Rewrite using `[if_neg (Ne.symm h01), zero_add, ← mul_assoc, hR1, zmul, map_smul]`.
+
+Simplify using `only [Fin.coe_castSucc, Fin.val_last]`. Rewrite using `[show t + 1 + t = 2 * t + 1 by ring, pow_succ, pow_mul]`. Simplify using the standard rewrite rules. Apply the tactic sequence `try rfl`. Rewrite using `[hsl, hQ']`.
+
+Establish `hl : Λ ((((-1 : ℤ) ^ (t + 1 + ((Fin.last (t + 1) : Fin (t + 2)) : ℕ)) : ℤ) : A) * (qminor E (a ∘ (Fin.last (t + 1)).succAbove) (b ∘ Fin.castSucc) u * Tm E (u - ((t + 1 : ℕ) : ℂ)) (a (Fin.last (t + 1))) (b (Fin.last (t + 1))))) = Λ (qminor E (a ∘ Fin.castSucc) (b ∘ Fin.castSucc) u …`. Rewrite using `[ha0, hb0, Fin.succAbove_last, Fin.val_last, ← two_mul, pow_mul]`. Evaluate the numerical expressions. Rewrite using `[hl]`. Normalize the expressions using the abelian group laws.
+-/
 theorem stepBv_ring {A : Type} [Ring A] [Algebra ℂ A] {n : ℕ} (E : Fin n → Fin n → A) (hE : GlRel E)
     {M : Type} [AddCommGroup M] [Module ℂ M] (Λ : A →ₗ[ℂ] M) (q0 q1 : Fin n) (h01 : q0 ≠ q1) (κ : ℂ)
     {t : ℕ} (a b : Fin (t + 2) → Fin n) (ha0 : a (Fin.last (t + 1)) = q0) (ha1 : a (Fin.last t).castSucc = q1)

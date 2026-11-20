@@ -13,6 +13,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {D : Formalism.BasicNotions.D7}
 
+/- English proof (translation)
+Establish `hp` using `D.host.g_prime i`. Take `⟨he, -⟩` from `Formalism.L2.SG.Pf.TypedLoc.tower_ef D.host.F D.host.E hp (D.nd.g_split i) v hv`. Establish `hvq : v.asIdeal ∈ (Ideal.span {((D.host.g i : ℕ) : ℤ)}).primesOver (𝓞 D.host.F)`. Rewrite using `[Formalism.L2.SG.Pf.TypedLoc.primesOver_eq D.host.F hp]`. Conclude with `⟨v, hv, rfl⟩`.
+
+Establish `: v.asIdeal.LiesOver (Ideal.span {((D.host.g i : ℕ) : ℤ)})` using `hvq.2`. Establish `: v.asIdeal.IsPrime` using `v.isPrime`. Rewrite `he` using `[Ideal.ramificationIdx'_eq_ramificationIdx _ _ (Formalism.L2.SG.Pf.TypedLoc.span_p_ne_bot hp)]`. Rewrite using `[not_dvd_differentIdeal_iff, Algebra.isUnramifiedAt_iff_of_isDedekindDomain]`. Conclude with `he`.
+-/
 theorem not_dvd_diff (v : HeightOneSpectrum (𝓞 D.host.F)) (i : Fin 2)
     (hv : ((D.host.g i : ℕ) : 𝓞 D.host.F) ∈ v.asIdeal) : ¬ v.asIdeal ∣ differentIdeal ℤ (𝓞 D.host.F) := by
   have hp := D.host.g_prime i
@@ -25,6 +30,19 @@ theorem not_dvd_diff (v : HeightOneSpectrum (𝓞 D.host.F)) (i : Fin 2)
   rw [not_dvd_differentIdeal_iff, Algebra.isUnramifiedAt_iff_of_isDedekindDomain]
   exact he
 
+/- English proof (translation)
+Establish `hPp` using `P.isPrime`. Set `v : HeightOneSpectrum (𝓞 D.host.F)` to `⟨P.asIdeal.comap (algebraMap (𝓞 D.host.F) (𝓞 D.host.E)), Ideal.IsPrime.comap _, by`. Introduce `hb`. Apply `P.ne_bot` to reduce the goal to its premises. Establish `hg0 : ((gS D : ℕ) : 𝓞 D.host.F) ∈ P.asIdeal.comap (algebraMap (𝓞 D.host.F) (𝓞 D.host.E))`.
+
+Rewrite using `[Ideal.mem_comap, map_natCast]`. Conclude with `hP`. Rewrite `hg0` using `[hb, Ideal.mem_bot]`. It suffices to derive a contradiction. Establish `: (gS D : ℕ) ≠ 0`.
+
+Unfold `Lat.gS`. Conclude with `Nat.mul_ne_zero (D.host.g_prime 0).ne_zero (D.host.g_prime 1).ne_zero`. Conclude with `this (by exact_mod_cast hg0)⟩`. Establish `hgi : ∃ i : Fin 2, ((D.host.g i : ℕ) : 𝓞 D.host.F) ∈ v.asIdeal`. Establish `hg : ((gS D : ℕ) : 𝓞 D.host.F) ∈ v.asIdeal` using `by show _ ∈ P.asIdeal.comap _`.
+
+Rewrite using `[Ideal.mem_comap, map_natCast]`. Conclude with `hP`. Unfold `Lat.gS at hg`. Rewrite `hg` using `[Nat.cast_mul]`. Break down `v.isPrime.mem_or_mem hg with h | h` into its components or cases.
+
+Conclude with `⟨0, h⟩`. Conclude with `⟨1, h⟩`. Take `⟨i, hi⟩` from `hgi`. Establish `hnd` using `not_dvd_diff v i hi`. Assume the negation of the conclusion as `hc`.
+
+Use `push Not at hc`. Conclude with `hnd (Ideal.dvd_iff_le.2 fun t ht => hc t ht)`.
+-/
 theorem diff_avoid (P : HeightOneSpectrum (𝓞 D.host.E)) (hP : ((gS D : ℕ) : 𝓞 D.host.E) ∈ P.asIdeal) :
     ∃ t ∈ differentIdeal ℤ (𝓞 D.host.F), algebraMap (𝓞 D.host.F) (𝓞 D.host.E) t ∉ P.asIdeal := by
   have hPp := P.isPrime

@@ -8,12 +8,18 @@ open scoped Matrix
 
 namespace GlobalTheory.Ord2.VanishKato
 
+/- English proof (translation)
+Use `ext1 s`. Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [tw_val, smul_smul, MonoidHom.mul_apply, Units.val_mul]`.
+-/
 theorem tw_tw {Γ k : Type} [Group Γ] [Field k] {n : ℕ} (r : Γ →* GL (Fin n) k) (a b : Γ →* kˣ) :
     tw (tw r a) b = tw r (b * a) := by
   ext1 s
   apply Units.ext
   simp only [tw_val, smul_smul, MonoidHom.mul_apply, Units.val_mul]
 
+/- English proof (translation)
+Use `continuous_of_continuousAt_one f ?_` and prove the remaining obligations. Use `(continuousAt_const (y := (1 : H))).congr ?_` and prove the remaining obligations. Use `filter_upwards [hU.mem_nhds h1] with s hs`. Conclude with `(h s hs).symm`.
+-/
 theorem cont_of_ker {Γ H : Type} [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] [Group H]
     [TopologicalSpace H] [IsTopologicalGroup H] (f : Γ →* H) (U : Set Γ) (hU : IsOpen U) (h1 : 1 ∈ U)
     (h : ∀ s ∈ U, f s = 1) : Continuous f := by
@@ -22,6 +28,11 @@ theorem cont_of_ker {Γ H : Type} [Group Γ] [TopologicalSpace Γ] [IsTopologica
   filter_upwards [hU.mem_nhds h1] with s hs
   exact (h s hs).symm
 
+/- English proof (translation)
+Establish `hfin : {ζ : Ω | ζ ^ M = 1}.Finite` using `by classical`. Use `(Polynomial.nthRoots M (1 : Ω)).toFinset.finite_toSet.subset fun ζ hζ => ?_` and prove the remaining obligations. Simplify `hζ` using `[Polynomial.mem_nthRoots hM]`. Use `cont_of_ker φ (⋂ ζ ∈ {ζ : Ω | ζ ^ M = 1}, (MulAction.stabilizer (Ω ≃ₐ[ℚ] Ω) ζ : Set (Ω ≃ₐ[ℚ] Ω))) (hfin.isOpen_biInter fun ζ _ => stabilizer_isOpen_of_isIntegral ζ) ?_ ?_` and prove the remaining obligations. Simplify using `only [Set.mem_iInter]`.
+
+Conclude with `fun ζ _ => Subgroup.one_mem _`. Introduce `s hs`. Simplify using `only [Set.mem_iInter] at hs`. Conclude with `hφ s fun ζ hζ => hs ζ hζ`.
+-/
 theorem cont_kills {l : ℕ} [Fact l.Prime] {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω]
     (M : ℕ) (hM : 1 ≤ M) (φ : G ℚ Ω →* (Qbar l)ˣ) (hφ : KillsMu M φ) : Continuous φ := by
   have hfin : {ζ : Ω | ζ ^ M = 1}.Finite := by

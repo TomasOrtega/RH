@@ -14,6 +14,9 @@ open MvPolynomial GlobalTheory.ArInt
 open CategoryTheory AlgebraicGeometry GlobalTheory GlobalTheory.Mean4O GlobalTheory.HermLB
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.FlatDegZero.deg_zero | exact GlobalTheory.FlatDegZero.deg_zero | (intros; apply GlobalTheory.FlatDegZero.deg_zero <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.real_phase_smooth_unit_sum : Hypotheses2 → HypothesesH → GlobalTheory.Published.ScholzeWeinsteinB → ∀ (D : D7) (O : Setup D), O.Core → 2 < D.R.f * (O.N - 1) →
     ∀ (A : SlopeTestRemainingChoices O.Y) (T : Real0 O.Y) (H : Ht O.Y) (h : O.Reads A T H) (B : ℝ), 2 ≤ B → ∀ (τ : D.what₂.Tau) (c : O.s.Comp)
     (g : (T.M c).Fun), (T.M c).Smooth g →

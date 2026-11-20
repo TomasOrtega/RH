@@ -16,11 +16,29 @@ open GlobalTheory GlobalTheory.Cartier GlobalTheory.CechPic GlobalTheory.ProjVar
 open GlobalTheory.VertCmp GlobalTheory.ValCount
 open scoped Classical
 
+/- English proof (translation)
+Introduce and unpack `rfl`. Conclude with `IsDiscreteValuationRing.not_isField (⊤ : ValuationSubring L) (MulEquiv.isField (Field.toIsField L) Subring.topEquiv.toMulEquiv)`.
+-/
 private theorem ne_top_of_dvr {L : Type} [Field L] (V : ValuationSubring L) [IsDiscreteValuationRing V] : V ≠ ⊤ := by
   rintro rfl
   exact IsDiscreteValuationRing.not_isField (⊤ : ValuationSubring L)
     (MulEquiv.isField (Field.toIsField L) Subring.topEquiv.toMulEquiv)
 
+/- English proof (translation)
+Distinguish the cases in `h1 : V.comap φ = W`. Use `swap`. Simplify using `[h1]`. Establish `h2 : (V.comap c).comap ε = O.comap ε`. Rewrite using `[ValuationSubring.comap_comap, ← hc, ← ValuationSubring.comap_comap, h1, hW]`.
+
+Use `hD _ h2` as an intermediate fact. Use `hD' _ h1` as an intermediate fact. Distinguish the cases in `h3 : ∀ o : O, c o ∈ V`. Establish `h4 : O = V.comap c` using `ValuationSubring.eq_of_le_of_ne_top O (fun x hx => h3 ⟨x, hx⟩) (ne_top_of_dvr _)`. Rewrite using `[if_pos ⟨h1, h3⟩, if_pos h1]`.
+
+Substitute `h1` using the available equality. Take `⟨e₁, -, he₁⟩` from `exists_vord_map c V`. Take `⟨e₂, -, he₂⟩` from `exists_vord_map φ V`. Rewrite `he₁` using `[← h4]`. Establish `hp₁ : (p : F') ≠ 0`.
+
+Rewrite using `[← map_natCast ε]`. Conclude with `(map_ne_zero ε).2 (Nat.cast_ne_zero.2 hp)`. Establish `hp₂ : (p : K) ≠ 0`. Rewrite using `[← map_natCast k]`. Conclude with `(map_ne_zero k).2 (Nat.cast_ne_zero.2 hp)`.
+
+Establish `h5` using `he₁ p hp₁`. Establish `h6` using `he₂ p hp₂`. Rewrite `h5`, `h6` using `[map_natCast]`. Rewrite using `[he₁ π hπ, he₂ a ha]`. Take the linear combination `(vord (V.comap φ) a * (vdeg φ V : ℤ) * vord O π) * (h5 - h6)`.
+
+Rewrite using `[if_neg fun h => h3 h.2, if_pos h1]`. Establish `h4 : V.comap c ≠ O` using `fun h => h3 fun o => (h.ge o.2 : (o : F') ∈ V.comap c)`. Take `⟨h5, h6⟩` from `hπ' _ h2 h4`. Rewrite `h6` using `[ValuationSubring.mem_comap, map_inv₀]`. Rewrite using `[vord_eq_zero_of_mem V ((map_ne_zero c).2 hπ) h5 h6]`.
+
+Simplify using the standard rewrite rules.
+-/
 private theorem one_term {F F' K L : Type} [Field F] [CharZero F] [Field F'] [Field K] [Field L] (ε : F →+* F')
     (k : F →+* K) (φ : K →+* L) (c : F' →+* L) (hc : φ.comp k = c.comp ε) (O : ValuationSubring F')
     [IsDiscreteValuationRing O] (W : ValuationSubring K) [IsDiscreteValuationRing W]
@@ -61,6 +79,27 @@ private theorem one_term {F F' K L : Type} [Field F] [CharZero F] [Field F'] [Fi
     rw [vord_eq_zero_of_mem V ((map_ne_zero c).2 hπ) h5 h6]
     simp
 
+/- English proof (translation)
+Establish `hp0 : p ≠ 0` using `(Fact.out : p.Prime).ne_zero`. Take `⟨hW₀, hC⟩` from `UpperTheory.place_degree_residue_formula F v p hp F' ε O b hb`. Establish `: CharZero K` using `charZero_of_injective_ringHom k.injective`. Establish `hε : ε.Finite`. Use `letI := ε.toAlgebra`.
+
+Establish `: IsScalarTower ℚ F F'` using `IsScalarTower.of_algebraMap_eq' (Subsingleton.elim _ _)`. Conclude with `Module.Finite.of_restrictScalars_finite ℚ F F'`. Take `⟨hs, hD, hn⟩` from `UpperTheory.valuation_norm_sum_extensions F F' ε hε (O.comap ε)`. Take `⟨π, hπ, hπO, hπ'⟩` from `UpperTheory.exists_approximation_valuations F' O (ne_top_of_dvr O) _ hs fun V hV =>`. Use `hD V hV` as an intermediate fact.
+
+Use `ne_top_of_dvr V`. Establish `h1 : vord (O.comap ε) (rnorm ε π) = vord O π * (vdeg ε O : ℤ)`. Rewrite using `[hn π hπ, finsum_eq_single _ O, if_pos rfl]`. Introduce `V hV`. Use `split_ifs with h`.
+
+Rewrite using `[vord_eq_zero_of_mem V hπ (hπ' V h hV).1 (hπ' V h hV).2, zero_mul]`. Both sides reduce to the same expression. Establish `hnz : ∀ {A B : Type} [Field A] [Field B] (ψ : A →+* B), ψ.Finite → ∀ x : B, x ≠ 0 → rnorm ψ x ≠ 0` using `fun ψ _ x hx => ((Ne.isUnit hx).map (rnorm ψ)).ne_zero`. Establish `: IsDiscreteValuationRing (W.comap k)` using `hW ▸ hW₀`. Take `⟨e₀, he₀, he⟩` from `exists_vord_map k W`.
+
+Rewrite `he` using `[hW]`. Establish `h2 (j : J) : (∑ᶠ V : ValuationSubring (L j), if V.comap (φ j) = W ∧ ∀ o : O, c j o ∈ V then vord V (φ j a) * (vdeg (φ j) V : ℤ) else 0 : ℤ) * (vord O π * vord W p) = vord W (rnorm (φ j) (c j π)) * (vord O p * vord W a)`. Take `⟨-, hD', hn'⟩` from `UpperTheory.valuation_norm_sum_extensions K (L j) (φ j) (hφ j) W`. Rewrite using `[hn' _ ((map_ne_zero _).2 hπ), finsum_mul, finsum_mul]`. Conclude with `finsum_congr fun V => one_term ε k (φ j) (c j) (hc j) O W hW hD hD' hπ hπ' hp0 ha V`.
+
+Establish `h3 : ∑ j, vord W (rnorm (φ j) (c j π)) = n * (e₀ * (vord O π * (vdeg ε O : ℤ)))`. Rewrite using `[← vord_prod W _ _ fun j _ => hnz _ (hφ j) _ ((map_ne_zero _).2 hπ), hN, vord_pow, he _ (hnz _ hε _ hπ), h1]`. Establish `h4` using `Finset.sum_congr (s₁ := Finset.univ) rfl fun j _ => h2 j`. Rewrite `h4` using `[← Finset.sum_mul, ← Finset.sum_mul, h3]`. Establish `h5` using `he p (Nat.cast_ne_zero.2 hp0)`.
+
+Rewrite `h5` using `[map_natCast]`. Establish `h6 : 0 < vord (O.comap ε) (p : F)`. Use `vord_pos _ (Nat.cast_ne_zero.2 hp0) ((mem_nonunits_comap ε O _).2 ?_)` and prove the remaining obligations. Use `ValuationSubring.coe_mem_nonunits_iff.2 ((hb.2 p).1 hp)` as an intermediate fact. Simplify using `using this`.
+
+Establish `h7 : 0 < vord O π` using `vord_pos O hπ hπO`. Establish `h8 : vord O (p : F') = ramIdx O p`. Use `vord_coe O (a := (p : O)) (Nat.cast_ne_zero.2 hp0)` as an intermediate fact. Simplify `this` using `[ramIdx]`. Rewrite using `[← Int.cast_sum]`.
+
+Generalize the expression as in `(∑ j : J, _ : ℤ) = S at h4 ⊢`. Rewrite `h4` using `[h5, h8]`. Establish `h9 : S * vord (O.comap ε) (p : F) = n * (vdeg ε O : ℤ) * (ramIdx O p * vord W a)`. Apply `mul_left_cancel₀ (mul_pos he₀ h7).ne'` to reduce the goal to its premises. Take the linear combination `h4`.
+
+Establish `h10 : (S : ℝ) * (vord (O.comap ε) (p : F) : ℝ) = n * (vdeg ε O : ℝ) * (ramIdx O p * (vord W a : ℝ))`. Conclude with `h9` after adjusting the coercions. Establish `h11 : (0 : ℝ) < (vord (O.comap ε) (p : F) : ℝ)` using `by exact_mod_cast h6`. Apply `mul_right_cancel₀ h11.ne'` to reduce the goal to its premises. Take the linear combination `placeDeg p v * h10 + (n * (ramIdx O p : ℝ) * (vord W a : ℝ)) * hC`.
+-/
 private theorem count_alg (F : Type) [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) (p : ℕ) [Fact p.Prime]
     (hp : (p : 𝓞 F) ∈ v.asIdeal) (F' : Type) [Field F'] [NumberField F'] (ε : F →+* F') (O : ValuationSubring F')
     [IsDiscreteValuationRing O] [CharP (ResidueField O) p] (b : 𝓞 F →+* O) (hb : IsUp v ε O b)
@@ -124,6 +163,9 @@ private theorem count_alg (F : Type) [Field F] [NumberField F] (v : HeightOneSpe
   apply mul_right_cancel₀ h11.ne'
   linear_combination placeDeg p v * h10 + (n * (ramIdx O p : ℝ) * (vord W a : ℝ)) * hC
 
+/- English proof (translation)
+Use `(congrArg (· ≫ X.fromSpecStalk (genericPoint X)) (Spec.map_comp _ _)).trans ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, Scheme.SpecMap_stalkSpecializes_fromSpecStalk, Scheme.SpecMap_stalkMap_fromSpecStalk]`. Both sides reduce to the same expression.
+-/
 private theorem sp_fnMap {X X' : Scheme.{0}} [IsIntegral X] [IsIntegral X'] (g : X' ⟶ X)
     (hg : g (genericPoint X') ⤳ genericPoint X) :
     Spec.map (CommRingCat.ofHom (SmallSec.fnMap g hg)) ≫ genericFieldPoint X = genericFieldPoint X' ≫ g := by
@@ -132,6 +174,9 @@ private theorem sp_fnMap {X X' : Scheme.{0}} [IsIntegral X] [IsIntegral X'] (g :
     Scheme.SpecMap_stalkMap_fromSpecStalk]
   rfl
 
+/- English proof (translation)
+Establish `e : Spec.map (CommRingCat.ofHom (toFunctionField p) ≫ CommRingCat.ofHom (SmallSec.fnMap g hg)) = Spec.map (CommRingCat.ofHom b ≫ CommRingCat.ofHom (toFunctionField q))`. Rewrite using `[Spec.map_comp, Spec.map_comp, ← genericFieldPoint_over, ← genericFieldPoint_over, ← Category.assoc, sp_fnMap, Category.assoc, w, Category.assoc]`. Conclude with `congr($(Spec.map_injective e) a)`.
+-/
 private theorem fnMap_toFF {X X' : Scheme.{0}} [IsIntegral X] [IsIntegral X'] (g : X' ⟶ X)
     (hg : g (genericPoint X') ⤳ genericPoint X) {A B : Type} [CommRing A] [CommRing B] (p : X ⟶ Sp A)
     (q : X' ⟶ Sp B) (b : A →+* B) (w : g ≫ p = q ≫ spMap b) (a : A) :
@@ -142,6 +187,9 @@ private theorem fnMap_toFF {X X' : Scheme.{0}} [IsIntegral X] [IsIntegral X'] (g
       sp_fnMap, Category.assoc, w, Category.assoc]
   exact congr($(Spec.map_injective e) a)
 
+/- English proof (translation)
+Take `⟨ψ, _, hψ⟩` from `dominatesStalk_iff_exists_isLocalHom.1 h`. Establish `_ : Nonempty (⊤ : X.Opens)` using `⟨⟨x, trivial⟩⟩`. Establish `e : toFunctionField p a = algebraMap _ X.functionField (X.presheaf.germ ⊤ x trivial (p.appTop ((Scheme.ΓSpecIso (.of A)).inv a)))` using `(Scheme.algebraMap_germ_eq_germToFunctionField X (U := ⊤) (x := x) trivial _).symm`. Rewrite using `[e, ← hψ, ValuationSubring.coe_mem_nonunits_iff, mem_maximalIdeal, mem_nonunits_iff, isUnit_map_iff, ← Scheme.mem_basicOpen_top, ← Scheme.preimage_basicOpen_top, basicOpen_eq_of_affine]`. Conclude with `not_not`.
+-/
 private theorem toFF_mem_nonunits {X : Scheme.{0}} [IsIntegral X] {A : Type} [CommRing A] (p : X ⟶ Sp A) {x : X}
     {W : ValuationSubring X.functionField} (h : DominatesStalk W x) (a : A) :
     toFunctionField p a ∈ W.nonunits ↔ a ∈ (p x).asIdeal := by
@@ -154,6 +202,11 @@ private theorem toFF_mem_nonunits {X : Scheme.{0}} [IsIntegral X] {A : Type} [Co
     ← Scheme.mem_basicOpen_top, ← Scheme.preimage_basicOpen_top, basicOpen_eq_of_affine]
   exact not_not
 
+/- English proof (translation)
+Establish `e : Spec.map (CommRingCat.ofHom (SmallSec.fnMap Q.j (SmallSec.j_gen_specializes Q)) ≫ CommRingCat.ofHom μ.φ) ≫ genericFieldPoint Q.X = Spec.map (CommRingCat.ofHom (SmallSec.fnMap g hg)) ≫ genericFieldPoint Q.X`. Rewrite using `[Spec.map_comp, Category.assoc, sp_fnMap, sp_fnMap, ← Category.assoc]`. Use `(congrArg (· ≫ Q.j) μ.φ_spec.symm).trans ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, ← h.1, ← Category.assoc, Scheme.Opens.fromSpecStalkOfMem_ι]`. Both sides reduce to the same expression.
+
+Establish `: Mono (genericFieldPoint Q.X)` using `inferInstanceAs (Mono (Q.X.fromSpecStalk _))`. Conclude with `congrArg CommRingCat.Hom.hom (Spec.map_injective ((cancel_mono _).1 e))`.
+-/
 private theorem phi_comp {F : Type} [Field F] [NumberField F] {Y : Var F} {O : Type} [CommRing O] [IsDomain O]
     [IsDiscreteValuationRing O] {b : 𝓞 F →+* O} {T : Vert.Model O} (μ : Match Y b T) (Q : TrueGeo.Model Y)
     [IsIntegral Q.X] (g : T.X ⟶ Q.X) (hg : g (genericPoint T.X) ⤳ genericPoint Q.X) (h : Extends μ Q g) :
@@ -168,6 +221,33 @@ private theorem phi_comp {F : Type} [Field F] [NumberField F] {Y : Var F} {O : T
   have : Mono (genericFieldPoint Q.X) := inferInstanceAs (Mono (Q.X.fromSpecStalk _))
   exact congrArg CommRingCat.Hom.hom (Spec.map_injective ((cancel_mono _).1 e))
 
+/- English proof (translation)
+Introduce `F _ _ Y v p _ hp F' _ _ ε O _ _ b hb σ Q _ _ hQ J _ T hT _ μ g hg hE n hn hC η hη hη1 a ha`. Use `GlobalTheory.IsNormalScheme.of_pred hQ` as an intermediate fact. Establish `hpr : IsProper Q.p` using `(isProper_and_exists_isAmpleLB_of_isProjOver Q.ar.isProjOver).1`. Establish `hsep : Q.X.IsSeparated` using `⟨by rw [← terminal.comp_from Q.p]; infer_instance⟩`. Use `SmallSec.isPreimmersion_j Q` as an intermediate fact.
+
+Set `e : Q.X.functionField ≃+* Y.Fn` to `RingEquiv.ofBijective (SmallSec.fnMap Q.j (SmallSec.j_gen_specializes Q)) ⟨RingHom.injective _, SmallSec.fnMap_surjective _ _⟩`. Set `k : F →+* Q.X.functionField` to `e.symm.toRingHom.comp (algebraMap F Y.Fn)`. Establish `hY (x : F) : algebraMap F Y.Fn x = toFunctionField Y.str x` using `IsScalarTower.algebraMap_apply F Γ(Y.X, ⊤) Y.Fn x`. Establish `hk (x : 𝓞 F) : k x = toFunctionField Q.p x`. Use `e.symm_apply_eq.2 ?_` and prove the remaining obligations.
+
+Rewrite using `[hY]`. Conclude with `(fnMap_toFF Q.j _ Q.p Y.str _ Q.pb.w x).symm`. Establish `hφ (j : J) (x : Q.X.functionField) : (μ j).φ (e x) = SmallSec.fnMap (g j) (hg j) x` using `congr($(phi_comp (μ j) Q (g j) (hg j) (hE j)) x)`. Establish `hinj (j : J) : Function.Injective (cst (T j))`. Rewrite using `[injective_iff_map_eq_zero]`.
+
+Introduce `o ho`. Assume the negation of the conclusion as `h0`. Conclude with `((T j).isRegularFn_const h0).ne_zero (germ_injective_of_isIntegral (T j).X (genericPoint _) (U := ⊤) trivial (ho.trans (map_zero _).symm))`. Set `c (j : J) : F' →+* (T j).X.functionField` to `IsFractionRing.lift (hinj j)`. Establish `hc (j : J) (o : O) : c j o = toFunctionField (T j).str o` using `IsFractionRing.lift_algebraMap (hinj j) o`.
+
+Establish `hcomp (j : J) : (SmallSec.fnMap (g j) (hg j)).comp k = (c j).comp ε`. Use `IsFractionRing.ringHom_ext (A := 𝓞 F) fun x => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `SmallSec.fnMap (g j) (hg j) (k x) = c j (ε x)`. Rewrite using `[hk, ← hb.1, hc]`. Conclude with `fnMap_toFF (g j) _ Q.p (T j).str b (hE j).2 x`.
+
+Establish `: Countable F` using `Countable.of_equiv _ (Module.finBasis ℚ F).equivFun.toEquiv.symm`. Establish `: Countable F'` using `Countable.of_equiv _ (Module.finBasis ℚ F').equivFun.toEquiv.symm`. Establish `: Countable (𝓞 F)` using `RingOfIntegers.coe_injective.countable`. Use `UpperTheory.countable_functionField_finiteType (𝓞 F) Q.X Q.p` as an intermediate fact. Establish `(j : J)` using `UpperTheory.countable_functionField_finiteType O (T j).X (T j).str`.
+
+Take `⟨hfin, hN⟩` from `UpperTheory.embedding_count_extensions F F' ε σ Q.X.functionField k J (fun j => (T j).X.functionField) (fun j => SmallSec.fnMap (g j) (hg j)) c hcomp n hn fun ι hι => by`. Rewrite using `[← hC (ι.comp e.symm.toRingHom) hι]`. Use `Nat.card_congr (Equiv.subtypeEquivRight fun q => and_congr ?_ ?_)` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl`.
+
+Use extensionality with `y`. Take `⟨x, rfl⟩` from `e.surjective y`. Simplify using `[hφ]`. Introduce `h`. Use extensionality with `x`.
+
+Simplify `congr($h (e x))` using `[hφ]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use extensionality with `o`. Conclude with `(congrArg q.2 (hc _ o)).symm.trans congr($h o)`.
+
+Introduce `h`. Use `IsFractionRing.ringHom_ext (A := O) fun o => ?_` and prove the remaining obligations. Conclude with `(congrArg q.2 (hc _ o)).trans congr($h o)`. Take `⟨W, hW⟩` from `exists_dominatesStalk η`. Use `hW.isDiscreteValuationRing hη1` as an intermediate fact.
+
+Establish `hWk : W.comap k = O.comap ε`. Use `UpperTheory.valuationSubring_unique_of_prime F v _ _ (fun x => ?_) fun x => ?_` and prove the remaining obligations. Rewrite using `[mem_nonunits_comap, hk, toFF_mem_nonunits Q.p hW, hη]`. Rewrite using `[mem_nonunits_comap, ← hb.1, ValuationSubring.coe_mem_nonunits_iff, hb.2]`. Establish `: CharZero Q.X.functionField` using `charZero_of_injective_ringHom k.injective`.
+
+Rewrite using `[UpperTheory.order_eq_valuation_codim_one Q.X η W hη1 hW a, ← count_alg F v p hp F' ε O b hb Q.X.functionField k W hWk J (fun j => (T j).X.functionField) (fun j => SmallSec.fnMap (g j) (hg j)) hfin c hcomp n hN a ha]`. Use `congr 1`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `hT j` as an intermediate fact. Rewrite using `[UpperTheory.order_codim_one_finite_map Q.X (T j).X O (T j).str (g j) (hg j) (hfin j) η W hη1 hW]`.
+
+Simplify using `only [hc]`.
+-/
 theorem UpperTheory.normal_model_complex_compat :
     ∀ (F : Type) [Field F] [NumberField F] (Y : Var F) (v : HeightOneSpectrum (𝓞 F)) (p : ℕ) [Fact p.Prime], (p : 𝓞 F) ∈ v.asIdeal → ∀ (F' : Type) [Field F'] [NumberField F'] (ε : F →+* F') (O : ValuationSubring F') [IsDiscreteValuationRing O] [CharP (ResidueField O) p] (b : 𝓞 F →+* O), IsUp v ε O b → ∀ (σ : F' →+* ℂ) (Q : TrueGeo.Model Y) [IsIntegral Q.X] [IsLocallyNoetherian Q.X], ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme Q.X → ∀ (J : Type) [Fintype J] (T : J → Vert.Model O), (∀ j, GlobalTheory.IsNormalScheme (T j).X) → (∀ j, (T j).relDim = Y.dim) → ∀ (μ : ∀ j, Match Y b (T j)) (g : ∀ j, (T j).X ⟶ Q.X) (hg : ∀ j, g j (genericPoint (T j).X) ⤳ genericPoint Q.X), (∀ j, Extends (μ j) Q (g j)) → ∀ n : ℕ, 0 < n → Count μ ε σ n → ∀ η : Q.X, (Q.p η).asIdeal = v.asIdeal → Order.coheight η = 1 → ∀ a : Q.X.functionField, a ≠ 0 → placeDeg p v * ∑ j, ((∑ᶠ ζ : (T j).X, if g j ζ = η then Scheme.ord (SmallSec.fnMap (g j) (hg j) a) ζ * ((g j).residueDegree ζ : ℤ) else 0 : ℤ) : ℝ) = (n : ℝ) * ((ramIdx O p : ℝ) * (resDeg O p : ℝ)) * (Scheme.ord a η : ℝ) := by
   intro F _ _ Y v p _ hp F' _ _ ε O _ _ b hb σ Q _ _ hQ J _ T hT _ μ g hg hE n hn hC η hη hη1 a ha

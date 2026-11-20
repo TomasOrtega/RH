@@ -19,6 +19,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.UU
 
+/- English proof (translation)
+Establish `le : ∀ J : PUnit → PUnit → N.ι, ((N.pull b).pull Q.q.left).U J ≤ (N.pull (Q.q.left ≫ b)).U (J PUnit.unit)` using `fun J y hy => mem_pull.2 ((mem_pull (L := N) (F := b)).1 ((mem_pull (L := N.pull b)).1 hy))`. Use `⟨⟨fun J => res (le J) (u.s (J PUnit.unit))⟩, fun i j => Geo.Tor.unit_ext fun y hy => ?_, fun J => (hw _).res (le J)⟩` and prove the remaining obligations. Establish `hm : (𝟙 G.left : G.left ⟶ G.left) y ∈ (N.pull (Q.q.left ≫ b)).U (i PUnit.unit) ⊓ (N.pull (Q.q.left ≫ b)).U (j PUnit.unit)` using `⟨le i hy.1, le j hy.2⟩`. Establish `h1` using `congrArg (gm (𝟙 G.left) y _) (hu (i PUnit.unit) (j PUnit.unit))`. Rewrite `h1` using `[map_mul, gm_res _ y _ hm, gm_res _ y _ hm, gm_pull_g N _ (𝟙 _) y _ _ hm.1 hm.2]`.
+
+Establish `h2` using `(gm_pull_g (N.pull b) Q.q.left (𝟙 _) y i j hy.1 hy.2).trans (gm_pull_g N b (𝟙 _ ≫ Q.q.left) y _ _ ((mem_pull (L := N.pull b)).1 hy.1) ((mem_pull (L := N.pull b)).1 hy.2))`. Rewrite `h2` using `[Category.assoc]`. Rewrite using `[map_mul, gm_res _ y inf_le_left hy, gm_res _ y inf_le_right hy]`. Conclude with `(gm_res (𝟙 _) y (le i) hy.1 _).trans (h1.trans (congrArg₂ (· * ·) h2.symm (gm_res (𝟙 _) y (le j) hy.2 _).symm))`.
+-/
 theorem TQ.exists_genWt_pull_comp {S : Scheme.{0}} {X : Type} [AddCommGroup X] {G : Over S} [GrpObj G] (Q : TQ G X)
     {Y : Scheme.{0}} (N : LB Y) (b : Q.B.left ⟶ Y) {χ : X} (u : LB.Gen (N.pull (Q.q.left ≫ b))) (hu : u.IsGen)
     (hw : ∀ j, IsWt Q.i _ (u.s j).val χ) : ∃ t, Q.GenWt (N.pull b) t χ := by
@@ -39,6 +44,11 @@ theorem TQ.exists_genWt_pull_comp {S : Scheme.{0}} {X : Type} [AddCommGroup X] {
   exact (gm_res (𝟙 _) y (le i) hy.1 _).trans
     (h1.trans (congrArg₂ (· * ·) h2.symm (gm_res (𝟙 _) y (le j) hy.2 _).symm))
 
+/- English proof (translation)
+Take `⟨w, hw⟩` from `H`. Establish `le : ∀ j : K' ⊕ K → L.ι, LB.wchart L (Sum.elim φ' φ) j ≤ LB.wchart L φ' (j ∘ Sum.inl) ⊓ LB.wchart L φ (j ∘ Sum.inr)` using `fun j y hy => ⟨Set.mem_iInter.2 fun k => Set.mem_iInter.1 hy (.inl k), Set.mem_iInter.2 fun k => Set.mem_iInter.1 hy (.inr k)⟩`. Use `gen_chartPull (A' := LB.LinComb L (Sum.elim φ' φ) (Sum.elim ε' fun k => -ε k)) (h := 𝟙 Y) (A := LB.div (LB.LinComb L φ' ε') (LB.LinComb L φ ε)) ⟨fun j => (j ∘ Sum.inl, j ∘ Sum.inr), le, fun y p q hp hq => ?_⟩ w hw` and prove the remaining obligations. Use `(gm_linComb L _ _ (𝟙 Y) y p q hp hq).trans (Eq.trans ?_ (gm_div (LB.LinComb L φ ε) (LB.LinComb L φ' ε') (𝟙 Y) y (p ∘ Sum.inl, p ∘ Sum.inr) (q ∘ Sum.inl, q ∘ Sum.inr) ⟨le p hp, le q hq⟩).symm)` and prove the remaining obligations. Use `Eq.trans ?_ (congrArg₂ (fun a b => a * b⁻¹) (gm_linComb L φ' ε' (𝟙 Y) y _ _ (le p hp).1 (le q hq).1) (gm_linComb L φ ε (𝟙 Y) y _ _ (le p hp).2 (le q hq).2)).symm` and prove the remaining obligations.
+
+Simplify using `only [Fintype.prod_sum_type, Sum.elim_inl, Sum.elim_inr, zpow_neg, Finset.prod_inv_distrib]`. Both sides reduce to the same expression.
+-/
 theorem hasGen_sum_of_lbIso {X Y : Scheme.{0}} (L : LB X) {K K' : Type} [Fintype K] [Fintype K'] (φ : K → (Y ⟶ X))
     (ε : K → ℤ) (φ' : K' → (Y ⟶ X)) (ε' : K' → ℤ) (H : LBIso (LB.LinComb L φ ε) (LB.LinComb L φ' ε')) :
     KerPow.HasGen L (Sum.elim φ' φ) (Sum.elim ε' fun k => -ε k) := by
@@ -57,6 +67,17 @@ theorem hasGen_sum_of_lbIso {X Y : Scheme.{0}} (L : LB X) {K K' : Type} [Fintype
   simp only [Fintype.prod_sum_type, Sum.elim_inl, Sum.elim_inr, zpow_neg, Finset.prod_inv_distrib]
   rfl
 
+/- English proof (translation)
+Establish `H₁` using `hasGen_sum_of_lbIso L _ _ _ _ (H.chartPull (chartPullIn _ _ _ _) (chartPullIn _ _ _ _))`. Set `x : T ⟶ B` to `toUnit T ≫ c`. Set `y : T ⟶ B` to `toUnit T ≫ c'`. Set `w : T ⊗ B ⟶ B` to `(fst T B ≫ y⁻¹) * snd T B`. Set `h : (T ⊗ B).left ⟶ Y` to `pb.lift w.left (fst T B).left ((Over.w w).trans (Over.w (fst T B)).symm)`.
+
+Establish `hb : h ≫ b = w.left` using `pb.lift_fst _ _ _`. Establish `key : ∀ d : 𝟙_ _ ⟶ B, w ≫ ((toUnit B ≫ d) * 𝟙 B) = translPt B ((toUnit T ≫ d) * y⁻¹)` using `fun d => by`. Express the relevant statement in the definitionally equal form `_ = (fst T B ≫ ((toUnit T ≫ d) * y⁻¹)) * snd T B`. Rewrite using `[MonObj.comp_mul, MonObj.comp_mul, Category.comp_id, _root_.mul_assoc, ← Category.assoc, ← Category.assoc, toUnit_unique (w ≫ toUnit B) (fst T B ≫ toUnit T)]`. Establish `k₁ : w ≫ ((toUnit B ≫ c') * 𝟙 B) = snd T B`.
+
+Rewrite using `[key, mul_inv_cancel, KerPow.translPt_one]`. Establish `H₂` using `H₁.pull h (φ' := Sum.elim ![(snd T B).left, w.left] ![(translPt B (x * y⁻¹)).left, w.left]) fun k => by`. Apply the tactic sequence `rcases k with k | k <;> refine (Category.assoc _ _ _).symm.trans ((congrArg (· ≫ _) hb).trans ?_) <;> fin_cases k`. Use `exacts [congrArg (fun q => q.left) k₁, Category.comp_id _, congrArg (fun q => q.left) (key c), Category.comp_id _]`. Establish `triv : KerPow.HasGen L (Y` using `(T ⊗ B).left) (K := Fin 0) ![] ![] := KerPow.hasGen_of_trivial hL fun U _ h => by simp`.
+
+Establish `H₃` using `H₂.comb hL triv (φ'' := ![(translPt B (x * y⁻¹)).left, (snd T B).left]) (ε'' := ![1, -1]) fun U _ h => by`. Rewrite using `[Fintype.prod_sum_type]`. Simplify using `only [Fin.prod_univ_two, Sum.elim_inl, Sum.elim_inr]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using the standard rewrite rules.
+
+Normalize the expressions using the abelian group laws. Conclude with `mul_inv_eq_one.1 (KerPow.eq_one_of_locGen hK (x * y⁻¹) fun _ => ⟨⊤, trivial, H₃.pull _ fun _ => rfl⟩)`.
+-/
 theorem section_eq_of_lbIso {S : Scheme.{0}} {B : Over S} [GrpObj B] {L : LB B.left} (hL : L.IsLB) (hK : KTriv B L)
     (c c' : 𝟙_ _ ⟶ B) {T : Over S} {Y : Scheme.{0}} {b : Y ⟶ B.left} {p : Y ⟶ T.left}
     (pb : IsPullback b p B.hom T.hom)
@@ -89,6 +110,11 @@ theorem section_eq_of_lbIso {S : Scheme.{0}} {B : Over S} [GrpObj B] {L : LB B.l
       abel
   exact mul_inv_eq_one.1 (KerPow.eq_one_of_locGen hK (x * y⁻¹) fun _ => ⟨⊤, trivial, H₃.pull _ fun _ => rfl⟩)
 
+/- English proof (translation)
+Take `⟨u, hu, hw⟩` from `hc`. Take `⟨u', hu', hw'⟩` from `hc'`. Take `⟨v, hv⟩` from `Q.exists_genWt_pull_comp _ b u hu hw`. Take `⟨v', hv'⟩` from `Q.exists_genWt_pull_comp _ b u' hu' hw'`. Establish `H` using `lbIso_of_genWt _ _ _ Q _ _ v v' χ (pull_isLB (DVR.linComb_isLB _ hL _ _) _) (pull_isLB (DVR.linComb_isLB _ hL _ _) _) hv hv'`.
+
+Conclude with `congrArg (fun q => q.left) (section_eq_of_lbIso hL hK c c' (T := Over.mk f) pb H)`.
+-/
 theorem section_eq_of_isWt {S S' : Scheme.{0}} {B : Over S} [GrpObj B] {L : LB B.left} (hL : L.IsLB) (hK : KTriv B L)
     (c c' : 𝟙_ _ ⟶ B) {X : Type} [AddCommGroup X] {G : Over S'} [GrpObj G] (Q : TQ G X) {f : S' ⟶ S}
     {b : Q.B.left ⟶ B.left} (pb : IsPullback b Q.B.hom B.hom f) (χ : X)
@@ -105,6 +131,11 @@ theorem section_eq_of_isWt {S S' : Scheme.{0}} {B : Over S} [GrpObj B] {L : LB B
     (pull_isLB (DVR.linComb_isLB _ hL _ _) _) hv hv'
   exact congrArg (fun q => q.left) (section_eq_of_lbIso hL hK c c' (T := Over.mk f) pb H)
 
+/- English proof (translation)
+Introduce `_ V _ _ _ A G _ _ s t a hK χ c c' hc hc'`. Use `s.cdvr.2.1` as an intermediate fact. Use `Over.OverMorphism.ext (GlobalTheory.hom_ext_of_isHausdorff (IsLocalRing.maximalIdeal V) fun e => ?_)` and prove the remaining obligations. Take `⟨pb, -⟩` from `a.b_pb e`. Establish `k` using `section_eq_of_isWt a.M.L.isLB hK c c' (t.l e).Q pb.1 χ (hc e) (hc' e)`.
+
+Rewrite `k` using `[Over.comp_left, Over.comp_left, Rosenlicht.toUnit_left]`. Conclude with `k`.
+-/
 theorem repWt_unique : Laws → AllSet fun {V} _ _ _ {A} {G} _ _ s => ∀ (t : Tower s) (a : t.Alg), KTriv a.B a.M.L.L → ∀ (χ : s.X) (c c' : 𝟙_ _ ⟶ a.B), (∀ e, a.RepWt c χ e) → (∀ e, a.RepWt c' χ e) → c = c' := by
   intro _ V _ _ _ A G _ _ s t a hK χ c c' hc hc'
   have := s.cdvr.2.1

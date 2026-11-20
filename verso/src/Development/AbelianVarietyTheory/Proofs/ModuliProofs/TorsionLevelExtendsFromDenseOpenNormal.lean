@@ -19,6 +19,19 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped CategoryTheory.Obj TensorProduct Pointwise
 open GlobalTheory.Models GlobalTheory.ZM
 
+/- English proof (translation)
+Introduce `Λ _ N S W _ j G _ _ G' _ φ lv' hS _ _ _ hN gp hadd hker`. Establish `hred : IsReduced S`. Establish `: ∀ x : S, _root_.IsReduced (S.presheaf.stalk x)` using `fun x => by`. Take `⟨_, _⟩` from `hS x`. Use `infer_instance`.
+
+Conclude with `isReduced_of_isReduced_stalk _`. Establish `hqc : QuasiCompact j` using `inferInstance`. Set `P : Over S` to `Over.mk ((𝟙_ (Over W)).hom ≫ j)`. Set `ρ : (𝟙_ (Over W) ⟶ G') →* (P ⟶ G)` to `pushHom gp _`. Establish `hρ : ∀ x, (ρ x).left = x.left ≫ φ` using `fun _ => rfl`.
+
+Establish `h0 : lv' 0 = 1` using `by simpa using hker 0`. Establish `hpow : ∀ (n : ℕ) a, lv' (n • a) = lv' a ^ n` using `fun n a => by`. Proceed by induction on `n with`. Consider the case `zero => simpa using h0`. Consider the case `succ n ih => rw [succ_nsmul, hadd, ih, pow_succ]`.
+
+Establish `hex : ∀ a, ∃ σ : S ⟶ G.left, σ ≫ G.hom = 𝟙 S ∧ j ≫ σ = (lv' a).left ≫ φ` using `fun a => by`. Take `⟨s, h₁, h₂⟩` from `GlobalTheory.exists_section_of_pow_eq_one hS j G N hN P (ρ (lv' a)) (by rw [← map_pow, ← hpow, hker, map_one]) (𝟙 _) ((Category.id_comp _).trans (Category.id_comp _))`. Conclude with `⟨s, h₁, h₂.trans (Category.id_comp _)⟩`. Use `choose σ hσ₁ hσ₂ using hex`. Set `lv : Λ → (𝟙_ (Over S) ⟶ G)` to `fun a => Over.homMk (σ a) (hσ₁ a)`.
+
+Set `u : P ⟶ 𝟙_ (Over S)` to `Over.homMk j ((Category.comp_id _).trans (Category.id_comp _).symm)`. Establish `hu : ∀ a, u ≫ lv a = ρ (lv' a)` using `fun a => Over.OverMorphism.ext (hσ₂ a)`. Establish `inj : ∀ s t : 𝟙_ (Over S) ⟶ G, u ≫ s = u ≫ t → s = t` using `fun s t h => Over.OverMorphism.ext (ext_of_isDominant_of_isSeparated (X := S) G.hom ((Over.w s).trans (Over.w t).symm) j (congrArg (fun z => z.left) h))`. Use `⟨lv, fun a c => inj _ _ ?_, fun a => inj _ _ ?_, fun a => (hσ₂ a).symm⟩` and prove the remaining obligations. Rewrite using `[MonObj.comp_mul, hu, hu, hu, hadd, map_mul]`.
+
+Rewrite using `[hu, hker, map_one, MonObj.comp_one]`.
+-/
 theorem GlobalTheory.exists_torsion_level_extend : ∀ (Λ : Type) [AddCommGroup Λ] (N : ℕ) (S W : Scheme.{0}) [IsLocallyNoetherian S] (j : W ⟶ S) (G : Over S) [GrpObj G] [IsCommMonObj G] (G' : Over W) [GrpObj G'] (φ : G'.left ⟶ G.left) (lv' : Λ → (𝟙_ (Over W) ⟶ G')), Geo.Tor.IsNormalScheme S → IsOpenImmersion j → IsDominant j → IsProper G.hom → IsUnit (N : Γ(S, ⊤)) → IsGrpPullback G' G j φ → (∀ a c, lv' (a + c) = lv' a * lv' c) → (∀ a, lv' (N • a) = 1) → ∃ lv : Λ → (𝟙_ (Over S) ⟶ G), (∀ a c, lv (a + c) = lv a * lv c) ∧ (∀ a, lv (N • a) = 1) ∧ ∀ a, (lv' a).left ≫ φ = j ≫ (lv a).left := by
   intro Λ _ N S W _ j G _ _ G' _ φ lv' hS _ _ _ hN gp hadd hker
   have hred : IsReduced S := by

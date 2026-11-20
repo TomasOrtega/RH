@@ -11,5 +11,8 @@ open ReciprocityTheory.L2DbarEstimates (V)
 open Filter Topology
 open scoped ContDiff
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.DblDegree.dbl_genericPoint_residueDegree | exact GlobalTheory.DblDegree.dbl_genericPoint_residueDegree | (intros; apply GlobalTheory.DblDegree.dbl_genericPoint_residueDegree <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.doubling_map_generic_degree : ∀ (k : Type) [CommRing k] (S : Scheme.{0}) (p : S ⟶ Sp k), IsRegSurf p → ∀ (P : PPAS S) (L : LB P.A.left), IsTheta P L → ∀ [IsIntegral P.A.left], dbl P (genericPoint P.A.left) = genericPoint P.A.left ∧ (dbl P).residueDegree (genericPoint P.A.left) = 4 ^ P.g := by
   first | exact @GlobalTheory.DblDegree.dbl_genericPoint_residueDegree | exact GlobalTheory.DblDegree.dbl_genericPoint_residueDegree | (intros; apply GlobalTheory.DblDegree.dbl_genericPoint_residueDegree <;> assumption)

@@ -7,5 +7,8 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 open scoped ENNReal Classical
 open MvPolynomial Formalism.BasicNotions.DV
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ShFam.ParamTwo.arMix_eq_max_two | exact GlobalTheory.ShFam.ParamTwo.arMix_eq_max_two | (intros; apply GlobalTheory.ShFam.ParamTwo.arMix_eq_max_two <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.arithmetic_mixed_volume_parameter_max_two : ∀ (D : D7) (O : Setup D), O.Core → ∀ (Sx : Finset ℕ) (R : ℝ) (p : ℕ), O.Y.arMix Sx R p = O.Y.arMix Sx (max R 2) p := by
   first | exact @GlobalTheory.ShFam.ParamTwo.arMix_eq_max_two | exact GlobalTheory.ShFam.ParamTwo.arMix_eq_max_two | (intros; apply GlobalTheory.ShFam.ParamTwo.arMix_eq_max_two <;> assumption)

@@ -20,6 +20,11 @@ variable {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] [NormedSpace ℝ 
 
 omit [NormedSpace ℂ E] [IsScalarTower ℝ ℂ E] in
 
+/- English proof (translation)
+Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C a => simp only [aeval_C]`. Conclude with `contDiffAt_const`. Consider the case `add p q hp hq => simp only [map_add]`. Conclude with `hp.add hq`.
+
+Consider the case `mul_X p s hp => simp only [map_mul, aeval_X]`. Conclude with `hp.mul (hf s)`.
+-/
 theorem contDiffAt_aeval_int {σ : Type} {k : WithTop ℕ∞} {f : E → σ → ℂ} {z : E}
     (hf : ∀ s, ContDiffAt ℝ k (fun x => f x s) z) (P : MvPolynomial σ ℤ) :
     ContDiffAt ℝ k (fun x => aeval (f x) P) z := by
@@ -28,6 +33,13 @@ theorem contDiffAt_aeval_int {σ : Type} {k : WithTop ℕ∞} {f : E → σ → 
   | add p q hp hq => simp only [map_add]; exact hp.add hq
   | mul_X p s hp => simp only [map_mul, aeval_X]; exact hp.mul (hf s)
 
+/- English proof (translation)
+Establish `hd : ∀ Q : MvPolynomial σ ℤ, DifferentiableAt ℝ (fun x => aeval (f x) Q) z` using `fun Q => (contDiffAt_aeval_int hf Q).differentiableAt one_ne_zero`. Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C a => simp only [aeval_C, pderiv_C, del_const]`. Simplify using the standard rewrite rules. Consider the case `add p q hp hq`.
+
+Simplify using `only [map_add, add_mul, Finset.sum_add_distrib, ← hp, ← hq]`. Rewrite using `[del_add (hd p) (hd q)]`. Both sides reduce to the same expression. Consider the case `mul_X p s hp`. Simplify using `only [map_mul, aeval_X]`.
+
+Rewrite using `[del_mul (hd p) ((hf s).differentiableAt one_ne_zero), hp]`. Simplify using `only [Derivation.leibniz, pderiv_X, smul_eq_mul, map_add, map_mul, aeval_X, add_mul, Finset.sum_add_distrib, Finset.sum_mul, Pi.single_apply]`. Use `congr 1`. Apply the tactic sequence `rw [Finset.sum_eq_single s] <;> simp +contextual [eq_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => by ring`.
+-/
 theorem del_aeval_int {σ : Type} [Fintype σ] {f : E → σ → ℂ} {z : E}
     (hf : ∀ s, ContDiffAt ℝ 1 (fun x => f x s) z) (P : MvPolynomial σ ℤ) (ξ : E) :
     del (fun x => aeval (f x) P) z ξ = ∑ s, aeval (f z) (pderiv s P) * del (fun x => f x s) z ξ := by
@@ -50,6 +62,17 @@ theorem del_aeval_int {σ : Type} [Fintype σ] {f : E → σ → ℂ} {z : E}
 
 variable {ι : Type} [Fintype ι] {m : ι → ℕ} (ρ : PolyRep m)
 
+/- English proof (translation)
+Use `set B : Mat m ℂ := (fun τ => (G u τ)ᵀ)⁻¹ with hB`. Establish `hBu : B * (fun τ => (G u τ)ᵀ) = 1` using `Mat.inv_mul fun τ => by rw [Matrix.det_transpose]; exact hu τ`. Establish `hev : ∀ w, ρ.ev (B * fun τ => (G w τ)ᵀ) = ρ.ev B * (ρ.ev (G w))ᵀ` using `fun w => by`. Rewrite using `[PolyRep.ev, ρ.mul, ρ.transp]`. Both sides reduce to the same expression.
+
+Establish `hinv : (ρ.ev (G u))ᵀ⁻¹ = ρ.ev B` using `Matrix.inv_eq_left_inv (by rw [← hev, hBu]; exact ρ.one ℂ)`. Establish `hρ : MContDiffAt 1 (fun w => ρ.ev (G w)) u` using `fun i j => contDiffAt_aeval_int (f := fun w (v : EntIx m) => G w v.1 v.2.1 v.2.2) (fun v => h v.1 v.2.1 v.2.2) _`. Establish `hK : ∀ τ, MContDiffAt 1 (fun w => B τ * (G w τ)ᵀ) u` using `fun τ => (mContDiffAt_const _).mul (h τ).transpose`. Establish `e1 : conn (fun w => ρ.ev (G w)) u ξ = mdel (fun w => ρ.ev (B * fun τ => (G w τ)ᵀ)) u ξ`. Simplify using `only [hev]`.
+
+Rewrite using `[mdel_mul (mContDiffAt_const _) hρ.transpose, mdel_const, Matrix.zero_mul, add_zero, conn, hinv]`. Both sides reduce to the same expression. Establish `e2 : ∀ τ, conn (fun w => G w τ) u ξ = mdel (fun w => B τ * (G w τ)ᵀ) u ξ` using `fun τ => by`. Rewrite using `[mdel_mul (mContDiffAt_const _) (h τ).transpose, mdel_const, Matrix.zero_mul, add_zero, conn]`. Both sides reduce to the same expression.
+
+Rewrite using `[e1]`. Simplify using `only [e2]`. Use extensionality with `i j`. Use `(del_aeval_int (f := fun w (v : EntIx m) => (B * fun τ => (G w τ)ᵀ : Mat m ℂ) v.1 v.2.1 v.2.2) (fun v => hK v.1 v.2.1 v.2.2) (ρ.ent i j) ξ).trans ?_` and prove the remaining obligations. Rewrite using `[hBu]`.
+
+Both sides reduce to the same expression.
+-/
 theorem PolyRep.conn_ev {G : E → Mat m ℂ} {u : E} (h : ∀ τ, MContDiffAt 1 (fun w => G w τ) u)
     (hu : ∀ τ, (G u τ).det ≠ 0) (ξ : E) :
     conn (fun w => ρ.ev (G w)) u ξ = ρ.lie (fun τ => conn (fun w => G w τ) u ξ) := by
@@ -78,6 +101,11 @@ theorem PolyRep.conn_ev {G : E → Mat m ℂ} {u : E} (h : ∀ τ, MContDiffAt 1
   rw [hBu]
   rfl
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [mdbar_apply, PolyRep.lie, Matrix.of_apply]`. Rewrite using `[dbar_sum fun v _ => (differentiableAt_const _).fun_mul ((h v.1).diff v.2.1 v.2.2), ContinuousLinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[dbar_mul (differentiableAt_const _) ((h v.1).diff v.2.1 v.2.2)]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem PolyRep.mdbar_lie {A : E → Mat m ℂ} {u : E} (h : ∀ τ, MContDiffAt 1 (fun w => A w τ) u) (η : E) :
     mdbar (fun w => ρ.lie (A w)) u η = ρ.lie (fun τ => mdbar (fun w => A w τ) u η) := by
   ext i j
@@ -88,6 +116,9 @@ theorem PolyRep.mdbar_lie {A : E → Mat m ℂ} {u : E} (h : ∀ τ, MContDiffAt
   rw [dbar_mul (differentiableAt_const _) ((h v.1).diff v.2.1 v.2.2)]
   simp
 
+/- English proof (translation)
+Use `filter_upwards [eventually_all.2 fun τ => (h τ).eventually_two, eventually_all.2 fun τ => (h τ).eventually_isUnit (hv τ).isUnit] with u h1 h2 ξ`. Conclude with `ρ.conn_ev (fun τ => (h1 τ).of_le one_le_two) (fun τ => (h2 τ).ne_zero) ξ`.
+-/
 theorem PolyRep.eventually_conn_ev {G : E → Mat m ℂ} {v : E} (h : ∀ τ, MContDiffAt 2 (fun w => G w τ) v)
     (hv : ∀ τ, (G v τ).det ≠ 0) :
     ∀ᶠ u in 𝓝 v, ∀ ξ, conn (fun w => ρ.ev (G w)) u ξ = ρ.lie (fun τ => conn (fun w => G w τ) u ξ) := by
@@ -95,6 +126,9 @@ theorem PolyRep.eventually_conn_ev {G : E → Mat m ℂ} {v : E} (h : ∀ τ, MC
     eventually_all.2 fun τ => (h τ).eventually_isUnit (hv τ).isUnit] with u h1 h2 ξ
   exact ρ.conn_ev (fun τ => (h1 τ).of_le one_le_two) (fun τ => (h2 τ).ne_zero) ξ
 
+/- English proof (translation)
+Rewrite using `[curv, mdbar_congr ((ρ.eventually_conn_ev h hv).mono fun u hu => hu ξ), ρ.mdbar_lie (A := fun u τ => conn (fun w => G w τ) u ξ) (fun τ => (h τ).conn (hv τ).isUnit (by norm_num) ξ)]`. Use extensionality with `i j`. Simplify using `[PolyRep.lie, curv]`.
+-/
 theorem PolyRep.curv_ev {G : E → Mat m ℂ} {v : E} (h : ∀ τ, MContDiffAt 2 (fun w => G w τ) v)
     (hv : ∀ τ, (G v τ).det ≠ 0) (ξ η : E) :
     curv (fun w => ρ.ev (G w)) v ξ η = ρ.lie (fun τ => curv (fun w => G w τ) v ξ η) := by
@@ -106,6 +140,15 @@ theorem PolyRep.curv_ev {G : E → Mat m ℂ} {v : E} (h : ∀ τ, MContDiffAt 2
 
 end General
 
+/- English proof (translation)
+Establish `hc : ∀ (S : Type) [CommRing S] (φ : ℂ →+* S) (P : MvPolynomial (EntIx m) ℤ), aeval (fun w : EntIx m => (1 : Mat m S) w.1 w.2.1 w.2.2) P = φ (aeval (fun w : EntIx m => (1 : Mat m ℂ) w.1 w.2.1 w.2.2) P)` using `fun S _ φ P => by`. Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C a => rw [aeval_C, aeval_C, eq_intCast, eq_intCast, map_intCast]`. Consider the case `add p q hp hq => rw [map_add, map_add, map_add, hp, hq]`. Consider the case `mul_X p s hp`.
+
+Rewrite using `[map_mul, map_mul, map_mul, hp, aeval_X, aeval_X, Pi.one_apply, Pi.one_apply, Matrix.one_apply, Matrix.one_apply]`. Use `split_ifs`. Rewrite using `[map_one]`. Rewrite using `[map_zero]`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations.
+
+Establish `key : ∀ (c : EntIx m → ℂ) (f : κ → κ → EntIx m → ℂ), (∑ a, ∑ b, C (∑ v, c v * f a b v) * X (a, b) : MvPolynomial (κ × κ) ℂ) = ∑ v, C (c v) * ∑ a, ∑ b, C (f a b v) * X (a, b)` using `fun c f => by`. Simplify using `only [map_sum, map_mul, Finset.sum_mul, Finset.mul_sum, mul_assoc]`. Rewrite using `[eq_comm, Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun a _ => Finset.sum_comm`. Simplify using `only [PolyRep.lie, Matrix.of_apply]`.
+
+Rewrite using `[key]`. Conclude with `Finset.sum_congr rfl fun v _ => by rw [hc _ C]`.
+-/
 theorem PolyRep.lie_sum_C_mul_X {ι κ : Type} [Fintype ι] [Fintype κ] {m : ι → ℕ} (ρ : PolyRep m)
     (F : κ → κ → Mat m ℂ) :
     (Matrix.of fun i j => ∑ a, ∑ b, C (ρ.lie (F a b) i j) * X (a, b) : Matrix _ _ (MvPolynomial (κ × κ) ℂ)) =
@@ -133,6 +176,9 @@ theorem PolyRep.lie_sum_C_mul_X {ι κ : Type} [Fintype ι] [Fintype κ] {m : ι
   rw [key]
   exact Finset.sum_congr rfl fun v _ => by rw [hc _ C]
 
+/- English proof (translation)
+Introduce `ι _ m ρ n G v h hv`. Use `⟨ρ.eventually_conn_ev h hv, ?_⟩` and prove the remaining obligations. Simplify using `only [curvPoly, ρ.curv_ev h hv]`. Conclude with `ρ.lie_sum_C_mul_X fun a b τ => curv (fun w => G w τ) v (coordVec a) (coordVec b)`.
+-/
 theorem conn_curvPoly_ev : ∀ (ι : Type) [Fintype ι] (m : ι → ℕ) (ρ : PolyRep m) (n : ℕ) (G : V n → Mat m ℂ) (v : V n),
     (∀ τ, MContDiffAt 2 (fun u => G u τ) v) → (∀ τ, (G v τ).det ≠ 0) →
     (∀ᶠ u in nhds v, ∀ ξ, conn (fun w => ρ.ev (G w)) u ξ = ρ.lie (fun τ => conn (fun w => G w τ) u ξ)) ∧

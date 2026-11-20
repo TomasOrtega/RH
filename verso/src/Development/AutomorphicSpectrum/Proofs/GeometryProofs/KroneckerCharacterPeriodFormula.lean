@@ -13,6 +13,19 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.Ar.Fl.TopLL
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Use `(h.union hC).subset ?_` and prove the remaining obligations. Introduce and unpack `p ⟨κ, hκ⟩`. Distinguish the cases in `hc : C p κ = 0`. Use `left`.
+
+Conclude with `⟨κ, by rw [hfin, hc, add_zero] at hκ; exact hκ⟩`. Use `right`. Conclude with `⟨κ, hc⟩`. Establish `h1 : Function.HasFiniteSupport (fun p => N'.finSum p)`. Use `h.subset ?_` and prove the remaining obligations.
+
+Introduce `p hp`. Take `⟨κ, _, hκ⟩` from `Finset.exists_ne_zero_of_sum_ne_zero hp`. Conclude with `⟨κ, hκ⟩`. Establish `h2 : Function.HasFiniteSupport (fun p => ∑ κ, C p κ)`. Use `hC.subset ?_` and prove the remaining obligations.
+
+Introduce `p hp`. Take `⟨κ, _, hκ⟩` from `Finset.exists_ne_zero_of_sum_ne_zero hp`. Conclude with `⟨κ, hκ⟩`. Establish `hs : ∑ᶠ p, N.finSum p = ∑ᶠ p, N'.finSum p + ∑ᶠ p, ∑ κ, C p κ`. Rewrite using `[← finsum_add_distrib h1 h2]`.
+
+Use `finsum_congr fun p => ?_` and prove the remaining obligations. Simplify using `only [LogNorms.finSum, hfin, Finset.sum_add_distrib]`. Establish `hk : (Module.finrank ℚ k : ℝ) ≠ 0` using `by exact_mod_cast Module.finrank_pos.ne'`. Simplify using `only [LogNorms.deg, hs, hinf]`. Clear the denominators using the available nonvanishing facts.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem shift {k : Type} [Field k] [NumberField k] (N N' : LogNorms k) (C : ∀ p : Nat.Primes, (k →+* ℂ_[p]) → ℝ)
     (hinf : N.inf = N'.inf) (hfin : ∀ p κ, N.fin p κ = N'.fin p κ + C p κ)
     (hC : {p : Nat.Primes | ∃ κ, C p κ ≠ 0}.Finite) (h : N'.IsAdelic) :
@@ -44,6 +57,25 @@ theorem shift {k : Type} [Field k] [NumberField k] (N N' : LogNorms k) (C : ∀ 
     field_simp
     ring
 
+/- English proof (translation)
+Establish `hdk : (d : k) ≠ 0` using `by exact_mod_cast hd`. Establish `hI` using `GlobalTheory.T.logIdeal_support_finite E (differentIdeal ℤ (𝓞 E)) differentIdeal_ne_bot`. Establish `hX` using `GlobalTheory.T.log_norms_of_nonzero_adelic k (d : k) hdk`. Establish `hP` using `GlobalTheory.T.product_formula_log_norms k (d : k) hdk`. Establish `hD` using `GlobalTheory.T.different_ideal_log_sum_root_discriminant E`.
+
+Establish `hcast : ∀ (p : Nat.Primes) (κ : k →+* ℂ_[p]), κ (d : k) = ((d : ℕ) : ℂ_[p])` using `fun _ κ => map_natCast κ d`. Prove the components needed by the constructor for the conclusion. Use `(hI.union hX).subset ?_` and prove the remaining obligations. Introduce and unpack `p ⟨κ, hκ⟩`. Distinguish the cases in `h0 : logIdeal ((κ.comp f).comp (algebraMap (𝓞 E) E)) (differentIdeal ℤ (𝓞 E)) = 0`.
+
+Use `right`. Use `⟨κ, ?_⟩` and prove the remaining obligations. Simplify using `only [LogNorms.ofElt, hcast]`. Introduce `h`. Conclude with `hκ (by rw [h0, h, sub_zero])`.
+
+Use `left`. Conclude with `⟨_, h0⟩`. Use `set A : Nat.Primes → ℝ := fun p => ∑ κ : k →+* ℂ_[p], logIdeal ((κ.comp f).comp (algebraMap (𝓞 E) E)) (differentIdeal ℤ (𝓞 E)) with hAdef set B : Nat.Primes → ℝ := fun p => (LogNorms.ofElt (d : k)).finSum p with hBdef`. Establish `hAB : ∀ p : Nat.Primes, ∑ κ : k →+* ℂ_[p], (logIdeal ((κ.comp f).comp (algebraMap (𝓞 E) E)) (differentIdeal ℤ (𝓞 E)) - Real.log ‖((d : ℕ) : ℂ_[p])‖) = A p - B p`. Introduce `p`.
+
+Simplify using `only [hAdef, hBdef, LogNorms.finSum, LogNorms.ofElt, hcast, Finset.sum_sub_distrib]`. Establish `hA : Function.HasFiniteSupport A`. Use `hI.subset ?_` and prove the remaining obligations. Introduce `p hp`. Take `⟨κ, _, hκ⟩` from `Finset.exists_ne_zero_of_sum_ne_zero hp`.
+
+Conclude with `⟨_, hκ⟩`. Establish `hB : Function.HasFiniteSupport B` using `hP.1`. Establish `hF : ∀ p : Nat.Primes, (Module.finrank ℚ E : ℝ) * A p = (Module.finrank ℚ k : ℝ) * ∑ j : E →+* ℂ_[p], logIdeal (j.comp (algebraMap (𝓞 E) E)) (differentIdeal ℤ (𝓞 E))` using `fun p => GlobalTheory.T.sum_embeddings_base_change E k ℂ_[p] f (fun j => logIdeal (j.comp (algebraMap (𝓞 E) E)) (differentIdeal ℤ (𝓞 E)))`. Establish `hE : (Module.finrank ℚ E : ℝ) ≠ 0` using `by exact_mod_cast Module.finrank_pos.ne'`. Establish `hsA : ∑ᶠ p, A p = -(Module.finrank ℚ k : ℝ) * Real.log (rootDiscr E)`.
+
+Establish `h1 : (Module.finrank ℚ E : ℝ) * ∑ᶠ p, A p = (Module.finrank ℚ k : ℝ) * (-(Module.finrank ℚ E : ℝ) * Real.log (rootDiscr E))`. Rewrite using `[mul_finsum, finsum_congr hF, ← mul_finsum, hD.2]`. Apply `mul_left_cancel₀ hE` to reduce the goal to its premises. Rewrite using `[h1]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hsB : ∑ᶠ p, B p = -(Module.finrank ℚ k : ℝ) * Real.log d`. Establish `h2` using `hP.2`. Establish `h3 : ∑ s : k →+* ℂ, Real.log ‖s (d : k)‖ = (Module.finrank ℚ k : ℝ) * Real.log d`. Simplify using `only [map_natCast, Complex.norm_natCast, Finset.sum_const, Finset.card_univ, Embeddings.card, nsmul_eq_mul]`. Rewrite `h2` using `[h3]`.
+
+Simplify using `only [hBdef]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[finsum_congr hAB, finsum_sub_distrib hA hB, hsA, hsB]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem corr {E k : Type} [Field E] [NumberField E] [Field k] [NumberField k] (f : E →+* k) (d : ℕ) (hd : d ≠ 0) :
     {p : Nat.Primes | ∃ κ : k →+* ℂ_[p], logIdeal ((κ.comp f).comp (algebraMap (𝓞 E) E)) (differentIdeal ℤ (𝓞 E)) -
       Real.log ‖((d : ℕ) : ℂ_[p])‖ ≠ 0}.Finite ∧
@@ -101,6 +133,21 @@ theorem corr {E k : Type} [Field E] [NumberField E] [Field k] [NumberField k] (f
     rw [finsum_congr hAB, finsum_sub_distrib hA hB, hsA, hsB]
     ring
 
+/- English proof (translation)
+Introduce `hFD E _ _ _ H D l Xo c g ty FU i U τ φ _ N _ χ hχ hty hrt hflat hinf hfin`. Set `f : E →+* c.F` to `(τ.codRestrict c.F.toSubfield (c.conj τ) :)`. Establish `hf : ∀ (p : Nat.Primes) (κ : c.F →+* ℂ_[p]), κ.comp (tauIn c τ) = (κ.comp f).comp (algebraMap (𝓞 E) E)` using `fun _ _ => rfl`. Set `C : ∀ p : Nat.Primes, (c.F →+* ℂ_[p]) → ℝ` to `fun p κ => (D.q : ℝ) * (logIdeal ((κ.comp f).comp (algebraMap (𝓞 E) E)) (differentIdeal ℤ (𝓞 E)) - Real.log ‖((H.d : ℕ) : ℂ_[p])‖)`. Set `N' : LogNorms c.F` to `⟨N.inf, fun p κ => N.fin p κ - C p κ⟩`.
+
+Establish `hN' : HasNorms U τ φ N'`. Use `⟨hinf, fun p κ => ?_⟩` and prove the remaining obligations. Establish `e : N'.fin p κ + D.q * (logIdeal (κ.comp (tauIn c τ)) (differentIdeal ℤ (𝓞 E)) - Real.log ‖((H.d : ℕ) : ℂ_[p])‖) = N.fin p κ`. Rewrite using `[hf]`. Simplify using `only [N', C]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `hfin p κ`. Take `⟨hA', hdeg'⟩` from `hFD E H D l Xo c g ty FU i U τ φ N' χ hχ hty hrt hflat hN'`. Establish `hd : H.d ≠ 0` using `NeZero.ne _`.
+
+Take `⟨hc1, hc2⟩` from `corr f H.d hd`. Establish `hCfin : {p : Nat.Primes | ∃ κ, C p κ ≠ 0}.Finite`. Use `hc1.subset ?_` and prove the remaining obligations. Introduce and unpack `p ⟨κ, hκ⟩`. Conclude with `⟨κ, right_ne_zero_of_mul hκ⟩`.
+
+Take `⟨hA, hdeg⟩` from `shift N N' C rfl (fun p κ => by simp [N']) hCfin hA'`. Use `⟨hA, ?_⟩` and prove the remaining obligations. Establish `hsum : ∑ᶠ p, ∑ κ, C p κ = (D.q : ℝ) * (Module.finrank ℚ c.F * (Real.log H.d - Real.log (rootDiscr E)))`. Rewrite using `[← hc2, mul_finsum]`. Use `finsum_congr fun p => ?_` and prove the remaining obligations.
+
+Simplify using `only [C, Finset.mul_sum]`. Establish `hF : (Module.finrank ℚ c.F : ℝ) ≠ 0` using `by exact_mod_cast Module.finrank_pos.ne'`. Establish `hsq : 2 * Real.log (Real.sqrt H.d) = Real.log H.d`. Rewrite using `[Real.log_sqrt (Nat.cast_nonneg _)]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[hdeg, hdeg', hsum, hsq]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem degree_frames : FlatDegree → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H)
     (l : Level H) (Xo : Moduli D l) (c : Coeff l) (g : ℕ) (ty : Fin g → (E →+* ℂ))
     (FU : FamilyUnif Xo (algebraMap (KA l) ℂ) ty) (i : Fin FU.n) (U : Set (Xo.XF c)) (τ : E →+* ℂ)

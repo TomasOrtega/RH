@@ -15,6 +15,13 @@ namespace GlobalTheory.GeoTie
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Introduce `D Γ _ _ Pl0 I0 T1 A3 T0 _ Rl cG S YS κ v₀ fw i iC _ b j f hf`. Introduce `z`. Take `⟨hwk, hb⟩` from `((YS.fi j).mkK _).1 hf`. Take `⟨T, io, k, hk, y, u, hy, hu, hval⟩` from `PtC.exists_valC z (wtA (κ j)) (κ j).n`. Take `⟨e, ho⟩` from `GlobalTheory.ReadingOver.overLa_placeAt _ _ (embC YS iC b) T io k hk`.
+
+Set `v : T0.PtM ((j : ℕ) + 1) (placeC YS iC b)` to `⟨vAtV (PtV.mk (cls := algCls (T0.Q.Xo ((j : ℕ) + 1)) T0.Q.c) (PY := Unit) (lies := fun _ _ _ _ => True) (placeC YS iC b) ho y hy () trivial), ⟨_, rfl⟩⟩`. Take `⟨w, hw⟩` from `(fw.pt j (placeC YS iC b)).surjective v`. Establish `h1` using `hb (placeC YS iC b) w`. Establish `e1 : (⟨(YS.fi j).e (show ↥(S.A ((j : ℕ) + 1)).WK from f).1, hwk⟩ : (Rl.FW j).WK) = fw.e j (cuspOf YS fw j f)` using `Subtype.ext (e_cuspOf YS fw j f).symm`. Rewrite `h1` using `[e1, fw.nrm_eq, hw]`.
+
+Establish `h2` using `(T0.nrmM_le_one_iff _ _ v _).1 h1`. Establish `h3` using `(GlobalTheory.GoodPtsModel.inV_iff_nval T ho.1 (evI y (cuspOf YS fw j f : T0.R ((j : ℕ) + 1)))).2 h2`. Rewrite using `[hval _ (cuspOf_mem_sec YS fw j f), norm_mul, hu, one_mul]`. Conclude with `(hk.int _).2 h3`.
+-/
 theorem mem_locBall_of_mem_MK : ∀ (D : D7) (Γ : Type) [Group Γ] [Fintype Γ] (Pl0 I0 T1 : Type) (A3 : FamIn3 D.what₂.LL Γ Pl0 I0 (List ℕ) T1 D.R.m) (T0 : CoreJ D) [Algebra T0.Q.c.F D.what₂.LL] (Rl : RealDat3 D A3 T0.Q.c.F) (cG : Formalism.L2.DIV.G0 Rl.Pg D.R.r ≃* G0g D.nd) (S : NX.RatDat D.ntw) (YS : NX.NExpRealS Rl cG S) (κ : ∀ j : Fin D.R.m, WeightFamilies.Wt D ((j : ℕ) + 1)) (v₀ : ∀ (j : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (Rl.MW j σ).Vec) (fw : FWTie T0 Rl.toRealDat κ v₀) (i : D.ntw.Tw) (iC : FractionRing (D.ntw.O i) →+* ℂ_[D.ntw.l i]), (∀ x, ‖iC x‖ ≤ 1 ↔ x ∈ (algebraMap (D.ntw.O i) (FractionRing (D.ntw.O i))).range) → ∀ (b : Bool) (j : Fin D.R.m), ∀ f : NX.FmK S ((j : ℕ) + 1), (show ↥(S.A ((j : ℕ) + 1)).WK from f).1 ∈ (S.A ((j : ℕ) + 1)).MK → f ∈ locBall YS fw iC b j := by
   intro D Γ _ _ Pl0 I0 T1 A3 T0 _ Rl cG S YS κ v₀ fw i iC _ b j f hf
   intro z

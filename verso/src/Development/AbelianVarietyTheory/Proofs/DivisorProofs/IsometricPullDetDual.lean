@@ -13,6 +13,11 @@ open GlobalTheory.FlagZ GlobalTheory.ArInt Formalism.DegreeFormula GlobalTheory.
 
 namespace GlobalTheory.FlagZ.WeightDrop
 
+/- English proof (translation)
+Simplify using `only [smul_sub, Finset.sum_sub_distrib, sub_smul]`. Use `congr 1`. Rewrite using `[Fin.sum_univ_castSucc]`. Simplify using the standard rewrite rules. Rewrite using `[Fin.sum_univ_succ]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem sum_smul_sub {G : Type*} [AddCommGroup G] {N : ℕ} (F : Fin (N + 1) → G) (m : Fin N → ℤ) :
     ∑ i : Fin N, m i • (F i.castSucc - F i.succ) =
       ∑ l : Fin (N + 1), ((if h : (l : ℕ) < N then m ⟨l, h⟩ else 0) -
@@ -26,11 +31,17 @@ theorem sum_smul_sub {G : Type*} [AddCommGroup G] {N : ℕ} (F : Fin (N + 1) →
 
 variable {k : Type} [CommRing k] {X Y : Scheme.{0}} {p : X ⟶ Sp k} {q : Y ⟶ Sp k}
 
+/- English proof (translation)
+Substitute `e` using the available equality. Conclude with `Isometric.refl _`.
+-/
 theorem isometric_pull_congr (L : HermLB p) {f f' : Y ⟶ X} (hf : f ≫ p = q) (hf' : f' ≫ p = q) (e : f = f') :
     (L.pull f hf).Isometric (L.pull f' hf') := by
   subst e
   exact Isometric.refl _
 
+/- English proof (translation)
+The claim follows from `isometric_of_chart π h.le (fun x j j' hj hj' => h.g X (𝟙 X) x j j' hj hj') fun σ j y hy => ((h.φ σ j y hy).trans (add_zero _)).symm`.
+-/
 theorem isometric_of_refines {N L : HermLB p} {π : N.B.ι → L.B.ι} (h : GlobalTheory.TwistTop.Refines N L π 0) :
     N.Isometric L :=
   isometric_of_chart π h.le (fun x j j' hj hj' => h.g X (𝟙 X) x j j' hj hj')
@@ -42,6 +53,9 @@ namespace GlobalTheory.FlagZ.WeightDrop
 
 variable {ι : Type} [Fintype ι] {N : ℕ}
 
+/- English proof (translation)
+Use `(isometric_of_refines (HermLB.refines_pull_pull _ _ _ (forget x) (toZ_ext _ _) (toZ_ext _ _))).trans ?_` and prove the remaining obligations. Conclude with `isometric_pull_congr _ _ _ (comap_plEmb_π _ _ _ _ _ _ y)`.
+-/
 theorem isometric_pull_detDual (x : ι × Fin (N + 1)) (y : {y // y ≠ x}) :
     ((detDual (fun y : {y // y ≠ x} => y.1.1) (fun y => y.1.2) y).pull (forget x) (toZ_ext _ _)).Isometric
       (flDet y.1.1 y.1.2) := by
@@ -58,6 +72,9 @@ def coef (lam : ι → Fin N → ℤ) (y : ι × Fin (N + 1)) : ℤ :=
   (if h : (y.2 : ℕ) < N then -lam y.1 ⟨y.2, h⟩ else 0) -
     (if h : 0 < (y.2 : ℕ) then -lam y.1 ⟨y.2 - 1, by have := y.2.isLt; omega⟩ else 0)
 
+/- English proof (translation)
+Rewrite using `[wtLine, icls_comb, Fintype.sum_prod_type, Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Simplify using `only [grLine, icls_tens, icls_dual, ← sub_eq_add_neg]`. Conclude with `sum_smul_sub (fun l => (flDet τ l).icls) (fun i => -lam τ i)`.
+-/
 theorem icls_wtLine (lam : ι → Fin N → ℤ) :
     (wtLine lam).icls = ∑ y : ι × Fin (N + 1), coef lam y • (flDet y.1 y.2).icls := by
   rw [wtLine, icls_comb, Fintype.sum_prod_type, Fintype.sum_prod_type]
@@ -67,6 +84,9 @@ theorem icls_wtLine (lam : ι → Fin N → ℤ) :
 
 open Classical in
 
+/- English proof (translation)
+Use `icls_eq_iff.1 ?_` and prove the remaining obligations. Rewrite using `[icls_wtLine, icls_pull, icls_comb, map_sum, Fintype.sum_eq_add_sum_subtype_ne _ x, hx, zero_smul, zero_add]`. Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul, ← icls_pull, icls_eq_iff.2 (isometric_pull_detDual x y)]`.
+-/
 theorem isometric_wtLine_pull (lam : ι → Fin N → ℤ) (x : ι × Fin (N + 1)) (hx : coef lam x = 0) :
     (wtLine lam).Isometric ((comb (detDual (fun y : {y // y ≠ x} => y.1.1) (fun y => y.1.2))
       fun y => coef lam y.1).pull (forget x) (toZ_ext _ _)) := by
@@ -76,6 +96,9 @@ theorem isometric_wtLine_pull (lam : ι → Fin N → ℤ) (x : ι × Fin (N + 1
   refine Finset.sum_congr rfl fun y _ => ?_
   rw [map_zsmul, ← icls_pull, icls_eq_iff.2 (isometric_pull_detDual x y)]
 
+/- English proof (translation)
+Establish `e` using `h ⟨j - 1, by omega⟩ ⟨j, h₂⟩ (by simp; omega) rfl`. Simplify using `only [coef, dif_pos h₂, dif_pos (show 0 < j by omega)]`. Rewrite using `[e]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem coef_eq_zero (lam : ι → Fin N → ℤ) (τ : ι) (j : ℕ) (h₁ : 1 ≤ j) (h₂ : j < N)
     (h : ∀ a b : Fin N, (b : ℕ) = a + 1 → (b : ℕ) = j → lam τ a = lam τ b) :
     coef lam (τ, ⟨j, by omega⟩) = 0 := by
@@ -84,6 +107,9 @@ theorem coef_eq_zero (lam : ι → Fin N → ℤ) (τ : ι) (j : ℕ) (h₁ : 1 
   rw [e]
   ring
 
+/- English proof (translation)
+Use `(topologicalKrullDim_subspace_le _ _).trans_lt ?_` and prove the remaining obligations. Rewrite using `[(smooth_dim_isArithVar_part ι {y // y ≠ x} N (fun y => y.1.1) (fun y => y.1.2)).2.1, (Count.card_cellVar ι N).2.2 x h₀ h₁]`. Conclude with `Nat.lt_succ_self _` after adjusting the coercions.
+-/
 theorem dim_closure_lt (x : ι × Fin (N + 1)) (h₀ : 0 < (x.2 : ℕ)) (h₁ : (x.2 : ℕ) < N) :
     topologicalKrullDim (closure ({forget x (genericPoint (Fl ι N))} : Set (FlOmit x))) < ((dimFl ι N + 1 : ℕ) : WithBot ℕ∞) := by
   refine (topologicalKrullDim_subspace_le _ _).trans_lt ?_

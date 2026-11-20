@@ -9,6 +9,19 @@ noncomputable section
 
 namespace GlobalTheory.InterpLimit
 
+/- English proof (translation)
+Use `set S : Set (ℝ × E) := Prod.snd ⁻¹' W ∩ (fun p : ℝ × E => 1 + p.1 * w p.2) ⁻¹' Ioi 0 with hSdef`. Establish `hcont : ContinuousOn (fun p : ℝ × E => 1 + p.1 * w p.2) (Prod.snd ⁻¹' W)` using `continuousOn_const.add (continuousOn_fst.mul (hw.continuousOn.comp continuousOn_snd fun p hp => hp))`. Establish `hS : IsOpen S` using `hcont.isOpen_inter_preimage (hW.preimage continuous_snd) isOpen_Ioi`. Set `Φ : ℝ × E → ℂ` to `fun p => (w p.2 / (1 + p.1 * w p.2)) • g p.2`. Establish `hΦ : ContDiffOn ℝ ∞ Φ S`.
+
+Establish `hw' : ContDiffOn ℝ ∞ (fun p : ℝ × E => w p.2) S` using `hw.comp contDiffOn_snd (fun p hp => hp.1)`. Establish `hg' : ContDiffOn ℝ ∞ (fun p : ℝ × E => g p.2) S` using `hg.comp contDiffOn_snd (fun p hp => hp.1)`. Use `(hw'.div (contDiffOn_const.add (contDiffOn_fst.mul hw')) ?_).smul hg'` and prove the remaining obligations. Introduce `p hp`. Conclude with `ne_of_gt hp.2`.
+
+Establish `hsub : Icc (0 : ℝ) 1 ×ˢ K ⊆ S`. Introduce and unpack `⟨ε, x⟩ ⟨hε, hx⟩`. Use `⟨hKW hx, ?_⟩` and prove the remaining obligations. Use `show 0 < 1 + ε * w x`. Use `mul_nonneg hε.1 (hw0 x (hKW hx))` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨M, hM⟩` from `GlobalTheory.T.iterated_fderiv_parametric_uniform_bound hS hΦ isCompact_Icc hK hsub k`. Use `⟨M, fun ε hε x hx => ?_⟩` and prove the remaining obligations. Establish `hfun : (fun y => ((ε * w y / (1 + ε * w y) : ℝ) : ℂ) * g y) = ε • fun y => Φ (ε, y)`. Use function extensionality and compare the values at `y`.
+
+Simplify using `only [Φ, Pi.smul_apply, smul_smul, Complex.real_smul, mul_div_assoc]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hat : ContDiffAt ℝ k (fun y => Φ (ε, y)) x` using `((hΦ.contDiffAt (hS.mem_nhds (hsub ⟨hε, hx⟩))).comp x (contDiffAt_const.prodMk contDiffAt_id)).of_le (by exact_mod_cast le_top)`. Rewrite using `[hfun, iteratedFDeriv_const_smul_apply hat, norm_smul, Real.norm_of_nonneg hε.1]`.
+
+Conclude with `mul_le_mul_of_nonneg_left (hM ε hε x hx) hε.1`.
+-/
 theorem iteratedFDeriv_frac_mul_le {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E]
     {W K : Set E} {w : E → ℝ} {g : E → ℂ}
     (hW : IsOpen W) (hK : IsCompact K) (hKW : K ⊆ W) (hw : ContDiffOn ℝ ∞ w W)
@@ -47,6 +60,13 @@ theorem iteratedFDeriv_frac_mul_le {E : Type} [NormedAddCommGroup E] [NormedSpac
   rw [hfun, iteratedFDeriv_const_smul_apply hat, norm_smul, Real.norm_of_nonneg hε.1]
   exact mul_le_mul_of_nonneg_left (hM ε hε x hx) hε.1
 
+/- English proof (translation)
+Establish `h1 : 1 < r z` using `lt_of_lt_of_le (by have := Real.add_one_lt_exp (x := 1) one_ne_zero; linarith) (hr z hz)`. Establish `hq : 0 < (form (H₀ z) (Pi.single a 1) (Pi.single a 1)).re`. Establish `hpos` using `(h₀.posDef z hz).diag_pos (i := a)`. Establish `e : form (H₀ z) (Pi.single a 1) (Pi.single a 1) = H₀ z a a`. Simplify using `[form, dotProduct, mulVec, Pi.single_apply]`.
+
+Rewrite using `[e]`. Conclude with `(Complex.pos_iff.1 hpos).1`. Take `⟨h1', h2'⟩` from `hc z hz (Pi.single a 1)`. Establish `h3 : r z ^ (-C) ≤ r z ^ C` using `le_of_mul_le_mul_right (h1'.trans h2') hq`. Use `(Real.rpow_le_rpow_left_iff h1).1 h3` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem nonneg_of_powComparable {ι n : Type} [Fintype ι] [Fintype n] [DecidableEq n]
     {U : Set (ι → ℂ)} {H₀ H : (ι → ℂ) → Matrix n n ℂ} {r : (ι → ℂ) → ℝ} {C : ℝ}
     (h₀ : IsPosFrame U H₀) (hr : ∀ z ∈ U, Real.exp 1 ≤ r z) (hc : PowComparable U r C H₀ H)
@@ -63,6 +83,33 @@ theorem nonneg_of_powComparable {ι n : Type} [Fintype ι] [Fintype n] [Decidabl
   have := (Real.rpow_le_rpow_left_iff h1).1 h3
   linarith
 
+/- English proof (translation)
+Break down `K.eq_empty_or_nonempty with rfl | ⟨z₀, hz₀⟩` into its components or cases. Conclude with `tendstoUniformlyOn_empty`. Establish `hC : 0 ≤ Cμ` using `nonneg_of_powComparable h₀ hre hc (hKU hz₀) a`. Establish `hκ0 : 0 < κ` using `by linarith`. Establish `hr1 : ∀ x ∈ U, 1 ≤ r x` using `fun x hx => le_trans (by have := Real.add_one_lt_exp (x := 1) one_ne_zero; linarith) (hre x hx)`.
+
+Take `⟨δ, hδ, hδU⟩` from `hK.exists_cthickening_subset_open h₀.isOpen hKU`. Take `⟨B, hB⟩` from `hK.cthickening.exists_bound_of_continuousOn (hr.continuousOn.mono hδU)`. Use `set W := Metric.thickening δ K with hWdef`. Establish `hWo : IsOpen W` using `Metric.isOpen_thickening`. Establish `hKW : K ⊆ W` using `Metric.self_subset_thickening hδ K`.
+
+Establish `hWU : W ⊆ U` using `(Metric.thickening_subset_cthickening δ K).trans hδU`. Establish `hrB : ∀ x ∈ W, r x ≤ B` using `fun x hx => (le_abs_self _).trans (by simpa using hB x (Metric.thickening_subset_cthickening δ K hx))`. Use `set w : (ι → ℂ) → ℝ := fun x => r x ^ κ with hwdef`. Use `set g : (ι → ℂ) → ℂ := fun x => H₀ x a b - H x a b with hgdef`. Establish `hw : ContDiffOn ℝ ∞ w W` using `(hr.mono hWU).rpow_const_of_ne fun x hx => by linarith [hr1 x (hWU hx)]`.
+
+Establish `hw0 : ∀ x ∈ W, 0 ≤ w x` using `fun x hx => Real.rpow_nonneg (by linarith [hr1 x (hWU hx)]) _`. Establish `hg : ContDiffOn ℝ ∞ g W` using `((h₀.smooth a b).sub (h₁.smooth a b)).mono hWU`. Take `⟨M, hM⟩` from `iteratedFDeriv_frac_mul_le hWo hK hKW hw hw0 hg k`. Establish `key : ∀ R : ℝ, 2 ≤ R → B ≤ R ^ 2 → ∀ x ∈ W, interp H₀ H (cutWeight χ κ R r) x a b = H x a b + ((R ^ (-κ) * w x / (1 + R ^ (-κ) * w x) : ℝ) : ℂ) * g x`. Introduce `R hR hRB x hx`.
+
+Establish `hrx : 1 ≤ r x` using `hr1 x (hWU hx)`. Establish `hR0 : 0 < R` using `by linarith`. Establish `hlogR : 0 < Real.log R` using `Real.log_pos (by linarith)`. Establish `hχ1 : χ (Real.log (r x) / Real.log R) = 1`. Apply `hχ.eq_one` to reduce the goal to its premises.
+
+Prove the components needed by the constructor for the conclusion. Conclude with `div_nonneg (Real.log_nonneg hrx) hlogR.le`. Rewrite using `[div_le_iff₀ hlogR]`. Establish `h2 : r x ≤ R ^ 2` using `(hrB x hx).trans hRB`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hdiv : (r x / R) ^ κ = R ^ (-κ) * w x`. Rewrite using `[Real.div_rpow (by linarith) hR0.le, Real.rpow_neg hR0.le, hwdef]`. Expand and normalize the polynomial expressions, which then agree. Establish `hu : 0 ≤ R ^ (-κ) * w x` using `mul_nonneg (Real.rpow_nonneg hR0.le _) (hw0 x hx)`. Simplify using `only [interp, cutWeight]`.
+
+Rewrite using `[hχ1, hdiv]`. Simplify using `only [Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, hgdef]`. Generalize the expression as in `R ^ (-κ) * w x = u at hu ⊢`. Establish `e1 : (1 : ℝ) - 1 / (1 + u) = u / (1 + u)`. Clear the denominators using the available nonvanishing facts.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `e2 : (1 : ℝ) / (1 + u) = 1 - u / (1 + u)` using `by rw [← e1]; ring`. Rewrite using `[e1, e2]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[Metric.tendstoUniformlyOn_iff]`. Introduce `η hη`. Establish `hε : Tendsto (fun R : ℝ => R ^ (-κ) * M) atTop (𝓝 0)`. Simplify using `using (tendsto_rpow_neg_atTop hκ0).mul_const M`. Use `filter_upwards [eventually_ge_atTop (2 : ℝ), eventually_ge_atTop (max B 1), hε.eventually (gt_mem_nhds hη)] with R hR2 hRB hRM x hx`.
+
+Establish `hRB' : B ≤ R ^ 2`. Establish `h1 : 1 ≤ R` using `le_trans (le_max_right _ _) hRB`. Establish `h2 : B ≤ R` using `le_trans (le_max_left _ _) hRB`. Use the polynomial consequences of the given equalities and inequalities. Establish `hxW` using `hKW hx`.
+
+Establish `hR0 : 0 < R` using `by linarith`. Establish `hat : ∀ y ∈ W, ContDiffAt ℝ k (fun y => H y a b) y` using `fun y hy => ((h₁.smooth a b).contDiffAt (h₁.isOpen.mem_nhds (hWU hy))).of_le (by exact_mod_cast le_top)`. Establish `hφ : ContDiffOn ℝ ∞ (fun y => ((R ^ (-κ) * w y / (1 + R ^ (-κ) * w y) : ℝ) : ℂ) * g y) W`. Use `(Complex.ofRealCLM.contDiff.comp_contDiffOn ((contDiffOn_const.mul hw).div (contDiffOn_const.add (contDiffOn_const.mul hw)) fun y hy => ?_)).mul hg` and prove the remaining obligations. Use `mul_nonneg (Real.rpow_nonneg hR0.le (-κ)) (hw0 y hy)` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `heq : (fun y => interp H₀ H (cutWeight χ κ R r) y a b) =ᶠ[𝓝 x] (fun y => H y a b) + fun y => ((R ^ (-κ) * w y / (1 + R ^ (-κ) * w y) : ℝ) : ℂ) * g y` using `Filter.eventually_of_mem (hWo.mem_nhds hxW) fun y hy => key R hR2 hRB' y hy`. Rewrite using `[(heq.iteratedFDeriv ℝ k).eq_of_nhds, iteratedFDeriv_add_apply (hat x hxW) ((hφ.contDiffAt (hWo.mem_nhds hxW)).of_le (by exact_mod_cast le_top)), dist_self_add_right]`. Establish `hε01 : R ^ (-κ) ∈ Icc (0 : ℝ) 1` using `⟨Real.rpow_nonneg hR0.le _, Real.rpow_le_one_of_one_le_of_nonpos (by linarith) (by linarith)⟩`. Conclude with `(hM _ hε01 x hx).trans_lt hRM`.
+-/
 theorem tendstoUniformlyOn_iteratedFDeriv_interp {ι n : Type} [Fintype ι] [Fintype n]
     [DecidableEq n] {Cμ κ : ℝ} {χ : ℝ → ℝ} (hχ : IsCutoff χ) (hκ : 2 * Cμ + 2 < κ)
     {U : Set (ι → ℂ)} {H₀ H : (ι → ℂ) → Matrix n n ℂ} {r : (ι → ℂ) → ℝ}

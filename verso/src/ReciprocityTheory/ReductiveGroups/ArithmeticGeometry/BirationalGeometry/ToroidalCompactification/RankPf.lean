@@ -18,10 +18,16 @@ variable {R : Type} [CommRing R] {Gx : Over (Spec (CommRingCat.of R))} [GrpObj G
   {x : ∀ m : ℕ, sp (R₀ := R) (JetR R (Fin n) m) ⟶ Gx} (hx : IsUnivChart Gx n x)
 
 include hx in
+/- English proof (translation)
+Rewrite using `[← tcoord_tvec hx c, ← tcoord_tvec hx c']`. Conclude with `tcoord_congr hx h _ _`.
+-/
 theorem tvec_inj {c c' : Fin n → R} (h : tvec (x := x) c = tvec (x := x) c') : c = c' := by
   rw [← tcoord_tvec hx c, ← tcoord_tvec hx c']
   exact tcoord_congr hx h _ _
 
+/- English proof (translation)
+The claim follows from `| 0, u, hu => by have e0 : (List.ofFn u).prod = 1 := by simp refine ⟨e0 ▸ isTan_one, ?_⟩ rw [tcoord_congr hx e0 _ isTan_one, tcoord_one] simp | M + 1, u, hu => by obtain ⟨h, e⟩ := list_prod_tan' (fun i => u i.succ) (fun i => hu i.succ) have e0 : (List.ofFn u).prod = u 0 * (List.o …`.
+-/
 theorem list_prod_tan' : ∀ {M : ℕ} (u : Fin M → (sp (R₀ := R) (DualNumber R) ⟶ Gx)) (hu : ∀ i, IsTan (u i)),
     ∃ h : IsTan (List.ofFn u).prod, tcoord hx _ h = ∑ i, tcoord hx (u i) (hu i)
   | 0, u, hu => by
@@ -36,11 +42,17 @@ theorem list_prod_tan' : ∀ {M : ℕ} (u : Fin M → (sp (R₀ := R) (DualNumbe
     refine ⟨e0 ▸ isTan_mul (hu 0) h, ?_⟩
     rw [tcoord_congr hx e0 _ (isTan_mul (hu 0) h), tcoord_mul hx (hu 0) h, e, Fin.sum_univ_succ]
 
+/- English proof (translation)
+Simplify using `only [eigLat, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, sub_eq_zero]`.
+-/
 theorem mem_eigLat_iff {O : Type} (act : O → (Gx ⟶ Gx)) [∀ a, IsMonHom (act a)] (χ : O → R) (c : Fin n → R) :
     c ∈ eigLat hx act χ ↔ ∀ a, tmap hx (act a) c = χ a • c := by
   simp only [eigLat, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply,
     LinearMap.id_apply, sub_eq_zero]
 
+/- English proof (translation)
+Rewrite using `[← tvec_tmap hx, ← tvec_smul hx]`. Conclude with `⟨fun h => tvec_inj hx h, fun h => by rw [h]⟩`.
+-/
 theorem tvec_eig_iff (e : Gx ⟶ Gx) [IsMonHom e] (c : Fin n → R) (s : R) :
     tvec (x := x) c ≫ e = spMap (scaleD s) ≫ tvec (x := x) c ↔ tmap hx e c = s • c := by
   rw [← tvec_tmap hx, ← tvec_smul hx]
@@ -55,6 +67,9 @@ variable {S S' : Scheme.{0}} {G : Over S} [GrpObj G] {G' : Over S'} [GrpObj G'] 
   {g : Spec (CommRingCat.of k) ⟶ S} (hg : tk ≫ f = g)
 
 include hc in
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl`. Conclude with `rel_uniq_v h₁ h₂`. Introduce and unpack `rfl`. Conclude with `rel_uniq_w hc h₁ h₂`.
+-/
 theorem rel_eq_iff {X : Over (Spec (CommRingCat.of k))} {w₁ w₂ : viaT tk X ⟶ G'} {v₁ v₂ : X ⟶ (Over.pullback g).obj G}
     (h₁ : Rel (F := F) tk g w₁ v₁) (h₂ : Rel (F := F) tk g w₂ v₂) : w₁ = w₂ ↔ v₁ = v₂ := by
   constructor
@@ -64,6 +79,15 @@ theorem rel_eq_iff {X : Over (Spec (CommRingCat.of k))} {w₁ w₂ : viaT tk X �
     exact rel_uniq_w hc h₁ h₂
 
 include hc hg in
+/- English proof (translation)
+Establish `h1` using `rel_pre (spMap (fstD k)) h`. Establish `h2` using `rel_one hc hg (X := sp (R₀ := k) k)`. Establish `hid : (sp (R₀` using `k) k).hom = 𝟙 _ := by show Spec.map (CommRingCat.ofHom (algebraMap k k)) = _`. Rewrite using `[Algebra.algebraMap_self, CommRingCat.ofHom_id, Spec.map_id]`. Both sides reduce to the same expression.
+
+Establish `e1 : (1 : viaT tk (sp (R₀` using `k) k) ⟶ G').left = (1 : Over.mk tk ⟶ G').left := by`. Rewrite using `[one_left', one_left']`. Use `show ((sp (R₀ := k) k).hom ≫ tk) ≫ _ = tk ≫ _`. Rewrite using `[hid, Category.id_comp]`. Rewrite using `[IsTan, ← rel_eq_iff hc h1 h2]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `e`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Conclude with `e.trans e1.symm`. Introduce `e`.
+
+Conclude with `(congrArg (fun q => q.left) e).trans e1`.
+-/
 theorem tan_iff {w : viaT tk (sp (R₀ := k) (DualNumber k)) ⟶ G'} {v : sp (R₀ := k) (DualNumber k) ⟶ (Over.pullback g).obj G}
     (h : Rel (F := F) tk g w v) :
     Geo.Tor.spMap (TrivSqZeroExt.fstHom k k k).toRingHom ≫ w.left = (1 : Over.mk tk ⟶ G').left ↔ IsTan v := by
@@ -86,6 +110,11 @@ theorem tan_iff {w : viaT tk (sp (R₀ := k) (DualNumber k)) ⟶ G'} {v : sp (R�
     exact (congrArg (fun q => q.left) e).trans e1
 
 include hc in
+/- English proof (translation)
+Rewrite using `[← rel_eq_iff hc (rel_act a b hab h) (rel_pre (spMap (scaleD s)) h)]`. Prove the components needed by the constructor for the conclusion. Introduce `e`. Conclude with `Over.OverMorphism.ext e`. Introduce `e`.
+
+Conclude with `congrArg (fun q => q.left) e`.
+-/
 theorem eig_iff (a : G' ⟶ G') (b : G ⟶ G) (hab : a.left ≫ F = F ≫ b.left) (s : k)
     {w : viaT tk (sp (R₀ := k) (DualNumber k)) ⟶ G'} {v : sp (R₀ := k) (DualNumber k) ⟶ (Over.pullback g).obj G}
     (h : Rel (F := F) tk g w v) :
@@ -105,6 +134,31 @@ variable {n : ℕ} {x : ∀ m : ℕ, sp (R₀ := k) (JetR k (Fin n) m) ⟶ (Over
 
 include hc hg hab hact' in
 
+/- English proof (translation)
+Take `⟨vB, hvB, huq⟩` from `hL`. Establish `hT : ∀ (w : viaT tk (sp (R₀` using `k) (DualNumber k)) ⟶ G') v, Rel (F := F) tk g w v → (Geo.Tor.IsLieEigen act tk τ w ↔ IsTan v ∧ ∀ a, v ≫ act' a = spMap (scaleD (τ a)) ≫ v) := by`. Introduce `w v h`. Use `and_congr (tan_iff hc hg h) (forall_congr' fun a => ?_)` and prove the remaining obligations. Rewrite using `[hact']`.
+
+Conclude with `eig_iff hc (act.act a) (b a) (hab a) (τ a) h`. Use `choose v' hv' using fun i => rel_exists_v hc hg (X := sp (R₀ := k) (DualNumber k)) (vB i)`. Establish `hv'e : ∀ i, IsTan (v' i) ∧ ∀ a, v' i ≫ act' a = spMap (scaleD (τ a)) ≫ v' i` using `fun i => (hT _ _ (hv' i)).mp (hvB i)`. Set `bb : Fin N → Fin n → k` to `fun i => tcoord hx (v' i) (hv'e i).1`. Establish `htv : ∀ i, tvec (x` using `x) (bb i) = v' i := fun i => (tcoord_spec hx _ _).symm`.
+
+Establish `hmem : ∀ c, c ∈ eigLat hx act' (fun a => τ a) ↔ ∀ a, tvec (x` using `x) c ≫ act' a = spMap (scaleD (τ a)) ≫ tvec (x := x) c := by`. Introduce `c`. Rewrite using `[mem_eigLat_iff]`. Conclude with `forall_congr' fun a => (tvec_eig_iff hx (act' a) c (τ a)).symm`. Establish `hbW : ∀ i, bb i ∈ eigLat hx act' (fun a => τ a)` using `fun i => (hmem _).mpr fun a => by`.
+
+Rewrite using `[htv]`. Conclude with `(hv'e i).2 a`. Set `P : (Fin N → k) → (sp (R₀` to `k) (DualNumber k) ⟶ (Over.pullback g).obj G) := fun d => (List.ofFn fun i => spMap (scaleD (d i)) ≫ v' i).prod`. Set `Wd : (Fin N → k) → (viaT tk (sp (R₀` to `k) (DualNumber k)) ⟶ G') := fun d => (List.ofFn fun i => liftT tk (spMap (scaleD (d i))) ≫ vB i).prod`. Establish `hPW : ∀ d, Rel (F` using `F) tk g (Wd d) (P d) := fun d => rel_prod hc hg _ _ fun i => rel_pre _ (hv' i)`.
+
+Establish `hPeq : ∀ d, P d = tvec (x` using `x) (∑ i, d i • bb i) := by`. Introduce `d`. Take `⟨h, e⟩` from `list_prod_tan' hx (fun i => spMap (scaleD (d i)) ≫ v' i) (fun i => isTan_scale (d i) (hv'e i).1)`. Use `(tcoord_spec hx (P d) h).trans ?_` and prove the remaining obligations. Use `show tvec (x := x) (tcoord hx (P d) h) = _`.
+
+Rewrite using `[e]`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun i _ => tcoord_scale hx (d i) (hv'e i).1`. Establish `hsum : ∀ d : Fin N → k, (∑ i, d i • bb i) ∈ eigLat hx act' (fun a => τ a)` using `fun d => Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (hbW i)`. Establish `hWeig : ∀ d : Fin N → k, Geo.Tor.IsLieEigen act tk τ (Wd d)` using `fun d => (hT _ _ (hPW d)).mpr ⟨by rw [hPeq]; exact isTan_tvec hx _, by rw [hPeq]; exact (hmem _).mp (hsum d)⟩`.
+
+Establish `hsat : ∀ d : Fin N → k, ∃ u : Fin N → (Geo.Tor.epsPt tk ⟶ G'), (∀ i, (u i).left = Geo.Tor.spMap (Geo.Tor.epsScale (d i)) ≫ (vB i).left) ∧ Wd d = (List.ofFn u).prod` using `fun d => ⟨fun i => liftT tk (spMap (scaleD (d i))) ≫ vB i, fun i => rfl, rfl⟩`. Establish `hli : LinearIndependent k bb`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `d hd`. Establish `e1 : P d = P 0`.
+
+Rewrite using `[hPeq, hPeq, hd]`. Simplify using the standard rewrite rules. Establish `e2 : Wd d = Wd 0` using `(rel_eq_iff hc (hPW d) (hPW 0)).mpr e1`. Use `(huq (Wd 0) (hWeig 0)).unique (e2 ▸ hsat d) (hsat 0)` as an intermediate fact. Conclude with `fun i => congrFun this i`.
+
+Establish `hspan : eigLat hx act' (fun a => τ a) = Submodule.span k (Set.range bb)`. Apply `le_antisymm` to reduce the goal to its premises. Introduce `c hc'`. Take `⟨w, hw⟩` from `rel_exists_w hc hg (tvec (x := x) c)`. Take `⟨d, ⟨u, hu, hwu⟩, -⟩` from `huq w ((hT _ _ hw).mpr ⟨isTan_tvec hx c, (hmem c).mp hc'⟩)`.
+
+Establish `hu' : u = fun i => liftT tk (spMap (scaleD (d i))) ≫ vB i`. Use function extensionality and compare the values at `fun i => Over.OverMorphism.ext (hu i)`. Establish `e1 : w = Wd d` using `by rw [hwu, hu']`. Establish `e2 : tvec (x` using `x) c = P d := rel_uniq_v (e1 ▸ hw) (hPW d)`. Rewrite `e2` using `[hPeq]`.
+
+Rewrite using `[tvec_inj hx e2]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `hbW i`.
+
+Rewrite using `[hspan, finrank_span_eq_card hli, Fintype.card_fin]`.
+-/
 theorem finrank_of_lieMult {N : ℕ} (hL : Geo.Tor.LieMult act tk τ N) :
     Module.finrank k (eigLat hx act' (fun a => τ a)) = N := by
   obtain ⟨vB, hvB, huq⟩ := hL
@@ -176,6 +230,9 @@ end Count
 
 section Assembly
 
+/- English proof (translation)
+Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[pushR_left, Over.comp_left, Over.comp_left, pushR_left, Category.assoc, Category.assoc]`. Use `congr 1`. Conclude with `pullback.lift_fst _ _ _`.
+-/
 theorem pushR_map {R R' : Type} [CommRing R] [CommRing R'] [Algebra R R'] (G : Over (Spec (CommRingCat.of R)))
     [GrpObj G] {P : Type} [CommRing P] [Algebra R' P] [Algebra R P] [IsScalarTower R R' P]
     (y : sp (R₀ := R') P ⟶ (Over.pullback (fB R R')).obj G) (e : G ⟶ G) :

@@ -13,12 +13,25 @@ open NumberField Formalism.HermitianLatticesTheory Formalism.HermitianLattices.E
 
 variable {K : Type} [Field K] [NumberField K] [StarRing K]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem std_form_eq (n : ℕ) : Formalism.MainNotions.StandardLattice.stdForm K n = stdForm K n := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem std_lattice_eq (n : ℕ) : Formalism.MainNotions.StandardLattice.stdLat K n = stdLat K n := rfl
 
 variable [Fact Formalism.HermitianLattices.Ext.L3.HermRepUnram] in
 
+/- English proof (translation)
+Rewrite using `[std_form_eq, std_form_eq, std_lattice_eq, std_lattice_eq]`. Take `⟨F, _, _, _, hF⟩` from `exists_fixF K hK`. Take `⟨c₁, -, hall⟩` from `massConst_all hermRepUnram liStat hK hF`. Establish `mk : ∀ n : ℕ, 1 ≤ n → mass (stdForm K n) (stdLat K n) = c₁ * ∏ j ∈ Finset.Icc 2 n, massRatioRightSide K j`. Introduce `n hn`.
+
+Establish `hs` using `stdForm_isSymm K n`. Establish `ho` using `stdLat_isOrtho K n`. Use `finiteDimensional_of_ortho ho` as an intermediate fact. Establish `e` using `hall n hn _ (stdForm K n) (stdLat K n) hs (isTotPosDef_of_ortho hK hs ho) (finrank_of_ortho ho) (isLattice_of_ortho ho) (isIntegralLat_of_ortho ho)`. Rewrite `e` using `[lamG_eq_one_of_ortho hK hF hs ho, mul_one]`.
+
+Conclude with `e`. Rewrite using `[mk 2 (by norm_num), mk 1 le_rfl, Finset.Icc_self, Finset.prod_singleton, Finset.Icc_eq_empty (by norm_num), Finset.prod_empty, mul_one]`.
+-/
 theorem mass_two_eq (hK : IsCMUnram K) :
     mass (Formalism.MainNotions.StandardLattice.stdForm K 2) (Formalism.MainNotions.StandardLattice.stdLat K 2) =
       mass (Formalism.MainNotions.StandardLattice.stdForm K 1) (Formalism.MainNotions.StandardLattice.stdLat K 1) * massRatioRightSide K 2 := by
@@ -38,6 +51,11 @@ theorem mass_two_eq (hK : IsCMUnram K) :
   rw [mk 2 (by norm_num), mk 1 le_rfl, Finset.Icc_self, Finset.prod_singleton,
     Finset.Icc_eq_empty (by norm_num), Finset.prod_empty, mul_one]
 
+/- English proof (translation)
+Establish `hc` using `Formalism.HermitianLatticeCounting.Final.LocalIntegralStructure.classNumberBound K (fun w => hK.1.isComplex w)`. Establish `hsq : Real.sqrt |(discr K : ℝ)| = (2 * vInv K) ^ fDeg K`. Take `⟨h1, -, h3⟩` from `discrTower K (cmF K) hK (Formalism.MainNotions.BridgeLemVN.fixF K)`. Rewrite using `[h1, Real.sqrt_sq_eq_abs, h3, abs_of_nonneg (pow_nonneg (by linarith [vInv_pos K]) _)]`. Rewrite `hc` using `[hsq, finrank_eq_two_fDeg hK, Real.log_pow]`.
+
+Conclude with `hc`.
+-/
 theorem classNumber_le (hK : IsCMUnram K) :
     (classNumber K : ℝ) ≤ (2 * vInv K) ^ fDeg K * (1 + (fDeg K : ℝ) * Real.log (2 * vInv K)) ^ (2 * fDeg K) := by
   have hc := Formalism.HermitianLatticeCounting.Final.LocalIntegralStructure.classNumberBound K (fun w => hK.1.isComplex w)
@@ -56,6 +74,15 @@ def MassTwoBound : Prop :=
     mass (Formalism.MainNotions.StandardLattice.stdForm E 2) (Formalism.MainNotions.StandardLattice.stdLat E 2) ≤ boundTwo E
 
 variable [Fact Formalism.HermitianLattices.Ext.L3.HermRepUnram] in
+/- English proof (translation)
+Introduce `E _ _ _ hE`. Rewrite using `[mass_two_eq hE]`. Establish `h1 : mass (Formalism.MainNotions.StandardLattice.stdForm E 1) (Formalism.MainNotions.StandardLattice.stdLat E 1) ≤ ((classNumber E * 2 ^ fDeg E : ℕ) : ℝ)`. Rewrite using `[std_form_eq, std_lattice_eq]`. Conclude with `Formalism.MainNotions.BridgeLemVN.mass_std_one_le hE`.
+
+Establish `hc` using `classNumber_le hE`. Establish `hv0 : 0 ≤ vInv E` using `(vInv_pos E).le`. Establish `hA0 : 0 ≤ (2 * vInv E) ^ fDeg E * (1 + (fDeg E : ℝ) * Real.log (2 * vInv E)) ^ (2 * fDeg E)` using `le_trans (Nat.cast_nonneg _) hc`. Establish `hA : mass (Formalism.MainNotions.StandardLattice.stdForm E 1) (Formalism.MainNotions.StandardLattice.stdLat E 1) ≤ (2 * vInv E) ^ fDeg E * (1 + (fDeg E : ℝ) * Real.log (2 * vInv E)) ^ (2 * fDeg E) * 2 ^ fDeg E`. Use `h1.trans ?_` and prove the remaining obligations.
+
+Use `push_cast`. Conclude with `mul_le_mul_of_nonneg_right hc (by positivity)`. Establish `hZ : Real.exp (2 * ((Module.finrank ℚ E : ℝ) * Formalism.MainNotions.BridgeLemVL.Z2)) = Real.exp (2 * Real.pi ^ 2 * fDeg E / 3)`. Rewrite using `[Formalism.MainNotions.BridgeLemVL.zeta_two_eq_pi_sq_div_six, finrank_eq_two_fDeg hE]`. Use `congr 1`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hB` using `(Formalism.MainNotions.BridgeLemVL.mass_ratio_rank_two_le hE).trans (le_of_eq (by rw [hZ]))`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem MassTwoBound_holds : MassTwoBound := by
   intro E _ _ _ hE
   rw [mass_two_eq hE]
@@ -86,6 +113,21 @@ theorem MassTwoBound_holds : MassTwoBound := by
 
 variable [Fact Formalism.HermitianLattices.Ext.L3.HermRepUnram] in
 
+/- English proof (translation)
+Use `(MassTwoBound_holds K hK).trans ?_` and prove the remaining obligations. Unfold `boundTwo`. Establish `hv0 : 0 ≤ vInv K` using `(vInv_pos K).le`. Establish `hr1 : 1 ≤ 2 * vInv K` using `Formalism.MainNotions.MassRatioZetaBound.one_le_two_vInv`. Establish `hY0 : 0 ≤ Y` using `by linarith`.
+
+Establish `hf0 : (0 : ℝ) ≤ fDeg K` using `Nat.cast_nonneg _`. Establish `p1 : (2 : ℝ) ^ fDeg K ≤ Y ^ fDeg K` using `pow_le_pow_left₀ (by norm_num) hY _`. Establish `p2 : (2 * vInv K) ^ fDeg K ≤ Y ^ fDeg K` using `pow_le_pow_left₀ (by linarith) hv _`. Establish `hl0 : 0 ≤ Real.log (2 * vInv K)` using `Real.log_nonneg hr1`. Establish `hl : Real.log (2 * vInv K) ≤ 2 * vInv K` using `(Real.log_le_sub_one_of_pos (by linarith)).trans (by linarith)`.
+
+Establish `hL : 1 + (fDeg K : ℝ) * Real.log (2 * vInv K) ≤ Y ^ 3`. Establish `h1 : (fDeg K : ℝ) * Real.log (2 * vInv K) ≤ Y * Y` using `mul_le_mul hf (hl.trans hv) hl0 hY0`. Use the polynomial consequences of the given equalities and inequalities. Establish `hL0 : 0 ≤ 1 + (fDeg K : ℝ) * Real.log (2 * vInv K)` using `by positivity`. Establish `p3 : (1 + (fDeg K : ℝ) * Real.log (2 * vInv K)) ^ (2 * fDeg K) ≤ (Y ^ 3) ^ (2 * fDeg K)` using `pow_le_pow_left₀ hL0 hL _`.
+
+Establish `hpi : 1 ≤ Real.pi` using `by linarith [Real.pi_gt_three]`. Establish `hq0 : 0 ≤ vInv K / Real.pi` using `div_nonneg hv0 (by linarith)`. Establish `hq : vInv K / Real.pi ≤ Y` using `(div_le_self hv0 hpi).trans (by linarith)`. Establish `p4 : ((vInv K / Real.pi) ^ 2) ^ fDeg K ≤ (Y ^ 2) ^ fDeg K` using `pow_le_pow_left₀ (pow_nonneg hq0 2) (pow_le_pow_left₀ hq0 hq 2) _`. Establish `he8 : Real.exp 8 ≤ 2 ^ 12`.
+
+Establish `e : Real.exp 8 = Real.exp 1 ^ 8` using `by rw [← Real.exp_nat_mul]; norm_num`. Rewrite using `[e]`. Combine the equalities or inequalities in the displayed calculation. Establish `p5 : Real.exp (2 * Real.pi ^ 2 * fDeg K / 3) ≤ (Y ^ 12) ^ fDeg K`. Establish `hpi2 : Real.pi ^ 2 ≤ 12` using `by nlinarith [Real.pi_lt_d2, Real.pi_pos]`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `q1` using `mul_le_mul p1 p2 (pow_nonneg (by linarith) _) (pow_nonneg hY0 _)`. Establish `q2` using `mul_le_mul q1 p3 (pow_nonneg hL0 _) (mul_nonneg (pow_nonneg hY0 _) (pow_nonneg hY0 _))`. Establish `q3` using `mul_le_mul q2 p4 (pow_nonneg (pow_nonneg hq0 2) _) (mul_nonneg (mul_nonneg (pow_nonneg hY0 _) (pow_nonneg hY0 _)) (pow_nonneg (pow_nonneg hY0 3) _))`. Establish `q4` using `mul_le_mul q3 p5 (Real.exp_pos _).le (mul_nonneg (mul_nonneg (mul_nonneg (pow_nonneg hY0 _) (pow_nonneg hY0 _)) (pow_nonneg (pow_nonneg hY0 3) _)) (pow_nonneg (pow_nonneg hY0 2) _))`.
+
+Use `q4.trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[← pow_mul, ← pow_mul, ← pow_mul, ← pow_add, ← pow_add, ← pow_add, ← pow_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem mass_two_le_pow (hK : IsCMUnram K) {Y : ℝ} (hY : 2 ≤ Y) (hv : 2 * vInv K ≤ Y)
     (hf : (fDeg K : ℝ) ≤ Y) :
     mass (Formalism.MainNotions.StandardLattice.stdForm K 2) (Formalism.MainNotions.StandardLattice.stdLat K 2) ≤ Y ^ (22 * fDeg K) := by

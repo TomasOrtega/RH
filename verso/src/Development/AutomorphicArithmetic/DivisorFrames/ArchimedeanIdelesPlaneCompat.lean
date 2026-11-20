@@ -9,10 +9,18 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK GlobalTheory.ThK.LemF
 open scoped Classical
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[Matrix.mulVec, dotProduct, map_sum, map_mul]`.
+-/
 private theorem UpperTheory.map_mulVec_ringHom {R : Type} [CommRing R] {n : ℕ} (c : R →+* R) (A : Matrix (Fin n) (Fin n) R)
     (v : Fin n → R) : A.map c *ᵥ (fun i => c (v i)) = fun i => c ((A *ᵥ v) i) := by
   funext i; simp [Matrix.mulVec, dotProduct, map_sum, map_mul]
 
+/- English proof (translation)
+Establish `h1 : (fun i => c (x i)) = K.map c *ᵥ (c a • fun i => c (x i))`. Establish `: (c a • fun i => c (x i)) = fun i => c ((K' *ᵥ x) i)`. Use function extensionality and compare the values at `i`. Simplify using `[hx]`. Rewrite using `[this, UpperTheory.map_mulVec_ringHom, Matrix.mulVec_mulVec, hK, Matrix.one_mulVec]`.
+
+Rewrite using `[← Matrix.mulVec_transpose]`. Use `conv_lhs => rw [h1]`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hu, Matrix.mulVec_smul]`.
+-/
 private theorem UpperTheory.vecMul_unitary_eigen {R : Type} [CommRing R] {n : ℕ} (c : R →+* R) (J K K' : Matrix (Fin n) (Fin n) R)
     (hK : K * K' = 1) (hu : Kᵀ * J * K.map c = J) (x : Fin n → R) (a : R) (hx : K' *ᵥ x = a • x) :
     (J *ᵥ fun i => c (x i)) ᵥ* K = c a • (J *ᵥ fun i => c (x i)) := by
@@ -24,6 +32,9 @@ private theorem UpperTheory.vecMul_unitary_eigen {R : Type} [CommRing R] {n : �
   conv_lhs => rw [h1]
   rw [Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hu, Matrix.mulVec_smul]
 
+/- English proof (translation)
+Establish `hz : ∀ v : Fin n → R, Matrix.vecMulVec v (0 : Fin m → R) = 0` using `fun v => by ext; simp [Matrix.vecMulVec]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← hf]`. Simplify using `only [Matrix.add_mul, Matrix.vecMulVec_mul, UpperTheory.vecMul_unitary_eigen c J K K' hK hu x a hx, UpperTheory.vecMul_unitary_eigen c J K K' hK hu y b hy, Matrix.smul_vecMul, ox, oy, smul_zero, hz, add_zero, Matrix.mul_assoc]`.
+-/
 private theorem UpperTheory.plane_inclusion_decomposition {R : Type} [CommRing R] {n m : ℕ} (c : R →+* R) (J K K' : Matrix (Fin n) (Fin n) R)
     (hK : K * K' = 1) (hu : Kᵀ * J * K.map c = J) (x y : Fin n → R) (a b : R) (hx : K' *ᵥ x = a • x)
     (hy : K' *ᵥ y = b • y) (ι : Matrix (Fin n) (Fin m) R) (π : Matrix (Fin m) (Fin n) R)
@@ -37,6 +48,27 @@ private theorem UpperTheory.plane_inclusion_decomposition {R : Type} [CommRing R
       simp only [Matrix.add_mul, Matrix.vecMulVec_mul, UpperTheory.vecMul_unitary_eigen c J K K' hK hu x a hx,
         UpperTheory.vecMul_unitary_eigen c J K K' hK hu y b hy, Matrix.smul_vecMul, ox, oy, smul_zero, hz, add_zero, Matrix.mul_assoc]
 
+/- English proof (translation)
+Set `φ : ((E × (Fin n₁ → E)) × E) →ₗ[E] (Fin n → E)` to `LinearMap.coprod (LinearMap.coprod (LinearMap.toSpanSingleton E _ H.x) (Matrix.mulVecLin H.ι)) (LinearMap.toSpanSingleton E _ H.y)`. Establish `hφ : ∀ p, φ p = p.1.1 • H.x + H.ι *ᵥ p.1.2 + p.2 • H.y` using `fun p => by`. Simplify using `[φ, LinearMap.coprod_apply]`. Establish `hsurj : Function.Surjective φ`. Rewrite using `[← LinearMap.range_eq_top, eq_top_iff, ← hX.lat.span_eq_top, Submodule.span_le]`.
+
+Introduce `z hz`. Take `⟨a, b, u, -, -, -, rfl⟩` from `hA.split z hz`. Conclude with `⟨((a, u), b), hφ _⟩`. Establish `hrk : Module.finrank E ((E × (Fin n₁ → E)) × E) = Module.finrank E (Fin n → E)`. Simplify using `[Module.finrank_prod, hA.rank]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hinj : Function.Injective φ` using `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank hrk).2 hsurj`. Set `e` to `LinearEquiv.ofBijective φ ⟨hinj, hsurj⟩`. Set `p : (Fin n → E) →ₗ[E] (Fin n₁ → E)` to `(LinearMap.snd E E _).comp ((LinearMap.fst E _ E).comp e.symm.toLinearMap)`. Establish `hp : ∀ q, LinearMap.toMatrix' p *ᵥ φ q = q.1.2` using `fun q => by`.
+
+Rewrite using `[LinearMap.toMatrix'_mulVec]`. Use `show (e.symm (e q)).1.2 = _`. Rewrite using `[e.symm_apply_apply]`. Establish `hyx : form σ X.J H.y H.x = 1`. Establish `: form σ X.J H.y H.x = σ (form σ X.J H.x H.y)`.
+
+Simplify using `only [form, dotProduct, Matrix.mulVec, map_sum, map_mul, hσ, hX.herm, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, hA.xy, map_one]`.
+
+Establish `hlin : ∀ q w, form σ X.J (φ q) w = q.1.1 * form σ X.J H.x w + form σ X.J (H.ι *ᵥ q.1.2) w + q.2 * form σ X.J H.y w`. Introduce `q w`. Simplify using `only [hφ, form, add_dotProduct, smul_dotProduct, smul_eq_mul]`. Establish `e1 : ∀ q, (X.J *ᵥ fun i => σ (H.y i)) ⬝ᵥ φ q = q.1.1` using `fun q => by`. Rewrite using `[dotProduct_comm, ← form, hlin, (hA.orth _).2, hA.xy, hA.yy]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `e2 : ∀ q, (X.J *ᵥ fun i => σ (H.x i)) ⬝ᵥ φ q = q.2` using `fun q => by`. Rewrite using `[dotProduct_comm, ← form, hlin, (hA.orth _).1, hA.xx, hyx]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨LinearMap.toMatrix' p, ?_, ?_⟩` and prove the remaining obligations.
+
+Apply `Matrix.toLin'.injective` to reduce the goal to its premises. Use `LinearMap.ext fun u => ?_` and prove the remaining obligations. Use `hp ((0, u), 0)` as an intermediate fact. Rewrite `this` using `[hφ]`. Rewrite using `[Matrix.toLin'_one, LinearMap.id_apply, Matrix.toLin'_apply, ← Matrix.mulVec_mulVec]`.
+
+Simplify using `using this`. Apply `Matrix.toLin'.injective` to reduce the goal to its premises. Use `LinearMap.ext fun z => ?_` and prove the remaining obligations. Take `⟨q, rfl⟩` from `hsurj z`. Rewrite using `[Matrix.toLin'_one, LinearMap.id_apply, Matrix.toLin'_apply, Matrix.add_mulVec, Matrix.add_mulVec, Matrix.vecMulVec_mulVec, Matrix.vecMulVec_mulVec, ← Matrix.mulVec_mulVec, hp, e1, e2, hφ]`.
+
+Use extensionality with `i`. Simplify using `only [Pi.add_apply, Pi.smul_apply, MulOpposite.smul_eq_mul_unop, MulOpposite.unop_op, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem UpperTheory.exists_adapted_plane_projection {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} (hσ : ∀ x, σ (σ x) = x) {B : Base F E} {n n₁ r s i₀ i₁ : ℕ} {X : Spc F E n} {X₁ : Spc F E n₁}
     {H : Plane E n n₁} (hX : X.IsHerm σ B r s) (hA : H.IsAdapted σ B X X₁ i₀ i₁) :
@@ -92,6 +124,49 @@ private theorem UpperTheory.exists_adapted_plane_projection {F E : Type} [Field 
     simp only [Pi.add_apply, Pi.smul_apply, MulOpposite.smul_eq_mul_unop, MulOpposite.unop_op, smul_eq_mul]
     ring
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n n₁ r s r₁ s₁ i₀ i₁ X X₁ H hB hX _ hA k hk t ht hkx`. Establish `hCM` using `hB.cm`. Establish `hσ : ∀ x, σ (σ x) = x` using `fun x => by`. Take `⟨w⟩ : Nonempty (InfinitePlace F)` from `inferInstance`. Apply `(B.emb w).1.injective` to reduce the goal to its premises.
+
+Rewrite using `[hCM.2.2.2, hCM.2.2.2, star_star]`. Take `⟨π, p1, p2⟩` from `UpperTheory.exists_adapted_plane_projection hσ hX hA`. Use `set c : AE F E →+* AE F E := (cA σ : AE F E →ₐ[AF F] AE F E).toRingHom with hc`. Establish `hci : ∀ e : E, c (inclR (F` using `F) (AF F) e) = inclR (F := F) (AF F) (σ e) := fun e => rfl`. Establish `hkk : mat k * mat k⁻¹ = 1` using `k.1.mul_inv`.
+
+Establish `hkk' : mat k⁻¹ * mat k = 1` using `k.1.inv_mul`. Establish `hu : (mat k)ᵀ * incM F X.J * (mat k).map c = incM F X.J` using `k.2`. Establish `hu' : (mat k⁻¹)ᵀ * incM F X.J * (mat k⁻¹).map c = incM F X.J` using `(k⁻¹).2`. Establish `hkat : At (evI F) (mat k - 1)` using `hk.1`. Establish `htat : At (evI F) ((t : AE F E) - 1)` using `ht`.
+
+Establish `hv : ∀ w (x : Fin n → E), (piInf (B.emb w)) ∘ incV F x = fun j => (B.emb w).1 (x j)`. Introduce `w x`. Use function extensionality and compare the values at `j`. Simplify using `[incV, GlobalTheory.ThK.PlaneEv.AdaptedJ.piInf_inclR]`. Establish `key : ∀ x : Fin n → E, (∀ w, (mat k).map (piInf (B.emb w)) *ᵥ (fun j => (B.emb w).1 (x j)) = piInf (B.emb w) (t : AE F E) • fun j => (B.emb w).1 (x j)) → mat k *ᵥ incV F x = t.1 • incV F x`.
+
+Introduce `x hx`. Use function extensionality and compare the values at `i`. Apply `sub_eq_zero.1` to reduce the goal to its premises. Apply `GlobalTheory.ArchInj.eq_zero_of_at_of_piInf F E σ hCM B.emb` to reduce the goal to its premises. Introduce `u hu`.
+
+Establish `e : (mat k *ᵥ incV F x) i - (t.1 • incV F x) i = ((mat k - 1) *ᵥ incV F x) i - (t.1 - 1) * incV F x i`. Simplify using `[Matrix.sub_mulVec, sub_mul]`. Rewrite using `[e, smul_sub, ← Pi.smul_apply, ← Matrix.smul_mulVec, hkat u hu, Matrix.zero_mulVec, Pi.zero_apply, ← smul_mul_assoc, htat u hu, zero_mul, sub_zero]`. Introduce `w`. Rewrite using `[map_sub, RingHom.map_mulVec, hv, hx w, Pi.smul_apply, Pi.smul_apply, smul_eq_mul, smul_eq_mul, map_mul]`.
+
+Simplify using `[incV, GlobalTheory.ThK.PlaneEv.AdaptedJ.piInf_inclR]`. Establish `lx : ∀ w, (mat k).map (piInf (B.emb w)) *ᵥ (fun j => (B.emb w).1 (H.x j)) = piInf (B.emb w) (t : AE F E) • fun j => (B.emb w).1 (H.x j)`. Introduce `w`. Establish `h1 : (fun j => (B.emb w).1 (H.x j)) = piInf (B.emb w) (t : AE F E) • ((mat k⁻¹).map (piInf (B.emb w)) *ᵥ (fun j => (B.emb w).1 (H.x j)))`. Use function extensionality and compare the values at `i`.
+
+Use `hkx i w` as an intermediate fact. Rewrite `this` using `[RingHom.map_mulVec, hv]`. Rewrite using `[Pi.smul_apply, smul_eq_mul, this]`. Conclude with `(congrFun (hv w H.x) i).symm`. Use `conv_lhs => rw [h1]`.
+
+Rewrite using `[Matrix.mulVec_smul, Matrix.mulVec_mulVec, ← Matrix.map_mul, hkk, Matrix.map_one _ (map_zero _) (map_one _), Matrix.one_mulVec]`. Establish `kx` using `key H.x lx`. Establish `ky` using `key H.y fun w => by`. Take `⟨a, -, ha⟩` from `(hA.cartan w).2`. Rewrite using `[ha, Matrix.mulVec_smul, Matrix.mulVec_mulVec, (hk.2 w).eq, ← Matrix.mulVec_mulVec, lx, Matrix.mulVec_smul, smul_comm]`.
+
+Establish `inv : ∀ v : Fin n → AE F E, mat k *ᵥ v = t.1 • v → mat k⁻¹ *ᵥ v = (t⁻¹).1 • v`. Introduce `v h`. Use `congrArg (fun z => (t⁻¹).1 • (mat k⁻¹ *ᵥ z)) h` as an intermediate fact. Simplify using `only [Matrix.mulVec_mulVec, hkk', Matrix.one_mulVec, Matrix.mulVec_smul, smul_smul, Units.inv_mul, one_smul] at this`. Conclude with `this.symm`.
+
+Establish `hJv : ∀ x : Fin n → E, (incM F X.J *ᵥ fun i => c (incV F x i)) = incV F (X.J *ᵥ fun i => σ (x i))`. Introduce `x`. Use function extensionality and compare the values at `i`. Conclude with `(RingHom.map_mulVec (inclR (F := F) (AF F)) X.J (fun i => σ (x i)) i).symm`. Establish `hmul : ∀ {a b d : ℕ} (M : Matrix (Fin a) (Fin b) E) (N : Matrix (Fin b) (Fin d) E), incM F (M * N) = incM F M * incM F N` using `fun M N => Matrix.map_mul`.
+
+Establish `hone : ∀ a : ℕ, incM F (1 : Matrix (Fin a) (Fin a) E) = 1` using `fun a => Matrix.map_one _ (map_zero _) (map_one _)`. Establish `q1 : incM F π * incM F H.ι = 1` using `by rw [← hmul, p1, hone]`. Establish `q2 : incM F H.ι * incM F π + Matrix.vecMulVec (incV F H.x) (incM F X.J *ᵥ fun i => c (incV F H.y i)) + Matrix.vecMulVec (incV F H.y) (incM F X.J *ᵥ fun i => c (incV F H.x i)) = 1`. Rewrite using `[hJv, hJv, ← hmul, ← hone, ← p2]`. Use extensionality with `i j`.
+
+Simplify using `only [incM, incV, Matrix.vecMulVec_apply, Matrix.map_apply, Matrix.add_apply, map_add, map_mul]`. Establish `ho : ∀ x : Fin n → E, (∀ u, form σ X.J (H.ι *ᵥ u) x = 0) → (incM F X.J *ᵥ fun i => c (incV F x i)) ᵥ* incM F H.ι = 0`. Introduce `x hx`. Rewrite using `[hJv]`. Use function extensionality and compare the values at `j`.
+
+Establish `h1` using `hx (Pi.single j 1)`. Rewrite `h1` using `[form, Matrix.mulVec_single_one, dotProduct_comm]`. Establish `h2` using `RingHom.map_vecMul (inclR (F := F) (AF F)) H.ι (X.J *ᵥ fun i => σ (x i)) j`. Establish `h3 : ((X.J *ᵥ fun i => σ (x i)) ᵥ* H.ι) j = 0` using `h1`. Rewrite `h2` using `[h3, map_zero]`.
+
+Conclude with `h2.symm`. Establish `ox` using `ho H.x fun u => (hA.orth u).1`. Establish `oy` using `ho H.y fun u => (hA.orth u).2`. Establish `g1` using `UpperTheory.plane_inclusion_decomposition c _ _ _ hkk hu _ _ _ _ (inv _ kx) (inv _ ky) _ _ q2 ox oy`. Establish `g2` using `UpperTheory.plane_inclusion_decomposition c _ _ _ hkk' hu' _ _ _ _ kx ky _ _ q2 ox oy`.
+
+Establish `hgram : (incM F H.ι)ᵀ * incM F X.J * (incM F H.ι).map c = incM F X₁.J`. Rewrite using `[← hA.gram, hmul, hmul]`. Both sides reduce to the same expression. Establish `htc : c (t⁻¹).1 = t.1`. Establish `h1 : incV F H.x ⬝ᵥ (incM F X.J *ᵥ fun i => c (incV F H.y i)) = 1`.
+
+Rewrite using `[hJv, ← map_one (inclR (F := F) (E := E) (AF F)), ← hA.xy, form, RingHom.map_dotProduct]`. Both sides reduce to the same expression. Establish `h2` using `congrArg (fun z => z ⬝ᵥ incV F H.x) (UpperTheory.vecMul_unitary_eigen c _ _ _ hkk hu _ _ (inv _ ky))`. Rewrite `h2` using `[← Matrix.dotProduct_mulVec]`. Simplify using `only [kx, dotProduct_smul, smul_dotProduct, dotProduct_comm _ (incV F H.x), h1, smul_eq_mul, mul_one] at h2`.
+
+Conclude with `h2.symm`. Use `⟨⟨⟨incM F π * mat k * incM F H.ι, incM F π * mat k⁻¹ * incM F H.ι, ?_, ?_⟩, ?_⟩, ?_, kx, ?_, g1⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_assoc, ← g2, Matrix.mul_assoc, ← Matrix.mul_assoc (mat k), hkk, Matrix.one_mul, q1]`. Rewrite using `[Matrix.mul_assoc, ← g1, Matrix.mul_assoc, ← Matrix.mul_assoc (mat k⁻¹), hkk', Matrix.one_mul, q1]`. Use `show (incM F π * mat k * incM F H.ι)ᵀ * incM F X₁.J * (incM F π * mat k * incM F H.ι).map c = incM F X₁.J`.
+
+Generalize the expression as in `incM F π * mat k * incM F H.ι = G at g1`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← hgram, Matrix.transpose_mul, Matrix.map_mul]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = (incM F H.ι)ᵀ * ((mat k)ᵀ * incM F X.J * (mat k).map c) * (incM F H.ι).map c := by`.
+
+Rewrite using `[← g1, Matrix.transpose_mul, Matrix.map_mul]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by rw [hu, hgram]`. Introduce `u hu0 show u • (incM F π * mat k * incM F H.ι - 1) = 0`. Establish `e : incM F π * mat k * incM F H.ι - 1 = incM F π * (mat k - 1) * incM F H.ι`.
+
+Rewrite using `[Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, q1]`. Rewrite using `[e, ← Matrix.smul_mul, ← Matrix.mul_smul, hkat u hu0, Matrix.mul_zero, Matrix.zero_mul]`. Rewrite using `[ky, ← htc]`. Both sides reduce to the same expression.
+-/
 theorem UpperTheory.archimedean_ideles_plane_compat :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n n₁ r s r₁ s₁ i₀ i₁ : ℕ) (X : Spc F E n) (X₁ : Spc F E n₁) (H : Plane E n n₁),
         B.IsGood σ → X.IsHerm σ B r s → X₁.IsHerm σ B r₁ s₁ → H.IsAdapted σ B X X₁ i₀ i₁ →

@@ -14,22 +14,36 @@ variable {Z Y : Scheme.{0}} {J J₁ J₂ J₃ : Type} [Fintype J] [Fintype J₁]
 def secVal {φ : J → (Y ⟶ Z)} {ε : J → ℤ} (s : LB.Sec (LB.LinComb (Inh.trivLB Z) φ ε)) : Γ(Y, ⊤) :=
   (Y.presheaf.map (homOfLE (wchart_triv φ (fun _ => PUnit.unit)).ge).op).hom (s.f (fun _ => PUnit.unit))
 
+/- English proof (translation)
+Rewrite using `[Subsingleton.elim (homOfLE h) (𝟙 U), op_id, CategoryTheory.Functor.map_id]`. Both sides reduce to the same expression.
+-/
 theorem map_self {U : Y.Opens} (h : U ≤ U) (x : Γ(Y, U)) : (Y.presheaf.map (homOfLE h).op).hom x = x := by
   rw [Subsingleton.elim (homOfLE h) (𝟙 U), op_id, CategoryTheory.Functor.map_id]
   rfl
 
+/- English proof (translation)
+Take `rfl : j = fun _ => PUnit.unit` from `rfl`. Conclude with `((map_map _ _ _).trans (map_self _ _)).symm`.
+-/
 theorem sec_f_eq {φ : J → (Y ⟶ Z)} {ε : J → ℤ} (s : LB.Sec (LB.LinComb (Inh.trivLB Z) φ ε))
     (j : J → (Inh.trivLB Z).ι) :
     s.f j = (Y.presheaf.map (homOfLE le_top).op).hom (secVal s) := by
   obtain rfl : j = fun _ => PUnit.unit := rfl
   exact ((map_map _ _ _).trans (map_self _ _)).symm
 
+/- English proof (translation)
+Substitute `hV` using the available equality. Rewrite `h` using `[map_self, map_self]`. Then use the resulting hypothesis.
+-/
 theorem map_top_inj {V : Y.Opens} (hV : V = ⊤) {a b : Γ(Y, ⊤)}
     (h : (Y.presheaf.map (homOfLE (le_top : V ≤ ⊤)).op).hom a = (Y.presheaf.map (homOfLE le_top).op).hom b) :
     a = b := by
   subst hV
   rwa [map_self, map_self] at h
 
+/- English proof (translation)
+Use `H (fun _ => PUnit.unit) (fun _ => PUnit.unit) (fun _ => PUnit.unit) (fun _ _ _ => rfl)` as an intermediate fact. Substitute `hh` using the available equality. Use `map_top_inj (top_unique (le_inf (le_inf (wchart_triv φ₁ _).ge (wchart_triv _ _).ge) (wchart_triv φ₃ _).ge)) (Eq.trans ?_ (this.trans ?_))` and prove the remaining obligations. Conclude with `(map_map _ _ _).symm.trans (congrArg _ (sec_f_eq s₁ _).symm)`. Rewrite using `[map_mul]`.
+
+Use `congrArg₂ (· * ·) ?_ ?_` and prove the remaining obligations. Conclude with `(congrArg _ (congrArg _ (sec_f_eq s₂ _))).trans (app_res _ _ _ _ _)`. Conclude with `(congrArg _ (congrArg Units.val (hu _))).trans (map_map _ _ _)`.
+-/
 theorem secVal_of_secRel {φ₁ : J₁ → (Y ⟶ Z)} {ε₁ : J₁ → ℤ} {s₁ : LB.Sec (LB.LinComb (Inh.trivLB Z) φ₁ ε₁)}
     {φ₂ : J₂ → (Y ⟶ Z)} {ε₂ : J₂ → ℤ} {s₂ : LB.Sec (LB.LinComb (Inh.trivLB Z) φ₂ ε₂)} {h : Y ⟶ Y}
     (hh : h = 𝟙 Y) {φ₃ : J₃ → (Y ⟶ Z)} {ε₃ : J₃ → ℤ} {u : LB.Gen (LB.LinComb (Inh.trivLB Z) φ₃ ε₃)}
@@ -51,6 +65,9 @@ variable {K : Type} [CommRing K] [IsDomain K] {X : Type} [AddCommGroup X] [Modul
 variable (q : X → (FractionRing K)ˣ)
 variable (F : Type) [Field F] [Algebra (FractionRing K) F]
 
+/- English proof (translation)
+The claim follows from `CartesianMonoidalCategory.hom_ext _ _ ((lift_fst _ _).trans (Category.id_comp _).symm) (toUnit_unique _ _)`.
+-/
 theorem trPt_eq_id (b : TF (R := K) F ⟶ (toricPre K X q).P.A) :
     DegPre.trPt (toricPre K X q) F b = 𝟙 _ :=
   CartesianMonoidalCategory.hom_ext _ _ ((lift_fst _ _).trans (Category.id_comp _).symm) (toUnit_unique _ _)
@@ -59,6 +76,11 @@ def constUnit : Fˣ →* Γ((DegPre.BF (toricPre K X q) F).left, ⊤)ˣ :=
   (pullTop (fst (TF (R := K) F) (toricPre K X q).P.A).left).comp
     (Units.map (Scheme.ΓSpecIso (CommRingCat.of F)).inv.hom.toMonoidHom)
 
+/- English proof (translation)
+Establish `h : (DegPre.zF (toricPre K X q) F).left ≫ (fst (TF (R` using `K) F) (toricPre K X q).P.A).left = 𝟙 _ := by`. Rewrite using `[← Over.comp_left, DegPre.zF, lift_fst, Over.id_left]`. Use `ext`. Express the relevant statement in the definitionally equal form `((DegPre.zF (toricPre K X q) F).left ≫ (fst (TF (R := K) F) (toricPre K X q).P.A).left).appTop.hom (unitOn c).val = _`. Rewrite using `[h]`.
+
+Both sides reduce to the same expression.
+-/
 theorem pullTop_zF_constUnit (c : Fˣ) :
     pullTop (DegPre.zF (toricPre K X q) F).left (constUnit q F c) = unitOn c := by
   have h : (DegPre.zF (toricPre K X q) F).left ≫ (fst (TF (R := K) F) (toricPre K X q).P.A).left = 𝟙 _ := by
@@ -69,6 +91,11 @@ theorem pullTop_zF_constUnit (c : Fˣ) :
   rw [h]
   rfl
 
+/- English proof (translation)
+Substitute `hβ` using the available equality. Establish `hg : IsConst (p.g.s α) (unitOn (t (Multiplicative.ofAdd α)))`. Rewrite using `[hp]`. Conclude with `pt_isConst q F t α`. Use `secVal_of_secRel (congrArg CommaMorphism.left (trPt_eq_id q F p.g.b)) (cg_isConst _ _ _) (h α (cg _ _ (constUnit q F (t (Multiplicative.ofAdd α) * c))) (cg_isGen _ _ _) ?_)` and prove the remaining obligations.
+
+Conclude with `corr_of_isConst ((isConst_pullGen (cg_isConst _ _ _) _).of_eq ((pullTop_zF_constUnit q F _).trans (unitOn_mul _ _))) (isConst_mulGen hg hw)`.
+-/
 theorem secVal_of_phiRel {n : ℕ} (p : QkPt (toricPre K X q) F n) (t : Multiplicative X →* Fˣ)
     (hp : p.g = pt q F t)
     (w : LB.Gen (LB.LinComb (toricPre K X q).P.L (DegPre.lineφ _ F p.g.b) (DegPre.lineε n))) (c : Fˣ)
@@ -85,6 +112,19 @@ theorem secVal_of_phiRel {n : ℕ} (p : QkPt (toricPre K X q) F n) (t : Multipli
     ((isConst_pullGen (cg_isConst _ _ _) _).of_eq ((pullTop_zF_constUnit q F _).trans (unitOn_mul _ _)))
     (isConst_mulGen hg hw)
 
+/- English proof (translation)
+Introduce `w w' _ _ s s₁ s₂ s₃ s₄ h₁ h₂ h₃ h₄ β j`. Take `⟨a, ha⟩` from `exists_isConst w`. Take `⟨c, rfl⟩` from `unitOn_bijective.2 a`. Take `⟨a', ha'⟩` from `exists_isConst w'`. Take `⟨c', rfl⟩` from `unitOn_bijective.2 a'`.
+
+Express the relevant statement in the definitionally equal form `X at β`. Set `y : X` to `p.y`. Set `y' : X` to `p'.y`. Establish `e₁` using `secVal_of_phiRel q F p' t' hp' w' c' ha' h₁ (β - y - y') (β - y - y' + y') rfl`. Establish `e₂` using `secVal_of_phiRel q F p t hp w c ha h₂ (β - y - y' + y') β (show β = β - y - y' + y' + y by abel)`.
+
+Establish `e₃` using `secVal_of_phiRel q F p t hp w c ha h₃ (β - y - y') (β - y - y' + y) rfl`. Establish `e₄` using `secVal_of_phiRel q F p' t' hp' w' c' ha' h₄ (β - y - y' + y) β (show β = β - y - y' + y + y' by abel)`. Establish `e : secVal (s₂.s β) = (constUnit q F (t (Multiplicative.ofAdd y') * (t' (Multiplicative.ofAdd y))⁻¹)).val * secVal (s₄.s β)`. Rewrite using `[e₂, e₄, e₁, e₃, _root_.mul_assoc, _root_.mul_assoc, mul_left_comm (Units.val _), ← Units.val_mul, ← Units.val_mul, ← Units.val_mul, ← map_mul, ← map_mul, ← map_mul]`. Use `congr 3`.
+
+Simplify using `only [ofAdd_add, map_mul]`. Generalize the expression as in `t (Multiplicative.ofAdd (β - y - y')) = A`. Generalize the expression as in `t' (Multiplicative.ofAdd (β - y - y')) = B`. Generalize the expression as in `t (Multiplicative.ofAdd y') = C`. Generalize the expression as in `t' (Multiplicative.ofAdd y) = D`.
+
+Use `ext`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Use `(sec_f_eq (s₂.s β) j).trans ?_` and prove the remaining obligations. Rewrite using `[e, map_mul, sec_f_eq (s₄.s β) j]`.
+
+Both sides reduce to the same expression.
+-/
 theorem weilQkIs_pt {n : ℕ} (p p' : QkPt (toricPre K X q) F n) (t t') (hp : p.g = pt q F t) (hp' : p'.g = pt q F t') :
     WeilQkIs (toricPre K X q) F n p p'
       ((t (Multiplicative.ofAdd (show X from p'.y)) * (t' (Multiplicative.ofAdd (show X from p.y)))⁻¹ : Fˣ) : F) := by

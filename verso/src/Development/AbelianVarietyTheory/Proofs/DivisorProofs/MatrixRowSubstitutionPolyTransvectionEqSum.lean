@@ -4,6 +4,19 @@ open MvPolynomial Formalism.GradedWeylDivisibility GlobalTheory.GenCoef
 
 namespace GlobalTheory.RowSubstTransvection
 
+/- English proof (translation)
+Use `conv_lhs => rw [f.as_sum]`. Rewrite using `[map_sum]`. Apply `Polynomial.natDegree_sum_le_of_forall_le` to reduce the goal to its premises. Introduce `m hm`. Rewrite using `[rowGen, aeval_monomial]`.
+
+Use `(Polynomial.natDegree_mul_le).trans ?_` and prove the remaining obligations. Establish `h0 : (algebraMap O (Polynomial (MvPolynomial (Fin N × Fin N) O)) (f.coeff m)).natDegree = 0`. Rewrite using `[Polynomial.algebraMap_apply]`. Conclude with `Polynomial.natDegree_C _`. Rewrite using `[h0, zero_add]`.
+
+Establish `hg : ∀ v : Fin N × Fin N, (Polynomial.C (X v : MvPolynomial (Fin N × Fin N) O) + (if v.1 = b then Polynomial.X * Polynomial.C (X (a, v.2)) else 0)).natDegree ≤ 1`. Introduce `v`. Use `split_ifs`. Use `(Polynomial.natDegree_add_le _ _).trans ?_` and prove the remaining obligations. Rewrite using `[Polynomial.natDegree_C]`.
+
+Use `(Polynomial.natDegree_mul_le).trans ?_` and prove the remaining obligations. Rewrite using `[Polynomial.natDegree_C]`. Simplify using `using Polynomial.natDegree_X_le`. Simplify using the standard rewrite rules. Use `(Polynomial.natDegree_prod_le _ _).trans ?_` and prove the remaining obligations.
+
+Use `le_trans ?_ (le_totalDegree hm)` and prove the remaining obligations. Rewrite using `[Finsupp.sum]`. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `v _`. Use `(Polynomial.natDegree_pow_le).trans ?_` and prove the remaining obligations.
+
+Simplify using `using Nat.mul_le_mul_left (m v) (hg v)`.
+-/
 theorem natDegree_rowGen_le (O : Type) [CommRing O] (N : ℕ) (a b : Fin N)
     (f : MvPolynomial (Fin N × Fin N) O) :
     (rowGen O (n := N) a b f).natDegree ≤ f.totalDegree := by
@@ -34,6 +47,15 @@ theorem natDegree_rowGen_le (O : Type) [CommRing O] (N : ℕ) (a b : Fin N)
   refine (Polynomial.natDegree_pow_le).trans ?_
   simpa using Nat.mul_le_mul_left (m v) (hg v)
 
+/- English proof (translation)
+Establish `key : (rowSubst O N R (Matrix.transvection a b r)).toRingHom = (Polynomial.evalRingHom (C r : MvPolynomial (Fin N × Fin N) R)).comp ((Polynomial.mapRingHom (MvPolynomial.map (σ` using `Fin N × Fin N) (algebraMap O R))).comp (rowGen O (n := N) b a).toRingHom) := by`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `c`. Simplify using `[rowSubst, rowGen, MvPolynomial.algebraMap_eq]`. Introduce `v`.
+
+Simplify using `[rowSubst, rowGen, Matrix.transvection, Matrix.add_apply, Matrix.one_apply, Matrix.single_apply, Finset.sum_add_distrib, add_mul, ite_mul, Finset.sum_ite_eq, Finset.sum_ite_eq']`. Distinguish the cases in `h : v.1 = a`. Establish `h' : a = v.1` using `h.symm`. Simplify using `only [h', true_and, if_true]`. Simplify using `[apply_ite C, ite_mul, Finset.sum_ite_eq']`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `h' : ¬ a = v.1` using `fun e => h e.symm`. Simplify using `[h, h']`. Establish `h1` using `DFunLike.congr_fun key f`. Simplify using `only [AlgHom.toRingHom_eq_coe, RingHom.coe_coe, RingHom.coe_comp, Function.comp_apply, Polynomial.coe_evalRingHom, Polynomial.coe_mapRingHom] at h1`.
+
+Rewrite using `[h1, Polynomial.eval_eq_sum_range' (n := D + 1)]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Polynomial.coeff_map, smul_eq_C_mul, C_pow, mul_comm]`. Both sides reduce to the same expression. Conclude with `Nat.lt_succ_of_le ((Polynomial.natDegree_map_le).trans ((natDegree_rowGen_le O N b a f).trans hf))`.
+-/
 theorem rowSubst_transvection (O : Type) [CommRing O] (N : ℕ) (R : Type) [CommRing R] [Algebra O R] (a b : Fin N) (r : R) (D : ℕ) (f : MvPolynomial (Fin N × Fin N) O) (hf : f.totalDegree ≤ D) :
     rowSubst O N R (Matrix.transvection a b r) f = ∑ k ∈ Finset.range (D + 1), r ^ k • MvPolynomial.map (algebraMap O R) (rowDiv O b a k f) := by
   have key : (rowSubst O N R (Matrix.transvection a b r)).toRingHom =

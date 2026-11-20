@@ -10,6 +10,11 @@ namespace Formalism.ExtensionFiltration
 
 open Formalism.HN
 
+/- English proof (translation)
+Use `haveI : FiniteDimensional K V := Module.Finite.of_basis b`. Unfold `rkK`. Rewrite using `[Nat.pos_iff_ne_zero, Ne, Submodule.finrank_eq_zero]`. Introduce `h`. Apply `hA` to reduce the goal to its premises.
+
+Rewrite using `[eq_bot_iff]`. Introduce `x hx`. Establish `hx' : x ∈ Submodule.span K (A : Set V)` using `Submodule.subset_span hx`. Rewrite `hx'` using `[h, Submodule.mem_bot]`. Simplify using `[hx']`.
+-/
 theorem rkK_pos {K V ι : Type} [Field K] [NumberField K] [AddCommGroup V] [Module K V]
     [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] [Fintype ι] (b : Basis ι K V)
     (A : Submodule (𝓞 K) V) (hA : A ≠ ⊥) : 0 < rkK (K := K) A := by

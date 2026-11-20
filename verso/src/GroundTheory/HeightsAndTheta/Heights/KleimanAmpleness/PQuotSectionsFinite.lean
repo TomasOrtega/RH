@@ -16,6 +16,25 @@ universe u w
 
 attribute [local instance] MvPolynomial.gradedAlgebra
 
+/- English proof (translation)
+Introduce `k _ Ω _ _ N x Q J`. Set `J' : Ideal (Poly k N)` to `Ideal.span {f | f ∈ J ∧ ∃ e, f.IsHomogeneous e}`. Establish `hJ'hom : ∀ p ∈ J', ∀ d : ℕ, homogeneousComponent d p ∈ J'`. Establish `h : J'.IsHomogeneous (homogeneousSubmodule (Fin (N + 1)) k)` using `Ideal.homogeneous_span _ _ fun f hf => ⟨_, (mem_homogeneousSubmodule _ f).mpr hf.2.choose_spec⟩`. Conclude with `fun p hp d => homogeneousComponent_mem_of_mem h hp d`.
+
+Establish `hforms : ∀ (f : Poly k N) (e : ℕ), f.IsHomogeneous e → (f ∈ J ↔ f ∈ J')` using `fun f e hf => ⟨fun h => Ideal.subset_span ⟨h, e, hf⟩, fun h => (Ideal.span_le.mpr fun _ hg => hg.1) h⟩`. Establish `hsys : idealSys x J = idealSys x J'` using `SubSystem.ext_sub fun I => by`. Express the relevant statement in the definitionally equal form `idealMod J I = idealMod J' I`. Unfold `idealMod`. Use `congr 1`.
+
+Use extensionality with `a`. Apply the tactic sequence `constructor <;> rintro ⟨f, s, e, hf, hs, hfe, hse, rfl⟩`. Conclude with `⟨f, s, e, (hforms f e hfe).mp hf, hs, hfe, hse, rfl⟩`. Conclude with `⟨f, s, e, (hforms f e hfe).mpr hf, hs, hfe, hse, rfl⟩`. Take `⟨F, hF, hFfg⟩` from `hI k Ω N x Q J' hJ'hom`.
+
+Take `⟨M, -, hM⟩` from `hE k Ω N x Ω Q.toSubFamily Q.fg`. Take `⟨M', -, hM'⟩` from `hE k Ω N x Ω F hFfg`. Establish `h0 : M.tildeSys 0 = Q.toSubSystem` using `SubSystem.ext_sub hM`. Establish `h1 : M'.tildeSys 0 = Q.toSubSystem.twist (idealSys x J)`. Rewrite using `[hsys, ← hF]`.
+
+Conclude with `SubSystem.ext_sub hM'`. Establish `hle : ∀ I, (Q.toSubSystem.twist (idealSys x J)).sub I ≤ Q.toSubSystem.sub I`. Introduce `I`. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨q, hq, y, hy, rfl⟩`.
+
+Use `Submodule.span_induction (p := fun q _ => q • y ∈ Q.sub I) ?_ ?_ ?_ ?_ hq` and prove the remaining obligations. Introduce and unpack `_ ⟨f, s, e, _, hs, hf, hse, rfl⟩`. Conclude with `(Q.sub I).smul_mem ⟨_, ⟨f, s, e, hs, hf, hse, rfl⟩⟩ hy`. Rewrite using `[zero_smul]`. Conclude with `Submodule.zero_mem _`.
+
+Introduce `a b _ _ ha hb`. Rewrite using `[add_smul]`. Conclude with `Submodule.add_mem _ ha hb`. Introduce `a q _ hq'`. Rewrite using `[smul_assoc]`.
+
+Conclude with `Submodule.smul_mem _ a hq'`. Establish `hH0 : Module.Finite k (Q.toSubSystem.H 0)`. Rewrite using `[← h0]`. Conclude with `hT k Ω N x M 0 0`. Establish `hH1 : Module.Finite k ((Q.toSubSystem.twist (idealSys x J)).H 1)`.
+
+Rewrite using `[← h1]`. Conclude with `hT k Ω N x M' 1 0`. Conclude with `hQ k Ω N x Ω Q.toSubSystem (Q.toSubSystem.twist (idealSys x J)) hle hH0 hH1`.
+-/
 theorem QuotSectionsFinite.proof (hE : Extension.Statement.{u, w, w})
     (hI : IdealTwistFamily.Statement.{u, w}) (hT : TildeFinite.Statement.{u, w})
     (hQ : QuotientH0Finite.Statement.{u, w, w}) : QuotSectionsFinite.Statement.{u, w} := by

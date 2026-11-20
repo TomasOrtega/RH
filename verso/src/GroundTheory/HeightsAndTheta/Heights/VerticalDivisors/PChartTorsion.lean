@@ -27,6 +27,9 @@ def toChart : MvPolynomial (Fin n ⊕ (Fin k × Fin n)) D →+* MvPolynomial (Fi
   eval₂Hom (C.comp ((toBase P j).comp C))
     (Sum.elim (fun m => C (toBase P j (X m))) (fun im => solve k P j im.1 im.2))
 
+/- English proof (translation)
+Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C d => simp [toChart]`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `mul_X p m hp => simp only [map_mul, hp, rename_X]`. Simplify using `[toChart]`.
+-/
 theorem toChart_rename (p : MvPolynomial (Fin n) D) :
     toChart k P j (rename Sum.inl p) = C (toBase P j p) := by
   induction p using MvPolynomial.induction_on with
@@ -34,6 +37,13 @@ theorem toChart_rename (p : MvPolynomial (Fin n) D) :
   | add p q hp hq => simp only [map_add, hp, hq]
   | mul_X p m hp => simp only [map_mul, hp, rename_X]; simp [toChart]
 
+/- English proof (translation)
+Use `sup_le (Ideal.map_le_iff_le_comap.2 fun p hp => ?_) (Ideal.span_le.2 (Set.range_subset_iff.2 fun i => ?_))` and prove the remaining obligations. Use `show toChart k P j (rename Sum.inl p) = 0`. Rewrite using `[toChart_rename]`. Simplify using `[toBase, Ideal.Quotient.eq_zero_iff_mem.2 hp]`. Use `show toChart k P j _ = 0`.
+
+Simplify using `only [map_sum, map_mul]`. Rewrite using `[← Finset.add_sum_erase _ _ (Finset.mem_univ j)]`. Establish `hs : ∀ l ∈ Finset.univ.erase j, toChart k P j (X (Sum.inr (i, l))) * toChart k P j (X (Sum.inl l)) = C (toBase P j (X l)) * X (i, l)`. Introduce `l hl`. Simplify using `[toChart, solve, Finset.ne_of_mem_erase hl, mul_comm]`.
+
+Rewrite using `[Finset.sum_congr rfl hs]`. Establish `h1 : C (IsLocalization.Away.invSelf (Ideal.Quotient.mk P (X j))) * C (toBase P j (X j)) = (1 : MvPolynomial (Fin k × Fin n) (Base P j))`. Rewrite using `[← C_mul, mul_comm, toBase, RingHom.comp_apply, IsLocalization.Away.mul_invSelf, C_1]`. Simplify using `only [toChart, eval₂Hom_X', Sum.elim_inl, Sum.elim_inr, solve, ↓reduceIte]`. Take the linear combination `(-(∑ l ∈ Finset.univ.erase j, C (toBase P j (X l)) * X (i, l))) * h1`.
+-/
 theorem incIdeal_le_ker : incIdeal P k ≤ RingHom.ker (toChart k P j) := by
   refine sup_le (Ideal.map_le_iff_le_comap.2 fun p hp => ?_)
     (Ideal.span_le.2 (Set.range_subset_iff.2 fun i => ?_))
@@ -60,6 +70,9 @@ abbrev Loc := Localization.Away (Ideal.Quotient.mk (incIdeal P k) (X (Sum.inl j)
 def toLoc : MvPolynomial (Fin n ⊕ (Fin k × Fin n)) D →+* Loc k P j :=
   (algebraMap _ (Loc k P j)).comp (Ideal.Quotient.mk (incIdeal P k))
 
+/- English proof (translation)
+Simplify using `[toLoc, Ideal.Quotient.eq_zero_iff_mem.2 hg]`.
+-/
 theorem toLoc_mem {g : MvPolynomial (Fin n ⊕ (Fin k × Fin n)) D} (hg : g ∈ incIdeal P k) :
     toLoc k P j g = 0 := by
   simp [toLoc, Ideal.Quotient.eq_zero_iff_mem.2 hg]
@@ -68,9 +81,15 @@ def quotToLoc : MvPolynomial (Fin n) D ⧸ P →+* Loc k P j :=
   Ideal.Quotient.lift P ((toLoc k P j).comp (rename Sum.inl).toRingHom) fun _ hp =>
     toLoc_mem k P j (Ideal.mem_sup_left (Ideal.mem_map_of_mem _ hp))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem quotToLoc_mk (p : MvPolynomial (Fin n) D) :
     quotToLoc k P j (Ideal.Quotient.mk P p) = toLoc k P j (rename Sum.inl p) := rfl
 
+/- English proof (translation)
+Rewrite using `[quotToLoc_mk, rename_X]`. Conclude with `IsLocalization.Away.algebraMap_isUnit (Ideal.Quotient.mk (incIdeal P k) (X (Sum.inl j)))`.
+-/
 theorem isUnit_quotToLoc : IsUnit (quotToLoc k P j (Ideal.Quotient.mk P (X j))) := by
   rw [quotToLoc_mk, rename_X]
   exact IsLocalization.Away.algebraMap_isUnit (Ideal.Quotient.mk (incIdeal P k) (X (Sum.inl j)))
@@ -78,6 +97,9 @@ theorem isUnit_quotToLoc : IsUnit (quotToLoc k P j (Ideal.Quotient.mk P (X j))) 
 def baseToLoc : Base P j →+* Loc k P j :=
   IsLocalization.Away.lift _ (isUnit_quotToLoc k P j)
 
+/- English proof (translation)
+Simplify using `[baseToLoc, toBase, quotToLoc_mk]`.
+-/
 theorem baseToLoc_toBase (p : MvPolynomial (Fin n) D) :
     baseToLoc k P j (toBase P j p) = toLoc k P j (rename Sum.inl p) := by
   simp [baseToLoc, toBase, quotToLoc_mk]
@@ -85,6 +107,17 @@ theorem baseToLoc_toBase (p : MvPolynomial (Fin n) D) :
 def back : MvPolynomial (Fin k × Fin n) (Base P j) →+* Loc k P j :=
   eval₂Hom (baseToLoc k P j) fun im => toLoc k P j (X (Sum.inr im))
 
+/- English proof (translation)
+It suffices to establish `h : (back k P j).comp (toChart k P j) = toLoc k P j from congrArg (· g) h`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `d`. Use `baseToLoc_toBase k P j (C d)` as an intermediate fact. Simplify `this` using `[back, toChart]`.
+
+Introduce and unpack `(m | ⟨i, m⟩)`. Use `baseToLoc_toBase k P j (X m)` as an intermediate fact. Simplify `this` using `[back, toChart]`. Distinguish the cases in `hm : m = j`. Substitute `hm` using the available equality.
+
+Establish `hinc : toLoc k P m (∑ l, X (Sum.inr (i, l)) * X (Sum.inl l)) = 0` using `toLoc_mem k P m (Ideal.mem_sup_right (Ideal.subset_span ⟨i, rfl⟩))`. Rewrite `hinc` using `[← Finset.add_sum_erase _ _ (Finset.mem_univ m), map_add, map_sum]`. Establish `hinv : baseToLoc k P m (IsLocalization.Away.invSelf (Ideal.Quotient.mk P (X m))) * toLoc k P m (X (Sum.inl m)) = 1`. Establish `e` using `baseToLoc_toBase k P m (X m)`. Rewrite `e` using `[rename_X]`.
+
+Rewrite using `[← e, toBase, RingHom.comp_apply, ← map_mul, mul_comm, IsLocalization.Away.mul_invSelf, map_one]`. Simplify using `only [RingHom.comp_apply, toChart, eval₂Hom_X', Sum.elim_inr, solve, ↓reduceIte, back, map_neg, map_mul, map_sum, eval₂Hom_C, eval₂Hom_X', baseToLoc_toBase, rename_X]`. Simplify using `only [map_mul] at hinc`. Use `set u := toLoc k P m (X (Sum.inr (i, m)))`. Use `set xm := toLoc k P m (X (Sum.inl m))`.
+
+Use `set inv := baseToLoc k P m (IsLocalization.Away.invSelf (Ideal.Quotient.mk P (X m)))`. Establish `hS : ∑ l ∈ Finset.univ.erase m, toLoc k P m (X (Sum.inl l)) * toLoc k P m (X (Sum.inr (i, l))) = ∑ l ∈ Finset.univ.erase m, toLoc k P m (X (Sum.inr (i, l))) * toLoc k P m (X (Sum.inl l))` using `Finset.sum_congr rfl fun _ _ => mul_comm _ _`. Rewrite using `[hS]`. Take the linear combination `(-inv) * hinc + u * hinv`. Simplify using `[back, toChart, solve, hm]`.
+-/
 theorem back_toChart (g : MvPolynomial (Fin n ⊕ (Fin k × Fin n)) D) :
     back k P j (toChart k P j g) = toLoc k P j g := by
   suffices h : (back k P j).comp (toChart k P j) = toLoc k P j from congrArg (· g) h
@@ -125,6 +158,17 @@ end ChartTorsion
 
 open ChartTorsion in
 
+/- English proof (translation)
+Introduce `D _ _ n k P hP hPD c g hc hcg j`. Distinguish the cases in `hj : (X j : MvPolynomial (Fin n) D) ∈ P`. Use `⟨1, Ideal.mul_mem_right _ _ (Ideal.mem_sup_left ?_)⟩` and prove the remaining obligations. Simplify using `using Ideal.mem_map_of_mem (rename (R := D) (Sum.inl (β := Fin k × Fin n))) hj`. Establish `hx : Ideal.Quotient.mk P (X j) ≠ 0` using `fun h => hj (Ideal.Quotient.eq_zero_iff_mem.1 h)`.
+
+Establish `hle : Submonoid.powers (Ideal.Quotient.mk P (X j)) ≤ nonZeroDivisors _` using `powers_le_nonZeroDivisors_of_noZeroDivisors hx`. Establish `: IsDomain (Base P j)` using `IsLocalization.isDomain_localization hle`. Establish `hcz : toChart k P j (C c) ≠ 0`. Simplify using `only [toChart, eval₂Hom_C, RingHom.comp_apply, ne_eq, C_eq_zero, toBase]`. Rewrite using `[map_eq_zero_iff _ (IsLocalization.injective (Base P j) hle)]`.
+
+Introduce `h`. Conclude with `hc (hPD c (Ideal.Quotient.eq_zero_iff_mem.1 h))`. Establish `hg0 : toChart k P j g = 0`. Establish `h` using `incIdeal_le_ker k P j hcg`. Rewrite `h` using `[RingHom.mem_ker, map_mul]`.
+
+Conclude with `(mul_eq_zero.1 h).resolve_left hcz`. Establish `hl : toLoc k P j g = 0`. Rewrite using `[← back_toChart, hg0, map_zero]`. Take `⟨⟨_, N, rfl⟩, hN⟩` from `(IsLocalization.map_eq_zero_iff (Submonoid.powers (Ideal.Quotient.mk (incIdeal P k) (X (Sum.inl j)))) _ _).1 hl`. Use `⟨N, Ideal.Quotient.eq_zero_iff_mem.1 ?_⟩` and prove the remaining obligations.
+
+Simplify `hN` using `[map_mul, map_pow]`.
+-/
 theorem ChartTorsion.proof : ChartTorsion.Statement := by
   intro D _ _ n k P hP hPD c g hc hcg j
   by_cases hj : (X j : MvPolynomial (Fin n) D) ∈ P

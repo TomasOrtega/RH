@@ -20,12 +20,18 @@ def evalRight (P : O[X]) (M : Matrix (Fin n) (Fin n) E) (hM : aeval M P = 0) :
     obtain ⟨b, rfl⟩ := Ideal.mem_span_singleton'.mp ha
     simp [hM])
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem evalRight_mk (P : O[X]) (M : Matrix (Fin n) (Fin n) E) (hM : aeval M P = 0) (f : O[X]) :
     evalRight P M hM (AdjoinRoot.mk P f) = aeval M f := rfl
 
 def evalLeft (j : O' →ₐ[O] E) : O' →ₐ[O] Matrix (Fin n) (Fin n) E :=
   ((Algebra.ofId E (Matrix (Fin n) (Fin n) E)).restrictScalars O).comp j
 
+/- English proof (translation)
+The claim follows from `Algebra.commutes (j x) (evalRight P M hM y)`.
+-/
 theorem evalLeft_commute (j : O' →ₐ[O] E) (P : O[X]) (M : Matrix (Fin n) (Fin n) E)
     (hM : aeval M P = 0) (x : O') (y : AdjoinRoot P) :
     Commute (evalLeft j x : Matrix (Fin n) (Fin n) E) (evalRight P M hM y) :=
@@ -36,11 +42,23 @@ def evalT (j : O' →ₐ[O] E) (P : O[X]) (M : Matrix (Fin n) (Fin n) E) (hM : a
   Algebra.TensorProduct.lift (evalLeft j) (evalRight P M hM)
     (evalLeft_commute j P M hM)
 
+/- English proof (translation)
+Unfold `evalT`. Rewrite using `[Algebra.TensorProduct.lift_tmul]`. Both sides reduce to the same expression.
+-/
 theorem evalT_tmul (j : O' →ₐ[O] E) (P : O[X]) (M : Matrix (Fin n) (Fin n) E)
     (hM : aeval M P = 0) (x : O') (r : AdjoinRoot P) :
     evalT j P M hM (x ⊗ₜ r) = algebraMap E _ (j x) * evalRight P M hM r := by
   unfold evalT; rw [Algebra.TensorProduct.lift_tmul]; rfl
 
+/- English proof (translation)
+Establish `hO : ∀ a : O, algebraMap O E a ∈ S` using `fun a => by`. Rewrite using `[← j.commutes a]`. Conclude with `hS _`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, by simp, by simp [S.zero_mem]⟩`.
+
+Consider the case `tmul x r`. Take `⟨f, rfl⟩` from `AdjoinRoot.mk_surjective r`. Use `⟨C (j x) * f.map (algebraMap O E), ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[evalT_tmul, evalRight_mk, map_mul, aeval_C, aeval_map_algebraMap]`. Rewrite using `[coeff_C_mul, coeff_map]`.
+
+Conclude with `S.mul_mem (hS x) (hO _)`. Consider the case `add a b ha hb`. Take `⟨p, hp, hp'⟩` from `ha`. Take `⟨q, hq, hq'⟩` from `hb`. Use `⟨p + q, by rw [map_add, hp, hq, map_add], fun i => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[coeff_add]`. Conclude with `S.add_mem (hp' i) (hq' i)`.
+-/
 theorem evalT_poly (j : O' →ₐ[O] E) (P : O[X]) (M : Matrix (Fin n) (Fin n) E)
     (hM : aeval M P = 0) (S : Subring E) (hS : ∀ x, j x ∈ S) (t : O' ⊗[O] AdjoinRoot P) :
     ∃ p : E[X], evalT j P M hM t = aeval M p ∧ ∀ i, p.coeff i ∈ S := by
@@ -59,6 +77,13 @@ theorem evalT_poly (j : O' →ₐ[O] E) (P : O[X]) (M : Matrix (Fin n) (Fin n) E
     refine ⟨p + q, by rw [map_add, hp, hq, map_add], fun i => ?_⟩
     rw [coeff_add]; exact S.add_mem (hp' i) (hq' i)
 
+/- English proof (translation)
+Establish `hφ : ∀ A : Matrix (Fin n) (Fin n) E, A.map s = s.mapMatrix A` using `fun _ => rfl`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x r`. Take `⟨f, rfl⟩` from `AdjoinRoot.mk_surjective r`.
+
+Rewrite using `[Algebra.TensorProduct.map_tmul, evalT_tmul, evalT_tmul, evalRight_mk, AlgHom.id_apply, evalRight_mk, hφ, map_mul, ← aeval_algHom_apply, ← hφ M, hMs, ← hs]`. Use `congr 1`. Use extensionality with `a b`. Simplify using `[Matrix.algebraMap_matrix_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+
+Consider the case `add a b ha hb`. Rewrite using `[map_add, map_add, map_add, ← ha, ← hb]`. Use extensionality with `a b`. Simplify using the standard rewrite rules.
+-/
 theorem evalT_map (j : O' →ₐ[O] E) (P : O[X]) (M : Matrix (Fin n) (Fin n) E)
     (hM : aeval M P = 0) (τ : O' →ₐ[O] O') (s : E →ₐ[O] E) (hs : ∀ x, s (j x) = j (τ x))
     (hMs : M.map s = M) (t : O' ⊗[O] AdjoinRoot P) :
@@ -87,6 +112,9 @@ section Norm
 variable {k E O O' : Type} [Field k] [Field E] [Algebra k E] [CommRing O] [CommRing O']
   [Algebra O O'] [Algebra O k] [Algebra O E] [IsScalarTower O k E]
 
+/- English proof (translation)
+Proceed by induction on `i generalizing x with`. Consider the case `zero => simp`. Consider the case `succ i ih`. Rewrite using `[pow_succ, pow_succ, AlgEquiv.mul_apply, AlgEquiv.mul_apply, hτ, ih]`.
+-/
 theorem pow_compat (j : O' →ₐ[O] E) (σ : E ≃ₐ[k] E) (τ : O' ≃ₐ[O] O')
     (hτ : ∀ x, σ (j x) = j (τ x)) (i : ℕ) (x : O') : (σ ^ i) (j x) = j ((τ ^ i) x) := by
   induction i generalizing x with
@@ -94,6 +122,21 @@ theorem pow_compat (j : O' →ₐ[O] E) (σ : E ≃ₐ[k] E) (τ : O' ≃ₐ[O] 
   | succ i ih =>
     rw [pow_succ, pow_succ, AlgEquiv.mul_apply, AlgEquiv.mul_apply, hτ, ih]
 
+/- English proof (translation)
+Use `set M : Matrix (Fin n) (Fin n) E := ((incl γ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) with hMdef`. Establish `hMk : M = (γ : Matrix (Fin n) (Fin n) k).map (algebraMap k E)` using `rfl`. Establish `hM : aeval M P = 0`. Establish `h1 : P.map (algebraMap O E) = M.charpoly`. Rewrite using `[hMk, Matrix.charpoly_map, ← hP, Polynomial.map_map, ← IsScalarTower.algebraMap_eq]`.
+
+Rewrite using `[← aeval_map_algebraMap E, h1, Matrix.aeval_self_charpoly]`. Set `ev` to `evalT j P M hM`. Set `c : GL (Fin n) E` to `Units.map (ev : _ →* _) s`. Establish `hc : ((c : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) = ev s` using `rfl`. Establish `hci : ((c⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) = ev (s⁻¹ : (O' ⊗[O] AdjoinRoot P)ˣ).val` using `rfl`.
+
+Establish `hfix : ∀ i : ℕ, M.map (((σ ^ i : E ≃ₐ[k] E) : E →ₐ[k] E).restrictScalars O) = M`. Introduce `i`. Rewrite using `[hMk]`. Use extensionality with `a b`. Conclude with `(σ ^ i).commutes _`.
+
+Establish `hmap : ∀ (i : ℕ) (t : O' ⊗[O] AdjoinRoot P), ((sigmaGL σ ^ i) (Units.map (ev : _ →* _) s) : GL (Fin n) E).val = ev (Algebra.TensorProduct.map ((τ ^ i : O' ≃ₐ[O] O').toAlgHom) (AlgHom.id O (AdjoinRoot P)) s.val)`. Introduce `i _`. Rewrite using `[← sigmaGL_pow, sigmaGL_val]`. Conclude with `evalT_map j P M hM ((τ ^ i : O' ≃ₐ[O] O').toAlgHom) (((σ ^ i : E ≃ₐ[k] E) : E →ₐ[k] E).restrictScalars O) (fun x => pow_compat j σ τ hτ i x) (hfix i) s.val`. Establish `key : ∀ m : ℕ, ((twNorm (sigmaGL σ) m c : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) = ev (∏ i ∈ Finset.range m, Algebra.TensorProduct.map ((τ ^ i : O' ≃ₐ[O] O').toAlgHom) (AlgHom.id O (AdjoinRoot P)) s.val)`.
+
+Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ m ih`. Rewrite using `[twNorm_succ, Units.val_mul, ih, Finset.prod_range_succ, map_mul, hmap m 0]`.
+
+Use `⟨c, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `evalT_poly j P M hM S hS s.val`. Conclude with `evalT_poly j P M hM S hS (s⁻¹ : (O' ⊗[O] AdjoinRoot P)ˣ).val`. Apply `Units.ext show ((twNorm (sigmaGL σ) (Module.finrank k E) c : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) = M` to reduce the goal to its premises. Rewrite using `[key, hs]`.
+
+Use `show evalT j P M hM (1 ⊗ₜ AdjoinRoot.root P) = M`. Rewrite using `[evalT_tmul, map_one, map_one, one_mul]`. Use `show evalRight P M hM (AdjoinRoot.mk P X) = M`. Rewrite using `[evalRight_mk, aeval_X]`.
+-/
 theorem exists_norm_eval (j : O' →ₐ[O] E) (σ : E ≃ₐ[k] E) (τ : O' ≃ₐ[O] O')
     (hτ : ∀ x, σ (j x) = j (τ x)) (S : Subring E) (hS : ∀ x, j x ∈ S) {n : ℕ}
     (γ : GL (Fin n) k) (P : O[X])
@@ -158,6 +201,13 @@ section Unit
 
 variable {O : Type} [CommRing O]
 
+/- English proof (translation)
+Take `⟨u, hu⟩` from `h0`. Establish `h1 : AdjoinRoot.mk P (P.divX * X + C (P.coeff 0)) = 0`. Rewrite using `[Polynomial.divX_mul_X_add]`. Conclude with `AdjoinRoot.mk_self`. Rewrite `h1` using `[map_add, map_mul, ← hu]`.
+
+Establish `h2 : AdjoinRoot.root P * (-(AdjoinRoot.of P (u⁻¹ : Oˣ).val * AdjoinRoot.mk P P.divX)) = 1`. Establish `h3 : AdjoinRoot.mk P (C (u : O)) * AdjoinRoot.of P (u⁻¹ : Oˣ).val = 1` using `by show AdjoinRoot.of P (u : O) * AdjoinRoot.of P (u⁻¹ : Oˣ).val = 1`. Rewrite using `[← map_mul, Units.mul_inv, map_one]`. Establish `h4 : AdjoinRoot.mk P X = AdjoinRoot.root P` using `rfl`. Rewrite `h1` using `[h4]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[eq_neg_of_add_eq_zero_left h1]`. Use `_ = 1 := by rw [neg_mul, neg_neg, h3]`. Conclude with `IsUnit.of_mul_eq_one _ h2`.
+-/
 theorem isUnit_root (P : O[X]) (h0 : IsUnit (P.coeff 0)) : IsUnit (AdjoinRoot.root P) := by
   obtain ⟨u, hu⟩ := h0
   have h1 : AdjoinRoot.mk P (P.divX * X + C (P.coeff 0)) = 0 := by
@@ -180,6 +230,9 @@ end Unit
 
 section Final
 
+/- English proof (translation)
+Use `letI := IsTopologicalAddGroup.rightUniformSpace k`. Use `haveI := isUniformAddGroup_of_addCommGroup (G := k)`. Conclude with `inferInstance`.
+-/
 theorem adicComplete_intO (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] :
     IsAdicComplete (IsLocalRing.maximalIdeal (intO k)) (intO k) := by
@@ -187,6 +240,43 @@ theorem adicComplete_intO (k : Type) [Field k] [ValuativeRel k] [TopologicalSpac
   haveI := isUniformAddGroup_of_addCommGroup (G := k)
   exact inferInstance
 
+/- English proof (translation)
+Introduce `h0a h0b h0c h3`. Unfold `N4`. Introduce `k E _ _ _ _ _ _ _ _ _ _ _ _ hun σ hgen n γ hγ`. Take `⟨hval, hint, -, -, -, -⟩` from `h0a k E hun σ hgen`. Take `⟨⟨b, hb, hb'⟩, -, -⟩` from `h0b k E hun σ hgen`.
+
+Take `⟨-, x, y, hxy, hdual⟩` from `h0c k E hun σ hgen`. Use `haveI := adicComplete_intO k`. Use `haveI : Finite (IsLocalRing.ResidueField (intO k)) := inferInstanceAs (Finite (IsLocalRing.ResidueField (Valuation.integer (ValuativeRel.valuation k))))`. Set `f : intO k →+* intO E` to `((algebraMap k E).comp (intO k).subtype).codRestrict (intO E) (fun a => (hint a).2 a.2)`. Use `letI : Algebra (intO k) (intO E) := f.toAlgebra`.
+
+Use `haveI : IsScalarTower (intO k) (intO E) E := IsScalarTower.of_algebraMap_eq (fun _ => rfl)`. Set `e : intO E ≃ₗ[intO k] (Fin (Module.finrank k E) → intO k)` to `{ toFun := fun z i => ⟨b.repr z.1 i, (hb' z.1).1 z.2 i⟩ invFun := fun v => ⟨∑ i, (v i : k) • b i, (hb' _).2 (fun i => by`. Rewrite using `[b.repr_sum_self]`. Conclude with `(v i).2)⟩`. Use `left_inv := fun z => Subtype.ext (b.sum_repr z.1)`.
+
+Use `right_inv := fun v => by`. Use function extensionality and compare the values at `i`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show b.repr (∑ i, (v i : k) • b i) i = v i`. Rewrite using `[b.repr_sum_self]`.
+
+Use the proof step `map_add' := fun z w => by`. Use function extensionality and compare the values at `i`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show b.repr (z.1 + w.1) i = b.repr z.1 i + b.repr w.1 i`. Simplify using the standard rewrite rules.
+
+Use the proof step `map_smul' := fun a z => by`. Use function extensionality and compare the values at `i`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show b.repr (algebraMap k E a.1 * z.1) i = a.1 * b.repr z.1 i`. Rewrite using `[← Algebra.smul_def]`.
+
+Simplify using `}`. Use `haveI : Module.Finite (intO k) (intO E) := Module.Finite.equiv e.symm`. Use `haveI : Module.Free (intO k) (intO E) := Module.Free.of_equiv e.symm`. Establish `hmem : ∀ (ρ : E ≃ₐ[k] E) (z : E), z ∈ intO E → ρ z ∈ intO E` using `fun ρ z hz => by`. Establish `h` using `hval ρ z`.
+
+Rewrite `*` using `[Valuation.mem_integer_iff]`. Rewrite using `[h]` and apply the resulting hypothesis. Set `τ : intO E ≃ₐ[intO k] intO E` to `{ toFun := fun z => ⟨σ z.1, hmem σ z.1 z.2⟩ invFun := fun z => ⟨σ.symm z.1, hmem σ.symm z.1 z.2⟩ left_inv := fun z => Subtype.ext (σ.symm_apply_apply z.1) right_inv := fun z => Subtype.ext (σ.apply_symm_apply z.1) map_mul' := fun z w => Subtype.ext (map_mul σ z.1 w.1) map_add' := …`. Set `j : intO E →ₐ[intO k] E` to `IsScalarTower.toAlgHom _ _ _`. Establish `hτ : ∀ z, σ (j z) = j (τ z)` using `fun _ => rfl`.
+
+Establish `hσℓ : σ ^ Module.finrank k E = 1`. Rewrite using `[← IsGalois.card_aut_eq_finrank]`. Conclude with `pow_card_eq_one'`. Establish `hτℓ : τ ^ Module.finrank k E = 1`. Use `AlgEquiv.ext fun z => Subtype.ext ?_` and prove the remaining obligations.
+
+Establish `h` using `pow_compat j σ τ hτ (Module.finrank k E) z`. Rewrite `h` using `[hσℓ]`. Conclude with `h.symm`. Establish `hpos : 0 < Module.finrank k E` using `Module.finrank_pos`. Establish `hfixed : ∀ z : intO E, τ z = z → z ∈ Set.range (algebraMap (intO k) (intO E))`.
+
+Introduce `z hz`. Establish `h1 : σ z.1 = z.1` using `congrArg Subtype.val hz`. Establish `hst : σ ∈ MulAction.stabilizer (E ≃ₐ[k] E) z.1`. Rewrite using `[MulAction.mem_stabilizer_iff, AlgEquiv.smul_def]`. Conclude with `h1`.
+
+Establish `hall : ∀ ρ : E ≃ₐ[k] E, ρ z.1 = z.1`. Introduce `ρ`. Establish `h2` using `(Subgroup.zpowers_le.mpr hst) (hgen ρ)`. Rewrite `h2` using `[MulAction.mem_stabilizer_iff, AlgEquiv.smul_def]`. Then use the resulting hypothesis. Establish `h3'` using `(IsGalois.mem_bot_iff_fixed z.1).mpr hall`.
+
+Rewrite `h3'` using `[IntermediateField.mem_bot]`. Take `⟨a, ha⟩` from `h3'`. Conclude with `⟨⟨a, (hint a).1 (ha ▸ z.2)⟩, Subtype.ext ha⟩`. Establish `hdual' : ∃ x' y' : Fin (Module.finrank k E) → intO E, ∀ m < Module.finrank k E, ∑ i, x' i * (τ ^ m) (y' i) = if m = 0 then 1 else 0`. Use `⟨fun i => ⟨x i, (hxy i).1⟩, fun i => ⟨y i, (hxy i).2⟩, fun m hm => ?_⟩` and prove the remaining obligations.
+
+Establish `hjinj : Function.Injective j` using `Subtype.val_injective`. Apply `hjinj` to reduce the goal to its premises. Rewrite using `[map_sum]`. Establish `e1 : ∀ i, j ((⟨x i, (hxy i).1⟩ : intO E) * (τ ^ m) ⟨y i, (hxy i).2⟩) = x i * (σ ^ m) (y i)` using `fun i => by`. Rewrite using `[map_mul, ← pow_compat j σ τ hτ m]`.
+
+Both sides reduce to the same expression. Rewrite using `[Finset.sum_congr rfl fun i _ => e1 i, hdual m hm]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `hlift : (γ : Matrix (Fin n) (Fin n) k).charpoly ∈ Polynomial.lifts (intO k).subtype` using `(Polynomial.lifts_iff_coeff_lifts _).2 (fun i => ⟨⟨_, hγ.1 i⟩, rfl⟩)`. Take `⟨P, hPmap, -, hPm⟩` from `Polynomial.lifts_and_natDegree_eq_and_monic hlift (Matrix.charpoly_monic _)`.
+
+Establish `hP : P.map (algebraMap (intO k) k) = (γ : Matrix (Fin n) (Fin n) k).charpoly` using `hPmap`. Establish `hcoef : ((P.coeff 0 : intO k) : k) = (γ : Matrix (Fin n) (Fin n) k).charpoly.coeff 0`. Rewrite using `[← hPmap, coeff_map]`. Both sides reduce to the same expression. Establish `h0 : IsUnit (P.coeff 0)`.
+
+Use `(Valuation.integer.integers (ValuativeRel.valuation k)).isUnit_iff_valuation_eq_one.2 ?_` and prove the remaining obligations. Use `show ValuativeRel.valuation k ((P.coeff 0 : intO k) : k) = 1`. Rewrite using `[hcoef]`. Conclude with `hγ.2`. Use `haveI : Module.Finite (intO k) (AdjoinRoot P) := hPm.finite_adjoinRoot`.
+
+Take `⟨s, hs⟩` from `h3 (intO k) (intO E) (AdjoinRoot P) (Module.finrank k E) τ hpos hτℓ hfixed hdual' (isUnit_root P h0).unit`. Conclude with `exists_norm_eval j σ τ hτ (intO E) (fun z => z.2) γ P hP s hs`.
+-/
 theorem exists_integral_norm_of_unit_norm_surjective : D0a → IntegralBasisUnramified → TraceOneIntegralElement → N3 → N4 := by
   intro h0a h0b h0c h3
   unfold N4

@@ -11,6 +11,15 @@ open GlobalTheory.Sandwich GlobalTheory.IndefiniteRowSideFullHecke.SandwichMaps 
 
 namespace GlobalTheory.ShiftLam
 
+/- English proof (translation)
+Establish `hA : (exteriorPower.ιMulti K n).compLinearMap (Fintype.linearCombination K z) = (Matrix.detRowAlternating : (Fin n → K) [⋀^Fin n]→ₗ[K] K).smulRight (exteriorPower.ιMulti K n z)`. Use `(Pi.basisFun K (Fin n)).ext_alternating fun u hu => ?_` and prove the remaining obligations. Set `s : Equiv.Perm (Fin n)` to `Equiv.ofBijective u (Finite.injective_iff_bijective.1 hu)`. Establish `e : (fun i => Pi.basisFun K (Fin n) (u i)) = (fun i => Pi.basisFun K (Fin n) i) ∘ s` using `rfl`. Rewrite using `[e, AlternatingMap.map_perm, AlternatingMap.map_perm]`.
+
+Use `congr 1`. Establish `e1 : (Matrix.detRowAlternating : (Fin n → K) [⋀^Fin n]→ₗ[K] K) (fun i => Pi.basisFun K (Fin n) i) = 1`. Express the relevant statement in the definitionally equal form `Matrix.det (Matrix.of fun i => Pi.basisFun K (Fin n) i) = 1`. Rewrite using `[show (Matrix.of fun i => Pi.basisFun K (Fin n) i) = 1 from by`. Use extensionality with `i j`.
+
+Simplify using `[Matrix.one_apply, Pi.single_apply, eq_comm], Matrix.det_one]`. Rewrite using `[AlternatingMap.smulRight_apply, e1, one_smul, AlternatingMap.compLinearMap_apply]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules.
+
+Conclude with `AlternatingMap.congr_fun hA M`.
+-/
 theorem ιMulti_sum_smul {K V : Type} [Field K] [AddCommGroup V] [Module K V] {n : ℕ}
     (M : Matrix (Fin n) (Fin n) K) (z : Fin n → V) :
     exteriorPower.ιMulti K n (fun i => ∑ j, M i j • z j) = M.det • exteriorPower.ιMulti K n z := by
@@ -33,6 +42,11 @@ theorem ιMulti_sum_smul {K V : Type} [Field K] [AddCommGroup V] [Module K V] {n
     simp
   exact AlternatingMap.congr_fun hA M
 
+/- English proof (translation)
+Take `⟨w, hw, hwe⟩` from `H ⟨e, Submodule.subset_span rfl, rfl⟩`. Take `⟨o, rfl⟩` from `Submodule.mem_span_singleton.1 hw`. Establish `hmu : μ * algebraMap O C o = l`. Apply `smul_left_injective C he` to reduce the goal to its premises. Simplify using `only [mul_smul, algebraMap_smul]`.
+
+Conclude with `hwe`. Rewrite using `[← hmu, map_mul]`. Conclude with `mul_le_of_le_one_right (by positivity) (hv.map_le_one o)`.
+-/
 theorem val_le_of_image_subset {C O W : Type} [Field C] [CommRing O] [Algebra O C]
     [AddCommGroup W] [Module C W] [Module O W] [IsScalarTower O C W]
     (v : Valuation C NNReal) (hv : v.Integers O) {e : W} (he : e ≠ 0) {μ l : C}
@@ -52,6 +66,11 @@ end GlobalTheory.ShiftLam
 
 namespace GlobalTheory.ShiftLam
 
+/- English proof (translation)
+Set `S : Subalgebra ℤ_[p] Λ` to `{ σ.eqLocus τ with algebraMap_mem' := fun r => by show σ (algebraMap ℤ_[p] Λ r) = τ (algebraMap ℤ_[p] Λ r)`. Establish `h1` using `GlobalTheory.T.padic_ring_hom_eq_canonical p O (σ.comp (algebraMap ℤ_[p] Λ))`. Establish `h2` using `GlobalTheory.T.padic_ring_hom_eq_canonical p O (τ.comp (algebraMap ℤ_[p] Λ))`. Conclude with `(RingHom.congr_fun h1 r).trans (RingHom.congr_fun h2 r).symm }`. Establish `hle : Algebra.adjoin ℤ_[p] {α} ≤ S` using `Algebra.adjoin_le (by simpa [S] using he)`.
+
+Use extensionality with `x`. Establish `hx : x ∈ Algebra.adjoin ℤ_[p] {α}` using `hα ▸ Algebra.mem_top`. Conclude with `hle hx`.
+-/
 theorem ringHom_eq_of_apply_gen {p : ℕ} [Fact p.Prime] {O : Type} [CommRing O] [Fact ¬IsUnit (p : O)]
     [IsAdicComplete (Ideal.span {(p : O)}) O] {Λ : Type} [CommRing Λ] [Algebra ℤ_[p] Λ] (α : Λ)
     (hα : Algebra.adjoin ℤ_[p] {α} = ⊤) (σ τ : Λ →+* O) (he : σ α = τ α) : σ = τ := by
@@ -69,6 +88,33 @@ theorem ringHom_eq_of_apply_gen {p : ℕ} [Fact p.Prime] {O : Type} [CommRing O]
 
 end GlobalTheory.ShiftLam
 
+/- English proof (translation)
+Introduce `p _ C _ _ _ v O _ _ _ _ hv ε hε Λ _ _ _ _ _ _ α hα N h hh D τ ι lam hι hlat`. Unfold `IsShift`. Introduce `a b x g m k hx hgx hm hkm`. Take `⟨ha, hab, hy⟩` from `GlobalTheory.T.dvr_determinant_frame_rank p C v O hv ε hε Λ N h hh D τ a b x _ _ hx hgx hkm`. Substitute `hab` using the available equality.
+
+Use `choose y hy using hy`. Take `⟨X, hX1, hX2, -, hXdet⟩` from `GlobalTheory.T.dvr_determinant_product_orders p C v O hv ε hε Λ a b h D τ _ _ hgx hkm`. Establish `hmem : ∀ j, m j ∈ eig C (actH D) τ` using `fun j => by`. Establish `: m j ∈ filQuot C D τ` using `hm.2 ▸ Submodule.subset_span ⟨j, rfl⟩`. Conclude with `this.1`.
+
+Set `z : Fin (a + b) → eig C (actH D) τ` to `Fin.append y (fun j => ⟨m j, hmem j⟩)`. Establish `hz1 : ∀ i, z (Fin.castAdd b i) = y i` using `fun i => Fin.append_left _ _ _`. Establish `hz2 : ∀ j, (z (Fin.natAdd a j) : Fin h → C) = m j` using `fun j => by`. Simplify using `[z, Fin.append_right]`. Take `⟨c, hc, hcz⟩` from `GlobalTheory.T.dvr_alpha_determinant_order p C v O hv ε hε Λ α hα a b h hh D τ z (by convert hx using 1; funext i; rw [hz1, hy]) (by convert hm using 1; funext j; exact hz2 j)`.
+
+Set `M : Matrix (Fin (a + b)) (Fin (a + b)) C` to `Matrix.reindex finSumFinEquiv finSumFinEquiv (Matrix.fromBlocks g 0 0 k)`. Establish `hM : M.det = g.det * k.det`. Simplify using `only [M, Matrix.det_reindex_self, Matrix.det_fromBlocks_zero₂₁]`. Set `Y : Fin (a + b) → eig C (actH D) τ` to `fun i => ∑ j, M i j • z j`. Establish `hY1 : ∀ i, Y (Fin.castAdd b i) = ∑ j, g i j • y j` using `fun i => by`.
+
+Simplify using `[Y, M, Fin.sum_univ_add, hz1]`. Establish `hY2 : ∀ i, Y (Fin.natAdd a i) = ∑ j, k i j • z (Fin.natAdd a j)` using `fun i => by`. Simplify using `[Y, M, Fin.sum_univ_add]`. Establish `hιX : ι (exteriorPower.ιMulti C (a + b) X) = exteriorPower.ιMulti C (a + b) Y`. Apply `hι` to reduce the goal to its premises.
+
+Introduce `i hi`. Rewrite `hi` using `[← ha]`. Take `⟨i', rfl⟩ : ∃ i' : Fin a, Fin.castAdd b i' = i` from `⟨⟨i, hi⟩, rfl⟩`. Rewrite using `[hX1, hY1]`. Simplify using `[hy]`.
+
+Introduce `i hi`. Rewrite `hi` using `[← ha]`. Take `⟨i', rfl⟩ : ∃ i' : Fin b, Fin.natAdd a i' = i` from `⟨⟨i - a, by omega⟩, Fin.ext (by simp; omega)⟩`. Rewrite using `[hX2, hY2]`. Simplify using `[hz2]`.
+
+Establish `hYz : exteriorPower.ιMulti C (a + b) Y = (g.det * k.det) • exteriorPower.ιMulti C (a + b) z`. Rewrite using `[← hM]`. Conclude with `GlobalTheory.ShiftLam.ιMulti_sum_smul M z`. Establish `himg : ι '' (detLattice C (actT D) τ (a + b) : Set (detLine C (actT D) τ (a + b))) = (fun w => (g.det * k.det) • w) '' (Submodule.span O {exteriorPower.ιMulti C (a + b) z} : Set (detLine C (actH D) τ (a + b)))`. Rewrite using `[hXdet]`.
+
+Use extensionality with `w`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, rfl⟩`. Take `⟨o, rfl⟩` from `Submodule.mem_span_singleton.1 hu`. Use `⟨o • exteriorPower.ιMulti C (a + b) z, Submodule.smul_mem _ _ (Submodule.subset_span rfl), ?_⟩` and prove the remaining obligations.
+
+Use `show _ = ι _`. Rewrite using `[LinearMap.map_smul_of_tower, hιX, hYz, smul_comm]`. Introduce and unpack `⟨u, hu, rfl⟩`. Take `⟨o, rfl⟩` from `Submodule.mem_span_singleton.1 hu`. Use `⟨o • exteriorPower.ιMulti C (a + b) X, Submodule.smul_mem _ _ (Submodule.subset_span rfl), ?_⟩` and prove the remaining obligations.
+
+Use `show ι _ = _`. Rewrite using `[LinearMap.map_smul_of_tower, hιX, hYz, smul_comm]`. Take `⟨hind, hsup, hrk⟩` from `(GlobalTheory.T.sandwich_datum_eigen_multiplicity p C v O hv ε hε Λ (a + b) h hh D).2`. Take `⟨e, -, -, he, hdet⟩` from `GlobalTheory.T.exists_basis_quotient_lattice_eigen C v O Λ h (a + b) hv (actH D) τ hind hsup (hrk τ)`. Establish `hfin : (fun w => (g.det * k.det * c) • w) '' (Submodule.span O {exteriorPower.ιMulti C (a + b) e} : Set (detLine C (actH D) τ (a + b))) = (fun w => lam • w) '' (Submodule.span O {exteriorPower.ιMulti C (a + b) e} : Set (detLine C (actH D) τ (a + b)))`.
+
+Rewrite using `[← hdet, ← hlat, himg, hcz, Set.image_image]`. Simplify using `only [smul_smul]`. Establish `hval : v (g.det * k.det * c) = v lam` using `le_antisymm (GlobalTheory.ShiftLam.val_le_of_image_subset v hv he hfin.subset) (GlobalTheory.ShiftLam.val_le_of_image_subset v hv he hfin.symm.subset)`. Establish `hc0 : v c ≠ 0`. Rewrite using `[hc]`.
+
+Use `finprod_induction (fun t : NNReal => t ≠ 0) one_ne_zero (fun s t => mul_ne_zero) ?_` and prove the remaining obligations. Introduce `σ`. Use `pow_ne_zero _ ((Valuation.ne_zero_iff v).2 (sub_ne_zero.2 fun hst => σ.2 ?_))` and prove the remaining obligations. Conclude with `GlobalTheory.ShiftLam.ringHom_eq_of_apply_gen α hα σ.1 τ (hv.hom_inj hst).symm`. Rewrite using `[← hc, ← hval, map_mul, map_mul, mul_inv_cancel_right₀ hc0]`.
+-/
 theorem GlobalTheory.DetInv.isShift_of_iota_image : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O], v.Integers O → ∀ (ε : PreTilt O p), IsPrimitiveRoot (root ε).untilt p → ∀ (Λ : Type) [CommRing Λ] [IsDomain Λ] [IsDiscreteValuationRing Λ] [Algebra ℤ_[p] Λ] [Module.Finite ℤ_[p] Λ] [FaithfulSMul ℤ_[p] Λ], ∀ (α : Λ), Algebra.adjoin ℤ_[p] {α} = ⊤ → ∀ (N h : ℕ), h = Module.finrank ℤ_[p] Λ * N → ∀ (D : Datum ε h Λ) (τ : Λ →+* O) ι (lam : C), IsIota C D τ N ι → ι '' (detLattice C (actT D) τ N : Set (detLine C (actT D) τ N)) = (fun w => lam • w) '' (detLattice C (actH D) τ N : Set (detLine C (actH D) τ N)) → IsShift C v D τ (v lam * (∏ᶠ σ : {σ : Λ →+* O // σ ≠ τ}, v (algebraMap O C (τ α) - algebraMap O C (σ.1 α)) ^ D.lieRank σ.1)⁻¹) := by
   intro p _ C _ _ _ v O _ _ _ _ hv ε hε Λ _ _ _ _ _ _ α hα N h hh D τ ι lam hι hlat
   unfold IsShift

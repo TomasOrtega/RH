@@ -15,12 +15,20 @@ namespace GlobalTheory.TypeLoss
 
 open IsDedekindDomain
 
+/- English proof (translation)
+Unfold `vAdd`. Rewrite using `[map_mul, WithZero.log_mul ((map_ne_zero _).2 hx) ((map_ne_zero _).2 hy)]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem additiveValuation_mul_of_ne_zero {K : Type} [Field K] [NumberField K] (w : HeightOneSpectrum (𝓞 K)) {x y : K}
     (hx : x ≠ 0) (hy : y ≠ 0) : vAdd w (x * y) = vAdd w x + vAdd w y := by
   unfold vAdd
   rw [map_mul, WithZero.log_mul ((map_ne_zero _).2 hx) ((map_ne_zero _).2 hy)]
   ring
 
+/- English proof (translation)
+Distinguish the cases in `hx : x = 0`. Substitute `hx` using the available equality. Simplify using `[vAdd]`. Establish `h1` using `D.conj_val w x`. Rewrite `h1` using `[D.val_eq _ x hx, D.val_eq _ (star x) (star_ne_zero.2 hx)]`.
+
+Conclude with `h1` after adjusting the coercions.
+-/
 theorem additiveValuation_conj_place_eq_star (D : D7) (w : D.what₂.places.Pl) (x : D.what₂.LL) :
     vAdd (D.plEq (D.what₂.places.conj w)) x = vAdd (D.plEq w) (star x) := by
   by_cases hx : x = 0
@@ -29,6 +37,9 @@ theorem additiveValuation_conj_place_eq_star (D : D7) (w : D.what₂.places.Pl) 
     rw [D.val_eq _ x hx, D.val_eq _ (star x) (star_ne_zero.2 hx)] at h1
     exact_mod_cast h1
 
+/- English proof (translation)
+Establish `hx' : w.valuation K (x : K) ≠ 0` using `(map_ne_zero _).2 (by exact_mod_cast hx)`. Rewrite using `[← HeightOneSpectrum.valuation_lt_one_iff_mem (K := K)]`. Unfold `vAdd`. Rewrite using `[neg_pos, ← WithZero.log_one, WithZero.log_lt_log hx' one_ne_zero]`.
+-/
 theorem mem_heightOneIdeal_iff_additiveValuation_pos {K : Type} [Field K] [NumberField K] (w : HeightOneSpectrum (𝓞 K)) (x : 𝓞 K)
     (hx : x ≠ 0) : x ∈ w.asIdeal ↔ 0 < vAdd w (x : K) := by
   have hx' : w.valuation K (x : K) ≠ 0 := (map_ne_zero _).2 (by exact_mod_cast hx)
@@ -36,6 +47,15 @@ theorem mem_heightOneIdeal_iff_additiveValuation_pos {K : Type} [Field K] [Numbe
   unfold vAdd
   rw [neg_pos, ← WithZero.log_one, WithZero.log_lt_log hx' one_ne_zero]
 
+/- English proof (translation)
+Apply `HeightOneSpectrum.ext` to reduce the goal to its premises. Use extensionality with `x`. Establish `key : ∀ y : 𝓞 D.what₂.LL, y ∈ (D.plEq (D.what₂.places.conj w)).asIdeal ↔ Formalism.DivisionValues.cO D.what₂.LL y ∈ (D.plEq w).asIdeal`. Introduce `y`. Distinguish the cases in `hy : y = 0`.
+
+Substitute `hy` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[mem_heightOneIdeal_iff_additiveValuation_pos _ y hy, mem_heightOneIdeal_iff_additiveValuation_pos _ _ ((map_ne_zero_iff _ (Formalism.DivisionValues.cO D.what₂.LL).injective).2 hy), additiveValuation_conj_place_eq_star, Formalism.DivisionValues.ValuationRepresentative.cO_apply]`. Rewrite using `[key]`. Express the relevant statement in the definitionally equal form `_ ↔ x ∈ (D.plEq w).asIdeal.map (Formalism.DivisionValues.cO D.what₂.LL)`.
+
+Rewrite using `[Ideal.mem_map_of_equiv]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `⟨_, h, Formalism.DivisionValues.ValuationRepresentative.cO_cO x⟩`. Introduce and unpack `⟨y, hy, rfl⟩`.
+
+Rewrite using `[Formalism.DivisionValues.ValuationRepresentative.cO_cO]` and apply the resulting hypothesis.
+-/
 theorem plEq_conj (D : D7) (w : D.what₂.places.Pl) :
     D.plEq (D.what₂.places.conj w) = Formalism.DivisionValues.conjPl (D.plEq w) := by
   apply HeightOneSpectrum.ext
@@ -56,12 +76,18 @@ theorem plEq_conj (D : D7) (w : D.what₂.places.Pl) :
   · rintro ⟨y, hy, rfl⟩
     rwa [Formalism.DivisionValues.ValuationRepresentative.cO_cO]
 
+/- English proof (translation)
+Unfold `SizeData₂.lwP`. Rewrite using `[plEq_conj]`. Conclude with `Formalism.DivisionValues.ValuationRepresentative.lw_conjPl (D.plEq w)`.
+-/
 theorem logWeight_conj (D : D7) (w : D.what₂.places.Pl) :
     SizeData₂.lwP (D.what₂.places.conj w) = SizeData₂.lwP w := by
   unfold SizeData₂.lwP
   rw [plEq_conj]
   exact Formalism.DivisionValues.ValuationRepresentative.lw_conjPl (D.plEq w)
 
+/- English proof (translation)
+Establish `h0 : ((D.what₂.places.resChar w : ℕ) : D.what₂.LL) ≠ 0` using `Nat.cast_ne_zero.2 (D.what₂.places.resChar_prime w).ne_zero`. Establish `h1` using `D.val_eq w _ h0`. Rewrite `h1` using `[D.what₂.places.val_resChar]`. Conclude with `h1.symm` after adjusting the coercions.
+-/
 theorem additiveValuation_residueChar_eq_ramIndex (D : D7) (w : D.what₂.places.Pl) :
     vAdd (D.plEq w) ((D.what₂.places.resChar w : ℕ) : D.what₂.LL) = (D.what₂.places.ramIdx w : ℤ) := by
   have h0 : ((D.what₂.places.resChar w : ℕ) : D.what₂.LL) ≠ 0 :=
@@ -70,6 +96,9 @@ theorem additiveValuation_residueChar_eq_ramIndex (D : D7) (w : D.what₂.places
   rw [D.what₂.places.val_resChar] at h1
   exact_mod_cast h1.symm
 
+/- English proof (translation)
+Take `⟨T, hT⟩` from `finite_places_over (K := D.what₂.LL) p hp`. Use `⟨(T.map D.plEq.symm.toEmbedding).filter (fun w => D.what₂.places.resChar w = p), fun w => ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.mem_filter, Finset.mem_map_equiv, Equiv.symm_symm, hT]`. Conclude with `⟨fun h => h.2, fun h => ⟨h ▸ resChar_mem D w, h⟩⟩`.
+-/
 theorem exists_over (D : D7) (p : ℕ) (hp : p.Prime) :
     ∃ S : Finset D.what₂.places.Pl, ∀ w, w ∈ S ↔ D.what₂.places.resChar w = p := by
   obtain ⟨T, hT⟩ := finite_places_over (K := D.what₂.LL) p hp
@@ -77,6 +106,19 @@ theorem exists_over (D : D7) (p : ℕ) (hp : p.Prime) :
   rw [Finset.mem_filter, Finset.mem_map_equiv, Equiv.symm_symm, hT]
   exact ⟨fun h => h.2, fun h => ⟨h ▸ resChar_mem D w, h⟩⟩
 
+/- English proof (translation)
+Establish `hp0 : (p : D.what₂.LL) ≠ 0` using `Nat.cast_ne_zero.2 hp.ne_zero`. Establish `hy0 : y ≠ 0` using `fun h => hp0 (by rw [← hy, h, zero_mul])`. Establish `hconj : ∑ w ∈ S, SizeData₂.lwP w * (vAdd (D.plEq w) (star y) : ℝ) = ∑ w ∈ S, SizeData₂.lwP w * (vAdd (D.plEq w) y : ℝ)`. Use `Finset.sum_nbij' D.what₂.places.conj D.what₂.places.conj ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `w hw`.
+
+Rewrite `hw`, the goal using `[hS]`. Rewrite using `[resChar_conj, hw]`. Introduce `w hw`. Rewrite `hw`, the goal using `[hS]`. Rewrite using `[resChar_conj, hw]`.
+
+Introduce `w _`. Conclude with `D.what₂.places.conj_conj w`. Introduce `w _`. Conclude with `D.what₂.places.conj_conj w`. Introduce `w _`.
+
+Rewrite using `[logWeight_conj, additiveValuation_conj_place_eq_star]`. Establish `hm` using `factEtaMean D p hp S hS`. Rewrite using `[← hm]`. Establish `: ∀ w ∈ S, lw D.what₂.LL (D.plEq w) * (D.what₂.places.ramIdx w : ℝ) = SizeData₂.lwP w * (vAdd (D.plEq w) y : ℝ) + SizeData₂.lwP w * (vAdd (D.plEq w) (star y) : ℝ)`. Introduce `w hw`.
+
+Establish `h1` using `additiveValuation_residueChar_eq_ramIndex D w`. Rewrite `h1` using `[(hS w).1 hw, ← hy, additiveValuation_mul_of_ne_zero _ hy0 (star_ne_zero.2 hy0)]`. Establish `h2 : (D.what₂.places.ramIdx w : ℝ) = (vAdd (D.plEq w) y : ℝ) + (vAdd (D.plEq w) (star y) : ℝ)`. Conclude with `h1.symm` after adjusting the coercions. Rewrite using `[h2, ← mul_add]`.
+
+Both sides reduce to the same expression. Rewrite using `[Finset.sum_congr rfl this, Finset.sum_add_distrib, hconj, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sum_half (D : D7) (p : ℕ) (hp : p.Prime) (S : Finset D.what₂.places.Pl)
     (hS : ∀ w, w ∈ S ↔ D.what₂.places.resChar w = p) (y : D.what₂.LL) (hy : y * star y = (p : D.what₂.LL)) :
     ∑ w ∈ S, 2 * SizeData₂.lwP w * (vAdd (D.plEq w) y : ℝ) = Real.log p := by
@@ -112,6 +154,9 @@ theorem sum_half (D : D7) (p : ℕ) (hp : p.Prime) (S : Finset D.what₂.places.
   refine Finset.sum_congr rfl fun w _ => ?_
   ring
 
+/- English proof (translation)
+Establish `h1 : H.sigmaOf (g * R.cc) = H.sigmaOf g * H.conj` using `map_mul (H.gal).symm g (R.cc)`. Establish `h2 : H.sigmaOf (R.cc * g) = H.conj * H.sigmaOf g` using `map_mul (H.gal).symm (R.cc) g`. Establish `h3 : H.conj * H.sigmaOf g = H.sigmaOf g * H.conj` using `by rw [← h1, ← h2, mul_comm]`. Conclude with `congrArg (fun s : H.E ≃ₐ[ℚ] H.E => s x) h3`.
+-/
 theorem conj_sigmaOf {R : Ranks} (H : Host R) (g : R.GG) (x : H.E) :
     H.conj (H.sigmaOf g x) = H.sigmaOf g (H.conj x) := by
   have h1 : H.sigmaOf (g * R.cc) = H.sigmaOf g * H.conj :=
@@ -121,12 +166,30 @@ theorem conj_sigmaOf {R : Ranks} (H : Host R) (g : R.GG) (x : H.E) :
   have h3 : H.conj * H.sigmaOf g = H.sigmaOf g * H.conj := by rw [← h1, ← h2, mul_comm]
   exact congrArg (fun s : H.E ≃ₐ[ℚ] H.E => s x) h3
 
+/- English proof (translation)
+Unfold `tauPib tauLL`. Rewrite using `[← D.embE_conj, conj_sigmaOf, ← map_mul, ← map_mul, ← map_mul, X.piG_norm]`. Simplify using the standard rewrite rules.
+-/
 theorem tauPib_norm {D : D7} (X : ErrX D) (i : Fin 2) (τ : D.what₂.Tau) :
     tauPib X i τ * star (tauPib X i τ) = (D.host.g i : D.what₂.LL) := by
   unfold tauPib tauLL
   rw [← D.embE_conj, conj_sigmaOf, ← map_mul, ← map_mul, ← map_mul, X.piG_norm]
   simp
 
+/- English proof (translation)
+Introduce `h`. Take `⟨a, ha⟩` from `Ideal.mem_span_singleton.1 (X.piT_cong u)`. Establish `hdiv : ∃ b : 𝓞 D.host.E, X.piT u = 1 + (D.host.g i : 𝓞 D.host.E) * b`. Establish `hd : D.host.g i ∣ D.host.QS * D.host.q * D.host.d * (D.host.g 0 * D.host.g 1) ^ 2`. Use `Dvd.dvd.mul_left (Dvd.dvd.pow ?_ two_ne_zero) _` and prove the remaining obligations.
+
+Use `fin_cases i`. Conclude with `dvd_mul_right _ _`. Conclude with `dvd_mul_left _ _`. Take `⟨k, hk⟩` from `hd`. Use `⟨k * a, ?_⟩` and prove the remaining obligations.
+
+Rewrite `ha` using `[hk]`. Move the coercions through the operations in `at ha`. Take the linear combination `ha`. Take `⟨b, hb⟩` from `hdiv`. Establish `hn` using `X.piT_norm u`.
+
+Rewrite `hn` using `[← h, hb]`. Establish `hbi : IsIntegral ℤ (D.host.conj (b : D.host.E))` using `(IsIntegral.map (D.host.conj : D.host.E →+* D.host.E).toIntAlgHom b.isIntegral_coe)`. Use `set b' : 𝓞 D.host.E := ⟨_, hbi⟩ with hb'`. Establish `hu : (D.host.g i : 𝓞 D.host.E) * (1 - b - b' - D.host.g i * b * b') = 1`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Establish `e : ((b' : 𝓞 D.host.E) : D.host.E) = D.host.conj (b : D.host.E)` using `rfl`. Simplify using `only [map_add, map_mul, map_one, map_natCast] at hn`. Express the relevant statement in the definitionally equal form `algebraMap _ D.host.E ((D.host.g i : 𝓞 D.host.E) * (1 - b - b' - D.host.g i * b * b')) = algebraMap _ D.host.E (1 : 𝓞 D.host.E)`. Simplify using `only [map_sub, map_mul, map_one, map_natCast]`. Express the relevant statement in the definitionally equal form `_ * (1 - (b : D.host.E) - (b' : D.host.E) - _ * (b : D.host.E) * (b' : D.host.E)) = 1`.
+
+Rewrite using `[e]`. Take the linear combination `-hn`. Establish `hunit : IsUnit ((D.host.g i : ℤ))`. Establish `: IsUnit (algebraMap ℤ (𝓞 D.host.E) (D.host.g i : ℤ))`. Simplify using `using IsUnit.of_mul_eq_one _ hu`.
+
+Conclude with `isUnit_of_map_unit (algebraMap ℤ (𝓞 D.host.E)) _ this`. Use `Int.isUnit_iff.1 hunit` as an intermediate fact. Establish `h2` using `(D.host.g_prime i).two_le`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem host_g_ne_mem_A_T {D : D7} (X : ErrX D) (u : D.what₂.Word) (i : Fin 2) : D.host.g i ≠ (D.mem u).A.T := by
   intro h
   obtain ⟨a, ha⟩ := Ideal.mem_span_singleton.1 (X.piT_cong u)
@@ -164,6 +227,23 @@ theorem host_g_ne_mem_A_T {D : D7} (X : ErrX D) (u : D.what₂.Word) (i : Fin 2)
   have h2 := (D.host.g_prime i).two_le
   omega
 
+/- English proof (translation)
+Take `⟨S, hS⟩` from `exists_over D _ (D.host.g_prime i)`. Establish `h1 : ∑ w ∈ L.supp.filter (fun w => D.what₂.places.resChar w = D.host.g i), SizeData₂.sz w (L.E u j w) = ∑ w ∈ S, SizeData₂.sz w (L.E u j w)`. Apply `Finset.sum_subset` to reduce the goal to its premises. Introduce `w hw`. Conclude with `(hS w).2 (Finset.mem_filter.1 hw).2`.
+
+Introduce `w hw hn`. Establish `: w ∉ L.supp` using `fun h => hn (Finset.mem_filter.2 ⟨h, (hS w).1 hw⟩)`. Rewrite using `[L.E_supp u j w this]`. Simplify using `[SizeData₂.sz]`. Use `set a : ℝ := (padicValNat (D.host.g i) (D.mem u).C.DGam : ℝ) + FTypeG D j + c.g * (D.R.f : ℝ) * ((D.R.N D.R.m : ℝ) ^ 2 + (D.R.m : ℝ) ^ 2 * L.etaSz) with ha`.
+
+Establish `h2 : ∀ w ∈ S, SizeData₂.sz w (L.E u j w) = 2 * a * (lw D.what₂.LL (D.plEq w) * (D.what₂.places.ramIdx w : ℝ)) + ∑ τ : D.what₂.Tau, nuAbs D u j τ * (2 * SizeData₂.lwP w * (vAdd (D.plEq w) (tauPib X i τ) : ℝ))`. Introduce `w hw`. Establish `hw` using `(hS w).1 hw`. Establish `hT : D.what₂.places.resChar w ≠ (D.mem u).A.T` using `hw ▸ host_g_ne_mem_A_T X u i`. Establish `h3 : L.E u j w = (padicValNat (D.host.g i) (D.mem u).C.DGam : ℝ) + EatG L X c i u j w`.
+
+Rewrite using `[hE u j hj w]`. Unfold `Eval`. Simplify using `only [if_neg hT]`. Use `fin_cases i`. Rewrite using `[if_pos (by simpa using hw), hw]; rfl`.
+
+Rewrite using `[if_neg (by rw [hw]; exact fun h => D.host.g_ne h.symm), if_pos (by simpa using hw), hw]; rfl`. Establish `he : (D.what₂.places.ramIdx w : ℝ) ≠ 0`. Conclude with `(D.what₂.places.ramIdx_pos w).ne'` after adjusting the coercions. Establish `h4 : ∑ τ : D.what₂.Tau, nuAbs D u j τ * (2 * SizeData₂.lwP w * (vAdd (D.plEq w) (tauPib X i τ) : ℝ)) = 2 * SizeData₂.lwP w * ∑ τ : D.what₂.Tau, nuAbs D u j τ * (vAdd (D.plEq w) (tauPib X i τ) : ℝ)`. Rewrite using `[Finset.mul_sum]`.
+
+Conclude with `Finset.sum_congr rfl fun τ _ => by ring`. Rewrite using `[h3, h4, ha]`. Unfold `SizeData₂.sz EatG vNN Formalism.MainNotions.G.Nm SizeData₂.lwP`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[h1, Finset.sum_congr rfl h2, Finset.sum_add_distrib, ← Finset.mul_sum, factEtaMean D _ (D.host.g_prime i) S hS, Finset.sum_comm]`. Establish `h5 : ∀ τ ∈ (Finset.univ : Finset D.what₂.Tau), ∑ w ∈ S, nuAbs D u j τ * (2 * SizeData₂.lwP w * (vAdd (D.plEq w) (tauPib X i τ) : ℝ)) = nuAbs D u j τ * Real.log (D.host.g i)`. Introduce `τ _`. Rewrite using `[← Finset.mul_sum, sum_half D _ (D.host.g_prime i) S hS _ (tauPib_norm X i τ)]`. Rewrite using `[Finset.sum_congr rfl h5, ← Finset.sum_mul, ha]`.
+
+Unfold `FTypeG`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sum_over_g {D : D7} {L : SizeData₂ D} {X : ErrX D} {K : Formalism.MainNotions.G.Consts} {c : ErrC} (hE : L.EDef X K c)
     (u : D.what₂.Word) (j : ℕ) (hj : j ∈ SizeData₂.lifts D) (i : Fin 2) :
     ∑ w ∈ L.supp.filter (fun w => D.what₂.places.resChar w = D.host.g i), SizeData₂.sz w (L.E u j w) =
@@ -216,6 +296,11 @@ theorem sum_over_g {D : D7} {L : SizeData₂ D} {X : ErrX D} {K : Formalism.Main
   unfold FTypeG
   ring
 
+/- English proof (translation)
+Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Simplify using the standard rewrite rules. Establish `h : p ^ padicValNat p n ≤ n` using `Nat.le_of_dvd hn pow_padicValNat_dvd`. Rewrite using `[← Real.log_pow]`. Apply `Real.log_le_log` to reduce the goal to its premises.
+
+Use `hp.pos` as an intermediate fact. Check the signs of the components of the expression. Conclude with `h` after adjusting the coercions.
+-/
 theorem padic_log_le (p n : ℕ) (hp : p.Prime) : (padicValNat p n : ℝ) * Real.log p ≤ Real.log n := by
   rcases Nat.eq_zero_or_pos n with rfl | hn
   · simp
@@ -226,6 +311,9 @@ theorem padic_log_le (p n : ℕ) (hp : p.Prime) : (padicValNat p n : ℝ) * Real
       positivity
     · exact_mod_cast h
 
+/- English proof (translation)
+The claim follows from `|δ * lg + 2 * v + 2 * e * lg| ≤ (|C₁| * (CY + 1) + 2 * |C₂| + 4 * |cg| * (CY + 1)) * B := by have hf0 : 0 ≤ f := by linarith have hm0 : 0 ≤ m := by linarith have hL0 : 0 ≤ L := by linarith have hηb : η ≤ b := le_trans (le_mul_of_one_le_left hη0 hf) hfη have hb : 0 ≤ b := hη0.tran …`.
+-/
 theorem arith_bound (δ v e lg f m b L N η C₁ C₂ cg CY B : ℝ) (hB : B = f * m * b * L) (hf : 1 ≤ f) (hm : 1 ≤ m)
     (hL : 1 ≤ L) (hN : 1 ≤ N) (hCY : 0 ≤ CY) (hδ : |δ| ≤ C₁ * f * b) (hv0 : 0 ≤ v)
     (hv : v ≤ C₂ * f * N * Real.log (f * N)) (he : e = cg * f * (N ^ 2 + m ^ 2 * η)) (hlg0 : 0 ≤ lg)
@@ -283,6 +371,9 @@ theorem arith_bound (δ v e lg f m b L N η C₁ C₂ cg CY B : ℝ) (hB : B = f
   rw [abs_of_nonneg (by linarith : 0 ≤ 2 * v)] at tri
   nlinarith
 
+/- English proof (translation)
+The claim follows from `|∑ w ∈ L.supp.filter (fun w => D.what₂.places.resChar w = D.host.g i), SizeData₂.sz w (L.E u j w) - A * Real.log (D.host.g i)| ≤ (|C₁| * (P.CYL + 1) + 2 * |C₂| + 4 * |c.g| * (P.CYL + 1)) * L.B0 := by rw [sum_over_g hE u j hj i] have hL : 1 ≤ L.sc.L := Real.one_le_rpow L.sc.one_lt …`.
+-/
 theorem bound_one {D : D7} {L : SizeData₂ D} {X : ErrX D} {K : Formalism.MainNotions.G.Consts} {c : ErrC} (hE : L.EDef X K c)
     (P : ParameterChoice' D L) (u : D.what₂.Word) (j : ℕ) (hj : j ∈ SizeData₂.lifts D) (i : Fin 2) (C₁ C₂ A : ℝ)
     (h1 : |(∑ τ : D.what₂.Tau, nuAbs D u j τ) - (fockDeg D j : ℝ) - A| ≤ C₁ * D.R.f * L.sc.b)

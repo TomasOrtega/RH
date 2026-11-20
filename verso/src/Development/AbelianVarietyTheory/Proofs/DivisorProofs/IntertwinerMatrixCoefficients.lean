@@ -4,6 +4,9 @@ open GlobalTheory.LocFinIso
 
 namespace GlobalTheory.IntwLeftMul
 
+/- English proof (translation)
+Unfold `leftMul`. Rewrite using `[Matrix.ofLp_toEuclideanCLM]`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.symm_apply_apply]`. Rewrite using `[← finProdFinEquiv.sum_comp, Fintype.sum_prod_type]`. Simplify using `[Matrix.kroneckerMap_apply, Matrix.one_apply]`.
+-/
 theorem leftMul_coord {G : Type} {m : ℕ} (A : G → Matrix (Fin m) (Fin m) ℂ) (k : G)
     (v : EuclideanSpace ℂ (Fin (m * m))) (i j : Fin m) :
     (leftMul A k v) (finProdFinEquiv (i, j)) = ∑ l, A k i l * v (finProdFinEquiv (l, j)) := by
@@ -24,10 +27,22 @@ noncomputable def colMap {V : Type} [AddCommGroup V] [Module ℂ V] (D : Submodu
   map_smul' c v := by
     ext; simp [Finset.smul_sum, smul_smul]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem colMap_val {V : Type} [AddCommGroup V] [Module ℂ V] (D : Submodule ℂ V) {m : ℕ}
     (b : Fin m → V) (hbD : ∀ i, b i ∈ D) (j : Fin m) (v : EuclideanSpace ℂ (Fin (m * m))) :
     ((colMap D b hbD j v : D) : V) = ∑ i, v (finProdFinEquiv (i, j)) • b i := rfl
 
+/- English proof (translation)
+Introduce `hA hf`. Use `⟨∑ j, D.subtype ∘ₗ (f j) ∘ₗ colMap D b hbD j, ?_, ?_⟩` and prove the remaining obligations. Introduce `k hk v`. Simplify using `only [LinearMap.sum_apply, LinearMap.comp_apply, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Simplify using `only [Submodule.coe_subtype]`. Apply `hf j k hk` to reduce the goal to its premises. Rewrite using `[colMap_val, colMap_val]`. Simplify using `only [leftMul_coord, Finset.sum_smul, map_sum, map_smul, hA k hk, Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`. Use `⟨WithLp.toLp 2 (fun x => if (finProdFinEquiv.symm x).1 = (finProdFinEquiv.symm x).2 then 1 else 0), ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.sum_apply, LinearMap.comp_apply, Submodule.coe_subtype]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Use `congr 2`. Use `ext`. Rewrite using `[colMap_val]`. Simplify using `[Finset.sum_ite_eq']`.
+-/
 theorem exists_intertwiner (G : Type) [Group G] (K : Set G) (V : Type) [AddCommGroup V] [Module ℂ V]
     (ρ : G →* Module.End ℂ V) (D : Submodule ℂ V) (m : ℕ) (b : Fin m → V)
     (A : G → Matrix (Fin m) (Fin m) ℂ) (hbD : ∀ i, b i ∈ D) (f : Fin m → (D →ₗ[ℂ] D)) :

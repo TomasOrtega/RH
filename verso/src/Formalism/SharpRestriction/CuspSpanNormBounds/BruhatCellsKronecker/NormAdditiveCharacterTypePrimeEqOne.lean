@@ -18,10 +18,16 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 section Schur
 
+/- English proof (translation)
+Unfold `Formalism.REAL.Jm allPos`. Simplify using the standard rewrite rules.
+-/
 theorem Jm_allPos (k : ℕ) : Formalism.REAL.Jm (allPos k) = 1 := by
   unfold Formalism.REAL.Jm allPos
   simp
 
+/- English proof (translation)
+Establish `h1 : star g * g = 1` using `(Matrix.mem_unitaryGroup_iff').1 hg.1`. Use `show g.conjTranspose * Formalism.REAL.Jm (allPos k) * g = Formalism.REAL.Jm (allPos k)`. Rewrite using `[Jm_allPos, Matrix.mul_one]`. Conclude with `h1`.
+-/
 theorem Kset_sub_UJset (k : ℕ) {g : Matrix (Fin k) (Fin k) ℂ} (hg : g ∈ Formalism.REAL.Kset (allPos k)) :
     g ∈ UJset (allPos k) := by
   have h1 : star g * g = 1 := (Matrix.mem_unitaryGroup_iff').1 hg.1
@@ -31,12 +37,22 @@ theorem Kset_sub_UJset (k : ℕ) {g : Matrix (Fin k) (Fin k) ℂ} (hg : g ∈ Fo
 
 def htF {k : ℕ} (x : Fin k → ℝ) : ℝ := ∑ a : Fin k, -((a : ℕ) : ℝ) * x a
 
+/- English proof (translation)
+Unfold `htF Formalism.REAL.root`. Simplify using `only [Pi.sub_apply, mul_sub, Finset.sum_sub_distrib, Pi.single_apply, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem htF_root {k : ℕ} (a b : Fin k) : htF (Formalism.REAL.root a b) = ((b : ℕ) : ℝ) - ((a : ℕ) : ℝ) := by
   unfold htF Formalism.REAL.root
   simp only [Pi.sub_apply, mul_sub, Finset.sum_sub_distrib, Pi.single_apply, mul_ite, mul_one, mul_zero,
     Finset.sum_ite_eq', Finset.mem_univ, if_true]
   ring
 
+/- English proof (translation)
+Establish `hadd : ∀ x y : Fin k → ℝ, htF (x + y) = htF x + htF y`. Introduce `x y; unfold htF; rw [← Finset.sum_add_distrib]; exact Finset.sum_congr rfl (fun i _ => by simp [mul_add])`. Establish `hsm : ∀ (t : ℝ) (x : Fin k → ℝ), htF (t • x) = t * htF x`. Introduce `t x; unfold htF; rw [Finset.mul_sum]; exact Finset.sum_congr rfl (fun i _ => by simp; ring)`. Establish `h0 : htF (0 : Fin k → ℝ) = 0` using `by unfold htF; simp`.
+
+Set `φ : (Fin k → ℝ) →+ ℝ` to `⟨⟨htF, h0⟩, hadd⟩`. Establish `e : ∀ x, htF x = φ x` using `fun _ => rfl`. Rewrite using `[e, map_sum]`. Use `Finset.sum_congr rfl (fun a _ => ?_)` and prove the remaining obligations. Rewrite using `[map_sum]`.
+
+Use `Finset.sum_congr rfl (fun b _ => ?_)` and prove the remaining obligations. Rewrite using `[← e, hsm, htF_root]`.
+-/
 theorem htF_sum {k : ℕ} (c : Fin k → Fin k → ℕ) :
     htF (∑ a, ∑ b, (c a b : ℝ) • Formalism.REAL.root a b) = ∑ a, ∑ b, (c a b : ℝ) * (((b : ℕ) : ℝ) - ((a : ℕ) : ℝ)) := by
   have hadd : ∀ x y : Fin k → ℝ, htF (x + y) = htF x + htF y := by
@@ -52,6 +68,19 @@ theorem htF_sum {k : ℕ} (c : Fin k → Fin k → ℕ) :
   refine Finset.sum_congr rfl (fun b _ => ?_)
   rw [← e, hsm, htF_root]
 
+/- English proof (translation)
+Take `⟨c, hc, e1⟩` from `h1`. Take `⟨c', hc', e2⟩` from `h2`. Establish `hs : htF (Λ - μ) + htF (μ - Λ) = 0`. Unfold `htF; rw [← Finset.sum_add_distrib]; exact Finset.sum_eq_zero (fun i _ => by simp; ring)`. Rewrite `hs` using `[e1, e2, htF_sum, htF_sum]`.
+
+Establish `nn : ∀ (d : Fin k → Fin k → ℕ), (∀ a b, d a b ≠ 0 → a < b ∧ ε a = ε b) → ∀ a b, 0 ≤ (d a b : ℝ) * (((b : ℕ) : ℝ) - ((a : ℕ) : ℝ))`. Introduce `d hd a b`. Distinguish the cases in `h : d a b = 0`. Simplify using `[h]`. Use `(hd a b h).1` as an intermediate fact.
+
+Establish `h' : ((a : ℕ) : ℝ) < ((b : ℕ) : ℝ)` using `by exact_mod_cast this`. Conclude with `mul_nonneg (Nat.cast_nonneg _) (by linarith)`. Establish `s1 : 0 ≤ ∑ a, ∑ b, (c a b : ℝ) * (((b : ℕ) : ℝ) - ((a : ℕ) : ℝ))` using `Finset.sum_nonneg (fun a _ => Finset.sum_nonneg (fun b _ => nn c hc a b))`. Establish `s2 : 0 ≤ ∑ a, ∑ b, (c' a b : ℝ) * (((b : ℕ) : ℝ) - ((a : ℕ) : ℝ))` using `Finset.sum_nonneg (fun a _ => Finset.sum_nonneg (fun b _ => nn c' hc' a b))`. Establish `z1 : ∑ a, ∑ b, (c a b : ℝ) * (((b : ℕ) : ℝ) - ((a : ℕ) : ℝ)) = 0` using `by linarith`.
+
+Establish `z2 : ∀ a b, c a b = 0`. Introduce `a b`. Establish `h3` using `(Finset.sum_eq_zero_iff_of_nonneg (fun a _ => Finset.sum_nonneg (fun b _ => nn c hc a b))).1 z1 a (Finset.mem_univ a)`. Establish `h4` using `(Finset.sum_eq_zero_iff_of_nonneg (fun b _ => nn c hc a b)).1 h3 b (Finset.mem_univ b)`. Assume the negation of the conclusion as `h`.
+
+Use `(hc a b h).1` as an intermediate fact. Establish `h' : ((a : ℕ) : ℝ) < ((b : ℕ) : ℝ)` using `by exact_mod_cast this`. Break down `mul_eq_zero.1 h4 with h5 | h5` into its components or cases. Conclude with `h (by exact_mod_cast h5)`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `: Λ - μ = 0`. Rewrite using `[e1]; exact Finset.sum_eq_zero (fun a _ => Finset.sum_eq_zero (fun b _ => by simp [z2 a b]))`. Conclude with `(sub_eq_zero.1 this).symm`.
+-/
 theorem cdom_antisymm {k : ℕ} {ε : Fin k → Bool} {μ Λ : Fin k → ℝ} (h1 : CDom ε μ Λ) (h2 : CDom ε Λ μ) : μ = Λ := by
   obtain ⟨c, hc, e1⟩ := h1
   obtain ⟨c', hc', e2⟩ := h2
@@ -86,6 +115,29 @@ theorem cdom_antisymm {k : ℕ} {ε : Fin k → Bool} {μ Λ : Fin k → ℝ} (h
     rw [e1]; exact Finset.sum_eq_zero (fun a _ => Finset.sum_eq_zero (fun b _ => by simp [z2 a b]))
   exact (sub_eq_zero.1 this).symm
 
+/- English proof (translation)
+Introduce `k u u' H H' _ _ _ _ π ρ hπ hρ hne P hP`. Take `⟨_, _, _, _, hπs, hπi, ⟨v, _, hv0, hvw⟩, hπd⟩` from `hπ`. Take `⟨_, _, _, _, hρs, hρi, ⟨v', _, hv'0, hv'w⟩, hρd⟩` from `hρ`. Assume the negation of the conclusion as `hP0`. Establish `comm : ∀ g ∈ Formalism.REAL.Kset (allPos k), ∀ x, P (ρ g x) = π g (P x)`.
+
+Introduce `g hg x`. Use `hP g (Kset_sub_UJset k hg)` as an intermediate fact. Conclude with `congrArg (fun T : H' →L[ℂ] H => T x) this`. Establish `hker : LinearMap.ker (P : H' →ₗ[ℂ] H) = ⊥`. Break down `hρi (LinearMap.ker (P : H' →ₗ[ℂ] H)) le_top (by` into its components or cases.
+
+Introduce `g hg x hx`. Rewrite `hx`, the goal using `[LinearMap.mem_ker]`. Establish `hx' : P x = 0` using `hx`. Use `show P (ρ g x) = 0`. Rewrite using `[comm g hg, hx', map_zero]) with h | h`.
+
+Conclude with `h`. It suffices to derive a contradiction. Apply `hP0` to reduce the goal to its premises. Use extensionality with `x`. Establish `: x ∈ LinearMap.ker (P : H' →ₗ[ℂ] H)` using `by rw [h]; trivial`.
+
+Conclude with `this`. Establish `hinj : Function.Injective P`. Use `LinearMap.ker_eq_bot.1 hker` as an intermediate fact. Conclude with `this`. Establish `hran : LinearMap.range (P : H' →ₗ[ℂ] H) = ⊤`.
+
+Break down `hπi (LinearMap.range (P : H' →ₗ[ℂ] H)) le_top (by` into its components or cases. Introduce and unpack `g hg _ ⟨x, rfl⟩`. Conclude with `⟨ρ g x, comm g hg x⟩) with h | h`. It suffices to derive a contradiction. Establish `: P v' ∈ LinearMap.range (P : H' →ₗ[ℂ] H)` using `⟨v', rfl⟩`.
+
+Rewrite `this` using `[h, Submodule.mem_bot]`. Conclude with `hv'0 (hinj (by rw [this, map_zero]))`. Conclude with `h`. Establish `d1 : CDom (allPos k) (Formalism.QuantumDeterminants.lowK (allPos k) u') (Formalism.QuantumDeterminants.lowK (allPos k) u)`. Use `hπd _ (P v') trivial (fun h => hv'0 (hinj (by rw [h, map_zero]))) ?_` and prove the remaining obligations.
+
+Introduce `θ hθ`. Rewrite using `[← comm _ hθ, hv'w θ hθ, map_smul]`. Establish `d2 : CDom (allPos k) (Formalism.QuantumDeterminants.lowK (allPos k) u) (Formalism.QuantumDeterminants.lowK (allPos k) u')`. Take `⟨w, hw⟩ : v ∈ LinearMap.range (P : H' →ₗ[ℂ] H)` from `by rw [hran]; trivial`. Establish `hw' : P w = v` using `hw`.
+
+Use `hρd _ w trivial (fun h => hv0 (by rw [← hw', h, map_zero])) ?_` and prove the remaining obligations. Introduce `θ hθ`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[comm _ hθ, hw', hvw θ hθ, map_smul, hw']`. Establish `e` using `cdom_antisymm d1 d2`.
+
+Apply `hne` to reduce the goal to its premises. Unfold `Formalism.QuantumDeterminants.lowK at e`. Use function extensionality and compare the values at `a`. Use `congrFun e a` as an intermediate fact. Simplify using `only [Pi.add_apply, Pi.sub_apply] at this`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem schur_lemma_unitary_distinct_params : NonGenericAndKTwoTheorems.adm7 := by
   intro k u u' H H' _ _ _ _ π ρ hπ hρ hne P hP
   obtain ⟨_, _, _, _, hπs, hπi, ⟨v, _, hv0, hvw⟩, hπd⟩ := hπ
@@ -147,20 +199,44 @@ end Schur
 
 section Mass
 
+/- English proof (translation)
+Introduce `j hj V V' _ _ _ _ _ _ _ _ hh hh' L L' s s' o o'` and use `h D.host.E D.sp.cm.cmUnram j hj V V' hh hh' L L' s s' o o'`.
+-/
 theorem stMassRatio_of_siegel (h : Formalism.HermitianLatticesTheory.SiegelMassRatio) (D : D7) : UnitaryVolumeMass.stMassRatio D :=
   fun j hj V V' _ _ _ _ _ _ _ _ hh hh' L L' s s' o o' =>
     h D.host.E D.sp.cm.cmUnram j hj V V' hh hh' L L' s s' o o'
 
+/- English proof (translation)
+The claim follows from `stMassRatio_of_siegel h D`.
+-/
 theorem mass_ratio_ninth_of_siegel (h : Formalism.HermitianLatticesTheory.SiegelMassRatio) (D : D7) : NonGenericAndKTwoTheorems.IntegrationByPartsAlt D := stMassRatio_of_siegel h D
 
 variable {eps : ℝ} (Fm : FamP eps)
 
+/- English proof (translation)
+Introduce `_ _` and use `stMassRatio_of_siegel h _`.
+-/
 theorem family_mass_ratio_of_siegel_bis (h : AdmissibleBoundsFromSource.FamilyTwelfthHypothesis) : NonGenericAndKTwoTheorems.FamilyMassFirstHypothesis Fm := fun _ _ => stMassRatio_of_siegel h _
+/- English proof (translation)
+Introduce `_ _` and use `stMassRatio_of_siegel h _`.
+-/
 theorem mass_one_bound_of_siegel_restricted (h : AdmissibleBoundsFromSource.FamilyTwelfthHypothesis) : LocalBesselAndTopKernel.SecondSizeStatement Fm := fun _ _ => stMassRatio_of_siegel h _
+/- English proof (translation)
+Introduce `_ _` and use `stMassRatio_of_siegel h _`.
+-/
 theorem family_mass_ratio_first_of_siegel (h : AdmissibleBoundsFromSource.FamilyTwelfthHypothesis) : AuxiliaryNormPrimes.SecondSizeStatement Fm := fun _ _ => stMassRatio_of_siegel h _
 
+/- English proof (translation)
+Introduce `x i j hj` and use `h x i j (by omega)`.
+-/
 theorem mass_two_bound_restricted_of_family (h : NonGenericAndKTwoTheorems.FamilyMassSecondHypothesis Fm) : LocalBesselAndTopKernel.BesselFormLine Fm := fun x i j hj => h x i j (by omega)
+/- English proof (translation)
+Introduce `x i` and use `h x i`.
+-/
 theorem family_mass_two_bound_of_mass_ratio (h : NonGenericAndKTwoTheorems.FamilyMassSecondHypothesis Fm) : AuxiliaryNormPrimes.BesselFormLine Fm := fun x i => h x i
+/- English proof (translation)
+Introduce `x i` and use `h x i`.
+-/
 theorem family_mass_ratio_of_mass_two_bound (h : AuxiliaryNormPrimes.BesselFormLine Fm) : NonGenericAndKTwoTheorems.FamilyMassSecondHypothesis Fm := fun x i => h x i
 
 end Mass
@@ -173,6 +249,11 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
 variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E]
 variable {M : Model F E} {V : Type} [AddCommGroup V] [Module E V]
 
+/- English proof (translation)
+Unfold `Model.R`. Use `split`. Both sides reduce to the same expression. Name the introduced variables `g hg`. Rewrite `hg` using `[hs]`.
+
+Consider the cases of `hg`.
+-/
 theorem R_eq_O (hs : M.split = none) : M.R = M.L.O := by
   unfold Model.R
   split
@@ -181,6 +262,11 @@ theorem R_eq_O (hs : M.split = none) : M.R = M.L.O := by
     rw [hs] at hg
     cases hg
 
+/- English proof (translation)
+Unfold `theta`. Use `split`. Both sides reduce to the same expression. Name the introduced variables `g hg`. Rewrite `hg` using `[hs]`.
+
+Consider the cases of `hg`.
+-/
 theorem theta_eq_one (hs : M.split = none) : theta M = 1 := by
   unfold theta
   split
@@ -189,6 +275,13 @@ theorem theta_eq_one (hs : M.split = none) : theta M = 1 := by
     rw [hs] at hg
     cases hg
 
+/- English proof (translation)
+Take `⟨hx, y, hy, hxy⟩` from `hx`. Establish `hR` using `R_eq_O hs`. Establish `himg : (fun z => x * z) '' (M.R : Set E) = (M.R : Set E)`. Rewrite using `[hR]`. Use extensionality with `z`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, hw, rfl⟩`. Conclude with `M.L.O.mul_mem hx hw`. Introduce `hz`. Conclude with `⟨y * z, M.L.O.mul_mem hy hz, by show x * (y * z) = z; rw [← mul_assoc, hxy, one_mul]⟩`.
+
+Unfold `Model.modK`. Rewrite using `[himg, hOK.haar.volR]`. Both sides reduce to the same expression.
+-/
 theorem modK_unitO (hOK : M.OK) (hs : M.split = none) {x : E} (hx : IsUnitO M x) : M.modK x = 1 := by
   obtain ⟨hx, y, hy, hxy⟩ := hx
   have hR := R_eq_O hs
@@ -204,8 +297,14 @@ theorem modK_unitO (hOK : M.OK) (hs : M.split = none) {x : E} (hx : IsUnitO M x)
   rw [himg, hOK.haar.volR]
   rfl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨M.L.O.one_mem, 1, M.L.O.one_mem, one_mul 1⟩`.
+-/
 theorem isUnitO_one : IsUnitO M (1 : E) := ⟨M.L.O.one_mem, 1, M.L.O.one_mem, one_mul 1⟩
 
+/- English proof (translation)
+Take `⟨hx, x', hx', e⟩` from `hx`. Take `⟨hy, y', hy', e'⟩` from `hy`. Conclude with `⟨M.L.O.mul_mem hx hy, x' * y', M.L.O.mul_mem hx' hy', by`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem isUnitO_mul {x y : E} (hx : IsUnitO M x) (hy : IsUnitO M y) : IsUnitO M (x * y) := by
   obtain ⟨hx, x', hx', e⟩ := hx
   obtain ⟨hy, y', hy', e'⟩ := hy
@@ -213,10 +312,16 @@ theorem isUnitO_mul {x y : E} (hx : IsUnitO M x) (hy : IsUnitO M y) : IsUnitO M 
     calc x * y * (x' * y') = (x * x') * (y * y') := by ring
       _ = 1 := by rw [e, e', one_mul]⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨M.L.O.pow_mem (M.L.O.neg_mem M.L.O.one_mem) n, (-1) ^ n, M.L.O.pow_mem (M.L.O.neg_mem M.L.O.one_mem) n, by rw [← mul_pow]; simp⟩`.
+-/
 theorem isUnitO_neg_one_pow (n : ℕ) : IsUnitO M ((-1 : E) ^ n) :=
   ⟨M.L.O.pow_mem (M.L.O.neg_mem M.L.O.one_mem) n, (-1) ^ n, M.L.O.pow_mem (M.L.O.neg_mem M.L.O.one_mem) n, by
     rw [← mul_pow]; simp⟩
 
+/- English proof (translation)
+Take `⟨hx, y, hy, e⟩` from `hx`. Conclude with `⟨Formalism.MainNotions.LocalModelPeriodLattices.cj_mem_O M.L x hx, M.L.cj y, Formalism.MainNotions.LocalModelPeriodLattices.cj_mem_O M.L y hy, by`. Rewrite using `[← map_mul, e, map_one]⟩`.
+-/
 theorem isUnitO_cj {x : E} (hx : IsUnitO M x) : IsUnitO M (M.L.cj x) := by
   obtain ⟨hx, y, hy, e⟩ := hx
   exact ⟨Formalism.MainNotions.LocalModelPeriodLattices.cj_mem_O M.L x hx, M.L.cj y, Formalism.MainNotions.LocalModelPeriodLattices.cj_mem_O M.L y hy, by
@@ -224,6 +329,11 @@ theorem isUnitO_cj {x : E} (hx : IsUnitO M x) : IsUnitO M (M.L.cj x) := by
 
 variable {H : HermSp M V} {r : ℕ}
 
+/- English proof (translation)
+Unfold `FPair.MMgen HermSp.MMfam`. Use `split`. Both sides reduce to the same expression. Name the introduced variables `g hg`. Rewrite `hg` using `[hs]`.
+
+Consider the cases of `hg`.
+-/
 theorem MMgen_eq (P : FPair H r) (hs : M.split = none) : P.MMgen = Sum.elim P.A.f P.B.f := by
   unfold FPair.MMgen HermSp.MMfam
   split
@@ -232,6 +342,29 @@ theorem MMgen_eq (P : FPair H r) (hs : M.split = none) : P.MMgen = Sum.elim P.A.
     rw [hs] at hg
     cases hg
 
+/- English proof (translation)
+Use `set c : E →+* E := (M.L.cj : E ≃ₐ[F] E).toAlgHom.toRingHom with hc`. Establish `hcx : ∀ x, c x = M.L.cj x` using `fun _ => rfl`. Use `set Zh := H.Zhat P.A.f P.B.f with hZh`. Establish `hG : H.gram (Sum.elim P.A.f P.B.f) = Matrix.fromBlocks (Matrix.diagonal fun i => if i = Fin.last r then -(algebraMap F E P.A.T) else 0) Zh (Zh.transpose.map c) (Matrix.diagonal fun i => if i = Fin.last r then -(algebraMap F E P.B.T) else 0)`. Use extensionality with `i j`.
+
+Apply the tactic sequence `rcases i with a | a <;> rcases j with b | b`. Simplify using `only [HermSp.gram, Matrix.of_apply, Sum.elim_inl, Matrix.fromBlocks_apply₁₁, Matrix.diagonal_apply]`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Distinguish the cases in `ha : a = Fin.last r`.
+
+Substitute `ha` using the available equality. Simplify using `[P.A.h_zz]`. Simplify using `[ha, P.A.h_iso a a (Or.inl ha)]`. Rewrite using `[if_neg hab]`. Distinguish the cases in `ha : a = Fin.last r`.
+
+Conclude with `P.A.h_iso b a (Or.inl (fun h => hab (by rw [ha, h])))`. Conclude with `P.A.h_iso b a (Or.inr ha)`. Simplify using `[HermSp.gram, hZh, HermSp.Zhat]`. Simplify using `only [HermSp.gram, Matrix.of_apply, Sum.elim_inl, Sum.elim_inr, Matrix.fromBlocks_apply₂₁, Matrix.map_apply, Matrix.transpose_apply, hZh, HermSp.Zhat, hcx]`. Conclude with `H.h_herm _ _`.
+
+Simplify using `only [HermSp.gram, Matrix.of_apply, Sum.elim_inr, Matrix.fromBlocks_apply₂₂, Matrix.diagonal_apply]`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Distinguish the cases in `ha : a = Fin.last r`. Substitute `ha` using the available equality.
+
+Simplify using `[P.B.h_zz]`. Simplify using `[ha, P.B.h_iso a a (Or.inl ha)]`. Rewrite using `[if_neg hab]`. Distinguish the cases in `ha : a = Fin.last r`. Conclude with `P.B.h_iso b a (Or.inl (fun h => hab (by rw [ha, h])))`.
+
+Conclude with `P.B.h_iso b a (Or.inr ha)`. Rewrite using `[MMgen_eq P hs, hG, Formalism.HermitianLatticeCounting.Final.LocalIntegralStructure.gramDetGen E r (Zh.transpose.map c) Zh]`. Establish `d1 : (Zh.transpose.map c).det = M.L.cj Zh.det`. Rewrite using `[← hcx, RingHom.map_det, ← Matrix.det_transpose]`. Both sides reduce to the same expression.
+
+Establish `d2 : ((Zh.transpose.map c).submatrix Fin.castSucc Fin.castSucc).det = M.L.cj (Zh.submatrix Fin.castSucc Fin.castSucc).det`. Rewrite using `[← hcx, RingHom.map_det, ← Matrix.det_transpose]`. Both sides reduce to the same expression. Establish `e1 : P.Dm (r + 1) = Zh.det`. Unfold `FPair.Dm HermSp.Dl`.
+
+Rewrite using `[dif_pos le_rfl]`. Both sides reduce to the same expression. Establish `e2 : P.Dm r = (Zh.submatrix Fin.castSucc Fin.castSucc).det`. Unfold `FPair.Dm HermSp.Dl`. Rewrite using `[dif_pos (Nat.le_succ r)]`.
+
+Both sides reduce to the same expression. Rewrite using `[d1, d2]`. Unfold `FPair.Gv HermSp.Gdet HermSp.normE`. Express the relevant statement in the definitionally equal form `_ = (-1) ^ (r + 1) * (P.Dm (r + 1) * M.L.cj (P.Dm (r + 1)) - algebraMap F E (P.A.T * P.B.T) * (P.Dm r * M.L.cj (P.Dm r)))`. Rewrite using `[e1, e2, map_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem gram_det_eq (P : FPair H r) (hs : M.split = none) :
     (H.gram P.MMgen).det = (-1) ^ (r + 1) * P.Gv := by
   set c : E →+* E := (M.L.cj : E ≃ₐ[F] E).toAlgHom.toRingHom with hc
@@ -288,6 +421,13 @@ theorem gram_det_eq (P : FPair H r) (hs : M.split = none) :
   rw [e1, e2, map_mul]
   ring
 
+/- English proof (translation)
+Take `⟨hs, hG, hD⟩` from `hP`. Unfold `FPair.Hp`. Establish `h1 : M.modK (algebraMap F E (theta M)) = 1`. Rewrite using `[theta_eq_one hs, map_one]`. Conclude with `modK_unitO hOK hs isUnitO_one`.
+
+Establish `h2 : M.modK (H.gram P.MMgen).det = 1`. Rewrite using `[gram_det_eq P hs]`. Conclude with `modK_unitO hOK hs (isUnitO_mul (isUnitO_neg_one_pow _) hG)`. Establish `h3 : ∏ l ∈ P.ends, M.modK (P.Dm l * M.L.cj (P.Dm l)) = 1` using `Finset.prod_eq_one (fun l hl => modK_unitO hOK hs (isUnitO_mul (hD l hl) (isUnitO_cj (hD l hl))))`. Rewrite using `[h1, h2, h3]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem NG_Hp_one (hOK : M.OK) (P : FPair H r) (hP : P.PrimeTo) : P.Hp = 1 := by
   obtain ⟨hs, hG, hD⟩ := hP
   unfold FPair.Hp
@@ -306,6 +446,23 @@ section K2
 
 open Formalism.MainNotions.S.Cnt
 
+/- English proof (translation)
+Take `⟨_, _, _, _, hlf, _, _, _, _, _, hrd, hg1, hg1', hg2, hg2', _, _, _, _, _, _, hgap, hT, hClm, hCl⟩` from `hH.1`. Take `⟨_, _, _, _, _, _, _, _, _, _, _, _, _, hTg⟩` from `hH.2.1`. Establish `hm1 : (1 : ℝ) ≤ D.R.m`. Use `D.R.two_le_m` as an intermediate fact. Conclude with `(by omega : 1 ≤ D.R.m)` after adjusting the coercions.
+
+Establish `hk0 : (0 : ℝ) ≤ D.R.k` using `Nat.cast_nonneg _`. Establish `hr0 : (0 : ℝ) ≤ D.R.r` using `Nat.cast_nonneg _`. Use `⟨hk, Fin.forall_fin_two.2 ⟨⟨hg1, hg1'⟩, ⟨hg2, hg2'⟩⟩, ?_, ?_, ?_, ?_, D.sp.cm.cmUnram⟩` and prove the remaining obligations. Introduce `τ a c hac`. Establish `hG : 0 ≤ Cl * (D.R.k : ℝ) * (D.R.m : ℝ) ^ 4 + (D.R.r : ℝ) * (D.R.m : ℝ) ^ 10` using `by positivity`.
+
+Establish `h1` using `abs_gap_of_consec (lamS D.R (D.hc τ)) _ hG (hgap τ) a c hac`. Use `lt_of_le_of_lt ?_ h1` and prove the remaining obligations. Establish `h3 : (D.R.m : ℝ) ^ 3 ≤ (D.R.m : ℝ) ^ 4` using `pow_le_pow_right₀ hm1 (by norm_num)`. Establish `h4 : Cl * (D.R.k : ℝ) * (D.R.m : ℝ) ^ 3 ≤ Cl * (D.R.k : ℝ) * (D.R.m : ℝ) ^ 4` using `mul_le_mul_of_nonneg_left h3 (by positivity)`. Establish `h5 : 0 ≤ (D.R.r : ℝ) * (D.R.m : ℝ) ^ 10` using `by positivity`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite `hrd` using `[le_div_iff₀ hCl]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hf2 : (2 : ℝ) ≤ D.R.f`. Establish `: 2 ≤ D.R.f`.
+
+Unfold `Ranks.f Ranks.n`. Use `D.R.ord_pos` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Conclude with `this` after adjusting the coercions. Establish `hlf0 : 0 < Real.log (D.R.f : ℝ)` using `Real.log_pos (by linarith)`.
+
+Break down `Nat.eq_zero_or_pos D.R.rS with h0 | h0` into its components or cases. It suffices to derive a contradiction. Rewrite `hlf` using `[h0]`. Simplify using `at hlf`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hr1 : (1 : ℝ) ≤ D.R.rS` using `by exact_mod_cast h0`. Use `le_trans hlf (Real.sqrt_le_iff.2 ⟨by positivity, ?_⟩)` and prove the remaining obligations. Establish `: ((D.R.rS : ℝ) ^ 2) ^ 2 = (D.R.rS : ℝ) ^ 4` using `by ring`. Rewrite using `[this]`. Conclude with `le_self_pow₀ hr1 (by norm_num)`.
+
+Introduce `u`. Use `⟨(hT u).2, Nat.Coprime.mul_right ?_ ?_⟩` and prove the remaining obligations. Conclude with `(Nat.coprime_primes (D.mem u).A.T_prime (D.host.g_prime 0)).2 (hTg u).1`. Conclude with `(Nat.coprime_primes (D.mem u).A.T_prime (D.host.g_prime 1)).2 (hTg u).2`.
+-/
 theorem k_parameter_bound_of_hypotheses (D : D7) (large₂ : SizeData₂ D) (C' Cl Cg cb Cu cT CT C0 : ℝ)
     (hH : Hyp0 D large₂ C' Cl Cg cb Cu cT CT C0)
     (hk : Cl * (D.R.m : ℝ) ^ 6 * large₂.sc.L ≤ (D.R.k : ℝ) * Real.log D.R.k) : NonGenericAndKTwoTheorems.KTwoParameterConditions D large₂ Cl Cg CT := by
@@ -352,6 +509,11 @@ theorem k_parameter_bound_of_hypotheses (D : D7) (large₂ : SizeData₂ D) (C' 
 
 variable {eps : ℝ} (Fm : FamP eps)
 
+/- English proof (translation)
+Establish `he` using `eps_pos Fm`. Take `⟨x0, _, hx0⟩` from `ev_rpow (show 0 < eps / 100 by positivity) (sCl Fm)`. Use `ownEv_intro Fm x0 (fun x hx hx1 i hH => ⟨hH, k_parameter_bound_of_hypotheses _ _ _ _ _ _ _ _ _ _ hH ?_⟩)` and prove the remaining obligations. Establish `hs` using `(Fm.sizes x hx1 i).2.2.2.1.2.2.2.2.2.2.1`. Unfold `szTh at hs`.
+
+Rewrite `hs` using `[Fm.L_x x i hx1, Fm.L_eps]`. Use `le_trans ?_ hs` and prove the remaining obligations. Establish `hL : 0 ≤ (Fm.L x i).sc.L` using `by unfold Scale.L; exact Real.rpow_nonneg (le_of_lt (lt_trans one_pos (Fm.L x i).sc.one_lt_alt)) _`. Use `hx0 x hx` as an intermediate fact. Use `gcongr`.
+-/
 theorem eventually_hypotheses_K2_of_scale (Cg cb Cu cT CT C0 : ℝ) :
     OwnEv Fm fun C' Cl x i => Hyp0 (Fm.D x i) (Fm.L x i) C' Cl Cg cb Cu cT CT C0 →
       NonGenericAndKTwoTheorems.KTwoHypotheses (Fm.D x i) (Fm.L x i) C' Cl Cg cb Cu cT CT C0 := by
@@ -366,6 +528,9 @@ theorem eventually_hypotheses_K2_of_scale (Cg cb Cu cT CT C0 : ℝ) :
   have := hx0 x hx
   gcongr
 
+/- English proof (translation)
+The claim follows from `OwnEv.mono (fun _ _ _ _ hh hH => ⟨hh.1.1 (hh.2 hH), hh.1.2 (hh.2 hH)⟩) (((h.1 Cg cb Cu cT CT C0).and (h.2 Cg cb Cu cT CT C0)).and (eventually_hypotheses_K2_of_scale Fm Cg cb Cu cT CT C0))`.
+-/
 theorem kernel_square_bound_under_hypotheses (h : NonGenericAndKTwoTheorems.FamilyNonIdentityTermSummability Fm) (Cg cb Cu cT CT C0 : ℝ) :
     OwnEv Fm fun C' Cl x i => Hyp0 (Fm.D x i) (Fm.L x i) C' Cl Cg cb Cu cT CT C0 →
       (∀ u : (Fm.D x i).what₂.Word,
@@ -386,6 +551,9 @@ def TheoremK2PairBound (D : D7) (u : D.what₂.Word) : Prop :=
 def RelevantZeroTermsVanish (D : D7) : Prop :=
   ∀ u u' : D.what₂.Word, u ≠ u' → ∀ t : D.s.Term u u', D.s.relevant t → D.s.Gterm t = 0 → D.s.aTerm u u' t = 0
 
+/- English proof (translation)
+Introduce `hH u`. Use `FiniteDimensional.complete ℂ (D.s.Cu u)` as an intermediate fact. Use `⟨?_, le_trans (h1 hH.1 u u (NonGenericAndKTwoTheorems.TermsPP D u u) (Or.inr (Or.inr (Or.inl rfl))) (hB hH u).1) (hB hH u).2⟩` and prove the remaining obligations. Establish `hs : Summable (fun t : D.s.Term u u => ‖D.s.aTerm u u t‖)` using `(h2 hH.1 u u).2`. Conclude with `(hs.subtype (NonGenericAndKTwoTheorems.TermsPP D u u)).of_norm`.
+-/
 theorem kernel_second_part_of_pair_bound (D : D7) (large₂ : SizeData₂ D) (C' Cl Cg cb Cu cT CT C0 : ℝ)
     (h1 : NonGenericAndKTwoTheorems.adm1 D large₂ C' Cl Cg cb Cu cT CT C0) (h2 : NonGenericAndKTwoTheorems.adm2 D large₂ C' Cl Cg cb Cu cT CT C0)
     (hB : NonGenericAndKTwoTheorems.KTwoHypotheses D large₂ C' Cl Cg cb Cu cT CT C0 → ∀ u, TheoremK2PairBound D u) :
@@ -396,6 +564,9 @@ theorem kernel_second_part_of_pair_bound (D : D7) (large₂ : SizeData₂ D) (C'
   have hs : Summable (fun t : D.s.Term u u => ‖D.s.aTerm u u t‖) := (h2 hH.1 u u).2
   exact (hs.subtype (NonGenericAndKTwoTheorems.TermsPP D u u)).of_norm
 
+/- English proof (translation)
+Introduce `hH u u' hne t ht`. Distinguish the cases in `hr : D.s.relevant t`. Conclude with `hR hH u u' hne t hr ht`. Conclude with `h4 hH.1 u u' t hr`.
+-/
 theorem kernel_third_part_of_relevant_case (D : D7) (large₂ : SizeData₂ D) (C' Cl Cg cb Cu cT CT C0 : ℝ)
     (h4 : NonGenericAndKTwoTheorems.ArchimedeanSignatureMatching D large₂ C' Cl Cg cb Cu cT CT C0)
     (hR : NonGenericAndKTwoTheorems.KTwoHypotheses D large₂ C' Cl Cg cb Cu cT CT C0 → RelevantZeroTermsVanish D) :
@@ -405,6 +576,9 @@ theorem kernel_third_part_of_relevant_case (D : D7) (large₂ : SizeData₂ D) (
   · exact hR hH u u' hne t hr ht
   · exact h4 hH.1 u u' t hr
 
+/- English proof (translation)
+Introduce `hA` and use `⟨kernel_second_part_of_pair_bound D large₂ _ _ _ _ _ _ _ _ hA.1 hA.2.1 (fun hH => (hB hA hH).1), kernel_third_part_of_relevant_case D large₂ _ _ _ _ _ _ _ _ hA.2.2.2.1 (fun hH => (hB hA hH).2)⟩`.
+-/
 theorem theorem_K2_of_pair_bounds (D : D7) (large₂ : SizeData₂ D) (X : TermTie D) (Gv : GaugeVol D)
     (C' Cl Cg cb Cu cT CT C0 Cθ C1 cq Cq CH CM : ℝ)
     (hB : NonGenericAndKTwoTheorems.admitted D large₂ X Gv C' Cl Cg cb Cu cT CT C0 Cθ C1 cq Cq CH CM →
@@ -413,6 +587,9 @@ theorem theorem_K2_of_pair_bounds (D : D7) (large₂ : SizeData₂ D) (X : TermT
   ⟨kernel_second_part_of_pair_bound D large₂ _ _ _ _ _ _ _ _ hA.1 hA.2.1 (fun hH => (hB hA hH).1),
     kernel_third_part_of_relevant_case D large₂ _ _ _ _ _ _ _ _ hA.2.2.2.1 (fun hH => (hB hA hH).2)⟩
 
+/- English proof (translation)
+Introduce `hA` and use `⟨fun Cg cb Cu cT CT C0 => OwnEv.mono (fun _ _ _ _ hh => kernel_second_part_of_pair_bound _ _ _ _ _ _ _ _ _ _ hh.1.1 hh.1.2 (fun hH => (hh.2 hH).1)) (((hA.1 Cg cb Cu cT CT C0).and (hA.2.1 Cg cb Cu cT CT C0)).and (hB hA Cg cb Cu cT CT C0)), fun Cg cb Cu cT CT C0 => OwnEv.mono (fun …`.
+-/
 theorem theorem_K2_family_of_pair_bounds (At : ∀ x, Fm.x1 < x → ∀ i : Fm.Ix x, TermTie (Fm.D x i))
     (Gv : ∀ x, Fm.x1 < x → ∀ i : Fm.Ix x, GaugeVol (Fm.D x i))
     (hB : NonGenericAndKTwoTheorems.AdmF Fm At Gv → ∀ Cg cb Cu cT CT C0 : ℝ, OwnEv Fm fun C' Cl x i =>
@@ -430,13 +607,24 @@ end K2
 
 section Copies
 
+/- English proof (translation)
+The claim follows from `k_parameter_bound_of_hypotheses D large₂ C' Cl Cg cb Cu cT CT C0 hH hk`.
+-/
 theorem k_parameter_bound_unfolded_of_hyps (D : D7) (large₂ : SizeData₂ D) (C' Cl Cg cb Cu cT CT C0 : ℝ)
     (hH : Cnt.Hyp0 D large₂ C' Cl Cg cb Cu cT CT C0)
     (hk : Cl * (D.R.m : ℝ) ^ 6 * large₂.sc.L ≤ (D.R.k : ℝ) * Real.log D.R.k) : UnitaryVolumeMass.KTwoParameterConditions D large₂ Cl Cg CT :=
   k_parameter_bound_of_hypotheses D large₂ C' Cl Cg cb Cu cT CT C0 hH hk
 
+/- English proof (translation)
+The claim follows from `schur_lemma_unitary_distinct_params`.
+-/
 theorem schur_lemma_statement : UnitaryVolumeMass.stSchurLem := schur_lemma_unitary_distinct_params
 
+/- English proof (translation)
+Establish `h1 : N / (p ^ j * (p - 1)) = 2 * N / (2 * (p ^ j * (p - 1)))`. Rewrite using `[Nat.mul_div_mul_left _ _ (by norm_num : 0 < 2)]`. Rewrite using `[h1]`. Apply `Nat.div_le_div_left` to reduce the goal to its premises. Establish `: p ≤ 2 * (p - 1)` using `by omega`.
+
+Combine the equalities or inequalities in the displayed calculation. Check the signs of the components of the expression.
+-/
 theorem minkM_term (N p j : ℕ) (hp : 2 ≤ p) : N / (p ^ j * (p - 1)) ≤ 2 * N / p ^ (j + 1) := by
   have h1 : N / (p ^ j * (p - 1)) = 2 * N / (2 * (p ^ j * (p - 1))) := by
     rw [Nat.mul_div_mul_left _ _ (by norm_num : 0 < 2)]
@@ -448,6 +636,15 @@ theorem minkM_term (N p j : ℕ) (hp : 2 ≤ p) : N / (p ^ j * (p - 1)) ≤ 2 * 
       _ = 2 * (p ^ j * (p - 1)) := by ring
   · positivity
 
+/- English proof (translation)
+Unfold `NonGenericAndKTwoTheorems.minkM`. Rewrite using `[← Int.natCast_dvd_natCast]`. Use `push_cast`. Apply `Finset.prod_dvd_of_coprime` to reduce the goal to its premises. Introduce `p hp q hq hne`.
+
+Establish `hp'` using `(Finset.mem_filter.1 hp).2`. Establish `hq'` using `(Finset.mem_filter.1 hq).2`. Conclude with `IsCoprime.pow (Nat.isCoprime_iff_coprime.2 ((Nat.coprime_primes hp' hq').2 hne))`. Introduce `p hp`. Establish `hp'` using `(Finset.mem_filter.1 hp).2`.
+
+Establish `key : p ^ (∑ j ∈ Finset.range (N + 1), N / (p ^ j * (p - 1))) ∣ (2 * N).factorial`. Rewrite using `[hp'.pow_dvd_factorial_iff (b := 2 * N + 2) (lt_of_le_of_lt (Nat.log_le_self _ _) (by omega))]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_Ico_eq_sum_range]`. Both sides reduce to the same expression.
+
+Use `_ ≤ ∑ i ∈ Finset.Ico 1 (2 * N + 2), 2 * N / p ^ i := Finset.sum_le_sum_of_subset (Finset.Ico_subset_Ico le_rfl (by omega))`. Conclude with `key` after adjusting the coercions.
+-/
 theorem minkM_dvd (N : ℕ) : NonGenericAndKTwoTheorems.minkM N ∣ (2 * N).factorial := by
   unfold NonGenericAndKTwoTheorems.minkM
   rw [← Int.natCast_dvd_natCast]
@@ -470,8 +667,14 @@ theorem minkM_dvd (N : ℕ) : NonGenericAndKTwoTheorems.minkM N ∣ (2 * N).fact
             Finset.sum_le_sum_of_subset (Finset.Ico_subset_Ico le_rfl (by omega))
     exact_mod_cast key
 
+/- English proof (translation)
+Introduce `N G hG` and use `(h N G hG).trans (minkM_dvd N)`.
+-/
 theorem minkowski_weak_of_exact (h : NonGenericAndKTwoTheorems.adm11) : UnitaryVolumeMass.stBRmink := fun N G hG => (h N G hG).trans (minkM_dvd N)
 
+/- English proof (translation)
+The claim follows from `minkowski_weak_of_exact h`.
+-/
 theorem minkowski_weak_hyp_of_exact_hyp (h : NonGenericAndKTwoTheorems.adm11) : AuxiliaryNormPrimes.MinkowskiFiniteSubgroupOrder := minkowski_weak_of_exact h
 
 end Copies
@@ -480,12 +683,21 @@ section Vol
 
 def gvTriv (D : D7) : Cnt.GaugeVol D := ⟨fun _ => 0, fun _ => 0, fun _ _ _ _ _ => rfl⟩
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ _ _ _` and use `rfl`.
+-/
 theorem trivial_gauge_condition_holds (D : D7) : NonGenericAndKTwoTheorems.DefiniteComplementMassVolumes D (gvTriv D) := fun _ _ _ _ _ _ _ _ => rfl
 
 variable {eps : ℝ} (Fm : FamP eps)
 
+/- English proof (translation)
+Introduce `_ _ _` and use `trivial_gauge_condition_holds _`.
+-/
 theorem MassVolF_triv : PX.MassVolF Fm (fun _ _ _ => gvTriv _) := fun _ _ _ => trivial_gauge_condition_holds _
 
+/- English proof (translation)
+Introduce and unpack `⟨a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, _, a13, a14, a15⟩`. Conclude with `h ⟨a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, MassVolF_triv Fm, a13, a14, a15⟩`.
+-/
 theorem kernel_family_of_trivial_gauge (At : ∀ x, Fm.x1 < x → ∀ i : Fm.Ix x, TermTie (Fm.D x i))
     (Gv : ∀ x, Fm.x1 < x → ∀ i : Fm.Ix x, Cnt.GaugeVol (Fm.D x i))
     (h : NonGenericAndKTwoTheorems.FamilyNonIdentityTermSummabilityOfAdmissible Fm At (fun _ _ _ => gvTriv _)) : NonGenericAndKTwoTheorems.FamilyNonIdentityTermSummabilityOfAdmissible Fm At Gv := by
@@ -502,6 +714,11 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
 variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E]
 variable {M : Model F E} {V : Type} [AddCommGroup V] [Module E V]
 
+/- English proof (translation)
+Unfold `Model.psiR`. Use `split`. Both sides reduce to the same expression. Name the introduced variables `g hg`. Rewrite `hg` using `[hs]`.
+
+Consider the cases of `hg`.
+-/
 theorem psi_eq_psi_zero_of_not_split (hs : M.split = none) : M.psiR = M.L.psi0 := by
   unfold Model.psiR
   split
@@ -510,6 +727,11 @@ theorem psi_eq_psi_zero_of_not_split (hs : M.split = none) : M.psiR = M.L.psi0 :
     rw [hs] at hg
     cases hg
 
+/- English proof (translation)
+Establish `h` using `Formalism.MainNotions.LocalModelPeriodLattices.unitary_of M hOK (Formalism.MainNotions.LocalModelPeriodLattices.R_top M hOK).1 (Formalism.MainNotions.LocalModelPeriodLattices.R_top M hOK).2.1 (Formalism.MainNotions.LocalModelPeriodLattices.R_top M hOK).2.2 x`. Rewrite `h` using `[psi_eq_psi_zero_of_not_split hs]`. Establish `h1 : M.L.psi0 x * M.L.psi0 (-x) = 1`. Rewrite using `[← AddChar.map_add_eq_mul, add_neg_cancel, AddChar.map_zero_eq_one]`. Rewrite `h1` using `[← h, Complex.mul_conj]`.
+
+Establish `h2 : Complex.normSq (M.L.psi0 x) = 1` using `by exact_mod_cast h1`. Rewrite `h2` using `[Complex.normSq_eq_norm_sq]`. Establish `h3 : 0 ≤ ‖M.L.psi0 x‖` using `norm_nonneg _`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem norm_additiveCharacter_typePrime_eq_one (hOK : M.OK) (hs : M.split = none) (x : E) : ‖M.L.psi0 x‖ = 1 := by
   have h := Formalism.MainNotions.LocalModelPeriodLattices.unitary_of M hOK (Formalism.MainNotions.LocalModelPeriodLattices.R_top M hOK).1 (Formalism.MainNotions.LocalModelPeriodLattices.R_top M hOK).2.1
     (Formalism.MainNotions.LocalModelPeriodLattices.R_top M hOK).2.2 x
@@ -524,6 +746,9 @@ theorem norm_additiveCharacter_typePrime_eq_one (hOK : M.OK) (hs : M.split = non
 
 variable {H : HermSp M V} {r : ℕ} {P : FPair H r}
 
+/- English proof (translation)
+Unfold `om FrameD.psiOf`. Rewrite using `[norm_mul, norm_inv, norm_additiveCharacter_typePrime_eq_one hOK hs, norm_additiveCharacter_typePrime_eq_one hOK hs]`. Simplify using the standard rewrite rules.
+-/
 theorem norm_om (hOK : M.OK) (hs : M.split = none) (t : Term V M r) : ‖om P t‖ = 1 := by
   unfold om FrameD.psiOf
   rw [norm_mul, norm_inv, norm_additiveCharacter_typePrime_eq_one hOK hs, norm_additiveCharacter_typePrime_eq_one hOK hs]
@@ -532,6 +757,13 @@ theorem norm_om (hOK : M.OK) (hs : M.split = none) (t : Term V M r) : ‖om P t�
 def NGEqStep (P : FPair H r) (R : Reps P) : Prop :=
   ∀ d : Datum P, (R.RT d).Subsingleton ∧ ∀ t ∈ R.RT d, mu P t = 1 ∧ ¬ BBne (H := H) t
 
+/- English proof (translation)
+Break down `(R.RT d).eq_empty_or_nonempty with he | ⟨t0, ht0⟩` into its components or cases. Establish `e1 : IsEmpty {t // t ∈ R.RT d ∧ S t}` using `⟨fun t => (Set.ext_iff.1 he t.1).1 t.2.1⟩`. Establish `e2 : IsEmpty (R.RT d)` using `⟨fun t => (Set.ext_iff.1 he t.1).1 t.2⟩`. Unfold `amp`. Rewrite using `[tsum_empty, tsum_empty]`.
+
+Simplify using the standard rewrite rules. Unfold `amp`. Rewrite using `[tsum_eq_single (⟨t0, ht0, hS t0 ht0⟩ : {t // t ∈ R.RT d ∧ S t}) (fun b hb => absurd (Subtype.ext (hd b.2.1 ht0)) hb), tsum_eq_single (⟨t0, ht0⟩ : R.RT d) (fun b hb => absurd (Subtype.ext (hd b.2 ht0)) hb)]`. Establish `h1 : ‖((mu P t0 : ℝ) : ℂ) * om P t0‖₊ = 1`. Apply `NNReal.eq` to reduce the goal to its premises.
+
+Simplify using `[hμ t0 ht0, norm_om hOK hs t0]`. Rewrite using `[h1, hμ t0 ht0]`. Simplify using the standard rewrite rules.
+-/
 theorem amp_sq_eq (hOK : M.OK) (hs : M.split = none) (R : Reps P) (d : Datum P) (hd : (R.RT d).Subsingleton)
     (hμ : ∀ t ∈ R.RT d, mu P t = 1) (S : Term V M r → Prop) (hS : ∀ t ∈ R.RT d, S t) :
     ((‖amp R d S‖₊ : ENNReal)) ^ 2 = ∑' t : R.RT d, ENNReal.ofReal (mu P t.1) := by
@@ -551,6 +783,11 @@ theorem amp_sq_eq (hOK : M.OK) (hs : M.split = none) (R : Reps P) (d : Datum P) 
     rw [h1, hμ t0 ht0]
     simp
 
+/- English proof (translation)
+Use `⟨NG_Hp_one hOK P hP, ?_, ?_⟩` and prove the remaining obligations. Unfold `sumSq nn`. Use `tsum_congr (fun d => ?_)` and prove the remaining obligations. Rewrite using `[amp_sq_eq hOK hP.1 R d.1 (h d.1).1 (fun t ht => ((h d.1).2 t ht).1) _ (fun t ht => ((h d.1).2 t ht).2)]`. Unfold `sumSq nn`.
+
+Use `tsum_congr (fun d => ?_)` and prove the remaining obligations. Rewrite using `[amp_sq_eq hOK hP.1 R d.1 (h d.1).1 (fun t ht => ((h d.1).2 t ht).1) _ (fun _ _ => trivial)]`.
+-/
 theorem NG_equality_of (hOK : M.OK) (hP : P.PrimeTo) (R : Reps P) (h : NGEqStep P R) (d0 : Datum P) :
     P.Hp = 1 ∧ sumSq R d0 (fun t => ¬ BBne (H := H) t) = nn R d0 ∧ sumSq R d0 (fun _ => True) = nn R d0 := by
   refine ⟨NG_Hp_one hOK P hP, ?_, ?_⟩
@@ -568,10 +805,20 @@ def NGIneq (k : ℕ) (P : FPair H r) (C : ℝ) : Prop :=
     sumSq R d0 (fun t => ¬ BBne (H := H) t) ≤ ENNReal.ofReal (P.Hp ^ (C * ((r : ℝ) + 1) ^ 2)) * nn R d0 ∧
     sumSq R d0 (fun _ => True) ≤ ENNReal.ofReal (P.Hp ^ (C * ((r : ℝ) + 1) ^ 2)) * nn R d0
 
+/- English proof (translation)
+Introduce `R d0` and use `⟨(h3 R d0).1, (h3 R d0).2.1, (h3 R d0).2.2, fun hP => NG_equality_of hOK hP R (hE hP R) d0⟩`.
+-/
 theorem NGAt_of (hOK : M.OK) (k : ℕ) (C : ℝ) (h3 : NGIneq k P C) (hE : P.PrimeTo → ∀ R : Reps P, NGEqStep P R) :
     NGAt k P C := fun R d0 =>
   ⟨(h3 R d0).1, (h3 R d0).2.1, (h3 R d0).2.2, fun hP => NG_equality_of hOK hP R (hE hP R) d0⟩
 
+/- English proof (translation)
+Introduce `R d0`. Take `⟨h1, h2, h3⟩` from `NG_equality_of hOK hP R (hE R) d0`. Establish `hz : sumSq R d0 (BBne (H` using `H)) = 0 := by`. Unfold `sumSq`. Rewrite using `[ENNReal.tsum_eq_zero]`.
+
+Introduce `d`. Establish `e1 : IsEmpty {t // t ∈ R.RT d.1 ∧ BBne (H` using `H) t} := ⟨fun t => ((hE R d.1).2 t.1 t.2.1).2 t.2.2⟩`. Unfold `amp`. Rewrite using `[tsum_empty]`. Simplify using the standard rewrite rules.
+
+Use `⟨by rw [hz]; exact bot_le, ?_, ?_, fun _ => ⟨h1, h2, h3⟩⟩` and prove the remaining obligations. Rewrite using `[h2, h1]`. Simplify using the standard rewrite rules. Rewrite using `[h3, h1]`. Simplify using the standard rewrite rules.
+-/
 theorem NGAt_of_primeTo (hOK : M.OK) (k : ℕ) (C : ℝ) (hP : P.PrimeTo) (hE : ∀ R : Reps P, NGEqStep P R) :
     NGAt k P C := by
   intro R d0
@@ -599,6 +846,9 @@ variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableS
 variable {M : Model F E} {V : Type} [AddCommGroup V] [Module E V]
 variable {H : HermSp M V} {r : ℕ}
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [H.h_zero_left]`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, H.h_add_left, H.h_smul_left, ih]`.
+-/
 theorem h_sum_left {ι : Type} (s : Finset ι) (c : ι → E) (m : ι → V) (y : V) :
     H.h (∑ i ∈ s, c i • m i) y = ∑ i ∈ s, c i * H.h (m i) y := by
   classical
@@ -606,6 +856,21 @@ theorem h_sum_left {ι : Type} (s : Finset ι) (c : ι → E) (m : ι → V) (y 
   | empty => simp [H.h_zero_left]
   | insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, H.h_add_left, H.h_smul_left, ih]
 
+/- English proof (translation)
+Take `⟨c, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun E).1 hsp`. Use `set G := H.gram m with hG`. Set `G₀ : Matrix ι ι M.L.O` to `fun a b => ⟨G a b, hint (m b) (hmem b) a⟩`. Establish `hG₀ : G = G₀.map M.L.O.subtype` using `by ext a b; rfl`. Establish `hadj : ∀ a b, G.adjugate a b ∈ M.L.O`.
+
+Introduce `a b`. Rewrite using `[hG₀, ← RingHom.mapMatrix_apply, ← RingHom.map_adjugate]`. Conclude with `(G₀.adjugate a b).2`. Establish `hGc : ∀ j, (G.mulVec c) j ∈ M.L.O`. Introduce `j`.
+
+Establish `: (G.mulVec c) j = H.h (∑ i, c i • m i) (m j)`. Rewrite using `[h_sum_left]`. Simplify using `only [Matrix.mulVec, dotProduct, hG, HermSp.gram, Matrix.of_apply]`. Conclude with `Finset.sum_congr rfl (fun i _ => mul_comm _ _)`. Rewrite using `[this]`.
+
+Conclude with `hint _ hv j`. Establish `hdc : ∀ i, G.det * c i ∈ M.L.O`. Introduce `i`. Establish `e : G.adjugate.mulVec (G.mulVec c) = G.det • c`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.adjugate_mul, Matrix.smul_mulVec, Matrix.one_mulVec]`.
+
+Establish `e'` using `congrFun e i`. Simplify using `only [Pi.smul_apply, smul_eq_mul] at e'`. Rewrite using `[← e']`. Simplify using `only [Matrix.mulVec, dotProduct]`. Conclude with `M.L.O.sum_mem (fun j _ => M.L.O.mul_mem (hadj i j) (hGc j))`.
+
+Take `⟨_, y, hy, hdy⟩` from `hu`. Establish `hc : ∀ i, c i ∈ M.L.O`. Introduce `i`. Establish `: c i = y * (G.det * c i)` using `by rw [← mul_assoc, mul_comm y, hdy, one_mul]`. Rewrite using `[this]`.
+
+Conclude with `M.L.O.mul_mem hy (hdc i)`. Use `Submodule.sum_mem _ (fun i _ => ?_)` and prove the remaining obligations. Establish `: c i • m i = (⟨c i, hc i⟩ : M.L.O) • m i` using `rfl`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`.
+-/
 theorem sat_of_unit_gram {ι : Type} [Fintype ι] [DecidableEq ι] (abelian₂ : Submodule M.L.O V) (m : ι → V)
     (hmem : ∀ j, m j ∈ abelian₂) (hint : ∀ v ∈ abelian₂, ∀ j, H.h v (m j) ∈ M.L.O) (hu : IsUnitO M (H.gram m).det)
     (v : V) (hv : v ∈ abelian₂) (hsp : v ∈ Submodule.span E (Set.range m)) :
@@ -646,6 +911,9 @@ theorem sat_of_unit_gram {ι : Type} [Fintype ι] [DecidableEq ι] (abelian₂ :
   rw [this]
   exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)
 
+/- English proof (translation)
+Introduce and unpack `⟨v, hv, hsp, hn⟩`. Conclude with `hn (sat_of_unit_gram t.abelian₂ _ hmem hint hu v hv hsp)`.
+-/
 theorem not_BBne_of {t : Term V M r} (hmem : ∀ j, H.MMfam t j ∈ t.abelian₂)
     (hint : ∀ v ∈ t.abelian₂, ∀ j, H.h v (H.MMfam t j) ∈ M.L.O) (hu : IsUnitO M (H.gram (H.MMfam t)).det) :
     ¬ BBne (H := H) t := by
@@ -663,12 +931,18 @@ variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableS
 variable {M : Model F E} {V : Type} [AddCommGroup V] [Module E V]
 variable {H : HermSp M V} {r : ℕ}
 
+/- English proof (translation)
+Rewrite using `[H.h_herm _ y, h_sum_left, map_sum]`. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[map_mul, ← H.h_herm (m i) y]`.
+-/
 theorem h_sum_right {ι : Type} (s : Finset ι) (c : ι → E) (m : ι → V) (y : V) :
     H.h y (∑ i ∈ s, c i • m i) = ∑ i ∈ s, M.L.cj (c i) * H.h y (m i) := by
   rw [H.h_herm _ y, h_sum_left, map_sum]
   refine Finset.sum_congr rfl (fun i _ => ?_)
   rw [map_mul, ← H.h_herm (m i) y]
 
+/- English proof (translation)
+Use `H.h_add_left (x - x') x' y` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem h_sub_left (x x' y : V) : H.h (x - x') y = H.h x y - H.h x' y := by
   have := H.h_add_left (x - x') x' y
   rw [sub_add_cancel] at this
@@ -676,9 +950,17 @@ theorem h_sub_left (x x' y : V) : H.h (x - x') y = H.h x y - H.h x' y := by
 
 variable (Fr : FrameD H r)
 
+/- English proof (translation)
+The claim follows from `Submodule.span_mono (Set.image_mono (fun a (ha : a.val < i) => lt_of_lt_of_le ha hij))`.
+-/
 theorem Fj_mono {i j : ℕ} (hij : i ≤ j) : Fr.Fj i ≤ Fr.Fj j :=
   Submodule.span_mono (Set.image_mono (fun a (ha : a.val < i) => lt_of_lt_of_le ha hij))
 
+/- English proof (translation)
+Unfold `FrameD.Fj HermSp.X`. Use `congr 1`. Use extensionality with `v`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, _, rfl⟩`.
+
+Conclude with `⟨a, rfl⟩`. Introduce and unpack `⟨a, rfl⟩`. Conclude with `⟨a, a.2, rfl⟩`.
+-/
 theorem Fj_r : Fr.Fj r = H.X Fr.f := by
   unfold FrameD.Fj HermSp.X
   congr 1
@@ -687,14 +969,25 @@ theorem Fj_r : Fr.Fj r = H.X Fr.f := by
   · rintro ⟨a, _, rfl⟩; exact ⟨a, rfl⟩
   · rintro ⟨a, rfl⟩; exact ⟨a, a.2, rfl⟩
 
+/- English proof (translation)
+Unfold `FrameD.Fj`. Establish `: {a : Fin r | a.val < 0} = ∅` using `by ext a; simp`. Rewrite using `[this]`. Simplify using the standard rewrite rules.
+-/
 theorem Fj_zero : Fr.Fj 0 = ⊥ := by
   unfold FrameD.Fj
   have : {a : Fin r | a.val < 0} = ∅ := by ext a; simp
   rw [this]; simp
 
+/- English proof (translation)
+The claim follows from `Submodule.subset_span ⟨a, Nat.lt_succ_self _, rfl⟩`.
+-/
 theorem e_mem_Fj (a : Fin r) : Fr.e a ∈ Fr.Fj (a.val + 1) :=
   Submodule.subset_span ⟨a, Nat.lt_succ_self _, rfl⟩
 
+/- English proof (translation)
+Unfold `HermSp.X at hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨a, rfl⟩` from `hx`. Conclude with `Fr.h_iso _ _ (Or.inl (Fin.castSucc_lt_last a).ne)`.
+
+Consider the case `zero => exact H.h_zero_left _`. Consider the case `add x y _ _ hx hy => rw [H.h_add_left, hx, hy, add_zero]`. Consider the case `smul c x _ hx => rw [H.h_smul_left, hx, mul_zero]`.
+-/
 theorem h_X_f {x : V} (hx : x ∈ H.X Fr.f) (b : Fin (r + 1)) : H.h x (Fr.f b) = 0 := by
   unfold HermSp.X at hx
   induction hx using Submodule.span_induction with
@@ -705,9 +998,17 @@ theorem h_X_f {x : V} (hx : x ∈ H.X Fr.f) (b : Fin (r + 1)) : H.h x (Fr.f b) =
   | add x y _ _ hx hy => rw [H.h_add_left, hx, hy, add_zero]
   | smul c x _ hx => rw [H.h_smul_left, hx, mul_zero]
 
+/- English proof (translation)
+Rewrite using `[H.h_herm x (Fr.f b), h_X_f Fr hx, map_zero]`.
+-/
 theorem h_f_X {x : V} (hx : x ∈ H.X Fr.f) (b : Fin (r + 1)) : H.h (Fr.f b) x = 0 := by
   rw [H.h_herm x (Fr.f b), h_X_f Fr hx, map_zero]
 
+/- English proof (translation)
+Unfold `HermSp.X at hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨a, rfl⟩` from `hx`. Conclude with `h_f_X Fr hy _`.
+
+Consider the case `zero => exact H.h_zero_left _`. Consider the case `add x y _ _ hx hy => rw [H.h_add_left, hx, hy, add_zero]`. Consider the case `smul c x _ hx => rw [H.h_smul_left, hx, mul_zero]`.
+-/
 theorem h_X_X {x y : V} (hx : x ∈ H.X Fr.f) (hy : y ∈ H.X Fr.f) : H.h x y = 0 := by
   unfold HermSp.X at hx
   induction hx using Submodule.span_induction with
@@ -718,10 +1019,19 @@ theorem h_X_X {x y : V} (hx : x ∈ H.X Fr.f) (hy : y ∈ H.X Fr.f) : H.h x y = 
   | add x y _ _ hx hy => rw [H.h_add_left, hx, hy, add_zero]
   | smul c x _ hx => rw [H.h_smul_left, hx, mul_zero]
 
+/- English proof (translation)
+Introduce `_ hx _ hy` and use `h_X_X Fr hx hy`.
+-/
 theorem X_le_perp : H.X Fr.f ≤ H.perp (H.X Fr.f) := fun _ hx _ hy => h_X_X Fr hx hy
 
+/- English proof (translation)
+Introduce `_ hx` and use `h_f_X Fr hx _`.
+-/
 theorem z_mem_perp : Fr.z ∈ H.perp (H.X Fr.f) := fun _ hx => h_f_X Fr hx _
 
+/- English proof (translation)
+Use `Fj_mono Fr (Nat.sub_le j 1) (hg.2.1 j hj v hv)` as an intermediate fact. Establish `e : g v = (g v - v) + v` using `by abel`. Rewrite using `[e]`. Conclude with `Submodule.add_mem _ this hv`.
+-/
 theorem NSet_apply_Fj {g : V ≃ₗ[E] V} (hg : g ∈ Fr.NSet) {j : ℕ} (hj : j ≤ r) {v : V} (hv : v ∈ Fr.Fj j) :
     g v ∈ Fr.Fj j := by
   have := Fj_mono Fr (Nat.sub_le j 1) (hg.2.1 j hj v hv)
@@ -729,9 +1039,21 @@ theorem NSet_apply_Fj {g : V ≃ₗ[E] V} (hg : g ∈ Fr.NSet) {j : ℕ} (hj : j
   rw [e]
   exact Submodule.add_mem _ this hv
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ _ => rfl, fun j _ v _ => by simp, fun v _ => by simp⟩`.
+-/
 theorem NSet_one : (1 : V ≃ₗ[E] V) ∈ Fr.NSet :=
   ⟨fun _ _ => rfl, fun j _ v _ => by simp, fun v _ => by simp⟩
 
+/- English proof (translation)
+Use `⟨fun x y => ?_, fun j hj v hv => ?_, fun v hv => ?_⟩` and prove the remaining obligations. Use `show H.h (g (g' x)) (g (g' y)) = _`. Rewrite using `[hg.1, hg'.1]`. Use `show g (g' v) - v ∈ _`. Establish `e : g (g' v) - v = (g (g' v) - g' v) + (g' v - v)` using `by abel`.
+
+Rewrite using `[e]`. Conclude with `Submodule.add_mem _ (hg.2.1 j hj _ (NSet_apply_Fj Fr hg' hj hv)) (hg'.2.1 j hj v hv)`. Use `show g (g' v) - v ∈ _`. Establish `h1` using `hg'.2.2 v hv`. Establish `h2 : g' v ∈ H.perp (H.X Fr.f)`.
+
+Establish `e : g' v = (g' v - v) + v` using `by abel`. Rewrite using `[e]`. Conclude with `Submodule.add_mem _ (X_le_perp Fr h1) hv`. Establish `e : g (g' v) - v = (g (g' v) - g' v) + (g' v - v)` using `by abel`. Rewrite using `[e]`.
+
+Conclude with `Submodule.add_mem _ (hg.2.2 _ h2) h1`.
+-/
 theorem NSet_mul {g g' : V ≃ₗ[E] V} (hg : g ∈ Fr.NSet) (hg' : g' ∈ Fr.NSet) : g * g' ∈ Fr.NSet := by
   refine ⟨fun x y => ?_, fun j hj v hv => ?_, fun v hv => ?_⟩
   · show H.h (g (g' x)) (g (g' y)) = _
@@ -750,6 +1072,17 @@ theorem NSet_mul {g g' : V ≃ₗ[E] V} (hg : g ∈ Fr.NSet) (hg' : g' ∈ Fr.NS
     rw [e]
     exact Submodule.add_mem _ (hg.2.2 _ h2) h1
 
+/- English proof (translation)
+Introduce `j`. Proceed by induction on `j with`. Consider the case `zero`. Introduce `_ v hv`. Rewrite `hv` using `[Fj_zero, Submodule.mem_bot]`.
+
+Substitute `hv` using the available equality. Simplify using the standard rewrite rules. Consider the case `succ j ih`. Introduce `hj v hv`. Establish `hu` using `hg.2.1 (j + 1) hj v hv`.
+
+Simplify using `only [Nat.add_sub_cancel] at hu ⊢`. Establish `h1` using `ih (by omega) _ hu`. Establish `h2 : g.symm (g v - v) ∈ Fr.Fj j`. Establish `e : g.symm (g v - v) = (g.symm (g v - v) - (g v - v)) + (g v - v)` using `by abel`. Rewrite using `[e]`.
+
+Conclude with `Submodule.add_mem _ (Fj_mono Fr (Nat.sub_le j 1) h1) hu`. Establish `e : g.symm v - v = -(g.symm (g v - v))`. Rewrite using `[map_sub, LinearEquiv.symm_apply_apply]`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`.
+
+Conclude with `Submodule.neg_mem _ h2`.
+-/
 theorem NSet_inv_Fj {g : V ≃ₗ[E] V} (hg : g ∈ Fr.NSet) :
     ∀ j, j ≤ r → ∀ v ∈ Fr.Fj j, g.symm v - v ∈ Fr.Fj (j - 1) := by
   intro j
@@ -773,6 +1106,15 @@ theorem NSet_inv_Fj {g : V ≃ₗ[E] V} (hg : g ∈ Fr.NSet) :
     rw [e]
     exact Submodule.neg_mem _ h2
 
+/- English proof (translation)
+Use `⟨fun x y => ?_, NSet_inv_Fj Fr hg, fun v hv => ?_⟩` and prove the remaining obligations. Use `show H.h (g.symm x) (g.symm y) = _`. Rewrite using `[← hg.1 (g.symm x) (g.symm y), LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply]`. Use `show g.symm v - v ∈ _`. Establish `hu` using `hg.2.2 v hv`.
+
+Establish `h1` using `NSet_inv_Fj Fr hg r le_rfl (g v - v) (by rw [Fj_r]; exact hu)`. Establish `h2 : g.symm (g v - v) ∈ H.X Fr.f`. Establish `e : g.symm (g v - v) = (g.symm (g v - v) - (g v - v)) + (g v - v)` using `by abel`. Rewrite using `[e]`. Use `Submodule.add_mem _ ?_ hu` and prove the remaining obligations.
+
+Rewrite using `[← Fj_r]`. Conclude with `Fj_mono Fr (Nat.sub_le r 1) h1`. Establish `e : g.symm v - v = -(g.symm (g v - v))`. Rewrite using `[map_sub, LinearEquiv.symm_apply_apply]`. Normalize the expressions using the abelian group laws.
+
+Rewrite using `[e]`. Conclude with `Submodule.neg_mem _ h2`.
+-/
 theorem NSet_inv {g : V ≃ₗ[E] V} (hg : g ∈ Fr.NSet) : g⁻¹ ∈ Fr.NSet := by
   refine ⟨fun x y => ?_, NSet_inv_Fj Fr hg, fun v hv => ?_⟩
   · show H.h (g.symm x) (g.symm y) = _
@@ -791,6 +1133,11 @@ theorem NSet_inv {g : V ≃ₗ[E] V} (hg : g ∈ Fr.NSet) : g⁻¹ ∈ Fr.NSet :
     rw [e]
     exact Submodule.neg_mem _ h2
 
+/- English proof (translation)
+Unfold `FrameD.N at hg`. Proceed by induction on `hg using Subgroup.closure_induction with`. Consider the case `mem x hx => exact hx`. Consider the case `one => exact NSet_one Fr`. Consider the case `mul x y _ _ hx hy => exact NSet_mul Fr hx hy`.
+
+Consider the case `inv x _ hx => exact NSet_inv Fr hx`.
+-/
 theorem mem_NSet_of_mem_N {g : V ≃ₗ[E] V} (hg : g ∈ Fr.N) : g ∈ Fr.NSet := by
   unfold FrameD.N at hg
   induction hg using Subgroup.closure_induction with
@@ -801,6 +1148,15 @@ theorem mem_NSet_of_mem_N {g : V ≃ₗ[E] V} (hg : g ∈ Fr.N) : g ∈ Fr.NSet 
 
 variable {Fr} {L : Submodule M.L.O (H.Wb Fr.f)}
 
+/- English proof (translation)
+Unfold `FrameD.prF`. Establish `h1 : ∑ c, H.h (Fr.e a) (Fr.es c) • Fr.e c = Fr.e a`. Rewrite using `[Finset.sum_eq_single a]`. Use `Fr.h_es a a` as an intermediate fact. Simplify using `only [if_true] at this`.
+
+Use `show H.h (Fr.f a.castSucc) (Fr.es a) • Fr.e a = _`. Rewrite using `[this, one_smul]`. Introduce `c _ hc`. Use `Fr.h_es a c` as an intermediate fact. Rewrite `this` using `[if_neg (Ne.symm hc)]`.
+
+Use `show H.h (Fr.f a.castSucc) (Fr.es c) • Fr.e c = _`. Rewrite using `[this, zero_smul]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ a) h`. Establish `h2 : ∑ c, H.h (Fr.e a) (Fr.e c) • Fr.es c = 0` using `Finset.sum_eq_zero (fun c _ => by show H.h (Fr.f a.castSucc) (Fr.f c.castSucc) • Fr.es c = _`.
+
+Rewrite using `[Fr.h_iso _ _ (Or.inl (Fin.castSucc_lt_last a).ne), zero_smul])`. Rewrite using `[h1, h2]`. Simplify using the standard rewrite rules.
+-/
 theorem prF_e (a : Fin r) : Fr.prF (Fr.e a) = 0 := by
   classical
   unfold FrameD.prF
@@ -822,10 +1178,18 @@ theorem prF_e (a : Fin r) : Fr.prF (Fr.e a) = 0 := by
       rw [Fr.h_iso _ _ (Or.inl (Fin.castSucc_lt_last a).ne), zero_smul])
   rw [h1, h2]; simp
 
+/- English proof (translation)
+Use `show H.h (Fr.f (Fin.last r)) (Fr.es c) = 0`. Rewrite using `[H.h_herm (Fr.es c) _, Fr.h_sz, map_zero]`.
+-/
 theorem h_z_es (c : Fin r) : H.h Fr.z (Fr.es c) = 0 := by
   show H.h (Fr.f (Fin.last r)) (Fr.es c) = 0
   rw [H.h_herm (Fr.es c) _, Fr.h_sz, map_zero]
 
+/- English proof (translation)
+Unfold `FrameD.prF`. Establish `h1 : ∑ c, H.h Fr.z (Fr.es c) • Fr.e c = 0` using `Finset.sum_eq_zero (fun c _ => by rw [h_z_es, zero_smul])`. Establish `h2 : ∑ c, H.h Fr.z (Fr.e c) • Fr.es c = 0` using `Finset.sum_eq_zero (fun c _ => by show H.h (Fr.f (Fin.last r)) (Fr.f c.castSucc) • Fr.es c = _`. Rewrite using `[Fr.h_iso _ _ (Or.inr (Fin.castSucc_lt_last c).ne), zero_smul])`. Rewrite using `[h1, h2]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem frame_projection_last_eq_self : Fr.prF Fr.z = Fr.z := by
   unfold FrameD.prF
   have h1 : ∑ c, H.h Fr.z (Fr.es c) • Fr.e c = 0 :=
@@ -836,6 +1200,17 @@ theorem frame_projection_last_eq_self : Fr.prF Fr.z = Fr.z := by
       rw [Fr.h_iso _ _ (Or.inr (Fin.castSucc_lt_last c).ne), zero_smul])
   rw [h1, h2]; simp
 
+/- English proof (translation)
+Apply `Submodule.subset_span` to reduce the goal to its premises. Break down `Fin.eq_castSucc_or_eq_last b with ⟨a, rfl⟩ | rfl` into its components or cases. Use `⟨fun c => ?_, fun c => ?_, ⟨0, ?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[Fr.h_es]`. Use `split_ifs`.
+
+Conclude with `M.L.O.one_mem`. Conclude with `M.L.O.zero_mem`. Use `show H.h (Fr.f a.castSucc) (Fr.f c.castSucc) ∈ _`. Rewrite using `[Fr.h_iso _ _ (Or.inl (Fin.castSucc_lt_last a).ne)]`. Conclude with `M.L.O.zero_mem`.
+
+Conclude with `(prF_e a).symm`. Rewrite using `[map_zero]`. Conclude with `L.zero_mem`. Take `⟨xz, hxz, hxL, _⟩` from `hL.2.2`. Use `⟨fun c => ?_, fun c => ?_, ⟨xz, ?_, hxL⟩⟩` and prove the remaining obligations.
+
+Rewrite using `[show Fr.f (Fin.last r) = Fr.z from rfl, h_z_es]`. Conclude with `M.L.O.zero_mem`. Use `show H.h (Fr.f (Fin.last r)) (Fr.f c.castSucc) ∈ _`. Rewrite using `[Fr.h_iso _ _ (Or.inr (Fin.castSucc_lt_last c).ne)]`. Conclude with `M.L.O.zero_mem`.
+
+Rewrite using `[hxz]`. Conclude with `frame_projection_last_eq_self.symm`.
+-/
 theorem f_mem_LamStd (hL : Fr.IsInner L) (b : Fin (r + 1)) : Fr.f b ∈ Fr.LamStd L := by
   apply Submodule.subset_span
   rcases Fin.eq_castSucc_or_eq_last b with ⟨a, rfl⟩ | rfl
@@ -854,6 +1229,19 @@ theorem f_mem_LamStd (hL : Fr.IsInner L) (b : Fin (r + 1)) : Fr.f b ∈ Fr.LamSt
       rw [Fr.h_iso _ _ (Or.inr (Fin.castSucc_lt_last c).ne)]; exact M.L.O.zero_mem
     · rw [hxz]; exact frame_projection_last_eq_self.symm
 
+/- English proof (translation)
+Unfold `FrameD.LamStd at hv`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem v hv`. Take `⟨_, h2, w, hw, hwL⟩` from `hv`. Break down `Fin.eq_castSucc_or_eq_last b with ⟨a, rfl⟩ | rfl` into its components or cases.
+
+Conclude with `h2 a`. Take `⟨xz, hxz, hxL, _⟩` from `hL.2.2`. Establish `h3` using `(hL.2.1 w).1 hwL xz hxL`. Rewrite `h3` using `[hw, hxz]`. Establish `e : H.h (Fr.prF v) Fr.z = H.h v Fr.z`.
+
+Unfold `FrameD.prF`. Rewrite using `[h_sub_left, h_sub_left, h_sum_left, h_sum_left]`. Establish `z1 : ∑ i, H.h v (Fr.es i) * H.h (Fr.e i) Fr.z = 0` using `Finset.sum_eq_zero (fun i _ => by`. Rewrite using `[show H.h (Fr.e i) Fr.z = 0 from Fr.h_iso _ _ (Or.inl (Fin.castSucc_lt_last i).ne), mul_zero])`. Establish `z2 : ∑ i, H.h v (Fr.e i) * H.h (Fr.es i) Fr.z = 0` using `Finset.sum_eq_zero (fun i _ => by rw [show H.h (Fr.es i) Fr.z = 0 from Fr.h_sz i, mul_zero])`.
+
+Rewrite using `[z1, z2]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h3` using `[e]`. Conclude with `h3`. Consider the case `zero => rw [H.h_zero_left]`.
+
+Conclude with `M.L.O.zero_mem`. Consider the case `add x y _ _ hx hy => rw [H.h_add_left]`. Conclude with `M.L.O.add_mem hx hy`. Consider the case `smul c x _ hx`. Establish `: H.h (c • x) (Fr.f b) = (c : E) * H.h x (Fr.f b)` using `H.h_smul_left (c : E) x _`.
+
+Rewrite using `[this]`. Conclude with `M.L.O.mul_mem c.2 hx`.
+-/
 theorem h_LamStd_f (hL : Fr.IsInner L) {v : V} (hv : v ∈ Fr.LamStd L) (b : Fin (r + 1)) :
     H.h v (Fr.f b) ∈ M.L.O := by
   unfold FrameD.LamStd at hv
@@ -893,6 +1281,11 @@ variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableS
 variable {M : Model F E} {V : Type} [AddCommGroup V] [Module E V]
 variable {H : HermSp M V} {r : ℕ}
 
+/- English proof (translation)
+Use `set c : E →+* E := (M.L.cj : E ≃ₐ[F] E).toAlgHom.toRingHom with hc`. Establish `hcx : ∀ x, c x = M.L.cj x` using `fun _ => rfl`. Establish `e : H.gram m' = A.map c * H.gram m * A.transpose`. Use extensionality with `a b`. Simplify using `only [HermSp.gram, Matrix.of_apply, Matrix.mul_apply, Matrix.map_apply, Matrix.transpose_apply]`.
+
+Rewrite using `[h a, h b, h_sum_left]`. Simplify using `only [h_sum_right, hcx]`. Conclude with `Finset.sum_congr rfl (fun x _ => mul_comm _ _)`. Rewrite using `[e, Matrix.det_mul, Matrix.det_mul, Matrix.det_transpose, ← hcx, RingHom.map_det]`. Both sides reduce to the same expression.
+-/
 theorem gram_det_change {ι : Type} [Fintype ι] [DecidableEq ι] (m m' : ι → V) (A : Matrix ι ι E)
     (h : ∀ j, m' j = ∑ i, A j i • m i) :
     (H.gram m').det = M.L.cj A.det * (H.gram m).det * A.det := by
@@ -909,6 +1302,15 @@ theorem gram_det_change {ι : Type} [Fintype ι] [DecidableEq ι] (m m' : ι →
 
 variable (Fr : FrameD H r)
 
+/- English proof (translation)
+Unfold `FrameD.Fj at hv`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem v hv`. Take `⟨a, ha, rfl⟩` from `hv`. Use `⟨Pi.single a 1, fun b hb => ?_, ?_⟩` and prove the remaining obligations.
+
+Establish `: b ≠ a` using `fun h => by subst h; exact absurd ha (not_lt.2 hb)`. Simplify using `[this]`. Apply the tactic sequence `rw [Finset.sum_eq_single a] <;> simp [Pi.single_apply]`. Introduce `b hb`. Simplify using `[hb]`.
+
+Consider the case `zero => exact ⟨0, fun _ _ => rfl, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨c, h1, h2⟩` from `hx`. Take `⟨c', h1', h2'⟩` from `hy`. Conclude with `⟨c + c', fun a ha => by simp [h1 a ha, h1' a ha], by`.
+
+Rewrite using `[h2, h2', ← Finset.sum_add_distrib]; exact Finset.sum_congr rfl (fun a _ => by simp [add_smul])⟩`. Consider the case `smul t x _ hx`. Take `⟨c, h1, h2⟩` from `hx`. Conclude with `⟨t • c, fun a ha => by simp [h1 a ha], by`. Rewrite using `[h2, Finset.smul_sum]; exact Finset.sum_congr rfl (fun a _ => by simp [mul_smul])⟩`.
+-/
 theorem coef_Fj {j : ℕ} {v : V} (hv : v ∈ Fr.Fj j) :
     ∃ c : Fin r → E, (∀ a : Fin r, j ≤ a.val → c a = 0) ∧ v = ∑ a, c a • Fr.e a := by
   classical
@@ -932,6 +1334,21 @@ theorem coef_Fj {j : ℕ} {v : V} (hv : v ∈ Fr.Fj j) :
     exact ⟨t • c, fun a ha => by simp [h1 a ha], by
       rw [h2, Finset.smul_sum]; exact Finset.sum_congr rfl (fun a _ => by simp [mul_smul])⟩
 
+/- English proof (translation)
+Break down `Fin.eq_castSucc_or_eq_last a with ⟨a', rfl⟩ | rfl` into its components or cases. Establish `h1` using `hg.2.1 (a'.val + 1) a'.2 _ (e_mem_Fj Fr a')`. Simplify using `only [Nat.add_sub_cancel] at h1`. Take `⟨c, hc0, hc⟩` from `coef_Fj Fr h1`. Use `⟨Fin.lastCases 0 (fun b' => c b' + if b' = a' then 1 else 0), fun b hb => ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Break down `Fin.eq_castSucc_or_eq_last b with ⟨b', rfl⟩ | rfl` into its components or cases. Establish `hlt : a' < b'` using `by simpa using hb beta_reduce`. Rewrite using `[Fin.lastCases_castSucc, hc0 b' (le_of_lt hlt), if_neg (ne_of_gt hlt), add_zero]`. Use `beta_reduce`. Rewrite using `[Fin.lastCases_last]`.
+
+Use `beta_reduce`. Rewrite using `[Fin.lastCases_castSucc, hc0 a' le_rfl, if_pos rfl, zero_add]`. Rewrite using `[Fin.sum_univ_castSucc]`. Simplify using `only [Fin.lastCases_castSucc, Fin.lastCases_last, zero_smul, add_zero, add_smul, Finset.sum_add_distrib]`. Establish `e1 : ∑ x : Fin r, (if x = a' then (1 : E) else 0) • Fr.f x.castSucc = Fr.f a'.castSucc`.
+
+Apply the tactic sequence `rw [Finset.sum_eq_single a'] <;> simp`. Introduce `b hb`. Simplify using `[hb]`. Rewrite using `[e1]`. Establish `e2 : g (Fr.f a'.castSucc) = (g (Fr.e a') - Fr.e a') + Fr.f a'.castSucc` using `by show _ = (g (Fr.f a'.castSucc) - Fr.f a'.castSucc) + _`.
+
+Normalize the expressions using the abelian group laws. Rewrite using `[e2, hc]`. Both sides reduce to the same expression. Establish `h1` using `hg.2.2 _ (z_mem_perp Fr)`. Rewrite `h1` using `[← Fj_r]`.
+
+Take `⟨c, _, hc⟩` from `coef_Fj Fr h1`. Use `⟨Fin.lastCases 1 (fun b' => c b'), fun b hb => absurd hb (not_lt.2 (Fin.le_last b)), ?_, ?_⟩` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[Fin.lastCases_last]`. Rewrite using `[Fin.sum_univ_castSucc]`.
+
+Simplify using `only [Fin.lastCases_castSucc, Fin.lastCases_last, one_smul]`. Establish `e2 : g (Fr.f (Fin.last r)) = (g Fr.z - Fr.z) + Fr.f (Fin.last r)` using `by show _ = (g (Fr.f (Fin.last r)) - Fr.f (Fin.last r)) + _`. Normalize the expressions using the abelian group laws. Rewrite using `[e2, hc]`. Both sides reduce to the same expression.
+-/
 theorem N_row {g : V ≃ₗ[E] V} (hg : g ∈ Fr.NSet) (a : Fin (r + 1)) :
     ∃ row : Fin (r + 1) → E, (∀ b, a < b → row b = 0) ∧ row a = 1 ∧ g (Fr.f a) = ∑ b, row b • Fr.f b := by
   classical
@@ -973,6 +1390,11 @@ theorem N_row {g : V ≃ₗ[E] V} (hg : g ∈ Fr.NSet) (a : Fin (r + 1)) :
       rw [e2, hc]
       rfl
 
+/- English proof (translation)
+Use `choose A h1 h2 h3 using N_row Fr hg`. Use `⟨Matrix.of A, ?_, h3⟩` and prove the remaining obligations. Establish `hT : (Matrix.of A).BlockTriangular OrderDual.toDual`. Introduce `i j hij`. Establish `h' : i < j` using `hij`.
+
+Conclude with `h1 i j h'`. Rewrite using `[Matrix.det_of_isLowerTriangular _ hT]`. Conclude with `Finset.prod_eq_one (fun i _ => h2 i)`.
+-/
 theorem N_matrix {g : V ≃ₗ[E] V} (hg : g ∈ Fr.NSet) :
     ∃ A : Matrix (Fin (r + 1)) (Fin (r + 1)) E, A.det = 1 ∧ ∀ a, g (Fr.f a) = ∑ b, A a b • Fr.f b := by
   choose A h1 h2 h3 using N_row Fr hg
@@ -986,6 +1408,13 @@ theorem N_matrix {g : V ≃ₗ[E] V} (hg : g ∈ Fr.NSet) :
 
 variable {P : FPair H r}
 
+/- English proof (translation)
+Take `⟨A, hA, hA'⟩` from `N_matrix P.A (mem_NSet_of_mem_N P.A hn)`. Take `⟨B, hB, hB'⟩` from `N_matrix P.B (mem_NSet_of_mem_N P.B hn')`. Establish `hm : H.MMfam t = Sum.elim t.f t.f'`. Unfold `HermSp.MMfam`. Use `split`.
+
+Both sides reduce to the same expression. Name the introduced variables `g hg`. Rewrite `hg` using `[hs]`. Consider the cases of `hg`. Rewrite using `[hm, MMgen_eq P hs, gram_det_change (Sum.elim P.A.f P.B.f) (Sum.elim t.f t.f') (Matrix.fromBlocks A 0 0 B)]`.
+
+Rewrite using `[Matrix.det_fromBlocks_zero₂₁, hA, hB]`. Simplify using the standard rewrite rules. Introduce and unpack `(a | a)`. Simplify using `[Fintype.sum_sum_type, hf, hA' a]`. Simplify using `[Fintype.sum_sum_type, hf', hB' a]`.
+-/
 theorem gram_det_term (hs : M.split = none) {t : Term V M r} {n n' : V ≃ₗ[E] V} (hn : n ∈ P.A.N) (hn' : n' ∈ P.B.N)
     (hf : t.f = fun b => n (P.A.f b)) (hf' : t.f' = fun b => n' (P.B.f b)) :
     (H.gram (H.MMfam t)).det = (H.gram P.MMgen).det := by
@@ -1004,6 +1433,23 @@ theorem gram_det_term (hs : M.split = none) {t : Term V M r} {n n' : V ≃ₗ[E]
     · simp [Fintype.sum_sum_type, hf, hA' a]
     · simp [Fintype.sum_sum_type, hf', hB' a]
 
+/- English proof (translation)
+Take `⟨hs, hG, _⟩` from `hP`. Take `⟨_, _, ⟨n, hn, hf, hL⟩, ⟨n', hn', hf', hL'⟩, _⟩` from `ht`. Establish `hnU` using `(mem_NSet_of_mem_N P.A hn).1`. Establish `hnU'` using `(mem_NSet_of_mem_N P.B hn').1`. Establish `hm : H.MMfam t = Sum.elim t.f t.f'`.
+
+Unfold `HermSp.MMfam`. Use `split`. Both sides reduce to the same expression. Name the introduced variables `g hg`. Rewrite `hg` using `[hs]`.
+
+Consider the cases of `hg`. Apply `not_BBne_of` to reduce the goal to its premises. Rewrite using `[hm]`. Introduce and unpack `(b | b)`. Simplify using `only [Sum.elim_inl]`.
+
+Rewrite using `[hf, hL]`. Conclude with `⟨P.A.f b, f_mem_LamStd d.hL b, rfl⟩`. Simplify using `only [Sum.elim_inr]`. Rewrite using `[hf', hL']`. Conclude with `⟨P.B.f b, f_mem_LamStd d.hL' b, rfl⟩`.
+
+Introduce `v hv`. Rewrite using `[hm]`. Introduce and unpack `(b | b)`. Simplify using `only [Sum.elim_inl]`. Rewrite `hv` using `[hL]`.
+
+Take `⟨v0, hv0, rfl⟩` from `hv`. Rewrite using `[hf]`. Use `show H.h (n v0) (n (P.A.f b)) ∈ _`. Rewrite using `[hnU]`. Conclude with `h_LamStd_f d.hL hv0 b`.
+
+Simplify using `only [Sum.elim_inr]`. Rewrite `hv` using `[hL']`. Take `⟨v0, hv0, rfl⟩` from `hv`. Rewrite using `[hf']`. Use `show H.h (n' v0) (n' (P.B.f b)) ∈ _`.
+
+Rewrite using `[hnU']`. Conclude with `h_LamStd_f d.hL' hv0 b`. Rewrite using `[gram_det_term hs hn hn' hf hf', gram_det_eq P hs]`. Conclude with `isUnitO_mul (isUnitO_neg_one_pow _) hG`.
+-/
 theorem not_BBne_term (hP : P.PrimeTo) (d : Datum P) {t : Term V M r} (ht : IsTermOver P d t) :
     ¬ BBne (H := H) t := by
   obtain ⟨hs, hG, _⟩ := hP
@@ -1049,9 +1495,15 @@ theorem not_BBne_term (hP : P.PrimeTo) (d : Datum P) {t : Term V M r} (ht : IsTe
 def NGEqStep' (P : FPair H r) (R : Reps P) : Prop :=
   ∀ d : Datum P, (R.RT d).Subsingleton ∧ ∀ t ∈ R.RT d, mu P t = 1
 
+/- English proof (translation)
+Introduce `d` and use `⟨(h d).1, fun t ht => ⟨(h d).2 t ht, not_BBne_term hP d ((R.hRT d).1 ht)⟩⟩`.
+-/
 theorem NGEqStep_of (hP : P.PrimeTo) (R : Reps P) (h : NGEqStep' P R) : NGEqStep P R := fun d =>
   ⟨(h d).1, fun t ht => ⟨(h d).2 t ht, not_BBne_term hP d ((R.hRT d).1 ht)⟩⟩
 
+/- English proof (translation)
+The claim follows from `NGAt_of_primeTo hOK k C hP (fun R => NGEqStep_of hP R (hE R))`.
+-/
 theorem NGAt_of_primeTo' (hOK : M.OK) (k : ℕ) (C : ℝ) (hP : P.PrimeTo) (hE : ∀ R : Reps P, NGEqStep' P R) :
     NGAt k P C := NGAt_of_primeTo hOK k C hP (fun R => NGEqStep_of hP R (hE R))
 
@@ -1069,21 +1521,41 @@ variable {H : HermSp M V} {r : ℕ} {P : FPair H r}
 def massS (R : Reps P) (d : Datum P) (S : Term V M r → Prop) : ℝ :=
   ∑' t : {t // t ∈ R.RT d ∧ S t}, mu P t.1
 
+/- English proof (translation)
+Unfold `mu volRel`. Check the signs of the components of the expression.
+-/
 theorem mu_nonneg (t : Term V M r) : 0 ≤ mu P t := by unfold mu volRel; positivity
 
+/- English proof (translation)
+Unfold `Datum.wt volRel`. Check the signs of the components of the expression.
+-/
 theorem wt_nonneg (d0 d : Datum P) : 0 ≤ Datum.wt d0 d := by unfold Datum.wt volRel; positivity
 
+/- English proof (translation)
+The claim follows from `hs.comp_injective (i := fun t : {t // t ∈ R.RT d ∧ S t} => (⟨t.1, t.2.1⟩ : R.RT d)) (fun _ _ h => Subtype.ext (congrArg (fun x : R.RT d => x.1) h))`.
+-/
 theorem summable_sub (R : Reps P) (d : Datum P) (hs : Summable (fun t : R.RT d => mu P t.1)) (S : Term V M r → Prop) :
     Summable (fun t : {t // t ∈ R.RT d ∧ S t} => mu P t.1) :=
   hs.comp_injective (i := fun t : {t // t ∈ R.RT d ∧ S t} => (⟨t.1, t.2.1⟩ : R.RT d))
     (fun _ _ h => Subtype.ext (congrArg (fun x : R.RT d => x.1) h))
 
+/- English proof (translation)
+The claim follows from `tsum_nonneg (fun _ => mu_nonneg _)`.
+-/
 theorem massS_nonneg (R : Reps P) (d : Datum P) (S : Term V M r → Prop) : 0 ≤ massS R d S :=
   tsum_nonneg (fun _ => mu_nonneg _)
 
+/- English proof (translation)
+Rewrite using `[norm_mul, hω, mul_one, Complex.norm_real, Real.norm_of_nonneg (mu_nonneg t)]`.
+-/
 theorem norm_term (hω : ∀ t : Term V M r, ‖om P t‖ = 1) (t : Term V M r) : ‖((mu P t : ℝ) : ℂ) * om P t‖ = mu P t := by
   rw [norm_mul, hω, mul_one, Complex.norm_real, Real.norm_of_nonneg (mu_nonneg t)]
 
+/- English proof (translation)
+Unfold `amp massS`. Establish `h1 : Summable (fun t : {t // t ∈ R.RT d ∧ S t} => ‖((mu P t.1 : ℝ) : ℂ) * om P t.1‖)`. Simplify using `only [norm_term hω]`. Conclude with `summable_sub R d hs S`. Use `le_trans (norm_tsum_le_tsum_norm h1) (le_of_eq ?_)` and prove the remaining obligations.
+
+Simplify using `only [norm_term hω]`.
+-/
 theorem norm_amp_le (hω : ∀ t : Term V M r, ‖om P t‖ = 1) (R : Reps P) (d : Datum P)
     (hs : Summable (fun t : R.RT d => mu P t.1)) (S : Term V M r → Prop) : ‖amp R d S‖ ≤ massS R d S := by
   unfold amp massS
@@ -1092,6 +1564,17 @@ theorem norm_amp_le (hω : ∀ t : Term V M r, ‖om P t‖ = 1) (R : Reps P) (d
   refine le_trans (norm_tsum_le_tsum_norm h1) (le_of_eq ?_)
   simp only [norm_term hω]
 
+/- English proof (translation)
+Use `set f : Term V M r → ℂ := fun t => ((mu P t : ℝ) : ℂ) * om P t with hf`. Establish `e : ∀ S' : Term V M r → Prop, amp R d S' = ∑' t, ({t | t ∈ R.RT d ∧ S' t} : Set _).indicator f t` using `fun S' => tsum_subtype ({t | t ∈ R.RT d ∧ S' t} : Set _) f`. Establish `hsum : ∀ S' : Term V M r → Prop, Summable (({t | t ∈ R.RT d ∧ S' t} : Set _).indicator f)`. Introduce `S'`. Rewrite using `[← summable_subtype_iff_indicator]`.
+
+Use `Summable.of_norm ?_` and prove the remaining obligations. Establish `: (fun t : ({t | t ∈ R.RT d ∧ S' t} : Set _) => ‖(f ∘ Subtype.val) t‖) = fun t => mu P t.1`. Use function extensionality and compare the values at `t`. Conclude with `norm_term hω t.1`. Rewrite using `[this]`.
+
+Conclude with `summable_sub R d hs S'`. Rewrite using `[e S]`. Simplify using `only [e]`. Rewrite using `[← Summable.tsum_finsetSum (fun τ _ => hsum _)]`. Use `tsum_congr (fun t => ?_)` and prove the remaining obligations.
+
+Distinguish the cases in `ht : t ∈ R.RT d ∧ S t`. Rewrite using `[Set.indicator_of_mem (show t ∈ {t | t ∈ R.RT d ∧ S t} from ht), Finset.sum_eq_single (typ t)]`. Rewrite using `[Set.indicator_of_mem (show t ∈ {t' | t' ∈ R.RT d ∧ S t' ∧ typ t' = typ t} from ⟨ht.1, ht.2, rfl⟩)]`. Introduce `τ _ hτ`. Conclude with `Set.indicator_of_notMem (s := {t' | t' ∈ R.RT d ∧ S t' ∧ typ t' = τ}) (f := f) (fun h => hτ (show t ∈ R.RT d ∧ S t ∧ typ t = τ from h).2.2.symm)`.
+
+Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Rewrite using `[Set.indicator_of_notMem (show t ∉ {t | t ∈ R.RT d ∧ S t} from ht)]`. Conclude with `(Finset.sum_eq_zero (fun τ _ => Set.indicator_of_notMem (s := {t' | t' ∈ R.RT d ∧ S t' ∧ typ t' = τ}) (f := f) (fun h => ht ⟨(show t ∈ R.RT d ∧ S t ∧ typ t = τ from h).1, (show t ∈ R.RT d ∧ S t ∧ typ t = τ from h).2.1⟩))).symm`.
+-/
 theorem amp_split (hω : ∀ t : Term V M r, ‖om P t‖ = 1) (R : Reps P) (d : Datum P)
     (hs : Summable (fun t : R.RT d => mu P t.1)) (S : Term V M r → Prop) {Ty : Type} [Fintype Ty]
     (typ : Term V M r → Ty) : amp R d S = ∑ τ, amp R d (fun t => S t ∧ typ t = τ) := by
@@ -1125,11 +1608,17 @@ theorem amp_split (hω : ∀ t : Term V M r, ‖om P t‖ = 1) (R : Reps P) (d :
         (fun h => ht ⟨(show t ∈ R.RT d ∧ S t ∧ typ t = τ from h).1,
           (show t ∈ R.RT d ∧ S t ∧ typ t = τ from h).2.1⟩))).symm
 
+/- English proof (translation)
+Establish `e1 : IsEmpty {t // t ∈ R.RT d ∧ S t}` using `⟨fun t => (Set.ext_iff.1 he t.1).1 t.2.1⟩`. Unfold `amp`. Rewrite using `[tsum_empty]`.
+-/
 theorem amp_of_empty (R : Reps P) (d : Datum P) (he : R.RT d = ∅) (S : Term V M r → Prop) : amp R d S = 0 := by
   have e1 : IsEmpty {t // t ∈ R.RT d ∧ S t} := ⟨fun t => (Set.ext_iff.1 he t.1).1 t.2.1⟩
   unfold amp
   rw [tsum_empty]
 
+/- English proof (translation)
+Unfold `sumSq`. Rewrite using `[tsum_eq_sum (s := Ds) (fun d hd => by rw [amp_of_empty R d.1 (off d hd)]; simp), Finset.sum_coe_sort Ds (fun d : R.RD => Datum.wt d0 d.1 * ‖amp R d.1 S‖ ^ 2), ENNReal.ofReal_sum_of_nonneg (fun d _ => mul_nonneg (wt_nonneg _ _) (by positivity))]`. Use `Finset.sum_congr rfl (fun d _ => ?_)` and prove the remaining obligations. Rewrite using `[ENNReal.ofReal_mul (wt_nonneg _ _), ENNReal.ofReal_pow (norm_nonneg _), ← coe_nnnorm, ENNReal.ofReal_coe_nnreal]`.
+-/
 theorem sumSq_eq (R : Reps P) (d0 : Datum P) (Ds : Finset R.RD) (off : ∀ d : R.RD, d ∉ Ds → R.RT d.1 = ∅)
     (S : Term V M r → Prop) :
     sumSq R d0 S = ENNReal.ofReal (∑ d : Ds, Datum.wt d0 d.1.1 * ‖amp R d.1.1 S‖ ^ 2) := by
@@ -1140,6 +1629,11 @@ theorem sumSq_eq (R : Reps P) (d0 : Datum P) (Ds : Finset R.RD) (off : ∀ d : R
   refine Finset.sum_congr rfl (fun d _ => ?_)
   rw [ENNReal.ofReal_mul (wt_nonneg _ _), ENNReal.ofReal_pow (norm_nonneg _), ← coe_nnnorm, ENNReal.ofReal_coe_nnreal]
 
+/- English proof (translation)
+Unfold `nn`. Rewrite using `[tsum_eq_sum (s := Ds) (fun d hd => by`. Establish `e2 : IsEmpty (R.RT d.1)` using `⟨fun t => (Set.ext_iff.1 (off d hd) t.1).1 t.2⟩`. Rewrite using `[tsum_empty]`. Use the proof step `simp),`.
+
+Use the proof step `Finset.sum_coe_sort Ds (fun d : R.RD => Datum.wt d0 d.1 * ∑' t : R.RT d.1, mu P t.1),`. Use the proof step `ENNReal.ofReal_sum_of_nonneg (fun d _ => mul_nonneg (wt_nonneg _ _) (tsum_nonneg (fun _ => mu_nonneg _)))]`. Use `Finset.sum_congr rfl (fun d _ => ?_)` and prove the remaining obligations. Rewrite using `[ENNReal.ofReal_mul (wt_nonneg _ _), ENNReal.ofReal_tsum_of_nonneg (fun _ => mu_nonneg _) (hs d)]`.
+-/
 theorem nn_eq (R : Reps P) (d0 : Datum P) (Ds : Finset R.RD) (off : ∀ d : R.RD, d ∉ Ds → R.RT d.1 = ∅)
     (hs : ∀ d : R.RD, Summable (fun t : R.RT d.1 => mu P t.1)) :
     nn R d0 = ENNReal.ofReal (∑ d : Ds, Datum.wt d0 d.1.1 * ∑' t : R.RT d.1.1, mu P t.1) := by
@@ -1175,10 +1669,18 @@ def nongenericConstantNoGain (c : ℕ) : ℕ := (Formalism.HermitianLatticeCount
 
 def gainBoundConstant (c : ℕ) (C₀ : ℝ) : ℕ := (Formalism.HermitianLatticeCounting.Final.S4.assemblyNG c C₀).choose
 
+/- English proof (translation)
+Establish `h : ((C * (r + 1) ^ 2 : ℕ) : ℝ) = (C : ℝ) * ((r : ℝ) + 1) ^ 2` using `by push_cast; ring`. Rewrite using `[← h, Real.rpow_natCast]`.
+-/
 theorem rpow_exp (x : ℝ) (C : ℕ) : x ^ ((C : ℝ) * ((r : ℝ) + 1) ^ 2) = x ^ (C * (r + 1) ^ 2) := by
   have h : ((C * (r + 1) ^ 2 : ℕ) : ℝ) = (C : ℝ) * ((r : ℝ) + 1) ^ 2 := by push_cast; ring
   rw [← h, Real.rpow_natCast]
 
+/- English proof (translation)
+Set `_` to `X.fin`. Establish `hnn : 0 ≤ ∑ d : X.Ds, Datum.wt d0 d.1.1 * ∑' t : R.RT d.1.1, mu P t.1` using `Finset.sum_nonneg (fun d _ => mul_nonneg (wt_nonneg _ _) (tsum_nonneg (fun _ => mu_nonneg _)))`. Establish `key` using `(Formalism.HermitianLatticeCounting.Final.S4.assemblyNG2 c).choose_spec k ((r + 1) ^ 2) P.Hp _ X.Ds X.Ty (fun d => Datum.wt d0 d.1.1) (fun τ d => amp R d.1.1 (fun t => S t ∧ X.typ t = τ)) (fun τ d => massS R d.1.1 (fun t => S t ∧ X.typ t = τ)) X.be X.I X.H1 hnn (fun d => wt_nonne …`. Rewrite using `[sumSq_eq R d0 X.Ds X.off, nn_eq R d0 X.Ds X.off X.summ, ← ENNReal.ofReal_mul (by have := X.H1; positivity)]`. Use `ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations.
+
+Rewrite using `[rpow_exp]`. Use `le_trans (le_of_eq ?_) key` and prove the remaining obligations. Conclude with `Finset.sum_congr rfl (fun d _ => by rw [amp_split X.om1 R d.1.1 (X.summ d.1) S X.typ])`.
+-/
 theorem NG_second_of_steps {k : ℕ} {R : Reps P} {d0 : Datum P} {c : ℕ} {S : Term V M r → Prop}
     (X : NGSteps2 k R d0 c S) :
     sumSq R d0 S ≤ ENNReal.ofReal (P.Hp ^ ((nongenericConstantNoGain c : ℝ) * ((r : ℝ) + 1) ^ 2)) * nn R d0 := by
@@ -1205,6 +1707,17 @@ structure NGSteps1 (k : ℕ) (R : Reps P) (d0 : Datum P) (c : ℕ) (C₀ : ℝ) 
   e : ∀ (τ : Ty) (d : Ds), isBe τ → ‖amp R d.1.1 (fun t => BBne (H := H) t ∧ typ t = τ)‖ ≤
     C₀ * (qF F : ℝ) ^ (1 - ((k : ℤ) - 2 * r - 3)) * massS R d.1.1 (fun t => BBne (H := H) t ∧ typ t = τ)
 
+/- English proof (translation)
+Set `_` to `X.fin`. Distinguish the cases in `hex : ∃ d : R.RD, ∃ t ∈ R.RT d.1, BBne (H := H) t`. Use `swap`. Establish `hz : sumSq R d0 (BBne (H` using `H)) = 0 := by`. Unfold `sumSq`.
+
+Rewrite using `[ENNReal.tsum_eq_zero]`. Introduce `d`. Establish `e1 : IsEmpty {t // t ∈ R.RT d.1 ∧ BBne (H` using `H) t} := ⟨fun t => hex ⟨d, t.1, t.2.1, t.2.2⟩⟩`. Unfold `amp`. Rewrite using `[tsum_empty]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[hz]`. Conclude with `bot_le`. Establish `hnn : 0 ≤ ∑ d : X.Ds, Datum.wt d0 d.1.1 * ∑' t : R.RT d.1.1, mu P t.1` using `Finset.sum_nonneg (fun d _ => mul_nonneg (wt_nonneg _ _) (tsum_nonneg (fun _ => mu_nonneg _)))`. Establish `key` using `(Formalism.HermitianLatticeCounting.Final.S4.assemblyNG c C₀).choose_spec k r (qF F) ((r + 1) ^ 2) P.Hp _ X.Ds X.Ty (fun d => Datum.wt d0 d.1.1) (fun τ d => amp R d.1.1 (fun t => BBne (H := H) t ∧ X.typ t = τ)) (fun τ d => massS R d.1.1 (fun t => BBne (H := H) t ∧ X.typ t = τ)) X …`.
+
+Establish `hq : (0 : ℝ) < qF F` using `by have := X.q2; exact_mod_cast (by omega : 0 < qF F)`. Rewrite using `[sumSq_eq R d0 X.Ds X.off, nn_eq R d0 X.Ds X.off X.summ, ← ENNReal.ofReal_mul (by have := X.H1; positivity)]`. Use `ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations. Rewrite using `[rpow_exp]`. Establish `hz : (qF F : ℝ) ^ (-((k : ℝ) - 2 * r - 5)) = (qF F : ℝ) ^ (-((k : ℤ) - 2 * r - 5))`.
+
+Establish `h : ((-((k : ℤ) - 2 * r - 5) : ℤ) : ℝ) = -((k : ℝ) - 2 * r - 5)` using `by push_cast; ring`. Rewrite using `[← h, Real.rpow_intCast]`. Rewrite using `[hz]`. Use `le_trans (le_of_eq ?_) key` and prove the remaining obligations. Conclude with `Finset.sum_congr rfl (fun d _ => by rw [amp_split X.om1 R d.1.1 (X.summ d.1) _ X.typ])`.
+-/
 theorem NG_first_of_steps {k : ℕ} {R : Reps P} {d0 : Datum P} {c : ℕ} {C₀ : ℝ} (X : NGSteps1 k R d0 c C₀) :
     sumSq R d0 (BBne (H := H)) ≤ ENNReal.ofReal (P.Hp ^ ((gainBoundConstant c C₀ : ℝ) * ((r : ℝ) + 1) ^ 2) *
       (qF F : ℝ) ^ (-((k : ℝ) - 2 * r - 5))) * nn R d0 := by
@@ -1239,6 +1752,11 @@ theorem NG_first_of_steps {k : ℕ} {R : Reps P} {d0 : Datum P} {c : ℕ} {C₀ 
   refine le_trans (le_of_eq ?_) key
   exact Finset.sum_congr rfl (fun d _ => by rw [amp_split X.om1 R d.1.1 (X.summ d.1) _ X.typ])
 
+/- English proof (translation)
+Establish `mono : ∀ C' : ℝ, C' ≤ C → P.Hp ^ (C' * ((r : ℝ) + 1) ^ 2) ≤ P.Hp ^ (C * ((r : ℝ) + 1) ^ 2)` using `fun C' h => Real.rpow_le_rpow_of_exponent_le hH (mul_le_mul_of_nonneg_right h (by positivity))`. Use `NGAt_of hOK k C (fun R d0 => ⟨?_, ?_, ?_⟩) (fun hP R => NGEqStep_of hP R (hE hP R))` and prove the remaining obligations. Use `le_trans (NG_first_of_steps (X1 R d0)) (mul_le_mul_left (ENNReal.ofReal_le_ofReal ?_) _)` and prove the remaining obligations. Conclude with `mul_le_mul_of_nonneg_right (mono _ hC1) (Real.rpow_nonneg (Nat.cast_nonneg _) _)`. Conclude with `le_trans (NG_second_of_steps (X2 R d0)) (mul_le_mul_left (ENNReal.ofReal_le_ofReal (mono _ hC2)) _)`.
+
+Conclude with `le_trans (NG_second_of_steps (X3 R d0)) (mul_le_mul_left (ENNReal.ofReal_le_ofReal (mono _ hC2)) _)`.
+-/
 theorem NGAt_of_steps (hOK : M.OK) (k c : ℕ) (C₀ C : ℝ) (hH : 1 ≤ P.Hp) (hC1 : (gainBoundConstant c C₀ : ℝ) ≤ C) (hC2 : (nongenericConstantNoGain c : ℝ) ≤ C)
     (X1 : ∀ (R : Reps P) (d0 : Datum P), NGSteps1 k R d0 c C₀)
     (X2 : ∀ (R : Reps P) (d0 : Datum P), NGSteps2 k R d0 c (fun t => ¬ BBne (H := H) t))
@@ -1265,6 +1783,15 @@ variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableS
 variable {M : Model F E} {V : Type} [AddCommGroup V] [Module E V]
 variable {H : HermSp M V} {r : ℕ} {P : FPair H r}
 
+/- English proof (translation)
+Introduce `R d0`. Establish `hz : ∀ S : Term V M r → Prop, sumSq R d0 S = 0`. Introduce `S`. Unfold `sumSq`. Rewrite using `[ENNReal.tsum_eq_zero]`.
+
+Introduce `d`. Rewrite using `[amp_of_empty R d.1 (h R d.1)]`. Simplify using the standard rewrite rules. Establish `hn : nn R d0 = 0`. Unfold `nn`.
+
+Rewrite using `[ENNReal.tsum_eq_zero]`. Introduce `d`. Establish `e2 : IsEmpty (R.RT d.1)` using `⟨fun t => (Set.ext_iff.1 (h R d.1) t.1).1 t.2⟩`. Rewrite using `[tsum_empty]`. Simplify using the standard rewrite rules.
+
+Simplify using `only [hz, hn, mul_zero, le_refl, true_and, and_true]`. Conclude with `fun hP => NG_Hp_one hOK P hP`.
+-/
 theorem NGAt_of_noTerms (hOK : M.OK) (k : ℕ) (C : ℝ) (h : ∀ (R : Reps P) (d : Datum P), R.RT d = ∅) : NGAt k P C := by
   intro R d0
   have hz : ∀ S : Term V M r → Prop, sumSq R d0 S = 0 := by
@@ -1299,6 +1826,9 @@ def NGStepsAll (k r c : ℕ) (C₀ : ℝ) : Prop :=
             Nonempty (NGSteps2 k R d0 c (fun t => ¬ BBne (H := H) t)) ∧ Nonempty (NGSteps2 k R d0 c (fun _ => True))) ∧
           (P.PrimeTo → ∀ R : Reps P, NGEqStep' P R))
 
+/- English proof (translation)
+Introduce `F _ _ _ E _ _ _ _ M hOK V _ _ H hrk P hP`. Break down `h F E M hOK V H hrk P hP with h0 | ⟨hH, hS, hE⟩` into its components or cases. Conclude with `NGAt_of_noTerms hOK k C h0`. Conclude with `NGAt_of_steps hOK k c C₀ C hH hC1 hC2 (fun R d0 => (hS R d0).1.some) (fun R d0 => (hS R d0).2.1.some) (fun R d0 => (hS R d0).2.2.some) hE`.
+-/
 theorem nongeneric_local_bound_of_estimates (k r c : ℕ) (C₀ C : ℝ) (hC1 : (gainBoundConstant c C₀ : ℝ) ≤ C) (hC2 : (nongenericConstantNoGain c : ℝ) ≤ C)
     (h : NGStepsAll k r c C₀) : NonGenericAndKTwoTheorems.NonGenericLocalBound k r C := by
   intro F _ _ _ E _ _ _ _ M hOK V _ _ H hrk P hP
@@ -1307,6 +1837,9 @@ theorem nongeneric_local_bound_of_estimates (k r c : ℕ) (C₀ C : ℝ) (hC1 : 
   · exact NGAt_of_steps hOK k c C₀ C hH hC1 hC2 (fun R d0 => (hS R d0).1.some) (fun R d0 => (hS R d0).2.1.some)
       (fun R d0 => (hS R d0).2.2.some) hE
 
+/- English proof (translation)
+Introduce `x i hk` and use `nongeneric_local_bound_of_estimates _ _ c C₀ C hC1 hC2 (h x i hk)`.
+-/
 theorem nongeneric_family_bound_of_estimates {eps : ℝ} (Fm : FamP eps) (c : ℕ) (C₀ C : ℝ) (hC1 : (gainBoundConstant c C₀ : ℝ) ≤ C)
     (hC2 : (nongenericConstantNoGain c : ℝ) ≤ C)
     (h : ∀ x (i : Fm.Ix x), 4 * (Fm.D x i).R.rS + 7 ≤ (Fm.D x i).R.k → NGStepsAll (Fm.D x i).R.k (Fm.D x i).R.rS c C₀) :

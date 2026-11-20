@@ -11,9 +11,15 @@ namespace GlobalTheory.ProdGlue
 
 variable {T T₁ : Scheme.{0}}
 
+/- English proof (translation)
+The claim follows from `IsPullback.of_hasPullback Y.hom Y.hom`.
+-/
 theorem isPb (Y : Over T) : IsPullback (fst Y Y).left (snd Y Y).left Y.hom Y.hom :=
   IsPullback.of_hasPullback Y.hom Y.hom
 
+/- English proof (translation)
+The claim follows from `(Over.w (fst Y Y)).symm`.
+-/
 theorem tens_hom (Y : Over T) : (Y ⊗ Y).hom = (fst Y Y).left ≫ Y.hom := (Over.w (fst Y Y)).symm
 
 noncomputable def incl (v : T₁ ⟶ T) (Y : Over T) (Y₁ : Over T₁) (j : Y₁.left ⟶ Y.left)
@@ -21,14 +27,33 @@ noncomputable def incl (v : T₁ ⟶ T) (Y : Over T) (Y₁ : Over T₁) (j : Y�
   (isPb Y).lift ((fst Y₁ Y₁).left ≫ j) ((snd Y₁ Y₁).left ≫ j) (by
     rw [Category.assoc, Category.assoc, w, ← Category.assoc, ← Category.assoc, (isPb Y₁).w])
 
+/- English proof (translation)
+The claim follows from `(isPb Y).lift_fst _ _ _`.
+-/
 @[reassoc (attr := simp)] theorem incl_fst (v : T₁ ⟶ T) (Y : Over T) (Y₁ : Over T₁) (j : Y₁.left ⟶ Y.left)
     (w : j ≫ Y.hom = Y₁.hom ≫ v) : incl v Y Y₁ j w ≫ (fst Y Y).left = (fst Y₁ Y₁).left ≫ j :=
   (isPb Y).lift_fst _ _ _
 
+/- English proof (translation)
+The claim follows from `(isPb Y).lift_snd _ _ _`.
+-/
 @[reassoc (attr := simp)] theorem incl_snd (v : T₁ ⟶ T) (Y : Over T) (Y₁ : Over T₁) (j : Y₁.left ⟶ Y.left)
     (w : j ≫ Y.hom = Y₁.hom ≫ v) : incl v Y Y₁ j w ≫ (snd Y Y).left = (snd Y₁ Y₁).left ≫ j :=
   (isPb Y).lift_snd _ _ _
 
+/- English proof (translation)
+Establish `w : incl v Y Y₁ j h.w ≫ (Y ⊗ Y).hom = (Y₁ ⊗ Y₁).hom ≫ v`. Rewrite using `[tens_hom, tens_hom, incl_fst_assoc, h.w, Category.assoc]`. Establish `e1 : ∀ s : Limits.PullbackCone (Y ⊗ Y).hom v, (s.fst ≫ (fst Y Y).left) ≫ Y.hom = s.snd ≫ v` using `fun s => by`. Rewrite using `[Category.assoc, ← tens_hom, s.condition]`. Establish `e2 : ∀ s : Limits.PullbackCone (Y ⊗ Y).hom v, (s.fst ≫ (snd Y Y).left) ≫ Y.hom = s.snd ≫ v` using `fun s => by`.
+
+Rewrite using `[Category.assoc, ← (isPb Y).w, ← tens_hom, s.condition]`. Set `lf : ∀ s : Limits.PullbackCone (Y ⊗ Y).hom v, s.pt ⟶ (Y₁ ⊗ Y₁).left` to `fun s => (isPb Y₁).lift (h.lift (s.fst ≫ (fst Y Y).left) s.snd (e1 s)) (h.lift (s.fst ≫ (snd Y Y).left) s.snd (e2 s)) (by rw [h.lift_snd, h.lift_snd])`. Establish `lf1 : ∀ s, lf s ≫ (fst Y₁ Y₁).left = h.lift (s.fst ≫ (fst Y Y).left) s.snd (e1 s)` using `fun s => (isPb Y₁).lift_fst _ _ _`. Establish `lf2 : ∀ s, lf s ≫ (snd Y₁ Y₁).left = h.lift (s.fst ≫ (snd Y Y).left) s.snd (e2 s)` using `fun s => (isPb Y₁).lift_snd _ _ _`. Use `⟨⟨w⟩, ⟨Limits.PullbackCone.IsLimit.mk w lf ?_ ?_ ?_⟩⟩` and prove the remaining obligations.
+
+Introduce `s`. Apply `(isPb Y).hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, incl_fst, reassoc_of% (lf1 s), h.lift_fst]`. Rewrite using `[Category.assoc, incl_snd, reassoc_of% (lf2 s), h.lift_fst]`. Introduce `s`.
+
+Rewrite using `[tens_hom Y₁, reassoc_of% (lf1 s), h.lift_snd]`. Introduce `s m hm1 hm2`. Rewrite `hm2` using `[tens_hom Y₁]`. Apply `(isPb Y₁).hom_ext` to reduce the goal to its premises. Rewrite using `[lf1]`.
+
+Apply `h.hom_ext` to reduce the goal to its premises. Rewrite using `[h.lift_fst, Category.assoc, ← incl_fst v Y Y₁ j h.w, reassoc_of% hm1]`. Rewrite using `[h.lift_snd]`. Simplify `hm2` using `only [Category.assoc]`. Rewrite using `[lf2]`.
+
+Apply `h.hom_ext` to reduce the goal to its premises. Rewrite using `[h.lift_fst, Category.assoc, ← incl_snd v Y Y₁ j h.w, reassoc_of% hm1]`. Rewrite using `[h.lift_snd, ← hm2, Category.assoc, (isPb Y₁).w]`.
+-/
 theorem incl_pullback (v : T₁ ⟶ T) (Y : Over T) (Y₁ : Over T₁) (j : Y₁.left ⟶ Y.left)
     (h : IsPullback j Y₁.hom Y.hom v) :
     IsPullback (incl v Y Y₁ j h.w) (Y₁ ⊗ Y₁).hom (Y ⊗ Y).hom v := by
@@ -64,6 +89,13 @@ theorem incl_pullback (v : T₁ ⟶ T) (Y : Over T) (Y₁ : Over T₁) (j : Y₁
       · rw [h.lift_fst, Category.assoc, ← incl_snd v Y Y₁ j h.w, reassoc_of% hm1]
       · rw [h.lift_snd, ← hm2, Category.assoc, (isPb Y₁).w]
 
+/- English proof (translation)
+Set `x₀ : Over.mk ((B ⊗ B).hom ≫ f) ⟶ A` to `Over.homMk ((fst B B).left ≫ φ) (by show _ = (B ⊗ B).hom ≫ f`. Rewrite using `[Category.assoc, h.1.w, ← Category.assoc, Over.w])`. Set `y₀ : Over.mk ((B ⊗ B).hom ≫ f) ⟶ A` to `Over.homMk ((snd B B).left ≫ φ) (by show _ = (B ⊗ B).hom ≫ f`. Rewrite using `[Category.assoc, h.1.w, ← Category.assoc, ← (isPb B).w, Over.w])`. Establish `hm` using `h.2 (B ⊗ B) (fst B B) (snd B B) x₀ y₀ rfl rfl`.
+
+Rewrite `hm` using `[Hom.mul_def, Hom.mul_def, lift_fst_snd, Category.id_comp, Over.comp_left]`. Establish `e : incl f A B φ h.1.w = (lift x₀ y₀).left`. Apply `(isPb A).hom_ext` to reduce the goal to its premises. Rewrite using `[incl_fst, ← Over.comp_left, lift_fst]`. Both sides reduce to the same expression.
+
+Rewrite using `[incl_snd, ← Over.comp_left, lift_snd]`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `hm`.
+-/
 theorem incl_mul (f : T₁ ⟶ T) (A : Over T) [GrpObj A] (B : Over T₁) [GrpObj B] (φ : B.left ⟶ A.left)
     (h : IsGrpPullback B A f φ) : incl f A B φ h.1.w ≫ (μ[A]).left = (μ[B]).left ≫ φ := by
   let x₀ : Over.mk ((B ⊗ B).hom ≫ f) ⟶ A := Over.homMk ((fst B B).left ≫ φ) (by
@@ -80,6 +112,9 @@ theorem incl_mul (f : T₁ ⟶ T) (A : Over T) [GrpObj A] (B : Over T₁) [GrpOb
     · rw [incl_snd, ← Over.comp_left, lift_snd]; rfl
   rw [e]; exact hm
 
+/- English proof (translation)
+Use `(((BinaryCofan.isVanKampen_iff _).1 (FinitaryExtensive.vanKampen _ hT) (Limits.BinaryCofan.mk (incl v₁ Y Y₁ j₁ h₁.w) (incl v₂ Y Y₂ j₂ h₂.w)) (Y₁ ⊗ Y₁).hom (Y₂ ⊗ Y₂).hom (Y ⊗ Y).hom ?_ ?_).2 ⟨incl_pullback v₁ Y Y₁ j₁ h₁, incl_pullback v₂ Y Y₂ j₂ h₂⟩)` and prove the remaining obligations. Conclude with `(incl_pullback v₁ Y Y₁ j₁ h₁).w.symm`. Conclude with `(incl_pullback v₂ Y Y₂ j₂ h₂).w.symm`.
+-/
 theorem colim_of_pullbacks {T T₁ T₂ : Scheme.{0}} (v₁ : T₁ ⟶ T) (v₂ : T₂ ⟶ T)
     (hT : Limits.IsColimit (Limits.BinaryCofan.mk v₁ v₂)) (Y : Over T) (Y₁ : Over T₁) (Y₂ : Over T₂)
     (j₁ : Y₁.left ⟶ Y.left) (j₂ : Y₂.left ⟶ Y.left)
@@ -94,6 +129,21 @@ theorem colim_of_pullbacks {T T₁ T₂ : Scheme.{0}} (v₁ : T₁ ⟶ T) (v₂ 
 end GlobalTheory.ProdGlue
 
 open GlobalTheory.ProdGlue in
+/- English proof (translation)
+Introduce `S S₁ S₂ T T₁ T₂ u₁ u₂ ⟨hS⟩ v₁ v₂ ⟨hT⟩ f₁ f₂ A₁ _ A₂ _ B₁ _ B₂ _ A₀ _ i₁ i₂ j₁ j₂ hi₁ hi₂ hj₁ hj₂ i ei₁ ei₂`. Use `set X := Over.mk (Limits.coprod.desc (A₁.hom ≫ u₁) (A₂.hom ≫ u₂)) with hX`. Establish `hV` using `(BinaryCofan.isVanKampen_iff _).1 (FinitaryExtensive.vanKampen _ hS) (Limits.BinaryCofan.mk (Limits.coprod.inl : A₁.left ⟶ A₁.left ⨿ A₂.left) Limits.coprod.inr) A₁.hom A₂.hom X.hom (Limits.coprod.inl_desc _ _).symm (Limits.coprod.inr_desc _ _).symm`. Establish `pX : _` using `hV.1 ⟨Limits.coprodIsCoprod _ _⟩`. Establish `pX₁ : IsPullback (Limits.coprod.inl : A₁.left ⟶ A₁.left ⨿ A₂.left) A₁.hom X.hom u₁` using `pX.1`.
+
+Establish `pX₂ : IsPullback (Limits.coprod.inr : A₂.left ⟶ A₁.left ⨿ A₂.left) A₂.hom X.hom u₂` using `pX.2`. Take `⟨cX⟩` from `colim_of_pullbacks u₁ u₂ hS X A₁ A₂ _ _ pX₁ pX₂`. Take `⟨c0⟩` from `colim_of_pullbacks v₁ v₂ hT A₀ B₁ B₂ _ _ hj₁.1 hj₂.1`. Establish `D` using `Limits.BinaryCofan.IsColimit.desc' cX ((μ[A₁]).left ≫ Limits.coprod.inl) ((μ[A₂]).left ≫ Limits.coprod.inr)`. Set `ml : (X ⊗ X).left ⟶ X.left` to `D.1`.
+
+Establish `hm₁ : incl u₁ X A₁ Limits.coprod.inl pX₁.w ≫ ml = (μ[A₁]).left ≫ Limits.coprod.inl` using `D.2.1`. Establish `hm₂ : incl u₂ X A₂ Limits.coprod.inr pX₂.w ≫ ml = (μ[A₂]).left ≫ Limits.coprod.inr` using `D.2.2`. Establish `hw : ml ≫ X.hom = (X ⊗ X).hom`. Apply `Limits.BinaryCofan.IsColimit.hom_ext cX` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `incl u₁ X A₁ Limits.coprod.inl pX₁.w ≫ ml ≫ X.hom = incl u₁ X A₁ Limits.coprod.inl pX₁.w ≫ (X ⊗ X).hom`.
+
+Rewrite using `[← Category.assoc, hm₁, Category.assoc, tens_hom, incl_fst_assoc]`. Simplify using `only [X, Over.mk_hom, Limits.coprod.inl_desc]`. Rewrite using `[← Category.assoc, Over.w, ← Category.assoc, Over.w]`. Express the relevant statement in the definitionally equal form `incl u₂ X A₂ Limits.coprod.inr pX₂.w ≫ ml ≫ X.hom = incl u₂ X A₂ Limits.coprod.inr pX₂.w ≫ (X ⊗ X).hom`. Rewrite using `[← Category.assoc, hm₂, Category.assoc, tens_hom, incl_fst_assoc]`.
+
+Simplify using `only [X, Over.mk_hom, Limits.coprod.inr_desc]`. Rewrite using `[← Category.assoc, Over.w, ← Category.assoc, Over.w]`. Use `⟨Over.homMk ml hw, fun l hl₁ hl₂ => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `l ≫ ml = _`. Establish `key : ∀ {Tk Sk : Scheme.{0}} (vk : Tk ⟶ T) (uk : Sk ⟶ S) (fk : Tk ⟶ Sk) (Ak : Over Sk) [GrpObj Ak] (Bk : Over Tk) [GrpObj Bk] (ik : Bk.left ⟶ Ak.left) (jk : Bk.left ⟶ A₀.left) (ink : Ak.left ⟶ X.left) (hik : IsGrpPullback Bk Ak fk ik) (hjk : IsGrpPullback Bk A₀ vk jk) (eik : jk ≫ …`.
+
+Introduce `Tk Sk vk uk fk Ak _ Bk _ ik jk ink hik hjk eik κ κf κs hmk`. Establish `e : incl vk A₀ Bk jk hjk.1.w ≫ l = incl fk Ak Bk ik hik.1.w ≫ κ`. Apply `(isPb X).hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, hl₁, incl_fst_assoc, eik, Category.assoc, κf, incl_fst_assoc]`. Rewrite using `[Category.assoc, hl₂, incl_snd_assoc, eik, Category.assoc, κs, incl_snd_assoc]`.
+
+Rewrite using `[reassoc_of% e, hmk, reassoc_of% (incl_mul fk Ak Bk ik hik), reassoc_of% (incl_mul vk A₀ Bk jk hjk), eik]`. Apply `Limits.BinaryCofan.IsColimit.hom_ext c0` to reduce the goal to its premises. Conclude with `key v₁ u₁ f₁ A₁ B₁ i₁ j₁ _ hi₁ hj₁ ei₁ _ (incl_fst _ _ _ _ _) (incl_snd _ _ _ _ _) hm₁`. Conclude with `key v₂ u₂ f₂ A₂ B₂ i₂ j₂ _ hi₂ hj₂ ei₂ _ (incl_fst _ _ _ _ _) (incl_snd _ _ _ _ _) hm₂`.
+-/
 theorem GlobalTheory.ProdGlue.mul_glue : ∀ {S S₁ S₂ T T₁ T₂ : Scheme.{0}} (u₁ : S₁ ⟶ S) (u₂ : S₂ ⟶ S), Nonempty (Limits.IsColimit (Limits.BinaryCofan.mk u₁ u₂)) → ∀ (v₁ : T₁ ⟶ T) (v₂ : T₂ ⟶ T), Nonempty (Limits.IsColimit (Limits.BinaryCofan.mk v₁ v₂)) → ∀ (f₁ : T₁ ⟶ S₁) (f₂ : T₂ ⟶ S₂) (A₁ : Over S₁) [GrpObj A₁] (A₂ : Over S₂) [GrpObj A₂] (B₁ : Over T₁) [GrpObj B₁] (B₂ : Over T₂) [GrpObj B₂] (A₀ : Over T) [GrpObj A₀] (i₁ : B₁.left ⟶ A₁.left) (i₂ : B₂.left ⟶ A₂.left) (j₁ : B₁.left ⟶ A₀.left) (j₂ : B₂.left ⟶ A₀.left), IsGrpPullback B₁ A₁ f₁ i₁ → IsGrpPullback B₂ A₂ f₂ i₂ → IsGrpPullback B₁ A₀ v₁ j₁ → IsGrpPullback B₂ A₀ v₂ j₂ → ∀ (i : A₀.left ⟶ A₁.left ⨿ A₂.left), j₁ ≫ i = i₁ ≫ Limits.coprod.inl → j₂ ≫ i = i₂ ≫ Limits.coprod.inr → ∃ m : Over.mk (Limits.coprod.desc (A₁.hom ≫ u₁) (A₂.hom ≫ u₂)) ⊗ Over.mk (Limits.coprod.desc (A₁.hom ≫ u₁) (A₂.hom ≫ u₂)) ⟶ Over.mk (Limits.coprod.desc (A₁.hom ≫ u₁) (A₂.hom ≫ u₂)), ∀ l : (A₀ ⊗ A₀).left ⟶ (Over.mk (Limits.coprod.desc (A₁.hom ≫ u₁) (A₂.hom ≫ u₂)) ⊗ Over.mk (Limits.coprod.desc (A₁.hom ≫ u₁) (A₂.hom ≫ u₂))).left, l ≫ (fst (Over.mk (Limits.coprod.desc (A₁.hom ≫ u₁) (A₂.hom ≫ u₂))) (Over.mk (Limits.coprod.desc (A₁.hom ≫ u₁) (A₂.hom ≫ u₂)))).left = (fst A₀ A₀).left ≫ i → l ≫ (snd (Over.mk (Limits.coprod.desc (A₁.hom ≫ u₁) (A₂.hom ≫ u₂))) (Over.mk (Limits.coprod.desc (A₁.hom ≫ u₁) (A₂.hom ≫ u₂)))).left = (snd A₀ A₀).left ≫ i → l ≫ m.left = (μ[A₀]).left ≫ i := by
 
   intro S S₁ S₂ T T₁ T₂ u₁ u₂ ⟨hS⟩ v₁ v₂ ⟨hT⟩ f₁ f₂ A₁ _ A₂ _ B₁ _ B₂ _ A₀ _ i₁ i₂ j₁ j₂ hi₁ hi₂ hj₁ hj₂ i ei₁ ei₂

@@ -27,6 +27,15 @@ open Classical in
 
 noncomputable def extZero (H : Subgroup T) (a : H → R) : T → R := fun x => if h : x ∈ H then a ⟨x, h⟩ else 0
 
+/- English proof (translation)
+Use `(hB _).2 fun t => ?_` and prove the remaining obligations. Distinguish the cases in `h : c * t ∈ H`. Establish `: (fun x : H => ind (R` using `R) H (c * (t * x))) = 1 := by`. Use function extensionality and compare the values at `x`. Establish `: c * (t * x) ∈ H`.
+
+Rewrite using `[← _root_.mul_assoc]`. Conclude with `H.mul_mem h x.2`. Simplify using `[ind, this]`. Rewrite using `[this]`. Conclude with `A.one_mem`.
+
+Establish `: (fun x : H => ind (R` using `R) H (c * (t * x))) = 0 := by`. Use function extensionality and compare the values at `x`. Establish `: c * (t * x) ∉ H`. Rewrite using `[← _root_.mul_assoc]`. Conclude with `fun h' => h (by simpa using H.mul_mem h' (H.inv_mem x.2))`.
+
+Simplify using `[ind, this]`. Rewrite using `[this]`. Conclude with `A.zero_mem`.
+-/
 theorem ind_translate_mem {H : Subgroup T} {A : Subalgebra R (H → R)} {B : Subalgebra R (T → R)}
     (hB : ∀ f : T → R, f ∈ B ↔ ∀ t, (fun h : H => f (t * h)) ∈ A) (c : T) :
     (fun x => ind (R := R) H (c * x)) ∈ B := by
@@ -49,6 +58,13 @@ theorem ind_translate_mem {H : Subgroup T} {A : Subalgebra R (H → R)} {B : Sub
     rw [this]
     exact A.zero_mem
 
+/- English proof (translation)
+Use `(hB _).2 fun t => ?_` and prove the remaining obligations. Distinguish the cases in `h : t ∈ H`. Establish `: (fun x : H => extZero H a (t * x)) = fun x => a (⟨t, h⟩ * x)`. Use function extensionality and compare the values at `x`. Establish `h' : t * x ∈ H` using `H.mul_mem h x.2`.
+
+Simplify using `only [extZero, dif_pos h']`. Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `hA a ha _`. Establish `: (fun x : H => extZero H a (t * x)) = 0`.
+
+Use function extensionality and compare the values at `x`. Establish `h' : t * x ∉ H` using `fun h' => h (by simpa using H.mul_mem h' (H.inv_mem x.2))`. Simplify using `[extZero, h']`. Rewrite using `[this]`. Conclude with `A.zero_mem`.
+-/
 theorem extZero_mem {H : Subgroup T} {A : Subalgebra R (H → R)} {B : Subalgebra R (T → R)}
     (hB : ∀ f : T → R, f ∈ B ↔ ∀ t, (fun h : H => f (t * h)) ∈ A)
     (hA : ∀ f ∈ A, ∀ t, (fun h => f (t * h)) ∈ A) {a : H → R} (ha : a ∈ A) : extZero H a ∈ B := by
@@ -68,6 +84,9 @@ theorem extZero_mem {H : Subgroup T} {A : Subalgebra R (H → R)} {B : Subalgebr
     rw [this]
     exact A.zero_mem
 
+/- English proof (translation)
+Use `(hB _).2 fun t => ?_` and prove the remaining obligations. Simplify `(hB f).1 hf (c * t)` using `only [_root_.mul_assoc]`.
+-/
 theorem translate_mem {H : Subgroup T} {A : Subalgebra R (H → R)} {B : Subalgebra R (T → R)}
     (hB : ∀ f : T → R, f ∈ B ↔ ∀ t, (fun h : H => f (t * h)) ∈ A) {f : T → R} (hf : f ∈ B) (c : T) :
     (fun x => f (c * x)) ∈ B := by
@@ -81,6 +100,15 @@ def transl {B : Subalgebra R (T → R)} (hB : ∀ f ∈ B, ∀ c : T, (fun x => 
   map_zero' := rfl
   map_add' _ _ := rfl
 
+/- English proof (translation)
+Use `Fintype.ofFinite T` as an intermediate fact. Establish `h0 : (∏ t : T, (1 - (⟨_, he t⁻¹⟩ : B))) = 0`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `x`. Establish `hx : ((∏ t : T, (1 - (⟨_, he t⁻¹⟩ : B)) : B) : T → R) x = ∏ t : T, (1 - ind (R` using `R) H (t⁻¹ * x)) := by`.
+
+Rewrite using `[← Subalgebra.coe_val, map_prod, Finset.prod_apply]`. Both sides reduce to the same expression. Rewrite using `[hx]`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ x) (by simp [ind, H.one_mem])`. Establish `hP : (∏ t : T, (1 - (⟨_, he t⁻¹⟩ : B))) ∈ P` using `h0 ▸ P.zero_mem`.
+
+Take `⟨t, -, ht⟩` from `(Ideal.IsPrime.prod_mem_iff (p := P)).1 hP`. Use `⟨t, fun h => ?_⟩` and prove the remaining obligations. Establish `: (1 : B) ∈ P`. Use `P.add_mem ht h` as an intermediate fact. Simplify using `using this`.
+
+Conclude with `(Ideal.ne_top_iff_one P).1 (Ideal.IsPrime.ne_top ‹_›) this`.
+-/
 theorem exists_translate_notMem [Finite T] {H : Subgroup T} {B : Subalgebra R (T → R)}
     (he : ∀ c : T, (fun x => ind (R := R) H (c * x)) ∈ B) (P : Ideal B) [P.IsPrime] :
     ∃ t : T, (⟨_, he t⁻¹⟩ : B) ∉ P := by
@@ -107,6 +135,9 @@ end alg
 
 section geom
 
+/- English proof (translation)
+Use `hF.finite` as an intermediate fact. Establish `: IsAffineHom (U.ι ≫ Γ.G.hom)` using `inferInstance`. Conclude with `isAffine_of_isAffineHom (U.ι ≫ Γ.G.hom)`.
+-/
 theorem isAffineOpen_of_fin {R : Type} [CommRing R] [IsDomain R] {T : Type} [CommGroup T] (Γ : QFGroup R T)
     {U : Γ.G.left.Opens} (hF : Γ.IsFinOpenSub U) : IsAffineOpen U := by
   have := hF.finite
@@ -117,9 +148,15 @@ noncomputable def valRing {B : Type} [CommRing B] {X : Scheme.{0}} (x : Spec (Co
     (h : ⊤ ≤ x ⁻¹ᵁ U) : Γ(X, U) →+* B :=
   (Scheme.ΓSpecIso (CommRingCat.of B)).hom.hom.comp (x.appLE U ⊤ h).hom
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem valRing_apply {B : Type} [CommRing B] {X : Scheme.{0}} (x : Spec (CommRingCat.of B) ⟶ X) (U : X.Opens)
     (h : ⊤ ≤ x ⁻¹ᵁ U) (s : Γ(X, U)) : valRing x U h s = valAt x U h s := rfl
 
+/- English proof (translation)
+Establish `e` using `IsAffineOpen.SpecMap_appLE_fromSpec x hU (isAffineOpen_top _) h`. Rewrite `e` using `[IsAffineOpen.fromSpec_top, Scheme.isoSpec_Spec_inv]`. Establish `: CommRingCat.ofHom (valRing x U h) = x.appLE U ⊤ h ≫ (Scheme.ΓSpecIso (CommRingCat.of B)).hom` using `rfl`. Rewrite using `[this, Spec.map_comp, Category.assoc, e, ← Category.assoc, ← Spec.map_comp]`. Simplify using the standard rewrite rules.
+-/
 theorem spec_valRing_fromSpec {B : Type} [CommRing B] {X : Scheme.{0}} (x : Spec (CommRingCat.of B) ⟶ X) {U : X.Opens}
     (hU : IsAffineOpen U) (h : ⊤ ≤ x ⁻¹ᵁ U) :
     Spec.map (CommRingCat.ofHom (valRing x U h)) ≫ hU.fromSpec = x := by
@@ -129,12 +166,20 @@ theorem spec_valRing_fromSpec {B : Type} [CommRing B] {X : Scheme.{0}} (x : Spec
   rw [this, Spec.map_comp, Category.assoc, e, ← Category.assoc, ← Spec.map_comp]
   simp
 
+/- English proof (translation)
+Rewrite using `[← SetLike.mem_coe, ← hU.range_fromSpec]`. Conclude with `⟨z, rfl⟩`.
+-/
 theorem fromSpec_mem' {X : Scheme.{0}} {U : X.Opens} (hU : IsAffineOpen U) (z) : hU.fromSpec z ∈ U := by
   rw [← SetLike.mem_coe, ← hU.range_fromSpec]
   exact ⟨z, rfl⟩
 
 variable {R : Type} [CommRing R] [IsDomain R] {T : Type} [CommGroup T]
 
+/- English proof (translation)
+Establish `e1` using `spec_valRing_fromSpec (Γ.pt t).left hU h`. Establish `e2` using `hj.pt t`. Rewrite `e2` using `[← e1, Category.assoc, ← hψ, ← Spec.map_comp]`. Use `congrArg (fun g => g.hom f) (Spec.map_injective e2)` as an intermediate fact. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_ofHom] at this`.
+
+Conclude with `this`.
+-/
 theorem val_pullback (Γ : QFGroup R T) {U : Γ.G.left.Opens} (hU : IsAffineOpen U) {A : Subalgebra R (T → R)}
     {j : Γ.G.left ⟶ Spec (CommRingCat.of A)} (hj : Γ.IsEmb A j) (ψ : CommRingCat.of A ⟶ Γ(Γ.G.left, U))
     (hψ : Spec.map ψ = hU.fromSpec ≫ j) (t : T) (h : ⊤ ≤ (Γ.pt t).left ⁻¹ᵁ U) (f : A) :
@@ -146,6 +191,15 @@ theorem val_pullback (Γ : QFGroup R T) {U : Γ.G.left.Opens} (hU : IsAffineOpen
   simp only [CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_ofHom] at this
   exact this
 
+/- English proof (translation)
+Set `ρ : R →+* Γ(Γ.G.left, U)` to `ψ.hom.comp (algebraMap R A)`. Use `letI : Algebra R Γ(Γ.G.left, U) := ρ.toAlgebra`. Establish `hρ : hU.fromSpec ≫ Γ.G.hom = Spec.map (CommRingCat.ofHom (algebraMap R Γ(Γ.G.left, U)))`. Establish `e : CommRingCat.ofHom (algebraMap R Γ(Γ.G.left, U)) = CommRingCat.ofHom (algebraMap R A) ≫ ψ` using `rfl`. Rewrite using `[e, Spec.map_comp, hψ, Category.assoc, hj.isOver]`.
+
+Use `hF.finite` as an intermediate fact. Establish `hfin : IsFinite (hU.fromSpec ≫ Γ.G.hom)`. Rewrite using `[← hU.isoSpec_inv_ι, Category.assoc]`. Use `infer_instance`. Rewrite `hfin` using `[hρ]`.
+
+Establish `hfin' : Module.Finite R Γ(Γ.G.left, U)` using `RingHom.finite_algebraMap.1 ((IsFinite.SpecMap_iff _).1 hfin)`. Establish `h1 : IsIntegral R s` using `Algebra.IsIntegral.isIntegral s`. Establish `h2 : (algebraMap R (FractionRing R)).comp (RingHom.id R) = (valRing (Γ.pt t).left U h).comp (algebraMap R Γ(Γ.G.left, U))`. Use extensionality with `r`. Use `val_pullback Γ hU hj ψ hψ t h (algebraMap R A r)` as an intermediate fact.
+
+Conclude with `this.symm`. Establish `h3 : IsIntegral R (valRing (Γ.pt t).left U h s)` using `h1.map_of_comp_eq _ _ h2`. Conclude with `IsIntegrallyClosed.isIntegral_iff.1 h3`.
+-/
 theorem val_mem_range [IsIntegrallyClosed R] (Γ : QFGroup R T) {U : Γ.G.left.Opens} (hF : Γ.IsFinOpenSub U)
     (hU : IsAffineOpen U) {A : Subalgebra R (T → R)}
     {j : Γ.G.left ⟶ Spec (CommRingCat.of A)} (hj : Γ.IsEmb A j) (ψ : CommRingCat.of A ⟶ Γ(Γ.G.left, U))
@@ -178,6 +232,49 @@ end PositivityTheory.HtPt.Ge.EmbSub
 namespace PositivityTheory.HtPt.Ge.EmbSub
 open GlobalTheory GlobalTheory.CompanionTheory GlobalTheory.CompanionTheory.Ar
 
+/- English proof (translation)
+Introduce `R _ _ _ T _ _ Γ U hF j hj`. Take `⟨H, A, hH, hA, hAs⟩` from `GlobalTheory.T.finite_open_hopf_order R T Γ U hF`. Establish `hU` using `isAffineOpen_of_fin Γ hF`. Establish `hTr : ∀ f ∈ A, ∀ t, (fun h => f (t * h)) ∈ A` using `GlobalTheory.T.hopf_order_translation_invariant R H A hA`. Establish `hB : ∀ f : T → R, f ∈ Γ.btOrder ⊤ ↔ ∀ t, (fun h : H => f (t * h)) ∈ A`.
+
+Introduce `f`. Rewrite using `[← Htat.bt_sub_eq_top R T Γ U hF, GlobalTheory.T.mem_btOrder_iff_btSet R T Γ U f]`. Prove the components needed by the constructor for the conclusion. Introduce `hf t`. Take `⟨s, hs⟩` from `(GlobalTheory.T.regular_function_iff_section R T Γ U _).1 (hf t)`.
+
+Conclude with `(hAs _).2 ⟨s, fun x h => hs x h⟩`. Introduce `hf t`. Take `⟨s, hs⟩` from `(hAs _).1 (hf t)`. Conclude with `(GlobalTheory.T.regular_function_iff_section R T Γ U _).2 ⟨s, fun x h => hs ⟨x, (hH x).2 h⟩ h⟩`. Set `ψ : CommRingCat.of (Γ.btOrder ⊤) ⟶ Γ(Γ.G.left, U)` to `Spec.preimage (hU.fromSpec ≫ j)`.
+
+Establish `hψ : Spec.map ψ = hU.fromSpec ≫ j` using `Spec.map_preimage _`. Establish `hv` using `val_pullback Γ hU hj ψ hψ`. Establish `hi` using `val_mem_range Γ hF hU hj ψ hψ`. Establish `inj : Function.Injective (algebraMap R (FractionRing R))` using `IsFractionRing.injective R _`. Establish `hsurj : Function.Surjective ψ.hom`.
+
+Introduce `s`. Use `choose a ha using fun t : H => hi t ((hH t).1 t.2) s`. Establish `haA : a ∈ A` using `(hAs a).2 ⟨s, fun t h => (ha t).symm⟩`. Use `⟨⟨extZero H a, extZero_mem hB hTr haA⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← sub_eq_zero]`.
+
+Use `GlobalTheory.T.section_eq_zero_of_values R T Γ U _ fun t h => ?_` and prove the remaining obligations. Establish `ht : t ∈ H` using `(hH t).2 h`. Rewrite using `[← valRing_apply, map_sub, valRing_apply, valRing_apply, hv t h, ← ha ⟨t, ht⟩]`. Simplify using `[extZero, ht]`. Establish `hz : ∀ f : Γ.btOrder ⊤, ψ.hom f = 0 ↔ ∀ t ∈ H, (f : T → R) t = 0`.
+
+Introduce `f`. Prove the components needed by the constructor for the conclusion. Introduce `hf t ht`. Use `hv t ((hH t).1 ht) f` as an intermediate fact. Rewrite `this` using `[hf, ← valRing_apply, map_zero]`.
+
+Conclude with `inj (by rw [← this, map_zero])`. Introduce `hf`. Use `GlobalTheory.T.section_eq_zero_of_values R T Γ U _ fun t h => ?_` and prove the remaining obligations. Rewrite using `[hv t h, hf t ((hH t).2 h), map_zero]`. Set `e : Γ.btOrder ⊤` to `⟨_, ind_translate_mem hB 1⟩`.
+
+Establish `he1 : ∀ x ∈ H, (e : T → R) x = 1` using `fun x hx => by simp [e, ind, hx]`. Establish `he0 : ∀ x, x ∉ H → (e : T → R) x = 0` using `fun x hx => by simp [e, ind, hx]`. Establish `hidem : IsIdempotentElem e`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `x`.
+
+Express the relevant statement in the definitionally equal form `(e : T → R) x * (e : T → R) x = (e : T → R) x`. Distinguish the cases in `hx : x ∈ H`. Simplify using `[he1 x hx]`. Simplify using `[he0 x hx]`. Establish `hker : RingHom.ker ψ.hom = Ideal.span {1 - e}`.
+
+Use extensionality with `f`. Rewrite using `[RingHom.mem_ker, Ideal.mem_span_singleton', hz]`. Prove the components needed by the constructor for the conclusion. Introduce `hf`. Use `⟨f, Subtype.ext (funext fun x => ?_)⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `(f : T → R) x * (1 - (e : T → R) x) = (f : T → R) x`. Distinguish the cases in `hx : x ∈ H`. Simplify using `[hf x hx]`. Simplify using `[he0 x hx]`. Introduce and unpack `⟨b, rfl⟩ t ht`.
+
+Express the relevant statement in the definitionally equal form `(b : T → R) t * (1 - (e : T → R) t) = 0`. Simplify using `[he1 t ht]`. Establish `hoi : IsOpenImmersion (Spec.map ψ)` using `(isOpenImmersion_SpecMap_iff_of_surjective ψ hsurj).2 ⟨1 - e, hidem.one_sub, hker⟩`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `: U.ι ≫ j = hU.isoSpec.hom ≫ Spec.map ψ`.
+
+Rewrite using `[hψ, ← hU.isoSpec_inv_ι]`. Simplify using the standard rewrite rules. Rewrite using `[this]`. Use `infer_instance`. Introduce `P`.
+
+Establish `hBt : ∀ f ∈ Γ.btOrder ⊤, ∀ c : T, (fun x => f (c * x)) ∈ Γ.btOrder ⊤` using `fun f hf c => translate_mem hB hf c`. Take `⟨t, ht⟩` from `exists_translate_notMem (B := Γ.btOrder ⊤) (H := H) (ind_translate_mem hB) P.asIdeal`. Set `Q : Ideal (Γ.btOrder ⊤)` to `P.asIdeal.comap (transl hBt t⁻¹)`. Establish `hQ : Q.IsPrime` using `Ideal.comap_isPrime _ _`. Establish `heQ : e ∉ Q`.
+
+Introduce `h`. Apply `ht` to reduce the goal to its premises. Establish `: transl hBt t⁻¹ e = ⟨_, ind_translate_mem hB t⁻¹⟩` using `Subtype.ext (funext fun x => by simp [transl, e])`. Rewrite using `[← this]`. Conclude with `h`.
+
+Establish `h1e : 1 - e ∈ Q`. Establish `h0 : e * (1 - e) ∈ Q`. Rewrite using `[mul_sub, _root_.mul_one, hidem.eq, sub_self]`. Conclude with `Q.zero_mem`. Conclude with `(hQ.mem_or_mem h0).resolve_left heQ`.
+
+Establish `hk : RingHom.ker ψ.hom ≤ Q`. Rewrite using `[hker, Ideal.span_singleton_le_iff_mem]`. Conclude with `h1e`. Choose the witnesses or unpack the hypotheses as in `⟨Q', hQ'⟩ : (⟨Q, hQ⟩ : PrimeSpectrum (Γ.btOrder ⊤)) ∈ Set.range (PrimeSpectrum.comap ψ.hom) := by`. Rewrite using `[range_comap_of_surjective _ _ hsurj]`.
+
+Conclude with `hk`. Use `⟨t, hU.fromSpec Q', fromSpec_mem' hU _, fun f f' hff => ?_⟩` and prove the remaining obligations. Establish `hjg : (j (hU.fromSpec Q')).asIdeal = Q`. Establish `h1 : j (hU.fromSpec Q') = (Spec.map ψ) Q'`. Rewrite using `[hψ]`.
+
+Both sides reduce to the same expression. Rewrite using `[h1]`. Conclude with `congrArg PrimeSpectrum.asIdeal hQ'`. Rewrite using `[hjg]`. Establish `h2 : transl hBt t⁻¹ f' = f` using `Subtype.ext (funext fun x => by`.
+
+Express the relevant statement in the definitionally equal form `(f' : T → R) (t⁻¹ * x) = (f : T → R) x`. Rewrite using `[hff, mul_inv_cancel_left])`. Express the relevant statement in the definitionally equal form `f ∈ P.asIdeal ↔ transl hBt t⁻¹ f' ∈ P.asIdeal`. Rewrite using `[h2]`.
+-/
 theorem openImmersion_translatesCover : ∀ (R : Type) [CommRing R] [IsDomain R] [IsIntegrallyClosed R] (T : Type) [CommGroup T] [Finite T] (Γ : QFGroup R T) (U : Γ.G.left.Opens), Γ.IsFinOpenSub U → ∀ (j : Γ.G.left ⟶ Spec (CommRingCat.of (Γ.btOrder ⊤))), Γ.IsEmb (Γ.btOrder ⊤) j → IsOpenImmersion (U.ι ≫ j) ∧ Γ.TranslatesCover (Γ.btOrder ⊤) j U := by
   intro R _ _ _ T _ _ Γ U hF j hj
   obtain ⟨H, A, hH, hA, hAs⟩ := GlobalTheory.T.finite_open_hopf_order R T Γ U hF

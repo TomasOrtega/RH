@@ -15,11 +15,29 @@ section Linear
 variable {O Ω : Type*} [CommRing O] [Field Ω] [Algebra O Ω]
 variable {V V₁ : Type*} [AddCommGroup V] [Module Ω V] [AddCommGroup V₁] [Module Ω V₁] {N : ℕ}
 
+/- English proof (translation)
+Use `conv_lhs => rw [← w.sum_repr v]`. Simplify using `only [map_sum, map_smul, smul_eq_mul]`.
+-/
 theorem form_eq_sum {W : Type*} [AddCommGroup W] [Module Ω W] (w : Module.Basis (Fin N) Ω W)
     (φ : W →ₗ[Ω] Ω) (v : W) : φ v = ∑ j, w.repr v j * φ (w j) := by
   conv_lhs => rw [← w.sum_repr v]
   simp only [map_sum, map_smul, smul_eq_mul]
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero`. Introduce `v _ hv`. Use `⟨0, fun _ => zero_mem _, ?_⟩` and prove the remaining obligations. Establish `: v = 0`.
+
+Apply `w.repr.injective` to reduce the goal to its premises. Use extensionality with `j`. Simplify using `using hv j (Nat.zero_le _)`. Simplify using `[this]`. Consider the case `succ k ih`.
+
+Introduce `v hvL hv`. Distinguish the cases in `hk : k < N`. Use `set i : Fin N := ⟨k, hk⟩ with hi`. Take `⟨a, haR, ha⟩` from `(hg i (w.repr v i)).1 ⟨v, hvL, fun j hj => hv j (by`. Establish `: i.val < j.val` using `hj`.
+
+Simplify `this), rfl⟩` using `[hi]`. Establish `hv' : v - a • e i ∈ L` using `sub_mem hvL (hst a haR _ (heL i))`. Take `⟨c, hcR, hc⟩` from `ih _ hv' (fun j hj => by`. Break down `Nat.lt_or_eq_of_le hj with hlt | heq` into its components or cases. Establish `hij : i < j` using `by show i.val < j.val`.
+
+Simplify `hlt` using `[hi]`. Establish `h1 : w.repr v j = 0` using `hv j hlt`. Simplify using `[h1, hez i j hij]`. Establish `hij : j = i` using `Fin.ext (by simp [hi, heq])`. Substitute `hij` using the available equality.
+
+Simplify using `[hed, ha])`. Use `⟨fun l => c l + (if l = i then a else 0), fun l => ?_, ?_⟩` and prove the remaining obligations. Use `add_mem (hcR l) ?_ split_ifs` and prove the remaining obligations. Conclude with `haR`. Conclude with `zero_mem _`.
+
+Establish `: v = (v - a • e i) + a • e i` using `by abel`. Rewrite using `[this, hc]`. Simplify using `[add_smul, Finset.sum_add_distrib, ite_smul]`. Conclude with `ih v hvL (fun j _ => hv j (by have := j.isLt; omega))`.
+-/
 theorem exists_coeffs (R : Subalgebra O Ω) (L : AddSubgroup V)
     (hst : ∀ a ∈ R, ∀ v ∈ L, a • v ∈ L) (w : Module.Basis (Fin N) Ω V) (m : Fin N → Ω)
     (hg : ∀ i s, (∃ v ∈ L, (∀ j, i < j → w.repr v j = 0) ∧ w.repr v i = s) ↔ ∃ a ∈ R, s = a * m i)
@@ -65,6 +83,11 @@ theorem exists_coeffs (R : Subalgebra O Ω) (L : AddSubgroup V)
         simp [add_smul, Finset.sum_add_distrib, ite_smul]
     · exact ih v hvL (fun j _ => hv j (by have := j.isLt; omega))
 
+/- English proof (translation)
+Establish `hdet : IsUnit (w.det e)`. Rewrite using `[Module.Basis.det_apply, isUnit_iff_ne_zero, Matrix.det_of_upperTriangular (M := w.toMatrix e)]`. Use `Finset.prod_ne_zero_iff.2 fun i _ => ?_` and prove the remaining obligations. Simplify `hm i` using `[Module.Basis.toMatrix_apply, hed]`. Introduce `i j hij`.
+
+Simplify `hez j i hij` using `[Module.Basis.toMatrix_apply]`. Take `⟨hli, hsp⟩` from `(Module.Basis.is_basis_iff_det w).2 hdet`. Conclude with `⟨Module.Basis.mk hli hsp.ge, fun i => by simp⟩`.
+-/
 theorem exists_basis (w : Module.Basis (Fin N) Ω V) (m : Fin N → Ω) (hm : ∀ i, m i ≠ 0)
     (e : Fin N → V) (hez : ∀ i j, i < j → w.repr (e i) j = 0) (hed : ∀ i, w.repr (e i) i = m i) :
     ∃ e' : Module.Basis (Fin N) Ω V, ∀ i, e' i = e i := by
@@ -78,6 +101,19 @@ theorem exists_basis (w : Module.Basis (Fin N) Ω V) (m : Fin N → Ω) (hm : �
   obtain ⟨hli, hsp⟩ := (Module.Basis.is_basis_iff_det w).2 hdet
   exact ⟨Module.Basis.mk hli hsp.ge, fun i => by simp⟩
 
+/- English proof (translation)
+Establish `hexp : ∀ l, (∀ j, j < l → e'.repr (w j) r = 0) → e'.repr (e' l) r = m l * e'.repr (w l) r`. Introduce `l hl`. Establish `h0 : e'.repr (e' l) r = ∑ j, w.repr (e' l) j * e'.repr (w j) r` using `form_eq_sum w (e'.coord r) (e' l)`. Rewrite using `[h0, Finset.sum_eq_single l]`. Rewrite using `[hed]`.
+
+Introduce `j _ hjl`. Break down `lt_or_gt_of_ne hjl with h | h` into its components or cases. Simplify using `[hl j h]`. Simplify using `[hez l j h]`. Simplify using the standard rewrite rules.
+
+Establish `hlow : ∀ n : ℕ, ∀ l : Fin N, l.val = n → l < r → e'.repr (w l) r = 0`. Introduce `n`. Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Introduce `l hln hlr`.
+
+Establish `h1` using `hexp l (fun j hj => ih j.val (by rw [← hln]; exact hj) j rfl (hj.trans hlr))`. Establish `h2 : e'.repr (e' l) r = 0`. Simplify using `[Module.Basis.repr_self, Finsupp.single_apply, hlr.ne]`. Rewrite `h1` using `[h2]`. Conclude with `(mul_eq_zero.1 h1.symm).resolve_left (hm l)`.
+
+Establish `hlow' : ∀ l, l < r → e'.repr (w l) r = 0` using `fun l hl => hlow _ l rfl hl`. Use `⟨hlow', ?_⟩` and prove the remaining obligations. Establish `h1` using `hexp r hlow'`. Establish `h2 : e'.repr (e' r) r = 1` using `by simp`. Rewrite `h1` using `[h2]`.
+
+Conclude with `eq_inv_of_mul_eq_one_right h1.symm`.
+-/
 theorem coord_w (w e' : Module.Basis (Fin N) Ω V) (m : Fin N → Ω) (hm : ∀ i, m i ≠ 0)
     (hez : ∀ i j, i < j → w.repr (e' i) j = 0) (hed : ∀ i, w.repr (e' i) i = m i) (r : Fin N) :
     (∀ l, l < r → e'.repr (w l) r = 0) ∧ e'.repr (w r) r = (m r)⁻¹ := by
@@ -110,6 +146,27 @@ theorem coord_w (w e' : Module.Basis (Fin N) Ω V) (m : Fin N → Ω) (hm : ∀ 
   rw [h2] at h1
   exact eq_inv_of_mul_eq_one_right h1.symm
 
+/- English proof (translation)
+Establish `hcoord : ∀ u l, w₁.repr u l = β (w l.rev) u`. Introduce `u l`. Rewrite using `[form_eq_sum w₁ (β (w l.rev)) u]`. Simplify using `[hw, Fin.rev_inj]`. Establish `hex : ∀ i, ∃ v, v ∈ L ∧ (∀ l, i < l → w.repr v l = 0) ∧ w.repr v i = m i`.
+
+Introduce `i`. Take `⟨v, hv, h1, h2⟩` from `(hg i (m i)).2 ⟨1, one_mem _, by simp⟩`. Conclude with `⟨v, hv, h1, h2⟩`. Use `choose e heL hez hed using hex`. Take `⟨e', he'⟩` from `exists_basis w m hm e hez hed`.
+
+Establish `hez' : ∀ i l, i < l → w.repr (e' i) l = 0` using `fun i l h => by rw [he']; exact hez i l h`. Establish `hed' : ∀ i, w.repr (e' i) i = m i` using `fun i => by rw [he']; exact hed i`. Use `set r := j.rev with hr`. Take `⟨hlow, htop⟩` from `coord_w w e' m hm hez' hed' r`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨u, hu, hz, rfl⟩`. Use `⟨m r * w₁.repr u j, ?_, ?_⟩` and prove the remaining obligations. Establish `hmem` using `(hL₁ u).1 hu _ (heL r)`. Establish `hsum : β (e r) u = m r * w₁.repr u j`. Establish `h0 : β (e r) u = ∑ l, w.repr (e r) l * β (w l) u` using `form_eq_sum w (β.flip u) (e r)`.
+
+Rewrite using `[h0, Finset.sum_eq_single r]`. Rewrite using `[hed, hcoord u j]`. Introduce `l _ hlr`. Break down `lt_or_gt_of_ne hlr with h | h` into its components or cases. Establish `hl : j < l.rev`.
+
+Rewrite `h` using `[hr]`. Use `Fin.rev_lt_rev.2 h` as an intermediate fact. Simplify using `using this`. Establish `h2` using `hcoord u l.rev`. Rewrite `h2` using `[Fin.rev_rev]`.
+
+Rewrite using `[← h2, hz _ hl, mul_zero]`. Simplify using `[hez r l h]`. Simplify using the standard rewrite rules. Rewrite `hmem` using `[hsum]`. Then use the resulting hypothesis. Clear denominators, using `[hm r]` for the nonvanishing conditions.
+
+Introduce and unpack `⟨a, haR, rfl⟩`. Take `⟨u, hu⟩` from `hβ (a • e'.coord r)`. Establish `hβu : ∀ v, β v u = a * e'.repr v r` using `fun v => by`. Use `LinearMap.congr_fun hu v` as an intermediate fact. Simplify using `using this`.
+
+Use `⟨u, (hL₁ u).2 fun v hv => ?_, fun l hl => ?_, ?_⟩` and prove the remaining obligations. Take `⟨c, hcR, hc⟩` from `exists_coeffs R L hst w m hg e heL hez hed N v hv (fun l hl => by have := l.isLt; omega)`. Establish `hcoef : e'.repr v r = c r`. Establish `: v = ∑ i, c i • e' i` using `by simpa [he'] using hc`. Rewrite using `[this]`.
+
+Simplify using `[map_sum, Finsupp.finset_sum_apply, Finsupp.single_apply]`. Rewrite using `[hβu, hcoef]`. Conclude with `mul_mem haR (hcR r)`. Rewrite using `[hcoord, hβu, hlow _ (by simpa [hr] using Fin.rev_lt_rev.2 hl), mul_zero]`. Rewrite using `[hcoord, hβu, ← hr, htop]`.
+-/
 theorem dual_graded (R : Subalgebra O Ω) (L : AddSubgroup V) (L₁ : AddSubgroup V₁)
     (hst : ∀ a ∈ R, ∀ v ∈ L, a • v ∈ L) (w : Module.Basis (Fin N) Ω V) (m : Fin N → Ω)
     (hm : ∀ i, m i ≠ 0)
@@ -174,6 +231,13 @@ theorem dual_graded (R : Subalgebra O Ω) (L : AddSubgroup V) (L₁ : AddSubgrou
 
 end Linear
 
+/- English proof (translation)
+Introduce `O _ Ω _ _ K _ _ ι _ x N V _ _ V₁ _ _ E F β hdual w b hE w₁ hw`. Use `⟨fun c hc i => ?_⟩` and prove the remaining obligations. Establish `hc' : mseg x c ≠ 0` using `hc`. Establish `hx : ∀ k, x ⟨k, c k⟩ ≠ 0` using `fun k => Finset.prod_ne_zero_iff.1 hc' k (Finset.mem_univ k)`. Establish `hm : ∀ l, (∏ k, x ⟨k, c k⟩ ^ b l k) ≠ 0` using `fun l => Finset.prod_ne_zero_iff.2 fun k _ => zpow_ne_zero _ (hx k)`.
+
+Use extensionality with `s`. Establish `key` using `dual_graded (chartRing O (mseg x) c) (E.lat c) (F.lat c) (fun a ha v hv => E.stable c a ha v hv) w (fun l => ∏ k, x ⟨k, c k⟩ ^ b l k) hm (fun l s => by`. Use `Set.ext_iff.1 (hE.graded c hc l) s` as an intermediate fact. Conclude with `this)`. Use `β hdual.1.2 (hdual.2 c hc') w₁ hw i s`.
+
+Establish `hinv : (∏ k, x ⟨k, c k⟩ ^ b i.rev k)⁻¹ = ∏ k, x ⟨k, c k⟩ ^ (-b i.rev) k`. Rewrite using `[← Finset.prod_inv_distrib]`. Conclude with `Finset.prod_congr rfl fun k _ => by simp [zpow_neg]`. Rewrite `key` using `[hinv]`. Conclude with `key`.
+-/
 theorem main : ∀ (O : Type) [CommRing O] (Ω : Type) [Field Ω] [Algebra O Ω] (K : Type) [Fintype K] [DecidableEq K] (ι : K → Type) [∀ k, Fintype (ι k)] (x : (Σ k, ι k) → Ω) (N : ℕ) (V : Type) [AddCommGroup V] [Module Ω V] (V₁ : Type) [AddCommGroup V₁] [Module Ω V₁] (E : ChartBundle O (mseg x) N V) (F : ChartBundle O (mseg x) N V₁) (β : V →ₗ[Ω] V₁ →ₗ[Ω] Ω), IsDualLat O x β E.lat F.lat → ∀ (w : Module.Basis (Fin N) Ω V) (b : Fin N → K → ℤ), IsFlagFrame x E w b → ∀ w₁ : Module.Basis (Fin N) Ω V₁, (∀ i j, β (w i) (w₁ j) = if i = j.rev then 1 else 0) → IsFlagFrame x F w₁ (fun j => -b j.rev) := by
   intro O _ Ω _ _ K _ _ ι _ x N V _ _ V₁ _ _ E F β hdual w b hE w₁ hw
   refine ⟨fun c hc i => ?_⟩

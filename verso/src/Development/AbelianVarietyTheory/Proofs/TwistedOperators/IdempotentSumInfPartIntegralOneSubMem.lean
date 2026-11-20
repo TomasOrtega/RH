@@ -27,6 +27,17 @@ section Generic
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Use `choose! a ha hae using h`. Establish `hone : (1 : E ⊗[F] Formalism.L2.Herm.Af F) - ε ∈ Formalism.L2.Herm.intAf F E` using `sub_mem (one_mem _) hε`. Use `set t : Formalism.L2.Herm.intAf F E := ⟨1 - ε, hone⟩ with ht`. Use `set b : Pl E → Formalism.L2.Herm.intAf F E := fun w => if hw : w ∈ P then ⟨1 - a w, (ha w hw).one_sub_mem⟩ else 1 with hb`. Establish `hbm : ∀ w ∈ P, b w ∈ Formalism.L2.DIV.idS F (w.asIdeal ^ d w)`.
+
+Introduce `w hw`. Use `(ha w hw).one_sub_mem_idS (d w)` as an intermediate fact. Simplify `this` using `[hb, hw]`. Establish `hprod : ∏ w ∈ P, b w ∈ ∏ w ∈ P, Formalism.L2.DIV.idS F (w.asIdeal ^ d w)` using `Ideal.prod_mem_prod hbm`. Establish `hmap : ∏ w ∈ P, Formalism.L2.DIV.idS F (w.asIdeal ^ d w) = Formalism.L2.DIV.idS F (∏ w ∈ P, w.asIdeal ^ d w)`.
+
+Unfold `Formalism.L2.DIV.idS`. Conclude with `(map_prod (Ideal.mapHom (Formalism.L2.DIV.oToS F E)) _ P).symm`. Establish `hfix : t * ∏ w ∈ P, b w = t`. Use `Finset.prod_induction b (fun x => t * x = t) (fun x y hx hy => by rw [← mul_assoc, hx, hy]) (mul_one t) ?_` and prove the remaining obligations. Introduce `w hw`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [hb, hw, dif_pos, ht, Subring.coe_mul]`. Take the linear combination `(hae w hw)`. Use `⟨t, ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[← hfix, ← hmap]`.
+
+Conclude with `Ideal.mul_mem_left _ _ hprod`.
+-/
 theorem one_sub_mem_idS_prod [StarRing E] (P : Finset (Pl E)) (d : Pl E → ℕ) {ε : E ⊗[F] Formalism.L2.Herm.Af F}
     (hε : ε ∈ Formalism.L2.Herm.intAf F E)
     (h : ∀ w ∈ P, ∃ a : E ⊗[F] Formalism.L2.Herm.Af F, GlobalTheory.InertNbr.IdemOf F w a ∧ a * ε = a) :
@@ -61,6 +72,11 @@ end GlobalTheory.IdemSumIdeal
 
 namespace GlobalTheory.IdemSumIdeal
 
+/- English proof (translation)
+Use `⟨by rw [← map_mul, h.1.1], fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[h.2 x hx]`. Establish `e : toEAf D (a * incA D ((x : D.host.E)⁻¹)) = toEAf D a * Formalism.L2.Col.iA D.host.F D.host.E ((x : D.host.E)⁻¹)`. Rewrite using `[map_mul]`. Both sides reduce to the same expression.
+
+Rewrite using `[← e]`. Conclude with `not_congr ⟨GlobalTheory.IdemIntegral.toEAf_mem_of_finPart_mem, GlobalTheory.PlaceDatum.finPart_mem_of_toEAf⟩`.
+-/
 theorem idemOf_toEAf {D : D7} {a : AE D} {w : Formalism.L2.DIV.Pl D.host.E} (h : Formalism.L2.NTheta.IsIdemAt a w) :
     GlobalTheory.InertNbr.IdemOf D.host.F w (toEAf D a) := by
   refine ⟨by rw [← map_mul, h.1.1], fun x hx => ?_⟩
@@ -70,6 +86,13 @@ theorem idemOf_toEAf {D : D7} {a : AE D} {w : Formalism.L2.DIV.Pl D.host.E} (h :
   rw [← e]
   exact not_congr ⟨GlobalTheory.IdemIntegral.toEAf_mem_of_finPart_mem, GlobalTheory.PlaceDatum.finPart_mem_of_toEAf⟩
 
+/- English proof (translation)
+Introduce `D e P d h`. Take `⟨⟨es, hes, he⟩, -⟩` from `id h`. Establish `hint : toEAf D e ∈ Formalism.L2.Herm.intAf D.host.F D.host.E`. Rewrite using `[he, map_sum]`. Conclude with `sum_mem fun w hw => (idemOf_toEAf (hes w hw)).mem`.
+
+Use `⟨?_, hint, ?_⟩` and prove the remaining obligations. Rewrite using `[he, map_sum]`. Conclude with `Finset.sum_eq_zero fun w hw => GlobalTheory.ExportSeries.SpecGood.infPart_eq_zero_of_isIdemAt D w (es w) (hes w hw)`. Use `one_sub_mem_idS_prod P d hint fun w hw => ?_` and prove the remaining obligations. Take `⟨a, ha, hae⟩` from `GlobalTheory.OffIdem.idemSum_mul_idemAt h hw`.
+
+Conclude with `⟨toEAf D a, idemOf_toEAf ha, by rw [← map_mul, hae]⟩`.
+-/
 theorem isIdemSum_props : ∀ {D : D7} (e : AE D) (P : Finset (Formalism.L2.DIV.Pl D.host.E)) (d : Formalism.L2.DIV.Pl D.host.E → ℕ),
     IsIdemSum e P → infPart D e = 0 ∧ toEAf D e ∈ Formalism.L2.Herm.intAf D.host.F D.host.E ∧
       ∃ t ∈ Formalism.L2.DIV.idS D.host.F (∏ w ∈ P, w.asIdeal ^ d w), (t : EAf D) = 1 - toEAf D e := by

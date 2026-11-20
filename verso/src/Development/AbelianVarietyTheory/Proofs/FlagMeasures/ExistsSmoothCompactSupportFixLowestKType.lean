@@ -13,6 +13,11 @@ namespace GlobalTheory
 
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
+/- English proof (translation)
+Establish `hu : k ∈ Matrix.unitaryGroup (Fin n) ℂ` using `hk.1`. Establish `h1 : k * star k = 1` using `Matrix.mem_unitaryGroup_iff.mp hu`. Establish `h2 : star k * k = 1` using `Matrix.mem_unitaryGroup_iff'.mp hu`. Establish `e1 : k * y - 1 = k * (y - star k)` using `by rw [mul_sub, h1]`. Establish `e2 : y * k - 1 = (y - star k) * k` using `by rw [sub_mul, h2]`.
+
+Establish `hinv` using `(hSBall n ε).2 (y - star k) k hk`. Rewrite using `[e1, e2, hinv.1, hinv.2]`.
+-/
 private lemma hs_mul_sub_one_comm_of_mem_Kset {n : ℕ} (ε : Fin n → Bool) {k : Matrix (Fin n) (Fin n) ℂ}
     (hk : k ∈ Kset ε) (y : Matrix (Fin n) (Fin n) ℂ) :
     Formalism.REAL.hs (k * y - 1) = Formalism.REAL.hs (y * k - 1) := by
@@ -24,6 +29,9 @@ private lemma hs_mul_sub_one_comm_of_mem_Kset {n : ℕ} (ε : Fin n → Bool) {k
   have hinv := (hSBall n ε).2 (y - star k) k hk
   rw [e1, e2, hinv.1, hinv.2]
 
+/- English proof (translation)
+Unfold `Formalism.REAL.hs`. Combine the equalities or inequalities in the displayed calculation.
+-/
 private lemma norm_apply_sq_le_hs {n : ℕ} (A : Matrix (Fin n) (Fin n) ℂ) (i j : Fin n) :
     ‖A i j‖ ^ 2 ≤ Formalism.REAL.hs A := by
   unfold Formalism.REAL.hs
@@ -34,6 +42,9 @@ private lemma norm_apply_sq_le_hs {n : ℕ} (A : Matrix (Fin n) (Fin n) ℂ) (i 
         Finset.single_le_sum (f := fun i' => ∑ j', ‖A i' j'‖ ^ 2)
           (fun _ _ => Finset.sum_nonneg fun _ _ => by positivity) (Finset.mem_univ i)
 
+/- English proof (translation)
+Unfold `Formalism.REAL.hs`. Use `ContDiff.sum fun i _ => ContDiff.sum fun j _ => ?_` and prove the remaining obligations. Establish `hsub : ContDiff ℝ ∞ (fun y : Matrix (Fin n) (Fin n) ℂ => y - 1)` using `contDiff_id.sub contDiff_const`. Establish `hent : ContDiff ℝ ∞ (fun y : Matrix (Fin n) (Fin n) ℂ => (y - 1) i j)` using `(contDiff_apply_apply ℝ ℂ i j).comp hsub`. Conclude with `(contDiff_norm_sq ℝ).comp hent`.
+-/
 private lemma contDiff_hs_sub_one {n : ℕ} :
     ContDiff ℝ ∞ (fun y : Matrix (Fin n) (Fin n) ℂ => Formalism.REAL.hs (y - 1)) := by
   unfold Formalism.REAL.hs
@@ -44,6 +55,25 @@ private lemma contDiff_hs_sub_one {n : ℕ} :
     (contDiff_apply_apply ℝ ℂ i j).comp hsub
   exact (contDiff_norm_sq ℝ).comp hent
 
+/- English proof (translation)
+Take `⟨hemb, -⟩` from `uJEmb n ε`. Establish `hU' : U ∈ Filter.comap (fun g : UJ ε => umat g) (nhds (umat (1 : UJ ε)))`. Rewrite using `[← hemb.isInducing.nhds_eq_comap]`. Conclude with `hU`. Take `⟨V, hV, hVU⟩` from `Filter.mem_comap.mp hU'`.
+
+Take `⟨r, hr, hrV⟩` from `Metric.mem_nhds_iff.mp hV`. Establish `hone : umat (1 : UJ ε) = 1` using `rfl`. Establish `hqc : Continuous (fun y : Matrix (Fin n) (Fin n) ℂ => Formalism.REAL.hs (y - 1))` using `contDiff_hs_sub_one.continuous`. Establish `hball : ∀ y : Matrix (Fin n) (Fin n) ℂ, Formalism.REAL.hs (y - 1) < r ^ 2 → y ∈ Metric.ball (umat (1 : UJ ε)) r`. Introduce `y hy`.
+
+Rewrite using `[Metric.mem_ball, dist_eq_norm, hone, Matrix.norm_lt_iff hr]`. Introduce `i j`. Conclude with `lt_of_pow_lt_pow_left₀ 2 hr.le ((norm_apply_sq_le_hs (y - 1) i j).trans_lt hy)`. Establish `hcb : {y : Matrix (Fin n) (Fin n) ℂ | Formalism.REAL.hs (y - 1) ≤ r ^ 2} ⊆ Metric.closedBall (1 : Matrix (Fin n) (Fin n) ℂ) r`. Introduce `y hy`.
+
+Rewrite using `[Metric.mem_closedBall, dist_eq_norm, Matrix.norm_le_iff hr.le]`. Introduce `i j`. Conclude with `(pow_le_pow_iff_left₀ (norm_nonneg _) hr.le two_ne_zero).mp ((norm_apply_sq_le_hs (y - 1) i j).trans hy)`. Establish `hr2 : 0 < r ^ 2` using `by positivity`. Use `⟨fun y => Real.smoothTransition ((r ^ 2 - Formalism.REAL.hs (y - 1)) / r ^ 2), ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Conclude with `Real.smoothTransition.contDiff.comp ((contDiff_const.sub contDiff_hs_sub_one).div_const _)`. Introduce `y`. Conclude with `Real.smoothTransition.nonneg _`. Establish `h0 : Formalism.REAL.hs ((1 : Matrix (Fin n) (Fin n) ℂ) - 1) = 0`. Simplify using `[Formalism.REAL.hs]`.
+
+Simplify using `only [h0, sub_zero, div_self hr2.ne']`. Rewrite using `[Real.smoothTransition.one_of_one_le le_rfl]`. Conclude with `one_ne_zero`. Establish `hclosed : IsClosed {y : Matrix (Fin n) (Fin n) ℂ | Formalism.REAL.hs (y - 1) ≤ r ^ 2}` using `isClosed_le hqc continuous_const haveI : ProperSpace (Matrix (Fin n) (Fin n) ℂ) := inferInstanceAs (ProperSpace (Fin n → Fin n → ℂ))`. Establish `hK : IsCompact {y : Matrix (Fin n) (Fin n) ℂ | Formalism.REAL.hs (y - 1) ≤ r ^ 2}` using `(isCompact_closedBall (1 : Matrix (Fin n) (Fin n) ℂ) r).of_isClosed_subset hclosed hcb`.
+
+Use `HasCompactSupport.intro' (hemb.isCompact_preimage hK) (hclosed.preimage hemb.continuous) ?_` and prove the remaining obligations. Introduce `g hg`. Simplify using `only [Set.mem_preimage, Set.mem_setOf_eq, not_le] at hg`. Conclude with `Real.smoothTransition.zero_of_nonpos (div_nonpos_of_nonpos_of_nonneg (by linarith) hr2.le)`. Introduce `g hg`.
+
+Apply `hVU` to reduce the goal to its premises. Apply `hrV` to reduce the goal to its premises. Apply `hball` to reduce the goal to its premises. Assume the negation of the conclusion as `h`. Use `push_neg at h`.
+
+Conclude with `hg (Real.smoothTransition.zero_of_nonpos (div_nonpos_of_nonpos_of_nonneg (by linarith) hr2.le))`. Introduce `k hk y`. Simplify using `only [hs_mul_sub_one_comm_of_mem_Kset ε hk y]`.
+-/
 theorem exists_conjInvariant_bump (n : ℕ) (ε : Fin n → Bool) (U : Set (UJ ε))
     (hU : U ∈ nhds (1 : UJ ε)) :
     ∃ a : Matrix (Fin n) (Fin n) ℂ → ℝ, ContDiff ℝ ∞ a ∧ (∀ y, 0 ≤ a y) ∧ a 1 ≠ 0 ∧
@@ -105,6 +135,61 @@ theorem exists_conjInvariant_bump (n : ℕ) (ε : Fin n → Bool) (U : Set (UJ �
   · intro k hk y
     simp only [hs_mul_sub_one_comm_of_mem_Kset ε hk y]
 
+/- English proof (translation)
+Introduce `n ε lam H _ _ _ σ hσ hS`. Take `⟨hemb, hrange⟩` from `uJEmb n ε`. Establish `hσ'` using `hσ`. Take `⟨⟨hσ1, hm⟩, -, hcont⟩` from `hσ'`. Establish `hS'` using `hS`.
+
+Take `⟨-, -, -, ⟨s0, hs0S, hs0, -⟩, -⟩` from `hS'`. Establish `hmem : ∀ g : UJ ε, umat g ∈ UJset ε` using `fun g => g.2`. Establish `hmul : ∀ x y : UJ ε, umat (x * y) = umat x * umat y` using `fun _ _ => rfl`. Establish `hone : umat (1 : UJ ε) = 1` using `rfl`. Establish `hcontσ : ∀ v : H, Continuous (fun g : UJ ε => σ (umat g) v)` using `fun v => (hcont v).comp_continuous hemb.continuous hmem`.
+
+Establish `hs0pos : 0 < ‖s0‖` using `norm_pos_iff.mpr hs0`. Set `U : Set (UJ ε)` to `{g | ‖σ (umat g) s0 - s0‖ < ‖s0‖ / 2}`. Establish `hU : U ∈ nhds (1 : UJ ε)`. Establish `h1 : σ (umat (1 : UJ ε)) s0 = s0` using `by rw [hone, hσ1]; rfl`. Establish `hpre` using `((hcontσ s0).continuousAt (x := 1)).preimage_mem_nhds (Metric.ball_mem_nhds (σ (umat (1 : UJ ε)) s0) (half_pos hs0pos))`.
+
+Use `Filter.mem_of_superset hpre ?_` and prove the remaining obligations. Introduce `g hg`. Establish `hg' : dist (σ (umat g) s0) (σ (umat (1 : UJ ε)) s0) < ‖s0‖ / 2` using `hg`. Rewrite `hg'` using `[h1, dist_eq_norm]`. Conclude with `hg'`.
+
+Take `⟨a, ha_sm, ha_nn, ha1, ha_cpt, ha_supp, ha_conj⟩` from `exists_conjInvariant_bump n ε U hU`. Use `haveI : (muG ε).IsMulRightInvariant := ⟨fun g => unimodular n ε g⟩`. Establish `hAc : Continuous (fun g : UJ ε => (a (umat g) : ℂ))` using `Complex.continuous_ofReal.comp (ha_sm.continuous.comp hemb.continuous)`. Establish `hAcpt : HasCompactSupport (fun g : UJ ε => (a (umat g) : ℂ))` using `ha_cpt.comp_left Complex.ofReal_zero`. Set `F : H → UJ ε → H` to `fun v g => (a (umat g) : ℂ) • σ (umat g) v`.
+
+Establish `hFi : ∀ v, Integrable (F v) (muG ε)` using `fun v => (hAc.smul (hcontσ v)).integrable_of_hasCompactSupport hAcpt.smul_right`. Set `T : lowKSub ε lam σ →ₗ[ℂ] H` to `{ toFun := fun s => ∫ g, F s g ∂(muG ε) map_add' := fun x y => by`. Simplify using `only [F, Submodule.coe_add, map_add, smul_add]`. Conclude with `integral_add (hFi x) (hFi y)`. Use the proof step `map_smul' := fun c x => by`.
+
+Simplify using `only [F, Submodule.coe_smul, map_smul, RingHom.id_apply]`. Rewrite using `[← integral_smul]`. Use `congr 1`. Use function extensionality and compare the values at `g`. Rewrite using `[smul_comm] }`.
+
+Establish `hK : ∀ k ∈ Kset ε, ∃ kk : UJ ε, umat kk = k`. Introduce `k hk`. Establish `hk' : k ∈ Set.range (fun g : UJ ε => ((g : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ))` using `hrange ▸ (kFacts n ε).1 k hk`. Take `⟨kk, hkk⟩` from `hk'`. Conclude with `⟨kk, hkk⟩`.
+
+Establish `hconj : ∀ (kk : UJ ε) (f : UJ ε → H), ∫ h, f (kk * h * kk⁻¹) ∂(muG ε) = ∫ g, f g ∂(muG ε)`. Introduce `kk f`. Combine the equalities or inequalities in the displayed calculation. Use `congr 1`. Use function extensionality and compare the values at `h`.
+
+Rewrite using `[mul_assoc]`. Use `_ = ∫ h, f (kk * h) ∂(muG ε) := integral_mul_right_eq_self (fun x => f (kk * x)) kk⁻¹`. Use `_ = ∫ g, f g ∂(muG ε) := integral_mul_left_eq_self f kk`. Establish `hT : ∀ k ∈ Kset ε, ∀ s s' : lowKSub ε lam σ, (s' : H) = σ k s → T s' = σ k (T s)`. Introduce `k hk s s' hss`.
+
+Take `⟨kk, rfl⟩` from `hK k hk`. Use `show ∫ g, F s' g ∂(muG ε) = σ (umat kk) (∫ g, F s g ∂(muG ε))`. Rewrite using `[← ContinuousLinearMap.integral_comp_comm _ (hFi s), ← hconj kk (F s')]`. Use `congr 1`. Use function extensionality and compare the values at `h`.
+
+Use `show (a (umat (kk * h * kk⁻¹)) : ℂ) • σ (umat (kk * h * kk⁻¹)) (s' : H) = σ (umat kk) ((a (umat h) : ℂ) • σ (umat h) (s : H))`. Establish `ha : a (umat (kk * h * kk⁻¹)) = a (umat h)`. Establish `e : umat (kk * h * kk⁻¹) = umat kk * (umat h * umat kk⁻¹)`. Rewrite using `[hmul, hmul, mul_assoc]`. Rewrite using `[e, ha_conj _ hk, ← hmul, ← hmul, inv_mul_cancel_right]`.
+
+Establish `e1` using `hm _ (hmem (kk * h * kk⁻¹)) _ (hmem kk)`. Rewrite `e1` using `[← hmul, show kk * h * kk⁻¹ * kk = kk * h by group]`. Establish `e2` using `hm _ (hmem kk) _ (hmem h)`. Rewrite `e2` using `[← hmul]`. Establish `hs : σ (umat (kk * h * kk⁻¹)) (σ (umat kk) s) = σ (umat kk) (σ (umat h) s)`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[ha, hss, hs, map_smul]`. Take `⟨c, hc⟩` from `KMapInto.kMap_lowKSub_scalar n ε lam H σ hσ hS T hT`. Establish `hinner : ∀ (s : lowKSub ε lam σ) (u : H), ∫ g, (a (umat g) : ℂ) * ⟪u, σ (umat g) (s : H)⟫_ℂ ∂(muG ε) = ⟪u, T s⟫_ℂ`. Introduce `s u`.
+
+Use `show _ = ⟪u, ∫ g, F s g ∂(muG ε)⟫_ℂ`. Rewrite using `[← integral_inner (hFi s)]`. Simplify using `only [F, inner_smul_right]`. Establish `hc0 : c ≠ 0`. Introduce `hc0`.
+
+Establish `h0` using `hinner ⟨s0, hs0S⟩ s0`. Rewrite `h0` using `[hc, hc0, zero_smul, inner_zero_right]`. Establish `hre : ∀ g ∈ U, 0 < (⟪s0, σ (umat g) s0⟫_ℂ).re`. Introduce `g hg`. Establish `hg' : ‖σ (umat g) s0 - s0‖ < ‖s0‖ / 2` using `hg`.
+
+Establish `e : ⟪s0, σ (umat g) s0⟫_ℂ = ⟪s0, s0⟫_ℂ + ⟪s0, σ (umat g) s0 - s0⟫_ℂ`. Rewrite using `[inner_sub_right]`. Expand and normalize the polynomial expressions, which then agree. Establish `h1 : (⟪s0, s0⟫_ℂ).re = ‖s0‖ ^ 2`. Use `inner_self_eq_norm_sq (𝕜 := ℂ) s0` as an intermediate fact.
+
+Simplify using `using this`. Establish `h2 : |(⟪s0, σ (umat g) s0 - s0⟫_ℂ).re| ≤ ‖s0‖ * ‖σ (umat g) s0 - s0‖` using `(Complex.abs_re_le_norm _).trans (norm_inner_le_norm _ _)`. Rewrite using `[e, Complex.add_re, h1]`. Establish `h3` using `neg_abs_le (⟪s0, σ (umat g) s0 - s0⟫_ℂ).re`. Use polynomial arithmetic with `[mul_lt_mul_of_pos_left hg' hs0pos, pow_pos hs0pos 2]`.
+
+Set `φ : UJ ε → ℝ` to `fun g => a (umat g) * (⟪s0, σ (umat g) s0⟫_ℂ).re`. Establish `hφc : Continuous φ` using `(ha_sm.continuous.comp hemb.continuous).mul (Complex.continuous_re.comp (continuous_const.inner (hcontσ s0)))`. Establish `hφcpt : HasCompactSupport φ` using `ha_cpt.mul_right`. Establish `hφnn : 0 ≤ φ`. Introduce `g`.
+
+Distinguish the cases in `hg : a (umat g) = 0`. Simplify using `[φ, hg]`. Conclude with `mul_nonneg (ha_nn _) (hre g (ha_supp g hg)).le`. Establish `hφ1 : φ 1 ≠ 0` using `by show a (umat (1 : UJ ε)) * (⟪s0, σ (umat (1 : UJ ε)) s0⟫_ℂ).re ≠ 0`. Rewrite using `[hone, hσ1, ContinuousLinearMap.one_apply]`.
+
+Establish `h1 : (⟪s0, s0⟫_ℂ).re = ‖s0‖ ^ 2`. Use `inner_self_eq_norm_sq (𝕜 := ℂ) s0` as an intermediate fact. Simplify using `using this`. Rewrite using `[h1]`. Conclude with `mul_ne_zero ha1 (pow_pos hs0pos 2).ne'`.
+
+Establish `hpos` using `hφc.integral_pos_of_hasCompactSupport_nonneg_nonzero (μ := muG ε) hφcpt hφnn hφ1`. Establish `hint : Integrable (fun g : UJ ε => (a (umat g) : ℂ) * ⟪s0, σ (umat g) s0⟫_ℂ) (muG ε)` using `(hAc.mul (continuous_const.inner (hcontσ s0))).integrable_of_hasCompactSupport hAcpt.mul_right`. Establish `hre_int` using `integral_re hint`. Simplify using `only [RCLike.re_to_complex, Complex.re_ofReal_mul] at hre_int`. Establish `h0' : (∫ g, (a (umat g) : ℂ) * ⟪s0, σ (umat g) s0⟫_ℂ ∂(muG ε)).re = 0`.
+
+Rewrite `h0` using `[show ((⟨s0, hs0S⟩ : lowKSub ε lam σ) : H) = s0 from rfl]`. Rewrite using `[h0, Complex.zero_re]`. Establish `: ∫ g, φ g ∂(muG ε) = 0` using `by rw [← h0', ← hre_int]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨fun y => c⁻¹ * (a y : ℂ), ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `g₀ _`. Use `⟨Set.univ, fun y => c⁻¹ * (a y : ℂ), isOpen_univ, Set.mem_univ _, ?_, fun _ _ _ => rfl⟩` and prove the remaining obligations. Conclude with `(contDiff_const.mul (Complex.ofRealCLM.contDiff.comp ha_sm)).contDiffOn`. Conclude with `hAcpt.mul_left`. Introduce `s hs u`.
+
+Establish `h : ∫ g, (a (umat g) : ℂ) * ⟪u, σ (umat g) s⟫_ℂ ∂(muG ε) = c * ⟪u, s⟫_ℂ`. Use `hinner ⟨s, hs⟩ u` as an intermediate fact. Rewrite `this` using `[hc, inner_smul_right]`. Conclude with `this`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `g`. Expand and normalize the polynomial expressions, which then agree. Use `_ = ⟪u, s⟫_ℂ := by`.
+
+Rewrite using `[h, ← mul_assoc, inv_mul_cancel₀ hc0, one_mul]`.
+-/
 theorem exists_smooth_fix_lowKSub : ∀ (n : ℕ) (ε : Fin n → Bool) (lam : Fin n → ℝ) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)), IsURepOn (UJset ε) σ → IsKTypeOf ε σ (lowK ε lam) (lowKSub ε lam σ) → ∃ α : Matrix (Fin n) (Fin n) ℂ → ℂ, SmoothOnG ε α ∧ HasCompactSupport (fun g : UJ ε => α (umat g)) ∧ ∀ s ∈ lowKSub ε lam σ, ∀ u : H, ∫ g : UJ ε, α (umat g) * ⟪u, σ (umat g) s⟫_ℂ ∂(muG ε) = ⟪u, s⟫_ℂ := by
   intro n ε lam H _ _ _ σ hσ hS
   obtain ⟨hemb, hrange⟩ := uJEmb n ε

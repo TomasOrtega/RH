@@ -18,6 +18,9 @@ namespace GlobalTheory.Fam.PlaceSep
 
 variable {D : D7}
 
+/- English proof (translation)
+Establish `h1 : ((n : ℕ) : 𝓞 D.host.F) ∈ (PP.under (𝓞 D.host.F)).asIdeal` using `by show algebraMap (𝓞 D.host.F) (𝓞 D.host.E) (n : 𝓞 D.host.F) ∈ PP.asIdeal`. Rewrite using `[map_natCast]` and apply the resulting hypothesis. Rewrite `h1` using `[h]`. Establish `h2 : algebraMap (𝓞 D.host.F) (𝓞 D.host.E) (n : 𝓞 D.host.F) ∈ PP'.asIdeal` using `h1`. Rewrite `h2` using `[map_natCast]`. Then use the resulting hypothesis.
+-/
 theorem natCast_mem_of_under_eq {PP PP' : Pl D.host.E}
     (h : PP.under (𝓞 D.host.F) = PP'.under (𝓞 D.host.F)) {n : ℕ} (hn : ((n : ℕ) : 𝓞 D.host.E) ∈ PP.asIdeal) :
     ((n : ℕ) : 𝓞 D.host.E) ∈ PP'.asIdeal := by
@@ -28,6 +31,11 @@ theorem natCast_mem_of_under_eq {PP PP' : Pl D.host.E}
   have h2 : algebraMap (𝓞 D.host.F) (𝓞 D.host.E) (n : 𝓞 D.host.F) ∈ PP'.asIdeal := h1
   rwa [map_natCast] at h2
 
+/- English proof (translation)
+Establish `hc : Nat.Coprime p q` using `(Nat.coprime_primes hp hq).2 hne`. Take `⟨u, v, huv⟩` from `Nat.isCoprime_iff_coprime.2 hc`. Establish `e : (u : 𝓞 D.host.E) * ((p : ℕ) : 𝓞 D.host.E) + (v : 𝓞 D.host.E) * ((q : ℕ) : 𝓞 D.host.E) = 1`. Use `congrArg (Int.cast : ℤ → 𝓞 D.host.E) huv` as an intermediate fact. Move the coercions through the operations in `at this`.
+
+Conclude with `this`. Apply `PP.isPrime.ne_top` to reduce the goal to its premises. Rewrite using `[Ideal.eq_top_iff_one, ← e]`. Conclude with `Ideal.add_mem _ (Ideal.mul_mem_left _ _ h1) (Ideal.mul_mem_left _ _ h2)`.
+-/
 theorem not_two_primes_mem (PP : Pl D.host.E) {p q : ℕ} (hp : p.Prime) (hq : q.Prime) (hne : p ≠ q)
     (h1 : ((p : ℕ) : 𝓞 D.host.E) ∈ PP.asIdeal) (h2 : ((q : ℕ) : 𝓞 D.host.E) ∈ PP.asIdeal) : False := by
   have hc : Nat.Coprime p q := (Nat.coprime_primes hp hq).2 hne
@@ -40,6 +48,9 @@ theorem not_two_primes_mem (PP : Pl D.host.E) {p q : ℕ} (hp : p.Prime) (hq : q
   rw [Ideal.eq_top_iff_one, ← e]
   exact Ideal.add_mem _ (Ideal.mul_mem_left _ _ h1) (Ideal.mul_mem_left _ _ h2)
 
+/- English proof (translation)
+Take `⟨⟨q, hq, hc, -, hne⟩, -⟩` from `hQ PP hP`. Use `⟨q, hq, ?_, hne⟩` and prove the remaining obligations. Use `Ideal.absNorm_mem PP.asIdeal` as an intermediate fact. Rewrite `this` using `[Ideal.absNorm_apply, Submodule.cardQuot_apply, show Nat.card (𝓞 D.host.E ⧸ PP.asIdeal) = q from hc]`. Then use the resulting hypothesis.
+-/
 theorem twist_prime {gp : Fin 2 → ℕ} {Q : Finset (Pl D.host.E)} (hQ : IsTwistPlaces gp Q) {PP : Pl D.host.E} (hP : PP ∈ Q) :
     ∃ q : ℕ, q.Prime ∧ ((q : ℕ) : 𝓞 D.host.E) ∈ PP.asIdeal ∧ ∀ i, q ≠ gp i := by
   obtain ⟨⟨q, hq, hc, -, hne⟩, -⟩ := hQ PP hP
@@ -47,6 +58,9 @@ theorem twist_prime {gp : Fin 2 → ℕ} {Q : Finset (Pl D.host.E)} (hQ : IsTwis
   have := Ideal.absNorm_mem PP.asIdeal
   rwa [Ideal.absNorm_apply, Submodule.cardQuot_apply, show Nat.card (𝓞 D.host.E ⧸ PP.asIdeal) = q from hc] at this
 
+/- English proof (translation)
+Establish `h1` using `P.pb_over k`. Rewrite `h1` using `[← hw]`. Establish `: algebraMap (𝓞 D.host.K) (𝓞 D.host.E) ((D.host.g k : ℕ) : 𝓞 D.host.K) ∈ w.asIdeal` using `h1`. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis.
+-/
 theorem g_mem_of_div (P : Formalism.L2.Host.PiBar D.host) {k : Fin 2} {w : Pl D.host.E} (hw : P.Div k w) :
     ((D.host.g k : ℕ) : 𝓞 D.host.E) ∈ w.asIdeal := by
   have h1 := P.pb_over k
@@ -58,6 +72,15 @@ end GlobalTheory.Fam.PlaceSep
 
 open GlobalTheory.Fam.PlaceSep in
 
+/- English proof (translation)
+Introduce `D L hT Gi Gl Kc Yd cX ex W hP PP PP' hPP hPP' hu`. Establish `hL : (pk W).toLevCh.Is W.P.A3.A.μ0` using `hP.bot.hyp.2.2.2.1.lev`. Establish `mixed : ∀ A B : Pl D.host.E, A ∈ (pk W).Pg → QAll W B → A.under (𝓞 D.host.F) = B.under (𝓞 D.host.F) → False`. Introduce `A B hA hB hAB`. Take `⟨k, hk⟩` from `(hL.Pg A).1 hA`.
+
+Take `⟨t, ht⟩` from `hB`. Take `⟨q, hq, hqB, hne⟩` from `twist_prime (hL.Q_pl t) ht`. Conclude with `not_two_primes_mem B (D.host.g_prime k) hq (hne k).symm (natCast_mem_of_under_eq hAB (g_mem_of_div _ hk)) hqB`. Apply the tactic sequence `rcases hPP with h1 | h1 <;> rcases hPP' with h2 | h2`. Take `⟨k, hk⟩` from `(hL.Pg PP).1 h1`.
+
+Take `⟨k', hk'⟩` from `(hL.Pg PP').1 h2`. Break down `GlobalTheory.GoodPrimes.eq_or_conj_of_under_eq hu with e | e` into its components or cases. Conclude with `e`. Conclude with `absurd (GlobalTheory.GoodPrimes.isConjPl_iff.2 e) (GlobalTheory.ProjLift.not_isConjPl_of_div _ hk' hk)`. Conclude with `(mixed PP PP' h1 h2 hu).elim`.
+
+Conclude with `(mixed PP' PP h2 h1 hu.symm).elim`. Conclude with `hP.sel PP PP' h1 h2 hu`.
+-/
 theorem GlobalTheory.Fam.pg_qAll_under_inj : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} (W : RealPack ex), PkHyp W → ∀ PP PP' : Pl D.host.E, (PP ∈ (pk W).Pg ∨ QAll W PP) → (PP' ∈ (pk W).Pg ∨ QAll W PP') → PP.under (𝓞 D.host.F) = PP'.under (𝓞 D.host.F) → PP = PP' := by
   intro D L hT Gi Gl Kc Yd cX ex W hP PP PP' hPP hPP' hu
   have hL : (pk W).toLevCh.Is W.P.A3.A.μ0 := hP.bot.hyp.2.2.2.1.lev

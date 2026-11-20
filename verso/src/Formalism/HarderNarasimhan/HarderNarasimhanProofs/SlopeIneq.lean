@@ -14,6 +14,11 @@ section SlopeTestRemainingChoices
 variable {E F : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E] [FiniteDimensional ℝ E]
   [NormedAddCommGroup F] [InnerProductSpace ℝ F] [FiniteDimensional ℝ F]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hab`. Use `push_neg at hab`. Establish `hpos : 0 < a - b` using `sub_pos.mpr hab`. Take `⟨n, hn⟩` from `exists_nat_gt (K / (a - b))`. Establish `h1` using `h (n + 1) n.succ_pos`.
+
+Move the coercions through the operations in `at h1`. Establish `h2 : ((n : ℝ) + 1) * (a - b) ≤ K` using `by linarith`. Establish `h3 : (n : ℝ) + 1 ≤ K / (a - b)` using `(le_div_iff₀ hpos).mpr h2`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 private lemma le_of_forall_nat_mul_le_mul_add {a b K : ℝ}
     (h : ∀ n : ℕ, 0 < n → (n : ℝ) * a ≤ n * b + K) : a ≤ b := by
   by_contra hab
@@ -26,6 +31,11 @@ private lemma le_of_forall_nat_mul_le_mul_add {a b K : ℝ}
   have h3 : (n : ℝ) + 1 ≤ K / (a - b) := (le_div_iff₀ hpos).mpr h2
   linarith
 
+/- English proof (translation)
+Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[norm_smul, Real.norm_eq_abs]`. Establish `h1` using `abs_sub_round (t i)`. Establish `h2` using `norm_nonneg (v i)`. Establish `h3` using `abs_nonneg (t i - (round (t i) : ℝ))`.
+
+Use the polynomial consequences of the given equalities and inequalities.
+-/
 private lemma norm_sum_sub_round_smul_le_sum_norm {X : Type*} [NormedAddCommGroup X] [NormedSpace ℝ X]
     {ι : Type*} [Fintype ι] (v : ι → X) (t : ι → ℝ) :
     ‖∑ i, (t i - (round (t i) : ℝ)) • v i‖ ≤ ∑ i, ‖v i‖ := by
@@ -36,6 +46,21 @@ private lemma norm_sum_sub_round_smul_le_sum_norm {X : Type*} [NormedAddCommGrou
   have h3 := abs_nonneg (t i - (round (t i) : ℝ))
   nlinarith
 
+/- English proof (translation)
+Apply `le_of_forall_nat_mul_le_mul_add (K := C * ∑ i, ‖((b i : A) : E)‖ + ∑ i, ‖((e (b i) : B) : F)‖)` to reduce the goal to its premises. Introduce `n _`. Establish `hnn : (0 : ℝ) ≤ n` using `n.cast_nonneg`. Establish `hyE : (((∑ i, round ((n : ℝ) * c i) • b i : A)) : E) = ∑ i, ((round ((n : ℝ) * c i) : ℤ) : ℝ) • ((b i : A) : E)`. Simplify using `[Submodule.coe_sum, Int.cast_smul_eq_zsmul]`.
+
+Establish `heF : ((e (∑ i, round ((n : ℝ) * c i) • b i) : B) : F) = ∑ i, ((round ((n : ℝ) * c i) : ℤ) : ℝ) • ((e (b i) : B) : F)`. Simplify using `[map_sum, map_zsmul, Submodule.coe_sum, Int.cast_smul_eq_zsmul]`. Establish `dF : (n : ℝ) • ∑ i, c i • ((e (b i) : B) : F) = ((e (∑ i, round ((n : ℝ) * c i) • b i) : B) : F) + ∑ i, ((n : ℝ) * c i - (round ((n : ℝ) * c i) : ℝ)) • ((e (b i) : B) : F)`. Rewrite using `[heF, Finset.smul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[smul_smul, ← add_smul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `dE : (((∑ i, round ((n : ℝ) * c i) • b i : A)) : E) = (n : ℝ) • ∑ i, c i • ((b i : A) : E) - ∑ i, ((n : ℝ) * c i - (round ((n : ℝ) * c i) : ℝ)) • ((b i : A) : E)`. Rewrite using `[hyE, Finset.smul_sum, ← Finset.sum_sub_distrib]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul, ← sub_smul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `r1` using `norm_sum_sub_round_smul_le_sum_norm (fun i => ((e (b i) : B) : F)) (fun i => (n : ℝ) * c i)`.
+
+Establish `r2` using `norm_sum_sub_round_smul_le_sum_norm (fun i => ((b i : A) : E)) (fun i => (n : ℝ) * c i)`. Establish `k1 : (n : ℝ) * ‖∑ i, c i • ((e (b i) : B) : F)‖ ≤ ‖((e (∑ i, round ((n : ℝ) * c i) • b i) : B) : F)‖ + ∑ i, ‖((e (b i) : B) : F)‖`. Use `norm_smul (n : ℝ) (∑ i, c i • ((e (b i) : B) : F))` as an intermediate fact. Rewrite `this` using `[Real.norm_of_nonneg hnn]`. Rewrite using `[← this, dF]`.
+
+Conclude with `(norm_add_le _ _).trans (add_le_add le_rfl r1)`. Establish `k2 : ‖(((∑ i, round ((n : ℝ) * c i) • b i : A)) : E)‖ ≤ (n : ℝ) * ‖∑ i, c i • ((b i : A) : E)‖ + ∑ i, ‖((b i : A) : E)‖`. Rewrite using `[dE]`. Use `(norm_sub_le _ _).trans (add_le_add ?_ r2)` and prove the remaining obligations. Rewrite using `[norm_smul, Real.norm_of_nonneg hnn]`.
+
+Establish `k3` using `h (∑ i, round ((n : ℝ) * c i) • b i)`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left k2 hC]`.
+-/
 private lemma norm_sum_smul_map_le_mul_of_bounded {A : Submodule ℤ E} {B : Submodule ℤ F} (e : A →ₗ[ℤ] B)
     (C : ℝ) (hC : 0 ≤ C) (h : ∀ y, ‖((e y : B) : F)‖ ≤ C * ‖(y : E)‖) {ι : Type*} [Fintype ι]
     (b : ι → A) (c : ι → ℝ) :
@@ -82,6 +107,21 @@ private lemma norm_sum_smul_map_le_mul_of_bounded {A : Submodule ℤ E} {B : Sub
   have k3 := h (∑ i, round ((n : ℝ) * c i) • b i)
   nlinarith [mul_le_mul_of_nonneg_left k2 hC]
 
+/- English proof (translation)
+Establish `hker : LinearMap.ker α.toIntLinearMap = LinearMap.ker β.toIntLinearMap`. Use extensionality with `g`. Simplify using `only [LinearMap.mem_ker]`. Conclude with `⟨hαβ g, hβα g⟩`. Set `e : LinearMap.range α.toIntLinearMap ≃ₗ[ℤ] LinearMap.range β.toIntLinearMap` to `(α.toIntLinearMap.quotKerEquivRange.symm.trans (Submodule.quotEquivOfEq _ _ hker)).trans β.toIntLinearMap.quotKerEquivRange`.
+
+Establish `he : ∀ g : G, ((e ⟨α g, g, rfl⟩ : LinearMap.range β.toIntLinearMap) : F) = β g`. Introduce `g`. Simplify using `only [e, LinearEquiv.trans_apply]`. Use `erw [LinearMap.quotKerEquivRange_symm_apply_image]`. Both sides reduce to the same expression.
+
+Establish `hy : ∀ y, ‖((e.toLinearMap y : LinearMap.range β.toIntLinearMap) : F)‖ ≤ C * ‖(y : E)‖`. Introduce and unpack `⟨_, g, rfl⟩`. Establish `h1` using `he g`. Establish `h2` using `h g`. Rewrite `h2` using `[← h1]`.
+
+Conclude with `h2`. Establish `hrk : Module.finrank ℤ (LinearMap.range α.toIntLinearMap) = Module.finrank ℤ (LinearMap.range β.toIntLinearMap)` using `e.finrank_eq`. Use `⟨by simp only [Formalism.F.rk]; exact hrk.symm, ?_⟩` and prove the remaining obligations. Set `b` to `Module.finBasis ℤ (LinearMap.range α.toIntLinearMap)`. Establish `hA` using `Formalism.F.covolEqGram E (LinearMap.range α.toIntLinearMap) _ b`.
+
+Establish `hB` using `Formalism.F.covolEqGram F (LinearMap.range β.toIntLinearMap) _ (b.map e)`. Simplify using `only [Basis.map_apply] at hB`. Establish `hG` using `Formalism.F.gramDetLe E F _ (fun i => ((b i : LinearMap.range α.toIntLinearMap) : E)) (fun i => ((e (b i) : LinearMap.range β.toIntLinearMap) : F)) C (fun c => norm_sum_smul_map_le_mul_of_bounded e.toLinearMap C hC.le hy b c)`. Simplify using `only [Fintype.card_fin] at hG`. Establish `hvpos` using `Formalism.F.covol_pos (LinearMap.range α.toIntLinearMap)`.
+
+Establish `hwpos` using `Formalism.F.covol_pos (LinearMap.range β.toIntLinearMap)`. Establish `hdet` using `Formalism.F.det_gram_basis_pos (LinearMap.range α.toIntLinearMap) b`. Establish `hle : Formalism.F.covol (LinearMap.range β.toIntLinearMap) ≤ C ^ Module.finrank ℤ (LinearMap.range α.toIntLinearMap) * Formalism.F.covol (LinearMap.range α.toIntLinearMap)`. Rewrite using `[hA, hB]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[Real.sqrt_mul (by positivity), pow_mul', Real.sqrt_sq (by positivity)]`. Establish `hlog` using `Real.log_le_log hwpos hle`. Rewrite `hlog` using `[Real.log_mul (by positivity) hvpos.ne', Real.log_pow]`. Simplify using `only [Formalism.F.deg, Formalism.F.rk]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem rank_range_eq_and_degree_le {G : Type*} [AddCommGroup G] (α : G →+ E) (β : G →+ F)
     (hαβ : ∀ g, α g = 0 → β g = 0) (hβα : ∀ g, β g = 0 → α g = 0)
     [DiscreteTopology (LinearMap.range α.toIntLinearMap)]
@@ -138,6 +178,27 @@ theorem rank_range_eq_and_degree_le {G : Type*} [AddCommGroup G] (α : G →+ E)
   simp only [Formalism.F.deg, Formalism.F.rk]
   linarith
 
+/- English proof (translation)
+Distinguish the cases in `hC : C < 0`. Establish `hb : ∀ g, β g = 0` using `fun g => by`. Establish `h1` using `h g`. Establish `h2` using `norm_nonneg (α g)`. Conclude with `norm_eq_zero.mp (le_antisymm (by nlinarith) (norm_nonneg _))`.
+
+Establish `ha : α g = 0`. Establish `h1` using `h g`. Rewrite `h1` using `[hb g, norm_zero]`. Establish `h2` using `norm_nonneg (α g)`. Conclude with `norm_eq_zero.mp (le_antisymm (by nlinarith) h2)`.
+
+Rewrite using `[hb g, ha, map_zero, map_zero, norm_zero, norm_zero, mul_zero]`. Use `push_neg at hC`. Establish `hw : α g - (span ℝ (α '' S))ᗮ.starProjection (α g) ∈ span ℝ (α '' S)` using `by first`. Consider the case `exact (Submodule.orthogonal_orthogonal (span ℝ (α '' S))) ▸ Submodule.sub_starProjection_mem_orthogonal (K := (span ℝ (α '' S))ᗮ) (α g)`. Consider the case `(have hd := Submodule.starProjection_add_starProjection_orthogonal (K := span ℝ (α '' S)) (α g)`.
+
+Rewrite using `[sub_eq_of_eq_add hd.symm]`. Use `first`. Consider the case `exact Submodule.starProjection_apply_mem _ _`. Consider the case `exact ((span ℝ (α '' S)).orthogonalProjection (α g)).2`. Consider the case `simp)`.
+
+Take `⟨n, c, gg, hf⟩` from `Submodule.mem_span_set'.mp hw`. Establish `hs : ∀ i, ∃ s ∈ S, α s = (gg i : E)` using `fun i => (gg i).2`. Use `choose s hsS hsα using hs`. Establish `hrep : ∑ i, c i • α (s i) = α g - (span ℝ (α '' S))ᗮ.starProjection (α g)`. Simplify using `only [hsα]`.
+
+Conclude with `hf`. Apply `le_of_forall_nat_mul_le_mul_add (K := C * ∑ i, ‖α (s i)‖)` to reduce the goal to its premises. Introduce `k _`. Establish `hnn : (0 : ℝ) ≤ k` using `k.cast_nonneg`. Establish `h0 : ∀ i, U'ᗮ.starProjection (β (s i)) = 0` using `fun i => starProjection_orthogonal_apply_eq_zero (hS _ (hsS i))`.
+
+Establish `hβ : U'ᗮ.starProjection (β (k • g - ∑ i, round ((k : ℝ) * c i) • s i)) = (k : ℝ) • U'ᗮ.starProjection (β g)`. Simplify using `[map_sub, map_sum, map_zsmul, map_nsmul, h0, Nat.cast_smul_eq_nsmul]`. Establish `hα : α (k • g - ∑ i, round ((k : ℝ) * c i) • s i) = (k : ℝ) • (span ℝ (α '' S))ᗮ.starProjection (α g) + ∑ i, ((k : ℝ) * c i - (round ((k : ℝ) * c i) : ℝ)) • α (s i)`. Establish `hx : α g = (span ℝ (α '' S))ᗮ.starProjection (α g) + ∑ i, c i • α (s i)`. Rewrite using `[hrep]`.
+
+Normalize the expressions using the abelian group laws. Rewrite using `[map_sub, map_nsmul, map_sum, ← Nat.cast_smul_eq_nsmul ℝ]`. Use `conv_lhs => rw [hx]`. Simplify using `only [map_zsmul, smul_add, Finset.smul_sum, sub_smul, Finset.sum_sub_distrib, smul_smul, Int.cast_smul_eq_zsmul]`. Normalize the expressions using the abelian group laws.
+
+Establish `e1 : (k : ℝ) * ‖U'ᗮ.starProjection (β g)‖ = ‖U'ᗮ.starProjection (β (k • g - ∑ i, round ((k : ℝ) * c i) • s i))‖`. Rewrite using `[hβ, norm_smul, Real.norm_of_nonneg hnn]`. Establish `e2` using `norm_starProjection_apply_le U'ᗮ (β (k • g - ∑ i, round ((k : ℝ) * c i) • s i))`. Establish `e3` using `h (k • g - ∑ i, round ((k : ℝ) * c i) • s i)`. Establish `e4 : ‖α (k • g - ∑ i, round ((k : ℝ) * c i) • s i)‖ ≤ (k : ℝ) * ‖(span ℝ (α '' S))ᗮ.starProjection (α g)‖ + ∑ i, ‖α (s i)‖`.
+
+Rewrite using `[hα]`. Use `(norm_add_le _ _).trans (add_le_add ?_ (norm_sum_sub_round_smul_le_sum_norm (fun i => α (s i)) (fun i => (k : ℝ) * c i)))` and prove the remaining obligations. Rewrite using `[norm_smul, Real.norm_of_nonneg hnn]`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left e4 hC]`.
+-/
 theorem norm_starProjection_le {G : Type*} [AddCommGroup G] (α : G →+ E) (β : G →+ F) (C : ℝ)
     (h : ∀ g, ‖β g‖ ≤ C * ‖α g‖) (S : Set G) (U' : Submodule ℝ F) (hS : ∀ s ∈ S, β s ∈ U')
     (g : G) :
@@ -203,6 +264,11 @@ theorem norm_starProjection_le {G : Type*} [AddCommGroup G] (α : G →+ E) (β 
     rw [norm_smul, Real.norm_of_nonneg hnn]
   nlinarith [mul_le_mul_of_nonneg_left e4 hC]
 
+/- English proof (translation)
+Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, rfl⟩`. Conclude with `⟨j g, (hj _).2 ⟨g, rfl⟩, rfl⟩`. Introduce and unpack `⟨v, hv, rfl⟩`.
+
+Take `⟨g, rfl⟩` from `(hj v).1 hv`. Conclude with `⟨g, rfl⟩`.
+-/
 theorem range_comp_eq_imageLattice {R V E G : Type*} [Ring R] [AddCommGroup V] [Module R V]
     [NormedAddCommGroup E] [InnerProductSpace ℝ E] [AddCommGroup G] (ρ : V →+ E)
     (N : Submodule R V) (j : G →+ V) (hj : ∀ v, v ∈ N ↔ ∃ g, j g = v) :
@@ -215,6 +281,11 @@ theorem range_comp_eq_imageLattice {R V E G : Type*} [Ring R] [AddCommGroup V] [
     obtain ⟨g, rfl⟩ := (hj v).1 hv
     exact ⟨g, rfl⟩
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `only [Submodule.mem_map, LinearMap.mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, ⟨g, rfl⟩, rfl⟩`. Conclude with `⟨g, rfl⟩`.
+
+Introduce and unpack `⟨g, rfl⟩`. Conclude with `⟨α g, ⟨g, rfl⟩, rfl⟩`.
+-/
 theorem map_range_toIntLinearMap {G : Type*} [AddCommGroup G] (α : G →+ E) (p : E →L[ℝ] E) :
     (LinearMap.range α.toIntLinearMap).map (p.toLinearMap.restrictScalars ℤ) =
       LinearMap.range ((p.toLinearMap.toAddMonoidHom.comp α).toIntLinearMap) := by
@@ -228,12 +299,20 @@ theorem map_range_toIntLinearMap {G : Type*} [AddCommGroup G] (α : G →+ E) (p
 
 end SlopeTestRemainingChoices
 
+/- English proof (translation)
+The claim follows from `hL hx L.zero_mem (h.trans (map_zero ρ).symm)`.
+-/
 theorem eq_zero_of_injOn {R V E : Type*} [Ring R] [AddCommGroup V] [Module R V]
     [NormedAddCommGroup E] [InnerProductSpace ℝ E] {ρ : V →+ E} {L : Submodule R V}
     (hL : Set.InjOn ρ (L : Set V)) {x : V} (hx : x ∈ L) (h : ρ x = 0) : x = 0 := hL hx L.zero_mem (h.trans (map_zero ρ).symm)
 
 universe uR uV uW uE uF
 
+/- English proof (translation)
+Establish `hw : x - Kᗮ.starProjection x ∈ K` using `by first`. Consider the case `exact (Submodule.orthogonal_orthogonal K) ▸ Submodule.sub_starProjection_mem_orthogonal (K := Kᗮ) x`. Consider the case `(have hd := Submodule.starProjection_add_starProjection_orthogonal (K := K) x`. Rewrite using `[sub_eq_of_eq_add hd.symm]`. Use `first`.
+
+Consider the case `exact Submodule.starProjection_apply_mem _ _`. Consider the case `exact (K.orthogonalProjection x).2`. Consider the case `simp)`. Rewrite `hw` using `[h, sub_zero]`. Then use the resulting hypothesis.
+-/
 private lemma mem_of_starProjection_orthogonal_eq_zero {X : Type*} [NormedAddCommGroup X] [InnerProductSpace ℝ X]
     [FiniteDimensional ℝ X] (K : Submodule ℝ X) (x : X) (h : Kᗮ.starProjection x = 0) :
     x ∈ K := by
@@ -249,6 +328,25 @@ private lemma mem_of_starProjection_orthogonal_eq_zero {X : Type*} [NormedAddCom
        | simp)
   rwa [h, sub_zero] at hw
 
+/- English proof (translation)
+Set `j : ↥(N.comap L.subtype) →+ V` to `(L.subtype ∘ₗ (N.comap L.subtype).subtype).toAddMonoidHom`. Set `j' : ↥(N.comap L.subtype) →+ W` to `(M.subtype ∘ₗ φ ∘ₗ (N.comap L.subtype).subtype).toAddMonoidHom`. Establish `hj : ∀ v, v ∈ N ↔ ∃ g, j g = v`. Introduce `v`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hv`. Conclude with `⟨⟨⟨v, hNL hv⟩, hv⟩, rfl⟩`. Introduce and unpack `⟨g, rfl⟩`. Conclude with `g.2`. Establish `hj' : ∀ w, w ∈ N' ↔ ∃ g, j' g = w`.
+
+Introduce `w`. Rewrite using `[hN']`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `⟨⟨x, hx⟩, rfl⟩`.
+
+Introduce and unpack `⟨g, rfl⟩`. Conclude with `⟨g.1, g.2, rfl⟩`. Establish `eA` using `range_comp_eq_imageLattice ρ N j hj`. Establish `eB` using `range_comp_eq_imageLattice ρ' N' j' hj'`. Use `haveI : DiscreteTopology (LinearMap.range (ρ.comp j).toIntLinearMap) := by`.
+
+Rewrite using `[eA]`. Conclude with `hN.2`. Use `haveI : DiscreteTopology (LinearMap.range (ρ'.comp j').toIntLinearMap) := by`. Rewrite using `[eB]`. Conclude with `hN'l.2`.
+
+Establish `hz : ∀ g : ↥(N.comap L.subtype), ρ (j g) = 0 → g = 0`. Introduce `g hg`. Establish `h1 : ((g : L) : V) = 0` using `eq_zero_of_injOn hL.1 (g : L).2 hg`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Simplify using `using h1`. Establish `hz' : ∀ g : ↥(N.comap L.subtype), ρ' (j' g) = 0 → g = 0`. Introduce `g hg`. Establish `h1 : ((φ (g : L) : M) : W) = 0` using `eq_zero_of_injOn hM.1 (φ (g : L)).2 hg`. Establish `h2 : φ (g : L) = 0` using `Subtype.ext (by simpa using h1)`.
+
+Establish `h3` using `hinj (g : L) g.2 h2`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `using h3`. Establish `hR` using `rank_range_eq_and_degree_le (ρ.comp j) (ρ'.comp j') (fun g hg => by rw [hz g hg, map_zero]) (fun g hg => by rw [hz' g hg, map_zero]) C hC (fun g => hφC (g : L))`. Rewrite `hR` using `[eA, eB]`.
+
+Conclude with `hR`.
+-/
 private theorem slopeIneq_of_lemma {R V W E F : Type*} [Ring R] [AddCommGroup V] [Module R V]
     [AddCommGroup W] [Module R W] [NormedAddCommGroup E] [InnerProductSpace ℝ E]
     [FiniteDimensional ℝ E] [NormedAddCommGroup F] [InnerProductSpace ℝ F] [FiniteDimensional ℝ F]
@@ -303,6 +401,81 @@ private theorem slopeIneq_of_lemma {R V W E F : Type*} [Ring R] [AddCommGroup V]
   rw [eA, eB] at hR
   exact hR
 
+/- English proof (translation)
+Introduce `R V W E F _ _ _ _ _ _ _ _ _ _ _ ρ ρ' L M hL hM φ C hC hφC`. Establish `hbL` using `hbV R V E ρ L hL`. Establish `hbM` using `hbW R W F ρ' M hM`. Establish `zmono : ∀ {A B : Submodule R W}, A ≤ B → zl ρ' A ≤ zl ρ' B`. Introduce `A B hAB x hx`.
+
+Take `⟨v, hv, rfl⟩` from `hx`. Conclude with `⟨v, hAB hv, rfl⟩`. Establish `zmonoV : ∀ {A B : Submodule R V}, A ≤ B → zl ρ A ≤ zl ρ B`. Introduce `A B hAB x hx`. Take `⟨v, hv, rfl⟩` from `hx`.
+
+Conclude with `⟨v, hAB hv, rfl⟩`. Establish `zmem : ∀ {A : Submodule R W} {w : W}, w ∈ A → ρ' w ∈ zl ρ' A` using `fun hw => ⟨_, hw, rfl⟩`. Establish `zmemV : ∀ {A : Submodule R V} {v : V}, v ∈ A → ρ v ∈ zl ρ A` using `fun hv => ⟨_, hv, rfl⟩`. Establish `hMuM : M ≠ ⊥ → ∀ N : Submodule R W, N ≤ M → deg ρ' N ≤ muMax ρ' M * rk ρ' N` using `fun hM0 => ((hmW R W F ρ' M hM hM0).1 (muMax ρ' M)).1 le_rfl`. Take `⟨Im, hIm⟩ : ∃ Im : Submodule R W, Im = (LinearMap.range φ).map M.subtype` from `⟨_, rfl⟩`.
+
+Rewrite using `[← hIm]`. Establish `hImM : Im ≤ M`. Rewrite using `[hIm]`. Introduce and unpack `_ ⟨y, _, rfl⟩`. Conclude with `y.2`.
+
+Establish `hImmem : ∀ g : L, (φ g : W) ∈ Im` using `fun g => by`. Rewrite using `[hIm]`. Conclude with `⟨φ g, ⟨g, rfl⟩, rfl⟩`. Establish `hImLat : IsLat ρ' Im` using `hbM.1 _ hImM`. Establish `hbIm` using `hbW R W F ρ' Im hImLat`.
+
+Use `⟨fun hφ0 => ?_, fun hinj hL0 => ?_⟩` and prove the remaining obligations. Establish `hIm0 : Im ≠ ⊥`. Introduce `h0`. Apply `hφ0` to reduce the goal to its premises. Use extensionality with `x`.
+
+Establish `h1` using `(Submodule.eq_bot_iff Im).1 h0 _ (hImmem x)`. Simplify using `using h1`. Establish `hM0 : M ≠ ⊥`. Introduce `h0`. Apply `hIm0` to reduce the goal to its premises.
+
+Rewrite using `[Submodule.eq_bot_iff]`. Introduce `w hw`. Conclude with `(Submodule.eq_bot_iff M).1 h0 w (hImM hw)`. Establish `hL0 : L ≠ ⊥`. Introduce `h0`.
+
+Apply `hφ0` to reduce the goal to its premises. Use extensionality with `x`. Establish `h1 : x = 0` using `Subtype.ext ((Submodule.eq_bot_iff L).1 h0 _ x.2)`. Simplify using `[h1]`. Establish `muL` using `hmV R V E ρ L hL hL0`.
+
+Establish `muIm` using `hmW R W F ρ' Im hImLat hIm0`. Establish `h1a : muMin ρ L - Real.log C ≤ muMin ρ' Im`. Use `(muIm.2.1 _).2 ?_` and prove the remaining obligations. Introduce `N' hN'`. Take `⟨N'', h1, h2, h3⟩` from `hs R W F ρ' Im N' hImLat hN'`.
+
+Establish `sp` using `Formalism.F.saturProps F (zl ρ' Im) (zl ρ' N') hImLat.2 (zmono hN')`. Rewrite `sp` using `[← h3]`. Establish `hdeg : deg ρ' N' ≤ deg ρ' N''` using `(hbIm.2.1 N' N'' h1 h2).2 sp.2.2.symm`. Take `⟨N, hNdef⟩ : ∃ N : Submodule R V, N = (N''.comap (M.subtype ∘ₗ φ)).map L.subtype` from `⟨_, rfl⟩`. Establish `hNmem : ∀ g : L, (g : V) ∈ N ↔ (φ g : W) ∈ N''`.
+
+Introduce `g`. Rewrite using `[hNdef]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, hxg⟩`. Establish `hxg' : x = g` using `Subtype.ext hxg`.
+
+Substitute `hxg'` using the available equality. Conclude with `hx`. Introduce `h`. Conclude with `⟨g, h, rfl⟩`. Establish `hNL : N ≤ L`.
+
+Rewrite using `[hNdef]`. Introduce and unpack `_ ⟨x, _, rfl⟩`. Conclude with `x.2`. Establish `hkey : ∀ g : L, ρ' (φ g : W) ∈ span ℝ (zl ρ' N'' : Set F) → (g : V) ∈ N`. Introduce `g hg`.
+
+Establish `h4` using `sp.1.2 _ (zmem (hImmem g)) hg`. Take `⟨w, hw, hwg⟩` from `h4`. Establish `h5 : w = (φ g : W)` using `hM.1 (hImM (h2 hw)) (φ g).2 hwg`. Rewrite using `[hNmem, ← h5]`. Conclude with `hw`.
+
+Set `α0 : L →+ E` to `ρ.comp L.subtype.toAddMonoidHom`. Set `β0 : L →+ F` to `ρ'.comp (M.subtype ∘ₗ φ).toAddMonoidHom`. Establish `hαS : α0 '' {g : L | (g : V) ∈ N} = (zl ρ N : Set E)`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨g, hg, rfl⟩`. Conclude with `⟨g, hg, rfl⟩`. Introduce and unpack `⟨v, hv, rfl⟩`. Conclude with `⟨⟨v, hNL hv⟩, hv, rfl⟩`. Establish `hSU : ∀ s ∈ {g : L | (g : V) ∈ N}, β0 s ∈ span ℝ (zl ρ' N'' : Set F)`.
+
+Introduce `s hs'`. Conclude with `Submodule.subset_span (zmem ((hNmem s).1 hs'))`. Establish `hproj : ∀ g : L, ‖(span ℝ (zl ρ' N'' : Set F))ᗮ.starProjection (β0 g)‖ ≤ C * ‖(span ℝ (zl ρ N : Set E))ᗮ.starProjection (α0 g)‖`. Introduce `g`. Use `norm_starProjection_le α0 β0 C (fun g => hφC g) _ _ hSU g` as an intermediate fact.
+
+Rewrite `this` using `[hαS]`. Then use the resulting hypothesis. Establish `hkeyE : ∀ g : L, ρ (g : V) ∈ span ℝ (zl ρ N : Set E) → (g : V) ∈ N`. Introduce `g hg`. Apply `hkey` to reduce the goal to its premises. Apply `mem_of_starProjection_orthogonal_eq_zero` to reduce the goal to its premises.
+
+Establish `h6` using `hproj g`. Establish `h7 : (span ℝ (zl ρ N : Set E))ᗮ.starProjection (α0 g) = 0` using `starProjection_orthogonal_apply_eq_zero hg`. Rewrite `h6` using `[h7, norm_zero, mul_zero]`. Conclude with `norm_le_zero_iff.mp h6`. Establish `hsatN : Formalism.F.IsSaturated (zl ρ L) (zl ρ N)`.
+
+Use `⟨zmonoV hNL, ?_⟩` and prove the remaining obligations. Introduce `x hx hxs`. Take `⟨v, hv, rfl⟩` from `hx`. Conclude with `zmemV (hkeyE ⟨v, hv⟩ hxs)`. Set `pE : E →L[ℝ] E` to `(span ℝ (zl ρ N : Set E))ᗮ.starProjection`.
+
+Set `pF : F →L[ℝ] F` to `(span ℝ (zl ρ' N'' : Set F))ᗮ.starProjection`. Establish `hαβ : ∀ g, (pE.toLinearMap.toAddMonoidHom.comp α0) g = 0 → (pF.toLinearMap.toAddMonoidHom.comp β0) g = 0`. Introduce `g hg`. Establish `hgN` using `hkeyE g (mem_of_starProjection_orthogonal_eq_zero (span ℝ (zl ρ N : Set E)) (ρ (g : V)) hg)`. Conclude with `starProjection_orthogonal_apply_eq_zero (Submodule.subset_span (zmem ((hNmem g).1 hgN)))`.
+
+Establish `hβα : ∀ g, (pF.toLinearMap.toAddMonoidHom.comp β0) g = 0 → (pE.toLinearMap.toAddMonoidHom.comp α0) g = 0`. Introduce `g hg`. Establish `hgN` using `hkey g (mem_of_starProjection_orthogonal_eq_zero (span ℝ (zl ρ' N'' : Set F)) (ρ' (φ g : W)) hg)`. Conclude with `starProjection_orthogonal_apply_eq_zero (Submodule.subset_span (zmemV hgN))`. Establish `hzlL : LinearMap.range α0.toIntLinearMap = zl ρ L` using `range_comp_eq_imageLattice ρ L L.subtype.toAddMonoidHom (fun v => ⟨fun hv => ⟨⟨v, hv⟩, rfl⟩, by rintro ⟨g, rfl⟩; exact g.2⟩)`.
+
+Establish `hzlIm : LinearMap.range β0.toIntLinearMap = zl ρ' Im` using `range_comp_eq_imageLattice ρ' Im (M.subtype ∘ₗ φ).toAddMonoidHom (fun w => by`. Rewrite using `[hIm]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨x, rfl⟩, rfl⟩`. Conclude with `⟨x, rfl⟩`.
+
+Introduce and unpack `⟨x, rfl⟩`. Conclude with `⟨φ x, ⟨x, rfl⟩, rfl⟩)`. Establish `eQL : LinearMap.range (pE.toLinearMap.toAddMonoidHom.comp α0).toIntLinearMap = Formalism.F.quot (zl ρ L) (zl ρ N)`. Rewrite using `[← map_range_toIntLinearMap, hzlL]`. Both sides reduce to the same expression.
+
+Establish `eQM : LinearMap.range (pF.toLinearMap.toAddMonoidHom.comp β0).toIntLinearMap = Formalism.F.quot (zl ρ' Im) (zl ρ' N'')`. Rewrite using `[← map_range_toIntLinearMap, hzlIm]`. Both sides reduce to the same expression. Establish `hsatQ` using `Formalism.F.degQuot E (zl ρ L) (zl ρ N) hL.2 hsatN`. Establish `hsatQ'` using `Formalism.F.degQuot F (zl ρ' Im) (zl ρ' N'') hImLat.2 sp.1`.
+
+Use `haveI : DiscreteTopology (LinearMap.range (pE.toLinearMap.toAddMonoidHom.comp α0).toIntLinearMap) := by`. Rewrite using `[eQL]`. Conclude with `hsatQ.1`. Use `haveI : DiscreteTopology (LinearMap.range (pF.toLinearMap.toAddMonoidHom.comp β0).toIntLinearMap) := by`. Rewrite using `[eQM]`.
+
+Conclude with `hsatQ'.1`. Establish `hR` using `rank_range_eq_and_degree_le (pE.toLinearMap.toAddMonoidHom.comp α0) (pF.toLinearMap.toAddMonoidHom.comp β0) hαβ hβα C hC (fun g => hproj g)`. Rewrite `hR` using `[eQL, eQM]`. Establish `q1` using `hbL.2.2.2.2.2.2.2 N ⟨hNL, hsatN⟩`. Establish `q2` using `hbIm.2.2.2.2.2.2.2 N'' ⟨h2, sp.1⟩`.
+
+Establish `MuL` using `(muL.2.1 (muMin ρ L)).1 le_rfl N hNL`. Establish `c1 : (Formalism.F.rk (Formalism.F.quot (zl ρ L) (zl ρ N)) : ℝ) = (rk ρ L : ℝ) - rk ρ N`. Rewrite using `[q1.1, Nat.cast_sub q1.2.1]`. Establish `c2 : (Formalism.F.rk (Formalism.F.quot (zl ρ' Im) (zl ρ' N'')) : ℝ) = (rk ρ' Im : ℝ) - rk ρ' N''`. Rewrite using `[q2.1, Nat.cast_sub q2.2.1]`.
+
+Establish `c3 : (Formalism.F.rk (Formalism.F.quot (zl ρ' Im) (zl ρ' N'')) : ℝ) = Formalism.F.rk (Formalism.F.quot (zl ρ L) (zl ρ N))` using `congrArg (Nat.cast : ℕ → ℝ) hR.1`. Establish `c4 : (rk ρ' N'' : ℝ) = rk ρ' N'` using `congrArg (Nat.cast : ℕ → ℝ) sp.2.2`. Rewrite using `[← c4, ← c2, c3]`. Rewrite `MuL` using `[← c1]`. Establish `d1` using `q1.2.2`.
+
+Establish `d2` using `q2.2.2`. Establish `d3` using `hR.2`. Use the polynomial consequences of the given equalities and inequalities. Use `⟨h1a, ?_⟩` and prove the remaining obligations. Establish `hImMax : muMax ρ' Im ≤ muMax ρ' M` using `(muIm.1 (muMax ρ' M)).2 (fun N hN => hMuM hM0 N (hN.trans hImM))`.
+
+Establish `e1` using `muIm.2.2.2.1`. Establish `e2` using `muIm.2.2.2.2`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hM0 : M ≠ ⊥`. Introduce `h0`.
+
+Apply `hL0` to reduce the goal to its premises. Rewrite using `[Submodule.eq_bot_iff]`. Introduce `v hv`. Establish `h1 : φ ⟨v, hv⟩ = φ 0`. Rewrite using `[map_zero]`.
+
+Conclude with `Subtype.ext ((Submodule.eq_bot_iff M).1 h0 _ (φ ⟨v, hv⟩).2)`. Establish `h2` using `congrArg Subtype.val (hinj h1)`. Simplify using `using h2`. Use `((hmV R V E ρ L hL hL0).1 _).2 ?_` and prove the remaining obligations. Introduce `N hN`.
+
+Take `⟨N', hN'mem⟩ : ∃ N' : Submodule R W, ∀ w, w ∈ N' ↔ ∃ x : L, (x : V) ∈ N ∧ (φ x : W) = w` from `⟨(N.comap L.subtype).map (M.subtype ∘ₗ φ), fun w => by`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `⟨x, hx, rfl⟩`. Introduce and unpack `⟨x, hx, rfl⟩`.
+
+Conclude with `⟨x, hx, rfl⟩⟩`. Establish `hN'M : N' ≤ M` using `fun w hw => by`. Take `⟨x, _, rfl⟩` from `(hN'mem w).1 hw`. Conclude with `(φ x).2`. Establish `key` using `slopeIneq_of_lemma ρ ρ' L M hL hM φ C hC hφC N hN (fun x _ h => hinj (h.trans (map_zero φ).symm)) N' hN'mem (hbL.1 N hN) (hbM.1 N' hN'M)`.
+
+Establish `h3` using `hMuM hM0 N' hN'M`. Rewrite `h3` using `[key.1]`. Use polynomial arithmetic with `[key.2]`.
+-/
 theorem slopeIneq_of (hmV : MuChar.{uR, uV, uE}) (hmW : MuChar.{uR, uW, uF})
     (hs : SatR.{uR, uW, uF}) (hbV : SatBasic.{uR, uV, uE}) (hbW : SatBasic.{uR, uW, uF}) :
     SlopeIneq.{uR, uV, uW, uE, uF} := by
@@ -504,6 +677,9 @@ theorem slopeIneq_of (hmV : MuChar.{uR, uV, uE}) (hmW : MuChar.{uR, uW, uF})
     rw [key.1] at h3
     nlinarith [key.2]
 
+/- English proof (translation)
+The claim follows from `slopeIneq_of slope_characterization slope_characterization real_saturation_property saturation_basic_properties saturation_basic_properties`.
+-/
 theorem slope_inequality_general : SlopeIneq := slopeIneq_of slope_characterization slope_characterization real_saturation_property saturation_basic_properties saturation_basic_properties
 
 end Formalism.HN

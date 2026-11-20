@@ -18,6 +18,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.FlatBFLoc
 
+/- English proof (translation)
+Introduce `D hFL hFLs hOm k _ _ _ _ _ _ p ν hν ψ ψk hψk ρ B J st s hs n n' _ _ _ _ c FA F₀ FV G₀ FW hco hbe hja Tm hTm`. Take `⟨hcont, hne⟩` from `(GlobalTheory.T.weilCharacter_splitPlace_exists_continuous_nontrivial D k p ψ st.weil.std).2.1 ψk hψk`. Establish `hc : c = 2 * ρ` using `by have := hbe.1; omega`. Set `L : SB (Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k) →ₗ[ℂ] (WO B.V₀ J.W₀ → ℂ)` to `{ toFun := fun Φ => flatBF st (Tm Φ) map_add' := fun Φ Φ' => by`. Simplify using `only [map_add]`.
+
+Conclude with `(GlobalTheory.T.besselToJacobiFlatSchwartz_linear D hFL ψ ρ B J st (Tm Φ) (Tm Φ') 1 (hTm.theta Φ) (hTm.theta Φ')).1`. Use the proof step `map_smul' := fun a Φ => by`. Simplify using `only [map_smul, RingHom.id_apply]`. Conclude with `(GlobalTheory.T.besselToJacobiFlatSchwartz_linear D hFL ψ ρ B J st (Tm Φ) (Tm Φ) a (hTm.theta Φ) (hTm.theta Φ)).2 }`. Take `⟨L₀, hL₀⟩` from `GlobalTheory.T.flatMap_fourierJacobi_factors_local_flat k ψk ν hcont hne hν n n' c ρ (WO B.V₀ J.W₀ → ℂ) L hc (GlobalTheory.T.localFlatMap_dualColumn_multiplicationLaws D hFL hFLs hOm k p ν hν ψ ψk hψk ρ B J st s hs n n' c FA F₀ FV G₀ FW hco hbe hja Tm hTm) (GlobalTheory.T.flat_be …`.
+
+Establish `hL : ∀ Φ Ψ, Ψ.1 = GlobalTheory.LocFlat.flCol ψk ν (ρ + 1) Φ.1 → flatBF st (Tm Φ) = L₀ Ψ` using `hL₀`. Use `⟨L₀, ⟨?_, ?_, ?_⟩, hL⟩` and prove the remaining obligations. Conclude with `GlobalTheory.T.localFlatMap_factor_values_thetaFunctions D hFL hFLs hOm k p ν hν ψ ψk hψk ρ B J st s hs n n' c FA F₀ FV G₀ FW hco hbe hja Tm hTm L₀ hL`. Conclude with `GlobalTheory.T.localFlatMap_factor_intertwines_translations D hFL hFLs hOm k p ν hν ψ ψk hψk ρ B J st s hs n n' c FA F₀ FV G₀ FW hco hbe hja Tm hTm L₀ hL`. Conclude with `GlobalTheory.T.localFlatMap_factor_intertwines_multiplication D hFL hFLs hOm k p ν hν ψ ψk hψk ρ B J st s hs n n' c FA F₀ FV G₀ FW hco hbe hja Tm hTm L₀ hL`.
+-/
 theorem flatBF_of_laws : ∀ (D : D7), FlatLaw D → GlobalTheory.FinPl.FlatLaws D → OmLoc D → FlatBF D := by
   intro D hFL hFLs hOm k _ _ _ _ _ _ p ν hν ψ ψk hψk ρ B J st s hs n n' _ _ _ _ c FA F₀ FV G₀ FW hco hbe hja Tm hTm
   obtain ⟨hcont, hne⟩ := (GlobalTheory.T.weilCharacter_splitPlace_exists_continuous_nontrivial D k p ψ st.weil.std).2.1 ψk hψk

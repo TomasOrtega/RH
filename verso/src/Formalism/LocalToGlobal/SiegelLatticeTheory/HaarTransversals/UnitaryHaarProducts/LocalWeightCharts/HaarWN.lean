@@ -9,6 +9,9 @@ namespace WlocSk
 
 open HM
 
+/- English proof (translation)
+Establish `: CompactSpace (Grp (Formalism.QuantumDeterminants.UWset k r z : Set (Mx k r)) (uw_clsub z))` using `isCompact_iff_compactSpace.mp (compactW z hz hT)`. Use `⟨?_⟩` and prove the remaining obligations. Unfold `hmeas`. Rewrite using `[Measure.map_apply (val_cemb _ _).continuous.measurable MeasurableSet.univ, Set.preimage_univ]`. Conclude with `isCompact_univ.measure_lt_top`.
+-/
 theorem uw_finite {k r : ℕ} (z : Fin (2 * r + k + 1) → ℂ) (hz : Formalism.QuantumDeterminants.inWb k r z)
     (hT : 0 < Formalism.QuantumDeterminants.Tz k r z) : IsFiniteMeasure (hmeas (Formalism.QuantumDeterminants.UWset k r z) (uw_clsub z)) := by
   have : CompactSpace (Grp (Formalism.QuantumDeterminants.UWset k r z : Set (Mx k r)) (uw_clsub z)) :=
@@ -18,6 +21,9 @@ theorem uw_finite {k r : ℕ} (z : Fin (2 * r + k + 1) → ℂ) (hz : Formalism.
   rw [Measure.map_apply (val_cemb _ _).continuous.measurable MeasurableSet.univ, Set.preimage_univ]
   exact isCompact_univ.measure_lt_top
 
+/- English proof (translation)
+Introduce `k r z hz hT`. Conclude with `⟨hmeas (Formalism.QuantumDeterminants.UWset k r z) (uw_clsub z), haarNm k r, hmeas_haar _ _, haarNm_haar, uw_finite z hz hT, haarNm_compact⟩`.
+-/
 theorem haar_measure_unipotent_nilradical : HaarWN := by
   intro k r z hz hT
   exact ⟨hmeas (Formalism.QuantumDeterminants.UWset k r z) (uw_clsub z), haarNm k r, hmeas_haar _ _, haarNm_haar,

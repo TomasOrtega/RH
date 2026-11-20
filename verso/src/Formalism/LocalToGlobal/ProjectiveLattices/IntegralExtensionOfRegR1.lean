@@ -28,6 +28,17 @@ def RegularityR2 (X : PJ D B P j) (E : PtExt X)
     (∀ la (y : X.Pt la), (⨅ k, X.vAt la y (X.inc wL (gens k))) ≤ ((nus la : ℝ) : EReal)) →
     ∀ la (y' : E.Pt' la), (⨅ k, E.vAt' la y' (X.inc wL (gens k))) ≤ ((nus la : ℝ) : EReal))
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Conclude with `le_iInf fun k => iInf₂_le (g k) (Submodule.subset_span (Set.mem_range_self k))`. Use `le_iInf₂ fun F hF => ?_` and prove the remaining obligations. Proceed by induction on `hF using Submodule.span_induction with`. Consider the case `mem x hx => obtain ⟨k, rfl⟩ := hx`.
+
+Conclude with `iInf_le _ k`. Consider the case `zero => simp [hv0]`. Consider the case `add x y _ _ hx hy`. Rewrite using `[map_add]`. Conclude with `le_trans (le_min hx hy) (hadd _ _)`.
+
+Consider the case `smul a x _ hx`. Distinguish the cases in `ha : (a : B.KO) = 0`. Establish `: a = 0` using `by exact_mod_cast ha`. Substitute `this` using the available equality. Simplify using `[hv0]`.
+
+Establish `hsm : X.inc wL (a • x) = (a : B.KO) • X.inc wL x`. Rewrite using `[← map_smul]`. Use `congr 1`. Conclude with `(algebraMap_smul B.KO a x).symm`. Rewrite using `[hsm, hsmul _ _ ha]`.
+
+Establish `h0 : (0 : EReal) ≤ (((vAdd la (a : B.KO) : ℤ) : ℝ) : EReal)`. Conclude with `hint a ha` after adjusting the coercions. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem iInf_span_eq {X : PJ D B P j} {wL : WeightFamilies.Wt D j} {n : ℕ} (g : Fin n → B.Cusp j wL)
     (la : HeightOneSpectrum (𝓞 B.KO)) (v : X.Forms → EReal) (hv0 : v 0 = ⊤)
     (hadd : ∀ F G, min (v F) (v G) ≤ v (F + G))
@@ -69,6 +80,17 @@ def gd2Xplus {ka wL wF : WeightFamilies.Wt D j} {X : PJ D B P j} (G : GlobalFami
     (hM : IntAtExt X E) : GlobalFamilyData (xplus X E hM) ka wL wF :=
   ⟨G.N, G.w, G.del, G.th', G.rz, G.alz, G.th0, G.zc, G.rq, G.th, G.iet, G.et, G.mx⟩
 
+/- English proof (translation)
+Establish `dX : ∀ la (y : X.Pt la), X.depth S.sW wL la y = ⨅ k, X.vAt la y (X.inc wL (G.w k))`. Introduce `la y`. Unfold `PJ.depth`. Rewrite using `[← hspan]`. Conclude with `iInf_span_eq G.w la (X.vAt la y) (X.vAt_zero la y) (X.vAt_add la y) (X.vAt_smul la y) (hint la)`.
+
+Establish `dE : ∀ la (y : E.Pt' la), (⨅ F ∈ X.WWc S.sW wL, E.vAt' la y (X.inc wL F)) = ⨅ k, E.vAt' la y (X.inc wL (G.w k))`. Introduce `la y`. Rewrite using `[← hspan]`. Conclude with `iInf_span_eq G.w la (E.vAt' la y) (E.vAt'_zero la y) (E.vAt'_add la y) (E.vAt'_smul la y) (hint la)`. Introduce `la y`.
+
+Consider the cases of `y with`. Consider the case `inl y0 => exact hX la y0`. Consider the case `inr y1`. Use `⟨fun hj => ?_, fun hj => ?_⟩` and prove the remaining obligations. Establish `hc' : 0 ≤ c / (2 * (G.iet : ℝ))` using `by positivity`.
+
+Use `hR2.1 wL _ G.N G.w G.et nus _ hc' hNZ (fun la' y => by have h := (hX la' y).1 hj; rw [dX] at h; exact h) la y1` as an intermediate fact. Use `show 0 ≤ E.vAt' la y1 (X.inc _ G.et) ∧ (E.vAt' la y1 (X.inc _ G.et) ≠ ⊤ → (⨅ F ∈ X.WWc S.sW wL, E.vAt' la y1 (X.inc wL F)) ≤ _)`. Rewrite using `[dE]`. Conclude with `this`. Use `hR2.2 wL G.N G.w nus hNZ (fun la' y => by have h := (hX la' y).2 hj; rw [dX] at h; exact h) la y1 show (⨅ F ∈ X.WWc S.sW wL, E.vAt' la y1 (X.inc wL F)) ≤ _` as an intermediate fact.
+
+Rewrite using `[dE]`. Conclude with `this`.
+-/
 theorem combBound_xplus {ka wL wF : WeightFamilies.Wt D j} (X : PJ D B P j) (E : PtExt X) (hM : IntAtExt X E)
     (NoZero : ∀ {wL : WeightFamilies.Wt D j} {n : ℕ}, (Fin n → B.Cusp j wL) → Prop)
     (G : GlobalFamilyData X ka wL wF) (S : Scal B) (c : ℝ) (hc : 0 ≤ c) (nus : HeightOneSpectrum (𝓞 B.KO) → ℝ)

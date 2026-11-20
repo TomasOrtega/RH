@@ -4,6 +4,39 @@ import Development.AutomorphicArithmetic.ThetaCorrespondence.RealBands.IsBand
 open MeasureTheory Filter UpperTheory.Lit.Cusp
 open scoped Topology
 
+/- English proof (translation)
+Introduce `G _ _ _ _ _ _ N a H h hr hb s`. Take `⟨hc, ⟨B, hB⟩, hN, ⟨R, hR⟩⟩` from `hb`. Establish `ha` using `hr.cont`. Establish `hH` using `hr.contH`. Establish `he1 : ∀ x : ℝ, ‖Complex.exp (-((x : ℂ) * Complex.I))‖ = 1` using `fun x => by`.
+
+Rewrite using `[← neg_mul, ← Complex.ofReal_neg, Complex.norm_exp_ofReal_mul_I]`. Establish `hsupp : ∀ g t, h (g * a t) ≠ 0 → |H g + t| ≤ R` using `fun g t hne => by`. Use `hR _ hne` as an intermediate fact. Rewrite `this` using `[hr.move]`. Then use the resulting hypothesis. Establish `hint : ∀ g, Integrable (fun t : ℝ => h (g * a t))`.
+
+Introduce `g`. Use `Continuous.integrable_of_hasCompactSupport (by fun_prop) ?_` and prove the remaining obligations. Use `HasCompactSupport.intro (isCompact_Icc (a := -R - H g) (b := R - H g)) ?_` and prove the remaining obligations. Introduce `t ht`. Assume the negation of the conclusion as `hne`.
+
+Apply `ht` to reduce the goal to its premises. Use `abs_le.mp (hsupp g t hne)` as an intermediate fact. Apply the tactic sequence `constructor <;> linarith [this.1, this.2]`. Establish `hbound : ∀ g, ∫ t : ℝ, ‖h (g * a t)‖ ≤ 2 * |R| * |B|`. Introduce `g`.
+
+Establish `hle : ∀ t, ‖h (g * a t)‖ ≤ (Set.Icc (-R - H g) (R - H g)).indicator (fun _ => |B|) t`. Introduce `t`. Distinguish the cases in `hne : h (g * a t) = 0`. Rewrite using `[hne, norm_zero]`. Conclude with `Set.indicator_nonneg (fun _ _ => abs_nonneg _) _`.
+
+Use `abs_le.mp (hsupp g t hne)` as an intermediate fact. Apply the tactic sequence `rw [Set.indicator_of_mem (by constructor <;> linarith [this.1, this.2])]`. Conclude with `(hB _).trans (le_abs_self B)`. Use `(integral_mono (hint g).norm ((continuous_const.integrableOn_Icc).integrable_indicator measurableSet_Icc) hle).trans ?_` and prove the remaining obligations. Rewrite using `[integral_indicator_const _ measurableSet_Icc, smul_eq_mul, Real.volume_real_Icc]`.
+
+Establish `h1 : max (R - H g - (-R - H g)) 0 ≤ 2 * |R|` using `max_le (by linarith [le_abs_self R]) (by positivity)`. Conclude with `mul_le_mul_of_nonneg_right h1 (abs_nonneg B)`. Establish `hshift : ∀ g, (∫ t : ℝ, Complex.exp (-((s * t : ℝ) * Complex.I)) * h (g * a t)) = Complex.exp (((s * H g : ℝ) : ℂ) * Complex.I) * ∫ t : ℝ, Complex.exp (-((s * t : ℝ) * Complex.I)) * h (g * a (t - H g))`. Introduce `g`. Rewrite using `[← integral_const_mul]`.
+
+Use `conv_lhs => rw [← integral_sub_right_eq_self _ (H g)]`. Use `congr 1`. Use extensionality with `t`. Rewrite using `[← mul_assoc, ← Complex.exp_add]`. Use `congr 1`.
+
+Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hΦ : Continuous fun g => ∫ t : ℝ, Complex.exp (-((s * t : ℝ) * Complex.I)) * h (g * a (t - H g))`. Use `continuous_of_dominated (bound := (Set.Icc (-R) R).indicator (fun _ => |B|)) ?_ ?_ ?_ ?_` and prove the remaining obligations.
+
+Introduce `g`. Conclude with `(by fun_prop : Continuous fun t : ℝ => Complex.exp (-((s * t : ℝ) * Complex.I)) * h (g * a (t - H g))).aestronglyMeasurable`. Introduce `g`. Use `Eventually.of_forall fun t => ?_` and prove the remaining obligations. Rewrite using `[norm_mul, he1, one_mul]`.
+
+Distinguish the cases in `hne : h (g * a (t - H g)) = 0`. Rewrite using `[hne, norm_zero]`. Conclude with `Set.indicator_nonneg (fun _ _ => abs_nonneg _) _`. Use `abs_le.mp (hsupp g _ hne)` as an intermediate fact. Apply the tactic sequence `rw [Set.indicator_of_mem (by constructor <;> linarith [this.1, this.2])]`.
+
+Conclude with `(hB _).trans (le_abs_self B)`. Conclude with `(continuous_const.integrableOn_Icc).integrable_indicator measurableSet_Icc`. Conclude with `Eventually.of_forall fun t => by fun_prop`. Use `⟨2 * |R| * |B|, ⟨?_, ?_, ?_, ?_⟩, fun g => ⟨hint g, hbound g⟩⟩` and prove the remaining obligations. Rewrite using `[show (fun g => ∫ t : ℝ, Complex.exp (-((s * t : ℝ) * Complex.I)) * h (g * a t)) = fun g => Complex.exp (((s * H g : ℝ) : ℂ) * Complex.I) * ∫ t : ℝ, Complex.exp (-((s * t : ℝ) * Complex.I)) * h (g * a (t - H g)) from funext hshift]`.
+
+Conclude with `(Complex.continuous_exp.comp (by fun_prop)).mul hΦ`. Introduce `g`. Use `(norm_integral_le_integral_norm _).trans (le_of_eq_of_le ?_ (hbound g))` and prove the remaining obligations. Use `congr 1`. Use extensionality with `t`.
+
+Rewrite using `[norm_mul, he1, one_mul]`. Introduce `g m hm beta_reduce`. Use `congr 1`. Use extensionality with `t`. Rewrite using `[show g * m * a t = g * a t * ((a t)⁻¹ * m * a t) by group, hN _ _ (hr.norm t m hm)]`.
+
+Introduce `g u beta_reduce`. Rewrite using `[← integral_const_mul]`. Use `conv_rhs => rw [← integral_add_left_eq_self _ u]`. Use `congr 1`. Use extensionality with `t`.
+
+Rewrite using `[mul_assoc g, ← hr.add, ← mul_assoc, ← Complex.exp_add]`. Use `congr 1`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem UpperTheory.Lit.Cusp.isEig_of_isBand :
     ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [LocallyCompactSpace G] [T2Space G]
       [SecondCountableTopology G] (N : Set G) (a : ℝ → G) (H : G → ℝ) (h : G → ℂ),

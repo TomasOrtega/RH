@@ -6,6 +6,15 @@ open IsLocalRing
 
 namespace GlobalTheory.CompletionEtale
 
+/- English proof (translation)
+Introduce `B C _ _ _ _ ψ hC _ hflat hm hfin hfu`. Use `haveI := hC`. Set `R'` to `AdicCompletion (maximalIdeal C) C`. Set `ι` to `algebraMap C R'`. Use `haveI : Module.Flat C R' := AdicCompletion.flat_of_isNoetherian _`.
+
+Establish `hres : Function.Surjective (ResidueField.map ι)` using `(AdicCompletion.residueField_map_bijective C).2`. Establish `hcomp : (residue R').comp (ι.comp ψ) = (ResidueField.map ι).comp ((residue C).comp ψ)`. Use extensionality with `b`. Simplify using `[ResidueField.map_residue]`. Use `⟨R', inferInstance, inferInstance, ι, GlobalTheory.AdicNoeth.isNoetherianRing_adicCompletion C _, inferInstance, inferInstance, AdicCompletion.of_injective (maximalIdeal C) C, ⟨?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations.
+
+Conclude with `RingHom.Flat.comp hflat (RingHom.flat_algebraMap_iff.2 inferInstance)`. Rewrite using `[← Ideal.map_map, hm, AdicCompletion.maximalIdeal_eq_map]`. Rewrite using `[hcomp]`. Conclude with `RingHom.Finite.comp (RingHom.Finite.of_surjective _ hres) hfin`. Rewrite using `[hcomp]`.
+
+Conclude with `RingHom.FormallyUnramified.comp hfu (RingHom.FormallyUnramified.of_surjective hres)`.
+-/
 theorem exists_completion : ∀ (B C : Type) [CommRing B] [IsLocalRing B] [CommRing C] [IsLocalRing C] (ψ : B →+* C),
     IsNoetherianRing C → IsLocalHom ψ → ψ.Flat → (IsLocalRing.maximalIdeal B).map ψ = IsLocalRing.maximalIdeal C →
     ((IsLocalRing.residue C).comp ψ).Finite → ((IsLocalRing.residue C).comp ψ).FormallyUnramified →

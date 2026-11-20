@@ -23,6 +23,9 @@ def minor (R : Type) [CommRing R] (σ : T) (s : Fin (r σ)) : MvPolynomial (Lett
 def minorsP (R : Type) [CommRing R] (a : T → ℕ → ℕ) : MvPolynomial (Letter T r n) R :=
   ∏ σ, ∏ s : Fin (r σ), minor r n col R σ s ^ (a σ s - a σ (s + 1))
 
+/- English proof (translation)
+Simplify using `only [minorsP, map_prod, map_pow, minor, RingHom.map_det]`. Use `Finset.prod_congr rfl fun σ _ => Finset.prod_congr rfl fun s _ => ?_` and prove the remaining obligations. Use `congr 2`. Use `ext1 i j`. Simplify using the standard rewrite rules.
+-/
 theorem minorMonomial_map (a : T → ℕ → ℕ) :
     MvPolynomial.map (Int.castRingHom k) (minorsP r n col ℤ a) = minorsP r n col k a := by
   simp only [minorsP, map_prod, map_pow, minor, RingHom.map_det]
@@ -31,11 +34,19 @@ theorem minorMonomial_map (a : T → ℕ → ℕ) :
   ext1 i j
   simp
 
+/- English proof (translation)
+Rewrite using `[← minorMonomial_map, coeff_map]`. Conclude with `intCast_mem O _`.
+-/
 theorem minorMonomial_coeff_mem (a : T → ℕ → ℕ) (O : Subring k) (m : Letter T r n →₀ ℕ) :
     (minorsP r n col k a).coeff m ∈ O := by
   rw [← minorMonomial_map, coeff_map]
   exact intCast_mem O _
 
+/- English proof (translation)
+Introduce `h`. Establish `h1 : MvPolynomial.eval (fun ℓ : Letter T r n => if ℓ.2.2 = col ℓ.1 ℓ.2.1 then (1 : k) else 0) (minorsP r n col k a) = 1`. Simplify using `only [minorsP, map_prod, map_pow, minor, RingHom.map_det]`. Use `Finset.prod_eq_one fun σ _ => Finset.prod_eq_one fun s _ => ?_` and prove the remaining obligations. Rewrite using `[show (MvPolynomial.eval _).mapMatrix _ = (1 : Matrix (Fin (s + 1)) (Fin (s + 1)) k) from ?_, Matrix.det_one, one_pow]`.
+
+Use extensionality with `i j`. Simplify using `only [RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply, eval_X, Matrix.one_apply, (hcol σ).eq_iff, (Fin.castLE_injective _).eq_iff, eq_comm]`. Rewrite `h1` using `[h, map_zero]`. Conclude with `zero_ne_one h1`.
+-/
 theorem minorMonomial_ne_zero (hcol : ∀ σ, Function.Injective (col σ)) (a : T → ℕ → ℕ) :
     minorsP r n col k a ≠ 0 := by
   classical
@@ -52,6 +63,15 @@ theorem minorMonomial_ne_zero (hcol : ∀ σ, Function.Injective (col σ)) (a : 
   rw [h, map_zero] at h1
   exact zero_ne_one h1
 
+/- English proof (translation)
+Set `S : Set (Letter T r n)` to `{v | ∃ j, col v.1 j = v.2.2}`. Establish `hS : minorsP r n col k a ∈ MvPolynomial.supported k S`. Use `Subalgebra.prod_mem _ fun t _ => Subalgebra.prod_mem _ fun s _ => Subalgebra.pow_mem _ ?_ _` and prove the remaining obligations. Rewrite using `[minor, Matrix.det_apply']`. Use `Subalgebra.sum_mem _ fun g _ => Subalgebra.mul_mem _ (intCast_mem _ _) (Subalgebra.prod_mem _ fun a _ => ?_)` and prove the remaining obligations.
+
+Conclude with `Algebra.subset_adjoin ⟨_, ⟨_, rfl⟩, rfl⟩`. Simplify using `only [harmK, Submodule.mem_iInf, LinearMap.mem_ker]`. Introduce `τ hτ i i'`. Simplify using `only [lap, LinearMap.sum_apply, LinearMap.smul_apply, LinearMap.comp_apply, Derivation.coeFn_coe]`. Use `Finset.sum_eq_zero fun b _ => Finset.sum_eq_zero fun b' _ => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `hbb : b = b'`. Substitute `hbb` using the available equality. Distinguish the cases in `hb : ∃ j, col (cc τ) j = b`. Take `⟨j', hj'⟩` from `hb`. Rewrite using `[minorHarm_pderiv_comm, minorHarm_pderiv_eq_zero hS, map_zero, smul_zero]`.
+
+Introduce and unpack `⟨j, hj⟩`. Conclude with `hdis τ hτ j j' (hj.trans hj'.symm)`. Rewrite using `[minorHarm_pderiv_eq_zero hS (v := ⟨cc τ, i', b⟩) hb, map_zero, smul_zero]`. Rewrite using `[Matrix.one_apply_ne hbb, zero_smul]`.
+-/
 theorem minorMonomial_mem_harmonic (cc : T → T) (isX : T → Prop)
     (hdis : ∀ τ, isX τ → ∀ i j, col τ i ≠ col (cc τ) j) (a : T → ℕ → ℕ) :
     minorsP r n col k a ∈ harmK r n k cc isX (fun _ => 1) := by
@@ -77,6 +97,21 @@ theorem minorMonomial_mem_harmonic (cc : T → T) (isX : T → Prop)
     · rw [minorHarm_pderiv_eq_zero hS (v := ⟨cc τ, i', b⟩) hb, map_zero, smul_zero]
   · rw [Matrix.one_apply_ne hbb, zero_smul]
 
+/- English proof (translation)
+Rewrite using `[minor, AlgHom.map_det]`. Distinguish the cases in `h : ∃ u : Fin (s + 1), (⟨σ', Fin.castLE s.isLt u⟩ : Σ σ, Fin (r σ)) = ⟨σ, i⟩`. Take `⟨u, hu⟩` from `h`. Take `⟨rfl, hu'⟩` from `Sigma.mk.inj_iff.1 hu`. Establish `hu'' : Fin.castLE s.isLt u = i` using `eq_of_heq hu'`.
+
+Substitute `hu''` using the available equality. Establish `hi' : (i' : ℕ) < u` using `hi`. Set `u' : Fin (s + 1)` to `⟨i', hi'.trans u.isLt⟩`. Establish `hne : u ≠ u'` using `fun e => by`. Use `congrArg Fin.val e` as an intermediate fact.
+
+Simplify using `only [u'] at this`. Use linear arithmetic over natural numbers and integers. Use `Eq.trans ?_ (Matrix.det_updateRow_add_smul_self _ hne (C t))` and prove the remaining obligations. Use `congr 1`. Use `ext1 x y`.
+
+Distinguish the cases in `hx : x = u`. Substitute `hx` using the available equality. Simplify using `only [AlgHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply, rowShift, aeval_X, Matrix.updateRow_self, Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[if_pos ⟨_, rfl⟩]`. Both sides reduce to the same expression.
+
+Simplify using `only [AlgHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply, rowShift, aeval_X, Matrix.updateRow_ne hx]`. Rewrite using `[if_neg]`. Introduce and unpack `⟨b, hb⟩`. Use `eq_of_heq (Sigma.mk.inj_iff.1 hb).2` as an intermediate fact. Conclude with `hx (Fin.castLE_injective s.isLt (congrArg Prod.fst this))`.
+
+Use `congr 1 ext1 x y`. Simplify using `only [AlgHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply, rowShift, aeval_X]`. Rewrite using `[if_neg]`. Introduce and unpack `⟨b, hb⟩`. Take `⟨rfl, hb'⟩` from `Sigma.mk.inj_iff.1 hb`.
+
+Conclude with `h ⟨x, by rw [show Fin.castLE s.isLt x = i from congrArg Prod.fst (eq_of_heq hb')]⟩`.
+-/
 theorem rowShift_minor (σ : T) (i i' : Fin (r σ)) (hi : i' < i) (t : k) (σ' : T) (s : Fin (r σ')) :
     rowShift r n k σ i i' t (minor r n col k σ' s) = minor r n col k σ' s := by
   classical
@@ -115,10 +150,18 @@ theorem rowShift_minor (σ : T) (i i' : Fin (r σ)) (hi : i' < i) (t : k) (σ' :
     obtain ⟨rfl, hb'⟩ := Sigma.mk.inj_iff.1 hb
     exact h ⟨x, by rw [show Fin.castLE s.isLt x = i from congrArg Prod.fst (eq_of_heq hb')]⟩
 
+/- English proof (translation)
+Introduce `σ i i' hi t`. Simplify using `only [minorsP, map_prod, map_pow, rowShift_minor r n k col σ i i' hi t]`.
+-/
 theorem minorMonomial_rowInvariant (a : T → ℕ → ℕ) : RowInv r n k (minorsP r n col k a) := by
   intro σ i i' hi t
   simp only [minorsP, map_prod, map_pow, rowShift_minor r n k col σ i i' hi t]
 
+/- English proof (translation)
+Rewrite using `[minor, Matrix.det_apply']`. Use `IsWeightedHomogeneous.sum _ _ _ fun g _ => ?_` and prove the remaining obligations. Establish `h` using `IsWeightedHomogeneous.prod (R := k) (w := fun ℓ : Letter T r n => w ⟨ℓ.1, ℓ.2.1⟩) (Finset.univ : Finset (Fin (s + 1))) (fun j => (X ⟨σ, Fin.castLE s.isLt (g j), col σ (Fin.castLE s.isLt j)⟩ : MvPolynomial (Letter T r n) k)) (fun j => w ⟨σ, Fin.castLE s.isLt (g j)⟩) (fun j _ => is …`. Rewrite `h` using `[Equiv.sum_comp g (fun j => w ⟨σ, Fin.castLE s.isLt j⟩)]`. Establish `h2` using `(isWeightedHomogeneous_C (fun ℓ : Letter T r n => w ⟨ℓ.1, ℓ.2.1⟩) (((Equiv.Perm.sign g : ℤˣ) : ℤ) : k)).mul h`.
+
+Simplify using `using h2`.
+-/
 theorem minor_weighted (w : (Σ σ, Fin (r σ)) → ℕ) (σ : T) (s : Fin (r σ)) :
     (minor r n col k σ s).IsWeightedHomogeneous (fun ℓ : Letter T r n => w ⟨ℓ.1, ℓ.2.1⟩)
       (∑ j : Fin (s + 1), w ⟨σ, Fin.castLE s.isLt j⟩) := by
@@ -133,6 +176,11 @@ theorem minor_weighted (w : (Σ σ, Fin (r σ)) → ℕ) (σ : T) (s : Fin (r σ
     (((Equiv.Perm.sign g : ℤˣ) : ℤ) : k)).mul h
   simpa using h2
 
+/- English proof (translation)
+Proceed by induction on `N, hi using Nat.le_induction with`. Consider the case `base`. Rewrite using `[Nat.sub_self]`. Conclude with `Finset.sum_eq_zero fun s hs => if_neg (by simpa using hs)`. Consider the case `succ N hN ih`.
+
+Rewrite using `[Finset.sum_range_succ, ih, if_pos hN]`. Use `hb hN` as an intermediate fact. Use `hb (Nat.le_succ N)` as an intermediate fact. Simplify using `only [Nat.succ_eq_add_one] at this`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem gaps_sum (b : ℕ → ℕ) (hb : Antitone b) (N i : ℕ) (hi : i ≤ N) :
     ∑ s ∈ Finset.range N, (if i ≤ s then b s - b (s + 1) else 0) = b i - b N := by
   induction N, hi using Nat.le_induction with
@@ -146,6 +194,23 @@ theorem gaps_sum (b : ℕ → ℕ) (hb : Antitone b) (N i : ℕ) (hi : i ≤ N) 
     simp only [Nat.succ_eq_add_one] at this
     omega
 
+/- English proof (translation)
+Introduce `m hm σ i`. Set `w : (Σ σ, Fin (r σ)) → ℕ` to `fun ℓ => if ℓ = ⟨σ, i⟩ then 1 else 0`. Establish `h` using `IsWeightedHomogeneous.prod (R := k) (w := fun ℓ : Letter T r n => w ⟨ℓ.1, ℓ.2.1⟩) Finset.univ _ _ fun σ' _ => IsWeightedHomogeneous.prod (R := k) (w := fun ℓ : Letter T r n => w ⟨ℓ.1, ℓ.2.1⟩) Finset.univ _ _ fun (s : Fin (r σ')) _ => (minor_weighted r n k col w σ' s).pow (a σ' s …`. Establish `h1` using `h (mem_support_iff.1 hm)`. Establish `hL : Finsupp.weight (fun ℓ : Letter T r n => w ⟨ℓ.1, ℓ.2.1⟩) m = ∑ b : Fin n, m ⟨σ, i, b⟩`.
+
+Rewrite using `[Finsupp.weight_apply, Finsupp.sum_fintype _ _ (by simp), Fintype.sum_sigma, Finset.sum_eq_single σ, Fintype.sum_prod_type, Finset.sum_eq_single i]`. Simplify using `[w]`. Introduce `j _ hj`. Simplify using `[w, hj]`. Simplify using the standard rewrite rules.
+
+Introduce `σ' _ hσ`. Simplify using `[w, hσ]`. Simplify using the standard rewrite rules. Rewrite using `[← hL, h1, Finset.sum_eq_single σ]`. Establish `e : ∀ s : Fin (r σ), (a σ s - a σ (s + 1)) • ∑ j : Fin (s + 1), w ⟨σ, Fin.castLE s.isLt j⟩ = if (i : ℕ) ≤ s then a σ s - a σ (s + 1) else 0`.
+
+Introduce `s`. Use `split_ifs with his`. Rewrite using `[Finset.sum_eq_single ⟨i, Nat.lt_succ_of_le his⟩]`. Simplify using `[w]`. Introduce `j _ hj`.
+
+Simplify using `only [w]`. Rewrite using `[if_neg]`. Introduce `e`. Establish `e' : Fin.castLE s.isLt j = i` using `eq_of_heq (Sigma.mk.inj_iff.1 e).2`. Conclude with `hj (Fin.ext (congrArg Fin.val e' :))`.
+
+Simplify using the standard rewrite rules. Rewrite using `[Finset.sum_eq_zero, smul_zero]`. Introduce `j _`. Simplify using `only [w]`. Rewrite using `[if_neg]`.
+
+Introduce `e`. Use `congrArg Fin.val (eq_of_heq (Sigma.mk.inj_iff.1 e).2)` as an intermediate fact. Use `j.isLt` as an intermediate fact. Simplify using `only [Fin.val_castLE] at *`. Use linear arithmetic over natural numbers and integers.
+
+Rewrite using `[Finset.sum_congr rfl fun s _ => e s, Fin.sum_univ_eq_sum_range (fun s => if (i : ℕ) ≤ s then a σ s - a σ (s + 1) else 0), gaps_sum _ (ha σ) _ _ i.isLt.le, h0, Nat.sub_zero]`. Introduce `σ' _ hσ`. Simplify using `[w, hσ]`. Simplify using the standard rewrite rules.
+-/
 theorem minorMonomial_rowDegree (a : T → ℕ → ℕ) (ha : ∀ σ, Antitone (a σ)) (h0 : ∀ σ, a σ (r σ) = 0) :
     RowDeg r n k a (minorsP r n col k a) := by
   classical
@@ -199,6 +264,15 @@ end Minors
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
 
+/- English proof (translation)
+Establish `hd : (0 : ℝ) < H.d` using `by exact_mod_cast H.d_prime.pos`. Establish `h` using `H.sqrt_neg_disc_sq`. Establish `hre` using `congrArg Complex.re h`. Establish `him` using `congrArg Complex.im h`. Simplify using `only [sq, Complex.mul_re, Complex.mul_im, Complex.neg_re, Complex.neg_im, Complex.natCast_re, Complex.natCast_im, neg_zero] at hre him`.
+
+Establish `h0 : H.rt0.re = 0`. Assume the negation of the conclusion as `h0`. Establish `: H.rt0.im = 0`. Establish `: H.rt0.re * H.rt0.im = 0` using `by linarith`. Conclude with `(mul_eq_zero.1 this).resolve_left h0`.
+
+Rewrite `hre` using `[this]`. Use polynomial arithmetic with `[mul_self_nonneg H.rt0.re]`. Use `⟨Complex.ext (by simp [h0]) (by simp), fun e => ?_⟩` and prove the remaining obligations. Rewrite `hre` using `[e]`. Simplify using `only [Complex.zero_re, Complex.zero_im] at hre`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem rt0_conj_neg_ne_zero (H : Host E) : starRingEnd ℂ H.rt0 = -H.rt0 ∧ H.rt0 ≠ 0 := by
   have hd : (0 : ℝ) < H.d := by exact_mod_cast H.d_prime.pos
   have h := H.sqrt_neg_disc_sq
@@ -218,25 +292,45 @@ theorem rt0_conj_neg_ne_zero (H : Host E) : starRingEnd ℂ H.rt0 = -H.rt0 ∧ H
   simp only [Complex.zero_re, Complex.zero_im] at hre
   linarith
 
+/- English proof (translation)
+Introduce `h'`. Unfold `InPsi at h h'`. Rewrite `h'` using `[ComplexEmbedding.conjugate_coe_eq, h, (rt0_conj_neg_ne_zero H).1]`. Conclude with `(rt0_conj_neg_ne_zero H).2 (by linear_combination (-1 / 2 : ℂ) * h')`.
+-/
 theorem not_inPsi_conjugate {τ : E →+* ℂ} (h : InPsi H τ) : ¬ InPsi H (ComplexEmbedding.conjugate τ) := by
   intro h'
   unfold InPsi at h h'
   rw [ComplexEmbedding.conjugate_coe_eq, h, (rt0_conj_neg_ne_zero H).1] at h'
   exact (rt0_conj_neg_ne_zero H).2 (by linear_combination (-1 / 2 : ℂ) * h')
 
+/- English proof (translation)
+The claim follows from `if_pos h`.
+-/
 theorem mult_of_inPsi {τ : E →+* ℂ} (h : InPsi H τ) : Dw.mult τ = Dw.p := if_pos h
 
+/- English proof (translation)
+The claim follows from `if_neg h`.
+-/
 theorem mult_of_not_inPsi {τ : E →+* ℂ} (h : ¬ InPsi H τ) : Dw.mult τ = Dw.q := if_neg h
 
 def trunc (Dw : Datum H) (a : (E →+* ℂ) × ℕ → ℕ) : (E →+* ℂ) × ℕ → ℕ :=
   fun x => if x.2 < Dw.mult x.1 then a x else 0
 
+/- English proof (translation)
+The claim follows from `if_pos i.isLt`.
+-/
 theorem trunc_row (a : (E →+* ℂ) × ℕ → ℕ) (τ : E →+* ℂ) (i : Fin (Dw.mult τ)) : trunc Dw a (τ, i) = a (τ, i) :=
   if_pos i.isLt
 
+/- English proof (translation)
+Introduce `τ _ _ hij` and use `h.1 τ hij`.
+-/
 theorem rowsDominant_of_dom {a : (E →+* ℂ) × ℕ → ℕ} {n : ℕ} (h : Dom a n) : RowsDominant Dw a :=
   fun τ _ _ hij => h.1 τ hij
 
+/- English proof (translation)
+Introduce `i j hij`. Simplify using `only [trunc]`. Use `split_ifs with hj hi hi`. Conclude with `h τ (a := ⟨i, hi⟩) (b := ⟨j, hj⟩) hij`. Use linear arithmetic over natural numbers and integers.
+
+Conclude with `Nat.zero_le _`. Conclude with `le_rfl`.
+-/
 theorem antitone_trunc {a : (E →+* ℂ) × ℕ → ℕ} (h : RowsDominant Dw a) (τ : E →+* ℂ) :
     Antitone fun i => trunc Dw a (τ, i) := by
   intro i j hij
@@ -247,16 +341,31 @@ theorem antitone_trunc {a : (E →+* ℂ) × ℕ → ℕ} (h : RowsDominant Dw a
   · exact Nat.zero_le _
   · exact le_rfl
 
+/- English proof (translation)
+Simplify using `only [DF, trunc_row]`.
+-/
 theorem df_trunc (a : (E →+* ℂ) × ℕ → ℕ) : DF Dw (trunc Dw a) = DF Dw a := by
   simp only [DF, trunc_row]
 
 variable (Xo : Moduli Dw l) (c : Coeff l)
 
+/- English proof (translation)
+Use extensionality with `P`. Simplify using `only [harmA, HaO, HHa, RowDeg, Set.mem_setOf_eq, trunc_row]`.
+-/
 theorem harmA_trunc (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ) :
     harmA (Dw := Dw) c (trunc Dw a) n = harmA (Dw := Dw) c a n := by
   ext P
   simp only [harmA, HaO, HHa, RowDeg, Set.mem_setOf_eq, trunc_row]
 
+/- English proof (translation)
+Set `col : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → Fin n` to `fun τ i => if h : InPsi H τ then ⟨i, by have := i.isLt; have := mult_of_inPsi (Dw := Dw) h; omega⟩ else ⟨Dw.p + i, by have := i.isLt; have := mult_of_not_inPsi (Dw := Dw) h; omega⟩`. Establish `hinj : ∀ τ, Function.Injective (col τ)`. Introduce `τ i j hij`. Use `congrArg Fin.val hij` as an intermediate fact. Distinguish the cases in `h : InPsi H τ`.
+
+Simplify using `only [col, dif_pos h] at this`. Conclude with `Fin.ext this`. Simplify using `only [col, dif_neg h] at this`. Conclude with `Fin.ext (by omega)`. Establish `hdis : ∀ τ, InPsi H τ → ∀ i j, col τ i ≠ col (ComplexEmbedding.conjugate τ) j`.
+
+Introduce `τ h i j hij`. Use `congrArg Fin.val hij` as an intermediate fact. Simplify using `only [col, dif_pos h, dif_neg (not_inPsi_conjugate h)] at this`. Use `i.isLt` as an intermediate fact. Use `mult_of_inPsi (Dw := Dw) h` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Rewrite using `[← harmA_trunc]`. Conclude with `⟨minorsP Dw.mult n col c.F fun τ i => trunc Dw a (τ, i), ⟨⟨minorMonomial_mem_harmonic _ _ _ _ _ _ hdis _, minorMonomial_rowInvariant _ _ _ _ _, minorMonomial_rowDegree _ _ _ _ _ (antitone_trunc ha) fun τ => if_neg (lt_irrefl _)⟩, minorMonomial_coeff_mem _ _ _ _ _ _⟩, minorMonomia …`.
+-/
 theorem exists_harmA_ne_zero {a : (E →+* ℂ) × ℕ → ℕ} {n : ℕ} (ha : RowsDominant Dw a) (hn : Dw.p + Dw.q ≤ n) :
     ∃ P ∈ harmA (Dw := Dw) c a n, P ≠ 0 := by
   classical

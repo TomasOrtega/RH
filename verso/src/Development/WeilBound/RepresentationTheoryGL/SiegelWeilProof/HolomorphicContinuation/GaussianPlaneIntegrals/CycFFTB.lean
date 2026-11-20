@@ -8,6 +8,9 @@ namespace PositivityTheory.Rg.Sw.FFTSteps.CycF
 
 variable {m n : ℕ} {ε : Fin m → Bool}
 
+/- English proof (translation)
+Rewrite using `[← sum_rw β (fun j => C (v a j) * (X (j.1, i, t) : PX m n))]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[blk_of β v a.2]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem sum_blk (β : Bool) (v : Matrix (Rw ε β) (Rw ε β) ℂ) (a : Rw ε β) (i : Fin n) (t : Bool) :
     ∑ b, C (blk ε β v a.1 b) * (X (b, i, t) : PX m n) = ∑ j : Rw ε β, C (v a j) * X (j.1, i, t) := by
   rw [← sum_rw β (fun j => C (v a j) * (X (j.1, i, t) : PX m n))]
@@ -15,6 +18,9 @@ theorem sum_blk (β : Bool) (v : Matrix (Rw ε β) (Rw ε β) ℂ) (a : Rw ε β
   rw [blk_of β v a.2]
   split_ifs <;> simp
 
+/- English proof (translation)
+Rewrite using `[← sum_rw β (fun j => C (star (v a j)) * (X (j.1, i, t) : PX m n))]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[blk_of β v a.2]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem sum_blk_star (β : Bool) (v : Matrix (Rw ε β) (Rw ε β) ℂ) (a : Rw ε β) (i : Fin n) (t : Bool) :
     ∑ b, C (star (blk ε β v a.1 b)) * (X (b, i, t) : PX m n) = ∑ j : Rw ε β, C (star (v a j)) * X (j.1, i, t) := by
   rw [← sum_rw β (fun j => C (star (v a j)) * (X (j.1, i, t) : PX m n))]
@@ -22,12 +28,18 @@ theorem sum_blk_star (β : Bool) (v : Matrix (Rw ε β) (Rw ε β) ℂ) (a : Rw 
   rw [blk_of β v a.2]
   split_ifs <;> simp
 
+/- English proof (translation)
+Simplify using `only [blk_of_not β v ha]`. Apply the tactic sequence `cases st <;> simp [apply_ite star, ite_mul]`.
+-/
 theorem sum_blk_other (β : Bool) (v : Matrix (Rw ε β) (Rw ε β) ℂ) {a : Fin m} (ha : ¬ ε a = β) (i : Fin n)
     (t : Bool) (st : Bool) :
     ∑ b, C (if st then star (blk ε β v a b) else blk ε β v a b) * (X (b, i, t) : PX m n) = X (a, i, t) := by
   simp only [blk_of_not β v ha]
   cases st <;> simp [apply_ite star, ite_mul]
 
+/- English proof (translation)
+Use `MvPolynomial.algHom_ext fun x => ?_` and prove the remaining obligations. Break down `x with ⟨i, a⟩ | ⟨i, a⟩` into its components or cases. Simplify using `[act, emb, sub, jv, sum_blk, map_sum]`. Simplify `sum_blk_star (n := n) β v i a true` using `[act, emb, sub, jv, map_sum]`.
+-/
 theorem act_emb_same (β : Bool) (v : Matrix (Rw ε β) (Rw ε β) ℂ) :
     (act (n := n) (blk ε β v)).comp (emb ε β) = (emb ε β).comp (sub v (v.map star)) := by
   refine MvPolynomial.algHom_ext fun x => ?_
@@ -35,6 +47,11 @@ theorem act_emb_same (β : Bool) (v : Matrix (Rw ε β) (Rw ε β) ℂ) :
   · simp [act, emb, sub, jv, sum_blk, map_sum]
   · simpa [act, emb, sub, jv, map_sum] using sum_blk_star (n := n) β v i a true
 
+/- English proof (translation)
+Use `MvPolynomial.algHom_ext fun x => ?_` and prove the remaining obligations. Break down `x with ⟨i, a⟩ | ⟨i, a⟩` into its components or cases. Establish `hi : ¬ ε i.1 = β` using `fun h => hne (i.2.symm.trans h)`. Use `sum_blk_other (n := n) β v hi a false false` as an intermediate fact. Simplify using `only [Bool.false_eq_true, if_false] at this`.
+
+Simplify using `[act, emb, jv, this]`. Establish `hi : ¬ ε i.1 = β` using `fun h => hne (i.2.symm.trans h)`. Use `sum_blk_other (n := n) β v hi a true true` as an intermediate fact. Simplify using `only [if_true] at this`. Simplify `this` using `[act, emb, jv]`.
+-/
 theorem act_emb_other (β β' : Bool) (hne : β' ≠ β) (v : Matrix (Rw ε β) (Rw ε β) ℂ) :
     (act (n := n) (blk ε β v)).comp (emb ε β') = emb ε β' := by
   refine MvPolynomial.algHom_ext fun x => ?_
@@ -48,12 +65,18 @@ theorem act_emb_other (β β' : Bool) (hne : β' ≠ β) (v : Matrix (Rw ε β) 
     simp only [if_true] at this
     simpa [act, emb, jv] using this
 
+/- English proof (translation)
+Simplify using `only [map_sum, map_mul, emb, rename_X, jv, Sum.elim_inl, Sum.elim_inr, Qb]`. Rewrite using `[Finset.sum_subtype (Finset.univ.filter (fun x : Fin m => ε x = β)) (p := fun x => ε x = β) (by simp)]`. Conclude with `Finset.sum_congr rfl (fun i _ => mul_comm _ _)`.
+-/
 theorem emb_pair (β : Bool) (a b : Fin n) :
     emb ε β (∑ i : Rw ε β, (X (Sum.inl (i, a)) : PV (Rw ε β) (Fin n) (Fin n)) * X (Sum.inr (i, b))) = Qb ε β b a := by
   simp only [map_sum, map_mul, emb, rename_X, jv, Sum.elim_inl, Sum.elim_inr, Qb]
   rw [Finset.sum_subtype (Finset.univ.filter (fun x : Fin m => ε x = β)) (p := fun x => ε x = β) (by simp)]
   exact Finset.sum_congr rfl (fun i _ => mul_comm _ _)
 
+/- English proof (translation)
+Establish `h1 : emb ε β p ∈ (pairAlg (Rw ε β) (Fin n) (Fin n)).map (emb ε β)` using `Subalgebra.mem_map.2 ⟨p, hp, rfl⟩`. Rewrite `h1` using `[pairAlg, AlgHom.map_adjoin]`. Use `Algebra.adjoin_mono ?_ h1` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨⟨a, b⟩, rfl⟩, rfl⟩`. Conclude with `⟨(β, b, a), (emb_pair β a b).symm⟩`.
+-/
 theorem emb_pairAlg (β : Bool) {p : PV (Rw ε β) (Fin n) (Fin n)} (hp : p ∈ pairAlg (Rw ε β) (Fin n) (Fin n)) :
     emb ε β p ∈ Algebra.adjoin ℂ (Set.range fun k : Bool × Fin n × Fin n => (Qb ε k.1 k.2.1 k.2.2 : PX m n)) := by
   have h1 : emb ε β p ∈ (pairAlg (Rw ε β) (Fin n) (Fin n)).map (emb ε β) := Subalgebra.mem_map.2 ⟨p, hp, rfl⟩

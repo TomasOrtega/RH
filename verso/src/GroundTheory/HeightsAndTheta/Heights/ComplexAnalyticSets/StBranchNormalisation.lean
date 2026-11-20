@@ -14,6 +14,13 @@ def branchOrder {I : Ideal (MvPolynomial (Fin n) ℂ)} {q : Fin n → ℂ} (c : 
     (f : MvPolynomial (Fin n) ℂ) : ℕ∞ :=
   analyticOrderAt (fun τ : ℂ ↦ eval (c.toFun fun _ ↦ τ) f) 0
 
+/- English proof (translation)
+Take `⟨H, hHd, hH0, hF⟩` from `h`. Set `ι : ℂ → (Fin 1 → ℂ)` to `fun τ _ ↦ τ`. Establish `hιd : Differentiable ℂ ι` using `differentiable_pi.2 fun _ ↦ differentiable_id`. Establish `hball : ∀ τ ∈ Metric.ball (0 : ℂ) c.radius, ι τ ∈ Metric.ball (0 : Fin 1 → ℂ) c.radius`. Introduce `τ hτ`.
+
+Simplify `hτ` using `[ι, Metric.mem_ball, dist_zero_right, pi_norm_const]`. Establish `hg : AnalyticAt ℂ (H ∘ ι) 0` using `(hHd.comp hιd.differentiableOn hball).analyticAt (Metric.ball_mem_nhds 0 c.radius_pos)`. Establish `hev : ∀ᶠ τ in 𝓝 (0 : ℂ), eval (c.toFun (ι τ)) f = (τ - 0) ^ k • (H ∘ ι) τ` using `by filter_upwards [Metric.ball_mem_nhds (0 : ℂ) c.radius_pos] with τ hτ`. Use `(hF _ (hball τ hτ)).trans ?_` and prove the remaining obligations. Simplify using `[ι]`.
+
+Establish `hF' : AnalyticAt ℂ (fun τ : ℂ ↦ eval (c.toFun (ι τ)) f) 0` using `AnalyticAt.congr (((analyticAt_id.sub analyticAt_const).pow k).smul hg) (hev.mono fun τ h ↦ h.symm)`. Conclude with `hF'.analyticOrderAt_eq_natCast.2 ⟨H ∘ ι, hg, hH0 _ (hball 0 (Metric.mem_ball_self c.radius_pos)), hev⟩`.
+-/
 theorem branchOrder_eq_of_vanishesToOrder {I : Ideal (MvPolynomial (Fin n) ℂ)} {q : Fin n → ℂ}
     (c : VarBranch I 1 q) (f : MvPolynomial (Fin n) ℂ) (k : ℕ)
     (h : VanishesToOrder (fun t ↦ eval (c.toFun t) f) c.radius k) : branchOrder c f = k := by

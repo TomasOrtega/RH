@@ -6,6 +6,23 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.TypeAsm
 
+/- English proof (translation)
+Introduce `Ca Cg cb Cw cT CT C0 C' Cl D large₂ hH hK hC' hCl hCa`. Establish `hStd : Std D large₂` using `⟨C', Cl, Cg, cb, Cw, cT, CT, C0, hK⟩`. Take `⟨_, _, hvI, hv1, hf, _, hfin, _, _, _, _, hg2, hT⟩` from `hH D large₂ hStd`. Take `⟨⟨hS0, _, _⟩, _⟩` from `hK`. Take `⟨_, h2, h3, _, h5, _, h7, _, _, _, h11, h12, _, _, _, _, _, _, _, _, _, _, h23, h24, h25⟩` from `hS0`.
+
+Establish `hL : 1 < large₂.sc.L` using `one_lt_scale_L D large₂`. Establish `hb2 : 2 ≤ large₂.sc.b` using `two_le_scale_b D large₂`. Establish `hlb : Real.log large₂.sc.b = large₂.sc.L` using `log_scale_eq_L D large₂`. Use `⟨by rw [hfin, hf], (two_rank_add_two_eq_m D).symm, h24, by rw [hf]; exact h3, ?_, by rw [hlb]; exact h7, by rw [hf]; exact h5, hb2, by rw [hvI]; exact hv1, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hf]`.
+
+Establish `hm : (0 : ℝ) ≤ (D.R.m : ℝ) ^ 5 * D.R.f` using `by positivity`. Establish `: ((D.R.m ^ 5 * D.R.f : ℕ) : ℝ) ≤ D.R.k`. Use `push_cast`. Combine the equalities or inequalities in the displayed calculation. Conclude with `this` after adjusting the coercions.
+
+Rewrite using `[hvI]`. Establish `hrd : 0 < D.host.rdE` using `pf_rd_pos D`. Establish `hL0 : 0 < large₂.sc.L` using `by linarith`. Establish `h1 : Real.log D.host.rdE ≤ large₂.sc.L`. Use `h11.trans ?_` and prove the remaining obligations.
+
+Rewrite using `[div_le_iff₀ h25]`. Use the polynomial consequences of the given equalities and inequalities. Establish `h2v : 2 * D.host.v = D.host.rdE` using `by show 2 * (D.host.rdE / 2) = D.host.rdE; ring`. Rewrite using `[h2v]`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hg1 : 1 ≤ D.host.g 1`. Break down `Nat.eq_zero_or_pos (D.host.g 1) with h | h` into its components or cases. Establish `: gS D = 0` using `by simp [gS, h]`. Use linear arithmetic over natural numbers and integers. Conclude with `h`.
+
+Combine the equalities or inequalities in the displayed calculation. Introduce `u`. Use `⟨(hT u).1.one_lt.le, ?_⟩` and prove the remaining obligations. Establish `h` using `(h23 u).2`. Combine the equalities or inequalities in the displayed calculation.
+
+Apply `Real.rpow_le_rpow_of_exponent_le (by linarith)` to reduce the goal to its premises. Establish `: (0 : ℝ) ≤ D.R.m` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem pairsPar : ∀ (Ca Cg cb Cw cT CT C0 C' Cl : ℝ) (D : D7) (large₂ : SizeData₂ D), HostC →
     Formalism.MainNotions.NonGenericAndKTwoTheorems.KTwoHypotheses D large₂ C' Cl Cg cb Cw cT CT C0 → 1 ≤ C' → 1 ≤ Cl → CT ≤ Ca →
     Module.finrank ℚ D.host.E = 2 * Formalism.HermitianLatticesTheory.fDeg D.host.E ∧ D.R.m = 2 * D.R.rS + 2 ∧ Cl ≤ (D.R.m : ℝ) ∧

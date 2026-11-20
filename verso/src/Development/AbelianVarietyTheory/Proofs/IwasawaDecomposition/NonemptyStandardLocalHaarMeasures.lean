@@ -23,15 +23,24 @@ def coordHomeo {F E : Type} [Field F] [Field E] [Algebra F E] {d : ℕ} (b : Mod
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E]
 
+/- English proof (translation)
+Use `haveI := GlobalTheory.AdelicUnitaryTop.compactSpace_adicCompletionIntegers F v`. Conclude with `isCompact_iff_compactSpace.2 this`.
+-/
 theorem isCompact_integers (v : HeightOneSpectrum (𝓞 F)) :
     IsCompact (v.adicCompletionIntegers F : Set (Fv F v)) := by
   haveI := GlobalTheory.AdelicUnitaryTop.compactSpace_adicCompletionIntegers F v
   exact isCompact_iff_compactSpace.2 this
 
+/- English proof (translation)
+The claim follows from `Valued.isOpen_valuationSubring _`.
+-/
 theorem isOpen_integers (v : HeightOneSpectrum (𝓞 F)) :
     IsOpen (v.adicCompletionIntegers F : Set (Fv F v)) :=
   Valued.isOpen_valuationSubring _
 
+/- English proof (translation)
+Use extensionality with `y`. Simplify using `only [intV, Set.mem_setOf_eq, Set.mem_preimage, Set.mem_pi, Set.mem_univ, true_imp_iff]`. Both sides reduce to the same expression.
+-/
 theorem intV_eq {d : ℕ} (b : Module.Basis (Fin d) F E) (v : HeightOneSpectrum (𝓞 F)) :
     intV b v = coordHomeo b (Fv F v) ⁻¹'
       (Set.univ.pi fun _ => (v.adicCompletionIntegers F : Set (Fv F v))) := by
@@ -39,11 +48,17 @@ theorem intV_eq {d : ℕ} (b : Module.Basis (Fin d) F E) (v : HeightOneSpectrum 
   simp only [intV, Set.mem_setOf_eq, Set.mem_preimage, Set.mem_pi, Set.mem_univ, true_imp_iff]
   rfl
 
+/- English proof (translation)
+Rewrite using `[intV_eq, Homeomorph.isCompact_preimage]`. Conclude with `isCompact_univ_pi fun _ => isCompact_integers v`.
+-/
 theorem isCompact_intV {d : ℕ} (b : Module.Basis (Fin d) F E) (v : HeightOneSpectrum (𝓞 F)) :
     IsCompact (intV b v) := by
   rw [intV_eq, Homeomorph.isCompact_preimage]
   exact isCompact_univ_pi fun _ => isCompact_integers v
 
+/- English proof (translation)
+Rewrite using `[intV_eq]`. Conclude with `(isOpen_set_pi Set.finite_univ fun _ _ => isOpen_integers v).preimage (coordHomeo b (Fv F v)).continuous`.
+-/
 theorem isOpen_intV {d : ℕ} (b : Module.Basis (Fin d) F E) (v : HeightOneSpectrum (𝓞 F)) :
     IsOpen (intV b v) := by
   rw [intV_eq]
@@ -65,6 +80,9 @@ def intVK {d : ℕ} (b : Module.Basis (Fin d) F E) (v : HeightOneSpectrum (𝓞 
     rw [(isOpen_intV b v).interior_eq]
     exact ⟨0, fun k => by simp⟩
 
+/- English proof (translation)
+Use `haveI : FiniteDimensional F E := Module.Finite.of_basis b`. Conclude with `⟨{ lamI := Measure.addHaar lamV := fun v => Measure.addHaarMeasure (intVK b v) nuI := Measure.addHaar nuV := fun v => Measure.addHaarMeasure (intK v) haar_lamI := inferInstance haar_lamV := fun v => inferInstance haar_nuI := inferInstance haar_nuV := fun v => inferInstance lamV_i …`.
+-/
 theorem nonempty_stdMeas (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E]
     [Algebra F E] (d : ℕ) (b : Module.Basis (Fin d) F E) : Nonempty (StdMeas b) := by
   haveI : FiniteDimensional F E := Module.Finite.of_basis b

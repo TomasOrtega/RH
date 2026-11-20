@@ -18,6 +18,17 @@ set_option autoImplicit false
 
 namespace GlobalTheory.LogDR
 
+/- English proof (translation)
+Introduce `p _ X _ _ C _ E n ι _ 𝒜 G hD hG e₀ h0`. Establish `step : ∀ e, (∀ a b : ℕ, n < a + b → DI.CechZero (cechFam 𝒜 (G (e + 1)) a) b) → ∀ a b : ℕ, n < a + b → DI.CechZero (cechFam 𝒜 (G e) a) b`. Introduce `e he a b hab`. Take `⟨ρ, hρ, hGe⟩` from `hG e`. Use `hD (G e) ρ hρ a b ?_` and prove the remaining obligations.
+
+Rewrite using `[← hGe]`. Use `DI.hypZero_of_cechZero (extD X.functionField) _ (fun x => CechDR.dDR_dDR x) ?_ ?_ (a + b) ?_` and prove the remaining obligations. Introduce `q s t _ hst show latSec _ _ ≤ latSec _ _`. Establish `hle : inter 𝒜.U t ≤ inter 𝒜.U s` using `Finset.inf_mono hst`. Introduce `x hx`.
+
+Simplify using `only [latSec, AddSubgroup.mem_iInf] at hx ⊢`. Conclude with `fun y hy => hx y (hle hy)`. Introduce `q s x hx`. Use `GlobalTheory.T.log_sections_differential_closed p 𝒜 (G e) ρ hρ q (inter 𝒜.U s) x (by rw [← hGe]; exact hx)` as an intermediate fact. Rewrite `this` using `[← hGe]`.
+
+Conclude with `this`. Introduce `q b' hqb`. Conclude with `he q b' (by omega)`. Proceed by induction on `e₀ with`. Consider the case `zero => exact h0`.
+
+Consider the case `succ k ih => exact ih (step k h0)`.
+-/
 theorem descend_vanishing : ∀ (p : ℕ) [Fact p.Prime] (X : Scheme.{0}) [IsIntegral X] [CharP X.functionField p] {C : Type} [Fintype C] (E : C → CartierDiv X) {n : ℕ} {ι : Type} [LinearOrder ι] (𝒜 : SncAtlas E n ι) (G : ℕ → CartierDiv X), Decomp p 𝒜 → (∀ e, ∃ ρ : C → ℕ, (∀ c, ρ c < p) ∧ G (e + 1) = p • G e + ∑ c, ρ c • E c) → ∀ e₀ : ℕ, (∀ a b : ℕ, n < a + b → DI.CechZero (cechFam 𝒜 (G e₀) a) b) → ∀ a b : ℕ, n < a + b → DI.CechZero (cechFam 𝒜 (G 0) a) b := by
   intro p _ X _ _ C _ E n ι _ 𝒜 G hD hG e₀ h0
   have step : ∀ e, (∀ a b : ℕ, n < a + b → DI.CechZero (cechFam 𝒜 (G (e + 1)) a) b) →

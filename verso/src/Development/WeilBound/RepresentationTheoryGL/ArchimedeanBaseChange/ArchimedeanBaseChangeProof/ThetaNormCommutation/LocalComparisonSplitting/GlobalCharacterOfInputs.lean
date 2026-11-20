@@ -12,10 +12,19 @@ namespace PositivityTheory.Rg.BcB.G8
 
 open PositivityTheory.Rg.Tf.Loc (quotIntegral IsQuotNormaliser twConj)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem phiU_val (a : ℕ) (R : Type) [CommRing R] : (PhiU a R).val = GlobalTheory.Tw.Phi a R := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem phiU_inv_val (a : ℕ) (R : Type) [CommRing R] : ((PhiU a R)⁻¹).val = (GlobalTheory.Tw.Phi a R)ᵀ := rfl
 
+/- English proof (translation)
+The claim follows from `Units.ext rfl`.
+-/
 theorem thetaGL_eq (a : ℕ) (R : Type) [CommRing R] (c : R →+* R) (g : GL (Fin a) R) :
     thetaGL a c g = PhiU a R * thetaR c a g * (PhiU a R)⁻¹ := Units.ext rfl
 

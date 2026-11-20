@@ -9,6 +9,11 @@ open scoped CategoryTheory.Obj
 
 namespace GlobalTheory.KerKilledFibre
 
+/- English proof (translation)
+Set `u : Over.mk (T.hom ≫ f) ⟶ G` to `Over.homMk ((1 : T ⟶ G').left ≫ φ) (by`. Simplify using `only [Over.mk_hom, Category.assoc]`. Rewrite using `[h.1.w, ← Category.assoc, Over.w])`. Establish `hu : u * u = u` using `Over.OverMorphism.ext (by`. Rewrite using `[h.2 T 1 1 u u rfl rfl, _root_.mul_one]`.
+
+Use the proof step `rfl)`. Establish `: u = 1` using `mul_eq_left.1 hu`. Rewrite using `[← this]`. Both sides reduce to the same expression.
+-/
 theorem one_left_push {S S' : Scheme.{0}} {G' : Over S'} [GrpObj G'] {G : Over S} [GrpObj G] {f : S' ⟶ S}
     {φ : G'.left ⟶ G.left} (h : IsGrpPullback G' G f φ) (T : Over S') :
     (1 : Over.mk (T.hom ≫ f) ⟶ G).left = (1 : T ⟶ G').left ≫ φ := by
@@ -21,6 +26,11 @@ theorem one_left_push {S S' : Scheme.{0}} {G' : Over S'} [GrpObj G'] {G : Over S
   rw [← this]
   rfl
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => rw [pow_zero, pow_zero]`. Conclude with `one_left_push h T`. Consider the case `succ n ih`. Rewrite using `[pow_succ, pow_succ]`.
+
+Conclude with `h.2 T _ _ _ _ ih hx`.
+-/
 theorem pow_left_push {S S' : Scheme.{0}} {G' : Over S'} [GrpObj G'] {G : Over S} [GrpObj G] {f : S' ⟶ S}
     {φ : G'.left ⟶ G.left} (h : IsGrpPullback G' G f φ) {T : Over S'} (x : T ⟶ G') (x₀ : Over.mk (T.hom ≫ f) ⟶ G)
     (hx : x₀.left = x.left ≫ φ) (n : ℕ) : (x₀ ^ n).left = (x ^ n).left ≫ φ := by
@@ -30,6 +40,9 @@ theorem pow_left_push {S S' : Scheme.{0}} {G' : Over S'} [GrpObj G'] {G : Over S
     rw [pow_succ, pow_succ]
     exact h.2 T _ _ _ _ ih hx
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => rw [pow_zero, pow_zero, MonObj.comp_one]`. Consider the case `succ n ih => rw [pow_succ, pow_succ, MonObj.comp_mul, ih]`.
+-/
 theorem comp_pow_pt {S : Scheme.{0}} {G A B : Over S} [GrpObj G] (f : A ⟶ B) (g : B ⟶ G) (n : ℕ) :
     f ≫ g ^ n = (f ≫ g) ^ n := by
   induction n with
@@ -40,6 +53,29 @@ end GlobalTheory.KerKilledFibre
 
 namespace GlobalTheory.KerKilledFibre
 
+/- English proof (translation)
+Introduce `d S' _ G _ _ P _ hP _ _ _ T g A' _ _ φ φ₂ P' hpb hsq hP' hiso _ H t T' x hT' hgen`. Take `⟨f, hf⟩` from `hT'`. Take `⟨c, hc⟩` from `hgen`. Set `r : Spec (T.residueField t) ⟶ Spec (S'.residueField (g.base t))` to `Spec.map (g.residueFieldMap t)`. Establish `hr : r ≫ S'.fromSpecResidueField (g.base t) = T.fromSpecResidueField t ≫ g` using `Scheme.Hom.SpecMap_residueFieldMap_fromSpecResidueField g t`.
+
+Set `p1 : pullback f r ⟶ T'.left` to `pullback.fst f r`. Set `p2 : pullback f r ⟶ Spec (T.residueField t)` to `pullback.snd f r`. Set `T'' : Over T` to `Over.mk (p2 ≫ T.fromSpecResidueField t)`. Establish `hw : p1 ≫ T'.hom = T''.hom ≫ g` using `by show p1 ≫ T'.hom = (p2 ≫ T.fromSpecResidueField t) ≫ g`. Rewrite using `[hf, ← Category.assoc, pullback.condition, Category.assoc, hr, Category.assoc]`.
+
+Establish `hxw : (p1 ≫ x.left) ≫ G.hom = T''.hom ≫ g` using `by rw [Category.assoc, Over.w x]; exact hw`. Set `x'' : T'' ⟶ A'` to `Over.homMk (hpb.1.lift (p1 ≫ x.left) T''.hom hxw) (hpb.1.lift_snd _ _ _)`. Establish `hx''φ : x''.left ≫ φ = p1 ≫ x.left` using `hpb.1.lift_fst _ _ _`. Set `Y : Over S'` to `Over.mk ((A' ⊗ T'').hom ≫ g)`. Set `a : Y ⟶ G` to `Over.homMk ((fst A' T'').left ≫ φ) (by show ((fst A' T'').left ≫ φ) ≫ G.hom = (A' ⊗ T'').hom ≫ g`.
+
+Rewrite using `[Category.assoc, hpb.1.w, ← Category.assoc]`. Conclude with `congrArg (· ≫ g) (Over.w (fst A' T'')))`. Set `b : Y ⟶ T'` to `Over.homMk ((snd A' T'').left ≫ p1) (by show ((snd A' T'').left ≫ p1) ≫ T'.hom = (A' ⊗ T'').hom ≫ g`. Rewrite using `[Category.assoc, hw, ← Category.assoc]`. Conclude with `congrArg (· ≫ g) (Over.w (snd A' T'')))`.
+
+Set `m` to `(lift a b).left`. Set `ψ` to `(lift (snd G T' ≫ x) (fst G T')).left`. Set `ψ''` to `(lift (snd A' T'' ≫ x'') (fst A' T'')).left`. Establish `heq : ψ'' ≫ φ₂ = m ≫ ψ`. Establish `k1 : ψ ≫ (fst G G).left = (snd G T' ≫ x).left` using `by rw [← Over.comp_left, lift_fst]`.
+
+Establish `k2 : ψ'' ≫ (fst A' A').left = (snd A' T'' ≫ x'').left` using `by rw [← Over.comp_left, lift_fst]`. Establish `k3 : m ≫ (snd G T').left = b.left` using `by rw [← Over.comp_left, lift_snd]`. Establish `k4 : ψ ≫ (snd G G).left = (fst G T').left` using `by rw [← Over.comp_left, lift_snd]`. Establish `k5 : ψ'' ≫ (snd A' A').left = (fst A' T'').left` using `by rw [← Over.comp_left, lift_snd]`. Establish `k6 : m ≫ (fst G T').left = a.left` using `by rw [← Over.comp_left, lift_fst]`.
+
+Apply `Over.tensorObj_ext` to reduce the goal to its premises. Use `show ψ'' ≫ φ₂ ≫ (fst G G).left = m ≫ ψ ≫ (fst G G).left`. Rewrite using `[hsq.1, reassoc_of% k2, k1]`. Simplify using `only [Over.comp_left, Category.assoc]`. Rewrite using `[reassoc_of% k3, hx''φ]`.
+
+Use `show _ = ((snd A' T'').left ≫ p1) ≫ x.left`. Rewrite using `[Category.assoc]`. Use `show ψ'' ≫ φ₂ ≫ (snd G G).left = m ≫ ψ ≫ (snd G G).left`. Rewrite using `[hsq.2, reassoc_of% k5, k4, k6]`. Both sides reduce to the same expression.
+
+Take `⟨w, hwg⟩` from `hiso`. Take `⟨c1, hc1⟩` from `gen_chartPull (chartPullSame P (fun _ : PUnit => ψ'' ≫ φ₂) (fun _ => ψ) (fun _ => 1) m (fun _ => heq)) c hc`. Take `⟨c2, hc2⟩` from `exists_down ((isGen_iff w).1 hwg) hP hP' (φ' := fun _ : PUnit => ψ'') (ε := fun _ => 1) c1 hc1`. Establish `hx'' : x'' ^ d = 1` using `H T'' x'' ⟨c2, hc2⟩`. Set `ρ : Over.mk (T''.hom ≫ g) ⟶ T'` to `Over.homMk p1 hw`.
+
+Establish `hρ : (ρ ≫ x).left = x''.left ≫ φ` using `hx''φ.symm`. Establish `e1 : ((ρ ≫ x) ^ d).left = (1 : Over.mk (T''.hom ≫ g) ⟶ G).left`. Rewrite using `[pow_left_push hpb x'' (ρ ≫ x) hρ d, hx'', one_left_push hpb T'']`. Establish `e2 : p1 ≫ (x ^ d).left = p1 ≫ (1 : T' ⟶ G).left`. Use `congrArg CommaMorphism.left ((comp_pow_pt ρ x d).trans ((Over.OverMorphism.ext e1).trans (MonObj.comp_one ρ).symm))` as an intermediate fact.
+
+Conclude with `this`. Establish `: Flat r` using `inferInstance`. Establish `: Surjective r` using `⟨Function.surjective_to_subsingleton _⟩`. Establish `: Epi p1` using `Flat.epi_of_flat_of_surjective _`. Conclude with `Over.OverMorphism.ext ((cancel_epi p1).1 e2)`.
+-/
 theorem fibreKilled_of_base : ∀ (d : ℕ) (S' : Scheme.{0}) [IsLocallyNoetherian S'] (G : Over S') [GrpObj G] [IsCommMonObj G] (P : LB (G2 G).left), IsAbelianScheme G → P.IsLB → (∃ s : (P.pull (lift (1 : G ⟶ G) (𝟙 G)).left).Gen, s.IsGen) → (∃ s : (P.pull (lift (𝟙 G) (1 : G ⟶ G)).left).Gen, s.IsGen) → LBIso P (P.pull (lift (snd G G) (fst G G)).left) → ∀ (T : Scheme.{0}) (g : T ⟶ S') (A' : Over T) [GrpObj A'] [IsCommMonObj A'] (φ : A'.left ⟶ G.left) (φ₂ : (G2 A').left ⟶ (G2 G).left) (P' : LB (G2 A').left), IsGrpPullback A' G g φ → IsSquare φ φ₂ → P'.IsLB → LBIso P' (P.pull φ₂) → IsUnit ((d : ℕ) : Γ(T, ⊤)) → (∀ (T' : Over T) (x : T' ⟶ A'), (∃ s : (P'.pull (lift (snd A' T' ≫ x) (fst A' T')).left).Gen, s.IsGen) → x ^ d = 1) → ∀ t : T, GlobalTheory.KerKilledNear.FibreKilled d G P (g.base t) := by
   intro d S' _ G _ _ P _ hP _ _ _ T g A' _ _ φ φ₂ P' hpb hsq hP' hiso _ H t T' x hT' hgen
   obtain ⟨f, hf⟩ := hT'

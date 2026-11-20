@@ -19,6 +19,9 @@ def chart0 (F : Formalism.L2.Forms.Forms0 D u) : GlobalTheory.AdForm.Chart D u 0
   K := F.cls0.toChart
   eY := F.val0.eY
 
+/- English proof (translation)
+Use function extensionality and compare the values at `ψ y`. Unfold `GlobalTheory.AdForm.rd GlobalTheory.AdForm.chart`. Rewrite using `[dif_pos (Or.inl rfl)]`. Both sides reduce to the same expression.
+-/
 theorem rd_zero {Ch : ℕ → Type} {chOf : ∀ i, (D.mem u).C.cls i → Ch i} (F : Formalism.L2.Forms.FormsTiedSym D u Ch chOf)
     (θ : InfFam D) (β : Ch 0) : GlobalTheory.AdForm.rd F θ 0 (Nat.zero_le _) β = (chart0 F.to0).rd θ := by
   funext ψ y

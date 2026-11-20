@@ -13,5 +13,8 @@ open GlobalTheory.Poinc
 open MonObj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.PolDim.g_eq_of_isGrpPullback | exact GlobalTheory.PolDim.g_eq_of_isGrpPullback | (intros; apply GlobalTheory.PolDim.g_eq_of_isGrpPullback <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.polarisedAbelian_relDim_eq_of_grpPullback_field : ∀ (K : Type) [Field K] (S : Scheme.{0}) (f : Sp K ⟶ S) (P : PolAV S) (P' : PolAV (Sp K)) (φ : P'.A.left ⟶ P.A.left), IsGrpPullback P'.A P.A f φ → P'.g = P.g := by
   first | exact @GlobalTheory.PolDim.g_eq_of_isGrpPullback | exact GlobalTheory.PolDim.g_eq_of_isGrpPullback | (intros; apply GlobalTheory.PolDim.g_eq_of_isGrpPullback <;> assumption)

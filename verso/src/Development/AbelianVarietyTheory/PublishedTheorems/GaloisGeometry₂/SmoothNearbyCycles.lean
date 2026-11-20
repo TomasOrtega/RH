@@ -23,6 +23,13 @@ def SmoothNearbyCycles : Prop :=
 
 open GlobalTheory.NCyc in
 
+/- English proof (translation)
+Use `letI := henselian_powerSeries_complex`. Use `letI := isSepClosed_residueField_powerSeries_complex`. Use `letI := faithfulSMul_powerSeries_complex`. Use `letI := isAlgebraic_powerSeries_complex`. Use `letI : TopologicalSpace (ZMod 3) := ⊥`.
+
+Use `haveI : DiscreteTopology (ZMod 3) := ⟨rfl⟩`. Use `haveI : Fact (Nat.Prime 3) := ⟨by norm_num⟩`. Establish `hu : IsUnit ((3 : ℕ) : PowerSeries ℂ)`. Rewrite using `[← map_natCast (algebraMap ℂ (PowerSeries ℂ))]`. Conclude with `(IsUnit.mk0 _ (by norm_num)).map _`.
+
+Use `H (PowerSeries ℂ) (AlgebraicClosure (FractionRing (PowerSeries ℂ))) 3 hu (ZMod 3) inferInstance inferInstance ⟨1, by decide⟩ _ _ (𝟙 _) (𝟙 _) (𝟙 _) (Category.id_comp _) (SpecialPoint.closed _) (SpecialPoint.closed _) rfl (StrictLoc.ofStrictlyHenselian _) (StrictLoc.ofStrictlyHense …` as an intermediate fact. Discharge the goal by the elementary cases of `trivial`.
+-/
 example (H : SmoothNearbyCycles) (n : ℕ) : True := by
   letI := henselian_powerSeries_complex
   letI := isSepClosed_residueField_powerSeries_complex

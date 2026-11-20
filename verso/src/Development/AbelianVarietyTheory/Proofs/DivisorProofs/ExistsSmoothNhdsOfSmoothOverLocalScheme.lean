@@ -13,6 +13,17 @@ set_option backward.isDefEq.respectTransparency false
 
 namespace GlobalTheory.Desc
 
+/- English proof (translation)
+Introduce `R _ _ P p x V W hWV hV hW z hz hle`. Establish `: LocallyOfFinitePresentation (W.ι ≫ p)` using `inferInstance`. Establish `: Flat ((Sp R).fromSpecStalk x)` using `GlobalTheory.LocalRingGeneralisation.flat_fromSpecStalk _ x`. Establish `: SurjectiveOnStalks ((Sp R).fromSpecStalk x)` using `inferInstance`. Establish `e : W.ι ≫ p = P.homOfLE hWV ≫ V.ι ≫ p` using `by simp`.
+
+Establish `h1 : Smooth (Limits.pullback.snd (P.homOfLE hWV ≫ V.ι ≫ p) ((Sp R).fromSpecStalk x))`. Rewrite using `[← pullbackRightPullbackFstIso_inv_snd_snd]`. Use `infer_instance`. Establish `h2 : Smooth (Limits.pullback.snd (W.ι ≫ p) ((Sp R).fromSpecStalk x))`. Rewrite using `[e]`.
+
+Conclude with `h1`. Establish `hs : p z ⤳ x` using `(PrimeSpectrum.le_iff_specializes (R := R) _ _).1 hle`. Choose the witnesses or unpack the hypotheses as in `⟨y, hy⟩ : p z ∈ Set.range ((Sp R).fromSpecStalk x) := by`. Rewrite using `[Scheme.range_fromSpecStalk]`. Conclude with `hs`.
+
+Take `⟨w, hw, -⟩` from `Scheme.Pullback.exists_preimage_pullback (f := W.ι ≫ p) (g := (Sp R).fromSpecStalk x) (⟨z, hz⟩ : W) y hy.symm`. Establish `h3` using `GlobalTheory.GenSpread.mem_smoothLocus_of_isPullback (IsPullback.of_hasPullback (W.ι ≫ p) ((Sp R).fromSpecStalk x)) w`. Rewrite `h3` using `[hw]`. Establish `h4 : Smooth ((W.ι ≫ p).smoothLocus.ι ≫ W.ι ≫ p)` using `GlobalTheory.smooth_smoothLocus_ι_comp _`. Use `⟨W.ι ''ᵁ (W.ι ≫ p).smoothLocus, ⟨⟨z, hz⟩, h3, rfl⟩, W.ι_image_le _, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← Scheme.Hom.isoImage_inv_ι, Category.assoc, Category.assoc]`. Use `infer_instance`.
+-/
 theorem exists_smooth_nhds_of_smooth_fromSpecStalk :
     ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (P : Scheme.{0}) (p : P ⟶ Sp R) (x : Sp R) (V W : P.Opens), W ≤ V → Smooth (Limits.pullback.snd (V.ι ≫ p) ((Sp R).fromSpecStalk x)) → LocallyOfFiniteType (W.ι ≫ p) → ∀ z : P, z ∈ W → (p z).asIdeal ≤ x.asIdeal → ∃ W' : P.Opens, z ∈ W' ∧ W' ≤ W ∧ Smooth (W'.ι ≫ p) := by
   intro R _ _ P p x V W hWV hV hW z hz hle

@@ -11,16 +11,25 @@ namespace Formalism.L2.Ker
 
 open Formalism.BasicNotions Formalism.HermitianLatticesTheory Formalism.L2.DIV Formalism.L2.Col Formalism.L2.Th1.H Formalism.MainNotions
 
+/- English proof (translation)
+Unfold `rangeIF`. Rewrite using `[AlgHom.mem_fieldRange]`. Both sides reduce to the same expression.
+-/
 theorem mem_rangeIF {K : Type} [Field K] [NumberField K] (σ : K →+* ℂ) (z : ℂ) : z ∈ rangeIF σ ↔ ∃ k : K, σ k = z := by
   unfold rangeIF
   rw [AlgHom.mem_fieldRange]
   rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ`. Conclude with `RingHom.ext fun x => rfl`.
+-/
 theorem withK_embC {X : Fields} (A : Amb X) (M : IntermediateField ℚ ℂ) [NumberField M] [StarRing M] (hM : ∀ τ x, X.embC A.σ₀ τ x ∈ M) :
     (fieldsWithK X M fun τ => (X.embC A.σ₀ τ).codRestrict M (hM τ)).embC (A.withK M hM).σ₀ = X.embC A.σ₀ := by
   funext τ
   exact RingHom.ext fun x => rfl
 
+/- English proof (translation)
+Establish `h` using `withK_embC A M hM`. Unfold `Amb.thInd`. Rewrite using `[h]`. Both sides reduce to the same expression.
+-/
 theorem withK_thInd {X : Fields} (A : Amb X) (M : IntermediateField ℚ ℂ) [NumberField M] [StarRing M] (hM : ∀ τ x, X.embC A.σ₀ τ x ∈ M)
     {a b : ℕ} (Sall : Finset (HeightOneSpectrum (𝓞 X.E))) (N : Submodule (𝓞 X.E) (Sp X.E a)) (N' : Submodule (𝓞 X.E) (Sp X.E b)) (c : ℕ) (x : HomE X.E a b) :
     (A.withK M hM).thInd Sall N N' c x = A.thInd Sall N N' c x := by
@@ -29,8 +38,14 @@ theorem withK_thInd {X : Fields} (A : Amb X) (M : IntermediateField ℚ ℂ) [Nu
   rw [h]
   rfl
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ _ _ h N N' c x hr m _` and use `h N N' c x hr m`.
+-/
 theorem jets_rational_of_degree_form : JetsRatDegOf := fun _ _ _ _ _ _ _ h N N' c x hr m _ => h N N' c x hr m
 
+/- English proof (translation)
+Use function extensionality and compare the values at `y`. Unfold `evG`. Use `congr 1`. Conclude with `MvPolynomial.eval_map σ _ P`.
+-/
 theorem evG_id_map {K : Type} [Field K] {ι : Type} [Fintype ι] {a : ℕ} {Y : Type} (fr : Y → ι → Matrix (Fin a) (Fin a) ℂ) (sh : ι → ℤ) (σ : K →+* ℂ)
     (P : DIV.Pol K ι a) : evG fr sh (RingHom.id ℂ) (MvPolynomial.map σ P) = evG fr sh σ P := by
   funext y
@@ -44,6 +59,9 @@ open MvPolynomial Formalism.L2.DIV
 
 variable {K : Type} [Field K] {ι : Type} [Fintype ι] {a b : ℕ}
 
+/- English proof (translation)
+Establish `h : (s.prod fun i k => (C (u i ^ k) : MvPolynomial σ K)) = C (s.prod fun i k => u i ^ k)`. Simplify using `[Finsupp.prod, map_prod]`. Rewrite using `[aeval_monomial]`. Simplify using `only [mul_pow, Finsupp.prod_mul, ← C_pow]`. Rewrite using `[h, monomial_eq, C_mul, algebraMap_eq, mul_assoc]`.
+-/
 theorem aeval_scale_monomial {σ : Type} (u : σ → K) (s : σ →₀ ℕ) (c : K) :
     aeval (fun i => C (u i) * X i : σ → MvPolynomial σ K) (monomial s c) = monomial s (c * s.prod fun i k => u i ^ k) := by
   have h : (s.prod fun i k => (C (u i ^ k) : MvPolynomial σ K)) = C (s.prod fun i k => u i ^ k) := by
@@ -52,6 +70,11 @@ theorem aeval_scale_monomial {σ : Type} (u : σ → K) (s : σ →₀ ℕ) (c :
   simp only [mul_pow, Finsupp.prod_mul, ← C_pow]
   rw [h, monomial_eq, C_mul, algebraMap_eq, mul_assoc]
 
+/- English proof (translation)
+Proceed by induction on `R using MvPolynomial.induction_on' with`. Consider the case `monomial m c`. Rewrite using `[aeval_scale_monomial, coeff_monomial, coeff_monomial]`. Use `split_ifs with h`. Substitute `h` using the available equality.
+
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. Consider the case `add f g hf hg => rw [map_add, coeff_add, coeff_add, hf, hg, add_mul]`.
+-/
 theorem coeff_scale {σ : Type} (u : σ → K) (R : MvPolynomial σ K) (s : σ →₀ ℕ) :
     coeff s (aeval (fun i => C (u i) * X i : σ → MvPolynomial σ K) R) = coeff s R * s.prod fun i k => u i ^ k := by
   classical
@@ -64,6 +87,11 @@ theorem coeff_scale {σ : Type} (u : σ → K) (R : MvPolynomial σ K) (s : σ �
   | add f g hf hg => rw [map_add, coeff_add, coeff_add, hf, hg, add_mul]
 
 open Classical in
+/- English proof (translation)
+Unfold `degAt`. Rewrite using `[Finset.sum_filter]`. Use `Finset.sum_subset (Finset.subset_univ _) fun k _ hk => ?_` and prove the remaining obligations. Establish `: m k = 0` using `by simpa using hk`. Rewrite using `[this]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem degAt_eq (m : DVar ι a b →₀ ℕ) (τ : ι) : degAt m τ = ∑ k : DVar ι a b, if k.1 = τ then m k else 0 := by
   unfold degAt
   rw [Finset.sum_filter]
@@ -76,6 +104,9 @@ open Classical in
 def scU (a b : ℕ) (τ : ι) (x : K) : ((ι × Fin b × Fin b) ⊕ DVar ι a b) → K := Sum.elim (fun _ => 1) (fun k => if k.1 = τ then x else 1)
 
 open Classical in
+/- English proof (translation)
+Rewrite using `[Finsupp.prod_fintype _ _ (fun i => pow_zero _), Fintype.prod_sum_type, degAt_eq, ← Finset.prod_pow_eq_pow_sum]`. Simplify using `only [scU, Sum.elim_inl, Sum.elim_inr, one_pow, Finset.prod_const_one, one_mul, Finsupp.comapDomain_apply]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem scale_prod (τ : ι) (x : K) (s : ((ι × Fin b × Fin b) ⊕ DVar ι a b) →₀ ℕ) :
     (s.prod fun i k => scU a b τ x i ^ k) = x ^ degAt (s.comapDomain Sum.inr Sum.inr_injective.injOn) τ := by
   rw [Finsupp.prod_fintype _ _ (fun i => pow_zero _), Fintype.prod_sum_type, degAt_eq, ← Finset.prod_pow_eq_pow_sum]
@@ -88,6 +119,11 @@ open Classical in
 def bSc (a : ℕ) (τ : ι) (x : K) : ι → Matrix (Fin a) (Fin a) K := fun τ' => Matrix.diagonal fun _ => if τ' = τ then x else 1
 
 open Classical in
+/- English proof (translation)
+Introduce `τ'`. Use `⟨fun r s h => ?_, fun r => ?_⟩` and prove the remaining obligations. Simplify using `[bSc, (ne_of_gt h)]`. Simplify using `only [bSc, Matrix.diagonal_apply_eq] split_ifs`. Conclude with `hx`.
+
+Conclude with `one_ne_zero`.
+-/
 theorem isBor_bSc (τ : ι) {x : K} (hx : x ≠ 0) : IsBor (bSc a τ x) := by
   intro τ'
   refine ⟨fun r s h => ?_, fun r => ?_⟩
@@ -98,6 +134,11 @@ theorem isBor_bSc (τ : ι) {x : K} (hx : x ≠ 0) : IsBor (bSc a τ x) := by
     · exact one_ne_zero
 
 open Classical in
+/- English proof (translation)
+Simplify using `only [colSub, aeval_X, bSc, Matrix.diagonal_apply]`. Rewrite using `[Finset.sum_eq_single v.2.2]`. Simplify using the standard rewrite rules. Introduce `r _ hr`. Simplify using `[hr]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem colSub_bSc_X (τ : ι) (x : K) (v : ι × Fin a × Fin a) :
     colSub (bSc a τ x) (X v : Pol K ι a) = C (if v.1 = τ then x else 1) * X v := by
   simp only [colSub, aeval_X, bSc, Matrix.diagonal_apply]
@@ -108,6 +149,11 @@ theorem colSub_bSc_X (τ : ι) (x : K) (v : ι × Fin a × Fin a) :
   · simp
 
 open Classical in
+/- English proof (translation)
+Establish `e : (subD K ι a b).comp (colSub (bSc a τ x)) = (aeval (fun i => C (scU a b τ x i) * X i) : MvPolynomial ((ι × Fin b × Fin b) ⊕ DVar ι a b) K →ₐ[K] _).comp (subD K ι a b)`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `v`. Rewrite using `[AlgHom.comp_apply, AlgHom.comp_apply, colSub_bSc_X, map_mul]`. Simplify using `only [subD, aeval_X, aeval_C, algebraMap_eq]`.
+
+Distinguish the cases in `hb : v.2.2.1 < b`. Simplify using `only [dif_pos hb, map_sum, map_mul, aeval_X, scU, Sum.elim_inl, Sum.elim_inr, C_1, one_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun β _ => by ring`. Simplify using `only [dif_neg hb, mul_zero, map_zero]`. Conclude with `AlgHom.congr_fun e Q`.
+-/
 theorem subD_colSub_bSc (τ : ι) (x : K) (Q : Pol K ι a) :
     subD K ι a b (colSub (bSc a τ x) Q) = aeval (fun i => C (scU a b τ x i) * X i) (subD K ι a b Q) := by
   have e : (subD K ι a b).comp (colSub (bSc a τ x)) =
@@ -122,6 +168,9 @@ theorem subD_colSub_bSc (τ : ι) (x : K) (Q : Pol K ι a) :
     · simp only [dif_neg hb, mul_zero, map_zero]
   exact AlgHom.congr_fun e Q
 
+/- English proof (translation)
+Rewrite using `[R.as_sum, map_sum, map_sum]`. Use `Finset.sum_congr rfl fun s hs => ?_` and prove the remaining obligations. Rewrite using `[jetLin_monomial, jetLin_monomial, h s hs]`.
+-/
 theorem jetLin_congr (J J' : (DVar ι a b →₀ ℕ) → K) (R : MvPolynomial ((ι × Fin b × Fin b) ⊕ DVar ι a b) K)
     (h : ∀ s ∈ R.support, J (s.comapDomain Sum.inr Sum.inr_injective.injOn) = J' (s.comapDomain Sum.inr Sum.inr_injective.injOn)) :
     jetLin J R = jetLin J' R := by
@@ -129,6 +178,15 @@ theorem jetLin_congr (J J' : (DVar ι a b →₀ ℕ) → K) (R : MvPolynomial (
   refine Finset.sum_congr rfl fun s hs => ?_
   rw [jetLin_monomial, jetLin_monomial, h s hs]
 
+/- English proof (translation)
+Apply `pow_inj_of_infinite (K := K)` to reduce the goal to its premises. Introduce `x hx`. Establish `h1` using `hQ (bSc a τ x) (isBor_bSc τ hx)`. Establish `h2` using `subD_colSub_bSc (b := b) τ x Q`. Rewrite `h2` using `[h1, map_smul]`.
+
+Establish `h3` using `congrArg (coeff s) h2`. Rewrite `h3` using `[coeff_scale, scale_prod, coeff_smul, smul_eq_mul, mul_comm]`. Establish `hc : coeff s (subD K ι a b Q) ≠ 0` using `mem_support_iff.1 hs`. Establish `h4` using `mul_left_cancel₀ hc h3`. Rewrite using `[← h4]`.
+
+Establish `h5 : (∏ τ', ∏ r, bSc a τ x τ' r r ^ ν τ' r) = x ^ ∑ r, ν τ r`. Rewrite using `[Finset.prod_eq_single τ]`. Simplify using `[bSc, Finset.prod_pow_eq_pow_sum]`. Introduce `τ' _ hne`. Simplify using `[bSc, hne]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[h5]`.
+-/
 theorem deg_of_wt [Infinite K] {ν : ι → Fin a → ℕ} {Q : Pol K ι a} (hQ : Q ∈ WtPol K ν)
     (s : ((ι × Fin b × Fin b) ⊕ DVar ι a b) →₀ ℕ) (hs : s ∈ (subD K ι a b Q).support) (τ : ι) :
     degAt (s.comapDomain Sum.inr Sum.inr_injective.injOn) τ = ∑ r, ν τ r := by
@@ -151,6 +209,9 @@ theorem deg_of_wt [Infinite K] {ν : ι → Fin a → ℕ} {Q : Pol K ι a} (hQ 
     · simp
   rw [h5]
 
+/- English proof (translation)
+Introduce `K _ _ ι _ a b lam n J J' h P hP`. Establish `hQ` using `vv_in_weight K ι a lam n P hP`. Unfold `jetMap`. Simplify using `only [LinearMap.comp_apply, LinearMap.mulRight_apply, AlgHom.toLinearMap_apply]`. Conclude with `jetLin_congr J J' _ fun s hs => h _ fun τ => deg_of_wt hQ s hs τ`.
+-/
 theorem jet_local_rationality : JetLocal := by
   intro K _ _ ι _ a b lam n J J' h P hP
   have hQ := vv_in_weight K ι a lam n P hP

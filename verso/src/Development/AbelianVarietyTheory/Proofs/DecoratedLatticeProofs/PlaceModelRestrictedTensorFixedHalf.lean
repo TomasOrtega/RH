@@ -10,24 +10,51 @@ namespace GlobalTheory.FinPl.PutIn.Factor
 
 variable {D : D7}
 
+/- English proof (translation)
+Introduce `i j` and use `by have h := hx i j simp only [Matrix.smul_apply, nsmul_eq_mul] linear_combination (k : AE D) * h`.
+-/
 theorem half_nsmul {m n : ℕ} {e : AE D} {x : Mx D m n} (hx : IsHalf e x) (k : ℕ) : IsHalf e (k • x) := fun i j => by
   have h := hx i j
   simp only [Matrix.smul_apply, nsmul_eq_mul]
   linear_combination (k : AE D) * h
 
+/- English proof (translation)
+Take `⟨hsupp, k, hk, hinv, hfin⟩` from `hΨ`. Use `⟨hsupp, k, hk, fun u hu hub t => hinv u ((hΛ u hub).2 hu) hub t, fun t ht => ?_⟩` and prove the remaining obligations. Conclude with `(hΛ _ (half_nsmul (hsupp t ht) k)).1 (hfin t ht)`.
+-/
 theorem isSBHalf_of_half_eq {S T : HSp D} {b : AE D} {Λ Λ' : AddSubgroup (WO S T)} {Ψ : WO S T → ℂ}
     (hΛ : ∀ t, IsHalf b t → (t ∈ Λ' ↔ t ∈ Λ)) (hΨ : IsSBHalf b Λ' Ψ) : IsSBHalf b Λ Ψ := by
   obtain ⟨hsupp, k, hk, hinv, hfin⟩ := hΨ
   refine ⟨hsupp, k, hk, fun u hu hub t => hinv u ((hΛ u hub).2 hu) hub t, fun t ht => ?_⟩
   exact (hΛ _ (half_nsmul (hsupp t ht) k)).1 (hfin t ht)
 
+/- English proof (translation)
+Use extensionality with `i j`. Conclude with `hx i j`.
+-/
 theorem half_smul_self {m n : ℕ} {b : AE D} {x : Mx D m n} (hx : IsHalf b x) : b • x = x := by
   ext i j; exact hx i j
 
+/- English proof (translation)
+Introduce `i j` and use `by simp only [Matrix.smul_apply, smul_eq_mul] linear_combination (t i j) * hb`.
+-/
 theorem half_of_idem {m n : ℕ} {b : AE D} (hb : b * b = b) (t : Mx D m n) : IsHalf b (b • t) := fun i j => by
   simp only [Matrix.smul_apply, smul_eq_mul]
   linear_combination (t i j) * hb
 
+/- English proof (translation)
+Take `⟨sΦ, kΦ, hkΦ, iΦ, fΦ⟩` from `hΦ`. Take `⟨sΨ, kΨ, hkΨ, iΨ, fΨ⟩` from `hΨ`. Establish `hne : ∀ t, tens b Φ Ψ t ≠ 0 → Φ (t - b • t) ≠ 0 ∧ Ψ (b • t) ≠ 0` using `fun t ht => by`. Rewrite `ht` using `[tens_apply]`. Conclude with `⟨left_ne_zero_of_mul ht, right_ne_zero_of_mul ht⟩`.
+
+Use `⟨fun t ht => ?_, kΦ * kΨ, Nat.mul_pos hkΦ hkΨ, fun u hu hua t => ?_, fun t ht => ?_⟩` and prove the remaining obligations. Take `⟨h1, -⟩` from `hne t ht`. Introduce `i j`. Establish `h` using `sΦ _ h1 i j`. Simplify using `only [Matrix.sub_apply, Matrix.smul_apply, smul_eq_mul] at h`.
+
+Take the linear combination `h + (t i j) * hab`. Establish `hbu : b • u ∈ Λ` using `hbΛ u hu`. Establish `hsub : u - b • u ∈ Λ` using `Λ.sub_mem hu hbu`. Establish `hau : IsHalf a (u - b • u)` using `fun i j => by`. Establish `e1` using `hua i j`.
+
+Simplify using `only [Matrix.sub_apply, Matrix.smul_apply, smul_eq_mul]`. Take the linear combination `e1 - (u i j) * hab - (u i j) * hb + (u i j) * hb`. Establish `hA : (t + (kΦ * kΨ) • u) - b • (t + (kΦ * kΨ) • u) = (t - b • t) + kΦ • (kΨ • (u - b • u))`. Use extensionality with `i j`. Simplify using `only [Matrix.sub_apply, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, nsmul_eq_mul, Nat.cast_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hB : b • (t + (kΦ * kΨ) • u) = b • t + kΨ • (kΦ • (b • u))`. Use extensionality with `i j`. Simplify using `only [Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, nsmul_eq_mul, Nat.cast_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[tens_apply, tens_apply, hA, hB, iΦ _ (AddSubgroup.nsmul_mem Λ hsub kΨ) (half_nsmul hau kΨ), iΨ _ (AddSubgroup.nsmul_mem Λ hbu kΦ) (half_nsmul (half_of_idem hb u) kΦ)]`. Take `⟨h1, h2⟩` from `hne t ht`. Establish `hC : (kΦ * kΨ) • t = kΨ • (kΦ • (t - b • t)) + kΦ • (kΨ • (b • t))`. Use extensionality with `i j`. Simplify using `only [Matrix.sub_apply, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, nsmul_eq_mul, Nat.cast_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hC]`. Conclude with `Λ.add_mem (AddSubgroup.nsmul_mem Λ (fΦ _ h1) kΨ) (AddSubgroup.nsmul_mem Λ (fΨ _ h2) kΦ)`.
+-/
 theorem isSBHalf_tens {S T : HSp D} {a b : AE D} {Λ : AddSubgroup (WO S T)} {Φ Ψ : WO S T → ℂ}
     (hab : a * b = 0) (hb : b * b = b) (hbΛ : ∀ u ∈ Λ, b • u ∈ Λ) (hΦ : IsSBHalf a Λ Φ) (hΨ : IsSBHalf b Λ Ψ) :
     IsSBHalf (a + b) Λ (tens b Φ Ψ) := by
@@ -69,6 +96,21 @@ theorem isSBHalf_tens {S T : HSp D} {a b : AE D} {Λ : AddSubgroup (WO S T)} {Φ
 
 open GlobalTheory.LocMod.TensorModel in
 
+/- English proof (translation)
+Introduce `D ψ S T a b Λ Λ' Φ f₀ Tm hab hb hbΛ hΛ hΦ hP`. Use `⟨fun Ψ hΨ x hx => ?_, fun Ψ hΨ y hy => ?_, ?_⟩` and prove the remaining obligations. Establish `hΨ'` using `isSBHalf_of_half_eq hΛ hΨ`. Establish `key : tens b Φ (fun t => Ψ (t + x)) = fun t => tens b Φ Ψ (t + x)`. Use function extensionality and compare the values at `t`.
+
+Simplify using `only [tens_apply]`. Rewrite using `[smul_add, half_smul_self hx, add_sub_add_right_eq_sub]`. Simplify using `only [LinearMap.comp_apply, tensR_apply]`. Rewrite using `[key]`. Conclude with `hP.trans _ (isSBHalf_tens hab hb hbΛ hΦ hΨ') x (half_sum hab hx)`.
+
+Establish `hΨ'` using `isSBHalf_of_half_eq hΛ hΨ`. Establish `key : tens b Φ (fun t => ψ (symplO S T t y) * Ψ t) = fun t => ψ (symplO S T t y) * tens b Φ Ψ t`. Use function extensionality and compare the values at `t`. Simplify using `only [tens_apply]`. Distinguish the cases in `h0 : Φ (t - b • t) = 0`.
+
+Rewrite using `[h0]`. Expand and normalize the polynomial expressions, which then agree. Establish `e1 : symplO S T t y = symplO S T (t - b • t) y + symplO S T (b • t) y`. Rewrite using `[← symplO_add_left', sub_add_cancel]`. Rewrite using `[e1, symplO_half_zero hab (hΦ.1 _ h0) hy, zero_add]`.
+
+Expand and normalize the polynomial expressions, which then agree. Simplify using `only [LinearMap.comp_apply, tensR_apply]`. Rewrite using `[key]`. Conclude with `hP.modul _ (isSBHalf_tens hab hb hbΛ hΦ hΨ') y (half_sum_cA hab hy)`. Establish `hind : halfInd b Λ' = halfInd b Λ`.
+
+Use function extensionality and compare the values at `t`. Unfold `halfInd`. Establish `hiff : (t ∈ Λ' ∧ IsHalf b t) ↔ (t ∈ Λ ∧ IsHalf b t)` using `⟨fun h => ⟨(hΛ t h.2).1 h.1, h.2⟩, fun h => ⟨(hΛ t h.2).2 h.1, h.2⟩⟩`. Distinguish the cases in `h : t ∈ Λ ∧ IsHalf b t`. Rewrite using `[if_pos (hiff.2 h), if_pos h]`.
+
+Rewrite using `[if_neg (mt hiff.1 h), if_neg h]`. Rewrite using `[one_smul, hind]`. Both sides reduce to the same expression.
+-/
 theorem isPlaceModel_tensR : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (a b : AE D) (Λ Λ' : AddSubgroup (WO S T)) (Φ f₀ : WO S T → ℂ) (Tm : (WO S T → ℂ) →ₗ[ℂ] (WO S T → ℂ)), a * b = 0 → b * b = b → (∀ u ∈ Λ, b • u ∈ Λ) → (∀ t, IsHalf b t → (t ∈ Λ' ↔ t ∈ Λ)) → IsSBHalf a Λ Φ → IsPlaceModel ψ (symplO S T) (heisO ψ S T) (a + b) Λ 1 f₀ Tm → IsPlaceModel ψ (symplO S T) (heisO ψ S T) b Λ' 1 (Tm (GlobalTheory.FinPl.PutIn.tens b Φ (halfInd b Λ))) (Tm ∘ₗ GlobalTheory.FinPl.PutIn.tensR b Φ) := by
   intro D ψ S T a b Λ Λ' Φ f₀ Tm hab hb hbΛ hΛ hΦ hP
   refine ⟨fun Ψ hΨ x hx => ?_, fun Ψ hΨ y hy => ?_, ?_⟩

@@ -21,6 +21,23 @@ open Formalism.L2.DIV (kP Pl LevelP)
 
 namespace GlobalTheory.LevelIndex
 
+/- English proof (translation)
+Introduce `hLoc D G _ _ Pl0 T A Ks _ _ _ R F hPM`. Introduce `i t σ s P cμ cη m ω BW f₀ f c io hd`. Establish `hC : Hk3.Core R F` using `hd.1`. Take `⟨Hl, cl, hP⟩` from `hd.2.2.2.1`. Use `⟨?_, fun μ 𝓧 hμ => ?_⟩` and prove the remaining obligations.
+
+Take `⟨c0, hc0⟩` from `hC.lev.βV i`. Rewrite `hc0` using `[one_pow]`. Conclude with `GlobalTheory.T.level_le_stabilizer_selfDual_lattice_frame D (Vc D i) _ _ _ hc0`. Establish `hn` using `GlobalTheory.T.levelVector_squareNorm_eq_prod_localVolumes hLoc R F hPM i t σ s P cμ cη m ω BW f₀ f c io hd Hl cl hP μ 𝓧 hμ`. Rewrite using `[GlobalTheory.T.relIndex_level_selfDual_stabilizer_eq_prod_local R F i t P m Hl cl hC hP, hn]`.
+
+Take `⟨hdis, hinj, hsp⟩` from `GlobalTheory.T.levelAndTwistPlaces_split_distinct R F hC t`. Establish `hrank : (Vc D i).rank = D.R.nV` using `D.sp.V_rank _ (Nat.le_add_left _ _) i.2`. Establish `hrt : (Vc D i).rank = D.R.r + D.R.t` using `D.sp.V_rank _ (Nat.le_add_left _ _) i.2`. Establish `key : ∀ PP ∈ R.Pg ∪ R.Q t, (dLoc D (PP.under (𝓞 D.host.F)))⁻¹ = (Nat.card (GL (Fin (Vc D i).rank) (kP PP)) : ℝ) / ((Nat.card (GL (Fin D.R.t) (kP PP)) : ℝ) * (Nat.card (kP PP) : ℝ) ^ (D.R.r * D.R.t)) * ((Nat.card (kP PP) : ℝ) ^ (D.R.r ^ 2 + D.R.r * D.R.t))⁻¹`. Introduce `PP hPP`.
+
+Take `⟨h2, hq⟩` from `hsp PP hPP`. Use `haveI : Fact PP.asIdeal.IsMaximal := ⟨PP.isMaximal⟩`. Use `letI : Field (kP PP) := Ideal.Quotient.field _`. Rewrite using `[GlobalTheory.T.card_GL_div_parabolic_index_finiteField (kP PP) _ D.R.r D.R.t hrt, hrank]`. Unfold `dLoc quadTerm quadSign`.
+
+Rewrite using `[if_pos h2, ← Finset.prod_inv_distrib]`. Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[inv_inv, hq]`. Simplify using the standard rewrite rules. Establish `hcard : ∀ PP : Pl D.host.E, ∀ n : ℕ, (Nat.card (GL (Fin n) (kP PP)) : ℝ) ≠ 0` using `fun PP n => by`.
+
+Establish `: Finite (GL (Fin n) (kP PP))` using `inferInstance`. Conclude with `(Nat.card_pos (α := GL (Fin n) (kP PP))).ne'` after adjusting the coercions. Establish `hHl : ∀ PP, (Nat.card (Hl PP) : ℝ) ≠ 0` using `fun PP => by`. Conclude with `(Nat.card_pos (α := Hl PP)).ne'` after adjusting the coercions. Establish `hq0 : ∀ PP : Pl D.host.E, (Nat.card (kP PP) : ℝ) ≠ 0` using `fun PP => by`.
+
+Conclude with `(Nat.card_pos (α := kP PP)).ne'` after adjusting the coercions. Unfold `finS`. Rewrite using `[Finset.prod_image hinj, Finset.prod_union hdis, ← Finset.prod_attach R.Pg, mul_mul_mul_comm, ← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]`. Use `congr 1`. Use `Finset.prod_congr rfl fun PP _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[key PP.1 (Finset.mem_union_left _ PP.2)]`. Clear denominators, using `[hHl PP, hcard PP.1, hq0 PP.1]` for the nonvanishing conditions. Use `Finset.prod_congr rfl fun PP hPP => ?_` and prove the remaining obligations. Rewrite using `[key PP (Finset.mem_union_right _ hPP)]`. Clear denominators, using `[hcard PP, hq0 PP]` for the nonvanishing conditions.
+-/
 theorem levelIndexNormC : GlobalTheory.IndefiniteRowSideFullHecke.LocalIntegralGL.LocalIntegralSingleBlock → ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting.PlaceModels D → LevelIndexNormC R F := by
   intro hLoc D G _ _ Pl0 T A Ks _ _ _ R F hPM
   intro i t σ s P cμ cη m ω BW f₀ f c io hd

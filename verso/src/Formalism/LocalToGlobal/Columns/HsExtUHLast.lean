@@ -15,6 +15,11 @@ section Gen
 
 variable {E : Type} [Field E] [NumberField E] [StarRing E]
 
+/- English proof (translation)
+Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `x`. Use function extensionality and compare the values at `j`. Rewrite using `[padL_apply]`. Use `Fin.lastCases ?_ (fun i => ?_) j` and prove the remaining obligations.
+
+Simplify using `[incl]`. Simplify using `[incl]`.
+-/
 theorem hs_padL_succ (n : ℕ) : padL E n (n + 1) = incl E n := by
   apply LinearMap.ext
   intro x
@@ -24,6 +29,11 @@ theorem hs_padL_succ (n : ℕ) : padL E n (n + 1) = incl E n := by
   · simp [incl]
   · simp [incl]
 
+/- English proof (translation)
+Substitute `hN` using the available equality. Rewrite using `[hs_padL_succ]`. Use `show extE g.1 (incl E n x) = incl E n (g.1 x)`. Apply `sp_ext` to reduce the goal to its premises. Rewrite using `[initL_extE, initL_incl, initL_incl]`.
+
+Rewrite using `[extE_last]`. Simplify using `[incl]`.
+-/
 theorem hs_extUH_pad {N n : ℕ} (hN : N = n + 1) (g : UF E n) (x : Fin n → E) :
     (extUH hN g).1 (padL E n N x) = padL E n N (g.1 x) := by
   subst hN
@@ -34,6 +44,11 @@ theorem hs_extUH_pad {N n : ℕ} (hN : N = n + 1) (g : UF E n) (x : Fin n → E)
   · rw [extE_last]
     simp [incl]
 
+/- English proof (translation)
+Substitute `hN` using the available equality. Rewrite using `[← lastVector_eq_single]`. Use `show extE g.1 (z0 E n p) = z0 E n p`. Apply `sp_ext` to reduce the goal to its premises. Rewrite using `[initL_extE]`.
+
+Simplify using `[z0]`. Rewrite using `[extE_last]`.
+-/
 theorem hs_extUH_last {N n : ℕ} (hN : N = n + 1) [NeZero N] (g : UF E n) (p : E) :
     (extUH hN g).1 (Pi.single (lastIdx N) p) = Pi.single (lastIdx N) p := by
   subst hN
@@ -44,11 +59,19 @@ theorem hs_extUH_last {N n : ℕ} (hN : N = n + 1) [NeZero N] (g : UF E n) (p : 
     simp [z0]
   · rw [extE_last]
 
+/- English proof (translation)
+Rewrite using `[inv_inv]`. Use `show g.1 (g.1.symm (e.1 (g.1 (g.1.symm w)))) = e.1 w`. Rewrite using `[LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply]`.
+-/
 theorem hs_conj {N : ℕ} (g e : UF E N) (w : Sp E N) : g.1 ((g⁻¹ * e * g⁻¹⁻¹).1 (g.1.symm w)) = e.1 w := by
   rw [inv_inv]
   show g.1 (g.1.symm (e.1 (g.1 (g.1.symm w)))) = e.1 w
   rw [LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply]
 
+/- English proof (translation)
+Establish `hγs : ∀ y, e (γ.symm y) = g₀.1.symm (e y)` using `fun y => by`. Rewrite using `[LinearEquiv.eq_symm_apply, ← hγ, LinearEquiv.apply_symm_apply]`. Prove the components needed by the constructor for the conclusion. Introduce `x`. Apply `e.injective` to reduce the goal to its premises.
+
+Rewrite using `[hγ, hM, hγs, hs_conj, hι, hs_extUH_pad, hι, hSs]`. Apply `e.injective` to reduce the goal to its premises. Rewrite using `[hγ, hM, hγs, hs_conj, hz, hs_extUH_last]`.
+-/
 theorem hs_core {V V' : Type} [AddCommGroup V] [Module E V] [AddCommGroup V'] [Module E V'] {N n : ℕ} (hN : N = n + 1) [NeZero N]
     (e : V ≃ₗ[E] (Fin N → E)) (e' : V' ≃ₗ[E] (Fin n → E)) (ι : V' →ₗ[E] V) (hι : ∀ x, e (ι x) = padL E n N (e' x))
     (γ M : V ≃ₗ[E] V) (S : V' ≃ₗ[E] V') (g₀ : UF E N) (s : UF E n)
@@ -66,6 +89,9 @@ theorem hs_core {V V' : Type} [AddCommGroup V] [Module E V] [AddCommGroup V'] [M
 
 variable {F : Type} [Field F] [NumberField F] [Algebra F E]
 
+/- English proof (translation)
+Establish `h1` using `hq_reGL_mulVec b h ((Formalism.L2.Herm.toGLb b).symm g) x`. Rewrite `h1` using `[MulEquiv.apply_symm_apply, hg, ← rlc_ratHom_apply hc n]`. Establish `h2 : ratHom hc n ((ratEquiv hc n).symm t) = t` using `(ratEquiv hc n).apply_symm_apply t`. Rewrite `h1` using `[h2]`. Conclude with `h1.symm`.
+-/
 theorem hs_stab_crd (hc : CMData F E) {V : Type} [AddCommGroup V] [Module E V] {n' n : ℕ} [NeZero n] (b : Basis (Fin n') E V) (h : n' = n)
     (g : GL (Fin n') E) (t : UF E n) (hg : Formalism.L2.Forms.reGL h E g = ((ratEquiv hc n).symm t).1) (x : V) :
     hqCrd b h ((Formalism.L2.Herm.toGLb b).symm g x) = t.1 (hqCrd b h x) := by
@@ -83,6 +109,9 @@ variable {X : Fields} {Pr : Primes X} (hc : CMData X.F X.E) (hX : X.Ok) (hPr : P
   {n : ℕ} [NeZero n] (Λ : LevFam X.E X.K n Pr.vGs)
   (c₀ : DiaG X.E (Pr.vT u)) (s : DecoCl n (Pr.vT u) Pr.vGs Λ.grp → DecoSet X.E n (Pr.vT u) Pr.vGs)
 
+/- English proof (translation)
+Take `⟨n', hn, J, rfl, f, rfl, bad, rfl, lat, hlat⟩` from `H`. Substitute `hn` using the available equality. Take `rfl : lat = fun c => (s c).1.L` from `funext fun c => (hlat c).trans (Formalism.L2.Forms.reL_rfl _)`. Conclude with `Formalism.L2.Forms.reGL_rfl _ _`.
+-/
 theorem levPack_stabI (hS : DecoPtSurj hc n (Pr.vT u) Pr.vGs) (hs : ∀ c, decoCls n (Pr.vT u) Pr.vGs Λ.grp (s c) = c)
     (hK : LocalLevelIsKOneAtT hc u Λ) (H : HCrd Pr n fun c => (s c).1.L) (c : DecoCl n (Pr.vT u) Pr.vGs Λ.grp)
     (t : MulAction.stabilizer (UF X.E n × Λ.grp) (s c)) :
@@ -101,12 +130,18 @@ variable {d : ColDat} (a : ColArgs d) (hS : SpStd d.toColBase) (hH : HostHyp d) 
 
 include hS in
 
+/- English proof (translation)
+Rewrite using `[← iXc_eq a hS]`. Use `show _ = CF.crdN (d.colRec a) d.R.m le_rfl (d.sp.iX' ((CF.crdP (d.colRec a)).symm (CF.crdP (d.colRec a) x)))`. Rewrite using `[LinearEquiv.symm_apply_apply]`.
+-/
 theorem hs_iX (x : d.sp.X'.V) :
     CF.crdN (d.colRec a) d.R.m le_rfl (d.sp.iX' x) = padL d.host.E (d.R.N d.R.m - 1) (d.R.N d.R.m) (CF.crdP (d.colRec a) x) := by
   rw [← iXc_eq a hS]
   show _ = CF.crdN (d.colRec a) d.R.m le_rfl (d.sp.iX' ((CF.crdP (d.colRec a)).symm (CF.crdP (d.colRec a) x)))
   rw [LinearEquiv.symm_apply_apply]
 
+/- English proof (translation)
+The claim follows from `(hqG_crd d.R.m le_rfl ((tildeLatticeAgreement a hS hH hP u).ga c) x).trans (tilGa_mulVec u c _)`.
+-/
 theorem hs_tilG (u : d.what₂.Word) (c : PCl d) (x : (d.sp.X d.R.m).V) :
     CF.crdN (d.colRec a) d.R.m le_rfl (((levelExponentAtT a hS hH hP u).tilG c).1 x) =
       (d.tilMv u c).1.1 (CF.crdN (d.colRec a) d.R.m le_rfl x) :=
@@ -114,6 +149,9 @@ theorem hs_tilG (u : d.what₂.Word) (c : PCl d) (x : (d.sp.X d.R.m).V) :
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Introduce `u h1 c s`. Conclude with `hs_core (E := d.X.E) (N_m_succ d.R) (CF.crdN (d.colRec a) d.R.m le_rfl) (CF.crdP (d.colRec a)) d.sp.iX' (hs_iX a hS) ((levelExponentAtT a hS hH hP u).tilG c).1 _ _ (d.tilMv u c).1 s.1.1 (hs_tilG a hS hH hP u c) (fun x => hs_stab_crd d.sp.cm (d.sp.X d.R.m).frame (CF.rankN (d.colRe …`.
+-/
 theorem stabMapTied (disc : ∀ u, AtTDisc (d.colRec a) u)
     (moves : ∀ u, AtTMoves (atTTied a hH u) (fun i hi => levelAgreement a hS hH u i hi)) :
     CH.StabMapTied (d.colRec a) (hermCols a hS hQ hK S hI) (hermAtT a hS hH ⟨disc, moves, levelExponentAtT a hS hH hP⟩) := by

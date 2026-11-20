@@ -16,6 +16,9 @@ open PI.SelfDualLoc
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Simplify using `only [hform, Matrix.map_apply, sigR_inclE, map_sum, map_mul]`. Both sides reduce to the same expression.
+-/
 theorem hform_incl {n : ℕ} (σ : E →ₐ[F] E) (J : Matrix (Fin n) (Fin n) E)
     (v : HeightOneSpectrum (𝓞 F)) (a b : Fin n → E) :
     hform (sigR σ (v.adicCompletion F)) (J.map (inclE (F := F) (v.adicCompletion F)))
@@ -25,36 +28,65 @@ theorem hform_incl {n : ℕ} (σ : E →ₐ[F] E) (J : Matrix (Fin n) (Fin n) E)
   simp only [hform, Matrix.map_apply, sigR_inclE, map_sum, map_mul]
   rfl
 
+/- English proof (translation)
+Simplify using `only [hform, Pi.add_apply, map_add, add_mul, Finset.sum_add_distrib]`.
+-/
 private theorem hform_add_left_self_dual_local_basis {A : Type} [CommRing A] {m : ℕ} (σ : A →+* A)
     (J : Matrix (Fin m) (Fin m) A) (x x' y : Fin m → A) :
     hform σ J (x + x') y = hform σ J x y + hform σ J x' y := by
   simp only [hform, Pi.add_apply, map_add, add_mul, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Simplify using `only [hform, Pi.add_apply, mul_add, Finset.sum_add_distrib]`.
+-/
 private theorem hform_add_right_self_dual_local_basis {A : Type} [CommRing A] {m : ℕ} (σ : A →+* A)
     (J : Matrix (Fin m) (Fin m) A) (x y y' : Fin m → A) :
     hform σ J x (y + y') = hform σ J x y + hform σ J x y' := by
   simp only [hform, Pi.add_apply, mul_add, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Simplify using `only [hform, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`.
+-/
 private theorem hform_smul_left_self_dual_local_basis {A : Type} [CommRing A] {m : ℕ} (σ : A →+* A)
     (J : Matrix (Fin m) (Fin m) A) (c : A) (x y : Fin m → A) :
     hform σ J (c • x) y = σ c * hform σ J x y := by
   simp only [hform, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]
   exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
 
+/- English proof (translation)
+Simplify using `only [hform, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`.
+-/
 private theorem hform_smul_right_self_dual_local_basis {A : Type} [CommRing A] {m : ℕ} (σ : A →+* A)
     (J : Matrix (Fin m) (Fin m) A) (c : A) (x y : Fin m → A) :
     hform σ J x (c • y) = c * hform σ J x y := by
   simp only [hform, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]
   exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
 
+/- English proof (translation)
+Simplify using `[hform]`.
+-/
 private theorem hform_zero_left' {A : Type} [CommRing A] {m : ℕ} (σ : A →+* A)
     (J : Matrix (Fin m) (Fin m) A) (y : Fin m → A) : hform σ J 0 y = 0 := by
   simp [hform]
 
+/- English proof (translation)
+Simplify using `[hform]`.
+-/
 private theorem hform_zero_right' {A : Type} [CommRing A] {m : ℕ} (σ : A →+* A)
     (J : Matrix (Fin m) (Fin m) A) (x : Fin m → A) : hform σ J x 0 = 0 := by
   simp [hform]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ n σ J v Lb hLb y hy z hz`. Unfold `hloc`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy'`. Take `⟨b, hb, rfl⟩` from `hy'`.
+
+Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem z hz'`. Take `⟨a, ha, rfl⟩` from `hz'`. Simplify using `only`. Rewrite using `[hform_incl]`.
+
+Conclude with `inclE_mem_Oloc v (hLb a ha b hb)`. Consider the case `zero => rw [hform_zero_left']`. Conclude with `zero_mem _`. Consider the case `add z z' _ _ h1 h2 => rw [hform_add_left_self_dual_local_basis]`. Conclude with `add_mem h1 h2`.
+
+Consider the case `smul c z _ h`. Rewrite using `[Subring.smul_def, hform_smul_left_self_dual_local_basis]`. Conclude with `mul_mem (hS F E σ v c c.2) h`. Consider the case `zero => rw [hform_zero_right']`. Conclude with `zero_mem _`.
+
+Consider the case `add y y' _ _ h1 h2 => rw [hform_add_right_self_dual_local_basis]`. Conclude with `add_mem h1 h2`. Consider the case `smul c y _ h`. Rewrite using `[Subring.smul_def, hform_smul_right_self_dual_local_basis]`. Conclude with `mul_mem c.2 h`.
+-/
 theorem fwdDir_of (hS : SigInt) : FwdDir := by
   intro F E _ _ _ _ _ n σ J v Lb hLb y hy z hz
   unfold hloc
@@ -78,6 +110,9 @@ theorem fwdDir_of (hS : SigInt) : FwdDir := by
     rw [Subring.smul_def, hform_smul_right_self_dual_local_basis]
     exact mul_mem c.2 h
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [hform_zero_left']`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, hform_add_left_self_dual_local_basis, hform_smul_left_self_dual_local_basis, ih]`.
+-/
 private theorem hform_finset_sum_smul_left {A : Type} [CommRing A] {m : ℕ} (σ : A →+* A)
     (J : Matrix (Fin m) (Fin m) A) {ι : Type*} (s : Finset ι) (c : ι → A) (x : ι → Fin m → A)
     (y : Fin m → A) :
@@ -88,6 +123,9 @@ private theorem hform_finset_sum_smul_left {A : Type} [CommRing A] {m : ℕ} (σ
   | insert a s ha ih =>
     rw [Finset.sum_insert ha, Finset.sum_insert ha, hform_add_left_self_dual_local_basis, hform_smul_left_self_dual_local_basis, ih]
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [hform_zero_right']`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, hform_add_right_self_dual_local_basis, hform_smul_right_self_dual_local_basis, ih]`.
+-/
 private theorem hform_finset_sum_smul_right {A : Type} [CommRing A] {m : ℕ} (σ : A →+* A)
     (J : Matrix (Fin m) (Fin m) A) {ι : Type*} (s : Finset ι) (c : ι → A) (x : Fin m → A)
     (y : ι → Fin m → A) :
@@ -98,6 +136,45 @@ private theorem hform_finset_sum_smul_right {A : Type} [CommRing A] {m : ℕ} (�
   | insert a s ha ih =>
     rw [Finset.sum_insert ha, Finset.sum_insert ha, hform_add_right_self_dual_local_basis, hform_smul_right_self_dual_local_basis, ih]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ n σ J v Lb T hfin hLb hdual hT y hy`. Establish `hT0 : T ≠ 0`. Introduce and unpack `rfl`. Conclude with `hT (by simp)`. Establish `hspan` using `hSp F E n σ J Lb T hfin hdual hT0`.
+
+Take `⟨x, s, hs, hxL, hxs⟩` from `hL F E n v Lb hfin hspan`. Establish `hs0 : s ≠ 0` using `fun h => hs (h ▸ zero_mem _)`. Use `set sE : E := algebraMap F E (s : F) with hsE`. Establish `hsE0 : sE ≠ 0`. Rewrite using `[hsE, ne_eq, map_eq_zero_iff _ (algebraMap F E).injective]`.
+
+Conclude with `fun h => hs0 (RingOfIntegers.coe_eq_zero_iff.mp h)`. Establish `hσs : (σ : E →+* E) sE = sE` using `σ.commutes _`. Establish `hσint : ∀ a : 𝓞 E, (σ : E →+* E) (a : E) ∈ intOE E` using `fun a => ⟨⟨σ (a : E), by`. Rewrite using `[mem_integralClosure_iff]`. Conclude with `(RingOfIntegers.isIntegral_coe a).map σ.toRingHom.toIntAlgHom⟩,`.
+
+Use the proof step `RingOfIntegers.map_mk _ _⟩`. Establish `hspanx : Submodule.span E (Set.range x) = ⊤`. Rewrite using `[eq_top_iff, ← hspan, Submodule.span_le]`. Introduce `z hz`. Take `⟨a, ha⟩` from `hxs z hz`.
+
+Establish `h1 : sE • z ∈ Submodule.span E (Set.range x)`. Rewrite using `[ha]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Establish `h2` using `Submodule.smul_mem _ sE⁻¹ h1`. Rewrite `h2` using `[smul_smul, inv_mul_cancel₀ hsE0, one_smul]`. Then use the resulting hypothesis.
+
+Establish `hpair : ∀ z ∈ Lb, ∀ w : Fin n → E, ∃ a : Fin n → 𝓞 E, sE * hform (σ : E →+* E) J z w = ∑ i, (σ : E →+* E) ((a i : 𝓞 E) : E) * hform (σ : E →+* E) J (x i) w`. Introduce `z hz w`. Take `⟨a, ha⟩` from `hxs z hz`. Use `⟨a, ?_⟩` and prove the remaining obligations. Rewrite using `[← hσs, ← hform_smul_left_self_dual_local_basis, ha, hform_finset_sum_smul_left]`.
+
+Establish `hnondx : ∀ w : Fin n → E, (∀ i, hform (σ : E →+* E) J (x i) w = 0) → w = 0`. Introduce `w hw`. Use `hN F E n σ J Lb T hfin hdual hT0 w fun z hz => ?_` and prove the remaining obligations. Take `⟨a, ha⟩` from `hpair z hz w`. Simplify using `only [hw, mul_zero, Finset.sum_const_zero] at ha`.
+
+Conclude with `(mul_eq_zero.mp ha).resolve_left hsE0`. Take `⟨yd, hyd, hydspan⟩` from `hD F E n σ J x hspanx hnondx`. Establish `hTs : ∀ j, (T : E) • (sE • yd j) ∈ Lb`. Introduce `j`. Use `hdual _ fun z hz => ?_` and prove the remaining obligations.
+
+Take `⟨a, ha⟩` from `hpair z hz (yd j)`. Rewrite using `[hform_smul_right_self_dual_local_basis, ha]`. Simplify using `only [hyd, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Conclude with `hσint (a j)`. Use `set w : Fin n → Fin n → E ⊗[F] v.adicCompletion F := fun j k => inclE (F := F) (v.adicCompletion F) (yd j k) with hw`.
+
+Establish `hTsv : (T * s : 𝓞 F) ∉ v.asIdeal` using `fun h => (v.isPrime.mem_or_mem h).elim hT hs`. Take `⟨u, hu, hu1⟩` from `hU F E v (T * s) hTsv`. Establish `hwmem : ∀ j, w j ∈ Lloc F E n v Lb`. Introduce `j`. Establish `hg : (fun k => inclE (F` using `F) (v.adicCompletion F) (((T : E) • (sE • yd j)) k)) ∈ Lloc F E n v Lb := Submodule.subset_span ⟨_, hTs j, rfl⟩`.
+
+Establish `h2` using `Submodule.smul_mem (Lloc F E n v Lb) (⟨u, hu⟩ : Oloc F E v) hg`. Use `h2 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `k`. Rewrite using `[Subring.smul_def, Pi.smul_apply, smul_eq_mul]`. Simplify using `only [Pi.smul_apply, smul_eq_mul, map_mul, hw]`.
+
+Establish `e : inclE (F` using `F) (v.adicCompletion F) (T : E) * inclE (F := F) (v.adicCompletion F) sE * u = 1 := by`. Rewrite using `[← hu1]`. Simplify using `only [map_mul, map_natCast, hsE]`. Take the linear combination `(-inclE (F := F) (v.adicCompletion F) (yd j k)) * e`. Use `choose d hd using fun k => hydspan (Pi.single k 1)`.
+
+Use `set c : Fin n → E ⊗[F] v.adicCompletion F := fun j => ∑ k, y k * inclE (F := F) (v.adicCompletion F) (d k j) with hc`. Establish `hyc : y = ∑ j, c j • w j`. Use function extensionality and compare the values at `l`. Establish `hl : ∀ k, inclE (F` using `F) (v.adicCompletion F) ((Pi.single k (1 : E) : Fin n → E) l) = ∑ j, inclE (F := F) (v.adicCompletion F) (d k j) * inclE (F := F) (v.adicCompletion F) (yd j l) := by`. Introduce `k`.
+
+Use `conv_lhs => rw [hd k]`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, map_sum, map_mul]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `[Pi.single_apply]`. Use `_ = ∑ k, ∑ j, y k * inclE (F := F) (v.adicCompletion F) (d k j) * inclE (F := F) (v.adicCompletion F) (yd j l) := by`.
+
+Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[hl k, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => by ring`. Use `_ = (∑ j, c j • w j) l := by`. Rewrite using `[Finset.sum_comm]`.
+
+Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, hc, hw, Finset.sum_mul]`. Establish `hcint : ∀ i, c i ∈ Oloc F E v`. Introduce `i`. Establish `hxi : (fun k => inclE (F` using `F) (v.adicCompletion F) (x i k)) ∈ Lloc F E n v Lb := Submodule.subset_span ⟨_, hxL i, rfl⟩`. Establish `h` using `hy _ hxi`.
+
+Unfold `hloc at h`. Rewrite `h` using `[hyc, hform_finset_sum_smul_right]`. Establish `h' : ∀ j, hform (sigR σ (v.adicCompletion F)) (J.map (inclE (F` using `F) (v.adicCompletion F))) (fun k => inclE (F := F) (v.adicCompletion F) (x i k)) (w j) = if i = j then 1 else 0 := by`. Introduce `j`. Rewrite using `[hw]`.
+
+Simplify using `only`. Rewrite using `[hform_incl, hyd]`. Apply the tactic sequence `split_ifs <;> simp`. Simplify using `only [h', mul_ite, mul_one, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true] at h`. Conclude with `h`.
+
+Rewrite using `[hyc]`. Conclude with `Submodule.sum_mem _ fun j _ => by`. Use `Submodule.smul_mem (Lloc F E n v Lb) (⟨c j, hcint j⟩ : Oloc F E v) (hwmem j)` as an intermediate fact. Simplify `this` using `[Subring.smul_def]`.
+-/
 theorem bwdDir_of (hN : Nondeg) (hSp : SpanTop) (hL : LocBasis) (hD : DualBasis)
     (hU : UnitLoc) : BwdDir := by
   intro F E _ _ _ _ _ n σ J v Lb T hfin hLb hdual hT y hy
@@ -217,6 +294,9 @@ theorem bwdDir_of (hN : Nondeg) (hSp : SpanTop) (hL : LocBasis) (hD : DualBasis)
     have := Submodule.smul_mem (Lloc F E n v Lb) (⟨c j, hcint j⟩ : Oloc F E v) (hwmem j)
     simpa [Subring.smul_def] using this
 
+/- English proof (translation)
+The claim follows from `selfDualLoc_of_dirs (fwdDir_of hS) (bwdDir_of hN hSp hL hD hU)`.
+-/
 theorem selfDualLoc_of (hS : SigInt) (hN : Nondeg) (hSp : SpanTop) (hL : LocBasis)
     (hD : DualBasis) (hU : UnitLoc) : PI.SelfDualLoc :=
   selfDualLoc_of_dirs (fwdDir_of hS) (bwdDir_of hN hSp hL hD hU)

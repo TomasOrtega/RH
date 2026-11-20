@@ -2,6 +2,17 @@ import Mathlib
 
 namespace GlobalTheory.PrimeDvdNatCastMem
 
+/- English proof (translation)
+Proceed by induction on `m using Nat.strong_induction_on with`. Consider the case `_ m ih`. Introduce `hm0 hm`. Distinguish the cases in `h1 : m = 1`. Substitute `h1` using the available equality.
+
+Conclude with `absurd ((Ideal.eq_top_iff_one P).2 (by simpa using hm)) hP.ne_top`. Take `⟨q, hq, k, hk⟩` from `Nat.exists_prime_and_dvd h1`. Establish `hk0 : k ≠ 0`. Introduce and unpack `rfl`. Conclude with `hm0 (by simpa using hk)`.
+
+Establish `hmul : (q : O) * (k : O) ∈ P`. Use `hm` as an intermediate fact. Rewrite `this` using `[hk, Nat.cast_mul]`. Conclude with `this`. Break down `hP.mem_or_mem hmul with h | h` into its components or cases.
+
+Conclude with `⟨q, hq, ⟨k, hk⟩, h⟩`. Establish `hlt : k < m`. Establish `h2` using `hq.two_le`. Establish `h3 : 0 < k` using `Nat.pos_of_ne_zero hk0`. Rewrite using `[hk]`.
+
+Use the polynomial consequences of the given equalities and inequalities. Take `⟨p, hp, hpk, hpP⟩` from `ih k hlt hk0 h`. Conclude with `⟨p, hp, hk ▸ Dvd.dvd.mul_left hpk q, hpP⟩`.
+-/
 theorem exists_prime_dvd_natCast_mem {O : Type} [CommRing O] (P : Ideal O) [hP : Ideal.IsPrime P]
     (m : ℕ) : m ≠ (0 : ℕ) → (↑m : O) ∈ P → ∃ (p : ℕ), Nat.Prime p ∧ p ∣ m ∧ (↑p : O) ∈ P := by
   induction m using Nat.strong_induction_on with

@@ -11,6 +11,9 @@ open Formalism.MainNotions.G.WittFrameLocaliserOrders Formalism.MainNotions.G.sy
 
 variable {n' r : ℕ} [NeZero n'] (Fr : Frames n' r) {L₁ N₁ : ℕ} {J : ℕ} [NeZero J] {nL : ZMod J → ℕ}
 
+/- English proof (translation)
+Establish `hm : y ∈ (Fr.LLset j).sort (· ≤ ·)` using `(Finset.mem_sort _).mpr hy`. Take `⟨i, hi, hiy⟩` from `List.mem_iff_getElem.mp hm`. Use `⟨i, by rwa [Finset.length_sort] at hi, ?_⟩` and prove the remaining obligations. Unfold `Formalism.MainNotions.TestSideWords.llPos`. Rewrite using `[List.getD_eq_getElem _ _ hi, hiy]`.
+-/
 theorem llPos_surj (j y : ℤ) (hy : y ∈ Fr.LLset j) : ∃ l, l < (Fr.LLset j).card ∧ llPos Fr j l = y := by
   have hm : y ∈ (Fr.LLset j).sort (· ≤ ·) := (Finset.mem_sort _).mpr hy
   obtain ⟨i, hi, hiy⟩ := List.mem_iff_getElem.mp hm
@@ -18,6 +21,27 @@ theorem llPos_surj (j y : ℤ) (hy : y ∈ Fr.LLset j) : ∃ l, l < (Fr.LLset j)
   unfold Formalism.MainNotions.TestSideWords.llPos
   rw [List.getD_eq_getElem _ _ hi, hiy]
 
+/- English proof (translation)
+Establish `hper : Fr.fr ((Fr.J : ℤ) - 1) (r - 1) = Fr.fr (-1) (r - 1) + n'`. Use `hV.2.1 (-1) (r - 1)` as an intermediate fact. Rewrite using `[← this]`. Use `congr 1`. Use `set c : ℤ := Fr.fr (-1) (r - 1) + 1 with hc`.
+
+Establish `hn0 : (0 : ℤ) < n'` using `by exact_mod_cast NeZero.pos n'`. Establish `b1` using `Int.emod_nonneg ((s.val : ℤ) - c) hn0.ne'`. Establish `b2` using `Int.emod_lt_of_pos ((s.val : ℤ) - c) hn0`. Establish `b3` using `Int.emod_def ((s.val : ℤ) - c) n'`. Establish `hx0 : c + ((s.val : ℤ) - c) % n' = (s.val : ℤ) + n' * (-(((s.val : ℤ) - c) / n'))`.
+
+Rewrite using `[b3]`. Expand and normalize the polynomial expressions, which then agree. Establish `hp : posOf n' (c + ((s.val : ℤ) - c) % n') = s`. Rewrite using `[hx0, posOf_add_mul_alt, posOf_natCast_self]`. Use `set y : ℤ := c + ((s.val : ℤ) - c) % n' with hy`.
+
+Establish `hyT : posOf n' y ∈ Fr.TT` using `by rw [hp]; exact hs`. Take `⟨j, h1, h2⟩` from `mn_cover Fr L₁ N₁ hV hr y hyT`. Establish `h3 : y ∈ nonW Fr j`. Unfold `nonW`. Rewrite using `[Finset.mem_filter]`.
+
+Conclude with `⟨h1, h2⟩`. Establish `h4` using `(ph_mem_nonW Fr hV hr _ _).1 h3`. Establish `j0 : 0 ≤ j`. Assume the negation of the conclusion as `h`. Use `ph_z_mono Fr hV hr (j := j) (j' := -1) (by omega)` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Establish `j1 : j < Fr.J`. Assume the negation of the conclusion as `h`. Use `ph_z_mono Fr hV hr (j := (Fr.J : ℤ) - 1) (j' := j - 1) (by omega)` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+
+Use `set jj : ZMod J := (j.toNat : ZMod J) with hjj`. Establish `hseg : segZ jj = j`. Unfold `segZ`. Rewrite using `[hjj, ZMod.val_natCast_of_lt (by rw [hJ]; omega)]`. Use linear arithmetic over natural numbers and integers.
+
+Break down `lt_or_ge y (Fr.fr j 0) with hlt | hge` into its components or cases. Establish `hyL : y ∈ Fr.LLset (segZ jj)`. Rewrite using `[hseg]`. Conclude with `(mem_LLset Fr _ _).2 ⟨⟨h4.1, hlt⟩, hyT⟩`. Take `⟨l, hl, he⟩` from `llPos_surj Fr _ _ hyL`.
+
+Use `⟨⟨jj, Sum.inl ⟨l, by rw [hnL]; exact hl⟩⟩, ?_⟩` and prove the remaining obligations. Use `show posOf n' (llPos Fr (segZ jj) l) = s`. Rewrite using `[he]`. Conclude with `hp`. Take `⟨i, hi, he⟩` from `ge_frame Fr L₁ N₁ hV j y hyT hge (r - 1) (by omega) h4.2.1`.
+
+Use `⟨⟨jj, Sum.inr ⟨r - 1 - i, by omega⟩⟩, ?_⟩` and prove the remaining obligations. Use `show posOf n' (Fr.fr (segZ jj) (r - 1 - (r - 1 - i))) = s`. Establish `e : r - 1 - (r - 1 - i) = i` using `by omega`. Rewrite using `[e, hseg, ← he]`. Conclude with `hp`.
+-/
 theorem posTL_surj (hV : Fr.Valid L₁ N₁) (hr : 1 ≤ r) (hJ : J = Fr.J) (hnL : ∀ j, nL j = (Fr.LLset (segZ j)).card)
     (s : Fin n') (hs : s ∈ Fr.TT) : ∃ x : TL J nL r, posOf n' (posTL Fr x) = s := by
   have hper : Fr.fr ((Fr.J : ℤ) - 1) (r - 1) = Fr.fr (-1) (r - 1) + n' := by

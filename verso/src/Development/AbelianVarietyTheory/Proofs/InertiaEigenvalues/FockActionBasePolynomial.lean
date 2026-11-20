@@ -15,6 +15,17 @@ set_option synthInstance.maxHeartbeats 400000
 noncomputable section
 namespace GlobalTheory.FockLetters
 
+/- English proof (translation)
+Introduce `D H Dw m n hΨ hm w a hw u P`. Substitute `hm` using the available equality. Use `⟨(((detFam w.c u)⁻¹ : ℂˣ) : ℂ), fun t => u ((tauPsi hΨ).symm t), ?_⟩` and prove the remaining obligations. Establish `key : (MvPolynomial.rename (fockVarEquiv Dw hΨ rfl)).comp (GlobalTheory.ExportSeries.fockSubst (m` using `Dw.p + Dw.q) w.p u) = (GlobalTheory.Harm.colSubst (p := Dw.p) (q := Dw.q) (fun t => (((u ((tauPsi hΨ).symm t))⁻¹ : GL (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ)) (fun t => ((u ((tauPsi hΨ).symm t) : GL (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ))).comp (MvPolynomial.rename (fockVarEquiv D …`. Use `MvPolynomial.algHom_ext fun v => ?_` and prove the remaining obligations.
+
+Take `⟨ρ, i, b⟩` from `v`. Establish `hp` using `(hw ρ).1`. Proceed by induction on `i using Fin.addCases with`. Consider the case `left i`. Establish `hi : ((Fin.castAdd Dw.q i : Fin (Dw.p + Dw.q)) : ℕ) < w.p ρ` using `by simp [hp]`.
+
+Simplify using `only [AlgHom.comp_apply, GlobalTheory.ExportSeries.fockSubst, MvPolynomial.aeval_X, if_pos hi, map_sum, map_mul, MvPolynomial.rename_C, MvPolynomial.rename_X, ]`. Simplify using `only [fockVarEquiv, Equiv.prodCongr_apply, Prod.map, finCongr_refl, Equiv.refl_trans, Equiv.refl_apply, finSumFinEquiv_symm_apply_castAdd]`. Use `erw [GlobalTheory.Harm.colSubst_X_xVar]`. Simplify using `[GlobalTheory.Harm.xForm_apply]`. Consider the case `right j`.
+
+Establish `hj : ¬ ((Fin.natAdd Dw.p j : Fin (Dw.p + Dw.q)) : ℕ) < w.p ρ` using `by simp [hp]`. Simplify using `only [AlgHom.comp_apply, GlobalTheory.ExportSeries.fockSubst, MvPolynomial.aeval_X, if_neg hj, map_sum, map_mul, MvPolynomial.rename_C, MvPolynomial.rename_X, ]`. Simplify using `only [fockVarEquiv, Equiv.prodCongr_apply, Prod.map, finCongr_refl, Equiv.refl_trans, Equiv.refl_apply, finSumFinEquiv_symm_apply_natAdd]`. Use `erw [GlobalTheory.Harm.colSubst_X_yVar]`. Simplify using `[GlobalTheory.Harm.yForm_apply]`.
+
+Establish `hB : GlobalTheory.ExportSeries.inBasis (1 : GLR D n) u = u` using `by simp [GlobalTheory.ExportSeries.inBasis]`. Rewrite using `[GlobalTheory.ExportSeries.fockGL_apply, hB, map_smul, MvPolynomial.smul_eq_C_mul]`. Use `congr 1`. Conclude with `DFunLike.congr_fun key P`.
+-/
 theorem rename_fockGL_eq_C_mul_colAct : ∀ (D : D7) (H : Geo.Tor.Host D.host.E) (Dw : Datum H) (m n : ℕ) (hΨ : ∀ τ : D.host.E →+* ℂ, InPsi H τ ↔ ∃ ρ, τ = tauE D ρ) (hm : m = Dw.p + Dw.q) (w : Weight D n) (a : (D.host.E →+* ℂ) × ℕ → ℕ), WtIs Dw w a → ∀ (u : GLR D n) (P : PolF D m n), ∃ (s : ℂ) (g : {τ : D.host.E →+* ℂ // InPsi H τ} → GL (Fin n) ℂ), MvPolynomial.rename (GlobalTheory.FockLetters.fockVarEquiv Dw hΨ hm) (fockGL m w 1 u P) = MvPolynomial.C s * GlobalTheory.Harm.colAct ℂ _ Dw.p Dw.q (Fin n) g (MvPolynomial.rename (GlobalTheory.FockLetters.fockVarEquiv Dw hΨ hm) P) := by
   intro D H Dw m n hΨ hm w a hw u P
   subst hm

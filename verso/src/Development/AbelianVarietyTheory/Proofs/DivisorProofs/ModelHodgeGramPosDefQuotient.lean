@@ -7,15 +7,24 @@ open GlobalTheory.HodgeLocGeo
 
 namespace GlobalTheory.ModelHodgeBlocks
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[conjTranspose_apply]`.
+-/
 theorem conjTranspose_transpose_eq_map {p q : ℕ} (Z : Matrix (Fin p) (Fin q) ℂ) :
     Zᴴᵀ = Z.map (starRingEnd ℂ) := by
   ext i j; simp [conjTranspose_apply]
 
+/- English proof (translation)
+Simplify using `[modelHodgeGram, modelFrame, fromBlocks_transpose, fromBlocks_conjTranspose, fromBlocks_multiply, conjTranspose_transpose_eq_map]`.
+-/
 theorem modelHodgeGram_eq_fromBlocks {p q : ℕ} (Z : Matrix (Fin p) (Fin q) ℂ) :
     modelHodgeGram Z = fromBlocks (-1 + Zᵀ * Z.map (starRingEnd ℂ)) Zᵀ (Z.map (starRingEnd ℂ)) 1 := by
   simp [modelHodgeGram, modelFrame, fromBlocks_transpose, fromBlocks_conjTranspose, fromBlocks_multiply,
     conjTranspose_transpose_eq_map]
 
+/- English proof (translation)
+Simplify using `only [Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_add, Matrix.add_mul, Matrix.mul_one, Matrix.one_mul, Matrix.mul_assoc]`. Normalize the expressions using the abelian group laws.
+-/
 theorem push_expand {p q : ℕ} (X : Matrix (Fin p) (Fin q) ℂ) (Y : Matrix (Fin q) (Fin p) ℂ)
     (N : Matrix (Fin q) (Fin q) ℂ) :
     (1 - X * Y) * (1 + X * N * Y) = 1 + X * ((1 - Y * X) * N - 1) * Y := by
@@ -23,6 +32,9 @@ theorem push_expand {p q : ℕ} (X : Matrix (Fin p) (Fin q) ℂ) (Y : Matrix (Fi
     Matrix.mul_assoc]
   abel
 
+/- English proof (translation)
+Simplify using `only [Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_add, Matrix.add_mul, Matrix.mul_one, Matrix.one_mul, Matrix.mul_assoc]`. Normalize the expressions using the abelian group laws.
+-/
 theorem push_expand' {p q : ℕ} (X : Matrix (Fin p) (Fin q) ℂ) (Y : Matrix (Fin q) (Fin p) ℂ)
     (N : Matrix (Fin q) (Fin q) ℂ) :
     (1 + X * N * Y) * (1 - X * Y) = 1 + X * (N * (1 - Y * X) - 1) * Y := by
@@ -30,6 +42,13 @@ theorem push_expand' {p q : ℕ} (X : Matrix (Fin p) (Fin q) ℂ) (Y : Matrix (F
     Matrix.mul_assoc]
   abel
 
+/- English proof (translation)
+Establish `hu : IsUnit (1 - Zᴴ * Z).det` using `(Matrix.isUnit_iff_isUnit_det _).1 h.isUnit`. Establish `hP : (1 + Z * (1 - Zᴴ * Z)⁻¹ * Zᴴ).PosDef`. Use `h.inv.posSemidef.conjTranspose_mul_mul_same Zᴴ` as an intermediate fact. Rewrite `this` using `[conjTranspose_conjTranspose]`. Conclude with `Matrix.PosDef.one.add_posSemidef this`.
+
+Establish `hinv : (1 + Z * (1 - Zᴴ * Z)⁻¹ * Zᴴ)⁻¹ = 1 - Z * Zᴴ`. Apply `Matrix.inv_eq_right_inv` to reduce the goal to its premises. Rewrite using `[push_expand', Matrix.nonsing_inv_mul _ hu]`. Simplify using the standard rewrite rules. Rewrite using `[← hinv]`.
+
+Conclude with `hP.inv`.
+-/
 theorem posDef_one_sub_mul_conjTranspose {p q : ℕ} (Z : Matrix (Fin p) (Fin q) ℂ)
     (h : (1 - Zᴴ * Z).PosDef) : (1 - Z * Zᴴ).PosDef := by
   have hu : IsUnit (1 - Zᴴ * Z).det := (Matrix.isUnit_iff_isUnit_det _).1 h.isUnit
@@ -48,6 +67,19 @@ end GlobalTheory.ModelHodgeBlocks
 
 open GlobalTheory.ModelHodgeBlocks in
 
+/- English proof (translation)
+Introduce `p q Z h`. Establish `e1 : 1 - Z.map (starRingEnd ℂ) * Zᵀ = (1 - Z * Zᴴ)ᵀ`. Rewrite using `[transpose_sub, transpose_one, transpose_mul, conjTranspose_transpose_eq_map]`. Establish `e2 : 1 - Zᵀ * Z.map (starRingEnd ℂ) = (1 - Zᴴ * Z)ᵀ`. Rewrite using `[transpose_sub, transpose_one, transpose_mul, conjTranspose_transpose_eq_map]`.
+
+Establish `h2 : (1 - Zᵀ * Z.map (starRingEnd ℂ)).PosDef` using `by rw [e2]; exact h.transpose`. Establish `hu : IsUnit (1 - Zᵀ * Z.map (starRingEnd ℂ))` using `h2.isUnit`. Establish `hu' : IsUnit (-1 + Zᵀ * Z.map (starRingEnd ℂ)).det`. Establish `: -1 + Zᵀ * Z.map (starRingEnd ℂ) = -(1 - Zᵀ * Z.map (starRingEnd ℂ))` using `by abel`. Rewrite using `[this]`.
+
+Conclude with `(Matrix.isUnit_iff_isUnit_det _).1 hu.neg`. Use `⟨?_, h2, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[e1]`. Conclude with `(posDef_one_sub_mul_conjTranspose Z h).transpose`. Rewrite using `[modelHodgeGram_eq_fromBlocks]`.
+
+Simplify using `only [GlobalTheory.HermFrame.quotGram, toBlocks_fromBlocks₁₁, toBlocks_fromBlocks₁₂, toBlocks_fromBlocks₂₁, toBlocks_fromBlocks₂₂]`. Use `symm`. Apply `Matrix.inv_eq_right_inv` to reduce the goal to its premises. Establish `key : 1 - Z.map (starRingEnd ℂ) * (-1 + Zᵀ * Z.map (starRingEnd ℂ))⁻¹ * Zᵀ = 1 + Z.map (starRingEnd ℂ) * (-(-1 + Zᵀ * Z.map (starRingEnd ℂ))⁻¹) * Zᵀ`. Simplify using `[Matrix.mul_neg, Matrix.neg_mul, sub_eq_add_neg]`.
+
+Rewrite using `[key, push_expand]`. Establish `: (1 - Zᵀ * Z.map (starRingEnd ℂ)) * -(-1 + Zᵀ * Z.map (starRingEnd ℂ))⁻¹ = 1`. Establish `h0 : 1 - Zᵀ * Z.map (starRingEnd ℂ) = -(-1 + Zᵀ * Z.map (starRingEnd ℂ))` using `by abel`. Rewrite using `[h0, Matrix.neg_mul, Matrix.mul_neg, neg_neg, Matrix.mul_nonsing_inv _ hu']`. Rewrite using `[this]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[modelHodgeGram_eq_fromBlocks]`. Simplify using `only [GlobalTheory.HermFrame.subGram, toBlocks_fromBlocks₁₁]`. Normalize the expressions using the abelian group laws.
+-/
 theorem GlobalTheory.modelHodgeGram_blocks : ∀ {p q : ℕ} (Z : Matrix (Fin p) (Fin q) ℂ), (1 - Zᴴ * Z).PosDef →
     (1 - Z.map (starRingEnd ℂ) * Zᵀ).PosDef ∧ (1 - Zᵀ * Z.map (starRingEnd ℂ)).PosDef ∧
     GlobalTheory.HermFrame.quotGram (modelHodgeGram Z) = (1 - Z.map (starRingEnd ℂ) * Zᵀ)⁻¹ ∧

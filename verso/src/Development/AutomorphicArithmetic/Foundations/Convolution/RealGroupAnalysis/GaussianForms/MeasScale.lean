@@ -7,6 +7,13 @@ open UpperTheory.ConvolutionTheory.R2
 open scoped Classical
 open UpperTheory.ConvolutionTheory.R2.C
 
+/- English proof (translation)
+Introduce `F _ _ a f`. Establish `hpos : 0 ≤ ((IdeleGroup.ideleModule F a : ℝ))⁻¹` using `inv_nonneg.mpr (IdeleGroup.ideleModule F a).2.le`. Establish `hmap` using `GroundTheory.Automorphic.GJGlobal.Modulus.map_vecMul_diagonal (K := F) (n := 4) (fun _ => a)`. Establish `hf : (fun x : V4 F => x ᵥ* Matrix.diagonal (fun _ : Fin 4 => ((a : (A F)ˣ) : A F))) = fun x i => (a : A F) * x i`. Use function extensionality and compare the values at `x i`.
+
+Rewrite using `[vecMul_diagonal, mul_comm]`. Set `e : V4 F ≃ᵐ V4 F` to `MeasurableEquiv.piCongrRight fun _ => (Homeomorph.smul a).toMeasurableEquiv`. Establish `he : (e : V4 F → V4 F) = fun x i => (a : A F) * x i` using `rfl`. Establish `h1 : ∫ v, f (fun i => (a : A F) * v i) ∂(adeleMeasurePi F) = ∫ v, f v ∂((adeleMeasurePi F).map (fun x : V4 F => fun i => (a : A F) * x i))`. Rewrite using `[← he]`.
+
+Conclude with `(e.measurableEmbedding.integral_map f).symm`. Rewrite using `[h1, ← hf, hmap, integral_smul_measure, Finset.prod_const, Finset.card_univ, Fintype.card_fin, ← ENNReal.ofReal_pow hpos, ENNReal.toReal_ofReal (pow_nonneg hpos 4), Complex.real_smul]`. Both sides reduce to the same expression.
+-/
 theorem UpperTheory.ConvolutionTheory.R2.C.measScale :
     ∀ (F : Type) [Field F] [NumberField F] (a : (A F)ˣ) (f : V4 F → ℂ), ∫ v, f (fun i => (a : A F) * v i) ∂(adeleMeasurePi F) = (((ab a)⁻¹ ^ 4 : ℝ) : ℂ) * ∫ v, f v ∂(adeleMeasurePi F) := by
   intro F _ _ a f

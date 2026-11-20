@@ -12,6 +12,27 @@ open GlobalTheory.CompanionTheory.MirPair
 
 namespace GlobalTheory.CompanionTheory.MirPair
 
+/- English proof (translation)
+Introduce `k _ _ _ _ _ _ ν _ ψ c n V V' _ _ _ _ T T' B s hψ hc hT hT' hB g v v'`. Use `haveI := GlobalTheory.SplitWeil.secondCountable k`. Use `haveI := GlobalTheory.SplitWeil.t2Space k`. Establish `hmono : ∀ {a a' : kˣ}, valuation k (a : k) ≤ valuation k (a' : k) → ∀ b ∈ GlobalTheory.CompanionTheory.BZOnto.PerpSmall.box (n + 1) a, b ∈ GlobalTheory.CompanionTheory.BZOnto.PerpSmall.box (n + 1) a'`. Introduce `a a' haa' b hb`.
+
+Establish `hb' : ∀ j, valuation k (b j) ≤ valuation k (a : k)` using `hb`. Use `show ∀ j, valuation k (b j) ≤ valuation k (a' : k)`. Conclude with `fun j => le_trans (hb' j) haa'`. Establish `hmin : ∀ a a' : kˣ, ∃ r : kˣ, valuation k (r : k) ≤ valuation k (a : k) ∧ valuation k (r : k) ≤ valuation k (a' : k)`. Introduce `a a'`.
+
+Break down `le_total (valuation k (a : k)) (valuation k (a' : k)) with h | h` into its components or cases. Use `exacts [⟨a, le_rfl, h⟩, ⟨a', h, le_rfl⟩]`. Take `⟨r₁, hr₁, h₁⟩` from `GlobalTheory.T.shear_preserves_box_membership g`. Take `⟨r₂, -, h₂⟩` from `GlobalTheory.T.smooth_vector_fixed_small_shear T hT v`. Take `⟨r₃, -, h₃⟩` from `GlobalTheory.T.smooth_vector_fixed_small_shear T' hT' v'`.
+
+Take `⟨r₄, h₄₁, h₄₂⟩` from `hmin r₁ r₂`. Take `⟨r, hr₄, hr₃⟩` from `hmin r₄ r₃`. Use `⟨r, fun t ht t' hgt => ?_⟩` and prove the remaining obligations. Use `set M : Set (Fin (n + 1) → k) := {x | (g : Matrix (Fin (n + 1)) (Fin (n + 1)) k) *ᵥ x ∈ GlobalTheory.CompanionTheory.BZOnto.PerpSmall.box (n + 1) t'} with hM`. Establish `hMimage : M = (fun y => ((g⁻¹ : GL (Fin (n + 1)) k) : Matrix (Fin (n + 1)) (Fin (n + 1)) k) *ᵥ y) '' (GlobalTheory.CompanionTheory.BZOnto.PerpSmall.box (n + 1) t' : Set (Fin (n + 1) → k))`.
+
+Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Use `⟨_, hx, ?_⟩` and prove the remaining obligations. Simplify using `only [Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec]`.
+
+Introduce and unpack `⟨y, hy, rfl⟩ show (g : Matrix (Fin (n + 1)) (Fin (n + 1)) k) *ᵥ (((g⁻¹ : GL (Fin (n + 1)) k) : Matrix (Fin (n + 1)) (Fin (n + 1)) k) *ᵥ y) ∈ GlobalTheory.CompanionTheory.BZOnto.PerpSmall.box (n + 1) t'`. Simplify `hy` using `only [Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec, SetLike.mem_coe]`. Establish `hMc : IsCompact M`. Rewrite using `[hMimage]`. Conclude with `(GlobalTheory.CompanionTheory.BZOnto.PerpSmall.isCompact_box (n + 1) t').image (Continuous.matrix_mulVec continuous_const continuous_id)`.
+
+Establish `hMm : MeasurableSet M` using `hMc.isClosed.measurableSet`. Establish `hw : Continuous (GlobalTheory.CompanionTheory.MirPair.wt ψ n)`. Unfold `GlobalTheory.CompanionTheory.MirPair.wt`. Conclude with `continuous_subtype_val.comp (hψ.comp (continuous_apply (Fin.last n)).neg)`. Establish `hf : Continuous fun x => GlobalTheory.CompanionTheory.MirPair.wt ψ n x * GlobalTheory.CompanionTheory.MirPair.coef T B v v' x` using `hw.mul (GlobalTheory.T.mirabolic_coefficient_continuous T B hT v v')`.
+
+Establish `hsub : (GlobalTheory.CompanionTheory.BZOnto.PerpSmall.box (n + 1) t : Set (Fin (n + 1) → k)) ⊆ M` using `fun x hx => hgt x hx`. Establish `key` using `GlobalTheory.T.fourier_box_integral_vanishing ν ψ c hψ hc (n + 1) t M (fun x => GlobalTheory.CompanionTheory.MirPair.wt ψ n x * GlobalTheory.CompanionTheory.MirPair.coef T B v v' x) (GlobalTheory.CompanionTheory.MirPair.JJ ν ψ T B M v v') hMc hMm hf (by`. Introduce `b hb`. Establish `hbv : ∀ j, valuation k (b j) ≤ valuation k ((c * t⁻¹ : kˣ) : k)` using `hb`. Establish `hb₁` using `hmono (le_trans ht (le_trans hr₄ h₄₁)) b hb`.
+
+Establish `hb₂` using `hmono (le_trans ht (le_trans hr₄ h₄₂)) b hb`. Establish `hb₃` using `hmono (le_trans ht hr₃) b hb`. Establish `hlast : valuation k (b (Fin.last n)) < 1` using `lt_of_le_of_lt (le_trans (hbv (Fin.last n)) (le_trans ht (le_trans hr₄ h₄₁))) hr₁`. Establish `hinv : ∀ x, ((GlobalTheory.CompanionTheory.MirPair.shearGL n b : GL (Fin (n + 1)) k) : Matrix (Fin (n + 1)) (Fin (n + 1)) k) *ᵥ x ∈ M ↔ x ∈ M` using `fun x => h₁ b hb₁ t' x`. Establish `h` using `GlobalTheory.T.mirabolic_pairing_depth_vanishing ν ψ T T' B s hψ hT hB b M v v' hlast (h₂ b hb₂) hinv`.
+
+Rewrite `h` using `[h₃ b hb₃]`. Conclude with `h)`. Rewrite `key` using `[Set.inter_eq_right.2 hsub]`. Conclude with `key.symm`.
+-/
 theorem JJ_preimage_box_eq_JJ_box : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] (ν : Measure k) [ν.IsAddHaarMeasure] (ψ : AddChar k Circle) (c : kˣ) {n : ℕ} {V V' : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup V'] [Module ℂ V'] (T : Representation ℂ (Mir k (n + 1)) V) (T' : Representation ℂ (Mir k (n + 1)) V') (B : V →ₗ[ℂ] V' →ₗ[ℂ] ℂ) (s : ℕ), Continuous ψ → HasConductor ψ c → IsSmooth T → IsSmooth T' → TwInv T T' B s → ∀ (g : GL (Fin (n + 1)) k) (v : V) (v' : V'), ∃ r : kˣ, ∀ t : kˣ, valuation k ((c * t⁻¹ : kˣ) : k) ≤ valuation k (r : k) → ∀ t' : kˣ, (∀ x ∈ box (n + 1) t, (g : Matrix (Fin (n + 1)) (Fin (n + 1)) k) *ᵥ x ∈ box (n + 1) t') → JJ ν ψ T B {x | (g : Matrix (Fin (n + 1)) (Fin (n + 1)) k) *ᵥ x ∈ box (n + 1) t'} v v' = JJ ν ψ T B (box (n + 1) t : Set (Fin (n + 1) → k)) v v' := by
   intro k _ _ _ _ _ _ ν _ ψ c n V V' _ _ _ _ T T' B s hψ hc hT hT' hB g v v'
   haveI := GlobalTheory.SplitWeil.secondCountable k

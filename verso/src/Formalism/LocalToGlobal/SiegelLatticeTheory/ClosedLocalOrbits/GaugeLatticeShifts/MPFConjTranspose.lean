@@ -16,15 +16,27 @@ section PFm
 
 variable {ι : Type*}
 
+/- English proof (translation)
+The claim follows from `Subalgebra.add_mem _ hf hg`.
+-/
 theorem PF_add {f g : (ι → ℝ) → ℂ} (hf : f ∈ PF ι) (hg : g ∈ PF ι) : (fun y => f y + g y) ∈ PF ι :=
   Subalgebra.add_mem _ hf hg
 
+/- English proof (translation)
+The claim follows from `Subalgebra.sub_mem _ hf hg`.
+-/
 theorem PF_sub {f g : (ι → ℝ) → ℂ} (hf : f ∈ PF ι) (hg : g ∈ PF ι) : (fun y => f y - g y) ∈ PF ι :=
   Subalgebra.sub_mem _ hf hg
 
+/- English proof (translation)
+The claim follows from `Subalgebra.mul_mem _ hf hg`.
+-/
 theorem PF_mul {f g : (ι → ℝ) → ℂ} (hf : f ∈ PF ι) (hg : g ∈ PF ι) : (fun y => f y * g y) ∈ PF ι :=
   Subalgebra.mul_mem _ hf hg
 
+/- English proof (translation)
+Use `Subalgebra.sum_mem (PF ι) h` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `y`. Simplify using `[Finset.sum_apply]`.
+-/
 theorem PF_sum {κ : Type*} (s : Finset κ) {f : κ → (ι → ℝ) → ℂ} (h : ∀ k ∈ s, f k ∈ PF ι) :
     (fun y => ∑ k ∈ s, f k y) ∈ PF ι := by
   have := Subalgebra.sum_mem (PF ι) h
@@ -32,6 +44,9 @@ theorem PF_sum {κ : Type*} (s : Finset κ) {f : κ → (ι → ℝ) → ℂ} (h
   funext y
   simp [Finset.sum_apply]
 
+/- English proof (translation)
+Use `Subalgebra.prod_mem (PF ι) h` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `y`. Simplify using `[Finset.prod_apply]`.
+-/
 theorem PF_prod {κ : Type*} (s : Finset κ) {f : κ → (ι → ℝ) → ℂ} (h : ∀ k ∈ s, f k ∈ PF ι) :
     (fun y => ∏ k ∈ s, f k y) ∈ PF ι := by
   have := Subalgebra.prod_mem (PF ι) h
@@ -43,31 +58,57 @@ def MPF {α β : Type*} (M : (ι → ℝ) → Matrix α β ℂ) : Prop := ∀ i 
 
 variable {α β γ : Type*}
 
+/- English proof (translation)
+Introduce `_ _` and use `PF_const _`.
+-/
 theorem MPF_const (A : Matrix α β ℂ) : MPF (ι := ι) (fun _ => A) := fun _ _ => PF_const _
 
+/- English proof (translation)
+Introduce `i j` and use `PF_add (hM i j) (hN i j)`.
+-/
 theorem MPF_add {M N : (ι → ℝ) → Matrix α β ℂ} (hM : MPF M) (hN : MPF N) : MPF (fun y => M y + N y) :=
   fun i j => PF_add (hM i j) (hN i j)
 
+/- English proof (translation)
+Introduce `i j` and use `PF_sub (hM i j) (hN i j)`.
+-/
 theorem MPF_sub {M N : (ι → ℝ) → Matrix α β ℂ} (hM : MPF M) (hN : MPF N) : MPF (fun y => M y - N y) :=
   fun i j => PF_sub (hM i j) (hN i j)
 
+/- English proof (translation)
+Introduce `i j` and use `by simp only [Matrix.mul_apply] exact PF_sum _ fun k _ => PF_mul (hM i k) (hN k j)`.
+-/
 theorem MPF_mul [Fintype β] {M : (ι → ℝ) → Matrix α β ℂ} {N : (ι → ℝ) → Matrix β γ ℂ} (hM : MPF M) (hN : MPF N) :
     MPF (fun y => M y * N y) := fun i j => by
   simp only [Matrix.mul_apply]
   exact PF_sum _ fun k _ => PF_mul (hM i k) (hN k j)
 
+/- English proof (translation)
+Introduce `i j` and use `by simp only [Matrix.smul_apply, smul_eq_mul] exact PF_mul hf (hM i j)`.
+-/
 theorem MPF_smul {f : (ι → ℝ) → ℂ} {M : (ι → ℝ) → Matrix α β ℂ} (hf : f ∈ PF ι) (hM : MPF M) :
     MPF (fun y => f y • M y) := fun i j => by
   simp only [Matrix.smul_apply, smul_eq_mul]
   exact PF_mul hf (hM i j)
 
+/- English proof (translation)
+Introduce `i j` and use `by simp only [conjTranspose_apply] exact PF_conj (hM j i)`.
+-/
 theorem MPF_conjTranspose {M : (ι → ℝ) → Matrix α β ℂ} (hM : MPF M) : MPF (fun y => (M y)ᴴ) := fun i j => by
   simp only [conjTranspose_apply]
   exact PF_conj (hM j i)
 
+/- English proof (translation)
+Introduce `i j` and use `hM (f i) (g j)`.
+-/
 theorem MPF_submatrix {α' β' : Type*} {M : (ι → ℝ) → Matrix α β ℂ} (hM : MPF M) (f : α' → α) (g : β' → β) :
     MPF (fun y => (M y).submatrix f g) := fun i j => hM (f i) (g j)
 
+/- English proof (translation)
+Establish `h : (fun y => (M y).det) = fun y => ∑ σ : Equiv.Perm α, ((Equiv.Perm.sign σ : ℤ) : ℂ) * ∏ i, M y (σ i) i`. Use function extensionality and compare the values at `y`. Rewrite using `[Matrix.det_apply]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[Units.smul_def, zsmul_eq_mul]`.
+
+Rewrite using `[h]`. Conclude with `PF_sum _ fun σ _ => PF_mul (PF_const _) (PF_prod _ fun i _ => hM _ _)`.
+-/
 theorem PF_det [Fintype α] [DecidableEq α] {M : (ι → ℝ) → Matrix α α ℂ} (hM : MPF M) :
     (fun y => (M y).det) ∈ PF ι := by
   have h : (fun y => (M y).det) =
@@ -79,6 +120,9 @@ theorem PF_det [Fintype α] [DecidableEq α] {M : (ι → ℝ) → Matrix α α 
   rw [h]
   exact PF_sum _ fun σ _ => PF_mul (PF_const _) (PF_prod _ fun i _ => hM _ _)
 
+/- English proof (translation)
+Introduce `i k` and use `by by_cases h : i = j · subst h simp only [updateRow_self] exact PF_const _ · simp only [updateRow_ne h] exact hM i k`.
+-/
 theorem MPF_updateRow [DecidableEq α] {M : (ι → ℝ) → Matrix α β ℂ} (hM : MPF M) (j : α) (v : β → ℂ) :
     MPF (fun y => (M y).updateRow j v) := fun i k => by
   by_cases h : i = j
@@ -88,6 +132,9 @@ theorem MPF_updateRow [DecidableEq α] {M : (ι → ℝ) → Matrix α β ℂ} (
   · simp only [updateRow_ne h]
     exact hM i k
 
+/- English proof (translation)
+Introduce `i j` and use `by simp only [adjugate_apply] exact PF_det (MPF_updateRow hM j _)`.
+-/
 theorem MPF_adjugate [Fintype α] [DecidableEq α] {M : (ι → ℝ) → Matrix α α ℂ} (hM : MPF M) :
     MPF (fun y => (M y).adjugate) := fun i j => by
   simp only [adjugate_apply]
@@ -99,6 +146,9 @@ section Coords
 
 variable {ι : Type*} {n r : ℕ}
 
+/- English proof (translation)
+Distinguish the cases in `h : l ≤ r + 1`. Simplify using `only [Dl, dif_pos h]`. Conclude with `PF_det (MPF_submatrix hZ _ _)`. Simplify using `only [Dl, dif_neg h]`. Conclude with `PF_const 0`.
+-/
 theorem PF_Dl {Z : (ι → ℝ) → Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ} (hZ : MPF Z) (l : ℕ) :
     (fun y => Dl (Z y) l) ∈ PF ι := by
   by_cases h : l ≤ r + 1
@@ -107,22 +157,34 @@ theorem PF_Dl {Z : (ι → ℝ) → Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ} (hZ 
   · simp only [Dl, dif_neg h]
     exact PF_const 0
 
+/- English proof (translation)
+Unfold `hJ`. Rewrite using `[Matrix.dotProduct_mulVec]`. Both sides reduce to the same expression.
+-/
 theorem hJ_eq_sum (ε : Fin n → Bool) (x v : Fin n → ℂ) :
     hJ ε x v = ∑ i, (star x ᵥ* Formalism.REAL.Jm ε) i * v i := by
   unfold hJ
   rw [Matrix.dotProduct_mulVec]
   rfl
 
+/- English proof (translation)
+Introduce `a b` and use `by simp only [Zhat, hJ_eq_sum, mulVec, dotProduct] exact PF_sum _ fun i _ => PF_mul (PF_const _) (PF_sum _ fun k _ => PF_mul (hM i k) (PF_const _))`.
+-/
 theorem MPF_Zhat (ε : Fin n → Bool) (f f' : Fin (r + 1) → Fin n → ℂ) {M : (ι → ℝ) → Matrix (Fin n) (Fin n) ℂ}
     (hM : MPF M) : MPF (fun y => Zhat ε f f' (M y)) := fun a b => by
   simp only [Zhat, hJ_eq_sum, mulVec, dotProduct]
   exact PF_sum _ fun i _ => PF_mul (PF_const _) (PF_sum _ fun k _ => PF_mul (hM i k) (PF_const _))
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a b`. Simplify using `only [Zhat, Matrix.smul_apply, smul_eq_mul, Matrix.smul_mulVec, UnitaryIsometries.hJ_smul_right]`.
+-/
 theorem Zhat_smul (ε : Fin n → Bool) (f f' : Fin (r + 1) → Fin n → ℂ) (c : ℂ) (g : Matrix (Fin n) (Fin n) ℂ) :
     Zhat ε f f' (c • g) = c • Zhat ε f f' g := by
   funext a b
   simp only [Zhat, Matrix.smul_apply, smul_eq_mul, Matrix.smul_mulVec, UnitaryIsometries.hJ_smul_right]
 
+/- English proof (translation)
+Simplify using `only [Dl, dif_pos hl]`. Rewrite using `[show (c • Z).submatrix (Fin.castLE hl) (Fin.castLE hl) = c • Z.submatrix (Fin.castLE hl) (Fin.castLE hl) from rfl, Matrix.det_smul, Fintype.card_fin]`.
+-/
 theorem Dl_smul (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ) (c : ℂ) (l : ℕ) (hl : l ≤ r + 1) :
     Dl (c • Z) l = c ^ l * Dl Z l := by
   simp only [Dl, dif_pos hl]
@@ -132,6 +194,11 @@ theorem Dl_smul (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ) (c : ℂ) (l : ℕ)
 def Fval (T T' : ℝ) (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ) : ℂ :=
   (∏ l ∈ Finset.Icc 1 r, Dl Z l) * (Gv T T' Z : ℂ)
 
+/- English proof (translation)
+Simplify using `only [IsReg, Fval, ne_eq, mul_eq_zero, not_or, Finset.prod_eq_zero_iff, Finset.mem_Icc, not_exists, not_and, Complex.ofReal_eq_zero]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨fun l hl => h1 l hl.1 hl.2, h2⟩`. Introduce and unpack `⟨h1, h2⟩`.
+
+Conclude with `⟨fun l hl1 hl2 => h1 l ⟨hl1, hl2⟩, h2⟩`.
+-/
 theorem isReg_iff (T T' : ℝ) (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ) : IsReg T T' Z ↔ Fval T T' Z ≠ 0 := by
   simp only [IsReg, Fval, ne_eq, mul_eq_zero, not_or, Finset.prod_eq_zero_iff, Finset.mem_Icc, not_exists,
     not_and, Complex.ofReal_eq_zero]
@@ -145,6 +212,11 @@ def Qexpr (T T' : ℝ) (Z0 : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ) (d : ℂ) :
   (∏ l ∈ Finset.Icc 1 r, Dl Z0 l) *
     (Dl Z0 (r + 1) * conj (Dl Z0 (r + 1)) - ((T * T' : ℝ) : ℂ) * (d * conj d) * (Dl Z0 r * conj (Dl Z0 r)))
 
+/- English proof (translation)
+Establish `hprod : ∏ l ∈ Finset.Icc 1 r, Dl (d • Z) l = (∏ l ∈ Finset.Icc 1 r, d ^ l) * ∏ l ∈ Finset.Icc 1 r, Dl Z l`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun l hl => Dl_smul Z d l ?_` and prove the remaining obligations. Use `(Finset.mem_Icc.1 hl).2` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+
+Rewrite using `[Qexpr, Fval, hprod, Dl_smul Z d (r + 1) le_rfl, Dl_smul Z d r (Nat.le_succ r), Gv]`. Use `push_cast`. Rewrite using `[← Complex.mul_conj', ← Complex.mul_conj']`. Simplify using `only [map_mul, map_pow]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem Qexpr_smul (T T' : ℝ) (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ) (d : ℂ) :
     Qexpr T T' (d • Z) d = ((∏ l ∈ Finset.Icc 1 r, d ^ l) * (d * conj d) ^ (r + 1)) * Fval T T' Z := by
   have hprod : ∏ l ∈ Finset.Icc 1 r, Dl (d • Z) l =
@@ -159,6 +231,11 @@ theorem Qexpr_smul (T T' : ℝ) (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ) (d 
   simp only [map_mul, map_pow]
   ring
 
+/- English proof (translation)
+Establish `hD : ∀ l, Continuous fun Z : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ => Dl Z l`. Introduce `l`. Distinguish the cases in `h : l ≤ r + 1`. Simplify using `only [Dl, dif_pos h]`. Conclude with `(continuous_id.matrix_submatrix _ _).matrix_det`.
+
+Simplify using `only [Dl, dif_neg h]`. Conclude with `continuous_const`. Unfold `Fval Gv`. Use `(continuous_finset_prod _ fun l _ => hD l).mul (Complex.continuous_ofReal.comp ?_)` and prove the remaining obligations. Conclude with `(((hD _).norm.pow 2).sub (continuous_const.mul ((hD _).norm.pow 2)))`.
+-/
 theorem continuous_Fval (T T' : ℝ) : Continuous (Fval (r := r) T T') := by
   have hD : ∀ l, Continuous fun Z : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ => Dl Z l := by
     intro l

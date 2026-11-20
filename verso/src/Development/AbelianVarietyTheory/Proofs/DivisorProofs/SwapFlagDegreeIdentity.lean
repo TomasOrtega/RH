@@ -9,6 +9,9 @@ open scoped Classical
 
 namespace GlobalTheory.CovTest.SwapZ
 
+/- English proof (translation)
+Introduce `hP hA G _ hG D Y hh H` and use `swap_of_model GlobalTheory.T.flag_variety_graded_lines_isometric (GlobalTheory.T.generic_degree_eq_flag_degree hP hA) G hG D Y hh H`.
+-/
 theorem swapEq_flagZ : Hypotheses2 → GlobalTheory.Published.ArDegree → ∀ G, Homog G → SwapFl G → ∀ (D : D7) (Y : DV.ShimX D.what₂.Tau) (hh : Fn Y), GlobalTheory.FlagZ.IsHh D.what₂.Tau Y.N hh → SwapEq Y G hh (degFl D.what₂.Tau Y.N) :=
   fun hP hA G _ hG D Y hh H => swap_of_model GlobalTheory.T.flag_variety_graded_lines_isometric (GlobalTheory.T.generic_degree_eq_flag_degree hP hA) G hG D Y hh H
 

@@ -12,6 +12,43 @@ section Compositum
 
 variable {k M : Type u} [Field k] [Field M] (σ : k →+* M) (L : Type u) [Field L] [Algebra k L]
 
+/- English proof (translation)
+Use `letI : Algebra k M := σ.toAlgebra`. Take `⟨B, hB⟩` from `exists_isTranscendenceBasis k M`. Set `A` to `MvPolynomial B L`. Set `L₁` to `FractionRing A`. Set `L'` to `AlgebraicClosure L₁`.
+
+Set `toL' : A →ₐ[k] L'` to `IsScalarTower.toAlgHom k A L'`. Establish `htoL' : Function.Injective toL'`. Establish `h1 : Function.Injective (algebraMap A L₁)` using `IsFractionRing.injective A L₁`. Establish `h2 : Function.Injective (algebraMap L₁ L')` using `(algebraMap L₁ L').injective`. Establish `: (toL' : A → L') = algebraMap L₁ L' ∘ algebraMap A L₁`.
+
+Use extensionality with `a`. Simplify using `[toL', IsScalarTower.algebraMap_apply A L₁ L']`. Rewrite using `[this]`. Conclude with `h2.comp h1`. Set `R` to `Algebra.adjoin k (Set.range ((↑) : B → M))`.
+
+Set `e` to `hB.1.aevalEquiv`. Set `x : B → L'` to `fun b => toL' (MvPolynomial.X b)`. Set `f₀ : R →ₐ[k] L'` to `toL'.comp ((MvPolynomial.mapAlgHom (Algebra.ofId k L)).comp e.symm.toAlgHom)`. Establish `hf₀inj : Function.Injective f₀`. Use `htoL'.comp ((MvPolynomial.map_injective _ (algebraMap k L).injective).comp ?_)` and prove the remaining obligations.
+
+Conclude with `e.symm.injective`. Establish `hf₀x : ∀ p : MvPolynomial B k, f₀ (e p) = MvPolynomial.aeval x p`. Introduce `p`. Establish `: toL'.comp (MvPolynomial.mapAlgHom (Algebra.ofId k L)) = MvPolynomial.aeval x`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises.
+
+Introduce `b`. Rewrite using `[AlgHom.comp_apply, MvPolynomial.mapAlgHom_apply, MvPolynomial.map_X, MvPolynomial.aeval_X]`. Use `show toL' (MvPolynomial.mapAlgHom (Algebra.ofId k L) (e.symm (e p))) = _`. Rewrite using `[e.symm_apply_apply]`. Conclude with `DFunLike.congr_fun this p`.
+
+Use `letI : Algebra R L' := f₀.toRingHom.toAlgebra`. Use `haveI : IsScalarTower k R L' := IsScalarTower.of_algebraMap_eq (fun a => (f₀.commutes a).symm)`. Use `haveI : Module.IsTorsionFree R L' := Module.isTorsionFree_iff_algebraMap_injective.mpr hf₀inj`. Use `haveI : Algebra.IsAlgebraic R M := hB.isAlgebraic`. Set `j₀ : M →ₐ[R] L'` to `IsAlgClosed.lift`.
+
+Set `j : M →ₐ[k] L'` to `j₀.restrictScalars k`. Set `ι : L →ₐ[k] L'` to `IsScalarTower.toAlgHom k L L'`. Use `⟨L', inferInstance, ι.toRingHom, j.toRingHom, ?_, fun u hu => ?_⟩` and prove the remaining obligations. Use extensionality with `a`. Conclude with `(ι.commutes a).trans (j.commutes a).symm`.
+
+Establish `hjR : ∀ r : R, j (r : M) = f₀ r` using `fun r => j₀.commutes r`. Establish `hjb : ∀ b : B, j (b : M) = x b`. Introduce `b`. Establish `hr : (b : M) = ((e (MvPolynomial.X b) : R) : M)`. Rewrite using `[show ((e (MvPolynomial.X b) : R) : M) = MvPolynomial.aeval ((↑) : B → M) (MvPolynomial.X b) from hB.1.algebraMap_aevalEquiv _, MvPolynomial.aeval_X]`.
+
+Rewrite using `[hr, hjR, hf₀x, MvPolynomial.aeval_X]`. Establish `hind : AlgebraicIndependent k (Sum.elim (fun _ : Unit => ι u) x)`. Establish `h1` using `AlgebraicIndependent.sumElim_comp (R := k) (S := L) (A := A) (x := fun _ : Unit => u) (algebraicIndependent_unique_type_iff.mpr hu) (MvPolynomial.algebraicIndependent_X B L)`. Establish `h2` using `h1.map' htoL'`. Use `(algebraicIndependent_equiv' (Equiv.sumComm Unit B) ?_).mpr h2` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `z`. Break down `z with _ | b` into its components or cases. Simplify using `[ι, toL', IsScalarTower.algebraMap_apply L A L']`. Both sides reduce to the same expression. Take `⟨-, hu'⟩` from `AlgebraicIndependent.sumElim_iff.mp hind`.
+
+Establish `htr : Transcendental (Algebra.adjoin k (Set.range x)) (ι u)` using `algebraicIndependent_unique_type_iff.mp hu'`. Introduce `halg`. Use `set R' := Algebra.adjoin k (Set.range x)`. Use `set K₁ := j.toRingHom.fieldRange`. Establish `hR'K : R'.toSubring ≤ K₁.toSubring` using `by show (Algebra.adjoin k (Set.range x) : Set L') ⊆ K₁`.
+
+Establish `hle : Algebra.adjoin k (Set.range x) ≤ j.range` using `Algebra.adjoin_le (by rintro _ ⟨b, rfl⟩; exact ⟨b, hjb b⟩)`. Introduce `z hz`. Take `⟨m, hm⟩` from `hle hz`. Conclude with `⟨m, hm⟩`. Use `letI : Algebra R' K₁ := (Subring.inclusion hR'K).toAlgebra`.
+
+Use `haveI : IsScalarTower R' K₁ L' := IsScalarTower.of_algebraMap_eq (fun _ => rfl)`. Establish `hmem : ∀ r : R, f₀ r ∈ R'`. Introduce `r`. Take `⟨p, rfl⟩` from `e.surjective r`. Rewrite using `[hf₀x]`.
+
+Use `show MvPolynomial.aeval x p ∈ Algebra.adjoin k (Set.range x)`. Rewrite using `[Algebra.adjoin_range_eq_range_aeval]`. Conclude with `⟨p, rfl⟩`. Set `f : R →+* R'` to `{ toFun := fun r => ⟨f₀ r, hmem r⟩ map_one' := by ext; simp map_mul' := fun a b => by ext; simp map_zero' := by ext; simp map_add' := fun a b => by ext; simp }`. Set `g : M →+* K₁` to `{ toFun := fun m => ⟨j m, m, rfl⟩ map_one' := by ext; simp map_mul' := fun a b => by ext; simp map_zero' := by ext; simp map_add' := fun a b => by ext; simp }`.
+
+Establish `hf : Function.Injective f` using `fun a b h => hf₀inj (congrArg Subtype.val h)`. Establish `hcomp : (algebraMap R' K₁).comp f = g.comp (algebraMap R M)`. Use extensionality with `r`. Conclude with `(hjR r).symm`. Use `haveI : Algebra.IsAlgebraic R' K₁ := by`.
+
+Use `⟨fun z => ?_⟩` and prove the remaining obligations. Take `⟨m, hm⟩` from `z.2`. Establish `hz : g m = z` using `Subtype.ext hm`. Rewrite using `[← hz]`. Conclude with `(Algebra.IsAlgebraic.isAlgebraic m).ringHom_of_comp_eq f g hf hcomp`.
+
+Conclude with `htr (halg.restrictScalars R')`.
+-/
 theorem exists_free_compositum :
     ∃ (L' : Type u) (_ : Field L') (ι : L →+* L') (j : M →+* L'),
       ι.comp (algebraMap k L) = j.comp σ ∧
@@ -127,6 +164,9 @@ end Compositum
 
 section Descent
 
+/- English proof (translation)
+Substitute `hx hy` using the available equality. Both sides reduce to the same expression.
+-/
 theorem point_some_congr {K : Type*} [Field K] {W : WeierstrassCurve K} {x y x' y' : K}
     {h : W.toAffine.Nonsingular x y} {h' : W.toAffine.Nonsingular x' y'} (hx : x = x')
     (hy : y = y') : (Point.some x y h : W.toAffine.Point) = Point.some x' y' h' := by
@@ -136,6 +176,29 @@ theorem point_some_congr {K : Type*} [Field K] {W : WeierstrassCurve K} {x y x' 
 variable {F F' : Type u} [Field F] [Field F'] (σ : F →+* F')
 variable {E E' : WeierstrassCurve F} [E.IsElliptic] [E'.IsElliptic]
 
+/- English proof (translation)
+Rewrite using `[respectsAdd_iff]`. Introduce `L _ _ _ P₁ P₂ h₁ h₂ h₃`. Take `⟨L', _, ι, j, hcomm, htr⟩` from `exists_free_compositum σ L`. Use `letI : Algebra F' L' := j.toAlgebra`. Use `letI : Algebra F L' := ((algebraMap F' L').comp σ).toAlgebra`.
+
+Set `ιA : L →ₐ[F] L'` to `{ ι with commutes' := fun a => DFunLike.congr_fun hcomm a }`. Set `pm : (E.baseChange L).toAffine.Point →+ ((E.map σ).baseChange L').toAffine.Point` to `Point.map (W' := E) ιA`. Establish `hgen : ∀ P : (E.baseChange L).toAffine.Point, IsGenPt E P → IsGenPt (E.map σ) (pm P)`. Introduce `P hP`. Consider the cases of `P with`.
+
+Consider the case `zero => exact hP.elim`. Consider the case `some u v h => show Transcendental F' (ι u)`. Introduce `halg`. Conclude with `htr u hP (halg.ringHom_of_comp_eq j.rangeRestrictField (RingHom.id L') j.rangeRestrictField.injective rfl)`. Establish `happ : ∀ {X Y : ((E.map σ).baseChange L').toAffine.Point} (h : X = Y) (hX : IsGenPt (E.map σ) X) (hY : IsGenPt (E.map σ) Y), ψ.app X hX = ψ.app Y hY`.
+
+Introduce `X Y h hX hY`. Substitute `h` using the available equality. Both sides reduce to the same expression. Set `pm' : (E'.baseChange L').toAffine.Point →+ ((E'.map σ).baseChange L').toAffine.Point` to `AddMonoidHom.id _`. Establish `key : ∀ (P : (E.baseChange L).toAffine.Point) (hP : IsGenPt E P), pm' (Point.map ιA (Point.map (genEval E P hP) Q)) = ψ.app (pm P) (hgen P hP)`.
+
+Introduce `P hP`. Rewrite using `[Point.map_map, ← genEval_map]`. Establish `hg : (genEval E (Point.map ιA P) (isGenPt_map E ιA hP)).toRingHom = (genEval (E.map σ) (pm P) (hgen P hP)).toRingHom.comp (ffMap σ E)`. Apply `ringHom_ext_functionField` to reduce the goal to its premises. Introduce `a`.
+
+Simplify using `only [AlgHom.toRingHom_eq_coe, RingHom.coe_coe, RingHom.comp_apply, ffMap_algebraMap, AlgHom.commutes]`. Both sides reduce to the same expression. Simplify using `only [AlgHom.toRingHom_eq_coe, RingHom.coe_coe, RingHom.comp_apply, ffMap_genX, genEval_genX]`. Both sides reduce to the same expression. Simplify using `only [AlgHom.toRingHom_eq_coe, RingHom.coe_coe, RingHom.comp_apply, ffMap_genY, genEval_genY]`.
+
+Both sides reduce to the same expression. Rewrite using `[Isogeny.app, ψ.val_eq]`. Consider the cases of `Q with`. Consider the case `zero => exact absurd rfl hQ`. Consider the case `some a b hab`.
+
+Establish `hx' : ffMap σ E a = ψ.x` using `hx`. Establish `hy' : ffMap σ E b = ψ.y` using `hy`. Establish `ea : genEval E (Point.map ιA P) (isGenPt_map E ιA hP) a = genEval (E.map σ) (pm P) (hgen P hP) ψ.x`. Rewrite using `[← hx']`. Conclude with `DFunLike.congr_fun hg a`.
+
+Establish `eb : genEval E (Point.map ιA P) (isGenPt_map E ιA hP) b = genEval (E.map σ) (pm P) (hgen P hP) ψ.y`. Rewrite using `[← hy']`. Conclude with `DFunLike.congr_fun hg b`. Rewrite using `[Point.map_some]`. Use `show (Point.some _ _ _ : ((E'.map σ).baseChange L').toAffine.Point) = Point.some _ _ _`.
+
+Conclude with `point_some_congr ea eb`. Establish `hpm' : Function.Injective pm'` using `fun _ _ h => h`. Apply `Point.map_injective (W' := E') ιA` to reduce the goal to its premises. Apply `hpm'` to reduce the goal to its premises. Rewrite using `[map_add, map_add, key _ h₃, key _ h₁, key _ h₂]`.
+
+Establish `h₃' : IsGenPt (E.map σ) (pm P₁ + pm P₂)`. Rewrite using `[← map_add]`. Conclude with `hgen _ h₃`. Rewrite using `[← ψ.app_add (hgen P₁ h₁) (hgen P₂ h₂) h₃']`. Conclude with `happ (map_add _ _ _) _ _`.
+-/
 theorem respectsAdd_of_map (ψ : Isogeny (E.map σ) (E'.map σ))
     {Q : (E'.baseChange E.toAffine.FunctionField).toAffine.Point} (hQ : Q ≠ 0)
     (hx : ffMap σ E (xOf _ Q) = ψ.x) (hy : ffMap σ E (yOf _ Q) = ψ.y) : RespectsAdd E E' Q := by
@@ -208,6 +271,9 @@ theorem respectsAdd_of_map (ψ : Isogeny (E.map σ) (E'.map σ))
 
 omit [E.IsElliptic] in
 
+/- English proof (translation)
+Introduce `halg`. Use `h (halg.ringHom_of_comp_eq σ (ffMap σ E) σ.injective ?_)` and prove the remaining obligations. Use extensionality with `a`. Conclude with `(ffMap_algebraMap σ E a).symm`.
+-/
 theorem transcendental_of_ffMap {z : E.toAffine.FunctionField}
     (h : Transcendental F' (ffMap σ E z)) : Transcendental F z := by
   intro halg
@@ -217,6 +283,9 @@ theorem transcendental_of_ffMap {z : E.toAffine.FunctionField}
 
 omit [E.IsElliptic] [E'.IsElliptic] in
 
+/- English proof (translation)
+Establish `hc : (ffMap σ E).comp (algebraMap F E.toAffine.FunctionField) = (algebraMap F' (E.map σ).toAffine.FunctionField).comp σ` using `RingHom.ext (ffMap_algebraMap σ E)`. Rewrite using `[WeierstrassCurve.baseChange, WeierstrassCurve.baseChange, WeierstrassCurve.map_map, WeierstrassCurve.map_map, hc]`.
+-/
 theorem baseChange_map_ffMap :
     (E'.baseChange E.toAffine.FunctionField).map (ffMap σ E) =
       (E'.map σ).baseChange (E.map σ).toAffine.FunctionField := by
@@ -227,6 +296,9 @@ theorem baseChange_map_ffMap :
 
 omit [E.IsElliptic] [E'.IsElliptic] in
 
+/- English proof (translation)
+Establish `h' : ((E'.baseChange E.toAffine.FunctionField).map (ffMap σ E)).toAffine.Nonsingular (ffMap σ E x) (ffMap σ E y)`. Rewrite using `[baseChange_map_ffMap]`. Conclude with `h`. Conclude with `(WeierstrassCurve.Affine.map_nonsingular (W := (E'.baseChange _).toAffine) (ffMap σ E).injective x y).mp h'`.
+-/
 theorem nonsingular_of_ffMap {x y : E.toAffine.FunctionField}
     (h : ((E'.map σ).baseChange (E.map σ).toAffine.FunctionField).toAffine.Nonsingular
       (ffMap σ E x) (ffMap σ E y)) :
@@ -244,14 +316,23 @@ noncomputable def _root_.GroundTheory.Arith.Abelian.Isogeny.ofMap (ψ : Isogeny 
     (isIsogeny_iff _).mpr ⟨transcendental_of_ffMap σ (hx ▸ ψ.transcendental_alt),
       respectsAdd_of_map σ ψ (by simp) hx hy⟩⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem _root_.GroundTheory.Arith.Abelian.Isogeny.ofMap_alt (ψ : Isogeny (E.map σ) (E'.map σ))
     (x y : E.toAffine.FunctionField) (hx : ffMap σ E x = ψ.x) (hy : ffMap σ E y = ψ.y) :
     (Isogeny.ofMap σ ψ x y hx hy).x = x := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem _root_.GroundTheory.Arith.Abelian.Isogeny.ofMap_y (ψ : Isogeny (E.map σ) (E'.map σ))
     (x y : E.toAffine.FunctionField) (hx : ffMap σ E x = ψ.x) (hy : ffMap σ E y = ψ.y) :
     (Isogeny.ofMap σ ψ x y hx hy).y = y := rfl
 
+/- English proof (translation)
+The claim follows from `Isogeny.ext_xy (by rw [Isogeny.map_x]; exact hx) (by rw [Isogeny.map_y]; exact hy)`.
+-/
 theorem _root_.GroundTheory.Arith.Abelian.Isogeny.map_ofMap (ψ : Isogeny (E.map σ) (E'.map σ))
     (x y : E.toAffine.FunctionField) (hx : ffMap σ E x = ψ.x) (hy : ffMap σ E y = ψ.y) :
     (Isogeny.ofMap σ ψ x y hx hy).map σ = ψ :=
@@ -264,6 +345,13 @@ section Bridge
 variable {F F' : Type u} [Field F] [Field F'] [Algebra F F'] (E : WeierstrassCurve F)
   [E.IsElliptic]
 
+/- English proof (translation)
+Establish `e : ffMap (algebraMap F F') E = (bcEmb (F'` using `F') E).toRingHom := by`. Apply `ringHom_ext_functionField` to reduce the goal to its premises. Introduce `a`. Rewrite using `[ffMap_algebraMap]`. Use `show _ = bcEmb (F' := F') E (algebraMap F _ a)`.
+
+Rewrite using `[AlgHom.commutes]`. Conclude with `(IsScalarTower.algebraMap_apply F F' (E.baseChange F').toAffine.FunctionField a).symm`. Rewrite using `[ffMap_genX]`. Conclude with `(bcEmb_genX E).symm`. Rewrite using `[ffMap_genY]`.
+
+Conclude with `(bcEmb_genY E).symm`. Conclude with `DFunLike.congr_fun e f`.
+-/
 theorem ffMap_algebraMap_eq_bcEmb (f : E.toAffine.FunctionField) :
     ffMap (algebraMap F F') E f = bcEmb (F' := F') E f := by
   have e : ffMap (algebraMap F F') E = (bcEmb (F' := F') E).toRingHom := by
@@ -279,12 +367,18 @@ theorem ffMap_algebraMap_eq_bcEmb (f : E.toAffine.FunctionField) :
 
 variable {E} {E' : WeierstrassCurve F} [E'.IsElliptic] [DecidableEq F']
 
+/- English proof (translation)
+Use `show xOf _ (isogBaseChange (F' := F') φ).1 = _`. Rewrite using `[isogBaseChange_val, φ.val_eq, Point.map_some]`. Both sides reduce to the same expression.
+-/
 theorem isogBaseChange_alt (φ : Isogeny E E') :
     (isogBaseChange (F' := F') φ).x = bcEmb (F' := F') E φ.x := by
   show xOf _ (isogBaseChange (F' := F') φ).1 = _
   rw [isogBaseChange_val, φ.val_eq, Point.map_some]
   rfl
 
+/- English proof (translation)
+Use `show yOf _ (isogBaseChange (F' := F') φ).1 = _`. Rewrite using `[isogBaseChange_val, φ.val_eq, Point.map_some]`. Both sides reduce to the same expression.
+-/
 theorem isogBaseChange_y (φ : Isogeny E E') :
     (isogBaseChange (F' := F') φ).y = bcEmb (F' := F') E φ.y := by
   show yOf _ (isogBaseChange (F' := F') φ).1 = _

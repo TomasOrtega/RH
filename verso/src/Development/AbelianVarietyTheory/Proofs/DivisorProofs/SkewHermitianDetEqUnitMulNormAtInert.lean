@@ -21,28 +21,46 @@ namespace GlobalTheory.SkewDetParity
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.valuation_algHom_eq_of_inertPrime F E σ v w h x`.
+-/
 theorem val_sigma (σ : E →ₐ[F] E) (v : HeightOneSpectrum (𝓞 F)) (w : HeightOneSpectrum (𝓞 E))
     (h : Formalism.UG.IsInertAt F E v w) (x : E) : w.valuation E (σ x) = w.valuation E x :=
   GlobalTheory.T.valuation_algHom_eq_of_inertPrime F E σ v w h x
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.valuation_algebraMap_eq_of_inertPlace F E v w h x`.
+-/
 theorem val_algebraMap (v : HeightOneSpectrum (𝓞 F)) (w : HeightOneSpectrum (𝓞 E))
     (h : Formalism.UG.IsInertAt F E v w) (x : F) : w.valuation E (algebraMap F E x) = v.valuation F x :=
   GlobalTheory.T.valuation_algebraMap_eq_of_inertPlace F E v w h x
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.exists_inverseDifferent_max_valuation E w`.
+-/
 theorem exists_max_dual (w : HeightOneSpectrum (𝓞 E)) : ∃ e : E, e ≠ 0 ∧
     (∀ o : 𝓞 E, IsIntegral ℤ (Algebra.trace ℚ E ((o : E) * e))) ∧
     ∀ f : E, (∀ o : 𝓞 E, IsIntegral ℤ (Algebra.trace ℚ E ((o : E) * f))) → w.valuation E f ≤ w.valuation E e :=
   GlobalTheory.T.exists_inverseDifferent_max_valuation E w
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.exists_localBasis_at_prime_of_isLattice E w n L hL`.
+-/
 theorem exists_local_basis (w : HeightOneSpectrum (𝓞 E)) (n : ℕ) (L : Submodule (𝓞 E) (Fin n → E))
     (hL : L.IsLattice E) : ∃ X : Matrix (Fin n) (Fin n) E, IsUnit X.det ∧ (∀ j, (fun i => X i j) ∈ L) ∧
     ∀ x ∈ L, ∀ i, w.valuation E ((X⁻¹ *ᵥ x) i) ≤ 1 :=
   GlobalTheory.T.exists_localBasis_at_prime_of_isLattice E w n L hL
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.exists_integer_denominator_not_mem_of_valuation_le_one E w a ha`.
+-/
 theorem exists_den (w : HeightOneSpectrum (𝓞 E)) (a : E) (ha : w.valuation E a ≤ 1) :
     ∃ s : 𝓞 E, s ∉ w.asIdeal ∧ ∃ r : 𝓞 E, (s : E) * a = r :=
   GlobalTheory.T.exists_integer_denominator_not_mem_of_valuation_le_one E w a ha
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.exists_common_denominator_conj_localCoords_lattice F E σ w hσ hden n L hL X hX`.
+-/
 theorem exists_common_den (σ : E →ₐ[F] E) (w : HeightOneSpectrum (𝓞 E))
     (hσ : ∀ x, w.valuation E (σ x) = w.valuation E x)
     (hden : ∀ a : E, w.valuation E a ≤ 1 → ∃ s : 𝓞 E, s ∉ w.asIdeal ∧ ∃ r : 𝓞 E, (s : E) * a = r)
@@ -51,6 +69,9 @@ theorem exists_common_den (σ : E →ₐ[F] E) (w : HeightOneSpectrum (𝓞 E))
     ∃ s : 𝓞 E, s ∉ w.asIdeal ∧ ∀ x ∈ L, ∀ i, ∃ r : 𝓞 E, (s : E) * σ ((X⁻¹ *ᵥ x) i) = r :=
   GlobalTheory.T.exists_common_denominator_conj_localCoords_lattice F E σ w hσ hden n L hL X hX
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.selfDualLattice_inverseGram_localBasis_integral F E σ n J L w hdual X hX hG hXc s hs hsr e he`.
+-/
 theorem dual_bound (σ : E →ₐ[F] E) (n : ℕ) (J : Matrix (Fin n) (Fin n) E) (L : Submodule (𝓞 E) (Fin n → E))
     (w : HeightOneSpectrum (𝓞 E))
     (hdual : ∀ y, y ∈ L ↔ ∀ x ∈ L, ∀ o : 𝓞 E, IsIntegral ℤ (Algebra.trace ℚ E (o * form σ J y x)))
@@ -61,6 +82,11 @@ theorem dual_bound (σ : E →ₐ[F] E) (n : ℕ) (J : Matrix (Fin n) (Fin n) E)
     ∀ i k, w.valuation E (e * (Xᵀ * J * X.map σ)⁻¹ i k) ≤ 1 :=
   GlobalTheory.T.selfDualLattice_inverseGram_localBasis_integral F E σ n J L w hdual X hX hG hXc s hs hsr e he
 
+/- English proof (translation)
+Rewrite using `[Matrix.det_apply]`. Use `Valuation.map_sum_le _ fun p _ => ?_` and prove the remaining obligations. Establish `hp : w.valuation E (∏ i, M (p i) i) ≤ c ^ n`. Rewrite using `[map_prod]`. Combine the equalities or inequalities in the displayed calculation.
+
+Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign p) with h1 | h1 <;> rw [h1]`. Rewrite using `[one_smul]` and apply the resulting hypothesis. Rewrite using `[Units.neg_smul, one_smul, Valuation.map_neg]` and apply the resulting hypothesis.
+-/
 theorem val_det_le (w : HeightOneSpectrum (𝓞 E)) {n : ℕ} (M : Matrix (Fin n) (Fin n) E)
     (c : WithZero (Multiplicative ℤ)) (h : ∀ i j, w.valuation E (M i j) ≤ c) :
     w.valuation E M.det ≤ c ^ n := by
@@ -80,6 +106,9 @@ namespace GlobalTheory.SkewDetParity
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Simplify using `only [form, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, dotProduct, Matrix.mulVec, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem form_cols (σ : E →ₐ[F] E) {n : ℕ} (J X : Matrix (Fin n) (Fin n) E) (i j : Fin n) :
     (Xᵀ * J * X.map σ) i j = form σ J (fun k => X k i) (fun k => X k j) := by
   simp only [form, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, dotProduct, Matrix.mulVec,
@@ -88,6 +117,23 @@ theorem form_cols (σ : E →ₐ[F] E) {n : ℕ} (J X : Matrix (Fin n) (Fin n) E
   refine Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_
   ring
 
+/- English proof (translation)
+Take `⟨e, he0, heD, hemax⟩` from `exists_max_dual w`. Take `⟨X, hXu, hXL, hXc⟩` from `exists_local_basis w n L hL`. Take `⟨s, hs, hsr⟩` from `exists_common_den σ w (val_sigma σ v w hin) (exists_den w) n L hL.fg X hXc`. Establish `hσdet : σ X.det = (X.map σ).det`. Rewrite using `[AlgHom.map_det]`.
+
+Both sides reduce to the same expression. Establish `hdetG : (Xᵀ * J * X.map σ).det = X.det * J.det * σ X.det`. Rewrite using `[Matrix.det_mul, Matrix.det_mul, Matrix.det_transpose, hσdet]`. Establish `hX0 : X.det ≠ 0` using `hXu.ne_zero`. Establish `hσX0 : σ X.det ≠ 0`.
+
+Introduce `h0`. Apply `hX0` to reduce the goal to its premises. Conclude with `(map_eq_zero_iff σ σ.toRingHom.injective).1 h0`. Establish `hG0 : (Xᵀ * J * X.map σ).det ≠ 0`. Rewrite using `[hdetG]`.
+
+Conclude with `mul_ne_zero (mul_ne_zero hX0 hJ) hσX0`. Establish `hGu : IsUnit (Xᵀ * J * X.map σ).det` using `isUnit_iff_ne_zero.2 hG0`. Establish `hGij : ∀ i j, w.valuation E ((Xᵀ * J * X.map σ) i j) ≤ w.valuation E e` using `fun i j => by`. Rewrite using `[form_cols]`. Conclude with `hemax _ fun o => (hdual _).1 (hXL i) _ (hXL j) o`.
+
+Establish `hup` using `val_det_le w _ _ hGij`. Establish `hinv` using `dual_bound σ n J L w hdual X hXu hGu hXc s hs hsr e heD`. Establish `hlow` using `val_det_le w (e • (Xᵀ * J * X.map σ)⁻¹) 1 (fun i k => by`. Simplify `hinv i k)` using `[Matrix.smul_apply]`. Rewrite `hlow` using `[one_pow, Matrix.det_smul, Matrix.det_nonsing_inv, Ring.inverse_eq_inv', Fintype.card_fin, map_mul, map_pow, map_inv₀]`.
+
+Establish `hvG0 : w.valuation E (Xᵀ * J * X.map σ).det ≠ 0` using `(Valuation.ne_zero_iff _).2 hG0`. Establish `hlow' : w.valuation E e ^ n ≤ w.valuation E (Xᵀ * J * X.map σ).det` using `by first`. Consider the case `rwa [mul_inv_le_iff₀ hvG0, one_mul] at hlow`. Consider the case `rwa [mul_inv_le_iff₀ (zero_lt_iff.2 hvG0), one_mul] at hlow`. Establish `hEq : w.valuation E (Xᵀ * J * X.map σ).det = w.valuation E e ^ n` using `le_antisymm hup hlow'`.
+
+Rewrite `hEq` using `[hdetG, map_mul, map_mul, val_sigma σ v w hin]`. Take `⟨m, rfl⟩` from `hn`. Use `⟨e ^ m / X.det, div_ne_zero (pow_ne_zero _ he0) hX0, ?_⟩` and prove the remaining obligations. Establish `hvX0 : w.valuation E X.det ≠ 0` using `(Valuation.ne_zero_iff _).2 hX0`. Rewrite using `[map_div₀, map_pow, div_pow, ← pow_mul, mul_two, ← hEq]`.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem parity_at (σ : E →ₐ[F] E) (v : HeightOneSpectrum (𝓞 F)) (w : HeightOneSpectrum (𝓞 E))
     (hin : Formalism.UG.IsInertAt F E v w) (n : ℕ) (J : Matrix (Fin n) (Fin n) E) (L : Submodule (𝓞 E) (Fin n → E))
     (hL : L.IsLattice E)
@@ -128,11 +174,29 @@ theorem parity_at (σ : E →ₐ[F] E) (v : HeightOneSpectrum (𝓞 F)) (w : Hei
   rw [map_div₀, map_pow, div_pow, ← pow_mul, mul_two, ← hEq]
   field_simp
 
+/- English proof (translation)
+Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[h.2.2.2 τ, h.2.2.2 τ, star_star]`.
+-/
 theorem sigma_sigma (σ : E →ₐ[F] E) (h : IsCMExt F E σ) (x : E) : σ (σ x) = x := by
   obtain ⟨τ⟩ : Nonempty (E →+* ℂ) := inferInstance
   apply τ.injective
   rw [h.2.2.2 τ, h.2.2.2 τ, star_star]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B hB n r s W hW hn v w hin _`. Distinguish the cases in `hJ : W.J.det = 0`. Conclude with `⟨0, 1, map_one _, by simp [hJ]⟩`. Take `⟨a, ha0, hva⟩` from `parity_at σ v w hin n W.J W.L hW.lat hW.dual hn hJ`. Establish `hmap : W.J.map σ = -W.Jᵀ`.
+
+Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, Matrix.neg_apply, Matrix.transpose_apply]`. Rewrite using `[← hW.skew j i]`. Establish `hfix : σ W.J.det = W.J.det`. Rewrite using `[AlgHom.map_det]`.
+
+Express the relevant statement in the definitionally equal form `(W.J.map σ).det = _`. Rewrite using `[hmap, Matrix.det_neg, Matrix.det_transpose, Fintype.card_fin, hn.neg_one_pow, one_mul]`. Take `⟨c, hc⟩` from `GlobalTheory.HermLineZeros.exists_of_fixed hB.cm _ hfix`. Establish `hfixN : σ (a * σ a) = a * σ a`. Rewrite using `[map_mul, sigma_sigma σ hB.cm, mul_comm]`.
+
+Take `⟨β, hβ⟩` from `GlobalTheory.HermLineZeros.exists_of_fixed hB.cm _ hfixN`. Establish `hσa0 : σ a ≠ 0`. Introduce `h0`. Apply `ha0` to reduce the goal to its premises. Conclude with `(map_eq_zero_iff σ σ.toRingHom.injective).1 h0`.
+
+Establish `hβ0 : β ≠ 0`. Introduce `h0`. Rewrite `hβ` using `[h0, map_zero]`. Conclude with `mul_ne_zero ha0 hσa0 hβ.symm`. Use `⟨(1 : Fv F v) ⊗ₜ[F] a, algebraMap F (Fv F v) (c / β), ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[show Valued.v (algebraMap F (Fv F v) (c / β)) = v.valuation F (c / β) from HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v (c / β), ← val_algebraMap v w hin, map_div₀, map_div₀, hc, hβ, map_mul, val_sigma σ v w hin, hva, sq]`. Establish `: w.valuation E a ≠ 0` using `(Valuation.ne_zero_iff _).2 ha0`. Conclude with `div_self (mul_ne_zero this this)`. Establish `key : (algebraMap F (Fv F v) (c / β)) ⊗ₜ[F] (algebraMap F E β) = (1 : Fv F v) ⊗ₜ[F] W.J.det`. Rewrite using `[Algebra.algebraMap_eq_smul_one (c / β), TensorProduct.smul_tmul, Algebra.smul_def, ← map_mul, div_mul_cancel₀ _ hβ0, hc]`.
+
+Rewrite using `[Algebra.TensorProduct.map_tmul, AlgHom.id_apply, Algebra.TensorProduct.tmul_mul_tmul, one_mul, ← hβ, Algebra.TensorProduct.algebraMap_apply, Algebra.TensorProduct.tmul_mul_tmul, one_mul, ← key]`. Simplify using the standard rewrite rules.
+-/
 theorem det_eq_unit_mul_norm : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (B : Base F E),
     B.IsGood σ → ∀ (n r s : ℕ) (W : Spc F E n), W.IsSkew σ B r s → Even n →

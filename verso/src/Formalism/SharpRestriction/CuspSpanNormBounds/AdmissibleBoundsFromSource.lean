@@ -285,6 +285,9 @@ def Stmt (C0 C' Cl Cg cb Cu cT CT : ℝ) (ca : AdmC) : Prop :=
   ca.Ok Cg → GamDef D large₂ ca.CE ca.CN → hyp D large₂ C0 C' Cl Cg cb Cu cT CT →
     admitted D large₂ C0 C' Cl Cg cb Cu cT CT ca → aux₃ D large₂
 
+/- English proof (translation)
+Introduce `hOk hG hh hA`. Conclude with `⟨h1 hOk hG hh hA.1, h2 hh hA.2.2⟩`.
+-/
 theorem statement_of_degree_and_bound {D : D7} {large₂ : SizeData₂ D} {C0 C' Cl Cg cb Cu cT CT : ℝ} {ca : AdmC}
     (h1 : IntegralityFromMetric D large₂ C0 C' Cl Cg cb Cu cT CT ca) (h2 : FamilyExpansionSecond D large₂ C0 C' Cl Cg cb Cu cT CT) :
     Stmt D large₂ C0 C' Cl Cg cb Cu cT CT ca := by
@@ -386,6 +389,9 @@ def FlatLineDegreeFamilyStatement (gc : GivC) (ca : AdmC) (C : ℝ) : Prop :=
 def KudlaFamilyStatement (gc : GivC) (ca : AdmC) : Prop :=
   gc.Ok → ca.Ok gc.Cg → max ca.CE ca.CN + 1 ≤ Fm.CGam → AdmF Fm gc ca → OrbitValuationBound Fm gc
 
+/- English proof (translation)
+Introduce `hg hc hm hA`. Conclude with `⟨h1 hg hc hm hA.1, h2 hg hA.2.2⟩`.
+-/
 theorem family_statement_of_parts {Fm : Formalism.MainNotions.FamP eps} {gc : GivC} {ca : AdmC} (h1 : PeriodFamilyStatement Fm gc ca) (h2 : FamilyUnfoldingCount Fm gc) :
     KudlaFamilyStatement Fm gc ca := by
   intro hg hc hm hA
@@ -408,6 +414,9 @@ def ClosedFamilyMomentFactorDefectBound (𝒞 : Formalism.MainNotions.FamClass) 
 def PropositionCStatement (𝒞 : Formalism.MainNotions.FamClass) : Prop :=
   ∀ (gc : GivC) (ca : AdmC), Formalism.MainNotions.Closed 𝒞 fun Fm _ => KudlaFamilyStatement Fm gc ca
 
+/- English proof (translation)
+Introduce `gc ca`. Conclude with `Formalism.MainNotions.Closed.imp (Formalism.MainNotions.Closed.and (h1 gc ca) (h2 gc)) fun _ _ _ h => family_statement_of_parts h.1 h.2`.
+-/
 theorem closed_form_of_parts {𝒞 : Formalism.MainNotions.FamClass} (h1 : ClosedFormWithDensityConstant 𝒞) (h2 : LocalTopSecond 𝒞) : PropositionCStatement 𝒞 := by
   intro gc ca
   exact Formalism.MainNotions.Closed.imp (Formalism.MainNotions.Closed.and (h1 gc ca) (h2 gc)) fun _ _ _ h => family_statement_of_parts h.1 h.2
@@ -416,6 +425,9 @@ def ClosedFormConstantFunctions (𝒞 : Formalism.MainNotions.FamClass) : Prop :
   ∀ (gc : List ℝ → GivC) (ca : List ℝ → AdmC),
     Formalism.MainNotions.Closed 𝒞 fun Fm _ => KudlaFamilyStatement Fm (gc Fm.cOut) (ca Fm.cOut)
 
+/- English proof (translation)
+Introduce `gc ca`. Conclude with `h (fun _ => gc) (fun _ => ca)`.
+-/
 theorem closed_form_of_functions {𝒞 : Formalism.MainNotions.FamClass} (h : ClosedFormConstantFunctions 𝒞) : PropositionCStatement 𝒞 := by
   intro gc ca
   exact h (fun _ => gc) (fun _ => ca)

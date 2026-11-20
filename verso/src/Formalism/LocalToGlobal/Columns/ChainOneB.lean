@@ -63,6 +63,11 @@ def ResidueFieldUnfoldingNonzero : Prop :=
     ∃ xj : (Fin n' → k) →ₗ[k] (Fin n → k),
       Loc.E1 (n' := n') (c' := c + 1) (n := n) (c := c) (fun u => ψ₀ u) Finset.univ 1 (ocbPhiS ψ₀ χ k₀ m t j n' c n) xj ≠ 0
 
+/- English proof (translation)
+Establish `e : Loc.om (fun _ : k => (1 : ℂ)) (fun _ => (0 : ℤ)) 1 (LinearEquiv.refl k (Fin (n' + (c + 1)) → k)) (1 : (Fin (n + c) → k) ≃ₗ[k] (Fin (n + c) → k)) (ocbPhiS ψ₀ χ k₀ m t j n' c n) = ocbPhiS ψ₀ χ k₀ m t j n' c n`. Use function extensionality and compare the values at `x`. Establish `hx : ((1 : (Fin (n + c) → k) ≃ₗ[k] (Fin (n + c) → k)).symm.toLinearMap ∘ₗ x ∘ₗ (LinearEquiv.refl k (Fin (n' + (c + 1)) → k)).toLinearMap) = x` using `LinearMap.ext fun _ => rfl`. Unfold `Loc.om`. Rewrite using `[hx]`.
+
+Simplify using the standard rewrite rules. Unfold `ocbNe`. Rewrite using `[e]`.
+-/
 theorem ocbNe_one {k : Type} [Field k] [Fintype k] (ψ₀ : AddChar k ℂ) (χ : ℕ → kˣ →* ℂˣ) (k₀ m t j n' c n : ℕ) :
     ocbNe ψ₀ χ k₀ m t j n' c n 1 ↔
       ∃ xj : (Fin n' → k) →ₗ[k] (Fin n → k),
@@ -217,6 +222,11 @@ structure OcbLevIs (Λ : ∀ j, LevFam X.E X.K (R.N j) Pr.vGs) (m2 : ℕ) : Prop
 
 variable {Ch sel mu cst}
 
+/- English proof (translation)
+Establish `h1 : psi0P Ch P ≠ 1`. Unfold `psi0P`. Rewrite using `[dif_pos hP]`. Conclude with `hCh.psi_zero_nontrivial_character ⟨P, hP⟩`. Take `⟨a, ha⟩` from `(AddChar.ne_one_iff).1 h1`.
+
+Use `(AddChar.ne_one_iff).2 ⟨a, fun h => ha ?_⟩` and prove the remaining obligations. Establish `h2 : σ (psi0P Ch P a) = σ 1`. Rewrite using `[map_one]`. Conclude with `h`. Conclude with `σ.injective h2`.
+-/
 theorem ocbPsiC_ne (hCh : Ch.Ok) (σ : X.K →+* ℂ) {P : HeightOneSpectrum (𝓞 X.E)} (hP : P ∈ Pr.vGs) : ocbPsiC Ch σ P ≠ 1 := by
   have h1 : psi0P Ch P ≠ 1 := by
     unfold psi0P
@@ -229,6 +239,13 @@ theorem ocbPsiC_ne (hCh : Ch.Ok) (σ : X.K →+* ℂ) {P : HeightOneSpectrum (�
     exact h
   exact σ.injective h2
 
+/- English proof (translation)
+Establish `hk` using `R.m_add_three_le_k`. Take `⟨a, ha⟩` from `R.m_even`. Establish `e1 : i * (R.t + 1) = i * R.t + i` using `by ring`. Establish `e2 : (i + 1) * (R.t + 1) = (i + 1) * R.t + i + 1` using `by ring`. Use `⟨by omega, R.m_even, by omega, by omega, by omega, rfl, ?_, ?_⟩` and prove the remaining obligations.
+
+Unfold `cOf Ranks.N`. Rewrite using `[e1, Nat.add_sub_cancel]`. Use linear arithmetic over natural numbers and integers. Unfold `cOf Ranks.N`. Rewrite using `[e2]`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem ocbRanks_step {m2 i : ℕ} (hm : R.m = m2 + 2) (hi : i < m2) :
     ocbRanks R.k R.m R.t (i + 1) (R.N i) (cOf R (i + 1)) (R.N (i + 1)) := by
   have hk := R.m_add_three_le_k
@@ -243,6 +260,9 @@ theorem ocbRanks_step {m2 i : ℕ} (hm : R.m = m2 + 2) (hi : i < m2) :
     rw [e2]
     omega
 
+/- English proof (translation)
+Introduce `i hi hh hs H P`. Take `⟨⟨hbar, hred⟩, hiff⟩` from `b2 hB i hi P (hQ P) (hh P) (hs P (hQ P))`. Establish `hin : ocbInAt R i P.1 hbar` using `@c1 (𝓞 X.E ⧸ P.1.asIdeal) (resField P.1) (resFintype P.1) (ocbPsiC Ch σ P.1) (ocbChiC Ch σ P.1) R.k R.m R.t (i + 1) (R.N i) (cOf R (i + 1)) (R.N (i + 1)) (ocbPsiC_ne hB.hCh σ (hQ P)) (ocbRanks_step hB.hm hi) hbar ((hiff hbar hred).1 (H P))`. Conclude with `b3 hB i hi P (hQ P) (hh P) (hs P (hQ P)) hbar hred hin`.
+-/
 theorem oneCoset_surj (σ : X.K →+* ℂ) {m2 : ℕ} (hB : OcbBase Ch sel mu cst m2) (hQ : ∀ P : rowSG Pr sel mu, P.1 ∈ Pr.vGs)
     (c1 : ResidueFieldUnfoldingSupport) (b2 : ReductionExistsInLatticeStabilizer Ch sel mu cst σ m2) (b3 : LiftFromResidueParabolicProduct Ch sel mu cst m2) :
     ∀ i, i < m2 → ∀ hh : rowSG Pr sel mu → AutY X R (i + 1),
@@ -255,6 +275,13 @@ theorem oneCoset_surj (σ : X.K →+* ℂ) {m2 : ℕ} (hB : OcbBase Ch sel mu cs
       (cOf R (i + 1)) (R.N (i + 1)) (ocbPsiC_ne hB.hCh σ (hQ P)) (ocbRanks_step hB.hm hi) hbar ((hiff hbar hred).1 (H P))
   exact b3 hB i hi P (hQ P) (hh P) (hs P (hQ P)) hbar hred hin
 
+/- English proof (translation)
+Introduce `l s hl hs`. Establish `h1 : Loc.atN ((1 : Sp E (n + c) ≃ₗ[E] Sp E (n + c)) (Loc.eN E (n + c) s)) l = if l = s then 1 else 0` using `by show Loc.atN (Loc.eN E (n + c) s) l = _`. Unfold `Loc.atN Loc.eN`. Rewrite using `[dif_pos hl]`. Establish `h2 : Loc.atN ((1 : (Fin (n + c) → 𝓞 E ⧸ P.asIdeal) ≃ₗ[𝓞 E ⧸ P.asIdeal] (Fin (n + c) → 𝓞 E ⧸ P.asIdeal)) (Loc.eN (𝓞 E ⧸ P.asIdeal) (n + c) s)) l = if l = s then 1 else 0` using `by show Loc.atN (Loc.eN (𝓞 E ⧸ P.asIdeal) (n + c) s) l = _`.
+
+Unfold `Loc.atN Loc.eN`. Rewrite using `[dif_pos hl]`. Rewrite using `[h1, h2]`. Distinguish the cases in `hls : l = s`. Substitute `hls` using the available equality.
+
+Rewrite using `[if_pos rfl, if_pos rfl, sub_self, zpow_zero, mul_one]`. Conclude with `⟨⟨1, 1, fun h => P.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h), by simp⟩, redP_one.symm⟩`. Rewrite using `[if_neg hls, if_neg hls, zero_mul]`. Conclude with `⟨⟨0, 1, fun h => P.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h), by simp⟩, redP_zero.symm⟩`.
+-/
 theorem ocbIsRed_one {E : Type} [Field E] [NumberField E] (P : HeightOneSpectrum (𝓞 E)) (q n c : ℕ) : ocbIsRed P q n c 1 1 := by
   intro l s hl hs
   have h1 : Loc.atN ((1 : Sp E (n + c) ≃ₗ[E] Sp E (n + c)) (Loc.eN E (n + c) s)) l = if l = s then 1 else 0 := by
@@ -274,6 +301,9 @@ theorem ocbIsRed_one {E : Type} [Field E] [NumberField E] (P : HeightOneSpectrum
   · rw [if_neg hls, if_neg hls, zero_mul]
     exact ⟨⟨0, 1, fun h => P.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h), by simp⟩, redP_zero.symm⟩
 
+/- English proof (translation)
+Introduce `i hi P`. Establish `h` using `(b2 hB i hi P (hQ P) 1 (Subgroup.one_mem _)).2 1 (ocbIsRed_one P.1 (qOf P.1) _ _)`. Use `h.2 ?_` and prove the remaining obligations. Conclude with `(@ocbNe_one (𝓞 X.E ⧸ P.1.asIdeal) (resField P.1) (resFintype P.1) (ocbPsiC Ch σ P.1) (ocbChiC Ch σ P.1) R.k R.m R.t (i + 1) (R.N i) (cOf R (i + 1)) (R.N (i + 1))).2 (@c2 (𝓞 X.E ⧸ P.1.asIdeal) (resField P.1) (resFintype P.1) (ocbPsiC Ch σ P.1) (ocbChiC Ch σ P.1) R.k R.m R.t (i + 1 …`.
+-/
 theorem nonVanSym_of (σ : X.K →+* ℂ) {m2 : ℕ} (hB : OcbBase Ch sel mu cst m2) (hQ : ∀ P : rowSG Pr sel mu, P.1 ∈ Pr.vGs)
     (c2 : ResidueFieldUnfoldingNonzero) (b2 : ReductionExistsInLatticeStabilizer Ch sel mu cst σ m2) : NonVanSym Ch sel mu cst m2 := by
   intro i hi P
@@ -284,6 +314,9 @@ theorem nonVanSym_of (σ : X.K →+* ℂ) {m2 : ℕ} (hB : OcbBase Ch sel mu cst
     (@c2 (𝓞 X.E ⧸ P.1.asIdeal) (resField P.1) (resFintype P.1) (ocbPsiC Ch σ P.1) (ocbChiC Ch σ P.1) R.k R.m R.t (i + 1) (R.N i)
       (cOf R (i + 1)) (R.N (i + 1)) (ocbPsiC_ne hB.hCh σ (hQ P)) (ocbRanks_step hB.hm hi))
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨{ surj := oneCoset_surj σ hB hQ c1 b2 b3 grpG := fun j hj w hbar => (hΛ.H j hj w hbar).trans (hG hB j hj w hbar).symm chrG := fun j hj w hbar g r hr hg hred => (hΛ.lam j hj w hbar).trans (hC hB j hj w hbar.1 g r hr hg hred).symm }, nonVanSym_of σ hB hQ c2 b2⟩`.
+-/
 theorem oneCosetSym_of (σ : X.K →+* ℂ) {m2 : ℕ} {Λ : ∀ j, LevFam X.E X.K (R.N j) Pr.vGs} (hB : OcbBase Ch sel mu cst m2)
     (hQ : ∀ P : rowSG Pr sel mu, P.1 ∈ Pr.vGs) (c1 : ResidueFieldUnfoldingSupport) (c2 : ResidueFieldUnfoldingNonzero)
     (b2 : ReductionExistsInLatticeStabilizer Ch sel mu cst σ m2) (b3 : LiftFromResidueParabolicProduct Ch sel mu cst m2) (hG : OcbGrpGLoc Ch sel mu cst m2) (hC : OcbChrGLoc Ch sel mu cst m2)

@@ -20,6 +20,9 @@ variable {K : Type} [CommRing K] {M : ℕ}
 def lowerB (U : Matrix (Fin (M + 2)) (Fin (M + 2)) K) : Matrix (Fin M) (Fin M) K :=
   Matrix.of fun i j => U i.succ.succ j.succ.succ
 
+/- English proof (translation)
+Use `congrFun h i` as an intermediate fact. Rewrite using `[← this]`. Simplify using `[Matrix.mulVec, dotProduct, Fin.sum_univ_succ]`.
+-/
 theorem col_zero {U : Matrix (Fin (M + 2)) (Fin (M + 2)) K}
     (h : U.mulVec (Fin.cons 1 fun _ => 0) = Fin.cons 1 fun _ => 0) (i : Fin (M + 2)) :
     U i 0 = (Fin.cons 1 (fun _ => 0) : Fin (M + 2) → K) i := by
@@ -27,6 +30,9 @@ theorem col_zero {U : Matrix (Fin (M + 2)) (Fin (M + 2)) K}
   rw [← this]
   simp [Matrix.mulVec, dotProduct, Fin.sum_univ_succ]
 
+/- English proof (translation)
+Establish `h` using `congrFun (congrFun hU 0) j.succ.succ`. Establish `h1 : U 1 0 = 0` using `h0 1`. Establish `hr : ∀ i : Fin M, U i.succ.succ 0 = 0` using `fun i => h0 i.succ.succ`. Simplify using `only [Matrix.mul_apply, cT, Matrix.transpose_apply, Matrix.map_apply, Fin.sum_univ_succ] at h`. Simplify `h` using `[hypOne_zero_zero, hypOne_zero_one, hypOne_one_zero, hypOne_one_one, hypOne_zero_rest, hypOne_one_rest, hypOne_rest_zero, hypOne_rest_one, hypOne_rest_rest, h0 0, h1, hr]`.
+-/
 theorem row_one (s : K →+* K) (A : Matrix (Fin M) (Fin M) K)
     {U : Matrix (Fin (M + 2)) (Fin (M + 2)) K} (hU : cT s U * hypOne A * U = hypOne A)
     (h0 : ∀ i, U i 0 = (Fin.cons 1 (fun _ => 0) : Fin (M + 2) → K) i) (j : Fin M) :
@@ -38,6 +44,9 @@ theorem row_one (s : K →+* K) (A : Matrix (Fin M) (Fin M) K)
   simpa [hypOne_zero_zero, hypOne_zero_one, hypOne_one_zero, hypOne_one_one, hypOne_zero_rest,
       hypOne_one_rest, hypOne_rest_zero, hypOne_rest_one, hypOne_rest_rest, h0 0, h1, hr] using h
 
+/- English proof (translation)
+Use extensionality with `i j`. Establish `h` using `congrFun (congrFun hU i.succ.succ) j.succ.succ`. Establish `h1 : ∀ j : Fin M, U 1 j.succ.succ = 0` using `row_one s A hU h0`. Simplify using `only [Matrix.mul_apply, cT, Matrix.transpose_apply, Matrix.map_apply, Fin.sum_univ_succ] at h ⊢`. Simplify `h` using `[lowerB, hypOne_zero_zero, hypOne_zero_one, hypOne_one_zero, hypOne_one_one, hypOne_zero_rest, hypOne_one_rest, hypOne_rest_zero, hypOne_rest_one, hypOne_rest_rest, h1]`.
+-/
 theorem lowerB_isometry (s : K →+* K) (A : Matrix (Fin M) (Fin M) K)
     {U : Matrix (Fin (M + 2)) (Fin (M + 2)) K} (hU : cT s U * hypOne A * U = hypOne A)
     (h0 : ∀ i, U i 0 = (Fin.cons 1 (fun _ => 0) : Fin (M + 2) → K) i) :
@@ -49,6 +58,11 @@ theorem lowerB_isometry (s : K →+* K) (A : Matrix (Fin M) (Fin M) K)
   simpa [lowerB, hypOne_zero_zero, hypOne_zero_one, hypOne_one_zero, hypOne_one_one, hypOne_zero_rest,
       hypOne_one_rest, hypOne_rest_zero, hypOne_rest_one, hypOne_rest_rest, h1] using h
 
+/- English proof (translation)
+Establish `e1 : U 1 0 = 0` using `h0 1`. Establish `er : ∀ i : Fin M, U i.succ.succ 0 = 0` using `fun i => h0 i.succ.succ`. Establish `e0 : U 0 0 = 1` using `h0 0`. Use function extensionality and compare the values at `i`. Use `Fin.cases ?_ (fun i => Fin.cases ?_ (fun i => ?_) i) i` and prove the remaining obligations.
+
+Simplify using `[Matrix.mulVec, dotProduct, Fin.sum_univ_succ, e0]`. Simplify using `[Matrix.mulVec, dotProduct, Fin.sum_univ_succ, e1, h1]`. Simplify using `[Matrix.mulVec, dotProduct, Fin.sum_univ_succ, er, lowerB]`.
+-/
 theorem mulVec_cons (U : Matrix (Fin (M + 2)) (Fin (M + 2)) K)
     (h0 : ∀ i, U i 0 = (Fin.cons 1 (fun _ => 0) : Fin (M + 2) → K) i)
     (h1 : ∀ j : Fin M, U 1 j.succ.succ = 0) (a : K) (Y : Fin M → K) :
@@ -63,6 +77,9 @@ theorem mulVec_cons (U : Matrix (Fin (M + 2)) (Fin (M + 2)) K)
   · simp [Matrix.mulVec, dotProduct, Fin.sum_univ_succ, e1, h1]
   · simp [Matrix.mulVec, dotProduct, Fin.sum_univ_succ, er, lowerB]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Use `Fin.cases ?_ (fun j => ?_) k` and prove the remaining obligations. Simplify `hfix` using `[consA]`. Simplify `mulVec_cons U h0 h1 (a 0 j) (Y j)` using `[consA]`.
+-/
 theorem mulVec_consA {n : ℕ} (U : Matrix (Fin (M + 2)) (Fin (M + 2)) K)
     (hfix : U.mulVec (Fin.cons 1 fun _ => 0) = Fin.cons 1 fun _ => 0)
     (h0 : ∀ i, U i 0 = (Fin.cons 1 (fun _ => 0) : Fin (M + 2) → K) i)
@@ -74,6 +91,9 @@ theorem mulVec_consA {n : ℕ} (U : Matrix (Fin (M + 2)) (Fin (M + 2)) K)
   · simpa [consA] using hfix
   · simpa [consA] using mulVec_cons U h0 h1 (a 0 j) (Y j)
 
+/- English proof (translation)
+Use extensionality with `i j`. Apply the tactic sequence `refine Fin.cases ?_ (fun i => Fin.cases ?_ (fun i => ?_) i) i <;>`. Use `Fin.cases ?_ (fun j => Fin.cases ?_ (fun j => ?_) j) j` and prove the remaining obligations. Use `all_goals`. Simplify using `[hypOne_zero_zero, hypOne_zero_one, hypOne_one_zero, hypOne_one_one, hypOne_zero_rest, hypOne_one_rest, hypOne_rest_zero, hypOne_rest_one, hypOne_rest_rest]`.
+-/
 theorem map_hypOne {L : Type} [CommRing L] (f : K →+* L) (A : Matrix (Fin M) (Fin M) K) :
     (hypOne A).map f = hypOne (A.map f) := by
   ext i j
@@ -89,10 +109,18 @@ section Main
 
 variable {F E : Type} [Field F] [Field E] [Algebra F E]
 
+/- English proof (translation)
+The claim follows from `map_hypOne (inclR R) J`.
+-/
 theorem JR_hypOne (R : Type) [CommRing R] [Algebra F R] {M : ℕ} (J : Matrix (Fin M) (Fin M) E) :
     JR (F := F) R (hypOne J) = hypOne (JR (F := F) R J) :=
   map_hypOne (inclR R) J
 
+/- English proof (translation)
+Establish `hu : IsUnit J.det` using `isUnit_iff_ne_zero.mpr hJ`. Establish `hi : (J⁻¹).map (inclR (F` using `F) R) * JR (F := F) R J = 1 := by`. Establish `h1` using `congrArg (fun A : Matrix (Fin M) (Fin M) E => A.map (inclR (F := F) R)) (Matrix.nonsing_inv_mul J hu)`. Simplify `h1` using `[JR, Matrix.map_mul, Matrix.map_one]`. Establish `hl : ((J⁻¹).map (inclR (F` using `F) R) * cT (sigR R σ) κ * JR (F := F) R J) * κ = 1 := by`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hr` using `mul_eq_one_comm.mp hl`. Set `G : GL (Fin M) (R ⊗[F] E)` to `⟨κ, _, hr, hl⟩`. Establish `hG : G ∈ HR R σ J` using `hκ`. Conclude with `⟨(⟨G, hG⟩ : HR R σ J), rfl⟩`.
+-/
 theorem exists_HA (R : Type) [CommRing R] [Algebra F R] (σ : E →ₐ[F] E) {M : ℕ}
     {J : Matrix (Fin M) (Fin M) E} (hJ : J.det ≠ 0) {κ : Matrix (Fin M) (Fin M) (R ⊗[F] E)}
     (hκ : cT (sigR R σ) κ * JR (F := F) R J * κ = JR (F := F) R J) :
@@ -112,6 +140,33 @@ theorem exists_HA (R : Type) [CommRing R] [Algebra F R] (σ : E →ₐ[F] E) {M 
 
 end Main
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hcm M J hJ R _ _ _ _ _ hL n d b lam hlam m₀ hm₀ φ hφ g g' hgg`. Use `haveI : IsTopologicalRing R := hL.1`. Use `haveI : LocallyCompactSpace R := hL.2.1`. Use `haveI : SecondCountableTopology R := hL.2.2.1`. Use `haveI : T2Space R := hL.2.2.2.1`.
+
+Take `⟨tK1, tK2, tK3, tK4, -, -, -, tK8, -, -⟩` from `GlobalTheory.T.tensor_locally_compact_ring F E σ hcm R`. Use `haveI := tK1`. Use `haveI := tK2`. Use `haveI := tK3`. Use `haveI := tK4`.
+
+Use `haveI : BorelSpace (R ⊗[F] E) := ⟨rfl⟩`. Use `haveI : BorelSpace (Fin n → Fin M → R ⊗[F] E) := tK8 n M`. Use `haveI : BorelSpace (Fin 1 → Fin n → R ⊗[F] E) := tK8 1 n`. Use `haveI : BorelSpace (Fin (n + 1) → Fin (M + 2) → R ⊗[F] E) := tK8 (n + 1) (M + 2)`. Take `⟨-, hW, -⟩` from `GlobalTheory.T.coordinate_haar_measure F E σ hcm R d b lam hlam`.
+
+Use `haveI := hW 1 n`. Take `⟨-, -, -, -, -, hA⟩` from `GlobalTheory.T.adelic_unitary_group_locally_compact F E σ hcm (M + 2) (hypOne J) (isHermND_hypOne σ hJ) R`. Take `⟨-, -, -, -, -, hA'⟩` from `GlobalTheory.T.adelic_unitary_group_locally_compact F E σ hcm M J hJ R`. Take `⟨-, e1, em, -⟩` from `hA 1`. Take `⟨hc, -, hm, -⟩` from `hA (n + 1)`.
+
+Take `⟨hc', -, -, -⟩` from `hA' n`. Use `set u : HA R σ (hypOne J) := g⁻¹ * g' with hu_def`. Establish `hg' : g' = g * u` using `by simp [hu_def]`. Establish `hfix : actW R σ (hypOne J) u (e0 _ M) = e0 _ M`. Rewrite using `[hu_def, em, ← hgg, ← em, inv_mul_cancel, e1]`.
+
+Use `set U : Matrix (Fin (M + 2)) (Fin (M + 2)) (R ⊗[F] E) := (HA.mat R σ (hypOne J) u).val with hU_def`. Establish `hfixV : U.mulVec (Fin.cons 1 fun _ => 0) = Fin.cons 1 fun _ => 0` using `congrFun hfix 0`. Establish `h0` using `col_zero hfixV`. Establish `hUu : cT (sigR R σ) U * hypOne (JR (F` using `F) R J) * U = hypOne (JR (F := F) R J) := by`. Rewrite using `[← JR_hypOne]`.
+
+Conclude with `(show HR R σ (hypOne J) from u).2`. Establish `h1` using `row_one _ _ hUu h0`. Apply the tactic sequence `obtain ⟨k, hk⟩ := exists_HA R σ hJ.2 (lowerB_isometry _ _ hUu h0)`. Establish `hact : ∀ (a : Fin 1 → Fin n → R ⊗[F] E) (Y : Fin n → Fin M → R ⊗[F] E), actW R σ (hypOne J) u (consA a Y) = consA (a + fun _ j => ∑ i, U 0 i.succ.succ * Y j i) (actW R σ J k Y)`. Introduce `a Y`.
+
+Use `mulVec_consA U hfixV h0 h1 a Y` as an intermediate fact. Establish `e : actW R σ J k Y = fun j => (lowerB U).mulVec (Y j)`. Use function extensionality and compare the values at `j`. Simplify using `only [actW, actTup, hk]`. Rewrite using `[e, ← this]`.
+
+Both sides reduce to the same expression. Set `G : (Fin n → Fin M → R ⊗[F] E) → ℝ≥0∞` to `fun Y => ∫⁻ a, φ (actW R σ (hypOne J) g (consA a Y)) ∂(coordW R b lam 1 n)`. Establish `hcons : Continuous fun p : (Fin n → Fin M → R ⊗[F] E) × (Fin 1 → Fin n → R ⊗[F] E) => (consA p.2 p.1 : Fin (n + 1) → Fin (M + 2) → R ⊗[F] E)`. Use `continuous_pi fun k => continuous_pi fun i => ?_` and prove the remaining obligations. Use `Fin.cases ?_ (fun j => ?_) k` and prove the remaining obligations.
+
+Apply the tactic sequence `refine Fin.cases ?_ (fun i => ?_) i <;> simpa [consA] using continuous_const`. Use `Fin.cases ?_ (fun i => Fin.cases ?_ (fun i => ?_) i) i` and prove the remaining obligations. Simplify using `only [consA, Fin.cons_succ, Fin.cons_zero] fun_prop`. Simplify `continuous_const` using `[consA]`. Simplify using `only [consA, Fin.cons_succ] fun_prop`.
+
+Establish `hGm : Measurable G`. Establish `hf : Measurable fun p : (Fin n → Fin M → R ⊗[F] E) × (Fin 1 → Fin n → R ⊗[F] E) => φ (actW R σ (hypOne J) g (consA p.2 p.1))` using `hφ.comp (hc.comp (continuous_const.prodMk hcons)).measurable`. Conclude with `hf.lintegral_prod_right'`. Establish `hkm : Measurable (actW R σ J k : (Fin n → Fin M → R ⊗[F] E) → _)` using `(hc'.comp (continuous_const.prodMk continuous_id)).measurable`. Establish `hinner : ∀ Y, (∫⁻ a, φ (actW R σ (hypOne J) g' (consA a Y)) ∂(coordW R b lam 1 n)) = G (actW R σ J k Y)`.
+
+Introduce `Y`. Establish `: ∀ a, actW R σ (hypOne J) g' (consA a Y) = actW R σ (hypOne J) g (consA (a + fun _ j => ∑ i, U 0 i.succ.succ * Y j i) (actW R σ J k Y))`. Introduce `a`. Rewrite using `[hg', hm, hact]`. Simplify using `only [this]`.
+
+Conclude with `lintegral_add_right_eq_self (fun a => φ (actW R σ (hypOne J) g (consA a (actW R σ J k Y)))) _`. Use `show (∫⁻ Y, G Y ∂m₀) = ∫⁻ Y, (∫⁻ a, φ (actW R σ (hypOne J) g' (consA a Y)) ∂(coordW R b lam 1 n)) ∂m₀`. Simplify using `only [hinner]`. Rewrite using `[← lintegral_map hGm hkm, hm₀ k]`.
+-/
 theorem stageInt_eq_of_e0 : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → ∀ (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R] [MeasurableSpace R] [BorelSpace R], IsLocR R → ∀ (n d : ℕ) (b : Module.Basis (Fin d) F E) (lam : Measure R), lam.IsAddHaarMeasure → ∀ m₀ : Measure (Fin n → Fin M → R ⊗[F] E), (∀ h : HA R σ J, m₀.map (actW R σ J h) = m₀) → ∀ φ : (Fin (n + 1) → Fin (M + 2) → R ⊗[F] E) → ℝ≥0∞, Measurable φ → ∀ g g' : HA R σ (hypOne J), actW R σ (hypOne J) g (e0 _ M) = actW R σ (hypOne J) g' (e0 _ M) → stageInt R σ J b lam m₀ φ g = stageInt R σ J b lam m₀ φ g' := by
   intro F E _ _ _ _ _ σ hcm M J hJ R _ _ _ _ _ hL n d b lam hlam m₀ hm₀ φ hφ g g' hgg
   haveI : IsTopologicalRing R := hL.1

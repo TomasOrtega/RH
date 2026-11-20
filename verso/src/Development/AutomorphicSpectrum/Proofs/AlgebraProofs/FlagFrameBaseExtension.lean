@@ -12,6 +12,17 @@ namespace GlobalTheory.CompanionTheory.Ar.Num.PullFlagFrame
 
 open GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.NumbersDVR.Bundles (restrictChart)
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Take `⟨j₀, hj₀, ha₀⟩` from `hne`. Set `S` to `Finset.univ.filter (fun j => i < j ∧ a j ≠ 0)`. Establish `hS : S.Nonempty` using `⟨j₀, by simp [S, hj₀, ha₀]⟩`.
+
+Establish `hm : S.max' hS ∈ S` using `S.max'_mem hS`. Take `⟨m, hmd⟩ : ∃ m, m = S.max' hS` from `⟨_, rfl⟩`. Rewrite `hm` using `[← hmd]`. Establish `hm' : i < m ∧ a m ≠ 0` using `by simpa [S] using hm`. Establish `hsum` using `h m hm'.1`.
+
+Rewrite `hsum` using `[Finset.sum_eq_single m]`. Conclude with `mul_ne_zero hm'.2 (hd m) hsum`. Introduce `j _ hjm`. Break down `lt_or_gt_of_ne hjm with hlt | hgt` into its components or cases. Rewrite using `[hT j m hlt, mul_zero]`.
+
+Establish `hz : a j = 0`. Assume the negation of the conclusion as `hz`. Establish `hjS : j ∈ S` using `by simp [S, hz, hm'.1.trans hgt]`. Use `S.le_max' j hjS` as an intermediate fact. Rewrite `this` using `[← hmd]`.
+
+Conclude with `absurd this (not_le.2 hgt)`. Rewrite using `[hz, zero_mul]`. Simplify using the standard rewrite rules.
+-/
 theorem tri_solve {F : Type} [Field F] {N : ℕ} (T : Fin N → Fin N → F) (a : Fin N → F)
     (hT : ∀ j l, j < l → T j l = 0) (hd : ∀ j, T j j ≠ 0) (i : Fin N)
     (h : ∀ l, i < l → ∑ j, a j * T j l = 0) : ∀ j, i < j → a j = 0 := by
@@ -47,12 +58,26 @@ variable {O : Type} [CommRing O] {Ω : Type} [Field Ω] [Algebra O Ω]
   {Ω₁ : Type} [Field Ω₁] [Algebra O Ω₁] [Algebra Ω Ω₁] [IsScalarTower O Ω Ω₁]
   {K' : Type} [Fintype K'] {ι' : K' → Type} [∀ k, Fintype (ι' k)]
 
+/- English proof (translation)
+Simplify using `[mseg, Fintype.prod_sum_type, bcCoord, joinCoord, restrictChart, map_prod]`.
+-/
 theorem mseg_bcCoord (x : (Σ k, ι k) → Ω) (z : (Σ k, ι' k) → Ω₁)
     (s : ∀ k : K ⊕ K', Sum.elim ι ι' k) :
     mseg (bcCoord x z) s =
       algebraMap Ω Ω₁ (mseg x (restrictChart s)) * ∏ k, z ⟨k, s (.inr k)⟩ := by
   simp [mseg, Fintype.prod_sum_type, bcCoord, joinCoord, restrictChart, map_prod]
 
+/- English proof (translation)
+Establish `hZ : (∏ k, z ⟨k, s (.inr k)⟩) ≠ 0`. Introduce `h0`. Conclude with `hs (by rw [mseg_bcCoord, h0, mul_zero])`. Proceed by induction on `ha using Algebra.adjoin_induction with`. Consider the case `mem t ht`.
+
+Take `⟨j, rfl⟩` from `ht`. Set `j' : ∀ k : K ⊕ K', Sum.elim ι ι' k` to `fun k => match k with`. Consider the case `.inl k => j k`. Consider the case `.inr k => s (.inr k)`. Establish `hj : restrictChart j' = j` using `rfl`.
+
+Establish `hz : (∏ k, z ⟨k, j' (.inr k)⟩) = ∏ k, z ⟨k, s (.inr k)⟩` using `rfl`. Establish `e : algebraMap Ω Ω₁ (mseg x j / mseg x (restrictChart s)) = mseg (bcCoord x z) j' / mseg (bcCoord x z) s`. Rewrite using `[mseg_bcCoord, mseg_bcCoord, hj, hz, map_div₀, mul_div_mul_right _ _ hZ]`. Rewrite using `[e]`. Conclude with `Algebra.subset_adjoin ⟨j', rfl⟩`.
+
+Consider the case `algebraMap r`. Rewrite using `[← IsScalarTower.algebraMap_apply O Ω Ω₁]`. Conclude with `Subalgebra.algebraMap_mem _ r`. Consider the case `add s t _ _ hs ht => rw [map_add]`. Conclude with `Subalgebra.add_mem _ hs ht`.
+
+Consider the case `mul s t _ _ hs ht => rw [map_mul]`. Conclude with `Subalgebra.mul_mem _ hs ht`.
+-/
 theorem map_mem_chartRing_bc (x : (Σ k, ι k) → Ω) (z : (Σ k, ι' k) → Ω₁)
     (s : ∀ k : K ⊕ K', Sum.elim ι ι' k) (hs : mseg (bcCoord x z) s ≠ 0) {a : Ω}
     (ha : a ∈ chartRing O (mseg x) (restrictChart s)) :
@@ -83,6 +108,11 @@ theorem map_mem_chartRing_bc (x : (Σ k, ι k) → Ω) (z : (Σ k, ι' k) → Ω
 variable {N : ℕ} {V : Type} [AddCommGroup V] [Module Ω V]
   {V₁ : Type} [AddCommGroup V₁] [Module Ω₁ V₁] [Module Ω V₁] [IsScalarTower Ω Ω₁ V₁]
 
+/- English proof (translation)
+Establish `h1 : bc e = ∑ i, algebraMap Ω Ω₁ (w.repr e i) • w₁ i` using `by conv_lhs => rw [← w.sum_repr e]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, hw, algebraMap_smul]`. Rewrite using `[h1, map_sum, Finsupp.finset_sum_apply, Finset.sum_eq_single j]`.
+
+Rewrite using `[map_smul, Module.Basis.repr_self, Finsupp.smul_apply, Finsupp.single_eq_same, smul_eq_mul, mul_one]`. Introduce `i _ hij`. Rewrite using `[map_smul, Module.Basis.repr_self, Finsupp.smul_apply, Finsupp.single_apply, if_neg hij, smul_zero]`. Introduce `hj`. Conclude with `absurd (Finset.mem_univ j) hj`.
+-/
 theorem repr_bc (bc : V →ₗ[Ω] V₁) (w : Module.Basis (Fin N) Ω V) (w₁ : Module.Basis (Fin N) Ω₁ V₁)
     (hw : ∀ i, w₁ i = bc (w i)) (e : V) (j : Fin N) :
     w₁.repr (bc e) j = algebraMap Ω Ω₁ (w.repr e j) := by
@@ -100,6 +130,33 @@ theorem repr_bc (bc : V →ₗ[Ω] V₁) (w : Module.Basis (Fin N) Ω V) (w₁ :
   · intro hj
     exact absurd (Finset.mem_univ j) hj
 
+/- English proof (translation)
+Use `⟨fun s hs0 i => ?_⟩` and prove the remaining obligations. Establish `hs : mseg (bcCoord x z) s ≠ 0` using `hs0`. Establish `hc : mseg x (restrictChart s) ≠ 0`. Introduce `h0`. Conclude with `hs (by rw [mseg_bcCoord, h0, map_zero, zero_mul])`.
+
+Take `⟨u, hu, hup, hdiag, hgen⟩` from `FlagPairExt.exists_frame x E w b h (restrictChart s) hc`. Establish `hx : ∀ k, x ⟨k, restrictChart s k⟩ ≠ 0` using `fun k => (Finset.prod_ne_zero_iff.1 hc) k (Finset.mem_univ k)`. Establish `hM : ∀ i, (∏ k, x ⟨k, restrictChart s k⟩ ^ b i k) ≠ 0` using `fun i => Finset.prod_ne_zero_iff.2 fun k _ => zpow_ne_zero _ (hx k)`. Establish `hMon : (∏ k : K ⊕ K', (bcCoord x z) ⟨k, s k⟩ ^ pullDeg (K'` using `K') (b i) k) = algebraMap Ω Ω₁ (∏ k, x ⟨k, restrictChart s k⟩ ^ b i k) := by`. Rewrite using `[Fintype.prod_sum_type]`.
+
+Simplify using `[pullDeg, bcCoord, joinCoord, restrictChart, map_prod, map_zpow₀]`. Establish `hbu : ∀ j, bc (u j) ∈ EB.lat s`. Introduce `j`. Rewrite using `[hp s hs]`. Conclude with `AddSubgroup.subset_closure ⟨1, Subalgebra.one_mem _, u j, hu j, (one_smul _ _).symm⟩`.
+
+Establish `hgenL : ∀ v ∈ EB.lat s, ∃ a : Fin N → Ω₁, (∀ j, a j ∈ chartRing O (mseg (bcCoord x z)) s) ∧ v = ∑ j, a j • bc (u j)`. Introduce `v hv`. Rewrite `hv` using `[hp s hs]`. Proceed by induction on `hv using AddSubgroup.closure_induction with`. Consider the case `mem v hv`.
+
+Take `⟨a, ha, e, he, rfl⟩` from `hv`. Take `⟨t, ht, rfl⟩` from `hgen e he`. Use `⟨fun j => a * algebraMap Ω Ω₁ (t j), fun j => Subalgebra.mul_mem _ ha (map_mem_chartRing_bc x z s hs (ht j)), ?_⟩` and prove the remaining obligations. Rewrite using `[map_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_smul, ← algebraMap_smul Ω₁ (t j), smul_smul]`. Consider the case `zero => exact ⟨0, fun _ => Subalgebra.zero_mem _, by simp⟩`. Consider the case `add v v' _ _ hv hv'`. Take `⟨a, ha, rfl⟩` from `hv`. Take `⟨a', ha', rfl⟩` from `hv'`.
+
+Conclude with `⟨a + a', fun j => Subalgebra.add_mem _ (ha j) (ha' j), by`. Simplify using `[add_smul, Finset.sum_add_distrib]⟩`. Consider the case `neg v _ hv`. Take `⟨a, ha, rfl⟩` from `hv`. Conclude with `⟨-a, fun j => Subalgebra.neg_mem _ (ha j), by simp [Finset.sum_neg_distrib]⟩`.
+
+Use extensionality with `t`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨v, hv, htri, rfl⟩`. Take `⟨a, ha, hav⟩` from `hgenL v hv`. Set `T : Fin N → Fin N → Ω₁` to `fun j l => algebraMap Ω Ω₁ (w.repr (u j) l)`.
+
+Establish `hrepr : ∀ l, w₁.repr v l = ∑ j, a j * T j l`. Introduce `l`. Rewrite using `[hav]`. Simplify using `[T, map_sum, repr_bc bc w w₁ hw]`. Establish `hT : ∀ j l, j < l → T j l = 0` using `fun j l hjl => by simp [T, hup j l hjl]`.
+
+Establish `hd : ∀ j, T j j ≠ 0` using `fun j => by`. Simplify using `only [T, hdiag j]`. Conclude with `(map_ne_zero _).2 (hM j)`. Establish `hz` using `tri_solve T a hT hd i fun l hl => by rw [← hrepr l]; exact htri l hl`. Use `⟨a i, ha i, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hrepr i, Finset.sum_eq_single i]`. Use `show a i * T i i = _`. Rewrite using `[hMon]`. Simplify using `only [T, hdiag i]`. Introduce `j _ hji`.
+
+Break down `lt_or_gt_of_ne hji with hlt | hgt` into its components or cases. Rewrite using `[hT j i hlt, mul_zero]`. Rewrite using `[hz j hgt, zero_mul]`. Simplify using the standard rewrite rules. Introduce and unpack `⟨a, ha, rfl⟩`.
+
+Use `⟨a • bc (u i), EB.stable s a ha _ (hbu i), fun j hj => ?_, ?_⟩` and prove the remaining obligations. Simplify using `[repr_bc bc w w₁ hw, hup i j hj]`. Rewrite using `[hMon]`. Simplify using `[repr_bc bc w w₁ hw, hdiag i]`.
+-/
 theorem isFlagFrame_bc (x : (Σ k, ι k) → Ω) (E : ChartBundle O (mseg x) N V)
     (w : Module.Basis (Fin N) Ω V) (b : Fin N → K → ℤ) (h : IsFlagFrame x E w b)
     (z : (Σ k, ι' k) → Ω₁) (bc : V →ₗ[Ω] V₁) (w₁ : Module.Basis (Fin N) Ω₁ V₁)
@@ -180,6 +237,11 @@ theorem isFlagFrame_bc (x : (Σ k, ι k) → Ω) (E : ChartBundle O (mseg x) N V
 
 end BC
 
+/- English proof (translation)
+Introduce `O _ _ _ Ω _ _ K _ _ ι _ x N V _ _ E w b h`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `K' _ _ ι' _ z EB hp`. Conclude with `isFlagFrame_bc (Ω₁ := Ω) (V₁ := V) x E w b h z LinearMap.id w (fun _ => rfl) EB hp`. Introduce `Ω₁ _ _ _ _ K' _ _ ι' _ z V₁ _ _ _ _ bc w₁ hw EB hp`.
+
+Conclude with `isFlagFrame_bc x E w b h z bc w₁ hw EB hp`.
+-/
 theorem main : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (Ω : Type) [Field Ω] [Algebra O Ω] (K : Type) [Fintype K] [DecidableEq K] (ι : K → Type) [∀ k, Fintype (ι k)] (x : (Σ k, ι k) → Ω) (N : ℕ) (V : Type) [AddCommGroup V] [Module Ω V] (E : ChartBundle O (mseg x) N V) (w : Module.Basis (Fin N) Ω V) (b : Fin N → K → ℤ), IsFlagFrame x E w b → (∀ (K' : Type) [Fintype K'] [DecidableEq K'] (ι' : K' → Type) [∀ k, Fintype (ι' k)] (z : (Σ k, ι' k) → Ω) (EB : ChartBundle O (mseg (joinCoord x z)) N V), IsPull O x z E EB → IsFlagFrame (joinCoord x z) EB w (fun i => pullDeg (K' := K') (b i))) ∧ ∀ (Ω₁ : Type) [Field Ω₁] [Algebra O Ω₁] [Algebra Ω Ω₁] [IsScalarTower O Ω Ω₁] (K' : Type) [Fintype K'] [DecidableEq K'] (ι' : K' → Type) [∀ k, Fintype (ι' k)] (z : (Σ k, ι' k) → Ω₁) (V₁ : Type) [AddCommGroup V₁] [Module Ω₁ V₁] [Module Ω V₁] [IsScalarTower Ω Ω₁ V₁] (bc : V →ₗ[Ω] V₁) (w₁ : Module.Basis (Fin N) Ω₁ V₁), (∀ i, w₁ i = bc (w i)) → ∀ EB : ChartBundle O (mseg (bcCoord x z)) N V₁, IsPullBC O x z bc E EB → IsFlagFrame (bcCoord x z) EB w₁ (fun i => pullDeg (K' := K') (b i)) := by
   intro O _ _ _ Ω _ _ K _ _ ι _ x N V _ _ E w b h
   refine ⟨?_, ?_⟩

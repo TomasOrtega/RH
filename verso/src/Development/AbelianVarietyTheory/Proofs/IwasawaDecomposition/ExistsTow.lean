@@ -11,6 +11,9 @@ namespace GlobalTheory.TowerSpaces
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Introduce `D`. Take `⟨Tw⟩` from `nonempty_tow (GlobalTheory.WittLow.wittLowEx D)`. Conclude with `⟨Tw, Tw.iXYs_rec, Tw.iYXm_rec⟩`.
+-/
 theorem exists_tow : ∀ D : D7, ∃ Tw : Tow D, (∀ j, j < D.R.m → HEq (Tw.iXYs D.R.t j) (D.sp.iXY j)) ∧
     HEq (Tw.iYXm D.R.t) (D.sp.iX'.comp D.sp.eYm.symm.toLinearMap) := by
   intro D

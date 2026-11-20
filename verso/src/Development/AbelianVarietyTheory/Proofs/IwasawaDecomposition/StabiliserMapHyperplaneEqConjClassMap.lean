@@ -7,6 +7,11 @@ set_option maxHeartbeats 4000000
 
 namespace GlobalTheory.Mem.Col2.HAt.Stab
 
+/- English proof (translation)
+Establish `e : lin S h (reGL h E (Formalism.L2.Herm.toGLb S.frame g)) = g`. Substitute `h` using the available equality. Establish `e0 : ∀ k : GL (Fin S.rank) E, reGL rfl E k = k` using `fun k => by`. Use extensionality with `a b`. Simplify using `[reGL]`.
+
+Use `show (Formalism.L2.Herm.toGLb S.frame).symm (reGL rfl E (reGL rfl E (Formalism.L2.Herm.toGLb S.frame g))) = g`. Rewrite using `[e0, e0, MulEquiv.symm_apply_apply]`. Rewrite using `[← co_lin, e]`.
+-/
 theorem co_apply {E : Type} [Field E] [NumberField E] [StarRing E] (S : HSpace E) {n : ℕ} (h : S.rank = n)
     (g : S.V ≃ₗ[E] S.V) (x : S.V) :
     co S h (g x) = (reGL h E (Formalism.L2.Herm.toGLb S.frame g)).1 *ᵥ co S h x := by
@@ -19,11 +24,21 @@ theorem co_apply {E : Type} [Field E] [NumberField E] [StarRing E] (S : HSpace E
     rw [e0, e0, MulEquiv.symm_apply_apply]
   rw [← co_lin, e]
 
+/- English proof (translation)
+Rewrite using `[co_apply, MulEquiv.apply_symm_apply]`.
+-/
 theorem co_symm_apply {E : Type} [Field E] [NumberField E] [StarRing E] (S : HSpace E) {n : ℕ} (h : S.rank = n)
     (k : GL (Fin S.rank) E) (x : S.V) :
     co S h ((Formalism.L2.Herm.toGLb S.frame).symm k x) = (reGL h E k).1 *ᵥ co S h x := by
   rw [co_apply, MulEquiv.apply_symm_apply]
 
+/- English proof (translation)
+Establish `h1 : (M⁻¹ : GL (Fin n) E).1.map (embAt σ emb τ) * (g.1.map (embAt σ emb τ) * y.1 τ) = y.1 τ` using `congrFun (congrArg Subtype.val h) τ`. Rewrite `h1` using `[← Matrix.mul_assoc, ← Matrix.map_mul, ← Units.val_mul]`. Establish `hy : IsUnit (y.1 τ)` using `(Matrix.isUnit_iff_isUnit_det _).2 (y.2 τ)`. Establish `h2 : (M⁻¹ * g : GL (Fin n) E).1.map (embAt σ emb τ) = 1` using `hy.mul_right_cancel (by rw [h1, Matrix.one_mul])`. Establish `h3 : (M⁻¹ * g : GL (Fin n) E).1 = 1`.
+
+Apply `Matrix.map_injective (embAt σ emb τ).injective` to reduce the goal to its premises. Use `show _ = (1 : Matrix (Fin n) (Fin n) E).map (embAt σ emb τ)`. Rewrite using `[Matrix.map_one _ (map_zero _) (map_one _)]`. Conclude with `h2`. Establish `h4 : M⁻¹ * g = 1` using `Units.ext h3`.
+
+Conclude with `(inv_mul_eq_one.1 h4).symm`.
+-/
 theorem eq_of_frMul {E K ι : Type} [Field E] [Field K] [Fintype ι] (τ : ι) (emb : ι → E →+* K) (σ : K →+* ℂ) {n : ℕ}
     (g M : GL (Fin n) E) (y : Col2.Fr emb σ n) (h : frMul emb σ M⁻¹ (frMul emb σ g y) = y) : g = M := by
   have h1 : (M⁻¹ : GL (Fin n) E).1.map (embAt σ emb τ) * (g.1.map (embAt σ emb τ) * y.1 τ) = y.1 τ :=
@@ -39,6 +54,9 @@ theorem eq_of_frMul {E K ι : Type} [Field E] [Field K] [Fintype ι] (τ : ι) (
   have h4 : M⁻¹ * g = 1 := Units.ext h3
   exact (inv_mul_eq_one.1 h4).symm
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j.1 < n`. Conclude with `congrFun h1 ⟨j.1, hj⟩`. Establish `: j = Br.iL hN` using `Fin.ext (by have := j.2; show j.1 = n; omega)`. Rewrite using `[this, h2]`.
+-/
 theorem ext_vec {E : Type} [Field E] {N n : ℕ} (hN : N = n + 1) {x y : Fin N → E} (h1 : iniH hN x = iniH hN y)
     (h2 : x (Br.iL hN) = y (Br.iL hN)) : x = y := by
   funext j
@@ -47,6 +65,17 @@ theorem ext_vec {E : Type} [Field E] {N n : ℕ} (hN : N = n + 1) {x y : Fin N �
   · have : j = Br.iL hN := Fin.ext (by have := j.2; show j.1 = n; omega)
     rw [this, h2]
 
+/- English proof (translation)
+Introduce `B X I l Z H F hF u c`. Establish `hemb : Formalism.L2.Forms.embT (I.rec7 l Z) = embAt B.embLL B.fields.emb`. Use function extensionality and compare the values at `τ`. Use extensionality with `y`. Use `show B.host.φ₀ _ = _`.
+
+Rewrite using `[← B.embE_φ₀]`. Both sides reduce to the same expression. Set `y : Col2.Fr B.fields.emb B.embLL (B.R.N B.R.m)` to `⟨fun _ => 1, fun _ => by simp⟩`. Set `g : GL (Fin (B.R.N B.R.m)) B.fields.E` to `((F u).til.ga c).1`. Set `φ : (I.stp u I.mu0 B.R.m).Cl → Col2.Fr B.fields.emb B.embLL (B.R.N B.R.m) → ℂ` to `fun _ z => if z = y then 1 else 0`.
+
+Establish `hY` using `(hF u).eY B.R.m le_rfl (Or.inr rfl)`. Establish `h` using `(F u).evz φ c (frMul B.fields.emb B.embLL g y) y (by`. Introduce `τ`. Rewrite using `[hemb]`. Conclude with `(congrFun (hY _) τ).trans (congrArg (fun k : Matrix (Fin (B.R.N B.R.m)) (Fin (B.R.N B.R.m)) ℂ => (g.1.map (embAt B.embLL B.fields.emb τ) * k : Matrix (Fin (B.R.N B.R.m)) (Fin (B.R.N B.R.m)) ℂ)) (congrFun (hY y) τ)).symm)`.
+
+Rewrite `h` using `[(hF u).eWz]`. Establish `h' : B.embLL _ * φ ((I.perIn u I.mu0).tilC c) (frMul B.fields.emb B.embLL ((I.stp u I.mu0 B.R.m).gam (I.perIn u I.mu0).b0 ((I.stp u I.mu0 B.R.m).mv (I.perIn u I.mu0).b0 ((I.perIn u I.mu0).tilPt c)))⁻¹ (frMul B.fields.emb B.embLL g y)) = _ * φ ((I.perIn u I.mu0).tilC c) y` using `h`. Establish `hy : frMul B.fields.emb B.embLL ((I.stp u I.mu0 B.R.m).gam (I.perIn u I.mu0).b0 ((I.stp u I.mu0 B.R.m).mv (I.perIn u I.mu0).b0 ((I.perIn u I.mu0).tilPt c)))⁻¹ (frMul B.fields.emb B.embLL g y) = y`. Assume the negation of the conclusion as `hne`. Simplify using `only [φ, if_neg hne, if_pos, mul_zero, mul_one] at h'`.
+
+Conclude with `Units.ne_zero _ h'.symm`. Conclude with `congrArg Units.val (eq_of_frMul (show B.fields.Tau from (I.rec7 l Z).eTau.symm 1) _ _ _ _ _ hy)`.
+-/
 theorem ga_eq_gam_mv : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X) (l : I.Laws) (Z : TC.Later B (I.cols l)) (H : Formalism.L2.Herm.HermColsCh (I.rec7 l Z)) (F : ∀ u, FormsTiedSym (I.rec7 l Z) u (H.Ch u) (H.chOf u)), (∀ u, I.StdF l Z u (F u)) → ∀ (u : B.Word) (c : ((I.rec7 l Z).fm u).clsP), ((F u).til.ga c).1.1 = ((I.stp u I.mu0 B.R.m).gam (I.perIn u I.mu0).b0 ((I.stp u I.mu0 B.R.m).mv (I.perIn u I.mu0).b0 ((I.perIn u I.mu0).tilPt c))).1 := by
   intro B X I l Z H F hF u c
   classical
@@ -72,6 +101,13 @@ theorem ga_eq_gam_mv : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X) (l : I.Law
     exact Units.ne_zero _ h'.symm
   exact congrArg Units.val (eq_of_frMul (show B.fields.Tau from (I.rec7 l Z).eTau.symm 1) _ _ _ _ _ hy)
 
+/- English proof (translation)
+Introduce `B X I l Z H F hF hC u h1 c s y`. Take `⟨k, hk⟩` from `(hF u).ends B.R.m le_rfl (Or.inr rfl)`. Establish `e1` using `hk.stab c s`. Establish `e2` using `(hC.carM u).st_eq c s`. Establish `e3 : ∀ (β β' : H.Ch u (I.rec7 l Z).R.m) (h : H.chOf u (I.rec7 l Z).R.m c = β) (h' : H.chOf u (I.rec7 l Z).R.m c = β'), ((H.cls u (I.rec7 l Z).R.m h1 le_rfl β).stabI ⟨c, h⟩ s).1 = ((H.cls u (I.rec7 l Z).R.m h1 le_rfl β').stabI ⟨c, h'⟩ s).1`.
+
+Introduce `β β' h h'`. Substitute `h` using the available equality. Substitute `h'` using the available equality. Both sides reduce to the same expression. Use `(co_symm_apply ((I.rec7 l Z).sp.X (I.rec7 l Z).R.m) (rankN (I.rec7 l Z) (I.rec7 l Z).R.m le_rfl) _ y).trans ?_` and prove the remaining obligations.
+
+Use `congrArg (fun k : GL (Fin (B.R.N B.R.m)) B.fields.E => k.1 *ᵥ crdN (I.rec7 l Z) (I.rec7 l Z).R.m le_rfl y) ?_` and prove the remaining obligations. Rewrite using `[← e1]`. Conclude with `(congrArg _ (e3 _ _ rfl (chOf_m H u c))).trans e2.symm`.
+-/
 theorem crdN_stabM : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X) (l : I.Laws) (Z : TC.Later B (I.cols l)) (H : Formalism.L2.Herm.HermColsCh (I.rec7 l Z)) (F : ∀ u, FormsTiedSym (I.rec7 l Z) u (H.Ch u) (H.chOf u)), (∀ u, I.StdF l Z u (F u)) → CarH H F → ∀ (u : B.Word) (h1 : 1 ≤ (I.rec7 l Z).R.m) (c : ((I.rec7 l Z).mem u).C.cls (I.rec7 l Z).R.m) (s : ((I.rec7 l Z).mem u).C.stab (I.rec7 l Z).R.m c) (y : ((I.rec7 l Z).sp.X (I.rec7 l Z).R.m).V), crdN (I.rec7 l Z) (I.rec7 l Z).R.m le_rfl (Formalism.L2.Herm.stabMLinS (I.rec7 l Z) H u h1 c s y) = ((I.stp u I.mu0 B.R.m).gam c.1 s.1).1 *ᵥ crdN (I.rec7 l Z) (I.rec7 l Z).R.m le_rfl y := by
   intro B X I l Z H F hF hC u h1 c s y
   obtain ⟨k, hk⟩ := (hF u).ends B.R.m le_rfl (Or.inr rfl)
@@ -88,6 +124,9 @@ theorem crdN_stabM : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X) (l : I.Laws)
   rw [← e1]
   exact (congrArg _ (e3 _ _ rfl (chOf_m H u c))).trans e2.symm
 
+/- English proof (translation)
+Introduce `B X I l Z H F A hF hC u c s x`. Establish `e1` using `(hF u).what₂.stab c s`. Establish `e2` using `(hC.carP u).st_eq c s`. Use `(co_symm_apply (I.rec7 l Z).sp.X' (rankP (I.rec7 l Z)) _ x).trans ?_` and prove the remaining obligations. Conclude with `congrArg (fun k : GL (Fin (B.R.N B.R.m - 1)) B.fields.E => k.1 *ᵥ crdP (I.rec7 l Z) x) (e2.symm.trans e1)`.
+-/
 theorem crdP_stabP : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X) (l : I.Laws) (Z : TC.Later B (I.cols l)) (H : Formalism.L2.Herm.HermColsCh (I.rec7 l Z)) (F : ∀ u, FormsTiedSym (I.rec7 l Z) u (H.Ch u) (H.chOf u)) (A : ∀ u, Formalism.L2.Herm.AtT (I.rec7 l Z) u (H.vT u) (H.Fv u)), (∀ u, I.StdF l Z u (F u)) → CarT H F A → ∀ (u : B.Word) (c : ((I.rec7 l Z).fm u).clsP) (s : ((I.rec7 l Z).fm u).stabilizer₂ c) (x : (I.rec7 l Z).sp.X'.V), crdP (I.rec7 l Z) (Formalism.L2.Herm.stabPLinS (I.rec7 l Z) H A u c s x) = ((I.perIn u I.mu0).S'.gam c.1 s.1).1 *ᵥ crdP (I.rec7 l Z) x := by
   intro B X I l Z H F A hF hC u c s x
   have e1 := (hF u).what₂.stab c s
@@ -95,11 +134,23 @@ theorem crdP_stabP : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X) (l : I.Laws)
   refine (co_symm_apply (I.rec7 l Z).sp.X' (rankP (I.rec7 l Z)) _ x).trans ?_
   exact congrArg (fun k : GL (Fin (B.R.N B.R.m - 1)) B.fields.E => k.1 *ᵥ crdP (I.rec7 l Z) x) (e2.symm.trans e1)
 
+/- English proof (translation)
+Introduce `B X I l Z H F A hC u c y`. Rewrite using `[hC.ga u c]`. Conclude with `co_apply ((I.rec7 l Z).sp.X (I.rec7 l Z).R.m) (rankN (I.rec7 l Z) (I.rec7 l Z).R.m le_rfl) _ y`.
+-/
 theorem crdN_tilG : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X) (l : I.Laws) (Z : TC.Later B (I.cols l)) (H : Formalism.L2.Herm.HermColsCh (I.rec7 l Z)) (F : ∀ u, FormsTiedSym (I.rec7 l Z) u (H.Ch u) (H.chOf u)) (A : ∀ u, Formalism.L2.Herm.AtT (I.rec7 l Z) u (H.vT u) (H.Fv u)), CarT H F A → ∀ (u : B.Word) (c : ((I.rec7 l Z).fm u).clsP) (y : ((I.rec7 l Z).sp.X (I.rec7 l Z).R.m).V), crdN (I.rec7 l Z) (I.rec7 l Z).R.m le_rfl (((A u).tilG c).1 y) = ((F u).til.ga c).1.1 *ᵥ crdN (I.rec7 l Z) (I.rec7 l Z).R.m le_rfl y := by
   intro B X I l Z H F A hC u c y
   rw [hC.ga u c]
   exact co_apply ((I.rec7 l Z).sp.X (I.rec7 l Z).R.m) (rankN (I.rec7 l Z) (I.rec7 l Z).R.m le_rfl) _ y
 
+/- English proof (translation)
+Introduce `B X I hOk hP l Z u b g`. Establish `hi` using `(GlobalTheory.Mem.Col2.TC.spaces_in_coordinates I hOk hP l Z).2.2.1`. Establish `ini : ∀ y : Fin (B.R.N B.R.m - 1) → B.fields.E, iniH (N_m_succ B.R) (iXc (I.rec7 l Z) y) = y` using `fun y => by`. Use function extensionality and compare the values at `j`. Conclude with `(hi y _).trans (dif_pos j.2)`.
+
+Establish `las : ∀ y : Fin (B.R.N B.R.m - 1) → B.fields.E, iXc (I.rec7 l Z) y (Br.iL (N_m_succ B.R)) = 0` using `fun y => (hi y _).trans (dif_neg (lt_irrefl _))`. Use `⟨fun y => ext_vec (N_m_succ B.R) ?_ ?_, ext_vec (N_m_succ B.R) ?_ ?_⟩` and prove the remaining obligations. Use `((l.per u I.mu0).gam_ini b g _).trans ?_` and prove the remaining obligations. Conclude with `(congrArg _ (ini _)).trans (ini _).symm`. Conclude with `((l.per u I.mu0).gam_last b g _).trans ((las _).trans (las _).symm)`.
+
+Use `((l.per u I.mu0).gam_ini b g _).trans ?_` and prove the remaining obligations. Establish `z : iniH (E` using `B.fields.E) (N_m_succ B.R) (TC.z0 X u) = 0 := by`. Use function extensionality and compare the values at `j`. Conclude with `if_neg (by have := j.2; show ¬ (j.1 + 1 = _); omega)`. Conclude with `(congrArg _ z).trans ((Matrix.mulVec_zero _).trans z.symm)`.
+
+Conclude with `(l.per u I.mu0).gam_last b g _`.
+-/
 theorem gam_ext : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)) (u : B.Word) (b : (I.perIn u I.mu0).S'.β) (g : (I.perIn u I.mu0).S'.G b), (∀ y, ((I.stp u I.mu0 B.R.m).gam (I.perIn u I.mu0).b0 ((I.perIn u I.mu0).ext b g)).1 *ᵥ iXc (I.rec7 l Z) y = iXc (I.rec7 l Z) (((I.perIn u I.mu0).S'.gam b g).1 *ᵥ y)) ∧ ((I.stp u I.mu0 B.R.m).gam (I.perIn u I.mu0).b0 ((I.perIn u I.mu0).ext b g)).1 *ᵥ TC.z0 X u = TC.z0 X u := by
   intro B X I hOk hP l Z u b g
   have hi := (GlobalTheory.Mem.Col2.TC.spaces_in_coordinates I hOk hP l Z).2.2.1
@@ -119,6 +170,19 @@ theorem gam_ext : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pi
     exact (congrArg _ z).trans ((Matrix.mulVec_zero _).trans z.symm)
   · exact (l.per u I.mu0).gam_last b g _
 
+/- English proof (translation)
+Introduce `B X I hOk hPins l Z H F hStd hCarH A hCarT u h1 c s`. Establish `hF : ∀ u, I.StdF l Z u (F u)` using `fun u => (hStd u).1`. Establish `hga` using `ga_eq_gam_mv I l Z H F hF u c`. Establish `conj : ∀ v, ((I.stp u I.mu0 B.R.m).gam (I.perIn u I.mu0).b0 ((I.stp u I.mu0 B.R.m).mv (I.perIn u I.mu0).b0 ((I.perIn u I.mu0).tilPt c))).1 *ᵥ (((I.stp u I.mu0 B.R.m).gam _ (((I.rec7 l Z).fm u).stabMap c s).1).1 *ᵥ v) = ((I.stp u I.mu0 B.R.m).gam (I.perIn u I.mu0).b0 ((I.perIn u I …`. Introduce `v`.
+
+Use `show _ *ᵥ (((I.stp u I.mu0 B.R.m).gam (I.perIn u I.mu0).b0 (((I.stp u I.mu0 B.R.m).mv (I.perIn u I.mu0).b0 ((I.perIn u I.mu0).tilPt c))⁻¹ * (I.perIn u I.mu0).ext c.1 s.1 * (I.stp u I.mu0 B.R.m).mv (I.perIn u I.mu0).b0 ((I.perIn u I.mu0).tilPt c))).1 *ᵥ v) = _`. Rewrite using `[map_mul, map_mul, map_inv, Units.val_mul, Units.val_mul, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec]`. Use `congr 1`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mul]`. Establish `key : ∀ y, crdN (I.rec7 l Z) (I.rec7 l Z).R.m le_rfl (((A u).tilG c).1 (Formalism.L2.Herm.stabMLinS (I.rec7 l Z) H u h1 _ (((I.rec7 l Z).fm u).stabMap c s) (((A u).tilG c).1.symm y))) = ((I.stp u I.mu0 B.R.m).gam (I.perIn u I.mu0).b0 ((I.perIn u I.mu0).ext c.1 s.1)).1 *ᵥ crdN (I. …`.
+
+Introduce `y`. Establish `hw : ((F u).til.ga c).1.1 *ᵥ crdN (I.rec7 l Z) (I.rec7 l Z).R.m le_rfl (((A u).tilG c).1.symm y) = crdN (I.rec7 l Z) (I.rec7 l Z).R.m le_rfl y`. Rewrite using `[← crdN_tilG I l Z H F A hCarT u c, LinearEquiv.apply_symm_apply]`. Rewrite using `[crdN_tilG I l Z H F A hCarT u c, crdN_stabM I l Z H F hF hCarH u h1, ← hw, hga]`. Conclude with `conj _`.
+
+Establish `hiX : ∀ x, crdN (I.rec7 l Z) (I.rec7 l Z).R.m le_rfl ((I.rec7 l Z).sp.iX' x) = iXc (I.rec7 l Z) (crdP (I.rec7 l Z) x)`. Introduce `x`. Simplify using `[iXc, crdN, crdP]`. Establish `hext` using `gam_ext I hOk hPins l Z u c.1 s.1`. Use `⟨fun x => ?_, ?_⟩` and prove the remaining obligations.
+
+Apply `(crdN (I.rec7 l Z) (I.rec7 l Z).R.m le_rfl).injective` to reduce the goal to its premises. Rewrite using `[key, hiX, hiX, hext.1, crdP_stabP I l Z H F A hF hCarT u c s x]`. Both sides reduce to the same expression. Apply `(crdN (I.rec7 l Z) (I.rec7 l Z).R.m le_rfl).injective` to reduce the goal to its premises. Rewrite using `[key, ← hCarT.z0 u]`.
+
+Establish `hz : (F u).til.z0 = TC.z0 X u` using `funext fun j => (hF u).z0 j`. Rewrite using `[hz, hext.2]`.
+-/
 theorem stabMap_tied : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)) (H : Formalism.L2.Herm.HermColsCh (I.rec7 l Z)) (F : ∀ u, FormsTiedSym (I.rec7 l Z) u (H.Ch u) (H.chOf u)), (∀ u, I.StdF l Z u (F u) ∧ I.StdLvC l Z u (F u)) → CarH H F → ∀ (A : ∀ u, Formalism.L2.Herm.AtT (I.rec7 l Z) u (H.vT u) (H.Fv u)), CarT H F A → Formalism.L2.Herm.SymmetricStabilizerMapCompatibility (I.rec7 l Z) H A := by
   intro B X I hOk hPins l Z H F hStd hCarH A hCarT u h1 c s
   have hF : ∀ u, I.StdF l Z u (F u) := fun u => (hStd u).1

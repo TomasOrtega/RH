@@ -5,6 +5,11 @@ open scoped InnerProductSpace
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Set `L : Hp →ₗᵢ[ℂ] Hp` to `{ toLinearMap := (π a : Hp →ₗ[ℂ] Hp), norm_map' := hiso a }`. Establish `hback : π a (π a⁻¹ w) = w`. Rewrite using `[← ContinuousLinearMap.mul_apply, ← map_mul, mul_inv_cancel, map_one, ContinuousLinearMap.one_apply]`. Establish `hL : ⟪L u, L (π a⁻¹ w)⟫_ℂ = ⟪u, π a⁻¹ w⟫_ℂ` using `L.inner_map_map _ _`. Rewrite using `[← hL]`.
+
+Use `show ⟪π a u, w⟫_ℂ = ⟪π a u, π a (π a⁻¹ w)⟫_ℂ`. Rewrite using `[hback]`.
+-/
 private lemma inner_apply_eq_inner_apply_inv_of_isometric {G : Type} [Group G] {Hp : Type} [NormedAddCommGroup Hp]
     [InnerProductSpace ℂ Hp] (π : G →* (Hp →L[ℂ] Hp)) (hiso : ∀ g x, ‖π g x‖ = ‖x‖)
     (a : G) (u w : Hp) : ⟪π a u, w⟫_ℂ = ⟪u, π a⁻¹ w⟫_ℂ := by
@@ -18,6 +23,39 @@ private lemma inner_apply_eq_inner_apply_inv_of_isometric {G : Type} [Group G] {
   show ⟪π a u, w⟫_ℂ = ⟪π a u, π a (π a⁻¹ w)⟫_ℂ
   rw [hback]
 
+/- English proof (translation)
+Introduce `G _ _ _ _ _ _ μ _ _ _ _ Hp _ _ _ π hiso hcont φ m hφ hstar hconv hm1 P hP`. Establish `hsand : ∀ x : G, P ∘L π x ∘L P = m x • P`. Introduce `x`. Use `ext1 v`. Use `ext_inner_left ℂ fun u => ?_` and prove the remaining obligations.
+
+Rewrite using `[ContinuousLinearMap.comp_apply, ContinuousLinearMap.comp_apply, ContinuousLinearMap.smul_apply, inner_smul_right, hP, hP]`. Establish `step : ∀ g : G, ⟪u, π g (π x (P v))⟫_ℂ = ∫ k, φ (x⁻¹ * g⁻¹ * k) * ⟪u, π k v⟫_ℂ ∂μ`. Introduce `g`. Establish `e1 : ⟪u, π g (π x (P v))⟫_ℂ = ⟪π (g * x)⁻¹ u, P v⟫_ℂ`. Rewrite using `[inner_apply_eq_inner_apply_inv_of_isometric π hiso, inv_inv]`.
+
+Simplify using `only [map_mul, ContinuousLinearMap.mul_apply]`. Establish `e2 : ∀ h : G, ⟪π (g * x)⁻¹ u, π h v⟫_ℂ = ⟪u, π (g * x * h) v⟫_ℂ`. Introduce `h`. Rewrite using `[inner_apply_eq_inner_apply_inv_of_isometric π hiso, inv_inv]`. Simplify using `only [map_mul, ContinuousLinearMap.mul_apply]`.
+
+Rewrite using `[e1, hP]`. Repeatedly rewrite using `[e2]`. Establish `htr` using `integral_mul_left_eq_self (μ := μ) (fun h => φ h * ⟪u, π (g * x * h) v⟫_ℂ) (g * x)⁻¹`. Rewrite using `[← htr]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `k`. Rewrite using `[mul_inv_cancel_left, mul_inv_rev]`. Repeatedly rewrite using `[step]`. Establish `hshift : Integrable (fun k => φ (x⁻¹ * k)) μ` using `hφ.comp_mul_left x⁻¹`. Establish `hprod : Integrable (fun z : G × G => φ z.1 * φ (x⁻¹ * z.2)) (μ.prod μ)` using `hφ.mul_prod hshift`.
+
+Establish `hsheared : Integrable (fun z : G × G => φ z.1 * φ (x⁻¹ * z.1⁻¹ * z.2)) (μ.prod μ)`. Establish `h` using `(measurePreserving_prod_inv_mul μ μ).integrable_comp_of_integrable hprod`. Use `h.congr (Filter.Eventually.of_forall fun z => ?_)` and prove the remaining obligations. Simplify using `only [Function.comp, mul_assoc]`. Establish `hcoef : Continuous fun k : G => ⟪u, π k v⟫_ℂ` using `continuous_const.inner (hcont v)`.
+
+Establish `hbound : ∀ᵐ z ∂(μ.prod μ), ‖⟪u, π z.2 v⟫_ℂ‖ ≤ ‖u‖ * ‖v‖`. Use `Filter.Eventually.of_forall fun z => ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Establish `hint : Integrable (Function.uncurry fun g k => φ g * (φ (x⁻¹ * g⁻¹ * k) * ⟪u, π k v⟫_ℂ)) (μ.prod μ)`. Establish `h` using `hsheared.mul_bdd (hcoef.comp continuous_snd).aestronglyMeasurable hbound`.
+
+Use `h.congr (Filter.Eventually.of_forall fun z => ?_)` and prove the remaining obligations. Break down `z with ⟨g, k⟩` into its components or cases. Simplify using `only [Function.uncurry_apply_pair, Function.comp]`. Expand and normalize the polynomial expressions, which then agree. Combine the equalities or inequalities in the displayed calculation.
+
+Use `congr 1`. Use function extensionality and compare the values at `g`. Rewrite using `[integral_const_mul]`. Use `_ = ∫ k, ∫ g, φ g * (φ (x⁻¹ * g⁻¹ * k) * ⟪u, π k v⟫_ℂ) ∂μ ∂μ := integral_integral_swap hint`. Use `_ = ∫ k, (m x * φ k) * ⟪u, π k v⟫_ℂ ∂μ := by`.
+
+Use `congr 1`. Use function extensionality and compare the values at `k`. Rewrite using `[← hconv x k, ← integral_mul_const]`. Use `congr 1`. Use function extensionality and compare the values at `g`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `_ = m x * ∫ k, φ k * ⟪u, π k v⟫_ℂ ∂μ := by`. Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `k`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hsa : IsSelfAdjoint P`. Rewrite using `[ContinuousLinearMap.isSelfAdjoint_iff_isSymmetric]`. Introduce `a b`. Use `show ⟪P a, b⟫_ℂ = ⟪a, P b⟫_ℂ`.
+
+Rewrite using `[← inner_conj_symm (P a) b, hP b a, hP a b, ← integral_conj]`. Combine the equalities or inequalities in the displayed calculation. Use `congr 1`. Use function extensionality and compare the values at `g`. Rewrite using `[map_mul, inner_conj_symm, inner_apply_eq_inner_apply_inv_of_isometric π hiso]`.
+
+Use `_ = ∫ g, (starRingEnd ℂ) (φ g⁻¹) * ⟪a, π g⁻¹⁻¹ b⟫_ℂ ∂μ := (integral_inv_eq_self (fun g => (starRingEnd ℂ) (φ g) * ⟪a, π g⁻¹ b⟫_ℂ) μ).symm`. Use `_ = ∫ g, φ g * ⟪a, π g b⟫_ℂ ∂μ := by`. Use `congr 1`. Use function extensionality and compare the values at `g`. Rewrite using `[inv_inv, starRingEnd_apply, hstar]`.
+
+Establish `hidem : IsIdempotentElem P`. Establish `h` using `hsand 1`. Rewrite `h` using `[map_one, hm1, one_smul]`. Use `show P * P = P`. Use extensionality with `v`.
+
+Establish `hv` using `DFunLike.congr_fun h v`. Simplify using `using hv`. Conclude with `⟨⟨hidem, hsa⟩, hsand⟩`.
+-/
 theorem integratedOperator_isStarProjection_and_sandwich :
     ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G] (μ : Measure G) [μ.IsHaarMeasure] [μ.IsMulRightInvariant] [SigmaFinite μ] [μ.IsInvInvariant] (Hp : Type) [NormedAddCommGroup Hp] [InnerProductSpace ℂ Hp] [CompleteSpace Hp] (π : G →* (Hp →L[ℂ] Hp)), (∀ g x, ‖π g x‖ = ‖x‖) → (∀ x, Continuous fun g => π g x) → ∀ (φ m : G → ℂ), Integrable φ μ → (∀ g, star (φ g⁻¹) = φ g) → (∀ x y : G, ∫ g, φ g * φ (x⁻¹ * g⁻¹ * y) ∂μ = m x * φ y) → m 1 = 1 → ∀ P : Hp →L[ℂ] Hp, (∀ x y : Hp, ⟪x, P y⟫_ℂ = ∫ g, φ g * ⟪x, π g y⟫_ℂ ∂μ) → IsStarProjection P ∧ ∀ x : G, P ∘L π x ∘L P = m x • P := by
   intro G _ _ _ _ _ _ μ _ _ _ _ Hp _ _ _ π hiso hcont φ m hφ hstar hconv hm1 P hP

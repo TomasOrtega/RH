@@ -20,6 +20,15 @@ open GlobalTheory GlobalTheory.QCoh GlobalTheory.CechPic GlobalTheory.Twist
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `k _ _ X _ hp d hd H A hA P hP`. Establish `hf` using `algebraMap_eq_strHom k X`. Use `isNoetherian_of_isProjOver hp` as an intermediate fact. Establish `hPb : ∀ i, (P i).IsLB` using `fun i => (hP i).isLB`. Establish `hsd : suppDim (GlobalTheory.structureModule X) ≤ (d + 1 : ℕ)`.
+
+Rewrite using `[suppDim_structureModule]`. Conclude with `hd`. Establish `hfin` using `finiteCohTwists_of_isProjOver hf (GlobalTheory.structureModule X) hp`. Establish `hv` using `diffVanish_chiPic_of_isProjOver hf (GlobalTheory.structureModule X) hp hsd`. Take `⟨a, ha, s, hs, -⟩` from `hA.exists_mono_cutHom (GlobalTheory.structureModule X)`.
+
+Establish `hLa` using `isLB_lbPow hA.isLB a`. Establish `h0` using `H _ (suppDim_cut_le _ hLa s hsd) P hP`. Rewrite `h0` using `[← interNum_cons_eq_interNum_cut hLa s hPb hfin]`. Establish `h` using `hv.interNum_update_of_cls_eq_zsmul (by simp) (isLB_cons hA.isLB hPb) (0 : Fin (d + 1)) hLa hA.isLB (a : ℤ) (cls_lbZPow hA.isLB a _)`. Simplify using `only [Fin.update_cons_zero] at h`.
+
+Rewrite `h0` using `[h]`. Conclude with `nonneg_of_mul_nonneg_right h0 (by exact_mod_cast ha)`.
+-/
 theorem interNum_cons_ample_nef_nonneg :
     ∀ (k : Type) [Field k] [Infinite k] (X : Scheme.{0}) [Algebra k Γ(X, ⊤)], IsProjOver (strHom k X) → ∀ d : ℕ, topologicalKrullDim X ≤ (d + 1 : ℕ) → (∀ (E : X.Modules) [IsFiniteQC E], suppDim E ≤ (d : ℕ) → ∀ P : Fin d → LB X, (∀ i, IsNef k (P i)) → 0 ≤ interNum k E P) → ∀ A : LB X, IsAmpleLB A → (∀ P : Fin d → LB X, (∀ i, IsNef k (P i)) → 0 ≤ interNum k (GlobalTheory.structureModule X) (Fin.cons A P : Fin (d + 1) → LB X)) := by
   intro k _ _ X _ hp d hd H A hA P hP

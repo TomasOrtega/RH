@@ -14,6 +14,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.LevZeroInd
 
+/- English proof (translation)
+Unfold `redFn ext1`. Rewrite using `[dif_pos (mul_mem hx hy), dif_pos hx, dif_pos hy]`. Rewrite using `[← map_mul]`. Use `congr 1`.
+-/
 theorem redFn_mul {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ}
     (β : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) (PP : Pl E) {x y : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)}
     (hx : x ∈ St β) (hy : y ∈ St β) : redFn β PP (x * y) = redFn β PP x * redFn β PP y := by
@@ -22,6 +25,9 @@ theorem redFn_mul {F E : Type} [Field F] [NumberField F] [Field E] [NumberField 
   rw [← map_mul]
   congr 1
 
+/- English proof (translation)
+Unfold `redFn ext1`. Rewrite using `[dif_pos (inv_mem hx), dif_pos hx]`. Rewrite using `[← map_inv]`. Use `congr 1`.
+-/
 theorem redFn_inv {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ}
     (β : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) (PP : Pl E) {x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)}
     (hx : x ∈ St β) : redFn β PP x⁻¹ = (redFn β PP x)⁻¹ := by
@@ -30,12 +36,22 @@ theorem redFn_inv {F E : Type} [Field F] [NumberField F] [Field E] [NumberField 
   rw [← map_inv]
   congr 1
 
+/- English proof (translation)
+Substitute `hn` using the available equality. Introduce `a b h`. Rewrite `h` using `[GlobalTheory.SeeConjRead.restrictedBlock_self_apply, GlobalTheory.SeeConjRead.restrictedBlock_self_apply]`. Then use the resulting hypothesis.
+-/
 theorem reductionBlock_injective_of_eq {κ : Type} [CommRing κ] {n r : ℕ} (hr : r ≤ n) (hn : n = r) :
     Function.Injective (upperLeftBlock (κ := κ) hr) := by
   subst hn
   intro a b h
   rwa [GlobalTheory.SeeConjRead.restrictedBlock_self_apply, GlobalTheory.SeeConjRead.restrictedBlock_self_apply] at h
 
+/- English proof (translation)
+Establish `h1` using `G.hs`. Set `e : Fin D.R.k ⊕ Fin (G.s + 1) ≃ Fin D.R.r` to `finSumFinEquiv.trans (finCongr (by unfold Ranks.r; omega))`. Establish `he : ∀ a, (e a).val = GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum.framePos _ _ a`. Apply the tactic sequence `rintro (a | a) <;> simp [e, GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum.framePos]`. Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations.
+
+Take `⟨i, rfl⟩` from `e.surjective i`. Take `⟨j, rfl⟩` from `e.surjective j`. Take `⟨z, hz⟩` from `Ideal.Quotient.mk_surjective (g.val (e i) (e j))`. Take `⟨z', hz'⟩` from `Ideal.Quotient.mk_surjective (g'.val (e i) (e j))`. Establish `h2` using `Valuation.map_sub_lt _ (h' i j _ _ (he i) (he j) z' hz') (h i j _ _ (he i) (he j) z hz)`.
+
+Rewrite `h2` using `[sub_sub_sub_cancel_left]`. Rewrite using `[← hz, ← hz', Ideal.Quotient.eq, GlobalTheory.LocMod.SymChainAt.prO_lt G.q G.idem, map_sub]`. Conclude with `h2`.
+-/
 theorem red_unique {D : D7} {u : D.what₂.Word} {d : GlobalTheory.SeeSaw.Dat D u}
     {τ : ∀ j h, Matrix (Fin (d.bes j 0 h).L.rank) (Fin d.Lz.rank) D.host.E} {PP : Pl D.host.E}
     (G : GlobalTheory.LocMod.GAt d τ PP) {x : G.S.P.J} {g g' : GL (Fin D.R.r) (kP PP)} (h : G.Red x g) (h' : G.Red x g') :
@@ -59,6 +75,23 @@ end GlobalTheory.LevZeroInd
 open GlobalTheory.LevZeroInd in
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `D u d τ G cG h0 hB hT hP Q hmul hN hU hred`. Establish `hm : 0 < D.R.m` using `by omega`. Establish `hst` using `hB.st 0 hm`. Take `⟨hr, ξ, hL⟩` from `hst.lev`. Establish `hn : (d.st 0).V.rank = D.R.r` using `by rw [hst.rank]; show D.R.r + 0 * D.R.t = D.R.r; simp`.
+
+Establish `key` using `fun x => GlobalTheory.LevYZero.lev_datY_zero _ (d.st 0).β _ D.R.r D.R.t hr hn d.c.Pg d.c.P d.c.chi ξ hL (Lev.finE (d.st 0).V x) (GlobalTheory.LevSplit.finE_mem_UA _ x)`. Establish `hSt : ∀ x ∈ d.lev 0, Lev.finE (d.st 0).V x ∈ St (d.st 0).β` using `fun x hx => ((key x).1.1 hx.2).1`. Establish `hRed : ∀ x ∈ d.lev 0, ∀ PP : d.c.Pg, ∃ z, (G PP).Red z (upperLeftBlock hr (redFn (d.st 0).β PP.1 (Lev.finE (d.st 0).V x)))` using `fun x hx PP => (hP.grp _).1 ((key x).1.1 hx.2).2 PP`. Establish `hmulm : ∀ x ∈ d.lev 0, ∀ y ∈ d.lev 0, x * y ∈ d.lev 0` using `fun x hx y hy => by`. Unfold `GlobalTheory.SeeSaw.Dat.lev levS at *`.
+
+Conclude with `Subgroup.mul_mem _ hx hy`. Establish `hinvm : ∀ x ∈ d.lev 0, x⁻¹ ∈ d.lev 0` using `fun x hx => by`. Unfold `GlobalTheory.SeeSaw.Dat.lev levS at *`. Conclude with `Subgroup.inv_mem _ hx`. Establish `claim : ∀ s : Finset (Pl D.host.E), ∀ k ∈ d.lev 0, (∀ PP ∈ d.c.Pg, PP ∉ s → redFn (d.st 0).β PP (Lev.finE (d.st 0).V k) = 1) → Q k`.
+
+Introduce `s`. Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Introduce `k hk h`. Conclude with `hred k hk fun PP hPP => h PP hPP (Finset.notMem_empty _)`. Introduce `a s ha ih k hk h`.
+
+Distinguish the cases in `haP : a ∈ d.c.Pg`. Take `⟨z, hz⟩` from `hRed k hk ⟨a, haP⟩`. Take `⟨m, hm0, hQm, hmr, hmo⟩` from `GlobalTheory.T.level_group_property_closed_mul_alt D u d τ G cG h0 hB hT hP Q hmul hN hU ⟨a, haP⟩ z`. Establish `e1 : redFn (d.st 0).β a (Lev.finE (d.st 0).V m) = redFn (d.st 0).β a (Lev.finE (d.st 0).V k)` using `reductionBlock_injective_of_eq hr hn (red_unique (G ⟨a, haP⟩) (hmr hr) hz)`. Establish `hk1 : m⁻¹ * k ∈ d.lev 0` using `hmulm _ (hinvm m hm0) k hk`.
+
+Establish `hred1 : ∀ PP, redFn (d.st 0).β PP (Lev.finE (d.st 0).V (m⁻¹ * k)) = (redFn (d.st 0).β PP (Lev.finE (d.st 0).V m))⁻¹ * redFn (d.st 0).β PP (Lev.finE (d.st 0).V k)` using `fun PP => by`. Rewrite using `[map_mul, map_inv, redFn_mul _ _ (inv_mem (hSt m hm0)) (hSt k hk), redFn_inv _ _ (hSt m hm0)]`. Establish `hQ1` using `ih (m⁻¹ * k) hk1 fun PP hPP hPs => by`. Rewrite using `[hred1]`. Distinguish the cases in `hPa : PP = a`.
+
+Substitute `hPa` using the available equality. Rewrite using `[e1, inv_mul_cancel]`. Rewrite using `[hmo PP hPP hPa, h PP hPP (by simp [hPa, hPs]), inv_one, one_mul]`. Use `hmul m hm0 _ hk1 hQm hQ1` as an intermediate fact. Simplify using `using this`.
+
+Conclude with `ih k hk fun PP hPP hPs => h PP hPP (by`. Simplify using `only [Finset.mem_insert, not_or]`. Conclude with `⟨fun e => haP (e ▸ hPP), hPs⟩)`. Introduce `k hk`. Conclude with `claim d.c.Pg k hk fun PP hPP h => absurd hPP h`.
+-/
 theorem GlobalTheory.LevZeroInd.gen : ∀ (D : D7) (u : D.what₂.Word) (d : GlobalTheory.SeeSaw.Dat D u) (τ : ∀ j h, Matrix (Fin (d.bes j 0 h).L.rank) (Fin d.Lz.rank) D.host.E) (G : ∀ PP : d.c.Pg, GlobalTheory.LocMod.GAt d τ PP.1) (cG : ∀ j, WO (D.sp.X j) (D.sp.X (j + 1)) →₀ ℂ) (h0 : 0 + 2 * D.R.rS + 2 = D.R.m), d.Base → IsTypePlaces d.c.Pg → GlobalTheory.LocMod.PinGBy G cG → ∀ Q : GA D (d.st 0).V → Prop, (∀ k ∈ d.lev 0, ∀ k' ∈ d.lev 0, Q k → Q k' → Q (k * k')) → (∀ (PP : d.c.Pg) (n : GA D (d.st 0).V) (q : GL (GlobalTheory.StepData.XIx (Fin D.R.k) (Fin D.R.t) 0 ⊕ Fin ((G PP).s + 1)) (G PP).k), n ∈ flagN (d.bes 0 D.R.rS h0).d → q ∈ GlobalTheory.RootEx.N (G PP).k _ ((G PP).s + 1) (D.R.rS + 1) → (GlobalTheory.LocMod.ofSplit (G PP).q).IsLoc ((G PP).FY 0 ((G PP).s + 1) (Nat.zero_add _)) n q → (d.t 0)⁻¹ * n * d.t 0 ∈ d.lev 0 → Q ((d.t 0)⁻¹ * n * d.t 0)) → (∀ b ∈ GfC (D.sp.X 0), (d.t 0)⁻¹ * embA (d.bes 0 D.R.rS h0).d (d.bes 0 D.R.rS h0).o b * d.t 0 ∈ d.lev 0 → Q ((d.t 0)⁻¹ * embA (d.bes 0 D.R.rS h0).d (d.bes 0 D.R.rS h0).o b * d.t 0)) → (∀ k ∈ d.lev 0, (∀ PP ∈ d.c.Pg, redFn (d.st 0).β PP (finE (d.st 0).V k) = 1) → Q k) → ∀ k ∈ d.lev 0, Q k := by
   intro D u d τ G cG h0 hB hT hP Q hmul hN hU hred
   classical

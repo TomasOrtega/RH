@@ -11,6 +11,9 @@ namespace GlobalTheory.CharpolyFrobDense
 def CoeffCont {Γ K : Type} [TopologicalSpace Γ] [CommRing K] [TopologicalSpace K] (F : Γ → K[X]) : Prop :=
   ∀ k, Continuous fun g => (F g).coeff k
 
+/- English proof (translation)
+Introduce `k`. Simplify using `only [Pi.mul_apply, coeff_mul]`. Conclude with `continuous_finset_sum _ fun x _ => (h x.1).mul (h' x.2)`.
+-/
 theorem CoeffCont.mul {Γ K : Type} [TopologicalSpace Γ] [CommRing K] [TopologicalSpace K]
     [IsTopologicalRing K] {F F' : Γ → K[X]} (h : CoeffCont F) (h' : CoeffCont F') :
     CoeffCont (F * F') := by
@@ -18,9 +21,17 @@ theorem CoeffCont.mul {Γ K : Type} [TopologicalSpace Γ] [CommRing K] [Topologi
   simp only [Pi.mul_apply, coeff_mul]
   exact continuous_finset_sum _ fun x _ => (h x.1).mul (h' x.2)
 
+/- English proof (translation)
+Introduce `_` and use `continuous_const`.
+-/
 theorem coeffCont_one {Γ K : Type} [TopologicalSpace Γ] [CommRing K] [TopologicalSpace K] :
     CoeffCont (1 : Γ → K[X]) := fun _ => continuous_const
 
+/- English proof (translation)
+Introduce `k`. Break down `k with _ | _ | k` into its components or cases. Simplify using `only [coeff_sub, coeff_X_zero, coeff_C_zero, zero_sub]`. Conclude with `ha.neg`. Simplify using `using continuous_const`.
+
+Simplify using `only [coeff_sub, coeff_X, coeff_C]`. Simplify using `using continuous_const`.
+-/
 theorem coeffCont_X_sub_C {Γ K : Type} [TopologicalSpace Γ] [CommRing K] [TopologicalSpace K]
     [IsTopologicalRing K] {a : Γ → K} (ha : Continuous a) :
     CoeffCont fun g => (X - C (a g)) := by
@@ -32,6 +43,9 @@ theorem coeffCont_X_sub_C {Γ K : Type} [TopologicalSpace Γ] [CommRing K] [Topo
   · simp only [coeff_sub, coeff_X, coeff_C]
     simpa using continuous_const
 
+/- English proof (translation)
+Establish `: (fun g => ∏ c ∈ s, F c g) = ∏ c ∈ s, F c`. Use function extensionality and compare the values at `g`. Simplify using `[Finset.prod_apply]`. Rewrite using `[this]`. Conclude with `Finset.prod_induction _ (fun G => CoeffCont G) (fun _ _ ha hb => ha.mul hb) coeffCont_one h`.
+-/
 theorem coeffCont_prod {Γ K ι : Type} [TopologicalSpace Γ] [CommRing K] [TopologicalSpace K]
     [IsTopologicalRing K] (s : Finset ι) (F : ι → Γ → K[X]) (h : ∀ c ∈ s, CoeffCont (F c)) :
     CoeffCont fun g => ∏ c ∈ s, F c g := by

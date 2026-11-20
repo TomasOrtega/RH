@@ -19,18 +19,30 @@ section Parts
 
 variable {D : ℕ} {O : Set (V D)} {u χ : V D → ℝ}
 
+/- English proof (translation)
+The claim follows from `(hu.mul hχ.continuousOn).continuous_of_tsupport_subset hO (tsupport_mul_subset_right.trans hs)`.
+-/
 theorem continuous_mul_of_tsupport (hO : IsOpen O) (hu : ContinuousOn u O) (hχ : Continuous χ)
     (hs : tsupport χ ⊆ O) : Continuous fun v => u v * χ v :=
   (hu.mul hχ.continuousOn).continuous_of_tsupport_subset hO (tsupport_mul_subset_right.trans hs)
 
+/- English proof (translation)
+The claim follows from `(continuous_mul_of_tsupport hO hu hχ hs).integrable_of_hasCompactSupport hc.mul_left`.
+-/
 theorem integrable_mul_of_tsupport (hO : IsOpen O) (hu : ContinuousOn u O) (hχ : Continuous χ)
     (hc : HasCompactSupport χ) (hs : tsupport χ ⊆ O) : Integrable fun v => u v * χ v :=
   (continuous_mul_of_tsupport hO hu hχ hs).integrable_of_hasCompactSupport hc.mul_left
 
+/- English proof (translation)
+The claim follows from `(hu.fderiv_of_isOpen hO le_rfl).clm_apply contDiffOn_const`.
+-/
 theorem contDiffOn_fderiv_apply (hO : IsOpen O) {n : ℕ∞ω} (hu : ContDiffOn ℝ (n + 1) u O) (a : V D) :
     ContDiffOn ℝ n (fun v => fderiv ℝ u v a) O :=
   (hu.fderiv_of_isOpen hO le_rfl).clm_apply contDiffOn_const
 
+/- English proof (translation)
+The claim follows from `integral_mul_fderiv_eq_neg_fderiv_mul_of_integrable (integrable_mul_of_tsupport hO (contDiffOn_fderiv_apply hO (n := 0) hu a).continuousOn hχ.continuous hc hs) (integrable_mul_of_tsupport hO hu.continuousOn ((hχ.continuous_fderiv one_ne_zero).clm_apply continuous_const) (hc.fderi …`.
+-/
 theorem integral_mul_fderiv_of_tsupport (hO : IsOpen O) (hu : ContDiffOn ℝ 1 u O)
     (hχ : ContDiff ℝ 1 χ) (hc : HasCompactSupport χ) (hs : tsupport χ ⊆ O) (a : V D) :
     ∫ v, u v * fderiv ℝ χ v a = -∫ v, fderiv ℝ u v a * χ v :=
@@ -44,17 +56,28 @@ theorem integral_mul_fderiv_of_tsupport (hO : IsOpen O) (hu : ContDiffOn ℝ 1 u
     (fun _ hv => (hu.contDiffAt (hO.mem_nhds (hs hv))).differentiableAt one_ne_zero)
     (fun v _ => hχ.differentiable one_ne_zero v)
 
+/- English proof (translation)
+Rewrite using `[fderiv_clm_apply ((hu.fderiv_right (m := 1) (by norm_num)).differentiableAt one_ne_zero) (differentiableAt_const _)]`. Simplify using the standard rewrite rules.
+-/
 theorem fderiv_fderiv_apply {v : V D} (hu : ContDiffAt ℝ 2 u v) (a : V D) :
     fderiv ℝ (fun w => fderiv ℝ u w a) v a = fderiv ℝ (fderiv ℝ u) v a a := by
   rw [fderiv_clm_apply ((hu.fderiv_right (m := 1) (by norm_num)).differentiableAt one_ne_zero)
     (differentiableAt_const _)]
   simp
 
+/- English proof (translation)
+The claim follows from `(contDiffOn_fderiv_apply hO (n := 0) (contDiffOn_fderiv_apply hO (n := 1) hu a) a).continuousOn.congr fun _ hv => (fderiv_fderiv_apply (hu.contDiffAt (hO.mem_nhds hv)) a).symm`.
+-/
 theorem continuousOn_fderiv_fderiv (hO : IsOpen O) (hu : ContDiffOn ℝ 2 u O) (a : V D) :
     ContinuousOn (fun v => fderiv ℝ (fderiv ℝ u) v a a) O :=
   (contDiffOn_fderiv_apply hO (n := 0) (contDiffOn_fderiv_apply hO (n := 1) hu a) a).continuousOn.congr
     fun _ hv => (fderiv_fderiv_apply (hu.contDiffAt (hO.mem_nhds hv)) a).symm
 
+/- English proof (translation)
+Establish `hχ' : ContDiff ℝ 1 fun v => fderiv ℝ χ v a` using `contDiffOn_univ.1 (contDiffOn_fderiv_apply isOpen_univ (n := 1) hχ.contDiffOn a)`. Establish `h₁` using `integral_mul_fderiv_of_tsupport hO (hu.of_le one_le_two) hχ' (hc.fderiv_apply ℝ a) ((tsupport_fderiv_apply_subset ℝ a).trans hs) a`. Establish `h₂` using `integral_mul_fderiv_of_tsupport hO (contDiffOn_fderiv_apply hO (n := 1) hu a) (hχ.of_le one_le_two) hc hs a`. Simplify using `only [fderiv_fderiv_apply hχ.contDiffAt] at h₁`. Rewrite using `[h₁, h₂, neg_neg]`.
+
+Use `integral_congr_ae (.of_forall fun v => ?_)` and prove the remaining obligations. Distinguish the cases in `hv : v ∈ O`. Simplify using `only [fderiv_fderiv_apply (hu.contDiffAt (hO.mem_nhds hv))]`. Simplify using `only [image_eq_zero_of_notMem_tsupport fun h => hv (hs h), mul_zero]`.
+-/
 theorem integral_mul_fderiv_fderiv (hO : IsOpen O) (hu : ContDiffOn ℝ 2 u O)
     (hχ : ContDiff ℝ 2 χ) (hc : HasCompactSupport χ) (hs : tsupport χ ⊆ O) (a : V D) :
     ∫ v, u v * fderiv ℝ (fderiv ℝ χ) v a a = ∫ v, fderiv ℝ (fderiv ℝ u) v a a * χ v := by
@@ -71,17 +94,30 @@ theorem integral_mul_fderiv_fderiv (hO : IsOpen O) (hu : ContDiffOn ℝ 2 u O)
   · simp only [fderiv_fderiv_apply (hu.contDiffAt (hO.mem_nhds hv))]
   · simp only [image_eq_zero_of_notMem_tsupport fun h => hv (hs h), mul_zero]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨_, _, fun _ _ hf => by rw [← LocalMaximumSecondDerivative.leviV_re_eq hf ξ]; ring⟩`.
+-/
 theorem exists_leviV_re_eq (ξ : Fin D → ℂ) : ∃ a b : V D, ∀ (f : V D → ℝ) (v : V D),
     ContDiffAt ℝ 2 f v → (leviV D (fun w => (f w : ℂ)) v ξ).re =
       4⁻¹ * (fderiv ℝ (fderiv ℝ f) v a a + fderiv ℝ (fderiv ℝ f) v b b) :=
   ⟨_, _, fun _ _ hf => by rw [← LocalMaximumSecondDerivative.leviV_re_eq hf ξ]; ring⟩
 
+/- English proof (translation)
+The claim follows from `have ⟨a, b, h⟩ := exists_leviV_re_eq ξ (continuousOn_const.mul ((continuousOn_fderiv_fderiv hO hu a).add (continuousOn_fderiv_fderiv hO hu b))).congr fun v hv => h u v (hu.contDiffAt (hO.mem_nhds hv))`.
+-/
 theorem continuousOn_leviV_re (hO : IsOpen O) (hu : ContDiffOn ℝ 2 u O) (ξ : Fin D → ℂ) :
     ContinuousOn (fun v => (leviV D (fun w => (u w : ℂ)) v ξ).re) O :=
   have ⟨a, b, h⟩ := exists_leviV_re_eq ξ
   (continuousOn_const.mul ((continuousOn_fderiv_fderiv hO hu a).add
     (continuousOn_fderiv_fderiv hO hu b))).congr fun v hv => h u v (hu.contDiffAt (hO.mem_nhds hv))
 
+/- English proof (translation)
+Take `⟨a, b, h⟩` from `exists_leviV_re_eq ξ`. Establish `I₁ (c : V D) : Integrable fun v => u v * fderiv ℝ (fderiv ℝ χ) v c c`. Simplify using `only [← fderiv_fderiv_apply hχ.contDiffAt]`. Use `integrable_mul_of_tsupport hO hu.continuousOn ?_ ((hc.fderiv_apply ℝ c).fderiv_apply ℝ c) ((tsupport_fderiv_apply_subset ℝ c).trans ((tsupport_fderiv_apply_subset ℝ c).trans hs))` and prove the remaining obligations. Simplify using `only [fderiv_fderiv_apply hχ.contDiffAt]`.
+
+Conclude with `continuousOn_univ.1 (continuousOn_fderiv_fderiv isOpen_univ hχ.contDiffOn c)`. Establish `I₂ (c : V D) : Integrable fun v => fderiv ℝ (fderiv ℝ u) v c c * χ v` using `integrable_mul_of_tsupport hO (continuousOn_fderiv_fderiv hO hu c) hχ.continuous hc hs`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[integral_const_mul, integral_const_mul, integral_add (I₁ a) (I₁ b), integral_add (I₂ a) (I₂ b), integral_mul_fderiv_fderiv hO hu hχ hc hs, integral_mul_fderiv_fderiv hO hu hχ hc hs]`. Use `_ = _ := by`.
+
+Use `integral_congr_ae (.of_forall fun v => ?_)` and prove the remaining obligations. Distinguish the cases in `hv : v ∈ O`. Simplify using `only [h u v (hu.contDiffAt (hO.mem_nhds hv))]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [image_eq_zero_of_notMem_tsupport fun h => hv (hs h), mul_zero, add_zero]`.
+-/
 theorem integral_mul_leviV_re (hO : IsOpen O) (hu : ContDiffOn ℝ 2 u O)
     (hχ : ContDiff ℝ 2 χ) (hc : HasCompactSupport χ) (hs : tsupport χ ⊆ O) (ξ : Fin D → ℂ) :
     ∫ v, u v * (leviV D (fun w => (χ w : ℂ)) v ξ).re =
@@ -107,6 +143,13 @@ theorem integral_mul_leviV_re (hO : IsOpen O) (hu : ContDiffOn ℝ 2 u O)
         · simp only [h u v (hu.contDiffAt (hO.mem_nhds hv))]; ring
         · simp only [image_eq_zero_of_notMem_tsupport fun h => hv (hs h), mul_zero, add_zero]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hlt`. Rewrite `hlt` using `[not_le]`. Establish `hn : O ∩ {w | u w < 0} ∈ 𝓝 v` using `inter_mem (hO.mem_nhds hv) ((hu.continuousAt (hO.mem_nhds hv)).eventually_lt continuousAt_const hlt)`. Take `⟨χ, hs, hc, hχ, hr, h1⟩` from `exists_contDiff_tsupport_subset (n := ⊤) hn`. Establish `h0 (w) : 0 ≤ χ w` using `(hr ⟨w, rfl⟩).1`.
+
+Establish `hs'` using `hs.trans inter_subset_left`. Establish `hp : 0 < ∫ w, -u w * χ w` using `(continuous_mul_of_tsupport hO hu.neg hχ.continuous hs').integral_pos_of_hasCompactSupport_nonneg_nonzero (x := v) hc.mul_left (fun w => by`. Distinguish the cases in `hw : w ∈ tsupport χ`. Conclude with `mul_nonneg (neg_nonneg.2 (le_of_lt (hs hw).2)) (h0 w)`. Simplify using `[image_eq_zero_of_notMem_tsupport hw]) (by simp [h1, hlt.ne])`.
+
+Simplify using `only [neg_mul, integral_neg] at hp`. Combine the linear relations using `[h χ hχ hc hs' h0]`.
+-/
 theorem nonneg_of_integral_mul_nonneg (hO : IsOpen O) (hu : ContinuousOn u O)
     (h : ∀ χ : V D → ℝ, ContDiff ℝ ∞ χ → HasCompactSupport χ → tsupport χ ⊆ O →
       (∀ v, 0 ≤ χ v) → 0 ≤ ∫ v, u v * χ v) {v : V D} (hv : v ∈ O) : 0 ≤ u v := by
@@ -126,6 +169,11 @@ theorem nonneg_of_integral_mul_nonneg (hO : IsOpen O) (hu : ContinuousOn u O)
   simp only [neg_mul, integral_neg] at hp
   linarith [h χ hχ hc hs' h0]
 
+/- English proof (translation)
+Establish `h2 {χ : V D → ℝ} (h : ContDiff ℝ ∞ χ) : ContDiff ℝ 2 χ` using `h.of_le (WithTop.coe_le_coe.2 le_top)`. Use `⟨fun h v hv ξ => nonneg_of_integral_mul_nonneg hO (continuousOn_leviV_re hO hu ξ) (fun χ h₁ h₂ h₃ h₄ => (h.2 χ h₁ h₂ h₃ h₄ ξ).trans_eq (integral_mul_leviV_re hO hu (h2 h₁) h₂ h₃ ξ)) hv, fun h => ⟨hu.continuousOn.locallyIntegrableOn hO.measurableSet, fun χ h₁ h₂ h₃ h₄ ξ => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[integral_mul_leviV_re hO hu (h2 h₁) h₂ h₃ ξ]`. Use `integral_nonneg fun v => ?_` and prove the remaining obligations. Distinguish the cases in `hv : v ∈ O`.
+
+Conclude with `mul_nonneg (h v hv ξ) (h₄ v)`. Simplify using `[image_eq_zero_of_notMem_tsupport fun h => hv (h₃ h)]`.
+-/
 theorem posCurrent_iff_leviV (hO : IsOpen O) (hu : ContDiffOn ℝ 2 u O) :
     PosCurrent O u ↔ ∀ v ∈ O, ∀ ξ, 0 ≤ (leviV D (fun w => (u w : ℂ)) v ξ).re := by
   have h2 {χ : V D → ℝ} (h : ContDiff ℝ ∞ χ) : ContDiff ℝ 2 χ := h.of_le (WithTop.coe_le_coe.2 le_top)
@@ -144,6 +192,11 @@ namespace Var
 
 variable {F : Type} [Field F] {Y : Var F} {σ : F →+* ℂ} {Δ : Y.Dv} {m : Met Y σ Δ} {ψ : Y.pts σ → ℝ}
 
+/- English proof (translation)
+Use `forall₂_congr fun c g => ?_` and prove the remaining obligations. Establish `ho : IsOpen (chartDom c Δ g)` using `isOpen_over _ (isOpen_eqnSet Δ g)`. Establish `hs : (Y.an σ).SmoothOn (eqnSet σ Δ g) fun z => m.wt g z + ψ z` using `fun j => ((h.2 g).mono (fun _ hz => ⟨trivial, hz⟩) j).add (hψ.mono (subset_univ _) j)`. Rewrite using `[and_iff_right (.of_forall fun _ _ => h.1 trivial)]`. Use `(posCurrent_iff_leviV ho ((hs.chart (isOpen_eqnSet Δ g) c).of_le (WithTop.coe_le_coe.2 le_top))).trans ⟨fun H y hy hg => H _ (mem_over _ hy hg), fun H v hv ξ => ?_⟩` and prove the remaining obligations.
+
+Use `H _ (c.e.map_target hv.1) hv.2 ξ` as an intermediate fact. Rewrite `this` using `[AlgChart.levi, c.e.right_inv hv.1]`. Then use the resulting hypothesis.
+-/
 theorem mSmooth.mPsh_iff_levi (h : mSmooth Y σ Δ m) (hψ : (Y.an σ).SmoothOn univ ψ) :
     mPsh Y σ Δ m ψ ↔ ∀ (c : AlgChart Y.str σ Y.dim) (g : Y.Fnˣ) (y : Y.pts σ), y ∈ c.e.source →
       y ∈ eqnSet σ Δ g → ∀ ξ, 0 ≤ c.levi (fun z => m.wt g z + ψ z) y ξ := by
@@ -157,6 +210,9 @@ theorem mSmooth.mPsh_iff_levi (h : mSmooth Y σ Δ m) (hψ : (Y.an σ).SmoothOn 
   have := H _ (c.e.map_target hv.1) hv.2 ξ
   rwa [AlgChart.levi, c.e.right_inv hv.1] at this
 
+/- English proof (translation)
+The claim follows from `AnRead.levi_eq_of_add_log (R := Y.an σ) (f := fun z => m.wt g z + ψ z) ((isOpen_eqnSet Δ g).inter (isOpen_eqnSet Δ g')) (fun j => ((h.2 g).mono (fun _ hz => ⟨trivial, hz.1⟩) j).add (hψ.mono (subset_univ _) j)) (holoOn_tv Δ g g') (fun _ hz => tv_ne_zero hz.1 hz.2) (fun z hz => by …`.
+-/
 theorem mSmooth.levi_frame (h : mSmooth Y σ Δ m) (hψ : (Y.an σ).SmoothOn univ ψ)
     {c : AlgChart Y.str σ Y.dim} {g g' : Y.Fnˣ} {y : Y.pts σ} (hy : y ∈ c.e.source)
     (hg : y ∈ eqnSet σ Δ g) (hg' : y ∈ eqnSet σ Δ g') (ξ : Fin Y.dim → ℂ) :
@@ -169,6 +225,9 @@ theorem mSmooth.levi_frame (h : mSmooth Y σ Δ m) (hψ : (Y.an σ).SmoothOn uni
 
 variable {L : LB Y.X} {r : L.ι → Y.Fnˣ}
 
+/- English proof (translation)
+Rewrite using `[h.mPsh_iff_levi hψ]`. Use `⟨fun H i c y hy ξ => H _ (r i) y hy.1 (ptsIn_subset_eqnSet hp i hy.2) ξ, fun H c g y hy hg ξ => ?_⟩` and prove the remaining obligations. Establish `hi` using `mem_pick hp.isLB y`. Rewrite using `[h.levi_frame hψ hy (ptsIn_subset_eqnSet hp _ hi) hg]`. Conclude with `H.chart ((h.isSmooth_toWeight hp).addFn hψ) hy hi ξ`.
+-/
 theorem mSmooth.mPsh_iff_semiPos (h : mSmooth Y σ Δ m) (hψ : (Y.an σ).SmoothOn univ ψ)
     (hp : Presents Δ L r) :
     mPsh Y σ Δ m ψ ↔ ((m.toWeight h.posSet_eq hp).addFn ψ).SemiPos (Y.an σ) := by
@@ -179,6 +238,9 @@ theorem mSmooth.mPsh_iff_semiPos (h : mSmooth Y σ Δ m) (hψ : (Y.an σ).Smooth
   rw [h.levi_frame hψ hy (ptsIn_subset_eqnSet hp _ hi) hg]
   exact H.chart ((h.isSmooth_toWeight hp).addFn hψ) hy hi ξ
 
+/- English proof (translation)
+Introduce `_` and use `contDiffOn_const`.
+-/
 theorem smoothOn_zero : (Y.an σ).SmoothOn univ (0 : Y.pts σ → ℝ) := fun _ => contDiffOn_const
 
 end Var

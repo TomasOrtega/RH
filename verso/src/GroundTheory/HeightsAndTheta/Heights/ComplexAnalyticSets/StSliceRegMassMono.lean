@@ -11,6 +11,13 @@ open scoped ContDiff
 
 noncomputable section
 
+/- English proof (translation)
+Introduce `k m hkm`. Simplify using `only [sliceCut]`. Establish `hk : (0 : ℝ) < (k : ℝ) + 1` using `by positivity`. Establish `hkm' : (k : ℝ) + 1 ≤ (m : ℝ) + 1` using `by exact_mod_cast Nat.add_le_add_right hkm 1`. Break down `le_or_gt 0 (Real.log (h.dualNorm x)) with hL | hL` into its components or cases.
+
+Apply `Real.smoothTransition.monotone` to reduce the goal to its premises. Use `div_le_div_of_nonneg_left hL hk hkm'` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1 : ∀ j : ℕ, Real.smoothTransition (2 - Real.log (h.dualNorm x) / ((j : ℝ) + 1)) = 1` using `fun j => Real.smoothTransition.one_of_one_le (by`. Establish `: Real.log (h.dualNorm x) / ((j : ℝ) + 1) ≤ 0` using `div_nonpos_of_nonpos_of_nonneg hL.le (by positivity)`.
+
+Use the proof step `linarith)`. Rewrite using `[h1 k, h1 m]`.
+-/
 theorem SliceCut.monotone {n : ℕ} (h : HermNorm n) (x : Fin n → ℂ) : Monotone fun k => sliceCut h k x := by
   intro k m hkm
   simp only [sliceCut]

@@ -14,6 +14,13 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 
 namespace PositivityTheory.Xgn.HolomorphicChart
 
+/- English proof (translation)
+Set `: Algebra A ℂ` to `ψ.toAlgebra`. Set `: Algebra K ℂ` to `(ψ.comp (algebraMap K A)).toAlgebra`. Establish `: IsScalarTower K A ℂ` using `IsScalarTower.of_algebraMap_eq fun _ => rfl`. Set `L : A →ₗ[K] ℂ` to `{ toFun := δ map_add' := δ.map_add map_smul' := fun k a => by`. Rewrite using `[Algebra.smul_def, hmul, hK, mul_zero, add_zero]`.
+
+Use `rfl }`. Set `D : Derivation K A ℂ` to `Derivation.mk' L fun a b => hmul a b`. Establish `h0 : D.liftKaehlerDifferential = 0`. Apply `LinearMap.ext_on_range hsp` to reduce the goal to its premises. Introduce `i`.
+
+Rewrite using `[Derivation.liftKaehlerDifferential_comp_D]`. Conclude with `hz i`. Use `D.liftKaehlerDifferential_comp_D a` as an intermediate fact. Rewrite `this` using `[h0]`. Conclude with `this.symm`.
+-/
 theorem der_zero {K A : Type} [Field K] [CommRing A] [Algebra K A] {d : ℕ} (z : Fin d → A)
     (hsp : Submodule.span A (Set.range fun i => KaehlerDifferential.D K A (z i)) = ⊤)
     (ψ : A →+* ℂ) (δ : A →+ ℂ) (hmul : ∀ a b, δ (a * b) = ψ a * δ b + ψ b * δ a)
@@ -36,6 +43,11 @@ theorem der_zero {K A : Type} [Field K] [CommRing A] [Algebra K A] {d : ℕ} (z 
   rw [h0] at this
   exact this.symm
 
+/- English proof (translation)
+Establish `h` using `der_zero z hsp (ψ.comp (algebraMap A A')) (δ.comp (algebraMap A A').toAddMonoidHom) (fun a b => by simpa using hmul (algebraMap A A' a) (algebraMap A A' b)) (fun k => by simpa [← IsScalarTower.algebraMap_apply] using hK k) hz`. Establish `h' : ∀ b, δ (algebraMap A A' b) = 0` using `h`. Take `⟨⟨b, s⟩, hs⟩` from `IsLocalization.surj (Submonoid.powers g) a`. Establish `hu : ψ (algebraMap A A' s) ≠ 0` using `((IsLocalization.map_units A' s).map ψ).ne_zero`. Use `hmul a (algebraMap A A' s)` as an intermediate fact.
+
+Rewrite `this` using `[hs, h', h', mul_zero, zero_add]`. Conclude with `(mul_eq_zero.1 this.symm).resolve_left hu`.
+-/
 theorem der_zero_loc {K A A' : Type} [Field K] [CommRing A] [Algebra K A] [CommRing A'] [Algebra K A'] [Algebra A A']
     [IsScalarTower K A A'] (g : A) [IsLocalization.Away g A'] {d : ℕ} (z : Fin d → A)
     (hsp : Submodule.span A (Set.range fun i => KaehlerDifferential.D K A (z i)) = ⊤)
@@ -51,6 +63,11 @@ theorem der_zero_loc {K A A' : Type} [Field K] [CommRing A] [Algebra K A] [CommR
   rw [hs, h', h', mul_zero, zero_add] at this
   exact (mul_eq_zero.1 this.symm).resolve_left hu
 
+/- English proof (translation)
+Set `b : Module.Basis (Fin d) A Ω[A⁄K]` to `Module.Basis.mk hli hsp.ge`. Establish `: Algebra.IsStandardSmooth K A` using `Algebra.IsStandardSmooth.of_basis_kaehlerDifferential b (by`. Introduce and unpack `_ ⟨i, rfl⟩; exact ⟨z i, by simp [b]⟩)`. Establish `: Algebra.IsStandardSmoothOfRelativeDimension d K A` using `(Algebra.IsStandardSmoothOfRelativeDimension.iff_of_isStandardSmooth d).2 (by simpa using rank_eq_card_basis b)`. Use `Algebra.IsStandardSmoothOfRelativeDimension.localization_away (S := A') g` as an intermediate fact.
+
+Simplify using `using Algebra.IsStandardSmoothOfRelativeDimension.trans d 0 K A A'`.
+-/
 theorem stdSmooth {K A A' : Type} [Field K] [CommRing A] [Algebra K A] [CommRing A'] [Algebra K A'] [Algebra A A']
     [IsScalarTower K A A'] (g : A) [IsLocalization.Away g A'] [Algebra.Smooth K A] [Nontrivial A] {d : ℕ} (z : Fin d → A)
     (hli : LinearIndependent A (fun i => KaehlerDifferential.D K A (z i)))
@@ -64,6 +81,29 @@ theorem stdSmooth {K A A' : Type} [Field K] [CommRing A] [Algebra K A] [CommRing
   have := Algebra.IsStandardSmoothOfRelativeDimension.localization_away (S := A') g
   simpa using Algebra.IsStandardSmoothOfRelativeDimension.trans d 0 K A A'
 
+/- English proof (translation)
+Take `⟨N, g, f, B, ε, Ψ, ε0, oB, a₁, a₂, a₃⟩` from `anChart_alg d σ ψ₀ h₀`. Take `⟨mB, e₀⟩` from `a₃ ψ₀ h₀ (fun j => by simpa using ε0)`. Use `set b₀ : Fin d → ℂ := fun i => ψ₀ (f i) with hb₀`. Establish `nB : B ∈ 𝓝 b₀` using `oB.mem_nhds mB`. Establish `dA : ∀ a, DifferentiableAt ℂ (fun b => Ψ b a) b₀` using `fun a => (a₂ a).differentiableAt nB`.
+
+Set `G : (Fin d → ℂ) → (Fin d → ℂ)` to `fun b i => Ψ b (z i)`. Establish `cd : ContDiffAt ℂ 1 G b₀` using `contDiffAt_pi.2 fun i => GlobalTheory.SCV.contDiffAt_of_differentiableOn (a₂ (z i)) nB 1`. Set `F` to `fderiv ℂ G b₀`. Establish `hF : HasFDerivAt G F b₀` using `(cd.differentiableAt one_ne_zero).hasFDerivAt`. Establish `inj : Function.Injective F` using `(injective_iff_map_eq_zero F).2 fun v hv => by`.
+
+Set `δ : A →+ ℂ` to `{ toFun := fun a => fderiv ℂ (fun b => Ψ b a) b₀ v map_zero' := by simp map_add' := fun a a' => by`. Simplify using `only [map_add]`. Rewrite using `[fderiv_fun_add (dA a) (dA a')]`. Use `rfl }`. Establish `hδ` using `H δ (fun a a' => by show fderiv ℂ (fun b => Ψ b (a * a')) b₀ v = _`.
+
+Simplify using `only [map_mul]`. Rewrite using `[fderiv_fun_mul (dA a) (dA a'), e₀]`. Use the proof step `rfl)`. Use the proof step `(fun k => by show fderiv ℂ (fun b => Ψ b (algebraMap K A k)) b₀ v = 0`. Establish `: (fun b => Ψ b (algebraMap K A k)) =ᶠ[𝓝 b₀] fun _ => σ k` using `by filter_upwards [nB] with b hb using congrArg (fun φ : K →+* ℂ => φ k) (a₁ b hb).1`.
+
+Rewrite using `[this.fderiv_eq]`. Use the proof step `simp)`. Use the proof step `(fun i => by show fderiv ℂ (fun b => Ψ b (z i)) b₀ v = 0`. Use `congrFun hv i` as an intermediate fact. Rewrite `this` using `[show F = _ from fderiv_pi (fun i => dA (z i))]`.
+
+Conclude with `this)`. Use function extensionality and compare the values at `i`. Establish `h1 : fderiv ℂ (fun b => Ψ b (f i)) b₀ v = 0` using `hδ (f i)`. Establish `: (fun b => Ψ b (f i)) =ᶠ[𝓝 b₀] fun b => b i` using `by filter_upwards [nB] with b hb using (a₁ b hb).2 i`. Rewrite `h1` using `[this.fderiv_eq, (hasFDerivAt_apply (𝕜 := ℂ) i b₀).fderiv]`.
+
+Conclude with `h1`. Set `F' : (Fin d → ℂ) ≃L[ℂ] (Fin d → ℂ)` to `(LinearEquiv.ofInjectiveEndo F.toLinearMap inj).toContinuousLinearEquiv`. Set `T` to `cd.toOpenPartialHomeomorph G (f' := F') hF one_ne_zero`. Establish `mS : b₀ ∈ T.source` using `cd.mem_toOpenPartialHomeomorph_source (f' := F') hF one_ne_zero`. Establish `mT : G b₀ ∈ T.target` using `T.map_source mS`.
+
+Establish `cI : ContDiffAt ℂ 1 T.symm (G b₀)` using `cd.to_localInverse (f' := F') hF one_ne_zero`. Establish `lI : T.symm (G b₀) = b₀` using `T.left_inv mS`. Establish `hG : G b₀ = fun i => ψ₀ (z i)` using `by simp only [G, e₀]`. Establish `nO : {u | u ∈ T.target ∧ ContDiffAt ℂ 1 T.symm u ∧ T.symm u ∈ B} ∈ 𝓝 (G b₀)` using `by filter_upwards [T.open_target.mem_nhds mT, cI.eventually (by simp), cI.continuousAt.preimage_mem_nhds (lI.symm ▸ nB)] with u h1 h2 h3 using ⟨h1, h2, h3⟩`. Use `⟨interior {u | u ∈ T.target ∧ ContDiffAt ℂ 1 T.symm u ∧ T.symm u ∈ B}, fun u => Ψ (T.symm u), isOpen_interior, hG ▸ mem_interior_iff_mem_nhds.2 nO, fun u hu => ?_, fun a u hu => ?_, fun l y hy hσ => ?_⟩` and prove the remaining obligations.
+
+Take `⟨h1, -, h3⟩` from `interior_subset hu`. Conclude with `⟨(a₁ _ h3).1, fun i => congrFun (T.right_inv h1) i⟩`. Take `⟨-, h2, h3⟩` from `interior_subset hu`. Conclude with `(((a₂ a).differentiableAt (oB.mem_nhds h3)).comp u (h2.differentiableAt one_ne_zero)).differentiableWithinAt`. Establish `t₁ : ∀ᶠ t in l, ∀ j, ‖y t (g j) - ψ₀ (g j)‖ < ε` using `eventually_all.2 fun j => by`.
+
+Simplify `Metric.tendsto_nhds.1 (hy (g j)) ε ε0` using `[dist_eq_norm]`. Establish `t₂ : ∀ᶠ t in l, (fun i => y t (f i)) ∈ T.source` using `(tendsto_pi_nhds.2 fun i => hy (f i)) (T.open_source.mem_nhds mS)`. Use `filter_upwards [t₁, t₂, hσ] with t h1 h2 h3`. Take `⟨-, h4⟩` from `a₃ (y t) h3 h1`. Establish `h5 : (fun i => y t (z i)) = T (fun i => y t (f i))` using `by show _ = G _`.
+
+Simplify using `only [G, h4]`. Rewrite using `[h5, T.left_inv h2, h4]`.
+-/
 theorem chart_alt_bis {K A : Type} [Field K] [CommRing A] [Algebra K A] (d : ℕ) [Algebra.IsStandardSmoothOfRelativeDimension d K A]
     (σ : K →+* ℂ) (ψ₀ : A →+* ℂ) (h₀ : ψ₀.comp (algebraMap K A) = σ) (z : Fin d → A)
     (H : ∀ δ : A →+ ℂ, (∀ a b, δ (a * b) = ψ₀ a * δ b + ψ₀ b * δ a) → (∀ k, δ (algebraMap K A k) = 0) →
@@ -137,6 +177,11 @@ theorem chart_alt_bis {K A : Type} [Field K] [CommRing A] [Algebra K A] (d : ℕ
       simp only [G, h4]
     rw [h5, T.left_inv h2, h4]
 
+/- English proof (translation)
+Establish `ha : Fintype.card {i // p i} ≤ d` using `(Fintype.card_subtype_le p).trans (by simp)`. Establish `e : {i // p i} ≃ {i : Fin d // i.val < Fintype.card {i // p i}}` using `Fintype.equivOfCardEq (by`. Rewrite using `[Fintype.card_subtype (fun i : Fin d => i.val < _), Fin.card_filter_val_lt, min_eq_right ha])`. Use `⟨_, e.extendSubtype, ha, fun i => ⟨fun h => ?_, fun h => e.extendSubtype_mem i h⟩⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h'`.
+
+Conclude with `e.extendSubtype_not_mem i h' h`.
+-/
 theorem exists_perm {d : ℕ} (p : Fin d → Prop) :
     ∃ (a : ℕ) (π : Equiv.Perm (Fin d)), a ≤ d ∧ ∀ i, (π i).val < a ↔ p i := by
   classical
@@ -147,6 +192,33 @@ theorem exists_perm {d : ℕ} (p : Fin d → Prop) :
   by_contra h'
   exact e.extendSubtype_not_mem i h' h
 
+/- English proof (translation)
+Take `⟨O, Φ, oO, mO, a₁, a₂, a₃⟩` from `chart_alt_bis d σ ψ₀ h₀ z H`. Use `set c : Fin d → ℂ := fun i => ψ₀ (z i) with hc`. Establish `e₀ : Φ c = ψ₀`. Simplify `h₀)` using `using a₃ (pure ()) (fun _ => ψ₀) (fun _ => tendsto_const_nhds) (by simpa`. Take `⟨a, π, ha, hπ⟩` from `exists_perm (fun i : Fin d => i.val < k ∧ c i = 0)`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨r, r0, hr⟩ : ∃ r > 0, ball c r ⊆ {u | u ∈ O ∧ ∀ i, c i ≠ 0 → u i ≠ 0} := by`. Apply `Metric.mem_nhds_iff.1` to reduce the goal to its premises. Use `inter_mem (oO.mem_nhds mO) (eventually_all.2 fun i => ?_)` and prove the remaining obligations. Distinguish the cases in `h : c i = 0`. Simplify using `[h]`.
+
+Use `filter_upwards [(continuous_apply i).continuousAt.eventually_ne h] with u hu _ using hu`. Establish `rC : (r : ℂ) ≠ 0` using `by exact_mod_cast r0.ne'`. Set `L : (Fin d → ℂ) → (Fin d → ℂ)` to `fun w i => c i + r * w (π i)`. Establish `dL : Differentiable ℂ L` using `differentiable_pi.2 fun i => by fun_prop`. Establish `mL : ∀ w ∈ ball (0 : Fin d → ℂ) 1, L w ∈ ball c r` using `fun w hw => by`.
+
+Rewrite using `[mem_ball, dist_pi_lt_iff r0]`. Introduce `i`. Use `(dist_pi_lt_iff one_pos).1 (mem_ball.1 hw) (π i)` as an intermediate fact. Simplify using `only [Pi.zero_apply, dist_zero_right] at this`. Simplify using `only [L, dist_self_add_left, norm_mul, Complex.norm_real, Real.norm_of_nonneg r0.le]`.
+
+Conclude with `mul_lt_of_lt_one_right r0 this`. Establish `zL : ∀ w ∈ ball (0 : Fin d → ℂ) 1, ∀ i, Φ (L w) (z i) = c i + r * w (π i)` using `fun w hw i => (a₁ _ (hr (mL w hw)).1).2 i`. Use `⟨a, fun w => Φ (L w), ha, ⟨isOpen_ball, fun x => (a₂ x).comp dL.differentiableOn fun w hw => (hr (mL w hw)).1⟩, ?_, fun w hw w' hw' h => ?_, fun w hw => ⟨(a₁ _ (hr (mL w hw)).1).1, ?_⟩, fun m U y oU hy hσ b₀ hb₀ hy₀ => ?_⟩` and prove the remaining obligations. Rewrite using `[← e₀]`. Use `show Φ (L 0) = Φ c`.
+
+Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `[L]`. Use function extensionality and compare the values at `j`. Take `⟨i, rfl⟩` from `π.surjective j`.
+
+Establish `h1` using `zL w hw i`. Establish `h2` using `zL w' hw' i`. Establish `h3 : Φ (L w) = Φ (L w')` using `h`. Rewrite `h1` using `[h3, h2]`. Conclude with `(mul_left_cancel₀ rC (add_left_cancel h1)).symm`.
+
+Use `⟨fun h => ⟨hw, fun j hj => ?_⟩, fun h i hi => ?_⟩` and prove the remaining obligations. Take `⟨i, rfl⟩` from `π.surjective j`. Take `⟨h1, h2⟩` from `(hπ i).1 hj`. Use `h i h1` as an intermediate fact. Rewrite `this` using `[zL w hw, h2, zero_add]`.
+
+Conclude with `right_ne_zero_of_mul this`. Distinguish the cases in `h' : c i = 0`. Rewrite using `[zL w hw, h', zero_add]`. Conclude with `mul_ne_zero rC (h.2 _ ((hπ i).2 ⟨hi, h'⟩))`. Rewrite using `[zL w hw]`.
+
+Conclude with `(hr (mL w hw)).2 i h'`. Set `κ : (Fin m → ℂ) → (Fin d → ℂ)` to `fun b j => (y b (z (π.symm j)) - c (π.symm j)) / r`. Establish `dκ : DifferentiableOn ℂ κ U` using `differentiableOn_pi.2 fun j => by`. Simplify using `only [κ, div_eq_mul_inv]`. Conclude with `((hy _).sub_const _).mul_const _`.
+
+Establish `κ0 : κ b₀ = 0` using `by funext j; simp [κ, hy₀, hc]`. Establish `nU` using `oU.mem_nhds hb₀`. Establish `t₁` using `a₃ (𝓝 b₀) y (fun x => by`. Use `((hy x).differentiableAt nU).continuousAt` as an intermediate fact. Rewrite using `[ContinuousAt, hy₀] at this) (by filter_upwards [nU] with b hb using hσ b hb)` and apply the resulting hypothesis.
+
+Establish `t₂ : ∀ᶠ b in 𝓝 b₀, κ b ∈ ball (0 : Fin d → ℂ) 1` using `(dκ.differentiableAt nU).continuousAt.preimage_mem_nhds (by rw [κ0]; exact ball_mem_nhds _ one_pos)`. Take `⟨ε, ε0, hε⟩` from `Metric.mem_nhds_iff.1 (inter_mem nU (t₁.and t₂))`. Use `⟨ε, κ, ε0, fun b hb => (hε hb).1, dκ.mono fun b hb => (hε hb).1, κ0, fun b hb => ⟨(hε hb).2.2, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← (hε hb).2.1]`. Use `show _ = Φ (L (κ b))`.
+
+Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `only [L, κ, Equiv.symm_apply_apply]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem ring_chart {K A : Type} [Field K] [CommRing A] [Algebra K A] (d : ℕ) [Algebra.IsStandardSmoothOfRelativeDimension d K A]
     (σ : K →+* ℂ) (ψ₀ : A →+* ℂ) (h₀ : ψ₀.comp (algebraMap K A) = σ) (z : Fin d → A)
     (H : ∀ δ : A →+ ℂ, (∀ a b, δ (a * b) = ψ₀ a * δ b + ψ₀ b * δ a) → (∀ k, δ (algebraMap K A k) = 0) →
@@ -225,6 +297,9 @@ theorem ring_chart {K A : Type} [Field K] [CommRing A] [Algebra K A] (d : ℕ) [
 noncomputable def ptHom {X : Scheme.{0}} (y : Sp ℂ ⟶ X) (V : X.Opens) (h : ⊤ ≤ y ⁻¹ᵁ V) : Γ(X, V) →+* ℂ :=
   (y.appLE V ⊤ h ≫ (Scheme.ΓSpecIso (CommRingCat.of ℂ)).hom).hom
 
+/- English proof (translation)
+Use `IsAffineOpen.SpecMap_appLE_fromSpec y hV (isAffineOpen_top _) h` as an intermediate fact. Rewrite `this` using `[IsAffineOpen.fromSpec_top, Scheme.isoSpec_Spec_inv]`. Use `show Spec.map (y.appLE V ⊤ h ≫ (Scheme.ΓSpecIso (CommRingCat.of ℂ)).hom) ≫ hV.fromSpec = y`. Rewrite using `[Spec.map_comp, Category.assoc, this, ← Category.assoc, ← Spec.map_comp, Iso.inv_hom_id, Spec.map_id, Category.id_comp]`.
+-/
 theorem ptHom_spec {X : Scheme.{0}} (y : Sp ℂ ⟶ X) {V : X.Opens} (hV : IsAffineOpen V) (h : ⊤ ≤ y ⁻¹ᵁ V) :
     spMap (ptHom y V h) ≫ hV.fromSpec = y := by
   have := IsAffineOpen.SpecMap_appLE_fromSpec y hV (isAffineOpen_top _) h
@@ -232,23 +307,35 @@ theorem ptHom_spec {X : Scheme.{0}} (y : Sp ℂ ⟶ X) {V : X.Opens} (hV : IsAff
   show Spec.map (y.appLE V ⊤ h ≫ (Scheme.ΓSpecIso (CommRingCat.of ℂ)).hom) ≫ hV.fromSpec = y
   rw [Spec.map_comp, Category.assoc, this, ← Category.assoc, ← Spec.map_comp, Iso.inv_hom_id, Spec.map_id, Category.id_comp]
 
+/- English proof (translation)
+Use `IsAffineOpen.SpecMap_appLE_fromSpec s (isAffineOpen_top _) hV (fun _ _ => trivial)` as an intermediate fact. Rewrite `this` using `[IsAffineOpen.fromSpec_top, Scheme.isoSpec_Spec_inv, ← Spec.map_comp]`. Conclude with `this.symm`.
+-/
 theorem fromSpec_str {K : Type} [Field K] {X : Scheme.{0}} (s : X ⟶ Sp K) {V : X.Opens} (hV : IsAffineOpen V) :
     hV.fromSpec ≫ s = spMap (@algebraMap K Γ(X, V) _ _ (Geo.ResK.secAlgebra s V)) := by
   have := IsAffineOpen.SpecMap_appLE_fromSpec s (isAffineOpen_top _) hV (fun _ _ => trivial)
   rw [IsAffineOpen.fromSpec_top, Scheme.isoSpec_Spec_inv, ← Spec.map_comp] at this
   exact this.symm
 
+/- English proof (translation)
+Rewrite using `[fromSpec_str, ← Spec.map_comp, Spec.map_inj, ← CommRingCat.ofHom_comp]`. Conclude with `⟨fun h => congrArg CommRingCat.Hom.hom h, fun h => by rw [h]⟩`.
+-/
 theorem over_iff {K : Type} [Field K] {X : Scheme.{0}} (s : X ⟶ Sp K) {V : X.Opens} (hV : IsAffineOpen V)
     (σ : K →+* ℂ) (ψ : Γ(X, V) →+* ℂ) :
     spMap ψ ≫ hV.fromSpec ≫ s = spMap σ ↔ ψ.comp (@algebraMap K Γ(X, V) _ _ (Geo.ResK.secAlgebra s V)) = σ := by
   rw [fromSpec_str, ← Spec.map_comp, Spec.map_inj, ← CommRingCat.ofHom_comp]
   exact ⟨fun h => congrArg CommRingCat.Hom.hom h, fun h => by rw [h]⟩
 
+/- English proof (translation)
+Establish `: centre (spMap ψ ≫ hV.fromSpec) ∈ Set.range hV.fromSpec` using `⟨_, rfl⟩`. Rewrite `this` using `[hV.range_fromSpec]`. Then use the resulting hypothesis.
+-/
 theorem centre_mem {X : Scheme.{0}} {V : X.Opens} (hV : IsAffineOpen V) (ψ : Γ(X, V) →+* ℂ) :
     centre (spMap ψ ≫ hV.fromSpec) ∈ V := by
   have : centre (spMap ψ ≫ hV.fromSpec) ∈ Set.range hV.fromSpec := ⟨_, rfl⟩
   rwa [hV.range_fromSpec] at this
 
+/- English proof (translation)
+Establish `: centre (spMap ψ ≫ hV.fromSpec) ∈ X.basicOpen f ↔ centre (spMap ψ) ∈ hV.fromSpec ⁻¹ᵁ X.basicOpen f` using `Iff.rfl`. Rewrite using `[this, hV.fromSpec_preimage_basicOpen]`. Use `show ψ f ∉ IsLocalRing.maximalIdeal ℂ ↔ _`. Simplify using the standard rewrite rules.
+-/
 theorem centre_mem_basicOpen {X : Scheme.{0}} {V : X.Opens} (hV : IsAffineOpen V) (ψ : Γ(X, V) →+* ℂ) (f : Γ(X, V)) :
     centre (spMap ψ ≫ hV.fromSpec) ∈ X.basicOpen f ↔ ψ f ≠ 0 := by
   have : centre (spMap ψ ≫ hV.fromSpec) ∈ X.basicOpen f ↔ centre (spMap ψ) ∈ hV.fromSpec ⁻¹ᵁ X.basicOpen f := Iff.rfl
@@ -256,17 +343,26 @@ theorem centre_mem_basicOpen {X : Scheme.{0}} {V : X.Opens} (hV : IsAffineOpen V
   show ψ f ∉ IsLocalRing.maximalIdeal ℂ ↔ _
   simp
 
+/- English proof (translation)
+Use `⟨fun h => h (Set.mem_univ _), fun h p _ => ?_⟩` and prove the remaining obligations. Take `rfl : p = IsLocalRing.closedPoint ℂ` from `Subsingleton.elim _ _`. Conclude with `h`.
+-/
 theorem top_le_iff {X : Scheme.{0}} (y : Sp ℂ ⟶ X) (V : X.Opens) : ⊤ ≤ y ⁻¹ᵁ V ↔ centre y ∈ V := by
   refine ⟨fun h => h (Set.mem_univ _), fun h p _ => ?_⟩
   obtain rfl : p = IsLocalRing.closedPoint ℂ := Subsingleton.elim _ _
   exact h
 
+/- English proof (translation)
+Establish `h1 : (s.appLE ⊤ V (fun _ _ => trivial)).hom.Smooth` using `HasRingHomProperty.appLE @Smooth s inferInstance ⟨⊤, isAffineOpen_top _⟩ ⟨V, hV⟩ _`. Conclude with `RingHom.Smooth.respectsIso.2 _ (Scheme.ΓSpecIso (CommRingCat.of K)).symm.commRingCatIsoToRingEquiv h1`.
+-/
 theorem smooth_sec {K : Type} [Field K] {X : Scheme.{0}} (s : X ⟶ Sp K) [Smooth s] {V : X.Opens} (hV : IsAffineOpen V) :
     @Algebra.Smooth K _ Γ(X, V) _ (Geo.ResK.secAlgebra s V) := by
   have h1 : (s.appLE ⊤ V (fun _ _ => trivial)).hom.Smooth :=
     HasRingHomProperty.appLE @Smooth s inferInstance ⟨⊤, isAffineOpen_top _⟩ ⟨V, hV⟩ _
   exact RingHom.Smooth.respectsIso.2 _ (Scheme.ΓSpecIso (CommRingCat.of K)).symm.commRingCatIsoToRingEquiv h1
 
+/- English proof (translation)
+Use `Scheme.Hom.appLE_map s (U := ⊤) (V := U) (fun _ _ => trivial) (homOfLE h).op` as an intermediate fact. Conclude with `congrArg (fun φ => ((Scheme.ΓSpecIso (CommRingCat.of K)).inv ≫ φ).hom) this.symm`.
+-/
 theorem sec_tower {K : Type} [Field K] {X : Scheme.{0}} (s : X ⟶ Sp K) {U V : X.Opens} (h : V ≤ U) :
     @algebraMap K Γ(X, V) _ _ (Geo.ResK.secAlgebra s V) =
       (X.presheaf.map (homOfLE h).op).hom.comp (@algebraMap K Γ(X, U) _ _ (Geo.ResK.secAlgebra s U)) := by
@@ -276,6 +372,25 @@ theorem sec_tower {K : Type} [Field K] {X : Scheme.{0}} (s : X ⟶ Sp K) {U V : 
 end PositivityTheory.Xgn.HolomorphicChart
 
 open PositivityTheory.Xgn.HolomorphicChart in
+/- English proof (translation)
+Introduce `K _ σ X s d T hs ⟨n, Vs, hcov, hVs⟩ x W hx hW`. Take `⟨j, hj⟩` from `hcov (centre x)`. Take `⟨z, k, -, hz, hT⟩` from `hVs j`. Establish `hU : IsAffineOpen (Vs j : X.Opens)` using `(Vs j).2`. Take `⟨g, hgW, hg⟩` from `hU.exists_basicOpen_le ⟨centre x, (top_le_iff x W).1 hW⟩ hj`.
+
+Establish `hV : IsAffineOpen (X.basicOpen g)` using `hU.basicOpen g`. Establish `hxV : ⊤ ≤ x ⁻¹ᵁ X.basicOpen g` using `(top_le_iff x _).2 hg`. Set `` to `Geo.ResK.secAlgebra s (Vs j)`. Set `` to `Geo.ResK.secAlgebra s (X.basicOpen g)`. Use `hU.isLocalization_basicOpen g` as an intermediate fact.
+
+Establish `: IsScalarTower K Γ(X, (Vs j : X.Opens)) Γ(X, X.basicOpen g)` using `IsScalarTower.of_algebraMap_eq' (sec_tower s (X.basicOpen_le g))`. Use `SmoothOfRelativeDimension.smooth d s` as an intermediate fact. Use `smooth_sec s hU` as an intermediate fact. Establish `: Nontrivial Γ(X, (Vs j : X.Opens))` using `((ptHom x _ hxV).comp (algebraMap Γ(X, (Vs j : X.Opens)) Γ(X, X.basicOpen g))).domain_nontrivial`. Use `stdSmooth (K := K) (A' := Γ(X, X.basicOpen g)) g z hz.1 hz.2` as an intermediate fact.
+
+Establish `h₀` using `(over_iff s hV σ (ptHom x _ hxV)).1 (by rw [← Category.assoc, ptHom_spec x hV hxV, hx])`. Take `⟨a, ψ, ha, hol, e₀, inj, a₁, a₂⟩` from `ring_chart d σ (ptHom x _ hxV) h₀ (fun i => algebraMap Γ(X, (Vs j : X.Opens)) Γ(X, X.basicOpen g) (z i)) (fun δ h1 h2 h3 => der_zero_loc g z hz.2 _ δ h1 h2 h3) k`. Use `⟨X.basicOpen g, hV, a, ψ, hgW, ha, hol, by rw [e₀, ptHom_spec], inj, fun w hw => ⟨(over_iff s hV σ _).2 (a₁ w hw).1, ?_⟩, fun m B y oB hy hσ b₀ hb₀ hy₀ => ?_⟩` and prove the remaining obligations. Rewrite using `[← (a₁ w hw).2]`. Establish `c₁` using `centre_mem hV (ψ w)`.
+
+Establish `c₂ : centre (spMap (ψ w) ≫ hV.fromSpec) ∈ (Vs j : X.Opens)` using `X.basicOpen_le g c₁`. Establish `c₃ : ∀ i, centre (spMap (ψ w) ≫ hV.fromSpec) ∈ X.basicOpen (z i) ↔ ψ w (algebraMap Γ(X, (Vs j : X.Opens)) Γ(X, X.basicOpen g) (z i)) ≠ 0` using `fun i => by`. Rewrite using `[← centre_mem_basicOpen hV, RingHom.algebraMap_toAlgebra, Scheme.basicOpen_res]`. Conclude with `⟨fun h => ⟨c₁, h⟩, fun h => h.2⟩`. Establish `c₄` using `Set.ext_iff.1 hT (centre (spMap (ψ w) ≫ hV.fromSpec))`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h i hi`. Rewrite using `[← c₃]`. Assume the negation of the conclusion as `h'`. Conclude with `h (c₄.2 ⟨c₂, i, hi, h'⟩).2`.
+
+Introduce `h h'`. Take `⟨-, i, hi, h''⟩` from `c₄.1 ⟨c₂, h'⟩`. Conclude with `h'' ((c₃ i).2 (h i hi))`. Set `U` to `{b ∈ B | ⊤ ≤ y b ⁻¹ᵁ X.basicOpen g}`. Set `y' : (Fin m → ℂ) → (Γ(X, X.basicOpen g) →+* ℂ)` to `fun b => if h : ⊤ ≤ y b ⁻¹ᵁ X.basicOpen g then ptHom (y b) _ h else ptHom x _ hxV`.
+
+Establish `hy' : ∀ b ∈ U, spMap (y' b) ≫ hV.fromSpec = y b` using `fun b hb => by`. Simplify using `only [y', dif_pos hb.2, ptHom_spec]`. Take `⟨ε, κ, ε0, b₁, b₂, b₃, b₄⟩` from `a₂ m U y' (hy (X.basicOpen g) 0).1 (fun f => (hy (X.basicOpen g) f).2.congr fun b hb => by`. Simplify using `only [y', valAt', dif_pos hb.2]`. Use the proof step `rfl)`.
+
+Use the proof step `(fun b hb => (over_iff s hV σ _).1 (by rw [← Category.assoc, hy' b hb, hσ b hb.1]))`. Use `b₀ ⟨hb₀, by rw [hy₀]; exact hxV⟩ (by subst hy₀; exact dif_pos hxV)`. Conclude with `⟨ε, κ, ε0, fun b hb => (b₁ hb).1, b₂, b₃, fun b hb => ⟨(b₄ b hb).1, by rw [← (b₄ b hb).2, hy' b (b₁ hb)]⟩⟩`.
+-/
 theorem PositivityTheory.Xgn.exists_holomorphic_chart_at_point : ∀ (K : Type) [Field K] (σ : K →+* ℂ) (X : Scheme.{0}) (s : X ⟶ Sp K) (d : ℕ) (T : Set X), SmoothOfRelativeDimension d s → Geo.ResK.HasSncCoords s d T → ∀ (x : Sp ℂ ⟶ X) (W : X.Opens), x ≫ s = spMap σ → ⊤ ≤ x ⁻¹ᵁ W → ∃ (V : X.Opens) (hV : IsAffineOpen V) (a : ℕ) (ψ : (Fin d → ℂ) → (Γ(X, V) →+* ℂ)), V ≤ W ∧ a ≤ d ∧ IsHolPts (ball 0 1) ψ ∧ spMap (ψ 0) ≫ hV.fromSpec = x ∧ Set.InjOn ψ (ball 0 1) ∧ (∀ z ∈ ball (0 : Fin d → ℂ) 1, spMap (ψ z) ≫ hV.fromSpec ≫ s = spMap σ ∧ (centre (spMap (ψ z) ≫ hV.fromSpec) ∉ T ↔ z ∈ punct d a 1)) ∧ ∀ (m : ℕ) (B : Set (Fin m → ℂ)) (y : (Fin m → ℂ) → (Sp ℂ ⟶ X)), IsOpen B → IsHolTo B y → (∀ b ∈ B, y b ≫ s = spMap σ) → ∀ b₀ ∈ B, y b₀ = x → ∃ (ε : ℝ) (κ : (Fin m → ℂ) → (Fin d → ℂ)), 0 < ε ∧ ball b₀ ε ⊆ B ∧ DifferentiableOn ℂ κ (ball b₀ ε) ∧ κ b₀ = 0 ∧ ∀ b ∈ ball b₀ ε, κ b ∈ ball (0 : Fin d → ℂ) 1 ∧ y b = spMap (ψ (κ b)) ≫ hV.fromSpec := by
   intro K _ σ X s d T hs ⟨n, Vs, hcov, hVs⟩ x W hx hW
   obtain ⟨j, hj⟩ := hcov (centre x)

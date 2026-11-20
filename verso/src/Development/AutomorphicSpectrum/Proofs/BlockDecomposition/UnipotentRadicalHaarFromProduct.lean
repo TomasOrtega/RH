@@ -12,6 +12,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.CompanionTheory.QKAvg.RadHaar
 
+/- English proof (translation)
+Use `⟨fun g => ?_⟩` and prove the remaining obligations. Take `⟨T, hT, hTe⟩` from `h (e.symm g)`. Establish `h1 : (fun x => g * x) = e ∘ T ∘ e.symm`. Use function extensionality and compare the values at `x`. Simplify using `[hTe]`.
+
+Establish `hm : Measurable (fun x => g * x)`. Rewrite using `[h1]`. Conclude with `e.measurable.comp (hT.measurable.comp e.symm.measurable)`. Rewrite using `[Measure.map_map hm e.measurable]`. Establish `h2 : (fun x => g * x) ∘ e = e ∘ T`.
+
+Use function extensionality and compare the values at `p`. Simplify using `[hTe]`. Rewrite using `[h2, ← Measure.map_map e.measurable hT.measurable, hT.map_eq]`.
+-/
 theorem isMulLeftInvariant_map_of {X G : Type*} [MeasurableSpace X] [MeasurableSpace G] [Mul G] (P : Measure X)
     (e : X ≃ᵐ G) (h : ∀ q, ∃ T : X → X, MeasurePreserving T P P ∧ ∀ p, e (T p) = e q * e p) :
     (P.map e).IsMulLeftInvariant := by
@@ -29,6 +36,11 @@ theorem isMulLeftInvariant_map_of {X G : Type*} [MeasurableSpace X] [MeasurableS
     simp [hTe]
   rw [h2, ← Measure.map_map e.measurable hT.measurable, hT.map_eq]
 
+/- English proof (translation)
+Establish `h1 : MeasurePreserving (fun p : C × A => (b₀ + p.1, f p.1 + p.2)) (β.prod κ) (β.prod κ)` using `(measurePreserving_add_left β b₀).skew_product (g := fun c a => f c + a) (by exact (hf.comp measurable_fst).add measurable_snd) (Filter.Eventually.of_forall fun c => map_add_left_eq_self κ (f c))`. Establish `h2` using `(Measure.measurePreserving_swap (μ := β) (ν := κ)).comp (h1.comp (Measure.measurePreserving_swap (μ := κ) (ν := β)))`. Establish `hfun : (fun p : A × C => (p.1 + f p.2, p.2 + b₀)) = Prod.swap ∘ (fun p : C × A => (b₀ + p.1, f p.1 + p.2)) ∘ Prod.swap`. Use function extensionality and compare the values at `p`. Conclude with `Prod.ext (add_comm _ _) (add_comm _ _)`.
+
+Rewrite using `[hfun]`. Conclude with `h2`.
+-/
 theorem measurePreserving_shear {A C : Type*} [AddCommGroup A] [MeasurableSpace A] [MeasurableAdd₂ A]
     [AddCommGroup C] [MeasurableSpace C] [MeasurableAdd₂ C] (κ : Measure A) (β : Measure C) [SFinite κ] [SFinite β]
     [κ.IsAddLeftInvariant] [β.IsAddLeftInvariant] {f : C → A} (hf : Measurable f) (b₀ : C) :
@@ -46,6 +58,13 @@ theorem measurePreserving_shear {A C : Type*} [AddCommGroup A] [MeasurableSpace 
   rw [hfun]
   exact h2
 
+/- English proof (translation)
+Use `⟨fun g => ?_⟩` and prove the remaining obligations. Take `⟨T, hT, hTe⟩` from `h (e.symm g)`. Establish `h1 : (fun x => x * g) = e ∘ T ∘ e.symm`. Use function extensionality and compare the values at `x`. Simplify using `[hTe]`.
+
+Establish `hm : Measurable (fun x => x * g)`. Rewrite using `[h1]`. Conclude with `e.measurable.comp (hT.measurable.comp e.symm.measurable)`. Rewrite using `[Measure.map_map hm e.measurable]`. Establish `h2 : (fun x => x * g) ∘ e = e ∘ T`.
+
+Use function extensionality and compare the values at `p`. Simplify using `[hTe]`. Rewrite using `[h2, ← Measure.map_map e.measurable hT.measurable, hT.map_eq]`.
+-/
 private theorem isMulRightInvariant_map_of_exists_measurePreserving {X G : Type*} [MeasurableSpace X] [MeasurableSpace G] [Mul G] (P : Measure X)
     (e : X ≃ᵐ G) (h : ∀ q, ∃ T : X → X, MeasurePreserving T P P ∧ ∀ p, e (T p) = e p * e q) :
     (P.map e).IsMulRightInvariant := by
@@ -63,6 +82,19 @@ private theorem isMulRightInvariant_map_of_exists_measurePreserving {X G : Type*
     simp [hTe]
   rw [h2, ← Measure.map_map e.measurable hT.measurable, hT.map_eq]
 
+/- English proof (translation)
+Establish `hfc : IsFiniteMeasureOnCompacts ((κ.prod β).map e)`. Use `⟨fun K hK => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(κ.prod β).map e.toMeasurableEquiv K < ⊤`. Rewrite using `[MeasurableEquiv.map_apply]`. Conclude with `(e.isCompact_preimage.2 hK).measure_lt_top`.
+
+Establish `hop : Measure.IsOpenPosMeasure ((κ.prod β).map e)`. Use `⟨fun U hU hne => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(κ.prod β).map e.toMeasurableEquiv U ≠ 0`. Rewrite using `[MeasurableEquiv.map_apply]`. Conclude with `(hU.preimage e.continuous).measure_ne_zero _ (hne.preimage e.surjective)`.
+
+Establish `hl : ((κ.prod β).map e).IsMulLeftInvariant`. Use `isMulLeftInvariant_map_of (κ.prod β) e.toMeasurableEquiv ?_` and prove the remaining obligations. Introduce and unpack `⟨c, b⟩`. Use `⟨fun p => (p.1 + (c + f b p.2), p.2 + b), measurePreserving_shear κ β ((hf.comp (continuous_const.prodMk continuous_id)).measurable.const_add c) b, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨c', b'⟩`.
+
+Express the relevant statement in the definitionally equal form `e _ = e (c, b) * e (c', b')`. Rewrite using `[hmul]`. Use `congr 1`. Conclude with `Prod.ext (add_left_comm _ _ _) (add_comm _ _)`. Establish `hr : ((κ.prod β).map e).IsMulRightInvariant`.
+
+Use `isMulRightInvariant_map_of_exists_measurePreserving (κ.prod β) e.toMeasurableEquiv ?_` and prove the remaining obligations. Introduce and unpack `⟨c, b⟩`. Use `⟨fun p => (p.1 + (c + f p.2 b), p.2 + b), measurePreserving_shear κ β ((hf.comp (continuous_id.prodMk continuous_const)).measurable.const_add c) b, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨c', b'⟩`. Express the relevant statement in the definitionally equal form `e _ = e (c', b') * e (c, b)`.
+
+Rewrite using `[hmul]`. Conclude with `⟨{ toIsFiniteMeasureOnCompacts := hfc, toIsMulLeftInvariant := hl, toIsOpenPosMeasure := hop }, hr⟩`.
+-/
 theorem haar_of_shear {A C G : Type*} [AddCommGroup A] [TopologicalSpace A] [IsTopologicalAddGroup A]
     [MeasurableSpace A] [BorelSpace A] [SecondCountableTopology A] [LocallyCompactSpace A]
     [AddCommGroup C] [TopologicalSpace C] [IsTopologicalAddGroup C]
@@ -109,15 +141,24 @@ def coordB (q : GA D B) : Mx D t W.rank := d.pX ⬝ mt B q ⬝ d.j0
 def coordC (q : GA D B) : Mx D t t :=
   d.pX ⬝ mt B q ⬝ d.jY + half D • (coordB d q ⬝ plus W (coordB d q))
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.MixModel.mt_mul, ← Matrix.mul_assoc, GlobalTheory.MixModel.HypDec.pX_nC, Matrix.add_mul, Matrix.mul_assoc, GlobalTheory.MixModel.HypDec.pY_nB, GlobalTheory.MixModel.HypDec.pX_nB]`.
+-/
 theorem pX_nn (c : skewA D t) (b : Mx D t W.rank) : d.pX ⬝ mt B (d.nC c * d.nB b) =
     d.pX + b ⬝ d.p0 - (half D • (b ⬝ plus W b)) ⬝ d.pY + c.1 ⬝ d.pY := by
   rw [GlobalTheory.MixModel.mt_mul, ← Matrix.mul_assoc, GlobalTheory.MixModel.HypDec.pX_nC, Matrix.add_mul, Matrix.mul_assoc, GlobalTheory.MixModel.HypDec.pY_nB, GlobalTheory.MixModel.HypDec.pX_nB]
 
+/- English proof (translation)
+Rewrite using `[coordB, pX_nn]`. Simplify using `only [Matrix.add_mul, Matrix.sub_mul, Matrix.mul_assoc, GlobalTheory.MixModel.HypDec.pX_j0, GlobalTheory.MixModel.HypDec.p0_j0, GlobalTheory.MixModel.HypDec.pY_j0, Matrix.mul_one, Matrix.mul_zero, zero_add, sub_zero, add_zero]`.
+-/
 theorem coordB_nn (c : skewA D t) (b : Mx D t W.rank) : coordB d (d.nC c * d.nB b) = b := by
   rw [coordB, pX_nn]
   simp only [Matrix.add_mul, Matrix.sub_mul, Matrix.mul_assoc, GlobalTheory.MixModel.HypDec.pX_j0, GlobalTheory.MixModel.HypDec.p0_j0, GlobalTheory.MixModel.HypDec.pY_j0, Matrix.mul_one,
     Matrix.mul_zero, zero_add, sub_zero, add_zero]
 
+/- English proof (translation)
+Rewrite using `[coordC, coordB_nn, pX_nn]`. Simplify using `only [Matrix.add_mul, Matrix.sub_mul, Matrix.mul_assoc, GlobalTheory.MixModel.HypDec.pX_jY, GlobalTheory.MixModel.HypDec.p0_jY, GlobalTheory.MixModel.HypDec.pY_jY, Matrix.mul_one, Matrix.mul_zero]`. Normalize the expressions using the abelian group laws.
+-/
 theorem coordC_nn (c : skewA D t) (b : Mx D t W.rank) : coordC d (d.nC c * d.nB b) = c.1 := by
   rw [coordC, coordB_nn, pX_nn]
   simp only [Matrix.add_mul, Matrix.sub_mul, Matrix.mul_assoc, GlobalTheory.MixModel.HypDec.pX_jY, GlobalTheory.MixModel.HypDec.p0_jY, GlobalTheory.MixModel.HypDec.pY_jY, Matrix.mul_one,
@@ -130,10 +171,16 @@ local instance topRingAE : IsTopologicalRing (AE D) := (Formalism.IndefR.Eqv.ae_
 
 local instance topGrpGA (S : HSp D) : IsTopologicalGroup (GA D S) := (Formalism.IndefR.Eqv.ga_facts D S).1
 
+/- English proof (translation)
+Use `show Continuous fun q : GA D B => d.pX * mt B q * d.j0`. Conclude with `(continuous_const.matrix_mul (GlobalTheory.MixModel.continuous_mt B)).matrix_mul continuous_const`.
+-/
 theorem continuous_coordB : Continuous (coordB d) := by
   show Continuous fun q : GA D B => d.pX * mt B q * d.j0
   exact (continuous_const.matrix_mul (GlobalTheory.MixModel.continuous_mt B)).matrix_mul continuous_const
 
+/- English proof (translation)
+Establish `hB` using `continuous_coordB d`. Establish `hP : Continuous fun q : GA D B => GlobalTheory.MixModel.giA W * GlobalTheory.MixModel.adj (coordB d q)` using `continuous_const.matrix_mul (GlobalTheory.MixModel.continuous_adj.comp hB)`. Establish `hS : Continuous fun q : GA D B => GlobalTheory.MixModel.half D • (coordB d q * (GlobalTheory.MixModel.giA W * GlobalTheory.MixModel.adj (coordB d q)))` using `(hB.matrix_mul hP).const_smul (GlobalTheory.MixModel.half D)`. Establish `hA : Continuous fun q : GA D B => d.pX * mt B q * d.jY` using `(continuous_const.matrix_mul (GlobalTheory.MixModel.continuous_mt B)).matrix_mul continuous_const`. Conclude with `hA.add hS`.
+-/
 theorem continuous_coordC : Continuous (coordC d) := by
   have hB := continuous_coordB d
   have hP : Continuous fun q : GA D B => GlobalTheory.MixModel.giA W * GlobalTheory.MixModel.adj (coordB d q) :=
@@ -145,6 +192,9 @@ theorem continuous_coordC : Continuous (coordC d) := by
     (continuous_const.matrix_mul (GlobalTheory.MixModel.continuous_mt B)).matrix_mul continuous_const
   exact hA.add hS
 
+/- English proof (translation)
+Take `⟨c, b, h⟩` from `n.2`. Rewrite using `[h, coordC_nn]`. Conclude with `c.2`.
+-/
 theorem coordC_mem (n : radN d) : coordC d n.1.1 ∈ skewA D t := by
   obtain ⟨c, b, h⟩ := n.2
   rw [h, coordC_nn]
@@ -172,6 +222,9 @@ def coordHomeo : (skewA D t × Mx D t W.rank) ≃ₜ radN d where
     (Continuous.subtype_mk ((continuous_coordC d).comp (continuous_subtype_val.comp continuous_subtype_val)) _).prodMk
       ((continuous_coordB d).comp (continuous_subtype_val.comp continuous_subtype_val))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coordHomeo_coe (p : skewA D t × Mx D t W.rank) :
     (((coordHomeo d p : radN d) : GlobalTheory.RegSW.stab d) : GA D B) = d.nC p.1 * d.nB p.2 := rfl
 
@@ -180,6 +233,19 @@ end Top
 set_option synthInstance.maxHeartbeats 200000 in
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Introduce `D B W t d _ κ β hκ hβ`. Establish `hc` using `coordHomeo_coe d`. Take `⟨i1, i2, i3, i4, i5⟩` from `Formalism.IndefR.Eqv.ae_facts D`. Take `⟨j1, j2, j3, j4, j5⟩` from `Formalism.IndefR.Eqv.ga_facts D B`. Establish `: T2Space (Mx D t t)` using `inferInstanceAs (T2Space (Fin t → Fin t → AE D))`.
+
+Establish `: BorelSpace (Mx D t t)` using `⟨rfl⟩`. Establish `: SecondCountableTopology (Mx D t t)` using `inferInstanceAs (SecondCountableTopology (Fin t → Fin t → AE D))`. Establish `: LocallyCompactSpace (Mx D t t)` using `inferInstanceAs (LocallyCompactSpace (Fin t → Fin t → AE D))`. Establish `: T2Space (Mx D t W.rank)` using `inferInstanceAs (T2Space (Fin t → Fin W.rank → AE D))`. Establish `: BorelSpace (Mx D t W.rank)` using `⟨rfl⟩`.
+
+Establish `: SecondCountableTopology (Mx D t W.rank)` using `inferInstanceAs (SecondCountableTopology (Fin t → Fin W.rank → AE D))`. Establish `: LocallyCompactSpace (Mx D t W.rank)` using `inferInstanceAs (LocallyCompactSpace (Fin t → Fin W.rank → AE D))`. Establish `q3 : SecondCountableTopology (skewA D t)` using `inferInstanceAs (SecondCountableTopology ((skewA D t : Set (Mx D t t))))`. Establish `hcl : IsClosed ((skewA D t : Set (Mx D t t)))` using `by show IsClosed {c : Mx D t t | GlobalTheory.MixModel.adj c = -c}`. Conclude with `isClosed_eq GlobalTheory.MixModel.continuous_adj continuous_neg`.
+
+Establish `: LocallyCompactSpace (skewA D t)` using `hcl.locallyCompactSpace`. Use `⟨coordHomeo d, hc, ?_⟩` and prove the remaining obligations. Use `haar_of_shear (coordHomeo d) (fun b b' => cComm W b b') (GlobalTheory.Unf.HaarCoord.continuous_cComm W t) ?_ κ β` and prove the remaining obligations. Introduce `c b c' b'`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[Subgroup.coe_mul, Subgroup.coe_mul, hc, hc, hc]`. Simplify using `only`. Rewrite using `[GlobalTheory.MixModel.HypDec.nC_add, GlobalTheory.MixModel.HypDec.nC_add]`. Simplify using `only [mul_assoc]`.
+
+Rewrite using `[← mul_assoc (d.nB b) (d.nC c'), ← GlobalTheory.MixModel.HypDec.nC_mul_nB d b c', mul_assoc (d.nC c'), GlobalTheory.MixModel.HypDec.nB_mul_nB, ← GlobalTheory.MixModel.HypDec.nC_mul_nB d (b + b') (cComm W b b')]`.
+-/
 theorem exists_coord : ∀ (D : D7) (B W : HSp D) (t : ℕ) (d : HypDec B W t) [LocallyCompactSpace (radN d)] (κ : Measure (skewA D t)) (β : Measure (Mx D t W.rank)), κ.IsAddHaarMeasure → β.IsAddHaarMeasure → ∃ Ψ : (skewA D t × Mx D t W.rank) ≃ₜ radN d, (∀ p, (((Ψ p : GlobalTheory.RegSW.stab d) : GA D B)) = d.nC p.1 * d.nB p.2) ∧ ((κ.prod β).map Ψ).IsHaarMeasure ∧ ((κ.prod β).map Ψ).IsMulRightInvariant := by
   intro D B W t d _ κ β hκ hβ
   have hc := coordHomeo_coe d

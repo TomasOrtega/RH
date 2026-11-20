@@ -30,6 +30,9 @@ open GlobalTheory.LiftRows
 
 namespace GlobalTheory.MultEqFinal
 
+/- English proof (translation)
+Introduce `a1 a2 a3 a4 a5 a6 a7 a8 a9 a10 a11 a12 a13 a14 D G _ _ Pl0 I0 T A3 Ks _ _ _ R F s h1 h2 h3 h4 h5 h6 h7 h8`. Conclude with `GlobalTheory.T.published_local_theory_consequence a1 a2 a3 a4 a5 a6 a7 a8 a9 a10 a11 a12 a13 a14 R.toRealDat F.lv2 (GlobalTheory.GivenOfTop.given_of_top R F h1 h2 h3 h4 h5 h6 h7 h8)`.
+-/
 theorem multiplicity_equality : GlobalTheory.Published.HarishChandraAnalyticity → GlobalTheory.Published.DiscreteSeriesClassification → GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.HarishChandraFinite → GlobalTheory.Published.CuspTraceClass → GlobalTheory.Published.DixmierMalliavinFactorisation → GlobalTheory.Published.FlathFactorisation → GlobalTheory.Published.PseudoCoefficientUpq → GlobalTheory.Published.HarishChandraCharacters → GlobalTheory.Published.LanglandsClassification → GlobalTheory.Published.LabesseWaldspurger → GlobalTheory.Published.ZelevinskyPolynomialRing → GlobalTheory.Published.GeometricLemma → GlobalTheory.Published.GreenCuspidal → ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type} {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3) {s : ℕ}, A3.fam3.Ok3 s → R.WeakCharacterisation F → R.toRealDat.ExAt → HostHyp D → (∃ L : SizeData₂ D, Nonempty (ParameterChoice' D L)) → D.host.ccK = ⊤ → FWT.QGuard R.toRealDat → GlobalTheory.IndefiniteRowSideFullHecke.CommutingLevelOperators.GoodTypes R.toRealDat → GlobalTheory.CuspMult.MultEq R.toRealDat := by
   intro a1 a2 a3 a4 a5 a6 a7 a8 a9 a10 a11 a12 a13 a14 D G _ _ Pl0 I0 T A3 Ks _ _ _ R F s h1 h2 h3 h4 h5 h6 h7 h8
   exact GlobalTheory.T.published_local_theory_consequence a1 a2 a3 a4 a5 a6 a7 a8 a9 a10 a11 a12 a13 a14 R.toRealDat F.lv2

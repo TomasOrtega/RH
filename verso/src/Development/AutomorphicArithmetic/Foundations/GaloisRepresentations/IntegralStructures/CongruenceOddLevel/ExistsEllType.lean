@@ -12,6 +12,17 @@ namespace UpperTheory.Gal.Int.Cong
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {a : ℕ} {l : ℕ} [Fact l.Prime]
 
+/- English proof (translation)
+Establish `hlp : l.Prime` using `Fact.out`. Establish `hchar : ∀ {M : ℕ} [NeZero M] (χ : Multiplicative (ZMod M) →* ℂˣ) (z : Multiplicative (ZMod M)), χ z = χ (Multiplicative.ofAdd 1) ^ (Multiplicative.toAdd z).val`. Introduce `M _ χ z`. Rewrite using `[← map_pow, ← ofAdd_nsmul, nsmul_one, ZMod.natCast_zmod_val, ofAdd_toAdd]`. Break down `Nat.lt_or_ge a 2 with ha1 | ha2` into its components or cases.
+
+Take `rfl : a = 1` from `by omega`. Take `⟨N', hN'N, hN'o, h1N'⟩` from `mem_nhds_iff.1 hN`. Take `⟨J, θ, hJN, hJo, hJc, hJtf, hθ⟩` from `TypeExists.exists_congruence_surj (E := E) (l := l) (a := 1) le_rfl w₀ hl m₀ N' hN'o h1N'`. Use `⟨m₀, J, θ, le_rfl, hJN.trans hN'N, hJo, hJc, hJtf, hθ, fun χ _ σ _ _ _ => ⟨σ.smooth, fun s d e he => absurd ?_ he⟩⟩` and prove the remaining obligations. Use `(Subgroup.eq_bot_iff_forall _).2 fun u hu => ?_` and prove the remaining obligations.
+
+Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Take `rfl : i = j` from `Subsingleton.elim _ _`. Take `⟨⟨b, i⟩, rfl⟩` from `e.surjective i`. Establish `h` using `(GlobalTheory.SmGL.mem_unipRad.1 hu).2 b i i`. Rewrite `h` using `[Matrix.one_apply_eq]`.
+
+Rewrite using `[h, Units.val_one, Matrix.one_apply_eq]`. Take `⟨m, hmm, J, lam, hJo, hJc, hJN, hJtf, hsurj, hsc⟩` from `TypeExists.exists_type_surj E w₀ a l hlp hl ha2 N hN m₀`. Use `⟨m, J, lam, hmm, hJN, hJo, hJc, fun x hx k hk hxk => hJtf x hx (isOfFinOrder_iff_pow_eq_one.2 ⟨k, hk, hxk⟩), hsurj, fun χ hχ σ v hv0 hv => ?_⟩` and prove the remaining obligations. Use `haveI : NeZero (l ^ m) := ⟨pow_ne_zero _ hlp.ne_zero⟩`. Use `hsc (χ (Multiplicative.ofAdd 1)) ?_ (fun h => hχ (MonoidHom.ext fun z => ?_)) σ v hv0 fun g => ?_` and prove the remaining obligations.
+
+Rewrite using `[← map_pow, ← ofAdd_nsmul, nsmul_one, ZMod.natCast_self, ofAdd_zero, map_one]`. Rewrite using `[hchar χ z, h, one_pow, MonoidHom.one_apply]`. Rewrite using `[hv g, hchar χ (lam g)]`.
+-/
 theorem exists_ellType (ha : 1 ≤ a) (w₀ : HeightOneSpectrum (𝓞 E)) (hl : ((l : ℕ) : 𝓞 E) ∈ w₀.asIdeal)
     (N : Set (GL (Fin a) (w₀.adicCompletion E))) (hN : N ∈ nhds (1 : GL (Fin a) (w₀.adicCompletion E))) (m₀ : ℕ) :
     ∃ (m : ℕ) (J : Subgroup (GL (Fin a) (w₀.adicCompletion E))) (θ : J →* Multiplicative (ZMod (l ^ m))), m₀ ≤ m ∧

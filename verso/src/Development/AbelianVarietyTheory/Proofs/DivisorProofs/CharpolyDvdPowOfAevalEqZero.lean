@@ -4,6 +4,17 @@ open Polynomial
 
 namespace GlobalTheory.SepCharpoly
 
+/- English proof (translation)
+Use `set a : Matrix n n R[X] := algebraMap R[X] (Matrix n n R[X]) X with ha_def`. Use `set b : Matrix n n R[X] := (Algebra.ofId R R[X]).mapMatrix M with hb_def`. Establish `hab : Commute a b` using `Algebra.commutes X b`. Establish `key : ∀ q : R[X], ∃ H, (a - b) * H = aeval a q - aeval b q`. Introduce `q`.
+
+Proceed by induction on `q using Polynomial.induction_on' with`. Consider the case `add p q hp hq`. Take `⟨H1, h1⟩` from `hp`. Take `⟨H2, h2⟩` from `hq`. Conclude with `⟨H1 + H2, by rw [mul_add, h1, h2, map_add, map_add]; abel⟩`.
+
+Consider the case `monomial k c`. Use `⟨algebraMap R (Matrix n n R[X]) c * ∑ i ∈ Finset.range k, a ^ i * b ^ (k - 1 - i), ?_⟩` and prove the remaining obligations. Rewrite using `[aeval_monomial, aeval_monomial, ← mul_assoc, ← Algebra.commutes, mul_assoc, hab.mul_geom_sum₂, mul_sub]`. Take `⟨H, hH⟩` from `key p`. Establish `hb : aeval b p = 0`.
+
+Rewrite using `[hb_def, aeval_algHom_apply, hp, map_zero]`. Establish `ha : aeval a p = algebraMap R[X] (Matrix n n R[X]) p`. Rewrite using `[ha_def, aeval_algebraMap_apply, aeval_X_left_apply]`. Establish `hch : (a - b).det = M.charpoly` using `rfl`. Use `⟨H.det, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← hch, ← Matrix.det_mul, hH, hb, sub_zero, ha, Matrix.algebraMap_eq_diagonal, Matrix.det_diagonal]`. Simplify using the standard rewrite rules.
+-/
 theorem charpoly_dvd_pow_of_aeval_eq_zero {R : Type*} [CommRing R] {n : Type*} [Fintype n] [DecidableEq n]
     (M : Matrix n n R) (p : R[X]) (hp : aeval M p = 0) : M.charpoly ∣ p ^ Fintype.card n := by
   set a : Matrix n n R[X] := algebraMap R[X] (Matrix n n R[X]) X with ha_def
@@ -30,6 +41,15 @@ theorem charpoly_dvd_pow_of_aeval_eq_zero {R : Type*} [CommRing R] {n : Type*} [
   rw [← hch, ← Matrix.det_mul, hH, hb, sub_zero, ha, Matrix.algebraMap_eq_diagonal, Matrix.det_diagonal]
   simp
 
+/- English proof (translation)
+Introduce `F L C _ _ _ _ _ _ n ι y h hc`. Establish `hyi : IsIntegral F y` using `IsIntegral.of_finite F y`. Establish `hpm : (minpoly F y).Monic` using `minpoly.monic hyi`. Establish `h1 : aeval (ι y) ((minpoly F y).map (algebraMap F L)) = 0`. Rewrite using `[aeval_map_algebraMap, aeval_algHom_apply, minpoly.aeval, map_zero]`.
+
+Establish `h2 : minpoly L (ι y) ∣ (minpoly F y).map (algebraMap F L)` using `minpoly.dvd L _ h1`. Establish `h3 : (ι y).charpoly ∣ (minpoly L (ι y)) ^ Fintype.card (Fin n)` using `charpoly_dvd_pow_of_aeval_eq_zero _ _ (minpoly.aeval L _)`. Establish `h4 : (ι y).charpoly ∣ minpoly L (ι y)` using `hc.squarefree.isRadical _ _ h3`. Establish `h5` using `h4.trans h2`. Establish `hmm : ((minpoly F y).map (algebraMap F L)).Monic` using `hpm.map _`.
+
+Establish `hdc : (ι y).charpoly.natDegree = n`. Rewrite using `[Matrix.charpoly_natDegree_eq_dim, Fintype.card_fin]`. Establish `hdm : ((minpoly F y).map (algebraMap F L)).natDegree = (minpoly F y).natDegree` using `natDegree_map _`. Break down `h with h | ⟨h, hns⟩` into its components or cases. Use `natDegree_le_of_dvd h5 hmm.ne_zero` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Establish `e` using `eq_of_monic_of_dvd_of_natDegree_le (Matrix.charpoly_monic _) hmm h5 (by omega)`. Rewrite `hc` using `[← e]`. Conclude with `hns ((separable_map (algebraMap F L)).mp hc)`.
+-/
 theorem not_separable_charpoly : ∀ (F L C : Type) [Field F] [Field L] [Algebra F L] [Ring C] [Algebra F C]
     [FiniteDimensional F C] (n : ℕ) (ι : C →ₐ[F] Matrix (Fin n) (Fin n) L) (y : C),
     ((minpoly F y).natDegree < n ∨ ((minpoly F y).natDegree = n ∧ ¬ (minpoly F y).Separable)) →
@@ -55,6 +75,9 @@ theorem not_separable_charpoly : ∀ (F L C : Type) [Field F] [Field L] [Algebra
     rw [← e] at hc
     exact hns ((separable_map (algebraMap F L)).mp hc)
 
+/- English proof (translation)
+The claim follows from `not_separable_charpoly`.
+-/
 example : ∀ (F L C : Type) [Field F] [Field L] [Algebra F L] [Ring C] [Algebra F C] [FiniteDimensional F C] (n : ℕ) (ι : C →ₐ[F] Matrix (Fin n) (Fin n) L) (y : C), ((minpoly F y).natDegree < n ∨ ((minpoly F y).natDegree = n ∧ ¬ (minpoly F y).Separable)) → ¬ (ι y).charpoly.Separable := not_separable_charpoly
 
 end GlobalTheory.SepCharpoly

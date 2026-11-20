@@ -16,12 +16,24 @@ section Rank
 
 variable {F L₀ L : Type*} [Field F] [Field L₀] [Field L] [Algebra F L₀] [Algebra F L]
 
+/- English proof (translation)
+The claim follows from `haveI := (faithfulSMul_iff_algebraMap_injective A K).mpr inj IsFractionRing.of_field A K surj`.
+-/
 theorem isFractionRing_of_div {A K : Type*} [CommRing A] [IsDomain A] [Field K] [Algebra A K]
     (inj : Function.Injective (algebraMap A K))
     (surj : ∀ z : K, ∃ x y : A, z = algebraMap A K x / algebraMap A K y) : IsFractionRing A K :=
   haveI := (faithfulSMul_iff_algebraMap_injective A K).mpr inj
   IsFractionRing.of_field A K surj
 
+/- English proof (translation)
+Rewrite using `[IntermediateField.relfinrank_eq_finrank_of_le hKE]`. Use `set K := K₀.map φ`. Use `set Lf := IntermediateField.extendScalars hKE`. Set `_ : Algebra A K` to `(((φ.comp A.val).toRingHom).codRestrict K (fun a => show φ a ∈ K from ⟨a, hA a a.2, rfl⟩)).toAlgebra`. Set `_ : Algebra B Lf` to `((B.val.toRingHom).codRestrict Lf (fun b => hB b b.2)).toAlgebra`.
+
+Set `_ : Algebra A Lf` to `((algebraMap B Lf).comp (algebraMap A B)).toAlgebra`. Establish `_ : IsScalarTower A B Lf` using `IsScalarTower.of_algebraMap_eq (fun _ => rfl)`. Establish `_ : IsScalarTower A K Lf` using `IsScalarTower.of_algebraMap_eq (fun a => Subtype.ext (hφ a))`. Establish `_ : IsFractionRing A K`. Use `isFractionRing_of_div (fun a b h => Subtype.ext (φ.injective ?_)) ?_` and prove the remaining obligations.
+
+Conclude with `congrArg Subtype.val h`. Introduce and unpack `⟨_, x, hx, rfl⟩`. Take `⟨y, hy, z, hz, -, rfl⟩` from `fracA x hx`. Conclude with `⟨⟨y, hy⟩, ⟨z, hz⟩, Subtype.ext (map_div₀ φ y z)⟩`. Establish `_ : IsFractionRing B Lf`.
+
+Use `isFractionRing_of_div (fun a b h => Subtype.ext (congrArg Subtype.val h :)) ?_` and prove the remaining obligations. Introduce and unpack `⟨x, hx⟩`. Take `⟨y, hy, z, hz, -, rfl⟩` from `fracB x hx`. Conclude with `⟨⟨y, hy⟩, ⟨z, hz⟩, Subtype.ext rfl⟩`. Conclude with `(IsFractionRing.finrank_eq A K B Lf).symm`.
+-/
 theorem finrank_eq_relfinrank_of_div (φ : L₀ →ₐ[F] L) {K₀ : IntermediateField F L₀}
     {E : IntermediateField F L} (hKE : K₀.map φ ≤ E) {A : Subalgebra F L₀} {B : Subalgebra F L}
     [Algebra A B] (hφ : ∀ a : A, ((algebraMap A B a : B) : L) = φ a) (hA : ∀ a ∈ A, a ∈ K₀)
@@ -52,6 +64,9 @@ theorem finrank_eq_relfinrank_of_div (φ : L₀ →ₐ[F] L) {K₀ : Intermediat
 
 end Rank
 
+/- English proof (translation)
+Introduce `x hx`. Use `(Algebra.adjoin_le (S := (homFracDegZero P).toSubalgebra) ?_) hx` and prove the remaining obligations. Introduce and unpack `_ ⟨b, f, g, hf, hg, hgP, -, rfl⟩`. Conclude with `IntermediateField.subset_adjoin _ _ ⟨b, f, g, hf, hg, hgP, rfl⟩`.
+-/
 theorem mem_homFracDegZero_of_mem_degZeroLoc {K : Type*} [DecidableEq K] {ι : K → Type*}
     {F : Type*} [Field F] (P : Ideal (MRing ι F)) [P.IsPrime] (𝒲 : Set (Ideal (MRing ι F))) :
     ∀ x ∈ degZeroLoc P 𝒲, x ∈ homFracDegZero P := by
@@ -60,6 +75,17 @@ theorem mem_homFracDegZero_of_mem_degZeroLoc {K : Type*} [DecidableEq K] {ι : K
   rintro _ ⟨b, f, g, hf, hg, hgP, -, rfl⟩
   exact IntermediateField.subset_adjoin _ _ ⟨b, f, g, hf, hg, hgP, rfl⟩
 
+/- English proof (translation)
+Introduce `F _ K K' _ _ _ _ j ι' _ P' hP' n hd' hd W hW hdW hle`. Use `hP'.isPrime` as an intermediate fact. Establish `hfin` using `h1 F K K' j ι' P' hP' n hd' hd W hW hdW hle`. Establish `inj : Function.Injective (algebraMap (degZeroLoc (contractPrime j P') {W}) (degZeroLoc P' (fibrePrimes j P' W)))`. Introduce `a b hab`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Apply `(contractFracMap j P').toRingHom.injective` to reduce the goal to its premises. Use `congrArg Subtype.val hab` as an intermediate fact. Rewrite `this` using `[degZeroLoc.algebraMap_contract_coe, degZeroLoc.algebraMap_contract_coe]`. Then use the resulting hypothesis. Use `⟨h2 F K K' j ι' P' hP' n hd' hd W hW hdW hle, ⟨fun r hr x y hxy => ?_⟩, ?_⟩` and prove the remaining obligations.
+
+Establish `hr0 : algebraMap (degZeroLoc (contractPrime j P') {W}) (degZeroLoc P' (fibrePrimes j P' W)) r ≠ 0`. Rewrite using `[Ne, ← map_zero (algebraMap (degZeroLoc (contractPrime j P') {W}) (degZeroLoc P' (fibrePrimes j P' W))), inj.eq_iff]`. Conclude with `hr.ne_zero`. Simplify using `only [Algebra.smul_def] at hxy`. Conclude with `mul_left_cancel₀ hr0 hxy`.
+
+Use `finrank_eq_relfinrank_of_div (contractFracMap j P') (map_homFracDegZero_le j ι' P') (degZeroLoc.algebraMap_contract_coe j P' W) (mem_homFracDegZero_of_mem_degZeroLoc _ _) (mem_homFracDegZero_of_mem_degZeroLoc _ _) ?_ ?_` and prove the remaining obligations. Introduce `x hx`. Use `h3 F K (fun k => ι' (j k)) (contractPrime j P') (isMultiProjPrime_contractPrime _ _ hP') {W} (Set.finite_singleton W) ?_ x hx` and prove the remaining obligations. Introduce `W₁ hW₁`. Rewrite using `[Set.mem_singleton_iff.mp hW₁]`.
+
+Conclude with `hW`. Conclude with `h3 F K' ι' P' hP' (fibrePrimes j P' W) hfin (fun W' hW' => hW'.1)`.
+-/
 theorem SemilocalFiniteRank.proof (h1 : FibreFinite.Statement.{u})
     (h2 : SemilocalFinite.Statement.{u}) (h3 : DegZeroLocFrac.Statement.{u}) :
     SemilocalFiniteRank.Statement.{u} := by

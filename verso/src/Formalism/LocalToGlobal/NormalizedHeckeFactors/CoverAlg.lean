@@ -11,6 +11,11 @@ section Ops
 
 variable {K V : Type*} [Field K] [AddCommGroup V] [Module K V]
 
+/- English proof (translation)
+Rewrite using `[h.add_pow, LinearMap.sum_apply]`. Use `Finset.sum_eq_zero fun m hm => ?_` and prove the remaining obligations. Rewrite `hm` using `[Finset.mem_range]`. Rewrite using `[Module.End.mul_apply, Module.End.natCast_apply, map_nsmul, Module.End.mul_apply]`. It suffices to establish `h0 : (P ^ m) ((Q ^ (k + l - m)) x) = 0 by rw [h0, smul_zero]`.
+
+Break down `le_or_gt k m with hkm | hkm` into its components or cases. Take `⟨d, rfl⟩ : ∃ d, m = d + k` from `⟨m - k, by omega⟩`. Rewrite using `[← Module.End.mul_apply, (h.pow_pow (d + k) (k + l - (d + k))).eq, Module.End.mul_apply, pow_add, Module.End.mul_apply, hP, map_zero, map_zero]`. Take `⟨d, hd⟩ : ∃ d, k + l - m = d + l` from `⟨k + l - m - l, by omega⟩`. Rewrite using `[hd, pow_add, Module.End.mul_apply, hQ, map_zero, map_zero]`.
+-/
 theorem add_pow_apply_eq_zero {P Q : End K V} (h : Commute P Q) {x : V} {k l : ℕ}
     (hP : (P ^ k) x = 0) (hQ : (Q ^ l) x = 0) : ((P + Q) ^ (k + l)) x = 0 := by
   rw [h.add_pow, LinearMap.sum_apply]
@@ -25,11 +30,19 @@ theorem add_pow_apply_eq_zero {P Q : End K V} (h : Commute P Q) {x : V} {k l : �
   · obtain ⟨d, hd⟩ : ∃ d, k + l - m = d + l := ⟨k + l - m - l, by omega⟩
     rw [hd, pow_add, Module.End.mul_apply, hQ, map_zero, map_zero]
 
+/- English proof (translation)
+The claim follows from `Commute.sub_left (Commute.sub_right h ((Commute.one_right A).smul_right b)) ((Commute.one_left _).smul_left a)`.
+-/
 theorem commute_sub_smul {A B : End K V} (h : Commute A B) (a b : K) :
     Commute (A - a • 1) (B - b • 1) :=
   Commute.sub_left (Commute.sub_right h ((Commute.one_right A).smul_right b))
     ((Commute.one_left _).smul_left a)
 
+/- English proof (translation)
+Rewrite `hA`, `hB`, the goal using `[mem_maxGenEigenspace]`. Take `⟨k, hk⟩` from `hA`. Take `⟨l, hl⟩` from `hB`. Use `⟨k + l, ?_⟩` and prove the remaining obligations. Establish `e : A + B - (a + b) • (1 : End K V) = (A - a • 1) + (B - b • 1)`.
+
+Rewrite using `[add_smul]`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Conclude with `add_pow_apply_eq_zero (commute_sub_smul h a b) hk hl`.
+-/
 theorem mem_maxGen_add {A B : End K V} (h : Commute A B) {a b : K} {x : V}
     (hA : x ∈ A.maxGenEigenspace a) (hB : x ∈ B.maxGenEigenspace b) :
     x ∈ (A + B).maxGenEigenspace (a + b) := by
@@ -42,22 +55,36 @@ theorem mem_maxGen_add {A B : End K V} (h : Commute A B) {a b : K} {x : V}
   rw [e]
   exact add_pow_apply_eq_zero (commute_sub_smul h a b) hk hl
 
+/- English proof (translation)
+Apply the tactic sequence `first | exact Bl.general_b_fact_left_last.goal1 .. | (apply Bl.general_b_fact_left_last.goal1 <;> assumption) | (intros; apply Bl.general_b_fact_left_last.goal1 <;> assumption) | (apply @Bl.general_b_fact_left_last.goal1 <;> assumption) | (intros; apply @Bl.general_b_fact_left_la …`.
+-/
 theorem mem_maxGen_mul {A B : End K V} (h : Commute A B) {a b : K} {x : V}
     (hA : x ∈ A.maxGenEigenspace a) (hB : x ∈ B.maxGenEigenspace b) :
     x ∈ (A * B).maxGenEigenspace (a * b) := by
   first | exact Bl.general_b_fact_left_last.goal1 .. | (apply Bl.general_b_fact_left_last.goal1 <;> assumption) | (intros; apply Bl.general_b_fact_left_last.goal1 <;> assumption) | (apply @Bl.general_b_fact_left_last.goal1 <;> assumption) | (intros; apply @Bl.general_b_fact_left_last.goal1 <;> assumption) | (apply @Bl.general_b_fact_left_last.goal1 <;> first | assumption | infer_instance)
 
+/- English proof (translation)
+Rewrite using `[eq_top_iff]`. Introduce `x _`. Rewrite using `[mem_maxGenEigenspace]`. Conclude with `⟨1, by simp⟩`.
+-/
 theorem maxGen_smul_one (c : K) : (c • (1 : End K V)).maxGenEigenspace c = ⊤ := by
   rw [eq_top_iff]
   intro x _
   rw [mem_maxGenEigenspace]
   exact ⟨1, by simp⟩
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hab`. Conclude with `hW (disjoint_self.1 ((f.disjoint_genEigenspace hab ⊤ ⊤).mono ha hb))`.
+-/
 theorem eq_of_le_maxGen {W : Submodule K V} (hW : W ≠ ⊥) {f : End K V} {a b : K}
     (ha : W ≤ f.maxGenEigenspace a) (hb : W ≤ f.maxGenEigenspace b) : a = b := by
   by_contra hab
   exact hW (disjoint_self.1 ((f.disjoint_genEigenspace hab ⊤ ⊤).mono ha hb))
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih`. Establish `hd : Disjoint (p a) (s.sup p)`. Use `hp.disjoint_biSup (y := (s : Set ι)) (by simpa using ha)` as an intermediate fact.
+
+Rewrite using `[Finset.sup_eq_iSup]`. Simplify using `using this`. Establish `h2` using `Submodule.finrank_sup_add_finrank_inf_eq (p a) (s.sup p)`. Rewrite `h2` using `[hd.eq_bot, finrank_bot, add_zero]`. Rewrite using `[Finset.sup_insert, Finset.sum_insert ha, h2, ih]`.
+-/
 theorem finrank_finset_sup [FiniteDimensional K V] {ι : Type*} {p : ι → Submodule K V} (hp : iSupIndep p)
     (s : Finset ι) : finrank K ↥(s.sup p) = ∑ i ∈ s, finrank K ↥(p i) := by
   classical
@@ -72,6 +99,11 @@ theorem finrank_finset_sup [FiniteDimensional K V] {ι : Type*} {p : ι → Subm
     rw [hd.eq_bot, finrank_bot, add_zero] at h2
     rw [Finset.sup_insert, Finset.sum_insert ha, h2, ih]
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Use `iSup₂_le fun i hi => ?_` and prove the remaining obligations. Distinguish the cases in `h : p i = ⊥`. Rewrite using `[h]`. Conclude with `bot_le`.
+
+Conclude with `Finset.le_sup (f := p) (Finset.mem_filter.2 ⟨hF i h, hi⟩)`. Conclude with `Finset.sup_le fun i hi => le_iSup₂_of_le (f := fun i (_ : P i) => p i) i (Finset.mem_filter.1 hi).2 le_rfl`.
+-/
 theorem iSup_eq_sup_filter {ι : Type*} (p : ι → Submodule K V) (F : Finset ι) (hF : ∀ i, p i ≠ ⊥ → i ∈ F)
     (P : ι → Prop) [DecidablePred P] : (⨆ (i) (_ : P i), p i) = (F.filter P).sup p := by
   apply le_antisymm
@@ -94,15 +126,24 @@ def W (T : Subalgebra O (End K V)) (χ : T → K) : Submodule K V :=
 
 def pt {T : Subalgebra O (End K V)} (ψ : T →ₐ[O] O) : T → K := fun t => algebraMap O K (ψ t)
 
+/- English proof (translation)
+The claim follows from `iInf_le (fun t : T => (t : End K V).maxGenEigenspace (χ t)) t`.
+-/
 theorem W_le (T : Subalgebra O (End K V)) (χ : T → K) (t : T) :
     W T χ ≤ (t : End K V).maxGenEigenspace (χ t) :=
   iInf_le (fun t : T => (t : End K V).maxGenEigenspace (χ t)) t
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `[Module.algebraMap_end_apply, algebraMap_smul]`.
+-/
 theorem algebraMap_end_eq (c : O) :
     algebraMap O (End K V) c = (algebraMap O K c) • (1 : End K V) := by
   ext x
   simp [Module.algebraMap_end_apply, algebraMap_smul]
 
+/- English proof (translation)
+Introduce `ψ ψ' h` and use `AlgHom.ext fun t => hinj (congrFun h t)`.
+-/
 theorem pt_injective {T : Subalgebra O (End K V)} (hinj : Function.Injective (algebraMap O K)) :
     Function.Injective (pt : (T →ₐ[O] O) → T → K) := fun ψ ψ' h =>
   AlgHom.ext fun t => hinj (congrFun h t)
@@ -118,6 +159,9 @@ def part (T : Subalgebra O (End K V)) (𝔪 : Ideal T) : Submodule K V :=
 def off (T : Subalgebra O (End K V)) (𝔪 : Ideal T) : Submodule K V :=
   ⨆ (ψ : T →ₐ[O] O) (_ : cls ψ ≠ 𝔪), W T (pt ψ)
 
+/- English proof (translation)
+Use `RingHom.ker_isMaximal_of_surjective _ fun y => ?_` and prove the remaining obligations. Take `⟨c, rfl⟩` from `IsLocalRing.residue_surjective y`. Conclude with `⟨algebraMap O T c, by simp⟩`.
+-/
 theorem cls_isMaximal {T : Subalgebra O (End K V)} (ψ : T →ₐ[O] O) : (cls ψ).IsMaximal := by
   refine RingHom.ker_isMaximal_of_surjective _ fun y => ?_
   obtain ⟨c, rfl⟩ := IsLocalRing.residue_surjective y
@@ -125,27 +169,46 @@ theorem cls_isMaximal {T : Subalgebra O (End K V)} (ψ : T →ₐ[O] O) : (cls �
 
 variable {S : Set (End K V)}
 
+/- English proof (translation)
+The claim follows from `Algebra.commute_of_mem_adjoin_of_forall_mem_commute hb fun b' hb' => (Algebra.commute_of_mem_adjoin_of_forall_mem_commute ha fun a' ha' => hS b' hb' a' ha').symm`.
+-/
 theorem commute_adjoin (hS : ∀ a ∈ S, ∀ b ∈ S, Commute a b) {a b : End K V}
     (ha : a ∈ Algebra.adjoin O S) (hb : b ∈ Algebra.adjoin O S) : Commute a b :=
   Algebra.commute_of_mem_adjoin_of_forall_mem_commute hb fun b' hb' =>
     (Algebra.commute_of_mem_adjoin_of_forall_mem_commute ha fun a' ha' => hS b' hb' a' ha').symm
 
+/- English proof (translation)
+The claim follows from `eq_of_le_maxGen hW (W_le _ χ (s + t)) fun _ hx => mem_maxGen_add (commute_adjoin hS s.2 t.2) (W_le _ χ s hx) (W_le _ χ t hx)`.
+-/
 theorem chi_add (hS : ∀ a ∈ S, ∀ b ∈ S, Commute a b) {χ : Algebra.adjoin O S → K}
     (hW : W _ χ ≠ ⊥) (s t : Algebra.adjoin O S) : χ (s + t) = χ s + χ t :=
   eq_of_le_maxGen hW (W_le _ χ (s + t)) fun _ hx =>
     mem_maxGen_add (commute_adjoin hS s.2 t.2) (W_le _ χ s hx) (W_le _ χ t hx)
 
+/- English proof (translation)
+The claim follows from `eq_of_le_maxGen hW (W_le _ χ (s * t)) fun _ hx => mem_maxGen_mul (commute_adjoin hS s.2 t.2) (W_le _ χ s hx) (W_le _ χ t hx)`.
+-/
 theorem chi_mul (hS : ∀ a ∈ S, ∀ b ∈ S, Commute a b) {χ : Algebra.adjoin O S → K}
     (hW : W _ χ ≠ ⊥) (s t : Algebra.adjoin O S) : χ (s * t) = χ s * χ t :=
   eq_of_le_maxGen hW (W_le _ χ (s * t)) fun _ hx =>
     mem_maxGen_mul (commute_adjoin hS s.2 t.2) (W_le _ χ s hx) (W_le _ χ t hx)
 
+/- English proof (translation)
+Use `eq_of_le_maxGen hW (W_le _ χ _) ?_` and prove the remaining obligations. Rewrite using `[Subalgebra.coe_algebraMap, algebraMap_end_eq, maxGen_smul_one]`. Conclude with `le_top`.
+-/
 theorem chi_alg {χ : Algebra.adjoin O S → K} (hW : W _ χ ≠ ⊥) (c : O) :
     χ (algebraMap O (Algebra.adjoin O S) c) = algebraMap O K c := by
   refine eq_of_le_maxGen hW (W_le _ χ _) ?_
   rw [Subalgebra.coe_algebraMap, algebraMap_end_eq, maxGen_smul_one]
   exact le_top
 
+/- English proof (translation)
+Take `⟨t, ht⟩` from `t`. Proceed by induction on `ht using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Conclude with `hint x hx _ fun h => hW (eq_bot_iff.2 ((W_le _ χ ⟨x, Algebra.subset_adjoin hx⟩).trans h.le))`. Consider the case `algebraMap r => exact ⟨r, (chi_alg hW r).symm⟩`.
+
+Consider the case `add x y hx hy ihx ihy`. Establish `e` using `chi_add hS hW ⟨x, hx⟩ ⟨y, hy⟩`. Rewrite using `[show (⟨x + y, add_mem hx hy⟩ : Algebra.adjoin O S) = ⟨x, hx⟩ + ⟨y, hy⟩ from rfl, e]`. Conclude with `add_mem ihx ihy`. Consider the case `mul x y hx hy ihx ihy`.
+
+Establish `e` using `chi_mul hS hW ⟨x, hx⟩ ⟨y, hy⟩`. Rewrite using `[show (⟨x * y, mul_mem hx hy⟩ : Algebra.adjoin O S) = ⟨x, hx⟩ * ⟨y, hy⟩ from rfl, e]`. Conclude with `mul_mem ihx ihy`.
+-/
 theorem chi_int (hS : ∀ a ∈ S, ∀ b ∈ S, Commute a b)
     (hint : ∀ a ∈ S, ∀ μ, a.maxGenEigenspace μ ≠ ⊥ → μ ∈ (algebraMap O K).range)
     {χ : Algebra.adjoin O S → K} (hW : W _ χ ≠ ⊥) (t : Algebra.adjoin O S) :
@@ -164,6 +227,11 @@ theorem chi_int (hS : ∀ a ∈ S, ∀ b ∈ S, Commute a b)
     rw [show (⟨x * y, mul_mem hx hy⟩ : Algebra.adjoin O S) = ⟨x, hx⟩ * ⟨y, hy⟩ from rfl, e]
     exact mul_mem ihx ihy
 
+/- English proof (translation)
+Establish `h` using `fun t => RingHom.mem_range.1 (chi_int hS hint hW t)`. Use `choose f hf using h`. Establish `h1 : f 1 = 1` using `hinj (by rw [hf, map_one]; simpa using chi_alg hW (1 : O))`. Establish `hm : ∀ s t, f (s * t) = f s * f t` using `fun s t => hinj (by rw [hf, map_mul, hf, hf, chi_mul hS hW])`. Establish `h0 : f 0 = 0` using `hinj (by rw [hf, map_zero]; simpa using chi_alg hW (0 : O))`.
+
+Establish `ha : ∀ s t, f (s + t) = f s + f t` using `fun s t => hinj (by rw [hf, map_add, hf, hf, chi_add hS hW])`. Establish `hc : ∀ c, f (algebraMap O (Algebra.adjoin O S) c) = c` using `fun c => hinj (by rw [hf, chi_alg hW])`. Conclude with `⟨{ toFun := f, map_one' := h1, map_mul' := hm, map_zero' := h0, map_add' := ha, commutes' := hc },`. Use function extensionality and compare the values at `fun t => hf t⟩`.
+-/
 theorem exists_pt (hS : ∀ a ∈ S, ∀ b ∈ S, Commute a b)
     (hint : ∀ a ∈ S, ∀ μ, a.maxGenEigenspace μ ≠ ⊥ → μ ∈ (algebraMap O K).range)
     (hinj : Function.Injective (algebraMap O K))
@@ -179,10 +247,22 @@ theorem exists_pt (hS : ∀ a ∈ S, ∀ b ∈ S, Commute a b)
   exact ⟨{ toFun := f, map_one' := h1, map_mul' := hm, map_zero' := h0, map_add' := ha, commutes' := hc },
     funext fun t => hf t⟩
 
+/- English proof (translation)
+The claim follows from `independent_iInf_maxGenEigenspace_of_forall_mapsTo (fun t : Algebra.adjoin O S => (t : End K V)) fun i j φ => mapsTo_maxGenEigenspace_of_comm (commute_adjoin hS j.2 i.2) φ`.
+-/
 theorem iSupIndep_alt (hS : ∀ a ∈ S, ∀ b ∈ S, Commute a b) : iSupIndep (W (Algebra.adjoin O S)) :=
   independent_iInf_maxGenEigenspace_of_forall_mapsTo (fun t : Algebra.adjoin O S => (t : End K V))
     fun i j φ => mapsTo_maxGenEigenspace_of_comm (commute_adjoin hS j.2 i.2) φ
 
+/- English proof (translation)
+Establish `hgen` using `iSup_iInf_maxGenEigenspace_eq_top_of_iSup_maxGenEigenspace_eq_top_of_commute (fun a : S => (a : End K V)) (fun a b _ => hS a a.2 b b.2) (fun a => hsplit a a.2)`. Establish `key : ∀ χ : S → K, ∀ x (hx : x ∈ Algebra.adjoin O S), ∃ μ, (⨅ a : S, (a : End K V).maxGenEigenspace (χ a)) ≤ x.maxGenEigenspace μ`. Introduce `χ x hx`. Proceed by induction on `hx using Algebra.adjoin_induction with`. Consider the case `mem x hx => exact ⟨χ ⟨x, hx⟩, iInf_le (fun a : S => (a : End K V).maxGenEigenspace (χ a)) ⟨x, hx⟩⟩`.
+
+Consider the case `algebraMap r`. Conclude with `⟨algebraMap O K r, by rw [algebraMap_end_eq, maxGen_smul_one]; exact le_top⟩`. Consider the case `add x y hx hy ihx ihy`. Take `⟨a, ha⟩` from `ihx`. Take `⟨b, hb⟩` from `ihy`.
+
+Conclude with `⟨a + b, fun v hv => mem_maxGen_add (commute_adjoin hS hx hy) (ha hv) (hb hv)⟩`. Consider the case `mul x y hx hy ihx ihy`. Take `⟨a, ha⟩` from `ihx`. Take `⟨b, hb⟩` from `ihy`. Conclude with `⟨a * b, fun v hv => mem_maxGen_mul (commute_adjoin hS hx hy) (ha hv) (hb hv)⟩`.
+
+Rewrite using `[eq_top_iff, ← hgen]`. Use `iSup_le fun χ => ?_` and prove the remaining obligations. Take `⟨μ, hμ⟩` from `key χ t t.2`. Conclude with `hμ.trans (le_iSup (fun μ => (t : End K V).maxGenEigenspace μ) μ)`.
+-/
 theorem iSup_maxGen_eq_top [FiniteDimensional K V] (hS : ∀ a ∈ S, ∀ b ∈ S, Commute a b)
     (hsplit : ∀ a ∈ S, ⨆ μ, a.maxGenEigenspace μ = ⊤) (t : Algebra.adjoin O S) :
     ⨆ μ, (t : End K V).maxGenEigenspace μ = ⊤ := by
@@ -208,12 +288,20 @@ theorem iSup_maxGen_eq_top [FiniteDimensional K V] (hS : ∀ a ∈ S, ∀ b ∈ 
   obtain ⟨μ, hμ⟩ := key χ t t.2
   exact hμ.trans (le_iSup (fun μ => (t : End K V).maxGenEigenspace μ) μ)
 
+/- English proof (translation)
+The claim follows from `iSup_iInf_maxGenEigenspace_eq_top_of_iSup_maxGenEigenspace_eq_top_of_commute (fun t : Algebra.adjoin O S => (t : End K V)) (fun a b _ => commute_adjoin hS a.2 b.2) (iSup_maxGen_eq_top hS hsplit)`.
+-/
 theorem iSup_W_eq_top [FiniteDimensional K V] (hS : ∀ a ∈ S, ∀ b ∈ S, Commute a b)
     (hsplit : ∀ a ∈ S, ⨆ μ, a.maxGenEigenspace μ = ⊤) : ⨆ χ, W (Algebra.adjoin O S) χ = ⊤ :=
   iSup_iInf_maxGenEigenspace_eq_top_of_iSup_maxGenEigenspace_eq_top_of_commute
     (fun t : Algebra.adjoin O S => (t : End K V)) (fun a b _ => commute_adjoin hS a.2 b.2)
     (iSup_maxGen_eq_top hS hsplit)
 
+/- English proof (translation)
+Establish `hind : iSupIndep (fun ψ : Algebra.adjoin O S →ₐ[O] O => W _ (pt ψ))` using `(iSupIndep_alt hS).comp (pt_injective hinj)`. Establish `hfin` using `Submodule.finite_ne_bot_of_iSupIndep hind`. Use `⟨hfin.toFinset, fun ψ h => hfin.mem_toFinset.2 h, ?_⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff, ← iSup_W_eq_top (O := O) hS hsplit]`. Use `iSup_le fun χ => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `h : W _ χ = ⊥`. Rewrite using `[h]`. Conclude with `bot_le`. Take `⟨ψ, rfl⟩` from `exists_pt hS hint hinj h`. Conclude with `Finset.le_sup (f := fun ψ => W _ (pt ψ)) (hfin.mem_toFinset.2 h)`.
+-/
 theorem exists_finset_pts [FiniteDimensional K V] (hinj : Function.Injective (algebraMap O K))
     (hS : ∀ a ∈ S, ∀ b ∈ S, Commute a b) (hsplit : ∀ a ∈ S, ⨆ μ, a.maxGenEigenspace μ = ⊤)
     (hint : ∀ a ∈ S, ∀ μ, a.maxGenEigenspace μ ≠ ⊥ → μ ∈ (algebraMap O K).range) :
@@ -230,6 +318,11 @@ theorem exists_finset_pts [FiniteDimensional K V] (hinj : Function.Injective (al
   · obtain ⟨ψ, rfl⟩ := exists_pt hS hint hinj h
     exact Finset.le_sup (f := fun ψ => W _ (pt ψ)) (hfin.mem_toFinset.2 h)
 
+/- English proof (translation)
+Take `⟨F, hF, htop⟩` from `exists_finset_pts hinj hS hsplit hint`. Establish `hind : iSupIndep (fun ψ : Algebra.adjoin O S →ₐ[O] O => W _ (pt ψ))` using `(iSupIndep_alt hS).comp (pt_injective hinj)`. Establish `hpart : ∀ 𝔪, part (Algebra.adjoin O S) 𝔪 = (F.filter (fun ψ => cls ψ = 𝔪)).sup (fun ψ => W _ (pt ψ))` using `fun 𝔪 => iSup_eq_sup_filter (fun ψ : Algebra.adjoin O S →ₐ[O] O => W _ (pt ψ)) F hF _`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun 𝔪 _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[hpart, finrank_finset_sup hind]`. Use `_ = ∑ ψ ∈ F, finrank K (W _ (pt ψ)) := Finset.sum_fiberwise_of_maps_to (fun ψ _ => hMs _ (cls_isMaximal ψ)) _`. Use `_ = finrank K V := by rw [← finrank_finset_sup hind, htop, finrank_top]`.
+-/
 theorem sum_finrank_part [FiniteDimensional K V] (hinj : Function.Injective (algebraMap O K))
     (hS : ∀ a ∈ S, ∀ b ∈ S, Commute a b) (hsplit : ∀ a ∈ S, ⨆ μ, a.maxGenEigenspace μ = ⊤)
     (hint : ∀ a ∈ S, ∀ μ, a.maxGenEigenspace μ ≠ ⊥ → μ ∈ (algebraMap O K).range)
@@ -251,6 +344,25 @@ theorem sum_finrank_part [FiniteDimensional K V] (hinj : Function.Injective (alg
         Finset.sum_fiberwise_of_maps_to (fun ψ _ => hMs _ (cls_isMaximal ψ)) _
     _ = finrank K V := by rw [← finrank_finset_sup hind, htop, finrank_top]
 
+/- English proof (translation)
+Take `⟨F, hF, htop⟩` from `exists_finset_pts hinj hS hsplit hint`. Use `set Wp : (Algebra.adjoin O S →ₐ[O] O) → Submodule K V := fun ψ => W _ (pt ψ) with hWp`. Establish `hind : iSupIndep Wp` using `(iSupIndep_alt hS).comp (pt_injective hinj)`. Establish `hsi : F.SupIndep Wp` using `hind.supIndep' F`. Establish `hoff : ∀ 𝔪, off (Algebra.adjoin O S) 𝔪 = (F.filter (fun ψ => cls ψ ≠ 𝔪)).sup Wp` using `fun 𝔪 => iSup_eq_sup_filter Wp F hF _`.
+
+Establish `key : ∀ s : Finset (Ideal (Algebra.adjoin O S)), (∀ 𝔪 ∈ s, y ∈ off (Algebra.adjoin O S) 𝔪) → y ∈ (F.filter (fun ψ => cls ψ ∉ s)).sup Wp`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Introduce `_`.
+
+Establish `e : F.filter (fun ψ => cls ψ ∉ (∅ : Finset (Ideal (Algebra.adjoin O S)))) = F`. Use extensionality with `ψ`. Simplify using the standard rewrite rules. Rewrite using `[e, htop]`. Conclude with `Submodule.mem_top`.
+
+Consider the case `insert a s ha ih`. Introduce `h`. Establish `h1` using `ih fun 𝔪 h𝔪 => h 𝔪 (Finset.mem_insert_of_mem h𝔪)`. Establish `h2` using `h a (Finset.mem_insert_self a s)`. Rewrite `h2` using `[hoff]`.
+
+Establish `e1 : (F.filter (fun ψ => cls ψ ∉ s)).sup Wp = (F.filter (fun ψ => cls ψ ∉ insert a s)).sup Wp ⊔ (F.filter (fun ψ => cls ψ ∉ s ∧ cls ψ = a)).sup Wp`. Rewrite using `[← Finset.sup_union]`. Use `congr 1`. Use extensionality with `ψ`. Simplify using `only [Finset.mem_filter, Finset.mem_union, Finset.mem_insert]`.
+
+The claim follows by propositional logic. Establish `e2 : (F.filter (fun ψ => cls ψ ≠ a)).sup Wp = (F.filter (fun ψ => cls ψ ∉ insert a s)).sup Wp ⊔ (F.filter (fun ψ => cls ψ ≠ a ∧ cls ψ ∈ s)).sup Wp`. Rewrite using `[← Finset.sup_union]`. Use `congr 1`. Use extensionality with `ψ`.
+
+Simplify using `only [Finset.mem_filter, Finset.mem_union, Finset.mem_insert]`. The claim follows by propositional logic. Establish `hdis : Disjoint ((F.filter (fun ψ => cls ψ ∉ s ∧ cls ψ = a)).sup Wp) ((F.filter (fun ψ => cls ψ ≠ a)).sup Wp)` using `hsi.disjoint_sup_sup (Finset.filter_subset _ _) (Finset.filter_subset _ _) (Finset.disjoint_filter.2 fun ψ _ hx hx' => hx' hx.2)`. Rewrite `h1` using `[e1]`. Rewrite `h2`, `hdis` using `[e2]`.
+
+Establish `hm` using `Submodule.mem_inf.2 ⟨h1, h2⟩`. Rewrite `hm` using `[sup_inf_assoc_of_le _ le_sup_left, hdis.eq_bot, sup_bot_eq]`. Conclude with `hm`. Establish `hy'` using `key Ms hy`. Establish `hempty : F.filter (fun ψ => cls ψ ∉ Ms) = ∅` using `Finset.filter_eq_empty_iff.2 fun ψ _ hψ => hψ (hMs _ (cls_isMaximal ψ))`.
+
+Rewrite `hy'` using `[hempty, Finset.sup_empty]`. Conclude with `(Submodule.mem_bot K).1 hy'`.
+-/
 theorem eq_zero_of_forall_mem_off [FiniteDimensional K V] (hinj : Function.Injective (algebraMap O K))
     (hS : ∀ a ∈ S, ∀ b ∈ S, Commute a b) (hsplit : ∀ a ∈ S, ⨆ μ, a.maxGenEigenspace μ = ⊤)
     (hint : ∀ a ∈ S, ∀ μ, a.maxGenEigenspace μ ≠ ⊥ → μ ∈ (algebraMap O K).range)
@@ -320,6 +432,9 @@ variable {O K V : Type*} [CommRing O] [Field K] [Algebra O K]
   [AddCommGroup V] [Module K V] [Module O V] [IsScalarTower O K V] [IsLocalRing O]
   {S : Set (End K V)}
 
+/- English proof (translation)
+Establish `h1` using `W_le _ (pt ψ) t hx`. Rewrite `h1` using `[maxGenEigenspace_eq, mem_genEigenspace_nat]`. Rewrite using `[algebraMap_end_eq]`. Conclude with `h1`.
+-/
 theorem pow_sub_apply_eq_zero [FiniteDimensional K V] (ψ : Algebra.adjoin O S →ₐ[O] O)
     (t : Algebra.adjoin O S) {x : V} (hx : x ∈ W _ (pt ψ)) :
     (((t : End K V) - algebraMap O (End K V) (ψ t)) ^
@@ -331,6 +446,33 @@ theorem pow_sub_apply_eq_zero [FiniteDimensional K V] (ψ : Algebra.adjoin O S �
 
 set_option linter.deprecated false in
 
+/- English proof (translation)
+Take `⟨F, hF, htop⟩` from `exists_finset_pts hinj hS hsplit hint`. Assume the negation of the conclusion as `hne`. Use `push Not at hne`. Use `letI : CommRing (Algebra.adjoin O S) := Algebra.adjoinCommRingOfComm O fun a ha b hb => (hS a ha b hb).eq`. Use `set F' := F.filter (fun ψ => W _ (pt ψ) ≠ ⊥) with hF'`.
+
+Establish `ht : ∃ t ∈ 𝔪, ∀ ψ ∈ F', IsUnit (ψ t)`. Break down `F'.eq_empty_or_nonempty with h0 | ⟨a, ha⟩` into its components or cases. Conclude with `⟨0, 𝔪.zero_mem, by simp [h0]⟩`. Establish `hcov : ¬ ((𝔪 : Set (Algebra.adjoin O S)) ⊆ ⋃ ψ ∈ (F' : Set (Algebra.adjoin O S →ₐ[O] O)), ((cls ψ : Ideal (Algebra.adjoin O S)) : Set (Algebra.adjoin O S)))`. Introduce `hsub`.
+
+Take `⟨ψ, hψ, hle⟩` from `(Ideal.subset_union_prime a a (fun ψ _ _ _ => (cls_isMaximal ψ).isPrime)).1 hsub`. Conclude with `hne ψ (Finset.mem_filter.1 hψ).2 (h𝔪.eq_of_le (cls_isMaximal ψ).ne_top hle).symm`. Simplify using `only [Set.not_subset, Set.mem_iUnion, not_exists] at hcov`. Take `⟨t, htm, ht⟩` from `hcov`. Use `⟨t, htm, fun ψ hψ => ?_⟩` and prove the remaining obligations.
+
+Establish `h1 : t ∉ cls ψ` using `fun h => ht ψ hψ h`. Express the relevant statement in the definitionally equal form `¬ ((IsLocalRing.residue O) (ψ t) = 0) at h1`. Conclude with `(IsLocalRing.residue_ne_zero_iff_isUnit _).1 h1`. Take `⟨t, htm, ht⟩` from `ht`. Set `d : (Algebra.adjoin O S →ₐ[O] O) → ℕ` to `fun ψ => (t : End K V).maxGenEigenspaceIndex (pt ψ t)`.
+
+Set `P : O[X]` to `∏ ψ ∈ F', (X - C (ψ t)) ^ d ψ`. Establish `hP : aeval (t : End K V) P = 0`. Establish `hker : ∀ ψ ∈ F', W _ (pt ψ) ≤ LinearMap.ker (aeval (t : End K V) P)`. Introduce `ψ hψ x hx`. Rewrite using `[LinearMap.mem_ker]`.
+
+Rewrite using `[show P = (∏ φ ∈ F'.erase ψ, (X - C (φ t)) ^ d φ) * (X - C (ψ t)) ^ d ψ from (Finset.prod_erase_mul _ _ hψ).symm]`. Rewrite using `[map_mul, Module.End.mul_apply, map_pow, map_sub, aeval_X, aeval_C]`. Rewrite using `[pow_sub_apply_eq_zero ψ t hx, map_zero]`. Establish `htop' : F'.sup (fun ψ => W _ (pt ψ)) = ⊤`. Rewrite using `[← htop]`.
+
+Apply `le_antisymm` to reduce the goal to its premises. Conclude with `Finset.sup_mono (Finset.filter_subset _ _)`. Use `Finset.sup_le fun ψ hψ => ?_` and prove the remaining obligations. Distinguish the cases in `h : W _ (pt ψ) = ⊥`. Rewrite using `[h]`.
+
+Conclude with `bot_le`. Conclude with `Finset.le_sup (f := fun ψ => W _ (pt ψ)) (Finset.mem_filter.2 ⟨hψ, h⟩)`. Establish `hle : (⊤ : Submodule K V) ≤ LinearMap.ker (aeval (t : End K V) P)`. Rewrite using `[← htop']`. Conclude with `Finset.sup_le hker`.
+
+Use extensionality with `x`. Conclude with `LinearMap.mem_ker.1 (hle Submodule.mem_top)`. Establish `hPT : aeval t P = 0`. Apply `Subtype.val_injective` to reduce the goal to its premises. Establish `e` using `aeval_algHom_apply (Algebra.adjoin O S).val t P`.
+
+Simplify using `only [Subalgebra.coe_val] at e`. Rewrite using `[← e]`. Simplify using `using hP`. Establish `hu : IsUnit (P.coeff 0)`. Rewrite using `[coeff_zero_eq_eval_zero, eval_prod]`.
+
+Use `Finset.prod_induction _ IsUnit (fun a b ha hb => ha.mul hb) isUnit_one fun ψ hψ => ?_` and prove the remaining obligations. Simplify using `only [eval_pow, eval_sub, eval_X, eval_C, zero_sub]`. Conclude with `((ht ψ hψ).neg).pow _`. Take `⟨u, hu'⟩` from `hu`. Establish `key` using `congrArg (aeval t) (X_mul_divX_add P)`.
+
+Rewrite `key` using `[hPT, map_add, map_mul, aeval_X, aeval_C, ← hu']`. Establish `e : t * aeval t P.divX = - algebraMap O _ (u : O)` using `eq_neg_of_add_eq_zero_left key`. Establish `hunitT : IsUnit t`. Establish `h : t * (aeval t P.divX * algebraMap O _ (-↑u⁻¹)) = 1`. Rewrite using `[← mul_assoc, e, ← map_neg, ← map_mul, neg_mul_neg, Units.mul_inv, map_one]`.
+
+Conclude with `⟨⟨t, _, h, (mul_comm _ t).trans h⟩, rfl⟩`. Conclude with `h𝔪.ne_top (Ideal.eq_top_of_isUnit_mem 𝔪 htm hunitT)`.
+-/
 theorem exists_pt_of_isMaximal [FiniteDimensional K V] (hinj : Function.Injective (algebraMap O K))
     (hS : ∀ a ∈ S, ∀ b ∈ S, Commute a b) (hsplit : ∀ a ∈ S, ⨆ μ, a.maxGenEigenspace μ = ⊤)
     (hint : ∀ a ∈ S, ∀ μ, a.maxGenEigenspace μ ≠ ⊥ → μ ∈ (algebraMap O K).range)
@@ -401,6 +543,15 @@ theorem exists_pt_of_isMaximal [FiniteDimensional K V] (hinj : Function.Injectiv
     exact ⟨⟨t, _, h, (mul_comm _ t).trans h⟩, rfl⟩
   exact h𝔪.ne_top (Ideal.eq_top_of_isUnit_mem 𝔪 htm hunitT)
 
+/- English proof (translation)
+Take `⟨F, hF, htop⟩` from `exists_finset_pts hinj hS hsplit hint`. Use `set Wp : (Algebra.adjoin O S →ₐ[O] O) → Submodule K V := fun ψ => W _ (pt ψ) with hWp`. Establish `hind : iSupIndep Wp` using `(iSupIndep_alt hS).comp (pt_injective hinj)`. Establish `hsi : F.SupIndep Wp` using `hind.supIndep' F`. Establish `hpart : part (Algebra.adjoin O S) 𝔪 = (F.filter (fun ψ => cls ψ = 𝔪)).sup Wp` using `iSup_eq_sup_filter Wp F hF _`.
+
+Establish `hoff : off (Algebra.adjoin O S) 𝔪 = (F.filter (fun ψ => cls ψ ≠ 𝔪)).sup Wp` using `iSup_eq_sup_filter Wp F hF _`. Rewrite using `[hpart, hoff]`. Prove the components needed by the constructor for the conclusion. Conclude with `hsi.disjoint_sup_sup (Finset.filter_subset _ _) (Finset.filter_subset _ _) (Finset.disjoint_filter.2 fun ψ _ h h' => h' h)`. Rewrite using `[codisjoint_iff, ← Finset.sup_union]`.
+
+Establish `e : F.filter (fun ψ => cls ψ = 𝔪) ∪ F.filter (fun ψ => cls ψ ≠ 𝔪) = F`. Use extensionality with `ψ`. Simplify using `only [Finset.mem_union, Finset.mem_filter]`. The claim follows by propositional logic. Rewrite using `[e]`.
+
+Conclude with `htop`.
+-/
 theorem isCompl_part_off [FiniteDimensional K V] (hinj : Function.Injective (algebraMap O K))
     (hS : ∀ a ∈ S, ∀ b ∈ S, Commute a b) (hsplit : ∀ a ∈ S, ⨆ μ, a.maxGenEigenspace μ = ⊤)
     (hint : ∀ a ∈ S, ∀ μ, a.maxGenEigenspace μ ≠ ⊥ → μ ∈ (algebraMap O K).range)

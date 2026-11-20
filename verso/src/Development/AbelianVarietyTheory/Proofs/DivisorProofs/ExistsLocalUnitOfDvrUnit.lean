@@ -3,6 +3,21 @@ import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.MemRange
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `A _ _ _ _ 𝔭 h1 V _ _ _ iT hinj hloc a b ⟨w, hw⟩`. Use `haveI : IsDomain (Localization.AtPrime 𝔭.asIdeal) := IsLocalization.isDomain_localization 𝔭.asIdeal.primeCompl_le_nonZeroDivisors`. Use `haveI : IsDiscreteValuationRing (Localization.AtPrime 𝔭.asIdeal) := isDiscreteValuationRing_of_height_eq_one 𝔭.asIdeal h1 _`. Use `set x := algebraMap A (Localization.AtPrime 𝔭.asIdeal) a with hxdef`. Use `set y := algebraMap A (Localization.AtPrime 𝔭.asIdeal) b with hydef`.
+
+Establish `hw0 : (w : V) ≠ 0` using `w.ne_zero`. Distinguish the cases in `hx : x = 0`. Use `⟨1, ?_⟩` and prove the remaining obligations. Establish `h0 : iT y * (w : V) = 0` using `by rw [← hw, hx, map_zero]`. Establish `hy : iT y = 0` using `(mul_eq_zero.mp h0).resolve_right hw0`.
+
+Establish `: y = 0` using `hinj (by rw [hy, map_zero])`. Rewrite using `[this, hx, mul_zero]`. Establish `hxT : iT x ≠ 0` using `fun h => hx (hinj (by rw [h, map_zero]))`. Take `⟨c, hc | hc⟩` from `ValuationRing.cond x y`. Establish `e : iT x * (iT c * (w : V)) = iT x * 1`.
+
+Rewrite using `[mul_one, ← mul_assoc, ← map_mul, hc]`. Conclude with `hw.symm`. Establish `hcw : iT c * (w : V) = 1` using `mul_left_cancel₀ hxT e`. Establish `hc' : IsUnit c` using `(isUnit_map_iff iT c).mp (IsUnit.of_mul_eq_one _ hcw)`. Use `⟨hc'.unit⁻¹, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← hc, mul_left_comm, IsUnit.val_inv_mul, mul_one]`. Establish `hy : y ≠ 0`. Introduce and unpack `h`. Apply `hx` to reduce the goal to its premises. Rewrite using `[← hc, h, zero_mul]`.
+
+Establish `hyT : iT y ≠ 0` using `fun h => hy (hinj (by rw [h, map_zero]))`. Establish `e : iT y * iT c = iT y * (w : V)`. Rewrite using `[← map_mul, hc]`. Conclude with `hw`. Establish `hcw : iT c = (w : V)` using `mul_left_cancel₀ hyT e`.
+
+Establish `hc' : IsUnit c` using `(isUnit_map_iff iT c).mp (by rw [hcw]; exact w.isUnit)`. Use `⟨hc'.unit, ?_⟩` and prove the remaining obligations. Rewrite using `[IsUnit.unit_spec, mul_comm, hc]`.
+-/
 theorem unitMultiple_descends_of_height_eq_one :
     ∀ (A : Type) [CommRing A] [IsDomain A] [IsIntegrallyClosed A] [IsNoetherianRing A]
     (𝔭 : PrimeSpectrum A),

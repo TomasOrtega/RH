@@ -19,6 +19,15 @@ section Gen
 variable {G' H' S' Sinf TK Tau : Type} [MeasurableSpace H'] [AddCommGroup S'] [Module ℂ S'] [AddCommGroup Sinf] [Module ℂ Sinf]
   [AddCommGroup TK] [Module ℂ TK] [AddCommGroup Tau] [Module ℂ Tau]
 
+/- English proof (translation)
+Use `⟨LinearMap.mk₂ ℂ (fun f e g => ∫ h in 𝓕, th g h (pt (io e ((f : H' → Tau) h))) ∂ν) ?_ ?_ ?_ ?_, hint, fun f e g => rfl⟩` and prove the remaining obligations. Introduce `f f' e`. Use function extensionality and compare the values at `g`. Simplify using `only [Submodule.coe_add, Pi.add_apply, map_add]`. Conclude with `integral_add (hint f e g) (hint f' e g)`.
+
+Introduce `c f e`. Use function extensionality and compare the values at `g`. Simplify using `only [Submodule.coe_smul, Pi.smul_apply, map_smul]`. Conclude with `integral_smul c _`. Introduce `f e e'`.
+
+Use function extensionality and compare the values at `g`. Simplify using `only [Pi.add_apply, map_add, LinearMap.add_apply]`. Conclude with `integral_add (hint f e g) (hint f e' g)`. Introduce `c f e`. Use function extensionality and compare the values at `g`.
+
+Simplify using `only [Pi.smul_apply, map_smul, LinearMap.smul_apply]`. Conclude with `integral_smul c _`.
+-/
 theorem exists_isThetaP (ν : Measure H') (𝓕 : Set H') (th : G' → H' → S' →ₗ[ℂ] ℂ) (pt : Sinf →ₗ[ℂ] S')
     (io : TK →ₗ[ℂ] Tau →ₗ[ℂ] Sinf) (A : Submodule ℂ (H' → Tau))
     (hint : ∀ f : A, ∀ e g, IntegrableOn (fun h => th g h (pt (io e ((f : H' → Tau) h)))) 𝓕 ν) :
@@ -42,6 +51,9 @@ theorem exists_isThetaP (ν : Measure H') (𝓕 : Set H') (th : G' → H' → S'
     simp only [Pi.smul_apply, map_smul, LinearMap.smul_apply]
     exact integral_smul c _
 
+/- English proof (translation)
+Take `rfl : th = fun g h s => thL g h s` from `funext fun g => funext fun h => funext fun s => h1 g h s`. Take `rfl : pt = fun s => ptL s` from `funext h2`. Conclude with `exists_isThetaP ν 𝓕 thL ptL io A hint`.
+-/
 theorem exists_isThetaP' (ν : Measure H') (𝓕 : Set H') (th : G' → H' → S' → ℂ) (pt : Sinf → S')
     (thL : G' → H' → S' →ₗ[ℂ] ℂ) (ptL : Sinf →ₗ[ℂ] S') (h1 : ∀ g h s, th g h s = thL g h s) (h2 : ∀ s, pt s = ptL s)
     (io : TK →ₗ[ℂ] Tau →ₗ[ℂ] Sinf) (A : Submodule ℂ (H' → Tau))
@@ -51,6 +63,11 @@ theorem exists_isThetaP' (ν : Measure H') (𝓕 : Set H') (th : G' → H' → S
   obtain rfl : pt = fun s => ptL s := funext h2
   exact exists_isThetaP ν 𝓕 thL ptL io A hint
 
+/- English proof (translation)
+Use `choose m hm hr using h`. Set `b` to `Module.Basis.ofVectorSpace ℂ X`. Set `y' : X →ₗ[ℂ] W` to `b.constr ℂ fun k => ⟨m (b k), hm _⟩`. Use `⟨W.subtype ∘ₗ y', fun x => (y' x).2, fun x => ?_⟩` and prove the remaining obligations. Establish `: r ∘ₗ W.subtype ∘ₗ y' = u` using `b.ext fun k => by`.
+
+Simplify using `only [LinearMap.comp_apply, y', Module.Basis.constr_basis, Submodule.subtype_apply, hr]`. Conclude with `LinearMap.congr_fun this x`.
+-/
 theorem exists_linear_choice {X M N : Type} [AddCommGroup X] [Module ℂ X] [AddCommGroup M] [Module ℂ M]
     [AddCommGroup N] [Module ℂ N] (W : Submodule ℂ M) (r : M →ₗ[ℂ] N) (u : X →ₗ[ℂ] N)
     (h : ∀ x, ∃ m ∈ W, r m = u x) : ∃ y : X →ₗ[ℂ] M, (∀ x, y x ∈ W) ∧ ∀ x, r (y x) = u x := by
@@ -62,6 +79,11 @@ theorem exists_linear_choice {X M N : Type} [AddCommGroup X] [Module ℂ X] [Add
     simp only [LinearMap.comp_apply, y', Module.Basis.constr_basis, Submodule.subtype_apply, hr]
   exact LinearMap.congr_fun this x
 
+/- English proof (translation)
+Take `⟨thP, hP⟩` from `exists_isThetaP' ν 𝓕 th pt thL ptL h1 h2 io (LinearMap.range ext) (by`. Introduce and unpack `⟨_, x, rfl⟩ e g`. Conclude with `(h x).1 e g)`. Set `r : MultilinearMap ℂ M (G' → ℂ) →ₗ[ℂ] ((∀ a, low a) → G' → ℂ)` to `{ toFun := fun U v => U fun a => (v a : M a) map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl }`. Set `p : ((⨂[ℂ] a, low a) →ₗ[ℂ] (G' → ℂ)) →ₗ[ℂ] ((∀ a, low a) → G' → ℂ)` to `{ toFun := fun U v => U (PiTensorProduct.tprod ℂ v) map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl }`.
+
+Take `⟨y, hy, hr⟩` from `exists_linear_choice W r (p ∘ₗ thP ∘ₗ ext.rangeRestrict) fun x => by`. Take `⟨U, hU, hv⟩` from `(h x).2`. Conclude with `⟨U, hU, funext fun v => funext fun g => (congrFun (hv v) g).trans (hP.eq (ext.rangeRestrict x) (PiTensorProduct.tprod ℂ v) g).symm⟩`. Conclude with `⟨y, hy, thP, hP, fun x v => congrFun (hr x) v⟩`.
+-/
 theorem exists_linear_lift {ι X : Type} [AddCommGroup X] [Module ℂ X] {M : ι → Type} [∀ a, AddCommGroup (M a)]
     [∀ a, Module ℂ (M a)] (low : ∀ a, Submodule ℂ (M a)) (W : Submodule ℂ (MultilinearMap ℂ M (G' → ℂ)))
     (ν : Measure H') (𝓕 : Set H') (th : G' → H' → S' → ℂ) (pt : Sinf → S')

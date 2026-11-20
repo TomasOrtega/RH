@@ -73,6 +73,17 @@ def SplitRowF {eps : ℝ} (Fm : FamP eps) : Prop :=
 
 def SplitRowClosed (C : FamClass) : Prop := Closed C (fun Fm _ => SplitRowF Fm)
 
+/- English proof (translation)
+Establish `hd : H.d ≠ 0` using `H.hyp.2.1.ne_zero`. Take `⟨l, hl, hgt, hmod⟩` from `Nat.exists_prime_gt_modEq_one (5 + H.q + H.d + H.g 0 + H.g 1 + H.small.sup id) (k := 4 * H.d) (by omega)`. Establish `hs : l ∉ H.small` using `fun h => by`. Establish `: l ≤ H.small.sup id` using `Finset.le_sup (f := id) h`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hq : l ≠ H.q` using `by omega`. Establish `hd' : l ≠ H.d` using `by omega`. Establish `hodd : Odd l` using `hl.odd_of_ne_two (by omega)`. Establish `hj : jacobiSym (-(H.d : ℤ)) l = 1`. Rewrite using `[jacobiSym.mod_right _ hodd]`.
+
+Establish `h1 : l % (4 * (-(H.d : ℤ)).natAbs) = 1`. Rewrite using `[Int.natAbs_neg, Int.natAbs_natCast]`. Establish `h` using `hmod`. Unfold `Nat.ModEq at h`. Rewrite using `[h]`.
+
+Conclude with `Nat.mod_eq_of_lt (by omega)`. Rewrite using `[h1, jacobiSym.one_right]`. Use `⟨l, hl, by omega, hq, hd', ?_, ?_⟩` and prove the remaining obligations. Introduce `k fin_cases k`. Use `show l ≠ H.g 0`.
+
+Use linear arithmetic over natural numbers and integers. Use `show l ≠ H.g 1`. Use linear arithmetic over natural numbers and integers. Unfold `Host.cls primeClass`. Rewrite using `[if_neg hs, if_neg hq, if_neg hd', if_pos hj]`.
+-/
 example {R : Ranks} (H : Host R) : ∃ l, SplitRowPrime H l := by
   have hd : H.d ≠ 0 := H.hyp.2.1.ne_zero
   obtain ⟨l, hl, hgt, hmod⟩ := Nat.exists_prime_gt_modEq_one

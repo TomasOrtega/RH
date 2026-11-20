@@ -9,6 +9,9 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace GlobalTheory.CompanionTheory.ResCardAbsNorm
 
+/- English proof (translation)
+Introduce `E _ _ w`. Conclude with `GlobalTheory.LFun.SatBoundGL.resCard_completion w` after adjusting the coercions.
+-/
 theorem resCard_completion_eq_absNorm : ∀ (E : Type) [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E)), (resCard (w.adicCompletion E) : ℝ) = (Ideal.absNorm w.asIdeal : ℝ) := by
   intro E _ _ w
   exact_mod_cast GlobalTheory.LFun.SatBoundGL.resCard_completion w

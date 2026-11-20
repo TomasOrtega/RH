@@ -12,11 +12,17 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 
 omit [Fintype α] [LinearOrder α] [∀ i, Fintype (c i)] [∀ i, DecidableEq (c i)] in
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun x => ha (congrArg Sigma.fst (g.injective (Subsingleton.elim (g ⟨a, x⟩) (g (g.symm ())))))⟩`.
+-/
 theorem isEmpty_of_ne (g : (Σ i, c i) ≃ Unit) {a : α} (ha : a ≠ (g.symm ()).1) : IsEmpty (c a) :=
   ⟨fun x => ha (congrArg Sigma.fst (g.injective (Subsingleton.elim (g ⟨a, x⟩) (g (g.symm ())))))⟩
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [Fintype α] [LinearOrder α] in
 
+/- English proof (translation)
+Use `isEmpty_of_ne g ha` as an intermediate fact. Use `ext`. Simplify using the standard rewrite rules.
+-/
 theorem det_eq_one_of_ne (g : (Σ i, c i) ≃ Unit) {a : α} (ha : a ≠ (g.symm ()).1) (x : GL (c a) k) :
     Matrix.GeneralLinearGroup.det x = 1 := by
   have := isEmpty_of_ne g ha
@@ -26,9 +32,19 @@ theorem det_eq_one_of_ne (g : (Σ i, c i) ≃ Unit) {a : α} (ha : a ≠ (g.symm
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [Fintype α]
   [∀ i, Fintype (c i)] [∀ i, DecidableEq (c i)] in
 
+/- English proof (translation)
+The claim follows from `mem_parab.2 fun _ _ h => absurd h (lt_irrefl _)`.
+-/
 theorem mem_parab_unit (g : (Σ i, c i) ≃ Unit) (x : GL Unit k) : x ∈ parab k g :=
   mem_parab.2 fun _ _ h => absurd h (lt_irrefl _)
 
+/- English proof (translation)
+Rewrite using `[deltaHalf_apply]`. Use `Finset.prod_eq_one fun a _ => ?_` and prove the remaining obligations. Distinguish the cases in `ha : a = (g.symm ()).1`. Establish `h : modExp c a = 0`. Unfold `modExp`.
+
+Rewrite using `[Finset.sum_eq_zero, Finset.sum_eq_zero, sub_zero]`. Introduce `b hb`. Use `isEmpty_of_ne g (a := b) (ha ▸ (Finset.mem_filter.1 hb).2.ne)` as an intermediate fact. Simplify using the standard rewrite rules. Introduce `b hb`.
+
+Use `isEmpty_of_ne g (a := b) (ha ▸ (Finset.mem_filter.1 hb).2.ne')` as an intermediate fact. Simplify using the standard rewrite rules. Simplify using `[h]`. Rewrite using `[det_eq_one_of_ne g ha, map_one]`.
+-/
 theorem deltaHalf_eq_one (g : (Σ i, c i) ≃ Unit) (x : Levi k c) : deltaHalf k c x = 1 := by
   rw [deltaHalf_apply]
   refine Finset.prod_eq_one fun a _ => ?_
@@ -47,6 +63,13 @@ theorem deltaHalf_eq_one (g : (Σ i, c i) ≃ Unit) (x : Levi k c) : deltaHalf k
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 
+/- English proof (translation)
+Establish `hd : (∏ a, (detChar (c a) (ψ a) (leviProj k g p a) : ℂ)) = (detChar Unit (ψ (g.symm ()).1) (p : GL Unit k) : ℂ)`. Rewrite using `[Finset.prod_eq_single (g.symm ()).1, detChar_apply, detChar_apply, det_parab, Finset.prod_eq_single (g.symm ()).1]`. Introduce `b _ hb`. Conclude with `det_eq_one_of_ne g hb _`. Simplify using the standard rewrite rules.
+
+Introduce `b _ hb`. Rewrite using `[detChar_apply, det_eq_one_of_ne g hb, map_one, Units.val_one]`. Simplify using the standard rewrite rules. Proceed by induction on `w using PiTensorProduct.induction_on with`. Consider the case `add x y hx hy => rw [map_add, hx, hy, smul_add]`.
+
+Consider the case `smul_tprod r x`. Rewrite using `[map_smul, piTensor_tprod, smul_comm, ← hd, ← MultilinearMap.map_smul_univ]`. Use `congr 2`.
+-/
 theorem piTensor_leviProj (g : (Σ i, c i) ≃ Unit) (ψ : α → kˣ →* ℂˣ) (p : parab k g)
     (w : PiTensorProduct ℂ fun _ : α => ℂ) :
     piTensor (fun i => detRep (c i) (ψ i)) (leviProj k g p) w =
@@ -67,6 +90,17 @@ theorem piTensor_leviProj (g : (Σ i, c i) ≃ Unit) (ψ : α → kˣ →* ℂˣ
     rw [map_smul, piTensor_tprod, smul_comm, ← hd, ← MultilinearMap.map_smul_univ]
     congr 2
 
+/- English proof (translation)
+Set `L : (PiTensorProduct ℂ fun _ : α => ℂ) ≃ₗ[ℂ] ℂ` to `(PiTensorProduct.constantBaseRingEquiv α ℂ).toLinearEquiv`. Establish `law : ∀ (φ : IndSp g (piTensor fun i => detRep (c i) (ψ i))) (x : GL Unit k), φ.1.1 x = (detChar Unit (ψ (g.symm ()).1) x : ℂ) • φ.1.1 1` using `fun φ x => by`. Use `parInd_law g _ φ ⟨x, mem_parab_unit g x⟩ 1` as an intermediate fact. Rewrite `this` using `[deltaHalf_eq_one g, piTensor_leviProj, mul_one, Units.val_one, one_smul]`. Conclude with `this`.
+
+Set `f : IndSp g (piTensor fun i => detRep (c i) (ψ i)) →ₗ[ℂ] ℂ` to `{ toFun := fun φ => L (φ.1.1 1) map_add' := fun φ φ' => map_add L _ _ map_smul' := fun r φ => map_smul L r _ }`. Use `⟨LocGL.equivOfBijective ⟨f, fun x => LinearMap.ext fun φ => ?_⟩ ⟨fun φ φ' h => ?_, fun z => ?_⟩⟩` and prove the remaining obligations. Use `show L (φ.1.1 (1 * x)) = detRep Unit (ψ (g.symm ()).1) x (L (φ.1.1 1))`. Rewrite using `[one_mul, law, map_smul]`. Conclude with `(ofChar_apply _ _ _).symm`.
+
+Establish `h1 : φ.1.1 1 = φ'.1.1 1` using `L.injective h`. Use `Subtype.ext (Subtype.ext (funext fun x => ?_))` and prove the remaining obligations. Rewrite using `[law φ x, law φ' x, h1]`. Use `⟨⟨⟨fun x => (detChar Unit (ψ (g.symm ()).1) x : ℂ) • L.symm z, fun p x => ?_⟩, mem_smoothPart_of_nhds (Filter.mem_of_superset (IsOpen.mem_nhds ((hψ (g.symm ()).1).detChar (n := Unit)) (one_mem _)) fun y hy => ?_)⟩, ?_⟩` and prove the remaining obligations. Use `show (detChar Unit (ψ (g.symm ()).1) (p * x) : ℂ) • L.symm z = (deltaHalf k c (leviProj k g p) : ℂ) • piTensor (fun i => detRep (c i) (ψ i)) (leviProj k g p) ((detChar Unit (ψ (g.symm ()).1) x : ℂ) • L.symm z)`.
+
+Rewrite using `[deltaHalf_eq_one g, piTensor_leviProj, Units.val_one, one_smul, map_mul, Units.val_mul, mul_smul]`. Establish `hy' : detChar Unit (ψ (g.symm ()).1) y = 1` using `hy`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `x`. Use `show (detChar Unit (ψ (g.symm ()).1) (x * y) : ℂ) • L.symm z = (detChar Unit (ψ (g.symm ()).1) x : ℂ) • L.symm z`.
+
+Rewrite using `[map_mul, hy', mul_one]`. Use `show L ((detChar Unit (ψ (g.symm ()).1) 1 : ℂ) • L.symm z) = z`. Rewrite using `[map_one, Units.val_one, one_smul, L.apply_symm_apply]`.
+-/
 theorem nonempty_equiv_multiProd_unit (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (α : Type) [Fintype α] [LinearOrder α] (c : α → Type)
     [∀ i, Fintype (c i)] [∀ i, DecidableEq (c i)] (g : (Σ i, c i) ≃ Unit) (ψ : α → kˣ →* ℂˣ)

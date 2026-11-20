@@ -6,6 +6,9 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ArithmeticRiemannRo
 
 namespace GlobalTheory
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.arithmetic_riemann_roch_abelian_of_quoted`.
+-/
 theorem arithRiemannRochAbelian_of_knownResults_known :
     GlobalTheory.CovTop.Hypotheses2 → GlobalTheory.Published.RegularAlteration → GlobalTheory.Published.ArithRiemannRoch →
       GlobalTheory.Published.ArithRiemannRochAbelian :=

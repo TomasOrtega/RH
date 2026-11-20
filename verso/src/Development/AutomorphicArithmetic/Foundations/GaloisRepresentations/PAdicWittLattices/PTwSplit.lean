@@ -5,16 +5,25 @@ open CategoryTheory Limits AlgebraicGeometry GlobalTheory.EtC GlobalTheory.GalV 
 open UpperTheory.Gal.Int.Geo (FEt Cover gen piece IsHEig)
 universe u v
 
+/- English proof (translation)
+Rewrite using `[← X.tr_mul i j j h k a.1 a.2 (X.K_le j k hk) (X.tower_admissible_self hk).2 p q, X.tr_self j k _ _ hk, Category.comp_id]`.
+-/
 private theorem tr_left {B : Scheme.{0}} {G : Type} [Group G] (X : Tower B G) {i j : X.ι} {h k : G} (hk : k ∈ X.K j)
     (a : X.admitted i j h) (p q) : X.tr i j (k * h) p q = X.tr i j h a.1 a.2 := by
   rw [← X.tr_mul i j j h k a.1 a.2 (X.K_le j k hk) (X.tower_admissible_self hk).2 p q,
     X.tr_self j k _ _ hk, Category.comp_id]
 
+/- English proof (translation)
+Substitute `hg` using the available equality. Conclude with `tr_left X hk a p q`.
+-/
 private theorem tower_tr_eq_of_eq_mul_of_mem_K {B : Scheme.{0}} {G : Type} [Group G] (X : Tower B G) {i j : X.ι} {h k g : G}
     (hk : k ∈ X.K j) (a : X.admitted i j h) (hg : g = k * h) (p q) : X.tr i j g p q = X.tr i j h a.1 a.2 := by
   subst hg
   exact tr_left X hk a p q
 
+/- English proof (translation)
+The claim follows from `X.tr_mul _ _ _ _ _ _ _ _ _ _ _`.
+-/
 private theorem tower_tr_comp_tr_eq_tr_mul {B : Scheme.{0}} {G : Type} [Group G] (X : Tower B G) {i j m : X.ι} {h h' : G}
     (p : h ∈ X.Δ) (q : ∀ u ∈ X.K i, h * u * h⁻¹ ∈ X.K j) (p' : h' ∈ X.Δ)
     (q' : ∀ u ∈ X.K j, h' * u * h'⁻¹ ∈ X.K m) :
@@ -23,6 +32,25 @@ private theorem tower_tr_comp_tr_eq_tr_mul {B : Scheme.{0}} {G : Type} [Group G]
         (Tower.admitted.mul (X := X) ⟨p, q⟩ ⟨p', q'⟩).2 :=
   X.tr_mul _ _ _ _ _ _ _ _ _ _ _
 
+/- English proof (translation)
+Introduce `hS B G _ X m i j a b hmi hnorm J _ r c hr huniq`. Establish `hij : ∀ u ∈ X.K i, u ∈ X.K j` using `fun u hu => by simpa using a.2 u hu`. Establish `hmj : ∀ u ∈ X.K m, u ∈ X.K j` using `fun u hu => by simpa using b.2 u hu`. Establish `Am : ∀ g ∈ X.K j, X.admitted m m g` using `fun g hg => ⟨X.K_le j g hg, fun u hu => hnorm g hg u hu⟩`. Establish `hcomp : ∀ x, X.tr m i (r x) (c x).1 (c x).2 ≫ X.tr i j 1 a.1 a.2 = X.tr m j 1 b.1 b.2`.
+
+Introduce `x`. Rewrite using `[X.tr_mul m i j (r x) 1 (c x).1 (c x).2 a.1 a.2 ((c x).mul a).1 ((c x).mul a).2]`. Conclude with `tower_tr_eq_of_eq_mul_of_mem_K X (hr x) b (by simp) _ _`. Establish `U : ∀ (Ω : Type) [Field Ω] [IsAlgClosed Ω] (x : sp Ω ⟶ X.Z m) (x1 x2 : J), x ≫ X.tr m i (r x1) (c x1).1 (c x1).2 = x ≫ X.tr m i (r x2) (c x2).1 (c x2).2 → x1 = x2`. Introduce `Ω _ _ x x1 x2 h12`.
+
+Establish `p1` using `X.isAdmissibleIntegralBasisChange_one hmi`. Establish `e1 : (x ≫ X.tr m m (r x1) (Am _ (hr x1)).1 (Am _ (hr x1)).2) ≫ X.tr m i 1 p1.1 p1.2 = (x ≫ X.tr m m (r x2) (Am _ (hr x2)).1 (Am _ (hr x2)).2) ≫ X.tr m i 1 p1.1 p1.2`. Rewrite using `[Category.assoc, Category.assoc, tower_tr_comp_tr_eq_tr_mul, tower_tr_comp_tr_eq_tr_mul, tower_tr_eq_of_eq_mul_of_mem_K X (one_mem (X.K i)) (c x1) (rfl : (1:G) * r x1 = 1 * r x1), tower_tr_eq_of_eq_mul_of_mem_K X (one_mem (X.K i)) (c x2) (rfl : (1:G) * r x2 = 1 * r x2)]`. Conclude with `h12`. Take `⟨k, hki, a', b', hk⟩` from `X.trans m i p1.1 p1.2 (fun k hk u hu => hnorm k (hij k hk) u hu) Ω _ _ e1`.
+
+Establish `hkj` using `hij k hki`. Establish `e2 : x ≫ X.tr m m (r x2) (Am _ (hr x2)).1 (Am _ (hr x2)).2 = x ≫ X.tr m m (k * r x1) (Am _ (mul_mem hkj (hr x1))).1 (Am _ (mul_mem hkj (hr x1))).2`. Rewrite using `[hk, Category.assoc, tower_tr_comp_tr_eq_tr_mul]`. Establish `hinv : (r x2)⁻¹ ∈ X.K j` using `inv_mem (hr x2)`. Establish `hg : (r x2)⁻¹ * (k * r x1) ∈ X.K j` using `mul_mem hinv (mul_mem hkj (hr x1))`.
+
+Establish `hfix : x ≫ X.tr m m _ (Am _ hg).1 (Am _ hg).2 = x`. Rewrite using `[← X.tr_mul m m m (k * r x1) (r x2)⁻¹ (Am _ (mul_mem hkj (hr x1))).1 (Am _ (mul_mem hkj (hr x1))).2 (Am _ hinv).1 (Am _ hinv).2, ← Category.assoc, ← e2, Category.assoc, X.tr_mul m m m (r x2) (r x2)⁻¹ (Am _ (hr x2)).1 (Am _ (hr x2)).2 (Am _ hinv).1 (Am _ hinv).2 (Am _ (mul_mem hin …`. Establish `hgm` using `X.free m j (fun u hu => hmj u hu) _ hg (Am _ hg).1 (Am _ hg).2 Ω x hfix`. Establish `hk0 : k * r x1 ∈ X.K j` using `mul_mem hkj (hr x1)`. Apply `(huniq _ hk0).unique` to reduce the goal to its premises.
+
+Simplify using `using hki`. Use `(c x2).2 _ hgm` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use `group`. Establish `hpts : ∀ (Ω : Type) [Field Ω] [IsAlgClosed Ω] (x : sp Ω ⟶ X.Z m) (y : sp Ω ⟶ X.Z i), y ≫ X.tr i j 1 a.1 a.2 = x ≫ X.tr m j 1 b.1 b.2 → ∃! x0, x ≫ X.tr m i (r x0) (c x0).1 (c x0).2 = y`.
+
+Introduce `Ω _ _ x y hxy`. Establish `p1` using `X.isAdmissibleIntegralBasisChange_one hmi`. Use `haveI := X.fin m i p1.1 p1.2`. Take `⟨v, hv⟩` from `(X.onto m i p1.1 p1.2).surj (UpperTheory.Gal.TranscendenceTraces.pt (X := X.Z i) (Ω := Ω) y)`. Take `⟨z, hz, -⟩` from `UpperTheory.Gal.TranscendenceTraces.ptLift_holds (X.tr m i 1 p1.1 p1.2) Ω y v hv`.
+
+Establish `hzj : x ≫ X.tr m j 1 b.1 b.2 = z ≫ X.tr m j 1 b.1 b.2`. Rewrite using `[← hxy, ← hz, Category.assoc, tower_tr_comp_tr_eq_tr_mul, tower_tr_eq_of_eq_mul_of_mem_K X (one_mem (X.K j)) b (rfl : (1:G) * 1 = 1 * 1)]`. Take `⟨k, hkj, a', b', hk⟩` from `X.trans m j b.1 b.2 hnorm Ω x z hzj`. Take `⟨x0, hx0, -⟩` from `huniq k hkj`. Establish `ex : x ≫ X.tr m i (r x0) (c x0).1 (c x0).2 = y`.
+
+Rewrite using `[← hz, hk, Category.assoc, tower_tr_comp_tr_eq_tr_mul, tower_tr_eq_of_eq_mul_of_mem_K X hx0 (c x0) (show (1:G) * k = k * (r x0)⁻¹ * r x0 by group)]`. Conclude with `⟨x0, ex, fun x2 h2 => U Ω x x2 x0 (h2.trans ex.symm)⟩`. Use `haveI := X.fin i j a.1 a.2`. Use `haveI := X.etale i j a.1 a.2`. Conclude with `hS _ _ J _ hcomp hpts`.
+-/
 theorem UpperTheory.Gal.G3.pTwSplit :
     SplitsPts → TwSplit := by
   intro hS B G _ X m i j a b hmi hnorm J _ r c hr huniq

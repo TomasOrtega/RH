@@ -8,6 +8,9 @@ import Development.WeilBound.RepresentationTheoryGL.SiegelWeilProof.HolomorphicC
 
 namespace PositivityTheory.Rg.Sw.HSt
 
+/- English proof (translation)
+The claim follows from `eRed (vacuum_nonvanishing_of_facts fdProps djFd kSplit sphU fzHol)`.
+-/
 theorem crux : Crux := eRed (vacuum_nonvanishing_of_facts fdProps djFd kSplit sphU fzHol)
 
 end PositivityTheory.Rg.Sw.HSt

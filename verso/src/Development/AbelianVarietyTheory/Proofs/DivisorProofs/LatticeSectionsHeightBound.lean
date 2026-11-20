@@ -23,6 +23,23 @@ section Generic
 
 variable {k : Type} [CommRing k] {X : Scheme.{0}} [IsIntegral X] {p : X ⟶ Sp k}
 
+/- English proof (translation)
+Establish `hr` using `isRatSec_ratOfSec s₀ hs₀`. Establish `hrτ` using `GlobalTheory.TrueGeo.SmallSec.isRatSec_pow hr τ`. Establish `hPr` using `presents_divOfRatSec (L.pow τ).isLB hrτ`. Use `⟨hPr.rat, hPr.rat_injective, fun h hreg hb => ?_⟩` and prove the remaining obligations. Establish `hsec : h ∈ (divOfRatSec (L.pow τ).isLB hrτ).sections`.
+
+Use `CartierDiv.mem_sections.2 fun x => ?_` and prove the remaining obligations. Take `⟨c, hc⟩` from `exists_chart (L.pow τ).isLB x`. Establish `hx : x ∈ L.B.U (c PUnit.unit)` using `Set.mem_iInter.1 hc PUnit.unit`. Use `⟨_, hPr.isEqn c x hc, ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_pow_eq_pow_val, val_ratOfSec (gen_mem hx)]`.
+
+Conclude with `hreg _ x hx`. Take `⟨S, hS⟩` from `hPr.exists_rat_eq hsec`. Use `⟨S, fun σ y => ?_, hS⟩` and prove the remaining obligations. Set `Lτ` to `(L.shift (fun _ => t) (fun _ => rfl)).pow τ`. Take `⟨c, hc⟩` from `exists_chart Lτ.isLB (under y)`.
+
+Establish `hy : y ∈ ptsIn p σ (Lτ.B.U c)` using `mem_ptsIn.2 hc`. Establish `hy1 : y ∈ ptsIn p σ (L.B.U (c PUnit.unit))` using `mem_ptsIn.2 (Set.mem_iInter.1 hc PUnit.unit)`. Establish `hgen : genericPoint X ∈ Lτ.B.U c` using `gen_mem hc`. Establish `e0 : fnOf (Lτ.B.U c) hgen ((S : Lτ.B.Sec).f c) = h * fnOf _ (gen_mem (mem_ptsIn.1 hy1)) (s₀.f (c PUnit.unit)) ^ τ`. Use `hPr.rat_mul S c hgen` as an intermediate fact.
+
+Rewrite `this` using `[hS, Units.val_pow_eq_pow_val, val_ratOfSec (gen_mem (mem_ptsIn.1 hy1))]`. Conclude with `this.symm`. Establish `e1 : ev p σ (Lτ.B.U c) ((S : Lτ.B.Sec).f c) y = ratVal (h * fnOf _ (gen_mem (mem_ptsIn.1 hy1)) (s₀.f (c PUnit.unit)) ^ τ) y`. Rewrite using `[← e0]`. Conclude with `(ratVal_fnOf hy hgen ((S : Lτ.B.Sec).f c)).symm`.
+
+Establish `e2 : (Lτ.φ σ).φ c y = (τ : ℝ) * ((L.φ σ).φ (c PUnit.unit) y + 2 * t)`. Use `Weight.zpow_φ ((L.φ σ).addFn fun _ => 2 * t) (τ : ℤ) c y` as an intermediate fact. Conclude with `this.trans (by push_cast; rfl)`. Establish `hb'` using `hb σ y (c PUnit.unit) hy1 (hreg _ _ (mem_ptsIn.1 hy1))`. Establish `hn` using `Weight.nsq_eq (Lτ.φ σ) (secVal_mem (p := p) (σ := σ) (S : Lτ.B.Sec)) hy`.
+
+Use `show (Lτ.φ σ).nsq (secVal p σ (S : Lτ.B.Sec)) y ≤ 1`. Use `hn.le.trans ?_` and prove the remaining obligations. Establish `e4 : secVal p σ (S : Lτ.B.Sec) c y = ev p σ (Lτ.B.U c) ((S : Lτ.B.Sec).f c) y` using `by erw [secVal_apply]; rfl`. Rewrite using `[e4, e1, e2]`. Establish `e3 : Real.exp (-((τ : ℝ) * ((L.φ σ).φ (c PUnit.unit) y + 2 * t))) = Real.exp (-((τ : ℝ) * (L.φ σ).φ (c PUnit.unit) y)) * (Real.exp (2 * (τ : ℝ) * t))⁻¹`.
+
+Rewrite using `[← Real.exp_neg, ← Real.exp_add]`. Put the polynomial expressions in normal form. Rewrite using `[e3, ← mul_assoc, mul_inv_le_iff₀ (Real.exp_pos _), one_mul]`. Conclude with `hb'`.
+-/
 theorem exists_rat_small (L : HermLB p) (s₀ : L.B.Sec) (hs₀ : genericPoint X ∈ nonzeroLocus s₀) (τ : ℕ) (t : ℝ) :
     ∃ R : (lbPow L.B τ).Sec → X.functionField, Function.Injective R ∧ ∀ h : X.functionField,
       (∀ (c : L.B.ι) (x : X) (hx : x ∈ L.B.U c), RegAt x (h * fnOf (L.B.U c) (gen_mem hx) (s₀.f c) ^ τ)) →
@@ -75,6 +92,9 @@ theorem exists_rat_small (L : HermLB p) (s₀ : L.B.Sec) (hs₀ : genericPoint X
 
 end Generic
 
+/- English proof (translation)
+Use `secZ_eq_zero_of_genVal hf.1.1 fun Z' => ?_` and prove the remaining obligations. Distinguish the cases in `hZ : Z' = Z`. Rewrite using `[hZ, h0]`. Conclude with `evC_eq_zero (GlobalTheory.Reg.genFrEx_and_genFromTest _ _ _ _ _ _).1 hZ hf.2`.
+-/
 theorem eq_zero_of_genVal' {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {r : ℕ} {U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r}
     {Z : Comp Xo c} {G : WTZ E} {f : Rul Xo c} (hf : f ∈ cuspOn U Z G) (h0 : genVal Z f = 0) : f = 0 := by
@@ -85,6 +105,25 @@ theorem eq_zero_of_genVal' {E : Type} [Field E] [NumberField E] [IsCMField E] {H
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `hP D T j Y e o hY hE Z u X _ p L ψ s t hGood hBir hNB hdg hM i hi`. Establish `hex : ∃ w : latOn Y.U Z (wtOf (T.Q.Dw j) u 0), genVal Z ((w : cuspOn Y.U Z (wtOf (T.Q.Dw j) u 0)) : Rul Y.d.Xo₂ Y.d.c₂) ≠ 0`. Assume the negation of the conclusion as `hno`. Use `push_neg at hno`. Establish `hz : genPoint Z (cuspOn Y.U Z (wtOf (T.Q.Dw j) u 0)) = 0`.
+
+Establish `hle : Submodule.span Y.d.c₂.F (latOn Y.U Z (wtOf (T.Q.Dw j) u 0) : Set (cuspOn Y.U Z (wtOf (T.Q.Dw j) u 0))) ≤ LinearMap.ker (genPoint Z (cuspOn Y.U Z (wtOf (T.Q.Dw j) u 0)))` using `Submodule.span_le.2 fun v hv => by`. Simplify `hno ⟨v, hv⟩` using `[genPoint]`. Rewrite `hle` using `[hGood.2.2]`. Conclude with `LinearMap.ext fun v => hle Submodule.mem_top`. Establish `h0 : Y.dg u Z = 0` using `by show ((compDeg Y.U Z (wtOf (T.Q.Dw j) u 0) : ℕ) : ℝ) = 0`.
+
+Rewrite using `[compDeg, hz, GlobalTheory.CompHt.Test.imageDeg_zero, Nat.cast_zero]`. Conclude with `absurd hdg (by rw [h0]; exact lt_irrefl 0)`. Choose the witnesses or unpack the hypotheses as in `⟨w, hw⟩ : ∃ w, genericPoint X ∈ nonzeroLocus (s w) := by`. Establish `h : genericPoint X ∈ (⨆ w, nonzeroLocus (s w) : X.Opens)`. Rewrite using `[hM.bpf]`.
+
+Discharge the goal by the elementary cases of `trivial`. Rewrite `h` using `[← SetLike.mem_coe, TopologicalSpace.Opens.coe_iSup, Set.mem_iUnion]`. Conclude with `h`. Take `⟨k₀, hk₀⟩` from `exists_chart L.isLB (genericPoint X)`. Establish `hw0 : genVal Z ((w : cuspOn Y.U Z (wtOf (T.Q.Dw j) u 0)) : Rul Y.d.Xo₂ Y.d.c₂) ≠ 0`.
+
+Introduce `h0`. Take `⟨w₁, hw₁⟩` from `hex`. Establish `hr` using `hM.ratio w₁ w k₀ hk₀`. Establish `e0 : ψ ((genPoint Z (cuspOn Y.U Z (wtOf (T.Q.Dw j) u 0))) (w : cuspOn Y.U Z (wtOf (T.Q.Dw j) u 0))) = 0`. Establish `: (genPoint Z (cuspOn Y.U Z (wtOf (T.Q.Dw j) u 0))) (w : cuspOn Y.U Z (wtOf (T.Q.Dw j) u 0)) = 0` using `h0`.
+
+Rewrite using `[this, map_zero]`. Establish `h1 : ψ ((genPoint Z (cuspOn Y.U Z (wtOf (T.Q.Dw j) u 0))) (w₁ : cuspOn Y.U Z (wtOf (T.Q.Dw j) u 0))) ≠ 0` using `(map_ne_zero_iff ψ hM.bij.1).2 hw₁`. Conclude with `mul_ne_zero h1 (fnOf_sec_ne_zero hw hk₀) (hr.trans (by rw [e0, zero_mul]))`. Establish `hψinj : Function.Injective ψ` using `hM.bij.1`. Take `⟨R, hRinj, hR⟩` from `exists_rat_small L (s w) hw (8 * i) t`.
+
+Establish `key : ∀ f ∈ smallL Y.U (xiR D) (fun _ => D.sp.W j) Y.dict Z (wtOf (T.Q.Dw j) u 0) (8 * i) t, ∃ S ∈ ((L.shift (fun _ => t) (fun _ => rfl)).pow (8 * i)).smallSec, R S = ψ (genVal Z (f : Rul Y.d.Xo₂ Y.d.c₂)) * (ψ (genVal Z ((w : cuspOn Y.U Z (wtOf (T.Q.Dw j) u 0)) : Rul Y.d.Xo₂ Y.d. …` using `fun f hf => hR _ (GlobalTheory.T.hermitian_lattice_sections_good_two hP D T j Y e o hY hE Z u X p L ψ s t hGood hBir hNB hdg hM i hi f hf w hw0 (GlobalTheory.T.hermitian_lattice_sections_good hP D T j Y e o hY hE Z u X p L ψ s t hGood hBir hNB hdg hM i hi f hf w hw0)) (GlobalTheo …`. Use `choose! Sf hSf hRf using key`. Establish `hinj : Set.InjOn Sf (smallL Y.U (xiR D) (fun _ => D.sp.W j) Y.dict Z (wtOf (T.Q.Dw j) u 0) (8 * i) t)`. Introduce `f hf g hg hfg`. Establish `h1` using `(hRf f hf).symm.trans ((congrArg R hfg).trans (hRf g hg))`.
+
+Establish `hψw : ψ (genVal Z ((w : cuspOn Y.U Z (wtOf (T.Q.Dw j) u 0)) : Rul Y.d.Xo₂ Y.d.c₂)) ≠ 0` using `(map_ne_zero_iff ψ hψinj).2 hw0`. Establish `hc : (ψ (genVal Z ((w : cuspOn Y.U Z (wtOf (T.Q.Dw j) u 0)) : Rul Y.d.Xo₂ Y.d.c₂)))⁻¹ ^ (8 * i) ≠ 0` using `pow_ne_zero _ (inv_ne_zero hψw)`. Establish `h2` using `hψinj (mul_right_cancel₀ hc h1)`. Establish `h3 : genVal Z ((f : Rul Y.d.Xo₂ Y.d.c₂) - (g : Rul Y.d.Xo₂ Y.d.c₂)) = 0`. Rewrite using `[map_sub, h2, sub_self]`.
+
+Conclude with `Subtype.ext (sub_eq_zero.1 (eq_zero_of_genVal' (Submodule.sub_mem _ f.2 g.2) h3))`. Rewrite using `[← hinj.encard_image]`. Conclude with `Set.encard_le_encard (Set.image_subset_iff.2 fun f hf => hSf f hf)`.
+-/
 theorem main : Hypotheses2 → ∀ (D : D7) (T : Core D) (j : ℕ) (Y : Deep T j) (e : ℕ) (o : ℝ), Y.Good e o → 2 < Module.finrank ℚ D.host.E / 2 → ∀ (Z : Comp Y.d.Xo₂ Y.d.c₂) (u : GlobalTheory.AllWt.Weight (T.Q.Dw j)) (X : AlgebraicGeometry.Scheme.{0}) [AlgebraicGeometry.IsIntegral X] (p : X ⟶ Sp (𝓞 Y.d.c₂.F)) (L : GlobalTheory.HermLB p) (ψ : Om Z →+* X.functionField) (s : latOn Y.U Z (wtOf (T.Q.Dw j) u 0) → L.B.Sec) (t : ℝ), GoodOn Y.U (xiR D) (fun _ => D.sp.W j) Y.dict Z (wtOf (T.Q.Dw j) u 0) → GlobalTheory.DegVal.BirOn Y.U Z (wtOf (T.Q.Dw j) u 0) → NoBase Y.U Z (wtOf (T.Q.Dw j) u 0) → 0 < Y.dg u Z → GlobalTheory.ImageModel.IsModelOf (normOn Y.U (xiR D) (fun _ => D.sp.W j) Y.dict Z (wtOf (T.Q.Dw j) u 0)) (latOn Y.U Z (wtOf (T.Q.Dw j) u 0)) (genPoint Z (cuspOn Y.U Z (wtOf (T.Q.Dw j) u 0))) (dimFlag (T.Q.Dw j)) p L ψ s → ∀ i : ℕ, 1 ≤ i → (smallL Y.U (xiR D) (fun _ => D.sp.W j) Y.dict Z (wtOf (T.Q.Dw j) u 0) (8 * i) t).encard ≤ ((L.shift (fun _ => t) (fun _ => rfl)).pow (8 * i)).smallSec.encard := by
   intro hP D T j Y e o hY hE Z u X _ p L ψ s t hGood hBir hNB hdg hM i hi
 

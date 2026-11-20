@@ -12,6 +12,13 @@ section L
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
   [MeasurableSpace F] [BorelSpace F]
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `(GLnLocal.mem_integralGL_iff F 2).1 hk`. Establish `key : ∀ g : GL (Fin 2) F, (∀ i j, g i j ∈ 𝒪[F]) → modulus ((g.val).det) ≤ 1`. Introduce `g hg`. Rewrite using `[modulus_le_one_iff, Matrix.det_fin_two]`. Conclude with `sub_mem (mul_mem (hg 0 0) (hg 1 1)) (mul_mem (hg 0 1) (hg 1 0))`.
+
+Establish `a'` using `key k h1`. Establish `b'` using `key k⁻¹ h2`. Establish `hne : (k.val).det ≠ 0` using `(Matrix.GeneralLinearGroup.det k).ne_zero`. Establish `hinv : ((k⁻¹ : GL (Fin 2) F).val).det = ((k.val).det)⁻¹`. Use `congrArg (fun m : GL (Fin 2) F => (m.val).det) (mul_inv_cancel k)` as an intermediate fact.
+
+Simplify using `only [Units.val_mul, Matrix.det_mul, Units.val_one, Matrix.det_one] at this`. Conclude with `eq_inv_of_mul_eq_one_right this`. Rewrite `b'` using `[hinv, modulus_inv]`. Conclude with `le_antisymm a' ((inv_le_one₀ (modulus_pos hne)).1 b')`.
+-/
 theorem modulus_det_integral {k : GL (Fin 2) F} (hk : k ∈ GLnLocal.integralGL F 2) :
     modulus ((k.val).det) = 1 := by
   obtain ⟨h1, h2⟩ := (GLnLocal.mem_integralGL_iff F 2).1 hk
@@ -29,6 +36,13 @@ theorem modulus_det_integral {k : GL (Fin 2) F} (hk : k ∈ GLnLocal.integralGL 
   rw [hinv, modulus_inv] at b'
   exact le_antisymm a' ((inv_le_one₀ (modulus_pos hne)).1 b')
 
+/- English proof (translation)
+Establish `hpos` using `modulus_pos hc`. Establish `hq : d / c ∈ 𝒪[F]`. Rewrite using `[← modulus_le_one_iff, div_eq_mul_inv, modulus_mul, modulus_inv]`. Conclude with `mul_inv_le_one_of_le₀ hdc (le_of_lt hpos)`. Establish `hi : c⁻¹ = e + d / c * f`.
+
+Clear the denominators using the available nonvanishing facts. Take the linear combination `-h`. Establish `hi' : c⁻¹ ∈ 𝒪[F]`. Rewrite using `[hi]`. Conclude with `add_mem he (mul_mem hq hf)`.
+
+Use `(modulus_le_one_iff).2 hi'` as an intermediate fact. Rewrite `this` using `[modulus_inv]`. Conclude with `(inv_le_one₀ hpos).1 this`.
+-/
 theorem one_le_modulus_of_comb {c d e f : F} (hc : c ≠ 0) (he : e ∈ 𝒪[F]) (hf : f ∈ 𝒪[F])
     (hdc : modulus d ≤ modulus c) (h : c * e + d * f = 1) : 1 ≤ modulus c := by
   have hpos := modulus_pos hc
@@ -45,6 +59,21 @@ theorem one_le_modulus_of_comb {c d e f : F} (hc : c ≠ 0) (he : e ∈ 𝒪[F])
   rw [modulus_inv] at this
   exact (inv_le_one₀ hpos).1 this
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `(GLnLocal.mem_integralGL_iff F 2).1 hk`. Establish `hle : ∀ j, (modulus (k.val 1 j) : ℝ) ≤ 1` using `fun j => by`. Establish `: modulus (k.val 1 j) ≤ 1` using `(modulus_le_one_iff).2 (h1 1 j)`. Conclude with `this` after adjusting the coercions. Establish `heq : k.val 1 0 * (k⁻¹ : GL (Fin 2) F).val 0 1 + k.val 1 1 * (k⁻¹ : GL (Fin 2) F).val 1 1 = 1`.
+
+Establish `h` using `congrArg (fun M : Matrix (Fin 2) (Fin 2) F => M 1 1) (Units.mul_inv k)`. Simplify using `only [Matrix.mul_apply, Fin.sum_univ_two, Matrix.one_apply_eq] at h`. Conclude with `h`. Establish `hlow : (1 : ℝ) ≤ mx (fun j => k.val 1 j)`. Unfold `mx`.
+
+Break down `le_total (modulus (k.val 1 0)) (modulus (k.val 1 1)) with hd | hd` into its components or cases. Establish `hne : k.val 1 1 ≠ 0`. Introduce `h0`. Establish `h00 : k.val 1 0 = 0`. Assume the negation of the conclusion as `hx`.
+
+Use `modulus_pos hx` as an intermediate fact. Rewrite `hd` using `[h0, modulus_zero]`. Conclude with `absurd hd (not_le.2 this)`. Rewrite `heq` using `[h0, h00]`. Simplify using `at heq`.
+
+Use `one_le_modulus_of_comb hne (h2 1 1) (h2 0 1) hd (by linear_combination heq)` as an intermediate fact. Conclude with `le_max_of_le_right (by exact_mod_cast this)`. Establish `hne : k.val 1 0 ≠ 0`. Introduce `h0`. Establish `h00 : k.val 1 1 = 0`.
+
+Assume the negation of the conclusion as `hx`. Use `modulus_pos hx` as an intermediate fact. Rewrite `hd` using `[h0, modulus_zero]`. Conclude with `absurd hd (not_le.2 this)`. Rewrite `heq` using `[h0, h00]`.
+
+Simplify using `at heq`. Use `one_le_modulus_of_comb hne (h2 0 1) (h2 1 1) hd heq` as an intermediate fact. Conclude with `le_max_of_le_left (by exact_mod_cast this)`. Conclude with `le_antisymm (max_le (hle 0) (hle 1)) hlow`.
+-/
 theorem mx_bottom_integral {k : GL (Fin 2) F} (hk : k ∈ GLnLocal.integralGL F 2) :
     mx (fun j => k.val 1 j) = 1 := by
   obtain ⟨h1, h2⟩ := (GLnLocal.mem_integralGL_iff F 2).1 hk
@@ -82,6 +111,11 @@ theorem mx_bottom_integral {k : GL (Fin 2) F} (hk : k ∈ GLnLocal.integralGL F 
       exact le_max_of_le_left (by exact_mod_cast this)
   exact le_antisymm (max_le (hle 0) (hle 1)) hlow
 
+/- English proof (translation)
+Establish `hrow : ∀ j, (uni2 x * dg2 a b * k).val 1 j = (b : F) * k.val 1 j`. Introduce `j`. Simplify using `[uni2, dg2, Matrix.mul_apply, Fin.sum_univ_two]`. Establish `h` using `mx_bottom_integral hk`. Unfold `mx at h ⊢`.
+
+Simplify using `only [hrow, modulus_mul, NNReal.coe_mul]`. Rewrite using `[← mul_max_of_nonneg _ _ (NNReal.coe_nonneg _), h, mul_one]`.
+-/
 theorem mx_iwasawa (x : F) (a b : Fˣ) {k : GL (Fin 2) F} (hk : k ∈ GLnLocal.integralGL F 2) :
     mx (fun j => (uni2 x * dg2 a b * k).val 1 j) = (modulus (b : F) : ℝ) := by
   have hrow : ∀ j, (uni2 x * dg2 a b * k).val 1 j = (b : F) * k.val 1 j := by
@@ -92,6 +126,11 @@ theorem mx_iwasawa (x : F) (a b : Fˣ) {k : GL (Fin 2) F} (hk : k ∈ GLnLocal.i
   simp only [hrow, modulus_mul, NNReal.coe_mul]
   rw [← mul_max_of_nonneg _ _ (NNReal.coe_nonneg _), h, mul_one]
 
+/- English proof (translation)
+Establish `hdet : ((uni2 x * dg2 a b * k).val).det = (a : F) * b * (k.val).det`. Rewrite using `[Units.val_mul, Units.val_mul, Matrix.det_mul, Matrix.det_mul]`. Simplify using `[uni2, dg2, Matrix.det_fin_two]`. Rewrite `hd` using `[hdet]`. Use `congrArg modulus hd` as an intermediate fact.
+
+Rewrite `this` using `[modulus_mul, modulus_mul, modulus_det_integral hk, mul_one, modulus_one]`. Conclude with `this` after adjusting the coercions.
+-/
 theorem modulus_mul_of_det_one (x : F) (a b : Fˣ) {k : GL (Fin 2) F}
     (hk : k ∈ GLnLocal.integralGL F 2) (hd : ((uni2 x * dg2 a b * k).val).det = 1) :
     (modulus (a : F) : ℝ) * (modulus (b : F) : ℝ) = 1 := by
@@ -103,6 +142,11 @@ theorem modulus_mul_of_det_one (x : F) (a b : Fˣ) {k : GL (Fin 2) F}
   rw [modulus_mul, modulus_mul, modulus_det_integral hk, mul_one, modulus_one] at this
   exact_mod_cast this
 
+/- English proof (translation)
+Establish `e0 : dg2 y 1 * (uni2 x * dg2 a b) = uni2 ((y : F) * x) * (dg2 b b * dg2 (y * (a * b⁻¹)) 1)`. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Simplify using `[uni2, dg2, Matrix.mul_apply, Fin.sum_univ_two, mul_assoc]`.
+
+Clear the denominators using the available nonvanishing facts. Rewrite using `[← mul_assoc (dg2 y 1), e0]`. Simplify using `only [mul_assoc]`.
+-/
 theorem torus_iwasawa (y a b : Fˣ) (x : F) (k : GL (Fin 2) F) :
     dg2 y 1 * (uni2 x * dg2 a b * k) =
       uni2 ((y : F) * x) * (dg2 b b * (dg2 (y * (a * b⁻¹)) 1 * k)) := by
@@ -118,6 +162,17 @@ theorem torus_iwasawa (y a b : Fˣ) (x : F) (k : GL (Fin 2) F) :
 
 end L
 
+/- English proof (translation)
+Introduce `F _ _ _ _ _ _ ψ hψ ω G V' hω H W hW ε hε`. Take `⟨C, B, hCB⟩` from `H.bound W hW ε hε`. Use `⟨max C 0, B, le_max_right _ _, fun y g hg => ?_⟩` and prove the remaining obligations. Take `⟨x, a, b, k, hk, rfl⟩` from `GlobalTheory.CompanionTheory.RankinTorusVanishing.exists_iwasawa2 g`. Establish `hab` using `modulus_mul_of_det_one x a b hk hg`.
+
+Establish `hb0 : (0 : ℝ) < modulus (b : F)` using `by exact_mod_cast modulus_pos b.ne_zero`. Use `set u : Fˣ := y * (a * b⁻¹) with hu`. Establish `hmod : (modulus (y : F) : ℝ) / mx (fun j => (uni2 x * dg2 a b * k).val 1 j) ^ 2 = (modulus (u : F) : ℝ)`. Rewrite using `[mx_iwasawa x a b hk, hu]`. Simplify using `only [Units.val_mul, Units.val_inv_eq_inv_val, modulus_mul, modulus_inv, NNReal.coe_mul, NNReal.coe_inv]`.
+
+Rewrite using `[eq_inv_of_mul_eq_one_left hab]`. Clear the denominators using the available nonvanishing facts. Establish `hWeq : W (dg2 y 1 * (uni2 x * dg2 a b * k)) = (ψ⁻¹ ((y : F) * x) : ℂ) * (((ω b : ℂˣ) : ℂ) * W (dg2 u 1 * k))`. Rewrite using `[torus_iwasawa, H.psi W hW, H.cen W hW]`. Establish `hnorm : ‖W (dg2 y 1 * (uni2 x * dg2 a b * k))‖ = ‖W (dg2 u 1 * k)‖`.
+
+Rewrite using `[hWeq, norm_mul, norm_mul, Circle.norm_coe, hω.2, one_mul, one_mul]`. Rewrite using `[hmod]`. Take `⟨h1, h2⟩` from `hCB u k hk`. Use `⟨?_, fun hne => h2 ?_⟩` and prove the remaining obligations. Rewrite using `[hnorm]`.
+
+Use `h1.trans (mul_le_mul_of_nonneg_right (le_max_left _ _) ?_)` and prove the remaining obligations. Conclude with `Real.rpow_nonneg (NNReal.coe_nonneg _) _`. Introduce `h0`. Apply `hne` to reduce the goal to its premises. Rewrite using `[hWeq, h0, mul_zero, mul_zero]`.
+-/
 theorem whittaker_bound_det_one : (ForT fun F _ _ _ _ _ _ ψ ω G V' => ∀ W ∈ V', ∀ ε : ℝ, 0 < ε → ∃ C B : ℝ, 0 ≤ C ∧
   ∀ (y : Fˣ) (g : GL (Fin 2) F), (g.val).det = 1 →
     ‖W (dg2 y 1 * g)‖ ≤ C * ((modulus (y : F) : ℝ) / GlobalTheory.CompanionTheory.GJTwo.mx (fun j => g.val 1 j) ^ 2) ^ (1 / 2 - ε) ∧

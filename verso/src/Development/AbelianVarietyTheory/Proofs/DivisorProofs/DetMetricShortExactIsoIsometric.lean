@@ -19,6 +19,9 @@ open GlobalTheory.VBExt (AdaptedChart)
 variable {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k}
   {S S' : ShortComplex X.Modules} {r s : ℕ}
 
+/- English proof (translation)
+Rewrite using `[Iso.comp_inv_eq, Category.assoc, ← he, ← Category.assoc, Iso.inv_hom_id, Category.id_comp]`.
+-/
 theorem f_inv (e₁ : S.X₁ ≅ S'.X₁) (e₂ : S.X₂ ≅ S'.X₂) (he : e₁.hom ≫ S'.f = S.f ≫ e₂.hom) :
     S'.f ≫ e₂.inv = e₁.inv ≫ S.f := by
   rw [Iso.comp_inv_eq, Category.assoc, ← he, ← Category.assoc, Iso.inv_hom_id, Category.id_comp]
@@ -28,6 +31,9 @@ def homThird (hS : S.ShortExact) (e₁ : S.X₁ ≅ S'.X₁) (e₂ : S.X₂ ≅ 
   (Limits.CokernelCofork.IsColimit.desc' hS.gIsCokernel (e₂.hom ≫ S'.g) (by
     rw [← Category.assoc, ← he, Category.assoc, S'.zero, Limits.comp_zero])).1
 
+/- English proof (translation)
+The claim follows from `(Limits.CokernelCofork.IsColimit.desc' hS.gIsCokernel _ _).2`.
+-/
 theorem g_homThird (hS : S.ShortExact) (e₁ : S.X₁ ≅ S'.X₁) (e₂ : S.X₂ ≅ S'.X₂)
     (he : e₁.hom ≫ S'.f = S.f ≫ e₂.hom) : S.g ≫ homThird hS e₁ e₂ he = e₂.hom ≫ S'.g :=
   (Limits.CokernelCofork.IsColimit.desc' hS.gIsCokernel _ _).2
@@ -45,6 +51,9 @@ def isoThird (hS : S.ShortExact) (hS' : S'.ShortExact) (e₁ : S.X₁ ≅ S'.X�
     rw [← Category.assoc, g_homThird, Category.assoc, g_homThird, Iso.symm_hom,
       ← Category.assoc, Iso.inv_hom_id, Category.id_comp, Category.comp_id])
 
+/- English proof (translation)
+The claim follows from `g_homThird hS e₁ e₂ he`.
+-/
 theorem g_isoThird (hS : S.ShortExact) (hS' : S'.ShortExact) (e₁ : S.X₁ ≅ S'.X₁)
     (e₂ : S.X₂ ≅ S'.X₂) (he : e₁.hom ≫ S'.f = S.f ≫ e₂.hom) :
     S.g ≫ (isoThird hS hS' e₁ e₂ he).hom = e₂.hom ≫ S'.g :=
@@ -55,6 +64,9 @@ variable (e₁ : S.X₁ ≅ S'.X₁) (e₂ : S.X₂ ≅ S'.X₂) (e₃ : S.X₃ 
 
 include hg in
 
+/- English proof (translation)
+Use `congr(($(hg)).app U x)` as an intermediate fact. Simplify `this.symm` using `[Scheme.Modules.Hom.comp_app]`.
+-/
 theorem app_g (U : X.Opens) (x : Γ(S.X₂, U)) :
     S'.g.app U (e₂.hom.app U x) = e₃.hom.app U (S.g.app U x) := by
   have := congr(($(hg)).app U x)
@@ -62,6 +74,9 @@ theorem app_g (U : X.Opens) (x : Γ(S.X₂, U)) :
 
 include he in
 
+/- English proof (translation)
+Use `congr(($(he)).app U x)` as an intermediate fact. Simplify `this` using `[Scheme.Modules.Hom.comp_app]`.
+-/
 theorem app_f (U : X.Opens) (x : Γ(S.X₁, U)) :
     S'.f.app U (e₁.hom.app U x) = e₂.hom.app U (S.f.app U x) := by
   have := congr(($(he)).app U x)
@@ -79,12 +94,18 @@ def mapChart (a : AdaptedChart S r s) : AdaptedChart S' r s where
 
 include he in
 
+/- English proof (translation)
+Break down `j with j | j` into its components or cases. Conclude with `app_f e₁ e₂ he _ _`. Both sides reduce to the same expression.
+-/
 theorem mapChart_frame (a : AdaptedChart S r s) (j : Fin r ⊕ Fin s) :
     (mapChart e₁ e₂ e₃ hg a).frame j = e₂.hom.app a.U (a.frame j) := by
   rcases j with j | j
   · exact app_f e₁ e₂ he _ _
   · rfl
 
+/- English proof (translation)
+Simplify using `only [AdaptedChart.quot, Chart.map, mapChart, Chart.mk.injEq, true_and]`. Conclude with `heq_of_eq (funext fun i => app_g e₂ e₃ hg _ _)`.
+-/
 theorem mapChart_quot (a : AdaptedChart S r s) :
     (mapChart e₁ e₂ e₃ hg a).quot = a.quot.map e₃ := by
   simp only [AdaptedChart.quot, Chart.map, mapChart, Chart.mk.injEq, true_and]
@@ -104,6 +125,9 @@ variable {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k}
 
 include he in
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [Met.gram, Matrix.of_apply, mapChart_frame e₁ e₂ e₃ he hg]`. Conclude with `hI σ a.U _ _ y hy`.
+-/
 theorem gram_mapChart (hI : h.IsIsometry h' e₂) (σ : k →+* ℂ) (a : AdaptedChart S r s)
     {y : CxPts p σ} (hy : y ∈ ptsIn p σ a.U) :
     (h'.met σ).gram (mapChart e₁ e₂ e₃ hg a).frame y = (h.met σ).gram a.frame y := by
@@ -113,6 +137,11 @@ theorem gram_mapChart (hI : h.IsIsometry h' e₂) (σ : k →+* ℂ) (a : Adapte
 
 include he hg in
 
+/- English proof (translation)
+Rewrite using `[VMetric.isIsometry_iff]`. Use `VMetric.ext (funext fun σ => Met.ext_of_exists fun y => ?_)` and prove the remaining obligations. Take `⟨a, ha⟩` from `Met.exists_adapted hS h₁ h₃ y`. Use `⟨(mapChart e₁ e₂ e₃ hg a).quot, ha, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((h'.met σ).quot hS' h₁' h₃').G _ y = (((h.met σ).quot hS h₁ h₃).map e₃).G _ y`.
+
+Rewrite using `[Met.quot_G _ hS' h₁' h₃' (mapChart e₁ e₂ e₃ hg a) ha, mapChart_quot e₁ e₂ e₃ hg, Met.map_G _ _ _ ha, Met.quot_G _ hS h₁ h₃ a ha, gram_mapChart he hg hI σ a ha]`.
+-/
 theorem quot_isIsometry (hS : S.ShortExact) (hS' : S'.ShortExact) (h₁ : IsVB S.X₁ r)
     (h₃ : IsVB S.X₃ s) (h₁' : IsVB S'.X₁ r) (h₃' : IsVB S'.X₃ s) (hI : h.IsIsometry h' e₂) :
     (h.quot hS h₁ h₃).IsIsometry (h'.quot hS' h₁' h₃') e₃ := by
@@ -126,6 +155,9 @@ theorem quot_isIsometry (hS : S.ShortExact) (hS' : S'.ShortExact) (h₁ : IsVB S
 
 include he hg in
 
+/- English proof (translation)
+Use `part_congr fun c y hy => ?_` and prove the remaining obligations. Take `⟨a, ha⟩` from `Met.exists_adapted hS h₁ h₃ y`. Use `(Met.bcDens_eq_of_gram hS hS' h₁ h₃ h₁' h₃' (H σ) (H' σ) a (mapChart e₁ e₂ e₃ hg a) c c hy hy ha ha rfl ?_).symm` and prove the remaining obligations. Use `filter_upwards [(ChartGlue.isOpen_over c.e (isOpen_ptsIn a.U)).mem_nhds (ChartGlue.mem_over c.e hy ha)] with v hv`. Conclude with `gram_mapChart he hg hI σ a hv.2`.
+-/
 theorem bcMeas_eq (hS : S.ShortExact) (hS' : S'.ShortExact) (h₁ : IsVB S.X₁ r)
     (h₃ : IsVB S.X₃ s) (h₁' : IsVB S'.X₁ r) (h₃' : IsVB S'.X₃ s) (H : h.IsCInf) (H' : h'.IsCInf)
     (hI : h.IsIsometry h' e₂) (σ : k →+* ℂ) :
@@ -142,6 +174,9 @@ end GlobalTheory.IsoSeq
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `k _ X p S S' r s h h' H H' hS hS' h₁ h₃ h₁' h₃' e₁ e₂ he hI`. Establish `hg` using `IsoSeq.g_isoThird hS hS' e₁ e₂ he`. Apply the tactic sequence `refine ⟨GlobalTheory.CurveDens.det_isometric_of_isIsometry k X p _ _ s _ _ (H.quot hS h₁ h₃) (H'.quot hS' h₁' h₃') (IsoSeq.isoThird hS hS' e₁ e₂ he) (IsoSeq.quot_isIsometry he hg hS hS' h₁ h₃ h₁' h₃' hI), ?_⟩`. Conclude with `finsum_congr fun σ => by`. Rewrite using `[IsoSeq.bcMeas_eq he hg hS hS' h₁ h₃ h₁' h₃' H H' hI σ]`.
+-/
 theorem isometric_detQuot_and_bcInt_eq_of_iso : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) (S S' : ShortComplex X.Modules) (r s : ℕ) (h : VMetric p S.X₂ (r + s)) (h' : VMetric p S'.X₂ (r + s)) (H : h.IsCInf) (H' : h'.IsCInf) (hS : S.ShortExact) (hS' : S'.ShortExact) (h₁ : IsVB S.X₁ r) (h₃ : IsVB S.X₃ s) (h₁' : IsVB S'.X₁ r) (h₃' : IsVB S'.X₃ s) (e₁ : S.X₁ ≅ S'.X₁) (e₂ : S.X₂ ≅ S'.X₂), e₁.hom ≫ S'.f = S.f ≫ e₂.hom → h.IsIsometry h' e₂ → (VMetric.det (H.quot hS h₁ h₃)).Isometric (VMetric.det (H'.quot hS' h₁' h₃')) ∧ h.bcInt hS h₁ h₃ = h'.bcInt hS' h₁' h₃' := by
   intro k _ X p S S' r s h h' H H' hS hS' h₁ h₃ h₁' h₃' e₁ e₂ he hI
   have hg := IsoSeq.g_isoThird hS hS' e₁ e₂ he

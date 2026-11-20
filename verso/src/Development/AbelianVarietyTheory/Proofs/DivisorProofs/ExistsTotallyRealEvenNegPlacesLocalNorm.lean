@@ -10,11 +10,22 @@ namespace GlobalTheory.NormSignEven
 
 variable {M : Type} [Field M] [NumberField M]
 
+/- English proof (translation)
+The claim follows from `star_star φ`.
+-/
 lemma cc (φ : M →+* ℂ) : ComplexEmbedding.conjugate (ComplexEmbedding.conjugate φ) = φ := star_star φ
 
+/- English proof (translation)
+Rewrite using `[ComplexEmbedding.conjugate_coe_eq]`. Simplify using the standard rewrite rules.
+-/
 lemma conj_re (φ : M →+* ℂ) (x : M) : (ComplexEmbedding.conjugate φ x).re = (φ x).re := by
   rw [ComplexEmbedding.conjugate_coe_eq]; simp
 
+/- English proof (translation)
+Introduce `h`. Apply `hσ` to reduce the goal to its premises. Use extensionality with `x`. Apply `φ.injective` to reduce the goal to its premises. Rewrite using `[hc, RingHom.id_apply]`.
+
+Use `congrArg (fun ψ : M →+* ℂ => ψ x) h` as an intermediate fact. Simplify `this` using `[ComplexEmbedding.conjugate_coe_eq]`.
+-/
 lemma conj_ne {σ : M →+* M} (hσ : σ ≠ RingHom.id M)
     (hc : ∀ (φ : M →+* ℂ) (x : M), φ (σ x) = (starRingEnd ℂ) (φ x)) (φ : M →+* ℂ) :
     ComplexEmbedding.conjugate φ ≠ φ := by
@@ -26,6 +37,9 @@ lemma conj_ne {σ : M →+* M} (hσ : σ ≠ RingHom.id M)
   have := congrArg (fun ψ : M →+* ℂ => ψ x) h
   simpa [ComplexEmbedding.conjugate_coe_eq] using this
 
+/- English proof (translation)
+Establish `h` using `hc φ x`. Rewrite `h` using `[hx]`. Conclude with `Complex.conj_eq_iff_im.mp h.symm`.
+-/
 lemma im_eq_zero {σ : M →+* M}
     (hc : ∀ (φ : M →+* ℂ) (x : M), φ (σ x) = (starRingEnd ℂ) (φ x)) (φ : M →+* ℂ) {x : M} (hx : σ x = x) :
     (φ x).im = 0 := by
@@ -33,6 +47,9 @@ lemma im_eq_zero {σ : M →+* M}
   rw [hx] at h
   exact Complex.conj_eq_iff_im.mp h.symm
 
+/- English proof (translation)
+Rewrite using `[map_mul, Complex.mul_re, im_eq_zero hc φ hx, zero_mul, sub_zero]`.
+-/
 lemma re_mul {σ : M →+* M}
     (hc : ∀ (φ : M →+* ℂ) (x : M), φ (σ x) = (starRingEnd ℂ) (φ x)) (φ : M →+* ℂ) {x y : M}
     (hx : σ x = x) :
@@ -42,6 +59,41 @@ lemma re_mul {σ : M →+* M}
 end GlobalTheory.NormSignEven
 
 open GlobalTheory.NormSignEven in
+/- English proof (translation)
+Introduce `M _ _ σ hσ hc S hS h4 p _`. Take `⟨n, hn⟩` from `h4`. Proceed by induction on `n generalizing S with`. Consider the case `zero`. Establish `hS0 : S = ∅` using `Finset.card_eq_zero.mp (by simpa using hn)`.
+
+Substitute `hS0` using the available equality. Use `⟨1, one_ne_zero, map_one σ, by simp, fun φ _ => by simp, 1, ?_⟩` and prove the remaining obligations. Simplify using `[Algebra.TensorProduct.one_def]`. Consider the case `succ n ih`. Take `⟨ε, hε⟩ : S.Nonempty` from `Finset.card_pos.mp (by omega)`.
+
+Establish `hε1 : ComplexEmbedding.conjugate ε ∈ (S.erase ε)` using `Finset.mem_erase.mpr ⟨conj_ne hσ hc ε, hS ε hε⟩`. Establish `hT : 0 < ((S.erase ε).erase (ComplexEmbedding.conjugate ε)).card`. Rewrite using `[Finset.card_erase_of_mem hε1, Finset.card_erase_of_mem hε]`. Use linear arithmetic over natural numbers and integers. Take `⟨ε', hε'⟩` from `Finset.card_pos.mp hT`.
+
+Simplify using `only [Finset.mem_erase] at hε'`. Take `⟨h1, h2, hε'S⟩` from `hε'`. Establish `hcc : ∀ φ ψ : M →+* ℂ, ComplexEmbedding.conjugate φ = ψ → φ = ComplexEmbedding.conjugate ψ`. Introduce `φ ψ h`. Rewrite using `[← h, cc]`.
+
+Establish `h3 : ε ≠ ComplexEmbedding.conjugate ε'`. Introduce `h`. Apply `h1` to reduce the goal to its premises. Rewrite using `[h, cc]`. Use `set S' := (((S.erase ε).erase (ComplexEmbedding.conjugate ε)).erase ε').erase (ComplexEmbedding.conjugate ε') with hS'def`.
+
+Establish `hmem : ∀ φ, φ ∈ S' ↔ φ ≠ ComplexEmbedding.conjugate ε' ∧ φ ≠ ε' ∧ φ ≠ ComplexEmbedding.conjugate ε ∧ φ ≠ ε ∧ φ ∈ S`. Introduce `φ`. Simplify using `[hS'def, Finset.mem_erase]`. Establish `hcard : S'.card = 4 * n`. Establish `e1 : ε' ∈ ((S.erase ε).erase (ComplexEmbedding.conjugate ε))`.
+
+Simplify using `[Finset.mem_erase]`. Conclude with `⟨h1, h2, hε'S⟩`. Establish `e2 : ComplexEmbedding.conjugate ε' ∈ ((S.erase ε).erase (ComplexEmbedding.conjugate ε)).erase ε'`. Simplify using `only [Finset.mem_erase]`. Use `⟨conj_ne hσ hc ε', ?_, fun h => h3 h.symm, hS _ hε'S⟩` and prove the remaining obligations.
+
+Introduce `h`. Conclude with `h2 (by have := congrArg ComplexEmbedding.conjugate h; simpa [cc] using this)`. Rewrite using `[hS'def, Finset.card_erase_of_mem e2, Finset.card_erase_of_mem e1, Finset.card_erase_of_mem hε1, Finset.card_erase_of_mem hε]`. Use linear arithmetic over natural numbers and integers. Establish `hS'stab : ∀ φ ∈ S', ComplexEmbedding.conjugate φ ∈ S'`.
+
+Introduce `φ hφ`. Rewrite `hφ`, the goal using `[hmem]`. Take `⟨a1, a2, a3, a4, a5⟩` from `hφ`. Use `⟨fun h => a2 ?_, fun h => a1 ?_, fun h => a4 ?_, fun h => a3 ?_, hS φ a5⟩` and prove the remaining obligations. Use `congrArg ComplexEmbedding.conjugate h` as an intermediate fact.
+
+Simplify `this` using `[cc]`. Conclude with `hcc _ _ h`. Use `congrArg ComplexEmbedding.conjugate h` as an intermediate fact. Simplify `this` using `[cc]`. Conclude with `hcc _ _ h`.
+
+Take `⟨b, hb0, hbσ, hbneg, hbpos, ub, hub⟩` from `ih S' hS'stab hcard`. Take `⟨c, hc0, hcσ, hcε, hcε', hcpos, uc, huc⟩` from `GlobalTheory.T.exists_realSubfield_negative_twoPlaces_normEverywhere M σ hσ hc ε ε' (Ne.symm h2) h3 p`. Establish `hcneg : ∀ φ, φ = ε ∨ φ = ComplexEmbedding.conjugate ε ∨ φ = ε' ∨ φ = ComplexEmbedding.conjugate ε' → (φ c).re < 0`. Introduce and unpack `φ (rfl | rfl | rfl | rfl)`. Conclude with `hcε`.
+
+Rewrite using `[conj_re]`. Conclude with `hcε`. Conclude with `hcε'`. Rewrite using `[conj_re]`. Conclude with `hcε'`.
+
+Use `⟨b * c, mul_ne_zero hb0 hc0, by rw [map_mul, hbσ, hcσ], ?_, ?_, ub * uc, ?_⟩` and prove the remaining obligations. Introduce `φ hφ`. Rewrite using `[re_mul hc φ hbσ]`. Distinguish the cases in `hφ' : φ ∈ S'`. Conclude with `mul_neg_of_neg_of_pos (hbneg φ hφ') (hcpos φ (by rw [hmem] at hφ'; exact hφ'.2.2.2.1) (by rw [hmem] at hφ'; exact hφ'.2.2.1) (by rw [hmem] at hφ'; exact hφ'.2.1) (by rw [hmem] at hφ'; exact hφ'.1))`.
+
+Use `mul_neg_of_pos_of_neg (hbpos φ hφ') (hcneg φ ?_)` and prove the remaining obligations. Rewrite `hφ'` using `[hmem]`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Conclude with `hφ' ⟨hne.2.2.2, hne.2.2.1, hne.2.1, hne.1, hφ⟩`.
+
+Introduce `φ hφ`. Rewrite using `[re_mul hc φ hbσ]`. Establish `hφ' : φ ∉ S'` using `fun h => hφ (((hmem φ).mp h).2.2.2.2)`. Use `mul_pos (hbpos φ hφ') (hcpos φ ?_ ?_ ?_ ?_)` and prove the remaining obligations. Introduce and unpack `rfl`.
+
+Conclude with `hφ hε`. Introduce and unpack `rfl`. Conclude with `hφ (hS ε hε)`. Introduce and unpack `rfl`. Conclude with `hφ hε'S`.
+
+Introduce and unpack `rfl`. Conclude with `hφ (hS ε' hε'S)`. Rewrite using `[Units.val_mul, map_mul]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem GlobalTheory.NormSign.exists_neg_even_norm_away : ∀ (M : Type) [Field M] [NumberField M] (σ : M →+* M), σ ≠ RingHom.id M → (∀ (φ : M →+* ℂ) (x : M), φ (σ x) = (starRingEnd ℂ) (φ x)) → ∀ (S : Finset (M →+* ℂ)), (∀ φ ∈ S, ComplexEmbedding.conjugate φ ∈ S) → 4 ∣ S.card → ∀ (p : ℕ) [Fact p.Prime], ∃ a : M, a ≠ 0 ∧ σ a = a ∧ (∀ φ ∈ S, (φ a).re < 0) ∧ (∀ φ : M →+* ℂ, φ ∉ S → 0 < (φ a).re) ∧ ∃ u : (AfP p ⊗[ℚ] M)ˣ, (u : AfP p ⊗[ℚ] M) * Algebra.TensorProduct.map (AlgHom.id ℚ (AfP p)) σ.toRatAlgHom u = 1 ⊗ₜ a := by
   intro M _ _ σ hσ hc S hS h4 p _
   obtain ⟨n, hn⟩ := h4

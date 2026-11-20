@@ -72,15 +72,27 @@ variable {d d₁ : ℕ} {W : Spc F E d} {H' : Plane E d d₁} {sp : ∀ j : ℕ,
 def op (C : Chain σ W H' sp pl) (i : ℕ) : (UA σ W.J → ℂ) → (UA σ (sp i).J → ℂ) :=
   Nat.rec (motive := fun i => (UA σ W.J → ℂ) → (UA σ (sp i).J → ℂ)) C.s0.op (fun j T G => (C.s j).op (T G)) i
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem op_zero (C : Chain σ W H' sp pl) (G : UA σ W.J → ℂ) : C.op 0 G = C.s0.op G := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem op_succ (C : Chain σ W H' sp pl) (j : ℕ) (G : UA σ W.J → ℂ) : C.op (j + 1) G = (C.s j).op (C.op j G) := rfl
 
 def lift (C : Chain σ W H' sp pl) (i : ℕ) : UA σ (sp i).J →* UA σ W.J :=
   Nat.rec (motive := fun i => UA σ (sp i).J →* UA σ W.J) C.s0.lev (fun j L => L.comp (C.s j).lev) i
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem lift_zero (C : Chain σ W H' sp pl) : C.lift 0 = C.s0.lev := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem lift_succ (C : Chain σ W H' sp pl) (j : ℕ) : C.lift (j + 1) = (C.lift j).comp (C.s j).lev := rfl
 
 structure Good (C : Chain σ W H' sp pl) (X : Chars F E) (a a' p : ℕ) : Prop where

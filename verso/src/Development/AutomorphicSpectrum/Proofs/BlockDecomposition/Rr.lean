@@ -41,11 +41,17 @@ def dens (u : ℝ → Mat n → W) (s : ℝ) (y : Mat n) : ℝ :=
 
 end Calc
 
+/- English proof (translation)
+Establish `: GLs n = (fun g : Mat n => g.det) ⁻¹' {0}ᶜ` using `by ext g; simp [GLs]`. Rewrite using `[this]`. Conclude with `isOpen_compl_singleton.preimage (Continuous.matrix_det continuous_id)`.
+-/
 theorem isOpen_GLs : IsOpen (GLs n) := by
   have : GLs n = (fun g : Mat n => g.det) ⁻¹' {0}ᶜ := by ext g; simp [GLs]
   rw [this]
   exact isOpen_compl_singleton.preimage (Continuous.matrix_det continuous_id)
 
+/- English proof (translation)
+Use `(Matrix.isUnit_iff_isUnit_det _).1 y.isUnit` as an intermediate fact. Conclude with `this.ne_zero`.
+-/
 theorem val_mem_GLs (y : G n) : y.val ∈ GLs n := by
   have := (Matrix.isUnit_iff_isUnit_det _).1 y.isUnit
   exact this.ne_zero

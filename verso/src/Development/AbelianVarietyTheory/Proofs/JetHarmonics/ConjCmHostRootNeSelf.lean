@@ -14,6 +14,11 @@ open NumberField Formalism.BasicNotions Formalism.MainNotions Formalism.MainNoti
 
 variable {D : D7}
 
+/- English proof (translation)
+Introduce `h5`. Take `⟨x, hx⟩` from `Complex.conj_eq_iff_real.1 h5`. Establish `h6` using `H.sqrt_neg_disc_sq`. Rewrite `h6` using `[hx]`. Establish `h7 : x ^ 2 = -(H.d : ℝ)` using `by exact_mod_cast h6`.
+
+Establish `h8 : (0 : ℝ) < H.d` using `by exact_mod_cast H.d_prime.pos`. Use polynomial arithmetic with `[sq_nonneg x]`.
+-/
 theorem conj_cmHostRoot_ne_self {E : Type} [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) :
     (starRingEnd ℂ) H.rt0 ≠ H.rt0 := by
   intro h5
@@ -24,9 +29,17 @@ theorem conj_cmHostRoot_ne_self {E : Type} [Field E] [NumberField E] [IsCMField 
   have h8 : (0 : ℝ) < H.d := by exact_mod_cast H.d_prime.pos
   nlinarith [sq_nonneg x]
 
+/- English proof (translation)
+The claim follows from `D.eTau.injective (Subtype.ext ((factEmb D.R D.host).1.1 h))`.
+-/
 theorem tauEmb_inj {t t' : D.what₂.Tau} (h : DV.tauEmb D t = DV.tauEmb D t') : t = t' :=
   D.eTau.injective (Subtype.ext ((factEmb D.R D.host).1.1 h))
 
+/- English proof (translation)
+Introduce `h`. Establish `h1` using `hp.2.2.2 t`. Rewrite `h1` using `[h]`. Establish `h2 : (starRingEnd ℂ) (DV.tauEmb D t' (Q.H.rt : D.host.E)) = Q.H.rt0` using `h1`. Rewrite `h2` using `[hp.2.2.2 t']`.
+
+Conclude with `conj_cmHostRoot_ne_self Q.H h2`.
+-/
 theorem tauEmb_ne_conj (Q : Par D) (hp : Q.PinHost) (t t' : D.what₂.Tau) :
     DV.tauEmb D t ≠ conjEmb (DV.tauEmb D t') := by
   intro h
@@ -36,6 +49,13 @@ theorem tauEmb_ne_conj (Q : Par D) (hp : Q.PinHost) (t t' : D.what₂.Tau) :
   rw [hp.2.2.2 t'] at h2
   exact conj_cmHostRoot_ne_self Q.H h2
 
+/- English proof (translation)
+Take `⟨g, hg⟩` from `(factEmb D.R D.host).1.2 τ`. Distinguish the cases in `hgP : g ∈ D.R.Psi`. Take `⟨t, ht⟩` from `(Formalism.L2.Geo.exists_tauEmb_iff D g).2 hgP`. Conclude with `⟨t, hg.symm.trans ht⟩`. It suffices to derive a contradiction.
+
+Establish `h2 : g * D.R.cc ∈ D.R.Psi`. Assume the negation of the conclusion as `h`. Conclude with `hgP ((Formalism.L2.Geo.mem_Psi_iff_mul_cc_notMem g).2 h)`. Take `⟨t, ht⟩` from `(Formalism.L2.Geo.exists_tauEmb_iff D (g * D.R.cc)).2 h2`. Establish `h3 : DV.tauEmb D t (Q.H.rt : D.host.E) = Q.H.rt0` using `hp.2.2.2 t`.
+
+Rewrite `h3` using `[← ht, Formalism.L2.Geo.emb_mul_cc_comp, hg, RingHom.comp_apply]`. Establish `h4 : τ (D.host.conj (Q.H.rt : D.host.E)) = star (τ (Q.H.rt : D.host.E))` using `Formalism.MainNotions.WeightFamilies.emb_conj D τ _`. Establish `hτ' : τ (Q.H.rt : D.host.E) = Q.H.rt0` using `hτ`. Apply `conj_cmHostRoot_ne_self Q.H` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem exists_tau (Q : Par D) (hp : Q.PinHost) (τ : D.host.E →+* ℂ) (hτ : InPsi Q.H τ) :
     ∃ t : D.what₂.Tau, τ = DV.tauEmb D t := by
   obtain ⟨g, hg⟩ := (factEmb D.R D.host).1.2 τ
@@ -56,6 +76,11 @@ theorem exists_tau (Q : Par D) (hp : Q.PinHost) (τ : D.host.E →+* ℂ) (hτ :
       _ = τ (D.host.conj (Q.H.rt : D.host.E)) := h4.symm
       _ = Q.H.rt0 := h3
 
+/- English proof (translation)
+Unfold `wtA`. Rewrite using `[Finset.sum_eq_single t]`. Simplify using `[tauEmb_ne_conj Q hp]`. Introduce `t' _ ht'`. Establish `: DV.tauEmb D t ≠ DV.tauEmb D t'` using `fun h => ht' (tauEmb_inj h).symm`.
+
+Simplify using `[tauEmb_ne_conj Q hp, this]`. Simplify using the standard rewrite rules.
+-/
 theorem wtA_tau (Q : Par D) (hp : Q.PinHost) {j : ℕ} (w : WeightFamilies.Wt D j) (t : D.what₂.Tau) (i : ℕ) :
     wtA w (DV.tauEmb D t, i) = ext0 (w.aP t) i := by
   classical
@@ -77,6 +102,9 @@ def NoBaseRows (T : Top D) : Prop :=
             ∀ σ' : T.Q.c.F →+* ℂ, l1At σ' P ≤ Real.exp (140 * D.R.r * large₂.sc.L * WeightAlgebra.DF w)) ∧
           IsThRule (T.Q.Xo j) T.Q.c (T.nab j) x P f) ∧ NeZeroOn T j σ k f
 
+/- English proof (translation)
+Consider the cases of `w`. Consider the cases of `w'`. Simplify the hypotheses and the goal together.
+-/
 theorem wt_ext {j : ℕ} {w w' : WeightFamilies.Wt D j} (h1 : w.aP = w'.aP) (h2 : w.aM = w'.aM) (h3 : w.n = w'.n) : w = w' := by
   cases w; cases w'; simp_all
 
@@ -86,6 +114,9 @@ def WeightsExist : Prop :=
     Formalism.MainNotions.Gaps.FamilyHypotheses.HypPage large₂ (recPJ h j hj) H C2 A2 CR CT ka wL wF Tn nP nW h0 →
     (∃ w2 : WeightFamilies.Wt D j, IsG2 wL wF w2) ∧ (j < D.R.m → ∃ w1 : WeightFamilies.Wt D j, IsDoubledWeightWithShift wL w1 nW)
 
+/- English proof (translation)
+Consider the cases of `p with`. Consider the case `zero => exact ⟨fun i => i.elim0, fun i => i.elim0⟩`. Consider the case `succ n`. Establish `ha : Antitone g` using `Fin.antitone_iff_succ_le.2 fun i => h1 i.castSucc (by simp)`. Conclude with `⟨ha, fun i => (h2 (Fin.last n) rfl).trans (ha (Fin.le_last i))⟩`.
+-/
 theorem anti_nonneg {p : ℕ} (g : Fin p → ℤ) (h1 : ∀ (i : Fin p) (h : i.1 + 1 < p), g ⟨i.1 + 1, h⟩ ≤ g i)
     (h2 : ∀ i : Fin p, i.1 + 1 = p → 0 ≤ g i) : Antitone g ∧ ∀ i, 0 ≤ g i := by
   cases p with
@@ -94,6 +125,11 @@ theorem anti_nonneg {p : ℕ} (g : Fin p → ℤ) (h1 : ∀ (i : Fin p) (h : i.1
     have ha : Antitone g := Fin.antitone_iff_succ_le.2 fun i => h1 i.castSucc (by simp)
     exact ⟨ha, fun i => (h2 (Fin.last n) rfl).trans (ha (Fin.le_last i))⟩
 
+/- English proof (translation)
+Rewrite `hq` using `[Int.fdiv_eq_ediv_of_nonneg _ hp.le]`. Establish `h1 : a - c < (q + 1) * T'` using `by rw [hq]; exact Int.lt_ediv_add_one_mul_self _ hp`. Establish `h2 : T' ≤ q`. Assume the negation of the conclusion as `hlt`. Establish `h3 : q + 1 ≤ T'` using `by omega`.
+
+Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right h3 hp.le]`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem div_step (a c q T' : ℤ) (hp : 0 < T') (hc : c ≤ T') (ha : T' * T' ≤ a - c)
     (hq : q = Int.fdiv (a - c) T') : a ≤ (T' + 2) * q := by
   rw [Int.fdiv_eq_ediv_of_nonneg _ hp.le] at hq
@@ -104,6 +140,17 @@ theorem div_step (a c q T' : ℤ) (hp : 0 < T') (hc : c ≤ T') (ha : T' * T' �
     nlinarith [mul_le_mul_of_nonneg_right h3 hp.le]
   nlinarith
 
+/- English proof (translation)
+Use `anti_nonneg _ (fun i h => ?_) (fun i h => ?_)` and prove the remaining obligations. Establish `e` using `hL i`. Rewrite `e` using `[if_pos h]`. Establish `hg` using `hgap i h`. Use `div_step (gapZ a i) (-2) (gapZ l i) ((T + Dm + 2 : ℕ) : ℤ) (by positivity) (by omega) (by push_cast at hg ⊢; nlinarith [mul_nonneg (by positivity : (0 : ℤ) ≤ T + Dm + 2) (by positivity : (0 : ℤ) ≤ r)]) e` as an intermediate fact.
+
+Simplify using `only [gapZ, dif_pos h] at this`. Move the coercions through the operations in `at this`. Use the polynomial consequences of the given equalities and inequalities. Establish `hn : ¬ i.1 + 1 < p` using `by omega`. Establish `e` using `hL i`.
+
+Rewrite `e` using `[if_neg hn]`. Simplify using `only [gapZ, dif_neg hn] at e`. Establish `hl : 2 * (T : ℤ) ^ 2 ≤ a i` using `by exact_mod_cast hlast i h`. Establish `h40' : 40 * ((Dm : ℤ) + 2) ≤ T` using `by exact_mod_cast h40`. Establish `hc' : (c : ℤ) ≤ T` using `by exact_mod_cast hc`.
+
+Establish `hD : (0 : ℤ) ≤ Dm` using `by positivity`. Establish `hT0 : (0 : ℤ) ≤ T` using `by positivity`. Use `div_step (a i) c (l i) ((T + Dm + 2 : ℕ) : ℤ) (by positivity) (by omega) (by push_cast` as an intermediate fact. Use polynomial arithmetic with `[mul_nonneg hT0 (sub_nonneg.2 h40'), mul_nonneg (by omega : (0 : ℤ) ≤ Dm + 2) (sub_nonneg.2 h40'), mul_nonneg hT0 (by omega : (0 : ℤ) ≤ T - 80)]) e`. Move the coercions through the operations in `at this`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem block {p : ℕ} (a l : Fin p → ℕ) (Dm T r c : ℕ) (h40 : 40 * (Dm + 2) ≤ T) (hc : c ≤ T)
     (hgap : ∀ i : Fin p, i.1 + 1 < p → (((T + Dm + 2) * ((T + Dm + 2) + 2 * r) : ℕ) : ℤ) ≤ gapZ a i + 2)
     (hlast : ∀ i : Fin p, i.1 + 1 = p → 2 * T ^ 2 ≤ a i)

@@ -6,6 +6,19 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.Glob
 
 namespace GlobalTheory.LocMod.Place
 
+/- English proof (translation)
+Introduce `k _ _ _ _ Y Y' _ _ _ _`. Establish `ho : IsOpen (𝒪[k] : Set k)` using `Valuation.isOpen_integer`. Establish `hc : IsCompact (𝒪[k] : Set k)` using `IsNonarchimedeanLocalField.isCompact_closedBall k 1`. Use `set K : Set (Matrix Y Y' k) := {x | ∀ r q, x r q ∈ 𝒪[k]} with hK`. Establish `hKeq : K = Set.univ.pi fun _ : Y => Set.univ.pi fun _ : Y' => (𝒪[k] : Set k)`.
+
+Use extensionality with `x`. Conclude with `⟨fun h r _ q _ => h r q, fun h r q => h r (Set.mem_univ r) q (Set.mem_univ q)⟩`. Establish `hKo : IsOpen K`. Rewrite using `[hKeq]`. Conclude with `isOpen_set_pi Set.finite_univ fun _ _ => isOpen_set_pi Set.finite_univ fun _ _ => ho`.
+
+Establish `hKc : IsCompact K`. Rewrite using `[hKeq]`. Conclude with `isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => hc`. Establish `hcl : IsClosed K`. Rewrite using `[hKeq]`.
+
+Conclude with `isClosed_set_pi fun _ _ => isClosed_set_pi fun _ _ => (Valuation.isClosed_integer (v := valuation k))`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `show IsLocallyConstant (K.indicator fun _ => (1 : ℂ))`. Use `(IsLocallyConstant.iff_eventually_eq _).mpr fun x => ?_` and prove the remaining obligations. Distinguish the cases in `hx : x ∈ K`.
+
+Use `filter_upwards [hKo.mem_nhds hx] with y hy`. Simplify using `[hx, hy]`. Use `filter_upwards [hcl.isOpen_compl.mem_nhds hx] with y hy`. Simplify using `[hx, Set.notMem_of_mem_compl hy]`. Use `show HasCompactSupport (K.indicator fun _ => (1 : ℂ))`.
+
+Conclude with `HasCompactSupport.intro hKc fun x hx => Set.indicator_of_notMem hx _`.
+-/
 theorem intInd_mem_SB : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (Y Y' : Type) [Fintype Y] [DecidableEq Y] [Fintype Y'] [DecidableEq Y'],
     Place.intInd (k := k) Y Y' ∈ SB (Matrix Y Y' k) := by

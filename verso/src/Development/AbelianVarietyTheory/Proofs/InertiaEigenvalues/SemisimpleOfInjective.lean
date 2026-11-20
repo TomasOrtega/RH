@@ -20,9 +20,15 @@ variable {Γ L : Type} [Group Γ] [Field L]
 def IsChar (T : Γ → L) : Prop :=
   ∃ (ι : Type) (_ : Fintype ι) (_ : DecidableEq ι) (σ : Γ →* Matrix ι ι L), ∀ g, T g = (σ g).trace
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Empty, inferInstance, inferInstance, 1, fun g => by simp [Matrix.trace]⟩`.
+-/
 theorem IsChar.zero : IsChar (fun _ : Γ => (0 : L)) :=
   ⟨Empty, inferInstance, inferInstance, 1, fun g => by simp [Matrix.trace]⟩
 
+/- English proof (translation)
+Take `⟨ι, _, _, σ, hσ⟩` from `hS`. Take `⟨κ, _, _, τ, hτ⟩` from `hT`. Use `⟨ι ⊕ κ, inferInstance, inferInstance, { toFun := fun g => Matrix.fromBlocks (σ g) 0 0 (τ g) map_one' := by simp map_mul' := fun g h => by simp [Matrix.fromBlocks_multiply] }, fun g => ?_⟩` and prove the remaining obligations. Simplify using `[hσ, hτ, Matrix.trace, Fintype.sum_sum_type]`.
+-/
 theorem IsChar.add {S T : Γ → L} (hS : IsChar S) (hT : IsChar T) : IsChar (fun g => S g + T g) := by
   obtain ⟨ι, _, _, σ, hσ⟩ := hS
   obtain ⟨κ, _, _, τ, hτ⟩ := hT
@@ -32,6 +38,9 @@ theorem IsChar.add {S T : Γ → L} (hS : IsChar S) (hT : IsChar T) : IsChar (fu
       map_mul' := fun g h => by simp [Matrix.fromBlocks_multiply] }, fun g => ?_⟩
   simp [hσ, hτ, Matrix.trace, Fintype.sum_sum_type]
 
+/- English proof (translation)
+Take `⟨ι, _, _, σ, hσ⟩` from `hT`. Use `⟨ι, inferInstance, inferInstance, { toFun := fun g => ψ g • σ g map_one' := by simp map_mul' := fun g h => by simp [smul_smul, mul_comm] }, fun g => ?_⟩` and prove the remaining obligations. Simplify using `[hσ, mul_comm]`.
+-/
 theorem IsChar.mul {T : Γ → L} (hT : IsChar T) (ψ : Γ →* L) : IsChar (fun g => T g * ψ g) := by
   obtain ⟨ι, _, _, σ, hσ⟩ := hT
   refine ⟨ι, inferInstance, inferInstance,
@@ -40,11 +49,17 @@ theorem IsChar.mul {T : Γ → L} (hT : IsChar T) (ψ : Γ →* L) : IsChar (fun
       map_mul' := fun g h => by simp [smul_smul, mul_comm] }, fun g => ?_⟩
   simp [hσ, mul_comm]
 
+/- English proof (translation)
+Establish `h : IsChar (fun _ : Γ => (1 : L))` using `⟨Unit, inferInstance, inferInstance, 1, fun g => by simp⟩`. Simplify using `using h.mul ψ`.
+-/
 theorem IsChar.of_hom (ψ : Γ →* L) : IsChar (fun g => ψ g) := by
   have h : IsChar (fun _ : Γ => (1 : L)) :=
     ⟨Unit, inferInstance, inferInstance, 1, fun g => by simp⟩
   simpa using h.mul ψ
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using IsChar.zero`. Consider the case `insert a s ha ih`. Simplify using `only [Finset.sum_insert ha]`. Conclude with `(h a (Finset.mem_insert_self _ _)).add (ih fun b hb => h b (Finset.mem_insert_of_mem hb))`.
+-/
 theorem IsChar.sum {α : Type} (s : Finset α) (T : α → Γ → L) (h : ∀ a ∈ s, IsChar (T a)) :
     IsChar (fun g => ∑ a ∈ s, T a g) := by
   classical
@@ -60,6 +75,11 @@ section Split
 
 variable {K Γ : Type} [Field K] [Group Γ]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h W hW`. Take `⟨W', h'⟩` from `exists_isCompl (⟨W, fun g v hv => hW g v hv⟩ : Subrepresentation ρ)`. Use `⟨W'.toSubmodule, fun g v hv => W'.apply_mem_toSubmodule g hv, ?_⟩` and prove the remaining obligations. Conclude with `IsCompl.of_eq (congrArg Subrepresentation.toSubmodule h'.inf_eq_bot) (congrArg Subrepresentation.toSubmodule h'.sup_eq_top)`.
+
+Introduce `h`. Use `⟨fun W => ?_⟩` and prove the remaining obligations. Take `⟨W', h1, h2⟩` from `h W.toSubmodule fun g v hv => W.apply_mem_toSubmodule g hv`. Conclude with `⟨⟨W', fun g v hv => h1 g v hv⟩, IsCompl.of_eq (Subrepresentation.toSubmodule_injective h2.inf_eq_bot) (Subrepresentation.toSubmodule_injective h2.sup_eq_top)⟩`.
+-/
 theorem semisimple_iff {V : Type} [AddCommGroup V] [Module K V] (ρ : Representation K Γ V) :
     ρ.IsSemisimpleRepresentation ↔ ∀ W : Submodule K V, (∀ g, ∀ v ∈ W, ρ g v ∈ W) →
       ∃ W' : Submodule K V, (∀ g, ∀ v ∈ W', ρ g v ∈ W') ∧ IsCompl W W' := by
@@ -76,6 +96,15 @@ theorem semisimple_iff {V : Type} [AddCommGroup V] [Module K V] (ρ : Representa
       IsCompl.of_eq (Subrepresentation.toSubmodule_injective h2.inf_eq_bot)
         (Subrepresentation.toSubmodule_injective h2.sup_eq_top)⟩
 
+/- English proof (translation)
+Rewrite `h`, the goal using `[semisimple_iff]`. Introduce `W hW`. Take `⟨C, hC, hc⟩` from `h (W.map j) (by`. Introduce and unpack `g _ ⟨v, hv, rfl⟩`. Conclude with `⟨_, hW g v hv, he g v⟩)`.
+
+Use `⟨C.comap j, fun g v hv => ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.mem_comap, he]`. Conclude with `hC g _ hv`. Rewrite using `[Submodule.disjoint_def]`. Introduce `v h1 h2`.
+
+Apply `hj` to reduce the goal to its premises. Rewrite using `[map_zero]`. Conclude with `Submodule.disjoint_def.1 hc.disjoint _ ⟨v, h1, rfl⟩ h2`. Rewrite using `[codisjoint_iff, eq_top_iff]`. Introduce `v _`.
+
+Establish `: j v ∈ W.map j ⊔ C` using `by rw [hc.sup_eq_top]; trivial`. Take `⟨_, ⟨w, hw, rfl⟩, c, hcc, e⟩` from `Submodule.mem_sup.1 this`. Use `Submodule.mem_sup.2 ⟨w, hw, v - w, ?_, by abel⟩` and prove the remaining obligations. Rewrite using `[Submodule.mem_comap, map_sub, ← e]`. Simplify using `using hcc`.
+-/
 theorem semisimple_of_injective {V V' : Type} [AddCommGroup V] [Module K V] [AddCommGroup V'] [Module K V']
     {ρ : Representation K Γ V} {ρ' : Representation K Γ V'} (h : ρ.IsSemisimpleRepresentation)
     (j : V' →ₗ[K] V) (hj : Function.Injective j) (he : ∀ g v, j (ρ' g v) = ρ g (j v)) :
@@ -101,6 +130,11 @@ theorem semisimple_of_injective {V V' : Type} [AddCommGroup V] [Module K V] [Add
     rw [Submodule.mem_comap, map_sub, ← e]
     simpa using hcc
 
+/- English proof (translation)
+Establish `e : f = (Submodule.prodEquivOfIsCompl _ _ hc).conj (LinearMap.prodMap (a • LinearMap.id) (f.restrict hC))`. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Take `⟨⟨⟨y, hy⟩, z⟩, rfl⟩` from `(Submodule.prodEquivOfIsCompl _ _ hc).surjective x`. Take `⟨b, rfl⟩` from `Submodule.mem_span_singleton.1 hy`. Rewrite using `[LinearEquiv.conj_apply_apply, LinearEquiv.symm_apply_apply]`.
+
+Simplify using `[hf, smul_smul, mul_comm, LinearMap.restrict_apply]`. Use `conv_lhs => rw [e]`. Rewrite using `[LinearMap.trace_conj', LinearMap.trace_prodMap', map_smul, LinearMap.trace_id, finrank_span_singleton hv]`. Simplify using the standard rewrite rules.
+-/
 theorem trace_eq_add {V : Type} [AddCommGroup V] [Module K V] [FiniteDimensional K V] (f : V →ₗ[K] V)
     {v : V} (hv : v ≠ 0) {a : K} (hf : f v = a • v) {C : Submodule K V} (hC : ∀ x ∈ C, f x ∈ C)
     (hc : IsCompl (K ∙ v) C) : LinearMap.trace K V f = a + LinearMap.trace K C (f.restrict hC) := by
@@ -116,6 +150,19 @@ theorem trace_eq_add {V : Type} [AddCommGroup V] [Module K V] [FiniteDimensional
     finrank_span_singleton hv]
   simp
 
+/- English proof (translation)
+Proceed by induction on `t with`. Consider the case `zero => exact fun χ V _ _ _ ρ _ _ => ⟨fun c => c.elim0, linearIndependent_empty_type, fun c => c.elim0⟩`. Consider the case `succ t ih`. Introduce `χ V _ _ _ ρ hρ h`. Take `⟨ι, _, _, σ, hσ⟩` from `hT.add (IsChar.sum Finset.univ (fun (c : Fin t) g => φ ((χ c.succ g : Kˣ) : K)) fun c _ => IsChar.of_hom (φ.toMonoidHom.comp ((Units.coeHom K).comp (χ c.succ))))`.
+
+Take `⟨v₀, hv₀, he⟩` from `GlobalTheory.exists_eigenvector_of_trace_eq_add_character K L Γ V ι φ ρ σ (χ 0) hρ fun g => by`. Rewrite using `[h, ← hσ, Fin.sum_univ_succ]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨C, hC, hc⟩` from `(semisimple_iff ρ).1 hρ (K ∙ v₀) fun g x hx => by`. Take `⟨b, rfl⟩` from `Submodule.mem_span_singleton.1 hx`.
+
+Rewrite using `[map_smul, he]`. Conclude with `Submodule.smul_mem _ _ (Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self _))`. Set `C' : Subrepresentation ρ` to `⟨C, fun g v hv => hC g v hv⟩`. Take `⟨v, hv, hve⟩` from `ih (fun c => χ c.succ) C C'.toRepresentation (semisimple_of_injective hρ C.subtype C.injective_subtype fun g x => rfl) fun g => by`. Establish `h1` using `h g`.
+
+Rewrite `h1` using `[trace_eq_add (ρ g) hv₀ (he g) (hC g) hc, map_add, Fin.sum_univ_succ]`. Express the relevant statement in the definitionally equal form `φ (LinearMap.trace K C ((ρ g).restrict (hC g))) = _`. Take the linear combination `h1`. Use `⟨Fin.cons v₀ fun c => (v c : V), ?_, fun c g => ?_⟩` and prove the remaining obligations. Rewrite using `[linearIndependent_finCons]`.
+
+Use `⟨hv.map' C.subtype C.ker_subtype, fun hm => hv₀ ?_⟩` and prove the remaining obligations. Use `Submodule.disjoint_def.1 hc.disjoint _ (Submodule.mem_span_singleton_self _) ?_` and prove the remaining obligations. Use `(Submodule.span_le.2 ?_) hm` and prove the remaining obligations. Introduce and unpack `_ ⟨c, rfl⟩`. Conclude with `(v c).2`.
+
+Use `Fin.cases ?_ (fun c => ?_) c` and prove the remaining obligations. Conclude with `he g`. Conclude with `congrArg Subtype.val (hve c g)`.
+-/
 theorem exists_eigenvectors {L : Type} [Field L] [CharZero L] (φ : K →+* L) {T : Γ → L} (hT : IsChar T)
     (t : ℕ) : ∀ (χ : Fin t → (Γ →* Kˣ)) (V : Type) [AddCommGroup V] [Module K V] [FiniteDimensional K V]
       (ρ : Representation K Γ V), ρ.IsSemisimpleRepresentation →
@@ -159,6 +206,21 @@ section Lattice
 variable {O Γ : Type} [CommRing O] [IsDomain O] [IsPrincipalIdealRing O] [TopologicalSpace O]
   [IsTopologicalRing O] [Group Γ] [TopologicalSpace Γ]
 
+/- English proof (translation)
+Establish `hs' : (fracRep r).IsSemisimpleRepresentation` using `(semisimple_iff _).2 hs`. Take `⟨v, hv, he⟩` from `exists_eigenvectors φ hT t (fun c => (Units.map (algebraMap O (FractionRing O)).toMonoidHom).comp (χ (c.1 + 1))) _ (fracRep r) hs' fun g => by`. Use `Eq.trans ?_ (h g)` and prove the remaining obligations. Use `congr 1`. Rewrite using `[AddMonoidHom.map_trace]`.
+
+Conclude with `Matrix.trace_toLin'_eq _`. Set `j` to `Fintype.linearCombination (FractionRing O) v`. Establish `hj : Function.Injective j` using `hv.fintypeLinearCombination_injective`. Establish `hje : ∀ g y, fracRep r g (j y) = j (charSum χ t g y)`. Introduce `g y`.
+
+Simplify using `only [j, Fintype.linearCombination_apply, map_sum, map_smul, he, smul_smul]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`. Both sides reduce to the same expression. Take `⟨W, hW, hcW⟩` from `(semisimple_iff _).1 hs' (LinearMap.range j) (by`.
+
+Introduce and unpack `g _ ⟨y, rfl⟩`. Conclude with `⟨_, (hje g y).symm⟩)`. Establish `hrk : Module.finrank (FractionRing O) W = a`. Use `Submodule.finrank_add_eq_of_isCompl hcW` as an intermediate fact. Rewrite `this` using `[LinearMap.finrank_range_of_inj hj]`.
+
+Simplify using `only [Module.finrank_fin_fun] at this`. Use linear arithmetic over natural numbers and integers. Take `⟨ρ, k, hρ, hk, hkW, hke⟩` from `GlobalTheory.StableLattice.exists_integral_model O Γ n a r hc W hW hrk`. Establish `hb : Function.Bijective (k.coprod j)`. Prove the components needed by the constructor for the conclusion.
+
+Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_coprod_of_disjoint_range _ _ (hkW ▸ hcW.disjoint.symm), LinearMap.ker_eq_bot.2 hk, LinearMap.ker_eq_bot.2 hj, Submodule.prod_bot]`. Rewrite using `[← LinearMap.range_eq_top, LinearMap.range_coprod, hkW, hcW.symm.sup_eq_top]`. Establish `hee : ∀ g x, k.coprod j (blockRep ρ χ t g x) = fracRep r g (k.coprod j x)`. Introduce `g x`. Rewrite using `[LinearMap.coprod_apply, LinearMap.coprod_apply, map_add, hke, hje]`.
+
+Both sides reduce to the same expression. Use `⟨ρ, ⟨(LinearEquiv.ofBijective _ hb).symm, fun g x => ?_⟩, semisimple_of_injective hs' _ hb.1 hee, hρ⟩` and prove the remaining obligations. Take `⟨y, rfl⟩` from `hb.2 x`. Rewrite using `[← hee]`. Conclude with `((LinearEquiv.ofBijective _ hb).symm_apply_apply _).trans (congrArg _ ((LinearEquiv.ofBijective _ hb).symm_apply_apply _).symm)`.
+-/
 theorem exists_complement {L : Type} [Field L] [CharZero L] (φ : FractionRing O →+* L) {n a t : ℕ}
     (hn : n = a + t) (r : Γ →* GL (Fin n) O) (χ : ℕ → (Γ →* Oˣ)) (hc : LatticeContinuous r)
     (hs : IsSSRep (mapRep (algebraMap O (FractionRing O)) r)) {T : Γ → L} (hT : IsChar T)
@@ -214,6 +276,19 @@ open scoped Pointwise
 
 variable {R : Ranks} {H : Host R} {what₂ : Rows.Data R}
 
+/- English proof (translation)
+Establish `hG : IsGalois ℚ H.E` using `H.hostE_isGalois`. Use `v.isPrime` as an intermediate fact. Establish `h3` using `Ideal.card_stabilizer_eq (G := H.E ≃ₐ[ℚ] H.E) (v.asIdeal.under ℤ) v.asIdeal`. Rewrite `h3` using `[Ideal.ramificationIdxIn_eq_ramificationIdx _ v.asIdeal (H.E ≃ₐ[ℚ] H.E), Ideal.inertiaDegIn_eq_inertiaDeg _ v.asIdeal (H.E ≃ₐ[ℚ] H.E), he, hf]`. Establish `hb : MulAction.stabilizer (H.E ≃ₐ[ℚ] H.E) v.asIdeal = ⊥` using `Subgroup.card_eq_one.1 h3`.
+
+Assume the negation of the conclusion as `hn`. Unfold `IsSplitPl at hn`. Use `push Not at hn`. Establish `hle : H.conj • v.asIdeal ≤ v.asIdeal`. Introduce `y hy`.
+
+Rewrite `hy` using `[Ideal.mem_pointwise_smul_iff_inv_smul_mem]`. Take `⟨z, hz, hzv⟩` from `hn _ hy`. Establish `e : z = y` using `RingOfIntegers.ext (hz.trans (H.conj.apply_symm_apply (y : H.E)))`. Conclude with `e ▸ hzv`. Establish `hm : (H.conj • v.asIdeal).IsMaximal`.
+
+Use `v.isMaximal` as an intermediate fact. Conclude with `(Ideal.isMaximal_map_iff_of_bijective _ (MulAction.bijective H.conj)).2 this`. Establish `heq : H.conj ∈ MulAction.stabilizer (H.E ≃ₐ[ℚ] H.E) v.asIdeal` using `hm.eq_of_le v.isPrime.ne_top hle`. Rewrite `heq` using `[hb, Subgroup.mem_bot]`. Establish `hc` using `H.conj_sqrtMinusD`.
+
+Establish `hsq` using `H.sqrtMinusD_sq`. Rewrite `hc` using `[heq]`. Establish `hc' : H.sqrtMinusD = -H.sqrtMinusD` using `hc`. Establish `h0 : H.sqrtMinusD = 0` using `by linear_combination (1 / 2 : H.E) * hc'`. Rewrite `hsq` using `[h0]`.
+
+Establish `h1 : (H.d : H.E) = 0` using `by linear_combination hsq`. Establish `h2 : H.d = 0` using `by exact_mod_cast h1`. Use `H.qd_big.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem isSplitPl_of_degree_one (v : PlE H) (hf : v.asIdeal.inertiaDeg ℤ = 1)
     (he : v.asIdeal.ramificationIdx ℤ = 1) : IsSplitPl H v := by
   have hG : IsGalois ℚ H.E := H.hostE_isGalois
@@ -256,16 +331,32 @@ def AE (P : PlE H → G H.E N.Om → Prop) : Prop :=
 
 variable {N}
 
+/- English proof (translation)
+Use `filter_upwards [hP, hQ] with w h1 h2 hw B σ hB hσ using ⟨h1 hw B σ hB hσ, h2 hw B σ hB hσ⟩`.
+-/
 theorem AE.and {P Q : PlE H → G H.E N.Om → Prop} (hP : AE N P) (hQ : AE N Q) :
     AE N fun w σ => P w σ ∧ Q w σ := by
   filter_upwards [hP, hQ] with w h1 h2 hw B σ hB hσ using ⟨h1 hw B σ hB hσ, h2 hw B σ hB hσ⟩
 
+/- English proof (translation)
+Use `filter_upwards [hP] with w h1 hw B σ hB hσ using h _ _ (h1 hw B σ hB hσ)`.
+-/
 theorem AE.mono {P Q : PlE H → G H.E N.Om → Prop} (hP : AE N P) (h : ∀ w σ, P w σ → Q w σ) : AE N Q := by
   filter_upwards [hP] with w h1 hw B σ hB hσ using h _ _ (h1 hw B σ hB hσ)
 
+/- English proof (translation)
+Use `filter_upwards [h] with w h1 _ _ _ _ _ using h1`.
+-/
 theorem AE.of_eventually {P : PlE H → Prop} (h : ∀ᶠ w in Filter.cofinite, P w) : AE N fun w _ => P w := by
   filter_upwards [h] with w h1 _ _ _ _ _ using h1
 
+/- English proof (translation)
+Use function extensionality and compare the values at `g`. Assume the negation of the conclusion as `hg`. Establish `: Normal H.E N.Om` using `IsAlgClosure.normal _ _`. Establish `ho : IsOpen {x : G H.E N.Om | f (x * g) ≠ f' (x * g)}` using `isOpen_ne_fun (hf.comp (continuous_mul_const g)) (hf'.comp (continuous_mul_const g))`. Take `⟨E, hfd, hN, hE⟩` from `(krullTopology_mem_nhds_one_iff_of_normal H.E N.Om _).1 (ho.mem_nhds (by simpa using hg))`.
+
+Use `hfd` as an intermediate fact. Use `hN` as an intermediate fact. Take `⟨v, hv, h1, h2, B, hB, -, σ, hσ, hU⟩` from `hC H.E N.Om E.fixingSubgroup E.fixingSubgroup_isOpen (E.restrictNormalHom_ker ▸ MonoidHom.normal_ker _) g (Filter.eventually_cofinite.1 h).toFinset`. Rewrite `hv` using `[Set.Finite.mem_toFinset, Set.mem_ofPred_eq, not_not]`. Use `hE hU` as an intermediate fact.
+
+Simplify using `only [Set.mem_ofPred_eq, inv_mul_cancel_right] at this`. Conclude with `this (hv (isSplitPl_of_degree_one v h1 h2) B σ hB hσ)`.
+-/
 theorem AE.eq_of_continuous (hC : GlobalTheory.TwSys.Cheb) {Y : Type} [TopologicalSpace Y] [T2Space Y]
     {f f' : G H.E N.Om → Y} (hf : Continuous f) (hf' : Continuous f') (h : AE N fun _ σ => f σ = f' σ) :
     f = f' := by
@@ -285,6 +376,11 @@ theorem AE.eq_of_continuous (hC : GlobalTheory.TwSys.Cheb) {Y : Type} [Topologic
   simp only [Set.mem_ofPred_eq, inv_mul_cancel_right] at this
   exact this (hv (isSplitPl_of_degree_one v h1 h2) B σ hB hσ)
 
+/- English proof (translation)
+Establish `hl : (N.l i).Prime` using `Fact.out`. Establish `hfin : (placesOver H.E (N.l i)).Finite`. Establish `h0 : Ideal.span {((N.l i : ℕ) : 𝓞 H.E)} ≠ 0` using `by simpa using hl.ne_zero`. Use `(Ideal.finite_factors h0).subset fun v hv => ?_` and prove the remaining obligations. Conclude with `Ideal.dvd_span_singleton.2 hv`.
+
+Use `filter_upwards [hfin.eventually_cofinite_notMem, (N.S i).eventually_cofinite_notMem, (N.Q i).eventually_cofinite_notMem] with w h1 h2 h3 hw using ⟨hw, h1, h2, h3⟩`.
+-/
 theorem eventually_out (i : N.Loc) : ∀ᶠ w in Filter.cofinite, IsSplitPl H w → SplitOut N i w := by
   have hl : (N.l i).Prime := Fact.out
   have hfin : (placesOver H.E (N.l i)).Finite := by
@@ -294,10 +390,16 @@ theorem eventually_out (i : N.Loc) : ∀ᶠ w in Filter.cofinite, IsSplitPl H w 
   filter_upwards [hfin.eventually_cofinite_notMem, (N.S i).eventually_cofinite_notMem,
     (N.Q i).eventually_cofinite_notMem] with w h1 h2 h3 hw using ⟨hw, h1, h2, h3⟩
 
+/- English proof (translation)
+Use `w.asIdeal.finiteQuotientOfFreeOfNeBot w.ne_bot` as an intermediate fact. Conclude with `Nat.cast_ne_zero.2 Nat.card_pos.ne'`.
+-/
 theorem normV_ne_zero (w : PlE H) : ((normV w : ℕ) : ℂ) ≠ 0 := by
   have := w.asIdeal.finiteQuotientOfFreeOfNeBot w.ne_bot
   exact Nat.cast_ne_zero.2 Nat.card_pos.ne'
 
+/- English proof (translation)
+Rewrite using `[AddMonoidHom.map_trace, Matrix.trace_eq_neg_charpoly_nextCoeff]`. Rewrite using `[Matrix.charpoly_map, h, multiset_prod_X_sub_C_nextCoeff, neg_neg]`.
+-/
 theorem map_trace_eq_sum {A B n : Type} [CommRing A] [CommRing B] [Fintype n] [DecidableEq n] (f : A →+* B)
     (M : Matrix n n A) (m : Multiset B) (h : M.charpoly.map f = (m.map fun α => X - C α).prod) :
     f M.trace = m.sum := by
@@ -311,12 +413,20 @@ def HasTrace (F : PlE H → ℂ) : Prop :=
 
 variable {A i}
 
+/- English proof (translation)
+Take `⟨T, h1, h2, h3⟩` from `h`. Use `⟨T, h1, h2, ?_⟩` and prove the remaining obligations. Use `filter_upwards [h3, e] with w h4 h5 hw B σ hB hσ using (h4 hw B σ hB hσ).trans (h5 hw)`.
+-/
 theorem HasTrace.congr {F F' : PlE H → ℂ} (h : HasTrace A i F)
     (e : ∀ᶠ w in Filter.cofinite, IsSplitPl H w → F w = F' w) : HasTrace A i F' := by
   obtain ⟨T, h1, h2, h3⟩ := h
   refine ⟨T, h1, h2, ?_⟩
   filter_upwards [h3, e] with w h4 h5 hw B σ hB hσ using (h4 hw B σ hB hσ).trans (h5 hw)
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => exact ⟨_, IsChar.zero, continuous_const, (AE.of_eventually (P := fun _ => True) (by simp)).mono (by simp)⟩`. Consider the case `cons a l ih`. Take `⟨T, h1, h2, h3⟩` from `h a List.mem_cons_self`. Take `⟨T', h1', h2', h3'⟩` from `ih fun b hb => h b (List.mem_cons_of_mem _ hb)`.
+
+Use `⟨_, h1.add h1', h2.add h2', (h3.and h3').mono fun w σ e => ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, e.1, e.2]`. Simplify using the standard rewrite rules.
+-/
 theorem HasTrace.list_sum {α : Type} (l : List α) (F : α → PlE H → ℂ) (h : ∀ a ∈ l, HasTrace A i (F a)) :
     HasTrace A i fun w => (l.map fun a => F a w).sum := by
   induction l with
@@ -328,6 +438,9 @@ theorem HasTrace.list_sum {α : Type} (l : List α) (F : α → PlE H → ℂ) (
     rw [map_add, e.1, e.2]
     simp
 
+/- English proof (translation)
+Take `⟨T, h1, h2, h3⟩` from `h`. Use `⟨_, h1.mul ⟨⟨fun g => ψ g ^ k, by simp⟩, fun g h => by simp [mul_zpow]⟩, h2.mul (hψ.zpow₀ k fun g => Or.inl ((Group.isUnit g).map ψ).ne_zero), (h3.and hc).mono fun w σ e => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `A.iotaQC i (T σ * ψ σ ^ k) = F w * c w ^ k`. Rewrite using `[← e.1, ← e.2, map_mul, map_zpow₀]`.
+-/
 theorem HasTrace.twist {F c : PlE H → ℂ} (h : HasTrace A i F) (ψ : G H.E N.Om →* Qbar (N.l i))
     (hψ : Continuous ψ) (hc : AE N fun w σ => A.iotaQC i (ψ σ) = c w) (k : ℤ) :
     HasTrace A i fun w => F w * c w ^ k := by
@@ -343,12 +456,18 @@ def epsBar : G H.E N.Om →* Qbar (N.l i) :=
   (((algebraMap ℚ_[N.l i] (Qbar (N.l i))).comp PadicInt.Coe.ringHom).toMonoidHom.comp
     (Units.coeHom _)).comp (cycZ H.E N.Om (N.l i))
 
+/- English proof (translation)
+The claim follows from `(continuous_algebraMap ℚ_[N.l i] (Qbar (N.l i))).comp ((continuous_subtype_val : Continuous fun x : ℤ_[N.l i] => (x : ℚ_[N.l i])).comp ((Units.continuous_val (M := ℤ_[N.l i])).comp (continuous_cycZ H.E N.Om (N.l i))))`.
+-/
 theorem continuous_epsBar : Continuous (epsBar N i) :=
   (continuous_algebraMap ℚ_[N.l i] (Qbar (N.l i))).comp
     ((continuous_subtype_val : Continuous fun x : ℤ_[N.l i] => (x : ℚ_[N.l i])).comp
       ((Units.continuous_val (M := ℤ_[N.l i])).comp (continuous_cycZ H.E N.Om (N.l i))))
 
 variable (A i) in
+/- English proof (translation)
+Use `filter_upwards [eventually_out i] with w h hw B σ hB hσ`. Use `cycZ_of_isFrob (l := N.l i) (h hw).2.1 hB hσ` as an intermediate fact. Express the relevant statement in the definitionally equal form `A.iotaQC i (((algebraMap ℚ_[N.l i] (Qbar (N.l i))).comp PadicInt.Coe.ringHom) ((cycZ H.E N.Om (N.l i) σ : ℤ_[N.l i]ˣ) : ℤ_[N.l i])) = _`. Rewrite using `[this, map_natCast, map_natCast]`.
+-/
 theorem ae_epsBar : AE N fun w σ => A.iotaQC i (epsBar N i σ) = ((normV w : ℕ) : ℂ) := by
   filter_upwards [eventually_out i] with w h hw B σ hB hσ
   have := cycZ_of_isFrob (l := N.l i) (h hw).2.1 hB hσ
@@ -361,9 +480,17 @@ variable (A i) in
 def chiBar (c : ℕ) : G H.E N.Om →* Qbar (N.l i) :=
   ((iotaOQ N A i).toMonoidHom.comp (Units.coeHom _)).comp (N.chi i c)
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.CoeffEmbedding.continuous_iotaOQ R H what₂ N A i).comp (N.chi_cont i c)`.
+-/
 theorem continuous_chiBar (c : ℕ) : Continuous (chiBar A i c) :=
   (GlobalTheory.CoeffEmbedding.continuous_iotaOQ R H what₂ N A i).comp (N.chi_cont i c)
 
+/- English proof (translation)
+Establish `h` using `N.chi_def i (c + 1) (by omega) hc`. Establish `e : (Units.map (iotaOQ N A i).toMonoidHom (N.chi i (c + 1) σ) : Qbar (N.l i)) = Units.map (iotaOQ N A i).toMonoidHom (N.chi i 1 σ) * (Units.map (iotaOQ N A i).toMonoidHom (Units.map (algebraMap ℤ_[N.l i] (N.O i)).toMonoidHom (cycZ H.E N.Om (N.l i) σ)) : Qbar (N.l i)) ^ (-(c : ℤ))`. Rewrite using `[h, MonoidHom.mul_apply, map_mul, Units.val_mul, MonoidHom.zpow_apply, map_zpow, Units.val_zpow_eq_zpow_val]`. Use `congr 2`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `e.trans ?_` and prove the remaining obligations. Use `congr 2`. Conclude with `A.iotaQ_alg i _`.
+-/
 theorem chiBar_succ (c : ℕ) (hc : c < R.t) (σ : G H.E N.Om) :
     chiBar A i (c + 1) σ = chiBar A i 1 σ * epsBar N i σ ^ (-(c : ℤ)) := by
   have h := N.chi_def i (c + 1) (by omega) hc
@@ -389,6 +516,9 @@ variable (A i) in
 abbrev muEta : A.CG 1 := A.tw (A.muC i) A.etaTinv
 
 variable (A i) in
+/- English proof (translation)
+Use `filter_upwards [eventually_out i] with w h hw B σ hB hσ`. Take `⟨h1, h2⟩` from `A.chi_mu i w (h hw)`. Use `congrArg Multiset.sum (h2 B σ hB hσ)` as an intermediate fact. Rewrite `this` using `[A.frobEig_tw _ _ h1, Multiset.sum_map_mul_right, Multiset.map_id', Multiset.sum_singleton]`. Conclude with `this.symm`.
+-/
 theorem ae_chiBar : AE N fun w σ => A.iotaQC i (chiBar A i 1 σ) = sumEig A (muEta A i) w *
     ((normV w : ℕ) : ℂ) ^ (((((R.t : ℝ) - 1) / 2 + (1 - (R.nV : ℝ)) / 2 : ℝ)) : ℂ) := by
   filter_upwards [eventually_out i] with w h hw B σ hB hσ
@@ -397,6 +527,11 @@ theorem ae_chiBar : AE N fun w σ => A.iotaQC i (chiBar A i 1 σ) = sumEig A (mu
   rw [A.frobEig_tw _ _ h1, Multiset.sum_map_mul_right, Multiset.map_id', Multiset.sum_singleton] at this
   exact this.symm
 
+/- English proof (translation)
+Use `filter_upwards [A.locG_unr_ae π, A.locG_unr_ae χ] with w h1 h2`. Take `⟨c, hc⟩` from `Multiset.card_eq_one.1 ((A.frobEig_card _ h2).trans (A.locG_dim χ w))`. Establish `h0` using `A.frobEig_ne_zero _ h2`. Unfold `sumEig`. Rewrite using `[A.locG_tw, A.frobEig_char _ _ c h1 h2 (A.locG_dim χ w) hc, Multiset.sum_map_mul_right, Multiset.map_id', hc, Multiset.sum_singleton]`.
+
+Rewrite `h0` using `[hc, Multiset.mem_singleton]`. Conclude with `⟨Ne.symm h0, rfl⟩`.
+-/
 theorem sumEig_tw {a : ℕ} (π : A.CG a) (χ : A.CG 1) :
     ∀ᶠ w in Filter.cofinite, sumEig A χ w ≠ 0 ∧ sumEig A (A.tw π χ) w = sumEig A π w * sumEig A χ w := by
   filter_upwards [A.locG_unr_ae π, A.locG_unr_ae χ] with w h1 h2
@@ -414,6 +549,11 @@ def sumPart (p : Part A.CG) (w : PlE H) : ℂ :=
   ((List.range p.d).map fun k : ℕ => sumEig A p.π w *
     ((normV w : ℕ) : ℂ) ^ (((((p.d : ℝ) - 1) / 2 - k : ℝ)) : ℂ)).sum
 
+/- English proof (translation)
+Unfold `spehLoc sumPart`. Proceed by induction on `List.range p.d with`. Consider the case `nil => exact ⟨A.lpZero_unr w, by simp [A.frobEig_zero]⟩`. Consider the case `cons k l ih`. Establish `h1` using `(A.unr_tw _ (((p.d : ℝ) - 1) / 2 - k)).2 h`.
+
+Use `⟨(A.unr_sum _ _).2 ⟨h1, ih.1⟩, ?_⟩` and prove the remaining obligations. Use `(congrArg Multiset.sum (A.frobEig_sum _ _ h1 ih.1)).trans ?_` and prove the remaining obligations. Rewrite using `[Multiset.sum_add, ih.2, A.frobEig_tw _ _ h, Multiset.sum_map_mul_right, Multiset.map_id', List.map_cons, List.sum_cons]`. Both sides reduce to the same expression.
+-/
 theorem spehLoc_sum (p : Part A.CG) (w : PlE H) (h : A.unr (A.locG p.π w)) :
     A.unr (spehLoc N A p w) ∧ (A.frobEig (spehLoc N A p w)).sum = sumPart A p w := by
   unfold spehLoc sumPart
@@ -427,6 +567,11 @@ theorem spehLoc_sum (p : Part A.CG) (w : PlE H) (h : A.unr (A.locG p.π w)) :
       Multiset.sum_map_mul_right, Multiset.map_id', List.map_cons, List.sum_cons]
     rfl
 
+/- English proof (translation)
+Proceed by induction on `P with`. Consider the case `nil => exact Filter.Eventually.of_forall fun w => ⟨A.lpZero_unr w, by simp [isoLoc, A.frobEig_zero]⟩`. Consider the case `cons p P ih => filter_upwards [ih, A.locG_unr_ae p.π] with w h1 h2`. Take `⟨h3, h4⟩` from `spehLoc_sum p w h2`. Use `⟨(A.unr_sum _ _).2 ⟨h3, h1.1⟩, ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `(A.frobEig (A.lpSum (spehLoc N A p w) (isoLoc N A P w))).sum = _`. Rewrite using `[A.frobEig_sum _ _ h3 h1.1, Multiset.sum_add, h4, h1.2, List.map_cons, List.sum_cons]`.
+-/
 theorem isoLoc_sum (P : List (Part A.CG)) : ∀ᶠ w in Filter.cofinite,
     A.unr (isoLoc N A P w) ∧ (A.frobEig (isoLoc N A P w)).sum = (P.map fun p => sumPart A p w).sum := by
   induction P with
@@ -438,6 +583,11 @@ theorem isoLoc_sum (P : List (Part A.CG)) : ∀ᶠ w in Filter.cofinite,
     change (A.frobEig (A.lpSum (spehLoc N A p w) (isoLoc N A P w))).sum = _
     rw [A.frobEig_sum _ _ h3 h1.1, Multiset.sum_add, h4, h1.2, List.map_cons, List.sum_cons]
 
+/- English proof (translation)
+Establish `hle : (A.infG p.π τ).map (· + (((p.d : ℂ) - 1) / 2 - (0 : ℕ))) ≤ isoInf N A P τ`. Use `le_trans ?_ (List.single_le_sum (fun x _ => Multiset.zero_le x) _ (List.mem_map_of_mem hp))` and prove the remaining obligations. Conclude with `List.single_le_sum (fun x _ => Multiset.zero_le x) _ (List.mem_map_of_mem (a := ((0 : ℕ) : ℂ)) (by`. Simplify using `only [List.bind_eq_flatMap, List.mem_flatMap, List.pure_def, List.mem_singleton]`. Conclude with `⟨0, List.mem_range.2 hd, rfl⟩))`.
+
+Use `⟨(Multiset.nodup_of_le hle h.1).of_map _, fun z hz => ?_⟩` and prove the remaining obligations. Take `⟨k, hk⟩` from `h.2 _ (Multiset.mem_of_le hle (Multiset.mem_map_of_mem _ hz))`. Conclude with `⟨k, by push_cast at hk; linear_combination hk⟩`.
+-/
 theorem inf_part {P : List (Part A.CG)} {p : Part A.CG} (hp : p ∈ P) (hd : 1 ≤ p.d) (τ : H.E →+* ℂ) (n : ℕ)
     (h : (isoInf N A P τ).Nodup ∧ ∀ x ∈ isoInf N A P τ, ∃ k : ℤ, x = (k : ℂ) + ((n : ℂ) - 1) / 2) :
     (A.infG p.π τ).Nodup ∧ ∀ z ∈ A.infG p.π τ, ∃ k : ℤ, z = (k : ℂ) + ((n : ℂ) - p.d) / 2 := by
@@ -463,6 +613,11 @@ def GaloisRepsCusp : Prop :=
 
 variable {D}
 
+/- English proof (translation)
+Take `⟨r, h1, -, h3⟩` from `hG i a ha π hc hr`. Use `⟨fun g => ((r g : GL (Fin a) _) : Matrix (Fin a) (Fin a) _).trace, ⟨Fin a, inferInstance, inferInstance, (Units.coeHom _).comp r, fun _ => rfl⟩, h1.matrix_trace, ?_⟩` and prove the remaining obligations. Use `filter_upwards [h3, D.naut.locG_unr_ae π] with w h4 h5 _ B σ hB hσ`. Use `(map_trace_eq_sum _ _ _ (h4 B σ hB hσ)).trans ?_` and prove the remaining obligations. Rewrite using `[D.naut.frobEig_tw _ _ h5, Multiset.sum_map_mul_right, Multiset.map_id']`.
+
+Both sides reduce to the same expression.
+-/
 theorem hasTrace_cusp (hG : GaloisRepsCusp D) (i : D.nd.Loc) {a : ℕ} (ha : 1 ≤ a) (π : D.naut.CG a)
     (hc : D.naut.csd π) (hr : D.naut.ralg π) : HasTrace D.naut i fun w =>
       sumEig D.naut π w * ((normV w : ℕ) : ℂ) ^ ((((1 - (a : ℝ)) / 2 : ℝ)) : ℂ) := by
@@ -474,6 +629,27 @@ theorem hasTrace_cusp (hG : GaloisRepsCusp D) (i : D.nd.Loc) {a : ℕ} (ha : 1 �
   rw [D.naut.frobEig_tw _ _ h5, Multiset.sum_map_mul_right, Multiset.map_id']
   rfl
 
+/- English proof (translation)
+Simplify using `only [sumPart, ← List.sum_map_mul_right]`. Use `HasTrace.list_sum _ _ fun k _ => ?_` and prove the remaining obligations. Choose the witnesses or unpack the hypotheses as in `⟨u, hu⟩ : ∃ u : ℕ, D.R.nV = D.R.t + 2 * u + 1 := by`. Take `⟨a, h1⟩` from `D.R.k_even`. Take `⟨b, h2⟩` from `D.R.m_even`.
+
+Use `D.R.two_le_m` as an intermediate fact. Conclude with `⟨a + b - 1, by unfold Ranks.nV Ranks.r; omega⟩`. Establish `hu' : (D.R.nV : ℂ) = D.R.t + 2 * u + 1` using `by exact_mod_cast hu`. Take `⟨e, he | he⟩` from `Int.even_or_odd' ((p.a : ℤ) + p.d - D.R.nV)`. Establish `he' : (p.a : ℂ) + p.d - D.R.nV = 2 * e` using `by exact_mod_cast he`.
+
+Establish `hr : D.naut.ralg (D.naut.tw p.π (muEta D.naut i))`. Rewrite using `[D.naut.ralg_def]`. Introduce `τ`. Take `⟨s, hs⟩` from `Multiset.card_eq_one.1 (D.naut.infG_card (muEta D.naut i) τ)`. Take `⟨k₀, hk₀⟩` from `hμ' τ s (by simp [hs])`.
+
+Rewrite using `[D.naut.infG_tw _ _ τ s hs]`. Use `⟨(hp τ).1.map (add_left_injective s), fun z hz => ?_⟩` and prove the remaining obligations. Take `⟨y, hy, rfl⟩` from `Multiset.mem_map.1 hz`. Take `⟨k₁, hk₁⟩` from `(hp τ).2 y hy`. Use `⟨k₁ + k₀ + u + 1 - e, ?_⟩` and prove the remaining obligations.
+
+Use `push_cast`. Take the linear combination `hk₁ + hk₀ + (1 / 2 : ℂ) * hu' - (1 / 2 : ℂ) * he'`. Use `(((hasTrace_cusp hG i ha _ (D.naut.csd_tw _ _ hμ hc) hr).twist _ (continuous_chiBar 1) (ae_chiBar D.naut i) (-1)).twist _ continuous_epsBar (ae_epsBar D.naut i) (e - u - 1 - k)).congr ?_` and prove the remaining obligations. Use `filter_upwards [sumEig_tw p.π (muEta D.naut i)] with w h _`. Establish `hq` using `normV_ne_zero w`.
+
+Rewrite using `[h.2, zpow_neg_one, mul_inv, ← Complex.cpow_neg, ← Complex.cpow_intCast, mul_assoc (sumEig _ p.π w) (_ ^ _), ← Complex.cpow_add _ _ hq]`. Establish `: ∀ a m x y z : ℂ, m ≠ 0 → a * m * x * (m⁻¹ * y) * z = a * (x * y * z)`. Introduce `a m x y z hm`. Clear the denominators using the available nonvanishing facts. Rewrite using `[this _ _ _ _ _ h.1, ← Complex.cpow_add _ _ hq, ← Complex.cpow_add _ _ hq]`.
+
+Use `congr 2`. Use `push_cast`. Take the linear combination `(1 / 2 : ℂ) * hu' - (1 / 2 : ℂ) * he'`. Establish `he' : (p.a : ℂ) + p.d - D.R.nV = 2 * e + 1` using `by exact_mod_cast he`. Establish `hr : D.naut.ralg p.π`.
+
+Rewrite using `[D.naut.ralg_def]`. Use `fun τ => ⟨(hp τ).1, fun z hz => ?_⟩` and prove the remaining obligations. Take `⟨k₁, hk₁⟩` from `(hp τ).2 z hz`. Use `⟨k₁ - e, ?_⟩` and prove the remaining obligations. Use `push_cast`.
+
+Take the linear combination `hk₁ - (1 / 2 : ℂ) * he'`. Use `((hasTrace_cusp hG i ha _ hc hr).twist _ continuous_epsBar (ae_epsBar D.naut i) (e - k)).congr ?_` and prove the remaining obligations. Use `Filter.Eventually.of_forall fun w _ => ?_` and prove the remaining obligations. Establish `hq` using `normV_ne_zero w`. Rewrite using `[← Complex.cpow_intCast, mul_assoc, mul_assoc, ← Complex.cpow_add _ _ hq, ← Complex.cpow_add _ _ hq]`.
+
+Use `congr 2`. Use `push_cast`. Take the linear combination `- (1 / 2 : ℂ) * he'`.
+-/
 theorem hasTrace_part (hG : GaloisRepsCusp D) (i : D.nd.Loc) (hμ : D.naut.csd (muEta D.naut i))
     (hμ' : ∀ τ, ∀ z ∈ D.naut.infG (muEta D.naut i) τ,
       ∃ k : ℤ, z = (k : ℂ) + ((D.R.nV : ℂ) - (D.R.t : ℕ)) / 2)
@@ -533,6 +709,19 @@ theorem hasTrace_part (hG : GaloisRepsCusp D) (i : D.nd.Loc) (hμ : D.naut.csd (
     push_cast
     linear_combination - (1 / 2 : ℂ) * he'
 
+/- English proof (translation)
+Introduce and unpack `i π hπ r₀ ⟨hr1, hr2, hr3⟩`. Take `⟨P, hP, Pa, ⟨hB1, -, -, hB4, -, hB6⟩, hmem⟩` from `(D.Z_tie i π).1 hπ`. Establish `hinf : ∀ p ∈ Pa, ∀ τ, (D.naut.infG p.π τ).Nodup ∧ ∀ z ∈ D.naut.infG p.π τ, ∃ k : ℤ, z = (k : ℂ) + ((D.R.nV : ℂ) - p.d) / 2` using `fun p hp τ => inf_part hp (hB1 p hp).2.1 τ _ (by rw [hB6, D.nbc.embAV_inf i P]; exact D.nbc.infW_alg _ _ τ)`. Take `⟨l₁, l₂, rfl⟩` from `List.append_of_mem hmem`. Take `⟨T, hT1, hT2, hT3⟩` from `HasTrace.list_sum (l₁ ++ l₂) _ fun p hp => by`.
+
+Establish `hp' : p ∈ l₁ ++ (⟨1, muEta D.naut i, D.R.t⟩ : Part D.naut.CG) :: l₂`. Simplify using `only [List.mem_append, List.mem_cons] at hp ⊢`. The claim follows by propositional logic. Conclude with `hasTrace_part hG i (hB1 _ hmem).2.2 (fun τ => (hinf _ hmem τ).2) p (hB1 p hp').1 (hB1 p hp').2.2 (hinf p hp')`. Establish `key : (fun g => iotaOQ D.nd D.naut i ((r₀ g : GL _ _) : Matrix (Fin D.R.nV) (Fin D.R.nV) _).trace) = fun g => T g + ∑ c : Fin D.R.t, chiBar D.naut i (c.1 + 1) g`.
+
+Use `AE.eq_of_continuous hC ((GlobalTheory.CoeffEmbedding.continuous_iotaOQ _ _ _ D.nd D.naut i).comp hr1.matrix_trace) (hT2.add (continuous_finsetSum _ fun c _ => continuous_chiBar _)) ?_` and prove the remaining obligations. Use `filter_upwards [hT3, ae_chiBar D.naut i, ae_epsBar D.naut i, eventually_out i, isoLoc_sum (A := D.naut) (l₁ ++ (⟨1, muEta D.naut i, D.R.t⟩ : Part D.naut.CG) :: l₂)] with w h1 h2 h3 h4 h5 hw B σ hB hσ`. Apply `(D.naut.iotaQC i).injective` to reduce the goal to its premises. Establish `hq` using `normV_ne_zero w`. Establish `h6` using `D.naut.pt_loc i P π hP w (h4 hw)`.
+
+Rewrite `h6` using `[← hr3 w (h4 hw) B σ hB hσ, ← hB4 w hw]`. Use `(map_trace_eq_sum _ _ _ h6).trans ?_` and prove the remaining obligations. Rewrite using `[D.naut.frobEig_tw _ _ h5.1, Multiset.sum_map_mul_right, Multiset.map_id', h5.2, map_add, h1 hw B σ hB hσ, map_sum, List.sum_map_mul_right]`. Establish `h7 : ∑ c : Fin D.R.t, D.naut.iotaQC i (chiBar D.naut i (c.1 + 1) σ) = sumPart D.naut ⟨1, muEta D.naut i, D.R.t⟩ w * ((normV w : ℕ) : ℂ) ^ ((((1 - (D.R.nV : ℝ)) / 2 : ℝ)) : ℂ)`. Rewrite using `[sumPart, ← List.sum_map_mul_right, ← List.sum_toFinset _ List.nodup_range, List.toFinset_range, Finset.sum_range]`.
+
+Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[chiBar_succ c.1 c.2, map_mul, map_zpow₀, h2 hw B σ hB hσ, h3 hw B σ hB hσ, ← Complex.cpow_intCast, mul_assoc, mul_assoc, ← Complex.cpow_add _ _ hq, ← Complex.cpow_add _ _ hq]`. Use `congr 2`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[h7]`. Simplify using `only [List.map_append, List.map_cons, List.sum_append, List.sum_cons]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨ρ, h1, h2, h3⟩` from `exists_complement (a := D.R.r) (t := D.R.t) (D.naut.iotaQ i) rfl r₀ (D.nd.chi i) hr1 hr2 hT1 fun g => congrFun key g`. Conclude with `⟨ρ, h1, h2, h3⟩`.
+-/
 theorem complement_at (hC : GlobalTheory.TwSys.Cheb) (D : D7) (hG : GaloisRepsCusp D) : Complement_at D := by
   rintro i π hπ r₀ ⟨hr1, hr2, hr3⟩
   obtain ⟨P, hP, Pa, ⟨hB1, -, -, hB4, -, hB6⟩, hmem⟩ := (D.Z_tie i π).1 hπ
@@ -578,10 +767,16 @@ theorem complement_at (hC : GlobalTheory.TwSys.Cheb) (D : D7) (hG : GaloisRepsCu
     hr1 hr2 hT1 fun g => congrFun key g
   exact ⟨ρ, h1, h2, h3⟩
 
+/- English proof (translation)
+Introduce `x hx k` and use `complement_at hC _ (hG x hx k)`.
+-/
 theorem complementF (hC : GlobalTheory.TwSys.Cheb) {eps : ℝ} (Fm : FamP eps)
     (hG : ∀ x : ℝ, Fm.x1 < x → ∀ k : Fm.Ix x, GaloisRepsCusp (Fm.D x k)) : ComplementF Fm :=
   fun x hx k => complement_at hC _ (hG x hx k)
 
+/- English proof (translation)
+The claim follows from `Closed.imp hG fun Fm _ _ h => complementF hC Fm h`.
+-/
 theorem complementClosed (hC : GlobalTheory.TwSys.Cheb) (𝒞 : FamClass)
     (hG : Closed 𝒞 fun Fm _ => ∀ x : ℝ, Fm.x1 < x → ∀ k : Fm.Ix x, GaloisRepsCusp (Fm.D x k)) :
     ComplementClosed 𝒞 :=

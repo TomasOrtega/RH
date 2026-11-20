@@ -9,6 +9,27 @@ open Matrix GlobalTheory.RedTh NumberField GlobalTheory.PolFan ReciprocityTheory
 
 namespace GlobalTheory.RedTh
 
+/- English proof (translation)
+Establish `hfree : Module.Free ℤ (LinearMap.ker r)` using `Module.free_of_finite_type_torsion_free'`. Take `⟨s, ⟨bK⟩⟩ : ∃ s, Nonempty (Module.Basis (Fin s) ℤ (LinearMap.ker r))` from `⟨_, ⟨Module.finBasis ℤ _⟩⟩`. Take `⟨m, ⟨bQ⟩⟩ : ∃ m, Nonempty (Module.Basis (Fin m) ℤ X₁)` from `⟨_, ⟨Module.finBasis ℤ _⟩⟩`. Set `BK : LinearMap.ker r →ₗ[ℤ] LinearMap.ker r →ₗ[ℤ] ℝ` to `B₀.compl₁₂ (LinearMap.ker r).subtype (LinearMap.ker r).subtype`. Establish `hpK : IsPosDef BK` using `fun k x hx c hc => hp₀ k (fun i => (x i : X)) (hx.map' (LinearMap.ker r).subtype (Submodule.ker_subtype _)) c hc`.
+
+Take `⟨b₁, d₁, u₁, hS₁, hd₁, hg₁⟩` from `GlobalTheory.T.exists_siegelReduced_basis_of_posDef_form s _ bK BK (fun y z => hs₀ _ _) hpK`. Take `⟨b₂, d₂, u₂, hS₂, hd₂, hg₂⟩` from `GlobalTheory.T.exists_siegelReduced_basis_of_posDef_form m _ bQ B₁ hs₁ hp₁`. Take `⟨t, d, d', u, -, hS, hS', hd', g11, g12, g22⟩` from `GlobalTheory.T.exists_siegel_reduction_orthogonal s m d₁ u₁ d₂ u₂ hS₁ hS₂ hd₁ hd₂`. Set `p : X →ₗ[ℤ] LinearMap.ker r` to `LinearMap.codRestrict _ (LinearMap.id - σ ∘ₗ r) fun x => by`. Simplify using `[hrσ]`.
+
+Set `e : X ≃ₗ[ℤ] LinearMap.ker r × X₁` to `LinearEquiv.ofLinear (p.prod r) ((LinearMap.ker r).subtype.coprod σ) (by`. Use extensionality with `x`. Simplify using `[p, LinearMap.mem_ker.1 x.2]`. Simplify using `[LinearMap.mem_ker.1 x.2]`. Simplify using `[p, hrσ]`.
+
+Simplify using `[hrσ])`. Use the proof step `(by ext x; simp [p])`. Set `c : Module.Basis (Fin (s + m)) ℤ X` to `((b₁.prod b₂).map e.symm).reindex finSumFinEquiv`. Establish `hc₁ : ∀ i, c (Fin.castAdd m i) = (b₁ i : X)` using `fun i => by`. Establish `: finSumFinEquiv.symm (Fin.castAdd m i) = Sum.inl i` using `finSumFinEquiv_symm_apply_castAdd i`.
+
+Simplify using `[c, this, e]`. Establish `hc₂ : ∀ j, c (Fin.natAdd s j) = σ (b₂ j)` using `fun j => by`. Establish `: finSumFinEquiv.symm (Fin.natAdd s j) = Sum.inr j` using `finSumFinEquiv_symm_apply_natAdd j`. Simplify using `[c, this, e]`. Establish `hnm : n = s + m`.
+
+Rewrite using `[← hn, Module.finrank_eq_card_basis c, Fintype.card_fin]`. Substitute `hnm` using the available equality. Establish `hr₁ : ∀ i, r (c (Fin.castAdd m i)) = 0` using `fun i => by rw [hc₁]; exact (b₁ i).2`. Establish `hr₂ : ∀ j, r (c (Fin.natAdd s j)) = b₂ j` using `fun j => by rw [hc₂, hrσ]`. Establish `hq₁ : ∀ i, c (Fin.castAdd m i) - σ (r (c (Fin.castAdd m i))) = (b₁ i : X)` using `fun i => by`.
+
+Rewrite using `[hr₁, map_zero, sub_zero, hc₁]`. Establish `hq₂ : ∀ j, c (Fin.natAdd s j) - σ (r (c (Fin.natAdd s j))) = 0` using `fun j => by rw [hr₂, hc₂, sub_self]`. Use `⟨c, d, d', u, t, hS, hS', hd', fun i j => ?_, fun i j => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `refine Fin.addCases (fun i => ?_) (fun i => ?_) i <;> refine Fin.addCases (fun j => ?_) (fun j => ?_) j`. Simplify using `[hr₁, (g11 _ _).1]`.
+
+Simplify using `[hr₁, (g12 _ _).1]`. Simplify using `[hr₁, (g12 _ _).2.1]`. Rewrite using `[hr₂, hr₂, hg₂, (g22 _ _).1]`. Apply the tactic sequence `refine Fin.addCases (fun i => ?_) (fun i => ?_) i <;> refine Fin.addCases (fun j => ?_) (fun j => ?_) j`. Rewrite using `[hq₁, hq₁, hr₁, hr₁, map_zero, add_zero, (g11 _ _).2, ← hg₁]`.
+
+Both sides reduce to the same expression. Rewrite using `[hq₁, hq₂, hr₁]`. Simplify using `only [map_zero, LinearMap.zero_apply, mul_zero, add_zero]`. Conclude with `(g12 _ _).2.2.1.symm`. Rewrite using `[hq₂, hq₁, hr₁]`.
+
+Simplify using `only [map_zero, LinearMap.zero_apply, mul_zero, add_zero]`. Conclude with `(g12 _ _).2.2.2.symm`. Rewrite using `[hq₂, hq₂, hr₂, hr₂]`. Simplify using `only [map_zero, LinearMap.zero_apply, mul_zero, zero_add]`. Rewrite using `[hg₂, (g22 _ _).2]`.
+-/
 theorem exists_siegel_split {X X₁ : Type} [AddCommGroup X] [AddCommGroup X₁] [Module.Finite ℤ X] [Module.Free ℤ X]
     [Module.Finite ℤ X₁] [Module.Free ℤ X₁] (r : X →ₗ[ℤ] X₁) (σ : X₁ →ₗ[ℤ] X) (hrσ : ∀ y, r (σ y) = y)
     (B₀ : X →ₗ[ℤ] X →ₗ[ℤ] ℝ) (hs₀ : ∀ y z, B₀ y z = B₀ z y) (hp₀ : IsPosDef B₀)
@@ -71,6 +92,9 @@ theorem exists_siegel_split {X X₁ : Type} [AddCommGroup X] [AddCommGroup X₁]
       simp only [map_zero, LinearMap.zero_apply, mul_zero, zero_add]
       rw [hg₂, (g22 _ _).2]
 
+/- English proof (translation)
+Take `⟨s, hs⟩` from `Module.projective_def'.1 ‹Module.Projective O M›`. Set `i : M →ₗ[ℤ] (M →₀ O)` to `s.toAddMonoidHom.toIntLinearMap`. Set `p : (M →₀ O) →ₗ[ℤ] M` to `(Finsupp.linearCombination O id).toAddMonoidHom.toIntLinearMap`. Conclude with `Module.Projective.of_split i p (LinearMap.ext fun x => LinearMap.congr_fun hs x)`.
+-/
 theorem projective_int_of_projective {O M : Type} [CommRing O] [AddCommGroup M] [Module O M] [Module.Free ℤ O]
     [Module.Projective O M] : Module.Projective ℤ M := by
   obtain ⟨s, hs⟩ := Module.projective_def'.1 ‹Module.Projective O M›
@@ -78,6 +102,19 @@ theorem projective_int_of_projective {O M : Type} [CommRing O] [AddCommGroup M] 
   let p : (M →₀ O) →ₗ[ℤ] M := (Finsupp.linearCombination O id).toAddMonoidHom.toIntLinearMap
   exact Module.Projective.of_split i p (LinearMap.ext fun x => LinearMap.congr_fun hs x)
 
+/- English proof (translation)
+Introduce `E _ _ _ H X _ _ _ _ B₀ hB₀ hp₀ n hn B hB`. Take `⟨X₁, _, _, _, r, B₁, hr, hB₁, hp₁, hBr⟩` from `hB`. Establish `: Module.Finite (𝓞 E) X₁` using `Module.Finite.of_surjective r hr`. Take `⟨σ, hσ⟩` from `Module.projective_lifting_property r LinearMap.id hr`. Establish `hrσ : ∀ y, r (σ y) = y` using `fun y => LinearMap.congr_fun hσ y`.
+
+Establish `: Module.Finite ℤ X` using `Module.Finite.trans (𝓞 E) X`. Establish `: Module.Finite ℤ X₁` using `Module.Finite.trans (𝓞 E) X₁`. Establish `: Module.Projective ℤ X` using `projective_int_of_projective (O := 𝓞 E)`. Establish `: Module.Projective ℤ X₁` using `projective_int_of_projective (O := 𝓞 E)`. Establish `: Module.Free ℤ X` using `Module.free_of_finite_type_torsion_free'`.
+
+Establish `: Module.Free ℤ X₁` using `Module.free_of_finite_type_torsion_free'`. Set `rZ : X →ₗ[ℤ] X₁` to `r.toAddMonoidHom.toIntLinearMap`. Set `σZ : X₁ →ₗ[ℤ] X` to `σ.toAddMonoidHom.toIntLinearMap`. Take `⟨b, d, d', u, t, hS, hS', hd', hg, hg'⟩` from `exists_siegel_split rZ σZ hrσ B₀ hB₀.1 hp₀ B₁ hB₁.1 hp₁ n hn`. Set `π : X →ₗ[𝓞 E] X` to `LinearMap.id - σ ∘ₗ r`.
+
+Set `πZ : X →ₗ[ℤ] X` to `π.toAddMonoidHom.toIntLinearMap`. Use `⟨b, d, d', u, t • B₀.compl₁₂ πZ πZ + B₁.compl₁₂ rZ rZ, hS, hS', hd', ⟨fun y z => ?_, fun a y z => ?_⟩, fun i j => (hBr _ _).trans (hg i j), fun i j => (hg' i j).symm ▸ ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.add_apply, LinearMap.smul_apply, LinearMap.compl₁₂_apply]`. Rewrite using `[hB₀.1, hB₁.1]`. Establish `e₁ : ∀ y, πZ (a • y) = a • πZ y` using `fun y => π.map_smul a y`.
+
+Establish `e₂ : ∀ y, rZ (a • y) = a • rZ y` using `fun y => r.map_smul a y`. Establish `e₃ : ∀ y, πZ (H.bar a • y) = H.bar a • πZ y` using `fun y => π.map_smul _ y`. Establish `e₄ : ∀ y, rZ (H.bar a • y) = H.bar a • rZ y` using `fun y => r.map_smul _ y`. Simplify using `only [LinearMap.add_apply, LinearMap.smul_apply, LinearMap.compl₁₂_apply, e₁, e₂, e₃, e₄]`. Rewrite using `[hB₀.2, hB₁.2]`.
+
+Both sides reduce to the same expression.
+-/
 theorem exists_adapted_siegel_basis : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (X : Type) [AddCommGroup X] [Module (𝓞 E) X] [Module.Finite (𝓞 E) X] [Module.Projective (𝓞 E) X] (B₀ : X →ₗ[ℤ] X →ₗ[ℤ] ℝ), B₀ ∈ realForms H.bar X → IsPosDef B₀ → ∀ n : ℕ, Module.finrank ℤ X = n → ∀ B ∈ psdCone H.bar X, ∃ (b : Module.Basis (Fin n) ℤ X) (d d' : Fin n → ℝ) (u : Matrix (Fin n) (Fin n) ℝ) (B' : X →ₗ[ℤ] X →ₗ[ℤ] ℝ), IsSiegel d u ∧ IsSiegel d' u ∧ (∀ i, 0 < d' i) ∧ B' ∈ realForms H.bar X ∧ (∀ i j, B (b i) (b j) = gram d u i j) ∧ ∀ i j, B' (b i) (b j) = gram d' u i j := by
   intro E _ _ _ H X _ _ _ _ B₀ hB₀ hp₀ n hn B hB
   obtain ⟨X₁, _, _, _, r, B₁, hr, hB₁, hp₁, hBr⟩ := hB

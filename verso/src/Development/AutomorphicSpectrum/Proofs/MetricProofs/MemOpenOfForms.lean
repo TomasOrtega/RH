@@ -21,16 +21,29 @@ def valRing (ξ : Spec (CommRingCat.of Ω) ⟶ X) (z : Spec (CommRingCat.of ℂ)
     Subring (Ω × ℂ) :=
   ((genMap ξ ⟨centre z, h⟩).prod (Scheme.stalkClosedPointTo z).hom).range
 
+/- English proof (translation)
+Take `⟨h', s, hs, hr⟩` from `hv`. Conclude with `⟨s, Prod.ext hs hr⟩`.
+-/
 theorem mem_valRing_of_valAt (h : genPt ξ ⤳ centre z) {a : Ω} {r : ℂ} (hv : ValAt ξ z a r) :
     (a, r) ∈ valRing ξ z h := by
   obtain ⟨h', s, hs, hr⟩ := hv
   exact ⟨s, Prod.ext hs hr⟩
 
+/- English proof (translation)
+Take `⟨s, hs⟩` from `hv`. Conclude with `⟨h, s, congrArg Prod.fst hs, congrArg Prod.snd hs⟩`.
+-/
 theorem valAt_of_mem_valRing (h : genPt ξ ⤳ centre z) {a : Ω} {r : ℂ} (hv : (a, r) ∈ valRing ξ z h) :
     ValAt ξ z a r := by
   obtain ⟨s, hs⟩ := hv
   exact ⟨h, s, congrArg Prod.fst hs, congrArg Prod.snd hs⟩
 
+/- English proof (translation)
+Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C n`. Establish `e : (aeval a (C n : MvPolynomial σ ℤ), aeval r (C n : MvPolynomial σ ℤ)) = ((n : Ω × ℂ))` using `Prod.ext (by simp) (by simp)`. Rewrite using `[e]`. Conclude with `intCast_mem _ n`.
+
+Consider the case `add f g hf hg`. Use `add_mem hf hg` as an intermediate fact. Simplify using `using this`. Consider the case `mul_X f i hf`. Use `mul_mem hf (hv i)` as an intermediate fact.
+
+Simplify using `using this`.
+-/
 theorem aeval_mem_valRing (h : genPt ξ ⤳ centre z) {σ : Type} {a : σ → Ω} {r : σ → ℂ}
     (hv : ∀ i, (a i, r i) ∈ valRing ξ z h) (f : MvPolynomial σ ℤ) :
     (aeval a f, aeval r f) ∈ valRing ξ z h := by
@@ -47,6 +60,11 @@ theorem aeval_mem_valRing (h : genPt ξ ⤳ centre z) {σ : Type} {a : σ → Ω
     have := mul_mem hf (hv i)
     simpa using this
 
+/- English proof (translation)
+Take `⟨s, hs⟩` from `hv`. Establish `hs1 : genMap ξ ⟨centre z, h⟩ s = a` using `congrArg Prod.fst hs`. Establish `hs2 : (Scheme.stalkClosedPointTo z).hom s = r` using `congrArg Prod.snd hs`. Establish `hl : IsLocalHom (Scheme.stalkClosedPointTo z).hom` using `Scheme.isLocalHom_stalkClosedPointTo z`. Establish `hu : IsUnit s` using `hl.map_nonunit s ((congrArg IsUnit hs2).mpr hr.isUnit)`.
+
+Take `⟨t, ht⟩` from `hu.exists_right_inv`. Establish `h1 : a * genMap ξ ⟨centre z, h⟩ t = 1` using `by rw [← hs1, ← map_mul, ht, map_one]`. Establish `ha0 : a ≠ 0` using `left_ne_zero_of_mul_eq_one h1`. Conclude with `⟨ha0, ⟨s, hs1⟩, ⟨t, eq_inv_of_mul_eq_one_right h1⟩⟩`.
+-/
 theorem unitAt_of_mem_valRing (h : genPt ξ ⤳ centre z) {a : Ω} {r : ℂ} (hv : (a, r) ∈ valRing ξ z h) (hr : r ≠ 0) :
     unitAt ξ ⟨centre z, h⟩ a := by
   obtain ⟨s, hs⟩ := hv
@@ -62,6 +80,11 @@ theorem unitAt_of_mem_valRing (h : genPt ξ ⤳ centre z) {a : Ω} {r : ℂ} (hv
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {y : (Σ k, ι k) → Ω}
   {w : (Σ k, ι k) → ℂ}
 
+/- English proof (translation)
+Take `⟨k, i⟩` from `p`. Take `⟨-, hr⟩` from `hc.2 k (c k) (hu k).isUnit`. Take `⟨r, hv, hw⟩` from `hr i`. Establish `e1 : (w ⟨k, c k⟩)⁻¹ * w ⟨k, i⟩ = r` using `by rw [hw]; field_simp [hu k]`. Establish `e2 : (y ⟨k, c k⟩)⁻¹ * y ⟨k, i⟩ = y ⟨k, i⟩ / y ⟨k, c k⟩` using `by rw [div_eq_mul_inv, mul_comm]`.
+
+Use `show ((y ⟨k, c k⟩)⁻¹ * y ⟨k, i⟩, (w ⟨k, c k⟩)⁻¹ * w ⟨k, i⟩) ∈ _`. Rewrite using `[e1, e2]`. Conclude with `mem_valRing_of_valAt h hv`.
+-/
 theorem ratio_mem_valRing (h : genPt ξ ⤳ centre z) (hc : CoordsAt ξ y z w) (c : (k : K) → ι k)
     (hu : ∀ k, w ⟨k, c k⟩ ≠ 0) (p : Σ k, ι k) :
     ((y ⟨p.1, c p.1⟩)⁻¹ * y p, (w ⟨p.1, c p.1⟩)⁻¹ * w p) ∈ valRing ξ z h := by
@@ -74,6 +97,11 @@ theorem ratio_mem_valRing (h : genPt ξ ⤳ centre z) (hc : CoordsAt ξ y z w) (
   rw [e1, e2]
   exact mem_valRing_of_valAt h hv
 
+/- English proof (translation)
+Establish `hm` using `aeval_mem_valRing h (ratio_mem_valRing h hc c hu) G`. Rewrite `hm` using `[aeval_scale hG (fun k => (y ⟨k, c k⟩)⁻¹) y, aeval_scale hG (fun k => (w ⟨k, c k⟩)⁻¹) w]`. Establish `e : (∏ k, (y ⟨k, c k⟩)⁻¹ ^ d k) * aeval y G = aeval y G / ∏ k, y ⟨k, c k⟩ ^ d k`. Simplify using `only [inv_pow, Finset.prod_inv_distrib]`. Rewrite using `[div_eq_mul_inv, mul_comm]`.
+
+Rewrite `hm` using `[e]`. Use `unitAt_of_mem_valRing h hm (mul_ne_zero ?_ hw)` and prove the remaining obligations. Conclude with `Finset.prod_ne_zero_iff.2 fun k _ => pow_ne_zero _ (inv_ne_zero (hu k))`.
+-/
 theorem unitAt_form (h : genPt ξ ⤳ centre z) (hc : CoordsAt ξ y z w) (c : (k : K) → ι k)
     (hu : ∀ k, w ⟨k, c k⟩ ≠ 0) {G : MRing ι} {d : K → ℕ} (hG : IsMultiHomog G d) (hw : aeval w G ≠ 0) :
     unitAt ξ ⟨centre z, h⟩ (aeval y G / ∏ k, y ⟨k, c k⟩ ^ d k) := by
@@ -92,6 +120,9 @@ section Field
 
 variable {Ω : Type} [Field Ω]
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert r s hr ih => rw [Finset.sum_insert hr, Finset.prod_insert hr, zpow_add₀ hY, ih]`.
+-/
 theorem zpow_sum_eq_prod_zpow {R : Type} (Y : Ω) (hY : Y ≠ 0) (s : Finset R) (f : R → ℤ) :
     Y ^ (∑ r ∈ s, f r) = ∏ r ∈ s, Y ^ f r := by
   classical
@@ -99,6 +130,17 @@ theorem zpow_sum_eq_prod_zpow {R : Type} (Y : Ω) (hY : Y ≠ 0) (s : Finset R) 
   | empty => simp
   | insert r s hr ih => rw [Finset.sum_insert hr, Finset.prod_insert hr, zpow_add₀ hY, ih]
 
+/- English proof (translation)
+Establish `h1 : ∏ k, Y k ^ Aa k = Y k₀`. Rewrite using `[Finset.prod_eq_single k₀ (fun k _ hk => by rw [hA.2 k hk, zpow_zero]) (by simp), hA.1, zpow_one]`. Establish `h2 : ∏ k, Y k ^ a k = (Y k₀ ^ q)⁻¹ * ∏ r, (∏ k, Y k ^ x r k) ^ (-n r)`. Establish `e1 : ∀ k, Y k ^ a k = (Y k ^ Aa k) ^ (-(q : ℤ)) * ∏ r, (Y k ^ x r k) ^ (-n r)` using `fun k => by`. Rewrite using `[ha k, zpow_add₀ (hY k), zpow_sum_eq_prod_zpow _ (hY k), ← zpow_mul, mul_comm (Aa k)]`.
+
+Use `congr 1`. Use `Finset.prod_congr rfl fun r _ => ?_` and prove the remaining obligations. Rewrite using `[← zpow_mul, mul_comm (x r k)]`. Simplify using `only [e1, Finset.prod_mul_distrib]`. Rewrite using `[Finset.prod_comm]`.
+
+Use `congr 1`. Rewrite using `[Finset.prod_zpow, h1, zpow_neg, zpow_natCast]`. Use `Finset.prod_congr rfl fun r _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_zpow]`. Establish `h3 : ∏ r, ((∏ k, Y k ^ x r k) • e r) ^ (-n r) = (∏ r, (∏ k, Y k ^ x r k) ^ (-n r)) * (∏ r, e r ^ n r)⁻¹`.
+
+Rewrite using `[← Finset.prod_inv_distrib, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun r _ => ?_` and prove the remaining obligations. Rewrite using `[smul_eq_mul, mul_zpow, zpow_neg (e r)]`. Establish `h4 : ∏ r, (∏ k, Y k ^ x r k) ^ (-n r) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun r _ => zpow_ne_zero _ (Finset.prod_ne_zero_iff.2 fun k _ => zpow_ne_zero _ (hY k))`. Establish `h5 : ∏ r, e r ^ n r ≠ 0` using `Finset.prod_ne_zero_iff.2 fun r _ => zpow_ne_zero _ (he r)`.
+
+Establish `h6 : Y k₀ ^ q ≠ 0` using `pow_ne_zero _ (hY k₀)`. Rewrite using `[h2, h3]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem mono_identity {K R : Type} [Fintype K] [Fintype R] (Y : K → Ω) (hY : ∀ k, Y k ≠ 0) (e : R → Ω)
     (he : ∀ r, e r ≠ 0) (x : R → K → ℤ) (Aa : K → ℤ) (n : R → ℤ) (q : ℕ) (k₀ : K)
     (hA : Aa k₀ = 1 ∧ ∀ k, k ≠ k₀ → Aa k = 0) (a : K → ℤ)
@@ -134,6 +176,33 @@ theorem mono_identity {K R : Type} [Fintype K] [Fintype R] (Y : K → Ω) (hY : 
 
 end Field
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo c O _ β Y S RM Sys Fx Or n₀ N₀ hn hnone hε x dg dh G Hf hG hH hdeg hy hwG hwH`. Establish `hmem : Or.Re.R.lift x x ∈ mcPts (mCoordIdeal RM.y)` using `Or.Re.R.mem x x (Or.Re.R.mem_U x)`. Take `⟨z, hz, hc⟩` from `(mem_mcPts_iff_exists_coordsAt _ _ Or.𝔐.ξ _ _ RM.y Or.𝔐.tie _).1 hmem`. Use `(Or.interior x z hc).1 ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hnab`.
+
+Use `choose b hb using hc.1`. Establish `hbw : ∀ k, Or.Re.R.lift x x ⟨k, b k⟩ ≠ 0` using `fun k => (hb k).ne_zero`. Set `p : Cpt Or.𝔐.ξ` to `⟨centre z, hz⟩`. Establish `hyc : ∀ k, RM.y ⟨k, b k⟩ ≠ 0` using `fun k => (hc.2 k (b k) (hb k)).1`. Establish `hrat : ∀ k i, RM.y ⟨k, i⟩ / RM.y ⟨k, b k⟩ ∈ regAt Or.𝔐.ξ p`.
+
+Introduce `k i`. Take `⟨r, ⟨h', s, hs, -⟩, -⟩` from `(hc.2 k (b k) (hb k)).2 i`. Conclude with `⟨s, hs⟩`. Establish `hch : InChart Or.𝔐.ξ (fun c' : (k : RM.K) → RM.ι k => ∏ k, RM.y ⟨k, c' k⟩) b p`. Use `⟨Finset.prod_ne_zero_iff.2 fun k _ => hyc k, fun c' => ?_⟩` and prove the remaining obligations.
+
+Use `show (∏ k, RM.y ⟨k, c' k⟩) / ∏ k, RM.y ⟨k, b k⟩ ∈ _`. Rewrite using `[← Finset.prod_div_distrib]`. Conclude with `prod_mem fun k _ => hrat k (c' k)`. Establish `he0 : ∀ r, Or.e r ≠ 0` using `fun r => (Or.lines r).1`. Establish `hgen : ∀ r, (Or.Fl.rootLat r).IsGenAt p ((∏ k, RM.y ⟨k, b k⟩ ^ RM.xdeg r k) • Or.e r)` using `fun r => ⟨smul_ne_zero (Finset.prod_ne_zero_iff.2 fun k _ => zpow_ne_zero _ (hyc k)) (he0 r), (Or.lines r).2 _ trivial b hch⟩`.
+
+Establish `ht` using `GlobalTheory.CompanionTheory.Ar.Chg.CoverEff.tens_isGenAt (fun r => -Fx.n r) hgen`. Establish `ya : Or.g (Fx.yf (Or.ix.symm (b Or.k₀))) = RM.y ⟨Or.k₀, b Or.k₀⟩`. Rewrite using `[← Or.y_eq, Equiv.apply_symm_apply]`. Establish `hch' : InChart Or.𝔐.ξ (fun i' => Or.g (Fx.yf i')) (Or.ix.symm (b Or.k₀)) p`. Use `⟨?_, fun j => ?_⟩` and prove the remaining obligations.
+
+Use `show Or.g (Fx.yf (Or.ix.symm (b Or.k₀))) ≠ 0`. Rewrite using `[ya]`. Conclude with `hyc _`. Use `show Or.g (Fx.yf j) / Or.g (Fx.yf (Or.ix.symm (b Or.k₀))) ∈ _`. Rewrite using `[ya, ← Or.y_eq]`.
+
+Conclude with `hrat _ _`. Establish `hnat : ∀ m : ℕ, m ≠ 0 → unitAt Or.𝔐.ξ p (m : RM.Ω)`. Introduce `m hm`. Establish `e : (((m : RM.Ω), (m : ℂ)) : RM.Ω × ℂ) = ((m : RM.Ω × ℂ))` using `Prod.ext (by simp) (by simp)`. Establish `h2 : (((m : RM.Ω), (m : ℂ)) : RM.Ω × ℂ) ∈ valRing Or.𝔐.ξ z hz`.
+
+Rewrite using `[e]`. Conclude with `natCast_mem _ m`. Conclude with `unitAt_of_mem_valRing hz h2 (Nat.cast_ne_zero.2 hm)`. Establish `hp0 : ∀ r : ℕ, r.Prime → ¬ InFibre Or.𝔐.ξ r p` using `fun r hr hf => hf (hnat r hr.ne_zero)`. Take `⟨-, hnu⟩` from `Or.eff p hp0 _ _ hch' ht`.
+
+Establish `hN₀ : N₀ ≠ 0`. Introduce and unpack `rfl`. Conclude with `hε (by simp)`. Establish `hA` using `unitAt_form hz hc b hbw hG hwG`. Establish `hB` using `unitAt_form hz hc b hbw hH hwH`.
+
+Establish `hAB : unitAt Or.𝔐.ξ p ((aeval RM.y G / ∏ k, RM.y ⟨k, b k⟩ ^ dg k) / (aeval RM.y Hf / ∏ k, RM.y ⟨k, b k⟩ ^ dh k))` using `⟨div_ne_zero hA.1 hB.1, by rw [div_eq_mul_inv]; exact mul_mem hA.2.1 hB.2.2, by rw [inv_div, div_eq_mul_inv]; exact mul_mem hB.2.1 hA.2.2⟩`. Establish `hid` using `mono_identity (fun k => RM.y ⟨k, b k⟩) hyc Or.e he0 RM.xdeg RM.A.a Fx.n Fx.q' Or.k₀ Or.A_deg (combLine (RM.line 1) n₀).a (fun k => by`. Simplify using `[combLine, Finset.sum_apply, Fintype.sum_option, RootModel.line, RM.x_deg, hn, hnone])`. Establish `hHf0 : aeval RM.y Hf ≠ 0` using `fun h0 => hB.1 (by rw [h0, zero_div])`. Establish `hMh : ∏ k, RM.y ⟨k, b k⟩ ^ dh k ≠ 0` using `Finset.prod_ne_zero_iff.2 fun k _ => pow_ne_zero _ (hyc k)`.
+
+Establish `hPa : ∏ k, RM.y ⟨k, b k⟩ ^ (combLine (RM.line 1) n₀).a k ≠ 0` using `Finset.prod_ne_zero_iff.2 fun k _ => zpow_ne_zero _ (hyc k)`. Establish `hMg : ∏ k, RM.y ⟨k, b k⟩ ^ dg k = (∏ k, RM.y ⟨k, b k⟩ ^ dh k) * ∏ k, RM.y ⟨k, b k⟩ ^ (combLine (RM.line 1) n₀).a k`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← zpow_natCast, hdeg k, zpow_add₀ (hyc k), zpow_natCast]`.
+
+Establish `hfin : (aeval RM.y G / ∏ k, RM.y ⟨k, b k⟩ ^ dg k) / (aeval RM.y Hf / ∏ k, RM.y ⟨k, b k⟩ ^ dh k) = (Or.g Fx.sE * Or.g (Fx.yf (Or.ix.symm (b Or.k₀))) ^ Fx.q' / ∏ r, ((∏ k, RM.y ⟨k, b k⟩ ^ RM.xdeg r k) • Or.e r) ^ (-Fx.n r)) * (N₀ : RM.Ω)`. Establish `hid' : (∏ k, RM.y ⟨k, b k⟩ ^ (combLine (RM.line 1) n₀).a k)⁻¹ * ∏ r, Or.e r ^ Fx.n r = RM.y ⟨Or.k₀, b Or.k₀⟩ ^ Fx.q' / ∏ r, ((∏ k, RM.y ⟨k, b k⟩ ^ RM.xdeg r k) • Or.e r) ^ (-Fx.n r)` using `hid`. Rewrite using `[hy, hMg, ya, mul_div_assoc (Or.g Fx.sE), ← hid']`. Clear the denominators using the available nonvanishing facts. Rewrite `hAB` using `[hfin]`.
+
+Conclude with `hnu hnab (GlobalTheory.CompanionTheory.Ar.Chg.CoverEff.unitAt_of_mul hAB (hnat N₀ hN₀))`.
+-/
 theorem mem_open_of_forms : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (S : Finset ℕ) (RM : RootModel (CMType H) (D.p + D.q)) (Sys : PB.AnSys (dimFl (CMType H) (D.p + D.q)) (Option (RootIx D))) (Fx : FixedData Y Sys) (Or : RootOrigin Y S RM Fx) (n₀ : Option (RootIx D) → ℤ) (N₀ : ℕ), (∀ r, n₀ (some r) = -Fx.n r) → n₀ none = -(Fx.q' : ℤ) → ((N₀ : RM.Ω) * Or.g Fx.sE * ∏ r, Or.e r ^ Fx.n r) ≠ 0 → ∀ (x : Or.Re.R.X) (dg dh : RM.K → ℕ) (G Hf : MRing RM.ι), IsMultiHomog G dg → IsMultiHomog Hf dh → (∀ k, (dg k : ℤ) = dh k + (combLine (RM.line 1) n₀).a k) → aeval RM.y G = ((N₀ : RM.Ω) * Or.g Fx.sE * ∏ r, Or.e r ^ Fx.n r) * aeval RM.y Hf → aeval (Or.Re.R.lift x x) G ≠ 0 → aeval (Or.Re.R.lift x x) Hf ≠ 0 → Or.Re.π x ∈ Sys.open' := by
   intro E _ _ _ H D l Xo c O _ β Y S RM Sys Fx Or n₀ N₀ hn hnone hε x dg dh G Hf hG hH hdeg hy hwG hwH
   classical

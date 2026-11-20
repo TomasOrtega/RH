@@ -9,6 +9,13 @@ open MvPolynomial
 
 universe u
 
+/- English proof (translation)
+Introduce `O _ _ _ ϖ hϖ`. It suffices to establish `H : ∀ n : ℕ, ∀ (K : Type) [Fintype K] [DecidableEq K] (ι : K → Type) [∀ k, Fintype (ι k)] (P : Ideal (MRing ι O)) (d : ℕ), IsModelOver P (d + 1) → ∀ (b : K → ℤ) (f g : MRing ι O), IsEffectiveVertical P ϖ b f g → ∀ (c : K → ℕ) (s : MRing ι O), IsMultiHomog s c → s ∉ P → (∀ H, divC …`. Introduce `K _ _ ι _ P d hP b f g hD c s hs hsP hH L`. Conclude with `H _ K ι P d hP b f g hD c s hs hsP hH rfl L`. Introduce `n`.
+
+Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Introduce `K _ _ ι _ P d hP b f g hD c s hs hsP hH hn L`. Distinguish the cases in `hcom : ∃ G, (C ϖ : MRing ι O) ∈ G ∧ divCycle P s G ≠ 0 ∧ ratDiv P f g G ≠ 0`. Use `h₁ O ϖ hϖ K ι P d hP b f g hD c s hs hsP hH hcom ?_ L` and prove the remaining obligations.
+
+Introduce `K' _ _ ι' _ P' d' hP' b' f' g' hD' c' s' hs' hsP' hH' hlt L'`. Conclude with `ih _ (hn ▸ hlt) K' ι' P' d' hP' b' f' g' hD' c' s' hs' hsP' hH' rfl L'`. Use `h₀ O ϖ hϖ K ι P d hP b f g hD c s hs hsP hH (fun G hG hsG => ?_) L` and prove the remaining obligations. Assume the negation of the conclusion as `hDG`. Conclude with `hcom ⟨G, hG, hsG, hDG⟩`.
+-/
 theorem EffectiveCase.proof (h₀ : NoCommonComponentCase.Statement.{u}) (h₁ : CommonFactorInduction.Statement.{u}) :
     EffectiveCase.Statement.{u} := by
   intro O _ _ _ ϖ hϖ

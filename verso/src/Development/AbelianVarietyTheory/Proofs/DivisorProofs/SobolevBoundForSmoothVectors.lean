@@ -12,6 +12,21 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.SobolevGrowth
 
+/- English proof (translation)
+Rewrite using `[← lintegral_indicator hA, h𝓕.lintegral_eq_tsum'' (A.indicator h), ← lintegral_tsum, ← lintegral_const_mul _ hm]`. Use `lintegral_mono fun y => ?_` and prove the remaining obligations. Take `⟨hfin, hle⟩` from `hM y`. Establish `hfin' : {γ : Γ | (γ : G) * y ∈ A}.Finite`. Use `Set.Finite.of_finite_image (f := Subtype.val) (hfin.subset ?_) Subtype.val_injective.injOn` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨γ, hγ, rfl⟩`. Conclude with `⟨γ.2, hγ⟩`. Establish `hcard : hfin'.toFinset.card = {γ : G | γ ∈ Γ ∧ γ * y ∈ A}.ncard`. Rewrite using `[← Set.ncard_eq_toFinset_card _ hfin', ← Set.ncard_image_of_injective _ Subtype.val_injective]`. Use `congr 1`.
+
+Use extensionality with `g`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨γ, hγ, rfl⟩`. Conclude with `⟨γ.2, hγ⟩`. Introduce and unpack `⟨h1, h2⟩`.
+
+Conclude with `⟨⟨g, h1⟩, h2, rfl⟩`. Rewrite using `[tsum_eq_sum (s := hfin'.toFinset)]`. Establish `: ∀ γ ∈ hfin'.toFinset, A.indicator h (γ • y) = h y`. Introduce `γ hγ`. Establish `h1 : (γ : G) * y ∈ A` using `by simpa using hγ`.
+
+Express the relevant statement in the definitionally equal form `A.indicator h ((γ : G) * y) = h y`. Rewrite using `[Set.indicator_of_mem h1, hinv _ γ.2]`. Rewrite using `[Finset.sum_congr rfl this, Finset.sum_const, nsmul_eq_mul, hcard]`. Use `gcongr`. Rewrite using `[← ENNReal.ofReal_natCast]`.
+
+Conclude with `ENNReal.ofReal_le_ofReal hle`. Introduce `γ hγ`. Establish `h1 : (γ : G) * y ∉ A` using `by simpa using hγ`. Express the relevant statement in the definitionally equal form `A.indicator h ((γ : G) * y) = 0`. Conclude with `Set.indicator_of_notMem h1 _`.
+
+Introduce `γ`. Conclude with `((hm.indicator hA).comp (measurable_const_mul (γ : G))).aemeasurable`.
+-/
 theorem lintegral_le_of_count {G : Type} [Group G] [MeasurableSpace G] [MeasurableMul G] (μ : Measure G)
     [μ.IsMulLeftInvariant] (Γ : Subgroup G) [Countable Γ] {𝓕 : Set G} (h𝓕 : IsFundamentalDomain Γ 𝓕 μ)
     {A : Set G} (hA : MeasurableSet A) {h : G → ℝ≥0∞} (hm : Measurable h) (hinv : ∀ γ ∈ Γ, ∀ g, h (γ * g) = h g)
@@ -51,6 +66,9 @@ theorem lintegral_le_of_count {G : Type} [Group G] [MeasurableSpace G] [Measurab
   · intro γ
     exact ((hm.indicator hA).comp (measurable_const_mul (γ : G))).aemeasurable
 
+/- English proof (translation)
+Establish `h` using `eLpNorm_nnreal_pow_eq_lintegral (f := F) (μ := ν) (p := 2) (by norm_num)`. Rewrite using `[ENNReal.ofReal_pow (norm_nonneg _), Lp.norm_def, ENNReal.ofReal_toReal (Lp.eLpNorm_ne_top F)]`. Simplify using `only [NNReal.coe_ofNat, ENNReal.coe_ofNat, ENNReal.rpow_ofNat] at h`. Conclude with `h.symm`.
+-/
 theorem lintegral_enorm_sq {Q : Type} [MeasurableSpace Q] (ν : Measure Q) (F : Lp ℂ 2 ν) :
     ∫⁻ x, ‖F x‖ₑ ^ 2 ∂ν = ENNReal.ofReal (‖F‖ ^ 2) := by
   have h := eLpNorm_nnreal_pow_eq_lintegral (f := F) (μ := ν) (p := 2) (by norm_num)
@@ -58,6 +76,11 @@ theorem lintegral_enorm_sq {Q : Type} [MeasurableSpace Q] (ν : Measure Q) (F : 
   simp only [NNReal.coe_ofNat, ENNReal.coe_ofNat, ENNReal.rpow_ofNat] at h
   exact h.symm
 
+/- English proof (translation)
+Proceed by induction on `S with`. Consider the case `nil => simp`. Consider the case `cons a S ih`. Establish `: 0 ≤ (S.map f).sum` using `List.sum_nonneg (by simpa using fun a _ => hf a)`. Simplify using `only [List.map_cons, List.sum_cons]`.
+
+Use polynomial arithmetic with `[hf a, mul_nonneg (hf a) this]`.
+-/
 theorem sum_sq_le {α : Type} (S : List α) (f : α → ℝ) (hf : ∀ a, 0 ≤ f a) :
     (S.map fun a => f a ^ 2).sum ≤ (S.map f).sum ^ 2 := by
   induction S with
@@ -67,6 +90,17 @@ theorem sum_sq_le {α : Type} (S : List α) (f : α → ℝ) (hf : ∀ a, 0 ≤ 
     simp only [List.map_cons, List.sum_cons]
     nlinarith [hf a, mul_nonneg (hf a) this]
 
+/- English proof (translation)
+Establish `hFm : Measurable fun x => ‖F x‖ₑ ^ 2` using `(Lp.stronglyMeasurable F).measurable.enorm.pow_const 2`. Establish `hA : IsCompact ((fun o => z * o) '' Ω)` using `hΩ.image (continuous_const_mul z)`. Establish `key` using `lintegral_le_of_count μ Γ h𝓕 hA.measurableSet (hFm.comp hmk) (fun γ hγ g => by simp only [Function.comp, hπ γ hγ g]) (M ^ 2) (fun y => by`. Establish `e : {γ : G | γ ∈ Γ ∧ γ * y ∈ (fun o => z * o) '' Ω} = {γ : G | γ ∈ Γ ∧ ∃ o ∈ Ω, γ * y = z * o}` using `Set.ext fun γ => and_congr_right fun _ => exists_congr fun _ => and_congr_right fun _ => eq_comm`. Rewrite using `[e]`.
+
+Use `⟨(hM y).1, ?_⟩` and prove the remaining obligations. Establish `h1` using `(hM y).2`. Generalize the expression as in `Set.ncard _ = n at h1`. Establish `h2 : (n : ℝ) ≤ (n : ℝ) ^ 2` using `by exact_mod_cast Nat.le_self_pow (by norm_num) n`. Conclude with `h2.trans (pow_le_pow_left₀ (Nat.cast_nonneg n) h1 2))`.
+
+Establish `e1 : ∫⁻ x in 𝓕, ((fun x => ‖F x‖ₑ ^ 2) ∘ π) x ∂μ = ENNReal.ofReal (‖F‖ ^ 2)`. Rewrite using `[← lintegral_enorm_sq]`. Conclude with `(lintegral_map hFm hmk).symm`. Establish `e2 : ∫⁻ x in (fun o => z * o) '' Ω, ((fun x => ‖F x‖ₑ ^ 2) ∘ π) x ∂μ = ∫⁻ x in Ω, ‖φ (z * x)‖ₑ ^ 2 ∂μ`. Rewrite using `[((measurePreserving_mul_left μ z).setLIntegral_comp_emb (measurableEmbedding_mulLeft z) (fun x => ‖φ x‖ₑ ^ 2) Ω)]`.
+
+Use `lintegral_congr_ae (ae_restrict_of_ae ?_)` and prove the remaining obligations. Use `filter_upwards [hr] with x hx`. Simplify using `only [Function.comp, hx]`. Rewrite `key` using `[e1, e2, ← ENNReal.ofReal_mul (sq_nonneg _)]`. Establish `hc : Continuous fun x => ‖φ (z * x)‖ ^ 2` using `(hφ.comp (continuous_const_mul z)).norm.pow 2`.
+
+Rewrite using `[integral_eq_lintegral_of_nonneg_ae (Filter.Eventually.of_forall fun x => sq_nonneg _) hc.aestronglyMeasurable]`. Use `ENNReal.toReal_le_of_le_ofReal (by positivity) (le_of_eq_of_le ?_ key)` and prove the remaining obligations. Use `lintegral_congr fun x => ?_` and prove the remaining obligations. Rewrite using `[ENNReal.ofReal_pow (norm_nonneg _), ofReal_norm]`.
+-/
 theorem integral_le_of_count {G Q : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [T2Space G]
     [MeasurableSpace G] [BorelSpace G] [MeasurableSpace Q] (μ : Measure G) [μ.IsMulLeftInvariant]
     (Γ : Subgroup G) [Countable Γ] {𝓕 : Set G} (h𝓕 : IsFundamentalDomain Γ 𝓕 μ) (π : G → Q) (hmk : Measurable π)
@@ -104,6 +138,13 @@ theorem integral_le_of_count {G Q : Type} [Group G] [TopologicalSpace G] [IsTopo
   refine lintegral_congr fun x => ?_
   rw [ENNReal.ofReal_pow (norm_nonneg _), ofReal_norm]
 
+/- English proof (translation)
+Establish `h2' : (S.map I).sum ≤ (S.map fun l => (C₂ * n ^ N) ^ 2 * f l ^ 2).sum` using `List.sum_le_sum h2`. Rewrite `h2'` using `[List.sum_map_mul_left]`. Establish `h3` using `sum_sq_le S f hf`. Establish `h0 : 0 ≤ (S.map I).sum` using `List.sum_nonneg (by simpa using fun a _ => hI a)`. Establish `hT : 0 ≤ (S.map f).sum` using `List.sum_nonneg (by simpa using fun a _ => hf a)`.
+
+Use `le_of_sq_le_sq ?_ (by positivity)` and prove the remaining obligations. Establish `e : (√|C₁| * |C₂| * n ^ N * (S.map f).sum) ^ 2 = |C₁| * ((C₂ * n ^ N) ^ 2 * (S.map f).sum ^ 2)`. Rewrite using `[mul_pow, mul_pow, mul_pow, mul_pow, Real.sq_sqrt (abs_nonneg _), sq_abs]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+
+Use `h1.trans ((mul_le_mul_of_nonneg_right (le_abs_self _) h0).trans ?_)` and prove the remaining obligations. Conclude with `mul_le_mul_of_nonneg_left (h2'.trans (mul_le_mul_of_nonneg_left h3 (sq_nonneg _))) (abs_nonneg _)`.
+-/
 theorem le_of_sums {α : Type} (S : List α) (I f : α → ℝ) (a C₁ C₂ n : ℝ) (N : ℕ) (hn : 0 ≤ n)
     (hI : ∀ l, 0 ≤ I l) (hf : ∀ l, 0 ≤ f l) (h1 : a ^ 2 ≤ C₁ * (S.map I).sum)
     (h2 : ∀ l ∈ S, I l ≤ (C₂ * n ^ N) ^ 2 * f l ^ 2) : a ≤ √|C₁| * |C₂| * n ^ N * (S.map f).sum := by
@@ -122,6 +163,9 @@ theorem le_of_sums {α : Type} (S : List α) (I f : α → ℝ) (a C₁ C₂ n :
 
 variable {D : D7}
 
+/- English proof (translation)
+Take `⟨-, -, _, _, _, -, _⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D V`. Use `hp.haar` as an intermediate fact. Conclude with `integral_le_of_count μ (GQ V) hp.fd (autMk V) measurable_quotient_mk'' (fun γ hγ g => Quotient.sound (QuotientGroup.rightRel_apply.2 (by`. Rewrite using `[_root_.mul_inv_rev, mul_inv_cancel_left]`. Conclude with `(GQ V).inv_mem hγ))) hΩ z M hM F φ hφ hr`.
+-/
 theorem integral_le_adelic (V : HSp D) {μ : Measure (GA D V)} {𝓕 : Set (GA D V)} (hp : FinPair V μ 𝓕)
     {Ω : Set (GA D V)} (hΩ : IsCompact Ω) (z : GA D V) (M : ℝ)
     (hM : ∀ y, {γ : GA D V | γ ∈ GQ V ∧ ∃ o ∈ Ω, γ * y = z * o}.Finite ∧
@@ -135,6 +179,9 @@ theorem integral_le_adelic (V : HSp D) {μ : Measure (GA D V)} {𝓕 : Set (GA D
       rw [_root_.mul_inv_rev, mul_inv_cancel_left]
       exact (GQ V).inv_mem hγ))) hΩ z M hM F φ hφ hr
 
+/- English proof (translation)
+Take `⟨-, -, -, -, _, -, -⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D V`. Take `⟨-, huniq, -, htr, -⟩` from `GlobalTheory.T.bounded_automorphic_has_representative D V μ 𝓕 ρ hp hρ`. Establish `h1` using `htr F ψ k hr`. Rewrite `h1` using `[hk]`. Conclude with `congrFun (huniq F (rTr V k ψ) ψ (hψ.comp (continuous_mul_const k)) hψ h1 hr) g`.
+-/
 theorem level_of_repr (V : HSp D) {μ : Measure (GA D V)} {𝓕 : Set (GA D V)}
     {ρ : GA D V →* (Lp ℂ 2 (nuQ V μ 𝓕) →L[ℂ] Lp ℂ 2 (nuQ V μ 𝓕))} (hp : FinPair V μ 𝓕) (hρ : IsReg V μ 𝓕 ρ)
     {F : Lp ℂ 2 (nuQ V μ 𝓕)} {ψ : GA D V → ℂ} (hψ : Continuous ψ) (hr : Repr V μ 𝓕 F ψ) {k : GA D V} (hk : ρ k F = F)
@@ -145,10 +192,20 @@ theorem level_of_repr (V : HSp D) {μ : Measure (GA D V)} {𝓕 : Set (GA D V)}
   rw [hk] at h1
   exact congrFun (huniq F (rTr V k ψ) ψ (hψ.comp (continuous_mul_const k)) hψ h1 hr) g
 
+/- English proof (translation)
+Unfold `normInf`. Check the signs of the components of the expression.
+-/
 theorem normInf_nonneg (θ : InfFam D) (V : HSp D) (g : GA D V) : 0 ≤ normInf θ V g := by
   unfold normInf
   positivity
 
+/- English proof (translation)
+Introduce `D θ V hθ μ 𝓕 ρ hp hρ U hU`. Take `⟨S, Ω, C₁, hS, hΩ, hsob⟩` from `GlobalTheory.T.local_sobolev_inequality_adelic_unitary D θ V hθ U hU μ hp.haar`. Establish `hcount` using `GlobalTheory.T.ncard_rationalPoints_translatedCompact_le_pow D θ V hθ Ω hΩ`. Use `hcount.elim fun N hN => ?_` and prove the remaining obligations. Use `⟨N, S, hS, fun x => ?_⟩` and prove the remaining obligations.
+
+Use `(hN x).elim fun C₂ hC₂ => ?_` and prove the remaining obligations. Use `⟨√|C₁| * |C₂|, fun F ψ hF hlev hψ hr u hu => ?_⟩` and prove the remaining obligations. Take `⟨ψ', hr', haut, hsm, hder⟩` from `GlobalTheory.T.smooth_vector_automorphic_derivatives D θ V hθ μ 𝓕 ρ hp hρ U hU F hF hlev`. Establish `e : ψ' = ψ` using `(GlobalTheory.T.bounded_automorphic_has_representative D V μ 𝓕 ρ hp hρ).2.1 F ψ' ψ haut.cont hψ hr' hr`. Substitute `e` using the available equality.
+
+Establish `h1` using `hsob ψ' hψ (fun k hk hk' => level_of_repr V hp hρ hψ hr (hlev k hk hk')) (fun l hl => (hder l hl).1) hsm (x * u)`. Establish `h2` using `fun l hl => integral_le_adelic V hp hΩ (x * u) _ (hC₂ u hu) _ _ (hder l (hS l hl)).1 (hder l (hS l hl)).2`. Establish `h3` using `le_of_sums S (fun l => ∫ o in Ω, ‖(l.foldr (fun p f => Rder θ V p.1 p.2 f) ψ') (x * u * o)‖ ^ 2 ∂μ) (fun l => ‖l.foldr (dL2 θ V ρ) F‖) ‖ψ' (x * u)‖ C₁ C₂ (normInf θ V u) N (normInf_nonneg θ V u) (fun _ => integral_nonneg fun _ => sq_nonneg _) (fun _ => norm_nonneg _) h1 h2`. Conclude with `h3`.
+-/
 theorem pointwise_growth : ∀ (D : D7) (θ : InfFam D) (V : HSp D), IsInfFam θ → ∀ (μ : Measure (GA D V)) (𝓕 : Set (GA D V)) (ρ : GA D V →* (Lp ℂ 2 (nuQ V μ 𝓕) →L[ℂ] Lp ℂ 2 (nuQ V μ 𝓕))), FinPair V μ 𝓕 → IsReg V μ 𝓕 ρ → ∀ U : Subgroup (GA D V), IsOpen (U : Set (GA D V)) → ∃ (N : ℕ) (S : List (List (D.what₂.Tau × Mt V.rank))), (∀ l ∈ S, ∀ p ∈ l, p.2 ∈ lieAt V p.1) ∧ ∀ x, ∃ C : ℝ, ∀ F ψ, IsSmoothVector' θ V ρ F → (∀ k ∈ U, k ∈ GfC V → ρ k F = F) → Continuous ψ → Repr V μ 𝓕 F ψ → ∀ u ∈ GinfC V, ‖ψ (x * u)‖ ≤ C * normInf θ V u ^ N * (S.map fun l => ‖l.foldr (dL2 θ V ρ) F‖).sum := by
   intro D θ V hθ μ 𝓕 ρ hp hρ U hU
   obtain ⟨S, Ω, C₁, hS, hΩ, hsob⟩ := GlobalTheory.T.local_sobolev_inequality_adelic_unitary D θ V hθ U hU μ hp.haar

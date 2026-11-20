@@ -14,6 +14,9 @@ def IsZModTorsor (B D : Type) [CommRing B] [CommRing D] [Algebra B D] (q : ℕ)
       (Pi.algHom B (fun _ : Multiplicative (ZMod q) => D) (fun _ => AlgHom.id B D))
       (Pi.algHom B (fun _ : Multiplicative (ZMod q) => D) (fun g => (act g).toAlgHom)))
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h D _ _ act hD`. Conclude with `h D hD.1 hD.2.1 hD.2.2.1 act hD.2.2.2`. Introduce `h D _ _ h1 h2 h3 act h4`. Conclude with `h D act ⟨h1, h2, h3, h4⟩`.
+-/
 theorem torsorsTrivial_iff (B : Type) [CommRing B] (q : ℕ) :
     TorsorsTrivial B q ↔ ∀ (D : Type) [CommRing D] [Algebra B D]
       (act : Multiplicative (ZMod q) →* (D ≃ₐ[B] D)), IsZModTorsor B D q act →

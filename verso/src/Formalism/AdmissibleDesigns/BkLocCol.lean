@@ -25,6 +25,21 @@ variable {D : D7} (i : D.nd.Loc) (dc : TruncatedSeriesCountingIdentities.Decl D 
 set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Proceed by induction on `y using Submodule.Quotient.induction_on with`. Consider the case `H f`. Establish `hy' : Submodule.Quotient.mk (psiZ (resRep (uRep (D.nd.O i) (M` using `M) r χ) (decs D.host.E (Aw i dc) n)) ((Br.WKO i ρ π).comp (decS D.nd (plOf i dc n))) φ (fun g m => hφ g m) f) ∈ F0col i dc n ρV (resRep (uRep (D.nd.O i) (M := M) r χ) (decs D.host.E (Aw i dc) n)) qV := hy`. Take `⟨c, hc, hceq⟩` from `Submodule.mem_map.mp hy'`. Establish `hd` using `(Submodule.Quotient.eq _).1 hceq`.
+
+Establish `hpsi` using `Submodule.sub_mem _ hc (Submodule.mem_sup_right hd)`. Simplify using `only [Submodule.mem_comap, Submodule.coe_subtype, sub_sub_cancel] at hpsi`. Take `⟨a, ha, b, hb, hab⟩` from `Submodule.mem_sup.mp hpsi`. Take `⟨z, hz, rfl⟩` from `Submodule.mem_map.mp ha`. Take `⟨m, rfl⟩` from `hb`.
+
+Establish `hz' : z ∈ fZ i dc n ρV` using `hz`. Unfold `fZ at hz'`. Rewrite `hz'` using `[dif_pos hw]`. Establish `hz2 : (fun g => (z (Br.iota D.nbr i _ hw g) : TrV (eK (D.nbr i _ hw)) V)) ∈ finiteCocycles (Br.PD D.loc D.nbr i _ hw) (repL (eK (D.nbr i _ hw)) ρV (Br.iota D.nbr i _ hw))` using `hz'`. Establish `hpt : ∀ x, f.1 x = φ (qV (z x)) + ((Br.WKO i ρ π) (x : GE D.nd) (φ m) - φ m)`.
+
+Introduce `x`. Establish `e` using `congrFun hab x`. Express the relevant statement in the definitionally equal form `qV (z x) + (uRep (D.nd.O i) (M := M) r χ (x : GE D.nd) m - m) = φ.symm (f.1 x) at e`. Rewrite using `[← hφ, ← map_sub, ← map_add, e, LinearEquiv.apply_symm_apply]`. Establish `h1 : (fun g => Submodule.Quotient.mk (Ψ (z (Br.iota D.nbr i _ hw g))) : ↥(GK (D.nbr i _ hw).Kw) → (Fin D.R.r → Br.LLw (D.nbr i _ hw)) ⧸ (Br.lat (D.nbr i _ hw) ((WpO D.nd i ρ π).comp (decS D.nd (plOf i dc n)))).T) ∈ HfD ((D.loc (D.nd.l i)).PD (D.nbr i _ hw).Kw) (Br.lat (D.nbr i _ …` using `Submodule.mem_sup_left ⟨fun g => Ψ (z (Br.iota D.nbr i _ hw g)), (cocyclesFunctorial_holds _ _ _ _ _ _ _ _ _ _ _ _ Ψ hΨc hΨe _).2 hz2, rfl⟩`.
+
+Establish `h2 : (fun g => actD (Br.lat (D.nbr i _ hw) ((WpO D.nd i ρ π).comp (decS D.nd (plOf i dc n)))) g (Br.phi (D.nbr i _ hw) D.R.r (φ m)) - (show (Fin D.R.r → Br.LLw (D.nbr i _ hw)) ⧸ (Br.lat (D.nbr i _ hw) ((WpO D.nd i ρ π).comp (decS D.nd (plOf i dc n)))).T from Br.phi (D.nbr i _ hw) …` using `Submodule.mem_sup_right ⟨Br.phi (D.nbr i _ hw) D.R.r (φ m), rfl⟩`. Establish `h3` using `Submodule.add_mem _ h1 h2`. Establish `hfun : (Br.Phi (D.nbr i _ hw) ((Br.WKO i ρ π).comp (decS D.nd (plOf i dc n))) f : ↥(GK (D.nbr i _ hw).Kw) → (Fin D.R.r → Br.LLw (D.nbr i _ hw)) ⧸ (Br.lat (D.nbr i _ hw) ((WpO D.nd i ρ π).comp (decS D.nd (plOf i dc n)))).T) = (fun g => Submodule.Quotient.mk (Ψ (z (Br.iota D.nbr i …`. Use function extensionality and compare the values at `g`. Establish `hact : Br.phi (D.nbr i _ hw) D.R.r (Br.WKO i ρ π (Br.ι (D.nbr i _ hw) g : GE D.nd) (φ m)) = actD (Br.lat (D.nbr i _ hw) ((WpO D.nd i ρ π).comp (decS D.nd (plOf i dc n)))) g (Br.phi (D.nbr i _ hw) D.R.r (φ m))` using `phi_act D i (plOf i dc n) hw ((WpO D.nd i ρ π).comp (decS D.nd (plOf i dc n))) g (φ m)`.
+
+Use `show Br.phi (D.nbr i _ hw) D.R.r (f.1 (Br.ι (D.nbr i _ hw) g)) = _`. Rewrite using `[hpt, map_add, map_sub, hcomp]`. Conclude with `congrArg (fun t => Submodule.Quotient.mk (Ψ (z (Br.iota D.nbr i _ hw g))) + (t - Br.phi (D.nbr i _ hw) D.R.r (φ m))) hact`. Establish `hmem : f ∈ (HfD ((D.loc (D.nd.l i)).PD (D.nbr i _ hw).Kw) (Br.lat (D.nbr i _ hw) ((WpO D.nd i ρ π).comp (decS D.nd (plOf i dc n))))).comap (Br.Phi (D.nbr i _ hw) ((Br.WKO i ρ π).comp (decS D.nd (plOf i dc n))))`. Conclude with `Submodule.mem_comap.mpr (hfun ▸ h3)`.
+
+Conclude with `⟨f, hmem, rfl⟩`.
+-/
 theorem bkLoc_col (n : ℕ) (hw : plOf i dc n ∈ placesOver D.host.E (D.nd.l i))
     {V : Type} [AddCommGroup V] [Module (FractionRing (D.nd.O i)) V] [Module (D.nd.O i) V]
     [IsScalarTower (D.nd.O i) (FractionRing (D.nd.O i)) V]

@@ -28,6 +28,11 @@ def trivialFlagPair (d r : ℕ) : DV.FPair (trivialIntersectionTheory d) r where
   hx := fun _ => by
     rw [map_zero, sub_zero]
 
+/- English proof (translation)
+Establish `h` using `Formalism.L2.Geo.cm_type_meets_conjugate_pair p jc τ`. Unfold `DV.rkOf`. Distinguish the cases in `hτ : τ ∈ DV.PsiOf D jc`. Rewrite using `[if_pos hτ, if_neg (h.1 hτ)]`. Establish `hc : DV.cEmb D τ ∈ DV.PsiOf D jc`.
+
+Assume the negation of the conclusion as `hn`. Conclude with `hτ (h.2 hn)`. Rewrite using `[if_neg hτ, if_pos hc]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem sub_rkOf_psiOf_eq_rkOf_cEmb (D : D7) (p : ℕ) [Fact p.Prime] (jc : DV.KW p →+* ℂ)
     (N j : ℕ) (hj : j ≤ N) (τ : DV.Emb D p) :
     N - DV.rkOf (DV.PsiOf D jc) N j τ = DV.rkOf (DV.PsiOf D jc) N j (DV.cEmb D τ) := by
@@ -56,6 +61,9 @@ def trivialAdmissibleModel (D : D7) (p : ℕ) [Fact p.Prime] (jc : DV.KW p →+*
   dim_eq := rfl
   omW_dual := ⟨Equiv.refl _, fun _ => neg_zero.symm⟩
 
+/- English proof (translation)
+Introduce `D p _ jc N j hj` and use `⟨trivialAdmissibleModel D p jc N j hj⟩`.
+-/
 theorem nonempty_admissibleModel :
     ∀ (D : D7) (p : ℕ) [Fact p.Prime] (jc : DV.KW p →+* ℂ) (N j : ℕ), j ≤ N →
       Nonempty (DV.Mdl D p N (DV.rkOf (DV.PsiOf D jc) N j)) :=

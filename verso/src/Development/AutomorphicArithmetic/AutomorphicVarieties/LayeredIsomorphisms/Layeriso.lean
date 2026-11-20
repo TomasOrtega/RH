@@ -3,6 +3,15 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.LayeredIsomorphism
 
 open NumberField Formalism.GaloisCohomology UpperTheory.Top UpperTheory.V UpperTheory.V.LDataCardLeFinrank UpperTheory.V.Win
 
+/- English proof (translation)
+Use `haveI : NeZero (l ^ k') := ⟨pow_ne_zero _ hl.ne_zero⟩`. Use `haveI : NeZero (l ^ k) := ⟨pow_ne_zero _ hl.ne_zero⟩`. Establish `hζ : IsPrimitiveRoot (IsCyclotomicExtension.zeta (l ^ k') L₀' L₁' ^ (l ^ (k' - k))) (l ^ k)` using `(IsCyclotomicExtension.zeta_spec (l ^ k') L₀' L₁').pow (pow_pos hl.pos _) (by rw [← pow_add, Nat.sub_add_cancel hk])`. Use `letI : Algebra L₀ L₀' := e.toRingHom.toAlgebra`. Use `letI : Algebra L₀ L₁' := ((algebraMap L₀' L₁').comp e.toRingHom).toAlgebra`.
+
+Use `haveI : IsScalarTower L₀ L₀' L₁' := IsScalarTower.of_algebraMap_eq (fun _ => rfl)`. Establish `h1 : Module.finrank L₀ L₀' = 1`. Rewrite using `[← (AlgEquiv.ofRingEquiv (R := L₀) (A₁ := L₀) (A₂ := L₀') (f := e) (fun _ => rfl)).toLinearEquiv.finrank_eq, Module.finrank_self]`. Establish `h2 : Module.finrank L₀ L₁' = l ^ j`. Rewrite using `[← Module.finrank_mul_finrank L₀ L₀' L₁', h1, one_mul, d₁']`.
+
+Use `haveI : FiniteDimensional L₀ L₁' := Module.finite_of_finrank_pos (by rw [h2]; exact pow_pos hl.pos _)`. Use `haveI : Algebra.IsIntegral L₀ L₁' := Algebra.IsIntegral.of_finite L₀ L₁'`. Use `haveI := hζ.intermediateField_adjoin_isCyclotomicExtension L₀`. Set `φ` to `IsCyclotomicExtension.algEquiv {l ^ k} L₀ L₁ (IntermediateField.adjoin L₀ {IsCyclotomicExtension.zeta (l ^ k') L₀' L₁' ^ (l ^ (k' - k))})`. Establish `htop : IntermediateField.adjoin L₀ {IsCyclotomicExtension.zeta (l ^ k') L₀' L₁' ^ (l ^ (k' - k))} = ⊤` using `IntermediateField.eq_of_le_of_finrank_eq le_top (by rw [IntermediateField.finrank_top', ← φ.toLinearEquiv.finrank_eq, d₁, h2])`.
+
+Conclude with `⟨φ.toRingEquiv.trans ((IntermediateField.equivOfEq htop).toRingEquiv.trans IntermediateField.topEquiv.toRingEquiv)⟩`.
+-/
 private theorem nonempty_ringEquiv_of_isCyclotomic_finrank_eq (l j k k' : ℕ) (hl : l.Prime) (hk : k ≤ k') (L₀ L₀' L₁ L₁' : Type)
     [Field L₀] [Field L₀'] [Field L₁] [Field L₁'] [Algebra L₀ L₁] [Algebra L₀' L₁']
     (e : L₀ ≃+* L₀') (h₁ : IsCyclotomicExtension {l ^ k} L₀ L₁)
@@ -35,6 +44,9 @@ private theorem nonempty_ringEquiv_of_isCyclotomic_finrank_eq (l j k k' : ℕ) (
   exact ⟨φ.toRingEquiv.trans ((IntermediateField.equivOfEq htop).toRingEquiv.trans
     IntermediateField.topEquiv.toRingEquiv)⟩
 
+/- English proof (translation)
+Introduce `l j hl L₀ L₀' L₁ L₁' _ _ _ _ _ _ _ _ _ _ ⟨e⟩ ⟨⟨k, hk⟩, d⟩ ⟨⟨k', hk'⟩, d'⟩`. Break down `le_total k k' with h | h` into its components or cases. Conclude with `nonempty_ringEquiv_of_isCyclotomic_finrank_eq l j k k' hl h L₀ L₀' L₁ L₁' e hk hk' d d'`. Take `⟨f⟩` from `nonempty_ringEquiv_of_isCyclotomic_finrank_eq l j k' k hl h L₀' L₀ L₁' L₁ e.symm hk' hk d' d`. Conclude with `⟨f.symm⟩`.
+-/
 theorem UpperTheory.V.Win.layeriso :
     ∀ (l j : ℕ), l.Prime → ∀ (L₀ L₀' L₁ L₁' : Type) [Field L₀] [NumberField L₀] [Field L₀'] [NumberField L₀']
       [Field L₁] [NumberField L₁] [Field L₁'] [NumberField L₁'] [Algebra L₀ L₁] [Algebra L₀' L₁'],

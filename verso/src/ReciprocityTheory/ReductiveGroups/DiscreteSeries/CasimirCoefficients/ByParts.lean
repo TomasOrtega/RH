@@ -14,6 +14,23 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Use `haveI := muK_rightInvariant ε`. Use `haveI := compactSpace_KG ε`. Take `⟨γ', -, hγ', hadd'⟩` from `exists_oneParam ε hZ`. Establish `hinj : ∀ a b : KG ε, toMK a = toMK b → a = b`. Introduce `a b h`.
+
+Conclude with `Subtype.ext (Subtype.ext (Units.ext h))`. Establish `hγγ : ∀ t, γ t = γ' t` using `fun t => hinj _ _ (by rw [hγ, hγ'])`. Establish `hadd : ∀ s t, γ (s + t) = γ s * γ t`. Introduce `s t`. Rewrite using `[hγγ, hγγ, hγγ, hadd']`.
+
+Establish `h0 : γ 0 = 1`. Establish `h00` using `hadd 0 0`. Rewrite `h00` using `[add_zero]`. Conclude with `mul_left_cancel (a := γ 0) (by rw [mul_one]; exact h00.symm)`. Establish `hderiv : ∀ k t, HasDerivAt (fun u => F (k * γ u)) (D (k * γ t)) t`.
+
+Introduce `k t`. Establish `h1` using `hder (k * γ t)`. Establish `h2 : (fun s => F (k * γ t * γ s)) = fun s => F (k * γ (t + s))`. Use function extensionality and compare the values at `s`. Rewrite using `[hadd, mul_assoc]`.
+
+Rewrite `h1` using `[h2]`. Establish `h3` using `HasDerivAt.comp_sub_const t t (by rw [sub_self]; exact h1)`. Establish `h4 : (fun x => F (k * γ (t + (x - t)))) = fun u => F (k * γ u)`. Use function extensionality and compare the values at `x`. Rewrite using `[show t + (x - t) = x by ring]`.
+
+Rewrite `h3` using `[h4]`. Conclude with `h3`. Choose the witnesses or unpack the hypotheses as in `⟨C, hC⟩ : ∃ C, ∀ k, ‖D k‖ ≤ C := by`. Take `⟨C, hC⟩` from `(isCompact_range hD.norm).bddAbove`. Conclude with `⟨C, fun k => hC ⟨k, rfl⟩⟩`.
+
+Establish `hFm : ∀ t, Continuous fun k : KG ε => F (k * γ t)` using `fun t => hF.comp (continuous_mul_right _)`. Establish `hDm : Continuous fun k : KG ε => D (k * γ 0)` using `hD.comp (continuous_mul_right _)`. Establish `key` using `hasDerivAt_integral_of_dominated_loc_of_deriv_le (μ := muK ε) (F := fun t k => F (k * γ t)) (F' := fun t k => D (k * γ t)) (x₀ := (0 : ℝ)) (bound := fun _ => C) (s := Set.univ) Filter.univ_mem (Filter.Eventually.of_forall fun t => ((hFm t).stronglyMeasurable_of_hasCompactSupport …`. Establish `key2 : HasDerivAt (fun t => ∫ k, F (k * γ t) ∂(muK ε)) (∫ k, D (k * γ 0) ∂(muK ε)) 0` using `key.2`. Establish `hconst : (fun t => ∫ k, F (k * γ t) ∂(muK ε)) = fun _ => ∫ k, F k ∂(muK ε)`.
+
+Use function extensionality and compare the values at `t`. Conclude with `integral_mul_right_eq_self (fun k => F k) (γ t)`. Rewrite `key2` using `[hconst]`. Establish `huniq` using `key2.unique (hasDerivAt_const (0 : ℝ) (∫ k, F k ∂(muK ε)))`. Simplify `huniq` using `[h0]`.
+-/
 theorem kByParts {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] [CompleteSpace E]
     (ε : Fin n → Bool) (F D : KG ε → E) {Z : Matrix (Fin n) (Fin n) ℂ} (hZ : inK ε Z) (γ : ℝ → KG ε)
     (hγ : ∀ t, toMK (γ t) = NormedSpace.exp ((t : ℂ) • Z)) (hF : Continuous F) (hD : Continuous D)

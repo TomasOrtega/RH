@@ -14,6 +14,9 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 open GlobalTheory.IndefiniteRowSideFullHecke.ClassZetaValuationBounds (IsClassZetaVals c_vp cE_vp a0)
 open TensorProduct
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.EigLine.finrank_common_eigenspace_eq_one | exact GlobalTheory.EigLine.finrank_common_eigenspace_eq_one | (intros; apply GlobalTheory.EigLine.finrank_common_eigenspace_eq_one <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.cm_representation_eigen_decomposition : ∀ (E : Type) [Field E] [NumberField E] (O : Subring E), (∀ x : E, ∃ n : ℕ, n ≠ 0 ∧ (n : E) * x ∈ O) →
     ∀ (L : AddSubgroup E), (∀ a ∈ O, ∀ x ∈ L, a * x ∈ L) →
     ∀ (W : Type 1) [AddCommGroup W] [Module ℂ W] (P : L →+ W), Submodule.span ℂ (Set.range P) = ⊤ →

@@ -8,5 +8,8 @@ import ReciprocityTheory.AnalyticForms.PlurisubharmonicFunctions.PshBasic
 import ReciprocityTheory.AnalyticForms.PotentialTheory.PshShiftA
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.limsupExt_usc_all | exact GlobalTheory.limsupExt_usc_all | (intros; apply GlobalTheory.limsupExt_usc_all <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.upperSemicontinuous_limsupExt : ∀ (Y : Type) [TopologicalSpace Y] (S : Set Y) (u : Y → ℝ), UpperSemicontinuous (GlobalTheory.IndefiniteRowSideFullHecke.QuasiPlurisubharmonic.limsupExt S u) := by
   first | exact @GlobalTheory.limsupExt_usc_all | exact GlobalTheory.limsupExt_usc_all | (intros; apply GlobalTheory.limsupExt_usc_all <;> assumption)

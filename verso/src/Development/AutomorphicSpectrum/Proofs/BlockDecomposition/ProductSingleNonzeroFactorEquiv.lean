@@ -6,6 +6,13 @@ open GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.SmGL GlobalTheory.Loc
 
 namespace GlobalTheory.CompanionTheory.FineProd.ProdSingle
 
+/- English proof (translation)
+Introduce `k _ _ _ _ h N Y hd i₀ h0`. Establish `hN : (Y i₀).1 = N`. Rewrite using `[← hd]`. Conclude with `(Finset.sum_eq_single i₀ (fun i _ hi => h0 i hi) (fun hi => absurd (Finset.mem_univ _) hi)).symm`. Substitute `hN` using the available equality.
+
+Use `⟨(Y i₀).2, Sigma.eta _, ?_⟩` and prove the remaining obligations. Establish `hd' : ∑ a : Fin 1, (Y ((fun _ : Fin 1 => i₀) a)).1 = (Y i₀).1` using `by simp`. Take `⟨e₁⟩` from `GlobalTheory.T.induced_product_drop_zero_factors Y hd (fun _ : Fin 1 => i₀) (Subsingleton.strictMono _) (fun j hj => ⟨0, by`. Assume the negation of the conclusion as `hne`. Conclude with `hj (h0 j (fun e => hne e.symm))⟩) hd'`.
+
+Take `⟨e₂⟩` from `nonempty_equiv_prodIrr_one (Y i₀) hd'`. Conclude with `⟨e₁.trans e₂.symm⟩`.
+-/
 theorem prodIrr_single : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {h N : ℕ} (Y : Fin h → IrrGL k) (hd : ∑ a, (Y a).1 = N) (i₀ : Fin h), (∀ i, i ≠ i₀ → (Y i).1 = 0) → ∃ z : IrrCl (GL (Fin N) k), (⟨N, z⟩ : IrrGL k) = Y i₀ ∧ Nonempty ((prodIrr Y hd).Equiv z.rep.ρ) := by
   intro k _ _ _ _ h N Y hd i₀ h0
   have hN : (Y i₀).1 = N := by

@@ -7,5 +7,8 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.Conj.germAt_exists_of_isLocalRing | exact GlobalTheory.CompanionTheory.Ar.Conj.germAt_exists_of_isLocalRing | (intros; apply GlobalTheory.CompanionTheory.Ar.Conj.germAt_exists_of_isLocalRing <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_formal_germ_local : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) [StarRing (𝓞 E)], (∀ a : 𝓞 E, star a = H.bar a) → ∀ (X0 : Scheme.{0}) (t : SAB H X0), PowFns t → ∀ (S : Type) [CommRing S] [IsLocalRing S] (x : Sp S ⟶ X0), ∃ d, Nonempty (GermAt t x d) := by
   first | exact @GlobalTheory.CompanionTheory.Ar.Conj.germAt_exists_of_isLocalRing | exact GlobalTheory.CompanionTheory.Ar.Conj.germAt_exists_of_isLocalRing | (intros; apply GlobalTheory.CompanionTheory.Ar.Conj.germAt_exists_of_isLocalRing <;> assumption)

@@ -13,6 +13,13 @@ noncomputable section
 
 namespace GlobalTheory.Unf
 
+/- English proof (translation)
+Introduce `D W ρ x₀ hb u hd hl`. Establish `htri : (rat u : Mx D ρ ρ).BlockTriangular id` using `fun i j (h : j < i) => by show incA D (u i j) = 0`. Rewrite using `[hl i j h, map_zero]`. Establish `hdiag : ∀ i, (rat u : Mx D ρ ρ) i i = 1` using `fun i => by show incA D (u i i) = 1`. Rewrite using `[hd i, map_one]`.
+
+Establish `hu : IsUnit (rat u : Mx D ρ ρ)` using `(Matrix.isUnit_iff_isUnit_det _).2 (by`. Rewrite using `[Matrix.det_of_upperTriangular htri]`. Simplify using `only [hdiag, Finset.prod_const_one]`. Conclude with `isUnit_one)`. Establish `hmem : hu.unit ∈ UX D ρ` using `fun i j => ⟨fun h => htri h, hdiag i⟩`.
+
+Establish `h` using `hb.2 _ hmem`. Rewrite `h` using `[IsUnit.unit_spec]`. Apply `rat_injective` to reduce the goal to its premises. Rewrite using `[rat_mul, rat_mul, rat_conjTranspose, Matrix.mul_assoc]`. Conclude with `h`.
+-/
 theorem gramQ_unitri : ∀ (D : D7) (W : HSp D) (ρ : ℕ) (x₀ : Matrix (Fin W.rank) (Fin ρ) D.host.E), IsBase W x₀ → ∀ u : Matrix (Fin ρ) (Fin ρ) D.host.E, (∀ i, u i i = 1) → (∀ i k, k < i → u i k = 0) → uᴴ * gramQ W x₀ * u = gramQ W x₀ := by
   intro D W ρ x₀ hb u hd hl
   have htri : (rat u : Mx D ρ ρ).BlockTriangular id := fun i j (h : j < i) => by

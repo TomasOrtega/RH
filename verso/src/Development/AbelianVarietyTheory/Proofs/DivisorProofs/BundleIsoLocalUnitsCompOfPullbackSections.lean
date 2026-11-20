@@ -6,16 +6,31 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 
 namespace GlobalTheory.FormalAlg
 
+/- English proof (translation)
+Rewrite using `[← gs_pull r F z U h, gs_stalkMap r z _ h, gs_pull (𝟙 _) F (r z) U h, Category.id_comp]`.
+-/
 theorem gs_comp_stalkMap {Z Y X : Scheme.{0}} (r : Z ⟶ Y) (F : Y ⟶ X) (z : Z) (U : X.Opens) (h : F (r z) ∈ U)
     (a : Γ(X, U)) :
     gs (r ≫ F) z U a = (Scheme.Hom.stalkMap r z).hom (gs F (r z) U a) := by
   rw [← gs_pull r F z U h, gs_stalkMap r z _ h, gs_pull (𝟙 _) F (r z) U h, Category.id_comp]
 
+/- English proof (translation)
+Rewrite using `[← gs_unit r z V h, ← gs_unit (𝟙 Y) (r z) V h, gs_stalkMap r z V h]`.
+-/
 theorem gm_val_stalkMap {Z Y : Scheme.{0}} (r : Z ⟶ Y) (z : Z) (V : Y.Opens) (h : r z ∈ V) (u : Γ(Y, V)ˣ) :
     ((gm r z V u : (Z.presheaf.stalk z)ˣ) : Z.presheaf.stalk z) =
       (Scheme.Hom.stalkMap r z).hom ((gm (𝟙 Y) (r z) V u : (Y.presheaf.stalk (r z))ˣ) : Y.presheaf.stalk (r z)) := by
   rw [← gs_unit r z V h, ← gs_unit (𝟙 Y) (r z) V h, gs_stalkMap r z V h]
 
+/- English proof (translation)
+Introduce `X Y' Y b' β b hb A H' H w' v w ι s s' s'' h₁ h₂ h₃ hc z k k' k'' hk hk' hk''`. Substitute `hb` using the available equality. Establish `hz : z ∈ ⨆ j, nonzeroLocus (s'' j)` using `by rw [hc]; trivial`. Take `⟨j, hj⟩` from `TopologicalSpace.Opens.mem_iSup.1 hz`. Take `⟨k₀, hk₀, hu₀⟩` from `(mem_nonzeroLocus (s'' j) z).1 hj`.
+
+Establish `hu : IsUnit (gs (𝟙 Y) z (H.U k'') ((s'' j).f k''))`. Rewrite using `[gs_compat (s'' j) (𝟙 Y) z hk'' hk₀]`. Conclude with `(Units.isUnit _).mul hu₀`. Establish `hkb : b' (β z) ∈ A.U k` using `hk`. Establish `e₁` using `h₁ j (β z) k k' hkb hk'`.
+
+Establish `e₂` using `h₂ j z k' k'' hk' hk''`. Establish `e₃` using `h₃ j z k k'' hk hk''`. Establish `hV : β z ∈ (A.pull b').U (fun _ => k) ⊓ H'.U k'` using `⟨mem_pull.2 hkb, hk'⟩`. Establish `e₁'` using `congrArg (Scheme.Hom.stalkMap β z).hom e₁`. Rewrite `e₁'` using `[map_mul, ← gs_comp_stalkMap β b' z _ hkb, ← gs_stalkMap β z _ hk']`.
+
+Establish `hw' : ((Geo.Tor.gw w' β z k k' : (Y.presheaf.stalk z)ˣ) : Y.presheaf.stalk z) = (Scheme.Hom.stalkMap β z).hom ((Geo.Tor.gw w' (𝟙 _) (β z) k k' : (Y'.presheaf.stalk (β z))ˣ) : Y'.presheaf.stalk (β z))` using `gm_val_stalkMap β z _ hV _`. Rewrite `e₁'` using `[← hw', e₂]`. Rewrite `e₁'` using `[e₃, ← _root_.mul_assoc, ← Units.val_mul]`. Conclude with `Units.ext (hu.mul_left_inj.1 e₁')`.
+-/
 theorem gw_comp_of_rel : ∀ (X Y' Y : Scheme.{0}) (b' : Y' ⟶ X) (β : Y ⟶ Y') (b : Y ⟶ X), β ≫ b' = b → ∀ (A : LB X) (H' : LB Y') (H : LB Y) (w' : LB.Iso H' (A.pull b')) (v : LB.Iso H (H'.pull β)) (w : LB.Iso H (A.pull b)) (ι : Type) (s : ι → LB.Sec A) (s' : ι → LB.Sec H') (s'' : ι → LB.Sec H), (∀ j, Rel b' w' (s j) (s' j)) → (∀ j, Rel β v (s' j) (s'' j)) → (∀ j, Rel b w (s j) (s'' j)) → (⨆ j, nonzeroLocus (s'' j) = ⊤) → ∀ z k k' k'', b z ∈ A.U k → β z ∈ H'.U k' → z ∈ H.U k'' → Geo.Tor.gw w (𝟙 _) z k k'' = Geo.Tor.gw w' β z k k' * Geo.Tor.gw v (𝟙 _) z k' k'' := by
   intro X Y' Y b' β b hb A H' H w' v w ι s s' s'' h₁ h₂ h₃ hc z k k' k'' hk hk' hk''
   subst hb

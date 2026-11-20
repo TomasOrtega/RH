@@ -11,11 +11,19 @@ variable {V : Type} [AddCommGroup V] [Module ℂ V] {d : ℕ}
 noncomputable abbrev ec (d : ℕ) : V ⊗[ℂ] (Fin d → ℂ) →ₗ[ℂ] (Fin d → V) :=
   TensorProduct.piScalarRightHom ℂ ℂ V (Fin d)
 
+/- English proof (translation)
+Introduce `x y h`. Apply `(TensorProduct.piScalarRight ℂ ℂ V (Fin d)).injective` to reduce the goal to its premises. Simplify using `using h`.
+-/
 lemma ec_injective : Function.Injective (ec (V := V) d) := by
   intro x y h
   apply (TensorProduct.piScalarRight ℂ ℂ V (Fin d)).injective
   simpa using h
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul φ v`. Simplify using `[Matrix.mulVec, dotProduct, Finset.sum_smul, mul_smul]`. Consider the case `add x y hx hy`.
+
+Simplify using `only [map_add, Pi.add_apply, hx, hy, smul_add, Finset.sum_add_distrib]`.
+-/
 lemma ec_lTensor (T : Matrix (Fin d) (Fin d) ℂ) (x : V ⊗[ℂ] (Fin d → ℂ)) (k : Fin d) :
     ec d ((Matrix.toLin' T).lTensor V x) k = ∑ j, T k j • ec d x j := by
   induction x using TensorProduct.induction_on with
@@ -27,6 +35,13 @@ lemma ec_lTensor (T : Matrix (Fin d) (Fin d) ℂ) (x : V ⊗[ℂ] (Fin d → ℂ
 
 end
 
+/- English proof (translation)
+Take `⟨m, v, rfl⟩` from `Matrix.posSemidef_iff_eq_sum_vecMulVec.mp hA`. Establish `e : ∑ k, ∑ j, (∑ i, Matrix.vecMulVec (v i) (star (v i))) k j * H (u k) (u j) = ∑ i, H (∑ k, star (v i k) • u k) (∑ k, star (v i k) • u k)`. Simplify using `only [Matrix.sum_apply, Matrix.vecMulVec_apply, map_sum, map_smulₛₗ, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul, Pi.star_apply, starRingEnd_apply, star_star, RingHom.id_apply, Finset.sum_mul, Finset.mul_sum]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, Complex.re_sum]`.
+
+Conclude with `Finset.sum_nonneg fun i _ => hnn _`.
+-/
 private theorem re_sum_posSemidef_mul_H_nonneg {V : Type} [AddCommGroup V] [Module ℂ V] {d : ℕ}
     (H : V →ₗ⋆[ℂ] V →ₗ[ℂ] ℂ) (hnn : ∀ φ : V, 0 ≤ (H φ φ).re)
     (A : Matrix (Fin d) (Fin d) ℂ) (hA : A.PosSemidef) (u : Fin d → V) :
@@ -48,6 +63,25 @@ private theorem re_sum_posSemidef_mul_H_nonneg {V : Type} [AddCommGroup V] [Modu
   rw [e, Complex.re_sum]
   exact Finset.sum_nonneg fun i _ => hnn _
 
+/- English proof (translation)
+Introduce `V _ _ d H hsym hpos`. Establish `hnn : ∀ φ : V, 0 ≤ (H φ φ).re` using `fun φ => by`. Distinguish the cases in `h : φ = 0`. Simplify using `[h]`. Conclude with `(hpos φ h).le`.
+
+Set `B : V ⊗[ℂ] (Fin d → ℂ) →ₗ[ℂ] V ⊗[ℂ] (Fin d → ℂ) →ₗ⋆[ℂ] ℂ` to `LinearMap.mk₂'ₛₗ (RingHom.id ℂ) (starRingEnd ℂ) (fun x y => ∑ k, H (ec (V := V) d y k) (ec (V := V) d x k)) (by intros; simp [Finset.sum_add_distrib]) (by intros; simp [Finset.mul_sum]) (by intros; simp [Finset.sum_add_distrib]) (by intros; simp [Finset.mul_sum])`. Use `⟨B, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x y`. Simplify using `only [B, LinearMap.mk₂'ₛₗ_apply]`. Rewrite using `[map_sum]`.
+
+Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[hsym]`. Introduce `x hx`. Simplify using `only [B, LinearMap.mk₂'ₛₗ_apply]`. Rewrite using `[Complex.re_sum]`.
+
+Establish `hne : ec (V` using `V) d x ≠ 0 := fun h => hx (ec_injective (by rw [h, map_zero]))`. Take `⟨k, hk⟩` from `Function.ne_iff.mp hne`. Conclude with `Finset.sum_pos' (fun j _ => hnn _) ⟨k, Finset.mem_univ _, hpos _ hk⟩`. Introduce `φ ψ v w`. Simplify using `only [B, LinearMap.mk₂'ₛₗ_apply, ec, TensorProduct.piScalarRightHom_tmul, map_smulₛₗ, LinearMap.smul_apply, map_smul, smul_eq_mul, dotProduct, Finset.mul_sum, Pi.star_apply]`.
+
+Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `only [starRingEnd_apply, RingHom.id_apply]`. Expand and normalize the polynomial expressions, which then agree. Introduce `T c hT hle x`. Establish `hH : ((c : ℂ) • (1 : Matrix (Fin d) (Fin d) ℂ) - T).IsHermitian`.
+
+Use `Matrix.IsHermitian.sub ?_ hT` and prove the remaining obligations. Simplify using `[Matrix.IsHermitian, Matrix.conjTranspose_smul]`. Establish `hA : ((c : ℂ) • (1 : Matrix (Fin d) (Fin d) ℂ) - T).PosSemidef`. Rewrite using `[Matrix.posSemidef_iff_dotProduct_mulVec]`. Use `⟨hH, fun v => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Complex.nonneg_iff]`. Prove the components needed by the constructor for the conclusion. Simplify using `only [Matrix.sub_mulVec, Matrix.smul_mulVec, Matrix.one_mulVec, dotProduct_sub, dotProduct_smul, smul_eq_mul, Complex.sub_re, Complex.re_ofReal_mul]`. Combine the linear relations using `[hle v]`. Establish `h0` using `hH.im_star_dotProduct_mulVec_self v`.
+
+Simplify using `using h0.symm`. Establish `key` using `re_sum_posSemidef_mul_H_nonneg H hnn _ hA (ec (V := V) d x)`. Simplify using `only [B, LinearMap.mk₂'ₛₗ_apply, ec_lTensor, map_sum, map_smul, smul_eq_mul]`. Simplify using `only [Matrix.sub_apply, Matrix.smul_apply, Matrix.one_apply, smul_eq_mul, sub_mul, Finset.sum_sub_distrib, mul_ite, mul_one, mul_zero, ite_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true, Complex.sub_re, Complex.re_sum, Complex.re_ofReal_mul] at key`. Rewrite using `[Complex.re_sum, Complex.re_sum, Finset.mul_sum]`.
+
+Simplify using `only [Complex.re_sum]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem tensForm_holds : TensForm := by
   intro V _ _ d H hsym hpos
   have hnn : ∀ φ : V, 0 ≤ (H φ φ).re := fun φ => by

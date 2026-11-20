@@ -6,6 +6,17 @@ open scoped CategoryTheory.Obj
 open GlobalTheory.Desc
 open TensorProduct
 
+/- English proof (translation)
+Take `⟨s, hs⟩` from `IsLocalization.exist_integer_multiples (nonZeroDivisors B) (Finset.univ : Finset (Fin n)) u`. Use `choose x hx using fun j => hs j (Finset.mem_univ j)`. Establish `hx' : ∀ j, algebraMap B K (x j) = algebraMap B K (s : B) * u j`. Introduce `j`. Rewrite using `[hx j, Algebra.smul_def]`.
+
+Establish `h0 : ∑ j, x j ⊗ₜ[R] r j = 0`. Apply `hβ` to reduce the goal to its premises. Rewrite using `[map_sum, map_zero]`. Simplify using `only [hβt, hx', map_mul]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[Finset.mul_sum]; refine Finset.sum_congr rfl fun j _ => by ring`. Use `_ = 0 := by rw [h, mul_zero]`. Establish `h1` using `congrArg ((IsScalarTower.toAlgHom R B K).toLinearMap.rTensor R₁) h0`. Simplify using `only [map_sum, LinearMap.rTensor_tmul, AlgHom.toLinearMap_apply, IsScalarTower.coe_toAlgHom', map_zero] at h1`. Establish `h2 : (algebraMap B K (s : B)) • ∑ j, u j ⊗ₜ[R] r j = 0`.
+
+Rewrite using `[Finset.smul_sum]`. Simplify `h1` using `only [TensorProduct.smul_tmul', smul_eq_mul, hx']`. Establish `hne : algebraMap B K (s : B) ≠ 0` using `(IsLocalization.map_units K s).ne_zero`. Use `congrArg (fun z => (algebraMap B K (s : B))⁻¹ • z) h2` as an intermediate fact. Simplify using `only [smul_zero] at this`.
+
+Rewrite `this` using `[inv_smul_smul₀ hne]`. Then use the resulting hypothesis.
+-/
 theorem GlobalTheory.tensor_fraction_injective_of_injective
     (R R₁ B K L : Type) [CommRing R] [CommRing R₁] [CommRing B] [Field K] [Field L] [Algebra R R₁]
     [Algebra R B] [Algebra R K] [Algebra B K] [IsScalarTower R B K] [IsFractionRing B K]

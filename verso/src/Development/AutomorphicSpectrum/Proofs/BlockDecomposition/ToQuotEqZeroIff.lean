@@ -24,12 +24,18 @@ def toQuot {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V] (P : Represent
   ⟨(Submodule.mkQ _) ∘ₗ LinearMap.codRestrict (⊤ : Subrepresentation P).toSubmodule
     LinearMap.id (fun v => trivial), fun g => rfl⟩
 
+/- English proof (translation)
+Introduce `y`. Take `⟨⟨v, hv⟩, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Conclude with `⟨v, rfl⟩`.
+-/
 theorem toQuot_surjective {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V] (P : Representation ℂ G V)
     (C : Subrepresentation P) : Function.Surjective (toQuot P C) := by
   intro y
   obtain ⟨⟨v, hv⟩, rfl⟩ := Submodule.Quotient.mk_surjective _ y
   exact ⟨v, rfl⟩
 
+/- English proof (translation)
+Use `show (Submodule.Quotient.mk _ : _ ⧸ _) = 0 ↔ _`. Rewrite using `[Submodule.Quotient.mk_eq_zero]`. Both sides reduce to the same expression.
+-/
 theorem toQuot_eq_zero_iff {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V] (P : Representation ℂ G V)
     (C : Subrepresentation P) (v : V) : toQuot P C v = 0 ↔ v ∈ C.toSubmodule := by
   show (Submodule.Quotient.mk _ : _ ⧸ _) = 0 ↔ _
@@ -40,9 +46,39 @@ def incl {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V] {P : Representat
     (S : Subrepresentation P) : S.toRepresentation.IntertwiningMap P :=
   ⟨S.toSubmodule.subtype, fun _ => rfl⟩
 
+/- English proof (translation)
+The claim follows from `Subtype.val_injective`.
+-/
 theorem incl_injective {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V] {P : Representation ℂ G V}
     (S : Subrepresentation P) : Function.Injective (incl S) := Subtype.val_injective
 
+/- English proof (translation)
+Establish `two_le_one : ¬ (2 : ℕ∞) ≤ 1` using `by norm_num`. Use `haveI : WellFoundedLT (Subrepresentation P) := ((hasFiniteLength_iff_wellFounded _).1 hfl).2`. Use `haveI : WellFoundedGT (Subrepresentation P) := ((hasFiniteLength_iff_wellFounded _).1 hfl).1`. Use `haveI : IsAtomic (Subrepresentation P) := isAtomic_of_orderBot_wellFounded_lt wellFounded_lt`. Take `⟨S, hSa, -⟩` from `(eq_bot_or_exists_atom_le (⊤ : Subrepresentation P)).resolve_left hne.symm`.
+
+Establish `hS : S.toRepresentation.IsIrreducible` using `GlobalTheory.CuspFactor.irr_of_atom _ S hSa`. Establish `hStop : S ≠ ⊤`. Introduce and unpack `rfl`. Conclude with `hred (isSimpleOrder_iff_isAtom_top.2 hSa)`. Take `⟨C, hC, hSC⟩` from `(eq_top_or_exists_le_coatom S).resolve_left hStop`.
+
+Establish `hCi : (subQuot ⊤ C).IsIrreducible` using `isIrreducible_subQuot hC.covBy_top`. Establish `hf` using `toQuot_surjective P C`. Take `⟨q, hq⟩` from `hF S hS`. Establish `hsub0 : IsSubquotient τ₀ (jac e S.toRepresentation)` using `.of_surjective q hq`. Establish `hQs : IsSubquotient (subQuot ⊤ C) P` using `.of_surjective (toQuot P C) hf`.
+
+Establish `hSP : IsSubquotient (jac e S.toRepresentation) (jac e P)` using `.of_injective (jacMap e (incl S)) (GlobalTheory.JacquetExact.jacMap_injective e hP (incl S) (incl_injective S))`. Establish `hz : ∀ z, toQuot P C (incl S z) = 0` using `fun z => (toQuot_eq_zero_iff P C _).2 (hSC z.2)`. Establish `hno : ¬ IsSubquotient τ₀ (jac e (subQuot ⊤ C))` using `fun h => two_le_one ((GlobalTheory.CompanionTheory.SegFine2.two_le_jhMult_of_map e hP (toQuot P C) hf (incl S) (incl_injective S) hz h₀ hsub0 h).trans m₀)`. Establish `hq1 : IsSubquotient τ₁ (jac e (subQuot ⊤ C))` using `(hQ _ _ (hQs.isSmooth hP) hCi hQs).resolve_left hno`. Establish `hno1 : ¬ IsSubquotient τ₁ (jac e S.toRepresentation)` using `fun h => two_le_one ((GlobalTheory.CompanionTheory.SegFine2.two_le_jhMult_of_map e hP (toQuot P C) hf (incl S) (incl_injective S) hz h₁ h hq1).trans m₁)`.
+
+Use `⟨S, hS, fun S' hS' => ?_, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne'`. Establish `ha' : IsAtom S'`. Establish `h` using `isAtom_range hS' (incl S') (incl_injective S')`. Establish `e' : (incl S').range = S'` using `Subrepresentation.toSubmodule_injective (Submodule.range_subtype _)`.
+
+Rewrite `h` using `[e']`. Then use the resulting hypothesis. Establish `hdis : S ⊓ S' = ⊥` using `(hSa.disjoint_of_ne ha' (Ne.symm hne')).eq_bot`. Set `c : S.toRepresentation.IntertwiningMap (subQuot ⊤ S')` to `⟨(toQuot P S').toLinearMap ∘ₗ (incl S).toLinearMap, fun g => LinearMap.ext fun v => ((toQuot P S').isIntertwining _ _ g _)⟩`. Establish `hc : Function.Injective c` using `(injective_iff_map_eq_zero c).2 fun v hv => by`. Establish `h1 : (v : V) ∈ S'.toSubmodule` using `(toQuot_eq_zero_iff P S' _).1 hv`.
+
+Establish `h2 : (v : V) ∈ (S ⊓ S').toSubmodule` using `⟨v.2, h1⟩`. Rewrite `h2` using `[hdis]`. Conclude with `Subtype.ext h2`. Establish `h2 : IsSubquotient τ₀ (jac e (subQuot ⊤ S'))` using `hsub0.trans (.of_injective (jacMap e c) (GlobalTheory.JacquetExact.jacMap_injective e ((IsSubquotient.of_surjective (toQuot P S') (toQuot_surjective P S')).isSmooth hP) c hc))`. Take `⟨q', hq'⟩` from `hF S' hS'`.
+
+Conclude with `two_le_one ((GlobalTheory.CompanionTheory.SegFine2.two_le_jhMult_of_map e hP (toQuot P S') (toQuot_surjective P S') (incl S') (incl_injective S') (fun z => (toQuot_eq_zero_iff P S' _).2 z.2) h₀ (.of_surjective q' hq') h2).trans m₀)`. Establish `hinj : Function.Injective q`. Set `K : Subrepresentation (jac e S.toRepresentation)` to `⟨LinearMap.ker q.toLinearMap, fun g x hx => by show q (jac e S.toRepresentation g x) = 0`. Rewrite using `[q.isIntertwining]`. Establish `hx' : q x = 0` using `hx`.
+
+Rewrite using `[hx', map_zero]⟩`. Assume the negation of the conclusion as `hni`. Establish `hK : K ≠ ⊥` using `fun h => hni ((injective_iff_map_eq_zero q).2 fun x hx => by`. Establish `h1 : x ∈ K.toSubmodule` using `hx`. Rewrite `h1` using `[h]`.
+
+Conclude with `h1)`. Use `haveI : WellFoundedLT (Subrepresentation (jac e S.toRepresentation)) := ((hasFiniteLength_iff_wellFounded _).1 (hJ S hS)).2`. Use `haveI : IsAtomic (Subrepresentation (jac e S.toRepresentation)) := isAtomic_of_orderBot_wellFounded_lt wellFounded_lt`. Take `⟨A, hA, hAK⟩` from `(eq_bot_or_exists_atom_le K).resolve_left hK`. Establish `hAi : A.toRepresentation.IsIrreducible` using `GlobalTheory.CuspFactor.irr_of_atom _ A hA`.
+
+Establish `hAs : IsSubquotient A.toRepresentation (jac e S.toRepresentation)` using `.of_injective (incl A) (incl_injective A)`. Break down `hcase _ _ hAi (hAs.trans hSP) with ⟨⟨φ⟩⟩ | ⟨⟨φ⟩⟩` into its components or cases. Establish `hadd` using `jhMult_exact (incl K) q h₀ (incl_injective K) hq (fun u => u.2) (fun v hv => ⟨⟨v, hv⟩, rfl⟩)`. Set `a : A.toRepresentation.IntertwiningMap K.toRepresentation` to `⟨LinearMap.codRestrict K.toSubmodule (incl A).toLinearMap (fun x => hAK x.2), fun g => LinearMap.ext fun x => Subtype.ext ((incl A).isIntertwining _ _ g x)⟩`. Establish `ha : Function.Injective a` using `fun x y h => incl_injective A (congrArg K.toSubmodule.subtype h)`.
+
+Establish `a1 : jhMult τ₀ K.toRepresentation ≠ 0` using `jhMult_ne_zero_iff.2 (IsSubquotient.trans (.of_injective φ.symm.toIntertwiningMap φ.symm.toLinearEquiv.injective) (.of_injective a ha))`. Establish `a2 : jhMult τ₀ τ₀ ≠ 0` using `jhMult_ne_zero_iff.2 (.refl _)`. Establish `h5` using `ENat.one_le_iff_ne_zero.2 a1`. Establish `h6` using `ENat.one_le_iff_ne_zero.2 a2`. Establish `h7 : (2 : ℕ∞) ≤ jhMult τ₀ (jac e S.toRepresentation)`.
+
+Rewrite using `[hadd]`. Conclude with `(by norm_num : (2 : ℕ∞) = 1 + 1).le.trans (add_le_add h5 h6)`. Conclude with `two_le_one ((h7.trans (GlobalTheory.CompanionTheory.JmMono.jhMult_le_of_isSubquotient τ₀ hSP)).trans m₀)`. Conclude with `hno1 (IsSubquotient.trans (.of_injective φ.symm.toIntertwiningMap φ.symm.toLinearEquiv.injective) hAs)`. Conclude with `⟨LocGL.equivOfBijective q ⟨hinj, hq⟩⟩`.
+-/
 theorem exists_unique_sub {s N : ℕ} {d : Fin s → ℕ} (e : (Σ a, Fin (d a)) ≃ Fin N) {V Y₀ Y₁ : Type}
     [AddCommGroup V] [Module ℂ V] [AddCommGroup Y₀] [Module ℂ Y₀] [AddCommGroup Y₁] [Module ℂ Y₁]
     {P : Representation ℂ (GL (Fin N) k) V} (hP : IsSmooth P) (hfl : HasFiniteLength P)
@@ -154,6 +190,27 @@ theorem exists_unique_sub {s N : ℕ} {d : Fin s → ℕ} (e : (Σ a, Fin (d a))
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Use `haveI : Fintype (SizeMatrix (fun _ : Fin 2 => Fin n) (fun _ : Fin 2 => Fin n)) := Fintype.ofFinite _`. Establish `hsm : IsSmooth (piTensor ρ)` using `isSmooth_piTensor hs`. Establish `key : ∀ b : SizeMatrix (fun _ : Fin 2 => Fin n) (fun _ : Fin 2 => Fin n), ∃ (f : ∀ i, (Σ j, Fin (b.1 i j)) ≃ Fin n) (g : ∀ j, (Σ i, Fin (b.1 i j)) ≃ Fin n), jhMult τ (cellFunctor f g (piTensor ρ)) ≠ 0 → Nonempty (τ.Equiv (piTensor ρ)) ∨ Nonempty (τ.Equiv (piTensor fun a => ρ (Fin …`. Introduce `b`. Distinguish the cases in `hrow : ∀ i j j', b.1 i j ≠ 0 → b.1 i j' ≠ 0 → j = j'`.
+
+Take `⟨σ, hσ, hz, hb⟩` from `GlobalTheory.RegMult.exists_perm (d := fun _ : Fin 2 => n) (fun _ => hn) b hrow`. Break down `GlobalTheory.CompanionTheory.SegFine2.perm_two σ with hσ1 | hσ1` into its components or cases. Establish `hb' : ∀ i j, b.1 i j = if (Equiv.refl (Fin 2)) j = i then n else 0`. Introduce `i j`. Distinguish the cases in `hij : j = i`.
+
+Substitute `hij` using the available equality. Establish `h2` using `hb j`. Rewrite `h2` using `[hσ1]`. Simplify using `using h2`. Rewrite using `[if_neg (show ¬ (Equiv.refl (Fin 2)) j = i from hij)]`.
+
+Conclude with `hz i j (by rw [hσ1]; exact hij)`. Take `⟨f, g, ⟨φ⟩⟩` from `GlobalTheory.CompanionTheory.CellBij.cell_bij (Equiv.refl (Fin 2)) (fun _ => n) ρ hs b hb'`. Use `⟨f, g, fun hne => Or.inl ?_⟩` and prove the remaining obligations. Establish `h2` using `jhMult_congr_right τ φ`. Conclude with `(GlobalTheory.RegMult.nonempty_equiv_of_jhMult_ne_zero hτ h0 (h2.symm.trans_ne hne)).map Representation.Equiv.symm`.
+
+Establish `hb' : ∀ i j, b.1 i j = if (Fin.revPerm : Equiv.Perm (Fin 2)) j = i then n else 0`. Introduce `i j`. Distinguish the cases in `hij : (Fin.revPerm : Equiv.Perm (Fin 2)) j = i`. Substitute `hij` using the available equality. Rewrite using `[if_pos rfl]`.
+
+Establish `h2` using `hb ((Fin.revPerm : Equiv.Perm (Fin 2)) j)`. Rewrite `h2` using `[hσ1]`. Simplify using `using h2`. Rewrite using `[if_neg hij]`. Use `hz i j fun h => hij ?_` and prove the remaining obligations.
+
+Rewrite `h` using `[hσ1]`. Rewrite using `[h]`. Simplify using the standard rewrite rules. Take `⟨f, g, ⟨φ⟩⟩` from `GlobalTheory.CompanionTheory.CellBij.cell_bij (Fin.revPerm : Equiv.Perm (Fin 2)) (fun _ => n) ρ hs b hb'`. Use `⟨f, g, fun hne => Or.inr ?_⟩` and prove the remaining obligations.
+
+Establish `h2` using `jhMult_congr_right τ φ`. Conclude with `(GlobalTheory.RegMult.nonempty_equiv_of_jhMult_ne_zero hτ h1 (h2.symm.trans_ne hne)).map Representation.Equiv.symm`. Use `⟨b.nonempty_rows.some, b.nonempty_cols.some, fun hne => ?_⟩` and prove the remaining obligations. It suffices to derive a contradiction. Use `push_neg at hrow`.
+
+Take `⟨i, j, j', hj, hj', hjj⟩` from `hrow`. Break down `lt_or_gt_of_ne hjj with hlt | hlt` into its components or cases. Conclude with `hne (GlobalTheory.RegMult.jhMult_cell_eq_zero_of_row (d := fun _ : Fin 2 => n) hc b hlt hj hj' _ _ hτ)`. Conclude with `hne (GlobalTheory.RegMult.jhMult_cell_eq_zero_of_row (d := fun _ : Fin 2 => n) hc b hlt hj' hj _ _ hτ)`. Use `choose f g hfg using key`.
+
+Establish `h3` using `jhMult_ne_zero_iff.2 hsub`. Rewrite `h3` using `[multiProd, hG.jhMult_eq e e hsm f g hτ]`. Take `⟨b, -, hb⟩` from `Finset.exists_ne_zero_of_sum_ne_zero h3`. Conclude with `hfg b hb`.
+-/
 theorem cell_cases (hG : JacquetOfInducedFiltration k) {n N : ℕ} (hn : 0 < n) {X : Fin 2 → Type}
     [∀ a, AddCommGroup (X a)] [∀ a, Module ℂ (X a)] (ρ : ∀ a, Representation ℂ (GL (Fin n) k) (X a))
     (hs : ∀ a, IsSmooth (ρ a)) (hc : ∀ a, IsCuspidal (ρ a)) (e : (Σ _ : Fin 2, Fin n) ≃ Fin N)

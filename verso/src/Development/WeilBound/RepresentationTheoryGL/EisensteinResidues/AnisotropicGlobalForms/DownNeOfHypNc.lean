@@ -74,6 +74,9 @@ namespace GlobalTheory.Core.Rk.Exh.Top
 
 variable {D : D7}
 
+/- English proof (translation)
+Use `⟨hf, 1, fun l hl => ?_⟩` and prove the remaining obligations. Use `match l, hl with`. Consider the case `[p], _ => exact hv p.1 p.2`.
+-/
 theorem fockVec_of_vac_nc {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {A H : HSp D} {sA : RealMat A} {sH : RealMat H}
     {f : WO A H → ℂ} (hf : IsThetaFunO ψ A H f)
     (hv : ∀ τ, IsFockVacAt (heisO ψ A H) θ τ (cplxO (sA τ) (sH τ)) f) : IsFockVec ψ θ A H sA sH f := by
@@ -81,6 +84,11 @@ theorem fockVec_of_vac_nc {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {A H 
   match l, hl with
   | [p], _ => exact hv p.1 p.2
 
+/- English proof (translation)
+Introduce `v hv k hk g`. Choose the witnesses or unpack the hypotheses as in `⟨w, hw⟩ : ∃ w : HeightOneSpectrum (𝓞 D.host.E), w.under (𝓞 D.host.F) = v := by`. Use `v.isMaximal` as an intermediate fact. Take `⟨Q, hQ, hl⟩` from `Ideal.exists_maximal_ideal_liesOver_of_isIntegral (S := 𝓞 D.host.E) v.asIdeal`. Conclude with `⟨⟨Q, hQ.isPrime, Ideal.ne_bot_of_liesOver_of_ne_bot v.ne_bot Q⟩, HeightOneSpectrum.ext hl.over.symm⟩`.
+
+Establish `hx` using `(hf v (by simpa using hv) w hw).mem_fixed`. Use `congrFun (hx ⟨k, hk⟩) g` as an intermediate fact. Simplify `this` using `[GlobalTheory.PRep.rightReg, LinearMap.funLeft]`.
+-/
 theorem sphFun_of_param_nc {V : HSp D} {Λ : Lat V} {Sf : Finset (FinPl D)} {f : GA D V → ℂ}
     {B : GlobalTheory.LFun.Fam D.host.E} (hf : GlobalTheory.LFun.IsParamFun D.sp.cm.sig V.gram Λ (Sf : Set (FinPl D)) f B) :
     SphFun V Λ Sf f := by

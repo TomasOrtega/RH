@@ -7,6 +7,11 @@ open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Toroi
 
 namespace GlobalTheory.PolFan.Mark.SplitPull
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h`. Establish `h1` using `hp ((-(x d z * (x z z + 1))) • d + z)`. Simplify using `only [map_add, map_smul, LinearMap.add_apply, LinearMap.smul_apply, smul_eq_mul, hd, hs z d] at h1`. Establish `h2 : 1 ≤ x d z * x d z` using `mul_self_pos.2 h`. Establish `h3` using `hp z`.
+
+Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right h2 (show 0 ≤ x z z + 1 by omega)]`.
+-/
 theorem apply_eq_zero_of_isotropic {X : Type} [AddCommGroup X] {x : LinearMap.BilinForm ℤ X}
     (hs : ∀ y z, x y z = x z y) (hp : ∀ y, 0 ≤ x y y) {d : X} (hd : x d d = 0) (z : X) : x d z = 0 := by
   by_contra h
@@ -25,12 +30,23 @@ def pullHom (r : X →ₗ[O] X₁) : LinearMap.BilinForm ℤ X₁ →ₗ[ℤ] Li
   map_add' _ _ := rfl
   map_smul' _ _ := rfl
 
+/- English proof (translation)
+The claim follows from `LinearMap.ext₂ fun a b => by simp [h]`.
+-/
 theorem pull_pull (h : ∀ a, r (s a) = a) (β : LinearMap.BilinForm ℤ X₁) : pull s (pull r β) = β :=
   LinearMap.ext₂ fun a b => by simp [h]
 
+/- English proof (translation)
+The claim follows from `Function.LeftInverse.injective (pull_pull h)`.
+-/
 theorem pull_injective (h : ∀ a, r (s a) = a) : Function.Injective (pull r) :=
   Function.LeftInverse.injective (pull_pull h)
 
+/- English proof (translation)
+Establish `key : ∀ a z, x (s (r a)) z = x a z` using `fun a z => by`. Use `apply_eq_zero_of_isotropic hs hp (hv (a - s (r a)) (by simp [h])) z` as an intermediate fact. Rewrite `this` using `[map_sub, LinearMap.sub_apply]`. Use linear arithmetic over natural numbers and integers. Use `LinearMap.ext₂ fun a b => ?_` and prove the remaining obligations.
+
+Rewrite using `[pull_apply, pull_apply, key, hs, key, hs]`.
+-/
 theorem eq_pull (h : ∀ a, r (s a) = a) {β : LinearMap.BilinForm ℤ X₁} {x : LinearMap.BilinForm ℤ X}
     (hs : ∀ y z, x y z = x z y) (hp : ∀ y, 0 ≤ x y y) (hv : ∀ y, pull r β y y = 0 → x y y = 0) :
     pull r (pull s x) = x := by
@@ -43,6 +59,11 @@ theorem eq_pull (h : ∀ a, r (s a) = a) {β : LinearMap.BilinForm ℤ X₁} {x 
 
 variable [Module.Finite O X] [Module.Finite O X₁]
 
+/- English proof (translation)
+Establish `hr : Function.Surjective r` using `fun a => ⟨s a, h a⟩`. Establish `e : pull r β + pull r x = pull r (β + x)` using `rfl`. Unfold `InFace`. Rewrite using `[e]`. Simplify using `only [evalZ_pull _ hr, pull_apply]`.
+
+Use `and_congr ⟨fun hx => ?_, pull_mem r⟩ (and_congr (hr.forall (p := fun y => 0 ≤ x y y)).symm (and_congr (hr.forall (p := fun y => β y y = 0 → x y y = 0)).symm Iff.rfl))` and prove the remaining obligations. Rewrite using `[← pull_pull h x]`. Conclude with `pull_mem s hx`.
+-/
 theorem inFace_pull_iff (h : ∀ a, r (s a) = a) {β x : LinearMap.BilinForm ℤ X₁} :
     InFace bar ψ lab (pull r β) (pull r x) ↔ InFace bar ψ lab β x := by
   have hr : Function.Surjective r := fun a => ⟨s a, h a⟩
@@ -55,10 +76,18 @@ theorem inFace_pull_iff (h : ∀ a, r (s a) = a) {β x : LinearMap.BilinForm ℤ
   rw [← pull_pull h x]
   exact pull_mem s hx
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨_, eq_pull h hx.1.1 hx.2.1 hx.2.2.1⟩`.
+-/
 theorem InFace_eq_pull (h : ∀ a, r (s a) = a) {β : LinearMap.BilinForm ℤ X₁} {x : LinearMap.BilinForm ℤ X}
     (hx : InFace bar ψ lab (pull r β) x) : ∃ x₁, pull r x₁ = x :=
   ⟨_, eq_pull h hx.1.1 hx.2.1 hx.2.2.1⟩
 
+/- English proof (translation)
+Establish `hne : ∀ y : LinearMap.BilinForm ℤ X₁, pull r y ≠ 0 ↔ y ≠ 0` using `fun y => (pull_injective h).ne_iff' (rfl : pull r 0 = 0)`. Use `and_congr (inFace_pull_iff h) (and_congr (hne x) ⟨fun H y z hy hz y0 z0 e => ?_, fun H y z hy hz y0 z0 e => ?_⟩)` and prove the remaining obligations. Conclude with `H _ _ ((inFace_pull_iff h).2 hy) ((inFace_pull_iff h).2 hz) ((hne y).2 y0) ((hne z).2 z0) (by rw [← e]; rfl)`. Take `⟨y, rfl⟩` from `InFace_eq_pull h hy`. Take `⟨z, rfl⟩` from `InFace_eq_pull h hz`.
+
+Conclude with `H y z ((inFace_pull_iff h).1 hy) ((inFace_pull_iff h).1 hz) ((hne y).1 y0) ((hne z).1 z0) (pull_injective h e)`.
+-/
 theorem isIndec_pull_iff (h : ∀ a, r (s a) = a) {β x : LinearMap.BilinForm ℤ X₁} :
     IsIndec bar ψ lab (pull r β) (pull r x) ↔ IsIndec bar ψ lab β x := by
   have hne : ∀ y : LinearMap.BilinForm ℤ X₁, pull r y ≠ 0 ↔ y ≠ 0 := fun y =>
@@ -70,6 +99,21 @@ theorem isIndec_pull_iff (h : ∀ a, r (s a) = a) {β x : LinearMap.BilinForm �
     exact H y z ((inFace_pull_iff h).1 hy) ((inFace_pull_iff h).1 hz) ((hne y).1 y0) ((hne z).1 z0)
       (pull_injective h e)
 
+/- English proof (translation)
+Establish `hr : Function.Surjective r` using `fun a => ⟨s a, h a⟩`. Establish `hsum : ∀ S : Finset (LinearMap.BilinForm ℤ X₁), ∑ x ∈ S.map ⟨pull r, pull_injective h⟩, x = pull r (∑ x ∈ S, x)` using `fun S => by`. Rewrite using `[Finset.sum_map]`. Conclude with `(map_sum (pullHom r) (fun x => x) S).symm`. Unfold `IsMarked`.
+
+Rewrite using `[evalZ_pull _ hr]`. Use `and_congr ⟨fun hx => ?_, pull_mem r⟩ (and_congr (hr.forall (p := fun y => 0 ≤ β y y)).symm (and_congr ⟨fun H k β' e => H k (pull r β') (by rw [← e]; rfl), fun H k β' e => H k (pull s β') ?_⟩ (and_congr Iff.rfl ⟨?_, ?_⟩)))` and prove the remaining obligations. Rewrite using `[← pull_pull h β]`. Conclude with `pull_mem s hx`. Rewrite using `[← pull_pull h β, ← e]`.
+
+Both sides reduce to the same expression. Introduce and unpack `⟨S, hS, k, hk, e⟩`. Establish `hS' : (S.preimage (pull r) (pull_injective h).injOn).map ⟨pull r, pull_injective h⟩ = S`. Use extensionality with `x`. Simplify using `only [Finset.mem_map, Finset.mem_preimage, Function.Embedding.coeFn_mk]`.
+
+Use `⟨by rintro ⟨y, hy, rfl⟩; exact hy, fun hx => ?_⟩` and prove the remaining obligations. Take `⟨y, rfl⟩` from `InFace_eq_pull h ((hS x).1 hx).1`. Conclude with `⟨y, hx, rfl⟩`. Use `⟨S.preimage (pull r) (pull_injective h).injOn, fun x => ?_, k, hk, pull_injective h ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.mem_preimage, hS, isIndec_pull_iff h]`.
+
+Rewrite using `[← hsum, hS', ← e]`. Both sides reduce to the same expression. Introduce and unpack `⟨S, hS, k, hk, e⟩`. Use `⟨S.map ⟨pull r, pull_injective h⟩, fun x => ?_, k, hk, ?_⟩` and prove the remaining obligations. Simplify using `only [Finset.mem_map, Function.Embedding.coeFn_mk]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Conclude with `(isIndec_pull_iff h).2 ((hS y).1 hy)`. Introduce `hx`. Take `⟨y, rfl⟩` from `InFace_eq_pull h hx.1`.
+
+Conclude with `⟨y, (hS y).2 ((isIndec_pull_iff h).1 hx), rfl⟩`. Rewrite using `[hsum, ← e]`. Both sides reduce to the same expression.
+-/
 theorem isMarked_pull_iff' (h : ∀ a, r (s a) = a) (i : ℕ) (β : LinearMap.BilinForm ℤ X₁) :
     IsMarked bar ψ lab i X (pull r β) ↔ IsMarked bar ψ lab i X₁ β := by
   classical
@@ -107,6 +151,9 @@ theorem isMarked_pull_iff' (h : ∀ a, r (s a) = a) (i : ℕ) (β : LinearMap.Bi
         exact ⟨y, (hS y).2 ((isIndec_pull_iff h).1 hx), rfl⟩
     · rw [hsum, ← e]; rfl
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ i _ _ _ _ _ _ _ _ _ _ h β` and use `isMarked_pull_iff' h i β`.
+-/
 theorem isMarked_pull_iff : ∀ (O : Type) [CommRing O] (bar : O → O) (ψ lab : InvFun O) (i : ℕ) (X X₁ : Type)
     [AddCommGroup X] [Module O X] [Module.Finite O X] [AddCommGroup X₁] [Module O X₁] [Module.Finite O X₁]
     (r : X →ₗ[O] X₁) (s : X₁ →ₗ[O] X), (∀ a, r (s a) = a) → ∀ β : LinearMap.BilinForm ℤ X₁,

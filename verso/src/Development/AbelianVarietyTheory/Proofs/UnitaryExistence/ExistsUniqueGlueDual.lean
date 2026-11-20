@@ -11,6 +11,9 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 noncomputable section
 namespace GlobalTheory.Frames
 
+/- English proof (translation)
+Rewrite using `[Chart.spMap_left]`. Use `congr 2`. Use `RingHom.ext fun a => ?_` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp [dualMap]`.
+-/
 theorem spMap_dualMap_left {R T T' : Type} [CommRing R] [CommRing T] [CommRing T'] [Algebra R T] [Algebra R T']
     (ρ : T →ₐ[R] T') : (Chart.spMap (SqZero.dualMap ρ)).left = spMap (dualMap (ρ : T →+* T')) := by
   rw [Chart.spMap_left]
@@ -18,6 +21,17 @@ theorem spMap_dualMap_left {R T T' : Type} [CommRing R] [CommRing T] [CommRing T
   refine RingHom.ext fun a => ?_
   ext <;> simp [dualMap]
 
+/- English proof (translation)
+Set `X : Over (Spec (CommRingCat.of R))` to `Over.mk (hR.from Y)`. Set `w' : ∀ i, Chart.sp (R₀` to `R) (DualNumber (Localization.Away (h i))) ⟶ X := fun i => Over.homMk (w i) (hR.hom_ext _ _)`. Set `q : ∀ k, S →ₐ[R] Localization.Away (h k)` to `fun k => SqZero.awayHom R (h k)`. Establish `hq : ∀ k, SqZero.IsAway (q k) (h k)` using `fun k => SqZero.isAway_awayHom _`. Set `p : ∀ k l, S →ₐ[R] Localization.Away (h k * h l)` to `fun k l => SqZero.awayHom R (h k * h l)`.
+
+Establish `hp : ∀ k l, SqZero.IsAway (p k l) (h k * h l)` using `fun k l => SqZero.isAway_awayHom _`. Use `choose a ha using fun k l => (hq k).lift (p k l) (isUnit_of_mul_isUnit_left (by rw [← map_mul]; exact (hp k l).unit))`. Use `choose b hb using fun k l => (hq l).lift (p k l) (isUnit_of_mul_isUnit_right (by rw [← map_mul]; exact (hp k l).unit))`. Establish `hs'` using `SqZero.span_range_map hs (SqZero.inlS R S)`. Take `⟨z, hz⟩` from `SqZero.away_glue (X := X) hs' (fun k => SqZero.dualMap (q k)) (fun k => (hq k).dualMap) w' (fun k l => SqZero.agree_of_isAway (hq k).dualMap (hq l).dualMap (a₀ := SqZero.dualMap (a k l)) (b₀ := SqZero.dualMap (b k l)) (by rw [SqZero.dualMap_comp, SqZero.dualMap_comp, ha, hb]) (by …`.
+
+Rewrite using `[Over.comp_left, Over.comp_left, spMap_dualMap_left, spMap_dualMap_left]`. Conclude with `hw k l _ _ (RingHom.ext fun x => AlgHom.congr_fun (ha k l) x) (RingHom.ext fun x => AlgHom.congr_fun (hb k l) x))))`. Establish `hz' : ∀ i, spMap (dualMap (algebraMap S (Localization.Away (h i)))) ≫ z.left = w i` using `fun i => by`. Establish `: (Chart.spMap (SqZero.dualMap (q i))).left ≫ z.left = w i` using `congrArg CommaMorphism.left (hz i)`. Rewrite `this` using `[spMap_dualMap_left]`.
+
+Conclude with `this`. Use `⟨z.left, hz', fun y hy => ?_⟩` and prove the remaining obligations. Set `y' : Chart.sp (R₀` to `R) (DualNumber S) ⟶ X := Over.homMk y (hR.hom_ext _ _)`. Establish `: y' = z` using `SqZero.away_ext (X := X) hs' (fun k => SqZero.dualMap (q k)) (fun k => (hq k).dualMap) fun k => Over.OverMorphism.ext (by`. Rewrite using `[Over.comp_left, Over.comp_left, spMap_dualMap_left]`.
+
+Conclude with `(hy k).trans (hz' k).symm)`. Conclude with `congrArg CommaMorphism.left this`.
+-/
 theorem existsUnique_glue_dual_of_isTerminal {R : Type} [CommRing R] (hR : IsTerminal (Sp R)) {S : Type} [CommRing S]
     [Algebra R S] (Y : Scheme.{0}) {κ : Type} (h : κ → S) (hs : Ideal.span (Set.range h) = ⊤)
     (w : ∀ i, Sp (DualNumber (Localization.Away (h i))) ⟶ Y)
@@ -60,6 +74,9 @@ theorem existsUnique_glue_dual_of_isTerminal {R : Type} [CommRing R] (hR : IsTer
       exact (hy k).trans (hz' k).symm)
   exact congrArg CommaMorphism.left this
 
+/- English proof (translation)
+Introduce `_ _ Y _ h hs w hw` and use `existsUnique_glue_dual_of_isTerminal specZIsTerminal Y h hs w hw`.
+-/
 theorem existsUnique_glue_dual : ∀ (S : Type) [CommRing S] (Y : Scheme.{0}) (n : ℕ) (h : Fin n → S), Ideal.span (Set.range h) = ⊤ → ∀ w : ∀ i, Sp (DualNumber (Localization.Away (h i))) ⟶ Y, (∀ i j (α : Localization.Away (h i) →+* Localization.Away (h i * h j)) (β : Localization.Away (h j) →+* Localization.Away (h i * h j)), α.comp (algebraMap S (Localization.Away (h i))) = (algebraMap S (Localization.Away (h i * h j))) → β.comp (algebraMap S (Localization.Away (h j))) = (algebraMap S (Localization.Away (h i * h j))) → spMap (dualMap α) ≫ w i = spMap (dualMap β) ≫ w j) → ∃! w₀ : Sp (DualNumber S) ⟶ Y, ∀ i, spMap (dualMap (algebraMap S (Localization.Away (h i)))) ≫ w₀ = w i :=
   fun _ _ Y _ h hs w hw => existsUnique_glue_dual_of_isTerminal specZIsTerminal Y h hs w hw
 

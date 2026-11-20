@@ -10,6 +10,9 @@ open MvPolynomial Finset
 
 noncomputable section
 
+/- English proof (translation)
+Unfold `antisymmetrize`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Simplify using `[blockPermute]`.
+-/
 theorem antisymmetrize_C_mul (f N : ℕ) (k : ℚ) (H : RootRing f N) :
     antisymmetrize f N (C k * H) = C k * antisymmetrize f N H := by
   unfold antisymmetrize
@@ -17,6 +20,11 @@ theorem antisymmetrize_C_mul (f N : ℕ) (k : ℚ) (H : RootRing f N) :
   refine Finset.sum_congr rfl fun w _ => ?_
   simp [blockPermute]
 
+/- English proof (translation)
+Unfold `blockVandermonde vandermondeOf`. Use `Finset.prod_ne_zero_iff.mpr fun τ _ => Finset.prod_ne_zero_iff.mpr fun i _ => Finset.prod_ne_zero_iff.mpr fun j hj => sub_ne_zero.mpr ?_` and prove the remaining obligations. Introduce `h`. Establish `h'` using `X_injective h`. Simplify using `only [Prod.mk.injEq, true_and] at h'`.
+
+Conclude with `(ne_of_lt (Finset.mem_Ioi.mp hj)) h'`.
+-/
 theorem blockVandermonde_ne_zero (f N : ℕ) : blockVandermonde f N ≠ 0 := by
   unfold blockVandermonde vandermondeOf
   refine Finset.prod_ne_zero_iff.mpr fun τ _ => Finset.prod_ne_zero_iff.mpr fun i _ =>
@@ -26,6 +34,17 @@ theorem blockVandermonde_ne_zero (f N : ℕ) : blockVandermonde f N ≠ 0 := by
   simp only [Prod.mk.injEq, true_and] at h'
   exact (ne_of_lt (Finset.mem_Ioi.mp hj)) h'
 
+/- English proof (translation)
+Introduce `r a c`. Take `⟨s, hs, hconc⟩` from `h4 r a c`. Establish `hsgn : ∀ n : ℕ, c.sign ^ n = 1 ∨ c.sign ^ n = -1`. Introduce `n`. Apply the tactic sequence `cases c <;> simp [SmallBlock.sign, neg_one_pow_eq_or]`.
+
+Use `⟨s * ((r.factorial : ℚ) * a.factorial) * c.sign ^ (r * (r - 1) / 2 + r * a), ?_, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `rcases hs with rfl | rfl <;> rcases hsgn (r * (r - 1) / 2 + r * a) with h | h <;>`. Apply the tactic sequence `rw [h] <;> first | (left; ring1) | (right; ring1)`. Introduce `lam hlam`. Establish `hV : algebraMap (RootRing 1 (r + a)) (FractionRing (RootRing 1 (r + a))) (blockVandermonde 1 (r + a)) ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective _ _)).mpr (blockVandermonde_ne_zero 1 (r + a))`.
+
+Unfold `dividedDifference`. Rewrite using `[h3, antisymmetrize_C_mul, h2, KAlt.antisym_rename_mul_rename, map_smul]`. Use `split_ifs with hcont`. Rewrite using `[hconc lam hcont, div_eq_iff hV, ← map_mul]`. Use `congr 1`.
+
+Establish `hA` using `h1 (Fin (r + a)) (Fin 1 × Fin (r + a)) c.sign (fun i => ((0 : Fin 1), i)) (∑ i, (lam i - a)) (schur (Fin (r + a)) (fun i : Fin r => lam i - a)) (h7 (Fin (r + a)) r (fun i : Fin r => lam i - a))`. Establish `hsum : ∑ i, lam i = ∑ i, (lam i - a) + r * a`. Rewrite using `[show r * a = ∑ _i : Fin r, a by simp, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun i _ => (Nat.sub_add_cancel (hcont i)).symm`. Rewrite using `[hA, h6, map_mul, hsum, smul_eq_C_mul]`.
+
+Simplify using `only [map_mul, map_pow, map_natCast]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h5 r a lam hlam hcont, map_zero, smul_zero, mul_zero, map_zero, zero_div]`.
+-/
 theorem LemmaB.proof (h1 : SchAevalSignedRename.Statement) (h2 : SchAntisymmetrizePlace.Statement)
     (h3 : SchSmallBlockProduct.Statement) (h4 : SchConcatAlternant.Statement)
     (h5 : SchConcatAlternantZero.Statement) (h6 : SchBlockVandermondeOne.Statement)

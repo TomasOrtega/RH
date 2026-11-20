@@ -21,9 +21,15 @@ def augAlg (R : Type) [CommRing R] {B : Type} [CommRing B] [Algebra R B] (I : Id
   AlgHom.equalizer ((Ideal.Quotient.mkₐ R I).comp (AlgHom.snd R R B))
     ((Ideal.Quotient.mkₐ R I).comp ((Algebra.ofId R B).comp (AlgHom.fst R R B)))
 
+/- English proof (translation)
+The claim follows from `Ideal.Quotient.eq`.
+-/
 theorem mem_augAlg {I : Ideal B} {b : R × B} : b ∈ augAlg R I ↔ b.2 - algebraMap R B b.1 ∈ I :=
   Ideal.Quotient.eq
 
+/- English proof (translation)
+The claim follows from `jet_ext fun j => by rw [AlgHom.comp_apply, AlgHom.comp_apply, jetAug_zR, map_zero] exact Ideal.Quotient.eq_zero_iff_mem.2 (h j)`.
+-/
 theorem mk_comp_eq {κ : Type} {m : ℕ} {I : Ideal B} (ψ : JetR R κ m →ₐ[R] B) (h : ∀ j, ψ (zR m j) ∈ I) :
     (Ideal.Quotient.mkₐ R I).comp ψ = (Algebra.ofId R _).comp (jetAug R κ m) :=
   jet_ext fun j => by
@@ -38,6 +44,19 @@ variable {G : Over (Spec (CommRingCat.of R))} [GrpObj G] [IsCommMonObj G] (hG : 
 
 include hG hv hx₁ hx₂ hx₃
 
+/- English proof (translation)
+Establish `hψ' : ∀ j, ψ' (zR m j) ∈ I` using `fun j => by rw [h]; exact add_mem (hψ j) (hle (hcJ j))`. Set `aug : augAlg R I →ₐ[R] R` to `(AlgHom.fst R R B).comp (augAlg R I).val`. Set `p : augAlg R I →ₐ[R] B` to `(AlgHom.snd R R B).comp (augAlg R I).val`. Set `up : ∀ φ : JetR R (Fin d) m →ₐ[R] B, (∀ j, φ (zR m j) ∈ I) → (JetR R (Fin d) m →ₐ[R] augAlg R I)` to `fun φ hφ => ((jetAug R (Fin d) m).prod φ).codRestrict _ fun a => by`. Use `AlgHom.congr_fun (mk_comp_eq φ hφ) a` as an intermediate fact.
+
+Conclude with `this`. Set `J' : Ideal (augAlg R I)` to `J.comap p ⊓ RingHom.ker aug`. Establish `hker : ∀ a : augAlg R I, a ∈ RingHom.ker aug → p a ∈ I` using `fun a ha => by`. Establish `h1 : a.1.1 = 0` using `ha`. Establish `h2` using `mem_augAlg.1 a.2`.
+
+Rewrite `h2` using `[h1, map_zero, sub_zero]`. Conclude with `h2`. Establish `hJ' : J' * RingHom.ker aug = ⊥`. Rewrite using `[← le_bot_iff, Ideal.mul_le]`. Introduce `a ha b hb`.
+
+Establish `h1 : a.1.1 = 0` using `ha.2`. Establish `h2 : p a * p b ∈ J * I` using `Ideal.mul_mem_mul ha.1 (hker b hb)`. Rewrite `h2` using `[hJ]`. Conclude with `Subtype.ext (Prod.ext (show a.1.1 * b.1.1 = 0 by rw [h1, zero_mul]) h2)`. Set `c' : Fin d → augAlg R I` to `fun j => ⟨(0, c j), mem_augAlg.2 (by simpa using hle (hcJ j))⟩`.
+
+Establish `hc' : ∀ j, c' j * c' j = 0` using `fun j => Subtype.ext (Prod.ext (mul_zero _) (hc j))`. Establish `he : ∀ j, epsTo R (c' j) (hc' j) (TrivSqZeroExt.inr 1) = c' j` using `fun j => epsTo_eps _ _`. Establish `key` using `jet_add_sqZero_eq_prod_mul R G hG d v hv x hx₁ hx₂ hx₃ _ aug J' hJ' inf_le_right m (up ψ hψ) (up ψ' hψ') rfl rfl (fun j => epsTo R (c' j) (hc' j)) (fun j => by rw [he]; exact ⟨hcJ j, rfl⟩) (fun j => by`. Rewrite using `[he]`. Conclude with `Subtype.ext (Prod.ext (add_zero _).symm (h j)))`.
+
+Establish `fin` using `congrArg (spMap p ≫ ·) key`. Express the relevant statement in the definitionally equal form `spMap p ≫ spMap _ ≫ x m = spMap p ≫ (lieExp v c' hc' * (spMap _ ≫ x m)) at fin`. Rewrite `fin` using `[MonObj.comp_mul, comp_lieExp, ← Category.assoc, ← Category.assoc, spMap_comp, spMap_comp]`. Conclude with `fin`.
+-/
 theorem move {I J : Ideal B} (hJ : J * I = ⊥) (hle : J ≤ I) {m : ℕ} (ψ ψ' : JetR R (Fin d) m →ₐ[R] B)
     (hψ : ∀ j, ψ (zR m j) ∈ I) (c : Fin d → B) (hcJ : ∀ j, c j ∈ J) (hc : ∀ j, c j * c j = 0)
     (h : ∀ j, ψ' (zR m j) = ψ (zR m j) + c j) : spMap ψ' ≫ x m = lieExp v c hc * (spMap ψ ≫ x m) := by
@@ -75,6 +94,13 @@ theorem move {I J : Ideal B} (hJ : J * I = ⊥) (hle : J ≤ I) {m : ℕ} (ψ ψ
   rw [MonObj.comp_mul, comp_lieExp, ← Category.assoc, ← Category.assoc, spMap_comp, spMap_comp] at fin
   exact fin
 
+/- English proof (translation)
+Establish `hJ2 : J ^ 2 = ⊥`. Rewrite using `[← le_bot_iff, pow_two, ← hJ]`. Conclude with `Ideal.mul_mono_right hle`. Set `c : Fin d → J` to `fun j => ⟨_, hδ j⟩`. Establish `hc : ∀ j, (c j : B) * (c j : B) = 0` using `fun j => mul_eq_zero_of_sq hJ2 (c j).2 (c j).2`.
+
+Establish `key` using `move hG hv hx₁ hx₂ hx₃ hJ hle ψ ψ' hψ (fun j => c j) (fun j => (c j).2) hc (fun j => (add_sub_cancel _ _).symm)`. Rewrite `key` using `[← h]`. Establish `h1 : lieExp v (fun j => (c j : B)) hc = 1` using `mul_eq_right.1 key.symm`. Establish `h0 : c = 0`. Apply `(expHom_bijective hv hJ2).1` to reduce the goal to its premises.
+
+Rewrite using `[map_zero]`. Conclude with `congrArg Additive.ofMul (Subtype.ext h1)`. Use `jet_ext fun j => ?_` and prove the remaining obligations. Establish `: ψ' (zR m j) - ψ (zR m j) = 0` using `congrArg Subtype.val (congrFun h0 j)`. Conclude with `(sub_eq_zero.1 this).symm`.
+-/
 theorem eq_of_sub_mem {I J : Ideal B} (hJ : J * I = ⊥) (hle : J ≤ I) {m : ℕ} (ψ ψ' : JetR R (Fin d) m →ₐ[R] B)
     (hψ : ∀ j, ψ (zR m j) ∈ I) (hδ : ∀ j, ψ' (zR m j) - ψ (zR m j) ∈ J)
     (h : spMap ψ ≫ x m = spMap ψ' ≫ x m) : ψ = ψ' := by
@@ -95,6 +121,15 @@ theorem eq_of_sub_mem {I J : Ideal B} (hJ : J * I = ⊥) (hle : J ≤ I) {m : �
   have : ψ' (zR m j) - ψ (zR m j) = 0 := congrArg Subtype.val (congrFun h0 j)
   exact (sub_eq_zero.1 this).symm
 
+/- English proof (translation)
+Establish `main : ∀ k j, ψ' (zR m j) - ψ (zR m j) ∈ N ^ (k + 1)`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `j`.
+
+Rewrite using `[zero_add, pow_one]`. Conclude with `sub_mem (hψ' j) (hψ j)`. Consider the case `succ k ih`. Set `q : B →ₐ[R] B ⧸ N ^ (k + 1 + 1)` to `Ideal.Quotient.mkₐ R _`. Establish `e` using `eq_of_sub_mem hG hv hx₁ hx₂ hx₃ (I := N.map q) (J := (N ^ (k + 1)).map q) (by rw [← Ideal.map_mul, ← pow_succ]; exact Ideal.map_quotient_self _) (Ideal.map_mono (Ideal.pow_le_self (by omega))) (q.comp ψ) (q.comp ψ') (fun j => Ideal.mem_map_of_mem _ (hψ j)) (fun j => by`.
+
+Rewrite using `[AlgHom.comp_apply, AlgHom.comp_apply, ← map_sub]`. Conclude with `Ideal.mem_map_of_mem _ (ih j))`. Use the proof step `(by rw [← spMap_comp, ← spMap_comp, Category.assoc, Category.assoc, h])`. Introduce `j`. Conclude with `Ideal.Quotient.eq.1 (AlgHom.congr_fun e (zR m j)).symm`.
+
+Take `⟨n, hn⟩` from `hN`. Use `jet_ext fun j => ?_` and prove the remaining obligations. Use `main n j` as an intermediate fact. Rewrite `this` using `[pow_succ, hn, zero_mul, Ideal.zero_eq_bot, Ideal.mem_bot]`. Conclude with `(sub_eq_zero.1 this).symm`.
+-/
 theorem eq_of_nil {N : Ideal B} (hN : IsNilpotent N) {m : ℕ} (ψ ψ' : JetR R (Fin d) m →ₐ[R] B)
     (hψ : ∀ j, ψ (zR m j) ∈ N) (hψ' : ∀ j, ψ' (zR m j) ∈ N)
     (h : spMap ψ ≫ x m = spMap ψ' ≫ x m) : ψ = ψ' := by
@@ -123,6 +158,9 @@ theorem eq_of_nil {N : Ideal B} (hN : IsNilpotent N) {m : ℕ} (ψ ψ' : JetR R 
   rw [pow_succ, hn, zero_mul, Ideal.zero_eq_bot, Ideal.mem_bot] at this
   exact (sub_eq_zero.1 this).symm
 
+/- English proof (translation)
+Establish `nil : ∀ φ : JetR R (Fin d) m →ₐ[R] B, IsNilpotent ((RingHom.ker (jetAug R (Fin d) m)).map φ)` using `fun φ => ⟨m + 1, by rw [← Ideal.map_pow, ker_jetAug_pow, Ideal.map_bot, Ideal.zero_eq_bot]⟩`. Use `eq_of_nil hG hv hx₁ hx₂ hx₃ (N := (RingHom.ker (jetAug R (Fin d) m)).map ψ + (RingHom.ker (jetAug R (Fin d) m)).map ψ') ((Commute.all _ _).isNilpotent_add (nil ψ) (nil ψ')) ψ ψ' (fun j => Ideal.mem_sup_left (Ideal.mem_map_of_mem _ (zR_mem_ker m j))) (fun j => Ideal.mem_sup_right …` and prove the remaining obligations.
+-/
 theorem coord_unique {m : ℕ} (ψ ψ' : JetR R (Fin d) m →ₐ[R] B) (h : spMap ψ ≫ x m = spMap ψ' ≫ x m) : ψ = ψ' := by
   have nil : ∀ φ : JetR R (Fin d) m →ₐ[R] B, IsNilpotent ((RingHom.ker (jetAug R (Fin d) m)).map φ) := fun φ =>
     ⟨m + 1, by rw [← Ideal.map_pow, ker_jetAug_pow, Ideal.map_bot, Ideal.zero_eq_bot]⟩
@@ -131,6 +169,29 @@ theorem coord_unique {m : ℕ} (ψ ψ' : JetR R (Fin d) m →ₐ[R] B) (h : spMa
     (fun j => Ideal.mem_sup_left (Ideal.mem_map_of_mem _ (zR_mem_ker m j)))
     (fun j => Ideal.mem_sup_right (Ideal.mem_map_of_mem _ (zR_mem_ker m j))) h
 
+/- English proof (translation)
+Establish `haug : spMap (jetAug R (Fin d) m) ≫ x m = 1`. Establish `e : jetAug R (Fin d) m = (jetAug R (Fin d) 0).comp (jetZeroR R (Fin d) m)` using `(jet_ext fun j => by rw [AlgHom.comp_apply, jetAug_zR]; exact (jetAug_zR (R := R) 0 j).symm)`. Rewrite using `[e, ← spMap_comp, Category.assoc, hx₂ m, comp_one']`. Establish `fac : ∀ {A₁ A₂ : Type} [CommRing A₁] [Algebra R A₁] [CommRing A₂] [Algebra R A₂] (p : B →ₐ[R] A₁) (q : A₁ →ₐ[R] A₂) {y y' : sp (R₀` using `R) B ⟶ G}, spMap p ≫ y = spMap p ≫ y' → spMap (q.comp p) ≫ y = spMap (q.comp p) ≫ y' := fun p q y y' h => by`. Rewrite using `[← spMap_comp, Category.assoc, Category.assoc, h]`.
+
+Establish `key : ∀ k : ℕ, ∃ (b : Fin d → B) (hb : ∀ j, b j ∈ N), spMap (Ideal.Quotient.mkₐ R (N ^ (k + 1))) ≫ y = spMap (Ideal.Quotient.mkₐ R (N ^ (k + 1))) ≫ spMap (jetLift R _ hN b hb) ≫ x m`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Use `⟨fun _ => 0, fun _ => zero_mem _, ?_⟩` and prove the remaining obligations.
+
+Establish `e : Ideal.Quotient.mkₐ R (N ^ (0 + 1)) = (Ideal.Quotient.factorₐ R (show N ≤ N ^ (0 + 1) by rw [zero_add, pow_one])).comp (Ideal.Quotient.mkₐ R N)`. Use extensionality with `a`. Both sides reduce to the same expression. Rewrite using `[e]`. Use `fac _ _ ?_` and prove the remaining obligations.
+
+Rewrite using `[hy, ← Category.assoc, spMap_comp, mk_comp_eq _ (fun j => by rw [jetLift_zR]; exact zero_mem _), ← spMap_comp, Category.assoc, haug, comp_one']`. Consider the case `succ k ih`. Take `⟨b, hb, ih⟩` from `ih`. Set `B'` to `B ⧸ N ^ (k + 1 + 1)`. Set `π : B →ₐ[R] B'` to `Ideal.Quotient.mkₐ R (N ^ (k + 1 + 1))`.
+
+Establish `hπ : Function.Surjective π` using `Ideal.Quotient.mk_surjective`. Set `J : Ideal B'` to `(N ^ (k + 1)).map π`. Establish `hJN : J * N.map π = ⊥`. Rewrite using `[← Ideal.map_mul, ← pow_succ]`. Conclude with `Ideal.map_quotient_self _`.
+
+Establish `hJle : J ≤ N.map π` using `Ideal.map_mono (Ideal.pow_le_self (by omega))`. Establish `hJ : J ^ 2 = ⊥`. Rewrite using `[← le_bot_iff, pow_two, ← hJN]`. Conclude with `Ideal.mul_mono_right hJle`. Set `q : (B ⧸ N ^ (k + 1)) →ₐ[R] B' ⧸ J` to `Ideal.Quotient.liftₐ _ ((Ideal.Quotient.mkₐ R J).comp π) (fun a ha => Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_map_of_mem _ ha))`.
+
+Establish `hq : q.comp (Ideal.Quotient.mkₐ R (N ^ (k + 1))) = (Ideal.Quotient.mkₐ R J).comp π`. Use extensionality with `a`. Both sides reduce to the same expression. Establish `h2` using `fac _ q ih`. Rewrite `h2` using `[hq, ← spMap_comp, Category.assoc, Category.assoc]`.
+
+Use `haveI := hG`. Take `⟨c, hc, -⟩` from `SqZero.existsUnique_eq_lieExp_mul hv hJ h2.symm`. Use `choose δ hδ hδc using fun j => (Ideal.mem_map_iff_of_surjective π hπ).1 (c j).2`. Establish `hb' : ∀ j, b j + δ j ∈ N` using `fun j => add_mem (hb j) (Ideal.pow_le_self (by omega) (hδ j))`. Use `⟨fun j => b j + δ j, hb', ?_⟩` and prove the remaining obligations.
+
+Establish `h3` using `move hG hv hx₁ hx₂ hx₃ hJN hJle (π.comp (jetLift R _ hN b hb)) (π.comp (jetLift R _ hN (fun j => b j + δ j) hb')) (fun j => by rw [AlgHom.comp_apply, jetLift_zR]; exact Ideal.mem_map_of_mem _ (hb j)) (fun j => (c j : B')) (fun j => (c j).2) (fun j => SqZero.mul_eq_zero_of_sq hJ ( …`. Rewrite using `[AlgHom.comp_apply, AlgHom.comp_apply, jetLift_zR, jetLift_zR, map_add, hδc])`. Express the relevant statement in the definitionally equal form `spMap π ≫ y = spMap π ≫ _`. Rewrite using `[hc, ← Category.assoc, spMap_comp, ← Category.assoc, spMap_comp, h3]`. Take `⟨b, hb, h⟩` from `key m`.
+
+Use `⟨jetLift R _ hN b hb, ?_⟩` and prove the remaining obligations. Set `q : (B ⧸ N ^ (m + 1)) →ₐ[R] B` to `Ideal.Quotient.liftₐ _ (AlgHom.id R B) (fun a ha => by rw [hN] at ha; exact ha)`. Establish `hq : q.comp (Ideal.Quotient.mkₐ R (N ^ (m + 1))) = AlgHom.id R B`. Use extensionality with `a`. Both sides reduce to the same expression.
+
+Establish `h2` using `fac _ q h`. Rewrite `h2` using `[hq, spMap_id, Category.id_comp, Category.id_comp]`. Conclude with `h2.symm`.
+-/
 theorem coord_exists {m : ℕ} {N : Ideal B} (hN : N ^ (m + 1) = ⊥) (y : sp (R₀ := R) B ⟶ G)
     (hy : spMap (Ideal.Quotient.mkₐ R N) ≫ y = 1) : ∃ ψ : JetR R (Fin d) m →ₐ[R] B, spMap ψ ≫ x m = y := by
   have haug : spMap (jetAug R (Fin d) m) ≫ x m = 1 := by
@@ -200,6 +261,9 @@ theorem coord_exists {m : ℕ} {N : Ideal B} (hN : N ^ (m + 1) = ⊥) (y : sp (R
   rw [hq, spMap_id, Category.id_comp, Category.id_comp] at h2
   exact h2.symm
 
+/- English proof (translation)
+Take `⟨ψ, h⟩` from `coord_exists hG hv hx₁ hx₂ hx₃ hN y hy`. Conclude with `⟨ψ, h, fun ψ' h' => coord_unique hG hv hx₁ hx₂ hx₃ _ _ (h'.trans h.symm)⟩`.
+-/
 theorem existsUnique_coord {m : ℕ} {N : Ideal B} (hN : N ^ (m + 1) = ⊥) (y : sp (R₀ := R) B ⟶ G)
     (hy : spMap (Ideal.Quotient.mkₐ R N) ≫ y = 1) : ∃! ψ : JetR R (Fin d) m →ₐ[R] B, spMap ψ ≫ x m = y := by
   obtain ⟨ψ, h⟩ := coord_exists hG hv hx₁ hx₂ hx₃ hN y hy

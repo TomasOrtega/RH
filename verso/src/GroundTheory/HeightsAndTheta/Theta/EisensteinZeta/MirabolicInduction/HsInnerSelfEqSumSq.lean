@@ -23,26 +23,53 @@ def hsVec (X : Matrix ι ι ℂ) : EuclideanSpace ℂ (ι × ι) := WithLp.toLp 
 
 def hs (X : Matrix ι ι ℂ) : ℝ := ‖hsVec X‖
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem hsVec_add (X Y : Matrix ι ι ℂ) : hsVec (X + Y) = hsVec X + hsVec Y := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem hsVec_sub (X Y : Matrix ι ι ℂ) : hsVec (X - Y) = hsVec X - hsVec Y := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem hsVec_smul (c : ℝ) (X : Matrix ι ι ℂ) : hsVec (c • X) = c • hsVec X := rfl
 
+/- English proof (translation)
+The claim follows from `norm_nonneg _`.
+-/
 theorem hs_nonneg (X : Matrix ι ι ℂ) : 0 ≤ hs X := norm_nonneg _
 
+/- English proof (translation)
+Rewrite using `[hs, hsVec_add]`. Conclude with `norm_add_le _ _`.
+-/
 theorem hs_add_le (X Y : Matrix ι ι ℂ) : hs (X + Y) ≤ hs X + hs Y := by
   rw [hs, hsVec_add]; exact norm_add_le _ _
 
+/- English proof (translation)
+Rewrite using `[hs, hsVec_smul, norm_smul, Real.norm_eq_abs]`. Both sides reduce to the same expression.
+-/
 theorem hs_smul (c : ℝ) (X : Matrix ι ι ℂ) : hs (c • X) = |c| * hs X := by
   rw [hs, hsVec_smul, norm_smul, Real.norm_eq_abs]; rfl
 
+/- English proof (translation)
+Simplify using `using hs_smul (0 : ℝ) (0 : Matrix ι ι ℂ)`.
+-/
 theorem hs_zero : hs (0 : Matrix ι ι ℂ) = 0 := by
   simpa using hs_smul (0 : ℝ) (0 : Matrix ι ι ℂ)
 
+/- English proof (translation)
+Rewrite using `[hs, EuclideanSpace.norm_sq_eq, Fintype.sum_prod_type]`. Both sides reduce to the same expression.
+-/
 theorem hs_sq (X : Matrix ι ι ℂ) : hs X ^ 2 = ∑ i, ∑ j, ‖X i j‖ ^ 2 := by
   rw [hs, EuclideanSpace.norm_sq_eq, Fintype.sum_prod_type]; rfl
 
 def tInner (X Y : Matrix ι ι ℂ) : ℝ := (trace (X * Yᴴ)).re
 
+/- English proof (translation)
+Rewrite using `[hs_sq, tInner, trace, Complex.re_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[diag, mul_apply, Complex.re_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[conjTranspose_apply, Complex.star_def, Complex.mul_conj, Complex.ofReal_re, Complex.normSq_eq_norm_sq]`.
+-/
 theorem tInner_self (X : Matrix ι ι ℂ) : tInner X X = hs X ^ 2 := by
   rw [hs_sq, tInner, trace, Complex.re_sum]
   refine Finset.sum_congr rfl fun i _ => ?_
@@ -51,12 +78,20 @@ theorem tInner_self (X : Matrix ι ι ℂ) : tInner X X = hs X ^ 2 := by
   rw [conjTranspose_apply, Complex.star_def, Complex.mul_conj, Complex.ofReal_re,
     Complex.normSq_eq_norm_sq]
 
+/- English proof (translation)
+Establish `h : hs Xᴴ ^ 2 = hs X ^ 2`. Rewrite using `[hs_sq, hs_sq, Finset.sum_comm]`. Simplify using `[conjTranspose_apply]`. Conclude with `(sq_eq_sq₀ (hs_nonneg _) (hs_nonneg _)).1 h`.
+-/
 theorem hs_conjTranspose (X : Matrix ι ι ℂ) : hs Xᴴ = hs X := by
   have h : hs Xᴴ ^ 2 = hs X ^ 2 := by
     rw [hs_sq, hs_sq, Finset.sum_comm]
     simp [conjTranspose_apply]
   exact (sq_eq_sq₀ (hs_nonneg _) (hs_nonneg _)).1 h
 
+/- English proof (translation)
+Rewrite using `[← l2_opNorm_toEuclideanCLM]`. Use `ContinuousLinearMap.opNorm_le_bound _ (hs_nonneg _) fun v => ?_` and prove the remaining obligations. Use `(sq_le_sq₀ (norm_nonneg _) (by have := hs_nonneg X; positivity)).1 ?_` and prove the remaining obligations. Rewrite using `[EuclideanSpace.norm_sq_eq, mul_pow, hs_sq, EuclideanSpace.norm_sq_eq, Finset.sum_mul]`. Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[ofLp_toEuclideanCLM, mulVec, dotProduct]`. Combine the equalities or inequalities in the displayed calculation. Use `(norm_sum_le _ _).trans (le_of_eq ?_)` and prove the remaining obligations. Simplify using the standard rewrite rules. Use `_ ≤ (∑ j, ‖X i j‖ ^ 2) * ∑ j, ‖(WithLp.ofLp v) j‖ ^ 2 := Finset.sum_mul_sq_le_sq_mul_sq _ _ _`.
+-/
 theorem opNorm_le_hs (X : Matrix ι ι ℂ) : ‖X‖ ≤ hs X := by
   rw [← l2_opNorm_toEuclideanCLM]
   refine ContinuousLinearMap.opNorm_le_bound _ (hs_nonneg _) fun v => ?_
@@ -70,6 +105,11 @@ theorem opNorm_le_hs (X : Matrix ι ι ℂ) : ‖X‖ ≤ hs X := by
         simp
     _ ≤ (∑ j, ‖X i j‖ ^ 2) * ∑ j, ‖(WithLp.ofLp v) j‖ ^ 2 := Finset.sum_mul_sq_le_sq_mul_sq _ _ _
 
+/- English proof (translation)
+Use `(sq_le_sq₀ (hs_nonneg _) (by have := hs_nonneg X; positivity)).1 ?_` and prove the remaining obligations. Rewrite using `[hs_sq, mul_pow, hs_sq, Finset.sum_comm, Finset.sum_comm (f := fun i j => ‖X i j‖ ^ 2), Finset.mul_sum]`. Use `Finset.sum_le_sum fun j _ => ?_` and prove the remaining obligations. Establish `key` using `(toEuclideanCLM (n := ι) (𝕜 := ℂ) A).le_opNorm (WithLp.toLp 2 fun i => X i j)`. Rewrite `key` using `[l2_opNorm_toEuclideanCLM]`.
+
+Establish `key2` using `pow_le_pow_left₀ (norm_nonneg _) key 2`. Rewrite `key2` using `[mul_pow, EuclideanSpace.norm_sq_eq, EuclideanSpace.norm_sq_eq]`. Use `key2 using 2` and compare the differences between its conclusion and the goal. Rewrite using `[ofLp_toEuclideanCLM]`. Simplify using `[mulVec, dotProduct, mul_apply]`.
+-/
 theorem hs_mul_left_le (A X : Matrix ι ι ℂ) : hs (A * X) ≤ ‖A‖ * hs X := by
   refine (sq_le_sq₀ (hs_nonneg _) (by have := hs_nonneg X; positivity)).1 ?_
   rw [hs_sq, mul_pow, hs_sq, Finset.sum_comm, Finset.sum_comm (f := fun i j => ‖X i j‖ ^ 2),
@@ -83,6 +123,9 @@ theorem hs_mul_left_le (A X : Matrix ι ι ℂ) : hs (A * X) ≤ ‖A‖ * hs X 
   rw [ofLp_toEuclideanCLM]
   simp [mulVec, dotProduct, mul_apply]
 
+/- English proof (translation)
+Rewrite using `[← hs_conjTranspose, conjTranspose_mul, ← hs_conjTranspose X, ← l2_opNorm_conjTranspose B, mul_comm]`. Conclude with `hs_mul_left_le _ _`.
+-/
 theorem hs_mul_right_le (X B : Matrix ι ι ℂ) : hs (X * B) ≤ hs X * ‖B‖ := by
   rw [← hs_conjTranspose, conjTranspose_mul, ← hs_conjTranspose X, ← l2_opNorm_conjTranspose B,
     mul_comm]
@@ -94,13 +137,22 @@ section Inner
 
 variable {f : ℕ} {p q : Fin f → ℕ}
 
+/- English proof (translation)
+Establish `h` using `trace_conjTranspose (X * Yᴴ)`. Rewrite `h` using `[conjTranspose_mul, conjTranspose_conjTranspose]`. Rewrite using `[tInner, tInner, h, Complex.star_def, Complex.conj_re]`.
+-/
 theorem tInner_comm {ι : Type*} [Fintype ι] (X Y : Matrix ι ι ℂ) : tInner X Y = tInner Y X := by
   have h := trace_conjTranspose (X * Yᴴ)
   rw [conjTranspose_mul, conjTranspose_conjTranspose] at h
   rw [tInner, tInner, h, Complex.star_def, Complex.conj_re]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem hsInner_eq (X Y : MatProd p q) : hsInner X Y = ∑ τ, tInner (X τ) (Y τ) := rfl
 
+/- English proof (translation)
+Simplify using `only [hsInner_eq, tInner_comm (X _)]`.
+-/
 theorem hsInner_comm (X Y : MatProd p q) : hsInner X Y = hsInner Y X := by
   simp only [hsInner_eq, tInner_comm (X _)]
 
@@ -113,21 +165,36 @@ def hsInnerR (X : MatProd p q) : MatProd p q →ₗ[ℝ] ℝ where
     simp only [hsInner, Pi.smul_apply, conjTranspose_smul, star_trivial, Matrix.mul_smul,
       trace_smul, Complex.smul_re, RingHom.id_apply, smul_eq_mul, Finset.mul_sum]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem hsInnerR_apply (X Y : MatProd p q) : hsInnerR X Y = hsInner X Y := rfl
 
+/- English proof (translation)
+Rewrite using `[← hsInnerR_apply, map_sum]`. Simplify using `[hsInnerR_apply]`.
+-/
 theorem hsInner_sum_right {κ : Type*} (s : Finset κ) (X : MatProd p q) (c : κ → ℝ)
     (Y : κ → MatProd p q) : hsInner X (∑ m ∈ s, c m • Y m) = ∑ m ∈ s, c m * hsInner X (Y m) := by
   rw [← hsInnerR_apply, map_sum]
   simp [hsInnerR_apply]
 
+/- English proof (translation)
+Rewrite using `[hsInner_comm, hsInner_sum_right]`. Simplify using `[hsInner_comm X]`.
+-/
 theorem hsInner_sum_left {κ : Type*} (s : Finset κ) (X : MatProd p q) (c : κ → ℝ)
     (Y : κ → MatProd p q) : hsInner (∑ m ∈ s, c m • Y m) X = ∑ m ∈ s, c m * hsInner (Y m) X := by
   rw [hsInner_comm, hsInner_sum_right]
   simp [hsInner_comm X]
 
+/- English proof (translation)
+Rewrite using `[← hsInnerR_apply, map_sub]`. Both sides reduce to the same expression.
+-/
 theorem hsInner_sub_right (X Y Z : MatProd p q) : hsInner X (Y - Z) = hsInner X Y - hsInner X Z := by
   rw [← hsInnerR_apply, map_sub]; rfl
 
+/- English proof (translation)
+Simplify using `only [hsInner_eq, tInner_self]`.
+-/
 theorem hsInner_self (X : MatProd p q) : hsInner X X = ∑ τ, hs (X τ) ^ 2 := by
   simp only [hsInner_eq, tInner_self]
 
@@ -137,29 +204,47 @@ section Frame
 
 def coords (F : OrthoFrame) (X : MatProd F.p F.q) : Fin F.dim → ℝ := fun k => hsInner (F.E k) X
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Simplify using `only [coords, OrthoFrame.io, hsInner_sum_right, F.orthonormal, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true]`.
+-/
 theorem coords_io (F : OrthoFrame) (v : Fin F.dim → ℝ) : coords F (F.io v) = v := by
   funext k
   simp only [coords, OrthoFrame.io, hsInner_sum_right, F.orthonormal, mul_ite, mul_one, mul_zero,
     Finset.sum_ite_eq, Finset.mem_univ, if_true]
 
+/- English proof (translation)
+Establish `: F.E l = F.io (Pi.single l 1)`. Simplify using `[OrthoFrame.io, Pi.single_apply]`. Rewrite using `[this, coords_io]`.
+-/
 theorem coords_E (F : OrthoFrame) (l : Fin F.dim) : coords F (F.E l) = Pi.single l 1 := by
   have : F.E l = F.io (Pi.single l 1) := by
     simp [OrthoFrame.io, Pi.single_apply]
   rw [this, coords_io]
 
+/- English proof (translation)
+Rewrite using `[← F.span]`. Conclude with `Submodule.subset_span ⟨l, rfl⟩`.
+-/
 theorem E_mem (F : OrthoFrame) (l : Fin F.dim) : F.E l ∈ lieProd F.p F.q := by
   rw [← F.span]; exact Submodule.subset_span ⟨l, rfl⟩
 
+/- English proof (translation)
+The claim follows from `(Submodule.mem_pi.1 (E_mem F l)) τ (Set.mem_univ _)`.
+-/
 theorem E_mem_u (F : OrthoFrame) (l : Fin F.dim) (τ : Fin F.f) :
     F.E l τ ∈ indefiniteUnitaryLieAlgebra (F.p τ) (F.q τ) :=
   (Submodule.mem_pi.1 (E_mem F l)) τ (Set.mem_univ _)
 
+/- English proof (translation)
+Rewrite `hX` using `[← F.span, Submodule.mem_span_range_iff_exists_fun]`. Take `⟨c, rfl⟩` from `hX`. Establish `: (∑ i, c i • F.E i) = F.io c` using `rfl`. Rewrite using `[this, coords_io]`.
+-/
 theorem io_coords (F : OrthoFrame) {X : MatProd F.p F.q} (hX : X ∈ lieProd F.p F.q) : F.io (coords F X) = X := by
   rw [← F.span, Submodule.mem_span_range_iff_exists_fun] at hX
   obtain ⟨c, rfl⟩ := hX
   have : (∑ i, c i • F.E i) = F.io c := rfl
   rw [this, coords_io]
 
+/- English proof (translation)
+Rewrite using `[OrthoFrame.io, hsInner_sum_left]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Use `congrFun (coords_io F w) l` as an intermediate fact. Rewrite `this` using `[coords]`. Rewrite using `[this]`.
+-/
 theorem hsInner_io_io (F : OrthoFrame) (v w : Fin F.dim → ℝ) : hsInner (F.io v) (F.io w) = ∑ l, v l * w l := by
   rw [OrthoFrame.io, hsInner_sum_left]
   refine Finset.sum_congr rfl fun l _ => ?_
@@ -167,17 +252,26 @@ theorem hsInner_io_io (F : OrthoFrame) (v w : Fin F.dim → ℝ) : hsInner (F.io
   rw [coords] at this
   rw [this]
 
+/- English proof (translation)
+Use `conv_lhs => rw [← io_coords F hX]`. Rewrite using `[hsInner_io_io]`. Simplify using `[sq]`.
+-/
 theorem hsInner_self_eq_sum_sq (F : OrthoFrame) {X : MatProd F.p F.q} (hX : X ∈ lieProd F.p F.q) :
     hsInner X X = ∑ k, coords F X k ^ 2 := by
   conv_lhs => rw [← io_coords F hX]
   rw [hsInner_io_io]
   simp [sq]
 
+/- English proof (translation)
+The claim follows from `F.supp l τ h`.
+-/
 theorem E_apply_of_ne (F : OrthoFrame) {l : Fin F.dim} {τ : Fin F.f} (h : τ ≠ F.place l) : F.E l τ = 0 :=
   F.supp l τ h
 
 end Frame
 
+/- English proof (translation)
+Introduce `F v w` and use `hsInner_io_io F v w`.
+-/
 theorem ioIsometry : IoIsometry.Statement := fun F v w => hsInner_io_io F v w
 
 end UnitaryRecombination
@@ -186,6 +280,13 @@ namespace UnitaryRecombination
 
 section ExpBound
 
+/- English proof (translation)
+Establish `hs : Summable (fun n : ℕ => ‖((n.factorial : ℝ)⁻¹) • x ^ n‖)` using `NormedSpace.norm_expSeries_summable' x`. Establish `hr : Summable (fun n : ℕ => ‖x‖ ^ n / (n.factorial : ℝ))` using `Real.summable_pow_div_factorial _`. Establish `he : NormedSpace.exp x = ∑' n : ℕ, ((n.factorial : ℝ)⁻¹) • x ^ n`. Rewrite using `[NormedSpace.exp_eq_tsum ℝ]`. Establish `hR : Real.exp ‖x‖ = ∑' n : ℕ, ‖x‖ ^ n / (n.factorial : ℝ)`.
+
+Rewrite using `[Real.exp_eq_exp_ℝ, NormedSpace.exp_eq_tsum_div]`. Establish `hs1 : Summable (fun n : ℕ => ‖(((n + 1).factorial : ℝ)⁻¹) • x ^ (n + 1)‖)` using `(summable_nat_add_iff 1).2 hs`. Establish `hr1 : Summable (fun n : ℕ => ‖x‖ ^ (n + 1) / ((n + 1).factorial : ℝ))` using `(summable_nat_add_iff 1).2 hr`. Rewrite using `[he, hR, hs.of_norm.tsum_eq_zero_add, hr.tsum_eq_zero_add]`. Simplify using `only [Nat.factorial_zero, Nat.cast_one, inv_one, pow_zero, one_smul, div_one, add_sub_cancel_left]`.
+
+Use `(norm_tsum_le_tsum_norm hs1).trans (hs1.tsum_le_tsum (fun n => ?_) hr1)` and prove the remaining obligations. Rewrite using `[norm_smul, div_eq_inv_mul, Real.norm_of_nonneg (by positivity)]`. Use `gcongr`. Conclude with `norm_pow_le' x n.succ_pos`.
+-/
 theorem norm_exp_sub_one_le {𝔸 : Type*} [NormedRing 𝔸] [NormedAlgebra ℝ 𝔸] [CompleteSpace 𝔸]
     (x : 𝔸) : ‖NormedSpace.exp x - 1‖ ≤ Real.exp ‖x‖ - 1 := by
   have hs : Summable (fun n : ℕ => ‖((n.factorial : ℝ)⁻¹) • x ^ n‖) :=
@@ -207,6 +308,9 @@ theorem norm_exp_sub_one_le {𝔸 : Type*} [NormedRing 𝔸] [NormedAlgebra ℝ 
   gcongr
   exact norm_pow_le' x n.succ_pos
 
+/- English proof (translation)
+Use `norm_exp_sub_one_le x` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem norm_exp_le {𝔸 : Type*} [NormedRing 𝔸] [NormedAlgebra ℝ 𝔸] [CompleteSpace 𝔸]
     (h1 : ‖(1 : 𝔸)‖ ≤ 1) (x : 𝔸) : ‖NormedSpace.exp x‖ ≤ Real.exp ‖x‖ := by
   have := norm_exp_sub_one_le x
@@ -223,31 +327,56 @@ variable (p q : ℕ)
 def dag (X : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ :=
   indefJ p q * Xᴴ * indefJ p q
 
+/- English proof (translation)
+Rewrite using `[← Matrix.mul_assoc, indefJ_mul_self, Matrix.one_mul]`.
+-/
 theorem J_mul_J_mul (Y : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) :
     indefJ p q * (indefJ p q * Y) = Y := by
   rw [← Matrix.mul_assoc, indefJ_mul_self, Matrix.one_mul]
 
+/- English proof (translation)
+Simplify using `only [dag, conjTranspose_mul, conjTranspose_conjTranspose, indefJ_conjTranspose, Matrix.mul_assoc, indefJ_mul_self, Matrix.mul_one]`. Rewrite using `[J_mul_J_mul]`.
+-/
 theorem dag_dag (X : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) : dag p q (dag p q X) = X := by
   simp only [dag, conjTranspose_mul, conjTranspose_conjTranspose, indefJ_conjTranspose,
     Matrix.mul_assoc, indefJ_mul_self, Matrix.mul_one]
   rw [J_mul_J_mul]
 
+/- English proof (translation)
+Simplify using `only [dag, conjTranspose_add, Matrix.mul_add, Matrix.add_mul]`.
+-/
 theorem dag_add (X Y : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) :
     dag p q (X + Y) = dag p q X + dag p q Y := by
   simp only [dag, conjTranspose_add, Matrix.mul_add, Matrix.add_mul]
 
+/- English proof (translation)
+Simplify using `only [dag, conjTranspose_sub, Matrix.mul_sub, Matrix.sub_mul]`.
+-/
 theorem dag_sub (X Y : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) :
     dag p q (X - Y) = dag p q X - dag p q Y := by
   simp only [dag, conjTranspose_sub, Matrix.mul_sub, Matrix.sub_mul]
 
+/- English proof (translation)
+Simplify using `only [dag, conjTranspose_smul, Matrix.mul_smul, Matrix.smul_mul, Complex.star_def]`.
+-/
 theorem dag_smul (c : ℂ) (X : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) :
     dag p q (c • X) = (starRingEnd ℂ c) • dag p q X := by
   simp only [dag, conjTranspose_smul, Matrix.mul_smul, Matrix.smul_mul, Complex.star_def]
 
+/- English proof (translation)
+Simplify using `only [dag, conjTranspose_smul, star_trivial, Matrix.mul_smul, Matrix.smul_mul]`.
+-/
 theorem dag_real_smul (c : ℝ) (X : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) :
     dag p q (c • X) = c • dag p q X := by
   simp only [dag, conjTranspose_smul, star_trivial, Matrix.mul_smul, Matrix.smul_mul]
 
+/- English proof (translation)
+Rewrite using `[mem_indefiniteUnitaryLieAlgebra_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[dag, h]`. Simplify using `only [Matrix.mul_neg, Matrix.neg_mul, Matrix.mul_assoc, indefJ_mul_self, Matrix.mul_one]`.
+
+Rewrite using `[J_mul_J_mul]`. Introduce `h`. Establish `: Xᴴ = indefJ p q * dag p q X * indefJ p q`. Rewrite using `[dag]`. Simplify using `only [Matrix.mul_assoc, indefJ_mul_self, Matrix.mul_one]`.
+
+Rewrite using `[J_mul_J_mul]`. Rewrite using `[this, h, Matrix.mul_neg, Matrix.neg_mul]`.
+-/
 theorem mem_u_iff_dag {X : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ} :
     X ∈ indefiniteUnitaryLieAlgebra p q ↔ dag p q X = -X := by
   rw [mem_indefiniteUnitaryLieAlgebra_iff]
@@ -323,6 +452,9 @@ def matEquivU : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ ≃ₗ[ℝ]
         rw [dag_sub, dag_smul, hA, hB, Complex.conj_I]
         match_scalars <;> ring_nf <;> simp only [Complex.I_sq] <;> ring }
 
+/- English proof (translation)
+Establish `h` using `(matEquivU p q).finrank_eq`. Rewrite `h` using `[Module.finrank_prod, Module.finrank_matrix, Complex.finrank_real_complex]`. Simplify using `only [Fintype.card_sum, Fintype.card_fin] at h`. Use polynomial arithmetic with `[h]`.
+-/
 theorem finrank_u : Module.finrank ℝ (indefiniteUnitaryLieAlgebra p q) = (p + q) ^ 2 := by
   have h := (matEquivU p q).finrank_eq
   rw [Module.finrank_prod, Module.finrank_matrix, Complex.finrank_real_complex] at h
@@ -346,12 +478,24 @@ def tInnerR (X : Matrix ι ι ℂ) : Matrix ι ι ℂ →ₗ[ℝ] ℝ where
     simp only [tInner, conjTranspose_smul, star_trivial, Matrix.mul_smul, trace_smul,
       Complex.smul_re, RingHom.id_apply, smul_eq_mul]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem tInnerR_apply (X Y : Matrix ι ι ℂ) : tInnerR X Y = tInner X Y := rfl
 
+/- English proof (translation)
+Simplify using `[tInner]`.
+-/
 theorem tInner_zero_left (Y : Matrix ι ι ℂ) : tInner 0 Y = 0 := by simp [tInner]
 
+/- English proof (translation)
+Simplify using `[tInner]`.
+-/
 theorem tInner_zero_right (Y : Matrix ι ι ℂ) : tInner Y 0 = 0 := by simp [tInner]
 
+/- English proof (translation)
+Rewrite using `[← tInnerR_apply, map_sum]`. Simplify using `[tInnerR_apply]`.
+-/
 theorem tInner_sum_right {κ : Type*} (s : Finset κ) (X : Matrix ι ι ℂ) (c : κ → ℝ)
     (Y : κ → Matrix ι ι ℂ) : tInner X (∑ m ∈ s, c m • Y m) = ∑ m ∈ s, c m * tInner X (Y m) := by
   rw [← tInnerR_apply, map_sum]
@@ -359,6 +503,9 @@ theorem tInner_sum_right {κ : Type*} (s : Finset κ) (X : Matrix ι ι ℂ) (c 
 
 variable (F : OrthoFrame)
 
+/- English proof (translation)
+Rewrite using `[hsInner_eq, Finset.sum_eq_single τ]`. Introduce `τ' _ h`. Rewrite using `[E_apply_of_ne F (fun h' => h (h'.trans hk)), tInner_zero_left]`. Simplify using the standard rewrite rules.
+-/
 theorem hsInner_eq_tInner {k : Fin F.dim} {τ : Fin F.f} (hk : F.place k = τ) (X : MatProd F.p F.q) :
     hsInner (F.E k) X = tInner (F.E k τ) (X τ) := by
   rw [hsInner_eq, Finset.sum_eq_single τ]
@@ -366,10 +513,24 @@ theorem hsInner_eq_tInner {k : Fin F.dim} {τ : Fin F.f} (hk : F.place k = τ) (
     rw [E_apply_of_ne F (fun h' => h (h'.trans hk)), tInner_zero_left]
   · simp
 
+/- English proof (translation)
+Rewrite using `[← hsInner_eq_tInner F hk, F.orthonormal]`.
+-/
 theorem tInner_E_E {k : Fin F.dim} {τ : Fin F.f} (hk : F.place k = τ) (l : Fin F.dim) :
     tInner (F.E k τ) (F.E l τ) = if k = l then 1 else 0 := by
   rw [← hsInner_eq_tInner F hk, F.orthonormal]
 
+/- English proof (translation)
+Use `set Xs : MatProd F.p F.q := Pi.single τ X with hXs`. Establish `hmem : Xs ∈ lieProd F.p F.q`. Rewrite using `[lieProd, Submodule.mem_pi]`. Introduce `τ' _`. Distinguish the cases in `h : τ' = τ`.
+
+Substitute `h` using the available equality. Simplify `hX` using `[hXs]`. Simplify using `[hXs, h]`. Establish `hc : ∀ l, coords F Xs l = tInner (F.E l τ) X`. Introduce `l`.
+
+Rewrite using `[coords, hsInner_eq, Finset.sum_eq_single τ]`. Simplify using `[hXs]`. Introduce `τ' _ h`. Simplify using `[hXs, h, tInner_zero_right]`. Simplify using the standard rewrite rules.
+
+Establish `h` using `congrFun (io_coords F hmem) τ`. Simplify using `only [OrthoFrame.io, Finset.sum_apply, Pi.smul_apply, hc] at h`. Rewrite `h` using `[hXs, Pi.single_eq_same]`. Establish `hz : ∑ l : {l // ¬ F.place l = τ}, tInner (F.E l τ) X • F.E (l : Fin F.dim) τ = 0`. Use `Finset.sum_eq_zero fun l _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[E_apply_of_ne F (fun h' => l.2 h'.symm), smul_zero]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Fintype.sum_subtype_add_sum_subtype (fun l => F.place l = τ), hz, add_zero]`. Use `_ = X := h`.
+-/
 theorem sum_place_eq {τ : Fin F.f} {X : Matrix (Fin (F.p τ) ⊕ Fin (F.q τ)) (Fin (F.p τ) ⊕ Fin (F.q τ)) ℂ}
     (hX : X ∈ indefiniteUnitaryLieAlgebra (F.p τ) (F.q τ)) :
     ∑ l : {l // F.place l = τ}, tInner (F.E l τ) X • F.E l τ = X := by
@@ -398,6 +559,15 @@ theorem sum_place_eq {τ : Fin F.f} {X : Matrix (Fin (F.p τ) ⊕ Fin (F.q τ)) 
         rw [← Fintype.sum_subtype_add_sum_subtype (fun l => F.place l = τ), hz, add_zero]
     _ = X := h
 
+/- English proof (translation)
+Set `toC : indefiniteUnitaryLieAlgebra (F.p τ) (F.q τ) →ₗ[ℝ] ({l // F.place l = τ} → ℝ)` to `{ toFun := fun X l => tInner (F.E l τ) X map_add' := fun X Y => by`. Use function extensionality and compare the values at `l`. Simplify using `only [Submodule.coe_add, Pi.add_apply, ← tInnerR_apply, map_add]`. Use the proof step `map_smul' := fun c X => by`. Use function extensionality and compare the values at `l`.
+
+Simplify using `only [SetLike.val_smul, RingHom.id_apply, Pi.smul_apply, ← tInnerR_apply, map_smul] }`. Set `e : indefiniteUnitaryLieAlgebra (F.p τ) (F.q τ) ≃ₗ[ℝ] ({l // F.place l = τ} → ℝ)` to `{ toC with invFun := fun c => ⟨∑ l : {l // F.place l = τ}, c l • F.E l τ, Submodule.sum_mem _ fun l _ => Submodule.smul_mem _ _ (E_mem_u F l τ)⟩ left_inv := fun X => Subtype.ext (sum_place_eq F X.2) right_inv := fun c => by`. Use function extensionality and compare the values at `k`. Express the relevant statement in the definitionally equal form `tInner (F.E k τ) (∑ l : {l // F.place l = τ}, c l • F.E l τ) = c k`. Rewrite using `[tInner_sum_right, Finset.sum_eq_single k]`.
+
+Rewrite using `[tInner_E_E F k.2, if_pos rfl, mul_one]`. Introduce `l _ hl`. Rewrite using `[tInner_E_E F k.2, if_neg (fun h => hl (Subtype.ext h).symm), mul_zero]`. Simplify using `}`. Establish `h` using `e.finrank_eq`.
+
+Rewrite `h` using `[finrank_u, F.sig, Module.finrank_fintype_fun_eq_card]`. Conclude with `h.symm`.
+-/
 theorem card_place (τ : Fin F.f) : Fintype.card {l // F.place l = τ} = F.r ^ 2 := by
   classical
   let toC : indefiniteUnitaryLieAlgebra (F.p τ) (F.q τ) →ₗ[ℝ] ({l // F.place l = τ} → ℝ) :=
@@ -426,6 +596,15 @@ theorem card_place (τ : Fin F.f) : Fintype.card {l // F.place l = τ} = F.r ^ 2
 
 end Places
 
+/- English proof (translation)
+Introduce `F`. Use `⟨fun k l hkl s t => ?_, fun τ => card_place F τ⟩` and prove the remaining obligations. Establish `h0 : (s • F.E k) * (t • F.E l) = 0`. Use function extensionality and compare the values at `τ`. Distinguish the cases in `hk : τ = F.place k`.
+
+Establish `: τ ≠ F.place l` using `fun h => hkl (hk.symm.trans h)`. Simplify using `[Pi.mul_apply, E_apply_of_ne F this]`. Simplify using `[Pi.mul_apply, E_apply_of_ne F hk]`. Establish `h1 : (t • F.E l) * (s • F.E k) = 0`. Use function extensionality and compare the values at `τ`.
+
+Distinguish the cases in `hk : τ = F.place k`. Establish `: τ ≠ F.place l` using `fun h => hkl (hk.symm.trans h)`. Simplify using `[Pi.mul_apply, E_apply_of_ne F this]`. Simplify using `[Pi.mul_apply, E_apply_of_ne F hk]`. Establish `hc : Commute (s • F.E k) (t • F.E l)` using `h0.trans h1.symm`.
+
+Conclude with `hc.exp.eq`.
+-/
 theorem factors : Factors.Statement := by
   intro F
   refine ⟨fun k l hkl s t => ?_, fun τ => card_place F τ⟩
@@ -467,17 +646,29 @@ def Gi (y : Fin F.dim → ℝ) (τ : Fin F.f) : ℕ → Mat F τ
   | 0 => 1
   | m + 1 => Gi y τ m * NormedSpace.exp (-(yy F y m • Evec F τ m))
 
+/- English proof (translation)
+Simplify using `[Evec, l.2]`.
+-/
 theorem Evec_val (τ : Fin F.f) (l : Fin F.dim) : Evec F τ l = F.E l τ := by
   simp [Evec, l.2]
 
+/- English proof (translation)
+Simplify using `[yy, l.2]`.
+-/
 theorem yy_val (y : Fin F.dim → ℝ) (l : Fin F.dim) : yy F y l = y l := by
   simp [yy, l.2]
 
+/- English proof (translation)
+Unfold `Evec`. Use `split_ifs`. Conclude with `E_mem_u F _ τ`. Conclude with `Submodule.zero_mem _`.
+-/
 theorem Evec_mem (τ : Fin F.f) (m : ℕ) : Evec F τ m ∈ indefiniteUnitaryLieAlgebra (F.p τ) (F.q τ) := by
   unfold Evec; split_ifs
   · exact E_mem_u F _ τ
   · exact Submodule.zero_mem _
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => simp [G, Gi]`. Consider the case `succ m ih`. Simplify using `only [G, Gi]`. Rewrite using `[show NormedSpace.exp (yy F y m • Evec F τ m) * G F y τ m * (Gi F y τ m * NormedSpace.exp (-(yy F y m • Evec F τ m))) = NormedSpace.exp (yy F y m • Evec F τ m) * (G F y τ m * Gi F y τ m) * NormedSpace.exp (-(yy F y m • Evec F τ m)) by simp only [Matrix.mul_assoc], ih, Matrix.mul_ …`.
+-/
 theorem G_mul_Gi (y : Fin F.dim → ℝ) (τ : Fin F.f) (k : ℕ) : G F y τ k * Gi F y τ k = 1 := by
   induction k with
   | zero => simp [G, Gi]
@@ -489,6 +680,9 @@ theorem G_mul_Gi (y : Fin F.dim → ℝ) (τ : Fin F.f) (k : ℕ) : G F y τ k *
         NormedSpace.exp (-(yy F y m • Evec F τ m)) by simp only [Matrix.mul_assoc], ih,
       Matrix.mul_one, exp_mul_exp_neg]
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => simp [G, Gi]`. Consider the case `succ m ih`. Simplify using `only [G, Gi]`. Rewrite using `[show Gi F y τ m * NormedSpace.exp (-(yy F y m • Evec F τ m)) * (NormedSpace.exp (yy F y m • Evec F τ m) * G F y τ m) = Gi F y τ m * (NormedSpace.exp (-(yy F y m • Evec F τ m)) * NormedSpace.exp (yy F y m • Evec F τ m)) * G F y τ m by simp only [Matrix.mul_assoc], exp_neg_mul_exp …`.
+-/
 theorem Gi_mul_G (y : Fin F.dim → ℝ) (τ : Fin F.f) (k : ℕ) : Gi F y τ k * G F y τ k = 1 := by
   induction k with
   | zero => simp [G, Gi]
@@ -500,9 +694,17 @@ theorem Gi_mul_G (y : Fin F.dim → ℝ) (τ : Fin F.f) (k : ℕ) : Gi F y τ k 
         NormedSpace.exp (yy F y m • Evec F τ m)) * G F y τ m by simp only [Matrix.mul_assoc],
       exp_neg_mul_exp, Matrix.mul_one, ih]
 
+/- English proof (translation)
+The claim follows from `Matrix.inv_eq_right_inv (G_mul_Gi F y τ k)`.
+-/
 theorem inv_G (y : Fin F.dim → ℝ) (τ : Fin F.f) (k : ℕ) : (G F y τ k)⁻¹ = Gi F y τ k :=
   Matrix.inv_eq_right_inv (G_mul_Gi F y τ k)
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simp [G]`. Consider the case `succ m ih`. Rewrite using `[List.ofFn_succ', List.concat_eq_append, List.reverse_append]`. Simplify using `only [List.reverse_cons, List.reverse_nil, List.nil_append, List.cons_append, List.prod_cons]`.
+
+Simplify using `only [Fin.val_castSucc, Fin.val_last] at ih ⊢`. Rewrite using `[ih]`. Both sides reduce to the same expression.
+-/
 theorem reverse_ofFn_prod (y : Fin F.dim → ℝ) (τ : Fin F.f) (n : ℕ) :
     ((List.ofFn fun l : Fin n => NormedSpace.exp (yy F y l • Evec F τ l)).reverse).prod =
       G F y τ n := by
@@ -515,6 +717,9 @@ theorem reverse_ofFn_prod (y : Fin F.dim → ℝ) (τ : Fin F.f) (n : ℕ) :
     simp only [Fin.val_castSucc, Fin.val_last] at ih ⊢
     rw [ih]; rfl
 
+/- English proof (translation)
+Rewrite using `[← reverse_ofFn_prod, OrthoFrame.coordMap]`. Use `congr 3`. Use function extensionality and compare the values at `l`. Rewrite using `[yy_val, Evec_val]`.
+-/
 theorem coordMap_eq (y : Fin F.dim → ℝ) (τ : Fin F.f) : F.coordMap y τ = G F y τ F.dim := by
   rw [← reverse_ofFn_prod, OrthoFrame.coordMap]
   congr 3
@@ -524,12 +729,18 @@ theorem coordMap_eq (y : Fin F.dim → ℝ) (τ : Fin F.f) : F.coordMap y τ = G
 def IsU {p q : ℕ} (g : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) : Prop :=
   gᴴ * indefJ p q * g = indefJ p q
 
+/- English proof (translation)
+Use `(mem_indefiniteUnitaryGroup_iff p q).1 ((isExpLieAlgebra_indefiniteUnitary p q).expUnit_mem X hX)` as an intermediate fact. Simplify `this` using `[IsU]`.
+-/
 theorem isU_exp {p q : ℕ} {X : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ}
     (hX : X ∈ indefiniteUnitaryLieAlgebra p q) : IsU (NormedSpace.exp X) := by
   have := (mem_indefiniteUnitaryGroup_iff p q).1
     ((isExpLieAlgebra_indefiniteUnitary p q).expUnit_mem X hX)
   simpa [IsU] using this
 
+/- English proof (translation)
+Unfold `IsU at *`. Rewrite using `[conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = indefJ p q := by rw [hg, hh]`.
+-/
 theorem isU_mul {p q : ℕ} {g h : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ} (hg : IsU g)
     (hh : IsU h) : IsU (g * h) := by
   unfold IsU at *
@@ -538,11 +749,21 @@ theorem isU_mul {p q : ℕ} {g h : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) �
         simp only [Matrix.mul_assoc]
     _ = indefJ p q := by rw [hg, hh]
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => simp [IsU, G]`. Consider the case `succ m ih => exact isU_mul (isU_exp (Submodule.smul_mem _ _ (Evec_mem F τ m))) ih`.
+-/
 theorem isU_G (y : Fin F.dim → ℝ) (τ : Fin F.f) (k : ℕ) : IsU (G F y τ k) := by
   induction k with
   | zero => simp [IsU, G]
   | succ m ih => exact isU_mul (isU_exp (Submodule.smul_mem _ _ (Evec_mem F τ m))) ih
 
+/- English proof (translation)
+Rewrite `hX`, the goal using `[mem_indefiniteUnitaryLieAlgebra_iff]`. Unfold `IsU at hg`. Establish `e1 : gᴴ * indefJ p q = indefJ p q * h`. Combine the equalities or inequalities in the displayed calculation. Establish `e2 : hᴴ = indefJ p q * g * indefJ p q`.
+
+Establish `h3` using `congrArg conjTranspose e1`. Rewrite `h3` using `[conjTranspose_mul, conjTranspose_mul, conjTranspose_conjTranspose, indefJ_conjTranspose]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_assoc, indefJ_mul_self, Matrix.mul_one]`. Use `_ = indefJ p q * g * indefJ p q := by rw [← h3]`.
+
+Rewrite using `[conjTranspose_mul, conjTranspose_mul, hX, e2]`. Simplify using `only [Matrix.neg_mul, Matrix.mul_neg, Matrix.mul_assoc]`. Rewrite using `[J_mul_J_mul, ← Matrix.mul_assoc gᴴ, e1]`. Simplify using `only [Matrix.mul_assoc]`.
+-/
 theorem conj_mem_u {p q : ℕ} {g h X : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ} (hg : IsU g)
     (hgh : g * h = 1) (hX : X ∈ indefiniteUnitaryLieAlgebra p q) :
     h * X * g ∈ indefiniteUnitaryLieAlgebra p q := by
@@ -564,6 +785,9 @@ theorem conj_mem_u {p q : ℕ} {g h X : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin 
   rw [J_mul_J_mul, ← Matrix.mul_assoc gᴴ, e1]
   simp only [Matrix.mul_assoc]
 
+/- English proof (translation)
+Rewrite using `[← l2_opNorm_toEuclideanCLM, map_one]`. Conclude with `ContinuousLinearMap.norm_id_le`.
+-/
 theorem norm_one_le {ι : Type*} [Fintype ι] [DecidableEq ι] : ‖(1 : Matrix ι ι ℂ)‖ ≤ 1 := by
   rw [← l2_opNorm_toEuclideanCLM, map_one]
   exact ContinuousLinearMap.norm_id_le
@@ -571,9 +795,17 @@ theorem norm_one_le {ι : Type*} [Fintype ι] [DecidableEq ι] : ‖(1 : Matrix 
 def cc (y : Fin F.dim → ℝ) (τ : Fin F.f) (m : ℕ) : ℝ :=
   if h : m < F.dim then (if F.place ⟨m, h⟩ = τ then |y ⟨m, h⟩| else 0) else 0
 
+/- English proof (translation)
+Apply the tactic sequence `unfold cc; split_ifs <;> simp`.
+-/
 theorem cc_nonneg (y : Fin F.dim → ℝ) (τ : Fin F.f) (m : ℕ) : 0 ≤ cc F y τ m := by
   unfold cc; split_ifs <;> simp
 
+/- English proof (translation)
+Unfold `Evec`. Use `split_ifs with h`. Use `(opNorm_le_hs _).trans ?_` and prove the remaining obligations. Establish `h1 : hsInner (F.E ⟨m, h⟩) (F.E ⟨m, h⟩) = 1` using `by simp [F.orthonormal]`. Rewrite `h1` using `[hsInner_self]`.
+
+Establish `h2 : hs (F.E ⟨m, h⟩ τ) ^ 2 ≤ 1`. Rewrite using `[← h1]`. Conclude with `Finset.single_le_sum (f := fun τ' => hs (F.E ⟨m, h⟩ τ') ^ 2) (fun _ _ => sq_nonneg _) (Finset.mem_univ τ)`. Use polynomial arithmetic with `[hs_nonneg (F.E ⟨m, h⟩ τ)]`. Simplify using the standard rewrite rules.
+-/
 theorem norm_Evec_le (τ : Fin F.f) (m : ℕ) : ‖Evec F τ m‖ ≤ 1 := by
   unfold Evec; split_ifs with h
   · refine (opNorm_le_hs _).trans ?_
@@ -586,6 +818,11 @@ theorem norm_Evec_le (τ : Fin F.f) (m : ℕ) : ‖Evec F τ m‖ ≤ 1 := by
     nlinarith [hs_nonneg (F.E ⟨m, h⟩ τ)]
   · simp
 
+/- English proof (translation)
+Rewrite using `[norm_smul]`. Unfold `yy cc Evec`. Use `split_ifs with h h'`. Rewrite using `[Real.norm_eq_abs]`. Use `norm_Evec_le F τ m` as an intermediate fact.
+
+Rewrite `this` using `[Evec, dif_pos h]`. Use polynomial arithmetic with `[abs_nonneg (y ⟨m, h⟩)]`. Rewrite using `[E_apply_of_ne F (Ne.symm h')]`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+-/
 theorem norm_factor_le (y : Fin F.dim → ℝ) (τ : Fin F.f) (m : ℕ) :
     ‖yy F y m • Evec F τ m‖ ≤ cc F y τ m := by
   rw [norm_smul]
@@ -598,6 +835,15 @@ theorem norm_factor_le (y : Fin F.dim → ℝ) (τ : Fin F.f) (m : ℕ) :
   · rw [E_apply_of_ne F (Ne.symm h')]; simp
   · simp
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => simp [G, norm_one_le]`. Consider the case `succ m ih`. Take `⟨ih1, ih2⟩` from `ih`. Use `set A := NormedSpace.exp (yy F y m • Evec F τ m) with hA`.
+
+Establish `hx` using `norm_factor_le F y τ m`. Establish `hA1 : ‖A - 1‖ ≤ Real.exp (cc F y τ m) - 1` using `(norm_exp_sub_one_le _).trans (by gcongr)`. Establish `hA2 : ‖A‖ ≤ Real.exp (cc F y τ m)` using `(norm_exp_le norm_one_le _).trans (Real.exp_le_exp.2 hx)`. Establish `e : G F y τ (m + 1) - 1 = A * (G F y τ m - 1) + (A - 1)`. Simplify using `only [G, hA, Matrix.mul_sub, Matrix.mul_one]`.
+
+Normalize the expressions using the abelian group laws. Rewrite using `[Finset.sum_range_succ, Real.exp_add]`. Use `set S := ∑ x ∈ Finset.range m, cc F y τ x`. Establish `hS : 1 ≤ Real.exp S` using `Real.one_le_exp (Finset.sum_nonneg fun i _ => cc_nonneg F y τ i)`. Establish `hc : 1 ≤ Real.exp (cc F y τ m)` using `Real.one_le_exp (cc_nonneg F y τ m)`.
+
+Prove the components needed by the constructor for the conclusion. Rewrite using `[e]`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem norm_G_sub_one_le (y : Fin F.dim → ℝ) (τ : Fin F.f) (k : ℕ) :
     ‖G F y τ k - 1‖ ≤ Real.exp (∑ m ∈ Finset.range k, cc F y τ m) - 1 ∧
       ‖G F y τ k‖ ≤ Real.exp (∑ m ∈ Finset.range k, cc F y τ m) := by
@@ -629,6 +875,17 @@ theorem norm_G_sub_one_le (y : Fin F.dim → ℝ) (τ : Fin F.f) (k : ℕ) :
         _ ≤ Real.exp (cc F y τ m) * Real.exp S := by gcongr
         _ = Real.exp S * Real.exp (cc F y τ m) := by ring
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => simp [Gi, norm_one_le]`. Consider the case `succ m ih`. Take `⟨ih1, ih2⟩` from `ih`. Use `set B := NormedSpace.exp (-(yy F y m • Evec F τ m)) with hB`.
+
+Establish `hx : ‖-(yy F y m • Evec F τ m)‖ ≤ cc F y τ m`. Rewrite using `[norm_neg]`. Conclude with `norm_factor_le F y τ m`. Establish `hB1 : ‖B - 1‖ ≤ Real.exp (cc F y τ m) - 1` using `(norm_exp_sub_one_le _).trans (by gcongr)`. Establish `hB2 : ‖B‖ ≤ Real.exp (cc F y τ m)` using `(norm_exp_le norm_one_le _).trans (Real.exp_le_exp.2 hx)`.
+
+Establish `e : Gi F y τ (m + 1) - 1 = (Gi F y τ m - 1) * B + (B - 1)`. Simplify using `only [Gi, hB, Matrix.sub_mul, Matrix.one_mul]`. Normalize the expressions using the abelian group laws. Rewrite using `[Finset.sum_range_succ, Real.exp_add]`. Use `set S := ∑ x ∈ Finset.range m, cc F y τ x`.
+
+Establish `hS : 1 ≤ Real.exp S` using `Real.one_le_exp (Finset.sum_nonneg fun i _ => cc_nonneg F y τ i)`. Establish `hc : 1 ≤ Real.exp (cc F y τ m)` using `Real.one_le_exp (cc_nonneg F y τ m)`. Prove the components needed by the constructor for the conclusion. Rewrite using `[e]`. Combine the equalities or inequalities in the displayed calculation.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem norm_Gi_sub_one_le (y : Fin F.dim → ℝ) (τ : Fin F.f) (k : ℕ) :
     ‖Gi F y τ k - 1‖ ≤ Real.exp (∑ m ∈ Finset.range k, cc F y τ m) - 1 ∧
       ‖Gi F y τ k‖ ≤ Real.exp (∑ m ∈ Finset.range k, cc F y τ m) := by
@@ -660,6 +917,13 @@ theorem norm_Gi_sub_one_le (y : Fin F.dim → ℝ) (τ : Fin F.f) (k : ℕ) :
         _ ≤ ‖Gi F y τ m‖ * ‖B‖ := norm_mul_le _ _
         _ ≤ Real.exp S * Real.exp (cc F y τ m) := by gcongr
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_range]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Simplify using `[cc, l.2]`. Use `_ = ∑ l ∈ Finset.univ.filter (fun l => F.place l = τ), |y l| := by`.
+
+Rewrite using `[Finset.sum_filter]`. Use `_ ≤ (Finset.univ.filter (fun l => F.place l = τ)).card • a := Finset.sum_le_card_nsmul _ _ _ fun l _ => hy l`. Use `_ = (F.r : ℝ) ^ 2 * a := by`. Rewrite using `[nsmul_eq_mul, ← Fintype.card_subtype, card_place]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sum_cc_le (y : Fin F.dim → ℝ) (τ : Fin F.f) {a : ℝ} (hy : ∀ l, |y l| ≤ a) {k : ℕ}
     (hk : k ≤ F.dim) : ∑ m ∈ Finset.range k, cc F y τ m ≤ (F.r : ℝ) ^ 2 * a := by
   classical

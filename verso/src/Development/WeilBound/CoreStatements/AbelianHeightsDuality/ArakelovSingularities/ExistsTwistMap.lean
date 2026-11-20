@@ -16,6 +16,11 @@ open GlobalTheory.AbLaw GlobalTheory.CechPic GlobalTheory.ProjSpace
 
 namespace GlobalTheory.Amb
 
+/- English proof (translation)
+Establish `hO : ((O1 k n).pull e).IsLB` using `LB.isLB_pull (O1_isLB k n) e`. Take `⟨t₀, ht⟩` from `GlobalTheory.TwistGen.twist_generated k X (e ≫ PSpace.str k n) ((O1 k n).pull e) n _ hO (veryAmpleBy_secPull_coord e) M hM`. Take `⟨r, u, hu⟩` from `ht (t₀.toNat : ℤ) (Int.self_le_toNat t₀)`. Use `⟨t₀.toNat, r, toProj (e ≫ PSpace.str k n) u hu, toProj_str _ _ _, ?_⟩` and prove the remaining obligations. Establish `hT : (tw M ((O1 k n).pull e) (t₀.toNat : ℤ)).IsLB` using `LB.isLB_div hM (isLB_pw hO _)`.
+
+Rewrite using `[(cls_eq_iff _ hT).2 (lbIso_pullback_O1_toProj _ u hu)]`. Use `(cls_div hM (isLB_pw hO _) hT).trans ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.EffBound.cls_pw hO, neg_smul, sub_neg_eq_add]`.
+-/
 theorem exists_twist_map {k : Type} [CommRing k] {X : Scheme.{0}} {n : ℕ} (e : X ⟶ PSpace k n) [IsClosedImmersion e]
     (M : LB X) (hM : M.IsLB) :
     ∃ (t r : ℕ) (g : X ⟶ PSpace k r), g ≫ PSpace.str k r = e ≫ PSpace.str k n ∧

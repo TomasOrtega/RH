@@ -10,12 +10,22 @@ open CategoryTheory AlgebraicGeometry Opposite ReciprocityTheory.ChartRestrictio
 
 namespace PositivityTheory.AutomorphicGaloisHodgeTate.G8.HBC
 
+/- English proof (translation)
+Unfold `sortSign`. Use `Finset.prod_eq_one fun a _ ↦ Finset.prod_eq_one fun b _ ↦ if_neg ?_` and prove the remaining obligations. Introduce and unpack `⟨h₁, h₂⟩`. Conclude with `lt_asymm h₁ h₂`.
+-/
 theorem sortSign_id' {ι : Type} [LinearOrder ι] (t : Finset ι) : sortSign (id : ι → ι) t = 1 := by
   unfold sortSign
   refine Finset.prod_eq_one fun a _ ↦ Finset.prod_eq_one fun b _ ↦ if_neg ?_
   rintro ⟨h₁, h₂⟩
   exact lt_asymm h₁ h₂
 
+/- English proof (translation)
+Take `⟨z, rfl⟩` from `cechClass_surjective (cechCube R F V U) n y`. Establish `hτ : ∀ t : Finset ι, cechOpen (g ⁻¹ᵁ V) (fun i ↦ g ⁻¹ᵁ U i) t ≤ g ⁻¹ᵁ cechOpen V U (t.image id)` using `fun t ↦ by`. Rewrite using `[Finset.image_id]`. Conclude with `(preimage_cechOpen g V U t).ge`. Establish `key : ∀ (t : {s : Finset ι // s.card = n + 1}) (u : Finset ι) (hu : u.card = n + 1) (h : cechOpen (g ⁻¹ᵁ V) (fun i ↦ g ⁻¹ᵁ U i) t.1 ≤ g ⁻¹ᵁ cechOpen V U u), u = t.1 → (((cechCubeMapOver V U hσ φ).cocycle (n + 1) z).1 t : sectionsOn G (cechOpen (g ⁻¹ᵁ V) (fun i ↦ g ⁻¹ᵁ U i) t.1)) …`.
+
+Introduce and unpack `⟨t, ht⟩ u hu h rfl`. Both sides reduce to the same expression. Use `Eq.trans ?_ (congrArg (cechHEquivCohOn S hc' hG n) ((cechCubeMapOver V U hσ φ).homology_cechClass n z)).symm` and prove the remaining obligations. Use `(GlobalTheory.T.cover_restriction_base_change g ι ι R S σ hσ V (g ⁻¹ᵁ V) U (fun i ↦ g ⁻¹ᵁ U i) hc hc' le_rfl id hτ F G φ hF hG n z ((cechCubeMapOver V U hσ φ).cocycle (n + 1) z) (fun t ht ↦ ?_) (fun t ht ↦ ?_)).symm` and prove the remaining obligations. Rewrite using `[sortSign_id', one_smul]`.
+
+Conclude with `key t _ ht (hτ t.1) Finset.image_id`. Conclude with `absurd (by rw [Finset.image_id]; exact t.2) ht`.
+-/
 theorem cechHEquivCohOn_cechCubeMapOver {X Y : Scheme.{0}} (g : Y ⟶ X) (ι : Type) [LinearOrder ι]
     [Finite ι] (R : Type) [CommRing R] [Algebra R Γ(X, ⊤)] (S : Type) [CommRing S]
     [Algebra S Γ(Y, ⊤)] (σ : R →+* S)
@@ -47,6 +57,9 @@ theorem cechHEquivCohOn_cechCubeMapOver {X Y : Scheme.{0}} (g : Y ⟶ X) (ι : T
     exact key t _ ht (hτ t.1) Finset.image_id
   · exact absurd (by rw [Finset.image_id]; exact t.2) ht
 
+/- English proof (translation)
+Introduce `k k' _ _ _ X X' s s' g hg a b _ _ n U hc hU hc' hU'`. Use `letI := algΓ s`. Use `letI := algΓ s'`. Introduce `y`. Conclude with `cechHEquivCohOn_cechCubeMapOver g (Fin n) k k' (algebraMap k k') (appTop_algebraMapS hg) ⊤ U hc.ge hc'.ge (Omega s a) (Omega s' a) (omegaPullS hg a) (cechAcyclicMod_top_of_isAffineOpen hU _) (cechAcyclicMod_top_of_isAffineOpen hU' _) b y`.
+-/
 theorem cech_holds : P_cech := by
   intro k k' _ _ _ X X' s s' g hg a b _ _ n U hc hU hc' hU'
   letI := algΓ s

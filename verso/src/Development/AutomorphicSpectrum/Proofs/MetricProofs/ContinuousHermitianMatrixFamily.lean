@@ -15,6 +15,9 @@ def cvec (z : Fin g → ℂ) : Fin g ⊕ Fin g → ℝ :=
 def realBlock (H : Matrix (Fin g) (Fin g) ℂ) : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℝ :=
   Matrix.fromBlocks (H.map Complex.im) (-(H.map Complex.re)) (H.map Complex.re) (H.map Complex.im)
 
+/- English proof (translation)
+Simplify using `only [GlobalTheory.CompanionTheory.Ar.Cusp.HmCont.cvec, GlobalTheory.CompanionTheory.Ar.Cusp.HmCont.realBlock, dotProduct, Matrix.mulVec, Fintype.sum_sum_type, Sum.elim_inl, Sum.elim_inr, Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₁₂, Matrix.fromBlocks_apply₂₁, Matrix.from …`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem cvec_dot_realBlock (H : Matrix (Fin g) (Fin g) ℂ) (z w : Fin g → ℂ) :
     cvec z ⬝ᵥ realBlock H *ᵥ cvec w = (z ⬝ᵥ H *ᵥ star w).im := by
   simp only [GlobalTheory.CompanionTheory.Ar.Cusp.HmCont.cvec, GlobalTheory.CompanionTheory.Ar.Cusp.HmCont.realBlock, dotProduct, Matrix.mulVec, Fintype.sum_sum_type,
@@ -26,6 +29,11 @@ theorem cvec_dot_realBlock (H : Matrix (Fin g) (Fin g) ℂ) (z w : Fin g → ℂ
   refine Finset.sum_congr rfl fun l _ => ?_
   ring
 
+/- English proof (translation)
+Introduce `hdet`. Take `⟨c, hc0, hc⟩` from `Matrix.exists_vecMul_eq_zero_iff.mpr hdet`. Establish `hform : form (∑ i, c i • b i) = 0`. Use `b.ext fun j => ?_` and prove the remaining obligations. Establish `hj` using `congrFun hc j`.
+
+Simplify using `only [Matrix.vecMul, dotProduct, Matrix.of_apply, Pi.zero_apply] at hj`. Simplify using `only [map_sum, map_smul, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul, LinearMap.zero_apply]`. Conclude with `hj`. Establish `hsum : ∑ i, c i • b i = 0` using `inj (by rw [hform, map_zero])`. Conclude with `hc0 (funext (Fintype.linearIndependent_iff.mp b.linearIndependent c hsum))`.
+-/
 theorem gram_det_ne_zero {Λ ι : Type} [AddCommGroup Λ] [Fintype ι] [DecidableEq ι]
     (b : Module.Basis ι ℤ Λ) (form : Λ →ₗ[ℤ] Λ →ₗ[ℤ] ℤ) (inj : Function.Injective form) :
     (Matrix.of fun i j => form (b i) (b j)).det ≠ 0 := by
@@ -41,6 +49,15 @@ theorem gram_det_ne_zero {Λ ι : Type} [AddCommGroup Λ] [Fintype ι] [Decidabl
   have hsum : ∑ i, c i • b i = 0 := inj (by rw [hform, map_zero])
   exact hc0 (funext (Fintype.linearIndependent_iff.mp b.linearIndependent c hsum))
 
+/- English proof (translation)
+Establish `hdet : ∀ x, (T x).det ≠ 0`. Introduce `x h0`. Apply `hW` to reduce the goal to its premises. Rewrite using `[← h x, Matrix.det_mul, Matrix.det_mul, h0, mul_zero]`. Establish `hG : ∀ x, G x = ((T x).det ^ 2)⁻¹ • ((T x).adjugateᵀ * W * (T x).adjugate)`.
+
+Introduce `x`. Establish `h1 : (T x).adjugateᵀ * ((T x)ᵀ * G x * T x) * (T x).adjugate = (T x).det ^ 2 • G x`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.transpose_mul]`. Simplify using `only [Matrix.mul_assoc]`.
+
+Use `_ = (T x).det ^ 2 • G x := by`. Simplify using `only [Matrix.mul_adjugate, Matrix.transpose_smul, Matrix.transpose_one, Matrix.smul_mul, Matrix.mul_smul, Matrix.one_mul, Matrix.mul_one, smul_smul, sq]`. Rewrite `h1` using `[h x]`. Rewrite using `[h1, smul_smul, inv_mul_cancel₀ (pow_ne_zero 2 (hdet x)), one_smul]`. Establish `hcont : Continuous fun x => ((T x).det ^ 2)⁻¹ • ((T x).adjugateᵀ * W * (T x).adjugate)`.
+
+Establish `hd : Continuous fun x => (T x).det` using `hT.matrix_det`. Establish `ha : Continuous fun x => (T x).adjugate` using `hT.matrix_adjugate`. Conclude with `((hd.pow 2).inv₀ fun x => pow_ne_zero 2 (hdet x)).smul ((ha.matrix_transpose.matrix_mul continuous_const).matrix_mul ha)`. Rewrite using `[show G = fun x => ((T x).det ^ 2)⁻¹ • ((T x).adjugateᵀ * W * (T x).adjugate) from funext hG]`. Conclude with `hcont`.
+-/
 theorem continuous_of_congruence {ι X : Type} [Fintype ι] [DecidableEq ι] [TopologicalSpace X]
     (T G : X → Matrix ι ι ℝ) (W : Matrix ι ι ℝ) (hT : Continuous T) (hW : W.det ≠ 0)
     (h : ∀ x, (T x)ᵀ * G x * T x = W) : Continuous G := by
@@ -68,6 +85,27 @@ theorem continuous_of_congruence {ι X : Type} [Fintype ι] [DecidableEq ι] [To
   rw [show G = fun x => ((T x).det ^ 2)⁻¹ • ((T x).adjugateᵀ * W * (T x).adjugate) from funext hG]
   exact hcont
 
+/- English proof (translation)
+Break down `isEmpty_or_nonempty X with hX | ⟨⟨x₀⟩⟩` into its components or cases. Conclude with `continuous_of_const fun x => isEmptyElim x`. Establish `hlat : ∀ S : GlobalTheory.CompanionTheory.Ar.Cusp.RiemLat E g Λ, Module.Free ℤ Λ ∧ Module.Finite ℤ Λ ∧ Module.finrank ℤ Λ = 2 * g ∧ Function.Bijective S.form`. Introduce `S`. Take `⟨h1, h2, h3, _, _, h4, _, _, _, _, _, _, _, _⟩` from `S`.
+
+Conclude with `⟨h1, h2, h3, h4⟩`. Establish `hIm : ∀ (S : GlobalTheory.CompanionTheory.Ar.Cusp.RiemLat E g Λ) (u v : Λ), ((S.P u) ⬝ᵥ S.Hm *ᵥ star (S.P v)).im = S.form u v`. Introduce `S u v`. Take `⟨_, _, _, _, _, _, _, _, _, _, _, h, _, _⟩` from `S`. Conclude with `h u v`.
+
+Take `⟨hfree, hfin, hrank, hbij⟩` from `hlat (R x₀)`. Establish `hinj : Function.Injective form`. Rewrite using `[← hform x₀]`. Conclude with `hbij.1`. Take `⟨b⟩ : Nonempty (Module.Basis (Fin g ⊕ Fin g) ℤ Λ)` from `⟨(Module.finBasisOfFinrankEq ℤ Λ (hrank.trans (two_mul g))).reindex finSumFinEquiv.symm⟩`.
+
+Take `⟨W, hWdef⟩ : ∃ W : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℝ, W = Matrix.of fun i j => ((form (b i) (b j) : ℤ) : ℝ)` from `⟨_, rfl⟩`. Establish `hW : W.det ≠ 0`. Establish `h0` using `GlobalTheory.CompanionTheory.Ar.Cusp.HmCont.gram_det_ne_zero b form hinj`. Establish `hmap : W = (Int.castRingHom ℝ).mapMatrix (Matrix.of fun i j => form (b i) (b j))`. Use extensionality with `i j`.
+
+Rewrite using `[hWdef, RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply, Matrix.of_apply]`. Simplify using the standard rewrite rules. Rewrite using `[hmap, ← RingHom.map_det]`. Simplify using `using h0`. Establish `hT : Continuous fun x => (Matrix.of fun a i => GlobalTheory.CompanionTheory.Ar.Cusp.HmCont.cvec ((R x).P (b i)) a : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℝ)`.
+
+Use `continuous_matrix fun a i => ?_` and prove the remaining obligations. Break down `a with k | k` into its components or cases. Conclude with `Complex.continuous_re.comp ((continuous_apply k).comp (hP (b i)))`. Conclude with `Complex.continuous_im.comp ((continuous_apply k).comp (hP (b i)))`. Establish `hTGT : ∀ x, (Matrix.of fun a i => GlobalTheory.CompanionTheory.Ar.Cusp.HmCont.cvec ((R x).P (b i)) a : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℝ)ᵀ * GlobalTheory.CompanionTheory.Ar.Cusp.HmCont.realBlock (R x).Hm * (Matrix.of fun a i => GlobalTheory.CompanionTheory.Ar.Cusp.HmCont.c …`.
+
+Introduce `x`. Use extensionality with `i j`. Rewrite using `[Matrix.mul_assoc]`. Combine the equalities or inequalities in the displayed calculation. Establish `hG : Continuous fun x => GlobalTheory.CompanionTheory.Ar.Cusp.HmCont.realBlock (R x).Hm` using `GlobalTheory.CompanionTheory.Ar.Cusp.HmCont.continuous_of_congruence (fun x => (Matrix.of fun a i => GlobalTheory.CompanionTheory.Ar.Cusp.HmCont.cvec ((R x).P (b i)) a : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℝ)) (fun x => GlobalTheory.CompanionTheory.Ar.Cusp.HmCont.realBlock (R …`.
+
+Use `continuous_matrix fun k l => ?_` and prove the remaining obligations. Establish `hre : Continuous fun x => ((R x).Hm k l).re`. Establish `h` using `hG.matrix_elem (Sum.inr k) (Sum.inl l)`. Simplify using `only [GlobalTheory.CompanionTheory.Ar.Cusp.HmCont.realBlock, Matrix.fromBlocks_apply₂₁, Matrix.map_apply] at h`. Conclude with `h`.
+
+Establish `him : Continuous fun x => ((R x).Hm k l).im`. Establish `h` using `hG.matrix_elem (Sum.inl k) (Sum.inl l)`. Simplify using `only [GlobalTheory.CompanionTheory.Ar.Cusp.HmCont.realBlock, Matrix.fromBlocks_apply₁₁, Matrix.map_apply] at h`. Conclude with `h`. Establish `heq : (fun x => (R x).Hm k l) = fun x => (((R x).Hm k l).re : ℂ) + (((R x).Hm k l).im : ℂ) * Complex.I`.
+
+Use function extensionality and compare the values at `fun x => (Complex.re_add_im _).symm`. Use `show Continuous fun x => (R x).Hm k l`. Rewrite using `[heq]`. Conclude with `(Complex.continuous_ofReal.comp hre).add ((Complex.continuous_ofReal.comp him).mul continuous_const)`.
+-/
 theorem continuous_Hm (E : Type) [Field E] [NumberField E] [IsCMField E] (g : ℕ) (Λ : Type)
     [AddCommGroup Λ] [Module (𝓞 E) Λ] (X : Type) [TopologicalSpace X] (R : X → RiemLat E g Λ)
     (form : Λ →ₗ[ℤ] Λ →ₗ[ℤ] ℤ) (hform : ∀ x, (R x).form = form)

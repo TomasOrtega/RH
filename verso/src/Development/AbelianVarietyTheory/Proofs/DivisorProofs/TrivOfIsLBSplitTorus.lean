@@ -14,6 +14,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 noncomputable section
 namespace GlobalTheory.TorusPic
 
+/- English proof (translation)
+Introduce `A _ hA X _ _ _ N hN`. Use `letI := hA.toField`. Establish `: IsAffine (splitTorus (Sp A) X).left`. Use `Diag.isAffineHom_hom (Sp A) X` as an intermediate fact. Conclude with `isAffine_of_isAffineHom (splitTorus (Sp A) X).hom`.
+
+Use `GlobalTheory.SS.LiftTorus.subsingleton_pic_torus A X` as an intermediate fact. Conclude with `GlobalTheory.LB.exists_isGen_of_subsingleton_pic_top hN`.
+-/
 theorem triv_of_isLB_splitTorus : ∀ (A : Type) [CommRing A], IsField A → ∀ (X : Type) [AddCommGroup X]
     [Module.Free ℤ X] [Module.Finite ℤ X] (N : LB (splitTorus (Sp A) X).left), N.IsLB → Triv N := by
   intro A _ hA X _ _ _ N hN

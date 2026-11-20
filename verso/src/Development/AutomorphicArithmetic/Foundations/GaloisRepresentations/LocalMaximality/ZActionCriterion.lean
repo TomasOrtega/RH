@@ -3,20 +3,32 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Local
 open KaehlerDifferential GlobalTheory.CechDR GlobalTheory.PD GlobalTheory.WH GlobalTheory.W1 UpperTheory.Gal.productCup_of_system
 open scoped TensorProduct
 
+/- English proof (translation)
+Simplify using `[resP, h]`.
+-/
 private theorem resP_one {F V : Type} [Field F] [Algebra ℂ F] [AddCommGroup V] [Module ℂ V] (ρ : F →ₗ[ℂ] ℂ)
     (h : ρ 1 = 1) (w : V) : resP V ρ ((1 : F) ⊗ₜ[ℂ] w) = w := by
   simp [resP, h]
 
+/- English proof (translation)
+Use extensionality with `i`. Simplify using `[lft, uni, Finset.mem_toLeft]`.
+-/
 private theorem lft_uni' {ι κ : Type} [LinearOrder ι] [LinearOrder κ] (I : Finset ι) (J : Finset κ) :
     lft (uni I J) = I := by
   ext i
   simp [lft, uni, Finset.mem_toLeft]
 
+/- English proof (translation)
+Use extensionality with `i`. Simplify using `[rgt, uni, Finset.mem_toRight]`.
+-/
 private theorem rgt_uni' {ι κ : Type} [LinearOrder ι] [LinearOrder κ] (I : Finset ι) (J : Finset κ) :
     rgt (uni I J) = J := by
   ext i
   simp [rgt, uni, Finset.mem_toRight]
 
+/- English proof (translation)
+Establish `h : Finset.univ.filter (· ≤ i) = Finset.Iic i`. Use extensionality with `j`. Simplify using the standard rewrite rules. Rewrite using `[h, Fin.card_Iic]`.
+-/
 private theorem card_filter_le {d : ℕ} (i : Fin (d + 1)) :
     (Finset.univ.filter (· ≤ i)).card = (i : ℕ) + 1 := by
   have h : Finset.univ.filter (· ≤ i) = Finset.Iic i := by
@@ -24,6 +36,9 @@ private theorem card_filter_le {d : ℕ} (i : Fin (d + 1)) :
     simp
   rw [h, Fin.card_Iic]
 
+/- English proof (translation)
+Establish `h : Finset.univ.filter (i ≤ ·) = Finset.Ici i`. Use extensionality with `j`. Simplify using the standard rewrite rules. Rewrite using `[h, Fin.card_Ici]`.
+-/
 private theorem card_filter_ge {d : ℕ} (i : Fin (d + 1)) :
     (Finset.univ.filter (i ≤ ·)).card = d + 1 - (i : ℕ) := by
   have h : Finset.univ.filter (i ≤ ·) = Finset.Ici i := by
@@ -31,6 +46,33 @@ private theorem card_filter_ge {d : ℕ} (i : Fin (d + 1)) :
     simp
   rw [h, Fin.card_Ici]
 
+/- English proof (translation)
+Introduce `hCup hTh hCmp hInt hEdge hBas hGood F K _ _ _ _ _ _ d x hx τ hτ ρ hρ a p ha c hc hD α hα`. Take `⟨hc1, hv1, hk1⟩` from `hCup F K d x hx τ hτ a p ha c hc hD α hα`. Take `⟨cθ, hcθ, hvθ, hkθ, htθ⟩` from `hTh F K d x hx a p α hα`. Establish `hmono` using `(hGood F K d x hx a).2.2`. Establish `hE` using `hEdge (Fin (d + 1)) (DR ℂ K) (fun s => omB ℂ K (rB ℂ K (xv x) s) a) p hmono α hα`.
+
+Set `c1` to `rcup (muP F K τ) p c α - cθ`. Establish `hZ : c1 ∈ ((sysP K x a).cx n11 (sysP K x a).mu).Z (d + p + 2)` using `sub_mem hc1 hcθ`. Establish `hv : ∀ (b : Finset (Two d)) (L : Finset (Mi d)), d < L.card → c1 (uni b L) = 0`. Introduce `b L h`. Simplify using `[c1, hv1 b L h, hvθ b L h]`.
+
+Set `γ : Finset (Two d) → DR ℂ K` to `((-1 : ℤ) ^ (p * (d + 1) + d)) • edge1 α - ((-1 : ℤ) ^ ((p + 1) * d)) • edge2 α`. Establish `hγe : γ = (-((-1 : ℤ) ^ ((p + 1) * d))) • (edge2 α - ((-1 : ℤ) ^ p) • edge1 α)`. Establish `h : p * (d + 1) + d = (p + 1) * d + p` using `by ring`. Simplify using `only [γ, h, pow_add]`. Generalize the expression as in `((-1 : ℤ) ^ ((p + 1) * d)) = s`.
+
+Generalize the expression as in `((-1 : ℤ) ^ p) = t`. Use `module`. Establish `hγ : γ ∈ (acx (mixF fun I J : Finset (Fin (d + 1)) => omB ℂ K (rB ℂ K (xv x) (I ∪ J)) a) fun _ => 1).B (p + 2)`. Rewrite using `[hγe]`. Conclude with `zsmul_mem hE _`.
+
+Establish `hk : ∀ (b : Finset (Two d)) (L : Finset (Mi d)), L.card = d → mulP F K (c1 (uni b L)) = kap K x L • γ b`. Introduce `b L h`. Simplify using `only [c1, γ, Pi.sub_apply, map_sub, hk1 b L h, hkθ b L h, smul_sub, Pi.smul_apply]`. Establish `hB` using `hCmp F K d x hx a p c1 hZ hv γ hγ hk`. Establish `hTop` using `(hBas d _ _ (sysP K x a) (Mi d) n11 (sysP K x a).mu (d + p + 2)).2.2.2.1 c1 hB`.
+
+Establish `hI` using `hInt F K d x hx τ hτ ρ hρ a p (top c1) hTop`. Establish `hCc` using `(hBas d _ _ (sysZ K x a) (Mi d) n11 (sysZ K x a).mu (d + 2)).1 c hc.1`. Establish `hαs : ∀ s : Finset (Fin (d + 1)), s.card ≠ p + 1 → α s = 0`. Introduce `s hs`. Establish `h1 : α s ∈ (if s.Nonempty ∧ (s.card : ℤ) = (p : ℤ) + 1 then omB ℂ K (rB ℂ K (xv x) s) a else ⊥ : Submodule ℂ (DR ℂ K))` using `hα.1 s (Set.mem_univ s)`.
+
+Rewrite using `[if_neg (by`. Introduce and unpack `⟨-, h⟩`. Conclude with `hs (by exact_mod_cast h))] at h1`. Simplify using `using h1`. Establish `key : (α - fun J => resP (DR ℂ K) ρ (∑ i, muP F K τ (top c (uni (Finset.univ.filter (· ≤ i)) J)) (α (Finset.univ.filter (i ≤ ·))))) = -(fun J => resP (DR ℂ K) ρ (top c1 (uni Finset.univ J)))`.
+
+Use function extensionality and compare the values at `J`. Establish `hsum : ((-1 : ℤ) ^ (p * J.card)) • (∑ i, muP F K τ (top c (uni (Finset.univ.filter (· ≤ i)) J)) (α (Finset.univ.filter (i ≤ ·)))) = ∑ i, muP F K τ (top c (uni (Finset.univ.filter (· ≤ i)) J)) (α (Finset.univ.filter (i ≤ ·)))`. Distinguish the cases in `hJ : J.card = p + 1`. Establish `: Even (p * J.card)`. Rewrite using `[hJ]`.
+
+Conclude with `Nat.even_mul_succ_self p`. Rewrite using `[this.neg_one_pow, one_smul]`. Establish `: ∑ i, muP F K τ (top c (uni (Finset.univ.filter (· ≤ i)) J)) (α (Finset.univ.filter (i ≤ ·))) = 0`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Distinguish the cases in `hi : (Finset.univ.filter (i ≤ ·)).card = p + 1`.
+
+Establish `h0 : top c (uni (Finset.univ.filter (· ≤ i)) J) = 0`. Use `hCc _ _ ∅ (Or.inr (Or.inr ?_))` and prove the remaining obligations. Rewrite `hi` using `[card_filter_ge]`. Establish `hid` using `i.is_lt`. Simplify using `only [card_filter_le, Finset.card_empty, add_zero]`.
+
+Use linear arithmetic over natural numbers and integers. Rewrite using `[h0]`. Simplify using the standard rewrite rules. Rewrite using `[hαs _ hi]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[this, smul_zero]`. Establish `htop : top c1 (uni Finset.univ J) = ((-1 : ℤ) ^ (p * J.card)) • (∑ i, muP F K τ (top c (uni (Finset.univ.filter (· ≤ i)) J)) (α (Finset.univ.filter (i ≤ ·)))) - (1 : F) ⊗ₜ[ℂ] α J`. Simplify using `only [top, c1, Pi.sub_apply, htθ, rcup, lft_uni', rgt_uni', Finset.card_empty, add_zero]`. Simplify using `only [Pi.sub_apply, Pi.neg_apply]`. Rewrite using `[htop, hsum, map_sub, resP_one ρ hρ.1]`.
+
+Normalize the expressions using the abelian group laws. Rewrite using `[key]`. Conclude with `neg_mem hI`.
+-/
 theorem UpperTheory.Gal.productCup_of_system.zAct_of :
     PCup → PTheta → PCmp → PInt → EdgeRel → SysBasic → GoodZ → ZAct := by
   intro hCup hTh hCmp hInt hEdge hBas hGood F K _ _ _ _ _ _ d x hx τ hτ ρ hρ a p ha c hc hD α hα

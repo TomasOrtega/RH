@@ -11,6 +11,21 @@ set_option autoImplicit false
 
 namespace GlobalTheory.TorsionForm.SuperconnComp
 
+/- English proof (translation)
+Use `set L : Pt E g → ℂ := fun Q => (Real.log (h Q) : ℂ) with hL`. Establish `hLd : DifferentiableAt ℝ L (φ P.1, P.2)` using `Complex.ofRealCLM.differentiableAt.comp _ (hh.log hh0)`. Establish `hch` using `fun w : Pt E' g => GlobalTheory.T.d10_d01_comp_fst_eq_fderiv_of_holomorphic φ s L P w hφ hs hLd`. Establish `hpair : ∀ v : E', ((fderiv ℂ φ P.1 (hor (τ ∘ φ) P v).1, (hor (τ ∘ φ) P v).2) : Pt E g) = hor τ (φ P.1, P.2) (fderiv ℂ φ P.1 v)`. Introduce `v`.
+
+Rewrite using `[GlobalTheory.T.horizontal_lift_pullback τ φ P v hφ hτ]`. Both sides reduce to the same expression. Establish `hvert : ∀ a : Fin g, ((fderiv ℂ φ P.1 (vert E' a).1, (vert E' a).2) : Pt E g) = vert E a`. Introduce `a`. Simplify using `[vert]`.
+
+Establish `hN : ∀ w : Pt E' g, pointDifference (fun Q => h (φ Q.1, Q.2)) (fun Q => s (φ Q.1, Q.2)) P w = pointDifference h s (φ P.1, P.2) (fderiv ℂ φ P.1 w.1, w.2)`. Introduce `w`. Unfold `pointDifference`. Rewrite using `[(hch w).1, (hch w).2.2]`. Establish `hD : ∀ w : Pt E' g, d01 (fun Q => s (φ Q.1, Q.2)) P w = d01 s (φ P.1, P.2) (fderiv ℂ φ P.1 w.1, w.2)` using `fun w => (hch w).2.1`.
+
+Establish `hC : ∀ (v : E') (x : Ext (n + n + g)), connForm (τ ∘ φ) P.1 v x = connForm τ (φ P.1) (fderiv ℂ φ P.1 v) x`. Introduce `v x`. Unfold `connForm`. Establish `e : (Matrix.of fun a e => d01 (fun b' => imPart (τ ∘ φ) b' a e) P.1 v) = Matrix.of fun a e => d01 (fun b' => imPart τ b' a e) (φ P.1) (fderiv ℂ φ P.1 v)`. Use extensionality with `a e`.
+
+Simplify using `only [Matrix.of_apply]`. Establish `hH : DifferentiableAt ℝ (fun b' => imPart τ b' a e) (φ P.1)`. Establish `h1 : DifferentiableAt ℝ (fun b => τ b a e) (φ P.1)` using `(hτ a e).restrictScalars ℝ`. Establish `h2` using `Complex.ofRealCLM.differentiableAt.comp _ (Complex.imCLM.differentiableAt.comp _ h1)`. Simplify `h2` using `[imPart, Function.comp_def]`.
+
+Conclude with `GlobalTheory.T.d01_comp_holomorphic_eq_d01_fderiv φ (fun b' => imPart τ b' a e) P.1 v hφ hH`. Rewrite using `[e]`. Both sides reduce to the same expression. Unfold `superconn nablaE dbarV dbarAdj`. Simplify using `only [hN, hD, hC, hpair, hvert]`.
+
+Both sides reduce to the same expression.
+-/
 theorem superconn_comp {E E' : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] [NormedAddCommGroup E']
     [NormedSpace ℂ E'] {g n : ℕ} (τ : E → Matrix (Fin g) (Fin g) ℂ) (h : Pt E g → ℝ) (φ : E' → E)
     (β : Fin n → E') (u : ℝ) (s : Pt E g → Ext (n + n + g)) (P : Pt E' g)

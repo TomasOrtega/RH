@@ -20,6 +20,9 @@ open ReciprocityTheory.Def (Z1 B1 H1)
 open TensorProduct
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.TopWindow.exists_topData_galData | exact GlobalTheory.TopWindow.exists_topData_galData | (intros; apply GlobalTheory.TopWindow.exists_topData_galData <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_numerical_galoisData_localSituation : ∀ {l : ℕ} [Fact l.Prime] (P : LocPrime l) (H : LocHW l P) (K LL : FinExt l)
     (hA : CaseA K LL) (lam : ↥(OL LL)), Irreducible lam → 5 ≤ (P.PD K).p →
     ∀ (t : ℕ) (h w η : ZMod (Module.finrank ℚ_[l] ↥(K0 K)) → ℕ) (typ : ZMod (Module.finrank ℚ_[l] ↥(K0 K)) → Bool)

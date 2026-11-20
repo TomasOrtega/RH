@@ -21,12 +21,20 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E}
 
 omit [NumberField F] [NumberField E] in
+/- English proof (translation)
+Simplify using `only [toLinearMapₛₗ₂'_apply, smul_eq_mul, RingHom.id_apply, RingHom.coe_coe, hE, Formalism.UG.hform]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`.
+-/
 theorem form_eq_hE (u v : Fin n → E) :
     toLinearMapₛₗ₂' E (σ : E →+* E) (RingHom.id E) J u v = hE σ J u v := by
   simp only [toLinearMapₛₗ₂'_apply, smul_eq_mul, RingHom.id_apply, RingHom.coe_coe, hE, Formalism.UG.hform]
   exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring
 
 omit [NumberField F] [NumberField E] in
+/- English proof (translation)
+Establish `e : Matrix.of (fun a (_ : Fin 1) => (m *ᵥ u) a) = m * Matrix.of (fun a (_ : Fin 1) => u a)`. Use extensionality with `i j`. Simplify using `[Matrix.mul_apply, Matrix.mulVec, dotProduct]`. Establish `h1` using `gram_apply (σ := σ) (J := J) (s := 1) (r := 1) (Matrix.of fun a _ => (m *ᵥ u) a) (Matrix.of fun a _ => (m *ᵥ u) a) 0 0`. Establish `h2` using `gram_apply (σ := σ) (J := J) (s := 1) (r := 1) (Matrix.of fun a _ => u a) (Matrix.of fun a _ => u a) 0 0`.
+
+Rewrite `h1` using `[e, pgram_unitary hm]`. Rewrite `h1` using `[h2]`. Rewrite using `[← form_eq_hE, ← form_eq_hE]`. Rewrite `*` using `[e]`. Conclude with `h1.symm`.
+-/
 theorem hE_mulVec {m : Matrix (Fin n) (Fin n) E} (hm : cT (σ : E →+* E) m * J * m = J) (u : Fin n → E) :
     hE σ J (m *ᵥ u) (m *ᵥ u) = hE σ J u u := by
   have e : Matrix.of (fun a (_ : Fin 1) => (m *ᵥ u) a) = m * Matrix.of (fun a (_ : Fin 1) => u a) := by
@@ -40,6 +48,13 @@ theorem hE_mulVec {m : Matrix (Fin n) (Fin n) E} (hm : cT (σ : E →+* E) m * J
   rw [e] at *
   exact h1.symm
 
+/- English proof (translation)
+Take `⟨m, hm, e⟩` from `hγ`. Use `⟨m.1 *ᵥ u, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `h0`. Apply `hu` to reduce the goal to its premises. Use `congrArg (fun z => (m⁻¹).1 *ᵥ z) h0` as an intermediate fact.
+
+Simplify `this` using `[Matrix.mulVec_mulVec, ← Units.val_mul]`. Rewrite using `[hE_mulVec hm, hi]`. Establish `e1 : (matHom _ σ J γ).1 = m.1.map (inclR (F` using `F) (AF F)) := by`. Rewrite using `[matHom_apply]`. Conclude with `(congrArg Units.val e).symm`.
+
+Unfold `Sends`. Rewrite using `[e1]`. Use function extensionality and compare the values at `i`. Simplify using `only [ratV]`. Conclude with `(RingHom.map_mulVec (inclR (F := F) (AF F)) m.1 u i).symm`.
+-/
 theorem exists_sends {γ : GAd σ J} (hγ : γ ∈ ratPts σ J) {u : Fin n → E} (hu : u ≠ 0) (hi : hE σ J u u = 0) :
     ∃ v : Fin n → E, v ≠ 0 ∧ hE σ J v v = 0 ∧ Sends σ J γ u v := by
   obtain ⟨m, hm, e⟩ := hγ
@@ -59,6 +74,9 @@ theorem exists_sends {γ : GAd σ J} (hγ : γ ∈ ratPts σ J) {u : Fin n → E
     exact (RingHom.map_mulVec (inclR (F := F) (AF F)) m.1 u i).symm
 
 omit [NumberField F] [NumberField E] in
+/- English proof (translation)
+Introduce `h0`. Establish `h1` using `gram_apply (σ := σ) (J := J) X Y 0 0`. Rewrite `h1` using `[hW.xy, h0]`. Simplify using `at h1`.
+-/
 theorem first_witt_vector_ne_zero {r : ℕ} {X Y : Matrix (Fin n) (Fin (r + 1)) E} (hW : IsWittFrame σ J X Y) : Xᵀ 0 ≠ 0 := by
   intro h0
   have h1 := gram_apply (σ := σ) (J := J) X Y 0 0
@@ -66,12 +84,22 @@ theorem first_witt_vector_ne_zero {r : ℕ} {X Y : Matrix (Fin n) (Fin (r + 1)) 
   simp at h1
 
 omit [NumberField F] [NumberField E] in
+/- English proof (translation)
+Establish `h1` using `gram_apply (σ := σ) (J := J) X X 0 0`. Rewrite `h1` using `[hW.xx, form_eq_hE]`. Conclude with `h1.symm`.
+-/
 theorem first_witt_vector_isotropic {r : ℕ} {X Y : Matrix (Fin n) (Fin (r + 1)) E} (hW : IsWittFrame σ J X Y) :
     hE σ J (Xᵀ 0) (Xᵀ 0) = 0 := by
   have h1 := gram_apply (σ := σ) (J := J) X X 0 0
   rw [hW.xx, form_eq_hE] at h1
   exact h1.symm
 
+/- English proof (translation)
+Take `⟨ε, hε, hS⟩` from `hS`. Take `⟨C₀, hC₀, hC⟩` from `hM ε hε`. Take `⟨B, hB⟩` from `hB hC₀ hx`. Use `⟨max ε B, lt_max_of_lt_left hε, fun g => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : ∃ v : Fin n → E, v ≠ 0 ∧ hgt σ J g v < ε`.
+
+Take `⟨v, hv, hlt⟩` from `h`. Conclude with `⟨v, hv, hS g v hv hlt, hlt.le.trans (le_max_left _ _)⟩`. Use `push_neg at h`. Take `⟨γ, hγ, hγC⟩` from `hC g h`. Take `⟨v, hv, hvi, hs⟩` from `exists_sends hγ hx hi`.
+
+Use `⟨v, hv, hvi, ?_⟩` and prove the remaining obligations. Rewrite using `[← hgt_mul hs.inv]`. Conclude with `(hB _ hγC).trans (le_max_right _ _)`.
+-/
 theorem exists_isotropic_le
     (hS : ∃ ε : ℝ, 0 < ε ∧ ∀ (g : GAd σ J) (v : Fin n → E), v ≠ 0 → hgt σ J g v < ε → hE σ J v v = 0)
     (hM : ∀ t : ℝ, 0 < t → ∃ C₀ : Set (GAd σ J), IsCompact C₀ ∧ ∀ g : GAd σ J,
@@ -93,6 +121,11 @@ theorem exists_isotropic_le
     rw [← hgt_mul hs.inv]
     exact (hB _ hγC).trans (le_max_right _ _)
 
+/- English proof (translation)
+Establish `e : Real.exp (-s) = Real.exp (-(d * s)) ^ (1 / d)`. Rewrite using `[← Real.exp_mul]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e]`.
+
+Conclude with `Real.rpow_le_rpow (Real.exp_pos _).le h (by positivity)`.
+-/
 theorem exp_neg_le_rpow {d : ℝ} (hd : 0 < d) {s D : ℝ} (h : Real.exp (-(d * s)) ≤ D) :
     Real.exp (-s) ≤ D ^ (1 / d) := by
   have e : Real.exp (-s) = Real.exp (-(d * s)) ^ (1 / d) := by
@@ -106,6 +139,11 @@ end GlobalTheory.CompanionTheory.RedCov.First
 
 open GlobalTheory.CompanionTheory.RedCov.First in
 
+/- English proof (translation)
+Use `haveI : Algebra.IsQuadraticExtension F E := ⟨h.2.2.1⟩`. Take `⟨C₁, hC₁, hu⟩` from `exists_isotropic_le (GlobalTheory.T.small_height_vector_isotropic F E σ h n J hJ) ((GlobalTheory.T.unitary_points_height_bound_finite GlobalTheory.T.unitary_points_height_bound_compact) F E σ h n J hJ) (fun hC _ hv => GlobalTheory.CompanionTheory.RedCov.Bridge.exists_hgt_le σ J h …`. Take `⟨P, hP, hlow⟩` from `GlobalTheory.T.torus_siegel_height_lower_bound F E σ h n J hJ r X Y hW a ha Ω C hΩ (hΩP.trans minParOne_subset) hC`. Establish `hd : (0 : ℝ) < Module.finrank ℚ F` using `Nat.cast_pos.2 Module.finrank_pos`. Use `⟨(2 * P * C₁) ^ (1 / (Module.finrank ℚ F : ℝ)), Real.rpow_pos_of_pos (by positivity) _, ?_⟩` and prove the remaining obligations.
+
+Introduce `ω hω s κ hκ e he hN`. Take `⟨u, hu0, hui, hule⟩` from `hu (ω * a s * κ)`. Use `exp_neg_le_rpow hd ((hlow ω hω s κ hκ e he).trans ?_)` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem GlobalTheory.CompanionTheory.RedCov.First.exp_neg_le (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (h : IsCMExt F E σ) (n : ℕ) (J : Matrix (Fin n) (Fin n) E) (hJ : IsHermND σ J) (r : ℕ)
     (X Y : Matrix (Fin n) (Fin (r + 1)) E) (hW : IsWittFrame σ J X Y) (a) (ha : IsTorus σ J X Y a)

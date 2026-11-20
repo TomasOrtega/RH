@@ -9,6 +9,17 @@ open CategoryTheory GroundTheory.PAdicHodge CrystallineSemistableComparison Crys
 
 namespace GlobalTheory.CompanionTheory.Untilt
 
+/- English proof (translation)
+Establish `hf : ∀ x y : A.A, (x - y) ^ l = x ^ l - y ^ l` using `fun x y => map_sub A.frob x y`. Establish `key : ∀ j i, a i - b i = (a (i + j) - b (i + j)) ^ (l ^ j)`. Introduce `j`. Proceed by induction on `j with`. Consider the case `zero => intro i`.
+
+Simplify using the standard rewrite rules. Consider the case `succ j ih`. Introduce `i`. Rewrite using `[ih i, pow_succ' l j, pow_mul, hf, ← add_assoc, ha, hb]`. Establish `hmem : ∀ j, a j - b j ∈ Ideal.span {A.pi}`.
+
+Introduce `j`. Rewrite using `[← (GlobalTheory.CompanionTheory.Untilt.sharp_map_surjective_ker A).2, RingHom.mem_ker, map_sub, A.sharpMap_eq, A.sharpMap_eq, hs j, sub_self]`. Establish `hdvd : ∀ i j, A.pi ^ j ∣ a i - b i`. Introduce `i j`. Establish `h1 : A.pi ∣ a (i + j) - b (i + j)` using `Ideal.mem_span_singleton.1 (hmem (i + j))`.
+
+Rewrite using `[key j i]`. Conclude with `(pow_dvd_pow _ (Nat.lt_pow_self (Fact.out : l.Prime).one_lt).le).trans (pow_dvd_pow_of_dvd h1 _)`. Establish `hH : IsHausdorff (Ideal.span {A.pi}) A.A` using `A.compl.toIsHausdorff`. Use function extensionality and compare the values at `i`. Use `sub_eq_zero.1 (hH.haus _ fun n => ?_)` and prove the remaining obligations.
+
+Rewrite using `[SModEq.zero, Ideal.span_singleton_pow, smul_eq_mul, Ideal.mul_top]`. Conclude with `Ideal.mem_span_singleton.2 (hdvd i n)`.
+-/
 theorem tilt_inj {l : ℕ} [Fact l.Prime] (A : PAlg l) (a b : ℕ → A.A)
     (ha : ∀ i, a (i + 1) ^ l = a i) (hb : ∀ i, b (i + 1) ^ l = b i)
     (hs : ∀ i, A.sharp (a i) = A.sharp (b i)) : a = b := by

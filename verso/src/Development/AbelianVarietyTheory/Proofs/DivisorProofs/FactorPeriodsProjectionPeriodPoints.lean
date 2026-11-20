@@ -17,6 +17,11 @@ open GlobalTheory.UT GlobalTheory.Mum GlobalTheory.Mum.Two
 
 noncomputable section
 
+/- English proof (translation)
+Establish `: IsDominant (jK R)` using `isDominant_jK`. Establish `: Surjective (jFK (R` using `R) F) := GlobalTheory.Balanced.surjective_spMap (algebraMap (FractionRing R) F)`. Establish `: IsDominant (jFK (R` using `R) F) := inferInstance`. Establish `: IsProper D.P.A.hom` using `D.P.isAb.proper`. Establish `e` using `congrArg (fun m => m.left) h`.
+
+Simplify using `only [Over.comp_left] at e`. Use `Over.OverMorphism.ext (ext_of_isDominant_of_isSeparated (X := Spec (CommRingCat.of R)) D.P.A.hom ((Over.w a).trans (Over.w b).symm) (jFK (R := R) F ≫ jK R) ?_)` and prove the remaining obligations. Simplify using `using e`.
+-/
 theorem GlobalTheory.Mum.Two.Fac.pt_ext (R : Type) [CommRing R] [IsDomain R] (D : DegPre R) (F : Type) [Field F]
     [Algebra (FractionRing R) F] (a b : 𝟙_ (Over (Sp R)) ⟶ D.P.A)
     (h : toUnit (TF (R := R) F) ≫ a = toUnit (TF (R := R) F) ≫ b) : a = b := by
@@ -32,6 +37,23 @@ theorem GlobalTheory.Mum.Two.Fac.pt_ext (R : Type) [CommRing R] [IsDomain R] (D 
 
 open GlobalTheory.Mum.Two.Fac in
 
+/- English proof (translation)
+Introduce `R _ _ D₀ D' hB O _ _ _ o e f inc pr h φ hinc hpr hpi hu hw F _ _ hiota hh`. Establish `hG` using `GlobalTheory.globalFns_holds`. Establish `hc : ∀ y, D₀.c (φ y) = D'.c y ≫ pr`. Introduce `y`. Take `⟨g', ha, hg'⟩` from `hiota y _ (GlobalTheory.TorusExt.isIota_iota hB y)`.
+
+Establish `h1` using `ha.1`. Rewrite `h1` using `[hg'.1, (GlobalTheory.TorusExt.isIota_iota hB y).1]`. Use `pt_ext R D₀ F _ _ ?_` and prove the remaining obligations. Simplify `h1` using `only [Category.assoc]`. Use `⟨hc, ?_⟩` and prove the remaining obligations.
+
+Use `haveI := hinc`. Use `haveI := hpr`. Use `haveI : IsMonHom (o.onB.act f) := o.onB.hom f`. Use `haveI : IsMonHom (o.onB.act e) := o.onB.hom e`. Use `haveI : IsMonHom (o.onB.act (star e)) := o.onB.hom (star e)`.
+
+Take `⟨w, hwg, hwn⟩` from `GlobalTheory.T.exists_mumfordBundleIso_twoHom_normalisedAtOrigin D₀.P.A D'.P.A D₀.P.L D'.P.L D₀.P.isLB D'.P.isLB inc (inc ≫ o.onB.act f) hw`. Establish `hw1` using `GlobalTheory.T.mumfordBundleIso_value_one_zero_first_factor D₀.P.A D'.P.A D₀.P.L D'.P.L D₀.P.isLB D'.P.isLB D₀.P.isAb inc (inc ≫ o.onB.act f) w hwg hwn`. Use `⟨w, hwg, fun y y' z J J' hJ hJ' => ?_⟩` and prove the remaining obligations. Take `⟨ur, hur, hur0⟩` from `exists_ros hG D'.P.isAb D'.P.isLB (o.onB.act e) (o.onB.act (star e)) (o.onB.rosati e)`. Establish `hur1` using `GlobalTheory.T.rosatiGenerator_value_one_zero_first_factor D'.P.A D'.P.L D'.P.isLB D'.P.isAb _ _ ur hur hur0`.
+
+Take `⟨JN₀, hJN, hl, hr⟩` from `exists_good_join D'.P.isLB D₀.P.isLB hJ hJ'`. Take `⟨u, hun⟩` from `hu (φ y')`. Take `⟨g', ha, hg'⟩` from `hiota y _ (GlobalTheory.TorusExt.isIota_iota hB y)`. Establish `A` using `GlobalTheory.T.torusExtensionPointAction_period_value_fractionField R D₀ D' pr h F y (φ y) _ g' (GlobalTheory.TorusExt.isIota_iota hB y) hg' ha (φ y') u hun z JN₀ hJN`. Rewrite `A` using `[hl, hr]`.
+
+Establish `B` using `val_corr hJ (o.tau_bal e ur hur hur0 y (f • e • y')) (𝟙 _)`. Use `beta_reduce at B`. Rewrite `B` using `[val_mul hJ, val_pull hJ, Category.id_comp, ← hh y']`. Establish `hq : D₀.c (φ y') ≫ inc ≫ o.onB.act f = D'.c (f • e • y')`. Rewrite using `[hc, o.c_lin, o.c_lin, ← hpi]`.
+
+Simplify using `only [Category.assoc]`. Establish `hq' : D'.c (h (φ y')) = D'.c (f • e • y') ≫ o.onB.act (star e)`. Rewrite using `[hh y', o.c_lin]`. Establish `C` using `GlobalTheory.T.mumfordIso_eq_rosatiGenerator_mul_comparison R D₀ D' inc pr (o.onB.act e) (o.onB.act f) (o.onB.act (star e)) hpi w hwg hw1 ur hur hur1 (h (φ y')) (φ y') (D'.c (f • e • y')) hq hq' u hun (TK R) (toUnit (TK R) ≫ D'.c y) z JN₀ hJN`. Rewrite `C` using `[hl, hr, Category.assoc, ← hc]`.
+
+Rewrite using `[A, ← B, C]`. Use `show _ = _ * _ * val (D'.tau (e • y) (f • e • y')) (𝟙 _) z J`. Rewrite using `[mul_comm (val ur _ z J)]`. The two sides agree by associativity and commutativity.
+-/
 theorem GlobalTheory.Mum.Two.Fac.periods_of_factor : ∀ (R : Type) [CommRing R] [IsDomain R] (D₀ D' : DegPre R), D'.TauBimult → ∀ (O : Type) [Ring O] [StarRing O] [Module O D'.X] (o : D'.OAct O) (e f : O) (inc : D₀.P.A ⟶ D'.P.A) (pr : D'.P.A ⟶ D₀.P.A) (h : D₀.X →+ D'.X) (φ : D'.X →+ D₀.X), IsMonHom inc → IsMonHom pr → pr ≫ inc = o.onB.act e → (∀ χ, ∃ u : LB.Gen (CmpLB D' D₀ pr (h χ) χ), Nrm u) → LBIso (abelian₂ D₀.P.A D₀.P.L) ((abelian₂ D'.P.A D'.P.L).pull (lift (fst D₀.P.A D₀.P.A ≫ inc) (snd D₀.P.A D₀.P.A ≫ inc ≫ o.onB.act f) : G2 D₀.P.A ⟶ G2 D'.P.A).left) → ∀ (F : Type) [Field F] [Algebra (FractionRing R) F], (∀ (y : D'.X) (g : GtPtF D' F), GtPtF.IsIota y g → ∃ g' : GtPtF D₀ F, Act D' D₀ pr h g g' ∧ GtPtF.IsIota (φ y) g') → (∀ y, h (φ y) = star e • f • e • y) → (∀ y, D₀.c (φ y) = D'.c y ≫ pr) ∧ ∃ w : LB.Iso (abelian₂ D₀.P.A D₀.P.L) ((abelian₂ D'.P.A D'.P.L).pull (lift (fst D₀.P.A D₀.P.A ≫ inc) (snd D₀.P.A D₀.P.A ≫ inc ≫ o.onB.act f) : G2 D₀.P.A ⟶ G2 D'.P.A).left), w.IsGen ∧ ∀ y y' z J J', Good D'.P.L z J → Good D₀.P.L z J' → val (D₀.tau (φ y) (φ y')) (𝟙 _) z J' = GlobalTheory.PolDeg.lamVal w (lift (toUnit (TK R) ≫ D₀.c (φ y)) (toUnit (TK R) ≫ D₀.c (φ y'))).left z J J' * val (D'.tau (e • y) (f • e • y')) (𝟙 _) z J := by
   intro R _ _ D₀ D' hB O _ _ _ o e f inc pr h φ hinc hpr hpi hu hw F _ _ hiota hh
   have hG := GlobalTheory.globalFns_holds

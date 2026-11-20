@@ -10,6 +10,11 @@ namespace UpperTheory.TNZ.Grp.P_lamUnip
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Rewrite using `[hT.det]`. Use `Finset.prod_eq_one fun c _ => ?_` and prove the remaining obligations. Establish `h1 : M.toSquareBlock b c = 1`. Use extensionality with `⟨i, hi⟩ ⟨j, hj⟩`. Express the relevant statement in the definitionally equal form `M i j = (1 : Matrix {a' // b a' = c} {a' // b a' = c} k) ⟨i, hi⟩ ⟨j, hj⟩`.
+
+Rewrite using `[one_apply, hD i j (hi.trans hj.symm)]`. Simplify using `[Subtype.ext_iff]`. Rewrite using `[h1, det_one]`.
+-/
 theorem det_eq_one_of_blockTri {ι β : Type} [Fintype ι] [DecidableEq ι] [LinearOrder β]
     (M : Matrix ι ι k) (b : ι → β) (hT : M.BlockTriangular b)
     (hD : ∀ i j, b i = b j → M i j = if i = j then 1 else 0) : M.det = 1 := by
@@ -22,6 +27,11 @@ theorem det_eq_one_of_blockTri {ι β : Type} [Fintype ι] [DecidableEq ι] [Lin
     simp [Subtype.ext_iff]
   rw [h1, det_one]
 
+/- English proof (translation)
+Unfold `Grp.Δ`. Use `det_eq_one_of_blockTri _ (fun i : {i : Fin n // G.bl i ≤ a} => b (G.bl i.1)) ?_ ?_` and prove the remaining obligations. Introduce `i j h`. Conclude with `hT i.1 j.1 h`. Introduce `i j h`.
+
+Express the relevant statement in the definitionally equal form `(g : Matrix (Fin n) (Fin n) k) i.1 j.1 = _`. Rewrite using `[hD i.1 j.1 h]`. Simplify using `[Subtype.ext_iff]`.
+-/
 theorem delta_eq_one {n : ℕ} (G : Grp k n) (g : GL (Fin n) k) {β : Type} [LinearOrder β]
     (b : Fin G.s → β)
     (hT : ∀ i j, b (G.bl j) < b (G.bl i) → (g : Matrix (Fin n) (Fin n) k) i j = 0)
@@ -36,12 +46,18 @@ theorem delta_eq_one {n : ℕ} (G : Grp k n) (g : GL (Fin n) k) {β : Type} [Lin
     rw [hD i.1 j.1 h]
     simp [Subtype.ext_iff]
 
+/- English proof (translation)
+Unfold `Grp.chk`. Rewrite using `[dif_neg one_ne_zero]`. Establish `h : Units.mk0 (1 : k) one_ne_zero = 1` using `Units.ext rfl`. Rewrite using `[h, map_one, Units.val_one]`.
+-/
 theorem chk_one (μ : kˣ →* ℂˣ) : Grp.chk μ (1 : k) = 1 := by
   unfold Grp.chk
   rw [dif_neg one_ne_zero]
   have h : Units.mk0 (1 : k) one_ne_zero = 1 := Units.ext rfl
   rw [h, map_one, Units.val_one]
 
+/- English proof (translation)
+Unfold `Grp.lam`. Use `Finset.prod_eq_one fun a _ => ?_` and prove the remaining obligations. Rewrite using `[delta_eq_one G g b hT hD a, chk_one]`.
+-/
 theorem lam_eq_one {n : ℕ} (G : Grp k n) (g : GL (Fin n) k) {β : Type} [LinearOrder β]
     (b : Fin G.s → β)
     (hT : ∀ i j, b (G.bl j) < b (G.bl i) → (g : Matrix (Fin n) (Fin n) k) i j = 0)
@@ -51,6 +67,13 @@ theorem lam_eq_one {n : ℕ} (G : Grp k n) (g : GL (Fin n) k) {β : Type} [Linea
   refine Finset.prod_eq_one fun a _ => ?_
   rw [delta_eq_one G g b hT hD a, chk_one]
 
+/- English proof (translation)
+Establish `hD` using `(mem_unipRad.1 hg).2`. Introduce `i j h`. Take `⟨⟨a, i'⟩, rfl⟩` from `G.e.surjective i`. Take `⟨⟨b, j'⟩, rfl⟩` from `G.e.surjective j`. Establish `hab : a = b` using `by simpa [Grp.bl] using h`.
+
+Substitute `hab` using the available equality. Rewrite using `[hD a i' j', one_apply]`. Distinguish the cases in `hij : i' = j'`. Substitute `hij` using the available equality. Simplify using the standard rewrite rules.
+
+Rewrite using `[if_neg hij, if_neg]`. Introduce `he`. Use `G.e.injective he` as an intermediate fact. Simplify using `at this`. Conclude with `hij this`.
+-/
 theorem diag_of_unipRad {n : ℕ} (G : Grp k n) (g : GL (Fin n) k) (hg : g ∈ unipRad k G.e) :
     ∀ i j, G.bl i = G.bl j → (g : Matrix (Fin n) (Fin n) k) i j = if i = j then 1 else 0 := by
   have hD := (mem_unipRad.1 hg).2
@@ -74,6 +97,11 @@ namespace UpperTheory.TNZ.Grp
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Use `⟨fun u hu => ?_, fun u hu _ => ?_⟩` and prove the remaining obligations. Take `⟨hN, hK⟩` from `Subgroup.mem_inf.1 hu`. Establish `hP` using `(mem_unipRad.1 hN).1`. Establish `hT : ∀ i j, G.bl j < G.bl i → ((u : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) i j = 0` using `fun i j h => mem_parab.1 hP i j h`. Use `⟨⟨hK, fun i j hij => ?_⟩, P_lamUnip.lam_eq_one G u (fun a => a) hT (P_lamUnip.diag_of_unipRad G u hN)⟩` and prove the remaining obligations.
+
+Rewrite using `[hT i j hij]`. Conclude with `⟨0, Submodule.zero_mem _, map_zero _⟩`. Conclude with `P_lamUnip.lam_eq_one G u (fun a => OrderDual.toDual a) (fun i j h => (hu i j).1 h) (fun i j h => (hu i j).2 h)`.
+-/
 theorem step_lamUnip {n : ℕ} (G : Grp k n) : G.LambdaUnipotentProp := by
   refine ⟨fun u hu => ?_, fun u hu _ => ?_⟩
   · obtain ⟨hN, hK⟩ := Subgroup.mem_inf.1 hu

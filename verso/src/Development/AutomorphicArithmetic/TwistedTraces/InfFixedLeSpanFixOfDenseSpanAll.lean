@@ -5,6 +5,21 @@ import Development.AutomorphicArithmetic.TwistedTraces.FixedProjectionInvariantA
 open MeasureTheory NumberField IsDedekindDomain Filter GroundTheory.Automorphic GroundTheory.Automorphic.Reduction GroundTheory.Automorphic.RightCosetSpace
 open GroundTheory.Automorphic.CuspidalSpectrum GlobalTheory.IndefiniteRowSideFullHecke.IwahoriDoubleCosets GlobalTheory.PRep Formalism.BasicNotions GlobalTheory.CuspRep GlobalTheory.SmGL UpperTheory.ConvolutionTheory UpperTheory.ConvolutionTheory.C UpperTheory.ConvolutionTheory.C.Sf
 
+/- English proof (translation)
+Introduce `G H S _ _ _ _ _ _ _ _ _ _ _ τ hτ π U hUc hUo V D hD hinv hDV hV hfin y hy`. Establish `hQX : spanFix τ π D U ≤ D ⊓ fixU π U`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨f, hf, x, hx, rfl⟩`. Conclude with `⟨hf.mem x, fun u hu => by rw [← hf.map, hx u hu]⟩`.
+
+Use `haveI : FiniteDimensional ℂ ↥(spanFix τ π D U) := Submodule.finiteDimensional_of_le hQX`. Establish `hQc : IsClosed (spanFix τ π D U : Set H)` using `Submodule.closed_of_finiteDimensional _`. Establish `hc : D.topologicalClosure = D` using `hD.submodule_topologicalClosure_eq`. Establish `hpm : ∀ v, prj D v ∈ D` using `fun v => by`. Establish `h : prj D v ∈ D.topologicalClosure` using `Submodule.starProjection_apply_mem _ v`.
+
+Rewrite `h` using `[hc]`. Then use the resulting hypothesis. Establish `hpc : ∀ g v, π g (prj D v) = prj D (π g v)` using `fun g v => by`. Establish `hi : π.IsInvariant D.topologicalClosure` using `by rw [hc]; exact hinv`. Conclude with `congrArg (fun T : H →L[ℂ] H => T v) ((UnitaryRep.isInvariant_iff_commute_starProjection D.topologicalClosure).1 hi g).eq`. Set `Φ : H →L[ℂ] H` to `prj (fixU π U) ∘L prj D`.
+
+Establish `hspan : spanAll τ π V ≤ (spanFix τ π D U).comap (Φ : H →ₗ[ℂ] H)`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨f, hf, x, rfl⟩`. Set `f' : S →ₗ[ℂ] H` to `(prj D : H →ₗ[ℂ] H) ∘ₗ f`. Establish `hmap : ∀ g x, f' (τ g x) = π g (f' x)` using `fun g x => by show prj D (f (τ g x)) = π g (prj D (f x))`.
+
+Rewrite using `[hf.map, hpc]`. Establish `hf1 : Eqv τ π D f'` using `⟨fun x => hpm _, hmap⟩`. Establish `hf2 : Eqv τ π ⊤ f'` using `⟨fun _ => trivial, hmap⟩`. Establish `h` using `UpperTheory.fixedProjection_apply_equivariant_eq G H S τ hτ π U hUc hUo f' hf2 x`. Use `show prj (fixU π U) (prj D (f x)) ∈ spanFix τ π D U`.
+
+Establish `h' : prj (fixU π U) (prj D (f x)) = f' (fixedProj τ hτ hUc hUo x)` using `h`. Rewrite using `[h']`. Conclude with `Submodule.subset_span ⟨f', hf1, _, (fixedProj τ hτ hUc hUo x).2, rfl⟩`. Establish `hcl : (spanAll τ π V).topologicalClosure ≤ (spanFix τ π D U).comap (Φ : H →ₗ[ℂ] H)` using `Submodule.topologicalClosure_minimal _ hspan (hQc.preimage Φ.continuous)`. Establish `hy' : Φ y ∈ spanFix τ π D U` using `hcl (hV (hDV hy.1))`.
+
+Establish `hp : prj D y = y` using `Submodule.starProjection_eq_self_iff.2 (D.le_topologicalClosure hy.1)`. Establish `he : prj (fixU π U) y = y` using `(UpperTheory.fixedProjection_invariant_and_commuting_reps G G H π π U U).2.1 y hy.2`. Establish `hΦ : Φ y = y` using `by show prj (fixU π U) (prj D y) = y`. Rewrite using `[hp, he]`. Rewrite `hy'` using `[hΦ]`. Then use the resulting hypothesis.
+-/
 theorem UpperTheory.inf_fixed_le_spanFix_of_dense_spanAll :
     ∀ (G H S : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [LocallyCompactSpace G] [T2Space G] [TotallyDisconnectedSpace G] [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] [AddCommGroup S] [Module ℂ S] (τ : Representation ℂ G S) (_ : GroundTheory.Automorphic.IsSmooth τ) (π : UnitaryRep G H) (U : Subgroup G) (_ : IsCompact (U : Set G)) (_ : IsOpen (U : Set G)) (V D : Submodule ℂ H), IsClosed (D : Set H) → π.IsInvariant D → D ≤ V → V ≤ (spanAll τ π V).topologicalClosure → FiniteDimensional ℂ ↥(D ⊓ fixU π U) → D ⊓ fixU π U ≤ spanFix τ π D U := by
   intro G H S _ _ _ _ _ _ _ _ _ _ _ τ hτ π U hUc hUo V D hD hinv hDV hV hfin y hy

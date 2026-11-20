@@ -20,6 +20,9 @@ variable {l : ℕ} [Fact l.Prime] (P : LocPrime l) {K : FinExt l} {LL : Type} [F
   [AddCommGroup V'] [Module LL V'] [Module ℚ_[l] V'] [IsScalarTower ℚ_[l] LL V']
   {ρ : Representation LL ↥(GK K) V} {ρ' : Representation LL ↥(GK K) V'}
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v b => simp [hgf]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`.
+-/
 theorem tensQ_tensQ (f : V →ₗ[ℚ_[l]] V') (g : V' →ₗ[ℚ_[l]] V) (hgf : ∀ v, g (f v) = v)
     (x : V ⊗[ℚ_[l]] Bst P) : tensQ P g (tensQ P f x) = x := by
   induction x using TensorProduct.induction_on with
@@ -43,10 +46,18 @@ def dpstUrCongr (e : V ≃ₗ[LL] V') (he : ∀ g x, e (ρ g x) = ρ' g (e x)) :
     left_inv := fun x => Subtype.ext (tensQ_tensQ P f g (fun v => e.symm_apply_apply v) x.1)
     right_inv := fun x => Subtype.ext (tensQ_tensQ P g f (fun v => e.apply_symm_apply v) x.1) }
 
+/- English proof (translation)
+Rewrite using `[IsPst, ← (dpstUrCongr P e he).rank_eq, hV]`. Conclude with `(e.restrictScalars ℚ_[l]).rank_eq`.
+-/
 theorem isPst_congr (e : V ≃ₗ[LL] V') (he : ∀ g x, e (ρ g x) = ρ' g (e x)) (hV : IsPst P ρ) : IsPst P ρ' := by
   rw [IsPst, ← (dpstUrCongr P e he).rank_eq, hV]
   exact (e.restrictScalars ℚ_[l]).rank_eq
 
+/- English proof (translation)
+Introduce `E Ω _ _ _ _ _ l _ ι a P AI _ w A h O _ _ _ Bw hj r r' p hc hr`. Establish `hr' : IsPstAt P Bw r'`. Take `⟨L₁, r₁, h₁, hp⟩` from `hr`. Take `⟨L₂, hL, r₂, hm, e, he⟩` from `GlobalTheory.ConjLocal.exists_conj_model p hc h₁`. Conclude with `⟨L₂, r₂, hm, GlobalTheory.PstConj.isPst_congr P e he (GlobalTheory.PstExt.isPst_enlarge P Bw hL r₁ hp)⟩`.
+
+Conclude with `⟨hr', GlobalTheory.ConjGal.wdAt_conj P ι Bw h hj r r' p hc hr hr'⟩`.
+-/
 theorem main : ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (l : ℕ) [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (a : ℕ) (P : LocPrime l) (AI : LocAinf l P), Nonempty (LocTied l P AI) → ∀ (w : HeightOneSpectrum (𝓞 E)) (A : ValuationSubring Ω) (h : IsPlaceOver A w) (O : Type) [CommRing O] [Algebra ℤ_[l] O] [TopologicalSpace O] (Bw : LocBridge l E Ω (Dec (F := E) A) O) (hj : GlobalTheory.Pst.Induces Bw) (r r' : ↥(Dec (F := E) A) →* GL (Fin a) (Qbar l)) (p : GL (Fin a) (Qbar l)), (∀ g, r' g = p * r g * p⁻¹) → IsPstAt P Bw r → IsPstAt P Bw r' ∧ wdAt P ι Bw h hj r' = wdAt P ι Bw h hj r := by
   intro E Ω _ _ _ _ _ l _ ι a P AI _ w A h O _ _ _ Bw hj r r' p hc hr
   have hr' : IsPstAt P Bw r' := by

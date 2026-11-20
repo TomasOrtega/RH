@@ -14,12 +14,20 @@ section Alg
 
 variable {G E : Type} [Group G] [Field E] {n : ℕ} {r : G →* GL (Fin n) E} {κ : Fin n → G →* Eˣ}
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `((r g : Matrix (Fin n) (Fin n) E) * X * ((r g)⁻¹ : GL (Fin n) E)) i j = _`. Rewrite using `[← map_inv]`. Simplify using `only [Matrix.mul_apply, Finset.sum_mul]`.
+-/
 private theorem ad_apply (r : G →* GL (Fin n) E) (g : G) (X : Matrix (Fin n) (Fin n) E) (i j : Fin n) :
     adGL r g X i j = ∑ b, ∑ a, (r g : Matrix (Fin n) (Fin n) E) i a * X a b * (r g⁻¹ : Matrix (Fin n) (Fin n) E) b j := by
   change ((r g : Matrix (Fin n) (Fin n) E) * X * ((r g)⁻¹ : GL (Fin n) E)) i j = _
   rw [← map_inv]
   simp only [Matrix.mul_apply, Finset.sum_mul]
 
+/- English proof (translation)
+Establish `key : ∀ a b, (a, b) ≠ (i, j) → (r g : Matrix (Fin n) (Fin n) E) i a * X a b * (r g⁻¹ : Matrix (Fin n) (Fin n) E) b j = 0`. Introduce `a b hab`. Break down `lt_or_ge a i with h1 | h1` into its components or cases. Rewrite using `[(h g).1 i a h1, zero_mul, zero_mul]`. Break down `lt_or_ge j b with h2 | h2` into its components or cases.
+
+Rewrite using `[(h g⁻¹).1 b j h2, mul_zero]`. Rewrite using `[hX a b h1 h2 hab, mul_zero, zero_mul]`. Rewrite using `[ad_apply, Finset.sum_eq_single j (fun b _ hb => Finset.sum_eq_zero fun a _ => key a b fun e => hb (Prod.ext_iff.1 e).2) (fun e => absurd (Finset.mem_univ _) e), Finset.sum_eq_single i (fun a _ ha => key a j fun e => ha (Prod.ext_iff.1 e).1) (fun e => absurd (Finset.mem_univ _) e …`. Simplify using `only [MonoidHom.mul_apply, MonoidHom.inv_apply, map_inv, Units.val_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem ad_entry (h : UpperTri r κ) (g : G) (X : Matrix (Fin n) (Fin n) E) (i j : Fin n)
     (hX : ∀ a b, i ≤ a → b ≤ j → (a, b) ≠ (i, j) → X a b = 0) :
     adGL r g X i j = ((κ i * (κ j)⁻¹) g : Eˣ) * X i j := by
@@ -44,6 +52,11 @@ private def corner (E : Type) [Field E] {n : ℕ} (i j : Fin n) : Submodule E (M
   add_mem' := fun hx hy a b h1 h2 h3 => by simp [hx a b h1 h2 h3, hy a b h1 h2 h3]
   smul_mem' := fun c x hx a b h1 h2 h3 => by simp [hx a b h1 h2 h3]
 
+/- English proof (translation)
+Introduce `X hX a b h1 h2 h3`. Apply the tactic sequence `rw [ad_entry h g X a b, hX a b h1 h2 h3, mul_zero]`. Introduce `c d h4 h5 _`. Use `hX c d (h1.trans h4) (h5.trans h2) fun e => h3 ?_` and prove the remaining obligations. Take `⟨rfl, rfl⟩` from `Prod.ext_iff.1 e`.
+
+Rewrite using `[le_antisymm h1 h4, le_antisymm h5 h2]`.
+-/
 private theorem corner_stable (h : UpperTri r κ) (i j : Fin n) (g : G) :
     corner E i j ≤ (corner E i j).comap (adGL r g) := by
   intro X hX a b h1 h2 h3
@@ -63,12 +76,22 @@ variable {l : ℕ} [Fact l.Prime] {G : Type} [Group G] [TopologicalSpace G] [IsT
   {κ : Fin n → G →* Eˣ}
 
 omit [T2Space E] in
+/- English proof (translation)
+Establish `hi : Continuous (fun g => (((r g)⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E))`. Simplify using `only [← map_inv]`. Conclude with `hr.comp continuous_inv`. Conclude with `((hr.comp continuous_fst).matrix_mul continuous_snd).matrix_mul (hi.comp continuous_fst)`.
+-/
 private theorem cont_ad (hr : Continuous fun g => (r g : Matrix (Fin n) (Fin n) E)) : ContAction (adGL r) := by
   have hi : Continuous (fun g => (((r g)⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E)) := by
     simp only [← map_inv]
     exact hr.comp continuous_inv
   exact ((hr.comp continuous_fst).matrix_mul continuous_snd).matrix_mul (hi.comp continuous_fst)
 
+/- English proof (translation)
+Use `haveI : IsModuleTopology ℚ_[l] (Matrix (Fin n) (Fin n) E) := inferInstanceAs (IsModuleTopology ℚ_[l] (Fin n → Fin n → E))`. Use `haveI : ContinuousSMul ℚ_[l] (Matrix (Fin n) (Fin n) E) := IsModuleTopology.toContinuousSMul _ _`. Use `haveI : FiniteDimensional ℚ_[l] (corner E i j) := Module.Finite.of_injective ((corner E i j).subtype.restrictScalars ℚ_[l]) Subtype.val_injective`. Use `haveI : ContinuousSMul ℚ_[l] (corner E i j) := ⟨continuous_induced_rng.2 (continuous_fst.smul (continuous_subtype_val.comp continuous_snd))⟩`. Use `haveI : IsModuleTopology ℚ_[l] (corner E i j) := isModuleTopologyOfFiniteDimensional`.
+
+Set `σ` to `(adGL r).subrepresentation (corner E i j) (corner_stable h i j)`. Establish `hσ : ContAction σ` using `continuous_induced_rng.2 ((cont_ad hr).comp (continuous_fst.prodMk (continuous_subtype_val.comp continuous_snd)))`. Set `c : G → corner E i j` to `fun g => ⟨y g, hm g⟩`. Establish `hc : c ∈ Z1 σ` using `⟨continuous_induced_rng.2 hy.1.1, fun g k => Subtype.ext (hy.1.2 g k)⟩`. Establish `h1` using `z1fSub φ hφ σ (adGL r) hσ (cont_ad hr) (corner E i j).subtype (fun _ _ => rfl) Subtype.val_injective U hU hcr c hc hy`.
+
+Apply the tactic sequence `exact (z1fMap φ σ (chRep (κ i * (κ j)⁻¹))).2 (((Matrix.entryLinearMap E E i j).comp (corner E i j).subtype).restrictScalars ℚ_[l]) (fun g x => ad_entry h g x i j x.2) c h1`.
+-/
 private theorem entry (hφ : IsOpenEmbedding φ) (hr : Continuous fun g => (r g : Matrix (Fin n) (Fin n) E))
     (h : UpperTri r κ) (U : Subgroup G) [U.Normal] (hU : IsOpen (U : Set G)) (hcr : CrOn φ (adGL r) U)
     (y : G → Matrix (Fin n) (Fin n) E) (hy : y ∈ finiteCocycles φ (adGL r)) (i j : Fin n) (hm : ∀ g, y g ∈ corner E i j) :
@@ -93,6 +116,15 @@ private theorem entry (hφ : IsOpenEmbedding φ) (hr : Continuous fun g => (r g 
     (fun g x => ad_entry h g x i j x.2) c h1
 
 omit [T2Space E] in
+/- English proof (translation)
+Use `haveI : IsModuleTopology ℚ_[l] (Matrix (Fin n) (Fin n) E) := inferInstanceAs (IsModuleTopology ℚ_[l] (Fin n → Fin n → E))`. Establish `hφU : IsOpenEmbedding (φ.comp U.subtype)` using `hφ.comp hU.isOpenEmbedding_subtypeVal`. Establish `hr1 : Continuous fun g : U => (r.comp U.subtype g : Matrix (Fin n) (Fin n) E)` using `hr.comp continuous_subtype_val`. Establish `h1 : IsCr (φ.comp U.subtype) (colRep (r.comp U.subtype))` using `prC P _ hφU (AlgHom.id E E) (fun a ha => ⟨1, by simpa using ha⟩) (r.comp U.subtype) (fun i j => by`. Unfold `QCont`.
+
+Rewrite using `[← IsModuleTopology.eq_moduleTopology' (R := ℚ_[l]) (A := E)]`. Conclude with `hr1.matrix_elem i j)`. Use the proof step `(fun i => (κ i).comp U.subtype) w (fun g => h g) hw (fun i g hg => hI i g g.2 hg)`. Use the proof step `(fun i j hij => by`. Take `⟨g, hg, e⟩` from `hne i j hij`.
+
+Conclude with `⟨⟨g, hg⟩, e⟩)`. Establish `hc : ContAction (colRep (r.comp U.subtype))` using `(hr1.comp continuous_fst).matrix_mulVec continuous_snd`. Use `(isCrys_isDR_internalHom _ hφU _ _ (adGL (r.comp U.subtype)) hc hc (cont_ad hr1) ((Matrix.mulVecBilin E E).restrictScalars₁₂ ℚ_[l] ℚ_[l]) (fun g X x => ?_) (fun X Y e => ?_)).1 h1 h1` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Matrix.mulVec ((r g : Matrix (Fin n) (Fin n) E) * X * (((r g)⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E)) (Matrix.mulVec (r g : Matrix (Fin n) (Fin n) E) x) = Matrix.mulVec (r g : Matrix (Fin n) (Fin n) E) (X.mulVec x)`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Matrix.mul_assoc, Units.inv_mul, Matrix.mul_one]`.
+
+Conclude with `Matrix.ext_of_mulVec_single fun i => LinearMap.congr_fun e _`.
+-/
 private theorem crOn_ad (P : LocalPublishedTheorems) (hφ : IsOpenEmbedding φ)
     (hr : Continuous fun g => (r g : Matrix (Fin n) (Fin n) E)) (h : UpperTri r κ) (w : Fin n → ℤ) (hw : StrictAnti w)
     (U : Subgroup G) (hU : IsOpen (U : Set G)) (hI : ∀ i, ∀ g ∈ U, φ g ∈ Iq l → κ i g = cycA l l E (φ g) ^ w i)
@@ -119,6 +151,27 @@ private theorem crOn_ad (P : LocalPublishedTheorems) (hφ : IsOpenEmbedding φ)
     rw [Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Matrix.mul_assoc, Units.inv_mul, Matrix.mul_one]
   · exact Matrix.ext_of_mulVec_single fun i => LinearMap.congr_fun e _
 
+/- English proof (translation)
+Use `haveI : IsModuleTopology ℚ_[l] (Matrix (Fin n) (Fin n) E) := inferInstanceAs (IsModuleTopology ℚ_[l] (Fin n → Fin n → E))`. Establish `hcr` using `crOn_ad P hφ hr h w hw U hU hI hne`. Establish `hκ : ∀ i, Continuous fun g => (κ i g : E)` using `fun i => by`. Simplify using `only [← fun g => (h g).2 i]`. Conclude with `hr.matrix_elem i i`.
+
+Establish `hκ2 : ∀ i j, Continuous fun g => ((κ i * (κ j)⁻¹) g : E)` using `fun i j => by`. Simplify using `only [MonoidHom.mul_apply, MonoidHom.inv_apply, ← map_inv, Units.val_mul]`. Conclude with `(hκ i).mul ((hκ j).comp continuous_inv)`. Establish `hsub : ∀ X, (fun g => y g - (adGL r g X - X)) ∈ finiteCocycles φ (adGL r)` using `fun X => sub_mem hy ((z1fMap φ (adGL r) (adGL r)).1 (cont_ad hr) ((mem_coboundaries1 _ _).2 ⟨X, fun _ => rfl⟩))`. Establish `key : ∀ s : Finset (Fin n × Fin n), (∀ p ∈ s, p.2 < p.1) → (∀ p ∈ s, ∀ a b, p.1 ≤ a → b ≤ p.2 → (a, b) ∈ s) → ∃ X, ∀ g, ∀ p ∈ s, (y g - (adGL r g X - X)) p.1 p.2 = 0`.
+
+Introduce `s`. Proceed by induction on `s using Finset.induction_on_max_value (fun p : Fin n × Fin n => (p.2.val : ℤ) - p.1.val) with`. Consider the case `empty => exact fun _ _ => ⟨0, fun _ p hp => absurd hp (Finset.notMem_empty _)⟩`. Consider the case `insert p s hp hmax ih`. Take `⟨i, j⟩` from `p`.
+
+Introduce `hlow hcl`. Establish `hup : ∀ q ∈ s, q.1 ≤ i → j ≤ q.2 → False` using `fun q hq h1 h2 => by`. Establish `h3` using `hmax q hq`. Rewrite `h1`, `h2` using `[Fin.le_def]`. Use `hp ?_` and prove the remaining obligations.
+
+Rewrite using `[show (i, j) = q from Prod.ext (Fin.ext (by simp only at h3 ⊢; omega)) (Fin.ext (by simp only at h3 ⊢; omega))]` and apply the resulting hypothesis. Take `⟨X, hX⟩` from `ih (fun q hq => hlow q (Finset.mem_insert_of_mem hq)) fun q hq a b h1 h2 => (Finset.mem_insert.1 (hcl q (Finset.mem_insert_of_mem hq) a b h1 h2)).resolve_left fun e => by`. Take `⟨rfl, rfl⟩` from `Prod.ext_iff.1 e`. Conclude with `hup q hq h1 h2`. Establish `hji : j < i` using `hlow _ (Finset.mem_insert_self _ _)`.
+
+Apply the tactic sequence `have h1 := entry hφ hr h U hU hcr _ (hsub X) i j fun g a b h1 h2 h3 => hX g (a, b) ((Finset.mem_insert.1 (hcl _ (Finset.mem_insert_self _ _) a b h1 h2)).resolve_left h3)`. Rewrite using `[((z1fChar P φ hφ _ (hκ2 i j) (w i - w j) ⟨U, hU, fun g hg hg' => by`. Rewrite using `[MonoidHom.mul_apply, MonoidHom.inv_apply, hI i g hg hg', hI j g hg hg', zpow_sub]⟩).1`. Use the proof step `(sub_neg.2 (hw hji))).1, mem_coboundaries1] at h1`. Take `⟨m, hm⟩` from `h1`.
+
+Use `⟨X + Matrix.single i j m, fun g q hq => ?_⟩` and prove the remaining obligations. Establish `e : (y g - (adGL r g (X + Matrix.single i j m) - (X + Matrix.single i j m))) q.1 q.2 = (y g - (adGL r g X - X)) q.1 q.2 - (adGL r g (Matrix.single i j m) q.1 q.2 - Matrix.single i j m q.1 q.2)`. Simplify using `only [map_add, Matrix.sub_apply, Matrix.add_apply]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+
+Break down `Finset.mem_insert.1 hq with rfl | hq` into its components or cases. Apply the tactic sequence `rw [ad_entry h g _ i j fun a b _ _ h3 => Matrix.single_apply_of_ne _ _ _ _ _ fun e => h3 (by rw [e.1, e.2]), Matrix.single_apply_same, sub_eq_zero]`. Conclude with `hm g`. Establish `h0 : ∀ a b, q.1 ≤ a → b ≤ q.2 → Matrix.single i j m a b = 0` using `fun a b h1 h2 => Matrix.single_apply_of_ne _ _ _ _ _ fun e => hup q hq (e.1 ▸ h1) (e.2 ▸ h2)`. Apply the tactic sequence `rw [hX g q hq, ad_entry h g _ _ _ fun a b h1 h2 _ => h0 a b h1 h2, h0 _ _ le_rfl le_rfl]`.
+
+Simplify using the standard rewrite rules. Take `⟨X, hX⟩` from `key (Finset.univ.filter fun p => p.2 < p.1) (fun p hp => (Finset.mem_filter.1 hp).2) fun p hp a b h1 h2 => Finset.mem_filter.2 ⟨Finset.mem_univ _, (h2.trans_lt (Finset.mem_filter.1 hp).2).trans_le h1⟩`. Establish `hX' : ∀ g i j, j < i → (y g - (adGL r g X - X)) i j = 0` using `fun g i j hij => hX g (i, j) (Finset.mem_filter.2 ⟨Finset.mem_univ _, hij⟩)`. Use `⟨X, fun g => ⟨hX' g, fun hg i => ?_⟩⟩` and prove the remaining obligations. Apply the tactic sequence `have h1 := entry hφ hr h U hU hcr _ (hsub X) i i fun g a b h1 h2 h3 => hX' g a b (lt_of_le_of_ne (h2.trans h1) fun e => h3 (by`.
+
+Substitute `e` using the available equality. Rewrite using `[le_antisymm h2 h1]))`. Conclude with `(z1fUnr P φ hφ (chRep (κ i * (κ i)⁻¹)) (((hκ2 i i).comp continuous_fst).mul continuous_snd) (fun g _ => LinearMap.ext fun x => by simp [chRep]) _ h1.1).1 h1 g hg`.
+-/
 private theorem fin (P : LocalPublishedTheorems) (hφ : IsOpenEmbedding φ)
     (hr : Continuous fun g => (r g : Matrix (Fin n) (Fin n) E)) (h : UpperTri r κ) (w : Fin n → ℤ) (hw : StrictAnti w)
     (U : Subgroup G) [U.Normal] (hU : IsOpen (U : Set G))
@@ -193,6 +246,9 @@ private theorem fin (P : LocalPublishedTheorems) (hφ : IsOpenEmbedding φ)
 end Fin
 
 open TensorProduct in
+/- English proof (translation)
+Take `⟨π, hπ⟩` from `LinearMap.exists_leftInverse_of_injective (Algebra.linearMap k B) (LinearMap.ker_eq_bot.2 (algebraMap k B).injective)`. Establish `h1 : π 1 = 1` using `by simpa using LinearMap.congr_fun hπ 1`. Simplify `congrArg (fun x => TensorProduct.rid k V (LinearMap.lTensor V π x)) h` using `[h1]`.
+-/
 private theorem tmul_one_inj {k V B : Type} [Field k] [AddCommGroup V] [Module k V] [CommRing B] [Algebra k B]
     (hB : Nontrivial B) {v w : V} (h : v ⊗ₜ[k] (1 : B) = w ⊗ₜ[k] (1 : B)) : v = w := by
   obtain ⟨π, hπ⟩ := LinearMap.exists_leftInverse_of_injective (Algebra.linearMap k B)
@@ -206,6 +262,37 @@ variable {l : ℕ} [Fact l.Prime] {G : Type} [Group G] [TopologicalSpace G] [IsT
   {φ : G →* GQ l} {n : ℕ}
 
 open TensorProduct in
+/- English proof (translation)
+Take `⟨E₀, _, hE₀⟩` from `GlobalTheory.CompactRepField.exists_finiteDimensional_entries_mem l G n r fun i j => hr.matrix_elem i j`. Take `⟨⟨hcc, hcoc⟩, x, hx⟩` from `hy`. Take `⟨S, rfl⟩` from `TensorProduct.exists_finset x`. Take `⟨T⟩` from `tiedP l`. Establish `hB : Nontrivial (Bcr l)` using `(GlobalTheory.RegularRing.isDomain_of_tied T (botExt l)).toNontrivial`.
+
+Set `t : Set (PadicAlgCl l)` to `Set.range fun p : S × Fin n × Fin n => p.1.1.1 p.2.1 p.2.2`. Use `haveI : Finite t := (Set.finite_range _).to_subtype`. Use `haveI : FiniteDimensional ℚ_[l] (IntermediateField.adjoin ℚ_[l] t) := IntermediateField.finiteDimensional_adjoin fun z _ => (Algebra.IsAlgebraic.isAlgebraic z).isIntegral`. Set `E : IntermediateField ℚ_[l] (PadicAlgCl l)` to `E₀ ⊔ IntermediateField.adjoin ℚ_[l] t`. Establish `hrE : ∀ g a b, (r g).val a b ∈ E` using `fun g a b => (le_sup_left : E₀ ≤ E) (hE₀ g a b)`.
+
+Establish `hS : ∀ p ∈ S, ∀ a b, p.1 a b ∈ E` using `fun p hp a b => (le_sup_right : _ ≤ E) (IntermediateField.subset_adjoin _ _ ⟨(⟨p, hp⟩, a, b), rfl⟩)`. Take `⟨π, hπ⟩` from `LinearMap.exists_leftInverse_of_injective (Algebra.linearMap E (PadicAlgCl l)) (LinearMap.ker_eq_bot.2 (algebraMap E (PadicAlgCl l)).injective)`. Establish `hπ1 : ∀ y : E, π (y : PadicAlgCl l) = y` using `fun y => LinearMap.congr_fun hπ y`. Establish `hπ2 : ∀ (c : E) y, π (c * y) = c * π y` using `fun c y => map_smul π c y`. Establish `hinj : Function.Injective fun X : Matrix (Fin n) (Fin n) E => X.map E.val` using `Matrix.map_injective Subtype.val_injective`.
+
+Set `s : G →* GL (Fin n) E` to `MonoidHom.toHomUnits { toFun := fun g => Matrix.of fun a b => (⟨_, hrE g a b⟩ : E) map_one' := hinj (by`. Simplify using `only []`. Rewrite using `[Matrix.map_one _ (map_zero _) (map_one _)]`. Conclude with `congrArg Units.val (map_one r))`. Use the proof step `map_mul' := fun g h => hinj (by`.
+
+Simplify using `only []`. Rewrite using `[Matrix.map_mul]`. Express the relevant statement in the definitionally equal form `(r (g * h)).val = (r g).val * (r h).val`. Rewrite using `[map_mul, Units.val_mul]) }`. Establish `hs : ∀ g, (s g).val.map E.val = (r g).val` using `fun g => rfl`.
+
+Establish `hs' : ∀ g a b, (r g).val a b = ((s g).val a b : E)` using `fun g a b => rfl`. Set `f : Matrix (Fin n) (Fin n) (PadicAlgCl l) →ₗ[ℚ_[l]] Matrix (Fin n) (Fin n) E` to `(π.restrictScalars ℚ_[l]).mapMatrix`. Set `i : Matrix (Fin n) (Fin n) E →ₗ[ℚ_[l]] Matrix (Fin n) (Fin n) (PadicAlgCl l)` to `E.val.toLinearMap.mapMatrix`. Establish `hf : ∀ g X, f (adGL r g X) = adGL s g (f X)` using `fun g X => by ext1 a b`. Express the relevant statement in the definitionally equal form `π (adGL r g X a b) = _`.
+
+Rewrite using `[ad_apply, ad_apply, map_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Rewrite using `[hs', hs', mul_comm, hπ2, hπ2, mul_comm]`.
+
+Both sides reduce to the same expression. Establish `hi : ∀ g X, i (adGL s g X) = adGL r g (i X)` using `fun g X => by ext1 a b`. Express the relevant statement in the definitionally equal form `E.val (adGL s g X a b) = _`. Rewrite using `[ad_apply, ad_apply, map_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_mul]`. Both sides reduce to the same expression. Establish `key : ∀ g (y : Matrix (Fin n) (Fin n) (PadicAlgCl l) ⊗[ℚ_[l]] Bcr l), LinearMap.rTensor (Bcr l) f (actC φ (adGL r) g y) = actC φ (adGL s) g (LinearMap.rTensor (Bcr l) f y)`.
+
+Introduce `g y`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => simp [actC, hf]`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`.
+
+Establish `key' : ∀ g (y : Matrix (Fin n) (Fin n) E ⊗[ℚ_[l]] Bcr l), LinearMap.rTensor (Bcr l) i (actC φ (adGL s) g y) = actC φ (adGL r) g (LinearMap.rTensor (Bcr l) i y)`. Introduce `g y`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => simp [actC, hi]`.
+
+Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Use `set x := ∑ p ∈ S, p.1 ⊗ₜ[ℚ_[l]] p.2 with hxd`. Establish `hix : LinearMap.rTensor (Bcr l) i (LinearMap.rTensor (Bcr l) f x) = x`. Rewrite using `[hxd, map_sum, map_sum]`. Use `Finset.sum_congr rfl fun p hp => ?_` and prove the remaining obligations.
+
+Rewrite using `[LinearMap.rTensor_tmul, LinearMap.rTensor_tmul]`. Use `congr 1`. Use `ext1 a b`. Conclude with `congrArg Subtype.val (hπ1 ⟨p.1 a b, hS p hp a b⟩)`. Establish `hx' : ∀ g, f (y g) ⊗ₜ[ℚ_[l]] (1 : Bcr l) = actC φ (adGL s) g (LinearMap.rTensor (Bcr l) f x) - LinearMap.rTensor (Bcr l) f x` using `fun g => by`.
+
+Rewrite using `[← key, ← map_sub, ← hx g, LinearMap.rTensor_tmul]`. Establish `hcE : ∀ g, (f (y g)).map E.val = y g` using `fun g => by`. Establish `h1` using `congrArg (LinearMap.rTensor (Bcr l) i) (hx' g)`. Rewrite `h1` using `[map_sub, key', hix, ← hx g, LinearMap.rTensor_tmul]`. Conclude with `tmul_one_inj hB h1`.
+
+Use `⟨E, inferInstance, s, fun g => f (y g), hs, hi, hcE, ⟨?_, fun g h => ?_⟩, _, hx'⟩` and prove the remaining obligations. Use `continuous_matrix fun a b => continuous_induced_rng.2 ((hcc.matrix_elem a b).congr fun g => ?_)` and prove the remaining obligations. Conclude with `(congrFun (congrFun (hcE g) a) b).symm`. Conclude with `(congrArg f (hcoc g h)).trans (by rw [map_add, hf])`.
+-/
 private theorem desc [T2Space G] (r : G →* GL (Fin n) (PadicAlgCl l))
     (hr : Continuous fun g => (r g).val)
     (y : G → Matrix (Fin n) (Fin n) (PadicAlgCl l)) (hy : y ∈ finiteCocycles φ (adGL r)) :
@@ -304,6 +391,17 @@ private theorem desc [T2Space G] (r : G →* GL (Fin n) (PadicAlgCl l))
     exact (congrFun (congrFun (hcE g) a) b).symm
   · exact (congrArg f (hcoc g h)).trans (by rw [map_add, hf])
 
+/- English proof (translation)
+Use `haveI : T2Space G := hφ.isEmbedding.t2Space`. Take `⟨E, _, s, z, hs, had, hz, hzf⟩` from `desc r hr y hy`. Use `haveI : IsModuleTopology ℚ_[l] ↥E := isModuleTopologyOfFiniteDimensional`. Establish `hs' : ∀ g a b, ((s g).val a b : PadicAlgCl l) = (r g).val a b` using `fun g a b => congrFun (congrFun (hs g) a) b`. Establish `hκE : ∀ i g, (κ i g : PadicAlgCl l) ∈ E` using `fun i g => by`.
+
+Rewrite using `[← (h g).2 i, ← hs']`. Conclude with `SetLike.coe_mem _`. Set `κ' : Fin n → G →* Eˣ` to `fun i => MonoidHom.toHomUnits { toFun := fun g => ⟨κ i g, hκE i g⟩ map_one' := Subtype.ext (by simp) map_mul' := fun g h => Subtype.ext (by simp) }`. Establish `hc : ∀ σ, ((cycA l l E σ : E) : PadicAlgCl l) = cycA l l (PadicAlgCl l) σ` using `fun σ => rfl`. Take `⟨X, hX⟩` from `fin (κ := κ') P hφ (continuous_matrix fun a b => continuous_induced_rng.2 ((hr.matrix_elem a b).congr fun g => (hs' g a b).symm)) (fun g => ⟨fun a b hab => Subtype.ext ((hs' g a b).trans ((h g).1 a b hab)), fun a => Subtype.ext ((hs' g a a).trans ((h g).2 a))⟩) w hw U hU (fun i g …`.
+
+Express the relevant statement in the definitionally equal form `(κ i g : PadicAlgCl l) = E.val _`. Rewrite using `[hI i g hg hg', Units.val_zpow_eq_zpow_val, Units.val_zpow_eq_zpow_val, map_zpow₀]`. Use the proof step `rfl)))`. Use the proof step `(fun i j hij => by`. Take `⟨g, hg, e⟩` from `hne i j hij`.
+
+Conclude with `⟨g, hg, fun e' => e (congrArg Subtype.val e')⟩) z hzf`. Establish `e : ∀ g a b, (y g - (adGL r g (X.map E.val) - X.map E.val)) a b = E.val ((z g - (adGL s g X - X)) a b)`. Introduce `g a b`. Rewrite using `[← had, ← hz]`. Simplify using `only [Matrix.sub_apply, Matrix.map_apply, map_sub]`.
+
+Conclude with `⟨X.map E.val, fun g => ⟨fun i j hij => by rw [e, (hX g).1 i j hij, map_zero], fun hg i => by rw [e, (hX g).2 hg i, map_zero]⟩⟩`.
+-/
 private theorem bar (P : LocalPublishedTheorems) (hφ : IsOpenEmbedding φ) {r : G →* GL (Fin n) (PadicAlgCl l)}
     {κ : Fin n → G →* (PadicAlgCl l)ˣ}
     (hr : Continuous fun g => (r g).val) (h : UpperTri r κ) (w : Fin n → ℤ)
@@ -344,6 +442,9 @@ private theorem bar (P : LocalPublishedTheorems) (hφ : IsOpenEmbedding φ) {r :
   exact ⟨X.map E.val, fun g => ⟨fun i j hij => by rw [e, (hX g).1 i j hij, map_zero],
     fun hg i => by rw [e, (hX g).2 hg i, map_zero]⟩⟩
 
+/- English proof (translation)
+Establish `hc : Continuous (cyc l l)` using `cyclotomicCharacter.continuous l ℚ_[l] (PadicAlgCl l)`. Establish `ha : Continuous (algebraMap ℤ_[l] (PadicAlgCl l))`. Rewrite using `[IsScalarTower.algebraMap_eq ℤ_[l] ℚ_[l] (PadicAlgCl l)]`. Conclude with `(continuous_algebraMap ℚ_[l] (PadicAlgCl l)).comp continuous_subtype_val`. Conclude with `(Continuous.units_map (algebraMap ℤ_[l] (PadicAlgCl l) : ℤ_[l] →* PadicAlgCl l) ha).comp hc`.
+-/
 private theorem cont_cyc (l : ℕ) [Fact l.Prime] : Continuous (cycA l l (PadicAlgCl l)) := by
   have hc : Continuous (cyc l l) := cyclotomicCharacter.continuous l ℚ_[l] (PadicAlgCl l)
   have ha : Continuous (algebraMap ℤ_[l] (PadicAlgCl l)) := by
@@ -351,6 +452,9 @@ private theorem cont_cyc (l : ℕ) [Fact l.Prime] : Continuous (cycA l l (PadicA
     exact (continuous_algebraMap ℚ_[l] (PadicAlgCl l)).comp continuous_subtype_val
   exact (Continuous.units_map (algebraMap ℤ_[l] (PadicAlgCl l) : ℤ_[l] →* PadicAlgCl l) ha).comp hc
 
+/- English proof (translation)
+Establish `hfin : ({z : K | z ^ k = 1} \ {1}).Finite` using `(Multiset.finite_toSet (Polynomial.nthRoots k (1 : K))).subset fun z hz => (Polynomial.mem_nthRoots hk).2 hz.1`. Take `⟨U, hU⟩` from `ProfiniteGrp.exist_openNormalSubgroup_sub_open_nhds_of_one (isOpen_iInter_of_finite fun i => hfin.isClosed.isOpen_compl.preimage (hf i)) (Set.mem_iInter.2 fun i h => h.2 (h1 i))`. Use `⟨U, fun i g hg e => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Conclude with `Set.mem_iInter.1 (hU hg) i ⟨e, hne⟩`.
+-/
 private theorem small {K ι : Type} [TotallyDisconnectedSpace G] [Field K] [TopologicalSpace K] [T1Space K] [Finite ι]
     (f : ι → G → K) (hf : ∀ i, Continuous (f i)) (h1 : ∀ i, f i 1 = 1) {k : ℕ} (hk : 0 < k) :
     ∃ U : OpenNormalSubgroup G, ∀ i, ∀ g ∈ U, f i g ^ k = 1 → f i g = 1 := by
@@ -370,6 +474,25 @@ end UpperTheory.V.Th.OrdinaryBlock
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V UpperTheory.V.HV GlobalTheory.GalOfCusp UpperTheory.V.Th
 
 open UpperTheory.V.Th.OrdinaryBlock in
+/- English proof (translation)
+Introduce `P l _ H _ _ _ _ _ φ hφ n ρ ψ m k hρ ⟨a, ha⟩ hm hk hI ⟨g₀, hg₀, hfree⟩ y hy`. Break down `n with _ | n` into its components or cases. Conclude with `⟨1, 0, fun g => ⟨fun i => i.elim0, fun i => i.elim0, fun i => i.elim0, fun _ i => i.elim0⟩⟩`. Establish `hρc : Continuous fun g => (a * ρ g * a⁻¹).val` using `Units.continuous_val.comp ((continuous_const.mul hρ).mul continuous_const)`. Establish `hψ : ∀ i, Continuous fun g => (ψ i g : Qbar l)` using `fun i => (hρc.matrix_elem i i).congr fun g => (ha g).2 i`.
+
+Establish `hψ0 : Continuous fun g => (ψ 0 g⁻¹ : Qbar l)` using `(hψ 0).comp continuous_inv`. Set `r : H →* GL (Fin (n + 1)) (Qbar l)` to `MonoidHom.toHomUnits { toFun := fun g => (ψ 0 g⁻¹ : Qbar l) • (a * ρ g * a⁻¹).val map_one' := by simp map_mul' := fun g h => by`. Rewrite using `[Matrix.smul_mul, Matrix.mul_smul, smul_smul, ← Units.val_mul, ← Units.val_mul, mul_inv_rev, map_mul, map_mul, mul_comm (ψ 0 h⁻¹)]`. Use `congr 2`. Use `group }`.
+
+Establish `hr : ∀ g, (r g).val = (ψ 0 g⁻¹ : Qbar l) • (a * ρ g * a⁻¹).val` using `fun g => rfl`. Establish `had : ∀ g (X : Matrix (Fin (n + 1)) (Fin (n + 1)) (Qbar l)), a.val * Loc.adGL ρ g X * (a⁻¹).val = Loc.adGL r g (a.val * X * (a⁻¹).val)` using `fun g X => by`. Express the relevant statement in the definitionally equal form `a.val * ((ρ g).val * X * ((ρ g)⁻¹).val) * (a⁻¹).val = (r g).val * (a.val * X * (a⁻¹).val) * ((r g)⁻¹).val`. Rewrite using `[← map_inv r, hr, hr, Matrix.smul_mul, Matrix.smul_mul, Matrix.mul_smul, smul_smul, ← Units.val_mul, ← map_mul, inv_inv, inv_mul_cancel, map_one, Units.val_one, one_smul, map_inv]`. Simplify using `only [Units.val_mul, Matrix.mul_assoc, Units.inv_mul_cancel_left]`.
+
+Set `f : Matrix (Fin (n + 1)) (Fin (n + 1)) (Qbar l) →ₗ[ℚ_[l]] Matrix (Fin (n + 1)) (Fin (n + 1)) (Qbar l)` to `{ toFun := fun X => a.val * X * (a⁻¹).val map_add' := fun X Y => by simp only [Matrix.mul_add, Matrix.add_mul] map_smul' := fun c X => by simp only [Matrix.mul_smul, Matrix.smul_mul, RingHom.id_apply] }`. Establish `hy'` using `Loc.z1fCoef φ (Loc.adGL ρ) (Loc.adGL r) f ((continuous_const.matrix_mul continuous_id).matrix_mul continuous_const) had y hy`. Take `⟨U, hU⟩` from `small (fun i g => ((ψ i g / ψ 0 g * Loc.cycA l l (Qbar l) (φ g) ^ (m 0 - m i) : (Qbar l)ˣ) : Qbar l)) (fun i => by`. Simplify using `only [div_eq_mul_inv, ← map_inv, Units.val_mul]`. Conclude with `((hψ i).mul hψ0).mul (Units.continuous_val.comp (((cont_cyc l).comp hφ.continuous).zpow _)))`.
+
+Use the proof step `(fun i => by simp only [map_one, one_zpow, div_one, mul_one, Units.val_one]) hk`. Use `haveI : Finite (H ⧸ U.toSubgroup) := U.toSubgroup.quotient_finite_of_isOpen U.isOpen`. Use `haveI : U.toSubgroup.FiniteIndex := Subgroup.finiteIndex_of_finite_quotient`. Take `⟨X, hX⟩` from `bar (κ := fun i => ψ i * (ψ 0)⁻¹) P hφ (r := r) (hψ0.smul hρc) (fun g => ⟨fun i j hij => by rw [hr, Matrix.smul_apply, (ha g).1 i j hij, smul_zero], fun i => by`. Rewrite using `[hr, Matrix.smul_apply, (ha g).2 i, smul_eq_mul, mul_comm, map_inv]`.
+
+Use the proof step `rfl⟩)`. Use the proof step `(fun i => m i - m 0) (fun i j hij => sub_lt_sub_right (hm hij) _) U.toSubgroup U.isOpen`. Use the proof step `(fun i g hg hg' => by`. Establish `h1` using `hU i g hg (by rw [← Units.val_pow_eq_pow_val, hI i 0 g hg', Units.val_one])`. Rewrite `h1` using `[Units.val_eq_one, ← neg_sub, zpow_neg, mul_inv_eq_one, div_eq_mul_inv]`.
+
+Conclude with `h1)`. Use the proof step `(fun i j hij => ⟨g₀ ^ U.toSubgroup.index, U.toSubgroup.pow_index_mem g₀, fun e => hfree i j hij.ne U.toSubgroup.index (Nat.pos_of_ne_zero Subgroup.FiniteIndex.index_ne_zero) (by`. Rewrite `e` using `[map_pow φ, map_pow, map_pow, map_pow, hg₀, one_pow, Units.val_one, mul_one, Units.val_inj, MonoidHom.mul_apply, MonoidHom.mul_apply, mul_pow, mul_pow]`. Conclude with `mul_right_cancel e)⟩) _ hy'`. Use `⟨a, (a⁻¹).val * X * a.val, fun g => ?_⟩` and prove the remaining obligations.
+
+Establish `e : a.val * (y g - (Loc.adGL ρ g ((a⁻¹).val * X * a.val) - (a⁻¹).val * X * a.val)) * (a⁻¹).val = f (y g) - (Loc.adGL r g X - X)`. Establish `e0 : a.val * ((a⁻¹).val * X * a.val) * (a⁻¹).val = X`. Simplify using `only [Matrix.mul_assoc, Units.mul_inv_cancel_left, Units.mul_inv, Matrix.mul_one]`. Rewrite using `[Matrix.mul_sub, Matrix.mul_sub, Matrix.sub_mul, Matrix.sub_mul, had, e0]`. Both sides reduce to the same expression.
+
+Rewrite using `[e]`. Conclude with `⟨(ha g).1, (ha g).2, (hX g).1, (hX g).2⟩`.
+-/
 theorem UpperTheory.V.Th.bkOrd :
     Loc.LocalPublishedTheorems → BkOrd := by
   intro P l _ H _ _ _ _ _ φ hφ n ρ ψ m k hρ ⟨a, ha⟩ hm hk hI ⟨g₀, hg₀, hfree⟩ y hy

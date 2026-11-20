@@ -7,6 +7,13 @@ open GlobalTheory.WeilDeligne GlobalTheory.LocLanglands GlobalTheory.LocGL Globa
 
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
+/- English proof (translation)
+Introduce `hG F Ω _ _ _ _ _ w A h a ha p _ ι σ hv`. Take `⟨art, hart⟩` from `hG F Ω`. Take `⟨μ, hμ, hL⟩` from `hart.exists_isLAdicOf ι (GlobalTheory.Published.CharAboveModel.absPow_isAlgPos F 1)`. Establish `e` using `GlobalTheory.Published.CharAboveModel.eq_cyc_pow hart hμ hL`. Establish `h1` using `hL.loc (a σ) σ (ha.glob art hart σ)`.
+
+Establish `: (Valued.v : Valuation (w.adicCompletion F) (WithZero (Multiplicative ℤ))).Compatible` using `Valuation.Compatible.ofValuation _`. Establish `he` using `isEquiv (valuation (w.adicCompletion F)) (Valued.v : Valuation (w.adicCompletion F) (WithZero (Multiplicative ℤ)))`. Establish `hu : Valued.v (a σ : w.adicCompletion F) = 1` using `he.eq_one_iff_eq_one.1 hv`. Establish `h2 : (GlobalTheory.HeckeGal.Model.absPow F ((1 : ℕ) : ℝ)).loc w (a σ) = 1` using `(GlobalTheory.HeckeGal.Model.absPow_isAbsPow F ((1 : ℕ) : ℝ)).1 w _ hu`. Rewrite `h1` using `[h2, e, pow_one, cyc_eq_map_cycZ]`.
+
+Simplify using `only [Units.val_one, map_one, one_mul, Nat.cast_one] at h1`. Conclude with `h1`.
+-/
 theorem UpperTheory.cyclotomicChar_eq_locPow_of_localArtin_unit :
     GlobalTheory.Published.GlobalArtinReciprocity → ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (w : HeightOneSpectrum (𝓞 F)) (A : ValuationSubring Ω) (h : IsPlaceOver A w)
     (a : Weil h →* (w.adicCompletion F)ˣ), IsLocalArtin h a → ∀ (p : ℕ) [Fact p.Prime] (ι : Qbar p ≃+* ℂ) (σ : Weil h),

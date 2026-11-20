@@ -4,6 +4,21 @@ open Matrix ValuativeRel
 
 namespace GlobalTheory.CompanionTheory.CharDual
 
+/- English proof (translation)
+Introduce `k _ _ _ _ ψ _ hψ n S hS`. Choose the witnesses or unpack the hypotheses as in `⟨x₁, hx₁⟩ : ∃ x, ψ x ≠ 1 := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `hψ (by ext x; simp [h x])`.
+
+Rewrite `hS` using `[nhds_pi]`. Take `⟨⟨I, γ⟩, ⟨-, hγ⟩, hsub⟩` from `(Filter.hasBasis_pi fun _ : Fin n => IsValuativeTopology.hasBasis_nhds_zero' k).mem_iff.1 hS`. Set `ε : Fin n → ValueGroupWithZero k` to `fun i => valuation k x₁ / γ i`. Set `Ξ : AddSubgroup (Fin n → k)` to `{ carrier := {ξ | ∀ i, valuation k (ξ i) ≤ ε i} zero_mem' := fun i => by simp add_mem' := fun {a b} ha hb i => ((valuation k).map_add_le (ha i) (hb i)) neg_mem' := fun {a} ha i => by`. Simplify `ha i }` using `[Valuation.map_neg]`.
+
+Use `⟨Ξ, ?_, fun t ht => hsub ?_⟩` and prove the remaining obligations. Establish `hc` using `isCompact_univ_pi fun i : Fin n => IsNonarchimedeanLocalField.isCompact_closedBall k (ε i)`. Use `hc using 1` and compare the differences between its conclusion and the goal. Use extensionality with `ξ`. Simplify using `[Ξ, Set.mem_pi]`.
+
+Introduce `i hi`. Assume the negation of the conclusion as `hlt`. Establish `hle : γ i ≤ valuation k (t i)` using `not_lt.1 hlt`. Establish `hγi : γ i ≠ 0` using `hγ i hi`. Establish `hpos : 0 < γ i` using `zero_lt_iff.2 hγi`.
+
+Establish `hti : t i ≠ 0`. Introduce `h0`. Rewrite `hle` using `[h0, map_zero]`. Conclude with `hγi (le_antisymm hle zero_le')`. Establish `hmem : (Pi.single i (x₁ / t i) : Fin n → k) ∈ Ξ`.
+
+Introduce `j`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Simplify using `only [Pi.single_eq_same, map_div₀, ε]`. Rewrite using `[div_eq_mul_inv, div_eq_mul_inv]`.
+
+Use `gcongr`. Simplify using `[Pi.single_eq_of_ne hj]`. Establish `h1` using `ht _ hmem`. Rewrite `h1` using `[single_dotProduct, div_mul_cancel₀ _ hti]`. Conclude with `hx₁ h1`.
+-/
 theorem exists_compact_annihilator_subset : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (ψ : AddChar k Circle), Continuous ψ → ψ ≠ 1 →
     ∀ (n : ℕ) (S : Set (Fin n → k)), S ∈ nhds (0 : Fin n → k) →

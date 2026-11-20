@@ -26,29 +26,52 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {v : HeightOneSpectrum (𝓞 F)}
   {Λ : Set (Fin n → E)}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem smul_tup (k : HA (Fv F v) σ J) {a : ℕ} (X : Fin a → Fin n → Fv F v ⊗[F] E) (b : Fin a) :
     (k • X) b = lin (Fv F v) σ J k (X b) := rfl
 
+/- English proof (translation)
+The claim follows from `(hk w).1 hw`.
+-/
 theorem kv_lat {k : HA (Fv F v) σ J} (hk : k ∈ Formalism.L2.SG.TypedSets.Kv σ J Λ v)
     {w : Fin n → Fv F v ⊗[F] E} (hw : w ∈ latLoc (E := E) v Λ) :
     lin (Fv F v) σ J k w ∈ latLoc (E := E) v Λ := (hk w).1 hw
 
+/- English proof (translation)
+The claim follows from `Subgroup.mul_mem (Kloc (E := E) v Λ) ha hb`.
+-/
 theorem kv_mul {a b : HA (Fv F v) σ J} (ha : a ∈ Formalism.L2.SG.TypedSets.Kv σ J Λ v)
     (hb : b ∈ Formalism.L2.SG.TypedSets.Kv σ J Λ v) : a * b ∈ Formalism.L2.SG.TypedSets.Kv σ J Λ v :=
   Subgroup.mul_mem (Kloc (E := E) v Λ) ha hb
 
+/- English proof (translation)
+The claim follows from `Subgroup.inv_mem (Kloc (E := E) v Λ) ha`.
+-/
 theorem kv_inv {a : HA (Fv F v) σ J} (ha : a ∈ Formalism.L2.SG.TypedSets.Kv σ J Λ v) :
     a⁻¹ ∈ Formalism.L2.SG.TypedSets.Kv σ J Λ v :=
   Subgroup.inv_mem (Kloc (E := E) v Λ) ha
 
+/- English proof (translation)
+The claim follows from `Subgroup.one_mem (Kloc (E := E) v Λ)`.
+-/
 theorem kv_one : (1 : HA (Fv F v) σ J) ∈ Formalism.L2.SG.TypedSets.Kv σ J Λ v :=
   Subgroup.one_mem (Kloc (E := E) v Λ)
 
+/- English proof (translation)
+Use `show sc (E := E) v (alp v r b) • (k • Y) b = _`. Rewrite using `[smul_tup, locF, map_smul]`.
+-/
 theorem locF_act (k : HA (Fv F v) σ J) {r : ℕ} (Y : TupV (E := E) v n (r + 1)) (b : Fin (r + 1)) :
     locF v (k • Y) b = lin (Fv F v) σ J k (locF v Y b) := by
   show sc (E := E) v (alp v r b) • (k • Y) b = _
   rw [smul_tup, locF, map_smul]
 
+/- English proof (translation)
+Simplify using `only [locF, Finset.smul_sum, smul_smul]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Use `congr 1`. Establish `h : (alp v r a)⁻¹ * alp v r b * alp v r a = alp v r b`. Rewrite using `[mul_comm (alp v r a)⁻¹, mul_assoc, inv_mul_cancel₀ (alp_ne' v r a), mul_one]`.
+
+Rewrite using `[mul_right_comm, sc_mul', h]`.
+-/
 theorem locF_comb {r : ℕ} (M : Matrix (Fin (r + 1)) (Fin (r + 1)) (Fv F v ⊗[F] E))
     (X : TupV (E := E) v n (r + 1)) (b : Fin (r + 1)) :
     locF v (fun b => ∑ a, M a b • X a) b =
@@ -60,6 +83,11 @@ theorem locF_comb {r : ℕ} (M : Matrix (Fin (r + 1)) (Fin (r + 1)) (Fv F v ⊗[
     rw [mul_comm (alp v r a)⁻¹, mul_assoc, inv_mul_cancel₀ (alp_ne' v r a), mul_one]
   rw [mul_right_comm, sc_mul', h]
 
+/- English proof (translation)
+Apply `hP.2 (fun a => sc (E := E) v t⁻¹ * c a) _ a` to reduce the goal to its premises. Establish `: ∑ a, (sc (E` using `E) v t⁻¹ * c a) • Y a = sc (E := E) v t⁻¹ • ∑ a, c a • Y a := by`. Rewrite using `[Finset.smul_sum]`. Simplify using `only [smul_smul]`. Rewrite using `[this, h, sc_smul_sc, inv_mul_cancel₀ ht, sc_one', one_smul]`.
+
+Conclude with `hy`.
+-/
 theorem prim_div {r : ℕ} {Y : TupV (E := E) v n (r + 1)} (hP : IsPrim v Λ Y)
     (c : Fin (r + 1) → Fv F v ⊗[F] E) {t : Fv F v} (ht : t ≠ 0) {y : Fin n → Fv F v ⊗[F] E}
     (hy : y ∈ latLoc (E := E) v Λ) (h : ∑ a, c a • Y a = sc (E := E) v t • y) (a : Fin (r + 1)) :
@@ -70,20 +98,32 @@ theorem prim_div {r : ℕ} {Y : TupV (E := E) v n (r + 1)} (hP : IsPrim v Λ Y)
   rw [this, h, sc_smul_sc, inv_mul_cancel₀ ht, sc_one', one_smul]
   exact hy
 
+/- English proof (translation)
+Simplify using `only [hR, Formalism.UG.hform, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`.
+-/
 theorem hR_smul (x w : Fin n → Fv F v ⊗[F] E) (c : Fv F v ⊗[F] E) :
     hR (Fv F v) σ J x (c • w) = c * hR (Fv F v) σ J x w := by
   simp only [hR, Formalism.UG.hform, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]
   exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
 
+/- English proof (translation)
+The claim follows from `(hSD (c • w)).2 fun x hx => by rw [hR_smul]; exact oev_mul v hc ((hSD w).1 hw x hx)`.
+-/
 theorem sd_smul (hSD : IsSDLoc σ J v Λ) {c : Fv F v ⊗[F] E} (hc : c ∈ OEv (E := E) v)
     {w : Fin n → Fv F v ⊗[F] E} (hw : w ∈ latLoc (E := E) v Λ) : c • w ∈ latLoc (E := E) v Λ :=
   (hSD (c • w)).2 fun x hx => by rw [hR_smul]; exact oev_mul v hc ((hSD w).1 hw x hx)
 
+/- English proof (translation)
+The claim follows from `Submodule.sum_mem _ fun a _ => sd_smul hSD (hc a) (hY a)`.
+-/
 theorem lat_comb (hSD : IsSDLoc σ J v Λ) {r : ℕ} {Y : Fin (r + 1) → Fin n → Fv F v ⊗[F] E}
     (hY : ∀ a, Y a ∈ latLoc (E := E) v Λ) {c : Fin (r + 1) → Fv F v ⊗[F] E}
     (hc : ∀ a, c a ∈ OEv (E := E) v) : ∑ a, c a • Y a ∈ latLoc (E := E) v Λ :=
   Submodule.sum_mem _ fun a _ => sd_smul hSD (hc a) (hY a)
 
+/- English proof (translation)
+Distinguish the cases in `h1 : a = b`. Substitute `h1` using the available equality. Simplify using `[uMat]`. Apply the tactic sequence `by_cases h2 : a < b <;> simp [uMat, h1, h2]`.
+-/
 theorem uMat_sub {r : ℕ} (u u' : UIdx r → Fv F v ⊗[F] E) (a b : Fin (r + 1)) :
     uMat v u' a b - uMat v u a b =
       if h : a < b then u' ⟨(a, b), h⟩ - u ⟨(a, b), h⟩ else 0 := by
@@ -91,6 +131,9 @@ theorem uMat_sub {r : ℕ} (u u' : UIdx r → Fv F v ⊗[F] E) (a b : Fin (r + 1
   · subst h1; simp [uMat]
   · by_cases h2 : a < b <;> simp [uMat, h1, h2]
 
+/- English proof (translation)
+Unfold `frU`. Rewrite using `[locF_comb, locF_comb, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← sub_smul, mul_sub]`.
+-/
 theorem locF_frU_sub {r : ℕ} (P : Frame E n r) (u u' : UIdx r → Fv F v ⊗[F] E) (b : Fin (r + 1)) :
     locF v (frU v P u') b - locF v (frU v P u) b =
       ∑ a, (sc (E := E) v ((alp v r a)⁻¹ * alp v r b) * (uMat v u' a b - uMat v u a b)) •
@@ -100,6 +143,19 @@ theorem locF_frU_sub {r : ℕ} (P : Frame E n r) (u u' : UIdx r → Fv F v ⊗[F
   refine Finset.sum_congr rfl fun a _ => ?_
   rw [← sub_smul, mul_sub]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `h ⟨⟨a, b⟩, hab⟩`. Take `⟨z, hz, hzeq⟩` from `h b`. Rewrite `hzeq` using `[locF_frU_sub]`. Use `prim_div hP _ hg hz hzeq a` as an intermediate fact.
+
+Rewrite `this` using `[uMat_sub, dif_pos hab]`. Simplify using `only`. Use `this using 1` and compare the differences between its conclusion and the goal. Rewrite using `[Pi.add_apply, Pi.neg_apply, neg_add_eq_sub, ← mul_assoc, sc_mul']`. Use `congr 1`.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Introduce `h b`. Use `⟨∑ a, (sc (E := E) v (g : Fv F v)⁻¹ * (sc (E := E) v ((alp v r a)⁻¹ * alp v r b) * (uMat v u' a b - uMat v u a b))) • locF v (ratTup (Fv F v) (F0 P)) a, lat_comb hSD hP.1 ?_, ?_⟩` and prove the remaining obligations. Introduce `a`.
+
+Rewrite using `[uMat_sub]`. Use `split_ifs with hab`. Use `h ⟨(a, b), hab⟩` as an intermediate fact. Simplify using `only [Pi.add_apply, Pi.neg_apply, neg_add_eq_sub] at this`. Use `this using 1` and compare the differences between its conclusion and the goal.
+
+Rewrite using `[← mul_assoc, sc_mul']`. Use `congr 1`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[mul_zero, mul_zero]`.
+
+Conclude with `oev_zero v`. Rewrite using `[locF_frU_sub, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul, ← mul_assoc, sc_mul', mul_inv_cancel₀ hg, sc_one', one_mul]`.
+-/
 theorem cong_lat_iff (hSD : IsSDLoc σ J v Λ) {r : ℕ} {P : Frame E n r}
     (hP : IsPrim v Λ (locF v (ratTup (Fv F v) (F0 P)))) {g : ℕ} (hg : (g : Fv F v) ≠ 0)
     (u u' : UIdx r → Fv F v ⊗[F] E) :
@@ -133,6 +189,19 @@ theorem cong_lat_iff (hSD : IsSDLoc σ J v Λ) {r : ℕ} {P : Frame E n r}
       refine Finset.sum_congr rfl fun a _ => ?_
       rw [smul_smul, ← mul_assoc, sc_mul', mul_inv_cancel₀ hg, sc_one', one_mul]
 
+/- English proof (translation)
+Rewrite using `[← cong_lat_iff hSD hP hg u u']`. Establish `key : ∀ b, locF v ((x⁻¹ * y) • ratTup (Fv F v) (F0 P)) b - locF v (ratTup (Fv F v) (F0 P)) b = lin (Fv F v) σ J x⁻¹ (locF v (y • ratTup (Fv F v) (F0 P)) b - locF v (x • ratTup (Fv F v) (F0 P)) b)`. Introduce `b`. Rewrite using `[map_sub, locF_act, locF_act, locF_act, lin_mul, lin_inv_lin]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨-, hk⟩ b`. Take `⟨z, hz, hzeq⟩` from `hk b`. Take `⟨wx, hwx, hwxe⟩` from `hcx b`. Take `⟨wy, hwy, hwye⟩` from `hcy b`. Use `⟨lin (Fv F v) σ J x z - wy + wx, Submodule.add_mem _ (Submodule.sub_mem _ (kv_lat hx hz) hwy) hwx, ?_⟩` and prove the remaining obligations.
+
+Establish `e1 : locF v (y • ratTup (Fv F v) (F0 P)) b - locF v (x • ratTup (Fv F v) (F0 P)) b = sc (E` using `E) v (g : Fv F v) • lin (Fv F v) σ J x z := by`. Rewrite `hzeq` using `[key]`. Use `congrArg (lin (Fv F v) σ J x) hzeq` as an intermediate fact. Rewrite `this` using `[← lin_mul, mul_inv_cancel, lin_one, map_smul]`. Then use the resulting hypothesis. Rewrite using `[smul_add, smul_sub, ← e1, ← hwye, ← hwxe]`.
+
+Normalize the expressions using the abelian group laws. Introduce `h`. Use `⟨kv_mul (kv_inv hx) hy, fun b => ?_⟩` and prove the remaining obligations. Take `⟨z, hz, hzeq⟩` from `h b`. Take `⟨wx, hwx, hwxe⟩` from `hcx b`.
+
+Take `⟨wy, hwy, hwye⟩` from `hcy b`. Use `⟨lin (Fv F v) σ J x⁻¹ (z + wy - wx), kv_lat (kv_inv hx) (Submodule.sub_mem _ (Submodule.add_mem _ hz hwy) hwx), ?_⟩` and prove the remaining obligations. Rewrite using `[key, ← map_smul]`. Use `congr 1`. Rewrite using `[smul_sub, smul_add, ← hzeq, ← hwye, ← hwxe]`.
+
+Normalize the expressions using the abelian group laws.
+-/
 theorem cong_iff (hSD : IsSDLoc σ J v Λ) {r : ℕ} {P : Frame E n r}
     (hP : IsPrim v Λ (locF v (ratTup (Fv F v) (F0 P)))) {g : ℕ} (hg : (g : Fv F v) ≠ 0)
     {x y : HA (Fv F v) σ J} (hx : x ∈ Formalism.L2.SG.TypedSets.Kv σ J Λ v)

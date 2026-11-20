@@ -29,6 +29,17 @@ end GlobalTheory.SerRefPt
 namespace GlobalTheory.SerRefPt
 open GlobalTheory.RealGeo GlobalTheory.Unframe GlobalTheory.UnframePt
 set_option maxHeartbeats 3200000 in
+/- English proof (translation)
+Take `⟨c', w, hw, hfr, B', hv⟩` from `exists_framed_half hP h0.size (GlobalTheory.Core5.of_core h0.core) (geoHalf p) h0.unif (_root_.GlobalTheory.UnframePt.inGeo_geoHalf_of_ratHyp0 hP Fm x hx i p hR hM t j h0)`. Use `letI iA : Algebra (setCE p.T c').Q.c.F (Fm.D x i).what₂.LL := p.alg`. Establish `hV' : (setCE p.T c').V ((j : ℕ) + 1) (setCE p.T c').σ₀ = Wc (Fm.D x i) j` using `B'.fw.laws.spaceW _ ⟨Nat.le_add_left _ _, j.2⟩ _ (setCE p.T c').toCore.good_σ₀`. Establish `hU' : (fullHeckeRealDatMovedReadings p.R w).toRealDat.LUnif` using `GlobalTheory.T.uniformisationLaws_centralMovedReadings p.R.toRealDat w hw h0.unif`. Establish `hG : (fullHeckeRealDatMovedReadings p.R w).toRealDat.IsGrp (F2 p)` using `⟨h0.core.grp.red_R, h0.core.grp.red_L, h0.core.grp.levels, h0.core.grp.record, h0.core.grp.chiW⟩`.
+
+Establish `c` using `h0.core`. Establish `hF : (fullHeckeRealDatMovedReadings p.R w).toRealDat.IsFam` using `{ c.fam with }`. Establish `hMo : (fullHeckeRealDatMovedReadings p.R w).toRealDat.IsModels` using `{ c.models with }`. Establish `hCh : (fullHeckeRealDatMovedReadings p.R w).toRealDat.IsChain` using `{ c.chain with }`. Establish `hTh : (fullHeckeRealDatMovedReadings p.R w).toRealDat.IsThP` using `{ c.thP with }`.
+
+Establish `hC : GlobalTheory.Hk3.Core (fullHeckeRealDatMovedReadings p.R w).toRealDat (F2 p)` using `⟨c.lev, hG, hF, hMo, hCh, hTh⟩`. Establish `hph : (fun k => cj (twAt (Fm.D x i).what₂.embLL p.P.A3.A.v0) ((fullHeckeRealDatMovedReadings p.R w).phs k)) = fun _ => (1 : ℂ)`. Use function extensionality and compare the values at `fun k => by show cj (twAt (Fm.D x i).what₂.embLL p.P.A3.A.v0) (p.R.phs k) = 1`. Rewrite using `[p.phsOne k, map_one]`. Establish `hRat : RatHyp (setCE p.T c') (fullHeckeRealDatMovedReadings p.R w) (F2 p) B'.κ B'.v₀ B'.O t j hV'`.
+
+Use `⟨h0.size, h0.host, h0.std, B'.fw.laws, hC, hU', ⟨B'.fw⟩, ⟨B'.fw.laws, B'.fw.alg_eq, B'.fw.kap, B'.fw.hv₀, B'.fw.chiR, B'.fw.x0⟩, h0.io, h0.guard, h0.fin, B'.pins j, ?_, hfr j hV', h0.galois, h0.small, h0.inUse, h0.low⟩` and prove the remaining obligations. Rewrite using `[hph]`. Conclude with `B'.phase j hU'`. Establish `hpin' : RealPin (fullHeckeRealDatMovedReadings p.R w) p.cG ρ` using `⟨h.psi, h.inf, h.cartT, h.onbS, h.onbT, h.latS, h.latT, h.frS, h.frT, h.vac, h.Pg, h.grp, h.mu0, h.eta, h.delta, h.deltaPl, h.ap, h.am⟩`. Establish `hsp : (Fm.D x i).host.cls (Fm.D x i).host.pde = PrimeClass.splitK ∧ (Fm.D x i).host.cls (Fm.D x i).host.pde' = PrimeClass.splitK` using `⟨(Fm.params x hx i).level_split _ (Fm.D x i).host.pde_level.1, (Fm.params x hx i).level_split _ (Fm.D x i).host.pde_level.2⟩`.
+
+Establish `H` using `core_cases (T := setCE p.T c') (Rl := fullHeckeRealDatMovedReadings p.R w) hA hRF hS (GlobalTheory.UnframeForms.movedYS p.nexp w) hρ b hpin' hRat hsp`. Rewrite `H` using `[hv]`. Break down `H with H | ⟨ν, hN, H⟩` into its components or cases. Conclude with `Or.inl H`. Conclude with `Or.inr ⟨ν, hN, fun s g P hd hl => algComb_of_moved p.nexp w p.v₀ j (H s g P hd hl)⟩`.
+-/
 theorem fw_eq_zero_or_exists_norm_algComb (hP : GlobalTheory.Published.CuspRapidDecay) (hA : GlobalTheory.Published.GlobalArtinReciprocity) (hRF : GlobalTheory.Published.RayClassFieldSt)
     (hS : GlobalTheory.SerStd.SeriesRatS) {eps : ℝ} (Fm : FamP eps) (x : ℝ) (hx : Fm.x1 < x) (i : Fm.Ix x) (p : Pt Fm x hx i) (hR : p.PointConditions')
     (hM : More p) (t : (Fm.D x i).ntw.Tw) (j : Fin (Fm.D x i).R.m) (h0 : RatHyp0 p.T p.R (F2 p) p.κ p.v₀ p.O t j)
@@ -70,6 +81,15 @@ theorem fw_eq_zero_or_exists_norm_algComb (hP : GlobalTheory.Published.CuspRapid
   rcases H with H | ⟨ν, hN, H⟩
   · exact Or.inl H
   · exact Or.inr ⟨ν, hN, fun s g P hd hl => algComb_of_moved p.nexp w p.v₀ j (H s g P hd hl)⟩
+/- English proof (translation)
+Introduce `hP hA hRF hS`. Establish `hL` using `_root_.GlobalTheory.BigOn.Exp.lowAt_holds_alt`. Establish `hT` using `_root_.GlobalTheory.BigOn.Exp.twAdm_alt`. Unfold `_root_.GlobalTheory.BigOn.Exp.LowerBoundAtPlace at hL`. Unfold `_root_.GlobalTheory.BigOn.Exp.TwAdmAlt at hT`.
+
+Unfold `_root_.GlobalTheory.BigOn.Exp.SerRefAlt`. Use `(_root_.GlobalTheory.BigOn.Exp.TwistConditions.and hL hT).imp fun Fm x hx i p hp hM w _ j h => ?_` and prove the remaining obligations. Introduce `ρ hρ ν hpin hN hR0`. Use `⟨ν, hN, hR0, fun s g P hd hl => ?_⟩` and prove the remaining obligations. Break down `_root_.GlobalTheory.SerRefPt.fw_eq_zero_or_exists_norm_algComb hP hA hRF (GlobalTheory.SerStd.seriesRatS_of hS) Fm x hx i p hp hM _ j (_root_.GlobalTheory.BigOn.Exp.ratHyp0_at_point_alt Fm x hx i p hp hM _ h.2.2.2 h.1 j) ρ hρ _ hpin with H | ⟨ν₁, hN₁, H⟩` into its components or cases.
+
+Establish `h0` using `theta_eq_zero p.nexp p.v₀ hρ _ j _ H hR0 hd`. Establish `h1 : AlgComb p.nexp p.v₀ j (ν • ρ.theta ((Fm.ex x hx i).nch.twI w) j ((Fm.ex x hx i).nch.sd w) g P)`. Rewrite using `[h0, smul_zero]`. Conclude with `AlgComb.zero`. Conclude with `h1`.
+
+Take `⟨ζ, hζ, e⟩` from `exists_root_of_isNorm p.R p.v₀ _ hN₁ hN`. Establish `h1 : AlgComb p.nexp p.v₀ j (ν • ρ.theta ((Fm.ex x hx i).nch.twI w) j ((Fm.ex x hx i).nch.sd w) g P)`. Rewrite using `[e, mul_smul]`. Conclude with `(H s g P hd hl).smul hζ`. Conclude with `h1`.
+-/
 theorem serRef_of_reciprocity_ray_class : GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.GlobalArtinReciprocity → GlobalTheory.Published.RayClassFieldSt →
     GlobalTheory.IndefiniteRowSideFullHecke.RationalRayLevels.SeriesRat → _root_.GlobalTheory.BigOn.Exp.SerRefAlt := by
   intro hP hA hRF hS

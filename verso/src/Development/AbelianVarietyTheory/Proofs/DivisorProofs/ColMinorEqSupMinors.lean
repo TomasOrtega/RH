@@ -8,6 +8,11 @@ open scoped Classical
 
 namespace GlobalTheory.ConstLat
 
+/- English proof (translation)
+Introduce `K _ w n g M k hk`. Set `e : Fin k ≃ ↥(Finset.univ.filter fun l : Fin g => (l : ℕ) < k)` to `{ toFun := fun l => ⟨Fin.castLE hk l, by simp⟩ invFun := fun l => ⟨(l.1 : ℕ), (Finset.mem_filter.1 l.2).2⟩ left_inv := fun l => rfl right_inv := fun l => rfl }`. Unfold `colMinor minorAt`. Rewrite using `[← Equiv.iSup_comp (Equiv.arrowCongr e (Equiv.refl (Fin n)))]`. Use `iSup_congr fun τ => ?_` and prove the remaining obligations.
+
+Rewrite using `[← Matrix.det_submatrix_equiv_self e]`. Use `congr 2`.
+-/
 theorem colMinor_filter_lt_eq_iSup_minorAt : ∀ {K : Type} [Field K] (w : AbsoluteValue K ℝ) {n g : ℕ} (M : Matrix (Fin n) (Fin g) K) (k : ℕ) (hk : k ≤ g), colMinor w M (Finset.univ.filter fun l : Fin g => (l : ℕ) < k) = ⨆ τ : Fin k → Fin n, w (minorAt M k hk τ) := by
   intro K _ w n g M k hk
   let e : Fin k ≃ ↥(Finset.univ.filter fun l : Fin g => (l : ℕ) < k) :=

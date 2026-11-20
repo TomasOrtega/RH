@@ -7,6 +7,9 @@ import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.Chebotarev
 
 namespace GlobalTheory.Corev.CmTwoClosing
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.cmLattice_good_model_unramified (GlobalTheory.T.exists_idealClass_artinSymbol_of_globalArtin hA) GlobalTheory.T.chebotarev_degreeOne_valuationSubrings`.
+-/
 theorem cmGoodModel_of_globalArtinReciprocity (hA : GlobalTheory.Published.GlobalArtinReciprocity) : Formalism.L2.Th1.CM.CM2 :=
   GlobalTheory.T.cmLattice_good_model_unramified (GlobalTheory.T.exists_idealClass_artinSymbol_of_globalArtin hA) GlobalTheory.T.chebotarev_degreeOne_valuationSubrings
 

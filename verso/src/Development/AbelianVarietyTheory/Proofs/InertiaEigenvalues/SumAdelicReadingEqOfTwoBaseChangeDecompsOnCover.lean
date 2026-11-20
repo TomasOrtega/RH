@@ -14,6 +14,11 @@ noncomputable section
 
 namespace GlobalTheory.CoverBCRead
 
+/- English proof (translation)
+Use `letI : Algebra C.c'.F (CAt σ) := (C.σ₂.comp (C.d.eF : C.c'.F →+* C.d.c₂.F)).toAlgebra`. Establish `hA : AlgOver T.Q.c C.c' C.hle (CAt σ)`. Introduce `c0`. Use `show C.σ₂ (C.d.eF (incF T.Q.c C.c' C.hle c0)) = σ c0`. Conclude with `RingHom.congr_fun hσ c0`.
+
+Establish `h1` using `hBC (CAt σ) hA (FrPt.ext C.hle hA y)`. Rewrite `h1` using `[Formalism.L2.Pj.evR_sum_smul]`. Simplify using `only [GlobalTheory.FieldBCModel.evR_rulBC C.hle (hf _).1 hA, FrPt.res_ext] at h1`. Conclude with `h1`.
+-/
 theorem evR_sum_eq {D : D7} (T : CoreJ D) (j : ℕ) (σ : T.Q.c.F →+* ℂ) (C : Cover T j σ)
     (hσ : C.σ₂.comp C.inc = σ) (a : (D.host.E →+* ℂ) × ℕ → ℕ) (n : ℕ) {m m' : ℕ} (x : Fin m → C.c'.F)
     (f : Fin m → T.R j) (as : Fin m' → C.c'.F) (fs : Fin m' → T.R j)
@@ -32,6 +37,13 @@ theorem evR_sum_eq {D : D7} (T : CoreJ D) (j : ℕ) (σ : T.Q.c.F →+* ℂ) (C 
   simp only [GlobalTheory.FieldBCModel.evR_rulBC C.hle (hf _).1 hA, FrPt.res_ext] at h1
   exact h1
 
+/- English proof (translation)
+Introduce `D T j σ C hσ a n m m' x f as fs hf hBC`. Establish `key : (∑ b, C.σ₂ (C.d.eF (x b)) • rdU (T.U j σ) (f b) : FDSec (T.U j σ).X) = ∑ i, C.σ₂ (C.d.eF (as i)) • rdU (T.U j σ) (fs i)`. Use function extensionality and compare the values at `k z`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Distinguish the cases in `h : z ∈ ((T.U j σ).X k).dom`.
+
+Simplify using `only [rdU, LinearMap.coe_mk, AddHom.coe_mk, dif_pos h]`. Conclude with `evR_sum_eq T j σ C hσ a n x f as fs hf hBC ((T.U j σ).un k ⟨z, h⟩)`. Simplify using `[rdU, dif_neg h]`. Set `L : FDSec (T.U j σ).X →ₗ[ℂ] (GA D (T.V j σ) → ℂ)` to `(lieFac (T.Q.Dw j) (xiR D) a : ℂ) • adel (T.V j σ) (T.dict j σ) (muPin (T.V j σ) (T.dict j σ) (T.mu j σ) (T.cE j σ))`. Establish `e : ∀ g : T.R j, T.phiJ j σ a g = L (rdU (T.U j σ) g)` using `fun _ => rfl`.
+
+Simplify using `only [e, ← map_smul, ← map_sum, key]`.
+-/
 theorem phiJ_sum_eq_of_isBC : ∀ (D : D7) (T : CoreJ D) (j : ℕ) (σ : T.Q.c.F →+* ℂ) (C : Cover T j σ), C.σ₂.comp C.inc = σ → ∀ (a : (D.host.E →+* ℂ) × ℕ → ℕ) (n : ℕ) (m m' : ℕ) (x : Fin m → C.c'.F) (f : Fin m → T.R j) (as : Fin m' → C.c'.F) (fs : Fin m' → T.R j), (∀ b, f b ∈ sec (T.Q.Xo j) T.Q.c a n) → IsBC C.hle (∑ b, x b • GlobalTheory.FieldBC.rulBC C.hle (f b)) as fs → ∑ b, C.σ₂ (C.d.eF (x b)) • T.phiJ j σ a (f b) = ∑ i, C.σ₂ (C.d.eF (as i)) • T.phiJ j σ a (fs i) := by
   intro D T j σ C hσ a n m m' x f as fs hf hBC
   have key : (∑ b, C.σ₂ (C.d.eF (x b)) • rdU (T.U j σ) (f b) : FDSec (T.U j σ).X) =

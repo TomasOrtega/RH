@@ -22,9 +22,15 @@ namespace GlobalTheory.Discrepancy.CoeffPlaces
 
 variable {Z : Scheme.{0}} [IsIntegral Z]
 
+/- English proof (translation)
+Introduce `x hx h` and use `hx (by simpa using h.neg)`.
+-/
 theorem supp_neg_le' (D : CartierDiv Z) : (-D).supp ≤ D.supp := fun x hx h =>
   hx (by simpa using h.neg)
 
+/- English proof (translation)
+Proceed by induction on `r with`. Consider the case `zero => rw [zero_smul, CartierDiv.supp_eq_bot_iff.2 rfl]`. Conclude with `bot_le`. Consider the case `succ r ih => rw [succ_nsmul]`. Conclude with `(CartierDiv.supp_add_le _ _).trans (sup_le ih le_rfl)`.
+-/
 theorem supp_nsmul_le' (D : CartierDiv Z) (r : ℕ) : (r • D).supp ≤ D.supp := by
   induction r with
   | zero => rw [zero_smul, CartierDiv.supp_eq_bot_iff.2 rfl]; exact bot_le
@@ -32,21 +38,37 @@ theorem supp_nsmul_le' (D : CartierDiv Z) (r : ℕ) : (r • D).supp ≤ D.supp 
 
 variable [IsLocallyNoetherian Z]
 
+/- English proof (translation)
+Establish `h₀` using `CartierDiv.mult_add (0 : CartierDiv Z) 0 z`. Rewrite `h₀` using `[add_zero]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem mult_zero'' (z : Z) : (0 : CartierDiv Z).mult z = 0 := by
   have h₀ := CartierDiv.mult_add (0 : CartierDiv Z) 0 z
   rw [add_zero] at h₀
   omega
 
+/- English proof (translation)
+Proceed by induction on `r with`. Consider the case `zero => rw [zero_nsmul, mult_zero'']`. Simplify using the standard rewrite rules. Consider the case `succ r ih => rw [succ_nsmul, CartierDiv.mult_add, ih]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem mult_nsmul''' (E : CartierDiv Z) (r : ℕ) (z : Z) : (r • E).mult z = r * E.mult z := by
   induction r with
   | zero => rw [zero_nsmul, mult_zero'']; simp
   | succ r ih => rw [succ_nsmul, CartierDiv.mult_add, ih]; push_cast; ring
 
+/- English proof (translation)
+Establish `h` using `CartierDiv.mult_add (D - E) E z`. Rewrite `h` using `[sub_add_cancel]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem mult_sub'' (D E : CartierDiv Z) (z : Z) : (D - E).mult z = D.mult z - E.mult z := by
   have h := CartierDiv.mult_add (D - E) E z
   rw [sub_add_cancel] at h
   omega
 
+/- English proof (translation)
+Distinguish the cases in `hz : Order.coheight z = 1`. Take `⟨a, rfl⟩` from `hf`. Establish `ha : a ≠ 0` using `fun h => h0 (by rw [h, map_zero])`. Rewrite using `[ord_algebraMap hz ha]`. Conclude with `Nat.cast_nonneg _`.
+
+Conclude with `(Scheme.ord_eq_zero_of_coheight_neq_one hz _).ge`.
+-/
 theorem ord_nonneg_of_regAt' {f : Z.functionField} {z : Z} (hf : RegAt z f) (h0 : f ≠ 0) :
     0 ≤ Scheme.ord f z := by
   by_cases hz : Order.coheight z = 1
@@ -56,6 +78,9 @@ theorem ord_nonneg_of_regAt' {f : Z.functionField} {z : Z} (hf : RegAt z f) (h0 
     exact Nat.cast_nonneg _
   · exact (Scheme.ord_eq_zero_of_coheight_neq_one hz _).ge
 
+/- English proof (translation)
+Take `⟨a, rfl⟩` from `h`. Conclude with `⟨q.stalkMap y a, (functionFieldMap_algebraMap q y a).symm⟩`.
+-/
 theorem regAt_functionFieldMap' {X : Scheme.{0}} [IsIntegral X] (q : Z ⟶ X) [IsDominant q] (y : Z)
     {f : X.functionField} (h : RegAt (q y) f) : RegAt y (functionFieldMap q f) := by
   obtain ⟨a, rfl⟩ := h
@@ -65,6 +90,25 @@ end GlobalTheory.Discrepancy.CoeffPlaces
 
 open GlobalTheory.Discrepancy.CoeffPlaces in
 
+/- English proof (translation)
+Introduce `X _ _ p n hproj _ η m g f Y _ _ s _ K B y σ hη hm hres hfB hfy hσ1 hσm hlt E hE`. Use `haveI : IsProper p := GlobalTheory.CommonModel.isProper_of_isProjOver hproj`. Use `haveI : IsProper (s ≫ p) := GlobalTheory.CommonModel.isProper_of_isProjOver hres.proj`. Use `haveI : IsProper s := IsProper.of_comp s p`. Use `haveI := hres.smooth`.
+
+Take `⟨E', hE'E⟩` from `GlobalTheory.T.exists_primeDivisor_over_source_birational ℂ X Y p s hres.bir E`. Take `⟨y', rfl, hE'⟩` from `GlobalTheory.T.divisor_center_proper_lift ℂ X Y p s hres.bir inferInstance E' E hE'E _ hE`. Establish `hη' : EtaleKlt.ratPull p s n η ≠ 0` using `fun h0 => hη ((GlobalTheory.T.rationalTopFormPullback_bijective_birational ℂ X Y p s hres.bir n).1 (h0.trans (map_zero _).symm))`. Use `set F := pullCart s (CartierDiv.principal f) with hFdef`. Use `set G := pullCart s (CartierDiv.principal g) with hGdef`.
+
+Establish `hFsupp : F.supp ≤ B` using `fun v hv => hfB v ((GlobalTheory.T.cartierDivisorPullback_support_and_effective X Y s _).1 v hv)`. Establish `e : G - m • F - m • K = (G - m • K) + -(m • F)` using `by abel`. Establish `hsupp : (G - m • F - m • K).supp ≤ B`. Rewrite using `[e]`. Conclude with `(CartierDiv.supp_add_le _ _).trans (sup_le hres.supp ((supp_neg_le' _).trans ((supp_nsmul_le' _ _).trans hFsupp)))`.
+
+Establish `hFm (w : Y) : F.mult w = Scheme.ord ((fnPull s f : Y.functionFieldˣ) : Y.functionField) w` using `(isEqn_pullCart s (CartierDiv.isEqn_principal f (s w))).mult_eq`. Establish `hEqn : (G - m • F).IsEqn y' (fnPull s g / fnPull s f ^ m)` using `(isEqn_pullCart s (CartierDiv.isEqn_principal g (s y'))).sub ((isEqn_pullCart s (CartierDiv.isEqn_principal f (s y'))).nsmul m)`. Establish `hmul (w : Y) : (G - m • F - m • K).mult w = (G - m • K).mult w - m * F.mult w`. Rewrite using `[mult_sub'', mult_sub'', mult_sub'', mult_nsmul''', mult_nsmul''']`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hlt' : ∀ w, w ⤳ y' → (G - m • F - m • K).mult w < m`. Introduce `w hw`. Rewrite using `[hmul, hFm]`. Distinguish the cases in `hwσ : w = σ`. Substitute `hwσ` using the available equality.
+
+Rewrite using `[hσm, hσ1]`. Simplify using `only [mul_one, sub_self]`. Conclude with `hm` after adjusting the coercions. Establish `hsw : s w ⤳ s y'` using `hw.map s.continuous`. Establish `h0 : 0 ≤ Scheme.ord ((fnPull s f : Y.functionFieldˣ) : Y.functionField) w` using `ord_nonneg_of_regAt' (regAt_functionFieldMap' s w (regAt_of_specializes hsw hfy)) (Units.ne_zero _)`.
+
+Establish `h1` using `hlt w hwσ hsw`. Establish `h2 : (0 : ℤ) ≤ m * Scheme.ord ((fnPull s f : Y.functionFieldˣ) : Y.functionField) w` using `mul_nonneg (Int.natCast_nonneg m) h0`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hcrit` using `(GlobalTheory.T.klt_of_snc_coefficients ℂ Y (s ≫ p) n (EtaleKlt.ratPull p s n η) hη' K (G - m • F) m B hm hres.div hres.snc hsupp y' _ hEqn E' hE').1 hlt'`. Establish `hd : discrep E' (EtaleKlt.ratPull p s n η) m (fnPull s g / fnPull s f ^ m) = discrep E η m g + E.ord f`.
+
+Simplify using `only [discrep]`. Rewrite using `[GlobalTheory.T.form_order_birational_pullback ℂ X Y p s hres.bir E' E hE'E n η hη, div_eq_mul_inv (fnPull s g), E'.ord_mul, E'.ord_inv, E'.ord_pow, GlobalTheory.T.ord_functionField_pullback_primeDivisor_over ℂ X Y p s hres.bir E' E hE'E g, GlobalTheory.T.ord_functionField_pullba …`. Establish `hm' : (m : ℚ) ≠ 0` using `by exact_mod_cast hm.ne'`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← hd]`. Conclude with `hcrit`.
+-/
 theorem GlobalTheory.Discrepancy.neg_one_lt_discrep_add_ord_of_logRes : ∀ (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X] (p : X ⟶ Sp ℂ) (n : ℕ), IsProjOver p → topologicalKrullDim X = n → ∀ (η : RatForms p n) (m : ℕ) (g f : X.functionFieldˣ) (Y : Scheme.{0}) [IsIntegral Y] [IsLocallyNoetherian Y] (s : Y ⟶ X) [IsDominant s] (K : CartierDiv Y) (B : Closeds Y) (y : X) (σ : Y), η ≠ 0 → 0 < m → IsLogRes p n η m (CartierDiv.principal g) s K B → (∀ y', s y' ∈ (CartierDiv.principal f).supp → y' ∈ B) → RegAt y (f : X.functionField) → Scheme.ord ((fnPull s f : Y.functionFieldˣ) : Y.functionField) σ = 1 → (pullCart s (CartierDiv.principal g) - m • K).mult σ = m → (∀ v : Y, v ≠ σ → s v ⤳ y → (pullCart s (CartierDiv.principal g) - m • K).mult v < m) → ∀ E : DivOver p, E.Through y → -1 < discrep E η m g + E.ord f := by
   intro X _ _ p n hproj _ η m g f Y _ _ s _ K B y σ hη hm hres hfB hfy hσ1 hσm hlt E hE
   haveI : IsProper p := GlobalTheory.CommonModel.isProper_of_isProjOver hproj

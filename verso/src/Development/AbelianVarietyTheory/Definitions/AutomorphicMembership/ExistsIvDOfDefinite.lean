@@ -25,6 +25,15 @@ namespace InvFun
 
 variable {O : Type} [CommRing O] (φ : InvFun O) {X X₁ : Type} [AddCommGroup X] [Module O X] [AddCommGroup X₁] [Module O X₁]
 
+/- English proof (translation)
+Take `⟨h, hh⟩` from `Module.projective_lifting_property r s hr`. Take `⟨k, hk⟩` from `Module.projective_lifting_property s r hs`. Set `P : (Fin (n + m) → O) →ₗ[O] (Fin n → O)` to `LinearMap.funLeft O O (Fin.castAdd m)`. Set `Q : (Fin (n + m) → O) →ₗ[O] (Fin m → O)` to `LinearMap.funLeft O O (Fin.natAdd n)`. Establish `h1 : Function.Surjective (P + h ∘ₗ Q)` using `fun a => ⟨Fin.append a 0, by`.
+
+Establish `e : Q (Fin.append a 0) = 0` using `by ext i; simp [Q]`. Establish `e' : P (Fin.append a 0) = a` using `by ext i; simp [P]`. Simplify using `[e, e']⟩`. Establish `h2 : Function.Surjective (k ∘ₗ P + Q)` using `fun a => ⟨Fin.append 0 a, by`. Establish `e : Q (Fin.append 0 a) = a` using `by ext i; simp [Q]`.
+
+Establish `e' : P (Fin.append 0 a) = 0` using `by ext i; simp [P]`. Simplify using `[e, e']⟩`. Rewrite using `[← φ.inv _ _ _ h1, ← φ.inv _ _ _ h2]`. Establish `e : ∀ a, r ((P + h ∘ₗ Q) a) = s ((k ∘ₗ P + Q) a)` using `fun a => by`. Simplify using `only [LinearMap.add_apply, LinearMap.comp_apply, map_add]`.
+
+Rewrite using `[← LinearMap.comp_apply r h, hh, ← LinearMap.comp_apply s k, hk]`. Simplify using `only [e]`.
+-/
 theorem toFun_pull_eq {n m : ℕ} {r : (Fin n → O) →ₗ[O] X} {s : (Fin m → O) →ₗ[O] X} (hr : Function.Surjective r)
     (hs : Function.Surjective s) (B : X → X → ℝ) :
     φ.toFun n (fun a b => B (r a) (r b)) = φ.toFun m (fun a b => B (s a) (s b)) := by
@@ -52,22 +61,37 @@ def eval [Module.Finite O X] (B : X → X → ℝ) : ℝ :=
   φ.toFun (Module.Finite.exists_fin' O X).choose fun a b =>
     B ((Module.Finite.exists_fin' O X).choose_spec.choose a) ((Module.Finite.exists_fin' O X).choose_spec.choose b)
 
+/- English proof (translation)
+The claim follows from `φ.toFun_pull_eq (Module.Finite.exists_fin' O X).choose_spec.choose_spec hr B`.
+-/
 theorem eval_eq [Module.Finite O X] {n : ℕ} {r : (Fin n → O) →ₗ[O] X} (hr : Function.Surjective r) (B : X → X → ℝ) :
     φ.eval X B = φ.toFun n fun a b => B (r a) (r b) :=
   φ.toFun_pull_eq (Module.Finite.exists_fin' O X).choose_spec.choose_spec hr B
 
+/- English proof (translation)
+The claim follows from `φ.eval_eq (r := LinearMap.id) Function.surjective_id B`.
+-/
 theorem eval_pi (n : ℕ) (B : (Fin n → O) → (Fin n → O) → ℝ) : φ.eval (Fin n → O) B = φ.toFun n B :=
   φ.eval_eq (r := LinearMap.id) Function.surjective_id B
 
+/- English proof (translation)
+Take `⟨n, s, hs⟩` from `Module.Finite.exists_fin' O X`. Rewrite using `[φ.eval_eq hs, φ.eval_eq (r := r ∘ₗ s) (hr.comp hs)]`. Both sides reduce to the same expression.
+-/
 theorem eval_comp [Module.Finite O X] [Module.Finite O X₁] {r : X →ₗ[O] X₁} (hr : Function.Surjective r)
     (B : X₁ → X₁ → ℝ) : φ.eval X (fun a b => B (r a) (r b)) = φ.eval X₁ B := by
   obtain ⟨n, s, hs⟩ := Module.Finite.exists_fin' O X
   rw [φ.eval_eq hs, φ.eval_eq (r := r ∘ₗ s) (hr.comp hs)]
   rfl
 
+/- English proof (translation)
+The claim follows from `φ.eval_comp (r := e.toLinearMap) e.surjective B`.
+-/
 theorem eval_equiv [Module.Finite O X] [Module.Finite O X₁] (e : X ≃ₗ[O] X₁) (B : X₁ → X₁ → ℝ) :
     φ.eval X (fun a b => B (e a) (e b)) = φ.eval X₁ B := φ.eval_comp (r := e.toLinearMap) e.surjective B
 
+/- English proof (translation)
+Rewrite using `[φ.eval_eq (n := 0) (r := 0) (fun x => ⟨0, Subsingleton.elim _ _⟩), φ.zero]`.
+-/
 theorem eval_of_subsingleton [Module.Finite O X] [Subsingleton X] (B : X → X → ℝ) : φ.eval X B = 0 := by
   rw [φ.eval_eq (n := 0) (r := 0) (fun x => ⟨0, Subsingleton.elim _ _⟩), φ.zero]
 
@@ -84,6 +108,11 @@ def minVal : InvFun O where
     convert Real.sInf_empty
     exact Set.eq_empty_of_forall_notMem fun x ⟨⟨y, h⟩, h'⟩ => h' (by rw [← h, Subsingleton.elim y 0])
 
+/- English proof (translation)
+Rewrite using `[(minVal ℤ).eval_eq (n := 1) (r := LinearMap.proj 0) fun x => ⟨fun _ => x, rfl⟩]`. Use `IsLeast.csInf_eq ⟨⟨⟨fun _ => 1, by simp⟩, by simp⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `x ⟨⟨y, rfl⟩, h⟩`. Establish `h0 : y 0 ≠ 0` using `fun e => h (by simp [e])`. Establish `: (1 : ℝ) ≤ (y 0 : ℝ) * y 0` using `by exact_mod_cast (show 1 ≤ y 0 * y 0 from mul_self_pos.2 h0)`.
+
+Simplify using `only [LinearMap.proj_apply]`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem minVal_three : (minVal ℤ).eval ℤ (fun a b => 3 * a * b) = 3 := by
   rw [(minVal ℤ).eval_eq (n := 1) (r := LinearMap.proj 0) fun x => ⟨fun _ => x, rfl⟩]
   refine IsLeast.csInf_eq ⟨⟨⟨fun _ => 1, by simp⟩, by simp⟩, ?_⟩
@@ -100,6 +129,9 @@ def LinearOn [Module.Finite O X] {m : ℕ} (γ : Fin m → LinearMap.BilinForm �
 
 variable {φ} in
 
+/- English proof (translation)
+Rewrite using `[← φ.eval_comp hr, ← h c hc]`. Simplify using `only [hB]`.
+-/
 theorem LinearOn.eval_eq_sum [Module.Finite O X] [Module.Finite O X₁] {m : ℕ} {γ : Fin m → LinearMap.BilinForm ℤ X}
     (h : φ.LinearOn γ) {r : X →ₗ[O] X₁} (hr : Function.Surjective r) {B : X₁ → X₁ → ℝ} {c : Fin m → ℝ}
     (hc : ∀ i, 0 ≤ c i) (hB : ∀ a b, B (r a) (r b) = ∑ i, c i * (γ i a b : ℝ)) :
@@ -123,6 +155,9 @@ def IsStrictAt (γ : Fin m → LinearMap.BilinForm ℤ X) : Prop :=
 
 variable {H φ} in
 
+/- English proof (translation)
+Take `⟨δ, -, e⟩` from `(mem_levelForms_iff_smul hM).1 (γ i).2`. Conclude with `⟨ℓ δ, by rw [← h.1 i]; simp only [e, map_smul, smul_eq_mul]; push_cast; rfl⟩`.
+-/
 theorem IsPiece.exists_eq_mul {N M : ℕ} (hM : M ≠ 0) {γ : Fin m → levelForms H M X}
     {ℓ : LinearMap.BilinForm ℤ X →ₗ[ℤ] ℤ} (h : IsPiece H φ N (fun i => γ i) ℓ) (i : Fin m) :
     ∃ z : ℤ, N * φ.evalZ (γ i : LinearMap.BilinForm ℤ X) = M * z := by
@@ -138,23 +173,38 @@ variable {R : Type} [CommRing R]
 def OrdGe (h : R) (i : ℚ) (n : ℕ) (I₁ I₂ : Ideal R) : Prop :=
   Ideal.span {h ^ (i.den * n)} * (I₂ ^ i.num.toNat * I₁ ^ (-i.num).toNat) ≤ I₁ ^ i.num.toNat * I₂ ^ (-i.num).toNat
 
+/- English proof (translation)
+Simplify using `[OrdGe]`.
+-/
 theorem ordGe_zero (h : R) (n : ℕ) (I₁ I₂ : Ideal R) : OrdGe h 0 n I₁ I₂ := by simp [OrdGe]
 
+/- English proof (translation)
+Use `Ideal.map_mono (f := f) H` as an intermediate fact. Simplify `this` using `only [OrdGe, Ideal.map_mul, Ideal.map_pow, Ideal.map_span, Set.image_singleton, map_pow]`.
+-/
 theorem OrdGe.map {S : Type} [CommRing S] (f : R →+* S) {h : R} {i : ℚ} {n : ℕ} {I₁ I₂ : Ideal R}
     (H : OrdGe h i n I₁ I₂) : OrdGe (f h) i n (I₁.map f) (I₂.map f) := by
   have := Ideal.map_mono (f := f) H
   simpa only [OrdGe, Ideal.map_mul, Ideal.map_pow, Ideal.map_span, Set.image_singleton, map_pow] using this
 
+/- English proof (translation)
+Simplify using `only [OrdGe, Ideal.span_singleton_pow, Ideal.span_singleton_mul_span_singleton, Ideal.span_singleton_le_span_singleton]`.
+-/
 theorem ordGe_span_iff {h g₁ g₂ : R} {i : ℚ} {n : ℕ} : OrdGe h i n (Ideal.span {g₁}) (Ideal.span {g₂}) ↔
     g₁ ^ i.num.toNat * g₂ ^ (-i.num).toNat ∣ h ^ (i.den * n) * (g₂ ^ i.num.toNat * g₁ ^ (-i.num).toNat) := by
   simp only [OrdGe, Ideal.span_singleton_pow, Ideal.span_singleton_mul_span_singleton,
     Ideal.span_singleton_le_span_singleton]
 
+/- English proof (translation)
+Simplify using `only [ordGe_span_iff]`. Evaluate the decidable proposition.
+-/
 example : OrdGe (8 : ℤ) 3 1 (Ideal.span {2}) (Ideal.span {1}) ∧ ¬ OrdGe (8 : ℤ) 4 1 (Ideal.span {2}) (Ideal.span {1}) ∧
     OrdGe (8 : ℤ) 3 2 (Ideal.span {8}) (Ideal.span {2}) ∧ ¬ OrdGe (8 : ℤ) 4 2 (Ideal.span {8}) (Ideal.span {2}) := by
   simp only [ordGe_span_iff]
   decide
 
+/- English proof (translation)
+Simplify using `only [ordGe_span_iff]`. Evaluate the decidable proposition.
+-/
 example : OrdGe (2 : ℤ) (-1) 1 (Ideal.span {1}) (Ideal.span {2}) ∧
     ¬ OrdGe (1 : ℤ) (-1) 1 (Ideal.span {1}) (Ideal.span {2}) := by
   simp only [ordGe_span_iff]
@@ -170,6 +220,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
 instance finite_pelUnif {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {t : SAB H (Sp R)} (P : PELUnif I t) :
     Module.Finite (𝓞 E) P.D.toPre.X := Module.Finite.of_restrictScalars_finite ℤ _ _
 
+/- English proof (translation)
+The claim follows from `Z.cover ▸ isOpen_iUnion fun a => (Z.U a).1.isOpen`.
+-/
 theorem Mdl.isOpen_opn (Z : Mdl Y i₀) : IsOpen Z.opn := Z.cover ▸ isOpen_iUnion fun a => (Z.U a).1.isOpen
 
 def Mdl.opnO (Z : Mdl Y i₀) : Z.X.Opens := ⟨Z.opn, Z.isOpen_opn⟩
@@ -179,11 +232,17 @@ def Mdl.bd (Z : Mdl Y i₀) : Closeds Z.X := ⟨Z.opnᶜ, Z.isOpen_opn.isClosed_
 def idlAlong {X : Scheme.{0}} (I : X.IdealSheafData) {R : Type} [CommRing R] [IsLocalRing R] (ξ : Sp R ⟶ X) : Ideal R :=
   (FinalTheorems.stalkId I (ξ (closedPoint R))).map (Scheme.stalkClosedPointTo ξ).hom
 
+/- English proof (translation)
+Take `⟨U, hU, hx, -⟩` from `Opens.isBasis_iff_nbhd.1 X.isBasis_affineOpens (show x ∈ (⊤ : X.Opens) from trivial)`. Use `top_le_iff.1 (le_trans ?_ (le_iSup₂_of_le (⟨U, hU⟩ : X.affineOpens) hx le_rfl))` and prove the remaining obligations. Simplify using `[Ideal.map_top]`.
+-/
 theorem stalkId_top {X : Scheme.{0}} (x : X) : FinalTheorems.stalkId (⊤ : X.IdealSheafData) x = ⊤ := by
   obtain ⟨U, hU, hx, -⟩ := Opens.isBasis_iff_nbhd.1 X.isBasis_affineOpens (show x ∈ (⊤ : X.Opens) from trivial)
   refine top_le_iff.1 (le_trans ?_ (le_iSup₂_of_le (⟨U, hU⟩ : X.affineOpens) hx le_rfl))
   simp [Ideal.map_top]
 
+/- English proof (translation)
+Rewrite using `[idlAlong, stalkId_top, Ideal.map_top]`.
+-/
 theorem idlAlong_top {X : Scheme.{0}} {R : Type} [CommRing R] [IsLocalRing R] (ξ : Sp R ⟶ X) : idlAlong ⊤ ξ = ⊤ := by
   rw [idlAlong, stalkId_top, Ideal.map_top]
 
@@ -238,6 +297,9 @@ def FanFun.DivGe {i₁ : Idx H p} (φ : FanFun Y i₀ i₁) (Z : Mdl Y i₀) (F 
       OrdGe (((f ≫ Z.genO.ι).stalkMap x).hom ((Z.X.presheaf.germ U _ hx).hom
         (lam ((F.presheaf.map (homOfLE hU).op).hom et)))) i φ.n (idlAt φ.D₁.1 g x) (idlAt φ.D₂.1 g x)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun ⟨M, f, g, h, _⟩ => ⟨M, f, g, h⟩, fun ⟨M, f, g, h⟩ => ⟨M, f, g, h, fun _ _ _ _ _ _ => ordGe_zero _ _ _ _⟩⟩`.
+-/
 theorem FanFun.divGe_zero_iff {i₁ : Idx H p} (φ : FanFun Y i₀ i₁) (Z : Mdl Y i₀) (F : Z.X.Modules) (et : Γ(F, Z.genO)) :
     φ.DivGe Z F et 0 ↔ ∃ (M : Scheme.{0}) (f : M ⟶ Z.genO.toScheme) (g : M ⟶ φ.Z.X), IsCommonMod Z φ.Z f g :=
   ⟨fun ⟨M, f, g, h, _⟩ => ⟨M, f, g, h⟩, fun ⟨M, f, g, h⟩ => ⟨M, f, g, h, fun _ _ _ _ _ _ => ordGe_zero _ _ _ _⟩⟩
@@ -290,6 +352,9 @@ def toFanFun : FanFun Y i₀ i where
 
 def π : d.Z.X ⟶ (Y i).X := d.Z.π ≫ eqToHom (congrArg (fun j => (Y j).X) d.lvl)
 
+/- English proof (translation)
+Take `⟨Z, rfl, _⟩` from `d`. Simplify using `[π, Pre.opn]`.
+-/
 theorem π_mem_iff (x : d.Z.X) : d.π x ∈ Set.range (Y i).j ↔ x ∈ d.Z.opn := by
   obtain ⟨Z, rfl, _⟩ := d
   simp [π, Pre.opn]
@@ -310,6 +375,9 @@ variable {Z₀ : Mdl Y i₀} [IsIso Z₀.π] (d : PolData Y i₀ Z₀.i)
 
 def ρ : d.Z.genO.toScheme ⟶ Z₀.X := d.Z.genO.ι ≫ d.π ≫ inv Z₀.π
 
+/- English proof (translation)
+Simplify using `[ρ]`.
+-/
 @[reassoc] theorem ρ_π : d.ρ ≫ Z₀.π = d.Z.genO.ι ≫ d.π := by simp [ρ]
 
 instance quasiCompact_ρ : QuasiCompact d.ρ := by
@@ -317,6 +385,9 @@ instance quasiCompact_ρ : QuasiCompact d.ρ := by
   unfold ρ π
   infer_instance
 
+/- English proof (translation)
+Rewrite using `[← d.π_mem_iff, ← Scheme.Hom.comp_apply, ← d.ρ_π, Scheme.Hom.comp_apply]`. Both sides reduce to the same expression.
+-/
 theorem ρ_mem_opn_iff (x : d.Z.genO.toScheme) : d.ρ x ∈ Z₀.opn ↔ d.Z.genO.ι x ∈ d.Z.opn := by
   rw [← d.π_mem_iff, ← Scheme.Hom.comp_apply, ← d.ρ_π, Scheme.Hom.comp_apply]
   rfl
@@ -331,9 +402,15 @@ def jIdl : Z₀.Idl :=
     rw [idealQ, Scheme.IdealSheafData.support_comap] at hy
     exact d.D.2 _ hy ((d.ρ_mem_opn_iff y).1 h)⟩
 
+/- English proof (translation)
+The claim follows from `Scheme.IdealSheafData.le_map_iff_comap_le`.
+-/
 theorem le_jIdl_iff (I : Z₀.X.IdealSheafData) : I ≤ d.jIdl.1 ↔ I.comap d.ρ ≤ d.idealQ :=
   Scheme.IdealSheafData.le_map_iff_comap_le
 
+/- English proof (translation)
+Rewrite using `[← Scheme.IdealSheafData.map_comp, h]`. Both sides reduce to the same expression.
+-/
 theorem jIdl_eq_map_comap (ρQ : d.Z.genO.toScheme ⟶ Z₀.genO.toScheme) (h : ρQ ≫ Z₀.genO.ι = d.ρ) :
     d.jIdl.1 = (d.idealQ.map ρQ).map Z₀.genO.ι := by
   rw [← Scheme.IdealSheafData.map_comp, h]; rfl
@@ -351,12 +428,28 @@ def PolData.ofNoBoundary (Z : Mdl Y i₀) (h : ∀ σ, Z.ty σ = ∅) (hb : ∀ 
   D := Z.unitIdl
   chart x hx hx' := (hx' (hb x hx)).elim
 
+/- English proof (translation)
+The claim follows from `top_le_iff.1 ((PolData.le_jIdl_iff _ _).2 (by rw [Scheme.IdealSheafData.comap_top] exact (Scheme.IdealSheafData.comap_top _).ge))`.
+-/
 theorem PolData.jIdl_ofNoBoundary (Z : Mdl Y i₀) [IsIso Z.π] (h : ∀ σ, Z.ty σ = ∅) (hb : ∀ x ∈ Z.genO, x ∈ Z.opn)
     (φ : InvFun (𝓞 E)) : (PolData.ofNoBoundary Z h hb φ).jIdl.1 = ⊤ :=
   top_le_iff.1 ((PolData.le_jIdl_iff _ _).2 (by
     rw [Scheme.IdealSheafData.comap_top]
     exact (Scheme.IdealSheafData.comap_top _).ge))
 
+/- English proof (translation)
+Use `haveI := Z.i.c.fin`. Use `haveI : NumberField Z.i.c.F := {}`. Establish `hp' : (p : Z.i.c.F) ∈ (Z.i.c.V W).nonunits`. Rewrite `hW`, the goal using `[ValuationSubring.mem_nonunits_iff_or]`. Break down `hW with h | h` into its components or cases.
+
+Conclude with `absurd (by exact_mod_cast h) hp`. Conclude with `Or.inr fun h' => h (by simpa [Coeff.V] using h')`. Use `(isDiscreteValuationRing_and_finite_residueField_of_numberField (Z.i.c.V W) hp hp').1` as an intermediate fact. Establish `h1 : Z.s x ∈ (Sp (Z.i.c.V W)).basicOpen ((Scheme.ΓSpecIso (CommRingCat.of (Z.i.c.V W))).inv (p : Z.i.c.V W))`. Use `(Scheme.Hom.mem_preimage Z.s).1 ?_` and prove the remaining obligations.
+
+Rewrite using `[Scheme.preimage_basicOpen_top, map_natCast, map_natCast]`. Conclude with `hx`. Rewrite `h1` using `[basicOpen_eq_of_affine]`. Establish `h2 : (Z.s x).asIdeal = ⊥`. Assume the negation of the conclusion as `h`.
+
+Establish `hm` using `eq_maximalIdeal ((Z.s x).isPrime.isMaximal h)`. Use `h1 ?_` and prove the remaining obligations. Rewrite using `[hm, ← ValuationSubring.coe_mem_nonunits_iff]`. Simplify using `using hp'`. Rewrite using `[Scheme.Pullback.range_fst]`.
+
+Use `⟨closedPoint _, ?_⟩` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply, Z.π_s]`. Use `PrimeSpectrum.ext (h2 ▸ ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Ideal.comap (Z.i.c.V W).subtype (maximalIdeal _) = ⊥`. Rewrite using `[maximalIdeal_eq_bot]`.
+
+Conclude with `Ideal.comap_bot_of_injective _ Subtype.val_injective`.
+-/
 theorem Mdl.mem_range_of_mem_genO (hp : p ≠ 0) (hW : (p : ℂ) ∈ W.nonunits) (Z : Mdl Y i₀) {x : Z.X} (hx : x ∈ Z.genO) :
     Z.π x ∈ Set.range (genι (Y Z.i)) := by
   haveI := Z.i.c.fin
@@ -387,6 +480,9 @@ theorem Mdl.mem_range_of_mem_genO (hp : p ≠ 0) (hW : (p : ℂ) ∈ W.nonunits)
   rw [maximalIdeal_eq_bot]
   exact Ideal.comap_bot_of_injective _ Subtype.val_injective
 
+/- English proof (translation)
+Introduce `x hx` and use `by obtain ⟨y, hy⟩ := Z.mem_range_of_mem_genO hp hW hx obtain ⟨z, rfl⟩ := surjective_jQ_of_dim_eq_zero (Y Z.i) h y exact ⟨z, (Scheme.Hom.comp_apply _ _ z).trans hy⟩`.
+-/
 theorem Mdl.mem_opn_of_dim_eq_zero (hp : p ≠ 0) (hW : (p : ℂ) ∈ W.nonunits) (h : Dw.dim = 0) (Z : Mdl Y i₀) :
     ∀ x ∈ Z.genO, x ∈ Z.opn := fun x hx => by
   obtain ⟨y, hy⟩ := Z.mem_range_of_mem_genO hp hW hx
@@ -407,18 +503,27 @@ def At.jIdl (ct : At S κ p) (b : Option ℕ) (d : ct.IvD b) : ct.Idl (ct.B.X b)
   haveI := ct.B.iso b
   d.jIdl
 
+/- English proof (translation)
+The claim follows from `h.eval_eq_sum hr hc hB`.
+-/
 theorem At.phiAt_eq_sum (ct : At S κ p) (φ : ct.PL) {Z : ct.Mdl} (y : ct.Pt Z) {X : Type} [AddCommGroup X]
     [Module (𝓞 D.host.E) X] [Module.Finite (𝓞 D.host.E) X] {m : ℕ} {γ : Fin m → LinearMap.BilinForm ℤ X}
     (h : φ.φ.LinearOn γ) {r : X →ₗ[𝓞 D.host.E] ct.Ylat y} (hr : Function.Surjective r) {c : Fin m → ℝ}
     (hc : ∀ i, 0 ≤ c i) (hB : ∀ a b, (ct.dat y).beta (r a) (r b) = ∑ i, c i * (γ i a b : ℝ)) :
     ct.phiAt φ y = ∑ i, c i * φ.φ.evalZ (γ i) := h.eval_eq_sum hr hc hB
 
+/- English proof (translation)
+Rewrite using `[At.phiAt, At.phiAt, ← φ.φ.eval_equiv e]`. Simplify using `only [h]`.
+-/
 theorem At.phiAt_congr (ct : At S κ p) (φ : ct.PL) {Z Z' : ct.Mdl} (y : ct.Pt Z) (y' : ct.Pt Z')
     (e : ct.Ylat y ≃ₗ[𝓞 D.host.E] ct.Ylat y') (h : ∀ a b, (ct.dat y').beta (e a) (e b) = (ct.dat y).beta a b) :
     ct.phiAt φ y = ct.phiAt φ y' := by
   rw [At.phiAt, At.phiAt, ← φ.φ.eval_equiv e]
   simp only [h]
 
+/- English proof (translation)
+The claim follows from `haveI := ct.B.iso b ⟨_, PolData.jIdl_ofNoBoundary _ (ct.B.ty b) (Mdl.mem_opn_of_dim_eq_zero ct.hp.ne_zero ct.hW (by rcases h with h | h <;> simp [Datum.dim, h]) _) (InvFun.minVal _)⟩`.
+-/
 theorem At.exists_IvD_of_definite (ct : At S κ p) (h : S.Dw.p = 0 ∨ S.Dw.q = 0) (b : Option ℕ) :
     ∃ d : ct.IvD b, (ct.jIdl b d).1 = ⊤ :=
   haveI := ct.B.iso b

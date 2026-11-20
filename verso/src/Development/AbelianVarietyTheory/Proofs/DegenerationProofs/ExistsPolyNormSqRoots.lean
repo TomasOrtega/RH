@@ -15,6 +15,23 @@ open GlobalTheory.SS
 namespace GlobalTheory.SS
 open Polynomial
 
+/- English proof (translation)
+Set `m : N →+ N` to `nsmulAddMonoidHom l`. Establish `h1 : Nat.card (N ⧸ m.range) = Nat.card m.ker`. Establish `a` using `AddSubgroup.card_eq_card_quotient_mul_card_addSubgroup m.range`. Establish `b` using `AddSubgroup.card_eq_card_quotient_mul_card_addSubgroup m.ker`. Rewrite `b` using `[Nat.card_congr (QuotientAddGroup.quotientKerEquivRange m).toEquiv, _root_.mul_comm]`.
+
+Conclude with `Nat.eq_of_mul_eq_mul_right Nat.card_pos (a.symm.trans b)`. Establish `h2 : Nat.card (N ⧸ m.range) ≤ Nat.card (Fin c)`. Rewrite using `[h1, Nat.card_fin]`. Conclude with `hc`. Choose the witnesses or unpack the hypotheses as in `⟨e⟩ : Nonempty ((N ⧸ m.range) ↪ Fin c) := by`.
+
+Use `Fintype.ofFinite (N ⧸ m.range)` as an intermediate fact. Apply `Function.Embedding.nonempty_of_card_le` to reduce the goal to its premises. Simplify using `using h2`. Set `v : Fin c → N` to `fun i => (Function.invFun e i).out`. Set `π : (Fin c → ℤ) →ₗ[ℤ] N` to `Fintype.linearCombination ℤ v`.
+
+Establish `hv : ∀ i, v i ∈ LinearMap.range π` using `fun i => ⟨Pi.single i 1, by simp [π]⟩`. Establish `key : ∀ j : ℕ, ∀ x : N, ∃ y : N, x - l ^ j • y ∈ LinearMap.range π`. Introduce `j`. Proceed by induction on `j with`. Consider the case `zero => exact fun x => ⟨x, by simp⟩`.
+
+Consider the case `succ j ih`. Introduce `x`. Take `⟨y, hy⟩` from `ih x`. Establish `h3 : (QuotientAddGroup.mk (v (e y)) : N ⧸ m.range) = QuotientAddGroup.mk y`. Simplify using `only [v, QuotientAddGroup.out_eq']`.
+
+Conclude with `Function.leftInverse_invFun e.injective _`. Take `⟨z, hz⟩` from `QuotientAddGroup.eq.1 h3`. Establish `hz' : l • z = - v (e y) + y` using `hz`. Use `⟨z, ?_⟩` and prove the remaining obligations. Establish `: x - l ^ (j + 1) • z = (x - l ^ j • y) + l ^ j • v (e y)`.
+
+Rewrite using `[pow_succ, mul_smul, hz', smul_add, smul_neg]`. Normalize the expressions using the abelian group laws. Rewrite using `[this]`. Conclude with `add_mem hy (nsmul_mem (hv _) _)`. Use `⟨π, fun x => ?_⟩` and prove the remaining obligations.
+
+Take `⟨y, hy⟩` from `key n x`. Rewrite `hy` using `[hn, sub_zero]`. Then use the resulting hypothesis.
+-/
 theorem exists_surj_of_torsion {N : Type} [AddCommGroup N] [Finite N] (l n c : ℕ) (hn : ∀ x : N, l ^ n • x = 0)
     (hc : Nat.card {x : N // l • x = 0} ≤ c) :
     ∃ π : (Fin c → ℤ) →ₗ[ℤ] N, Function.Surjective π := by
@@ -55,6 +72,11 @@ theorem exists_surj_of_torsion {N : Type} [AddCommGroup N] [Finite N] (l n c : �
   obtain ⟨y, hy⟩ := key n x
   rwa [hn, sub_zero] at hy
 
+/- English proof (translation)
+Proceed by induction on `p using Polynomial.induction_on with`. Consider the case `C a => intro x`. Rewrite using `[aeval_C, aeval_C, Module.algebraMap_end_apply, Module.algebraMap_end_apply, map_smul]`. Consider the case `add p q hp hq => intro x`. Simplify using `[hp, hq]`.
+
+Consider the case `monomial n a ih`. Introduce `x`. Rewrite using `[pow_succ, ← _root_.mul_assoc, map_mul, map_mul (aeval _) _ X, aeval_X, aeval_X, Module.End.mul_apply, Module.End.mul_apply, h, ih]`.
+-/
 theorem aeval_intertwine {M N : Type} [AddCommGroup M] [AddCommGroup N] (π : M →ₗ[ℤ] N) (S : Module.End ℤ M)
     (T : Module.End ℤ N) (h : ∀ x, T (π x) = π (S x)) (p : ℤ[X]) : ∀ x, aeval T p (π x) = π (aeval S p x) := by
   induction p using Polynomial.induction_on with
@@ -65,6 +87,11 @@ theorem aeval_intertwine {M N : Type} [AddCommGroup M] [AddCommGroup N] (π : M 
     rw [pow_succ, ← _root_.mul_assoc, map_mul, map_mul (aeval _) _ X, aeval_X, aeval_X, Module.End.mul_apply,
       Module.End.mul_apply, h, ih]
 
+/- English proof (translation)
+Take `⟨S, hS⟩` from `Module.projective_lifting_property π (T ∘ₗ π) hπ`. Establish `h` using `aeval_intertwine π S T fun x => (LinearMap.congr_fun hS x).symm`. Use `⟨S.charpoly, S.charpoly_monic, by simp [LinearMap.charpoly_natDegree], ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Take `⟨y, rfl⟩` from `hπ x`.
+
+Rewrite using `[h, LinearMap.aeval_self_charpoly]`. Simplify using the standard rewrite rules.
+-/
 theorem exists_monic_of_surj {N : Type} [AddCommGroup N] (c : ℕ) (π : (Fin c → ℤ) →ₗ[ℤ] N)
     (hπ : Function.Surjective π) (T : Module.End ℤ N) :
     ∃ χ : ℤ[X], χ.Monic ∧ χ.natDegree = c ∧ aeval T χ = 0 := by
@@ -76,6 +103,15 @@ theorem exists_monic_of_surj {N : Type} [AddCommGroup N] (c : ℕ) (π : (Fin c 
   rw [h, LinearMap.aeval_self_charpoly]
   simp
 
+/- English proof (translation)
+Use `⟨Nat.card {x : M // l ^ 1 • x = 0}, fun n => ?_⟩` and prove the remaining obligations. Set `N : Submodule ℤ M` to `LinearMap.ker (l ^ n • LinearMap.id)`. Establish `hN : ∀ x : M, x ∈ N ↔ l ^ n • x = 0` using `fun x => Iff.rfl`. Establish `: Finite N`. Use `hf n` as an intermediate fact.
+
+Conclude with `Finite.of_equiv _ (Equiv.subtypeEquivRight fun x => (hN x).symm)`. Establish `hT : ∀ x ∈ N, T x ∈ N` using `fun x hx => by`. Rewrite `hx`, the goal using `[hN]`. Rewrite using `[← map_nsmul, hx, map_zero]`. Use `hf 1` as an intermediate fact.
+
+Take `⟨π, hπ⟩` from `exists_surj_of_torsion (N := N) l n (Nat.card {x : M // l ^ 1 • x = 0}) (fun x => Subtype.ext ((hN _).1 x.2)) (Nat.card_le_card_of_injective (fun x => (⟨x.1.1, by rw [pow_one]; exact congrArg Subtype.val x.2⟩ : {x : M // l ^ 1 • x = 0})) fun x y h => Subtype.ext (Subtype.ext (by …`. Take `⟨χ, h1, h2, h3⟩` from `exists_monic_of_surj _ π hπ (T.restrict hT)`. Use `⟨χ, h1, h2, fun x hx => ?_⟩` and prove the remaining obligations. Establish `h` using `aeval_intertwine N.subtype (T.restrict hT) T (fun _ => rfl) χ ⟨x, (hN x).2 hx⟩`. Rewrite `h` using `[h3]`.
+
+Conclude with `h`.
+-/
 theorem exists_monic_torsion {M : Type} [AddCommGroup M] (l : ℕ) (hf : ∀ n : ℕ, Finite {x : M // l ^ n • x = 0})
     (T : Module.End ℤ M) : ∃ r : ℕ, ∀ n : ℕ, ∃ χ : ℤ[X], χ.Monic ∧ χ.natDegree = r ∧
       ∀ x : M, l ^ n • x = 0 → aeval T χ x = 0 := by
@@ -106,6 +142,11 @@ noncomputable def ptEnd (F : End B) (hF : IsMonHom (show B ⟶ B from F)) (Z : O
     Module.End ℤ (Additive (Z ⟶ B)) :=
   (MonoidHom.toAdditive (IsMonHom.monoidHom (show B ⟶ B from F) Z)).toIntLinearMap
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => rw [pow_zero, pow_zero]`. Conclude with `congrArg Additive.ofMul (Category.comp_id x).symm`. Consider the case `succ n ih`. Rewrite using `[pow_succ', pow_succ', Module.End.mul_apply, ih]`.
+
+Conclude with `congrArg Additive.ofMul (Category.assoc x (show B ⟶ B from F ^ n) (show B ⟶ B from F))`.
+-/
 theorem ptEnd_pow (F : End B) (hF : IsMonHom (show B ⟶ B from F)) {Z : Over S} (x : Z ⟶ B) (n : ℕ) :
     (ptEnd F hF Z ^ n) (Additive.ofMul x) = Additive.ofMul (x ≫ (show B ⟶ B from F ^ n)) := by
   induction n with
@@ -114,6 +155,9 @@ theorem ptEnd_pow (F : End B) (hF : IsMonHom (show B ⟶ B from F)) {Z : Over S}
     rw [pow_succ', pow_succ', Module.End.mul_apply, ih]
     exact congrArg Additive.ofMul (Category.assoc x (show B ⟶ B from F ^ n) (show B ⟶ B from F))
 
+/- English proof (translation)
+Rewrite using `[aeval_eq_sum_range, LinearMap.sum_apply]`. Express the relevant statement in the definitionally equal form `_ = Additive.ofMul (∏ n ∈ Finset.range (P.natDegree + 1), (x ≫ (show B ⟶ B from F ^ n)) ^ P.coeff n)`. Rewrite using `[ofMul_prod]`. Use `Finset.sum_congr rfl fun n _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply, ptEnd_pow, ofMul_zpow]`.
+-/
 theorem aeval_ptEnd (F : End B) (hF : IsMonHom (show B ⟶ B from F)) {Z : Over S} (x : Z ⟶ B) (P : ℤ[X]) :
     aeval (ptEnd F hF Z) P (Additive.ofMul x) = Additive.ofMul (polyPt F P x) := by
   rw [aeval_eq_sum_range, LinearMap.sum_apply]
@@ -144,6 +188,21 @@ noncomputable def homSub (B : Over S) [GrpObj B] [IsCommMonObj B] : Submodule �
 
 end
 
+/- English proof (translation)
+Introduce `k _ _ B _ hB L hL F q hF hq`. Use `hB.comm` as an intermediate fact. Choose the witnesses or unpack the hypotheses as in `⟨l, hl2, hl⟩ : ∃ l : ℕ, 2 ≤ l ∧ (l : k) ≠ 0 := by`. Distinguish the cases in `h : ((2 : ℕ) : k) = 0`. Use `⟨2 + 1, by norm_num, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Nat.cast_add, h]`. Simplify using the standard rewrite rules. Conclude with `⟨2, le_rfl, h⟩`. Establish `hD` using `fun n : ℕ => GlobalTheory.T.abelianVariety_torsion_finite_endomorphism_divisible k B hB (l ^ n) (by rw [Nat.cast_pow]; exact pow_ne_zero _ hl)`. Take `⟨Q, Q1, Q2, Q3, Q4⟩` from `GlobalTheory.T.exists_positiveDefinite_quadraticForm_endomorphisms k B hB L hL`.
+
+Take `⟨r, hr⟩` from `exists_monic_torsion (M := Additive (𝟙_ (Over (Sp k)) ⟶ B)) l (fun n => (hD n).1) (ptEnd F hF _)`. Establish `hT : ∀ f ∈ homSub B, ptEnd F hF B f ∈ homSub B` using `fun f hf => by`. Express the relevant statement in the definitionally equal form `IsMonHom (Additive.toMul f) at hf`. Express the relevant statement in the definitionally equal form `IsMonHom (Additive.toMul f ≫ (show B ⟶ B from F))`. Use `infer_instance`.
+
+Set `e : homSub B` to `⟨Additive.ofMul (𝟙 B), inferInstanceAs (IsMonHom (𝟙 B))⟩`. Set `φ : Module.End ℤ (homSub B)` to `(ptEnd F hF B).restrict hT`. Establish `hev : ∀ (x : 𝟙_ (Over (Sp k)) ⟶ B) (p : ℤ[X]), aeval (ptEnd F hF _) p (Additive.ofMul x) = Additive.ofMul (x ≫ Additive.toMul (aeval φ p e).1)` using `fun x p => by`. Establish `h` using `aeval_intertwine (evalPt x ∘ₗ (homSub B).subtype) φ (ptEnd F hF _) (fun f => congrArg Additive.ofMul (Category.assoc x (Additive.toMul f.1) (show B ⟶ B from F))) p e`. Establish `h' : (evalPt x ∘ₗ (homSub B).subtype) e = Additive.ofMul x` using `congrArg Additive.ofMul (Category.comp_id x)`.
+
+Rewrite `h` using `[h']`. Conclude with `h`. Take `⟨P, hP, h0, hβ⟩` from `GlobalTheory.T.similitude_definite_form_isAlgebraic_on_vector (homSub B) (fun f => Q (Additive.toMul f.1)) φ e q l r hl2 (fun x y => by`. Use `Q1 (Additive.toMul x.1) (Additive.toMul y.1)` as an intermediate fact. Rewrite using `[sub_eq_add_neg]`.
+
+Conclude with `this)`. Use the proof step `(fun x => Q2 _) (fun x hx => Subtype.ext (Q3 _ x.2 hx)) (fun x => Q4 _ q hq _)`. Use the proof step `(fun n => by`. Take `⟨χ, h1, h2, h3⟩` from `hr n`. Take `⟨g, hg, hg'⟩` from `(hD n).2 (Additive.toMul (aeval φ χ e).1) (aeval φ χ e).2 fun x hx => (hev x χ).symm.trans (h3 (Additive.ofMul x) hx)`.
+
+Conclude with `⟨χ, ⟨Additive.ofMul g, hg⟩, h1, h2, Subtype.ext hg'⟩)`. Use `⟨P, hP, hβ, fun x => ?_⟩` and prove the remaining obligations. Establish `h` using `(aeval_ptEnd F hF x P).symm.trans (hev x P)`. Rewrite `h` using `[h0]`. Conclude with `h.trans (MonObj.comp_one x)`.
+-/
 theorem exists_poly_normSq_roots : ∀ (k : Type) [Field k] [IsAlgClosed k] (B : Over (Sp k)) [GrpObj B], IsAbelianScheme B → ∀ (L : LB B.left), AmpleCub B L → ∀ (F : End B) (q : ℕ), IsMonHom (show B ⟶ B from F) → PullPow (show B ⟶ B from F).left L q → ∃ P : Polynomial ℤ, P ≠ 0 ∧ (∀ β : ℂ, Polynomial.aeval β P = 0 → Complex.normSq β = q) ∧ ∀ x : (𝟙_ (Over (Sp k)) ⟶ B), polyPt F P x = 1 := by
   intro k _ _ B _ hB L hL F q hF hq
   have := hB.comm

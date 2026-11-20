@@ -11,6 +11,9 @@ namespace GlobalTheory.LKTrip
 
 namespace LevelExists
 
+/- English proof (translation)
+Use `haveI : CompleteSpace (v.adicCompletionIntegers ℚ) := (Valued.isClosed_valuationSubring (v.adicCompletion ℚ)).completeSpace_coe`. Use `haveI : Finite (ℤ ⧸ v.asIdeal) := v.asIdeal.finiteQuotientOfFreeOfNeBot v.ne_bot`. Use `haveI : Finite (IsLocalRing.ResidueField (v.adicCompletionIntegers ℚ)) := Finite.of_equiv _ (GroundTheory.Global.residueFieldEquiv (K := ℚ) v).toEquiv`. Establish `hc : CompactSpace (Valued.integer (v.adicCompletion ℚ))` using `Valued.integer.compactSpace_iff_completeSpace_and_isDiscreteValuationRing_and_finite_residueField.mpr ⟨inferInstanceAs (CompleteSpace (v.adicCompletionIntegers ℚ)), inferInstanceAs (IsDiscreteValuationRing (v.adicCompletionIntegers ℚ)), inferInstanceAs (Finite (IsLocalRing.Residu …`. Conclude with `isCompact_iff_compactSpace.mpr hc`.
+-/
 theorem isCompact_intCompl (v : HeightOneSpectrum ℤ) :
     IsCompact (v.adicCompletionIntegers ℚ : Set (v.adicCompletion ℚ)) := by
   haveI : CompleteSpace (v.adicCompletionIntegers ℚ) :=
@@ -35,12 +38,22 @@ def intAfP (p : ℕ) : Subring (AfP p) where
   zero_mem' := by intro v; exact zero_mem _
   neg_mem' := by intro a ha v; exact neg_mem (ha v)
 
+/- English proof (translation)
+Conclude with `RestrictedProduct.isOpen_forall_mem (R := fun w : AwayP p => w.1.adicCompletion ℚ) (A := fun w => (w.1.adicCompletionIntegers ℚ : Set (w.1.adicCompletion ℚ))) (fun w => Valued.isOpen_valuationSubring (w.1.adicCompletion ℚ))`.
+-/
 theorem isOpen_intAfP (p : ℕ) : IsOpen (intAfP p : Set (AfP p)) := by
   exact RestrictedProduct.isOpen_forall_mem
     (R := fun w : AwayP p => w.1.adicCompletion ℚ)
     (A := fun w => (w.1.adicCompletionIntegers ℚ : Set (w.1.adicCompletion ℚ)))
     (fun w => Valued.isOpen_valuationSubring (w.1.adicCompletion ℚ))
 
+/- English proof (translation)
+Use `haveI : ∀ w : AwayP p, CompactSpace (w.1.adicCompletionIntegers ℚ) := fun w => isCompact_iff_compactSpace.mp (isCompact_intCompl w.1)`. Set `e` to `RestrictedProduct.homeoTop (R := fun w : AwayP p => w.1.adicCompletion ℚ) (A := fun w => (w.1.adicCompletionIntegers ℚ : Set (w.1.adicCompletion ℚ)))`. Set `f : (Π w : AwayP p, w.1.adicCompletionIntegers ℚ) → AfP p` to `fun g => RestrictedProduct.inclusion (fun w : AwayP p => w.1.adicCompletion ℚ) (fun w => (w.1.adicCompletionIntegers ℚ : Set (w.1.adicCompletion ℚ))) le_top (e g)`. Establish `hf : Continuous f` using `(RestrictedProduct.continuous_inclusion le_top).comp e.continuous`. Establish `hset : (intAfP p : Set (AfP p)) = Set.range f`.
+
+Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Conclude with `⟨fun w => ⟨(rp x).1 w, hx w⟩, rfl⟩`. Introduce and unpack `⟨g, rfl⟩ w`.
+
+Conclude with `(g w).2`. Rewrite using `[hset]`. Conclude with `isCompact_range hf`.
+-/
 theorem isCompact_intAfP (p : ℕ) : IsCompact (intAfP p : Set (AfP p)) := by
   haveI : ∀ w : AwayP p, CompactSpace (w.1.adicCompletionIntegers ℚ) :=
     fun w => isCompact_iff_compactSpace.mp (isCompact_intCompl w.1)
@@ -119,6 +132,21 @@ def tensorIntAlg (A : Type) [Ring A] [Algebra ℚ A] [Module.Finite ℚ A] (O : 
     simp only [Set.mem_setOf_eq, map_neg, Matrix.neg_apply]
     exact neg_mem (hx i j)
 
+/- English proof (translation)
+Use `letI : TopologicalSpace (R ⊗[ℚ] A) := moduleTopology R (R ⊗[ℚ] A)`. Use `haveI : IsModuleTopology R (R ⊗[ℚ] A) := ⟨rfl⟩`. Use `haveI : IsTopologicalRing (R ⊗[ℚ] A) := IsModuleTopology.isTopologicalRing R (R ⊗[ℚ] A)`. Use `set bS := Algebra.TensorProduct.basis R (Module.finBasis ℚ A) with hbS`. Use `set L := mulMatAlg R A with hL`.
+
+Establish `hLc : Continuous L` using `IsModuleTopology.continuous_of_linearMap L.toLinearMap`. Use `set box : Set (Matrix (Fin (Module.finrank ℚ A)) (Fin (Module.finrank ℚ A)) R) := Set.univ.pi fun _ ↦ Set.univ.pi fun _ ↦ (O : Set R) with hbox`. Establish `hset : (tensorIntAlg R A O : Set (R ⊗[ℚ] A)) = L ⁻¹' box`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h i _ j _`. Conclude with `h i j`. Introduce `h i j`. Conclude with `h i trivial j trivial`. Establish `hopen : IsOpen (tensorIntAlg R A O : Set (R ⊗[ℚ] A))`.
+
+Rewrite using `[hset]`. Conclude with `hLc.isOpen_preimage _ (isOpen_set_pi Set.finite_univ fun _ _ ↦ isOpen_set_pi Set.finite_univ fun _ _ ↦ hOo)`. Use `⟨hopen, ?_⟩` and prove the remaining obligations. Establish `hboxc : IsCompact box` using `isCompact_univ_pi fun _ ↦ isCompact_univ_pi fun _ ↦ hOc`. Use `set w := bS.equivFun 1`.
+
+Set `ψ : Matrix (Fin (Module.finrank ℚ A)) (Fin (Module.finrank ℚ A)) R → R ⊗[ℚ] A` to `fun M ↦ bS.equivFun.symm (M *ᵥ w)`. Establish `hψ : Continuous ψ` using `(IsModuleTopology.continuous_of_linearMap bS.equivFun.symm.toLinearMap).comp (continuous_id.matrix_mulVec continuous_const)`. Establish `e : ∀ f : Module.End R (R ⊗[ℚ] A), LinearMap.toMatrixAlgEquiv bS f = LinearMap.toMatrix bS bS f` using `fun f ↦ by ext i j; simp [LinearMap.toMatrixAlgEquiv_apply, LinearMap.toMatrix_apply]`. Establish `hrec : ∀ x, ψ (L x) = x`. Introduce `x`.
+
+Use `show bS.equivFun.symm (LinearMap.toMatrixAlgEquiv bS (Algebra.lmul R (R ⊗[ℚ] A) x) *ᵥ bS.equivFun 1) = x`. Rewrite using `[e, Module.Basis.equivFun_apply, LinearMap.toMatrix_mulVec_repr, ← Module.Basis.equivFun_apply, LinearEquiv.symm_apply_apply]`. Simplify using the standard rewrite rules. Establish `hsub : (tensorIntAlg R A O : Set (R ⊗[ℚ] A)) ⊆ ψ '' box`. Introduce `x hx`.
+
+Use `⟨L x, by rw [hset] at hx; exact hx, hrec x⟩` and prove the remaining obligations. Establish `hcl : IsClosed (tensorIntAlg R A O : Set (R ⊗[ℚ] A))` using `AddSubgroup.isClosed_of_isOpen (tensorIntAlg R A O).toAddSubgroup hopen`. Conclude with `(hboxc.image hψ).of_isClosed_subset hcl hsub`.
+-/
 theorem isOpen_isCompact_tensorIntAlg (A : Type) [Ring A] [Algebra ℚ A] [Module.Finite ℚ A] (O : Subring R)
     (hOo : IsOpen (O : Set R)) (hOc : IsCompact (O : Set R)) :
     @IsOpen _ (moduleTopology R (R ⊗[ℚ] A)) (tensorIntAlg R A O : Set (R ⊗[ℚ] A)) ∧
@@ -162,6 +190,9 @@ theorem isOpen_isCompact_tensorIntAlg (A : Type) [Ring A] [Algebra ℚ A] [Modul
     AddSubgroup.isClosed_of_isOpen (tensorIntAlg R A O).toAddSubgroup hopen
   exact (hboxc.image hψ).of_isClosed_subset hcl hsub
 
+/- English proof (translation)
+Use `letI : TopologicalSpace (R ⊗[ℚ] A) := moduleTopology R (R ⊗[ℚ] A)`. Use `haveI : IsModuleTopology R (R ⊗[ℚ] A) := ⟨rfl⟩`. Use `set bS := Algebra.TensorProduct.basis R (Module.finBasis ℚ A)`. Conclude with `T2Space.of_injective_continuous bS.equivFun.injective (IsModuleTopology.continuous_of_linearMap bS.equivFun.toLinearMap)`.
+-/
 theorem t2Space_tensor_rat_finite_algebra_moduleTopology [T2Space R] (A : Type) [Ring A] [Algebra ℚ A] [Module.Finite ℚ A] :
     @T2Space (R ⊗[ℚ] A) (moduleTopology R (R ⊗[ℚ] A)) := by
   letI : TopologicalSpace (R ⊗[ℚ] A) := moduleTopology R (R ⊗[ℚ] A)
@@ -198,6 +229,23 @@ def stdLevel (G : HTGroup p) (O : Subring (AfP p)) (P : Subring (AfP p ⊗[ℚ] 
     rintro x ⟨⟨hx1, hx2⟩, hx3, hx4⟩
     exact ⟨⟨hx2, hx1⟩, hx4, hx3⟩
 
+/- English proof (translation)
+Introduce `p _ G`. Use `haveI : T2Space (AfP p) := inferInstanceAs (T2Space (Πʳ v : AwayP p, [v.1.adicCompletion ℚ, v.1.adicCompletionIntegers ℚ]))`. Use `letI : TopologicalSpace (AfP p ⊗[ℚ] G.C) := moduleTopology (AfP p) (AfP p ⊗[ℚ] G.C)`. Use `haveI : IsModuleTopology (AfP p) (AfP p ⊗[ℚ] G.C) := ⟨rfl⟩`. Use `haveI : IsTopologicalRing (AfP p ⊗[ℚ] G.C) := IsModuleTopology.isTopologicalRing (AfP p) _`.
+
+Use `haveI : T2Space (AfP p ⊗[ℚ] G.C) := t2Space_tensor_rat_finite_algebra_moduleTopology (AfP p) G.C`. Take `⟨hPo, hPc⟩` from `isOpen_isCompact_tensorIntAlg (AfP p) G.C (intAfP p) (isOpen_intAfP p) (isCompact_intAfP p)`. Establish `hOo` using `isOpen_intAfP p`. Establish `hOc` using `isCompact_intAfP p`. Use `set P := tensorIntAlg (AfP p) G.C (intAfP p)`.
+
+Use `set O := intAfP p`. Establish `hσ : Continuous (fun y : AfP p ⊗[ℚ] G.C ↦ (starT G.star (AfP p) y).unop)`. Set `σl : (AfP p ⊗[ℚ] G.C) →ₗ[AfP p] (AfP p ⊗[ℚ] G.C)` to `{ toFun := fun y ↦ (starT G.star (AfP p) y).unop map_add' := fun x y ↦ by simp only [map_add, MulOpposite.unop_add] map_smul' := by`. Introduce `r x`. Proceed by induction on `x using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp`. Consider the case `tmul a y`. Simplify using `only [TensorProduct.smul_tmul', smul_eq_mul, starT_tmul, RingHom.id_apply]`. Consider the case `add x y hx hy => simp only [smul_add, map_add, MulOpposite.unop_add, hx, hy, RingHom.id_apply] }`. Conclude with `IsModuleTopology.continuous_of_linearMap σl`.
+
+Establish `hj : Continuous (algebraMap (AfP p) (AfP p ⊗[ℚ] G.C))` using `IsModuleTopology.continuous_of_linearMap (Algebra.linearMap (AfP p) (AfP p ⊗[ℚ] G.C))`. Establish `hGcl : IsClosed (UPts G.star (AfP p) : Set ((AfP p ⊗[ℚ] G.C)ˣ × (AfP p)ˣ))`. Apply `isClosed_eq` to reduce the goal to its premises. Conclude with `(Units.continuous_val.comp continuous_fst).mul (hσ.comp (Units.continuous_val.comp continuous_fst))`. Conclude with `hj.comp (Units.continuous_val.comp continuous_snd)`.
+
+Set `g : G.GAf → ((AfP p ⊗[ℚ] G.C) × (AfP p ⊗[ℚ] G.C)ᵐᵒᵖ) × (AfP p × (AfP p)ᵐᵒᵖ)` to `fun x ↦ (Units.embedProduct _ x.1.1, Units.embedProduct _ x.1.2)`. Establish `hg : Topology.IsClosedEmbedding g` using `(Units.isClosedEmbedding_embedProduct.prodMap Units.isClosedEmbedding_embedProduct).comp hGcl.isClosedEmbedding_subtypeVal`. Set `C` to `((P : Set (AfP p ⊗[ℚ] G.C)) ×ˢ (MulOpposite.opHomeomorph.symm ⁻¹' (P : Set (AfP p ⊗[ℚ] G.C)))) ×ˢ ((O : Set (AfP p)) ×ˢ (MulOpposite.opHomeomorph.symm ⁻¹' (O : Set (AfP p))))`. Establish `hKC : (stdLevel G O P : Set G.GAf) = g ⁻¹' C` using `rfl`. Use `⟨⟨⟨stdLevel G O P, ?_⟩, ?_⟩⟩` and prove the remaining obligations.
+
+Use `show IsOpen (stdLevel G O P : Set G.GAf)`. Rewrite using `[hKC]`. Conclude with `hg.continuous.isOpen_preimage _ ((hPo.prod (MulOpposite.opHomeomorph.symm.isOpen_preimage.2 hPo)).prod (hOo.prod (MulOpposite.opHomeomorph.symm.isOpen_preimage.2 hOo)))`. Use `show IsCompact (stdLevel G O P : Set G.GAf)`. Rewrite using `[hKC]`.
+
+Conclude with `hg.isCompact_preimage ((hPc.prod (MulOpposite.opHomeomorph.symm.isCompact_preimage.2 hPc)).prod (hOc.prod (MulOpposite.opHomeomorph.symm.isCompact_preimage.2 hOc)))`.
+-/
 theorem level_exists : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p), Nonempty G.Level := by
   intro p _ G
   haveI : T2Space (AfP p) := inferInstanceAs

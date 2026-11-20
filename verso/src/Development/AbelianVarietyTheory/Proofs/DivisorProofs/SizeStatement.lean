@@ -18,12 +18,34 @@ open ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M GlobalTheory.Indefinite
 
 namespace GlobalTheory.HomWtBd
 
+/- English proof (translation)
+Establish `h` using `levi_add_smul (f := fun _ => (0 : ℝ)) (g := f) 2 contDiffAt_const hf w`. Establish `h0 : levi (fun _ : ι → ℂ => (0 : ℝ)) z w = 0` using `by simp [levi]`. Simplify `h` using `[h0]`.
+-/
 theorem levi_two_mul {ι : Type} [Fintype ι] {f : (ι → ℂ) → ℝ} {z : ι → ℂ} (hf : ContDiffAt ℝ 2 f z)
     (w : ι → ℂ) : levi (fun y => 2 * f y) z w = 2 * levi f z w := by
   have h := levi_add_smul (f := fun _ => (0 : ℝ)) (g := f) 2 contDiffAt_const hf w
   have h0 : levi (fun _ : ι → ℂ => (0 : ℝ)) z w = 0 := by simp [levi]
   simpa [h0] using h
 
+/- English proof (translation)
+Take `⟨hL, hs, hn, hZ, -, hr⟩` from `hB`. Substitute `hZ` using the available equality. Establish `hbd : IsBoundary A L s W`. Use `⟨hL, hs, hW, fun y => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h`.
+
+Use `push_neg at h`. Use `Real.log_pos h` as an intermediate fact. Use `hn y` as an intermediate fact. Unfold `logNormSec at this`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hsm : A.SmoothOn (opn s) (fun y => 2 * f y)` using `fun j => contDiffOn_const.mul (hf j)`. Establish `hnn : SumNonnegOn A Θ (fun y => 2 * f y) (opn s)`. Introduce `x j z hz w`. Take `⟨hzt, hzx, hzs⟩` from `hz`. Use `set c := A.chart j`.
+
+Establish `hzZ : c.symm z ∉ P.bdry s` using `hzs`. Establish `hp` using `hpsh j z hzt hzZ w`. Establish `hopen : ∀ {U : Set X}, IsOpen U → c.symm z ∈ U → c.target ∩ c.symm ⁻¹' U ∈ nhds z` using `fun hU hzU => (c.isOpen_inter_preimage_symm hU).mem_nhds ⟨hzt, hzU⟩`. Establish `hΘx : ContDiffAt ℝ 2 (Θ.φ x ∘ c.symm) z` using `((hΘ.1 x j).contDiffAt (hopen (Θ.isOpen_U x) hzx)).of_le (WithTop.coe_le_coe.2 le_top)`. Establish `hΘp : ContDiffAt ℝ 2 (Θ.φ (c.symm z) ∘ c.symm) z` using `((hΘ.1 (c.symm z) j).contDiffAt (hopen (Θ.isOpen_U _) (Θ.mem_U _))).of_le (WithTop.coe_le_coe.2 le_top)`.
+
+Establish `hfz : ContDiffAt ℝ 2 (f ∘ c.symm) z` using `((hf j).contDiffAt (hopen hZc.isOpen_compl hzZ)).of_le (WithTop.coe_le_coe.2 le_top)`. Establish `e1 : leviSum A Θ (fun y => 2 * f y) x j z w = 2 * levi (Θ.φ x ∘ c.symm) z w + 2 * levi (f ∘ c.symm) z w`. Unfold `leviSum`. Use `levi_add_smul (f := fun y => 2 * (Θ.φ x ∘ c.symm) y) (g := f ∘ c.symm) 2 (contDiffAt_const.mul hΘx) hfz w` as an intermediate fact. Rewrite `this` using `[levi_two_mul hΘx]`.
+
+Conclude with `this`. Establish `e2 : leviAt A (Θ + LocPot.ofFun f) j z w = levi (Θ.φ (c.symm z) ∘ c.symm) z w + levi (f ∘ c.symm) z w`. Unfold `leviAt`. Use `levi_add_smul (f := Θ.φ (c.symm z) ∘ c.symm) (g := f ∘ c.symm) 1 hΘp hfz w` as an intermediate fact. Simplify using `only [one_mul] at this`.
+
+Conclude with `this`. Establish `e3` using `GlobalTheory.PosDom.levi_base_change A Θ hΘ x (c.symm z) j z hzt hzx (Θ.mem_U _) w`. Rewrite using `[e1]`. Rewrite `hp` using `[e2, ← e3]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hgr : ∀ y ∈ opn s, 2 * f y ≤ 2 * K * Real.log (rad L s y)`. Introduce `y hy`. Establish `h1` using `hK y hy`. Rewrite `h1` using `[hr y hy]`. Establish `: rad L s y = P.rW L s y` using `rfl`.
+
+Rewrite using `[this]`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨⟨M, hM⟩, -, -⟩` from `hE e X A L s n W hbd Θ (fun y => 2 * f y) (2 * K) hΘ hsm hnn hgr`. Conclude with `⟨M / 2, fun x hx => by have := hM x hx; linarith⟩`.
+-/
 theorem bddAbove_of_ext (hE : Extension) {e : ℕ} {X : Type} [TopologicalSpace X] [T2Space X] [CompactSpace X]
     (A : FinHolAtlas e X) (Z : Set X) (hZc : IsClosed Z) (r : X → ℝ) (L : LocPot X) (s : X → X → ℂ)
     (hB : IsBdSec A Z r L s) {n : ℕ} (W : Fin n → Set X) (hW : IsSNC A L s (fun _ => 1) W) (Θ : LocPot X)
@@ -85,12 +107,20 @@ namespace GlobalTheory.HomWtBd
 
 open GlobalTheory.ShFam
 
+/- English proof (translation)
+Break down `le_or_gt 0 C with h | h` into its components or cases. Rewrite using `[abs_of_nonneg h]`. Conclude with `mul_le_of_le_one_right h hu`. Rewrite using `[abs_of_neg h]`. Use polynomial arithmetic with `[norm_nonneg u]`.
+-/
 theorem mul_le_abs_of_norm_le {V : Type} [SeminormedAddCommGroup V] (C : ℝ) {u : V} (hu : ‖u‖ ≤ 1) :
     C * ‖u‖ ≤ |C| := by
   rcases le_or_gt 0 C with h | h
   · rw [abs_of_nonneg h]; exact mul_le_of_le_one_right h hu
   · rw [abs_of_neg h]; nlinarith [norm_nonneg u]
 
+/- English proof (translation)
+Introduce `τ' a b hab`. Unfold `fund`. Use `split_ifs with h₁ h₂`. Conclude with `le_rfl`. Conclude with `absurd ⟨h₁.1, hab.trans h₁.2⟩ h₂`.
+
+Conclude with `zero_le_one`. Conclude with `le_rfl`.
+-/
 theorem dom_fund {D : D7} {N : ℕ} (τ : D.what₂.Tau) (i : Fin N) : GlobalTheory.FlagPoly.Dom (fund τ i) := by
   intro τ' a b hab
   unfold fund
@@ -100,11 +130,35 @@ theorem dom_fund {D : D7} {N : ℕ} (τ : D.what₂.Tau) (i : Fin N) : GlobalThe
   · exact zero_le_one
   · exact le_rfl
 
+/- English proof (translation)
+The claim follows from `(pi_norm_le_iff_of_nonneg zero_le_one).2 fun τ' => (pi_norm_le_iff_of_nonneg zero_le_one).2 fun a => by unfold fund split_ifs <;> simp`.
+-/
 theorem norm_fund_le {D : D7} {N : ℕ} (τ : D.what₂.Tau) (i : Fin N) : ‖fund τ i‖ ≤ 1 :=
   (pi_norm_le_iff_of_nonneg zero_le_one).2 fun τ' => (pi_norm_le_iff_of_nonneg zero_le_one).2 fun a => by
     unfold fund
     split_ifs <;> simp
 
+/- English proof (translation)
+Introduce `h1 h2 D O x P hC hf hR`. Take `⟨A, T, H, ⟨R⟩⟩` from `hR`. Establish `hCore : O.Core` using `⟨x, P, hC⟩`. Establish `key : ∀ (c : O.s.Comp) (σ : D.what₂.LL →+* ℂ) (τ : D.what₂.Tau) (i : Fin O.N), ∃ G : ℝ, 0 ≤ G ∧ ∀ y ∈ offBd O.Φ c σ, -(G * Real.log (O.met.r c σ y)) ≤ psi O x c σ τ i y ∧ psi O x c σ τ i y ≤ G`. Introduce `c σ τ i`.
+
+Take `⟨C₁, hC₁⟩` from `GlobalTheory.HodgeLogBd.abs_ph_le_log h1 h2 D O hCore hf A T H R c`. Take `⟨-, hsm, hpsh, C₂, hC₂⟩` from `(GlobalTheory.T.fibre_size_and_range_bound h1 h2 D O hCore hf A T H R c).1`. Take `⟨a, rfl⟩` from `(R.man c).ε.surjective σ`. Establish `hnorm` using `norm_fund_le (D := D) τ i`. Establish `hre : ∀ z, z ∉ (T.M c).Z a → 0 ≤ Real.log ((T.M c).r a z)` using `fun z hz => Real.log_nonneg (by linarith [Real.add_one_le_exp 1, ((T.M c).bd a).2.2.2.2.2.1 z hz])`.
+
+Take `⟨-, L, s, hB, n, W, hW⟩` from `GlobalTheory.T.component_metric_from_section D O hCore A T H R c a`. Take `⟨B, hBd⟩` from `bddAbove_of_ext GlobalTheory.T.extension_statement ((T.M c).A a) ((T.M c).Z a) ((T.M c).bd a).1 ((T.M c).r a) L s hB W hW ((T.F c).th (fund τ i) a) (T.th_pot c _ a) ((T.F c).ph (fund τ i) a) (hsm _ a) (hpsh _ (dom_fund τ i) a) |C₂| fun z hz => by`. Establish `l` using `(hC₂ (fund τ i) a z hz).1`. Establish `l'` using `(abs_le.1 l).2`. Establish `hz0` using `hre z hz`.
+
+Establish `: C₂ * ‖fund τ i‖ ≤ |C₂|` using `mul_le_abs_of_norm_le C₂ hnorm`. Combine the equalities or inequalities in the displayed calculation. Use `⟨2 * |C₁| + 2 * |B|, by positivity, fun y hy => ?_⟩` and prove the remaining obligations. Use `set z := ((R.man c).pt a).symm y with hzdef`. Establish `hyz : (R.man c).pt a z = y` using `Homeomorph.apply_symm_apply _ _`.
+
+Establish `hz : z ∉ (T.M c).Z a`. Rewrite using `[(R.an c).Z a z, hyz]`. Conclude with `hy`. Establish `hph : (T.F c).ph (fund τ i) a z = O.chg c none (fund τ i) _ y`. Use `(R.an c).ph (fund τ i) a z hz` as an intermediate fact.
+
+Rewrite `this` using `[hyz]`. Conclude with `this`. Establish `hr : (T.M c).r a z = O.met.r c _ y`. Rewrite using `[(R.an c).r a z hz, hyz]`. Establish `hpsi : psi O x c ((R.man c).ε a) τ i y = 2 * (T.F c).ph (fund τ i) a z`.
+
+Rewrite using `[hph]`. Conclude with `(hC.two_mul_chg c _ _ y).symm`. Establish `hz0` using `hre z hz`. Establish `k1 : |(T.F c).ph (fund τ i) a z| ≤ |C₁| * Real.log ((T.M c).r a z)` using `(hC₁ _ a z hz).trans (mul_le_mul_of_nonneg_right (mul_le_abs_of_norm_le C₁ hnorm) hz0)`. Establish `l1` using `abs_le.1 k1`.
+
+Establish `l4` using `hBd z hz`. Establish `hB0 : 0 ≤ |B| * Real.log ((T.M c).r a z)` using `mul_nonneg (abs_nonneg _) hz0`. Rewrite using `[hpsi, ← hr]`. Prove the components needed by the constructor for the conclusion. Combine the linear relations using `[l1.1, hB0]`.
+
+Combine the linear relations using `[l4, le_abs_self B, abs_nonneg C₁]`. Use `choose G hG0 hG using key`. Use `⟨∑ k : O.s.Comp × (D.what₂.LL →+* ℂ) × D.what₂.Tau × Fin O.N, G k.1 k.2.1 k.2.2.1 k.2.2.2, Finset.sum_nonneg fun _ _ => hG0 _ _ _ _, fun c σ τ i y hy => ?_⟩` and prove the remaining obligations. Establish `hle : G c σ τ i ≤ ∑ k : O.s.Comp × (D.what₂.LL →+* ℂ) × D.what₂.Tau × Fin O.N, G k.1 k.2.1 k.2.2.1 k.2.2.2` using `Finset.single_le_sum (f := fun k : O.s.Comp × (D.what₂.LL →+* ℂ) × D.what₂.Tau × Fin O.N => G k.1 k.2.1 k.2.2.1 k.2.2.2) (fun k _ => hG0 _ _ _ _) (Finset.mem_univ (c, σ, τ, i))`. Establish `hlog : 0 ≤ Real.log (O.met.r c σ y)` using `Real.log_nonneg (by linarith [Real.add_one_le_exp 1, hCore.exp_le_r c σ y])`.
+
+Take `⟨l, u⟩` from `hG c σ τ i y hy`. Conclude with `⟨by nlinarith [mul_le_mul_of_nonneg_right hle hlog], u.trans hle⟩`.
+-/
 theorem sizeSt : Hypotheses2 → HypothesesH → SizeSt := by
   intro h1 h2 D O x P hC hf hR
   obtain ⟨A, T, H, ⟨R⟩⟩ := hR

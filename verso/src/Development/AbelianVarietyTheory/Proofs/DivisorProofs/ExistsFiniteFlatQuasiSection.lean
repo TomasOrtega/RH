@@ -6,6 +6,17 @@ open CategoryTheory Limits AlgebraicGeometry
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `S _ _ Y f _ _ _ _ _ ⟨y, hy⟩`. Set `F` to `finitePart f`. Establish `hyF : y ∈ F` using `mem_finitePart_of_eq_closedPoint f y hy`. Establish `hfin : IsFinite (F.ι ≫ f)` using `isFinite_finitePart f`. Establish `: IsAffine F.toScheme` using `isAffine_of_isAffineHom (F.ι ≫ f)`.
+
+Set `g : Spec Γ(F.toScheme, ⊤) ⟶ Spec (.of S)` to `F.toScheme.isoSpec.inv ≫ F.ι ≫ f`. Take `⟨φ, hφ⟩` from `Spec.map_surjective g`. Use `letI : Algebra S Γ(F.toScheme, ⊤) := φ.hom.toAlgebra`. Establish `hφ' : CommRingCat.ofHom (algebraMap S Γ(F.toScheme, ⊤)) = φ` using `rfl`. Establish `hgfin : IsFinite g` using `by dsimp [g]; infer_instance`.
+
+Establish `hgfl : Flat g` using `by dsimp [g]; infer_instance`. Use `⟨Γ(F.toScheme, ⊤), inferInstance, inferInstance, ?_, ?_, ?_, F.toScheme.isoSpec.inv ≫ F.ι, ?_⟩` and prove the remaining obligations. Rewrite `hgfin` using `[← hφ, IsFinite.SpecMap_iff]`. Conclude with `RingHom.finite_algebraMap.1 hgfin`. Rewrite `hgfl` using `[← hφ, Flat.SpecMap_iff]`.
+
+Conclude with `RingHom.flat_algebraMap_iff.1 hgfl`. Establish `: Nonempty F.toScheme` using `⟨⟨y, hyF⟩⟩`. Set `x : Spec Γ(F.toScheme, ⊤)` to `F.toScheme.isoSpec.hom ⟨y, hyF⟩`. Establish `hp : x.asIdeal.IsPrime` using `x.isPrime`. Assume the negation of the conclusion as `hn`.
+
+Rewrite `hn` using `[not_nontrivial_iff_subsingleton]`. Conclude with `hp.ne_top (Subsingleton.elim _ _)`. Rewrite using `[hφ', hφ]`. Simplify using `[g]`.
+-/
 theorem exists_finite_flat_spec_of_quasiFinite_of_henselian :
     ∀ (S : Type) [CommRing S] [HenselianLocalRing S] (Y : Scheme.{0}) (f : Y ⟶ Spec (.of S))
       [IsSeparated f] [LocallyOfFiniteType f] [QuasiCompact f] [LocallyQuasiFinite f] [Flat f],

@@ -15,6 +15,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
 
 def trivialClassCondition (T : CDVR) (io : c.F →+* T.Fr) (_y : IntFr Xo c T io) : Prop := True
 
+/- English proof (translation)
+Introduce and unpack `_ ⟨y, rfl⟩`. Conclude with `⟨PtV.widen (fun _ _ _ _ => trivial) y, rfl⟩`.
+-/
 theorem valSet_alg_subset (la : HeightOneSpectrum (𝓞 c.F)) :
     valSet Xo c (algCls Xo c) la ⊆ valSet Xo c (trivialClassCondition Xo c) la := by
   rintro _ ⟨y, rfl⟩
@@ -42,6 +45,9 @@ def regular₂ {r : ℕ} (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) : Prop :=
 
 variable {Xo c}
 
+/- English proof (translation)
+Introduce `la v hv` and use `(h.1.1 ⟨(a, n), hd⟩ ⟨f, hf⟩ fun la y => h0 la y.1 y.2).1 la ⟨v, hv⟩`.
+-/
 theorem regular₂.int {r : ℕ} {U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r} (h : regular₂ Xo c U) {a n} (hd : Dom a n)
     {f : Rul Xo c} (hf : f ∈ cusp Xo c U a n)
     (h0 : ∀ la, ∀ v ∈ valSet Xo c (algCls Xo c) la, 0 ≤ v f) :

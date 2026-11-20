@@ -21,6 +21,13 @@ open GlobalTheory.Mum
 
 namespace GlobalTheory.Mum
 
+/- English proof (translation)
+Introduce `R _ _ _ hR M G' _ _ hG' P' E hθ`. Establish `: IsNoetherianRing R` using `hR.1`. Establish `: IsIntegrallyClosed R` using `hR.2.2.1`. Establish `hs : Surjective M.π` using `(Modif.appTop_bijective_surjective R M).2`. Take `⟨N, fU, l, hl, hf⟩` from `GlobalTheory.T.exists_smooth_model_near_closedFibre_embedding R hR M G' hG' E`.
+
+Establish `hN : N.Law` using `GlobalTheory.T.mul_descends_near_closed_fibre_of_embedding R hR M G' hG' E N fU l hl hf`. Take `⟨G, i1, i2, β, i, hG, hβ, hi, hu⟩` from `GlobalTheory.T.semiAbelian_descends_of_descends_near_closedFibre R hR M.S M.π M.proper hs M.integral G' hG' N hN`. Take `⟨θ, O, hO, hθO⟩` from `GlobalTheory.T.exists_open_thetaNonvanishing_descendedGroup R M.S M.π hs G' E N fU l hl hf P'.L.L hθ G β i hβ.1.w hi hu`. Take `⟨L, hL, hLi⟩` from `GlobalTheory.T.cubicalBundle_modification_descends_to_group R hR M G' hG' P' G β hG hβ θ O hO hθO`. Take `⟨P, rfl⟩` from `GlobalTheory.T.exists_cp_descent' R hR M G' hG' P' G β hG hβ L hL hLi`.
+
+Conclude with `⟨G, i1, i2, P, β, hG, hβ, hLi⟩`.
+-/
 theorem descend_of_emb : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], AdmBase R (maximalIdeal R) → ∀ (M : Modif R) (G' : Over M.S) [GrpObj G'] [IsCommMonObj G'], IsSemiAbelian G' → ∀ (P' : GlobalTheory.UU.CP G') (E : Emb M.π G'), E.Theta P'.L.L → ∃ (G : Over (Sp R)) (_ : GrpObj G) (_ : IsCommMonObj G) (P : GlobalTheory.UU.CP G) (β : G'.left ⟶ G.left), IsSemiAbelian G ∧ IsGrpPullback G' G M.π β ∧ LBIso P'.L.L (P.L.L.pull β) := by
   intro R _ _ _ hR M G' _ _ hG' P' E hθ
   have : IsNoetherianRing R := hR.1

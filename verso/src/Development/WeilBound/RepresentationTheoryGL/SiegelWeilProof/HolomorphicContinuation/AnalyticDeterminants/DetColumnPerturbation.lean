@@ -19,8 +19,14 @@ def piF (X : Matrix (Fin N) (Fin (N + 1)) ℂ) : Matrix (Fin N) (Fin N) ℂ := f
 def colQ (X : Matrix (Fin N) (Fin (N + 1)) ℂ) (c : Fin N) : Matrix (Fin N) (Fin N) ℂ :=
   fun k l => if l = c then X k 0 else 0
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem phiF_zero_row (X : Matrix (Fin N) (Fin (N + 1)) ℂ) (j : Fin (N + 1)) : phiF X 0 j = 0 := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem phiF_succ_row (X : Matrix (Fin N) (Fin (N + 1)) ℂ) (k : Fin N) (j : Fin (N + 1)) :
     phiF X k.succ j = X k j := rfl
 
@@ -38,9 +44,18 @@ def piL (N : ℕ) : Matrix (Fin N) (Fin (N + 1)) ℂ →L[ℂ] Matrix (Fin N) (F
       map_add' := fun X Y => by ext k l; simp [piF]
       map_smul' := fun a X => by ext k l; simp [piF] }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem phiL_apply (X : Matrix (Fin N) (Fin (N + 1)) ℂ) : phiL N X = phiF X := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem piL_apply (X : Matrix (Fin N) (Fin (N + 1)) ℂ) : piL N X = piF X := rfl
 
+/- English proof (translation)
+Use extensionality with `i l`. Use `Fin.cases ?_ (fun m => ?_) i` and prove the remaining obligations. Simplify using `[Matrix.single_apply, (Fin.succ_ne_zero k).symm]`. Simplify using `[Matrix.single_apply, Fin.succ_inj]`.
+-/
 theorem phiF_single (k : Fin N) (j : Fin (N + 1)) :
     phiF (Matrix.single k j (1 : ℂ)) = Matrix.single k.succ j 1 := by
   ext i l
@@ -48,14 +63,23 @@ theorem phiF_single (k : Fin N) (j : Fin (N + 1)) :
   · simp [Matrix.single_apply, (Fin.succ_ne_zero k).symm]
   · simp [Matrix.single_apply, Fin.succ_inj]
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `[piF, Matrix.single_apply, Fin.succ_inj]`.
+-/
 theorem piF_single_succ (k : Fin N) (j : Fin N) :
     piF (Matrix.single k j.succ (1 : ℂ)) = Matrix.single k j 1 := by
   ext a b; simp [piF, Matrix.single_apply, Fin.succ_inj]
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `only [piF, Matrix.single_apply, Matrix.zero_apply]`. Rewrite using `[if_neg]`. Introduce and unpack `⟨_, h⟩`. Conclude with `Fin.succ_ne_zero b h.symm`.
+-/
 theorem piF_single_zero (k : Fin N) : piF (Matrix.single k (0 : Fin (N + 1)) (1 : ℂ)) = 0 := by
   ext a b; simp only [piF, Matrix.single_apply, Matrix.zero_apply]
   rw [if_neg]; rintro ⟨_, h⟩; exact Fin.succ_ne_zero b h.symm
 
+/- English proof (translation)
+Rewrite using `[Matrix.det_succ_row_zero, Finset.sum_eq_single 0]`. Simplify using `[h]`. Introduce `j _ hj`. Simplify using `[h, hj]`. Simplify using the standard rewrite rules.
+-/
 theorem det_first_row_expansion (A : Matrix (Fin (N + 1)) (Fin (N + 1)) ℂ) (a : ℂ) (h : ∀ j, A 0 j = if j = 0 then a else 0) :
     A.det = a * (A.submatrix Fin.succ Fin.succ).det := by
   rw [Matrix.det_succ_row_zero, Finset.sum_eq_single 0]
@@ -63,6 +87,11 @@ theorem det_first_row_expansion (A : Matrix (Fin (N + 1)) (Fin (N + 1)) ℂ) (a 
   · intro j _ hj; simp [h, hj]
   · simp
 
+/- English proof (translation)
+Establish `hsub : (1 + phiF X + s • Matrix.single 0 0 1).submatrix Fin.succ Fin.succ = 1 + piF X`. Use extensionality with `k l`. Simplify using `[piF, Matrix.one_apply, Matrix.single_apply, Fin.succ_inj, Fin.succ_ne_zero]`. Introduce `h`. Conclude with `absurd h.symm (Fin.succ_ne_zero k)`.
+
+Rewrite using `[det_first_row_expansion _ (1 + s), hsub]`. Introduce `j`. Use `Fin.cases ?_ (fun m => ?_) j` and prove the remaining obligations. Simplify using `[Matrix.one_apply, Matrix.single_apply]`. Simplify using `[Matrix.one_apply, Matrix.single_apply, Fin.succ_ne_zero, (Fin.succ_ne_zero m).symm]`.
+-/
 theorem det_corner_perturbation (X : Matrix (Fin N) (Fin (N + 1)) ℂ) (s : ℂ) :
     (1 + phiF X + s • Matrix.single 0 0 1).det = (1 + s) * (1 + piF X).det := by
   have hsub : (1 + phiF X + s • Matrix.single 0 0 1).submatrix Fin.succ Fin.succ = 1 + piF X := by
@@ -75,6 +104,17 @@ theorem det_corner_perturbation (X : Matrix (Fin N) (Fin (N + 1)) ℂ) (s : ℂ)
   · simp [Matrix.one_apply, Matrix.single_apply]
   · simp [Matrix.one_apply, Matrix.single_apply, Fin.succ_ne_zero, (Fin.succ_ne_zero m).symm]
 
+/- English proof (translation)
+Use `set A := 1 + phiF X + s • Matrix.single 0 c.succ (1 : ℂ) with hA`. Establish `hne : c.succ ≠ (0 : Fin (N + 1))` using `Fin.succ_ne_zero c`. Establish `hz : ∀ k : Fin N, ((0 : Fin (N + 1)) = k.succ) ↔ False` using `fun k => ⟨fun h => Fin.succ_ne_zero k h.symm, False.elim⟩`. Rewrite using `[← Matrix.det_updateCol_add_smul_self A hne (-s)]`. Rewrite using `[det_first_row_expansion _ 1]`.
+
+Rewrite using `[one_mul]`. Use `congr 1`. Use extensionality with `k l`. Distinguish the cases in `hl : l = c`. Substitute `hl` using the available equality.
+
+Simplify using `[A, Matrix.updateCol_apply, piF, colQ, Matrix.one_apply, Matrix.single_apply, Fin.succ_inj, Fin.succ_ne_zero, hz]`. Expand and normalize the polynomial expressions, which then agree. Establish `hl' : l.succ ≠ c.succ` using `fun h => hl (Fin.succ_inj.mp h)`. Simplify using `[A, Matrix.updateCol_apply, piF, colQ, Matrix.one_apply, Matrix.single_apply, Fin.succ_inj, hl, hl', Fin.succ_ne_zero, hz]`. Introduce `j`.
+
+Distinguish the cases in `hj : j = c.succ`. Substitute `hj` using the available equality. Simplify using `[A, Matrix.updateCol_apply, Matrix.one_apply, Matrix.single_apply, Fin.succ_ne_zero, hz]`. Break down `Fin.eq_zero_or_eq_succ j with rfl | ⟨m, rfl⟩` into its components or cases. Simplify using `[A, Matrix.updateCol_apply, Matrix.one_apply, Matrix.single_apply, hne.symm, hz]`.
+
+Establish `hm : m ≠ c` using `fun h => hj (by rw [h])`. Simplify using `[A, Matrix.updateCol_apply, Matrix.one_apply, Matrix.single_apply, hm, Fin.succ_ne_zero, hz, Fin.succ_inj, Ne.symm hm]`.
+-/
 theorem det_column_perturbation (X : Matrix (Fin N) (Fin (N + 1)) ℂ) (s : ℂ) (c : Fin N) :
     (1 + phiF X + s • Matrix.single 0 c.succ 1).det = (1 + piF X - s • colQ X c).det := by
   set A := 1 + phiF X + s • Matrix.single 0 c.succ (1 : ℂ) with hA

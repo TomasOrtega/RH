@@ -16,6 +16,11 @@ variable {K : Type u} [Field K] {ι : Type} [Fintype ι]
 def dirD (L : ι → K) : Derivation K (MvPowerSeries ι K) (MvPowerSeries ι K) :=
   ∑ x, L x • MvPowerSeries.pderiv K x
 
+/- English proof (translation)
+Unfold `dirD`. Establish `h` using `congrFun (map_sum (Derivation.coeFnAddMonoidHom (R := K) (A := MvPowerSeries ι K) (M := MvPowerSeries ι K)) (fun x => L x • MvPowerSeries.pderiv K x) Finset.univ) F`. Rewrite `h` using `[Derivation.coeFnAddMonoidHom_apply, Finset.sum_apply]`. Rewrite using `[h]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Derivation.coeFnAddMonoidHom_apply, Derivation.smul_apply, MvPowerSeries.smul_eq_C_mul]`.
+-/
 lemma dirD_apply (L : ι → K) (F : MvPowerSeries ι K) :
     dirD L F = ∑ x, MvPowerSeries.C (L x) * MvPowerSeries.pderiv K x F := by
   unfold dirD
@@ -26,6 +31,11 @@ lemma dirD_apply (L : ι → K) (F : MvPowerSeries ι K) :
   refine Finset.sum_congr rfl fun x _ => ?_
   rw [Derivation.coeFnAddMonoidHom_apply, Derivation.smul_apply, MvPowerSeries.smul_eq_C_mul]
 
+/- English proof (translation)
+Unfold `linForm`. Rewrite using `[Finset.mul_sum, jetPair_sum_left, dirD_apply, jetPair_sum_right]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[jetPair_C_mul_right, ← jetPair_mul_X, ← jetPair_C_mul_left]`. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma jetPair_mul_linForm (P : MvPolynomial ι K) (L : ι → K) (F : MvPowerSeries ι K) :
     jetPair (P * linForm L) F = jetPair P (dirD L F) := by
   unfold linForm
@@ -35,10 +45,18 @@ lemma jetPair_mul_linForm (P : MvPolynomial ι K) (L : ι → K) (F : MvPowerSer
   congr 1
   ring
 
+/- English proof (translation)
+Rewrite using `[← MvPolynomial.C_1, jetPair_C_left, one_mul]`.
+-/
 lemma jetPair_one_left (F : MvPowerSeries ι K) :
     jetPair (1 : MvPolynomial ι K) F = MvPowerSeries.constantCoeff F := by
   rw [← MvPolynomial.C_1, jetPair_C_left, one_mul]
 
+/- English proof (translation)
+Rewrite using `[dirD_apply, Finset.sum_eq_single x]`. Rewrite using `[MvPowerSeries.pderiv_X_self, mul_one]`. Introduce `y _ hy`. Rewrite using `[MvPowerSeries.pderiv_X_of_ne hy.symm, mul_zero]`. Introduce `h`.
+
+Conclude with `absurd (Finset.mem_univ x) h`.
+-/
 lemma dirD_X (L : ι → K) (x : ι) : dirD L (MvPowerSeries.X x) = MvPowerSeries.C (L x) := by
   classical
   rw [dirD_apply, Finset.sum_eq_single x]
@@ -48,6 +66,9 @@ lemma dirD_X (L : ι → K) (x : ι) : dirD L (MvPowerSeries.X x) = MvPowerSerie
   · intro h
     exact absurd (Finset.mem_univ x) h
 
+/- English proof (translation)
+Rewrite using `[dirD_apply]`. Simplify using the standard rewrite rules.
+-/
 lemma dirD_C (L : ι → K) (a : K) : dirD L (MvPowerSeries.C a : MvPowerSeries ι K) = 0 := by
   rw [dirD_apply]
   simp
@@ -56,6 +77,11 @@ def linSer (c : ι → ι → K) (L : ι → K) : MvPowerSeries ι K :=
   ∑ x, ∑ y, MvPowerSeries.C (c x y) *
     (MvPowerSeries.C (L x) * MvPowerSeries.X y + MvPowerSeries.C (L y) * MvPowerSeries.X x)
 
+/- English proof (translation)
+Unfold `quadSer linSer`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations.
+
+Simplify using `only [Derivation.leibniz, dirD_X, dirD_C, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma dirD_quadSer (c : ι → ι → K) (L : ι → K) : dirD L (quadSer c) = linSer c L := by
   unfold quadSer linSer
   rw [map_sum]
@@ -65,6 +91,11 @@ lemma dirD_quadSer (c : ι → ι → K) (L : ι → K) : dirD L (quadSer c) = l
   simp only [Derivation.leibniz, dirD_X, dirD_C, smul_eq_mul]
   ring
 
+/- English proof (translation)
+Unfold `linSer polar`. Rewrite using `[map_sum, map_sum]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[map_sum, map_sum]`. Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations.
+
+Simplify using `only [Derivation.leibniz, dirD_X, dirD_C, smul_eq_mul, map_add, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma dirD_linSer (c : ι → ι → K) (L L' : ι → K) :
     dirD L' (linSer c L) = MvPowerSeries.C (polar c L L') := by
   unfold linSer polar
@@ -75,19 +106,35 @@ lemma dirD_linSer (c : ι → ι → K) (L L' : ι → K) :
   simp only [Derivation.leibniz, dirD_X, dirD_C, smul_eq_mul, map_add, map_mul]
   ring
 
+/- English proof (translation)
+Simplify using `[linSer]`.
+-/
 lemma constantCoeff_linSer (c : ι → ι → K) (L : ι → K) :
     MvPowerSeries.constantCoeff (linSer c L) = 0 := by
   simp [linSer]
 
+/- English proof (translation)
+Simplify using `[quadSer]`.
+-/
 lemma constantCoeff_quadSer (c : ι → ι → K) :
     MvPowerSeries.constantCoeff (quadSer c) = 0 := by
   simp [quadSer]
 
+/- English proof (translation)
+Unfold `polar`. Use `Finset.sum_congr rfl fun x _ => Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma polar_comm (c : ι → ι → K) (L L' : ι → K) : polar c L L' = polar c L' L := by
   unfold polar
   refine Finset.sum_congr rfl fun x _ => Finset.sum_congr rfl fun y _ => ?_
   ring
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Introduce `G`. Simplify using `[jetPair_one_left, h0]`. Consider the case `insert a s ha ih`.
+
+Introduce `G`. Rewrite using `[Finset.prod_insert ha, mul_comm, jetPair_mul_linForm, Derivation.leibniz, hd, smul_eq_mul, smul_eq_mul, jetPair_add_right, ih, mul_comm G, jetPair_C_mul_right, Finset.sum_insert ha, Finset.erase_insert ha, add_comm]`. Use `congr 1`. Use `Finset.sum_congr rfl fun b hb => ?_` and prove the remaining obligations. Establish `hab : a ≠ b` using `fun h => ha (h ▸ hb)`.
+
+Rewrite using `[Finset.erase_insert_of_ne hab, Finset.prod_insert (fun h => ha (Finset.mem_of_mem_erase h)), mul_comm (linForm (L a)), jetPair_mul_linForm]`.
+-/
 lemma jetPair_prod_lin_mul {α : Type} [DecidableEq α] (L : α → ι → K) (ℓ : MvPowerSeries ι K)
     (cst : α → K) (h0 : MvPowerSeries.constantCoeff ℓ = 0)
     (hd : ∀ a, dirD (L a) ℓ = MvPowerSeries.C (cst a)) (s : Finset α) :
@@ -114,6 +161,9 @@ section Exp
 
 variable {K : Type u} [NormedField K] [CharZero K] {ι : Type} [Fintype ι]
 
+/- English proof (translation)
+Rewrite using `[dirD_apply, dirD_apply, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Unfold `mvExp`. Rewrite using `[Formalism.G.LogCR.pderiv_psubst hf, PowerSeries.derivative_exp]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma dirD_mvExp (L : ι → K) (f : MvPowerSeries ι K) (hf : MvPowerSeries.constantCoeff f = 0) :
     dirD L (mvExp f) = dirD L f * mvExp f := by
   rw [dirD_apply, dirD_apply, Finset.sum_mul]
@@ -122,6 +172,9 @@ lemma dirD_mvExp (L : ι → K) (f : MvPowerSeries ι K) (hf : MvPowerSeries.con
   rw [Formalism.G.LogCR.pderiv_psubst hf, PowerSeries.derivative_exp]
   ring
 
+/- English proof (translation)
+Unfold `mvExp`. Rewrite using `[PowerSeries.constantCoeff_subst (PowerSeries.HasSubst.of_constantCoeff_zero hf), finsum_eq_single _ 0]`. Simplify using the standard rewrite rules. Introduce `n hn`. Simplify using `[hf, hn]`.
+-/
 lemma constantCoeff_mvExp (f : MvPowerSeries ι K) (hf : MvPowerSeries.constantCoeff f = 0) :
     MvPowerSeries.constantCoeff (mvExp f) = 1 := by
   unfold mvExp
@@ -131,6 +184,11 @@ lemma constantCoeff_mvExp (f : MvPowerSeries ι K) (hf : MvPowerSeries.constantC
   · intro n hn
     simp [hf, hn]
 
+/- English proof (translation)
+Establish `h0 : MvPowerSeries.constantCoeff ((-S) • quadSer c) = 0`. Rewrite using `[MvPowerSeries.smul_eq_C_mul, map_mul, constantCoeff_quadSer, mul_zero]`. Rewrite using `[Finset.prod_insert ha, mul_comm, jetPair_mul_linForm, Derivation.leibniz, dirD_mvExp _ _ h0, Derivation.map_smul, dirD_quadSer, smul_eq_mul, smul_eq_mul, jetPair_add_right]`. Use `congr 1`. Rewrite using `[show h * ((-S) • linSer c (L a) * mvExp ((-S) • quadSer c)) = MvPowerSeries.C (-S) * (linSer c (L a) * (mvExp ((-S) • quadSer c) * h)) by`.
+
+Rewrite using `[MvPowerSeries.smul_eq_C_mul]`. Use the proof step `ring]`. Rewrite using `[jetPair_C_mul_right, jetPair_prod_lin_mul L (linSer c (L a)) (fun b => polar c (L a) (L b)) (constantCoeff_linSer _ _) (fun b => dirD_linSer _ _ _), Finset.mul_sum]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma jet_insert {α : Type} [DecidableEq α] (c : ι → ι → K) (S : K) (L : α → ι → K) (a : α)
     (s : Finset α) (ha : a ∉ s) (h : MvPowerSeries ι K) :
     jetPair (∏ i ∈ insert a s, linForm (L i)) (mvExp ((-S) • quadSer c) * h) =
@@ -159,10 +217,16 @@ variable {n : ℕ}
 def invOn (s : Finset (Fin n)) : Finset (Equiv.Perm (Fin n)) :=
   Finset.univ.filter (fun σ : Equiv.Perm (Fin n) => σ * σ = 1 ∧ ∀ i, i ∉ s → σ i = i)
 
+/- English proof (translation)
+Simplify using `[invOn]`.
+-/
 lemma mem_invOn {s : Finset (Fin n)} {σ : Equiv.Perm (Fin n)} :
     σ ∈ invOn s ↔ σ * σ = 1 ∧ ∀ i, i ∉ s → σ i = i := by
   simp [invOn]
 
+/- English proof (translation)
+Rewrite using `[Equiv.Perm.mul_apply]`. Use `Equiv.swap_apply_of_ne_of_ne (fun h => hia ?_) (fun h => hib ?_)` and prove the remaining obligations. Conclude with `τ.injective (h.trans hτa.symm)`. Conclude with `τ.injective (h.trans hτb.symm)`.
+-/
 lemma swap_mul_apply_of_ne {a b : Fin n} {τ : Equiv.Perm (Fin n)} (hτa : τ a = a) (hτb : τ b = b)
     {i : Fin n} (hia : i ≠ a) (hib : i ≠ b) : (Equiv.swap a b * τ) i = τ i := by
   rw [Equiv.Perm.mul_apply]
@@ -170,10 +234,16 @@ lemma swap_mul_apply_of_ne {a b : Fin n} {τ : Equiv.Perm (Fin n)} (hτa : τ a 
   · exact τ.injective (h.trans hτa.symm)
   · exact τ.injective (h.trans hτb.symm)
 
+/- English proof (translation)
+Rewrite using `[Equiv.Perm.mul_apply, hτa, Equiv.swap_apply_left]`.
+-/
 lemma swap_mul_apply_left {a b : Fin n} {τ : Equiv.Perm (Fin n)} (hτa : τ a = a) :
     (Equiv.swap a b * τ) a = b := by
   rw [Equiv.Perm.mul_apply, hτa, Equiv.swap_apply_left]
 
+/- English proof (translation)
+Rewrite using `[Equiv.Perm.mul_apply, hτb, Equiv.swap_apply_right]`.
+-/
 lemma swap_mul_apply_right {a b : Fin n} {τ : Equiv.Perm (Fin n)} (hτb : τ b = b) :
     (Equiv.swap a b * τ) b = a := by
   rw [Equiv.Perm.mul_apply, hτb, Equiv.swap_apply_right]
@@ -183,6 +253,15 @@ variable {R : Type u} [CommRing R]
 def edgeW (w : Fin n → Fin n → R) (σ : Equiv.Perm (Fin n)) : R :=
   ∏ i ∈ Finset.univ.filter (fun i => i < σ i), w i (σ i)
 
+/- English proof (translation)
+Unfold `edgeW`. Establish `hset : Finset.univ.filter (fun i => i < (Equiv.swap a b * τ) i) = insert a (Finset.univ.filter (fun i => i < τ i))`. Use extensionality with `i`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_insert]`. Distinguish the cases in `hia : i = a`.
+
+Substitute `hia` using the available equality. Simplify using `[swap_mul_apply_left hτa, hab]`. Distinguish the cases in `hib : i = b`. Substitute `hib` using the available equality. Simplify using `[swap_mul_apply_right hτb, hτb, hia, hab.le]`.
+
+Simplify using `[swap_mul_apply_of_ne hτa hτb hia hib, hia]`. Establish `hna : a ∉ Finset.univ.filter (fun i => i < τ i)`. Simplify using `[hτa]`. Rewrite using `[hset, Finset.prod_insert hna, swap_mul_apply_left hτa]`. Use `congr 1`.
+
+Use `Finset.prod_congr rfl fun i hi => ?_` and prove the remaining obligations. Establish `hi' : i < τ i` using `(Finset.mem_filter.mp hi).2`. Establish `hia : i ≠ a` using `fun h => by rw [h, hτa] at hi'; exact lt_irrefl _ hi'`. Establish `hib : i ≠ b` using `fun h => by rw [h, hτb] at hi'; exact lt_irrefl _ hi'`. Rewrite using `[swap_mul_apply_of_ne hτa hτb hia hib]`.
+-/
 lemma edgeW_swap_lt (w : Fin n → Fin n → R) {a b : Fin n} (hab : a < b) {τ : Equiv.Perm (Fin n)}
     (hτa : τ a = a) (hτb : τ b = b) : edgeW w (Equiv.swap a b * τ) = w a b * edgeW w τ := by
   unfold edgeW
@@ -207,6 +286,9 @@ lemma edgeW_swap_lt (w : Fin n → Fin n → R) {a b : Fin n} (hab : a < b) {τ 
   have hib : i ≠ b := fun h => by rw [h, hτb] at hi'; exact lt_irrefl _ hi'
   rw [swap_mul_apply_of_ne hτa hτb hia hib]
 
+/- English proof (translation)
+Break down `lt_or_gt_of_ne hab with h | h` into its components or cases. Conclude with `edgeW_swap_lt w h hτa hτb`. Rewrite using `[Equiv.swap_comm, hw a b]`. Conclude with `edgeW_swap_lt w h hτb hτa`.
+-/
 lemma edgeW_swap (w : Fin n → Fin n → R) (hw : ∀ i j, w i j = w j i) {a b : Fin n} (hab : a ≠ b)
     {τ : Equiv.Perm (Fin n)} (hτa : τ a = a) (hτb : τ b = b) :
     edgeW w (Equiv.swap a b * τ) = w a b * edgeW w τ := by
@@ -215,9 +297,17 @@ lemma edgeW_swap (w : Fin n → Fin n → R) (hw : ∀ i j, w i j = w j i) {a b 
   · rw [Equiv.swap_comm, hw a b]
     exact edgeW_swap_lt w h hτb hτa
 
+/- English proof (translation)
+Simplify using `[edgeW]`.
+-/
 lemma edgeW_one (w : Fin n → Fin n → R) : edgeW w 1 = 1 := by
   simp [edgeW]
 
+/- English proof (translation)
+Use extensionality with `σ`. Rewrite using `[mem_invOn, Finset.mem_singleton]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, h⟩`. Conclude with `Equiv.ext fun i => h i (Finset.notMem_empty i)`.
+
+Introduce and unpack `rfl`. Simplify using the standard rewrite rules.
+-/
 lemma invOn_empty : invOn (∅ : Finset (Fin n)) = {1} := by
   ext σ
   rw [mem_invOn, Finset.mem_singleton]
@@ -227,6 +317,9 @@ lemma invOn_empty : invOn (∅ : Finset (Fin n)) = {1} := by
   · rintro rfl
     simp
 
+/- English proof (translation)
+Establish `hc : τ * Equiv.swap a b = Equiv.swap a b * τ`. Rewrite using `[Equiv.mul_swap_eq_swap_mul, h]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 lemma swap_mul_sq {a b : Fin n} {τ : Equiv.Perm (Fin n)} (hτ : τ * τ = 1)
     (h : Equiv.swap (τ a) (τ b) = Equiv.swap a b) :
     (Equiv.swap a b * τ) * (Equiv.swap a b * τ) = 1 := by
@@ -237,6 +330,37 @@ lemma swap_mul_sq {a b : Fin n} {τ : Equiv.Perm (Fin n)} (hτ : τ * τ = 1)
     _ = (Equiv.swap a b * Equiv.swap a b) * (τ * τ) := by rw [hc]; simp only [mul_assoc]
     _ = 1 := by rw [hτ, Equiv.swap_mul_self, one_mul]
 
+/- English proof (translation)
+Establish `hmaps : ∀ σ ∈ invOn (insert a s), σ a ∈ insert a s`. Introduce `σ hσ`. Assume the negation of the conclusion as `hn`. Establish `h1` using `(mem_invOn.mp hσ).2 _ hn`. Conclude with `hn (by rw [σ.injective h1]; exact Finset.mem_insert_self _ _)`.
+
+Rewrite using `[← Finset.sum_fiberwise_of_maps_to hmaps, Finset.sum_insert ha]`. Use `congr 1`. Establish `hset : (invOn (insert a s)).filter (fun σ => σ a = a) = invOn s`. Use extensionality with `σ`. Rewrite using `[Finset.mem_filter, mem_invOn, mem_invOn]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨h1, h2⟩, h3⟩`. Use `⟨h1, fun i hi => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hia : i = a`. Rewrite using `[hia, h3]`.
+
+Conclude with `h2 i (by simp [hia, hi])`. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨⟨h1, fun i hi => h2 i fun h => hi (Finset.mem_insert_of_mem h)⟩, h2 a ha⟩`. Rewrite using `[hset]`. Use `Finset.sum_congr rfl fun σ hσ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Finset.filter_insert, if_pos ((mem_invOn.mp hσ).2 a ha)]`. Use `Finset.sum_congr rfl fun b hb => ?_` and prove the remaining obligations. Establish `hab : a ≠ b` using `fun h => ha (h ▸ hb)`. Rewrite using `[Finset.mul_sum]`. Use `symm`.
+
+Use `Finset.sum_nbij' (fun τ => Equiv.swap a b * τ) (fun σ => Equiv.swap a b * σ) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `τ hτ`. Take `⟨h1, h2⟩` from `mem_invOn.mp hτ`. Establish `hτa : τ a = a` using `h2 a fun h => ha (Finset.mem_of_mem_erase h)`. Establish `hτb : τ b = b` using `h2 b (Finset.notMem_erase b s)`.
+
+Rewrite using `[Finset.mem_filter, mem_invOn]`. Use `⟨⟨swap_mul_sq h1 (by rw [hτa, hτb]), fun i hi => ?_⟩, swap_mul_apply_left hτa⟩` and prove the remaining obligations. Establish `hia : i ≠ a` using `fun h => hi (h ▸ Finset.mem_insert_self _ _)`. Establish `his : i ∉ s` using `fun h => hi (Finset.mem_insert_of_mem h)`. Establish `hib : i ≠ b` using `fun h => his (h ▸ hb)`.
+
+Rewrite using `[swap_mul_apply_of_ne hτa hτb hia hib]`. Conclude with `h2 i fun h => his (Finset.mem_of_mem_erase h)`. Introduce `σ hσ`. Take `⟨hσ1, hσa⟩` from `Finset.mem_filter.mp hσ`. Take `⟨h1, h2⟩` from `mem_invOn.mp hσ1`.
+
+Establish `hσb : σ b = a`. Use `congrArg (fun f : Equiv.Perm (Fin n) => f a) h1` as an intermediate fact. Simplify `this` using `[hσa]`. Rewrite using `[mem_invOn]`. Use `⟨swap_mul_sq h1 (by rw [hσa, hσb, Equiv.swap_comm]), fun i hi => ?_⟩` and prove the remaining obligations.
+
+Distinguish the cases in `hia : i = a`. Rewrite using `[hia, Equiv.Perm.mul_apply, hσa, Equiv.swap_apply_right]`. Distinguish the cases in `hib : i = b`. Rewrite using `[hib, Equiv.Perm.mul_apply, hσb, Equiv.swap_apply_left]`. Establish `his : i ∉ insert a s`.
+
+Simplify using `only [Finset.mem_insert, not_or]`. Conclude with `⟨hia, fun h => hi (Finset.mem_erase.mpr ⟨hib, h⟩)⟩`. Rewrite using `[Equiv.Perm.mul_apply, h2 i his, Equiv.swap_apply_of_ne_of_ne hia hib]`. Introduce `τ _`. Simplify using `[← mul_assoc]`.
+
+Introduce `σ _`. Simplify using `[← mul_assoc]`. Introduce `τ hτ`. Take `⟨h1, h2⟩` from `mem_invOn.mp hτ`. Establish `hτa : τ a = a` using `h2 a fun h => ha (Finset.mem_of_mem_erase h)`.
+
+Establish `hτb : τ b = b` using `h2 b (Finset.notMem_erase b s)`. Establish `hset : (insert a s).filter (fun i => (Equiv.swap a b * τ) i = i) = (s.erase b).filter (fun i => τ i = i)`. Use extensionality with `i`. Simplify using `only [Finset.mem_filter, Finset.mem_insert, Finset.mem_erase]`. Distinguish the cases in `hia : i = a`.
+
+Substitute `hia` using the available equality. Simplify using `[swap_mul_apply_left hτa, ha, hab.symm]`. Distinguish the cases in `hib : i = b`. Substitute `hib` using the available equality. Simplify using `[swap_mul_apply_right hτb, hab]`.
+
+Simplify using `[swap_mul_apply_of_ne hτa hτb hia hib, hia, hib]`. Rewrite using `[hset, edgeW_swap w hw hab hτa hτb, mul_assoc]`.
+-/
 lemma sum_invOn_insert (w : Fin n → Fin n → R) (hw : ∀ i j, w i j = w j i)
     (g : Finset (Fin n) → R) (a : Fin n) (s : Finset (Fin n)) (ha : a ∉ s) :
     ∑ σ ∈ invOn (insert a s), edgeW w σ * g ((insert a s).filter (fun i => σ i = i)) =
@@ -323,6 +447,13 @@ section Main
 
 variable {K : Type u} [NormedField K] [CharZero K] {ι : Type} [Fintype ι]
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.strongInduction with`. Consider the case `H s ih`. Introduce `h`. Break down `s.eq_empty_or_nonempty with rfl | ⟨a, ha⟩` into its components or cases. Establish `h0 : MvPowerSeries.constantCoeff ((-S) • quadSer c) = 0`.
+
+Rewrite using `[MvPowerSeries.smul_eq_C_mul, map_mul, constantCoeff_quadSer, mul_zero]`. Rewrite using `[invOn_empty, Finset.sum_singleton, edgeW_one, Finset.filter_empty, Finset.prod_empty, jetPair_one_left, jetPair_one_left, map_mul, constantCoeff_mvExp _ h0]`. Take `⟨t, hat, rfl⟩ : ∃ t, a ∉ t ∧ insert a t = s` from `⟨s.erase a, Finset.notMem_erase a s, Finset.insert_erase ha⟩`. Rewrite using `[jet_insert c S L a t hat h, sum_invOn_insert (fun i j => -S * polar c (L i) (L j)) (fun i j => by rw [polar_comm]) (fun F => jetPair (∏ i ∈ F, linForm (L i)) h) a t hat, ih t (Finset.ssubset_insert hat)]`. Use `congr 1`.
+
+Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_insert (fun hh => hat (Finset.mem_of_mem_filter a hh)), mul_comm (linForm (L a)), jetPair_mul_linForm]`. Use `Finset.sum_congr rfl fun b hb => ?_` and prove the remaining obligations. Rewrite using `[ih (t.erase b) ((Finset.erase_subset b t).trans_ssubset (Finset.ssubset_insert hat))]`.
+-/
 lemma matchings_on (c : ι → ι → K) (S : K) {n : ℕ} (L : Fin n → ι → K) (s : Finset (Fin n)) :
     ∀ h : MvPowerSeries ι K,
       jetPair (∏ i ∈ s, linForm (L i)) (mvExp ((-S) • quadSer c) * h) =
@@ -351,6 +482,11 @@ lemma matchings_on (c : ι → ι → K) (S : K) {n : ℕ} (L : Fin n → ι →
 
 end Main
 
+/- English proof (translation)
+Introduce `K _ _ ι _ c S sg n L`. Rewrite using `[matchings_on c S L Finset.univ sg]`. Establish `hset : invOn (Finset.univ : Finset (Fin n)) = Finset.univ.filter (fun σ : Equiv.Perm (Fin n) => σ * σ = 1)`. Use extensionality with `σ`. Simplify using `[mem_invOn]`.
+
+Rewrite using `[hset]`. Both sides reduce to the same expression.
+-/
 theorem matching_existence : Matchings.{u} := by
   intro K _ _ ι _ c S sg n L
   rw [matchings_on c S L Finset.univ sg]

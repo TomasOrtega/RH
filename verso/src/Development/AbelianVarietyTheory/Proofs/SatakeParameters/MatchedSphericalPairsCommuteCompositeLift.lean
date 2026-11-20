@@ -17,6 +17,19 @@ namespace GlobalTheory.Hk3.SysE
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T A Ks _ _ _ R F hC hS SF hSF t P hg cX c0 hM hX hXo`. Establish `gd` using `GlobalTheory.GoodPrimes.good_primes R F hC.lev`. Establish `hg0 : Good R A.μ0 P` using `(gd.2.1 t P hg).2.2`. Establish `injE : Function.Injective R.HE.e` using `hC.models.HE.1`. Establish `injX : Function.Injective (R.HX t).e` using `(hC.models.HX t).1`.
+
+Establish `part1 : ∀ h, IsOpsE R h → ∀ y, R.Th t (hX P cX y) = h P c0 (R.Th t y)`. Introduce `h hh y`. Apply `injE` to reduce the goal to its premises. Conclude with `(hM y (hX P cX y) (hXo P hg cX y)).trans (hh P hg0 c0 (R.Th t y)).symm`. Use `⟨part1, ?_⟩` and prove the remaining obligations.
+
+Introduce `c w hw`. Establish `h01` using `GlobalTheory.T.exists_sphericalOperators_rows_normal_eigenspaces R F hC hS SF hSF`. Break down `h01 with ⟨h0, h0o, h0n, -, h0e, -⟩` into its components or cases. Establish `hX01` using `(GlobalTheory.T.realization_family_normal_operators R F hC.lev hC.fam hC.models).1 t`. Break down `hX01 with ⟨hX0, hX0o, hX0n⟩` into its components or cases.
+
+Establish `eqX : hX P cX = hX0 P cX`. Use extensionality with `x`. Apply `injX` to reduce the goal to its premises. Conclude with `(hXo P hg cX x).trans (hX0o P hg cX x).symm`. Establish `eX : LinearMap.adjoint (hX0 P cX) = hX0 P (dualC (Finsupp.mapRange star (star_zero ℂ) cX))` using `hX0n.2 P hg cX`.
+
+Establish `cX' : Commute (hX0 P cX) (hX0 P (dualC (Finsupp.mapRange star (star_zero ℂ) cX)))` using `hX0n.1 P P hg hg _ _`. Establish `nX0 : Commute (hX0 P cX) (LinearMap.adjoint (hX0 P cX))` using `@Eq.subst (Module.End ℂ (R.HX t).H) (fun B => Commute (hX0 P cX) B) _ _ eX.symm cX'`. Establish `nX : Commute (hX P cX) (LinearMap.adjoint (hX P cX))` using `@Eq.subst (Module.End ℂ (R.HX t).H) (fun B => Commute B (LinearMap.adjoint B)) _ _ eqX.symm nX0`. Establish `eE : LinearMap.adjoint (h0 P c0) = h0 P (dualC (Finsupp.mapRange star (star_zero ℂ) c0))` using `h0n.2 P hg0 c0`. Establish `cE : Commute (h0 P c0) (h0 P (dualC (Finsupp.mapRange star (star_zero ℂ) c0)))` using `h0n.1 P P hg0 hg0 _ _`.
+
+Establish `nE : Commute (h0 P c0) (LinearMap.adjoint (h0 P c0))` using `@Eq.subst (Module.End ℂ R.HE.H) (fun B => Commute (h0 P c0) B) _ _ eE.symm cE`. Conclude with `GlobalTheory.T.eigenvector_adjoint_intertwiner_normal_operators (R.Th t) (fun _ : Unit => hX P cX) (fun _ : Unit => h0 P c0) (fun _ u => part1 h0 h0o u) (fun _ => nX) (fun _ => nE) () _ w (h0e c P hg0 c0 w hw)`.
+-/
 theorem matched_commute : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), Core R F → SchurAll R → ∀ SF, IsSF R SF → ∀ t P, Good R t P → ∀ cX c0, MatchE R t P cX c0 → ∀ hX, IsOpsX R t hX → (∀ h, IsOpsE R h → ∀ y, R.Th t (hX P cX y) = h P c0 (R.Th t y)) ∧ ∀ c, ∀ w ∈ EEc R SF c, hX P cX (LinearMap.adjoint (R.Th t) w) = evC (Yc D 0) P (fun d => c P (dualLab d)) c0 • LinearMap.adjoint (R.Th t) w := by
   intro D G _ _ Pl0 T A Ks _ _ _ R F hC hS SF hSF t P hg cX c0 hM hX hXo
   have gd := GlobalTheory.GoodPrimes.good_primes R F hC.lev

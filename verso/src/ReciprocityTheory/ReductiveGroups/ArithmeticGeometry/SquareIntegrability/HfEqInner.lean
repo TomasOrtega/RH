@@ -23,12 +23,40 @@ def prj {dim : (E →+* ℂ) → ℕ} (σ : E →+* ℂ) (v : Vsp dim) : Vsp dim
 def mulc {dim : (E →+* ℂ) → ℕ} (c : (E →+* ℂ) → ℂ) (v : Vsp dim) : Vsp dim :=
   WithLp.toLp 2 fun j => c j.1 * v j
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Apply `h` to reduce the goal to its premises. Conclude with `IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 E)) (RingHom.ext fun x => hc x)`.
+-/
 theorem emb_sep {σ τ : E →+* ℂ} (h : σ ≠ τ) : ∃ α : 𝓞 E, σ (α : E) ≠ τ (α : E) := by
   by_contra hc
   push Not at hc
   apply h
   exact IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 E)) (RingHom.ext fun x => hc x)
 
+/- English proof (translation)
+Use `set S := Submodule.span ℂ (I : Set (Vsp dim)) with hS`. Establish `hact : ∀ (α : 𝓞 E), ∀ v ∈ S, act α v ∈ S`. Introduce `α`. Set `A : Vsp dim →ₗ[ℂ] Vsp dim` to `{ toFun := act α map_add' := fun x y => by ext j; simp [act]; ring map_smul' := fun c x => by ext j; simp [act]; ring }`. Establish `hle : S.map A ≤ S`.
+
+Rewrite using `[hS, Submodule.map_span]`. Apply `Submodule.span_le.2` to reduce the goal to its premises. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `Submodule.subset_span (hst α x hx)`. Introduce `v hv`.
+
+Conclude with `hle ⟨v, hv, rfl⟩`. Establish `hα : ∀ τ : E →+* ℂ, ∃ α : 𝓞 E, τ ≠ σ → σ (α : E) ≠ τ (α : E)`. Introduce `τ`. Distinguish the cases in `h : τ = σ`. Conclude with `⟨0, fun h' => (h' h).elim⟩`.
+
+Take `⟨α, hα⟩` from `emb_sep (Ne.symm h)`. Conclude with `⟨α, fun _ => hα⟩`. Use `choose α hα using hα`. Set `c : (E →+* ℂ) → (E →+* ℂ) → ℂ` to `fun τ τ' => (τ' (α τ : E) - τ (α τ : E)) * (σ (α τ : E) - τ (α τ : E))⁻¹`. Establish `hstep : ∀ τ, ∀ v ∈ S, mulc (c τ) v ∈ S`.
+
+Introduce `τ v hv`. Establish `: mulc (c τ) v = (σ (α τ : E) - τ (α τ : E))⁻¹ • (act (α τ) v - (τ (α τ : E)) • v)`. Use extensionality with `j`. Simplify using `[mulc, act, c]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[this]`. Conclude with `S.smul_mem _ (S.sub_mem (hact _ v hv) (S.smul_mem _ hv))`. Establish `hprod : ∀ T : Finset (E →+* ℂ), ∀ v ∈ S, mulc (fun τ' => ∏ τ ∈ T, c τ τ') v ∈ S`. Introduce `T`. Proceed by induction on `T using Finset.induction_on with`.
+
+Consider the case `empty`. Introduce `v hv`. Establish `: mulc (fun τ' => ∏ τ ∈ (∅ : Finset (E →+* ℂ)), c τ τ') v = v` using `by ext j; simp [mulc]`. Rewrite using `[this]`. Conclude with `hv`.
+
+Consider the case `insert τ T hτ ih`. Introduce `v hv`. Establish `: mulc (fun τ' => ∏ t ∈ insert τ T, c t τ') v = mulc (c τ) (mulc (fun τ' => ∏ t ∈ T, c t τ') v)`. Use extensionality with `j`. Simplify using `[mulc, Finset.prod_insert hτ]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `hstep τ _ (ih v hv)`. Introduce `v hv`. Establish `: prj σ v = mulc (fun τ' => ∏ τ ∈ Finset.univ.erase σ, c τ τ') v`.
+
+Use extensionality with `j`. Simplify using `only [prj, mulc, PiLp.toLp_apply]`. Distinguish the cases in `hj : j.1 = σ`. Rewrite using `[if_pos hj, hj, Finset.prod_eq_one, one_mul]`. Introduce `τ hτ`.
+
+Establish `hne` using `hα τ (Finset.ne_of_mem_erase hτ)`. Simplify using `only [c]`. Conclude with `mul_inv_cancel₀ (sub_ne_zero.2 hne)`. Rewrite using `[if_neg hj, Finset.prod_eq_zero (i := j.1) (Finset.mem_erase.2 ⟨hj, Finset.mem_univ _⟩), zero_mul]`. Simplify using `[c]`.
+
+Rewrite using `[this]`. Conclude with `hprod _ v hv`.
+-/
 theorem mulc_mem {dim : (E →+* ℂ) → ℕ} (I : Submodule ℤ (Vsp dim))
     (hst : ∀ (α : 𝓞 E) x, x ∈ I → act α x ∈ I) (σ : E →+* ℂ) :
     ∀ v ∈ Submodule.span ℂ (I : Set (Vsp dim)), prj σ v ∈ Submodule.span ℂ (I : Set (Vsp dim)) := by
@@ -92,6 +120,11 @@ theorem mulc_mem {dim : (E →+* ℂ) → ℕ} (I : Submodule ℤ (Vsp dim))
   rw [this]
   exact hprod _ v hv
 
+/- English proof (translation)
+Unfold `Hf`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [prj, PiLp.toLp_apply]`. Distinguish the cases in `hj : j.1 = σ`. Rewrite using `[if_pos hj]`.
+
+Rewrite using `[if_neg hj, hξ j hj]`. Simplify using the standard rewrite rules.
+-/
 theorem Hf_prj {dim : (E →+* ℂ) → ℕ} {σ : E →+* ℂ} {ξ : Vsp dim} (hξ : InPart σ ξ) (a : Vsp dim) :
     Hf ξ a = Hf ξ (prj σ a) := by
   unfold Hf
@@ -101,12 +134,49 @@ theorem Hf_prj {dim : (E →+* ℂ) → ℕ} {σ : E →+* ℂ} {ξ : Vsp dim} (
   · rw [if_pos hj]
   · rw [if_neg hj, hξ j hj]; simp
 
+/- English proof (translation)
+The claim follows from `lemS_Hf_eq_inner w v`.
+-/
 theorem Hf_eq_inner' {ι : Type} [Fintype ι] (w v : EuclideanSpace ℂ ι) : Hf w v = inner ℂ v w :=
   lemS_Hf_eq_inner w v
 
+/- English proof (translation)
+Introduce `j hj`. Simplify using `[prj, hj]`.
+-/
 theorem prj_inpart {dim : (E →+* ℂ) → ℕ} (σ : E →+* ℂ) (a : Vsp dim) : InPart σ (prj σ a) := by
   intro j hj; simp [prj, hj]
 
+/- English proof (translation)
+Use `set N := Module.finrank ℂ (VP (dim := X.dim) σ) with hN`. Establish `hw_inner : ∀ s s', inner ℂ (w s) (w s') = if s = s' then (1 : ℂ) else 0`. Introduce `s s'`. Rewrite using `[← Hf_eq_inner', hon s' s]`. Apply the tactic sequence `by_cases h : s = s' <;> simp [h, eq_comm]`.
+
+Establish `hwo : Orthonormal ℂ w`. Rewrite using `[orthonormal_iff_ite]`. Conclude with `hw_inner`. Establish `hρN : ρ ≤ N` using `hρ ▸ Submodule.finrank_mono inf_le_right`. Establish `hNr : N ≤ X.r`.
+
+Set `f : VP (dim` to `X.dim) σ →ₗ[ℂ] (Fin (X.dim σ) → ℂ) := { toFun := fun v a => (v : Vsp X.dim) ⟨σ, a⟩ map_add' := fun x y => by funext a; simp map_smul' := fun c x => by funext a; simp }`. Establish `hinj : Function.Injective f`. Introduce `v v' h`. Apply `Subtype.ext` to reduce the goal to its premises. Use extensionality with `j`.
+
+Take `⟨τ, a⟩` from `j`. Distinguish the cases in `hτ : τ = σ`. Substitute `hτ` using the available equality. Conclude with `congrFun h a`. Rewrite using `[(v.2 : InPart σ (v : Vsp X.dim)) ⟨τ, a⟩ hτ, (v'.2 : InPart σ (v' : Vsp X.dim)) ⟨τ, a⟩ hτ]`.
+
+Establish `h1` using `LinearMap.finrank_le_finrank_of_injective hinj`. Rewrite `h1` using `[Module.finrank_fin_fun]`. Establish `h2` using `X.dim_conj σ`. Use linear arithmetic over natural numbers and integers. Set `vv : Fin N → VP (dim` to `X.dim) σ := fun k => if h : k.val < ρ then ⟨w ⟨k, h⟩, (hw _).1⟩ else 0`.
+
+Establish `hon' : Orthonormal ℂ (Set.domRestrict {k : Fin N | k.val < ρ} vv)`. Rewrite using `[orthonormal_iff_ite]`. Introduce and unpack `⟨k, hk⟩ ⟨k', hk'⟩`. Establish `hk0 : k.val < ρ` using `hk`. Establish `hk0' : k'.val < ρ` using `hk'`.
+
+Use `show inner ℂ (vv k) (vv k') = if (⟨k, hk⟩ : {k : Fin N | k.val < ρ}) = ⟨k', hk'⟩ then 1 else 0`. Simplify using `only [vv, dif_pos hk0, dif_pos hk0', Submodule.coe_inner, hw_inner]`. Simplify using `[Fin.ext_iff, Subtype.ext_iff]`. Take `⟨bb, hbb⟩` from `Orthonormal.exists_orthonormalBasis_extension_of_card_eq (𝕜 := ℂ) (E := VP (dim := X.dim) σ) (ι := Fin N) (by simp [hN]) hon'`. Establish `hbw : ∀ k (h : k.val < ρ), (bb k : Vsp X.dim) = w ⟨k, h⟩`.
+
+Introduce `k h`. Rewrite using `[hbb k h]`. Simplify using `[vv, h]`. Use `⟨N, fun k => (bb k : Vsp X.dim), hNr, hρN, hbw, fun k => (bb k).2, ?_, ?_⟩` and prove the remaining obligations. Introduce `k hk`.
+
+Prove the components needed by the constructor for the conclusion. Conclude with `bb.orthonormal.1 k`. Introduce `a ha`. Rewrite using `[Hf_prj ((bb k).2 : InPart σ (bb k : Vsp X.dim)) a]`. Establish `hpa : prj σ a ∈ (Submodule.span ℂ (I : Set (Vsp X.dim)) ⊓ VP σ : Submodule ℂ _)` using `⟨mulc_mem I hst σ a (Submodule.subset_span ha), prj_inpart σ a⟩`.
+
+Establish `hspan : Submodule.span ℂ (Set.range w) = (Submodule.span ℂ (I : Set (Vsp X.dim)) ⊓ VP σ : Submodule ℂ _)`. Apply `Submodule.eq_of_le_of_finrank_eq` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨s, rfl⟩`. Conclude with `⟨(hw s).2, (hw s).1⟩`.
+
+Rewrite using `[finrank_span_eq_card hwo.linearIndependent, Fintype.card_fin, hρ]`. Rewrite `hpa` using `[← hspan]`. Rewrite using `[Hf_eq_inner']`. Use `Submodule.span_induction (p := fun z _ => inner ℂ z (bb k : Vsp X.dim) = 0) ?_ ?_ ?_ ?_ hpa` and prove the remaining obligations. Introduce and unpack `_ ⟨s, rfl⟩`.
+
+Establish `hs : (⟨s.val, lt_of_lt_of_le s.2 hρN⟩ : Fin N).val < ρ` using `s.2`. Establish `e1 : w s = (bb ⟨s.val, lt_of_lt_of_le s.2 hρN⟩ : Vsp X.dim)`. Rewrite using `[hbw _ hs]`. Rewrite using `[e1, ← Submodule.coe_inner]`. Use `bb.orthonormal.2 ?_` and prove the remaining obligations.
+
+Introduce `h`. Use `congrArg Fin.val h` as an intermediate fact. Simplify using `at this`. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules.
+
+Introduce `x y _ _ hx hy`. Rewrite using `[inner_add_left, hx, hy, add_zero]`. Introduce `c x _ hx`. Rewrite using `[inner_smul_left, hx, mul_zero]`. Introduce `x y hx hy`.
+
+Use `bb.sum_inner_mul_inner (⟨y, hy⟩ : VP (dim := X.dim) σ) ⟨x, hx⟩` as an intermediate fact. Simplify using `only [Submodule.coe_inner] at this`. Rewrite using `[Hf_eq_inner', ← this]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Hf_eq_inner', Hf_eq_inner', mul_comm]`.
+-/
 theorem onb_data (X : PT E) (I : Submodule ℤ (Vsp X.dim)) (σ : E →+* ℂ) (ρ : ℕ)
     (hρ : Module.finrank ℂ (Submodule.span ℂ (I : Set (Vsp X.dim)) ⊓ VP σ : Submodule ℂ _) = ρ)
     (hst : ∀ (α : 𝓞 E) x, x ∈ I → act α x ∈ I)

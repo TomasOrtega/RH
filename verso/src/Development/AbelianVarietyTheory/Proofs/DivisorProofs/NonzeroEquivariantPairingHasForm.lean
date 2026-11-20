@@ -15,6 +15,11 @@ def jS (P Q R S : ℕ) : Ln P Q 0 S → Ln P Q R S := fun v => (v.1, Sum.elim (f
 
 variable {P Q R S : ℕ}
 
+/- English proof (translation)
+Introduce and unpack `⟨a, c | c⟩ ⟨a', c' | c'⟩ h`. Simplify using `only [jR, Sum.elim_inl, Prod.mk.injEq, Sum.inl.injEq] at h`. Rewrite using `[h.1, h.2]`. Conclude with `c'.elim0`. Conclude with `c.elim0`.
+
+Conclude with `c.elim0`.
+-/
 theorem jR_injective : Function.Injective (jR P Q R S) := by
   rintro ⟨a, c | c⟩ ⟨a', c' | c'⟩ h
   · simp only [jR, Sum.elim_inl, Prod.mk.injEq, Sum.inl.injEq] at h; rw [h.1, h.2]
@@ -22,6 +27,11 @@ theorem jR_injective : Function.Injective (jR P Q R S) := by
   · exact c.elim0
   · exact c.elim0
 
+/- English proof (translation)
+Introduce and unpack `⟨a, c | c⟩ ⟨a', c' | c'⟩ h`. Conclude with `c.elim0`. Conclude with `c.elim0`. Conclude with `c'.elim0`. Simplify using `only [jS, Sum.elim_inr, Prod.mk.injEq, Sum.inr.injEq] at h`.
+
+Rewrite using `[h.1, h.2]`.
+-/
 theorem jS_injective : Function.Injective (jS P Q R S) := by
   rintro ⟨a, c | c⟩ ⟨a', c' | c'⟩ h
   · exact c.elim0
@@ -29,12 +39,21 @@ theorem jS_injective : Function.Injective (jS P Q R S) := by
   · exact c'.elim0
   · simp only [jS, Sum.elim_inr, Prod.mk.injEq, Sum.inr.injEq] at h; rw [h.1, h.2]
 
+/- English proof (translation)
+Apply the tactic sequence `rcases l with ⟨a | a, c | c⟩ <;> first | exact c.elim0 | rfl`.
+-/
 theorem linePos_jR (l : Ln P Q R 0) : linePos (jR P Q R S l) = linePos l := by
   rcases l with ⟨a | a, c | c⟩ <;> first | exact c.elim0 | rfl
 
+/- English proof (translation)
+Apply the tactic sequence `rcases l with ⟨a | a, c | c⟩ <;> first | exact c.elim0 | rfl`.
+-/
 theorem linePos_jS (l : Ln P Q 0 S) : linePos (jS P Q R S l) = linePos l := by
   rcases l with ⟨a | a, c | c⟩ <;> first | exact c.elim0 | rfl
 
+/- English proof (translation)
+Apply the tactic sequence `rcases k with ⟨a, c | c⟩ <;> rcases m with ⟨a', e | e⟩`. Conclude with `e.elim0`. Simplify using `[jR, jS]`. Conclude with `c.elim0`. Conclude with `c.elim0`.
+-/
 theorem jR_ne_jS (k : Ln P Q R 0) (m : Ln P Q 0 S) : jR P Q R S k ≠ jS P Q R S m := by
   rcases k with ⟨a, c | c⟩ <;> rcases m with ⟨a', e | e⟩
   · exact e.elim0
@@ -46,6 +65,9 @@ section General
 
 variable {R' S' : ℕ} (j : Ln P Q R' S' → Ln P Q R S)
 
+/- English proof (translation)
+Proceed by induction on `g using MvPolynomial.induction_on with`. Consider the case `C a => simp`. Consider the case `add p q hp hq => simp [hp, hq]`. Consider the case `mul_X p m hp => simp [hp, pderiv_X, Pi.single_apply, hv m]`.
+-/
 theorem pderiv_rename_eq_zero {σ τ : Type*} (i : σ → τ) (v : τ) (hv : ∀ m, i m ≠ v) (g : MvPolynomial σ ℂ) :
     pderiv v (rename i g) = 0 := by
   induction g using MvPolynomial.induction_on with
@@ -53,10 +75,16 @@ theorem pderiv_rename_eq_zero {σ τ : Type*} (i : σ → τ) (v : τ) (hv : ∀
   | add p q hp hq => simp [hp, hq]
   | mul_X p m hp => simp [hp, pderiv_X, Pi.single_apply, hv m]
 
+/- English proof (translation)
+Rewrite using `[Derivation.leibniz, hG, smul_zero, zero_add, pderiv_rename hj, smul_eq_mul, mul_comm]`.
+-/
 theorem pderiv_rename_mul (hj : Function.Injective j) (k : Ln P Q R' S') (f : Pol P Q R' S') (G : Pol P Q R S)
     (hG : pderiv (j k) G = 0) : pderiv (j k) (rename j f * G) = rename j (pderiv k f) * G := by
   rw [Derivation.leibniz, hG, smul_zero, zero_add, pderiv_rename hj, smul_eq_mul, mul_comm]
 
+/- English proof (translation)
+Unfold `raiB`. Rewrite using `[hpos l]`. Use `split_ifs`. Simplify using `[mul_assoc]`. Simplify using `[pderiv_rename_mul j hj l f G (hG l)]`.
+-/
 theorem raiB_rename_mul (hj : Function.Injective j) (hpos : ∀ l, linePos (j l) = linePos l) (l : Ln P Q R' S')
     (f : Pol P Q R' S') (G : Pol P Q R S) (hG : ∀ k, pderiv (j k) G = 0) :
     raiB (j l) (rename j f * G) = rename j (raiB l f) * G := by
@@ -65,6 +93,9 @@ theorem raiB_rename_mul (hj : Function.Injective j) (hpos : ∀ l, linePos (j l)
   · simp [mul_assoc]
   · simp [pderiv_rename_mul j hj l f G (hG l)]
 
+/- English proof (translation)
+Unfold `lowB`. Rewrite using `[hpos l]`. Use `split_ifs`. Simplify using `[pderiv_rename_mul j hj l f G (hG l)]`. Simplify using `[mul_assoc]`.
+-/
 theorem lowB_rename_mul (hj : Function.Injective j) (hpos : ∀ l, linePos (j l) = linePos l) (l : Ln P Q R' S')
     (f : Pol P Q R' S') (G : Pol P Q R S) (hG : ∀ k, pderiv (j k) G = 0) :
     lowB (j l) (rename j f * G) = rename j (lowB l f) * G := by
@@ -73,6 +104,9 @@ theorem lowB_rename_mul (hj : Function.Injective j) (hpos : ∀ l, linePos (j l)
   · simp [pderiv_rename_mul j hj l f G (hG l)]
   · simp [mul_assoc]
 
+/- English proof (translation)
+Simplify using `only [omE, LinearMap.add_apply, Module.End.mul_apply, lowB_rename_mul j hj hpos l' f G hG, raiB_rename_mul j hj hpos l _ G hG, hj.eq_iff]`. Apply the tactic sequence `split_ifs <;> simp [add_mul, smul_mul_assoc]`.
+-/
 theorem omE_rename_mul (hj : Function.Injective j) (hpos : ∀ l, linePos (j l) = linePos l) (l l' : Ln P Q R' S')
     (f : Pol P Q R' S') (G : Pol P Q R S) (hG : ∀ k, pderiv (j k) G = 0) :
     omE (j l) (j l') (rename j f * G) = rename j (omE l l' f) * G := by
@@ -82,6 +116,11 @@ theorem omE_rename_mul (hj : Function.Injective j) (hpos : ∀ l, linePos (j l) 
 
 end General
 
+/- English proof (translation)
+Rewrite using `[fockAct1_Eab, fockAct1_Eab, fockAct1_Eab]`. Simplify using `only [LinearMap.sum_apply, LinearMap.add_apply, Fintype.sum_sum_type, Finset.univ_eq_empty, Finset.sum_empty, add_zero, zero_add, map_sum, Finset.sum_mul, Finset.mul_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Conclude with `omE_rename_mul (jR P Q R S) jR_injective linePos_jR (a, .inl c) (b, .inl c) f _ (fun k => pderiv_rename_eq_zero _ _ (fun m => (jR_ne_jS k m).symm) g)`.
+
+Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm, mul_comm (rename _ f)]`. Conclude with `omE_rename_mul (jS P Q R S) jS_injective linePos_jS (a, .inr c) (b, .inr c) g _ (fun k => pderiv_rename_eq_zero _ _ (fun m => jR_ne_jS m k) f)`.
+-/
 theorem fockAct1_Eab_mul (a b : Ix P Q) (f : Pol P Q R 0) (g : Pol P Q 0 S) :
     fockAct1 P Q R S (Eab a b) (rename (jR P Q R S) f * rename (jS P Q R S) g) =
       rename (jR P Q R S) (fockAct1 P Q R 0 (Eab a b) f) * rename (jS P Q R S) g +
@@ -104,6 +143,9 @@ namespace GlobalTheory.FockSplit
 
 variable {P Q R S : ℕ}
 
+/- English proof (translation)
+Establish `hZ : Z = ∑ a, ∑ b, Z a b • Eab a b` using `by conv_lhs => rw [Matrix.matrix_eq_sum_single Z]`. Simplify using `only [Eab, Matrix.smul_single, smul_eq_mul, mul_one]`. Rewrite using `[hZ]`. Simplify using `only [map_sum, map_smul, LinearMap.sum_apply, LinearMap.smul_apply, fockAct1_Eab_mul, smul_add, Finset.sum_add_distrib, Finset.sum_mul, Finset.mul_sum, smul_mul_assoc, mul_smul_comm]`.
+-/
 theorem fockAct1_rename_mul (Z : Mat P Q) (f : Pol P Q R 0) (g : Pol P Q 0 S) :
     fockAct1 P Q R S Z (rename (jR P Q R S) f * rename (jS P Q R S) g) =
       rename (jR P Q R S) (fockAct1 P Q R 0 Z f) * rename (jS P Q R S) g +
@@ -118,6 +160,27 @@ theorem fockAct1_rename_mul (Z : Mat P Q) (f : Pol P Q R 0) (g : Pol P Q 0 S) :
 def toTens (P Q R S : ℕ) (v : Ln P Q R S) : Pol P Q R 0 ⊗[ℂ] Pol P Q 0 S :=
   Sum.elim (fun c => X (v.1, Sum.inl c) ⊗ₜ 1) (fun e => 1 ⊗ₜ X (v.1, Sum.inr e)) v.2
 
+/- English proof (translation)
+Introduce `P Q R S x b hb hinv`. Set `φ : Pol P Q R S →ₐ[ℂ] Pol P Q R 0 ⊗[ℂ] Pol P Q 0 S` to `aeval (toTens P Q R S)`. Set `μ : Pol P Q R 0 ⊗[ℂ] Pol P Q 0 S →ₐ[ℂ] Pol P Q R S` to `Algebra.TensorProduct.productMap (rename (jR P Q R S)) (rename (jS P Q R S))`. Establish `hμ : ∀ f g, μ (f ⊗ₜ g) = rename (jR P Q R S) f * rename (jS P Q R S) g` using `fun f g => Algebra.TensorProduct.productMap_apply_tmul _ _ _ _`. Establish `hφR : ∀ f, φ (rename (jR P Q R S) f) = f ⊗ₜ 1`.
+
+Introduce `f`. Establish `: φ.comp (rename (jR P Q R S)) = Algebra.TensorProduct.includeLeft`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce and unpack `⟨a, c | c⟩`. Simplify using `[φ, toTens, jR]`.
+
+Conclude with `c.elim0`. Simplify using `using congrArg (fun h => h f) this`. Establish `hφS : ∀ g, φ (rename (jS P Q R S) g) = 1 ⊗ₜ g`. Introduce `g`. Establish `: φ.comp (rename (jS P Q R S)) = Algebra.TensorProduct.includeRight`.
+
+Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce and unpack `⟨a, c | c⟩`. Conclude with `c.elim0`. Simplify using `[φ, toTens, jS]`. Simplify using `using congrArg (fun h => h g) this`.
+
+Establish `hφ : ∀ f g, φ (rename (jR P Q R S) f * rename (jS P Q R S) g) = f ⊗ₜ g`. Introduce `f g`. Rewrite using `[map_mul, hφR, hφS, Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]`. Establish `hμφ : μ.comp φ = AlgHom.id ℂ _`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises.
+
+Introduce and unpack `⟨a, c | c⟩`. Simplify using `[φ, μ, toTens, jR]`. Simplify using `[φ, μ, toTens, jS]`. Set `l : Pol P Q R S →ₗ[ℂ] ℂ` to `TensorProduct.lift b ∘ₗ φ.toLinearMap`. Establish `hl : ∀ f g, l (rename (jR P Q R S) f * rename (jS P Q R S) g) = b f g`.
+
+Introduce `f g`. Simplify using `[l, hφ]`. Use `⟨l, ?_, ?_⟩` and prove the remaining obligations. Introduce `h0`. Apply `hb` to reduce the goal to its premises.
+
+Use `LinearMap.ext fun f => LinearMap.ext fun g => ?_` and prove the remaining obligations. Use `congrArg (fun m => m (rename (jR P Q R S) f * rename (jS P Q R S) g)) h0` as an intermediate fact. Simplify `this` using `[hl]`. Introduce `Z F`. Establish `key : ∀ t, l (fockAct1 P Q R S Z (μ t)) = (x : ℂ) * Z.trace * l (μ t)`.
+
+Introduce `t`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul f g => rw [hμ, fockAct1_rename_mul, map_add, hl, hl, hl, hinv]`. Consider the case `add t₁ t₂ h₁ h₂ => simp only [map_add, h₁, h₂, mul_add]`.
+
+Establish `hF : μ (φ F) = F` using `by simpa using congrArg (fun h => h F) hμφ`. Simplify `key (φ F)` using `[hF]`.
+-/
 theorem hasForm_of_pairing : ∀ (P Q R S : ℕ) (x : ℚ) (b : Pol P Q R 0 →ₗ[ℂ] Pol P Q 0 S →ₗ[ℂ] ℂ), b ≠ 0 →
     (∀ Z f g, b (fockAct1 P Q R 0 Z f) g + b f (fockAct1 P Q 0 S Z g) = (x : ℂ) * Z.trace * b f g) →
     GlobalTheory.RealLift.HasForm P Q R S x := by

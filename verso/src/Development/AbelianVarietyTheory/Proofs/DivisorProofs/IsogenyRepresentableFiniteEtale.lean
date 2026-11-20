@@ -16,6 +16,11 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 
 namespace GlobalTheory.UPel.HT.ES.IsogRep
 
+/- English proof (translation)
+Establish `e1 : (1 : T ⟶ G').left ≫ φ = T.hom ≫ f ≫ η[G].left` using `by show (T.hom ≫ η[G'].left) ≫ φ = _`. Rewrite using `[Category.assoc, ReciprocityTheory.ChartRestriction.G.Out.PullGtPf.IsGrpPullback.one_left h]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl`. Conclude with `e1`.
+
+Introduce `hz`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `h.1.hom_ext` to reduce the goal to its premises. Rewrite using `[hz, e1]`. Rewrite using `[Over.w, Over.w]`.
+-/
 theorem eq_one_iff_of_isGrpPullback {S S' : Scheme.{0}} {f : S' ⟶ S} {G : Over S} [GrpObj G] {G' : Over S'}
     [GrpObj G'] {φ : G'.left ⟶ G.left} (h : IsGrpPullback G' G f φ) {T : Over S'} (z : T ⟶ G') :
     z = 1 ↔ z.left ≫ φ = T.hom ≫ f ≫ η[G].left := by
@@ -30,12 +35,26 @@ theorem eq_one_iff_of_isGrpPullback {S S' : Scheme.{0}} {f : S' ⟶ S} {G : Over
     · rw [hz, e1]
     · rw [Over.w, Over.w]
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => rw [pow_zero, pow_zero, comp_one]`. Consider the case `succ n ih => rw [pow_succ, pow_succ, comp_mul, ih]`.
+-/
 theorem comp_pow_hom {S : Scheme.{0}} {T H A : Over S} [GrpObj A] (z : T ⟶ H) (f : H ⟶ A) (n : ℕ) :
     z ≫ f ^ n = (z ≫ f) ^ n := by
   induction n with
   | zero => rw [pow_zero, pow_zero, comp_one]
   | succ n ih => rw [pow_succ, pow_succ, comp_mul, ih]
 
+/- English proof (translation)
+Take `⟨B, gB, q, hB, hqm, hqfin, hqflat, hqsurj, hq⟩` from `GlobalTheory.IwLevel.quotGlobal_holds Y A₀ H i hA hi hm hf inferInstance`. Establish `hcB : IsCommMonObj B` using `hB.comm`. Establish `hker : ∀ (T : Over Y) (x : T ⟶ A₀), x ≫ q = 1 ↔ ∃ z : T ⟶ H, z ≫ i = x`. Introduce `T x`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h`. Establish `h' : x ≫ q = (1 : T ⟶ A₀) ≫ q` using `by rw [h, MonObj.one_comp]`. Use `⟨hq.lift x 1 h' ≫ fst H A₀, ?_⟩` and prove the remaining obligations. Establish `h1` using `hq.lift_fst x 1 h'`. Rewrite `h1` using `[comp_mul, hq.lift_snd, _root_.mul_one]`.
+
+Rewrite using `[Category.assoc, h1]`. Introduce and unpack `⟨y, rfl⟩`. Use `lift y (1 : T ⟶ A₀) ≫= hq.w` as an intermediate fact. Simplify `this` using `[comp_mul, ← Category.assoc]`. Establish `hK` using `GlobalTheory.TranslQuotientPow.isMonHom_id_pow A₀ k`.
+
+Establish `hqc : QuasiCompact q.left` using `inferInstance`. Take `⟨⟨ψ', hψ', hψ'e⟩, hepi⟩` from `GlobalTheory.exists_monHom_factor_of_flat_surjective Y A₀ B A₀ q ((𝟙 A₀) ^ k) hqm hK hqflat hqsurj hqc (fun T x hx => by`. Take `⟨z, rfl⟩` from `(hker T x).1 hx`. Rewrite using `[GlobalTheory.TranslQuotientPow.comp_id_pow, ← comp_pow_hom, hk, comp_one])`. Use `⟨B, gB, hcB, q, ψ', hB, ⟨hqm, hψ', hψ'e, ?_⟩, hker⟩` and prove the remaining obligations.
+
+Rewrite using `[← cancel_epi q, reassoc_of% hψ'e, GlobalTheory.TranslQuotientPow.comp_id_pow q k, GlobalTheory.TranslQuotientPow.pow_comp_hom q (𝟙 A₀) k, Category.id_comp]`.
+-/
 theorem exists_quot_quasiInv {Y : Scheme.{0}} [IsLocallyNoetherian Y] (A₀ : Over Y) [GrpObj A₀] [IsCommMonObj A₀]
     (H : Over Y) [GrpObj H] (i : H ⟶ A₀) (k : ℕ) (hA : IsAbelianScheme A₀) (hi : IsMonHom i) (hm : Mono i)
     (hf : IsFinite H.hom) (he : Etale H.hom) (hk : i ^ k = 1) :
@@ -66,6 +85,17 @@ theorem exists_quot_quasiInv {Y : Scheme.{0}} [IsLocallyNoetherian Y] (A₀ : Ov
   rw [← cancel_epi q, reassoc_of% hψ'e, GlobalTheory.TranslQuotientPow.comp_id_pow q k,
     GlobalTheory.TranslQuotientPow.pow_comp_hom q (𝟙 A₀) k, Category.id_comp]
 
+/- English proof (translation)
+Establish `hP : (g.left ≫ θ) ≫ A₀.hom = T'.hom ≫ y`. Rewrite using `[Category.assoc, hθ, ← Category.assoc, Over.w g]`. Set `P : Over.mk (T'.hom ≫ y) ⟶ A₀` to `Over.homMk (g.left ≫ θ) hP`. Establish `e : P ≫ ψ = 1 ↔ (g.left ≫ θ) ≫ ψ.left = T'.hom ≫ y ≫ η[B].left`. Rewrite using `[← Category.assoc T'.hom]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `congrArg Over.Hom.left h`. Introduce `h`. Conclude with `Over.OverMorphism.ext h`.
+
+Rewrite using `[eq_one_iff_of_isGrpPullback hθ', Over.comp_left, Category.assoc, ← hc, ← Category.assoc, ← e, hker]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz⟩`. Use `⟨z.left, Over.w z, ?_⟩` and prove the remaining obligations. Use `congrArg Over.Hom.left hz` as an intermediate fact.
+
+Rewrite `this` using `[Over.comp_left]`. Rewrite using `[← Category.assoc, this]`. Both sides reduce to the same expression. Introduce and unpack `⟨h, hH, hφ⟩`. Use `⟨Over.homMk h hH, Over.OverMorphism.ext ?_⟩` and prove the remaining obligations.
+
+Use `show h ≫ i.left = g.left ≫ θ`. Apply `h₀.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, hφ, Category.assoc]`. Rewrite using `[Category.assoc, Over.w i, hH, Category.assoc, hθ, ← Category.assoc, Over.w g]`.
+-/
 theorem ker_iff_of_pullbacks {S Y T : Scheme.{0}} {g₀ : Y ⟶ S} {A : Over S} {A₀ : Over Y}
     {φ₀ : A₀.left ⟶ A.left} (h₀ : IsPullback φ₀ A₀.hom A.hom g₀)
     {H : Over Y} {i : H ⟶ A₀} {B : Over Y} [GrpObj B] {ψ : A₀ ⟶ B}
@@ -97,6 +127,23 @@ theorem ker_iff_of_pullbacks {S Y T : Scheme.{0}} {g₀ : Y ⟶ S} {A : Over S} 
     · rw [Category.assoc, hφ, Category.assoc]
     · rw [Category.assoc, Over.w i, hH, Category.assoc, hθ, ← Category.assoc, Over.w g]
 
+/- English proof (translation)
+Introduce `S _ A _ _ k hA hk0 hk`. Take `⟨Y, hYf, hYe, hY⟩` from `GlobalTheory.T.exists_finite_etale_trivializing_torsion_abelianScheme S A k hA hk0 hk`. Use `⟨Y, hYf, hYe, ?_⟩` and prove the remaining obligations. Introduce `A₀ _ _ φ₀ h₀`. Use `haveI : IsLocallyNoetherian Y.left := LocallyOfFiniteType.isLocallyNoetherian Y.hom`.
+
+Take `⟨H, _, i, hi, hm, hHf, hHe, hik, hH⟩` from `hY A₀ φ₀ h₀`. Establish `hA₀ : IsAbelianScheme A₀` using `GlobalTheory.PolPull.isAbelianScheme_of_isGrpPullback hA h₀`. Take `⟨B, gB, cB, ψ, ψ', hB, hq, hker⟩` from `exists_quot_quasiInv A₀ H i k hA₀ hi hm hHf hHe hik`. Use `⟨B, gB, cB, ψ, ψ', hB, hq, ?_⟩` and prove the remaining obligations. Introduce `T x A₁ _ _ φ₁ B₁ _ _ ψ₁ ψ₁' h₁ hB₁ hq₁`.
+
+Establish `hkT : IsUnit (k : Γ(T, ⊤))`. Use `hk.map x.appTop.hom` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Take `⟨hψ₁m, hψ₁'m, e₁, e₂⟩` from `hq₁`. Establish `hkill : ∀ (T' : Over T) (g : T' ⟶ A₁), g ≫ ψ₁ = 1 → g ^ k = 1`.
+
+Introduce `T' g hg`. Rewrite using `[← GlobalTheory.TranslQuotientPow.comp_id_pow, ← e₁, ← Category.assoc, hg, one_comp]`. Establish `hA₁ : IsAbelianScheme A₁` using `GlobalTheory.PolPull.isAbelianScheme_of_isGrpPullback hA h₁`. Take `⟨y, ⟨hyx, hyker⟩, hyu⟩` from `hH T x A₁ φ₁ B₁ ψ₁ h₁ hB₁ hψ₁m hkill`. Establish `w : φ₁ ≫ A.hom = (A₁.hom ≫ y) ≫ Y.hom` using `by rw [h₁.1.w, Category.assoc, hyx]`.
+
+Set `θ` to `h₀.1.lift φ₁ (A₁.hom ≫ y) w`. Establish `hθφ : θ ≫ φ₀ = φ₁` using `h₀.1.lift_fst _ _ _`. Establish `hθs : θ ≫ A₀.hom = A₁.hom ≫ y` using `h₀.1.lift_snd _ _ _`. Establish `hθ : IsGrpPullback A₁ A₀ y θ` using `IsGrpPullback.cancel h₀ (h₁.congr hyx.symm hθφ.symm) hθs`. Take `⟨B₂, _, _, θ₂, ψ₂, ψ₂', hB₂, hθ₂, hq₂, hc₂, -⟩` from `GlobalTheory.UPel.HT.ES.pullQuasiInv T Y.left y A₀ B k ψ ψ' A₁ θ hB hq hθ`.
+
+Take `⟨hψ₂f, hψ₂e, hψ₂s⟩` from `GlobalTheory.UPel.HT.ES.isFinite_etale_surjective_of_isQuasiInv T A₁ B₂ k ψ₂ ψ₂' hA₁ hB₂ hkT hq₂`. Use `haveI := hψ₂f`. Use `haveI := hψ₂e`. Establish `hk₂` using `ker_iff_of_pullbacks h₀.1 hker hθs hθ₂ hc₂`. Take `⟨β, hβi, hβm, hβ⟩` from `GlobalTheory.SameKer.exists_iso_of_sameKer T A₁ B₂ B₁ ψ₂ ψ₁' ψ₁ k hB₁ hkT hq₂.1 hψ₁'m hψ₁m inferInstance hψ₂s inferInstance e₂ (fun T' g => by rw [hyker, hk₂, hθφ])`.
+
+Use `⟨y, ⟨hyx, θ, β.left ≫ θ₂, hθφ, hθ, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Use `haveI := hβi haveI : IsMonHom (asIso β).hom := hβm`. Conclude with `((isGrpPullback_of_iso (asIso β)).comp hθ₂).congr (Category.id_comp _) rfl`. Rewrite using `[hc₂, ← hβ, Over.comp_left, Category.assoc]`. Introduce and unpack `y' ⟨hy'x, θ', θ'', hθ'φ, hθ', hθ'', hc'⟩`.
+
+Apply `hyu` to reduce the goal to its premises. Use `⟨hy'x, fun T' g => ?_⟩` and prove the remaining obligations. Rewrite using `[ker_iff_of_pullbacks h₀.1 hker hθ'.1.w hθ'' hc', hθ'φ]`.
+-/
 theorem isogeny_rep : ∀ (S : Scheme.{0}) [IsLocallyNoetherian S] (A : Over S) [GrpObj A] [IsCommMonObj A] (k : ℕ), IsAbelianScheme A → 0 < k → IsUnit (k : Γ(S, ⊤)) → ∃ (Y : Over S), IsFinite Y.hom ∧ Etale Y.hom ∧ ∀ (A₀ : Over Y.left) [GrpObj A₀] [IsCommMonObj A₀] (φ₀ : A₀.left ⟶ A.left), IsGrpPullback A₀ A Y.hom φ₀ → ∃ (B : Over Y.left) (_ : GrpObj B) (_ : IsCommMonObj B) (ψ : A₀ ⟶ B) (ψ' : B ⟶ A₀), IsAbelianScheme B ∧ IsQuasiInv k ψ ψ' ∧ ∀ (T : Scheme.{0}) (x : T ⟶ S) (A₁ : Over T) [GrpObj A₁] [IsCommMonObj A₁] (φ₁ : A₁.left ⟶ A.left) (B₁ : Over T) [GrpObj B₁] [IsCommMonObj B₁] (ψ₁ : A₁ ⟶ B₁) (ψ₁' : B₁ ⟶ A₁), IsGrpPullback A₁ A x φ₁ → IsAbelianScheme B₁ → IsQuasiInv k ψ₁ ψ₁' → ∃! y : T ⟶ Y.left, y ≫ Y.hom = x ∧ ∃ (θ : A₁.left ⟶ A₀.left) (θ' : B₁.left ⟶ B.left), θ ≫ φ₀ = φ₁ ∧ IsGrpPullback A₁ A₀ y θ ∧ IsGrpPullback B₁ B y θ' ∧ θ ≫ ψ.left = ψ₁.left ≫ θ' := by
   intro S _ A _ _ k hA hk0 hk
   obtain ⟨Y, hYf, hYe, hY⟩ := GlobalTheory.T.exists_finite_etale_trivializing_torsion_abelianScheme S A k hA hk0 hk

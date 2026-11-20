@@ -15,21 +15,38 @@ open scoped Classical
 
 namespace GlobalTheory.Shin.LiftHc
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[galAct_apply, gal, incl]`.
+-/
 theorem galAct_incl {F F' : Type} [Field F] [Field F'] [Algebra F F'] (n : ℕ) (t : F' ≃ₐ[F] F')
     (x : GL (Fin n) F) : galAct F F' n t (incl F F' n x) = incl F F' n x := by
   ext i j; simp [galAct_apply, gal, incl]
 
+/- English proof (translation)
+Simplify using `[InPar, incl, gal]`.
+-/
 theorem inPar_incl {F F' : Type} [Field F] [Field F'] [Algebra F F'] (a n : ℕ) (x : GL (Fin n) F) :
     InPar a (incl F F' n x) ↔ InPar a x := by
   simp [InPar, incl, gal]
 
+/- English proof (translation)
+Introduce `i j hj hi`. Simplify using `[gal, hx i j hj hi]`.
+-/
 theorem inPar_gal {F : Type} [Field F] (t : F →+* F) (a n : ℕ) (x : GL (Fin n) F) (hx : InPar a x) :
     InPar a (gal t n x) := by
   intro i j hj hi; simp [gal, hx i j hj hi]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[gal]`.
+-/
 theorem gal_id {F : Type} [Field F] (n : ℕ) (x : GL (Fin n) F) : gal (RingHom.id F) n x = x := by
   ext i j; simp [gal]
 
+/- English proof (translation)
+Unfold `nrm nrmG`. Use `set c := incl F F' n y₀`. Use `set L := List.range (Module.finrank F F')`. Establish `h : ∀ i : ℕ, galAct F F' n (s ^ i) (c⁻¹ * δ * c) = MulAut.conj c⁻¹ (galAct F F' n (s ^ i) δ)`. Introduce `i`.
+
+Rewrite using `[map_mul, map_mul, map_inv, galAct_incl, MulAut.conj_apply, inv_inv]`. Simplify using `only [h]`. Establish `e` using `map_list_prod (MulAut.conj c⁻¹) (L.map fun i => galAct F F' n (s ^ i) δ)`. Rewrite `e` using `[List.map_map]`. Rewrite using `[show (fun i => MulAut.conj c⁻¹ (galAct F F' n (s ^ i) δ)) = (⇑(MulAut.conj c⁻¹) ∘ fun i => galAct F F' n (s ^ i) δ) from rfl, ← e, MulAut.conj_apply, inv_inv]`.
+-/
 theorem nrm_conj_incl {F F' : Type} [Field F] [Field F'] [Algebra F F'] (s : F' ≃ₐ[F] F') {n : ℕ}
     (δ : GL (Fin n) F') (y₀ : GL (Fin n) F) :
     nrm s ((incl F F' n y₀)⁻¹ * δ * incl F F' n y₀) = (incl F F' n y₀)⁻¹ * nrm s δ * incl F F' n y₀ := by
@@ -46,17 +63,26 @@ theorem nrm_conj_incl {F F' : Type} [Field F] [Field F'] [Algebra F F'] (s : F' 
   rw [show (fun i => MulAut.conj c⁻¹ (galAct F F' n (s ^ i) δ)) =
     (⇑(MulAut.conj c⁻¹) ∘ fun i => galAct F F' n (s ^ i) δ) from rfl, ← e, MulAut.conj_apply, inv_inv]
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.card_comap_mul_finsum_eq_finsum_fibres G₀ G ι H T hT`.
+-/
 theorem count {G₀ G : Type} [Group G₀] [Group G] [Finite G₀] [Finite G] (ι : G₀ →* G)
     (H : Subgroup G) (T : G → ℂ) (hT : ∀ y, T y ≠ 0 → ∃ k p, p ∈ H ∧ y = ι k * p) :
     (Nat.card (H.comap ι) : ℂ) * ∑ᶠ y, T y = ∑ᶠ k : G₀, ∑ᶠ p : H, T (ι k * p) :=
   GlobalTheory.T.card_comap_mul_finsum_eq_finsum_fibres G₀ G ι H T hT
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.diagonalBlocks_twistedConj_blockUpperTriangular F t a b n hn p x hp hx`.
+-/
 theorem blocks_twist {F : Type} [Field F] (t : F →+* F) (a b n : ℕ) (hn : n = a + b)
     (p x : GL (Fin n) F) (hp : InPar a p) (hx : InPar a x) :
     tlG a (p⁻¹ * x * gal t n p) = (tlG a p)⁻¹ * tlG a x * gal t a (tlG a p) ∧
     brG a b (p⁻¹ * x * gal t n p) = (brG a b p)⁻¹ * brG a b x * gal t b (brG a b p) :=
   GlobalTheory.T.diagonalBlocks_twistedConj_blockUpperTriangular F t a b n hn p x hp hx
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.inPar_conj_of_mem_adjoin_incl_of_inPar_conj F F' a n γ y₀ δ hA hP`.
+-/
 theorem inPar_conj_adjoin {F F' : Type} [Field F] [Field F'] [Algebra F F'] (a n : ℕ)
     (γ y₀ : GL (Fin n) F) (δ : GL (Fin n) F')
     (hA : (δ : Matrix (Fin n) (Fin n) F') ∈
@@ -64,6 +90,23 @@ theorem inPar_conj_adjoin {F F' : Type} [Field F] [Field F'] [Algebra F F'] (a n
     (hP : InPar a (y₀⁻¹ * γ * y₀)) : InPar a ((incl F F' n y₀)⁻¹ * δ * incl F F' n y₀) :=
   GlobalTheory.T.inPar_conj_of_mem_adjoin_incl_of_inPar_conj F F' a n γ y₀ δ hA hP
 
+/- English proof (translation)
+Establish `hle : a ≤ n` using `by omega`. Take `⟨H, π, hH, -⟩` from `GlobalTheory.T.exists_blockParabolic_subgroup_levi_projection F' a b n hn`. Take `⟨H₀, π₀, hH₀, -⟩` from `GlobalTheory.T.exists_blockParabolic_subgroup_levi_projection F a b n hn`. Use `set c := incl F F' n y₀ with hc`. Use `set δ₁ := c⁻¹ * δ * c with hδ₁def`.
+
+Establish `hgc : gal (s : F' →+* F') n c = c` using `galAct_incl n s y₀`. Establish `key : (c * p)⁻¹ * δ * gal (s : F' →+* F') n (c * p) = p⁻¹ * δ₁ * gal (s : F' →+* F') n p`. Rewrite using `[map_mul, hgc, hδ₁def]`. Use `group`. Distinguish the cases in `h1 : InPar a (y₀⁻¹ * γ * y₀)`.
+
+Rewrite using `[key]`. Establish `hδ₁ : InPar a δ₁` using `inPar_conj_adjoin a n γ y₀ δ hA h1`. Establish `hin : InPar a (p⁻¹ * δ₁ * gal (s : F' →+* F') n p)`. Rewrite using `[← hH]`. Conclude with `H.mul_mem (H.mul_mem (H.inv_mem ((hH p).2 hp)) ((hH _).2 hδ₁)) ((hH _).2 (inPar_gal _ a n p hp))`.
+
+Rewrite using `[if_pos hin, if_pos h1]`. Take `⟨et, eb⟩` from `blocks_twist (s : F' →+* F') a b n hn p δ₁ hp hδ₁`. Establish `hN₁ : nrm s δ₁ = incl F F' n (y₀⁻¹ * γ * y₀)`. Rewrite using `[hδ₁def, nrm_conj_incl, hN, map_mul, map_mul, map_inv]`. Take `⟨nt, nb⟩` from `GlobalTheory.T.galoisTwistedNormGL_diagonal_blocks F F' s hs a b n hn _ δ₁ h1 hδ₁ hN₁`.
+
+Establish `lα` using `GlobalTheory.T.base_change_lift_class_function F F' s hs a α hα`. Establish `lβ` using `GlobalTheory.T.base_change_lift_class_function F F' s hs b β hβ`. Rewrite using `[et, eb]`. Establish `eα` using `lα.2 (tlG a δ₁) (tlG a p)`. Establish `eβ` using `lβ.2 (brG a b δ₁) (brG a b p)`.
+
+Rewrite `eα`, `eβ` using `[galAct_apply]`. Rewrite using `[eα, eβ, lα.1 _ _ (by unfold IsNorm; rw [nt]), lβ.1 _ _ (by unfold IsNorm; rw [nb])]`. Rewrite using `[if_neg h1, if_neg]`. Introduce `hin`. Take `⟨y₁, p₁, hp₁, e, hγ₁⟩` from `(GlobalTheory.T.blockUpper_twistedConj_iff_defined_over_base F F' s hs a n hle γ δ (c * p) hA hN).1 hin`.
+
+Establish `hh : incl F F' n (y₁⁻¹ * y₀) = p₁ * p⁻¹`. Rewrite using `[map_mul, map_inv, ← hc, show c = incl F F' n y₁ * p₁ * p⁻¹ by rw [← e]; group]`. Use `group`. Establish `hP : InPar a (y₁⁻¹ * y₀)`. Rewrite using `[← inPar_incl (F' := F'), hh, ← hH]`.
+
+Conclude with `H.mul_mem ((hH _).2 hp₁) (H.inv_mem ((hH _).2 hp))`. Apply `h1` to reduce the goal to its premises. Establish `: y₀⁻¹ * γ * y₀ = (y₁⁻¹ * y₀)⁻¹ * (y₁⁻¹ * γ * y₁) * (y₁⁻¹ * y₀)` using `by group`. Rewrite using `[this, ← hH₀]`. Conclude with `H₀.mul_mem (H₀.mul_mem (H₀.inv_mem ((hH₀ _).2 hP)) ((hH₀ _).2 hγ₁)) ((hH₀ _).2 hP)`.
+-/
 theorem term (F F' : Type) [Field F] [Field F'] [Algebra F F'] [Finite F'] (s : F' ≃ₐ[F] F')
     (hs : ∀ t : F' ≃ₐ[F] F', t ∈ Subgroup.zpowers s) (a b n : ℕ) (hn : n = a + b)
     (α : GL (Fin a) F → ℂ) (β : GL (Fin b) F → ℂ) (hα : IsCl α) (hβ : IsCl β)
@@ -117,6 +160,21 @@ theorem term (F F' : Type) [Field F] [Field F'] [Algebra F F'] [Finite F'] (s : 
     rw [this, ← hH₀]
     exact H₀.mul_mem (H₀.mul_mem (H₀.inv_mem ((hH₀ _).2 hP)) ((hH₀ _).2 hγ₁)) ((hH₀ _).2 hP)
 
+/- English proof (translation)
+Use `haveI : Finite F := Finite.of_injective _ (algebraMap F F').injective`. Take `⟨H, -, hH, -⟩` from `GlobalTheory.T.exists_blockParabolic_subgroup_levi_projection F' a b n hn`. Use `set T : GL (Fin n) F' → ℂ := fun y => if InPar a (y⁻¹ * δ * gal (s : F' →+* F') n y) then shLift s α (tlG a (y⁻¹ * δ * gal (s : F' →+* F') n y)) * shLift s β (brG a b (y⁻¹ * δ * gal (s : F' →+* F') n y)) else 0 with hTdef`. Use `set c₀ : GL (Fin n) F → ℂ := fun y₀ => if InPar a (y₀⁻¹ * γ * y₀) then α (tlG a (y₀⁻¹ * γ * y₀)) * β (brG a b (y₀⁻¹ * γ * y₀)) else 0 with hc₀`. Establish `hsupp : ∀ y, T y ≠ 0 → ∃ k p, p ∈ H ∧ y = incl F F' n k * p`.
+
+Introduce `y hy`. Establish `hin : InPar a (y⁻¹ * δ * gal (s : F' →+* F') n y)`. Assume the negation of the conclusion as `h`. Conclude with `hy (if_neg h)`. Take `⟨k, p, hp, e, -⟩` from `(GlobalTheory.T.blockUpper_twistedConj_iff_defined_over_base F F' s hs a n (by omega) γ δ y hA hN).1 hin`.
+
+Conclude with `⟨k, p, (hH p).2 hp, e⟩`. Establish `hcnt` using `count (incl F F' n) H T hsupp`. Establish `hterm : ∀ k (p : H), T (incl F F' n k * p) = c₀ k` using `fun k p => term F F' s hs a b n hn α β hα hβ γ δ hA hN k p ((hH p).1 p.2)`. Simplify using `only [hterm] at hcnt`. Establish `e1 : Nat.card (H.comap (incl F F' n)) = Nat.card {p : GL (Fin n) F // InPar a p}` using `Nat.card_congr (Equiv.subtypeEquivRight fun x => by rw [Subgroup.mem_comap, hH, inPar_incl])`.
+
+Establish `e2 : Nat.card H = Nat.card {p : GL (Fin n) F' // InPar a p}` using `Nat.card_congr (Equiv.subtypeEquivRight fun x => hH x)`. Establish `hpos1 : (Nat.card {p : GL (Fin n) F // InPar a p} : ℂ) ≠ 0`. Rewrite using `[← e1]`. Conclude with `(Nat.card_pos (α := H.comap (incl F F' n))).ne'` after adjusting the coercions. Establish `hpos2 : (Nat.card {p : GL (Fin n) F' // InPar a p} : ℂ) ≠ 0`.
+
+Rewrite using `[← e2]`. Conclude with `(Nat.card_pos (α := H)).ne'` after adjusting the coercions. Use `haveI := Fintype.ofFinite H`. Establish `hconst : ∀ k, ∑ᶠ _p : H, c₀ k = (Nat.card H : ℂ) * c₀ k`. Introduce `k`.
+
+Rewrite using `[finsum_eq_sum_of_fintype, Finset.sum_const, Finset.card_univ, Nat.card_eq_fintype_card, nsmul_eq_mul]`. Simplify using `only [hconst] at hcnt`. Rewrite `hcnt` using `[← mul_finsum]`. Establish `hhc : hc a b α β n γ = (Nat.card {p : GL (Fin n) F // InPar a p} : ℂ)⁻¹ * ∑ᶠ y₀, c₀ y₀`. Simplify using `only [hc, hcTw, gal_id, hc₀]`.
+
+Rewrite `*` using `[hhc, e1, e2]`. Unfold `hcTw`. Rewrite using `[← hTdef]`. Clear the denominators using the available nonvanishing facts. Take the linear combination `hcnt`.
+-/
 theorem pointwise (F F' : Type) [Field F] [Field F'] [Algebra F F'] [Finite F'] (s : F' ≃ₐ[F] F')
     (hs : ∀ t : F' ≃ₐ[F] F', t ∈ Subgroup.zpowers s) (a b n : ℕ) (hn : n = a + b)
     (α : GL (Fin a) F → ℂ) (β : GL (Fin b) F → ℂ) (hα : IsCl α) (hβ : IsCl β)
@@ -165,6 +223,11 @@ theorem pointwise (F F' : Type) [Field F] [Field F'] [Algebra F F'] [Finite F'] 
 
 end GlobalTheory.Shin.LiftHc
 
+/- English proof (translation)
+Introduce `F F' _ _ _ _ s hs a b n hn α β hα hβ`. Use `haveI : Finite F := Finite.of_injective _ (algebraMap F F').injective`. Use function extensionality and compare the values at `δ`. Take `⟨γ, hγ⟩` from `GlobalTheory.T.every_element_is_norm F F' s hs n δ`. Take `⟨y, hyA, hyN⟩` from `GlobalTheory.T.conjugate_into_adjoined_algebra F F' s hs n δ γ hγ`.
+
+Establish `hcl` using `(GlobalTheory.T.twistedHarishChandraInductionGL_isTwistedClassFunction F (RingHom.id F) a b n α β).2.1`. Establish `hL` using `(GlobalTheory.T.base_change_lift_class_function F F' s hs n _ hcl).2 δ y`. Establish `hR` using `(GlobalTheory.T.twistedHarishChandraInductionGL_isTwistedClassFunction F' (s : F' →+* F') a b n (shLift s α) (shLift s β)).1 δ y`. Rewrite using `[← hL, ← hR, (GlobalTheory.T.base_change_lift_class_function F F' s hs n _ hcl).1 _ γ (by unfold IsNorm; rw [hyN])]`. Conclude with `(GlobalTheory.Shin.LiftHc.pointwise F F' s hs a b n hn α β hα hβ γ _ hyA hyN).symm`.
+-/
 theorem GlobalTheory.Shin.shLift_hc_eq_hcTw : ∀ (F F' : Type) [Field F] [Field F'] [Algebra F F'] [Finite F'] (s : F' ≃ₐ[F] F'), (∀ t : F' ≃ₐ[F] F', t ∈ Subgroup.zpowers s) → ∀ (a b n : ℕ), n = a + b → ∀ (α : GL (Fin a) F → ℂ) (β : GL (Fin b) F → ℂ), IsCl α → IsCl β → shLift s (hc a b α β n) = hcTw (s : F' →+* F') a b (shLift s α) (shLift s β) n := by
   intro F F' _ _ _ _ s hs a b n hn α β hα hβ
   haveI : Finite F := Finite.of_injective _ (algebraMap F F').injective

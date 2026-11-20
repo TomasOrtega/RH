@@ -71,6 +71,9 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace PositivityTheory.AdelicQuotientData
 
+/- English proof (translation)
+The claim follows from `have hQ1 : Q1 := isUnit_last_join have hQ2 : Q2 := closedSubgroup_cutoff_exists have hD0 : D0 := determinant_basic_of_G0 eJS2G0 have hMOD0 : AdelicLinearChange := linear_change_variables_of hD0 have hK5e : CornerEmbedding := corner_embedding_of eJS2G0 have hMOD1 : ColumnConjugati …`.
+-/
 theorem rsPole_of_inputs (eJS2G0 : jumpWindows.G0) (eCAUCHY : CAUCHY) (eJS2S1 : jumpWindows.S1) (eJS1L7 : JacquetShalikaLocal.L7) (eJS1L12 : JacquetShalikaLocal.lift_levelP_alt₂) (eJS2G5 : jumpWindows.G5) (eJS2S7 : jumpWindows.S7) (eJS2S10 : jumpWindows.MirabolicColumnBlock) (eJS2G5b : jumpWindows.G5b) (eJS2S2 : jumpWindows.S2) (eJS2S9 : jumpWindows.S9) (eJS2G1 : jumpWindows.G1) (eJS2G1b : jumpWindows.AlmostEverywhereSpherical) (eJS2G2c : jumpWindows.G2c) (eJS2G2a : jumpWindows.G2a) (eJS2G11 : jumpWindows.FourierUniquenessMirabolic) (eJS2S4 : jumpWindows.S4) (eJS2S8 : jumpWindows.S8) (eJS2G14 : jumpWindows.CuspidalIrreducibleSubrep) (eJS2SmoNorm : jumpWindows.SmoNorm) (eBlkJacquetShalikaBound : GlobalTheory.Published.JacquetShalikaBound) (eJS2G10 : jumpWindows.StandardCharacterExists) : RSPole :=
   have hQ1 : Q1 := isUnit_last_join
   have hQ2 : Q2 := closedSubgroup_cutoff_exists

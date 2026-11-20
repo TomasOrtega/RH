@@ -37,6 +37,15 @@ def CayLiftU : Prop := ∀ (n : ℕ) (ε : Fin n → Bool) (m h : Submodule ℝ 
         expR ε (L₀ p.1 : EuclideanSpace ℝ (Fin n × Fin n × Bool)) *
           expR ε (L₁ p.2 : EuclideanSpace ℝ (Fin n × Fin n × Bool))
 
+/- English proof (translation)
+Introduce `n ε m h hmh horth ι η _ _ L₀ L₁ hG`. Use `haveI hHaar : (volume : Measure (EuclideanSpace ℝ ι × EuclideanSpace ℝ η)).IsAddHaarMeasure := by`. Rewrite using `[Measure.volume_eq_prod]`. Use `infer_instance`. Take `⟨r₀, hr₀, f, hfc, hf0, hfm, hf⟩` from `hC n ε m h hmh horth ι η L₀ L₁ hG`.
+
+Take `⟨U, hU, ψ, ψ', hψ, hinj, hψ0, hψc, hψm, hψ'm, hdc, hd0, heq⟩` from `hL n ε m h hmh horth ι η L₀ L₁`. Establish `hpre : ψ ⁻¹' ball 0 r₀ ∈ 𝓝 (0 : EuclideanSpace ℝ ι × EuclideanSpace ℝ η)` using `hψc.preimage_mem_nhds (by rw [hψ0]; exact ball_mem_nhds _ hr₀)`. Take `⟨r, hr, hrs⟩` from `Metric.mem_nhds_iff.1 (Filter.inter_mem hU hpre)`. Use `⟨r, hr, fun p => |(ψ' p).det| * f (ψ p), ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `chart_change_cont f ψ ψ' 0 hψc (by rw [hψ0]; exact hfc) hdc`.
+
+Simplify using `only`. Rewrite using `[hd0, hψ0, hf0, one_mul]`. Conclude with `(continuous_abs.measurable.comp (ContinuousLinearMap.continuous_det.measurable.comp hψ'm)).mul (hfm.comp hψm)`. Introduce `A hA hAm`. Establish `hAU : A ⊆ ball 0 r` using `hA`.
+
+Establish `e : (fun p : EuclideanSpace ℝ ι × EuclideanSpace ℝ η => expR ε (L₀ p.1 : EuclideanSpace ℝ (Fin n × Fin n × Bool)) * expR ε (L₁ p.2 : EuclideanSpace ℝ (Fin n × Fin n × Bool))) '' A = ((fun p => cayR ε ((L₀ p.1 : EuclideanSpace ℝ (Fin n × Fin n × Bool)) + (L₁ p.2 : EuclideanSpace ℝ …`. Use `Set.image_congr fun p hp => ?_` and prove the remaining obligations. Conclude with `(heq p (hrs (hAU hp)).1).symm`. Rewrite using `[e]`. Conclude with `chart_change volume _ _ (ball 0 r₀) f hf ψ ψ' (ball 0 r) (fun p hp => (hψ p (hrs hp).1).mono fun q hq => (hrs hq).1) (hinj.mono fun q hq => (hrs hq).1) (by rintro _ ⟨q, hq, rfl⟩; exact (hrs hq).2) A hAU hAm`.
+-/
 theorem expProdU_of (hC : CayProdU) (hL : CayLiftU) : ExpProdU := by
   intro n ε m h hmh horth ι η _ _ L₀ L₁ hG
   haveI hHaar : (volume : Measure (EuclideanSpace ℝ ι × EuclideanSpace ℝ η)).IsAddHaarMeasure := by
@@ -65,6 +74,13 @@ theorem expProdU_of (hC : CayProdU) (hL : CayLiftU) : ExpProdU := by
       (fun p hp => (hψ p (hrs hp).1).mono fun q hq => (hrs hq).1) (hinj.mono fun q hq => (hrs hq).1)
       (by rintro _ ⟨q, hq, rfl⟩; exact (hrs hq).2) A hAU hAm
 
+/- English proof (translation)
+Establish `hs : HasStrictFDerivAt ψ ((ContinuousLinearEquiv.refl ℝ E : E ≃L[ℝ] E) : E →L[ℝ] E) 0`. Use `hψ.hasStrictFDerivAt one_ne_zero` as an intermediate fact. Rewrite `this` using `[hd, ← ContinuousLinearEquiv.coe_refl]`. Conclude with `this`. Establish `hev : ∀ᶠ p in 𝓝 (0 : E), ContDiffAt ℝ 1 ψ p` using `hψ.eventually (by simp)`.
+
+Use `⟨(HasStrictFDerivAt.toOpenPartialHomeomorph ψ hs).source ∩ {p | ContDiffAt ℝ 1 ψ p}, Filter.inter_mem ((HasStrictFDerivAt.toOpenPartialHomeomorph ψ hs).open_source.mem_nhds (HasStrictFDerivAt.mem_toOpenPartialHomeomorph_source hs)) hev, ?_, ?_, hψ.continuousAt, ?_, ?_⟩` and prove the remaining obligations. Introduce `p hp`. Conclude with `(((show ContDiffAt ℝ 1 ψ p from hp.2).differentiableAt (by simp)).hasFDerivAt).hasFDerivWithinAt`. Establish `hi` using `(HasStrictFDerivAt.toOpenPartialHomeomorph ψ hs).injOn`. Rewrite `hi` using `[HasStrictFDerivAt.toOpenPartialHomeomorph_coe]`.
+
+Conclude with `hi.mono Set.inter_subset_left`. Establish `hf : ContinuousAt (fderiv ℝ ψ) 0` using `(hψ.fderiv_right (m := 0) (by simp)).continuousAt`. Conclude with `ContinuousLinearMap.continuous_det.continuousAt.comp hf`. Rewrite using `[hd]`. Simplify using `[ContinuousLinearMap.det]`.
+-/
 theorem locChart_of_contDiff {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
     (ψ : E → E) (hψ : ContDiffAt ℝ 1 ψ 0) (hd : fderiv ℝ ψ 0 = ContinuousLinearMap.id ℝ E) :
     ∃ U ∈ 𝓝 (0 : E), (∀ p ∈ U, HasFDerivWithinAt ψ (fderiv ℝ ψ p) U p) ∧ Set.InjOn ψ U ∧
@@ -97,6 +113,9 @@ def CayPsiU : Prop := ∀ (n : ℕ) (ε : Fin n → Bool) (m h : Submodule ℝ (
         expR ε (L₀ p.1 : EuclideanSpace ℝ (Fin n × Fin n × Bool)) *
           expR ε (L₁ p.2 : EuclideanSpace ℝ (Fin n × Fin n × Bool))
 
+/- English proof (translation)
+Introduce `n ε m h' hmh horth ι η _ _ L₀ L₁`. Take `⟨ψ, hc, h0, hd, hmeas, hev⟩` from `h n ε m h' hmh horth ι η L₀ L₁`. Take `⟨U, hU, hder, hinj, hcont, hdet, hdet1⟩` from `locChart_of_contDiff ψ hc hd`. Conclude with `⟨U ∩ _, Filter.inter_mem hU hev, ψ, fderiv ℝ ψ, fun p hp => (hder p hp.1).mono Set.inter_subset_left, hinj.mono Set.inter_subset_left, h0, hcont, hmeas, measurable_fderiv ℝ ψ, hdet, hdet1, fun p hp => hp.2⟩`.
+-/
 theorem cayLiftU_of (h : CayPsiU) : CayLiftU := by
   intro n ε m h' hmh horth ι η _ _ L₀ L₁
   obtain ⟨ψ, hc, h0, hd, hmeas, hev⟩ := h n ε m h' hmh horth ι η L₀ L₁
@@ -105,6 +124,9 @@ theorem cayLiftU_of (h : CayPsiU) : CayLiftU := by
     fun p hp => (hder p hp.1).mono Set.inter_subset_left, hinj.mono Set.inter_subset_left, h0, hcont,
     hmeas, measurable_fderiv ℝ ψ, hdet, hdet1, fun p hp => hp.2⟩
 
+/- English proof (translation)
+The claim follows from `expProdU_of hC (cayLiftU_of hP)`.
+-/
 theorem expProdU_of_psi (hC : CayProdU) (hP : CayPsiU) : ExpProdU := expProdU_of hC (cayLiftU_of hP)
 
 def psiE {n : ℕ} (ε : Fin n → Bool) (m h : Submodule ℝ (EuclideanSpace ℝ (Fin n × Fin n × Bool))) {ι η : Type}
@@ -133,10 +155,16 @@ def PsiInvU : Prop := ∀ (n : ℕ) (ε : Fin n → Bool) (m h : Submodule ℝ (
         expR ε (L₀ p.1 : EuclideanSpace ℝ (Fin n × Fin n × Bool)) *
           expR ε (L₁ p.2 : EuclideanSpace ℝ (Fin n × Fin n × Bool))
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i j`. Apply the tactic sequence `apply Complex.ext <;> simp [unrealify]`.
+-/
 theorem unrealify_zero' (n : ℕ) : unrealify (0 : EuclideanSpace ℝ (Fin n × Fin n × Bool)) = 0 := by
   funext i j
   apply Complex.ext <;> simp [unrealify]
 
+/- English proof (translation)
+Establish `hr : realifyFun (0 : Matrix (Fin n) (Fin n) ℂ) = 0`. Use function extensionality and compare the values at `q`. Simplify using `[realifyFun]`. Simplify using `[psiE, unrealify_zero', hr]`.
+-/
 theorem psiE_zero {n : ℕ} (ε : Fin n → Bool) (m h : Submodule ℝ (EuclideanSpace ℝ (Fin n × Fin n × Bool)))
     {ι η : Type} [Fintype ι] [Fintype η] (L₀ : EuclideanSpace ℝ ι ≃ₗᵢ[ℝ] m) (L₁ : EuclideanSpace ℝ η ≃ₗᵢ[ℝ] h) :
     psiE ε m h L₀ L₁ 0 = 0 := by
@@ -145,12 +173,18 @@ theorem psiE_zero {n : ℕ} (ε : Fin n → Bool) (m h : Submodule ℝ (Euclidea
     simp [realifyFun]
   simp [psiE, unrealify_zero', hr]
 
+/- English proof (translation)
+Introduce `n ε m h hmh horth ι η _ _ L₀ L₁`. Take `⟨hc, hd⟩` from `hS n ε m h hmh horth ι η L₀ L₁`. Conclude with `⟨psiE ε m h L₀ L₁, hc, psiE_zero ε m h L₀ L₁, hd, hM n ε m h ι η L₀ L₁, hI n ε m h hmh horth ι η L₀ L₁⟩`.
+-/
 theorem cayPsiU_of (hS : PsiSmoothU) (hM : PsiMeasU) (hI : PsiInvU) : CayPsiU := by
   intro n ε m h hmh horth ι η _ _ L₀ L₁
   obtain ⟨hc, hd⟩ := hS n ε m h hmh horth ι η L₀ L₁
   exact ⟨psiE ε m h L₀ L₁, hc, psiE_zero ε m h L₀ L₁, hd, hM n ε m h ι η L₀ L₁,
     hI n ε m h hmh horth ι η L₀ L₁⟩
 
+/- English proof (translation)
+The claim follows from `expProdU_of_psi hC (cayPsiU_of hS hM hI)`.
+-/
 theorem expProdU_of_parts (hC : CayProdU) (hS : PsiSmoothU) (hM : PsiMeasU) (hI : PsiInvU) : ExpProdU :=
   expProdU_of_psi hC (cayPsiU_of hS hM hI)
 

@@ -7,6 +7,23 @@ namespace GlobalTheory.FinGL.LeviWh
 
 open GlobalTheory.FinGL Formalism.L2.DIV Module
 
+/- English proof (translation)
+Take `⟨v, hv, hv0⟩` from `(Submodule.ne_bot_iff W).1 hne`. Set `w : (ι → F) → V` to `fun l => ∑ x : ι → F, ψ (-∑ i, l i * x i) • T x v`. Establish `hprim` using `AddChar.IsPrimitive.of_ne_one hψ`. Establish `hs : ∀ x : ι → F, x ≠ 0 → ∑ l : ι → F, ψ (-∑ i, l i * x i) = 0`. Introduce `x hx`.
+
+Establish `e : ∀ l : ι → F, ψ (-∑ i, l i * x i) = ∏ i, ψ (l i * (-x i))`. Introduce `l`. Rewrite using `[← Finset.sum_neg_distrib]`. Simplify using `only [mul_neg]`. Proceed by induction on `(Finset.univ : Finset ι) using Finset.induction_on with`.
+
+Consider the case `empty => simp`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.prod_insert ha, AddChar.map_add_eq_mul, ih]`. Simplify using `only [e]`. Rewrite using `[← Fintype.piFinset_univ, ← Finset.prod_univ_sum (fun _ => Finset.univ) (fun i t => ψ (t * (-x i)))]`. Take `⟨i, hi⟩` from `Function.ne_iff.1 hx`.
+
+Use `Finset.prod_eq_zero (Finset.mem_univ i) ?_` and prove the remaining obligations. Use `AddChar.sum_mulShift (ψ := ψ) (-x i) hprim` as an intermediate fact. Rewrite `this` using `[if_neg (by simpa using hi)]`. Simplify using `using this`. Establish `hsum : ∑ l, w l = (Fintype.card (ι → F) : ℂ) • v`.
+
+Simplify using `only [w]`. Rewrite using `[Finset.sum_comm, Finset.sum_eq_single (0 : ι → F)]`. Simplify using `[h0, Nat.cast_smul_eq_nsmul, -Fintype.card_pi]`. Introduce `x _ hx`. Rewrite using `[← Finset.sum_smul, hs x hx, zero_smul]`.
+
+Simplify using the standard rewrite rules. Establish `hex : ∃ l, w l ≠ 0`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Rewrite `hsum` using `[Finset.sum_eq_zero fun l _ => hc l]`.
+
+Break down `smul_eq_zero.1 hsum.symm with h | h` into its components or cases. Conclude with `(Nat.cast_ne_zero.2 Fintype.card_ne_zero) h`. Conclude with `hv0 h`. Take `⟨l, hl⟩` from `hex`. Use `⟨l, w l, W.sum_mem fun x _ => W.smul_mem _ (hW x v hv), hl, fun x => ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [w, map_sum, map_smul, hT, Finset.smul_sum, smul_smul]`. Use `Fintype.sum_equiv (Equiv.addLeft x) _ _ fun z => ?_` and prove the remaining obligations. Simplify using `only [Equiv.coe_addLeft, ← AddChar.map_add_eq_mul, Pi.add_apply, mul_add, Finset.sum_add_distrib]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_eigenvector_of_stable {F : Type} [Field F] [Fintype F] (ψ : AddChar F ℂ) (hψ : ψ ≠ 1)
     {ι : Type} [Fintype ι] [DecidableEq ι] {V : Type} [AddCommGroup V] [Module ℂ V]
     (T : (ι → F) → V →ₗ[ℂ] V) (h0 : T 0 = LinearMap.id) (hT : ∀ x x' v, T x (T x' v) = T (x + x') v)
@@ -59,6 +76,9 @@ variable {F : Type} [Field F] {r : ℕ}
 def colMat (k : Fin r) (x : Fin r → F) : Matrix (Fin r) (Fin r) F :=
   Matrix.of fun i j => if i < k ∧ j = k then x i else 0
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single k]`. Apply the tactic sequence `by_cases h : i < k <;> simp [colMat, h]`. Introduce `m _ hm`. Simplify using `[colMat, hm]`. Simplify using the standard rewrite rules.
+-/
 theorem colMat_mul_apply (k : Fin r) (x : Fin r → F) (M : Matrix (Fin r) (Fin r) F) (i j : Fin r) :
     (colMat k x * M) i j = if i < k then x i * M k j else 0 := by
   rw [Matrix.mul_apply, Finset.sum_eq_single k]
@@ -67,6 +87,13 @@ theorem colMat_mul_apply (k : Fin r) (x : Fin r → F) (M : Matrix (Fin r) (Fin 
     simp [colMat, hm]
   · simp
 
+/- English proof (translation)
+Establish `: colMat k x * colMat k x' = 0`. Use extensionality with `i j`. Rewrite using `[colMat_mul_apply]`. Simplify using `[colMat]`. Establish `h2 : colMat k (x + x') = colMat k x + colMat k x'`.
+
+Use extensionality with `i j`. Simplify using `only [colMat, Matrix.of_apply, Matrix.add_apply, Pi.add_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[h2, add_mul, mul_add, mul_add, this]`. Simplify using `only [one_mul, mul_one]`.
+
+Normalize the expressions using the abelian group laws.
+-/
 theorem one_add_colMat_mul (k : Fin r) (x x' : Fin r → F) :
     (1 + colMat k x) * (1 + colMat k x') = 1 + colMat k (x + x') := by
   have : colMat k x * colMat k x' = 0 := by
@@ -81,6 +108,9 @@ theorem one_add_colMat_mul (k : Fin r) (x x' : Fin r → F) :
   simp only [one_mul, mul_one]
   abel
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[colMat]`.
+-/
 theorem colMat_zero (k : Fin r) : colMat k (0 : Fin r → F) = 0 := by
   ext i j
   simp [colMat]
@@ -91,6 +121,11 @@ def colGL (k : Fin r) (x : Fin r → F) : GL (Fin r) F where
   val_inv := by rw [one_add_colMat_mul]; simp [colMat_zero]
   inv_val := by rw [one_add_colMat_mul]; simp [colMat_zero]
 
+/- English proof (translation)
+Use `⟨fun i j hij => ?_, fun i => ?_⟩` and prove the remaining obligations. Establish `hij' : j < i` using `hij`. Establish `: ¬ (i < k ∧ j = k)` using `fun h => by`. Take `⟨h1, rfl⟩` from `h`. Conclude with `lt_asymm h1 hij'`.
+
+Simplify using `[colGL, colMat, this, Matrix.one_apply_ne hij'.ne']`. Establish `: ¬ (i < k ∧ i = k)` using `fun h => h.1.ne h.2`. Simplify using `[colGL, colMat, this]`.
+-/
 theorem colGL_mem_unip (k : Fin r) (x : Fin r → F) : colGL k x ∈ unip F r := by
   refine ⟨fun i j hij => ?_, fun i => ?_⟩
   · have hij' : j < i := hij
@@ -104,16 +139,38 @@ theorem colGL_mem_unip (k : Fin r) (x : Fin r → F) : colGL k x ∈ unip F r :=
 def colEl {b : Fin r → ℕ} (hb : Monotone b) (k : Fin r) (x : Fin r → F) : blockTri (κ := F) b :=
   ⟨colGL k x, fun i j hij => (colGL_mem_unip k x).1 (show j < i from hb.reflect_lt hij)⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem colEl_val {b : Fin r → ℕ} (hb : Monotone b) (k : Fin r) (x : Fin r → F) :
     ((colEl hb k x : GL (Fin r) F) : Matrix (Fin r) (Fin r) F) = 1 + colMat k x := rfl
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (Units.ext (one_add_colMat_mul k x x'))`.
+-/
 theorem colEl_mul {b : Fin r → ℕ} (hb : Monotone b) (k : Fin r) (x x' : Fin r → F) :
     colEl hb k x * colEl hb k x' = colEl hb k (x + x') :=
   Subtype.ext (Units.ext (one_add_colMat_mul k x x'))
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (Units.ext (by rw [colEl_val, colMat_zero]; simp))`.
+-/
 theorem colEl_zero {b : Fin r → ℕ} (hb : Monotone b) (k : Fin r) : colEl hb k (0 : Fin r → F) = 1 :=
   Subtype.ext (Units.ext (by rw [colEl_val, colMat_zero]; simp))
 
+/- English proof (translation)
+Establish `e : ∀ i j, (((colEl hb k (-x) * u : blockTri (κ` using `F) b) : GL (Fin r) F) : Matrix (Fin r) (Fin r) F) i j = ((u : GL (Fin r) F) : Matrix (Fin r) (Fin r) F) i j + if i < k then -x i * ((u : GL (Fin r) F) : Matrix (Fin r) (Fin r) F) k j else 0 := by`. Introduce `i j`. Rewrite using `[Subgroup.coe_mul, Units.val_mul, colEl_val, add_mul, one_mul, Matrix.add_apply, colMat_mul_apply]`. Both sides reduce to the same expression. Establish `hc : ∀ i j : Fin r, j.val < k.val + 1 → (((colEl hb k (-x) * u : blockTri (κ` using `F) b) : GL (Fin r) F) : Matrix (Fin r) (Fin r) F) i j = (1 : Matrix (Fin r) (Fin r) F) i j := by`.
+
+Introduce `i j hj`. Rewrite using `[e]`. Break down `Nat.lt_succ_iff_lt_or_eq.1 hj with h | h` into its components or cases. Rewrite using `[hu.2 i j h, hu.2 k j h, Matrix.one_apply_ne (i := k) (j := j) (fun h' => by simp [h'] at h)]`. Simplify using the standard rewrite rules.
+
+Take `rfl : j = k` from `Fin.ext h`. Rewrite using `[hu.1.2 j]`. Break down `lt_trichotomy i j with h' | h' | h'` into its components or cases. Rewrite using `[if_pos h', hx i h', Matrix.one_apply_ne h'.ne]`. Expand and normalize the polynomial expressions, which then agree.
+
+Substitute `h'` using the available equality. Simplify using `[hu.1.2 i]`. Rewrite using `[if_neg (lt_asymm h'), hu.1.1 (show j.val < i.val from h'), Matrix.one_apply_ne h'.ne']`. Simplify using the standard rewrite rules. Use `⟨⟨(unip F r).mul_mem (colGL_mem_unip k (-x)) hu.1, hc⟩, ?_⟩` and prove the remaining obligations.
+
+Unfold `edgeSum`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Distinguish the cases in `hij : blkEdge b i j`. Establish `h1` using `hij.1`. Distinguish the cases in `hk : k < j`.
+
+Establish `: ¬ i < k` using `by rw [Fin.lt_def] at hk ⊢; omega`. Rewrite using `[if_pos hij, if_pos ⟨hij, hk⟩, e, if_neg this, add_zero]`. Rewrite using `[if_pos hij, if_neg (fun h => hk h.2), hc i j (by rw [Fin.lt_def] at hk; omega), Matrix.one_apply_ne (fun h' => by simp [h'] at h1)]`. Rewrite using `[if_neg hij, if_neg (fun h => hij h.1)]`.
+-/
 theorem colEl_neg_mul {b : Fin r → ℕ} (hb : Monotone b) (k : Fin r) (x : Fin r → F) {u : blockTri (κ := F) b}
     (hu : u ∈ colSet F b k.val)
     (hx : ∀ i, i < k → x i = ((u : GL (Fin r) F) : Matrix (Fin r) (Fin r) F) i k) :
@@ -152,6 +209,11 @@ theorem colEl_neg_mul {b : Fin r → ℕ} (hb : Monotone b) (k : Fin r) (x : Fin
         Matrix.one_apply_ne (fun h' => by simp [h'] at h1)]
   · rw [if_neg hij, if_neg (fun h => hij h.1)]
 
+/- English proof (translation)
+Rewrite using `[Subgroup.coe_mul, Units.val_mul, colEl_val, mul_add, mul_one, Matrix.add_apply, Matrix.mul_apply]`. Use `congr 1`. Establish `: ∀ m, ((u : GL (Fin r) F) : Matrix (Fin r) (Fin r) F) i m * colMat k x m j = (1 : Matrix (Fin r) (Fin r) F) i m * colMat k x m j`. Introduce `m`. Distinguish the cases in `hm : m < k`.
+
+Rewrite using `[hu.2 i m (by rw [Fin.lt_def] at hm; omega)]`. Simplify using `[colMat, hm]`. Simplify using `only [this]`. Rewrite using `[← Matrix.mul_apply, one_mul]`. Both sides reduce to the same expression.
+-/
 theorem mul_colEl_val {b : Fin r → ℕ} (hb : Monotone b) (k : Fin r) (x : Fin r → F) {u : blockTri (κ := F) b}
     (hu : u ∈ colSet F b (k.val + 1)) (i j : Fin r) :
     (((u * colEl hb k x : blockTri (κ := F) b) : GL (Fin r) F) : Matrix (Fin r) (Fin r) F) i j =
@@ -168,6 +230,17 @@ theorem mul_colEl_val {b : Fin r → ℕ} (hb : Monotone b) (k : Fin r) (x : Fin
   rw [← Matrix.mul_apply, one_mul]
   rfl
 
+/- English proof (translation)
+Rewrite `hv`, the goal using `[mem_eig]`. Introduce `u hu`. Establish `hu' : u ∈ colSet F b k.val` using `⟨hu.1, fun i j hj => hu.2 i j (by omega)⟩`. Establish `hm : u * colEl hb k x ∈ colSet F b k.val`. Use `⟨(unip F r).mul_mem hu.1 (colGL_mem_unip k x), fun i j hj => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[mul_colEl_val hb k x hu, hu.2 i j (by omega), if_neg (fun h => by simp [h.2] at hj), add_zero]`. Take `⟨h1, h2⟩` from `colEl_neg_mul hb k x hm (fun i hi => by`. Rewrite using `[mul_colEl_val hb k x hu, hu.2 i k (by omega), if_pos ⟨hi, rfl⟩, Matrix.one_apply_ne hi.ne, zero_add])`. Take `⟨-, h3⟩` from `colEl_neg_mul hb k 0 hu' (fun i hi => by`. Rewrite using `[hu.2 i k (by omega), Matrix.one_apply_ne hi.ne]; rfl)`.
+
+Rewrite `h3` using `[neg_zero, colEl_zero, one_mul]`. Establish `h4 : edgeSum (fun i j => blkEdge b i j ∧ k < j) ((u * colEl hb k x : blockTri (κ` using `F) b) : GL (Fin r) F) = edgeSum (fun i j => blkEdge b i j ∧ k < j) (u : GL (Fin r) F) := by`. Unfold `edgeSum`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `split_ifs with h`.
+
+Rewrite using `[mul_colEl_val hb k x hu, if_neg (fun h' => h.2.ne' h'.2), add_zero]`. Both sides reduce to the same expression. Establish `h5` using `hv _ h1`. Rewrite `h5` using `[h2, h4, ← h3]`. Establish `h6 : u * colEl hb k x = colEl hb k x * (colEl hb k (-x) * (u * colEl hb k x))`.
+
+Rewrite using `[← mul_assoc (colEl hb k x), colEl_mul, add_neg_cancel, colEl_zero, one_mul]`. Rewrite using `[← Module.End.mul_apply, ← map_mul, h6, map_mul, Module.End.mul_apply, h5, map_smul]`.
+-/
 theorem colEl_stable {V : Type} [AddCommGroup V] [Module ℂ V] (ψ : AddChar F ℂ) {b : Fin r → ℕ} (hb : Monotone b)
     (σ : Representation ℂ (blockTri (κ := F) b) V) (k : Fin r) (x : Fin r → F) (v : V)
     (hv : v ∈ eig σ (colSet F b (k.val + 1)) (fun p => ψ (edgeSum (blkEdge b) (p : GL (Fin r) F)))) :
@@ -196,6 +269,21 @@ theorem colEl_stable {V : Type} [AddCommGroup V] [Module ℂ V] (ψ : AddChar F 
     rw [← mul_assoc (colEl hb k x), colEl_mul, add_neg_cancel, colEl_zero, one_mul]
   rw [← Module.End.mul_apply, ← map_mul, h6, map_mul, Module.End.mul_apply, h5, map_smul]
 
+/- English proof (translation)
+Introduce `F _ _ ψ hψ r V _ _ b σ hb hinf k hne`. Take `⟨l, w, hw, hw0, hl⟩` from `exists_eigenvector_of_stable ψ hψ (fun x => σ (colEl hb k x)) (by rw [colEl_zero, map_one]; rfl) (fun x x' v => by rw [← Module.End.mul_apply, ← map_mul, colEl_mul]) _ (fun x v hv => colEl_stable ψ hb σ k x v hv) hne`. Use `⟨l, fun i hi => ?_, (Submodule.ne_bot_iff _).2 ⟨w, ?_, hw0⟩⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hc`. Use `AddChar.IsPrimitive.of_ne_one hψ hi (AddChar.ext _ _ fun t => ?_)` and prove the remaining obligations.
+
+Establish `h1 : σ (colEl hb k (Pi.single i t)) = 1`. Use `hinf _ fun a c hac => ?_` and prove the remaining obligations. Rewrite using `[colEl_val, Matrix.add_apply, add_eq_left]`. Simplify using `only [colMat, Matrix.of_apply]`. Use `split_ifs with h`.
+
+Use `Pi.single_eq_of_ne (fun h' => hc ?_) _` and prove the remaining obligations. Rewrite using `[← h', hac, h.2]`. Conclude with `⟨h.2 ▸ h.1, rfl⟩`. Both sides reduce to the same expression. Establish `h2` using `hl (Pi.single i t)`.
+
+Rewrite `h2` using `[h1, Finset.sum_eq_single i (fun a _ ha => by simp [ha]) (by simp), Pi.single_eq_same]`. Establish `h3 : (ψ (l i * t) - 1) • w = 0` using `by rw [sub_smul, ← h2]; simp`. Establish `h4` using `(smul_eq_zero.1 h3).resolve_right hw0`. Simplify `h4` using `[sub_eq_zero]`. Rewrite `hw`, the goal using `[mem_eig]`.
+
+Introduce `u hu`. Use `set x : Fin r → F := fun i => ((u : GL (Fin r) F) : Matrix (Fin r) (Fin r) F) i k with hx`. Take `⟨h1, h2⟩` from `colEl_neg_mul hb k x hu (fun i _ => rfl)`. Establish `h5` using `hw _ h1`. Rewrite `h5` using `[h2]`.
+
+Establish `h6 : u = colEl hb k x * (colEl hb k (-x) * u)`. Rewrite using `[← mul_assoc (colEl hb k x), colEl_mul, add_neg_cancel, colEl_zero, one_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Module.End.mul_apply, ← map_mul, ← h6]`. Use `_ = _ := by`.
+
+Rewrite using `[h5, map_smul, hl x, smul_smul, colChar, AddChar.map_add_eq_mul, mul_comm]`.
+-/
 theorem exists_colChar_eig_ne_bot : ∀ (F : Type) [Field F] [Fintype F] (ψ : AddChar F ℂ), ψ ≠ 1 → ∀ (r : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V] (b : Fin r → ℕ) (σ : Representation ℂ (blockTri (κ := F) b) V), Monotone b → (∀ p : blockTri (κ := F) b, (∀ i j, b i = b j → ((p : GL (Fin r) F) : Matrix (Fin r) (Fin r) F) i j = (1 : Matrix (Fin r) (Fin r) F) i j) → σ p = 1) → ∀ k : Fin r, eig σ (colSet F b (k.val + 1)) (fun p => ψ (edgeSum (blkEdge b) (p : GL (Fin r) F))) ≠ ⊥ → ∃ l : Fin r → F, (∀ i, l i ≠ 0 → i < k ∧ b i = b k) ∧ eig σ (colSet F b k.val) (colChar ψ b k l) ≠ ⊥ := by
   intro F _ _ ψ hψ r V _ _ b σ hb hinf k hne
   obtain ⟨l, w, hw, hw0, hl⟩ := exists_eigenvector_of_stable ψ hψ (fun x => σ (colEl hb k x))

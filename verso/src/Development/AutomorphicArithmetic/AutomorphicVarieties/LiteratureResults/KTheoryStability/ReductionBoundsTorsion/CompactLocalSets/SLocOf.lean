@@ -7,6 +7,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.LiteratureResults.
 
 namespace PositivityTheory.KB
 
+/- English proof (translation)
+The claim follows from `LocalOverlapAverage.sLoc_of_parts (LocalOverlapAverage.avgS_of hEv) LocalOverlapAverage.simpBd_holds LocalOverlapAverage.unfold_holds LocalOverlapAverage.discr_holds LocalOverlapAverage.overlapG_holds`.
+-/
 theorem sLoc_of (hEv : SEv) : SLoc :=
   LocalOverlapAverage.sLoc_of_parts (LocalOverlapAverage.avgS_of hEv) LocalOverlapAverage.simpBd_holds LocalOverlapAverage.unfold_holds
     LocalOverlapAverage.discr_holds LocalOverlapAverage.overlapG_holds

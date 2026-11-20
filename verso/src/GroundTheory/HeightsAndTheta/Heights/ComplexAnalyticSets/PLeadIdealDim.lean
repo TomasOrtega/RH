@@ -11,6 +11,11 @@ noncomputable section
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Take `⟨d, hd, hdeg⟩` from `Finset.exists_mem_eq_sup f.support (support_nonempty.mpr hf) (fun m => m.sum fun _ e => e)`. Introduce `h0`. Establish `hc` using `congrArg (coeff d) h0`. Rewrite `hc` using `[leadForm, coeff_homogeneousComponent, coeff_zero]`. Rewrite `hc` using `[if_pos (by rw [totalDegree, hdeg]; rfl)]`.
+
+Conclude with `(mem_support_iff.mp hd) hc`.
+-/
 theorem leadForm_ne_zero {f : MvPolynomial (Fin n) ℂ} (hf : f ≠ 0) : leadForm f ≠ 0 := by
   obtain ⟨d, hd, hdeg⟩ := Finset.exists_mem_eq_sup f.support (support_nonempty.mpr hf)
     (fun m => m.sum fun _ e => e)
@@ -20,6 +25,11 @@ theorem leadForm_ne_zero {f : MvPolynomial (Fin n) ℂ} (hf : f ≠ 0) : leadFor
   rw [if_pos (by rw [totalDegree, hdeg]; rfl)] at hc
   exact (mem_support_iff.mp hd) hc
 
+/- English proof (translation)
+Introduce `i hi`. Rewrite `hi`, the goal using `[mem_vars_iff_mem_support]`. Take `⟨d, hd, hid⟩` from `hi`. Use `⟨d, ?_, hid⟩` and prove the remaining obligations. Rewrite `hd` using `[mem_support_iff, leadForm, coeff_homogeneousComponent]`.
+
+Rewrite using `[mem_support_iff]`. Use `split_ifs at hd`. Conclude with `hd`. Conclude with `absurd rfl hd`.
+-/
 theorem vars_leadForm_subset (f : MvPolynomial (Fin n) ℂ) : (leadForm f).vars ⊆ f.vars := by
   intro i hi
   rw [mem_vars_iff_mem_support] at hi ⊢
@@ -31,6 +41,9 @@ theorem vars_leadForm_subset (f : MvPolynomial (Fin n) ℂ) : (leadForm f).vars 
   · exact hd
   · exact absurd rfl hd
 
+/- English proof (translation)
+Proceed by induction on `q using MvPolynomial.induction_on with`. Consider the case `C a => rw [aeval_C, rename_C]`. Both sides reduce to the same expression. Consider the case `add p q hp hq => simp [hp, hq]`. Consider the case `mul_X p i hp => simp [hp]`.
+-/
 theorem aeval_mk_X (I : Ideal (MvPolynomial (Fin n) ℂ)) (u : Set (Fin n))
     (q : MvPolynomial u ℂ) :
     aeval (fun i : u => Ideal.Quotient.mk I (X (i : Fin n))) q =
@@ -40,12 +53,20 @@ theorem aeval_mk_X (I : Ideal (MvPolynomial (Fin n) ℂ)) (u : Set (Fin n))
   | add p q hp hq => simp [hp, hq]
   | mul_X p i hp => simp [hp]
 
+/- English proof (translation)
+Rewrite using `[algebraicIndependent_iff]`. Simplify using `only [aeval_mk_X, Ideal.Quotient.eq_zero_iff_mem]`.
+-/
 theorem algebraicIndependent_mk_X_iff (I : Ideal (MvPolynomial (Fin n) ℂ)) (u : Set (Fin n)) :
     AlgebraicIndependent ℂ (fun i : u => Ideal.Quotient.mk I (X (i : Fin n))) ↔
       ∀ q : MvPolynomial u ℂ, rename Subtype.val q ∈ I → q = 0 := by
   rw [algebraicIndependent_iff]
   simp only [aeval_mk_X, Ideal.Quotient.eq_zero_iff_mem]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hq0`. Establish `hf : rename Subtype.val q ≠ 0`. Rewrite using `[Ne, ← map_zero (rename (Subtype.val : u → Fin n)), (rename_injective _ Subtype.val_injective).eq_iff]` and apply the resulting hypothesis. Establish `hvars : ((leadForm (rename Subtype.val q)).vars : Set (Fin n)) ⊆ Set.range (Subtype.val : u → Fin n)`. Introduce `i hi`.
+
+Take `⟨j, -, rfl⟩` from `mem_vars_rename _ _ (vars_leadForm_subset _ hi)`. Conclude with `⟨j, rfl⟩`. Take `⟨r, hr⟩` from `exists_rename_eq_of_vars_subset_range _ _ Subtype.val_injective hvars`. Establish `hr0 : r = 0` using `h r (hr ▸ Ideal.subset_span ⟨_, hq, rfl⟩)`. Conclude with `leadForm_ne_zero hf (by rw [← hr, hr0, map_zero])`.
+-/
 theorem rename_mem_of_leadIdeal (J : Ideal (MvPolynomial (Fin n) ℂ)) (u : Set (Fin n))
     (h : ∀ q : MvPolynomial u ℂ, rename Subtype.val q ∈ leadIdeal J → q = 0)
     (q : MvPolynomial u ℂ) (hq : rename Subtype.val q ∈ J) : q = 0 := by
@@ -62,6 +83,11 @@ theorem rename_mem_of_leadIdeal (J : Ideal (MvPolynomial (Fin n) ℂ)) (u : Set 
   have hr0 : r = 0 := h r (hr ▸ Ideal.subset_span ⟨_, hq, rfl⟩)
   exact leadForm_ne_zero hf (by rw [← hr, hr0, map_zero])
 
+/- English proof (translation)
+Rewrite using `[ringKrullDim_quotient, Order.krullDim_eq_iSup_coheight, iSup_le_iff]`. Introduce `a`. Take `⟨Z, hZ, hZa⟩` from `Ideal.exists_minimalPrimes_le ((PrimeSpectrum.mem_zeroLocus _ _).mp a.2)`. Establish `: Z.IsPrime` using `hZ.1.1`. Set `z : PrimeSpectrum.zeroLocus (R` to `R) (I : Set R) := ⟨⟨Z, inferInstance⟩, (PrimeSpectrum.mem_zeroLocus _ _).mpr hZ.1.2⟩`.
+
+Establish `hza : z ≤ a` using `hZa`. Set `e : Set.Ici z ↪o PrimeSpectrum.zeroLocus (R` to `R) (Z : Set R) := OrderEmbedding.ofMapLEIff (fun x => ⟨x.1.1, (PrimeSpectrum.mem_zeroLocus _ _).mpr (show Z ≤ x.1.1.asIdeal from x.2)⟩) fun _ _ => Iff.rfl`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem quotient_dim_le_of_minimalPrimes {R : Type*} [CommRing R] (I : Ideal R)
     {N : WithBot ℕ∞} (h : ∀ Z ∈ I.minimalPrimes, ringKrullDim (R ⧸ Z) ≤ N) :
     ringKrullDim (R ⧸ I) ≤ N := by
@@ -85,6 +111,13 @@ theorem quotient_dim_le_of_minimalPrimes {R : Type*} [CommRing R] (I : Ideal R)
     _ = ringKrullDim (R ⧸ Z) := (ringKrullDim_quotient Z).symm
     _ ≤ N := h Z hZ
 
+/- English proof (translation)
+Use `set x : Fin n → MvPolynomial (Fin n) ℂ ⧸ P := fun i => Ideal.Quotient.mk P (X i) with hx`. Establish `hrange : Set.range x = Ideal.Quotient.mkₐ ℂ P '' Set.range X`. Rewrite using `[← Set.range_comp]`. Both sides reduce to the same expression. Establish `hadj : Algebra.adjoin ℂ (Set.range x) = ⊤`.
+
+Rewrite using `[hrange, ← AlgHom.map_adjoin, MvPolynomial.adjoin_range_X, Algebra.map_top, AlgHom.range_eq_top]`. Conclude with `Ideal.Quotient.mkₐ_surjective ℂ P`. Establish `_ : Algebra.IsAlgebraic (Algebra.adjoin ℂ (Set.range x)) (MvPolynomial (Fin n) ℂ ⧸ P)` using `⟨fun a => isAlgebraic_algebraMap (R := Algebra.adjoin ℂ (Set.range x)) (⟨a, hadj ▸ Algebra.mem_top⟩ : Algebra.adjoin ℂ (Set.range x))⟩`. Establish `_` using `(faithfulSMul_iff_algebraMap_injective ℂ (MvPolynomial (Fin n) ℂ ⧸ P)).mpr (algebraMap ℂ _).injective`. Take `⟨t, hts, ht⟩` from `exists_isTranscendenceBasis_subset (R := ℂ) (Set.range x)`.
+
+Take `⟨u, hu, hinj⟩` from `Set.exists_image_eq_injOn_of_subset_range hts`. Set `g : u → t` to `fun i => ⟨x i, hu ▸ Set.mem_image_of_mem x i.2⟩`. Establish `hg : Function.Injective g` using `fun i j hij => Subtype.ext (hinj i.2 j.2 (congrArg Subtype.val hij))`. Use `⟨u, ht.1.comp g hg, ?_⟩` and prove the remaining obligations. Rewrite using `[← ht.cardinalMk_eq_trdeg, ← hu, Cardinal.mk_image_eq_of_injOn _ _ hinj]`.
+-/
 theorem exists_vars_isTranscendenceBasis (P : Ideal (MvPolynomial (Fin n) ℂ)) [P.IsPrime] :
     ∃ u : Set (Fin n), AlgebraicIndependent ℂ (fun i : u => Ideal.Quotient.mk P (X (i : Fin n))) ∧
       Cardinal.mk u = Algebra.trdeg ℂ (MvPolynomial (Fin n) ℂ ⧸ P) := by
@@ -108,6 +141,17 @@ theorem exists_vars_isTranscendenceBasis (P : Ideal (MvPolynomial (Fin n) ℂ)) 
   refine ⟨u, ht.1.comp g hg, ?_⟩
   rw [← ht.cardinalMk_eq_trdeg, ← hu, Cardinal.mk_image_eq_of_injOn _ _ hinj]
 
+/- English proof (translation)
+Introduce `n J`. Apply `quotient_dim_le_of_minimalPrimes` to reduce the goal to its premises. Introduce `P hP`. Establish `_ : P.IsPrime` using `hP.1.1`. Take `⟨u, hu, hcard⟩` from `exists_vars_isTranscendenceBasis P`.
+
+Establish `hJ : ∀ q : MvPolynomial u ℂ, rename Subtype.val q ∈ J → q = 0` using `rename_mem_of_leadIdeal J u fun q hq => (algebraicIndependent_mk_X_iff P u).mp hu q (hP.1.2 hq)`. Set `M : Submonoid (MvPolynomial (Fin n) ℂ)` to `(nonZeroDivisors (MvPolynomial u ℂ)).map (rename (R := ℂ) (Subtype.val : u → Fin n))`. Establish `hdis : Disjoint (J : Set (MvPolynomial (Fin n) ℂ)) M`. Rewrite using `[Set.disjoint_left]`. Introduce and unpack `_ hJf ⟨q, hq, rfl⟩`.
+
+Conclude with `(mem_nonZeroDivisors_iff_ne_zero.mp hq) (hJ q hJf)`. Take `⟨Q, hQ, hJQ, hQM⟩` from `Ideal.exists_le_prime_disjoint J M hdis`. Establish `hQu : AlgebraicIndependent ℂ (fun i : u => Ideal.Quotient.mk Q (X (i : Fin n)))`. Rewrite using `[algebraicIndependent_mk_X_iff]`. Introduce `q hq`.
+
+Assume the negation of the conclusion as `hq0`. Conclude with `Set.disjoint_left.mp hQM hq ⟨q, mem_nonZeroDivisors_of_ne_zero hq0, rfl⟩`. Take `⟨a, haP, htP⟩` from `GroundTheory.Arith.Abelian.Jacobian.exists_ringKrullDim_eq_trdeg ℂ (A := MvPolynomial (Fin n) ℂ ⧸ P)`. Take `⟨b, hbQ, htQ⟩` from `GroundTheory.Arith.Abelian.Jacobian.exists_ringKrullDim_eq_trdeg ℂ (A := MvPolynomial (Fin n) ℂ ⧸ Q)`. Establish `hab : a ≤ b`.
+
+Establish `h` using `hQu.cardinalMk_le_trdeg`. Rewrite `h` using `[hcard, htP, htQ]`. Conclude with `h` after adjusting the coercions. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem LeadIdealDim.proof : LeadIdealDim.Statement := by
   intro n J
   apply quotient_dim_le_of_minimalPrimes

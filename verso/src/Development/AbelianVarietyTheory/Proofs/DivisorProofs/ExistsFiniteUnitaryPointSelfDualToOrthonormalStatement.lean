@@ -10,6 +10,9 @@ open scoped TensorProduct
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.DefTransfer.LatMove.exists_finite_point | exact GlobalTheory.DefTransfer.LatMove.exists_finite_point | (intros; apply GlobalTheory.DefTransfer.LatMove.exists_finite_point <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_finite_unitary_point_selfDual_to_orthonormal : ∀ (D : D7) [IsCMField D.host.E] (V : HSp D) (M : Matrix (Fin V.rank) (Fin V.rank) D.host.E),
     cT (D.sp.cm.sig : D.host.E →+* D.host.E) M * V.gram * M = 1 →
     ∃ h₀ ∈ GfC V, ∀ y, y ∈ latHat D.host.F D.host.E (L0c D V) ↔

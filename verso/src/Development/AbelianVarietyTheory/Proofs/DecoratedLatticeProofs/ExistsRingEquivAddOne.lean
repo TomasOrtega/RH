@@ -9,11 +9,31 @@ noncomputable def shiftVars (ι k : Type) [CommRing k] :
     (MvPolynomial.aeval fun i => MvPolynomial.X i - 1)
     (by ext1 i; simp) (by ext1 i; simp)
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `MvPolynomial.aeval (fun i => MvPolynomial.X i + 1) (MvPolynomial.X i) = _`. Simplify using the standard rewrite rules.
+-/
 theorem shiftVars_X (ι k : Type) [CommRing k] (i : ι) :
     shiftVars ι k (MvPolynomial.X i) = MvPolynomial.X i + 1 := by
   change MvPolynomial.aeval (fun i => MvPolynomial.X i + 1) (MvPolynomial.X i) = _
   simp
 
+/- English proof (translation)
+Establish `hs : AlgebraicIndepOn (↥k) id ({c} : Set Ω)` using `algebraicIndependent_unique_type_iff.mpr (by simpa using hc)`. Take `⟨t, hct, ht⟩` from `exists_isTranscendenceBasis_superset hs`. Establish `hind : AlgebraicIndependent (↥k) ((↑) : t → Ω)` using `ht.1`. Use `set K := IntermediateField.adjoin (↥k) (Set.range ((↑) : t → Ω)) with hK`. Set `e` to `hind.aevalEquivField`.
+
+Set `φ : FractionRing (MvPolynomial t ↥k) ≃ₐ[↥k] FractionRing (MvPolynomial t ↥k)` to `IsFractionRing.algEquivOfAlgEquiv (K := FractionRing (MvPolynomial t ↥k)) (L := FractionRing (MvPolynomial t ↥k)) (shiftVars t ↥k)`. Set `τ : K ≃ₐ[↥k] K` to `e.symm.trans (φ.trans e)`. Establish `hmem : ∀ i : t, (i : Ω) ∈ K` using `fun i => IntermediateField.subset_adjoin _ _ ⟨i, rfl⟩`. Establish `he : ∀ i : t, e (algebraMap (MvPolynomial t ↥k) _ (MvPolynomial.X i)) = ⟨i, hmem i⟩`. Introduce `i`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hind.aevalEquivField_algebraMap_apply_coe]`. Simplify using the standard rewrite rules. Establish `he1 : ∀ i : t, e (algebraMap (MvPolynomial t ↥k) _ (MvPolynomial.X i + 1)) = ⟨i, hmem i⟩ + 1`. Introduce `i`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hind.aevalEquivField_algebraMap_apply_coe]`. Simplify using the standard rewrite rules. Establish `hτ : ∀ i : t, τ ⟨i, hmem i⟩ = ⟨i, hmem i⟩ + 1`. Introduce `i`.
+
+Establish `h0 : e.symm ⟨i, hmem i⟩ = algebraMap (MvPolynomial t ↥k) _ (MvPolynomial.X i)`. Rewrite using `[AlgEquiv.symm_apply_eq, he]`. Express the relevant statement in the definitionally equal form `e (φ (e.symm ⟨i, hmem i⟩)) = _`. Rewrite using `[h0, IsFractionRing.algEquivOfAlgEquiv_algebraMap, shiftVars_X, he1]`. Establish `: Algebra.IsAlgebraic K Ω` using `ht.isAlgebraic_field`.
+
+Establish `: IsAlgClosure K Ω` using `⟨inferInstance, inferInstance⟩`. Set `σ : Ω ≃+* Ω` to `IsAlgClosure.equivOfEquiv Ω Ω τ.toRingEquiv`. Establish `hσ : ∀ y : K, σ (y : Ω) = (τ y : Ω)` using `fun y => IsAlgClosure.equivOfEquiv_algebraMap Ω Ω τ.toRingEquiv y`. Use `⟨σ, fun a ha => ?_, ?_⟩` and prove the remaining obligations. Establish `hak : a ∈ K` using `IntermediateField.algebraMap_mem K (⟨a, ha⟩ : ↥k)`.
+
+Establish `h1` using `hσ ⟨a, hak⟩`. Establish `h2 : τ ⟨a, hak⟩ = ⟨a, hak⟩` using `τ.commutes (⟨a, ha⟩ : ↥k)`. Rewrite `h1` using `[h2]`. Conclude with `h1`. Establish `hc' : c ∈ t` using `hct rfl`.
+
+Establish `h1` using `hσ ⟨c, hmem ⟨c, hc'⟩⟩`. Rewrite `h1` using `[hτ ⟨c, hc'⟩]`. Simplify using `using h1`.
+-/
 theorem exists_ringEquiv_add_one {Ω : Type} [Field Ω] [IsAlgClosed Ω] (k : Subfield Ω) (c : Ω)
     (hc : Transcendental (↥k) c) :
     ∃ (σ : Ω ≃+* Ω), (∀ a ∈ k, (σ : Ω → Ω) a = a) ∧ (σ : Ω → Ω) c = c + (1 : Ω) := by

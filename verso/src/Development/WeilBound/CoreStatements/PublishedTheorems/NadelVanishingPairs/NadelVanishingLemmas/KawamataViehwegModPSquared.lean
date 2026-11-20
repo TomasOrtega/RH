@@ -17,6 +17,19 @@ open GlobalTheory GlobalTheory.CechPic GlobalTheory.QCoh GlobalTheory.LogPair
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `p _ Y X g f π d _ hpb hproj hdp s L σ h K M A hM hA r b hr hb heq q hq`. Establish `hprop : IsProper f` using `GlobalTheory.SchemeWords.isProper_of_isProjOver hproj`. Establish `: Smooth f` using `SmoothOfRelativeDimension.smooth d f`. Take `⟨κ, U, hcov, hdisj, hU⟩` from `GlobalTheory.T.exists_integral_clopen_cover_of_smooth_quasiCompact_field (ZMod p) X f`. Use `GlobalTheory.T.cohomology_subsingleton_of_disjoint_open_cover X M κ U hM hcov hdisj q (fun c => ?_)` and prove the remaining obligations.
+
+Establish `hint` using `(hU c).1`. Establish `hcl` using `(hU c).2`. Take `⟨W, ρ, hρ, hpb'⟩` from `GlobalTheory.T.open_subscheme_closed_base_change (ZMod (p ^ 2)) (ZMod p) (ZMod.castHom (dvd_pow_self p two_ne_zero) (ZMod p)) Y X g f π (U c) (ZMod.ringHom_surjective _) hpb`. Establish `hsm : SmoothOfRelativeDimension d ((U c).ι ≫ f)`. Use `smoothOfRelativeDimension_comp (f := (U c).ι) 0 d f` as an intermediate fact.
+
+Simplify using `using this`. Establish `hproj' : IsProjOver ((U c).ι ≫ f)`. Take `⟨N, i, hi, e⟩` from `hproj`. Conclude with `⟨N, (U c).ι ≫ i, inferInstance, by rw [Category.assoc, e]⟩`. Establish `h'` using `GlobalTheory.T.relative_snc_open_immersion (ZMod (p ^ 2)) Y W.toScheme g W.ι d s L σ h`.
+
+Set `K' : CanonLB ((U c).ι ≫ f) d` to `Classical.choice inferInstance`. Establish `hA' : IsAmpleLB (A.pull (U c).ι)` using `hA.pull_of_isClosedImmersion (U c).ι`. Establish `hK` using `GlobalTheory.T.canonical_bundle_open_restrict (ZMod p) X (U c).toScheme f (U c).ι d K K'`. Use `GlobalTheory.T.kodaira_vanishing_mod_p_squared p W.toScheme (U c).toScheme (W.ι ≫ g) ((U c).ι ≫ f) ρ d hpb' hproj' hdp s (fun i => (L i).pull W.ι) (fun i => Cartier.secPull (σ i) W.ι) h' K' (M.pull (U c).ι) (A.pull (U c).ι) (pull_isLB hM _) hA' r b hr hb ?_ q hq` and prove the remaining obligations. Establish `e2` using `congrArg (CechPic.pull (U c).ι) heq`.
+
+Simplify using `only [map_nsmul, map_add, map_sum] at e2`. Rewrite using `[cls_pull hM (U c).ι, hK, cls_pull hA.isLB (U c).ι, e2]`. Use `congr 2`. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[← pull_comp, ← hρ, pull_comp]`.
+
+Both sides reduce to the same expression.
+-/
 theorem charp_vanishing_liftable : ∀ (p : ℕ) [Fact p.Prime] (Y X : Scheme.{0}) (g : Y ⟶ Sp (ZMod (p ^ 2))) (f : X ⟶ Sp (ZMod p)) (π : X ⟶ Y) (d : ℕ) [SmoothOfRelativeDimension d f], IsPullback π f g (spMap (ZMod.castHom (dvd_pow_self p two_ne_zero) (ZMod p))) → IsProjOver f → d < p → ∀ (s : ℕ) (L : Fin s → LB Y) (σ : ∀ i, (L i).Sec) (h : RelSnc g d L σ), ∀ (K : CanonLB f d) (M A : LB X) (hM : M.IsLB) (hA : IsAmpleLB A) (r : ℕ) (b : Fin s → ℕ), 0 < r → (∀ i, b i < r) → r • cls M hM = r • cls K.bundle K.isLB + ∑ i, b i • CechPic.pull π (cls (L i) (h.isLB i)) + cls A hA.isLB → ∀ q : ℕ, 0 < q → Subsingleton (coh (LB.toMod M) q) := by
   intro p _ Y X g f π d _ hpb hproj hdp s L σ h K M A hM hA r b hr hb heq q hq
   have hprop : IsProper f := GlobalTheory.SchemeWords.isProper_of_isProjOver hproj

@@ -16,6 +16,9 @@ section Linear
 
 variable {K V J : Type} [Field K] [AddCommGroup V] [Module K V] [FiniteDimensional K V] [Fintype J]
 
+/- English proof (translation)
+Establish `hs : Function.Surjective (DirectSum.coeLinearMap N)`. Rewrite using `[← LinearMap.range_eq_top, DirectSum.range_coeLinearMap, h]`. Rewrite using `[← Module.finrank_directSum]`. Conclude with `LinearMap.finrank_le_finrank_of_surjective hs`.
+-/
 theorem finrank_le_sum {N : J → Submodule K V} (h : ⨆ i, N i = ⊤) :
     Module.finrank K V ≤ ∑ i, Module.finrank K (N i) := by
   classical
@@ -24,6 +27,11 @@ theorem finrank_le_sum {N : J → Submodule K V} (h : ⨆ i, N i = ⊤) :
   rw [← Module.finrank_directSum]
   exact LinearMap.finrank_le_finrank_of_surjective hs
 
+/- English proof (translation)
+Establish `hs : Function.Surjective (DirectSum.coeLinearMap N)`. Rewrite using `[← LinearMap.range_eq_top, DirectSum.range_coeLinearMap, h]`. Establish `he : Module.finrank K (DirectSum J fun i => N i) = Module.finrank K V`. Rewrite using `[Module.finrank_directSum]`. Conclude with `le_antisymm hd (finrank_le_sum h)`.
+
+Conclude with `DirectSum.IsInternal.submodule_iSupIndep ⟨(LinearMap.injective_iff_surjective_of_finrank_eq_finrank he).2 hs, hs⟩`.
+-/
 theorem iSupIndep_of_sum_le {N : J → Submodule K V} (h : ⨆ i, N i = ⊤)
     (hd : ∑ i, Module.finrank K (N i) ≤ Module.finrank K V) : iSupIndep N := by
   classical
@@ -35,6 +43,9 @@ theorem iSupIndep_of_sum_le {N : J → Submodule K V} (h : ⨆ i, N i = ⊤)
   exact DirectSum.IsInternal.submodule_iSupIndep
     ⟨(LinearMap.injective_iff_surjective_of_finrank_eq_finrank he).2 hs, hs⟩
 
+/- English proof (translation)
+Rewrite using `[← Module.finrank_directSum]`. Conclude with `(LinearEquiv.ofBijective (DirectSum.coeLinearMap N) (DirectSum.isInternal_submodule_of_iSupIndep_of_iSup_eq_top hi h)).finrank_eq`.
+-/
 theorem sum_finrank_eq {N : J → Submodule K V} (hi : iSupIndep N) (h : ⨆ i, N i = ⊤) :
     ∑ i, Module.finrank K (N i) = Module.finrank K V := by
   classical
@@ -42,6 +53,9 @@ theorem sum_finrank_eq {N : J → Submodule K V} (hi : iSupIndep N) (h : ⨆ i, 
   exact (LinearEquiv.ofBijective (DirectSum.coeLinearMap N)
     (DirectSum.isInternal_submodule_of_iSupIndep_of_iSup_eq_top hi h)).finrank_eq
 
+/- English proof (translation)
+Establish `hle : ∀ i ∈ (Finset.univ : Finset J), Module.finrank K (LinearMap.range (M i)) ≤ Module.finrank K (W i)` using `fun i _ => LinearMap.finrank_range_le _`. Establish `he` using `(Finset.sum_eq_sum_iff_of_le hle).1 (le_antisymm (Finset.sum_le_sum hle) (hd ▸ finrank_le_sum h)) j (Finset.mem_univ _)`. Use `LinearMap.finrank_range_add_finrank_ker (M j)` as an intermediate fact. Rewrite using `[← LinearMap.ker_eq_bot, ← Submodule.finrank_eq_zero]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem injective_of_sum_eq {W : J → Type} [∀ i, AddCommGroup (W i)] [∀ i, Module K (W i)]
     [∀ i, FiniteDimensional K (W i)] {M : ∀ i, W i →ₗ[K] V} (h : ⨆ i, LinearMap.range (M i) = ⊤)
     (hd : ∑ i, Module.finrank K (W i) = Module.finrank K V) (j : J) : Function.Injective (M j) := by
@@ -57,6 +71,9 @@ end Linear
 
 open IntCoord in
 
+/- English proof (translation)
+Introduce and unpack `_ ⟨c, hc, rfl⟩`. Take `⟨u, hu, he⟩` from `((integral_tangent_coordinates K P F).2.2.2.2.2 O a τ c).1 hc`. Use `Submodule.subset_span ⟨u ≫ f, hM u c hu, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[isLieComb_one_iff, Category.assoc, ← hf, ← Category.assoc, (isLieComb_one_iff _ _ _).1 (he x), Category.assoc]`.
+-/
 theorem map_eigLat_le {K : Type} [Field K] [NumberField K] {P P' : Out.PolAV (Sp (𝓞 K))} {F : GenFib P}
     {F' : GenFib P'} {O : Type} [CommRing O] {a : OAct O P.A} {a' : OAct O P'.A} {f : P.A ⟶ P'.A}
     (hf : ∀ x, a.act x ≫ f = f ≫ a'.act x) {M : (Fin F.P₀.g → K) →ₗ[K] (Fin F'.P₀.g → K)}
@@ -68,6 +85,27 @@ theorem map_eigLat_le {K : Type} [Field K] [NumberField K] {P P' : Out.PolAV (Sp
   rw [isLieComb_one_iff, Category.assoc, ← hf, ← Category.assoc, (isLieComb_one_iff _ _ _).1 (he x),
     Category.assoc]
 
+/- English proof (translation)
+Introduce `hU hL E _ _ _ H K _ _ ρ σ₁ p q X FA FB M hM N`. Use `haveI : Finite (𝓞 E →+* 𝓞 K) := (Nat.card_pos_iff.1 (X.split ▸ Module.finrank_pos)).2`. Use `haveI := Fintype.ofFinite (𝓞 E →+* 𝓞 K)`. Establish `hρ : ρ ≠ 0` using `fun h => by`. Use `X.ρ_sq` as an intermediate fact.
+
+Rewrite `this` using `[h]`. Conclude with `H.d_prime.ne_zero (by simpa using this)`. Establish `hsq : ∀ τ : 𝓞 E →+* 𝓞 K, τ H.rt = -ρ ↔ ¬ τ H.rt = ρ` using `fun τ => by`. Establish `e : τ H.rt ^ 2 = ρ ^ 2` using `by rw [← map_pow, H.rt_sq, X.ρ_sq]; simp`. Use `⟨fun h h' => hρ ?_, fun h => (sq_eq_sq_iff_eq_or_eq_neg.1 e).resolve_left h⟩` and prove the remaining obligations.
+
+Establish `: (2 : 𝓞 K) * ρ = 0` using `by linear_combination h - h'`. Conclude with `(mul_eq_zero.1 this).resolve_left two_ne_zero`. Establish `hA : ∀ b : Bool, (∀ τ : 𝓞 E →+* 𝓞 K, latRank K ((FA b).eigLat (X.A b).t.act τ) = if τ H.rt = (if b then ρ else -ρ) then 1 else 0) ∧ iSupIndep (fun τ : 𝓞 E →+* 𝓞 K => Submodule.span K ((FA b).eigLat (X.A b).t.act τ : Set (Fin (FA b).P₀.g → K))) ∧ ⨆ τ : 𝓞 E →+* 𝓞 K, Submodule.span …`. Introduce and unpack `(_ | _)`. Take `⟨a, b, c, d, -⟩` from `GlobalTheory.T.lieAlgebra_eigenDecomposition_CM_signature E H K ρ (X.A false) (FA false) 0 1 X.split X.typeM X.ρ_sq`.
+
+Use `⟨fun τ => ?_, b, c, by rw [(FA false).fib.1]; simpa using d⟩` and prove the remaining obligations. Rewrite using `[a]`. Distinguish the cases in `h : τ H.rt = ρ`. Rewrite using `[if_pos h, if_neg (by simpa [hsq] using h)]`. Rewrite using `[if_neg h, if_pos (by simpa [hsq] using h)]`.
+
+Take `⟨a, b, c, d, -⟩` from `GlobalTheory.T.lieAlgebra_eigenDecomposition_CM_signature E H K ρ (X.A true) (FA true) 1 0 X.split X.typeP X.ρ_sq`. Use `⟨fun τ => ?_, b, c, by rw [(FA true).fib.1]; simpa using d⟩` and prove the remaining obligations. Rewrite using `[a]`. Simplify using the standard rewrite rules. Establish `hB : FB.P₀.g = Module.finrank ℚ E / 2 * (p + q)`.
+
+Rewrite using `[FB.fib.1]`. Conclude with `(GlobalTheory.T.lieAlgebra_eigenDecomposition_CM_signature E H K ρ X.B FB p q X.split X.typeB X.ρ_sq).2.2.2.1`. Establish `hsur : ⨆ j, LinearMap.range (M j) = ⊤` using `GlobalTheory.T.iSup_range_differential_eq_top_of_jointly_onto hU hL K X.B.pol FB σ₁ (Fin p ⊕ Fin q) (fun j => (X.A j.isLeft).pol) (fun j => FA j.isLeft) X.φ M inferInstance (fun j => (X.lin j).1) hM fun y => by`. Take `⟨x, hx⟩` from `X.onto y`. Conclude with `⟨p + q, finSumFinEquiv.symm, fun m => x _, hx⟩`.
+
+Establish `hdim : ∑ j : Fin p ⊕ Fin q, Module.finrank K (Fin (FA j.isLeft).P₀.g → K) = Module.finrank K (Fin FB.P₀.g → K)`. Simplify using `[(hA _).2.2.2, hB, mul_comm]`. Establish `hinj` using `injective_of_sum_eq hsur hdim`. Establish `hspan : ∀ x, Submodule.span K (N x : Set (Fin FB.P₀.g → K)) = (Submodule.span K ((FA x.1.isLeft).eigLat (X.A x.1.isLeft).t.act x.2 : Set _)).map (M x.1)` using `fun x => by`. Rewrite using `[Submodule.map_span]`.
+
+Both sides reduce to the same expression. Establish `hrk : ∀ x, latRank K (N x) = latRank K ((FA x.1.isLeft).eigLat (X.A x.1.isLeft).t.act x.2)` using `fun x => by`. Rewrite using `[latRank, hspan]`. Conclude with `(Submodule.equivMapOfInjective _ (hinj x.1) _).finrank_eq.symm`. Establish `htop : ⨆ x, Submodule.span K (N x : Set (Fin FB.P₀.g → K)) = ⊤`.
+
+Rewrite using `[iSup_prod, ← hsur]`. Use `iSup_congr fun j => ?_` and prove the remaining obligations. Rewrite using `[← Submodule.map_top, ← (hA j.isLeft).2.2.1, Submodule.map_iSup]`. Conclude with `iSup_congr fun τ => hspan (j, τ)`. Use `⟨fun x => map_eigLat_le (X.lin x.1).2 (hM x.1) x.2, fun x => ?_, hinj, iSupIndep_of_sum_le htop ?_, htop⟩` and prove the remaining obligations.
+
+Rewrite using `[hrk, (hA _).1]`. Rewrite using `[← hdim, Fintype.sum_prod_type]`. Use `le_of_eq (Finset.sum_congr rfl fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[← sum_finrank_eq (hA j.isLeft).2.1 (hA j.isLeft).2.2.1]`. Conclude with `Finset.sum_congr rfl fun τ _ => hrk (j, τ)`.
+-/
 theorem letters_independent : ThetaUnifAV → Out.Laws → IndSt := by
   intro hU hL E _ _ _ H K _ _ ρ σ₁ p q X FA FB M hM N
   classical

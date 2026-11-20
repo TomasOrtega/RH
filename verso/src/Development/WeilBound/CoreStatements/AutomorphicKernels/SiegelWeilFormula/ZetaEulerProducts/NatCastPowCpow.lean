@@ -12,6 +12,13 @@ variable (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 def badSet : Set (HeightOneSpectrum (𝓞 F)) :=
   {v | ¬ ∀ w : HeightOneSpectrum (𝓞 E), w.asIdeal.LiesOver v.asIdeal → Algebra.IsUnramifiedAt (𝓞 F) w.asIdeal}
 
+/- English proof (translation)
+Set `_ : Algebra (FractionRing (𝓞 F)) (FractionRing (𝓞 E))` to `FractionRing.liftAlgebra _ _`. Establish `hD : differentIdeal (𝓞 F) (𝓞 E) ≠ ⊥` using `differentIdeal_ne_bot`. Establish `hW` using `Ideal.finite_factors (R := 𝓞 E) hD`. Use `(hW.image (HeightOneSpectrum.under (𝓞 F))).subset ?_` and prove the remaining obligations. Introduce `v hv`.
+
+Simplify using `only [badSet, Set.mem_ofPred_eq, not_forall] at hv`. Take `⟨w, hwv, hw⟩` from `hv`. Use `⟨w, ?_, ?_⟩` and prove the remaining obligations. Use `w.isPrime` as an intermediate fact. Conclude with `(dvd_differentIdeal_iff (P := w.asIdeal)).2 hw`.
+
+Use `ext1`. Simplify using `[hwv.over]`.
+-/
 theorem badSet_finite : (badSet F E).Finite := by
   classical
   let _ : Algebra (FractionRing (𝓞 F)) (FractionRing (𝓞 E)) := FractionRing.liftAlgebra _ _
@@ -27,6 +34,9 @@ theorem badSet_finite : (badSet F E).Finite := by
   · ext1
     simp [hwv.over]
 
+/- English proof (translation)
+Use `((IsDedekindDomain.primesOver_finite v.asIdeal (𝓞 E)).preimage (Set.injOn_of_injective (fun a b h => HeightOneSpectrum.ext h))).subset ?_` and prove the remaining obligations. Introduce `P hP`. Conclude with `⟨P.isPrime, hP⟩`.
+-/
 theorem fib_finite (v : HeightOneSpectrum (𝓞 F)) :
     {P : HeightOneSpectrum (𝓞 E) | P.asIdeal.LiesOver v.asIdeal}.Finite := by
   refine ((IsDedekindDomain.primesOver_finite v.asIdeal (𝓞 E)).preimage
@@ -37,10 +47,18 @@ theorem fib_finite (v : HeightOneSpectrum (𝓞 F)) :
 noncomputable def fib (v : HeightOneSpectrum (𝓞 F)) : Finset (HeightOneSpectrum (𝓞 E)) :=
   (fib_finite F E v).toFinset
 
+/- English proof (translation)
+Simplify using `[fib]`.
+-/
 theorem mem_fib {v : HeightOneSpectrum (𝓞 F)} {P : HeightOneSpectrum (𝓞 E)} :
     P ∈ fib F E v ↔ P.asIdeal.LiesOver v.asIdeal := by
   simp [fib]
 
+/- English proof (translation)
+Proceed by induction on `f with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Establish `h` using `Complex.mul_cpow_ofReal_nonneg (a := ((q ^ n : ℕ) : ℝ)) (b := (q : ℝ)) (by positivity) (by positivity) s`. Establish `e1 : ((q ^ (n + 1) : ℕ) : ℂ) = (((q ^ n : ℕ) : ℝ) : ℂ) * ((q : ℝ) : ℂ)` using `by push_cast; ring`.
+
+Rewrite using `[e1, h, pow_succ, ← ih]`. Simplify using `only [Complex.ofReal_natCast]`.
+-/
 theorem natCast_pow_cpow (q f : ℕ) (s : ℂ) : ((q ^ f : ℕ) : ℂ) ^ s = ((q : ℂ) ^ s) ^ f := by
   induction f with
   | zero => simp
@@ -51,12 +69,56 @@ theorem natCast_pow_cpow (q f : ℕ) (s : ℂ) : ((q ^ f : ℕ) : ℂ) ^ s = ((q
     rw [e1, h, pow_succ, ← ih]
     simp only [Complex.ofReal_natCast]
 
+/- English proof (translation)
+Rewrite using `[he, one_mul]`.
+-/
 private theorem inertiaDeg_eq_ramIdx_mul_of_ramIdx_eq_one {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E]
     [Algebra F E] (p : Ideal (𝓞 F)) (P : HeightOneSpectrum (𝓞 E))
     (he : p.ramificationIdx' P.asIdeal = 1) :
     p.inertiaDeg' P.asIdeal = p.ramificationIdx' P.asIdeal * p.inertiaDeg' P.asIdeal := by
   rw [he, one_mul]
 
+/- English proof (translation)
+Use `set p := v.asIdeal with hpdef`. Establish `hp0 : p ≠ ⊥` using `v.ne_bot`. Use `haveI hpm : p.IsMaximal := v.isMaximal`. Establish `hmap0 : Ideal.map (algebraMap (𝓞 F) (𝓞 E)) p ≠ ⊥` using `Ideal.map_ne_bot_of_ne_bot hp0`. Establish `hunr : ∀ w : HeightOneSpectrum (𝓞 E), w.asIdeal.LiesOver p → Algebra.IsUnramifiedAt (𝓞 F) w.asIdeal`.
+
+Simplify `hv` using `[badSet]`. Establish `hlies : ∀ P ∈ fib F E v, P.asIdeal.LiesOver p` using `fun P hP => (mem_fib F E).mp hP`. Establish `hmapfib : (fib F E v).map ⟨HeightOneSpectrum.asIdeal, fun a b h => HeightOneSpectrum.ext h⟩ = IsDedekindDomain.primesOverFinset p (𝓞 E)`. Use extensionality with `Q`. Rewrite using `[Finset.mem_map, IsDedekindDomain.mem_primesOverFinset_iff hp0]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨P, hP, rfl⟩`. Conclude with `⟨P.isPrime, (mem_fib F E).mp hP⟩`. Introduce `hQ`. Establish `hQ0 : Q ≠ ⊥`.
+
+Introduce `h`. Apply `hp0` to reduce the goal to its premises. Rewrite using `[hQ.2.over, h]`. Conclude with `Ideal.comap_bot_of_injective _ (FaithfulSMul.algebraMap_injective (𝓞 F) (𝓞 E))`. Conclude with `⟨⟨Q, hQ.1, hQ0⟩, (mem_fib F E).mpr hQ.2, rfl⟩`.
+
+Establish `hcard_eq : (IsDedekindDomain.primesOverFinset p (𝓞 E)).card = (fib F E v).card`. Rewrite using `[← hmapfib, Finset.card_map]`. Establish `he : ∀ P ∈ fib F E v, p.ramificationIdx' P.asIdeal = 1`. Introduce `P hP`. Use `haveI := hlies P hP`.
+
+Use `haveI := hunr P (hlies P hP)`. Rewrite using `[Ideal.ramificationIdx'_eq_ramificationIdx' p P.asIdeal hmap0]`. Conclude with `Ideal.ramificationIdx_eq_one _ _`. Establish `hsum : ∑ P ∈ fib F E v, p.inertiaDeg' P.asIdeal = 2`. Establish `h` using `Ideal.sum_ramification_inertia (𝓞 E) F E hp0`.
+
+Rewrite `h` using `[← hmapfib, Finset.sum_map]`. Rewrite using `[← h2, ← h]`. Use `Finset.sum_congr rfl fun P hP => ?_` and prove the remaining obligations. Conclude with `inertiaDeg_eq_ramIdx_mul_of_ramIdx_eq_one p P (he P hP)`. Establish `hnorm : ∀ P ∈ fib F E v, Ideal.absNorm P.asIdeal = Ideal.absNorm p ^ p.inertiaDeg' P.asIdeal`.
+
+Introduce `P hP`. Use `haveI := hlies P hP`. Conclude with `Ideal.absNorm_eq_pow_inertiaDeg'_of_liesOver P.asIdeal p hpm.isPrime hp0`. Establish `hfpos : ∀ P ∈ fib F E v, 0 < p.inertiaDeg' P.asIdeal`. Introduce `P hP`.
+
+Use `haveI := hlies P hP`. Conclude with `Ideal.inertiaDeg'_pos p P.asIdeal`. Establish `hcard_le : (fib F E v).card ≤ 2`. Rewrite using `[← hsum, Finset.card_eq_sum_ones]`. Conclude with `Finset.sum_le_sum fun P hP => hfpos P hP`.
+
+Establish `hcard_pos : 0 < (fib F E v).card`. Rewrite using `[Finset.card_pos]`. Assume the negation of the conclusion as `h`. Rewrite `h` using `[Finset.not_nonempty_iff_eq_empty]`. Rewrite `hsum` using `[h]`.
+
+Simplify using `at hsum`. Break down `(show (fib F E v).card = 1 ∨ (fib F E v).card = 2 by omega) with hc | hc` into its components or cases. Take `⟨a, ha⟩` from `Finset.card_eq_one.mp hc`. Establish `hamem : a ∈ fib F E v`. Rewrite using `[ha]`.
+
+Conclude with `Finset.mem_singleton_self a`. Establish `haf : p.inertiaDeg' a.asIdeal = 2`. Rewrite `hsum` using `[ha, Finset.sum_singleton]`. Conclude with `hsum`. Establish `hmapa : Ideal.map (algebraMap (𝓞 F) (𝓞 E)) p = a.asIdeal` using `by haveI := hlies a hamem`.
+
+Establish `hle : Ideal.map (algebraMap (𝓞 F) (𝓞 E)) p ≤ a.asIdeal` using `Ideal.map_le_of_le_comap (le_of_eq (Ideal.LiesOver.over))`. Take `⟨J, hJ⟩` from `Ideal.dvd_iff_le.mpr hle`. Establish `hn` using `congrArg Ideal.absNorm hJ`. Rewrite `hn` using `[Ideal.absNorm_algebraMap, map_mul, hnorm a hamem, haf, ← IsFractionRing.finrank_eq (𝓞 F) F (𝓞 E) E, h2]`. Establish `hNp : 0 < Ideal.absNorm p` using `Nat.pos_of_ne_zero (by rwa [Ne, Ideal.absNorm_eq_zero_iff])`.
+
+Establish `hJ1 : Ideal.absNorm J = 1`. Establish `h' : Ideal.absNorm p ^ 2 * 1 = Ideal.absNorm p ^ 2 * Ideal.absNorm J`. Rewrite using `[mul_one]`. Conclude with `hn`. Conclude with `(Nat.eq_of_mul_eq_mul_left (by positivity) h').symm`.
+
+Rewrite `hJ` using `[Ideal.absNorm_eq_one_iff.mp hJ1, Ideal.mul_top]`. Conclude with `hJ`. Establish `hfield : IsField (TensorProduct F (HeightOneSpectrum.adicCompletion F v) E)` using `GlobalTheory.InertField.isField_of_inert F E h2 v (by rw [hmapa]; exact a.isPrime)`. Establish `heSp : PositivityTheory.SiegelWeilFormula.Gen.eSp E v = -1`. Unfold `PositivityTheory.SiegelWeilFormula.Gen.eSp`.
+
+Conclude with `if_pos hfield`. Rewrite using `[ha, Finset.prod_singleton, hnorm a hamem, haf, heSp, natCast_pow_cpow]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨a, b, hab, hfab⟩` from `Finset.card_eq_two.mp hc`. Establish `hamem : a ∈ fib F E v`.
+
+Rewrite using `[hfab]`. Simplify using the standard rewrite rules. Establish `hbmem : b ∈ fib F E v`. Rewrite using `[hfab]`. Simplify using the standard rewrite rules.
+
+Establish `hpa` using `hfpos a hamem`. Establish `hpb` using `hfpos b hbmem`. Rewrite `hsum` using `[hfab, Finset.sum_pair hab]`. Establish `ha1 : p.inertiaDeg' a.asIdeal = 1` using `by omega`. Establish `hb1 : p.inertiaDeg' b.asIdeal = 1` using `by omega`.
+
+Establish `hsplit : (p.primesOver (𝓞 E)).ncard = 2`. Rewrite using `[← IsDedekindDomain.coe_primesOverFinset hp0, Set.ncard_coe_finset, hcard_eq, hc]`. Establish `hnf` using `GlobalTheory.SplitPlace.not_isField_of_split F E h2 v hsplit`. Establish `heSp : PositivityTheory.SiegelWeilFormula.Gen.eSp E v = 1`. Unfold `PositivityTheory.SiegelWeilFormula.Gen.eSp`.
+
+Conclude with `if_neg hnf`. Rewrite using `[hfab, Finset.prod_pair hab, hnorm a hamem, hnorm b hbmem, ha1, hb1, heSp, pow_one]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem local_factor (h2 : Module.finrank F E = 2) (v : HeightOneSpectrum (𝓞 F)) (hv : v ∉ badSet F E) (s : ℂ) :
     ∏ P ∈ fib F E v, (1 - (Ideal.absNorm P.asIdeal : ℂ) ^ (-s)) =
       (1 - (Ideal.absNorm v.asIdeal : ℂ) ^ (-s)) *

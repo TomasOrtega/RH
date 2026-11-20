@@ -6,6 +6,15 @@ open IsLocalRing TensorProduct
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `Λ _ _ _ _ R K _ _ _ _ _ _ _ hK`. Take `⟨n, P, hP, φ, hφ⟩` from `GlobalTheory.T.exists_surj_localization_mvPolynomial_of_essFiniteType_local Λ R`. Set `R₀` to `Localization.AtPrime P`. Use `letI : Algebra R₀ R := φ.toRingHom.toAlgebra`. Use `letI : Algebra R₀ K := ((algebraMap R K).comp φ.toRingHom).toAlgebra`.
+
+Use `haveI : IsScalarTower R₀ R K := IsScalarTower.of_algebraMap_eq (fun _ => rfl)`. Use `haveI : IsNoetherianRing R₀ := IsLocalization.isNoetherianRing P.primeCompl _ inferInstance`. Establish `hsurj : Function.Surjective (algebraMap R₀ R)` using `hφ`. Use `haveI : Algebra.FiniteType R₀ R := Algebra.FiniteType.of_surjective (Algebra.ofId R₀ R) hsurj`. Use `haveI : Algebra.EssFiniteType R₀ R := inferInstance`.
+
+Use `haveI : Algebra.EssFiniteType R₀ K := Algebra.EssFiniteType.comp R₀ R K`. Establish `hK₀ : ∀ a : Λ, algebraMap R₀ K (algebraMap Λ R₀ a) = 0 → a = 0`. Introduce `a ha`. Apply `hK a` to reduce the goal to its premises. Establish `h1 : algebraMap R₀ K (algebraMap Λ R₀ a) = algebraMap R K (φ (algebraMap Λ R₀ a))` using `rfl`.
+
+Rewrite `ha` using `[h1, φ.commutes]`. Conclude with `ha`. Establish `hreg` using `GlobalTheory.T.isRegularRing_formal_fibre_mvPolynomial_perfect Λ n P K hK₀`. Take `⟨e⟩` from `GlobalTheory.T.nonempty_adicCompletion_tensor_ringEquiv_of_surjective R₀ R K hsurj`. Conclude with `IsRegularRing.of_ringEquiv e.symm`.
+-/
 theorem formalFibre_isRegularRing_of_essFiniteType :
     ∀ (Λ : Type) [CommRing Λ] [IsDomain Λ] [IsRegularRing Λ] [PerfectField (FractionRing Λ)]
       (R K : Type) [CommRing R] [IsLocalRing R] [Algebra Λ R] [Algebra.EssFiniteType Λ R]

@@ -30,6 +30,13 @@ def pair (a : D → R) (β : Du k D → R) : R :=
 
 variable [Algebra k R]
 
+/- English proof (translation)
+Establish `h : ∑ i, counit (R` using `k) (Module.finBasis k D i) • (toConv ((Module.finBasis k D).coord i) : Du k D) = 1 := by`. Apply `ofConv_injective` to reduce the goal to its premises. Use `(Module.finBasis k D).sum_dual_apply_smul_coord (counit (R := k) (A := D))` as an intermediate fact. Rewrite using `[LinearMap.convOne_def]`. Use `Eq.trans ?_ (this.trans ?_)` and prove the remaining obligations.
+
+Use extensionality with `d`. Simplify using the standard rewrite rules. Use extensionality with `d`. Simplify using the standard rewrite rules. Unfold `pair`.
+
+Rewrite using `[← map_one β, ← h, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, Algebra.smul_def]`.
+-/
 theorem pair_counit [IsCocomm k D] (β : Du k D →ₐ[k] R) :
     pair (fun d => algebraMap k R (counit (R := k) d)) β = 1 := by
   have h : ∑ i, counit (R := k) (Module.finBasis k D i) • (toConv ((Module.finBasis k D).coord i) : Du k D) = 1 := by
@@ -44,6 +51,25 @@ theorem pair_counit [IsCocomm k D] (β : Du k D →ₐ[k] R) :
   refine Finset.sum_congr rfl fun i _ => ?_
   rw [map_smul, Algebra.smul_def]
 
+/- English proof (translation)
+Use `set b := Module.finBasis k D with hb`. Set `cc : _ → Du k D` to `fun i => toConv (b.coord i)`. Establish `hexp : ∀ (f : D →ₗ[k] R) (d : D), f d = ∑ j, b.coord j d • f (b j)`. Introduce `f d`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `key1 : ∀ x : D ⊗[k] D, ψ x = ∑ j, ∑ l, (LinearMap.mul' k k (TensorProduct.map (b.coord j) (b.coord l) x)) • (a (b j) * a' (b l))`. Introduce `x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul u v`.
+
+Rewrite using `[hψ, hexp a u, hexp a' v, Finset.sum_mul_sum]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Simplify using `only [TensorProduct.map_tmul, LinearMap.mul'_apply, Algebra.smul_def, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `add x y hx hy`.
+
+Simplify using `only [map_add, add_smul, Finset.sum_add_distrib, hx, hy]`. Establish `key2 : ∀ j l, β (cc j) * β (cc l) = ∑ i, (LinearMap.mul' k k (TensorProduct.map (b.coord j) (b.coord l) (comul (R` using `k) (b i)))) • β (cc i) := by`. Introduce `j l`. Rewrite using `[← map_mul]`. Establish `h` using `b.sum_dual_apply_smul_coord (cc j * cc l).ofConv`.
+
+Establish `h' : cc j * cc l = ∑ i, (cc j * cc l).ofConv (b i) • cc i`. Apply `ofConv_injective` to reduce the goal to its premises. Use `h.symm.trans ?_` and prove the remaining obligations. Use extensionality with `d`. Simplify using `[cc]`.
+
+Rewrite using `[h', map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul]`. Use `congr 1`. Unfold `pair`.
+
+Simplify using `only [← hb]`. Rewrite using `[Finset.sum_mul_sum]`. Simplify using `only [hc, key1, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Use `key2 j l` as an intermediate fact. Simplify using `only [cc] at this`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [Algebra.smul_def]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = _ := by rw [← this]; ring`.
+-/
 theorem pair_mul [IsCocomm k D] (a a' : D →ₗ[k] R) (β : Du k D →ₐ[k] R) (ψ : D ⊗[k] D →+ R)
     (hψ : ∀ x y, ψ (x ⊗ₜ y) = a x * a' y) (c : D → R) (hc : ∀ d, c d = ψ (comul (R := k) d)) :
     pair c β = pair a β * pair a' β := by
@@ -104,11 +130,17 @@ open Coalgebra WithConv
 def fnR {X : Scheme.{0}} {A : Type} [CommRing A] (x : X ⟶ Spec (.of A)) : A →+* Γ(X, ⊤) :=
   ((Scheme.ΓSpecIso (.of A)).inv ≫ x.appTop).hom
 
+/- English proof (translation)
+Rewrite using `[fnR, fnR, Scheme.Hom.comp_appTop]`. Both sides reduce to the same expression.
+-/
 theorem fnR_comp {X Y : Scheme.{0}} {A : Type} [CommRing A] (f : Y ⟶ X) (x : X ⟶ Spec (.of A)) (a : A) :
     fnR (f ≫ x) a = f.appTop (fnR x a) := by
   rw [fnR, fnR, Scheme.Hom.comp_appTop]
   rfl
 
+/- English proof (translation)
+Establish `h` using `Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom φ)`. Establish `h2` using `congr($h a)`. Simplify using `only [fnR, Scheme.Hom.comp_appTop, CommRingCat.hom_comp, RingHom.comp_apply] at h2 ⊢`. Simplify using `only [CommRingCat.hom_ofHom] at h2`. Rewrite using `[h2]`.
+-/
 theorem fnR_specMap {X : Scheme.{0}} {A B : Type} [CommRing A] [CommRing B] (φ : A →+* B)
     (x : X ⟶ Spec (.of B)) (a : A) :
     fnR (x ≫ Spec.map (CommRingCat.ofHom φ)) a = fnR x (φ a) := by
@@ -122,6 +154,9 @@ variable {k : Type} [Field k]
 
 @[reducible] def wAlg (W : Over (Sp k)) : Algebra k Γ(W.left, ⊤) := (fnR W.hom).toAlgebra
 
+/- English proof (translation)
+Establish `h : x.left ≫ Spec.map (CommRingCat.ofHom (algebraMap k A)) = W.hom` using `Over.w x`. Conclude with `(fnR_specMap (algebraMap k A) x.left c).symm.trans (congrArg (fun y => fnR y c) h)`.
+-/
 theorem fnR_algebraMap {W : Over (Sp k)} {A : Type} [CommRing A] [Algebra k A]
     (x : W ⟶ (Spec (.of A)).asOver (Spec (.of k))) (c : k) :
     fnR x.left (algebraMap k A c) = fnR W.hom c := by
@@ -139,6 +174,17 @@ def ptr {W : Over (Sp k)} {A : Type} [CommRing A] [Algebra k A]
 
 variable {D : Type} [CommRing D] [HopfAlgebra k D]
 
+/- English proof (translation)
+Set `L : W.left ⟶ pullback (Spec.map (CommRingCat.ofHom (algebraMap k D))) (Spec.map (CommRingCat.ofHom (algebraMap k D)))` to `(lift x y).left`. Set `M : W.left ⟶ Spec (.of (D ⊗[k] D))` to `L ≫ (pullbackSpecIso k D D).hom`. Establish `hf : L ≫ pullback.fst _ _ = x.left`. Use `congrArg Over.Hom.left (lift_fst x y)` as an intermediate fact. Rewrite `this` using `[Over.comp_left, Over.fst_left]`.
+
+Conclude with `this`. Establish `hs : L ≫ pullback.snd _ _ = y.left`. Use `congrArg Over.Hom.left (lift_snd x y)` as an intermediate fact. Rewrite `this` using `[Over.comp_left, Over.snd_left]`. Conclude with `this`.
+
+Establish `h1 : M ≫ Spec.map (CommRingCat.ofHom Algebra.TensorProduct.includeLeftRingHom) = x.left` using `(Category.assoc _ _ _).trans ((congrArg (fun z => L ≫ z) (pullbackSpecIso_hom_fst k D D)).trans hf)`. Establish `h2 : M ≫ Spec.map (CommRingCat.ofHom (Algebra.TensorProduct.includeRight : D →ₐ[k] D ⊗[k] D).toRingHom) = y.left` using `(Category.assoc _ _ _).trans ((congrArg (fun z => L ≫ z) (pullbackSpecIso_hom_snd k D D)).trans hs)`. Use `⟨(fnR M).toAddMonoidHom, fun u v => ?_, fun d => ?_⟩` and prove the remaining obligations. Establish `e : u ⊗ₜ[k] v = Algebra.TensorProduct.includeLeftRingHom u * (Algebra.TensorProduct.includeRight : D →ₐ[k] D ⊗[k] D).toRingHom v` using `by simp show fnR M _ = _`. Rewrite using `[e, map_mul, ← fnR_specMap, ← fnR_specMap, h1, h2]`.
+
+Establish `hμ : (x * y).left = M ≫ Spec.map (CommRingCat.ofHom (Bialgebra.comulAlgHom k D).toRingHom)`. Rewrite using `[Hom.mul_def, Over.comp_left, mul_spec_asOver_spec_left (R := .of k) (A := .of D)]`. Simplify using `only [M, L]`. Both sides reduce to the same expression. Rewrite using `[hμ, fnR_specMap]`.
+
+Both sides reduce to the same expression.
+-/
 theorem fn_mul {W : Over (Sp k)} (x y : W ⟶ (Spec (.of D)).asOver (Spec (.of k))) :
     ∃ ψ : D ⊗[k] D →+ Γ(W.left, ⊤), (∀ u v, ψ (u ⊗ₜ v) = fnR x.left u * fnR y.left v) ∧
       ∀ d, fnR (x * y).left d = ψ (comul (R := k) d) := by
@@ -169,6 +215,9 @@ theorem fn_mul {W : Over (Sp k)} (x y : W ⟶ (Spec (.of D)).asOver (Spec (.of k
     rw [hμ, fnR_specMap]
     rfl
 
+/- English proof (translation)
+Establish `h : (1 : W ⟶ (Spec (.of D)).asOver (Spec (.of k))).left = W.hom ≫ Spec.map (CommRingCat.ofHom (Bialgebra.counitAlgHom k D).toRingHom)`. Rewrite using `[Hom.one_def, Over.comp_left, one_spec_asOver_spec_left (R := .of k) (A := .of D)]`. Both sides reduce to the same expression. Rewrite using `[h, fnR_specMap]`. Both sides reduce to the same expression.
+-/
 theorem fn_one {W : Over (Sp k)} (d : D) :
     fnR (1 : W ⟶ (Spec (.of D)).asOver (Spec (.of k))).left d = fnR W.hom (counit (R := k) d) := by
   have h : (1 : W ⟶ (Spec (.of D)).asOver (Spec (.of k))).left =
@@ -198,12 +247,20 @@ variable {k D}
 def P {W : Over (Sp k)} (x : W ⟶ GD k D) (t : W ⟶ TE k D) : Γ(W.left, ⊤) :=
   pair (fnR x.left) (fnR t.left)
 
+/- English proof (translation)
+Take `⟨ψ, h1, h2⟩` from `fn_mul x y`. Use `letI := wAlg W`. Conclude with `pair_mul (ptr x).toLinearMap (ptr y).toLinearMap (ptr t) ψ h1 _ h2`.
+-/
 theorem twoPow_mul_twoPow {W : Over (Sp k)} (x y : W ⟶ GD k D) (t : W ⟶ TE k D) :
     P (x * y) t = P x t * P y t := by
   obtain ⟨ψ, h1, h2⟩ := fn_mul x y
   letI := wAlg W
   exact pair_mul (ptr x).toLinearMap (ptr y).toLinearMap (ptr t) ψ h1 _ h2
 
+/- English proof (translation)
+Use `letI := wAlg W`. Establish `h : (fnR (1 : W ⟶ GD k D).left : D → Γ(W.left, ⊤)) = fun d => algebraMap k Γ(W.left, ⊤) (counit (R` using `k) d) := by`. Use function extensionality and compare the values at `d`. Conclude with `fn_one d`. Unfold `P`.
+
+Rewrite using `[h]`. Conclude with `pair_counit (ptr t)`.
+-/
 theorem P_one {W : Over (Sp k)} (t : W ⟶ TE k D) : P (1 : W ⟶ GD k D) t = 1 := by
   letI := wAlg W
   have h : (fnR (1 : W ⟶ GD k D).left : D → Γ(W.left, ⊤)) =
@@ -214,6 +271,9 @@ theorem P_one {W : Over (Sp k)} (t : W ⟶ TE k D) : P (1 : W ⟶ GD k D) t = 1 
   rw [h]
   exact pair_counit (ptr t)
 
+/- English proof (translation)
+Simplify using `only [P, pair, map_sum, map_mul, Over.comp_left]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Conclude with `congrArg₂ (· * ·) (fnR_comp f.left x.left _).symm (fnR_comp f.left t.left _).symm`.
+-/
 theorem pullback_comp₂ {W W' : Over (Sp k)} (f : W' ⟶ W) (x : W ⟶ GD k D) (t : W ⟶ TE k D) :
     f.left.appTop (P x t) = P (f ≫ x) (f ≫ t) := by
   simp only [P, pair, map_sum, map_mul, Over.comp_left]

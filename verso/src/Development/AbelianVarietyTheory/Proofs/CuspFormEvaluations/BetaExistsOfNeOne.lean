@@ -10,6 +10,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l c n bad _` and use `BetaEx.betaExists E H Dw l c n bad`.
+-/
 theorem betaExists_of_ne_one : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H)
     (l : Level H) (c : Coeff l) (n bad : ℕ), bad ≠ 1 → BetaExists (Dw := Dw) c n bad :=
   fun E _ _ _ H Dw l c n bad _ => BetaEx.betaExists E H Dw l c n bad

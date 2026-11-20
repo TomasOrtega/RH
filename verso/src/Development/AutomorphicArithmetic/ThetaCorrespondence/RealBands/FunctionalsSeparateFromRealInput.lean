@@ -4,6 +4,11 @@ import Development.AutomorphicArithmetic.ThetaCorrespondence.BesselModels.Separa
 
 namespace UpperTheory.Lit
 
+/- English proof (translation)
+Establish `rowModels` using `GlobalTheory.T.level_models_of_functoriality P`. Establish `rowStep` using `GlobalTheory.T.level_induction_from_pairs P (GlobalTheory.T.pair_existence_of_functoriality P) rowModels`. Establish `rowTower` using `GlobalTheory.T.firstRowTower_multiplicitySpaces_of_arrow rowModels rowStep`. Establish `conv` using `GlobalTheory.T.level_tower_convergence P rowTower`. Establish `per` using `Branch.periodNe_of_eigen P.harishChandraModules P.casselmanWallach P.cuspRapidDecay realIn`.
+
+Establish `onto` using `GlobalTheory.T.theta_surjective_definite_level P P.harishChandraFinite P.cuspRapidDecay P.discreteSeriesCover P.harishChandraModules P.casselmanWallach hHowe P.weilRepresentationUnitaryPair P.weilSiegelFormulaUnitary hSW P.doublingMethod P.unramifiedDoublingGL`. Establish `weak` using `GlobalTheory.T.rowSeparation_by_realFunctionals_of_chain_steps GlobalTheory.T.largeScaleSizes_imply_gapConditions (GlobalTheory.T.basic_models_of_functoriality P) (GlobalTheory.T.level_tower_rapid_decay P rowTower) per onto (GlobalTheory.T.bessel_period_nonvanishing_ascent_of_dep …`. Conclude with `separate_of_steps_gap P rowTower GlobalTheory.T.largeScaleSizes_imply_gapConditions GlobalTheory.T.goodRows_principalLevel_are_rows conv weak`.
+-/
 theorem functionalsSeparate_of_input
     (P : GlobalTheory.FunPr.Hypotheses₂) (hHowe : GlobalTheory.Hk3.HoweUnram)
     (hSW : GlobalTheory.Published.SiegelWeilUnitaryConvergent)

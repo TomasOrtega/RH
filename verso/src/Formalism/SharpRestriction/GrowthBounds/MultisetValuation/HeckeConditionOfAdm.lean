@@ -12,6 +12,21 @@ attribute [local instance] Formalism.MainNotions.G.GAtP.ringO Formalism.MainNoti
 
 variable {p : ℕ} [Fact p.Prime] {X : Sys p}
 
+/- English proof (translation)
+Take `⟨hlat, _, h4⟩` from `hS`. Apply `MvPolynomial.map_injective (algebraMap X.G.Kf Y.Kc) (algebraMap X.G.Kf Y.Kc).injective` to reduce the goal to its premises. Establish `eT : X.Tm v i (j + 1) (X.Kz j F) c' L' = ∑ L1 ∈ EE (X.Pj (j + 1)) (X.vJ (j + 1) v) i (L' (X.vJ (j + 1) v)), X.Kz j F c' (Function.update L' (X.vJ (j + 1) v) L1)` using `Tminus_eq (X.Pj (j + 1)) (X.vJ (j + 1) v) i (X.Kz j F c') L'`. Rewrite using `[eT, map_sum, map_sum]`. Establish `eL : ∀ L1 ∈ EE (X.Pj (j + 1)) (X.vJ (j + 1) v) i (L' (X.vJ (j + 1) v)), MvPolynomial.map (algebraMap X.G.Kf Y.Kc) (X.Kz j F c' (Function.update L' (X.vJ (j + 1) v) L1)) = ∑ x : Cl, (((wt x : Y.Kc))⁻¹ * cK) • ∑ y : Yb, Y.ker j (La x y) (c', Function.update L' (X.vJ (j + 1) v) L1) …`.
+
+Introduce `L1 hL1`. Conclude with `h4 F hF c' _ (hk_latTup_update _ hL' _ L1 ((mem_EE _).1 hL1).1)`. Rewrite using `[Finset.sum_congr rfl eL, Finset.sum_comm]`. Establish `eL2 : ∀ x ∈ (Finset.univ : Finset Cl), ∑ L1 ∈ EE (X.Pj (j + 1)) (X.vJ (j + 1) v) i (L' (X.vJ (j + 1) v)), (((wt x : Y.Kc))⁻¹ * cK) • ∑ y : Yb, Y.ker j (La x y) (c', Function.update L' (X.vJ (j + 1) v) L1) (F (La x y).1 (La x y).2) = (((wt x : Y.Kc))⁻¹ * cK) • ∑ y : Yb, (cA X a' v …`. Introduce `x _`.
+
+Rewrite using `[← Finset.smul_sum, Finset.sum_comm]`. Use `congr 1`. Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Conclude with `ker_dn_sum hC hp ha ha' hTh (La x y) (hlat x y) c' L' hL' i _`. Rewrite using `[Finset.sum_congr rfl eL2]`.
+
+Establish `eR : ∀ l ∈ range (i + 1), MvPolynomial.map (algebraMap X.G.Kf Y.Kc) ((cA X a' v j i * (nC X v i l : X.G.Kf) * (cC X a v j (i - l))⁻¹) • X.Kz j (X.Tm v (i - l) j F) c' L') = (cA X a' v j i * (nC X v i l : X.G.Kf) * (cC X a v j (i - l))⁻¹) • (cK • ∑ x : Cl, ((wt x : Y.Kc))⁻¹ • ∑ y …`. Introduce `l _`. Rewrite using `[map_smulK Y, h4 _ (hT v (i - l) j F hF) c' L' hL', hAd v (i - l) F hF (c', L') hL', Finset.smul_sum (r := cK)]`. Use `congr 1`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[smul_smul, mul_comm]`. Rewrite using `[Finset.sum_congr rfl eR]`. Establish `hs : ∀ (r : X.G.Kf) (z : XspC (X.Pj (j + 1)) Y.Kc), r • z = algebraMap X.G.Kf Y.Kc r • z` using `fun r z => (algebraMap_smul Y.Kc r z).symm`. Simplify using `only [hs, Finset.smul_sum, smul_smul]`. Use `symm`.
+
+Use `Finset.sum_comm.trans ?_` and prove the remaining obligations. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Use `Finset.sum_comm.trans ?_` and prove the remaining obligations. Use `Finset.sum_congr rfl fun y _ => Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun A1 _ => ?_` and prove the remaining obligations. Use `congr 1`.
+
+Simplify using `only [map_mul, map_inv₀, map_natCast]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hk_point (Y : Pend X) (hC : CountLoc) (hT : RestTmFQ X)
     (hp : (p : X.G.Kf) ≠ 0) {a a' : X.G.Kf} {cK : Y.Kc} (ha : a ≠ 0) (ha' : a' ≠ 0) (v : X.Pl) (j : ℕ)
     (hTh : ThEq Y a a' v j) {Cl Yb : Type} [Fintype Cl] [Fintype Yb] {wt : Cl → ℕ} {La : Cl → Yb → X.Lt j}
@@ -72,6 +87,29 @@ theorem hk_point (Y : Pend X) (hC : CountLoc) (hT : RestTmFQ X)
   simp only [map_mul, map_inv₀, map_natCast]
   ring
 
+/- English proof (translation)
+Take `⟨_, _, _, _, _, h3b, h4, h5, h5b, h6, _, _, _⟩` from `hA`. Introduce `v`. Establish `hfr` using `frac_of_place X v`. Establish `he` using `eO_pos X v`. Establish `hp : (p : X.G.Kf) ≠ 0` using `pKf_ne Y`.
+
+Establish `h5' : ∀ j, ∃ a a' : X.G.Kf, j < X.mm → (X.vEqK a 0 ∧ X.vEqK a' 0 ∧ ThEq Y a a' v j)`. Introduce `j`. Distinguish the cases in `hj : j < X.mm`. Take `⟨u, u', h1, h2, h3⟩` from `h5 v j hj`. Conclude with `⟨u, u', fun _ => ⟨h1, h2, h3⟩⟩`.
+
+Conclude with `⟨1, 1, fun h => absurd h hj⟩`. Use `choose a a' H using h5'`. Use `⟨fun l => (a (l - 1) * a' (l - 1))⁻¹, fun l => a (l - 1) * (p : X.G.Kf) ^ (X.vm v l), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `l hl`. Rewrite `hl` using `[Finset.mem_Icc]`.
+
+Take `⟨h1, h2, _⟩` from `H (l - 1) (by omega)`. Use `vEqK_inv X hfr (vEqK_mul X hfr h1 h2)` as an intermediate fact. Simplify using `using this`. Introduce `l hl`. Rewrite `hl` using `[Finset.mem_Icc]`.
+
+Take `⟨h1, _, _⟩` from `H (l - 1) (by omega)`. Use `vEqK_mul X hfr h1 (vEqK_ppow X hfr he (X.vm v l))` as an intermediate fact. Simplify using `using this`. Introduce `j hj i F hF`. Take `⟨h1, h2, hTh⟩` from `H j hj`.
+
+Take `⟨cK, Cl, Yb, iC, iY, wt, La, hS, hAd⟩` from `ksa_of_adm D h4 h5b h6 hj`. Establish `ha` using `vEqK.ne_zero X h1`. Establish `ha'` using `vEqK.ne_zero X h2`. Use `show X.ecal v i (j + 1) (X.Kz j F) = ((a j * a' j)⁻¹ ^ i) • X.Kz j (∑ l ∈ range (i + 1), (MvPolynomial.eval (fun x : Fin (X.t + 1) => (a j * (p : X.G.Kf) ^ (X.vm v (j + 1))) * X.qh v x.val) (MvPolynomial.esymm (Fin (X.t + 1)) X.G.Kf l)) • X.ecal v (i - l) j F)`. Use function extensionality and compare the values at `c' L'`.
+
+Distinguish the cases in `hL' : (X.Pj (j + 1)).IsLatTup L'`. Establish `eR : X.Kz j (∑ l ∈ range (i + 1), (MvPolynomial.eval (fun x : Fin (X.t + 1) => (a j * (p : X.G.Kf) ^ (X.vm v (j + 1))) * X.qh v x.val) (MvPolynomial.esymm (Fin (X.t + 1)) X.G.Kf l)) • X.ecal v (i - l) j F) = ∑ l ∈ range (i + 1), ((MvPolynomial.eval (fun x : Fin (X.t + 1) => (a j …`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Unfold `Sys.ecal`.
+
+Rewrite using `[map_smul, map_smul, smul_smul]`. Both sides reduce to the same expression. Rewrite using `[eR]`. Use `show ((p : X.G.Kf) ^ (-(hv X v * i * ((NN X.G.P.m X.t (j + 1) : ℤ) - i)))) • X.Tm v i (j + 1) (X.Kz j F) c' L' = _`. Rewrite using `[hk_point Y hC hT hp ha ha' v j hTh hS hAd i F hF c' L' hL']`.
+
+Simplify using `only [Pi.smul_apply, Finset.sum_apply, Finset.smul_sum, smul_smul]`. Use `Finset.sum_congr rfl fun l hl => ?_` and prove the remaining obligations. Use `congr 1`. Use `hk_coef X hp (a j) (a' j) ha v j i l (Nat.lt_succ_iff.1 (Finset.mem_range.1 hl))` as an intermediate fact. Rewrite `this` using `[mul_assoc ((a j * a' j)⁻¹ ^ i)]`.
+
+Rewrite using `[← this]`. Expand and normalize the polynomial expressions, which then agree. Establish `e1 : X.Tm v i (j + 1) (X.Kz j F) c' L' = 0` using `(restTmEquiv X (j + 1) v i _ (Eqv_of_FQ X (h3b j hj F hF))).1 c' L' hL'`. Establish `e2 : X.ecal v i (j + 1) (X.Kz j F) c' L' = 0` using `by show ((p : X.G.Kf) ^ (-(hv X v * i * ((NN X.G.P.m X.t (j + 1) : ℤ) - i)))) • X.Tm v i (j + 1) (X.Kz j F) c' L' = 0`. Rewrite using `[e1, smul_zero]`.
+
+Rewrite using `[e2]`. Establish `hmem : X.Kz j (∑ l ∈ range (i + 1), (MvPolynomial.eval (fun x : Fin (X.t + 1) => (a j * (p : X.G.Kf) ^ (X.vm v (j + 1))) * X.qh v x.val) (MvPolynomial.esymm (Fin (X.t + 1)) X.G.Kf l)) • X.ecal v (i - l) j F) ∈ X.FQ (j + 1)` using `h3b j hj _ (Submodule.sum_mem _ fun l _ => Submodule.smul_mem _ _ (Submodule.smul_mem _ _ (hT v (i - l) j F hF)))`. Rewrite using `[Pi.smul_apply, Pi.smul_apply, FQ_zero_off X hmem c' L' hL', smul_zero]`.
+-/
 theorem heckeCondition_of_adm (D : Formalism.BasicNotions.D7) (X : Sys p) (Y : Pend X) (hA : admitted D X Y) (hC : CountLoc) (hT : RestTmFQ X) :
     RestHecke X := by
   obtain ⟨_, _, _, _, _, h3b, h4, h5, h5b, h6, _, _, _⟩ := hA

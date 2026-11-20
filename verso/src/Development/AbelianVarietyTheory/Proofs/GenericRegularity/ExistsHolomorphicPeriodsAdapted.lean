@@ -14,6 +14,25 @@ namespace GlobalTheory.AdaptedPeriods
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Take `⟨x, hxs, u, htan, heig, hbas, s, hgen⟩` from `y`. Simplify using `only at hy ⊢`. Substitute `hy` using the available equality. Establish `hT` using `GlobalTheory.isDerivAt0_ex_isTanAt _ _ _ _ _ _ _ _ F k P hP`. Establish `hw0 : ∀ p : (Σ τ : E →+* ℂ, Fin (Dw.mult τ)), ∃ w, IsDerivAt0 (fun z => (F.ex k P z).left) w (u p.1 p.2)` using `fun p => (hT.2.2 _ (htan p.1 p.2)).exists`.
+
+Use `choose wp hwp using hw0`. Establish `hblk : ∀ j, ∃ a : Fin (Dw.mult (e j).1) → ℂ, ∑ i, a i • wp (e (e.symm ⟨(e j).1, i⟩)) = Pi.single j 1`. Introduce `j`. Take `⟨d, hd, -⟩` from `hT.2.1 (Pi.single j 1)`. Establish `hdt` using `hT.1 _ _ hd`.
+
+Establish `hde` using `(GlobalTheory.isEigAt_iff_of_isDerivAt0 _ _ _ _ _ _ _ _ _ F k P hP (Pi.single j 1) d (e j).1 hd).2 (by`. Introduce `j' hj'`. Rewrite `hj'` using `[Pi.single_apply]`. Use `split_ifs at hj' with hjj`. Rewrite using `[hjj]`.
+
+Conclude with `absurd rfl hj')`. Take `⟨a, ha, -⟩` from `hbas (e j).1 d hdt hde`. Use `⟨a, ?_⟩` and prove the remaining obligations. Establish `hc` using `(GlobalTheory.DerLin.isCombAt_iff_isDerivAt0 _ _ _ _ _ _ _ _ F k P hP (Dw.mult (e j).1) (u (e j).1) (fun i => wp (e (e.symm ⟨(e j).1, i⟩))) (fun i => by simpa using hwp ⟨(e j).1, i⟩) a d).1 ha`. Conclude with `(hT.2.2 d hdt).unique hc hd`.
+
+Take `⟨V, hVdet, hVblk, hVw⟩` from `GlobalTheory.CoverFrame.exists_inverse_block e (fun j => wp (e j)) hblk`. Take `⟨P', hP', hP'V⟩` from `GlobalTheory.PeriodLin.exists_period_mulVec _ _ _ _ _ P V hP hVdet (fun j j' h => congrArg (relab c σ) (hVblk j j' h))`. Establish `hS : ∀ (Y : Type) [AddCommGroup Y] [Module.Free ℤ Y] [Module.Finite ℤ Y] (s : Y ≃ₗ[ℤ] Y) (n M : ℕ), 0 < n → s ^ n = 1 → 3 ≤ M → (∀ y, ∃ z, s y = y + M • z) → s = 1`. Introduce `Y _ _ _ s n M hn hs hM h`. Establish `h1 : (s : Module.End ℤ Y) ^ n = 1`.
+
+Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `v`. Establish `hv` using `congrArg (fun t : Y ≃ₗ[ℤ] Y => t v) hs`. Simplify using `only [LinearEquiv.coe_pow] at hv`. Use `first`.
+
+Consider the case `rw [Module.End.coe_pow]`. Consider the case `rw [LinearMap.coe_pow]`. Simplify using `using hv`. Establish `h2` using `GlobalTheory.end_eq_one_of_pow_eq_one_of_congr Y (s : Module.End ℤ Y) n M hn h1 hM h`. Conclude with `LinearEquiv.ext fun v => by simpa using LinearMap.congr_fun h2 v`.
+
+Take `⟨-, hu, hex⟩` from `GlobalTheory.FamRigid.ex_eq_of_level_group hS _ _ _ _ _ _ _ _ F k P P' (LinearEquiv.refl _ _) V hP hP' (fun a b => rfl) (fun a _ => ⟨0, by simp⟩) (fun a => ⟨0, by simp⟩) (fun a => hP'V a)`. Establish `hD` using `GlobalTheory.ExpChain.isDerivAt0_ex_iff _ _ _ _ _ _ _ _ F k P hP k P' (Matrix.mulVecLin V) hP' (fun z => hex z)`. Use `⟨fun j => wp (e j), V, P', fun j => hwp (e j), hVw, hP'V, hP', hu, ?_⟩` and prove the remaining obligations. Introduce `τ i`. Establish `h3 : V *ᵥ wp ⟨τ, i⟩ = Pi.single (e.symm ⟨τ, i⟩) 1`.
+
+Simplify using `using hVw (e.symm ⟨τ, i⟩)`. Rewrite using `[← h3]`. Conclude with `(hD (wp ⟨τ, i⟩) (u τ i)).1 (hwp ⟨τ, i⟩)`.
+-/
 theorem exists_adapted (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E)
     (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (g : ℕ)
     (e : Fin g ≃ Σ τ : E →+* ℂ, Fin (Dw.mult τ))
@@ -82,6 +101,25 @@ theorem exists_adapted (E : Type) [Field E] [NumberField E] [IsCMField E] (H : R
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c σ g e F A _ _ yA m B φ y hB hφ hmap b₀ hb₀`. Establish `hpts : IsHolTo B (fun b => (y b).x)`. Establish `h1` using `GlobalTheory.ThetaValueCont.isHolTo_spMap hB (fun b => ((φ b).toRingHom : A →+* ℂ)) (fun a => hφ a)`. Establish `h2` using `GlobalTheory.LocLift.isHolTo_comp_hom h1 yA.x`. Conclude with `GlobalTheory.LocLift.isHolTo_congr h2 (fun b hb => (hmap b hb).1)`.
+
+Take `⟨B1, k, P0, hB1, hb1, hB1B, hP0, hu0⟩` from `F.24 m B (fun b => (y b).x) hB (fun b _ => (y b).2) hpts b₀ hb₀`. Establish `hadp` using `fun b (hb : b ∈ B1) => exists_adapted E H Dw l Xo c σ g e F (y b) k (P0 b) (hP0.1 b hb) (hu0 b hb)`. Use `choose! W V P' hW hVW hP'V hP' hux hder using hadp`. Establish `hWd : ∀ b' ∈ B1, ∀ j, DifferentiableAt ℂ (fun b => W b j) b'`. Introduce `b' hb' j`.
+
+Use `GlobalTheory.HolFrameMatrix.differentiableAt_coord F k (yA.u (e j).1 (e j).2) (fun b => ((φ b).toRingHom : A →+* ℂ)) hB1 hP0 (fun b => W b j) ?_ hb' ?_` and prove the remaining obligations. Introduce `b hb`. Establish `h1` using `hW b hb j`. Rewrite `h1` using `[(hmap b (hB1B hb)).2.1, GlobalTheory.HolFrameMatrix.dualMap_eq]`. Conclude with `h1`.
+
+Introduce `t`. Conclude with `(hφ t).differentiableAt (hB.mem_nhds (hB1B hb'))`. Establish `hVW1 : ∀ b ∈ B1, V b * Matrix.of (fun i j => W b j i) = 1`. Introduce `b hb`. Use extensionality with `i j`.
+
+Establish `h` using `congrFun (hVW b hb j) i`. Rewrite using `[Matrix.mul_apply]`. Simplify using `only [Matrix.of_apply]`. Rewrite using `[show (∑ x, V b i x * W b j x) = (V b *ᵥ W b j) i from rfl, h, Pi.single_apply, Matrix.one_apply]`. Establish `hVd : ∀ b' ∈ B1, ∀ i j, DifferentiableAt ℂ (fun b => V b i j) b'`.
+
+Introduce `b' hb' i j`. Conclude with `GlobalTheory.HolFrameMatrix.differentiableAt_of_mul_eq_one V (fun b => Matrix.of fun i j => W b j i) b' (fun i j => differentiableAt_pi.1 (hWd b' hb' j) i) (Filter.eventually_of_mem (hB1.mem_nhds hb') hVW1) i j`. Establish `hPd : ∀ b' ∈ B1, ∀ a, DifferentiableAt ℂ (fun b => P0 b a) b'` using `fun b' hb' a => (hP0.2 a).differentiableAt (hB1.mem_nhds hb')`. Use `⟨B1, k, P', hB1, hb1, hB1B, ⟨fun b hb => hP' b hb, fun a => ?_⟩, fun b hb => ⟨hux b hb, hder b hb⟩⟩` and prove the remaining obligations. Introduce `b' hb'`.
+
+Establish `hd : DifferentiableAt ℂ (fun b => V b *ᵥ P0 b a) b'`. Rewrite using `[differentiableAt_pi]`. Introduce `i`. Use `show DifferentiableAt ℂ (fun b => ∑ j, V b i j * P0 b a j) b'`. Establish `hv : ∀ j, DifferentiableAt ℂ (fun b => V b i j) b'` using `hVd b' hb' i`.
+
+Establish `hp : ∀ j, DifferentiableAt ℂ (fun b => P0 b a j) b'` using `fun j => differentiableAt_pi.1 (hPd b' hb' a) j`. Use `first`. Consider the case `exact DifferentiableAt.fun_sum fun j _ => (hv j).mul (hp j)`. Consider the case `fun_prop`. Consider the case `(convert DifferentiableAt.sum (u := Finset.univ) (fun j _ => (hv j).mul (hp j)) using 1`.
+
+Use extensionality with `b`. Use the proof step `simp)`. Conclude with `hd.differentiableWithinAt.congr (fun b hb => hP'V b hb a) (hP'V b' hb' a)`.
+-/
 theorem exists_holPeriods_adapted : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (g : ℕ) (e : Fin g ≃ Σ τ : E →+* ℂ, Fin (Dw.mult τ)) (F : FamilyUnif Xo (σ.comp (IntermediateField.inclusion c.le).toRingHom) (fun j => relab c σ (e j).1)) (A : Type) [CommRing A] [Algebra c.F A] (yA : FrPt Xo c A) (m : ℕ) (B : Set (Fin m → ℂ)) (φ : (Fin m → ℂ) → (A →ₐ[c.F] CAt σ)) (y : (Fin m → ℂ) → FrPt Xo c (CAt σ)), IsOpen B → (∀ a, DifferentiableOn ℂ (fun b => toC (φ b a)) B) → (∀ b ∈ B, FrMap (φ b) yA (y b)) → ∀ b₀ ∈ B, ∃ (B' : Set (Fin m → ℂ)) (k : Fin F.n) (P : (Fin m → ℂ) → ((F.Di k).La →+ (Fin g → ℂ))), IsOpen B' ∧ b₀ ∈ B' ∧ B' ⊆ B ∧ IsHolPeriods (F.Di k) (fun j => relab c σ (e j).1) B' P ∧ ∀ b ∈ B', (y b).x = F.u k (P b) ∧ ∀ τ (i : Fin (Dw.mult τ)), IsDerivAt0 (fun z => (F.ex k (P b) z).left) (Pi.single (e.symm ⟨τ, i⟩) 1) ((y b).u τ i) := by
   intro E _ _ _ H Dw l Xo c σ g e F A _ _ yA m B φ y hB hφ hmap b₀ hb₀
   have hpts : IsHolTo B (fun b => (y b).x) := by

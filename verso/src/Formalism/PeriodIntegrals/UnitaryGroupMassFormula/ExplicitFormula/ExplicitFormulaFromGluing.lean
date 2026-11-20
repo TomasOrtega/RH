@@ -7,15 +7,30 @@ namespace PI.EF
 
 open Complex
 
+/- English proof (translation)
+Unfold `psi0 psiRaw del1`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem fractionFieldToGenericStalk_algebraMap_eq {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) (u : ℝ) :
     psi0 χ u = psiRaw χ u - del1 χ * u := by
   unfold psi0 psiRaw del1
   split_ifs <;> simp
 
+/- English proof (translation)
+Unfold `S1`. Conclude with `finsum_nonneg (fun ρ => finsum_nonneg (fun _ => div_nonneg (Nat.cast_nonneg _) (norm_nonneg _)))`.
+-/
 theorem first_character_sum_nonneg {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) : 0 ≤ S1 χ := by
   unfold S1
   exact finsum_nonneg (fun ρ => finsum_nonneg (fun _ => div_nonneg (Nat.cast_nonneg _) (norm_nonneg _)))
 
+/- English proof (translation)
+Take `⟨C1, hC1, H1⟩` from `h1`. Take `⟨C2, hC2, H2⟩` from `h2`. Take `⟨C4, hC4, H4⟩` from `h4`. Use `⟨C1 + C2 + C4, by positivity, ?_⟩` and prove the remaining obligations. Introduce `N _ χ hχ u T hT hTu`.
+
+Use `⟨h5 N χ hχ T, ?_⟩` and prove the remaining obligations. Take `⟨T', hT1, hT2, hg⟩` from `h3 N χ hχ T hT`. Establish `e1` using `H1 N χ u T T' hT hTu hT1 hT2`. Establish `e2` using `H2 N χ hχ u T T' hT hTu hT1 hT2 hg`. Establish `e4` using `H4 N χ hχ u T T' hT hTu hT1 hT2`.
+
+Establish `hS : 0 ≤ S1 χ` using `first_character_sum_nonneg χ`. Establish `key : psi0 χ u + zsum χ T u = (psiRaw χ u - vertInt χ u T') + (vertInt χ u T' - del1 χ * u + zsum χ T' u) - (zsum χ T' u - zsum χ T u)`. Rewrite using `[fractionFieldToGenericStalk_algebraMap_eq]`. Expand and normalize the polynomial expressions, which then agree. Use `show ‖psi0 χ u + zsum χ T u‖ ≤ (C1 + C2 + C4) * (Err N u T + S1 χ)`.
+
+Rewrite using `[key]`. Combine the equalities or inequalities in the displayed calculation. Use polynomial arithmetic with `[mul_nonneg hC1.le hS, mul_nonneg hC4.le hS]`.
+-/
 theorem explicitFormula_of_perron_shift (κ : ℝ) (h1 : ∃ C, 0 < C ∧ PerronL C)
     (h2 : ∃ C, 0 < C ∧ ShiftBound κ C) (h3 : GoodHeightExists κ)
     (h4 : ∃ C, 0 < C ∧ TruncChange C) (h5 : ZerosFinite) : PI.ExplicitFormula := by
@@ -79,6 +94,9 @@ def GlueShift : Prop :=
   ∀ κ, 0 < κ → RegularPart → ContourIdentity → (∃ C, 0 < C ∧ SidesBound κ C) →
     (∃ C, 0 < C ∧ RegAtZero C) → ∃ C, 0 < C ∧ ShiftBound κ C
 
+/- English proof (translation)
+Take `⟨κ, hκ, hGood⟩` from `g4 hZW`. Establish `hLL` using `g7 hLA hG hZL hZW`. Establish `hZF` using `g6 hZW`. Conclude with `explicitFormula_of_perron_shift κ (g2 (g1 hK hPS)) (g13 κ hκ hRP (g11 (g3 hRC) hZL hZF) (g12 κ hκ (g8 hZW hLL hZL κ hκ) (g9 hZW hLL hZL)) (g10 hZW hLL)) hGood (g5 hZW) hZF`.
+-/
 theorem explicitFormula_of_leaves
 
     (hK : PerronKernel) (hPS : ∃ C, 0 < C ∧ PerronSumBound C) (hRC : RectCauchy)

@@ -18,6 +18,13 @@ noncomputable section
 
 namespace GlobalTheory.ConeSmallUnf
 
+/- English proof (translation)
+Introduce `hKP F E _ _ _ _ _ σ B a b G G₁ H H' hCfg e' he' K μK μ hK hμK hμ`. Take `⟨C₀, hC₀, ⟨γ, hγ⟩, hCT⟩` from `GlobalTheory.T.config_b_witt_constant_nonzero hKP F E σ B a b G G₁ H H' hCfg e' he'`. Take `⟨c, hc, hR⟩` from `GlobalTheory.T.config_B_haar_stabilizer_right hKP F E σ B a b G G₁ H H' hCfg e' he' K μK μ hK hμK hμ`. Use `⟨C₀ * c, mul_ne_zero hC₀ hc, fun X om om' om₁ om₁' hT hT₁ Φ' hΦ' Eis hEis => ?_⟩` and prove the remaining obligations. Take `⟨hf, hI, hdec, -⟩` from `id hEis`.
+
+Take `⟨𝓓, h𝓓, s₀, hB⟩` from `GlobalTheory.T.polarized_data_integral_identity hKP F E σ B a b G G₁ H H' hCfg K hK X om om' hT Φ' hΦ' hf hI hdec Eis hEis`. Take `⟨s₁, hcl⟩` from `GlobalTheory.T.config_B_haar_stabilizer_left hKP F E σ B a b G G₁ H H' hCfg e' he' K μK μ hK hμK hμ γ hγ X om om' om₁ om₁' hT hT₁ Φ' hΦ' hf hI hdec 𝓓 h𝓓`. Use `⟨max s₀ s₁, fun T hTr s hs => ?_⟩` and prove the remaining obligations. Establish `hs₀ : s₀ < s.re` using `lt_of_le_of_lt (le_max_left _ _) hs`. Establish `hs₁ : s₁ < s.re` using `lt_of_le_of_lt (le_max_right _ _) hs`.
+
+Use `⟨(hcl s hs₁).2 T hTr, fun h => ?_⟩` and prove the remaining obligations. Rewrite using `[(hB s hs₀ h).1]`. Conclude with `hR C₀ γ hγ X om om' om₁ om₁' hT hT₁ Φ' hΦ' (fun h => (hCT γ hγ X om om' om₁ om₁' hT hT₁ Φ' hΦ' h).2) hf hI hdec 𝓓 h𝓓 s (fun h => (hB s hs₀ h).2) (hcl s hs₁).1 T hTr h`.
+-/
 theorem unfold_series : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a b : ℕ)
     (G : Geo σ a (b + 2)) (G₁ : Geo σ a b) (H : Plane E (b + 2) b) (H' : Plane E (a + (b + 2)) (a + b)), CfgB B G G₁ H H' →
     ∀ e', IsEv B G.M' G₁.M' H.ι H'.ι (isoB H H') e' → ∀ (K : Subgroup (UA σ G.V'.J)) (μK : Measure K) (μ : Measure (AE F E)ˣ),

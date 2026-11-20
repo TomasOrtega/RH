@@ -16,6 +16,23 @@ noncomputable section
 
 namespace GlobalTheory.AbCoh
 
+/- English proof (translation)
+Introduce `R R' R₀ _ _ _ t σ σ₀ X X' X₀ s s' s₀ φ φ₀ h h₀ hS hF x`. Establish `hc : IsClosedImmersion (spMap σ)` using `IsClosedImmersion.spec_of_surjective _ hS.1`. Establish `hc₀ : IsClosedImmersion (spMap σ₀)` using `IsClosedImmersion.spec_of_surjective _ hS.2.2.1`. Use `haveI : IsClosedImmersion φ := MorphismProperty.of_isPullback h.flip hc`. Use `haveI : IsClosedImmersion φ₀ := MorphismProperty.of_isPullback h₀.flip hc₀`.
+
+Establish `sec` using `fun U ↦ GlobalTheory.T.surjective_deformation_affine_sections R R' R₀ t σ σ₀ X X' X₀ s s' s₀ φ φ₀ h h₀ hS hF U`. Establish `red` using `GlobalTheory.T.cocyclePullback_iff_preimage_affineHom R R' X X' s s' σ φ h.w`. Establish `red₀` using `GlobalTheory.T.cocyclePullback_iff_preimage_affineHom R R₀ X X₀ s s₀ σ₀ φ₀ h₀.w`. Establish `bij₀` using `(GlobalTheory.T.preimageCochainRestriction_bijective_closedImmersion R₀ X X₀ φ₀ s₀).2.1`. Take `⟨c, hc⟩` from `GlobalTheory.CatCoh.H1.mk_surjective _ ((preRes φ s').pull1 x)`.
+
+Use `choose f hf using fun (U V : AffOp X) (a : U ⟶ V) ↦ (sec V).1 (c.1 U V a)`. Establish `hd : ∀ (U V W : AffOp X) (a : U ⟶ V) (b : V ⟶ W), preα φ s s' W (d1 (OAff s) f U V W a b) = 0`. Introduce `U V W a b`. Establish `nat` using `(preCoef h.w).naturality b (f U V a)`. Establish `cc` using `c.2 a b`.
+
+Rewrite using `[d1_apply, map_add, map_sub, hf, hf]`. Use `erw [nat, hf]`. Rewrite using `[cc]`. Expand and normalize the polynomial expressions, which then agree. Use `choose w hw using fun (U V W : AffOp X) (a : U ⟶ V) (b : V ⟶ W) ↦ ((sec W).2.1 _).1 (hd U V W a b)`.
+
+Establish `hdw : d1 (OAff s) f = t • w`. Use function extensionality and compare the values at `U V W a b`. Conclude with `hw U V W a b`. Establish `hw2 : ∀ ⦃U V W Y : AffOp X⦄ (a : U ⟶ V) (b : V ⟶ W) (e : W ⟶ Y), t • (mp (OAff s) e (w U V W a b) + w U W Y (a ≫ b) e - (w U V Y a (b ≫ e) + w V W Y b e)) = 0`. Introduce `U V W Y a b e`.
+
+Use `(differential_one_mem_scaled_lattice (OAff s) f) a b e` as an intermediate fact. Rewrite `this` using `[hdw]`. Simplify using `only [Pi.smul_apply, map_smul] at this`. Rewrite using `[smul_sub, smul_add, smul_add, this, sub_self]`. Establish `hc0 : (fun U V W (a : U ⟶ V) (b : V ⟶ W) ↦ preα φ₀ s s₀ W (w U V W a b) : C2 (OPre φ₀ s₀)) ∈ Z2 (OPre φ₀ s₀)`.
+
+Introduce `U V W Y a b e`. Establish `h1` using `((sec Y).2.2.2 _).2 (hw2 a b e)`. Establish `nat` using `(preCoef h₀.w).naturality e (w U V W a b)`. Simplify using `only [map_add, map_sub] at h1`. Use `erw [nat] at h1`.
+
+Simplify using `only`. Conclude with `sub_eq_zero.1 h1`. Take `⟨z, hz⟩` from `bij₀.2 (GlobalTheory.CatCoh.H2.mk _ ⟨_, hc0⟩)`. Conclude with `⟨z, f, w, hdw, (red.1 f x).2 ⟨c, fun U V a ↦ (hf U V a).symm, hc⟩, (red₀.2.1 w z).2 ⟨⟨_, hc0⟩, fun U V W a b ↦ rfl, hz.symm⟩⟩`.
+-/
 theorem exists_bock : ∀ (R R' R₀ : Type) [CommRing R] [CommRing R'] [CommRing R₀] (t : R) (σ : R →+* R') (σ₀ : R →+* R₀) (X X' X₀ : Scheme.{0}) (s : X ⟶ Sp R) (s' : X' ⟶ Sp R') (s₀ : X₀ ⟶ Sp R₀) (φ : X' ⟶ X) (φ₀ : X₀ ⟶ X) (h : IsPullback φ s' s (spMap σ)) (h₀ : IsPullback φ₀ s₀ s (spMap σ₀)), SmallExt t σ σ₀ → Flat s → ∀ x : HO1 s', ∃ z : HO2 s₀, Bock h.w h₀.w t x z := by
   intro R R' R₀ _ _ _ t σ σ₀ X X' X₀ s s' s₀ φ φ₀ h h₀ hS hF x
   have hc : IsClosedImmersion (spMap σ) := IsClosedImmersion.spec_of_surjective _ hS.1

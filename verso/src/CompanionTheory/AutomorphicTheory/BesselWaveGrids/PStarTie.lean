@@ -13,9 +13,17 @@ def NQ (P : M.Par) (nn : ℝ → ℝ) (Y : Finset ℝ) (Λ₀ : ℝ) : Prop :=
 
 noncomputable def lamN {n : ℕ} (lam : Fin n → ℝ) (s : ℕ) : ℝ := if h : s - 1 < n then lam ⟨s - 1, h⟩ else 0
 
+/- English proof (translation)
+Simplify using `[lamN]`.
+-/
 theorem lamN_succ {n : ℕ} (lam : Fin n → ℝ) (s : Fin n) : lamN lam (s + 1) = lam s := by
   simp [lamN]
 
+/- English proof (translation)
+Unfold `Pst PStar`. Use `symm`. Use `Finset.prod_bij (fun s _ => (s : ℕ) + 1) (fun s _ => ?_) (fun s _ t _ h => ?_) (fun t ht => ?_) (fun s _ => ?_)` and prove the remaining obligations. Use `s.2` as an intermediate fact. Conclude with `mem_Icc.2 ⟨by omega, by omega⟩`.
+
+Conclude with `Fin.ext (by omega)`. Take `⟨h1, h2⟩` from `mem_Icc.1 ht`. Conclude with `⟨⟨t - 1, by omega⟩, mem_univ _, by simp only; omega⟩`. Rewrite using `[lamN_succ]`.
+-/
 theorem Pst_lamN (k r : ℕ) (lam : Fin (2 * r + k + 1) → ℝ) (c y : ℝ) : Pst k r (lamN lam) c y = PStar lam c y := by
   unfold Pst PStar
   symm
@@ -28,6 +36,9 @@ theorem Pst_lamN (k r : ℕ) (lam : Fin (2 * r + k + 1) → ℝ) (c y : ℝ) : P
     exact ⟨⟨t - 1, by omega⟩, mem_univ _, by simp only; omega⟩
   · rw [lamN_succ]
 
+/- English proof (translation)
+The claim follows from `Finset.prod_pos fun _ _ => add_pos_of_nonneg_of_pos (abs_nonneg _) hc`.
+-/
 theorem PStar_pos {n : ℕ} (lam : Fin n → ℝ) {c : ℝ} (hc : 0 < c) (y : ℝ) : 0 < PStar lam c y :=
   Finset.prod_pos fun _ _ => add_pos_of_nonneg_of_pos (abs_nonneg _) hc
 
@@ -46,6 +57,11 @@ structure HypType (k r : ℕ) (lam : Fin (2 * r + k + 1) → ℝ) (u : ℕ → �
   inter : C7.LamInterlaces k r u fun s => lam (s.cast (by ring))
   u_le : ∀ i, 1 ≤ i → i ≤ k → |u i| ≤ b
 
+/- English proof (translation)
+Establish `h1 : (-1 : ℝ) < m` using `by linarith`. Establish `h2 : (0 : ℤ) ≤ m`. Establish `: (-1 : ℤ) < m` using `by exact_mod_cast h1`. Use linear arithmetic over natural numbers and integers. Establish `h3 : (0 : ℝ) ≤ m` using `by exact_mod_cast h2`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem half_le_of_pos {x : ℝ} (m : ℤ) (hx : x = m + 1 / 2) (h : 0 < x) : 1 / 2 ≤ x := by
   have h1 : (-1 : ℝ) < m := by linarith
   have h2 : (0 : ℤ) ≤ m := by
@@ -54,6 +70,13 @@ theorem half_le_of_pos {x : ℝ} (m : ℤ) (hx : x = m + 1 / 2) (h : 0 < x) : 1 
   have h3 : (0 : ℝ) ≤ m := by exact_mod_cast h2
   linarith
 
+/- English proof (translation)
+Take `⟨t, rfl⟩ : ∃ t, s = t + 1` from `⟨s - 1, by omega⟩`. Establish `ht : t < 2 * r + k + 1` using `by omega`. Establish `e : lamN lam (t + 1) = lam ⟨t, ht⟩` using `lamN_succ lam ⟨t, ht⟩`. Take `⟨h1, h2⟩` from `hu.inter.2 ⟨t, by omega⟩`. Establish `h1' : lam ⟨t, ht⟩ < u (t + 1)` using `h1 (by simp only; omega)`.
+
+Establish `h2' : u (t + 2) < lam ⟨t, ht⟩` using `h2 (by simp only; omega)`. Take `⟨a, ha⟩` from `hc.2 ⟨t, ht⟩`. Take `⟨m1, hm1⟩` from `hu.half (t + 1) (by omega) (by omega)`. Take `⟨m2, hm2⟩` from `hu.half (t + 2) (by omega) (by omega)`. Move the coercions through the operations in `at ha`.
+
+Rewrite using `[e]`. Establish `k1` using `half_le_of_pos (x := u (t + 1) - lam ⟨t, ht⟩) (m1 - a - r - 1) (by push_cast; linarith) (by linarith)`. Establish `k2` using `half_le_of_pos (x := lam ⟨t, ht⟩ - u (t + 2)) (a + r - m2) (by push_cast; linarith) (by linarith)`. Apply the tactic sequence `constructor <;> linarith`.
+-/
 theorem inter_half {k r : ℕ} {lam : Fin (2 * r + k + 1) → ℝ} (hc : Formalism.QuantumDeterminants.IsHCParam lam) {u : ℕ → ℝ} {b : ℝ}
     (hu : HypType k r lam u b) (s : ℕ) (hs1 : 1 ≤ s) (hsk : s ≤ k - 1) :
     lamN lam s + 1 / 2 ≤ u s ∧ u (s + 1) ≤ lamN lam s - 1 / 2 := by
@@ -76,11 +99,17 @@ section data
 
 variable {P : M.Par} {lam : Fin (2 * P.r + P.k + 1) → ℝ} {c g b : ℝ}
 
+/- English proof (translation)
+Establish `h1 : (1 : ℝ) ≤ Real.exp 1` using `Real.one_le_exp zero_le_one`. Establish `h2 : (0 : ℝ) ≤ P.k` using `Nat.cast_nonneg _`. Use polynomial arithmetic with `[h.b_ge_k]`.
+-/
 theorem HypLam.k_le (h : HypLam P.k P.r lam c g b) : (P.k : ℝ) ≤ b := by
   have h1 : (1 : ℝ) ≤ Real.exp 1 := Real.one_le_exp zero_le_one
   have h2 : (0 : ℝ) ≤ P.k := Nat.cast_nonneg _
   nlinarith [h.b_ge_k]
 
+/- English proof (translation)
+Introduce `s hs1 hs`. Take `⟨t, rfl⟩ : ∃ t, s = t + 1` from `⟨s - 1, by omega⟩`. Rewrite using `[show lamN lam (t + 1) = lam ⟨t, by omega⟩ from lamN_succ lam ⟨t, by omega⟩]`. Conclude with `h.lam_le _`.
+-/
 theorem HypLam.lamN_le (h : HypLam P.k P.r lam c g b) :
     ∀ s, 1 ≤ s → s ≤ P.k + 2 * P.r + 1 → |lamN lam s| ≤ b := by
   intro s hs1 hs
@@ -88,6 +117,9 @@ theorem HypLam.lamN_le (h : HypLam P.k P.r lam c g b) :
   rw [show lamN lam (t + 1) = lam ⟨t, by omega⟩ from lamN_succ lam ⟨t, by omega⟩]
   exact h.lam_le _
 
+/- English proof (translation)
+Introduce `s hs1 hs`. Take `⟨t, rfl⟩ : ∃ t, s = t + 1` from `⟨s - 1, by omega⟩`. Rewrite using `[show lamN lam (t + 1) = lam ⟨t, by omega⟩ from lamN_succ lam ⟨t, by omega⟩, show lamN lam (t + 1 + 1) = lam ⟨t + 1, by omega⟩ from lamN_succ lam ⟨t + 1, by omega⟩]`. Conclude with `h.gap _ _ rfl`.
+-/
 theorem HypLam.lamN_gap (h : HypLam P.k P.r lam c g b) :
     ∀ s, 1 ≤ s → s + 1 ≤ P.k - 1 → lamN lam (s + 1) + g ≤ lamN lam s := by
   intro s hs1 hs
@@ -96,6 +128,9 @@ theorem HypLam.lamN_gap (h : HypLam P.k P.r lam c g b) :
     show lamN lam (t + 1 + 1) = lam ⟨t + 1, by omega⟩ from lamN_succ lam ⟨t + 1, by omega⟩]
   exact h.gap _ _ rfl
 
+/- English proof (translation)
+Combine the linear relations using `[h.c_ge] g_ge := by linarith [h.c_ge, h.g_ge] b_ge_three := h.b_ge_three b_ge_k := h.k_le b_ge_c := h.b_ge_c lam_le := h.lamN_le gap := h.lamN_gap inter := fun s h1 h2 => ⟨inter_half h.hc hu s h1 h2, inter_half h.hc hu' s h1 h2⟩ u_le := fun i h1 h2 => ⟨hu.u_le i h1 h2, hu'.u_le i …`.
+-/
 theorem lamData_of_hyp (h : HypLam P.k P.r lam c g b) (hu : HypType P.k P.r lam P.u b)
     (hu' : HypType P.k P.r lam P.u' b) : LamData P (lamN lam) c g b where
   c_pos := by linarith [h.c_ge]
@@ -108,6 +143,9 @@ theorem lamData_of_hyp (h : HypLam P.k P.r lam c g b) (hu : HypType P.k P.r lam 
   inter := fun s h1 h2 => ⟨inter_half h.hc hu s h1 h2, inter_half h.hc hu' s h1 h2⟩
   u_le := fun i h1 h2 => ⟨hu.u_le i h1 h2, hu'.u_le i h1 h2⟩
 
+/- English proof (translation)
+Combine the linear relations using `[h.c_ge] g_ge := by linarith [h.c_ge, h.g_ge] b_ge_three := h.b_ge_three b_ge_k := h.k_le b_ge_c := h.b_ge_c lam_le := h.lamN_le gap := h.lamN_gap inter := fun s h1 h2 => inter_half h.hc hu s h1 h2 moved := hmv ul_le := ⟨hu.u_le l hl1 hlk, hl⟩`.
+-/
 theorem movedData_of_hyp (h : HypLam P.k P.r lam c g b) (hu : HypType P.k P.r lam P.u b) {l : ℕ} (hl1 : 1 ≤ l)
     (hlk : l ≤ P.k) (hmv : ∀ i, i ≠ l → P.u' i = P.u i) (hl : |P.u' l| ≤ b) : MovedData P l (lamN lam) c g b where
   c_pos := by linarith [h.c_ge]
@@ -125,6 +163,11 @@ end data
 
 noncomputable def nqΛ (P : M.Par) (b : ℝ) : ℝ := Real.sqrt (b ^ (8 * P.r + 20) / (P.T * P.T'))
 
+/- English proof (translation)
+Introduce `y hy`. Establish `h` using `(nq_onCut_pair P hOK l hl1 hlk hk (lamN lam) c g b hL y (hY y hy)).2`. Rewrite `h` using `[Pst_lamN, Pst_lamN]`. Establish `hb : 0 ≤ b` using `by linarith [hL.b_ge_three]`. Establish `hTT : 0 < P.T * P.T'` using `mul_pos hOK.T_pos hOK.T'_pos`.
+
+Rewrite using `[nqΛ, Real.sq_sqrt (by positivity)]`. Conclude with `h`.
+-/
 theorem nq_PStar (P : M.Par) (hOK : P.OK) (l : ℕ) (hl1 : 1 ≤ l) (hlk : l ≤ P.k) (hk : 2 ≤ P.k)
     (lam : Fin (2 * P.r + P.k + 1) → ℝ) (c g b : ℝ) (hL : PairData P l (lamN lam) c g b) (Y : Finset ℝ)
     (hY : ∀ y ∈ Y, I.OnCut P.u P.u' l y) : NQ P (PStar lam c) Y (nqΛ P b) := by
@@ -136,6 +179,19 @@ theorem nq_PStar (P : M.Par) (hOK : P.OK) (l : ℕ) (hl1 : 1 ≤ l) (hlk : l ≤
   rw [nqΛ, Real.sq_sqrt (by positivity)]
   exact h
 
+/- English proof (translation)
+Use `set m : ℝ := ((2 * P.r + 2 : ℕ) : ℝ) with hm`. Establish `hmr : m = 2 * (P.r : ℝ) + 2` using `by rw [hm]; push_cast; ring`. Establish `hb0 : (0 : ℝ) < b` using `by linarith`. Establish `hr : (0 : ℝ) ≤ P.r` using `Nat.cast_nonneg _`. Establish `hm0 : 0 ≤ m` using `by rw [hmr]; positivity`.
+
+Establish `h2 : b ^ (8 * P.r + 20) = b ^ (8 * (P.r : ℝ) + 20)`. Rewrite using `[← Real.rpow_natCast]`. Use `push_cast`. Put the polynomial expressions in normal form. Establish `h3 : (P.T * P.T')⁻¹ ≤ b ^ (CT * m)`.
+
+Rewrite `hTT` using `[Real.rpow_neg hb0.le]`. Establish `hpos : 0 < (b ^ (CT * m))⁻¹` using `inv_pos.mpr (Real.rpow_pos_of_pos hb0 _)`. Combine the equalities or inequalities in the displayed calculation. Establish `hX : b ^ (8 * P.r + 20) / (P.T * P.T') ≤ (b ^ ((5 + CT) * m)) ^ 2`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[div_eq_mul_inv, h2]`. Conclude with `mul_le_mul_of_nonneg_left h3 (by positivity)`. Use `_ = b ^ ((8 * (P.r : ℝ) + 20) + CT * m) := by rw [Real.rpow_add hb0 (8 * (P.r : ℝ) + 20)]`. Use `_ ≤ b ^ ((5 + CT) * m + (5 + CT) * m) := by`. Apply `Real.rpow_le_rpow_of_exponent_le hb` to reduce the goal to its premises.
+
+Establish `hCTm : 0 ≤ CT * m` using `mul_nonneg hCT hm0`. Establish `e : (5 + CT) * m + (5 + CT) * m = 10 * m + 2 * (CT * m)` using `by ring`. Rewrite using `[e]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `_ = (b ^ ((5 + CT) * m)) ^ 2 := by rw [Real.rpow_add hb0, sq]`.
+
+Conclude with `(Real.sqrt_le_left (Real.rpow_nonneg hb0.le _)).mpr hX`.
+-/
 theorem nqΛ_le (P : M.Par) (b CT : ℝ) (hb : 1 ≤ b) (hCT : 0 ≤ CT)
     (hTT : b ^ (-(CT * ((2 * P.r + 2 : ℕ) : ℝ))) ≤ P.T * P.T') :
     nqΛ P b ≤ b ^ ((5 + CT) * ((2 * P.r + 2 : ℕ) : ℝ)) := by
@@ -165,6 +221,9 @@ theorem nqΛ_le (P : M.Par) (b CT : ℝ) (hb : 1 ≤ b) (hCT : 0 ≤ CT)
       _ = (b ^ ((5 + CT) * m)) ^ 2 := by rw [Real.rpow_add hb0, sq]
   exact (Real.sqrt_le_left (Real.rpow_nonneg hb0.le _)).mpr hX
 
+/- English proof (translation)
+The claim follows from `nq_PStar P hOK l hl1 hlk hk lam c g b (movedData_of_hyp h hu hl1 hlk hmv hl).toPair Y hY`.
+-/
 theorem nq_text_moved (P : M.Par) (hOK : P.OK) (l : ℕ) (hl1 : 1 ≤ l) (hlk : l ≤ P.k) (hk : 2 ≤ P.k)
     (lam : Fin (2 * P.r + P.k + 1) → ℝ) (c g b : ℝ) (h : HypLam P.k P.r lam c g b)
     (hu : HypType P.k P.r lam P.u b) (hmv : ∀ i, i ≠ l → P.u' i = P.u i) (hl : |P.u' l| ≤ b) (Y : Finset ℝ)
@@ -181,6 +240,17 @@ noncomputable def P₂ : M.Par where
 
 noncomputable def lam₂ : Fin (2 * P₂.r + P₂.k + 1) → ℝ := fun s => 10 - 20 * ((s : ℕ) : ℝ)
 
+/- English proof (translation)
+Use `show 1 ≤ 2; norm_num T_pos := by show (0 : ℝ) < 1; norm_num T'_pos := by show (0 : ℝ) < 1; norm_num int_u := by`. Introduce `i hi`. Take `⟨h1, h2⟩` from `Finset.mem_Icc.1 hi`. Establish `h2' : i ≤ 2` using `h2`. Use `interval_cases i`.
+
+Conclude with `⟨0, by simp [P₂]⟩`. Conclude with `⟨-20, by simp [P₂]; norm_num⟩`. Use the proof step `int_u' := by`. Introduce `i hi`. Take `⟨h1, h2⟩` from `Finset.mem_Icc.1 hi`.
+
+Establish `h2' : i ≤ 2` using `h2`. Use `interval_cases i`. Conclude with `⟨20, by simp [P₂]; norm_num⟩`. Conclude with `⟨-20, by simp [P₂]; norm_num⟩`. Use `gap := by`.
+
+Introduce `i hi`. Take `⟨h1, h2⟩` from `Finset.mem_Icc.1 hi`. Establish `h2' : i ≤ 1` using `h2`. Use `interval_cases i`. Simplify using `only [M.Par.lo, M.Par.hi, P₂]`.
+
+Evaluate the numerical expressions.
+-/
 theorem P₂_OK : P₂.OK where
   k_pos := by show 1 ≤ 2; norm_num
   T_pos := by show (0 : ℝ) < 1; norm_num
@@ -207,12 +277,18 @@ theorem P₂_OK : P₂.OK where
     simp only [M.Par.lo, M.Par.hi, P₂]
     norm_num
 
+/- English proof (translation)
+Introduce `s t hst`. Establish `: ((s : ℕ) : ℝ) < ((t : ℕ) : ℝ)` using `by exact_mod_cast hst`. Simplify using `only [lam₂]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem lam₂_anti : StrictAnti lam₂ := by
   intro s t hst
   have : ((s : ℕ) : ℝ) < ((t : ℕ) : ℝ) := by exact_mod_cast hst
   simp only [lam₂]
   linarith
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨lam₂_anti, fun s => ⟨9 - 20 * (s : ℕ), by simp only [lam₂, P₂]; push_cast; ring⟩⟩ lam_le := by intro s have hs : (s : ℕ) < 3 := s.2 have h1 : ((s : ℕ) : ℝ) ≤ 2 := by exact_mod_cast (by omega : (s : ℕ) ≤ 2) have h0 : (0 : ℝ) ≤ ((s : ℕ) : ℝ) := Nat.cast_nonneg _ simp only [lam₂] r …`.
+-/
 theorem hypLam₂ : HypLam P₂.k P₂.r lam₂ 10 20 41 where
   hc := ⟨lam₂_anti, fun s => ⟨9 - 20 * (s : ℕ), by simp only [lam₂, P₂]; push_cast; ring⟩⟩
   lam_le := by
@@ -238,6 +314,19 @@ theorem hypLam₂ : HypLam P₂.k P₂.r lam₂ 10 20 41 where
     push_cast
     linarith
 
+/- English proof (translation)
+Introduce `i _ _`. Distinguish the cases in `h : i = 1`. Conclude with `⟨a, by simp [h, P₂]; norm_num⟩`. Conclude with `⟨0, by simp [h, P₂]; norm_num⟩`. Use `inter := by`.
+
+Establish `haR : (10 : ℝ) ≤ a` using `by exact_mod_cast ha`. Use `⟨fun s t hst => lam₂_anti (by simpa using hst), fun s => ⟨fun hs => ?_, fun hs => ?_⟩⟩` and prove the remaining obligations. Establish `hs' : (s : ℕ) + 1 ≤ 2` using `hs`. Simplify using `only [lam₂, Fin.val_cast]`. Use `split_ifs with h`.
+
+Establish `: (s : ℕ) = 0` using `by omega`. Rewrite using `[this]`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `: (s : ℕ) = 1` using `by omega`.
+
+Rewrite using `[this]`. Evaluate the numerical expressions. Establish `hs' : (s : ℕ) + 2 ≤ 2` using `hs`. Establish `: (s : ℕ) = 0` using `by omega`. Simplify using `only [lam₂, Fin.val_cast, this]`.
+
+Evaluate the numerical expressions. Use `u_le := by`. Introduce `i _ _`. Establish `haR : (10 : ℝ) ≤ a` using `by exact_mod_cast ha`. Establish `haR' : (a : ℝ) ≤ 40` using `by exact_mod_cast ha'`.
+
+Rewrite using `[abs_le]`. Apply the tactic sequence `split_ifs <;> constructor <;> linarith`.
+-/
 theorem hypType₂ (a : ℤ) (ha : 10 ≤ a) (ha' : a ≤ 40) :
     HypType P₂.k P₂.r lam₂ (fun i => if i = 1 then (a : ℝ) + 1 / 2 else 1 / 2) 41 where
   half := by
@@ -266,12 +355,18 @@ theorem hypType₂ (a : ℤ) (ha : 10 ≤ a) (ha' : a ≤ 40) :
     rw [abs_le]
     split_ifs <;> constructor <;> linarith
 
+/- English proof (translation)
+Use `hypType₂ 20 (by norm_num) (by norm_num) using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Simplify using `only [P₂]`. Apply the tactic sequence `split_ifs <;> norm_num`.
+-/
 theorem hypType₂_u : HypType P₂.k P₂.r lam₂ P₂.u 41 := by
   convert hypType₂ 20 (by norm_num) (by norm_num) using 1
   funext i
   simp only [P₂]
   split_ifs <;> norm_num
 
+/- English proof (translation)
+Use `hypType₂ 40 (by norm_num) (by norm_num) using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Simplify using `only [P₂]`. Apply the tactic sequence `split_ifs <;> norm_num`.
+-/
 theorem hypType₂_u' : HypType P₂.k P₂.r lam₂ P₂.u' 41 := by
   convert hypType₂ 40 (by norm_num) (by norm_num) using 1
   funext i

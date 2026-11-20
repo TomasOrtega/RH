@@ -32,28 +32,46 @@ variable {A : Type} [CommGroup A]
 
 def detRoot (V : HSp D) (g : GA D V) : (AE D)ˣ := ((GlobalTheory.Member.isDetRoot_laws D V).1 g).choose
 
+/- English proof (translation)
+The claim follows from `((GlobalTheory.Member.isDetRoot_laws D V).1 g).choose_spec`.
+-/
 theorem isDetRoot_detRoot (V : HSp D) (g : GA D V) : IsDetRoot V g (detRoot V g) :=
   ((GlobalTheory.Member.isDetRoot_laws D V).1 g).choose_spec
 
 def detChar (V : HSp D) (χ : (AE D)ˣ →* A) (g : GA D V) : A := χ (detRoot V g)
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `(GlobalTheory.Member.isDetRoot_laws D V).2.1 g _ _ (isDetRoot_detRoot V g) hz`. Rewrite using `[ha, map_mul, hF, mul_one, detChar]`.
+-/
 theorem detChar_eq {V : HSp D} {χ : (AE D)ˣ →* A} (hF : ∀ a, χ (idF D a) = 1) {g : GA D V} {z : (AE D)ˣ}
     (hz : IsDetRoot V g z) : detChar V χ g = χ z := by
   obtain ⟨a, ha⟩ := (GlobalTheory.Member.isDetRoot_laws D V).2.1 g _ _ (isDetRoot_detRoot V g) hz
   rw [ha, map_mul, hF, mul_one, detChar]
 
+/- English proof (translation)
+Rewrite using `[detChar_eq hF ((GlobalTheory.Member.isDetRoot_laws D V).2.2.2 _ _ _ _ (isDetRoot_detRoot V g) (isDetRoot_detRoot V g')), map_mul]`. Both sides reduce to the same expression.
+-/
 theorem detChar_mul {V : HSp D} {χ : (AE D)ˣ →* A} (hF : ∀ a, χ (idF D a) = 1) (g g' : GA D V) :
     detChar V χ (g * g') = detChar V χ g * detChar V χ g' := by
   rw [detChar_eq hF ((GlobalTheory.Member.isDetRoot_laws D V).2.2.2 _ _ _ _ (isDetRoot_detRoot V g) (isDetRoot_detRoot V g')), map_mul]
   rfl
 
+/- English proof (translation)
+Take `⟨x, hx⟩` from `(GlobalTheory.Member.isDetRoot_laws D V).2.2.1 γ hγ`. Rewrite using `[detChar_eq hF hx, hE]`.
+-/
 theorem detChar_rat {V : HSp D} {χ : (AE D)ˣ →* A} (hF : ∀ a, χ (idF D a) = 1)
     (hE : ∀ x : D.host.Eˣ, χ (Units.map (incA D).toMonoidHom x) = 1) {γ : GA D V} (hγ : γ ∈ GQ V) : detChar V χ γ = 1 := by
   obtain ⟨x, hx⟩ := (GlobalTheory.Member.isDetRoot_laws D V).2.2.1 γ hγ
   rw [detChar_eq hF hx, hE]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem detChar_one (V : HSp D) (g : GA D V) : detChar V (1 : (AE D)ˣ →* A) g = 1 := rfl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(GlobalTheory.Member.isDetRoot_laws D V).1, fun _ _ hz => by beta_reduce; rw [detChar_eq hF hz]⟩`.
+-/
 theorem muVal_detChar (V : HSp D) {χ : (AE D)ˣ →* Circle} (hF : ∀ a, χ (idF D a) = 1) :
     Formalism.L2.Pj.MuVal V χ fun g => ((detChar V χ g : Circle) : ℂ) :=
   ⟨(GlobalTheory.Member.isDetRoot_laws D V).1, fun _ _ hz => by beta_reduce; rw [detChar_eq hF hz]⟩
@@ -61,9 +79,15 @@ theorem muVal_detChar (V : HSp D) {χ : (AE D)ˣ →* Circle} (hF : ∀ a, χ (i
 def twistBy (V : HSp D) (χ : (AE D)ˣ →* Circle) : (GA D V → ℂ) →ₗ[ℂ] (GA D V → ℂ) :=
   LinearMap.mulLeft ℂ fun g => ((detChar V χ g : Circle) : ℂ)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem twistBy_apply (V : HSp D) (χ : (AE D)ˣ →* Circle) (φ : GA D V → ℂ) (g : GA D V) :
     twistBy V χ φ g = ((detChar V χ g : Circle) : ℂ) * φ g := rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `g`. Simplify using `[twistBy_apply]`.
+-/
 @[simp] theorem twistBy_one (V : HSp D) (φ : GA D V → ℂ) : twistBy V 1 φ = φ := by
   funext g; simp [twistBy_apply]
 
@@ -75,29 +99,52 @@ def idem (P : Finset (Pl D.host.E)) : AE D := ∑ PP ∈ P, idemAt PP
 
 def SplitSet (P : Finset (Pl D.host.E)) : Prop := ∃ e : AE D, IsIdemSum e P
 
+/- English proof (translation)
+The claim follows from `(((GlobalTheory.IdemSupport.supported_group_and_prime_idempotents D.sp.X').2.2.1 PP e _ (Or.inl ⟨h, rfl⟩)).2.2.2.1 _ _ (Or.inl ⟨Classical.epsilon_spec (p := fun e => IsIdemAt e PP) ⟨e, h⟩, rfl⟩)).1`.
+-/
 theorem idemAt_eq {e : AE D} {PP : Pl D.host.E} (h : IsIdemAt e PP) : idemAt PP = e :=
   (((GlobalTheory.IdemSupport.supported_group_and_prime_idempotents D.sp.X').2.2.1 PP e _ (Or.inl ⟨h, rfl⟩)).2.2.2.1 _ _
     (Or.inl ⟨Classical.epsilon_spec (p := fun e => IsIdemAt e PP) ⟨e, h⟩, rfl⟩)).1
 
+/- English proof (translation)
+Take `⟨⟨es, h1, rfl⟩, -⟩` from `h`. Conclude with `Finset.sum_congr rfl fun PP hPP => idemAt_eq (h1 PP hPP)`.
+-/
 theorem idem_eq {e : AE D} {P : Finset (Pl D.host.E)} (h : IsIdemSum e P) : idem P = e := by
   obtain ⟨⟨es, h1, rfl⟩, -⟩ := h
   exact Finset.sum_congr rfl fun PP hPP => idemAt_eq (h1 PP hPP)
 
+/- English proof (translation)
+Take `⟨e, he⟩` from `h`. Rewrite using `[idem_eq he]` and apply the resulting hypothesis.
+-/
 theorem SplitSet.isIdemSum {P : Finset (Pl D.host.E)} (h : SplitSet P) : IsIdemSum (idem P) P := by
   obtain ⟨e, he⟩ := h
   rwa [idem_eq he]
 
+/- English proof (translation)
+Take `⟨e, ⟨es, h1, -⟩, -⟩` from `h`. Rewrite using `[idemAt_eq (h1 PP hPP)]`. Conclude with `h1 PP hPP`.
+-/
 theorem SplitSet.isIdemAt {P : Finset (Pl D.host.E)} (h : SplitSet P) {PP : Pl D.host.E} (hPP : PP ∈ P) :
     IsIdemAt (idemAt PP) PP := by
   obtain ⟨e, ⟨es, h1, -⟩, -⟩ := h
   rw [idemAt_eq (h1 PP hPP)]
   exact h1 PP hPP
 
+/- English proof (translation)
+The claim follows from `Finset.sum_empty`.
+-/
 @[simp] theorem idem_empty : idem (∅ : Finset (Pl D.host.E)) = 0 := Finset.sum_empty
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨0, ⟨fun _ => 0, by simp, by simp⟩, zero_mul _⟩`.
+-/
 theorem splitSet_empty : SplitSet (∅ : Finset (Pl D.host.E)) :=
   ⟨0, ⟨fun _ => 0, by simp, by simp⟩, zero_mul _⟩
 
+/- English proof (translation)
+Use `(GlobalTheory.PlaceModelSum.eq_or_mul_eq_zero (h.isIdemAt hi).1 (h.isIdemAt hj).1).resolve_left fun e => hij ?_` and prove the remaining obligations. Use `HeightOneSpectrum.ext (Ideal.ext fun x => ?_)` and prove the remaining obligations. Distinguish the cases in `hx : x = 0`. Rewrite using `[hx]`. Conclude with `iff_of_true (zero_mem _) (zero_mem _)`.
+
+Rewrite using `[(h.isIdemAt hi).2 x hx, (h.isIdemAt hj).2 x hx, e]`.
+-/
 theorem SplitSet.mul_eq_zero {P : Finset (Pl D.host.E)} (h : SplitSet P) {i j : Pl D.host.E} (hi : i ∈ P) (hj : j ∈ P)
     (hij : j ≠ i) : idemAt i * idemAt j = 0 := by
   refine (GlobalTheory.PlaceModelSum.eq_or_mul_eq_zero (h.isIdemAt hi).1 (h.isIdemAt hj).1).resolve_left fun e => hij ?_
@@ -106,6 +153,9 @@ theorem SplitSet.mul_eq_zero {P : Finset (Pl D.host.E)} (h : SplitSet P) {i j : 
   · rw [hx]; exact iff_of_true (zero_mem _) (zero_mem _)
   · rw [(h.isIdemAt hi).2 x hx, (h.isIdemAt hj).2 x hx, e]
 
+/- English proof (translation)
+Establish `k : ∀ l ∈ P, idemAt l * idem P = idemAt l` using `fun l hl => GlobalTheory.PlaceModelSum.mul_sum_orth (fun a ha => (h.isIdemAt ha).1) (fun a ha b hb hab => h.mul_eq_zero ha hb hab) hl`. Establish `h0` using `h.isIdemSum.2`. Rewrite using `[← k i hi, ← k j hj, RingHom.map_mul]`. Take the linear combination `(idemAt i * cA D (idemAt j)) * h0`.
+-/
 theorem SplitSet.mul_conj {P : Finset (Pl D.host.E)} (h : SplitSet P) {i j : Pl D.host.E} (hi : i ∈ P) (hj : j ∈ P) :
     idemAt i * cA D (idemAt j) = 0 := by
   have k : ∀ l ∈ P, idemAt l * idem P = idemAt l := fun l hl =>
@@ -114,6 +164,9 @@ theorem SplitSet.mul_conj {P : Finset (Pl D.host.E)} (h : SplitSet P) {i j : Pl 
   rw [← k i hi, ← k j hj, RingHom.map_mul]
   linear_combination (idemAt i * cA D (idemAt j)) * h0
 
+/- English proof (translation)
+Use `⟨idem P', ⟨idemAt, fun PP hPP => h.isIdemAt (hP hPP), rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[idem, map_sum, Finset.sum_mul_sum]`. Conclude with `Finset.sum_eq_zero fun i hi => Finset.sum_eq_zero fun j hj => h.mul_conj (hP hi) (hP hj)`.
+-/
 theorem SplitSet.mono {P P' : Finset (Pl D.host.E)} (h : SplitSet P) (hP : P' ⊆ P) : SplitSet P' := by
   refine ⟨idem P', ⟨idemAt, fun PP hPP => h.isIdemAt (hP hPP), rfl⟩, ?_⟩
   rw [idem, map_sum, Finset.sum_mul_sum]
@@ -149,6 +202,9 @@ structure Twist.Good (t : Twist D A) : Prop where
 
 def Twist.triv (A : Type) [CommGroup A] (Q : Finset (Pl D.host.E)) : Twist D A := ⟨Q, 1, fun _ => 1⟩
 
+/- English proof (translation)
+Simplify using `[Twist.triv] rat _ := rfl real _ := rfl split := h unram _ _ _ _ _ := rfl res _ _ _ _ _ _ _ := rfl`.
+-/
 theorem Twist.triv_good {Q : Finset (Pl D.host.E)} (h : SplitSet Q) : (Twist.triv A Q).Good where
   isOpen := by simp [Twist.triv]
   rat _ := rfl
@@ -157,6 +213,9 @@ theorem Twist.triv_good {Q : Finset (Pl D.host.E)} (h : SplitSet Q) : (Twist.tri
   unram _ _ _ _ _ := rfl
   res _ _ _ _ _ _ _ := rfl
 
+/- English proof (translation)
+Use `haveI := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.isTopRing (F := D.host.F) (E := D.host.E)`. Use `⟨continuous_of_continuousAt_one t.chi ?_, h.rat⟩` and prove the remaining obligations. Use `(continuousAt_const (y := (1 : Circle))).congr ?_` and prove the remaining obligations. Use `filter_upwards [h.isOpen.mem_nhds (one_mem t.chi.ker)] with x hx using (MonoidHom.mem_ker.1 hx).symm`.
+-/
 theorem Twist.Good.isHeckeChar {t : Twist D Circle} (h : t.Good) : IsHeckeChar D t.chi := by
   haveI := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.isTopRing (F := D.host.F) (E := D.host.E)
   refine ⟨continuous_of_continuousAt_one t.chi ?_, h.rat⟩
@@ -192,11 +251,20 @@ def UnivTwist.spec (u : UnivTwist D C) (Q : Finset (Pl D.host.E)) (χ : Multipli
       χ.comp ((AddMonoidHom.toMultiplicative (AddMonoidHom.single (fun _ : ↥Q => C) ⟨PP, h⟩)).comp (u.kap PP))
     else 1
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨splitSet_empty, fun _ h => absurd h (Finset.notMem_empty _)⟩`.
+-/
 theorem UnivTwist.good_empty (u : UnivTwist D C) : u.Good ∅ := ⟨splitSet_empty, fun _ h => absurd h (Finset.notMem_empty _)⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.1.mono hQ, fun PP hPP => h.2 PP (hQ hPP)⟩`.
+-/
 theorem UnivTwist.Good.mono {u : UnivTwist D C} {Q Q' : Finset (Pl D.host.E)} (h : u.Good Q) (hQ : Q' ⊆ Q) : u.Good Q' :=
   ⟨h.1.mono hQ, fun PP hPP => h.2 PP (hQ hPP)⟩
 
+/- English proof (translation)
+Use extensionality with `PP`. Conclude with `congrArg Multiplicative.toAdd ((h.2 PP.1 PP.2).real a)`.
+-/
 theorem UnivTwist.Good.delQ_real {u : UnivTwist D C} {Q : Finset (Pl D.host.E)} (h : u.Good Q) (a : (AF D.host.F)ˣ) :
     u.delQ Q (idF D a) = 1 := by
   ext PP
@@ -262,10 +330,16 @@ structure PlacesOK (Pg Q : Finset (Pl D.host.E)) : Prop where
   disj : Disjoint Pg Q
   prime : ∀ PP, PP ∈ Pg ∨ PP ∈ Q → ∀ PP', PP' = PP ∨ Lev.IsConjPl PP PP' → FractionalIdeal.count D.host.E PP' D.host.AA = 0
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.split.imp fun _ hP => ⟨hP.1, hQ.trans hP.2.1, hP.2.2⟩, h.disj.mono_right hQ, fun PP hPP => h.prime PP (hPP.imp_right fun h' => hQ h')⟩`.
+-/
 theorem PlacesOK.mono {Pg Q Q' : Finset (Pl D.host.E)} (h : PlacesOK Pg Q) (hQ : Q' ⊆ Q) : PlacesOK Pg Q' :=
   ⟨h.split.imp fun _ hP => ⟨hP.1, hQ.trans hP.2.1, hP.2.2⟩, h.disj.mono_right hQ,
     fun PP hPP => h.prime PP (hPP.imp_right fun h' => hQ h')⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨∅, le_rfl, le_rfl, splitSet_empty⟩, Finset.disjoint_empty_left _, fun _ h => by simp at h⟩`.
+-/
 theorem placesOK_empty : PlacesOK (∅ : Finset (Pl D.host.E)) ∅ :=
   ⟨⟨∅, le_rfl, le_rfl, splitSet_empty⟩, Finset.disjoint_empty_left _, fun _ h => by simp at h⟩
 
@@ -288,12 +362,18 @@ def datumFn (Q : Finset (Pl D.host.E)) (ω : Reds D T.rank S.rank → ℂ) : WO 
 def vec (Q : Finset (Pl D.host.E)) (ω : Reds D T.rank S.rank → ℂ) : WO S T → ℂ :=
   F.placeMap (halfIdem G.Pg Q) (F.datumFn G Q ω)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `only [datumFn, Pi.add_apply]`. Apply the tactic sequence `split_ifs <;> ring`.
+-/
 theorem datumFn_add (Q : Finset (Pl D.host.E)) (ω ω' : Reds D T.rank S.rank → ℂ) :
     F.datumFn G Q (ω + ω') = F.datumFn G Q ω + F.datumFn G Q ω' := by
   funext x
   simp only [datumFn, Pi.add_apply]
   split_ifs <;> ring
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `only [datumFn, Pi.smul_apply, smul_eq_mul]`. Apply the tactic sequence `split_ifs <;> ring`.
+-/
 theorem datumFn_smul (Q : Finset (Pl D.host.E)) (c : ℂ) (ω : Reds D T.rank S.rank → ℂ) :
     F.datumFn G Q (c • ω) = c • F.datumFn G Q ω := by
   funext x
@@ -307,6 +387,17 @@ def vecL (Q : Finset (Pl D.host.E)) : (Reds D T.rank S.rank → ℂ) →ₗ[ℂ]
 
 end Frame
 
+/- English proof (translation)
+Take `⟨P, h1, h2, hP⟩` from `h.split`. Establish `cc` using `GlobalTheory.DualPairCheck.cA_cA (D := D)`. Establish `hne : ∀ i ∈ Pg, ∀ j ∈ Q, j ≠ i` using `fun i hi j hj e => Finset.disjoint_left.1 h.disj hi (e ▸ hj)`. Prove the components needed by the constructor for the conclusion. Use `⟨Pl D.host.E ⊕ Pl D.host.E, Pg.disjSum Q, Sum.elim (fun i => cA D (idemAt i)) idemAt, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce and unpack `(i | i) hi`. Conclude with `GlobalTheory.PlaceModelSum.isSplitIdem_cA (hP.isIdemAt (h1 (by simpa using hi))).1`. Conclude with `(hP.isIdemAt (h2 (by simpa using hi))).1`. Apply the tactic sequence `rintro (i | i) hi (j | j) hj hij <;> simp only [Finset.inl_mem_disjSum, Finset.inr_mem_disjSum] at hi hj <;>`. Simplify using `only [Sum.elim_inl, Sum.elim_inr]`.
+
+Rewrite using `[← RingHom.map_mul, hP.mul_eq_zero (h1 hi) (h1 hj) fun e => hij (e ▸ rfl), RingHom.map_zero]`. Rewrite using `[mul_comm]`. Conclude with `hP.mul_conj (h2 hj) (h1 hi)`. Conclude with `hP.mul_conj (h2 hi) (h1 hj)`. Conclude with `hP.mul_eq_zero (h2 hi) (h2 hj) fun e => hij (e ▸ rfl)`.
+
+Rewrite using `[Finset.sum_disjSum, halfIdem, idem, map_sum]`. Both sides reduce to the same expression. Establish `a1` using `(hP.mono h1).isIdemSum.2`. Establish `a2` using `(hP.mono h2).isIdemSum.2`. Establish `a3 : idem Pg * idem Q = 0`.
+
+Rewrite using `[idem, idem, Finset.sum_mul_sum]`. Conclude with `Finset.sum_eq_zero fun i hi => Finset.sum_eq_zero fun j hj => hP.mul_eq_zero (h1 hi) (h2 hj) (hne i hi j hj)`. Establish `a4 : cA D (idem Pg) * cA D (idem Q) = 0` using `by rw [← RingHom.map_mul, a3, RingHom.map_zero]`. Rewrite using `[halfIdem, RingHom.map_add, cc]`. Take the linear combination `a1 + a2 + a3 + a4`.
+-/
 theorem PlacesOK.isOrthSum {Pg Q : Finset (Pl D.host.E)} (h : PlacesOK Pg Q) :
     GlobalTheory.PlaceModelSum.IsOrthSum (halfIdem Pg Q) ∧ halfIdem Pg Q * cA D (halfIdem Pg Q) = 0 := by
   obtain ⟨P, h1, h2, hP⟩ := h.split
@@ -333,6 +424,13 @@ theorem PlacesOK.isOrthSum {Pg Q : Finset (Pl D.host.E)} (h : PlacesOK Pg Q) :
     rw [halfIdem, RingHom.map_add, cc]
     linear_combination a1 + a2 + a3 + a4
 
+/- English proof (translation)
+Take `⟨a1, k, hk, a2, a3⟩` from `h`. Take `⟨-, k', hk', b2, -⟩` from `h'`. Establish `hh : ∀ (j : ℕ) (u : Mx D m n), IsHalf e u → IsHalf e (j • u)` using `fun j u hu a b => by`. Express the relevant statement in the definitionally equal form `e * (j • u a b) = j • u a b`. Rewrite using `[mul_smul_comm, hu]`.
+
+Use `⟨fun t ht => a1 t (left_ne_zero_of_mul ht), k * k', Nat.mul_pos hk hk', fun u hu hu' t => ?_, fun t ht => ?_⟩` and prove the remaining obligations. Establish `e1` using `a2 _ (nsmul_mem hu k') (hh k' u hu') t`. Establish `e2` using `b2 _ (nsmul_mem hu k) (hh k u hu') t`. Rewrite `e1`, `e2` using `[smul_smul]`. Use `beta_reduce`.
+
+Rewrite using `[e1, mul_comm k k', e2]`. Rewrite using `[mul_comm, mul_smul]`. Conclude with `nsmul_mem (a3 t (left_ne_zero_of_mul ht)) k'`.
+-/
 theorem isSBHalf_mul {m n : ℕ} {e : AE D} {Λ : AddSubgroup (Mx D m n)} {Φ Φ' : Mx D m n → ℂ} (h : IsSBHalf e Λ Φ)
     (h' : IsSBHalf e Λ Φ') : IsSBHalf e Λ fun x => Φ x * Φ' x := by
   obtain ⟨a1, k, hk, a2, a3⟩ := h
@@ -353,10 +451,16 @@ namespace Frame
 
 variable {F : Frame S T} {G : TypeDat D T.rank} {Q : Finset (Pl D.host.E)} {ω : Reds D T.rank S.rank → ℂ}
 
+/- English proof (translation)
+The claim follows from `Classical.epsilon_spec (h.isOrthSum.1.exists_model hF.vac.1 hF.sdS hF.sdT h.isOrthSum.2 hF.vac.2.lat)`.
+-/
 theorem isPlaceModel_placeMap (hF : F.Good) (h : PlacesOK G.Pg Q) :
     IsPlaceModel F.ψ (symplO S T) (heisO F.ψ S T) (halfIdem G.Pg Q) F.lat 1 F.f₀ (F.placeMap (halfIdem G.Pg Q)) :=
   Classical.epsilon_spec (h.isOrthSum.1.exists_model hF.vac.1 hF.sdS hF.sdT h.isOrthSum.2 hF.vac.2.lat)
 
+/- English proof (translation)
+Establish `hinf` using `h.isOrthSum.1.infPart_eq`. Use `isSBHalf_mul (GlobalTheory.PlaceVec.isSBHalf_of_red hF.sdS.1 hF.sdT.1 hinf (frMapAdj S T F.βS F.βT) (GlobalTheory.PlaceVec.frMapAdj_add S T _ _) (GlobalTheory.PlaceVec.frMapAdj_up S T _ _) (GlobalTheory.PlaceVec.frMapAdj_down S T _ _) G.Pg (omegaG G.levT G.muC) (GlobalTheory.Plac …` and prove the remaining obligations. Take `⟨K, hK, h'⟩` from `GlobalTheory.PlaceDatum.exists_nsmul_of_frMapO hF.sdS.1 hF.sdT.1 F.βS F.βT`. Conclude with `⟨K, hK, fun t ht => h' t (GlobalTheory.PlaceDatum.infPart_of_half hinf ht)⟩`.
+-/
 theorem isSBHalf_datumFn (hF : F.Good) (h : PlacesOK G.Pg Q) (hω : ∀ y y', (∀ PP ∈ Q, y PP = y' PP) → ω y = ω y') :
     IsSBHalf (halfIdem G.Pg Q) F.lat (F.datumFn G Q ω) := by
   have hinf := h.isOrthSum.1.infPart_eq
@@ -369,6 +473,9 @@ theorem isSBHalf_datumFn (hF : F.Good) (h : PlacesOK G.Pg Q) (hω : ∀ y y', (�
   obtain ⟨K, hK, h'⟩ := GlobalTheory.PlaceDatum.exists_nsmul_of_frMapO hF.sdS.1 hF.sdT.1 F.βS F.βT
   exact ⟨K, hK, fun t ht => h' t (GlobalTheory.PlaceDatum.infPart_of_half hinf ht)⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨_, isPlaceModel_placeMap hF h⟩, fun _ h₂ => GlobalTheory.PlaceVec.placeModel_unique hF.vac.1 hF.sdS hF.sdT h.isOrthSum.1.idem h.isOrthSum.1.infPart_eq (isPlaceModel_placeMap hF h) h₂ (isSBHalf_datumFn hF h hω)⟩`.
+-/
 theorem isThetaAt_vec (hF : F.Good) (h : PlacesOK G.Pg Q) (hω : ∀ y y', (∀ PP ∈ Q, y PP = y' PP) → ω y = ω y') :
     IsThetaAt F.ψ (symplO S T) (heisO F.ψ S T) (halfIdem G.Pg Q) F.lat 1 F.f₀ (F.datumFn G Q ω) (F.vec G Q ω) :=
   ⟨⟨_, isPlaceModel_placeMap hF h⟩, fun _ h₂ => GlobalTheory.PlaceVec.placeModel_unique hF.vac.1 hF.sdS hF.sdT h.isOrthSum.1.idem

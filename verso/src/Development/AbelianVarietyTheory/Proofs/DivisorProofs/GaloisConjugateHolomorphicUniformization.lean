@@ -20,6 +20,29 @@ set_option autoImplicit false
 
 namespace GlobalTheory.ConjTangent
 
+/- English proof (translation)
+Introduce `_ _ _ F _ _ 𝔠 X X' p g c n u Ω₀ Ω₁ h0 h1 hX`. Establish `hn` using `Obj.holUnif_dim_eq X u`. Substitute `hn` using the available equality. Take `⟨L₁, u₁, -, -⟩` from `Obj.exists_holUnif_ringHom_lift F 𝔠 X'`. Take `⟨u₀, -, -, -, -⟩` from `GlobalTheory.exists_isFactorAH_frame_of_unif X'.A X'.ab L₁ _ u₁ (X'.diag c) (pull_isLB (X'.isLB c) _)`.
+
+Take `⟨-, hu⟩` from `GlobalTheory.TorusTransfer.tangent_bijective u X.dim`. Take `⟨hu₀, -⟩` from `GlobalTheory.TorusTransfer.tangent_bijective u₀ X'.dim`. Take `⟨T, hTi, hT⟩` from `GlobalTheory.T.conjugate_uniformization_semilinear_map X.A X'.A p g hX.grp _ _ _ u u₀ hu hu₀`. Set `ψ : (Fin (Module.finrank ℚ F) → ℂ) → (Fin (Module.finrank ℚ F) → ℂ)` to `fun w' => Ω₀⁻¹ • fun j => g.symm (Ω₁ * w' j)`. Establish `hψa : ∀ a b, ψ (a + b) = ψ a + ψ b` using `fun a b => by`.
+
+Simplify using `only [ψ, ← smul_add]`. Use `congr 1`. Use extensionality with `j`. Simplify using `[mul_add]`. Establish `hψs : ∀ (a : ℂ) b, ψ (a • b) = g.symm a • ψ b` using `fun a b => by`.
+
+Simplify using `only [ψ, smul_comm (g.symm a) Ω₀⁻¹]`. Use `congr 1`. Use extensionality with `j`. Simplify using `[mul_left_comm]`. Set `φl : (Fin (Module.finrank ℚ F) → ℂ) →ₗ[ℂ] (Fin (Module.finrank ℚ F) → ℂ)` to `{ toFun := fun w' => T (ψ w') map_add' := fun a b => by simp only [hψa, map_add] map_smul' := fun a b => by`.
+
+Simplify using `only [hψs, map_smulₛₗ, RingHom.id_apply]`. Use `congr 1`. Simplify using `}`. Establish `hinj : Function.Injective φl`. Introduce `a b hab`.
+
+Establish `hab'` using `hTi hab`. Simplify using `only [ψ] at hab'`. Use `smul_right_injective _ (inv_ne_zero h0) hab'` as an intermediate fact. Use extensionality with `j`. Establish `e` using `congrFun this j`.
+
+Simplify using `only [EmbeddingLike.apply_eq_iff_eq] at e`. Conclude with `mul_left_cancel₀ h1 e`. Set `φ` to `LinearEquiv.ofInjectiveEndo φl hinj`. Take `⟨u', -, -, -, -, hD⟩` from `GlobalTheory.exists_holUnif_reparam X'.A (X'.diag c) _ u₀ φ (fun _ => 1) (differentiable_const 1) (fun _ => one_ne_zero) rfl`. Use `⟨u', fun w v v' hv hd => hD _ _ ?_⟩` and prove the remaining obligations.
+
+Distinguish the cases in `ht : IsTangent v`. Establish `e : φ (fun j => g (Ω₀ * w j) / Ω₁) = T w` using `by show T (ψ _) = T w`. Use `congr 1`. Use extensionality with `j`. Simplify using `only [ψ, Pi.smul_apply, smul_eq_mul]`.
+
+Rewrite using `[mul_div_cancel₀ _ h1, RingEquiv.symm_apply_apply]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e]`. Conclude with `hT w v v' ht hv hd`. Establish `hw` using `GlobalTheory.T.differential_zero_of_not_tangent F 𝔠 X _ _ u w v hd ht`.
+
+Substitute `hw` using the available equality. Establish `e : φ (fun j => g (Ω₀ * (0 : Fin (Module.finrank ℚ F) → ℂ) j) / Ω₁) = 0`. Establish `: (fun j => g (Ω₀ * (0 : Fin (Module.finrank ℚ F) → ℂ) j) / Ω₁) = 0`. Use extensionality with `j`. Simplify using the standard rewrite rules.
+
+Rewrite using `[this, map_zero]`. Rewrite using `[e]`. Conclude with `GlobalTheory.T.conjugate_uniformization_differential_zero X.A X'.A p g hX.grp _ _ _ _ u u₀ v v' hv hd`.
+-/
 theorem exists_conj_holUnif_tangent : GlobalTheory.Published.PeriodComparison → GlobalTheory.Published.AbelianDeRham → GlobalTheory.Published.AbelianDualCrystal →
   ∀ (F : Type) [Field F] [NumberField F] (𝔠 : FracId F) (X X' : Obj F 𝔠 (Sp ℂ)) (p : X'.A.left ⟶ X.A.left) (g : ℂ ≃+* ℂ)
     (c : 𝔠.elt) (n : ℕ) (u : HolUnif X.A (X.diag c) n) (Ω₀ Ω₁ : ℂ), Ω₀ ≠ 0 → Ω₁ ≠ 0 →

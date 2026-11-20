@@ -9,6 +9,15 @@ open GlobalTheory.Points RatModel
 
 namespace GlobalTheory.Poinc
 
+/- English proof (translation)
+Introduce `o Ω _ _ _ M U hU hne P hP`. Set `e` to `M.sectionsEquiv U hne`. Set `P' : Ideal Γ(M.Z, U)` to `P.comap (e : Γ(M.Z, U) →+* M.ringOn (U : Set M.Z))`. Establish `hP' : P'.IsPrime` using `Ideal.comap_isPrime _ _`. Set `x : Spec Γ(M.Z, U)` to `(⟨P', hP'⟩ : PrimeSpectrum Γ(M.Z, U))`.
+
+Establish `hz : hU.fromSpec x ∈ U`. Establish `h` using `hU.range_fromSpec`. Conclude with `h.subset ⟨x, rfl⟩`. Use `⟨hU.fromSpec x, hz, fun a => ?_⟩` and prove the remaining obligations. Take `⟨f, rfl⟩` from `e.surjective a`.
+
+Establish `key : hU.fromSpec x ∈ M.Z.basicOpen f ↔ f ∉ P'`. Establish `h` using `hU.fromSpec_preimage_basicOpen f`. Establish `h2 : x ∈ hU.fromSpec ⁻¹ᵁ M.Z.basicOpen f ↔ hU.fromSpec x ∈ M.Z.basicOpen f` using `Iff.rfl`. Rewrite using `[← h2, h]`. Conclude with `PrimeSpectrum.mem_basicOpen f (⟨P', hP'⟩ : PrimeSpectrum Γ(M.Z, U))`.
+
+Establish `hu` using `isUnit_valF_iff hz f`. Rewrite `hu` using `[isUnit_O_iff]`. Establish `hmem : e f ∈ P ↔ f ∈ P'` using `Iff.rfl`. Rewrite using `[hmem, coe_sectionsEquiv, ← not_iff_not, ← key, ← hu]`. Simplify using `only [not_or, not_not]`.
+-/
 theorem prime_eq_nonunits_at_point : ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] (M : RatModel o Ω)
     (U : M.Z.Opens), IsAffineOpen U → (U : Set M.Z).Nonempty → ∀ P : Ideal (M.ringOn (U : Set M.Z)), P.IsPrime →
       ∃ z ∈ U, ∀ a : M.ringOn (U : Set M.Z), a ∈ P ↔ ((a : Ω) = 0 ∨ (a : Ω)⁻¹ ∉ M.O z) := by

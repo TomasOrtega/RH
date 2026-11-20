@@ -17,6 +17,15 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {O' : Type} [CommRing O'] {β' : O' →+* c.F}
   {R K : Type} [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] [Field K] [Algebra R K] [IsFractionRing R K]
 
+/- English proof (translation)
+Use `haveI := isProper_genStr Z`. Take `⟨χ, h2, h3⟩` from `GlobalTheory.exists_valuativeExtension (genStr Z) (spMap j) (x ≫ Z.jQ) (by`. Rewrite using `[Category.assoc, Z.jQ_over, ← Geo.Tor.spMap_comp]`. Conclude with `h1)`. Use `⟨χ, h3, h2.symm, ?_⟩` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨p, rfl⟩`. Set `g0 : Sp K` to `(⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum K)`. Establish `hg : χ (spMap (algebraMap R K) g0) ∈ Z.jQ '' U`. Rewrite using `[← Scheme.Hom.comp_apply, h2, Scheme.Hom.comp_apply]`. Conclude with `⟨_, hU ⟨g0, rfl⟩, rfl⟩`.
+
+Establish `hp : p ∈ closure {spMap (algebraMap R K) g0}`. Apply `(PrimeSpectrum.le_iff_mem_closure _ _).1` to reduce the goal to its premises. Use `show Ideal.comap (algebraMap R K) (⊥ : Ideal K) ≤ (p : PrimeSpectrum R).asIdeal`. Rewrite using `[Ideal.comap_bot_of_injective _ (IsFractionRing.injective R K)]`. Conclude with `bot_le`.
+
+Conclude with `map_mem_closure χ.continuous hp (fun z hz => by rw [Set.mem_singleton_iff.1 hz]; exact hg)`.
+-/
 theorem exists_ext (Z : Model Xo c β) (U : Set (Xo.XF c)) (j : c.F →+* R) (x : Sp K ⟶ Xo.XF c)
     (h1 : x ≫ toF Xo c = spMap ((algebraMap R K).comp j)) (hU : Set.range x ⊆ U) :
     ∃ χ : Sp R ⟶ gen Z, χ ≫ genStr Z = spMap j ∧ x ≫ Z.jQ = spMap (algebraMap R K) ≫ χ ∧
@@ -40,6 +49,11 @@ theorem exists_ext (Z : Model Xo c β) (U : Set (Xo.XF c)) (j : c.F →+* R) (x 
 
 omit [IsDomain R] [IsDiscreteValuationRing R] [IsFractionRing R K] in
 
+/- English proof (translation)
+Take `⟨mF, h1⟩` from `sabCancel pullCubCancel E H _ _ _ Xo.univ.t Z.oF.t tK (pullback.fst _ _) x Z.m0.toSABMap mK`. Take `⟨mJ, h2⟩` from `sabComp pullCubComp E H _ _ _ Z.t Z.oF.t tK (Z.jQ ≫ pullback.fst _ _) x Z.m mF`. Establish `hj : x ≫ Z.jQ ≫ pullback.fst _ _ = spMap (algebraMap R K) ≫ χ ≫ genι Z`. Rewrite using `[← Category.assoc, hχ, Category.assoc]`. Take `⟨a, h3⟩` from `sabCancel pullCubCancel E H _ _ _ Z.t t tK (χ ≫ genι Z) (spMap (algebraMap R K)) m (PullbackSections.sabMapCast mJ hj)`.
+
+Conclude with `⟨a, mF, h1.symm, by rw [← h2, ← PullbackSections.sabMapCast_φ mJ hj, h3]⟩`.
+-/
 theorem exists_ident (Z : Model Xo c β) {χ : Sp R ⟶ gen Z} {x : Sp K ⟶ Xo.XF c}
     (hχ : x ≫ Z.jQ = spMap (algebraMap R K) ≫ χ) {tK : SAB H (Sp K)}
     (mK : SABMap tK Xo.univ.t (x ≫ toX Xo c)) {t : SAB H (Sp R)} (m : SABMap t Z.t (χ ≫ genι Z)) :
@@ -56,6 +70,19 @@ theorem exists_ident (Z : Model Xo c β) {χ : Sp R ⟶ gen Z} {x : Sp K ⟶ Xo.
 
 omit [IsDomain R] [IsDiscreteValuationRing R] [IsFractionRing R K] in
 
+/- English proof (translation)
+Rewrite `hv` using `[Category.comp_id]`. Take `⟨w₀, hw₀⟩ : ∃ w₀ : Sp (DualNumber K) ⟶ Y.oF.t.G.left, w₀ = w'.left` from `⟨_, rfl⟩`. Establish `hw1 : w₀ ≫ Y.oF.t.G.hom = spMap (algebraMap K (DualNumber K)) ≫ x` using `hw₀ ▸ Over.w w'`. Establish `hw3' : w₀ ≫ Y.m.φ = spMap (Chart.dualMapR (algebraMap R K)) ≫ (v ≫ ψ.φ) ≫ m'.φ` using `hw₀ ▸ hw3`. Take `⟨u, e1, hu1⟩ : ∃ u : Sp (DualNumber K) ⟶ tK.G.left, u ≫ mF'.φ = w₀ ∧ u ≫ tK.G.hom = spMap (algebraMap K (DualNumber K))` from `⟨mF'.cart.1.lift _ _ hw1, mF'.cart.1.lift_fst _ _ _, mF'.cart.1.lift_snd _ _ _⟩`.
+
+Establish `hbase : spMap (algebraMap K (DualNumber K)) ≫ spMap (algebraMap R K) = spMap (Chart.dualMapR (algebraMap R K)) ≫ spMap (algebraMap R (DualNumber R))`. Rewrite using `[OpenReg.spMap_comp, OpenReg.spMap_comp]`. Use `congr 1`. Apply the tactic sequence `ext z <;> simp [Chart.dualMapR, TrivSqZeroExt.algebraMap_eq_inl]`. Establish `e2 : u ≫ a.φ = spMap (Chart.dualMapR (algebraMap R K)) ≫ v`.
+
+Apply `ψ.cart.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, hψ]`. Apply `m'.cart.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, ← hFm', ← Category.assoc, e1, hw3']`. Simplify using `only [Category.assoc]`.
+
+Rewrite using `[Category.assoc, a'.cart.1.w, ← Category.assoc, hu1, hbase]`. Simplify using `only [Category.assoc, ψ.cart.1.w, Category.comp_id, hv]`. Rewrite using `[Category.assoc, a.cart.1.w, ← Category.assoc, hu1, Category.assoc, hv, hbase]`. Establish `k1 : (u ≫ mF.φ) ≫ Z.oF.t.G.hom = spMap (algebraMap K (DualNumber K)) ≫ x`. Rewrite using `[Category.assoc, mF.cart.1.w, ← Category.assoc, hu1]`.
+
+Establish `k2 : (u ≫ mF.φ) ≫ Z.m0.toSABMap.φ = w₀ ≫ Y.m0.toSABMap.φ`. Rewrite using `[Category.assoc, hF0, ← e1, Category.assoc, hF0']`. Establish `k3 : (u ≫ mF.φ) ≫ Z.m.φ = spMap (Chart.dualMapR (algebraMap R K)) ≫ v ≫ m.φ`. Rewrite using `[Category.assoc, hFm, ← Category.assoc, e2, Category.assoc]`. Substitute `hw₀` using the available equality.
+
+Conclude with `⟨Over.homMk (u ≫ mF.φ) k1, k2, k3⟩`.
+-/
 theorem exists_lift_vec {Z : Model Xo c β} {Y : Model Xo c β'} {χ : Sp R ⟶ gen Z} {χ' : Sp R ⟶ gen Y}
     {x : Sp K ⟶ Xo.XF c} {tK : SAB H (Sp K)} {mK : SABMap tK Xo.univ.t (x ≫ toX Xo c)} {t t' : SAB H (Sp R)}
     {m : SABMap t Z.t (χ ≫ genι Z)} {m' : SABMap t' Y.t (χ' ≫ genι Y)} {ψ : SABMap t t' (𝟙 (Sp R))}
@@ -98,6 +125,15 @@ theorem exists_lift_vec {Z : Model Xo c β} {Y : Model Xo c β'} {χ : Sp R ⟶ 
   subst hw₀
   exact ⟨Over.homMk (u ≫ mF.φ) k1, k2, k3⟩
 
+/- English proof (translation)
+Take `⟨tK, ⟨mK⟩⟩` from `GlobalTheory.ModFam.exists_sabPull (x ≫ toX Xo c) Xo.univ.t`. Take `⟨t, ⟨m⟩⟩` from `GlobalTheory.ModFam.exists_sabPull (xZ ≫ genι Z) Z.t`. Take `⟨t', ⟨m'⟩⟩` from `GlobalTheory.ModFam.exists_sabPull (xR ≫ genι Y) Y.t`. Take `⟨a, mF, hF0, hFm⟩` from `exists_ident Z hZ mK m`. Take `⟨a', mF', hF0', hFm'⟩` from `exists_ident Y hY mK m'`.
+
+Take `⟨ψ, hψ, -⟩` from `GlobalTheory.ModelUniqueChecks.existsUnique_map R K t t' tK a a'`. Take `⟨e, he, hbe⟩` from `BdryUnit.exists_eigEquiv m.cart m.act (𝟙 _) (xZ ≫ genι Z) (Category.id_comp _).symm`. Take `⟨e', he', hbe'⟩` from `BdryUnit.exists_eigEquiv m'.cart m'.act (𝟙 _) (xR ≫ genι Y) (Category.id_comp _).symm`. Take `⟨f, hf, hbf⟩` from `BdryUnit.exists_eigEquiv ψ.cart ψ.act (𝟙 _) (𝟙 _) (Category.id_comp _).symm`. Take `⟨v₀, rfl⟩ : ∃ v₀ : Fin n → _, vR = fun i => e' (f (v₀ i))` from `⟨fun i => f.symm (e'.symm (vR i)), funext fun i => by simp⟩`.
+
+Use `⟨fun i => e (v₀ i), (hbe χ n v₀).1 ((hbf χ n v₀).2 ((hbe' χ n fun i => f (v₀ i)).2 hvR)), fun vK hK i => ?_⟩` and prove the remaining obligations. Take `⟨w', h1, h2⟩` from `hs i`. Establish `h3` using `h2.trans (hb i)`. Rewrite `h3` using `[he', hf]`. Take `⟨w, h4, h5⟩` from `exists_lift_vec hψ hF0 hFm hF0' hFm' (Over.w (v₀ i)) w' h3`.
+
+Use `⟨w, h4.trans h1, h5.trans ?_⟩` and prove the remaining obligations. Rewrite using `[hK i, he]`.
+-/
 theorem exists_move (Y : Model Xo c β') (Z : Model Xo c β) {xR : Sp R ⟶ gen Y} {xZ : Sp R ⟶ gen Z}
     {x : Sp K ⟶ Xo.XF c} (hY : x ≫ Y.jQ = spMap (algebraMap R K) ≫ xR) (hZ : x ≫ Z.jQ = spMap (algebraMap R K) ≫ xZ)
     (χ : 𝓞 E →+* R) {n : ℕ} (vR : Fin n → (epsAt (xR ≫ genι Y) ⟶ Y.t.G))
@@ -126,6 +162,11 @@ theorem exists_move (Y : Model Xo c β') (Z : Model Xo c β) {xR : Sp R ⟶ gen 
   refine ⟨w, h4.trans h1, h5.trans ?_⟩
   rw [hK i, he]
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo c O _ β Y O' _ β' Z U τ σZ σ hsec hnz hres R K _ _ _ _ _ _ j xR x V vR wR v w vb wb hR hU hx hv hw ev ew`. Take `⟨xZ, h1, h2, h3⟩` from `exists_ext Z U j x hU.1 hU.2.1`. Take `⟨vZ, hvZ, sv⟩` from `exists_move Y Z hx h2 _ vR hR.2.2.1 hv ev`. Take `⟨wZ, hwZ, sw⟩` from `exists_move Y Z hx h2 _ wR hR.2.2.2 hw ew`. Establish `hZ : FrY Z (compactOf Z U) τ j xZ vZ wZ` using `⟨h1, h3, hvZ, hwZ⟩`.
+
+Take `⟨vK, wK, hK, a, b⟩` from `exists_pull (algebraMap R K) hZ h2`. Take `⟨u, hu⟩` from `hnz R j xZ vZ wZ hZ`. Use `⟨u, ?_⟩` and prove the remaining obligations. Rewrite using `[← hres K _ x v w vK wK hU hK (sv vK a) (sw wK b), hu]`. Apply the tactic sequence `exact hsec.1 R K (algebraMap R K) (Chart.dualMapR (algebraMap R K)) j _ xZ _ vZ wZ vK wK (fun a => by ext <;> simp [Chart.dualMapR, TrivSqZeroExt.algebraMap_eq_inl]) (by ext <;> simp [Chart.dualMapR]) hZ hK h2 a b`.
+-/
 theorem unit_in_integral_frame : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (O' : Type) [CommRing O'] (β' : O' →+* c.F) (Z : Model Xo c β') (U : Set (Xo.XF c)) (τ : E →+* ℂ) (σZ : RuleY Z) (σ : RuleU Xo c), SecY Z (compactOf Z U) τ σZ → NzY Z (compactOf Z U) τ σZ → Restricts Z U τ σZ σ → ∀ (R K : Type) [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] [Field K] [Algebra R K] [IsFractionRing R K] (j : c.F →+* R) (xR : Sp R ⟶ gen Y) (x : Sp K ⟶ Xo.XF c) (V : Set (gen Y)) vR wR v w vb wb, FrY Y V τ j xR vR wR → FrU Xo c U τ ((algebraMap R K).comp j) x v w → x ≫ Y.jQ = spMap (algebraMap R K) ≫ xR → SameVecs Y x v vb → SameVecs Y x w wb → (∀ i, (vb i).left = spMap (Chart.dualMapR (algebraMap R K)) ≫ (vR i).left) → (∀ i, (wb i).left = spMap (Chart.dualMapR (algebraMap R K)) ≫ (wR i).left) → ∃ u : Rˣ, σ K x v w = algebraMap R K u := by
   intro E _ _ _ H D l Xo c O _ β Y O' _ β' Z U τ σZ σ hsec hnz hres R K _ _ _ _ _ _ j xR x V vR wR v w vb wb
     hR hU hx hv hw ev ew

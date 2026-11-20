@@ -17,6 +17,9 @@ variable {G : Type*} [Group G] [TopologicalSpace G] [MeasurableSpace G] (μ : Me
 def convFun (f₁ f₂ : CompactlySupportedContinuousMap G ℂ) (x : G) : ℂ :=
   ∫ g, f₁ g * f₂ (g⁻¹ * x) ∂μ
 
+/- English proof (translation)
+Rewrite using `[convFun, setIntegral_eq_integral_of_forall_compl_eq_zero]`. Introduce `g hg`. Rewrite using `[image_eq_zero_of_notMem_tsupport hg, zero_mul]`.
+-/
 theorem convFun_eq_setIntegral (f₁ f₂ : CompactlySupportedContinuousMap G ℂ) (x : G) :
     convFun μ f₁ f₂ x = ∫ g in tsupport f₁, f₁ g * f₂ (g⁻¹ * x) ∂μ := by
   rw [convFun, setIntegral_eq_integral_of_forall_compl_eq_zero]
@@ -25,6 +28,9 @@ theorem convFun_eq_setIntegral (f₁ f₂ : CompactlySupportedContinuousMap G �
 
 variable [IsTopologicalGroup G] [LocallyCompactSpace G] [SecondCountableTopology G]
   [BorelSpace G] [IsFiniteMeasureOnCompacts μ] in
+/- English proof (translation)
+Establish `h : convFun μ f₁ f₂ = fun x => ∫ g in tsupport f₁, f₁ g * f₂ (g⁻¹ * x) ∂μ`. Use function extensionality and compare the values at `(convFun_eq_setIntegral μ f₁ f₂)`. Rewrite using `[h]`. Conclude with `continuous_parametric_integral_of_continuous (f := fun x g => f₁ g * f₂ (g⁻¹ * x)) (by fun_prop) f₁.hasCompactSupport`.
+-/
 theorem continuous_convFun (f₁ f₂ : CompactlySupportedContinuousMap G ℂ) :
     Continuous (convFun μ f₁ f₂) := by
   have h : convFun μ f₁ f₂ = fun x => ∫ g in tsupport f₁, f₁ g * f₂ (g⁻¹ * x) ∂μ :=
@@ -33,6 +39,11 @@ theorem continuous_convFun (f₁ f₂ : CompactlySupportedContinuousMap G ℂ) :
   exact continuous_parametric_integral_of_continuous (f := fun x g => f₁ g * f₂ (g⁻¹ * x))
     (by fun_prop) f₁.hasCompactSupport
 
+/- English proof (translation)
+Rewrite using `[convFun]`. Use `integral_eq_zero_of_ae (Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Distinguish the cases in `h1 : g ∈ tsupport f₁`. Establish `h2 : g⁻¹ * x ∉ tsupport f₂` using `fun h2 => hx ⟨g, h1, g⁻¹ * x, h2, by simp only [mul_inv_cancel_left]⟩`. Simplify using `[image_eq_zero_of_notMem_tsupport h2]`.
+
+Simplify using `[image_eq_zero_of_notMem_tsupport h1]`.
+-/
 theorem convFun_eq_zero (f₁ f₂ : CompactlySupportedContinuousMap G ℂ) {x : G}
     (hx : x ∉ tsupport f₁ * tsupport f₂) : convFun μ f₁ f₂ x = 0 := by
   rw [convFun]
@@ -44,6 +55,9 @@ theorem convFun_eq_zero (f₁ f₂ : CompactlySupportedContinuousMap G ℂ) {x :
   · simp [image_eq_zero_of_notMem_tsupport h1]
 
 variable [IsTopologicalGroup G] [T2Space G] in
+/- English proof (translation)
+The claim follows from `HasCompactSupport.intro (f₁.hasCompactSupport.mul f₂.hasCompactSupport) fun _ hx => convFun_eq_zero μ f₁ f₂ hx`.
+-/
 theorem hasCompactSupport_convFun (f₁ f₂ : CompactlySupportedContinuousMap G ℂ) :
     HasCompactSupport (convFun μ f₁ f₂) :=
   HasCompactSupport.intro (f₁.hasCompactSupport.mul f₂.hasCompactSupport)
@@ -57,6 +71,9 @@ def conv (f₁ f₂ : CompactlySupportedContinuousMap G ℂ) : CompactlySupporte
   continuous_toFun := continuous_convFun μ f₁ f₂
   hasCompactSupport' := hasCompactSupport_convFun μ f₁ f₂
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem conv_apply (f₁ f₂ : CompactlySupportedContinuousMap G ℂ) (x : G) :
     conv μ f₁ f₂ x = ∫ g, f₁ g * f₂ (g⁻¹ * x) ∂μ :=
   rfl
@@ -72,6 +89,9 @@ variable {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Loca
 omit [IsTopologicalGroup G] [LocallyCompactSpace G] [SecondCountableTopology G] [MeasurableSpace G]
   [BorelSpace G] in
 
+/- English proof (translation)
+Establish `hcl : IsClosed (Γ : Set G)` using `Subgroup.isClosed_of_discrete`. Conclude with `(hcl.isClosedEmbedding_subtypeVal.isProperMap.isCompact_preimage hC).finite_of_discrete`.
+-/
 theorem finite_setOf_mem_of_isCompact [IsTopologicalGroup G] {C : Set G} (hC : IsCompact C) :
     {δ : Γ | (δ : G) ∈ C}.Finite := by
   have hcl : IsClosed (Γ : Set G) := Subgroup.isClosed_of_discrete
@@ -81,6 +101,25 @@ section Kernel
 
 variable (μ : Measure G) [μ.IsMulLeftInvariant] [IsFiniteMeasureOnCompacts μ]
 
+/- English proof (translation)
+Take `⟨a, rfl⟩` from `mk_surjective Γ x`. Take `⟨b, rfl⟩` from `mk_surjective Γ z`. Set `φ : C(RightCosetSpace Γ, ℂ)` to `⟨fun y => quotientKernel Γ f₂ (y, mk Γ b), (continuous_quotientKernel Γ f₂).comp (continuous_id.prodMk continuous_const)⟩`. Establish `hφ` using `integral_mul_rightMul_eq Γ μ f₁ φ (mk Γ a)`. Simplify using `only [φ, ContinuousMap.coe_mk] at hφ`.
+
+Rewrite using `[← hφ]`. Use `set C : Set G := a • ((tsupport f₁ * tsupport f₂) * {b⁻¹}) with hC`. Establish `hCc : IsCompact C` using `((f₁.hasCompactSupport.mul f₂.hasCompactSupport).mul isCompact_singleton).smul a`. Establish `hfin` using `finite_setOf_mem_of_isCompact Γ hCc`. Use `set S := hfin.toFinset`.
+
+Establish `hmem : ∀ δ : Γ, (∃ g, f₁ g * f₂ (g⁻¹ * (a⁻¹ * δ * b)) ≠ 0) → δ ∈ S`. Introduce and unpack `δ ⟨g, hg⟩`. Rewrite using `[Finite.mem_toFinset]`. Establish `h1 : g ∈ tsupport f₁` using `subset_tsupport _ (left_ne_zero_of_mul hg)`. Establish `h2 : g⁻¹ * (a⁻¹ * δ * b) ∈ tsupport f₂` using `subset_tsupport _ (right_ne_zero_of_mul hg)`.
+
+Use `⟨(a⁻¹ * δ * b) * b⁻¹, ⟨a⁻¹ * δ * b, ⟨g, h1, _, h2, by group⟩, b⁻¹, rfl, rfl⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [smul_eq_mul]`. Use `group`. Establish `hsupp' : (support fun δ : Γ => conv μ f₁ f₂ (a⁻¹ * δ * b)) ⊆ S`. Introduce `δ hδ`.
+
+Rewrite `hδ` using `[mem_support, conv_apply]`. Assume the negation of the conclusion as `hS`. Conclude with `hδ (integral_eq_zero_of_ae (Eventually.of_forall fun g => by`. Assume the negation of the conclusion as `h`. Conclude with `hS (hmem δ ⟨g, h⟩)))`.
+
+Establish `hint : ∀ δ : Γ, Integrable (fun g => f₁ g * f₂ (g⁻¹ * (a⁻¹ * δ * b))) μ` using `fun δ => (by fun_prop : Continuous fun g => f₁ g * f₂ (g⁻¹ * (a⁻¹ * δ * b))).integrable_of_hasCompactSupport f₁.hasCompactSupport.mul_right`. Rewrite using `[quotientKernel_mk, finsum_eq_sum_of_support_subset _ hsupp']`. Simplify using `only [conv_apply]`. Rewrite using `[← integral_finsetSum _ fun δ _ => hint δ]`. Use `integral_congr_ae (Eventually.of_forall fun g => ?_)` and prove the remaining obligations.
+
+Simplify using `only [rightMul_mk, quotientKernel_mk]`. Distinguish the cases in `hg : f₁ g = 0`. Simplify using `[hg]`. Rewrite using `[finsum_eq_sum_of_support_subset _ (s := S) ?_, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun δ _ => ?_` and prove the remaining obligations.
+
+Use `congr 2`. Use `group`. Introduce `δ hδ`. Use `hmem δ ⟨g, mul_ne_zero hg ?_⟩` and prove the remaining obligations. Rewrite `hδ` using `[mem_support]`.
+
+Establish `: g⁻¹ * (a⁻¹ * δ * b) = (a * g)⁻¹ * δ * b` using `by group`. Rewrite using `[this]` and apply the resulting hypothesis.
+-/
 theorem quotientKernel_conv (f₁ f₂ : CompactlySupportedContinuousMap G ℂ)
     (x z : RightCosetSpace Γ) :
     quotientKernel Γ (conv μ f₁ f₂) (x, z) =
@@ -138,12 +177,18 @@ def quotientKernelC (f : CompactlySupportedContinuousMap G ℂ) :
     C(RightCosetSpace Γ × RightCosetSpace Γ, ℂ) :=
   ⟨quotientKernel Γ f, continuous_quotientKernel Γ f⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem quotientKernelC_apply (f : CompactlySupportedContinuousMap G ℂ)
     (p : RightCosetSpace Γ × RightCosetSpace Γ) : quotientKernelC Γ f p = quotientKernel Γ f p :=
   rfl
 
 variable [CompactSpace (RightCosetSpace Γ)]
 
+/- English proof (translation)
+Use extensionality with `⟨x, z⟩`. Rewrite using `[compKernel_apply, quotientKernelC_apply, quotientKernel_conv Γ μ f₁ f₂ x z]`. Both sides reduce to the same expression.
+-/
 theorem quotientKernelC_conv (f₁ f₂ : CompactlySupportedContinuousMap G ℂ) :
     quotientKernelC Γ (conv μ f₁ f₂) =
       compKernel (quotientMeasure Γ μ) (quotientKernelC Γ f₁) (quotientKernelC Γ f₂) := by
@@ -158,10 +203,16 @@ section Operator
 variable (μ : Measure G) [μ.IsMulLeftInvariant] [μ.IsMulRightInvariant] [IsFiniteMeasureOnCompacts μ]
   [CompactSpace (RightCosetSpace Γ)]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem kernelOperator_eq_contKernelOp (f : CompactlySupportedContinuousMap G ℂ) :
     kernelOperator Γ μ f = contKernelOp (quotientMeasure Γ μ) (quotientKernelC Γ f) :=
   rfl
 
+/- English proof (translation)
+Rewrite using `[integrated_rightRegularRep_eq_kernelOperator, integrated_rightRegularRep_eq_kernelOperator, integrated_rightRegularRep_eq_kernelOperator, kernelOperator_eq_contKernelOp, kernelOperator_eq_contKernelOp, kernelOperator_eq_contKernelOp, quotientKernelC_conv, contKernelOp_comp]`.
+-/
 theorem integrated_conv (f₁ f₂ : CompactlySupportedContinuousMap G ℂ) :
     (rightRegularRep Γ μ).integrated μ (UnitaryRep.ccToL1 μ (conv μ f₁ f₂)) =
       ((rightRegularRep Γ μ).integrated μ (UnitaryRep.ccToL1 μ f₁)).comp
@@ -171,6 +222,9 @@ theorem integrated_conv (f₁ f₂ : CompactlySupportedContinuousMap G ℂ) :
     kernelOperator_eq_contKernelOp, kernelOperator_eq_contKernelOp, quotientKernelC_conv,
     contKernelOp_comp]
 
+/- English proof (translation)
+Rewrite using `[integrated_conv]`. Conclude with `isTraceClass_comp (isHilbertSchmidt_integrated_rightRegularRep Γ μ f₁) (isHilbertSchmidt_integrated_rightRegularRep Γ μ f₂)`.
+-/
 theorem isTraceClass_integrated_conv (f₁ f₂ : CompactlySupportedContinuousMap G ℂ) :
     IsTraceClass ((rightRegularRep Γ μ).integrated μ (UnitaryRep.ccToL1 μ (conv μ f₁ f₂))) := by
   rw [integrated_conv]
@@ -194,12 +248,22 @@ def indicatorOne (K : OpenSubgroup G) (hK : IsCompact (K : Set G)) :
     exact (LocallyConstant.charFn ℂ K.isClopen).continuous
   hasCompactSupport' := HasCompactSupport.intro hK fun _ hx => indicator_of_notMem hx _
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem indicatorOne_apply (K : OpenSubgroup G) (hK : IsCompact (K : Set G)) (x : G) :
     indicatorOne K hK x = (K : Set G).indicator 1 x :=
   rfl
 
 variable (μ : Measure G) [μ.IsMulLeftInvariant] [IsFiniteMeasureOnCompacts μ]
 
+/- English proof (translation)
+Rewrite using `[conv_apply]`. Establish `h : (fun g => f g * indicatorOne K hK (g⁻¹ * x)) = (x • (K : Set G)).indicator (fun _ => f x)`. Use function extensionality and compare the values at `g`. Distinguish the cases in `hg : g ∈ x • (K : Set G)`. Take `⟨k, hk, rfl⟩` from `mem_smul_set.1 hg`.
+
+Establish `hk' : (x • k)⁻¹ * x ∈ (K : Set G)`. Rewrite using `[smul_eq_mul, mul_inv_rev, inv_mul_cancel_right]`. Conclude with `inv_mem hk`. Rewrite using `[indicatorOne_apply, indicator_of_mem hk', indicator_of_mem hg, smul_eq_mul, hf x k hk, Pi.one_apply, mul_one]`. Establish `hx : g⁻¹ * x ∉ (K : Set G)` using `fun h => hg (mem_smul_set.2 ⟨(g⁻¹ * x)⁻¹, inv_mem h, by rw [smul_eq_mul, mul_inv_rev, inv_inv, mul_inv_cancel_left]⟩)`.
+
+Rewrite using `[indicatorOne_apply, indicator_of_notMem hx, indicator_of_notMem hg, mul_zero]`. Rewrite using `[h, integral_indicator_const _ ((K.isOpen.smul x).measurableSet)]`. Establish `hvol : μ.real (x • (K : Set G)) = μ.real (K : Set G)`. Simplify using `[Measure.real, measure_smul]`. Rewrite using `[hvol, Complex.real_smul]`.
+-/
 theorem conv_indicatorOne (K : OpenSubgroup G) (hK : IsCompact (K : Set G))
     (f : CompactlySupportedContinuousMap G ℂ) (hf : ∀ g, ∀ k ∈ K, f (g * k) = f g) (x : G) :
     conv μ f (indicatorOne K hK) x = (μ.real (K : Set G) : ℂ) * f x := by
@@ -224,6 +288,11 @@ theorem conv_indicatorOne (K : OpenSubgroup G) (hK : IsCompact (K : Set G))
 
 variable [TotallyDisconnectedSpace G]
 
+/- English proof (translation)
+Establish `hmem : (f : G → ℂ) ∈ locallyConstantCompactSupport G ℂ ℂ` using `⟨hf, f.hasCompactSupport⟩`. Take `⟨K, hKc, hK⟩` from `exists_forall_mul_right hmem`. Establish `hpos : 0 < μ.real (K : Set G)` using `ENNReal.toReal_pos (K.isOpen.measure_pos μ ⟨1, K.one_mem⟩).ne' hKc.measure_lt_top.ne`. Use `set c : ℂ := (((μ.real (K : Set G))⁻¹ : ℝ) : ℂ)`. Use `⟨c • f, indicatorOne K hKc, ?_⟩` and prove the remaining obligations.
+
+Use extensionality with `x`. Rewrite using `[conv_indicatorOne μ K hKc (c • f) (fun g k hk => by`. Simplify using `only [CompactlySupportedContinuousMap.smul_apply, hK g k hk]) x]`. Simplify using `only [CompactlySupportedContinuousMap.smul_apply, smul_eq_mul, c]`. Rewrite using `[← mul_assoc, ← Complex.ofReal_mul, mul_inv_cancel₀ hpos.ne', Complex.ofReal_one, one_mul]`.
+-/
 theorem exists_eq_conv_of_isLocallyConstant [μ.IsOpenPosMeasure]
     (f : CompactlySupportedContinuousMap G ℂ) (hf : IsLocallyConstant (f : G → ℂ)) :
     ∃ f₁ f₂ : CompactlySupportedContinuousMap G ℂ, f = conv μ f₁ f₂ := by
@@ -249,6 +318,9 @@ variable {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Loca
   (Γ : Subgroup G) [DiscreteTopology Γ] [CompactSpace (RightCosetSpace Γ)]
   (μ : Measure G) [μ.IsHaarMeasure] [μ.IsMulRightInvariant]
 
+/- English proof (translation)
+Take `⟨f₁, f₂, rfl⟩` from `exists_eq_conv_of_isLocallyConstant μ f hf`. Conclude with `isTraceClass_integrated_conv Γ μ f₁ f₂`.
+-/
 theorem isTraceClass_integrated_of_isLocallyConstant (f : CompactlySupportedContinuousMap G ℂ)
     (hf : IsLocallyConstant (f : G → ℂ)) :
     IsTraceClass ((rightRegularRep Γ μ).integrated μ (UnitaryRep.ccToL1 μ f)) := by

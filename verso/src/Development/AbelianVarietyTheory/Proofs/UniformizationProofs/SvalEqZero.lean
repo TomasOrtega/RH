@@ -20,12 +20,30 @@ namespace GlobalTheory.ExpZero
 
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor
 
+/- English proof (translation)
+Use `(gs_eq r z _ (hJ.mem φ r) _).trans ?_` and prove the remaining obligations. Conclude with `(congrArg _ ((congrArg _ (h _)).trans (map_zero _))).trans (map_zero _)`.
+-/
 theorem sval_eq_zero {X Y Z : Scheme.{0}} {L : LB X} {K : Type} [Fintype K] {φ : K → (Y ⟶ X)} {ε : K → ℤ}
     {s : LB.Sec (LB.LinComb L φ ε)} (h : ∀ j, s.f j = 0) (r : Z ⟶ Y) (z : Z) {J : (Z ⟶ X) → L.ι}
     (hJ : Good L z J) : sval s r z J = 0 := by
   refine (gs_eq r z _ (hJ.mem φ r) _).trans ?_
   exact (congrArg _ ((congrArg _ (h _)).trans (map_zero _))).trans (map_zero _)
 
+/- English proof (translation)
+Introduce `R _ _ I D A G _ _ U k hR s F hs hE`. Take `⟨hN, -, -, hC⟩` from `hR`. Establish `hI : I ≤ Ideal.jacobson ⊥` using `IsAdicComplete.le_jacobson_bot I`. Take `⟨r, hr, σ, f, h₁, hf, hE⟩` from `hE`. Use `U.smooth` as an intermediate fact.
+
+Establish `: Flat G.hom` using `inferInstance`. Establish `hσ : ∀ j, σ.f j = 0` using `fun j => by`. Use `ExpInt.generic_app_injective G _ (Eq.trans (fn_ext fun y hy => ?_) (map_zero _).symm)` and prove the remaining obligations. Take `⟨J, hJ, e⟩` from `exists_good U.LG.L U.LG.isLB y (fun _ : Unit => (𝟙 _ ≫ pullback.fst G.hom (jK R)) ≫ 𝟙 G.left) (fun _ => j 0) (fun _ _ _ => rfl) (fun _ => Set.mem_iInter.1 hy 0)`. Establish `ej : ∀ a : Fin 1, J ((𝟙 _ ≫ pullback.fst G.hom (jK R)) ≫ 𝟙 G.left) = j a` using `fun a => by`.
+
+Rewrite using `[Subsingleton.elim a 0]`. Conclude with `e ()`. Establish `e₂` using `ExpInt.secScal_sval h₁ (𝟙 _) y hJ`. Rewrite `e₂` using `[sval_eq_zero hs _ y hJ, mul_zero, sval_of σ _ y J j ej]`. Use `((gs_pull (𝟙 _) _ y _ hy _).trans e₂).trans ((gs_eq _ y _ hy _).trans ?_).symm` and prove the remaining obligations.
+
+Conclude with `(congrArg _ (map_zero _)).trans (map_zero _)`. Establish `hf0 : ∀ α j, (f α).f j = 0` using `fun α => by`. Use `D.toPre.P.isAb.smooth` as an intermediate fact. Use `D.toPre.P.isAb.geomConnected` as an intermediate fact. Use `(sec_eq_zero_and_hom_eq_of_thickenings R I hI D.toPre.P.A).1 _ (DVR.linComb_isLB _ D.toPre.P.isLB _ _) (f α) fun e j => ?_` and prove the remaining obligations.
+
+Use `(ExtDiv.pG_app_eq_zero_iff (U.gt e) _ _).1 (WeightPf.weightIndep R I D A G U e k σ f (fun j => ?_) (hE e) α j)` and prove the remaining obligations. Conclude with `(congrArg _ (hσ j)).trans (map_zero _)`. Use `fam_ext fun α j => ?_` and prove the remaining obligations. Use `sec_ext_val D.toPre.P.isLB (s' := SecOps.secZero) (fun y J hJ => ?_) j` and prove the remaining obligations. Establish `e₁` using `ExpInt.secScal_sval (hf α) (𝟙 _) y hJ`.
+
+Rewrite `e₁` using `[sval_eq_zero (hf0 α) _ y hJ, ExpInt.gs_scal]`. Establish `e₃ : 𝟙 _ ≫ (DegPre.BF D.toPre (FractionRing R)).hom = ((fst (TF (R` using `R) (FractionRing R)) D.toPre.P.A).left ≫ jFK (R := R) (FractionRing R)) ≫ jK R := by`. Rewrite using `[Category.id_comp, Category.assoc]`. Conclude with `(Over.w (fst (TF (R := R) (FractionRing R)) D.toPre.P.A)).symm`. Rewrite `e₁` using `[e₃]`.
+
+Use `Eq.trans ?_ (sval_eq_zero (fun _ => rfl) _ y hJ).symm` and prove the remaining obligations. Conclude with `(IsUnit.mul_right_eq_zero (ExpInt.isUnit_cst _ y hr)).1 e₁.symm`.
+-/
 theorem main : ∀ (R : Type) [CommRing R] [IsDomain R] (I : Ideal R) (D : DegData R I) (A : PolAV (Spec (CommRingCat.of (FractionRing R)))) (G : Over (Spec (CommRingCat.of R))) [GrpObj G] [IsCommMonObj G] (U : UnifPre I D A G) (k : ℕ), AdmBase R I → ∀ (s : U.SecK k) (F : Fam D.toPre (FractionRing R) k), (∀ jj, s.f jj = 0) → U.Expands k s F → F = 0 := by
   intro R _ _ I D A G _ _ U k hR s F hs hE
   obtain ⟨hN, -, -, hC⟩ := hR

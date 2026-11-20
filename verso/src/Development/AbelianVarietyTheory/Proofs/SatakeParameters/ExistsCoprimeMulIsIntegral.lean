@@ -12,6 +12,11 @@ noncomputable section
 
 namespace GlobalTheory.KerTie.MuqUnit
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hn`. Establish `hc : IsCoprime ((p : ℤ)) ((Ideal.absNorm P.asIdeal : ℕ) : ℤ)` using `Nat.isCoprime_iff_coprime.2 ((Nat.Prime.coprime_iff_not_dvd hp).2 hn)`. Take `⟨a, b, hab⟩` from `hc.map (Int.castRingHom (𝓞 E))`. Establish `h1 : (1 : 𝓞 E) ∈ P.asIdeal`. Rewrite using `[← hab]`.
+
+Use `P.asIdeal.add_mem (P.asIdeal.mul_mem_left _ ?_) (P.asIdeal.mul_mem_left _ ?_)` and prove the remaining obligations. Simplify using `using h`. Simplify using `using Ideal.absNorm_mem P.asIdeal`. Conclude with `P.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h1)`.
+-/
 theorem dvd_absNorm_of_mem {E : Type} [Field E] [NumberField E] (P : HeightOneSpectrum (𝓞 E)) {p : ℕ} (hp : p.Prime)
     (h : ((p : ℕ) : 𝓞 E) ∈ P.asIdeal) : p ∣ Ideal.absNorm P.asIdeal := by
   by_contra hn
@@ -25,6 +30,23 @@ theorem dvd_absNorm_of_mem {E : Type} [Field E] [NumberField E] (P : HeightOneSp
     · simpa using Ideal.absNorm_mem P.asIdeal
   exact P.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h1)
 
+/- English proof (translation)
+Establish `halg : IsAlgebraic ℤ x` using `(IsFractionRing.isAlgebraic_iff ℤ ℚ K).2 (Algebra.IsAlgebraic.isAlgebraic x)`. Take `⟨y, hy0, hyint⟩` from `halg.exists_integral_multiple`. Establish `hd0 : y.natAbs ≠ 0` using `Int.natAbs_ne_zero.2 hy0`. Establish `hdint : IsIntegral ℤ ((y.natAbs : K) * x)`. Break down `Int.natAbs_eq y with e | e` into its components or cases.
+
+Establish `e2 : ((y.natAbs : ℤ) : K) = (y : K)` using `congrArg (fun z : ℤ => (z : K)) e.symm`. Establish `: (y.natAbs : K) * x = y • x`. Rewrite using `[zsmul_eq_mul, ← e2, Int.cast_natCast]`. Rewrite using `[this]`. Conclude with `hyint`.
+
+Establish `: (y.natAbs : K) * x = -(y • x)`. Rewrite using `[zsmul_eq_mul, ← neg_mul]`. Use `congr 1`. Establish `e' : (y : K) = -((y.natAbs : ℤ) : K)`. Use `congrArg (fun z : ℤ => (z : K)) e` as an intermediate fact.
+
+Simplify using `using this`. Rewrite using `[e', neg_neg, Int.cast_natCast]`. Rewrite using `[this]`. Conclude with `hyint.neg`. Take `⟨e, M, hpM, hd⟩` from `Nat.exists_eq_pow_mul_and_not_dvd hd0 p hp.ne_one`.
+
+Use `⟨M, (Nat.Prime.coprime_iff_not_dvd hp).2 hpM |>.symm, ?_⟩` and prove the remaining obligations. Take `⟨r, hr⟩` from `HeightOneSpectrum.mem_integers_of_valuation_le_one (R := 𝓞 K) K ((M : K) * x) fun w => by`. Distinguish the cases in `hw : ((p : ℕ) : 𝓞 K) ∈ w.asIdeal`. Rewrite using `[map_mul]`. Use `mul_le_one' ?_ (h w hw)` and prove the remaining obligations.
+
+Use `w.valuation_le_one (K := K) (M : 𝓞 K)` as an intermediate fact. Simplify using `using this`. Take `⟨s, hs⟩` from `HeightOneSpectrum.mem_integers_of_valuation_le_one (R := 𝓞 K) K ((y.natAbs : K) * x) fun v => by`. Take `⟨t, ht⟩` from `(IsIntegralClosure.isIntegral_iff (A := 𝓞 K) (R := ℤ) (B := K)).1 hdint`. Rewrite using `[← ht]`.
+
+Conclude with `v.valuation_le_one t`. Establish `hp1 : w.valuation K (p : K) = 1`. Use `(w.intValuation_eq_one_iff (x := ((p : ℕ) : 𝓞 K))).2 hw` as an intermediate fact. Rewrite using `[← map_natCast (algebraMap (𝓞 K) K), HeightOneSpectrum.valuation_of_algebraMap]`. Conclude with `this`.
+
+Establish `hle : w.valuation K ((y.natAbs : K) * x) ≤ 1` using `by rw [← hs]; exact w.valuation_le_one s`. Rewrite `hle` using `[hd, Nat.cast_mul, Nat.cast_pow, mul_assoc, map_mul, map_pow, hp1, one_pow, one_mul]`. Conclude with `hle`. Rewrite using `[← hr]`. Conclude with `RingOfIntegers.isIntegral_coe r`.
+-/
 theorem exists_coprime_mul_isIntegral {K : Type} [Field K] [NumberField K] {p : ℕ} (hp : p.Prime) (x : K)
     (h : ∀ w : HeightOneSpectrum (𝓞 K), ((p : ℕ) : 𝓞 K) ∈ w.asIdeal → w.valuation K x ≤ 1) :
     ∃ M : ℕ, M.Coprime p ∧ IsIntegral ℤ ((M : K) * x) := by
@@ -66,6 +88,13 @@ theorem exists_coprime_mul_isIntegral {K : Type} [Field K] [NumberField K] {p : 
   rw [← hr]
   exact RingOfIntegers.isIntegral_coe r
 
+/- English proof (translation)
+Establish `hQ : σ x ∈ TaylorLogMetric.Qbar`. Rewrite using `[TaylorLogMetric.Qbar, mem_algebraicClosure_iff']`. Conclude with `(Algebra.IsIntegral.isIntegral (R := ℚ) x).map σ.toRatAlgHom`. Use `⟨hQ, fun p hp lam hpS => ?_⟩` and prove the remaining obligations. Rewrite using `[lamC_of_mem lam hQ]`.
+
+Take `⟨M, hM, hint⟩` from `exists_coprime_mul_isIntegral hp.out x (h p hp.out hpS)`. Establish `h1 : IsIntegral ℤ ((M : ℂ) * σ x)`. Use `map_isIntegral_int σ hint` as an intermediate fact. Simplify using `using this`. Establish `h2 : IsIntegral ℤ ((M : TaylorLogMetric.Qbar) * (⟨σ x, hQ⟩ : TaylorLogMetric.Qbar))` using `(isIntegral_algHom_iff ((algebraMap TaylorLogMetric.Qbar ℂ).toIntAlgHom) Subtype.val_injective).1 (by simpa using h1)`.
+
+Conclude with `GlobalTheory.HeckeVal.norm_le_one_of_denom lam hM h2`.
+-/
 theorem intOff_of_val {K : Type} [Field K] [NumberField K] (σ : K →+* ℂ) (S : Finset ℕ) (x : K)
     (h : ∀ p : ℕ, p.Prime → p ∉ S → ∀ w : HeightOneSpectrum (𝓞 K), ((p : ℕ) : 𝓞 K) ∈ w.asIdeal → w.valuation K x ≤ 1) :
     IntOff S (σ x) := by
@@ -91,6 +120,15 @@ open GlobalTheory.CharVal
 variable {X : Fields} {Pr : Primes X} {m : ℕ} {Ch : Chars X Pr m} {σ₀ : X.K →+* ℂ} {e : X.Tau → ℚ} {j : Fin m}
   {μ : Formalism.L2.Host.HChar X.E}
 
+/- English proof (translation)
+Establish `hg : ∀ i, ((Pr.g i : ℕ) : 𝓞 X.E) ≠ 0` using `fun i => by exact_mod_cast (hPr.g_prime i).ne_zero`. Take `⟨M, z, hM, h1, h2, h3⟩` from `GlobalTheory.TamePow.exists_pow_locK_mul_inf X.E μ (divs ((Pr.g 0 : ℕ) : 𝓞 X.E) ∪ divs ((Pr.g 1 : ℕ) : 𝓞 X.E)) (productRule μ) (fun v hv => hμ.unr v fun i hi => hv (by`. Rewrite using `[Finset.mem_union, mem_divs (hg 0), mem_divs (hg 1)]`. Use `fin_cases i`. Use `exacts [Or.inl hi, Or.inr hi])) hμ.tame P k`.
+
+Take `⟨n, hn, hinf⟩` from `hμ.inf`. Use `⟨M, z, fun τ => -n τ, hM, fun τ => by push_cast; rw [hn]; ring, h1, h2, σ₀.injective ?_⟩` and prove the remaining obligations. Establish `h4 : ((μ.locK P k : ℂˣ) : ℂ) ^ M = (((μ.inf z : ℂˣ) : ℂ))⁻¹`. Rewrite using `[← Units.val_pow_eq_pow_val, eq_inv_of_mul_eq_one_left h3, Units.val_inv_eq_inv_val]`. Rewrite using `[map_pow, hc, mul_comm 2 M, pow_mul, h4, hinf z, ← Finset.prod_inv_distrib, ← Finset.prod_pow, map_prod]`.
+
+Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[map_zpow₀, ← zpow_neg, ← zpow_natCast, ← zpow_mul, mul_comm, zpow_mul, zpow_natCast]`. Use `congr 1`. Express the relevant statement in the definitionally equal form `_ = X.embC σ₀ τ (z / star (z : X.E))`. Establish `h0 : X.embC σ₀ τ (z : X.E) ≠ 0` using `by simp`.
+
+Rewrite using `[map_div₀, hconj, div_pow, div_eq_div_iff (pow_ne_zero _ (by simpa using h0)) (by simpa using h0), sq, mul_assoc, Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Use `push_cast`. Both sides reduce to the same expression.
+-/
 theorem mu_core_of_conj (hconj : ∀ τ (x : X.E), X.embC σ₀ τ (star x) = starRingEnd ℂ (X.embC σ₀ τ x)) (hPr : Pr.Ok)
     (hμ : IsMu0 Ch σ₀ e j μ) (P : HeightOneSpectrum (𝓞 X.E)) (k : X.Eˣ) {c : X.K}
     (hc : σ₀ c = ((μ.locK P k : ℂˣ) : ℂ)) :
@@ -118,6 +156,11 @@ theorem mu_core_of_conj (hconj : ∀ τ (x : X.E), X.embC σ₀ τ (star x) = st
   push_cast
   rfl
 
+/- English proof (translation)
+Take `⟨M, z, n, hM, -, -, h2, h3⟩` from `mu_core_of_conj hconj hPr hμ P k hc`. Use `unit_of_pow (M := 2 * M) (by omega) ?_` and prove the remaining obligations. Rewrite using `[h3]`. Use `val_prod_unit w (fun τ => ?_) n` and prove the remaining obligations. Establish `h4` using `(natCast_mem_pullW τ w p).2 hw`.
+
+Rewrite using `[map_div₀, ← valuation_conjP, h2 _ (fun e' => hP (e' ▸ h4)), h2 _ (fun e' => hP (e' ▸ (natCast_mem_conjP _ p).2 h4)), div_one]`.
+-/
 theorem mu_unit_of_conj (hconj : ∀ τ (x : X.E), X.embC σ₀ τ (star x) = starRingEnd ℂ (X.embC σ₀ τ x)) (hPr : Pr.Ok)
     (hμ : IsMu0 Ch σ₀ e j μ) {P : HeightOneSpectrum (𝓞 X.E)} (k : X.Eˣ) {c : X.K}
     (hc : σ₀ c = ((μ.locK P k : ℂˣ) : ℂ)) {p : ℕ} (hP : ((p : ℕ) : 𝓞 X.E) ∉ P.asIdeal) {w : HeightOneSpectrum (𝓞 X.K)}
@@ -136,6 +179,9 @@ namespace GlobalTheory.KerTie.MuqUnit
 variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : G.Inst D L} {Gl : G.LatInst D} {K : G.Consts} {Y : DivX D} {cX : ExtraC}
   {ex : Extra D L hT Gi Gl K Y cX}
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `t.seam.σ₀ (t.X.emb τ (star x)) = starRingEnd ℂ (t.seam.σ₀ (t.X.emb τ x))`. Rewrite using `[t.seam_ok.1, t.seam_ok.1, t.seam_ok.2]`. Conclude with `D.host.conjE_apply (TaylorLogMetric.embT D (t.seam.iT τ)) (t.seam.iE x)`.
+-/
 theorem embC_star (t : KerEntTied ex) (τ : t.X.Tau) (x : t.X.E) :
     t.X.embC t.seam.σ₀ τ (star x) = starRingEnd ℂ (t.X.embC t.seam.σ₀ τ x) := by
   change t.seam.σ₀ (t.X.emb τ (star x)) = starRingEnd ℂ (t.seam.σ₀ (t.X.emb τ x))
@@ -148,6 +194,15 @@ namespace GlobalTheory.KerTie
 
 open MuqUnit
 
+/- English proof (translation)
+Introduce `D L hT Gi Gl K Y cX ex t hmu hval u μ hQg i hi P hP`. Establish `hPQ : P.1 ∈ QE t.sel (t.tup μ : Chr t.X.F t.X.E t.X.K)` using `(Finset.mem_union.1 P.2).resolve_left hP`. Establish `hg : ∀ k, ((t.Pr.g k : ℕ) : 𝓞 t.X.E) ∉ P.1.asIdeal` using `fun k hk => hQg k (t.g_rec k ▸ (t.Q_rec μ (t.Pr.g k)).2 ⟨t.pr_ok.g_prime k, P.1, hPQ, hk⟩)`. Establish `hq` using `(t.idx_ok μ).muqQ i hi P hP`. Establish `key : ∀ p : ℕ, p.Prime → p ∉ (t.O u μ).S → ∀ w : HeightOneSpectrum (𝓞 t.X.K), ((p : ℕ) : 𝓞 t.X.K) ∈ w.asIdeal → w.valuation t.X.K ((t.cst μ).muq (i + 1) P) = 1`.
+
+Introduce `p hp hpS w hw`. Establish `hpP : ((p : ℕ) : 𝓞 t.X.E) ∉ P.1.asIdeal` using `fun h => hpS ((sNum_qOf_rowSG D L hT Gi Gl K Y cX ex t u μ P).2 p hp (dvd_absNorm_of_mem P.1 hp h))`. Take `⟨e, he⟩` from `hmu ⟨i, hi⟩`. Establish `hm` using `mu_unit_of_conj (embC_star t) t.pr_ok he (Formalism.L2.Host.unif P.1) (hval ⟨i, hi⟩ P.1 hg) hpP hw`. Establish `htw` using `(GlobalTheory.ColPeriod.twistUnit t.X.F t.X.E t.X.K t.S (t.tup μ) P.1 w).2`.
+
+Rewrite using `[hq, Units.val_mul, Units.val_inv_eq_inv_val, Units.val_inv_eq_inv_val, map_mul, map_inv₀, map_inv₀, hm, htw]`. Simplify using the standard rewrite rules. Use `⟨intOff_of_val _ _ _ fun p hp hpS w hw => (key p hp hpS w hw).le, ?_⟩` and prove the remaining obligations. Establish `h2` using `intOff_of_val t.seam.σ₀ (t.O u μ).S ((t.cst μ).muq (i + 1) P)⁻¹ fun p hp hpS w hw => by`. Rewrite using `[map_inv₀, key p hp hpS w hw, inv_one]`.
+
+Conclude with `h2`.
+-/
 theorem muq_intOff : ∀ (D : D7) (L : SizeData₂ D) (hT : GatTies D) (Gi : G.Inst D L) (Gl : G.LatInst D) (K : G.Consts) (Y : DivX D) (cX : ExtraC) (ex : Extra D L hT Gi Gl K Y cX) (t : KerEntTied ex), (∀ j, ∃ e, Formalism.L2.Col.IsMu0 t.Ch t.seam.σ₀ e j (t.glob.mu0 j)) → (∀ (j : Fin D.R.m) (v : IsDedekindDomain.HeightOneSpectrum (𝓞 t.X.E)), (∀ i, ((t.Pr.g i : ℕ) : 𝓞 t.X.E) ∉ v.asIdeal) → t.seam.σ₀ (t.Ch.muVal j v : t.X.K) = (((t.glob.mu0 j).val v : ℂˣ) : ℂ)) → ∀ u μ, (∀ k, D.host.g k ∉ Y.Qp μ) → ∀ (i : ℕ), i < D.R.m → ∀ P : rowSG t.Pr t.sel (t.tup μ), P.1 ∉ t.Pr.vGs → IntOff (t.O u μ).S (t.seam.σ₀ ((t.cst μ).muq (i + 1) P)) ∧ IntOff (t.O u μ).S (t.seam.σ₀ ((t.cst μ).muq (i + 1) P)⁻¹) := by
   intro D L hT Gi Gl K Y cX ex t hmu hval u μ hQg i hi P hP
   have hPQ : P.1 ∈ QE t.sel (t.tup μ : Chr t.X.F t.X.E t.X.K) := (Finset.mem_union.1 P.2).resolve_left hP

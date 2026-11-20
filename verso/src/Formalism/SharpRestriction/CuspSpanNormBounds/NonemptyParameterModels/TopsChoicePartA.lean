@@ -21,13 +21,25 @@ def degenerateLevel : Lev where
   π' := fun _ => 0
   μsec := fun _ => 0
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨degenerateLevel⟩`.
+-/
 theorem level_type_nonempty : Nonempty Lev := ⟨degenerateLevel⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨0, 0, 0⟩⟩`.
+-/
 theorem haar_data_nonempty (L : Lev) : Nonempty L.Haar := ⟨⟨0, 0, 0⟩⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨fun _ _ => zeroOp, fun _ _ _ => zeroOp, fun _ => 0⟩⟩`.
+-/
 theorem module_datum_nonempty (m : ℕ) (E : Type*) [AddCommGroup E] [Module ℂ E] (n : ℕ) : Nonempty (Mod m E n) :=
   ⟨⟨fun _ _ => zeroOp, fun _ _ _ => zeroOp, fun _ => 0⟩⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨{ k0 := 0, T := 1, T' := 1, u := 0, u' := 0, I := ∅, sgn := 1, hs := fun _ _ => 0, fadj := id, Rho := Unit, IsType := fun _ => True, rhoP := fun _ => 0 }⟩`.
+-/
 theorem base_datum_nonempty (E : Type*) [NormedAddCommGroup E] [NormedSpace ℂ E] : Nonempty (Base E) :=
   ⟨{ k0 := 0, T := 1, T' := 1, u := 0, u' := 0, I := ∅, sgn := 1, hs := fun _ _ => 0, fadj := id, Rho := Unit,
      IsType := fun _ => True, rhoP := fun _ => 0 }⟩
@@ -45,12 +57,21 @@ def degenerateContext {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] (B 
   qw := fun _ _ => 0
   uw := fun _ _ _ _ => 0
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨degenerateContext B r⟩`.
+-/
 theorem context_nonempty {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] (B : Base E) (r : ℕ) :
     Nonempty (Ctx B r) := ⟨degenerateContext B r⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨{ nV := r, Eop := fun _ _ _ _ => 0, H := 0, eIdx := id, Rad := fun _ _ => False, PolyInv := ∅ }⟩`.
+-/
 theorem nonempty_GCtx (E : Type*) [NormedAddCommGroup E] [NormedSpace ℂ E] (r : ℕ) : Nonempty (GCtx E r) :=
   ⟨{ nV := r, Eop := fun _ _ _ _ => 0, H := 0, eIdx := id, Rad := fun _ _ => False, PolyInv := ∅ }⟩
 
+/- English proof (translation)
+Take `⟨mm, hmm⟩` from `exists_nat_ge (C * ((L.r : ℝ) + 1) ^ 4 * ((N : ℝ) * ((2 * L.r + L.k0 + 2 : ℕ) : ℝ) ^ 2 + ((2 * L.r + L.k0 + 2 : ℕ) : ℝ) ^ 3))`. Conclude with `⟨_, mm, le_rfl, hmm⟩`.
+-/
 theorem size_condition_exists (C : ℝ) (L : Lev) (N : ℕ) : ∃ (A : ℝ) (mm : ℕ), Big C L N A mm := by
   obtain ⟨mm, hmm⟩ := exists_nat_ge
     (C * ((L.r : ℝ) + 1) ^ 4 * ((N : ℝ) * ((2 * L.r + L.k0 + 2 : ℕ) : ℝ) ^ 2 + ((2 * L.r + L.k0 + 2 : ℕ) : ℝ) ^ 3))
@@ -60,6 +81,11 @@ def RadialOperatorsWellDefinedOnGerms (L : Lev) : Prop :=
   ∀ (Y : ℂ) (a b : Fin 2), ∀ J₁ ∈ L.KKop, ∀ J₂ ∈ L.KKop, ∀ U : Set (Fin (L.r + 1) → ℂ), IsOpen U → U ⊆ L.BD →
     (∀ x ∈ U, L.B J₁ x = L.B J₂ x) → ∀ x ∈ U, L.B (L.QQ Y a b J₁) x = L.B (L.QQ Y a b J₂) x
 
+/- English proof (translation)
+Establish `h1 : IsOpen {x : Fin (L.r + 1) → ℂ | ∀ l, x l ≠ 0}`. Establish `: {x : Fin (L.r + 1) → ℂ | ∀ l, x l ≠ 0} = ⋂ l, {x | x l ≠ 0}`. Use extensionality with `x`. Simplify using the standard rewrite rules. Rewrite using `[this]`.
+
+Conclude with `isOpen_iInter_of_finite fun l => isOpen_ne_fun (continuous_apply l) continuous_const`. Establish `h2 : IsOpen {x : Fin (L.r + 1) → ℂ | Tz (L.k0 + 1) L.r L.z * Tz (L.k0 + 1) L.r L.z' < Complex.normSq (zOf x)}` using `isOpen_lt continuous_const (Complex.continuous_normSq.comp (continuous_apply _))`. Conclude with `h1.inter h2`.
+-/
 theorem bounded_domain_isOpen (L : Lev) : IsOpen L.BD := by
   have h1 : IsOpen {x : Fin (L.r + 1) → ℂ | ∀ l, x l ≠ 0} := by
     have : {x : Fin (L.r + 1) → ℂ | ∀ l, x l ≠ 0} = ⋂ l, {x | x l ≠ 0} := by
@@ -77,6 +103,9 @@ def germRadialPart (L : Lev) (Y : ℂ) (a b : Fin 2) : L.POp := fun φ x =>
   if h : ∃ J, J ∈ L.KKop ∧ ∃ U : Set (Fin (L.r + 1) → ℂ), IsOpen U ∧ x ∈ U ∧ U ⊆ L.BD ∧ ∀ y ∈ U, φ y = L.B J y
   then L.B (L.QQ Y a b h.choose) x else 0
 
+/- English proof (translation)
+Establish `h : ∃ J, J ∈ L.KKop ∧ ∃ U : Set (Fin (L.r + 1) → ℂ), IsOpen U ∧ x ∈ U ∧ U ⊆ L.BD ∧ ∀ y ∈ U, φ y = L.B J y` using `⟨J, hJ, U, hU, hx, hUB, hφ⟩`. Unfold `germRadialPart`. Rewrite using `[dif_pos h]`. Take `⟨hJ', U', hU', hx', hUB', hφ'⟩` from `h.choose_spec`. Conclude with `hw Y a b _ hJ' _ hJ (U' ∩ U) (hU'.inter hU) (fun y hy => hUB hy.2) (fun y hy => (hφ' y hy.1).symm.trans (hφ y hy.2)) x ⟨hx', hx⟩`.
+-/
 theorem germ_radial_part_eq_of_local_picture (L : Lev) (hw : RadialOperatorsWellDefinedOnGerms L) (Y : ℂ) (a b : Fin 2) (φ : L.PF) (x : Fin (L.r + 1) → ℂ)
     (J : L.GF) (hJ : J ∈ L.KKop) (U : Set (Fin (L.r + 1) → ℂ)) (hU : IsOpen U) (hx : x ∈ U) (hUB : U ⊆ L.BD)
     (hφ : ∀ y ∈ U, φ y = L.B J y) : germRadialPart L Y a b φ x = L.B (L.QQ Y a b J) x := by
@@ -88,6 +117,11 @@ theorem germ_radial_part_eq_of_local_picture (L : Lev) (hw : RadialOperatorsWell
   exact hw Y a b _ hJ' _ hJ (U' ∩ U) (hU'.inter hU) (fun y hy => hUB hy.2)
     (fun y hy => (hφ' y hy.1).symm.trans (hφ y hy.2)) x ⟨hx', hx⟩
 
+/- English proof (translation)
+Introduce `φ ψ hφψ x hx`. Distinguish the cases in `h : ∃ J, J ∈ L.KKop ∧ ∃ U : Set (Fin (L.r + 1) → ℂ), IsOpen U ∧ x ∈ U ∧ U ⊆ L.BD ∧ ∀ y ∈ U, φ y = L.B J y`. Take `⟨J, hJ, U, hU, hxU, hUB, hφ⟩` from `h`. Rewrite using `[germ_radial_part_eq_of_local_picture L hw Y a b φ x J hJ U hU hxU hUB hφ, germ_radial_part_eq_of_local_picture L hw Y a b ψ x J hJ (U ∩ V) (hU.inter hV) ⟨hxU, hx⟩ (fun y hy => hUB hy.1) (fun y hy => (hφψ y hy.2).symm.trans (hφ y hy.1))]`. Establish `h' : ¬ ∃ J, J ∈ L.KKop ∧ ∃ U : Set (Fin (L.r + 1) → ℂ), IsOpen U ∧ x ∈ U ∧ U ⊆ L.BD ∧ ∀ y ∈ U, ψ y = L.B J y`.
+
+Introduce and unpack `⟨J, hJ, U, hU, hxU, hUB, hψ⟩`. Conclude with `h ⟨J, hJ, U ∩ V, hU.inter hV, ⟨hxU, hx⟩, fun y hy => hUB hy.1, fun y hy => (hφψ y hy.2).trans (hψ y hy.1)⟩`. Unfold `germRadialPart`. Rewrite using `[dif_neg h, dif_neg h']`.
+-/
 theorem germ_radial_part_local (L : Lev) (hw : RadialOperatorsWellDefinedOnGerms L) (Y : ℂ) (a b : Fin 2) (V : Set (Fin (L.r + 1) → ℂ))
     (hV : IsOpen V) : LocalOn V (germRadialPart L Y a b) := by
   intro φ ψ hφψ x hx
@@ -104,6 +138,13 @@ theorem germ_radial_part_local (L : Lev) (hw : RadialOperatorsWellDefinedOnGerms
     unfold germRadialPart
     rw [dif_neg h, dif_neg h']
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨R, hR⟩ Y a b J₁ h₁ J₂ h₂ U hU hUB hJ x hx`. Take `⟨hrad, -, hloc⟩` from `hR Y a b`. Establish `e₁` using `hrad J₁ ⟨h₁.1, h₁⟩ x (hUB hx)`. Establish `e₂` using `hrad J₂ ⟨h₂.1, h₂⟩ x (hUB hx)`.
+
+Conclude with `e₁.trans ((hloc U hU hUB _ _ hJ x hx).trans e₂.symm)`. Introduce `hw`. Use `⟨fun Y => Matrix.of fun a b => germRadialPart L Y a b, fun Y a b => ⟨?_, ?_, ?_⟩⟩` and prove the remaining obligations. Introduce `J hJ x hx`. Conclude with `(germ_radial_part_eq_of_local_picture L hw Y a b _ x J hJ.2 L.BD (bounded_domain_isOpen L) hx subset_rfl (fun _ _ => rfl)).symm`.
+
+Conclude with `germ_radial_part_local L hw Y a b _ (bounded_domain_isOpen L)`. Introduce `U hU _`. Conclude with `germ_radial_part_local L hw Y a b U hU`.
+-/
 theorem radial_part_exists_iff_well_defined (L : Lev) : (∃ R, L.IsRadQQ R) ↔ RadialOperatorsWellDefinedOnGerms L := by
   constructor
   · rintro ⟨R, hR⟩ Y a b J₁ h₁ J₂ h₂ U hU hUB hJ x hx
@@ -119,19 +160,33 @@ theorem radial_part_exists_iff_well_defined (L : Lev) : (∃ R, L.IsRadQQ R) ↔
     · intro U hU _
       exact germ_radial_part_local L hw Y a b U hU
 
+/- English proof (translation)
+The claim follows from `(radial_part_exists_iff_well_defined L).2 fun _ _ _ _ _ _ _ _ _ _ _ _ _ => Subsingleton.elim _ _`.
+-/
 theorem radial_part_exists_of_trivial_hom (L : Lev) [Subsingleton L.Hom] : ∃ R, L.IsRadQQ R :=
   (radial_part_exists_iff_well_defined L).2 fun _ _ _ _ _ _ _ _ _ _ _ _ _ => Subsingleton.elim _ _
 
+/- English proof (translation)
+Simplify using `[herm, bvec, dotProduct, Pi.single_apply, Matrix.col_apply]`.
+-/
 theorem hermitian_form_basis_vectors {n : ℕ} (H : Matrix (Fin n) (Fin n) ℂ) (i j : Fin n) : herm H (bvec i) (bvec j) = H j i := by
   simp [herm, bvec, dotProduct, Pi.single_apply, Matrix.col_apply]
 
 def negativeBasisVector (k0 r : ℕ) : Vec k0 r := bvec (wI (k0 + 1) r (Fin.last (k0 + 1)))
 
+/- English proof (translation)
+Unfold `Tz negativeBasisVector`. Rewrite using `[hermitian_form_basis_vectors]`. Simplify using `[Hpk, wI]`.
+-/
 theorem hermitian_norm_negative_vector_eq_one (k0 r : ℕ) : Tz (k0 + 1) r (negativeBasisVector k0 r) = 1 := by
   unfold Tz negativeBasisVector
   rw [hermitian_form_basis_vectors]
   simp [Hpk, wI]
 
+/- English proof (translation)
+Introduce `i hi`. Unfold `negativeBasisVector bvec`. Rewrite using `[Pi.single_apply, if_neg]`. Introduce `h`. Use `congrArg Fin.val h` as an intermediate fact.
+
+Simplify using `[wI] at this`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem negative_basis_vector_mem_Wb (k0 r : ℕ) : inWb (k0 + 1) r (negativeBasisVector k0 r) := by
   intro i hi
   unfold negativeBasisVector bvec
@@ -141,6 +196,9 @@ theorem negative_basis_vector_mem_Wb (k0 r : ℕ) : inWb (k0 + 1) r (negativeBas
   simp [wI] at this
   omega
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Simplify using `only [wbPart, negativeBasisVector, bvec, Pi.single_apply, wI, Fin.ext_iff, Fin.val_last]`. Use `congr 1`. Simplify using the standard rewrite rules.
+-/
 theorem definite_part_negative_vector (k0 r : ℕ) : wbPart (k0 + 1) r (negativeBasisVector k0 r) = bvec (Fin.last (k0 + 1)) := by
   funext j
   simp only [wbPart, negativeBasisVector, bvec, Pi.single_apply, wI, Fin.ext_iff, Fin.val_last]
@@ -154,6 +212,13 @@ def bigCellSectionMatrix (k0 : ℕ) (ζ : ℂ) : Matrix (Fin (k0 + 1 + 1)) (Fin 
   (Matrix.fromBlocks 1 0 0 (hyperbolicU11Element ζ)).submatrix (finSumFinEquiv (m := k0) (n := 2)).symm
     (finSumFinEquiv (m := k0) (n := 2)).symm
 
+/- English proof (translation)
+Use extensionality with `i j`. Take `⟨a, rfl⟩` from `(finSumFinEquiv (m := k0) (n := 2)).surjective i`. Take `⟨b, rfl⟩` from `(finSumFinEquiv (m := k0) (n := 2)).surjective j`. Simplify using `only [Matrix.submatrix_apply, Equiv.symm_apply_apply]`. Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b`.
+
+Simplify using `only [Matrix.fromBlocks_apply₁₁, Hb, Matrix.diagonal_apply, Matrix.one_apply, finSumFinEquiv_apply_left, Fin.ext_iff, Fin.val_castAdd, Fin.val_last]`. Use `a.2` as an intermediate fact. Apply the tactic sequence `split_ifs <;> first | rfl | omega`. Simplify using `only [Matrix.fromBlocks_apply₁₂, Hb, Matrix.diagonal_apply, finSumFinEquiv_apply_left, finSumFinEquiv_apply_right, Fin.ext_iff, Fin.val_castAdd, Fin.val_natAdd, Matrix.zero_apply]`. Use `a.2` as an intermediate fact.
+
+Rewrite using `[if_neg (by omega)]`. Simplify using `only [Matrix.fromBlocks_apply₂₁, Hb, Matrix.diagonal_apply, finSumFinEquiv_apply_left, finSumFinEquiv_apply_right, Fin.ext_iff, Fin.val_castAdd, Fin.val_natAdd, Matrix.zero_apply]`. Use `b.2` as an intermediate fact. Rewrite using `[if_neg (by omega)]`. Apply the tactic sequence `simp only [Matrix.fromBlocks_apply₂₂, Hb, Matrix.diagonal_apply, finSumFinEquiv_apply_right, Fin.ext_iff, Fin.val_natAdd, Fin.val_last] fin_cases a <;> fin_cases b <;> simp`.
+-/
 theorem signature_form_block_decomposition (k0 : ℕ) : Hb (k0 + 1) =
     (Matrix.fromBlocks 1 0 0 !![1, 0; 0, -1]).submatrix (finSumFinEquiv (m := k0) (n := 2)).symm
       (finSumFinEquiv (m := k0) (n := 2)).symm := by
@@ -178,12 +243,18 @@ theorem signature_form_block_decomposition (k0 : ℕ) : Hb (k0 + 1) =
       finSumFinEquiv_apply_right, Fin.ext_iff, Fin.val_natAdd, Fin.val_last]
     fin_cases a <;> fin_cases b <;> simp
 
+/- English proof (translation)
+Establish `: (fun ζ : ℂ => Complex.normSq ζ) = fun ζ : ℂ => Complex.reCLM ζ * Complex.reCLM ζ + Complex.imCLM ζ * Complex.imCLM ζ`. Use function extensionality and compare the values at `ζ`. Simplify using `[Complex.normSq_apply]`. Rewrite using `[this]`. Conclude with `(Complex.reCLM.contDiff.mul Complex.reCLM.contDiff).add (Complex.imCLM.contDiff.mul Complex.imCLM.contDiff)`.
+-/
 theorem normSq_contDiff_smooth : ContDiff ℝ ∞ (fun ζ : ℂ => Complex.normSq ζ) := by
   have : (fun ζ : ℂ => Complex.normSq ζ) = fun ζ : ℂ => Complex.reCLM ζ * Complex.reCLM ζ + Complex.imCLM ζ * Complex.imCLM ζ := by
     funext ζ; simp [Complex.normSq_apply]
   rw [this]
   exact (Complex.reCLM.contDiff.mul Complex.reCLM.contDiff).add (Complex.imCLM.contDiff.mul Complex.imCLM.contDiff)
 
+/- English proof (translation)
+Establish `h : ContDiffOn ℝ ∞ (fun ζ : ℂ => Real.sqrt (Complex.normSq ζ - 1)) {ζ : ℂ | 1 < Complex.normSq ζ}` using `ContDiffOn.sqrt (normSq_contDiff_smooth.sub contDiff_const).contDiffOn (fun x hx => by`. Establish `: (1 : ℝ) < Complex.normSq x` using `hx`. Conclude with `ne_of_gt (by linarith))`. Conclude with `Complex.ofRealCLM.contDiff.comp_contDiffOn h`.
+-/
 theorem sqrt_normSq_sub_one_contDiffOn :
     ContDiffOn ℝ ∞ (fun ζ : ℂ => ((Real.sqrt (Complex.normSq ζ - 1) : ℝ) : ℂ)) {ζ : ℂ | 1 < Complex.normSq ζ} := by
   have h : ContDiffOn ℝ ∞ (fun ζ : ℂ => Real.sqrt (Complex.normSq ζ - 1)) {ζ : ℂ | 1 < Complex.normSq ζ} :=
@@ -192,6 +263,11 @@ theorem sqrt_normSq_sub_one_contDiffOn :
       exact ne_of_gt (by linarith))
   exact Complex.ofRealCLM.contDiff.comp_contDiffOn h
 
+/- English proof (translation)
+Apply the tactic sequence `fin_cases i <;> fin_cases j`. Use `show ContDiffOn ℝ ∞ (fun ζ : ℂ => -star ζ) _`. Conclude with `(Complex.conjCLE.contDiff.neg).contDiffOn`. Conclude with `sqrt_normSq_sub_one_contDiffOn`. Conclude with `sqrt_normSq_sub_one_contDiffOn`.
+
+Use `show ContDiffOn ℝ ∞ (fun ζ : ℂ => -ζ) _`. Conclude with `contDiff_id.neg.contDiffOn`.
+-/
 theorem hyperbolic_element_contDiffOn (i j : Fin 2) : ContDiffOn ℝ ∞ (fun ζ : ℂ => hyperbolicU11Element ζ i j) {ζ : ℂ | 1 < Complex.normSq ζ} := by
   fin_cases i <;> fin_cases j
   · show ContDiffOn ℝ ∞ (fun ζ : ℂ => -star ζ) _
@@ -201,6 +277,13 @@ theorem hyperbolic_element_contDiffOn (i j : Fin 2) : ContDiffOn ℝ ∞ (fun ζ
   · show ContDiffOn ℝ ∞ (fun ζ : ℂ => -ζ) _
     exact contDiff_id.neg.contDiffOn
 
+/- English proof (translation)
+Establish `hs : ((Real.sqrt (Complex.normSq ζ - 1) : ℝ) : ℂ) * ((Real.sqrt (Complex.normSq ζ - 1) : ℝ) : ℂ) = (Complex.normSq ζ : ℂ) - 1`. Rewrite using `[← Complex.ofReal_mul, Real.mul_self_sqrt (by linarith)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hz : ζ * (starRingEnd ℂ) ζ = (Complex.normSq ζ : ℂ)` using `Complex.mul_conj ζ`.
+
+Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Apply the tactic sequence `simp [hyperbolicU11Element, Matrix.mul_apply, Fin.sum_univ_two, Matrix.conjTranspose_apply] <;>`. Use `first`. Consider the case `linear_combination hz - hs`.
+
+Consider the case `linear_combination hs - hz`. Consider the case `ring`.
+-/
 theorem hyperbolic_element_preserves_form (ζ : ℂ) (hζ : 1 < Complex.normSq ζ) :
     (hyperbolicU11Element ζ)ᴴ * !![1, 0; 0, -1] * hyperbolicU11Element ζ = !![1, 0; 0, -1] := by
   have hs : ((Real.sqrt (Complex.normSq ζ - 1) : ℝ) : ℂ) * ((Real.sqrt (Complex.normSq ζ - 1) : ℝ) : ℂ) =
@@ -216,6 +299,21 @@ theorem hyperbolic_element_preserves_form (ζ : ℂ) (hζ : 1 < Complex.normSq �
       | linear_combination hs - hz
       | ring
 
+/- English proof (translation)
+Unfold `IsSection`. Rewrite using `[hermitian_norm_negative_vector_eq_one, definite_part_negative_vector]`. Simplify using `only [mul_one]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `i j`.
+
+Simplify using `only [bigCellSectionMatrix, Matrix.submatrix_apply]`. Generalize the expression as in `(finSumFinEquiv (m := k0) (n := 2)).symm i = a`. Generalize the expression as in `(finSumFinEquiv (m := k0) (n := 2)).symm j = b`. Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b`. Simplify using `only [Matrix.fromBlocks_apply₁₁]`.
+
+Conclude with `contDiffOn_const`. Simplify using `only [Matrix.fromBlocks_apply₁₂]`. Conclude with `contDiffOn_const`. Simplify using `only [Matrix.fromBlocks_apply₂₁]`. Conclude with `contDiffOn_const`.
+
+Simplify using `only [Matrix.fromBlocks_apply₂₂]`. Conclude with `hyperbolic_element_contDiffOn a b`. Introduce `ζ hζ`. Prove the components needed by the constructor for the conclusion. Rewrite using `[signature_form_block_decomposition, bigCellSectionMatrix, Matrix.conjTranspose_submatrix, Matrix.submatrix_mul_equiv, Matrix.submatrix_mul_equiv, Matrix.fromBlocks_conjTranspose, Matrix.fromBlocks_multiply, Matrix.fromBlocks_multiply]`.
+
+Simplify using `[hyperbolic_element_preserves_form ζ hζ]`. Establish `hl : (finSumFinEquiv (m` using `k0) (n := 2)).symm (Fin.last (k0 + 1)) = Sum.inr 1 := by`. Rewrite using `[Equiv.symm_apply_eq]`. Simplify using `[Fin.ext_iff]`. Establish `h1 : bigCellSectionMatrix k0 ζ *ᵥ bvec (Fin.last (k0 + 1)) = fun i => bigCellSectionMatrix k0 ζ i (Fin.last (k0 + 1))`.
+
+Use function extensionality and compare the values at `i`. Simplify using `[bvec, Matrix.mulVec, dotProduct, Pi.single_apply]`. Rewrite using `[h1]`. Simplify using `[herm, bvec, dotProduct, Pi.single_apply, Matrix.mulVec, Hb, Matrix.diagonal_apply, bigCellSectionMatrix, hl, hyperbolicU11Element]`. Rewrite using `[Finset.sum_eq_single (Fin.last (k0 + 1))]`.
+
+Simplify using `[hl]`. Introduce `b _ hb`. Simplify using `[hb]`. Simplify using the standard rewrite rules.
+-/
 theorem big_cell_section_negative_vector (k0 r : ℕ) : IsSection (k0 + 1) r (negativeBasisVector k0 r) (negativeBasisVector k0 r) (bigCellSectionMatrix k0) := by
   unfold IsSection
   rw [hermitian_norm_negative_vector_eq_one, definite_part_negative_vector]
@@ -251,6 +349,11 @@ theorem big_cell_section_negative_vector (k0 r : ℕ) : IsSection (k0 + 1) r (ne
 def upperBlockOfMatrix (k0 r : ℕ) (g : Mat k0 r) : Matrix (Fin (k0 + 1)) (Fin (k0 + 1)) ℂ :=
   fun i j => g (wI (k0 + 1) r i.castSucc) (wI (k0 + 1) r j.castSucc)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i j`. Establish `h1 : ∀ a : Fin (k0 + 1), r ≤ (wI (k0 + 1) r a.castSucc).val ∧ (wI (k0 + 1) r a.castSucc).val < r + (k0 + 1)`. Introduce `a`. Use `a.2` as an intermediate fact. Simplify using `only [wI, Fin.val_castSucc]`.
+
+Use linear arithmetic over natural numbers and integers. Establish `e : ∀ (a : Fin (k0 + 1)) (p : (wI (k0 + 1) r a.castSucc).val - r < k0 + 1), (⟨(wI (k0 + 1) r a.castSucc).val - r, p⟩ : Fin (k0 + 1)) = a` using `fun a p => Fin.ext (by simp [wI])`. Unfold `upperBlockOfMatrix Formalism.MainNotions.S.blockW`. Rewrite using `[dif_pos (h1 i), dif_pos (h1 j), e, e]`.
+-/
 theorem upper_block_of_blockW_eq (k0 r : ℕ) (h : Matrix (Fin (k0 + 1)) (Fin (k0 + 1)) ℂ) :
     upperBlockOfMatrix k0 r (Formalism.MainNotions.S.blockW (k0 + 1) r h) = h := by
   funext i j
@@ -286,10 +389,18 @@ variable (k0 r : ℕ) (Hp Hq : Type) [NormedAddCommGroup Hp] [InnerProductSpace 
     (σ : Matrix (Fin (k0 + 1)) (Fin (k0 + 1)) ℂ → (Hp →L[ℂ] Hp))
     (σ' : Matrix (Fin (k0 + 1)) (Fin (k0 + 1)) ℂ → (Hq →L[ℂ] Hq))
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨negative_basis_vector_mem_Wb k0 r, negative_basis_vector_mem_Wb k0 r, by show 0 < Tz (k0 + 1) r (negativeBasisVector k0 r); rw [hermitian_norm_negative_vector_eq_one]; norm_num, by show 0 < Tz (k0 + 1) r (negativeBasisVector k0 r); rw [hermitian_norm_negative_vector_eq_one]; nor …`.
+-/
 theorem level_from_representations_standard : (levelFromCompactRepresentations k0 r Hp Hq σ σ').Std :=
   ⟨negative_basis_vector_mem_Wb k0 r, negative_basis_vector_mem_Wb k0 r, by show 0 < Tz (k0 + 1) r (negativeBasisVector k0 r); rw [hermitian_norm_negative_vector_eq_one]; norm_num,
     by show 0 < Tz (k0 + 1) r (negativeBasisVector k0 r); rw [hermitian_norm_negative_vector_eq_one]; norm_num, big_cell_section_negative_vector k0 r⟩
 
+/- English proof (translation)
+Use `⟨1, ⟨?_, fun a => ⟨by simp, by simp⟩, ?_⟩, ?_⟩` and prove the remaining obligations. Use `show (1 : Mat k0 r)ᴴ * _ * 1 = _`. Simplify using the standard rewrite rules. Rewrite using `[hermitian_norm_negative_vector_eq_one]`. Simplify using `[negativeBasisVector]`.
+
+Simplify `hτ` using `[upper_block_of_blockW_eq]`.
+-/
 theorem block_rep_is_hc_type_W {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] (u : Fin (k0 + 1) → ℝ)
     (τ : Matrix (Fin (k0 + 1)) (Fin (k0 + 1)) ℂ → (H →L[ℂ] H)) (hτ : Formalism.MainNotions.S.IsHCTypeU (k0 + 1) u τ) :
     Formalism.MainNotions.S.IsHCTypeW (k0 + 1) r (negativeBasisVector k0 r) u (fun g => τ (upperBlockOfMatrix k0 r g)) := by
@@ -300,6 +411,9 @@ theorem block_rep_is_hc_type_W {H : Type} [NormedAddCommGroup H] [InnerProductSp
     simp [negativeBasisVector]
   · simpa [upper_block_of_blockW_eq] using hτ
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨block_rep_is_hc_type_W k0 r u σ h, block_rep_is_hc_type_W k0 r u' σ' h', hint⟩`.
+-/
 theorem level_from_reps_harish_chandra (u u' : Fin (k0 + 1) → ℝ) (h : Formalism.MainNotions.S.IsHCTypeU (k0 + 1) u σ)
     (h' : Formalism.MainNotions.S.IsHCTypeU (k0 + 1) u' σ') (hint : ∀ i, ∃ m : ℤ, u i - u' i = m) :
     (levelFromCompactRepresentations k0 r Hp Hq σ σ').HC u u' :=
@@ -307,14 +421,27 @@ theorem level_from_reps_harish_chandra (u u' : Fin (k0 + 1) → ℝ) (h : Formal
 
 end LG
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨levelFromCompactRepresentations k0 r ℂ ℂ (fun _ => 0) (fun _ => 0), rfl, rfl, level_from_representations_standard _ _ _ _ _ _⟩`.
+-/
 theorem standard_level_exists_all_ranks (k0 r : ℕ) : ∃ L : Lev, L.k0 = k0 ∧ L.r = r ∧ L.Std :=
   ⟨levelFromCompactRepresentations k0 r ℂ ℂ (fun _ => 0) (fun _ => 0), rfl, rfl, level_from_representations_standard _ _ _ _ _ _⟩
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a`. Establish `h1 : ∀ a b : Fin 1, ¬ a < b` using `by decide`. Simplify using `[lowK, Formalism.REAL.rhoN, Formalism.REAL.rhoC, h1]`.
+-/
 theorem low_part_rank_one_eq (x : ℝ) : lowK (Formalism.MainNotions.S.allPos 1) (fun _ => x) = fun _ => x := by
   funext a
   have h1 : ∀ a b : Fin 1, ¬ a < b := by decide
   simp [lowK, Formalism.REAL.rhoN, Formalism.REAL.rhoC, h1]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Rewrite using `[Matrix.mem_unitaryGroup_iff]`. Use extensionality with `i j`. Establish `hi : i = 0` using `Subsingleton.elim _ _`. Establish `hj : j = 0` using `Subsingleton.elim _ _`.
+
+Substitute `hi` using the available equality. Substitute `hj` using the available equality. Simplify using `[Matrix.mul_apply, Matrix.star_apply, ← Complex.exp_conj, ← Complex.exp_add]`. Use extensionality with `i j`. Establish `hi : i = 0` using `Subsingleton.elim _ _`.
+
+Establish `hj : j = 0` using `Subsingleton.elim _ _`. Substitute `hi` using the available equality. Substitute `hj` using the available equality. Simplify using `[Matrix.mul_apply, Formalism.REAL.Jm, Formalism.MainNotions.S.allPos]`.
+-/
 theorem diagonal_torus_mem_maximal_compact (θ : Fin 1 → ℝ) :
     Matrix.diagonal (fun a => Complex.exp ((θ a : ℂ) * Complex.I)) ∈ Formalism.REAL.Kset (Formalism.MainNotions.S.allPos 1) := by
   constructor
@@ -333,6 +460,33 @@ theorem diagonal_torus_mem_maximal_compact (θ : Fin 1 → ℝ) :
 def powerCharacterU1 (m : ℕ) : Matrix (Fin (0 + 1)) (Fin (0 + 1)) ℂ → (ℂ →L[ℂ] ℂ) :=
   fun h => (h 0 0) ^ m • ContinuousLinearMap.id ℂ ℂ
 
+/- English proof (translation)
+Establish `hσ : ∀ h, powerCharacterU1 m h = (h 0 0) ^ m • ContinuousLinearMap.id ℂ ℂ` using `fun _ => rfl`. Generalize the expression as in `powerCharacterU1 m = σ at hσ`. Use `⟨inferInstance, inferInstance, ⟨⟨?_, ?_⟩, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hσ]`. Use `ext`.
+
+Simplify using the standard rewrite rules. Introduce `a _ b _`. Rewrite using `[hσ, hσ, hσ]`. Use `ext`. Simplify using `[Matrix.mul_apply, mul_pow, mul_comm]`.
+
+Introduce `g hg v`. Establish `h0` using `congrFun (congrFun (show gᴴ * Formalism.REAL.Jm (Formalism.MainNotions.S.allPos 1) * g = _ from hg) 0) 0`. Simplify using `[Matrix.mul_apply, Formalism.REAL.Jm, Formalism.MainNotions.S.allPos] at h0`. Establish `h1 : ‖g 0 0‖ = 1`. Establish `h2 : ((‖g 0 0‖ ^ 2 : ℝ) : ℂ) = 1`.
+
+Rewrite using `[← h0]`. Use `push_cast`. Conclude with `(Complex.conj_mul' (g 0 0)).symm`. Establish `h3 : ‖g 0 0‖ ^ 2 = 1` using `by exact_mod_cast h2`. Use polynomial arithmetic with `[norm_nonneg (g 0 0)]`.
+
+Rewrite using `[hσ]`. Simplify using `[h1]`. Introduce `v`. Simplify using `only [hσ]`. Use `Continuous.continuousOn ?_` and prove the remaining obligations.
+
+Establish `: Continuous fun g : Matrix (Fin 1) (Fin 1) ℂ => g 0 0` using `Continuous.matrix_elem continuous_id 0 0`. Establish `h2 : Continuous fun g : Matrix (Fin 1) (Fin 1) ℂ => g 0 0 ^ m * v` using `(this.pow m).mul continuous_const`. Simplify using `using h2`. Use `show Formalism.MainNotions.S.IsKTypeOf (Formalism.MainNotions.S.allPos 1) σ (lowK (Formalism.MainNotions.S.allPos 1) fun _ => (m : ℝ)) ⊤`. Rewrite using `[low_part_rank_one_eq]`.
+
+Use `⟨inferInstance, fun _ _ _ _ => Submodule.mem_top, fun S' _ _ => eq_bot_or_eq_top S', ⟨1, Submodule.mem_top, one_ne_zero, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `θ _`. Rewrite using `[hσ]`. Simplify using `[← Complex.exp_nat_mul]`. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree. Introduce `μ v _ hv hw`. Use `⟨0, fun a b h => absurd rfl h, ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.zero_apply, Nat.cast_zero, zero_smul, Finset.sum_const_zero]`. Assume the negation of the conclusion as `hne`.
+
+Establish `hd : (m : ℝ) - μ 0 ≠ 0`. Introduce `h`. Apply `hne` to reduce the goal to its premises. Use function extensionality and compare the values at `a`. Establish `ha : a = 0` using `Subsingleton.elim _ _`.
+
+Substitute `ha` using the available equality. Simplify using `using h`. Establish `e` using `hw (fun _ => Real.pi / ((m : ℝ) - μ 0)) (diagonal_torus_mem_maximal_compact _)`. Rewrite `e` using `[hσ]`. Simplify using `[← Complex.exp_nat_mul] at e`.
+
+Break down `e with e | e` into its components or cases. Establish `e2 : Complex.exp ((m : ℂ) * (((Real.pi / ((m : ℝ) - μ 0) : ℝ) : ℂ) * Complex.I) - ((μ 0 * (Real.pi / ((m : ℝ) - μ 0)) : ℝ) : ℂ) * Complex.I) = 1`. Rewrite using `[Complex.exp_sub]`. Use `push_cast`. Rewrite using `[e]`.
+
+Conclude with `div_self (Complex.exp_ne_zero _)`. Establish `e3 : (m : ℂ) * (((Real.pi / ((m : ℝ) - μ 0) : ℝ) : ℂ) * Complex.I) - ((μ 0 * (Real.pi / ((m : ℝ) - μ 0)) : ℝ) : ℂ) * Complex.I = (Real.pi : ℂ) * Complex.I`. Establish `hd' : ((m : ℂ) - (μ 0 : ℂ)) ≠ 0` using `by exact_mod_cast hd`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+
+Rewrite `e2` using `[e3, Complex.exp_pi_mul_I]`. Evaluate the numerical expressions using `at e2`. Conclude with `hv e`.
+-/
 theorem character_power_is_hc_type_U1 (m : ℕ) : Formalism.MainNotions.S.IsHCTypeU (0 + 1) (fun _ => (m : ℝ)) (powerCharacterU1 m) := by
   have hσ : ∀ h, powerCharacterU1 m h = (h 0 0) ^ m • ContinuousLinearMap.id ℂ ℂ := fun _ => rfl
   generalize powerCharacterU1 m = σ at hσ
@@ -398,6 +552,9 @@ theorem character_power_is_hc_type_U1 (m : ℕ) : Formalism.MainNotions.S.IsHCTy
 
 def rankOneLevel (r m m' : ℕ) : Lev := levelFromCompactRepresentations 0 r ℂ ℂ (powerCharacterU1 m) (powerCharacterU1 m')
 
+/- English proof (translation)
+Use `⟨0, -2, -2, by norm_num, le_rfl, rfl, by norm_num, by norm_num, ?_⟩` and prove the remaining obligations. Introduce `y hy`. Establish `: y = -2` using `le_antisymm hy.2 hy.1`. Substitute `this` using the available equality. Evaluate the numerical expressions.
+-/
 theorem cut_condition_zero_four : Formalism.MainNotions.S.IsCutS (fun _ : Fin (0 + 1) => ((0 : ℕ) : ℝ)) (fun _ => ((4 : ℕ) : ℝ)) (Set.Icc (-2) (-2)) := by
   refine ⟨0, -2, -2, by norm_num, le_rfl, rfl, by norm_num, by norm_num, ?_⟩
   intro y hy
@@ -405,11 +562,17 @@ theorem cut_condition_zero_four : Formalism.MainNotions.S.IsCutS (fun _ : Fin (0
   subst this
   norm_num
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨level_from_representations_standard _ _ _ _ _ _, level_from_reps_harish_chandra 0 r ℂ ℂ _ _ _ _ (character_power_is_hc_type_U1 0) (character_power_is_hc_type_U1 4) (fun _ => ⟨-4, by norm_num⟩), cut_condition_zero_four, ⟨fun j => j.elim0, fun j => j.elim0, fun j => j.elim0⟩⟩`.
+-/
 theorem hyp_rank_one_level (r : ℕ) :
     HypC (rankOneLevel r 0 4) (fun _ => ((0 : ℕ) : ℝ)) (fun _ => ((4 : ℕ) : ℝ)) (Set.Icc (-2) (-2)) :=
   ⟨level_from_representations_standard _ _ _ _ _ _, level_from_reps_harish_chandra 0 r ℂ ℂ _ _ _ _ (character_power_is_hc_type_U1 0) (character_power_is_hc_type_U1 4) (fun _ => ⟨-4, by norm_num⟩), cut_condition_zero_four,
     ⟨fun j => j.elim0, fun j => j.elim0, fun j => j.elim0⟩⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨rankOneLevel r 0 4, _, _, _, rfl, hyp_rank_one_level r⟩`.
+-/
 theorem hyp_level_nonempty (r : ℕ) : ∃ (L : Lev) (u u' : Fin (L.k0 + 1) → ℝ) (I : Set ℝ), L.r = r ∧ HypC L u u' I :=
   ⟨rankOneLevel r 0 4, _, _, _, rfl, hyp_rank_one_level r⟩
 
@@ -417,8 +580,14 @@ def HighestWeightRepExists (k : ℕ) (u : Fin k → ℝ) : Prop :=
   ∃ (H : Type) (_ : NormedAddCommGroup H) (_ : InnerProductSpace ℂ H)
     (σ : Matrix (Fin k) (Fin k) ℂ → (H →L[ℂ] H)), Formalism.MainNotions.S.IsHCTypeU k u σ
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨ℂ, _, _, _, character_power_is_hc_type_U1 m⟩`.
+-/
 theorem highest_weight_rank_one (m : ℕ) : HighestWeightRepExists (0 + 1) (fun _ => (m : ℝ)) := ⟨ℂ, _, _, _, character_power_is_hc_type_U1 m⟩
 
+/- English proof (translation)
+Take `⟨H, i1, i2, σ, hσ⟩` from `h`. Take `⟨H', i1', i2', σ', hσ'⟩` from `h'`. Use `hσ.2.1` as an intermediate fact. Use `hσ'.2.1` as an intermediate fact. Conclude with `⟨levelFromCompactRepresentations k0 r H H' σ σ', rfl, rfl, level_from_representations_standard _ _ _ _ _ _, level_from_reps_harish_chandra k0 r H H' σ σ' u u' hσ hσ' hint, hI, hρ⟩`.
+-/
 theorem hyp_level_of_highest_weight (k0 r : ℕ) (u u' : Fin (k0 + 1) → ℝ) (I : Set ℝ) (h : HighestWeightRepExists (k0 + 1) u)
     (h' : HighestWeightRepExists (k0 + 1) u') (hint : ∀ i, ∃ m : ℤ, u i - u' i = m) (hI : Formalism.MainNotions.S.IsCutS u u' I)
     (hρ : ∃ ρ : Fin k0 → ℝ, Interlace u ρ ∧ Interlace u' ρ) :
@@ -437,6 +606,9 @@ variable (k0 r : ℕ) (Hp Hq : Type) [NormedAddCommGroup Hp] [InnerProductSpace 
     (σ : Matrix (Fin (k0 + 1)) (Fin (k0 + 1)) ℂ → (Hp →L[ℂ] Hp))
     (σ' : Matrix (Fin (k0 + 1)) (Fin (k0 + 1)) ℂ → (Hq →L[ℂ] Hq))
 
+/- English proof (translation)
+Use function extensionality and compare the values at `p`. Simplify using `only [negativeBasisVector, bvec, Pi.single_apply, wI, Fin.ext_iff, Fin.val_last]`. Use `congr 1`. Apply `propext` to reduce the goal to its premises. Use linear arithmetic over natural numbers and integers.
+-/
 theorem negative_basis_vector_restrict_level (i r' : ℕ) (h : i + r' = r) :
     (fun p : Fin (2 * r' + (k0 + 1) + 1) => negativeBasisVector k0 r ⟨p.val + i, by omega⟩) = negativeBasisVector k0 r' := by
   funext p
@@ -445,6 +617,11 @@ theorem negative_basis_vector_restrict_level (i r' : ℕ) (h : i + r' = r) :
   apply propext
   omega
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a b`. Establish `h1 : ∀ a : Fin (k0 + 1), i ≤ (wI (k0 + 1) r a.castSucc).val ∧ (wI (k0 + 1) r a.castSucc).val < 2 * r' + (k0 + 1) + 1 + i`. Introduce `a`. Use `a.2` as an intermediate fact. Simplify using `only [wI, Fin.val_castSucc]`.
+
+Use linear arithmetic over natural numbers and integers. Establish `e : ∀ (a : Fin (k0 + 1)) (p : (wI (k0 + 1) r a.castSucc).val - i < 2 * r' + (k0 + 1) + 1), (⟨(wI (k0 + 1) r a.castSucc).val - i, p⟩ : Fin (2 * r' + (k0 + 1) + 1)) = wI (k0 + 1) r' a.castSucc` using `fun a p => Fin.ext (by simp only [wI, Fin.val_castSucc]; omega)`. Unfold `upperBlockOfMatrix ιLev`. Simplify using `only [Fin.val_cast]`. Rewrite using `[dif_pos (h1 a), dif_pos (h1 b), e, e]`.
+-/
 theorem upper_block_restrict_down_eq (i r' : ℕ) (h : i + r' = r) (g : Mat k0 r') :
     upperBlockOfMatrix k0 r (fun p q => ιLev (k0 + 1) i r' g (Fin.cast (by omega) p) (Fin.cast (by omega) q)) =
       upperBlockOfMatrix k0 r' g := by
@@ -462,6 +639,9 @@ theorem upper_block_restrict_down_eq (i r' : ℕ) (h : i + r' = r) (g : Mat k0 r
   simp only [Fin.val_cast]
   rw [dif_pos (h1 a), dif_pos (h1 b), e, e]
 
+/- English proof (translation)
+Establish `hz` using `negative_basis_vector_restrict_level k0 r i r' h`. Establish `hb` using `upper_block_restrict_down_eq k0 r i r' h`. Unfold `Lev.down levelFromCompactRepresentations`. Simplify using `only [hz, hb]`.
+-/
 theorem level_from_reps_restrict_down (i r' : ℕ) (h : i + r' = r) :
     (levelFromCompactRepresentations k0 r Hp Hq σ σ').down i r' h = levelFromCompactRepresentations k0 r' Hp Hq σ σ' := by
   have hz := negative_basis_vector_restrict_level k0 r i r' h
@@ -469,6 +649,9 @@ theorem level_from_reps_restrict_down (i r' : ℕ) (h : i + r' = r) :
   unfold Lev.down levelFromCompactRepresentations
   simp only [hz, hb]
 
+/- English proof (translation)
+Substitute `e` using the available equality. Conclude with `⟨rfl, H⟩`.
+-/
 theorem hyp_transport_along_level_eq (L : Lev) (e : L = levelFromCompactRepresentations k0 r Hp Hq σ σ') (u u' : Fin (k0 + 1) → ℝ) (I : Set ℝ)
     (H : HypC (levelFromCompactRepresentations k0 r Hp Hq σ σ') u u' I) :
     ∃ hk : L.k0 = k0, HypC L (fun i => u (Fin.cast (by rw [hk]) i)) (fun i => u' (Fin.cast (by rw [hk]) i)) I := by
@@ -477,11 +660,17 @@ theorem hyp_transport_along_level_eq (L : Lev) (e : L = levelFromCompactRepresen
 
 variable (u u' : Fin (k0 + 1) → ℝ) (I : Set ℝ)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨level_from_representations_standard _ _ _ _ _ _, level_from_reps_harish_chandra k0 r Hp Hq σ σ' u u' hσ hσ' hint, hI, hρ⟩`.
+-/
 theorem level_from_reps_hyp (hσ : Formalism.MainNotions.S.IsHCTypeU (k0 + 1) u σ) (hσ' : Formalism.MainNotions.S.IsHCTypeU (k0 + 1) u' σ')
     (hint : ∀ i, ∃ m : ℤ, u i - u' i = m) (hI : Formalism.MainNotions.S.IsCutS u u' I)
     (hρ : ∃ ρ : Fin k0 → ℝ, Interlace u ρ ∧ Interlace u' ρ) : HypC (levelFromCompactRepresentations k0 r Hp Hq σ σ') u u' I :=
   ⟨level_from_representations_standard _ _ _ _ _ _, level_from_reps_harish_chandra k0 r Hp Hq σ σ' u u' hσ hσ' hint, hI, hρ⟩
 
+/- English proof (translation)
+Take `⟨_, H''⟩` from `hyp_transport_along_level_eq k0 r' Hp Hq σ σ' _ (level_from_reps_restrict_down k0 r Hp Hq σ σ' i r' h) u u' I (level_from_reps_hyp k0 r' Hp Hq σ σ' u u' I hσ hσ' hint hI hρ)`. Conclude with `H''`.
+-/
 theorem level_from_reps_hyp_restrict_down (hσ : Formalism.MainNotions.S.IsHCTypeU (k0 + 1) u σ) (hσ' : Formalism.MainNotions.S.IsHCTypeU (k0 + 1) u' σ')
     (hint : ∀ i, ∃ m : ℤ, u i - u' i = m) (hI : Formalism.MainNotions.S.IsCutS u u' I)
     (hρ : ∃ ρ : Fin k0 → ℝ, Interlace u ρ ∧ Interlace u' ρ) (i r' : ℕ) (h : i + r' = r) :
@@ -490,12 +679,20 @@ theorem level_from_reps_hyp_restrict_down (hσ : Formalism.MainNotions.S.IsHCTyp
     (level_from_reps_hyp k0 r' Hp Hq σ σ' u u' I hσ hσ' hint hI hρ)
   exact H''
 
+/- English proof (translation)
+Use function extensionality and compare the values at `p`. Establish `hp` using `p.2`. Simplify using `only [liftVectorLevel, liftVec, negativeBasisVector, bvec, Pi.single_apply, wI, Fin.ext_iff, Fin.val_last, Fin.val_cast]`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega)`.
+-/
 theorem negative_basis_vector_lift_rank : liftVectorLevel (negativeBasisVector k0 r) = negativeBasisVector k0 (r + 1) := by
   funext p
   have hp := p.2
   simp only [liftVectorLevel, liftVec, negativeBasisVector, bvec, Pi.single_apply, wI, Fin.ext_iff, Fin.val_last, Fin.val_cast]
   split_ifs <;> first | rfl | (exfalso; omega)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a b`. Establish `h1 : ∀ a : Fin (k0 + 1), 1 ≤ (wI (k0 + 1) (r + 1) a.castSucc).val ∧ (wI (k0 + 1) (r + 1) a.castSucc).val < 2 * r + (k0 + 1) + 1 + 1`. Introduce `a`. Use `a.2` as an intermediate fact. Simplify using `only [wI, Fin.val_castSucc]`.
+
+Use linear arithmetic over natural numbers and integers. Establish `e : ∀ (a : Fin (k0 + 1)) (p : (wI (k0 + 1) (r + 1) a.castSucc).val - 1 < 2 * r + (k0 + 1) + 1), (⟨(wI (k0 + 1) (r + 1) a.castSucc).val - 1, p⟩ : Fin (2 * r + (k0 + 1) + 1)) = wI (k0 + 1) r a.castSucc` using `fun a p => Fin.ext (by simp only [wI, Fin.val_castSucc]; omega)`. Unfold `upperBlockOfMatrix ι1 ιLev`. Simplify using `only [Fin.val_cast]`. Rewrite using `[dif_pos (h1 a), dif_pos (h1 b), e, e]`.
+-/
 theorem upper_block_lift_rank_eq (g : Mat k0 r) : upperBlockOfMatrix k0 (r + 1) (ι1 g) = upperBlockOfMatrix k0 r g := by
   funext a b
   have h1 : ∀ a : Fin (k0 + 1), 1 ≤ (wI (k0 + 1) (r + 1) a.castSucc).val ∧
@@ -511,12 +708,18 @@ theorem upper_block_lift_rank_eq (g : Mat k0 r) : upperBlockOfMatrix k0 (r + 1) 
   simp only [Fin.val_cast]
   rw [dif_pos (h1 a), dif_pos (h1 b), e, e]
 
+/- English proof (translation)
+Establish `hz` using `negative_basis_vector_lift_rank k0 r`. Unfold `Lev.up levelFromCompactRepresentations`. Simplify using `only [hz]`.
+-/
 theorem level_from_reps_lift_rank : (levelFromCompactRepresentations k0 r Hp Hq σ σ').up (fun g => σ (upperBlockOfMatrix k0 (r + 1) g)) (fun g => σ' (upperBlockOfMatrix k0 (r + 1) g)) =
     levelFromCompactRepresentations k0 (r + 1) Hp Hq σ σ' := by
   have hz := negative_basis_vector_lift_rank k0 r
   unfold Lev.up levelFromCompactRepresentations
   simp only [hz]
 
+/- English proof (translation)
+Introduce `g`. Establish `hb` using `upper_block_lift_rank_eq k0 r g`. Conclude with `⟨by show σ (upperBlockOfMatrix k0 r g) = σ (upperBlockOfMatrix k0 (r + 1) (ι1 g)); rw [hb], by show σ' (upperBlockOfMatrix k0 r g) = σ' (upperBlockOfMatrix k0 (r + 1) (ι1 g)); rw [hb]⟩`.
+-/
 theorem level_from_reps_compatible : (levelFromCompactRepresentations k0 r Hp Hq σ σ').Compat (fun g => σ (upperBlockOfMatrix k0 (r + 1) g))
     (fun g => σ' (upperBlockOfMatrix k0 (r + 1) g)) := by
   intro g
@@ -524,6 +727,9 @@ theorem level_from_reps_compatible : (levelFromCompactRepresentations k0 r Hp Hq
   exact ⟨by show σ (upperBlockOfMatrix k0 r g) = σ (upperBlockOfMatrix k0 (r + 1) (ι1 g)); rw [hb],
     by show σ' (upperBlockOfMatrix k0 r g) = σ' (upperBlockOfMatrix k0 (r + 1) (ι1 g)); rw [hb]⟩
 
+/- English proof (translation)
+Take `⟨_, H''⟩` from `hyp_transport_along_level_eq k0 (r + 1) Hp Hq σ σ' _ (level_from_reps_lift_rank k0 r Hp Hq σ σ') u u' I (level_from_reps_hyp k0 (r + 1) Hp Hq σ σ' u u' I hσ hσ' hint hI hρ)`. Conclude with `H''`.
+-/
 theorem level_from_reps_hyp_lift_rank (hσ : Formalism.MainNotions.S.IsHCTypeU (k0 + 1) u σ) (hσ' : Formalism.MainNotions.S.IsHCTypeU (k0 + 1) u' σ')
     (hint : ∀ i, ∃ m : ℤ, u i - u' i = m) (hI : Formalism.MainNotions.S.IsCutS u u' I)
     (hρ : ∃ ρ : Fin k0 → ℝ, Interlace u ρ ∧ Interlace u' ρ) :
@@ -534,12 +740,18 @@ theorem level_from_reps_hyp_lift_rank (hσ : Formalism.MainNotions.S.IsHCTypeU (
 
 end Two
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨rankOneLevel r 0 4, _, _, _, rfl, rfl, hyp_rank_one_level r, level_from_reps_hyp_restrict_down 0 r ℂ ℂ _ _ _ _ _ (character_power_is_hc_type_U1 0) (character_power_is_hc_type_U1 4) (fun _ => ⟨-4, by norm_num⟩) cut_condition_zero_four ⟨fun j => j.elim0, fun j => j.elim0, fun j => …`.
+-/
 theorem hyp_two_levels_exist (r : ℕ) : ∃ (Lt : Lev) (u u' : Fin (Lt.k0 + 1) → ℝ) (I : Set ℝ) (hr : Lt.r + 0 = Lt.r),
     Lt.r = r ∧ HypC Lt u u' I ∧ HypC (Lt.down Lt.r 0 hr) u u' I :=
   ⟨rankOneLevel r 0 4, _, _, _, rfl, rfl, hyp_rank_one_level r,
     level_from_reps_hyp_restrict_down 0 r ℂ ℂ _ _ _ _ _ (character_power_is_hc_type_U1 0) (character_power_is_hc_type_U1 4) (fun _ => ⟨-4, by norm_num⟩) cut_condition_zero_four
       ⟨fun j => j.elim0, fun j => j.elim0, fun j => j.elim0⟩ r 0 rfl⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨rankOneLevel r 0 4, _, _, _, _, _, rfl, level_from_representations_standard _ _ _ _ _ _, level_from_reps_compatible 0 r ℂ ℂ _ _, level_from_reps_hyp_lift_rank 0 r ℂ ℂ _ _ _ _ _ (character_power_is_hc_type_U1 0) (character_power_is_hc_type_U1 4) (fun _ => ⟨-4, by norm_num⟩) cut_c …`.
+-/
 theorem hyp_lifted_levels_exist (r : ℕ) : ∃ (L : Lev) (pb : Mat L.k0 (L.r + 1) → (L.Wp →L[ℂ] L.Wp))
     (pb' : Mat L.k0 (L.r + 1) → (L.Wq →L[ℂ] L.Wq)) (u u' : Fin (L.k0 + 1) → ℝ) (I : Set ℝ),
     L.r = r ∧ L.Std ∧ L.Compat pb pb' ∧ HypC (L.up pb pb') u u' I :=
@@ -549,6 +761,21 @@ theorem hyp_lifted_levels_exist (r : ℕ) : ∃ (L : Lev) (pb : Mat L.k0 (L.r + 
 
 def HighestWeightTheoremUnitary (k : ℕ) : Prop := ∀ u : Fin k → ℝ, IsHCParam u → HighestWeightRepExists k u
 
+/- English proof (translation)
+Use `⟨fun i => (k0 : ℝ) / 2 - 10 * (i : ℕ), fun i => (k0 : ℝ) / 2 - 10 * (i : ℕ) + 4, Set.Icc (-((k0 : ℝ) / 2) - 2) (-((k0 : ℝ) / 2) - 2), ⟨?_, ?_⟩, ⟨?_, ?_⟩, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `a b hab`. Establish `: ((a : ℕ) : ℝ) < ((b : ℕ) : ℝ)` using `by exact_mod_cast hab`. Use `show (k0 : ℝ) / 2 - 10 * (b : ℕ) < (k0 : ℝ) / 2 - 10 * (a : ℕ)`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Introduce `a`. Conclude with `⟨-10 * ((a : ℕ) : ℤ), by push_cast; ring⟩`. Introduce `a b hab`. Establish `: ((a : ℕ) : ℝ) < ((b : ℕ) : ℝ)` using `by exact_mod_cast hab`. Use `show (k0 : ℝ) / 2 - 10 * (b : ℕ) + 4 < (k0 : ℝ) / 2 - 10 * (a : ℕ) + 4`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Introduce `a`. Conclude with `⟨-10 * ((a : ℕ) : ℤ) + 4, by push_cast; ring⟩`. Introduce `i`. Conclude with `⟨-4, by push_cast; ring⟩`.
+
+Use `⟨0, _, _, ?_, le_rfl, rfl, ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules. Simplify using `only [Fin.val_zero, Nat.cast_zero, mul_zero, sub_zero]`. Rewrite using `[min_eq_right (by linarith)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Simplify using `only [Fin.val_zero, Nat.cast_zero, mul_zero, sub_zero]`. Rewrite using `[max_eq_left (by linarith)]`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `y hy`. Establish `: y = -((k0 : ℝ) / 2) - 2` using `le_antisymm hy.2 hy.1`.
+
+Substitute `this` using the available equality. Simplify using `only [Fin.val_zero, Nat.cast_zero, mul_zero, sub_zero]`. Prove the components needed by the constructor for the conclusion. Rewrite using `[show -((k0 : ℝ) / 2) - 2 + (k0 : ℝ) / 2 = -2 by ring]; norm_num`. Rewrite using `[show -((k0 : ℝ) / 2) - 2 + ((k0 : ℝ) / 2 + 4) = 2 by ring]; norm_num`.
+
+Apply the tactic sequence `refine ⟨fun j => (k0 : ℝ) / 2 - 10 * (j : ℕ) - 3, fun j => ⟨?_, ?_⟩, fun j => ⟨?_, ?_⟩⟩ <;>`. Apply the tactic sequence `simp only [Fin.val_castSucc, Fin.val_succ, Nat.cast_add, Nat.cast_one] <;> linarith`.
+-/
 theorem hc_parameters_interlacing_exist (k0 : ℕ) : ∃ (u u' : Fin (k0 + 1) → ℝ) (I : Set ℝ), IsHCParam u ∧ IsHCParam u' ∧
     (∀ i, ∃ m : ℤ, u i - u' i = m) ∧ Formalism.MainNotions.S.IsCutS u u' I ∧ ∃ ρ : Fin k0 → ℝ, Interlace u ρ ∧ Interlace u' ρ := by
   refine ⟨fun i => (k0 : ℝ) / 2 - 10 * (i : ℕ), fun i => (k0 : ℝ) / 2 - 10 * (i : ℕ) + 4,
@@ -585,18 +812,35 @@ theorem hc_parameters_interlacing_exist (k0 : ℕ) : ∃ (u u' : Fin (k0 + 1) �
   · refine ⟨fun j => (k0 : ℝ) / 2 - 10 * (j : ℕ) - 3, fun j => ⟨?_, ?_⟩, fun j => ⟨?_, ?_⟩⟩ <;>
       simp only [Fin.val_castSucc, Fin.val_succ, Nat.cast_add, Nat.cast_one] <;> linarith
 
+/- English proof (translation)
+Take `⟨u, u', I, hu, hu', hint, hI, hρ⟩` from `hc_parameters_interlacing_exist k0`. Take `⟨L, hk, hr, H⟩` from `hyp_level_of_highest_weight k0 r u u' I (h u hu) (h u' hu') hint hI hρ`. Conclude with `⟨L, _, _, I, hk, hr, H⟩`.
+-/
 theorem hyp_level_exists_highest_weight (k0 r : ℕ) (h : HighestWeightTheoremUnitary (k0 + 1)) :
     ∃ (L : Lev) (u u' : Fin (L.k0 + 1) → ℝ) (I : Set ℝ), L.k0 = k0 ∧ L.r = r ∧ HypC L u u' I := by
   obtain ⟨u, u', I, hu, hu', hint, hI, hρ⟩ := hc_parameters_interlacing_exist k0
   obtain ⟨L, hk, hr, H⟩ := hyp_level_of_highest_weight k0 r u u' I (h u hu) (h u' hu') hint hI hρ
   exact ⟨L, _, _, I, hk, hr, H⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ _ _ hφ => absurd hφ (Set.notMem_empty _), fun _ hx => absurd hx (Set.notMem_empty _), fun _ hx => absurd hx (Set.notMem_empty _), fun _ _ hx => absurd hx (Set.notMem_empty _)⟩`.
+-/
 theorem degenerate_context_frame_datum {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] (B : Base E) (r : ℕ)
     (h : (Fin (r + 1) → ℂ) → E →L[ℂ] E) (SS : Fin B.k0 → (Fin (r + 1) → ℂ) → E →L[ℂ] E) :
     (degenerateContext B r).IsFrameDatum h SS :=
   ⟨fun _ _ _ hφ => absurd hφ (Set.notMem_empty _), fun _ hx => absurd hx (Set.notMem_empty _),
     fun _ hx => absurd hx (Set.notMem_empty _), fun _ _ hx => absurd hx (Set.notMem_empty _)⟩
 
+/- English proof (translation)
+Establish `hPDP : P * D * P = 0`. Establish `e : P * D * P = P * D * P + P * D * P`. Combine the equalities or inequalities in the displayed calculation. Conclude with `left_eq_add.mp e`. Establish `e0 : h = P * a * P + P * D - D * P`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `e1 : h * P = P * a * P - D * P`. Combine the equalities or inequalities in the displayed calculation. Establish `e2 : P * h = P * a * P + P * D`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hD2 : D - D * P = P * D`. Rewrite using `[sub_eq_iff_eq_add, add_comm]`. Conclude with `hD`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[e1, e2]`.
+
+Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← e0]`. Use `_ = -(P * a * P) + (P * P) * a * P - P * D * P := by noncomm_ring`. Use `_ = 0 := by rw [hP, hPDP]; simp`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem idempotent_connection_algebra {A : Type*} [Ring A] (P D a h : A) (hP : P * P = P) (hD : D = D * P + P * D)
     (hh : h = P * a * P + P * D * (1 - P) - (1 - P) * D * P) :
     D + h * P = P * h ∧ (1 - P) * h * (1 - P) = 0 ∧ P * h * P = P * a * P := by
@@ -631,6 +875,11 @@ theorem idempotent_connection_algebra {A : Type*} [Ring A] (P D a h : A) (hP : P
       _ = (P * P) * a * P - P * D * P := by rw [e1]; noncomm_ring
       _ = P * a * P := by rw [hP, hPDP]; simp
 
+/- English proof (translation)
+Use `⟨fun x => C.PiL x * a x * C.PiL x + C.PiL x * dP x * (1 - C.PiL x) - (1 - C.PiL x) * dP x * C.PiL x, fun x hx e => ?_, fun x hx e => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Establish `k` using `(idempotent_connection_algebra (C.PiL x) (dP x) (a x) _ (hid x hx) (hl x hx) rfl).1`. Establish `k2` using `congrArg (fun T : E →L[ℂ] E => T e) k`. Rewrite using `[hd x hx e]`. Simplify using `using k2`.
+
+Establish `k` using `(idempotent_connection_algebra (C.PiL x) (dP x) (a x) _ (hid x hx) (hl x hx) rfl).2.1`. Establish `k2` using `congrArg (fun T : E →L[ℂ] E => T e) k`. Simplify using `using k2`. Conclude with `(idempotent_connection_algebra (C.PiL x) (dP x) (a x) _ (hid x hx) (hl x hx) rfl).2.2`.
+-/
 theorem projection_frame_connection_exists {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] {B : Base E} {r : ℕ} (C : Ctx B r)
     (a dP : (Fin (r + 1) → ℂ) → E →L[ℂ] E)
     (hid : ∀ x ∈ C.Dom, C.PiL x * C.PiL x = C.PiL x)
@@ -651,6 +900,9 @@ theorem projection_frame_connection_exists {E : Type*} [NormedAddCommGroup E] [N
     simpa using k2
   · exact (idempotent_connection_algebra (C.PiL x) (dP x) (a x) _ (hid x hx) (hl x hx) rfl).2.2
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hε, hc, by rw [hz, hz']; exact big_cell_section_negative_vector k0 D.R.rS, hI, hρ⟩`.
+-/
 theorem standard_datum_of_level_data (D : Formalism.BasicNotions.D7) {k0 : ℕ} (hk : k0 + 1 = D.R.k) (L : LocBessel (k0 + 1) D.R.rS) (I : Set ℝ)
     (hε : ∀ i, L.ε i = epsSH D.R (Fin.cast (by rw [hk]) i)) (hc : L.c = cStd)
     (hz : L.z = negativeBasisVector k0 D.R.rS) (hz' : L.z' = negativeBasisVector k0 D.R.rS) (hI : Formalism.MainNotions.S.IsCutS L.u L.u' I)
@@ -659,6 +911,9 @@ theorem standard_datum_of_level_data (D : Formalism.BasicNotions.D7) {k0 : ℕ} 
 
 section GenSec
 
+/- English proof (translation)
+Establish `h` using `big_cell_section_negative_vector k0 0`. Unfold `IsSection at h`. Rewrite `h` using `[hermitian_norm_negative_vector_eq_one, definite_part_negative_vector]`. Simplify `h` using `only [mul_one]`.
+-/
 theorem big_cell_section_properties (k0 : ℕ) :
     (∀ i j, ContDiffOn ℝ ∞ (fun ζ => bigCellSectionMatrix k0 ζ i j) {ζ : ℂ | 1 < Complex.normSq ζ}) ∧
     ∀ ζ : ℂ, 1 < Complex.normSq ζ → (bigCellSectionMatrix k0 ζ)ᴴ * Hb (k0 + 1) * bigCellSectionMatrix k0 ζ = Hb (k0 + 1) ∧
@@ -670,26 +925,47 @@ theorem big_cell_section_properties (k0 : ℕ) :
 
 variable (k r : ℕ)
 
+/- English proof (translation)
+Introduce `a b h` and use `Fin.ext (by have := congrArg Fin.val h; simpa [wI] using this)`.
+-/
 theorem middle_block_index_injective : Function.Injective (wI k r) := fun a b h =>
   Fin.ext (by have := congrArg Fin.val h; simpa [wI] using this)
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hc`. Apply `hm` to reduce the goal to its premises. Conclude with `⟨⟨m.val - r, by omega⟩, Fin.ext (by simp only [wI]; omega)⟩`.
+-/
 theorem outside_middle_block_index (m : Fin (2 * r + k + 1)) (hm : m ∉ Set.range (wI k r)) : m.val < r ∨ r + k < m.val := by
   by_contra hc
   apply hm
   exact ⟨⟨m.val - r, by omega⟩, Fin.ext (by simp only [wI]; omega)⟩
 
+/- English proof (translation)
+Use `a.2` as an intermediate fact. Use `m.2` as an intermediate fact. Simplify using `only [Hpk, esI, eI, Fin.ext_iff]`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega)`.
+-/
 theorem hermitian_form_dual_basis_row (a : Fin r) (m : Fin (2 * r + k + 1)) : Hpk k r (esI k r a) m = if m = eI k r a then 1 else 0 := by
   have := a.2
   have := m.2
   simp only [Hpk, esI, eI, Fin.ext_iff]
   split_ifs <;> first | rfl | (exfalso; omega)
 
+/- English proof (translation)
+Use `a.2` as an intermediate fact. Use `m.2` as an intermediate fact. Simplify using `only [Hpk, esI, eI, Fin.ext_iff]`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega)`.
+-/
 theorem hermitian_form_basis_row (a : Fin r) (m : Fin (2 * r + k + 1)) : Hpk k r (eI k r a) m = if m = esI k r a then 1 else 0 := by
   have := a.2
   have := m.2
   simp only [Hpk, esI, eI, Fin.ext_iff]
   split_ifs <;> first | rfl | (exfalso; omega)
 
+/- English proof (translation)
+Establish `hi` using `i.2`. Establish `hj` using `j.2`. Unfold `Hpk Hb`. Rewrite using `[Matrix.diagonal_apply, if_neg (by simp only [wI]; omega), if_neg (by simp only [wI]; omega)]`. Distinguish the cases in `hij : i = j`.
+
+Substitute `hij` using the available equality. Rewrite using `[if_pos ⟨by simp only [wI]; omega, by simp only [wI]; omega, rfl⟩, if_pos rfl]`. Distinguish the cases in `hl : i = Fin.last k`. Rewrite using `[if_pos hl, if_pos (by rw [hl]; simp [wI])]`. Rewrite using `[if_neg hl, if_neg (by`.
+
+Introduce `h`. Apply `hl` to reduce the goal to its premises. Apply `Fin.ext` to reduce the goal to its premises. Simplify using `only [wI] at h`. Simplify using `only [Fin.val_last]`.
+
+Use the proof step `omega)]`. Rewrite using `[if_neg hij, if_neg (fun h => hij (middle_block_index_injective k r h.2.2))]`.
+-/
 theorem split_form_middle_block_eq (i j : Fin (k + 1)) : Hpk k r (wI k r i) (wI k r j) = Hb k i j := by
   have hi := i.2
   have hj := j.2
@@ -709,6 +985,9 @@ theorem split_form_middle_block_eq (i j : Fin (k + 1)) : Hpk k r (wI k r i) (wI 
         omega)]
   · rw [if_neg hij, if_neg (fun h => hij (middle_block_index_injective k r h.2.2))]
 
+/- English proof (translation)
+Simplify using `only [Matrix.mul_apply, Matrix.conjTranspose_apply, hcol]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Use `congr 1`. Simplify using `[apply_ite]`.
+-/
 theorem conjugate_form_entry_of_fixed_column {n : ℕ} (g H : Matrix (Fin n) (Fin n) ℂ) (p q : Fin n) (hcol : ∀ l, g l p = if l = p then 1 else 0) :
     (gᴴ * H * g) p q = ∑ m, H p m * g m q := by
   simp only [Matrix.mul_apply, Matrix.conjTranspose_apply, hcol]
@@ -716,6 +995,9 @@ theorem conjugate_form_entry_of_fixed_column {n : ℕ} (g H : Matrix (Fin n) (Fi
   congr 1
   simp [apply_ite]
 
+/- English proof (translation)
+Establish `e` using `congrFun h l`. Simplify `e` using `[bvec, Matrix.mulVec, dotProduct, Pi.single_apply]`.
+-/
 theorem column_eq_basis_of_fixes_vector {n : ℕ} (g : Matrix (Fin n) (Fin n) ℂ) (c : Fin n) (h : g *ᵥ bvec c = bvec c) (l : Fin n) :
     g l c = if l = c then 1 else 0 := by
   have e := congrFun h l
@@ -723,6 +1005,15 @@ theorem column_eq_basis_of_fixes_vector {n : ℕ} (g : Matrix (Fin n) (Fin n) �
 
 variable {k r}
 
+/- English proof (translation)
+Establish `hU' : gᴴ * Hpk k r * g = Hpk k r` using `hU`. Establish `hj` using `j.2`. Break down `outside_middle_block_index k r m hm with h | h` into its components or cases. Establish `e` using `congrFun (congrFun hU' (esI k r ⟨m.val, h⟩)) (wI k r j)`. Rewrite `e` using `[conjugate_form_entry_of_fixed_column g _ _ _ (column_eq_basis_of_fixes_vector g _ (hfix ⟨m.val, h⟩).2)]`.
+
+Simplify using `only [hermitian_form_dual_basis_row] at e`. Rewrite `e` using `[if_neg (by simp only [wI, eI, Fin.ext_iff]; omega)]`. Establish `hme : eI k r ⟨m.val, h⟩ = m` using `Fin.ext rfl`. Rewrite `e` using `[hme, Finset.sum_eq_single m (fun b _ hb => by rw [if_neg hb, zero_mul]) (fun h => absurd (Finset.mem_univ _) h), if_pos rfl, one_mul]`. Conclude with `e`.
+
+Establish `hm2` using `m.2`. Establish `ha : 2 * r + k - m.val < r` using `by omega`. Establish `e` using `congrFun (congrFun hU' (eI k r ⟨2 * r + k - m.val, ha⟩)) (wI k r j)`. Rewrite `e` using `[conjugate_form_entry_of_fixed_column g _ _ _ (column_eq_basis_of_fixes_vector g _ (hfix ⟨2 * r + k - m.val, ha⟩).1)]`. Simplify using `only [hermitian_form_basis_row] at e`.
+
+Rewrite `e` using `[if_neg (by simp only [wI, esI, Fin.ext_iff]; omega)]`. Establish `hme : esI k r ⟨2 * r + k - m.val, ha⟩ = m` using `Fin.ext (by simp only [esI]; omega)`. Rewrite `e` using `[hme, Finset.sum_eq_single m (fun b _ hb => by rw [if_neg hb, zero_mul]) (fun h => absurd (Finset.mem_univ _) h), if_pos rfl, one_mul]`. Conclude with `e`.
+-/
 theorem fixed_frame_zero_off_middle_block (g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) (hU : g ∈ UH (Hpk k r))
     (hfix : ∀ a : Fin r, g *ᵥ bvec (eI k r a) = bvec (eI k r a) ∧ g *ᵥ bvec (esI k r a) = bvec (esI k r a))
     (m : Fin (2 * r + k + 1)) (hm : m ∉ Set.range (wI k r)) (j : Fin (k + 1)) : g m (wI k r j) = 0 := by
@@ -749,6 +1040,15 @@ theorem fixed_frame_zero_off_middle_block (g : Matrix (Fin (2 * r + k + 1)) (Fin
       (fun h => absurd (Finset.mem_univ _) h), if_pos rfl, one_mul] at e
     exact e
 
+/- English proof (translation)
+Take `⟨hU, hfix, hz⟩` from `hg`. Establish `hU' : gᴴ * Hpk k r * g = Hpk k r` using `hU`. Establish `h0` using `fixed_frame_zero_off_middle_block g hU hfix`. Use `⟨g.submatrix (wI k r) (wI k r), ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`.
+
+Establish `e` using `congrFun (congrFun hU' (wI k r i)) (wI k r j)`. Rewrite `e` using `[split_form_middle_block_eq]`. Rewrite using `[← e]`. Simplify using `only [Matrix.mul_apply, Matrix.conjTranspose_apply, Matrix.submatrix_apply]`. Use `Fintype.sum_of_injective (wI k r) (middle_block_index_injective k r) _ _ (fun m hm => by rw [h0 m hm j, mul_zero]) (fun b => ?_)` and prove the remaining obligations.
+
+Use `congr 1`. Use `Fintype.sum_of_injective (wI k r) (middle_block_index_injective k r) _ _ (fun l hl => by rw [h0 l hl i]; simp) (fun a => by rw [split_form_middle_block_eq])` and prove the remaining obligations. Use `conv_lhs => rw [← hz]`. Use function extensionality and compare the values at `i`. Simplify using `only [wbPart, Matrix.mulVec, dotProduct, Matrix.submatrix_apply]`.
+
+Use `symm`. Use `Fintype.sum_of_injective (wI k r) (middle_block_index_injective k r) _ _ (fun m hm => ?_) (fun b => ?_)` and prove the remaining obligations. Establish `: m ≠ wI k r (Fin.last k)` using `fun h => hm ⟨_, h.symm⟩`. Simplify using `[bvec, this]`. Simplify using `[bvec, Pi.single_apply, (middle_block_index_injective k r).eq_iff]`.
+-/
 theorem frame_gives_unitary_block (z : Fin (2 * r + k + 1) → ℂ) (g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ)
     (hg : Formalism.MainNotions.S.IsFrameW k r z g) :
     ∃ A : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ, Aᴴ * Hb k * A = Hb k ∧
@@ -779,6 +1079,9 @@ end GenSec
 
 section GenSec2
 
+/- English proof (translation)
+Unfold `Hb`. Rewrite using `[Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Apply the tactic sequence `split_ifs <;> norm_num`.
+-/
 theorem signature_form_sq_one (k : ℕ) : Hb k * Hb k = 1 := by
   unfold Hb
   rw [Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]
@@ -786,6 +1089,11 @@ theorem signature_form_sq_one (k : ℕ) : Hb k * Hb k = 1 := by
   funext j
   split_ifs <;> norm_num
 
+/- English proof (translation)
+Unfold `Hb`. Rewrite using `[Matrix.diagonal_conjTranspose]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Simplify using `only [Pi.star_apply]`.
+
+Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem signature_form_conjTranspose_eq (k : ℕ) : (Hb k)ᴴ = Hb k := by
   unfold Hb
   rw [Matrix.diagonal_conjTranspose]
@@ -794,11 +1102,19 @@ theorem signature_form_conjTranspose_eq (k : ℕ) : (Hb k)ᴴ = Hb k := by
   simp only [Pi.star_apply]
   split_ifs <;> simp
 
+/- English proof (translation)
+Unfold `herm`. Rewrite using `[Matrix.star_mulVec, Matrix.mulVec_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, ← Matrix.mul_assoc, hA]`.
+-/
 theorem hermitian_form_unitary_invariant {n : ℕ} (H A : Matrix (Fin n) (Fin n) ℂ) (hA : Aᴴ * H * A = H) (x y : Fin n → ℂ) :
     herm H (A *ᵥ x) (A *ᵥ y) = herm H x y := by
   unfold herm
   rw [Matrix.star_mulVec, Matrix.mulVec_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, ← Matrix.mul_assoc, hA]
 
+/- English proof (translation)
+Establish `h1 : (Hb k * Bᴴ * Hb k) * B = 1`. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : B * (Hb k * Bᴴ * Hb k) = 1` using `mul_eq_one_comm.mp h1`. Use `⟨h1, ?_⟩` and prove the remaining obligations. Establish `h3 : (Hb k * Bᴴ * Hb k)ᴴ = Hb k * B * Hb k`.
+
+Simplify using `only [Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, signature_form_conjTranspose_eq, Matrix.mul_assoc]`. Rewrite using `[h3]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = Hb k := by rw [signature_form_sq_one, Matrix.one_mul, h2, Matrix.mul_one]`.
+-/
 theorem signature_form_inverse_facts {k : ℕ} (B : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) (hB : Bᴴ * Hb k * B = Hb k) :
     (Hb k * Bᴴ * Hb k) * B = 1 ∧ (Hb k * Bᴴ * Hb k)ᴴ * Hb k * (Hb k * Bᴴ * Hb k) = Hb k := by
   have h1 : (Hb k * Bᴴ * Hb k) * B = 1 := by
@@ -813,6 +1129,23 @@ theorem signature_form_inverse_facts {k : ℕ} (B : Matrix (Fin (k + 1)) (Fin (k
         simp only [Matrix.mul_assoc]
     _ = Hb k := by rw [signature_form_sq_one, Matrix.one_mul, h2, Matrix.mul_one]
 
+/- English proof (translation)
+Take `⟨g, hg⟩` from `hf`. Take `⟨g', hg'⟩` from `hf'`. Take `⟨A, hA, hzA⟩` from `frame_gives_unitary_block z g hg`. Take `⟨B, hB, hzB⟩` from `frame_gives_unitary_block z' g' hg'`. Take `⟨hCB, hC⟩` from `signature_form_inverse_facts B hB`.
+
+Take `⟨hsm, hun⟩` from `big_cell_section_properties k0`. Use `set T := Tz (k0 + 1) r z with hTdef`. Use `set T' := Tz (k0 + 1) r z' with hTdef'`. Use `set C := Hb (k0 + 1) * Bᴴ * Hb (k0 + 1) with hCdef`. Establish `hc0 : 0 < Real.sqrt T * Real.sqrt T'` using `mul_pos (Real.sqrt_pos.2 hT) (Real.sqrt_pos.2 hT')`.
+
+Establish `hcc : (Real.sqrt T * Real.sqrt T') * (Real.sqrt T * Real.sqrt T') = T * T'`. Combine the equalities or inequalities in the displayed calculation. Establish `hdom : ∀ ζ : ℂ, T * T' < Complex.normSq ζ → 1 < Complex.normSq (ζ * (((Real.sqrt T * Real.sqrt T' : ℝ) : ℂ))⁻¹)`. Introduce `ζ hζ`. Rewrite using `[Complex.normSq_mul, Complex.normSq_inv, Complex.normSq_ofReal, hcc, ← div_eq_mul_inv, lt_div_iff₀ (mul_pos hT hT')]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨fun ζ => A * bigCellSectionMatrix k0 (ζ * (((Real.sqrt T * Real.sqrt T' : ℝ) : ℂ))⁻¹) * C, ?_, ?_⟩` and prove the remaining obligations. Introduce `i j`. Simplify using `only [Matrix.mul_apply, Finset.sum_mul]`. Use `ContDiffOn.sum fun b _ => ContDiffOn.sum fun a _ => ?_` and prove the remaining obligations.
+
+Use `(contDiffOn_const.mul ?_).mul contDiffOn_const` and prove the remaining obligations. Conclude with `(hsm a b).comp (contDiff_id.mul contDiff_const).contDiffOn (fun ζ hζ => hdom ζ hζ)`. Introduce `ζ hζ`. Take `⟨hM, hv⟩` from `hun _ (hdom ζ hζ)`. Use `set M := bigCellSectionMatrix k0 (ζ * (((Real.sqrt T * Real.sqrt T' : ℝ) : ℂ))⁻¹) with hMdef`.
+
+Prove the components needed by the constructor for the conclusion. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = Hb (k0 + 1) := by rw [hA, hM, hC]`. Rewrite using `[hzA, hzB, Matrix.mulVec_mulVec]`.
+
+Establish `e1 : A * M * C * B = A * M` using `by rw [Matrix.mul_assoc, hCB, Matrix.mul_one]`. Rewrite using `[e1, ← Matrix.mulVec_mulVec, hermitian_form_unitary_invariant _ A hA, Matrix.mulVec_smul]`. Establish `e2 : ∀ (s t : ℝ) (x y : Fin (k0 + 1 + 1) → ℂ), herm (Hb (k0 + 1)) ((s : ℂ) • x) ((t : ℂ) • y) = ((t * s : ℝ) : ℂ) * herm (Hb (k0 + 1)) x y`. Introduce `s t x y`. Simplify using `[herm, Matrix.mulVec_smul, dotProduct_smul, smul_dotProduct, star_smul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e2, hv]`. Establish `hne : (((Real.sqrt T * Real.sqrt T' : ℝ) : ℂ)) ≠ 0` using `by exact_mod_cast hc0.ne'`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem big_cell_section_exists (k0 r : ℕ) (z z' : Vec k0 r) (hT : 0 < Tz (k0 + 1) r z) (hT' : 0 < Tz (k0 + 1) r z')
     (hf : ∃ g, Formalism.MainNotions.S.IsFrameW (k0 + 1) r z g) (hf' : ∃ g, Formalism.MainNotions.S.IsFrameW (k0 + 1) r z' g) :
     ∃ μsec, IsSection (k0 + 1) r z z' μsec := by
@@ -859,21 +1192,33 @@ theorem big_cell_section_exists (k0 r : ℕ) (z z' : Vec k0 r) (hT : 0 < Tz (k0 
       have hne : (((Real.sqrt T * Real.sqrt T' : ℝ) : ℂ)) ≠ 0 := by exact_mod_cast hc0.ne'
       field_simp
 
+/- English proof (translation)
+The claim follows from `big_cell_section_exists L.k0 L.r L.z L.z' hT hT' (h.1.imp fun _ hg => hg.1) (h.2.1.imp fun _ hg => hg.1)`.
+-/
 theorem big_cell_section_of_hc (L : Lev) (u u' : Fin (L.k0 + 1) → ℝ) (hT : 0 < L.T) (hT' : 0 < L.T') (h : L.HC u u') :
     ∃ μsec, IsSection (L.k0 + 1) L.r L.z L.z' μsec :=
   big_cell_section_exists L.k0 L.r L.z L.z' hT hT' (h.1.imp fun _ hg => hg.1) (h.2.1.imp fun _ hg => hg.1)
 
+/- English proof (translation)
+The claim follows from `big_cell_section_exists k0 r L.z L.z' L.hz.2 L.hz'.2 (L.hπ.imp fun _ hg => hg.1) (L.hπ'.imp fun _ hg => hg.1)`.
+-/
 theorem big_cell_section_of_local_bessel {k0 r : ℕ} (L : LocBessel (k0 + 1) r) : ∃ μsec, IsSection (k0 + 1) r L.z L.z' μsec :=
   big_cell_section_exists k0 r L.z L.z' L.hz.2 L.hz'.2 (L.hπ.imp fun _ hg => hg.1) (L.hπ'.imp fun _ hg => hg.1)
 
 end GenSec2
 
+/- English proof (translation)
+Take `⟨μ, hμ⟩` from `big_cell_section_of_local_bessel L`. Conclude with `⟨μ, ⟨L.hz.1, L.hz'.1, L.hz.2, L.hz'.2, hμ⟩, ⟨L.hπ, L.hπ', hint⟩, hI, hρ⟩`.
+-/
 theorem hyp_of_local_bessel {k0 r : ℕ} (L : LocBessel (k0 + 1) r) (I : Set ℝ) (hint : ∀ i, ∃ m : ℤ, L.u i - L.u' i = m)
     (hI : Formalism.MainNotions.S.IsCutS L.u L.u' I) (hρ : ∃ ρ : Fin k0 → ℝ, Interlace L.u ρ ∧ Interlace L.u' ρ) :
     ∃ μsec, HypC (UnitaryLevelOperators.levOf L μsec) L.u L.u' I := by
   obtain ⟨μ, hμ⟩ := big_cell_section_of_local_bessel L
   exact ⟨μ, ⟨L.hz.1, L.hz'.1, L.hz.2, L.hz'.2, hμ⟩, ⟨L.hπ, L.hπ', hint⟩, hI, hρ⟩
 
+/- English proof (translation)
+Take `⟨μ, hμ⟩` from `big_cell_section_of_local_bessel L`. Conclude with `⟨μ, hε, hc, hμ, hI, hρ⟩`.
+-/
 theorem exists_std_of_isCutS_of_interlace (D : Formalism.BasicNotions.D7) {k0 : ℕ} (hk : k0 + 1 = D.R.k) (L : LocBessel (k0 + 1) D.R.rS) (I : Set ℝ)
     (hε : ∀ i, L.ε i = epsSH D.R (Fin.cast (by rw [hk]) i)) (hc : L.c = cStd) (hI : Formalism.MainNotions.S.IsCutS L.u L.u' I)
     (hρ : ∃ ρ : Fin k0 → ℝ, Interlace L.u ρ ∧ Interlace L.u' ρ) : ∃ μsec, UnitaryLevelOperators.Std D hk L μsec I := by
@@ -882,12 +1227,30 @@ theorem exists_std_of_isCutS_of_interlace (D : Formalism.BasicNotions.D7) {k0 : 
 
 section HaarCompact
 
+/- English proof (translation)
+Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Simplify using `only [lmulM, Matrix.mul_apply, Matrix.of_apply]`. Conclude with `continuous_finsetSum _ fun l _ => continuous_const.mul ((continuous_apply j).comp (continuous_apply l))`.
+-/
 theorem left_multiplication_continuous {k r : ℕ} (s : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) :
     Continuous (lmulM (k := k) (r := r) s) := by
   refine continuous_pi fun i => continuous_pi fun j => ?_
   simp only [lmulM, Matrix.mul_apply, Matrix.of_apply]
   exact continuous_finsetSum _ fun l _ => continuous_const.mul ((continuous_apply j).comp (continuous_apply l))
 
+/- English proof (translation)
+Set `G` to `{g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ // g ∈ S}`. Set `iM : Mul G` to `⟨fun a b => ⟨a.1 * b.1, hmul _ a.2 _ b.2⟩⟩`. Set `iO : One G` to `⟨⟨1, h1⟩⟩`. Set `iI : Inv G` to `⟨fun a => ⟨iv a.1, (hiv _ a.2).1⟩⟩`. Set `iG : Group G` to `Group.ofLeftAxioms (fun a b c => Subtype.ext (Matrix.mul_assoc _ _ _)) (fun a => Subtype.ext (Matrix.one_mul _)) (fun a => Subtype.ext (hiv _ a.2).2)`.
+
+Establish `: IsTopologicalGroup G` using `{ continuous_mul := Continuous.subtype_mk ((continuous_subtype_val.comp continuous_fst).matrix_mul (continuous_subtype_val.comp continuous_snd)) _ continuous_inv := Continuous.subtype_mk (hivc.comp continuous_subtype_val) _ }`. Establish `: CompactSpace G` using `isCompact_iff_compactSpace.mp hc`. Set `: MeasurableSpace G` to `borel G`. Establish `: BorelSpace G` using `⟨rfl⟩`. Set `μG : Measure G` to `Measure.haarMeasure ⊤`.
+
+Set `f : G → Mt k r` to `fun a i j => a.1 i j`. Establish `hf : Continuous f` using `continuous_pi fun i => continuous_pi fun j => Continuous.matrix_elem continuous_subtype_val i j`. Establish `hm : Measurable f` using `hf.measurable`. Establish `hu : (μG.map f) Set.univ = 1`. Rewrite using `[Measure.map_apply hm MeasurableSet.univ, Set.preimage_univ]`.
+
+Use `Measure.haarMeasure_self (K₀ := (⊤ : TopologicalSpace.PositiveCompacts G))` as an intermediate fact. Simplify using `using this`. Establish `hp : IsProbabilityMeasure (μG.map f)` using `⟨hu⟩`. Use `⟨μG.map f, ⟨inferInstance, IsProbabilityMeasure.ne_zero _, ?_, ?_⟩, hu⟩` and prove the remaining obligations. Establish `hr : MeasurableSet (Set.range f)ᶜ` using `(isCompact_range hf).isClosed.measurableSet.compl`.
+
+Use `measure_mono_null (t := (Set.range f)ᶜ) ?_ ?_` and prove the remaining obligations. Introduce and unpack `x hx ⟨y, rfl⟩`. Conclude with `hx y.2`. Rewrite using `[Measure.map_apply hm hr]`. Establish `: f ⁻¹' (Set.range f)ᶜ = ∅`.
+
+Use extensionality with `y`. Simplify using the standard rewrite rules. Rewrite using `[this, measure_empty]`. Introduce `s hs`. Establish `hcomp : lmulM (k` using `k) (r := r) s ∘ f = f ∘ (fun x : G => (⟨s, hs⟩ : G) * x) := rfl`.
+
+Rewrite using `[Measure.map_map (left_multiplication_continuous s).measurable hm, hcomp, ← Measure.map_map hm (continuous_const_mul _).measurable, map_mul_left_eq_self]`.
+-/
 theorem haar_probability_compact_subgroup {k r : ℕ} (S : Set (Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ))
     (h1 : (1 : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) ∈ S) (hmul : ∀ a ∈ S, ∀ b ∈ S, a * b ∈ S)
     (iv : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ → Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ)
@@ -933,6 +1296,13 @@ theorem haar_probability_compact_subgroup {k r : ℕ} (S : Set (Matrix (Fin (2 *
 
 variable (k r : ℕ)
 
+/- English proof (translation)
+Distinguish the cases in `hm : m ∈ Set.range (wI k r)`. Take `⟨d, rfl⟩` from `hm`. Rewrite using `[split_form_middle_block_eq]`. Distinguish the cases in `hcd : d = c`. Rewrite using `[hcd, if_pos rfl]`.
+
+Rewrite using `[if_neg (fun h => hcd (middle_block_index_injective k r h))]`. Unfold `Hb`. Rewrite using `[Matrix.diagonal_apply, if_neg (fun h => hcd h.symm)]`. Establish `hc` using `c.2`. Establish `h1` using `outside_middle_block_index k r m hm`.
+
+Rewrite using `[if_neg (fun h => hm ⟨c, h.symm⟩)]`. Unfold `Hpk`. Rewrite using `[if_neg (by simp only [wI]; omega), if_neg (by simp only [wI]; omega), if_neg (by`. Introduce and unpack `⟨-, -, h⟩`. Conclude with `hm ⟨c, h⟩)]`.
+-/
 theorem split_form_middle_row (c : Fin (k + 1)) (m : Fin (2 * r + k + 1)) :
     Hpk k r (wI k r c) m = if m = wI k r c then Hb k c c else 0 := by
   by_cases hm : m ∈ Set.range (wI k r)
@@ -952,6 +1322,11 @@ theorem split_form_middle_row (c : Fin (k + 1)) (m : Fin (2 * r + k + 1)) :
         rintro ⟨-, -, h⟩
         exact hm ⟨c, h⟩)]
 
+/- English proof (translation)
+Distinguish the cases in `hi : i ∈ Set.range (wI k r)`. Take `⟨c, rfl⟩` from `hi`. Conclude with `Or.inr (Or.inr ⟨c, rfl⟩)`. Establish `h2` using `i.2`. Break down `outside_middle_block_index k r i hi with h | h` into its components or cases.
+
+Conclude with `Or.inl ⟨⟨i.val, h⟩, Fin.ext rfl⟩`. Conclude with `Or.inr (Or.inl ⟨⟨2 * r + k - i.val, by omega⟩, Fin.ext (by simp only [esI]; omega)⟩)`.
+-/
 theorem basis_index_trichotomy (i : Fin (2 * r + k + 1)) :
     (∃ a, i = eI k r a) ∨ (∃ a, i = esI k r a) ∨ ∃ c, i = wI k r c := by
   by_cases hi : i ∈ Set.range (wI k r)
@@ -962,11 +1337,21 @@ theorem basis_index_trichotomy (i : Fin (2 * r + k + 1)) :
     · exact Or.inl ⟨⟨i.val, h⟩, Fin.ext rfl⟩
     · exact Or.inr (Or.inl ⟨⟨2 * r + k - i.val, by omega⟩, Fin.ext (by simp only [esI]; omega)⟩)
 
+/- English proof (translation)
+Unfold `Hb`. Rewrite using `[Matrix.diagonal_apply_eq]`. Apply the tactic sequence `split_ifs <;> norm_num`.
+-/
 theorem signature_form_diag_sq_one (c : Fin (k + 1)) : Hb k c c * Hb k c c = 1 := by
   unfold Hb
   rw [Matrix.diagonal_apply_eq]
   split_ifs <;> norm_num
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[Matrix.mul_apply, Matrix.one_apply]`. Break down `basis_index_trichotomy k r i with ⟨a, rfl⟩ | ⟨a, rfl⟩ | ⟨c, rfl⟩` into its components or cases. Simplify using `only [hermitian_form_basis_row]`. Rewrite using `[Finset.sum_eq_single (esI k r a) (fun b _ hb => by rw [if_neg hb, zero_mul]) (fun h => absurd (Finset.mem_univ _) h), if_pos rfl, one_mul, hermitian_form_dual_basis_row]`.
+
+Simplify using `only [eq_comm]`. Simplify using `only [hermitian_form_dual_basis_row]`. Rewrite using `[Finset.sum_eq_single (eI k r a) (fun b _ hb => by rw [if_neg hb, zero_mul]) (fun h => absurd (Finset.mem_univ _) h), if_pos rfl, one_mul, hermitian_form_basis_row]`. Simplify using `only [eq_comm]`. Simplify using `only [split_form_middle_row]`.
+
+Rewrite using `[Finset.sum_eq_single (wI k r c) (fun b _ hb => by rw [if_neg hb, zero_mul]) (fun h => absurd (Finset.mem_univ _) h), if_pos rfl, split_form_middle_row]`. Distinguish the cases in `hj : j = wI k r c`. Rewrite using `[if_pos hj, if_pos hj.symm, signature_form_diag_sq_one]`. Rewrite using `[if_neg hj, if_neg (fun h => hj h.symm), mul_zero]`.
+-/
 theorem split_form_matrix_sq_one : Hpk k r * Hpk k r = 1 := by
   ext i j
   rw [Matrix.mul_apply, Matrix.one_apply]
@@ -988,9 +1373,19 @@ theorem split_form_matrix_sq_one : Hpk k r * Hpk k r = 1 := by
 
 variable {k r}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨by show (1 : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ)ᴴ * _ * 1 = _; simp, fun a => ⟨by simp, by simp⟩, by simp⟩`.
+-/
 theorem one_mem_unitary_stabilizer_set (z : Fin (2 * r + k + 1) → ℂ) : (1 : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) ∈ UWset k r z :=
   ⟨by show (1 : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ)ᴴ * _ * 1 = _; simp, fun a => ⟨by simp, by simp⟩, by simp⟩
 
+/- English proof (translation)
+Take `⟨ha1, ha2, ha3⟩` from `ha`. Take `⟨hb1, hb2, hb3⟩` from `hb`. Establish `ha1' : aᴴ * Hpk k r * a = Hpk k r` using `ha1`. Establish `hb1' : bᴴ * Hpk k r * b = Hpk k r` using `hb1`. Use `⟨?_, fun c => ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations.
+
+Use `show (a * b)ᴴ * Hpk k r * (a * b) = Hpk k r`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = Hpk k r := by rw [ha1', hb1']`. Rewrite using `[← Matrix.mulVec_mulVec, (hb2 c).1, (ha2 c).1]`.
+
+Rewrite using `[← Matrix.mulVec_mulVec, (hb2 c).2, (ha2 c).2]`. Rewrite using `[← Matrix.mulVec_mulVec, hb3, ha3]`.
+-/
 theorem unitary_stabilizer_mul_mem (z : Fin (2 * r + k + 1) → ℂ) (a : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ)
     (ha : a ∈ UWset k r z) (b : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) (hb : b ∈ UWset k r z) :
     a * b ∈ UWset k r z := by
@@ -1007,6 +1402,13 @@ theorem unitary_stabilizer_mul_mem (z : Fin (2 * r + k + 1) → ℂ) (a : Matrix
   · rw [← Matrix.mulVec_mulVec, (hb2 c).2, (ha2 c).2]
   · rw [← Matrix.mulVec_mulVec, hb3, ha3]
 
+/- English proof (translation)
+Take `⟨ha1, ha2, ha3⟩` from `ha`. Establish `ha1' : aᴴ * Hpk k r * a = Hpk k r` using `ha1`. Establish `h1 : (Hpk k r * aᴴ * Hpk k r) * a = 1`. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : a * (Hpk k r * aᴴ * Hpk k r) = 1` using `mul_eq_one_comm.mp h1`.
+
+Establish `hfix : ∀ v : Fin (2 * r + k + 1) → ℂ, a *ᵥ v = v → (Hpk k r * aᴴ * Hpk k r) *ᵥ v = v`. Introduce `v hv`. Use `conv_lhs => rw [← hv]`. Rewrite using `[Matrix.mulVec_mulVec, h1, Matrix.one_mulVec]`. Use `⟨⟨?_, fun c => ⟨hfix _ (ha2 c).1, hfix _ (ha2 c).2⟩, hfix _ ha3⟩, h1⟩` and prove the remaining obligations.
+
+Use `show (Hpk k r * aᴴ * Hpk k r)ᴴ * Hpk k r * (Hpk k r * aᴴ * Hpk k r) = Hpk k r`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = Hpk k r := by rw [h2]; simp`.
+-/
 theorem unitary_stabilizer_inv_mem (z : Fin (2 * r + k + 1) → ℂ) (a : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ)
     (ha : a ∈ UWset k r z) : Hpk k r * aᴴ * Hpk k r ∈ UWset k r z ∧ (Hpk k r * aᴴ * Hpk k r) * a = 1 := by
   obtain ⟨ha1, ha2, ha3⟩ := ha
@@ -1027,6 +1429,11 @@ theorem unitary_stabilizer_inv_mem (z : Fin (2 * r + k + 1) → ℂ) (a : Matrix
         simp only [Matrix.conjTranspose_mul, Matrix.mul_assoc]
     _ = Hpk k r := by rw [h2]; simp
 
+/- English proof (translation)
+Establish `hmv : ∀ v : Fin (2 * r + k + 1) → ℂ, IsClosed {g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ | g *ᵥ v = v}` using `fun v => isClosed_eq (Continuous.matrix_mulVec continuous_id continuous_const) continuous_const`. Establish `hu : IsClosed {g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ | gᴴ * Hpk k r * g = Hpk k r}` using `isClosed_eq ((continuous_id.matrix_conjTranspose.matrix_mul continuous_const).matrix_mul continuous_id) continuous_const`. Establish `e : UWset k r z = {g | gᴴ * Hpk k r * g = Hpk k r} ∩ ((⋂ a : Fin r, ({g | g *ᵥ bvec (eI k r a) = bvec (eI k r a)} ∩ {g | g *ᵥ bvec (esI k r a) = bvec (esI k r a)})) ∩ {g | g *ᵥ z = z})`. Use extensionality with `g`. Simplify using `only [UWset, UH, Set.mem_ofPred_eq, Set.mem_inter_iff, Set.mem_iInter]`.
+
+Rewrite using `[e]`. Conclude with `hu.inter ((isClosed_iInter fun a => (hmv _).inter (hmv _)).inter (hmv _))`.
+-/
 theorem unitary_stabilizer_closed (z : Fin (2 * r + k + 1) → ℂ) : IsClosed (UWset k r z) := by
   have hmv : ∀ v : Fin (2 * r + k + 1) → ℂ,
       IsClosed {g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ | g *ᵥ v = v} := fun v =>
@@ -1042,6 +1449,11 @@ theorem unitary_stabilizer_closed (z : Fin (2 * r + k + 1) → ℂ) : IsClosed (
   rw [e]
   exact hu.inter ((isClosed_iInter fun a => (hmv _).inter (hmv _)).inter (hmv _))
 
+/- English proof (translation)
+Establish `hU' : gᴴ * Hpk k r * g = Hpk k r` using `hU`. Establish `h0` using `fixed_frame_zero_off_middle_block g hU hfix`. Use extensionality with `i j`. Establish `e` using `congrFun (congrFun hU' (wI k r i)) (wI k r j)`. Rewrite `e` using `[split_form_middle_block_eq]`.
+
+Rewrite using `[← e]`. Simplify using `only [Matrix.mul_apply, Matrix.conjTranspose_apply, Matrix.submatrix_apply]`. Use `Fintype.sum_of_injective (wI k r) (middle_block_index_injective k r) _ _ (fun m hm => by rw [h0 m hm j, mul_zero]) (fun b => ?_)` and prove the remaining obligations. Use `congr 1`. Use `Fintype.sum_of_injective (wI k r) (middle_block_index_injective k r) _ _ (fun l hl => by rw [h0 l hl i]; simp) (fun a => by rw [split_form_middle_block_eq])` and prove the remaining obligations.
+-/
 theorem middle_block_preserves_hermitian_form (g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) (hU : g ∈ UH (Hpk k r))
     (hfix : ∀ a : Fin r, g *ᵥ bvec (eI k r a) = bvec (eI k r a) ∧ g *ᵥ bvec (esI k r a) = bvec (esI k r a)) :
     (g.submatrix (wI k r) (wI k r))ᴴ * Hb k * g.submatrix (wI k r) (wI k r) = Hb k := by
@@ -1057,6 +1469,25 @@ theorem middle_block_preserves_hermitian_form (g : Matrix (Fin (2 * r + k + 1)) 
   refine Fintype.sum_of_injective (wI k r) (middle_block_index_injective k r) _ _ (fun l hl => by rw [h0 l hl i]; simp)
     (fun a => by rw [split_form_middle_block_eq])
 
+/- English proof (translation)
+Distinguish the cases in `hc : c = Fin.last k`. Apply the tactic sequence `rw [hc, hcol] split_ifs <;> simp`. Establish `hrow : ∀ m, Hb k (Fin.last k) m = if m = Fin.last k then -1 else 0`. Introduce `m`. Unfold `Hb`.
+
+Rewrite using `[Matrix.diagonal_apply]`. Distinguish the cases in `hm : m = Fin.last k`. Rewrite using `[if_pos hm.symm, if_pos rfl, if_pos hm]`. Rewrite using `[if_neg (fun h => hm h.symm), if_neg hm]`. Establish `e0` using `congrFun (congrFun hA (Fin.last k)) c`.
+
+Rewrite `e0` using `[conjugate_form_entry_of_fixed_column A _ _ _ hcol]`. Simplify using `only [hrow] at e0`. Rewrite `e0` using `[Finset.sum_eq_single (Fin.last k) (fun b _ hb => by rw [if_neg hb, zero_mul]) (fun h => absurd (Finset.mem_univ _) h), if_pos rfl, if_neg hc]`. Establish `hlast : A (Fin.last k) c = 0` using `by simpa using e0`. Establish `e1` using `congrFun (congrFun hA c) c`.
+
+Establish `hsum : (∑ x, (Complex.normSq (A x c) : ℂ)) = 1`. Establish `hcc : Hb k c c = 1`. Unfold `Hb`. Rewrite using `[Matrix.diagonal_apply_eq, if_neg hc]`. Rewrite `e1` using `[hcc]`.
+
+Rewrite using `[← e1]`. Simplify using `only [Matrix.mul_apply, Matrix.conjTranspose_apply]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Establish `hin : (∑ l, star (A l c) * Hb k l x) = star (A x c) * Hb k x x`. Rewrite using `[Finset.sum_eq_single x (fun b _ hb => by`.
+
+Unfold `Hb`. Rewrite using `[Matrix.diagonal_apply, if_neg hb, mul_zero]) (fun h => absurd (Finset.mem_univ _) h)]`. Rewrite using `[hin]`. Distinguish the cases in `hx : x = Fin.last k`. Rewrite using `[hx, hlast]`.
+
+Simplify using the standard rewrite rules. Establish `hxx : Hb k x x = 1`. Unfold `Hb`. Rewrite using `[Matrix.diagonal_apply_eq, if_neg hx]`. Rewrite using `[hxx, mul_one, Complex.normSq_eq_conj_mul_self]`.
+
+Both sides reduce to the same expression. Establish `hsumR : (∑ x, Complex.normSq (A x c)) = 1` using `by exact_mod_cast hsum`. Establish `hle : Complex.normSq (A d c) ≤ 1`. Rewrite using `[← hsumR]`. Conclude with `Finset.single_le_sum (f := fun x => Complex.normSq (A x c)) (fun x _ => Complex.normSq_nonneg _) (Finset.mem_univ d)`.
+
+Rewrite `hle` using `[Complex.normSq_eq_norm_sq]`. Use polynomial arithmetic with `[norm_nonneg (A d c)]`.
+-/
 theorem entries_norm_le_one_of_fixing_last (A : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) (hA : Aᴴ * Hb k * A = Hb k)
     (hcol : ∀ l, A l (Fin.last k) = if l = Fin.last k then 1 else 0) (d c : Fin (k + 1)) : ‖A d c‖ ≤ 1 := by
   by_cases hc : c = Fin.last k
@@ -1104,6 +1535,15 @@ theorem entries_norm_le_one_of_fixing_last (A : Matrix (Fin (k + 1)) (Fin (k + 1
     rw [Complex.normSq_eq_norm_sq] at hle
     nlinarith [norm_nonneg (A d c)]
 
+/- English proof (translation)
+Establish `hsub : UWset k r (bvec (wI k r (Fin.last k))) ⊆ Set.pi Set.univ (fun _ : Fin (2 * r + k + 1) => Set.pi Set.univ (fun _ : Fin (2 * r + k + 1) => Metric.closedBall (0 : ℂ) 1))`. Introduce `g hg i _ j _`. Take `⟨hU, hfix, hz⟩` from `hg`. Rewrite using `[mem_closedBall_zero_iff]`. Establish `hδ : ∀ (c : Fin (2 * r + k + 1)), g *ᵥ bvec c = bvec c → ‖g i c‖ ≤ 1`.
+
+Introduce `c hc`. Rewrite using `[column_eq_basis_of_fixes_vector g c hc i]`. Apply the tactic sequence `split_ifs <;> simp`. Break down `basis_index_trichotomy k r j with ⟨a, rfl⟩ | ⟨a, rfl⟩ | ⟨c, rfl⟩` into its components or cases. Conclude with `hδ _ (hfix a).1`.
+
+Conclude with `hδ _ (hfix a).2`. Distinguish the cases in `hi : i ∈ Set.range (wI k r)`. Take `⟨d, rfl⟩` from `hi`. Conclude with `entries_norm_le_one_of_fixing_last (g.submatrix (wI k r) (wI k r)) (middle_block_preserves_hermitian_form g hU hfix) (fun l => by`. Rewrite using `[Matrix.submatrix_apply, column_eq_basis_of_fixes_vector g _ hz]`.
+
+Simplify using `only [(middle_block_index_injective k r).eq_iff]) d c`. Rewrite using `[fixed_frame_zero_off_middle_block g hU hfix i hi c]`. Simplify using the standard rewrite rules. Conclude with `IsCompact.of_isClosed_subset (isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => isCompact_closedBall (0 : ℂ) 1) (unitary_stabilizer_closed _) hsub`.
+-/
 theorem unitary_stabilizer_compact : IsCompact (UWset k r (bvec (wI k r (Fin.last k)))) := by
   have hsub : UWset k r (bvec (wI k r (Fin.last k))) ⊆
       Set.pi Set.univ (fun _ : Fin (2 * r + k + 1) => Set.pi Set.univ
@@ -1128,6 +1568,9 @@ theorem unitary_stabilizer_compact : IsCompact (UWset k r (bvec (wI k r (Fin.las
   exact IsCompact.of_isClosed_subset
     (isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => isCompact_closedBall (0 : ℂ) 1) (unitary_stabilizer_closed _) hsub
 
+/- English proof (translation)
+The claim follows from `haar_probability_compact_subgroup _ (one_mem_unitary_stabilizer_set _) (unitary_stabilizer_mul_mem _) (fun a => Hpk k r * aᴴ * Hpk k r) ((continuous_const.matrix_mul continuous_id.matrix_conjTranspose).matrix_mul continuous_const) (unitary_stabilizer_inv_mem _) unitary_stabilizer …`.
+-/
 theorem unitary_stabilizer_haar_probability : ∃ μ : Measure (Mt k r), Formalism.MainNotions.S.IsHaarOn (UWset k r (bvec (wI k r (Fin.last k)))) μ ∧
     μ Set.univ = 1 :=
   haar_probability_compact_subgroup _ (one_mem_unitary_stabilizer_set _) (unitary_stabilizer_mul_mem _) (fun a => Hpk k r * aᴴ * Hpk k r)
@@ -1138,6 +1581,23 @@ end HaarCompact
 
 section HaarClosed
 
+/- English proof (translation)
+Establish `: LocallyCompactSpace (Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ)` using `inferInstanceAs (LocallyCompactSpace (Fin (2 * r + k + 1) → Fin (2 * r + k + 1) → ℂ))`. Set `G` to `{g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ // g ∈ S}`. Set `iM : Mul G` to `⟨fun a b => ⟨a.1 * b.1, hmul _ a.2 _ b.2⟩⟩`. Set `iO : One G` to `⟨⟨1, h1⟩⟩`. Set `iI : Inv G` to `⟨fun a => ⟨iv a.1, (hiv _ a.2).1⟩⟩`.
+
+Set `iG : Group G` to `Group.ofLeftAxioms (fun a b c => Subtype.ext (Matrix.mul_assoc _ _ _)) (fun a => Subtype.ext (Matrix.one_mul _)) (fun a => Subtype.ext (hiv _ a.2).2)`. Establish `: IsTopologicalGroup G` using `{ continuous_mul := Continuous.subtype_mk ((continuous_subtype_val.comp continuous_fst).matrix_mul (continuous_subtype_val.comp continuous_snd)) _ continuous_inv := Continuous.subtype_mk (hivc.comp continuous_subtype_val) _ }`. Establish `hce : Topology.IsClosedEmbedding (Subtype.val : G → Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ)` using `hc.isClosedEmbedding_subtypeVal`. Establish `: LocallyCompactSpace G` using `hce.locallyCompactSpace`. Set `_ : MeasurableSpace G` to `borel G`.
+
+Establish `: BorelSpace G` using `⟨rfl⟩`. Set `μG : Measure G` to `Measure.haar`. Set `f : G → Mt k r` to `fun a i j => a.1 i j`. Establish `hfce : Topology.IsClosedEmbedding f` using `hce`. Establish `hf : Continuous f` using `hfce.continuous`.
+
+Establish `hm : Measurable f` using `hf.measurable`. Establish `hfc : IsFiniteMeasureOnCompacts (μG.map f)` using `⟨fun K hK => by`. Rewrite using `[Measure.map_apply hm hK.measurableSet]`. Conclude with `(hfce.isCompact_preimage hK).measure_lt_top⟩`. Use `⟨μG.map f, inferInstance, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `h0`. Establish `h2 : (μG.map f) Set.univ = 0` using `by rw [h0]; simp`. Rewrite `h2` using `[Measure.map_apply hm MeasurableSet.univ, Set.preimage_univ]`. Conclude with `(isOpen_univ.measure_ne_zero μG ⟨1, trivial⟩) h2`. Establish `hr : MeasurableSet (Set.range f)ᶜ` using `hfce.isClosed_range.measurableSet.compl`.
+
+Use `measure_mono_null (t := (Set.range f)ᶜ) ?_ ?_` and prove the remaining obligations. Introduce and unpack `x hx ⟨y, rfl⟩`. Conclude with `hx y.2`. Rewrite using `[Measure.map_apply hm hr]`. Establish `: f ⁻¹' (Set.range f)ᶜ = ∅`.
+
+Use extensionality with `y`. Simplify using the standard rewrite rules. Rewrite using `[this, measure_empty]`. Introduce `s hs`. Establish `hcomp : lmulM (k` using `k) (r := r) s ∘ f = f ∘ (fun x : G => (⟨s, hs⟩ : G) * x) := rfl`.
+
+Rewrite using `[Measure.map_map (left_multiplication_continuous s).measurable hm, hcomp, ← Measure.map_map hm (continuous_const_mul _).measurable, map_mul_left_eq_self]`.
+-/
 theorem haar_measure_closed_subgroup {k r : ℕ} (S : Set (Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ))
     (h1 : (1 : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) ∈ S) (hmul : ∀ a ∈ S, ∀ b ∈ S, a * b ∈ S)
     (iv : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ → Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ)
@@ -1193,6 +1653,11 @@ variable {k r : ℕ}
 def UnipotentEntryCondition (k r : ℕ) (g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) : Prop :=
   ∀ i j : Fin (2 * r + k + 1), j.val ≤ r + k → (j.val ≤ i.val ∨ r ≤ i.val) → g i j = if i = j then 1 else 0
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hU, h1, h2⟩`. Use `⟨hU, fun i j hj hij => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hjr : j.val < r`. Establish `e : j = eI k r ⟨j.val, hjr⟩` using `Fin.ext rfl`.
+
+Rewrite using `[e]`. Conclude with `h1 ⟨j.val, hjr⟩ i (by show j.val ≤ i.val; omega)`. Conclude with `h2 i j (by omega) hj (by omega)`. Introduce and unpack `⟨hU, hP⟩`. Use `⟨hU, fun a i hai => hP i _ (by have := a.2; simp only [eI]; omega) (Or.inl hai), fun i j h1 h2 h3 => hP i j h2 (Or.inr h3)⟩` and prove the remaining obligations.
+-/
 theorem unipotent_radical_mem_iff (g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) :
     g ∈ Nset k r ↔ g ∈ UH (Hpk k r) ∧ UnipotentEntryCondition k r g := by
   constructor
@@ -1207,6 +1672,13 @@ theorem unipotent_radical_mem_iff (g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r 
     refine ⟨hU, fun a i hai => hP i _ (by have := a.2; simp only [eI]; omega) (Or.inl hai),
       fun i j h1 h2 h3 => hP i j h2 (Or.inr h3)⟩
 
+/- English proof (translation)
+Introduce `i j hj hij`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single j]`. Rewrite using `[hb j j hj (Or.inl le_rfl), if_pos rfl, mul_one]`. Conclude with `ha i j hj hij`. Introduce `m _ hmj`.
+
+Distinguish the cases in `hm : j.val ≤ m.val ∨ r ≤ m.val`. Rewrite using `[hb m j hj hm, if_neg hmj, mul_zero]`. Rewrite using `[ha i m (by omega) (by omega), if_neg (by`. Introduce `h`. Use `congrArg Fin.val h` as an intermediate fact.
+
+Use the proof step `omega), zero_mul]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+-/
 theorem unipotent_entry_condition_mul (a b : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) (ha : UnipotentEntryCondition k r a)
     (hb : UnipotentEntryCondition k r b) : UnipotentEntryCondition k r (a * b) := by
   intro i j hj hij
@@ -1223,6 +1695,15 @@ theorem unipotent_entry_condition_mul (a b : Matrix (Fin (2 * r + k + 1)) (Fin (
   · intro h
     exact absurd (Finset.mem_univ _) h
 
+/- English proof (translation)
+Establish `key : ∀ (n : ℕ) (i j : Fin (2 * r + k + 1)), j.val = n → j.val ≤ r + k → (j.val ≤ i.val ∨ r ≤ i.val) → b i j = if i = j then 1 else 0`. Introduce `n`. Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Introduce `i j hn hj hij`.
+
+Establish `e` using `congrFun (congrFun hba i) j`. Rewrite `e` using `[Matrix.mul_apply, Matrix.one_apply, Finset.sum_eq_single j]`. Rewrite `e` using `[ha j j hj (Or.inl le_rfl), if_pos rfl, mul_one]`. Conclude with `e`. Introduce `m _ hmj`.
+
+Distinguish the cases in `hm : j.val ≤ m.val ∨ r ≤ m.val`. Rewrite using `[ha m j hj hm, if_neg hmj, mul_zero]`. Rewrite using `[ih m.val (by omega) i m rfl (by omega) (by omega), if_neg (by`. Introduce `h`. Use `congrArg Fin.val h` as an intermediate fact.
+
+Use the proof step `omega), zero_mul]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Conclude with `fun i j hj hij => key j.val i j rfl hj hij`.
+-/
 theorem unipotent_entry_condition_inv (a b : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) (hba : b * a = 1)
     (ha : UnipotentEntryCondition k r a) : UnipotentEntryCondition k r b := by
   have key : ∀ (n : ℕ) (i j : Fin (2 * r + k + 1)), j.val = n → j.val ≤ r + k → (j.val ≤ i.val ∨ r ≤ i.val) →
@@ -1246,6 +1727,11 @@ theorem unipotent_entry_condition_inv (a b : Matrix (Fin (2 * r + k + 1)) (Fin (
         exact absurd (Finset.mem_univ _) h
   exact fun i j hj hij => key j.val i j rfl hj hij
 
+/- English proof (translation)
+Establish `ha1' : aᴴ * Hpk k r * a = Hpk k r` using `ha`. Establish `hb1' : bᴴ * Hpk k r * b = Hpk k r` using `hb`. Use `show (a * b)ᴴ * Hpk k r * (a * b) = Hpk k r`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`.
+
+Use `_ = Hpk k r := by rw [ha1', hb1']`.
+-/
 theorem mul_mem_UH_Hpk_nonempty_parameter_models (a b : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) (ha : a ∈ UH (Hpk k r))
     (hb : b ∈ UH (Hpk k r)) : a * b ∈ UH (Hpk k r) := by
   have ha1' : aᴴ * Hpk k r * a = Hpk k r := ha
@@ -1255,6 +1741,11 @@ theorem mul_mem_UH_Hpk_nonempty_parameter_models (a b : Matrix (Fin (2 * r + k +
         simp only [Matrix.conjTranspose_mul, Matrix.mul_assoc]
     _ = Hpk k r := by rw [ha1', hb1']
 
+/- English proof (translation)
+Establish `ha1' : aᴴ * Hpk k r * a = Hpk k r` using `ha`. Establish `h1 : (Hpk k r * aᴴ * Hpk k r) * a = 1`. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : a * (Hpk k r * aᴴ * Hpk k r) = 1` using `mul_eq_one_comm.mp h1`. Use `⟨?_, h1⟩` and prove the remaining obligations.
+
+Use `show (Hpk k r * aᴴ * Hpk k r)ᴴ * Hpk k r * (Hpk k r * aᴴ * Hpk k r) = Hpk k r`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = Hpk k r := by rw [h2]; simp`.
+-/
 theorem unitary_group_inv_mem (a : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) (ha : a ∈ UH (Hpk k r)) :
     Hpk k r * aᴴ * Hpk k r ∈ UH (Hpk k r) ∧ (Hpk k r * aᴴ * Hpk k r) * a = 1 := by
   have ha1' : aᴴ * Hpk k r * a = Hpk k r := ha
@@ -1270,6 +1761,11 @@ theorem unitary_group_inv_mem (a : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k 
         simp only [Matrix.conjTranspose_mul, Matrix.mul_assoc]
     _ = Hpk k r := by rw [h2]; simp
 
+/- English proof (translation)
+Establish `hu : IsClosed {g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ | gᴴ * Hpk k r * g = Hpk k r}` using `isClosed_eq ((continuous_id.matrix_conjTranspose.matrix_mul continuous_const).matrix_mul continuous_id) continuous_const`. Establish `hp : IsClosed {g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ | UnipotentEntryCondition k r g}`. Unfold `UnipotentEntryCondition`. Simplify using `only [Set.ofPred_forall]`. Conclude with `isClosed_iInter fun i => isClosed_iInter fun j => isClosed_iInter fun _ => isClosed_iInter fun _ => isClosed_eq (Continuous.matrix_elem continuous_id i j) continuous_const`.
+
+Establish `e : Nset k r = {g | gᴴ * Hpk k r * g = Hpk k r} ∩ {g | UnipotentEntryCondition k r g}`. Use extensionality with `g`. Conclude with `unipotent_radical_mem_iff g`. Rewrite using `[e]`. Conclude with `hu.inter hp`.
+-/
 theorem unipotent_radical_set_closed : IsClosed (Nset k r) := by
   have hu : IsClosed {g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ | gᴴ * Hpk k r * g = Hpk k r} :=
     isClosed_eq ((continuous_id.matrix_conjTranspose.matrix_mul continuous_const).matrix_mul continuous_id)
@@ -1285,6 +1781,9 @@ theorem unipotent_radical_set_closed : IsClosed (Nset k r) := by
   rw [e]
   exact hu.inter hp
 
+/- English proof (translation)
+The claim follows from `haar_measure_closed_subgroup _ ((unipotent_radical_mem_iff _).2 ⟨by show (1 : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ)ᴴ * _ * 1 = _; simp, fun i j _ _ => Matrix.one_apply⟩) (fun a ha b hb => (unipotent_radical_mem_iff _).2 ⟨mul_mem_UH_Hpk_nonempty_parameter_models a …`.
+-/
 theorem unipotent_radical_haar_exists (k r : ℕ) : ∃ μ : Measure (Mt k r), Formalism.MainNotions.S.IsHaarOn (Nset k r) μ :=
   haar_measure_closed_subgroup _
     ((unipotent_radical_mem_iff _).2 ⟨by show (1 : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ)ᴴ * _ * 1 = _; simp,
@@ -1298,6 +1797,9 @@ theorem unipotent_radical_haar_exists (k r : ℕ) : ∃ μ : Measure (Mt k r), F
       (unitary_group_inv_mem a ((unipotent_radical_mem_iff a).1 ha).1).2⟩)
     unipotent_radical_set_closed
 
+/- English proof (translation)
+The claim follows from `haar_measure_closed_subgroup _ (one_mem_unitary_stabilizer_set _) (unitary_stabilizer_mul_mem _) (fun a => Hpk k r * aᴴ * Hpk k r) ((continuous_const.matrix_mul continuous_id.matrix_conjTranspose).matrix_mul continuous_const) (unitary_stabilizer_inv_mem _) (unitary_stabilizer_clo …`.
+-/
 theorem unitary_stabilizer_haar_exists (z : Fin (2 * r + k + 1) → ℂ) : ∃ μ : Measure (Mt k r), Formalism.MainNotions.S.IsHaarOn (UWset k r z) μ :=
   haar_measure_closed_subgroup _ (one_mem_unitary_stabilizer_set _) (unitary_stabilizer_mul_mem _) (fun a => Hpk k r * aᴴ * Hpk k r)
     ((continuous_const.matrix_mul continuous_id.matrix_conjTranspose).matrix_mul continuous_const)
@@ -1305,12 +1807,18 @@ theorem unitary_stabilizer_haar_exists (z : Fin (2 * r + k + 1) → ℂ) : ∃ �
 
 end HaarClosed
 
+/- English proof (translation)
+Take `⟨μW, hW⟩` from `unitary_stabilizer_haar_exists (k := L.k0 + 1) (r := L.r) L.z`. Take `⟨μN, hN⟩` from `unipotent_radical_haar_exists (L.k0 + 1) L.r`. Take `⟨μW', hW'⟩` from `unitary_stabilizer_haar_exists (k := L.k0 + 1) (r := L.r) L.z'`. Conclude with `⟨⟨μW, μN, μW'⟩, hW, hN, hW'⟩`.
+-/
 theorem haar_measure_ok_exists (L : Lev) : ∃ h : L.Haar, h.Ok := by
   obtain ⟨μW, hW⟩ := unitary_stabilizer_haar_exists (k := L.k0 + 1) (r := L.r) L.z
   obtain ⟨μN, hN⟩ := unipotent_radical_haar_exists (L.k0 + 1) L.r
   obtain ⟨μW', hW'⟩ := unitary_stabilizer_haar_exists (k := L.k0 + 1) (r := L.r) L.z'
   exact ⟨⟨μW, μN, μW'⟩, hW, hN, hW'⟩
 
+/- English proof (translation)
+Take `⟨h, hh⟩` from `haar_measure_ok_exists (rankOneLevel r 0 4)`. Take `⟨A, mm, hB⟩` from `size_condition_exists C (rankOneLevel r 0 4) N`. Conclude with `⟨_, _, _, _, h, A, mm, rfl, hyp_rank_one_level r, hh, hB⟩`.
+-/
 theorem rank_one_level_full_bundle (r : ℕ) (C : ℝ) (N : ℕ) :
     ∃ (L : Lev) (u u' : Fin (L.k0 + 1) → ℝ) (I : Set ℝ) (h : L.Haar) (A : ℝ) (mm : ℕ),
       L.r = r ∧ HypC L u u' I ∧ h.Ok ∧ Big C L N A mm := by

@@ -16,6 +16,13 @@ variable {S R B : Type u} [CommRing S] [CommRing R] [CommRing B]
   (hsurj : Function.Surjective (algebraMap S R))
   (P : Algebra.SubmersivePresentation R B ι σ)
 
+/- English proof (translation)
+Establish `hu : Nat.card Unit = 1`. Rewrite using `[Nat.card_eq_fintype_card, Fintype.card_unit]`. Establish `h1 : Nat.card (Unit ⊕ ι) = Nat.card ι + 1`. Rewrite using `[Nat.card_sum, hu]`. Use linear arithmetic over natural numbers and integers.
+
+Establish `h2 : Nat.card (Unit ⊕ σ) = Nat.card σ + 1`. Rewrite using `[Nat.card_sum, hu]`. Use linear arithmetic over natural numbers and integers. Use `show Nat.card (Unit ⊕ ι) - Nat.card (Unit ⊕ σ) = Nat.card ι - Nat.card σ`. Rewrite using `[h1, h2]`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem liftedSubmersivePresentation_dimension :
     (liftedSubmersivePresentation hsurj P).dimension = P.dimension := by
   have hu : Nat.card Unit = 1 := by
@@ -39,6 +46,11 @@ section
 variable (S R B : Type u) [CommRing S] [CommRing R] [CommRing B]
   [Algebra S R] [Algebra R B] [Algebra S B] [IsScalarTower S R B]
 
+/- English proof (translation)
+Establish `hinst : Algebra.IsStandardSmoothOfRelativeDimension r R B` using `‹_›`. Take `⟨ι, σ, hσ, hι, P, hdim⟩` from `hinst.out`. Establish `: Finite ι` using `hι`. Establish `: Finite σ` using `hσ`. Use `⟨StandardSmoothLift.LiftedAlgebra hsurj P, inferInstance, inferInstance, StandardSmoothLift.liftedAlgebraHom hsurj P, ?_, StandardSmoothLift.liftedAlgebraHom_surjective hsurj P, StandardSmoothLift.baseChangeEquiv hsurj P, StandardSmoothLift.baseChangeEquiv_one_tmul hsurj P⟩` and prove the remaining obligations.
+
+Conclude with `⟨⟨Unit ⊕ ι, Unit ⊕ σ, inferInstance, inferInstance, StandardSmoothLift.liftedSubmersivePresentation hsurj P, (StandardSmoothLift.liftedSubmersivePresentation_dimension hsurj P).trans hdim⟩⟩`.
+-/
 theorem exists_lift_of_isStandardSmoothOfRelativeDimension (r : ℕ)
     [Algebra.IsStandardSmoothOfRelativeDimension r R B]
     (hsurj : Function.Surjective (algebraMap S R)) :

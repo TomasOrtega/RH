@@ -17,6 +17,9 @@ open Matrix GlobalTheory.ThK.UnipDom GlobalTheory.ThK.UnipDom.Inverse
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Establish `hc : (fun i => cA σ ((s • w) i)) = cA σ s • fun i => cA σ (w i)`. Use function extensionality and compare the values at `i`. Simplify using `[map_mul]`. Unfold `fA`. Rewrite using `[hc, Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]`.
+-/
 theorem fA_smul_right (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (s : AE F E) (v w : Fin n → AE F E) :
     fA σ J v (s • w) = cA σ s * fA σ J v w := by
   have hc : (fun i => cA σ ((s • w) i)) = cA σ s • fun i => cA σ (w i) := by
@@ -24,6 +27,11 @@ theorem fA_smul_right (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n)
   unfold fA
   rw [hc, Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]
 
+/- English proof (translation)
+Establish `key : ∀ z : Fin d₁ → AE F E, fA σ J (mat g *ᵥ (incM F H.ι *ᵥ z)) (incV F H.y) = ((incM F J *ᵥ fun i => cA σ (incV F H.y i)) ᵥ* (mat g * incM F H.ι)) ⬝ᵥ z`. Introduce `z`. Unfold `fA`. Rewrite using `[Matrix.mulVec_mulVec, dotProduct_comm, Matrix.dotProduct_mulVec]`. Establish `hco : coA σ J H g = (incM F J *ᵥ fun i => cA σ (incV F H.y i)) ᵥ* (mat g * incM F H.ι)`.
+
+Use function extensionality and compare the values at `j`. Simplify using `only [coA]`. Rewrite using `[key, dotProduct_single, mul_one]`. Rewrite using `[key, hco]`.
+-/
 theorem fA_mat_iota {σ : E →ₐ[F] E} {d d₁ : ℕ} (J : Matrix (Fin d) (Fin d) E) (H : Plane E d d₁) (g : UA σ J)
     (z : Fin d₁ → AE F E) :
     fA σ J (mat g *ᵥ (incM F H.ι *ᵥ z)) (incV F H.y) = coA σ J H g ⬝ᵥ z := by
@@ -38,6 +46,21 @@ theorem fA_mat_iota {σ : E →ₐ[F] E} {d d₁ : ℕ} (J : Matrix (Fin d) (Fin
     rw [key, dotProduct_single, mul_one]
   rw [key, hco]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B b a' G G₁ H H' _ hB _ _ l g₀ h hL n`. Establish `hσ` using `sigma_sigma hB.cm`. Take `⟨-, hy, hι⟩` from `hL`. Establish `hyinv : mat h⁻¹ *ᵥ incV F H.y = cA σ l.1 • incV F H.y`. Establish `e : mat h *ᵥ (cA σ l.1 • incV F H.y) = incV F H.y`.
+
+Rewrite using `[Matrix.mulVec_smul, hy, smul_smul, ← map_mul, Units.mul_inv, map_one, one_smul]`. Use `conv_lhs => rw [← e]`. Conclude with `mat_inv_mulVec h _`. Establish `hι' : mat h⁻¹ * incM F H.ι = incM F H.ι * mat g₀⁻¹`. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [Matrix.mul_assoc, ← mat_mul, mul_inv_cancel, mat_one, Matrix.mul_one]`. Use `_ = mat h⁻¹ * (mat h * incM F H.ι) * mat g₀⁻¹ := by rw [hι]`. Use `_ = incM F H.ι * mat g₀⁻¹ := by`. Rewrite using `[← Matrix.mul_assoc, ← mat_mul, inv_mul_cancel, mat_one, Matrix.one_mul]`. Establish `hconj : ∀ v, mat h⁻¹ *ᵥ (mat (h * n * h⁻¹) *ᵥ v) = mat n *ᵥ (mat h⁻¹ *ᵥ v)`.
+
+Introduce `v`. Establish `e : h⁻¹ * (h * n * h⁻¹) = n * h⁻¹` using `by group`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, ← mat_mul, ← mat_mul, e]`. Establish `hfA : ∀ v, fA σ G.V.J (mat (h * n * h⁻¹) *ᵥ v) (incV F H.y) = cA σ (cA σ l.1) * fA σ G.V.J (mat n *ᵥ (mat h⁻¹ *ᵥ v)) (incV F H.y)`. Introduce `v`.
+
+Rewrite using `[← fA_mulVec σ G.V.J h⁻¹, hconj, hyinv, fA_smul_right]`. Establish `hl : cA σ (cA σ l.1) = l.1` using `cA_cA hσ _`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `j`. Establish `e1 : coA σ G.V.J H (h * n * h⁻¹) j = fA σ G.V.J (mat (h * n * h⁻¹) *ᵥ (incM F H.ι *ᵥ Pi.single j 1)) (incV F H.y)` using `rfl`.
+
+Rewrite using `[e1, hfA, hl, Matrix.mulVec_mulVec (M := mat h⁻¹), hι', ← Matrix.mulVec_mulVec, fA_mat_iota, Matrix.mulVec_single_one, Pi.smul_apply, smul_eq_mul, dotProduct_comm]`. Both sides reduce to the same expression. Establish `e2 : coC σ G.V.J H (h * n * h⁻¹) = fA σ G.V.J (mat (h * n * h⁻¹) *ᵥ incV F H.y) (incV F H.y)` using `rfl`. Rewrite using `[e2, hfA, hl, hyinv, Matrix.mulVec_smul, fA_smul_left]`. Use `show _ = l.1 * cA σ l.1 * fA σ G.V.J (mat n *ᵥ incV F H.y) (incV F H.y)`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem coA_coC_levi_conj : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (b a' : ℕ) (G : Geo σ (b + 2) a') (G₁ : Geo σ b a')
     (H : Plane E (b + 2) b) (H' : Plane E (b + 2 + a') (b + a')), CfgA B G G₁ H H' → B.IsGood σ → G.IsGood B → G₁.IsGood B →
     ∀ (l : (AE F E)ˣ) (g₀ : UA σ G₁.V.J) (h : UA σ G.V.J), IsLevi H l g₀ h → ∀ n : UA σ G.V.J,

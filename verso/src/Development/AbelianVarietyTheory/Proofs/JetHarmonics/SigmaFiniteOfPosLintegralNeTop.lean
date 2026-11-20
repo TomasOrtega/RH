@@ -8,6 +8,11 @@ open scoped ENNReal
 
 namespace GlobalTheory.QuotientMeasureSigmaFinite
 
+/- English proof (translation)
+Use `Measure.sigmaFinite_of_countable (S := Set.range fun n : ℕ => {x | ((n : ℝ≥0∞) + 1)⁻¹ ≤ g x}) (Set.countable_range _) ?_ ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨n, rfl⟩`. Establish `h0 : ((n : ℝ≥0∞) + 1)⁻¹ ≠ 0` using `ENNReal.inv_ne_zero.2 (by simp)`. Establish `h1 : ((n : ℝ≥0∞) + 1)⁻¹ ≠ ∞` using `ENNReal.inv_ne_top.2 (by simp)`. Conclude with `(meas_ge_le_lintegral_div hg.aemeasurable h0 h1).trans_lt (ENNReal.div_lt_top hfin h0)`.
+
+Use `Set.eq_univ_of_forall fun x => ?_` and prove the remaining obligations. Take `⟨n, hn⟩` from `ENNReal.exists_inv_nat_lt (hpos x)`. Use `Set.mem_sUnion.2 ⟨_, ⟨n, rfl⟩, ?_⟩` and prove the remaining obligations. Use `show ((n : ℝ≥0∞) + 1)⁻¹ ≤ g x`. Conclude with `le_trans (ENNReal.inv_le_inv.2 le_self_add) hn.le`.
+-/
 theorem sigmaFinite_of_pos_lintegral_ne_top {X : Type*} [MeasurableSpace X] {ν : Measure X}
     {g : X → ℝ≥0∞} (hg : Measurable g) (hpos : ∀ x, g x ≠ 0) (hfin : ∫⁻ x, g x ∂ν ≠ ∞) :
     SigmaFinite ν := by
@@ -23,6 +28,9 @@ theorem sigmaFinite_of_pos_lintegral_ne_top {X : Type*} [MeasurableSpace X] {ν 
     show ((n : ℝ≥0∞) + 1)⁻¹ ≤ g x
     exact le_trans (ENNReal.inv_le_inv.2 le_self_add) hn.le
 
+/- English proof (translation)
+Use `measurable_pi_lambda _ fun i => measurable_pi_lambda _ fun j => ?_` and prove the remaining obligations. Simplify using `only [Matrix.mul_apply, Matrix.of_apply]`. Use `fun_prop`.
+-/
 theorem measurable_mul_pair (k r : ℕ) :
     Measurable (fun p : Formalism.QuantumDeterminants.Mt k r × Formalism.QuantumDeterminants.Mt k r =>
       (fun i j => (Matrix.of p.2 * Matrix.of p.1) i j : Formalism.QuantumDeterminants.Mt k r)) := by
@@ -30,6 +38,15 @@ theorem measurable_mul_pair (k r : ℕ) :
   simp only [Matrix.mul_apply, Matrix.of_apply]
   fun_prop
 
+/- English proof (translation)
+Take `⟨h, hpos, hmeas, hint⟩` from `exists_pos_lintegral_lt_of_sigmaFinite μG (ε := 1) one_ne_zero`. Establish `hne : ∀ y, h y ≠ 0` using `fun y => (hpos y).ne'`. Establish `hF : Measurable fun p : Formalism.QuantumDeterminants.Mt k r × Formalism.QuantumDeterminants.Mt k r => ((h (fun i j => (Matrix.of p.2 * Matrix.of p.1) i j) : NNReal) : ℝ≥0∞)` using `(measurable_coe_nnreal_ennreal.comp hmeas).comp (measurable_mul_pair k r)`. Establish `hq' : ∫⁻ x, (h x : ℝ≥0∞) ∂μG = ∫⁻ x, (∫⁻ s, (h (fun i j => (Matrix.of s * Matrix.of x) i j) : ℝ≥0∞) ∂μS) ∂ν` using `hq _ (measurable_coe_nnreal_ennreal.comp hmeas)`. Use `sigmaFinite_of_pos_lintegral_ne_top (g := fun x => ∫⁻ s, (h (fun i j => (Matrix.of s * Matrix.of x) i j) : ℝ≥0∞) ∂μS) hF.lintegral_prod_right' ?_ ?_` and prove the remaining obligations.
+
+Introduce `x hx`. Establish `hfm : Measurable fun s : Formalism.QuantumDeterminants.Mt k r => ((h (fun i j => (Matrix.of s * Matrix.of x) i j) : NNReal) : ℝ≥0∞)` using `(measurable_coe_nnreal_ennreal.comp hmeas).comp (measurable_pi_lambda _ fun i => measurable_pi_lambda _ fun j => by`. Simplify using `only [Matrix.mul_apply, Matrix.of_apply]`. Use the proof step `fun_prop)`. Rewrite `hx` using `[lintegral_eq_zero_iff hfm]`.
+
+Apply `hS` to reduce the goal to its premises. Rewrite using `[← Measure.measure_univ_eq_zero]`. Establish `h0` using `ae_iff.1 hx`. Simplify `h0` using `[hne]`. Rewrite using `[← hq']`.
+
+Conclude with `(hint.trans ENNReal.one_lt_top).ne`.
+-/
 theorem sigmaFinite_of_isQuotMeas {k r : ℕ} {μG μS ν : Measure (Formalism.QuantumDeterminants.Mt k r)}
     [SigmaFinite μG] [SFinite μS] (hS : μS ≠ 0)
     (hq : PI.BesselPeriodGGP.IsQuotMeas μG μS ν) : SigmaFinite ν := by

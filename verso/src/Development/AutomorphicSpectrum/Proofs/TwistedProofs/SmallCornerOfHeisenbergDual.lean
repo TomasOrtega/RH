@@ -15,40 +15,64 @@ def dv (σ : L →+* L) (x : Fin N → L) : Fin N → L := fun j => σ (x j.rev)
 
 def H (σ : L →+* L) (x : Fin N → L) (A : Matrix (Fin N) (Fin N) L) (y : Fin N → L) : L := x ⬝ᵥ (A *ᵥ dv σ y)
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [st, Matrix.mul_apply, map_sum, map_mul]`. Conclude with `Fintype.sum_equiv Fin.revPerm _ _ (fun k => by simp only [Fin.revPerm_apply, Fin.rev_rev]; ring)`.
+-/
 theorem st_mul (σ : L →+* L) (A B : Matrix (Fin N) (Fin N) L) : st σ (A * B) = st σ B * st σ A := by
   ext i j
   simp only [st, Matrix.mul_apply, map_sum, map_mul]
   exact Fintype.sum_equiv Fin.revPerm _ _ (fun k => by simp only [Fin.revPerm_apply, Fin.rev_rev]; ring)
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[st, map_add]`.
+-/
 theorem st_add (σ : L →+* L) (A B : Matrix (Fin N) (Fin N) L) : st σ (A + B) = st σ A + st σ B := by
   ext i j
   simp [st, map_add]
 
+/- English proof (translation)
+Use extensionality with `i j`. Break down `eq_or_ne i j with rfl | h` into its components or cases. Simplify using `[st, Matrix.one_apply]`. Simplify using `[st, Matrix.one_apply, h, Ne.symm h, Fin.rev_inj]`.
+-/
 theorem st_one (σ : L →+* L) : st σ (1 : Matrix (Fin N) (Fin N) L) = 1 := by
   ext i j
   rcases eq_or_ne i j with rfl | h
   · simp [st, Matrix.one_apply]
   · simp [st, Matrix.one_apply, h, Ne.symm h, Fin.rev_inj]
 
+/- English proof (translation)
+Use extensionality with `j`. Simplify using `only [dv, st, Matrix.vecMul, Matrix.mulVec, dotProduct, map_sum, map_mul]`. Conclude with `Fintype.sum_equiv Fin.revPerm _ _ (fun k => by simp only [Fin.revPerm_apply, Fin.rev_rev]; ring)`.
+-/
 theorem dv_vecMul (σ : L →+* L) (x : Fin N → L) (A : Matrix (Fin N) (Fin N) L) :
     dv σ (x ᵥ* A) = st σ A *ᵥ dv σ x := by
   ext j
   simp only [dv, st, Matrix.vecMul, Matrix.mulVec, dotProduct, map_sum, map_mul]
   exact Fintype.sum_equiv Fin.revPerm _ _ (fun k => by simp only [Fin.revPerm_apply, Fin.rev_rev]; ring)
 
+/- English proof (translation)
+Unfold `H`. Rewrite using `[dv_vecMul, Matrix.mulVec_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mul_assoc]`.
+-/
 theorem H_vecMul (σ : L →+* L) (x y : Fin N → L) (A P Q : Matrix (Fin N) (Fin N) L) :
     H σ (x ᵥ* P) A (y ᵥ* Q) = H σ x (P * A * st σ Q) y := by
   unfold H
   rw [dv_vecMul, Matrix.mulVec_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mul_assoc]
 
+/- English proof (translation)
+Simplify using `only [H, Matrix.add_mulVec, dotProduct_add]`.
+-/
 theorem H_add (σ : L →+* L) (x y : Fin N → L) (A B : Matrix (Fin N) (Fin N) L) :
     H σ x (A + B) y = H σ x A y + H σ x B y := by
   simp only [H, Matrix.add_mulVec, dotProduct_add]
 
+/- English proof (translation)
+Simplify using `only [H, Matrix.neg_mulVec, dotProduct_neg]`.
+-/
 theorem H_neg (σ : L →+* L) (x y : Fin N → L) (A : Matrix (Fin N) (Fin N) L) :
     H σ x (-A) y = -H σ x A y := by
   simp only [H, Matrix.neg_mulVec, dotProduct_neg]
 
+/- English proof (translation)
+Establish `hd : dv σ (t • x) = t • dv σ x`. Use extensionality with `j`. Simplify using `[dv, ht]`. Simplify using `only [H, hd, Matrix.mulVec_smul, dotProduct_smul, smul_dotProduct, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem H_smul (σ : L →+* L) (x : Fin N → L) (A : Matrix (Fin N) (Fin N) L) {t : L} (ht : σ t = t) :
     H σ (t • x) A (t • x) = t * t * H σ x A x := by
   have hd : dv σ (t • x) = t • dv σ x := by
@@ -57,6 +81,9 @@ theorem H_smul (σ : L →+* L) (x : Fin N → L) (A : Matrix (Fin N) (Fin N) L)
   simp only [H, hd, Matrix.mulVec_smul, dotProduct_smul, smul_dotProduct, smul_eq_mul]
   ring
 
+/- English proof (translation)
+Simplify using `only [H, dv, st, dotProduct, Matrix.mulVec, map_sum, map_mul, hσ, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Fintype.sum_equiv Fin.revPerm _ _ (fun k => ?_)` and prove the remaining obligations. Simplify using `only [Fin.revPerm_apply, Fin.rev_rev]`. Conclude with `Fintype.sum_equiv Fin.revPerm _ _ (fun i => by simp only [Fin.revPerm_apply, Fin.rev_rev]; ring)`.
+-/
 theorem H_conj (σ : L →+* L) (hσ : ∀ x, σ (σ x) = x) (x y : Fin N → L) (A : Matrix (Fin N) (Fin N) L) :
     σ (H σ x A y) = H σ y (st σ A) x := by
   simp only [H, dv, st, dotProduct, Matrix.mulVec, map_sum, map_mul, hσ, Finset.mul_sum]
@@ -67,6 +94,11 @@ theorem H_conj (σ : L →+* L) (hσ : ∀ x, σ (σ x) = x) (x y : Fin N → L)
 
 variable [Valued L (WithZero (Multiplicative ℤ))]
 
+/- English proof (translation)
+Introduce `i j`. Establish `h` using `hA j.rev i.rev`. Simplify using `only [Formalism.UG.intL, Valuation.mem_integer_iff] at h ⊢`. Simplify using `only [st]`. Rewrite using `[hv]`.
+
+Conclude with `h`.
+-/
 theorem isInt_st {σ : L →+* L} (hv : ∀ x, Valued.v (σ x) = Valued.v x) {A : Matrix (Fin N) (Fin N) L} (hA : IsInt A) :
     IsInt (st σ A) := by
   intro i j
@@ -76,6 +108,11 @@ theorem isInt_st {σ : L →+* L} (hv : ∀ x, Valued.v (σ x) = Valued.v x) {A 
   rw [hv]
   exact h
 
+/- English proof (translation)
+Establish `hs : ∀ a, a ∈ intL L → σ a ∈ intL L`. Introduce `a ha`. Simplify using `only [Formalism.UG.intL, Valuation.mem_integer_iff] at ha ⊢`. Rewrite using `[hv]`. Conclude with `ha`.
+
+Simplify using `only [H, dotProduct, Matrix.mulVec, dv]`. Conclude with `Subring.sum_mem _ (fun i _ => Subring.mul_mem _ (hx i) (Subring.sum_mem _ (fun k _ => Subring.mul_mem _ (hA i k) (hs _ (hx _)))))`.
+-/
 theorem H_mem {σ : L →+* L} (hv : ∀ x, Valued.v (σ x) = Valued.v x) {A : Matrix (Fin N) (Fin N) L} (hA : IsInt A)
     {x : Fin N → L} (hx : ∀ j, x j ∈ intL L) : H σ x A x ∈ intL L := by
   have hs : ∀ a, a ∈ intL L → σ a ∈ intL L := by
@@ -87,6 +124,13 @@ theorem H_mem {σ : L →+* L} (hv : ∀ x, Valued.v (σ x) = Valued.v x) {A : M
   exact Subring.sum_mem _ (fun i _ => Subring.mul_mem _ (hx i)
     (Subring.sum_mem _ (fun k _ => Subring.mul_mem _ (hA i k) (hs _ (hx _)))))
 
+/- English proof (translation)
+Establish `hi` using `i.isLt`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single i.rev]`. Simplify using `only [antiJ, Fin.val_rev]`. Rewrite using `[if_pos (by omega), one_mul]`. Introduce `k _ hk`.
+
+Simplify using `only [antiJ]`. Rewrite using `[if_neg, zero_mul]`. Introduce `h`. Apply `hk` to reduce the goal to its premises. Use `ext`.
+
+Simplify using `only [Fin.val_rev]`. Use linear arithmetic over natural numbers and integers. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+-/
 private theorem antiJ_mul_apply_eq_apply_rev_fst (M : Matrix (Fin N) (Fin N) L) (i j : Fin N) :
     (antiJ L N * M) i j = M i.rev j := by
   have hi := i.isLt
@@ -104,6 +148,13 @@ private theorem antiJ_mul_apply_eq_apply_rev_fst (M : Matrix (Fin N) (Fin N) L) 
   · intro h
     exact absurd (Finset.mem_univ _) h
 
+/- English proof (translation)
+Establish `hj` using `j.isLt`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single j.rev]`. Simplify using `only [antiJ, Fin.val_rev]`. Rewrite using `[if_pos (by omega), mul_one]`. Introduce `k _ hk`.
+
+Simplify using `only [antiJ]`. Rewrite using `[if_neg, mul_zero]`. Introduce `h`. Apply `hk` to reduce the goal to its premises. Use `ext`.
+
+Simplify using `only [Fin.val_rev]`. Use linear arithmetic over natural numbers and integers. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+-/
 private theorem mul_antiJ_apply_eq_rev_col (M : Matrix (Fin N) (Fin N) L) (i j : Fin N) :
     (M * antiJ L N) i j = M i j.rev := by
   have hj := j.isLt
@@ -121,6 +172,11 @@ private theorem mul_antiJ_apply_eq_rev_col (M : Matrix (Fin N) (Fin N) L) (i j :
   · intro h
     exact absurd (Finset.mem_univ _) h
 
+/- English proof (translation)
+Use extensionality with `i j`. Establish `hi` using `i.isLt`. Establish `hj` using `j.isLt`. Rewrite using `[antiJ_mul_apply_eq_apply_rev_fst, Matrix.one_apply]`. Simplify using `only [antiJ, Fin.val_rev]`.
+
+Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Rewrite using `[if_pos (by omega), if_pos rfl]`. Rewrite using `[if_neg (by intro h'; apply h; ext; omega), if_neg h]`.
+-/
 private theorem antiJ_mul_self_eq_one : antiJ L N * antiJ L N = 1 := by
   ext i j
   have hi := i.isLt
@@ -132,18 +188,31 @@ private theorem antiJ_mul_self_eq_one : antiJ L N * antiJ L N = 1 := by
     rw [if_pos (by omega), if_pos rfl]
   · rw [if_neg (by intro h'; apply h; ext; omega), if_neg h]
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[mul_antiJ_apply_eq_rev_col, antiJ_mul_apply_eq_apply_rev_fst]`. Simplify using `[st, cT]`.
+-/
 private theorem st_eq_antiJ_mul_cT_mul_antiJ (σ : L →+* L) (A : Matrix (Fin N) (Fin N) L) :
     st σ A = antiJ L N * cT σ A * antiJ L N := by
   ext i j
   rw [mul_antiJ_apply_eq_rev_col, antiJ_mul_apply_eq_apply_rev_fst]
   simp [st, cT]
 
+/- English proof (translation)
+Establish `hg : cT σ (mat g) * antiJ L N * mat g = antiJ L N` using `g.2`. Establish `hst : st σ (mat g) * mat g = 1`. Rewrite using `[st_eq_antiJ_mul_cT_mul_antiJ, Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc (cT σ (mat g)), hg, antiJ_mul_self_eq_one]`. Conclude with `mul_eq_one_comm.mp hst`.
+-/
 private theorem mat_mul_st_mat_eq_one {σ : L →+* L} (g : GU σ N) : mat g * st σ (mat g) = 1 := by
   have hg : cT σ (mat g) * antiJ L N * mat g = antiJ L N := g.2
   have hst : st σ (mat g) * mat g = 1 := by
     rw [st_eq_antiJ_mul_cT_mul_antiJ, Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc (cT σ (mat g)), hg, antiJ_mul_self_eq_one]
   exact mul_eq_one_comm.mp hst
 
+/- English proof (translation)
+Establish `hg : mat g₀ * st σ (mat g₀) = 1` using `mat_mul_st_mat_eq_one g₀`. Establish `hCs : st σ C * st σ (U + V * mat g₀) = 1` using `by rw [← st_mul, hC, st_one]`. Establish `e1 : (U + V * mat g₀) * (C * V * mat g₀) = V * mat g₀`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, hC, Matrix.one_mul]`. Establish `e2 : (U + V * mat g₀) * st σ (C * V * mat g₀) * st σ (U + V * mat g₀) = (U + V * mat g₀) * st σ (mat g₀) * st σ V`.
+
+Rewrite using `[st_mul, st_mul]`. Simplify using `only [Matrix.mul_assoc, hCs, Matrix.mul_one]`. Establish `e3 : V * mat g₀ * st σ (mat g₀) * st σ V = V * st σ V`. Rewrite using `[Matrix.mul_assoc V, hg, Matrix.mul_one]`. Rewrite using `[Matrix.mul_one, e1, e2, st_add, st_mul]`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem defect_eq {σ : L →+* L} (g₀ : GU σ N) {U V C : Matrix (Fin N) (Fin N) L}
     (hC : (U + V * mat g₀) * C = 1) :
     -((U + V * mat g₀) * 1 * st σ (U + V * mat g₀)) + (U + V * mat g₀) * (C * V * mat g₀) * st σ (U + V * mat g₀)
@@ -163,6 +232,37 @@ theorem defect_eq {σ : L →+* L} (g₀ : GU σ N) {U V C : Matrix (Fin N) (Fin
   calc _ = -(U * st σ U) + V * mat g₀ * st σ (mat g₀) * st σ V := by noncomm_ring
     _ = _ := by rw [e3]
 
+/- English proof (translation)
+Introduce `hH _hDl L _ _ ϖ σ q N hU g₀ U V C hF e f r hef hr`. Take `⟨h1, -, h3⟩` from `hH L ϖ σ q N hU`. Take `⟨τ, hτ, hτ1⟩` from `GlobalTheory.InertZeta.exists_trace_one hU`. Take `⟨hσ, hv, hϖ, hϖv, -, -, -⟩` from `hU`. Take `⟨hUi, hVi, -, -, hWC⟩` from `hF`.
+
+Establish `hCW : C * (U + V * mat g₀) = 1` using `mul_eq_one_comm.mp hWC`. Establish `hrW : r = (r ᵥ* C) ᵥ* (U + V * mat g₀)`. Rewrite using `[Matrix.vecMul_vecMul, hCW, Matrix.vecMul_one]`. Take `⟨b, hb⟩ : ∃ b : Fin N → L, b = fun i => -σ (r i.rev)` from `⟨_, rfl⟩`. Take `⟨w, hw⟩ : ∃ w : L, w = r ⬝ᵥ ((C * V * mat g₀) *ᵥ b)` from `⟨_, rfl⟩`.
+
+Take `⟨xx, hxx⟩ : ∃ xx : L, xx = r ⬝ᵥ b - w - σ w` from `⟨_, rfl⟩`. Establish `hb' : b = -(dv σ r)`. Rewrite using `[hb]`. Use extensionality with `i`. Simplify using `[dv]`.
+
+Establish `e1 : r ⬝ᵥ b = -(H σ r 1 r)`. Unfold `H`. Rewrite using `[hb', Matrix.one_mulVec, dotProduct_neg]`. Establish `e2 : w = -(H σ r (C * V * mat g₀) r)`. Unfold `H`.
+
+Rewrite using `[hw, hb', Matrix.mulVec_neg, dotProduct_neg]`. Establish `e3 : σ w = -(H σ r (st σ (C * V * mat g₀)) r)`. Rewrite using `[e2, map_neg, H_conj σ hσ]`. Establish `key : xx = H σ (r ᵥ* C) (-(U * st σ U) + V * st σ V) (r ᵥ* C)`. Rewrite using `[hxx, e1, e3, e2, ← defect_eq g₀ hWC, H_add, H_add, H_neg, ← H_vecMul, ← H_vecMul, ← H_vecMul, ← hrW]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hM : GlobalTheory.InertZeta.IsInt (-(U * st σ U) + V * st σ V)`. Use `GlobalTheory.InertZeta.IsInt.add ?_ (GlobalTheory.InertZeta.IsInt.mul hVi (isInt_st hv hVi))` and prove the remaining obligations. Introduce `i j`. Rewrite using `[Matrix.neg_apply]`.
+
+Conclude with `Subring.neg_mem _ (GlobalTheory.InertZeta.IsInt.mul hUi (isInt_st hv hUi) i j)`. Establish `hint : ϖ ^ (2 * e) * xx ∈ intL L`. Establish `ht : σ (ϖ ^ e) = ϖ ^ e` using `by rw [map_pow, hϖ]`. Establish `h2 : ϖ ^ (2 * e) * xx = H σ (ϖ ^ e • (r ᵥ* C)) (-(U * st σ U) + V * st σ V) (ϖ ^ e • (r ᵥ* C))`. Rewrite using `[H_smul σ _ _ ht, key, two_mul, pow_add]`.
+
+Rewrite using `[h2]`. Use `H_mem hv hM (fun j => ?_)` and prove the remaining obligations. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Conclude with `hr j`. Establish `hϖint : ϖ ∈ intL L`.
+
+Simplify using `only [Formalism.UG.intL, Valuation.mem_integer_iff]`. Rewrite using `[hϖv, ← WithZero.coe_one, WithZero.coe_le_coe]`. Conclude with `(Multiplicative.ofAdd_le (a := (-1 : ℤ)) (b := 0)).mpr (by norm_num)`. Establish `hσxx : σ xx = xx`. Rewrite using `[hxx, map_sub, map_sub, hσ, e1, map_neg, H_conj σ hσ, st_one]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hsum : r ⬝ᵥ b = -∑ j, r j * σ (r j.rev)`. Rewrite using `[hb]`. Simplify using `[dotProduct, Finset.sum_neg_distrib]`. Establish `hc : (w + xx * τ) + σ (w + xx * τ) = -∑ j, r j * σ (r j.rev)`.
+
+Rewrite using `[← hsum, map_add, map_mul, hσxx]`. Establish `hrb : r ⬝ᵥ b = xx + w + σ w` using `by rw [hxx]; ring`. Rewrite using `[hrb]`. Take the linear combination `xx * hτ1`. Take `⟨u, hu, hrow, hcorner⟩` from `h3 r (w + xx * τ) hc`.
+
+Take `⟨hrc, -, -⟩` from `h1 u hu`. Establish `hcol : colOf u = b`. Use function extensionality and compare the values at `i`. Establish `h` using `hrc i.rev`. Rewrite `h` using `[Fin.rev_rev, hrow]`.
+
+Rewrite using `[hb]`. Combine the equalities or inequalities in the displayed calculation. Use `⟨u, hu, hrow, ?_⟩` and prove the remaining obligations. Unfold `GlobalTheory.InertZeta.Small`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hrow]`. Conclude with `hr`. Rewrite using `[hcorner, hrow, hcol, ← hw]`. Take `⟨d, rfl⟩` from `Nat.exists_eq_add_of_le hef`. Rewrite using `[show w + xx * τ - w = xx * τ by ring, pow_add, show ϖ ^ (2 * e) * ϖ ^ d * (xx * τ) = (ϖ ^ (2 * e) * xx) * (ϖ ^ d * τ) by ring]`.
+
+Conclude with `Subring.mul_mem _ hint (Subring.mul_mem _ (Subring.pow_mem _ hϖint d) hτ)`.
+-/
 theorem smallCorner_of_heis : Heis → Dual → SmallCorner := by
   intro hH _hDl L _ _ ϖ σ q N hU g₀ U V C hF e f r hef hr
   obtain ⟨h1, -, h3⟩ := hH L ϖ σ q N hU

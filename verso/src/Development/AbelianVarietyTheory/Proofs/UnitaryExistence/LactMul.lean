@@ -8,6 +8,11 @@ namespace GlobalTheory.LeftActionMul
 
 open ReciprocityTheory.ChartRestriction.G.FD
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ`. Establish `h1 : ((δ * δ' : GL (Fin r) E) : Matrix (Fin r) (Fin r) E) = (δ : Matrix (Fin r) (Fin r) E) * (δ' : Matrix (Fin r) (Fin r) E)` using `Units.val_mul δ δ'`. Establish `h2 : ((δ : Matrix (Fin r) (Fin r) E) * (δ' : Matrix (Fin r) (Fin r) E)).map τ.1 = (δ : Matrix (Fin r) (Fin r) E).map τ.1 * (δ' : Matrix (Fin r) (Fin r) E).map τ.1` using `Matrix.map_mul`. Use `show ((δ * δ' : GL (Fin r) E) : Matrix (Fin r) (Fin r) E).map τ.1 * mat y τ = (δ : Matrix (Fin r) (Fin r) E).map τ.1 * mat (lact δ' y) τ`. Rewrite using `[h1, h2, Matrix.mul_assoc]`.
+
+Both sides reduce to the same expression.
+-/
 theorem lact_mul {E : Type} [Field E] {r : ℕ} {Ψ : Finset (E →+* ℂ)} (δ δ' : GL (Fin r) E)
     (y : Frame Ψ r) : lact (δ * δ') y = lact δ (lact δ' y) := by
   funext τ
@@ -21,6 +26,9 @@ theorem lact_mul {E : Type} [Field E] {r : ℕ} {Ψ : Finset (E →+* ℂ)} (δ 
   rw [h1, h2, Matrix.mul_assoc]
   rfl
 
+/- English proof (translation)
+Introduce `δ δ' y` and use `lact_mul δ δ' y`.
+-/
 theorem main : ∀ {E : Type} [inst : Field E] {r : ℕ} {Ψ : Finset (E →+* ℂ)} (δ δ' : GL (Fin r) E)
     (y : ReciprocityTheory.ChartRestriction.G.FD.Frame Ψ r),
     ReciprocityTheory.ChartRestriction.G.FD.lact (δ * δ') y = ReciprocityTheory.ChartRestriction.G.FD.lact δ (ReciprocityTheory.ChartRestriction.G.FD.lact δ' y) :=

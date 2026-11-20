@@ -17,6 +17,45 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK.Dbl GlobalTheory.Cont PositivityTheory.Rg.Sw
 namespace PositivityTheory.SiegelWeilFormula.AStep
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
+/- English proof (translation)
+Establish `hK` using `H.polyKFin F E σ d R Φ hΦ ((H.vacK F E σ d R).2.1 hv)`. Establish `hsec` using `H.secK F E σ d Φ hK`. Establish `hEis` using `H.eisWk F E σ d _ _ hsec`. Establish `hE'` using `hE`. Take `⟨hUo, hR, hs, hp, hd, hcont, hinv, hfar⟩` from `hE'`.
+
+Take `⟨-, -, hI⟩` from `H.tAll.2.2.2.2 F E σ d`. Take `⟨-, hIc, hIi⟩` from `hI Φ hΦ`. Use `set s := s0 d.m d.n with hsdef`. Use `set A : d.G → ℂ := fun g => iteratedDeriv j (Ê · g) s with hAdef`. Establish `hAc : Continuous A` using `famCont U Ê hUo hd hcont _ hs j`.
+
+Establish `hAi : ∀ γ ∈ rat2 σ d.Y, ∀ g, A (γ * g) = A g` using `fun γ hγ g => derivInv U Ê hUo _ hs γ g (fun z hz => hinv z hz γ hγ g) j`. Establish `hB : _root_.PositivityTheory.SiegelWeilFormula.AStep.Bj_k d Φ p Ê j = (-(iteratedDeriv j (fun z => p.eval z) s * 2)) • d.I Φ + A`. Use function extensionality and compare the values at `g`. Simplify using `only [_root_.PositivityTheory.SiegelWeilFormula.AStep.Bj_k, hAdef, Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hfcB : ∀ x', fc d.B.ψ d.b nb lam 𝓖 (_root_.PositivityTheory.SiegelWeilFormula.AStep.Bj_k d Φ p Ê j) T x' = fc d.B.ψ d.b nb lam 𝓖 A T x' - iteratedDeriv j (fun z => p.eval z) s * (2 * fc d.B.ψ d.b nb lam 𝓖 (d.I Φ) T x')`. Introduce `x'`. Rewrite using `[hB, (_root_.PositivityTheory.SiegelWeilFormula.AStep.fcAll_k d hc T x').1 _ _ _ hIc hAc hIi hAi]`. Expand and normalize the polynomial expressions, which then agree. Set `w : InfinitePlace F` to `Classical.arbitrary _`.
+
+Take `⟨y, hy⟩` from `dilEx d.n (Pi.single L.i₀ 1) 1`. Take `⟨pp, qq, e, hpq, hhol⟩` from `_root_.PositivityTheory.SiegelWeilFormula.AStep.holA_k H R hmn hΦ hv hE w j hj hlow`. Take `⟨hlawA, huA⟩` from `_root_.PositivityTheory.SiegelWeilFormula.AStep.holCoef_k H R L w hc hT A hAc hAi pp qq e hpq hhol`. Take `⟨uM, ν, 𝓤, hu⟩` from `(H.uEx F E σ d R L).1`. Take `⟨nb', lam', 𝓖', hc'⟩` from `H.coefEx F E σ L.sd`.
+
+Take `⟨t', hct⟩` from `H.cTSplit F E σ d R L _ _ hsec hEis`. Establish `hspl : ∀ z : ℂ, t' < z.re → ∃ c₂ : d.G → ℂ, (∀ x, _root_.PositivityTheory.SiegelWeilFormula.AStep.avg_k d L uM ν 𝓤 nb lam 𝓖 (d.eis (d.sec0 Φ) s z) T x = _root_.PositivityTheory.SiegelWeilFormula.AStep.cOne_k d L (d.sec0 Φ) s z nb' lam' 𝓖' T' x + c₂ x) ∧ ∀ x, c₂ (R.ι w y * x) = Co …`. Introduce `z hz`. Take `⟨c₂, h1, h2⟩` from `hct z hz nb lam 𝓖 hc nb' lam' 𝓖' hc' uM ν 𝓤 hu T T' hT`. Conclude with `⟨c₂, h1, fun x => h2 w 1 y x hy⟩`.
+
+Set `c2 : ℂ → d.G → ℂ` to `fun z => if h : t' < z.re then Classical.choose (hspl z h) else 0`. Establish `hc2 : ∀ z : ℂ, t' < z.re → (∀ x, _root_.PositivityTheory.SiegelWeilFormula.AStep.avg_k d L uM ν 𝓤 nb lam 𝓖 (d.eis (d.sec0 Φ) s z) T x = _root_.PositivityTheory.SiegelWeilFormula.AStep.cOne_k d L (d.sec0 Φ) s z nb' lam' 𝓖' T' x + c2 z x) ∧ ∀ x, c2 z (R.ι w y * x) = Complex.exp ((( …`. Introduce `z hz`. Simplify using `only [c2, dif_pos hz]`. Conclude with `Classical.choose_spec (hspl z hz)`.
+
+Establish `havg_smul : ∀ (c : ℂ) (φ : d.G → ℂ) x', _root_.PositivityTheory.SiegelWeilFormula.AStep.avg_k d L uM ν 𝓤 nb lam 𝓖 (fun g => c * φ g) T x' = c * _root_.PositivityTheory.SiegelWeilFormula.AStep.avg_k d L uM ν 𝓤 nb lam 𝓖 φ T x'`. Introduce `c φ x'`. Simplify using `only [_root_.PositivityTheory.SiegelWeilFormula.AStep.avg_k, fc, mul_assoc]`. Simplify using `only [integral_const_mul]`. Establish `hhol1` using `_root_.PositivityTheory.SiegelWeilFormula.AStep.avgHol_k H L hE hc T hT hu`.
+
+Establish `hsep` using `lawSep U p (max t t') s j (fun z => _root_.PositivityTheory.SiegelWeilFormula.AStep.avg_k d L uM ν 𝓤 nb lam 𝓖 (Ê z) T x) (fun z => _root_.PositivityTheory.SiegelWeilFormula.AStep.avg_k d L uM ν 𝓤 nb lam 𝓖 (Ê z) T (R.ι w y * x)) (fun z => _root_.PositivityTheory.SiegelWeilFormula. …`. Rewrite using `[(hhol1 x).2 i]`. Establish `: (fun g => iteratedDeriv i (Ê · g) s) = fun _ => 0` using `funext fun g => hlow i hi g`. Rewrite using `[this]`. Simplify using `[_root_.PositivityTheory.SiegelWeilFormula.AStep.avg_k, fc])`.
+
+Use the proof step `(fun i hi => by`. Rewrite using `[(hhol1 _).2 i]`. Establish `: (fun g => iteratedDeriv i (Ê · g) s) = fun _ => 0` using `funext fun g => hlow i hi g`. Rewrite using `[this]`. Simplify using `[_root_.PositivityTheory.SiegelWeilFormula.AStep.avg_k, fc])`.
+
+Use the proof step `(fun z hz => by`. Establish `h1` using `(hfar z (lt_of_le_of_lt (le_max_left _ _) hz)).2`. Establish `e1 : Ê z = fun g => p.eval z * d.eis (d.sec0 Φ) s z g` using `funext h1`. Rewrite using `[e1, havg_smul, (hc2 z (lt_of_le_of_lt (le_max_right _ _) hz)).1 x])`. Use the proof step `(fun z hz => by`.
+
+Establish `h1` using `(hfar z (lt_of_le_of_lt (le_max_left _ _) hz)).2`. Establish `e1 : Ê z = fun g => p.eval z * d.eis (d.sec0 Φ) s z g` using `funext h1`. Rewrite using `[e1, havg_smul, (hc2 z (lt_of_le_of_lt (le_max_right _ _) hz)).1 _])`. Use the proof step `(_root_.PositivityTheory.SiegelWeilFormula.AStep.cOneVal_k H R L R' hIH hΦ hv hc hc' hT x) (_root_.PositivityTheory.SiegelWeilFormula.AStep.cOneVal_k H R L R' hIH hΦ hv hc hc' hT _)`. Use the proof step `(fun z hz => by`.
+
+Rewrite using `[(hc2 z (lt_of_le_of_lt (le_max_right _ _) hz)).2 x]`. Use `congr 1`. Use `push_cast`. Use the proof step `ring_nf)`. Establish `havgA : ∀ x', iteratedDeriv j (fun z => _root_.PositivityTheory.SiegelWeilFormula.AStep.avg_k d L uM ν 𝓤 nb lam 𝓖 (Ê z) T x') s = fc d.B.ψ d.b nb lam 𝓖 A T x'`.
+
+Introduce `x'`. Rewrite using `[(hhol1 x').2 j]`. Use `show _root_.PositivityTheory.SiegelWeilFormula.AStep.avg_k d L uM ν 𝓤 nb lam 𝓖 A T x' = _`. Simplify using `only [_root_.PositivityTheory.SiegelWeilFormula.AStep.avg_k, huA uM ν 𝓤 hu, setIntegral_const]`. Simplify using `[Measure.real, hu.2.2.2]`.
+
+Rewrite `hsep` using `[havgA, havgA]`. Establish `hth : fc d.B.ψ d.b nb lam 𝓖 (d.I Φ) T (R.ι w y * x) = Complex.exp (d.m : ℂ) * fc d.B.ψ d.b nb lam 𝓖 (d.I Φ) T x`. Use `valLaw (fun z => _root_.PositivityTheory.SiegelWeilFormula.AStep.cOne_k d L (d.sec0 Φ) s z nb' lam' 𝓖' T' x) (fun z => _root_.PositivityTheory.SiegelWeilFormula.AStep.cOne_k d L (d.sec0 Φ) s z nb' lam' 𝓖' T' (R.ι w y * x)) 0 (d.n : ℂ) 2 s _ _ (fun z _ => by rw [_root_.PositivityT …` as an intermediate fact. Establish `e2 : (d.n : ℂ) + 2 * s = d.m` using `by rw [hsdef, s0]; ring`. Rewrite `this` using `[e2]`.
+
+Take the linear combination `this / 2`. Establish `hA1` using `hlawA 1 y hy x`. Rewrite `hA1` using `[Complex.ofReal_one, one_mul]`. Rewrite using `[hfcB x]`. Rewrite `hsep` using `[hA1, hth]`.
+
+Establish `e3 : (d.n : ℂ) + -2 * s = ((2 * d.n - d.m : ℕ) : ℂ)`. Establish `h2 : ((2 * d.n - d.m : ℕ) : ℂ) = 2 * (d.n : ℂ) - d.m`. Rewrite using `[Nat.cast_sub (by omega)]; push_cast; ring`. Rewrite using `[h2, hsdef, s0]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite `hsep` using `[e3]`. Establish `hne` using `exp_ne_of_lt hmn`. Establish `key : (Complex.exp ((2 * d.n - d.m : ℕ) : ℂ) - Complex.exp (d.m : ℂ)) * (fc d.B.ψ d.b nb lam 𝓖 A T x - iteratedDeriv j (fun z => p.eval z) s * (2 * fc d.B.ψ d.b nb lam 𝓖 (d.I Φ) T x)) = 0`. Take the linear combination `-hsep`. Break down `mul_eq_zero.1 key with h | h` into its components or cases.
+
+Conclude with `absurd (sub_eq_zero.1 h) hne`. Conclude with `h`.
+-/
 theorem deg_k (H : _root_.PositivityTheory.SiegelWeilFormula.AStep.Hyps_k) {d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ} (R : _root_.PositivityTheory.SiegelWeilFormula.RD_k d) (L : _root_.PositivityTheory.SiegelWeilFormula.LD_k d) (R' : _root_.PositivityTheory.SiegelWeilFormula.RD_k L.sd) (hmn : d.m < d.n) (hIH : _root_.PositivityTheory.SiegelWeilFormula.MainV_k 2 R') {Φ : d.Fn}
     (hΦ : Φ ∈ d.sch) (hv : d.T Φ ∈ R.vac) {U p Ê t} (hE : _root_.PositivityTheory.SiegelWeilFormula.AStep.EData_k d (d.sec0 Φ) (s0 d.m d.n) (s0 d.m d.n) U p Ê t) (j : ℕ)
     (hj : j ≤ p.rootMultiplicity (s0 d.m d.n)) (hlow : ∀ i < j, ∀ g, iteratedDeriv i (Ê · g) (s0 d.m d.n) = 0)

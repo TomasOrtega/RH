@@ -17,15 +17,24 @@ section Ind
 
 variable {D : D7} {T : D.host.E} (F0 : FlagG (VS D) D.R.rS T)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem inv_apply' (δ : (VS D).V ≃ₗ[D.host.E] (VS D).V) (y : (VS D).V) : (δ⁻¹ : (VS D).V ≃ₗ[D.host.E] (VS D).V) y = δ.symm y :=
   rfl
 
+/- English proof (translation)
+Unfold `FlagG.Xa FlagG.X`. Use `congr 1`. Use extensionality with `x`. Simplify using `[Fin.is_lt]`.
+-/
 theorem xa_top : F0.Xa D.R.rS = F0.X := by
   unfold FlagG.Xa FlagG.X
   congr 1
   ext x
   simp [Fin.is_lt]
 
+/- English proof (translation)
+Use `⟨mul_mem hγ.1 hδ.1, fun j => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[kmap_mul, hδ.2.1 j, hγ.2.1 j]`. Use `show γ (δ F0.z) = F0.z`. Rewrite using `[hδ.2.2, hγ.2.2]`.
+-/
 theorem st_mul {γ δ : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hγ : γ ∈ stabF D F0) (hδ : δ ∈ stabF D F0) :
     γ * δ ∈ stabF D F0 := by
   refine ⟨mul_mem hγ.1 hδ.1, fun j => ?_, ?_⟩
@@ -33,6 +42,9 @@ theorem st_mul {γ δ : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hγ : γ ∈ stabF 
   · show γ (δ F0.z) = F0.z
     rw [hδ.2.2, hγ.2.2]
 
+/- English proof (translation)
+Use `⟨inv_mem hγ.1, fun j => ?_, ?_⟩` and prove the remaining obligations. Use `conv_lhs => rw [← hγ.2.1 j]`. Rewrite using `[← kmap_mul, inv_mul_cancel, kmap_one]`. Use `show γ.symm F0.z = F0.z conv_lhs => rw [← hγ.2.2]`. Conclude with `γ.symm_apply_apply _`.
+-/
 theorem st_inv {γ : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hγ : γ ∈ stabF D F0) : γ⁻¹ ∈ stabF D F0 := by
   refine ⟨inv_mem hγ.1, fun j => ?_, ?_⟩
   · conv_lhs => rw [← hγ.2.1 j]
@@ -41,12 +53,20 @@ theorem st_inv {γ : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hγ : γ ∈ stabF D F
     conv_lhs => rw [← hγ.2.2]
     exact γ.symm_apply_apply _
 
+/- English proof (translation)
+Rewrite `hx`, the goal using `[← xa_top]`. Rewrite using `[← hγ.2.1 D.R.rS]`. Conclude with `Submodule.mem_map_of_mem hx`.
+-/
 theorem stab_X_mem {γ : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hγ : γ ∈ stabF D F0) {x : (VS D).V} (hx : x ∈ F0.X) :
     γ x ∈ F0.X := by
   rw [← xa_top] at hx ⊢
   rw [← hγ.2.1 D.R.rS]
   exact Submodule.mem_map_of_mem hx
 
+/- English proof (translation)
+Introduce `x hx`. Establish `h1` using `hy _ (stab_X_mem F0 (st_inv F0 hγ) hx)`. Establish `h2` using `hγ.1 (γ⁻¹ x) y`. Rewrite `h2` using `[inv_apply', LinearEquiv.apply_symm_apply]`. Rewrite using `[h2]`.
+
+Conclude with `h1`.
+-/
 theorem stab_perp_mem {γ : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hγ : γ ∈ stabF D F0) {y : (VS D).V}
     (hy : y ∈ perpS (VS D) F0.X) : γ y ∈ perpS (VS D) F0.X := by
   intro x hx
@@ -61,9 +81,17 @@ def ind {γ : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hγ : γ ∈ stabF D F0) : Wb
     ((γ : (VS D).V →ₗ[D.host.E] (VS D).V).restrict (fun y hy => stab_perp_mem F0 hγ hy))
     (fun x hx => stab_X_mem F0 hγ hx)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ind_mk {γ : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hγ : γ ∈ stabF D F0) (x : perpS (VS D) F0.X) :
     ind F0 hγ (Submodule.Quotient.mk x) = Submodule.Quotient.mk ⟨γ x.1, stab_perp_mem F0 hγ x.2⟩ := rfl
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨γ, hγ, hΛ, hφ⟩`. Use `⟨γ, hγ, hΛ, funext fun q => ?_⟩` and prove the remaining obligations. Use `Submodule.Quotient.induction_on _ q (fun x => ?_)` and prove the remaining obligations. Conclude with `(hφ x (stab_perp_mem F0 hγ x.2)).trans rfl`.
+
+Introduce and unpack `⟨γ, hγ, hΛ, rfl⟩`. Conclude with `⟨γ, hγ, hΛ, fun x hx => rfl⟩`.
+-/
 theorem autLz_iff (Λ : Submodule (𝓞 D.host.E) (VS D).V) (φ : WbQ D F0 → WbQ D F0) :
     φ ∈ autLz D F0 Λ ↔ ∃ γ, ∃ hγ : γ ∈ stabF D F0, Formalism.HermitianLatticesTheory.gmap γ Λ = Λ ∧ φ = ind F0 hγ := by
   constructor
@@ -74,6 +102,11 @@ theorem autLz_iff (Λ : Submodule (𝓞 D.host.E) (VS D).V) (φ : WbQ D F0 → W
   · rintro ⟨γ, hγ, hΛ, rfl⟩
     exact ⟨γ, hγ, hΛ, fun x hx => rfl⟩
 
+/- English proof (translation)
+Use `Submodule.Quotient.induction_on _ q (fun x => ?_)` and prove the remaining obligations. Rewrite using `[ind_mk, ind_mk]`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show δ⁻¹ (δ x.1) = x.1`.
+
+Rewrite using `[inv_apply', LinearEquiv.symm_apply_apply]`.
+-/
 theorem ind_inv_cancel {δ : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hδ : δ ∈ stabF D F0) (q : WbQ D F0) :
     ind F0 (st_inv F0 hδ) (ind F0 hδ q) = q := by
   refine Submodule.Quotient.induction_on _ q (fun x => ?_)
@@ -83,6 +116,11 @@ theorem ind_inv_cancel {δ : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hδ : δ ∈ s
   show δ⁻¹ (δ x.1) = x.1
   rw [inv_apply', LinearEquiv.symm_apply_apply]
 
+/- English proof (translation)
+Use `Submodule.Quotient.induction_on _ q (fun x => ?_)` and prove the remaining obligations. Rewrite using `[ind_mk, ind_mk]`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show δ (δ⁻¹ x.1) = x.1`.
+
+Rewrite using `[inv_apply', LinearEquiv.apply_symm_apply]`.
+-/
 theorem ind_cancel_inv {δ : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hδ : δ ∈ stabF D F0) (q : WbQ D F0) :
     ind F0 hδ (ind F0 (st_inv F0 hδ) q) = q := by
   refine Submodule.Quotient.induction_on _ q (fun x => ?_)
@@ -92,6 +130,21 @@ theorem ind_cancel_inv {δ : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hδ : δ ∈ s
   show δ (δ⁻¹ x.1) = x.1
   rw [inv_apply', LinearEquiv.apply_symm_apply]
 
+/- English proof (translation)
+Set `c : (WbQ D F0 → WbQ D F0) → (WbQ D F0 → WbQ D F0)` to `fun φ => ind F0 hδ ∘ φ ∘ ind F0 (st_inv F0 hδ)`. Establish `hc : Function.Injective c`. Introduce `φ ψ hφψ`. Use function extensionality and compare the values at `q`. Establish `h1` using `congrFun hφψ (ind F0 hδ q)`.
+
+Simplify using `only [c, Function.comp, ind_inv_cancel] at h1`. Establish `h2` using `congrArg (ind F0 (st_inv F0 hδ)) h1`. Rewrite `h2` using `[ind_inv_cancel, ind_inv_cancel]`. Then use the resulting hypothesis. Establish `hset : autLz D F0 (Formalism.HermitianLatticesTheory.gmap δ Λ) = c '' autLz D F0 Λ`. Use extensionality with `ψ`.
+
+Rewrite using `[autLz_iff, Set.mem_image]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨γ', hγ', hΛ', rfl⟩`. Use `⟨ind F0 (st_mul F0 (st_mul F0 (st_inv F0 hδ) hγ') hδ), (autLz_iff F0 Λ _).2 ⟨_, _, ?_, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[gmap_mul', gmap_mul', hΛ', ← gmap_mul', inv_mul_cancel, gmap_one']`.
+
+Use function extensionality and compare the values at `q`. Use `Submodule.Quotient.induction_on _ q (fun x => ?_)` and prove the remaining obligations. Simplify using `only [c, Function.comp]`. Rewrite using `[ind_mk, ind_mk, ind_mk, ind_mk]`. Use `congr 1`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Use `show δ ((δ⁻¹ * γ' * δ) (δ⁻¹ x.1)) = γ' x.1`. Use `show δ (δ⁻¹ (γ' (δ (δ⁻¹ x.1)))) = γ' x.1`. Rewrite using `[inv_apply', inv_apply', LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply]`. Introduce and unpack `⟨φ, hφ, rfl⟩`.
+
+Take `⟨γ, hγ, hΛ, rfl⟩` from `(autLz_iff F0 Λ φ).1 hφ`. Use `⟨δ * γ * δ⁻¹, st_mul F0 (st_mul F0 hδ hγ) (st_inv F0 hδ), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[gmap_mul', ← gmap_mul' δ⁻¹ δ, inv_mul_cancel, gmap_one', gmap_mul', hΛ]`. Use function extensionality and compare the values at `q`. Use `Submodule.Quotient.induction_on _ q (fun x => rfl)` and prove the remaining obligations.
+
+Rewrite using `[hset]`. Conclude with `Nat.card_image_of_injective hc _`.
+-/
 theorem card_autLz_gmap {δ : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hδ : δ ∈ stabF D F0)
     (Λ : Submodule (𝓞 D.host.E) (VS D).V) :
     Nat.card ↥(autLz D F0 (Formalism.HermitianLatticesTheory.gmap δ Λ)) = Nat.card ↥(autLz D F0 Λ) := by

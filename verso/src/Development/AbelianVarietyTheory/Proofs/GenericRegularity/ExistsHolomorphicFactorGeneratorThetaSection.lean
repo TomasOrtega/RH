@@ -19,6 +19,17 @@ section
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
   {l : Level H} {Xo : Moduli Dw l}
 
+/- English proof (translation)
+Substitute `hxu` using the available equality. Take `⟨s', hs'⟩` from `GlobalTheory.FibreSection.exists_sec_same_values E H Dw l Xo x t`. Take `⟨a, ha, -⟩` from `hs s'`. Establish `key : ∀ j z (pt : Sp ℂ ⟶ Gx x), pt ≫ gxFst x = (e z).left → pt ≫ gxSnd x = 𝟙 (Sp ℂ) → ⊤ ≤ (e z).left ⁻¹ᵁ Xo.univ.t.PP.L.U j → a * valAt' pt ((PPx x).U (fun _ => j)) (s.f (fun _ => j)) = θ z * fr j z`. Introduce `j z pt e₁ e₂ hj`.
+
+Establish `hw : (e z).left ≫ Xo.univ.t.G.hom = 𝟙 _ ≫ x` using `(Over.w (e z)).trans (Category.id_comp _).symm`. Establish `p₁` using `pullback.lift_fst (f := Xo.univ.t.G.hom) (g := x) (e z).left (𝟙 _) hw`. Establish `p₂` using `pullback.lift_snd (f := Xo.univ.t.G.hom) (g := x) (e z).left (𝟙 _) hw`. Use `((sec_values_complex_fibre hT E H Dw l Xo x s).1 a (fun _ => j) pt e₂).symm.trans ?_` and prove the remaining obligations. Use `(congrArg (valAt' pt ((PPx x).U (fun _ => j))) (ha (fun _ => j))).symm.trans ?_` and prove the remaining obligations.
+
+Conclude with `(hs' j pt _ (p₁.trans e₁.symm) p₂ e₂).trans (ht j z _ p₁ p₂ hj)`. Take `⟨z₀, hz₀⟩` from `hθ`. Take `⟨j₀, hj₀⟩` from `GlobalTheory.ThetaPtChg.exists_chart_point Xo.univ.t.PP.isLB (e z₀).left`. Take `⟨pt₀, e₁, e₂⟩` from `exists_pt (R := ℂ) x (𝟙 _) (e z₀).left ((Category.id_comp _).trans (Over.w (e z₀)).symm)`. Establish `ha0 : a ≠ 0`.
+
+Introduce and unpack `rfl`. Use `key j₀ z₀ pt₀ e₁ e₂ hj₀` as an intermediate fact. Rewrite `this` using `[zero_mul]`. Conclude with `mul_ne_zero hz₀ (hfr j₀ z₀ hj₀) this.symm`. Use `⟨a⁻¹, inv_ne_zero ha0, fun j z pt e₁ e₂ hj => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[mul_assoc, ← key j z pt e₁ e₂ hj, inv_mul_cancel_left₀ ha0]`.
+-/
 theorem exists_factor (hT : Out.SecTwistSt) {Z : Type} (x u : Sp ℂ ⟶ Xo.X) (hxu : x = u) (s : LB.Sec (PPx x))
     (hs : SecGen x s) (e : Z → (Over.mk u ⟶ Xo.univ.t.G)) (θ : Z → ℂ) (fr : Xo.univ.t.PP.L.ι → Z → ℂ)
     (hθ : ∃ z, θ z ≠ 0) (hfr : ∀ j z, ⊤ ≤ (e z).left ⁻¹ᵁ Xo.univ.t.PP.L.U j → fr j z ≠ 0)
@@ -57,6 +68,27 @@ theorem exists_factor (hT : Out.SecTwistSt) {Z : Type} (x u : Sp ℂ ⟶ Xo.X) (
 
 end
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c σ σ' g ty F k A _ _ yA m B ψ y P θ hB hψ hb hP hxu hθ hθ0 hfr`. Establish `hT : Out.SecTwistSt` using `GlobalTheory.abelianSchemeLaws_all.2.secTwist`. Take `⟨fr, f₁, f₂, f₃, f₄, f₅⟩` from `hfr`. Establish `hκ₁ : ∀ b, ∃ κ : ℂ, b ∈ B → κ ≠ 0 ∧ SecVal F k (P b) (y b).x (y b).s (fun z => κ * θ b z) (fun j z => fr j (b, z))` using `fun b => by`. Distinguish the cases in `h : b ∈ B`.
+
+Take `⟨t, ht⟩` from `f₅ b h`. Take `⟨κ, h₁, h₂⟩` from `exists_factor hT (y b).x (F.u k (P b)) (hxu b h) (y b).s (y b).gen (F.ex k (P b)) (θ b) (fun j z => fr j (b, z)) (hθ0 b h) (fun j z hz => f₂ j b z h hz) t ht`. Conclude with `⟨κ, fun _ => ⟨h₁, h₂⟩⟩`. Conclude with `⟨0, fun h' => absurd h' h⟩`. Use `choose κ hκ using hκ₁`.
+
+Use `⟨fr, κ, ⟨f₁, f₂, f₃, f₄⟩, fun b₀ hb₀ => ?_, hκ⟩` and prove the remaining obligations. Set `φ : (Fin m → ℂ) → (A →+* ℂ)` to `fun b => (ψ b).toRingHom`. Establish `hux : ∀ b ∈ B, F.u k (P b) = (y b).x` using `fun b h => (hxu b h).symm`. Take `⟨pm₀, p₁, p₂, p₃⟩` from `(hb b₀ hb₀).2.2`. Take `⟨e₀, j, hne⟩` from `exists_val_ne hT (φ b₀) yA.x (y b₀).x _ (hux b₀ hb₀) yA.s (y b₀).s pm₀ p₁ p₂ p₃ (y b₀).gen`.
+
+Take `⟨w₀, rfl⟩` from `F.ex_onto k _ (hP.1 b₀ hb₀) e₀`. Establish `hq₁ : ∀ b ∈ B, ∃ q : Sp ℂ ⟶ Gx yA.x, q ≫ gxFst yA.x = (F.ex k (P b) w₀).left ∧ q ≫ gxSnd yA.x = spMap (φ b)` using `fun b h => exists_pt _ _ _ (((hb b h).1.symm.trans (hux b h).symm).trans (Over.w (F.ex k (P b) w₀)).symm)`. Establish `hq₂ : ∀ b, ∃ q : Sp ℂ ⟶ Gx yA.x, b ∈ B → q ≫ gxFst yA.x = (F.ex k (P b) w₀).left ∧ q ≫ gxSnd yA.x = spMap (φ b)` using `fun b => by`. Distinguish the cases in `h : b ∈ B`. Conclude with `(hq₁ b h).imp fun _ h' _ => h'`.
+
+Conclude with `⟨(hq₁ b₀ hb₀).choose, fun h' => absurd h' h⟩`. Use `choose q hq using hq₂`. Establish `hι : Differentiable ℂ (fun b : Fin m → ℂ => ((b, w₀) : (Fin m → ℂ) × (Fin g → ℂ)))` using `by fun_prop`. Establish `hol : IsHolTo B q`. Use `HolPullback.isHolTo_of_components _ B _ _ _ _ (gxSnd yA.x) (gxFst yA.x) yA.x Xo.univ.t.G.hom q (IsPullback.of_hasPullback yA.x Xo.univ.t.G.hom) hB ?_ ?_` and prove the remaining obligations.
+
+Conclude with `LocLift.isHolTo_congr (ThetaValueCont.isHolTo_spMap hB φ hψ) fun b h => (hq b h).2`. Conclude with `LocLift.isHolTo_congr (LocLift.isHolTo_comp (F.hol k _ B _ hB hP).2 hB hι.differentiableOn fun b h => ⟨h, trivial⟩) fun b h => (hq b h).1`. Establish `hW` using `(hol ((Gx yA.x).basicOpen (yA.s.f (fun _ => j))) 0).1`. Use `set W := {b ∈ B | ⊤ ≤ q b ⁻¹ᵁ (Gx yA.x).basicOpen (yA.s.f (fun _ => j))} with hWd`. Establish `hb₀W : b₀ ∈ W` using `⟨hb₀, (top_le_preimage_basicOpen_iff _ _ _).2 (hne _ (hq b₀ hb₀).1 (hq b₀ hb₀).2)⟩`.
+
+Establish `vnz : ∀ b ∈ W, valAt' (q b) ((PPx yA.x).U (fun _ => j)) (yA.s.f (fun _ => j)) ≠ 0` using `fun b h => (top_le_preimage_basicOpen_iff _ _ _).1 h.2`. Establish `m₁ : ∀ b ∈ W, ⊤ ≤ q b ⁻¹ᵁ (PPx yA.x).U (fun _ => j)` using `fun b h => top_le_preimage_of_valAt'_ne_zero _ (vnz b h)`. Establish `m₂ : ∀ b ∈ W, ⊤ ≤ (F.ex k (P b) w₀).left ⁻¹ᵁ Xo.univ.t.PP.L.U j` using `fun b h => by`. Rewrite using `[← (hq b h.1).1]`. Conclude with `(chart_iff _ _ _).1 (m₁ b h)`.
+
+Establish `d₁ : DifferentiableOn ℂ (fun b => θ b w₀) W` using `(hθ w₀).mono fun b h => h.1`. Establish `d₂ : DifferentiableOn ℂ (fun b => fr j (b, w₀)) W` using `DifferentiableOn.comp (f := fun b : Fin m → ℂ => ((b, w₀) : (Fin m → ℂ) × (Fin g → ℂ))) (g := fr j) (f₁ j) hι.differentiableOn fun b h => ⟨h.1, m₂ b h⟩`. Establish `d₃ : DifferentiableOn ℂ (fun b => valAt' (q b) ((PPx yA.x).U (fun _ => j)) (yA.s.f (fun _ => j))) W` using `(hol _ _).2.mono fun b h => ⟨h.1, m₁ b h⟩`. Establish `key : ∀ b ∈ W, valAt' (q b) ((PPx yA.x).U (fun _ => j)) (yA.s.f (fun _ => j)) = κ b * (θ b w₀ * fr j (b, w₀))` using `fun b h => by`. Take `⟨-, -, pm, p₁, p₂, p₃⟩` from `hb b h.1`.
+
+Take `⟨pt, e₁, e₂⟩` from `exists_pt (R := ℂ) (y b).x (𝟙 _) (F.ex k (P b) w₀).left (((Category.id_comp _).trans (hxu b h.1)).trans (Over.w (F.ex k (P b) w₀)).symm)`. Rewrite using `[← mul_assoc]`. Use `Eq.trans ?_ ((hκ b h.1).2 j w₀ pt e₁ e₂ (m₂ b h))` and prove the remaining obligations. Use `(val_pull (φ b) yA.x (y b).x yA.s (y b).s pm p₁ p₂ p₃ _ pt (q b) ((hq b h.1).1.trans e₁.symm) e₂ (hq b h.1).2 ((chart_iff _ _ _).2 ?_)).symm` and prove the remaining obligations. Rewrite using `[e₁]`.
+
+Conclude with `m₂ b h`. Establish `nz : ∀ b ∈ W, θ b w₀ * fr j (b, w₀) ≠ 0` using `fun b h => right_ne_zero_of_mul (key b h ▸ vnz b h)`. Establish `d : DifferentiableOn ℂ κ W` using `(d₃.mul ((d₁.mul d₂).inv nz)).congr fun b h => ((mul_inv_eq_iff_eq_mul₀ (nz b h)).2 (key b h)).symm`. Conclude with `(d.differentiableAt (hW.mem_nhds hb₀W)).differentiableWithinAt`.
+-/
 theorem exists_holomorphic_factor : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (σ' : KA l →+* ℂ) (g : ℕ) (ty : Fin g → (E →+* ℂ)) (F : FamilyUnif Xo σ' ty) (k : Fin F.n) (A : Type) [CommRing A] [Algebra c.F A] (yA : FrPt Xo c A) (m : ℕ) (B : Set (Fin m → ℂ)) (φ : (Fin m → ℂ) → (A →ₐ[c.F] CAt σ)) (y : (Fin m → ℂ) → FrPt Xo c (CAt σ)) (P : (Fin m → ℂ) → ((F.Di k).La →+ (Fin g → ℂ))) (θ : (Fin m → ℂ) → (Fin g → ℂ) → ℂ), IsOpen B → (∀ a, DifferentiableOn ℂ (fun b => toC (φ b a)) B) → (∀ b ∈ B, FrMap (φ b) yA (y b)) → IsHolPeriods (F.Di k) ty B P → (∀ b ∈ B, (y b).x = F.u k (P b)) → (∀ z, DifferentiableOn ℂ (fun b => θ b z) B) → (∀ b ∈ B, ∃ z, θ b z ≠ 0) → IsThetaFrame Xo.univ.t.PP B (fun b => F.u k (P b)) (fun b z => (F.ex k (P b) z).left) θ → ∃ (fr : Xo.univ.t.PP.L.ι → (Fin m → ℂ) × (Fin g → ℂ) → ℂ) (κ : (Fin m → ℂ) → ℂ), RigFrame F k B P fr ∧ DifferentiableOn ℂ κ B ∧ ∀ b ∈ B, κ b ≠ 0 ∧ SecVal F k (P b) (y b).x (y b).s (fun z => κ b * θ b z) (fun j z => fr j (b, z)) := by
   intro E _ _ _ H Dw l Xo c σ σ' g ty F k A _ _ yA m B ψ y P θ hB hψ hb hP hxu hθ hθ0 hfr
   have hT : Out.SecTwistSt := GlobalTheory.abelianSchemeLaws_all.2.secTwist

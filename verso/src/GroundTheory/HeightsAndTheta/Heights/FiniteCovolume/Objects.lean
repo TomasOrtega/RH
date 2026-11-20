@@ -12,6 +12,19 @@ section Conj
 
 variable {F E : Type*} [Field F] [Field E] [Algebra F E] [Algebra.IsQuadraticExtension F E]
 
+/- English proof (translation)
+Establish `hF : ∀ c : F, starRingEnd ℂ (σ (algebraMap F E c)) = σ (algebraMap F E c)`. Introduce `c`. Establish `h1` using `ComplexEmbedding.isReal_iff.mp (IsTotallyReal.complexEmbedding_isReal (σ.comp (algebraMap F E)))`. Establish `h2` using `congrArg (fun ψ : F →+* ℂ => ψ c) h1`. Simplify `h2` using `[ComplexEmbedding.conjugate_coe_eq]`.
+
+Distinguish the cases in `hx : x ∈ Set.range (algebraMap F E)`. Take `⟨c, rfl⟩` from `hx`. Rewrite using `[conj_algebraMap, hF]`. Establish `hs : σ x + σ (conj F E x) = σ (algebraMap F E (Algebra.trace F E x))`. Rewrite using `[← map_add, add_conj]`.
+
+Establish `hp : σ x * σ (conj F E x) = σ (algebraMap F E (Algebra.norm F x))`. Rewrite using `[← map_mul, mul_conj]`. Establish `e1 : starRingEnd ℂ (σ x) + starRingEnd ℂ (σ (conj F E x)) = σ x + σ (conj F E x)`. Rewrite using `[← map_add, hs, hF]`. Establish `e2 : starRingEnd ℂ (σ x) * starRingEnd ℂ (σ (conj F E x)) = σ x * σ (conj F E x)`.
+
+Rewrite using `[← map_mul, hp, hF]`. Establish `key : (starRingEnd ℂ (σ x) - σ x) * (starRingEnd ℂ (σ x) - σ (conj F E x)) = 0`. Take the linear combination `(starRingEnd ℂ (σ x)) * e1 - e2`. Break down `mul_eq_zero.mp key with h1 | h1` into its components or cases. It suffices to derive a contradiction.
+
+Establish `hz : starRingEnd ℂ (σ x) = σ x` using `sub_eq_zero.mp h1`. Apply `IsTotallyComplex.complexEmbedding_not_isReal σ` to reduce the goal to its premises. Rewrite using `[ComplexEmbedding.isReal_iff]`. Use extensionality with `y`. Establish `hy` using `(basisOneOf hx).sum_repr y`.
+
+Rewrite `hy` using `[Fin.sum_univ_two, basisOneOf_zero, basisOneOf_one]`. Rewrite using `[← hy]`. Simplify using `only [ComplexEmbedding.conjugate_coe_eq, Algebra.smul_def, map_add, map_mul, mul_one, hF, hz]`. Conclude with `(sub_eq_zero.mp h1).symm`.
+-/
 theorem embedding_conj [NumberField F] [NumberField E] [IsTotallyReal F] [IsTotallyComplex E]
     (σ : E →+* ℂ) (x : E) : σ (conj F E x) = starRingEnd ℂ (σ x) := by
   have hF : ∀ c : F, starRingEnd ℂ (σ (algebraMap F E c)) = σ (algebraMap F E c) := by
@@ -61,6 +74,9 @@ def archUnitary (h : HermitianForm F E W) (v : Basis ι E W) :
     Subgroup (InfinitePlace E → GL ι ℂ) :=
   Subgroup.pi Set.univ fun w => unitaryGroupMatrix (starRingEnd ℂ) (gramAt h v w)
 
+/- English proof (translation)
+Simplify using `[archUnitary, Subgroup.mem_pi, mem_unitaryGroupMatrix]`.
+-/
 theorem mem_archUnitary {h : HermitianForm F E W} {v : Basis ι E W}
     {g : InfinitePlace E → GL ι ℂ} :
     g ∈ archUnitary h v ↔ ∀ w, ((g w : Matrix ι ι ℂ).map (starRingEnd ℂ))ᵀ * gramAt h v w *
@@ -70,6 +86,11 @@ theorem mem_archUnitary {h : HermitianForm F E W} {v : Basis ι E W}
 instance locallyCompactSpace_matrix_complex : LocallyCompactSpace (Matrix ι ι ℂ) :=
   inferInstanceAs (LocallyCompactSpace (ι → ι → ℂ))
 
+/- English proof (translation)
+Establish `: (archUnitary h v : Set (InfinitePlace E → GL ι ℂ)) = Set.pi Set.univ fun w => {g : GL ι ℂ | ((g : Matrix ι ι ℂ).map (starRingEnd ℂ))ᵀ * gramAt h v w * (g : Matrix ι ι ℂ) = gramAt h v w}`. Use extensionality with `g`. Simplify using `[archUnitary, Subgroup.mem_pi, mem_unitaryGroupMatrix]`. Rewrite using `[this]`. Use `isClosed_set_pi fun w _ => isClosed_eq ?_ continuous_const` and prove the remaining obligations.
+
+Conclude with `((Units.continuous_val.matrix_map Complex.continuous_conj).matrix_transpose.matrix_mul continuous_const).matrix_mul Units.continuous_val`.
+-/
 theorem isClosed_archUnitary (h : HermitianForm F E W) (v : Basis ι E W) :
     IsClosed (archUnitary h v : Set (InfinitePlace E → GL ι ℂ)) := by
   have : (archUnitary h v : Set (InfinitePlace E → GL ι ℂ)) = Set.pi Set.univ fun w =>

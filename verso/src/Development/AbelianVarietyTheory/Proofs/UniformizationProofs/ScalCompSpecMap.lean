@@ -21,9 +21,15 @@ def scalOn {R : Type} [CommRing R] {Y : Scheme.{0}} (p : Y ⟶ Spec (CommRingCat
   (Y.presheaf.map (homOfLE le_top).op).hom.comp
     (p.appTop.hom.comp (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem scalOn_apply {R : Type} [CommRing R] {Y : Scheme.{0}} (p : Y ⟶ Spec (CommRingCat.of R))
     (W : Y.Opens) (r : R) : resTop W (scal p r) = scalOn p W r := rfl
 
+/- English proof (translation)
+Unfold `scal`. Rewrite using `[Scheme.Hom.comp_appTop, CommRingCat.hom_comp, RingHom.comp_apply]`. Use `congr 1`. Use `congrArg (fun g => g.hom r) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom φ))` as an intermediate fact. Conclude with `this.symm`.
+-/
 theorem scal_comp_specMap {R C : Type} [CommRing R] [CommRing C] {Y : Scheme.{0}}
     (p : Y ⟶ Spec (CommRingCat.of C)) (φ : R →+* C) (r : R) :
     scal (p ≫ Spec.map (CommRingCat.ofHom φ)) r = scal p (φ r) := by
@@ -33,6 +39,9 @@ theorem scal_comp_specMap {R C : Type} [CommRing R] [CommRing C] {Y : Scheme.{0}
   have := congrArg (fun g => g.hom r) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom φ))
   exact this.symm
 
+/- English proof (translation)
+Simplify using `only [resTop]`. Rewrite using `[← RingHom.comp_apply, ← CommRingCat.hom_comp, Scheme.Hom.naturality, CommRingCat.hom_comp, RingHom.comp_apply]`. Both sides reduce to the same expression.
+-/
 theorem app_resTop_scal {R : Type} [CommRing R] {Y Y' : Scheme.{0}} (h : Y' ⟶ Y)
     (p : Y ⟶ Spec (CommRingCat.of R)) (W : Y.Opens) (r : R) :
     (h.app W).hom (resTop W (scal p r)) = resTop _ (scal (h ≫ p) r) := by
@@ -47,6 +56,13 @@ def secComb {Y : Scheme.{0}} {L : LB Y} {n : ℕ} (a : Fin n → Γ(Y, ⊤)) (s 
     rw [map_sum, map_sum, Finset.mul_sum]
     exact Finset.sum_congr rfl fun i _ => (SecOps.secScale (a i) (s i)).compat j j'
 
+/- English proof (translation)
+Introduce `j₁ j₂ hco`. Use `erw [hs]`. Simplify using `only [secComb]`. Use `erw [map_sum, map_sum, map_sum]`. Rewrite using `[Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `Hi` using `H i j₁ j₂ hco`. Use `erw [map_mul, map_mul, map_mul, Hi, app_resTop_scal, SecOps.resTop_res, SecOps.resTop_res]`. Rewrite using `[hp, hπ, scal_comp_specMap, scal_comp_specMap, scal_comp_specMap, ← _root_.mul_assoc, ← _root_.mul_assoc]`. Simplify using `only [scalOn_apply]`.
+
+Rewrite using `[← map_mul, hc, map_mul]`.
+-/
 theorem secScal_comb {R C : Type} [CommRing R] [CommRing C] (φ : R →+* C) {X Y Y' : Scheme.{0}} (L : LB X)
     {K₁ K₂ : Type} [Fintype K₁] [Fintype K₂] (φ₁ : K₁ → (Y' ⟶ X)) (ε₁ : K₁ → ℤ)
     (φ₂ : K₂ → (Y ⟶ X)) (ε₂ : K₂ → ℤ) (h : Y' ⟶ Y) (π : Y' ⟶ Spec (CommRingCat.of C))
@@ -69,6 +85,9 @@ theorem secScal_comb {R C : Type} [CommRing R] [CommRing C] (φ : R →+* C) {X 
   simp only [scalOn_apply]
   rw [← map_mul, hc, map_mul]
 
+/- English proof (translation)
+Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => simp only [Finset.sum_empty, zero_f]`. Consider the case `insert a S ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, add_f, ih]`.
+-/
 theorem fam_sum_f {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {F : Type} [Field F]
     [Algebra (FractionRing R) F] {k : ℕ} {N : Type} (S : Finset N) (s : N → Fam D F k) (α : D.X) (j) :
     ((∑ i ∈ S, s i).s α).f j = ∑ i ∈ S, ((s i).s α).f j := by
@@ -81,6 +100,15 @@ end ExpandsLinear
 
 open ExpandsLinear in
 
+/- English proof (translation)
+Introduce `R _ _ I _ D A G _ _ _ U k n b F c s hE hs`. Use `choose r hr σ f hσ hf hE using hE`. Take `⟨d, hd⟩` from `IsLocalization.exist_integer_multiples_of_finite (nonZeroDivisors R) (fun i => c i / algebraMap R (FractionRing R) (r i))`. Use `choose a ha using hd`. Establish `hc : ∀ i, algebraMap R (FractionRing R) (a i) * algebraMap R (FractionRing R) (r i) = algebraMap R (FractionRing R) d * c i` using `fun i => by`.
+
+Establish `h0 : algebraMap R (FractionRing R) (r i) ≠ 0` using `fun h => hr i ((IsFractionRing.injective R (FractionRing R)) (h.trans (map_zero _).symm))`. Rewrite using `[ha i, Algebra.smul_def, _root_.mul_assoc, div_mul_cancel₀ _ h0]`. Use `⟨d, nonZeroDivisors.ne_zero d.2, secComb (fun i => scal G.hom (a i)) σ, fun α => secComb (fun i => scal D.toPre.P.A.hom (a i)) (fun i => f i α), ?_, fun α => ?_, fun e => ?_⟩` and prove the remaining obligations. Conclude with `secScal_comb (algebraMap R (FractionRing R)) _ _ _ _ _ _ (pullback.snd G.hom (jK R)) _ G.hom rfl pullback.condition b σ r a d c hc hσ s hs`. Use `secScal_comb (algebraMap R (FractionRing R)) _ _ _ _ _ _ (fst (TF (R := R) (FractionRing R)) D.toPre.P.A).left _ D.toPre.P.A.hom ?_ (Over.w (DegPre.prB D.toPre (FractionRing R))) (fun i => (F i).s α) (fun i => f i α) r a d c hc (fun i => hf i α) _ fun j => ?_` and prove the remaining obligations.
+
+Rewrite using `[← Over.w (fst (TF (R := R) (FractionRing R)) D.toPre.P.A)]`. Use `congr 1`. Express the relevant statement in the definitionally equal form `Spec.map (CommRingCat.ofHom (RingHom.id _)) ≫ _ = _`. Rewrite using `[CommRingCat.ofHom_id, Spec.map_id, Category.id_comp]`. Rewrite using `[fam_sum_f]`.
+
+Both sides reduce to the same expression. Conclude with `expandsAt_linear R I D A G U k e n a σ f _ _ (fun i => hE i e) (fun _ => rfl) (fun _ _ => rfl)`.
+-/
 theorem expands_linear : ∀ (R : Type) [CommRing R] [IsDomain R] (I : Ideal R), AdmBase R I → ∀ (D : DegData R I) (A : PolAV (Spec (CommRingCat.of (FractionRing R)))) (G : Over (Spec (CommRingCat.of R))) [GrpObj G] [IsCommMonObj G] [GeometricallyConnected G.hom] (U : UnifPre I D A G) (k : ℕ) (n : ℕ) (b : Fin n → U.SecK k) (F : Fin n → Fam D.toPre (FractionRing R) k) (c : Fin n → FractionRing R) (s : U.SecK k), (∀ i, U.Expands k (b i) (F i)) → (∀ j, (s).f j = ∑ i, resTop _ (scal (pullback.snd G.hom (jK R)) (c i)) * (b i).f j) → U.Expands k s (∑ i, c i • F i) := by
   intro R _ _ I _ D A G _ _ _ U k n b F c s hE hs
   choose r hr σ f hσ hf hE using hE

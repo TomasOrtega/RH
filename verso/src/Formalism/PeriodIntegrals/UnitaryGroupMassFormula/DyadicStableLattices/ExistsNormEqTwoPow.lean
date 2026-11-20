@@ -7,6 +7,47 @@ namespace PI.GoodTwo.AlgebraicValuationTrichotomy
 open NumberField QuadraticAlgebra
 open scoped nonZeroDivisors
 
+/- English proof (translation)
+Take `⟨k, hk⟩` from `hme`. Establish `hk' : (m : ℤ) = 2 * k` using `by push_cast [hk]; ring`. Establish `hm1 : (1 : ℤ) ≤ m` using `by exact_mod_cast (by omega : 1 ≤ m)`. Use `set w : 𝓞 (Kq m) := mkO m 0 1 with hw`. Use `set v : 𝓞 (Kq m) := mkO m 1 (-1) with hv`.
+
+Use `set P : Ideal (𝓞 (Kq m)) := Ideal.span {2, w} with hP`. Use `set Q : Ideal (𝓞 (Kq m)) := Ideal.span {2, v} with hQ`. Establish `hwP : w ∈ P` using `by rw [hP]; exact Ideal.subset_span (by simp)`. Establish `h2P : (2 : 𝓞 (Kq m)) ∈ P` using `by rw [hP]; exact Ideal.subset_span (by simp)`. Establish `hvQ : v ∈ Q` using `by rw [hQ]; exact Ideal.subset_span (by simp)`.
+
+Establish `h2Q : (2 : 𝓞 (Kq m)) ∈ Q` using `by rw [hQ]; exact Ideal.subset_span (by simp)`. Establish `hwv : w + v = 1`. Rewrite using `[hw, hv, mkO_add, one_O m]`. Evaluate the numerical expressions. Establish `hPQ : P ⊔ Q = ⊤`.
+
+Rewrite using `[Ideal.eq_top_iff_one, ← hwv]`. Conclude with `Ideal.add_mem _ (Ideal.mem_sup_left hwP) (Ideal.mem_sup_right hvQ)`. Establish `hwv' : w * v = mkO m m 0`. Apply the tactic sequence `rw [hw, hv, mkO_mul]; congr 1 <;> ring`. Establish `hm2 : mkO m m 0 = 2 * mkO m k 0`.
+
+Rewrite using `[two_O m, mkO_mul]`. Apply the tactic sequence `congr 1 <;> (try rw [hk']) <;> ring`. Establish `hPQ2 : P * Q = Ideal.span {2}`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[hP, hQ, Ideal.span_mul_span', Ideal.span_le]`.
+
+Introduce and unpack `_ ⟨a, ha, b, hb, rfl⟩`. Simplify using `only [Set.mem_insert_iff, Set.mem_singleton_iff] at ha hb`. Rewrite using `[SetLike.mem_coe, Ideal.mem_span_singleton]`. Apply the tactic sequence `rcases ha with rfl | rfl <;> rcases hb with rfl | rfl`. Conclude with `dvd_mul_right _ _`.
+
+Conclude with `dvd_mul_right _ _`. Conclude with `dvd_mul_left _ _`. Use `show (2 : 𝓞 (Kq m)) ∣ w * v`. Rewrite using `[hwv', hm2]`. Conclude with `dvd_mul_right _ _`.
+
+Rewrite using `[Ideal.span_le, Set.singleton_subset_iff, SetLike.mem_coe]`. Establish `h2 : (2 : 𝓞 (Kq m)) = 2 * v + w * 2` using `by linear_combination (-2) * hwv`. Rewrite using `[h2]`. Conclude with `Ideal.add_mem _ (Ideal.mul_mem_mul h2P hvQ) (Ideal.mul_mem_mul hwP h2Q)`. Establish `h2ne : (2 : 𝓞 (Kq m)) ≠ 0` using `two_ne_zero`.
+
+Establish `hP0 : P ∈ (Ideal (𝓞 (Kq m)))⁰`. Use `mem_nonZeroDivisors_of_ne_zero fun h => h2ne ?_` and prove the remaining obligations. Use `h2P` as an intermediate fact. Rewrite `this` using `[h, Ideal.zero_eq_bot, Ideal.mem_bot]`. Then use the resulting hypothesis. Choose the witnesses or unpack the hypotheses as in `⟨n, hnpos, hprin⟩ : ∃ n, 0 < n ∧ (P ^ n).IsPrincipal := by`.
+
+Use `⟨orderOf (ClassGroup.mk0 (⟨P, hP0⟩ : (Ideal (𝓞 (Kq m)))⁰)), orderOf_pos _, ?_⟩` and prove the remaining obligations. Establish `hpow : ClassGroup.mk0 ((⟨P, hP0⟩ : (Ideal (𝓞 (Kq m)))⁰) ^ orderOf (ClassGroup.mk0 (⟨P, hP0⟩ : (Ideal (𝓞 (Kq m)))⁰))) = 1`. Rewrite using `[map_pow, pow_orderOf_eq_one]`. Rewrite `hpow` using `[ClassGroup.mk0_eq_one_iff]`. Conclude with `hpow`.
+
+Take `⟨α, hαspan⟩ : ∃ α, Ideal.span {α} = P ^ n` from `⟨_, Ideal.span_singleton_generator (P ^ n)⟩`. Establish `hQmap : Ideal.map (RingOfIntegers.mapRingHom (starRingEnd (Kq m))) P = Q`. Rewrite using `[hP, hQ, Ideal.map_span, Set.image_pair, map_ofNat, hw, star_O]`. Evaluate the numerical expressions using `[hv]`. Establish `hQn : Ideal.span {RingOfIntegers.mapRingHom (starRingEnd (Kq m)) α} = Q ^ n`.
+
+Rewrite using `[← hQmap, ← Ideal.map_pow, ← hαspan, Ideal.map_span, Set.image_singleton]`. Establish `hprod : Ideal.span {α * RingOfIntegers.mapRingHom (starRingEnd (Kq m)) α} = Ideal.span {(2 : 𝓞 (Kq m)) ^ n}`. Rewrite using `[← Ideal.span_singleton_mul_span_singleton, hαspan, hQn, ← mul_pow, hPQ2, Ideal.span_singleton_pow]`. Rewrite `hprod` using `[Ideal.span_singleton_eq_span_singleton]`. Take `⟨x, y, hxy⟩` from `repr_O m d hd hdm α`.
+
+Establish `hN : α * RingOfIntegers.mapRingHom (starRingEnd (Kq m)) α = mkO m (x ^ 2 + x * y + (m : ℤ) * y ^ 2) 0`. Apply the tactic sequence `rw [hxy, star_O, mkO_mul]; congr 1 <;> ring`. Rewrite `hprod` using `[hN, pow_two_O m]`. Establish `hN0 : 0 ≤ x ^ 2 + x * y + (m : ℤ) * y ^ 2`. Use polynomial arithmetic with `[sq_nonneg (2 * x + y), sq_nonneg y, mul_nonneg (sub_nonneg.2 hm1) (sq_nonneg y)]`.
+
+Establish `hNeq : x ^ 2 + x * y + (m : ℤ) * y ^ 2 = 2 ^ n` using `Int.dvd_antisymm hN0 (pow_nonneg (by norm_num) _) (int_dvd m d hd hdm hprod.dvd) (int_dvd m d hd hdm hprod.symm.dvd)`. Use `⟨n, x, y, hnpos, ?_, hNeq⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hyo`. Rewrite `hyo` using `[Int.not_odd_iff_even]`. Take `⟨l, hl⟩` from `hyo`.
+
+Establish `hx : Even x`. Assume the negation of the conclusion as `hxo`. Rewrite `hxo` using `[Int.not_even_iff_odd]`. Take `⟨j, hj⟩` from `hxo`. Establish `h2n : (2 : ℤ) ^ n = 2 * 2 ^ (n - 1)`.
+
+Rewrite using `[← pow_succ']`. Use `congr 1`. Use linear arithmetic over natural numbers and integers. Establish `h1 : (1 : ℤ) = 2 * (2 ^ (n - 1) - 2 * j ^ 2 - 2 * j - 2 * j * l - l - 2 * m * l ^ 2)`. Substitute `hj hl` using the available equality.
+
+Take the linear combination `hNeq + h2n`. Conclude with `absurd (Dvd.intro _ h1.symm) (by norm_num)`. Take `⟨j, hj⟩` from `hx`. Establish `hα2 : α = 2 * mkO m j l`. Apply the tactic sequence `rw [hxy, hj, hl, two_O m, mkO_mul]; congr 1 <;> ring`.
+
+Establish `hPnQ : P ^ n ≤ Q`. Rewrite using `[← hαspan, Ideal.span_le, Set.singleton_subset_iff, SetLike.mem_coe, hα2]`. Conclude with `Ideal.mul_mem_right _ _ h2Q`. Establish `hQtop : Q = ⊤`. Use `Ideal.pow_sup_eq_top (n := n) hPQ` as an intermediate fact.
+
+Rewrite `this` using `[sup_eq_right.mpr hPnQ]`. Then use the resulting hypothesis. Establish `hw2 : w ∈ Ideal.span {(2 : 𝓞 (Kq m))}`. Rewrite using `[← hPQ2, hQtop, Ideal.mul_top]`. Conclude with `hwP`. Rewrite `hw2` using `[Ideal.mem_span_singleton]`.
+
+Take `⟨γ, hγ⟩` from `hw2`. Take `⟨a, b, rfl⟩` from `repr_O m d hd hdm γ`. Rewrite `hγ` using `[hw, two_O m, mkO_mul]`. Use `(mkO_inj m hγ).2` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem core (m : ℕ) [Fact (∀ r : ℚ, r ^ 2 ≠ -(m : ℚ) + 1 * r)] (d : ℕ) (hd : Squarefree d)
     (hdm : d + 1 = 4 * m) (hme : Even m) :
     ∃ (h : ℕ) (x y : ℤ), 0 < h ∧ Odd y ∧ x ^ 2 + x * y + (m : ℤ) * y ^ 2 = 2 ^ h := by
@@ -116,6 +157,9 @@ theorem core (m : ℕ) [Fact (∀ r : ℚ, r ^ 2 ≠ -(m : ℚ) + 1 * r)] (d : �
   have := (mkO_inj m hγ).2
   omega
 
+/- English proof (translation)
+Establish `hm : 1 ≤ (d + 1) / 4` using `by omega`. Establish `: Fact (∀ r : ℚ, r ^ 2 ≠ -(((d + 1) / 4 : ℕ) : ℚ) + 1 * r)` using `⟨noRoot _ hm⟩`. Conclude with `core ((d + 1) / 4) d hd (by omega) ⟨(d + 1) / 8, by omega⟩`.
+-/
 theorem exists_norm_eq_two_pow (d : ℕ) (hd : Squarefree d) (h7 : d % 8 = 7) :
     ∃ (h : ℕ) (x y : ℤ), 0 < h ∧ Odd y ∧
       x ^ 2 + x * y + (((d + 1) / 4 : ℕ) : ℤ) * y ^ 2 = 2 ^ h := by

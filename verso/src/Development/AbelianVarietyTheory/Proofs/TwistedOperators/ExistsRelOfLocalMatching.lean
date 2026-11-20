@@ -21,16 +21,30 @@ variable {P Q Pr : Type*} [AddCommGroup P] [Module ℂ P] [AddCommGroup Q] [Modu
 def relOf (q : P →ₗ[ℂ] Pr) (q' : Q →ₗ[ℂ] Pr) : Submodule ℂ (P × Q) :=
   LinearMap.eqLocus (q ∘ₗ LinearMap.fst ℂ P Q) (q' ∘ₗ LinearMap.snd ℂ P Q)
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_relOf {q : P →ₗ[ℂ] Pr} {q' : Q →ₗ[ℂ] Pr} {x : P × Q} : x ∈ relOf q q' ↔ q x.1 = q' x.2 := Iff.rfl
 
+/- English proof (translation)
+Take `⟨b, hb⟩` from `hq' (q a)`. Conclude with `⟨b, hb.symm⟩`.
+-/
 theorem relOf_fst {q : P →ₗ[ℂ] Pr} {q' : Q →ₗ[ℂ] Pr} (hq' : Function.Surjective q') (a : P) : ∃ b, (a, b) ∈ relOf q q' := by
   obtain ⟨b, hb⟩ := hq' (q a)
   exact ⟨b, hb.symm⟩
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `hq (q' b)`. Conclude with `⟨a, ha⟩`.
+-/
 theorem relOf_snd {q : P →ₗ[ℂ] Pr} {q' : Q →ₗ[ℂ] Pr} (hq : Function.Surjective q) (b : Q) : ∃ a, (a, b) ∈ relOf q q' := by
   obtain ⟨a, ha⟩ := hq (q' b)
   exact ⟨a, ha⟩
 
+/- English proof (translation)
+Introduce `h`. Take `⟨y, hy⟩` from `exists_ne (0 : Pr)`. Take `⟨a, rfl⟩` from `hq y`. Establish `h1 : (a, (0 : Q)) ∈ relOf q q'` using `h ▸ Submodule.mem_top`. Rewrite `h1` using `[mem_relOf, map_zero]`.
+
+Conclude with `hy h1`.
+-/
 theorem relOf_ne_top [Nontrivial Pr] {q : P →ₗ[ℂ] Pr} {q' : Q →ₗ[ℂ] Pr} (hq : Function.Surjective q) : relOf q q' ≠ ⊤ := by
   intro h
   obtain ⟨y, hy⟩ := exists_ne (0 : Pr)
@@ -49,6 +63,13 @@ def polTens : MvPolynomial σ₁ ℂ ⊗[ℂ] MvPolynomial σ₂ ℂ ≃ₗ[ℂ]
   ((MvPolynomial.basisMonomials σ₁ ℂ).tensorProduct (MvPolynomial.basisMonomials σ₂ ℂ)).equiv
     (MvPolynomial.basisMonomials ν ℂ) (Finsupp.sumFinsuppEquivProdFinsupp.symm.trans (Finsupp.domCongr e).toEquiv)
 
+/- English proof (translation)
+Use extensionality with `x`. Take `⟨s, rfl⟩` from `e.surjective x`. Establish `h1 : Function.Injective (e ∘ Sum.inl)` using `e.injective.comp Sum.inl_injective`. Establish `h2 : Function.Injective (e ∘ Sum.inr)` using `e.injective.comp Sum.inr_injective`. Break down `s with s | s` into its components or cases.
+
+Rewrite using `[Finsupp.add_apply, Finsupp.domCongr_apply, Finsupp.equivMapDomain_apply, Equiv.symm_apply_apply, Finsupp.sumElim_inl]`. Rewrite using `[show e (Sum.inl s) = (e ∘ Sum.inl) s from rfl, Finsupp.mapDomain_apply h1, Finsupp.mapDomain_notin_range]`. Simplify using the standard rewrite rules. Introduce and unpack `⟨u, hu⟩`. Conclude with `Sum.inl_ne_inr (e.injective hu).symm`.
+
+Rewrite using `[Finsupp.add_apply, Finsupp.domCongr_apply, Finsupp.equivMapDomain_apply, Equiv.symm_apply_apply, Finsupp.sumElim_inr]`. Rewrite using `[show e (Sum.inr s) = (e ∘ Sum.inr) s from rfl, Finsupp.mapDomain_apply h2, Finsupp.mapDomain_notin_range]`. Simplify using the standard rewrite rules. Introduce and unpack `⟨u, hu⟩`. Conclude with `Sum.inl_ne_inr (e.injective hu)`.
+-/
 theorem finsupp_sum_eq (m : σ₁ →₀ ℕ) (n : σ₂ →₀ ℕ) :
     Finsupp.domCongr e (Finsupp.sumElim m n) = m.mapDomain (e ∘ Sum.inl) + n.mapDomain (e ∘ Sum.inr) := by
   ext x
@@ -69,6 +90,11 @@ theorem finsupp_sum_eq (m : σ₁ →₀ ℕ) (n : σ₂ →₀ ℕ) :
     · rintro ⟨u, hu⟩
       exact Sum.inl_ne_inr (e.injective hu)
 
+/- English proof (translation)
+Establish `key : (TensorProduct.mk ℂ _ _).compr₂ (polTens e).toLinearMap = (LinearMap.mul ℂ (MvPolynomial ν ℂ)).compl₁₂ (MvPolynomial.rename (R` using `ℂ) (e ∘ Sum.inl)).toLinearMap (MvPolynomial.rename (R := ℂ) (e ∘ Sum.inr)).toLinearMap := by`. Use `(MvPolynomial.basisMonomials σ₁ ℂ).ext fun m => (MvPolynomial.basisMonomials σ₂ ℂ).ext fun n => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.compr₂_apply, TensorProduct.mk_apply, LinearMap.compl₁₂_apply, LinearMap.mul_apply', AlgHom.toLinearMap_apply, MvPolynomial.coe_basisMonomials]`. Establish `h : (MvPolynomial.monomial m (1 : ℂ)) ⊗ₜ[ℂ] (MvPolynomial.monomial n (1 : ℂ)) = ((MvPolynomial.basisMonomials σ₁ ℂ).tensorProduct (MvPolynomial.basisMonomials σ₂ ℂ)) (m, n)`. Rewrite using `[Module.Basis.tensorProduct_apply, MvPolynomial.coe_basisMonomials, MvPolynomial.coe_basisMonomials]`.
+
+Rewrite using `[h, polTens]`. Use `erw [Module.Basis.equiv_apply]`. Simplify using `only [MvPolynomial.coe_basisMonomials, MvPolynomial.rename_monomial, MvPolynomial.monomial_mul, mul_one, Equiv.trans_apply, AddEquiv.toEquiv_eq_coe, AddEquiv.coe_toEquiv, Finsupp.sumFinsuppEquivProdFinsupp_symm_apply]`. Rewrite using `[finsupp_sum_eq]`. Conclude with `LinearMap.congr_fun₂ key p₁ p₂`.
+-/
 theorem polTens_tmul (p₁ : MvPolynomial σ₁ ℂ) (p₂ : MvPolynomial σ₂ ℂ) :
     polTens e (p₁ ⊗ₜ p₂) = MvPolynomial.rename (e ∘ Sum.inl) p₁ * MvPolynomial.rename (e ∘ Sum.inr) p₂ := by
   have key : (TensorProduct.mk ℂ _ _).compr₂ (polTens e).toLinearMap =
@@ -135,6 +161,13 @@ def squareRel (en : Fin (G.V (.grid i (j + 1))).rank ⊕ Fin (G.V (.grid (i + 1)
       PolRoute G (.grid i (j + 1)) (.grid i j) (.grid (i + 1) j)) :=
   relOf (q ∘ₗ (iotaBig G i j en eb).toLinearMap) (q' ∘ₗ (iotaSmall G i j en eb₁).toLinearMap)
 
+/- English proof (translation)
+Take `⟨-, -, ⟨θ, hθ⟩, -⟩` from `id h`. Take `⟨n, hn, ho⟩` from `hL.xi_fin t`. Take `⟨n', hn', ho'⟩` from `hL.xi_fin t'`. Establish `h0` using `GlobalTheory.Chain.StepVac.hasInfExp_of_order hθ (hL.xi t) hn ho τ`. Establish `h0'` using `GlobalTheory.Chain.StepVac.hasInfExp_of_order hθ (hL.xi t') hn' ho' τ`.
+
+Establish `hK : ∀ s, GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.alpha G s i j = (L.mu0 (j + 1) * L.eta ^ GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.eps G i j) * L.xi s` using `fun s => by show L.mu0 (j + 1) * L.xi s * L.eta ^ GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.eps G i j = _`. Conclude with `mul_right_comm _ _ _`. Establish `e : GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.alpha G t' i j = GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.alpha G t i j * (L.xi t)⁻¹ * L.xi t'`. Rewrite using `[hK t', hK t, mul_inv_cancel_right]`. Use `GlobalTheory.Chain.StepVac.hasInfExp_mul (GlobalTheory.Chain.StepVac.hasInfExp_mul h (GlobalTheory.Chain.StepVac.hasInfExp_inv h0)) h0'` as an intermediate fact.
+
+Rewrite using `[e]`. Simplify using `using this`.
+-/
 theorem hasInfExp_alpha {μ₀ : T} (hL : L.Is μ₀) (t t' : T) (τ : D.what₂.Tau) {a : ℚ}
     (h : HasInfExp D (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.alpha G t i j) τ a) : HasInfExp D (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.alpha G t' i j) τ a := by
   obtain ⟨-, -, ⟨θ, hθ⟩, -⟩ := id h
@@ -153,6 +186,11 @@ theorem hasInfExp_alpha {μ₀ : T} (hL : L.Is μ₀) (t t' : T) (τ : D.what₂
 
 end Grid
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h`. Rewrite `h` using `[not_nontrivial_iff_subsingleton]`. Establish `hz : ∀ z : Pr ⊗[ℂ] Pf, z = 0` using `fun z => by`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => rfl`.
+
+Consider the case `tmul x y => rw [Subsingleton.elim x 0, TensorProduct.zero_tmul]`. Consider the case `add x y hx hy => rw [hx, hy, add_zero]`. Take `⟨u, hu⟩` from `exists_ne (0 : Pi)`. Apply `hu` to reduce the goal to its premises. Rewrite using `[← e.apply_symm_apply u, hz (e.symm u), map_zero]`.
+-/
 theorem nontrivial_of_tensor {Pr Pf Pi : Type*} [AddCommGroup Pr] [Module ℂ Pr] [AddCommGroup Pf] [Module ℂ Pf]
     [AddCommGroup Pi] [Module ℂ Pi] [Nontrivial Pi] (e : Pr ⊗[ℂ] Pf ≃ₗ[ℂ] Pi) : Nontrivial Pr := by
   by_contra h

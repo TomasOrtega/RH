@@ -13,6 +13,13 @@ namespace GlobalTheory.WeilSurj
 
 open GlobalTheory.WeilRestrict Polynomial
 
+/- English proof (translation)
+Use `haveI := Fintype.ofFinite F`. Establish `hdeg : (X : F[X]).natDegree < (X ^ m : F[X]).natDegree`. Rewrite using `[natDegree_X, natDegree_X_pow]`. Conclude with `hm`. Establish `hp : (X ^ m - X : F[X]) ≠ 0`.
+
+Introduce `h0`. Use `congrArg natDegree h0` as an intermediate fact. Rewrite `this` using `[natDegree_sub_eq_left_of_natDegree_lt hdeg, natDegree_X_pow, natDegree_zero]`. Use linear arithmetic over natural numbers and integers. Establish `hsub : (Finset.univ : Finset F) ⊆ (X ^ m - X : F[X]).roots.toFinset`.
+
+Introduce `x _`. Rewrite using `[Multiset.mem_toFinset, mem_roots hp, IsRoot.def]`. Simplify using `[h x]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem card_le_of_forall_pow_eq {F : Type*} [Field F] [Finite F] {m : ℕ} (hm : 1 < m)
     (h : ∀ x : F, x ^ m = x) : Nat.card F ≤ m := by
   classical
@@ -34,6 +41,33 @@ theorem card_le_of_forall_pow_eq {F : Type*} [Field F] [Finite F] {m : ℕ} (hm 
     _ ≤ _ := card_roots' _
     _ = m := by rw [natDegree_sub_eq_left_of_natDegree_lt hdeg, natDegree_X_pow]
 
+/- English proof (translation)
+Introduce `E K Ω _ _ _ _ _ _ _ _ _ _ _ A w W h h' σ hσ`. Take `⟨f, hf⟩` from `normV_eq_pow_of_isPlaceOver h h'`. Establish `hq1 : 1 < normV w` using `one_lt_normV w`. Establish `hf0 : 0 < f`. Break down `Nat.eq_zero_or_pos f with h0 | h0` into its components or cases.
+
+Use `one_lt_normV W` as an intermediate fact. Rewrite `this` using `[hf, h0, pow_zero]`. Conclude with `absurd this (lt_irrefl 1)`. Conclude with `h0`. Establish `hφdeg : deg (resWeil h h' (frob h')) = f`.
+
+Establish `h1 : ActsAs A (normV w ^ f) (frob h' : G K Ω) 1 0`. Rewrite using `[← hf]`. Conclude with `actsAs_one_iff.mpr isFrob_frob`. Establish `h2` using `actsAs_resG (K := E) h1`. Use `deg_eq (σ := resWeil h h' (frob h')) h2` as an intermediate fact.
+
+Simplify using `using this`. Take `⟨k, r, hr0, hrf, hdr⟩ : ∃ k r : ℤ, 0 ≤ r ∧ r < f ∧ r + f * k = deg σ` from `⟨deg σ / f, deg σ % f, Int.emod_nonneg _ (by exact_mod_cast hf0.ne'), Int.emod_lt_of_pos _ (by exact_mod_cast hf0), Int.emod_add_mul_ediv _ _⟩`. Use `set σ' : Weil h := σ * (resWeil h h' (frob h' ^ k))⁻¹ with hσ'`. Establish `hdeg' : deg σ' = r`. Rewrite using `[hσ', deg_mul, deg_inv, map_zpow, deg_zpow, hφdeg]`.
+
+Take the linear combination `-hdr`. Establish `hfix' : ∀ x : K, (σ' : G E Ω) (algebraMap K Ω x) = algebraMap K Ω x`. Introduce `x`. Rewrite using `[hσ', Subgroup.coe_mul, AlgEquiv.mul_apply, ← map_inv, resWeil_apply, AlgEquiv.commutes, hσ]`. Establish `hr : r = 0`.
+
+Assume the negation of the conclusion as `hne`. Establish `hrpos : 0 < r` using `lt_of_le_of_ne hr0 (Ne.symm hne)`. Use `set n := r.toNat with hn'`. Establish `hn : (n : ℤ) = r` using `Int.toNat_of_nonneg hr0`. Establish `hact` using `actsAs_of_deg (σ := σ') (a := n) (b := 0) (by rw [hdeg', hn]; simp)`.
+
+Establish `hmem : ∀ x : 𝓞 K, x ^ (normV w ^ n) - x ∈ W.asIdeal`. Introduce `x`. Rewrite using `[← h' _]`. Establish `hx : A.valuation (algebraMap K Ω x) ≤ 1` using `(A.valuation_le_one_iff _).mpr (mem_of_isIntegral_int A (map_isIntegral_int (algebraMap K Ω) x.isIntegral_coe))`. Use `hact.2 _ hx` as an intermediate fact.
+
+Rewrite `this` using `[hfix', pow_zero, pow_one, Valuation.map_sub_swap]`. Establish `e : algebraMap K Ω ((x ^ (normV w ^ n) - x : 𝓞 K) : K) = (algebraMap K Ω x) ^ (normV w ^ n) - algebraMap K Ω x` using `by simp`. Rewrite using `[e]`. Conclude with `this`. Use `haveI : W.asIdeal.IsMaximal := W.isMaximal`.
+
+Use `letI : Field (𝓞 K ⧸ W.asIdeal) := Ideal.Quotient.field _`. Use `haveI : Finite (𝓞 K ⧸ W.asIdeal) := W.asIdeal.finiteQuotientOfFreeOfNeBot W.ne_bot`. Establish `hall : ∀ y : 𝓞 K ⧸ W.asIdeal, y ^ (normV w ^ n) = y`. Introduce `y`. Take `⟨x, rfl⟩` from `Ideal.Quotient.mk_surjective y`.
+
+Rewrite using `[← map_pow, ← sub_eq_zero, ← map_sub, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hmem x`. Establish `hn0 : n ≠ 0` using `by omega`. Establish `hcard` using `card_le_of_forall_pow_eq (one_lt_pow₀ hq1 hn0) hall`. Establish `hQ : Nat.card (𝓞 K ⧸ W.asIdeal) = normV w ^ f` using `hf`.
+
+Rewrite `hcard` using `[hQ]`. Establish `: normV w ^ n < normV w ^ f` using `Nat.pow_lt_pow_right hq1 (by omega)`. Use linear arithmetic over natural numbers and integers. Establish `hine : (σ' : G E Ω) ∈ Ine (F` using `E) A := deg_eq_zero_iff.mp (by rw [hdeg', hr])`. Set `τ0 : G K Ω` to `{ (σ' : G E Ω).toRingEquiv with commutes' := fun x => hfix' x }`.
+
+Establish `hτ0 : τ0 ∈ Ine (F` using `K) A := hine`. Use `⟨ineIncl h' ⟨τ0, hτ0⟩ * frob h' ^ k, fun z => ?_⟩` and prove the remaining obligations. Establish `key : (((resWeil h h' (frob h' ^ k))⁻¹ : Weil h) : G E Ω) (((frob h' ^ k : Weil h') : G K Ω) z) = z`. Rewrite using `[← map_inv, resWeil_apply, ← AlgEquiv.mul_apply, ← Subgroup.coe_mul, inv_mul_cancel, Subgroup.coe_one, AlgEquiv.one_apply]`. Use `show (σ : G E Ω) z = (σ' : G E Ω) (((frob h' ^ k : Weil h') : G K Ω) z)`.
+
+Rewrite using `[hσ', Subgroup.coe_mul, AlgEquiv.mul_apply, key]`.
+-/
 theorem exists_weil_of_fixes : ∀ (E K Ω : Type) [Field E] [NumberField E] [Field K] [NumberField K] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] [Algebra K Ω] [IsAlgClosure K Ω] [Algebra E K] [IsScalarTower E K Ω] (A : ValuationSubring Ω) (w : HeightOneSpectrum (𝓞 E)) (W : HeightOneSpectrum (𝓞 K)) (h : IsPlaceOver A w) (h' : IsPlaceOver A W) (σ : Weil h), (∀ x : K, (σ : G E Ω) (algebraMap K Ω x) = algebraMap K Ω x) → ∃ τ : Weil h', ∀ z : Ω, (σ : G E Ω) z = (τ : G K Ω) z := by
   intro E K Ω _ _ _ _ _ _ _ _ _ _ _ A w W h h' σ hσ
   obtain ⟨f, hf⟩ := normV_eq_pow_of_isPlaceOver h h'

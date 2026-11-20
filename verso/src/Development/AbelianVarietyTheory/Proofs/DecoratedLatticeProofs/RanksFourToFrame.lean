@@ -35,6 +35,11 @@ def powChars {m₀ : ℕ} (Ch : Chars X Pr (m₀ + 1)) (m : ℕ) : Chars X Pr m 
   muVal _ := Ch.muVal 0
   etaVal := Ch.etaVal
 
+/- English proof (translation)
+Establish `hp` using `hPr.g_prime i`. Use `haveI : NeZero (Pr.g i) := ⟨hp.ne_zero⟩`. Establish `hq : qOf w = Pr.g i` using `ciQOf_eq hPr hw`. Use `haveI : Finite (𝓞 X.E ⧸ w.asIdeal) := ciFinite (by rw [hq]; exact hp.ne_zero)`. Use `haveI : Fintype (𝓞 X.E ⧸ w.asIdeal) := Fintype.ofFinite _`.
+
+Set `e : ZMod (Pr.g i) ≃+* (𝓞 X.E ⧸ w.asIdeal)` to `ZMod.ringEquivOfPrime _ hp (by rw [← Nat.card_eq_fintype_card, ciCard, hq])`. Use `⟨Units.map (e : ZMod (Pr.g i) →* (𝓞 X.E ⧸ w.asIdeal)) a, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `e (a : ZMod (Pr.g i)) = _`. Rewrite using `[← map_natCast e, ZMod.natCast_zmod_val]`.
+-/
 theorem exists_unit (hPr : Pr.Ok) {i : Fin 2} {w : HeightOneSpectrum (𝓞 X.E)} (hw : w ∈ Pr.vG i) (a : (ZMod (Pr.g i))ˣ) :
     ∃ x : (𝓞 X.E ⧸ w.asIdeal)ˣ, (x : 𝓞 X.E ⧸ w.asIdeal) = (((a : ZMod (Pr.g i)).val : ℕ) : 𝓞 X.E ⧸ w.asIdeal) := by
   have hp := hPr.g_prime i
@@ -48,6 +53,17 @@ theorem exists_unit (hPr : Pr.Ok) {i : Fin 2} {w : HeightOneSpectrum (𝓞 X.E)}
   change e (a : ZMod (Pr.g i)) = _
   rw [← map_natCast e, ZMod.natCast_zmod_val]
 
+/- English proof (translation)
+Establish `hom : ∀ i : Fin 2, ∃ om : (ZMod (Pr.g i))ˣ →* X.Kˣ, Function.Injective om ∧ ∀ w : {w // w ∈ Pr.vGs}, w.1 ∈ Pr.vG i → ∀ (j : Fin m) (a : (ZMod (Pr.g i))ˣ) (x : (𝓞 X.E ⧸ w.1.asIdeal)ˣ), (x : 𝓞 X.E ⧸ w.1.asIdeal) = (((a : ZMod (Pr.g i)).val : ℕ) : 𝓞 X.E ⧸ w.1.asIdeal) → (powChars Ch …`. Introduce `i`. Take `⟨om, hi, h⟩` from `hCh.chi_om i`. Use `⟨om, hi, fun w hw j a x hx => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(Ch.chi 0 w ^ (j.1 + 1)) x = _`.
+
+Rewrite using `[MonoidHom.pow_apply, h w hw 0 a x hx, ← pow_mul]`. Simplify using the standard rewrite rules. Use `⟨hCh.psi_zero_nontrivial_character, fun w j j' hjj => ?_, fun i w w' hw hw' j a x x' hx hx' => ?_, hCh.characterAgreesOnPlaces, hom⟩` and prove the remaining obligations. Take `⟨i, hi⟩` from `ciVGs_cases w.2`. Take `⟨om, hinj, h⟩` from `hom i`.
+
+Use `haveI : Fact (Pr.g i).Prime := ⟨hPr.g_prime i⟩`. Take `⟨a, ha⟩` from `IsCyclic.exists_ofOrder_eq_natCard (α := (ZMod (Pr.g i))ˣ)`. Take `⟨x, hx⟩` from `exists_unit hPr hi a`. Establish `h1 : om a ^ (2 * (j.1 + 1)) = om a ^ (2 * (j'.1 + 1))`. Rewrite using `[← h w hi j a x hx, ← h w hi j' a x hx]`.
+
+Conclude with `DFunLike.congr_fun hjj x`. Establish `ho : orderOf (om a) = Pr.g i - 1`. Rewrite using `[orderOf_injective om hinj, ha, Nat.card_eq_fintype_card, ZMod.card_units]`. Establish `hmi` using `hm i`. Establish `hj` using `j.2`.
+
+Establish `hj'` using `j'.2`. Establish `h2` using `pow_injOn_Iio_orderOf (x := om a) (by rw [ho, Set.mem_Iio]; omega) (by rw [ho, Set.mem_Iio]; omega) h1`. Conclude with `Fin.ext (by omega)`. Express the relevant statement in the definitionally equal form `(Ch.chi 0 w ^ (j.1 + 1)) x = (Ch.chi 0 w' ^ (j.1 + 1)) x'`. Rewrite using `[MonoidHom.pow_apply, MonoidHom.pow_apply, hCh.chi_same i w w' hw hw' 0 a x x' hx hx']`.
+-/
 theorem powChars_ok (hPr : Pr.Ok) {m₀ : ℕ} {Ch : Chars X Pr (m₀ + 1)} (hCh : Ch.Ok) {m : ℕ} (hm : ∀ i, 2 * m + 1 < Pr.g i) :
     (powChars Ch m).Ok := by
   have hom : ∀ i : Fin 2, ∃ om : (ZMod (Pr.g i))ˣ →* X.Kˣ, Function.Injective om ∧
@@ -79,6 +95,9 @@ theorem powChars_ok (hPr : Pr.Ok) {m₀ : ℕ} {Ch : Chars X Pr (m₀ + 1)} (hCh
   · change (Ch.chi 0 w ^ (j.1 + 1)) x = (Ch.chi 0 w' ^ (j.1 + 1)) x'
     rw [MonoidHom.pow_apply, MonoidHom.pow_apply, hCh.chi_same i w w' hw hw' 0 a x x' hx hx']
 
+/- English proof (translation)
+Introduce `h1`. Establish `h2 : Ch.chi 0 w = 1` using `by simpa [powChars] using h1`. Establish `h3 : (0 : Fin (m + 2)) = 1` using `h.chi_inj w (by simp [powChars, h2])`. Simplify using `at h3`.
+-/
 theorem powChars_ne_one {m₀ m : ℕ} {Ch : Chars X Pr (m₀ + 1)} (h : (powChars Ch (m + 2)).Ok) (w : {w // w ∈ Pr.vGs}) :
     (powChars Ch (m + 2)).chi 0 w ≠ 1 := by
   intro h1
@@ -89,6 +108,11 @@ theorem powChars_ne_one {m₀ m : ℕ} {Ch : Chars X Pr (m₀ + 1)} (h : (powCha
 def cstSym {R : Ranks} (Ch : Chars X Pr R.m) (SB : Finset (HeightOneSpectrum (𝓞 X.E))) : LocCst X SB :=
   { ciCst Ch SB (fun _ _ => 1) with sharp := true, A := R.m }
 
+/- English proof (translation)
+Establish `hP` using `ciMemG sel S₀ P`. Establish `h2` using `R.two_le_m`. Establish `hc : (ciCst Ch (rowSG Pr sel (mu0 X.F X.E X.K S₀)) (fun _ _ => 1)).Ok` using `ciCst_ok hPr hCh (fun Q hQ => ciMemG sel S₀ ⟨Q, hQ⟩) (fun Q hQ => h4 Q (ciMemG sel S₀ ⟨Q, hQ⟩))`. Use `GlobalTheory.AtTypeExists.exists_atType X Pr R Ch sel S₀ _ _ σ₀ P _ hP (by omega) ⟨hc.psi_add, hc.psi_int, hc.psi_ne, hc.D_pos, hc.sq_sq, hc.M_pos, ?_, hc.M_le_B, hc.B_pos⟩ rfl le_rfl (fun a ha => ?_) (ciQ_notMem_sq hX hPr hP)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `1 ≤ R.m`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hq0 : (qOf P.1 : X.E) ≠ 0` using `by exact_mod_cast (ciQOf_prime hPr hP).ne_zero`. Express the relevant statement in the definitionally equal form `ciPsi Ch P _ = _`. Unfold `ciPsi`. Rewrite using `[mul_div_cancel₀ _ hq0, if_pos ha]`.
+-/
 theorem atType_of_ok (hX : X.Ok) (hPr : Pr.Ok) {R : Ranks} {Ch : Chars X Pr R.m} (hCh : Ch.Ok) (h4 : ∀ w ∈ Pr.vGs, qOf w % 4 = 1)
     (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) (S₀ : Set ℕ) (σ₀ : X.K →+* ℂ)
     (P : rowSG Pr sel (mu0 X.F X.E X.K S₀)) :
@@ -112,6 +136,17 @@ end Gen
 
 open Formalism.L2.Host in
 
+/- English proof (translation)
+Establish `hX` using `exampleFields_ok (cycQ nd2N) le_rfl`. Establish `hPr` using `examplePrimes_ok (cycQ nd2N) le_rfl`. Establish `hf : (nd2X (cycQ nd2N) le_rfl).f = ranksFour.f` using `exampleFields_degree _ _`. Establish `h4` using `primes_over_one_mod_four (cycQ nd2N) le_rfl`. Establish `hg : ∀ i, 2 * 4 + 1 < (toyPrimes (cycQ nd2N) le_rfl).g i` using `Fin.forall_fin_two.2 ⟨lt_trans (by norm_num) example_primes_gt_sixteen.1, lt_trans (by norm_num) example_primes_gt_sixteen.2⟩`.
+
+Establish `h0 : ∃ Ch : Chars (nd2X (cycQ nd2N) le_rfl) (toyPrimes (cycQ nd2N) le_rfl) (1 + 1), Ch.Ok` using `exampleCharacters_exist _ _`. Establish `σ₀` using `toyComplexEmbedding (cycQ nd2N) le_rfl`. Use `revert hX hPr hf h4 hg h0 σ₀`. Generalize the expression as in `toyPrimes (cycQ nd2N) le_rfl = Pr`. Use `revert Pr`.
+
+Generalize the expression as in `nd2X (cycQ nd2N) le_rfl = X`. Introduce `Pr hX hPr hf h4 hg h0 σ₀`. Take `⟨Ch₀, hCh₀⟩` from `h0`. Establish `hCh : (powChars Ch₀ (2 + 2)).Ok` using `powChars_ok hPr hCh₀ hg`. Take `⟨w, hw⟩ : (Pr.vG 0).Nonempty` from `Finset.card_pos.1 (by rw [hPr.vG_card 0, hf]; decide)`.
+
+Establish `hw' : w ∈ Pr.vGs` using `by classical`. Conclude with `Finset.mem_union.2 (Or.inl hw)`. Set `P : rowSG Pr (fun _ => w) (mu0 X.F X.E X.K ∅)` to `⟨w, by rw [ciRowSG]; exact hw'⟩`. Take `⟨k, i1, i2, i3, i4, ι, S, hS⟩` from `atType_of_ok hX hPr (R := ranksFour) (Ch := powChars Ch₀ (2 + 2)) hCh h4 (fun _ => w) ∅ σ₀ P`. Use `⟨X, Pr, ranksFour, powChars Ch₀ (2 + 2), _, _, _, _, σ₀, P, k, i1, i2, i3, i4, ι, _, S, hX, hPr, hCh, hf, ?_, le_rfl, hS⟩` and prove the remaining obligations.
+
+Unfold `chiP`. Rewrite using `[dif_pos hw']`. Conclude with `powChars_ne_one hCh ⟨w, hw'⟩`.
+-/
 theorem exists_closed_ok : ∃ (X : Fields) (Pr : Primes X) (R : Ranks) (Ch : Chars X Pr R.m)
     (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) (S₀ : Set ℕ) (mu : Tup X.F X.E X.K S₀)
     (cst : LocCst X (rowSG Pr sel mu)) (σ₀ : X.K →+* ℂ) (P : rowSG Pr sel mu) (k : Type) (_ : Field k) (_ : ValuativeRel k)

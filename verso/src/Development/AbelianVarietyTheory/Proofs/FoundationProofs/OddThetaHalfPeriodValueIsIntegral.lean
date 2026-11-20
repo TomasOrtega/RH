@@ -11,6 +11,13 @@ open Filter
 
 namespace GlobalTheory.HalfPeriodValue
 
+/- English proof (translation)
+Establish `d : ∀ {g : ℂ → ℂ}, Differentiable ℂ g → Differentiable ℂ (deriv g)` using `fun hg => differentiableOn_univ.1 (hg.differentiableOn.deriv isOpen_univ)`. Establish `h1 : ∀ᶠ z in 𝓝 (0 : ℂ), f' z * a z + f z * deriv a z = (2 * s z * deriv s z) * b z + (s z * s z) * deriv b z` using `by filter_upwards [hf, h.eventually_nhds] with z hz hz'`. Establish `e1` using `hz.mul (ha z).hasDerivAt`. Establish `e2` using `((hs z).hasDerivAt.mul (hs z).hasDerivAt).mul (hb z).hasDerivAt`. Establish `e3` using `e1.unique (e2.congr_of_eventuallyEq (by filter_upwards [hz'] with w hw`.
+
+Simplify `hw))` using `[sq]`. Simplify using `only [Pi.mul_apply] at e3`. Take the linear combination `e3`. Establish `e1` using `(hf'.mul (ha 0).hasDerivAt).add (hf.self_of_nhds.mul (d ha 0).hasDerivAt)`. Establish `e2` using `((((hs 0).hasDerivAt.const_mul 2).mul (d hs 0).hasDerivAt).mul (hb 0).hasDerivAt).add (((hs 0).hasDerivAt.mul (hs 0).hasDerivAt).mul (d hb 0).hasDerivAt)`.
+
+Establish `e3` using `e1.unique (e2.congr_of_eventuallyEq (by filter_upwards [h1] with w hw`. Simplify using `using hw))`. Simplify using `only [Pi.mul_apply, h0, h0', hs0, hs1] at e3`. Take the linear combination `e3`.
+-/
 lemma second_order {f f' a s b : ℂ → ℂ} {c : ℂ} (hf : ∀ᶠ z in 𝓝 (0 : ℂ), HasDerivAt f (f' z) z)
     (hf' : HasDerivAt f' c 0) (h0 : f 0 = 0) (h0' : f' 0 = 0) (ha : Differentiable ℂ a)
     (hs : Differentiable ℂ s) (hb : Differentiable ℂ b) (hs0 : s 0 = 0) (hs1 : deriv s 0 = 1)
@@ -36,6 +43,11 @@ lemma second_order {f f' a s b : ℂ → ℂ} {c : ℂ} (hf : ∀ᶠ z in 𝓝 (
   simp only [Pi.mul_apply, h0, h0', hs0, hs1] at e3
   linear_combination e3
 
+/- English proof (translation)
+Use `IsIntegral.of_pow (n := 12) (by norm_num) ?_` and prove the remaining obligations. Set `R` to `integralClosure ℤ ℂ`. Use `isIntegral_trans (A := R) _ ?_` and prove the remaining obligations. Use `⟨(Polynomial.X + 16) ^ 3 - Polynomial.C (⟨j, hj⟩ : R) * Polynomial.X, by monicity!, ?_⟩` and prove the remaining obligations. Rewrite using `[← Polynomial.aeval_def]`.
+
+Simplify using `only [map_sub, map_pow, map_add, map_mul, Polynomial.aeval_X, Polynomial.aeval_C, map_ofNat]`. Conclude with `sub_eq_zero.2 h`.
+-/
 lemma isIntegral_of_eq {u j : ℂ} (hj : IsIntegral ℤ j) (h : (u ^ 12 + 16) ^ 3 = j * u ^ 12) :
     IsIntegral ℤ u := by
   refine IsIntegral.of_pow (n := 12) (by norm_num) ?_
@@ -46,6 +58,33 @@ lemma isIntegral_of_eq {u j : ℂ} (hj : IsIntegral ℤ j) (h : (u ^ 12 + 16) ^ 
   simp only [map_sub, map_pow, map_add, map_mul, Polynomial.aeval_X, Polynomial.aeval_C, map_ofNat]
   exact sub_eq_zero.2 h
 
+/- English proof (translation)
+Introduce `Λ hΛ hΔ hj t h2 ht`. Take `⟨⟨hd, hd1, hodd, hU⟩, hzero, -, hwp, -⟩` from `GlobalTheory.T.oddThetaFunction_existence_uniqueness Λ hΛ`. Take `⟨w₁, w₂, hli, hΛ⟩` from `hΛ`. Set `L : PeriodPair` to `⟨w₁, w₂, hli⟩`. Establish `hL : ∀ z, z ∈ Λ ↔ z ∈ L.lattice` using `fun z => by`.
+
+Rewrite using `[hΛ, PeriodPair.mem_lattice, AddSubgroup.mem_closure_pair]`. Simplify using `[L]`. Take `⟨hg2, hg3, -, -, hw, -⟩` from `GlobalTheory.T.latticeInvariants_periodPair_dictionary L Λ hL`. Establish `htL : t ∉ L.lattice` using `fun h => ht ((hL t).2 h)`. Establish `hP' : L.derivWeierstrassP t = 0`.
+
+Establish `e1` using `L.derivWeierstrassP_add_coe (-t) ⟨2 * t, (hL _).1 h2⟩`. Rewrite `e1` using `[L.derivWeierstrassP_neg]`. Establish `: -t + 2 * t = t` using `by ring`. Simplify using `only [this] at e1`. Take the linear combination `e1 / 2`.
+
+Establish `hcub : 4 * wpF Λ t ^ 3 - g2 Λ * wpF Λ t - g3 Λ = 0`. Rewrite using `[(hw t ht).1, hg2, hg3, ← L.derivWeierstrassP_sq t htL, hP']`. Simplify using the standard rewrite rules. Use `set k : ℂ := (Real.pi : ℂ) * (starRingEnd ℂ) t / (area Λ : ℂ) with hk`. Establish `hsys` using `GlobalTheory.weierstrass_system_add_const L t (z := 0) (by simpa using htL)`.
+
+Establish `key` using `second_order (f := fun z => L.weierstrassP (z + t) - L.weierstrassP t) (f' := fun z => L.derivWeierstrassP (z + t)) (a := fun z => sgStar Λ (z + t) ^ 2 * sgStar Λ t ^ 2) (s := sgStar Λ) (b := fun z => Complex.exp (2 * k * z + 2 * k * t)) (hsys.mono fun z hz => hz.1.sub_const _) h …`. Establish `hz' : z + t ∉ Λ` using `fun h => hz ((hL _).1 h)`. Establish `e1` using `hwp (z + t) t hz' ht`. Rewrite `e1` using `[(hw _ hz').1, (hw t ht).1]`. Establish `e2` using `hU (2 * t) h2 z`.
+
+Rewrite `e2` using `[if_neg (by simpa using ht)]`. Establish `e3 : -(Real.pi : ℂ) * z * (starRingEnd ℂ) (2 * t) / (area Λ : ℂ) - (Real.pi : ℂ) * (2 * t) * (starRingEnd ℂ) (2 * t) / (2 * (area Λ : ℂ)) = -(2 * k * z + 2 * k * t)`. Rewrite using `[hk, map_mul, map_ofNat]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [U1] at e2`.
+
+Rewrite `e2` using `[e3, Complex.exp_neg]`. Establish `e4 : z + t + t = z + 2 * t` using `by ring`. Rewrite using `[e1, e4, add_sub_cancel_right]`. Establish `e5` using `Complex.exp_ne_zero (2 * k * z + 2 * k * t)`. Rewrite `e2` using `[mul_inv_eq_iff_eq_mul₀ e5]`.
+
+Rewrite using `[e2]`. Use the proof step `ring)`. Simplify using `only [zero_add, mul_zero] at key`. Rewrite `key` using `[← (hw t ht).1, ← hg2]`. Establish `hu : U1 Λ t (sgStar Λ) 0 ^ 4 * Complex.exp (2 * k * t) = sgStar Λ t ^ 4`.
+
+Simplify using `only [U1, zero_add]`. Rewrite using `[mul_pow, mul_assoc, ← Complex.exp_nat_mul, ← Complex.exp_add]`. Establish `: ((4 : ℕ) : ℂ) * (-(Real.pi : ℂ) * 0 * (starRingEnd ℂ) t / (area Λ : ℂ) - (Real.pi : ℂ) * t * (starRingEnd ℂ) t / (2 * (area Λ : ℂ))) + 2 * k * t = 0`. Rewrite using `[hk]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, Complex.exp_zero, mul_one]`. Use `set u := U1 Λ t (sgStar Λ) 0`. Use `set e := wpF Λ t`. Establish `h4 : (12 * e ^ 2 - g2 Λ) * u ^ 4 = 4`.
+
+Apply `mul_right_cancel₀ (Complex.exp_ne_zero (2 * k * t))` to reduce the goal to its premises. Take the linear combination `2 * key + (12 * e ^ 2 - g2 Λ) * hu`. Establish `hD : (12 * e ^ 2 - g2 Λ) ^ 2 * (g2 Λ - 3 * e ^ 2) = 1`. Establish `h3 : g3 Λ = 4 * e ^ 3 - g2 Λ * e` using `by linear_combination -hcub`. Rewrite using `[← hΔ, TaylorLogMetric.discr, h3]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `h8 : u ^ 8 = 16 * (g2 Λ - 3 * e ^ 2)`. Take the linear combination `(-u ^ 8) * hD + (g2 Λ - 3 * e ^ 2) * ((12 * e ^ 2 - g2 Λ) * u ^ 4 + 4) * h4`. Use `⟨fun h => by simp [h] at h4, isIntegral_of_eq hj ?_, h8, hcub⟩` and prove the remaining obligations. Establish `h5 : u ^ 12 + 16 = 12 * g2 Λ * u ^ 4`.
+
+Take the linear combination `u ^ 4 * h8 - 4 * h4`. Rewrite using `[h5]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem value_half_period : ∀ (Λ : AddSubgroup ℂ), (∃ w₁ w₂ : ℂ, LinearIndependent ℝ ![w₁, w₂] ∧ Λ = AddSubgroup.closure {w₁, w₂}) → TaylorLogMetric.discr Λ = 1 → IsIntegral ℤ (1728 * g2 Λ ^ 3) → ∀ t, 2 * t ∈ Λ → t ∉ Λ → U1 Λ t (sgStar Λ) 0 ≠ 0 ∧ IsIntegral ℤ (U1 Λ t (sgStar Λ) 0) ∧ U1 Λ t (sgStar Λ) 0 ^ 8 = 16 * (g2 Λ - 3 * wpF Λ t ^ 2) ∧ 4 * wpF Λ t ^ 3 - g2 Λ * wpF Λ t - g3 Λ = 0 := by
   intro Λ hΛ hΔ hj t h2 ht
   obtain ⟨⟨hd, hd1, hodd, hU⟩, hzero, -, hwp, -⟩ := GlobalTheory.T.oddThetaFunction_existence_uniqueness Λ hΛ

@@ -14,6 +14,11 @@ namespace GlobalTheory.RealWeilF
 section Unitary
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 end Unitary
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B hB nS nT JS JT _ _ ξ₀ _ _ θ hθ ι _ p`. Take `⟨g, h⟩` from `p`. Establish `hσ : ∀ w x, (B.emb w).1 (σ x) = star ((B.emb w).1 x)` using `fun w x => hB.cm.2.2.2 _ x`. Unfold `HMF`. Rewrite using `[mMF_apply, blk_conjTranspose, blk_mul, blk_mul]`.
+
+Apply the tactic sequence `congr 1 <;> funext w`. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul, compAtF_unitary hσ hθ]`. Establish `h1` using `compAtF_unitary hσ hθ JS g w`. Establish `h2` using `compAtF_mul_inv θ JS g w`. Use `conv_rhs => rw [← h1, Matrix.mul_inv_rev, Matrix.mul_inv_rev, ← conjTranspose_nonsing_inv, inv_eq_right_inv h2]`.
+-/
 theorem mMF_unitary_k : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E), _root_.UpperTheory.TP.W.GoodK σ B → ∀ (nS nT : ℕ) (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E),
       IsHermND σ JS → IsHermND σ JT → ∀ ξ₀ : E, ξ₀ ≠ 0 → σ ξ₀ = -ξ₀ → ∀ θ : InfinitePlace F → (Ainf F ⊗[F] E →+* ℂ),

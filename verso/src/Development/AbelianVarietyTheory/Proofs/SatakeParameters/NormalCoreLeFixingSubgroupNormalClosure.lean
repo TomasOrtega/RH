@@ -13,10 +13,16 @@ open Pointwise
 
 variable {Ω F : Type} [Field Ω] [Field F] [Algebra F Ω]
 
+/- English proof (translation)
+Rewrite using `[ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem, AlgEquiv.smul_def, AlgEquiv.commutes]`.
+-/
 theorem algebraMap_mem_smul_iff (γ : Ω ≃ₐ[F] Ω) (A : ValuationSubring Ω) (c : F) :
     algebraMap F Ω c ∈ γ • A ↔ algebraMap F Ω c ∈ A := by
   rw [ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem, AlgEquiv.smul_def, AlgEquiv.commutes]
 
+/- English proof (translation)
+Introduce `x`. Rewrite using `[← h x, valuation_lt_one_iff', valuation_lt_one_iff', ← map_inv₀, algebraMap_mem_smul_iff, algebraMap_mem_smul_iff, map_inv₀]`.
+-/
 theorem isPlaceOver_smul' [NumberField F] {A : ValuationSubring Ω} {v : HeightOneSpectrum (𝓞 F)}
     (h : IsPlaceOver A v) (γ : Ω ≃ₐ[F] Ω) : IsPlaceOver (γ • A) v := by
   intro x

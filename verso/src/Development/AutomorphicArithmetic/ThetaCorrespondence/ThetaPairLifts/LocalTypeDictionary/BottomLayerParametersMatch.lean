@@ -16,6 +16,11 @@ open Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 noncomputable section
 namespace GlobalTheory.ReadMatch
+/- English proof (translation)
+Introduce `hPr hTI hLM hInp hBS`. Use `gbig_and (_root_.GlobalTheory.T.exists_bottom_stratum_intertwiner hPr hTI hLM hInp hBS) (_root_.GlobalTheory.T.standard_module_bottom_datum_exists hPr hTI hLM hInp hBS) ?_` and prove the remaining obligations. Introduce `D T Lc sc G μ₀ C x b q1 q2 W hW i j A A' WW X δ t0 hX hβ`. Take `⟨r, rc, hr, hrδ, hrc, H1⟩` from `q1 W hW i j A A' WW X δ t0 hX`. Take `⟨κ, hκ, H2⟩` from `q2 W hW i j A A' WW X δ t0 hX hβ r rc hr hrδ hrc H1`.
+
+Use `⟨r, rc, κ, hr, hrc, hκ, fun s Q P P' hB => ?_⟩` and prove the remaining obligations. Take `⟨u, hu0, huQ, huU, hEq⟩` from `H2 s Q P P' hB`. Use `⟨u, hu0, huQ, huU, fun ea ed h g x y hg hy => ?_⟩` and prove the remaining obligations. Rewrite using `[(H1 s Q P P' hB ea ed).2 h g x y hg hy, hEq ea ed, P.W.smul _ _ _ _ (GlobalTheory.NormSum.RepInv.test_mem (GlobalTheory.InducedType.induced_type D).1 P.crv P P.level_pos)]`.
+-/
 theorem bottom_layer_parameters_match : _root_.GlobalTheory.FunPr.ThetaLocalInputs → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching →
     (∀ D, GlobalTheory.NormSum.Inp D) → GlobalTheory.SqTop.BotSmall →
     GlobalTheory.SqTop.GBig fun {D} T _ _ G _ _ _ _ => ∀ (W : G.Weil), IsStdChar D W.ψ (-1) → ∀ (i j : Fin D.R.m) (A A' WW : HSp D)
@@ -51,6 +56,9 @@ open GlobalTheory.NormSum (Pair Tup)
 open Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.ReadMatch.bottom_layer_parameters_match | exact _root_.GlobalTheory.ReadMatch.bottom_layer_parameters_match | (intros; apply _root_.GlobalTheory.ReadMatch.bottom_layer_parameters_match <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.theta_parameters_match : _root_.GlobalTheory.FunPr.ThetaLocalInputs → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching →
     (∀ D, GlobalTheory.NormSum.Inp D) → GlobalTheory.SqTop.BotSmall →
     GlobalTheory.SqTop.GBig fun {D} T _ _ G _ _ _ _ => ∀ (W : G.Weil), IsStdChar D W.ψ (-1) → ∀ (i j : Fin D.R.m) (A A' WW : HSp D)

@@ -15,6 +15,9 @@ end Alg
 
 variable (D : D7) (i : D.nd.Loc)
 
+/- English proof (translation)
+Introduce `p hp`. Take `⟨k, a, -, rfl⟩` from `mem_twList D i hp`. Conclude with `ss_twGL _ _ (hR k).2.1`.
+-/
 theorem isSSRep_of_mem_twList (Pa : List (Part D.naut.CG))
     (R : ∀ k : Fin Pa.length, G D.host.E D.nd.Om →* GL (Fin (Pa.get k).a) (Qbar (D.nd.l i)))
     (hR : ∀ k, UpperTheory.GalS.IsStringRepN D i (Pa.get k) (R k)) : ∀ p ∈ twList D i Pa R, IsSSRep p.2 := by
@@ -22,6 +25,13 @@ theorem isSSRep_of_mem_twList (Pa : List (Part D.naut.CG))
   obtain ⟨k, a, -, rfl⟩ := mem_twList D i hp
   exact ss_twGL _ _ (hR k).2.1
 
+/- English proof (translation)
+Establish `h3` using `GlobalTheory.HeckeCharacterEquality.heckeCharacterEqualityOfRealisation`. Break down `p with ⟨a, π, d⟩` into its components or cases. Simplify using `only at ha hd`. Substitute `ha hd` using the available equality. Establish `hu00 : u 0 ≠ 0` using `fun h => hu0 (funext fun j => by rw [Fin.fin_one_eq_zero j]; exact h)`.
+
+Establish `h00 : ∀ g, ((Rk g : GL _ _) : Matrix (Fin 1) (Fin 1) (Qbar (D.nd.l i))) 0 0 = iotaOQ D.nd D.naut i (chi1 D.nd i g)` using `fun g => by`. Use `congrFun (hu g) 0` as an intermediate fact. Simplify using `only [Matrix.mulVec, dotProduct, Fin.sum_univ_one, Pi.smul_apply, smul_eq_mul] at this`. Conclude with `mul_right_cancel₀ hu00 this`. Establish `hπ` using `h3 D hA i π (D.naut.tw (D.naut.muC i) D.naut.etaTinv) _ Rk hR.2.2 (h4 D hA i hg Rk h00)`.
+
+Substitute `hπ` using the available equality. Both sides reduce to the same expression.
+-/
 theorem segment_eq_of_eigenvector_chi1 (_h3 : HeckeCharEqOfLAdicRealisation) (h4 : MuChar) (hA : Formalism.MainNotions.SumRepresentations.admitted D) (hg : HG D.nd D.naut i)
     (p : Part D.naut.CG) (Rk : G D.host.E D.nd.Om →* GL (Fin p.a) (Qbar (D.nd.l i)))
     (hR : UpperTheory.GalS.IsStringRepN D i p Rk) (ha : p.a = 1) (hd : p.d = D.R.t) (u : Fin p.a → Qbar (D.nd.l i)) (hu0 : u ≠ 0)

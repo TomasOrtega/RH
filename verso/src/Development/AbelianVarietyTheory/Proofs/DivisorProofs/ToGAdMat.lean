@@ -14,6 +14,9 @@ def toGAd {σ : E →ₐ[F] E} (hσ : ∀ x, σ (σ x) = x) {n : ℕ} (J : Matri
     UA σ J ≃* GlobalTheory.AdelicU.GAd σ (c • J.map σ) :=
   MulEquiv.subgroupCongr (GlobalTheory.SiegelSet.ug_eq_hr (J := J) hσ hc)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toGAd_mat {σ : E →ₐ[F] E} (hσ : ∀ x, σ (σ x) = x) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) {c : E} (hc : c ≠ 0)
     (g : UA σ J) : HA.mat (AF F) σ (c • J.map σ) (toGAd hσ J hc g) = g.1 := rfl
 

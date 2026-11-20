@@ -320,6 +320,9 @@ def InWin (xa xb : ℝ) (X : Loc) : Prop :=
 def HIext (C0 CYb Cde Ck CD Cb : ℝ) (X : Loc) : Prop :=
   WindowHypotheses C0 CYb Cde Ck CD Cb X ∧ InWin (2 * X.J0 C0) (2 * X.J0 C0) X
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2, h3, h4, h5, h6, h7, h8, h9, h10, h11, h12, h13, h14, h15, h16, h17, h18, h19, h20, h21, h22, h23, h24, h25, h26, h27⟩`. Conclude with `⟨⟨h1, h2, h3, h4, h5, h6, h7, h8, h10, h11, h12, h13, h14, h15, h16, h17, h19, h20, h21, h22, h23, h24, h25, h26, h27⟩, fun s hs => ⟨(h9 s hs).1, by linarith [(h9 s hs).2]⟩, fun s hs => ⟨(h18 s hs).1, by linarith [(h18 s hs).2]⟩⟩`. Introduce and unpack `⟨⟨g1, g2, g3, g4, g5, g6, g7, g8, g10, g11, g12, g13, g14, g15, g16, g17, g19, g20, g21, g22, g23, g24, g25, g26, g27⟩, g9, g18⟩`. Conclude with `⟨g1, g2, g3, g4, g5, g6, g7, g8, fun s hs => ⟨(g9 s hs).1, by linarith [(g9 s hs).2]⟩, g10, g11, g12, g13, g14, g15, g16, g17, fun s hs => ⟨(g18 s hs).1, by linarith [(g18 s hs).2]⟩, g19, g20, g21, g22, g23, g24, g25, g26, g27⟩`.
+-/
 theorem HI_iff {C0 CYb Cde Ck CD Cb : ℝ} {X : Loc} :
     HI C0 CYb Cde Ck CD Cb X ↔ WindowHypotheses C0 CYb Cde Ck CD Cb X ∧ InWin 0 0 X := by
   constructor
@@ -332,19 +335,31 @@ theorem HI_iff {C0 CYb Cde Ck CD Cb : ℝ} {X : Loc} :
       g13, g14, g15, g16, g17, fun s hs => ⟨(g18 s hs).1, by linarith [(g18 s hs).2]⟩, g19, g20, g21, g22, g23,
       g24, g25, g26, g27⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun s hs => ⟨(h.1 s hs).1, by linarith [(h.1 s hs).2]⟩, fun s hs => ⟨(h.2 s hs).1, by linarith [(h.2 s hs).2]⟩⟩`.
+-/
 theorem InWin.mono {xa xb xa' xb' : ℝ} {X : Loc} (ha : xa ≤ xa') (hb : xb ≤ xb') (h : InWin xa xb X) :
     InWin xa' xb' X :=
   ⟨fun s hs => ⟨(h.1 s hs).1, by linarith [(h.1 s hs).2]⟩, fun s hs => ⟨(h.2 s hs).1, by linarith [(h.2 s hs).2]⟩⟩
 
+/- English proof (translation)
+Take `⟨g1, g2, g3, g4, g5, g6, g7, g8, g10, g11, g12, g13, g14, g15, g16, g17, g19, g20, g21, g22, g23, g24, g25, g26, g27⟩` from `h`. Unfold `Loc.J0`. Conclude with `g23.trans g24`.
+-/
 theorem WindowHypotheses.cleaning_budget_nonneg {C0 CYb Cde Ck CD Cb : ℝ} {X : Loc} (h : WindowHypotheses C0 CYb Cde Ck CD Cb X) : 0 ≤ X.J0 C0 := by
   obtain ⟨g1, g2, g3, g4, g5, g6, g7, g8, g10, g11, g12, g13, g14, g15, g16, g17, g19, g20, g21, g22, g23, g24, g25, g26, g27⟩ := h
   unfold Loc.J0
   exact g23.trans g24
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h, hw.mono ha hb⟩`.
+-/
 theorem HIext.of_le {C0 CYb Cde Ck CD Cb xa xb : ℝ} {X : Loc} (h : WindowHypotheses C0 CYb Cde Ck CD Cb X)
     (ha : xa ≤ 2 * X.J0 C0) (hb : xb ≤ 2 * X.J0 C0) (hw : InWin xa xb X) : HIext C0 CYb Cde Ck CD Cb X :=
   ⟨h, hw.mono ha hb⟩
 
+/- English proof (translation)
+Take `⟨h0, hw⟩` from `HI_iff.mp h`. Establish `hJ` using `h0.cleaning_budget_nonneg`. Conclude with `HIext.of_le h0 (by linarith) (by linarith) hw`.
+-/
 theorem HI.toExt {C0 CYb Cde Ck CD Cb : ℝ} {X : Loc} (h : HI C0 CYb Cde Ck CD Cb X) :
     HIext C0 CYb Cde Ck CD Cb X := by
   obtain ⟨h0, hw⟩ := HI_iff.mp h
@@ -439,6 +454,11 @@ def FreeTopRankBound (_D : Formalism.BasicNotions.D7) (C0 CYb Cde Ck CD Cb CE1 C
       (Kept X.p X.m (X.seg C0 CE1 CE2 j) (segATop X.TT X.aT j) b ↔
         Kept X.p X.m (X.seg C0 CE1 CE2 j) (segATop X.TT aT' j) b)
 
+/- English proof (translation)
+Introduce `X _ W Qq O Kf _ _ _ _ _ _ _ _ _ _ ι σ jO w hS hE hC j rz ry hD`. Take `⟨⟨g1, -, -, -, -, -, -, -, g10, -⟩, -⟩` from `id hE`. Establish `hM : 0 ≤ X.b' / (X.k * X.Q * X.Y)`. Apply `div_nonneg g10.le` to reduce the goal to its premises. Apply `mul_nonneg (mul_nonneg ?_ ?_) (by linarith)` to reduce the goal to its premises.
+
+Unfold `Loc.k`. Check the signs of the components of the expression. Unfold `Loc.Q`. Check the signs of the components of the expression. Conclude with `(h X W Qq O Kf ι σ jO w hS hE hC j 0 le_rfl hM rz ry hD).2`.
+-/
 theorem RootMultiplicityTwo.toExtendedDigitRankBound {D : Formalism.BasicNotions.D7} {C0 CYb Cde Ck CD Cb CE1 CE2 Cc : ℝ}
     (h : RootMultiplicityTwo D C0 CYb Cde Ck CD Cb CE1 CE2 Cc) : ExtendedDigitRankBound D C0 CYb Cde Ck CD Cb CE1 CE2 Cc := by
   intro X _ W Qq O Kf _ _ _ _ _ _ _ _ _ _ ι σ jO w hS hE hC j rz ry hD
@@ -457,41 +477,67 @@ def ExtendedAllConclusions (D : Formalism.BasicNotions.D7) (C0 CYb Cde Ck CD Cb 
     ExtendedDigitRankBound D C0 CYb Cde Ck CD Cb CE1 CE2 Cc ∧ RootMultiplicityTwo D C0 CYb Cde Ck CD Cb CE1 CE2 Cc ∧
     FreeTopRankBound D C0 CYb Cde Ck CD Cb CE1 CE2 Cc
 
+/- English proof (translation)
+Introduce `X _ W Qq O Kf _ _ _ _ _ _ _ _ _ _ ι σ jO w hS hHI hC`. Conclude with `h X W Qq O Kf ι σ jO w hS hHI.toExt hC`.
+-/
 theorem HerrExtensionClass.toGrowthBound {D : Formalism.BasicNotions.D7} {C0 CYb Cde Ck CD Cb CE1 CE2 Cm Ckap Ct Cc : ℝ}
     (h : HerrExtensionClass D C0 CYb Cde Ck CD Cb CE1 CE2 Cm Ckap Ct Cc) : aux₃ D C0 CYb Cde Ck CD Cb CE1 CE2 Cm Ckap Ct Cc := by
   intro X _ W Qq O Kf _ _ _ _ _ _ _ _ _ _ ι σ jO w hS hHI hC
   exact h X W Qq O Kf ι σ jO w hS hHI.toExt hC
 
+/- English proof (translation)
+Introduce `X _ W Qq O Kf _ _ _ _ _ _ _ _ _ _ ι σ jO w hS hHI hC`. Conclude with `h X W Qq O Kf ι σ jO w hS hHI.toExt hC`.
+-/
 theorem ExtendedDigitRankBound.toDigitRankBound {D : Formalism.BasicNotions.D7} {C0 CYb Cde Ck CD Cb CE1 CE2 Cc : ℝ}
     (h : ExtendedDigitRankBound D C0 CYb Cde Ck CD Cb CE1 CE2 Cc) : Conclusion4 D C0 CYb Cde Ck CD Cb CE1 CE2 Cc := by
   intro X _ W Qq O Kf _ _ _ _ _ _ _ _ _ _ ι σ jO w hS hHI hC
   exact h X W Qq O Kf ι σ jO w hS hHI.toExt hC
 
+/- English proof (translation)
+Introduce `X hD hHI hC` and use `h X hD hHI.toExt hC`.
+-/
 theorem ExtendedKappaBound.toKappaBound {D : Formalism.BasicNotions.D7} {C0 CYb Cde Ck CD Cb CE1 CE2 Cm Ckap Cc Cs : ℝ}
     (h : ExtendedKappaBound D C0 CYb Cde Ck CD Cb CE1 CE2 Cm Ckap Cc Cs) :
     Conclusion2 D C0 CYb Cde Ck CD Cb CE1 CE2 Cm Ckap Cc Cs :=
   fun X hD hHI hC => h X hD hHI.toExt hC
 
+/- English proof (translation)
+Introduce `X _ hD hHI hC`. Conclude with `h X hD hHI.toExt hC`.
+-/
 theorem ExtendedDichotomy.toDegreeDichotomy {D : Formalism.BasicNotions.D7} {C0 CYb Cde Ck CD Cb CE1 CE2 Cc : ℝ}
     (h : ExtendedDichotomy D C0 CYb Cde Ck CD Cb CE1 CE2 Cc) : DegreeDichotomy D C0 CYb Cde Ck CD Cb CE1 CE2 Cc := by
   intro X _ hD hHI hC
   exact h X hD hHI.toExt hC
 
+/- English proof (translation)
+Introduce `X _ W Qq O Kf _ _ _ _ _ _ _ _ _ _ ι σ jO w hS hHI hC`. Conclude with `h X W Qq O Kf ι σ jO w hS hHI.toExt hC`.
+-/
 theorem ExtendedModelRank.toModelLatticeRank {D : Formalism.BasicNotions.D7} {C0 CYb Cde Ck CD Cb CE1 CE2 Ckap Cc : ℝ}
     (h : ExtendedModelRank D C0 CYb Cde Ck CD Cb CE1 CE2 Ckap Cc) : ModelLatticeRank D C0 CYb Cde Ck CD Cb CE1 CE2 Ckap Cc := by
   intro X _ W Qq O Kf _ _ _ _ _ _ _ _ _ _ ι σ jO w hS hHI hC
   exact h X W Qq O Kf ι σ jO w hS hHI.toExt hC
 
+/- English proof (translation)
+Introduce `X hD hHI hC` and use `h X hD hHI.toExt hC`.
+-/
 theorem ExtendedOrderBound.toOrderBoundDigits {D : Formalism.BasicNotions.D7} {C0 CYb Cde Ck CD Cb CE1 CE2 Ct Cc : ℝ}
     (h : ExtendedOrderBound D C0 CYb Cde Ck CD Cb CE1 CE2 Ct Cc) : OrderBoundDigits D C0 CYb Cde Ck CD Cb CE1 CE2 Ct Cc :=
   fun X hD hHI hC => h X hD hHI.toExt hC
 
+/- English proof (translation)
+Take `⟨h1, h2, h3, h4, h5, h6, h7, -, -, -⟩` from `h`. Conclude with `⟨h1.toGrowthBound, h2.toKappaBound, h3, h4, h5.toDegreeDichotomy, h6.toModelLatticeRank, h7.toOrderBoundDigits⟩`.
+-/
 theorem ExtendedAllConclusions.toAllConjugates {D : Formalism.BasicNotions.D7} {C0 CYb Cde Ck CD Cb CE1 CE2 Cm Ckap Ct Cc Cs : ℝ}
     (h : ExtendedAllConclusions D C0 CYb Cde Ck CD Cb CE1 CE2 Cm Ckap Ct Cc Cs) :
     ExportAllConjugates D C0 CYb Cde Ck CD Cb CE1 CE2 Cm Ckap Ct Cc Cs := by
   obtain ⟨h1, h2, h3, h4, h5, h6, h7, -, -, -⟩ := h
   exact ⟨h1.toGrowthBound, h2.toKappaBound, h3, h4, h5.toDegreeDichotomy, h6.toModelLatticeRank, h7.toOrderBoundDigits⟩
 
+/- English proof (translation)
+Introduce `Cc hCc`. Take `⟨T0, hT0, h0⟩` from `h Cc hCc`. Use `⟨T0, hT0, fun C0 hC0 => ?_⟩` and prove the remaining obligations. Take `⟨T1, hT1, h1⟩` from `h0 C0 hC0`. Use `⟨T1, hT1, fun CE1 CE2 Cm a1 a2 a3 => ?_⟩` and prove the remaining obligations.
+
+Take `⟨T2, hT2, h2⟩` from `h1 CE1 CE2 Cm a1 a2 a3`. Use `⟨T2, hT2, fun CYb Cde Ck CD Cb b1 b2 b3 b4 b5 => ?_⟩` and prove the remaining obligations. Take `⟨Ckap, Ct, Cs, c1, c2, c3, hx⟩` from `h2 CYb Cde Ck CD Cb b1 b2 b3 b4 b5`. Conclude with `⟨Ckap, Ct, Cs, c1, c2, c3, hP _ _ _ _ _ _ _ _ _ _ _ _ _ hx⟩`.
+-/
 theorem Closed.mono {P P' : ℝ → ℝ → ℝ → ℝ → ℝ → ℝ → ℝ → ℝ → ℝ → ℝ → ℝ → ℝ → ℝ → Prop}
     (hP : ∀ C0 CYb Cde Ck CD Cb CE1 CE2 Cm Ckap Ct Cc Cs, P C0 CYb Cde Ck CD Cb CE1 CE2 Cm Ckap Ct Cc Cs →
       P' C0 CYb Cde Ck CD Cb CE1 CE2 Cm Ckap Ct Cc Cs) (h : Closed P) : Closed P' := by
@@ -510,6 +556,9 @@ def HerrExtensionTheorem (D : Formalism.BasicNotions.D7) (C0 CYb Cde Ck CD Cb CE
 
 def ExtendedClosedForm (D : Formalism.BasicNotions.D7) : Prop := admitted D → Closed (ExtendedAllConclusions D)
 
+/- English proof (translation)
+Introduce `hA` and use `Closed.mono (fun _ _ _ _ _ _ _ _ _ _ _ _ _ hx => ExtendedAllConclusions.toAllConjugates hx) (h hA)`.
+-/
 theorem ExtendedClosedForm.closed_of_extended_closed {D : Formalism.BasicNotions.D7} (h : ExtendedClosedForm D) : ClosedFormOfAdmitted D :=
   fun hA => Closed.mono (fun _ _ _ _ _ _ _ _ _ _ _ _ _ hx => ExtendedAllConclusions.toAllConjugates hx) (h hA)
 

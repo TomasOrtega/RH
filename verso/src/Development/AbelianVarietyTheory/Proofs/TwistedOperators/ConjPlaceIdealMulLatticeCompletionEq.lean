@@ -24,6 +24,23 @@ namespace GlobalTheory.ConjPlaceLat
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `D k _ _ _ _ p w hw S L 𝔪 hm z hz`. Take `⟨m, hm𝔪, hmw⟩` from `hm`. Establish `hm0 : m ≠ 0`. Introduce and unpack `rfl`. Conclude with `hmw (Ideal.zero_mem _)`.
+
+Establish `hmE : (m : D.host.E) ≠ 0` using `by exact_mod_cast hm0`. Establish `hc` using `GlobalTheory.SplitHeckeAdj.idem_conj S hw`. Establish `hu : finPart D (cA D p.e * incA D ((m : D.host.E)⁻¹)) ∈ intAE D`. Assume the negation of the conclusion as `h`. Conclude with `hmw ((hc.2 m hm0).2 h)`.
+
+Establish `h1 : ∀ y ∈ latV S L (· = p.v), (fun i => incA D (m : D.host.E) * y i) ∈ latV S (𝔪 • L) (· = p.v)`. Introduce `y hy`. Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem y hy`. Take `⟨α, hαi, hα, a, ha, x, hx, rfl⟩` from `hy`.
+
+Rewrite `ha` using `[Set.mem_singleton_iff]`. Substitute `ha` using the available equality. Use `AddSubgroup.subset_closure ⟨α, hαi, hα, 1, rfl, m • x, Submodule.smul_mem_smul hm𝔪 hx, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Use `show (1 : AF D.host.F) ⊗ₜ[D.host.F] (m : D.host.E) * (pairA D.host.F 0 α ⊗ₜ[D.host.F] (1 * x i)) = _`.
+
+Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul, one_mul, one_mul, Pi.smul_apply, Algebra.smul_def]`. Consider the case `zero`. Use `zero_mem (latV S (𝔪 • L) (· = p.v)) using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules.
+
+Consider the case `add y y' _ _ h h'`. Use `add_mem h h' using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Simplify using `[mul_add]`. Consider the case `neg y _ h`.
+
+Use `neg_mem h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Establish `key : (fun i => cA D p.e * z i) = fun i => cA D p.e * incA D ((m : D.host.E)⁻¹) * (incA D (m : D.host.E) * z i)`. Use function extensionality and compare the values at `i`.
+
+Rewrite using `[mul_assoc, ← mul_assoc (incA D _), ← map_mul, inv_mul_cancel₀ hmE, map_one, one_mul]`. Rewrite using `[key]`. Conclude with `GlobalTheory.FinPl.LatIndHalf.mul_mem_latV hu (h1 z hz)`.
+-/
 theorem cA_mul_mem_latV_smul : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
   (p : GlobalTheory.FinPl.SplitPt D k) (w : HeightOneSpectrum (𝓞 D.host.E)), Formalism.L2.NTheta.IsIdemAt p.e w →
   ∀ (S : HSp D) (L : GlobalTheory.FinPl.Lat S) (𝔪 : Ideal (𝓞 D.host.E)), (∃ m ∈ 𝔪, m ∉ (Formalism.DivisionValues.conjPl w).asIdeal) →

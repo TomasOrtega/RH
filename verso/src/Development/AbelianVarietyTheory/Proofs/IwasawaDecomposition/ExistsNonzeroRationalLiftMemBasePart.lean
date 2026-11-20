@@ -8,6 +8,33 @@ open Formalism.IndefR.RecTie Formalism.IndefR.Lev Formalism.L2.Rows GlobalTheory
 
 namespace GlobalTheory.RatLift
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 I0 T A3 Ks _ _ _ R F cG _ hP hH _ _ p _ i hB`. Establish `hRw` using `complex_data_conditions_base_level_of_primitive_links hH.ok hH.sep hP.char hH.prim`. Establish `hk : (R.toCx3 F).KForm false` using `hRw.kForm`. Establish `he : (R.toCx3 F).EWnorm false` using `hRw.ewNorm`. Establish `hn : 0 < (R.toCx3 F).nP false` using `hRw.h4pos.2.2 false`.
+
+Establish `h5 : (R.toCx3 F).H5 F.cr false` using `hRw.lifts0.1`. Establish `hr : (R.toCx3 F).RATth F.cr false` using `hRw.ratTh`. Establish `h3W : (R.toCx3 F).H3W F.cr false` using `hRw.liftHyp0.h3W`. Establish `ht : (lv (F.fc (R.toCx3 F).zs) false).Types` using `hRw.types0`. Establish `hK : ∀ y, y ∈ ⨆ q, (R.toCx3 F).WpK false i q` using `fun y => CxData.liftsK ht hk he hn h5 hr h3W i y`.
+
+Establish `hc0 : cpt A3.A.v0.embedding (0 : Fin ((R.toCx3 F).dW false i) → D.what₂.LL) = 0`. Use function extensionality and compare the values at `l`. Simplify using `[cpt]`. Establish `hWpK : (R.toCx3 F).WpK false i p ≠ ⊥`. Introduce `h0`.
+
+Apply `hB` to reduce the goal to its premises. Rewrite using `[eq_bot_iff]`. Introduce `w hw`. Set `M : Submodule ℂ ((R.toCx3 F).W i)` to `⨆ q, ⨆ (_ : q ≠ p), (R.toCx3 F).Wp i q ⊓ LinearMap.range ((R.toCx3 F).w0C false i)`. Establish `hrat : ∀ y, (R.toCx3 F).w0C false i (cpt A3.A.v0.embedding y) ∈ M`.
+
+Introduce `y`. Use `Submodule.iSup_induction _ (motive := fun y => (R.toCx3 F).w0C false i (cpt A3.A.v0.embedding y) ∈ M) (hK y) ?_ ?_ ?_` and prove the remaining obligations. Introduce `q z hz`. Distinguish the cases in `hq : q = p`. Substitute `hq` using the available equality.
+
+Rewrite `hz` using `[h0]`. Rewrite using `[(Submodule.mem_bot _).1 hz, hc0, map_zero]`. Conclude with `M.zero_mem`. Conclude with `(le_iSup₂ (f := fun q (_ : q ≠ p) => (R.toCx3 F).Wp i q ⊓ LinearMap.range ((R.toCx3 F).w0C false i)) q hq) ⟨hz, ⟨_, rfl⟩⟩`. Rewrite using `[hc0, map_zero]`.
+
+Conclude with `M.zero_mem`. Introduce `a c ha hc`. Establish `: cpt A3.A.v0.embedding (a + c) = cpt A3.A.v0.embedding a + cpt A3.A.v0.embedding c`. Use function extensionality and compare the values at `l`. Simplify using `[cpt]`.
+
+Rewrite using `[this, map_add]`. Conclude with `M.add_mem ha hc`. Establish `hrange : LinearMap.range ((R.toCx3 F).w0C false i) ≤ M`. Rewrite using `[LinearMap.range_eq_map, ← (Pi.basisFun ℂ (Fin ((R.toCx3 F).dW false i))).span_eq, Submodule.map_span, Submodule.span_le]`. Introduce and unpack `_ ⟨_, ⟨k, rfl⟩, rfl⟩`.
+
+Establish `: (Pi.basisFun ℂ (Fin ((R.toCx3 F).dW false i)) k) = cpt A3.A.v0.embedding (Pi.single k (1 : D.what₂.LL))`. Use function extensionality and compare the values at `l`. Simplify using `only [Pi.basisFun_apply, cpt, Pi.single_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[this]`.
+
+Conclude with `hrat _`. Establish `hperp : M ≤ (ℂ ∙ w)ᗮ`. Use `iSup₂_le fun q hq => ?_` and prove the remaining obligations. Introduce `v hv`. Rewrite using `[Submodule.mem_orthogonal_singleton_iff_inner_right]`.
+
+Conclude with `(hH.prim.sumW i).1 p q (Ne.symm hq) w hw v hv`. Establish `hww` using `hperp (hrange hw.2)`. Rewrite `hww` using `[Submodule.mem_orthogonal_singleton_iff_inner_right]`. Conclude with `(Submodule.mem_bot ℂ).2 (inner_self_eq_zero.1 hww)`. Take `⟨y, hy, hy0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hWpK`.
+
+Take `⟨x, rfl⟩` from `((R.toCx3 F).liftMat_bij F.cr false hk he hn h5 hr i A3.A.μ0).2 y`. Use `⟨x, ?_, ?_⟩` and prove the remaining obligations. Establish `hy' : (R.toCx3 F).w0C false i (cpt A3.fam3.base3.v0.embedding ((R.toCx3 F).liftMat F.cr false i A3.A.μ0 *ᵥ x)) ∈ (R.toCx3 F).Wp i p` using `hy`. Rewrite `hy'` using `[(R.toCx3 F).key_lift F.cr false h5 hr i A3.A.μ0 x]`. Conclude with `hy'`.
+
+Introduce and unpack `rfl`. Conclude with `hy0 (Matrix.mulVec_zero _)`.
+-/
 theorem exists_rat_lift_mem_part : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 I0 T : Type) (A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3) (cG : G0 R.Pg D.R.r ≃* G0g D.nd), Inputs D → Pins R F cG → Holds R F → GlobalTheory.CuspMult.MultEq R.toRealDat → (∀ χ ∈ A3.A.X, chiIdem χ * lvlIdem F.P0 F.ψ0 ≠ 0) → ∀ p, R.EEp3 p ≠ ⊥ → ∀ i, (R.toCx3 F).Wp i p ⊓ LinearMap.range ((R.toCx3 F).w0C false i) ≠ ⊥ → ∃ x : Fin ((lv (F.fc (R.toCx3 F).zs) false).dZ i A3.A.μ0) → D.what₂.LL, (R.toCx3 F).tC F.cr false i A3.A.μ0 (cpt A3.A.v0.embedding x) ∈ (R.toCx3 F).Wp i p ∧ x ≠ 0 := by
   intro D G _ _ Pl0 I0 T A3 Ks _ _ _ R F cG _ hP hH _ _ p _ i hB
   have hRw := complex_data_conditions_base_level_of_primitive_links hH.ok hH.sep hP.char hH.prim

@@ -5,6 +5,15 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.UPel.HT GlobalTheory.UPel.HT.Hecke GlobalTheory.UPel.HT.EtLev GlobalTheory.UPel.HT.ES
 open UpperTheory.Gal.FiniteEtaleModels
 
+/- English proof (translation)
+Introduce `cover p _ D R _ _ b N h3 hcop 𝔞 r h𝔞 M`. Use `haveI : Smooth M.s := M.smooth.smooth`. Use `haveI : IsLocallyNoetherian M.X := LocallyOfFiniteType.isLocallyNoetherian M.s`. Take `⟨Y, q, u, mu, lev, act, hlev, hgal, hrep⟩` from `cover p D R b N 𝔞 r h3 hcop h𝔞 M.X M.s M.univ`. Set `E : EtModel b N 𝔞 r` to `{ X := Y, s := q ≫ M.s, univ := u, lv := lev, isLev := hlev rep := by`.
+
+Introduce `T t o l hl`. Take `⟨c, ⟨hc, ⟨mc⟩⟩, cuniq⟩` from `M.rep T t o`. Substitute `hc` using the available equality. Take `⟨f, ⟨hfq, m₂, hm₂⟩, funiq⟩` from `hrep T c o mc l hl`. Use `⟨f, ⟨?_, m₂, hm₂⟩, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← Category.assoc, hfq]`. Introduce and unpack `f' ⟨hs, m', hm'⟩`. Use `funiq f' ⟨?_, m', hm'⟩` and prove the remaining obligations. Take `⟨mcomp⟩` from `objMap_comp p D R b N T Y M.X (c ≫ M.s) (q ≫ M.s) M.s o u M.univ f' q m' mu`. Conclude with `cuniq (f' ≫ q) ⟨by rw [Category.assoc, ← hs], ⟨mcomp⟩⟩ }`.
+
+Conclude with `⟨E, q, act, rfl, ⟨mu⟩, hgal⟩`.
+-/
 theorem UpperTheory.Gal.FiniteEtaleModels.finModel_holds :
     FinCover → FinModel := by
   intro cover p _ D R _ _ b N h3 hcop 𝔞 r h𝔞 M

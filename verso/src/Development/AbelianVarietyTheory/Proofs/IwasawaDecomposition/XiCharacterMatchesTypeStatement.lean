@@ -15,5 +15,8 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.TypeR
 open Formalism.L2.Theta Formalism.L2.DIV Formalism.L2.Indef Formalism.L2.Rows Formalism.IndefR Formalism.IndefR.Links Formalism.IndefR.Lev Formalism.IndefR.RecTie GlobalTheory.HeightCounting.Up.RealOfReading
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.HeightCounting.Up.xiH_tupT_layer | exact GlobalTheory.HeightCounting.Up.xiH_tupT_layer | (intros; apply GlobalTheory.HeightCounting.Up.xiH_tupT_layer <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.xi_character_matches_type : PrN → ∀ hL : GlobalTheory.Published.LocalLanglandsGL, AtMem hL fun _ _ _ _ w Z _ _ t _ n _ => ∀ μ, Used0 (w.D Z) μ → t.r.z.R.toLevCh.xiH (t.r.Y.tupT μ) = n.tp.xi μ := by
   first | exact @GlobalTheory.HeightCounting.Up.xiH_tupT_layer | exact GlobalTheory.HeightCounting.Up.xiH_tupT_layer | (intros; apply GlobalTheory.HeightCounting.Up.xiH_tupT_layer <;> assumption)

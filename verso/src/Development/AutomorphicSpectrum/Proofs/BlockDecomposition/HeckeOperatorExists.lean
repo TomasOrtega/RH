@@ -14,6 +14,17 @@ namespace GlobalTheory.CompanionTheory.HeckeKm
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Establish `hc : (((Zls.unifU k ^ m : kˣ)) : k) = ((Zls.unif k ^ m : 𝒪[k]) : k)`. Simplify using `[Zls.unifU]`. Both sides reduce to the same expression. Establish `hne : ((Zls.unif k ^ m : 𝒪[k]) : k) ≠ 0`. Rewrite using `[← hc]`.
+
+Conclude with `Units.ne_zero _`. Establish `hinv : (((Zls.unifU k ^ m)⁻¹ : kˣ) : k) = ((Zls.unif k ^ m : 𝒪[k]) : k)⁻¹`. Rewrite using `[Units.val_inv_eq_inv_val, hc]`. Rewrite using `[Ideal.mem_span_singleton', hinv]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨b, rfl⟩`. Establish `: ((Zls.unif k ^ m : 𝒪[k]) : k)⁻¹ * ((b * Zls.unif k ^ m : 𝒪[k]) : k) = (b : k)`. Rewrite using `[MulMemClass.coe_mul]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[this]`.
+
+Conclude with `b.2`. Introduce `h`. Use `⟨⟨_, h⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[MulMemClass.coe_mul]`. Express the relevant statement in the definitionally equal form `((Zls.unif k ^ m : 𝒪[k]) : k)⁻¹ * (a : k) * _ = _`.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem mem_span_unif_pow_iff (m : ℕ) (a : 𝒪[k]) :
     a ∈ Ideal.span {Zls.unif k ^ m} ↔ (((Zls.unifU k ^ m)⁻¹ : kˣ) : k) * (a : k) ∈ 𝒪[k] := by
   have hc : (((Zls.unifU k ^ m : kˣ)) : k) = ((Zls.unif k ^ m : 𝒪[k]) : k) := by
@@ -37,6 +48,15 @@ theorem mem_span_unif_pow_iff (m : ℕ) (a : 𝒪[k]) :
     change ((Zls.unif k ^ m : 𝒪[k]) : k)⁻¹ * (a : k) * _ = _
     field_simp
 
+/- English proof (translation)
+Establish `key : ∀ (u : GL (Fin N) 𝒪[k]) (i j : Fin N), ((Matrix.GeneralLinearGroup.map (n` using `Fin N) (algebraMap 𝒪[k] k) u).val - 1) i j = ((u.val i j - (1 : Matrix (Fin N) (Fin N) 𝒪[k]) i j : 𝒪[k]) : k) := by`. Introduce `u i j`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using `[Matrix.GeneralLinearGroup.map_apply]`.
+
+Both sides reduce to the same expression. Simplify using `[Matrix.GeneralLinearGroup.map_apply, Matrix.one_apply_ne h]`. Both sides reduce to the same expression. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, rfl⟩`.
+
+Use `⟨⟨u, rfl⟩, fun i j => ?_⟩` and prove the remaining obligations. Rewrite using `[key, ← mem_span_unif_pow_iff, ← Ideal.Quotient.eq]`. Establish `h` using `congrArg (fun x : GL (Fin N) (𝒪[k] ⧸ Ideal.span {Zls.unif k ^ m}) => x.val i j) (MonoidHom.mem_ker.1 hu)`. Simplify `h` using `[Matrix.GeneralLinearGroup.map_apply, Matrix.one_apply, apply_ite]`. Introduce and unpack `⟨⟨u, rfl⟩, h⟩`.
+
+Use `⟨u, MonoidHom.mem_ker.2 (Units.ext (Matrix.ext fun i j => ?_)), rfl⟩` and prove the remaining obligations. Establish `h'` using `h i j`. Rewrite `h'` using `[key, ← mem_span_unif_pow_iff, ← Ideal.Quotient.eq]`. Simplify `h'` using `[Matrix.GeneralLinearGroup.map_apply, Matrix.one_apply, apply_ite]`.
+-/
 theorem mem_Km_iff {N m : ℕ} (g : GL (Fin N) k) :
     g ∈ Zls.Km k N m ↔ g ∈ KO k (Fin N) ∧
       ∀ i j, (((Zls.unifU k ^ m)⁻¹ : kˣ) : k) * (g.val - 1) i j ∈ 𝒪[k] := by
@@ -63,11 +83,17 @@ theorem mem_Km_iff {N m : ℕ} (g : GL (Fin N) k) :
     rw [key, ← mem_span_unif_pow_iff, ← Ideal.Quotient.eq] at h'
     simpa [Matrix.GeneralLinearGroup.map_apply, Matrix.one_apply, apply_ite] using h'
 
+/- English proof (translation)
+The claim follows from `continuous_const.mul (((Units.continuous_val (M := Matrix (Fin N) (Fin N) k)).sub continuous_const).matrix_elem i j)`.
+-/
 theorem continuous_entry_Km (N : ℕ) (c : k) (i j : Fin N) :
     Continuous fun g : GL (Fin N) k => c * (g.val - 1) i j :=
   continuous_const.mul
     (((Units.continuous_val (M := Matrix (Fin N) (Fin N) k)).sub continuous_const).matrix_elem i j)
 
+/- English proof (translation)
+Use extensionality with `g`. Simplify using `only [SetLike.mem_coe, mem_Km_iff, Set.mem_inter_iff, Set.mem_iInter, Set.mem_preimage]`.
+-/
 theorem coe_Km_eq (N m : ℕ) :
     (Zls.Km k N m : Set (GL (Fin N) k)) = (KO k (Fin N) : Set (GL (Fin N) k)) ∩
       ⋂ i, ⋂ j, (fun g : GL (Fin N) k => (((Zls.unifU k ^ m)⁻¹ : kˣ) : k) * (g.val - 1) i j) ⁻¹'
@@ -75,11 +101,17 @@ theorem coe_Km_eq (N m : ℕ) :
   ext g
   simp only [SetLike.mem_coe, mem_Km_iff, Set.mem_inter_iff, Set.mem_iInter, Set.mem_preimage]
 
+/- English proof (translation)
+Rewrite using `[coe_Km_eq]`. Conclude with `GlobalTheory.SplitFlip.isOpen_KO.inter (isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j => (show IsOpen (𝒪[k] : Set k) from Valuation.isOpen_integer).preimage (continuous_entry_Km N _ i j))`.
+-/
 theorem isOpen_Km (N m : ℕ) : IsOpen (Zls.Km k N m : Set (GL (Fin N) k)) := by
   rw [coe_Km_eq]
   exact GlobalTheory.SplitFlip.isOpen_KO.inter (isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j =>
     (show IsOpen (𝒪[k] : Set k) from Valuation.isOpen_integer).preimage (continuous_entry_Km N _ i j))
 
+/- English proof (translation)
+Take `⟨_, _⟩` from `GlobalTheory.SplitWeil.Model.secondCountable_and_t2_local_field (k := k)`. Rewrite using `[coe_Km_eq]`. Conclude with `GlobalTheory.SplitFlip.isCompact_KO.inter_right (isClosed_iInter fun i => isClosed_iInter fun j => (show IsCompact (𝒪[k] : Set k) from IsNonarchimedeanLocalField.isCompact_closedBall k 1).isClosed.preimage (continuous_entry_Km N _ i j))`.
+-/
 theorem isCompact_Km (N m : ℕ) : IsCompact (Zls.Km k N m : Set (GL (Fin N) k)) := by
   obtain ⟨_, _⟩ := GlobalTheory.SplitWeil.Model.secondCountable_and_t2_local_field (k := k)
   rw [coe_Km_eq]
@@ -87,6 +119,11 @@ theorem isCompact_Km (N m : ℕ) : IsCompact (Zls.Km k N m : Set (GL (Fin N) k))
     (show IsCompact (𝒪[k] : Set k) from IsNonarchimedeanLocalField.isCompact_closedBall k 1).isClosed.preimage
       (continuous_entry_Km N _ i j))
 
+/- English proof (translation)
+Take `⟨_, _⟩` from `GlobalTheory.SplitWeil.Model.secondCountable_and_t2_local_field (k := k)`. Use `haveI : NonarchimedeanAddGroup k := ⟨fun V hV => by`. Take `⟨s, hs⟩` from `GlobalTheory.SplitWeil.exists_cball_subset hV`. Conclude with `⟨⟨⟨⟨⟨GlobalTheory.SplitWeil.cball s, GlobalTheory.SplitWeil.add_mem_cball⟩, by simp [GlobalTheory.SplitWeil.cball]⟩, GlobalTheory.SplitWeil.neg_mem_cball⟩, GlobalTheory.SplitWeil.isOpen_cball s⟩, hs⟩⟩`. Use `haveI : TotallyDisconnectedSpace k := inferInstance`.
+
+Use `haveI : TotallyDisconnectedSpace (Matrix (Fin N) (Fin N) k) := inferInstanceAs (TotallyDisconnectedSpace (Fin N → Fin N → k))`. Conclude with `⟨(GlobalTheory.SplitFlip.isEmbedding_val_GL (k := k) (n := Fin N)).isTotallyDisconnected (isTotallyDisconnected_of_totallyDisconnectedSpace _)⟩`.
+-/
 theorem totallyDisconnected_GL (N : ℕ) : TotallyDisconnectedSpace (GL (Fin N) k) := by
   obtain ⟨_, _⟩ := GlobalTheory.SplitWeil.Model.secondCountable_and_t2_local_field (k := k)
   haveI : NonarchimedeanAddGroup k := ⟨fun V hV => by
@@ -99,6 +136,13 @@ theorem totallyDisconnected_GL (N : ℕ) : TotallyDisconnectedSpace (GL (Fin N) 
   exact ⟨(GlobalTheory.SplitFlip.isEmbedding_val_GL (k := k) (n := Fin N)).isTotallyDisconnected
     (isTotallyDisconnected_of_totallyDisconnectedSpace _)⟩
 
+/- English proof (translation)
+Introduce `k _ _ _ _ N V _ _ π hπ m g`. Take `⟨_, _⟩` from `GlobalTheory.SplitWeil.Model.secondCountable_and_t2_local_field (k := k)`. Use `haveI := totallyDisconnected_GL (k := k) N`. Establish `hKc` using `isCompact_Km (k := k) N m`. Establish `hKo` using `isOpen_Km (k := k) N m`.
+
+Establish `hπ' : GroundTheory.Automorphic.IsSmooth π` using `fun v => hπ v`. Establish `hfix : ∀ w : GroundTheory.Automorphic.fixedVectors π (Zls.Km k N m), (w : V) ∈ fixed π (Zls.Km k N m)` using `fun w h => by`. Simplify using `using w.2 h h.2`. Use `⟨LinearMap.codRestrict (fixed π (Zls.Km k N m)) ((Submodule.subtype _) ∘ₗ GroundTheory.Automorphic.fixedProj π hπ' hKc hKo ∘ₗ π g ∘ₗ (fixed π (Zls.Km k N m)).subtype) fun v => hfix _, ?_⟩` and prove the remaining obligations. Introduce `v l hl`.
+
+Establish `hs` using `GroundTheory.Automorphic.sub_fixedProj_mem hπ' hKc hKo (π g (v : V))`. Establish `h0` using `GroundTheory.Automorphic.coinvariantsKer_le_ker_of_invariant (ρ := π) (K := Zls.Km k N m) (f := l) (fun x hx w => LinearMap.congr_fun (hl x hx) w) hs`. Rewrite `h0` using `[LinearMap.mem_ker, map_sub, sub_eq_zero]`. Conclude with `h0`.
+-/
 theorem exists_isHeckeOp : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (N : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL (Fin N) k) V), IsSmooth π →
     ∀ (m : ℕ) (g : GL (Fin N) k), ∃ T : Module.End ℂ (fixed π (Zls.Km k N m)), Zls.IsHeckeOp π m g T := by

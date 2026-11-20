@@ -18,6 +18,9 @@ variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V]
 noncomputable def dw (l : List V) (g : V → ℂ) : V → ℂ :=
   l.foldr (fun e u y => fderiv ℝ u y e) g
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => exact hg`. Consider the case `cons e l ih`. Conclude with `(ih.fderiv_right (m := (⊤ : ℕ∞)) (by simp)).clm_apply contDiff_const`.
+-/
 theorem contDiff_dw (l : List V) {g : V → ℂ} (hg : ContDiff ℝ (⊤ : ℕ∞) g) :
     ContDiff ℝ (⊤ : ℕ∞) (dw l g) := by
   induction l with
@@ -25,12 +28,18 @@ theorem contDiff_dw (l : List V) {g : V → ℂ} (hg : ContDiff ℝ (⊤ : ℕ�
   | cons e l ih =>
     exact (ih.fderiv_right (m := (⊤ : ℕ∞)) (by simp)).clm_apply contDiff_const
 
+/- English proof (translation)
+Establish `h1 : HasDerivAt (fun r : ℝ => x + r • e) e t`. Simplify using `using ((hasDerivAt_id t).smul_const e).const_add x`. Conclude with `((hu.differentiable (by simp)) (x + t • e)).hasFDerivAt.comp_hasDerivAt t h1`.
+-/
 theorem hasDerivAt_line {u : V → ℂ} (hu : ContDiff ℝ (⊤ : ℕ∞) u) (x e : V) (t : ℝ) :
     HasDerivAt (fun r : ℝ => u (x + r • e)) (fderiv ℝ u (x + t • e) e) t := by
   have h1 : HasDerivAt (fun r : ℝ => x + r • e) e t := by
     simpa using ((hasDerivAt_id t).smul_const e).const_add x
   exact ((hu.differentiable (by simp)) (x + t • e)).hasFDerivAt.comp_hasDerivAt t h1
 
+/- English proof (translation)
+Establish `hc : Continuous (dw [e] u)` using `(contDiff_dw [e] hu).continuous`. Use `GlobalTheory.sobolev_endpoint_one_variable ℂ (fun r : ℝ => u (x + r • e)) (fun r : ℝ => fderiv ℝ u (x + r • e) e) 1 one_pos (fun t _ => hasDerivAt_line hu x e t) (hc.comp (f := fun r : ℝ => x + r • e) (by fun_prop)).continuousOn` as an intermediate fact. Simplify using `using this`.
+-/
 theorem step {u : V → ℂ} (hu : ContDiff ℝ (⊤ : ℕ∞) u) (x e : V) :
     ‖u x‖ ^ 2 ≤ (2 * ∫ r in (0:ℝ)..1, ‖u (x + r • e)‖ ^ 2) +
       2 * ∫ r in (0:ℝ)..1, ‖fderiv ℝ u (x + r • e) e‖ ^ 2 := by
@@ -40,6 +49,23 @@ theorem step {u : V → ℂ} (hu : ContDiff ℝ (⊤ : ℕ∞) u) (x e : V) :
     (hc.comp (f := fun r : ℝ => x + r • e) (by fun_prop)).continuousOn
   simpa using this
 
+/- English proof (translation)
+Set `T : (Fin D → ℝ) ≃L[ℝ] V` to `b.equivFunL.symm`. Establish `hT : ∀ t, T t = ∑ i, t i • b i` using `fun t => b.equivFun_symm_apply t`. Set `ν : Measure V` to `Measure.map T volume`. Use `haveI : ν.IsAddHaarMeasure := T.isAddHaarMeasure_map _`. Set `c : ℝ≥0` to `Measure.addHaarScalarFactor ν μ`.
+
+Establish `hν : ν = c • μ` using `Measure.isAddLeftInvariant_eq_smul ν μ`. Use `⟨4 ^ D * (c + 1), fun g hg S hS => ?_⟩` and prove the remaining obligations. Establish `hpos : (0:ℝ) < 4 ^ D * (c + 1)` using `by positivity`. Break down `eq_or_ne S ⊤ with rfl | hS'` into its components or cases. Rewrite using `[ENNReal.mul_top (by simpa using hpos)]; exact le_top`.
+
+Establish `key` using `GlobalTheory.ThetaGrowth.sobolev_iter D 0 (fun i r => r • b i) (fun p => {u | ∃ l : List (Fin D), l.length ≤ p ∧ u = dw (l.map b) g}) (c * S.toReal) (0 : V) (fun i => by fun_prop) (fun p q hpq u ⟨l, hl, hu⟩ => ⟨l, hl.trans hpq, hu⟩) (by`. Introduce and unpack `p u ⟨l, hl, rfl⟩`. Use `⟨(contDiff_dw _ hg).continuous, fun i => ⟨dw ((i :: l).map b) g, ⟨i :: l, by simpa using hl, rfl⟩, fun x => ?_⟩⟩` and prove the remaining obligations. Conclude with `step (contDiff_dw _ hg) x (b i))`. Use the proof step `(by`.
+
+Introduce and unpack `u ⟨l, hl, rfl⟩`. Establish `hcu : Continuous (dw (l.map b) g)` using `(contDiff_dw _ hg).continuous`. Establish `h1` using `hS l (by simpa using hl)`. Use `set u := dw (l.map b) g`. Simplify using `only [zero_add, ← hT]`.
+
+Rewrite using `[integral_eq_lintegral_of_nonneg_ae (Eventually.of_forall fun _ => by positivity) (Continuous.aestronglyMeasurable (by fun_prop))]`. Establish `h2 : ∫⁻ t in Set.univ.pi fun _ => Set.Icc (0:ℝ) 1, ENNReal.ofReal (‖u (T t)‖ ^ 2) ≤ c * S`. Combine the equalities or inequalities in the displayed calculation. Use `lintegral_congr fun t => ?_` and prove the remaining obligations. Rewrite using `[ENNReal.ofReal_pow (norm_nonneg _), ofReal_norm_eq_enorm]`.
+
+Use `_ = ∫⁻ y, ‖u y‖ₑ ^ 2 ∂ν := by`. Rewrite using `[lintegral_map (hcu.measurable.enorm.pow_const 2) T.continuous.measurable]`. Use `_ = c * ∫⁻ y, ‖u y‖ₑ ^ 2 ∂μ := by`. Rewrite using `[hν, lintegral_smul_measure]`. Both sides reduce to the same expression.
+
+Use `_ ≤ c * S := by gcongr`. Use `ENNReal.toReal_mono (ENNReal.mul_ne_top ENNReal.coe_ne_top hS') h2` as an intermediate fact. Simplify using `using this)`. Use `g ⟨[], le_rfl, rfl⟩`. Rewrite using `[← ofReal_norm_eq_enorm, ← ENNReal.ofReal_pow (norm_nonneg _), ← ENNReal.ofReal_toReal hS', ← ENNReal.ofReal_mul hpos.le]`.
+
+Use `ENNReal.ofReal_le_ofReal (key.trans ?_)` and prove the remaining obligations. Rewrite using `[mul_assoc]`. Use `gcongr`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem sobolev_haar [FiniteDimensional ℝ V] [MeasurableSpace V] [BorelSpace V]
     (μ : Measure V) [μ.IsAddHaarMeasure] {D : ℕ} (b : Module.Basis (Fin D) ℝ V) :
     ∃ C : ℝ, ∀ g : V → ℂ, ContDiff ℝ (⊤ : ℕ∞) g → ∀ S : ENNReal,
@@ -93,6 +119,9 @@ theorem sobolev_haar [FiniteDimensional ℝ V] [MeasurableSpace V] [BorelSpace V
   gcongr
   linarith
 
+/- English proof (translation)
+Set `b` to `Module.finBasis ℝ V`. Establish `h : ∀ i, (‖b i‖⁻¹ : ℝ) ≠ 0` using `fun i => inv_ne_zero (norm_ne_zero_iff.2 (b.ne_zero i))`. Use `⟨_, b.unitsSMul fun i => Units.mk0 _ (h i), fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[Module.Basis.unitsSMul_apply, Units.smul_def, Units.val_mk0, norm_smul, norm_inv, norm_norm, inv_mul_cancel₀ (norm_ne_zero_iff.2 (b.ne_zero i))]`.
+-/
 theorem exists_small_basis [FiniteDimensional ℝ V] :
     ∃ (D : ℕ) (b : Module.Basis (Fin D) ℝ V), ∀ i, ‖b i‖ ≤ 1 := by
   let b := Module.finBasis ℝ V
@@ -107,6 +136,15 @@ open GlobalTheory.SobClass
 
 variable {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ]
 
+/- English proof (translation)
+Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `mem Φ h`. Take `⟨f, g, -, rfl⟩` from `h`. Establish `e : (fun y => pureA F f g (x + archInc F y)) = fun y => f ((fun i => (InfiniteAdeleRing.ringEquiv_mixedSpace F) (x i).1) + y) * g (fun i => (x i).2)`. Use function extensionality and compare the values at `y`.
+
+Unfold `pureA`. Use `congr 2`. Use function extensionality and compare the values at `i`. Express the relevant statement in the definitionally equal form `(InfiniteAdeleRing.ringEquiv_mixedSpace F) ((x i).1 + (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (y i)) = _`. Rewrite using `[map_add, RingEquiv.apply_symm_apply]`.
+
+Both sides reduce to the same expression. Use function extensionality and compare the values at `i`. Express the relevant statement in the definitionally equal form `(x i).2 + (archInc F y i).2 = _`. Rewrite using `[archInc_snd, add_zero]`. Rewrite using `[e]`.
+
+Conclude with `((f.smooth ⊤).comp (contDiff_const.add contDiff_id)).mul contDiff_const`. Consider the case `zero => exact contDiff_const`. Consider the case `add Φ Ψ _ _ h1 h2 => exact h1.add h2`. Consider the case `smul a Φ _ h => exact contDiff_const.mul h`.
+-/
 theorem contDiff_slice {Φ : (κ → AF F) → ℂ} (hΦ : Φ ∈ schA F κ) (x : κ → AF F) :
     ContDiff ℝ (⊤ : ℕ∞) fun y => Φ (x + archInc F y) := by
   induction hΦ using Submodule.span_induction with
@@ -131,6 +169,11 @@ theorem contDiff_slice {Φ : (κ → AF F) → ℂ} (hΦ : Φ ∈ schA F κ) (x 
   | add Φ Ψ _ _ h1 h2 => exact h1.add h2
   | smul a Φ _ h => exact contDiff_const.mul h
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (algebraMap ℝ _ t) * (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (e i) = (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (t • e i)`. Rewrite using `[← map_mul, Algebra.smul_def]`. Express the relevant statement in the definitionally equal form `(0 : FiniteAdeleRing (𝓞 F) F) * 0 = 0`.
+
+Rewrite using `[mul_zero]`.
+-/
 theorem realAd_smul_archInc (t : ℝ) (e : κ → mixedEmbedding.mixedSpace F) :
     realAd F t • archInc F e = archInc F (t • e) := by
   funext i
@@ -142,6 +185,13 @@ theorem realAd_smul_archInc (t : ℝ) (e : κ → mixedEmbedding.mixedSpace F) :
   · change (0 : FiniteAdeleRing (𝓞 F) F) * 0 = 0
     rw [mul_zero]
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => rfl`. Consider the case `cons e l ih`. Use function extensionality and compare the values at `y`. Establish `h` using `(hasDerivAt_line (contDiff_dw l hΦ) y e 0).deriv`.
+
+Rewrite `h` using `[zero_smul, add_zero]`. Use `Eq.trans ?_ h` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `deriv (fun t : ℝ => schr ψ (realAd F t • (archInc F e, 0)) (wordH ψ (l.map fun e => (archInc F e, 0)) Φ) (x + archInc F y)) 0 = _`. Use `congr 1`. Use function extensionality and compare the values at `t`.
+
+Rewrite using `[← ih]`. Simplify using `only [schr, Prod.smul_mk, smul_zero, dotProduct_zero, mul_zero, add_zero, AddChar.map_zero_eq_one, one_mul, realAd_smul_archInc, archInc_add, add_assoc]`.
+-/
 theorem word_slice (ψ : AddChar (AF F) ℂ) {Φ : (κ → AF F) → ℂ} (x : κ → AF F)
     (hΦ : ContDiff ℝ (⊤ : ℕ∞) fun y => Φ (x + archInc F y))
     (l : List (κ → mixedEmbedding.mixedSpace F)) :
@@ -162,6 +212,17 @@ theorem word_slice (ψ : AddChar (AF F) ℂ) {Φ : (κ → AF F) → ℂ} (x : �
     simp only [schr, Prod.smul_mk, smul_zero, dotProduct_zero, mul_zero, add_zero,
       AddChar.map_zero_eq_one, one_mul, realAd_smul_archInc, archInc_add, add_assoc]
 
+/- English proof (translation)
+Introduce `F _ _ κ _ ψ _`. Take `⟨D, b, hb⟩` from `exists_small_basis (V := κ → mixedEmbedding.mixedSpace F)`. Use `haveI : BorelSpace (mixedEmbedding.mixedSpace F) := inferInstance`. Use `haveI : BorelSpace (κ → mixedEmbedding.mixedSpace F) := Pi.borelSpace`. Use `haveI : (volume : Measure (mixedEmbedding.mixedSpace F)).IsAddHaarMeasure := inferInstance`.
+
+Use `haveI : SigmaFinite (volume : Measure (mixedEmbedding.mixedSpace F)) := inferInstance`. Use `haveI : (volume : Measure (κ → mixedEmbedding.mixedSpace F)).IsAddHaarMeasure := Measure.pi.isAddHaarMeasure (fun _ => volume)`. Take `⟨C, hC⟩` from `sobolev_haar (volume : Measure (κ → mixedEmbedding.mixedSpace F)) b`. Set `L₀ : Finset (List (Fin D))` to `(List.finite_length_le (Fin D) D).toFinset`. Use `⟨L₀.image fun l => (l.map b).map fun e => (archInc F e, 0), D, C, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `l hl`. Take `⟨l, hl', rfl⟩` from `Finset.mem_image.1 hl`. Use `⟨by simpa [L₀] using hl', fun w hw => ?_⟩` and prove the remaining obligations. Take `⟨e, he, rfl⟩` from `List.mem_map.1 hw`. Take `⟨j, -, rfl⟩` from `List.mem_map.1 he`.
+
+Conclude with `isArchUnit_der _ fun i => (norm_le_pi_norm _ i).trans (hb j)`. Introduce `Φ hΦ x`. Establish `h0 : archInc F (0 : κ → mixedEmbedding.mixedSpace F) = 0`. Use `archInc_add (F := F) (κ := κ) 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`.
+
+Conclude with `left_eq_add.1 this`. Use `hC _ (contDiff_slice hΦ x) (∑ l ∈ L₀.image fun l => (l.map b).map fun e => ((archInc F e, 0) : (κ → AF F) × (κ → AF F)), ∫⁻ y : κ → mixedEmbedding.mixedSpace F, ‖wordH ψ l Φ (x + archInc F y)‖ₑ ^ 2) (fun l hl => by` as an intermediate fact. Rewrite using `[← word_slice ψ x (contDiff_slice hΦ x)]`. Conclude with `Finset.single_le_sum (f := fun l => ∫⁻ y : κ → mixedEmbedding.mixedSpace F, ‖wordH ψ l Φ (x + archInc F y)‖ₑ ^ 2) (fun _ _ => zero_le) (Finset.mem_image_of_mem _ (by simpa [L₀] using hl)))`. Simplify `this` using `only [h0, add_zero]`.
+-/
 theorem slice_sobolev : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] (ψ : AddChar (AF F) ℂ), IsStd ψ → ∃ (L : Finset (List ((κ → AF F) × (κ → AF F)))) (D : ℕ) (C : ℝ), (∀ l ∈ L, l.length ≤ D ∧ ∀ w ∈ l, IsArchUnit w) ∧ ∀ Φ ∈ schA F κ, ∀ x : κ → AF F, ‖Φ x‖ₑ ^ 2 ≤ ENNReal.ofReal C * ∑ l ∈ L, ∫⁻ y : κ → mixedEmbedding.mixedSpace F, ‖wordH ψ l Φ (x + GlobalTheory.SobClass.archInc F y)‖ₑ ^ 2 := by
   intro F _ _ κ _ ψ _
   obtain ⟨D, b, hb⟩ := exists_small_basis (V := κ → mixedEmbedding.mixedSpace F)

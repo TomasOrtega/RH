@@ -17,6 +17,13 @@ noncomputable section
 
 namespace GlobalTheory.FlagCell2
 
+/- English proof (translation)
+Introduce `F _ σ X Y ι _ m E E' φ f hf hR c A u n ε α hα x hx`. Establish `hs : ptMap σ f hf x.pt ∈ ((atlas X σ).e c).source` using `hx.2`. Rewrite using `[GlobalTheory.CxForm.pullback_eq_chart _ _ _ _ (atlas X σ) (atlas Y σ) (ptMap σ f hf) α (GlobalTheory.T.varietyComplexPointsMap_isHolomorphic F σ X Y f hf) hα x c hs]`. Establish `hb : bsL ε (cellMap ε f hf c u x.pt) = c.e (ptMap σ f hf x.pt)` using `bsL_pt _ _ _`. Establish `hloc : (atlas X σ).loc α c (c.e (ptMap σ f hf x.pt)) = α ⟨(c, ptMap σ f hf x.pt), hs⟩` using `(atlas X σ).loc_crd α ⟨(c, ptMap σ f hf x.pt), hs⟩`.
+
+Rewrite using `[hb, hloc, ← GlobalTheory.T.pullbackComplexFormsLinearMap_comp_linear]`. Use `congr 1`. Establish `he : (atlas X σ).e c ∘ ptMap σ f hf ∘ x.ch.symm = bsL ε ∘ (cellMap ε f hf c u ∘ x.ch.symm)`. Use function extensionality and compare the values at `w`. Simplify using `only [Function.comp_apply, cellMap, bsL_pt]`.
+
+Both sides reduce to the same expression. Establish `hd : DifferentiableAt ℂ (cellMap ε f hf c u ∘ x.ch.symm) x.crd` using `(GlobalTheory.T.flagCellCoordinates_contDiffAt_etaleChart F σ X Y ι m E E' φ f hf hR c A u n ε x hx).differentiableAt (by norm_num)`. Rewrite using `[he, fderiv_comp x.crd (bsL ε).differentiableAt hd, ContinuousLinearMap.fderiv]`.
+-/
 theorem pullback_cell : ∀ (F : Type) [Field F] (σ : F →+* ℂ) (X Y : Var F) (ι : Type) [Fintype ι] (m : ι → ℕ) (E : Fr (ratOf X) m 0) (E' : Fr (ratOf Y) m m) (φ : X.Fn →ₐ[F] Y.Fn) (f : Y.X ⟶ X.X) (hf : f ≫ X.str = Y.str), Refines E E' φ f → ∀ (c : AlgChart X.str σ X.dim) (A : Mat m X.Fn) (u : Cell m → Y.Fn), ∀ (n : ℕ) (ε : Fin n ≃ Fin X.dim ⊕ Cell m) (α : (atlas X σ).Fld), (atlas X σ).IsForm α → ∀ x : (atlas Y σ).Pt, x.pt ∈ cellSet E E' φ f hf c A u → (atlas X σ).pullback (atlas Y σ) (ptMap σ f hf) α x = pull (fderiv ℂ (cellMap ε f hf c u ∘ x.ch.symm) x.crd) (pull (bsL ε) ((atlas X σ).loc α c (bsL ε (cellMap ε f hf c u x.pt)))) := by
   intro F _ σ X Y ι _ m E E' φ f hf hR c A u n ε α hα x hx
   have hs : ptMap σ f hf x.pt ∈ ((atlas X σ).e c).source := hx.2

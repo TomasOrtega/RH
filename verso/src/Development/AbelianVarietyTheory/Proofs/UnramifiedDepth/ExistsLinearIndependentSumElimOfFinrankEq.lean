@@ -4,6 +4,11 @@ open ReciprocityTheory.PGsh ReciprocityTheory.ChartRestriction.G.Sh
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Take `⟨Q, hQ⟩` from `Submodule.exists_isCompl (Submodule.span k (Set.range v))`. Establish `h1` using `Submodule.finrank_add_eq_of_isCompl hQ`. Rewrite `h1` using `[finrank_span_eq_card hv, Fintype.card_fin, hV]`. Establish `h2 : Module.finrank k Q = n'` using `by omega`. Set `b` to `Module.finBasisOfFinrankEq k Q h2`.
+
+Use `⟨fun j => (b j : V), hv.sum_type (b.linearIndependent.map' Q.subtype Q.ker_subtype) ?_⟩` and prove the remaining obligations. Use `hQ.disjoint.mono_right ?_` and prove the remaining obligations. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩`. Conclude with `(b j).2`.
+-/
 theorem exists_linearIndependent_sumElim_of_finrank_eq {k V : Type*} [Field k] [AddCommGroup V]
     [Module k V] [FiniteDimensional k V] {n₀ n' : ℕ} (hV : Module.finrank k V = n₀ + n')
     (v : Fin n₀ → V) (hv : LinearIndependent k v) :

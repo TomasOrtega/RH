@@ -9,5 +9,8 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsEqFlagPtOfIsL
 open CategoryTheory CategoryTheory.Limits AlgebraicGeometry ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory GlobalTheory.FlagZ GlobalTheory.FlagZ.Univ
 open GlobalTheory.QCoh (freeModule)
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.FlagZ.Univ.isVB_F_and_isSubbundle_incl | exact GlobalTheory.FlagZ.Univ.isVB_F_and_isSubbundle_incl | (intros; apply GlobalTheory.FlagZ.Univ.isVB_F_and_isSubbundle_incl <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.tautological_subbundle_rank : ∀ (ι : Type) [Fintype ι] (N : ℕ) (τ : ι) (i : Fin (N + 1)), VB.IsVB (F ι N τ i) i ∧ VB.IsSubbundle (incl ι N τ i) := by
   first | exact @GlobalTheory.FlagZ.Univ.isVB_F_and_isSubbundle_incl | exact GlobalTheory.FlagZ.Univ.isVB_F_and_isSubbundle_incl | (intros; apply GlobalTheory.FlagZ.Univ.isVB_F_and_isSubbundle_incl <;> assumption)

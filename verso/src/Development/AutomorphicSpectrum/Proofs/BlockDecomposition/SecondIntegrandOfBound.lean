@@ -10,12 +10,22 @@ open Ad3.K Ad3.K.LC Ad3.K.LC.B
 
 namespace GlobalTheory.CompanionTheory.SecJC
 
+/- English proof (translation)
+Establish `h : ‖z / (‖z‖ : ℂ)‖ = 1`. Rewrite using `[norm_div, Complex.norm_real, norm_norm, div_self (norm_ne_zero_iff.mpr hz)]`. Unfold `ph`. Rewrite using `[norm_zpow, h, _root_.one_zpow]`.
+-/
 theorem norm_ph (n : ℤ) {z : ℂ} (hz : z ≠ 0) : ‖ph n z‖ = 1 := by
   have h : ‖z / (‖z‖ : ℂ)‖ = 1 := by
     rw [norm_div, Complex.norm_real, norm_norm, div_self (norm_ne_zero_iff.mpr hz)]
   unfold ph
   rw [norm_zpow, h, _root_.one_zpow]
 
+/- English proof (translation)
+Establish `h : Measurable (fun z : ℂ => z / (‖z‖ : ℂ))` using `measurable_id.div (Complex.measurable_ofReal.comp measurable_norm)`. Consider the cases of `n with`. Consider the case `ofNat m`. Establish `e : ph (Int.ofNat m) = fun z : ℂ => (z / (‖z‖ : ℂ)) ^ m`. Use function extensionality and compare the values at `z`.
+
+Conclude with `zpow_natCast _ m`. Rewrite using `[e]`. Conclude with `h.pow_const m`. Consider the case `negSucc m`. Establish `e : ph (Int.negSucc m) = fun z : ℂ => ((z / (‖z‖ : ℂ)) ^ (m + 1))⁻¹`.
+
+Use function extensionality and compare the values at `z`. Conclude with `zpow_negSucc _ m`. Rewrite using `[e]`. Conclude with `(h.pow_const (m + 1)).inv`.
+-/
 theorem measurable_ph (n : ℤ) : Measurable (ph n) := by
   have h : Measurable (fun z : ℂ => z / (‖z‖ : ℂ)) :=
     measurable_id.div (Complex.measurable_ofReal.comp measurable_norm)
@@ -33,17 +43,31 @@ theorem measurable_ph (n : ℤ) : Measurable (ph n) := by
     rw [e]
     exact (h.pow_const (m + 1)).inv
 
+/- English proof (translation)
+Unfold `psiC`. Use `fun_prop`.
+-/
 theorem continuous_psiC : Continuous psiC := by
   unfold psiC
   fun_prop
 
+/- English proof (translation)
+Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [blk] <;> fun_prop`.
+-/
 theorem continuous_blk : Continuous blk := by
   refine continuous_matrix fun i j => ?_
   fin_cases i <;> fin_cases j <;> simp [blk] <;> fun_prop
 
+/- English proof (translation)
+The claim follows from `Continuous.matrix_det (continuous_id : Continuous fun h : M22 => h)`.
+-/
 theorem continuous_det : Continuous (fun h : M22 => (Matrix.of h).det) :=
   Continuous.matrix_det (continuous_id : Continuous fun h : M22 => h)
 
+/- English proof (translation)
+Use `measurable_pi_iff.mpr fun j => ?_` and prove the remaining obligations. Establish `hd : Measurable (fun q : (M22 × ℂ) × ((Fin 2 → ℂ) × ℂ) => ((Matrix.of q.1.1).det)⁻¹)` using `(continuous_det.measurable.comp (measurable_fst.comp measurable_fst)).inv`. Establish `he : ∀ (a b : Fin 2), Measurable (fun q : (M22 × ℂ) × ((Fin 2 → ℂ) × ℂ) => q.1.1 a b)`. Introduce `a b`. Use `fun_prop`.
+
+Establish `ht : Measurable (fun q : (M22 × ℂ) × ((Fin 2 → ℂ) × ℂ) => q.1.2)` using `by fun_prop`. Establish `hy : Measurable (fun q : (M22 × ℂ) × ((Fin 2 → ℂ) × ℂ) => q.2.2)` using `by fun_prop`. Simplify using `only [rowv, Matrix.inv_def, Ring.inverse_eq_inv', Matrix.adjugate_fin_two]`. Apply the tactic sequence `fin_cases j <;> simp [Matrix.vecMul, dotProduct, Fin.sum_univ_two] <;> fun_prop`.
+-/
 theorem measurable_rowv :
     Measurable (fun q : (M22 × ℂ) × ((Fin 2 → ℂ) × ℂ) => rowv q.1.2 q.2.2 (Matrix.of q.1.1)) := by
   refine measurable_pi_iff.mpr fun j => ?_
@@ -57,6 +81,11 @@ theorem measurable_rowv :
   simp only [rowv, Matrix.inv_def, Ring.inverse_eq_inv', Matrix.adjugate_fin_two]
   fin_cases j <;> simp [Matrix.vecMul, dotProduct, Fin.sum_univ_two] <;> fun_prop
 
+/- English proof (translation)
+Establish `hA : Continuous (fun q : (M22 × ℂ) × ((Fin 2 → ℂ) × ℂ) => (Matrix.of.symm (Matrix.of q.1.1 * blk q.2.1 * (g : Matrix (Fin 3) (Fin 3) ℂ)) : M23))`. Establish `h1 : Continuous (fun q : (M22 × ℂ) × ((Fin 2 → ℂ) × ℂ) => (Matrix.of q.1.1 : Matrix (Fin 2) (Fin 2) ℂ))` using `continuous_fst.comp continuous_fst`. Establish `h2 : Continuous (fun q : (M22 × ℂ) × ((Fin 2 → ℂ) × ℂ) => blk q.2.1)` using `continuous_blk.comp (continuous_fst.comp continuous_snd)`. Conclude with `(h1.matrix_mul h2).matrix_mul continuous_const`. Establish `hF : Measurable (fun q : (M22 × ℂ) × ((Fin 2 → ℂ) × ℂ) => Ψ (Matrix.of.symm (Matrix.of q.1.1 * blk q.2.1 * (g : Matrix (Fin 3) (Fin 3) ℂ)), rowv q.1.2 q.2.2 (Matrix.of q.1.1)) * psiC (-(q.2.1 1)) * psiC (-q.2.2))`.
+
+Use `((Ψ.continuous.measurable.comp (hA.measurable.prodMk measurable_rowv)).mul ?_).mul ?_` and prove the remaining obligations. Conclude with `(continuous_psiC.comp (by fun_prop)).measurable`. Conclude with `(continuous_psiC.comp (by fun_prop)).measurable`. Conclude with `(hF.stronglyMeasurable.integral_prod_right' (ν := volume)).measurable`.
+-/
 theorem measurable_inn (Ψ : Sw) (g : GL (Fin 3) ℂ) :
     Measurable (fun p : M22 × ℂ => inn Ψ g (Matrix.of p.1) p.2) := by
   have hA : Continuous (fun q : (M22 × ℂ) × ((Fin 2 → ℂ) × ℂ) =>
@@ -74,6 +103,9 @@ theorem measurable_inn (Ψ : Sw) (g : GL (Fin 3) ℂ) :
     · exact (continuous_psiC.comp (by fun_prop)).measurable
   exact (hF.stronglyMeasurable.integral_prod_right' (ν := volume)).measurable
 
+/- English proof (translation)
+Establish `hd : Measurable (fun p : M22 × ℂ => (Matrix.of p.1).det)` using `continuous_det.measurable.comp measurable_fst`. Unfold `secI`. Use `(((measurable_inn Ψ g).mul ((measurable_ph _).comp measurable_snd)).mul ((measurable_ph _).comp hd)).mul ?_` and prove the remaining obligations. Conclude with `Complex.measurable_ofReal.comp ((measurable_norm.comp hd).pow_const _)`.
+-/
 theorem measurable_secI (k : ℕ) (Ψ : Sw) (g : GL (Fin 3) ℂ) : Measurable (secI k Ψ g) := by
   have hd : Measurable (fun p : M22 × ℂ => (Matrix.of p.1).det) :=
     continuous_det.measurable.comp measurable_fst
@@ -82,6 +114,9 @@ theorem measurable_secI (k : ℕ) (Ψ : Sw) (g : GL (Fin 3) ℂ) : Measurable (s
     ((measurable_ph _).comp hd)).mul ?_
   exact Complex.measurable_ofReal.comp ((measurable_norm.comp hd).pow_const _)
 
+/- English proof (translation)
+Unfold `inn innB`. Use `integral_congr_ae (Filter.Eventually.of_forall fun p => ?_)` and prove the remaining obligations. Simplify using `[hΦ]`.
+-/
 theorem inn_eq_innB (Ψ : Sw) (g : GL (Fin 3) ℂ) (Φ : Sw)
     (hΦ : ∀ (X : M23) (q : Fin 2 → ℂ), Φ (X, q) =
       Ψ (Matrix.of.symm (Matrix.of X * (g : Matrix (Fin 3) (Fin 3) ℂ)), q))
@@ -90,6 +125,11 @@ theorem inn_eq_innB (Ψ : Sw) (g : GL (Fin 3) ℂ) (Φ : Sw)
   refine integral_congr_ae (Filter.Eventually.of_forall fun p => ?_)
   simp [hΦ]
 
+/- English proof (translation)
+Establish `h1 : ∀ᵐ h : M22, (Matrix.of h).det ≠ 0`. Rewrite using `[ae_iff]`. Simplify using `using GlobalTheory.CompanionTheory.DetC.volume_det_fin_two_complex_eq_zero`. Establish `h2 : ∀ᵐ t : ℂ, t ≠ 0`. Rewrite using `[ae_iff]`.
+
+Simplify using the standard rewrite rules. Establish `h1'` using `(Measure.quasiMeasurePreserving_fst (μ := (volume : Measure M22)) (ν := (volume : Measure ℂ))).ae h1`. Establish `h2'` using `(Measure.quasiMeasurePreserving_snd (μ := (volume : Measure M22)) (ν := (volume : Measure ℂ))).ae h2`. Rewrite `h1'`, `h2'` using `[← Measure.volume_eq_prod]`. Use `filter_upwards [h1', h2'] with p a b using ⟨a, b⟩`.
+-/
 theorem ae_good : ∀ᵐ p : M22 × ℂ, (Matrix.of p.1).det ≠ 0 ∧ p.2 ≠ 0 := by
   have h1 : ∀ᵐ h : M22, (Matrix.of h).det ≠ 0 := by
     rw [ae_iff]
@@ -102,6 +142,15 @@ theorem ae_good : ∀ᵐ p : M22 × ℂ, (Matrix.of p.1).det ≠ 0 ∧ p.2 ≠ 0
   rw [← Measure.volume_eq_prod] at h1' h2'
   filter_upwards [h1', h2'] with p a b using ⟨a, b⟩
 
+/- English proof (translation)
+Introduce `hI hM k _ Ψ g`. Take `⟨Φ, hΦ⟩` from `GlobalTheory.CompanionTheory.SchwartzTranslateC.exists_rightTranslate g Ψ`. Take `⟨N, hN⟩` from `hM 1 one_pos`. Take `⟨C₁, hC₁⟩` from `hN N le_rfl`. Establish `hint` using `(hC₁ 1 1 one_ne_zero one_ne_zero).1`.
+
+Take `⟨C, hC⟩` from `hI N`. Take `⟨B, hB⟩ : ∃ B : ℝ, ∀ n ≤ 2 * N, ∀ X : E5, (1 + ‖X‖) ^ (2 * N + 20) * ‖iteratedFDeriv ℝ n Φ X‖ ≤ B` from `⟨_, fun n hn X => SchwartzMap.one_add_le_sup_seminorm_apply (𝕜 := ℝ) (m := (2 * N + 20, 2 * N)) le_rfl hn Φ X⟩`. Use `Integrable.mono' (hint.const_mul (C * B)) (measurable_secI k Ψ g).aestronglyMeasurable ?_` and prove the remaining obligations. Use `filter_upwards [ae_good] with p hp`. Take `⟨hd, ht⟩` from `hp`.
+
+Establish `hbd : ‖innB Φ p.1 p.2 1 1‖ ≤ C * B * jm N p.1 p.2 1 1` using `hC Φ B (Φ.smooth ⊤) hB p.1 p.2 1 1 hd ht one_ne_zero`. Establish `hn : ‖(((‖(Matrix.of p.1).det‖ ^ (-(2 : ℝ)) : ℝ)) : ℂ)‖ = (‖(Matrix.of p.1).det‖ ^ 2)⁻¹`. Rewrite using `[Complex.norm_real, Real.norm_of_nonneg (by positivity), Real.rpow_neg (norm_nonneg _)]`. Use `norm_cast`. Establish `hD : 0 ≤ (‖(Matrix.of p.1).det‖ ^ 2)⁻¹` using `by positivity`.
+
+Unfold `secI`. Rewrite using `[norm_mul, norm_mul, norm_mul, norm_ph _ ht, norm_ph _ hd, hn, mul_one, mul_one, inn_eq_innB Ψ g Φ hΦ]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem main : IbpBound → MajScaled → SecJ := by
   intro hI hM k _ Ψ g
   obtain ⟨Φ, hΦ⟩ := GlobalTheory.CompanionTheory.SchwartzTranslateC.exists_rightTranslate g Ψ

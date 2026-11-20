@@ -135,6 +135,9 @@ section Inhabitant
 open ReciprocityTheory.AnForm.M (p1 fsPot projectiveLinePairSection projLine_isSmoothPotential projLine_isPlurisubharmonic projLine_isHolomorphicSection projLine_isSimpleNormalCrossing ptAtlas)
 open OnePoint
 
+/- English proof (translation)
+Introduce `z _`. Establish `h : f = fun _ => f z` using `funext fun w => congrArg f (Subsingleton.elim w z)`. Rewrite using `[h]`. Conclude with `analyticAt_const`.
+-/
 theorem analyticOnNhd_fin_zero {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
     (f : (Fin 0 → ℂ) → E) (s : Set (Fin 0 → ℂ)) : AnalyticOnNhd ℂ f s := by
   intro z _
@@ -142,6 +145,9 @@ theorem analyticOnNhd_fin_zero {E : Type*} [NormedAddCommGroup E] [NormedSpace �
   rw [h]
   exact analyticAt_const
 
+/- English proof (translation)
+Introduce `x`. Use `⟨Set.univ, isOpen_univ, Set.mem_univ _, 1, fun _ _ => 1, fun _ _ => analyticOnNhd_const, ?_⟩` and prove the remaining obligations. Use extensionality with `y`. Simplify using the standard rewrite rules.
+-/
 theorem isAnalyticSubset_empty {e : ℕ} {X : Type*} [TopologicalSpace X] (A : FinHolAtlas e X) :
     A.IsAnalyticSubset ∅ := by
   intro x
@@ -150,6 +156,9 @@ theorem isAnalyticSubset_empty {e : ℕ} {X : Type*} [TopologicalSpace X] (A : F
   ext y
   simp
 
+/- English proof (translation)
+Unfold `mInt`. Use `split_ifs`. Simplify using `[integralWith]`. Both sides reduce to the same expression.
+-/
 theorem mInt_zero_fun {e : ℕ} {X : Type*} [TopologicalSpace X] (A : FinHolAtlas e X)
     (Φ : Fin e → LocPot X) : mInt A Φ (fun _ => 0) = 0 := by
   unfold mInt
@@ -157,12 +166,20 @@ theorem mInt_zero_fun {e : ℕ} {X : Type*} [TopologicalSpace X] (A : FinHolAtla
   · simp [integralWith]
   · rfl
 
+/- English proof (translation)
+Introduce `j K _ _`. Simplify using `only [zero_mul]`. Conclude with `integrableOn_zero`.
+-/
 theorem mIntegrable_zero_fun {e : ℕ} {X : Type*} [TopologicalSpace X] (A : FinHolAtlas e X)
     (Φ : Fin e → LocPot X) : MIntegrable A Φ (fun _ => 0) := by
   intro j K _ _
   simp only [zero_mul]
   exact integrableOn_zero
 
+/- English proof (translation)
+Introduce `R₀ hR₀`. Establish `h : ((tail Yo r R₀).indicator fun x => Real.log (r x)) = fun _ => 0`. Use function extensionality and compare the values at `x`. Establish `hx : x ∉ tail Yo r R₀` using `fun hx => lt_irrefl _ ((hR₀.trans hx.2).trans_lt (hr x))`. Simplify using `[hx]`.
+
+Rewrite using `[h, mInt_zero_fun]`. Conclude with `⟨mIntegrable_zero_fun A T, by simp⟩`.
+-/
 theorem tailLogBound_of_small {e : ℕ} {X : Type*} [TopologicalSpace X] (A : FinHolAtlas e X)
     (Yo : Set X) (r : X → ℝ) (hr : ∀ x, r x < Real.exp 1) (T : Fin e → LocPot X) :
     TailLogBound A Yo r T 0 := by
@@ -174,10 +191,16 @@ theorem tailLogBound_of_small {e : ℕ} {X : Type*} [TopologicalSpace X] (A : Fi
   rw [h, mInt_zero_fun]
   exact ⟨mIntegrable_zero_fun A T, by simp⟩
 
+/- English proof (translation)
+Use `Real.add_one_lt_exp (x := 1) one_ne_zero` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem one_lt_exp_one : (1 : ℝ) < Real.exp 1 := by
   have := Real.add_one_lt_exp (x := 1) one_ne_zero
   linarith
 
+/- English proof (translation)
+Use `fin_cases k`. Both sides reduce to the same expression.
+-/
 theorem inf_comp (k : Fin 1) : (![{∞}] : Fin 1 → Set (OnePoint ℂ)) k = {∞} := by
   fin_cases k
   rfl
@@ -188,6 +211,11 @@ abbrev infUnique (k : Fin 1) : Unique ((![{∞}] : Fin 1 → Set (OnePoint ℂ))
     obtain rfl : k = 0 := Subsingleton.elim _ _
     exact Subtype.ext y.2
 
+/- English proof (translation)
+Use `⟨⟨projLine_isSmoothPotential, fun _ _ _ _ _ => le_rfl, ?_, fun _ => contDiffOn_const, fun _ _ => le_rfl, fun _ _ => by simp, ?_, Or.inl fun _ => contDiffOn_const⟩, fun _ => contDiffOn_const⟩` and prove the remaining obligations. Introduce `x k y hy w`. Use `projLine_isPlurisubharmonic x k y ⟨hy.1, hy.2.1.2⟩ w` as an intermediate fact. Use `show -1 * levi (fsPot.φ x ∘ (p1.chart k).symm) y w ≤ 1 * levi (fsPot.φ x ∘ (p1.chart k).symm) y w`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Introduce `x k y hy w`. Establish `h : (potForm fsPot fun _ => (0 : ℝ)).φ x = fsPot.φ x` using `funext fun z => add_zero _`. Rewrite using `[h]`. Conclude with `projLine_isPlurisubharmonic x k y ⟨hy.1, hy.2.2.1⟩ w`.
+-/
 theorem projectiveLine_smoothPotForm :
     IsSmoothPotForm p1 Set.univ (fun _ => (1 : ℝ)) projectiveLineKaehler 0 fsPot (fun _ => 0) := by
   refine ⟨⟨projLine_isSmoothPotential, fun _ _ _ _ _ => le_rfl, ?_, fun _ => contDiffOn_const,

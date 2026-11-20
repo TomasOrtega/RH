@@ -18,14 +18,23 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Simplify using `only [GLs, Set.mem_ofPred_eq, Matrix.det_nonsing_inv, Ring.inverse_eq_inv'] at *`. Conclude with `inv_ne_zero ha`.
+-/
 theorem inv_mem {a : Mat n} (ha : a ∈ GLs n) : a⁻¹ ∈ GLs n := by
   simp only [GLs, Set.mem_ofPred_eq, Matrix.det_nonsing_inv, Ring.inverse_eq_inv'] at *
   exact inv_ne_zero ha
 
+/- English proof (translation)
+Simplify using `only [GLs, Set.mem_ofPred_eq, Matrix.det_mul] at *`. Conclude with `mul_ne_zero ha hb`.
+-/
 theorem mul_mem {a b : Mat n} (ha : a ∈ GLs n) (hb : b ∈ GLs n) : a * b ∈ GLs n := by
   simp only [GLs, Set.mem_ofPred_eq, Matrix.det_mul] at *
   exact mul_ne_zero ha hb
 
+/- English proof (translation)
+The claim follows from `isUnit_iff_ne_zero.2 ha`.
+-/
 theorem isUnit_det {a : Mat n} (ha : a ∈ GLs n) : IsUnit a.det := isUnit_iff_ne_zero.2 ha
 
 def mulR (z : Mat n) : Mat n →L[ℝ] Mat n :=
@@ -38,6 +47,9 @@ def mulL (x : Mat n) : Mat n →L[ℝ] Mat n :=
     { toFun := fun w => x * w, map_add' := fun a b => Matrix.mul_add x a b,
       map_smul' := fun c a => Matrix.mul_smul x c a }
 
+/- English proof (translation)
+Establish `hAe : ∀ i j, ContDiffOn ℝ ∞ (fun x => A x i j) s` using `fun i j => (GlobalTheory.CompanionTheory.LengthGL.ent i j).contDiff.comp_contDiffOn hA`. Establish `hBe : ∀ i j, ContDiffOn ℝ ∞ (fun x => B x i j) s` using `fun i j => (GlobalTheory.CompanionTheory.LengthGL.ent i j).contDiff.comp_contDiffOn hB`. Use `contDiffOn_pi.2 fun i => contDiffOn_pi.2 fun j => ?_` and prove the remaining obligations. Simplify using `only [Matrix.mul_apply]`. Conclude with `ContDiffOn.sum fun c _ => (hAe i c).mul (hBe c j)`.
+-/
 theorem cdo_mul {X : Type} [NormedAddCommGroup X] [NormedSpace ℝ X] {s : Set X} {A B : X → Mat n}
     (hA : ContDiffOn ℝ ∞ A s) (hB : ContDiffOn ℝ ∞ B s) : ContDiffOn ℝ ∞ (fun x => A x * B x) s := by
   have hAe : ∀ i j, ContDiffOn ℝ ∞ (fun x => A x i j) s := fun i j =>
@@ -52,6 +64,11 @@ def Psi {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] (k : Mat n → (V 
     (p : Mat n × Mat n) : V :=
   k (p.1⁻¹ * p.2) (f p.2)
 
+/- English proof (translation)
+Establish `h1 : ContDiffOn ℝ ∞ (fun p : Mat n × Mat n => p.1⁻¹ * p.2) (GLs n ×ˢ GLs n)` using `cdo_mul (contDiffOn_inv.comp contDiffOn_fst fun p hp => hp.1) contDiffOn_snd`. Establish `h2 : MapsTo (fun p : Mat n × Mat n => p.1⁻¹ * p.2) (GLs n ×ˢ GLs n) (GLs n)` using `fun p hp => mul_mem (inv_mem hp.1) hp.2`. Establish `h3 : ContDiffOn ℝ ∞ (fun p : Mat n × Mat n => k (p.1⁻¹ * p.2)) (GLs n ×ˢ GLs n)` using `hk.comp h1 h2`. Establish `h4 : ContDiffOn ℝ ∞ (fun p : Mat n × Mat n => f p.2) (GLs n ×ˢ GLs n)` using `hf.comp contDiffOn_snd fun (p : Mat n × Mat n) (hp : p ∈ GLs n ×ˢ GLs n) => hp.2`. Establish `h3' : ContDiffOn ℝ ∞ (fun p : Mat n × Mat n => (k (p.1⁻¹ * p.2)).restrictScalars ℝ) (GLs n ×ˢ GLs n)` using `(ContinuousLinearMap.restrictScalarsL ℂ V V ℝ ℝ).contDiff.comp_contDiffOn h3`.
+
+Conclude with `h3'.clm_apply h4`.
+-/
 theorem contDiffOn_Psi {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] {k : Mat n → (V →L[ℂ] V)}
     {f : Mat n → V} (hk : ContDiffOn ℝ ∞ k (GLs n)) (hf : ContDiffOn ℝ ∞ f (GLs n)) :
     ContDiffOn ℝ ∞ (Psi k f) (GLs n ×ˢ GLs n) := by
@@ -66,6 +83,13 @@ theorem contDiffOn_Psi {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] {k 
     (ContinuousLinearMap.restrictScalarsL ℂ V V ℝ ℝ).contDiff.comp_contDiffOn h3
   exact h3'.clm_apply h4
 
+/- English proof (translation)
+Take `⟨R, hR⟩` from `hkc`. Introduce `x₀ hx₀`. Take `⟨r, hr, hrU⟩` from `Metric.isOpen_iff.1 isOpen_GLs x₀ hx₀`. Establish `hcb : closedBall x₀ (r / 2) ⊆ GLs n` using `(closedBall_subset_ball (by linarith)).trans hrU`. Use `haveI : ProperSpace (Mat n) := FiniteDimensional.proper ℝ (Mat n)`.
+
+Take `⟨M, hM⟩` from `(isCompact_closedBall x₀ (r / 2)).exists_bound_of_continuousOn (contDiffOn_lg.continuousOn.mono hcb)`. Use `⟨ball x₀ (r / 2), isOpen_ball, mem_ball_self (by linarith), ball_subset_closedBall.trans hcb, {y : G n | lg y.val ≤ R + M}, isCompact_G _, fun x hx y hy => ?_⟩` and prove the remaining obligations. Establish `hxG : x ∈ GLs n` using `hcb (ball_subset_closedBall hx)`. Establish `hlx : lg x ≤ M` using `(le_abs_self _).trans (by simpa using hM x (ball_subset_closedBall hx))`. Establish `hy' : R + M < lg y.val` using `lt_of_not_ge hy`.
+
+Establish `hsub : lg y.val ≤ lg x + lg (x⁻¹ * y.val)`. Use `lg_mul_le x (x⁻¹ * y.val)` as an intermediate fact. Rewrite `this` using `[Matrix.mul_nonsing_inv_cancel_left _ _ (isUnit_det hxG)]`. Then use the resulting hypothesis. Establish `hz : k (x⁻¹ * y.val) = 0` using `hR _ (mul_mem (inv_mem hxG) (mem_GLs_val y)) (by linarith)`. Simplify using `[Psi, hz]`.
+-/
 theorem locSupp_Psi {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] {k : Mat n → (V →L[ℂ] V)}
     (f : Mat n → V) (hkc : Cpt k) : LocSupp (GLs n) (fun y : G n => y.val) (Psi k f) := by
   obtain ⟨R, hR⟩ := hkc
@@ -90,6 +114,9 @@ section Int
 
 variable [MeasurableSpace (G n)] [BorelSpace (G n)] (μ : Measure (G n)) [μ.IsHaarMeasure]
 
+/- English proof (translation)
+Set `u : G n` to `Matrix.nonsingInvUnit x (isUnit_det hx)`. Establish `hu : (u : Mat n) = x` using `rfl`. Rewrite using `[← integral_mul_left_eq_self (fun y : G n => Psi k f (x, y.val)) u]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Simplify using `only [Psi, Units.val_mul, hu, Matrix.nonsing_inv_mul_cancel_left _ _ (isUnit_det hx)]`.
+-/
 theorem act_eq_Psi (E : KMod n) (k : Mat n → (E.V →L[ℂ] E.V))
     (f : Mat n → E.V) {x : Mat n} (hx : x ∈ GLs n) :
     act μ E k f x = ∫ y : G n, Psi k f (x, y.val) ∂μ := by
@@ -99,6 +126,9 @@ theorem act_eq_Psi (E : KMod n) (k : Mat n → (E.V →L[ℂ] E.V))
   refine integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)
   simp only [Psi, Units.val_mul, hu, Matrix.nonsing_inv_mul_cancel_left _ _ (isUnit_det hx)]
 
+/- English proof (translation)
+Establish `hg : HasFDerivAt (fun x' : Mat n => x'⁻¹ * z) ((mulR z).comp (fderiv ℝ (fun y : Mat n => y⁻¹) x)) x` using `(mulR z).hasFDerivAt.comp x (differentiableAt_inv hx).hasFDerivAt`. Establish `hk' : HasFDerivAt k (fderiv ℝ k (x⁻¹ * z)) (x⁻¹ * z)` using `((hk.differentiableOn (by simp)).differentiableAt (isOpen_GLs.mem_nhds (mul_mem (inv_mem hx) hz))).hasFDerivAt`. Establish `hev : HasFDerivAt (fun L : V →L[ℂ] V => L (f z)) ((ContinuousLinearMap.apply ℂ V (f z)).restrictScalars ℝ) (k (x⁻¹ * z))` using `((ContinuousLinearMap.apply ℂ V (f z)).restrictScalars ℝ).hasFDerivAt`. Conclude with `hev.comp x (hk'.comp x hg)`.
+-/
 theorem hasFDerivAt_Psi_slice {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] {k : Mat n → (V →L[ℂ] V)}
     (f : Mat n → V) (hk : ContDiffOn ℝ ∞ k (GLs n)) {x z : Mat n} (hx : x ∈ GLs n) (hz : z ∈ GLs n) :
     HasFDerivAt (fun x' => Psi k f (x', z))
@@ -114,6 +144,11 @@ theorem hasFDerivAt_Psi_slice {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ
     ((ContinuousLinearMap.apply ℂ V (f z)).restrictScalars ℝ).hasFDerivAt
   exact hev.comp x (hk'.comp x hg)
 
+/- English proof (translation)
+Establish `h1` using `hasFDerivAt_pd isOpen_GLs isOpen_GLs (contDiffOn_Psi hk hf) hx hz`. Establish `key : pd (Psi k f) (x, z) (x * X) = (fderiv ℝ k (x⁻¹ * z) (mulR z (fderiv ℝ (fun y : Mat n => y⁻¹) x (x * X)))) (f z)`. Rewrite using `[h1.unique (hasFDerivAt_Psi_slice f hk hx hz)]`. Both sides reduce to the same expression. Rewrite using `[key, fderiv_inv_mul hx X]`.
+
+Establish `: mulR z (-(X * x⁻¹)) = -(X * (x⁻¹ * z))` using `by show -(X * x⁻¹) * z = -(X * (x⁻¹ * z))`. Rewrite using `[neg_mul, Matrix.mul_assoc]`. Rewrite using `[this, map_neg]`. Both sides reduce to the same expression.
+-/
 theorem pd_Psi_apply (E : KMod n) {k : Mat n → (E.V →L[ℂ] E.V)} (f : Mat n → E.V) (hk : ContDiffOn ℝ ∞ k (GLs n))
     (hf : ContDiffOn ℝ ∞ f (GLs n)) {x z : Mat n} (hx : x ∈ GLs n) (hz : z ∈ GLs n) (X : Mat n) :
     pd (Psi k f) (x, z) (x * X) = Ld X k (x⁻¹ * z) (f z) := by
@@ -129,6 +164,15 @@ theorem pd_Psi_apply (E : KMod n) {k : Mat n → (E.V →L[ℂ] E.V)} (f : Mat n
   rw [this, map_neg]
   rfl
 
+/- English proof (translation)
+Introduce `_hU n _ _ μ _ E k f hk hkc hf`. Establish `hΦ` using `contDiffOn_Psi hk hf`. Establish `hS` using `locSupp_Psi f hkc`. Establish `hιc : Continuous fun y : G n => y.val` using `Units.continuous_val`. Establish `hι : ∀ y : G n, (fun y : G n => y.val) y ∈ GLs n` using `mem_GLs_val`.
+
+Establish `hI` using `contDiffOn_int μ isOpen_GLs isOpen_GLs hιc hι hΦ hS`. Use `⟨hI.congr fun x hx => act_eq_Psi μ E k f hx, fun X x hx => ?_⟩` and prove the remaining obligations. Establish `heq : act μ E k f =ᶠ[𝓝 x] fun x => ∫ y : G n, Psi k f (x, y.val) ∂μ` using `eventually_of_mem (isOpen_GLs.mem_nhds hx) fun x' hx' => act_eq_Psi μ E k f hx'`. Establish `hD : HasFDerivAt (fun x => ∫ y : G n, Psi k f (x, y.val) ∂μ) (∫ y : G n, pd (Psi k f) (x, y.val) ∂μ) x` using `hasFDerivAt_int μ isOpen_GLs isOpen_GLs hιc hι hΦ hS hx`. Establish `hint : Integrable (fun y : G n => pd (Psi k f) (x, y.val)) μ` using `integrable_pd μ isOpen_GLs isOpen_GLs hιc hι hΦ hS hx`.
+
+Establish `hA : HasFDerivAt (act μ E k f) (∫ y : G n, pd (Psi k f) (x, y.val) ∂μ) x` using `hD.congr_of_eventuallyEq heq`. Establish `h1 : Rd X (act μ E k f) x = (∫ y : G n, pd (Psi k f) (x, y.val) ∂μ) (x * X)` using `congrArg (fun L => L (x * X)) hA.fderiv`. Rewrite using `[h1, ContinuousLinearMap.integral_apply hint]`. Set `u : G n` to `Matrix.nonsingInvUnit x (isUnit_det hx)`. Establish `hu : (u : Mat n) = x` using `rfl`.
+
+Rewrite using `[← integral_mul_left_eq_self (fun y : G n => pd (Psi k f) (x, y.val) (x * X)) u]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Simplify using `only [Units.val_mul, hu]`. Rewrite using `[pd_Psi_apply E f hk hf hx (mul_mem hx (mem_GLs_val y)) X, Matrix.nonsing_inv_mul_cancel_left _ _ (isUnit_det hx)]`.
+-/
 theorem actDer : ActDer := by
   intro _hU n _ _ μ _ E k f hk hkc hf
   have hΦ := contDiffOn_Psi hk hf

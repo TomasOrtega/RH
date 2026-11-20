@@ -1,5 +1,8 @@
 import Mathlib
 
+/- English proof (translation)
+Introduce `E _ _`. Conclude with `traceForm_nondegenerate ℚ E`.
+-/
 theorem UpperTheory.Reformulated.B.DualIntegralLattice.aux2 :
     ∀ (E : Type) [inst : Field E] [inst_1 : NumberField E], (Algebra.traceForm ℚ E).Nondegenerate := by
   intro E _ _
@@ -13,6 +16,35 @@ noncomputable def UpperTheory.Reformulated.B.DualIntegralLattice.dualInt :
           Module.Free.ChooseBasisIndex ℤ (NumberField.RingOfIntegers E) → E)
         k
 
+/- English proof (translation)
+Use `haveI : NeZero (p ^ R) := ⟨pow_ne_zero _ hp.ne_zero⟩`. Establish `star : ∀ (i j : Fin N) (a : S), (d : ZMod (p ^ R)) * e (Pi.single i a) (Pi.single j 1) = ((T (a * ∑ k, ((e (Pi.single i (b k)) (Pi.single j 1)).val : S) * w k) : ℤ) : ZMod (p ^ R))`. Introduce `i j a`. Set `g : S →+ ZMod (p ^ R)` to `(e.flip (Pi.single j 1)).comp (AddMonoidHom.single (fun _ => S) i)`. Establish `hg : ∀ a, g a = e (Pi.single i a) (Pi.single j 1)` using `fun _ => rfl`.
+
+Simplify using `only [← hg]`. Establish `h1 : (d : ZMod (p ^ R)) * g a = g (d • a)`. Rewrite using `[map_zsmul, zsmul_eq_mul]`. Rewrite using `[h1, hdual, map_sum, Finset.mul_sum, map_sum, Int.cast_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Establish `h2 : a * (((g (b k)).val : S) * w k) = ((g (b k)).val : ℕ) • (a * w k)`. Rewrite using `[nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h2, map_nsmul, map_zsmul, nsmul_eq_mul, zsmul_eq_mul]`. Use `push_cast`.
+
+Rewrite using `[ZMod.natCast_zmod_val, mul_comm]`. Take `⟨W, hW⟩ : ∃ W : Fin N → Fin N → S, ∀ i j, W i j = ∑ k, ((e (Pi.single i (b k)) (Pi.single j 1)).val : S) * w k` from `⟨_, fun _ _ => rfl⟩`. Simplify using `only [← hW] at star hx`. Establish `expand : ∀ y : Fin N → S, (d : ZMod (p ^ R)) * e x y = ((T (∑ j, c.symm (y j) * ∑ i, x i * W i j) : ℤ) : ZMod (p ^ R))`. Introduce `y`.
+
+Establish `hxs : x = ∑ i, Pi.single i (x i)` using `(Finset.univ_sum_single x).symm`. Establish `hys : y = ∑ j, Pi.single j (y j)` using `(Finset.univ_sum_single y).symm`. Establish `term : ∀ i j, (d : ZMod (p ^ R)) * e (Pi.single i (x i)) (Pi.single j (y j)) = ((T (c.symm (y j) * (x i * W i j)) : ℤ) : ZMod (p ^ R))`. Introduce `i j`. Establish `h1 : (Pi.single j (y j) : Fin N → S) = c (c.symm (y j)) • Pi.single j 1`.
+
+Rewrite using `[c.apply_symm_apply, ← Pi.single_smul, smul_eq_mul, mul_one]`. Establish `h2 : c.symm (y j) • (Pi.single i (x i) : Fin N → S) = Pi.single i (c.symm (y j) * x i)`. Rewrite using `[← Pi.single_smul, smul_eq_mul]`. Rewrite using `[h1, ← hadj, h2, star, mul_assoc]`. Use `conv_lhs => rw [hxs, map_sum, AddMonoidHom.finset_sum_apply, hys]`.
+
+Simplify using `only [map_sum, Finset.mul_sum, Int.cast_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Conclude with `term i j`. Use `choose z hz using hx`.
+
+Establish `hpR : ((p : ZMod (p ^ R))) ^ R = 0`. Conclude with `ZMod.natCast_self (p ^ R)` after adjusting the coercions. Establish `h3 : ∀ y, ((p : ZMod (p ^ R)) ^ (R - 1) * d) * e x y = 0`. Introduce `y`. Rewrite using `[mul_assoc, expand]`.
+
+Simplify using `only [hz]`. Establish `h4 : ∑ j, c.symm (y j) * ((p : S) * z j) = p • ∑ j, c.symm (y j) * z j`. Rewrite using `[nsmul_eq_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => by ring`. Rewrite using `[h4, map_nsmul, nsmul_eq_mul]`.
+
+Use `push_cast`. Rewrite using `[← mul_assoc, ← pow_succ, Nat.sub_add_cancel hR, hpR, zero_mul]`. Establish `h4 : e (((p : ℤ) ^ (R - 1) * d) • x) = 0`. Use `AddMonoidHom.ext fun y => ?_` and prove the remaining obligations. Establish `h5 : e (((p : ℤ) ^ (R - 1) * d) • x) y = ((p : ℤ) ^ (R - 1) * d) • e x y` using `map_zsmul (e.flip y) _ x`.
+
+Rewrite using `[h5, zsmul_eq_mul]`. Use `push_cast`. Conclude with `h3 y`. Take `⟨x', hx'⟩` from `hnd _ h4`. Establish `hp0 : (p : S) ^ (R - 1) ≠ 0` using `pow_ne_zero _ (Nat.cast_ne_zero.mpr hp.ne_zero)`.
+
+Establish `h5 : ∀ i, (d : S) * x i = p * x' i`. Introduce `i`. Establish `h6` using `congrFun hx' i`. Simplify using `only [Pi.smul_apply, zsmul_eq_mul, nsmul_eq_mul] at h6`. Move the coercions through the operations in `at h6`.
+
+Apply `mul_left_cancel₀ hp0` to reduce the goal to its premises. Rewrite using `[← mul_assoc, h6, ← mul_assoc, ← pow_succ, Nat.sub_add_cancel hR]`. Establish `hcop : IsCoprime d (p : ℤ)` using `(((Nat.prime_iff_prime_int.mp hp).irreducible.coprime_iff_not_dvd).mpr hd).symm`. Take `⟨u, v, huv⟩` from `hcop`. Establish `huv' : (u : S) * d + v * p = 1` using `by exact_mod_cast congrArg (Int.cast : ℤ → S) huv`.
+
+Use `⟨fun i => (u : S) * x' i + (v : S) * x i, funext fun i => ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.smul_apply, nsmul_eq_mul]`. Take the linear combination `(-(x i)) * huv' + (u : S) * h5 i`.
+-/
 private theorem key1 {S : Type} [CommRing S] [IsDomain S] [CharZero S] {ι : Type} [Fintype ι]
     {p R N : ℕ} (hp : p.Prime) (hR : 1 ≤ R) (c : S ≃+* S) (b w : ι → S) (T : S →+ ℤ) (d : ℤ)
     (hd : ¬ (p : ℤ) ∣ d)
@@ -100,6 +132,23 @@ private theorem key1 {S : Type} [CommRing S] [IsDomain S] [CharZero S] {ι : Typ
   simp only [Pi.smul_apply, nsmul_eq_mul]
   linear_combination (-(x i)) * huv' + (u : S) * h5 i
 
+/- English proof (translation)
+Set `I : Ideal S` to `Ideal.span {(p : S)}`. Set `π : S →+* S ⧸ I` to `Ideal.Quotient.mk I`. Establish `hπ : Function.Surjective π` using `Ideal.Quotient.mk_surjective`. Establish `hker : ∀ s : S, π s = 0 → ∃ z, s = (p : S) * z`. Introduce `s hs`.
+
+Take `⟨a, ha⟩` from `Ideal.mem_span_singleton'.mp (Ideal.Quotient.eq_zero_iff_mem.mp hs)`. Conclude with `⟨a, by rw [← ha, mul_comm]⟩`. Establish `hp0 : π (p : S) = 0` using `Ideal.Quotient.eq_zero_iff_mem.mpr (Ideal.mem_span_singleton_self _)`. Set `Wb : Matrix (Fin N) (Fin N) (S ⧸ I)` to `W.map π`. Establish `inj : Function.Injective (fun v : Fin N → S ⧸ I => Matrix.vecMul v Wb)`.
+
+Introduce `v1 v2 h`. Establish `h0 : Matrix.vecMul (v1 - v2) Wb = 0`. Rewrite using `[Matrix.sub_vecMul]`. Conclude with `sub_eq_zero.mpr h`. Use `choose x hx using fun i => hπ ((v1 - v2) i)`.
+
+Take `⟨x', hx'⟩` from `hW x (fun j => by`. Use `hker _ ?_` and prove the remaining obligations. Use `congrFun h0 j` as an intermediate fact. Simplify using `only [Matrix.vecMul, dotProduct, Pi.zero_apply] at this`. Rewrite using `[map_sum, ← this]`.
+
+Conclude with `Finset.sum_congr rfl fun i _ => by rw [map_mul, hx]; rfl)`. Use `sub_eq_zero.mp (funext fun i => ?_)` and prove the remaining obligations. Rewrite using `[← hx, hx']`. Simplify using `[hp0]`. Establish `surj` using `Finite.injective_iff_surjective.mp inj`.
+
+Use `choose G hG using fun j : Fin N => surj (Pi.single j 1)`. Establish `hGW : (Matrix.of G) * Wb = 1`. Use extensionality with `i j`. Use `congrFun (hG i) j` as an intermediate fact. Simplify using `only [Matrix.vecMul, dotProduct] at this`.
+
+Simplify using `only [Matrix.mul_apply, Matrix.of_apply]`. Rewrite using `[this, Matrix.one_apply, Pi.single_apply]`. Simplify using `[eq_comm]`. Establish `hdet : (Matrix.of G).det * π W.det = 1`. Establish `h1 : π W.det = Wb.det` using `RingHom.map_det π W`.
+
+Rewrite using `[h1, ← Matrix.det_mul, hGW, Matrix.det_one]`. Take `⟨u, hu⟩` from `hπ (Matrix.of G).det`. Take `⟨z, hz⟩` from `hker (W.det * u - 1) (by`. Rewrite using `[map_sub, map_mul, hu, map_one, mul_comm, hdet, sub_self])`. Conclude with `⟨u, z, by linear_combination hz⟩`.
+-/
 private theorem key2 {S : Type} [CommRing S] {N p : ℕ} [Finite (S ⧸ Ideal.span {(p : S)})]
     (W : Matrix (Fin N) (Fin N) S)
     (hW : ∀ x : Fin N → S, (∀ j, ∃ z : S, ∑ i, x i * W i j = (p : S) * z) →
@@ -147,6 +196,13 @@ private theorem key2 {S : Type} [CommRing S] {N p : ℕ} [Finite (S ⧸ Ideal.sp
     rw [map_sub, map_mul, hu, map_one, mul_comm, hdet, sub_self])
   exact ⟨u, z, by linear_combination hz⟩
 
+/- English proof (translation)
+Take `⟨u, z, h⟩` from `h`. Establish `h1 : (W.map τ).det * τ u = 1 + (p : O) * τ z`. Establish `h2 : τ W.det = (W.map τ).det` using `RingHom.map_det τ W`. Rewrite using `[← h2, ← map_mul, h]`. Simplify using the standard rewrite rules.
+
+Establish `h3 : IsUnit (1 + (p : O) * τ z)`. Break down `IsLocalRing.isUnit_or_isUnit_one_sub_self (-((p : O) * τ z)) with h4 | h4` into its components or cases. Conclude with `absurd (isUnit_of_mul_isUnit_left (IsUnit.neg_iff _ |>.mp h4)) hp`. Simplify using `using h4`. Rewrite `h3` using `[← h1]`.
+
+Conclude with `isUnit_of_mul_isUnit_left h3`.
+-/
 private theorem key3 {S O : Type} [CommRing S] [CommRing O] [IsLocalRing O] {N p : ℕ}
     (τ : S →+* O) (hp : ¬ IsUnit (p : O)) (W : Matrix (Fin N) (Fin N) S)
     (h : ∃ u z : S, W.det * u = 1 + (p : S) * z) : IsUnit (W.map τ).det := by
@@ -163,6 +219,27 @@ private theorem key3 {S O : Type} [CommRing S] [CommRing O] [IsLocalRing O] {N p
   exact isUnit_of_mul_isUnit_left h3
 
 open NumberField in
+/- English proof (translation)
+Set `b` to `RingOfIntegers.basis E`. Set `T : 𝓞 E →ₗ[ℤ] ℤ` to `Algebra.trace ℤ (𝓞 E)`. Set `Q` to `Algebra.traceMatrix ℤ b`. Establish `hQ : Q.det = discr E` using `(discr_eq_discr E b).symm ▸ rfl`. Set `w : Module.Free.ChooseBasisIndex ℤ (𝓞 E) → 𝓞 E` to `fun k => ∑ l, Q.adjugate k l • b l`.
+
+Establish `hQ' : ∀ l m, T (b l * b m) = Q l m` using `fun l m => by`. Simplify using `[Q, T, Algebra.traceMatrix_apply, Algebra.traceForm_apply]`. Establish `hTw : ∀ m k, T (b m * w k) = if k = m then discr E else 0`. Introduce `m k`. Establish `h1 : T (b m * w k) = (Q.adjugate * Q) k m`.
+
+Simplify using `only [w, Finset.mul_sum, map_sum, Matrix.mul_apply]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[mul_smul_comm, map_zsmul, mul_comm (b m), hQ', smul_eq_mul]`. Rewrite using `[h1, Matrix.adjugate_mul, hQ, Matrix.smul_apply, Matrix.one_apply]`. Simplify using the standard rewrite rules.
+
+Establish `hint : ∀ a : 𝓞 E, Algebra.trace ℚ E (a : E) = (T a : ℚ)`. Introduce `a`. Use `Algebra.algebraMap_intTrace (A := ℤ) (K := ℚ) (L := E) (B := 𝓞 E) a` as an intermediate fact. Rewrite `this` using `[Algebra.intTrace_eq_trace]`. Simplify using `using this.symm`.
+
+Use `⟨T.toAddMonoidHom, w, ?_, ?_⟩` and prove the remaining obligations. Introduce `k`. Apply `(((Algebra.traceForm ℚ E).dualBasis (UpperTheory.Reformulated.B.DualIntegralLattice.aux2 E) (integralBasis E)).repr).injective` to reduce the goal to its premises. Use `Finsupp.ext fun i => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.BilinForm.dualBasis_repr_apply, LinearMap.BilinForm.dualBasis_repr_apply]`.
+
+Establish `hR : (Algebra.traceForm ℚ E) ((discr E : E) * UpperTheory.Reformulated.B.DualIntegralLattice.dualInt E k) (integralBasis E i) = (discr E : ℚ) * if i = k then 1 else 0`. Establish `h1 : (discr E : E) * UpperTheory.Reformulated.B.DualIntegralLattice.dualInt E k = (discr E : ℚ) • UpperTheory.Reformulated.B.DualIntegralLattice.dualInt E k`. Rewrite using `[Algebra.smul_def]`. Simplify using the standard rewrite rules. Rewrite using `[h1, map_smul, LinearMap.smul_apply, smul_eq_mul]`.
+
+Use `congr 1`. Conclude with `LinearMap.BilinForm.apply_dualBasis_left _ _ _ _`. Rewrite using `[hR, Algebra.traceForm_apply, integralBasis_apply, mul_comm]`. Establish `h2 : algebraMap (𝓞 E) E (RingOfIntegers.basis E i) * ((w k : 𝓞 E) : E) = ((b i * w k : 𝓞 E) : E)` using `by simp [b]`. Rewrite using `[h2, hint, hTw]`.
+
+Distinguish the cases in `hik : i = k`. Simplify using `[hik]`. Simplify using `[hik, Ne.symm hik]`. Introduce `a`. Establish `hTa : ∀ k, T (a * w k) = b.repr a k * discr E`.
+
+Introduce `k`. Use `conv_lhs => rw [← b.sum_repr a]`. Rewrite using `[Finset.sum_mul, map_sum]`. Simplify using `only [smul_mul_assoc, map_zsmul, hTw, smul_eq_mul]`. Simplify using the standard rewrite rules.
+
+Express the relevant statement in the definitionally equal form `discr E • a = ∑ k, T (a * w k) • b k`. Simplify using `only [hTa]`. Use `conv_lhs => rw [← b.sum_repr a]`. Rewrite using `[Finset.smul_sum]`. Conclude with `Finset.sum_congr rfl fun k _ => by rw [smul_smul, mul_comm]`.
+-/
 private theorem key4 (E : Type) [Field E] [NumberField E] :
     ∃ (T : 𝓞 E →+ ℤ) (w : Module.Free.ChooseBasisIndex ℤ (𝓞 E) → 𝓞 E),
       (∀ k, ((w k : 𝓞 E) : E) = (discr E : E) * UpperTheory.Reformulated.B.DualIntegralLattice.dualInt E k) ∧
@@ -222,6 +299,17 @@ private theorem key4 (E : Type) [Field E] [NumberField E] :
     rw [Finset.smul_sum]
     exact Finset.sum_congr rfl fun k _ => by rw [smul_smul, mul_comm]
 
+/- English proof (translation)
+Introduce `E _ _ cc p R N hfact hR hd e hadj hnd O Ω _ _ _ _ _ hinj hpu σ hσ`. Establish `hp : p.Prime` using `hfact.out`. Take `⟨T, w, hw, hdual⟩` from `key4 E`. Set `W : Matrix (Fin N) (Fin N) (NumberField.RingOfIntegers E)` to `Matrix.of fun i j => ∑ k, ((e (Pi.single i (NumberField.RingOfIntegers.basis E k)) (Pi.single j 1)).val : NumberField.RingOfIntegers E) * w k`. Use `haveI : Finite (NumberField.RingOfIntegers E ⧸ Ideal.span {((p : ℕ) : NumberField.RingOfIntegers E)}) := Ideal.finiteQuotientOfFreeOfNeBot _ (by simp [hp.ne_zero])`.
+
+Establish `hkey` using `key2 (p := p) W (fun x hx => key1 hp hR (NumberField.RingOfIntegers.mapRingEquiv cc) _ w T _ hd hdual e hadj hnd x hx)`. Use `choose t ht using hσ`. Set `τ : NumberField.RingOfIntegers E →+* O` to `{ toFun := t map_one' := hinj (by rw [ht]; simp) map_zero' := hinj (by rw [ht]; simp) map_mul' := fun a b => hinj (by rw [ht, map_mul, ht, ht]; simp) map_add' := fun a b => hinj (by rw [ht, map_add, ht, ht]; simp) }`. Establish `hdet` using `key3 τ hpu W hkey`. Set `Wo` to `W.map τ`.
+
+Establish `hinv : Wo * Wo⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hdet`. Establish `hfin : ∀ M : Matrix (Fin N) (Fin N) Ω, (∀ i j, ((NumberField.discr E : ℤ) : Ω) * M i j = algebraMap O Ω (Wo i j)) → M * (((NumberField.discr E : ℤ) : Ω) • (Wo⁻¹).map (algebraMap O Ω)) = 1`. Introduce `M hM`. Establish `h1 : ((NumberField.discr E : ℤ) : Ω) • M = Wo.map (algebraMap O Ω)`. Use extensionality with `i j`.
+
+Simplify using `using hM i j`. Rewrite using `[Matrix.mul_smul, ← Matrix.smul_mul, h1, ← Matrix.map_mul, hinv]`. Simplify using the standard rewrite rules. Use `⟨((NumberField.discr E : ℤ) : Ω) • (Wo⁻¹).map (algebraMap O Ω), fun i j => ⟨((NumberField.discr E : ℤ) : O) * Wo⁻¹ i j, by simp⟩, hfin _ fun i j => ?_⟩` and prove the remaining obligations. Establish `h2 : algebraMap O Ω (Wo i j) = σ ((W i j : NumberField.RingOfIntegers E) : E)` using `ht _`.
+
+Rewrite using `[h2]`. Simplify using `only [W, Matrix.of_apply, map_sum, map_mul, hw, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `only [map_natCast, map_mul, map_intCast]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem UpperTheory.Reformulated.B.DualIntegralLattice.main :
     ∀ (E : Type) [inst : Field E] [inst_1 : NumberField E] (cc : E ≃+* E) (p R N : ℕ) [Fact (Nat.Prime p)],
       (1 : ℕ) ≤ R →

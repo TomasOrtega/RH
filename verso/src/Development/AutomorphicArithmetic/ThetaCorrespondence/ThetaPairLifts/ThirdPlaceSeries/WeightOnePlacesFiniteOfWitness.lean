@@ -32,6 +32,17 @@ open Formalism.L2 Formalism.L2.DIV Formalism.L2.Indef Formalism.L2.Rows Formalis
 noncomputable section
 namespace GlobalTheory.Mem.Top.Bl
 set_option maxHeartbeats 4000000 in
+/- English proof (translation)
+Establish `hK : DV.KapDef (q.w.D q.Z)` using `b.R.T.what₂.ka`. Establish `hB : ∀ Zs, HEq ((_root_.GlobalTheory.Mem.Top.Bl.realPackageOfBundle b).Zsc Zs).F0 (F0K K.s (q.w.D q.Z))`. Introduce `Zs`. Apply `heq_of_eq` to reduce the goal to its premises. Use function extensionality and compare the values at `y j`.
+
+Rewrite using `[← hsc]`. Conclude with `(forcedContent_eq_closedContent_numericalDatum _ _ _ _ hK y j).symm`. Take `⟨x, a, ax, y, _⟩` from `w`. Consider the cases of `ax`. Establish `hX` using `y.eq ▸ hB`.
+
+Use `letI := a.x.grp`. Use `letI := a.x.fin`. Establish `hX' : ∀ Zs : DefSub a.x.A3.fam3.amb3, HEq (a.x.F.Zsc Zs).F0 (F0K K.s (q.w.D q.Z))` using `hX`. Simplify using `only`. Use `clear * - hX'`.
+
+Take `⟨Dc, Sp, Zsc, lam, err, lam_eq, x', pack, _⟩` from `a`. Simplify using `only at hX' ⊢`. Take `⟨G, grp, fin, Pl0, I0, T0, A3, core, alg, R, F, cG, _⟩` from `x'`. Simplify using `only at pack hX' ⊢`. Consider the cases of `pack`.
+
+Conclude with `hX' _`.
+-/
 theorem zscale_f0_of_witness_alt {hL : _root_.UpperTheory.Zero.LLC.RecTExists} {p : _root_.GlobalTheory.Mem.Top.Bl.Parameters hL} {K : Ctx} (q : WPt p.s K) {c : ℝ}
     (b : _root_.GlobalTheory.Fc.BundleCondition (q.w.D q.Z) q.O c) (w : _root_.GlobalTheory.Mem.Top.Bl.BundleWitness q b) (hsc : q.O.L.sc = K.s) :
     HEq (w.a.Zsc (zsOf q.x.what₂.r.z.R q.x.what₂.r.z.F)).F0 (F0K K.s (q.w.D q.Z)) := by
@@ -57,6 +68,13 @@ theorem zscale_f0_of_witness_alt {hL : _root_.UpperTheory.Zero.LLC.RecTExists} {
   cases pack
   exact hX' _
 set_option maxHeartbeats 4000000 in
+/- English proof (translation)
+Introduce `hL p K q c b w hsc`. Establish `hZ` using `_root_.GlobalTheory.Mem.Top.Bl.zscale_f0_of_witness_alt q b w hsc`. Take `⟨x, a, ax, y, _⟩` from `w`. Consider the cases of `ax`. Use `letI := a.x.grp`.
+
+Use `letI := a.x.fin`. Use `letI : Algebra (↥a.x.core.Q.c.F) (q.w.D q.Z).what₂.LL := a.x.alg`. Establish `h3 : _root_.Formalism.IndefR.IndefiniteRealisationNormalisationDegreeThree (_root_.GlobalTheory.Mem.R3.realisationOfInput y.y)` using `_root_.GlobalTheory.Mem.R3.realPins3_realTOf_alt K q.B q.f q.T q.w q.Z q.x.Wt _ _ _ _ _ _ _ q.O.ex q.x.what₂ a b.R b.S y.y hZ`. Establish `hP : (fun r : _root_.GlobalTheory.Mem.Top.Bl.RealPackage b.R b.S => _root_.Formalism.IndefR.IndefiniteRealisationNormalisationDegreeThree r.B.Q ∧ r.B.Q.Rl.toRealDat.ExAt ∧ Finite r.P.T) (_root_.GlobalTheory.Mem.Top.Bl.realPackageOfRealInput y.y)` using `⟨h3, y.intersectionNumber_baseChange.aux.ex, finite_T_of_twArgs a⟩`. Rewrite `hP` using `[← y.eq]`.
+
+Conclude with `⟨hP.1.w1 0 0, hP.2.1, hP.2.2⟩`.
+-/
 theorem weight_one_places_finite_of_witness : ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (p : _root_.GlobalTheory.Mem.Top.Bl.Parameters hL) (K : Ctx) (q : WPt p.s K) (c : ℝ)
     (b : _root_.GlobalTheory.Fc.BundleCondition (q.w.D q.Z) q.O c), _root_.GlobalTheory.Mem.Top.Bl.BundleWitness q b → q.O.L.sc = K.s →
     (∀ v, (b.B.Q.Rl.toCx3 b.B.Q.F).W1 b.B.Q.F.cr (b.B.Q.Rl.num b.B.Q.F 0 0) v → v ∈ b.B.Q.Rl.twPl) ∧

@@ -20,6 +20,19 @@ noncomputable section
 
 namespace GlobalTheory.BalProj
 
+/- English proof (translation)
+Introduce `E _ _ _ H X t S _ x0 n v A hv hb hA`. Set `T : Fin n → TanM x0 t.G` to `fun i => GlobalTheory.LieMet.tanOf (hv i)`. Establish `uniq : ∀ c c' : Fin n → S, ∑ j, c j • T j = ∑ j, c' j • T j → c = c'`. Introduce `c c' h`. Take `⟨cf, _, hcf⟩` from `hb _ (GlobalTheory.LieMet.isTan_tv (∑ j, c j • T j))`.
+
+Establish `h1 : IsCombAtG t x0 v c (tv (∑ j, c j • T j)).left` using `(GlobalTheory.LieMet.isComb_iff T c _).2 rfl`. Establish `h2 : IsCombAtG t x0 v c' (tv (∑ j, c j • T j)).left` using `(GlobalTheory.LieMet.isComb_iff T c' _).2 h`. Conclude with `(hcf _ h1).trans (hcf _ h2).symm`. Establish `hact : ∀ a i, ReciprocityTheory.ChartRestriction.G.PullbackSections.actR t.act a (T i) = ∑ j, A a i j • T j` using `fun a i => (GlobalTheory.LieMet.isComb_iff T (A a i) (ReciprocityTheory.ChartRestriction.G.PullbackSections.actR t.act a (T i))).1 (hA a i)`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Use extensionality with `i j`. Establish `e : ∑ k, A 1 i k • T k = ∑ k, (1 : Matrix (Fin n) (Fin n) S) i k • T k`. Rewrite using `[← hact, map_one, Module.End.one_apply]`. Simplify using `[Matrix.one_apply]`. Conclude with `congrFun (uniq _ _ e) j`.
+
+Introduce `a b`. Use extensionality with `i j`. Establish `e : ∑ k, A (a + b) i k • T k = ∑ k, (A a + A b) i k • T k`. Rewrite using `[← hact, map_add, LinearMap.add_apply, hact, hact]`. Simplify using `[Matrix.add_apply, add_smul, Finset.sum_add_distrib]`.
+
+Conclude with `congrFun (uniq _ _ e) j`. Introduce `a b`. Use extensionality with `i j`. Establish `e : ∑ k, A (a * b) i k • T k = ∑ k, (A a * A b) i k • T k`. Rewrite using `[← hact, mul_comm a b, map_mul, Module.End.mul_apply, hact, map_sum]`.
+
+Simplify using `only [map_smul, hact, Finset.smul_sum, smul_smul, Matrix.mul_apply, Finset.sum_smul]`. Conclude with `Finset.sum_comm`. Conclude with `congrFun (uniq _ _ e) j`.
+-/
 theorem actMat_ringHom : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] (H : Host E) {X : Scheme.{0}} (t : SAB H X) (S : Type) [CommRing S] (x0 : Spec (CommRingCat.of S) ⟶ X) (n : ℕ) (v : Fin n → (Spec (CommRingCat.of (DualNumber S)) ⟶ t.G.left)) (A : 𝓞 E → Matrix (Fin n) (Fin n) S), (∀ i, IsTanAtG t x0 (v i)) → (∀ w, IsTanAtG t x0 w → ∃! cf : Fin n → S, IsCombAtG t x0 v cf w) → (∀ a i, IsCombAtG t x0 v (A a i) (v i ≫ (t.act.act a).left)) → A 1 = 1 ∧ (∀ a b, A (a + b) = A a + A b) ∧ (∀ a b, A (a * b) = A a * A b) := by
   intro E _ _ _ H X t S _ x0 n v A hv hb hA
   classical

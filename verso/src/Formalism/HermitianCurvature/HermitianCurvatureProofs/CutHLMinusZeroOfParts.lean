@@ -11,21 +11,33 @@ open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt Form
 
 variable {k r : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E]
 
+/- English proof (translation)
+Unfold `Dmin`. Conclude with `Matrix.det_isEmpty`.
+-/
 theorem dmin_zero (z z' : Fin (2 * r + k + 1) → ℂ) (g : Q.Mx k r) (h : 0 < r + 2) :
     Dmin k r z z' g ⟨0, h⟩ = 1 := by
   unfold Dmin
   exact Matrix.det_isEmpty
 
+/- English proof (translation)
+Unfold `qminorOp`. Rewrite using `[Finset.sum_apply, Fintype.sum_unique]`. Simplify using the standard rewrite rules.
+-/
 theorem qminorOp_zero (a b : Fin 0 → Fin (2 * r + k + 1)) (u : ℂ) (f : Q.Mx k r → E) (g : Q.Mx k r) :
     qminorOp (EabH (Hpk k r)) a b u f g = f g := by
   unfold qminorOp
   rw [Finset.sum_apply, Fintype.sum_unique]
   simp
 
+/- English proof (translation)
+Unfold `C3.AAvop`. Rewrite using `[Fintype.sum_unique, if_pos (Subsingleton.strictMono _), Matrix.det_isEmpty, one_smul, qminorOp_zero]`.
+-/
 theorem AAvop_zero (h : 0 ≤ r) (ell : ℂ) (f : Q.Mx k r → E) (g : Q.Mx k r) : C3.AAvop k r 0 h ell f g = f g := by
   unfold C3.AAvop
   rw [Fintype.sum_unique, if_pos (Subsingleton.strictMono _), Matrix.det_isEmpty, one_smul, qminorOp_zero]
 
+/- English proof (translation)
+Unfold `qminorOp`. Rewrite using `[Finset.sum_apply, Fintype.sum_unique]`. Simplify using `[QuantumDeterminants.Top]`.
+-/
 theorem qminorOp_one (a b : Fin 1 → Fin (2 * r + k + 1)) (u : ℂ) (f : Q.Mx k r → E) (g : Q.Mx k r) :
     qminorOp (EabH (Hpk k r)) a b u f g =
       (if a 0 = b 0 then u • f g else 0) + EabH (Hpk k r) (a 0) (b 0) f g := by
@@ -33,6 +45,17 @@ theorem qminorOp_one (a b : Fin 1 → Fin (2 * r + k + 1)) (u : ℂ) (f : Q.Mx k
   rw [Finset.sum_apply, Fintype.sum_unique]
   simp [QuantumDeterminants.Top]
 
+/- English proof (translation)
+Unfold `C3.AAvop`. Establish `hent : ∀ c : Fin 1 → Fin (2 * r + k + 1), (Matrix.of fun a l : Fin 1 => (x⁻¹ *ᵥ bvec (eI k r (Fin.castLE h a))) (c l)).det = if (c 0).val = 2 * r + k then w else 0`. Introduce `c`. Rewrite using `[Matrix.det_unique]`. Conclude with `hnf (c 0)`.
+
+Rewrite using `[Finset.sum_eq_single (fun _ => esI k r ⟨0, by omega⟩)]`. Rewrite using `[if_pos (Subsingleton.strictMono _), hent, if_pos (by simp [esI]), qminorOp_one, if_pos (by simp [C3.sR, esI])]`. Simplify using `only [C3.sR, Q.EH] at *`. Rewrite using `[show ell + ((1 : ℕ) : ℂ) - 1 = ell by push_cast; ring]`. Both sides reduce to the same expression.
+
+Introduce `c _ hc split_ifs with hm`. Rewrite using `[hent, if_neg, zero_smul]`. Introduce `h0`. Apply `hc` to reduce the goal to its premises. Use function extensionality and compare the values at `l`.
+
+Rewrite using `[Subsingleton.elim l 0]`. Use `ext`. Simplify `h0` using `[esI]`. Both sides reduce to the same expression. Introduce `hc`.
+
+Conclude with `absurd (Finset.mem_univ _) hc`.
+-/
 theorem AAvop_one (h : 1 ≤ r) (x : Q.Mx k r) (w : ℂ)
     (hnf : ∀ p : Fin (2 * r + k + 1), PBG.y0 x ⟨0, by omega⟩ p = if p.val = 2 * r + k then w else 0)
     (ell : ℂ) (f : Q.Mx k r → E) :
@@ -70,6 +93,21 @@ namespace Formalism.FourierDecayAlt.P
 
 open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt Formalism.FourierDecayAlt.Q Formalism.FourierDecayAlt.P.LevelPointCoordinates Formalism.FourierDecayAlt.P.CutHL Formalism.FourierDecayAlt.P.CutHLMZ
 
+/- English proof (translation)
+Introduce `hNf hDm hT k r j hj z z' E _ _ Dm Φ Z γ τ hj0 hH Y`. Substitute `hj0` using the available equality. Take `⟨_, _, hDo, _, hR, hZ, hτ, hγ, hx⟩` from `hH`. Establish `hnfy` using `(hNf k r 0 hj Z τ γ hZ hτ hγ).2`. Establish `hT'` using `hT E k r 0 hj Dm Φ Z τ γ hDo hR.1 hZ hτ hγ hx`.
+
+Establish `hD1` using `(hDm k r 0 hj z z' Z τ γ hZ hτ hγ).2`. Rewrite `hD1` using `[Matrix.det_isEmpty, one_mul]`. Establish `hτc : conj τ ≠ 0` using `(map_ne_zero _).2 hτ`. Establish `hv0 : ∀ g, D.vLet k r z z' 0 (by omega) (false, Y) 0 Φ g = Φ g`. Introduce `g`.
+
+Rewrite using `[PBG.letter_minus_component_zero, dmin_zero, map_one, inv_one, one_smul, AAvop_zero]`. Establish `hv1 : ∀ g, D.vLet k r z z' 0 (by omega) (false, Y) 1 Φ g = 0`. Introduce `g`. Unfold `D.vLet`. Simplify using the standard rewrite rules.
+
+Establish `hA` using `AAvop_one (k := k) (r := r) (E := E) hj (x0 k r 0 hj Z τ γ) (conj τ) (fun p => by`. Rewrite using `[hnfy ⟨0, by omega⟩ p (by simp)]`. Establish `hp` using `p.isLt`. Distinguish the cases in `hq : p.val = 2 * r + k`. Rewrite using `[if_pos (by omega), if_pos hq, hq, Nat.sub_self]; simp [C3.Zb]`.
+
+Rewrite using `[if_neg (by omega), if_neg hq])`. Use the proof step `((Y : ℂ) - ((2 * r + k : ℕ) : ℂ) / 2) Φ`. Establish `hu : ((Y : ℂ) - ((2 * r + k : ℕ) : ℂ) / 2) = (Y : ℂ) - levelZeroKernel k r 0`. Unfold `levelZeroKernel`. Rewrite using `[Nat.sub_zero]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hA` using `[hu]`. Unfold `Eq3`. Simplify using `only [hv0, hv1]`.
+
+Rewrite using `[PBG.letter_minus_component_zero, hD1, hu, hA, smul_smul, inv_mul_cancel₀ hτc, one_smul, smul_zero, sub_zero, sub_eq_add_neg _ (conj τ • _), ← hT']`.
+-/
 theorem minus_zero_of_parts : CutHL.MinusZeroOfParts := by
   intro hNf hDm hT k r j hj z z' E _ _ Dm Φ Z γ τ hj0 hH Y
   subst hj0

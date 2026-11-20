@@ -13,6 +13,9 @@ def cf {Γ : Type} [Group Γ] (g : Γ) : MonoidAlgebra ℂ Γ →ₗ[ℂ] ℂ wh
   map_add' a b := by simp
   map_smul' r a := by simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cf_apply {Γ : Type} [Group Γ] (g : Γ) (a : MonoidAlgebra ℂ Γ) : cf g a = a.coeff g := rfl
 
 def regSub {Γ : Type} [Group Γ] (N : Submodule ℂ (MonoidAlgebra ℂ Γ))
@@ -27,6 +30,29 @@ def regSub {Γ : Type} [Group Γ] (N : Submodule ℂ (MonoidAlgebra ℂ Γ))
       MonoidAlgebra.single g (1 : ℂ) * (MonoidAlgebra.single k (1 : ℂ) * (a : MonoidAlgebra ℂ Γ))
     rw [← mul_assoc, MonoidAlgebra.single_mul_single, one_mul]
 
+/- English proof (translation)
+Establish `htop` using `IsSemisimpleModule.sSup_simples_eq_top (MonoidAlgebra ℂ Γ) (MonoidAlgebra ℂ Γ)`. Establish `hex : ∃ I : Submodule (MonoidAlgebra ℂ Γ) (MonoidAlgebra ℂ Γ), IsSimpleModule (MonoidAlgebra ℂ Γ) I ∧ ∃ n ∈ I, T n ≠ 0`. Assume the negation of the conclusion as `hno`. Use `push Not at hno`. Establish `hz : ∀ a ∈ sSup {m : Submodule (MonoidAlgebra ℂ Γ) (MonoidAlgebra ℂ Γ) | IsSimpleModule (MonoidAlgebra ℂ Γ) m}, T a = 0`.
+
+Introduce `a ha`. Rewrite `ha` using `[sSup_eq_iSup']`. Use `Submodule.iSup_induction _ (motive := fun x => T x = 0) ha ?_ (map_zero T) ?_` and prove the remaining obligations. Introduce and unpack `⟨I, hI⟩ x hx`. Conclude with `hno I hI x hx`.
+
+Introduce `x y hx hy`. Rewrite using `[map_add, hx, hy, add_zero]`. Conclude with `hT (hz 1 (by rw [htop]; trivial))`. Take `⟨I, hI, n, hn, hTn⟩` from `hex`. Establish `hstab : ∀ g : Γ, ∀ a ∈ I.restrictScalars ℂ, MonoidAlgebra.single g (1 : ℂ) * a ∈ I.restrictScalars ℂ` using `fun g a ha => I.smul_mem (MonoidAlgebra.single g (1 : ℂ)) ha`.
+
+Use `⟨I.restrictScalars ℂ, hstab, ⟨?_, ?_⟩, n, hn, hTn⟩` and prove the remaining obligations. Establish `hn0 : n ≠ 0` using `fun h0 => hTn (by rw [h0, map_zero])`. Conclude with `⟨⟨⟨n, hn⟩, 0, fun h0 => hn0 (congrArg Subtype.val h0)⟩⟩`. Introduce `U hU`. Establish `hmul : ∀ a : MonoidAlgebra ℂ Γ, ∀ x ∈ U.map (I.restrictScalars ℂ).subtype, a * x ∈ U.map (I.restrictScalars ℂ).subtype`.
+
+Introduce `a`. Proceed by induction on `a using MonoidAlgebra.induction_on with`. Consider the case `of g`. Introduce and unpack `x ⟨u, hu, rfl⟩`. Conclude with `⟨regSub _ hstab g u, hU g u hu, rfl⟩`.
+
+Consider the case `add a b ha hb`. Introduce `x hx`. Rewrite using `[add_mul]`. Conclude with `Submodule.add_mem _ (ha x hx) (hb x hx)`. Consider the case `smul r a ha`.
+
+Introduce `x hx`. Rewrite using `[smul_mul_assoc]`. Conclude with `Submodule.smul_mem _ r (ha x hx)`. Set `J : Submodule (MonoidAlgebra ℂ Γ) (MonoidAlgebra ℂ Γ)` to `{ carrier := U.map (I.restrictScalars ℂ).subtype add_mem' := fun ha hb => Submodule.add_mem _ ha hb zero_mem' := Submodule.zero_mem _ smul_mem' := fun a x hx => hmul a x hx }`. Establish `hJI : J ≤ I`.
+
+Introduce and unpack `x ⟨u, -, rfl⟩`. Conclude with `u.2`. Break down `(isSimpleModule_iff_isAtom.mp hI).le_iff.mp hJI with h0 | h1` into its components or cases. Use `left`. Rewrite using `[eq_bot_iff]`.
+
+Introduce `u hu`. Establish `: (u : MonoidAlgebra ℂ Γ) ∈ J` using `⟨u, hu, rfl⟩`. Rewrite `this` using `[h0]`. Conclude with `(Submodule.mem_bot ℂ).2 (Subtype.ext ((Submodule.mem_bot _).1 this))`. Use `right`.
+
+Rewrite using `[eq_top_iff]`. Introduce `u _`. Establish `: (u : MonoidAlgebra ℂ Γ) ∈ J`. Rewrite using `[h1]`. Conclude with `u.2`.
+
+Take `⟨u', hu', he⟩` from `this`. Establish `: u' = u` using `Subtype.ext he`. Conclude with `this ▸ hu'`.
+-/
 theorem exists_irr {Γ : Type} [Group Γ] [Fintype Γ] {W : Type} [AddCommGroup W] [Module ℂ W]
     (T : MonoidAlgebra ℂ Γ →ₗ[ℂ] W) (hT : T 1 ≠ 0) :
     ∃ (N : Submodule ℂ (MonoidAlgebra ℂ Γ))
@@ -105,10 +131,18 @@ def psi (ρ : Representation ℂ (∀ c, L c) W) (v : W) :
   ∑ g : ∀ c, L c,
     ((MultilinearMap.mkPiAlgebra ℂ (Fin s) ℂ).compLinearMap (fun c => cf (g c))).smulRight (ρ g v)
 
+/- English proof (translation)
+Simplify using `[psi, MultilinearMap.sum_apply, cf_apply]`.
+-/
 theorem psi_apply (ρ : Representation ℂ (∀ c, L c) W) (v : W) (x : ∀ c, MonoidAlgebra ℂ (L c)) :
     psi ρ v x = ∑ g : ∀ c, L c, (∏ c, (x c).coeff (g c)) • ρ g v := by
   simp [psi, MultilinearMap.sum_apply, cf_apply]
 
+/- English proof (translation)
+Rewrite using `[psi_apply, Finset.sum_eq_single (1 : ∀ c, L c)]`. Simplify using `[MonoidAlgebra.one_def]`. Introduce `g _ hg`. Choose the witnesses or unpack the hypotheses as in `⟨c, hc⟩ : ∃ c, g c ≠ 1 := by`. Assume the negation of the conclusion as `hall`.
+
+Use `push Not at hall`. Conclude with `hg (funext hall)`. Rewrite using `[Finset.prod_eq_zero (Finset.mem_univ c), zero_smul]`. Simplify using `[MonoidAlgebra.one_def, Finsupp.single_apply, hc.symm]`. Simplify using the standard rewrite rules.
+-/
 theorem psi_one (ρ : Representation ℂ (∀ c, L c) W) (v : W) :
     psi ρ v (fun _ => 1) = v := by
   classical
@@ -123,6 +157,9 @@ theorem psi_one (ρ : Representation ℂ (∀ c, L c) W) (v : W) :
     simp [MonoidAlgebra.one_def, Finsupp.single_apply, hc.symm]
   · simp
 
+/- English proof (translation)
+Rewrite using `[psi_apply, psi_apply, map_sum]`. Use `Fintype.sum_equiv (Equiv.mulLeft g⁻¹) _ _ fun h => ?_` and prove the remaining obligations. Simplify using `only [MonoidAlgebra.coeff_single_mul_apply, one_mul, map_smul, Equiv.coe_mulLeft, Pi.mul_apply, Pi.inv_apply]`. Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel_left]`.
+-/
 theorem psi_single_mul (ρ : Representation ℂ (∀ c, L c) W) (v : W) (g : ∀ c, L c)
     (x : ∀ c, MonoidAlgebra ℂ (L c)) :
     psi ρ v (fun c => MonoidAlgebra.single (g c) (1 : ℂ) * x c) = ρ g (psi ρ v x) := by
@@ -132,6 +169,17 @@ theorem psi_single_mul (ρ : Representation ℂ (∀ c, L c) W) (v : W) (g : ∀
     Pi.mul_apply, Pi.inv_apply]
   rw [← Module.End.mul_apply, ← map_mul, mul_inv_cancel_left]
 
+/- English proof (translation)
+Establish `key : ∀ S : Finset (Fin s), ∃ x : ∀ c, MonoidAlgebra ℂ (L c), (∀ c, c ∉ S → x c = 1) ∧ (∀ c ∈ S, ∃ (N : Submodule ℂ (MonoidAlgebra ℂ (L c))) (h : ∀ g : L c, ∀ a ∈ N, MonoidAlgebra.single g (1 : ℂ) * a ∈ N), IsIrr (regSub N h) ∧ x c ∈ N) ∧ psi ρ v x ≠ 0`. Introduce `S`. Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty`. Conclude with `⟨fun _ => 1, fun _ _ => rfl, by simp, by rwa [psi_one]⟩`.
+
+Consider the case `insert c S hc ih`. Take `⟨x, h1, h2, h3⟩` from `ih`. Establish `hT : (psi ρ v).toLinearMap x c 1 ≠ 0`. Rewrite using `[MultilinearMap.toLinearMap_apply, ← h1 c hc, Function.update_eq_self]`. Conclude with `h3`.
+
+Take `⟨N, h, hirr, n, hn, hTn⟩` from `exists_irr _ hT`. Use `⟨Function.update x c n, fun c' hc' => ?_, fun c' hc' => ?_, ?_⟩` and prove the remaining obligations. Rewrite `hc'` using `[Finset.mem_insert, not_or]`. Rewrite using `[Function.update_of_ne hc'.1]`. Conclude with `h1 c' hc'.2`.
+
+Distinguish the cases in `hcc : c' = c`. Substitute `hcc` using the available equality. Conclude with `⟨N, h, hirr, by rwa [Function.update_self]⟩`. Take `⟨N', h', hirr', hm⟩` from `h2 c' ((Finset.mem_insert.mp hc').resolve_left hcc)`. Conclude with `⟨N', h', hirr', by rwa [Function.update_of_ne hcc]⟩`.
+
+Simplify `hTn` using `[MultilinearMap.toLinearMap_apply]`. Take `⟨x, -, h2, h3⟩` from `key Finset.univ`. Conclude with `⟨x, fun c => h2 c (Finset.mem_univ c), h3⟩`.
+-/
 theorem exists_family (ρ : Representation ℂ (∀ c, L c) W) (v : W) (hv : v ≠ 0) :
     ∃ x : ∀ c, MonoidAlgebra ℂ (L c),
       (∀ c, ∃ (N : Submodule ℂ (MonoidAlgebra ℂ (L c)))
@@ -167,6 +215,15 @@ theorem exists_family (ρ : Representation ℂ (∀ c, L c) W) (v : W) (hv : v �
 end GlobalTheory.CompanionTheory.ProdSimple
 
 open GlobalTheory.CompanionTheory.ProdSimple in
+/- English proof (translation)
+Introduce `s L _ _ W _ _ _ _ ρ`. Take `⟨v, hv⟩` from `exists_ne (0 : W)`. Take `⟨x, hx, hne⟩` from `exists_family ρ v hv`. Use `choose N h hirr hmem using hx`. Establish `hfin : ∀ c, Module.Finite ℂ (N c)` using `fun c => inferInstance`.
+
+Set `lam : ∀ c, FDRep ℂ (L c)` to `fun c => FDRep.of (regSub (N c) (h c))`. Set `M : MultilinearMap ℂ (fun c => (lam c : Type)) W` to `(psi ρ v).compLinearMap (fun c => (N c).subtype)`. Use `⟨lam, PiTensorProduct.lift M, fun c => ?_, ?_, fun g => ?_⟩` and prove the remaining obligations. Conclude with `(GlobalTheory.CompanionTheory.TyFin.simpleIffIrr.1 (L c) (lam c)).2 (hirr c)`. Introduce `h0`.
+
+Apply `hne` to reduce the goal to its premises. Use `congrArg (fun f => f (PiTensorProduct.tprod ℂ (fun c => (⟨x c, hmem c⟩ : N c)))) h0` as an intermediate fact. Simplify using `only [LinearMap.zero_apply, PiTensorProduct.lift.tprod] at this`. Conclude with `this`. Apply `PiTensorProduct.ext` to reduce the goal to its premises.
+
+Use extensionality with `y`. Simplify using `only [LinearMap.compMultilinearMap_apply, LinearMap.comp_apply, PiTensorProduct.map_tprod, PiTensorProduct.lift.tprod]`. Conclude with `psi_single_mul ρ v g (fun c => (y c : MonoidAlgebra ℂ (L c)))`.
+-/
 theorem GlobalTheory.CompanionTheory.ProdSimple.prodSimpleAll : ReciprocityTheory.Ty.Fin.St.ProdSimpleAll := by
   intro s L _ _ W _ _ _ _ ρ
   obtain ⟨v, hv⟩ := exists_ne (0 : W)

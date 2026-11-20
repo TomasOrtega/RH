@@ -20,15 +20,26 @@ set_option maxHeartbeats 800000
 
 variable {D : D7}
 
+/- English proof (translation)
+Introduce `i j` and use `by rw [Matrix.smul_apply, nsmul_eq_mul, mul_left_comm, ha i j]`.
+-/
 theorem isHalf_nsmul' {m n : ℕ} {ε : AE D} {a : Mx D m n} (ha : IsHalf ε a) (k : ℕ) : IsHalf ε (k • a) :=
   fun i j => by rw [Matrix.smul_apply, nsmul_eq_mul, mul_left_comm, ha i j]
 
+/- English proof (translation)
+Introduce `i j` and use `by have h1 := h i j rw [Matrix.add_apply, mul_add, hb i j] at h1 exact add_right_cancel h1`.
+-/
 theorem isHalf_of_add' {m n : ℕ} {ε : AE D} {a b : Mx D m n} (h : IsHalf ε (a + b)) (hb : IsHalf ε b) : IsHalf ε a :=
   fun i j => by
     have h1 := h i j
     rw [Matrix.add_apply, mul_add, hb i j] at h1
     exact add_right_cancel h1
 
+/- English proof (translation)
+Take `⟨h1, k, hk, h2, h3⟩` from `h`. Use `⟨fun t ht => isHalf_of_add' (h1 _ ht) hx, k * k₀, Nat.mul_pos hk hk₀, fun u hu hu' t => ?_, fun t ht => ?_⟩` and prove the remaining obligations. Use `show φ (t + (k * k₀) • u + x) = φ (t + x)`. Rewrite using `[show t + (k * k₀) • u + x = (t + x) + k • (k₀ • u) by rw [mul_smul]; abel]`. Conclude with `h2 _ (nsmul_mem hu k₀) (isHalf_nsmul' hu' k₀) _`.
+
+Establish `e : (k * k₀) • t = k₀ • (k • (t + x)) - k • (k₀ • x)`. Rewrite using `[smul_add, smul_add, smul_smul, smul_smul, smul_smul, mul_comm k₀ k]`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Conclude with `sub_mem (nsmul_mem (h3 _ ht) k₀) (nsmul_mem hkx k)`.
+-/
 theorem sb_trans {m n : ℕ} {ε : AE D} {Λ : AddSubgroup (Mx D m n)} {φ : Mx D m n → ℂ} (h : IsSBHalf ε Λ φ)
     {x : Mx D m n} (hx : IsHalf ε x) {k₀ : ℕ} (hk₀ : 0 < k₀) (hkx : k₀ • x ∈ Λ) :
     IsSBHalf ε Λ (fun t => φ (t + x)) := by
@@ -42,6 +53,11 @@ theorem sb_trans {m n : ℕ} {ε : AE D} {Λ : AddSubgroup (Mx D m n)} {φ : Mx 
     rw [e]
     exact sub_mem (nsmul_mem (h3 _ ht) k₀) (nsmul_mem hkx k)
 
+/- English proof (translation)
+Take `⟨h1, k, hk, h2, h3⟩` from `h`. Use `⟨fun t ht => h1 t (right_ne_zero_of_mul ht), k₀ * k, Nat.mul_pos hk₀ hk, fun u hu hu' t => ?_, fun t ht => ?_⟩` and prove the remaining obligations. Use `show χ (t + (k₀ * k) • u) * φ (t + (k₀ * k) • u) = χ t * φ t`. Rewrite using `[hχ, mul_smul, h1χ _ (nsmul_mem hu k) (isHalf_nsmul' hu' k), mul_one, smul_comm k₀ k u, h2 _ (nsmul_mem hu k₀) (isHalf_nsmul' hu' k₀)]`. Rewrite using `[mul_smul]`.
+
+Conclude with `nsmul_mem (h3 t (right_ne_zero_of_mul ht)) k₀`.
+-/
 theorem sb_modul {m n : ℕ} {ε : AE D} {Λ : AddSubgroup (Mx D m n)} {φ : Mx D m n → ℂ} (h : IsSBHalf ε Λ φ)
     (χ : Mx D m n → ℂ) (hχ : ∀ a b, χ (a + b) = χ a * χ b) {k₀ : ℕ} (hk₀ : 0 < k₀)
     (h1χ : ∀ u ∈ Λ, IsHalf ε u → χ (k₀ • u) = 1) : IsSBHalf ε Λ (fun t => χ t * φ t) := by
@@ -54,24 +70,39 @@ theorem sb_modul {m n : ℕ} {ε : AE D} {Λ : AddSubgroup (Mx D m n)} {φ : Mx 
   · rw [mul_smul]
     exact nsmul_mem (h3 t (right_ne_zero_of_mul ht)) k₀
 
+/- English proof (translation)
+Simplify using `only [symplO, hO, Matrix.add_apply, mul_add, Finset.sum_add_distrib, LinearMap.map_add]`.
+-/
 theorem symplO_add_left' (S T : HSp D) (x x' y : WO S T) : symplO S T (x + x') y = symplO S T x y + symplO S T x' y := by
   simp only [symplO, hO, Matrix.add_apply, mul_add, Finset.sum_add_distrib, LinearMap.map_add]
 
+/- English proof (translation)
+Simplify using `only [symplO, hO, Matrix.add_apply, RingHom.map_add, map_add (cA D), mul_add, add_mul, Finset.sum_add_distrib, LinearMap.map_add]`.
+-/
 theorem symplO_add_right' (S T : HSp D) (x y y' : WO S T) : symplO S T x (y + y') = symplO S T x y + symplO S T x y' := by
   simp only [symplO, hO, Matrix.add_apply, RingHom.map_add, map_add (cA D), mul_add, add_mul, Finset.sum_add_distrib,
     LinearMap.map_add]
 
+/- English proof (translation)
+Establish `h1` using `map_nsmul (AddMonoidHom.mk' (fun x => symplO S T x y) fun a b => symplO_add_left' S T a b y) k x`. Establish `h2` using `map_nsmul (AddMonoidHom.mk' (fun y => symplO S T x y) fun a b => symplO_add_right' S T x a b) k y`. Conclude with `h1.trans h2.symm`.
+-/
 theorem symplO_nsmul' (S T : HSp D) (k : ℕ) (x y : WO S T) : symplO S T (k • x) y = symplO S T x (k • y) := by
   have h1 := map_nsmul (AddMonoidHom.mk' (fun x => symplO S T x y) fun a b => symplO_add_left' S T a b y) k x
   have h2 := map_nsmul (AddMonoidHom.mk' (fun y => symplO S T x y) fun a b => symplO_add_right' S T x a b) k y
   exact h1.trans h2.symm
 
+/- English proof (translation)
+Use extensionality with `i j`. Use `show infPart D (u i j) = 0`. Rewrite using `[← hu i j, map_mul, ha, zero_mul]`.
+-/
 theorem map_infPart_of_half {S T : HSp D} {a : AE D} (ha : infPart D a = 0) {u : WO S T} (hu : IsHalf a u) :
     u.map (infPart D) = 0 := by
   ext i j
   show infPart D (u i j) = 0
   rw [← hu i j, map_mul, ha, zero_mul]
 
+/- English proof (translation)
+Take `⟨k, hk, hkx⟩` from `GlobalTheory.PlaceVec.exists_nsmul_mem_latO hS hT x (map_infPart_of_half hinf hx)`. Conclude with `sb_trans h hx hk hkx`.
+-/
 theorem sb_trans_latO {S T : HSp D} {ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)}
     {ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)} (hS : Submodule.IsLattice D.host.E ΛS)
     (hT : Submodule.IsLattice D.host.E ΛT) {ε : AE D} (hinf : infPart D ε = 0) {φ : WO S T → ℂ}
@@ -82,6 +113,11 @@ theorem sb_trans_latO {S T : HSp D} {ΛS : Submodule (𝓞 D.host.E) (Fin S.rank
   obtain ⟨k, hk, hkx⟩ := GlobalTheory.PlaceVec.exists_nsmul_mem_latO hS hT x (map_infPart_of_half hinf hx)
   exact sb_trans h hx hk hkx
 
+/- English proof (translation)
+Take `⟨k, hk, hky⟩` from `GlobalTheory.PlaceVec.exists_nsmul_mem_latO hS.1 hT.1 y (map_infPart_of_half hinf hy)`. Use `sb_modul h (fun t => ψ (symplO S T t y)) (fun a b => ?_) hk (fun u hu _ => ?_)` and prove the remaining obligations. Use `show ψ (symplO S T (a + b) y) = ψ (symplO S T a y) * ψ (symplO S T b y)`. Rewrite using `[symplO_add_left', AddChar.map_add_eq_mul]`. Use `show ψ (symplO S T (k • u) y) = 1`.
+
+Rewrite using `[symplO_nsmul']`. Conclude with `GlobalTheory.LatVac.char_sympl_eq_one hψ hS hT hu hky`.
+-/
 theorem sb_modul_latO {S T : HSp D} {ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)}
     {ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)} {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1))
     (hS : IsSelfDualC S ΛS) (hT : IsSelfDualC T ΛT) {ε : AE D} (hinf : infPart D (cA D ε) = 0) {φ : WO S T → ℂ}
@@ -128,6 +164,9 @@ def graphMap (e : Num G i j) (T₁ : (HomV G i j → ℂ) →ₗ[ℂ] (HomV G i 
     show T₁ (fun x => T₂ (fun y => (c • g) (ofMaps e (x, y))) (mapW e u)) (mapV e u) = _
     rw [h, map_smul]; rfl
 
+/- English proof (translation)
+The claim follows from `funext fun u => by have e2 : ∀ x, (fun y => box e φ₁ φ₂ (ofMaps e (x, y))) = φ₁ x • φ₂ := fun x => funext fun y => by show φ₁ (mapV e (ofMaps e (x, y))) * φ₂ (mapW e (ofMaps e (x, y))) = φ₁ x * φ₂ y rw [mapV_ofMaps, mapW_ofMaps] have e1 : (fun x => T₂ (fun y => box e φ₁ φ₂ (ofMap …`.
+-/
 theorem graphMap_box (e : Num G i j) (T₁ : (HomV G i j → ℂ) →ₗ[ℂ] (HomV G i j → ℂ))
     (T₂ : (HomW G i j → ℂ) →ₗ[ℂ] (HomW G i j → ℂ)) (φ₁ : HomV G i j → ℂ) (φ₂ : HomW G i j → ℂ) :
     graphMap e T₁ T₂ (box e φ₁ φ₂) = box e (T₁ φ₁) (T₂ φ₂) := funext fun u => by
@@ -161,6 +200,27 @@ end GlobalTheory.BigDat
 set_option maxHeartbeats 1600000 in
 open GlobalTheory.BigDat.GraphHeis in
 
+/- English proof (translation)
+Introduce `D T L sc G μ₀ hL W i j e Γ hW hWW ε P hε f₁ f₂ T₁ T₂ h₁ h₂`. Establish `hinf : infPart D ε = 0` using `GlobalTheory.PlaceVec.idemSum_infPart hε`. Establish `hinf' : infPart D (cA D ε) = 0` using `GlobalTheory.PlaceVec.infPart_cA hinf`. Establish `sdW : IsSelfDualC (spW G i j) (G.Λ (.grid ((i : ℕ) + 1) ((j : ℕ) + 1)))` using `(node_isV G hL (X := .grid ((i : ℕ) + 1) ((j : ℕ) + 1)) ⟨i.2, j.2⟩).sd`. Establish `sdV : IsSelfDualC (spV G i j) (G.Λ (.grid (i : ℕ) ((j : ℕ) + 1)))` using `(node_isV G hL (X := .grid (i : ℕ) ((j : ℕ) + 1)) ⟨i.2.le, j.2⟩).sd`.
+
+Establish `sdV₁ : IsSelfDualC (spV₁ G i j) (G.Λ (.grid ((i : ℕ) + 1) (j : ℕ)))` using `(node_isV G hL (X := .grid ((i : ℕ) + 1) (j : ℕ)) ⟨i.2, j.2.le⟩).sd`. Establish `sdW' : IsSelfDualC (negSp (spW G i j)) (G.Λ (.grid ((i : ℕ) + 1) ((j : ℕ) + 1)))` using `isSelfDualC_neg sdW`. Use `⟨fun f hf => ?_, fun x hx p hp => ?_, fun y hy p hp => ?_⟩` and prove the remaining obligations. Establish `key : boxGraph e ε T₁ T₂ ≤ LinearMap.ker (LinearMap.snd ℂ _ _ - graphMap e T₁ T₂ ∘ₗ LinearMap.fst ℂ _ _)`. Use `Submodule.span_le.2 fun p hp => ?_` and prove the remaining obligations.
+
+Take `⟨φ₁, φ₂, -, -, rfl⟩` from `hp`. Use `show box e (T₁ φ₁) (T₂ φ₂) - graphMap e T₁ T₂ (box e φ₁ φ₂) = 0`. Rewrite using `[graphMap_box, sub_self]`. Establish `h0` using `key hf`. Rewrite `h0` using `[LinearMap.mem_ker]`.
+
+Establish `h1 : f - graphMap e T₁ T₂ 0 = 0` using `h0`. Rewrite `h1` using `[map_zero, sub_zero]`. Then use the resulting hypothesis. Establish `key : boxGraph e ε T₁ T₂ ≤ (boxGraph e ε T₁ T₂).comap (transPair Γ W.ψ x)`. Use `Submodule.span_le.2 fun p hp => ?_` and prove the remaining obligations. Take `⟨φ₁, φ₂, hφ₁, hφ₂, rfl⟩` from `hp`.
+
+Establish `hx₁ : IsHalf ε (mapV e x)` using `hx.1`. Establish `hx₂ : IsHalf ε (mapW e x)` using `hx.2`. Establish `s₁ : IsSBHalf ε (latV G i j) (fun t => φ₁ (t + mapV e x))` using `sb_trans_latO (S := negSp (spW G i j)) (T := spV G i j) (ΛS := G.Λ (.grid ((i : ℕ) + 1) ((j : ℕ) + 1))) (ΛT := G.Λ (.grid (i : ℕ) ((j : ℕ) + 1))) sdW'.1 sdV.1 hinf hφ₁ hx₁`. Establish `s₂ : IsSBHalf ε (latW G i j) (fun t => φ₂ (t + mapW e x))` using `sb_trans_latO (S := spV₁ G i j) (T := spW G i j) (ΛS := G.Λ (.grid ((i : ℕ) + 1) (j : ℕ))) (ΛT := G.Λ (.grid ((i : ℕ) + 1) ((j : ℕ) + 1))) sdV₁.1 sdW.1 hinf hφ₂ hx₂`. Use `show (fun u => box e φ₁ φ₂ (u + x), heisPt Γ W.ψ x (box e (T₁ φ₁) (T₂ φ₂))) ∈ boxGraph e ε T₁ T₂`.
+
+Rewrite using `[heisPt_box e Γ hW hWW]`. Use `Submodule.subset_span ⟨_, _, s₁, s₂, ?_⟩` and prove the remaining obligations. Rewrite using `[h₁.trans φ₁ hφ₁ _ hx₁, h₂.trans φ₂ hφ₂ _ hx₂]`. Use `Prod.ext (funext fun u => ?_) rfl` and prove the remaining obligations. Use `show φ₁ (mapV e (u + x)) * φ₂ (mapW e (u + x)) = φ₁ (mapV e u + mapV e x) * φ₂ (mapW e u + mapW e x)`.
+
+Rewrite using `[mapV_add, mapW_add]`. Conclude with `key hp`. Establish `key : boxGraph e ε T₁ T₂ ≤ (boxGraph e ε T₁ T₂).comap (modulPair Γ W.ψ y)`. Use `Submodule.span_le.2 fun p hp => ?_` and prove the remaining obligations. Take `⟨φ₁, φ₂, hφ₁, hφ₂, rfl⟩` from `hp`.
+
+Establish `hy₁ : IsHalf (cA D ε) (mapV e y)` using `hy.1`. Establish `hy₂ : IsHalf (cA D ε) (mapW e y)` using `hy.2`. Establish `s₁ : IsSBHalf ε (latV G i j) (fun t => W.ψ (symplO _ _ t (mapV e y)) * φ₁ t)` using `sb_modul_latO (S := negSp (spW G i j)) (T := spV G i j) (ΛS := G.Λ (.grid ((i : ℕ) + 1) ((j : ℕ) + 1))) (ΛT := G.Λ (.grid (i : ℕ) ((j : ℕ) + 1))) W.ψ_std sdW' sdV hinf' hφ₁ hy₁`. Establish `s₂ : IsSBHalf ε (latW G i j) (fun t => W.ψ (symplO _ _ t (mapW e y)) * φ₂ t)` using `sb_modul_latO (S := spV₁ G i j) (T := spW G i j) (ΛS := G.Λ (.grid ((i : ℕ) + 1) (j : ℕ))) (ΛT := G.Λ (.grid ((i : ℕ) + 1) ((j : ℕ) + 1))) W.ψ_std sdV₁ sdW hinf' hφ₂ hy₂`. Use `show (fun u => W.ψ (sympPt Γ u y) * box e φ₁ φ₂ u, heisPt Γ W.ψ y (box e (T₁ φ₁) (T₂ φ₂))) ∈ boxGraph e ε T₁ T₂`.
+
+Rewrite using `[heisPt_box e Γ hW hWW]`. Use `Submodule.subset_span ⟨_, _, s₁, s₂, ?_⟩` and prove the remaining obligations. Rewrite using `[h₁.modul φ₁ hφ₁ _ hy₁, h₂.modul φ₂ hφ₂ _ hy₂]`. Use `Prod.ext (funext fun u => ?_) rfl` and prove the remaining obligations. Use `show W.ψ (sympPt Γ u y) * (φ₁ (mapV e u) * φ₂ (mapW e u)) = (W.ψ (symplO _ _ (mapV e u) (mapV e y)) * φ₁ (mapV e u)) * (W.ψ (symplO _ _ (mapW e u) (mapW e y)) * φ₂ (mapW e u))`.
+
+Rewrite using `[symp_eq e Γ hW hWW, AddChar.map_add_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `key hp`.
+-/
 theorem GlobalTheory.BigDat.boxGraph_graph_heis : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {μ₀ : T}, L.Is μ₀ → ∀ (W : G.Weil) (i j : Fin D.R.m) (e : Num G i j) (Γ : GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.Geo G i j),
     Γ.V.J = (1 : D.host.E) • (spW G i j).gram → Γ.W.J = skewGram (spV G i j) (spV₁ G i j) e → ∀ (ε : AE D) (P : Finset (Pl D.host.E)), IsIdemSum ε P →
     ∀ (f₁ : HomV G i j → ℂ) (f₂ : HomW G i j → ℂ) (T₁ : (HomV G i j → ℂ) →ₗ[ℂ] (HomV G i j → ℂ))

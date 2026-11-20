@@ -7,6 +7,13 @@ open MeasureTheory ValuativeRel Matrix GlobalTheory.SplitWeil GlobalTheory.RootE
 noncomputable section
 namespace GlobalTheory.SymChain
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Simplify using `only [not_exists, not_not] at hne`. Apply `h0` to reduce the goal to its premises. Use function extensionality and compare the values at `x₀`. Establish `key : ∀ e, om μ 1 h Φ (affPt 1 x₀ e) = 0` using `fun e => by`.
+
+Establish `h1 : Φ ((h⁻¹).val * affPt 1 x₀ e * (1 : GL (n' ⊕ Fin (c + 1)) k).val) = 0`. Rewrite using `[Units.val_one, Matrix.mul_one]`. Conclude with `hne x₀ e`. Conclude with `mul_eq_zero_of_right _ h1`. Unfold `flat opE`.
+
+Simplify using `only [key, zero_mul, integral_zero, Pi.zero_apply]`.
+-/
 theorem exists_affPt_of_flat_ne_zero {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] [MeasurableSpace k] {n n' : Type} [Fintype n] [DecidableEq n]
     [Fintype n'] [DecidableEq n'] {c : ℕ} (ψ : AddChar k Circle) (ν : Measure k) (μ : kˣ →* ℂˣ)
@@ -23,6 +30,11 @@ theorem exists_affPt_of_flat_ne_zero {k : Type} [Field k] [ValuativeRel k] [Topo
   unfold flat opE
   simp only [key, zero_mul, integral_zero, Pi.zero_apply]
 
+/- English proof (translation)
+Introduce `k _ _ _ _ _ _ ν hν s κ S t _ _ hC hS j c hjc β hβ`. Use `hν.1` as an intermediate fact. Take `⟨h, rfl, h0⟩` from `hβ`. Take `⟨r, hr, u, hu, rfl⟩` from `hC j c hjc h h0`. Establish `HL : (S.T t).Laws` using `Chain.ofType_laws _ _ _ _ _`.
+
+Establish `h1` using `(GlobalTheory.UnfoldedEntries.flat_ne_zero_congr (ψ := S.ψ) (ν := ν) (h₂' := 1) (h₂ := u) (by omega) (HL.1 j (c + 1) (by omega)) rfl ((DoubleCoset.eq _ _ _ _).2 ⟨r⁻¹, inv_mem hr, 1, one_mem _, by group⟩)).1 h0`. Take `⟨x₀, e, he⟩` from `exists_affPt_of_flat_ne_zero _ _ _ _ _ h1`. Take `⟨r', hr', w, hw, rfl⟩` from `hS j c hjc u hu x₀ e he`. Conclude with `(DoubleCoset.eq _ _ _ _).2 ⟨(r * r')⁻¹, inv_mem (mul_mem hr hr'), w⁻¹, inv_mem hw, by group⟩`.
+-/
 theorem oneIndex_of_oneClass_of_supportOne :
     ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k]
       [BorelSpace k] (ν : Measure k), IsUnitVol ν → ∀ (s κ : ℕ) (S : SymData k s κ) (t : Type) [Fintype t]

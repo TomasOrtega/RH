@@ -29,11 +29,19 @@ section Asm
 variable (hS : SpStd d.toColBase) (hH : HostHyp d) (hP : PtSurj d) (hK : LocalLevelIsKOneEverywhere d) (S : GSplit (Pr := d.Pr) d.sp.cm) (hI : IwAll d S)
   (O : AtTOwed a hS hH)
 
+/- English proof (translation)
+Introduce `u`. Use `show (d.piT d.u₀ : d.host.E) / (d.piT u : d.host.E) * (d.piT u : d.host.E) = (d.piT d.u₀ : d.host.E)`. Conclude with `div_mul_cancel₀ _ (basePi_of_ok d.hX d.hPr u).coe_ne_zero`.
+-/
 theorem cofTied : CH.CofTied (d.colRec a) (hermCols a hS hP hK S hI) (hermAtT a hS hH O) := by
   intro u
   show (d.piT d.u₀ : d.host.E) / (d.piT u : d.host.E) * (d.piT u : d.host.E) = (d.piT d.u₀ : d.host.E)
   exact div_mul_cancel₀ _ (basePi_of_ok d.hX d.hPr u).coe_ne_zero
 
+/- English proof (translation)
+Introduce `u pb hpb`. Establish `hpb' : algebraMap (𝓞 d.X.E) d.X.E pb = star (algebraMap (𝓞 d.X.E) d.X.E (d.Pr.piT u))`. Rewrite using `[att_star_eq]`. Conclude with `hpb`. Use `⟨?_, fun i h1 hm => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[coordLattice_selfDual_zero hS]`. Conclude with `levPack_base d.sp.cm d.hX d.hPr d.σ₀ u (d.lev 0) _ _ _ _ (hK u 0) (hCrd0 hS u) pb hpb'`. Rewrite using `[coordLattice_selfDual_eq_std hS i hm]`. Conclude with `levPack_base d.sp.cm d.hX d.hPr d.σ₀ u (d.lev i) _ _ _ _ (hK u i) (hCrd hS u i hm) pb hpb'`.
+-/
 theorem baseTied : CH.BaseTied (d.colRec a) (hermCols a hS hP hK S hI) (hermAtT a hS hH O) := by
   intro u pb hpb
   have hpb' : algebraMap (𝓞 d.X.E) d.X.E pb = star (algebraMap (𝓞 d.X.E) d.X.E (d.Pr.piT u)) := by

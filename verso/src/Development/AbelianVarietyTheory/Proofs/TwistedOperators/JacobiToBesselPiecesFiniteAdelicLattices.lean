@@ -14,16 +14,25 @@ section Transfer
 
 variable {D : D7}
 
+/- English proof (translation)
+Introduce `i j` and use `by rw [Matrix.mul_apply] exact Ideal.sum_mem _ fun l _ => Ideal.mul_mem_right _ _ (hx i l)`.
+-/
 theorem mxAt_mul_right {m n k : ℕ} {x : Mx D m n} (hx : MxAt (fun _ => True) x) (M : Mx D n k) :
     MxAt (fun _ => True) (x ⬝ M) := fun i j => by
   rw [Matrix.mul_apply]
   exact Ideal.sum_mem _ fun l _ => Ideal.mul_mem_right _ _ (hx i l)
 
+/- English proof (translation)
+Introduce `i j` and use `by rw [Matrix.mul_apply] exact Ideal.sum_mem _ fun l _ => Ideal.mul_mem_left _ _ (hx l j)`.
+-/
 theorem mxAt_mul_left {m n k : ℕ} {x : Mx D m n} (hx : MxAt (fun _ => True) x) (M : Mx D k m) :
     MxAt (fun _ => True) (M ⬝ x) := fun i j => by
   rw [Matrix.mul_apply]
   exact Ideal.sum_mem _ fun l _ => Ideal.mul_mem_left _ _ (hx l j)
 
+/- English proof (translation)
+The claim follows from `hgf a ▸ hgM _ (hΓ.fin _ ha) cpt := by haveI : T2Space (Mx D m' n') := (GlobalTheory.MixModel.lattice_Mx D m' n').2.2.2.1 have hc : IsClosed ((Γ.comap f : AddSubgroup _) : Set (Mx D m n)) := hΓ.cpt.isClosed.preimage hf refine (hΓ.cpt.image hg).of_isClosed_subset hc ?_ intro a ha e …`.
+-/
 theorem finLat_comap {m n m' n' : ℕ} {Γ : AddSubgroup (Mx D m' n')} (hΓ : FinLat Γ) (f : Mx D m n →+ Mx D m' n')
     (g : Mx D m' n' → Mx D m n) (hf : Continuous f) (hg : Continuous g) (hgf : ∀ a, g (f a) = a)
     (hfM : ∀ a, MxAt (fun _ => True) a → MxAt (fun _ => True) (f a))
@@ -41,6 +50,15 @@ theorem finLat_comap {m n m' n' : ℕ} {Γ : AddSubgroup (Mx D m' n')} (hΓ : Fi
 
 end Transfer
 
+/- English proof (translation)
+Introduce `D hOff T L μ0 hL sc G W M hM F hF σ h h'`. Establish `hlat` using `(GlobalTheory.T.grid_lattices_compact_selfDual_splitting D hOff T L μ0 hL sc G W M hM F hF).1 (2 * σ + 2) (by omega)`. Establish `hRow : FinLat (latRow G (2 * σ + 2))` using `hlat.1`. Establish `hBig : FinLat (latBig G (2 * σ + 2))` using `hlat.2.2.1`. Use `set dV := F.dJ (σ + 1) h`.
+
+Use `set dW := F.dB σ h'`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `finLat_comap hRow (dV.extX _) (fun w => w ⬝ dV.jX) (continuous_id.matrix_mul continuous_const) (continuous_id.matrix_mul continuous_const) (fun a => by simp only [HypDec.extX_apply, Matrix.mul_assoc, HypDec.pX_jX, Matrix.mul_one]) (fun a ha => mxAt_mul_right ha _) (fun b hb => mx …`. Conclude with `finLat_comap hBig ((dV.ext0 _).comp (dW.incX _)) (fun w => dW.pX ⬝ (w ⬝ dV.j0)) ((continuous_const.matrix_mul continuous_id).matrix_mul continuous_const) (continuous_const.matrix_mul (continuous_id.matrix_mul continuous_const)) (fun a => by simp only [AddMonoidHom.comp_apply, Hyp …`. Conclude with `finLat_comap hBig ((dV.ext0 _).comp (dW.incY _)) (fun w => dW.pY ⬝ (w ⬝ dV.j0)) ((continuous_const.matrix_mul continuous_id).matrix_mul continuous_const) (continuous_const.matrix_mul (continuous_id.matrix_mul continuous_const)) (fun a => by simp only [AddMonoidHom.comp_apply, Hyp …`.
+
+Introduce `u hu`. Establish `h1` using `hRow.fin _ hu`. Establish `h2 : dW.p0 ⬝ (((dV.ext0 _).comp (dW.inc0 _)) u ⬝ dV.j0) = u`. Simplify using `only [AddMonoidHom.comp_apply, HypDec.matrixExtendByZero_apply, HypDec.wittDecomp_inclAnisotropicHom_apply, Matrix.mul_assoc, HypDec.p0_j0, Matrix.mul_one, ← Matrix.mul_assoc dW.p0, Matrix.one_mul]`. Rewrite using `[← h2]`.
+
+Conclude with `mxAt_mul_left (mxAt_mul_right h1 _) _`.
+-/
 theorem pcFB_fin : OnStd fun {D} _ _ {sc} {G} W F => ∀ σ (h : 2 * (σ + 1) + 2 ≤ D.R.m) (h' : 2 * σ + 2 ≤ D.R.m),
     FinLat (pcFB W F σ h h').A₁ ∧ FinLat (pcFB W F σ h h').B₁ ∧ FinLat (pcFB W F σ h h').B₂ ∧
       ∀ u ∈ (pcFB W F σ h h').Γ₀, MxAt (fun _ => True) u := by

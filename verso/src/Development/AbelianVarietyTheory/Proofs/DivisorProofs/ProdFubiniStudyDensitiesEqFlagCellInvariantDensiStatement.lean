@@ -8,5 +8,8 @@ open GlobalTheory GlobalTheory.Cartier GlobalTheory.ProjVar GlobalTheory.CxPts G
 open GlobalTheory.FlagFibre (Low)
 open scoped Matrix ContDiff ComplexOrder ENNReal Classical
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.FlagCellDens.main | exact GlobalTheory.FlagCellDens.main | (intros; apply GlobalTheory.FlagCellDens.main <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.prod_fubiniStudy_densities_eq_flagCell_invariant_density : ∀ (s : ℕ) (G : Matrix (Fin s) (Fin s) ℂ), G.PosDef → ∀ (y : Low s → ℂ), ∏ i : Fin s, (((s - 1 - i : ℕ).factorial : ℝ) / Real.pi ^ (s - 1 - i : ℕ) * (G.det.re / (leadMinor (upU y * G * (upU y)ᴴ) i).re / grD (upU y * G * (upU y)ᴴ) i ^ ((s - 1 - i : ℕ) + 1))) = GlobalTheory.TrueCx.flagConst s * G.det.re ^ ((s : ℤ) - 1) * GlobalTheory.FlagFibre.dens Gᵀ y := by
   first | exact @GlobalTheory.FlagCellDens.main | exact GlobalTheory.FlagCellDens.main | (intros; apply GlobalTheory.FlagCellDens.main <;> assumption)

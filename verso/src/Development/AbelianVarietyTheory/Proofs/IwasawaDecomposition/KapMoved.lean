@@ -24,6 +24,13 @@ open Formalism.IndefR.FWT Formalism.L2.Pj Formalism.IndefR.Mult GlobalTheory.Rea
 
 namespace GlobalTheory.FWKapMove
 
+/- English proof (translation)
+Introduce `B B' f f' T T' w w' hPre Z hX Wt z Z' hX' Wt' core' alg' halg hcore hlaws Xg tr R' hRS hmu ι hι κ' hκ' i τ`. Take `⟨P'⟩` from `B'`. Simplify using `only at hPre`. Substitute `hPre` using the available equality. Take `⟨h1, h2, h3⟩` from `hκ' i i rfl`.
+
+Establish `h1'` using `eq_of_heq h1`. Establish `h2'` using `eq_of_heq h2`. Take `⟨k1, k2, k3⟩` from `z.geo.fw.kap i τ`. Use `⟨fun k => ?_, fun k => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[h1']`.
+
+Conclude with `k1 k`. Rewrite using `[h2']`. Conclude with `k2 k`. Rewrite using `[h3]`. Conclude with `k3`.
+-/
 theorem kap_moved : ∀ (B B' : Base) (f : Fr B.toPre) (f' : Fr B'.toPre) (T : TwDat B) (T' : TwDat B') (w : ColW B f T) (w' : ColW B' f' T'),
     B'.toPre = B.toPre → ∀ (Z : w.Lt) (hX : B.fields.Ok) (Wt : Set B.places.Pl) (z : Dat (w.st Z) w.I hX T Wt) (Z' : w'.Lt) (hX' : B'.fields.Ok)
     (Wt' : Set B'.places.Pl) (core' : Formalism.L2.Pj.CoreJ (w'.st Z').toD7) (alg' : Algebra core'.Q.c.F (w'.st Z').toD7.what₂.LL),

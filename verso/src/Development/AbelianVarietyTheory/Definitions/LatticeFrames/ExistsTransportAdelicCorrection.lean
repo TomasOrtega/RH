@@ -12,6 +12,11 @@ namespace GlobalTheory.Core.Mi.PinModel
 
 variable {D : D7} {u : D.what₂.Word}
 
+/- English proof (translation)
+Substitute `hn` using the available equality. Take `⟨a, ha, e⟩` from `GlobalTheory.DefFree.AdelCls.exists_fin V ⟨y.1, y.2⟩`. Use `⟨a, ha, ?_⟩` and prove the remaining obligations. Establish `e2 : (finE V a : GL _ _) = y.1` using `congrArg Subtype.val e`. Rewrite using `[← e2]`.
+
+Both sides reduce to the same expression.
+-/
 theorem exists_finM (V : HSp D) {n : ℕ} (hn : V.rank = n)
     (y : Formalism.UG.UPts (Formalism.L2.Forms.sigD D) (V.gram.reindex (finCongr hn) (finCongr hn))
       (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) :
@@ -23,11 +28,17 @@ theorem exists_finM (V : HSp D) {n : ℕ} (hn : V.rank = n)
   rw [← e2]
   rfl
 
+/- English proof (translation)
+Take `⟨a, ha, e⟩` from `exists_finM (D.sp.X 0) (Formalism.L2.Forms.rankN D 0 (Nat.zero_le _)) tr.h0`. Conclude with `⟨a, ha, e⟩`.
+-/
 theorem exists_transport_adelic_correction {X : HidaSetting D} {F : Formalism.L2.Forms.Forms0 D u} (tr : Formalism.L2.SG.ColDict.Transport X u F) :
     ∃ a, IsTransportAdelicCorrection tr a := by
   obtain ⟨a, ha, e⟩ := exists_finM (D.sp.X 0) (Formalism.L2.Forms.rankN D 0 (Nat.zero_le _)) tr.h0
   exact ⟨a, ha, e⟩
 
+/- English proof (translation)
+Use `⟨⟨fun a => ⟨if (a : ℕ) < ρ then k + a else if (a : ℕ) < ρ + k then a - ρ else a, ?_⟩, fun b => ⟨if (b : ℕ) < k then b + ρ else if (b : ℕ) < ρ + k then b - k else b, ?_⟩, fun a => Fin.ext ?_, fun b => Fin.ext ?_⟩, fun _ => rfl⟩` and prove the remaining obligations. Apply the tactic sequence `have := a.2 split_ifs <;> omega`. Apply the tactic sequence `have := b.2 split_ifs <;> omega`. Apply the tactic sequence `dsimp only split_ifs <;> omega`. Apply the tactic sequence `dsimp only split_ifs <;> omega`.
+-/
 theorem exists_symOrd' {r : ℕ} (ρ k : ℕ) (h : ρ + k ≤ r) : ∃ π : Equiv.Perm (Fin r), IsSymOrd ρ k π := by
   refine ⟨⟨fun a => ⟨if (a : ℕ) < ρ then k + a else if (a : ℕ) < ρ + k then a - ρ else a, ?_⟩,
     fun b => ⟨if (b : ℕ) < k then b + ρ else if (b : ℕ) < ρ + k then b - k else b, ?_⟩, fun a => Fin.ext ?_, fun b => Fin.ext ?_⟩,
@@ -46,6 +57,13 @@ def reordHom {Pg : Finset (Pl D.host.E)} {r : ℕ} (π : Equiv.Perm (Fin r)) : G
   map_one' := by funext PP; simp [reord]
   map_mul' a b := by funext PP; simp [reord]
 
+/- English proof (translation)
+Establish `key : ∀ PP : Pl D.host.E, ∃ ψ : AddChar (kP PP) ℂ, ψ ≠ 1` using `fun PP => by`. Establish `: Finite (kP PP)` using `Ideal.finiteQuotientOfFreeOfNeBot PP.asIdeal PP.ne_bot`. Establish `: Nontrivial (kP PP)` using `Ideal.Quotient.nontrivial_iff.2 PP.isPrime.ne_top`. Take `⟨ψ, hψ⟩` from `(AddChar.exists_apply_ne_zero (α := kP PP) (a := 1)).2 one_ne_zero`. Conclude with `⟨ψ, fun h => hψ (by rw [h]; rfl)⟩`.
+
+Use `choose ψ0 hψ using key`. Establish `hr : D.R.rS + D.R.k ≤ D.R.r`. Use `D.R.two_le_m` as an intermediate fact. Unfold `Formalism.BasicNotions.Ranks.rS Formalism.BasicNotions.Ranks.r`. Use linear arithmetic over natural numbers and integers.
+
+Take `⟨π, hπ⟩` from `exists_symOrd' D.R.rS D.R.k hr`. Set `Q` to `PsharpSym Pg D.R.r D.R.rS D.R.k ψ0`. Use `⟨⟨Q.H.comap (reordHom π), Q.chi.comp ((reordHom π).subgroupComap Q.H)⟩, ψ0, fun PP _ => hψ PP, π, hπ, fun g => Iff.rfl, fun g hg hg' => rfl⟩` and prove the remaining obligations.
+-/
 theorem exists_isSymLev (Pg : Finset (Pl D.host.E)) : ∃ P : LevelP Pg D.R.r ℂ, IsSymLev P := by
   have key : ∀ PP : Pl D.host.E, ∃ ψ : AddChar (kP PP) ℂ, ψ ≠ 1 := fun PP => by
     have : Finite (kP PP) := Ideal.finiteQuotientOfFreeOfNeBot PP.asIdeal PP.ne_bot
@@ -62,6 +80,17 @@ theorem exists_isSymLev (Pg : Finset (Pl D.host.E)) : ∃ P : LevelP Pg D.R.r �
   refine ⟨⟨Q.H.comap (reordHom π), Q.chi.comp ((reordHom π).subgroupComap Q.H)⟩, ψ0, fun PP _ => hψ PP, π, hπ,
     fun g => Iff.rfl, fun g hg hg' => rfl⟩
 
+/- English proof (translation)
+Establish `key : ∀ v : HeightOneSpectrum (𝓞 D.host.F), ∃ PP : Pl D.host.E, PP.under (𝓞 D.host.F) = v` using `fun v => by`. Use `v.isMaximal` as an intermediate fact. Take `⟨Q, hQ, hQ'⟩` from `Ideal.exists_maximal_ideal_liesOver_of_isIntegral (S := 𝓞 D.host.E) v.asIdeal`. Use `⟨⟨Q, hQ.isPrime, Ideal.ne_bot_of_liesOver_of_ne_bot v.ne_bot Q⟩, ?_⟩` and prove the remaining obligations. Conclude with `HeightOneSpectrum.ext hQ'.over.symm`.
+
+Use `choose s hs using key`. Establish `hne : ((D.host.g 0 * D.host.g 1 : ℕ) : 𝓞 D.host.F) ≠ 0` using `Nat.cast_ne_zero.2 (mul_ne_zero (D.host.g_prime 0).ne_zero (D.host.g_prime 1).ne_zero)`. Establish `hfin : {v : HeightOneSpectrum (𝓞 D.host.F) | ((D.host.g 0 * D.host.g 1 : ℕ) : 𝓞 D.host.F) ∈ v.asIdeal}.Finite`. Use `(Ideal.finite_factors (I := Ideal.span {((D.host.g 0 * D.host.g 1 : ℕ) : 𝓞 D.host.F)}) (by rw [Ne, Submodule.zero_eq_bot, Ideal.span_singleton_eq_bot]; exact hne)).subset fun v hv => ?_` and prove the remaining obligations. Conclude with `Ideal.dvd_span_singleton.2 hv`.
+
+Use `⟨hfin.toFinset.image s, ?_, ?_⟩` and prove the remaining obligations. Introduce `PP hPP`. Take `⟨v, hv, rfl⟩` from `Finset.mem_image.1 hPP`. Establish `hv' : ((D.host.g 0 * D.host.g 1 : ℕ) : 𝓞 D.host.F) ∈ v.asIdeal` using `hfin.mem_toFinset.1 hv`. Rewrite `hv'` using `[← hs v]`.
+
+Establish `h2 : algebraMap (𝓞 D.host.F) (𝓞 D.host.E) ((D.host.g 0 * D.host.g 1 : ℕ) : 𝓞 D.host.F) ∈ (s v).asIdeal` using `hv'`. Rewrite `h2` using `[map_natCast]`. Then use the resulting hypothesis. Introduce `v hv`. Use `⟨s v, ⟨Finset.mem_image.2 ⟨v, hfin.mem_toFinset.2 hv, rfl⟩, hs v⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `PP ⟨hPP, e⟩`.
+
+Take `⟨w, -, rfl⟩` from `Finset.mem_image.1 hPP`. Rewrite `e` using `[hs w]`. Rewrite using `[e]`.
+-/
 theorem exists_isTypePlaces : ∃ Pg : Finset (Pl D.host.E), GlobalTheory.Core.Mi.IsTypePlaces Pg := by
   have key : ∀ v : HeightOneSpectrum (𝓞 D.host.F), ∃ PP : Pl D.host.E, PP.under (𝓞 D.host.F) = v := fun v => by
     have := v.isMaximal
@@ -89,6 +118,13 @@ theorem exists_isTypePlaces : ∃ Pg : Finset (Pl D.host.E), GlobalTheory.Core.M
     rw [hs w] at e
     rw [e]
 
+/- English proof (translation)
+Introduce and unpack `⟨-, h⟩`. Establish `hp` using `D.host.g_prime 0`. Establish `hnu : ¬ IsUnit ((D.host.g 0 : ℕ) : 𝓞 D.host.F)`. Introduce `hu`. Use `hu.map (Algebra.norm ℤ)` as an intermediate fact.
+
+Rewrite `this` using `[show ((D.host.g 0 : ℕ) : 𝓞 D.host.F) = algebraMap ℤ _ (D.host.g 0 : ℤ) by simp, Algebra.norm_algebraMap, isUnit_pow_iff (Module.finrank_pos.ne'), Int.isUnit_iff_natAbs_eq, Int.natAbs_natCast]`. Conclude with `hp.one_lt.ne' this`. Take `⟨M, hM, hle⟩` from `Ideal.exists_le_maximal (Ideal.span {((D.host.g 0 : ℕ) : 𝓞 D.host.F)}) (by rwa [Ne, Ideal.span_singleton_eq_top])`. Establish `hmem : ((D.host.g 0 : ℕ) : 𝓞 D.host.F) ∈ M` using `hle (Ideal.mem_span_singleton_self _)`. Establish `hM0 : M ≠ ⊥` using `fun e => by`.
+
+Rewrite `hmem` using `[e, Ideal.mem_bot, Nat.cast_eq_zero]`. Conclude with `hp.ne_zero hmem`. Take `⟨PP, ⟨hPP, -⟩, -⟩` from `h ⟨M, hM.isPrime, hM0⟩ (by rw [Nat.cast_mul]; exact M.mul_mem_right _ hmem)`. Simplify using `at hPP`.
+-/
 theorem not_isTypePlaces_empty : ¬ GlobalTheory.Core.Mi.IsTypePlaces (D := D) ∅ := by
   rintro ⟨-, h⟩
   have hp := D.host.g_prime 0
@@ -109,6 +145,11 @@ theorem not_isTypePlaces_empty : ¬ GlobalTheory.Core.Mi.IsTypePlaces (D := D) �
 
 variable {F₀ : ∀ u, Formalism.L2.Forms.Forms0 D u} (S : STrue D F₀) (d : GlobalTheory.SeeSaw.Dat D u)
 
+/- English proof (translation)
+Take `⟨a₀, ha₀⟩` from `exists_transport_adelic_correction (S.tr u)`. Use `⟨(embA B.d B.o (a₀ * 1))⁻¹ * (iotaX S.X S.inst).symm (1, S.X.xu u) * t, h0, B, a₀, 1, hB, hA, ha₀, one_mem _, one_mem _, ?_, hrd⟩` and prove the remaining obligations. Establish `e : ((iotaX S.X S.inst).symm (1, S.X.xu u))⁻¹ * embA B.d B.o (a₀ * 1) * ((embA B.d B.o (a₀ * 1))⁻¹ * (iotaX S.X S.inst).symm (1, S.X.xu u) * t) = t` using `by group`. Establish `ht'` using `ht`. Rewrite `ht'` using `[← e]`.
+
+Conclude with `ht'`.
+-/
 theorem pinBot_of_matches (h0 : 0 + 2 * D.R.rS + 2 = D.R.m) (B : SBes S.X S.inst u d.c.ψ (D.sp.X 0))
     (hB : B.lev = d.B 0 D.R.rS h0) (hA : B.Adapted (S.tr u).wt) (t : GA D (D.sp.Y 0))
     (ht : Matches S.X S.inst (d.lev 0) (levChi (D.sp.Y 0) d.bot.β d.bot.L) t)
@@ -123,6 +164,11 @@ theorem pinBot_of_matches (h0 : 0 + 2 * D.R.rS + 2 = D.R.m) (B : SBes S.X S.inst
   rw [← e] at ht'
   exact ht'
 
+/- English proof (translation)
+Rewrite using `[(h.2 _).1]`. Establish `e1 : a₀ * k * a₀⁻¹ = (a₀ * a) * k * (a₀ * a)⁻¹`. Use `Subgroup.mem_center_iff.1 ha k` as an intermediate fact. Rewrite using `[mul_assoc a₀ a k, ← this]`. Use `group`.
+
+Establish `e : (x⁻¹ * embA B.d B.o (a₀ * a) * t₀)⁻¹⁻¹ * (t₀⁻¹ * embA B.d B.o k * t₀) * (x⁻¹ * embA B.d B.o (a₀ * a) * t₀)⁻¹ = x⁻¹ * embA B.d B.o (a₀ * k * a₀⁻¹) * x`. Rewrite using `[e1, map_mul _ (a₀ * a * k), map_mul _ (a₀ * a) k, map_inv]`. Use `group`. Rewrite using `[e]`.
+-/
 theorem level_side (B : SBes S.X S.inst u d.c.ψ (D.sp.X 0)) (a₀ a : GA D (D.sp.X 0)) (ha : a ∈ Subgroup.center (GA D (D.sp.X 0)))
     (J : Set (GA D (D.sp.Y 0))) (χ : GA D (D.sp.Y 0) → ℂ) (x t₀ : GA D (D.sp.Y 0))
     (h : Matches S.X S.inst J χ (x⁻¹ * embA B.d B.o (a₀ * a) * t₀)) (k : GA D (D.sp.X 0)) :
@@ -136,6 +182,9 @@ theorem level_side (B : SBes S.X S.inst u d.c.ψ (D.sp.X 0)) (a₀ a : GA D (D.s
     rw [e1, map_mul _ (a₀ * a * k), map_mul _ (a₀ * a) k, map_inv]; group
   rw [e]
 
+/- English proof (translation)
+Use `D.R.two_le_m` as an intermediate fact. Take `⟨c, hc⟩` from `D.R.m_even`. Unfold `Formalism.BasicNotions.Ranks.rS`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem rank_ok : 0 + 2 * D.R.rS + 2 = D.R.m := by
   have := D.R.two_le_m
   obtain ⟨c, hc⟩ := D.R.m_even

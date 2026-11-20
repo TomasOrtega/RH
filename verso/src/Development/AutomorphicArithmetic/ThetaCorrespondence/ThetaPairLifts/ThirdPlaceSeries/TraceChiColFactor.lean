@@ -16,6 +16,25 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 2000000
 noncomputable section
 namespace GlobalTheory.FamTraceChiCol
+/- English proof (translation)
+Introduce `B X I l Z L hT Gi Gl Kc Yd cX ex W hA u a y`. Establish `hTP : GlobalTheory.Core.Mi.IsTypePlaces (_root_.GlobalTheory.Fam.pk_z W).Pg` using `hA.lev.1`. Use `set w : Fin a.n → IsDedekindDomain.HeightOneSpectrum (𝓞 (I.rec7 l Z).host.F) := fun i => (a.pl i).1.under (𝓞 (I.rec7 l Z).host.F) with hw`. Establish `hw_mem : ∀ i, (((I.rec7 l Z).host.g 0 * (I.rec7 l Z).host.g 1 : ℕ) : 𝓞 (I.rec7 l Z).host.F) ∈ (w i).asIdeal`. Introduce `i`.
+
+Establish `h1` using `hTP.1 (a.pl i).1 (a.pl i).2`. Use `show _ ∈ Ideal.comap _ _`. Rewrite using `[Ideal.mem_comap, map_natCast]`. Conclude with `h1`. Establish `hw_inj : Function.Injective w`.
+
+Introduce `i i' hii`. Take `⟨PP, _, hu⟩` from `hTP.2 (w i) (hw_mem i)`. Establish `e1` using `hu (a.pl i).1 ⟨(a.pl i).2, rfl⟩`. Establish `e2` using `hu (a.pl i').1 ⟨(a.pl i').2, hii.symm⟩`. Conclude with `a.pl.injective (Subtype.ext (e1.trans e2.symm))`.
+
+Use `set S : Fin 2 → Set (IsDedekindDomain.HeightOneSpectrum (𝓞 (I.rec7 l Z).host.F)) := fun j => {v | ((I.rec7 l Z).host.g j : 𝓞 (I.rec7 l Z).host.F) ∈ v.asIdeal} with hS`. Establish `hrange : S 0 ∪ S 1 = Set.range w`. Use extensionality with `v`. Simplify using `only [Set.mem_union, hS, Set.mem_setOf_eq, Set.mem_range]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hv`. Establish `hv' : (((I.rec7 l Z).host.g 0 * (I.rec7 l Z).host.g 1 : ℕ) : 𝓞 (I.rec7 l Z).host.F) ∈ v.asIdeal` using `(mem_type_prod_iff v).2 (Fin.exists_fin_two.2 hv)`. Take `⟨PP, ⟨hPP, hPv⟩, _⟩` from `hTP.2 v hv'`. Conclude with `⟨a.pl.symm ⟨PP, hPP⟩, by simp [hw, hPv]⟩`. Introduce and unpack `⟨i, rfl⟩`.
+
+Conclude with `Fin.exists_fin_two.1 ((mem_type_prod_iff (w i)).1 (hw_mem i))`. Establish `hfin : ∀ j, (S j).Finite` using `fun j => (Set.finite_range w).subset (hrange ▸ (by`. Apply the tactic sequence `rcases Fin.exists_fin_two.mp ⟨j, rfl⟩ with hj | hj <;> subst hj`. Conclude with `Set.subset_union_left`. Conclude with `Set.subset_union_right))`.
+
+Establish `hdisj : Disjoint (S 0) (S 1)`. Rewrite using `[Set.disjoint_left]`. Introduce `v h0 h1`. Conclude with `absurd (type_idx_unique (D := I.rec7 l Z) h0 h1) (by decide)`. Establish `hinner : ∀ j : Fin 2, (∏ᶠ (v : IsDedekindDomain.HeightOneSpectrum (𝓞 (I.rec7 l Z).host.F)) (h : ((I.rec7 l Z).host.g j : 𝓞 (I.rec7 l Z).host.F) ∈ v.asIdeal), (Formalism.L2.Forms.lamJ ((_root_.GlobalTheory.MiTop.formsAtZero W u).gl.psi0 j v h) ((_root_.GlobalTheory.MiTop.formsAtZe …` using `(I.rec7 l Z).host.E) v) y.1))))⁻¹) = ∏ᶠ v ∈ S j, (colLam (_root_.GlobalTheory.MiTop.formsAtZero W u) v y.1)⁻¹ := by`.
+
+Introduce `j`. Use `finprod_congr fun v => finprod_congr fun h => ?_` and prove the remaining obligations. Rewrite using `[colLam_eq (_root_.GlobalTheory.MiTop.formsAtZero W u) j h y.1]`. Establish `hchi` using `(_root_.GlobalTheory.MiTop.formsAtZero W u).glev0.chi_eq y`. Rewrite `hchi` using `[Fin.prod_univ_two, hinner 0, hinner 1, ← finprod_mem_union hdisj (hfin 0) (hfin 1), hrange, finprod_mem_range hw_inj, finprod_eq_prod_of_fintype]`.
+
+Rewrite using `[hchi, ← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_eq_one fun i _ => inv_mul_cancel₀ (colLam_ne_zero (_root_.GlobalTheory.MiTop.formsAtZero W u) _ _)`.
+-/
 theorem trace_chi_col_factor_alt : ∀ {B : GlobalTheory.Mem.Base} {X : GlobalTheory.Mem.PreX B.toPre} {I : TC B X} {l : I.Laws} {Z : TC.Later B (I.cols l)} {L : SizeData₂ (I.rec7 l Z)} {hT : GatTies (I.rec7 l Z)} {Gi : Formalism.MainNotions.G.Inst (I.rec7 l Z) L} {Gl : Formalism.MainNotions.G.LatInst (I.rec7 l Z)} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX (I.rec7 l Z)} {cX : ExtraC} {ex : Extra (I.rec7 l Z) L hT Gi Gl Kc Yd cX} (W : _root_.GlobalTheory.MiS.RealPackAlt ex), _root_.GlobalTheory.Fam.AllFamilyConditions W → ∀ (u : B.Word) (a : _root_.GlobalTheory.Fam.GeometricFamily W u) (y : (_root_.GlobalTheory.MiTop.formsAtZero W u).cls0.lev.U), (((_root_.GlobalTheory.MiTop.formsAtZero W u).cls0.lev.chi y : ℂˣ) : ℂ) * ∏ i : Fin a.n, GlobalTheory.FamTraceChiCol.colLam (_root_.GlobalTheory.MiTop.formsAtZero W u) ((a.pl i).1.under (𝓞 (I.rec7 l Z).host.F)) y.1 = 1 := by
   intro B X I l Z L hT Gi Gl Kc Yd cX ex W hA u a y
   have hTP : GlobalTheory.Core.Mi.IsTypePlaces (_root_.GlobalTheory.Fam.pk_z W).Pg := hA.lev.1

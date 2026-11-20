@@ -11,6 +11,13 @@ open AlgebraicGeometry CategoryTheory ReciprocityTheory.ChartRestriction.G.Semi 
 
 namespace GlobalTheory.FlatCore
 
+/- English proof (translation)
+Introduce `hCM E _ _ _ H hH _ χ hχ Dw l Xo c r U x hL Z τ s ρ hρ`. Take `⟨K, iF, iN, iA, y, ρ₀, σ₁, X, t₀, hy, hm₁, hm₂, hρ₀⟩` from `GlobalTheory.T.exists_cm_goodReduction_point_on_component E H Dw l Xo c r U x hL Z`. Take `⟨F⟩` from `GlobalTheory.CM.GenFib.nonempty_of_baseChange GlobalTheory.polBaseChange_holds K X.B.pol`. Take `⟨⟨h, hh⟩, -⟩` from `GlobalTheory.CM.LieMetric.exists_unique_isHerm GlobalTheory.thetaUnifAV_all GlobalTheory.abelianSchemeLaws_all.1 K X.B.pol F`. Set `f : 𝓞 E →+* K` to `(algebraMap c.F K).comp (embK c τ.1)`.
+
+Establish `hf : ∀ a, IsIntegral ℤ (f a)` using `fun a => (Algebra.IsIntegral.isIntegral (R := ℤ) a).map f.toIntAlgHom`. Set `t : 𝓞 E →+* 𝓞 K` to `f.codRestrict (integralClosure ℤ K).toSubring hf`. Establish `ht : ∀ a, ((t a : 𝓞 K) : K) = algebraMap c.F K (embK c τ.1 a)` using `fun a => rfl`. Take `⟨hfin, hdeg⟩` from `GlobalTheory.T.flatLineDegree_eq_eigenLattice_degree_sub E H Dw l Xo c r U x hL Z τ s ρ hρ K y hy X.B t₀ hm₁ hm₂ F h hh t ht`. Establish `htρ : t H.rt = ρ₀`.
+
+Apply `RingOfIntegers.ext` to reduce the goal to its premises. Rewrite using `[ht, hρ₀ τ]`. Conclude with `⟨hfin, hdeg.trans (hCM E H hH χ hχ K ρ₀ σ₁ Dw.p Dw.q X F h hh t htρ)⟩`.
+-/
 theorem frameDeg_of_cmDiff : CMDiffSt → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E), GlobalTheory.IndefiniteRowSideFullHecke.EigenvectorLieDegree.IsHostField H → ∀ [NeZero H.d] (χ : DirichletCharacter ℂ H.d), GlobalTheory.IsKroneckerChar χ → ∀ (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (r : ℕ) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (x : ℝ), Laws U x → FrameDeg U x (GlobalTheory.CM.logOm E χ).re := by
   intro hCM E _ _ _ H hH _ χ hχ Dw l Xo c r U x hL Z τ s ρ hρ
   obtain ⟨K, iF, iN, iA, y, ρ₀, σ₁, X, t₀, hy, hm₁, hm₂, hρ₀⟩ := GlobalTheory.T.exists_cm_goodReduction_point_on_component E H Dw l Xo c r U x hL Z

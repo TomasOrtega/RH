@@ -8,10 +8,26 @@ open MeasureTheory Matrix NumberField IsDedekindDomain Formalism.BasicNotions Fo
 noncomputable section
 namespace GlobalTheory.Mem.HD.RamBoth
 
+/- English proof (translation)
+Rewrite using `[← WithZero.lt_mul_exp_iff_le WithZero.exp_ne_zero, ← WithZero.exp_add]`. Simplify using `using h`.
+-/
 theorem le_exp_neg_one_of_lt_one {x : WithZero (Multiplicative ℤ)} (h : x < 1) : x ≤ WithZero.exp (-1 : ℤ) := by
   rw [← WithZero.lt_mul_exp_iff_le WithZero.exp_ne_zero, ← WithZero.exp_add]
   simpa using h
 
+/- English proof (translation)
+Take `⟨b, hb⟩` from `GlobalTheory.CMVal.Euler.SplitPair.exists_int_cong w z hz`. Establish `hc : Nat.card (𝓞 E ⧸ w.asIdeal) = Ideal.absNorm w.asIdeal`. Rewrite using `[Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Use `haveI : Fact (Nat.card (𝓞 E ⧸ w.asIdeal)).Prime := ⟨hc ▸ hp⟩`. Use `haveI : Nontrivial (𝓞 E ⧸ w.asIdeal) := Ideal.Quotient.nontrivial_iff.2 w.isPrime.ne_top`.
+
+Establish `htop : AddSubgroup.zmultiples (1 : 𝓞 E ⧸ w.asIdeal) = ⊤`. Break down `AddSubgroup.eq_bot_or_eq_top_of_prime_card (AddSubgroup.zmultiples (1 : 𝓞 E ⧸ w.asIdeal)) with h | h` into its components or cases. It suffices to derive a contradiction. Establish `: (1 : 𝓞 E ⧸ w.asIdeal) ∈ AddSubgroup.zmultiples (1 : 𝓞 E ⧸ w.asIdeal)` using `AddSubgroup.mem_zmultiples 1`. Rewrite `this` using `[h, AddSubgroup.mem_bot]`.
+
+Conclude with `one_ne_zero this`. Conclude with `h`. Take `⟨k, hk⟩ : Ideal.Quotient.mk w.asIdeal b ∈ AddSubgroup.zmultiples (1 : 𝓞 E ⧸ w.asIdeal)` from `htop ▸ AddSubgroup.mem_top _`. Establish `hk' : ((k : 𝓞 E ⧸ w.asIdeal)) = Ideal.Quotient.mk w.asIdeal b` using `by simpa using hk`. Establish `hmem : b - (k : 𝓞 E) ∈ w.asIdeal`.
+
+Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_sub, ← hk', map_intCast, sub_self]`. Establish `h1 : Valued.v (algebraMap E (w.adicCompletion E) ((b : E) - (k : E))) ≤ WithZero.exp (-1 : ℤ)`. Establish `hval : ∀ x : E, Valued.v (algebraMap E (w.adicCompletion E) x) = w.valuation E x` using `fun x => HeightOneSpectrum.valuedAdicCompletion_eq_valuation' w x`. Rewrite using `[hval]`. Use `le_exp_neg_one_of_lt_one ?_` and prove the remaining obligations.
+
+Use `(HeightOneSpectrum.valuation_lt_one_iff_mem (K := E) w (b - (k : 𝓞 E))).2 hmem` as an intermediate fact. Simplify using `using this`. Establish `hb' : Valued.v (algebraMap E (w.adicCompletion E) (b : E) - z) ≤ WithZero.exp (-((1 : ℕ) : ℤ))` using `hb`. Use `⟨k, ?_⟩` and prove the remaining obligations. Use `Valuation.map_sub_le _ (hb'.trans (by simp)) h1` as an intermediate fact.
+
+Rewrite `this` using `[map_sub (algebraMap E (w.adicCompletion E)), sub_sub_sub_cancel_left]`. Conclude with `this`.
+-/
 theorem exists_intCast_cong {E : Type} [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E))
     (hp : (Ideal.absNorm w.asIdeal).Prime) (z : w.adicCompletion E) (hz : Valued.v z ≤ 1) :
     ∃ k : ℤ, Valued.v (algebraMap E (w.adicCompletion E) (k : E) - z) ≤ WithZero.exp (-1 : ℤ) := by
@@ -44,12 +60,24 @@ theorem exists_intCast_cong {E : Type} [Field E] [NumberField E] (w : HeightOneS
   rw [map_sub (algebraMap E (w.adicCompletion E)), sub_sub_sub_cancel_left] at this
   exact this
 
+/- English proof (translation)
+Rewrite using `[aboveF, Set.Finite.mem_toFinset]`. Both sides reduce to the same expression.
+-/
 theorem mem_aboveF_iff (D : D7) {v : HeightOneSpectrum (𝓞 D.host.F)} {R : HeightOneSpectrum (𝓞 D.host.E)} :
     R ∈ aboveF (L := D.host.E) D.host.F v ↔ R.under (𝓞 D.host.F) = v := by
   rw [aboveF, Set.Finite.mem_toFinset]; rfl
 
 open Classical in
 
+/- English proof (translation)
+Use `haveI := v.isMaximal`. Use `haveI : NoZeroSMulDivisors (𝓞 D.host.F) (𝓞 D.host.E) := ⟨fun {c x} e => by`. Rewrite `e` using `[Algebra.smul_def, mul_eq_zero, map_eq_zero_iff _ (FaithfulSMul.algebraMap_injective (𝓞 D.host.F) (𝓞 D.host.E))]`. Conclude with `e⟩`. Establish `h1` using `Ideal.card_primesOverFinset_le_finrank (𝓞 D.host.E) D.host.F D.host.E v.ne_bot`.
+
+Rewrite `h1` using `[D.sp.cm.deg2]`. Establish `h2 : (aboveF (L` using `D.host.E) D.host.F v).card ≤ (IsDedekindDomain.primesOverFinset v.asIdeal (𝓞 D.host.E)).card := by`. Use `Finset.card_le_card_of_injOn HeightOneSpectrum.asIdeal (fun R hR => ?_) (fun a _ b _ h => HeightOneSpectrum.ext h)` and prove the remaining obligations. Rewrite `hR` using `[Finset.mem_coe, mem_aboveF_iff]`. Rewrite using `[IsDedekindDomain.coe_primesOverFinset v.ne_bot]`.
+
+Conclude with `⟨R.isPrime, ⟨hR ▸ rfl⟩⟩`. Use `symm`. Use `Finset.eq_of_subset_of_card_le ?_ ?_` and prove the remaining obligations. Introduce `R hR`. Rewrite `hR` using `[Finset.mem_insert, Finset.mem_singleton]`.
+
+Apply the tactic sequence `rcases hR with rfl | rfl <;> assumption`. Rewrite using `[Finset.card_pair hne]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem aboveF_eq_pair (D : D7) {v : HeightOneSpectrum (𝓞 D.host.F)} {w P : HeightOneSpectrum (𝓞 D.host.E)}
     (hw : w ∈ aboveF (L := D.host.E) D.host.F v) (hP : P ∈ aboveF (L := D.host.E) D.host.F v) (hne : w ≠ P) :
     aboveF (L := D.host.E) D.host.F v = {w, P} := by
@@ -73,6 +101,25 @@ theorem aboveF_eq_pair (D : D7) {v : HeightOneSpectrum (𝓞 D.host.F)} {w P : H
     rcases hR with rfl | rfl <;> assumption
   · rw [Finset.card_pair hne]; omega
 
+/- English proof (translation)
+Introduce `u hu`. Establish `hu1 : Valued.v (u : w.adicCompletion E) = 1` using `hu`. Take `⟨k, hk⟩` from `exists_intCast_cong w hp u hu1.le`. Establish `hval : ∀ (R : HeightOneSpectrum (𝓞 E)), Valued.v (algebraMap E (R.adicCompletion E) (k : E)) = 1 ↔ (k : 𝓞 E) ∉ R.asIdeal` using `fun R => by`. Establish `h1 : Valued.v (algebraMap E (R.adicCompletion E) (k : E)) = R.valuation E (k : E)` using `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' R (k : E)`.
+
+Establish `h2 : R.valuation E (k : E) = R.intValuation (k : 𝓞 E)`. Rewrite using `[← map_intCast (algebraMap (𝓞 E) E) k]`. Conclude with `HeightOneSpectrum.valuation_of_algebraMap (K := E) R (k : 𝓞 E)`. Rewrite using `[h1, h2, HeightOneSpectrum.intValuation_eq_one_iff]`. Establish `hmem : ∀ (R : HeightOneSpectrum (𝓞 E)), R.under (𝓞 F) = v → ((k : 𝓞 E) ∈ R.asIdeal ↔ (k : 𝓞 F) ∈ v.asIdeal)` using `fun R hR => by`.
+
+Rewrite using `[← hR, ← map_intCast (algebraMap (𝓞 F) (𝓞 E)) k]`. Conclude with `Iff.rfl`. Establish `hlt : WithZero.exp (-1 : ℤ) < 1`. Rewrite using `[← WithZero.exp_zero, WithZero.exp_lt_exp]`. Use linear arithmetic over natural numbers and integers.
+
+Establish `h5 : Valued.v (algebraMap E (w.adicCompletion E) (k : E)) = 1`. Rewrite using `[Valuation.map_eq_of_sub_lt _ (hu1 ▸ hk.trans_lt hlt), hu1]`. Establish `hkw` using `(hval w).1 h5`. Establish `hkP : (k : 𝓞 E) ∉ P.asIdeal` using `fun h => hkw ((hmem w hw).2 ((hmem P hP).1 h))`. Establish `hk0 : (k : F) ≠ 0`.
+
+Introduce `h`. Establish `: k = 0` using `by exact_mod_cast h`. Conclude with `hkw (by simp [this])`. Establish `hco : ∀ R : HeightOneSpectrum (𝓞 E), ((atFin R (upF F (Units.mk0 (k : F) hk0)) : (R.adicCompletion E)ˣ) : R.adicCompletion E) = algebraMap E (R.adicCompletion E) (k : E)` using `fun R => by`. Rewrite using `[← map_intCast (algebraMap F E) k]`.
+
+Both sides reduce to the same expression. Establish `h7` using `hF.1 v (Units.mk0 (k : F) hk0)`. Unfold `HChar.resFin at h7`. Rewrite `h7` using `[MonoidHom.finsetProd_apply, hS, Finset.prod_pair hne]`. Establish `h6 : χ.loc P (atFin P (upF F (Units.mk0 (k : F) hk0))) = 1` using `hun _ (by`.
+
+Unfold `IsUnitAt`. Rewrite using `[hco, (hval P).2 hkP])`. Express the relevant statement in the definitionally equal form `χ.loc w (atFin w (upF F (Units.mk0 (k : F) hk0))) * χ.loc P (atFin P (upF F (Units.mk0 (k : F) hk0))) = 1 at h7`. Rewrite `h7` using `[h6, mul_one]`. Establish `h8 : χ.loc w (atFin w (upF F (Units.mk0 (k : F) hk0)) / u) = 1`.
+
+Use `ht _ ?_ ?_` and prove the remaining obligations. Unfold `IsUnitAt`. Rewrite using `[Units.val_div_eq_div_val, map_div₀, hco, h5, hu1, div_one]`. Rewrite using `[Units.val_div_eq_div_val, div_sub_one u.ne_zero, map_div₀, hu1, div_one, hco]`. Conclude with `hk`.
+
+Rewrite `h8` using `[map_div, div_eq_one, h7]`. Conclude with `h8.symm`.
+-/
 theorem unrAt_of_pair {E : Type} [Field E] [NumberField E] {F : Type} [Field F] [NumberField F] [Algebra F E]
     [DecidableEq (HeightOneSpectrum (𝓞 E))] (χ : HChar E) {v : HeightOneSpectrum (𝓞 F)} {w P : HeightOneSpectrum (𝓞 E)}
     (hw : w.under (𝓞 F) = v) (hP : P.under (𝓞 F) = v) (hne : w ≠ P) (hS : aboveF (L := E) F v = {w, P})
@@ -123,6 +170,9 @@ theorem unrAt_of_pair {E : Type} [Field E] [NumberField E] {F : Type} [Field F] 
   rw [map_div, div_eq_one, h7] at h8
   exact h8.symm
 
+/- English proof (translation)
+Introduce `D C nch Tp hT μ v w P hw hP hr hun`. Distinguish the cases in `hne : w = P`. Conclude with `hr (hne ▸ hun)`. Conclude with `hr (unrAt_of_pair _ ((mem_aboveF_iff D).1 hw) ((mem_aboveF_iff D).1 hP) hne (by convert aboveF_eq_pair D hw hP hne) (hT.ram μ w hr).2.1 (Tp.xi_triv μ) (Tp.xi_tame μ w) hun)`.
+-/
 theorem ram_both : ∀ (D : D7) (C : CharFrame D) (nch : NChoice D) (Tp : TupTied D C nch), TupPins Tp →
     ∀ (μ : D.what₂.Tup) (v : HeightOneSpectrum (𝓞 D.host.F)) (w P : HeightOneSpectrum (𝓞 D.host.E)),
     w ∈ aboveF (L := D.host.E) D.host.F v → P ∈ aboveF (L := D.host.E) D.host.F v →

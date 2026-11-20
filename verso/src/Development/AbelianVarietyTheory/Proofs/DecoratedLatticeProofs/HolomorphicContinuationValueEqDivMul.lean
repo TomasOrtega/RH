@@ -11,6 +11,9 @@ open GlobalTheory.Core.Rk.IP
 
 namespace GlobalTheory.Core.Rk.IP
 
+/- English proof (translation)
+Introduce `Z L d Y s₀ z l s₁ h0 h1 hd hd0 hY e hZ hL`. Conclude with `(hZ.congr e).unique ((hL.div (holValueAt_self hd h0) (hd0 _ h0)).mul (holValueAt_self (hY.analyticOnNhd (isOpen_rightOf s₁)) h1))`.
+-/
 theorem holValueAt_eq_div_mul : ∀ (Z L d Y : ℂ → ℂ) (s₀ z l : ℂ) (s₁ : ℝ), 0 < s₀.re → s₁ < s₀.re → AnalyticOnNhd ℂ d (rightOf 0) → (∀ s : ℂ, 0 < s.re → d s ≠ 0) → DifferentiableOn ℂ Y (rightOf s₁) → EqRight Z (fun s => L s / d s * Y s) → HolValueAt Z s₀ z → HolValueAt L s₀ l → z = l / d s₀ * Y s₀ := by
   intro Z L d Y s₀ z l s₁ h0 h1 hd hd0 hY e hZ hL
   exact (hZ.congr e).unique ((hL.div (holValueAt_self hd h0) (hd0 _ h0)).mul

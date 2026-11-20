@@ -19,6 +19,9 @@ set_option autoImplicit false
 set_option autoImplicit false
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.normSq_embedding_eq_abs_norm_of_imagQuad | exact GlobalTheory.normSq_embedding_eq_abs_norm_of_imagQuad | (intros; apply GlobalTheory.normSq_embedding_eq_abs_norm_of_imagQuad <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.norm_sq_embedding_imag_quadratic : ∀ {K : Type} [Field K] [NumberField K] (d : ℕ) (δ : K) (io : K →+* ℂ), Module.finrank ℚ K = 2 → 0 < d → δ ^ 2 = -(d : K) →
     ∀ x : K, Complex.normSq (io x) = |((Algebra.norm ℚ x : ℚ) : ℝ)| := by
   first | exact @GlobalTheory.normSq_embedding_eq_abs_norm_of_imagQuad | exact GlobalTheory.normSq_embedding_eq_abs_norm_of_imagQuad | (intros; apply GlobalTheory.normSq_embedding_eq_abs_norm_of_imagQuad <;> assumption)

@@ -19,12 +19,24 @@ section Polar
 
 variable {X Y : Type*} [MeasurableSpace X] [MeasurableSpace Y]
 
+/- English proof (translation)
+Use `⟨hf, ?_⟩` and prove the remaining obligations. Rewrite using `[eLpNorm_lt_top_iff_lintegral_rpow_enorm_lt_top two_ne_zero ENNReal.ofNat_ne_top]`. Simplify using `using h.lt_top`.
+-/
 theorem memLp_two_of_lintegral {μ : Measure X} {f : X → ℂ} (hf : AEStronglyMeasurable f μ)
     (h : ∫⁻ x, ‖f x‖ₑ ^ 2 ∂μ ≠ ⊤) : MemLp f 2 μ := by
   refine ⟨hf, ?_⟩
   rw [eLpNorm_lt_top_iff_lintegral_rpow_enorm_lt_top two_ne_zero ENNReal.ofNat_ne_top]
   simpa using h.lt_top
 
+/- English proof (translation)
+Establish `hm : ∀ c : ℂ, MemLp (fun x => f x + c * f' x) 2 μ` using `fun c => hf.add (hf'.const_mul c)`. Establish `hi : ∀ c : ℂ, Integrable (fun x => ((‖f x + c * f' x‖ ^ 2 : ℝ) : ℂ)) μ` using `fun c => ((memLp_two_iff_integrable_sq_norm (hm c).1).1 (hm c)).ofReal`. Establish `he : ∀ c : ℂ, ((∫⁻ x, ‖f x + c * f' x‖ₑ ^ 2 ∂μ).toReal : ℂ) = ∫ x, ((‖f x + c * f' x‖ ^ 2 : ℝ) : ℂ) ∂μ`. Introduce `c`. Rewrite using `[integral_complex_ofReal, integral_eq_lintegral_of_nonneg_ae (f := fun x => ‖f x + c * f' x‖ ^ 2) (Filter.Eventually.of_forall fun w => by positivity) ((hm c).1.norm.pow 2)]`.
+
+Simplify using `only [ENNReal.ofReal_pow (norm_nonneg _), ofReal_norm]`. Establish `hp : (fun x => f x * conj (f' x)) = fun x => (((‖f x + 1 * f' x‖ ^ 2 : ℝ) : ℂ) - (‖f x + (-1) * f' x‖ ^ 2 : ℝ) + Complex.I * ((‖f x + Complex.I * f' x‖ ^ 2 : ℝ) - (‖f x + (-Complex.I) * f' x‖ ^ 2 : ℝ))) / 4`. Use function extensionality and compare the values at `x`. Simplify using `only [Complex.sq_norm, Complex.normSq_apply]`. Apply the tactic sequence `apply Complex.ext <;> simp <;> ring`.
+
+Rewrite using `[hp]`. Use `⟨(((hi 1).sub (hi (-1))).add (((hi _).sub (hi _)).const_mul _)).div_const _, ?_⟩` and prove the remaining obligations. Rewrite using `[integral_div, integral_add, integral_const_mul, integral_sub (hi _) (hi _), integral_sub (hi _) (hi _)]`. Simplify using `only [he]`. Conclude with `(hi 1).sub (hi (-1))`.
+
+Conclude with `((hi _).sub (hi _)).const_mul _`.
+-/
 theorem integral_mul_conj_eq {μ : Measure X} {f f' : X → ℂ} (hf : MemLp f 2 μ) (hf' : MemLp f' 2 μ) :
     Integrable (fun x => f x * conj (f' x)) μ ∧ ∫ x, f x * conj (f' x) ∂μ =
       (((∫⁻ x, ‖f x + 1 * f' x‖ₑ ^ 2 ∂μ).toReal : ℂ) - (∫⁻ x, ‖f x + (-1) * f' x‖ₑ ^ 2 ∂μ).toReal +
@@ -51,6 +63,15 @@ theorem integral_mul_conj_eq {μ : Measure X} {f f' : X → ℂ} (hf : MemLp f 2
   · exact (hi 1).sub (hi (-1))
   · exact ((hi _).sub (hi _)).const_mul _
 
+/- English proof (translation)
+Establish `e1 : ∀ φ : X → ℂ, Measurable φ → ∫⁻ x, ‖φ x‖ₑ ^ 2 ∂(μ.withDensity fun x => v x) = ∫⁻ x, ‖φ x‖ₑ ^ 2 * v x ∂μ` using `fun φ hφ => by`. Rewrite using `[lintegral_withDensity_eq_lintegral_mul _ hv.coe_nnreal_ennreal (hφ.enorm.pow_const 2)]`. Simplify using `only [Pi.mul_apply, mul_comm]`. Establish `e2 : ∀ φ : Y → ℂ, Measurable φ → ∫⁻ x, ‖φ x‖ₑ ^ 2 ∂(ν.withDensity fun x => w x) = ∫⁻ x, ‖φ x‖ₑ ^ 2 * w x ∂ν` using `fun φ hφ => by`. Rewrite using `[lintegral_withDensity_eq_lintegral_mul _ hw.coe_nnreal_ennreal (hφ.enorm.pow_const 2)]`.
+
+Simplify using `only [Pi.mul_apply, mul_comm]`. Establish `H1` using `H 1 0`. Establish `H2` using `H 0 1`. Simplify using `only [one_mul, zero_mul, add_zero, zero_add] at H1 H2`. Take `⟨a1, a2⟩` from `integral_mul_conj_eq (μ := μ.withDensity fun x => v x) (memLp_two_of_lintegral hf.aestronglyMeasurable (by rwa [e1 f hf])) (memLp_two_of_lintegral hf'.aestronglyMeasurable (by rwa [e1 f' hf']))`.
+
+Take `⟨b1, b2⟩` from `integral_mul_conj_eq (μ := ν.withDensity fun x => w x) (memLp_two_of_lintegral hh.aestronglyMeasurable (by rwa [e2 h hh, ← H1])) (memLp_two_of_lintegral hh'.aestronglyMeasurable (by rwa [e2 h' hh', ← H2]))`. Establish `H3 : ∀ d : ℂ, ∫⁻ x, ‖f x + d * f' x‖ₑ ^ 2 ∂(μ.withDensity fun x => v x) = ∫⁻ y, ‖h y + d * h' y‖ₑ ^ 2 ∂(ν.withDensity fun x => w x)` using `fun d => by`. Rewrite using `[e1 (fun x => f x + d * f' x) (hf.add (hf'.const_mul d)), e2 (fun y => h y + d * h' y) (hh.add (hh'.const_mul d))]`. Simplify `H 1 d` using `only [one_mul]`. Simplify using `only [H3] at a2`.
+
+Rewrite `a2` using `[← b2, integral_withDensity_eq_integral_smul hv, integral_withDensity_eq_integral_smul hw]`. Rewrite `a1` using `[integrable_withDensity_iff_integrable_smul hv]`. Rewrite `b1` using `[integrable_withDensity_iff_integrable_smul hw]`. Simplify using `only [NNReal.smul_def, Complex.real_smul, mul_comm ((_ : ℝ) : ℂ)] at a1 b1 a2`. Conclude with `⟨a1, b1, a2⟩`.
+-/
 theorem integral_mul_conj_eq_of_lintegral {μ : Measure X} {ν : Measure Y} {f f' : X → ℂ} {h h' : Y → ℂ}
     (hf : Measurable f) (hf' : Measurable f') (hh : Measurable h) (hh' : Measurable h')
     {v : X → ℝ≥0} {w : Y → ℝ≥0} (hv : Measurable v) (hw : Measurable w)
@@ -90,6 +111,9 @@ end Polar
 
 variable {E : Type} [Field E] [NumberField E] {a : ℕ} {ψ : AddChar (Ad E) ℂ}
 
+/- English proof (translation)
+Use `haveI : SecondCountableTopology (Matrix (Fin a) (Fin a) (Ad E)) := inferInstanceAs (SecondCountableTopology (Fin a → Fin a → Ad E))`. Use `haveI : SecondCountableTopology (Matrix (Fin a) (Fin a) (Ad E))ᵐᵒᵖ := MulOpposite.opHomeomorph.symm.secondCountableTopology`. Conclude with `Units.isEmbedding_embedProduct.secondCountableTopology`.
+-/
 theorem secondCountable_GA : SecondCountableTopology (GA E a) := by
   haveI : SecondCountableTopology (Matrix (Fin a) (Fin a) (Ad E)) :=
     inferInstanceAs (SecondCountableTopology (Fin a → Fin a → Ad E))
@@ -97,10 +121,18 @@ theorem secondCountable_GA : SecondCountableTopology (GA E a) := by
     MulOpposite.opHomeomorph.symm.secondCountableTopology
   exact Units.isEmbedding_embedProduct.secondCountableTopology
 
+/- English proof (translation)
+Simplify using `only [dot, map_sum, map_mul]`.
+-/
 theorem dot_algebraMap {ι : Type} [Fintype ι] (ξ c : ι → E) :
     dot ξ (fun t => algebraMap E (Ad E) (c t)) = algebraMap E (Ad E) (∑ t, ξ t * c t) := by
   simp only [dot, map_sum, map_mul]
 
+/- English proof (translation)
+Take `⟨u, hu, g₀, hg₀, rfl, h1, -⟩` from `exists_peel (Nat.le_succ m) hγ`. Rewrite using `[map_mul, mul_assoc, invariant_colGen (ratGL E a) f (fun k hk y g => by`. Rewrite using `[ratGL_blkU, hf.law k hk, dot_algebraMap, hψ.rat, one_mul]) hu]`. Use `hf.left g₀ (fun i k h => ?_) g` and prove the remaining obligations. Distinguish the cases in `hk : m < (k : ℕ)`.
+
+Conclude with `h1 i k hk`. Conclude with `hg₀ i k (by omega) (by change (k : ℕ) ≤ i; omega)`.
+-/
 theorem good_left_mirU (hψ : StdPsi ψ) {m : ℕ} {f : GA E a → ℂ} (hf : Good ψ m f) {γ : GL (Fin a) E}
     (hγ : γ ∈ mirU E a m) (g : GA E a) : f (ratGL E a γ * g) = f g := by
   obtain ⟨u, hu, g₀, hg₀, rfl, h1, -⟩ := exists_peel (Nat.le_succ m) hγ
@@ -111,6 +143,9 @@ theorem good_left_mirU (hψ : StdPsi ψ) {m : ℕ} {f : GA E a → ℂ} (hf : Go
   · exact h1 i k hk
   · exact hg₀ i k (by omega) (by change (k : ℕ) ≤ i; omega)
 
+/- English proof (translation)
+The claim follows from `(continuous_const.mul hf.cont).add (continuous_const.mul hf'.cont) left γ hγ g := by rw [hf.left γ hγ, hf'.left γ hγ] law k hk y g := by rw [hf.law k hk, hf'.law k hk]; ring van r h0 hr g := by have p1 := per_blk (r := r) (m := m) (f := fun g => c * f g) (continuous_const.mul hf. …`.
+-/
 theorem good_comb {m : ℕ} {f f' : GA E a → ℂ} (hf : Good ψ m f) (hf' : Good ψ m f') (c d : ℂ) :
     Good ψ m (fun g => c * f g + d * f' g) where
   cont := (continuous_const.mul hf.cont).add (continuous_const.mul hf'.cont)
@@ -125,9 +160,17 @@ theorem good_comb {m : ℕ} {f f' : GA E a → ℂ} (hf : Good ψ m f) (hf' : Go
     rw [avg_const_mul, avg_const_mul, hf.van r h0 hr, hf'.van r h0 hr] at this
     simpa using this
 
+/- English proof (translation)
+Simplify using `using good_comb hf hf c 0`.
+-/
 theorem good_smul {m : ℕ} {f : GA E a → ℂ} (hf : Good ψ m f) (c : ℂ) : Good ψ m (fun g => c * f g) := by
   simpa using good_comb hf hf c 0
 
+/- English proof (translation)
+Rewrite using `[Finset.sum_eq_single (⟨(⟨m, by omega⟩, ⟨m + 1, hm⟩), by simp⟩ : UnipotentBlockColumnIndex a (m + 1) (m + 1))]`. Simplify using `[eLast]`. Introduce `s _ hs`. Rewrite using `[eLast, if_neg, zero_mul]`. Introduce `e`.
+
+Use `s.2` as an intermediate fact. Conclude with `hs (Subtype.ext (Prod.ext (Fin.ext (by simp only; omega)) (Fin.ext (by simp only; omega))))`. Simplify using the standard rewrite rules.
+-/
 theorem sum_eLast_mul {m : ℕ} (hm : m + 1 < a) (φ : Fin a → E) :
     ∑ s : UnipotentBlockColumnIndex a (m + 1) (m + 1), eLast a (m + 1) s * φ s.1.1 = φ ⟨m, by omega⟩ := by
   rw [Finset.sum_eq_single (⟨(⟨m, by omega⟩, ⟨m + 1, hm⟩), by simp⟩ : UnipotentBlockColumnIndex a (m + 1) (m + 1))]
@@ -139,6 +182,21 @@ theorem sum_eLast_mul {m : ℕ} (hm : m + 1 < a) (φ : Fin a → E) :
     exact hs (Subtype.ext (Prod.ext (Fin.ext (by simp only; omega)) (Fin.ext (by simp only; omega))))
   · simp
 
+/- English proof (translation)
+Use `choose γ hγ hrow using fun ξ : {ξ : UnipotentBlockColumnIndex a (m + 1) (m + 1) → E // ξ ≠ 0} => mir_exists_row E a m hm ξ.1 ξ.2`. Establish `hγU : ∀ ξ, γ ξ ∈ mirU E a (m + 1)` using `fun ξ i k hi _ => hγ ξ i k (Or.inl hi)`. Set `i₀ : Fin a` to `⟨m, by omega⟩`. Establish `hrow' : ∀ ξ (t : UnipotentBlockColumnIndex a (m + 1) (m + 1)), (γ ξ).val i₀ t.1.1 = ξ.1 t` using `fun ξ t => by`. Rewrite using `[← hrow ξ t, sum_eLast_mul hm (fun i => (γ ξ).val i t.1.1)]`.
+
+Establish `hδ : ∀ δ ∈ mirU E a m, ∀ ξ (t : UnipotentBlockColumnIndex a (m + 1) (m + 1)), (δ * γ ξ).val i₀ t.1.1 = ξ.1 t`. Introduce `δ hδ ξ t`. Rewrite using `[Units.val_mul, mul_apply_congr (hγU ξ) (x' := 1) (fun l hl => hδ i₀ l le_rfl (by change (l : ℕ) ≤ m; omega)) t.2.1, Matrix.one_mul, hrow']`. Set `φ : ratMirU E a m × {ξ : UnipotentBlockColumnIndex a (m + 1) (m + 1) → E // ξ ≠ 0} → ratMirU E a (m + 1)` to `fun p => ⟨p.1 * ratGL E a (γ p.2), mul_mem (Subgroup.map_mono (mirU_mono (Nat.le_succ m)) p.1.2) ⟨_, hγU _, rfl⟩⟩`. Use `⟨γ, Equiv.ofBijective φ ⟨?_, ?_⟩, fun ξ => ⟨hγ ξ, funext (hrow ξ)⟩, fun _ => rfl⟩` and prove the remaining obligations.
+
+Introduce and unpack `⟨⟨_, δ, hδ1, rfl⟩, ξ⟩ ⟨⟨_, δ', hδ2, rfl⟩, ξ'⟩ h`. Establish `h1 : δ * γ ξ = δ' * γ ξ'` using `GlobalTheory.ThetaUnfold.ratGL_injective (by simpa only [map_mul] using congrArg Subtype.val h)`. Establish `h2 : ξ = ξ'` using `Subtype.ext (funext fun t => by rw [← hδ δ hδ1 ξ t, h1, hδ δ' hδ2])`. Substitute `h2` using the available equality. Take `rfl` from `mul_right_cancel h1`.
+
+Both sides reduce to the same expression. Introduce and unpack `⟨_, x, hx, rfl⟩`. Set `ξ₀ : UnipotentBlockColumnIndex a (m + 1) (m + 1) → E` to `fun t => x.val i₀ t.1.1`. Establish `hl : ∀ l : Fin a, (l : ℕ) < m + 1 → ∃ t : UnipotentBlockColumnIndex a (m + 1) (m + 1), t.1.1 = l` using `fun l hl => ⟨⟨(l, ⟨m + 1, hm⟩), hl, le_rfl, le_rfl⟩, rfl⟩`. Establish `h0 : ξ₀ ≠ 0` using `fun h => by`.
+
+Use `mul_apply_congr ((mirU E a (m + 1)).inv_mem hx) (x := x.val) (x' := 0) (i := i₀) (k := i₀) (fun l h' => by` as an intermediate fact. Take `⟨t, rfl⟩` from `hl l h'`. Conclude with `congrFun h t) (Nat.lt_succ_self m)`. Simplify using `at this`. Establish `h1 : x * (γ ⟨ξ₀, h0⟩)⁻¹ ∈ mirU E a m`.
+
+Introduce `i k hi hk`. Distinguish the cases in `him : m + 1 ≤ (i : ℕ)`. Conclude with `(mirU E a (m + 1)).mul_mem hx ((mirU E a (m + 1)).inv_mem (hγU _)) i k him hk`. Take `rfl : i = i₀` from `Fin.ext (by change (i : ℕ) = m; omega)`. Rewrite using `[Units.val_mul, mul_apply_congr ((mirU E a (m + 1)).inv_mem (hγU _)) (x' := (γ ⟨ξ₀, h0⟩).val) (fun l h' => by`.
+
+Take `⟨t, rfl⟩` from `hl l h'`. Conclude with `(hrow' ⟨ξ₀, h0⟩ t).symm) (Nat.lt_succ_of_le hk), Units.mul_inv]`. Use `⟨⟨⟨_, _, h1, rfl⟩, ⟨ξ₀, h0⟩⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `ratGL E a _ * ratGL E a _ = _`. Rewrite using `[← map_mul, inv_mul_cancel_right]`.
+-/
 theorem exists_transversal {m : ℕ} (hm : m + 1 < a) :
     ∃ (γ : {ξ : UnipotentBlockColumnIndex a (m + 1) (m + 1) → E // ξ ≠ 0} → GL (Fin a) E)
       (e : ratMirU E a m × {ξ : UnipotentBlockColumnIndex a (m + 1) (m + 1) → E // ξ ≠ 0} ≃ ratMirU E a (m + 1)),
@@ -188,6 +246,27 @@ section Step
 
 variable [MeasurableSpace (GA E a)] [BorelSpace (GA E a)] (μ : Measure (GA E a)) [SFinite μ] [μ.IsMulLeftInvariant]
 
+/- English proof (translation)
+Use `haveI : LocallyCompactSpace (Matrix (Fin a) (Fin a) (Ad E)) := inferInstanceAs (LocallyCompactSpace (Fin a → Fin a → Ad E))`. Use `haveI : LocallyCompactSpace (GA E a) := Units.isClosedEmbedding_embedProduct.locallyCompactSpace`. Use `haveI := secondCountable_GA (E := E) (a := a)`. Use `haveI : DiscreteTopology (ratMirU E a (m + 1)) := discrete_of_le_range (Subgroup.map_le_range _ _)`. Use `haveI : Countable (ratMirU E a (m + 1)) := GlobalTheory.countable_of_discrete_subgroup _`.
+
+Use `letI : MeasurableSpace (UnipotentBlockColumnIndex a (m + 1) (m + 1) → Ad E) := borel _`. Use `haveI : BorelSpace (UnipotentBlockColumnIndex a (m + 1) (m + 1) → Ad E) := ⟨rfl⟩`. Establish `hL` using `isCoLat_ratV E (UnipotentBlockColumnIndex a (m + 1) (m + 1))`. Use `haveI := hL.1`. Use `haveI : Countable (ratV E (UnipotentBlockColumnIndex a (m + 1) (m + 1))) := GlobalTheory.countable_of_discrete_addSubgroup _`.
+
+Take `⟨ν, D, hν, hD, hνD⟩` from `exists_fundamentalDomain_mass_one _ _ hL`. Establish `hT` using `GlobalTheory.CuspRep.Generic.good_colT hψ hm hf`. Establish `hnorm : ∀ k, m + 1 < k → ∀ (y : UnipotentBlockColumnIndex a k k → Ad E) g, ‖f (blkU y * g)‖ₑ = ‖f g‖ₑ` using `fun k hk y g => by`. Rewrite using `[hf.law k hk, enorm_mul, ← ofReal_norm (ψ _), hψ.norm, ENNReal.ofReal_one, one_mul]`. Establish `havg` using `GlobalTheory.T.setLIntegral_average_abelian_quotient_alt (GA E a) (UnipotentBlockColumnIndex a (m + 1) (m + 1) → Ad E) μ (ratMirU E a (m + 1)) (lateU (Ad E) a (m + 1)) (isClosed_lateU _) (by rintro _ ⟨γ, hγ, rfl⟩ u hu; exact conj_mem_lateU (map_mem_mirU _ hγ) hu) (by`.
+
+Take `⟨K, hK, h⟩` from `exists_compact_lateU (E := E) (a := a) (m + 1)`. Use `⟨K, hK, fun u hu => ?_⟩` and prove the remaining obligations. Take `⟨γ, h1, h2, h3⟩` from `h u hu`. Conclude with `⟨_, ⟨γ, mirU_mono (Nat.zero_le _) h1, rfl⟩, h2, h3⟩)`. Use `blkU blkU_add (continuous_posU (isNil_blk a (m + 1) (m + 1))).measurable (blkU_mem_lateU le_rfl) ν (ratV E _)`.
+
+Use the proof step `(by rintro _ ⟨c, rfl⟩; exact ⟨blkU c, blkU_mem_mirU _ c, ratGL_blkU c⟩) D hD hνD 𝓕 h𝓕`. Use the proof step `(fun g => ‖f g‖ₑ ^ 2 * w g) ((hf.cont.measurable.enorm.pow_const 2).mul hw)`. Use the proof step `(by rintro _ ⟨γ, hγ, rfl⟩ g; simp only [good_left_mirU hψ hf hγ, hwΓ γ hγ])`. Use the proof step `(fun u hu => by`. Take `⟨v, hv, y, rfl⟩` from `exists_eq_colGen_mul_blkU hu`.
+
+Use `⟨y, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[mul_assoc]`. Conclude with `invariant_colGen (MonoidHom.id _) (fun g => ‖f g‖ₑ ^ 2 * w g) (fun k hk z g => by`. Simplify using `only [MonoidHom.id_apply, hnorm k hk, hwU k (by omega)]) hv _)`. Take `⟨γ, e, hγ, he⟩` from `exists_transversal (E := E) hm`.
+
+Rewrite using `[havg, ← GlobalTheory.ThetaUnfold.lintegral_unfold μ _ _ (fun ξ => ratGL E a (γ ξ)) e he h𝓕 h𝓕' (fun g => ‖colT ψ (m + 1) f g‖ₑ ^ 2 * w g) (by rintro _ ⟨δ, hδ, rfl⟩ g; simp only [good_left_mirU hψ hT hδ, hwΓ δ (mirU_mono (Nat.le_succ m) hδ)]) ((hT.cont.measurable.enorm.pow_const …`. Use `lintegral_congr fun g => ?_` and prove the remaining obligations. Establish `hper : Per (ratV E (UnipotentBlockColumnIndex a (m + 1) (m + 1))) (fun x => f (blkU x * g))` using `per_blk hf.cont (fun c g => hf.left _ (isMir_blkU c) g) g`. Establish `h0 : coefF ψ (m + 1) 0 f g = 0`. Establish `e0 : ∀ x : UnipotentBlockColumnIndex a (m + 1) (m + 1) → Ad E, ψ (-dot (0 : UnipotentBlockColumnIndex a (m + 1) (m + 1) → E) x) = 1` using `fun x => by`.
+
+Simplify using `[dot]`. Simplify using `only [coefF, e0, one_mul]`. Conclude with `hf.van (m + 1) (Nat.succ_pos m) le_rfl g`. Establish `hc : ∀ ξ, colT ψ (m + 1) f (ratGL E a (γ ξ) * g) = coefF ψ (m + 1) ξ.1 f g` using `fun ξ => by`. Rewrite using `[colT, coefF_ratGL_mul E a ψ hψ m f hf.cont hf.left _ (hγ ξ).1, (hγ ξ).2]`.
+
+Establish `hwγ : ∀ ξ, w (ratGL E a (γ ξ) * g) = w g` using `fun ξ => hwΓ _ (fun i k hi _ => (hγ ξ).1 i k (Or.inl hi)) g`. Simplify using `only [hwU (m + 1) (Nat.lt_succ_self m), hc, hwγ]`. Rewrite using `[lintegral_mul_const _ (hper.1.measurable.enorm.pow_const 2), ENNReal.tsum_mul_right, ← GlobalTheory.T.parseval_continuous_periodic_adelicRationalQuotient E _ ψ hψ _ hper ν D hν hD hνD]`. Use `congr 1`. Use `(tsum_subtype_eq_of_support_subset (f := fun ξ => ‖coefF ψ (m + 1) ξ f g‖ₑ ^ 2) (s := {ξ | ξ ≠ 0}) ?_).symm` and prove the remaining obligations.
+
+Introduce and unpack `ξ hξ rfl`. Simplify using `[h0] at hξ`.
+-/
 theorem lintegral_step (hψ : StdPsi ψ) {m : ℕ} (hm : m + 1 < a) {𝓕 𝓕' : Set (GA E a)}
     (h𝓕 : IsFundamentalDomain (ratMirU E a (m + 1)) 𝓕 μ) (h𝓕' : IsFundamentalDomain (ratMirU E a m) 𝓕' μ)
     (w : GA E a → ℝ≥0∞) (hw : Measurable w) (hwΓ : ∀ γ ∈ mirU E a (m + 1), ∀ g, w (ratGL E a γ * g) = w g)
@@ -249,6 +328,13 @@ theorem lintegral_step (hψ : StdPsi ψ) {m : ℕ} (hm : m + 1 < a) {𝓕 𝓕' 
   rintro ξ hξ rfl
   simp [h0] at hξ
 
+/- English proof (translation)
+Use `haveI := secondCountable_GA (E := E) (a := a)`. Use `haveI : ∀ n, DiscreteTopology (ratMirU E a n) := fun n => discrete_of_le_range (Subgroup.map_le_range _ _)`. Proceed by induction on `m generalizing f 𝓕 with`. Consider the case `zero => haveI : Countable (ratMirU E a 0) := GlobalTheory.countable_of_discrete_subgroup _ haveI : SMulInvariantMeasure (ratMirU E a 0) (GA E a) μ := ⟨fun γ s _ => measure_preimage_mul μ (γ : GA E a) s⟩`. Use `h𝓕.setLIntegral_eq h𝓕' _ ?_` and prove the remaining obligations.
+
+Introduce and unpack `⟨_, γ, hγ, rfl⟩ g`. Express the relevant statement in the definitionally equal form `‖f (ratGL E a γ * g)‖ₑ ^ 2 * w (ratGL E a γ * g) = _`. Rewrite using `[good_left_mirU hψ hf hγ, hwΓ γ hγ]`. Consider the case `succ m ih`. Establish `h1 : m + 1 < a` using `by omega`.
+
+Take `⟨D, -, -, hD⟩` from `GlobalTheory.exists_isFundamentalDomain_subgroup (ratMirU E a m)`. Rewrite using `[lintegral_step μ hψ h1 h𝓕 (hD μ) w hw hwΓ (fun k hk => hwU k (by omega)) hf, whit_succ]`. Conclude with `ih (Or.inl (by omega)) (hD μ) (fun γ hγ => hwΓ γ (mirU_mono (Nat.le_succ m) hγ)) (GlobalTheory.CuspRep.Generic.good_colT hψ h1 hf)`.
+-/
 theorem lintegral_tower (hψ : StdPsi ψ) {m : ℕ} (hm : m < a ∨ m = 0) {𝓕 𝓕' : Set (GA E a)}
     (h𝓕 : IsFundamentalDomain (ratMirU E a m) 𝓕 μ) (h𝓕' : IsFundamentalDomain (ratMirU E a 0) 𝓕' μ)
     (w : GA E a → ℝ≥0∞) (hw : Measurable w) (hwΓ : ∀ γ ∈ mirU E a m, ∀ g, w (ratGL E a γ * g) = w g)
@@ -272,6 +358,9 @@ theorem lintegral_tower (hψ : StdPsi ψ) {m : ℕ} (hm : m < a ∨ m = 0) {𝓕
     exact ih (Or.inl (by omega)) (hD μ) (fun γ hγ => hwΓ γ (mirU_mono (Nat.le_succ m) hγ))
       (GlobalTheory.CuspRep.Generic.good_colT hψ h1 hf)
 
+/- English proof (translation)
+Use `integral_mul_conj_eq_of_lintegral hf.cont.measurable hf'.cont.measurable (GlobalTheory.CuspRep.Generic.whit_good hψ m hm hf).1.cont.measurable (GlobalTheory.CuspRep.Generic.whit_good hψ m hm hf').1.cont.measurable hw hw (fun c d => ?_) h1 h2` and prove the remaining obligations. Rewrite using `[lintegral_tower μ hψ hm h𝓕 h𝓕' (fun g => w g) hw.coe_nnreal_ennreal (fun γ hγ g => by rw [hwΓ γ hγ]) (fun k hk y g => by rw [hwU k hk]) (good_comb hf hf' c d), GlobalTheory.CuspRep.Generic.whit_add hψ m hm (good_smul hf c) (good_smul hf' d), GlobalTheory.CuspRep.Generic.whit_smu …`.
+-/
 theorem integral_tower (hψ : StdPsi ψ) {m : ℕ} (hm : m < a ∨ m = 0) {𝓕 𝓕' : Set (GA E a)}
     (h𝓕 : IsFundamentalDomain (ratMirU E a m) 𝓕 μ) (h𝓕' : IsFundamentalDomain (ratMirU E a 0) 𝓕' μ)
     (w : GA E a → ℝ≥0) (hw : Measurable w) (hwΓ : ∀ γ ∈ mirU E a m, ∀ g, w (ratGL E a γ * g) = w g)

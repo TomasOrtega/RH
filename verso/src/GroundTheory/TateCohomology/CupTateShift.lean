@@ -17,27 +17,42 @@ section Exactness
 variable {E : ShortComplex (Rep.{u} k G)} (hE : E.ShortExact)
 include hE
 
+/- English proof (translation)
+The claim follows from `shortExact_map_tensorRight hE (V ⊗ B) (injective_whiskerRight_tensor_of_flat V E.f B ((Rep.mono_iff_injective _).1 hEB.mono_f))`.
+-/
 theorem shortExact_tensorRight_tensor (B V : Rep.{u} k G) [Module.Flat k V.V]
     (hEB : (E.map (tensorRight B)).ShortExact) : (E.map (tensorRight (V ⊗ B))).ShortExact :=
   shortExact_map_tensorRight hE (V ⊗ B) (injective_whiskerRight_tensor_of_flat V E.f B
     ((Rep.mono_iff_injective _).1 hEB.mono_f))
 
+/- English proof (translation)
+The claim follows from `shortExact_map_tensorLeft hE V (injective_whiskerLeft_of_flat V E.f ((Rep.mono_iff_injective _).1 hE.mono_f))`.
+-/
 theorem shortExact_tensorLeft_of_flat (V : Rep.{u} k G) [Module.Flat k V.V] :
     (E.map (tensorLeft V)).ShortExact :=
   shortExact_map_tensorLeft hE V (injective_whiskerLeft_of_flat V E.f
     ((Rep.mono_iff_injective _).1 hE.mono_f))
 
+/- English proof (translation)
+The claim follows from `shortExact_map_tensorRight (shortExact_tensorLeft_of_flat hE V) B (injective_whiskerLeft_whiskerRight_of_flat V E.f B ((Rep.mono_iff_injective _).1 hEB.mono_f))`.
+-/
 theorem shortExact_tensorLeft_tensorRight (B V : Rep.{u} k G) [Module.Flat k V.V]
     (hEB : (E.map (tensorRight B)).ShortExact) :
     ((E.map (tensorLeft V)).map (tensorRight B)).ShortExact :=
   shortExact_map_tensorRight (shortExact_tensorLeft_of_flat hE V) B
     (injective_whiskerLeft_whiskerRight_of_flat V E.f B ((Rep.mono_iff_injective _).1 hEB.mono_f))
 
+/- English proof (translation)
+The claim follows from `shortExact_map_tensorLeft hE (V ⊗ A) (injective_tensor_whiskerLeft_of_flat V E.f A ((Rep.mono_iff_injective _).1 hAE.mono_f))`.
+-/
 theorem shortExact_tensorLeft_tensor (A V : Rep.{u} k G) [Module.Flat k V.V]
     (hAE : (E.map (tensorLeft A)).ShortExact) : (E.map (tensorLeft (V ⊗ A))).ShortExact :=
   shortExact_map_tensorLeft hE (V ⊗ A) (injective_tensor_whiskerLeft_of_flat V E.f A
     ((Rep.mono_iff_injective _).1 hAE.mono_f))
 
+/- English proof (translation)
+The claim follows from `shortExact_map_tensorLeft (shortExact_tensorLeft_of_flat hE V) A (injective_whiskerLeft_whiskerLeft_of_flat V E.f A ((Rep.mono_iff_injective _).1 hAE.mono_f))`.
+-/
 theorem shortExact_tensorLeft_tensorLeft (A V : Rep.{u} k G) [Module.Flat k V.V]
     (hAE : (E.map (tensorLeft A)).ShortExact) :
     ((E.map (tensorLeft V)).map (tensorLeft A)).ShortExact :=
@@ -50,9 +65,15 @@ variable [Fintype G]
 
 def tsgn (k : Type u) [CommRing k] (p : ℤ) : k := ((p.negOnePow : ℤˣ) : ℤ)
 
+/- English proof (translation)
+Simplify using `[tsgn, Int.negOnePow_succ]`.
+-/
 theorem tsgn_add_one (p : ℤ) : tsgn k (p + 1) = -tsgn k p := by
   simp [tsgn, Int.negOnePow_succ]
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simp [tsgn]`. Consider the case `succ n ih => rw [Nat.cast_succ, tsgn_add_one, ih, pow_succ, mul_neg_one]`.
+-/
 theorem tsgn_natCast (n : ℕ) : tsgn k n = (-1 : k) ^ n := by
   induction n with
   | zero => simp [tsgn]
@@ -100,23 +121,41 @@ noncomputable def tateCup (p q : ℤ) : TateCupFam k G p q :=
 termination_by (1 - p).toNat + (1 - q).toNat
 decreasing_by all_goals omega
 
+/- English proof (translation)
+Rewrite using `[tateCup, dif_pos hp]`.
+-/
 theorem tateCup_of_nonpos {p : ℤ} (q : ℤ) (hp : p ≤ 0) : tateCup (k := k) (G := G) p q = tateCupL (tateCup (p + 1) q) := by
   rw [tateCup, dif_pos hp]
 
+/- English proof (translation)
+Rewrite using `[tateCup, dif_neg (by omega), dif_pos hq]`.
+-/
 theorem tateCup_of_pos_of_nonpos {p q : ℤ} (hp : 0 < p) (hq : q ≤ 0) :
     tateCup (k := k) (G := G) p q = tateCupR (tateCup p (q + 1)) := by
   rw [tateCup, dif_neg (by omega), dif_pos hq]
 
+/- English proof (translation)
+Rewrite using `[tateCup, dif_neg (by omega), dif_neg (by omega)]`.
+-/
 theorem tateCup_of_pos {p q : ℤ} (hp : 0 < p) (hq : 0 < q) :
     tateCup (k := k) (G := G) p q = tateCupBase p q (by omega) (by omega) := by
   rw [tateCup, dif_neg (by omega), dif_neg (by omega)]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem tateLeftIso_hom (A B : Rep.{u} k G) (r : ℤ) :
     (tateLeftIso A B r).hom = tδ (augSES_tensorRight_shortExact A B) r (r + 1) rfl := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem tateRightIso_hom (A B : Rep.{u} k G) (r : ℤ) :
     (tateRightIso A B r).hom = tδ (augSES_tensorLeft_shortExact A B) r (r + 1) rfl := rfl
 
+/- English proof (translation)
+Simplify using `only [tateCupL, LinearMap.compr₂_apply, LinearMap.comp_apply]`. Conclude with `(tateLeftIso A B r).inv_hom_id_apply _`.
+-/
 theorem tateLeftIso_cupL {p q : ℤ} (μ : TateCupFam k G (p + 1) q) (A B : Rep.{u} k G) (r : ℤ)
     (h : p + q = r) (a : tateCohomology A p) (b : tateCohomology B q) :
     (tateLeftIso A B r).hom.hom (tateCupL μ A B r h a b) =
@@ -124,6 +163,9 @@ theorem tateLeftIso_cupL {p q : ℤ} (μ : TateCupFam k G (p + 1) q) (A B : Rep.
   simp only [tateCupL, LinearMap.compr₂_apply, LinearMap.comp_apply]
   exact (tateLeftIso A B r).inv_hom_id_apply _
 
+/- English proof (translation)
+Simplify using `only [tateCupR, LinearMap.smul_apply, LinearMap.compr₂_apply, LinearMap.compl₂_apply, map_smul]`. Rewrite using `[(tateRightIso A B r).inv_hom_id_apply]`.
+-/
 theorem tateRightIso_cupR {p q : ℤ} (μ : TateCupFam k G p (q + 1)) (A B : Rep.{u} k G) (r : ℤ)
     (h : p + q = r) (a : tateCohomology A p) (b : tateCohomology B q) :
     (tateRightIso A B r).hom.hom (tateCupR μ A B r h a b) =
@@ -175,6 +217,9 @@ variable {E : ShortComplex (Rep.{u} k G)} (hE : E.ShortExact)
 
 set_option backward.isDefEq.respectTransparency false in
 
+/- English proof (translation)
+Establish `key` using `tδ_comp_tδ (tensorShortComplex E ((augSES k G).obj B)) (augSES_tensorLeft_shortExact E.X₁ B) (augSES_tensorLeft_shortExact E.X₂ B) (augSES_tensorLeft_shortExact E.X₃ B) (shortExact_tensorRight_tensor hE B (augIdeal k G) hEB) (shortExact_tensorRight_tensor hE B (Rep.leftRegular k …`. Establish `e` using `congr(($key).hom z)`. Conclude with `e`.
+-/
 theorem tateRightIso_tδ (B : Rep.{u} k G) (hEB : (E.map (tensorRight B)).ShortExact) (r : ℤ)
     (z : tateCohomology (E.X₃ ⊗ B) r) :
     (tateRightIso E.X₁ B (r + 1)).hom.hom ((tδ hEB r (r + 1) rfl).hom z) =
@@ -189,6 +234,9 @@ theorem tateRightIso_tδ (B : Rep.{u} k G) (hEB : (E.map (tensorRight B)).ShortE
 
 set_option backward.isDefEq.respectTransparency false in
 
+/- English proof (translation)
+Establish `key` using `tδ_comp_tδ ((E.map (augSES k G)).map ((tensorRight B).mapShortComplex)) (augSES_tensorRight_shortExact E.X₁ B) (augSES_tensorRight_shortExact E.X₂ B) (augSES_tensorRight_shortExact E.X₃ B) (shortExact_tensorLeft_tensorRight hE B (augIdeal k G) hEB) (shortExact_tensorLeft_tensorRi …`. Establish `e` using `congr(($key).hom z)`. Conclude with `e`.
+-/
 theorem tateLeftIso_tδ (B : Rep.{u} k G) (hEB : (E.map (tensorRight B)).ShortExact) (r : ℤ)
     (z : tateCohomology (E.X₃ ⊗ B) r) :
     (tateLeftIso E.X₁ B (r + 1)).hom.hom ((tδ hEB r (r + 1) rfl).hom z) =
@@ -204,6 +252,9 @@ theorem tateLeftIso_tδ (B : Rep.{u} k G) (hEB : (E.map (tensorRight B)).ShortEx
 
 set_option backward.isDefEq.respectTransparency false in
 
+/- English proof (translation)
+Establish `key` using `tδ_comp_tδ (E.map (augSES k G)) (augSES_shortExact E.X₁) (augSES_shortExact E.X₂) (augSES_shortExact E.X₃) (shortExact_tensorLeft_of_flat hE (augIdeal k G)) (shortExact_tensorLeft_of_flat hE (Rep.leftRegular k G)) hE p`. Establish `e` using `congr(($key).hom a)`. Conclude with `e`.
+-/
 theorem augShiftδ_tδ (p : ℤ) (a : tateCohomology E.X₃ p) :
     (augShiftδ E.X₁ (p + 1)).hom ((tδ hE p (p + 1) rfl).hom a) =
       -(tδ (shortExact_tensorLeft_of_flat hE (augIdeal k G)) (p + 1) (p + 1 + 1) rfl).hom
@@ -217,6 +268,9 @@ theorem augShiftδ_tδ (p : ℤ) (a : tateCohomology E.X₃ p) :
 
 set_option backward.isDefEq.respectTransparency false in
 
+/- English proof (translation)
+Establish `key` using `tδ_comp_tδ (tensorShortComplex ((augSES k G).obj A) E) (shortExact_tensorLeft_tensor hE A (augIdeal k G) hAE) (shortExact_tensorLeft_tensor hE A (Rep.leftRegular k G) hAE) hAE (augSES_tensorRight_shortExact A E.X₁) (augSES_tensorRight_shortExact A E.X₂) (augSES_tensorRight_shortE …`. Establish `e` using `congr(($key).hom z)`. Conclude with `(neg_eq_iff_eq_neg.mpr e).symm`.
+-/
 theorem tateLeftIso_tδ' (A : Rep.{u} k G) (hAE : (E.map (tensorLeft A)).ShortExact) (r : ℤ)
     (z : tateCohomology (A ⊗ E.X₃) r) :
     (tateLeftIso A E.X₁ (r + 1)).hom.hom ((tδ hAE r (r + 1) rfl).hom z) =
@@ -232,6 +286,9 @@ theorem tateLeftIso_tδ' (A : Rep.{u} k G) (hAE : (E.map (tensorLeft A)).ShortEx
 
 set_option backward.isDefEq.respectTransparency false in
 
+/- English proof (translation)
+Establish `key` using `tδ_comp_tδ ((E.map (augSES k G)).map ((tensorLeft A).mapShortComplex)) (augSES_tensorLeft_shortExact A E.X₁) (augSES_tensorLeft_shortExact A E.X₂) (augSES_tensorLeft_shortExact A E.X₃) (shortExact_tensorLeft_tensorLeft hE A (augIdeal k G) hAE) (shortExact_tensorLeft_tensorLeft hE …`. Establish `e` using `congr(($key).hom z)`. Conclude with `e`.
+-/
 theorem tateRightIso_tδ' (A : Rep.{u} k G) (hAE : (E.map (tensorLeft A)).ShortExact) (r : ℤ)
     (z : tateCohomology (A ⊗ E.X₃) r) :
     (tateRightIso A E.X₁ (r + 1)).hom.hom ((tδ hAE r (r + 1) rfl).hom z) =
@@ -247,18 +304,32 @@ theorem tateRightIso_tδ' (A : Rep.{u} k G) (hAE : (E.map (tensorLeft A)).ShortE
 
 end Anticomm
 
+/- English proof (translation)
+The claim follows from `map_smul _ _ _`.
+-/
 theorem moduleHom_smul {M N : ModuleCat.{u} k} (f : M ⟶ N) (c : k) (y : M) :
     f.hom (c • y) = c • f.hom y :=
   map_smul _ _ _
 
+/- English proof (translation)
+Rewrite using `[smul_neg, smul_neg]`.
+-/
 theorem smul_smul_neg_self {M : ModuleCat.{u} k} (c : k) (x : M) : c • (c • -x) = -(c • (c • x)) := by
   rw [smul_neg, smul_neg]
 
+/- English proof (translation)
+Introduce `x y h` and use `by have := congrArg e.inv.hom h rwa [e.hom_inv_id_apply, e.hom_inv_id_apply] at this`.
+-/
 theorem moduleIso_hom_injective {M N : ModuleCat.{u} k} (e : M ≅ N) : Function.Injective e.hom.hom :=
   fun x y h => by
     have := congrArg e.inv.hom h
     rwa [e.hom_inv_id_apply, e.hom_inv_id_apply] at this
 
+/- English proof (translation)
+Substitute `hp hq hr` using the available equality. Establish `hn` using `NeZero.pos n`. Establish `hm` using `NeZero.pos m`. Rewrite using `[tateCup_of_pos (by omega) (by omega)]`. Simplify using `only [tateCupBase, LinearMap.compr₂_apply, LinearMap.compl₁₂_apply]`.
+
+Conclude with `(tateIsoH (A ⊗ B) l l rfl).inv_hom_id_apply _`.
+-/
 theorem tateIsoH_tateCup {p q r : ℤ} {n m l : ℕ} [NeZero n] [NeZero m] [NeZero l] (hp : p = n)
     (hq : q = m) (hr : r = l) (h : p + q = r) (hl : n + m = l) (A B : Rep.{u} k G)
     (a : tateCohomology A p) (b : tateCohomology B q) :
@@ -273,6 +344,23 @@ theorem tateIsoH_tateCup {p q r : ℤ} {n m l : ℕ} [NeZero n] [NeZero m] [NeZe
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Proceed by induction on `m using Nat.strong_induction_on with`. Consider the case `_ m ih`. Introduce `p q hm E hE B hEB r h a b`. Distinguish the cases in `hp : p ≤ 0`. Rewrite using `[tateCup_of_nonpos q hp]`.
+
+Apply `moduleIso_hom_injective (tateLeftIso E.X₁ B (r + 1))` to reduce the goal to its premises. Rewrite using `[tateLeftIso_tδ hE B hEB r, tateLeftIso_cupL]`. Use `erw [ih _ (by omega) (p + 1) q rfl (shortExact_tensorLeft_of_flat hE (augIdeal k G)) B (shortExact_tensorLeft_tensorRight hE B (augIdeal k G) hEB) (r + 1) (by omega) _ b]`. Rewrite using `[tateLeftIso_hom]`. Use `erw [ih _ (by omega) (p + 1) q rfl (augSES_shortExact E.X₁) B (augSES_tensorRight_shortExact E.X₁ B) (r + 1) (by omega) _ b]`.
+
+Use `erw [augShiftδ_tδ hE p a, map_neg, LinearMap.neg_apply]`. Both sides reduce to the same expression. Distinguish the cases in `hq : q ≤ 0`. Rewrite using `[tateCup_of_pos_of_nonpos (by omega) hq, tateCup_of_pos_of_nonpos (p := p + 1) (by omega) hq]`. Apply `moduleIso_hom_injective (tateRightIso E.X₁ B (r + 1))` to reduce the goal to its premises.
+
+Rewrite using `[tateRightIso_tδ hE B hEB r, tateRightIso_cupR, tateRightIso_cupR]`. Use `erw [map_smul]`. Use `erw [ih _ (by omega) p (q + 1) rfl hE (augIdeal k G ⊗ B) (shortExact_tensorRight_tensor hE B (augIdeal k G) hEB) (r + 1) (by omega) a _]`. Rewrite using `[tsgn_add_one, neg_smul]`. Both sides reduce to the same expression.
+
+Take `⟨n, rfl⟩ : ∃ n : ℕ, p = n` from `⟨p.toNat, by omega⟩`. Take `⟨m', rfl⟩ : ∃ m' : ℕ, q = m'` from `⟨q.toNat, by omega⟩`. Take `⟨l, rfl⟩ : ∃ l : ℕ, r = l` from `⟨r.toNat, by omega⟩`. Establish `: NeZero n` using `⟨by omega⟩`. Establish `: NeZero m'` using `⟨by omega⟩`.
+
+Establish `: NeZero l` using `⟨by omega⟩`. Establish `hl : n + m' = l` using `by omega`. Apply `moduleIso_hom_injective (tateIsoH (E.X₁ ⊗ B) (l + 1) (l + 1) (Nat.cast_succ l).symm)` to reduce the goal to its premises. Establish `e1` using `congr(($(tδ_comp_tateIsoH hEB l)).hom (tateCup n m' E.X₃ B l h a b))`. Establish `e2` using `tateIsoH_tateCup rfl rfl rfl h hl E.X₃ B a b`.
+
+Establish `e3` using `δ_cupH_left' hE B hEB rfl rfl hl (show n + 1 + m' = l + 1 by omega) ((tateIsoH E.X₃ n n rfl).hom.hom a) ((tateIsoH B m' m' rfl).hom.hom b)`. Establish `e4` using `congr(($(tδ_comp_tateIsoH hE n)).hom a)`. Establish `e5` using `tateIsoH_tateCup (n := n + 1) (Nat.cast_succ n).symm rfl (Nat.cast_succ l).symm (show (n : ℤ) + 1 + m' = l + 1 by omega) (show n + 1 + m' = l + 1 by omega) E.X₁ B ((tδ hE n (n + 1) rfl).hom a) b`. Use `e1.trans ?_` and prove the remaining obligations. Use `(congrArg (δ hEB l (l + 1) rfl).hom e2).trans ?_` and prove the remaining obligations.
+
+Use `e3.trans ?_` and prove the remaining obligations. Use `(congrArg (fun y => cupH (show n + 1 + m' = l + 1 by omega) y ((tateIsoH B m' m' rfl).hom.hom b)) e4.symm).trans ?_` and prove the remaining obligations. Conclude with `e5.symm`.
+-/
 theorem tateCup_connecting_left (m : ℕ) : ∀ (p q : ℤ), (1 - p).toNat + (1 - q).toNat = m →
     ∀ {E : ShortComplex (Rep.{u} k G)} (hE : E.ShortExact) (B : Rep.{u} k G)
       (hEB : (E.map (tensorRight B)).ShortExact) (r : ℤ) (h : p + q = r)
@@ -327,6 +415,23 @@ theorem tateCup_connecting_left (m : ℕ) : ∀ (p q : ℤ), (1 - p).toNat + (1 
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Proceed by induction on `m using Nat.strong_induction_on with`. Consider the case `_ m ih`. Introduce `p q hm E hE A hAE r h a b`. Distinguish the cases in `hp : p ≤ 0`. Rewrite using `[tateCup_of_nonpos q hp, tateCup_of_nonpos (q + 1) hp]`.
+
+Apply `moduleIso_hom_injective (tateLeftIso A E.X₁ (r + 1))` to reduce the goal to its premises. Rewrite using `[tateLeftIso_tδ' hE A hAE r, tateLeftIso_cupL, moduleHom_smul, tateLeftIso_cupL]`. Use `erw [ih _ (by omega) (p + 1) q rfl hE (augIdeal k G ⊗ A) (shortExact_tensorLeft_tensor hE A (augIdeal k G) hAE) (r + 1) (by omega) _ b]`. Rewrite using `[tsgn_add_one, neg_smul]`. Conclude with `neg_neg _`.
+
+Distinguish the cases in `hq : q ≤ 0`. Rewrite using `[tateCup_of_pos_of_nonpos (by omega) hq]`. Apply `moduleIso_hom_injective (tateRightIso A E.X₁ (r + 1))` to reduce the goal to its premises. Rewrite using `[tateRightIso_tδ' hE A hAE r, tateRightIso_cupR]`. Use `erw [moduleHom_smul, moduleHom_smul]`.
+
+Use `erw [ih _ (by omega) p (q + 1) rfl (shortExact_tensorLeft_of_flat hE (augIdeal k G)) A (shortExact_tensorLeft_tensorLeft hE A (augIdeal k G) hAE) (r + 1) (by omega) a _]`. Rewrite using `[tateRightIso_hom]`. Use `erw [ih _ (by omega) p (q + 1) rfl (augSES_shortExact E.X₁) A (augSES_tensorLeft_shortExact A E.X₁) (r + 1) (by omega) a _]`. Use `erw [augShiftδ_tδ hE q b, map_neg]`. Conclude with `(smul_smul_neg_self _ _).symm`.
+
+Take `⟨n, rfl⟩ : ∃ n : ℕ, p = n` from `⟨p.toNat, by omega⟩`. Take `⟨m', rfl⟩ : ∃ m' : ℕ, q = m'` from `⟨q.toNat, by omega⟩`. Take `⟨l, rfl⟩ : ∃ l : ℕ, r = l` from `⟨r.toNat, by omega⟩`. Establish `: NeZero n` using `⟨by omega⟩`. Establish `: NeZero m'` using `⟨by omega⟩`.
+
+Establish `: NeZero l` using `⟨by omega⟩`. Establish `hl : n + m' = l` using `by omega`. Apply `moduleIso_hom_injective (tateIsoH (A ⊗ E.X₁) (l + 1) (l + 1) (Nat.cast_succ l).symm)` to reduce the goal to its premises. Establish `e1` using `congr(($(tδ_comp_tateIsoH hAE l)).hom (tateCup n m' A E.X₃ l h a b))`. Establish `e2` using `tateIsoH_tateCup rfl rfl rfl h hl A E.X₃ a b`.
+
+Establish `e3` using `δ_cupH_right' hE A hAE (p := m') rfl rfl hl (show n + (m' + 1) = l + 1 by omega) ((tateIsoH A n n rfl).hom.hom a) ((tateIsoH E.X₃ m' m' rfl).hom.hom b)`. Establish `e4` using `congr(($(tδ_comp_tateIsoH hE m')).hom b)`. Establish `e5` using `tateIsoH_tateCup (m := m' + 1) rfl (Nat.cast_succ m').symm (Nat.cast_succ l).symm (show (n : ℤ) + (m' + 1) = l + 1 by omega) (show n + (m' + 1) = l + 1 by omega) A E.X₁ a ((tδ hE m' (m' + 1) rfl).hom b)`. Use `e1.trans ?_` and prove the remaining obligations. Use `(congrArg (δ hAE l (l + 1) rfl).hom e2).trans ?_` and prove the remaining obligations.
+
+Use `e3.trans ?_` and prove the remaining obligations. Rewrite using `[map_smul, tsgn_natCast]`. Use `congr 1`. Use `(congrArg (fun y => cupH (show n + (m' + 1) = l + 1 by omega) ((tateIsoH A n n rfl).hom.hom a) y) e4.symm).trans ?_` and prove the remaining obligations. Conclude with `e5.symm`.
+-/
 theorem tateCup_connecting_right (m : ℕ) : ∀ (p q : ℤ), (1 - p).toNat + (1 - q).toNat = m →
     ∀ {E : ShortComplex (Rep.{u} k G)} (hE : E.ShortExact) (A : Rep.{u} k G)
       (hAE : (E.map (tensorLeft A)).ShortExact) (r : ℤ) (h : p + q = r)
@@ -383,6 +488,17 @@ theorem tateCup_connecting_right (m : ℕ) : ∀ (p q : ℤ), (1 - p).toNat + (1
 
 set_option backward.isDefEq.respectTransparency false in
 
+/- English proof (translation)
+Establish `hz` using `tate_d_iCycles_int _ _ z`. Take `⟨y, x, hy, hx⟩` from `exists_lift_of_cocycle hS (cocyclesMk (((tateComplex S.X₃).iCycles n).hom z) (tate_d_iCycles _ n z))`. Establish `hd : ((tateComplex S.X₁).d (↑n + 1) (↑n + 1 + 1)).hom (iCocycles S.X₁ (n + 1) x) = 0`. Use `d_iCocycles x` as an intermediate fact. Rewrite `this` using `[← inhomogeneousCochains.d_def]`.
+
+Conclude with `this`. Establish `hy' : ((tateComplex.map S.g).f n).hom y = ((tateComplex S.X₃).iCycles n).hom z`. Use function extensionality and compare the values at `fun v => (hy v).trans (congrFun (iCocycles_mk _ _) v)`. Establish `hx' : ((tateComplex.map S.f).f (↑n + 1)).hom (iCocycles S.X₁ (n + 1) x) = ((tateComplex S.X₂).d n (n + 1)).hom y`. Rewrite using `[tateComplex_d_ofNat, inhomogeneousCochains.d_def]`.
+
+Conclude with `funext hx`. Establish `h2` using `δ_π_eq hS _ y hy x hx`. Establish `h3 : (tδ hS n (n + 1) rfl).hom (((tateComplex S.X₃).homologyπ n).hom z) = ((tateComplex S.X₁).homologyπ (n + 1)).hom (tateCyclesMk S.X₁ (n + 1) (iCocycles S.X₁ (n + 1) x) hd)`. Establish `e` using `tδ_apply hS n _ hz y hy' (iCocycles S.X₁ (n + 1) x) hx' hd`. Rewrite `e` using `[tateCyclesMk_iCycles]`.
+
+Conclude with `e`. Establish `h4` using `tateIsoH_homologyπ S.X₁ (n + 1) (tateCyclesMk S.X₁ (n + 1) (iCocycles S.X₁ (n + 1) x) hd)`. Use `(congrArg (fun w => (tateIsoH S.X₁ (↑n + 1) (n + 1) (Nat.cast_succ n).symm).hom.hom w) h3).trans ?_` and prove the remaining obligations. Use `(h4.trans ?_).trans h2.symm` and prove the remaining obligations. Use `congr 1`.
+
+Apply `cocycles_ext` to reduce the goal to its premises. Conclude with `(iCocycles_mk _ _).trans (iCycles_tateCyclesMk _ _ _ _)`.
+-/
 theorem tateIsoH_tδ_homologyπ {S : ShortComplex (Rep.{u} k G)} (hS : S.ShortExact) (n : ℕ)
     (z : (tateComplex S.X₃).cycles n) :
     (tateIsoH S.X₁ (n + 1) (n + 1) (Nat.cast_succ n).symm).hom.hom

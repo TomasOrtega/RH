@@ -19,6 +19,11 @@ def TripleProduct : Prop := ∀ (τ : ℍ) (z : ℂ), HasProd (tpFactor τ z) (j
 def oddTheta (τ : ℍ) (z : ℂ) : ℂ :=
   cexp (π * I * (τ : ℂ) / 4 + π * I * (z + 1 / 2)) * jacobiTheta₂ (z + ((τ : ℂ) + 1) / 2) τ
 
+/- English proof (translation)
+Introduce `z`. Establish `hexp : DifferentiableAt ℂ (fun w : ℂ => cexp (π * I * (τ : ℂ) / 4 + π * I * (w + 1 / 2))) z` using `by fun_prop`. Establish `hshift : DifferentiableAt ℂ (fun w : ℂ => w + ((τ : ℂ) + 1) / 2) z` using `differentiableAt_id.add_const _`. Establish `htheta : DifferentiableAt ℂ (fun w : ℂ => jacobiTheta₂ (w + ((τ : ℂ) + 1) / 2) τ) z`. Establish `h0 : DifferentiableAt ℂ (fun w : ℂ => jacobiTheta₂ w τ) (z + ((τ : ℂ) + 1) / 2)` using `differentiableAt_jacobiTheta₂_fst _ τ.2`.
+
+Conclude with `h0.comp z hshift`. Conclude with `hexp.mul htheta`.
+-/
 theorem differentiable_oddTheta (τ : ℍ) : Differentiable ℂ (oddTheta τ) := by
   intro z
   have hexp : DifferentiableAt ℂ

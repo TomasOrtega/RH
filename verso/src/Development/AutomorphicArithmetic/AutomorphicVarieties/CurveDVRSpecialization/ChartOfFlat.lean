@@ -1,6 +1,11 @@
 import Development.AutomorphicArithmetic.AutomorphicVarieties.CurveDVRSpecialization.FlipTwoThree
 
 open PrimeSpectrum in
+/- English proof (translation)
+Establish `h1 : IsIrreducible (j ⁻¹' Z)` using `⟨⟨c, hc⟩, hZ.isPreirreducible.preimage hj⟩`. Take `⟨q, hq⟩` from `QuasiSober.sober h1.closure isClosed_closure`. Use `⟨q, hq.specializes (subset_closure hc), ?_⟩` and prove the remaining obligations. Establish `h2 : Z ⊆ closure (Z ∩ Set.range j)` using `subset_closure_inter_of_isPreirreducible_of_isOpen hZ.isPreirreducible hj.isOpen_range ⟨j c, hc, c, rfl⟩`. Use `h2.trans (closure_minimal ?_ isClosed_closure)` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨hy, y, rfl⟩`. Establish `h3 : q ⤳ y` using `hq.specializes (subset_closure hy)`. Conclude with `specializes_iff_mem_closure.mp (h3.map hj.continuous)`.
+-/
 private theorem UpperTheory.V.Pr.exp_product_chart_local {X : Type} [TopologicalSpace X] {C : Type} [CommRing C]
     {j : PrimeSpectrum C → X} (hj : Topology.IsOpenEmbedding j) {Z : Set X} (hZ : IsIrreducible Z)
     {c : PrimeSpectrum C} (hc : j c ∈ Z) :
@@ -17,6 +22,17 @@ private theorem UpperTheory.V.Pr.exp_product_chart_local {X : Type} [Topological
   exact specializes_iff_mem_closure.mp (h3.map hj.continuous)
 
 open PrimeSpectrum in
+/- English proof (translation)
+Introduce `X _ C _ j hj R _ _ _ _`. Establish `hg : GeneralizingMap (PrimeSpectrum.comap (algebraMap C R))` using `Algebra.HasGoingDown.iff_generalizingMap_primeSpectrumComap.mp inferInstance`. Establish `hc : Continuous (j ∘ PrimeSpectrum.comap (algebraMap C R))` using `hj.continuous.comp (PrimeSpectrum.continuous_comap _)`. Use `⟨hc, rfl, ?_, ?_⟩` and prove the remaining obligations. Introduce `P hP`.
+
+Use `⟨isIrreducible_singleton.closure, ?_⟩` and prove the remaining obligations. Introduce `Z hZ hle`. Establish `hmem : j (PrimeSpectrum.comap (algebraMap C R) P) ∈ Z` using `hle (subset_closure rfl)`. Take `⟨q, hq, hZq⟩` from `UpperTheory.V.Pr.exp_product_chart_local hj hZ hmem`. Take `⟨P', hP', rfl⟩` from `hg hq`.
+
+Establish `h1 : P' ≤ P` using `(PrimeSpectrum.le_iff_specializes _ _).mpr hP'`. Establish `h2 : P.asIdeal ≤ P'.asIdeal` using `hP.2 ⟨P'.isPrime, bot_le⟩ h1`. Establish `h3 : P' = P` using `le_antisymm h1 h2`. Substitute `h3` using the available equality. Conclude with `hZq`.
+
+Introduce `Y hY hx`. Take `⟨q, hq, hYq⟩` from `UpperTheory.V.Pr.exp_product_chart_local hj hY.1 hx`. Take `⟨P', -, rfl⟩` from `hg hq`. Take `⟨p, hp, hle⟩` from `Ideal.exists_minimalPrimes_le (I := (⊥ : Ideal R)) (J := P'.asIdeal) bot_le`. Use `⟨⟨p, hp.1.1⟩, hp, ?_⟩` and prove the remaining obligations.
+
+Establish `h1 : (⟨p, hp.1.1⟩ : PrimeSpectrum R) ⤳ P'` using `(PrimeSpectrum.le_iff_specializes _ _).mp hle`. Establish `h2 : Y ⊆ closure {(j ∘ PrimeSpectrum.comap (algebraMap C R)) ⟨p, hp.1.1⟩}` using `hYq.trans (closure_minimal (Set.singleton_subset_iff.mpr (specializes_iff_mem_closure.mp (h1.map hc))) isClosed_closure)`. Conclude with `Set.Subset.antisymm (hY.2 isIrreducible_singleton.closure h2) h2`.
+-/
 theorem UpperTheory.V.Pr.chartOfFlat :
     UpperTheory.V.Pr.ChartOfFlat := by
   intro X _ C _ j hj R _ _ _ _

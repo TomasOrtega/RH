@@ -12,6 +12,9 @@ open NumberField MvPolynomial Filter Topology Formalism.BasicNotions Formalism.M
 open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory GlobalTheory.ArInt
 open scoped Classical
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.FlagZ.TautUniq.eq_of_pullback_taut | exact GlobalTheory.FlagZ.TautUniq.eq_of_pullback_taut | (intros; apply GlobalTheory.FlagZ.TautUniq.eq_of_pullback_taut <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.tautological_flag_map_unique : ∀ (ι : Type) [Fintype ι] (N : ℕ) (fl : ∀ _ : ι, GlobalTheory.Vert.Flag ((Scheme.Modules.pullback (GlobalTheory.FlagZ.flStr ι N)).obj (GlobalTheory.FlagZ.Taut.stdE N)) N), GlobalTheory.FlagZ.Taut.IsTaut ι N fl →
   ∀ (T : Scheme.{0}) (g : T ⟶ Sp ℤ) (fl' : ∀ _ : ι, GlobalTheory.Vert.Flag ((Scheme.Modules.pullback g).obj (GlobalTheory.FlagZ.Taut.stdE N)) N)
     (g₁ g₂ : T ⟶ GlobalTheory.FlagZ.Fl ι N) (w₁ : g₁ ≫ GlobalTheory.FlagZ.flStr ι N = g) (w₂ : g₂ ≫ GlobalTheory.FlagZ.flStr ι N = g),

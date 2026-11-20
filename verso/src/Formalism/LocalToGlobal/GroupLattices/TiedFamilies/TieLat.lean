@@ -37,6 +37,9 @@ variable {T : ∀ u : D.what₂.Word, Forms0 D u} {Gt : GatTies D} {I : CmpIn D 
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Rewrite using `[locWCrit_proved T u w x]`. Conclude with `cmpC_mem_M_iff (tEL D) (tEL_emb D) (embT_conj D) (locAt_std u w hg I.B I.B_std) (locAt_actB u w hg I.B (I.fr_B u w hg)) (H.ex u w hg) (H.pos u w hg) (H.chi u w hg) (evInj_rec Gt I u w hg) (ptEx_rec X T u w hg I.B) (ptAll_rec X T u (H.same u) w hg I.B) (locAt_UJ u w hg I.B) (awayE …`.
+-/
 theorem cmpRec_lat_pf (H : CmpCore T Gt I) (hloc : ValIntRec T Gt I)
     (u : D.what₂.Word) (w : D.what₂.places.Pl) (hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w))
     (x : ((D.fm u).lat 0).V) :
@@ -52,6 +55,9 @@ def SurjRat (T : ∀ u : D.what₂.Word, Forms0 D u) (Gt : GatTies D) (I : CmpIn
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+The claim follows from `span_image_of_surj (D.gat u w hg).P (D.gat u w hg).comp (I.embW u w hg) (D.gat u w hg).M (cmpL (e := I.embW u w hg) (H.ex u w hg) (valUniq_of (embT_conj D) (evInj_rec Gt I u w hg) (ptEx_rec X T u w hg I.B))) (intW D.what₂.places w) (fun a ha => (I.embW_int u w hg a).1 ha) _ (hsur …`.
+-/
 theorem latM_pf (H : CmpCore T Gt I) (hloc : ValIntRec T Gt I) (hsurj : SurjRat T Gt I)
     (hd : ∀ u w hg, MRatSpan (D.gat u w hg).P (D.gat u w hg).comp (I.embW u w hg) (D.gat u w hg).M)
     (u : D.what₂.Word) (w : D.what₂.places.Pl) (hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)) :
@@ -62,6 +68,9 @@ theorem latM_pf (H : CmpCore T Gt I) (hloc : ValIntRec T Gt I) (hsurj : SurjRat 
     (intW D.what₂.places w) (fun a ha => (I.embW_int u w hg a).1 ha) _ (hsurj u w hg)
     (fun x => cmpRec_lat_pf H hloc u w hg x) (hd u w hg)
 
+/- English proof (translation)
+Introduce `v s x`. Rewrite using `[tPos_apply]`. Conclude with `H.pos u w hg v s x`.
+-/
 theorem posCompat_rec (H : CmpCore T Gt I) (u : D.what₂.Word) (w : D.what₂.places.Pl)
     (hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)) :
     PosCompat (D.gat u w hg) (I.embW u w hg) (locAt X u w hg I.B).iw
@@ -70,6 +79,11 @@ theorem posCompat_rec (H : CmpCore T Gt I) (u : D.what₂.Word) (w : D.what₂.p
   rw [tPos_apply]
   exact H.pos u w hg v s x
 
+/- English proof (translation)
+Introduce `i γ`. Use `⟨(castGL (locAt X u w hg I.B).rk D.host.E).symm ((locAt X u w hg I.B).B⁻¹ * (locAt X u w hg I.B).gamI i γ * (locAt X u w hg I.B).B), fun v => ?_⟩` and prove the remaining obligations. Establish `hA` using `locAt_actB u w hg I.B (I.fr_B u w hg)`. Establish `h1 : ((D.gat u w hg).lev i).act v γ = bc ((locAt X u w hg I.B).iw v) ((castGL (locAt X u w hg I.B).rk D.host.E).symm ((locAt X u w hg I.B).B⁻¹ * (locAt X u w hg I.B).gamI i γ * (locAt X u w hg I.B).B))`. Rewrite using `[← castGL_symm_bc, ← hA i v γ, MulEquiv.symm_apply_apply]`.
+
+Rewrite using `[h1]`. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `a b`. Both sides reduce to the same expression.
+-/
 theorem actE_rec (I : CmpIn D X) (u : D.what₂.Word) (w : D.what₂.places.Pl)
     (hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)) :
     ActE (D.gat u w hg) (locAt X u w hg I.B).iw := by
@@ -86,6 +100,9 @@ theorem actE_rec (I : CmpIn D X) (u : D.what₂.Word) (w : D.what₂.places.Pl)
   ext a b
   rfl
 
+/- English proof (translation)
+Introduce `i γ`. Take `⟨κ, hκ⟩` from `awayEx_rec X T u (H.same u) w hg I.B i γ`. Take `⟨r, _, hr⟩` from `H.chi u w hg i γ κ hκ`. Conclude with `⟨r⁻¹, by rw [map_inv₀]; exact (eq_inv_of_mul_eq_one_left hr).symm⟩`.
+-/
 theorem chiRat_rec (H : CmpCore T Gt I) (u : D.what₂.Word) (w : D.what₂.places.Pl)
     (hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)) : ChiRat (D.gat u w hg) (I.embW u w hg) := by
   intro i γ
@@ -93,6 +110,9 @@ theorem chiRat_rec (H : CmpCore T Gt I) (u : D.what₂.Word) (w : D.what₂.plac
   obtain ⟨r, _, hr⟩ := H.chi u w hg i γ κ hκ
   exact ⟨r⁻¹, by rw [map_inv₀]; exact (eq_inv_of_mul_eq_one_left hr).symm⟩
 
+/- English proof (translation)
+The claim follows from `mRatSpan_of_rat_inv (D.gat u w hg) (I.embW u w hg) (D.plEq w) (fun x => (val_nonneg_iff D w x).symm.trans (I.embW_int u w hg x)) hfin (ratLev_of (D.gat u w hg) (I.embW u w hg) (locAt X u w hg I.B).iw _ (posCompat_rec H u w hg) (actE_rec I u w hg) (chiRat_rec H u w hg)) (ratBasis_ …`.
+-/
 theorem mRatSpan_rec (H : CmpCore T Gt I) (u : D.what₂.Word) (w : D.what₂.places.Pl)
     (hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w))
     (hfrac : IsFractionRing (D.gat u w hg).O (D.gat u w hg).Kf) (hfin : (D.gat u w hg).FinClasses)
@@ -105,12 +125,18 @@ theorem mRatSpan_rec (H : CmpCore T Gt I) (u : D.what₂.Word) (w : D.what₂.pl
     (ratBasis_of (D.gat u w hg) (I.embW u w hg) (locAt X u w hg I.B).iw _ (posCompat_rec H u w hg)
       (ratTup_of_weak (D.gat u w hg) (locAt X u w hg I.B).iw hw))
 
+/- English proof (translation)
+Take `⟨W, Qq, O, Kf, _, _, _, _, _, _, _, _, _, _, n', ι, σ, j, w0, hS, nV, r, m, lam0, dom, hk, I, ψ, e, hH, heq⟩` from `h`. Rewrite using `[heq]`. Conclude with `Cmp.finClasses hS r lam0 dom hk I ψ e (isUnit_det_gram0 D.sp) hH`.
+-/
 theorem finClasses_of_gatIs (Hm : LevelData D) (u : D.what₂.Word) (w : D.what₂.places.Pl)
     (hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)) (h : GatIs D Hm u w hg) : (D.gat u w hg).FinClasses := by
   obtain ⟨W, Qq, O, Kf, _, _, _, _, _, _, _, _, _, _, n', ι, σ, j, w0, hS, nV, r, m, lam0, dom, hk, I, ψ, e, hH, heq⟩ := h
   rw [heq]
   exact Cmp.finClasses hS r lam0 dom hk I ψ e (isUnit_det_gram0 D.sp) hH
 
+/- English proof (translation)
+Take `⟨W, Qq, O, Kf, _, _, _, _, _, _, _, _, _, _, n', ι, σ, j, w0, hS, nV, r, m, lam0, dom, hk, I, ψ, e, hH, heq⟩` from `h`. Rewrite using `[heq]`. Conclude with `hS.frac_O`.
+-/
 theorem frac_of_gatIs (Hm : LevelData D) (u : D.what₂.Word) (w : D.what₂.places.Pl)
     (hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)) (h : GatIs D Hm u w hg) :
     IsFractionRing (D.gat u w hg).O (D.gat u w hg).Kf := by
@@ -121,6 +147,9 @@ theorem frac_of_gatIs (Hm : LevelData D) (u : D.what₂.Word) (w : D.what₂.pla
 def WeakRec (I : CmpIn D X) : Prop :=
   ∀ u w hg, WeakApprox (D.gat u w hg) (locAt X u w hg I.B).iw
 
+/- English proof (translation)
+The claim follows from `latM_pf H hloc hsurj (fun u w hg => mRatSpan_rec H u w hg (frac_of_gatIs X.lev0 u w hg (hG u w hg)) (finClasses_of_gatIs X.lev0 u w hg (hG u w hg)) (hw u w hg)) u w hg`.
+-/
 theorem latM_rec (H : CmpCore T Gt I) (hG : ∀ u w hg, GatIs D X.lev0 u w hg) (hloc : ValIntRec T Gt I)
     (hsurj : SurjRat T Gt I) (hw : WeakRec I)
     (u : D.what₂.Word) (w : D.what₂.places.Pl) (hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)) :

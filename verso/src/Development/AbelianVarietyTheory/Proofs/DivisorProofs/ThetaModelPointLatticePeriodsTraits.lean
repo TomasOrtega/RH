@@ -23,6 +23,25 @@ noncomputable section
 
 namespace GlobalTheory.Poinc.Periods
 
+/- English proof (translation)
+Establish `hc : 0 < W 0 0`. Use `hW.1.diag_pos (i := 0)` as an intermediate fact. Simplify using `only [Matrix.map_apply, Matrix.add_apply, Matrix.transpose_apply] at this`. Establish `h2 : (0 : ℤ) < W 0 0 + W 0 0` using `by exact_mod_cast this`. Use linear arithmetic over natural numbers and integers.
+
+Distinguish the cases in `hex : ∃ T ψ, P T ψ`. Use `swap`. Use `push_neg at hex`. Conclude with `⟨PUnit, inferInstance, fun _ => 0, 1, le_rfl, fun T ψ hP => absurd hP (hex T ψ)⟩`. Take `⟨T₀, ψ₀, hP₀⟩` from `hex`.
+
+Take `⟨e₀, -, he₀⟩` from `h T₀ ψ₀ hP₀`. Establish `hcoord : ∀ z, ∃ r, PsiCoord D.toPre (e₀.symm (Pi.single 0 z)) r` using `fun z => (GlobalTheory.PeriodFormCompare.exists_psiCoord_iff D.toPre _).2 (GlobalTheory.PeriodFormCompare.psiIn_top D _)`. Use `choose p hp using hcoord`. Use `⟨T₀.D.toPre.X, inferInstance, p, (W 0 0).toNat, by omega, fun T ψ hP => ?_⟩` and prove the remaining obligations. Take `⟨ρT, hρ, hm⟩` from `h T ψ hP`.
+
+Take `⟨π, hπs, hπ⟩` from `exists_diag_of_matRel W hW D.toPre.X T₀.D.toPre.X T.D.toPre.X m e₀ ρT.toAddMonoidHom ρT.surjective he₀ hm`. Establish `hsingle : ∀ z, ρT (e₀.symm (Pi.single 0 z)) = Pi.single 0 (π z)`. Introduce `z`. Use function extensionality and compare the values at `u`. Use `hπ (e₀.symm (Pi.single 0 z)) u` as an intermediate fact.
+
+Simplify using `only [AddEquiv.coe_toAddMonoidHom, AddEquiv.apply_symm_apply] at this`. Rewrite using `[this]`. Distinguish the cases in `hu : u = 0`. Substitute `hu` using the available equality. Simplify using the standard rewrite rules.
+
+Simplify using `[Pi.single_apply, hu]`. Establish `hinj : Function.Injective π`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `z hz`. Establish `h1 : ρT (e₀.symm (Pi.single 0 z)) = 0` using `by rw [hsingle, hz, Pi.single_zero]`.
+
+Establish `h2 : e₀.symm (Pi.single 0 z) = 0` using `by simpa using h1`. Establish `h3 : (Pi.single 0 z : Fin 8 → T₀.D.toPre.X) = 0` using `by simpa using h2`. Simplify using `using congrFun h3 0`. Use `⟨AddEquiv.ofBijective π ⟨hinj, hπs⟩, fun z => ?_⟩` and prove the remaining obligations. Take `⟨h0, ha⟩` from `hρ _ _ (hp z)`.
+
+Rewrite `h0`, `ha` using `[hsingle]`. Establish `hq : qW W T.β (Pi.single 0 (π z)) = W 0 0 * T.β (π z) (π z)`. Unfold `qW`. Rewrite using `[Finset.sum_eq_single 0 (fun u _ hu => by simp [Pi.single_eq_of_ne hu]) (by simp)]`. Rewrite using `[Finset.sum_eq_single 0 (fun v _ hv => by simp [Pi.single_eq_of_ne hv]) (by simp)]`.
+
+Simplify using the standard rewrite rules. Use `⟨(qW W T.β (Pi.single 0 (π z))).toNat, ?_, ha⟩` and prove the remaining obligations. Rewrite using `[Int.toNat_of_nonneg h0, hq, Int.toNat_of_nonneg hc.le]`. Both sides reduce to the same expression.
+-/
 theorem one_lattice {g n : ℕ} {o : Type} [CommRing o] {ζ : o} {F : SFam g n ζ} {R : Type} [CommRing R] [IsDomain R]
     [IsLocalRing R] (D : DegData R (maximalIdeal R)) (W : Matrix (Fin 8) (Fin 8) ℤ) (hW : IsE8 W)
     (m : Fin 8 → Fin 8 → (D.toPre.X →+ D.toPre.X)) (P : ∀ T : Trait F, (R →+* T.V) → Prop)
@@ -79,6 +98,13 @@ theorem one_lattice {g n : ℕ} {o : Type} [CommRing o] {ζ : o} {F : SFam g n �
 
 end GlobalTheory.Poinc.Periods
 
+/- English proof (translation)
+Introduce `g n o _ ζ F W hW o' Ω _ _ _ hA S ρ u c pr hs M U₀ EE FinalForm hO V v hv f hf R _ _ _ hB ξ _ D A U hL hP m hm T ψ hl ht`. Establish `hVab` using `(GlobalTheory.T.thetaModel_open_abelian_eighthPower_with_bundle g n o ζ F W o' Ω S ρ u c pr hs M U₀ EE FinalForm hO V v hv).1`. Establish `hBV : GlobalTheory.Mum.Base T.V` using `⟨⟨inferInstance, inferInstance, inferInstance, T.complete⟩, inferInstance⟩`. Establish `hgen : ∀ w, (jK T.V ≫ spMap ψ ≫ ξ) w ∈ abLocus FinalForm.G`. Take `⟨ξ₀, hξ₀, -⟩` from `ht`.
+
+Introduce `w`. Rewrite using `[← hξ₀]`. Conclude with `hVab (ξ₀ w).2`. Take `⟨G', _, _, D', A', U', gm, ι, hG', hgm, hLB, hC, hE⟩` from `GlobalTheory.T.uniformisation_baseChange_completedLocal_abelianLocus M.Z FinalForm.G FinalForm.semi FinalForm.L.L R hB ξ D A U hL hP T.V hBV ψ hl hgen`. Use `GlobalTheory.T.characterGroup_eq_eighthPower_lattice_over_trait g n o ζ F W hW o' Ω S ρ u c pr hs M U₀ EE FinalForm hO V v hv f hf R ξ D.toPre m T ψ ht G' D' A' U' gm ι hG' hgm hLB hC fun a b => ?_` and prove the remaining obligations.
+
+Take `⟨f', hf'm, hf'c, hf'e⟩` from `hE (f a b) (hf a b).1`. Conclude with `⟨f', hf'm, hf'c, fun m' hm' => hf'e _ m' (hm a b) hm'⟩`.
+-/
 theorem GlobalTheory.Poinc.Periods.trait_iso : ∀ (g n : ℕ) (o : Type) [CommRing o] (ζ : o) (F : SFam g n ζ) (W : Matrix (Fin 8) (Fin 8) ℤ), IsE8 W → ∀ (o' Ω : Type) [CommRing o'] [Field Ω] [Algebra o' Ω] [ArithBase o' Ω] (S : ThetaSys o' Ω) (ρ : S.Real) (u : Sp S.R ⟶ F.X) c pr, SharpBy F W ρ.P u c pr → ∀ (M : RatModel o' Ω) (U₀ : M.Z.Opens) (EE : M.Lat S.J) (FinalForm : ZHOut ρ M U₀ EE), S.Over₀ M U₀ → ∀ (V : M.Z.Opens) (v : V.toScheme ⟶ F.X), (∀ x : Sp Ω ⟶ V.toScheme, x ≫ V.ι = M.pt → x ≫ v = spMap S.R.val.toRingHom ≫ u) → ∀ (f : Fin 8 → Fin 8 → (FinalForm.G ⟶ FinalForm.G)), (∀ a b, MatOn FinalForm pr a b (f a b)) → ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], GlobalTheory.Mum.Base R → ∀ (ξ : Sp R ⟶ M.Z) [IsCommMonObj ((Over.pullback ξ).obj FinalForm.G)] (D : DegData R (maximalIdeal R)) (A : PolAV (Sp (FractionRing R))) (U : Unif (maximalIdeal R) D A ((Over.pullback ξ).obj FinalForm.G)), LBIso U.LG.L (FinalForm.L.L.pull (pullback.fst FinalForm.G.hom ξ)) → (∀ y, PsiUnitOn D.toPre y (ξ ⁻¹' abLocus FinalForm.G)) → ∀ (m : Fin 8 → Fin 8 → (D.toPre.X →+ D.toPre.X)), (∀ a b, EndChar U ((Over.pullback ξ).map (f a b)) (m a b)) → ∀ (T : Trait F) (ψ : R →+* T.V), IsLocalHom ψ → ThroughU M V v (𝟙 F.X) T (spMap ψ ≫ ξ) → ∃ ρT : D.toPre.X ≃+ (Fin 8 → T.D.toPre.X), (∀ y r, PsiCoord D.toPre y r → 0 ≤ qW W T.β (ρT y) ∧ Associated (ψ r) (T.ϖ ^ (qW W T.β (ρT y)).toNat)) ∧ ∀ a b y, MatRel W a b (ρT y) (ρT (m a b y)) := by
   intro g n o _ ζ F W hW o' Ω _ _ _ hA S ρ u c pr hs M U₀ EE FinalForm hO V v hv f hf R _ _ _ hB ξ _ D A U hL hP m hm T ψ hl ht
   have hVab := (GlobalTheory.T.thetaModel_open_abelian_eighthPower_with_bundle g n o ζ F W o' Ω S ρ u c pr hs M U₀ EE FinalForm hO V v hv).1
@@ -95,6 +121,33 @@ theorem GlobalTheory.Poinc.Periods.trait_iso : ∀ (g n : ℕ) (o : Type) [CommR
   obtain ⟨f', hf'm, hf'c, hf'e⟩ := hE (f a b) (hf a b).1
   exact ⟨f', hf'm, hf'c, fun m' hm' => hf'e _ m' (hm a b) hm'⟩
 
+/- English proof (translation)
+Introduce `g n o _ ζ F W hW o' Ω _ _ _ hA S ρ u hu M U₀ EE FinalForm hO V v hv x`. Take `⟨c, pr, hs⟩` from `(sharpOver_iff F W ρ.P u).1 hu`. Establish `hinjΩ` using `M.stalkHom_injective x`. Use `haveI : IsDomain (M.Z.presheaf.stalk x) := hinjΩ.isDomain`. Use `haveI : CharZero Ω := hA.char`.
+
+Use `haveI : CharZero (M.Z.presheaf.stalk x) := (RingHom.charZero_iff hinjΩ).2 inferInstance`. Use `haveI : IsIntegrallyClosed (M.Z.presheaf.stalk x) := (hO.normal x).2`. Use `haveI : Algebra.EssFiniteType ℤ (M.Z.presheaf.stalk x) := GlobalTheory.Poinc.CompletedStalk.essFiniteType_int_stalk M x`. Use `haveI : IsNoetherianRing (M.Z.presheaf.stalk x) := Algebra.EssFiniteType.isNoetherianRing ℤ _`. Establish `fg : (maximalIdeal (M.Z.presheaf.stalk x)).FG` using `IsNoetherian.noetherian _`.
+
+Use `haveI hloc : IsLocalRing (AdicCompletion (maximalIdeal (M.Z.presheaf.stalk x)) (M.Z.presheaf.stalk x)) := AdicCompletion.isLocalRing_of_fg fg`. Take `⟨hRd, hRi⟩` from `GlobalTheory.AnalyticNormality.completion_isDomain_and_isIntegrallyClosed (M.Z.presheaf.stalk x)`. Use `haveI hRn : IsNoetherianRing (AdicCompletion (maximalIdeal (M.Z.presheaf.stalk x)) (M.Z.presheaf.stalk x)) := GlobalTheory.AdicNoeth.isNoetherianRing_adicCompletion _ _`. Establish `hm` using `AdicCompletion.maximalIdeal_eq_map_of_fg fg`. Use `set R := AdicCompletion (maximalIdeal (M.Z.presheaf.stalk x)) (M.Z.presheaf.stalk x) with hR`.
+
+Use `set φ := algebraMap (M.Z.presheaf.stalk x) R with hφ`. Establish `hcpl : IsAdicComplete (maximalIdeal R) R`. Rewrite using `[hm]`. Conclude with `AdicCompletion.isAdicComplete_self _ fg`. Establish `hinj : Function.Injective φ` using `AdicCompletion.of_injective _ _`.
+
+Use `haveI : CharZero R := (RingHom.charZero_iff hinj).1 inferInstance`. Use `set ξ : Sp R ⟶ M.Z := spMap φ ≫ M.Z.fromSpecStalk x with hξ`. Establish `hne : (ξ ⁻¹' abLocus FinalForm.G).Nonempty`. Set `w : Sp R` to `(⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum R)`. Set `p : Sp (M.Z.presheaf.stalk x)` to `spMap φ w`.
+
+Establish `hp : p.asIdeal = ⊥` using `by show Ideal.comap φ ⊥ = ⊥`. Rewrite using `[← RingHom.ker_eq_comap_bot]`. Conclude with `(RingHom.injective_iff_ker_eq_bot φ).1 hinj`. Establish `hgen : genericPoint M.Z ∈ Set.range (M.Z.fromSpecStalk x)`. Rewrite using `[Scheme.range_fromSpecStalk]`.
+
+Conclude with `genericPoint_specializes x`. Take `⟨q, hq⟩` from `hgen`. Establish `hpq : p ⤳ q` using `(PrimeSpectrum.le_iff_specializes p q).1 (by show p.asIdeal ≤ q.asIdeal`. Rewrite using `[hp]`. Conclude with `bot_le)`.
+
+Establish `hsp : ξ w ⤳ genericPoint M.Z`. Use `hpq.map (M.Z.fromSpecStalk x).continuous` as an intermediate fact. Rewrite `this` using `[hq]`. Conclude with `this`. Use `⟨w, ?_⟩` and prove the remaining obligations.
+
+Use `show ξ w ∈ abLocus FinalForm.G`. Rewrite using `[FinalForm.ab]`. Conclude with `le_bot_iff.1 ((S.TT_anti M hsp).trans (ThetaSys.TT_genericPoint S M).le)`. Use `haveI : IsCommMonObj ((Over.pullback ξ).obj FinalForm.G) := Functor.isCommMonObj_obj`. Take `⟨D, A, U, hL, hP⟩` from `FinalForm.unif R hRn hRi hcpl ξ hne`.
+
+Establish `hB : GlobalTheory.Mum.Base R` using `⟨⟨hRn, hRd, hRi, hcpl⟩, inferInstance⟩`. Establish `hGs : IsSemiAbelian ((Over.pullback ξ).obj FinalForm.G)` using `IsSemiAbelian.pullback _ FinalForm.G FinalForm.semi`. Take `⟨hsb, hpr, huniq, hlb⟩` from `hs`. Use `choose f hf using matOn_exists o' Ω S ρ M U₀ EE FinalForm hO.ne c.A pr hpr huniq`. Establish `hfm : ∀ a b, IsMonHom ((Over.pullback ξ).map (f a b))` using `fun a b => by`.
+
+Use `(hf a b).1` as an intermediate fact. Use `infer_instance`. Use `choose m hmc using fun a b => endChar_exists_of_isMonHom R hB _ hGs D A U _ (hfm a b)`. Take `⟨Λ, _, p, c', hc', hall⟩` from `GlobalTheory.Poinc.Periods.one_lattice D W hW m (fun T ψ => IsLocalHom ψ ∧ ThroughU M V v (𝟙 F.X) T (spMap (ψ.comp φ) ≫ M.Z.fromSpecStalk x)) (fun T ψ hT => by`. Take `⟨hl, ht⟩` from `hT`.
+
+Establish `e : spMap (ψ.comp φ) ≫ M.Z.fromSpecStalk x = spMap ψ ≫ ξ`. Rewrite using `[hξ, ← Category.assoc]`. Use `congr 1`. Conclude with `Spec.map_comp (CommRingCat.ofHom φ) (CommRingCat.ofHom ψ)`. Rewrite `ht` using `[e]`.
+
+Conclude with `GlobalTheory.Poinc.Periods.trait_iso g n o ζ F W hW o' Ω S ρ u c pr ⟨hsb, hpr, huniq, hlb⟩ M U₀ EE FinalForm hO V v hv f hf R hB ξ D A U hL hP m hmc T ψ hl ht)`. Conclude with `⟨R, inferInstance, hRd, hloc, φ, Λ, inferInstance, p, c', hB, isCpl_self _, hc', fun T ψ hl ht => hall T ψ ⟨hl, ht⟩⟩`.
+-/
 theorem GlobalTheory.Poinc.Periods.main : ∀ (g n : ℕ) (o : Type) [CommRing o] (ζ : o) (F : SFam g n ζ) (W : Matrix (Fin 8) (Fin 8) ℤ), IsE8 W → ∀ (o' Ω : Type) [CommRing o'] [Field Ω] [Algebra o' Ω] [ArithBase o' Ω] (S : ThetaSys o' Ω) (ρ : S.Real) (u : Sp S.R ⟶ F.X), SharpOver F W ρ.P u → ∀ (M : RatModel o' Ω) (U₀ : M.Z.Opens) (EE : M.Lat S.J) (FinalForm : ZHOut ρ M U₀ EE), S.Over₀ M U₀ → ∀ (V : M.Z.Opens) (v : V.toScheme ⟶ F.X), (∀ x : Sp Ω ⟶ V.toScheme, x ≫ V.ι = M.pt → x ≫ v = spMap S.R.val.toRingHom ≫ u) → ∀ x : M.Z, ∃ (R : Type) (_ : CommRing R) (_ : IsDomain R) (_ : IsLocalRing R) (j : M.Z.presheaf.stalk x →+* R) (Λ : Type) (_ : AddCommGroup Λ) (p : Λ → R) (c : ℕ), GlobalTheory.Mum.Base R ∧ IsCpl j ∧ 1 ≤ c ∧ ∀ (T : Trait F) (ψ : R →+* T.V), IsLocalHom ψ → ThroughU M V v (𝟙 F.X) T (spMap (ψ.comp j) ≫ M.Z.fromSpecStalk x) → ∃ e : Λ ≃+ T.D.toPre.X, ∀ y, ∃ k : ℕ, (k : ℤ) = c * T.β (e y) (e y) ∧ Associated (ψ (p y)) (T.ϖ ^ k) := by
   intro g n o _ ζ F W hW o' Ω _ _ _ hA S ρ u hu M U₀ EE FinalForm hO V v hv x
   obtain ⟨c, pr, hs⟩ := (sharpOver_iff F W ρ.P u).1 hu

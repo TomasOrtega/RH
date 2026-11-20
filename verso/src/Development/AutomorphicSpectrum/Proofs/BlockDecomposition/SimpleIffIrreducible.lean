@@ -8,6 +8,15 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.TyFin
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨i⟩`. Use `⟨FDRep.isoToLinearEquiv i, fun γ v => ?_⟩` and prove the remaining obligations. Rewrite using `[FDRep.Iso.conj_ρ i γ, LinearEquiv.conj_apply_apply, LinearEquiv.symm_apply_apply]`. Introduce and unpack `⟨e, he⟩`.
+
+Establish `h1 : ∀ g, e.toLinearMap ∘ₗ τ.ρ g = σ.ρ g ∘ₗ e.toLinearMap` using `fun g => LinearMap.ext fun v => he g v`. Establish `h2 : ∀ g, e.symm.toLinearMap ∘ₗ σ.ρ g = τ.ρ g ∘ₗ e.symm.toLinearMap`. Introduce `g`. Use `LinearMap.ext fun v => ?_` and prove the remaining obligations. Use `show e.symm (σ.ρ g v) = τ.ρ g (e.symm v)`.
+
+Apply `e.injective` to reduce the goal to its premises. Rewrite using `[he, LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply]`. Use `⟨{ hom := basicsMk e.toLinearMap h1 inv := basicsMk e.symm.toLinearMap h2 hom_inv_id := ?_ inv_hom_id := ?_ }⟩` and prove the remaining obligations. Use extensionality with `v`. Simplify using `[basicsMk]`.
+
+Use extensionality with `v`. Simplify using `[basicsMk]`.
+-/
 theorem nonempty_iso_iff_intertwiner {Γ : Type} [Group Γ] (τ σ : FDRep ℂ Γ) :
     Nonempty (τ ≅ σ) ↔ ∃ e : τ ≃ₗ[ℂ] σ, ∀ γ v, e (τ.ρ γ v) = σ.ρ γ (e v) := by
   constructor
@@ -32,6 +41,39 @@ theorem nonempty_iso_iff_intertwiner {Γ : Type} [Group Γ] (τ σ : FDRep ℂ �
     · ext v
       simp [basicsMk]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hs`. Use `⟨?_, fun W hW => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hnt`. Rewrite `hnt` using `[not_nontrivial_iff_subsingleton]`.
+
+Apply `Simple.not_isZero τ` to reduce the goal to its premises. Rewrite using `[Limits.IsZero.iff_id_eq_zero]`. Apply `basics_hom_ext` to reduce the goal to its premises. Rewrite using `[basics_lin_id, basics_lin_zero]`. Use `LinearMap.ext fun v => ?_` and prove the remaining obligations.
+
+Conclude with `@Subsingleton.elim _ hnt _ _`. Use `haveI hmono : Mono (basicsIncl τ W hW) := basics_mono_of_inj _ (fun x y hxy => Subtype.ext hxy)`. Break down `eq_or_ne (basicsIncl τ W hW) 0 with h0 | h0` into its components or cases. Use `left`. Rewrite using `[Submodule.eq_bot_iff]`.
+
+Introduce `w hw`. Establish `h1 : basicsLin (basicsIncl τ W hW) (⟨w, hw⟩ : W) = w` using `rfl`. Establish `h2` using `congrArg (fun f => basicsLin f (⟨w, hw⟩ : W)) h0`. Simplify using `only [basics_lin_zero, LinearMap.zero_apply] at h2`. Rewrite using `[← h1]`.
+
+Conclude with `h2`. Use `right haveI hiso : IsIso (basicsIncl τ W hW) := (Simple.mono_isIso_iff_nonzero (basicsIncl τ W hW)).mpr h0`. Rewrite using `[eq_top_iff]`. Introduce `v _`. Establish `h3 : basicsLin (inv (basicsIncl τ W hW) ≫ basicsIncl τ W hW) v = v`.
+
+Rewrite using `[IsIso.inv_hom_id, basics_lin_id]`. Both sides reduce to the same expression. Rewrite `h3` using `[basics_lin_comp]`. Rewrite using `[← h3]`. Conclude with `(basicsLin (inv (basicsIncl τ W hW)) v).2`.
+
+Introduce and unpack `⟨hnt, hirr⟩`. Use `⟨fun {Y} f hf => ⟨fun hiso h0 => ?_, fun h0 => ?_⟩⟩` and prove the remaining obligations. Substitute `h0` using the available equality. Establish `h1 : 𝟙 τ = 0`. Rewrite using `[← IsIso.inv_hom_id (0 : Y ⟶ τ), Limits.comp_zero]`.
+
+Establish `h2 : basicsLin (𝟙 τ) = 0`. Rewrite using `[h1, basics_lin_zero]`. Rewrite `h2` using `[basics_lin_id]`. Take `⟨⟨x, y, hxy⟩⟩` from `hnt`. Apply `hxy` to reduce the goal to its premises.
+
+Establish `hx` using `LinearMap.congr_fun h2 x`. Establish `hy` using `LinearMap.congr_fun h2 y`. Simplify using `only [LinearMap.id_apply, LinearMap.zero_apply] at hx hy`. Rewrite using `[hx, hy]`. Establish `hinj` using `basics_inj_of_mono f`.
+
+Establish `hinv : ∀ g : Γ, ∀ v ∈ LinearMap.range (basicsLin f), τ.ρ g v ∈ LinearMap.range (basicsLin f)`. Introduce and unpack `g v ⟨y, rfl⟩`. Use `⟨Y.ρ g y, ?_⟩` and prove the remaining obligations. Conclude with `LinearMap.congr_fun (basics_lin_comm f g) y`. Break down `hirr _ hinv with hbot | htop` into its components or cases.
+
+It suffices to derive a contradiction. Apply `h0` to reduce the goal to its premises. Apply `basics_hom_ext` to reduce the goal to its premises. Rewrite using `[basics_lin_zero]`. Conclude with `LinearMap.range_eq_bot.mp hbot`.
+
+Establish `hsurj : Function.Surjective (basicsLin f)` using `LinearMap.range_eq_top.mp htop`. Set `e` to `LinearEquiv.ofBijective (basicsLin f) ⟨hinj, hsurj⟩`. Establish `hcomm : ∀ g : Γ, e.symm.toLinearMap ∘ₗ τ.ρ g = Y.ρ g ∘ₗ e.symm.toLinearMap`. Introduce `g`. Use `LinearMap.ext fun v => ?_` and prove the remaining obligations.
+
+Use `show e.symm (τ.ρ g v) = Y.ρ g (e.symm v)`. Apply `e.injective` to reduce the goal to its premises. Rewrite using `[LinearEquiv.apply_symm_apply]`. Use `show τ.ρ g v = basicsLin f (Y.ρ g (e.symm v))`. Rewrite using `[← LinearMap.comp_apply (basicsLin f), basics_lin_comm f g, LinearMap.comp_apply]`.
+
+Use `congr 1`. Conclude with `(e.apply_symm_apply v).symm`. Use `⟨⟨basicsMk e.symm.toLinearMap hcomm, ?_, ?_⟩⟩` and prove the remaining obligations. Apply `basics_hom_ext` to reduce the goal to its premises. Rewrite using `[basics_lin_comp, basics_lin_id]`.
+
+Use `LinearMap.ext fun y => ?_` and prove the remaining obligations. Conclude with `e.symm_apply_apply y`. Apply `basics_hom_ext` to reduce the goal to its premises. Rewrite using `[basics_lin_comp, basics_lin_id]`. Use `LinearMap.ext fun v => ?_` and prove the remaining obligations.
+
+Conclude with `e.apply_symm_apply v`.
+-/
 private theorem simple_iff_isIrr {Γ : Type} [Group Γ] (τ : FDRep ℂ Γ) :
     CategoryTheory.Simple τ ↔ ReciprocityTheory.Ty.Fin.IsIrr τ.ρ := by
   constructor
@@ -115,6 +157,9 @@ private theorem simple_iff_isIrr {Γ : Type} [Group Γ] (τ : FDRep ℂ Γ) :
           refine LinearMap.ext fun v => ?_
           exact e.apply_symm_apply v
 
+/- English proof (translation)
+Unfold `ReciprocityTheory.Ty.Fin.St.SimpleIffIrr`. Conclude with `⟨fun Γ _ _ τ => simple_iff_isIrr τ, fun Γ _ _ τ σ => nonempty_iso_iff_intertwiner τ σ⟩`.
+-/
 theorem simpleIffIrr : ReciprocityTheory.Ty.Fin.St.SimpleIffIrr := by
   unfold ReciprocityTheory.Ty.Fin.St.SimpleIffIrr
   exact ⟨fun Γ _ _ τ => simple_iff_isIrr τ, fun Γ _ _ τ σ => nonempty_iso_iff_intertwiner τ σ⟩

@@ -234,6 +234,9 @@ def LGal : Prop := GlobalTheory.Published.LocalLanglandsGL → TameRec → GalEp
 
 def LOneOf : Prop := TameRec → LOne
 
+/- English proof (translation)
+Take `⟨l, W, h1, h2, h3, h4⟩` from `HR E w g i hi ψ₀ h₀ ψ hc hl m τ hτ σ hσ hs τ₀ ω hω hv e he`. Conclude with `HFP g m ψ₀ h₀ τ hτ γ hγ l h1 h2 W h3 _ h4`.
+-/
 theorem aut_eps (HFP : FinPair) (HR : Red) {E : Type} [Field E] [NumberField E] {w : HeightOneSpectrum (𝓞 E)} {g : ℕ}
     [Fact g.Prime] (i : ℚ_[g] ≃+* w.adicCompletion E) (hi : Continuous i) (ψ₀ : AddChar (ZMod g) Circle) (h₀ : ψ₀ ≠ 1)
     (ψ : AddChar (w.adicCompletion E) Circle) (hc : Continuous ψ) (hl : Lifts1 i ψ₀ ψ) (m : ℕ)
@@ -246,11 +249,33 @@ theorem aut_eps (HFP : FinPair) (HR : Red) {E : Type} [Field E] [NumberField E] 
   obtain ⟨l, W, h1, h2, h3, h4⟩ := HR E w g i hi ψ₀ h₀ ψ hc hl m τ hτ σ hσ hs τ₀ ω hω hv e he
   exact HFP g m ψ₀ h₀ τ hτ γ hγ l h1 h2 W h3 _ h4
 
+/- English proof (translation)
+Use `⟨ZMod.toCircle, fun h => ?_⟩` and prove the remaining obligations. Establish `h1 : (ZMod.toCircle (1 : ZMod g)) = ZMod.toCircle (0 : ZMod g)` using `by rw [h]; rfl`. Conclude with `one_ne_zero (ZMod.injective_toCircle h1)`.
+-/
 theorem exists_addChar (g : ℕ) [Fact g.Prime] : ∃ ψ₀ : AddChar (ZMod g) Circle, ψ₀ ≠ 1 := by
   refine ⟨ZMod.toCircle, fun h => ?_⟩
   have h1 : (ZMod.toCircle (1 : ZMod g)) = ZMod.toCircle (0 : ZMod g) := by rw [h]; rfl
   exact one_ne_zero (ZMod.injective_toCircle h1)
 
+/- English proof (translation)
+Introduce `E E' Ω _ _ _ _ _ _ _ _ _ _ _ _ g _ A w h w' h' rc hrc i hi n hn hbig hg hN a' ha' K _ _ red hr hk θ hθ τ hτ hf σ hs ξ hξ hξf`. Distinguish the cases in `h1 : n = 1`. Conclude with `HO E E' Ω g A w h w' h' rc hrc i hi n hn h1 hg hN a' ha' K red hr hk θ hθ τ hτ hf σ hs ξ hξ hξf`. Establish `hb : 16 * n ^ 2 < g` using `hbig.resolve_left h1`. Establish `h2 : 2 ≤ n` using `by omega`.
+
+Establish `hcard : Nat.card K = g ^ n`. Establish `e : (𝓞 E' ⧸ w'.asIdeal) ≃+* K` using `(Ideal.quotEquivOfEq hk.symm).trans (RingHom.quotientKerEquivOfSurjective hr)`. Rewrite using `[← hN, normV, Nat.card_congr e.toEquiv]`. Take `⟨m, rfl⟩ : ∃ m, n = m + 1` from `⟨n - 1, by omega⟩`. Take `⟨a, ha, ε, hε, hL⟩` from `hrc`.
+
+Take `⟨ψ₀, h₀⟩` from `exists_addChar g`. Take `⟨ψ, hc, hψ, hl⟩` from `HPs E w g i hi ψ₀ h₀`. Take `⟨τ₀, ω, hsph, hω, hv⟩` from `HG E w g i hi ψ₀ h₀ ψ hc hl m`. Take `⟨κ, hκ, hKo⟩` from `HK g (m + 1) h2 hb K hcard ψ₀ h₀`. Establish `hcu : ∀ (τ' : FDRep ℂ (Gn g (m + 1))), IsCusp τ'.character → ∀ σ' : IrrRep (GL (Fin (m + 1)) (w.adicCompletion E)), GlobalTheory.SerSys.TameGen.Inflates (σ'.ρ.comp (Matrix.GeneralLinearGroup.map i.toRingHom)) τ' → IsCuspidal σ'.ρ` using `fun τ' hτ' σ' hs' => (IrrGL.isCusp_of.1 (H1 E w g i hi (m + 1) hn τ' hτ' σ' hs')).2`.
+
+Establish `hy : IsIrrWD (rc (cls σ))` using `(hL.cusp _).1 (H1 E w g i hi _ hn τ hτ σ hs)`. Establish `ht : IsTameWD (rc (cls σ))` using `(hL.depth _).1 (H2 E w g i hi _ τ σ hs)`. Establish `hu : (rc (cls τ₀)).unr` using `(hL.sph _).1 hsph`. Establish `hdu : (rc (cls τ₀)).lpDim = m` using `hL.dim _`. Establish `e1` using `aut_eps HFP HR i hi ψ₀ h₀ ψ hc hl m τ hτ _ (hKo θ hθ τ hτ hf) σ (hcu τ hτ σ hs) hs τ₀ ω hω hv _ (hL.eps ψ hc hψ m σ τ₀ (hcu τ hτ σ hs))`.
+
+Use `HP g (m + 1) h2 hb K hcard ψ₀ h₀ θ ξ hθ hξ fun χ₀ => ?_` and prove the remaining obligations. Take `⟨χ, hχ, hlc, htw⟩` from `HT E w g i hi (m + 1) K hcard hn χ₀`. Take `⟨τ', σ', hθ', hτ', hf', hs', hcl⟩` from `htw θ hθ τ hτ hf σ hs`. Establish `e2` using `aut_eps HFP HR i hi ψ₀ h₀ ψ hc hl m τ' hτ' _ (hKo _ hθ' τ' hτ' hf') σ' (hcu τ' hτ' σ' hs') hs' τ₀ ω hω hv _ (hL.eps ψ hc hψ m σ' τ₀ (hcu τ' hτ' σ' hs'))`. Rewrite `e2` using `[hcl, hL.tw_eq]`.
+
+Take `⟨r, hr0, e3⟩` from `HE E E' Ω g A w h w' h' i hi (m + 1) h2 hg hN a' ha' K red hr hk a ha ε hε ψ₀ h₀ ψ hc hψ (rc (cls σ)) hy ht (hL.dim _) ξ hξ hξf (rc (cls τ₀)) hu χ₀ χ hχ hlc`. Rewrite `e3` using `[hdu]`. Use `⟨m * r, Nat.mul_pos (by omega) hr0, ?_⟩` and prove the remaining obligations. Establish `hκr : (κ ^ m) ^ r ≠ 0` using `pow_ne_zero _ (pow_ne_zero _ hκ)`. Use `mul_left_cancel₀ hκr ?_` and prove the remaining obligations.
+
+Generalize the expression as in `(ε E w h ψ (((rc (cls σ)).lpTwist (χ.comp a) (ha.smooth hχ)).lpChar (rc (cls τ₀))) : ℂ) = e' at e2 e3`. Generalize the expression as in `(ε E w h ψ ((rc (cls σ)).lpChar (rc (cls τ₀))) : ℂ) = e at e1 e3`. Generalize the expression as in `(g : ℂ) ^ (m * (m + 1) ^ 2 / 2) = Q at e1 e2`. Generalize the expression as in `(ω (-1) : ℂ) ^ m = o at e1 e2`. Establish `f1 : κ ^ m * (gs ψ₀ (θ * nmChar K χ₀)⁻¹ * gs ψ₀ ξ⁻¹) ^ m = Q * o * (e' * gs ψ₀ ξ⁻¹ ^ m)`.
+
+Rewrite using `[mul_pow, ← mul_assoc, ← mul_pow, ← e2]`. Expand and normalize the polynomial expressions, which then agree. Establish `f2 : κ ^ m * (gs ψ₀ (ξ * nmChar K χ₀)⁻¹ * gs ψ₀ θ⁻¹) ^ m = Q * o * (e * gs ψ₀ (ξ * nmChar K χ₀)⁻¹ ^ m)`. Rewrite using `[mul_pow, mul_left_comm, ← mul_pow, ← e1]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[pow_mul, pow_mul, ← mul_pow (κ ^ m), ← mul_pow (κ ^ m), f1, f2, mul_pow (Q * o), mul_pow (Q * o), e3]`.
+-/
 theorem lMatchBig_of (H1 : LCusp) (H2 : LDepth) (HO : LOne) (HP : LPin) (HK : LKondo) (HFP : FinPair) (HPs : LPsi)
     (HG : GenSph) (HR : Red) (HT : LTw) (HE : GalEps) : LMatchBig := by
   intro E E' Ω _ _ _ _ _ _ _ _ _ _ _ _ g _ A w h w' h' rc hrc i hi n hn hbig hg hN a' ha' K _ _ red hr hk θ hθ τ hτ hf σ hs
@@ -302,6 +327,15 @@ theorem lMatchBig_of (H1 : LCusp) (H2 : LDepth) (HO : LOne) (HP : LPin) (HK : LK
     rw [mul_pow, mul_left_comm, ← mul_pow, ← e1]; ring
   rw [pow_mul, pow_mul, ← mul_pow (κ ^ m), ← mul_pow (κ ^ m), f1, f2, mul_pow (Q * o), mul_pow (Q * o), e3]
 
+/- English proof (translation)
+Introduce `E E' Ω _ _ _ _ _ _ _ _ _ _ _ _ g _ A w h w' h' rc hrc i hi n hn hbig hg hN a' ha' K _ _ red hr hk θ hθ τ hτ hf σ hs t x z hxz hv`. Take `⟨a, ha, ε, hε, hL⟩` from `hrc`. Establish `hrc' : IsRec h rc` using `⟨a, ha, ε, hε, hL⟩`. Establish `hc : IsIrrWD (rc (cls σ))` using `(hL.cusp _).1 (H1 E w g i hi n hn τ hτ σ hs)`. Establish `ht : IsTameWD (rc (cls σ))` using `(hL.depth _).1 (H2 E w g i hi n τ σ hs)`.
+
+Establish `hd : (rc (cls σ)).lpDim = n` using `hL.dim _`. Take `⟨ξ, hξ, hξf⟩` from `H3 E E' Ω g A w h w' h' i hi n hn hg hN a' ha' K red hr hk (rc (cls σ)) hc ht hd`. Take `⟨k, hk'⟩` from `H4 E E' Ω g A w h w' h' rc hrc' i hi n hn hbig hg hN a' ha' K red hr hk θ hθ τ hτ hf σ hs ξ hξ hξf`. Rewrite using `[hξf t x z hxz hv]`. Establish `hpos : 0 < g ^ n` using `pow_pos (Fact.out : g.Prime).pos n`.
+
+Establish `hz` using `pow_card_units w' g n hN K red hr hk hpos z`. Establish `e1 : ∀ j, ((ξ (z ^ g ^ j) : ℂˣ) : ℂ) = ((θ (z ^ g ^ (j + k)) : ℂˣ) : ℂ)` using `fun j => by`. Rewrite using `[hk', ← pow_mul, ← pow_add]`. Repeatedly rewrite using `[e1]`. Use `prod_shift (fun j => ((θ (z ^ g ^ j) : ℂˣ) : ℂ)) n (fun j => ?_) k` and prove the remaining obligations.
+
+Use `show ((θ (z ^ g ^ (j + n)) : ℂˣ) : ℂ) = ((θ (z ^ g ^ j) : ℂˣ) : ℂ)`. Rewrite using `[pow_add, mul_comm, pow_mul, hz]`.
+-/
 theorem narrowBig_of (H1 : LCusp) (H2 : LDepth) (H3 : LTame) (H4 : LMatchBig) : NarrowBig := by
   intro E E' Ω _ _ _ _ _ _ _ _ _ _ _ _ g _ A w h w' h' rc hrc i hi n hn hbig hg hN a' ha' K _ _ red hr hk θ hθ τ hτ hf σ hs
     t x z hxz hv
@@ -322,6 +356,9 @@ theorem narrowBig_of (H1 : LCusp) (H2 : LDepth) (H3 : LTame) (H4 : LMatchBig) : 
   show ((θ (z ^ g ^ (j + n)) : ℂˣ) : ℂ) = ((θ (z ^ g ^ j) : ℂˣ) : ℂ)
   rw [pow_add, mul_comm, pow_mul, hz]
 
+/- English proof (translation)
+The claim follows from `narrowBig_of H1 H2 H3 (lMatchBig_of H1 H2 (hO (hTR art chev)) hP hK (hFP hFE) hPs (hG bern) (hR cg) hT (hE hL (hTR art chev)))`.
+-/
 theorem narrowBig_of_leaves (H1 : LCusp) (H2 : LDepth) (H3 : LTame) (hO : LOneOf) (hP : LPin) (hK : LKondo) (hFE : LFE)
     (hFP : LFinPair) (hPs : LPsi) (hG : LGen) (hR : LRed) (hT : LTw) (hTR : LTameRec) (hE : LGal)
     (cg : DiscreteGroups.sglob.LConv.CuspGen) (art : GlobalTheory.Published.GlobalArtinReciprocity) (chev : GlobalTheory.Published.ChevalleyUnits)

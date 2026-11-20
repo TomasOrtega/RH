@@ -21,6 +21,9 @@ def topComps (J : Ideal (MRing ι)) (d : ℕ) : Set (Ideal (MRing ι)) :=
   {W | W ∈ J.minimalPrimes ∧ IsRelevant W ∧
     ringKrullDim (MRing ι ⧸ W) = ((d + Fintype.card K : ℕ) : WithBot ℕ∞)}
 
+/- English proof (translation)
+The claim follows from `AddSubgroup.relIndex_self _`.
+-/
 theorem modPieceCard_self (J : Ideal (MRing ι)) (a : K → ℕ) : modPieceCard J J a = 1 :=
   AddSubgroup.relIndex_self _
 

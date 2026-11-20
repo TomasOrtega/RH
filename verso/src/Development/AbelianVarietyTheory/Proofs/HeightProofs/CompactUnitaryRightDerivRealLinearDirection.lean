@@ -25,12 +25,20 @@ open Matrix
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `show (0 : Mx n)ᴴ * Jm ε + Jm ε * 0 = 0`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+-/
 theorem inK_zero' (ε : Fin n → Bool) : inK ε (0 : Mx n) := by
   refine ⟨?_, ?_⟩
   · show (0 : Mx n)ᴴ * Jm ε + Jm ε * 0 = 0
     simp
   · simp
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `hX`. Take `⟨h3, h4⟩` from `hY`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `h1' : Xᴴ * Jm ε + Jm ε * X = 0` using `h1`. Establish `h3' : Yᴴ * Jm ε + Jm ε * Y = 0` using `h3`.
+
+Use `show (X + Y)ᴴ * Jm ε + Jm ε * (X + Y) = 0`. Rewrite using `[Matrix.conjTranspose_add, Matrix.add_mul, Matrix.mul_add]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.add_mul, Matrix.mul_add, h2, h4]`.
+-/
 theorem inK_add'' {ε : Fin n → Bool} {X Y : Mx n} (hX : inK ε X) (hY : inK ε Y) : inK ε (X + Y) := by
   obtain ⟨h1, h2⟩ := hX
   obtain ⟨h3, h4⟩ := hY
@@ -44,6 +52,9 @@ theorem inK_add'' {ε : Fin n → Bool} {X Y : Mx n} (hX : inK ε X) (hY : inK �
       _ = 0 := by rw [h1', h3', add_zero]
   · rw [Matrix.add_mul, Matrix.mul_add, h2, h4]
 
+/- English proof (translation)
+Use `Finset.sum_induction _ (inK ε) (fun _ _ ha hb => inK_add'' ha hb) (inK_zero' ε) ?_` and prove the remaining obligations. Introduce `j _`. Conclude with `inK_smul_real ε (hX j) (c j)`.
+-/
 theorem inK_sum_real {ε : Fin n → Bool} {r : ℕ} (X : Fin r → Mx n) (c : Fin r → ℝ) (hX : ∀ j, inK ε (X j)) :
     inK ε (∑ j, (c j : ℂ) • X j) := by
   classical
@@ -71,6 +82,17 @@ def entryDerStar (ε : Fin n → Bool) (k : KG ε) (a b : Fin n) : Mx n →ₗ[�
     refine Finset.sum_congr rfl fun l _ => ?_
     ring
 
+/- English proof (translation)
+Take `⟨a, b, f⟩` from `c`. Establish `hent : ∀ (k : KG ε) (Y : Mx n), inK ε Y → HasDerivAt (fun t : ℝ => (toMK (k * expK ε Y t)) a b) (∑ l, toMK k a l * Y l b) 0`. Introduce `k Y hY`. Establish `e : (fun t : ℝ => (toMK (k * expK ε Y t)) a b) = fun t : ℝ => ∑ l, toMK k a l * (NormedSpace.exp ((t : ℂ) • Y)) l b`. Use function extensionality and compare the values at `t`.
+
+Simplify using `only [toMK_mul, toMK_expK hY, Matrix.mul_apply]`. Rewrite using `[e]`. Conclude with `HasDerivAt.fun_sum fun l _ => (hasDerivAt_exp_entry_real Y l b).const_mul _`. Consider the cases of `f`. Use `⟨fun k => entryDerStar ε k a b, fun k Y hY => ?_⟩` and prove the remaining obligations.
+
+Establish `h` using `(hent k Y hY).star`. Establish `e1 : (fun t : ℝ => coord ε (a, b, false) (k * expK ε Y t)) = fun t => star ((toMK (k * expK ε Y t)) a b)`. Use function extensionality and compare the values at `t`. Simplify using `[coord]`. Rewrite using `[e1]`.
+
+Conclude with `h`. Use `⟨fun k => entryDer ε k a b, fun k Y hY => ?_⟩` and prove the remaining obligations. Establish `e1 : (fun t : ℝ => coord ε (a, b, true) (k * expK ε Y t)) = fun t => (toMK (k * expK ε Y t)) a b`. Use function extensionality and compare the values at `t`. Simplify using `[coord]`.
+
+Rewrite using `[e1]`. Conclude with `hent k Y hY`.
+-/
 theorem hasDerivAt_coord_lin {ε : Fin n → Bool} (c : Fin n × Fin n × Bool) :
     ∃ D : KG ε → Mx n →ₗ[ℝ] ℂ, ∀ (k : KG ε) (Y : Mx n), inK ε Y →
       HasDerivAt (fun t : ℝ => coord ε c (k * expK ε Y t)) (D k Y) 0 := by
@@ -96,6 +118,15 @@ theorem hasDerivAt_coord_lin {ε : Fin n → Bool} (c : Fin n × Fin n × Bool) 
       funext t; simp [coord]
     rw [e1]; exact hent k Y hY
 
+/- English proof (translation)
+Proceed by induction on `s with`. Consider the case `nil`. Use `⟨0, fun k Y _ => ?_⟩` and prove the remaining obligations. Simplify `hasDerivAt_const (0 : ℝ) (1 : ℂ)` using `[mono]`. Consider the case `cons c s ih`.
+
+Take `⟨Dc, hc⟩` from `hasDerivAt_coord_lin (ε := ε) c`. Take `⟨Ds, hs⟩` from `ih`. Use `⟨fun k => mono ε s k • Dc k + coord ε c k • Ds k, fun k Y hY => ?_⟩` and prove the remaining obligations. Establish `h` using `(hc k Y hY).mul (hs k Y hY)`. Establish `e : (fun t : ℝ => mono ε (c :: s) (k * expK ε Y t)) = fun t => coord ε c (k * expK ε Y t) * mono ε s (k * expK ε Y t)`.
+
+Use function extensionality and compare the values at `t`. Simplify using `[mono]`. Rewrite using `[e]`. Rewrite `h` using `[coord_mul_expK_zero hY, mono_mul_expK_zero hY]`. Use `h.congr_deriv ?_` and prove the remaining obligations.
+
+Simplify using `only [LinearMap.add_apply, LinearMap.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hasDerivAt_mono_lin {ε : Fin n → Bool} (s : List (Fin n × Fin n × Bool)) :
     ∃ D : KG ε → Mx n →ₗ[ℝ] ℂ, ∀ (k : KG ε) (Y : Mx n), inK ε Y →
       HasDerivAt (fun t : ℝ => mono ε s (k * expK ε Y t)) (D k Y) 0 := by
@@ -117,6 +148,13 @@ theorem hasDerivAt_mono_lin {ε : Fin n → Bool} (s : List (Fin n × Fin n × B
     simp only [LinearMap.add_apply, LinearMap.smul_apply, smul_eq_mul]
     ring
 
+/- English proof (translation)
+Proceed by induction on `hφ using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨s, -, rfl⟩` from `hx`. Conclude with `hasDerivAt_mono_lin s`. Consider the case `zero`.
+
+Conclude with `⟨0, fun k Y _ => by simpa using hasDerivAt_const (0 : ℝ) (0 : ℂ)⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨D₁, d₁⟩` from `hx`. Take `⟨D₂, d₂⟩` from `hy`. Conclude with `⟨D₁ + D₂, fun k Y hY => (d₁ k Y hY).add (d₂ k Y hY)⟩`.
+
+Consider the case `smul a x _ hx`. Take `⟨D, dD⟩` from `hx`. Conclude with `⟨a • D, fun k Y hY => by simpa using (dD k Y hY).const_mul a⟩`.
+-/
 theorem hasDerivAt_lin_of_mem {ε : Fin n → Bool} {d : ℕ} {φ : KG ε → ℂ} (hφ : φ ∈ polyV ε d) :
     ∃ D : KG ε → Mx n →ₗ[ℝ] ℂ, ∀ (k : KG ε) (Y : Mx n), inK ε Y →
       HasDerivAt (fun t : ℝ => φ (k * expK ε Y t)) (D k Y) 0 := by
@@ -134,6 +172,13 @@ theorem hasDerivAt_lin_of_mem {ε : Fin n → Bool} {d : ℕ} {φ : KG ε → �
     obtain ⟨D, dD⟩ := hx
     exact ⟨a • D, fun k Y hY => by simpa using (dD k Y hY).const_mul a⟩
 
+/- English proof (translation)
+Take `⟨D, hD⟩` from `hasDerivAt_lin_of_mem hφ`. Establish `hr : ∀ (Y : Mx n), inK ε Y → ∀ k, rder ε [Y] φ k = D k Y`. Introduce `Y hY k`. Rewrite using `[rder_cons, rder_nil]`. Conclude with `(hD k Y hY).deriv`.
+
+Use function extensionality and compare the values at `k`. Rewrite using `[hr _ (inK_sum_real X c hX) k, Finset.sum_apply]`. Establish `e : (∑ j, (c j : ℂ) • X j) = ∑ j, c j • X j` using `Finset.sum_congr rfl fun j _ => Complex.coe_smul (c j) (X j)`. Rewrite using `[e, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_smul, Pi.smul_apply, hr _ (hX j) k, Complex.real_smul, smul_eq_mul]`.
+-/
 theorem rder_real_linear {n : ℕ} (ε : Fin n → Bool) (d : ℕ) (φ : KG ε → ℂ) (hφ : φ ∈ polyV ε d)
     {r : ℕ} (X : Fin r → Mx n) (c : Fin r → ℝ) (hX : ∀ j, inK ε (X j)) :
     rder ε [∑ j, (c j : ℂ) • X j] φ = ∑ j, (c j : ℂ) • rder ε [X j] φ := by

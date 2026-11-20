@@ -13,6 +13,13 @@ open GlobalTheory.KJInf Formalism.L2.Ker
 
 namespace GlobalTheory.WeilChange
 
+/- English proof (translation)
+Introduce `D ψ S T χS χT χS' χT' om om' H H' g h x y hx hy f hf`. Establish `rS : ResEta D (χS⁻¹ * χS') 0` using `resEta_parity (resEta_mul (resEta_inv H.resS) H'.resS) (by omega)`. Establish `rT : ResEta D (χT⁻¹ * χT') 0` using `resEta_parity (resEta_mul (resEta_inv H.resT) H'.resT) (by omega)`. Take `⟨om₂, H₂, h₂⟩` from `exists_weilDatum_twist D ψ H.std S T χS χT (χS⁻¹ * χS') (χT⁻¹ * χT') om H (hecke_mul (hecke_inv H.hecS) H'.hecS) (hecke_mul (hecke_inv H.hecT) H'.hecT) rS rT`. Rewrite `H₂` using `[mul_inv_cancel_left, mul_inv_cancel_left]`.
+
+Rewrite using `[GlobalTheory.WeilUniq.weilDatum_unique D ψ H.std S T χS' χT' om' om₂ H' H₂ (g, h) f hf, h₂ g h x y hx hy, LinearMap.smul_apply]`. Use `congr 1`. Rewrite using `[← Circle.coe_inv, ← Circle.coe_mul]`. Use `congr 1`. Simplify using `only [splitFacO, MonoidHom.mul_apply, MonoidHom.inv_apply, mul_inv, inv_inv]`.
+
+Generalize the expression as in `(χT' x)⁻¹ = a, (χS y)⁻¹ = b, χS' y = c, χT x = d`. Apply `Circle.ext` to reduce the goal to its premises. Simplify using `only [Circle.coe_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem weilData_differ_by_splitFac : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (χS χT χS' χT' : (AE D)ˣ →* Circle) (om om' : Om S T), IsWeilDatumO ψ S T χS χT om → IsWeilDatumO ψ S T χS' χT' om' → ∀ g h x y, IsDetRoot S g x → IsDetRoot T h y → ∀ f, IsThetaFunO ψ S T f → om' (g, h) f = ((splitFacO χS' χT' x y : ℂ) * (splitFacO χS χT x y : ℂ)⁻¹) • om (g, h) f := by
   intro D ψ S T χS χT χS' χT' om om' H H' g h x y hx hy f hf
   have rS : ResEta D (χS⁻¹ * χS') 0 :=

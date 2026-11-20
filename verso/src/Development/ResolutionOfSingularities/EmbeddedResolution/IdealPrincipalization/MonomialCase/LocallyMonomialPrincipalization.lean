@@ -68,6 +68,9 @@ instance instSurjectivePullbackFstSpecMapField (k L : Type u) [Field k] [Field L
     AlgebraicGeometry.Surjective (pullback.fst p (specMapOfFieldHom k L f)) :=
   inferInstance
 
+/- English proof (translation)
+Establish `: AlgebraicGeometry.Flat (pullback.fst T.structMap (specMapOfFieldHom T.base L f))` using `inferInstance`. Establish `hord' : ∀ (B : Scheme.{u}) (b : B ⟶ T.scheme) (pB : B ⟶ Spec (CommRingCat.of T.base)), b ≫ T.structMap = pB → ∀ (IB : B.IdealSheafData) (EB : List B.IdealSheafData), (@MarkedIdealWithBoundary.mk T.base T.instField B pB IB T.mult EB).IsAdmissible → ∀ (Q : Scheme.{u}) (a : Q ⟶ B) ( …` using `hord T hT.valid L f`. Conclude with `monomialPrincipalization_isPullbackBlowupSequence_of_flat hGeom hinv T (pullback T.structMap (specMapOfFieldHom T.base L f)) L (pullback.snd T.structMap (specMapOfFieldHom T.base L f)) (pullback.fst T.structMap (specMapOfFieldHom T.base L f)) E' hT hE.symm hT' hord'`.
+-/
 private theorem isPullbackBlowupSequence_monomialPrincipalization_baseChange (hGeom : MonomialGeometryHypotheses.{u})
     (hinv : ComapIsoInvariance.{u})
     (hord : OrderAtBaseFieldChangeInvariance.{u}) (T : MarkedIdealWithBoundary.{u})
@@ -94,6 +97,13 @@ private theorem isPullbackBlowupSequence_monomialPrincipalization_baseChange (hG
     (pullback.snd T.structMap (specMapOfFieldHom T.base L f))
     (pullback.fst T.structMap (specMapOfFieldHom T.base L f)) E' hT hE.symm hT' hord'
 
+/- English proof (translation)
+Establish `hmonomial` using `isMonomialCasePrincipalization_monomialPrincipalization hGeom hinv`. Establish `hne : ∀ T : MarkedIdealWithBoundary.{u}, MonomialCenter.IsLocallyMonomialTriple T → ∀ i : ℕ, i < (monomialPrincipalization hinv T).length → (monomialPrincipalization hinv T).center i ≠ ⊤` using `fun T hT i hi => (Scheme.IdealSheafData.support_nonempty_iff_ne_top _).mp (monomialPrincipalization_center_support_nonempty hGeom hinv T hT i hi)`. Use `{ center_subset_boundaryLocus := fun T hT _ => hmonomial.center_subset_boundaryLocus T hT cert := fun T hT _ => hmonomial.cert T hT base_change := ?_ base_change_strict := ?_ center_eq := fun T hT _ => hmonomial.center_eq T hT minLevel_ne_zero := fun T hT _ => hmonomial.minLevel_ …` and prove the remaining obligations. Introduce `T hT _ L instL instCZ f E' hE hT' _`. Conclude with `isPullbackBlowupSequence_monomialPrincipalization_baseChange hGeom hinv hord T hT L f E' hE hT'`.
+
+Introduce `T hT _ L instL instCZ f E' hE hT' _`. Conclude with `(isPullbackBlowupSequence_monomialPrincipalization_baseChange hGeom hinv hord T hT L f E' hE hT').isStrictPullback_of_surjective (hne T hT)`. Introduce `T hT _ Y q h hsmooth hq E' hE hT' _`. Conclude with `monomialPrincipalization_isPullbackBlowupSequence_of_smooth hGeom hinv T hT Y q h hq E' hE hT'`. Introduce `T hT _ Y q h hsmooth instSurj hq E' hE hT' _`.
+
+Conclude with `(monomialPrincipalization_isPullbackBlowupSequence_of_smooth hGeom hinv T hT Y q h hq E' hE hT').isStrictPullback_of_surjective (hne T hT)`.
+-/
 theorem isLocallyMonomialPrincipalization_monomialPrincipalization
     (hGeom : MonomialGeometryHypotheses.{u}) (hinv : ComapIsoInvariance.{u})
     (hord : OrderAtBaseFieldChangeInvariance.{u}) (P : ℕ → Prop) :

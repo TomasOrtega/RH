@@ -11,20 +11,39 @@ open IsDiscreteValuationRing
 def iotaN (n : ℕ) (a b : ℕ∞) : ZMod n :=
   if b ≤ a then ((b.toNat : ℕ) : ZMod n) else -((a.toNat : ℕ) : ZMod n)
 
+/- English proof (translation)
+Establish `: (3 : ℕ∞) * (τ : ℕ∞) = ((3 * τ : ℕ) : ℕ∞)` using `by push_cast; rfl`. Rewrite using `[this]`. Conclude with `(ENat.natCast_ne_top _).symm`.
+-/
 theorem top_ne_three_mul (τ : ℕ) : (⊤ : ℕ∞) ≠ 3 * (τ : ℕ∞) := by
   have : (3 : ℕ∞) * (τ : ℕ∞) = ((3 * τ : ℕ) : ℕ∞) := by push_cast; rfl
   rw [this]; exact (ENat.natCast_ne_top _).symm
 
+/- English proof (translation)
+Establish `: (2 : ℕ∞) * (τ : ℕ∞) = ((2 * τ : ℕ) : ℕ∞)` using `by push_cast; rfl`. Rewrite using `[this]`. Conclude with `(ENat.natCast_ne_top _).symm`.
+-/
 theorem top_ne_two_mul (τ : ℕ) : (⊤ : ℕ∞) ≠ 2 * (τ : ℕ∞) := by
   have : (2 : ℕ∞) * (τ : ℕ∞) = ((2 * τ : ℕ) : ℕ∞) := by push_cast; rfl
   rw [this]; exact (ENat.natCast_ne_top _).symm
 
+/- English proof (translation)
+Simplify using `[iotaN, h]`.
+-/
 theorem iotaN_of_le {n : ℕ} {a b : ℕ∞} (h : b ≤ a) : iotaN n a b = ((b.toNat : ℕ) : ZMod n) := by
   simp [iotaN, h]
 
+/- English proof (translation)
+Simplify using `[iotaN, not_le.2 h]`.
+-/
 theorem iotaN_of_lt {n : ℕ} {a b : ℕ∞} (h : a < b) : iotaN n a b = -((a.toNat : ℕ) : ZMod n) := by
   simp [iotaN, not_le.2 h]
 
+/- English proof (translation)
+Break down `lt_trichotomy a b with h | h | h` into its components or cases. Rewrite using `[iotaN_of_le h.le, iotaN_of_lt h, neg_neg]`. Substitute `h` using the available equality. Rewrite using `[iotaN_of_le le_rfl, eq_neg_iff_add_eq_zero]`. Establish `h2` using `htie rfl`.
+
+Establish `ha : a ≠ ⊤` using `by rintro rfl; simp at h2`. Use `lift a to ℕ using ha`. Simplify using `only [ENat.toNat_natCast]`. Rewrite using `[← Nat.cast_add, ← two_mul]`. Establish `: 2 * a = n` using `by exact_mod_cast h2`.
+
+Rewrite using `[this, ZMod.natCast_self]`. Rewrite using `[iotaN_of_lt h, iotaN_of_le h.le]`.
+-/
 theorem iotaN_swap {n : ℕ} {a b : ℕ∞} (htie : a = b → 2 * a = n) :
     iotaN n b a = -iotaN n a b := by
   rcases lt_trichotomy a b with h | h | h
@@ -40,6 +59,65 @@ theorem iotaN_swap {n : ℕ} {a b : ℕ∞} (htie : a = b → 2 * a = n) :
     rw [this, ZMod.natCast_self]
   · rw [iotaN_of_lt h, iotaN_of_le h.le]
 
+/- English proof (translation)
+Establish `fin_of_two : ∀ {a : ℕ∞}, 2 * a = (n : ℕ∞) → a ≠ ⊤`. Introduce `a h`. Introduce and unpack `rfl`. Simplify using `at h`. Establish `min_cases : ∀ {a b : ℕ∞}, a ≠ b → min a b = τ → (a = τ ∧ τ < b) ∨ (b = τ ∧ τ < a)`.
+
+Introduce `a b hab hm`. Break down `le_total a b with h | h` into its components or cases. Rewrite `hm` using `[min_eq_left h]`. Conclude with `Or.inl ⟨hm, hm ▸ lt_of_le_of_ne h hab⟩`. Rewrite `hm` using `[min_eq_right h]`.
+
+Conclude with `Or.inr ⟨hm, hm ▸ lt_of_le_of_ne h (Ne.symm hab)⟩`. Establish `hτ' : ∀ {a b : ℕ∞}, a ≠ b → min a b = τ → τ ≠ ⊤`. Introduce `a b hab hm hτt`. Rewrite `hm` using `[hτt, min_eq_top]`. Conclude with `hab (hm.1.trans hm.2.symm)`.
+
+Apply the tactic sequence `rcases cP with ⟨tP, hP⟩ | ⟨nP, mP⟩ <;> rcases cR with ⟨tR, hR⟩ | ⟨nR, mR⟩`. Substitute `tP tR` using the available equality. Rewrite using `[iotaN_of_le le_rfl, iotaN_of_le le_rfl]`. Use `lift aP to ℕ using fin_of_two hP`. Use `lift aR to ℕ using fin_of_two hR`.
+
+Simplify using `only [ENat.toNat_natCast]`. Establish `h1 : 2 * aP = n` using `by exact_mod_cast hP`. Establish `h2 : 2 * aR = n` using `by exact_mod_cast hR`. Rewrite using `[← Nat.cast_add, show aP + aR = n by omega, ZMod.natCast_self]`. It suffices to derive a contradiction.
+
+Substitute `tP` using the available equality. Establish `hτf` using `hτ' nR mR`. Use `lift τ to ℕ using hτf`. Use `lift aP to ℕ using fin_of_two hP`. Establish `h1 : 2 * aP = n` using `by exact_mod_cast hP`.
+
+Establish `hτ1 : 1 ≤ τ` using `by exact_mod_cast hτ`. Break down `lt_trichotomy (3 * τ) n with h | h | h` into its components or cases. Establish `e1` using `hα.1 (by exact_mod_cast h)`. Establish `e2` using `hβ.1 (by exact_mod_cast h)`. Establish `haR : aR ≠ ⊤` using `by rintro rfl; simp at e1; exact absurd e1 (top_ne_three_mul τ)`.
+
+Establish `hbR : bR ≠ ⊤` using `by rintro rfl; simp at e2; exact absurd e2 (top_ne_three_mul τ)`. Use `lift aR to ℕ using haR`. Use `lift bR to ℕ using hbR`. Apply `nR` to reduce the goal to its premises. Establish `e1' : aP + aR = 3 * τ` using `by exact_mod_cast e1`.
+
+Establish `e2' : aP + bR = 3 * τ` using `by exact_mod_cast e2`. Conclude with `(show aR = bR by omega)` after adjusting the coercions. Establish `e1` using `hα.2.2 (by exact_mod_cast h)`. Establish `e2` using `hβ.2.2 (by exact_mod_cast h)`. Break down `min_cases nR mR with ⟨hm, -⟩ | ⟨hm, -⟩` into its components or cases.
+
+Rewrite `e1` using `[hm]`. Establish `: n ≤ aP + τ` using `by exact_mod_cast e1`. Use linear arithmetic over natural numbers and integers. Rewrite `e2` using `[hm]`. Establish `: n ≤ aP + τ` using `by exact_mod_cast e2`.
+
+Use linear arithmetic over natural numbers and integers. Establish `e1` using `hα.2.1 (by exact_mod_cast h)`. Establish `e2` using `hβ.2.1 (by exact_mod_cast h)`. Establish `haR : aR ≠ ⊤` using `by rintro rfl; simp at e1`. Establish `hbR : bR ≠ ⊤` using `by rintro rfl; simp at e2`.
+
+Use `lift aR to ℕ using haR`. Use `lift bR to ℕ using hbR`. Apply `nR` to reduce the goal to its premises. Establish `e1' : aP + aR = n` using `by exact_mod_cast e1`. Establish `e2' : aP + bR = n` using `by exact_mod_cast e2`.
+
+Conclude with `(show aR = bR by omega)` after adjusting the coercions. It suffices to derive a contradiction. Substitute `tR` using the available equality. Establish `hτf` using `hτ' nP mP`. Use `lift τ to ℕ using hτf`.
+
+Use `lift aR to ℕ using fin_of_two hR`. Establish `h1 : 2 * aR = n` using `by exact_mod_cast hR`. Establish `hτ1 : 1 ≤ τ` using `by exact_mod_cast hτ`. Break down `lt_trichotomy (3 * τ) n with h | h | h` into its components or cases. Establish `e1` using `hα.1 (by exact_mod_cast h)`.
+
+Establish `e2` using `hβ.1 (by exact_mod_cast h)`. Establish `haP : aP ≠ ⊤` using `by rintro rfl; simp at e1; exact absurd e1 (top_ne_three_mul τ)`. Establish `hbP : bP ≠ ⊤` using `by rintro rfl; simp at e2; exact absurd e2 (top_ne_three_mul τ)`. Use `lift aP to ℕ using haP`. Use `lift bP to ℕ using hbP`.
+
+Apply `nP` to reduce the goal to its premises. Establish `e1' : aP + aR = 3 * τ` using `by exact_mod_cast e1`. Establish `e2' : bP + aR = 3 * τ` using `by exact_mod_cast e2`. Conclude with `(show aP = bP by omega)` after adjusting the coercions. Establish `e1` using `hα.2.2 (by exact_mod_cast h)`.
+
+Establish `e2` using `hβ.2.2 (by exact_mod_cast h)`. Break down `min_cases nP mP with ⟨hm, -⟩ | ⟨hm, -⟩` into its components or cases. Rewrite `e1` using `[hm]`. Establish `: n ≤ τ + aR` using `by exact_mod_cast e1`. Use linear arithmetic over natural numbers and integers.
+
+Rewrite `e2` using `[hm]`. Establish `: n ≤ τ + aR` using `by exact_mod_cast e2`. Use linear arithmetic over natural numbers and integers. Establish `e1` using `hα.2.1 (by exact_mod_cast h)`. Establish `e2` using `hβ.2.1 (by exact_mod_cast h)`.
+
+Establish `haP : aP ≠ ⊤` using `by rintro rfl; simp at e1`. Establish `hbP : bP ≠ ⊤` using `by rintro rfl; simp at e2`. Use `lift aP to ℕ using haP`. Use `lift bP to ℕ using hbP`. Apply `nP` to reduce the goal to its premises.
+
+Establish `e1' : aP + aR = n` using `by exact_mod_cast e1`. Establish `e2' : bP + aR = n` using `by exact_mod_cast e2`. Conclude with `(show aP = bP by omega)` after adjusting the coercions. Establish `hτf` using `hτ' nP mP lift τ to ℕ using hτf`. Establish `hτ1 : 1 ≤ τ` using `by exact_mod_cast hτ`.
+
+Break down `lt_trichotomy (3 * τ) n with h | h | h` into its components or cases. Establish `e1` using `hα.1 (by exact_mod_cast h)`. Establish `e2` using `hβ.1 (by exact_mod_cast h)`. Establish `e3` using `(sP nP).1 (by exact_mod_cast h)`. Establish `e4` using `(sR nR).1 (by exact_mod_cast h)`.
+
+Establish `haP : aP ≠ ⊤` using `by rintro rfl; simp at e1; exact absurd e1 (top_ne_three_mul τ)`. Establish `hbP : bP ≠ ⊤` using `by rintro rfl; simp at e2; exact absurd e2 (top_ne_three_mul τ)`. Establish `haR : aR ≠ ⊤` using `by rintro rfl; simp at e1; exact absurd e1 (top_ne_three_mul τ)`. Establish `hbR : bR ≠ ⊤` using `by rintro rfl; simp at e2; exact absurd e2 (top_ne_three_mul τ)`. Use `lift aP to ℕ using haP`.
+
+Use `lift bP to ℕ using hbP`. Use `lift aR to ℕ using haR`. Use `lift bR to ℕ using hbR`. Establish `e1' : aP + aR = 3 * τ` using `by exact_mod_cast e1`. Establish `e3' : aP + bP = 3 * τ` using `by exact_mod_cast e3`.
+
+Establish `e4' : aR + bR = 3 * τ` using `by exact_mod_cast e4`. Rewrite using `[show aR = bP by omega, show bR = aP by omega, iotaN_swap (fun h => absurd h nP), add_neg_cancel]`. Apply the tactic sequence `rcases min_cases nP mP with ⟨hmP, hlP⟩ | ⟨hmP, hlP⟩ <;>`. Break down `min_cases nR mR with ⟨hmR, hlR⟩ | ⟨hmR, hlR⟩` into its components or cases. Establish `e1` using `hα.2.2 (by exact_mod_cast h)`.
+
+Rewrite `e1` using `[hmP, hmR]`. Establish `: n ≤ τ + τ` using `by exact_mod_cast e1`. Use linear arithmetic over natural numbers and integers. Rewrite using `[iotaN_of_lt (hmP ▸ hlP), iotaN_of_le (hmR ▸ hlR).le, hmP, hmR, neg_add_cancel]`. Rewrite using `[iotaN_of_le (hmP ▸ hlP).le, iotaN_of_lt (hmR ▸ hlR), hmP, hmR, add_neg_cancel]`.
+
+Establish `e2` using `hβ.2.2 (by exact_mod_cast h)`. Rewrite `e2` using `[hmP, hmR]`. Establish `: n ≤ τ + τ` using `by exact_mod_cast e2`. Use linear arithmetic over natural numbers and integers. Establish `e1` using `hα.2.1 (by exact_mod_cast h)`.
+
+Establish `e2` using `hβ.2.1 (by exact_mod_cast h)`. Establish `e3` using `(sP nP).2 (by exact_mod_cast h)`. Establish `e4` using `(sR nR).2 (by exact_mod_cast h)`. Establish `haP : aP ≠ ⊤` using `by rintro rfl; simp at e1`. Establish `hbP : bP ≠ ⊤` using `by rintro rfl; simp at e2`.
+
+Establish `haR : aR ≠ ⊤` using `by rintro rfl; simp at e1`. Establish `hbR : bR ≠ ⊤` using `by rintro rfl; simp at e2`. Use `lift aP to ℕ using haP`. Use `lift bP to ℕ using hbP`. Use `lift aR to ℕ using haR`.
+
+Use `lift bR to ℕ using hbR`. Establish `e1' : aP + aR = n` using `by exact_mod_cast e1`. Establish `e3' : aP + bP = n` using `by exact_mod_cast e3`. Establish `e4' : aR + bR = n` using `by exact_mod_cast e4`. Rewrite using `[show aR = bP by omega, show bR = aP by omega, iotaN_swap (fun h => absurd h nP), add_neg_cancel]`.
+-/
 theorem iotaN_two {n : ℕ} {τ aP bP aR bR : ℕ∞} (hτ : 1 ≤ τ)
     (cP : (aP = bP ∧ 2 * aP = n) ∨ (aP ≠ bP ∧ min aP bP = τ))
     (cR : (aR = bR ∧ 2 * aR = n) ∨ (aR ≠ bR ∧ min aR bR = τ))
@@ -193,6 +271,39 @@ theorem iotaN_two {n : ℕ} {τ aP bP aR bR : ℕ∞} (hτ : 1 ≤ τ)
       rw [show aR = bP by omega, show bR = aP by omega,
         iotaN_swap (fun h => absurd h nP), add_neg_cancel]
 
+/- English proof (translation)
+Break down `lt_or_ge (n : ℕ∞) (3 * N) with hlt | hge` into its components or cases. Establish `e` using `hsb.2.1 hlt`. Establish `hb : ∀ {b : ℕ∞}, b ≤ b₁ + b₂ + b₃ → b ≠ ⊤` using `fun h ht => by`. Rewrite `h` using `[e, ht]`. Simplify using `at h`.
+
+Establish `key : ∀ {a b m : ℕ∞}, ((a < b ∧ a = N ∧ m = N) ∨ (b ≤ a ∧ b = min m N)) → (a < b → (n : ℕ∞) < 3 * N → a + b = n) → b ≠ ⊤ → iotaN n a b = ((b.toNat : ℕ) : ZMod n)`. Introduce `a b m c s hbt`. Break down `c with ⟨hab, ha, -⟩ | ⟨hba, -⟩` into its components or cases. Rewrite using `[iotaN_of_lt hab]`. Establish `h1` using `s hab hlt`.
+
+Establish `hat : a ≠ ⊤` using `hab.ne_top`. Use `lift a to ℕ using hat`. Use `lift b to ℕ using hbt`. Simplify using `only [ENat.toNat_natCast]`. Establish `h2 : a + b = n` using `by exact_mod_cast h1`.
+
+Rewrite using `[neg_eq_iff_add_eq_zero, ← Nat.cast_add, show a + b = n by omega, ZMod.natCast_self]`. Rewrite using `[iotaN_of_le hba]`. Establish `hb₁ : b₁ ≠ ⊤` using `hb (by rw [add_assoc]; exact le_self_add)`. Establish `hb₂ : b₂ ≠ ⊤` using `hb (by rw [add_comm b₁, add_assoc]; exact le_self_add)`. Establish `hb₃ : b₃ ≠ ⊤` using `hb le_add_self`.
+
+Rewrite using `[key c₁ s₁ hb₁, key c₂ s₂ hb₂, key c₃ s₃ hb₃]`. Use `lift b₁ to ℕ using hb₁`. Use `lift b₂ to ℕ using hb₂`. Use `lift b₃ to ℕ using hb₃`. Simplify using `only [ENat.toNat_natCast]`.
+
+Establish `: b₁ + b₂ + b₃ = n` using `by exact_mod_cast e`. Rewrite using `[← Nat.cast_add, ← Nat.cast_add, this, ZMod.natCast_self]`. Establish `hNt : N ≠ ⊤` using `by rintro rfl; simp at hge lift N to ℕ using hNt`. Establish `hN1 : 1 ≤ N` using `by exact_mod_cast hN`. Establish `h3 : 3 * N ≤ n` using `by exact_mod_cast hge`.
+
+Establish `em` using `hsm (by exact_mod_cast (show 2 * N < n by omega))`. Establish `hm₁t : m₁ ≠ ⊤` using `by rintro rfl; simp at em; exact absurd em (top_ne_two_mul N)`. Establish `hm₂t : m₂ ≠ ⊤` using `by rintro rfl; simp at em; exact absurd em (top_ne_two_mul N)`. Establish `hm₃t : m₃ ≠ ⊤` using `by rintro rfl; simp at em; exact absurd em (top_ne_two_mul N)`. Use `lift m₁ to ℕ using hm₁t`.
+
+Use `lift m₂ to ℕ using hm₂t`. Use `lift m₃ to ℕ using hm₃t`. Establish `em' : m₁ + m₂ + m₃ = 2 * N` using `by exact_mod_cast em`. Establish `h1 : 1 ≤ m₁` using `by exact_mod_cast hm₁`. Establish `h2 : 1 ≤ m₂` using `by exact_mod_cast hm₂`.
+
+Establish `h3' : 1 ≤ m₃` using `by exact_mod_cast hm₃`. Establish `hb3 : 3 * N ≤ b₁ + b₂ + b₃`. Break down `lt_or_eq_of_le h3 with h | h` into its components or cases. Rewrite using `[hsb.1 (by exact_mod_cast h)]`. Use `hsb.2.2 (by exact_mod_cast h)` as an intermediate fact.
+
+Rewrite `this` using `[← h]`. Conclude with `this` after adjusting the coercions. Establish `mincast : ∀ m : ℕ, min (m : ℕ∞) (N : ℕ∞) = ((min m N : ℕ) : ℕ∞)` using `fun m => by`. Use `norm_cast`. Apply the tactic sequence `rcases c₁ with ⟨l₁, a₁e, m₁e⟩ | ⟨l₁, b₁e⟩ <;> rcases c₂ with ⟨l₂, a₂e, m₂e⟩ | ⟨l₂, b₂e⟩ <;>`.
+
+Break down `c₃ with ⟨l₃, a₃e, m₃e⟩ | ⟨l₃, b₃e⟩` into its components or cases. Establish `: m₁ = N` using `by exact_mod_cast m₁e`. Establish `: m₂ = N` using `by exact_mod_cast m₂e`. Use linear arithmetic over natural numbers and integers. Establish `: m₁ = N` using `by exact_mod_cast m₁e`.
+
+Establish `: m₂ = N` using `by exact_mod_cast m₂e`. Use linear arithmetic over natural numbers and integers. Establish `: m₁ = N` using `by exact_mod_cast m₁e`. Establish `: m₃ = N` using `by exact_mod_cast m₃e`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hm1 : m₁ = N` using `by exact_mod_cast m₁e`. Rewrite using `[iotaN_of_lt l₁, iotaN_of_le l₂, iotaN_of_le l₃, a₁e, b₂e, b₃e, mincast, mincast]`. Simplify using `only [ENat.toNat_natCast]`. Rewrite using `[show min m₂ N = m₂ by omega, show min m₃ N = m₃ by omega, add_assoc, neg_add_eq_zero, ← Nat.cast_add, show m₂ + m₃ = N by omega]`. Establish `: m₂ = N` using `by exact_mod_cast m₂e`.
+
+Establish `: m₃ = N` using `by exact_mod_cast m₃e`. Use linear arithmetic over natural numbers and integers. Establish `hm2 : m₂ = N` using `by exact_mod_cast m₂e`. Rewrite using `[iotaN_of_le l₁, iotaN_of_lt l₂, iotaN_of_le l₃, a₂e, b₁e, b₃e, mincast, mincast]`. Simplify using `only [ENat.toNat_natCast]`.
+
+Rewrite using `[show min m₁ N = m₁ by omega, show min m₃ N = m₃ by omega, add_right_comm, add_neg_eq_zero, ← Nat.cast_add, show m₁ + m₃ = N by omega]`. Establish `hm3 : m₃ = N` using `by exact_mod_cast m₃e`. Rewrite using `[iotaN_of_le l₁, iotaN_of_le l₂, iotaN_of_lt l₃, a₃e, b₁e, b₂e, mincast, mincast]`. Simplify using `only [ENat.toNat_natCast]`. Rewrite using `[show min m₁ N = m₁ by omega, show min m₂ N = m₂ by omega, add_neg_eq_zero, ← Nat.cast_add, show m₁ + m₂ = N by omega]`.
+
+It suffices to derive a contradiction. Rewrite `hb3` using `[b₁e, b₂e, b₃e, mincast, mincast, mincast]`. Establish `: 3 * N ≤ min m₁ N + min m₂ N + min m₃ N` using `by exact_mod_cast hb3`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem iotaN_three {n : ℕ} {N a₁ b₁ m₁ a₂ b₂ m₂ a₃ b₃ m₃ : ℕ∞} (hN : 1 ≤ N)
     (c₁ : (a₁ < b₁ ∧ a₁ = N ∧ m₁ = N) ∨ (b₁ ≤ a₁ ∧ b₁ = min m₁ N))
     (c₂ : (a₂ < b₂ ∧ a₂ = N ∧ m₂ = N) ∨ (b₂ ≤ a₂ ∧ b₂ = min m₂ N))
@@ -296,20 +407,38 @@ variable {𝒪 : Type*} [CommRing 𝒪] [IsDomain 𝒪] [IsDiscreteValuationRing
 
 local notation "v" => addVal 𝒪
 
+/- English proof (translation)
+The claim follows from `addVal_eq_zero_iff.2 hu`.
+-/
 theorem v_unit {u : 𝒪} (hu : IsUnit u) : v u = 0 := addVal_eq_zero_iff.2 hu
 
+/- English proof (translation)
+Rewrite using `[addVal_mul, v_unit hu, zero_add]`.
+-/
 theorem v_mul_unit_left {u a : 𝒪} (hu : IsUnit u) : v (u * a) = v a := by
   rw [addVal_mul, v_unit hu, zero_add]
 
+/- English proof (translation)
+Introduce `h` and use `ha (addVal_eq_top_iff.1 h)`.
+-/
 theorem v_ne_top {a : 𝒪} (ha : a ≠ 0) : v a ≠ ⊤ := fun h => ha (addVal_eq_top_iff.1 h)
 
+/- English proof (translation)
+Rewrite using `[addVal_pow, nsmul_eq_mul]`. Both sides reduce to the same expression.
+-/
 theorem v_cube (a : 𝒪) : v (a ^ 3) = 3 * v a := by
   rw [addVal_pow, nsmul_eq_mul]; rfl
 
 include hπ in
+/- English proof (translation)
+Rewrite using `[← addVal_uniformizer hπ, addVal_le_iff_dvd]`.
+-/
 theorem one_le_v_iff {a : 𝒪} : 1 ≤ v a ↔ π ∣ a := by
   rw [← addVal_uniformizer hπ, addVal_le_iff_dvd]
 
+/- English proof (translation)
+Use `⟨fun h => ?_, fun h => ?_, fun h => ?_⟩` and prove the remaining obligations. Rewrite using `[AddValuation.map_add_eq_of_lt_left _ (by rwa [v_cube]), v_cube]`. Rewrite using `[AddValuation.map_add_eq_of_lt_right _ (by rwa [v_cube])]`. Use `AddValuation.map_add (addVal 𝒪) (z ^ 3) q` as an intermediate fact. Rewrite `this` using `[v_cube, h, min_self]`. Then use the resulting hypothesis.
+-/
 theorem v_cube_add (z q : 𝒪) :
     (3 * v z < v q → v (z ^ 3 + q) = 3 * v z) ∧ (v q < 3 * v z → v (z ^ 3 + q) = v q) ∧
       (3 * v z = v q → v q ≤ v (z ^ 3 + q)) := by
@@ -321,9 +450,17 @@ theorem v_cube_add (z q : 𝒪) :
 
 variable {e q : 𝒪}
 
+/- English proof (translation)
+Rewrite using `[← addVal_mul, h]`.
+-/
 theorem v_sum_eq {x y : 𝒪} (h : y * (y + e * x) = x ^ 3 + q) : v y + v (y + e * x) = v (x ^ 3 + q) := by
   rw [← addVal_mul, h]
 
+/- English proof (translation)
+Establish `hx : v x = v ((y + e * x) + -y)`. Rewrite using `[show (y + e * x) + -y = e * x by ring, v_mul_unit_left he]`. Use `⟨?_, fun hne => ?_⟩` and prove the remaining obligations. Rewrite using `[hx, min_comm]`. Use `AddValuation.map_add (addVal 𝒪) (y + e * x) (-y)` as an intermediate fact.
+
+Rewrite `this` using `[AddValuation.map_neg]`. Then use the resulting hypothesis. Rewrite using `[hx, AddValuation.map_add_of_distinct_val _ (by rwa [AddValuation.map_neg, ne_comm]), AddValuation.map_neg, min_comm]`.
+-/
 theorem v_x_of {x y : 𝒪} (he : IsUnit e) :
     min (v y) (v (y + e * x)) ≤ v x ∧ (v y ≠ v (y + e * x) → v x = min (v y) (v (y + e * x))) := by
   have hx : v x = v ((y + e * x) + -y) := by
@@ -337,6 +474,21 @@ theorem v_x_of {x y : 𝒪} (he : IsUnit e) :
 
 include hπ in
 
+/- English proof (translation)
+Establish `hs` using `v_sum_eq h`. Take `⟨hmin, -⟩` from `v_x_of (x := x) (y := y) he`. Rewrite `hmin` using `[← ht, min_self]`. Rewrite `hs` using `[← ht]`. Establish `hy1 : 1 ≤ v y` using `(one_le_v_iff hπ).2 dy`.
+
+Establish `hqt` using `v_ne_top hq`. Take `⟨c1, c2, c3⟩` from `v_cube_add x q`. Break down `lt_trichotomy (3 * v x) (v q) with h3 | h3 | h3` into its components or cases. It suffices to derive a contradiction. Rewrite `hs` using `[c1 h3]`.
+
+Establish `hxt : v x ≠ ⊤`. Introduce and unpack `hx`. Rewrite `h3` using `[hx]`. Simplify using `at h3`. Establish `hyt : v y ≠ ⊤` using `ne_top_of_le_ne_top hxt hmin`.
+
+Use `lift v x to ℕ using hxt with m hm`. Use `lift v y to ℕ using hyt with a ha`. Establish `e1 : a + a = 3 * m` using `by exact_mod_cast hs`. Establish `e2 : a ≤ m` using `by exact_mod_cast hmin`. Establish `e3 : 1 ≤ a` using `by exact_mod_cast hy1`.
+
+Use linear arithmetic over natural numbers and integers. It suffices to derive a contradiction. Establish `hs'` using `c3 h3`. Rewrite `hs'` using `[← hs, ← h3]`. Establish `hxt : v x ≠ ⊤`.
+
+Introduce and unpack `hx; rw [hx] at h3; exact hqt (by rw [← h3]; simp)`. Establish `hyt : v y ≠ ⊤` using `ne_top_of_le_ne_top hxt hmin`. Use `lift v x to ℕ using hxt with m hm`. Use `lift v y to ℕ using hyt with a ha`. Establish `e1 : 3 * m ≤ a + a` using `by exact_mod_cast hs'`.
+
+Establish `e2 : a ≤ m` using `by exact_mod_cast hmin`. Establish `e3 : 1 ≤ a` using `by exact_mod_cast hy1`. Use linear arithmetic over natural numbers and integers. Rewrite `hs` using `[c2 h3]`. Rewrite using `[two_mul, hs]`.
+-/
 theorem tie_two {x y : 𝒪} (he : IsUnit e) (hq : q ≠ 0) (h : y * (y + e * x) = x ^ 3 + q)
     (dy : π ∣ y) (ht : v y = v (y + e * x)) : 2 * v y = v q := by
   have hs := v_sum_eq h
@@ -384,10 +536,44 @@ local notation "v" => addVal 𝒪
 
 variable {e q : 𝒪}
 
+/- English proof (translation)
+Rewrite using `[pow_two, addVal_mul]`.
+-/
 theorem v_sq (a : 𝒪) : v (a ^ 2) = v a + v a := by rw [pow_two, addVal_mul]
 
 include hπ in
 
+/- English proof (translation)
+Establish `hn : v q = ((v q).toNat : ℕ∞)` using `(ENat.natCast_toNat (v_ne_top hq)).symm`. Use `set n := (v q).toNat`. Establish `hf : v μ ≠ ⊤` using `v_ne_top hμ`. Establish `hD : ∀ {x y : 𝒪}, μ * y = l * (x + ρ) → v (x + ρ) = v μ + v y` using `fun h => by`. Rewrite using `[← addVal_mul, h, v_mul_unit_left hl]`.
+
+Establish `hD' : ∀ {x y : 𝒪}, μ * (y + e * x) = l' * (x + ρ') → v (x + ρ') = v μ + v (y + e * x)` using `fun h => by rw [← addVal_mul, h, v_mul_unit_left hl']`. Establish `hρ' : v ρ' = v ρ`. Use `congrArg v hρρ` as an intermediate fact. Rewrite `this` using `[v_mul_unit_left hl, v_mul_unit_left hl', eq_comm]`. Then use the resulting hypothesis. Establish `hdiff : v ((xP + ρ) + -(xP + ρ')) = v μ + v ρ`.
+
+Establish `h1 : l * ((xP + ρ) + -(xP + ρ')) = e * (μ * ρ')` using `by linear_combination hρρ + ρ' * hll`. Use `congrArg v h1` as an intermediate fact. Rewrite `this` using `[v_mul_unit_left hl, v_mul_unit_left he, addVal_mul, hρ']`. Then use the resulting hypothesis. Establish `hdiffR : v ((xR + ρ) + -(xR + ρ')) = v μ + v ρ`. Rewrite using `[show (xR + ρ) + -(xR + ρ') = (xP + ρ) + -(xP + ρ') by ring, hdiff]`.
+
+Establish `hτ1 : 1 ≤ v ρ`. Rewrite using `[one_le_v_iff hπ]`. Establish `h1 : π ∣ l * (xP + ρ)` using `by rw [← lP]; exact dvd_mul_of_dvd_right dyP μ`. Establish `h2 : π ∣ xP + ρ` using `(hl.dvd_mul_left).1 h1`. Use `dvd_sub h2 dxP` as an intermediate fact.
+
+Rewrite `this` using `[add_sub_cancel_left]`. Then use the resulting hypothesis. Establish `cls : ∀ {x y : 𝒪}, y * (y + e * x) = x ^ 3 + q → π ∣ y → μ * y = l * (x + ρ) → μ * (y + e * x) = l' * (x + ρ') → v ((x + ρ) + -(x + ρ')) = v μ + v ρ → (v y = v (y + e * x) ∧ 2 * v y = n) ∨ (v y ≠ v (y + e * x) ∧ min (v y) (v (y + e * x)) = v ρ)`. Introduce `x y h dy l1 l2 hd`. Distinguish the cases in `ht : v y = v (y + e * x)`. Conclude with `Or.inl ⟨ht, by rw [tie_two hπ he hq h dy ht, hn]⟩`.
+
+Use `Or.inr ⟨ht, ?_⟩` and prove the remaining obligations. Establish `hne : v (x + ρ) ≠ v (-(x + ρ'))`. Rewrite using `[AddValuation.map_neg, hD l1, hD' l2]`. Conclude with `fun h' => ht (ENat.add_right_injective_of_ne_top hf h')`. Rewrite `hd` using `[AddValuation.map_add_of_distinct_val _ hne, AddValuation.map_neg, hD l1, hD' l2, min_add_add_left]`.
+
+Conclude with `ENat.add_right_injective_of_ne_top hf hd`. Establish `sums : ∀ {x y : 𝒪}, y * (y + e * x) = x ^ 3 + q → min (v y) (v (y + e * x)) = v ρ → v y ≠ v (y + e * x) → (3 * v ρ < n → v y + v (y + e * x) = 3 * v ρ) ∧ (n < 3 * v ρ → v y + v (y + e * x) = n)`. Introduce `x y h hm hne`. Establish `hx` using `(v_x_of (x := x) (y := y) he).2 hne`. Rewrite `hx` using `[hm]`.
+
+Take `⟨c1, c2, -⟩` from `v_cube_add x q`. Rewrite `c1`, `c2` using `[hn]`. Rewrite using `[v_sum_eq h, ← hx]`. Conclude with `⟨c1, c2⟩`. Establish `prod : ∀ {r : 𝒪} {W : 𝒪}, IsUnit W → μ ^ 2 * (q - r ^ 3) = (xP + r) * (xR + r) * W → v (q - r ^ 3) + (v μ + v μ) = v (xP + r) + v (xR + r)`.
+
+Introduce `r W hW h`. Use `congrArg v h` as an intermediate fact. Rewrite `this` using `[addVal_mul, addVal_mul, addVal_mul, v_unit hW, add_zero, v_sq, add_comm]`. Conclude with `this`. Establish `hα` using `prod hU pα`.
+
+Establish `hβ` using `prod hU' pβ`. Rewrite `hα` using `[hD lP, hD lR]`. Rewrite `hβ` using `[hD' lP', hD' lR']`. Establish `h2f : v μ + v μ ≠ ⊤`. Rewrite using `[Ne, ENat.add_eq_top]`.
+
+Conclude with `fun h => h.elim hf hf`. Establish `hα' : v (q - ρ ^ 3) = v yP + v yR`. Apply `ENat.add_left_injective_of_ne_top h2f` to reduce the goal to its premises. Use `show v (q - ρ ^ 3) + (v μ + v μ) = (v yP + v yR) + (v μ + v μ)`. Rewrite using `[hα]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hβ' : v (q - ρ' ^ 3) = v (yP + e * xP) + v (yR + e * xR)`. Apply `ENat.add_left_injective_of_ne_top h2f` to reduce the goal to its premises. Use `show v (q - ρ' ^ 3) + (v μ + v μ) = (v (yP + e * xP) + v (yR + e * xR)) + (v μ + v μ)`. Rewrite using `[hβ]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `cube : ∀ r : 𝒪, (3 * v r < n → v (q - r ^ 3) = 3 * v r) ∧ (n < 3 * v r → v (q - r ^ 3) = n) ∧ (3 * v r = n → n ≤ v (q - r ^ 3))`. Introduce `r`. Establish `h` using `v_cube_add (-r) q`. Rewrite `h` using `[AddValuation.map_neg, show (-r) ^ 3 + q = q - r ^ 3 by ring, hn]`.
+
+Conclude with `h`. Use `iotaN_two hτ1 (cls eP dyP lP lP' hdiff) (cls eR dyR lR lR' hdiffR) (fun hne => sums eP (((cls eP dyP lP lP' hdiff).resolve_left fun h => hne h.1).2) hne) (fun hne => sums eR (((cls eR dyR lR lR' hdiffR).resolve_left fun h => hne h.1).2) hne) ?_ ?_` and prove the remaining obligations. Rewrite using `[← hα']`. Conclude with `cube ρ`. Establish `hc` using `cube ρ'`.
+
+Rewrite `hc` using `[hρ']`. Rewrite using `[← hβ']`. Conclude with `hc`.
+-/
 theorem iota_pair {μ l l' ρ ρ' U U' xP yP xR yR : 𝒪} (he : IsUnit e) (hq : q ≠ 0)
     (hl : IsUnit l) (hl' : IsUnit l') (hU : IsUnit U) (hU' : IsUnit U') (hμ : μ ≠ 0)
     (eP : yP * (yP + e * xP) = xP ^ 3 + q) (eR : yR * (yR + e * xR) = xR ^ 3 + q)
@@ -482,6 +668,27 @@ theorem iota_pair {μ l l' ρ ρ' U U' xP yP xR yR : 𝒪} (he : IsUnit e) (hq :
 
 include hπ in
 
+/- English proof (translation)
+Establish `hw : y + e * x = (ℓ + e) * x + ν` using `by rw [l]; ring`. Establish `hwx : v ((ℓ + e) * x) = v x` using `v_mul_unit_left hℓe`. Establish `hℓx : v x + 1 ≤ v (ℓ * x)`. Rewrite using `[addVal_mul, add_comm]`. Conclude with `add_le_add_left ((one_le_v_iff hπ).2 hℓ) _`.
+
+Rewrite using `[hw, l]`. Break down `lt_trichotomy (v x) (v ν) with hm | hm | hm` into its components or cases. Establish `hxt : v x ≠ ⊤` using `hm.ne_top`. Establish `hb : v ((ℓ + e) * x + ν) = v x`. Rewrite using `[AddValuation.map_add_eq_of_lt_left _ (by rwa [hwx]), hwx]`.
+
+Establish `ha : v x < v (ℓ * x + ν)`. Establish `hlt : v x < v (ℓ * x)` using `lt_of_lt_of_le (ENat.lt_add_one_iff hxt |>.2 le_rfl) hℓx`. Conclude with `lt_of_lt_of_le (lt_min hlt hm) (AddValuation.map_add _ _ _)`. Use `right`. Rewrite using `[hb, min_eq_left hm.le]`.
+
+Conclude with `⟨ha.le, rfl⟩`. Establish `hNt : v x ≠ ⊤`. Introduce `ht`. Establish `hx0 : x = 0` using `addVal_eq_top_iff.1 ht`. Establish `hν0 : ν = 0` using `addVal_eq_top_iff.1 (hm ▸ ht)`.
+
+Substitute `hx0 hν0` using the available equality. Apply `hq` to reduce the goal to its premises. Rewrite `h` using `[l]`. Simplify `h` using `[eq_comm]`. Establish `ha : v (ℓ * x + ν) = v ν`.
+
+Rewrite using `[AddValuation.map_add_eq_of_lt_right]`. Rewrite using `[← hm]`. Conclude with `lt_of_lt_of_le (ENat.lt_add_one_iff hNt |>.2 le_rfl) hℓx`. Establish `hb : v ν ≤ v ((ℓ + e) * x + ν)`. Use `AddValuation.map_add (addVal 𝒪) ((ℓ + e) * x) ν` as an intermediate fact.
+
+Rewrite `this` using `[hwx, hm, min_self]`. Then use the resulting hypothesis. Break down `eq_or_lt_of_le hb with hb' | hb'` into its components or cases. Use `right`. Rewrite using `[← hb', ha, hm, min_self]`. Conclude with `⟨le_rfl, rfl⟩`.
+
+Use `left`. Rewrite using `[ha]`. Conclude with `⟨hb', rfl, hm⟩`. Establish `hb : v ((ℓ + e) * x + ν) = v ν`. Rewrite using `[AddValuation.map_add_eq_of_lt_right _ (by rwa [hwx])]`.
+
+Establish `ha : v (ℓ * x + ν) = v ν`. Rewrite using `[AddValuation.map_add_eq_of_lt_right]`. Conclude with `lt_of_lt_of_le hm (le_trans le_self_add hℓx)`. Use `right`. Rewrite using `[hb, ha, min_eq_right hm.le]`.
+
+Conclude with `⟨le_rfl, rfl⟩`.
+-/
 theorem point_kind {ℓ ν x y : 𝒪} (hq : q ≠ 0) (hℓ : π ∣ ℓ) (hℓe : IsUnit (ℓ + e))
     (h : y * (y + e * x) = x ^ 3 + q) (l : y = ℓ * x + ν) :
     (v y < v (y + e * x) ∧ v y = v ν ∧ v x = v ν) ∨
@@ -534,6 +741,19 @@ theorem point_kind {ℓ ν x y : 𝒪} (hq : q ≠ 0) (hℓ : π ∣ ℓ) (hℓe
 
 include hπ in
 
+/- English proof (translation)
+Establish `hn : v q = ((v q).toNat : ℕ∞)` using `(ENat.natCast_toNat (v_ne_top hq)).symm`. Use `set n := (v q).toNat`. Establish `hN : 1 ≤ v ν`. Rewrite using `[one_le_v_iff hπ]`. Establish `: ν = y₁ - ℓ * x₁` using `by rw [l₁]; ring`.
+
+Rewrite using `[this]`. Conclude with `dvd_sub dy₁ (dvd_mul_of_dvd_left hℓ _)`. Establish `sA : ∀ {x y : 𝒪}, y * (y + e * x) = x ^ 3 + q → (v y < v (y + e * x) ∧ v y = v ν ∧ v x = v ν) ∨ (v (y + e * x) ≤ v y ∧ v (y + e * x) = min (v x) (v ν)) → v y < v (y + e * x) → (n : ℕ∞) < 3 * v ν → v y + v (y + e * x) = n`. Introduce `x y h c hlt hn3`. Break down `c with ⟨-, -, hx⟩ | ⟨hle, -⟩` into its components or cases.
+
+Rewrite using `[v_sum_eq h, (v_cube_add x q).2.1 (by rw [hx, hn]; exact hn3), hn]`. Conclude with `absurd hle (not_le.2 hlt)`. Establish `k₁` using `point_kind hπ hq hℓ hℓe e₁ l₁`. Establish `k₂` using `point_kind hπ hq hℓ hℓe e₂ l₂`. Establish `k₃` using `point_kind hπ hq hℓ hℓe e₃ l₃`.
+
+Use `iotaN_three hN k₁ k₂ k₃ ((one_le_v_iff hπ).2 dx₁) ((one_le_v_iff hπ).2 dx₂) ((one_le_v_iff hπ).2 dx₃) (sA e₁ k₁) (sA e₂ k₂) (sA e₃ k₃) ?_ ?_` and prove the remaining obligations. Introduce `h2`. Rewrite using `[← addVal_mul, ← addVal_mul, hv3, sub_eq_add_neg, AddValuation.map_add_eq_of_lt_left _ (by rwa [AddValuation.map_neg, v_sq, ← two_mul, hn]), v_sq, two_mul]`. Rewrite using `[← addVal_mul, ← addVal_mul, hvw]`. Establish `hq3 : v ((ℓ + e) ^ 3 * q) = n`.
+
+Rewrite using `[addVal_mul, show (ℓ + e) ^ 3 = (ℓ + e) ^ 3 by rfl, v_unit (hℓe.pow 3), zero_add, hn]`. Use `⟨fun h => ?_, fun h => ?_, fun h => ?_⟩` and prove the remaining obligations. Rewrite using `[sub_eq_add_neg, AddValuation.map_add_eq_of_lt_left _ (by rwa [AddValuation.map_neg, hq3, v_cube]), v_cube]`. Rewrite using `[sub_eq_add_neg, AddValuation.map_add_eq_of_lt_right _ (by rwa [AddValuation.map_neg, hq3, v_cube]), AddValuation.map_neg, hq3]`. Use `AddValuation.map_sub (addVal 𝒪) (ν ^ 3) ((ℓ + e) ^ 3 * q)` as an intermediate fact.
+
+Rewrite `this` using `[v_cube, hq3, h, min_self]`. Then use the resulting hypothesis.
+-/
 theorem iota_triple {ℓ ν x₁ y₁ x₂ y₂ x₃ y₃ : 𝒪} (hq : q ≠ 0) (hℓ : π ∣ ℓ)
     (hℓe : IsUnit (ℓ + e))
     (e₁ : y₁ * (y₁ + e * x₁) = x₁ ^ 3 + q) (e₂ : y₂ * (y₂ + e * x₂) = x₂ ^ 3 + q)

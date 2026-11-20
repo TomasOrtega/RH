@@ -8,6 +8,11 @@ open NumberField MeasureTheory GlobalTheory.CuspRep GlobalTheory.HCF Topology
 
 namespace GlobalTheory.HCF
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.CuspBoundSiegel.posIdele_exp]`. Establish `e : t • (1 : Cinf E) = fun _ => (t : ℂ)`. Use function extensionality and compare the values at `w`. Simplify using the standard rewrite rules. Unfold `expCurve`.
+
+Rewrite using `[e]`. Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[GroundTheory.Automorphic.Reduction.coe_diagUnits]`. Both sides reduce to the same expression.
+-/
 theorem expCurve_eq_diagUnits (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (t : ℝ) :
     expCurve E a t = GroundTheory.Automorphic.Reduction.diagUnits a
       (fun _ : Fin a => GroundTheory.Automorphic.Reduction.posIdele (K := E) (Real.exp t) (Real.exp_pos t)) := by
@@ -20,6 +25,9 @@ theorem expCurve_eq_diagUnits (E : Type) [Field E] [NumberField E] [IsTotallyCom
   rw [GroundTheory.Automorphic.Reduction.coe_diagUnits]
   rfl
 
+/- English proof (translation)
+Unfold `absDetA`. Rewrite using `[GroundTheory.Automorphic.Reduction.adeleAbs_units (K := E), GroundTheory.Automorphic.Reduction.adeleAbs_units (K := E), map_mul, map_mul, Positive.val_mul, expCurve_eq_diagUnits, GlobalTheory.CuspBoundSiegel.ideleModule_det_diagUnits_posIdele, ← Real.exp_nat_mul]`. Use `congr 2`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem absDetA_mul_expCurve (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (g : GA E a) (t : ℝ) :
     absDetA (g * expCurve E a t) = absDetA g * Real.exp (t * (a * Module.finrank ℚ E)) := by
   unfold absDetA

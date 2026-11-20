@@ -10,6 +10,9 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK GlobalTheory.ThK.PlaneEv
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ThK.FrameGram.frame_gram | exact GlobalTheory.ThK.FrameGram.frame_gram | (intros; apply GlobalTheory.ThK.FrameGram.frame_gram <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.hyperbolic_basis_matrix_gram : ∀ {F E : Type} [Field F] [Field E] [Algebra F E] (σ : E →ₐ[F] E) (d₁ : ℕ)
     (J : Matrix (Fin (d₁ + 2)) (Fin (d₁ + 2)) E) (J₁ : Matrix (Fin d₁) (Fin d₁) E) (x y : Fin (d₁ + 2) → E)
     (ι : Matrix (Fin (d₁ + 2)) (Fin d₁) E) (Q : Matrix (Fin (d₁ + 2)) (Fin (d₁ + 2)) E),

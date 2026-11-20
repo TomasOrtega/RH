@@ -32,6 +32,19 @@ section Local
 open NumberField Formalism.BasicNotions Formalism.MainNotions GlobalTheory.Mean4 GlobalTheory.Mean4O GlobalTheory.ShFam GlobalTheory.ShFam.Pad GlobalTheory.ProjVar GlobalTheory.TrueGeo GlobalTheory.Cartier CategoryTheory AlgebraicGeometry
 open IsDedekindDomain ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.Toroidal GlobalTheory.CxPts
 
+/- English proof (translation)
+Use `set A : (O.var c).Fnˣ := ∏ i, eqn (divOf (O.Φ.C c) (n i)) (under z) with hAdef`. Establish `hA : (divOf (O.Φ.C c) (∑ i, n i)).IsEqn (under z) A` using `GlobalTheory.OmCx.prod_isEqn O c (under z) Finset.univ n`. Establish `k1 : (cxSt _).pn _ σ _ (O.met.h0 c σ (∑ i, n i)) ((cxSt _).cx _ σ ((A : (O.var c).Fn)⁻¹)) z = ∏ i, (cxSt _).pn _ σ _ (O.met.h0 c σ (n i)) ((cxSt _).cx _ σ (genAt (divOf (O.Φ.C c) (n i)) (under z))) z`. Take `⟨xa, P, hc⟩` from `h`. Rewrite using `[hc.h0_eq, ← Units.val_inv_eq_inv_val]`.
+
+Conclude with `(Var.pn_frame hA).trans ((GlobalTheory.OmCx.prod_h O c σ z (xa.eigMet (embOf O.κ.e σ)) Finset.univ n).trans (Finset.prod_congr rfl fun i _ => (Var.pn_frame (Base.isEqn_eqn _ _)).symm))`. Establish `hgen : (divOf (O.Φ.C c) (∑ i, n i)).GeneratesAt (under z) ((A : (O.var c).Fn)⁻¹)` using `CartierDiv.isEqn_iff_generatesAt_inv.1 hA`. Use `set g := genAt (divOf (O.Φ.C c) (∑ i, n i)) (under z) with hgdef`. Establish `hA0 : (A : (O.var c).Fn) ≠ 0` using `Units.ne_zero _`. Establish `hu : UnitAt (under z) (g * (A : (O.var c).Fn))`.
+
+Use `(Base.isEqn_eqn (divOf (O.Φ.C c) (∑ i, n i)) (under z)).generatesAt_iff.1 hgen` as an intermediate fact. Establish `e : g * (A : (O.var c).Fn) = ((A : (O.var c).Fn)⁻¹ * (eqn (divOf (O.Φ.C c) (∑ i, n i)) (under z) : (O.var c).Fn))⁻¹`. Rewrite using `[hgdef, genAt, Units.val_inv_eq_inv_val, mul_inv, inv_inv, mul_comm]`. Rewrite using `[e]`. Conclude with `this.inv`.
+
+Establish `hg : g = (g * (A : (O.var c).Fn)) * (A : (O.var c).Fn)⁻¹` using `by field_simp`. Establish `k2 : (cxSt _).pn _ σ _ (O.met.h0 c σ (∑ i, n i)) ((cxSt _).cx _ σ g) z = ‖ratVal (g * (A : (O.var c).Fn)) z‖ ^ 2 * (cxSt _).pn _ σ _ (O.met.h0 c σ (∑ i, n i)) ((cxSt _).cx _ σ (A : (O.var c).Fn)⁻¹) z` using `by conv_lhs => rw [hg]`. Conclude with `(cxSt _).pn_mul _ σ _ _ _ _ z hu.regAt hgen.regularAt`. Establish `hq : g / ∏ i, genAt (divOf (O.Φ.C c) (n i)) (under z) = g * (A : (O.var c).Fn)`. Simplify using `[genAt, hAdef, Units.coe_prod, div_eq_mul_inv, Finset.prod_inv_distrib]`.
+
+Establish `hpos : ∀ i, 0 < (cxSt _).pn _ σ _ (O.met.h0 c σ (n i)) ((cxSt _).cx _ σ (genAt (divOf (O.Φ.C c) (n i)) (under z))) z` using `fun i => h.referenceMetric_posAt c σ (n i) z`. Establish `hr : ratVal (g * (A : (O.var c).Fn)) z ≠ 0` using `ratVal_ne_zero hu`. Simplify using `only [lnN]`. Rewrite using `[hq, k2, k1, Real.log_mul (pow_ne_zero _ (norm_ne_zero_iff.2 hr)) (Finset.prod_ne_zero_iff.2 fun i _ => (hpos i).ne'), Real.log_pow, Real.log_prod fun i _ => (hpos i).ne', ← Finset.sum_div]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem lnN_sum {D : D7} (O : Setup D) (h : O.Core) (c : O.s.Comp) (σ : D.what₂.LL →+* ℂ) (z : Pts (O.var c) σ)
     {ι : Type} [Fintype ι] (n : ι → Letter O.S.Dw → ℤ) :
     lnN (O.met.h0 c σ (∑ i, n i)) (genAt (divOf (O.Φ.C c) (∑ i, n i)) (under z)) z =
@@ -85,6 +98,17 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
 
 open Classical in
 
+/- English proof (translation)
+Establish `hp` using `LineTest.residueCharacteristic_prime v`. Establish `UW` using `GlobalTheory.CombInd.Tens.unitAt_prod Y (∑ i ∈ s, ρ i) (below y.1)`. Establish `Ui` using `fun i => GlobalTheory.CombInd.Tens.unitAt_prod Y (ρ i) (below y.1)`. Simplify using `only [lgOf, dif_pos hp]`. Rewrite using `[← Finsupp.sum_finsetSum_index (fun _ => by simp) (fun _ _ _ => by push_cast; ring)]`.
+
+Use `set b := below y.1 with hb`. Use `set t := (Y.gr_spec b).choose_spec.choose_spec.choose with ht`. Establish `hP : (∏ x : Letter Dw, t x.1 x.2 ^ expo Dw (∑ i ∈ s, ρ i) x) = (∏ i ∈ s, ∏ x : Letter Dw, t x.1 x.2 ^ expo Dw (ρ i) x)`. Rewrite using `[GlobalTheory.CovolFin.expo_sum, Finset.prod_comm]`. Use `Finset.prod_congr rfl fun x _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Finset.sum_apply, GlobalTheory.CovolFin.zpow_finsum]`. Use `set U : Y.Y.Fnˣ := (eqn (divOf Y (expo Dw (∑ i ∈ s, ρ i))) b)⁻¹ * ∏ i ∈ s, (eqn (divOf Y (expo Dw (ρ i))) b) with hU`. Use `set V : Y.Y.Fnˣ := ∏ i ∈ s, ((∏ x : Letter Dw, t x.1 x.2 ^ expo Dw (ρ i) x) * (eqn (divOf Y (expo Dw (ρ i))) b)⁻¹) with hV`. Establish `hprod : ((∏ x : Letter Dw, t x.1 x.2 ^ expo Dw (∑ i ∈ s, ρ i) x) * (eqn (divOf Y (expo Dw (∑ i ∈ s, ρ i))) b)⁻¹) = U * V`. Rewrite using `[hU, hV, hP, Finset.prod_mul_distrib, Finset.prod_inv_distrib]`.
+
+Simplify using `only [mul_assoc, mul_left_comm (∏ i ∈ s, (eqn (divOf Y (expo Dw (ρ i))) b)), mul_inv_cancel, mul_one]`. Conclude with `mul_comm _ _`. Take `⟨Us, hs⟩` from `GlobalTheory.CovolFin.log_valAt_prod y.1 ε.w s (fun i => (∏ x : Letter Dw, t x.1 x.2 ^ expo Dw (ρ i) x) * (eqn (divOf Y (expo Dw (ρ i))) b)⁻¹) fun i _ => Ui i`. Establish `UU : UnitAt b (U : Y.Y.Fn)`. Establish `h₁ : U = (U * V) * V⁻¹` using `by simp`.
+
+Rewrite using `[h₁, ← hprod, Units.val_mul, Units.val_inv_eq_inv_val V]`. Conclude with `UnitAt.mul UW Us.inv`. Rewrite using `[hprod, Units.val_mul U V, SmallSec.valAt_mul UU.regAt Us.regAt, map_mul, Real.log_mul (ε.w.pos (SmallSec.valAt_ne_zero UU)).ne' (ε.w.pos (SmallSec.valAt_ne_zero Us)).ne', hs, Finset.sum_add_distrib, ← Finset.mul_sum]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem lgOf_sum {ι : Type} (s : Finset ι) (ρ : ι → Sym E →₀ ℤ) (v : HeightOneSpectrum (𝓞 F)) (ε : Ext v)
     (y : AlgPt Y.Y) :
     lgOf Y (∑ i ∈ s, ρ i) v ε y = Real.log (ε.w (valAt y.1
@@ -123,6 +147,13 @@ theorem lgOf_sum {ι : Type} (s : Finset ι) (ρ : ι → Sym E →₀ ℤ) (v :
 
 end Free
 
+/- English proof (translation)
+Use `⟨1, fun _ => 1, one_pos, fun i => by simp [Setup.adl0, adlOf], ?_, fun σ z => ⟨hO.referenceMetric_posAt c σ _ z, ?_⟩, fun v e y => ?_⟩` and prove the remaining obligations. Simplify using `only [one_smul, Setup.adl0, adlOf]`. Rewrite using `[GlobalTheory.CovolFin.expo_sum, GlobalTheory.OmCx.divOf_sum]`. Establish `key` using `lnN_sum O hO c σ z fun i => expo O.S.Dw (ρ i)`. Simplify using `only [Nat.cast_one, one_mul, pow_one, mul_zero, sub_zero, Int.cast_one, zpow_one]`.
+
+Simplify using `only [lnAdl, Setup.adl0, adlOf]`. Rewrite using `[GlobalTheory.CovolFin.expo_sum]`. Simplify using `only [Pi.zero_apply, mul_zero, sub_zero]`. Conclude with `key`. Simplify using `only [Nat.cast_one, one_mul, pow_one, Int.cast_one, zpow_one]`.
+
+Use `(lgOf_sum (O.Φ.C c) Finset.univ ρ v e y).trans ?_` and prove the remaining obligations. Use `congr 4`. Simplify using `only [Setup.adl0, adlOf, genAt, Units.val_mul, Units.coe_prod, div_eq_mul_inv, Finset.prod_inv_distrib, inv_inv, Units.val_inv_eq_inv_val]`.
+-/
 theorem isComb_sum {D : D7} (O : Setup D) (hO : O.Core) (c : O.s.Comp) {ι : Type} [Fintype ι]
     (ρ : ι → Sym D.host.E →₀ ℤ) :
     IsComb (O.adl0 c (∑ i, ρ i)) (fun i => O.adl0 c (ρ i)) (fun _ => 1) (fun _ _ => 0) := by
@@ -150,6 +181,11 @@ open MvPolynomial GlobalTheory.ArInt
 open CategoryTheory AlgebraicGeometry GlobalTheory GlobalTheory.Mean4O GlobalTheory.HermLB
 open GlobalTheory.TrueGeo GlobalTheory.Cartier GlobalTheory.ProjVar GlobalTheory.ShFam GlobalTheory.ShFam.Pad GlobalTheory.Mean4
 
+/- English proof (translation)
+Introduce `D O hO A T H h Q c τ b hb`. Establish `hd : detSym O.S.Dw (ArIn.ind Q) none (DV.tauEmb D τ) = ∑ i : Fin O.N, rootSym O.S.Dw (ArIn.ind Q) none (DV.tauEmb D τ) i`. Rewrite using `[detSym, O.S.rank_eq, Finset.sum_range]`. Establish `e` using `GlobalTheory.Mean4O.HtComb.main _ _ _ _ _ _ _ _ (isComb_sum O hO c fun i : Fin O.N => rootSym O.S.Dw (ArIn.ind Q) none (DV.tauEmb D τ) i) (fun i y => GlobalTheory.Mean4O.Cover.finite_places_lg_ne_zero _ _ _ _ _ _ _ one_ne_zero (GlobalTheory.T.lattice_model_induces_root_metric D O …`. Rewrite using `[hd, e, Fintype.sum_prod_type, Finset.sum_eq_single τ (fun τ' _ hne => by simp [hne]) (by simp)]`.
+
+Simplify using `[finsum_zero, Setup.root0]`.
+-/
 theorem ht_detSym : ∀ (D : D7) (O : Setup D), O.Core → ∀ (A : SlopeTestRemainingChoices O.Y) (T : Real0 O.Y) (H : Ht O.Y), O.Reads A T H →
     ∀ (Q : Finset ℕ) (c : O.s.Comp) (τ : D.what₂.Tau) (b : (O.var c).X), IsClosed ({b} : Set (O.var c).X) →
     (O.adl0 c (detSym O.S.Dw (ArIn.ind Q) none (DV.tauEmb D τ))).ht b =
@@ -176,6 +212,9 @@ open CategoryTheory AlgebraicGeometry GlobalTheory GlobalTheory.Mean4O GlobalThe
 
 open GlobalTheory.TrueGeo GlobalTheory.Cartier GlobalTheory.ProjVar GlobalTheory.ShFam GlobalTheory.ShFam.Pad GlobalTheory.Mean4
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.DetRefHt.ht_detSym`.
+-/
 theorem _root_.GlobalTheory.T.determinant_symbol_height_root_sum : ∀ (D : D7) (O : Setup D), O.Core → ∀ (A : SlopeTestRemainingChoices O.Y) (T : Real0 O.Y) (H : Ht O.Y), O.Reads A T H →
     ∀ (Q : Finset ℕ) (c : O.s.Comp) (τ : D.what₂.Tau) (b : (O.var c).X), IsClosed ({b} : Set (O.var c).X) →
     (O.adl0 c (detSym O.S.Dw (ArIn.ind Q) none (DV.tauEmb D τ))).ht b =

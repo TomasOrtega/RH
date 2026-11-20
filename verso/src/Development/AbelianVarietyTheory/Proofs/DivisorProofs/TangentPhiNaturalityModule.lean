@@ -14,12 +14,18 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.SqZeroPt
 
+/- English proof (translation)
+Substitute `e` using the available equality. Both sides reduce to the same expression.
+-/
 theorem Phi_congr {O : Type} [CommRing O] {M : Type} [AddCommGroup M] [Module O M] [Module Oᵐᵒᵖ M]
     [IsCentralScalar O M] {A : Over (Sp O)} [GrpObj A] {z z' : TM O M ⟶ A} (e : z = z')
     (h : zeroSec O M ≫ z = η[A]) (h' : zeroSec O M ≫ z' = η[A]) (w : Wmod A) :
     Phi z h w = Phi z' h' w := by
   subst e; rfl
 
+/- English proof (translation)
+Establish `hf : ∀ a, (φ a).fst = Bialgebra.counitAlgHom O (G.A n) a` using `fun a => AlgHom.congr_fun hφ a`. Use extensionality with `a`. Simplify using `[univ, hf]`. Simplify using `[univ]`.
+-/
 theorem eq_map_comp_univ {p : ℕ} {O : Type} [CommRing O] (G : GlobalTheory.PDivGroup p O) {M : Type}
     [AddCommGroup M] [Module O M] [Module Oᵐᵒᵖ M] [IsCentralScalar O M] (n : ℕ)
     (φ : G.A n →ₐ[O] TrivSqZeroExt O M)
@@ -31,6 +37,11 @@ theorem eq_map_comp_univ {p : ℕ} {O : Type} [CommRing O] (G : GlobalTheory.PDi
   · simp [univ, hf]
   · simp [univ]
 
+/- English proof (translation)
+Introduce `p O _ G A _ t nat M _ _ _ _ n φ hφ w`. Establish `e : spOver φ ≫ t.y n = GlobalTheory.GrpTangent.sqZeroMap (GlobalTheory.AugCot.sqZeroEquiv (Bialgebra.counitAlgHom O (G.A n)) M ⟨φ, hφ⟩) ≫ spOver (univ G n) ≫ t.y n`. Rewrite using `[← Category.assoc]`. Use `congr 1`. Establish `e1 : GlobalTheory.GrpTangent.sqZeroMap (GlobalTheory.AugCot.sqZeroEquiv (Bialgebra.counitAlgHom O (G.A n)) M ⟨φ, hφ⟩) = spOver (TrivSqZeroExt.map (GlobalTheory.AugCot.sqZeroEquiv (Bialgebra.counitAlgHom O (G.A n)) M ⟨φ, hφ⟩))` using `rfl`.
+
+Rewrite using `[e1, spOver_comp, ← eq_map_comp_univ G n φ hφ]`. Establish `h' : zeroSec O M ≫ GlobalTheory.GrpTangent.sqZeroMap (GlobalTheory.AugCot.sqZeroEquiv (Bialgebra.counitAlgHom O (G.A n)) M ⟨φ, hφ⟩) ≫ spOver (univ G n) ≫ t.y n = η[A]` using `e ▸ zeroSec_spOver_y t n φ hφ`. Rewrite using `[Phi_congr e _ h' w]`. Conclude with `nat _ M _ (spOver (univ G n) ≫ t.y n) (zeroSec_spOver_y t n _ (fst_comp_univ (G := G) n)) h' w`.
+-/
 theorem Phi_spOver_y : ∀ (p : ℕ) (O : Type) [CommRing O] (G : GlobalTheory.PDivGroup p O) (A : Over (Sp O)) [GrpObj A] (t : G.TorsionTower A), (∀ (M N : Type) [AddCommGroup M] [Module O M] [Module Oᵐᵒᵖ M] [IsCentralScalar O M] [AddCommGroup N] [Module O N] [Module Oᵐᵒᵖ N] [IsCentralScalar O N] (l : M →ₗ[O] N) (z : TM O M ⟶ A) (h : zeroSec O M ≫ z = η[A]) (h' : zeroSec O N ≫ (GlobalTheory.GrpTangent.sqZeroMap l ≫ z) = η[A]) (w : Wmod A), Phi (GlobalTheory.GrpTangent.sqZeroMap l ≫ z) h' w = l (Phi z h w)) → (∀ (M : Type) [AddCommGroup M] [Module O M] [Module Oᵐᵒᵖ M] [IsCentralScalar O M] (n : ℕ) (φ : G.A n →ₐ[O] TrivSqZeroExt O M) (hφ : (TrivSqZeroExt.fstHom O O M).comp φ = Bialgebra.counitAlgHom O (G.A n)) (w : Wmod A), Phi (spOver φ ≫ t.y n) (zeroSec_spOver_y t n φ hφ) w = GlobalTheory.AugCot.sqZeroEquiv (Bialgebra.counitAlgHom O (G.A n)) M ⟨φ, hφ⟩ (cn t n w)) := by
   intro p O _ G A _ t nat M _ _ _ _ n φ hφ w
   have e : spOver φ ≫ t.y n = GlobalTheory.GrpTangent.sqZeroMap

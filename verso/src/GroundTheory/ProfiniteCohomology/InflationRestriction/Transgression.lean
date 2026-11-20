@@ -13,6 +13,9 @@ variable {k G : Type u} [CommRing k] [Group G] [TopologicalSpace G] [IsTopologic
 
 section Class
 
+/- English proof (translation)
+The claim follows from `cocycleOneApply_mul A N z`.
+-/
 theorem isCocycleOne_cocycleOneApply (z : cocycles (Rep.res N.subtype A) 1) :
     IsCocycleOne A N (cocycleOneApply A N z) :=
   cocycleOneApply_mul A N z
@@ -27,12 +30,42 @@ noncomputable def tgClass (z : cocycles (Rep.res N.subtype A) 1) {y : G → A}
 
 omit [IsTopologicalGroup G] in
 
+/- English proof (translation)
+Use `conv_lhs => rw [← QuotientGroup.out_eq' c]`. Both sides reduce to the same expression.
+-/
 theorem quotientToInvariants_ρ_apply_coe (c : G ⧸ N) (w : Representation.invariants (A.ρ.comp N.subtype)) :
     (((A.quotientToInvariants N).ρ c w : Representation.invariants (A.ρ.comp N.subtype)) : A) =
       A.ρ c.out w := by
   conv_lhs => rw [← QuotientGroup.out_eq' c]
   rfl
 
+/- English proof (translation)
+Establish `h0 : (cohomologyπ _ (0 + 1)).hom (z' - z) = 0`. Rewrite using `[map_sub, ← hzz, sub_self]`. Take `⟨w, hw⟩` from `(homologyπ_succ_eq_zero_iff _ 0 _).1 h0`. Use `set a : A := w.1 Fin.elim0`. Establish `ha : ∀ n : N, cocycleOneApply A N z' n - cocycleOneApply A N z n = A.ρ n a - a`.
+
+Introduce `n`. Use `congrArg (fun c : locallyConstantCochains (Rep.res N.subtype A) 1 => c.1 fun _ => n) hw` as an intermediate fact. Simplify using `only [map_sub] at this`. Conclude with `this.symm.trans (cochainsComplex_d_zero_apply (Rep.res N.subtype A) w fun _ => n)`. Use `set V : G → A := fun g => y' g - y g - (A.ρ g a - a)`.
+
+Establish `hVr : ∀ (g : G) (n : N), V (g * n) = V g`. Introduce `g n`. Simplify using `only [V, hy.mul_right, hy'.mul_right, map_mul, Module.End.mul_apply]`. Rewrite using `[show cocycleOneApply A N z' n = cocycleOneApply A N z n + (A.ρ n a - a) by`. Rewrite using `[← ha]`.
+
+Use the proof step `abel, map_add, map_sub]`. Normalize the expressions using the abelian group laws. Establish `hVi : ∀ (h : G) (n : N), A.ρ n (V h) = V h`. Introduce `h n`. Establish `c1` using `hy.conj h n`.
+
+Establish `c2` using `hy'.conj h n`. Rewrite `c2` using `[show cocycleOneApply A N z' (GroundTheory.GroupCoh.conjHom N h n) = cocycleOneApply A N z (GroundTheory.GroupCoh.conjHom N h n) + (A.ρ (GroundTheory.GroupCoh.conjHom N h n) a - a) by rw [← ha]; abel, show cocycleOneApply A N z' n = cocycleOneApply A N z n + (A.ρ n a - a) by rw [ …`. Simplify using `only [V, map_sub, ← Module.End.mul_apply, ← map_mul]`. Rewrite `c2` using `[show h * (h⁻¹ * (n : G) * h) = n * h by group]`. Rewrite using `[← sub_eq_zero]`.
+
+Establish `e : A.ρ n (y' h) - y' h = A.ρ n (y h) - y h + (A.ρ (n * h) a - A.ρ h a - (A.ρ n a - a))`. Rewrite using `[← c1, ← c2]`. Normalize the expressions using the abelian group laws. Rewrite using `[show A.ρ (n : G) (y' h) = y' h + (A.ρ n (y h) - y h + (A.ρ (n * h) a - A.ρ h a - (A.ρ n a - a))) by rw [← e]; abel]`. Simplify using `only [Module.End.mul_apply, map_mul]`.
+
+Normalize the expressions using the abelian group laws. Establish `hVc : IsLocallyConstant V` using `(hyc'.sub hyc).sub ((isLocallyConstant_apply A a).sub (IsLocallyConstant.const a))`. Establish `hVeq : ∀ g g' : G, (g : G ⧸ N) = g' → V g = V g'`. Introduce `g g' h`. Establish `hm : g⁻¹ * g' ∈ N` using `QuotientGroup.eq.mp h`.
+
+Rewrite using `[show g' = g * ((⟨g⁻¹ * g', hm⟩ : N) : G) by simp, hVr]`. Set `W : locallyConstantCochains (A.quotientToInvariants N) 1` to `⟨fun c => ⟨V (c 0).out, fun n => hVi _ n⟩, by`. Set `q : (Fin 1 → G) → (Fin 1 → G ⧸ N)` to `Pi.map fun _ => QuotientGroup.mk`. Establish `hq : Topology.IsQuotientMap q` using `(IsOpenQuotientMap.piMap fun _ => QuotientGroup.isOpenQuotientMap_mk).isQuotientMap`. Use `isLocallyConstant_of_comp_isQuotientMap hq ?_` and prove the remaining obligations.
+
+Use `IsLocallyConstant.desc _ Subtype.val ?_ Subtype.val_injective` and prove the remaining obligations. Establish `: (Subtype.val ∘ ((fun c : Fin 1 → G ⧸ N => (⟨V (c 0).out, fun n => hVi _ n⟩ : Representation.invariants (A.ρ.comp N.subtype))) ∘ q)) = fun g : Fin 1 → G => V (g 0)`. Use function extensionality and compare the values at `g`. Conclude with `hVeq _ _ (QuotientGroup.out_eq' _)`. Rewrite using `[this]`.
+
+Conclude with `hVc.comp_continuous (continuous_apply 0)⟩`. Establish `hW : ((cochainsComplex (A.quotientToInvariants N)).d 1 (1 + 1)).hom W = tgCochain (isCocycleOne_cocycleOneApply A N z') hy' hyc' - tgCochain (isCocycleOne_cocycleOneApply A N z) hy hyc`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `c`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Establish `hd` using `congrArg Subtype.val (cochainsComplex_d_one_apply (A.quotientToInvariants N) W c)`. Use `hd.trans ?_` and prove the remaining obligations. Establish `hq : ∀ (c : G ⧸ N) (w : Representation.invariants (A.ρ.comp N.subtype)), ((A.ρ.quotientToInvariants N c w : Representation.invariants (A.ρ.comp N.subtype)) : A) = A.ρ c.out w` using `fun c w => quotientToInvariants_ρ_apply_coe c w`. Simplify using `only [Submodule.coe_add, Submodule.coe_sub]`. Rewrite using `[hq]`.
+
+Express the relevant statement in the definitionally equal form `A.ρ (c 0).out (V (c 1).out) - V (c 0 * c 1).out + V (c 0).out = tgDiff A y' (c 0).out (c 1).out - tgDiff A y (c 0).out (c 1).out`. Rewrite using `[hVeq (c 0 * c 1).out ((c 0).out * (c 1).out) (by`. Rewrite using `[QuotientGroup.mk_mul, QuotientGroup.out_eq', QuotientGroup.out_eq', QuotientGroup.out_eq'])]`. Simplify using `only [V, tgDiff, map_sub, map_mul, Module.End.mul_apply]`. Normalize the expressions using the abelian group laws.
+
+Conclude with `(cohomologyπ_cocycleOf_eq 1 _ _ _ _ W hW).symm`.
+-/
 theorem tgClass_eq (z z' : cocycles (Rep.res N.subtype A) 1)
     (hzz : (cohomologyπ _ 1).hom z = (cohomologyπ _ 1).hom z') {y y' : G → A}
     (hy : IsTgLift A N (cocycleOneApply A N z) y) (hyc : IsLocallyConstant y)
@@ -115,12 +148,18 @@ theorem tgClass_eq (z z' : cocycles (Rep.res N.subtype A) 1)
     abel
   exact (cohomologyπ_cocycleOf_eq 1 _ _ _ _ W hW).symm
 
+/- English proof (translation)
+Use function extensionality and compare the values at `n`. Simplify using `only [cocycleOneApply, map_add]`. Both sides reduce to the same expression.
+-/
 theorem cocycleOneApply_add (z z' : cocycles (Rep.res N.subtype A) 1) :
     cocycleOneApply A N (z + z') = cocycleOneApply A N z + cocycleOneApply A N z' := by
   funext n
   simp only [cocycleOneApply, map_add]
   rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `n`. Simplify using `only [cocycleOneApply, map_smul]`. Both sides reduce to the same expression.
+-/
 theorem cocycleOneApply_smul (r : k) (z : cocycles (Rep.res N.subtype A) 1) :
     cocycleOneApply A N (r • z) = r • cocycleOneApply A N z := by
   funext n
@@ -128,6 +167,11 @@ theorem cocycleOneApply_smul (r : k) (z : cocycles (Rep.res N.subtype A) 1) :
   rfl
 
 omit [TopologicalSpace G] [IsTopologicalGroup G] [IsDiscreteRep A] in
+/- English proof (translation)
+Simplify using `[hy.map_one, hy'.map_one] mul_right g n := by`. Simplify using `only [Pi.add_apply, hy.mul_right, hy'.mul_right, map_add]`. Normalize the expressions using the abelian group laws. Use `conj h n := by`. Simplify using `only [Pi.add_apply, map_add]`.
+
+Rewrite using `[show A.ρ h (x _) + A.ρ h (x' _) - (x n + x' n) = (A.ρ h (x (GroundTheory.GroupCoh.conjHom N h n)) - x n) + (A.ρ h (x' (GroundTheory.GroupCoh.conjHom N h n)) - x' n) by abel, hy.conj, hy'.conj]`. Normalize the expressions using the abelian group laws.
+-/
 theorem IsTgLift.add {x x' : N → A} {y y' : G → A} (hy : IsTgLift A N x y)
     (hy' : IsTgLift A N x' y') : IsTgLift A N (x + x') (y + y') where
   map_one := by simp [hy.map_one, hy'.map_one]
@@ -142,6 +186,9 @@ theorem IsTgLift.add {x x' : N → A} {y y' : G → A} (hy : IsTgLift A N x y)
     abel
 
 omit [TopologicalSpace G] [IsTopologicalGroup G] [IsDiscreteRep A] in
+/- English proof (translation)
+Simplify using `[hy.map_one] mul_right g n := by`. Simplify using `only [Pi.smul_apply, hy.mul_right, map_smul, smul_add]`. Use `conj h n := by`. Simplify using `only [Pi.smul_apply, map_smul]`. Rewrite using `[← smul_sub, hy.conj, smul_sub]`.
+-/
 theorem IsTgLift.smul (r : k) {x : N → A} {y : G → A} (hy : IsTgLift A N x y) :
     IsTgLift A N (r • x) (r • y) where
   map_one := by simp [hy.map_one]
@@ -151,6 +198,11 @@ theorem IsTgLift.smul (r : k) {x : N → A} {y : G → A} (hy : IsTgLift A N x y
     simp only [Pi.smul_apply, map_smul]
     rw [← smul_sub, hy.conj, smul_sub]
 
+/- English proof (translation)
+Simplify using `only [tgClass]`. Rewrite using `[← map_add]`. Use `congr 1`. Rewrite using `[cocycleOf_eq_iff, map_add, iCycles_cocycleOf, iCycles_cocycleOf]`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Use function extensionality and compare the values at `c`. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `tgDiff A y _ _ + tgDiff A y' _ _ = tgDiff A (y + y') _ _`. Simplify using `only [tgDiff, Pi.add_apply, map_add]`. Normalize the expressions using the abelian group laws.
+-/
 theorem tgClass_add (z z' : cocycles (Rep.res N.subtype A) 1) {y y' : G → A}
     (hy : IsTgLift A N (cocycleOneApply A N z) y) (hyc : IsLocallyConstant y)
     (hy' : IsTgLift A N (cocycleOneApply A N z') y') (hyc' : IsLocallyConstant y')
@@ -167,6 +219,11 @@ theorem tgClass_add (z z' : cocycles (Rep.res N.subtype A) 1) {y y' : G → A}
   simp only [tgDiff, Pi.add_apply, map_add]
   abel
 
+/- English proof (translation)
+Simplify using `only [tgClass]`. Rewrite using `[← map_smul]`. Use `congr 1`. Rewrite using `[cocycleOf_eq_iff, map_smul, iCycles_cocycleOf]`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Use function extensionality and compare the values at `c`. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `r • tgDiff A y _ _ = tgDiff A (r • y) _ _`. Simplify using `only [tgDiff, Pi.smul_apply, map_smul, smul_add, smul_sub]`.
+-/
 theorem tgClass_smul (r : k) (z : cocycles (Rep.res N.subtype A) 1) {y : G → A}
     (hy : IsTgLift A N (cocycleOneApply A N z) y) (hyc : IsLocallyConstant y)
     (hs : IsTgLift A N (cocycleOneApply A N (r • z)) (r • y)) :
@@ -189,6 +246,9 @@ def IsTransgression (h : cohomology (Rep.res N.subtype A) 1)
     (hy : IsTgLift A N (cocycleOneApply A N z) y) (hyc : IsLocallyConstant y),
     (cohomologyπ _ 1).hom z = h ∧ tgClass z hy hyc = t
 
+/- English proof (translation)
+Take `⟨z, y, hy, hyc, hz, rfl⟩` from `ht`. Take `⟨z', y', hy', hyc', hz', rfl⟩` from `ht'`. Conclude with `tgClass_eq z z' (hz.trans hz'.symm) hy hyc hy' hyc'`.
+-/
 theorem IsTransgression.unique {h : cohomology (Rep.res N.subtype A) 1}
     {t t' : cohomology (A.quotientToInvariants N) 2} (ht : IsTransgression A N h t)
     (ht' : IsTransgression A N h t') : t = t' := by
@@ -196,6 +256,11 @@ theorem IsTransgression.unique {h : cohomology (Rep.res N.subtype A) 1}
   obtain ⟨z', y', hy', hyc', hz', rfl⟩ := ht'
   exact tgClass_eq z z' (hz.trans hz'.symm) hy hyc hy' hyc'
 
+/- English proof (translation)
+Take `⟨z, y, hy, hyc, hz, rfl⟩` from `ht`. Take `⟨z', y', hy', hyc', hz', rfl⟩` from `ht'`. Establish `hs : IsTgLift A N (cocycleOneApply A N (z + z')) (y + y')`. Rewrite using `[cocycleOneApply_add]`. Conclude with `hy.add hy'`.
+
+Conclude with `⟨z + z', y + y', hs, hyc.add hyc', by rw [map_add, hz, hz'], tgClass_add z z' hy hyc hy' hyc' hs⟩`.
+-/
 theorem IsTransgression.add {h h' : cohomology (Rep.res N.subtype A) 1}
     {t t' : cohomology (A.quotientToInvariants N) 2} (ht : IsTransgression A N h t)
     (ht' : IsTransgression A N h' t') : IsTransgression A N (h + h') (t + t') := by
@@ -207,6 +272,9 @@ theorem IsTransgression.add {h h' : cohomology (Rep.res N.subtype A) 1}
   exact ⟨z + z', y + y', hs, hyc.add hyc', by rw [map_add, hz, hz'],
     tgClass_add z z' hy hyc hy' hyc' hs⟩
 
+/- English proof (translation)
+Take `⟨z, y, hy, hyc, hz, rfl⟩` from `ht`. Establish `hs : IsTgLift A N (cocycleOneApply A N (r • z)) (r • y)`. Rewrite using `[cocycleOneApply_smul]`. Conclude with `hy.smul r`. Conclude with `⟨r • z, r • y, hs, hyc.comp (r • ·), by rw [map_smul, hz], tgClass_smul r z hy hyc hs⟩`.
+-/
 theorem IsTransgression.smul (r : k) {h : cohomology (Rep.res N.subtype A) 1}
     {t : cohomology (A.quotientToInvariants N) 2} (ht : IsTransgression A N h t) :
     IsTransgression A N (r • h) (r • t) := by
@@ -223,11 +291,45 @@ section Existence
 variable [CompactSpace G] [TotallyDisconnectedSpace G]
 
 omit [CompactSpace G] [TotallyDisconnectedSpace G] in
+/- English proof (translation)
+The claim follows from `(((cochainsComplex (Rep.res N.subtype A)).iCycles 1).hom z).2.comp_continuous (continuous_pi fun _ => continuous_id)`.
+-/
 theorem isLocallyConstant_cocycleOneApply (z : cocycles (Rep.res N.subtype A) 1) :
     IsLocallyConstant (cocycleOneApply A N z) :=
   (((cochainsComplex (Rep.res N.subtype A)).iCycles 1).hom z).2.comp_continuous
     (continuous_pi fun _ => continuous_id)
 
+/- English proof (translation)
+Use `set X := cocycleOneApply A N z with hXdef`. Establish `hXlc : IsLocallyConstant X` using `isLocallyConstant_cocycleOneApply A N z`. Establish `hXc : IsCocycleOne A N X` using `isCocycleOne_cocycleOneApply A N z`. Establish `hX1 : X 1 = 0`. Use `hXc 1 1` as an intermediate fact.
+
+Simplify using `using this`. Take `⟨s, hs, hsec, hs1⟩` from `exists_continuous_section N hN`. Establish `: CompactSpace N` using `isCompact_iff_compactSpace.mp hN.isCompact`. Set `φ : G ⧸ N → N → A` to `fun c n => A.ρ (s c) (X (GroundTheory.GroupCoh.conjHom N (s c) n)) - X n`. Set `S : G ⧸ N → Set A` to `fun c => {a | ∀ n, φ c n = A.ρ n a - a}`.
+
+Establish `hne : ∀ c, ∃ a, a ∈ S c` using `fun c => (cohomologyConj_π_eq_iff A N z (s c)).1 (hz (s c))`. Set `b₀ : G ⧸ N → A` to `fun c => Classical.epsilon fun a => a ∈ S c`. Establish `hb₀ : ∀ c, b₀ c ∈ S c` using `fun c => Classical.epsilon_spec (hne c)`. Establish `hΦ : IsLocallyConstant fun p : (G ⧸ N) × N => φ p.1 p.2`. Establish `hconj : Continuous fun p : (G ⧸ N) × N => GroundTheory.GroupCoh.conjHom N (s p.1) p.2` using `Continuous.subtype_mk (((hs.comp continuous_fst).inv.mul (continuous_subtype_val.comp continuous_snd)).mul (hs.comp continuous_fst)) _`.
+
+Conclude with `(isLocallyConstant_ρ_apply A (hs.comp continuous_fst) (hXlc.comp_continuous hconj)).sub (hXlc.comp_continuous continuous_snd)`. Establish `hφ : ∀ c₀, ∀ᶠ c in nhds c₀, φ c = φ c₀`. Introduce `c₀`. Establish `key` using `(isCompact_univ : IsCompact (Set.univ : Set N)).eventually_forall_of_forall_eventually (x₀ := c₀) (P := fun c n => φ c n = φ c₀ n) fun n _ => by`. Establish `h1` using `hΦ.eventually_eq (c₀, n)`.
+
+Establish `h2 : ∀ᶠ p in nhds (c₀, n), φ c₀ p.2 = φ c₀ n` using `(continuous_snd.tendsto (c₀, n)).eventually ((hΦ.comp_continuous (continuous_const.prodMk continuous_id)).eventually_eq n)`. Use `filter_upwards [h1, h2] with p hp1 hp2`. Conclude with `hp1.trans hp2.symm`. Use `filter_upwards [key] with c hc`. Use function extensionality and compare the values at `n`.
+
+Conclude with `hc n (Set.mem_univ n)`. Establish `hb₀lc : IsLocallyConstant b₀`. Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `c₀`. Use `filter_upwards [hφ c₀] with c hc`.
+
+Simplify using `only [b₀, S, hc]`. Set `b : G ⧸ N → A` to `fun c => b₀ c - b₀ 1`. Establish `hφ1 : ∀ n, φ 1 n = 0`. Introduce `n`. Establish `e : GroundTheory.GroupCoh.conjHom N 1 n = n` using `Subtype.ext (by simp)`.
+
+Simplify using `only [φ, hs1, e, map_one, Module.End.one_apply, sub_self]`. Establish `hb : ∀ c n, φ c n = A.ρ n (b c) - b c`. Introduce `c n`. Establish `h1` using `hb₀ c n`. Establish `h2` using `hb₀ 1 n`.
+
+Rewrite `h2` using `[hφ1]`. Simplify using `only [b, map_sub]`. Rewrite using `[h1, ← sub_eq_zero]`. Rewrite using `[show A.ρ (n : G) (b₀ c) - b₀ c - (A.ρ n (b₀ c) - A.ρ n (b₀ 1) - (b₀ c - b₀ 1)) = A.ρ n (b₀ 1) - b₀ 1 by abel, ← h2]`. Establish `hr1 : sectionRetraction N hsec 1 = 1` using `Subtype.ext (by rw [coe_sectionRetraction, QuotientGroup.mk_one, hs1]; simp)`.
+
+Use `⟨fun g => b g + A.ρ (s g) (X (sectionRetraction N hsec g)), ⟨?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Simplify using `[b, hs1, hr1, hX1]`. Introduce `g n beta_reduce`. Rewrite using `[mk_mul_mem N g n, sectionRetraction_mul N hsec, hXc, map_add, ← Module.End.mul_apply, ← map_mul, section_mul_sectionRetraction N hsec]`. Normalize the expressions using the abelian group laws.
+
+Introduce `h n set c : G ⧸ N := (h : G ⧸ N) with hcdef set m : N := sectionRetraction N hsec h with hmdef`. Establish `hh : s c * (m : G) = h` using `section_mul_sectionRetraction N hsec h`. Use `set n' : N := GroundTheory.GroupCoh.conjHom N (s c) n with hn'def`. Establish `F1 : GroundTheory.GroupCoh.conjHom N h n = GroundTheory.GroupCoh.conjHom N m n'` using `Subtype.ext (by simp only [GroundTheory.GroupCoh.coe_conjHom_apply, hn'def]; rw [← hh]; group)`. Establish `e : m * GroundTheory.GroupCoh.conjHom N m n' = n' * m` using `Subtype.ext (by simp only [Subgroup.coe_mul, GroundTheory.GroupCoh.coe_conjHom_apply]; group)`.
+
+Establish `F2` using `hXc m (GroundTheory.GroupCoh.conjHom N m n')`. Rewrite `F2` using `[e, hXc n' m]`. Establish `F2' : A.ρ m (X (GroundTheory.GroupCoh.conjHom N m n')) = X n' + A.ρ n' (X m) - X m`. Rewrite using `[F2]`. Normalize the expressions using the abelian group laws.
+
+Establish `F3` using `hb c n`. Establish `F4 : s c * (n' : G) = n * s c`. Simplify using `only [hn'def, GroundTheory.GroupCoh.coe_conjHom_apply]`. Use `group`. Use `show A.ρ h (X (GroundTheory.GroupCoh.conjHom N h n)) - X n = A.ρ n (b c + A.ρ (s c) (X m)) - (b c + A.ρ (s c) (X m))`.
+
+Rewrite using `[F1, ← hh, map_mul, Module.End.mul_apply, F2', map_sub, map_add, ← Module.End.mul_apply (A.ρ (s c)) (A.ρ n'), ← map_mul, F4, map_mul, Module.End.mul_apply]`. Establish `F3' : A.ρ (s c) (X n') = X n + (A.ρ n (b c) - b c)`. Rewrite using `[← F3]`. Simplify using `only [φ, hn'def]`. Normalize the expressions using the abelian group laws.
+
+Rewrite using `[F3', map_add]`. Normalize the expressions using the abelian group laws. Conclude with `((hb₀lc.sub (IsLocallyConstant.const _)).comp_continuous QuotientGroup.continuous_mk).add (isLocallyConstant_ρ_apply A (hs.comp QuotientGroup.continuous_mk) (hXlc.comp_continuous (continuous_sectionRetraction N hs hsec)))`.
+-/
 theorem exists_isTgLift (hN : IsClosed (N : Set G)) (z : cocycles (Rep.res N.subtype A) 1)
     (hz : (cohomologyπ _ 1).hom z ∈ cohomologyConjInvariants A N 1) :
     ∃ y : G → A, IsTgLift A N (cocycleOneApply A N z) y ∧ IsLocallyConstant y := by
@@ -321,6 +423,9 @@ theorem exists_isTgLift (hN : IsClosed (N : Set G)) (z : cocycles (Rep.res N.sub
       (isLocallyConstant_ρ_apply A (hs.comp QuotientGroup.continuous_mk)
         (hXlc.comp_continuous (continuous_sectionRetraction N hs hsec)))
 
+/- English proof (translation)
+Take `⟨z, rfl⟩` from `homologyπ_surjective (cochainsComplex (Rep.res N.subtype A)) 1 h`. Take `⟨y, hy, hyc⟩` from `exists_isTgLift A N hN z hh`. Conclude with `⟨tgClass z hy hyc, z, y, hy, hyc, rfl, rfl⟩`.
+-/
 theorem exists_isTransgression (hN : IsClosed (N : Set G)) (h : cohomology (Rep.res N.subtype A) 1)
     (hh : h ∈ cohomologyConjInvariants A N 1) : ∃ t, IsTransgression A N h t := by
   obtain ⟨z, rfl⟩ := homologyπ_surjective (cochainsComplex (Rep.res N.subtype A)) 1 h
@@ -338,10 +443,16 @@ noncomputable def transgression (hN : IsClosed (N : Set G)) :
     (Classical.choose_spec (exists_isTransgression A N hN (r • h).1 (r • h).2)).unique
       ((Classical.choose_spec (exists_isTransgression A N hN h.1 h.2)).smul r)
 
+/- English proof (translation)
+The claim follows from `Classical.choose_spec (exists_isTransgression A N hN h.1 h.2)`.
+-/
 theorem isTransgression_transgression (hN : IsClosed (N : Set G))
     (h : cohomologyConjInvariants A N 1) : IsTransgression A N h (transgression A N hN h) :=
   Classical.choose_spec (exists_isTransgression A N hN h.1 h.2)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun e => e ▸ isTransgression_transgression A N hN h, fun ht => (isTransgression_transgression A N hN h).unique ht⟩`.
+-/
 theorem transgression_eq_iff (hN : IsClosed (N : Set G)) (h : cohomologyConjInvariants A N 1)
     (t : cohomology (A.quotientToInvariants N) 2) :
     transgression A N hN h = t ↔ IsTransgression A N h t :=

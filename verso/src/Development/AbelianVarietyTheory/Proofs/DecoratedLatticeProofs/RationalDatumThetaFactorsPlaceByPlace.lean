@@ -14,17 +14,28 @@ noncomputable section
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.L2.Theta Formalism.IndefR Formalism.IndefR.Datum MeasureTheory Matrix ValuativeRel GlobalTheory.MixModel GlobalTheory.MixPer GlobalTheory.Unf GlobalTheory.SplitWeil GlobalTheory.SeeSaw GlobalTheory.AdForm GlobalTheory.LocMod
 namespace GlobalTheory.LocMod
 
+/- English proof (translation)
+Establish `h` using `p.ι_π 1`. Rewrite `h` using `[map_one, mul_one]`. Rewrite using `[← h, p.π_ι]`.
+-/
 theorem pi_e_self {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (p : Place D k) : p.π p.e = 1 := by
   have h := p.ι_π 1
   rw [map_one, mul_one] at h
   rw [← h, p.π_ι]
 
+/- English proof (translation)
+Use `congrArg p.π h` as an intermediate fact. Rewrite `this` using `[map_mul, pi_e_self, mul_one, map_zero]`. Then use the resulting hypothesis.
+-/
 theorem pi_eq_zero_of {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (p : Place D k) {e : AE D} (h : e * p.e = 0) : p.π e = 0 := by
   have := congrArg p.π h
   rwa [map_mul, pi_e_self, mul_one, map_zero] at this
 
+/- English proof (translation)
+Unfold `Place.up Place.down`. Establish `hM : FT.β * (FT.γ * (t : Matrix (Fin T.rank) (Fin S.rank) (AE D)).map p.π * FS.β) * FS.γ = (t : Matrix (Fin T.rank) (Fin S.rank) (AE D)).map p.π`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, FT.βγ, Matrix.one_mul, Matrix.mul_assoc, FS.βγ, Matrix.mul_one]`. Rewrite using `[hM]`. Use extensionality with `i j`.
+
+Simplify using `only [Matrix.map_apply, p.ι_π]`.
+-/
 theorem up_down_eq {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (p : Place D k) {S T : HSp D} {Y Y' : Type} [Fintype Y] [DecidableEq Y] [Fintype Y'] [DecidableEq Y']
     (FS : Frame k S.rank Y') (FT : Frame k T.rank Y) (t : WO S T) :
@@ -37,6 +48,21 @@ theorem up_down_eq {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSp
   ext i j
   simp only [Matrix.map_apply, p.ι_π]
 
+/- English proof (translation)
+Introduce `D k _ _ _ _ p ψ hψ _hdense S T Y Y' _ _ _ _ FS FT P PP e hPP hIdemAt hE hE' hstd Ξ Ξ' Ξk hΞk hΞ' c hc f₀ f f' hf₀ hvac hf hf'`. Take `⟨Φ, hΦSB, hΦrat, hθ⟩` from `hf`. Take `⟨Φ', hΦ'SB, hΦ'rat, hθ'⟩` from `hf'`. Take `⟨T', hT'⟩` from `hθ'.1`. Establish `hf'T : f' = T' Φ'` using `hθ'.2 T' hT'`.
+
+Establish `horth : e * p.e = 0` using `GlobalTheory.T.splitPlaceIdempotent_mul_idemSum_eq_zero_of_not_mem D k p P PP e hPP hIdemAt hE`. Establish `hstabp` using `GlobalTheory.T.standardLatticeHomCompletion_stable_splitIdempotent D S T p.e p.split`. Establish `hθT'` using `GlobalTheory.T.placeModel_standardLattice_values_are_theta D ψ hψ S T _ (e + p.e) hE' f₀ T' hf₀ hvac hT'`. Establish `hsb` using `GlobalTheory.T.isSchwartzBruhat_tensor_half_add_placeIdempotent D k p S T Y Y' FS FT e horth hstd hstabp Φ hΦSB`. Establish `hmodel` using `GlobalTheory.T.isLocalModel_tensorWithHalfFunction D k p ψ S T Y Y' FS FT e horth Φ hΦSB.1 f₀ T' hT' hθT' hsb`.
+
+Establish `hvacm` using `GlobalTheory.T.isPlaceModel_tensorIntegralIndicator D k p ψ S T Y Y' FS FT e horth hstd hstabp f₀ T' hT' (fun Φ₁ h₁ => GlobalTheory.T.isSchwartzBruhat_tensor_half_add_placeIdempotent D k p S T Y Y' FS FT e horth hstd hstabp Φ₁ h₁ _ (GlobalTheory.T.splitPlaceIntegralMatrixIndicato …`. Establish `hfT : f = T' (p.tensorOne FS FT Φ)` using `hθ.2 _ hvacm`. Establish `hπe : p.π e = 0` using `pi_eq_zero_of p horth`. Establish `hpe2 : p.e * p.e = p.e` using `p.split.1`. Establish `hid : Φ' = p.tensorAt FS FT Φ Ξk`.
+
+Use `GlobalTheory.T.schwartzBruhat_half_eq_of_eq_on_rational D S T _ (e + p.e) hE' Φ' _ hΦ'SB (hsb Ξk hΞk) fun γ => ?_` and prove the remaining obligations. Rewrite using `[hΦ'rat, hΞ']`. Establish `hd : p.down FS FT (γ.map fun a => (e + p.e) * incA D a) = FT.γ * γ.map p.pr * FS.β`. Unfold `Place.down`. Use `congr 2`.
+
+Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, map_mul, map_add, hπe, pi_e_self, zero_add, one_mul, Place.pr]`. Establish `hs : (γ.map fun a => (e + p.e) * incA D a) - p.up FS FT (p.down FS FT (γ.map fun a => (e + p.e) * incA D a)) = γ.map fun a => e * incA D a`. Rewrite using `[up_down_eq]`. Use extensionality with `i j`.
+
+Simplify using `only [Matrix.sub_apply, Matrix.map_apply]`. Establish `h2 : p.e * e = 0` using `by rw [mul_comm]; exact horth`. Take the linear combination `(-(incA D (γ i j))) * h2 + (-(incA D (γ i j))) * hpe2`. Simplify using `only [Place.tensorAt]`. Rewrite using `[hs, hd, hΦrat]`.
+
+Establish `key` using `hc.2 (T' ∘ₗ p.tensorL FS FT Φ) hmodel ⟨Place.intInd Y Y', GlobalTheory.T.splitPlaceIntegralMatrixIndicator_mem_schwartzBruhat k Y Y'⟩ ⟨Ξk, hΞk⟩ rfl rfl`. Rewrite using `[hf'T, hid, hfT]`. Simplify `key` using `only [LinearMap.comp_apply, Place.tensorL_apply, Place.tensorOne_apply]`.
+-/
 theorem ratDatum_factor : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (p : Place D k) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → DenseRange p.pr → ∀ (S T : HSp D) (Y Y' : Type) [Fintype Y] [DecidableEq Y] [Fintype Y'] [DecidableEq Y'] (FS : Frame k S.rank Y') (FT : Frame k T.rank Y) (P : Finset (Formalism.L2.DIV.Pl D.host.E)) (PP : Formalism.L2.DIV.Pl D.host.E) (e : AE D), PP ∉ P → Formalism.L2.NTheta.IsIdemAt p.e PP → IsIdemSum e P → IsIdemSum (e + p.e) (@insert _ _ (@Finset.instInsert _ (Classical.decEq _)) PP P) → (∀ x : Matrix Y Y' k, (∀ r q, x r q ∈ 𝒪[k]) ↔ p.up FS FT x ∈ stdHom S T) → ∀ (Ξ Ξ' : Matrix (Fin T.rank) (Fin S.rank) D.host.E → ℂ) (Ξk : Matrix Y Y' k → ℂ), Ξk ∈ SB (Matrix Y Y' k) → (∀ γ, Ξ' γ = Ξ γ * Ξk (FT.γ * γ.map p.pr * FS.β)) → ∀ c, p.IsCombAt ψ FS FT c Ξk → ∀ f₀ f f', IsThetaFunO ψ S T f₀ → IsLatVac (heisO ψ S T) (stdHom S T) f₀ → IsRatDatum ψ S T e Ξ f₀ f → IsRatDatum ψ S T (e + p.e) Ξ' f₀ f' → f' = comb ψ S T c f := by
   intro D k _ _ _ _ p ψ hψ _hdense S T Y Y' _ _ _ _ FS FT P PP e hPP hIdemAt hE hE' hstd Ξ Ξ' Ξk hΞk hΞ' c hc f₀ f f' hf₀ hvac hf hf'
   obtain ⟨Φ, hΦSB, hΦrat, hθ⟩ := hf

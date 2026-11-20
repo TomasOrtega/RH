@@ -12,6 +12,27 @@ open scoped Matrix
 
 namespace GlobalTheory.HilbertThetaSeries
 
+/- English proof (translation)
+Introduce `F _ _ _ p _ ι κ _ _ G S t hL Φ hΦ`. Take `⟨⟨N, hN, hNp, hSB⟩, hinv, hbd, h0⟩` from `hΦ`. Establish `hp : p.Prime` using `Fact.out`. Take `⟨hQ, hact, -, -⟩` from `_root_.GlobalTheory.T.intMatrix_isometry_prime_order_lattice_stability F p hp κ G S t hL`. Take `⟨hTP, -, hfin⟩` from `_root_.GlobalTheory.T.evenPosGram_quadForm_totallyPositive_properness F κ G hL.pos`.
+
+Take `⟨B, hB⟩` from `((_root_.GlobalTheory.T.lattice_periodic_function_range_finite F κ N Φ hN hSB).image (fun w => ‖w‖)).bddAbove`. Establish `hB' : ∀ x, ‖Φ x‖ ≤ B` using `fun x => hB ⟨Φ x, ⟨x, rfl⟩, rfl⟩`. Take `⟨-, -, -, hq⟩` from `_root_.GlobalTheory.T.thetaSeries_holomorphic_qExpansion_of_bounded_coeff F κ G hL.pos ((N:F)⁻¹) Φ B hSB.1 hB'`. Establish `hc` using `(_root_.GlobalTheory.T.qExpansion_linear_combination F _ _ _ _ (1:ℂ) hq hq).2.2.2`. Establish `hq1` using `(_root_.GlobalTheory.T.qExpansion_linear_combination F _ _ _ _ (1:ℂ) hq hc).2.2.1`.
+
+Use `⟨_, hq1, fun ξ => ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.sub_apply]`. Establish `hfs` using `hfin ((N:F)⁻¹) ξ`. Rewrite using `[finsum_mem_eq_finite_toFinset_sum _ hfs]`. Distinguish the cases in `hξ : ξ = 0`.
+
+Substitute `hξ` using the available equality. Establish `hz : hfs.toFinset = {0}`. Use extensionality with `x`. Simplify using `only [Set.Finite.mem_toFinset, Set.mem_setOf_eq, Finset.mem_singleton]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨-, hx⟩`. Assume the negation of the conclusion as `hne`. Establish `h1` using `hTP x hne`. Rewrite `h1` using `[hx]`. Take `⟨v⟩` from `(inferInstance : Nonempty (NumberField.InfinitePlace F))`.
+
+Establish `h2` using `h1 v`. Simplify using `[reAt] at h2`. Introduce and unpack `rfl`. Conclude with `⟨zero_mem _, by simp [QF, BF]⟩`. Rewrite using `[hz, Finset.sum_singleton, if_pos rfl, map_sub, map_one]`.
+
+Conclude with `h0`. Rewrite using `[if_neg hξ, sub_zero]`. Apply `_root_.GlobalTheory.T.norm_sum_free_orbits_le_inv_prime p ι (κ → F) (fun x => S.map Int.cast *ᵥ x) hfs.toFinset Φ` to reduce the goal to its premises. Introduce `x hx`. Simplify using `only [Set.Finite.mem_toFinset, Set.mem_setOf_eq] at hx ⊢`.
+
+Conclude with `⟨((hact x).2.2.2 _).2 hx.1, ((hQ x x).2).trans hx.2⟩`. Introduce `x _`. Conclude with `(hact x).1`. Introduce `x hx h`. Simplify using `only [Set.Finite.mem_toFinset, Set.mem_setOf_eq] at hx`.
+
+Apply `hξ` to reduce the goal to its premises. Rewrite using `[← hx.2, (hact x).2.1 h]`. Simplify using `[QF, BF]`. Introduce `x _`. Conclude with `hinv x`.
+
+Introduce `x _`. Conclude with `hbd x`.
+-/
 theorem th_congr_one : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (p : ℕ) [Fact p.Prime] (ι : Qbar p ≃+* ℂ) (κ : Type) [Fintype κ] [DecidableEq κ] (G S : Matrix κ κ ℤ) (t : ℕ), LatD p G S t → ∀ Φ : (κ → F) → ℂ, Good ι S Φ → Small ι (p : ℝ)⁻¹ (th G Φ - 1) := by
   intro F _ _ _ p _ ι κ _ _ G S t hL Φ hΦ
   obtain ⟨⟨N, hN, hNp, hSB⟩, hinv, hbd, h0⟩ := hΦ
@@ -66,5 +87,8 @@ end GlobalTheory.HilbertThetaSeries
 open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual GlobalTheory.CuspRep UpperTheory.V UpperTheory.V.Af UpperTheory.V.Sd GlobalTheory.HilbertThetaSeries
 open scoped Matrix
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.HilbertThetaSeries.th_congr_one | exact GlobalTheory.HilbertThetaSeries.th_congr_one | (intros; apply GlobalTheory.HilbertThetaSeries.th_congr_one <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.thetaSeries_congr_one_mod_p_of_isometry : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (p : ℕ) [Fact p.Prime] (ι : Qbar p ≃+* ℂ) (κ : Type) [Fintype κ] [DecidableEq κ] (G S : Matrix κ κ ℤ) (t : ℕ), LatD p G S t → ∀ Φ : (κ → F) → ℂ, Good ι S Φ → Small ι (p : ℝ)⁻¹ (th G Φ - 1) := by
   first | exact @GlobalTheory.HilbertThetaSeries.th_congr_one | exact GlobalTheory.HilbertThetaSeries.th_congr_one | (intros; apply GlobalTheory.HilbertThetaSeries.th_congr_one <;> assumption)

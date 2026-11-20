@@ -8,6 +8,9 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK GlobalTheory.ThK.LemF
 open GlobalTheory.Doubling (absE)
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ThK.LemF.LocPartLaw.locPart_law | exact GlobalTheory.ThK.LemF.LocPartLaw.locPart_law | (intros; apply GlobalTheory.ThK.LemF.LocPartLaw.locPart_law <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.local_part_operator_unitary_compatible : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     (B : Base F E) {n d n₁ d₁ : ℕ} {X : Spc F E n} {W : Spc F E d} {X₁ : Spc F E n₁} {W₁ : Spc F E d₁}
     (M : Model σ X W) (M₁ : Model σ X₁ W₁), M.IsGood B.ψ → M₁.IsGood B.ψ →

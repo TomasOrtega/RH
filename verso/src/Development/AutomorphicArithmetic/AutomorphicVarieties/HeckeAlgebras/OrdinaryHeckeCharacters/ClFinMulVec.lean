@@ -5,6 +5,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.HeckeAlgebras.Ordi
 import Development.AutomorphicArithmetic.AutomorphicVarieties.HeckeAlgebras.OrdinaryHeckeCharacters.IwMemMul
 open IsLocalRing Matrix UpperTheory.V.Hi
 
+/- English proof (translation)
+Simplify using `only [mulVec, dotProduct]`. Use `Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Take `⟨x, hx⟩` from `hM k j`. Rewrite using `[← hx, ← Algebra.smul_def]`. Conclude with `L.smul_mem x (hv j)`.
+-/
 private theorem clFin_mulVec {O Ω : Type} [CommRing O] [Field Ω] [Algebra O Ω] {n : ℕ} (L : Submodule O Ω)
     (M : Matrix (Fin n) (Fin n) Ω) (hM : ∀ i j, M i j ∈ (algebraMap O Ω).range) (v : Fin n → Ω)
     (hv : ∀ k, v k ∈ L) (k : Fin n) : (M *ᵥ v) k ∈ L := by
@@ -14,6 +17,25 @@ private theorem clFin_mulVec {O Ω : Type} [CommRing O] [Field Ω] [Algebra O Ω
   rw [← hx, ← Algebra.smul_def]
   exact L.smul_mem x (hv j)
 
+/- English proof (translation)
+Take `⟨s, hs⟩` from `hU`. Use `haveI : Finite (X.I.Iw 0 ⧸ (X.I.I1 c).subgroupOf (X.I.Iw 0)) := Nat.finite_of_card_ne_zero (iwFin Gp X.I c).2`. Use `haveI := Fintype.ofFinite (X.I.Iw 0 ⧸ (X.I.I1 c).subgroupOf (X.I.Iw 0))`. Use `⟨(s ×ˢ (Finset.univ : Finset (X.I.Iw 0 ⧸ (X.I.I1 c).subgroupOf (X.I.Iw 0)))).image (fun p => p.1 * (1, ((p.2.out : X.I.Iw 0) : Gp))), ?_⟩` and prove the remaining obligations. Introduce and unpack `F ⟨⟨hA, hU⟩, hN, hM, hT⟩ L hL g i`.
+
+Take `⟨γ, x, hx, u, hu, b, hb, rfl⟩` from `hs g`. Take `⟨e, he⟩` from `QuotientGroup.mk_out_eq_mul ((X.I.I1 c).subgroupOf (X.I.Iw 0)) ⟨b, hb⟩`. Establish `he1 : ((e : X.I.Iw 0) : Gp) ∈ X.I.I1 c` using `Subgroup.mem_subgroupOf.1 e.2`. Use `set r : Gp := ((⟨b, hb⟩ : X.I.Iw 0) : X.I.Iw 0 ⧸ (X.I.I1 c).subgroupOf (X.I.Iw 0)).out.1 with hr`. Establish `hr2 : r = b * ((e : X.I.Iw 0) : Gp)` using `by rw [hr, he]; rfl`.
+
+Establish `hL1` using `hL (x * (1, r)) (Finset.mem_image.2 ⟨(x, _), Finset.mem_product.2 ⟨hx, Finset.mem_univ _⟩, rfl⟩)`. Generalize the expression as in `((e : X.I.Iw 0) : Gp) = e' at he1 hr2`. Establish `hfix : ∀ w ∈ X.I.I1 c, X.rpF Ω (W.d + 1) m w F = F`. Introduce `w hw`. Take `⟨n, hn, t, ht, y, hy, rfl⟩` from `(iwMem Gp X.I c w).2.1.1 hw`.
+
+Establish `h3` using `hT ⟨t, X.I.Tc_le c ht⟩`. Rewrite `h3` using `[hφ _ ht, inv_one, Units.val_one, one_smul]`. Rewrite using `[map_mul, map_mul, Module.End.mul_apply, Module.End.mul_apply, hM y hy, h3, hN n hn]`. Establish `hint : ∀ v : Fin (W.d + 1) → Ω, (∀ k, v k ∈ L) → ∀ k, ((W.ξ e').val *ᵥ v) k ∈ L`. Introduce `v hv`.
+
+Take `⟨n, hn, t, ht, y, hy, rfl⟩` from `(iwMem Gp X.I c _).2.1.1 he1`. Rewrite using `[map_mul, map_mul, Units.val_mul, Units.val_mul, ← mulVec_mulVec, ← mulVec_mulVec]`. Conclude with `clFin_mulVec L _ (W.int_N n hn) _ (clFin_mulVec L _ (W.integral_torusCharacter t (X.I.Tc_le c ht)) _ (clFin_mulVec L _ (W.int_Nm y (X.I.Nm_anti hc hy)) _ hv))`. Establish `e1 : X.glob γ * x * ((u : Ga), b) = X.glob γ * (x * (1, r) * ((u : Ga), 1) * (1, e'⁻¹))`. Rewrite using `[hr2]`.
+
+Simplify using `[mul_assoc]`. Establish `e2 : F i (x * (1, r) * ((u : Ga), 1) * (1, e'⁻¹)) = F i (x * (1, r) * ((u : Ga), 1))` using `congrFun (congrFun (hfix _ (inv_mem he1)) i) _`. Establish `e3 : F i (x * (1, r) * ((u : Ga), 1)) = ∑ j, (τ u⁻¹).val i j • F j (x * (1, r))`. Use function extensionality and compare the values at `k`. Use `congrFun (congrFun (congrFun (hU u⁻¹ (inv_mem hu)) i) (x * (1, r) * ((u : Ga), 1))) k` as an intermediate fact.
+
+Rewrite using `[← this]`. Express the relevant statement in the definitionally equal form `((τ u⁻¹).val *ᵥ fun j => F j (x * (1, r) * ((u : Ga), 1) * (((u⁻¹ : X.Ub) : Ga), 1)) k) i = _`. Simplify using `[mulVec, dotProduct, mul_assoc, ← Prod.one_eq_mk]`. Establish `e4 : ((W.ξ (X.glob γ * (x * (1, r) * ((u : Ga), 1) * (1, e'⁻¹))).2)⁻¹).val * (W.ξ (X.glob γ).2).val = (W.ξ e').val * ((W.ξ (x * (1, r)).2)⁻¹).val`. Rewrite using `[← Units.val_mul, ← Units.val_mul]`.
+
+Use `congr 1`. Simplify using `[mul_assoc]`. Rewrite using `[e1, hA i trivial γ, mulVec_mulVec, e4, ← mulVec_mulVec, e2, e3]`. Use `hint _ fun k => ?_` and prove the remaining obligations. Rewrite using `[mulVec_sum, Finset.sum_apply]`.
+
+Use `Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Take `⟨a, ha⟩` from `hτ u⁻¹ i j`. Rewrite using `[mulVec_smul, ← ha, Pi.smul_apply, smul_eq_mul, ← Algebra.smul_def]`. Conclude with `L.smul_mem a (hL1 j k)`.
+-/
 private theorem clFin_key {Γ Ga Gp : Type} [Group Γ] [Group Ga] [Group Gp] (X : Frame Γ Ga Gp) {O Ω : Type}
     [CommRing O] [IsLocalRing O] [Field Ω] [Algebra O Ω] (W : WtRep X.I O Ω) {m : ℕ}
     (τ : X.Ub →* GL (Fin m) Ω) (hτ : ∀ u i j, (τ u).val i j ∈ (algebraMap O Ω).range) (φ : X.I.T →* Ωˣ) (c : ℕ)
@@ -69,11 +91,41 @@ private theorem clFin_key {Γ Ga Gp : Type} [Group Γ] [Group Ga] [Group Gp] (X 
   rw [mulVec_smul, ← ha, Pi.smul_apply, smul_eq_mul, ← Algebra.smul_def]
   exact L.smul_mem a (hL1 j k)
 
+/- English proof (translation)
+Use `congrArg (M.val *ᵥ ·) h` as an intermediate fact. Simplify `this` using `[mulVec_mulVec]`.
+-/
 private theorem clFin_zero {Ω : Type} [Field Ω] {n : ℕ} (M : GL (Fin n) Ω) (v : Fin n → Ω)
     (h : (M⁻¹).val *ᵥ v = 0) : v = 0 := by
   have := congrArg (M.val *ᵥ ·) h
   simpa [mulVec_mulVec] using this
 
+/- English proof (translation)
+Introduce `Γ Ga Gp _ _ _ X O Ω _ _ _ _ _ _ _ W m τ θ φ c hc hφ _ U hU _`. Establish `hτ : ∀ u i j, (((Matrix.GeneralLinearGroup.map (algebraMap O Ω)).comp τ) u).val i j ∈ (algebraMap O Ω).range` using `fun u i j => ⟨(τ u).val i j, rfl⟩`. Establish `hφ' : ∀ t : X.I.T, (t : Gp) ∈ X.I.Tc c → ((Units.map (algebraMap O Ω).toMonoidHom).comp φ) t = 1` using `fun t ht => by rw [MonoidHom.comp_apply, hφ t ht, map_one]`. Generalize the expression as in `(Matrix.GeneralLinearGroup.map (algebraMap O Ω)).comp τ = τ' at hτ ⊢`. Generalize the expression as in `(Units.map (algebraMap O Ω).toMonoidHom).comp φ = φ' at hφ' ⊢`.
+
+Take `⟨S, hS⟩` from `clFin_key X W τ' hτ φ' c hc hφ' U hU`. Establish `hz : ∀ F ∈ X.Cl τ' W.ξ U c φ', (∀ x ∈ S, ∀ i k, (((W.ξ x.2)⁻¹).val *ᵥ F i x) k = 0) → F = 0`. Introduce `F hF h`. Use function extensionality and compare the values at `i g`. Conclude with `clFin_zero (W.ξ g.2) _ (funext fun k => hS F hF ⊥ h g i k)`.
+
+Use `⟨?_, fun a => ?_⟩` and prove the remaining obligations. Set `ev : X.Cl τ' W.ξ U c φ' →ₗ[Ω] (S → Fin m → Fin (W.d + 1) → Ω)` to `{ toFun := fun F x i => F.1 i x map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl }`. Use `FiniteDimensional.of_injective ev ((injective_iff_map_eq_zero ev).2 fun F h => Subtype.ext ?_)` and prove the remaining obligations. Use `hz F.1 F.2 fun x hx i k => ?_` and prove the remaining obligations. Establish `: F.1 i x = 0` using `congrFun (congrFun h ⟨x, hx⟩) i`.
+
+Rewrite using `[this, mulVec_zero]`. Both sides reduce to the same expression. Take `⟨⟨s, hs, hu⟩, h2⟩` from `uOpSum Gp X.I Ω _ (X.rpF Ω (W.d + 1) m) a a.2`. Establish `hsum : ∀ F ∈ X.Cl τ' W.ξ U c φ', X.UF m W a F = (((W.χ ⟨a, X.I.P_le a a.2⟩)⁻¹ : Ωˣ) : Ω) • ∑ u ∈ s, X.rpF Ω (W.d + 1) m (u * a) F`. Introduce `F hF`.
+
+Rewrite using `[← (h2 s hs hu).2 F hF.2.1]`. Both sides reduce to the same expression. Use `⟨fun F hF => ⟨?_, ?_⟩, fun F hF h0 μ hμ => ?_⟩` and prove the remaining obligations. Rewrite using `[hsum F hF]`. Use `Submodule.smul_mem _ _ (Submodule.sum_mem _ fun u _ => ⟨fun i _ γ g => ?_, fun w hw => ?_⟩)` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `F i (X.glob γ * g * (1, u * a)) = _ *ᵥ F i (g * (1, u * a))`. Rewrite using `[mul_assoc]`. Conclude with `hF.1.1 i trivial γ _`. Use function extensionality and compare the values at `i g k`. Use `congrFun (congrFun (congrFun (hF.1.2 w hw) i) (g * (1, u * a))) k` as an intermediate fact.
+
+Use `Eq.trans ?_ this` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((τ' w).val *ᵥ fun j => F j (g * ((w : Ga), 1) * (1, u * a)) k) i = ((τ' w).val *ᵥ fun j => F j (g * (1, u * a) * ((w : Ga), 1)) k) i`. Simplify using `[mul_assoc]`. Conclude with `Submodule.smul_mem _ _ (((uOpLevel Gp X.I Ω _ (X.rpF Ω (W.d + 1) m) c).2.2 φ' hφ').1 a a.2 F hF.2)`. Set `L : Submodule O Ω` to `Submodule.span O (Set.range fun p : S × Fin m × Fin (W.d + 1) => (((W.ξ p.1.1.2)⁻¹).val *ᵥ F p.2.1 p.1.1) p.2.2)`.
+
+Establish `hL0 : ∀ x ∈ S, ∀ i k, (((W.ξ x.2)⁻¹).val *ᵥ F i x) k ∈ L` using `fun x hx i k => Submodule.subset_span ⟨(⟨x, hx⟩, i, k), rfl⟩`. Establish `hL` using `hS F hF L hL0`. Establish `hμL : ∀ g i k, μ * (((W.ξ g.2)⁻¹).val *ᵥ F i g) k ∈ L`. Introduce `g i k`. Establish `e : μ • F i g = (((W.χ ⟨a, X.I.P_le a a.2⟩)⁻¹ : Ωˣ) : Ω) • ∑ u ∈ s, F i (g * (1, u * a))`.
+
+Use `congrFun (congrFun (hμ.symm.trans (hsum F hF)) i) g` as an intermediate fact. Simplify using `only [Pi.smul_apply, Finset.sum_apply] at this`. Conclude with `this`. Rewrite using `[← smul_eq_mul, ← Pi.smul_apply, ← mulVec_smul, e, Finset.smul_sum, mulVec_sum, Finset.sum_apply]`. Use `Submodule.sum_mem _ fun u hu => ?_` and prove the remaining obligations.
+
+Establish `e4 : ((W.ξ g.2)⁻¹).val = (W.ξ u).val * ((W.ξ a).val * ((W.ξ (g * (1, u * a)).2)⁻¹).val)`. Rewrite using `[← Units.val_mul, ← Units.val_mul]`. Use `congr 1`. Simplify using `[mul_assoc]`. Rewrite using `[e4, ← mulVec_mulVec, ← mulVec_mulVec, mulVec_smul, mulVec_smul, ← smul_mulVec]`.
+
+Conclude with `clFin_mulVec L _ (W.int_N u (hs u hu)) _ (clFin_mulVec L _ (W.int_P a a.2) _ (hL _ i)) k`. Use `isIntegral_of_smul_mem_submodule L (fun h => h0 (hz F hF fun x hx i k => ?_)) (Submodule.fg_span (Set.finite_range _)) μ fun n hn => ?_` and prove the remaining obligations. Use `hL0 x hx i k` as an intermediate fact. Rewrite `this` using `[h]`. Then use the resulting hypothesis. Proceed by induction on `hn using Submodule.span_induction with`.
+
+Consider the case `mem y hy`. Take `⟨p, rfl⟩` from `hy`. Conclude with `hμL _ _ _`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [smul_add]`.
+
+Conclude with `add_mem hx hy`. Consider the case `smul r x _ hx => rw [smul_comm]`. Conclude with `L.smul_mem r hx`.
+-/
 theorem UpperTheory.V.Hi.clFin :
     ∀ (Γ Ga Gp : Type) [Group Γ] [Group Ga] [Group Gp] (X : Frame Γ Ga Gp) (O Ω : Type) [CommRing O] [IsDomain O] [IsCNL O] [Field Ω] [IsAlgClosed Ω] [Algebra O Ω], Function.Injective (algebraMap O Ω) →
       ∀ (W : WtRep X.I O Ω) (m : ℕ) (τ : X.Ub →* GL (Fin m) O) (θ φ : X.I.T →* Oˣ) (c : ℕ), W.c0 ≤ c →

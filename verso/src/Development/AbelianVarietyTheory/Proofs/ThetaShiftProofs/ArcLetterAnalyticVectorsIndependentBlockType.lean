@@ -18,6 +18,13 @@ open AlgebraicGeometry CategoryTheory CategoryTheory.Limits NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.FD Formalism.L2.Pj Formalism.L2.PjFree Formalism.L2.Pj.QAt GlobalTheory.ArcQ GlobalTheory.Frames
 open scoped LaurentSeries MonObj
 
+/- English proof (translation)
+Use `ConstTan.isLocalRing_dual R` as an intermediate fact. Establish `: IsLocalHom (TrivSqZeroExt.fstHom R R R).toRingHom` using `⟨fun _ h => TrivSqZeroExt.isUnit_iff_isUnit_fst.2 h⟩`. Establish `hc : spMap (TrivSqZeroExt.fstHom R R R).toRingHom (IsLocalRing.closedPoint R) = IsLocalRing.closedPoint (DualNumber R)` using `IsLocalRing.comap_closedPoint _`. Establish `hpq : p (IsLocalRing.closedPoint (DualNumber R)) = q (IsLocalRing.closedPoint (DualNumber R))`. Rewrite using `[← hc]`.
+
+Conclude with `congrArg (fun r : Sp R ⟶ X => r (IsLocalRing.closedPoint R)) h₀`. Take `⟨_, ⟨V, hV, rfl⟩, hm, -⟩` from `X.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ (p (IsLocalRing.closedPoint (DualNumber R)))) isOpen_univ`. Establish `hp : ⊤ ≤ p ⁻¹ᵁ V` using `(Points.le_preimage_iff p V).2 hm`. Establish `hq : ⊤ ≤ q ⁻¹ᵁ V` using `(Points.le_preimage_iff q V).2 (hpq ▸ hm)`. Use `Points.ext_of_valR hV hp hq fun f => TrivSqZeroExt.ext ?_ (h₁ V f hp hq)` and prove the remaining obligations.
+
+Conclude with `(Points.valR_spMap_comp _ p V hp f).symm.trans ((congrArg (fun r => valR r V f) h₀).trans (Points.valR_spMap_comp _ q V hq f))`.
+-/
 theorem ext_dual {R : Type} [CommRing R] [IsLocalRing R] {X : Scheme.{0}} {p q : Sp (DualNumber R) ⟶ X}
     (h₀ : spMap (TrivSqZeroExt.fstHom R R R).toRingHom ≫ p = spMap (TrivSqZeroExt.fstHom R R R).toRingHom ≫ q)
     (h₁ : ∀ (V : X.Opens) (f : Γ(X, V)), ⊤ ≤ p ⁻¹ᵁ V → ⊤ ≤ q ⁻¹ᵁ V →
@@ -38,6 +45,9 @@ theorem ext_dual {R : Type} [CommRing R] [IsLocalRing R] {X : Scheme.{0}} {p q :
   exact (Points.valR_spMap_comp _ p V hp f).symm.trans
     ((congrArg (fun r => valR r V f) h₀).trans (Points.valR_spMap_comp _ q V hq f))
 
+/- English proof (translation)
+Use `ext_dual h₀ fun V f hp hq => hi ?_` and prove the remaining obligations. Use `(Points.valR_spMap_comp _ p V hp f).symm.trans ((congrArg (fun r => valR r V f) h₁).trans (Points.valR_spMap_comp _ q V hq f))` as an intermediate fact. Simplify `congrArg TrivSqZeroExt.snd this` using `[dualMap]`.
+-/
 theorem ext_of_injective {R S : Type} [CommRing R] [IsLocalRing R] [CommRing S] {k : R →+* S}
     (hi : Function.Injective k) {X : Scheme.{0}} {p q : Sp (DualNumber R) ⟶ X}
     (h₀ : spMap (TrivSqZeroExt.fstHom R R R).toRingHom ≫ p = spMap (TrivSqZeroExt.fstHom R R R).toRingHom ≫ q)
@@ -47,6 +57,11 @@ theorem ext_of_injective {R S : Type} [CommRing R] [IsLocalRing R] [CommRing S] 
     ((congrArg (fun r => valR r V f) h₁).trans (Points.valR_spMap_comp _ q V hq f))
   simpa [dualMap] using congrArg TrivSqZeroExt.snd this
 
+/- English proof (translation)
+Establish `h0 : ∀ w : ℂ, T < w.im → SumsAt (s - s') w 0` using `fun w hw => by`. Take `⟨x, h₁, h₂⟩` from `h w hw`. Simplify `h₁.sub h₂` using `[SumsAt, sub_mul]`. Establish `hm` using `Conv.coe_mem_halfRing.2 fun w hw => ⟨0, h0 w hw⟩`. Use `Conv.halfRing_spec.2.2.2.1 T T ⟨_, hm⟩ fun w hw _ => HasSum.unique (Conv.sumsAt_ev hw hm) (h0 w hw)` as an intermediate fact.
+
+Establish `h2 : ((s - s' : PowerSeries ℂ) : ℂ⸨X⸩) = 0` using `congrArg Subtype.val this`. Conclude with `sub_eq_zero.1 (HahnSeries.ofPowerSeries_injective (Γ := ℤ) (h2.trans (map_zero _).symm))`.
+-/
 theorem eq_of_sumsAt {s s' : PowerSeries ℂ} {T : ℝ} (h : ∀ w : ℂ, T < w.im → ∃ x, SumsAt s w x ∧ SumsAt s' w x) :
     s = s' := by
   have h0 : ∀ w : ℂ, T < w.im → SumsAt (s - s') w 0 := fun w hw => by
@@ -58,6 +73,9 @@ theorem eq_of_sumsAt {s s' : PowerSeries ℂ} {T : ℝ} (h : ∀ w : ℂ, T < w.
   have h2 : ((s - s' : PowerSeries ℂ) : ℂ⸨X⸩) = 0 := congrArg Subtype.val this
   exact sub_eq_zero.1 (HahnSeries.ofPowerSeries_injective (Γ := ℤ) (h2.trans (map_zero _).symm))
 
+/- English proof (translation)
+Set `L : (Fin g → ℂ) ≃L[ℂ] (Fin g → ℂ)` to `(LinearEquiv.piCongrRight fun k => LinearEquiv.smulOfNeZero ℂ ℂ (a k) (ha k)).toContinuousLinearEquiv`. Use `L.comp_right_fderiv (f := F) (x := 0)` as an intermediate fact. Rewrite `this` using `[map_zero]`. Conclude with `congrArg (fun D => D z) this`.
+-/
 theorem fderiv_diag {g : ℕ} (a : Fin g → ℂ) (ha : ∀ k, a k ≠ 0) (F : (Fin g → ℂ) → ℂ) (z : Fin g → ℂ) :
     fderiv ℂ (fun z => F (fun k => a k * z k)) 0 z = fderiv ℂ F 0 (fun k => a k * z k) := by
   let L : (Fin g → ℂ) ≃L[ℂ] (Fin g → ℂ) :=
@@ -74,6 +92,11 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {a : ArcIn Dw l β ℂ (σ.comp β)} {χ : Sp (PowerSeries ℂ) ⟶ Y.X} {W : Wit Y a χ} {g : ℕ} {ty : Fin g → (E →+* ℂ)}
   {Fu : FamilyUnif Xo (σ.comp (IntermediateField.inclusion c.le).toRingHom) ty} (Ha : HolArc Y σ a χ W Fu)
 
+/- English proof (translation)
+Use `Ha.diff z₀ ν v V f h.1 h.2 (fun n ρ κ vn h₁ h₂ h₃ h₄ h₆ => hv n ρ κ vn h₁ h₂ h₃ h₄ ?_ h₆) hV` and prove the remaining obligations. Rewrite using `[← cancel_mono (Out.thick (PowerSeries ℂ) (Ideal.span {PowerSeries.X}) n)]`. Establish `e₁` using `Over.w (Out.fstG (Ideal.span {(PowerSeries.X : PowerSeries ℂ)}) n W.t.G)`. Use `(Category.assoc _ _ _).trans ((congrArg (vn ≫ ·) e₁.symm).trans ((Category.assoc _ _ _).symm.trans ?_))` and prove the remaining obligations. Rewrite using `[h₆, Category.assoc, Over.w v]`.
+
+Use `(spMap_comp _ _).symm.trans (Eq.trans (congrArg spMap ?_) (spMap_comp _ _))` and prove the remaining obligations. Conclude with `RingHom.ext fun r => h₁ r`.
+-/
 theorem diff_of {ν : Out.GtPt a.D₀ (epsR ℂ)} {z₀ : Fin g → ℂ} {v : epsR (PowerSeries ℂ) ⟶ W.t.G}
     (h : AnVec Ha ν z₀) (hv : LieImg W ν v) (V : Y.t.G.left.Opens) (f : Γ(Y.t.G.left, V))
     (hV : ⊤ ≤ (v.left ≫ W.m.φ) ⁻¹ᵁ V) : ∃ T' : ℝ, ∀ w : ℂ, T' < w.im →
@@ -89,6 +112,13 @@ theorem diff_of {ν : Out.GtPt a.D₀ (epsR ℂ)} {z₀ : Fin g → ℂ} {v : ep
   refine (spMap_comp _ _).symm.trans (Eq.trans (congrArg spMap ?_) (spMap_comp _ _))
   exact RingHom.ext fun r => h₁ r
 
+/- English proof (translation)
+Establish `hP` using `Ha.period w hw`. Set `yF : Sp ℂ ⟶ Xo.XF c` to `pullback.lift (Fu.u Ha.i (Ha.Pw w)) (spMap σ) ((Fu.over_σ _ _ hP).trans (spMap_comp _ _))`. Establish `C` using `Y.m0.toSABMap.cart.1`. Establish `hw' : ∀ z, (Fu.ex Ha.i (Ha.Pw w) z).left ≫ Xo.univ.t.G.hom = yF ≫ pullback.fst _ _` using `fun z => (Over.w _).trans (pullback.lift_fst _ _ _).symm`. Use `⟨fun z => C.lift _ yF (hw' z), fun z => ⟨C.lift_fst _ _ _, ?_⟩, fun x z => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← Category.assoc, C.lift_snd]`. Conclude with `pullback.lift_snd _ _ _`. Rewrite using `[Category.assoc, ← Y.m.act x, ← Category.assoc]`. Use `congr 1`. Use `C.hom_ext ?_ ?_` and prove the remaining obligations.
+
+Rewrite using `[Category.assoc, Y.m0.toSABMap.act x, C.lift_fst, ← Category.assoc, C.lift_fst, Fu.ex_lin _ _ hP]`. Both sides reduce to the same expression. Rewrite using `[Category.assoc, Over.w, C.lift_snd, C.lift_snd]`.
+-/
 theorem exists_lift (w : ℂ) (hw : Ha.T < w.im) : ∃ xF : (Fin g → ℂ) → (Sp ℂ ⟶ Y.oF.t.G.left),
     (∀ z, xF z ≫ Y.m0.toSABMap.φ = (Fu.ex Ha.i (Ha.Pw w) z).left ∧
       xF z ≫ Y.oF.t.G.hom ≫ pullback.snd _ _ = spMap σ) ∧
@@ -108,6 +138,15 @@ theorem exists_lift (w : ℂ) (hw : Ha.T < w.im) : ∃ xF : (Fin g → ℂ) → 
       rfl
     · rw [Category.assoc, Over.w, C.lift_snd, C.lift_snd]
 
+/- English proof (translation)
+Use `W.t.act.hom x` as an intermediate fact. Establish `ht₂ : IsTangent (v ≫ W.t.act.act x)` using `(Chart.isTan_iff _).1 (Chart.isTan_comp ((Chart.isTan_iff _).2 ht) _)`. Use `Over.OverMorphism.ext (W.m.cart.1.hom_ext ?_ ((Over.w _).trans (Over.w _).symm))` and prove the remaining obligations. Use `ext_dual (R := PowerSeries ℂ) ((Category.assoc _ _ _).symm.trans ((congrArg (· ≫ W.m.φ) (Eq.trans ht₁ (Eq.symm ht₂))).trans (Category.assoc _ _ _))) ?_` and prove the remaining obligations. Establish `e : (v ≫ W.t.act.act x).left ≫ W.m.cm.F = (v.left ≫ W.m.φ) ≫ (Y.t.act.act x).left`.
+
+Rewrite using `[Over.comp_left, Category.assoc, W.m.act x, Category.assoc]`. Rewrite using `[e]`. Introduce `V f hp hq`. Take `⟨T₁, H₁⟩` from `diff_of Ha h₁ hv₁ V f hp`. Take `⟨T₂, H₂⟩` from `diff_of Ha h hv ((Y.t.act.act x).left ⁻¹ᵁ V) (((Y.t.act.act x).left.app V).hom f) hq`.
+
+Use `eq_of_sumsAt (T := max Ha.T (max T₁ T₂)) fun w hw => ?_` and prove the remaining obligations. Simplify using `only [max_lt_iff] at hw`. Take `⟨xF, hF, hl⟩` from `exists_lift Ha w hw.1`. Use `⟨_, H₁ w hw.2.1 xF hF, ?_⟩` and prove the remaining obligations. Establish `k` using `H₂ w hw.2.2 xF hF`.
+
+Rewrite using `[← fderiv_diag _ (fun k => (map_ne_zero _).2 (by simpa using hx))]`. Simplify using `only [hl, Points.valAt'_eq_valR] at k ⊢`. Simplify using `only [Points.valR_comp _ (Y.t.act.act x).left]`. Conclude with `k`.
+-/
 theorem act_eq {ν ν₁ : Out.GtPt a.D₀ (epsR ℂ)} {z₀ : Fin g → ℂ} {v v₁ : epsR (PowerSeries ℂ) ⟶ W.t.G}
     {x : 𝓞 E} (hx : x ≠ 0) (h : AnVec Ha ν z₀) (hv : LieImg W ν v) (ht : IsTangent v)
     (h₁ : AnVec Ha ν₁ (fun k => ty k (x : E) * z₀ k)) (hv₁ : LieImg W ν₁ v₁) (ht₁ : IsTangent v₁) :
@@ -147,6 +186,11 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
 
 include hφ h₁ h₂ in
 
+/- English proof (translation)
+Establish `h0` using `LieCombBaseChange.prod_left_comp hφ (T := epsR R) (T' := epsR S) _ (LieCombBaseChange.dualMap_over k) (n := 0) Fin.elim0 Fin.elim0 (fun i => i.elim0)`. Simplify using `only [List.ofFn_zero, List.prod_nil] at h0`. Take `⟨p, hp, e⟩` from `(lieComb_baseChange R S k G t'.G φ hφ _ v 1 cf u 1 h₂ h).1 h0`. Use `⟨fun i => pushHom m.cart (epsR S) (p i), fun i => ?_, ?_⟩` and prove the remaining obligations. Conclude with `(congrArg (· ≫ m.φ) (hp i)).trans ((Category.assoc _ _ _).trans (congrArg _ (h₁ i)))`.
+
+Establish `e₁` using `map_list_prod (pushHom m.cart (epsR S)) (List.ofFn p)`. Rewrite `e₁` using `[← e, map_one, List.map_ofFn]`. Conclude with `congrArg (fun q => q.left) e₁.symm`.
+-/
 theorem isCombAt_one {cf : Fin (Dw.mult τ) → R} (h : IsLieComb cf v 1) :
     IsCombAt y.x (y.u τ) (fun i => k (cf i)) (1 : tEps y.x ⟶ Xo.univ.t.G).left := by
   have h0 := LieCombBaseChange.prod_left_comp hφ (T := epsR R) (T' := epsR S) _ (LieCombBaseChange.dualMap_over k)
@@ -161,6 +205,11 @@ theorem isCombAt_one {cf : Fin (Dw.mult τ) → R} (h : IsLieComb cf v 1) :
 
 include hφ h₁ h₂ in
 
+/- English proof (translation)
+Use `congrFun ((y.basis τ _ ⟨Over.w _, ?_⟩ fun x => ?_).unique (isCombAt_one y m hφ τ h₁ h₂ h) (isCombAt_one y m hφ τ h₁ h₂ h')) i` and prove the remaining obligations. Set `r : Over.mk y.x ⟶ tEps y.x` to `Over.homMk (spMap (TrivSqZeroExt.fstHom S S S).toRingHom) (by`. Use `(Category.assoc _ _ _).symm.trans (Eq.trans (congrArg (· ≫ y.x) ?_) (Category.id_comp _))` and prove the remaining obligations. Conclude with `(spMap_comp _ _).symm.trans (Eq.trans (congrArg spMap (RingHom.ext fun _ => rfl)) (Spec.map_id _)))`. Conclude with `congrArg (fun q => q.left) (MonObj.comp_one (M := Xo.univ.t.G) r)`.
+
+Use `Xo.univ.t.act.hom x` as an intermediate fact. Set `r : tEps y.x ⟶ tEps y.x` to `Over.homMk (spMap (epsMul (algebraMap c.F S (embK c τ x)))) (by`. Conclude with `(Category.assoc _ _ _).symm.trans (congrArg (· ≫ y.x) (LieCombBaseChange.epsScale_over _)))`. Conclude with `congrArg (fun q => q.left) ((MonObj.one_comp (Xo.univ.t.act.act x)).trans (MonObj.comp_one (M := Xo.univ.t.G) r).symm)`.
+-/
 theorem coeff_eq {cf cf' : Fin (Dw.mult τ) → R} (h : IsLieComb cf v 1) (h' : IsLieComb cf' v 1) (i) :
     k (cf i) = k (cf' i) := by
   refine congrFun ((y.basis τ _ ⟨Over.w _, ?_⟩ fun x => ?_).unique (isCombAt_one y m hφ τ h₁ h₂ h)
@@ -177,11 +226,33 @@ theorem coeff_eq {cf cf' : Fin (Dw.mult τ) → R} (h : IsLieComb cf v 1) (h' : 
 
 end Frame
 
+/- English proof (translation)
+Take `⟨u, hu, rfl⟩` from `h`. Simplify using `using hu 0`.
+-/
 theorem left_eq_of_comb {R : Type} [CommRing R] {G : Over (Sp R)} [GrpObj G] {s : R} {v w : epsR R ⟶ G}
     (h : IsLieComb (fun _ : Fin 1 => s) (fun _ => v) w) : w.left = spMap (epsScaleR s) ≫ v.left := by
   obtain ⟨u, hu, rfl⟩ := h
   simpa using hu 0
 
+/- English proof (translation)
+Introduce `hL _ E _ _ _ H Dw l Xo c σ r U Uw _ _ O _ β Y a χ W Ha _ y e th z hσ halg _ hF hz τ`. Establish `hG` using `hL.globalFns`. Establish `ex` using `GlobalTheory.T.exists_unique_constant_tangent_vectors_along_arc hG E H Dw l Xo c O β Y ℂ _ a χ W`. Establish `lin` using `GlobalTheory.T.lieImg_iff_isLieComb_of_gtComb hG E H Dw l Xo c O β Y ℂ _ a χ W`. Take `⟨an₁, an₂, an₃, an₄⟩` from `GlobalTheory.T.torusExt_exponential_derivative_bijective_tangent hG E H Dw l Xo c σ O β Y a χ W _ _ _ Ha`.
+
+Take `⟨_, t', m1, m2, _, -, -, -, -, -, hu, -⟩` from `hF`. Use `choose v u' hv h₁ h₂ hover using hu τ`. Establish `hi : Function.Injective (HahnSeries.ofPowerSeries ℤ ℂ)` using `HahnSeries.ofPowerSeries_injective`. Set `u : Fin (Dw.mult τ) → (epsR ℂ⸨X⸩ ⟶ t'.G)` to `fun i => Over.homMk (u' i) (hover i)`. Use `⟨Fintype.linearIndependent_iff.2 fun cf hcf i => ?_, fun i jj hjj => ?_⟩` and prove the remaining obligations.
+
+Take `⟨o, ho, -⟩` from `an₂ 0`. Establish `c₀` using `(an₄ 0 Fin.elim0 Fin.elim0 Fin.elim0 o (fun j => j.elim0)).2 (by simpa using ho)`. Establish `h₀` using `(lin 0 _ _ o Fin.elim0 1 (fun j => j.elim0) c₀).2 ⟨Fin.elim0, fun j => j.elim0, by simp⟩`. Establish `c₁` using `(lin _ cf _ o v 1 hv ((an₄ _ cf _ _ o (hz τ)).2 (hcf ▸ ho))).1 h₀`. Establish `c₂` using `(lin _ 0 _ o v 1 hv ((an₄ _ 0 _ _ o (hz τ)).2 (by simpa using ho))).1 h₀`.
+
+Conclude with `PowerSeries.C_injective (hi (coeff_eq y m1 m2.cart τ (u := u) h₁ h₂ c₁ c₂ i))`. Use `(GlobalTheory.Relab.relab_good E H l c σ hσ).1.1 ?_` and prove the remaining obligations. Use `IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 E)) (RingHom.ext fun x => ?_)` and prove the remaining obligations. Distinguish the cases in `hx : x = 0`. Simplify using `[hx]`.
+
+Establish `ht` using `((ex _).2 _ (hv i)).1 (an₃ _ _ (hz τ i))`. Take `⟨ν₁, hν₁, -⟩` from `an₂ (fun k => relab c σ (Uw.e k).1 (x : E) * z τ i k)`. Take `⟨v₁, hv₁, -⟩` from `(ex ν₁).1`. Establish `e₁` using `act_eq Ha hx (hz τ i) (hv i) ht hν₁ hv₁ (((ex _).2 _ hv₁).1 (an₃ _ _ hν₁))`. Take `⟨ν₂, hν₂, -⟩` from `an₂ (σ (embK c τ x) • z τ i)`.
+
+Take `⟨v₂, hv₂, -⟩` from `(ex ν₂).1`. Establish `e₂` using `left_eq_of_comb ((lin 1 (fun _ => σ (embK c τ x)) (fun _ => e τ i) ν₂ (fun _ => v i) v₂ (fun _ => hv i) ((an₄ 1 _ _ (fun _ => z τ i) ν₂ fun _ => hz τ i).2 (by simpa using hν₂))).1 hv₂)`. Establish `e₃ : v₁.left = v₂.left`. Use `ext_of_injective hi (Eq.trans (((ex _).2 _ hv₁).1 (an₃ _ _ hν₁)) (Eq.symm (((ex _).2 _ hv₂).1 (an₃ _ _ hν₂)))) ?_` and prove the remaining obligations. Establish `e₄ : u' i ≫ (t'.act.act x).left = spMap (epsMul (algebraMap c.F ℂ⸨X⸩ (embK c τ x))) ≫ u' i`.
+
+Use `m1.cart.1.hom_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, m1.act x, ← Category.assoc, h₁, Category.assoc, h₁]`. Conclude with `y.eig τ i x`. Rewrite using `[Category.assoc, Over.w, Category.assoc, hover]`. Conclude with `(LieCombBaseChange.epsScale_over _).symm`.
+
+Establish `e₅` using `congrArg (· ≫ m2.φ) e₄`. Simplify using `only [Category.assoc] at e₅`. Rewrite `e₅` using `[m2.act x, ← Category.assoc, h₂, halg]`. Rewrite using `[e₁, e₂, Over.comp_left]`. Use `(Category.assoc _ _ _).symm.trans (e₅.trans ?_)` and prove the remaining obligations.
+
+Conclude with `(Category.assoc _ _ _).symm.trans ((congrArg (· ≫ (v i).left) (LieCombBaseChange.dualMap_epsScale _ _).symm).trans (Category.assoc _ _ _))`. Take `rfl : ν₁ = ν₂` from `ConstLie.eq_of_red W hG hv₁ hv₂ (congrArg _ e₃)`. Conclude with `mul_right_cancel₀ hjj (congrFun ((an₁ _ (an₃ _ _ hν₁)).unique hν₁ hν₂) jj)`.
+-/
 theorem main : Out.Laws → Out.Laws2 → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (r : ℕ) (U : Unf Xo c σ r) (Uw : UnfWit U) [Algebra (FractionRing ℂ) ℂ] [IsScalarTower ℂ (FractionRing ℂ) ℂ] (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (a : ArcIn Dw l β ℂ (σ.comp β)) (χ : Sp (PowerSeries ℂ) ⟶ Y.X) (W : Wit Y a χ) (Ha : HolArc Y σ a χ W Uw.F) [Algebra c.F ℂ⸨X⸩] (y : FrPt Xo c ℂ⸨X⸩) (e : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → Out.GtPt a.D₀ (epsR ℂ)) (th : a.D₀.P.L.Sec) (z : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → (Fin Uw.g → ℂ)), GoodEmb c σ → (∀ x : c.F, algebraMap c.F ℂ⸨X⸩ x = HahnSeries.ofPowerSeries ℤ ℂ (PowerSeries.C (R := ℂ) (σ x))) → Mono Y.j → IsArcFr W e th (HahnSeries.ofPowerSeries ℤ ℂ) y → (∀ τ i, AnVec Ha (e τ i) (z τ i)) → (∀ τ, LinearIndependent ℂ (z τ) ∧ ∀ i jj, z τ i jj ≠ 0 → (Uw.e jj).1 = τ) := by
   intro hL _ E _ _ _ H Dw l Xo c σ r U Uw _ _ O _ β Y a χ W Ha _ y e th z hσ halg _ hF hz τ
   have hG := hL.globalFns

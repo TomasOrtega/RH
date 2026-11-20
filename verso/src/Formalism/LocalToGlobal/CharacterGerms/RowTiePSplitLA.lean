@@ -10,6 +10,11 @@ section Sep
 
 variable {K : Type} [Field K] [CharZero K]
 
+/- English proof (translation)
+Introduce `t1 h1 t2 h2`. Simplify using `only [Set.mem_setOf_eq] at h1 h2`. Distinguish the cases in `hb : β = 0`. Rewrite `h1` using `[hb, mul_zero, add_zero]`. Conclude with `absurd h1 (h.resolve_right (not_not.mpr hb))`.
+
+Establish `h3 : ((t1 : K) - t2) * β = 0` using `by linear_combination h1 - h2`. Establish `h4 : (t1 : K) = t2` using `sub_eq_zero.mp ((mul_eq_zero.mp h3).resolve_right hb)`. Conclude with `h4` after adjusting the coercions.
+-/
 theorem aff_sub (α β : K) (h : α ≠ 0 ∨ β ≠ 0) : {t : ℕ | α + (t : K) * β = 0}.Subsingleton := by
   intro t1 h1 t2 h2
   simp only [Set.mem_setOf_eq] at h1 h2
@@ -20,6 +25,17 @@ theorem aff_sub (α β : K) (h : α ≠ 0 ∨ β ≠ 0) : {t : ℕ | α + (t : K
     have h4 : (t1 : K) = t2 := sub_eq_zero.mp ((mul_eq_zero.mp h3).resolve_right hb)
     exact_mod_cast h4
 
+/- English proof (translation)
+Establish `key : ∀ F : Finset (ι × ι), (∀ q ∈ F, q.1 ≠ q.2) → ∃ x0 : O, ∀ q ∈ F, em q.1 x0 ≠ em q.2 x0`. Introduce `F`. Proceed by induction on `F using Finset.induction_on with`. Consider the case `empty => intro _; exact ⟨0, by simp⟩`. Consider the case `insert p F _ ih`.
+
+Introduce `hF`. Take `⟨x, hx⟩` from `ih fun q hq => hF q (Finset.mem_insert_of_mem hq)`. Choose the witnesses or unpack the hypotheses as in `⟨z, hz⟩ : ∃ z, em p.1 z ≠ em p.2 z := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`.
+
+Conclude with `hF p (Finset.mem_insert_self p F) (hem (RingHom.ext h))`. Establish `hfin : (⋃ q ∈ ((↑(insert p F) : Set (ι × ι))), {t : ℕ | (em q.1 x - em q.2 x) + (t : K) * (em q.1 z - em q.2 z) = 0}).Finite`. Use `Set.Finite.biUnion (Finset.finite_toSet _) fun q hq => (aff_sub _ _ ?_).finite` and prove the remaining obligations. Break down `Finset.mem_insert.1 (Finset.mem_coe.1 hq) with rfl | hq'` into its components or cases. Conclude with `Or.inr (sub_ne_zero.2 hz)`.
+
+Conclude with `Or.inl (sub_ne_zero.2 (hx q hq'))`. Take `⟨t, ht⟩` from `hfin.infinite_compl.nonempty`. Use `⟨x + (t : O) * z, fun q hq h => ht (Set.mem_biUnion (Finset.mem_coe.2 hq) ?_)⟩` and prove the remaining obligations. Simplify using `only [Set.mem_ofPred_eq]`. Simplify using `only [map_add, map_mul, map_natCast] at h`.
+
+Take the linear combination `h`. Take `⟨x0, hx0⟩` from `key (Finset.univ.filter fun q : ι × ι => q.1 ≠ q.2) (fun q hq => (Finset.mem_filter.1 hq).2)`. Conclude with `⟨x0, fun c c' hcc' => hx0 (c, c') (Finset.mem_filter.2 ⟨Finset.mem_univ _, hcc'⟩)⟩`.
+-/
 theorem exists_sep {O : Type} [CommRing O] {ι : Type} [Fintype ι] (em : ι → (O →+* K))
     (hem : Function.Injective em) : ∃ x0 : O, ∀ c c', c ≠ c' → em c x0 ≠ em c' x0 := by
   classical
@@ -55,14 +71,25 @@ section Mat
 
 variable {K : Type} [Field K] {n : ℕ}
 
+/- English proof (translation)
+Rewrite using `[← Algebra.smul_def, Matrix.smul_mulVec]`.
+-/
 theorem alg_mulVec (a : K) (A : Matrix (Fin n) (Fin n) K) (w : Fin n → K) :
     (algebraMap K (Matrix (Fin n) (Fin n) K) a * A) *ᵥ w = a • (A *ᵥ w) := by
   rw [← Algebra.smul_def, Matrix.smul_mulVec]
 
+/- English proof (translation)
+Rewrite using `[Algebra.algebraMap_eq_smul_one, Matrix.smul_mulVec, Matrix.one_mulVec]`.
+-/
 theorem alg_mulVec1 (a : K) (w : Fin n → K) :
     algebraMap K (Matrix (Fin n) (Fin n) K) a *ᵥ w = a • w := by
   rw [Algebra.algebraMap_eq_smul_one, Matrix.smul_mulVec, Matrix.one_mulVec]
 
+/- English proof (translation)
+Proceed by induction on `f using Polynomial.induction_on with`. Consider the case `C a`. Rewrite using `[aeval_C]`. Conclude with `(Algebra.commutes a A).symm`. Consider the case `add p q hp hq`.
+
+Rewrite using `[map_add]`. Conclude with `hp.add_right hq`. Consider the case `monomial k a ih`. Rewrite using `[pow_succ, ← mul_assoc, map_mul, aeval_X]`. Conclude with `ih.mul_right h`.
+-/
 theorem commute_aeval {A B : Matrix (Fin n) (Fin n) K} (h : Commute A B) (f : K[X]) : Commute A (aeval B f) := by
   induction f using Polynomial.induction_on with
   | C a =>
@@ -75,6 +102,11 @@ theorem commute_aeval {A B : Matrix (Fin n) (Fin n) K} (h : Commute A B) (f : K[
     rw [pow_succ, ← mul_assoc, map_mul, aeval_X]
     exact ih.mul_right h
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[pow_succ', pow_succ', ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, ih, Matrix.add_mulVec, Matrix.add_mulVec]`. Use `congr 1`.
+
+Establish `hc : Commute N ((algebraMap K (Matrix (Fin n) (Fin n) K) lam + B) ^ k)` using `((show Commute (algebraMap K (Matrix (Fin n) (Fin n) K) lam) N from Algebra.commutes lam N).symm.add_right hNB).pow_right k`. Rewrite using `[Matrix.mulVec_mulVec, hc.eq, ← Matrix.mulVec_mulVec, hw, Matrix.mulVec_smul, alg_mulVec1]`.
+-/
 theorem pow_shift (N B : Matrix (Fin n) (Fin n) K) (hNB : Commute N B) (lam : K) (w : Fin n → K)
     (hw : N *ᵥ w = lam • w) (k : ℕ) :
     (N + B) ^ k *ᵥ w = (algebraMap K (Matrix (Fin n) (Fin n) K) lam + B) ^ k *ᵥ w := by
@@ -89,6 +121,9 @@ theorem pow_shift (N B : Matrix (Fin n) (Fin n) K) (hNB : Commute N B) (lam : K)
         hNB).pow_right k
     rw [Matrix.mulVec_mulVec, hc.eq, ← Matrix.mulVec_mulVec, hw, Matrix.mulVec_smul, alg_mulVec1]
 
+/- English proof (translation)
+Proceed by induction on `f using Polynomial.induction_on with`. Consider the case `C a => simp`. Consider the case `add p q hp hq => rw [map_add, map_add, Matrix.add_mulVec, Matrix.add_mulVec, hp, hq]`. Consider the case `monomial k a _`. Rewrite using `[map_mul, map_mul, aeval_C, aeval_C, map_pow, map_pow, aeval_X, aeval_X, alg_mulVec, alg_mulVec, pow_shift N B hNB lam w hw (k + 1)]`.
+-/
 theorem aeval_shift (N B : Matrix (Fin n) (Fin n) K) (hNB : Commute N B) (lam : K) (w : Fin n → K)
     (hw : N *ᵥ w = lam • w) (f : K[X]) :
     aeval (N + B) f *ᵥ w = aeval (algebraMap K (Matrix (Fin n) (Fin n) K) lam + B) f *ᵥ w := by
@@ -99,6 +134,9 @@ theorem aeval_shift (N B : Matrix (Fin n) (Fin n) K) (hNB : Commute N B) (lam : 
     rw [map_mul, map_mul, aeval_C, aeval_C, map_pow, map_pow, aeval_X, aeval_X, alg_mulVec, alg_mulVec,
       pow_shift N B hNB lam w hw (k + 1)]
 
+/- English proof (translation)
+Rewrite using `[Lagrange.nodal_eq_mul_nodal_erase hi]`. Simplify using `only [Lagrange.basis, Lagrange.basisDivisor, Finset.prod_mul_distrib, Lagrange.nodalWeight, Lagrange.nodal, map_prod]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem X_sub_mul_basis {ι : Type} [DecidableEq ι] {s : Finset ι} {v : ι → K} {i : ι} (hi : i ∈ s) :
     (X - Polynomial.C (v i)) * Lagrange.basis s v i =
       Polynomial.C (Lagrange.nodalWeight s v i) * Lagrange.nodal s v := by
@@ -107,6 +145,23 @@ theorem X_sub_mul_basis {ι : Type} [DecidableEq ι] {s : Finset ι} {v : ι →
     map_prod]
   ring
 
+/- English proof (translation)
+Use `set R : K[X][X] := ∏ c', (Polynomial.C (Polynomial.C (a c')) + X * Polynomial.C (X - Polynomial.C (μ c'))) with hR`. Establish `hev : ∀ t : ℕ, R.eval (Polynomial.C (t : K)) = ∏ c', (Polynomial.C (a c') + Polynomial.C (t : K) * (X - Polynomial.C (μ c')))`. Introduce `t`. Rewrite using `[hR, eval_prod]`. Use `Finset.prod_congr rfl fun c' _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[eval_add, eval_C, eval_mul, eval_X, eval_C]`. Establish `hcoord : ∀ i, (aeval B (R.coeff 1) *ᵥ w) i = 0`. Introduce `i`. Use `set q : K[X] := ∑ k ∈ Finset.range (R.natDegree + 2), monomial k ((aeval B (R.coeff k) *ᵥ w) i) with hq`. Establish `hroot : ∀ t : ℕ, q.eval (t : K) = 0`.
+
+Introduce `t`. Establish `h1` using `congrFun (h t) i`. Rewrite `h1` using `[← hev t, eval_eq_sum_range' (n := R.natDegree + 2) (by omega), map_sum, Matrix.sum_mulVec, Finset.sum_apply, Pi.zero_apply]`. Rewrite using `[hq, eval_finsetSum]`. Use `Eq.trans (Finset.sum_congr rfl fun k _ => ?_) h1` and prove the remaining obligations.
+
+Rewrite using `[eval_monomial, ← map_pow, map_mul, aeval_C, ← Algebra.commutes, alg_mulVec, Pi.smul_apply, smul_eq_mul, mul_comm]`. Establish `hq0 : q = 0`. Apply `Polynomial.eq_zero_of_infinite_isRoot` to reduce the goal to its premises. Use `Set.Infinite.mono ?_ (Set.infinite_range_of_injective (Nat.cast_injective (R := K)))` and prove the remaining obligations. Introduce and unpack `_ ⟨t, rfl⟩`.
+
+Conclude with `hroot t`. Establish `hc1` using `congrArg (fun p => Polynomial.coeff p 1) hq0`. Simplify using `only [hq, finsetSum_coeff, coeff_monomial, Finset.sum_ite_eq', Finset.mem_range, coeff_zero] at hc1`. Rewrite `hc1` using `[if_pos (by omega)]`. Conclude with `hc1`.
+
+Establish `hR1 : R.coeff 1 = (X - Polynomial.C (μ c)) * Polynomial.C (∏ c' ∈ Finset.univ.erase c, a c')`. Rewrite using `[hR, ← Finset.mul_prod_erase Finset.univ _ (Finset.mem_univ c), hac, map_zero, map_zero, zero_add, mul_assoc]`. Use `(coeff_X_mul _ 0).trans ?_` and prove the remaining obligations. Rewrite using `[coeff_C_mul, coeff_zero_eq_eval_zero, eval_prod, map_prod]`. Use `congr 1`.
+
+Use `Finset.prod_congr rfl fun c' _ => ?_` and prove the remaining obligations. Rewrite using `[eval_add, eval_C, eval_mul, eval_X, zero_mul, add_zero]`. Establish `hπ : ∏ c' ∈ Finset.univ.erase c, a c' ≠ 0` using `Finset.prod_ne_zero_iff.2 fun c' hc' => ha c' (Finset.ne_of_mem_erase hc')`. Establish `hv : aeval B (R.coeff 1) *ᵥ w = 0` using `funext hcoord`. Rewrite `hv` using `[hR1, map_mul, aeval_C, ← Algebra.commutes, alg_mulVec, map_sub, aeval_X, aeval_C, Matrix.sub_mulVec, alg_mulVec1]`.
+
+Establish `h2` using `(smul_eq_zero.1 hv).resolve_left hπ`. Rewrite `h2` using `[sub_eq_zero]`. Then use the resulting hypothesis.
+-/
 theorem coeff_extract [CharZero K] {ι : Type} [Fintype ι] [DecidableEq ι] (B : Matrix (Fin n) (Fin n) K)
     (w : Fin n → K) (a μ : ι → K) (c : ι) (hac : a c = 0) (ha : ∀ c', c' ≠ c → a c' ≠ 0)
     (h : ∀ t : ℕ, aeval B (∏ c', (Polynomial.C (a c') + Polynomial.C (t : K) * (X - Polynomial.C (μ c')))) *ᵥ w = 0) :
@@ -156,6 +211,25 @@ theorem coeff_extract [CharZero K] {ι : Type} [Fintype ι] [DecidableEq ι] (B 
 
 end Mat
 
+/- English proof (translation)
+Introduce `K _ _ O _ n ι _ _ M P em hPP hPM hinj hann v`. Break down `isEmpty_or_nonempty ι with hι | hι` into its components or cases. Establish `hP : P = 0`. Establish `h` using `hann 0`. Rewrite `h` using `[Finset.univ_eq_empty, Finset.prod_empty, map_one, one_mul]`.
+
+Conclude with `h`. Use `⟨fun c => (hι.false c).elim, ?_, fun c => (hι.false c).elim⟩` and prove the remaining obligations. Rewrite using `[hP, Matrix.zero_mulVec, Finset.univ_eq_empty, Finset.sum_empty]`. Take `⟨x0, hx0⟩` from `exists_sep em hinj`. Establish `hinjl : Set.InjOn (fun c => em c x0) (Finset.univ : Finset ι)` using `fun c _ c' _ h => by`.
+
+Assume the negation of the conclusion as `hne`. Conclude with `hx0 c c' hne h`. Use `⟨fun c => P *ᵥ (aeval (M x0) (Lagrange.basis Finset.univ (fun c => em c x0) c) *ᵥ v), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← Matrix.mulVec_sum, ← Matrix.sum_mulVec, ← map_sum, Lagrange.sum_basis hinjl Finset.univ_nonempty, map_one, Matrix.one_mulVec]`. Introduce `c x`.
+
+Use `set u := aeval (M x0) (Lagrange.basis Finset.univ (fun c => em c x0) c) *ᵥ v with hu`. Establish `hP0 : Commute P (M x0)` using `hPM x0`. Establish `hXL : (X - Polynomial.C (em c x0)) * Lagrange.basis Finset.univ (fun c => em c x0) c = Polynomial.C (Lagrange.nodalWeight Finset.univ (fun c => em c x0) c) * ∏ c', (X - Polynomial.C (em c' x0))` using `X_sub_mul_basis (Finset.mem_univ c)`. Establish `hE0 : (M x0 - algebraMap K _ (em c x0)) * (P * aeval (M x0) (Lagrange.basis Finset.univ (fun c => em c x0) c)) = 0`. Establish `e1 : M x0 - algebraMap K (Matrix (Fin n) (Fin n) K) (em c x0) = aeval (M x0) (X - Polynomial.C (em c x0))`.
+
+Rewrite using `[map_sub, aeval_X, aeval_C]`. Rewrite using `[e1, ← mul_assoc, ← (commute_aeval hP0 _).eq, mul_assoc, ← map_mul, hXL, map_mul, aeval_C, ← mul_assoc, ← Algebra.commutes, mul_assoc, (commute_aeval hP0 _).eq, hann x0, mul_zero]`. Establish `hw0 : M x0 *ᵥ (P *ᵥ u) = em c x0 • (P *ᵥ u)`. Establish `h1` using `congrArg (fun A => A *ᵥ v) hE0`. Simplify using `only [Matrix.zero_mulVec] at h1`.
+
+Rewrite `h1` using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, Matrix.sub_mulVec, alg_mulVec1, sub_eq_zero]`. Conclude with `h1`. Use `coeff_extract (M x) (P *ᵥ u) (fun c' => em c x0 - em c' x0) (fun c' => em c' x) c (sub_self _) (fun c' hc' => sub_ne_zero.2 (hx0 c c' (Ne.symm hc'))) fun t => ?_` and prove the remaining obligations. Establish `hcx : Commute (M x0) ((t : Matrix (Fin n) (Fin n) K) * M x)`. Use `((Nat.cast_commute t (M x0)).symm).mul_right ?_` and prove the remaining obligations.
+
+Use `show M x0 * M x = M x * M x0`. Rewrite using `[← map_mul, ← map_mul, mul_comm]`. Establish `h1` using `congrArg (fun A => A *ᵥ u) (hann (x0 + (t : O) * x))`. Simplify using `only [Matrix.zero_mulVec] at h1`. Rewrite `h1` using `[← Matrix.mulVec_mulVec, map_add, map_mul, map_natCast, aeval_shift _ _ hcx (em c x0) _ hw0]`.
+
+Establish `e2 : algebraMap K (Matrix (Fin n) (Fin n) K) (em c x0) + (t : Matrix (Fin n) (Fin n) K) * M x = aeval (M x) (Polynomial.C (em c x0) + Polynomial.C (t : K) * X)`. Rewrite using `[map_add, map_mul, aeval_C, aeval_C, aeval_X, map_natCast]`. Rewrite `h1` using `[e2, ← aeval_comp, prod_comp]`. Use `Eq.trans ?_ h1` and prove the remaining obligations. Use `congr 2`.
+
+Use `Finset.prod_congr rfl fun c' _ => ?_` and prove the remaining obligations. Rewrite using `[sub_comp, X_comp, C_comp]`. Simplify using `only [map_add, map_mul, map_natCast, map_sub]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem split_holds : SplitSt := by
   intro K _ _ O _ n ι _ _ M P em hPP hPM hinj hann v
   rcases isEmpty_or_nonempty ι with hι | hι

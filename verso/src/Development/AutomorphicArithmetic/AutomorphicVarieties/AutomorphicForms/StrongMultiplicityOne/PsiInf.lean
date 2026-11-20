@@ -10,6 +10,11 @@ open GlobalTheory.CuspRep (Cinf Lie chart infGL pInf sInf toL lmul invSet)
 open scoped SchwartzMap FourierTransform RealInnerProductSpace ContDiff Topology
 open UpperTheory.V UpperTheory.V.Af.StrongMultiplicityOne
 
+/- English proof (translation)
+Introduce `E _ _ _ x`. Establish `h : GroundTheory.Global.adelicChar E (sInf E x) = 𝐞 (-TG.tr E x)`. Establish `e : sInf E x = GroundTheory.Global.infiniteAdeleInl (GlobalTheory.CuspRep.infEq E x)` using `rfl`. Rewrite using `[e, GroundTheory.Global.adelicChar_infiniteAdeleInl, TG.tr_apply, ← Finset.sum_neg_distrib, GroundTheory.Global.addChar_map_finsetSum]`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[GroundTheory.Global.infiniteAdelicChar_apply_of_isComplex (IsTotallyComplex.isComplex w)]`. Establish `e2 : InfinitePlace.Completion.extensionEmbedding w (GlobalTheory.CuspRep.infEq E x w) = x w` using `Cm.mixRing_snd x ⟨w, IsTotallyComplex.isComplex w⟩`. Rewrite using `[e2]`. Conclude with `congrArg (fun z : Circle => (z : ℂ)) h`.
+-/
 theorem UpperTheory.V.Af.StrongMultiplicityOne.psiInf :
     UpperTheory.V.Af.StrongMultiplicityOne.PsiInf := by
   intro E _ _ _ x

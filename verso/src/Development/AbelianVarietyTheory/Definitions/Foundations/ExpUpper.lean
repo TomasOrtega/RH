@@ -105,16 +105,28 @@ structure Tower (Ω : Type) [Field Ω] [Algebra ℚ Ω] (ε : Ω →+* ℂ) wher
 
 attribute [instance] Tower.fld Tower.alg
 
+/- English proof (translation)
+Simplify using `[mob, ent]`.
+-/
 example (z : ℂ) : mob 1 z = z := by
   simp [mob, ent]
 
+/- English proof (translation)
+Simplify using `[ent]`.
+-/
 example : ent (ofSL 1) 0 1 = 0 := by
   simp [ent]
 
+/- English proof (translation)
+Establish `h : (0 : ℤ) < (!![1, 1; 0, 1] : Matrix (Fin 2) (Fin 2) ℤ).det` using `by simp [Matrix.det_fin_two]`. Simplify using `[mob, ent, toGQ, h]`.
+-/
 example (z : ℂ) : mob (toGQ !![1, 1; 0, 1]) z = z + 1 := by
   have h : (0 : ℤ) < (!![1, 1; 0, 1] : Matrix (Fin 2) (Fin 2) ℤ).det := by simp [Matrix.det_fin_two]
   simp [mob, ent, toGQ, h]
 
+/- English proof (translation)
+Simplify using `[Hs]`.
+-/
 example : (1 : ℂ) ∈ Hs ↔ False := by
   simp [Hs]
 

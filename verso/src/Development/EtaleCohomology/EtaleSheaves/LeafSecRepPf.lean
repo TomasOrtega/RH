@@ -17,14 +17,23 @@ def FP : C ⥤ (Cᵒᵖ ⥤ ModuleCat.{1} R) :=
 def gen {U V : C} (a : V ⟶ U) : ((FP R).obj U).obj (op V) :=
   ModuleCat.freeMk (R := R) (X := ULift.{1} (V ⟶ U)) (ULift.up a)
 
+/- English proof (translation)
+The claim follows from `ModuleCat.free_map_apply (R := R) _ _`.
+-/
 theorem map_gen {U V W : C} (a : V ⟶ U) (b : W ⟶ V) :
     ((FP R).obj U).map b.op (gen R a) = gen R (b ≫ a) :=
   ModuleCat.free_map_apply (R := R) _ _
 
+/- English proof (translation)
+The claim follows from `ModuleCat.free_map_apply (R := R) _ _`.
+-/
 theorem app_gen {U U' V : C} (a : V ⟶ U') (b : U' ⟶ U) :
     ((FP R).map b).app (op V) (gen R a) = gen R (a ≫ b) :=
   ModuleCat.free_map_apply (R := R) _ _
 
+/- English proof (translation)
+The claim follows from `ModuleCat.free_hom_ext (R := R) (X := ULift.{1} (V ⟶ U)) (fun x => h x.down)`.
+-/
 theorem freePresheaf_hom_ext {U V : C} {M : ModuleCat.{1} R} {f g : ((FP R).obj U).obj (op V) ⟶ M}
     (h : ∀ a : V ⟶ U, f (gen R a) = g (gen R a)) : f = g :=
   ModuleCat.free_hom_ext (R := R) (X := ULift.{1} (V ⟶ U)) (fun x => h x.down)
@@ -33,10 +42,16 @@ def desc (G : Cᵒᵖ ⥤ ModuleCat.{1} R) (U : C) (s : G.obj (op U)) (V : C) :
     ((FP R).obj U).obj (op V) ⟶ G.obj (op V) :=
   ModuleCat.freeDesc (R := R) (X := ULift.{1} (V ⟶ U)) (↾fun x => G.map x.down.op s)
 
+/- English proof (translation)
+The claim follows from `ModuleCat.freeDesc_apply (R := R) _ _`.
+-/
 theorem desc_gen (G : Cᵒᵖ ⥤ ModuleCat.{1} R) (U : C) (s : G.obj (op U)) {V : C} (a : V ⟶ U) :
     desc R G U s V (gen R a) = G.map a.op s :=
   ModuleCat.freeDesc_apply (R := R) _ _
 
+/- English proof (translation)
+Establish `h` using `ConcreteCategory.congr_hom (η.naturality a.op) (gen R (𝟙 U))`. Simplify using `only [ConcreteCategory.comp_apply] at h`. Rewrite `h` using `[map_gen, Category.comp_id]`. Conclude with `h`.
+-/
 theorem nat_gen {G : Cᵒᵖ ⥤ ModuleCat.{1} R} {U V : C} (η : (FP R).obj U ⟶ G) (a : V ⟶ U) :
     η.app (op V) (gen R a) = G.map a.op (η.app (op U) (gen R (𝟙 U))) := by
   have h := ConcreteCategory.congr_hom (η.naturality a.op) (gen R (𝟙 U))
@@ -67,17 +82,32 @@ def yE (G : Cᵒᵖ ⥤ ModuleCat.{1} R) (U : C) : ((FP R).obj U ⟶ G) ≃ G.ob
     refine (desc_gen R G U s (𝟙 U)).trans ?_
     simp
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `η.app (op U') (((FP R).map a).app (op U') (gen R (𝟙 U'))) = _`. Rewrite using `[app_gen, Category.id_comp]`. Conclude with `nat_gen R η a`.
+-/
 theorem yE_res {G : Cᵒᵖ ⥤ ModuleCat.{1} R} {U U' : C} (a : U' ⟶ U) (η : (FP R).obj U ⟶ G) :
     yE R G U' ((FP R).map a ≫ η) = G.map a.op (yE R G U η) := by
   change η.app (op U') (((FP R).map a).app (op U') (gen R (𝟙 U'))) = _
   rw [app_gen, Category.id_comp]
   exact nat_gen R η a
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem yE_sub {G : Cᵒᵖ ⥤ ModuleCat.{1} R} (U : C) (η η' : (FP R).obj U ⟶ G) :
     yE R G U (η - η') = yE R G U η - yE R G U η' := rfl
 
 variable (J : GrothendieckTopology C) [HasSheafify J (ModuleCat.{1} R)]
 
+/- English proof (translation)
+Set `adj` to `sheafificationAdjunction J (ModuleCat.{1} R)`. Use `⟨fun F U => ((Iso.homCongr (i.app U).symm (Iso.refl F)).trans (adj.homEquiv ((FP R).obj U) F)).trans (yE R F.obj U), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `F G g U t`. Simplify using `only [Equiv.trans_apply, Iso.homCongr_apply, Iso.symm_inv, Iso.refl_hom, Category.comp_id]`. Rewrite using `[← Category.assoc, Adjunction.homEquiv_naturality_right]`.
+
+Both sides reduce to the same expression. Introduce `F U U' a t`. Simplify using `only [Equiv.trans_apply, Iso.homCongr_apply, Iso.symm_inv, Iso.refl_hom, Category.comp_id]`. Establish `h : (i.app U').hom ≫ T.map a ≫ t = (presheafToSheaf J _).map ((FP R).map a) ≫ (i.app U).hom ≫ t`. Rewrite using `[← Category.assoc, ← Category.assoc]`.
+
+Use `congr 1`. Conclude with `(i.hom.naturality a).symm`. Rewrite using `[h]`. Use `erw [Adjunction.homEquiv_naturality_left]`. Conclude with `yE_res R a _`.
+
+Introduce `F U t t'`. Simplify using `only [Equiv.trans_apply, Iso.homCongr_apply, Iso.symm_inv, Iso.refl_hom, Category.comp_id]`. Rewrite using `[Preadditive.comp_sub, ← yE_sub]`. Use `congr 1`.
+-/
 theorem general (T : C ⥤ Sheaf J (ModuleCat.{1} R)) (i : FP R ⋙ presheafToSheaf J _ ≅ T) :
     ∃ e : ∀ (F : Sheaf J (ModuleCat.{1} R)) (U : C), (T.obj U ⟶ F) ≃ F.obj.obj (op U),
   (∀ (F G : Sheaf J (ModuleCat.{1} R)) (g : F ⟶ G) (U : C) (t : T.obj U ⟶ F),
@@ -109,6 +139,9 @@ theorem general (T : C ⥤ Sheaf J (ModuleCat.{1} R)) (i : FP R ⋙ presheafToSh
 
 end General
 
+/- English proof (translation)
+Introduce `B q`. Set `i : FP (C` to `B.Etale) (ULift.{1} (ZMod q)) ⋙ presheafToSheaf (EtTop B) _ ≅ OU B q ⋙ H0 B q := (Functor.isoWhiskerLeft (FP (C := B.Etale) (ULift.{1} (ZMod q)) ⋙ presheafToSheaf (EtTop B) _) (DerivedCategory.singleFunctorCompHomologyFunctorIso (SShv B q) 0)).symm`. Conclude with `general (ULift.{1} (ZMod q)) (EtTop B) (OU B q ⋙ H0 B q) i`.
+-/
 theorem LeafSecRep_of : LeafSecRep := by
   intro B q
   let i : FP (C := B.Etale) (ULift.{1} (ZMod q)) ⋙ presheafToSheaf (EtTop B) _ ≅ OU B q ⋙ H0 B q :=

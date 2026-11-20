@@ -24,6 +24,11 @@ section
 variable {K V ι : Type} [Field K] [NumberField K] [StarRing K] [IsTotallyComplex K] [AddCommGroup V]
   [Module K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] [Fintype ι] [DecidableEq ι]
 
+/- English proof (translation)
+Unfold `Formalism.HermitianLatticesTheory.majAt Formalism.HermitianLatticesTheory.normAt Formalism.HermitianLatticesTheory.cnorm`. Rewrite using `[Real.sq_sqrt (Finset.sum_nonneg (fun i _ => by positivity)), Complex.re_sum]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `i _`. Rewrite using `[Complex.sq_norm, Complex.normSq_apply]`.
+
+Apply the tactic sequence `simp [Complex.mul_re] <;> ring`.
+-/
 theorem majAt_self_re (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ) (v : InfinitePlace K)
     (x : V) : (Formalism.HermitianLatticesTheory.majAt b X v x x).re = Formalism.HermitianLatticesTheory.normAt b X v x ^ 2 := by
   unfold Formalism.HermitianLatticesTheory.majAt Formalism.HermitianLatticesTheory.normAt Formalism.HermitianLatticesTheory.cnorm
@@ -33,11 +38,29 @@ theorem majAt_self_re (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι �
   rw [Complex.sq_norm, Complex.normSq_apply]
   simp [Complex.mul_re] <;> ring
 
+/- English proof (translation)
+Unfold `rkK`. Rewrite using `[Submodule.span_span_of_tower, finrank_span_singleton hx]`.
+-/
 theorem rkK_span_singleton (x : V) (hx : x ≠ 0) :
     rkK (K := K) (Submodule.span (𝓞 K) ({x} : Set V)) = 1 := by
   unfold rkK
   rw [Submodule.span_span_of_tower, finrank_span_singleton hx]
 
+/- English proof (translation)
+Use `set L := Submodule.span (𝓞 K) ({x} : Set V) with hLdef`. Establish `hFG : L.FG` using `Submodule.fg_span_singleton x`. Establish `hne : L ≠ ⊥`. Rewrite using `[hLdef, Ne, Submodule.span_singleton_eq_bot]`. Conclude with `hx`.
+
+Take `⟨-, -, hpos⟩` from `Formalism.HN.place_lattice_structure K V ι b X hX L hFG`. Establish `hmu` using `(Formalism.HN.size_maximal_slope K V ι b X hX L hFG hne).2.1`. Establish `hli : LinearIndependent K ![x]` using `linearIndependent_unique_iff.mpr (by simpa using hx)`. Establish `hr : Set.range ![x] = ({x} : Set V)`. Rewrite using `[Set.range_unique]`.
+
+Simplify using the standard rewrite rules. Take `⟨hht, -⟩` from `Formalism.HN.height_gram_determinant K V ι b X hX 1 ![x] hli`. Rewrite `hht` using `[hr]`. Establish `hg : ∀ v, (gramPl b X v ![x]).det.re = Formalism.HermitianLatticesTheory.normAt b X v x ^ 2`. Introduce `v`.
+
+Rewrite using `[Matrix.det_unique]`. Conclude with `majAt_self_re b X v x`. Simplify using `only [hg] at hht`. Establish `hrk : rkK (K` using `K) L = 1 := rkK_span_singleton x hx`. Establish `hnPl : 0 < nPl K` using `Fintype.card_pos`.
+
+Establish `hle : ht b X L ≤ (Real.exp Λ ^ 2) ^ nPl K`. Rewrite using `[hht]`. Combine the equalities or inequalities in the displayed calculation. Establish `hlog : Real.log (ht b X L) ≤ (nPl K : ℝ) * (2 * Λ)`. Establish `h1` using `Real.log_le_log hpos hle`.
+
+Rewrite `h1` using `[Real.log_pow, Real.log_pow, Real.log_exp]`. Then use the resulting hypothesis. Rewrite using `[hmu]`. Unfold `size`. Rewrite using `[hrk, Real.log_rpow hpos]`. Establish `hn' : (0 : ℝ) < nPl K` using `by exact_mod_cast hnPl`.
+
+Establish `key : 1 / (2 * (nPl K : ℝ) * ((1 : ℕ) : ℝ)) * Real.log (ht b X L) ≤ Λ`. Rewrite using `[Nat.cast_one, mul_one, div_mul_eq_mul_div, one_mul, div_le_iff₀ (by positivity)]`. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem muDef_line (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ)
     (hX : ∀ v, IsUnit (X v).det) (x : V) (hx : x ≠ 0) (Λ : ℝ)
     (hn : ∀ v, Formalism.HermitianLatticesTheory.normAt b X v x ≤ Real.exp Λ) :
@@ -82,6 +105,27 @@ theorem muDef_line (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ)
     nlinarith
   linarith
 
+/- English proof (translation)
+Establish `hFG : (Submodule.span (𝓞 K) ({x} : Set V)).FG` using `Submodule.fg_span_singleton x`. Take `⟨hLat, hrkL, -⟩` from `Formalism.HN.place_lattice_structure K V ι b X hX _ hFG`. Establish `hne : Submodule.span (𝓞 K) ({x} : Set V) ≠ ⊥`. Rewrite using `[Ne, Submodule.span_singleton_eq_bot]`. Conclude with `hx`.
+
+Take `⟨-, hmin, -, -, -⟩` from `Formalism.HN.slope_characterization (𝓞 K) V _ (Formalism.HermitianLatticesTheory.realize b X) _ hLat hne`. Rewrite using `[hmin]`. Introduce `N hN`. Take `⟨-, hmono, -, hzero, hdeg0, -⟩` from `Formalism.HN.saturation_basic_properties (𝓞 K) V _ (Formalism.HermitianLatticesTheory.realize b X) _ hLat`. Establish `hK : 0 < Module.finrank ℚ K` using `Module.finrank_pos`.
+
+Rewrite `hrkL` using `[rkK_span_singleton x hx, mul_one]`. Distinguish the cases in `hN0 : N = ⊥`. Substitute `hN0` using the available equality. Rewrite using `[hdeg0, (hzero ⊥ bot_le).mpr rfl]`. Establish `hpos : (0 : ℝ) < (rk (Formalism.HermitianLatticesTheory.realize b X) (Submodule.span (𝓞 K) ({x} : Set V)) : ℝ)`.
+
+Rewrite using `[hrkL]`. Conclude with `hK` after adjusting the coercions. Establish `hθ' : θ ≤ deg (Formalism.HermitianLatticesTheory.realize b X) (Submodule.span (𝓞 K) ({x} : Set V)) / (rk (Formalism.HermitianLatticesTheory.realize b X) (Submodule.span (𝓞 K) ({x} : Set V)) : ℝ)` using `hθ`. Rewrite `hθ'` using `[le_div_iff₀ hpos]`. Simplify using `using hθ'`.
+
+Establish `hNoeth : IsNoetherian (𝓞 K) (Submodule.span (𝓞 K) ({x} : Set V))` using `isNoetherian_of_fg_of_noetherian _ hFG`. Establish `hNFG : N.FG`. Establish `h1` using `(IsNoetherian.noetherian (N.comap (Submodule.span (𝓞 K) ({x} : Set V)).subtype)).map (Submodule.span (𝓞 K) ({x} : Set V)).subtype`. Rewrite `h1` using `[Submodule.map_comap_subtype, inf_eq_right.mpr hN]`. Then use the resulting hypothesis. Take `⟨-, hrkN, -⟩` from `Formalism.HN.place_lattice_structure K V ι b X hX N hNFG`.
+
+Use `haveI : FiniteDimensional K V := Module.Finite.of_basis b`. Establish `hkN : rkK (K` using `K) N = 1 := by`. Establish `hle : Submodule.span K (N : Set V) ≤ Submodule.span K ({x} : Set V)`. Rewrite using `[Submodule.span_le]`. Introduce `y hy`.
+
+Establish `hy'` using `hN hy`. Rewrite `hy'` using `[Submodule.mem_span_singleton]`. Take `⟨a, rfl⟩` from `hy'`. Rewrite using `[SetLike.mem_coe, ← algebraMap_smul K a x]`. Conclude with `Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self x)`.
+
+Establish `h1 : rkK (K` using `K) N ≤ 1 := by`. Unfold `rkK`. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : 0 < rkK (K` using `K) N := by`. Unfold `rkK`.
+
+Apply `Module.finrank_pos_iff_exists_ne_zero.mpr` to reduce the goal to its premises. Take `⟨y, hyN, hy0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hN0`. Conclude with `⟨⟨y, Submodule.subset_span hyN⟩, fun h => hy0 (congrArg Subtype.val h)⟩`. Use linear arithmetic over natural numbers and integers. Rewrite `hrkN` using `[hkN, mul_one]`.
+
+Establish `hrkNL : rk (Formalism.HermitianLatticesTheory.realize b X) N = rk (Formalism.HermitianLatticesTheory.realize b X) (Submodule.span (𝓞 K) ({x} : Set V))`. Rewrite using `[hrkN, hrkL]`. Rewrite using `[hrkNL, sub_self, mul_zero, sub_nonneg]`. Conclude with `(hmono N _ hN le_rfl).2 hrkNL`.
+-/
 theorem muMin_line (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ)
     (hX : ∀ v, IsUnit (X v).det) (x : V) (hx : x ≠ 0) (θ : ℝ)
     (hθ : θ ≤ slope (Formalism.HermitianLatticesTheory.realize b X) (Submodule.span (𝓞 K) ({x} : Set V))) :
@@ -143,6 +187,23 @@ theorem muMin_line (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ)
 
 end
 
+/- English proof (translation)
+Introduce `K V ι _ _ _ _ _ _ _ _ _ _ b X hX B Λ hB hB0 hs`. Take `⟨s, hsB, hsn, hspan⟩` from `hs`. Use `set ρ := Formalism.HermitianLatticesTheory.realize b X with hρ`. Use `set θ : ℝ := (-(2 * Λ) + Real.log 2 - logDisc K / (Module.finrank ℚ K : ℝ)) / 2 with hθ`. Take `⟨hlat, hrkB, -⟩` from `place_lattice_structure K V ι b X hX B hB`.
+
+Take `⟨hsat, hmin, hcont, -⟩` from `hnStep_of degree_supermodular slope_characterization maximal_slope_ratio finite_supremum_slopes real_saturation_property saturation_basic_properties (𝓞 K) V _ ρ B hlat θ`. Use `set S := hnStep ρ B θ with hS`. Establish `hmem : ∀ x ∈ s, x ∈ S`. Introduce `x hx`. Distinguish the cases in `hx0 : x = 0`.
+
+Rewrite using `[hx0]`. Conclude with `S.zero_mem`. Establish `hle : Submodule.span (𝓞 K) ({x} : Set V) ≤ B` using `(Submodule.span_singleton_le_iff_mem x B).2 (hsB hx)`. Establish `hne : Submodule.span (𝓞 K) ({x} : Set V) ≠ ⊥` using `fun h => hx0 ((Submodule.span_singleton_eq_bot).1 h)`. Establish `hmu` using `muDef_line b X hX x hx0 Λ (hsn x hx)`.
+
+Establish `hsl : θ ≤ slope ρ (Submodule.span (𝓞 K) ({x} : Set V))`. Unfold `muDef at hmu`. Rewrite using `[hθ]`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `hcont _ hle hne (muMin_line b X hX x hx0 θ hsl) (Submodule.mem_span_singleton_self x)`.
+
+Establish `hSfg : S.FG` using `Submodule.FG.of_le hB hsat.1`. Establish `hrkS` using `(place_lattice_structure K V ι b X hX S hSfg).2.1`. Establish `hspanEq : Submodule.span K (S : Set V) = Submodule.span K (B : Set V)`. Use `le_antisymm (Submodule.span_mono hsat.1) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce `y hy`.
+
+Conclude with `Submodule.span_mono (fun x hx => hmem x hx) (hspan hy)`. Establish `hrkK : rkK (K` using `K) S = rkK (K := K) B := by`. Unfold `rkK`. Rewrite using `[hspanEq]`. Establish `hBS : B = S` using `(saturation_basic_properties (𝓞 K) V _ ρ B hlat).2.2.1 S B hsat hsat.1 le_rfl (by rw [hrkB, hrkS, hrkK])`.
+
+Establish `hfin : θ ≤ muMin ρ B`. Use `hmin (by rw [← hBS]; exact hB0)` as an intermediate fact. Rewrite `this` using `[← hBS]`. Then use the resulting hypothesis. Unfold `muMinDef`. Rewrite `hfin` using `[hθ]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem span_min_slope : SpanMuMin := by
   intro K V ι _ _ _ _ _ _ _ _ _ _ b X hX B Λ hB hB0 hs
   obtain ⟨s, hsB, hsn, hspan⟩ := hs

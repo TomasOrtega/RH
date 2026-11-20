@@ -18,6 +18,11 @@ noncomputable section
 
 variable {K : FiniteSubfield} (ι : LocalEmbeddings K)
 
+/- English proof (translation)
+Take `⟨p, y, rfl⟩` from `exists_unitsLevelInfl_eq 2 x`. Use `⟨Fintype.card (p.1.1 ≃ₐ[K.1] p.1.1), Fintype.card_ne_zero, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_nsmul]`. Establish `h` using `card_smul_groupCohomology (galUnitsZ K.1 p.1.1) two_ne_zero ((cohomologyIsoGroupCohomology _ 2).hom.hom y)`. Establish `hy : Fintype.card (p.1.1 ≃ₐ[K.1] p.1.1) • y = 0`.
+
+Apply `(ModuleCat.mono_iff_injective (cohomologyIsoGroupCohomology (galUnitsZ K.1 p.1.1) 2).hom).1 inferInstance` to reduce the goal to its premises. Rewrite using `[map_nsmul, h, map_zero]`. Rewrite using `[hy, map_zero]`.
+-/
 theorem exists_nsmul_eq_zero_unitsLimitRep (x : cohomology (unitsLimitRep K) 2) : ∃ m : ℕ, m ≠ 0 ∧ m • x = 0 := by
   obtain ⟨p, y, rfl⟩ := exists_unitsLevelInfl_eq 2 x
   refine ⟨Fintype.card (p.1.1 ≃ₐ[K.1] p.1.1), Fintype.card_ne_zero, ?_⟩
@@ -30,6 +35,15 @@ theorem exists_nsmul_eq_zero_unitsLimitRep (x : cohomology (unitsLimitRep K) 2) 
     rw [map_nsmul, h, map_zero]
   rw [hy, map_zero]
 
+/- English proof (translation)
+Take `⟨a₀, ha₀⟩` from `exists_brauerLocal_sub_globalCupClass_iChar_inl_eq_zero ι x`. Use `set x' := x - globalCupClass (iChar K) a₀ with hx'`. Take `⟨m, hm0, hm⟩` from `exists_nsmul_eq_zero_unitsLimitRep x'`. Set `S : Finset (HeightOneSpectrum (𝓞 K.1))` to `(brauerLocal ι x').support.preimage Sum.inr Sum.inr_injective.injOn`. Take `⟨E, _, hgal, hcyc, hEle, hdeg⟩` from `CyclotomicLayer.exists_cyclic_layer_dvd_localDegree K S hm0`.
+
+Establish `hsplit : (unitsResField K E 2).hom x' = 0` using `unitsResField_eq_zero_of_dvd_finrank ι x' m hm ha₀ fun v hv w => hdeg v (by`. Rewrite using `[Finset.mem_preimage, DFinsupp.mem_support_iff]`. Conclude with `hv) w`. Take `⟨χ, b, hχ, hb⟩` from `exists_globalCupClass_eq_of_unitsResField_eq_zero x' hsplit`. Establish `: (E.1.fixingSubgroup.subgroupOf K.1.fixingSubgroup).Normal` using `normal_subgroupOf_of_isGalois (K := K) (E := E)`.
+
+Establish `: IsMulCommutative (E.1 ≃ₐ[K.1] E.1)`. Set `` to `IsCyclic.commGroup (α := E.1 ≃ₐ[K.1] E.1)`. Conclude with `⟨⟨fun a c => mul_comm a c⟩⟩`. Establish `h' : brauerSumInv ι x' = 0`. Rewrite using `[← hb, brauerSumInv_globalCupClass]`.
+
+Conclude with `finsum_char_localSymbolAt_eq_zero E ι (hEle.trans (sup_le_sup_left Cyclotomic.zhatField_le_maxCyclotomic _)) χ hχ b`. Establish `hx : x = x' + globalCupClass (iChar K) a₀` using `by rw [hx', sub_add_cancel]`. Rewrite using `[hx, map_add, h', brauerSumInv_globalCupClass_iChar, add_zero]`.
+-/
 theorem brauerSumInv_eq_zero (x : cohomology (unitsLimitRep K) 2) : brauerSumInv ι x = 0 := by
   classical
   obtain ⟨a₀, ha₀⟩ := exists_brauerLocal_sub_globalCupClass_iChar_inl_eq_zero ι x

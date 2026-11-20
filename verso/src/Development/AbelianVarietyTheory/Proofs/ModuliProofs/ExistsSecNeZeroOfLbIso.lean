@@ -21,6 +21,13 @@ open scoped CategoryTheory.Obj TensorProduct
 
 namespace GlobalTheory.AmpleSpecialisation
 
+/- English proof (translation)
+Take `⟨u, hu⟩` from `h`. Take `⟨t, b, hb⟩` from `hs`. Use `⟨DVR.secOfIso t hu hA hB, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hn`. Use `push Not at hn`.
+
+Use `hb (fn_ext fun y hy => ?_)` and prove the remaining obligations. Take `⟨a, ha⟩` from `exists_chart hA y`. Establish `e` using `(DVR.secOfIso_spec t hu hA hB a b).symm`. Rewrite `e` using `[hn a]`. Establish `e'` using `(DVR.isoCand_rs u t a b le_rfl).symm.trans ((congrArg (DVR.rs le_rfl) (e.trans (map_zero _))).trans (map_zero _))`.
+
+Establish `e''` using `(Units.mul_right_eq_zero _).1 e'`. Establish `hm : (𝟙 Y : Y ⟶ Y) y ∈ A.U a ⊓ B.U b` using `⟨ha, hy⟩`. Use `(gs_res (𝟙 Y) y inf_le_right hm _).symm.trans ((congrArg (gs (𝟙 Y) y _) e'').trans ?_)` and prove the remaining obligations. Rewrite using `[gs_eq _ y _ hm, gs_eq _ y _ hy, map_zero, map_zero, map_zero, map_zero]`.
+-/
 theorem exists_sec_ne_zero_of_lbIso {Y : Scheme.{0}} {A B : LB Y} (hA : A.IsLB) (hB : B.IsLB) (h : LBIso A B)
     (hs : ∃ s : LB.Sec B, ∃ j, s.f j ≠ 0) : ∃ s : LB.Sec A, ∃ j, s.f j ≠ 0 := by
   obtain ⟨u, hu⟩ := h
@@ -39,6 +46,9 @@ theorem exists_sec_ne_zero_of_lbIso {Y : Scheme.{0}} {A B : LB Y} (hA : A.IsLB) 
   refine (gs_res (𝟙 Y) y inf_le_right hm _).symm.trans ((congrArg (gs (𝟙 Y) y _) e'').trans ?_)
   rw [gs_eq _ y _ hm, gs_eq _ y _ hy, map_zero, map_zero, map_zero, map_zero]
 
+/- English proof (translation)
+Establish `hp : (lbPow M a).IsLB` using `LB.isLB_linComb hM _ _`. Establish `hp' : (lbPow (M.pull f) a).IsLB` using `LB.isLB_linComb (pull_isLB hM f) _ _`. Use `(CechPic.cls_eq_iff (pull_isLB (LB.isLB_div hp hL) f) (LB.isLB_div hp' (pull_isLB hL f))).1 ?_` and prove the remaining obligations. Rewrite using `[CechPic.cls_pull (LB.isLB_div hp hL), CechPic.cls_div hp hL, CechPic.cls_div hp' (pull_isLB hL f), CechPic.cls_lbPow hM, CechPic.cls_lbPow (pull_isLB hM f), CechPic.cls_pull hM, CechPic.cls_pull hL, map_sub, map_nsmul]`.
+-/
 theorem lbIso_pull_div_lbPow {X Y : Scheme.{0}} {L M : LB X} (hL : L.IsLB) (hM : M.IsLB) (f : Y ⟶ X) (a : ℕ) :
     LBIso ((LB.div (lbPow M a) L).pull f) (LB.div (lbPow (M.pull f) a) (L.pull f)) := by
   have hp : (lbPow M a).IsLB := LB.isLB_linComb hM _ _
@@ -65,6 +75,13 @@ def baseChange {S S' : Scheme.{0}} (P : Out.PolAV S) (f : S' ⟶ S) : Out.PolAV 
     obtain ⟨w, hw⟩ := PolBaseChange.lbIso_refl (pull_isLB P.isLB (pullback.fst P.A.hom f))
     exact kTriv_pull (isGrpPullback_pullback P.A f) P.isLB (pull_isLB P.isLB _) ((isGen_iff w).1 hw) P.ktriv
 
+/- English proof (translation)
+Introduce `hL _ S _ _ P M K _ x hM hx hamp`. Establish `hne : Nonempty (baseChange P x).A.left` using `⟨eSec (baseChange P x).A (Classical.arbitrary (Sp K))⟩`. Take `⟨a, s, ha, hs⟩` from `GlobalTheory.T.exists_sec_relAmplePow_div_ne_zero K (baseChange P x).A (baseChange P x).L (M.pull (pullback.fst P.A.hom x)) (baseChange P x).isAb.proper hne (baseChange P x).isLB (pull_isLB hM _) hamp`. Establish `hp : (lbPow M a).IsLB` using `LB.isLB_linComb hM _ _`. Establish `hN` using `LB.isLB_div hp P.isLB`.
+
+Establish `hN' : ∀ {Y : Scheme.{0}} (f : Y ⟶ P.A.left), (LB.div (lbPow (M.pull f) a) (P.L.pull f)).IsLB` using `fun f => LB.isLB_div (LB.isLB_linComb (pull_isLB hM f) _ _) (pull_isLB P.isLB f)`. Take `⟨t, ht⟩` from `exists_sec_ne_zero_of_lbIso (pull_isLB hN _) (hN' _) (lbIso_pull_div_lbPow P.isLB hM (pullback.fst P.A.hom x) a) ⟨s, hs⟩`. Use `GlobalTheory.T.relAmple_of_ample_geometricFibres_abelianScheme hL S P M hM fun K' _ _ y => ?_` and prove the remaining obligations. Take `⟨t', ht'⟩` from `exists_sec_ne_zero_of_lbIso (hN' _) (pull_isLB hN _) (lbIso_pull_div_lbPow P.isLB hM (pullback.fst P.A.hom y) a).symm (GlobalTheory.T.exists_section_ne_zero_fibre_of_generic_section hL S P _ K K' x y t hN hx ht)`. Take `⟨r, u, hu⟩` from `GlobalTheory.T.exists_sections_cover_cube_effective_abelianVariety GlobalTheory.T.cube_theorem_and_sections_finite_growth_abelianVariety.1 K' (baseChange P y) _ t' (hN' _) ht'`.
+
+Conclude with `GlobalTheory.T.relAmple_of_cube_div_generated_field K' (baseChange P y).A (baseChange P y).L (M.pull (pullback.fst P.A.hom y)) a r u (baseChange P y).isAb.proper (baseChange P y).isLB (pull_isLB hM _) ha (baseChange P y).ample hu`.
+-/
 theorem relAmple_of_genericFibre : Out.Laws → Out.Laws2 → ∀ (S : Scheme.{0}) [IsLocallyNoetherian S] [IsIntegral S] (P : Out.PolAV S) (M : LB P.A.left) (K : Type) [Field K] (x : Sp K ⟶ S), M.IsLB → Set.range x = {genericPoint S} → Out.RelAmple ((Over.pullback x).obj P.A) (M.pull (pullback.fst P.A.hom x)) → Out.RelAmple P.A M := by
   intro hL _ S _ _ P M K _ x hM hx hamp
   have hne : Nonempty (baseChange P x).A.left :=

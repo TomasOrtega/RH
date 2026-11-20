@@ -15,6 +15,19 @@ open ValuativeRel Formalism.L2.Host
 
 namespace GlobalTheory.FunObj
 
+/- English proof (translation)
+Introduce `D T L sc G F W w hF hc x hx`. Use `haveI : (Valued.v : Valuation (Kw w) (WithZero (Multiplicative ℤ))).Compatible := Valuation.Compatible.ofValuation _`. Establish `e` using `ValuativeRel.isEquiv (valuation (Kw w)) (Valued.v : Valuation (Kw w) (WithZero (Multiplicative ℤ)))`. Use `set q := Ideal.absNorm w.asIdeal`. Use `set n := depthAt G w`.
+
+Establish `hq : Valued.v ((q : ℕ) : Kw w) ≤ WithZero.exp (-1 : ℤ)`. Establish `hmem : ((q : ℕ) : 𝓞 D.host.E) ∈ w.asIdeal ^ 1` using `by rw [pow_one]; exact Ideal.absNorm_mem w.asIdeal`. Establish `h2 : Valued.v ((q : ℕ) : Kw w) = w.intValuation ((q:ℕ) : 𝓞 D.host.E)`. Rewrite using `[← map_natCast (algebraMap (𝓞 D.host.E) (Kw w))]`. Conclude with `(IsDedekindDomain.HeightOneSpectrum.valuedAdicCompletion_eq_valuation (K := D.host.E) w _).trans (IsDedekindDomain.HeightOneSpectrum.valuation_of_algebraMap _ _)`.
+
+Rewrite using `[h2]`. Use `(w.intValuation_le_pow_iff_mem ((q:ℕ) : 𝓞 D.host.E) 1).2 hmem` as an intermediate fact. Simplify using `using this`. Establish `hu : Valued.v ((unifAt w : (Kw w)ˣ) : Kw w) = WithZero.exp (-1 : ℤ)` using `unif_spec w`. Establish `hx' : Valued.v ((((unifAt w) ^ n : (Kw w)ˣ) : Kw w) * x) ≤ 1`.
+
+Use `(e ((((unifAt w) ^ n : (Kw w)ˣ) : Kw w) * x) 1).1 (by rw [map_one]; exact hx)` as an intermediate fact. Rewrite `this` using `[map_one]`. Then use the resulting hypothesis. Establish `hNx : Valued.v (((q ^ n : ℕ) : Kw w) * x) ≤ 1`. Use `le_trans ?_ hx'` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, Units.val_pow_eq_pow_val, map_pow, Nat.cast_pow, map_pow, hu]`.
+
+Use `gcongr`. Establish `hNx2 : valuation (Kw w) (((q ^ n : ℕ) : Kw w) * x) ≤ valuation (Kw w) 1` using `(e (((q ^ n : ℕ) : Kw w) * x) 1).2 (by rw [map_one]; exact hNx)`. Establish `h1 : psiAt W w ((q ^ n) • x) = 1`. Rewrite using `[nsmul_eq_mul]`. Conclude with `(hc 1).2 (by simp) _ hNx2`.
+
+Apply `hF` to reduce the goal to its premises. Rewrite using `[← Circle.coe_pow, ← AddChar.map_nsmul_eq_pow, h1, Circle.coe_one]`.
+-/
 theorem psiAt_mem_subfield_of_roots : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} (F : Subfield ℂ) {W : G.Weil} {w : Pl D.host.E}, (∀ z : ℂ, z ^ (Ideal.absNorm w.asIdeal ^ depthAt G w) = 1 → z ∈ F) → HasConductor (psiAt W w) 1 → ∀ (x : Kw w), valuation (Kw w) ((((unifAt w) ^ depthAt G w : (Kw w)ˣ) : Kw w) * x) ≤ 1 → (psiAt W w x : ℂ) ∈ F := by
   intro D T L sc G F W w hF hc x hx
   haveI : (Valued.v : Valuation (Kw w) (WithZero (Multiplicative ℤ))).Compatible := Valuation.Compatible.ofValuation _

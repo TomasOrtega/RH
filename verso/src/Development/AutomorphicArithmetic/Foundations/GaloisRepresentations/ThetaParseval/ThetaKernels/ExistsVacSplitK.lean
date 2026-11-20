@@ -27,6 +27,41 @@ end
 noncomputable section
 namespace PositivityTheory.ThKW.SplitVacuumEigenvectors
 open GlobalTheory.SplitInvFormF
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B hB nS nT JS JT hS hT ξ₀ hξ hσξ e he f₀ hf₀ hf₀0`. Establish `he'` using `isSplitIdemF_conj he`. Set `Y` to `conjHalf σ e nS nT`. Set `X` to `conjHalf σ (cAF σ e) nS nT`. Take `⟨U, hU, hUf⟩` from `hf₀.level`.
+
+Take `⟨G, hGX, hGU⟩` from `_root_.PositivityTheory.ThKW.exists_finite_open_subgroup_split F E σ B hB nS nT JS JT hS hT ξ₀ hξ hσξ e he U hU`. Establish `hGX' : ∀ g ∈ G, g ∈ X` using `fun g hg => mem_conjHalf_conj he (hGX g hg)`. Set `YK : AddSubgroup (WOF F E nS nT)` to `{ carrier := {y | y ∈ Y ∧ ∀ k ∈ X, heisOF σ JS JT ξ₀ B.ψ k f₀ = f₀ → commF σ JS JT ξ₀ B.ψ k y = 1} add_mem' := fun {a b} ha hb => ⟨Y.add_mem ha.1 hb.1, fun k hk hkf => by`. Rewrite using `[commF_add_right, ha.2 k hk hkf, hb.2 k hk hkf, one_mul]⟩`. Use the proof step `zero_mem' := ⟨Y.zero_mem, fun k _ _ => commF_zero_right k⟩`.
+
+Use the proof step `neg_mem' := fun {a} ha => ⟨Y.neg_mem ha.1, fun k hk hkf => by`. Use `commF_neg_right (σ := σ) (JS := JS) (JT := JT) (xi0 := ξ₀) (ψ := B.ψ) k a` as an intermediate fact. Rewrite using `[ha.2 k hk hkf, mul_one] at this⟩ }` and apply the resulting hypothesis. Set `Q : AddSubgroup YK` to `{ carrier := {y | ∀ g ∈ G, commF σ JS JT ξ₀ B.ψ g (y : WOF F E nS nT) = 1} add_mem' := fun {a b} ha hb g hg => by`. Rewrite using `[AddSubgroup.coe_add, commF_add_right, ha g hg, hb g hg, one_mul]`.
+
+Use the proof step `zero_mem' := fun g _ => commF_zero_right g`. Use the proof step `neg_mem' := fun {a} ha g hg => by`. Use `commF_neg_right (σ := σ) (JS := JS) (JT := JT) (xi0 := ξ₀) (ψ := B.ψ) g (a : WOF F E nS nT)` as an intermediate fact. Rewrite using `[ha g hg, mul_one] at this }` and apply the resulting hypothesis. Establish `hQfix : ∀ q ∈ Q, heisOF σ JS JT ξ₀ B.ψ (q : WOF F E nS nT) f₀ = f₀` using `fun q hq => hUf _ (hGU _ q.2.1 hq) (fin_of_mem he q.2.1)`.
+
+Establish `hN : ∀ g ∈ G, ∃ k : ℕ, 0 < k ∧ heisOF σ JS JT ξ₀ B.ψ (k • g) f₀ = f₀` using `fun g hg => exists_nsmul_fix he' (hGX' g hg) hf₀`. Use `choose! Ng hNg0 hNg using hN`. Use `set N := ∏ g ∈ G, Ng g with hNdef`. Establish `hN0 : 0 < N` using `Finset.prod_pos fun g hg => hNg0 g hg`. Establish `hpowN : ∀ g ∈ G, ∀ y : YK, commF σ JS JT ξ₀ B.ψ g (y : WOF F E nS nT) ^ N = 1`.
+
+Introduce `g hg y`. Take `⟨m, hm⟩ : Ng g ∣ N` from `Finset.dvd_prod_of_mem _ hg`. Rewrite using `[← commF_nsmul_left]`. Use `y.2.2 _ (nsmul_mem (hGX' g hg) N) ?_` and prove the remaining obligations. Rewrite using `[hm, mul_nsmul]`.
+
+Conclude with `heisOF_nsmul_fix he' (nsmul_mem (hGX' g hg) _) (hNg g hg) m`. Use `haveI : Finite (YK ⧸ Q) := by`. Set `S` to `(Polynomial.nthRoots N (1 : ℂ)).toFinset`. Use `Finite.of_injective (β := G → S) (fun a g => ⟨commF σ JS JT ξ₀ B.ψ g (Quotient.out a : YK), ?_⟩) ?_` and prove the remaining obligations. Rewrite using `[Multiset.mem_toFinset, Polynomial.mem_nthRoots hN0]`.
+
+Conclude with `hpowN g g.2 _`. Introduce `a b hab`. Rewrite using `[← QuotientAddGroup.out_eq' a, ← QuotientAddGroup.out_eq' b, QuotientAddGroup.eq]`. Introduce `g hg`. Establish `h1` using `congrArg Subtype.val (congrFun hab ⟨g, hg⟩)`.
+
+Simplify using `only at h1`. Use `show commF σ JS JT ξ₀ B.ψ g ((-Quotient.out a + Quotient.out b : YK) : WOF F E nS nT) = 1`. Rewrite using `[AddSubgroup.coe_add, commF_add_right, ← h1, AddSubgroup.coe_neg, commF_neg_right]`. Set `Ch : Set (YK → ℂ)` to `{χ | ∃ x ∈ X, (∀ q ∈ Q, commF σ JS JT ξ₀ B.ψ x (q : WOF F E nS nT) = 1) ∧ χ = fun y : YK => commF σ JS JT ξ₀ B.ψ x (y : WOF F E nS nT)}`. Take `⟨χ, ⟨x, hxX, -, rfl⟩, w, hwspan, hw0, hweig⟩` from `exists_eigen_of_sep (fun y : YK => heisL σ JS JT ξ₀ B.ψ (y : WOF F E nS nT)) (fun a b f => heisOF_add_half he a.2.1 b.2.1 f) Q f₀ hf₀0 hQfix Ch (by rintro _ ⟨x, -, -, rfl⟩ a b; exact commF_add_right x a b) (by rintro _ ⟨x, -, hx, rfl⟩ q hq; exact hx q hq) (by`.
+
+Introduce and unpack `_ ⟨x, hx, hxQ, rfl⟩ _ ⟨x', hx', hxQ', rfl⟩`. Use `⟨x + x', X.add_mem hx hx', fun q hq => by rw [commF_add_left, hxQ q hq, hxQ' q hq, one_mul], ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `y`. Simplify using `only [Pi.mul_apply, commF_add_left])`. Use the proof step `⟨0, X.zero_mem, fun q _ => commF_zero_left _, by funext y; simp only [Pi.one_apply, commF_zero_left]⟩`.
+
+Use the proof step `(fun y hy => by`. Establish `hy' : ¬ ∀ g ∈ G, commF σ JS JT ξ₀ B.ψ g (y : WOF F E nS nT) = 1` using `hy`. Use `push_neg at hy'`. Take `⟨g, hg, hne⟩` from `hy'`. Conclude with `⟨_, ⟨g, hGX' g hg, fun q hq => hq g hg, rfl⟩, hne⟩)`.
+
+Establish `hspan_theta : Submodule.span ℂ (Set.range fun y : YK => heisL σ JS JT ξ₀ B.ψ (y : WOF F E nS nT) f₀) ≤ GlobalTheory.WeilPartsF.thetaSubF σ JS JT ξ₀ B.ψ` using `Submodule.span_le.2 (by`. Introduce and unpack `_ ⟨y, rfl⟩`. Conclude with `_root_.GlobalTheory.HeisThetaF.isThetaFunOF_heisOF_k F E σ B hB nS nT JS JT ξ₀ _ _ hf₀)`. Establish `hspan_fix : ∀ k ∈ X, heisOF σ JS JT ξ₀ B.ψ k f₀ = f₀ → Submodule.span ℂ (Set.range fun y : YK => heisL σ JS JT ξ₀ B.ψ (y : WOF F E nS nT) f₀) ≤ LinearMap.eqLocus (heisL σ JS JT ξ₀ B.ψ k) LinearMap.id` using `fun k hk hkf => Submodule.span_le.2 (by`. Introduce and unpack `_ ⟨y, rfl⟩`.
+
+Use `show heisOF σ JS JT ξ₀ B.ψ k (heisOF σ JS JT ξ₀ B.ψ (y : WOF F E nS nT) f₀) = heisOF σ JS JT ξ₀ B.ψ (y : WOF F E nS nT) f₀`. Rewrite using `[heisOF_comm, y.2.2 k hk hkf, one_smul, hkf])`. Establish `hwθ : IsThetaFunOF σ JS JT ξ₀ B.ψ w` using `hspan_theta hwspan`. Use `⟨heisOF σ JS JT ξ₀ B.ψ (-x) w, _root_.GlobalTheory.HeisThetaF.isThetaFunOF_heisOF_k F E σ B hB nS nT JS JT ξ₀ _ _ hwθ, ?_, ?_⟩` and prove the remaining obligations. Introduce `h0`.
+
+Apply `hw0` to reduce the goal to its premises. Use `heisOF_add_half (JS := JS) (JT := JT) (xi0 := ξ₀) (ψ := B.ψ) he' hxX (X.neg_mem hxX) w` as an intermediate fact. Rewrite `this` using `[add_neg_cancel, heisOF_zero]`. Rewrite using `[this, show heisOF σ JS JT ξ₀ B.ψ (-x) w = 0 from h0]`. Conclude with `map_zero (heisL σ JS JT ξ₀ B.ψ x)`.
+
+Introduce `y hy`. Distinguish the cases in `hyK : ∀ k ∈ X, heisOF σ JS JT ξ₀ B.ψ k f₀ = f₀ → commF σ JS JT ξ₀ B.ψ k y = 1`. Use `left`. Establish `hyy : y ∈ YK` using `⟨hy, hyK⟩`. Establish `h1` using `hweig ⟨y, hyy⟩`.
+
+Express the relevant statement in the definitionally equal form `commF σ JS JT ξ₀ B.ψ x y • heisOF σ JS JT ξ₀ B.ψ y w = w at h1`. Rewrite using `[heisOF_comm, commF_swap]`. Use `conv_rhs => rw [← h1]`. Conclude with `(GlobalTheory.WeilPartsF.heisOF_smul _ _ _).symm`. Use `right push_neg at hyK`.
+
+Take `⟨k, hk, hkf, hne⟩` from `hyK`. Use `⟨k, ?_, hne⟩` and prove the remaining obligations. Rewrite using `[heisOF_comm, commF_half he' hk (X.neg_mem hxX), one_smul]`. Use `congr 1`. Conclude with `hspan_fix k hk hkf hwspan`.
+-/
 theorem exists_vac_split_k : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
     _root_.UpperTheory.TP.W.GoodK σ B → ∀ (nS nT : ℕ) (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E),
       IsHermND σ JS → IsHermND σ JT → ∀ ξ₀ : E, ξ₀ ≠ 0 → σ ξ₀ = -ξ₀ →

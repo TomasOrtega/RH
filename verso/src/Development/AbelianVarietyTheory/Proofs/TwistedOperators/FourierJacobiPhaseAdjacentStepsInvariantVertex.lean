@@ -14,6 +14,13 @@ open GlobalTheory.DiagVol
 section Shape
 variable {k : Type} [Field k] {ι : Type} [Fintype ι] [DecidableEq ι]
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_apply]`. Establish `h : ∀ t, M r t * D t s = (if t = r then D t s else 0) + (if ℓ r < ℓ t then M r t * D t s else 0)`. Introduce `t`. Distinguish the cases in `ht : ℓ r < ℓ t`. Establish `: t ≠ r` using `by rintro rfl; exact lt_irrefl _ ht`.
+
+Simplify using `[ht, this]`. Rewrite using `[hM r t (by omega), if_neg ht, add_zero]`. Distinguish the cases in `htr : t = r`. Substitute `htr` using the available equality. Simplify using the standard rewrite rules.
+
+Rewrite using `[Matrix.one_apply_ne (Ne.symm htr), if_neg htr, zero_mul]`. Rewrite using `[Finset.sum_congr rfl fun t _ => h t, Finset.sum_add_distrib, Finset.sum_ite_eq']`. Simplify using the standard rewrite rules.
+-/
 theorem mul_apply_of_shape {β : Type} {ℓ : ι → ℕ} {M : Matrix ι ι k}
     (hM : ∀ r s, ℓ s ≤ ℓ r → M r s = (1 : Matrix ι ι k) r s) (D : Matrix ι β k) (r : ι) (s : β) :
     (M * D) r s = D r s + ∑ t, if ℓ r < ℓ t then M r t * D t s else 0 := by
@@ -30,6 +37,13 @@ theorem mul_apply_of_shape {β : Type} {ℓ : ι → ℕ} {M : Matrix ι ι k}
   rw [Finset.sum_congr rfl fun t _ => h t, Finset.sum_add_distrib, Finset.sum_ite_eq']
   simp
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_apply]`. Establish `h : ∀ t, D r t * M t s = (if t = s then D r t else 0) + (if ℓ t < ℓ s then D r t * M t s else 0)`. Introduce `t`. Distinguish the cases in `ht : ℓ t < ℓ s`. Establish `: t ≠ s` using `by rintro rfl; exact lt_irrefl _ ht`.
+
+Simplify using `[ht, this]`. Rewrite using `[hM t s (by omega), if_neg ht, add_zero]`. Distinguish the cases in `htr : t = s`. Substitute `htr` using the available equality. Simplify using the standard rewrite rules.
+
+Rewrite using `[Matrix.one_apply_ne htr, if_neg htr, mul_zero]`. Rewrite using `[Finset.sum_congr rfl fun t _ => h t, Finset.sum_add_distrib, Finset.sum_ite_eq']`. Simplify using the standard rewrite rules.
+-/
 theorem apply_mul_of_shape {α : Type} {ℓ : ι → ℕ} {M : Matrix ι ι k}
     (hM : ∀ r s, ℓ s ≤ ℓ r → M r s = (1 : Matrix ι ι k) r s) (D : Matrix α ι k) (r : α) (s : ι) :
     (D * M) r s = D r s + ∑ t, if ℓ t < ℓ s then D r t * M t s else 0 := by
@@ -51,6 +65,9 @@ end Shape
 section Step
 variable {k : Type} [Field k] {n n' : Type} {c : ℕ}
 
+/- English proof (translation)
+Establish `h1 : ¬ (Free (c / 2 + 1) ((Sum.inr l : n ⊕ Fin c), (Sum.inr i : n' ⊕ Fin (c + 1))) ∨ Kept ((Sum.inr l : n ⊕ Fin c), (Sum.inr i : n' ⊕ Fin (c + 1))))`. Simplify using `only [Free, Kept, or_false]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[stepPt, Matrix.add_apply, Matrix.of_apply, dif_neg h1, add_zero, basePt, fromBlocks_apply₂₂, Matrix.of_apply, if_neg (by omega)]`.
+-/
 theorem stepPt_rr_lt (x₀ : Matrix n n' k) (e : StepVar n c n' → k) (l : Fin c) (i : Fin (c + 1))
     (h : i.val < l.val) : stepPt x₀ e (.inr l) (.inr i) = 0 := by
   have h1 : ¬ (Free (c / 2 + 1) ((Sum.inr l : n ⊕ Fin c), (Sum.inr i : n' ⊕ Fin (c + 1))) ∨
@@ -59,6 +76,9 @@ theorem stepPt_rr_lt (x₀ : Matrix n n' k) (e : StepVar n c n' → k) (l : Fin 
   rw [stepPt, Matrix.add_apply, Matrix.of_apply, dif_neg h1, add_zero, basePt, fromBlocks_apply₂₂,
     Matrix.of_apply, if_neg (by omega)]
 
+/- English proof (translation)
+Establish `h1 : ¬ (Free (c / 2 + 1) ((Sum.inr l : n ⊕ Fin c), (Sum.inr i : n' ⊕ Fin (c + 1))) ∨ Kept ((Sum.inr l : n ⊕ Fin c), (Sum.inr i : n' ⊕ Fin (c + 1))))`. Simplify using `only [Free, Kept, or_false]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[stepPt, Matrix.add_apply, Matrix.of_apply, dif_neg h1, add_zero, basePt, fromBlocks_apply₂₂, Matrix.of_apply, if_pos h]`.
+-/
 theorem stepPt_rr_eq (x₀ : Matrix n n' k) (e : StepVar n c n' → k) (l : Fin c) (i : Fin (c + 1))
     (h : l.val = i.val) : stepPt x₀ e (.inr l) (.inr i) = 1 := by
   have h1 : ¬ (Free (c / 2 + 1) ((Sum.inr l : n ⊕ Fin c), (Sum.inr i : n' ⊕ Fin (c + 1))) ∨
@@ -67,6 +87,9 @@ theorem stepPt_rr_eq (x₀ : Matrix n n' k) (e : StepVar n c n' → k) (l : Fin 
   rw [stepPt, Matrix.add_apply, Matrix.of_apply, dif_neg h1, add_zero, basePt, fromBlocks_apply₂₂,
     Matrix.of_apply, if_pos h]
 
+/- English proof (translation)
+Establish `h1 : ¬ (Free (c / 2 + 1) ((Sum.inl r : n ⊕ Fin c), (Sum.inr i : n' ⊕ Fin (c + 1))) ∨ Kept ((Sum.inl r : n ⊕ Fin c), (Sum.inr i : n' ⊕ Fin (c + 1))))`. Simplify using `only [Free, Kept, Nat.even_iff]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[stepPt, Matrix.add_apply, Matrix.of_apply, dif_neg h1, add_zero, basePt, fromBlocks_apply₁₂, Matrix.zero_apply]`.
+-/
 theorem stepPt_lr_zero (x₀ : Matrix n n' k) (e : StepVar n c n' → k) (r : n) (i : Fin (c + 1))
     (h : i.val < c / 2 ∨ (i.val = c / 2 ∧ c % 2 = 1)) : stepPt x₀ e (.inl r) (.inr i) = 0 := by
   have h1 : ¬ (Free (c / 2 + 1) ((Sum.inl r : n ⊕ Fin c), (Sum.inr i : n' ⊕ Fin (c + 1))) ∨
@@ -75,6 +98,9 @@ theorem stepPt_lr_zero (x₀ : Matrix n n' k) (e : StepVar n c n' → k) (r : n)
   rw [stepPt, Matrix.add_apply, Matrix.of_apply, dif_neg h1, add_zero, basePt, fromBlocks_apply₁₂,
     Matrix.zero_apply]
 
+/- English proof (translation)
+Establish `h1 : ¬ (Free (c / 2 + 1) ((Sum.inr l : n ⊕ Fin c), (Sum.inl s : n' ⊕ Fin (c + 1))) ∨ Kept ((Sum.inr l : n ⊕ Fin c), (Sum.inl s : n' ⊕ Fin (c + 1))))`. Simplify using `only [Free, Kept, Nat.odd_iff]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[stepPt, Matrix.add_apply, Matrix.of_apply, dif_neg h1, add_zero, basePt, fromBlocks_apply₂₁, Matrix.zero_apply]`.
+-/
 theorem stepPt_rl_zero (x₀ : Matrix n n' k) (e : StepVar n c n' → k) (l : Fin c) (s : n')
     (h : c / 2 < l.val ∨ (l.val = c / 2 ∧ c % 2 = 0)) : stepPt x₀ e (.inr l) (.inl s) = 0 := by
   have h1 : ¬ (Free (c / 2 + 1) ((Sum.inr l : n ⊕ Fin c), (Sum.inl s : n' ⊕ Fin (c + 1))) ∨
@@ -89,6 +115,11 @@ section Ch
 variable {k : Type} [Field k] {n n₀ n₂ : Type} [Fintype n₀] [DecidableEq n₀] [Fintype n] [DecidableEq n]
   [Fintype n₂] [DecidableEq n₂] {c : ℕ}
 
+/- English proof (translation)
+Rewrite using `[Fin.sum_univ_castSucc]`. Establish `h0 : (∑ j : Fin (c + 1), if j.val = (Fin.last c).val + 1 then f (Fin.last c) j else 0) = 0` using `Finset.sum_eq_zero fun j _ => if_neg (by simp; omega)`. Rewrite using `[h0, add_zero]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single l.succ]`.
+
+Rewrite using `[if_pos (by simp)]`. Introduce `j _ hj; rw [if_neg]; intro h; exact hj (Fin.ext (by simp at h ⊢; omega))`. Simplify using the standard rewrite rules.
+-/
 theorem sum_succ_eq (f : Fin (c + 1) → Fin (c + 1) → k) :
     (∑ i : Fin (c + 1), ∑ j : Fin (c + 1), if j.val = i.val + 1 then f i j else 0) =
       ∑ l : Fin c, f l.castSucc l.succ := by
@@ -102,6 +133,17 @@ theorem sum_succ_eq (f : Fin (c + 1) → Fin (c + 1) → k) :
   · intro j _ hj; rw [if_neg]; intro h; exact hj (Fin.ext (by simp at h ⊢; omega))
   · simp
 
+/- English proof (translation)
+Unfold `ch`. Rewrite using `[Finset.sum_congr rfl fun i _ => mul_apply_of_shape hM (stepPt x₀ e₀) _ _, Finset.sum_add_distrib]`. Use `Eq.trans (congrArg (_ + ·) ?_) (add_assoc _ _ _).symm` and prove the remaining obligations. Establish `key : ∀ i : Fin (c + 1), (∑ t : n ⊕ Fin (c + 1), if ordL (c + 1) (Sum.inr i : n ⊕ Fin (c + 1)) < ordL (c + 1) t then M (.inr i) t * stepPt x₀ e₀ t (.inr i.succ) else 0) = (∑ j : Fin (c + 1), if j.val = i.val + 1 then M (.inr i) (.inr j) else 0) + (if 2 * i.val + 1 = c then ∑ x, M …`. Introduce `i`.
+
+Rewrite using `[Fintype.sum_sum_type, add_comm]`. Use `congr 1`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Distinguish the cases in `hj : j.val = i.val + 1`. Rewrite using `[if_pos (by simp [ordL]; omega), if_pos hj, stepPt_rr_eq _ _ _ _ (by simp [hj]), mul_one]`.
+
+Rewrite using `[if_neg hj] split_ifs with h`. Rewrite using `[stepPt_rr_lt _ _ _ _ (by simp [ordL] at h; simp; omega), mul_zero]`. Both sides reduce to the same expression. Distinguish the cases in `hc : 2 * i.val + 1 = c`. Rewrite using `[if_pos hc]`.
+
+Conclude with `Finset.sum_congr rfl fun x _ => if_pos (by simp [ordL]; omega)`. Rewrite using `[if_neg hc]`. Use `Finset.sum_eq_zero fun x _ => ?_` and prove the remaining obligations. Use `split_ifs with h`. Rewrite using `[stepPt_lr_zero _ _ _ _ (by simp [ordL] at h; simp; omega), mul_zero]`.
+
+Both sides reduce to the same expression. Rewrite using `[Finset.sum_congr rfl fun i _ => key i, Finset.sum_add_distrib, sum_succ_eq]`.
+-/
 theorem ch_shape_mul {M : Matrix (n ⊕ Fin (c + 1)) (n ⊕ Fin (c + 1)) k}
     (hM : ∀ r s, ordL (c + 1) s ≤ ordL (c + 1) r → M r s = (1 : Matrix _ _ k) r s)
     (x₀ : Matrix n n₀ k) (e₀ : StepVar n (c + 1) n₀ → k) :
@@ -135,6 +177,17 @@ theorem ch_shape_mul {M : Matrix (n ⊕ Fin (c + 1)) (n ⊕ Fin (c + 1)) k}
         · rfl
   rw [Finset.sum_congr rfl fun i _ => key i, Finset.sum_add_distrib, sum_succ_eq]
 
+/- English proof (translation)
+Unfold `ch`. Rewrite using `[Finset.sum_congr rfl fun i _ => apply_mul_of_shape hM (stepPt x₁ e₁) _ _, Finset.sum_add_distrib]`. Use `Eq.trans (congrArg (_ + ·) ?_) (add_assoc _ _ _).symm` and prove the remaining obligations. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Fintype.sum_sum_type, add_comm]`. Use `congr 1`. Rewrite using `[Finset.sum_eq_single l.castSucc]`. Rewrite using `[if_pos (by simp [ordL]), stepPt_rr_eq _ _ _ _ (by simp), one_mul]`. Introduce `j _ hj split_ifs with h`.
+
+Rewrite using `[stepPt_rr_lt _ _ _ _ ?_, zero_mul]`. Simplify using `[ordL] at h`. Establish `: j.val ≠ l.val` using `fun h' => hj (Fin.ext (by simp [h']))`. Use linear arithmetic over natural numbers and integers. Both sides reduce to the same expression.
+
+Simplify using the standard rewrite rules. Distinguish the cases in `hc : 2 * l.val + 1 = c`. Rewrite using `[if_pos hc]`. Conclude with `Finset.sum_congr rfl fun x _ => if_pos (by simp [ordL]; omega)`. Rewrite using `[if_neg hc]`.
+
+Use `Finset.sum_eq_zero fun x _ => ?_` and prove the remaining obligations. Use `split_ifs with h`. Rewrite using `[stepPt_rl_zero _ _ _ _ (by simp [ordL] at h; omega), zero_mul]`. Both sides reduce to the same expression.
+-/
 theorem ch_mul_shape {M : Matrix (n ⊕ Fin (c + 1)) (n ⊕ Fin (c + 1)) k}
     (hM : ∀ r s, ordL (c + 1) s ≤ ordL (c + 1) r → M r s = (1 : Matrix _ _ k) r s)
     (x₁ : Matrix n₂ n k) (e₁ : StepVar n₂ c n → k) :
@@ -173,6 +226,15 @@ section Rel
 variable {k : Type} [Field k] {n n₀ n₂ : Type} [Fintype n₀] [DecidableEq n₀] [Fintype n] [DecidableEq n]
   [Fintype n₂] [DecidableEq n₂] {c : ℕ} {V W : Matrix (n ⊕ Fin (c + 1)) (n ⊕ Fin (c + 1)) k}
 
+/- English proof (translation)
+Establish `h` using `congrFun (congrFun hVW (.inr l.castSucc)) (.inr l.succ)`. Rewrite `h` using `[mul_apply_of_shape hV W, Matrix.one_apply_ne (by simp [Fin.ext_iff]), Fintype.sum_sum_type]`. Establish `h1 : (∑ j : Fin (c + 1), if ordL (c + 1) (Sum.inr l.castSucc : n ⊕ Fin (c + 1)) < ordL (c + 1) (Sum.inr j : n ⊕ Fin (c + 1)) then V (.inr l.castSucc) (.inr j) * W (.inr j) (.inr l.succ) else 0) = V (.inr l.castSucc) (.inr l.succ)`. Rewrite using `[Finset.sum_eq_single l.succ]`. Rewrite using `[if_pos (by simp [ordL]), hW _ _ le_rfl, Matrix.one_apply_eq, mul_one]`.
+
+Introduce `j _ hj split_ifs with hc`. Rewrite using `[hW _ _ (by simp [ordL] at hc ⊢; omega), Matrix.one_apply_ne (by simpa using hj), mul_zero]`. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Establish `h2 : (∑ x : n, if ordL (c + 1) (Sum.inr l.castSucc : n ⊕ Fin (c + 1)) < ordL (c + 1) (Sum.inl x : n ⊕ Fin (c + 1)) then V (.inr l.castSucc) (.inl x) * W (.inl x) (.inr l.succ) else 0) = (if 2 * l.val + 1 = c then ∑ x, V (.inr l.castSucc) (.inl x) * W (.inl x) (.inr l.succ) else 0 …`.
+
+Distinguish the cases in `hc : 2 * l.val + 1 = c`. Rewrite using `[if_pos hc]`. Conclude with `Finset.sum_congr rfl fun x _ => if_pos (by simp [ordL]; omega)`. Rewrite using `[if_neg hc]`. Use `Finset.sum_eq_zero fun x _ => ?_` and prove the remaining obligations.
+
+Use `split_ifs with h'`. Rewrite using `[hW _ _ (by simp [ordL] at h' ⊢; omega), Matrix.one_apply_ne (by simp), mul_zero]`. Both sides reduce to the same expression. Rewrite `h` using `[h1, h2]`. Take the linear combination `h`.
+-/
 theorem simple_rel (hV : ∀ r s, ordL (c + 1) s ≤ ordL (c + 1) r → V r s = (1 : Matrix _ _ k) r s)
     (hW : ∀ r s, ordL (c + 1) s ≤ ordL (c + 1) r → W r s = (1 : Matrix _ _ k) r s) (hVW : V * W = 1) (l : Fin c) :
     V (.inr l.castSucc) (.inr l.succ) + W (.inr l.castSucc) (.inr l.succ) +
@@ -202,6 +264,15 @@ theorem simple_rel (hV : ∀ r s, ordL (c + 1) s ≤ ordL (c + 1) r → V r s = 
   rw [h1, h2] at h
   linear_combination h
 
+/- English proof (translation)
+Establish `h` using `congrFun (congrFun hVW (.inr ⟨c / 2, by omega⟩)) (.inl x)`. Rewrite `h` using `[mul_apply_of_shape hV W, Matrix.one_apply_ne (by simp), Fintype.sum_sum_type]`. Establish `h1 : (∑ j : Fin (c + 1), if ordL (c + 1) (Sum.inr ⟨c / 2, by omega⟩ : n ⊕ Fin (c + 1)) < ordL (c + 1) (Sum.inr j : n ⊕ Fin (c + 1)) then V (.inr ⟨c / 2, by omega⟩) (.inr j) * W (.inr j) (.inl x) else 0) = 0`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Use `split_ifs with h'`.
+
+Rewrite using `[hW _ _ (by simp [ordL] at h' ⊢; omega), Matrix.one_apply_ne (by simp), mul_zero]`. Both sides reduce to the same expression. Establish `h2 : (∑ y : n, if ordL (c + 1) (Sum.inr ⟨c / 2, by omega⟩ : n ⊕ Fin (c + 1)) < ordL (c + 1) (Sum.inl y : n ⊕ Fin (c + 1)) then V (.inr ⟨c / 2, by omega⟩) (.inl y) * W (.inl y) (.inl x) else 0) = V (.inr ⟨c / 2, by omega⟩) (.inl x)`. Rewrite using `[Finset.sum_eq_single x]`. Rewrite using `[if_pos (by simp [ordL]; omega), hW _ _ le_rfl, Matrix.one_apply_eq, mul_one]`.
+
+Introduce `y _ hy`. Rewrite using `[hW _ _ (by simp [ordL]), Matrix.one_apply_ne (by simpa using hy)]`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite `h` using `[h1, h2]`.
+
+Take the linear combination `h`.
+-/
 theorem row_rel (hV : ∀ r s, ordL (c + 1) s ≤ ordL (c + 1) r → V r s = (1 : Matrix _ _ k) r s)
     (hW : ∀ r s, ordL (c + 1) s ≤ ordL (c + 1) r → W r s = (1 : Matrix _ _ k) r s) (hVW : V * W = 1)
     (hc : c % 2 = 1) (x : n) :
@@ -225,6 +296,13 @@ theorem row_rel (hV : ∀ r s, ordL (c + 1) s ≤ ordL (c + 1) r → V r s = (1 
   rw [h1, h2] at h
   linear_combination h
 
+/- English proof (translation)
+Establish `h` using `congrFun (congrFun hVW (.inl x)) (.inr ⟨(c + 1) / 2, by omega⟩)`. Rewrite `h` using `[mul_apply_of_shape hV W, Matrix.one_apply_ne (by simp), Fintype.sum_sum_type]`. Establish `h1 : (∑ j : Fin (c + 1), if ordL (c + 1) (Sum.inl x : n ⊕ Fin (c + 1)) < ordL (c + 1) (Sum.inr j : n ⊕ Fin (c + 1)) then V (.inl x) (.inr j) * W (.inr j) (.inr ⟨(c + 1) / 2, by omega⟩) else 0) = V (.inl x) (.inr ⟨(c + 1) / 2, by omega⟩)`. Rewrite using `[Finset.sum_eq_single ⟨(c + 1) / 2, by omega⟩]`. Rewrite using `[if_pos (by simp [ordL]; omega), hW _ _ le_rfl, Matrix.one_apply_eq, mul_one]`.
+
+Introduce `j _ hj split_ifs with h'`. Rewrite using `[hW _ _ (by simp [ordL] at h' ⊢; omega), Matrix.one_apply_ne (by simpa using hj), mul_zero]`. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Establish `h2 : (∑ y : n, if ordL (c + 1) (Sum.inl x : n ⊕ Fin (c + 1)) < ordL (c + 1) (Sum.inl y : n ⊕ Fin (c + 1)) then V (.inl x) (.inl y) * W (.inl y) (.inr ⟨(c + 1) / 2, by omega⟩) else 0) = 0` using `Finset.sum_eq_zero fun y _ => if_neg (by simp [ordL])`.
+
+Rewrite `h` using `[h1, h2]`. Take the linear combination `h`.
+-/
 theorem col_rel (hV : ∀ r s, ordL (c + 1) s ≤ ordL (c + 1) r → V r s = (1 : Matrix _ _ k) r s)
     (hW : ∀ r s, ordL (c + 1) s ≤ ordL (c + 1) r → W r s = (1 : Matrix _ _ k) r s) (hVW : V * W = 1)
     (hc : c % 2 = 1) (x : n) :
@@ -246,6 +324,13 @@ theorem col_rel (hV : ∀ r s, ordL (c + 1) s ≤ ordL (c + 1) r → V r s = (1 
   rw [h1, h2] at h
   linear_combination h
 
+/- English proof (translation)
+Rewrite using `[apply_mul_of_shape hV, Fintype.sum_sum_type]`. Use `congr 1`. Rewrite using `[Finset.sum_eq_zero fun y _ => if_neg (by simp [ordL]), zero_add, Finset.sum_eq_single ⟨c / 2, by omega⟩]`. Rewrite using `[if_pos (by simp [ordL]; omega), stepPt_rr_eq _ _ _ _ rfl, one_mul]`. Introduce `j _ hj split_ifs with h'`.
+
+Rewrite using `[stepPt_rr_lt _ _ _ _ ?_, zero_mul]`. Simplify using `[ordL] at h'`. Establish `: j.val ≠ c / 2` using `fun h => hj (Fin.ext h)`. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
+
+Both sides reduce to the same expression. Simplify using the standard rewrite rules.
+-/
 theorem pair_right (hV : ∀ r s, ordL (c + 1) s ≤ ordL (c + 1) r → V r s = (1 : Matrix _ _ k) r s)
     (hc : c % 2 = 1) (x₁ : Matrix n₂ n k) (e₁ : StepVar n₂ c n → k) (x : n) :
     (stepPt x₁ e₁ * V) (.inr ⟨c / 2, by omega⟩) (.inl x) =
@@ -264,6 +349,13 @@ theorem pair_right (hV : ∀ r s, ordL (c + 1) s ≤ ordL (c + 1) r → V r s = 
     · rfl
   · simp
 
+/- English proof (translation)
+Rewrite using `[mul_apply_of_shape hW, Fintype.sum_sum_type]`. Use `congr 1`. Rewrite using `[Finset.sum_eq_zero fun y _ => if_neg (by simp [ordL]), zero_add, Finset.sum_eq_single ⟨(c + 1) / 2, by omega⟩]`. Rewrite using `[if_pos (by simp [ordL]; omega), stepPt_rr_eq _ _ _ _ rfl, mul_one]`. Introduce `j _ hj split_ifs with h'`.
+
+Rewrite using `[stepPt_rr_lt _ _ _ _ ?_, mul_zero]`. Simplify using `[ordL] at h'`. Establish `: j.val ≠ (c + 1) / 2` using `fun h => hj (Fin.ext h)`. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
+
+Both sides reduce to the same expression. Simplify using the standard rewrite rules.
+-/
 theorem pair_left (hW : ∀ r s, ordL (c + 1) s ≤ ordL (c + 1) r → W r s = (1 : Matrix _ _ k) r s)
     (hc : c % 2 = 1) (x₀ : Matrix n n₀ k) (e₀ : StepVar n (c + 1) n₀ → k) (x : n) :
     (W * stepPt x₀ e₀) (.inl x) (.inr ⟨(c + 1) / 2, by omega⟩) =
@@ -282,6 +374,11 @@ theorem pair_left (hW : ∀ r s, ordL (c + 1) s ≤ ordL (c + 1) r → W r s = (
     · rfl
   · simp
 
+/- English proof (translation)
+Rewrite using `[mul_apply_of_shape hW, Fintype.sum_sum_type, Finset.sum_eq_zero fun y _ => if_neg (by simp [ordL]; omega), zero_add]`. Rewrite using `[Finset.sum_eq_zero, add_zero]`. Introduce `j _`. Use `split_ifs with h'`. Rewrite using `[stepPt_rl_zero _ _ _ _ (by simp [ordL] at h'; omega), mul_zero]`.
+
+Both sides reduce to the same expression.
+-/
 theorem row_left (hW : ∀ r s, ordL (c + 1) s ≤ ordL (c + 1) r → W r s = (1 : Matrix _ _ k) r s)
     (hc : c % 2 = 0) (x₀ : Matrix n n₀ k) (e₀ : StepVar n (c + 1) n₀ → k) (s : n₀) :
     (W * stepPt x₀ e₀) (.inr ⟨(c + 1) / 2, by omega⟩) (.inl s) = stepPt x₀ e₀ (.inr ⟨(c + 1) / 2, by omega⟩) (.inl s) := by
@@ -293,6 +390,11 @@ theorem row_left (hW : ∀ r s, ordL (c + 1) s ≤ ordL (c + 1) r → W r s = (1
   · rw [stepPt_rl_zero _ _ _ _ (by simp [ordL] at h'; omega), mul_zero]
   · rfl
 
+/- English proof (translation)
+Rewrite using `[apply_mul_of_shape hV, Fintype.sum_sum_type, Finset.sum_eq_zero fun y _ => if_neg (by simp [ordL]; omega), zero_add]`. Rewrite using `[Finset.sum_eq_zero, add_zero]`. Introduce `j _`. Use `split_ifs with h'`. Rewrite using `[stepPt_lr_zero _ _ _ _ (by simp [ordL] at h'; omega), zero_mul]`.
+
+Both sides reduce to the same expression.
+-/
 theorem row_right (hV : ∀ r s, ordL (c + 1) s ≤ ordL (c + 1) r → V r s = (1 : Matrix _ _ k) r s)
     (hc : c % 2 = 0) (x₁ : Matrix n₂ n k) (e₁ : StepVar n₂ c n → k) (r : n₂) :
     (stepPt x₁ e₁ * V) (.inl r) (.inr ⟨c / 2, by omega⟩) = stepPt x₁ e₁ (.inl r) (.inr ⟨c / 2, by omega⟩) := by
@@ -309,14 +411,25 @@ end Rel
 section GlobalTheory
 variable {k : Type} [Field k] {n : Type} [Fintype n] [DecidableEq n] {m : ℕ}
 
+/- English proof (translation)
+Simplify using `[Matrix.mul_apply, Fintype.sum_sum_type, Matrix.one_apply]`.
+-/
 theorem blk_mul_inr {β : Type} (P : Matrix n n k) (M : Matrix (n ⊕ Fin m) β k) (i : Fin m) (s : β) :
     ((fromBlocks P 0 0 1 : Matrix (n ⊕ Fin m) (n ⊕ Fin m) k) * M) (.inr i) s = M (.inr i) s := by
   simp [Matrix.mul_apply, Fintype.sum_sum_type, Matrix.one_apply]
 
+/- English proof (translation)
+Simplify using `[Matrix.mul_apply, Fintype.sum_sum_type, Matrix.one_apply]`.
+-/
 theorem mul_blk_inr {α : Type} (P : Matrix n n k) (M : Matrix α (n ⊕ Fin m) k) (r : α) (j : Fin m) :
     (M * (fromBlocks P 0 0 1 : Matrix (n ⊕ Fin m) (n ⊕ Fin m) k)) r (.inr j) = M r (.inr j) := by
   simp [Matrix.mul_apply, Fintype.sum_sum_type, Matrix.one_apply]
 
+/- English proof (translation)
+Establish `hE : (fromBlocks K 0 0 1 : Matrix (n ⊕ Fin m) (n ⊕ Fin m) k) * fromBlocks K' 0 0 1 = 1`. Rewrite using `[fromBlocks_multiply]`. Simplify using `[hK]`. Establish `h : ((A * (fromBlocks K 0 0 1 : Matrix (n ⊕ Fin m) (n ⊕ Fin m) k)) * ((fromBlocks K' 0 0 1 : Matrix (n ⊕ Fin m) (n ⊕ Fin m) k) * B)) a b = (A * B) a b`. Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc (fromBlocks K 0 0 1), hE, Matrix.one_mul]`.
+
+Rewrite `h` using `[Matrix.mul_apply, Matrix.mul_apply, Fintype.sum_sum_type, Fintype.sum_sum_type]`. Simplify using `only [mul_blk_inr, blk_mul_inr] at h`. Conclude with `add_right_cancel h`.
+-/
 theorem pair_blk {α β : Type} (K K' : Matrix n n k) (hK : K * K' = 1) (A : Matrix α (n ⊕ Fin m) k)
     (B : Matrix (n ⊕ Fin m) β k) (a : α) (b : β) :
     ∑ r, (A * (fromBlocks K 0 0 1 : Matrix (n ⊕ Fin m) (n ⊕ Fin m) k)) a (.inl r) *
@@ -333,6 +446,37 @@ theorem pair_blk {α β : Type} (K K' : Matrix n n k) (hK : K * K' = 1) (A : Mat
 
 end GlobalTheory
 
+/- English proof (translation)
+Introduce `k _ n₀ n n₂ _ _ _ _ _ _ c v hv κ x₀ e₀ x₁ e₁ d₀ d₁ h₀ h₁`. Establish `hV : ∀ r s, ordL (c + 1) s ≤ ordL (c + 1) r → v.val r s = (1 : Matrix (n ⊕ Fin (c + 1)) _ k) r s` using `GlobalTheory.DiagVol.symN_le_unipSub hv`. Establish `hW : ∀ r s, ordL (c + 1) s ≤ ordL (c + 1) r → (v⁻¹).val r s = (1 : Matrix (n ⊕ Fin (c + 1)) _ k) r s` using `GlobalTheory.DiagVol.symN_le_unipSub (inv_mem hv)`. Establish `hVW : v.val * (v⁻¹).val = 1` using `by rw [← Units.val_mul, mul_inv_cancel, Units.val_one]`. Establish `hK : κ.val * (κ⁻¹).val = 1` using `by rw [← Units.val_mul, mul_inv_cancel, Units.val_one]`.
+
+Establish `e₀' : d₀ = (fromBlocks (κ⁻¹).val 0 0 1 : Matrix (n ⊕ Fin (c + 1)) (n ⊕ Fin (c + 1)) k) * ((v⁻¹).val * stepPt x₀ e₀)`. Rewrite using `[h₀, _root_.mul_inv_rev, Units.val_mul, ← map_inv, Matrix.mul_assoc]`. Both sides reduce to the same expression. Establish `e₁' : d₁ = (stepPt x₁ e₁ * v.val) * (fromBlocks κ.val 0 0 1 : Matrix (n ⊕ Fin (c + 1)) (n ⊕ Fin (c + 1)) k)`. Rewrite using `[h₁, Units.val_mul, ← Matrix.mul_assoc]`.
+
+Both sides reduce to the same expression. Establish `hch₀ : ch d₀ = ch ((v⁻¹).val * stepPt x₀ e₀)`. Rewrite using `[e₀']`. Unfold `ch`. Simplify using `only [blk_mul_inr]`.
+
+Establish `hch₁ : ch d₁ = ch (stepPt x₁ e₁ * v.val)`. Rewrite using `[e₁']`. Unfold `ch`. Simplify using `only [mul_blk_inr]`. Rewrite using `[hch₀, hch₁, ch_shape_mul hW, ch_mul_shape hV]`.
+
+Establish `hrel` using `fun l => simple_rel hV hW hVW l`. Break down `Nat.even_or_odd (c + 1) with hc | hc` into its components or cases. Establish `hc' : c % 2 = 1` using `by rcases hc with ⟨r, hr⟩; omega`. Use `⟨?_, fun h => absurd h (Nat.not_odd_iff_even.mpr hc)⟩` and prove the remaining obligations. Rewrite using `[if_pos hc, if_pos hc]`.
+
+Establish `hs0 : (⟨c / 2, by omega⟩ : Fin (c + 1)).succ = ⟨(c + 1) / 2, by omega⟩` using `Fin.ext (by simp; omega)`. Establish `hs1 : (⟨c / 2, by omega⟩ : Fin c).succ = ⟨(c + 1) / 2, by omega⟩` using `Fin.ext (by simp; omega)`. Establish `hcs : (⟨c / 2, by omega⟩ : Fin c).castSucc = ⟨c / 2, by omega⟩` using `rfl`. Establish `f0 : (∑ i : Fin (c + 1), if 2 * i.val + 1 = c then ∑ x, (v⁻¹).val (.inr i) (.inl x) * stepPt x₀ e₀ (.inl x) (.inr i.succ) else 0) = ∑ x, (v⁻¹).val (.inr ⟨c / 2, by omega⟩) (.inl x) * stepPt x₀ e₀ (.inl x) (.inr ⟨(c + 1) / 2, by omega⟩)`. Rewrite using `[Finset.sum_eq_single ⟨c / 2, by omega⟩, if_pos (by simp; omega), hs0]`.
+
+Introduce `i _ hi; rw [if_neg]; intro h; exact hi (Fin.ext (by simp; omega))`. Simplify using the standard rewrite rules. Establish `f1 : (∑ l : Fin c, if 2 * l.val + 1 = c then ∑ x, stepPt x₁ e₁ (.inr l) (.inl x) * v.val (.inl x) (.inr l.succ) else 0) = ∑ x, stepPt x₁ e₁ (.inr ⟨c / 2, by omega⟩) (.inl x) * v.val (.inl x) (.inr ⟨(c + 1) / 2, by omega⟩)`. Rewrite using `[Finset.sum_eq_single ⟨c / 2, by omega⟩, if_pos (by simp; omega), hs1]`. Introduce `i _ hi; rw [if_neg]; intro h; exact hi (Fin.ext (by simp; omega))`.
+
+Simplify using the standard rewrite rules. Establish `hS : ∑ l : Fin c, v.val (.inr l.castSucc) (.inr l.succ) + ∑ l : Fin c, (v⁻¹).val (.inr l.castSucc) (.inr l.succ) + ∑ x, v.val (.inr ⟨c / 2, by omega⟩) (.inl x) * (v⁻¹).val (.inl x) (.inr ⟨(c + 1) / 2, by omega⟩) = 0`. Establish `h` using `Finset.sum_eq_zero (s := Finset.univ) fun l _ => hrel l`. Establish `f2 : (∑ l : Fin c, if 2 * l.val + 1 = c then ∑ x, v.val (.inr l.castSucc) (.inl x) * (v⁻¹).val (.inl x) (.inr l.succ) else 0) = ∑ x, v.val (.inr ⟨c / 2, by omega⟩) (.inl x) * (v⁻¹).val (.inl x) (.inr ⟨(c + 1) / 2, by omega⟩)`. Rewrite using `[Finset.sum_eq_single ⟨c / 2, by omega⟩, if_pos (by simp; omega), hs1, hcs]`.
+
+Introduce `i _ hi; rw [if_neg]; intro h; exact hi (Fin.ext (by simp; omega))`. Simplify using the standard rewrite rules. Rewrite `h` using `[Finset.sum_add_distrib, Finset.sum_add_distrib, f2]`. Conclude with `h`. Establish `hp : ∀ (D₁ : Matrix (n₂ ⊕ Fin c) (n ⊕ Fin (c + 1)) k) r, (∑ l : Fin c, if l.val = c / 2 then D₁ (.inr l) (.inl r) else 0) = D₁ (.inr ⟨c / 2, by omega⟩) (.inl r)`.
+
+Introduce `D₁ r`. Rewrite using `[Finset.sum_eq_single ⟨c / 2, by omega⟩, if_pos rfl]`. Introduce `i _ hi`. Rewrite using `[if_neg]`. Introduce `h`.
+
+Conclude with `hi (Fin.ext h)`. Simplify using the standard rewrite rules. Simplify using `only [hp]`. Rewrite using `[e₀', e₁', pair_blk _ _ hK, f0, f1]`. Simplify using `only [pair_right hV hc' x₁ e₁, pair_left hW hc' x₀ e₀]`.
+
+Establish `hl : ∀ x, (v⁻¹).val (.inr ⟨c / 2, by omega⟩) (.inl x) = -v.val (.inr ⟨c / 2, by omega⟩) (.inl x)` using `fun x => eq_neg_of_add_eq_zero_right (row_rel hV hW hVW hc' x)`. Establish `hb : ∀ x, (v⁻¹).val (.inl x) (.inr ⟨(c + 1) / 2, by omega⟩) = -v.val (.inl x) (.inr ⟨(c + 1) / 2, by omega⟩)` using `fun x => eq_neg_of_add_eq_zero_right (col_rel hV hW hVW hc' x)`. Simplify using `only [hl, hb] at hS ⊢`. Simplify using `only [add_mul, mul_add, neg_mul, mul_neg, Finset.sum_add_distrib, Finset.sum_neg_distrib] at hS ⊢`. Take the linear combination `hS`.
+
+Establish `hc' : c % 2 = 0` using `by rcases hc with ⟨r, hr⟩; omega`. Establish `hne : ¬ Even (c + 1)` using `Nat.not_even_iff_odd.mpr hc`. Use `⟨?_, fun _ => ⟨fun s => ?_, fun r => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[if_neg hne, if_neg hne]`. Establish `z0 : ∀ i : Fin (c + 1), ¬ (2 * i.val + 1 = c)` using `fun i => by omega`.
+
+Establish `z1 : ∀ i : Fin c, ¬ (2 * i.val + 1 = c)` using `fun i => by omega`. Simplify using `only [z0, z1, if_false, Finset.sum_const_zero, add_zero]`. Establish `hS : ∑ l : Fin c, v.val (.inr l.castSucc) (.inr l.succ) + ∑ l : Fin c, (v⁻¹).val (.inr l.castSucc) (.inr l.succ) = 0`. Rewrite using `[← Finset.sum_add_distrib]`. Conclude with `Finset.sum_eq_zero fun l _ => by simpa [z1 l] using hrel l`.
+
+Take the linear combination `hS`. Rewrite using `[e₀', blk_mul_inr, row_left hW hc']`. Rewrite using `[e₁', mul_blk_inr, row_right hV hc']`.
+-/
 theorem phase_step_inv : ∀ {k : Type} [Field k] {n₀ n n₂ : Type} [Fintype n₀] [DecidableEq n₀] [Fintype n] [DecidableEq n] [Fintype n₂] [DecidableEq n₂] {c : ℕ},
     ∀ v ∈ symN k n (c + 1), ∀ (κ : GL n k) (x₀ : Matrix n n₀ k) (e₀ : StepVar n (c + 1) n₀ → k) (x₁ : Matrix n₂ n k) (e₁ : StepVar n₂ c n → k)
       (d₀ : Matrix (n ⊕ Fin (c + 1)) (n₀ ⊕ Fin (c + 1 + 1)) k) (d₁ : Matrix (n₂ ⊕ Fin c) (n ⊕ Fin (c + 1)) k),

@@ -8,6 +8,11 @@ open PositivityTheory.Rg.Tf.Core PositivityTheory.Rg.Tf.Adel PositivityTheory.Rg
 open scoped ENNReal NumberField.AdeleRing InnerProductSpace ComplexConjugate
 open UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[← (Fin.consEquiv fun _ : Fin (k + 1) => α).tsum_eq, ENNReal.tsum_prod', pow_succ', ← ih, ← ENNReal.tsum_mul_right]`. Use `tsum_congr fun a => ?_` and prove the remaining obligations.
+
+Rewrite using `[← ENNReal.tsum_mul_left]`. Use `tsum_congr fun x => ?_` and prove the remaining obligations. Simplify using `[Fin.prod_univ_succ, Fin.consEquiv]`.
+-/
 private theorem tsum_fin {α : Type} (f : α → ℝ≥0∞) (k : ℕ) :
     ∑' x : Fin k → α, ∏ i, f (x i) = (∑' a, f a) ^ k := by
   induction k with
@@ -20,6 +25,9 @@ private theorem tsum_fin {α : Type} (f : α → ℝ≥0∞) (k : ℕ) :
     refine tsum_congr fun x => ?_
     simp [Fin.prod_univ_succ, Fin.consEquiv]
 
+/- English proof (translation)
+Rewrite using `[← tsum_fin, ← (Equiv.arrowCongr (Fintype.equivFin ι) (Equiv.refl α)).tsum_eq]`. Use `tsum_congr fun x => ?_` and prove the remaining obligations. Rewrite using `[← (Fintype.equivFin ι).prod_comp]`. Simplify using the standard rewrite rules.
+-/
 private theorem tsum_pi {α ι : Type} [Fintype ι] (f : α → ℝ≥0∞) :
     ∑' x : ι → α, ∏ i, f (x i) = (∑' a, f a) ^ Fintype.card ι := by
   rw [← tsum_fin, ← (Equiv.arrowCongr (Fintype.equivFin ι) (Equiv.refl α)).tsum_eq]
@@ -27,6 +35,13 @@ private theorem tsum_pi {α ι : Type} [Fintype ι] (f : α → ℝ≥0∞) :
   rw [← (Fintype.equivFin ι).prod_comp]
   simp
 
+/- English proof (translation)
+Establish `h1 : ∀ b, ENNReal.ofReal (H b ^ Fintype.card ι)⁻¹ ≤ ENNReal.ofReal (C ^ Fintype.card ι) * ∏ i, ENNReal.ofReal (f (e b i))⁻¹`. Introduce `b`. Rewrite using `[← ENNReal.ofReal_prod_of_nonneg fun i _ => (inv_pos.2 (hf _)).le, ← ENNReal.ofReal_mul (by positivity)]`. Use `ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations. Rewrite using `[← inv_pow, ← Finset.card_univ, ← Finset.prod_const, ← Finset.prod_const, ← Finset.prod_mul_distrib]`.
+
+Use `Finset.prod_le_prod (fun _ _ => (inv_pos.2 (hH b)).le) fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← div_eq_mul_inv, le_div_iff₀ (hf _), inv_mul_le_iff₀ (hH b), mul_comm]`. Conclude with `h b i`. Use `ne_top_of_le_ne_top ?_ (ENNReal.tsum_le_tsum h1)` and prove the remaining obligations. Rewrite using `[ENNReal.tsum_mul_left]`.
+
+Use `ENNReal.mul_ne_top ENNReal.ofReal_ne_top (ne_top_of_le_ne_top ?_ (ENNReal.tsum_comp_le_tsum_of_injective he fun x : ι → α => ∏ i, ENNReal.ofReal (f (x i))⁻¹))` and prove the remaining obligations. Rewrite using `[tsum_pi fun a => ENNReal.ofReal (f a)⁻¹]`. Conclude with `ENNReal.pow_ne_top hs`.
+-/
 private theorem step {α β ι : Type} [Fintype ι] (e : β → ι → α) (he : Function.Injective e) (f : α → ℝ)
     (hf : ∀ a, 0 < f a) (hs : ∑' a, ENNReal.ofReal (f a)⁻¹ ≠ ⊤) (H : β → ℝ) (hH : ∀ b, 0 < H b) {C : ℝ} (hC : 0 ≤ C)
     (h : ∀ b i, f (e b i) ≤ C * H b) : ∑' b, ENNReal.ofReal (H b ^ Fintype.card ι)⁻¹ ≠ ⊤ := by
@@ -46,6 +61,11 @@ private theorem step {α β ι : Type} [Fintype ι] (e : β → ι → α) (he :
   rw [tsum_pi fun a => ENNReal.ofReal (f a)⁻¹]
   exact ENNReal.pow_ne_top hs
 
+/- English proof (translation)
+Use `Summable.tsum_ofReal_ne_top ?_` and prove the remaining obligations. Establish `h : Summable fun a : ℤ => 1 / (a : ℝ) ^ 2` using `Real.summable_one_div_int_pow.2 one_lt_two`. Use `h.congr_cofinite ?_` and prove the remaining obligations. Use `(Set.finite_singleton (0 : ℤ)).subset fun a ha => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h0`.
+
+Use `ha ?_` and prove the remaining obligations. Establish `h1 : (1 : ℤ) ≤ a ^ 2` using `(one_le_sq_iff_one_le_abs a).2 (Int.one_le_abs h0)`. Establish `h2 : (1 : ℝ) ≤ (a : ℝ) ^ 2` using `by exact_mod_cast h1`. Use `show 1 / (a : ℝ) ^ 2 = (max 1 ((a : ℝ) ^ 2))⁻¹`. Rewrite using `[max_eq_right h2, one_div]`.
+-/
 private theorem sum_int : ∑' a : ℤ, ENNReal.ofReal (max 1 ((a : ℝ) ^ 2))⁻¹ ≠ ⊤ := by
   refine Summable.tsum_ofReal_ne_top ?_
   have h : Summable fun a : ℤ => 1 / (a : ℝ) ^ 2 := Real.summable_one_div_int_pow.2 one_lt_two
@@ -58,6 +78,11 @@ private theorem sum_int : ∑' a : ℤ, ENNReal.ofReal (max 1 ((a : ℝ) ^ 2))�
   show 1 / (a : ℝ) ^ 2 = (max 1 ((a : ℝ) ^ 2))⁻¹
   rw [max_eq_right h2, one_div]
 
+/- English proof (translation)
+Rewrite using `[mulHeight₁_eq]`. Establish `h1 : (1 : ℝ) ≤ ∏ᶠ v : FinitePlace K, max (v x) 1` using `finprod_induction (fun x : ℝ => 1 ≤ x) le_rfl (fun _ _ hx hy => one_le_mul_of_one_le_of_one_le hx hy) fun _ => le_max_right _ _`. Establish `h2 : max (w x) 1 ^ w.mult ≤ ∏ v : InfinitePlace K, max (v x) 1 ^ v.mult`. Rewrite using `[← Finset.mul_prod_erase _ _ (Finset.mem_univ w)]`. Conclude with `le_mul_of_one_le_right (by positivity) (Finset.prod_induction _ (fun x : ℝ => 1 ≤ x) (fun _ _ hx hy => one_le_mul_of_one_le_of_one_le hx hy) le_rfl fun _ _ => one_le_pow₀ (le_max_right _ _))`.
+
+Establish `h3 : w x ≤ max (w x) 1 ^ w.mult` using `(le_max_left _ _).trans (le_self_pow₀ (le_max_right _ _) w.mult_ne_zero)`. Conclude with `(h3.trans h2).trans (le_mul_of_one_le_right ((apply_nonneg w x).trans (h3.trans h2)) h1)`.
+-/
 private theorem inf_le {K : Type} [Field K] [NumberField K] (x : K) (w : InfinitePlace K) :
     w x ≤ Height.mulHeight₁ x := by
   classical
@@ -73,6 +98,21 @@ private theorem inf_le {K : Type} [Field K] [NumberField K] (x : K) (w : Infinit
     (le_max_left _ _).trans (le_self_pow₀ (le_max_right _ _) w.mult_ne_zero)
   exact (h3.trans h2).trans (le_mul_of_one_le_right ((apply_nonneg w x).trans (h3.trans h2)) h1)
 
+/- English proof (translation)
+Take `⟨C, hC, hr⟩` from `exists_abs_repr_le K`. Use `choose m hm0 hm hi using fun x : K => exists_nat_le_mulHeight₁ x`. Set `z : K → 𝓞 K` to `fun x => ⟨m x * x, hi x⟩`. Set `e : K → Option (Module.Free.ChooseBasisIndex ℤ (𝓞 K)) → ℤ` to `fun x o => o.elim (m x) fun i => (RingOfIntegers.basis K).repr (z x) i`. Establish `he : Function.Injective e`.
+
+Introduce `x y h`. Establish `h1 : m x = m y` using `Int.natCast_inj.1 (congrFun h none)`. Establish `h2 : z x = z y` using `(RingOfIntegers.basis K).repr.injective (Finsupp.ext fun i => congrFun h (some i))`. Establish `h3 : (m x : K) * x = m y * y` using `congrArg Subtype.val h2`. Rewrite `h3` using `[h1]`.
+
+Conclude with `mul_left_cancel₀ (Nat.cast_ne_zero.2 (hm0 y)) h3`. Use `step e he (fun a => max 1 ((a : ℝ) ^ 2)) (fun _ => lt_max_of_lt_left one_pos) sum_int (fun x => Height.mulHeight₁ x ^ 4) (fun x => pow_pos (Height.mulHeight₁_pos x) 4) (C := (max 1 C) ^ 2) (by positivity) ?_` as an intermediate fact. Conclude with `⟨_, by simpa only [← pow_mul] using this⟩`. Introduce `x o`. Establish `hH` using `Height.one_le_mulHeight₁ x`.
+
+Establish `hC1 : 1 ≤ max 1 C` using `le_max_left _ _`. Establish `hb : |(e x o : ℝ)| ≤ max 1 C * Height.mulHeight₁ x ^ 2`. Consider the cases of `o with`. Consider the case `none`. Express the relevant statement in the definitionally equal form `|((m x : ℤ) : ℝ)| ≤ _`.
+
+Rewrite using `[Int.cast_natCast, Nat.abs_cast]`. Conclude with `((hm x).trans (le_self_pow₀ hH two_ne_zero)).trans (le_mul_of_one_le_left (by positivity) hC1)`. Consider the case `some i`. Use `(hr (z x) i).trans ((mul_le_mul_of_nonneg_left ?_ hC).trans (mul_le_mul_of_nonneg_right (le_max_right _ _) (by positivity)))` and prove the remaining obligations. Rewrite using `[mixedEmbedding.norm_eq_sup'_normAtPlace]`.
+
+Use `Finset.sup'_le _ _ fun w _ => ?_` and prove the remaining obligations. Rewrite using `[mixedEmbedding.normAtPlace_apply]`. Express the relevant statement in the definitionally equal form `w ((m x : K) * x) ≤ _`. Rewrite using `[map_mul, InfinitePlace.map_natCast, sq]`. Conclude with `mul_le_mul (hm x) (inf_le x w) (apply_nonneg _ _) (by positivity)`.
+
+Use `max_le (one_le_mul_of_one_le_of_one_le (one_le_pow₀ hC1) (one_le_pow₀ hH)) ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem sum_field (K : Type) [Field K] [NumberField K] :
     ∃ M : ℕ, ∑' x : K, ENNReal.ofReal (Height.mulHeight₁ x ^ M)⁻¹ ≠ ⊤ := by
   obtain ⟨C, hC, hr⟩ := exists_abs_repr_le K
@@ -114,6 +154,11 @@ private theorem sum_field (K : Type) [Field K] [NumberField K] :
     _ ≤ (max 1 C * Height.mulHeight₁ x ^ 2) ^ 2 := pow_le_pow_left₀ (abs_nonneg _) hb 2
     _ = _ := by ring
 
+/- English proof (translation)
+Rewrite using `[mulHeight₁_eq, AutomorphicForm.height, ← finprod_comp_equiv FinitePlace.equivHeightOneSpectrum.symm]`. Establish `hf : ∀ v : IsDedekindDomain.HeightOneSpectrum (𝓞 K), max (FinitePlace.equivHeightOneSpectrum.symm v (γ.val i j)) 1 ≤ locHeight (finAt v (AdelicGLn.diagonal K n γ))` using `fun v => max_le (norm_apply_le_locHeight (finAt v (AdelicGLn.diagonal K n γ)) i j) (one_le_locHeight _)`. Use `mul_le_mul ?_ ?_ (finprod_nonneg fun _ => le_max_of_le_right zero_le_one) (zero_le_one.trans (one_le_prod_locHeight _))` and prove the remaining obligations. Use `Finset.prod_le_prod (fun _ _ => by positivity) fun w _ => ?_` and prove the remaining obligations. Use `pow_le_pow_left₀ (by positivity) (max_le ?_ (one_le_locHeight _)) _` and prove the remaining obligations.
+
+Use `le_trans (le_of_eq ?_) (norm_apply_le_locHeight (infAt w (AdelicGLn.diagonal K n γ)) i j)` and prove the remaining obligations. Conclude with `(InfinitePlace.Completion.norm_coe w _).symm`. Use `finprod_le_finprod ((finite_mulSupport_locHeight_finAt (AdelicGLn.diagonal K n γ)).subset fun v hv h1 => hv ?_) (fun _ => le_max_of_le_right zero_le_one) (finite_mulSupport_locHeight_finAt _) hf` and prove the remaining obligations. Conclude with `le_antisymm ((hf v).trans_eq h1) (le_max_right _ _)`.
+-/
 private theorem entry_le {K : Type} [Field K] [NumberField K] {n : ℕ} (γ : GL (Fin n) K) (i j : Fin n) :
     Height.mulHeight₁ (γ.val i j) ≤ AutomorphicForm.height (AdelicGLn.diagonal K n γ) := by
   rw [mulHeight₁_eq, AutomorphicForm.height, ← finprod_comp_equiv FinitePlace.equivHeightOneSpectrum.symm]
@@ -130,6 +175,13 @@ private theorem entry_le {K : Type} [Field K] [NumberField K] {n : ℕ} (γ : GL
       (fun _ => le_max_of_le_right zero_le_one) (finite_mulSupport_locHeight_finAt _) hf
     exact le_antisymm ((hf v).trans_eq h1) (le_max_right _ _)
 
+/- English proof (translation)
+Take `⟨M, hM⟩` from `sum_field K`. Establish `hγ : ∀ γ : Gam K n, ∃ δ : GL (Fin n) K, AdelicGLn.diagonal K n δ = ((γ : G1 K n) : AdelicGLn.AdelicGL K n)` using `fun γ => γ.2`. Use `choose δ hδ using hγ`. Use `step (fun (γ : Gam K n) (p : Fin n × Fin n) => (δ γ).val p.1 p.2) ?_ (fun x => Height.mulHeight₁ x ^ M) (fun x => pow_pos (Height.mulHeight₁_pos x) M) hM (fun γ => AutomorphicForm.height ((γ : G1 K n) : AdelicGLn.AdelicGL K n) ^ M) (fun γ => pow_pos (height_pos _) M) zero_le_one …` as an intermediate fact. Conclude with `⟨_, by simpa only [← pow_mul] using this⟩`.
+
+Introduce `γ γ' h`. Establish `: δ γ = δ γ'` using `Units.ext (Matrix.ext fun i j => congrFun h (i, j))`. Conclude with `Subtype.ext (Subtype.ext (by rw [← hδ, ← hδ, this]))`. Introduce `γ p`. Rewrite using `[one_mul, ← hδ]`.
+
+Conclude with `pow_le_pow_left₀ (Height.mulHeight₁_pos _).le (entry_le _ _ _) M`.
+-/
 private theorem sum_gam (K : Type) [Field K] [NumberField K] (n : ℕ) : ∃ M : ℕ,
     ∑' γ : Gam K n, ENNReal.ofReal (AutomorphicForm.height ((γ : G1 K n) : AdelicGLn.AdelicGL K n) ^ M)⁻¹ ≠ ⊤ := by
   obtain ⟨M, hM⟩ := sum_field K
@@ -148,6 +200,17 @@ private theorem sum_gam (K : Type) [Field K] [NumberField K] (n : ℕ) : ∃ M :
     rw [one_mul, ← hδ]
     exact pow_le_pow_left₀ (Height.mulHeight₁_pos _).le (entry_le _ _ _) M
 
+/- English proof (translation)
+Introduce `K _ _ n`. Take `⟨M, hM⟩` from `sum_gam K n`. Establish `hc : 0 < heightConst K n` using `one_pos.trans_le one_le_heightConst`. Use `⟨2 * M, _, ENNReal.mul_ne_top (ENNReal.ofReal_ne_top (r := (heightConst K n * 2) ^ M)) hM, fun g => ?_⟩` and prove the remaining obligations. Use `set F : Gam K n → ℝ := fun γ => AutomorphicForm.height (((γ : G1 K n) * g : G1 K n) : AdelicGLn.AdelicGL K n) with hF`.
+
+Establish `hF1 : ∀ γ, 1 ≤ F γ` using `fun γ => one_le_height _`. Establish `hb : BddBelow (Set.range F)` using `⟨1, Set.forall_mem_range.2 hF1⟩`. Establish `hi : 1 ≤ ⨅ γ, F γ` using `le_ciInf hF1`. Take `⟨γ₀, h₀⟩` from `exists_lt_of_ciInf_lt (f := F) (a := 2 * ⨅ γ, F γ) (by linarith)`. Rewrite using `[← (Equiv.mulRight γ₀⁻¹).tsum_eq fun γ : Gam K n => ENNReal.ofReal (AutomorphicForm.height ((γ : G1 K n) : AdelicGLn.AdelicGL K n) ^ M)⁻¹, ← ENNReal.tsum_mul_left]`.
+
+Use `ENNReal.tsum_le_tsum fun γ => ?_` and prove the remaining obligations. Rewrite using `[← ENNReal.ofReal_mul (by positivity)]`. Use `ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(F γ ^ (2 * M))⁻¹ ≤ _`. Establish `hp : 0 < F γ` using `one_pos.trans_le (hF1 γ)`.
+
+Rewrite using `[pow_mul, ← inv_pow _ M, ← inv_pow _ M, ← mul_pow]`. Use `pow_le_pow_left₀ (by positivity) ?_ M` and prove the remaining obligations. Rewrite using `[← div_eq_mul_inv, le_div_iff₀ (height_pos _), inv_mul_le_iff₀ (by positivity)]`. Establish `e : (((Equiv.mulRight γ₀⁻¹ γ : Gam K n) : G1 K n) : AdelicGLn.AdelicGL K n) = (((γ : G1 K n) * g : G1 K n) : AdelicGLn.AdelicGL K n) * ((((γ₀ : G1 K n) * g : G1 K n) : AdelicGLn.AdelicGL K n))⁻¹`. Simplify using `[mul_assoc]`.
+
+Rewrite using `[e]`. Use `(height_mul_le _ _).trans ?_` and prove the remaining obligations. Rewrite using `[height_inv]`. Establish `h2 : F γ₀ ≤ 2 * F γ` using `h₀.le.trans (by linarith [ciInf_le hb γ])`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.sumHt :
     ∀ {K : Type} [Field K] [NumberField K] (n : ℕ), ∃ (N : ℕ) (C : ℝ≥0∞), C ≠ ⊤ ∧ ∀ g : G1 K n,
       ∑' γ : Gam K n, ENNReal.ofReal ((AutomorphicForm.height (((γ : G1 K n) * g : G1 K n) : AdelicGLn.AdelicGL K n) ^ N)⁻¹) ≤ C := by

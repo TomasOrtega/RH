@@ -34,6 +34,9 @@ section Ind
 
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Distinguish the cases in `h : x ∈ 𝒪[F]`. Rewrite using `[Set.indicator_of_mem (show x ∈ {x : F | x ∈ 𝒪[F]} from h), intInd_of_mem h]`. Simplify using the standard rewrite rules. Rewrite using `[Set.indicator_of_notMem (show x ∉ {x : F | x ∈ 𝒪[F]} from h), intInd_of_notMem h]`.
+-/
 theorem indicator_eq_intInd : Set.indicator {x : F | x ∈ 𝒪[F]} 1 = (intInd : F → ℂ) := by
   funext x
   by_cases h : x ∈ 𝒪[F]
@@ -41,6 +44,11 @@ theorem indicator_eq_intInd : Set.indicator {x : F | x ∈ 𝒪[F]} 1 = (intInd 
     simp
   · rw [Set.indicator_of_notMem (show x ∉ {x : F | x ∈ 𝒪[F]} from h), intInd_of_notMem h]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `z`. Distinguish the cases in `h1 : z.1 ∈ 𝒪[F]`. Distinguish the cases in `h2 : z.2 ∈ 𝒪[F]`. Rewrite using `[Set.indicator_of_mem (show z ∈ {x : F × F | x.1 ∈ 𝒪[F] ∧ x.2 ∈ 𝒪[F]} from ⟨h1, h2⟩), phiS, intInd_of_mem h1, intInd_of_mem h2]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[Set.indicator_of_notMem (show z ∉ {x : F × F | x.1 ∈ 𝒪[F] ∧ x.2 ∈ 𝒪[F]} from fun h => h2 h.2), phiS, intInd_of_notMem h2]`. Simplify using the standard rewrite rules. Rewrite using `[Set.indicator_of_notMem (show z ∉ {x : F × F | x.1 ∈ 𝒪[F] ∧ x.2 ∈ 𝒪[F]} from fun h => h1 h.1), phiS, intInd_of_notMem h1]`. Simplify using the standard rewrite rules.
+-/
 theorem indicator_eq_phiS :
     Set.indicator {x : F × F | x.1 ∈ 𝒪[F] ∧ x.2 ∈ 𝒪[F]} 1 = (phiS : F × F → ℂ) := by
   funext z
@@ -58,6 +66,39 @@ theorem indicator_eq_phiS :
 
 end Ind
 
+/- English proof (translation)
+Establish `H1` using `GlobalTheory.CompanionTheory.SphTheta.SplitRW.rW_phiS F χ hχ`. Establish `H2` using `GlobalTheory.CompanionTheory.SphTheta.RowIwasawa.iwasawa_lower_row F`. Establish `key : ∀ g : GL (Fin 2) F, GL2LocalData.WcS χ c₁ c₂ phiS g = ((c₁ (Matrix.GeneralLinearGroup.det g) : ℂˣ) : ℂ) * mp (Matrix.GeneralLinearGroup.det g) (1 / 2) * ((((modulus (mRow g) : ℝ)⁻¹ : ℝ) : ℂ) * (χ (xRow g) : ℂ) * ∫ u, sphJ c₁ c₂ (g.val).det (mRow g) u ∂multHaar F)`. Introduce `g`. Unfold `GL2LocalData.WcS`.
+
+Use `congr 1`. Rewrite using `[← integral_const_mul]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun u => ?_)` and prove the remaining obligations. Simplify using `only [H1 g u, sphJ]`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `k hk g`. Take `⟨hm, hD, hM, hx⟩` from `H2 g k hk`. Establish `hk1 : modulus (k.val).det = 1`. Use `(H2 1 k hk).2.1` as an intermediate fact.
+
+Simplify using `using this`. Establish `hdet : Matrix.GeneralLinearGroup.det (g * k) = Matrix.GeneralLinearGroup.det g * Matrix.GeneralLinearGroup.det k` using `map_mul _ _ _`. Establish `hc : ((c₁ (Matrix.GeneralLinearGroup.det (g * k)) : ℂˣ) : ℂ) = ((c₁ (Matrix.GeneralLinearGroup.det g) : ℂˣ) : ℂ)`. Rewrite using `[hdet, map_mul, Units.val_mul, char_eq_one hc₁ (u := Matrix.GeneralLinearGroup.det k) hk1, mul_one]`. Establish `hmp : mp (Matrix.GeneralLinearGroup.det (g * k)) (1 / 2) = mp (Matrix.GeneralLinearGroup.det g) (1 / 2)`.
+
+Unfold `mp`. Establish `: modulus ((Matrix.GeneralLinearGroup.det (g * k) : Fˣ) : F) = modulus ((Matrix.GeneralLinearGroup.det g : Fˣ) : F)` using `hD`. Rewrite using `[this]`. Rewrite using `[key, key, hc, hmp, hM, sphJ_congr c₁ c₂ hD hM]`. Distinguish the cases in `hle : modulus (g.val).det ≤ modulus (mRow g) ^ 2`.
+
+Establish `ht` using `hx hle`. Establish `h1 : χ (xRow (g * k) - xRow g) = 1`. Establish `h` using `isTrivialOn_addCharConductor hχ.1 hχ.2.1`. Rewrite `h` using `[hχ.2.2]`. Conclude with `h _ (mem_valBall_zero_iff.2 ht)`.
+
+Establish `h2 : χ (xRow (g * k)) = χ (xRow g)`. Establish `e : xRow (g * k) = (xRow (g * k) - xRow g) + xRow g` using `by ring`. Rewrite using `[e, AddChar.map_add_eq_mul, h1, one_mul]`. Rewrite using `[h2]`. Establish `h0 : (fun u => sphJ c₁ c₂ (g.val).det (mRow g) u) = fun _ => 0`.
+
+Use function extensionality and compare the values at `(sphJ_eq_zero c₁ c₂ hm hle)`. Simplify using `only [h0, integral_zero, mul_zero]`. Rewrite using `[key]`. Establish `hm1 : mRow (1 : GL (Fin 2) F) = 1`. Simplify using `[mRow]`.
+
+Establish `hx1 : xRow (1 : GL (Fin 2) F) = 0`. Simplify using `[xRow]`. Establish `hJ : (fun u => sphJ c₁ c₂ ((1 : GL (Fin 2) F).val).det 1 u) = (unitFiltrationUnits F 0 : Set Fˣ).indicator (fun _ => (1 : ℂ))`. Use function extensionality and compare the values at `u`. Distinguish the cases in `hu : u ∈ (unitFiltrationUnits F 0 : Set Fˣ)`.
+
+Establish `hu1 : modulus (u : F) = 1` using `mem_units_iff_modulus.1 hu`. Rewrite using `[Set.indicator_of_mem hu]`. Establish `e1 : ((c₂ u)⁻¹ : ℂˣ) = 1`. Establish `: c₂ u = 1` using `hc₂ (mem_units_iff_modulus.2 hu1)`. Rewrite using `[this, inv_one]`.
+
+Unfold `sphJ`. Rewrite using `[e1, char_eq_one hc₁ hu1, intInd_of_mem, intInd_of_mem]`. Simplify using the standard rewrite rules. Rewrite using `[← modulus_le_one_iff]`. Simplify using `[modulus_mul, hu1]`.
+
+Rewrite using `[← modulus_le_one_iff]`. Simplify using `[modulus_mul, modulus_inv, hu1]`. Rewrite using `[Set.indicator_of_notMem hu]`. Establish `hu1 : modulus (u : F) ≠ 1` using `fun h => hu (mem_units_iff_modulus.2 h)`. Unfold `sphJ`.
+
+Break down `lt_or_gt_of_ne hu1 with h | h` into its components or cases. Rewrite using `[intInd_of_notMem (x := (1 * (u : F))⁻¹)]`. Simplify using the standard rewrite rules. Rewrite using `[← modulus_le_one_iff, one_mul, modulus_inv, not_le]`. Conclude with `(one_lt_inv₀ (modulus_pos u.ne_zero)).2 h`.
+
+Rewrite using `[intInd_of_notMem (x := ((1 : GL (Fin 2) F).val).det * u / 1)]`. Simplify using the standard rewrite rules. Rewrite using `[← modulus_le_one_iff, not_le]`. Simplify using `using h`. Establish `hmeas : MeasurableSet (unitFiltrationUnits F 0 : Set Fˣ)`.
+
+Conclude with `(isOpen_unitFiltrationUnits 0).measurableSet`. Establish `hint : ∫ u, sphJ c₁ c₂ ((1 : GL (Fin 2) F).val).det 1 u ∂multHaar F = 1`. Rewrite using `[hJ, integral_indicator_const _ hmeas]`. Simplify using `[Measure.real, multHaar_unitFiltrationUnits_zero]`. Rewrite using `[hm1, hx1, hint]`.
+
+Simplify using `[mp]`.
+-/
 theorem split_sph (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F]
     [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] (χ : AddChar F Circle)
     (c₁ c₂ : Fˣ →* ℂˣ) (hχ : Ad3.IsStd χ) (hc₁ : IsUnramifiedChar c₁) (hc₂ : IsUnramifiedChar c₂) :
@@ -147,6 +188,25 @@ theorem split_sph (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F]
 
 open GlobalTheory.CompanionTheory.SphTheta.InertAsm in
 
+/- English proof (translation)
+Establish `hstd` using `GlobalTheory.CompanionTheory.SphTheta.isStd_chE_of_ord_unif F E h2 hcont hord χ hχ`. Establish `hform` using `GlobalTheory.CompanionTheory.SphTheta.inert_rw F E h2 hcont hord χ η σ hσ hχ hstd hη (GlobalTheory.CompanionTheory.NormGauss.gauss_main F E h2 hcont hord χ η hχ hstd hη)`. Establish `hrow` using `GlobalTheory.CompanionTheory.SphTheta.RowIwasawa.iwasawa_lower_row F`. Take `⟨hη1, hηu, -, -⟩` from `hη`. Use `haveI : Fact (Module.finrank F E = 2) := ⟨h2⟩`.
+
+Use `haveI : FiniteDimensional F E := Module.finite_of_finrank_pos (by omega)`. Use `haveI : Algebra.IsSeparable F E := inferInstance`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `k hk g`. Establish `hdk : modulus (k.val).det = 1`.
+
+Establish `h1` using `(hrow 1 k hk).2.1`. Simplify using `using h1`. Choose the witnesses or unpack the hypotheses as in `⟨s, hs⟩ : ∃ s : Eˣ, Algebra.norm F (s : E) = (k.val).det := by`. Establish `hk0 : (k.val).det ≠ 0` using `(Matrix.GeneralLinearGroup.det k).ne_zero`. Establish `h1` using `hη1 (Units.mk0 _ hk0)`.
+
+Rewrite `h1` using `[char_congr η hηu (u := Units.mk0 _ hk0) (v := 1) (by simpa using hdk), map_one, Units.val_one, Units.val_mk0, GL2LocalData.nsg]`. Assume the negation of the conclusion as `hn`. Rewrite `h1` using `[if_neg hn]`. Evaluate the numerical expressions using `at h1`. Distinguish the cases in `hg : ∃ t : Eˣ, Algebra.norm F (t : E) = (g.val).det`.
+
+Take `⟨t, ht⟩` from `hg`. Establish `ht' : Algebra.norm F ((t * s : Eˣ) : E) = ((g * k).val).det`. Rewrite using `[Units.val_mul, map_mul, ht, hs, Units.val_mul, Matrix.det_mul]`. Rewrite using `[Wc_eq hc hform _ _ ht', Wc_eq hc hform _ _ ht]`. Take `⟨hm0, hdet, hmm, hx⟩` from `hrow g k hk`.
+
+Conclude with `val_eq hχ hη1 hηu hc ht ht' hm0 (hrow (g * k) 1 (one_mem _)).1 hdet hmm hx`. Establish `hg' : ¬ ∃ t : Eˣ, Algebra.norm F (t : E) = ((g * k).val).det`. Introduce and unpack `⟨t', ht'⟩`. Use `hg ⟨t' * s⁻¹, ?_⟩` and prove the remaining obligations. Establish `hs0 : Algebra.norm F (s : E) ≠ 0` using `Algebra.norm_ne_zero_iff.2 s.ne_zero`.
+
+Establish `hmul : Algebra.norm F ((t' * s⁻¹ : Eˣ) : E) * Algebra.norm F (s : E) = Algebra.norm F (t' : E)`. Rewrite using `[← map_mul, ← Units.val_mul, inv_mul_cancel_right]`. Establish `hd : ((g * k).val).det = (g.val).det * (k.val).det`. Rewrite using `[Units.val_mul, Matrix.det_mul]`. Rewrite `hmul` using `[ht', hs, hd]`.
+
+Conclude with `mul_right_cancel₀ (hs ▸ hs0) hmul`. Rewrite using `[GL2LocalData.Wc, GL2LocalData.Wc, dif_neg hg, dif_neg hg']`. Rewrite using `[Wc_eq hc hform 1 1 (by simp)]`. Establish `hn : GL2LocalData.nsg E (1 : F) = 1`. Rewrite using `[GL2LocalData.nsg, if_pos ⟨1, by simp⟩]`.
+
+Establish `hO : (1 : E) ∈ 𝒪[E]` using `one_mem _`. Simplify using `[val, mRow_one, xRow_one, hn, intInd, hO]`.
+-/
 theorem inert_sph (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F]
     [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] [CharZero F]
     (E : Type) [Field E] [ValuativeRel E] [TopologicalSpace E] [IsNonarchimedeanLocalField E]
@@ -205,6 +265,15 @@ theorem inert_sph (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F]
     have hO : (1 : E) ∈ 𝒪[E] := one_mem _
     simp [val, mRow_one, xRow_one, hn, intInd, hO]
 
+/- English proof (translation)
+Introduce `K _ _ h2 c v hv W' hth`. Break down `hth with ⟨w₁, w₂, h₁, h₂, hne, rfl⟩ | ⟨w, hw, huniq, σ, η, hσ, hη, rfl⟩` into its components or cases. Use `haveI := h₁ haveI := h₂`. Rewrite using `[indicator_eq_phiS]`. Conclude with `split_sph (Qv v) (GP.psiF v)⁻¹ (cAt c v w₁) (cAt c v w₂) (GlobalTheory.CompanionTheory.SphStd.isStd_psiF_inv v) (GlobalTheory.CompanionTheory.SphTheta.isUnramifiedChar_comp_unitsMap (Qv v) (Kv K w₁) (localChar c w₁) (hv w₁).1) (GlobalTheory.CompanionTheory.SphTheta.isUnramifiedCh …`.
+
+Use `haveI := hw`. Break down `GlobalTheory.CompanionTheory.QuadPlace.split_or_inert_of_unramified K h2 v (fun w _ => (hv w).2) with ⟨w₁, w₂, h₁, h₂, hne⟩ | ⟨w₀, hw₀, -, hf, hord⟩` into its components or cases. Conclude with `absurd ((huniq w₁ h₁).trans (huniq w₂ h₂).symm) hne`. Take `rfl` from `huniq w₀ hw₀`. Establish `hcont` using `GroundTheory.Global.continuous_adicCompletionMap v w₀`.
+
+Take `⟨η', hη'⟩` from `GlobalTheory.CompanionTheory.SphTheta.UnramQuad.exists_quadChar_unramified (Qv v) (Kv K w₀) hf hcont hord`. Establish `hηη : η = η'`. Use extensionality with `a`. Rewrite using `[hη a, hη'.1 a]`. Substitute `hηη` using the available equality.
+
+Establish `hχ` using `GlobalTheory.CompanionTheory.SphStd.isStd_psiF_inv v`. Establish `hstd` using `GlobalTheory.CompanionTheory.SphTheta.isStd_chE_of_ord_unif (Qv v) (Kv K w₀) hf hcont hord _ hχ`. Establish `hlam : GL2LocalData.lamE (Kv K w₀) (GP.psiF v)⁻¹ η = 1` using `GlobalTheory.CompanionTheory.LamUnr.lamE_eq_one (Qv v) (Kv K w₀) _ η hχ hstd hη'.2.1 hη'.2.2.1`. Rewrite using `[hlam, indicator_eq_intInd]`. Conclude with `inert_sph (Qv v) (Kv K w₀) hf hcont hord _ η σ (localChar c w₀) hσ hχ (hv w₀).1 hη'`.
+-/
 theorem stdTh_sphN : ∀ (K : Type) [Field K] [NumberField K], Module.finrank ℚ K = 2 →
     ∀ (c : HeckeCharacter K) (v : Pl), Ad3.K.QuadraticBaseChangeGL3.Th.Unr c v →
       ∀ W' : GL (Fin 2) (Qv v) → ℂ, Ad3.K.QuadraticBaseChangeGL3.Th.StdTh c v W' → SphN W' := by

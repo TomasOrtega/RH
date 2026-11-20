@@ -23,5 +23,8 @@ open GlobalTheory.IndefiniteRowSideFullHecke.LevelStructureAutomorphisms (LevelA
 open GlobalTheory.BadCount
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CovTop.bad_def_lift | exact GlobalTheory.CovTop.bad_def_lift | (intros; apply GlobalTheory.CovTop.bad_def_lift <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.bad_at_top_level : Hypotheses2 → GlobalTheory.Published.GreenCuspidal → Gram → Lifts fun Fm x _ ι p i _ _ => (i : ℕ) + 1 = (Fm.D x ι).R.m → BadAt p i := by
   first | exact @GlobalTheory.CovTop.bad_def_lift | exact GlobalTheory.CovTop.bad_def_lift | (intros; apply GlobalTheory.CovTop.bad_def_lift <;> assumption)

@@ -18,6 +18,27 @@ namespace GlobalTheory.TwV.Xc.AwayInd
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Introduce `D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X _ std t J S hDict hSpl hK hPos hPair`. Introduce `v j hj`. Establish `hgood` using `J.one.good`. Establish `hint` using `J.one.int`. Establish `hp : (D.what₂.places.resChar w).Prime` using `Fact.out`.
+
+Take `⟨hcop, hSS, -, -⟩` from `GlobalTheory.T.level_badPrimes_coprime_residueChar S hDict hSpl`. Take `⟨P, hPof, happ, hpP, hpP2⟩` from `GlobalTheory.T.exists_prime_under_firstFactor_at_placeOverP _ _ _ _ _ (A0 J) hint hSpl.1 v`. Take `⟨a, b, hab, ha, hb⟩` from `GlobalTheory.XcSplit.prime_not_stable _ _ (sigD D) _ _ _ (A0 J) _ hgood hint hSpl.1 v P hPof`. Establish `hpC : (((D.what₂.places.resChar w : ℕ)) : 𝓞 D.host.E) ∈ (Formalism.L2.Col.conjPrime₂ P).asIdeal`. Rewrite using `[Formalism.L2.Col.mem_conjP, map_natCast]`.
+
+Conclude with `hpP`. Establish `hcopE : IsCoprime (((t.rd u μ).lev : ℕ) : 𝓞 D.host.E) ((D.what₂.places.resChar w : ℕ) : 𝓞 D.host.E)`. Establish `h` using `(Nat.isCoprime_iff_coprime.2 hcop).map (Int.castRingHom (𝓞 D.host.E))`. Simplify using `using h`. Establish `hlev : ∀ Q : HeightOneSpectrum (𝓞 D.host.E), ((D.what₂.places.resChar w : ℕ) : 𝓞 D.host.E) ∈ Q.asIdeal → (((t.rd u μ).lev : ℕ) : 𝓞 D.host.E) ∉ Q.asIdeal`.
+
+Introduce `Q hpQ hlQ`. Take `⟨x, y, hxy⟩` from `hcopE`. Establish `h1 : (1 : 𝓞 D.host.E) ∈ Q.asIdeal` using `hxy ▸ Q.asIdeal.add_mem (Q.asIdeal.mul_mem_left x hlQ) (Q.asIdeal.mul_mem_left y hpQ)`. Conclude with `Q.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h1)`. Establish `hab' : (b : D.host.E) = D.host.conj (a : D.host.E)`.
+
+Rewrite using `[hab]`. Apply the tactic sequence `first | exact Formalism.L2.PairingIndexBounds.F.sig_conj D _ | exact Formalism.L2.Fam.sig_eq_conj D.host D.sp.cm _ | exact Formalism.MainNotions.GlobalTheoryTheory.jnt_sig_eq_conj D _`. Use `⟨P, ⟨a, b, hab', ha, hb⟩, GlobalTheory.T.localisation_inverseHalfDifferent_eq_one_unramified D _ hp P hpP hpP2, fun h => hSS P h hpP, fun h => hSS _ h hpC, hlev P hpP, hlev _ hpC, hPof, happ, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hc : Nonempty ((sysS H X std).Lv.comp j) ∧ Nonempty ((sysS H X std).Lv.comp (j + 1))`. Take `⟨⟨c⟩, ⟨c'⟩⟩` from `hc`.
+
+Take `⟨π, hπU, hoff, hord⟩` from `GlobalTheory.T.exists_normOne_idele_order_one_trivial_elsewhere _ _ (sigD D) _ _ _ (A0 J) _ hgood v`. Establish `hU : IsUnifAt J v π` using `⟨hπU, hoff, hord⟩`. Take `⟨x, y, hx0, hy0, hx, hy⟩` from `GlobalTheory.T.two_units_at_place_uniformizing_idele S hDict hSpl hK hPos v π hU j hj c c'`. Use `⟨x, y, hx0, hy0, ?_⟩` and prove the remaining obligations. Introduce `La Lb La' Lb' h1 h2 h3 h4 haw`.
+
+Establish `e1 : La.1 = Lb.1` using `congrArg (fun z : (sysS H X std).Lt j × (sysS H X std).Lt (j + 1) => z.1.1) haw`. Establish `e2 : Function.update La.2 ((sysS H X std).vJ j v) ⊥ = Function.update Lb.2 ((sysS H X std).vJ j v) ⊥` using `congrArg (fun z : (sysS H X std).Lt j × (sysS H X std).Lt (j + 1) => z.1.2) haw`. Establish `e3 : La'.1 = Lb'.1` using `congrArg (fun z : (sysS H X std).Lt j × (sysS H X std).Lt (j + 1) => z.2.1) haw`. Establish `e4 : Function.update La'.2 ((sysS H X std).vJ (j + 1) v) ⊥ = Function.update Lb'.2 ((sysS H X std).vJ (j + 1) v) ⊥` using `congrArg (fun z : (sysS H X std).Lt j × (sysS H X std).Lt (j + 1) => z.2.2) haw`. Establish `hA : SameAway (hT` using `hT) (H := H) (X := X) std v j La Lb := ⟨h1, h3, e1, e2⟩`.
+
+Establish `hA' : SameAway (hT` using `hT) (H := H) (X := X) std v (j + 1) La' Lb' := ⟨h2, h4, e3, e4⟩`. Use `⟨GlobalTheory.T.eqOffPrime_kernelLattices_of_agreeAway S hDict hSpl v P hPof j hj.le La Lb hA, GlobalTheory.T.eqOffPrime_kernelLattices_of_agreeAway S hDict hSpl v P hPof (j + 1) hj La' Lb' hA', ?_, ?_, GlobalTheory.T.movedDatum_eq_of_latticeTuples_agreeAway S hDict hSpl v j hj L …` and prove the remaining obligations. Establish `hLb : Lb = (La.1, Lb.2)` using `Prod.ext e1.symm rfl`. Rewrite using `[hLb]`. Conclude with `GlobalTheory.T.latticeTuple_frameMatrices_eq_of_same_component S hDict hSpl j La.1 La.2 Lb.2`.
+
+Establish `hLb : Lb' = (La'.1, Lb'.2)` using `Prod.ext e3.symm rfl`. Rewrite using `[hLb]`. Conclude with `GlobalTheory.T.latticeTuple_frameMatrices_eq_of_same_component S hDict hSpl (j + 1) La'.1 La'.2 Lb'.2`. Establish `h1 : (sysS H X std).vEqK 1 0` using `GlobalTheory.UnitK.vEqK_zero_of_norm_one _ _ S.E.toCEmb 1 (by simp)`. Use `⟨1, 1, h1, h1, ?_⟩` and prove the remaining obligations.
+
+Introduce `La Lb La' Lb'`. Conclude with `absurd ⟨⟨La.1⟩, ⟨La'.1⟩⟩ hc`.
+-/
 theorem away_of_pos_pair : Sites (fun {D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X} [Fact (D.what₂.places.resChar w).Prime] {std t J} S =>
     KIn t → S.Pos → S.Pair → S.Away) := by
   intro D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X _ std t J S hDict hSpl hK hPos hPair

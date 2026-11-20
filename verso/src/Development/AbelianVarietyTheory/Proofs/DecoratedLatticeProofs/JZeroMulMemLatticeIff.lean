@@ -24,6 +24,11 @@ namespace GlobalTheory.SeeSaw.AdaptFBIdeals
 
 variable {D : D7}
 
+/- English proof (translation)
+Establish `h1 : (d.pX ⬝ d.jX) i i = 1` using `by rw [d.pX_jX]; exact Matrix.one_apply_eq i`. Rewrite `h1` using `[Matrix.mul_apply]`. Establish `h2 : a = ∑ k, d.pX i k * colMul d.jX i a k`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h2]`.
+
+Conclude with `Ideal.sum_mem _ fun k _ => Ideal.mul_mem_left _ _ (GlobalTheory.FinPl.FrameLat.latV_supp h k)`.
+-/
 theorem supp_of_colMul {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (L : Lat S) (v : Pl D) (i : Fin ρ) (a : AE D)
     (h : colMul d.jX i a ∈ latV S L (· = v)) : a ∈ idAt D (· = v) := by
   have h1 : (d.pX ⬝ d.jX) i i = 1 := by rw [d.pX_jX]; exact Matrix.one_apply_eq i
@@ -34,6 +39,11 @@ theorem supp_of_colMul {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (L : L
   rw [h2]
   exact Ideal.sum_mem _ fun k _ => Ideal.mul_mem_left _ _ (GlobalTheory.FinPl.FrameLat.latV_supp h k)
 
+/- English proof (translation)
+Proceed by induction on `h using AddSubgroup.closure_induction with`. Consider the case `mem y hy`. Take `⟨α, -, hα, x, -, rfl⟩` from `hy`. Conclude with `GlobalTheory.FinPl.LatMem.tmul_mem_idAt hα _`. Consider the case `zero => exact zero_mem _`.
+
+Consider the case `add x y _ _ hx hy => exact add_mem hx hy`. Consider the case `neg x _ hx => exact neg_mem hx`.
+-/
 theorem idV_supp (𝔞 : FI D) (v : Pl D) {a : AE D} (h : a ∈ idV 𝔞 v) : a ∈ idAt D (· = v) := by
   induction h using AddSubgroup.closure_induction with
   | mem y hy =>
@@ -43,6 +53,9 @@ theorem idV_supp (𝔞 : FI D) (v : Pl D) {a : AE D} (h : a ∈ idV 𝔞 v) : a 
   | add x y _ _ hx hy => exact add_mem hx hy
   | neg x _ hx => exact neg_mem hx
 
+/- English proof (translation)
+Establish `hc : ∀ {n : ℕ} (x : Mx D S.rank n) (i : Fin n), colMul x i 0 = 0` using `fun x i => by`. Use function extensionality and compare the values at `k`. Simplify using `[colMul]`. Rewrite using `[hL]`. Simplify using `only [Matrix.mulVec_mulVec, d.pX_j0, d.pY_j0, d.p0_j0, Matrix.zero_mulVec, Matrix.one_mulVec, Pi.zero_apply, hc, zero_mem, implies_true, true_and]`.
+-/
 theorem j_zero_mul_mem_lattice_iff {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (L : Lat S) (M : Lat S₀) (v : Pl D) (hL : MonoAt d L M v)
     (w : Fin S₀.rank → AE D) : d.j0 *ᵥ w ∈ latV S L (· = v) ↔ w ∈ latV S₀ M (· = v) := by
   have hc : ∀ {n : ℕ} (x : Mx D S.rank n) (i : Fin n), colMul x i 0 = 0 := fun x i => by

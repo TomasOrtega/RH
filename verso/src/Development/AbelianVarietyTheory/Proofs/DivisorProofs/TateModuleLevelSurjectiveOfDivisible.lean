@@ -9,6 +9,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.Published
 
+/- English proof (translation)
+Introduce `l _ M _ hroot n x hx`. Use `choose r hr using hroot`. Establish `key : ∀ (m : ℕ) (y : M), (r^[m] y) ^ l ^ m = y`. Introduce `m`. Proceed by induction on `m with`.
+
+Consider the case `zero => intro y`. Simplify using the standard rewrite rules. Consider the case `succ m ih`. Introduce `y`. Rewrite using `[Function.iterate_succ_apply, pow_succ, pow_mul, ih, hr]`.
+
+Use `⟨GlobalTheory.HTLat.Tate.mk (fun m => (r^[m] x) ^ l ^ n) fun m => ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← pow_mul, mul_comm, pow_mul, key, hx]`. Rewrite using `[← pow_mul, mul_comm, pow_mul, Function.iterate_succ_apply', hr]`. Rewrite using `[GlobalTheory.HTLat.Tate.lev_mk, key]`.
+-/
 theorem tate_lev_surj : ∀ (l : ℕ) [Fact l.Prime] (M : Type) [CommGroup M], (∀ x : M, ∃ y, y ^ l = x) → ∀ (n : ℕ) (x : M), x ^ l ^ n = 1 → ∃ t : Tate l M, t.lev n = x := by
   intro l _ M _ hroot n x hx
   choose r hr using hroot

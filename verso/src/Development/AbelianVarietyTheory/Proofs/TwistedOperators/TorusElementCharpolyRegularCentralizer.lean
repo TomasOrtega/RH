@@ -15,6 +15,9 @@ section Base
 variable {F E : Type} [Field F] [Field E] [Algebra F E] {σ : E →ₐ[F] E} {r : ℕ} (P : PPol σ r)
   (k : Type) [CommRing k] [Algebra F k]
 
+/- English proof (translation)
+Rewrite using `[Algebra.smul_def]`. Express the relevant statement in the definitionally equal form `(Algebra.TensorProduct.map (AlgHom.id F k) (IsScalarTower.toAlgHom F E (Fld P))) (a ⊗ₜ[F] e) * _ = _`. Rewrite using `[Algebra.TensorProduct.map_tmul, Algebra.TensorProduct.tmul_mul_tmul, AlgHom.id_apply, IsScalarTower.coe_toAlgHom', ← Algebra.smul_def]`.
+-/
 theorem tmul_smul_tmul (a : k) (e : E) (c : k) (y : Fld P) :
     (a ⊗ₜ[F] e) • (c ⊗ₜ[F] y) = (a * c) ⊗ₜ[F] (e • y) := by
   rw [Algebra.smul_def]
@@ -22,6 +25,11 @@ theorem tmul_smul_tmul (a : k) (e : E) (c : k) (y : Fld P) :
   rw [Algebra.TensorProduct.map_tmul, Algebra.TensorProduct.tmul_mul_tmul, AlgHom.id_apply,
     IsScalarTower.coe_toAlgHom', ← Algebra.smul_def]
 
+/- English proof (translation)
+Proceed by induction on `a using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => rw [add_smul, map_add, ha, hb, add_mul]`. Consider the case `tmul k1 e1`. Proceed by induction on `z using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp`. Consider the case `add z w hz hw => rw [smul_add, map_add, hz, hw, map_add, mul_add]`. Consider the case `tmul k2 l`. Rewrite using `[tmul_smul_tmul, LinearMap.lTensor_tmul, LinearMap.lTensor_tmul, Algebra.TensorProduct.tmul_mul_tmul, LinearMap.restrictScalars_apply, LinearMap.restrictScalars_apply, f.map_smul, smul_eq_mul]`.
+-/
 theorem lT_smul (f : Fld P →ₗ[E] E) (a : k ⊗[F] E) (z : k ⊗[F] Fld P) :
     LinearMap.lTensor k (f.restrictScalars F) (a • z) = a * LinearMap.lTensor k (f.restrictScalars F) z := by
   induction a using TensorProduct.induction_on with
@@ -39,8 +47,14 @@ variable {ι : Type} [Fintype ι] [DecidableEq ι] (b : Module.Basis ι E (Fld P
 
 def crd (i : ι) : k ⊗[F] Fld P →ₗ[F] k ⊗[F] E := LinearMap.lTensor k ((b.coord i).restrictScalars F)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem crd_tmul (i : ι) (c : k) (y : Fld P) : crd P k b i (c ⊗ₜ[F] y) = c ⊗ₜ[F] b.repr y i := rfl
 
+/- English proof (translation)
+The claim follows from `lT_smul P k _ a z`.
+-/
 theorem crd_smul (i : ι) (a : k ⊗[F] E) (z : k ⊗[F] Fld P) : crd P k b i (a • z) = a * crd P k b i z :=
   lT_smul P k _ a z
 
@@ -71,12 +85,18 @@ def tEquiv : (k ⊗[F] Fld P) ≃ₗ[k ⊗[F] E] (ι → k ⊗[F] E) where
 
 def bb : Module.Basis ι (k ⊗[F] E) (k ⊗[F] Fld P) := Module.Basis.ofEquivFun (tEquiv P k b)
 
+/- English proof (translation)
+Rewrite using `[bb, Module.Basis.coe_ofEquivFun]`. Express the relevant statement in the definitionally equal form `∑ j, (Pi.single i (1 : k ⊗[F] E) : ι → k ⊗[F] E) j • ((1 : k) ⊗ₜ[F] b j) = _`. Rewrite using `[Finset.sum_eq_single i (fun j _ h => by simp [Pi.single_apply, h]) (by simp)]`. Simplify using the standard rewrite rules.
+-/
 theorem bb_apply (i : ι) : bb P k b i = (1 : k) ⊗ₜ[F] b i := by
   rw [bb, Module.Basis.coe_ofEquivFun]
   change ∑ j, (Pi.single i (1 : k ⊗[F] E) : ι → k ⊗[F] E) j • ((1 : k) ⊗ₜ[F] b j) = _
   rw [Finset.sum_eq_single i (fun j _ h => by simp [Pi.single_apply, h]) (by simp)]
   simp
 
+/- English proof (translation)
+Simplify using `[bb, tEquiv]`.
+-/
 theorem bb_repr (z : k ⊗[F] Fld P) (i : ι) : (bb P k b).repr z i = crd P k b i z := by
   simp [bb, tEquiv]
 
@@ -93,8 +113,14 @@ variable {F E : Type} [Field F] [Field E] [Algebra F E] {σ : E →ₐ[F] E} {r 
 
 abbrev pb : PowerBasis E (Fld P) := AdjoinRoot.powerBasis P.2.2.1.ne_zero
 
+/- English proof (translation)
+The claim follows from `AdjoinRoot.powerBasis_gen _`.
+-/
 theorem pb_gen : (pb P).gen = alpha P := AdjoinRoot.powerBasis_gen _
 
+/- English proof (translation)
+Establish `e` using `AdjoinRoot.minpoly_powerBasis_gen P.2.2.1.ne_zero`. Establish `m : P.1.leadingCoeff = 1` using `P.2.1`. Rewrite `e` using `[m, inv_one, C_1, mul_one]`. Conclude with `e`.
+-/
 theorem minpoly_gen : minpoly E (pb P).gen = P.1 := by
   have e := AdjoinRoot.minpoly_powerBasis_gen P.2.2.1.ne_zero
   have m : P.1.leadingCoeff = 1 := P.2.1
@@ -105,6 +131,9 @@ instance free_base : Module.Free (k ⊗[F] E) (k ⊗[F] Fld P) := Module.Free.of
 
 instance finite_base : Module.Finite (k ⊗[F] E) (k ⊗[F] Fld P) := Module.Finite.of_basis (bb P k (pb P).basis)
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[LinearMap.toMatrix_apply, bb_repr, bb_apply]`. Express the relevant statement in the definitionally equal form `crd P k b i (((1 : k) ⊗ₜ[F] y) * ((1 : k) ⊗ₜ[F] b j)) = _`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul, crd_tmul, Matrix.map_apply, Algebra.leftMulMatrix_eq_repr_mul]`. Both sides reduce to the same expression.
+-/
 theorem toMatrix_lmul {ι : Type} [Fintype ι] [DecidableEq ι] (b : Module.Basis ι E (Fld P)) (y : Fld P) :
     LinearMap.toMatrix (bb P k b) (bb P k b) (Algebra.lmul (k ⊗[F] E) (k ⊗[F] Fld P) ((1 : k) ⊗ₜ[F] y)) =
       (Algebra.leftMulMatrix b y).map (inclR k) := by
@@ -114,6 +143,9 @@ theorem toMatrix_lmul {ι : Type} [Fintype ι] [DecidableEq ι] (b : Module.Basi
   rw [Algebra.TensorProduct.tmul_mul_tmul, one_mul, crd_tmul, Matrix.map_apply, Algebra.leftMulMatrix_eq_repr_mul]
   rfl
 
+/- English proof (translation)
+Rewrite using `[← LinearMap.charpoly_toMatrix _ (bb P k (pb P).basis), toMatrix_lmul, Matrix.charpoly_map, ← pb_gen, charpoly_leftMulMatrix, minpoly_gen]`.
+-/
 theorem charpoly_lmul :
     (Algebra.lmul (k ⊗[F] E) (k ⊗[F] Fld P) ((1 : k) ⊗ₜ[F] alpha P)).charpoly = P.1.map (inclR k) := by
   rw [← LinearMap.charpoly_toMatrix _ (bb P k (pb P).basis), toMatrix_lmul, Matrix.charpoly_map, ← pb_gen,
@@ -121,23 +153,41 @@ theorem charpoly_lmul :
 
 variable {k} {n : ℕ}
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[LinearMap.toMatrix_apply, LinearMap.toMatrix'_apply, LinearEquiv.conj_apply]`.
+-/
 theorem toMatrix_conj (φ : (k ⊗[F] Fld P) ≃ₗ[k ⊗[F] E] (Fin n → k ⊗[F] E)) (f : k ⊗[F] Fld P →ₗ[k ⊗[F] E] k ⊗[F] Fld P) :
     LinearMap.toMatrix ((Pi.basisFun (k ⊗[F] E) (Fin n)).map φ.symm) ((Pi.basisFun (k ⊗[F] E) (Fin n)).map φ.symm) f =
       LinearMap.toMatrix' (φ.conj f) := by
   ext i j
   simp [LinearMap.toMatrix_apply, LinearMap.toMatrix'_apply, LinearEquiv.conj_apply]
 
+/- English proof (translation)
+Rewrite using `[← LinearMap.charpoly_toMatrix _ ((Pi.basisFun (k ⊗[F] E) (Fin n)).map φ.symm), toMatrix_conj]`. Both sides reduce to the same expression.
+-/
 theorem charpoly_mulMat (φ : (k ⊗[F] Fld P) ≃ₗ[k ⊗[F] E] (Fin n → k ⊗[F] E)) (z : k ⊗[F] Fld P) :
     (mulMat φ z).charpoly = (Algebra.lmul (k ⊗[F] E) (k ⊗[F] Fld P) z).charpoly := by
   rw [← LinearMap.charpoly_toMatrix _ ((Pi.basisFun (k ⊗[F] E) (Fin n)).map φ.symm), toMatrix_conj]
   rfl
 
 variable (k) in
+/- English proof (translation)
+The claim follows from `lT_smul P k (Algebra.trace E (Fld P)) a z`.
+-/
 theorem trBase_smul (a : k ⊗[F] E) (z : k ⊗[F] Fld P) : trBase P k (a • z) = a * trBase P k z :=
   lT_smul P k (Algebra.trace E (Fld P)) a z
 
 variable (k) in
 
+/- English proof (translation)
+Set `b` to `(pb P).basis`. Establish `hnd` using `traceForm_nondegenerate E (Fld P)`. Set `d` to `(Algebra.traceForm E (Fld P)).dualBasis hnd b`. Apply `(bb P k b).repr.injective` to reduce the goal to its premises. Use extensionality with `i`.
+
+Rewrite using `[map_zero, Finsupp.zero_apply]`. Establish `key : ∀ j, trBase P k ((1 : k) ⊗ₜ[F] (b j * d i)) = if j = i then 1 else 0`. Introduce `j`. Use `LinearMap.BilinForm.apply_dualBasis_left hnd b i j` as an intermediate fact. Rewrite `this` using `[Algebra.traceForm_apply, mul_comm]`.
+
+Rewrite using `[trBase, LinearMap.lTensor_tmul, LinearMap.restrictScalars_apply, this]`. Apply the tactic sequence `split_ifs <;> simp [Algebra.TensorProduct.one_def]`. Establish `h` using `hz ((1 : k) ⊗ₜ[F] d i)`. Rewrite `h` using `[← (bb P k b).sum_repr z, Finset.sum_mul, map_sum]`. Simplify using `only [smul_mul_assoc, trBase_smul, bb_apply, Algebra.TensorProduct.tmul_mul_tmul, one_mul, key, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true] at h`.
+
+Conclude with `h`.
+-/
 theorem eq_zero_of_trBase [NumberField E] (z : k ⊗[F] Fld P) (hz : ∀ y, trBase P k (z * y) = 0) : z = 0 := by
   classical
   let b := (pb P).basis
@@ -160,6 +210,11 @@ theorem eq_zero_of_trBase [NumberField E] (z : k ⊗[F] Fld P) (hz : ∀ y, trBa
 
 variable {J : Matrix (Fin n) (Fin n) E}
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `mulMat φ ((torUnit (diagH (star' P) (one₁ P) k (alphaRat P))).1) = _`. Use `congr 1`. Express the relevant statement in the definitionally equal form `((diagH (star' P) (one₁ P) k (alphaRat P)).1.1).det = _`. Rewrite using `[Matrix.det_fin_one]`. Use `first`.
+
+Consider the case `(simp only [diagH, GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.mapU, MonoidHom.codRestrict_apply, MonoidHom.comp_apply, Subgroup.coe_subtype, Formalism.UG.bc, Units.coe_map, alphaRat, Matrix.GeneralLinearGroup.scalar]; simp; done)`. Consider the case `rfl`. Consider the case `(simp [diagH, GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.mapU, Formalism.UG.bc, alphaRat, Matrix.GeneralLinearGroup.scalar, Matrix.scalar_apply]; done)`.
+-/
 theorem gam_mat {x : k ⊗[F] Fld P} {φ : (k ⊗[F] Fld P) ≃ₗ[k ⊗[F] E] (Fin n → k ⊗[F] E)} (h : IsIsom P k J x φ) :
     (GlobalTheory.AdelicU.matHom k σ J (gam h)).1 = mulMat φ ((1 : k) ⊗ₜ[F] alpha P) := by
   change mulMat φ ((torUnit (diagH (star' P) (one₁ P) k (alphaRat P))).1) = _
@@ -187,9 +242,15 @@ def mulAlg (φ : (k ⊗[F] Fld P) ≃ₗ[k ⊗[F] E] (Fin n → k ⊗[F] E)) :
   (LinearMap.toMatrixAlgEquiv' (R := k ⊗[F] E) (n := Fin n)).toAlgHom.comp
     ((φ.conjAlgEquiv (k ⊗[F] E)).toAlgHom.comp (Algebra.lmul (k ⊗[F] E) (k ⊗[F] Fld P)))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mulAlg_apply (φ : (k ⊗[F] Fld P) ≃ₗ[k ⊗[F] E] (Fin n → k ⊗[F] E)) (z : k ⊗[F] Fld P) :
     mulAlg φ z = mulMat φ z := rfl
 
+/- English proof (translation)
+Introduce `z z' e` and use `by have h1 := mulMat_mulVec φ z 1 have h2 := mulMat_mulVec φ z' 1 rw [e, h2, mul_one, mul_one] at h1 exact φ.injective h1.symm`.
+-/
 theorem mulMat_injective (φ : (k ⊗[F] Fld P) ≃ₗ[k ⊗[F] E] (Fin n → k ⊗[F] E)) : Function.Injective (mulMat φ) :=
   fun z z' e => by
     have h1 := mulMat_mulVec φ z 1
@@ -197,6 +258,9 @@ theorem mulMat_injective (φ : (k ⊗[F] Fld P) ≃ₗ[k ⊗[F] E] (Fin n → k 
     rw [e, h2, mul_one, mul_one] at h1
     exact φ.injective h1.symm
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `(t.1.1 * s.1.1) i j = (s.1.1 * t.1.1) i j`. Simplify using `[Matrix.mul_apply, Subsingleton.elim i 0, Subsingleton.elim j 0, mul_comm]`.
+-/
 theorem tor_comm (t s : Tor P k) : t * s = s * t := by
   apply Subtype.ext
   apply Units.ext
@@ -204,6 +268,9 @@ theorem tor_comm (t s : Tor P k) : t * s = s * t := by
   change (t.1.1 * s.1.1) i j = (s.1.1 * t.1.1) i j
   simp [Matrix.mul_apply, Subsingleton.elim i 0, Subsingleton.elim j 0, mul_comm]
 
+/- English proof (translation)
+Introduce `t s e` and use `by have e' : (t.1.1).det = (s.1.1).det := congrArg Units.val e rw [Matrix.det_fin_one, Matrix.det_fin_one] at e' apply Subtype.ext apply Units.ext ext i j rw [Subsingleton.elim i 0, Subsingleton.elim j 0] exact e'`.
+-/
 theorem torUnit_injective : Function.Injective (torUnit (P := P) (k := k)) := fun t s e => by
   have e' : (t.1.1).det = (s.1.1).det := congrArg Units.val e
   rw [Matrix.det_fin_one, Matrix.det_fin_one] at e'
@@ -213,6 +280,9 @@ theorem torUnit_injective : Function.Injective (torUnit (P := P) (k := k)) := fu
   rw [Subsingleton.elim i 0, Subsingleton.elim j 0]
   exact e'
 
+/- English proof (translation)
+Rewrite using `[← (bb P k (pb P).basis).sum_repr z, ← mulAlg_apply, map_sum]`. Use `Commute.sum_right _ _ _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, bb_apply, PowerBasis.coe_basis, pb_gen, ← one_pow (i : ℕ), ← Algebra.TensorProduct.tmul_pow, map_pow, mulAlg_apply]`. Conclude with `(hG.pow_right _).smul_right _`.
+-/
 theorem commute_mulMat {φ : (k ⊗[F] Fld P) ≃ₗ[k ⊗[F] E] (Fin n → k ⊗[F] E)} {G : Matrix (Fin n) (Fin n) (k ⊗[F] E)}
     (hG : Commute G (mulMat φ ((1 : k) ⊗ₜ[F] alpha P))) (z : k ⊗[F] Fld P) : Commute G (mulMat φ z) := by
   rw [← (bb P k (pb P).basis).sum_repr z, ← mulAlg_apply, map_sum]
@@ -221,6 +291,11 @@ theorem commute_mulMat {φ : (k ⊗[F] Fld P) ≃ₗ[k ⊗[F] E] (Fin n → k �
     mulAlg_apply]
   exact (hG.pow_right _).smul_right _
 
+/- English proof (translation)
+Establish `key : ∀ y, G *ᵥ φ y = φ (φ.symm (G *ᵥ φ 1) * y)` using `fun y => by`. Establish `e1 : φ y = mulMat φ y *ᵥ φ 1` using `by rw [mulMat_mulVec, mul_one]`. Rewrite using `[e1, Matrix.mulVec_mulVec, (commute_mulMat hG y).eq, ← Matrix.mulVec_mulVec, ← φ.apply_symm_apply (G *ᵥ φ 1), mulMat_mulVec, LinearEquiv.symm_apply_apply, mul_comm]`. Apply `Matrix.toLin'.injective` to reduce the goal to its premises. Use `LinearMap.ext fun v => ?_` and prove the remaining obligations.
+
+Take `⟨y, rfl⟩` from `φ.surjective v`. Rewrite using `[Matrix.toLin'_apply, Matrix.toLin'_apply, key, mulMat_mulVec]`.
+-/
 theorem eq_mulMat {φ : (k ⊗[F] Fld P) ≃ₗ[k ⊗[F] E] (Fin n → k ⊗[F] E)} {G : Matrix (Fin n) (Fin n) (k ⊗[F] E)}
     (hG : Commute G (mulMat φ ((1 : k) ⊗ₜ[F] alpha P))) :
     G = mulMat φ (φ.symm (G *ᵥ φ 1)) := by
@@ -244,6 +319,25 @@ section Cent
 variable {F E : Type} [Field F] [Field E] [Algebra F E] {σ : E →ₐ[F] E} {r : ℕ} {P : PPol σ r}
   {k : Type} [CommRing k] [Algebra F k] {n : ℕ} {J : Matrix (Fin n) (Fin n) E}
 
+/- English proof (translation)
+Establish `hA : (gam h).1.1 = mulMat φ ((1 : k) ⊗ₜ[F] alpha P)` using `gam_mat P h`. Use extensionality with `g`. Rewrite using `[Subgroup.mem_centralizer_singleton_iff, MonoidHom.mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce `hg`.
+
+Establish `hc : Commute g.1.1 (mulMat φ ((1 : k) ⊗ₜ[F] alpha P))`. Rewrite using `[← hA]`. Use `first`. Consider the case `exact (congrArg (fun u : HA k σ J => u.1.1) hg)`. Consider the case `exact (congrArg (fun u : HA k σ J => u.1.1) hg).symm`.
+
+Use `set c := φ.symm (g.1.1 *ᵥ φ 1) with hcdef`. Establish `hG : g.1.1 = mulMat φ c` using `eq_mulMat hc`. Establish `hu : Formalism.UG.cT (sigR k σ) g.1.1 * JR k J * g.1.1 = JR k J` using `g.2`. Establish `hn : c * sigR k (star' P) c = 1`. Establish `hz : x.1.1 * (c * sigR k (star' P) c - 1) = 0`.
+
+Apply `eq_zero_of_trBase P k` to reduce the goal to its premises. Introduce `y`. Establish `e` using `Formalism.UG.P.hform_mulVec (sigR k σ) (JR k J) g.1.1 (φ 1) (φ y)`. Rewrite `e` using `[hu]`. Rewrite `e` using `[hG, mulMat_mulVec, mulMat_mulVec]`.
+
+Express the relevant statement in the definitionally equal form `Formalism.UG.hform (sigR k σ) (JR k J) (φ (c * 1)) (φ (c * y)) = Formalism.UG.hform (sigR k σ) (JR k J) (φ 1) (φ y) at e`. Rewrite `e` using `[h, h, hx, hx]`. Rewrite using `[show x.1.1 * (c * sigR k (star' P) c - 1) * y = x.1.1 * (c * y) * sigR k (star' P) (c * 1) - x.1.1 * y * sigR k (star' P) 1 by`. Rewrite using `[mul_one, map_one]`. Use the proof step `ring, map_sub, e, sub_self]`.
+
+Conclude with `sub_eq_zero.1 ((x.1.isUnit.mul_right_eq_zero).1 hz)`. Set `u : (k ⊗[F] Fld P)ˣ` to `⟨c, sigR k (star' P) c, hn, by rw [mul_comm]; exact hn⟩`. Use `⟨⟨Matrix.GeneralLinearGroup.scalar (Fin 1) u, ?_⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Formalism.UG.cT _ _ * _ * _ = _`. Use extensionality with `i j`.
+
+Simplify using `[Formalism.UG.cT, Matrix.mul_apply, Subsingleton.elim i 0, Subsingleton.elim j 0, JR, u, mul_comm, hn]`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `mulMat φ (torUnit _).1 = g.1.1`. Rewrite using `[hG]`.
+
+Use `congr 1`. Express the relevant statement in the definitionally equal form `(Matrix.GeneralLinearGroup.scalar (Fin 1) u).1.det = c`. Rewrite using `[Matrix.det_fin_one]`. Simplify using `[u]`. Introduce and unpack `⟨t, rfl⟩`.
+
+Express the relevant statement in the definitionally equal form `torEmb h t * torEmb h _ = torEmb h _ * torEmb h t`. Rewrite using `[← map_mul, ← map_mul, tor_comm]`.
+-/
 theorem cent_gam [NumberField E] (x : plusUnits P k) {φ : (k ⊗[F] Fld P) ≃ₗ[k ⊗[F] E] (Fin n → k ⊗[F] E)}
     (h : IsIsom P k J x.1.1 φ) : cent (gam h) = (torEmb h).range := by
   have hA : (gam h).1.1 = mulMat φ ((1 : k) ⊗ₜ[F] alpha P) := gam_mat P h
@@ -298,6 +392,13 @@ namespace GlobalTheory.TrEll
 
 open GamAlg in
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ _ r n P J _ k _ _ x φ h`. Establish `hcp : (GlobalTheory.AdelicU.matHom k σ J (gam h)).1.charpoly = P.1.map (inclR k)`. Rewrite using `[gam_mat P h, charpoly_mulMat, charpoly_lmul]`. Use `⟨hcp, ?_, ?_, cent_gam x h⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Polynomial.Separable _`.
+
+Rewrite using `[hcp]`. Conclude with `(Irreducible.separable P.2.2.1).map`. Introduce `t s e`. Apply `torUnit_injective` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises.
+
+Apply `mulMat_injective φ` to reduce the goal to its premises. Conclude with `congrArg (fun u : HA k σ J => u.1.1) e`.
+-/
 theorem gam_charpoly_regular_cent : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (r n : ℕ) (P : PPol σ r) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J →
     ∀ (k : Type) [CommRing k] [Algebra F k], ∀ (x : plusUnits P k)

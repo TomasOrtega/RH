@@ -15,6 +15,13 @@ noncomputable section
 
 namespace GlobalTheory.RowBig
 
+/- English proof (translation)
+Introduce `D hq T L μ0 hL sc G W M hM him u hu`. Establish `hS : IsSelfDualC (G.V (.grid (0 + 1) 0)) (G.Λ (.grid (0 + 1) 0))` using `(G.sp.V_is (0 + 1) 0 (by omega) him (by omega)).sd`. Establish `hT : IsSelfDualC (G.V (.grid 0 0)) (G.Λ (.grid 0 0))`. Take `⟨c, hc⟩` from `(hL.βY 0 (by have := D.R.two_le_m; omega) : ∃ c, _)`. Conclude with `Formalism.IndefR.Eqv.KerDiag.isSelfDualC_of_base hc`.
+
+Establish `h1` using `idLat_one (G.Λ (.grid 0 0))`. Establish `hsh` using `isSelfDualC_idLat_shiftId G _ hT`. Take `⟨e, he, -⟩` from `W.cosVec_is`. Establish `hu' : u ∈ latO (negSp (G.V (.grid (0 + 1) 0))) (G.V (.grid 0 0)) (G.Λ (.grid (0 + 1) 0) : Set _) (G.Λ (.grid 0 0) : Set _) (fun _ => True) ∧ ∀ e : AE D, IsIdemSum e G.pl.W0 → e • u ∈ hatMx (G.modul • homLat (G.Λ (.grid (0 + 1) 0)) (G.Λ (.grid 0 0)))` using `hu`. Establish `key` using `GlobalTheory.T.completedHomLattice_modulus_depth_mem_shift hq μ0 hL G (G.Λ (.grid (0 + 1) 0)) 1 (G.Λ (.grid 0 0)) hS (by rw [h1]; exact hT) (by rw [one_mul]; exact hsh) u (by rw [h1]; exact GlobalTheory.RowLoc.mem_latO_negSp.1 hu'.1) ⟨e, he, by rw [h1]; exact hu'.2 e he⟩`.
+
+Rewrite `key` using `[one_mul]`. Conclude with `key`.
+-/
 theorem latRow_zero_le_latBig : All fun {D} _ _ _ {G} _ _ => 0 < D.R.m → latRow G 0 ≤ latBig G 0 := by
   intro D hq T L μ0 hL sc G W M hM him u hu
   have hS : IsSelfDualC (G.V (.grid (0 + 1) 0)) (G.Λ (.grid (0 + 1) 0)) :=

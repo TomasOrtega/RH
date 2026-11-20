@@ -14,6 +14,9 @@ variable (p : ℕ) [Fact p.Prime] (k : Type) [Field k] [CharP k p]
 
 def redHom : ℤ_[p] →+* k := (ZMod.castHom (dvd_refl p) k).comp PadicInt.toZMod
 
+/- English proof (translation)
+Establish `h` using `PadicInt.sub_zmodRepr_mem z`. Rewrite `h` using `[PadicInt.maximalIdeal_eq_span_p, Ideal.mem_span_singleton']`. Take `⟨w, hw⟩` from `h`. Conclude with `⟨PadicInt.zmodRepr z, w, by rw [mul_comm, hw]; ring⟩`.
+-/
 lemma exists_nat_add (z : ℤ_[p]) : ∃ n : ℕ, ∃ w : ℤ_[p], z = n + p * w := by
   have h := PadicInt.sub_zmodRepr_mem z
   rw [PadicInt.maximalIdeal_eq_span_p, Ideal.mem_span_singleton'] at h
@@ -59,6 +62,11 @@ namespace GlobalTheory.UPel.HT
 
 open GlobalTheory.CharPMatrix in
 
+/- English proof (translation)
+Introduce `p _ D k _ _ _`. Take `⟨e⟩` from `D.splitP`. Establish `E0 : k ⊗[𝓞 D.F] (𝓞 D.F ⊗[ℤ] ℤ_[p]) ≃ₐ[k] k` using `(Algebra.TensorProduct.cancelBaseChange ℤ (𝓞 D.F) k k ℤ_[p]).trans (tensorPadicEquiv p k k)`. Establish `E1` using `(Algebra.TensorProduct.assoc ℤ (𝓞 D.F) (𝓞 D.F) D.O (𝓞 D.F) ℤ_[p]).symm.trans (Algebra.TensorProduct.congr (Algebra.TensorProduct.rid (𝓞 D.F) (𝓞 D.F) D.O) (AlgEquiv.refl (R := ℤ) (A₁ := ℤ_[p])))`. Establish `E2` using `E1.trans e`.
+
+Conclude with `⟨(Algebra.TensorProduct.congr E0.symm (AlgEquiv.refl (R := 𝓞 D.F) (A₁ := D.O))).trans ((Algebra.TensorProduct.assoc (𝓞 D.F) (𝓞 D.F) k k (𝓞 D.F ⊗[ℤ] ℤ_[p]) D.O).trans ((Algebra.TensorProduct.congr AlgEquiv.refl ((Algebra.TensorProduct.comm (𝓞 D.F) (𝓞 D.F ⊗[ℤ] ℤ_[p]) D.O).trans (E2 …`.
+-/
 theorem Datum.charP_tensor_matrix : ∀ (p : ℕ) [Fact p.Prime] (D : GlobalTheory.UPel.HT.Datum p) (k : Type) [Field k]
     [CharP k p] [Algebra (𝓞 D.F) k], Nonempty ((k ⊗[𝓞 D.F] D.O) ≃ₐ[k] Matrix (Fin D.m) (Fin D.m) k) := by
   intro p _ D k _ _ _

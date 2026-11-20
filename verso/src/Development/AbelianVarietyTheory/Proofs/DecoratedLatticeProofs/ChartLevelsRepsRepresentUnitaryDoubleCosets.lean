@@ -31,13 +31,22 @@ def finHomN : GA D V →* GL (Fin n) (EF D) where
   map_one' := Units.ext (GlobalTheory.AdForm.Model.finM_one V hn)
   map_mul' g g' := Units.ext (GlobalTheory.AdForm.Model.finM_mul V hn g g')
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem finHomN_val (g : GA D V) : (finHomN V hn g).1 = finM V hn g := rfl
 
+/- English proof (translation)
+Rewrite using `[Units.ext_iff, finHomN_val, Units.val_one, GlobalTheory.AdForm.finM_eq_one_iff_mem_GinfC D V n hn g]`.
+-/
 theorem finHomN_eq_one (g : GA D V) : finHomN V hn g = 1 ↔ g ∈ GinfC V := by
   rw [Units.ext_iff, finHomN_val, Units.val_one, GlobalTheory.AdForm.finM_eq_one_iff_mem_GinfC D V n hn g]
 
 include hU in
 
+/- English proof (translation)
+Establish `h1 : finM V hn (e.symm ⟨κ.1, ((S.U_eq κ.1).1 κ.2).1⟩).1 = κ.1.1` using `by rw [← he, e.apply_symm_apply]`. Conclude with `⟨(hU _).2 ⟨(e.symm _).2, κ, h1.symm⟩, h1⟩`.
+-/
 theorem lift_mem (e : ↥(GfC V) ≃* ↥(UPts (sigD D) (V.gram.reindex (finCongr hn) (finCongr hn)) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)))
     (he : ∀ g, (e g).1.1 = finM V hn g.1) (κ : S.U) :
     (e.symm ⟨κ.1, ((S.U_eq κ.1).1 κ.2).1⟩).1 ∈ U ∧ finM V hn (e.symm ⟨κ.1, ((S.U_eq κ.1).1 κ.2).1⟩).1 = κ.1.1 := by
@@ -47,6 +56,37 @@ theorem lift_mem (e : ↥(GfC V) ≃* ↥(UPts (sigD D) (V.gram.reindex (finCong
 include hU hh in
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Use `letI := tensTopL (F := D.host.F) (E := D.host.E) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)`. Take `⟨e, he⟩` from `GlobalTheory.FinPartIso.exists_finIso D V n hn`. Take `⟨r, hr⟩` from `GlobalTheory.RatPtsEquiv.rat_equiv D V n hn`. Establish `hmemU : ∀ (g : GfC V), g.1 ∈ U ↔ (e g).1 ∈ S.U`. Introduce `g`.
+
+Rewrite using `[hU]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, κ, hκ⟩`. Establish `: (e g).1 = κ.1` using `Units.ext ((he g).trans hκ.symm)`. Rewrite using `[this]`.
+
+Conclude with `κ.2`. Introduce `hx`. Conclude with `⟨g.2, ⟨(e g).1, hx⟩, he g⟩`. Establish `hΦe : ∀ g : GfC V, finHomN V hn g.1 = (e g).1` using `fun g => Units.ext (he g).symm`. Use `⟨fun g hg => ((hU g).1 hg).1, ?_, ?_, fun c => (hh c).1, ?_, ?_⟩` and prove the remaining obligations.
+
+Establish `hset : (U : Set (GA D V)) = (fun x => (e.symm x).1) '' {x | x.1 ∈ S.U}`. Use extensionality with `g`. Prove the components needed by the constructor for the conclusion. Introduce `hg`. Establish `hgf` using `((hU g).1 hg).1`.
+
+Conclude with `⟨e ⟨g, hgf⟩, (hmemU ⟨g, hgf⟩).1 hg, by simp only [e.symm_apply_apply]⟩`. Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `(hmemU _).2 (by rw [e.apply_symm_apply]; exact hx)`. Establish `hc : IsCompact {x : ↥(UPts (sigD D) (V.gram.reindex (finCongr hn) (finCongr hn)) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) | x.1 ∈ S.U}`. Rewrite using `[Topology.IsEmbedding.subtypeVal.isCompact_iff]`.
+
+Use `S.U_compact using 1` and compare the differences between its conclusion and the goal. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `hx`.
+
+Introduce `hz`. Conclude with `⟨⟨z, ((S.U_eq z).1 hz).1⟩, hz, rfl⟩`. Rewrite using `[hset]`. Conclude with `hc.image (continuous_subtype_val.comp e.symm.continuous)`. Establish `: ((U.subgroupOf (GfC V) : Subgroup (GfC V)) : Set (GfC V)) = e ⁻¹' {x | x.1 ∈ S.U}`.
+
+Use extensionality with `g`. Conclude with `(Subgroup.mem_subgroupOf).trans (hmemU g)`. Rewrite using `[this]`. Conclude with `S.U_open.preimage e.continuous`. Introduce `g`.
+
+Take `⟨p, hpq⟩ : ∃ p : GinfC V × GfC V, g = p.1.1 * p.2.1` from `⟨(GlobalTheory.AdelicSplit.splitEquiv V).symm g, ((GlobalTheory.AdelicSplit.splitEquiv V).apply_symm_apply g).symm⟩`. Take `⟨⟨c, δ, κ0⟩, hδ, hdec⟩` from `GlobalTheory.AdForm.Model.exists_dec V hn S y hy.2 p.2.1`. Take `⟨κ, hκU, hκf⟩ : ∃ κ ∈ U, finM V hn κ = κ0.1.1` from `⟨_, (lift_mem V hn S U hU e.toMulEquiv he κ0).1, (lift_mem V hn S U hU e.toMulEquiv he κ0).2⟩`. Take `⟨γ, hγ, hΦγ⟩ : ∃ γ ∈ GQ V, finHomN V hn γ = bc (inclE (F` from `D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) δ := by`. Use `⟨(r.symm ⟨δ, hδ⟩).1, (r.symm ⟨δ, hδ⟩).2, ?_⟩` and prove the remaining obligations.
+
+Apply `Units.ext` to reduce the goal to its premises. Establish `h1` using `hr (r.symm ⟨δ, hδ⟩)`. Rewrite `h1` using `[MulEquiv.apply_symm_apply]`. Conclude with `h1`. Use `⟨γ, hγ, c, (h c)⁻¹ * γ⁻¹ * g * κ⁻¹, ?_, κ, hκU, by group⟩` and prove the remaining obligations.
+
+Rewrite using `[← finHomN_eq_one V hn]`. Establish `e1 : finHomN V hn g = finHomN V hn p.2.1`. Rewrite using `[hpq, map_mul, (finHomN_eq_one V hn _).2 p.1.2, one_mul]`. Establish `e2 : finHomN V hn p.2.1 = bc (inclE (F` using `D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) δ * (y c).1 * κ0.1 := Units.ext (by rw [finHomN_val, hdec])`. Establish `e3 : finHomN V hn (h c) = (y c).1` using `Units.ext (by rw [finHomN_val, (hh c).2])`.
+
+Establish `e4 : finHomN V hn κ = κ0.1` using `Units.ext (by rw [finHomN_val, hκf])`. Rewrite using `[map_mul, map_mul, map_mul, map_inv, map_inv, map_inv, e1, e2, e3, e4, hΦγ]`. Use `group`. Introduce `c c' γ hγ k hk κ hκ heq`. Take `⟨_, κ0, hκ0⟩` from `(hU κ).1 hκ`.
+
+Establish `hΦγ : finHomN V hn γ = bc (inclE (F` using `D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) (r ⟨γ, hγ⟩).1 := Units.ext (by rw [finHomN_val, hr ⟨γ, hγ⟩])`. Establish `e3 : ∀ c, finHomN V hn (h c) = (y c).1` using `fun c => Units.ext (by rw [finHomN_val, (hh c).2])`. Establish `e4 : finHomN V hn κ = κ0.1` using `Units.ext (by rw [finHomN_val, ← hκ0])`. Establish `key : (y c').1 = bc (inclE (F` using `D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) (r ⟨γ, hγ⟩).1 * (y c).1 * κ0.1 := by`. Rewrite using `[← e3, ← e3, heq, ← e4, ← hΦγ]`.
+
+Simplify using `only [map_mul, (finHomN_eq_one V hn k).2 hk, mul_one]`. Establish `hmemγ : bc (inclE (F` using `D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) (r ⟨γ, hγ⟩).1 ∈ UPts (sigD D) (V.gram.reindex (finCongr hn) (finCongr hn)) (FiniteAdeleRing (𝓞 D.host.F) D.host.F) := by`. Rewrite using `[← hΦγ]`. Conclude with `GlobalTheory.AdForm.Model.finGL_mem V hn γ`. Apply `hy.1` to reduce the goal to its premises.
+
+Use `show (Quotient.mk'' (y c) : Cls S) = Quotient.mk'' (y c')`. Use `(DoubleCoset.eq _ _ _ _).2 ⟨⟨_, hmemγ⟩, Subgroup.mem_subgroupOf.2 (Subgroup.mem_map_of_mem _ (r ⟨γ, hγ⟩).2), ⟨κ0.1, ((S.U_eq κ0.1).1 κ0.2).1⟩, Subgroup.mem_subgroupOf.2 κ0.2, Subtype.ext key⟩` and prove the remaining obligations.
+-/
 theorem reps_of_chart (hy : Function.Bijective (fun c => (Quotient.mk'' (y c) : Cls S))) : IsReps V U h := by
   letI := tensTopL (F := D.host.F) (E := D.host.E) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)
   obtain ⟨e, he⟩ := GlobalTheory.FinPartIso.exists_finIso D V n hn
@@ -134,6 +174,19 @@ variable {D : D7} (V : HSp D) {n : ℕ} (hn : V.rank = n) {T f : ℕ} {bad : Set
 include hU hh in
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Use `letI := tensTopL (F := D.host.F) (E := D.host.E) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)`. Take `⟨e, he⟩` from `GlobalTheory.FinPartIso.exists_finIso D V n hn`. Take `⟨r, hr⟩` from `GlobalTheory.RatPtsEquiv.rat_equiv D V n hn`. Establish `hΦγ : ∀ γ : GQ V, finHomN V hn γ.1 = bc (inclE (F` using `D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) (r γ).1 := fun γ => Units.ext (hr γ)`. Establish `e3 : finHomN V hn (h c) = (y c).1` using `Units.ext (by rw [finHomN_val, (hh c).2])`.
+
+Establish `hcond : ∀ γ : GQ V, (∃ k ∈ GinfC V, ∃ κ ∈ U, γ.1 * h c = h c * k * κ) ↔ r γ ∈ (stabI c).range`. Introduce `γ`. Rewrite using `[hran]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨k, hk, κ, hκ, heq⟩`.
+
+Take `⟨_, κ0, hκ0⟩` from `(hU κ).1 hκ`. Establish `e4 : finHomN V hn κ = κ0.1` using `Units.ext (by rw [finHomN_val, ← hκ0])`. Establish `key` using `congrArg (finHomN V hn) heq`. Rewrite `key` using `[map_mul, map_mul, map_mul, hΦγ, e3, e4, (finHomN_eq_one V hn k).2 hk, mul_one]`. Use `Subgroup.mem_map.2 ⟨κ0.1, κ0.2, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[MulEquiv.coe_toMonoidHom, MulAut.conj_apply, ← key]`. Use `group`. Introduce `hmem`. Take `⟨κ1, hκ1, hconj⟩` from `Subgroup.mem_map.1 hmem`. Rewrite `hconj` using `[MulEquiv.coe_toMonoidHom, MulAut.conj_apply]`.
+
+Take `⟨κ, hκU, hκf⟩ : ∃ κ ∈ U, finM V hn κ = κ1.1` from `⟨_, (lift_mem V hn S U hU e.toMulEquiv he ⟨κ1, hκ1⟩).1, (lift_mem V hn S U hU e.toMulEquiv he ⟨κ1, hκ1⟩).2⟩`. Establish `e4 : finHomN V hn κ = κ1` using `Units.ext (by rw [finHomN_val, hκf])`. Use `⟨(h c)⁻¹ * γ.1 * h c * κ⁻¹, ?_, κ, hκU, by group⟩` and prove the remaining obligations. Rewrite using `[← finHomN_eq_one V hn, map_mul, map_mul, map_mul, map_inv, map_inv, hΦγ, e3, e4, ← hconj]`. Use `group`.
+
+Unfold `stabOrd`. Rewrite using `[Nat.card_congr (r.toEquiv.subtypeEquiv hcond)]`. Conclude with `(Nat.card_congr (MonoidHom.ofInjective (hinj c)).toEquiv).symm`.
+-/
 theorem stabOrd_of_chart {stab : cl → Type} [∀ c, Group (stab c)]
     (stabI : ∀ c, stab c →* UJ (sigD D : D.host.E →+* D.host.E) (V.gram.reindex (finCongr hn) (finCongr hn)))
     (hinj : ∀ c, Function.Injective (stabI c))
@@ -176,6 +229,9 @@ end Gen2
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `B X I hOk hP l Z u a Ch A hA i hi β`. Conclude with `⟨reps_of_chart _ (rankN (I.rec7 l Z) i hi) (A.K i hi β).lev (A.K i hi β).y (A.U i β) (hA.U i hi β) (A.h i β) (hA.h i hi β) (A.K i hi β).y_bij, GlobalTheory.T.continuous_chartLevelCharacters_adelic_tuple I hOk hP l Z u a Ch A hA i hi β, fun c => stabOrd_of_chart _ (rankN (I.rec7 l …`.
+-/
 theorem twDat_reps : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)), ∀ (u : B.Word) (a : I.ι) (Ch : ℕ → Type) (A : TwDat I l Z u a Ch), A.Is → ∀ (i : ℕ) (hi : i ≤ B.R.m) β, IsReps ((I.rec7 l Z).sp.X i) (A.U i β) (A.h i β) ∧ (Continuous fun κ => ((A.chi i β κ : ℂˣ) : ℂ)) ∧ ∀ c, stabOrd (A.U i β) (A.h i β c) = Nat.card ((I.chain l u a).stab i c.1) := by
   intro B X I hOk hP l Z u a Ch A hA i hi β
   exact ⟨reps_of_chart _ (rankN (I.rec7 l Z) i hi) (A.K i hi β).lev (A.K i hi β).y (A.U i β) (hA.U i hi β) (A.h i β)

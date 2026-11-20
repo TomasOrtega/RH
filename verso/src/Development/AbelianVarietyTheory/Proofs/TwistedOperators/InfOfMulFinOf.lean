@@ -20,6 +20,9 @@ def finOf (V : HSp D) (g : GA D V) : GfC V := ((GlobalTheory.AdelicSplit.splitEq
 
 def infOf (V : HSp D) (g : GA D V) : GinfC V := ((GlobalTheory.AdelicSplit.splitEquiv V).symm g).1
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.AdelicSplit.splitEquiv V).apply_symm_apply g`.
+-/
 theorem infOf_mul_finOf (V : HSp D) (g : GA D V) : ((infOf V g : GinfC V) : GA D V) * (finOf V g : GA D V) = g :=
   (GlobalTheory.AdelicSplit.splitEquiv V).apply_symm_apply g
 
@@ -41,6 +44,11 @@ def realAct (θ : InfFam D) (fr : ∀ X : Node, GL (Fin (G.V X).rank) D.host.E) 
     GA D (G.V X) →* Module.End ℂ (VV ℂ (wt G X)) :=
   (rhoK (wt G X)).comp (invTrK.comp (realIn θ fr X))
 
+/- English proof (translation)
+Establish `h : GlobalTheory.CoefModel.realGL θ (G.V X) g = 1`. Use function extensionality and compare the values at `τ`. Use `show Formalism.UG.bc (θ τ) (infHom (G.V X) g) = 1`. Rewrite using `[show infHom (G.V X) g = 1 from hg, map_one]`. Establish `h2 : realIn θ fr X g = 1`.
+
+Use function extensionality and compare the values at `τ`. Simplify using `[realIn, h]`. Rewrite using `[realAct, MonoidHom.comp_apply, MonoidHom.comp_apply, h2, map_one, map_one]`.
+-/
 theorem realAct_fin (θ : InfFam D) (fr : ∀ X : Node, GL (Fin (G.V X).rank) D.host.E) (X : Node) {g : GA D (G.V X)}
     (hg : g ∈ GfC (G.V X)) : realAct θ fr X g = 1 := by
   have h : GlobalTheory.CoefModel.realGL θ (G.V X) g = 1 := by
@@ -57,13 +65,22 @@ end GlobalTheory.DefStep
 namespace GlobalTheory.DefStep
 variable {D : D7}
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.AdelicSplit.splitEquiv V).symm_apply_eq.2 h.symm`.
+-/
 theorem split_symm_eq (V : HSp D) {g : GA D V} (a : GinfC V) (b : GfC V) (h : (a : GA D V) * b = g) :
     (GlobalTheory.AdelicSplit.splitEquiv V).symm g = (a, b) :=
   (GlobalTheory.AdelicSplit.splitEquiv V).symm_apply_eq.2 h.symm
 
+/- English proof (translation)
+Rewrite using `[finOf, split_symm_eq V 1 b (one_mul _)]`.
+-/
 theorem finOf_fin (V : HSp D) (b : GfC V) : finOf V b = b := by
   rw [finOf, split_symm_eq V 1 b (one_mul _)]
 
+/- English proof (translation)
+Establish `h : ((infOf V g * k : GinfC V) : GA D V) * (finOf V g : GA D V) = g * k`. Establish `hc` using `GlobalTheory.AdelicSplit.commute_GinfC_GfC V k.2 (finOf V g).2`. Use `conv_rhs => rw [← infOf_mul_finOf V g]`. Rewrite using `[Subgroup.coe_mul, mul_assoc, hc, ← mul_assoc]`. Rewrite using `[finOf, split_symm_eq V _ _ h]`.
+-/
 theorem finOf_mul_inf (V : HSp D) (g : GA D V) (k : GinfC V) : finOf V (g * k) = finOf V g := by
   have h : ((infOf V g * k : GinfC V) : GA D V) * (finOf V g : GA D V) = g * k := by
     have hc := GlobalTheory.AdelicSplit.commute_GinfC_GfC V k.2 (finOf V g).2
@@ -71,6 +88,9 @@ theorem finOf_mul_inf (V : HSp D) (g : GA D V) (k : GinfC V) : finOf V (g * k) =
     rw [Subgroup.coe_mul, mul_assoc, hc, ← mul_assoc]
   rw [finOf, split_symm_eq V _ _ h]
 
+/- English proof (translation)
+Establish `h : ((infOf V g : GinfC V) : GA D V) * ((finOf V g * k : GfC V) : GA D V) = g * k`. Rewrite using `[Subgroup.coe_mul, ← mul_assoc, infOf_mul_finOf]`. Rewrite using `[finOf, split_symm_eq V _ _ h]`.
+-/
 theorem finOf_mul_fin (V : HSp D) (g : GA D V) (k : GfC V) : finOf V (g * k) = finOf V g * k := by
   have h : ((infOf V g : GinfC V) : GA D V) * ((finOf V g * k : GfC V) : GA D V) = g * k := by
     rw [Subgroup.coe_mul, ← mul_assoc, infOf_mul_finOf]

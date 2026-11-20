@@ -8,6 +8,25 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.FibreAtTau
 
+/- English proof (translation)
+Introduce `D θ hθ V r C τ`. Establish `hc : ∀ (ρ : D.what₂.Tau) (x : GA D V), cmp θ ρ x = GlobalTheory.RowReal.infMatHom V (θ ρ) x` using `fun _ _ => rfl`. Establish `one_spec : GlobalTheory.RowReal.IsRealAll θ V 1 (1 : GA D V)` using `⟨one_mem _, fun _ => GlobalTheory.PointAtPlaceHom.infMat_one V _⟩`. Use `⟨fun p hp q hq => ?_, fun h hp hq => ?_⟩` and prove the remaining obligations. Rewrite `hp` using `[mem_atP]`.
+
+Rewrite `hq` using `[mem_offP]`. Take `⟨hpf, hpc⟩` from `hp`. Establish `hpf' : finHom V (p : GA D V) = 1` using `hpf`. Use `set c : GA D V := (p : GA D V) * q * (p : GA D V)⁻¹ * (q : GA D V)⁻¹ with hcdef`. Establish `hcR : GlobalTheory.RowReal.IsRealAll θ V 1 c`.
+
+Use `⟨?_, fun ρ => ?_⟩` and prove the remaining obligations. Use `show finHom V c = 1`. Simplify using `only [hcdef, map_mul, map_inv, hpf', one_mul, inv_one, mul_one, mul_inv_cancel]`. Use `show GlobalTheory.RowReal.infMatHom V (θ ρ) c = 1`. Distinguish the cases in `hρ : ρ = τ`.
+
+Establish `hinv : ∀ x : GA D V, GlobalTheory.RowReal.infMatHom V (θ ρ) x * GlobalTheory.RowReal.infMatHom V (θ ρ) x⁻¹ = 1` using `fun x => by rw [← map_mul, mul_inv_cancel, map_one]`. Establish `hinv1 : ∀ x : GA D V, GlobalTheory.RowReal.infMatHom V (θ ρ) x = 1 → GlobalTheory.RowReal.infMatHom V (θ ρ) x⁻¹ = 1` using `fun x hx => by have := hinv x; rwa [hx, Matrix.one_mul] at this`. Substitute `hρ` using the available equality. Establish `hq' : GlobalTheory.RowReal.infMatHom V (θ ρ) (q : GA D V) = 1` using `by rw [← hc]; exact hq`. Rewrite using `[hcdef, map_mul, map_mul, map_mul, hq', hinv1 _ hq', Matrix.mul_one, Matrix.mul_one, hinv]`.
+
+Establish `hinv : ∀ x : GA D V, GlobalTheory.RowReal.infMatHom V (θ ρ) x * GlobalTheory.RowReal.infMatHom V (θ ρ) x⁻¹ = 1` using `fun x => by rw [← map_mul, mul_inv_cancel, map_one]`. Establish `hinv1 : ∀ x : GA D V, GlobalTheory.RowReal.infMatHom V (θ ρ) x = 1 → GlobalTheory.RowReal.infMatHom V (θ ρ) x⁻¹ = 1` using `fun x hx => by have := hinv x; rwa [hx, Matrix.one_mul] at this`. Establish `hp' : GlobalTheory.RowReal.infMatHom V (θ ρ) (p : GA D V) = 1` using `by rw [← hc]; exact hpc ρ hρ`. Rewrite using `[hcdef, map_mul, map_mul, map_mul, hp', hinv1 _ hp', Matrix.one_mul, Matrix.mul_one, hinv]`. Establish `e : c = 1` using `hcR.unique hθ one_spec`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Establish `e2 : (p : GA D V) * q * (p : GA D V)⁻¹ * (q : GA D V)⁻¹ = 1` using `e`. Establish `e3 : (p : GA D V) * q = (q : GA D V) * p`. Rewrite `e2` using `[mul_inv_eq_one, mul_inv_eq_iff_eq_mul]`. Conclude with `e2`.
+
+Simplify using `using e3`. Rewrite `hp` using `[mem_atP]`. Rewrite `hq` using `[mem_offP]`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `hR : GlobalTheory.RowReal.IsRealAll θ V 1 (h : GA D V)`.
+
+Use `⟨hp.1, fun ρ => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hρ : ρ = τ`. Substitute `hρ` using the available equality. Conclude with `hq`. Conclude with `hp.2 ρ hρ`.
+
+Conclude with `hR.unique hθ one_spec`.
+-/
 theorem comm_and_inf_trivial : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → ∀ (V : HSp D) (r : ℕ) (C : Matrix (Fin V.rank) (Fin r) D.host.E) (τ : D.what₂.Tau), (∀ p ∈ GlobalTheory.FibreAtTau.atP θ V C τ, ∀ q ∈ GlobalTheory.FibreAtTau.offP θ V C τ, p * q = q * p) ∧ ∀ h, h ∈ GlobalTheory.FibreAtTau.atP θ V C τ → h ∈ GlobalTheory.FibreAtTau.offP θ V C τ → h = 1 := by
   intro D θ hθ V r C τ
   have hc : ∀ (ρ : D.what₂.Tau) (x : GA D V), cmp θ ρ x = GlobalTheory.RowReal.infMatHom V (θ ρ) x := fun _ _ => rfl

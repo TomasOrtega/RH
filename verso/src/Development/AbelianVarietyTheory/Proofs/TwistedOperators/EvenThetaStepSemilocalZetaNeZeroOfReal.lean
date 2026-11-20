@@ -27,6 +27,11 @@ namespace GlobalTheory.EvenOnto.ZetaNeProof
 
 variable {D : D7}
 
+/- English proof (translation)
+Establish `hmul : p.ω (b * κ, 1) = p.ω (b, 1) * p.ω (κ, 1)`. Rewrite using `[← map_mul, Prod.mk_mul_mk, mul_one]`. Establish `hv : p.ω (b * κ, 1) (p.pt φ) = p.ω (b, 1) (p.pt φ)`. Rewrite using `[hmul, Module.End.mul_apply, hlaw κ hκ]`. Unfold `coefW`.
+
+Rewrite using `[hv]`.
+-/
 theorem coefW_mul_lev {c : Com D} {s s' : PiLocalization₂ D} (p : Step c s s') (m : Measure (WO s.V s'.V))
     (X : Set (WO s.V s'.V)) (φ : PolF D s'.V.rank s.V.rank)
     (hlaw : ∀ κ ∈ s.J, (p.ω (κ, 1)) (p.pt φ) = p.pt φ)
@@ -39,6 +44,13 @@ theorem coefW_mul_lev {c : Com D} {s s' : PiLocalization₂ D} (p : Step c s s')
   unfold coefW
   rw [hv]
 
+/- English proof (translation)
+Take `⟨h1, h2, h3⟩` from `GlobalTheory.T.doublingHeight_eq_one_lattice_stabilizer_components D s.V s.Λ hs`. Establish `hκf : κ ∈ GfC s.V` using `hfin hκ`. Unfold `hgtS`. Establish `hA : ∀ w, GlobalTheory.AdelicU.projArch D.sp.cm.sig s.V.gram w ((b : GA D s.V) * κ) = GlobalTheory.AdelicU.projArch D.sp.cm.sig s.V.gram w (b : GA D s.V)`. Introduce `w`.
+
+Rewrite using `[map_mul, h2 κ hκf w, mul_one]`. Establish `hF : ∀ v ∈ c.S, GlobalTheory.IndefiniteRowSideFullHecke.SphericalVolumeLift.hgtV s.V s.Λ v (GlobalTheory.AdelicU.proj D.sp.cm.sig s.V.gram v ((b : GA D s.V) * κ)) = 1`. Introduce `v _`. Rewrite using `[map_mul, h3 b b.2 v, one_mul]`. Conclude with `h1 v _ (hstab κ hκ v)`.
+
+Simplify using `only [hA]`. Rewrite using `[Finset.prod_eq_one hF, mul_one]`.
+-/
 theorem hgtS_mul_lev {c : Com D} {s : PiLocalization₂ D} (hs : IsSelfDualC s.V s.Λ) (hfin : s.J ≤ GfC s.V)
     (hstab : ∀ k ∈ s.J, ∀ v,
       GlobalTheory.AdelicU.proj D.sp.cm.sig s.V.gram v k ∈ GlobalTheory.AdelicU.stabLoc D.sp.cm.sig s.V.gram s.Λ v)
@@ -60,6 +72,25 @@ theorem hgtS_mul_lev {c : Com D} {s : PiLocalization₂ D} (hs : IsSelfDualC s.V
   simp only [hA]
   rw [Finset.prod_eq_one hF, mul_one]
 
+/- English proof (translation)
+Introduce `D hMet hRZ`. Introduce `c hc k hk s s' hs hs' p hp m X hcov`. Take `⟨φ, v, hvK, hR⟩` from `hRZ c hc k hk s s' hs hs' p hp m X hcov`. Establish `hkm : k ≤ c.m` using `hk.le`. Take `⟨ipD, ip, hip⟩` from `hMet c hc k hkm s hs`.
+
+Take `⟨⟨hmOff, _, hAsub, mR, hmR, hint⟩, hpet⟩` from `GlobalTheory.T.evenThetaChainStage_levelMeasure_peterssonCoefficient D c hc k hkm s hs`. Establish `hlaw : ∀ κ ∈ s.J, (p.ω (κ, 1)) (p.pt φ) = p.pt φ` using `fun κ hκ => hp.pre.law φ κ hκ 1 s'.J.one_mem`. Establish `hsupp` using `hp.pre.supp m X hcov φ`. Take `⟨hz, hzI⟩` from `hR mR hmR`. Use `⟨φ, PiTensorProduct.tprod ℂ v, Submodule.subset_span ⟨v, hvK, rfl⟩, ?_⟩` and prove the remaining obligations.
+
+Introduce `u hu`. Establish `hipu : ip u u ≠ 0`. Introduce `h0`. Use `hip.pos u hu` as an intermediate fact. Rewrite `this` using `[h0, Complex.zero_re]`.
+
+Conclude with `lt_irrefl _ this`. Establish `hcipu : conj (ip u u) ≠ 0` using `(map_ne_zero _).mpr hipu`. Establish `hlawZ : ∀ (b : GinfC s.V), ∀ κ ∈ s.J, p.zint m X φ (PiLocalization₂.val u (PiTensorProduct.tprod ℂ v)) ((b : GA D s.V) * κ) = conj (ip u u) * (coefW p.ω m X (p.pt φ) (b : GA D s.V) * conj (∏ τ, ⟪(v τ : s.M.H τ), s.M.rep τ (infMat D.sp.cm.sig s.V.gram (c.θ τ) (b : GA D s.V)) (v τ …`. Introduce `b κ hκ`. Unfold `Step.zint`.
+
+Rewrite using `[coefW_mul_lev p m X φ hlaw _ κ hκ, hpet ipD ip hip u v b κ hκ]`. Simplify using `only [map_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hoff : ∀ g ∈ intOff c s \ s.big, p.zint m X φ (PiLocalization₂.val u (PiTensorProduct.tprod ℂ v)) g = 0`. Introduce and unpack `g ⟨hg, hgA⟩`.
+
+Unfold `Step.zint`. Establish `h0 : coefW p.ω m X (p.pt φ) g = 0` using `hsupp g hg hgA`. Rewrite using `[h0, zero_mul]`. Establish `hzInt : Integrable (fun g : GinfC s.V => coefW p.ω m X (p.pt φ) (g : GA D s.V) * conj (∏ τ, ⟪(v τ : s.M.H τ), s.M.rep τ (infMat D.sp.cm.sig s.V.gram (c.θ τ) (g : GA D s.V)) (v τ : s.M.H τ)⟫_ℂ)) mR`. Assume the negation of the conclusion as `hni`.
+
+Conclude with `hz (integral_undef hni)`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[setIntegral_eq_of_subset_of_forall_diff_eq_zero hmOff hAsub hoff]`. Rewrite using `[(hint _ _ (hzInt.const_mul (conj (ip u u))) hlawZ).2, integral_const_mul]`. Conclude with `mul_ne_zero hcipu hz`.
+
+Introduce `a hmaj hcomp`. Take `⟨s₁, hs₁, hI⟩` from `hzI a hmaj hcomp`. Use `⟨s₁, hs₁, ?_⟩` and prove the remaining obligations. Use `IntegrableOn.of_forall_diff_eq_zero (s := s.big) ?_ hmOff ?_` and prove the remaining obligations. Use `(hint _ _ (hI.const_mul (conj (ip u u))) ?_).1` and prove the remaining obligations.
+
+Introduce `b κ hκ`. Rewrite using `[hlawZ b κ hκ, hgtS_mul_lev hs.selfDual hs.fin hs.stab a b κ hκ, mul_assoc]`. Introduce `g hg`. Rewrite using `[hoff g hg, zero_mul]`.
+-/
 theorem zetaNe_of_real : ∀ D : D7, MetEx D → RealZeta D → ZetaNe D := by
   intro D hMet hRZ
   intro c hc k hk s s' hs hs' p hp m X hcov
@@ -116,4 +147,7 @@ theorem zetaNe_of_real : ∀ D : D7, MetEx D → RealZeta D → ZetaNe D := by
 
 end GlobalTheory.EvenOnto.ZetaNeProof
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.EvenOnto.ZetaNeProof.zetaNe_of_real`.
+-/
 example : ∀ D : D7, MetEx D → RealZeta D → ZetaNe D := GlobalTheory.EvenOnto.ZetaNeProof.zetaNe_of_real

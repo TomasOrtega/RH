@@ -30,6 +30,49 @@ noncomputable section
 
 namespace GlobalTheory.EvenOnto
 
+/- English proof (translation)
+Introduce `D hHF _ hZ c hc k hk s s' hs hs' p hp u B hB hL`. Take `⟨m₁, X₁, hmX⟩` from `GlobalTheory.Size.exists_isCovolOne s.V s'.V`. Take `⟨φ, v, hvK, hZ'⟩` from `hZ c hc k hk s s' hs hs' p hp m₁ X₁ hmX`. Use `⟨φ, v, hvK, ?_⟩` and prove the remaining obligations. Take `⟨hu0, hpar⟩` from `hB`.
+
+Take `⟨hI, hInt⟩` from `hZ' u hu0`. Establish `hF : PiLocalization₂.val u v ≠ 0`. Introduce `h0`. Apply `hI` to reduce the goal to its premises. Establish `: ∀ g, p.zint m₁ X₁ φ (PiLocalization₂.val u v) g = 0`.
+
+Introduce `g`. Simplify using `[Step.zint, h0, PiLocalization₂.pet, Lift.pet, rTr]`. Simplify using `[this]`. Establish `hparF` using `hpar v hF`. Take `⟨cA, a, hcA, hcart, hJ, hmaj, hmaj_eq, hA0⟩` from `GlobalTheory.T.thetaChainStage_cartanFrame_conj_values_cuspForms D c hc k hk.le s hs`.
+
+Take `⟨-, -, -, hcartB, -, -, -, -⟩` from `GlobalTheory.T.thetaChainStage_cartanFrame_conj_values_cuspForms D c hc (k + 1) hk s' hs'`. Establish `hu1 : (fun g => conj (PiLocalization₂.val u v g)) ∈ GlobalTheory.Cusp.A0 c.θ s.V cA` using `hA0 u v hvK`. Establish `hwitt : GlobalTheory.Cusp.wittIndex s'.V < c.t` using `hs'.witt`. Establish `hfock` using `GlobalTheory.T.evenThetaChainStep_fockVectors_spherical_latticeVacua D c hc k hk s s' hs hs' p hp`. Establish `hunrT` using `(hc.unr k hk)`.
+
+Take `⟨-, -, hoff⟩` from `GlobalTheory.T.doubledLatticeHeightFun_properties D s.V s.Λ a hs.selfDual hmaj`. Establish `hmeas : MeasurableSet (intOff c s)` using `(hoff c.S).1.measurableSet`. Establish `hr1 : 1 ≤ s.V.rank`. Rewrite using `[hs.rank]`. Use `hc.one_le` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Establish `ht1 : 1 ≤ c.t` using `by have := hc.step; omega`. Establish `hrk : s'.V.rank = s.V.rank + c.t` using `by rw [hs'.rank, hs.rank]; ring`. Establish `hPair : GlobalTheory.Core.Rk.IP.Pair c.ψ c.θ s.V s'.V (c.χ k) (c.χ k) (cart s.M) (cart s'.M) c.t cA a p.ω m₁ X₁` using `{ setting := ⟨hr1, ht1, hrk, hc.inf, hs.sigOK, hcA, hcart, hcartB, hJ⟩ maj := hmaj maj_eq := hmaj_eq weil := hp.pre.weil covol := hmX }`. Establish `hUnr : GlobalTheory.Core.Rk.IP.Unram c.ψ s.V s'.V (c.χ k) s.Λ s'.Λ c.S (p.pt φ) (p.pt φ)` using `⟨hs.selfDual, hs'.selfDual, fun w _ h2 => GlobalTheory.Core.Rk.IP.Model.isSplit_two w h2, hunrT, (hfock φ).2.2.1, (hfock φ).2.2.1⟩`.
+
+Establish `hsph` using `GlobalTheory.ChainOnto.sphFun_of_isParamFun D s.V s.Λ c.S _ B hparF`. Use `set F := PiLocalization₂.val u v with hFdef`. Establish `hAut : Formalism.L2.Theta.IsAutFunSm c.θ s.V (fun g => conj (F g))` using `hu1.1.1`. Establish `hFl : ∀ γ ∈ GQ s.V, ∀ g, F (γ * g) = F g` using `fun γ hγ g => by`. Simplify using `using congrArg (starRingEnd ℂ) (hAut.left γ hγ g)`.
+
+Establish `hFc : Continuous F` using `by simpa using hAut.cont.star`. Establish `hΦ : IsThetaFunO c.ψ s.V s'.V (p.pt φ)` using `(hfock φ).1`. Establish `hθl : ∀ h, ∀ γ ∈ GQ s.V, ∀ g, thetaKO p.ω (γ * g) h (p.pt φ) = thetaKO p.ω g h (p.pt φ)`. Introduce `h γ hγ g`. Establish `e : ((γ * g, h) : GA D s.V × GA D s'.V) = (γ, 1) * (g, h)` using `by simp`.
+
+Simplify using `only [thetaKO, e, map_mul, Module.End.mul_apply]`. Conclude with `hp.pre.weil.om_aut γ hγ 1 (one_mem _) _ (hp.pre.weil.om_pres _ _ hΦ)`. Establish `hθc : ∀ h, Continuous fun g => thetaKO p.ω g h (p.pt φ)` using `fun h => (hp.pre.weil.om_cont _ hΦ 0).comp (continuous_id.prodMk continuous_const)`. Establish `hrc : ∀ g, GlobalTheory.Core.Rk.IP.rcoef s.ν (fun x => conj (F x)) (fun x => conj (F x)) g = conj (s.pet (rTr s.V g F) F)`. Introduce `g`.
+
+Use `GlobalTheory.T.integral_quotient_eq_setIntegral_fundamentalDomain D s.V s.ν s.fd hs.haar hs.fund (fun x => conj (F (x * g)) * conj (conj (F x))) (fun γ hγ x => by simp only [mul_assoc, hFl γ hγ]) (by fun_prop)` as an intermediate fact. Simplify using `only [GlobalTheory.Core.Rk.IP.rcoef, PiLocalization₂.pet, Lift.pet, rTr]`. Rewrite using `[← integral_conj]`. Simplify using `only [map_mul]`. Conclude with `this`.
+
+Establish `hup : ∀ h, GlobalTheory.Core.Rk.IP.up p.ω s.ν (p.pt φ) (fun x => conj (F x)) h = conj (p.up φ F h)`. Introduce `h`. Use `GlobalTheory.T.integral_quotient_eq_setIntegral_fundamentalDomain D s.V s.ν s.fd hs.haar hs.fund (fun g => thetaKO p.ω g h (p.pt φ) * conj (F g)) (fun γ hγ x => by simp only [hθl h γ hγ, hFl γ hγ]) (by have := hθc h; fun_prop)` as an intermediate fact. Simplify using `only [GlobalTheory.Core.Rk.IP.up, Step.up]`. Rewrite using `[← integral_conj]`.
+
+Simplify using `only [map_mul, Complex.conj_conj]`. Conclude with `this`. Establish `hsZ : GlobalTheory.IndefiniteRowSideFullHecke.SphericalZero.sZero s.V s'.V = (c.t : ℂ) / 2`. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.SphericalZero.sZero, hrk]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hwz : ∀ g, GlobalTheory.Core.Rk.IP.wcoef p.ω m₁ X₁ (p.pt φ) (p.pt φ) g * GlobalTheory.Core.Rk.IP.rcoef s.ν (fun x => conj (F x)) (fun x => conj (F x)) g = p.zint m₁ X₁ φ F g`. Introduce `g`. Simplify using `only [Step.zint, hrc]`. Both sides reduce to the same expression.
+
+Establish `hint : ∃ s₁ : ℝ, s₁ < (c.t : ℝ) / 2 ∧ IntegrableOn (GlobalTheory.Core.Rk.IP.integrand p.ω s.ν m₁ X₁ s.Λ a (p.pt φ) (p.pt φ) (fun x => conj (F x)) (fun x => conj (F x)) s₁) (GlobalTheory.Core.Rk.IP.openOff s.V s.Λ c.S) s.ν`. Take `⟨s₁, hs₁, hi⟩` from `hInt a hmaj hmaj_eq`. Use `⟨s₁, hs₁, hi.congr_fun (fun g hg => ?_) hmeas⟩` and prove the remaining obligations. Simplify using `only [GlobalTheory.Core.Rk.IP.integrand, GlobalTheory.Doubling.npow, (hoff c.S).2 g hg, hsZ, hrc]`. Simplify using `only [Step.zint, coefW, GlobalTheory.Core.Rk.IP.wcoef, GlobalTheory.IndefiniteRowSideFullHecke.SphericalZero.ip, hgtS]`.
+
+Expand and normalize the polynomial expressions, which then agree. Take `⟨-, -, -, hval⟩` from `hHF c.ψ c.θ s.V s'.V (c.χ k) (c.χ k) (cart s.M) (cart s'.M) c.t cA a p.ω m₁ X₁ hPair (Or.inr hwitt) s.Λ s'.Λ c.S (p.pt φ) (p.pt φ) (hfock φ).2.1 (hfock φ).2.1 hUnr s.ν s'.ν hs.haar hs'.haar _ hu1 _ hu1 B hparF hsph hint`. Take `⟨l, hl0, hlv⟩` from `hL`. Establish `key` using `hval l hlv`. Introduce `hup0`.
+
+Establish `hz : GlobalTheory.Core.Rk.IP.up p.ω s.ν (p.pt φ) (fun x => conj (F x)) = 0`. Use function extensionality and compare the values at `h`. Rewrite using `[hup, hup0]`. Simplify using the standard rewrite rules. Rewrite `key` using `[hz]`.
+
+Establish `hlhs : GlobalTheory.Cusp.petersson s'.V s'.ν (0 : GA D s'.V → ℂ) 0 = 0`. Simplify using `[GlobalTheory.Cusp.petersson, GlobalTheory.AutomorphicL2Unitary.pet, GlobalTheory.AutomorphicL2Unitary.descend]`. Rewrite `key` using `[hlhs]`. Establish `hvol : (0 : ℝ) < GlobalTheory.IndefiniteRowSideFullHecke.SphericalVolumeLift.volQ s'.V s'.ν`. Use `hs'.haar` as an intermediate fact.
+
+Conclude with `GlobalTheory.RallisIP.Model.vol_pos s'.ν`. Establish `hd : GlobalTheory.LFun.dSfun (F` using `D.host.F) D.host.E (c.S : Set (GlobalTheory.IndefiniteRowSideFullHecke.SphericalVolumeLift.FinPl D)) s.V.rank s'.V.rank ((c.t : ℂ) / 2) ≠ 0 := by`. Use `((GlobalTheory.T.partialNormalizingFactorProduct_analytic_ne_zero D _ _ _).2 _ ?_).1` and prove the remaining obligations. Simplify using `only [Complex.div_ofNat_re, Complex.natCast_re]`. Check the signs of the components of the expression.
+
+Establish `hI' : ∫ g in GlobalTheory.Core.Rk.IP.openOff s.V s.Λ c.S, GlobalTheory.Core.Rk.IP.wcoef p.ω m₁ X₁ (p.pt φ) (p.pt φ) g * GlobalTheory.Core.Rk.IP.rcoef s.ν (fun x => conj (F x)) (fun x => conj (F x)) g ∂s.ν ≠ 0`. Simplify using `only [hwz]`. Conclude with `hI`. Establish `hvolC : ((GlobalTheory.IndefiniteRowSideFullHecke.SphericalVolumeLift.volQ s'.V s'.ν : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast hvol.ne'`. Conclude with `hI' (by`.
+
+Use `key.symm` as an intermediate fact. Break down `mul_eq_zero.1 this with h | h` into its components or cases. Break down `mul_eq_zero.1 h with h | h` into its components or cases. Conclude with `absurd h hvolC`. Conclude with `absurd h (div_ne_zero hl0 hd)`.
+
+Conclude with `h)`.
+-/
 theorem upNe_of_heckeForm : ∀ D : D7, GlobalTheory.Core.Rk.IP.HeckeForm D → MetEx D → ZetaNe D → UpNe D := by
   intro D hHF _ hZ c hc k hk s s' hs hs' p hp u B hB hL
   obtain ⟨m₁, X₁, hmX⟩ := GlobalTheory.Size.exists_isCovolOne s.V s'.V

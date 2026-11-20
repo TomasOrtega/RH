@@ -12,14 +12,25 @@ section Lin
 
 variable {n r : ℕ}
 
+/- English proof (translation)
+Unfold `spanLt`. Conclude with `Submodule.span_mono (Set.image_mono fun b (hb : b.1 < a) => lt_of_lt_of_le hb h)`.
+-/
 theorem spanLt_mono (e : Fin r → Fin n → ℂ) {a b : ℕ} (h : a ≤ b) : spanLt e a ≤ spanLt e b := by
   unfold spanLt
   exact Submodule.span_mono (Set.image_mono fun b (hb : b.1 < a) => lt_of_lt_of_le hb h)
 
+/- English proof (translation)
+Rewrite using `[Matrix.sub_mulVec, Matrix.one_mulVec, sub_add_cancel]`.
+-/
 theorem mulVec_eq_sub_add (g : Matrix (Fin n) (Fin n) ℂ) (x : Fin n → ℂ) :
     g *ᵥ x = (g - 1) *ᵥ x + x := by
   rw [Matrix.sub_mulVec, Matrix.one_mulVec, sub_add_cancel]
 
+/- English proof (translation)
+Establish `key : spanLt e a ≤ (spanLt e a).comap (Matrix.mulVecLin (g - 1))`. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨b, hb, rfl⟩`. Simplify using `only [SetLike.mem_coe, Submodule.mem_comap, Matrix.mulVecLin_apply]`. Conclude with `spanLt_mono e (le_of_lt hb) (hg.1 b)`.
+
+Conclude with `key hx`.
+-/
 theorem sub_mem_spanLt {e : Fin r → Fin n → ℂ} {z : Fin n → ℂ} {g : Matrix (Fin n) (Fin n) ℂ}
     (hg : InS e z g) (a : ℕ) {x : Fin n → ℂ} (hx : x ∈ spanLt e a) : (g - 1) *ᵥ x ∈ spanLt e a := by
   have key : spanLt e a ≤ (spanLt e a).comap (Matrix.mulVecLin (g - 1)) := by
@@ -29,11 +40,21 @@ theorem sub_mem_spanLt {e : Fin r → Fin n → ℂ} {z : Fin n → ℂ} {g : Ma
     exact spanLt_mono e (le_of_lt hb) (hg.1 b)
   exact key hx
 
+/- English proof (translation)
+Rewrite using `[mulVec_eq_sub_add g x]`. Conclude with `Submodule.add_mem _ (sub_mem_spanLt hg a hx) hx`.
+-/
 theorem mem_spanLt_of_inS {e : Fin r → Fin n → ℂ} {z : Fin n → ℂ} {g : Matrix (Fin n) (Fin n) ℂ}
     (hg : InS e z g) (a : ℕ) {x : Fin n → ℂ} (hx : x ∈ spanLt e a) : g *ᵥ x ∈ spanLt e a := by
   rw [mulVec_eq_sub_add g x]
   exact Submodule.add_mem _ (sub_mem_spanLt hg a hx) hx
 
+/- English proof (translation)
+Set `f : W →ₗ[ℂ] W` to `(Matrix.mulVecLin g).restrict (fun x hx => hW x hx)`. Establish `hf : Function.Injective f`. Introduce `a b hab`. Establish `h2 : g *ᵥ (a : Fin n → ℂ) = g *ᵥ (b : Fin n → ℂ)` using `congrArg Subtype.val hab`. Establish `h3` using `congrArg (fun y => g' *ᵥ y) h2`.
+
+Simplify using `only [Matrix.mulVec_mulVec, h1, Matrix.one_mulVec] at h3`. Conclude with `Subtype.ext h3`. Establish `hs : Function.Surjective f` using `LinearMap.injective_iff_surjective.mp hf`. Introduce `x hx`. Take `⟨y, hy⟩` from `hs ⟨x, hx⟩`.
+
+Establish `hy' : g *ᵥ (y : Fin n → ℂ) = x` using `congrArg Subtype.val hy`. Rewrite using `[← hy', Matrix.mulVec_mulVec, h1, Matrix.one_mulVec]`. Conclude with `y.2`.
+-/
 theorem inv_preserves {W : Submodule ℂ (Fin n → ℂ)} {g g' : Matrix (Fin n) (Fin n) ℂ} (h1 : g' * g = 1)
     (hW : ∀ x ∈ W, g *ᵥ x ∈ W) : ∀ x ∈ W, g' *ᵥ x ∈ W := by
   let f : W →ₗ[ℂ] W := (Matrix.mulVecLin g).restrict (fun x hx => hW x hx)
@@ -50,20 +71,32 @@ theorem inv_preserves {W : Submodule ℂ (Fin n → ℂ)} {g g' : Matrix (Fin n)
   rw [← hy', Matrix.mulVec_mulVec, h1, Matrix.one_mulVec]
   exact y.2
 
+/- English proof (translation)
+Apply the tactic sequence `simp only [Matrix.sub_mulVec, Matrix.mulVec_sub, Matrix.mulVec_mulVec, mul_sub, mul_one, Matrix.one_mulVec] <;> abel`.
+-/
 theorem mul_sub_one_mulVec (g g' : Matrix (Fin n) (Fin n) ℂ) (x : Fin n → ℂ) :
     (g * g' - 1) *ᵥ x = g *ᵥ ((g' - 1) *ᵥ x) + (g - 1) *ᵥ x := by
   simp only [Matrix.sub_mulVec, Matrix.mulVec_sub, Matrix.mulVec_mulVec, mul_sub, mul_one,
     Matrix.one_mulVec] <;> abel
 
+/- English proof (translation)
+Simplify using `only [Matrix.sub_mulVec, Matrix.mulVec_sub, Matrix.mulVec_mulVec, h1, Matrix.one_mulVec, neg_sub]`.
+-/
 theorem inv_sub_one_mulVec {g g' : Matrix (Fin n) (Fin n) ℂ} (h1 : g' * g = 1) (x : Fin n → ℂ) :
     (g' - 1) *ᵥ x = -(g' *ᵥ ((g - 1) *ᵥ x)) := by
   simp only [Matrix.sub_mulVec, Matrix.mulVec_sub, Matrix.mulVec_mulVec, h1, Matrix.one_mulVec,
     neg_sub]
 
+/- English proof (translation)
+Unfold `InS`. Apply the tactic sequence `refine ⟨fun a => ?_, ?_⟩ <;> simp`.
+-/
 theorem inS_one (e : Fin r → Fin n → ℂ) (z : Fin n → ℂ) : InS e z 1 := by
   unfold InS
   refine ⟨fun a => ?_, ?_⟩ <;> simp
 
+/- English proof (translation)
+Use `⟨fun a => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_sub_one_mulVec]`. Conclude with `Submodule.add_mem _ (mem_spanLt_of_inS hg _ (hg'.1 a)) (hg.1 a)`. Rewrite using `[mul_sub_one_mulVec]`. Conclude with `Submodule.add_mem _ (mem_spanLt_of_inS hg _ hg'.2) hg.2`.
+-/
 theorem inS_mul {e : Fin r → Fin n → ℂ} {z : Fin n → ℂ} {g g' : Matrix (Fin n) (Fin n) ℂ}
     (hg : InS e z g) (hg' : InS e z g') : InS e z (g * g') := by
   refine ⟨fun a => ?_, ?_⟩
@@ -72,6 +105,11 @@ theorem inS_mul {e : Fin r → Fin n → ℂ} {z : Fin n → ℂ} {g g' : Matrix
   · rw [mul_sub_one_mulVec]
     exact Submodule.add_mem _ (mem_spanLt_of_inS hg _ hg'.2) hg.2
 
+/- English proof (translation)
+Establish `hp : ∀ (a : ℕ), ∀ x ∈ spanLt e a, g' *ᵥ x ∈ spanLt e a` using `fun a => inv_preserves h1 (fun x hx => mem_spanLt_of_inS hg a hx)`. Use `⟨fun a => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[inv_sub_one_mulVec h1]`. Conclude with `Submodule.neg_mem _ (hp _ _ (hg.1 a))`. Rewrite using `[inv_sub_one_mulVec h1]`.
+
+Conclude with `Submodule.neg_mem _ (hp _ _ hg.2)`.
+-/
 theorem inS_inv {e : Fin r → Fin n → ℂ} {z : Fin n → ℂ} {g g' : Matrix (Fin n) (Fin n) ℂ}
     (hg : InS e z g) (h1 : g' * g = 1) : InS e z g' := by
   have hp : ∀ (a : ℕ), ∀ x ∈ spanLt e a, g' *ᵥ x ∈ spanLt e a := fun a =>
@@ -82,16 +120,25 @@ theorem inS_inv {e : Fin r → Fin n → ℂ} {z : Fin n → ℂ} {g g' : Matrix
   · rw [inv_sub_one_mulVec h1]
     exact Submodule.neg_mem _ (hp _ _ hg.2)
 
+/- English proof (translation)
+Unfold `InN`. Conclude with `⟨inS_one e z, fun y _ => by simp⟩`.
+-/
 theorem inN_one (ε : Fin n → Bool) (e : Fin r → Fin n → ℂ) (z : Fin n → ℂ) : InN ε e z 1 := by
   unfold InN
   exact ⟨inS_one e z, fun y _ => by simp⟩
 
+/- English proof (translation)
+Use `⟨inS_mul hg.1 hg'.1, fun y hy => ?_⟩` and prove the remaining obligations. Rewrite using `[mul_sub_one_mulVec]`. Conclude with `Submodule.add_mem _ (mem_spanLt_of_inS hg.1 _ (hg'.2 y hy)) (hg.2 y hy)`.
+-/
 theorem inN_mul {ε : Fin n → Bool} {e : Fin r → Fin n → ℂ} {z : Fin n → ℂ} {g g' : Matrix (Fin n) (Fin n) ℂ}
     (hg : InN ε e z g) (hg' : InN ε e z g') : InN ε e z (g * g') := by
   refine ⟨inS_mul hg.1 hg'.1, fun y hy => ?_⟩
   rw [mul_sub_one_mulVec]
   exact Submodule.add_mem _ (mem_spanLt_of_inS hg.1 _ (hg'.2 y hy)) (hg.2 y hy)
 
+/- English proof (translation)
+Use `⟨inS_inv hg.1 h1, fun y hy => ?_⟩` and prove the remaining obligations. Rewrite using `[inv_sub_one_mulVec h1]`. Conclude with `Submodule.neg_mem _ (inv_preserves h1 (fun x hx => mem_spanLt_of_inS hg.1 r hx) _ (hg.2 y hy))`.
+-/
 theorem inN_inv {ε : Fin n → Bool} {e : Fin r → Fin n → ℂ} {z : Fin n → ℂ} {g g' : Matrix (Fin n) (Fin n) ℂ}
     (hg : InN ε e z g) (h1 : g' * g = 1) : InN ε e z g' := by
   refine ⟨inS_inv hg.1 h1, fun y hy => ?_⟩
@@ -99,12 +146,18 @@ theorem inN_inv {ε : Fin n → Bool} {e : Fin r → Fin n → ℂ} {z : Fin n �
   exact Submodule.neg_mem _
     (inv_preserves h1 (fun x hx => mem_spanLt_of_inS hg.1 r hx) _ (hg.2 y hy))
 
+/- English proof (translation)
+Establish `hc : Continuous fun g : Matrix (Fin n) (Fin n) ℂ => (g - 1) *ᵥ x` using `(continuous_id.sub continuous_const).matrix_mulVec continuous_const`. Conclude with `W.closed_of_finiteDimensional.preimage hc`.
+-/
 theorem isClosed_sub_mem (x : Fin n → ℂ) (W : Submodule ℂ (Fin n → ℂ)) :
     IsClosed {g : Matrix (Fin n) (Fin n) ℂ | (g - 1) *ᵥ x ∈ W} := by
   have hc : Continuous fun g : Matrix (Fin n) (Fin n) ℂ => (g - 1) *ᵥ x :=
     (continuous_id.sub continuous_const).matrix_mulVec continuous_const
   exact W.closed_of_finiteDimensional.preimage hc
 
+/- English proof (translation)
+Establish `h1 : {g : Matrix (Fin n) (Fin n) ℂ | InN ε e z g} = ((⋂ a : Fin r, {g | (g - 1) *ᵥ e a ∈ spanLt e a.1}) ∩ {g | (g - 1) *ᵥ z ∈ spanLt e r}) ∩ ⋂ y ∈ {y : Fin n → ℂ | ∀ a, hJ ε (e a) y = 0}, {g | (g - 1) *ᵥ y ∈ spanLt e r}`. Use extensionality with `g`. Simplify using `only [Set.mem_setOf_eq, Set.mem_inter_iff, Set.mem_iInter, InN, InS]`. Rewrite using `[h1]`. Conclude with `((isClosed_iInter fun a => isClosed_sub_mem _ _).inter (isClosed_sub_mem _ _)).inter (isClosed_biInter fun y _ => isClosed_sub_mem _ _)`.
+-/
 theorem isClosed_inN (ε : Fin n → Bool) (e : Fin r → Fin n → ℂ) (z : Fin n → ℂ) :
     IsClosed {g : Matrix (Fin n) (Fin n) ℂ | InN ε e z g} := by
   have h1 : {g : Matrix (Fin n) (Fin n) ℂ | InN ε e z g} =
@@ -116,6 +169,9 @@ theorem isClosed_inN (ε : Fin n → Bool) (e : Fin r → Fin n → ℂ) (z : Fi
   exact ((isClosed_iInter fun a => isClosed_sub_mem _ _).inter (isClosed_sub_mem _ _)).inter
     (isClosed_biInter fun y _ => isClosed_sub_mem _ _)
 
+/- English proof (translation)
+Establish `hg' : gᴴ * Formalism.REAL.Jm ε * g = Formalism.REAL.Jm ε` using `hg`. Unfold `hJ`. Rewrite using `[Matrix.star_mulVec, Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec, Matrix.dotProduct_mulVec, Matrix.vecMul_vecMul, ← Matrix.mul_assoc, hg']`.
+-/
 theorem hJ_mulVec {ε : Fin n → Bool} {g : Matrix (Fin n) (Fin n) ℂ} (hg : Formalism.REAL.inUJ ε g)
     (x y : Fin n → ℂ) : hJ ε (g *ᵥ x) (g *ᵥ y) = hJ ε x y := by
   have hg' : gᴴ * Formalism.REAL.Jm ε * g = Formalism.REAL.Jm ε := hg
@@ -123,6 +179,11 @@ theorem hJ_mulVec {ε : Fin n → Bool} {g : Matrix (Fin n) (Fin n) ℂ} (hg : F
   rw [Matrix.star_mulVec, Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec, Matrix.dotProduct_mulVec,
     Matrix.vecMul_vecMul, ← Matrix.mul_assoc, hg']
 
+/- English proof (translation)
+Introduce `x hx`. Establish `hle : Submodule.span ℂ W ≤ LinearMap.ker (Matrix.mulVecLin g - LinearMap.id)`. Rewrite using `[Submodule.span_le]`. Introduce `y hy`. Simplify using `[hW y hy]`.
+
+Establish `hx'` using `hle hx`. Simplify `hx'` using `[sub_eq_zero]`.
+-/
 theorem fix_span {W : Set (Fin n → ℂ)} {g : Matrix (Fin n) (Fin n) ℂ} (hW : ∀ x ∈ W, g *ᵥ x = x) :
     ∀ x ∈ Submodule.span ℂ W, g *ᵥ x = x := by
   intro x hx
@@ -133,10 +194,22 @@ theorem fix_span {W : Set (Fin n → ℂ)} {g : Matrix (Fin n) (Fin n) ℂ} (hW 
   have hx' := hle hx
   simpa [sub_eq_zero] using hx'
 
+/- English proof (translation)
+Rewrite using `[mul_sub, sub_mul, mul_one, hh]`.
+-/
 theorem conj_sub_one {h x h' : Matrix (Fin n) (Fin n) ℂ} (hh : h * h' = 1) :
     h * x * h' - 1 = h * (x - 1) * h' := by
   rw [mul_sub, sub_mul, mul_one, hh]
 
+/- English proof (translation)
+Establish `hfix : ∀ (a : ℕ), ∀ v ∈ spanLt e a, h *ᵥ v = v` using `fun a => fix_span (fun v hv => by obtain ⟨b, _, rfl⟩ := hv; exact he b)`. Establish `h'e : ∀ v, h *ᵥ v = v → h' *ᵥ v = v` using `fun v hv => by conv_lhs => rw [← hv]`. Rewrite using `[Matrix.mulVec_mulVec, hh', Matrix.one_mulVec]`. Establish `key : ∀ v, (h * x * h' - 1) *ᵥ v = h *ᵥ ((x - 1) *ᵥ (h' *ᵥ v))` using `fun v => by`. Rewrite using `[conj_sub_one hh]`.
+
+Simplify using `only [Matrix.mulVec_mulVec, mul_assoc]`. Use `⟨⟨fun a => ?_, ?_⟩, fun y hy => ?_⟩` and prove the remaining obligations. Rewrite using `[key, h'e _ (he a), hfix a.1 _ (hx.1.1 a)]`. Conclude with `hx.1.1 a`. Rewrite using `[key, h'e _ hz, hfix r _ hx.1.2]`.
+
+Conclude with `hx.1.2`. Establish `hy' : ∀ a, hJ ε (e a) (h' *ᵥ y) = 0` using `fun a => by`. Rewrite using `[← hJ_mulVec hU, he a, Matrix.mulVec_mulVec, hh, Matrix.one_mulVec]`. Conclude with `hy a`. Rewrite using `[key, hfix r _ (hx.2 _ hy')]`.
+
+Conclude with `hx.2 _ hy'`.
+-/
 theorem inN_conj {ε : Fin n → Bool} {e : Fin r → Fin n → ℂ} {z : Fin n → ℂ}
     {h h' x : Matrix (Fin n) (Fin n) ℂ} (hU : Formalism.REAL.inUJ ε h) (hh : h * h' = 1) (hh' : h' * h = 1)
     (he : ∀ a, h *ᵥ e a = e a) (hz : h *ᵥ z = z) (hx : InN ε e z x) : InN ε e z (h * x * h') := by
@@ -165,21 +238,39 @@ section Inst
 
 variable (I : Formalism.MainNotions.S.AutInst)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem uMat_mul {n : ℕ} {ε : Fin n → Bool} (g h : Formalism.REAL.UJ ε) :
     Formalism.MainNotions.S.uMat (g * h) = Formalism.MainNotions.S.uMat g * Formalism.MainNotions.S.uMat h := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem uMat_one {n : ℕ} {ε : Fin n → Bool} : Formalism.MainNotions.S.uMat (1 : Formalism.REAL.UJ ε) = 1 := rfl
 
+/- English proof (translation)
+Rewrite using `[← uMat_mul, inv_mul_cancel, uMat_one]`.
+-/
 theorem uMat_inv_mul {n : ℕ} {ε : Fin n → Bool} (g : Formalism.REAL.UJ ε) :
     Formalism.MainNotions.S.uMat g⁻¹ * Formalism.MainNotions.S.uMat g = 1 := by
   rw [← uMat_mul, inv_mul_cancel, uMat_one]
 
+/- English proof (translation)
+Rewrite using `[← uMat_mul, mul_inv_cancel, uMat_one]`.
+-/
 theorem uMat_mul_inv {n : ℕ} {ε : Fin n → Bool} (g : Formalism.REAL.UJ ε) :
     Formalism.MainNotions.S.uMat g * Formalism.MainNotions.S.uMat g⁻¹ = 1 := by
   rw [← uMat_mul, mul_inv_cancel, uMat_one]
 
+/- English proof (translation)
+The claim follows from `g.2`.
+-/
 theorem uMat_inUJ {n : ℕ} {ε : Fin n → Bool} (g : Formalism.REAL.UJ ε) : Formalism.REAL.inUJ ε (Formalism.MainNotions.S.uMat g) := g.2
 
+/- English proof (translation)
+The claim follows from `(Units.continuous_val.comp continuous_subtype_val).comp (continuous_apply v)`.
+-/
 theorem continuous_uMat_apply (v : NumberField.InfinitePlace I.F) :
     Continuous fun s : I.Ginf => Formalism.MainNotions.S.uMat (s v) := (Units.continuous_val.comp continuous_subtype_val).comp (continuous_apply v)
 
@@ -210,6 +301,9 @@ def HSub (S : Set (Fin I.n → I.E)) : Subgroup I.Ginf where
     conv_lhs => rw [← ha v x hx]
     rw [Matrix.mulVec_mulVec, uMat_inv_mul, Matrix.one_mulVec]
 
+/- English proof (translation)
+Establish `h1 : Ninf I e z = ⋂ v, (fun s : I.Ginf => Formalism.MainNotions.S.uMat (s v)) ⁻¹' {g | InN (I.ε v) (fun a => rv I v (e a)) (rv I v z) g}`. Use extensionality with `s`. Simplify using `only [Ninf, Set.mem_setOf_eq, Set.mem_iInter, Set.mem_preimage]`. Rewrite using `[h1]`. Conclude with `isClosed_iInter fun v => (isClosed_inN _ _ _).preimage (continuous_uMat_apply I v)`.
+-/
 theorem isClosed_Ninf (e : Fin r → Fin I.n → I.E) (z : Fin I.n → I.E) : IsClosed (Ninf I e z) := by
   have h1 : Ninf I e z = ⋂ v, (fun s : I.Ginf => Formalism.MainNotions.S.uMat (s v)) ⁻¹'
       {g | InN (I.ε v) (fun a => rv I v (e a)) (rv I v z) g} := by
@@ -218,6 +312,11 @@ theorem isClosed_Ninf (e : Fin r → Fin I.n → I.E) (z : Fin I.n → I.E) : Is
   rw [h1]
   exact isClosed_iInter fun v => (isClosed_inN _ _ _).preimage (continuous_uMat_apply I v)
 
+/- English proof (translation)
+Establish `h1 : Hset I S = ⋂ v, ⋂ x ∈ S, {s : I.Ginf | Formalism.MainNotions.S.uMat (s v) *ᵥ rv I v x = rv I v x}`. Use extensionality with `s`. Simplify using `only [Hset, Set.mem_setOf_eq, Set.mem_iInter]`. Rewrite using `[h1]`. Use `isClosed_iInter fun v => isClosed_biInter fun x _ => ?_` and prove the remaining obligations.
+
+Conclude with `isClosed_eq ((continuous_uMat_apply I v).matrix_mulVec continuous_const) continuous_const`.
+-/
 theorem isClosed_Hset (S : Set (Fin I.n → I.E)) : IsClosed (Hset I S) := by
   have h1 : Hset I S = ⋂ v, ⋂ x ∈ S, {s : I.Ginf | Formalism.MainNotions.S.uMat (s v) *ᵥ rv I v x = rv I v x} := by
     ext s
@@ -226,6 +325,11 @@ theorem isClosed_Hset (S : Set (Fin I.n → I.E)) : IsClosed (Hset I S) := by
   refine isClosed_iInter fun v => isClosed_biInter fun x _ => ?_
   exact isClosed_eq ((continuous_uMat_apply I v).matrix_mulVec continuous_const) continuous_const
 
+/- English proof (translation)
+Introduce `I r e f z`. Use `⟨NSub I e z, HSub I (frameSet I e f z), rfl, rfl, isClosed_Ninf I e z, isClosed_Hset I _, ?_⟩` and prove the remaining obligations. Introduce `h hh x hx`. Establish `hh' : h ∈ Hset I (frameSet I e f z)` using `hh`. Establish `hx' : x ∈ Ninf I e z` using `hx`.
+
+Use `show ∀ v, InN _ _ _ (Formalism.MainNotions.S.uMat ((h * x * h⁻¹) v))`. Introduce `v`. Use `show InN _ _ _ (Formalism.MainNotions.S.uMat (h v * x v * (h v)⁻¹))`. Rewrite using `[uMat_mul, uMat_mul]`. Conclude with `inN_conj (uMat_inUJ _) (uMat_mul_inv _) (uMat_inv_mul _) (fun a => hh' v _ (Set.mem_union_left _ (Set.mem_union_left _ (Set.mem_range_self a)))) (hh' v _ (Set.mem_union_right _ rfl)) (hx' v)`.
+-/
 theorem measure_subFacts : SubFacts := by
   intro I r e f z
   refine ⟨NSub I e z, HSub I (frameSet I e f z), rfl, rfl, isClosed_Ninf I e z, isClosed_Hset I _, ?_⟩

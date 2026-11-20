@@ -11,6 +11,17 @@ open Formalism.MainNotions.TaylorLogMetric Formalism.MainNotions.StandardLattice
 
 namespace GlobalTheory.RatTop
 
+/- English proof (translation)
+Use `haveI : FiniteDimensional K VS := Module.Finite.of_basis b0`. Establish `hli : LinearIndependent K uS`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg i`. Establish `h1 : ∑ i, φ (g i) • bS i = 0`.
+
+Use `congrArg mS hg` as an intermediate fact. Simplify `this` using `[map_sum, LinearMap.map_smulₛₗ, hS]`. Establish `h2` using `Fintype.linearIndependent_iff.mp bS.linearIndependent _ h1 i`. Conclude with `φ.injective (by rw [h2, map_zero])`. Establish `hsp : Submodule.span K (Set.range uS) = ⊤` using `hli.span_eq_top_of_card_eq_finrank' (Module.finrank_eq_card_basis b0).symm`.
+
+Set `bS' : Module.Basis ι K VS` to `Module.Basis.mk hli hsp.ge`. Use `choose m hm using hL`. Set `f : VS →ₗ[K] VT` to `bS'.constr K fun i => ∑ k, m k i • uT k`. Use `⟨f, fun u => ?_⟩` and prove the remaining obligations. Establish `e : (L.comp mS : VS →ₛₗ[φ] WT) = (mT.comp f : VS →ₛₗ[φ] WT)`.
+
+Use `bS'.ext fun i => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.comp_apply, LinearMap.comp_apply, Module.Basis.constr_basis, Module.Basis.mk_apply, hS, map_sum]`. Use `conv_lhs => rw [← bT.sum_repr (L (bS i))]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.map_smulₛₗ, hT, hm]`.
+
+Conclude with `LinearMap.congr_fun e u`.
+-/
 theorem exists_linearMap_of_repr_mem_range {K : Type} [Field K] (φ : K →+* ℂ) {VS VT WS WT : Type}
     [AddCommGroup VS] [Module K VS] [AddCommGroup VT] [Module K VT]
     [AddCommGroup WS] [Module ℂ WS] [AddCommGroup WT] [Module ℂ WT]
@@ -47,6 +58,15 @@ end GlobalTheory.RatTop
 
 namespace GlobalTheory.KerConjMean
 
+/- English proof (translation)
+Use `⟨0, fun _ _ => ⟨0, fun _ _ _ => ⟨0, ?_⟩⟩⟩` and prove the remaining obligations. Introduce `D _ _ _ Γ _ _ Pl0 T A Ks _ _ _ R _ _ ch _ _ hK`. Introduce `Φ β d hd c j`. Take `⟨hβ, τ, hτ, hdτ⟩` from `hd`. Establish `hr` using `(hK.isRatAt hβ hτ hdτ c).1 j`.
+
+Use `GlobalTheory.RatTop.exists_linearMap_of_repr_mem_range D.what₂.embLL (GlobalTheory.CoefModel.mapVV D.what₂.embLL _) (GlobalTheory.CoefModel.mapVV D.what₂.embLL _) (bVV D.what₂.LL _) (bVV ℂ _) (bVV ℂ _) (fun i => ⟨_, (GlobalTheory.Proof.TensorMapDescent.bVVfun_desc D.what₂.embLL _ …` and prove the remaining obligations. Introduce `i`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[GlobalTheory.CoefModel.mapVV_coe, bVV_coe]`. Conclude with `((GlobalTheory.Proof.TensorMapDescent.bVVfun_desc D.what₂.embLL _ i).choose_spec.2).symm`.
+
+Introduce `k`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[GlobalTheory.CoefModel.mapVV_coe, bVV_coe]`. Conclude with `((GlobalTheory.Proof.TensorMapDescent.bVVfun_desc D.what₂.embLL _ k).choose_spec.2).symm`. Introduce `k i`.
+
+Establish `h` using `hr k i`. Rewrite `h` using `[Normal.kkIn, LinearMap.toMatrix_apply]`. Then use the resulting hypothesis.
+-/
 theorem ratTopAt_big : BigC fun _ ch _ _ => RatTopAt ch := by
   refine ⟨0, fun _ _ => ⟨0, fun _ _ _ => ⟨0, ?_⟩⟩⟩
   intro D _ _ _ Γ _ _ Pl0 T A Ks _ _ _ R _ _ ch _ _ hK

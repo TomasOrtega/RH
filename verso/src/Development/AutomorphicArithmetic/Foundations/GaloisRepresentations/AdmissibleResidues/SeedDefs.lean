@@ -64,7 +64,13 @@ def WtsN (h : Fin 4 → ℤ) (P : PD T.ι (G T.F Ω) (PadicAlgCl l)) : Prop :=
 
 variable {T} {h : Fin 4 → ℤ} {P : PD T.ι (G T.F Ω) (PadicAlgCl l)}
 
+/- English proof (translation)
+The claim follows from `k`.
+-/
 theorem mkWts (k : Wts0 T h P) (_ : h 1 + 4 ≤ h 0 → haveI := T.nF; Unlinked P.r.toHomUnits) : T.Wts h P := k
+/- English proof (translation)
+The claim follows from `mkWts k fun hb => absurd hb (by simp [Raw.wts4]; omega)`.
+-/
 theorem mkWts4 (k : Wts0 T (fun i => 2 * D.wts4 i) P) : T.Wts (fun i => 2 * D.wts4 i) P :=
   mkWts k fun hb => absurd hb (by simp [Raw.wts4]; omega)
 end

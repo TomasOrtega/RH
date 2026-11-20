@@ -4,6 +4,13 @@ import ReciprocityTheory.AnalyticForms.RegularLocalRings.IntToRatA
 
 namespace GlobalTheory.IntFiniteTypeDim
 
+/- English proof (translation)
+Use `haveI := ReciprocityTheory.AnForm.R.IntegerToRational.isJacobsonRing_int`. Use `letI := Ideal.Quotient.field m`. Establish `hfin : Module.Finite ℤ (A ⧸ m)` using `finite_of_finite_type_of_isJacobsonRing ℤ (A ⧸ m)`. Take `⟨p, hp⟩` from `CharP.exists (A ⧸ m)`. Break down `CharP.char_is_prime_or_zero (A ⧸ m) p with h | h` into its components or cases.
+
+Use `⟨p, h, ?_⟩` and prove the remaining obligations. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_natCast]`. Conclude with `CharP.cast_eq_zero _ p`. Substitute `h haveI : CharZero (A ⧸ m) := CharP.charP_to_charZero _` using the available equality. It suffices to derive a contradiction.
+
+Establish `hinj : Function.Injective (algebraMap ℤ (A ⧸ m))` using `RingHom.injective_int _`. Conclude with `Int.not_isField ((Algebra.IsIntegral.isField_iff_isField hinj).mpr (Field.toIsField (A ⧸ m)))`.
+-/
 theorem exists_natPrime_mem_of_isMaximal (A : Type) [CommRing A] [Algebra.FiniteType ℤ A]
     (m : Ideal A) [m.IsMaximal] : ∃ l : ℕ, l.Prime ∧ (l : A) ∈ m := by
   haveI := ReciprocityTheory.AnForm.R.IntegerToRational.isJacobsonRing_int
@@ -22,6 +29,11 @@ theorem exists_natPrime_mem_of_isMaximal (A : Type) [CommRing A] [Algebra.Finite
     exact Int.not_isField
       ((Algebra.IsIntegral.isField_iff_isField hinj).mpr (Field.toIsField (A ⧸ m)))
 
+/- English proof (translation)
+Rewrite using `[ringKrullDim_quotient]`. Use `iSup_le fun s => ?_` and prove the remaining obligations. Take `⟨P, hP, hle⟩` from `Ideal.exists_minimalPrimes_le (I := I) (J := s.head.1.asIdeal) s.head.2`. Use `le_trans ?_ (h P hP)` and prove the remaining obligations. Rewrite using `[ringKrullDim_quotient]`.
+
+Set `t : LTSeries (PrimeSpectrum.zeroLocus (R` to `A) P) := ⟨s.length, fun i => ⟨(s i).1, hle.trans (show s.head.1 ≤ (s i).1 from s.head_le i)⟩, fun i => s.step i⟩`. Conclude with `Order.LTSeries.length_le_krullDim t`.
+-/
 theorem ringKrullDim_quotient_le_of_minimalPrimes {A : Type} [CommRing A] (I : Ideal A)
     (c : WithBot ℕ∞) (h : ∀ P ∈ I.minimalPrimes, ringKrullDim (A ⧸ P) ≤ c) :
     ringKrullDim (A ⧸ I) ≤ c := by
@@ -35,6 +47,19 @@ theorem ringKrullDim_quotient_le_of_minimalPrimes {A : Type} [CommRing A] (I : I
       fun i => s.step i⟩
   exact Order.LTSeries.length_le_krullDim t
 
+/- English proof (translation)
+Introduce `A _ _ _ hinj`. Use `haveI : CharZero A := charZero_of_injective_algebraMap hinj`. Use `haveI : FaithfulSMul ℤ A := (faithfulSMul_iff_algebraMap_injective _ _).mpr hinj`. Use `haveI : IsNoetherianRing A := Algebra.FiniteType.isNoetherianRing ℤ A`. Take `⟨d, hd⟩` from `Cardinal.lt_aleph0.mp (trdeg_lt_aleph0_of_finiteType (R := ℤ) (S := A))`.
+
+Establish `hrhs : ((Cardinal.toENat (Algebra.trdeg ℤ A) + 1 : ℕ∞) : WithBot ℕ∞) = (d : WithBot ℕ∞) + 1`. Rewrite using `[hd, Cardinal.toENat_nat]`. Both sides reduce to the same expression. Rewrite using `[hrhs]`. Apply `le_antisymm` to reduce the goal to its premises.
+
+Use `(ringKrullDim_le_iff_isMaximal_height_le _).mpr fun m hm => ?_` and prove the remaining obligations. Take `⟨l, hl, hlm⟩` from `exists_natPrime_mem_of_isMaximal A m`. Use `haveI := Fact.mk hl`. Use `(Ideal.height_le_ringKrullDim_quotient_add_one hlm).trans ?_` and prove the remaining obligations. Use `gcongr`.
+
+Use `ringKrullDim_quotient_le_of_minimalPrimes _ _ fun q hq => ?_` and prove the remaining obligations. Use `haveI := hq.1.1`. Conclude with `(ringKrullDim_quotient_eq_trdeg_of_mem_minimalPrimes_natPrime A l q hq d hd).le`. Take `⟨m, hm⟩` from `Ideal.exists_maximal A`. Take `⟨l, hl, hlm⟩` from `exists_natPrime_mem_of_isMaximal A m`.
+
+Use `haveI := Fact.mk hl`. Take `⟨q, hq, -⟩` from `Ideal.exists_minimalPrimes_le (I := Ideal.span {(l : A)}) (J := m) ((Ideal.span_singleton_le_iff_mem _).mpr hlm)`. Use `haveI := hq.1.1`. Rewrite using `[← ringKrullDim_quotient_eq_trdeg_of_mem_minimalPrimes_natPrime A l q hq d hd]`. Establish `hlq : (l : A) ∈ q` using `hq.1.2 (Ideal.mem_span_singleton_self _)`.
+
+Conclude with `ringKrullDim_succ_le_of_surjective (Ideal.Quotient.mk q) Ideal.Quotient.mk_surjective (r := (l : A)) (mem_nonZeroDivisors_of_ne_zero (Nat.cast_ne_zero.mpr hl.ne_zero)) (Ideal.Quotient.eq_zero_iff_mem.mpr hlq)`.
+-/
 theorem ringKrullDim_eq_trdeg_add_one :
     ∀ (A : Type) [CommRing A] [IsDomain A] [Algebra.FiniteType ℤ A],
       Function.Injective (algebraMap ℤ A) →

@@ -22,10 +22,16 @@ def transposeHomeo (k : Type) [TopologicalSpace k] (a b : Type) : Matrix a b k �
   continuous_toFun := continuous_id.matrix_transpose
   continuous_invFun := continuous_id.matrix_transpose
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hf.1.comp_continuous e.continuous, hf.2.comp_homeomorph e⟩`.
+-/
 theorem comp_mem_SB {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y] (e : X ≃ₜ Y) {f : Y → ℂ}
     (hf : f ∈ GlobalTheory.WeilM.SB Y) : f ∘ e ∈ GlobalTheory.WeilM.SB X :=
   ⟨hf.1.comp_continuous e.continuous, hf.2.comp_homeomorph e⟩
 
+/- English proof (translation)
+Use `letI : MeasurableSpace X := borel _`. Use `letI : MeasurableSpace Y := borel _`. Use `haveI : BorelSpace X := ⟨rfl⟩`. Use `haveI : BorelSpace Y := ⟨rfl⟩`. Conclude with `⟨μ.map e, e.isAddHaarMeasure_map μ, fun f => integral_map_equiv e.toHomeomorph.toMeasurableEquiv f, fun f => lintegral_map_equiv f e.toHomeomorph.toMeasurableEquiv⟩`.
+-/
 theorem exists_haar_transport {X Y : Type} [AddCommGroup X] [TopologicalSpace X] [IsTopologicalAddGroup X]
     [AddCommGroup Y] [TopologicalSpace Y] [IsTopologicalAddGroup Y] (e : X ≃ₜ+ Y)
     (μ : @Measure X (borel _)) (hμ : @Measure.IsAddHaarMeasure _ _ _ (borel _) μ) :
@@ -39,6 +45,27 @@ theorem exists_haar_transport {X Y : Type} [AddCommGroup X] [TopologicalSpace X]
     fun f => integral_map_equiv e.toHomeomorph.toMeasurableEquiv f,
     fun f => lintegral_map_equiv f e.toHomeomorph.toMeasurableEquiv⟩
 
+/- English proof (translation)
+Introduce `k _ _ _ _ n d ψ0 hψc hψ1 ι hι Tr Mu hTr hMu hTrI hMuI S hS hSI χ hχ`. Set `e` to `swapEquiv k (Fin n) (Fin d)`. Set `t` to `transposeHomeo k (Fin n) (Fin d)`. Establish `hup : ∀ {φ}, φ ∈ GlobalTheory.WeilM.SB (Fin n × Fin d → k) → φ ∘ e.symm ∈ GlobalTheory.WeilM.SB (Fin d × Fin n → k)` using `fun h => comp_mem_SB e.symm.toHomeomorph h`. Establish `hdown : ∀ {φ}, φ ∈ GlobalTheory.WeilM.SB (Fin d × Fin n → k) → φ ∘ e ∈ GlobalTheory.WeilM.SB (Fin n × Fin d → k)` using `fun h => comp_mem_SB e.toHomeomorph h`.
+
+Set `ι' : ((Fin n × Fin d → k) → ℂ) →ₗ[ℂ] (Matrix (Fin n) (Fin d) k → ℂ)` to `(LinearMap.funLeft ℂ ℂ t) ∘ₗ ι ∘ₗ (LinearMap.funLeft ℂ ℂ e.symm)`. Establish `hι' : ∀ φ Z, ι' φ Z = ι (φ ∘ e.symm) Zᵀ` using `fun _ _ => rfl`. Establish `hι'' : ∀ φ Z, ι' (φ ∘ e) Z = ι φ Zᵀ` using `fun _ _ => rfl`. Use `GlobalTheory.T.abs_weilCharacter_det_eq_abs_det_pow ψ0 hψc hψ1 ι' ⟨?_, ?_, ?_⟩ (fun C φ => Tr Cᵀ (φ ∘ e.symm) ∘ e) (fun l φ => Mu (l ∘ₗ (Matrix.transposeLinearEquiv (Fin d) (Fin n) k k).toLinearMap) (φ ∘ e.symm) ∘ e) ?_ ?_ ?_ ?_ (fun g φ => S g (φ ∘ e.symm) ∘ e) ?_ ?_ χ ?_` and prove the remaining obligations. Introduce `φ hφ`.
+
+Conclude with `comp_mem_SB t (hι.mapsTo (hup hφ))`. Introduce `φ hφ φ' hφ' h`. Establish `h1 : ι (φ ∘ e.symm) = ι (φ' ∘ e.symm)` using `funext fun Y => congrFun h Yᵀ`. Establish `h2` using `hι.injOn (hup hφ) (hup hφ') h1`. Conclude with `funext fun y => congrFun h2 (e y)`.
+
+Introduce `F hF`. Take `⟨φ, hφ, hφF⟩` from `hι.surjOn (comp_mem_SB t.symm hF)`. Use `⟨φ ∘ e, hdown hφ, funext fun Z => ?_⟩` and prove the remaining obligations. Rewrite using `[hι'', hφF]`. Both sides reduce to the same expression.
+
+Introduce `C φ hφ`. Take `⟨h1, h2⟩` from `hTr Cᵀ _ (hup hφ)`. Use `⟨hdown h1, funext fun Z => ?_⟩` and prove the remaining obligations. Rewrite using `[hι'', h2, hι', Matrix.transpose_add]`. Introduce `l φ hφ`.
+
+Take `⟨h1, h2⟩` from `hMu (l ∘ₗ (Matrix.transposeLinearEquiv (Fin d) (Fin n) k k).toLinearMap) _ (hup hφ)`. Use `⟨hdown h1, funext fun Z => ?_⟩` and prove the remaining obligations. Rewrite using `[hι'', h2, hι']`. Both sides reduce to the same expression. Introduce `μ hμ C φ hφ φ' hφ'`.
+
+Take `⟨μ', hμ', h1, -⟩` from `exists_haar_transport e μ hμ`. Establish `h` using `hTrI μ' hμ' Cᵀ _ (hup hφ) _ (hup hφ')`. Rewrite `h` using `[h1, h1]`. Conclude with `h`. Introduce `μ hμ l φ hφ φ' hφ'`.
+
+Take `⟨μ', hμ', h1, -⟩` from `exists_haar_transport e μ hμ`. Establish `h` using `hMuI μ' hμ' (l ∘ₗ (Matrix.transposeLinearEquiv (Fin d) (Fin n) k k).toLinearMap) _ (hup hφ) _ (hup hφ')`. Rewrite `h` using `[h1, h1]`. Conclude with `h`. Introduce `g φ hφ`.
+
+Conclude with `hdown (hS g _ (hup hφ))`. Introduce `g φ hφ μ hμ`. Take `⟨μ', hμ', -, h1⟩` from `exists_haar_transport e μ hμ`. Establish `h` using `hSI g _ (hup hφ) μ' hμ'`. Rewrite `h` using `[h1, h1]`.
+
+Conclude with `h`. Introduce `g φ hφ`. Use `funext fun Z => ?_` and prove the remaining obligations. Rewrite using `[hι'', hχ g _ (hup hφ), hι', Matrix.transpose_mul, Matrix.transpose_transpose]`.
+-/
 theorem exists_unitary_factor_right : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n d : ℕ} (ψ0 : AddChar k ℂ), Continuous ψ0 → ψ0 ≠ 1 →
     ∀ (ι : ((Fin d × Fin n → k) → ℂ) →ₗ[ℂ] (Matrix (Fin d) (Fin n) k → ℂ)),
     Set.BijOn ι (GlobalTheory.WeilM.SB (Fin d × Fin n → k) : Set _) (GlobalTheory.WeilM.SB (Matrix (Fin d) (Fin n) k) : Set _) →

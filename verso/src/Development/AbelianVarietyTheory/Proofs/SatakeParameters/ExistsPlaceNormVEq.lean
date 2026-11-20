@@ -21,6 +21,11 @@ open Polynomial
 
 namespace GlobalTheory.PlaceNormDec
 
+/- English proof (translation)
+Introduce `E Ω _ _ _ _ _ Q w A hA hD`. Take `⟨w', hw', i, hi⟩` from `GlobalTheory.PlaceIsoDec.exists_placeIso_of_dec_le_range E Ω (↥Q.K) w A hA hD`. Use `⟨w', ?_, hw', ?_⟩` and prove the remaining obligations. Establish `hl` using `GlobalTheory.PlaceIsoDec.liesOver_of_isPlaceOver hA hw'`. Use extensionality with `x`.
+
+Use `show x ∈ (w'.under (𝓞 E)).asIdeal ↔ x ∈ w.asIdeal`. Rewrite using `[hl.over]`. Both sides reduce to the same expression. Take `⟨c, -, -, hq, -⟩` from `GlobalTheory.WeilTransport.weil_equiv E Ω A w hA (↥Q.K) Ω A w' hw' (RingEquiv.refl Ω) (algebraMap E ↥Q.K) i hi`. Conclude with `hq`.
+-/
 theorem exists_place_normV_eq : ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (Q : GlobalTheory.RealGal.QCM E Ω) (w : HeightOneSpectrum (𝓞 E)) (A : ValuationSubring Ω), IsPlaceOver A w → Dec (F := E) A ≤ (UpperTheory.V.Af.Bc.res E Ω ↥Q.K).range → ∃ w' : HeightOneSpectrum (𝓞 ↥Q.K), w'.under (𝓞 E) = w ∧ IsPlaceOver A w' ∧ normV w' = normV w := by
   intro E Ω _ _ _ _ _ Q w A hA hD
   obtain ⟨w', hw', i, hi⟩ := GlobalTheory.PlaceIsoDec.exists_placeIso_of_dec_le_range E Ω (↥Q.K) w A hA hD

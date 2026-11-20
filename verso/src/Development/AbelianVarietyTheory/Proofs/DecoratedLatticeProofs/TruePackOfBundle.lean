@@ -12,6 +12,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.Fam
 
+/- English proof (translation)
+Introduce `hL p K q c b hW hX hR`. Take `⟨hOk, hPins, hTw, hStdC, hTS⟩` from `GlobalTheory.Fam.colsStd_of_bWit q b hW`. Take `⟨hChr, hXi, hQ, hLev, hRec, hRP, hOk3, hIdE, hLM⟩` from `GlobalTheory.T.characters_match_bundle q b hW`. Establish `hTop` using `GlobalTheory.T.exists_top_reading_bundle q b hW hX`. Establish `hTW : TrueW (packB b)` using `⟨hOk, hPins, hTw, hStdC, hChr, ⟨1, hTop⟩⟩`.
+
+Establish `hTQ : TrueQ (packB b)` using `⟨hXi, hQ, hTop⟩`. Take `⟨hRec'⟩` from `hRec`. Establish `hPk : PkHyp (packB b)` using `pkHyp_of_real (packB b) hR.join hLM hR.dc hR.frames hRP hR.see hRec' hR.ex hR.prim.1 hR.prim.2 hOk3 hIdE hR.gapS hR.fin hR.gap hTW hTQ`. Conclude with `TruePack.mk _ ⟨hPk, hTW, hTQ, hTS, hLev, ⟨hRec'⟩⟩`.
+-/
 theorem truePack_of_bWit : ∀ {hL : GlobalTheory.Published.LocalLanglandsGL} {p : Bl.Prm hL} {K : Ctx} (q : Bl.WPt p.s K) {c : ℝ}
     (b : Bundle (q.w.D q.Z) q.O c), Bl.BWit q b → Nonempty (Bl.RXs q.x.what₂) → PtRows b → TruePack (packB b) := by
   intro hL p K q c b hW hX hR

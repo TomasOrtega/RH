@@ -5,6 +5,9 @@ noncomputable section
 
 namespace Formalism.MainNotions.TestSideCounting
 
+/- English proof (translation)
+The claim follows from `onePos_of hOB restAdj restStab hT hW restRep restRep2`.
+-/
 theorem onePos_of_opBound (hOB : OpBound) (hT : RestTheta) (hW : RestWt) : OnePos :=
   onePos_of hOB restAdj restStab hT hW restRep restRep2
 

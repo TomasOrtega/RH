@@ -6,6 +6,13 @@ open NumberField IsDedekindDomain GlobalTheory.CuspRep Formalism.UG GlobalTheory
 
 namespace GlobalTheory.JSW.MirSemi
 
+/- English proof (translation)
+Introduce `E _ _ _ a S h t hh ht htS`. Use `ga_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, ht, mul_one, one_mul]`. Use extensionality with `i j w`. Establish `key : GeneralLinearGroup.map ((pLoc E w).comp (pFin E)) (h * t) = GeneralLinearGroup.map ((pLoc E w).comp (pFin E)) (t * h)`.
+
+Rewrite using `[map_mul, map_mul]`. Distinguish the cases in `hw : w ∈ S`. Rewrite using `[htS w hw, mul_one, one_mul]`. Rewrite using `[hh w hw, mul_one, one_mul]`. Establish `e : ((GeneralLinearGroup.map (pFin E) (h * t)).val i j) w = ((GeneralLinearGroup.map (pFin E) (t * h)).val i j) w` using `congrArg (fun g : GL (Fin a) (w.adicCompletion E) => g.val i j) key`.
+
+Rewrite using `[e]`.
+-/
 theorem supS_mul_comm : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ)
     (S : Finset (HeightOneSpectrum (𝓞 E))) (h t : GA E a), h ∈ GlobalTheory.JSW.supS E a S →
     GeneralLinearGroup.map (pInf E) t = 1 →

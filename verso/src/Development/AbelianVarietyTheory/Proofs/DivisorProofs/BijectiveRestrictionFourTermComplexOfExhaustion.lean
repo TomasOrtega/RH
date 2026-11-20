@@ -16,6 +16,9 @@ section Gen
 
 variable {C₁ : Type u} [Category.{0} C₁] {C₂ : Type u'} [Category.{0} C₂]
 
+/- English proof (translation)
+Use `Prod.ext (funext fun T ↦ funext fun T' ↦ funext fun T'' ↦ funext fun φ ↦ funext fun ψ ↦ ?_) (Prod.ext (funext fun T ↦ funext fun T' ↦ funext fun φ ↦ ?_) (funext fun T ↦ ?_))` and prove the remaining obligations. Simplify using `[Cx.D0, Cx.D1, Coef.map_comp, map_sub]`. Simplify using `[Cx.D0, Cx.D1, Cx.diffZero_natural, map_sub]`. Simplify using `[Cx.D0, Cx.D1, Cx.diffOne_diffZero]`.
+-/
 theorem cx_D1_D0_eq_zero (K : Cx C₁) (g : K.M0.c0) : K.D1 (K.D0 g) = 0 := by
   refine Prod.ext (funext fun T ↦ funext fun T' ↦ funext fun T'' ↦ funext fun φ ↦ funext fun ψ ↦ ?_)
     (Prod.ext (funext fun T ↦ funext fun T' ↦ funext fun φ ↦ ?_) (funext fun T ↦ ?_))
@@ -23,6 +26,11 @@ theorem cx_D1_D0_eq_zero (K : Cx C₁) (g : K.M0.c0) : K.D1 (K.D0 g) = 0 := by
   · simp [Cx.D0, Cx.D1, Cx.diffZero_natural, map_sub]
   · simp [Cx.D0, Cx.D1, Cx.diffOne_diffZero]
 
+/- English proof (translation)
+Use `⟨fun T T' T'' T''' φ ψ χ ↦ ?_, fun T T' T'' φ ψ ↦ ?_, fun T T' φ ↦ ?_, fun T ↦ ?_⟩` and prove the remaining obligations. Simplify using `[Cx.D1, Coef.map_comp, map_sub, map_add]`. Normalize the expressions using the abelian group laws. Simplify using `[Cx.D1, Coef.map_comp, map_sub, map_add, Cx.diffZero_natural]`. Normalize the expressions using the abelian group laws.
+
+Simplify using `[Cx.D1, map_sub, Cx.diffOne_natural, Cx.diffOne_diffZero]`. Simplify using `[Cx.D1, Cx.diffTwo_comp_diffOne]`.
+-/
 theorem first_diagonal_phase_mem_unitary (K : Cx C₁) (c : K.T1) : K.D1 c ∈ K.Z2 := by
   refine ⟨fun T T' T'' T''' φ ψ χ ↦ ?_, fun T T' T'' φ ψ ↦ ?_, fun T T' φ ↦ ?_, fun T ↦ ?_⟩
   · simp [Cx.D1, Coef.map_comp, map_sub, map_add]; abel
@@ -32,27 +40,50 @@ theorem first_diagonal_phase_mem_unitary (K : Cx C₁) (c : K.T1) : K.D1 c ∈ K
 
 variable {K : Cx C₁} {K' : Cx C₂} (m : CxMap K K')
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem h1_mk (c : K.Z1) : m.h1 (QuotientAddGroup.mk c) = QuotientAddGroup.mk (m.z1 c) := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem h2_mk (c : K.Z2) : m.h2 (QuotientAddGroup.mk c) = QuotientAddGroup.mk (m.z2 c) := rfl
 
+/- English proof (translation)
+Rewrite using `[QuotientAddGroup.eq_zero_iff, AddSubgroup.mem_addSubgroupOf, AddMonoidHom.mem_range]`.
+-/
 theorem h1_mk_eq_zero_iff_exists_d0 {K : Cx C₁} (c : K.Z1) : (QuotientAddGroup.mk c : K.H1) = 0 ↔ ∃ w, K.D0 w = c := by
   rw [QuotientAddGroup.eq_zero_iff, AddSubgroup.mem_addSubgroupOf, AddMonoidHom.mem_range]
 
+/- English proof (translation)
+Rewrite using `[QuotientAddGroup.eq_zero_iff, AddSubgroup.mem_addSubgroupOf, AddMonoidHom.mem_range]`.
+-/
 theorem h2_mk_eq_zero_iff_exists_d1 {K : Cx C₁} (c : K.Z2) : (QuotientAddGroup.mk c : K.H2) = 0 ↔ ∃ w, K.D1 w = c := by
   rw [QuotientAddGroup.eq_zero_iff, AddSubgroup.mem_addSubgroupOf, AddMonoidHom.mem_range]
 
+/- English proof (translation)
+Establish `e : m.h1 (QuotientAddGroup.mk ⟨x, hx⟩) = m.h1 0`. Rewrite using `[map_zero, h1_mk, h1_mk_eq_zero_iff_exists_d0]`. Conclude with `⟨w, hw.symm⟩`. Conclude with `(h1_mk_eq_zero_iff_exists_d0 _).1 (h e)`.
+-/
 theorem inj1 (h : Function.Injective m.h1) (x : K.T1) (hx : x ∈ K.Z1) (w : K'.M0.c0)
     (hw : m.p1 x = K'.D0 w) : ∃ v, K.D0 v = x := by
   have e : m.h1 (QuotientAddGroup.mk ⟨x, hx⟩) = m.h1 0 := by
     rw [map_zero, h1_mk, h1_mk_eq_zero_iff_exists_d0]; exact ⟨w, hw.symm⟩
   exact (h1_mk_eq_zero_iff_exists_d0 _).1 (h e)
 
+/- English proof (translation)
+Establish `e : m.h2 (QuotientAddGroup.mk ⟨x, hx⟩) = m.h2 0`. Rewrite using `[map_zero, h2_mk, h2_mk_eq_zero_iff_exists_d1]`. Conclude with `⟨w, hw.symm⟩`. Conclude with `(h2_mk_eq_zero_iff_exists_d1 _).1 (h e)`.
+-/
 theorem inj2 (h : Function.Injective m.h2) (x : K.T2) (hx : x ∈ K.Z2) (w : K'.T1)
     (hw : m.p2 x = K'.D1 w) : ∃ v, K.D1 v = x := by
   have e : m.h2 (QuotientAddGroup.mk ⟨x, hx⟩) = m.h2 0 := by
     rw [map_zero, h2_mk, h2_mk_eq_zero_iff_exists_d1]; exact ⟨w, hw.symm⟩
   exact (h2_mk_eq_zero_iff_exists_d1 _).1 (h e)
 
+/- English proof (translation)
+Take `⟨q, hq⟩` from `h (QuotientAddGroup.mk ⟨y, hy⟩)`. Take `⟨⟨x, hx⟩, rfl⟩` from `QuotientAddGroup.mk_surjective q`. Rewrite `hq` using `[h1_mk, QuotientAddGroup.eq, AddSubgroup.mem_addSubgroupOf, AddMonoidHom.mem_range]`. Take `⟨w, hw⟩` from `hq`. Use `⟨x, hx, w, ?_⟩` and prove the remaining obligations.
+
+Establish `e : K'.D0 w = -m.p1 x + y` using `hw`. Rewrite using `[e]`. Normalize the expressions using the abelian group laws.
+-/
 theorem surj1 (h : Function.Surjective m.h1) (y : K'.T1) (hy : y ∈ K'.Z1) :
     ∃ x ∈ K.Z1, ∃ w, y = m.p1 x + K'.D0 w := by
   obtain ⟨q, hq⟩ := h (QuotientAddGroup.mk ⟨y, hy⟩)
@@ -63,6 +94,11 @@ theorem surj1 (h : Function.Surjective m.h1) (y : K'.T1) (hy : y ∈ K'.Z1) :
   have e : K'.D0 w = -m.p1 x + y := hw
   rw [e]; abel
 
+/- English proof (translation)
+Take `⟨q, hq⟩` from `h (QuotientAddGroup.mk ⟨y, hy⟩)`. Take `⟨⟨x, hx⟩, rfl⟩` from `QuotientAddGroup.mk_surjective q`. Rewrite `hq` using `[h2_mk, QuotientAddGroup.eq, AddSubgroup.mem_addSubgroupOf, AddMonoidHom.mem_range]`. Take `⟨w, hw⟩` from `hq`. Use `⟨x, hx, w, ?_⟩` and prove the remaining obligations.
+
+Establish `e : K'.D1 w = -m.p2 x + y` using `hw`. Rewrite using `[e]`. Normalize the expressions using the abelian group laws.
+-/
 theorem surj2 (h : Function.Surjective m.h2) (y : K'.T2) (hy : y ∈ K'.Z2) :
     ∃ x ∈ K.Z2, ∃ w, y = m.p2 x + K'.D1 w := by
   obtain ⟨q, hq⟩ := h (QuotientAddGroup.mk ⟨y, hy⟩)
@@ -73,6 +109,15 @@ theorem surj2 (h : Function.Surjective m.h2) (y : K'.T2) (hy : y ∈ K'.Z2) :
   have e : K'.D1 w = -m.p2 x + y := hw
   rw [e]; abel
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `q hq`. Take `⟨⟨x, hx⟩, rfl⟩` from `QuotientAddGroup.mk_surjective q`. Rewrite `hq` using `[h2_mk, h2_mk_eq_zero_iff_exists_d1]`.
+
+Take `⟨w, hw⟩` from `hq`. Conclude with `(h2_mk_eq_zero_iff_exists_d1 _).2 (hi x hx w hw.symm)`. Introduce `q`. Take `⟨⟨y, hy⟩, rfl⟩` from `QuotientAddGroup.mk_surjective q`. Take `⟨x, hx, w, hxw⟩` from `hs y hy`.
+
+Use `⟨QuotientAddGroup.mk ⟨x, hx⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[h2_mk, QuotientAddGroup.eq, AddSubgroup.mem_addSubgroupOf, AddMonoidHom.mem_range]`. Use `⟨w, ?_⟩` and prove the remaining obligations. Use `show K'.D1 w = -m.p2 x + y`. Rewrite using `[hxw]`.
+
+Normalize the expressions using the abelian group laws.
+-/
 theorem h2_bijective_of_surj_of_inj_on_cocycles (hs : ∀ y ∈ K'.Z2, ∃ x ∈ K.Z2, ∃ w, y = m.p2 x + K'.D1 w)
     (hi : ∀ x ∈ K.Z2, ∀ w, m.p2 x = K'.D1 w → ∃ v, K.D1 v = x) : Function.Bijective m.h2 := by
   constructor
@@ -110,6 +155,9 @@ def lvl (K : Cx C) {P P' : ObjectProperty C} (h : P ≤ P') : CxMap (K.res P'.ι
   comp_commutes_diffOne _ _ := rfl
   comp_commutes_diffTwo _ _ := rfl
 
+/- English proof (translation)
+Introduce `g`. Use `⟨fun T ↦ if hT : P T.obj then g ⟨T.obj, hT⟩ else 0, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `T`. Use `show (if hT : P T.obj then g ⟨T.obj, hT⟩ else 0) = g T`. Rewrite using `[dif_pos T.property]`.
+-/
 theorem level_p0_surjective (K : Cx C) {P P' : ObjectProperty C} (h : P ≤ P') :
     Function.Surjective (lvl K h).p0 := by
   classical
@@ -119,6 +167,11 @@ theorem level_p0_surjective (K : Cx C) {P P' : ObjectProperty C} (h : P ≤ P') 
   show (if hT : P T.obj then g ⟨T.obj, hT⟩ else 0) = g T
   rw [dif_pos T.property]
 
+/- English proof (translation)
+Introduce `c`. Use `⟨(fun T T' φ ↦ if hT : P T.obj ∧ P T'.obj then c.1 ⟨T.obj, hT.1⟩ ⟨T'.obj, hT.2⟩ (ObjectProperty.homMk φ.hom) else 0, fun T ↦ if hT : P T.obj then c.2 ⟨T.obj, hT⟩ else 0), ?_⟩` and prove the remaining obligations. Use `Prod.ext (funext fun T ↦ funext fun T' ↦ funext fun φ ↦ ?_) (funext fun T ↦ ?_)` and prove the remaining obligations. Use `show (if hT : P T.obj ∧ P T'.obj then c.1 ⟨T.obj, hT.1⟩ ⟨T'.obj, hT.2⟩ (ObjectProperty.homMk φ.hom) else 0) = c.1 T T' φ`. Rewrite using `[dif_pos ⟨T.property, T'.property⟩]`.
+
+Both sides reduce to the same expression. Use `show (if hT : P T.obj then c.2 ⟨T.obj, hT⟩ else 0) = c.2 T`. Rewrite using `[dif_pos T.property]`.
+-/
 theorem level_p1_surjective (K : Cx C) {P P' : ObjectProperty C} (h : P ≤ P') :
     Function.Surjective (lvl K h).p1 := by
   classical
@@ -139,12 +192,18 @@ section Glue
 
 variable {C : Type u} [Category.{0} C] {Q : ℕ → ObjectProperty C}
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `hex T`. Take `⟨b, hb⟩` from `hex T'`. Conclude with `⟨max a b, hQ _ _ _ (le_max_left _ _) ha, hQ _ _ _ (le_max_right _ _) hb⟩`.
+-/
 theorem ex2 (hQ : ∀ m n T, m ≤ n → Q m T → Q n T) (hex : ∀ T, ∃ n, Q n T) (T T' : C) :
     ∃ n, Q n T ∧ Q n T' := by
   obtain ⟨a, ha⟩ := hex T
   obtain ⟨b, hb⟩ := hex T'
   exact ⟨max a b, hQ _ _ _ (le_max_left _ _) ha, hQ _ _ _ (le_max_right _ _) hb⟩
 
+/- English proof (translation)
+Take `⟨a, ha, ha'⟩` from `ex2 hQ hex T T'`. Take `⟨b, hb⟩` from `hex T''`. Conclude with `⟨max a b, hQ _ _ _ (le_max_left _ _) ha, hQ _ _ _ (le_max_left _ _) ha', hQ _ _ _ (le_max_right _ _) hb⟩`.
+-/
 theorem ex3 (hQ : ∀ m n T, m ≤ n → Q m T → Q n T) (hex : ∀ T, ∃ n, Q n T) (T T' T'' : C) :
     ∃ n, Q n T ∧ Q n T' ∧ Q n T'' := by
   obtain ⟨a, ha, ha'⟩ := ex2 hQ hex T T'
@@ -152,6 +211,9 @@ theorem ex3 (hQ : ∀ m n T, m ≤ n → Q m T → Q n T) (hex : ∀ T, ∃ n, Q
   exact ⟨max a b, hQ _ _ _ (le_max_left _ _) ha, hQ _ _ _ (le_max_left _ _) ha',
     hQ _ _ _ (le_max_right _ _) hb⟩
 
+/- English proof (translation)
+Take `⟨a, ha, ha', ha''⟩` from `ex3 hQ hex T T' T''`. Take `⟨b, hb⟩` from `hex T'''`. Conclude with `⟨max a b, hQ _ _ _ (le_max_left _ _) ha, hQ _ _ _ (le_max_left _ _) ha', hQ _ _ _ (le_max_left _ _) ha'', hQ _ _ _ (le_max_right _ _) hb⟩`.
+-/
 theorem ex4 (hQ : ∀ m n T, m ≤ n → Q m T → Q n T) (hex : ∀ T, ∃ n, Q n T) (T T' T'' T''' : C) :
     ∃ n, Q n T ∧ Q n T' ∧ Q n T'' ∧ Q n T''' := by
   obtain ⟨a, ha, ha', ha''⟩ := ex3 hQ hex T T' T''
@@ -174,6 +236,13 @@ def glue2 (g : ∀ n, (M.res (Q n).ι).c2) : M.c2 := fun T T' T'' φ ψ ↦
     (ObjectProperty.homMk φ) (ObjectProperty.homMk ψ)
 
 include hQ in
+/- English proof (translation)
+Establish `mono : ∀ n m, n ≤ m → ∀ (T : C) (h : Q n T) (k : Q m T), g m ⟨T, k⟩ = g n ⟨T, h⟩`. Introduce `n m hnm`. Proceed by induction on `m, hnm using Nat.le_induction with`. Consider the case `base => intros`. Both sides reduce to the same expression.
+
+Consider the case `succ m hnm ih`. Introduce `T h k`. Rewrite using `[hc m T (hQ _ _ _ hnm h) k]`. Conclude with `ih T h _`. Establish `hn` using `(hex T).choose_spec`.
+
+Conclude with `(mono _ (max (hex T).choose m) (le_max_left _ _) T hn (hQ _ _ _ (le_max_right _ _) h)).symm.trans (mono m _ (le_max_right _ _) T h _)`.
+-/
 theorem glueZeroCochain_apply_of_tower (g : ∀ n, (M.res (Q n).ι).c0)
     (hc : ∀ n (T : C) (h : Q n T) (k : Q (n + 1) T), g (n + 1) ⟨T, k⟩ = g n ⟨T, h⟩)
     (m : ℕ) (T : C) (h : Q m T) : glue0 hex M g T = g m ⟨T, h⟩ := by
@@ -189,6 +258,13 @@ theorem glueZeroCochain_apply_of_tower (g : ∀ n, (M.res (Q n).ι).c0)
   exact (mono _ (max (hex T).choose m) (le_max_left _ _) T hn (hQ _ _ _ (le_max_right _ _) h)).symm.trans
     (mono m _ (le_max_right _ _) T h _)
 
+/- English proof (translation)
+Establish `mono : ∀ n m, n ≤ m → ∀ (T T' : C) (φ : T ⟶ T') (h : Q n T) (h' : Q n T') (k : Q m T) (k' : Q m T'), g m ⟨T, k⟩ ⟨T', k'⟩ (ObjectProperty.homMk φ) = g n ⟨T, h⟩ ⟨T', h'⟩ (ObjectProperty.homMk φ)`. Introduce `n m hnm`. Proceed by induction on `m, hnm using Nat.le_induction with`. Consider the case `base => intros`. Both sides reduce to the same expression.
+
+Consider the case `succ m hnm ih`. Introduce `T T' φ h h' k k'`. Rewrite using `[hc m T T' φ (hQ _ _ _ hnm h) (hQ _ _ _ hnm h') k k']`. Conclude with `ih T T' φ h h' _ _`. Establish `hn` using `(ex2 hQ hex T T').choose_spec`.
+
+Conclude with `(mono _ (max (ex2 hQ hex T T').choose m) (le_max_left _ _) T T' φ hn.1 hn.2 (hQ _ _ _ (le_max_right _ _) h) (hQ _ _ _ (le_max_right _ _) h')).symm.trans (mono m _ (le_max_right _ _) T T' φ h h' _ _)`.
+-/
 theorem glueOneCochain_apply_of_tower (g : ∀ n, (M.res (Q n).ι).c1)
     (hc : ∀ n (T T' : C) (φ : T ⟶ T') (h : Q n T) (h' : Q n T') (k : Q (n + 1) T) (k' : Q (n + 1) T'),
       g (n + 1) ⟨T, k⟩ ⟨T', k'⟩ (ObjectProperty.homMk φ) = g n ⟨T, h⟩ ⟨T', h'⟩ (ObjectProperty.homMk φ))
@@ -208,6 +284,13 @@ theorem glueOneCochain_apply_of_tower (g : ∀ n, (M.res (Q n).ι).c1)
     (hQ _ _ _ (le_max_right _ _) h) (hQ _ _ _ (le_max_right _ _) h')).symm.trans
     (mono m _ (le_max_right _ _) T T' φ h h' _ _)
 
+/- English proof (translation)
+Establish `mono : ∀ n m, n ≤ m → ∀ (T T' T'' : C) (φ : T ⟶ T') (ψ : T' ⟶ T'') (h : Q n T) (h' : Q n T') (h'' : Q n T'') (k : Q m T) (k' : Q m T') (k'' : Q m T''), g m ⟨T, k⟩ ⟨T', k'⟩ ⟨T'', k''⟩ (ObjectProperty.homMk φ) (ObjectProperty.homMk ψ) = g n ⟨T, h⟩ ⟨T', h'⟩ ⟨T'', h''⟩ (ObjectPropert …`. Introduce `n m hnm`. Proceed by induction on `m, hnm using Nat.le_induction with`. Consider the case `base => intros`. Both sides reduce to the same expression.
+
+Consider the case `succ m hnm ih`. Introduce `T T' T'' φ ψ h h' h'' k k' k''`. Rewrite using `[hc m T T' T'' φ ψ (hQ _ _ _ hnm h) (hQ _ _ _ hnm h') (hQ _ _ _ hnm h'') k k' k'']`. Conclude with `ih T T' T'' φ ψ h h' h'' _ _ _`. Establish `hn` using `(ex3 hQ hex T T' T'').choose_spec`.
+
+Conclude with `(mono _ (max (ex3 hQ hex T T' T'').choose m) (le_max_left _ _) T T' T'' φ ψ hn.1 hn.2.1 hn.2.2 (hQ _ _ _ (le_max_right _ _) h) (hQ _ _ _ (le_max_right _ _) h') (hQ _ _ _ (le_max_right _ _) h'')).symm.trans (mono m _ (le_max_right _ _) T T' T'' φ ψ h h' h'' _ _ _)`.
+-/
 theorem glueTwoCochain_apply_of_tower (g : ∀ n, (M.res (Q n).ι).c2)
     (hc : ∀ n (T T' T'' : C) (φ : T ⟶ T') (ψ : T' ⟶ T'') (h : Q n T) (h' : Q n T') (h'' : Q n T'')
       (k : Q (n + 1) T) (k' : Q (n + 1) T') (k'' : Q (n + 1) T''),
@@ -237,6 +320,41 @@ end Glue
 
 open ObjectProperty in
 
+/- English proof (translation)
+Introduce `C _ D _ K P ℓ N₀ hP hPex hB`. Set `Q : ℕ → ObjectProperty C` to `fun n ↦ P (N₀ + n)`. Establish `hQ : ∀ m n T, m ≤ n → Q m T → Q n T` using `fun m n T h ↦ hP _ _ T (by omega)`. Establish `hQex : ∀ T, ∃ n, Q n T` using `fun T ↦`. Set `⟨n, hn⟩` to `hPex T; ⟨n, hP _ _ _ (by omega) hn⟩`.
+
+Establish `hB' : ∀ n, ∃ h : ∀ U, Q n (ℓ.obj U), ((K.res (Q n).ι).resMap ((Q n).lift ℓ h)).Bij` using `fun n ↦ hB _ (by omega)`. Use `choose hl hbij using hB'`. Set `μ : ∀ n, CxMap (K.res (Q n).ι) (K.res ℓ)` to `fun n ↦ (K.res (Q n).ι).resMap ((Q n).lift ℓ (hl n))`. Establish `hμ : ∀ n, (Function.Injective (μ n).h1 ∧ Function.Surjective (μ n).h1) ∧ (Function.Injective (μ n).h2 ∧ Function.Surjective (μ n).h2)` using `fun n ↦ (hbij n).2`. Set `ρ : ∀ n, CxMap (K.res (Q (n + 1)).ι) (K.res (Q n).ι)` to `fun n ↦ lvl K (P := Q n) (P' := Q (n + 1)) (fun T hT ↦ hQ n (n + 1) T (Nat.le_succ n) hT)`.
+
+Establish `hμρ1 : ∀ n x, (μ n).p1 ((ρ n).p1 x) = (μ (n + 1)).p1 x` using `fun n x ↦ rfl`. Establish `hμρ2 : ∀ n x, (μ n).p2 ((ρ n).p2 x) = (μ (n + 1)).p2 x` using `fun n x ↦ rfl`. Establish `hS2 : ∀ n, ∀ b ∈ (K.res (Q n).ι).Z2, ∃ b' ∈ (K.res (Q (n + 1)).ι).Z2, ∃ a, b = (ρ n).p2 b' + (K.res (Q n).ι).D1 a`. Introduce `n b hb`. Take `⟨b', hb', w, hw⟩` from `surj2 (μ (n + 1)) (hμ (n + 1)).2.2 ((μ n).p2 b) ((μ n).p2_mem_Z2_of_mem_Z2 hb)`.
+
+Establish `hz : (μ n).p2 (b - (ρ n).p2 b') = (K.res ℓ).D1 w`. Rewrite using `[map_sub, hμρ2, hw]`. Normalize the expressions using the abelian group laws. Take `⟨v, hv⟩` from `inj2 (μ n) (hμ n).2.1 _ (sub_mem hb ((ρ n).p2_mem_Z2_of_mem_Z2 hb')) w hz`. Conclude with `⟨b', hb', v, by rw [hv]; abel⟩`.
+
+Establish `hS1 : ∀ n (a : (K.res (Q n).ι).T1), (K.res (Q n).ι).D1 a = 0 → ∃ a' w, (K.res (Q (n + 1)).ι).D1 a' = 0 ∧ a = (ρ n).p1 a' + (K.res (Q n).ι).D0 w`. Introduce `n a ha`. Take `⟨a', ha', w, hw⟩` from `surj1 (μ (n + 1)) (hμ (n + 1)).1.2 ((μ n).p1 a) ((μ n).z1 ⟨a, ha⟩).2`. Establish `hz : (μ n).p1 (a - (ρ n).p1 a') = (K.res ℓ).D0 w`. Rewrite using `[map_sub, hμρ1, hw]`.
+
+Normalize the expressions using the abelian group laws. Establish `hmem : a - (ρ n).p1 a' ∈ (K.res (Q n).ι).Z1` using `sub_mem ha ((ρ n).z1 ⟨a', ha'⟩).2`. Take `⟨v, hv⟩` from `inj1 (μ n) (hμ n).1.1 _ hmem w hz`. Conclude with `⟨a', v, ha', by rw [hv]; abel⟩`. Apply `h2_bijective_of_surj_of_inj_on_cocycles (K.resMap ℓ)` to reduce the goal to its premises.
+
+Introduce `y hy`. Take `⟨x, hx, w, hw⟩` from `surj2 (μ 0) (hμ 0).2.2 y hy`. Take `⟨b, hb0, hbZ, hbc⟩` from `GlobalTheory.T.tower_complex_lift_and_extension_lemmas.2 (fun n ↦ (K.res (Q n).ι).T1) (fun n ↦ (K.res (Q n).ι).T2) (fun n ↦ (K.res (Q n).ι).Z2) (fun n ↦ (K.res (Q n).ι).D1) (fun n ↦ (ρ n).p1) (fun n ↦ (ρ n).p2) (fun n x ↦ first_diagonal_phase_mem_unitary _ x) (fun n x ↦ (ρ n).pul …`. Establish `hc2` using `fun (n : ℕ) (T T' T'' : C) (φ : T ⟶ T') (ψ : T' ⟶ T'') (h : Q n T) (h' : Q n T') (h'' : Q n T'') (_ : Q (n + 1) T) (_ : Q (n + 1) T') (_ : Q (n + 1) T'') ↦ congrArg (fun q : (K.res (Q n).ι).T2 ↦ q.1 ⟨T, h⟩ ⟨T', h'⟩ ⟨T'', h''⟩ (homMk φ) (homMk ψ)) (hbc n)`. Establish `hc1` using `fun (n : ℕ) (T T' : C) (φ : T ⟶ T') (h : Q n T) (h' : Q n T') (_ : Q (n + 1) T) (_ : Q (n + 1) T') ↦ congrArg (fun q : (K.res (Q n).ι).T2 ↦ q.2.1 ⟨T, h⟩ ⟨T', h'⟩ (homMk φ)) (hbc n)`.
+
+Establish `hc0` using `fun (n : ℕ) (T : C) (h : Q n T) (_ : Q (n + 1) T) ↦ congrArg (fun q : (K.res (Q n).ι).T2 ↦ q.2.2 ⟨T, h⟩) (hbc n)`. Establish `e2` using `glueTwoCochain_apply_of_tower hQ hQex K.M0 (fun n ↦ (b n).1) hc2`. Establish `e1` using `glueOneCochain_apply_of_tower hQ hQex K.M1 (fun n ↦ (b n).2.1) hc1`. Establish `e0` using `glueZeroCochain_apply_of_tower hQ hQex K.M2 (fun n ↦ (b n).2.2) hc0`. Use `⟨(glue2 hQ hQex K.M0 (fun n ↦ (b n).1), glue1 hQ hQex K.M1 (fun n ↦ (b n).2.1), glue0 hQex K.M2 (fun n ↦ (b n).2.2)), ?_, w, ?_⟩` and prove the remaining obligations.
+
+Use `⟨fun T T' T'' T''' φ ψ χ ↦ ?_, fun T T' T'' φ ψ ↦ ?_, fun T T' φ ↦ ?_, fun T ↦ ?_⟩` and prove the remaining obligations. Take `⟨m, h1, h2, h3, h4⟩` from `ex4 hQ hQex T T' T'' T''' dsimp only`. Rewrite using `[e2 m T T' T'' φ ψ h1 h2 h3, e2 m T T'' T''' (φ ≫ ψ) χ h1 h3 h4, e2 m T T' T''' φ (ψ ≫ χ) h1 h2 h4, e2 m T' T'' T''' ψ χ h2 h3 h4]`. Conclude with `(hbZ m).1 ⟨T, h1⟩ ⟨T', h2⟩ ⟨T'', h3⟩ ⟨T''', h4⟩ (homMk φ) (homMk ψ) (homMk χ)`. Take `⟨m, h1, h2, h3⟩` from `ex3 hQ hQex T T' T'' dsimp only`.
+
+Rewrite using `[e1 m T T'' (φ ≫ ψ) h1 h3, e1 m T T' φ h1 h2, e1 m T' T'' ψ h2 h3, e2 m T T' T'' φ ψ h1 h2 h3]`. Conclude with `(hbZ m).2.1 ⟨T, h1⟩ ⟨T', h2⟩ ⟨T'', h3⟩ (homMk φ) (homMk ψ)`. Take `⟨m, h1, h2⟩` from `ex2 hQ hQex T T' dsimp only`. Rewrite using `[e0 m T' h2, e0 m T h1, e1 m T T' φ h1 h2]`. Conclude with `(hbZ m).2.2.1 ⟨T, h1⟩ ⟨T', h2⟩ (homMk φ)`.
+
+Take `⟨m, h1⟩` from `hQex T dsimp only`. Rewrite using `[e0 m T h1]`. Conclude with `(hbZ m).2.2.2 ⟨T, h1⟩`. Establish `hp : (K.resMap ℓ).p2 (glue2 hQ hQex K.M0 (fun n ↦ (b n).1), glue1 hQ hQex K.M1 (fun n ↦ (b n).2.1), glue0 hQex K.M2 (fun n ↦ (b n).2.2)) = (μ 0).p2 (b 0)`. Use `Prod.ext (funext fun U ↦ funext fun U' ↦ funext fun U'' ↦ funext fun φ ↦ funext fun ψ ↦ ?_) (Prod.ext (funext fun U ↦ funext fun U' ↦ funext fun φ ↦ ?_) (funext fun U ↦ ?_))` and prove the remaining obligations.
+
+Conclude with `e2 0 _ _ _ (ℓ.map φ) (ℓ.map ψ) (hl 0 U) (hl 0 U') (hl 0 U'')`. Conclude with `e1 0 _ _ (ℓ.map φ) (hl 0 U) (hl 0 U')`. Conclude with `e0 0 _ (hl 0 U)`. Rewrite using `[hp, hb0]`. Conclude with `hw`.
+
+Introduce `x hx w hw`. Set `bx : ∀ n, (K.res (Q n).ι).T2` to `fun n ↦ (K.resMap (Q n).ι).p2 x`. Establish `hbx : ∀ n, ∃ a, (K.res (Q n).ι).D1 a = bx n` using `fun n ↦ inj2 (μ n) (hμ n).2.1 (bx n) ((K.resMap (Q n).ι).p2_mem_Z2_of_mem_Z2 hx) w hw`. Take `⟨a, hac, had⟩` from `GlobalTheory.T.tower_complex_lift_and_extension_lemmas.1 (fun n ↦ (K.res (Q n).ι).M0.c0) (fun n ↦ (K.res (Q n).ι).T1) (fun n ↦ (K.res (Q n).ι).T2) (fun n ↦ (K.res (Q n).ι).D0) (fun n ↦ (K.res (Q n).ι).D1) (fun n ↦ (ρ n).p0) (fun n ↦ (ρ n).p1) (fun n ↦ (ρ n).p2) (fun n x ↦ cx_D1_D …`. Establish `hc1` using `fun (n : ℕ) (T T' : C) (φ : T ⟶ T') (h : Q n T) (h' : Q n T') (_ : Q (n + 1) T) (_ : Q (n + 1) T') ↦ congrArg (fun q : (K.res (Q n).ι).T1 ↦ q.1 ⟨T, h⟩ ⟨T', h'⟩ (homMk φ)) (hac n)`.
+
+Establish `hc0` using `fun (n : ℕ) (T : C) (h : Q n T) (_ : Q (n + 1) T) ↦ congrArg (fun q : (K.res (Q n).ι).T1 ↦ q.2 ⟨T, h⟩) (hac n)`. Establish `e1` using `glueOneCochain_apply_of_tower hQ hQex K.M0 (fun n ↦ (a n).1) hc1`. Establish `e0` using `glueZeroCochain_apply_of_tower hQ hQex K.M1 (fun n ↦ (a n).2) hc0`. Use `⟨(glue1 hQ hQex K.M0 (fun n ↦ (a n).1), glue0 hQex K.M1 (fun n ↦ (a n).2)), ?_⟩` and prove the remaining obligations. Use `Prod.ext (funext fun T ↦ funext fun T' ↦ funext fun T'' ↦ funext fun φ ↦ funext fun ψ ↦ ?_) (Prod.ext (funext fun T ↦ funext fun T' ↦ funext fun φ ↦ ?_) (funext fun T ↦ ?_))` and prove the remaining obligations.
+
+Take `⟨m, h1, h2, h3⟩` from `ex3 hQ hQex T T' T''`. Simplify using `only [Cx.D1, AddMonoidHom.coe_mk, ZeroHom.coe_mk]`. Rewrite using `[e1 m T T' φ h1 h2, e1 m T T'' (φ ≫ ψ) h1 h3, e1 m T' T'' ψ h2 h3]`. Conclude with `congrArg (fun q : (K.res (Q m).ι).T2 ↦ q.1 ⟨T, h1⟩ ⟨T', h2⟩ ⟨T'', h3⟩ (homMk φ) (homMk ψ)) (had m)`. Take `⟨m, h1, h2⟩` from `ex2 hQ hQex T T'`.
+
+Simplify using `only [Cx.D1, AddMonoidHom.coe_mk, ZeroHom.coe_mk]`. Rewrite using `[e0 m T' h2, e0 m T h1, e1 m T T' φ h1 h2]`. Conclude with `congrArg (fun q : (K.res (Q m).ι).T2 ↦ q.2.1 ⟨T, h1⟩ ⟨T', h2⟩ (homMk φ)) (had m)`. Take `⟨m, h1⟩` from `hQex T`. Simplify using `only [Cx.D1, AddMonoidHom.coe_mk, ZeroHom.coe_mk]`.
+
+Rewrite using `[e0 m T h1]`. Conclude with `congrArg (fun q : (K.res (Q m).ι).T2 ↦ q.2.2 ⟨T, h1⟩) (had m)`.
+-/
 theorem tower_two : ∀ (C : Type 1) [Category.{0} C] (D : Type) [Category.{0} D] (K : Cx C)
     (P : ℕ → ObjectProperty C) (ℓ : D ⥤ C) (N₀ : ℕ), (∀ m n T, m ≤ n → P m T → P n T) →
     (∀ T, ∃ n, P n T) → (∀ N, N₀ ≤ N → ∃ h : ∀ U, P N (ℓ.obj U),

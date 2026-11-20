@@ -7,6 +7,9 @@ import Development.WeilBound.RepresentationTheoryGL.HolomorphicDiscreteSeries.Ha
 
 namespace PositivityTheory.RgHe
 
+/- English proof (translation)
+The claim follows from `Dec.walk (Sl.stepL LowestKTypeModel.models LowestKTypeModel.ofInt LowestKTypeModel.seed Dec.decomposition_existence_holds) (SM.stepM LowestKTypeModel.models LowestKTypeModel.ofInt LowestKTypeModel.seed Dec.decomposition_existence_holds) (PositivityTheory.RgHe3.base LowestKTypeMod …`.
+-/
 theorem occ : Occ :=
   Dec.walk (Sl.stepL LowestKTypeModel.models LowestKTypeModel.ofInt LowestKTypeModel.seed Dec.decomposition_existence_holds)
     (SM.stepM LowestKTypeModel.models LowestKTypeModel.ofInt LowestKTypeModel.seed Dec.decomposition_existence_holds)

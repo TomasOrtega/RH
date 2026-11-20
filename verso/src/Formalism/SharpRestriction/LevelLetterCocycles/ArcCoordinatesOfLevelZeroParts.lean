@@ -40,6 +40,9 @@ def LevelZeroModPRefined (A : ArcP n) (c' : ZMod n) (e : ℕ) (T : LocLat G Qp L
       (condNN W T (c' + ((e + 1 : ℕ) : ZMod n)) (e + 1) b) fun m => lE W κ * f m) →
     InFNc W T (c' + ((e + 1 : ℕ) : ZMod n)) 1 x
 
+/- English proof (translation)
+Introduce `x k f hx hr hf` and use `⟨h1 x k f hx hr hf, h2 x k f hx hr hf⟩`.
+-/
 theorem secCrit0_of_pieces [IsDomain O] [NeZero n] (A : ArcP n) (c' : ZMod n) (e : ℕ)
     (T : LocLat G Qp LL O) {d : ℕ} (b : Fin d → W.DD T) (sol : Fin d → ℕ → Fin d → LL)
     (h1 : LevelZeroModP A c' e T b sol) (h2 : LevelZeroModPRefined A c' e T b sol) : SecCrit0 A c' e T b sol :=
@@ -73,6 +76,9 @@ def LevelZeroModPRefinedLocal (D : D7) (HW : HWOf D.loc) : Prop :=
         (sol : Fin d → ℕ → Fin d → ↥LL.1), Formalism.MainNotions.ArcLiftingSetup.IsHor ((HW l).W K 1 LL hG) T c' b sol →
           ∀ e : ℕ, LevC.LevelZeroModPRefined (W := (HW l).W K 1 LL hG) A c' e T b sol
 
+/- English proof (translation)
+Introduce `l _ K LL hG hCA h5l A hA c' hc' T hT d b sol hb e`. Use `neZero_finrank_max_unramified K` as an intermediate fact. Conclude with `LevC.secCrit0_of_pieces A c' e T b sol (h1 l K LL hG hCA h5l A hA c' hc' T hT d b sol hb e) (h2 l K LL hG hCA h5l A hA c' hc' T hT d b sol hb e)`.
+-/
 theorem secCrit0L_of_pieces (D : D7) (HW : HWOf D.loc) (h1 : LevelZeroModPLocal D HW) (h2 : LevelZeroModPRefinedLocal D HW) :
     SecCrit0L D HW := by
   intro l _ K LL hG hCA h5l A hA c' hc' T hT d b sol hb e
@@ -80,6 +86,9 @@ theorem secCrit0L_of_pieces (D : D7) (HW : HWOf D.loc) (h1 : LevelZeroModPLocal 
   exact LevC.secCrit0_of_pieces A c' e T b sol (h1 l K LL hG hCA h5l A hA c' hc' T hT d b sol hb e)
     (h2 l K LL hG hCA h5l A hA c' hc' T hT d b sol hb e)
 
+/- English proof (translation)
+The claim follows from `arc_coordinates_of_level_zero D HW F Cm (secCrit0L_of_pieces D HW h1 h2)`.
+-/
 theorem arc_coordinates_of_level_zero_parts (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW)
     (Cm : CmpOf D.loc D.locA HW F) (h1 : LevelZeroModPLocal D HW) (h2 : LevelZeroModPRefinedLocal D HW) : ArcCoordinatesTheorem D HW F Cm :=
   arc_coordinates_of_level_zero D HW F Cm (secCrit0L_of_pieces D HW h1 h2)
@@ -120,6 +129,9 @@ def PolarToPole : Prop :=
         SecIn W c (A.len c) (Formalism.MainNotions.UnusedSlot80.LevC.condPolar (W := W) T₂ c (A.len c) b) f →
         SecIn W c (A.len c) (condPole W A T₂ c b) f
 
+/- English proof (translation)
+Introduce `hCA h5 A hA T₂ Y ι π hT₂ hY hses c hc w hI hP hpx d b sol hb`. Take `⟨κ, f, hrep, hS⟩` from `h1 hCA h5 A hA T₂ Y ι π hT₂ hY hses c hc w hI hP hpx d b sol hb`. Conclude with `⟨κ, f, hrep, h2 hCA h5 A hA T₂ hT₂ c hc d b sol hb f hS⟩`.
+-/
 theorem splitShape_of_pieces (h1 : SplitPolar W) (h2 : PolarToPole W) : SplitShape W := by
   intro hCA h5 A hA T₂ Y ι π hT₂ hY hses c hc w hI hP hpx d b sol hb
   obtain ⟨κ, f, hrep, hS⟩ := h1 hCA h5 A hA T₂ Y ι π hT₂ hY hses c hc w hI hP hpx d b sol hb
@@ -131,6 +143,9 @@ def SplitPolarL (D : D7) (HW : HWOf D.loc) : Prop :=
 def PolarToPoleL (D : D7) (HW : HWOf D.loc) : Prop :=
   AtCaseA fun l _ K LL hG => PolarToPole ((HW l).W K 1 LL hG)
 
+/- English proof (translation)
+Introduce `l _ K LL hG hA h5` and use `splitShape_of_pieces _ (h1 l K LL hG hA h5) (h2 l K LL hG hA h5)`.
+-/
 theorem splitShapeL_of_pieces (D : D7) (HW : HWOf D.loc) (h1 : SplitPolarL D HW) (h2 : PolarToPoleL D HW) :
     SplitShapeL D HW := fun l _ K LL hG hA h5 =>
   splitShape_of_pieces _ (h1 l K LL hG hA h5) (h2 l K LL hG hA h5)

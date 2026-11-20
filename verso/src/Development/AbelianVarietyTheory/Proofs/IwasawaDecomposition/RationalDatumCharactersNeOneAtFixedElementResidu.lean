@@ -12,6 +12,13 @@ open GlobalTheory.TwistChoice (Reading ReadsAt)
 
 namespace GlobalTheory.HeightCounting
 
+/- English proof (translation)
+Introduce `D cf Rw low Pq S hL eig θ Bs hr i kv h1`. Use `haveI : NeZero (D.host.g kv.1) := ⟨(D.host.g_prime kv.1).ne_zero⟩`. Take `⟨θ', hθ', hψ⟩` from `Bs.exp.psiU_gen i true`. Establish `hu : Formalism.L2.NX.tvAt (p` using `fun kv : (Σ k : Fin 2, D.nd.PlG k) => D.host.g kv.1) hr kv ∈ D.nexp.U := by`. Rewrite using `[Bs.exp.U_eq]`.
+
+Conclude with `Formalism.L2.NX.tvAt_mem hr _`. Establish `hu' : Formalism.L2.NX.tvAt (p` using `fun kv : (Σ k : Fin 2, D.nd.PlG k) => D.host.g kv.1) hr kv ∈ Formalism.IndefR.NX.U D.nd := Formalism.L2.NX.tvAt_mem hr _`. Establish `e` using `Bs.psiU i true _ hu hu'`. Establish `e2 : psiUOf D.nd (NX.xiRed D) θ ⟨_, hu'⟩ = θ kv.1 (Multiplicative.ofAdd (NX.xiRed D kv))` using `psiXi_tvAt (p := fun kv : (Σ k : Fin 2, D.nd.PlG k) => D.host.g kv.1) (NX.xiRed D) (fun kv => θ kv.1) hr kv`. Establish `e3 : D.nexp.psiU i true ⟨_, hu⟩ = θ' kv (Multiplicative.ofAdd 1)` using `(hψ ⟨_, hu⟩).trans (Formalism.L2.NX.stdVal_tvAt θ' hr kv)`.
+
+Rewrite `e` using `[e2, h1, e3]`. Use `Formalism.L2.NX.char_one_ne (θ' kv) (hθ' hr kv) (Units.ext (e.trans ?_))` and prove the remaining obligations. Conclude with `map_one (readLL0 S i true)`.
+-/
 theorem theta_xiRed_ne_one : ∀ (D : D7) (cf : CharFrame D) (Rw : RowSide D) (low : Finset ℕ)
     (Pq : HeightOneSpectrum (𝓞 (maximalRealSubfield D.host.E)) → PlE D.host) (S : RatDat D.ntw)
     (hL : ∀ j, ℕ → PlE D.host → Module.End D.what₂.LL (S.WL j)) (eig : ℕ → D.what₂.FT → ℕ → PlE D.host → ↥D.LL0)

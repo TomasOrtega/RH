@@ -11,11 +11,25 @@ open scoped ENNReal ComplexConjugate ContDiff
 
 namespace GlobalTheory.CompanionTheory.FSCrofton.HessFrame
 
+/- English proof (translation)
+The claim follows from `(contDiff_norm_sq ℝ).comp_contDiffOn ((ReciprocityTheory.L2DbarEstimates.contDiffOn_of_differentiableOn d f U hU hf).restrict_scalars ℝ)`.
+-/
 private lemma contDiffOn_norm_sq_of_differentiableOn {d : ℕ} {U : Set (V d)} (hU : IsOpen U) {f : V d → ℂ}
     (hf : DifferentiableOn ℂ f U) : ContDiffOn ℝ ∞ (fun v => ‖f v‖ ^ 2) U :=
   (contDiff_norm_sq ℝ).comp_contDiffOn
     ((ReciprocityTheory.L2DbarEstimates.contDiffOn_of_differentiableOn d f U hU hf).restrict_scalars ℝ)
 
+/- English proof (translation)
+Introduce `z hz`. Take `⟨R, hRdef⟩ : ∃ R : V d → ℝ, R = fun v => 1 + ∑ j : {j : α // j ≠ j₀}, ‖b j.1 v / b j₀ v‖ ^ 2` from `⟨_, rfl⟩`. Establish `hpos : ∀ v ∈ U, 0 < ‖b j₀ v‖ ^ 2` using `fun v hv => pow_pos (norm_pos_iff.2 (h0 v hv)) 2`. Establish `hRpos : ∀ v, 0 < R v` using `fun v => by rw [hRdef]; positivity`. Establish `hp : ContDiffOn ℝ ∞ (fun v => Real.log (‖b j₀ v‖ ^ 2)) U` using `(contDiffOn_norm_sq_of_differentiableOn hU (hb j₀)).log fun v hv => (hpos v hv).ne'`.
+
+Establish `hq : ContDiffOn ℝ ∞ (fun v => Real.log (R v)) U`. Use `ContDiffOn.log ?_ fun v _ => (hRpos v).ne'` and prove the remaining obligations. Rewrite using `[hRdef]`. Conclude with `contDiffOn_const.add (ContDiffOn.sum fun j _ => contDiffOn_norm_sq_of_differentiableOn hU (by`. Simplify `(hb j.1).fun_mul ((hb j₀).fun_inv h0)))` using `only [div_eq_mul_inv]`.
+
+Establish `hsplit : ∀ v ∈ U, ∑ j, ‖b j v‖ ^ 2 = ‖b j₀ v‖ ^ 2 * R v`. Introduce `v hv`. Establish `hn : ‖b j₀ v‖ ^ 2 ≠ 0` using `(hpos v hv).ne'`. Rewrite using `[← Finset.add_sum_erase _ _ (Finset.mem_univ j₀), Finset.sum_subtype (F := inferInstance) (Finset.univ.erase j₀) (p := fun j => j ≠ j₀) (by simp), hRdef]`. Simplify using `only [mul_add, mul_one, Finset.mul_sum, norm_div, div_pow, mul_div_cancel₀ _ hn]`.
+
+Establish `hev : (fun v => ((Real.log (∑ j, ‖b j v‖ ^ 2) : ℝ) : ℂ)) =ᶠ[nhds z] fun v => ((Real.log (‖b j₀ v‖ ^ 2) + 1 * Real.log (R v) : ℝ) : ℂ)`. Use `Filter.eventually_of_mem (hU.mem_nhds hz) fun v hv => ?_` and prove the remaining obligations. Simplify using `only`. Rewrite using `[hsplit v hv, Real.log_mul (hpos v hv).ne' (hRpos v).ne', one_mul]`. Establish `hzero : cHess d (fun w => ((Real.log (‖b j₀ w‖ ^ 2) : ℝ) : ℂ)) z = 0`.
+
+Use extensionality with `j k`. Simplify using `only [cHess, Matrix.of_apply, Matrix.zero_apply]`. Conclude with `ReciprocityTheory.L2DbarEstimates.Y.cmpa_hess_log hU hz (hb j₀) h0 j k`. Rewrite using `[ReciprocityTheory.L2DbarEstimates.Y.cmpb_cHess_congr hev, ReciprocityTheory.L2DbarEstimates.I.MongeAmpereIntegrability.cHess_add_smul hU hp hq 1 hz, hzero, zero_add, Complex.ofReal_one, one_smul, hRdef]`.
+-/
 theorem cHess_log_sum_normSq_eq (d : ℕ) (α : Type) [Fintype α] [DecidableEq α] (j₀ : α)
     (U : Set (V d)) (b : α → V d → ℂ) (hU : IsOpen U) (hb : ∀ j, DifferentiableOn ℂ (b j) U)
     (h0 : ∀ z ∈ U, b j₀ z ≠ 0) : ∀ z ∈ U,

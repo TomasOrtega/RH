@@ -9,6 +9,15 @@ open GlobalTheory GlobalTheory.CechPic GlobalTheory.Cartier GlobalTheory.TopForm
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `X _ _ p n Δ m m' G D₀ hm hm' hG`. Take `⟨η, hη, hG⟩` from `hG`. Use `⟨η, hη, fun x g hg z hz E hE => ?_⟩` and prove the remaining obligations. Take `⟨V, hV, hgV⟩` from `hg.exists_nhds`. Take `⟨a, ha⟩` from `G.exists_isEqn z`.
+
+Take `⟨d, hd⟩` from `D₀.exists_isEqn z`. Establish `h3` using `((hgV z (hz.mem_open V.isOpen hV)).mult_eq.symm.trans ((ha.nsmul m').add (hd.nsmul m)).mult_eq)`. Rewrite `h3` using `[← hE.ord_eq, ← hE.ord_eq, E.ord_mul, E.ord_pow, E.ord_pow]`. Establish `h4` using `hG z a ha z specializes_rfl E hE`. Establish `hd'` using `hd.mult_eq`.
+
+Rewrite `hd'` using `[← hE.ord_eq]`. Establish `h1 : (m : ℚ) ≠ 0` using `by exact_mod_cast hm.ne'`. Establish `h2 : (m' : ℚ) ≠ 0` using `by exact_mod_cast hm'.ne'`. Rewrite using `[Pi.add_apply, qWeil, hd', h3]`. Use `push_cast`.
+
+Rewrite using `[← h4]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem isLogCanonicalMultiple_add_qWeil : ∀ (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X] (p : X ⟶ Sp ℂ) (n : ℕ), ∀ (Δ : X → ℚ) (m m' : ℕ) (G D₀ : CartierDiv X), 0 < m → 0 < m' → IsLogCanonicalMultiple p n Δ m G → IsLogCanonicalMultiple p n (Δ + qWeil D₀ m') (m * m') (m' • G + m • D₀) := by
   intro X _ _ p n Δ m m' G D₀ hm hm' hG
   obtain ⟨η, hη, hG⟩ := hG

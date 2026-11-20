@@ -9,6 +9,9 @@ open scoped TensorProduct Matrix NNReal
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `only [Matrix.map_apply, gramR, hR, hform, map_sum, map_mul, hc, Matrix.mul_apply, Matrix.conjTranspose_apply, Matrix.of_apply, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`.
+-/
 theorem map_gramR (σ : E →ₐ[F] E) (θ : Ainf F ⊗[F] E →+* ℂ)
     (hc : ∀ z, θ (sigR (Ainf F) σ z) = star (θ z)) {M n : ℕ} (J : Matrix (Fin M) (Fin M) E)
     (Y : Fin n → Fin M → Ainf F ⊗[F] E) :
@@ -19,6 +22,9 @@ theorem map_gramR (σ : E →ₐ[F] E) (θ : Ainf F ⊗[F] E →+* ℂ)
     Matrix.of_apply, Finset.sum_mul]
   rw [Finset.sum_comm]
 
+/- English proof (translation)
+Simplify using `only [crd, ← Matrix.mul_assoc]`. Rewrite using `[← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mul, Matrix.mul_assoc, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.mul_one]`.
+-/
 theorem of_eq_crd {M n : ℕ} (θ : Ainf F ⊗[F] E →+* ℂ) (fr : GL (Fin M) ℂ) (g : GL (Fin n) ℂ)
     (Y : Fin n → Fin M → Ainf F ⊗[F] E) :
     (Matrix.of fun a j => θ (Y j a)) = fr.1 * crd θ fr g Y * (g⁻¹).1 := by
@@ -26,6 +32,9 @@ theorem of_eq_crd {M n : ℕ} (θ : Ainf F ⊗[F] E →+* ℂ) (fr : GL (Fin M) 
   rw [← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mul, Matrix.mul_assoc, ← Units.val_mul,
     mul_inv_cancel, Units.val_one, Matrix.mul_one]
 
+/- English proof (translation)
+Rewrite using `[map_gramR σ (θ i) (hP.conj i), of_eq_crd (θ i) (fr i) (g i)]`. Establish `hg : gramX (ε i) (crdAll θ fr g Y i) = (crd (θ i) (fr i) (g i) Y)ᴴ * Matrix.diagonal (sgn (ε i)) * crd (θ i) (fr i) (g i) Y` using `gramX_eq _ _`. Rewrite using `[hg, ← hfr i]`. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`.
+-/
 theorem map_gramR_crd (σ : E →ₐ[F] E) (ψ : AddChar (AF F) ℂ) {ι : Type} [Fintype ι]
     (θ : ι → (Ainf F ⊗[F] E →+* ℂ)) (l : ι → ℝ) (hP : IsPlaces σ ψ θ l) {M n : ℕ} (J : Matrix (Fin M) (Fin M) E)
     (ε : ι → Fin M → Bool) (fr : ι → GL (Fin M) ℂ) (hfr : IsFrames J θ ε fr) (g : ι → GL (Fin n) ℂ)
@@ -37,6 +46,15 @@ theorem map_gramR_crd (σ : E →ₐ[F] E) (ψ : AddChar (AF F) ℂ) {ι : Type}
   rw [hg, ← hfr i]
   simp only [Matrix.conjTranspose_mul, Matrix.mul_assoc]
 
+/- English proof (translation)
+Establish `key : ∀ i j, herm β i j * herm y j i + herm β j i * herm y i j = ((β i j : ℝ) : ℂ) * ((y i j : ℝ) : ℂ) + ((β j i : ℝ) : ℂ) * ((y j i : ℝ) : ℂ)`. Introduce `i j`. Apply the tactic sequence `apply Complex.ext <;> simp [herm] <;> ring`. Establish `h2 : (2 : ℂ) * (herm β * herm y).trace = 2 * ∑ a, ∑ b, ((β a b : ℝ) : ℂ) * ((y a b : ℝ) : ℂ)`. Establish `e1 : (herm β * herm y).trace = ∑ i, ∑ j, herm β i j * herm y j i`.
+
+Simplify using `[Matrix.trace, Matrix.mul_apply]`. Establish `e2 : (2 : ℂ) * ∑ i, ∑ j, herm β i j * herm y j i = ∑ i, ∑ j, (herm β i j * herm y j i + herm β j i * herm y i j)`. Rewrite using `[two_mul]`. Use `conv_lhs => arg 2`. Rewrite using `[Finset.sum_comm]`.
+
+Simplify using `only [Finset.sum_add_distrib]`. Establish `e3 : (2 : ℂ) * ∑ a, ∑ b, ((β a b : ℝ) : ℂ) * ((y a b : ℝ) : ℂ) = ∑ i, ∑ j, (((β i j : ℝ) : ℂ) * ((y i j : ℝ) : ℂ) + ((β j i : ℝ) : ℂ) * ((y j i : ℝ) : ℂ))`. Rewrite using `[two_mul]`. Use `conv_lhs => arg 2`. Rewrite using `[Finset.sum_comm]`.
+
+Simplify using `only [Finset.sum_add_distrib]`. Rewrite using `[e1, e2, e3]`. Simplify using `only [key]`. Conclude with `mul_left_cancel₀ two_ne_zero h2`.
+-/
 theorem trace_herm_mul {n : ℕ} (β y : WR.E n) :
     (herm β * herm y).trace = ∑ a, ∑ b, ((β a b : ℝ) : ℂ) * ((y a b : ℝ) : ℂ) := by
   have key : ∀ i j, herm β i j * herm y j i + herm β j i * herm y i j =
@@ -60,12 +78,18 @@ theorem trace_herm_mul {n : ℕ} (β y : WR.E n) :
     simp only [key]
   exact mul_left_cancel₀ two_ne_zero h2
 
+/- English proof (translation)
+Apply `Complex.conj_eq_iff_re.mp` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `star (Matrix.trace _) = _`. Rewrite using `[← Matrix.trace_conjTranspose, Matrix.conjTranspose_mul, hA.eq, hB.eq, Matrix.trace_mul_comm]`.
+-/
 theorem trace_re_of_herm {n : ℕ} {A B : Matrix (Fin n) (Fin n) ℂ} (hA : A.IsHermitian) (hB : B.IsHermitian) :
     ((((A * B).trace).re : ℝ) : ℂ) = (A * B).trace := by
   apply Complex.conj_eq_iff_re.mp
   change star (Matrix.trace _) = _
   rw [← Matrix.trace_conjTranspose, Matrix.conjTranspose_mul, hA.eq, hB.eq, Matrix.trace_mul_comm]
 
+/- English proof (translation)
+The claim follows from `herm_hinv _ (Matrix.isHermitian_mul_mul_conjTranspose _ (map_isHerm σ (θ i) (hP.conj i) b))`.
+-/
 theorem herm_ybAll (σ : E →ₐ[F] E) (ψ : AddChar (AF F) ℂ) {ι : Type} [Fintype ι]
     (θ : ι → (Ainf F ⊗[F] E →+* ℂ)) (l : ι → ℝ) (hP : IsPlaces σ ψ θ l) {n : ℕ} (g : ι → GL (Fin n) ℂ)
     (b : HermR (Ainf F) σ n) (i : ι) :
@@ -73,6 +97,9 @@ theorem herm_ybAll (σ : E →ₐ[F] E) (ψ : AddChar (AF F) ℂ) {ι : Type} [F
       ((g i)⁻¹).1 * (b : Matrix (Fin n) (Fin n) (Ainf F ⊗[F] E)).map (θ i) * (((g i)⁻¹).1)ᴴ :=
   herm_hinv _ (Matrix.isHermitian_mul_mul_conjTranspose _ (map_isHerm σ (θ i) (hP.conj i) b))
 
+/- English proof (translation)
+The claim follows from `herm_hinv _ (Matrix.isHermitian_conjTranspose_mul_mul _ (map_isHerm σ (θ i) (hP.conj i) b))`.
+-/
 theorem herm_ygAll (σ : E →ₐ[F] E) (ψ : AddChar (AF F) ℂ) {ι : Type} [Fintype ι]
     (θ : ι → (Ainf F ⊗[F] E →+* ℂ)) (l : ι → ℝ) (hP : IsPlaces σ ψ θ l) {n : ℕ} (g : ι → GL (Fin n) ℂ)
     (b : HermR (Ainf F) σ n) (i : ι) :

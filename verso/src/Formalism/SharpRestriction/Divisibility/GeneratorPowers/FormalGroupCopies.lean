@@ -14,10 +14,16 @@ variable {R : Type} [CommRing R] {d n : ℕ}
 
 def Vc (d : ℕ) (T : Finset (Fin n)) : Set (Fin n × Fin d) := {p | p.1 ∈ T}
 
+/- English proof (translation)
+Unfold `OnCopies subV Vc`. Both sides reduce to the same expression.
+-/
 theorem onCopies_iff (T : Finset (Fin n)) (f : PS R n d) : OnCopies T f ↔ f ∈ subV R (Vc d T) := by
   unfold OnCopies subV Vc
   rfl
 
+/- English proof (translation)
+Establish `hs : HasSubst (fun p : Fin m × Fin d => a p.1 p.2)` using `hasSubst_of_constantCoeff_zero fun p => h0 p.1 p.2`. Conclude with `subst_mem (fun p : Fin m × Fin d => a p.1 p.2) hs (fun p => hV p.1 p.2) g`.
+-/
 theorem ev_mem {m : ℕ} (V : Set (Fin n × Fin d)) (a : Fin m → Pt R n d)
     (h0 : ∀ q i, constantCoeff (a q i) = 0) (hV : ∀ q i, a q i ∈ subV R V) (g : PS R m d) :
     ev a g ∈ subV R V := by
@@ -25,6 +31,11 @@ theorem ev_mem {m : ℕ} (V : Set (Fin n × Fin d)) (a : Fin m → Pt R n d)
     hasSubst_of_constantCoeff_zero fun p => h0 p.1 p.2
   exact subst_mem (fun p : Fin m × Fin d => a p.1 p.2) hs (fun p => hV p.1 p.2) g
 
+/- English proof (translation)
+Unfold `ev`. Apply `MvPowerSeries.constantCoeff_subst_eq_zero` to reduce the goal to its premises. Apply the tactic sequence `all_goals first`. Consider the case `exact MvPowerSeries.hasSubst_of_constantCoeff_zero (fun p => h0 p.1 p.2)`. Consider the case `exact fun p => h0 p.1 p.2`.
+
+Consider the case `exact hg`.
+-/
 theorem ev_cc {m : ℕ} (a : Fin m → Pt R n d) (h0 : ∀ q i, constantCoeff (a q i) = 0)
     (g : PS R m d) (hg : constantCoeff g = 0) : constantCoeff (ev a g) = 0 := by
   unfold ev
@@ -34,11 +45,21 @@ theorem ev_cc {m : ℕ} (a : Fin m → Pt R n d) (h0 : ∀ q i, constantCoeff (a
     | exact fun p => h0 p.1 p.2
     | exact hg
 
+/- English proof (translation)
+Introduce `q i`. Apply the tactic sequence `fin_cases q <;> simp [pt]`.
+-/
 theorem ptz_cc (b : Fin n) :
     ∀ (q : Fin 2) (i : Fin d), constantCoeff ((![pt R d b, 0] : Fin 2 → Pt R n d) q i) = 0 := by
   intro q i
   fin_cases q <;> simp [pt]
 
+/- English proof (translation)
+Introduce `q i`. Use `fin_cases q`. Use `show OnV (Vc d T) (pt R d b i)`. Unfold `OnV pt`. Introduce `e he p hp`.
+
+Rewrite `he` using `[MvPowerSeries.coeff_X]`. Use `split_ifs at he with h`. Substitute `h` using the available equality. Establish `hp'` using `Finsupp.support_single_subset hp`. Rewrite `hp'` using `[Finset.mem_singleton]`.
+
+Substitute `hp'` using the available equality. Conclude with `hb`. Conclude with `absurd rfl he`. Conclude with `(subV R (Vc d T)).zero_mem`.
+-/
 theorem ptz_mem (T : Finset (Fin n)) (b : Fin n) (hb : b ∈ T) :
     ∀ (q : Fin 2) (i : Fin d), (![pt R d b, 0] : Fin 2 → Pt R n d) q i ∈ subV R (Vc d T) := by
   intro q i
@@ -56,12 +77,22 @@ theorem ptz_mem (T : Finset (Fin n)) (b : Fin n) (hb : b ∈ T) :
     · exact absurd rfl he
   · exact (subV R (Vc d T)).zero_mem
 
+/- English proof (translation)
+Introduce `q i`. Use `fin_cases q`. Simplify using `[pt]`.
+-/
 theorem single_point_const_coeff (b : Fin n) :
     ∀ (q : Fin 1) (i : Fin d), constantCoeff ((![pt R d b] : Fin 1 → Pt R n d) q i) = 0 := by
   intro q i
   fin_cases q
   simp [pt]
 
+/- English proof (translation)
+Introduce `q i`. Use `fin_cases q`. Use `show OnV (Vc d T) (pt R d b i)`. Unfold `OnV pt`. Introduce `e he p hp`.
+
+Rewrite `he` using `[MvPowerSeries.coeff_X]`. Use `split_ifs at he with h`. Substitute `h` using the available equality. Establish `hp'` using `Finsupp.support_single_subset hp`. Rewrite `hp'` using `[Finset.mem_singleton]`.
+
+Substitute `hp'` using the available equality. Conclude with `hb`. Conclude with `absurd rfl he`.
+-/
 theorem single_point_mem_subspace (T : Finset (Fin n)) (b : Fin n) (hb : b ∈ T) :
     ∀ (q : Fin 1) (i : Fin d), (![pt R d b] : Fin 1 → Pt R n d) q i ∈ subV R (Vc d T) := by
   intro q i
@@ -78,6 +109,9 @@ theorem single_point_mem_subspace (T : Finset (Fin n)) (b : Fin n) (hb : b ∈ T
     exact hb
   · exact absurd rfl he
 
+/- English proof (translation)
+Unfold `DofN`. Conclude with `sum_mem fun j _ => mul_mem (sum_mem fun i _ => mul_mem (C_mem _ _) (ev_mem _ _ (ptz_cc b) (ptz_mem T b hb) _)) (pderiv_mem _ hg)`.
+-/
 theorem dofN_mem (F : Fin d → PS R 2 d) (T : Finset (Fin n)) {b : Fin n} (hb : b ∈ T)
     (u : Fin d → R) (g : PS R n d) (hg : g ∈ subV R (Vc d T)) :
     DofN F b u g ∈ subV R (Vc d T) := by
@@ -85,6 +119,9 @@ theorem dofN_mem (F : Fin d → PS R 2 d) (T : Finset (Fin n)) {b : Fin n} (hb :
   exact sum_mem fun j _ => mul_mem (sum_mem fun i _ =>
     mul_mem (C_mem _ _) (ev_mem _ _ (ptz_cc b) (ptz_mem T b hb) _)) (pderiv_mem _ hg)
 
+/- English proof (translation)
+Unfold `DofN`. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl (fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[Derivation.leibniz, hB j, smul_zero, zero_add, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem dofN_mul_right (F : Fin d → PS R 2 d) (b : Fin n) (u : Fin d → R) (A B : PS R n d)
     (hB : ∀ j, pderiv R (b, j) B = 0) : DofN F b u (A * B) = DofN F b u A * B := by
   unfold DofN
@@ -93,6 +130,9 @@ theorem dofN_mul_right (F : Fin d → PS R 2 d) (b : Fin n) (u : Fin d → R) (A
   rw [Derivation.leibniz, hB j, smul_zero, zero_add, smul_eq_mul]
   ring
 
+/- English proof (translation)
+Unfold `DofN`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl (fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[Derivation.leibniz, hA j, smul_zero, add_zero, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem dofN_mul_left (F : Fin d → PS R 2 d) (b : Fin n) (u : Fin d → R) (A B : PS R n d)
     (hA : ∀ j, pderiv R (b, j) A = 0) : DofN F b u (A * B) = A * DofN F b u B := by
   unfold DofN
@@ -101,18 +141,27 @@ theorem dofN_mul_left (F : Fin d → PS R 2 d) (b : Fin n) (u : Fin d → R) (A 
   rw [Derivation.leibniz, hA j, smul_zero, add_zero, smul_eq_mul]
   ring
 
+/- English proof (translation)
+The claim follows from `| 0, _ => rfl | N + 1, A => by rw [Function.iterate_succ_apply, Function.iterate_succ_apply, hD, it_right D B hD N]`.
+-/
 theorem it_right (D : PS R n d → PS R n d) (B : PS R n d) (hD : ∀ A, D (A * B) = D A * B) :
     ∀ (N : ℕ) (A : PS R n d), D^[N] (A * B) = D^[N] A * B
   | 0, _ => rfl
   | N + 1, A => by
     rw [Function.iterate_succ_apply, Function.iterate_succ_apply, hD, it_right D B hD N]
 
+/- English proof (translation)
+The claim follows from `| 0, _ => rfl | N + 1, B => by rw [Function.iterate_succ_apply, Function.iterate_succ_apply, hD, it_left D A hD N]`.
+-/
 theorem it_left (D : PS R n d → PS R n d) (A : PS R n d) (hD : ∀ B, D (A * B) = A * D B) :
     ∀ (N : ℕ) (B : PS R n d), D^[N] (A * B) = A * D^[N] B
   | 0, _ => rfl
   | N + 1, B => by
     rw [Function.iterate_succ_apply, Function.iterate_succ_apply, hD, it_left D A hD N]
 
+/- English proof (translation)
+The claim follows from `| 0, _, hg => hg | N + 1, g, hg => by rw [Function.iterate_succ_apply'] exact hD _ (it_mem D Q hD N g hg)`.
+-/
 theorem it_mem (D : PS R n d → PS R n d) (Q : Subalgebra R (PS R n d)) (hD : ∀ g ∈ Q, D g ∈ Q) :
     ∀ (N : ℕ) (g : PS R n d), g ∈ Q → D^[N] g ∈ Q
   | 0, _, hg => hg
@@ -124,6 +173,11 @@ section Fold
 
 variable {ι : Type} [Fintype ι] (F : Fin d → PS R 2 d) (cp : ι → Fin n) (u : ι → Fin d → R)
 
+/- English proof (translation)
+Proceed by induction on `L with`. Consider the case `nil => exact hA`. Consider the case `cons l L ih`. Rewrite using `[List.foldr_cons]`. Distinguish the cases in `hl : mm l = 0`.
+
+Rewrite using `[hl, Function.iterate_zero_apply]`. Conclude with `ih`. Conclude with `it_mem (DofN F (cp l) (u l)) (subV R (Vc d T)) (fun g hg => dofN_mem F T (hm l hl) (u l) g hg) (mm l) _ ih`.
+-/
 theorem fold_mem (T : Finset (Fin n)) (mm : ι →₀ ℕ) (hm : ∀ l, mm l ≠ 0 → cp l ∈ T) (L : List ι)
     (A : PS R n d) (hA : A ∈ subV R (Vc d T)) :
     L.foldr (fun l g => (DofN F (cp l) (u l))^[mm l] g) A ∈ subV R (Vc d T) := by
@@ -137,6 +191,15 @@ theorem fold_mem (T : Finset (Fin n)) (mm : ι →₀ ℕ) (hm : ∀ l, mm l ≠
     · exact it_mem (DofN F (cp l) (u l)) (subV R (Vc d T))
         (fun g hg => dofN_mem F T (hm l hl) (u l) g hg) (mm l) _ ih
 
+/- English proof (translation)
+Proceed by induction on `L with`. Consider the case `nil => rfl`. Consider the case `cons l L ih`. Simplify using `only [List.foldr_cons]`. Rewrite using `[ih, Finsupp.add_apply]`.
+
+Establish `hA'` using `fold_mem F cp u S m₁ hm1 L A hA`. Establish `hB'` using `fold_mem F cp u Sᶜ m₂ hm2 L B hB`. Distinguish the cases in `hl : cp l ∈ S`. Establish `h2 : m₂ l = 0`. Assume the negation of the conclusion as `h`.
+
+Conclude with `(Finset.mem_compl.1 (hm2 l h)) hl`. Rewrite using `[h2, add_zero, it_right _ _ (fun X => dofN_mul_right F _ _ X _ (fun j => pderiv_kill (i := (cp l, j)) (V := Vc d Sᶜ) (fun hc => (Finset.mem_compl.1 (show cp l ∈ Sᶜ from hc)) hl) hB'))]`. Both sides reduce to the same expression. Establish `h1 : m₁ l = 0`. Assume the negation of the conclusion as `h`.
+
+Conclude with `hl (hm1 l h)`. Rewrite using `[h1, zero_add, it_left _ _ (fun X => dofN_mul_left F _ _ _ X (fun j => pderiv_kill (i := (cp l, j)) (V := Vc d S) (fun hc => hl (show cp l ∈ S from hc)) hA'))]`. Both sides reduce to the same expression.
+-/
 theorem fold_mul (S : Finset (Fin n)) (m₁ m₂ : ι →₀ ℕ) (hm1 : ∀ l, m₁ l ≠ 0 → cp l ∈ S)
     (hm2 : ∀ l, m₂ l ≠ 0 → cp l ∈ Sᶜ) (L : List ι) (A B : PS R n d)
     (hA : A ∈ subV R (Vc d S)) (hB : B ∈ subV R (Vc d Sᶜ)) :
@@ -165,6 +228,9 @@ theorem fold_mul (S : Finset (Fin n)) (m₁ m₂ : ι →₀ ℕ) (hm1 : ∀ l, 
         pderiv_kill (i := (cp l, j)) (V := Vc d S) (fun hc => hl (show cp l ∈ S from hc)) hA'))]
       rfl
 
+/- English proof (translation)
+Unfold `DmonN`. Conclude with `fold_mul F cp u S m₁ m₂ hm1 hm2 _ A B hA hB`.
+-/
 theorem dmon_mul (S : Finset (Fin n)) (m₁ m₂ : ι →₀ ℕ) (hm1 : ∀ l, m₁ l ≠ 0 → cp l ∈ S)
     (hm2 : ∀ l, m₂ l ≠ 0 → cp l ∈ Sᶜ) (A B : PS R n d)
     (hA : A ∈ subV R (Vc d S)) (hB : B ∈ subV R (Vc d Sᶜ)) :
@@ -172,9 +238,15 @@ theorem dmon_mul (S : Finset (Fin n)) (m₁ m₂ : ι →₀ ℕ) (hm1 : ∀ l, 
   unfold DmonN
   exact fold_mul F cp u S m₁ m₂ hm1 hm2 _ A B hA hB
 
+/- English proof (translation)
+Simplify using `[DmonN]`.
+-/
 theorem dmon_zero (g : PS R n d) : DmonN F cp u 0 g = g := by
   simp [DmonN]
 
+/- English proof (translation)
+Unfold `DpolyN`. Apply `Finset.sum_subset hT` to reduce the goal to its premises. Introduce `mm _ hmm`. Establish `h0 : P.coeff mm = 0` using `by simpa [MvPolynomial.mem_support_iff] using hmm`. Rewrite using `[h0, map_zero, zero_mul]`.
+-/
 theorem dpoly_sup (P : MvPolynomial ι R) (T : Finset (ι →₀ ℕ)) (hT : P.support ⊆ T)
     (g : PS R n d) : DpolyN F cp u P g = ∑ mm ∈ T, C (P.coeff mm) * DmonN F cp u mm g := by
   unfold DpolyN
@@ -183,6 +255,9 @@ theorem dpoly_sup (P : MvPolynomial ι R) (T : Finset (ι →₀ ℕ)) (hT : P.s
   have h0 : P.coeff mm = 0 := by simpa [MvPolynomial.mem_support_iff] using hmm
   rw [h0, map_zero, zero_mul]
 
+/- English proof (translation)
+Rewrite using `[dpoly_sup F cp u (P + Q) (P.support ∪ Q.support) MvPolynomial.support_add, dpoly_sup F cp u P (P.support ∪ Q.support) Finset.subset_union_left, dpoly_sup F cp u Q (P.support ∪ Q.support) Finset.subset_union_right, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl (fun mm _ => ?_)` and prove the remaining obligations. Rewrite using `[MvPolynomial.coeff_add, map_add, add_mul]`.
+-/
 theorem dpoly_add (P Q : MvPolynomial ι R) (g : PS R n d) :
     DpolyN F cp u (P + Q) g = DpolyN F cp u P g + DpolyN F cp u Q g := by
   classical
@@ -192,12 +267,18 @@ theorem dpoly_add (P Q : MvPolynomial ι R) (g : PS R n d) :
   refine Finset.sum_congr rfl (fun mm _ => ?_)
   rw [MvPolynomial.coeff_add, map_add, add_mul]
 
+/- English proof (translation)
+Rewrite using `[dpoly_sup F cp u _ {mm} MvPolynomial.support_monomial_subset, Finset.sum_singleton, MvPolynomial.coeff_monomial, if_pos rfl]`.
+-/
 theorem dpoly_monomial (mm : ι →₀ ℕ) (a : R) (g : PS R n d) :
     DpolyN F cp u (MvPolynomial.monomial mm a) g = C a * DmonN F cp u mm g := by
   classical
   rw [dpoly_sup F cp u _ {mm} MvPolynomial.support_monomial_subset, Finset.sum_singleton,
     MvPolynomial.coeff_monomial, if_pos rfl]
 
+/- English proof (translation)
+Rewrite using `[← MvPolynomial.C_1, MvPolynomial.C_apply, dpoly_monomial, map_one, one_mul, dmon_zero]`.
+-/
 theorem dpoly_one (g : PS R n d) : DpolyN F cp u 1 g = g := by
   rw [← MvPolynomial.C_1, MvPolynomial.C_apply, dpoly_monomial, map_one, one_mul, dmon_zero]
 
@@ -206,6 +287,15 @@ def dpolyHom (g : PS R n d) : MvPolynomial ι R →+ PS R n d where
   map_zero' := by simp [DpolyN]
   map_add' P Q := dpoly_add F cp u P Q g
 
+/- English proof (translation)
+Establish `e : P₁ * P₂ = ∑ m1 ∈ P₁.support, ∑ m2 ∈ P₂.support, MvPolynomial.monomial (m1 + m2) (P₁.coeff m1 * P₂.coeff m2)` using `by conv_lhs => rw [P₁.as_sum, P₂.as_sum]`. Rewrite using `[Finset.sum_mul_sum]`. Repeatedly rewrite using `[MvPolynomial.monomial_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e, map_sum]`.
+
+Use `Finset.sum_congr rfl fun m1 hm1 => ?_` and prove the remaining obligations. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun m2 hm2 => ?_` and prove the remaining obligations. Establish `hq1 : ∀ l, m1 l ≠ 0 → cp l ∈ S` using `fun l hl => h1 l ((MvPolynomial.mem_vars_iff_mem_support l).2 ⟨m1, hm1, Finsupp.mem_support_iff.2 hl⟩)`. Establish `hq2 : ∀ l, m2 l ≠ 0 → cp l ∈ Sᶜ` using `fun l hl => Finset.mem_compl.2 (h2 l ((MvPolynomial.mem_vars_iff_mem_support l).2 ⟨m2, hm2, Finsupp.mem_support_iff.2 hl⟩))`.
+
+Use `show DpolyN F cp u _ (A * B) = _`. Rewrite using `[dpoly_monomial, dmon_mul F cp u S m1 m2 hq1 hq2 A B hA hB, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = DpolyN F cp u P₁ A * DpolyN F cp u P₂ B := by`. Unfold `DpolyN`.
+
+Rewrite using `[Finset.sum_mul_sum]`.
+-/
 theorem dpoly_mul (S : Finset (Fin n)) (P₁ P₂ : MvPolynomial ι R) (h1 : ∀ l ∈ P₁.vars, cp l ∈ S)
     (h2 : ∀ l ∈ P₂.vars, cp l ∉ S) (A B : PS R n d)
     (hA : A ∈ subV R (Vc d S)) (hB : B ∈ subV R (Vc d Sᶜ)) :
@@ -233,18 +323,29 @@ theorem dpoly_mul (S : Finset (Fin n)) (P₁ P₂ : MvPolynomial ι R) (h1 : ∀
       unfold DpolyN
       rw [Finset.sum_mul_sum]
 
+/- English proof (translation)
+Establish `h` using `dpoly_mul F cp u S P₁ 1 h1 (by intro l hl; simp [MvPolynomial.vars_one] at hl) A B hA hB`. Rewrite `h` using `[mul_one, dpoly_one]`. Then use the resulting hypothesis.
+-/
 theorem key_left (S : Finset (Fin n)) (P₁ : MvPolynomial ι R) (h1 : ∀ l ∈ P₁.vars, cp l ∈ S)
     (A B : PS R n d) (hA : A ∈ subV R (Vc d S)) (hB : B ∈ subV R (Vc d Sᶜ)) :
     DpolyN F cp u P₁ (A * B) = DpolyN F cp u P₁ A * B := by
   have h := dpoly_mul F cp u S P₁ 1 h1 (by intro l hl; simp [MvPolynomial.vars_one] at hl) A B hA hB
   rwa [mul_one, dpoly_one] at h
 
+/- English proof (translation)
+Establish `h` using `dpoly_mul F cp u S 1 P₂ (by intro l hl; simp [MvPolynomial.vars_one] at hl) h2 A B hA hB`. Rewrite `h` using `[one_mul, dpoly_one]`. Then use the resulting hypothesis.
+-/
 theorem key_right (S : Finset (Fin n)) (P₂ : MvPolynomial ι R) (h2 : ∀ l ∈ P₂.vars, cp l ∉ S)
     (A B : PS R n d) (hA : A ∈ subV R (Vc d S)) (hB : B ∈ subV R (Vc d Sᶜ)) :
     DpolyN F cp u P₂ (A * B) = A * DpolyN F cp u P₂ B := by
   have h := dpoly_mul F cp u S 1 P₂ (by intro l hl; simp [MvPolynomial.vars_one] at hl) h2 A B hA hB
   rwa [one_mul, dpoly_one] at h
 
+/- English proof (translation)
+Establish `hA : f₁ * ES ∈ subV R (Vc d S)` using `Subalgebra.mul_mem _ hf1 hES`. Establish `hB : f₂ * ET ∈ subV R (Vc d Sᶜ)` using `Subalgebra.mul_mem _ hf2 hET`. Establish `e1 : f₁ * f₂ * (ES * ET) = (f₁ * ES) * (f₂ * ET)` using `by ring`. Establish `e2 : f₁ * (ES * ET) = (f₁ * ES) * ET` using `by ring`. Establish `e3 : f₂ * (ES * ET) = ES * (f₂ * ET)` using `by ring`.
+
+Rewrite using `[e1, e2, e3, dpoly_mul F cp u S P₁ P₂ h1 h2 _ _ hA hB, key_left F cp u S P₁ h1 _ _ hA hET, key_right F cp u S P₂ h2 _ _ hES hB, map_mul, map_mul, map_mul, c1, c2, mul_one, one_mul]`.
+-/
 theorem value_split (S : Finset (Fin n)) (P₁ P₂ : MvPolynomial ι R) (h1 : ∀ l ∈ P₁.vars, cp l ∈ S)
     (h2 : ∀ l ∈ P₂.vars, cp l ∉ S) (f₁ f₂ ES ET : PS R n d) (hf1 : f₁ ∈ subV R (Vc d S))
     (hf2 : f₂ ∈ subV R (Vc d Sᶜ)) (hES : ES ∈ subV R (Vc d S)) (hET : ET ∈ subV R (Vc d Sᶜ))
@@ -269,6 +370,17 @@ namespace Formalism.MainNotions.ModuliIntegralCharts.H1
 open MvPowerSeries Formalism.L2.Pj ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ
 open Formalism.MainNotions.ModuliIntegralCharts.H1.FormalGroupOnCopies Formalism.MainNotions.ModuliIntegralCharts.H1.PartialDerivativeExponent Formalism.MainNotions.ModuliIntegralCharts.H1.FormalGroupCopies
 
+/- English proof (translation)
+Introduce `R _ d O _ _ B k _ _ _ h w0 h0 m n S f₁ f₂ ι _ cp u P₁ P₂ hf1 hf2 hP1 hP2`. Establish `gcc : ∀ b : Fin n, constantCoeff (ev (n` using `n) ![pt k d b] (B.hL k h w0)) = 0 := fun b => ev_cc _ (single_point_const_coeff b) _ h0`. Establish `xcc : ∀ T : Finset (Fin n), constantCoeff ((m : k) • ∑ b ∈ T, ev (n` using `n) ![pt k d b] (B.hL k h w0)) = 0 := by`. Introduce `T`. Rewrite using `[smul_eq_C_mul, map_mul, map_sum]`.
+
+Simplify using `[gcc]`. Establish `xmem : ∀ T : Finset (Fin n), ((m : k) • ∑ b ∈ T, ev (n` using `n) ![pt k d b] (B.hL k h w0)) ∈ subV k (Vc d T) := fun T => Subalgebra.smul_mem _ (sum_mem fun b hb => ev_mem _ _ (single_point_const_coeff b) (single_point_mem_subspace T b hb) _) _`. Establish `emem : ∀ T : Finset (Fin n), FB.expS k ((m : k) • ∑ b ∈ T, ev (n` using `n) ![pt k d b] (B.hL k h w0)) ∈ subV k (Vc d T) := by`. Introduce `T`. Unfold `FB.expS`.
+
+Rewrite using `[PowerSeries.subst_def]`. Conclude with `subst_mem _ (hasSubst_of_constantCoeff_zero fun _ => xcc T) (fun _ => xmem T) _`. Establish `ecc : ∀ T : Finset (Fin n), constantCoeff (FB.expS k ((m : k) • ∑ b ∈ T, ev (n` using `n) ![pt k d b] (B.hL k h w0))) = 1 := by`. Introduce `T`. Unfold `FB.expS`.
+
+Conclude with `cc_exp _ (xcc T)`. Establish `hE : FB.expS k ((m : k) • ∑ b : Fin n, ev (n` using `n) ![pt k d b] (B.hL k h w0)) = FB.expS k ((m : k) • ∑ b ∈ S, ev (n := n) ![pt k d b] (B.hL k h w0)) * FB.expS k ((m : k) • ∑ b ∈ Sᶜ, ev (n := n) ![pt k d b] (B.hL k h w0)) := by`. Rewrite using `[← Finset.sum_add_sum_compl S, smul_add]`. Unfold `FB.expS`. Conclude with `expS_add _ _ (xcc S) (xcc Sᶜ)`.
+
+Establish `key` using `value_split (B.FK k) cp u S P₁ P₂ hP1 hP2 f₁ f₂ _ _ ((onCopies_iff _ _).1 hf1) ((onCopies_iff _ _).1 hf2) (emem S) (emem Sᶜ) (ecc S) (ecc Sᶜ)`. Rewrite `key` using `[← hE]`. Conclude with `key`.
+-/
 theorem columnsStatement_holds : ColumnsStatement := by
   intro R _ d O _ _ B k _ _ _ h w0 h0 m n S f₁ f₂ ι _ cp u P₁ P₂ hf1 hf2 hP1 hP2
   classical

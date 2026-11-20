@@ -19,6 +19,13 @@ noncomputable section
 namespace GlobalTheory.ValuesTorsion
 open IsLocalRing GlobalTheory.UT.ExactTerm
 
+/- English proof (translation)
+Establish `: NeZero k` using `⟨hk⟩`. Simplify using `only [List.prod_ofFn] at h`. Set `f : Multiplicative (Fin r → ZMod k) →* (powMonoidHom k : G →* G).ker` to `MonoidHom.mk' (fun c => ⟨∏ i, v i ^ (c.toAdd i).val, by show (∏ i, v i ^ (c.toAdd i).val) ^ k = 1`. Rewrite using `[← Finset.prod_pow]`. Conclude with `Finset.prod_eq_one fun i _ => by rw [← pow_mul, mul_comm, pow_mul, hv, one_pow]⟩)`.
+
+Use `fun a b => Subtype.ext (by show ∏ i, v i ^ (a.toAdd i + b.toAdd i).val = (∏ i, v i ^ (a.toAdd i).val) * ∏ i, v i ^ (b.toAdd i).val`. Rewrite using `[← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_congr rfl fun i _ => by rw [ZMod.val_add, ← pow_eq_pow_mod _ (hv i), pow_add])`. Use `⟨(MulEquiv.ofBijective f ⟨fun a b e => ?_, fun y => ?_⟩).symm⟩` and prove the remaining obligations. Conclude with `(h _ (f b).2).unique (congrArg Subtype.val e) rfl`.
+
+Take `⟨c, hc⟩` from `(h y.1 y.2).exists`. Conclude with `⟨Multiplicative.ofAdd c, Subtype.ext hc⟩`.
+-/
 theorem nonempty_equiv_of_basis {G : Type} [CommGroup G] {k r : ℕ} (hk : k ≠ 0) (v : Fin r → G) (hv : ∀ i, v i ^ k = 1)
     (h : ∀ y : G, y ^ k = 1 → ∃! c : Fin r → ZMod k, (List.ofFn fun i => v i ^ (c i).val).prod = y) :
     Nonempty ((powMonoidHom k : G →* G).ker ≃* Multiplicative (Fin r → ZMod k)) := by
@@ -43,6 +50,13 @@ variable (hL : Laws) {S : Scheme.{0}} [IsLocallyNoetherian S] (P : PolAV S) {K :
   (t : Sp K ⟶ S)
 include hL
 
+/- English proof (translation)
+Take `⟨hfin, -, hsurj, -, -⟩` from `hL.mulN S P n hn`. Take `⟨s, hs⟩` from `H1.SectionDivision.exists_section (k := K) (pullback.snd (mulA P.A n).left a.left)`. Establish `hb : (s ≫ pullback.fst (mulA P.A n).left a.left) ≫ (mulA P.A n).left = a.left`. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, hs]`. Conclude with `Category.id_comp _`.
+
+Establish `hw : (s ≫ pullback.fst (mulA P.A n).left a.left) ≫ P.A.hom = t`. Rewrite using `[← Over.w (mulA P.A n), ← Category.assoc, hb]`. Conclude with `Over.w a`. Use `⟨Over.homMk _ hw, ?_⟩` and prove the remaining obligations. Establish `e : ∀ b : Over.mk t ⟶ P.A, b ^ n = b ≫ mulA P.A n` using `fun b => (congrArg (· ^ n) (Category.comp_id b).symm).trans (MonObj.comp_pow (𝟙 P.A) n b).symm`.
+
+Rewrite using `[e]`. Conclude with `Over.OverMorphism.ext hb`.
+-/
 theorem exists_pow_eq (a : Over.mk t ⟶ P.A) {n : ℕ} (hn : 1 ≤ n) : ∃ b : Over.mk t ⟶ P.A, b ^ n = a := by
   obtain ⟨hfin, -, hsurj, -, -⟩ := hL.mulN S P n hn
   obtain ⟨s, hs⟩ := H1.SectionDivision.exists_section (k := K) (pullback.snd (mulA P.A n).left a.left)
@@ -56,6 +70,13 @@ theorem exists_pow_eq (a : Over.mk t ⟶ P.A) {n : ℕ} (hn : 1 ≤ n) : ∃ b :
   rw [e]
   exact Over.OverMorphism.ext hb
 
+/- English proof (translation)
+Use `P.isAb.comm` as an intermediate fact. Set `c : Γ(Sp K, ⊤) ≃+* K` to `(Scheme.ΓSpecIso (CommRingCat.of K)).commRingCatIsoToRingEquiv`. Establish `: IsDomain Γ(Sp K, ⊤)` using `c.toMulEquiv.isDomain _`. Establish `hk0 : k ≠ 0` using `fun e => hk (by rw [e, Nat.cast_zero])`. Establish `: NeZero (k : K)` using `⟨hk⟩`.
+
+Establish `: NeZero k` using `⟨hk0⟩`. Take `⟨ζ, hζ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot K k`. Establish `hζ' : IsPrimitiveRoot (c.symm ζ) k` using `hζ.map_of_injective c.symm.injective`. Take `⟨w₁, w₂, w₃, -⟩` from `hL.weil _ P k (Over.mk t)`. Conclude with `PrincipalNumerics.exists_basis_of_pairing (G := Over.mk t ⟶ P.A) (g := P.g) (Nat.pos_of_ne_zero hk0) (fun d hd => (hL.mulN _ P d (Nat.pos_of_dvd_of_pos hd (Nat.pos_of_ne_zero hk0))).2.2.2.2 K t (by`.
+
+Take `⟨e, rfl⟩` from `hd`. Rewrite `hk` using `[Nat.cast_mul]`. Conclude with `left_ne_zero_of_mul hk))`. Use the proof step `(hζ'.isUnit_unit hk0) (fun x y c => WeilIs P.A P.L k x y c) w₁ w₂ w₃`. Use the proof step `(fun _ _ _ h => CommPairing.weilIs_symm P.isLB h) (ThetaRep.eq_one_of_weilIs hL P t hk)`.
+-/
 theorem exists_basis {k : ℕ} (hk : (k : K) ≠ 0) : ∃ v : Fin (2 * P.g) → (Over.mk t ⟶ P.A), (∀ i, v i ^ k = 1) ∧
     ∀ y : Over.mk t ⟶ P.A, y ^ k = 1 →
       ∃! c : Fin (2 * P.g) → ZMod k, (List.ofFn fun i => v i ^ (c i).val).prod = y := by
@@ -80,6 +101,9 @@ end Geom
 section Val
 variable {C : Type} [NormedField C] (S : ValuationSubring C)
 
+/- English proof (translation)
+Take `⟨a, rfl⟩` from `Spec.map_surjective (R := CommRingCat.of R) (S := CommRingCat.of S) f`. Take `⟨b, rfl⟩` from `Spec.map_surjective (R := CommRingCat.of R) (S := CommRingCat.of S) g`. Establish `e₁ : a ≫ CommRingCat.ofHom S.subtype = b ≫ CommRingCat.ofHom S.subtype` using `Spec.map_injective (by rw [Spec.map_comp, Spec.map_comp]; exact h)`. Conclude with `congrArg Spec.map (CommRingCat.hom_ext (RingHom.ext fun x => Subtype.ext (RingHom.congr_fun (congrArg CommRingCat.Hom.hom e₁) x)))`.
+-/
 theorem affine_ext {R : Type} [CommRing R] {f g : Sp S ⟶ Sp R} (h : spMap S.subtype ≫ f = spMap S.subtype ≫ g) :
     f = g := by
   obtain ⟨a, rfl⟩ := Spec.map_surjective (R := CommRingCat.of R) (S := CommRingCat.of S) f
@@ -89,6 +113,9 @@ theorem affine_ext {R : Type} [CommRing R] {f g : Sp S ⟶ Sp R} (h : spMap S.su
   exact congrArg Spec.map (CommRingCat.hom_ext (RingHom.ext fun x => Subtype.ext
     (RingHom.congr_fun (congrArg CommRingCat.Hom.hom e₁) x)))
 
+/- English proof (translation)
+Establish `e : f ≫ p = g ≫ p` using `affine_ext S (by rw [← Category.assoc, h, Category.assoc])`. Set `Q : ValuativeCommSq p` to `{ R := S, K := C, i₁ := spMap S.subtype ≫ f, i₂ := f ≫ p, commSq := ⟨Category.assoc _ _ _⟩ }`. Conclude with `congrArg CommSq.LiftStruct.l ((IsSeparated.valuativeCriterion p Q).elim ⟨f, rfl, rfl⟩ ⟨g, h.symm, e.symm⟩)`.
+-/
 theorem separated_ext {R : Type} [CommRing R] {X : Scheme.{0}} (p : X ⟶ Sp R) [IsSeparated p] {f g : Sp S ⟶ X}
     (h : spMap S.subtype ≫ f = spMap S.subtype ≫ g) : f = g := by
   have e : f ≫ p = g ≫ p := affine_ext S (by rw [← Category.assoc, h, Category.assoc])
@@ -99,6 +126,17 @@ theorem separated_ext {R : Type} [CommRing R] {X : Scheme.{0}} (p : X ⟶ Sp R) 
 variable {S} (hS : ∀ x, x ∈ S ↔ ‖x‖ ≤ 1)
 include hS
 
+/- English proof (translation)
+Establish `h₁ : x ⁻¹ᵁ X.basicOpen a = ⊤` using `DVR.eq_top_of_closedPoint_mem _ ha`. Establish `ht : ⊤ ≤ x ⁻¹ᵁ U` using `fun q _ => X.basicOpen_le a (h₁.ge (Set.mem_univ q))`. Establish `h' : ⊤ ≤ (spMap S.subtype ≫ x) ⁻¹ᵁ U` using `fun q _ => ht (Set.mem_univ (spMap S.subtype q))`. Establish `hu : IsUnit ((x.appLE U ⊤ ht).hom a)`. Use `(Sp S).toRingedSpace.isUnit_of_isUnit_germ _ _ fun y hy => ((Sp S).mem_basicOpen _ y hy).1 ?_` and prove the remaining obligations.
+
+Rewrite using `[Scheme.basicOpen_appLE, h₁]`. Conclude with `⟨trivial, trivial⟩`. Take `⟨u, hu⟩` from `hu.map (Scheme.ΓSpecIso (CommRingCat.of S)).hom.hom`. Establish `e : (spMap S.subtype ≫ x).appLE U ⊤ h' ≫ (Scheme.ΓSpecIso (CommRingCat.of C)).hom = x.appLE U ⊤ ht ≫ (Scheme.ΓSpecIso (CommRingCat.of S)).hom ≫ CommRingCat.ofHom S.subtype`. Rewrite using `[← Scheme.ΓSpecIso_naturality, ← Scheme.Hom.appLE_comp_appLE (spMap S.subtype) x U ⊤ ⊤ ht le_rfl, Category.assoc]`.
+
+Both sides reduce to the same expression. Establish `e' : valF (spMap S.subtype ≫ x) U a = S.subtype u.val`. Rewrite using `[valF, dif_pos h', hu]`. Conclude with `congrArg (fun g => g.hom a) e`. Establish `m : ‖S.subtype u.val‖ * ‖S.subtype u.inv‖ = 1`.
+
+Rewrite using `[← norm_mul, ← map_mul]`. Conclude with `(congrArg (fun q => ‖S.subtype q‖) u.val_inv).trans (by rw [map_one, norm_one])`. Establish `b₁ : ‖S.subtype u.val‖ ≤ 1` using `(hS _).1 (show S from u.val).2`. Establish `b₂ : ‖S.subtype u.inv‖ ≤ 1` using `(hS _).1 (show S from u.inv).2`. Rewrite using `[e']`.
+
+Use polynomial arithmetic with `[norm_nonneg (S.subtype u.val), norm_nonneg (S.subtype u.inv)]`.
+-/
 theorem norm_valF {X : Scheme.{0}} (x : Sp S ⟶ X) (U : X.Opens) (a : Γ(X, U))
     (ha : x (closedPoint S) ∈ X.basicOpen a) : ‖valF (spMap S.subtype ≫ x) U a‖ = 1 := by
   have h₁ : x ⁻¹ᵁ X.basicOpen a = ⊤ := DVR.eq_top_of_closedPoint_mem _ ha
@@ -129,10 +167,18 @@ variable {X Y : Scheme.{0}} {L : LB X} {K : Type} [Fintype K] {φ : K → (Y ⟶
   {J : (Sp C ⟶ X) → L.ι} (hm : ∀ k, ⊤ ≤ (m ≫ φ k) ⁻¹ᵁ L.U (J ((spMap S.subtype ≫ m) ≫ φ k)))
 include hm
 
+/- English proof (translation)
+Use `norm_valF hS m _ _ ?_` and prove the remaining obligations. Conclude with `(Scheme.basicOpen_of_isUnit Y (Units.isUnit _)).ge (Set.mem_iInter.2 fun k => hm k trivial)`.
+-/
 theorem norm_vF (t : LB.Gen (LB.LinComb L φ ε)) : ‖vF t (spMap S.subtype ≫ m) J‖ = 1 := by
   refine norm_valF hS m _ _ ?_
   exact (Scheme.basicOpen_of_isUnit Y (Units.isUnit _)).ge (Set.mem_iInter.2 fun k => hm k trivial)
 
+/- English proof (translation)
+Set `z : Spec (CommRingCat.of (ResidueField S))` to `closedPoint (ResidueField S)`. Take `⟨J', hJ'⟩` from `GlobalTheory.UT.CoefBasic.exists_good' hL z`. Establish `e : (Spec.map (CommRingCat.ofHom (residue S)) ≫ m) z = m (closedPoint S)` using `congrArg m (IsLocalRing.comap_closedPoint (residue S))`. Establish `h₁ : (Spec.map (CommRingCat.ofHom (residue S)) ≫ m) z ∈ LB.wchart L φ fun k => J ((spMap S.subtype ≫ m) ≫ φ k)`. Rewrite using `[e]`.
+
+Conclude with `Set.mem_iInter.2 fun k => hm k trivial`. Establish `h₂` using `(congrArg IsUnit (sec_trans s _ z (hJ'.mem φ _) h₁)).mp (h z J' hJ')`. Use `norm_valF hS m _ _ ?_` and prove the remaining obligations. Rewrite using `[← e]`. Conclude with `(isUnit_gs_iff _ z _ h₁ _).1 (isUnit_of_mul_isUnit_right h₂)`.
+-/
 theorem norm_sF (hL : L.IsLB) (s : LB.Sec (LB.LinComb L φ ε))
     (h : ∀ z J', Good L z J' → IsUnit (sval s (Spec.map (CommRingCat.ofHom (residue S)) ≫ m) z J')) :
     ‖sF s (spMap S.subtype ≫ m) J‖ = 1 := by
@@ -150,6 +196,27 @@ theorem norm_sF (hL : L.IsLB) (s : LB.Sec (LB.LinComb L φ ε))
   exact (isUnit_gs_iff _ z _ h₁ _).1 (isUnit_of_mul_isUnit_right h₂)
 end Val
 
+/- English proof (translation)
+Take `⟨S, hS, hI⟩` from `hν`. Use `D.P.isAb.proper` as an intermediate fact. Set `f : R →+* S` to `((algebraMap (FractionRing R) C).comp (algebraMap R _)).codRestrict S fun r => (hS _).2 (hR.1 r)`. Establish `hf : spMap S.subtype ≫ spMap f = (TF (R` using `R) C).hom := by`. Express the relevant statement in the definitionally equal form `Spec.map _ ≫ Spec.map _ = Spec.map _ ≫ Spec.map _`.
+
+Rewrite using `[← Spec.map_comp, ← Spec.map_comp]`. Both sides reduce to the same expression. Set `ρ : TF (R` to `R) C ⟶ Over.mk (spMap f) := Over.homMk (spMap S.subtype) hf`. Establish `hJ : ∀ y : Sp S ⟶ D.P.A.left, y ≫ D.P.A.hom = spMap f → ⊤ ≤ y ⁻¹ᵁ D.P.L.U (ν.J (spMap S.subtype ≫ y))` using `fun y hy => by`. Take `⟨x₀, e, h⟩` from `hI (Over.homMk (spMap S.subtype ≫ y) (by rw [Category.assoc, hy]; exact hf))`.
+
+Take `rfl : x₀ = y` from `separated_ext S D.P.A.hom e`. Conclude with `h`. Take `⟨m₀, hm₀, -⟩` from `hI (ν.eA a)`. Set `m : Over.mk (spMap f) ⟶ D.P.A` to `Over.homMk m₀ (affine_ext S (by`. Rewrite using `[← Category.assoc, hm₀]`.
+
+Conclude with `(Over.w (ν.eA a)).trans hf.symm))`. Establish `hm : ρ ≫ m = ν.eA a` using `Over.OverMorphism.ext hm₀`. Establish `: IsAlgClosed (ResidueField S)` using `isAlgClosed_residueField_of_valuationRing_of_isAlgClosed S C`. Establish `hκ : (n : ResidueField S) ≠ 0`. Establish `h0 : (n : C) ≠ 0` using `fun e => by simp [e] at hC`.
+
+Establish `hu : IsUnit (n : S)` using `IsUnit.of_mul_eq_one (⟨(n : C)⁻¹, (hS _).2 (by simp [hC])⟩ : S) (Subtype.ext (by simp [h0]))`. Use `(hu.map (residue S)).ne_zero` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Set `r : Over.mk (Spec.map (CommRingCat.ofHom (residue S)) ≫ spMap f) ⟶ Over.mk (spMap f)` to `Over.homMk _ rfl`. Take `⟨β, -, hβ⟩` from `exists_generator_ne_zero hL.secBaseChange D.P`.
+
+Take `⟨th, h₀, hth⟩` from `hβ (ResidueField S) (Spec.map (CommRingCat.ofHom (residue S)) ≫ spMap f)`. Take `⟨x₀, hx₀, hu⟩` from `exists_good_point hL.goodPt hL.polBaseChange D.P _ hn hκ th h₀ (r ≫ m)`. Take `⟨hfin, hflat, -⟩` from `hL.mulN _ D.P n (by omega)`. Take `⟨x, hx, ex⟩ : ∃ x : Over.mk (spMap f) ⟶ D.P.A, x ^ n = 1 ∧ Spec.map (CommRingCat.ofHom (residue S)) ≫ x.left = x₀.left` from `exists_torsion_lift S D.P.A n (spMap f) x₀ hx₀`. Establish `ex' : r ≫ x = x₀` using `Over.OverMorphism.ext ex`.
+
+Take `⟨c, hc⟩` from `ν.th_gen β`. Use `⟨ν.eA.symm (ρ ≫ x), by rw [← map_pow, ← MonObj.comp_pow, hx, MonObj.comp_one, map_one], ?_⟩` and prove the remaining obligations. Establish `e : (ν.eA (a * ν.eA.symm (ρ ≫ x))).left = spMap S.subtype ≫ (m * x).left`. Rewrite using `[map_mul, MulEquiv.apply_symm_apply, ← hm, ← MonObj.comp_mul]`. Both sides reduce to the same expression.
+
+Establish `h₁ : ‖sF ν.th (spMap S.subtype ≫ (m * x).left) ν.J‖ = 1` using `norm_sF hS (m * x).left (fun _ => by`. Simplify `hJ (m * x).left (Over.w _)) D.P.isLB ν.th fun z J hz => by` using `only [Category.comp_id]`. Establish `q` using `hu z J hz`. Rewrite `q` using `[hth _ _ z J hz, ThetaPtMove.ptSecT_snd, ← ex', ← MonObj.comp_mul]`. Conclude with `isUnit_of_mul_isUnit_right ((congrArg IsUnit (IndivisibleSection.sval_of_secIsMul (s := β) (t := ν.th) hc _ z hz)).mp q)`.
+
+Establish `h₂ : ‖vF (L` using `D.P.L) (φ := fun _ : PUnit => eSec D.P.A) (ε := fun _ => 1) D.rig (spMap S.subtype ≫ spMap f) ν.J‖ = 1 := norm_vF hS (spMap f) (fun _ => by`. Rewrite using `[Category.assoc]`. Conclude with `hJ _ (Over.w (1 : Over.mk (spMap f) ⟶ D.P.A))) _`. Establish `h₃` using `congrArg norm (ν.th_eq (a * ν.eA.symm (ρ ≫ x)))`. Rewrite `h₃` using `[norm_mul, e, h₁, ← hf, h₂, _root_.mul_one]`.
+
+Conclude with `h₃`.
+-/
 theorem exists_norm_th (hL : Laws) {R : Type} [CommRing R] [IsDomain R] [IsLocalRing R] [IsNoetherianRing R]
     {D : DegPre R} {C : Type} [NormedField C] [IsAlgClosed C] [Algebra (FractionRing R) C] (hR : CExt R ⊥ C)
     {N : NumD C} (ν : NumOf D C N) (hν : ν.IntN) {n : ℕ} (hn : 2 ≤ n) (hC : ‖(n : C)‖ = 1) (a : N.A) :
@@ -206,6 +273,19 @@ theorem exists_norm_th (hL : Laws) {R : Type} [CommRing R] [IsDomain R] [IsLocal
   rw [norm_mul, e, h₁, ← hf, h₂, _root_.mul_one] at h₃
   exact h₃
 
+/- English proof (translation)
+Introduce `hL _ hB R _ _ _ _ D he hb C _ _ _ _ hR N ν hν n hp ho hC`. Establish `h0 : (n : C) ≠ 0` using `fun e => by simp [e] at hC`. Establish `hj : ∀ j : ℕ, ((n ^ j : ℕ) : C) ≠ 0` using `fun j => by rw [Nat.cast_pow]; exact pow_ne_zero _ h0`. Take `⟨hW, hU⟩` from `hB R D he hb C N ν`. Establish `tor : ∀ (b : N.A) (k : ℕ), ν.eA b ^ k = 1 ↔ b ^ k = 1` using `fun b k => by`.
+
+Rewrite using `[← map_pow, MulEquiv.map_eq_one_iff]`. Use `⟨fun x => ?_, fun j => ?_, fun j b hb h => ?_, exists_norm_th hL hR ν hν hp.two_le hC, fun j h1 x x' l hl h => ?_⟩` and prove the remaining obligations. Take `⟨y, hy⟩` from `exists_pow_eq hL D.P (jFK (R := R) C ≫ jK R) (ν.eA x) hp.pos`. Conclude with `⟨ν.eA.symm y, by rw [← map_pow, hy, MulEquiv.symm_apply_apply]⟩`. Take `⟨v, hv, h⟩` from `exists_basis hL D.P (jFK (R := R) C ≫ jK R) (hj j)`.
+
+Use `nonempty_equiv_of_basis (pow_ne_zero j hp.ne_zero) (fun i => ν.eA.symm (v i)) (fun i => by rw [← map_pow, hv, map_one]) fun y hy => ?_` and prove the remaining obligations. Use `(existsUnique_congr fun c => ?_).1 (h (ν.eA y) ((tor _ _).2 hy))` and prove the remaining obligations. Simplify using `only [List.prod_ofFn, ← map_pow, ← map_prod, MulEquiv.symm_apply_eq]`. Use `ν.eA.map_eq_one_iff.1 (ThetaRep.eq_one_of_weilIs hL D.P (jFK (R := R) C ≫ jK R) (hj j) _ ((tor _ _).2 hb) fun y hy => ?_)` and prove the remaining obligations. Take `⟨b', rfl⟩` from `ν.eA.surjective y`.
+
+Establish `hb'` using `(tor _ _).1 hy`. Use `hW (n ^ j) (Nat.pos_of_ne_zero (pow_ne_zero j hp.ne_zero)) b b' hb hb'` as an intermediate fact. Rewrite `this` using `[h b' hb', show unitOn (1 : Cˣ) = 1 from map_one (Units.map _)]`. Then use the resulting hypothesis. Take `⟨-, hc⟩` from `hU (n ^ j) ho.pow (hj j) {b : N.A // b ^ (n ^ j) ^ 2 = 1} Subtype.val Subtype.property`. Take `⟨-, hs, -, hsep⟩` from `GlobalTheory.T.thetaCoordinates_exist_unique_separate_points hL C _ D.P (jFK (R := R) C ≫ jK R) (n ^ j) ho.pow (hj j) {b : N.A // b ^ (n ^ j) ^ 2 = 1} (fun i => ν.eA i.1) fun i => (tor _ _).2 i.2`.
+
+Establish `h3 : 3 ≤ n ^ j`. Establish `: 3 ≤ n`. Use `hp.two_le` as an intermediate fact. Take `⟨k, rfl⟩` from `ho`. Use linear arithmetic over natural numbers and integers.
+
+Conclude with `this.trans (Nat.le_self_pow (by omega) n)`. Use `ν.eA.injective (hsep h3 (fun y hy => ?_) _ _ (fun i => N.uth (n ^ j) i.1 x) (hc x) ((hs _ (fun i => N.uth (n ^ j) i.1 x') _ (hc x')).2 ⟨Units.mk0 l hl, funext fun i => h i.1 i.2⟩)).1` and prove the remaining obligations. Take `⟨b, rfl⟩` from `ν.eA.surjective y`. Conclude with `⟨⟨b, (tor _ _).1 hy⟩, rfl⟩`.
+-/
 theorem tors_of_integral : Laws → Laws2 → BrUthSt → ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [IsNoetherianRing R] (D : DegPre R), D.PsiEven → D.TauBimult → ∀ (C : Type) [NormedField C] [IsUltrametricDist C] [IsAlgClosed C] [Algebra (FractionRing R) C], CExt R ⊥ C → ∀ (N : NumD C) (ν : NumOf D C N), ν.IntN → ∀ n : ℕ, n.Prime → Odd n → ‖(n : C)‖ = 1 → N.Tors n D.P.g := by
   intro hL _ hB R _ _ _ _ D he hb C _ _ _ _ hR N ν hν n hp ho hC
   have h0 : (n : C) ≠ 0 := fun e => by simp [e] at hC

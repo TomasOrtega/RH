@@ -6,6 +6,17 @@ open scoped TensorProduct GlobalTheory.CuspRep.CuspidalL2GL
 open UpperTheory.V.Cj UpperTheory.V.Cj.H
 
 open scoped ENNReal in
+/- English proof (translation)
+Establish `hmeasF : AEStronglyMeasurable (GlobalTheory.AutomorphicL2Unitary.lift Γ (F : GlobalTheory.AutomorphicL2Unitary.Quot Γ → ℂ)) μ` using `GlobalTheory.AutomorphicL2Unitary.aestronglyMeasurable_quotMeasure_iff_lift.mp (Lp.aestronglyMeasurable F)`. Establish `key : ∫⁻ x, ‖GlobalTheory.AutomorphicL2Unitary.lift Γ (F : GlobalTheory.AutomorphicL2Unitary.Quot Γ → ℂ) x‖ₑ ^ (2 : ℝ) ∂(μ.restrict S) ≤ (N : ℝ≥0∞) * ∫⁻ q, ‖(F : GlobalTheory.AutomorphicL2Unitary.Quot Γ → ℂ) q‖ₑ ^ (2 : ℝ) ∂(GlobalTheory.AutomorphicL2Unitary.quotMeasure Γ μ)`. Rewrite using `[← lintegral_indicator hS, GlobalTheory.AutomorphicL2Unitary.lintegral_eq_lintegral_tsum (Γ := Γ) ((hmeasF.enorm.pow_const _).indicator hS), ← lintegral_const_mul' _ _ (ENNReal.natCast_ne_top N)]`. Use `lintegral_mono (fun q => ?_)` and prove the remaining obligations. Establish `hq : ∀ γ : Γ, S.indicator (fun x => ‖GlobalTheory.AutomorphicL2Unitary.lift Γ (F : GlobalTheory.AutomorphicL2Unitary.Quot Γ → ℂ) x‖ₑ ^ (2 : ℝ)) ((γ : G) * Quotient.out q) = {γ : Γ | (γ : G) * Quotient.out q ∈ S}.indicator (fun _ => ‖(F : GlobalTheory.AutomorphicL2Unitary.Quot Γ → …`.
+
+Introduce `γ`. Establish `hl : GlobalTheory.AutomorphicL2Unitary.lift Γ (F : GlobalTheory.AutomorphicL2Unitary.Quot Γ → ℂ) ((γ : G) * Quotient.out q) = (F : GlobalTheory.AutomorphicL2Unitary.Quot Γ → ℂ) q`. Rewrite using `[GlobalTheory.AutomorphicL2Unitary.lift, GlobalTheory.AutomorphicL2Unitary.mk_mul]`. Conclude with `congrArg _ (Quotient.out_eq q)`. Distinguish the cases in `h : (γ : G) * Quotient.out q ∈ S`.
+
+Rewrite using `[Set.indicator_of_mem h, Set.indicator_of_mem (show γ ∈ {γ : Γ | (γ : G) * Quotient.out q ∈ S} from h), hl]`. Rewrite using `[Set.indicator_of_notMem h, Set.indicator_of_notMem (show γ ∉ {γ : Γ | (γ : G) * Quotient.out q ∈ S} from h)]`. Rewrite using `[tsum_congr hq, ← tsum_subtype, ENNReal.tsum_set_const]`. Use `gcongr`. Establish `h1` using `ENat.toENNReal_le.mpr (hN (Quotient.out q))`.
+
+Simplify using `using h1`. Rewrite using `[eLpNorm_eq_lintegral_rpow_enorm_toReal (by norm_num) (by norm_num), eLpNorm_eq_lintegral_rpow_enorm_toReal (by norm_num) (by norm_num)]`. Simplify using `only [ENNReal.toReal_ofNat]`. Establish `hN2 : (N : ℝ≥0∞) ^ (1 / 2 : ℝ) ≤ N`. Break down `Nat.eq_zero_or_pos N with h0 | h0` into its components or cases.
+
+Substitute `h0` using the available equality. Simplify using the standard rewrite rules. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem sq_on_le {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [SecondCountableTopology G]
     [MeasurableSpace G] [BorelSpace G] (Γ : Subgroup G) [DiscreteTopology Γ] (μ : Measure G) [μ.IsMulLeftInvariant]
     {S : Set G} (hS : MeasurableSet S) (N : ℕ) (hN : ∀ x : G, {γ : Γ | (γ : G) * x ∈ S}.encard ≤ N)
@@ -52,6 +63,25 @@ private theorem sq_on_le {G : Type} [Group G] [TopologicalSpace G] [IsTopologica
         ENNReal.mul_rpow_of_nonneg _ _ (by norm_num)
     _ ≤ _ := by gcongr
 
+/- English proof (translation)
+Introduce `G _ _ _ _ _ _ _ _ Γ _ μ _ _ ψ hψ hψc`. Take `⟨C0, hC0⟩` from `hψ.bounded_above_of_compact_support hψc`. Establish `hC : ∀ z, ‖ψ z‖ ≤ max C0 0` using `fun z => (hC0 z).trans (le_max_left _ _)`. Establish `hC' : 0 ≤ max C0 0` using `le_max_right _ _`. Establish `hMfin : μ (tsupport ψ)⁻¹ ≠ ⊤` using `(hψc.isCompact.inv).measure_lt_top.ne`.
+
+Use `⟨max C0 0 * (μ (tsupport ψ)⁻¹).toReal ^ (1 / 2 : ℝ), by positivity, ?_⟩` and prove the remaining obligations. Introduce `x N hN F`. Establish `hS : MeasurableSet {y : G | ψ (y⁻¹ * x) ≠ 0}` using `(isOpen_ne_fun (hψ.comp (continuous_inv.mul continuous_const)) continuous_const).measurableSet`. Establish `hSK : μ {y : G | ψ (y⁻¹ * x) ≠ 0} ≤ μ (tsupport ψ)⁻¹`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `measure_mono (fun y hy => ?_)` and prove the remaining obligations. Use `show (x⁻¹ * y)⁻¹ ∈ tsupport ψ`. Rewrite using `[_root_.mul_inv_rev, inv_inv]`. Conclude with `subset_tsupport _ hy`. Use `_ = μ (tsupport ψ)⁻¹ := measure_preimage_mul μ x⁻¹ _`.
+
+Establish `hF` using `sq_on_le Γ μ hS N hN F`. Establish `hmeas : AEStronglyMeasurable (GlobalTheory.AutomorphicL2Unitary.lift Γ (F : GlobalTheory.AutomorphicL2Unitary.Quot Γ → ℂ)) μ` using `GlobalTheory.AutomorphicL2Unitary.aestronglyMeasurable_quotMeasure_iff_lift.mp (Lp.aestronglyMeasurable F)`. Establish `hH` using `eLpNorm_le_eLpNorm_mul_rpow_measure_univ (p := 1) (q := 2) (by norm_num) (hmeas.restrict (s := {y : G | ψ (y⁻¹ * x) ≠ 0}))`. Rewrite `hH` using `[show (1 / (1 : ENNReal).toReal - 1 / (2 : ENNReal).toReal) = (1 / 2 : ℝ) by norm_num, Measure.restrict_apply_univ]`. Establish `hE : ‖cv ψ F x‖ₑ ≤ (N * eLpNorm F 2 (GlobalTheory.AutomorphicL2Unitary.quotMeasure Γ μ) * μ (tsupport ψ)⁻¹ ^ (1 / 2 : ℝ)) * ENNReal.ofReal (max C0 0)`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `lintegral_mono (fun y => ?_)` and prove the remaining obligations. Distinguish the cases in `hy : y ∈ {y : G | ψ (y⁻¹ * x) ≠ 0}`. Rewrite using `[Set.indicator_of_mem hy, enorm_mul] gcongr`. Rewrite using `[← ofReal_norm]`.
+
+Conclude with `ENNReal.ofReal_le_ofReal (hC _)`. Establish `h0 : ψ (y⁻¹ * x) = 0` using `not_not.mp hy`. Rewrite using `[h0, mul_zero, enorm_zero]`. Conclude with `bot_le`. Use `_ = (∫⁻ y in {y : G | ψ (y⁻¹ * x) ≠ 0}, ‖GlobalTheory.AutomorphicL2Unitary.lift Γ (F : GlobalTheory.AutomorphicL2Unitary.Quot Γ → ℂ) y‖ₑ ∂μ) * ENNReal.ofReal (max C0 0) := by`.
+
+Rewrite using `[lintegral_mul_const' _ _ ENNReal.ofReal_ne_top, lintegral_indicator hS]`. Use `_ = eLpNorm (GlobalTheory.AutomorphicL2Unitary.lift Γ (F : GlobalTheory.AutomorphicL2Unitary.Quot Γ → ℂ)) 1 (μ.restrict {y : G | ψ (y⁻¹ * x) ≠ 0}) * ENNReal.ofReal (max C0 0) := by`. Rewrite using `[eLpNorm_one_eq_lintegral_enorm]`. Use `_ ≤ _ := by gcongr`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hRfin : (N * eLpNorm F 2 (GlobalTheory.AutomorphicL2Unitary.quotMeasure Γ μ) * μ (tsupport ψ)⁻¹ ^ (1 / 2 : ℝ)) * ENNReal.ofReal (max C0 0) ≠ ⊤`. Establish `h1 : eLpNorm F 2 (GlobalTheory.AutomorphicL2Unitary.quotMeasure Γ μ) ≠ ⊤` using `Lp.eLpNorm_ne_top F`. Establish `h2 : μ (tsupport ψ)⁻¹ ^ (1 / 2 : ℝ) ≠ ⊤` using `ENNReal.rpow_ne_top_of_nonneg (by norm_num) hMfin`. Conclude with `ENNReal.mul_ne_top (ENNReal.mul_ne_top (ENNReal.mul_ne_top (ENNReal.natCast_ne_top N) h1) h2) ENNReal.ofReal_ne_top`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[ENNReal.toReal_mul, ENNReal.toReal_mul, ENNReal.toReal_mul, ENNReal.toReal_ofReal hC', ENNReal.toReal_rpow, ENNReal.toReal_natCast, Lp.norm_def]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem UpperTheory.V.Cj.H.cvCount :
     UpperTheory.V.Cj.H.CvCount := by
   intro G _ _ _ _ _ _ _ _ Γ _ μ _ _ ψ hψ hψc

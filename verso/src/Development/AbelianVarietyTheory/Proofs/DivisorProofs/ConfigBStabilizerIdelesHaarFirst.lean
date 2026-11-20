@@ -25,6 +25,13 @@ namespace GlobalTheory.ConeSmallMidJBInner
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+Take `⟨h1, h2, h3⟩` from `h`. Take `⟨h1', h2', h3'⟩` from `h'`. Establish `hmul : ∀ x y : UA σ W.J, mat (x * y) = mat x * mat y` using `fun _ _ => rfl`. Establish `hmul₁ : ∀ x y : UA σ W₁.J, mat (x * y) = mat x * mat y` using `fun _ _ => rfl`. Simplify using `only [inv_one, Units.val_one, map_one, one_smul] at h1 h2 h1' h2' ⊢`.
+
+Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hmul, ← Matrix.mulVec_mulVec, h1', h1]`. Simplify using the standard rewrite rules. Rewrite using `[hmul, ← Matrix.mulVec_mulVec, h2', h2]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[hmul, hmul₁, Matrix.mul_assoc, h3', ← Matrix.mul_assoc, h3, Matrix.mul_assoc]`.
+-/
 theorem isLevi_mul {d d₁ : ℕ} {W : Spc F E d} {W₁ : Spc F E d₁} {H' : Plane E d d₁} {v v' : UA σ W₁.J} {m m' : UA σ W.J}
     (h : IsLevi H' 1 v m) (h' : IsLevi H' 1 v' m') : IsLevi H' 1 (v * v') (m * m') := by
   obtain ⟨h1, h2, h3⟩ := h
@@ -37,6 +44,19 @@ theorem isLevi_mul {d d₁ : ℕ} {W : Spc F E d} {W₁ : Spc F E d₁} {H' : Pl
   · rw [hmul, ← Matrix.mulVec_mulVec, h2', h2]; simp
   · rw [hmul, hmul₁, Matrix.mul_assoc, h3', ← Matrix.mul_assoc, h3, Matrix.mul_assoc]
 
+/- English proof (translation)
+Establish `hΦs : Φ' ∈ schA F _` using `GlobalTheory.ThKContSmall.so_le_schA hT.geo.hM' B.τ₁ (Submodule.mem_inf.1 hΦ').2`. Establish `hW` using `IsUWeilPair.isUSplitting hT.weil'`. Unfold `GlobalTheory.ConeSmall.coneI`. Use `integral_congr_ae (Filter.Eventually.of_forall fun k => ?_)` and prove the remaining obligations. Use `integral_congr_ae (Filter.Eventually.of_forall fun l => ?_)` and prove the remaining obligations.
+
+Simplify using `only`. Use `congr 2`. Establish `hΨ : om' (k.1, h) Φ' ∈ schA F _` using `hW.pres _ _ hΦs`. Establish `e1 : om' (k.1, m * h) Φ' = om' (1, m) (om' (k.1, h) Φ')`. Rewrite using `[← Module.End.mul_apply, ← map_mul]`.
+
+Simplify using the standard rewrite rules. Establish `hact : actAB (cA σ) ((1, m) : UA σ G.V'.J × UA σ G.W.J) (shiftB σ H H' l) = shiftB σ H H' l`. Establish `hx : mat m *ᵥ incV F H'.x = incV F H'.x` using `by simpa using hL.1`. Use extensionality with `i j`. Simplify using `only [actAB, shiftB, OneMemClass.coe_one, Units.val_one, Matrix.one_mul, Matrix.smul_mul, Matrix.smul_apply]`.
+
+Use `congr 1`. Use `conv_rhs => rw [← hx]`. Simplify using `[mat, Matrix.mul_apply, Matrix.vecMulVec_apply, Matrix.mulVec, dotProduct, Finset.mul_sum, mul_comm, mul_left_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => by ring`. Establish `e2 : G.M'.co.rho B.ψ (shiftB σ H H' l) (om' (1, m) (om' (k.1, h) Φ')) = om' (1, m) (G.M'.co.rho B.ψ (shiftB σ H H' l) (om' (k.1, h) Φ'))`.
+
+Rewrite using `[hW.impl (1, m) (shiftB σ H H' l) _ hΨ, hact]`. Establish `hρ` using `GlobalTheory.HeisSchA.rho_mem_schA G.M' B.ψ hT.base.std (shiftB σ H H' l) _ hΨ`. Rewrite using `[e1, e2, GlobalTheory.T.config_b_levi_evaluation_compatible hKP.base F E σ B a b G G₁ H H' hC e' he X om om' om₁ om₁' hT hT₁ h₁ m hL _ hρ]`. Simplify using `only [Model.I, theta]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations.
+
+Simplify using `only`. Rewrite using `[← Module.End.mul_apply, ← map_mul]`. Simplify using the standard rewrite rules.
+-/
 theorem coneI_levi_pt (hKP : GlobalTheory.ThK.KP) {B : Base F E} {a b : ℕ} {G : Geo σ a (b + 2)} {G₁ : Geo σ a b}
     {H : Plane E (b + 2) b} {H' : Plane E (a + (b + 2)) (a + b)} (hC : CfgB B G G₁ H H') {e'}
     (he : IsEv B G.M' G₁.M' H.ι H'.ι (isoB H H') e') (K : Subgroup (UA σ G.V'.J)) (μK : Measure K) (μ : Measure (AE F E)ˣ)
@@ -74,6 +94,23 @@ theorem coneI_levi_pt (hKP : GlobalTheory.ThK.KP) {B : Base F E} {a b : ℕ} {G 
   rw [← Module.End.mul_apply, ← map_mul]
   simp
 
+/- English proof (translation)
+Introduce `hKP F E _ _ _ _ _ σ B a b G G₁ H H' hC e' he K μK μ hK hμK hμ X om om' om₁ om₁' hT hT₁ Φ' hΦ' V V' W₁' hT₂ e W₂ H₂ i₀ i₁ hH₂ emb hemb`. Take `⟨s₁, hs₁⟩` from `GlobalTheory.T.config_b_stabilizer_ideles_haar_third hKP F E σ B a b G G₁ H H' hC e' he K μK μ hK hμK hμ X om om' om₁ om₁' hT hT₁ Φ' hΦ' V V' W₁' hT₂ e W₂ H₂ i₀ i₁ hH₂`. Use `⟨s₁, fun s hs => ?_⟩` and prove the remaining obligations. Establish `hJ : ∀ (g : UA σ G.W.J) (k : K) (l : (AE F E)ˣ), ∃ c : UA σ G₁.W.J → ℂ, IsCT H₂ (G₁.M'.I om₁' (e' (G.M'.co.rho B.ψ (shiftB σ H H' l) (om' (k.1, g) Φ')))) c ∧ GlobalTheory.ConeSmallMid.JRel W₂ H₂ X.α (((b : ℕ) : ℂ) / 2) X.β (((a : ℕ) : ℂ) / 2) c ∧ GlobalTheory.ConeSmallMid.JRel W₂ …` using `fun g k l => GlobalTheory.T.reduced_triple_isotropic_plane hKP F E σ B a b G₁ X om₁ om₁' hT₁ V V' W₁' hT₂ e W₂ H₂ i₀ i₁ hH₂ _ (GlobalTheory.T.config_b_eigen_stabilizer_integral hKP F E σ B a b G G₁ H H' hC e' he K μK μ hK hμK hμ X om om' om₁ om₁' hT hT₁ Φ' hΦ' g k l)`. Use `choose C hCT hJ1 hJ2 using fun g => hs₁ s hs g (hJ g)`.
+
+Establish `hLv : ∀ (v : UA σ G₁.W.J) (m x : UA σ G.W.J), IsLevi H' 1 v m → GlobalTheory.ConeSmall.coneI B G G₁ H H' e' K μK μ X.ν om' om₁' Φ' (s + ((a : ℂ) + 1) / 2) (m * x) = ∫ k, ∫ l, G₁.M'.I om₁' (e' (G.M'.co.rho B.ψ (shiftB σ H H' l) (om' (k.1, x) Φ'))) v * (X.ν l : ℂ) * ((absE F E l : …` using `fun v m x hL => coneI_levi_pt hKP hC he K μK μ hT hT₁ hΦ' _ v m hL x`. Distinguish the cases in `hex : ∃ (μ₀ : Measure (unip σ G₁.W H₂)) (𝓕₀ : Set (unip σ G₁.W H₂)), μ₀.IsHaarMeasure ∧ IsFundamentalDomain ((ratU σ G₁.W.J).subgroupOf (unip σ G₁.W H₂)) 𝓕₀ μ₀ ∧ μ₀ 𝓕₀ = 1`. Use `swap`. Apply the tactic sequence `refine ⟨0, fun g μ' 𝓕 h1 h2 h3 => absurd ⟨μ', 𝓕, h1, h2, h3⟩ hex, ?_, ?_⟩ <;> intros <;> simp`. Take `⟨μ₀, 𝓕₀, hμ₀, h𝓕₀, h1₀⟩` from `hex`.
+
+Establish `key : ∀ g v m, IsLevi H' 1 v m → C (m * g) 1 = C g v`. Introduce `g v m hL`. Rewrite using `[hCT (m * g) μ₀ 𝓕₀ hμ₀ h𝓕₀ h1₀ 1, hCT g μ₀ 𝓕₀ hμ₀ h𝓕₀ h1₀ v]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun u => ?_)` and prove the remaining obligations. Establish `A` using `hLv (u.1 * 1) (emb (u.1 * 1)) (m * g) (hemb _)`.
+
+Establish `hv : u.1 * 1 * v = u.1 * v` using `by rw [mul_one]`. Establish `B'` using `hLv (u.1 * v) (emb (u.1 * 1) * m) g (by rw [← hv]; exact isLevi_mul (hemb _) hL)`. Rewrite `B'` using `[mul_assoc]`. Conclude with `A.symm.trans B'`. Use `⟨fun x => C x 1, fun g μ' 𝓕 h1 h2 h3 h => ?_, fun t t' m m' hm hm' g => ?_, fun t t' m m' hm hm' g => ?_⟩` and prove the remaining obligations.
+
+Use `show C (emb h * g) 1 = _`. Rewrite using `[key g h (emb h) (hemb h), hCT g μ' 𝓕 h1 h2 h3 h]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun u => ?_)` and prove the remaining obligations. Conclude with `(hLv _ _ g (hemb (u.1 * h))).symm`. Establish `e1` using `key g (m' * m) (emb m' * emb m) (isLevi_mul (hemb m') (hemb m))`.
+
+Establish `e2` using `key g m (emb m) (hemb m)`. Establish `e3` using `key g m' (emb m') (hemb m')`. Establish `hj` using `hJ1 g t t' m m' hm hm' 1`. Simplify using `only [mul_one] at hj`. Use `show C (emb m' * (emb m * g)) 1 - _ * C (emb m * g) 1 - _ * C (emb m' * g) 1 + _ * C g 1 = 0`.
+
+Rewrite using `[← mul_assoc, e1, e2, e3]`. Conclude with `hj`. Establish `e1` using `key g (m' * m) (emb m' * emb m) (isLevi_mul (hemb m') (hemb m))`. Establish `e2` using `key g m (emb m) (hemb m)`. Establish `e3` using `key g m' (emb m') (hemb m')`.
+
+Establish `hj` using `hJ2 g t t' m m' hm hm' 1`. Simplify using `only [mul_one] at hj`. Use `show C (emb m' * (emb m * g)) 1 - _ * C (emb m * g) 1 - _ * C (emb m' * g) 1 + _ * C g 1 = 0`. Rewrite using `[← mul_assoc, e1, e2, e3]`. Conclude with `hj`.
+-/
 theorem jb_inner : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a b : ℕ) (G : Geo σ a (b + 2)) (G₁ : Geo σ a b) (H : Plane E (b + 2) b) (H' : Plane E (a + (b + 2)) (a + b)), CfgB B G G₁ H H' →
     ∀ e', IsEv B G.M' G₁.M' H.ι H'.ι (isoB H H') e' → ∀ (K : Subgroup (UA σ G.V'.J)) (μK : Measure K) (μ : Measure (AE F E)ˣ),
     IsStab B K → μK.IsHaarMeasure → μ.IsHaarMeasure →

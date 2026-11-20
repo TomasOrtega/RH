@@ -32,6 +32,11 @@ section SlopeTestRemainingChoices
 
 variable {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l}
 
+/- English proof (translation)
+Establish `hl : l.Prime` using `Fact.out`. Take `⟨u, -, hu⟩` from `(UpperTheory.V.Chr.placesQ Ω).2.2 l A _ hl hA (h.pl_over l hl)`. Establish `e : ∀ γ : G ℚ Ω →* c.Oˣ, γ (u⁻¹ * s * u) = γ s` using `fun γ => by`. Rewrite using `[map_mul, map_mul, map_inv, mul_right_comm, inv_mul_cancel, one_mul]`. Establish `h3` using `(facts D h).2.2.2.1 i (u⁻¹ * s * u) ⟨⟨hu s hs, (e _).trans h1⟩, (e _).trans h2⟩`.
+
+Rewrite `h3` using `[e, e]`. Then use the resulting hypothesis.
+-/
 private theorem ps_wt_any {D : Raw Ω c} (h : D.Good) {A : ValuationSubring Ω} (hA : A.valuation (l : Ω) < 1) (i : Fin 4)
     {s : G ℚ Ω} (hs : s ∈ Ine (F := ℚ) A) (h1 : s ∈ D.ψ.ker) (h2 : s ∈ D.om.ker) :
     D.ps i s = chiO ℚ Ω l c.O s ^ D.wts4 i := by
@@ -42,10 +47,16 @@ private theorem ps_wt_any {D : Raw Ω c} (h : D.Good) {A : ValuationSubring Ω} 
   have h3 := (facts D h).2.2.2.1 i (u⁻¹ * s * u) ⟨⟨hu s hs, (e _).trans h1⟩, (e _).trans h2⟩
   rwa [e, e] at h3
 
+/- English proof (translation)
+Simplify using `[PD.ψ, PD.map, Matrix.mul_apply, adj_apply, map_sum]`.
+-/
 private theorem map_psi {ι Γ R R' : Type} [Group Γ] [CommRing R] [CommRing R'] (P : PD ι Γ R) (f : R →+* R') (v : ι) (i : Fin 4)
     (s : Γ) : (P.map f).ψ v i s = f (P.ψ v i s) := by
   simp [PD.ψ, PD.map, Matrix.mul_apply, adj_apply, map_sum]
 
+/- English proof (translation)
+Take `⟨u, hu⟩` from `h`. Use `show ((r g).map f).charpoly = ((r' g).map f).charpoly`. Rewrite using `[Matrix.charpoly_map, Matrix.charpoly_map, hu, Matrix.coe_units_inv, Matrix.charpoly_units_conj]`.
+-/
 private theorem charpoly_conj {H K K' : Type} [Group H] [Field K] [Field K'] (f : K →+* K') {r r' : H →* M4 K}
     (h : IsConj4 r r') (g : H) : (mapRep f r g).charpoly = (mapRep f r' g).charpoly := by
   obtain ⟨u, hu⟩ := h

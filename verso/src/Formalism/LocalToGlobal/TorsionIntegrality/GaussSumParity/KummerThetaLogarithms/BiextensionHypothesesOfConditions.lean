@@ -17,6 +17,9 @@ section Lin
 
 variable {K : Type} [NormedField K] {τ : Type} {d : ℕ} [NeZero d]
 
+/- English proof (translation)
+Unfold `linEL`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Use `split_ifs with hs`. Rewrite using `[h s hs]`. Both sides reduce to the same expression.
+-/
 theorem linEL_congr (σ : K →+* K) (c : K) {L L' : ZMod d → MvPowerSeries τ K}
     (h : ∀ s : ZMod d, s.val % 2 = 0 → L s = L' s) : linEL σ c L = linEL σ c L' := by
   unfold linEL
@@ -25,6 +28,9 @@ theorem linEL_congr (σ : K →+* K) (c : K) {L L' : ZMod d → MvPowerSeries τ
   · rw [h s hs]
   · rfl
 
+/- English proof (translation)
+Unfold `linOL`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Use `split_ifs with hs`. Both sides reduce to the same expression. Rewrite using `[h s hs]`.
+-/
 theorem linOL_congr (σ : K →+* K) (c : K) {L L' : ZMod d → MvPowerSeries τ K}
     (h : ∀ s : ZMod d, ¬ s.val % 2 = 0 → L s = L' s) : linOL σ c L = linOL σ c L' := by
   unfold linOL
@@ -33,6 +39,11 @@ theorem linOL_congr (σ : K →+* K) (c : K) {L L' : ZMod d → MvPowerSeries τ
   · rfl
   · rw [h s hs]
 
+/- English proof (translation)
+Unfold `linEL`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Use `split_ifs`. Rewrite using `[mul_add]`.
+
+Rewrite using `[add_zero]`.
+-/
 theorem linEL_add (σ : K →+* K) (c : K) (L L' : ZMod d → MvPowerSeries τ K) :
     linEL σ c (fun s => L s + L' s) = linEL σ c L + linEL σ c L' := by
   unfold linEL
@@ -42,6 +53,11 @@ theorem linEL_add (σ : K →+* K) (c : K) (L L' : ZMod d → MvPowerSeries τ K
   · rw [mul_add]
   · rw [add_zero]
 
+/- English proof (translation)
+Unfold `linOL`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Use `split_ifs`. Rewrite using `[add_zero]`.
+
+Rewrite using `[mul_add]`.
+-/
 theorem linOL_add (σ : K →+* K) (c : K) (L L' : ZMod d → MvPowerSeries τ K) :
     linOL σ c (fun s => L s + L' s) = linOL σ c L + linOL σ c L' := by
   unfold linOL
@@ -57,44 +73,71 @@ section Five
 
 variable {K : Type} [Field K] {τ : Type} {d : ℕ} {a : V2 d → MvPowerSeries τ K}
 
+/- English proof (translation)
+The claim follows from `MvPowerSeries.subst_X ha _`.
+-/
 theorem subst_first_coordinate (ha : HasSubst a) (s : ZMod d) : subst a (s0 (K := K) s) = a (false, s) :=
   MvPowerSeries.subst_X ha _
 
+/- English proof (translation)
+Unfold `s1`. Rewrite using `[if_pos hs, MvPowerSeries.subst_add ha, MvPowerSeries.subst_X ha, MvPowerSeries.subst_X ha]`.
+-/
 theorem subst_first_sum_even (ha : HasSubst a) {s : ZMod d} (hs : s.val % 2 = 0) :
     subst a (s1 (K := K) s) = a (false, s) + a (true, s) := by
   unfold s1
   rw [if_pos hs, MvPowerSeries.subst_add ha, MvPowerSeries.subst_X ha, MvPowerSeries.subst_X ha]
 
+/- English proof (translation)
+Unfold `s1`. Rewrite using `[if_neg hs, add_zero, MvPowerSeries.subst_X ha]`.
+-/
 theorem subst_first_odd (ha : HasSubst a) {s : ZMod d} (hs : ¬ s.val % 2 = 0) :
     subst a (s1 (K := K) s) = a (false, s) := by
   unfold s1
   rw [if_neg hs, add_zero, MvPowerSeries.subst_X ha]
 
+/- English proof (translation)
+Unfold `s2`. Rewrite using `[if_pos hs, MvPowerSeries.subst_X ha]`.
+-/
 theorem subst_second_even (ha : HasSubst a) {s : ZMod d} (hs : s.val % 2 = 0) :
     subst a (s2 (K := K) s) = a (true, s) := by
   unfold s2
   rw [if_pos hs, MvPowerSeries.subst_X ha]
 
+/- English proof (translation)
+Unfold `s2`. Rewrite using `[if_neg hs, MvPowerSeries.subst_X ha]`.
+-/
 theorem subst_second_odd (ha : HasSubst a) {s : ZMod d} (hs : ¬ s.val % 2 = 0) :
     subst a (s2 (K := K) s) = a (false, s) := by
   unfold s2
   rw [if_neg hs, MvPowerSeries.subst_X ha]
 
+/- English proof (translation)
+Unfold `s1'`. Rewrite using `[if_pos hs, add_zero, MvPowerSeries.subst_X ha]`.
+-/
 theorem subst_s1Prime_even (ha : HasSubst a) {s : ZMod d} (hs : s.val % 2 = 0) :
     subst a (s1' (K := K) s) = a (false, s) := by
   unfold s1'
   rw [if_pos hs, add_zero, MvPowerSeries.subst_X ha]
 
+/- English proof (translation)
+Unfold `s1'`. Rewrite using `[if_neg hs, MvPowerSeries.subst_add ha, MvPowerSeries.subst_X ha, MvPowerSeries.subst_X ha]`.
+-/
 theorem subst_s1Prime_odd (ha : HasSubst a) {s : ZMod d} (hs : ¬ s.val % 2 = 0) :
     subst a (s1' (K := K) s) = a (false, s) + a (true, s) := by
   unfold s1'
   rw [if_neg hs, MvPowerSeries.subst_add ha, MvPowerSeries.subst_X ha, MvPowerSeries.subst_X ha]
 
+/- English proof (translation)
+Unfold `s2'`. Rewrite using `[if_pos hs, MvPowerSeries.subst_X ha]`.
+-/
 theorem subst_s2Prime_even (ha : HasSubst a) {s : ZMod d} (hs : s.val % 2 = 0) :
     subst a (s2' (K := K) s) = a (false, s) := by
   unfold s2'
   rw [if_pos hs, MvPowerSeries.subst_X ha]
 
+/- English proof (translation)
+Unfold `s2'`. Rewrite using `[if_neg hs, MvPowerSeries.subst_X ha]`.
+-/
 theorem subst_s2Prime_odd (ha : HasSubst a) {s : ZMod d} (hs : ¬ s.val % 2 = 0) :
     subst a (s2' (K := K) s) = a (true, s) := by
   unfold s2'
@@ -106,6 +149,9 @@ section Sim
 
 variable {K ι : Type} [NormedField K] [IsUltrametricDist K] [CharZero K]
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using (Formalism.InvariantFactorPaths.G7.Top.simeqRules K ι).1 0`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha]`. Conclude with `(Formalism.InvariantFactorPaths.G7.Top.simeqRules K ι).2.2.2.1 _ _ _ _ (h a (Finset.mem_insert_self _ _)) (ih fun b hb => h b (Finset.mem_insert_of_mem hb))`.
+-/
 theorem simeq_sum {α : Type} (s : Finset α) (f g : α → MvPowerSeries ι K)
     (h : ∀ a ∈ s, Simeq (f a) (g a)) : Simeq (∑ a ∈ s, f a) (∑ a ∈ s, g a) := by
   classical
@@ -116,16 +162,25 @@ theorem simeq_sum {α : Type} (s : Finset α) (f g : α → MvPowerSeries ι K)
     exact (Formalism.InvariantFactorPaths.G7.Top.simeqRules K ι).2.2.2.1 _ _ _ _ (h a (Finset.mem_insert_self _ _))
       (ih fun b hb => h b (Finset.mem_insert_of_mem hb))
 
+/- English proof (translation)
+Unfold `Simeq at *`. Rewrite using `[sub_zero]` and apply the resulting hypothesis.
+-/
 theorem simeq_sub_zero {f g : MvPowerSeries ι K} (h : Simeq f g) : Simeq (f - g) 0 := by
   unfold Simeq at *
   rwa [sub_zero]
 
+/- English proof (translation)
+Simplify using `using simeq_sum s f (fun _ => 0) h`.
+-/
 theorem simeq_sum_zero {α : Type} (s : Finset α) (f : α → MvPowerSeries ι K)
     (h : ∀ a ∈ s, Simeq (f a) 0) : Simeq (∑ a ∈ s, f a) 0 := by
   simpa using simeq_sum s f (fun _ => 0) h
 
 end Sim
 
+/- English proof (translation)
+Establish `hc : ∀ x : V2 d, constantCoeff (letterLog (K` using `K) l x) = 0 := Formalism.DworkPowerSeriesWeights.Transfer.cc_letterLog l`. Establish `hLL : HasSubst (letterLog (K` using `K) (d := d) l) := MvPowerSeries.hasSubst_of_constantCoeff_zero hc`. Rewrite using `[MvPowerSeries.subst_comp_subst_apply (MvPowerSeries.hasSubst_of_constantCoeff_zero hS0) hLL]`. Conclude with `hS K l d σ hl be0 ι om oms (V2 d) _ (fun s => MvPowerSeries.constantCoeff_subst_eq_zero hLL hc (hS0 s))`.
+-/
 theorem subst_letter_til (hS : SubstTil) {K : Type} [NormedField K] (l d : ℕ) [NeZero d]
     (σ : K →+* K) (hl : 2 ≤ l) (be0 : MvPowerSeries (Fin 2) K) (ι : Type) [Fintype ι]
     (om oms : ι → K) (S : ZMod d → MvPowerSeries (V2 d) K) (hS0 : ∀ s, constantCoeff (S s) = 0) :
@@ -144,6 +199,15 @@ end B4
 
 open B4
 
+/- English proof (translation)
+Introduce `K _ _ _ l d _ σ hU hd hev F hF be0 hF1 ι _ om oms hO`. Establish `hl : 2 ≤ l` using `hU.1.two_le`. Establish `hc : ∀ x : V2 d, constantCoeff (letterLog (K` using `K) l x) = 0 := Formalism.DworkPowerSeriesWeights.Transfer.cc_letterLog l`. Establish `hLL : HasSubst (letterLog (K` using `K) (d := d) l) := MvPowerSeries.hasSubst_of_constantCoeff_zero hc`. Take `⟨hsh, -, -⟩` from `hL K l d σ hU.1`.
+
+Establish `ipE : ∀ (b : Bool) (r : ι), IP l σ (linEL σ (oms r) fun s : ZMod d => letterLog (K` using `K) l (b, s)) := fun b r => (hI K l d σ hU hev (V2 d) _ (hsh b) (oms r) (hO.1 r).2 (hO.2 r).2).1`. Establish `ipO : ∀ (b : Bool) (r : ι), IP l σ (linOL σ (om r) fun s : ZMod d => letterLog (K` using `K) l (b, s)) := fun b r => (hI K l d σ hU hev (V2 d) _ (hsh b) (om r) (hO.1 r).1 (hO.2 r).1).2`. Take `⟨p1, p2, -⟩` from `hP K l σ hU F hF be0 hF1 (V2 d)`. Prove the components needed by the constructor for the conclusion. Unfold `de1`.
+
+Rewrite using `[MvPowerSeries.subst_sub hLL, MvPowerSeries.subst_sub hLL, subst_letter_til hS l d σ hl be0 ι om oms s1 Formalism.DworkPowerSeriesWeights.Transfer.constantCoeff_substOne, subst_letter_til hS l d σ hl be0 ι om oms s0 Formalism.DworkPowerSeriesWeights.Transfer.constantCoeff_substZe …`. Use `simeq_sub_zero (simeq_sum _ _ _ fun r _ => ?_)` and prove the remaining obligations. Rewrite using `[linEL_congr σ (oms r) (L' := fun s => letterLog (K := K) l (false, s) + letterLog (K := K) l (true, s)) (fun s hs => subst_first_sum_even hLL hs), linEL_add, linOL_congr σ (om r) (L' := fun s => letterLog (K := K) l (false, s)) (fun s hs => subst_first_odd hLL hs), linEL_congr σ …`. Conclude with `p1 _ _ _ (ipE false r) (ipE true r) (ipO false r)`. Unfold `de2`.
+
+Rewrite using `[MvPowerSeries.subst_sub hLL, MvPowerSeries.subst_sub hLL, subst_letter_til hS l d σ hl be0 ι om oms s1' Formalism.DworkPowerSeriesWeights.Transfer.constantCoeff_substOne', subst_letter_til hS l d σ hl be0 ι om oms s0 Formalism.DworkPowerSeriesWeights.Transfer.constantCoeff_subst …`. Use `simeq_sub_zero (simeq_sum _ _ _ fun r _ => ?_)` and prove the remaining obligations. Rewrite using `[linEL_congr σ (oms r) (L' := fun s => letterLog (K := K) l (false, s)) (fun s hs => subst_s1Prime_even hLL hs), linOL_congr σ (om r) (L' := fun s => letterLog (K := K) l (false, s) + letterLog (K := K) l (true, s)) (fun s hs => subst_s1Prime_odd hLL hs), linOL_add, linEL_congr σ …`. Conclude with `p2 _ _ _ (ipE false r) (ipO false r) (ipO true r)`.
+-/
 theorem fourth_condition_of_pairing_rules (hP : PairRules) (hS : SubstTil) (hI : ShiftIP) (hL : LetterShift) : TorusSumCoboundaryCondition := by
   intro K _ _ _ l d _ σ hU hd hev F hF be0 hF1 ι _ om oms hO
   have hl : 2 ≤ l := hU.1.two_le
@@ -207,6 +271,9 @@ section Linear
 
 variable {K : Type} [Field K] {τ τ' : Type}
 
+/- English proof (translation)
+Rewrite using `[MvPowerSeries.subst_mul ha, MvPowerSeries.subst_C, ← MvPowerSeries.coe_substAlgHom ha, map_sum]`.
+-/
 theorem subst_C_mul_sum {a : τ → MvPowerSeries τ' K} (ha : HasSubst a) (c : K) {α : Type}
     (s : Finset α) (f : α → MvPowerSeries τ K) :
     subst a (MvPowerSeries.C c * ∑ k ∈ s, f k) = MvPowerSeries.C c * ∑ k ∈ s, subst a (f k) := by
@@ -215,6 +282,9 @@ theorem subst_C_mul_sum {a : τ → MvPowerSeries τ' K} (ha : HasSubst a) (c : 
 
 variable {d : ℕ} [NeZero d]
 
+/- English proof (translation)
+Unfold `de1`. Rewrite using `[subst_C_mul_sum (MvPowerSeries.hasSubst_of_constantCoeff_zero Formalism.DworkPowerSeriesWeights.Transfer.constantCoeff_substOne), subst_C_mul_sum (MvPowerSeries.hasSubst_of_constantCoeff_zero Formalism.DworkPowerSeriesWeights.Transfer.constantCoeff_substZero), subst_C_mul_sum (M …`.
+-/
 theorem first_difference_C_mul_sum (c : K) {α : Type} (s : Finset α) (f : α → MvPowerSeries (ZMod d) K) :
     de1 (MvPowerSeries.C c * ∑ k ∈ s, f k) = MvPowerSeries.C c * ∑ k ∈ s, de1 (f k) := by
   unfold de1
@@ -223,6 +293,9 @@ theorem first_difference_C_mul_sum (c : K) {α : Type} (s : Finset α) (f : α �
     subst_C_mul_sum (MvPowerSeries.hasSubst_of_constantCoeff_zero Formalism.DworkPowerSeriesWeights.Transfer.constantCoeff_substTwo),
     Finset.sum_sub_distrib, Finset.sum_sub_distrib, mul_sub, mul_sub]
 
+/- English proof (translation)
+Unfold `de2`. Rewrite using `[subst_C_mul_sum (MvPowerSeries.hasSubst_of_constantCoeff_zero Formalism.DworkPowerSeriesWeights.Transfer.constantCoeff_substOne'), subst_C_mul_sum (MvPowerSeries.hasSubst_of_constantCoeff_zero Formalism.DworkPowerSeriesWeights.Transfer.constantCoeff_substZero), subst_C_mul_sum ( …`.
+-/
 theorem second_difference_C_mul_sum (c : K) {α : Type} (s : Finset α) (f : α → MvPowerSeries (ZMod d) K) :
     de2 (MvPowerSeries.C c * ∑ k ∈ s, f k) = MvPowerSeries.C c * ∑ k ∈ s, de2 (f k) := by
   unfold de2
@@ -231,6 +304,9 @@ theorem second_difference_C_mul_sum (c : K) {α : Type} (s : Finset α) (f : α 
     subst_C_mul_sum (MvPowerSeries.hasSubst_of_constantCoeff_zero Formalism.DworkPowerSeriesWeights.Transfer.constantCoeff_substTwo'),
     Finset.sum_sub_distrib, Finset.sum_sub_distrib, mul_sub, mul_sub]
 
+/- English proof (translation)
+Unfold `de1`. Rewrite using `[map_sub, map_sub, MvPowerSeries.constantCoeff_subst_eq_zero (MvPowerSeries.hasSubst_of_constantCoeff_zero Formalism.DworkPowerSeriesWeights.Transfer.constantCoeff_substOne) Formalism.DworkPowerSeriesWeights.Transfer.constantCoeff_substOne h, MvPowerSeries.constantCoeff_subst_eq_ …`. Simplify using the standard rewrite rules.
+-/
 theorem constantCoeff_defectOne {be : MvPowerSeries (ZMod d) K} (h : constantCoeff be = 0) :
     constantCoeff (de1 be) = 0 := by
   unfold de1
@@ -246,6 +322,9 @@ theorem constantCoeff_defectOne {be : MvPowerSeries (ZMod d) K} (h : constantCoe
       Formalism.DworkPowerSeriesWeights.Transfer.constantCoeff_substTwo h]
   simp
 
+/- English proof (translation)
+Unfold `de2`. Rewrite using `[map_sub, map_sub, MvPowerSeries.constantCoeff_subst_eq_zero (MvPowerSeries.hasSubst_of_constantCoeff_zero Formalism.DworkPowerSeriesWeights.Transfer.constantCoeff_substOne') Formalism.DworkPowerSeriesWeights.Transfer.constantCoeff_substOne' h, MvPowerSeries.constantCoeff_subst_e …`. Simplify using the standard rewrite rules.
+-/
 theorem constantCoeff_defectTwo {be : MvPowerSeries (ZMod d) K} (h : constantCoeff be = 0) :
     constantCoeff (de2 be) = 0 := by
   unfold de2
@@ -261,6 +340,9 @@ theorem constantCoeff_defectTwo {be : MvPowerSeries (ZMod d) K} (h : constantCoe
       Formalism.DworkPowerSeriesWeights.Transfer.constantCoeff_substTwo' h]
   simp
 
+/- English proof (translation)
+Proceed by induction on `j with`. Consider the case `zero => simp`. Consider the case `succ j ih => rw [Function.iterate_succ_apply', ih, map_pow, h, ← pow_mul, pow_succ']`.
+-/
 theorem iterate_of_pow {σ : K →+* K} {u : K} {l : ℕ} (h : σ u = u ^ l) (j : ℕ) :
     σ^[j] u = u ^ (l ^ j) := by
   induction j with
@@ -269,6 +351,11 @@ theorem iterate_of_pow {σ : K →+* K} {u : K} {l : ℕ} (h : σ u = u ^ l) (j 
 
 end Linear
 
+/- English proof (translation)
+Establish `hc : ∀ x : V2 d, constantCoeff (letterLog (K` using `K) l x) = 0 := Formalism.DworkPowerSeriesWeights.Transfer.cc_letterLog l`. Establish `hLL : HasSubst (letterLog (K` using `K) (d := d) l) := MvPowerSeries.hasSubst_of_constantCoeff_zero hc`. Rewrite using `[Formalism.InvariantFactorPaths.G7.LogarithmEquivalence.subst_mvExp' hLL h0]`. Unfold `Simeq at h`. Rewrite `h` using `[sub_zero]`.
+
+Conclude with `⟨h.2, Formalism.InvariantFactorPaths.G7.LogarithmEquivalence.constantCoeff_mvExp' h.1⟩`.
+-/
 theorem exp_of_simeq {K : Type} [NormedField K] [CharZero K] {d : ℕ} [NeZero d] (l : ℕ)
     {D : MvPowerSeries (V2 d) K} (h0 : constantCoeff D = 0)
     (h : Simeq (subst (letterLog (K := K) l) D) 0) :
@@ -285,6 +372,31 @@ theorem exp_of_simeq {K : Type} [NormedField K] [CharZero K] {d : ℕ} [NeZero d
 
 end B4
 
+/- English proof (translation)
+Introduce `K _ _ _ l d _ σ hU hd hev F hF be0 hF1 ι _ om oms hO ζ hζ`. Establish `hl : 2 ≤ l` using `hU.1.two_le`. Establish `hld : 2 ≤ l ^ d` using `le_trans hl (Nat.le_self_pow (by omega) l)`. Establish `hN0 : l ^ d - 1 ≠ 0` using `by omega`. Establish `hζ1 : ζ ^ (l ^ d - 1) = 1` using `hζ.pow_eq_one`.
+
+Establish `hu1 : ∀ k : ℕ, (ζ ^ k) ^ (l ^ d - 1) = 1` using `fun k => by`. Rewrite using `[← pow_mul, mul_comm, pow_mul, hζ1, one_pow]`. Establish `huσ : ∀ k : ℕ, σ (ζ ^ k) = (ζ ^ k) ^ l` using `fun k => hTe K l d σ hU (by omega) (ζ ^ k) (hu1 k)`. Establish `hun : ∀ k : ℕ, ‖ζ ^ k‖ = 1` using `fun k => (isOfFinOrder_iff_pow_eq_one.2 ⟨l ^ d - 1, Nat.pos_of_ne_zero hN0, hu1 k⟩).norm_eq_one`. Establish `hu0 : ∀ k : ℕ, ζ ^ k ≠ 0` using `fun k h => by`.
+
+Use `hun k` as an intermediate fact. Rewrite `this` using `[h, norm_zero]`. Conclude with `zero_ne_one this`. Establish `hud : ∀ k : ℕ, σ^[d] (ζ ^ k) = ζ ^ k` using `fun k => by`. Rewrite using `[iterate_of_pow (huσ k) d]`.
+
+Establish `: l ^ d = (l ^ d - 1) + 1` using `by omega`. Rewrite using `[this, pow_succ, hu1 k, one_mul]`. Establish `hOk : ∀ k : ℕ, OwOK d σ (fun r => (ζ ^ k)⁻¹ * om r) (fun r => ζ ^ k * oms r)`. Introduce `k`. Use `⟨fun r => ⟨?_, ?_⟩, fun r => ⟨?_, ?_⟩⟩` and prove the remaining obligations.
+
+Rewrite using `[norm_mul, norm_inv, hun k, inv_one, one_mul]`. Conclude with `(hO.1 r).1`. Rewrite using `[norm_mul, hun k, one_mul]`. Conclude with `(hO.1 r).2`. Establish `e` using `hud k`.
+
+Establish `e'` using `(hO.2 r).1`. Rewrite `e`, `e'`, the goal using `[← RingHom.coe_pow]`. Rewrite using `[map_mul, map_inv₀, e, e']`. Establish `e` using `hud k`. Establish `e'` using `(hO.2 r).2`.
+
+Rewrite `e`, `e'`, the goal using `[← RingHom.coe_pow]`. Rewrite using `[map_mul, e, e']`. Establish `hmean : beMean (d` using `d) l σ be0 om oms ζ = MvPowerSeries.C (((l ^ d - 1 : ℕ) : K)⁻¹) * ∑ k ∈ Finset.range (l ^ d - 1), beTil l σ be0 (fun r => (ζ ^ k)⁻¹ * om r) (fun r => ζ ^ k * oms r) := by`. Unfold `beMean`. Use `congr 1`.
+
+Conclude with `Finset.sum_congr rfl fun k _ => hT K l d σ hl be0 ι om oms (ζ ^ k) (hu0 k) (huσ k)`. Establish `hb3 : NoLowBidegree (beMean (d` using `d) l σ be0 om oms ζ) := h3 K l d σ hl hd hev be0 hF1.1 ι om oms ζ hζ`. Establish `hcc : constantCoeff (beMean (d` using `d) l σ be0 om oms ζ) = 0 := by`. Assume the negation of the conclusion as `h`. Use `(hb3 0 (by rwa [MvPowerSeries.coeff_zero_eq_constantCoeff_apply])).1` as an intermediate fact.
+
+Simplify using `[degE] at this`. Establish `hc : ∀ x : V2 d, constantCoeff (letterLog (K` using `K) l x) = 0 := Formalism.DworkPowerSeriesWeights.Transfer.cc_letterLog l`. Establish `hLL : HasSubst (letterLog (K` using `K) (d := d) l) := MvPowerSeries.hasSubst_of_constantCoeff_zero hc`. Establish `hndvd : ¬ l ∣ l ^ d - 1`. Introduce `h`.
+
+Establish `h' : l ∣ l ^ d` using `dvd_pow_self l (by omega)`. Establish `: l ∣ 1`. Use `(Nat.dvd_sub h' h)` as an intermediate fact. Rewrite `this` using `[Nat.sub_sub_self (by omega)]`. Then use the resulting hypothesis. Use `Nat.le_of_dvd one_pos this` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Establish `hlam` using `Formalism.InvariantFactorPaths.G7.Top.lamModule K (V2 d) l σ hU.1 hU.2.2.1 hU.2.2.2.2`. Use `⟨fun n => Subfield.mem_top _, h2 K l d σ be0 ι om oms ζ hζ1, hb3, ?_, ?_⟩` and prove the remaining obligations. Use `exp_of_simeq l (constantCoeff_defectOne hcc) ?_` and prove the remaining obligations. Rewrite using `[hmean, first_difference_C_mul_sum, subst_C_mul_sum hLL]`.
+
+Conclude with `hlam _ _ hndvd (simeq_sum_zero _ _ fun k _ => (h4 K l d σ hU hd hev F hF be0 hF1 ι _ _ (hOk k)).1)`. Use `exp_of_simeq l (constantCoeff_defectTwo hcc) ?_` and prove the remaining obligations. Rewrite using `[hmean, second_difference_C_mul_sum, subst_C_mul_sum hLL]`. Conclude with `hlam _ _ hndvd (simeq_sum_zero _ _ fun k _ => (h4 K l d σ hU hd hev F hF be0 hF1 ι _ _ (hOk k)).2)`.
+-/
 theorem biextension_hypotheses_of_conditions (h4 : TorusSumCoboundaryCondition) (hT : TorusTil) (hTe : TeichSigma) (h2 : MeanTorusInvariant) (h3 : MeanNoLowBidegreeTerms) :
     MeanBiextensionHypothesesOfCocycle := by
   intro K _ _ _ l d _ σ hU hd hev F hF be0 hF1 ι _ om oms hO ζ hζ

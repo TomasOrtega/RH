@@ -11,6 +11,11 @@ noncomputable section
 
 namespace GlobalTheory.Mem.Col2.AdPlace
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ n v η h`. Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `prV (E := E) v (η.1 i j) = (1 : Matrix (Fin n) (Fin n) (E ⊗[F] v.adicCompletion F)) i j`. Rewrite using `[Matrix.one_apply, ← sub_eq_zero]`. Apply the tactic sequence `have e : (if i = j then (1 : E ⊗[F] v.adicCompletion F) else 0) = prV (E := E) v (if i = j then 1 else 0) := by split_ifs <;> simp`.
+
+Rewrite using `[e, ← map_sub]`. Use `((GlobalTheory.Mem.Col2.AdComp.prV_zero_int_iff F E v _).1).2 fun w hw => ?_` and prove the remaining obligations. Rewrite using `[map_sub, h w hw i j]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem bc_prV_eq_one_of_adAt : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (n : ℕ) (v : HeightOneSpectrum (𝓞 F)) (η : GL (Fin n) (AfE F E)), (∀ w : HeightOneSpectrum (𝓞 E), w.under (𝓞 F) = v → ∀ i j, adAt F w (η.1 i j) = if i = j then 1 else 0) → bc (prV (E := E) v) η = 1 := by
   intro F E _ _ _ _ _ n v η h
   refine Units.ext (Matrix.ext fun i j => ?_)

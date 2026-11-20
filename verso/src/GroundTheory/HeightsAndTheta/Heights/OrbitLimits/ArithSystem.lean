@@ -10,6 +10,13 @@ open ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction
 
 namespace ArithIntersectionSystem
 
+/- English proof (translation)
+Introduce `K _ ι _ P n L j A B hP hL hA hB`. Consider the cases of `n with`. Consider the case `zero => exact j.elim0`. Consider the case `succ m`. Take `⟨hsym, hadd, -⟩` from `hI K ι`.
+
+Establish `e : ∀ X : HermLine ι, IsSmoothHerm X → I K ι P (m + 1) (Function.update L j X) = I K ι P (m + 1) (Fin.snoc (fun i : Fin m => L (Equiv.swap j (Fin.last m) i.castSucc)) X)`. Introduce `X hX`. Rewrite using `[← GroundTheory.Heights₂.Heights.Inter.ThmIMultilin.update_comp_swap]`. Conclude with `(hsym P (m + 1) _ _ hP (GroundTheory.Heights₂.Heights.Inter.ThmIMultilin.smooth_update hL j hX)).symm`. Rewrite using `[e _ (isSmoothHerm_tensor hA hB), e A hA, e B hB]`.
+
+Conclude with `hadd P m _ A B hP (fun i => hL _) hA hB`.
+-/
 theorem multilin_of_isFamily {I : AllFam} (hI : I.IsFamily) : IsMultilinFam I := by
   intro K _ ι _ P n L j A B hP hL hA hB
   cases n with
@@ -27,6 +34,9 @@ theorem multilin_of_isFamily {I : AllFam} (hI : I.IsFamily) : IsMultilinFam I :=
     rw [e _ (isSmoothHerm_tensor hA hB), e A hA, e B hB]
     exact hadd P m _ A B hP (fun i => hL _) hA hB
 
+/- English proof (translation)
+Take `⟨I, hI⟩` from `(hE : ExistsStatement)`. Conclude with `⟨I, hI, multilin_of_isFamily hI, hPF I hI, hCM I hI⟩`.
+-/
 theorem of_found (hE : GroundTheory.Heights₂.Heights.Inter.ThmIExists.Statement) (hPF : PFCoordStatement)
     (hCM : ContractMixedStatement) : ArithIntersectionSystemStatement := by
   obtain ⟨I, hI⟩ := (hE : ExistsStatement)

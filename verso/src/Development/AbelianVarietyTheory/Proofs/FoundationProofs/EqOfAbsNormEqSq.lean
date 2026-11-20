@@ -6,6 +6,9 @@ open NumberField IsDedekindDomain
 
 namespace GlobalTheory.QuadPlaces
 
+/- English proof (translation)
+Use `(GlobalTheory.CuspRep.eq_conjSrc ?_).symm` and prove the remaining obligations. Rewrite using `[GlobalTheory.Mem.Chr.conjPl_iff_comap]`. Use extensionality with `x`. Both sides reduce to the same expression.
+-/
 theorem conjSrc_one {M : Type} [Field M] [NumberField M] (w : HeightOneSpectrum (𝓞 M)) :
     GlobalTheory.CuspRep.conjSrc (1 : M ≃+* M) w = w := by
   refine (GlobalTheory.CuspRep.eq_conjSrc ?_).symm
@@ -13,6 +16,13 @@ theorem conjSrc_one {M : Type} [Field M] [NumberField M] (w : HeightOneSpectrum 
   ext x
   rfl
 
+/- English proof (translation)
+Use `set v := w.under (𝓞 K) with hv`. Establish `: v.asIdeal.IsPrime` using `v.isPrime`. Establish `: w.asIdeal.IsPrime` using `w.isPrime`. Establish `hl : w.asIdeal.LiesOver v.asIdeal` using `⟨rfl⟩`. Establish `hl' : w'.asIdeal.LiesOver v.asIdeal` using `⟨by rw [← hw']; rfl⟩`.
+
+Establish `hpow` using `Ideal.absNorm_pow_inertiaDeg v.asIdeal w.asIdeal`. Establish `hf : w.asIdeal.inertiaDeg (𝓞 K) = 2` using `Nat.pow_right_injective (NumberField.HeightOneSpectrum.one_lt_absNorm v) (hpow.trans hN)`. Establish `hfund` using `Ideal.ncard_primesOver_mul_ramificationIdxIn_mul_inertiaDegIn v.asIdeal (𝓞 M) (M ≃ₐ[K] M)`. Rewrite `hfund` using `[Ideal.inertiaDegIn_eq_inertiaDeg v.asIdeal w.asIdeal (M ≃ₐ[K] M), hf, IsGalois.card_aut_eq_finrank, h2, ← mul_assoc]`. Establish `h1 : (v.asIdeal.primesOver (𝓞 M)).ncard * v.asIdeal.ramificationIdxIn (𝓞 M) = 1` using `by omega`.
+
+Take `⟨P, hP⟩` from `Set.ncard_eq_one.1 (Nat.eq_one_of_mul_eq_one_right h1)`. Establish `a : w.asIdeal ∈ v.asIdeal.primesOver (𝓞 M)` using `⟨w.isPrime, hl⟩`. Establish `b : w'.asIdeal ∈ v.asIdeal.primesOver (𝓞 M)` using `⟨w'.isPrime, hl'⟩`. Rewrite `a`, `b` using `[hP, Set.mem_singleton_iff]`. Conclude with `HeightOneSpectrum.ext (b.trans a.symm)`.
+-/
 theorem eq_of_absNorm_eq_sq {K M : Type} [Field K] [NumberField K] [Field M] [NumberField M] [Algebra K M]
     [IsGalois K M] (h2 : Module.finrank K M = 2) (w w' : HeightOneSpectrum (𝓞 M))
     (hN : Ideal.absNorm w.asIdeal = Ideal.absNorm (w.under (𝓞 K)).asIdeal ^ 2)
@@ -35,6 +45,11 @@ theorem eq_of_absNorm_eq_sq {K M : Type} [Field K] [NumberField K] [Field M] [Nu
   rw [hP, Set.mem_singleton_iff] at a b
   exact HeightOneSpectrum.ext (b.trans a.symm)
 
+/- English proof (translation)
+Introduce `K M _ _ _ _ _ _ h2 s hs w`. Establish `hu : GlobalTheory.Mem.Chr.ConjPl s.toRingEquiv (GlobalTheory.CuspRep.conjSrc (s : M ≃+* M) w) w` using `GlobalTheory.CuspRep.conjPl_conjSrc (s : M ≃+* M) w`. Establish `hunder : (GlobalTheory.CuspRep.conjSrc (s : M ≃+* M) w).under (𝓞 K) = w.under (𝓞 K)` using `((GlobalTheory.Mem.Chr.under_eq_iff_conjPl s h2 hs (GlobalTheory.CuspRep.conjSrc (s : M ≃+* M) w) w).2 (Or.inr hu)).symm`. Use `⟨fun w' hw' => ?_, hunder, conjSrc_one w, fun hN => eq_of_absNorm_eq_sq h2 w _ hN hunder⟩` and prove the remaining obligations. Break down `(GlobalTheory.Mem.Chr.under_eq_iff_conjPl s h2 hs (GlobalTheory.CuspRep.conjSrc (s : M ≃+* M) w) w').1 (hw'.trans hunder.symm) with h | h` into its components or cases.
+
+Conclude with `Or.inr h`. Conclude with `Or.inl ((GlobalTheory.Mem.Chr.existsUnique_conjPl _ _).unique h hu)`.
+-/
 theorem main : ∀ (K M : Type) [Field K] [NumberField K] [Field M] [NumberField M] [Algebra K M] [IsGalois K M], Module.finrank K M = 2 → ∀ (s : M ≃ₐ[K] M), s ≠ 1 → ∀ w : HeightOneSpectrum (𝓞 M), (∀ w' : HeightOneSpectrum (𝓞 M), w'.under (𝓞 K) = w.under (𝓞 K) → w' = w ∨ w' = GlobalTheory.CuspRep.conjSrc (s : M ≃+* M) w) ∧ (GlobalTheory.CuspRep.conjSrc (s : M ≃+* M) w).under (𝓞 K) = w.under (𝓞 K) ∧ GlobalTheory.CuspRep.conjSrc ((1 : M ≃ₐ[K] M) : M ≃+* M) w = w ∧ (Ideal.absNorm w.asIdeal = Ideal.absNorm (w.under (𝓞 K)).asIdeal ^ 2 → GlobalTheory.CuspRep.conjSrc (s : M ≃+* M) w = w) := by
   intro K M _ _ _ _ _ _ h2 s hs w
   have hu : GlobalTheory.Mem.Chr.ConjPl s.toRingEquiv (GlobalTheory.CuspRep.conjSrc (s : M ≃+* M) w) w :=

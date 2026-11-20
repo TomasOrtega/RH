@@ -15,6 +15,13 @@ section Ray
 
 variable {K0 : Type} [Field K0] [NumberField K0]
 
+/- English proof (translation)
+Take `⟨i, hi, t, ht, hit⟩` from `Submodule.mem_sup.1 (show (1 : 𝓞 K0) ∈ I ⊔ qq by rw [hI.2]; trivial)`. Distinguish the cases in `h0 : i = 0`. Substitute `h0` using the available equality. Establish `ht1 : t = 1` using `by simpa using hit`. Establish `hq : qq = ⊤` using `(Ideal.eq_top_iff_one qq).2 (ht1 ▸ ht)`.
+
+Take `⟨b, hb, hb0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hI.1`. Conclude with `⟨b, hb, hb0, by rw [hq]; trivial⟩`. Use `⟨i, hi, h0, ?_⟩` and prove the remaining obligations. Establish `: i - 1 = -t` using `by rw [← hit]; ring`. Rewrite using `[this]`.
+
+Conclude with `qq.neg_mem ht`.
+-/
 lemma exists_mem_sub_one_mem (qq I : Ideal (𝓞 K0)) (hI : CoprimeTo K0 qq I) :
     ∃ b ∈ I, b ≠ 0 ∧ b - 1 ∈ qq := by
   obtain ⟨i, hi, t, ht, hit⟩ := Submodule.mem_sup.1 (show (1 : 𝓞 K0) ∈ I ⊔ qq by rw [hI.2]; trivial)
@@ -29,6 +36,13 @@ lemma exists_mem_sub_one_mem (qq I : Ideal (𝓞 K0)) (hI : CoprimeTo K0 qq I) :
     rw [this]
     exact qq.neg_mem ht
 
+/- English proof (translation)
+Take `⟨c, t, ht, hct⟩` from `Ideal.mem_span_singleton_sup.1 (show (1 : 𝓞 K0) ∈ Ideal.span {a} ⊔ qq by rw [ha]; trivial)`. Distinguish the cases in `h0 : c = 0`. Substitute `h0` using the available equality. Establish `ht1 : t = 1` using `by simpa using hct`. Use `⟨1, one_ne_zero, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[(Ideal.eq_top_iff_one qq).2 (ht1 ▸ ht)]`. Discharge the goal by the elementary cases of `trivial`. Use `⟨c, h0, ?_⟩` and prove the remaining obligations. Establish `: c * a - 1 = -t` using `by rw [← hct]; ring`. Rewrite using `[this]`.
+
+Conclude with `qq.neg_mem ht`.
+-/
 lemma exists_inv_mod (qq : Ideal (𝓞 K0)) (a : 𝓞 K0) (ha : Ideal.span {a} ⊔ qq = ⊤) :
     ∃ c : 𝓞 K0, c ≠ 0 ∧ c * a - 1 ∈ qq := by
   obtain ⟨c, t, ht, hct⟩ :=
@@ -44,6 +58,21 @@ lemma exists_inv_mod (qq : Ideal (𝓞 K0)) (a : 𝓞 K0) (ha : Ideal.span {a} �
     rw [this]
     exact qq.neg_mem ht
 
+/- English proof (translation)
+Take `⟨b, hbI, hb0, hb1⟩` from `exists_mem_sub_one_mem qq I hI`. Establish `hxb : x * b ∈ Ideal.span {y}`. Establish `: x * b ∈ Ideal.span {x} * I` using `Ideal.mul_mem_mul (Ideal.mem_span_singleton_self x) hbI`. Rewrite `this` using `[hxy]`. Conclude with `Ideal.mul_le_left this`.
+
+Take `⟨a, ha⟩` from `Ideal.mem_span_singleton'.1 hxb`. Establish `ha0 : a ≠ 0`. Introduce and unpack `rfl`. Rewrite `ha` using `[zero_mul]`. Conclude with `mul_ne_zero hx hb0 ha.symm`.
+
+Establish `hy' : Ideal.span {y} ≠ (0 : Ideal (𝓞 K0))`. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `hy`. Establish `key : Ideal.span {a} * I = Ideal.span {b} * J`. Apply `mul_left_cancel₀ hy'` to reduce the goal to its premises.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_assoc, Ideal.span_singleton_mul_span_singleton, mul_comm y a]`. Use `_ = Ideal.span {b} * (Ideal.span {x} * I) := by`. Rewrite using `[ha, ← mul_assoc, Ideal.span_singleton_mul_span_singleton, mul_comm b x]`. Use `_ = Ideal.span {y} * (Ideal.span {b} * J) := by`.
+
+Rewrite using `[hxy, mul_left_comm]`. Establish `hbq : Ideal.span {b} ⊔ qq = ⊤`. Rewrite using `[Ideal.eq_top_iff_one]`. Establish `: (1 : 𝓞 K0) = b - (b - 1)` using `by ring`. Rewrite using `[this]`.
+
+Conclude with `Ideal.sub_mem _ (Ideal.mem_sup_left (Ideal.mem_span_singleton_self b)) (Ideal.mem_sup_right hb1)`. Establish `hcop : Ideal.span {b} * J ⊔ qq = ⊤`. Establish `h1 : IsCoprime (Ideal.span {b}) qq` using `Ideal.isCoprime_iff_sup_eq.2 hbq`. Establish `h2 : IsCoprime J qq` using `Ideal.isCoprime_iff_sup_eq.2 hJ.2`. Conclude with `Ideal.isCoprime_iff_sup_eq.1 (h1.mul_left h2)`.
+
+Establish `haq : Ideal.span {a} ⊔ qq = ⊤`. Rewrite `hcop` using `[← key]`. Use `top_unique ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Conclude with `⟨a, b, ha0, hb0, hb1, haq, key⟩`.
+-/
 lemma exists_rel_of_class (qq I J : Ideal (𝓞 K0)) (hI : CoprimeTo K0 qq I) (hJ : CoprimeTo K0 qq J)
     (x y : 𝓞 K0) (hx : x ≠ 0) (hy : y ≠ 0) (hxy : Ideal.span {x} * I = Ideal.span {y} * J) :
     ∃ a b : 𝓞 K0, a ≠ 0 ∧ b ≠ 0 ∧ b - 1 ∈ qq ∧ Ideal.span {a} ⊔ qq = ⊤ ∧
@@ -85,6 +114,29 @@ lemma exists_rel_of_class (qq I J : Ideal (𝓞 K0)) (hI : CoprimeTo K0 qq I) (h
       _ ≤ Ideal.span {a} ⊔ qq := sup_le_sup_right Ideal.mul_le_left qq
   exact ⟨a, b, ha0, hb0, hb1, haq, key⟩
 
+/- English proof (translation)
+Establish `htop : CoprimeTo K0 qq ⊤` using `⟨top_ne_bot, top_sup_eq qq⟩`. Establish `hne : Nonempty {I : Ideal (𝓞 K0) // CoprimeTo K0 qq I}` using `⟨⟨⊤, htop⟩⟩`. Set `cls : {I : Ideal (𝓞 K0) // CoprimeTo K0 qq I} → ClassGroup (𝓞 K0)` to `fun I => ClassGroup.mk0 ⟨I.1, mem_nonZeroDivisors_of_ne_zero (by rw [Ne, Ideal.zero_eq_bot]; exact I.2.1)⟩`. Set `rep : ClassGroup (𝓞 K0) → {I : Ideal (𝓞 K0) // CoprimeTo K0 qq I}` to `fun C => Classical.epsilon (fun J => cls J = C)`. Establish `hrep : ∀ I, cls (rep (cls I)) = cls I` using `fun I => Classical.epsilon_spec (p := fun J => cls J = cls I) ⟨I, rfl⟩`.
+
+Establish `hex : ∀ I : {I : Ideal (𝓞 K0) // CoprimeTo K0 qq I}, ∃ a b : 𝓞 K0, a ≠ 0 ∧ b ≠ 0 ∧ b - 1 ∈ qq ∧ Ideal.span {a} ⊔ qq = ⊤ ∧ Ideal.span {a} * I.1 = Ideal.span {b} * (rep (cls I)).1`. Introduce `I`. Take `⟨x, y, hx, hy, hxy⟩` from `ClassGroup.mk0_eq_mk0_iff.1 (hrep I).symm`. Conclude with `exists_rel_of_class qq I.1 _ I.2 (rep (cls I)).2 x y hx hy hxy`. Use `choose a b ha0 hb0 hb1 haq hab using hex`.
+
+Set `F : {I : Ideal (𝓞 K0) // CoprimeTo K0 qq I} → ClassGroup (𝓞 K0) × (𝓞 K0 ⧸ qq)` to `fun I => (cls I, Ideal.Quotient.mk qq (a I))`. Establish `hF : ∀ I J, F I = F J → RayRel K0 qq I.1 J.1`. Introduce `I J h`. Establish `hc : cls I = cls J` using `congrArg Prod.fst h`. Establish `ha : a I - a J ∈ qq` using `Ideal.Quotient.eq.1 (congrArg Prod.snd h)`.
+
+Establish `hrIJ : rep (cls I) = rep (cls J)` using `by rw [hc]`. Take `⟨c, hc0, hc1⟩` from `exists_inv_mod qq (a I) (haq I)`. Use `⟨c * a I * b J, c * a J * b I, mul_ne_zero (mul_ne_zero hc0 (ha0 I)) (hb0 J), mul_ne_zero (mul_ne_zero hc0 (ha0 J)) (hb0 I), ?_, ?_, fun σ => by have := hE; exact isEmptyElim σ, ?_⟩` and prove the remaining obligations. Establish `: c * a I * b J - 1 = c * a I * (b J - 1) + (c * a I - 1)` using `by ring`. Rewrite using `[this]`.
+
+Conclude with `qq.add_mem (qq.mul_mem_left _ (hb1 J)) hc1`. Establish `: c * a J * b I - 1 = c * b I * (-(a I - a J)) + c * a I * (b I - 1) + (c * a I - 1)` using `by ring`. Rewrite using `[this]`. Conclude with `qq.add_mem (qq.add_mem (qq.mul_mem_left _ (qq.neg_mem ha)) (qq.mul_mem_left _ (hb1 I))) hc1`. Establish `e1` using `hab I`.
+
+Establish `e2` using `hab J`. Rewrite `e1` using `[hrIJ]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Ideal.span_singleton_mul_span_singleton, ← Ideal.span_singleton_mul_span_singleton]`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `_ = Ideal.span {c} * Ideal.span {b J} * (Ideal.span {b I} * (rep (cls J)).1) := by rw [e1]`. Use `_ = Ideal.span {c} * Ideal.span {b I} * (Ideal.span {b J} * (rep (cls J)).1) := by ring`. Use `_ = Ideal.span {c} * Ideal.span {b I} * (Ideal.span {a J} * J.1) := by rw [e2]`. Use `_ = Ideal.span {c * a J * b I} * J.1 := by`. Rewrite using `[← Ideal.span_singleton_mul_span_singleton (c * a J), ← Ideal.span_singleton_mul_span_singleton c]`.
+
+Expand and normalize the polynomial expressions, which then agree. Set `G : RayCls K0 qq → ClassGroup (𝓞 K0) × (𝓞 K0 ⧸ qq)` to `fun R => F (Quot.out R)`. Establish `hG : Function.Injective G`. Introduce `R R' h`. Rewrite using `[← Quot.out_eq R, ← Quot.out_eq R']`.
+
+Conclude with `Quot.sound (hF _ _ h)`. Establish `hN : Nat.card (𝓞 K0 ⧸ qq) = Ideal.absNorm qq`. Rewrite using `[Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Establish `hN0 : Ideal.absNorm qq ≠ 0`. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff]`.
+
+Conclude with `hqq`. Establish `: Finite (𝓞 K0 ⧸ qq)` using `Nat.finite_of_card_ne_zero (hN ▸ hN0)`. Establish `: Finite (RayCls K0 qq)` using `Finite.of_injective G hG`. Establish `: Nonempty (RayCls K0 qq)` using `⟨Quot.mk _ ⟨⊤, htop⟩⟩`. Use `⟨?_, Nat.card_pos⟩` and prove the remaining obligations.
+
+Establish `hle` using `Nat.card_le_card_of_injective G hG`. Rewrite `hle` using `[Nat.card_prod, hN]`. Rewrite using `[classNumber, ← Nat.card_eq_fintype_card]`. Conclude with `hle`.
+-/
 theorem grCard_le_of_noReal (hE : IsEmpty (K0 →+* ℝ)) (qq : Ideal (𝓞 K0)) (hqq : qq ≠ ⊥) :
     Nat.card (RayCls K0 qq) ≤ classNumber K0 * Ideal.absNorm qq ∧ 0 < Nat.card (RayCls K0 qq) := by
   classical
@@ -149,6 +201,9 @@ theorem grCard_le_of_noReal (hE : IsEmpty (K0 →+* ℝ)) (qq : Ideal (𝓞 K0))
   rw [classNumber, ← Nat.card_eq_fintype_card]
   exact hle
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun v => InfinitePlace.not_isReal_iff_isComplex.1 fun hv => by have := hE exact isEmptyElim (InfinitePlace.embedding_of_isReal hv)⟩`.
+-/
 theorem totallyComplex_of_noReal (hE : IsEmpty (K0 →+* ℝ)) : IsTotallyComplex K0 :=
   ⟨fun v => InfinitePlace.not_isReal_iff_isComplex.1 fun hv => by
     have := hE
@@ -157,6 +212,15 @@ theorem totallyComplex_of_noReal (hE : IsEmpty (K0 →+* ℝ)) : IsTotallyComple
 variable (hCN : HeckeCharacterZeroLocus.ClassNumberQuad.ClassNumberLe.{0})
 include hCN
 
+/- English proof (translation)
+Establish `h` using `hCN K0 hK hc`. Establish `hD1 : (1 : ℝ) ≤ |(discr K0 : ℝ)|`. Establish `: (1 : ℤ) ≤ |discr K0|` using `Int.one_le_abs (discr_ne_zero K0)`. Conclude with `this` after adjusting the coercions. Establish `hs0 : 0 < Real.sqrt |(discr K0 : ℝ)|` using `Real.sqrt_pos.2 (by linarith)`.
+
+Establish `hs2 : Real.sqrt |(discr K0 : ℝ)| ^ 2 = |(discr K0 : ℝ)|` using `Real.sq_sqrt (by linarith)`. Establish `hlog : Real.log |(discr K0 : ℝ)| ≤ 2 * (Real.sqrt |(discr K0 : ℝ)| - 1)`. Establish `e : Real.log |(discr K0 : ℝ)| = 2 * Real.log (Real.sqrt |(discr K0 : ℝ)|)`. Rewrite using `[Real.log_sqrt (by linarith)]; ring`. Rewrite using `[e]`.
+
+Use `Real.log_le_sub_one_of_pos hs0` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hpi` using `Real.pi_gt_three`. Combine the equalities or inequalities in the displayed calculation. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Use `_ ≤ 4 * |(discr K0 : ℝ)| := by`. Rewrite using `[div_le_iff₀ Real.pi_pos]`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem classNumber_le_four (hK : Module.finrank ℚ K0 = 2) (hc : IsTotallyComplex K0) :
     (classNumber K0 : ℝ) ≤ 4 * |(discr K0 : ℝ)| := by
   have h := hCN K0 hK hc
@@ -180,6 +244,11 @@ theorem classNumber_le_four (hK : Module.finrank ℚ K0 = 2) (hc : IsTotallyComp
         rw [div_le_iff₀ Real.pi_pos]
         nlinarith
 
+/- English proof (translation)
+Introduce `qq hqq`. Take `⟨hle, hpos⟩` from `grCard_le_of_noReal hE qq hqq`. Use `⟨hpos, ?_⟩` and prove the remaining obligations. Establish `hh` using `classNumber_le_four hCN hK (totallyComplex_of_noReal hE)`. Establish `h1 : (grCard K0 qq : ℝ) ≤ (classNumber K0 : ℝ) * (Ideal.absNorm qq : ℝ)`.
+
+Unfold `grCard`. Conclude with `hle` after adjusting the coercions. Unfold `Bmod`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem grBound_of (hK : Module.finrank ℚ K0 = 2) (hE : IsEmpty (K0 →+* ℝ)) : GrBound K0 := by
   intro qq hqq
   obtain ⟨hle, hpos⟩ := grCard_le_of_noReal hE qq hqq
@@ -194,6 +263,9 @@ theorem grBound_of (hK : Module.finrank ℚ K0 = 2) (hE : IsEmpty (K0 →+* ℝ)
 
 end Ray
 
+/- English proof (translation)
+Establish `hd` using `D.host.hyp`. Establish `hsq : D.host.sqd ^ 2 = -(D.host.d : D.host.E)` using `Formalism.BasicNotions.Examples₂.bE_sq D.host`. Establish `hK : Module.finrank ℚ D.host.K = 2` using `Formalism.FrobeniusOrbits.SplitK.finrank_K (L := D.host.E) (b := D.host.sqd) hd.2.1.pos hsq`. Establish `hmem : D.host.sqd ∈ D.host.K` using `IntermediateField.mem_adjoin_simple_self ℚ _`. Conclude with `⟨hK, ⟨_, hmem⟩, by apply Subtype.ext; push_cast; exact hsq⟩`.
+-/
 theorem finrank_sqrt_K (D : D7) :
     Module.finrank ℚ D.host.K = 2 ∧ ∃ s : D.host.K, s ^ 2 = -(D.host.d : D.host.K) := by
   have hd := D.host.hyp
@@ -204,6 +276,11 @@ theorem finrank_sqrt_K (D : D7) :
   have hmem : D.host.sqd ∈ D.host.K := IntermediateField.mem_adjoin_simple_self ℚ _
   exact ⟨hK, ⟨_, hmem⟩, by apply Subtype.ext; push_cast; exact hsq⟩
 
+/- English proof (translation)
+Take `⟨s, hs⟩` from `(finrank_sqrt_K D).2`. Use `⟨fun σ => ?_⟩` and prove the remaining obligations. Establish `h` using `congrArg σ hs`. Rewrite `h` using `[map_pow, map_neg, map_natCast]`. Establish `hd : (0 : ℝ) < D.host.d` using `by exact_mod_cast D.host.hyp.2.1.pos`.
+
+Use `sq_nonneg (σ s)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem noReal_K (D : D7) : IsEmpty (D.host.K →+* ℝ) := by
   obtain ⟨s, hs⟩ := (finrank_sqrt_K D).2
   refine ⟨fun σ => ?_⟩
@@ -213,9 +290,15 @@ theorem noReal_K (D : D7) : IsEmpty (D.host.K →+* ℝ) := by
   have := sq_nonneg (σ s)
   linarith
 
+/- English proof (translation)
+The claim follows from `grBound_of hCN (finrank_sqrt_K D).1 (noReal_K D)`.
+-/
 theorem grBound_K (hCN : HeckeCharacterZeroLocus.ClassNumberQuad.ClassNumberLe.{0}) (D : D7) : GrBound D.host.K :=
   grBound_of hCN (finrank_sqrt_K D).1 (noReal_K D)
 
+/- English proof (translation)
+Introduce `C0 Cr cr cQ cQ' hC0 hCr hcr hcQ hcQ'`. Take `⟨C0', c1, c2, p1, p2, p3, h⟩` from `lemma_three_of_Q4_growth_bound C0 Cr cr cQ cQ' hC0 hCr hcr hcQ hcQ'`. Conclude with `⟨C0', c1, c2, p1, p2, p3, fun D cT _ ha => h D cT ha (grBound_K hCN D)⟩`.
+-/
 theorem linkAux_of_classNumberLe (hCN : HeckeCharacterZeroLocus.ClassNumberQuad.ClassNumberLe.{0}) : LinkPointsLemma := by
   intro C0 Cr cr cQ cQ' hC0 hCr hcr hcQ hcQ'
   obtain ⟨C0', c1, c2, p1, p2, p3, h⟩ := lemma_three_of_Q4_growth_bound C0 Cr cr cQ cQ' hC0 hCr hcr hcQ hcQ'

@@ -14,6 +14,9 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchim
 
 instance fintypeResidue : Fintype 𝓀[F] := Fintype.ofFinite _
 
+/- English proof (translation)
+Rewrite using `[Matrix.det_fin_two_of]`. Establish `h : (GLnLocal.uniformizer F : F) ≠ 0` using `Cartan.uniformizer_ne_zero F`. Simplify using `using mul_ne_zero (pow_ne_zero i h) (pow_ne_zero j h)`.
+-/
 theorem det_rowMat (i j : ℕ) (c : F) :
     (!![(GLnLocal.uniformizer F : F) ^ i, c; 0, (GLnLocal.uniformizer F : F) ^ j]).det ≠ 0 := by
   rw [Matrix.det_fin_two_of]
@@ -23,6 +26,9 @@ theorem det_rowMat (i j : ℕ) (c : F) :
 def rowRep (i j : ℕ) (c : Fin j → 𝓀[F]) : GL (Fin 2) F :=
   Matrix.GeneralLinearGroup.mkOfDetNeZero _ (det_rowMat i j (digitSum F j c))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_rowRep (i j : ℕ) (c : Fin j → 𝓀[F]) :
     (rowRep i j c : Matrix (Fin 2) (Fin 2) F) =
       !![(GLnLocal.uniformizer F : F) ^ i, digitSum F j c; 0, (GLnLocal.uniformizer F : F) ^ j] :=

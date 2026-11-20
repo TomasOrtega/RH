@@ -2,6 +2,17 @@ import Mathlib
 
 namespace GlobalTheory.IntegralNormAtMostOne
 
+/- English proof (translation)
+Take `⟨p, hp, hpy⟩` from `hy`. Assume the negation of the conclusion as `hcon`. Establish `h1 : 1 < ‖y‖` using `not_le.mp hcon`. Establish `h0 : 0 < ‖y‖` using `lt_trans one_pos h1`. Rewrite `hpy` using `[← Polynomial.aeval_def, Polynomial.aeval_eq_sum_range, Finset.sum_range_succ, hp.coeff_natDegree, one_smul]`.
+
+Establish `heq : y ^ p.natDegree = - ∑ i ∈ Finset.range p.natDegree, p.coeff i • y ^ i` using `eq_neg_of_add_eq_zero_right hpy`. Establish `hlt : ∀ (s : Finset ℕ), (∀ i ∈ s, i < p.natDegree) → ‖∑ i ∈ s, p.coeff i • y ^ i‖ < ‖y‖ ^ p.natDegree`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => intro _`.
+
+Simplify using `using pow_pos h0 _`. Consider the case `insert a s ha ih`. Introduce `hs`. Rewrite using `[Finset.sum_insert ha]`. Use `lt_of_le_of_lt (IsUltrametricDist.norm_add_le_max _ _) (max_lt ?_ ?_)` and prove the remaining obligations.
+
+Rewrite using `[zsmul_eq_mul, norm_mul, norm_pow]`. Establish `hc : ‖((p.coeff a : ℤ) : ℂ_[l])‖ ≤ 1` using `IsUltrametricDist.norm_intCast_le_one _ _`. Combine the equalities or inequalities in the displayed calculation. Conclude with `ih fun i hi => hs i (Finset.mem_insert_of_mem hi)`. Use `hlt (Finset.range p.natDegree) fun i hi => Finset.mem_range.mp hi` as an intermediate fact.
+
+Rewrite `this` using `[← norm_neg, ← heq, norm_pow]`. Conclude with `lt_irrefl _ this`.
+-/
 theorem norm_le_one_of_isIntegral {l : ℕ} [hl : Fact (Nat.Prime l)] {y : ℂ_[l]}
     (hy : IsIntegral ℤ y) : ‖y‖ ≤ (1 : ℝ) := by
   obtain ⟨p, hp, hpy⟩ := hy

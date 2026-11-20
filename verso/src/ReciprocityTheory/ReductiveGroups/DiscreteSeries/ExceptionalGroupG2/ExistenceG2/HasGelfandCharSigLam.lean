@@ -16,6 +16,13 @@ namespace ReciprocityTheory.ChartRestriction.DS.G2
 variable {n : ℕ} {ε : Fin n → Bool} {lam : Fin n → ℝ} {T : S7.KType ε (lowK ε lam)}
   {Ψ : Matrix (Fin n) (Fin n) ℂ → (T.V →L[ℂ] T.V)} {v₀ : T.V}
 
+/- English proof (translation)
+Establish `hinj : Function.Injective (Hlam ε Ψ v₀).subtype` using `Subtype.val_injective`. Establish `hint` using `subtype_sigLam hgap hP hv₀`. Use `hSf` as an intermediate fact. Establish `hf : FiniteDimensional ℂ (S.map (Hlam ε Ψ v₀).subtype)` using `(Submodule.equivMapOfInjective _ hinj S).finiteDimensional`. Establish `hK : ∀ k ∈ Kset ε, ∀ x ∈ S.map (Hlam ε Ψ v₀).subtype, rreg ε k x ∈ S.map (Hlam ε Ψ v₀).subtype`.
+
+Introduce `k hk x hx`. Rewrite `hk` using `[← mir_Kset_eq]`. Conclude with `(kStableOn_map_iff _ hinj hint S).1 hSK k hk x hx`. Establish `h` using `data_kfin_le hgap (rreg_isURepOn ε) (isDerivedOn_smE (rreg_isURepOn ε)) (datumV_isKIrrHW hP hv₀) (datumV_casimir hP v₀) (datumV_kStable hP v₀) _ (map_subtype_le_closGen S) hf hK`. Introduce `x hx`.
+
+Conclude with `h ⟨x, hx, rfl⟩`.
+-/
 theorem sigLam_kfin (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (hv₀ : v₀ ≠ 0) (S : Submodule ℂ (Hlam ε Ψ v₀)) (hSf : FiniteDimensional ℂ S)
     (hSK : Formalism.MainNotions.S.IsKStableOn ε (sigLam ε Ψ v₀) S) : S ≤ kfinLam ε Ψ v₀ := by
   have hinj : Function.Injective (Hlam ε Ψ v₀).subtype := Subtype.val_injective
@@ -32,6 +39,11 @@ theorem sigLam_kfin (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (hv₀ : 
   intro x hx
   exact h ⟨x, hx, rfl⟩
 
+/- English proof (translation)
+Establish `hE : IsGlRep (smE ε (rreg ε))` using `(isDerivedOn_smE (rreg_isURepOn ε)).glRep`. Introduce `k x hx`. Establish `hdat : ∀ y ∈ datumV ε Ψ v₀, gelfand (smE ε (rreg ε)) k y = gval (icShift lam) k • y ∧ gelfand (antiE (smE ε (rreg ε))) k y = gval (icShift (-lam)) k • y`. Introduce `y hy`. Take `⟨v, hv⟩` from `(mem_datumV_iff hP v₀ y).1 hy`.
+
+Establish `hg` using `icx_good_datum hP hv`. Conclude with `⟨icx_val (icxGood_gelfand (smE ε (rreg ε)) (S7.rightE ε) (fun a b _ _ h => icxGood_eab h a b) hg k) hv _ fun g hg' => (hG k g hg').1, icx_val (icxGood_gelfand (antiE (smE ε (rreg ε))) (S7.rightEanti ε) (fun a b _ _ h => icxGood_anti h a b) hg k) hv _ fun g hg' => (hG k g hg').2⟩`. Conclude with `⟨icx_genSub_eigen _ _ _ _ (fun a b => (gelfand_comm hE k a b).symm) (fun y hy => (hdat y hy).1) x hx, icx_genSub_eigen _ _ _ _ (fun a b => icx_anti_comm hE k a b) (fun y hy => (hdat y hy).2) x hx⟩`.
+-/
 theorem hasGelfandChar_sigLam (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (hv₀ : v₀ ≠ 0)
     (hG : ∀ (k : ℕ) (g : Matrix (Fin n) (Fin n) ℂ), inUJ ε g →
       S7.opGelfand (S7.rightE ε) k Ψ g = gval (icShift lam) k • Ψ g ∧
@@ -51,6 +63,9 @@ theorem hasGelfandChar_sigLam (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ)
   exact ⟨icx_genSub_eigen _ _ _ _ (fun a b => (gelfand_comm hE k a b).symm) (fun y hy => (hdat y hy).1) x hx,
     icx_genSub_eigen _ _ _ _ (fun a b => icx_anti_comm hE k a b) (fun y hy => (hdat y hy).2) x hx⟩
 
+/- English proof (translation)
+Take `⟨-, h1, hg1, hh1⟩` from `hgap`. Take `⟨-, h2, hg2, hh2⟩` from `hgap'`. Establish `hn : (0 : ℝ) ≤ n` using `Nat.cast_nonneg n`. Use `⟨min h1 h2, fun a b hab => le_trans (min_le_left _ _) (hg1 a b hab), fun a b hab => le_trans (min_le_right _ _) (hg2 a b hab), lt_min hh1 hh2, ?_⟩` and prove the remaining obligations. Conclude with `lt_min (by linarith) (by linarith)`.
+-/
 theorem puniq_exists_h {lam' : Fin n → ℝ} (hgap : StdGap ε lam) (hgap' : StdGap ε lam') :
     ∃ h : ℝ, GapAtLeast ε lam h ∧ GapAtLeast ε lam' h ∧ 2 * (n : ℝ) < h ∧ (n : ℝ) - 1 < h := by
   obtain ⟨-, h1, hg1, hh1⟩ := hgap
@@ -60,6 +75,17 @@ theorem puniq_exists_h {lam' : Fin n → ℝ} (hgap : StdGap ε lam) (hgap' : St
     fun a b hab => le_trans (min_le_right _ _) (hg2 a b hab), lt_min hh1 hh2, ?_⟩
   exact lt_min (by linarith) (by linarith)
 
+/- English proof (translation)
+Take `⟨h, hg, hg', hb, hn⟩` from `puniq_exists_h hgap hgap'`. Establish `hU' : ∀ g ∈ UJset ε, ∀ y : Hlam ε Ψ' v₀', U.symm (sigLam ε Ψ' v₀' g y) = sigLam ε Ψ v₀ g (U.symm y)`. Introduce `g hgU y`. Use `hU g hgU (U.symm y)` as an intermediate fact. Rewrite `this` using `[LinearIsometryEquiv.apply_symm_apply]`.
+
+Rewrite using `[← this, LinearIsometryEquiv.symm_apply_apply]`. Establish `hK1` using `puniq_isKTypeOf_map U (fun g hgK x => hU g (puniq_kset hgK) x) (sigLam_lowK hgap hP hv₀).1`. Establish `hK2` using `puniq_isKTypeOf_map U.symm (fun g hgK y => hU' g (puniq_kset hgK) y) (sigLam_lowK hgap' hP' hv₀').1`. Establish `b1` using `(sigLam_kType_bounds hgap' hP' hv₀' _ hK1).2 h hg' hb`. Establish `b2` using `(sigLam_kType_bounds hgap hP hv₀ _ hK2).2 h hg hb`.
+
+Rewrite `b1`, `b2` using `[mir_lowK_eq]`. Assume the negation of the conclusion as `hne`. Establish `hne' : lowK ε lam ≠ lowK ε lam'`. Introduce `heq`. Apply `hne` to reduce the goal to its premises.
+
+Use function extensionality and compare the values at `a`. Use `congrFun heq a` as an intermediate fact. Simplify using `only [lowK, Pi.add_apply, Pi.sub_apply] at this`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `c1` using `b1 hne'`.
+
+Establish `c2` using `b2 (Ne.symm hne')`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem sigLam_inj (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (hv₀ : v₀ ≠ 0) {lam' : Fin n → ℝ} {T' : S7.KType ε (lowK ε lam')}
     {Ψ' : Matrix (Fin n) (Fin n) ℂ → (T'.V →L[ℂ] T'.V)} {v₀' : T'.V} (hgap' : StdGap ε lam')
     (hP' : IsPsiFor ε lam' T' Ψ') (hv₀' : v₀' ≠ 0) (U : Hlam ε Ψ v₀ ≃ₗᵢ[ℂ] Hlam ε Ψ' v₀')

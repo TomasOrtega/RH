@@ -46,9 +46,15 @@ def restrictSys {E : X.Modules} (D : Subobject E) (S : ℕ → Subobject E) (c e
     Subobject (D : X.Modules) :=
   (Subobject.pullback D.arrow).obj (S (e + c)) ⊔ powSub I (D : X.Modules) (e + 1)
 
+/- English proof (translation)
+The claim follows from `Subobject.mk_le_mk_of_comm (idealPowSucc I E n) (idealPowSucc_ι I E n)`.
+-/
 lemma powSub_succ_le (E : X.Modules) (n : ℕ) : powSub I E (n + 1) ≤ powSub I E n :=
   Subobject.mk_le_mk_of_comm (idealPowSucc I E n) (idealPowSucc_ι I E n)
 
+/- English proof (translation)
+The claim follows from `(SheafOfModules.isQuasicoherent X.ringCatSheaf).prop_of_iso (Subobject.underlyingIso (idealPowι I E (e + 1))).symm inferInstance pow_le _ := le_rfl succ e := (sup_eq_right.2 (powSub_succ_le I E (e + 1))).symm`.
+-/
 theorem closedSys_pow (E : X.Modules) [E.IsQuasicoherent] :
     ClosedSys I E (fun e => powSub I E (e + 1)) where
   qcoh e := (SheafOfModules.isQuasicoherent X.ringCatSheaf).prop_of_iso

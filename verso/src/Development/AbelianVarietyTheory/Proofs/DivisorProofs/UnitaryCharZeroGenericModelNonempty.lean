@@ -33,6 +33,9 @@ def GBase.toBaseAt (gb : GBase D.toG R) : Base D R where
     have h := ((IsUnit.mk0 _ hp).map (algebraMap ℚ R)).map β
     simp at h
 
+/- English proof (translation)
+Use `haveI : CharZero k := by`. Use `letI : Algebra ℚ k := (β.comp (algebraMap ℚ R)).toAlgebra`. Conclude with `algebraRat.charZero k`. Conclude with `GlobalTheory.T.exists_tate_module_iso p D R gb.toBaseAt N h3 hN S s o k x β h`.
+-/
 theorem fullTate (gb : GBase D.toG R) {N : ℕ} (h3 : 3 ≤ N) (hN : N.Coprime p) {s : S ⟶ Sp R} (o : Obj gb.toBaseAt N s)
     (k : Type) [Field k] [IsAlgClosed k] (x : Sp k ⟶ S) (β : R →+* k) (h : x ≫ s = spMap β) :
     ∃ I : GTateIso D.toG k (Over.mk x ⟶ o.A) (fun c g => g ≫ o.act.act c)
@@ -43,6 +46,9 @@ theorem fullTate (gb : GBase D.toG R) {N : ℕ} (h3 : 3 ≤ N) (hN : N.Coprime p
     exact algebraRat.charZero k
   exact GlobalTheory.T.exists_tate_module_iso p D R gb.toBaseAt N h3 hN S s o k x β h
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.torsion_of_generating_section p D R gb N h3 S s o`.
+-/
 theorem kerPrimeTo {gb : GBase D.toG R} {N : ℕ} (h3 : 3 ≤ N) {s : S ⟶ Sp R} (o : GObj gb N s) :
     ∃ e : ℕ, e.Coprime p ∧ ∀ (T : Over S) (x : T ⟶ o.A),
       (∃ t : (o.P.pull (lift (snd o.A T ≫ x) (fst o.A T)).left).Gen, t.IsGen) → x ^ e = 1 :=
@@ -115,6 +121,9 @@ def GBase.genModelOf (gb : GBase D.toG R) {N : ℕ} (h3 : 3 ≤ N) (hN : N.Copri
     rintro g ⟨hg, ⟨n⟩⟩
     exact hu g ⟨hg, ⟨⟨n.φ, n.φ₂, n.cart, n.sq, n.act, n.pol, n.eta⟩⟩⟩
 
+/- English proof (translation)
+Take `⟨M⟩` from `GlobalTheory.T.harrisTaylorIntegralModel_nonempty p D R' gb.toBaseAt N h3 hN`. Conclude with `⟨gb.genModelOf h3 hN M⟩`.
+-/
 theorem genModel_nonempty (p : ℕ) [Fact p.Prime] (D : Datum p) (R' : Type) [CommRing R'] [Algebra ℚ R']
     [IsNoetherianRing R'] (gb : GBase D.toG R') (N : ℕ) (h3 : 3 ≤ N) (hN : N.Coprime p) :
     Nonempty (GenModel gb N) := by

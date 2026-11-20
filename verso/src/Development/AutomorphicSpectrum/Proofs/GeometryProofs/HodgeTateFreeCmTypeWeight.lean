@@ -27,6 +27,17 @@ open GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.NumbersDVR.Bundl
 
 namespace GlobalTheory.CompanionTheory.Ar.Flat.HTL
 
+/- English proof (translation)
+Establish `hp : p.Prime` using `Fact.out`. Establish `hmul : ∀ {b b' : ℕ}, ¬ p ∣ b → ¬ p ∣ b' → ¬ p ∣ b * b'` using `fun h h' hd => (hp.dvd_mul.1 hd).elim h h'`. Set `o : Subring Ω` to `{ carrier := {x | ∃ (a : ℤ) (b : ℕ), ¬ p ∣ b ∧ x = (a : Ω) / (b : Ω)} mul_mem' := by`. Introduce and unpack `_ _ ⟨a, b, hb, rfl⟩ ⟨a', b', hb', rfl⟩`. Conclude with `⟨a * a', b * b', hmul hb hb', by push_cast; rw [div_mul_div_comm]⟩`.
+
+Use the proof step `one_mem' := ⟨1, 1, by simpa using hp.one_lt.ne', by simp⟩`. Use the proof step `add_mem' := by`. Introduce and unpack `_ _ ⟨a, b, hb, rfl⟩ ⟨a', b', hb', rfl⟩`. Distinguish the cases in `h0 : (b : Ω) = 0`. Conclude with `⟨a', b', hb', by simp [h0]⟩`.
+
+Distinguish the cases in `h0' : (b' : Ω) = 0`. Conclude with `⟨a, b, hb, by simp [h0']⟩`. Conclude with `⟨a * b' + a' * b, b * b', hmul hb hb', by push_cast; field_simp⟩`. Use the proof step `zero_mem' := ⟨0, 1, by simpa using hp.one_lt.ne', by simp⟩`. Use the proof step `neg_mem' := by`.
+
+Introduce and unpack `_ ⟨a, b, hb, rfl⟩`. Conclude with `⟨-a, b, hb, by push_cast; rw [neg_div]⟩ }`. Use `⟨o, fun x => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨a, rfl⟩`. Conclude with `a.2`.
+
+Introduce `h`. Conclude with `⟨⟨x, h⟩, rfl⟩`.
+-/
 theorem exists_zp (Ω : Type) [Field Ω] (p : ℕ) [Fact p.Prime] : ∃ o : Subring Ω, ∀ x : Ω, x ∈ (algebraMap o Ω).range ↔ ∃ (a : ℤ) (b : ℕ), ¬ p ∣ b ∧ x = (a : Ω) / (b : Ω) := by
   have hp : p.Prime := Fact.out
   have hmul : ∀ {b b' : ℕ}, ¬ p ∣ b → ¬ p ∣ b' → ¬ p ∣ b * b' := fun h h' hd =>
@@ -54,6 +65,15 @@ theorem exists_zp (Ω : Type) [Field Ω] (p : ℕ) [Fact p.Prime] : ∃ o : Subr
   · intro h
     exact ⟨⟨x, h⟩, rfl⟩
 
+/- English proof (translation)
+Establish `hp : p.Prime` using `Fact.out`. Unfold `IsCp at h`. Use `split_ifs at h with h2`. Substitute `h2` using the available equality. Establish `: κ = 4` using `hinj (by rw [h, map_ofNat])`.
+
+Rewrite using `[this]`. Evaluate the numerical expressions. Take `⟨ζ, hζ, e⟩` from `h`. Establish `e' : algebraMap A K (κ + 1) = ζ` using `by rw [map_add, e]; simp`. Establish `hz : IsPrimitiveRoot (κ + 1) p` using `IsPrimitiveRoot.of_map_of_injective (f := algebraMap A K) (by rwa [e']) hinj`.
+
+Take `⟨n, rfl⟩ : ∃ n, p = n + 1` from `⟨p - 1, by have := hp.pos; omega⟩`. Establish `hn : 0 < n` using `by have := hp.one_lt; omega`. Establish `h3` using `hz.prod_one_sub_pow_eq_order`. Establish `h4 : (1 - (κ + 1) ^ (0 + 1)) ∣ ∏ k ∈ Finset.range n, (1 - (κ + 1) ^ (k + 1))` using `Finset.dvd_prod_of_mem _ (Finset.mem_range.2 hn)`. Rewrite `h4` using `[h3]`.
+
+Establish `h5 : κ ∣ ((n + 1 : ℕ) : A)`. Establish `: (1 - (κ + 1) ^ (0 + 1)) = -κ` using `by ring`. Rewrite `h4` using `[this]`. Conclude with `(neg_dvd).1 (by push_cast; exact h4)`. Conclude with `h5.trans (dvd_pow_self _ two_ne_zero)`.
+-/
 theorem dvd_sq (A K : Type) [CommRing A] [IsDomain A] [Field K] [Algebra A K] (hinj : Function.Injective (algebraMap A K))
     (p : ℕ) [Fact p.Prime] (κ : A) (h : IsCp p (algebraMap A K κ)) : κ ∣ (p : A) ^ 2 := by
   have hp : p.Prime := Fact.out
@@ -78,6 +98,11 @@ theorem dvd_sq (A K : Type) [CommRing A] [IsDomain A] [Field K] [Algebra A K] (h
       exact (neg_dvd).1 (by push_cast; exact h4)
     exact h5.trans (dvd_pow_self _ two_ne_zero)
 
+/- English proof (translation)
+Introduce `h0`. Take `⟨x, hx, hx0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot (differentIdeal_ne_bot (A := ℤ) (B := 𝓞 E))`. Establish `h1 : σ (x : E) ∈ Submodule.span A {algebraMap A K d}`. Rewrite using `[h]`. Conclude with `Submodule.subset_span ⟨x, hx, rfl⟩`.
+
+Rewrite `h1` using `[h0]`. Simplify using `only [Set.singleton_zero, Submodule.span_zero, Submodule.mem_bot, map_eq_zero] at h1`. Conclude with `hx0 (by exact_mod_cast h1)`.
+-/
 theorem ne_zero_of_gen (A K : Type) [CommRing A] [Field K] [Algebra A K] (E : Type) [Field E] [NumberField E] (σ : E →+* K) (d : A)
     (h : GeneratesDiff σ d) : algebraMap A K d ≠ 0 := by
   intro h0
@@ -89,12 +114,26 @@ theorem ne_zero_of_gen (A K : Type) [CommRing A] [Field K] [Algebra A K] (E : Ty
   simp only [Set.singleton_zero, Submodule.span_zero, Submodule.mem_bot, map_eq_zero] at h1
   exact hx0 (by exact_mod_cast h1)
 
+/- English proof (translation)
+Establish `h : IsIntegral ℤ (σ (a : E))` using `map_isIntegral_int σ (RingOfIntegers.isIntegral_coe a)`. Take `⟨y, hy⟩` from `(IsIntegrallyClosed.isIntegral_iff (R := A) (K := K)).1 (h.tower_top (A := A))`. Conclude with `⟨y, hy⟩`.
+-/
 theorem emb_mem (A K : Type) [CommRing A] [IsDomain A] [IsIntegrallyClosed A] [Field K] [Algebra A K] [IsFractionRing A K]
     (E : Type) [Field E] [NumberField E] (σ : E →+* K) (a : 𝓞 E) : σ (a : E) ∈ (algebraMap A K).range := by
   have h : IsIntegral ℤ (σ (a : E)) := map_isIntegral_int σ (RingOfIntegers.isIntegral_coe a)
   obtain ⟨y, hy⟩ := (IsIntegrallyClosed.isIntegral_iff (R := A) (K := K)).1 (h.tower_top (A := A))
   exact ⟨y, hy⟩
 
+/- English proof (translation)
+Establish `e : ∑ j, (∑ l, v l * G l j) * H j i = v i + ϖ * ∑ l, v l * Z l i`. Establish `h1 : ∀ l, ∑ j, G l j * H j i = (1 : Matrix (Fin N) (Fin N) K) l i + ϖ * Z l i` using `fun l => by`. Use `congrFun (congrFun hGH l) i` as an intermediate fact. Simplify `this` using `[Matrix.mul_apply]`. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`. Use `_ = v i + ϖ * ∑ l, v l * Z l i := by`. Simplify using `only [h1, mul_add, Finset.sum_add_distrib, Matrix.one_apply, Finset.mul_sum]`.
+
+Simplify using the standard rewrite rules. Conclude with `Finset.sum_congr rfl fun _ _ => by ring`. Establish `e2 : v i / ϖ = ∑ j, ((∑ l, v l * G l j) / ϖ) * H j i - ∑ l, v l * Z l i`. Establish `: ∑ j, ((∑ l, v l * G l j) / ϖ) * H j i = (∑ j, (∑ l, v l * G l j) * H j i) / ϖ`. Rewrite using `[Finset.sum_div]`.
+
+Conclude with `Finset.sum_congr rfl fun _ _ => by ring`. Rewrite using `[this, e]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e2]`.
+
+Conclude with `sub_mem (sum_mem fun j _ => mul_mem (hj j) (hH j i)) (sum_mem fun l _ => mul_mem (hv l) (hZ l i))`.
+-/
 theorem div_mem_of_mul (K : Type) [Field K] (B : Subring K) (ϖ : K) (N : ℕ) (G H Z : Matrix (Fin N) (Fin N) K) (hϖ : ϖ ≠ 0)
     (hH : ∀ i j, H i j ∈ B) (hZ : ∀ i j, Z i j ∈ B) (hGH : G * H = 1 + ϖ • Z) (v : Fin N → K) (hv : ∀ l, v l ∈ B)
     (hj : ∀ j, (∑ l, v l * G l j) / ϖ ∈ B) (i : Fin N) : v i / ϖ ∈ B := by
@@ -124,6 +163,27 @@ end GlobalTheory.CompanionTheory.Ar.Flat.HTL
 
 namespace GlobalTheory.CompanionTheory.Ar.Flat.HTL
 
+/- English proof (translation)
+Introduce `A K _ _ _ _ _ _ _ E _ _ c hc p R N _ Li _ _ D ρ hact V t B hB e he`. Establish `hle : D.om' ≤ D.om`. Use `sup_le (Submodule.span_le.2 ?_) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `D.h_mem x`.
+
+Introduce and unpack `_ ⟨w, hw, rfl⟩`. Conclude with `D.om.smul_mem _ hw`. Establish `hfg : D.om'.FG` using `Submodule.FG.of_le D.om_lat.fg hle`. Take `⟨S, hS⟩` from `hfg`. Establish `key : ∀ S : Finset (Module.Dual K Li), (∀ w ∈ S, t * w e ∈ B) → ∃ u : A, algebraMap A K u ≠ 0 ∧ (algebraMap A K u)⁻¹ ∈ B ∧ ∀ w ∈ S, algebraMap A K u * (t * w e) ∈ (algebraMap A K).range` using `by classical`.
+
+Introduce `S`. Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => exact fun _ => ⟨1, by simp, by simp [one_mem], by simp⟩`. Consider the case `insert w S _ ih`. Introduce `h`.
+
+Take `⟨u, hu0, hui, hu⟩` from `ih fun w' hw' => h w' (Finset.mem_insert_of_mem hw')`. Take `⟨u', a, hu0', hui', ha⟩` from `hB.2 _ (h w (Finset.mem_insert_self _ _))`. Use `⟨u * u', by rw [map_mul]; exact mul_ne_zero hu0 hu0', by rw [map_mul, mul_inv]; exact mul_mem hui hui', ?_⟩` and prove the remaining obligations. Introduce `w' hw'`. Break down `Finset.mem_insert.1 hw' with rfl | hw'` into its components or cases.
+
+Use `⟨u * a, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, ← ha]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨b, hb⟩` from `hu w' hw'`. Use `⟨u' * b, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_mul, map_mul, hb]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨u, hu0, hui, hu⟩` from `key S fun w hw => he.2 w (hS ▸ Submodule.subset_span hw)`. Use `⟨u, hu0, hui, V.smul_mem _ he.1, fun w hw => ?_⟩` and prove the remaining obligations. Rewrite `hw` using `[← hS]`.
+
+Establish `e1 : ∀ w : Module.Dual K Li, t * w (algebraMap A K u • e) = algebraMap A K u * (t * w e)` using `fun w => by`. Rewrite using `[map_smul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1]`. Proceed by induction on `hw using Submodule.span_induction with`.
+
+Consider the case `mem x hx => exact hu x hx`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy`. Use `add_mem hx hy` as an intermediate fact. Simplify `this` using `[mul_add]`.
+
+Consider the case `smul a x _ hx`. Take `⟨b, hb⟩` from `hx`. Use `⟨a * b, ?_⟩` and prove the remaining obligations. Establish `: (a • x) e = algebraMap A K a * x e`. Rewrite using `[LinearMap.smul_apply, Algebra.smul_def]`.
+
+Rewrite using `[map_mul, hb, this]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_unit_smul : ∀ (A K : Type) [CommRing A] [IsDomain A] [IsNoetherianRing A] [Field K] [Algebra A K] [IsFractionRing A K] [CharZero K] (E : Type) [Field E] [NumberField E] (c : E ≃+* E) (hc : ∀ x, c (c x) = x) (p R N : ℕ) [Fact p.Prime] (Li : Type) [AddCommGroup Li] [Module K Li] (D : HTChart A K c p R N (Module.Dual K Li)) (ρ : 𝓞 E →+* Module.End K Li), (∀ (a : 𝓞 E) (w : Module.Dual K Li), D.ρΩ a w = w ∘ₗ ρ (RingOfIntegers.mapRingEquiv c a)) → ∀ (V : Submodule K Li) (t : K) (B : Subring K), HTL.IsLocIn A B → ∀ e ∈ HTL.latOn D V t B, ∃ u : A, algebraMap A K u ≠ 0 ∧ (algebraMap A K u)⁻¹ ∈ B ∧ (algebraMap A K u) • e ∈ HTL.latOn D V t (algebraMap A K).range := by
   intro A K _ _ _ _ _ _ _ E _ _ c hc p R N _ Li _ _ D ρ hact V t B hB e he
   have hle : D.om' ≤ D.om := by
@@ -175,6 +235,11 @@ theorem exists_unit_smul : ∀ (A K : Type) [CommRing A] [IsDomain A] [IsNoether
     rw [map_mul, hb, this]
     ring
 
+/- English proof (translation)
+Use `⟨V.smul_mem _ he.1, fun w hw => ?_⟩` and prove the remaining obligations. Establish `: t * w (b • e) = b * (t * w e)`. Rewrite using `[map_smul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`.
+
+Conclude with `mul_mem hb (he.2 w hw)`.
+-/
 theorem latOn_smul {A K : Type} [CommRing A] [Field K] [Algebra A K] {E : Type} [Field E] [NumberField E]
     {c : E ≃+* E} {p R N : ℕ} {Li : Type} [AddCommGroup Li] [Module K Li]
     (D : HTChart A K c p R N (Module.Dual K Li)) {V : Submodule K Li} {t : K} {B : Subring K} {b : K} (hb : b ∈ B) {e : Li}
@@ -186,6 +251,9 @@ theorem latOn_smul {A K : Type} [CommRing A] [Field K] [Algebra A K] {E : Type} 
   rw [this]
   exact mul_mem hb (he.2 w hw)
 
+/- English proof (translation)
+Use `⟨he.1, fun w hw => ?_⟩` and prove the remaining obligations. Take `⟨a, ha⟩` from `he.2 w hw`. Rewrite using `[← ha]`. Conclude with `hB.1 a`.
+-/
 theorem latOn_mono {A K : Type} [CommRing A] [Field K] [Algebra A K] {E : Type} [Field E] [NumberField E]
     {c : E ≃+* E} {p R N : ℕ} {Li : Type} [AddCommGroup Li] [Module K Li]
     (D : HTChart A K c p R N (Module.Dual K Li)) {V : Submodule K Li} {t : K} {B : Subring K} (hB : IsLocIn A B) {e : Li}
@@ -195,11 +263,51 @@ theorem latOn_mono {A K : Type} [CommRing A] [Field K] [Algebra A K] {E : Type} 
   rw [← ha]
   exact hB.1 a
 
+/- English proof (translation)
+The claim follows from `Submodule.mem_sup_left (Submodule.subset_span ⟨x, rfl⟩)`.
+-/
 theorem h_mem_om' {A K : Type} [CommRing A] [Field K] [Algebra A K] {E : Type} [Field E] [NumberField E]
     {c : E ≃+* E} {p R N : ℕ} {Ω : Type} [AddCommGroup Ω] [Module K Ω] [Module A Ω] [IsScalarTower A K Ω]
     (D : HTChart A K c p R N Ω) (x : Fin N → 𝓞 E) : D.h x ∈ D.om' :=
   Submodule.mem_sup_left (Submodule.subset_span ⟨x, rfl⟩)
 
+/- English proof (translation)
+Introduce `A K _ _ _ _ _ _ _ E _ _ c hc p R N _ Li _ _ D ρ hact σ d m i hd hex hdual hproj`. Take `⟨J, Rr, hJ1, hJ2, hJ3⟩` from `GlobalTheory.T.hodge_tate_chart_dual_action A K E c hc p R N Li D ρ hact σ d m i hd hex`. Take `⟨Rr', hR1, hR2⟩` from `GlobalTheory.T.hodge_chart_dual_action_compat A K E c hc p R N Li D ρ hact σ m hproj hex.2.2`. Establish `hσσ : (σ.comp c.toRingHom).comp c.toRingHom = σ`. Use extensionality with `x`.
+
+Simplify using `[hc]`. Establish `hev : ∀ {e : Li}, e ∈ GlobalTheory.CompanionTheory.Ar.HT.eigSp ρ σ → ∀ w : Module.Dual K Li, eigProj D.ρΩ (σ.comp c.toRingHom) w e = w e`. Introduce `e he w`. Conclude with `eigProj_apply D ρ hc hact (σ.comp c.toRingHom) (by rwa [hσσ]) w`. Use `⟨J, fun B hB => ?_⟩` and prove the remaining obligations.
+
+Establish `hloc` using `fun (V : Submodule K Li) (t : K) => exists_unit_smul A K E c hc p R N Li D ρ hact V t B hB`. Establish `hJu : ∀ (u : K) (e : Li) (l : Fin N), J (u • e) l = u * J e l` using `fun u e l => by`. Rewrite using `[map_smul]`. Both sides reduce to the same expression. Use `⟨?_, ?_, ⟨Rr, fun k => latOn_mono D hB (hJ2 k), ?_⟩, ⟨Rr', fun k => latOn_mono D hB (hR1 k), ?_⟩, ?_⟩` and prove the remaining obligations.
+
+Introduce `e he l`. Take `⟨u, hu0, hui, hu⟩` from `hloc _ _ e he`. Take `⟨f, -, hf⟩` from `hJ1 _ hu`. Establish `e1 : J e l = (algebraMap A K u)⁻¹ * algebraMap A K (i f l)`. Rewrite using `[← hf l, hJu]`.
+
+Clear the denominators using the available nonvanishing facts. Rewrite using `[e1]`. Conclude with `mul_mem hui (hB.1 _)`. Introduce `e he j`. Take `⟨u, hu0, hui, hu⟩` from `hloc _ _ e he`.
+
+Take `⟨f, hf1, hf⟩` from `hJ1 _ hu`. Set `y : D.omHT (σ.comp c.toRingHom)` to `⟨eigProj D.ρΩ (σ.comp c.toRingHom) (D.h (Pi.single j 1)), ⟨_, h_mem_om' D _, rfl⟩⟩`. Take `⟨z, hz⟩` from `hdual f j y rfl`. Use `⟨(algebraMap A K u)⁻¹ * algebraMap A K z, mul_mem hui (hB.1 _), ?_⟩` and prove the remaining obligations. Establish `e1 : algebraMap A K (f y) = algebraMap A K d * (algebraMap A K u * D.h (Pi.single j 1) e)`.
+
+Rewrite using `[hf1 y]`. Establish `: (y : Module.Dual K Li) (algebraMap A K u • e) = D.h (Pi.single j 1) (algebraMap A K u • e)` using `hev hu.1 _`. Rewrite using `[this, map_smul, smul_eq_mul]`. Establish `e2 : ∀ l, algebraMap A K (i f l) = algebraMap A K u * J e l` using `fun l => by`. Rewrite using `[← hf l, hJu]`.
+
+Simplify using `only [e2, map_add, map_mul, map_pow, map_natCast, e1] at hz`. Establish `e3 : algebraMap A K u * ∑ l, J e l * D.gram σ d l j = algebraMap A K u * (algebraMap A K d * D.h (Pi.single j 1) e + (p : K) ^ m * ((algebraMap A K u)⁻¹ * algebraMap A K z))`. Rewrite using `[Finset.mul_sum]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `mul_left_cancel₀ hu0 e3`.
+
+Introduce `e he`. Take `⟨u, hu0, hui, hu⟩` from `hloc _ _ e he`. Take `⟨e', he', h⟩` from `hJ3 _ hu`. Use `⟨(algebraMap A K u)⁻¹ • e', latOn_smul D hui (latOn_mono D hB he'), ?_⟩` and prove the remaining obligations. Rewrite `h` using `[map_smul, map_smul]`.
+
+Establish `h2 : algebraMap A K u • Rr (J e) = algebraMap A K u • (e + ((p : K) ^ m) • (algebraMap A K u)⁻¹ • e')`. Rewrite using `[h, smul_add, smul_comm (algebraMap A K u) ((p : K) ^ m), smul_smul (algebraMap A K u), mul_inv_cancel₀ hu0, one_smul]`. Conclude with `smul_right_injective Li hu0 h2`. Introduce `e he`. Take `⟨u, hu0, hui, hu⟩` from `hloc _ _ e he`.
+
+Take `⟨e', he', h⟩` from `hR2 _ hu`. Use `⟨(algebraMap A K u)⁻¹ • e', latOn_smul D hui (latOn_mono D hB he'), ?_⟩` and prove the remaining obligations. Establish `e1 : (fun l => D.h (Pi.single l 1) (algebraMap A K u • e)) = algebraMap A K u • fun l => D.h (Pi.single l 1) e`. Use function extensionality and compare the values at `l`. Simplify using the standard rewrite rules.
+
+Rewrite `h` using `[e1, map_smul]`. Establish `h2 : algebraMap A K u • Rr' (fun l => D.h (Pi.single l 1) e) = algebraMap A K u • (e + ((p : K) ^ m) • (algebraMap A K u)⁻¹ • e')`. Rewrite using `[h, smul_add, smul_comm (algebraMap A K u) ((p : K) ^ m), smul_smul (algebraMap A K u), mul_inv_cancel₀ hu0, one_smul]`. Conclude with `smul_right_injective Li hu0 h2`. Introduce `e he e' he'`.
+
+Take `⟨u, hu0, hui, hu⟩` from `hloc _ _ e he`. Take `⟨u', hu0', hui', hu'⟩` from `hloc _ _ e' he'`. Take `⟨f, -, hf⟩` from `hJ1 _ hu`. Take `⟨y, ⟨w, hw, hy⟩, hq⟩` from `(hex.2.1 (i f)).2 ⟨f, 0, by simp⟩`. Establish `hy' : eigProj D.ρΩ σ w = y` using `hy`.
+
+Take `⟨a, ha⟩` from `hu'.2 w hw`. Rewrite `ha` using `[one_mul]`. Establish `hev' : ∀ w' : Module.Dual K Li, eigProj D.ρΩ σ w' (algebraMap A K u' • e') = w' (algebraMap A K u' • e')` using `fun w' => eigProj_apply D ρ hc hact σ hu'.1 w'`. Use `⟨(algebraMap A K u)⁻¹ * (algebraMap A K u')⁻¹ * algebraMap A K a, mul_mem (mul_mem hui hui') (hB.1 _), ?_⟩` and prove the remaining obligations. Establish `e1 : (D.q σ (i f)) (algebraMap A K u' • e') = ∑ l, algebraMap A K (i f l) * D.h (Pi.single l 1) (algebraMap A K u' • e')`.
+
+Simplify using `only [HTChart.q, LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply, hev', Algebra.smul_def]`. Establish `e2 : (D.q σ (i f)) (algebraMap A K u' • e') = (p : K) ^ m * algebraMap A K a`. Rewrite using `[hq, LinearMap.smul_apply, ← hy', hev', ha, Algebra.smul_def]`.
+
+Simplify using the standard rewrite rules. Establish `e3 : ∀ l, algebraMap A K (i f l) = algebraMap A K u * J e l` using `fun l => by`. Rewrite using `[← hf l, hJu]`. Rewrite `e2` using `[e1]`. Simplify using `only [e3, map_smul, smul_eq_mul] at e2`.
+
+Establish `e4 : algebraMap A K u * algebraMap A K u' * ∑ l, J e l * D.h (Pi.single l 1) e' = (p : K) ^ m * algebraMap A K a`. Rewrite using `[← e2, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun _ _ => by ring`. Establish `: ∑ l, J e l * D.h (Pi.single l 1) e' = (algebraMap A K u)⁻¹ * (algebraMap A K u')⁻¹ * ((p : K) ^ m * algebraMap A K a)`. Rewrite using `[← e4]`.
+
+Clear the denominators using the available nonvanishing facts. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem chart_pack : ∀ (A K : Type) [CommRing A] [IsDomain A] [IsNoetherianRing A] [Field K] [Algebra A K] [IsFractionRing A K] [CharZero K] (E : Type) [Field E] [NumberField E] (c : E ≃+* E) (hc : ∀ x, c (c x) = x) (p R N : ℕ) [Fact p.Prime] (Li : Type) [AddCommGroup Li] [Module K Li] (D : HTChart A K c p R N (Module.Dual K Li)) (ρ : 𝓞 E →+* Module.End K Li), (∀ (a : 𝓞 E) (w : Module.Dual K Li), D.ρΩ a w = w ∘ₗ ρ (RingOfIntegers.mapRingEquiv c a)) → ∀ (σ : E →+* K) (d : A) (m : ℕ) (i : Module.Dual A (D.omHT (σ.comp c.toRingHom)) →ₗ[A] (Fin N → A)), algebraMap A K d ≠ 0 → D.ExactMod σ m i → D.IsDualMap σ d m i → Module.Projective A (D.omHT σ) → ∃ J : Li →ₗ[K] (Fin N → K), ∀ B : Subring K, HTL.IsLocIn A B → (∀ e ∈ HTL.latOn D (GlobalTheory.CompanionTheory.Ar.HT.eigSp ρ σ) (algebraMap A K d) B, ∀ l, J e l ∈ B) ∧ (∀ e ∈ HTL.latOn D (GlobalTheory.CompanionTheory.Ar.HT.eigSp ρ σ) (algebraMap A K d) B, ∀ j, ∃ z ∈ B, ∑ l, J e l * D.gram σ d l j = algebraMap A K d * D.h (Pi.single j 1) e + (p : K) ^ m * z) ∧ (∃ Rr : (Fin N → K) →ₗ[K] Li, (∀ k, Rr (Pi.single k 1) ∈ HTL.latOn D (GlobalTheory.CompanionTheory.Ar.HT.eigSp ρ σ) (algebraMap A K d) B) ∧ ∀ e ∈ HTL.latOn D (GlobalTheory.CompanionTheory.Ar.HT.eigSp ρ σ) (algebraMap A K d) B, ∃ e' ∈ HTL.latOn D (GlobalTheory.CompanionTheory.Ar.HT.eigSp ρ σ) (algebraMap A K d) B, Rr (J e) = e + ((p : K) ^ m) • e') ∧ (∃ Rr : (Fin N → K) →ₗ[K] Li, (∀ k, Rr (Pi.single k 1) ∈ HTL.latOn D (GlobalTheory.CompanionTheory.Ar.HT.eigSp ρ (σ.comp c.toRingHom)) 1 B) ∧ ∀ e ∈ HTL.latOn D (GlobalTheory.CompanionTheory.Ar.HT.eigSp ρ (σ.comp c.toRingHom)) 1 B, ∃ e' ∈ HTL.latOn D (GlobalTheory.CompanionTheory.Ar.HT.eigSp ρ (σ.comp c.toRingHom)) 1 B, Rr (fun l => D.h (Pi.single l 1) e) = e + ((p : K) ^ m) • e') ∧ ∀ e ∈ HTL.latOn D (GlobalTheory.CompanionTheory.Ar.HT.eigSp ρ σ) (algebraMap A K d) B, ∀ e' ∈ HTL.latOn D (GlobalTheory.CompanionTheory.Ar.HT.eigSp ρ (σ.comp c.toRingHom)) 1 B, ∃ z ∈ B, ∑ l, J e l * D.h (Pi.single l 1) e' = (p : K) ^ m * z := by
   intro A K _ _ _ _ _ _ _ E _ _ c hc p R N _ Li _ _ D ρ hact σ d m i hd hex hdual hproj
   obtain ⟨J, Rr, hJ1, hJ2, hJ3⟩ := GlobalTheory.T.hodge_tate_chart_dual_action A K E c hc p R N Li D ρ hact σ d m i hd hex
@@ -299,6 +407,83 @@ namespace GlobalTheory.CompanionTheory.Ar.Flat
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Introduce `hF E _ _ _ H D l Xo c O _ β Y S Ω _ K _ J _ y 𝔐 p _ hpS hpq hfree τ`. Take `⟨o, ho⟩` from `HTL.exists_zp Ω p`. Take `⟨Dc, hfam, htest⟩` from `GlobalTheory.T.hodge_tate_free_flag_lattice_lower E H D l Xo c O β Y S Ω K J y 𝔐 p hpS hpq o ho`. Take `⟨hproj, hdiff, κ, hκ, hκs⟩` from `GlobalTheory.T.hodge_tate_free_flag_lattice_upper E H D l Xo c O β Y S Ω K J y 𝔐 p hpS hpq o ho Dc hfam hfree`. Take `⟨hchar, -, -, -, -, -, hcharts⟩` from `GlobalTheory.T.hodge_tate_free_integral_models E H D l Xo c O β Y S Ω K J y 𝔐 p hpS o ho`.
+
+Use `haveI := hchar`. Establish `hPt : PointHT` using `GlobalTheory.T.pointHT_of_fargues_hodge_tate hF`. Establish `hc : ∀ x, cmConj E (cmConj E x) = x` using `fun x => by`. Simplify using `[cmConj]`. Set `σ : E →+* Ω` to `𝔐.cst.comp (τ.1.codRestrict c.F (c.conj τ.1))`.
+
+Establish `hσ : ∀ a : 𝓞 E, σ (a : E) = 𝔐.emb (Sum.inl τ) a` using `fun a => rfl`. Take `⟨d, hd⟩` from `hdiff σ`. Take `⟨d', hd'⟩` from `hdiff (σ.comp (cmConj E).toRingHom)`. Establish `hR` using `𝔐.R_ge p hpS`. Take `⟨m, hm⟩ : ∃ m, 𝔐.R p = m + 2` from `⟨𝔐.R p - 2, by omega⟩`.
+
+Establish `hm1 : 1 ≤ m` using `by omega`. Establish `hch : ∀ s : {s : ∀ k, J k // mseg y s ≠ 0}, ∃ (ds κs : chartRing o (mseg y) s.1) (Jc : 𝔐.Li →ₗ[Ω] (Fin (D.p + D.q) → Ω)), (ds : Ω) = d ∧ GeneratesDiff σ ds ∧ (κs : Ω) = κ ∧ κs ∣ (p : chartRing o (mseg y) s.1) ^ 2 ∧ (∀ x ∈ (Dc s).om, κs • x ∈ (Dc s).om') ∧ (∃ G H Z : Matrix (Fin ( …`. Introduce `s`. Take `⟨hN, hI, hFr, -⟩` from `hcharts s.1 s.2`. Use `haveI := hN`.
+
+Use `haveI := hI`. Use `haveI := hFr`. Take `⟨ds, hds1, hds2⟩` from `hd s`. Take `⟨ds', -, hds2'⟩` from `hd' s`. Set `κs : chartRing o (mseg y) s.1` to `⟨κ, hκs s⟩`.
+
+Establish `hinj : Function.Injective (algebraMap (chartRing o (mseg y) s.1) Ω)` using `Subtype.val_injective`. Establish `hκd : κs ∣ (p : chartRing o (mseg y) s.1) ^ 2` using `HTL.dvd_sq _ Ω hinj p κs hκ`. Establish `hdiv : κs * (p : chartRing o (mseg y) s.1) ^ m ∣ (p : chartRing o (mseg y) s.1) ^ (𝔐.R p)`. Rewrite using `[hm, pow_add, mul_comm ((p : chartRing o (mseg y) s.1) ^ m)]`. Conclude with `mul_dvd_mul_right hκd _`.
+
+Take `⟨⟨-, hκ1⟩, hseq⟩` from `GlobalTheory.T.chart_sequence_holds (chartRing o (mseg y) s.1) Ω E (cmConj E) hc p (𝔐.R p) (D.p + D.q) (Module.Dual Ω 𝔐.Li) (Dc s) κs m hdiv (htest s κs hPt hκ) (hproj s).1`. Take `⟨i, hi1, hi2⟩` from `hseq σ ds ds' hds2 hds2' ((hproj s).2 σ) ((hproj s).2 _)`. Establish `hact : ∀ (a : 𝓞 E) (w : Module.Dual Ω 𝔐.Li), (Dc s).ρΩ a w = w ∘ₗ 𝔐.ρ (RingOfIntegers.mapRingEquiv (cmConj E) a)` using `fun a w => by`. Rewrite using `[HT.ModelTest.bar_eq H a]`. Conclude with `hfam.act s a w`.
+
+Take `⟨Jc, hJ⟩` from `HTL.chart_pack (chartRing o (mseg y) s.1) Ω E (cmConj E) hc p (𝔐.R p) (D.p + D.q) 𝔐.Li (Dc s) 𝔐.ρ hact σ ds m i (HTL.ne_zero_of_gen _ Ω E σ ds hds2) hi2 hi1 ((hproj s).2 σ)`. Take `⟨G, H', Z, -, hG, hGH, -⟩` from `GlobalTheory.T.hodge_tate_chart_different_generators (chartRing o (mseg y) s.1) Ω hinj E (cmConj E) hc p (𝔐.R p) (D.p + D.q) (Module.Dual Ω 𝔐.Li) (Dc s) σ ds (fun a => HTL.emb_mem _ Ω E σ a) hds2`. Conclude with `⟨ds, κs, Jc, hds1, hds2, rfl, hκd, hκ1, ⟨G, H', Z, hG, hGH⟩, hJ⟩`. Use `choose ds κs Jc hds hgd hκeq hκd hκom hG hpack using hch`. Establish `hcov : ∀ x : Cpt 𝔐.ξ, ∃ s : {s : ∀ k, J k // mseg y s ≠ 0}, InChart 𝔐.ξ (mseg y) s.1 x` using `fun x => by`.
+
+Take `⟨s, hs⟩` from `𝔐.tie.cover x`. Conclude with `⟨⟨s, hs.1⟩, hs⟩`. Use `choose sx hsx using hcov`. Set `J' : ∀ s : {s : ∀ k, J k // mseg y s ≠ 0}, 𝔐.Li →ₗ[Ω] (Fin (D.p + D.q) → Ω)` to `fun s => LinearMap.pi fun l => (Dc s).h (Pi.single l 1)`. Establish `hp0 : (p : Ω) ≠ 0` using `Nat.cast_ne_zero.2 (Fact.out : p.Prime).ne_zero`.
+
+Establish `hpm : (p : Ω) ^ m = p * (p : Ω) ^ (m - 1)`. Rewrite using `[← pow_succ']`. Use `congr 1`. Use linear arithmetic over natural numbers and integers. Establish `hgram : ∀ s t, (Dc s).gram σ (ds s) = (Dc t).gram σ (ds t)` using `fun s t => by`.
+
+Use function extensionality and compare the values at `i j`. Establish `e1 : algebraMap (chartRing o (mseg y) s.1) Ω (ds s) = d` using `hds s`. Establish `e2 : algebraMap (chartRing o (mseg y) t.1) Ω (ds t) = d` using `hds t`. Simplify using `only [HTChart.gram, e1, e2, hfam.e_eq s t]`. Establish `hov : ∀ (s t : {s : ∀ k, J k // mseg y s ≠ 0}) (q : Cpt 𝔐.ξ), InChart 𝔐.ξ (mseg y) s.1 q → InChart 𝔐.ξ (mseg y) t.1 q → InFibre 𝔐.ξ p q → (∀ e ∈ 𝔐.V (.inl τ) q, ∀ l, (Jc s e l - Jc t e l) / (p : Ω) ∈ regAt 𝔐.ξ q) ∧ (∀ e ∈ 𝔐.V (.inr τ) q, ∀ l, (J' s e l - J' t e l) / (p : Ω) ∈ reg …`.
+
+Introduce `s t q hs ht hq`. Establish `hZ` using `HT.ModelTest.overZp_of_inFibre 𝔐 (Fact.out : p.Prime) q hq`. Establish `hls` using `GlobalTheory.T.hodge_component_integral_over_ring E H D l Xo c O β Y S Ω K J y 𝔐 p o ho s.1 q hs hZ`. Establish `hlt` using `GlobalTheory.T.hodge_component_integral_over_ring E H D l Xo c O β Y S Ω K J y 𝔐 p o ho t.1 q ht hZ`. Take `⟨b, hb⟩` from `hκd s`.
+
+Establish `hb' : (p : Ω) ^ 2 = κ * (b : Ω)`. Use `congrArg (algebraMap (chartRing o (mseg y) s.1) Ω) hb` as an intermediate fact. Rewrite `this` using `[map_pow, map_natCast, map_mul]`. Rewrite using `[this]`. Use `congr 1`.
+
+Conclude with `hκeq s`. Establish `hbB : (b : Ω) ∈ regAt 𝔐.ξ q` using `hls.1 b`. Establish `hκw : ∀ w ∈ 𝔐.M.omLat q, κ • w ∈ omP 𝔐 p q`. Introduce `w hw`. Rewrite `hw` using `[hfam.om_loc s q hs hZ]`.
+
+Rewrite using `[hfam.om'_loc s q hs hq]`. Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem x hx`. Use `Submodule.subset_span ?_` and prove the remaining obligations. Use `hκom s x hx` as an intermediate fact.
+
+Rewrite using `[show κs s • x = κ • x from by` and apply the resulting hypothesis. Rewrite using `[← hκeq s]`. Use the proof step `rfl] at this`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [smul_add]`.
+
+Conclude with `add_mem hx hy`. Consider the case `smul a x _ hx => rw [smul_comm]`. Conclude with `Submodule.smul_mem _ a hx`. Establish `hsp : ∀ (u : Ω) (e : 𝔐.Li), (∀ w ∈ (Dc s).om', u * w e ∈ regAt 𝔐.ξ q) → ∀ v ∈ omP 𝔐 p q, u * v e ∈ regAt 𝔐.ξ q`. Introduce `u e h v hv`.
+
+Rewrite `hv` using `[hfam.om'_loc s q hs hq]`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx => exact h x hx`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy`.
+
+Simplify `add_mem hx hy` using `[mul_add]`. Consider the case `smul a x _ hx`. Establish `e1 : u * (a • x) e = (a : Ω) * (u * x e)`. Establish `: (a • x) e = (a : Ω) * x e` using `rfl`. Rewrite using `[this]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1]`. Conclude with `mul_mem a.2 hx`. Establish `hrem : ∀ (u : Ω) (e : 𝔐.Li) (w : Module.Dual Ω 𝔐.Li), (∀ v ∈ omP 𝔐 p q, u * v e ∈ regAt 𝔐.ξ q) → w ∈ 𝔐.M.omLat q → u * ((p ^ 𝔐.R p) • w) e / (p : Ω) ∈ regAt 𝔐.ξ q`. Introduce `u e w h hw`.
+
+Establish `h1` using `h _ (hκw w hw)`. Establish `e1 : u * ((p ^ 𝔐.R p) • w) e / (p : Ω) = (p : Ω) ^ (m - 1) * (b : Ω) * (u * (κ • w) e)`. Establish `e2 : ((p ^ 𝔐.R p) • w) e = (p : Ω) ^ (m + 2) * w e`. Rewrite using `[hm]`. Simplify using the standard rewrite rules.
+
+Establish `e3 : (κ • w) e = κ * w e` using `rfl`. Rewrite using `[e2, e3, pow_add, hb', hpm]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e1]`. Conclude with `mul_mem (mul_mem (pow_mem (natCast_mem _ p) _) hbB) h1`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `e he i`. Establish `hes` using `(GlobalTheory.T.hodge_component_residue_integrality E H D l Xo c O β Y S Ω K J y 𝔐 p o ho Dc hfam hpS τ σ hσ s (ds s) (hgd s) q hs hq e).1 he`. Establish `het` using `(GlobalTheory.T.hodge_component_residue_integrality E H D l Xo c O β Y S Ω K J y 𝔐 p o ho Dc hfam hpS τ σ hσ t (ds t) (hgd t) q ht hq e).1 he`. Take `⟨a1, a2, -, -, -⟩` from `hpack s _ hls`.
+
+Take `⟨b1, b2, -, -, -⟩` from `hpack t _ hlt`. Take `⟨G, H', Z, hGg, hGH⟩` from `hG s`. Use `HTL.div_mem_of_mul Ω (regAt 𝔐.ξ q) (p : Ω) (D.p + D.q) (Matrix.of fun i j => (Dc s).gram σ (ds s) i j) (Matrix.of fun i j => (H' i j : Ω)) (Matrix.of fun i j => (p : Ω) ^ (𝔐.R p - 1) * (Z i j : Ω)) hp0 (fun i j => hls.1 _) (fun i j => mul_mem (pow_mem (natCast_mem _ p) _) (hls.1 …` and prove the remaining obligations. Use extensionality with `i j`. Establish `h1` using `congrArg (algebraMap (chartRing o (mseg y) s.1) Ω) (congrFun (congrFun hGH i) j)`.
+
+Rewrite `h1` using `[Matrix.mul_apply, map_sum, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, map_add, map_mul, map_pow, map_natCast]`. Simplify using `only [map_mul] at h1`. Simplify using `only [Matrix.mul_apply, Matrix.of_apply, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul]`. Establish `e0 : ∀ k, (Dc s).gram σ (ds s) i k = algebraMap (chartRing o (mseg y) s.1) Ω (G i k)` using `fun k => (hGg i k).symm`. Simplify using `only [e0]`.
+
+Establish `e1 : (1 : Matrix (Fin (D.p + D.q)) (Fin (D.p + D.q)) Ω) i j = algebraMap (chartRing o (mseg y) s.1) Ω ((1 : Matrix (Fin (D.p + D.q)) (Fin (D.p + D.q)) (chartRing o (mseg y) s.1)) i j)`. Apply the tactic sequence `by_cases h : i = j <;> simp [Matrix.one_apply, h]`. Establish `e2 : ∀ x : Ω, (p : Ω) * ((p : Ω) ^ (𝔐.R p - 1) * x) = (p : Ω) ^ 𝔐.R p * x` using `fun x => by`. Rewrite using `[← mul_assoc, ← pow_succ']`. Use `congr 2`.
+
+Use linear arithmetic over natural numbers and integers. Rewrite using `[e1, e2]`. Conclude with `h1`. Introduce `j`. Take `⟨z, hz, h1⟩` from `a2 e hes j`.
+
+Take `⟨z', hz', h2⟩` from `b2 e het j`. Take `⟨w, hw, hwe⟩` from `hfam.glue s t q hs ht hZ (Pi.single j 1)`. Establish `h3` using `hrem d e w (hsp d e (by`. Introduce `w' hw'`. Use `hes.2 w' hw'` as an intermediate fact.
+
+Rewrite using `[show ((ds s : chartRing o (mseg y) s.1) : Ω) = d from hds s] at this)) hw` and apply the resulting hypothesis. Establish `h2' : ∑ l, Jc t e l * (Dc s).gram σ (ds s) l j = (ds t : Ω) * (Dc t).h (Pi.single j 1) e + (p : Ω) ^ m * z'`. Rewrite using `[hgram s t]`. Conclude with `h2`. Establish `e1 : (∑ l, (Jc s e l - Jc t e l) * (Matrix.of fun i j => (Dc s).gram σ (ds s) i j) l j) / (p : Ω) = d * ((p ^ 𝔐.R p) • w) e / (p : Ω) + (p : Ω) ^ (m - 1) * (z - z')`.
+
+Simplify using `only [Matrix.of_apply, sub_mul, Finset.sum_sub_distrib]`. Rewrite using `[h1, h2', hds s, hds t, hwe, LinearMap.add_apply, hpm]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1]`.
+
+Conclude with `add_mem h3 (mul_mem (pow_mem (natCast_mem _ p) _) (sub_mem hz hz'))`. Introduce `e he j`. Establish `hes` using `(GlobalTheory.T.hodge_component_reduction_at_p E H D l Xo c O β Y S Ω K J y 𝔐 p o ho Dc hfam hpS τ σ hσ s q hs hq e).1 he`. Take `⟨w, hw, hwe⟩` from `hfam.glue s t q hs ht hZ (Pi.single j 1)`. Establish `h1` using `hrem 1 e w (hsp 1 e hes.2) hw`.
+
+Establish `e1 : J' s e j - J' t e j = 1 * ((p ^ 𝔐.R p) • w) e` using `by show (Dc s).h (Pi.single j 1) e - (Dc t).h (Pi.single j 1) e = _`. Rewrite using `[hwe, LinearMap.add_apply, one_mul, add_sub_cancel_left]`. Rewrite using `[e1]`. Conclude with `h1`. Use `⟨fun x => Jc (sx x), fun x => J' (sx x), fun x hx => ?_⟩` and prove the remaining obligations.
+
+Take `⟨U, -, hU⟩` from `𝔐.tie.affine (sx x).1 (sx x).2`. Use `⟨U, (hU x.1).2 ⟨x.2, hsx x⟩, fun q hqU hq => ?_⟩` and prove the remaining obligations. Take `⟨_, hqc⟩` from `(hU q.1).1 hqU`. Establish `hqc' : InChart 𝔐.ξ (mseg y) (sx x).1 q` using `hqc`. Establish `hqF : InFibre 𝔐.ξ p q` using `hq`.
+
+Establish `hZ` using `HT.ModelTest.overZp_of_inFibre 𝔐 (Fact.out : p.Prime) q hqF`. Establish `hls` using `GlobalTheory.T.hodge_component_integral_over_ring E H D l Xo c O β Y S Ω K J y 𝔐 p o ho (sx x).1 q hqc' hZ`. Take `⟨k1, -, ⟨R1, hR1, hR1'⟩, ⟨R2, hR2, hR2'⟩, k5⟩` from `hpack (sx x) _ hls`. Establish `hl` using `fun e => GlobalTheory.T.hodge_component_residue_integrality E H D l Xo c O β Y S Ω K J y 𝔐 p o ho Dc hfam hpS τ σ hσ (sx x) (ds (sx x)) (hgd _) q hqc' hqF e`. Establish `hr` using `fun e => GlobalTheory.T.hodge_component_reduction_at_p E H D l Xo c O β Y S Ω K J y 𝔐 p o ho Dc hfam hpS τ σ hσ (sx x) q hqc' hqF e`.
+
+Take `⟨ov1, ov2⟩` from `hov (sx x) (sx q) q hqc' (hsx q) hqF`. Establish `hpB : (p : Ω) ^ (m - 1) ∈ regAt 𝔐.ξ q` using `pow_mem (natCast_mem _ p) _`. Use `⟨⟨fun w hw k => ⟨k1 w ((hl w).1 hw) k, ov1 w hw k⟩, R1, fun k => (hl _).2 (hR1 k), fun w hw => ?_⟩, ⟨fun w hw k => ⟨?_, ov2 w hw k⟩, R2, fun k => (hr _).2 (hR2 k), fun w hw => ?_⟩, fun w hw w' hw' => ?_⟩` and prove the remaining obligations. Take `⟨e', he', h⟩` from `hR1' w ((hl w).1 hw)`. Use `⟨(p : Ω) ^ (m - 1) • e', (𝔐.V (.inl τ) q).smul_mem ⟨_, hpB⟩ ((hl e').2 he'), ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[h, hpm, smul_smul]`. Establish `h1` using `((hr w).1 hw).2 ((Dc (sx x)).h (Pi.single k 1)) (Submodule.mem_sup_left (Submodule.subset_span ⟨_, rfl⟩))`. Simplify `h1` using `[J']`. Take `⟨e', he', h⟩` from `hR2' w ((hr w).1 hw)`. Use `⟨(p : Ω) ^ (m - 1) • e', (𝔐.V (.inr τ) q).smul_mem ⟨_, hpB⟩ ((hr e').2 he'), ?_⟩` and prove the remaining obligations.
+
+Establish `: (J' (sx x)) w = fun l => (Dc (sx x)).h (Pi.single l 1) w` using `rfl`. Rewrite using `[this, h, hpm, smul_smul]`. Take `⟨z, hz, h⟩` from `k5 w ((hl w).1 hw) w' ((hr w').1 hw')`. Establish `e1 : dotProduct (Jc (sx x) w) (J' (sx x) w') / (p : Ω) = (p : Ω) ^ (m - 1) * z`. Establish `: dotProduct (Jc (sx x) w) (J' (sx x) w') = (p : Ω) ^ m * z` using `h`.
+
+Rewrite using `[this, hpm]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e1]`. Conclude with `mul_mem hpB hz`.
+-/
 theorem exactModLat_hodgeTate : FarguesHodgeTate → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (S : Finset ℕ) (Ω : Type) [Field Ω] (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (y : (Σ k, J k) → Ω) (𝔐 : HodgeCpt Y S y) (p : ℕ) [Fact p.Prime], p ∈ S → 0 < D.p + D.q → HTFree 𝔐 p → ∀ τ : CMType H, ExactModLat (𝔐.V (.inl τ)) (𝔐.V (.inr τ)) (p : Ω) (D.p + D.q) := by
   intro hF E _ _ _ H D l Xo c O _ β Y S Ω _ K _ J _ y 𝔐 p _ hpS hpq hfree τ
   obtain ⟨o, ho⟩ := HTL.exists_zp Ω p

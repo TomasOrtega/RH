@@ -108,6 +108,11 @@ def PullFrameNuZeroStatement : Prop := InWeilActionSetting fun P F _ _ _ N Q v s
 
 def TorsionFactsStatement : Prop := InWeilActionSetting fun P F _ _ α N Q v s₀ => TorsionFacts P F α N Q v s₀
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Apply the tactic sequence `refine ⟨?_, ?_, ?_, ?_, ?_⟩ <;>`. Apply the tactic sequence `intro E _ _ _ H V _ _ _ t P hP α N h1 h2 h3 h4 ϖ h5 Q h6 F _ _ _ v h7 Dw I θ h8 s h9 <;>`. Use `h E H V t P hP α N h1 h2 h3 h4 ϖ h5 Q h6 F v h7 Dw I θ h8 s h9` as an intermediate fact.
+
+Use `exacts [this.1, this.2.1, this.2.2.1, this.2.2.2.1, this.2.2.2.2]`. Introduce and unpack `⟨a, b, c, d, e⟩ E _ _ _ H V _ _ _ t P hP α N h1 h2 h3 h4 ϖ h5 Q h6 F _ _ _ v h7 Dw I θ h8 s h9`. Conclude with `⟨a E H V t P hP α N h1 h2 h3 h4 ϖ h5 Q h6 F v h7 Dw I θ h8 s h9, b E H V t P hP α N h1 h2 h3 h4 ϖ h5 Q h6 F v h7 Dw I θ h8 s h9, c E H V t P hP α N h1 h2 h3 h4 ϖ h5 Q h6 F v h7 Dw I θ h8 s h9, d E H V t P hP α N h1 h2 h3 h4 ϖ h5 Q h6 F v h7 Dw I θ h8 s h9, e E H V t P hP α N h1 h …`.
+-/
 theorem torsionFactsStatement_iff : TorsionFactsStatement ↔
     ConjKernelCountStatement ∧ FixingLiftsStatement ∧ PairingSeparatesStatement ∧
       FiniteOrderLiftsStatement ∧ PullFrameNuZeroStatement := by
@@ -124,6 +129,9 @@ theorem torsionFactsStatement_iff : TorsionFactsStatement ↔
       d E H V t P hP α N h1 h2 h3 h4 ϖ h5 Q h6 F v h7 Dw I θ h8 s h9,
       e E H V t P hP α N h1 h2 h3 h4 ϖ h5 Q h6 F v h7 Dw I θ h8 s h9⟩
 
+/- English proof (translation)
+Introduce `h` and use `h.2 1 one_pos fun χ => ⟨0, Fin.elim0, Fin.elim0, Fin.elim0, fun i => i.elim0, fun i => i.elim0, fun j => by simp⟩`.
+-/
 example {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] (D : DegData V (maximalIdeal V))
     (Q : D.toPre.X → ℤ) (F : Type) [Field F] [Algebra (FractionRing V) F] (v : AddValuation F (WithTop ℚ))
     (k : ℕ) : ¬ NuZero D Q F v k 0 := fun h =>

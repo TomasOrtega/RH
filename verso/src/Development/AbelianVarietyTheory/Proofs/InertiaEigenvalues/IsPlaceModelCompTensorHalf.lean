@@ -17,17 +17,34 @@ def tensorHalf (a' b : AE D) (Ψ : Mx D m n → ℂ) : (Mx D m n → ℂ) →ₗ
   map_add' Φ Φ' := by funext x; simp only [Pi.add_apply]; ring
   map_smul' c Φ := by funext x; simp only [Pi.smul_apply, smul_eq_mul, RingHom.id_apply]; ring
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem tensorHalf_apply (a' b : AE D) (Ψ Φ : Mx D m n → ℂ) (x : Mx D m n) :
     tensorHalf a' b Ψ Φ x = Φ (a' • x) * Ψ (b • x) * (if IsHalf (a' + b) x then 1 else 0) := rfl
 
 open GlobalTheory.ExportSeries.RestrictHalfModel
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `only [tensorHalf_apply, restrictHalf_apply, one_smul, add_comm b a']`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem tensorHalf_halfInd (a' b : AE D) (Λ : AddSubgroup (Mx D m n)) (Ψ : Mx D m n → ℂ) :
     tensorHalf a' b Ψ ((1 : ℂ) • halfInd a' Λ) = restrictHalf b a' Λ Ψ := by
   funext x
   simp only [tensorHalf_apply, restrictHalf_apply, one_smul, add_comm b a']
   ring
 
+/- English proof (translation)
+Take `⟨-, k, hk, hinv, hlat⟩` from `hΦ`. Take `⟨-, k', hk', hinv', hlat'⟩` from `hΨ`. Use `⟨fun t ht => ?_, k * k', Nat.mul_pos hk hk', fun u hu hhu t => ?_, fun t ht => ?_⟩` and prove the remaining obligations. Rewrite `ht` using `[tensorHalf_apply]`. Assume the negation of the conclusion as `h`.
+
+Conclude with `ht (by rw [if_neg h, mul_zero])`. Rewrite `hhu` using `[isHalf_iff']`. Simplify using `only [tensorHalf_apply]`. Establish `e1 : a' • (t + (k * k') • u) = a' • t + k • (a' • (k' • u))`. Rewrite using `[smul_add, mul_comm k k', mul_smul, smul_comm k' k u, smul_comm a' k]`.
+
+Establish `e2 : b • (t + (k * k') • u) = b • t + k' • (b • (k • u))`. Rewrite using `[smul_add, mul_smul, smul_comm k k' u, smul_comm b k']`. Establish `e3 : (a' + b) • ((k * k') • u) = (k * k') • u` using `by rw [smul_comm, hhu]`. Rewrite using `[e1, hinv _ (hΛ a' ha' _ (Λ.nsmul_mem hu k')) (isHalf_smul ha' _), e2, hinv' _ (hΛ b hb _ (Λ.nsmul_mem hu k)) (isHalf_smul hb _), isHalf_add_iff e3]`. Rewrite `ht` using `[tensorHalf_apply]`.
+
+Establish `h1 : Φ (a' • t) ≠ 0` using `fun h => ht (by rw [h, zero_mul, zero_mul])`. Establish `h2 : Ψ (b • t) ≠ 0` using `fun h => ht (by rw [h, mul_zero, zero_mul])`. Establish `h3 : IsHalf (a' + b) t`. Assume the negation of the conclusion as `h`. Conclude with `ht (by rw [if_neg h, mul_zero])`.
+
+Rewrite `h3` using `[isHalf_iff', add_smul]`. Rewrite using `[← h3, smul_add, mul_smul, mul_comm k k', mul_smul k']`. Conclude with `Λ.add_mem (by rw [smul_comm k k']; exact Λ.nsmul_mem (hlat _ h1) k') (by rw [smul_comm k' k]; exact Λ.nsmul_mem (hlat' _ h2) k)`.
+-/
 theorem isSBHalf_tensorHalf {a' b : AE D} (ha' : a' * a' = a') (hb : b * b = b) {Λ : AddSubgroup (Mx D m n)}
     (hΛ : ∀ e : AE D, e * e = e → ∀ u ∈ Λ, e • u ∈ Λ) {Φ Ψ : Mx D m n → ℂ} (hΦ : IsSBHalf a' Λ Φ)
     (hΨ : IsSBHalf b Λ Ψ) : IsSBHalf (a' + b) Λ (tensorHalf a' b Ψ Φ) := by
@@ -56,6 +73,17 @@ theorem isSBHalf_tensorHalf {a' b : AE D} (ha' : a' * a' = a') (hb : b * b = b) 
     rw [← h3, smul_add, mul_smul, mul_comm k k', mul_smul k']
     exact Λ.add_mem (by rw [smul_comm k k']; exact Λ.nsmul_mem (hlat _ h1) k') (by rw [smul_comm k' k]; exact Λ.nsmul_mem (hlat' _ h2) k)
 
+/- English proof (translation)
+Establish `hsb : ∀ Φ, IsSBHalf a' Λ Φ → IsSBHalf (a' + b) Λ (tensorHalf a' b Ψ Φ)` using `fun Φ hΦ => isSBHalf_tensorHalf ha' hb hΛ hΦ hΨ`. Use `⟨fun Φ hΦ x hx => ?_, fun Φ hΦ y hy => ?_, ?_⟩` and prove the remaining obligations. Take `⟨hbx, hax⟩` from `smul_of_half hab hx`. Establish `hxa : IsHalf (a' + b) x` using `(isHalf_iff' _ _).2 hax`. Establish `e : tensorHalf a' b Ψ (fun t => Φ (t + x)) = fun t => tensorHalf a' b Ψ Φ (t + x)`.
+
+Use function extensionality and compare the values at `z`. Simplify using `only [tensorHalf_apply]`. Rewrite using `[smul_add, (isHalf_iff' _ _).1 hx, smul_add b, hbx, add_zero, isHalf_add_iff hax]`. Rewrite using `[LinearMap.comp_apply, LinearMap.comp_apply, e]`. Conclude with `hT.trans _ (hsb Φ hΦ) x hxa`.
+
+Establish `hy' : IsHalf (cA D (a' + b)) y`. Rewrite `hy`, the goal using `[isHalf_iff']`. Rewrite using `[map_add, add_smul, hy, ← hy, smul_smul, ← map_mul, mul_comm, hab, map_zero, zero_smul, add_zero]`. Establish `e : tensorHalf a' b Ψ (fun t => ψ (symplO S T t y) * Φ t) = fun t => ψ (symplO S T t y) * tensorHalf a' b Ψ Φ t`. Use function extensionality and compare the values at `z`.
+
+Simplify using `only [tensorHalf_apply]`. Rewrite using `[GlobalTheory.SplitScalar.symplO_smul, (isHalf_iff' _ _).1 hy]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[LinearMap.comp_apply, LinearMap.comp_apply, e]`. Conclude with `hT.modul _ (hsb Φ hΦ) y hy'`.
+
+Rewrite using `[LinearMap.comp_apply, tensorHalf_halfInd]`.
+-/
 theorem isPlaceModel_comp_tensorHalf {S T : HSp D} {ψ : AddChar (AF D.host.F) ℂ} {Λ : AddSubgroup (WO S T)}
     {f₀ : WO S T → ℂ} {a' b : AE D} {T₀ : (WO S T → ℂ) →ₗ[ℂ] (WO S T → ℂ)} (ha' : a' * a' = a') (hb : b * b = b)
     (hab : a' * b = 0) (hΛ : ∀ e : AE D, e * e = e → ∀ u ∈ Λ, e • u ∈ Λ) {Ψ : WO S T → ℂ} (hΨ : IsSBHalf b Λ Ψ)

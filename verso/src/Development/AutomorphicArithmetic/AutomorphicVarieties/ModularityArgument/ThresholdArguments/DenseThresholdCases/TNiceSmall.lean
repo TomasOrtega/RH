@@ -7,6 +7,13 @@ set_option synthInstance.maxHeartbeats 200000
 
 section
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal IsLocalRing Polynomial Matrix UpperTheory.V UpperTheory.V.HV UpperTheory.V.Alg GlobalTheory.GalOfCusp
+/- English proof (translation)
+Take `⟨g, hg⟩` from `h`. Establish `h1` using `Matrix.charpoly_units_conj g (Pr.gm r s)`. Establish `h2 : ((g * r s * g⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k).BlockTriangular id` using `fun i j hij => (hg s).1 i j hij`. Establish `h3` using `Matrix.charpoly_of_upperTriangular _ h2`. Rewrite using `[← h1]`.
+
+Simplify using `only [Units.val_mul, Matrix.coe_units_inv] at h3`. Rewrite using `[h3]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `h4` using `(hg s).2 i`. Simplify using `only [Units.val_mul, Matrix.coe_units_inv] at h4`.
+
+Rewrite using `[h4]`.
+-/
 private theorem charpoly_flag' {H k : Type} [Group H] [CommRing k] {n : ℕ} (r : H →* GL (Fin n) k)
     (κ : Fin n → H →* kˣ) (h : W.HasFlag r κ) (s : H) : (Pr.gm r s).charpoly = Pr.chPoly κ s := by
   obtain ⟨g, hg⟩ := h
@@ -21,6 +28,13 @@ private theorem charpoly_flag' {H k : Type} [Group H] [CommRing k] {n : ℕ} (r 
   have h4 := (hg s).2 i
   simp only [Units.val_mul, Matrix.coe_units_inv] at h4
   rw [h4]
+/- English proof (translation)
+Introduce `l _ L Ω _ _ _ _ _ _ s V c n r B ι x ρ hn hA hirr hfree ⟨v, hne⟩`. Establish `hp : n.Prime`. Break down `hn with rfl | rfl` into its components or cases. Conclude with `Nat.prime_two`. Conclude with `Nat.prime_three`.
+
+Establish `h3 : n ≤ 3` using `by omega`. Take `⟨-, A, _, j, φ, hj, hred, hlift⟩` from `Th.Det.redB x ρ hA.rep`. Use `haveI : V.frame.G'.Normal := MonoidHom.normal_ker _`. Use `haveI : CompactSpace V.frame.G₀ := isCompact_iff_compactSpace.1 (Subgroup.isClosed_of_isOpen _ V.frame.η_open).isCompact`. Establish `key` using `Th.Det.irrSmall hp V.frame.G' ρ j φ r.chib (V.frame.φ v) (x.psi v) (r.psib v) hirr hj hred (hA.flag v) (hlift v) (hfree v) hne`.
+
+Use `⟨hA, hfree, ?_, ?_⟩` and prove the remaining obligations. Establish `h` using `key ⊤ (by simp)`. Rewrite `h` using `[top_inf_eq]`. Then use the resulting hypothesis. Take `⟨g, hg, hfr⟩` from `hfree v`. Conclude with `Th.Det.n3small h3 V.frame.G' ρ hA.cont key ⟨V.frame.φ v g, hg, fun i => x.psi v i g, hfr, charpoly_flag' _ _ (hA.flag v) g⟩`.
+-/
 theorem UpperTheory.V.Th.nice_zero_of_rank_two_or_three_irreducible_free :
     ∀ {l : ℕ} [Fact l.Prime] {L Ω : Type} [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] {s : W.HidaSetting l L Ω} {V : s.Lev} {c : Coef l} {n : ℕ} {r : W.Resid V.frame c.O n} {B : W.UniversalOrdinaryDeterminantRing r} (ι : Qbar l ≃+* ℂ) (x : B.Pt) (ρ : V.frame.G₀ →* GL (Fin n) (Qbar l)), (n = 2 ∨ n = 3) → _root_.UpperTheory.V.Th.AutomorphicPointGalois ι x ρ → U3.MatIrr ⊤ (W.mat ρ) → Th.Free V.frame (fun v => x.psi v) → (∃ v a b g, r.psib v a g ≠ r.psib v b g) → _root_.UpperTheory.V.Th.AutomorphicPointLocallyGeneric ι x ρ := by
   intro l _ L Ω _ _ _ _ _ _ s V c n r B ι x ρ hn hA hirr hfree ⟨v, hne⟩

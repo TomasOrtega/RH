@@ -11,6 +11,9 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CechCohomologyF
 set_option backward.isDefEq.respectTransparency false
 open CategoryTheory AlgebraicGeometry TensorProduct GlobalTheory.LogCris CrystallineSemistableComparison CrystallineSemistableComparison.Pb
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.GlobSt.glob_st | exact GlobalTheory.CompanionTheory.GlobSt.glob_st | (intros; apply GlobalTheory.CompanionTheory.GlobSt.glob_st <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.stable_cover_cech_vanishing : (∀ {O : Type} [CommRing O] {R : Type} [CommRing R] {I : Ideal R} {γ : DividedPowers I} {p : ℕ}
     {X : Scheme.{0}} {q : X ⟶ Spec (CommRingCat.of O)} {κ : O →+* R ⧸ I} {Λ : Type} [CommRing Λ]
     (F : Thick (nlFun γ p X q κ) ⥤ ModuleCat.{0} Λ) (Q : ObjectProperty (Thick (nlFun γ p X q κ)))

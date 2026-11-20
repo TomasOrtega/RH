@@ -50,6 +50,9 @@ def colSpan {m : ℕ} (Q : Matrix (Fin n) (Fin m) A) (a : ℕ) : AddSubgroup (Fi
 def flagUnip {m : ℕ} (Q : Matrix (Fin n) (Fin m) A) : Subgroup (GL (Fin n) A) :=
   ⨅ a : Fin m, unip (colSpan Q ((a : ℕ) + 1)) (colSpan Q a)
 
+/- English proof (translation)
+Use extensionality with `g`. Conclude with `⟨fun h => h.1, fun h => ⟨h, h, fun v hv => M.sub_mem ((h v).1 hv) hv⟩⟩`.
+-/
 example (M : AddSubgroup (Fin n → A)) : unip M M = stabAdd M := by
   ext g
   exact ⟨fun h => h.1, fun h => ⟨h, h, fun v hv => M.sub_mem ((h v).1 hv) hv⟩⟩
@@ -242,6 +245,9 @@ def ColumnDimension : Prop :=
         (dπ : ℝ≥0∞) / (μNi 𝓓 * μHi Set.univ) =
           d * volMul μNf μHf (KSpp σ J P f L SG ε (g₁ * g₂) : Set (HA (Af F) σ J))
 
+/- English proof (translation)
+Simplify using `[gammaOne]`.
+-/
 example (E : Type) [Field E] [NumberField E] (k : ℕ) :
     gammaOne (∅ : Finset (HeightOneSpectrum (𝓞 E))) k = 1 := by simp [gammaOne]
 

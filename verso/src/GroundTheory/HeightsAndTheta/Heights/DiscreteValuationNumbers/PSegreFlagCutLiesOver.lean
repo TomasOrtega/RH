@@ -14,6 +14,21 @@ namespace SegreFlagCutLiesOverProof
 variable {κ : Type} [Fintype κ] [DecidableEq κ] {ικ : κ → Type} [∀ o, Fintype (ικ o)] {O : Type} [CommRing O] [IsDomain O]
   [IsDiscreteValuationRing O] {Φ : Type} [Field Φ] [Algebra O Φ]
 
+/- English proof (translation)
+Establish `: (pointIdeal O pt).IsPrime` using `RingHom.ker_isPrime _`. Establish `hμP : μ ∉ pointIdeal O pt` using `fun h' => hμW (hPW h')`. Establish `hsv0 : aeval pt s ≠ 0` using `fun h0 => hsP (GenericProjClosureDivisor.mem_of_homog hs h0)`. Establish `hτ : τ ≠ 0`. Introduce and unpack `rfl`.
+
+Conclude with `hsv0 (by rw [hsv, zero_mul])`. Establish `hμv : aeval pt μ ≠ 0` using `fun h0 => hμP (GenericProjClosureDivisor.mem_of_homog hμ h0)`. Establish `hlP : l ∉ pointIdeal O pt` using `fun h' => mul_ne_zero hτ hμv (hlv ▸ GenericProjClosureDivisor.aeval_eq_zero_of_mem h')`. Establish `hdiff : s * μ - l * h ∈ pointIdeal O pt`. Establish `h2` using `hl.mul hh`.
+
+Rewrite `h2` using `[← hdeg]`. Establish `h1 : IsMultiHomog (s * μ - l * h) (cs + dm)` using `(mem_weightedHomogeneousSubmodule _ _ _ _).mp (Submodule.sub_mem _ ((mem_weightedHomogeneousSubmodule _ _ _ _).mpr (hs.mul hμ)) ((mem_weightedHomogeneousSubmodule _ _ _ _).mpr h2))`. Use `GenericProjClosureDivisor.mem_of_homog h1 ?_` and prove the remaining obligations. Rewrite using `[map_sub, map_mul, map_mul, hsv, hlv]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hrat` using `congrFun (ratDiv_eq_of_sub_mem hsP hhP hlP hμP hdiff) W`. Establish `hμ0 : divCycle (pointIdeal O pt) μ W = 0`. Unfold `divCycle`. Rewrite using `[dif_neg]`. Introduce and unpack `⟨h', -⟩`.
+
+Conclude with `hμW (h'.1.2 (Ideal.mem_sup_right (Ideal.mem_span_singleton_self μ)))`. Establish `hl0 : divCycle (pointIdeal O pt) l W ≠ 0`. Rewrite `hW` using `[hrat]`. Unfold `ratDiv at hW`. Rewrite `hW` using `[hμ0, sub_zero]`. Then use the resulting hypothesis.
+
+Establish `hmin : W ∈ (pointIdeal O pt ⊔ Ideal.span {l}).minimalPrimes`. Unfold `divCycle at hl0`. Use `split_ifs at hl0 with h'`. Conclude with `h'.1`. Conclude with `absurd rfl hl0`.
+
+Establish `hWp : W.IsPrime` using `hmin.1.1`. Introduce `q hq`. Take `⟨n, hn⟩` from `hsat q hq`. Conclude with `(hWp.mem_or_mem (hmin.1.2 hn)).resolve_left (huW n)`.
+-/
 theorem le_comap_of_chart (pt : (Σ o, ικ o) → Φ) {A F : Type*} [CommRing A] [FunLike F A (MRing ικ O)]
     [RingHomClass F A (MRing ικ O)] (ρ : F) (Q : Ideal A) (u : MRing ικ O) (τ : Φ) {cs ch dl dm : κ → ℕ}
     {s h l μ : MRing ικ O} (hs : IsMultiHomog s cs) (hh : IsMultiHomog h ch) (hl : IsMultiHomog l dl)
@@ -63,6 +78,11 @@ theorem le_comap_of_chart (pt : (Σ o, ικ o) → Φ) {A F : Type*} [CommRing A
 
 omit [Fintype κ] [DecidableEq κ] [∀ o, Fintype (ικ o)] [IsDomain O] [IsDiscreteValuationRing O] in
 
+/- English proof (translation)
+Establish `key : ∀ v, divCycle P v W ≠ 0 → W.IsPrime ∧ P ≤ W ∧ IsRelevant W`. Introduce `v hv`. Unfold `divCycle at hv`. Use `split_ifs at hv with h'`. Conclude with `⟨h'.1.1.1, le_sup_left.trans h'.1.1.2, h'.2⟩`.
+
+Conclude with `absurd rfl hv`. Distinguish the cases in `h1 : divCycle P s W = 0`. Conclude with `key h fun h2 => hW (by simp [ratDiv, h1, h2])`. Conclude with `key s h1`.
+-/
 theorem support_ratDiv {P W : Ideal (MRing ικ O)} {s h : MRing ικ O} (hW : ratDiv P s h W ≠ 0) :
     W.IsPrime ∧ P ≤ W ∧ IsRelevant W := by
   have key : ∀ v, divCycle P v W ≠ 0 → W.IsPrime ∧ P ≤ W ∧ IsRelevant W := by
@@ -79,6 +99,19 @@ end SegreFlagCutLiesOverProof
 
 open SegreFlagCutLiesOverProof in
 
+/- English proof (translation)
+Introduce `O _ _ _ ϖ hϖ Ω _ _ K _ _ ι _ y d hV N E _ _ B B' hBB' w w' x x' f g hfl M M' a₀ a₀' φ φ' hφ hφ' Φ _ _ _ _ e t ht k hk`. Establish `hchart : ∀ (s h : MRing (bundleIdx (bundleIdx ι M) M') O) (W : Ideal (MRing (bundleIdx (bundleIdx ι M) M') O)), ratDiv (pointIdeal O (flagClosurePt y w e φ φ' t (k + 1))) s h W ≠ 0 → ∃ c : ∀ j, ι j, segreVec y c ≠ 0 ∧ pointIdeal O (flagClosurePt y w e φ φ' t (k + 1)) ≤ W ∧ ∀ m : …`. Introduce `s h W hW`. Take `⟨hWp, hPW, hWr⟩` from `support_ratDiv hW`. Use `choose c hc using fun j : K => hWr (some (some j))`.
+
+Use `⟨c, ?_, hPW, ?_⟩` and prove the remaining obligations. Unfold `segreVec`. Rewrite using `[Finset.prod_ne_zero_iff]`. Introduce `j _ hj`. Apply `hc j (hPW ?_)` to reduce the goal to its premises.
+
+Use `GenericProjClosureDivisor.mem_of_homog (isWeightedHomogeneous_X O _ _) ?_` and prove the remaining obligations. Rewrite using `[aeval_X]`. Simplify using `[flagClosurePt, pairProjCoord, projCoord, hj]`. Introduce `m hm`. Take `⟨j, -, hj⟩` from `(Ideal.IsPrime.prod_mem_iff (hp := hWp)).mp hm`.
+
+Conclude with `hc j (hWp.mem_of_pow_mem _ hj)`. Establish `hdeg : ∀ {cs ch dl dm : Option (Option K) → ℕ} {D : Option (Option K) → ℤ}, (fun o => (cs o : ℤ) - ch o) = D → (fun o => (dl o : ℤ) - dm o) = D → cs + dm = dl + ch`. Introduce `cs ch dl dm D h1 h2`. Use function extensionality and compare the values at `o`. Establish `e1` using `congrFun h1 o`.
+
+Establish `e2` using `congrFun h2 o`. Simplify using `only [Pi.add_apply] at e1 e2 ⊢`. Use linear arithmetic over natural numbers and integers. Use `⟨fun cs ch s h hs hh hsh hsP hhP hsv W _ hW => ?_, fun cs ch s h hs hh hsh hsP hhP hsv W _ hW => ?_⟩` and prove the remaining obligations. Take `⟨c, hc, hPW, hmono⟩` from `hchart s h W hW`.
+
+Take `⟨⟨dl, dm, l, μ, m, hμ, hl, hμh, hdl, hlv, hsat⟩, -⟩` from `hChart O ϖ hϖ Ω K ι y d hV N E B B' hBB' w w' x x' f g hfl M M' a₀ a₀' φ φ' hφ hφ' Φ e t ht k hk c hc`. Conclude with `le_comap_of_chart _ _ _ _ _ hs hh hl hμh (hdeg hsh hdl) hsP hhP hsv hlv hsat (hμ ▸ hmono m) (fun n => by rw [← Finset.prod_pow]; exact hmono fun _ => n) hPW hW`. Take `⟨c, hc, hPW, hmono⟩` from `hchart s h W hW`. Take `⟨-, ⟨dl, dm, l, μ, m, hμ, hl, hμh, hdl, hlv, hsat⟩⟩` from `hChart O ϖ hϖ Ω K ι y d hV N E B B' hBB' w w' x x' f g hfl M M' a₀ a₀' φ φ' hφ hφ' Φ e t ht k hk c hc`. Conclude with `le_comap_of_chart _ _ _ _ _ hs hh hl hμh (hdeg hsh hdl) hsP hhP hsv hlv hsat (hμ ▸ hmono m) (fun n => by rw [← Finset.prod_pow]; exact hmono fun _ => n) hPW hW`.
+-/
 theorem SegreFlagCutLiesOver.proof (hChart : SegreFlagCutChartSection.Statement) :
     SegreFlagCutLiesOver.Statement := by
   intro O _ _ _ ϖ hϖ Ω _ _ K _ _ ι _ y d hV N E _ _ B B' hBB' w w' x x' f g hfl M M' a₀ a₀' φ φ' hφ hφ'

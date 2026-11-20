@@ -4,6 +4,31 @@ namespace DiscreteGroups.sglob.DzType
 
 open Matrix
 
+/- English proof (translation)
+Establish `mlt : ∀ a b : Γ, a ≤ 1 → b < 1 → a * b < 1` using `fun a b ha hb => lt_of_le_of_lt (show a * b ≤ b from (by gcongr : a * b ≤ 1 * b).trans_eq (one_mul b)) hb`. Establish `split : ∀ (i c a : Fin m), (L * U) i c = L i a * U a c + ∑ l ∈ Finset.univ.erase a, L i l * U l c`. Introduce `i c a`. Rewrite using `[Matrix.mul_apply, ← Finset.add_sum_erase _ _ (Finset.mem_univ a)]`. Establish `key : ∀ n : ℕ, ∀ i : Fin m, i.val = n → ∀ j, i < j → v (U i j) < 1`.
+
+Introduce `n`. Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Introduce `i hin`. Establish `up : ∀ l : Fin m, l < i → ∀ j, l < j → v (U l j) < 1` using `fun l hl j hlj => ih l.val (by rw [← hin]; exact hl) l rfl j hlj`.
+
+Establish `hLi : ∀ p : ℕ, ∀ l : Fin m, l.val = p → l < i → v (L i l) ≤ 1`. Introduce `p`. Proceed by induction on `p using Nat.strong_induction_on with`. Consider the case `_ p ihp`. Introduce `l hlp hli`.
+
+Establish `hR : v (∑ l' ∈ Finset.univ.erase l, L i l' * U l' l) < 1`. Use `Valuation.map_sum_lt v one_ne_zero fun l' hl' => ?_` and prove the remaining obligations. Establish `hne : l' ≠ l` using `Finset.ne_of_mem_erase hl'`. Break down `lt_or_gt_of_ne hne with h | h` into its components or cases. Rewrite using `[map_mul]`.
+
+Conclude with `mlt _ _ (ihp l'.val (by rw [← hlp]; exact h) l' rfl (h.trans hli)) (up l' (h.trans hli) l h)`. Rewrite using `[hU0 l' l h, mul_zero, map_zero]`. Conclude with `zero_lt_one`. Establish `hs` using `split i l l`. Rewrite `hs` using `[hU1, mul_one]`.
+
+Establish `e : L i l = (L * U) i l - ∑ l' ∈ Finset.univ.erase l, L i l' * U l' l` using `by rw [hs]; ring`. Rewrite using `[e]`. Conclude with `(Valuation.map_sub v _ _).trans (max_le (hX i l) hR.le)`. Establish `hR : ∀ c, (∀ l', l' < i → v (U l' c) < 1) → v (∑ l' ∈ Finset.univ.erase i, L i l' * U l' c) < 1`. Introduce `c hc`.
+
+Use `Valuation.map_sum_lt v one_ne_zero fun l' hl' => ?_` and prove the remaining obligations. Establish `hne : l' ≠ i` using `Finset.ne_of_mem_erase hl'`. Break down `lt_or_gt_of_ne hne with h | h` into its components or cases. Rewrite using `[map_mul]`. Conclude with `mlt _ _ (hLi l'.val l' rfl h) (hc l' h)`.
+
+Rewrite using `[hL i l' h, zero_mul, map_zero]`. Conclude with `zero_lt_one`. Establish `hLii : v (L i i) = 1`. Establish `hs` using `split i i i`. Rewrite `hs` using `[hU1, mul_one]`.
+
+Establish `hr` using `hR i (fun l' h => up l' h i h)`. Establish `e : L i i = (L * U) i i - ∑ l' ∈ Finset.univ.erase i, L i l' * U l' i` using `by rw [hs]; ring`. Use `le_antisymm ?_ ?_` and prove the remaining obligations. Rewrite using `[e]`. Conclude with `(Valuation.map_sub v _ _).trans (max_le (hX i i) hr.le)`.
+
+Assume the negation of the conclusion as `hlt push Not at hlt`. Establish `h2` using `Valuation.map_add v (L i i) (∑ l' ∈ Finset.univ.erase i, L i l' * U l' i)`. Rewrite `h2` using `[← hs, hXd i]`. Conclude with `absurd (h2.trans_lt (max_lt hlt hr)) (lt_irrefl 1)`. Introduce `j hij`.
+
+Establish `hs` using `split i j i`. Establish `hr` using `hR j (fun l' h => up l' h j (h.trans hij))`. Establish `h1 : v (L i i * U i j) < 1`. Establish `e : L i i * U i j = (L * U) i j - ∑ l' ∈ Finset.univ.erase i, L i l' * U l' j` using `by rw [hs]; ring`. Rewrite using `[e]`.
+
+Conclude with `(Valuation.map_sub v _ _).trans_lt (max_lt (hXu i j hij) hr)`. Rewrite `h1` using `[map_mul, hLii, one_mul]`. Then use the resulting hypothesis. Introduce `i j hij`. Conclude with `key i.val i rfl j hij`.
+-/
 theorem valuation_unitri_lt {K Γ : Type} [Field K] [LinearOrderedCommGroupWithZero Γ] (v : Valuation K Γ) {m : ℕ}
     (L U : Matrix (Fin m) (Fin m) K) (hL : ∀ i j, i < j → L i j = 0) (hU1 : ∀ i, U i i = 1)
     (hU0 : ∀ i j, j < i → U i j = 0) (hX : ∀ i j, v ((L * U) i j) ≤ 1) (hXd : ∀ i, v ((L * U) i i) = 1)

@@ -15,6 +15,23 @@ open PositivityTheory.Rg.BcB.F PositivityTheory.Rg.BcB.F.Rd
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Use `B.hν` as an intermediate fact. Establish `: BorelSpace (Hf E B.a B.b)` using `⟨rfl⟩`. Take `⟨hFinA, hFinB⟩` from `hFin E B K₁ K₂ o₁ c₁ o₂ c₂ cK t₀.ψ hcK hψ₀`. Establish `hUo : IsOpen (((K₁.prod K₂ : Subgroup (Hf E B.a B.b))) : Set (Hf E B.a B.b))`. Rewrite using `[Subgroup.coe_prod]`.
+
+Conclude with `o₁.prod o₂`. Establish `hUc : IsCompact (((K₁.prod K₂ : Subgroup (Hf E B.a B.b))) : Set (Hf E B.a B.b))`. Rewrite using `[Subgroup.coe_prod]`. Conclude with `c₁.prod c₂`. Establish `hψF : ∀ l, IsFinM (mulF B.ν (tΛ l).ψ t₀.ψ)` using `fun l => (hBO E B (tΛ l) t₀ (hok l) h₀).2.2.1.ψ`.
+
+Establish `hex` using `fun l => hFH E B.a B.b B.ν (IxA B.Ma × IxA B.Mb) B.κ (mulF B.ν (tΛ l).ψ t₀.ψ) (K₁.prod K₂) (hψF l) hUo hUc (hFinB _ ((hok l).ψ))`. Use `choose hm _ _ hm₃ using hex`. Establish `hact : ∀ l (F : B.I → H E B.a B.b → ℂ), (∀ i, ∀ u ∈ (K₁.prod K₂ : Subgroup (Hf E B.a B.b)), ∀ x, F i (x * finH u) = F i x) → heckeAct (hm l) F = convF B.ν (tΛ l).ψ F` using `fun l F hF => by`. Rewrite using `[← hm₃ l F hF, (hFinA _ F hF).2 _ (hok l).ψ]`. Establish `heig : ∀ l k, heckeAct (hm l) (f k) = r l k • f k` using `fun l k => by`.
+
+Rewrite using `[hact l (f k) (hflev k), hr l k]`. Establish `hcons : ∀ l l', hm l = hm l' → ∀ k, r l k = r l' k` using `fun l l' e k => smul_cancel (hf0 k) (by rw [← heig l k, ← heig l' k, e])`. Establish `hcons₀ : ∀ l l', hm l = hm l' → r₀ l = r₀ l'` using `fun l l' e => tendsto_nhds_unique (hlim l) (by`. Establish `: r l = r l'` using `funext (hcons l l' e)`. Rewrite using `[this]`.
+
+Conclude with `hlim l')`. Set `lam : ℕ → HeckeM E B.a B.b B.I → ℂ` to `fun k h => if hh : ∃ l, hm l = h then r hh.choose k else 0`. Set `lam₀ : HeckeM E B.a B.b B.I → ℂ` to `fun h => if hh : ∃ l, hm l = h then r₀ hh.choose else 0`. Establish `hlam : ∀ l k, lam k (hm l) = r l k` using `fun l k => by`. Establish `hh : ∃ l', hm l' = hm l` using `⟨l, rfl⟩`.
+
+Simplify using `only [lam, dif_pos hh]`. Conclude with `hcons _ _ hh.choose_spec k`. Establish `hlam₀ : ∀ l, lam₀ (hm l) = r₀ l` using `fun l => by`. Establish `hh : ∃ l', hm l' = hm l` using `⟨l, rfl⟩`. Simplify using `only [lam₀, dif_pos hh]`.
+
+Conclude with `hcons₀ _ _ hh.choose_spec`. Use `⟨hm, lam, lam₀, ?_, ?_, fun l F hF => ⟨hact l F hF, hlam₀ l⟩⟩` and prove the remaining obligations. Introduce and unpack `k _ ⟨l, rfl⟩`. Rewrite using `[hlam, heig]`. Introduce and unpack `_ ⟨l, rfl⟩`.
+
+Simplify using `only [hlam, hlam₀]`. Conclude with `hlim l`.
+-/
 theorem hecke_setup (hFH : FinHecke) (hBO : BlockOperatorsProductAdjoint) (hFin : FinSt) {E : Type} [Field E] [NumberField E] [IsCMField E]
     (B : Block E) (K₁ : Subgroup (GL (Fin B.a) (Af E))) (K₂ : Subgroup (GL (Fin B.b) (Af E)))
     (o₁ : IsOpen (K₁ : Set (GL (Fin B.a) (Af E)))) (c₁ : IsCompact (K₁ : Set (GL (Fin B.a) (Af E))))
@@ -74,6 +91,9 @@ theorem hecke_setup (hFH : FinHecke) (hBO : BlockOperatorsProductAdjoint) (hFin 
     simp only [hlam, hlam₀]
     exact hlim l
 
+/- English proof (translation)
+Unfold `PT.val valA`. Use `Tendsto.mul (tendsto_finsetProd _ fun v _ => ?_) (tendsto_finsetProd _ fun v _ => ?_)` and prove the remaining obligations. Conclude with `hVC B.a B.μa (B.Ma v) (t.ka v) (t.va v) t.T (fun k => χak k v) (χa v) (ht.ka v) (hA v)`. Conclude with `hVC B.b B.μb (B.Mb v) (t.kb v) (t.vb v) t.T (fun k => χbk k v) (χb v) (ht.kb v) (hB v)`.
+-/
 theorem val_tendsto (hVC : ValCont) {E : Type} [Field E] [NumberField E] [IsCMField E] (B : Block E) (t : PT B)
     (ht : t.Ok) (χak : ℕ → InfinitePlace E → Inf B.a) (χa : InfinitePlace E → Inf B.a)
     (χbk : ℕ → InfinitePlace E → Inf B.b) (χb : InfinitePlace E → Inf B.b)
@@ -86,6 +106,27 @@ theorem val_tendsto (hVC : ValCont) {E : Type} [Field E] [NumberField E] [IsCMFi
   · exact hVC B.b B.μb (B.Mb v) (t.kb v) (t.vb v) t.T (fun k => χbk k v) (χb v) (ht.kb v) (hB v)
 
 set_option maxHeartbeats 2000000 in
+/- English proof (translation)
+Take `⟨M, sk, f, χak, χbk, hsg, hsX, hgA, hgB, hk⟩` from `hK`. Establish `h₀ : t₀.Ok` using `by have := hok a₀; rw [ha₀] at this; exact this`. Use `choose χa hχa using fun v s => hIL B.a (fun k => χak k v s) _ (hgA v s)`. Use `choose χb hχb using fun v s => hIL B.b (fun k => χbk k v s) _ (hgB v s)`. Take `⟨hRa, hRb, hGap⟩` from `hreg χa χb (fun v s m h1 h2 => by rw [hχa, if_pos ⟨h1, h2⟩]) (fun v s m h1 h2 => by rw [hχb, if_pos ⟨h1, h2⟩])`.
+
+Establish `cA : ∀ v s m, Tendsto (fun k => GlobalTheory.Dec.gelfVal (χak k v s) m) atTop (𝓝 (GlobalTheory.Dec.gelfVal (χa v s) m))` using `fun v s m => by rw [hχa]; exact hgA v s m`. Establish `cB : ∀ v s m, Tendsto (fun k => GlobalTheory.Dec.gelfVal (χbk k v s) m) atTop (𝓝 (GlobalTheory.Dec.gelfVal (χb v s) m))` using `fun v s m => by rw [hχb]; exact hgB v s m`. Set `Λ` to `{y : Γ // ∃ t, g y = Sum.inr t ∧ FinType t₀ t} ⊕ Unit`. Set `tΛ : Λ → PT B` to `Sum.elim (fun y => y.2.choose) (fun _ => tX)`. Establish `hokΛ : ∀ l, (tΛ l).Ok`.
+
+Introduce and unpack `(y | _)`. Use `hok y.1` as an intermediate fact. Rewrite `this` using `[y.2.choose_spec.1]`. Conclude with `this`. Conclude with `htX`.
+
+Set `r : Λ → ℕ → ℂ` to `Sum.elim (fun y k => sk k (genE g X y.1) / sk k (genE g X a₀)) (fun _ k => sk k (XE g X) / sk k (genE g X a₀) ^ jX)`. Set `r₀ : Λ → ℂ` to `Sum.elim (fun y => χ (genE g X y.1) / χ (genE g X a₀)) (fun _ => χ (XE g X) / χ (genE g X a₀) ^ jX)`. Establish `hr : ∀ l k, convF B.ν (tΛ l).ψ (f k) = r l k • f k`. Introduce and unpack `(y | _) k`. Conclude with `(hk k).2.2.2.2.2.2.2.2.2.2.2.2.1 y.1 _ y.2.choose_spec.1 y.2.choose_spec.2`.
+
+Conclude with `(hk k).2.2.2.2.2.2.2.2.2.2.2.2.2.1`. Establish `hlim : ∀ l, Tendsto (r l) atTop (𝓝 (r₀ l))`. Introduce and unpack `(y | _)`. Conclude with `(hsg y.1).div (hsg a₀) hχ0`. Conclude with `hsX.div ((hsg a₀).pow jX) (pow_ne_zero _ hχ0)`.
+
+Establish `hflev : ∀ k i, ∀ u ∈ (K₁.prod K₂ : Subgroup (Hf E B.a B.b)), ∀ x, f k i (x * finH u) = f k i x` using `fun k i u hu x => ((hk k).2.2.2.2.2.1 i).1 u.1 (Subgroup.mem_prod.1 hu).1 u.2 (Subgroup.mem_prod.1 hu).2 x`. Take `⟨hm, lam, lam₀, hHe, hHl, hHF⟩` from `hecke_setup hFH hBO hFin B K₁ K₂ o₁ c₁ o₂ c₂ t₀ h₀ cK hcK hψ₀ Λ tΛ hokΛ f (fun k => (hk k).2.2.1) hflev r r₀ hr hlim`. Take `⟨s₁, s₂, F, g₁, g₂, u₁, u₂, l₁, l₂, i₁, i₂, hF0, hFm, hFt, hFh⟩` from `hEB B.D B.I M (fun k => mOf (χak k)) (fun k => mOf (χbk k)) (mOf χa) (mOf χb) (Set.range hm) lam lam₀ f (Set.countable_range hm) (fun N _ _ ν _ K' W' R' hK' hW' => hRE E N ν K' W' R' hK' hW') (fun k => (hk k).2.1) (fun k => (hk k).2.2.1) (fun k => (hk k).2.2.2.1) (fun k => (hk k) …`. Establish `hFlev : ∀ i, ∀ u ∈ (K₁.prod K₂ : Subgroup (Hf E B.a B.b)), ∀ x, F i (x * finH u) = F i x` using `fun i u hu x => (hFt i).1 u.1 (Subgroup.mem_prod.1 hu).1 u.2 (Subgroup.mem_prod.1 hu).2 x`. Establish `hFeig : ∀ l, convF B.ν (tΛ l).ψ F = r₀ l • F` using `fun l => by`.
+
+Take `⟨e1, e2⟩` from `hHF l F hFlev`. Rewrite using `[← e1, hFh _ ⟨l, rfl⟩, e2]`. Establish `L₁ : s₁.AllLeaves (fun M V => M = 0 ∨ ∃ K' ∈ Θ₁ M, ∃ W' ∈ Ω₁' M, HasType K' W' V)` using `allLeaves_mono (fun M V h => h.imp id fun ⟨K', hK', W', hW', ht⟩ => ⟨K', hK', W', hΩ₁ M hW', ht⟩) s₁ l₁`. Establish `L₂ : s₂.AllLeaves (fun M V => M = 0 ∨ ∃ K' ∈ Θ₂ M, ∃ W' ∈ Ω₂' M, HasType K' W' V)` using `allLeaves_mono (fun M V h => h.imp id fun ⟨K', hK', W', hW', ht⟩ => ⟨K', hK', W', hΩ₂ M hW', ht⟩) s₂ l₂`. Use `⟨⟨s₁, s₂, F, χa, χb, g₁, g₂, u₁, u₂, L₁, L₂, i₁, i₂, ⟨herm_of_realSym χa hRa, herm_of_realSym χb hRb⟩, hF0, hFm, hFt, ?_, ?_, ?_⟩⟩` and prove the remaining obligations.
+
+Introduce `x t hx hft`. Establish `l` using `(Sum.inl ⟨x, t, hx, hft⟩ : Λ)`. Establish `ht : (Classical.choose (⟨t, hx, hft⟩ : ∃ t, g x = Sum.inr t ∧ FinType t₀ t)) = t`. Use `(Classical.choose_spec (⟨t, hx, hft⟩ : ∃ t, g x = Sum.inr t ∧ FinType t₀ t)).1` as an intermediate fact. Conclude with `Sum.inr_injective (this.symm.trans hx)`.
+
+Use `hFeig (Sum.inl ⟨x, t, hx, hft⟩)` as an intermediate fact. Simplify using `only [tΛ, r₀, Sum.elim_inl, ht] at this`. Conclude with `this`. Introduce `x t hx hat`. Establish `hto : t.Ok` using `by have := hok x; rw [hx] at this; exact this`.
+
+Establish `e : ∀ k, t.val (χak k) (χbk k) = sk k (genE g X x)` using `fun k => (hk k).2.2.2.2.2.2.2.2.2.2.2.2.2.2 x t hx hat`. Establish `h1` using `val_tendsto hVC B t hto χak χa χbk χb cA cB`. Simplify using `only [e] at h1`. Conclude with `tendsto_nhds_unique (hsg x) h1`. Conclude with `hFeig (Sum.inr ())`.
+-/
 theorem blockOut_lim (hFH : FinHecke) (hVC : ValCont) (hIC : InfConv) (hIL : InfLim) (hRE : ReproEx) (hBO : BlockOperatorsProductAdjoint)
     (hFin : FinSt) {E : Type} [Field E] [NumberField E] [IsCMField E] (B : Block E)
     (W₁ W₁' : Submodule ℂ (Kinf E B.a → ℂ)) (W₂ W₂' : Submodule ℂ (Kinf E B.b → ℂ)) (hW₁ : W₁ ≤ W₁') (hW₂ : W₂ ≤ W₂')

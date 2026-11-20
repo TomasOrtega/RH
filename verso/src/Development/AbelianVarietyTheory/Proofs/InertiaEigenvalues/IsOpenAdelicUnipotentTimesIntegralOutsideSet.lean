@@ -6,6 +6,13 @@ open scoped ENNReal
 namespace GlobalTheory.CellDec
 variable {E : Type} [Field E] [NumberField E] {n : ℕ}
 
+/- English proof (translation)
+Use `⟨?_, fun h => ⟨⟨Matrix.of fun i j => ⟨_, h.1 i j⟩, Matrix.of fun i j => ⟨_, h.2 i j⟩, ?_, ?_⟩, rfl⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨y, rfl⟩`. Conclude with `⟨fun i j => (y.1 i j).2, fun i j => ((y⁻¹).1 i j).2⟩`. Use `Matrix.map_injective O.subtype_injective ?_` and prove the remaining obligations. Simplify using `only`.
+
+Rewrite using `[Matrix.map_mul, Matrix.map_one _ (map_zero _) (map_one _)]`. Conclude with `x.mul_inv`. Use `Matrix.map_injective O.subtype_injective ?_` and prove the remaining obligations. Simplify using `only`. Rewrite using `[Matrix.map_mul, Matrix.map_one _ (map_zero _) (map_one _)]`.
+
+Conclude with `x.inv_mul`.
+-/
 theorem mem_GLint_iff_entries_cell {K : Type} [Field K] {O : Subring K} {x : GL (Fin n) K} :
     x ∈ GLint (Fin n) O ↔ (∀ i j, x.1 i j ∈ O) ∧ ∀ i j, (x⁻¹).1 i j ∈ O := by
   refine ⟨?_, fun h => ⟨⟨Matrix.of fun i j => ⟨_, h.1 i j⟩, Matrix.of fun i j => ⟨_, h.2 i j⟩, ?_, ?_⟩, rfl⟩⟩
@@ -20,6 +27,11 @@ theorem mem_GLint_iff_entries_cell {K : Type} [Field K] {O : Subring K} {x : GL 
     rw [Matrix.map_mul, Matrix.map_one _ (map_zero _) (map_one _)]
     exact x.inv_mul
 
+/- English proof (translation)
+Use `RestrictedProduct.isOpen_forall_imp_mem (fun v => ?_)` and prove the remaining obligations. Establish `h : (v.adicCompletionIntegers E : Set (v.adicCompletion E)) = ((Valued.v : Valuation (v.adicCompletion E) _).integer : Set (v.adicCompletion E))`. Use extensionality with `x`. Simplify using `only [SetLike.mem_coe, HeightOneSpectrum.mem_adicCompletionIntegers, Valuation.mem_integer_iff]`. Rewrite using `[h]`.
+
+Conclude with `Valued.isOpen_integer _`.
+-/
 theorem isOpen_intAway (S : Finset (HeightOneSpectrum (𝓞 E))) :
     IsOpen {f : Af E | ∀ v, v ∉ S → f v ∈ v.adicCompletionIntegers E} := by
   refine RestrictedProduct.isOpen_forall_imp_mem (fun v => ?_)
@@ -30,6 +42,13 @@ theorem isOpen_intAway (S : Finset (HeightOneSpectrum (𝓞 E))) :
   rw [h]
   exact Valued.isOpen_integer _
 
+/- English proof (translation)
+Use `set A := {f : Af E | ∀ v, v ∉ S → f v ∈ v.adicCompletionIntegers E}`. Establish `e : (US E n S : Set (GA E n)) = ⋂ i : Fin n, ⋂ j : Fin n, ((fun g : GA E n => ((g : Matrix (Fin n) (Fin n) (Ad E)) i j).2) ⁻¹' A ∩ (fun g : GA E n => (((g⁻¹ : GA E n) : Matrix (Fin n) (Fin n) (Ad E)) i j).2) ⁻¹' A)`. Use extensionality with `g`. Simplify using `only [SetLike.mem_coe, US, Subgroup.mem_iInf, Subgroup.mem_comap, Set.mem_iInter, Set.mem_inter_iff, Set.mem_preimage, A, Set.mem_setOf_eq, GlobalTheory.LFun.KGL, mem_GLint_iff_entries_cell, ← map_inv]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h i j`. Conclude with `⟨fun v hv => (h v hv).1 i j, fun v hv => (h v hv).2 i j⟩`. Introduce `h v hv`. Conclude with `⟨fun i j => (h i j).1 v hv, fun i j => (h i j).2 v hv⟩`. Rewrite using `[e]`.
+
+Use `isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j => IsOpen.inter ?_ ?_` and prove the remaining obligations. Conclude with `(isOpen_intAway S).preimage (continuous_snd.comp ((Units.continuous_val (M := Matrix (Fin n) (Fin n) (Ad E))).matrix_elem i j))`. Conclude with `(isOpen_intAway S).preimage (continuous_snd.comp ((Units.continuous_coe_inv (M := Matrix (Fin n) (Fin n) (Ad E))).matrix_elem i j))`.
+-/
 theorem isOpen_US (S : Finset (HeightOneSpectrum (𝓞 E))) : IsOpen (US E n S : Set (GA E n)) := by
   set A := {f : Af E | ∀ v, v ∉ S → f v ∈ v.adicCompletionIntegers E}
   have e : (US E n S : Set (GA E n)) =
@@ -50,6 +69,13 @@ theorem isOpen_US (S : Finset (HeightOneSpectrum (𝓞 E))) : IsOpen (US E n S :
   · exact (isOpen_intAway S).preimage
       (continuous_snd.comp ((Units.continuous_coe_inv (M := Matrix (Fin n) (Fin n) (Ad E))).matrix_elem i j))
 
+/- English proof (translation)
+Introduce `E _ _ n S`. Establish `e : C0 E n S = ⋃ u ∈ (NA E n : Set (GA E n)), (fun k => u * k) '' (US E n S : Set (GA E n))`. Use extensionality with `g`. Simplify using `only [C0, Set.mem_setOf_eq, Set.mem_iUnion, Set.mem_image, SetLike.mem_coe, exists_prop]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨u, hu, k, hk, rfl⟩`. Conclude with `⟨u, hu, k, hk, rfl⟩`. Introduce and unpack `⟨u, hu, k, hk, rfl⟩`. Conclude with `⟨u, hu, k, hk, rfl⟩`. Rewrite using `[e]`.
+
+Conclude with `isOpen_biUnion fun u _ => isOpenMap_mul_left u _ (isOpen_US S)`.
+-/
 theorem isOpen_adelicUnipotentTimesIntegralOutsideSet : ∀ (E : Type) [Field E] [NumberField E] (n : ℕ) (S : Finset (HeightOneSpectrum (𝓞 E))),
     IsOpen (GlobalTheory.CellDec.C0 E n S) := by
   intro E _ _ n S

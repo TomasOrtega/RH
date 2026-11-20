@@ -7,6 +7,9 @@ namespace GlobalTheory.CompanionTheory.PrincipalCongruence
 variable {k Γ : Type*} [Field k] [LinearOrderedCommGroupWithZero Γ]
 variable {n : Type*} [Fintype n] [DecidableEq n]
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_apply]`. Use `Valuation.map_sum_le v fun l _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem entry_mul_le (v : Valuation k Γ) {r s : Γ} (hs : s ≤ 1)
     {A B : Matrix n n k} (hA : ∀ i j, v (A i j) ≤ r) (hB : ∀ i j, v (B i j) ≤ s) (i j : n) :
     v ((A * B) i j) ≤ r := by
@@ -17,6 +20,21 @@ theorem entry_mul_le (v : Valuation k Γ) {r s : Γ} (hs : s ≤ 1)
     _ ≤ r * 1 := mul_le_mul' le_rfl hs
     _ = r := mul_one r
 
+/- English proof (translation)
+Use `haveI : Nonempty (n × n) := ⟨(i, j)⟩`. Take `⟨⟨a, b⟩, hmax⟩` from `Finite.exists_max (fun p : n × n => v (B p.1 p.2))`. Establish `hM : ∀ i j, v (B i j) ≤ v (B a b)` using `fun i j => hmax (i, j)`. Use `(hM i j).trans ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hlt`.
+
+Establish `hgt : 1 < v (B a b)` using `not_le.mp hlt`. Establish `hpos : 0 < v (B a b)` using `zero_lt_one.trans hgt`. Establish `hB : B = 1 - B * A`. Establish `: B + B * A = 1` using `by rw [← hBA, mul_add, mul_one]`. Conclude with `eq_sub_of_add_eq this`.
+
+Establish `hprod : v ((B * A) a b) ≤ v (B a b) * r`. Rewrite using `[Matrix.mul_apply]`. Use `Valuation.map_sum_le v fun l _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `mul_le_mul' (hM a l) (hA l b)`.
+
+Establish `hlt' : v (B a b) * r < v (B a b)`. Combine the equalities or inequalities in the displayed calculation. Conclude with `mul_lt_mul_of_pos_left hr hpos`. Use `_ = v (B a b) := mul_one _`. Establish `hone : v ((1 : Matrix n n k) a b) ≤ 1`.
+
+Distinguish the cases in `h : a = b`. Rewrite using `[h, Matrix.one_apply_eq, map_one]`. Rewrite using `[Matrix.one_apply_ne h, map_zero]`. Conclude with `zero_le_one`. Apply the tactic sequence `have hentry : B a b = (1 : Matrix n n k) a b - (B * A) a b := by conv_lhs => rw [hB]`.
+
+Both sides reduce to the same expression. Establish `hle : v (B a b) ≤ max (v ((1 : Matrix n n k) a b)) (v ((B * A) a b))`. Rewrite using `[hentry]`. Conclude with `Valuation.map_sub v _ _`. Break down `le_max_iff.mp hle with h | h` into its components or cases.
+
+Conclude with `absurd (h.trans hone) (not_le.mpr hgt)`. Conclude with `absurd (h.trans hprod) (not_le.mpr hlt')`.
+-/
 theorem inv_entry_le_one (v : Valuation k Γ) {r : Γ} (hr : r < 1)
     {A B : Matrix n n k} (hBA : B * (1 + A) = 1) (hA : ∀ i j, v (A i j) ≤ r) (i j : n) :
     v (B i j) ≤ 1 := by
@@ -98,6 +116,9 @@ def principalCongruence (v : Valuation k Γ) (r : Γ) (hr : r < 1) :
         ≤ 1 * r := mul_le_mul' (hint i l) (hg' l j)
       _ = r := one_mul r
 
+/- English proof (translation)
+Introduce `k _ _ _ _ N t _ ht`. Conclude with `⟨principalCongruence (ValuativeRel.valuation k) _ ht, rfl⟩`.
+-/
 theorem exists_principalCongruence :
     ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
       (N : ℕ) (t : k), t ≠ 0 → ValuativeRel.valuation k (t) < 1 →

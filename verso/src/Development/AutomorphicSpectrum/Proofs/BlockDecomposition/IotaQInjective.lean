@@ -21,8 +21,16 @@ def iotaQ : H1 F →ₗ[R] QC F :=
     rintro _ ⟨g, rfl⟩
     exact ⟨g, rfl⟩)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem iotaQ_mk (f : Z1 F) : iotaQ F (H1.mk F f) = Submodule.Quotient.mk f.1 := rfl
 
+/- English proof (translation)
+Rewrite using `[injective_iff_map_eq_zero]`. Introduce `c hc`. Take `⟨f, rfl⟩` from `H1.mk_surjective F c`. Rewrite `hc` using `[iotaQ_mk, Submodule.Quotient.mk_eq_zero]`. Take `⟨g, hg⟩` from `hc`.
+
+Conclude with `H1.mk_eq_zero.2 ⟨g, hg⟩`.
+-/
 theorem iotaQ_injective : Function.Injective (iotaQ F) := by
   rw [injective_iff_map_eq_zero]
   intro c hc
@@ -34,6 +42,9 @@ theorem iotaQ_injective : Function.Injective (iotaQ F) := by
 def crossB : H1 F →ₗ[R] H1 F →ₗ[R] H2 (box F) :=
   (cup (box F)).compl₁₂ (boxL F).pull1 (boxR F).pull1
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem crossB_apply (a b : H1 F) : crossB F a b = cup (box F) ((boxL F).pull1 a) ((boxR F).pull1 b) := rfl
 
 end Defs
@@ -42,9 +53,15 @@ section Wedge
 
 variable {R : Type} [CommRing R] (V : Type) [AddCommGroup V] [Module R V]
 
+/- English proof (translation)
+Apply the tactic sequence `funext i; fin_cases i <;> simp`.
+-/
 private theorem upd0 {X : Type} (a b c : X) : Function.update ![a, b] 0 c = ![c, b] := by
   funext i; fin_cases i <;> simp
 
+/- English proof (translation)
+Apply the tactic sequence `funext i; fin_cases i <;> simp`.
+-/
 private theorem upd1 {X : Type} (a b c : X) : Function.update ![a, b] 1 c = ![a, c] := by
   funext i; fin_cases i <;> simp
 
@@ -63,6 +80,9 @@ def wedgeT : V ⊗[R] V →ₗ[R] ⋀[R]^2 V :=
       have := (exteriorPower.ιMulti R (M := V) 2).map_update_smul ![a, b] 1 r b
       simpa only [upd0, upd1] using this))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem wedgeT_tmul (a b : V) : wedgeT (R := R) V (a ⊗ₜ b) = exteriorPower.ιMulti R 2 ![a, b] := rfl
 
 end Wedge

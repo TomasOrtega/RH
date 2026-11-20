@@ -31,6 +31,9 @@ abbrev pW (i : Fin D.R.m) (τ : D.what₂.Tau) : ℕ := ((Wc D i).sig (tauE D τ
 
 abbrev qW (i : Fin D.R.m) (τ : D.what₂.Tau) : ℕ := ((Wc D i).sig (tauE D τ)).2
 
+/- English proof (translation)
+The claim follows from `sig_sum _ (D.sp.W_sig _) _`.
+-/
 theorem pW_add_qW (i : Fin D.R.m) (τ : D.what₂.Tau) : pW i τ + qW i τ = (Wc D i).rank :=
   sig_sum _ (D.sp.W_sig _) _
 

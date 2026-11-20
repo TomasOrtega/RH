@@ -8,6 +8,9 @@ open Formalism.BasicNotions Formalism.MainNotions.GlobalTheoryTheory.GenusMassVo
 open scoped TensorProduct ENNReal
 open GlobalTheory.TamSU GlobalTheory.SUVol GlobalTheory.UCls GlobalTheory.AdLat GlobalTheory.Published GlobalTheory.TamUnf
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.TamUnf.exists_adelic_split_detOne | exact GlobalTheory.TamUnf.exists_adelic_split_detOne | (intros; apply GlobalTheory.TamUnf.exists_adelic_split_detOne <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.special_unitary_adelic_splitting : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (M : ℕ)
     (J : Matrix (Fin M) (Fin M) E),
     ∃ e : SUAdelic σ J ≃ₜ*

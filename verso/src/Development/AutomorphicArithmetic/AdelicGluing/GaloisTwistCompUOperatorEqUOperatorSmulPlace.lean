@@ -13,6 +13,13 @@ open GroundTheory.Global GroundTheory.Global.SemiLocal GroundTheory.Automorphic.
 open UpperTheory.ConvolutionTheory UpperTheory.ConvolutionTheory.GM
 open scoped ComplexConjugate
 
+/- English proof (translation)
+Establish `hc : W.topologicalClosure = W` using `hW.submodule_topologicalClosure_eq`. Establish `hc' : W'.topologicalClosure = W'` using `hW'.submodule_topologicalClosure_eq`. Establish `hm : ∀ v, v ∈ W.topologicalClosure ↔ v ∈ W` using `fun v => by rw [hc]`. Establish `hm' : ∀ v, v ∈ W'.topologicalClosure ↔ v ∈ W'` using `fun v => by rw [hc']`. Establish `a1 : prj W v ∈ W` using `(hm _).1 (Submodule.starProjection_apply_mem _ v)`.
+
+Use `symm`. Use `Submodule.eq_starProjection_of_mem_of_inner_eq_zero ((hm' _).2 ((hU _).2 a1)) fun u hu => ?_` and prove the remaining obligations. Establish `hu' : U.symm u ∈ W` using `(hU _).1 (by simpa using (hm' _).1 hu)`. Establish `e : u = U (U.symm u)` using `by simp`. Rewrite using `[e, ← map_sub, LinearIsometryEquiv.inner_map_map]`.
+
+Conclude with `Submodule.starProjection_inner_eq_zero v _ ((hm _).2 hu')`.
+-/
 private theorem prj_map {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
     (U : H ≃ₗᵢ[ℂ] H) (W W' : Submodule ℂ H) (hW : IsClosed (W : Set H)) (hW' : IsClosed (W' : Set H))
     (hU : ∀ v, U v ∈ W' ↔ v ∈ W) (v : H) : U (prj W v) = prj W' (U v) := by
@@ -28,12 +35,30 @@ private theorem prj_map {H : Type*} [NormedAddCommGroup H] [InnerProductSpace �
   rw [e, ← map_sub, LinearIsometryEquiv.inner_map_map]
   exact Submodule.starProjection_inner_eq_zero v _ ((hm _).2 hu')
 
+/- English proof (translation)
+Rewrite using `[QuotientGroup.eq, QuotientGroup.eq, hJ, map_mul, map_inv]`.
+-/
 private theorem mk_iff {G G' : Type} [Group G] [Group G'] (s : G ≃* G') (J : Subgroup G) (J' : Subgroup G')
     (hJ : ∀ g, g ∈ J ↔ s g ∈ J') (a b : G) :
     (QuotientGroup.mk (s a) : G' ⧸ J') = QuotientGroup.mk (s b) ↔
       (QuotientGroup.mk a : G ⧸ J) = QuotientGroup.mk b := by
   rw [QuotientGroup.eq, QuotientGroup.eq, hJ, map_mul, map_inv]
 
+/- English proof (translation)
+Set `S` to `{c : G ⧸ J | ∃ k ∈ J, c = QuotientGroup.mk (k * x)}`. Use `haveI : Fintype S := hS.fintype`. Establish `hout : ∀ c : S, (QuotientGroup.mk (c.1.out) : G ⧸ J) = c.1` using `fun c => QuotientGroup.out_eq' c.1`. Use `⟨S, inferInstance, fun c => c.1.out, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `a b h`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Establish `h' : (QuotientGroup.mk (a.1.out) : G ⧸ J) = QuotientGroup.mk (b.1.out)` using `h`. Rewrite `h'` using `[hout, hout]`. Then use the resulting hypothesis. Use extensionality with `c`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨i, rfl⟩`. Establish `: (QuotientGroup.mk (i.1.out) : G ⧸ J) ∈ S` using `by rw [hout]; exact i.2`. Conclude with `this`. Introduce `hc`. Conclude with `⟨⟨c, hc⟩, hout ⟨c, hc⟩⟩`.
+
+Introduce `a b h`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `h'` using `(mk_iff s J J' hJ _ _).1 h`. Rewrite `h'` using `[hout, hout]`. Then use the resulting hypothesis. Use extensionality with `c`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨i, rfl⟩`. Take `⟨k, hk, e⟩` from `i.2`. Use `⟨s k, (hJ k).1 hk, ?_⟩` and prove the remaining obligations. Establish `h1 : (QuotientGroup.mk (i.1.out) : G ⧸ J) = QuotientGroup.mk (k * x)` using `(hout i).trans e`.
+
+Establish `h2` using `(mk_iff s J J' hJ _ _).2 h1`. Rewrite `h2` using `[map_mul]`. Conclude with `h2`. Introduce and unpack `⟨k, hk, rfl⟩`. Establish `hk0 : s.symm k ∈ J` using `(hJ _).2 (by simpa using hk)`.
+
+Establish `hc : (QuotientGroup.mk (s.symm k * x) : G ⧸ J) ∈ S` using `⟨_, hk0, rfl⟩`. Use `⟨⟨_, hc⟩, ?_⟩` and prove the remaining obligations. Establish `h2` using `(mk_iff s J J' hJ _ _).2 (hout ⟨_, hc⟩)`. Rewrite `h2` using `[map_mul, MulEquiv.apply_symm_apply]`. Conclude with `h2`.
+-/
 private theorem cosets {G G' : Type} [Group G] [Group G'] (s : G ≃* G') (J : Subgroup G) (J' : Subgroup G')
     (hJ : ∀ g, g ∈ J ↔ s g ∈ J') (x : G)
     (hS : {c : G ⧸ J | ∃ k ∈ J, c = QuotientGroup.mk (k * x)}.Finite) :
@@ -80,6 +105,13 @@ private theorem cosets {G G' : Type} [Group G] [Group G'] (s : G ≃* G') (J : S
       rw [map_mul, MulEquiv.apply_symm_apply] at h2
       exact h2
 
+/- English proof (translation)
+Establish `key : ∀ k : G, (QuotientGroup.mk (k * (a * x * b)) : G ⧸ J) = QuotientGroup.mk (k * a * x)` using `fun k => by`. Rewrite using `[QuotientGroup.eq]`. Establish `e : (k * (a * x * b))⁻¹ * (k * a * x) = b⁻¹` using `by group`. Rewrite using `[e]`. Conclude with `J.inv_mem hb`.
+
+Use extensionality with `c`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨k, hk, rfl⟩`. Conclude with `⟨k * a, J.mul_mem hk ha, key k⟩`. Introduce and unpack `⟨k, hk, rfl⟩`.
+
+Use `⟨k * a⁻¹, J.mul_mem hk (J.inv_mem ha), ?_⟩` and prove the remaining obligations. Rewrite using `[key]`. Simplify using the standard rewrite rules.
+-/
 private theorem cosets_eq {G : Type} [Group G] (J : Subgroup G) (a b x : G) (ha : a ∈ J) (hb : b ∈ J) :
     {c : G ⧸ J | ∃ k ∈ J, c = QuotientGroup.mk (k * (a * x * b))} =
       {c | ∃ k ∈ J, c = QuotientGroup.mk (k * x)} := by
@@ -97,6 +129,11 @@ private theorem cosets_eq {G : Type} [Group G] (J : Subgroup G) (a b x : G) (ha 
     rw [key]
     simp
 
+/- English proof (translation)
+Unfold `fixL`. Rewrite using `[(UpperTheory.ConvolutionTheory.Tf.commPrj K n μ (J.map (AdelicGLn.localEmbedding w))).2.1]`. Prove the components needed by the constructor for the conclusion. Conclude with `fun h k hk => h _ (Subgroup.mem_map_of_mem _ hk)`. Introduce and unpack `h _ ⟨k, hk, rfl⟩`.
+
+Conclude with `h k hk`.
+-/
 private theorem fixL_iff {K : Type} [Field K] [NumberField K] {n : ℕ} (μ : Measure (normOneGL K n)) [μ.IsHaarMeasure]
     (w : Pl K) (J : Subgroup (GL (Fin n) (w.adicCompletion K))) (v : LL μ) :
     v ∈ fixL μ w J ↔ ∀ k ∈ J, rhoL μ w k v = v := by
@@ -107,6 +144,23 @@ private theorem fixL_iff {K : Type} [Field K] [NumberField K] {n : ℕ} (μ : Me
   · rintro h _ ⟨k, hk, rfl⟩
     exact h k hk
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ σ n hn μ _ θ hθ w ν`. Take `⟨s, hs1, hs2, hs3⟩` from `UpperTheory.exists_galois_transport_localGL_preserving_iwahori F E σ n hn w`. Take `⟨U, hU, hint, -⟩` from `UpperTheory.ConvolutionTheory.C.twistUnitary E n μ θ`. Establish `hO` using `GLnLocal.isOpen_iwahori (w.adicCompletion E) n`. Establish `hC` using `GLnLocal.isCompact_iwahori (w.adicCompletion E) n`.
+
+Establish `hO'` using `GLnLocal.isOpen_iwahori ((σ • w).adicCompletion E) n`. Establish `hC'` using `GLnLocal.isCompact_iwahori ((σ • w).adicCompletion E) n`. Establish `hrho : ∀ g v, U (rhoL μ w g v) = rhoL μ (σ • w) (s g) (U v)` using `fun g v => by`. Establish `e` using `UpperTheory.galTwist_finProj_eq_of_galAd_finEmb_eq F E σ n hn μ θ hθ _ _ (hs1 g)`. Use `show U (rightRegularRep (rationalGLOne E n) μ (MultiplicityOne.finProj E n (AdelicGLn.localEmbedding w g)) v) = rightRegularRep (rationalGLOne E n) μ (MultiplicityOne.finProj E n (AdelicGLn.localEmbedding (σ • w) (s g))) (U v)`.
+
+Rewrite using `[hint, e]`. Establish `hfx : ∀ v, U v ∈ fixL μ (σ • w) (GLnLocal.iwahori ((σ • w).adicCompletion E) n) ↔ v ∈ fixL μ w (GLnLocal.iwahori (w.adicCompletion E) n)` using `fun v => by`. Rewrite using `[fixL_iff, fixL_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h k hk`.
+
+Apply `U.injective` to reduce the goal to its premises. Rewrite using `[hrho]`. Conclude with `h _ ((hs2 k).1 hk)`. Introduce `h k' hk'`. Establish `e : k' = s (s.symm k')` using `by simp`.
+
+Rewrite using `[e, ← hrho, h _ ((hs2 _).2 (by simpa using hk'))]`. Establish `hP : ∀ v, U (prj (fixL μ w (GLnLocal.iwahori (w.adicCompletion E) n)) v) = prj (fixL μ (σ • w) (GLnLocal.iwahori ((σ • w).adicCompletion E) n)) (U v)` using `prj_map U _ _ (UpperTheory.ConvolutionTheory.Tf.commPrj E n μ _).1 (UpperTheory.ConvolutionTheory.Tf.commPrj E n μ _).1 hfx`. Take `⟨hf, -, hHP, hsum, -, -⟩` from `UpperTheory.ConvolutionTheory.Tf.hopBasic E n μ w _ (Cartan.diagPow (w.adicCompletion E) n ν) hO hC`. Take `⟨-, -, hHP', hsum', -, -⟩` from `UpperTheory.ConvolutionTheory.Tf.hopBasic E n μ (σ • w) _ (s (Cartan.diagPow (w.adicCompletion E) n ν)) hO' hC'`. Take `⟨ι, _, y, i1, r1, i2, r2⟩` from `cosets s _ _ hs2 _ hf`.
+
+Establish `hmain : ∀ v ∈ fixL μ w (GLnLocal.iwahori (w.adicCompletion E) n), U (Hop μ w (GLnLocal.iwahori (w.adicCompletion E) n) (Cartan.diagPow (w.adicCompletion E) n ν) v) = Hop μ (σ • w) (GLnLocal.iwahori ((σ • w).adicCompletion E) n) (s (Cartan.diagPow (w.adicCompletion E) n ν)) (U v)` using `fun v hv => by`. Rewrite using `[hsum ι y i1 r1 v hv, hsum' ι (fun i => s (y i)) i2 r2 (U v) ((hfx v).2 hv), map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => hrho _ _`. Take `⟨a, ha, b, hb, hab⟩` from `hs3 ν`. Establish `hH : Hop μ (σ • w) (GLnLocal.iwahori ((σ • w).adicCompletion E) n) (s (Cartan.diagPow (w.adicCompletion E) n ν)) = Uiw μ (σ • w) ν`.
+
+Unfold `Uiw Hop`. Rewrite using `[hab, cosets_eq _ a b _ ha hb]`. Rewrite using `[← hU, ← hH]`. Use `ContinuousLinearMap.ext fun v => ?_` and prove the remaining obligations. Establish `e1` using `DFunLike.congr_fun hHP v`.
+
+Establish `e2` using `DFunLike.congr_fun hHP' (U v)`. Simplify using `only [ContinuousLinearMap.comp_apply] at e1 e2`. Establish `hm : prj (fixL μ w (GLnLocal.iwahori (w.adicCompletion E) n)) v ∈ fixL μ w (GLnLocal.iwahori (w.adicCompletion E) n)` using `(UpperTheory.ConvolutionTheory.Tf.commPrj E n μ _).2.2.1 v`. Use `show U (Hop μ w (GLnLocal.iwahori (w.adicCompletion E) n) (Cartan.diagPow (w.adicCompletion E) n ν) v) = Hop μ (σ • w) (GLnLocal.iwahori ((σ • w).adicCompletion E) n) (s (Cartan.diagPow (w.adicCompletion E) n ν)) (U v)`. Rewrite using `[← e1, hmain _ hm, hP, e2]`.
+-/
 theorem UpperTheory.galoisTwist_comp_uOperator_eq_uOperator_smul_place :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsGalois F E] (σ : E ≃ₐ[F] E) (n : ℕ), 0 < n →
           ∀ (μ : Measure (normOneGL E n)) [μ.IsHaarMeasure] (θ : Twist μ), IsGalTwist σ θ → ∀ (w : Pl E) (ν : Fin n → ℤ),

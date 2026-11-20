@@ -7,6 +7,9 @@ namespace Formalism.MainNotions.G.ChF
 open Formalism.BasicNotions Formalism.MainNotions.G Formalism.L2.Forms NumberField IsDedekindDomain Matrix Formalism.UG Formalism.L2.G.Cmp Formalism.L2.G Formalism.L2.G.RelativeIndexFlags
 open scoped TensorProduct
 
+/- English proof (translation)
+Rewrite using `[Matrix.det_apply]`. Use `Subring.sum_mem _ fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[Units.smul_def]`. Conclude with `zsmul_mem (Subring.prod_mem _ fun a _ => h _ _) _`.
+-/
 theorem det_mem_sub {K : Type} [CommRing K] (O : Subring K) {n : ℕ} (A : Matrix (Fin n) (Fin n) K) (h : ∀ a b, A a b ∈ O) :
     A.det ∈ O := by
   rw [Matrix.det_apply]
@@ -24,16 +27,31 @@ def unitsOf {K : Type} [CommRing K] (O : Subring K) : Subgroup Kˣ where
     rintro a ⟨ha, ha'⟩
     exact ⟨ha', by rw [inv_inv]; exact ha⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨det_mem_sub O _ h, by rw [← map_inv]; exact det_mem_sub O _ h'⟩`.
+-/
 theorem det_mem_unitsOf {K : Type} [CommRing K] (O : Subring K) {n : ℕ} (g : GL (Fin n) K)
     (h : ∀ a b, (g : Matrix (Fin n) (Fin n) K) a b ∈ O) (h' : ∀ a b, ((g⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) a b ∈ O) :
     Matrix.GeneralLinearGroup.det g ∈ unitsOf O :=
   ⟨det_mem_sub O _ h, by rw [← map_inv]; exact det_mem_sub O _ h'⟩
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Conclude with `(RingHom.map_det φ (g : Matrix (Fin n) (Fin n) A)).symm`.
+-/
 theorem det_bc {A B : Type} [CommRing A] [CommRing B] (φ : A →+* B) {n : ℕ} (g : GL (Fin n) A) :
     Matrix.GeneralLinearGroup.det (bc φ g) = Units.map φ.toMonoidHom (Matrix.GeneralLinearGroup.det g) := by
   apply Units.ext
   exact (RingHom.map_det φ (g : Matrix (Fin n) (Fin n) A)).symm
 
+/- English proof (translation)
+Establish `hk : dk ∈ U`. Establish `e0 : dB'⁻¹ * (Y * dk) * dB = dB'⁻¹ * Y * dB * dk` using `by ac_rfl`. Establish `e : dk = (dB'⁻¹ * Y * dB)⁻¹ * (dB'⁻¹ * (Y * dk) * dB)`. Rewrite using `[e0, inv_mul_cancel_left]`. Rewrite using `[e]`.
+
+Conclude with `U.mul_mem (U.inv_mem h1) h2`. Establish `hY : Y ^ k = dg * dk`. Rewrite `h` using `[pow_add, mul_comm dg, mul_assoc]`. Conclude with `mul_left_cancel h`. Establish `e : (dB' * dB⁻¹) ^ k * dg⁻¹ = ((dB'⁻¹ * Y * dB) ^ k)⁻¹ * dk`.
+
+Establish `e1 : dB'⁻¹ * Y * dB = (dB' * dB⁻¹)⁻¹ * Y`. Rewrite using `[mul_inv, inv_inv]`. The two sides agree by associativity and commutativity. Take `⟨Z, hZ⟩ : ∃ Z, Z = dB' * dB⁻¹` from `⟨_, rfl⟩`. Rewrite `e1`, the goal using `[← hZ]`.
+
+Rewrite using `[e1, mul_pow, inv_pow, hY]`. Generalize the expression as in `Z ^ k = z`. Rewrite using `[mul_inv, inv_inv, mul_inv, mul_assoc, mul_assoc, inv_mul_cancel, mul_one]`. Rewrite using `[e]`. Conclude with `U.mul_mem (U.inv_mem (U.pow_mem h1 k)) hk`.
+-/
 theorem quot_calc {Q : Type} [CommGroup Q] (U : Subgroup Q) (Y dB dB' dg dk : Q) (b k : ℕ)
     (h1 : dB'⁻¹ * Y * dB ∈ U) (h2 : dB'⁻¹ * (Y * dk) * dB ∈ U) (h : Y ^ (b + k) = dg * Y ^ b * dk) :
     (dB' * dB⁻¹) ^ k * dg⁻¹ ∈ U := by
@@ -68,6 +86,15 @@ def epsU (B B' γ : GL (Fin n) E) (k : ℕ) : Eˣ :=
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Establish `key : ∀ κ' : S.U, (Matrix.GeneralLinearGroup.det (bc (A.phE v) B'))⁻¹ * Matrix.GeneralLinearGroup.det (bc (A.ph v) (bc (prV (E` using `E) (A.pl v).1) (y.1 * κ'.1))) * Matrix.GeneralLinearGroup.det (bc (A.phE v) A.B) ∈ unitsOf ((A.pl v).1.adicCompletionIntegers F).toSubring := by`. Introduce `κ'`. Take `⟨h1, h2⟩` from `int_of_move (A.pl v).1 (A.spl v) (halg v) A.B B' (hb v) (bc (prV (E := E) (A.pl v).1) (y.1 * κ'.1)) ((loc_facts S (A.pl v).1 hp (A.pl v).2 hT Lc y hy hle B' hB').2 κ')`. Establish `h3` using `det_mem_unitsOf ((A.pl v).1.adicCompletionIntegers F).toSubring ((bc (A.phE v) B')⁻¹ * bc (A.ph v) (bc (prV (E := E) (A.pl v).1) (y.1 * κ'.1)) * bc (A.phE v) A.B) h1 (by`. Establish `e : ((bc (A.phE v) B')⁻¹ * bc (A.ph v) (bc (prV (E` using `E) (A.pl v).1) (y.1 * κ'.1)) * bc (A.phE v) A.B)⁻¹ = (bc (A.phE v) A.B)⁻¹ * (bc (A.ph v) (bc (prV (E := E) (A.pl v).1) (y.1 * κ'.1)))⁻¹ * bc (A.phE v) B' := by group`.
+
+Rewrite using `[e]`. Conclude with `h2)`. Rewrite `h3` using `[map_mul, map_mul, map_inv]`. Then use the resulting hypothesis. Establish `k1` using `key 1`. Establish `k2` using `key κ`.
+
+Rewrite `k1` using `[show ((1 : S.U) : GL (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) = 1 from rfl, mul_one]`. Rewrite `k2` using `[map_mul, map_mul, map_mul]`. Establish `h'` using `congrArg (fun z => Matrix.GeneralLinearGroup.det (bc (A.ph v) (bc (prV (E := E) (A.pl v).1) z))) h`. Simplify using `only [map_mul, map_pow, bc_ph_incl] at h'`. Use `quot_calc _ _ _ _ _ _ b k k1 k2 h'` as an intermediate fact.
+
+Rewrite `this` using `[det_bc, det_bc, det_bc]`. Rewrite using `[epsU, map_mul, map_pow, map_mul, map_inv, map_inv]`. Conclude with `this`.
+-/
 theorem epsU_ph (S : StepLevel F E σ J T f bad) (A : LocAt F E n G) (hp : p.Prime) (hT : ¬ p ∣ T)
     (halg : ∀ v (a : (A.pl v).1.adicCompletion F), A.spl v ((1 : E) ⊗ₜ[F] a) = (a, a))
     (hb : ∀ v (t : Fin n → (A.pl v).1.adicCompletion F),

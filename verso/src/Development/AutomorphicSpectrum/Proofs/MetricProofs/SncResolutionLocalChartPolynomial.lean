@@ -9,6 +9,13 @@ namespace GlobalTheory.CompanionTheory.Ar.Cmp.SncRes.ChartInv
 
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
+/- English proof (translation)
+Simplify using `only [SncRes.proj]`. Prove the components needed by the constructor for the conclusion. Introduce `h h0`. Apply `h` to reduce the goal to its premises. Simplify using `[h0]`.
+
+Introduce `h`. Establish `hn : (0 : ℝ) < ‖z ⟨k, i⟩‖` using `norm_pos_iff.2 h`. Establish `hpos : (0 : ℝ) < ∑ j, ‖z ⟨k, j⟩‖ ^ 2`. Use `lt_of_lt_of_le (pow_pos hn 2) ?_` and prove the remaining obligations. Conclude with `Finset.single_le_sum (f := fun j => ‖z ⟨k, j⟩‖ ^ 2) (fun j _ => by positivity) (Finset.mem_univ i)`.
+
+Establish `hden : ((∑ j, ‖z ⟨k, j⟩‖ ^ 2 : ℝ) : ℂ) ≠ 0`. Conclude with `hpos.ne'` after adjusting the coercions. Conclude with `div_ne_zero (mul_ne_zero h ((map_ne_zero _).2 h)) hden`.
+-/
 theorem proj_diag_ne_zero_iff (z : (Σ k, ι k) → ℂ) (k : K) (i : ι k) :
     SncRes.proj z ⟨k, (i, i)⟩ ≠ 0 ↔ z ⟨k, i⟩ ≠ 0 := by
   simp only [SncRes.proj]
@@ -26,6 +33,11 @@ theorem proj_diag_ne_zero_iff (z : (Σ k, ι k) → ℂ) (k : K) (i : ι k) :
       exact_mod_cast hpos.ne'
     exact div_ne_zero (mul_ne_zero h ((map_ne_zero _).2 h)) hden
 
+/- English proof (translation)
+Establish `h : SncRes.src P p = ⋂ k, {x : SncRes.Pts P | x.1 ⟨k, (p k, p k)⟩ ≠ 0}`. Use extensionality with `x`. Simplify using `only [SncRes.src, Set.mem_setOf_eq, Set.mem_iInter]`. Use `forall_congr' fun k => ?_` and prove the remaining obligations. Rewrite using `[← SncRes.proj_rep x]`.
+
+Conclude with `(proj_diag_ne_zero_iff _ k (p k)).symm`. Rewrite using `[h]`. Use `isOpen_iInter_of_finite fun k => ?_` and prove the remaining obligations. Establish `hc : Continuous fun x : SncRes.Pts P => x.1 ⟨k, (p k, p k)⟩` using `(continuous_apply _).comp continuous_subtype_val`. Conclude with `isOpen_ne_fun hc continuous_const`.
+-/
 theorem isOpen_alt_bis (P : Ideal (MvPolynomial (Σ k, ι k) ℂ)) (p : (k : K) → ι k) :
     IsOpen (SncRes.src P p) := by
   have h : SncRes.src P p = ⋂ k, {x : SncRes.Pts P | x.1 ⟨k, (p k, p k)⟩ ≠ 0} := by
@@ -40,6 +52,23 @@ theorem isOpen_alt_bis (P : Ideal (MvPolynomial (Σ k, ι k) ℂ)) (p : (k : K) 
     (continuous_apply _).comp continuous_subtype_val
   exact isOpen_ne_fun hc continuous_const
 
+/- English proof (translation)
+Introduce `K _ ι _ P _ p x hx p' hp'`. Establish `key : ∀ y ∈ SncRes.src P p, ((∀ k, eval (SncRes.coord P p y) (SncRes.lift p ⟨k, p' k⟩) ≠ 0) ↔ y ∈ SncRes.src P p')`. Introduce `y hy`. Simplify using `only [SncRes.eval_lift p y hy, ReciprocityTheory.AnForm.R.affCoord]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h k h0`. Conclude with `h k (by simp [h0])`. Introduce `h k`. Conclude with `div_ne_zero (h k) (hy k)`. Use `⟨SncRes.src P p ∩ SncRes.src P p', (isOpen_alt_bis P p).inter (isOpen_alt_bis P p'), ⟨hx, (key x hx).1 hp'⟩, Set.inter_subset_left, ∏ k, X ⟨k, p k⟩, fun l => X ((Fintype.equivFin (Σ k, ι k)).symm l) * ∏ k ∈ Finset.univ.erase ((Fintype.equivFin (Σ k, ι k)).symm l).1, X ⟨k, p k⟩, ? …` and prove the remaining obligations.
+
+Introduce and unpack `y ⟨hy, hy'⟩`. Establish `hw : (fun q => eval (SncRes.coord P p y) (SncRes.lift p q)) = ReciprocityTheory.AnForm.R.affCoord p (SncRes.rep y)` using `funext (SncRes.eval_lift p y hy)`. Simplify using `only [hw]`. Establish `hone : ∀ k, ReciprocityTheory.AnForm.R.affCoord p (SncRes.rep y) ⟨k, p k⟩ = 1` using `fun k => by`. Simplify using `[ReciprocityTheory.AnForm.R.affCoord, hy k]`.
+
+Establish `hne : ∀ k, ReciprocityTheory.AnForm.R.affCoord p (SncRes.rep y) ⟨k, p' k⟩ ≠ 0` using `fun k => div_ne_zero (hy' k) (hy k)`. Establish `ha : ∀ k, ReciprocityTheory.AnForm.R.affCoord p' (ReciprocityTheory.AnForm.R.affCoord p (SncRes.rep y)) ⟨k, p k⟩ ≠ 0`. Introduce `k`. Establish `: ReciprocityTheory.AnForm.R.affCoord p' (ReciprocityTheory.AnForm.R.affCoord p (SncRes.rep y)) ⟨k, p k⟩ = 1 / ReciprocityTheory.AnForm.R.affCoord p (SncRes.rep y) ⟨k, p' k⟩`. Rewrite using `[← hone k]`.
+
+Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `div_ne_zero one_ne_zero (hne k)`. Use `⟨(key y hy).2 hy', ?_, fun l => ?_⟩` and prove the remaining obligations. Rewrite using `[map_prod]`.
+
+Simplify using `only [eval_X]`. Conclude with `Finset.prod_ne_zero_iff.2 fun k _ => ha k`. Use `set q := (Fintype.equivFin (Σ k, ι k)).symm l with hq`. Establish `hcoord : SncRes.coord P p y l = ReciprocityTheory.AnForm.R.affCoord p (SncRes.rep y) q` using `rfl`. Rewrite using `[map_mul, map_prod, map_prod, hcoord]`.
+
+Simplify using `only [eval_X]`. Rewrite using `[← Finset.mul_prod_erase Finset.univ (fun k => ReciprocityTheory.AnForm.R.affCoord p' (ReciprocityTheory.AnForm.R.affCoord p (SncRes.rep y)) ⟨k, p k⟩) (Finset.mem_univ q.1), ← mul_assoc]`. Use `congr 1`. Establish `h1 : ReciprocityTheory.AnForm.R.affCoord p' (ReciprocityTheory.AnForm.R.affCoord p (SncRes.rep y)) ⟨q.1, p q.1⟩ = 1 / ReciprocityTheory.AnForm.R.affCoord p (SncRes.rep y) ⟨q.1, p' q.1⟩`. Rewrite using `[← hone q.1]`.
+
+Both sides reduce to the same expression. Establish `h2 : ReciprocityTheory.AnForm.R.affCoord p' (ReciprocityTheory.AnForm.R.affCoord p (SncRes.rep y)) q = ReciprocityTheory.AnForm.R.affCoord p (SncRes.rep y) q / ReciprocityTheory.AnForm.R.affCoord p (SncRes.rep y) ⟨q.1, p' q.1⟩` using `rfl`. Rewrite using `[h1, h2, mul_one_div]`.
+-/
 theorem chart_coord_ratio : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (P : Ideal (MvPolynomial (Σ k, ι k) ℂ)), ReciprocityTheory.AnForm.R.IsMultiHomogIdeal P → ∀ p : (k : K) → ι k, ∀ x ∈ SncRes.src P p, ∀ p' : (k : K) → ι k, (∀ k, eval (SncRes.coord P p x) (SncRes.lift p ⟨k, p' k⟩) ≠ 0) → ∃ O : Set (SncRes.Pts P), IsOpen O ∧ x ∈ O ∧ O ⊆ SncRes.src P p ∧ ∃ (q : MvPolynomial (Σ k, ι k) ℂ) (F : Fin (Fintype.card (Σ k, ι k)) → MvPolynomial (Σ k, ι k) ℂ), ∀ y ∈ O, (∀ k, eval (SncRes.coord P p y) (SncRes.lift p ⟨k, p' k⟩) ≠ 0) ∧ eval (ReciprocityTheory.AnForm.R.affCoord p' fun q => eval (SncRes.coord P p y) (SncRes.lift p q)) q ≠ 0 ∧ ∀ l, SncRes.coord P p y l * eval (ReciprocityTheory.AnForm.R.affCoord p' fun q => eval (SncRes.coord P p y) (SncRes.lift p q)) q = eval (ReciprocityTheory.AnForm.R.affCoord p' fun q => eval (SncRes.coord P p y) (SncRes.lift p q)) (F l) := by
   intro K _ ι _ P _ p x hx p' hp'
   classical

@@ -15,11 +15,17 @@ section Identity
 
 variable {A B : Rep.{u} k G} [IsDiscreteRep A] [IsDiscreteRep B]
 
+/- English proof (translation)
+Use extensionality with `n x : 3`. Both sides reduce to the same expression.
+-/
 theorem cochainsMapAlong_id_eq_cochainsMap (f : A ⟶ B) :
     cochainsMapAlong (MonoidHom.id G) continuous_id f = cochainsMap f := by
   ext n x : 3
   rfl
 
+/- English proof (translation)
+Rewrite using `[cohomologyMapAlong, cochainsMapAlong_id_eq_cochainsMap]`. Both sides reduce to the same expression.
+-/
 theorem cohomologyMapAlong_id_eq_cohomologyMap (f : A ⟶ B) (n : ℕ) :
     cohomologyMapAlong (MonoidHom.id G) continuous_id f n = cohomologyMap f n := by
   rw [cohomologyMapAlong, cochainsMapAlong_id_eq_cochainsMap]
@@ -39,6 +45,9 @@ section Restriction
 variable (A : Rep.{u} k G) [IsDiscreteRep A]
 
 @[reassoc]
+/- English proof (translation)
+Rewrite using `[← cohomologyMapAlong_id_eq_cohomologyMap, ← cohomologyMapAlong_id_eq_cohomologyMap]`. Conclude with `cohomologyRes_naturality A g S n`. Use the proof step `@[reassoc]`.
+-/
 theorem cohomologyMap_comp_cohomologyRes {A' : Rep.{u} k G} [IsDiscreteRep A'] (g : A ⟶ A')
     (S : Subgroup G) (n : ℕ) :
     cohomologyMap g n ≫ cohomologyRes A' S n =
@@ -47,6 +56,9 @@ theorem cohomologyMap_comp_cohomologyRes {A' : Rep.{u} k G} [IsDiscreteRep A'] (
   exact cohomologyRes_naturality A g S n
 
 @[reassoc]
+/- English proof (translation)
+The claim follows from `cohomologyRes_comp_homologyMap_cochainsComplexι A S n`.
+-/
 theorem cohomologyRes_comp_cohomologyToGroupCohomology (S : Subgroup G) (n : ℕ) :
     cohomologyRes A S n ≫ cohomologyToGroupCohomology (Rep.res S.subtype A) n =
       cohomologyToGroupCohomology A n ≫ groupCohomology.map S.subtype (𝟙 _) n :=
@@ -63,6 +75,9 @@ instance isDiscreteRep_quotientToInvariantsFunctor_obj :
   isDiscreteRep_quotientToInvariants_of_normal A N
 
 @[reassoc]
+/- English proof (translation)
+The claim follows from `cohomologyInfl_comp_homologyMap_cochainsComplexι A N n`.
+-/
 theorem cohomologyInfl_comp_cohomologyToGroupCohomology (n : ℕ) :
     cohomologyInfl A N n ≫ cohomologyToGroupCohomology A n =
       cohomologyToGroupCohomology (A.quotientToInvariants N) n ≫

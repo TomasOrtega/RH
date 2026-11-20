@@ -29,6 +29,11 @@ namespace GlobalTheory.FrameRead
 
 open Formalism.IndefR.Bridge
 
+/- English proof (translation)
+Establish `hx : x ∈ Submodule.span ℂ (Set.range v)` using `hv ▸ Submodule.mem_top`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨i, rfl⟩` from `hx`. Conclude with `h i`.
+
+Consider the case `zero => simp only [map_zero]`. Consider the case `add x y _ _ hx hy => simp only [map_add, hx, hy]`. Consider the case `smul a x _ hx => simp only [map_smul, hs, hx]`.
+-/
 theorem avatar_comm {C W M I : Type} [Field C] [AddCommGroup W] [Module ℂ W] [AddCommGroup M] [Module C M] (io : C ≃+* ℂ)
     (θ : W →+ M) (hs : ∀ (a : ℂ) w, θ (a • w) = io.symm a • θ w) (A : Module.End ℂ W) (B : Module.End C M) (v : I → W)
     (hv : Submodule.span ℂ (Set.range v) = ⊤) (h : ∀ i, θ (A (v i)) = B (θ (v i))) (x : W) : θ (A x) = B (θ x) := by
@@ -41,6 +46,51 @@ theorem avatar_comm {C W M I : Type} [Field C] [AddCommGroup W] [Module ℂ W] [
   | add x y _ _ hx hy => simp only [map_add, hx, hy]
   | smul a x _ hx => simp only [map_smul, hs, hx]
 
+/- English proof (translation)
+Take `⟨Φ, hΦ, hli⟩` from `GlobalTheory.T.exists_dualWeylTensor_lift_coefficientSpace _ _ e0 _ _ lam lamW cs hS`. Take `⟨θ, hs, hθ, hθi⟩` from `exists_avatar io hio (bVV K lam) c0 hc1 hc2 Φ hli`. Establish `heq` using `GlobalTheory.T.dualWeylTensorLift_equivariant _ _ e0 _ _ lam lamW cs Φ hS hΦ`. Set `Λ0` to `lamG (PadicAlgCl l) n lamW cs`. Set `Λ : G →* Module.End (PadicAlgCl l) (NablaT (PadicAlgCl l) n lamW)` to `Λ0.comp m`.
+
+Establish `hΛ : ∀ γ x, θ (ρ γ x) = Λ (ι γ) (θ x)`. Introduce `γ x`. Take `⟨γE, hγ, hE⟩` from `hrat γ`. Use `avatar_comm io θ hs _ _ _ hc2 (fun i => ?_) x` and prove the remaining obligations. Rewrite using `[← hγ, hθ, hθ]`.
+
+Use `(heq (embGL lab γE) _).trans ?_` and prove the remaining obligations. Use `show Λ0 _ _ = Λ0 (m (ι γ)) _`. Rewrite using `[hE]`. Both sides reduce to the same expression. Take `⟨rd, h1, h2, h3, h4, h5⟩` from `exists_reading P io hio θ hs hθi Λ hΛ`.
+
+Establish `hanti : ∀ τ, Antitone (res n (lamW τ))` using `fun τ a b hab => by`. Use `(lam τ).anti hab` as an intermediate fact. Establish `ha` using `hS τ a`. Establish `hb` using `hS τ b`. Use `show lamW τ b ≤ lamW τ a`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hstab` using `GlobalTheory.T.unimodular_matrices_preserve_frame_lattices l _ n lamW cs F hinj hanti`. Establish `hlw : ((l : ℕ) : 𝓞 K) ∈ w.asIdeal`. Rewrite using `[hw]`. Establish `: e0 (((l : ℕ) : 𝓞 K) : K) = algebraMap ℚ_[l] (PadicAlgCl l) l` using `by simp`.
+
+Rewrite using `[this, PadicAlgCl.norm_extends]`. Conclude with `Padic.norm_p_lt_one`. Establish `hmulL : ∀ A B : GL (Fin n) (PadicAlgCl l), (∀ a b, A.val a b ∈ Lf) → (∀ a b, B.val a b ∈ Lf) → ∀ a b, (A * B).val a b ∈ Lf` using `fun A B hA hB a b => by`. Rewrite using `[Units.val_mul, Matrix.mul_apply]`. Conclude with `sum_mem fun x _ => mul_mem (hA _ _) (hB _ _)`.
+
+Establish `key : ∀ (c : S.Cl), ∃ (B : T → GL (Fin n) K) (u : T → GL (Fin n) (PadicAlgCl l)), (∀ τ, Submodule.IsLattice K (dualFr (tauLat lab τ (Lat c)))) ∧ (∀ τ, IsBasisAt w (dualFr (tauLat lab τ (Lat c))) (B τ)) ∧ (∀ τ a b, (u τ).val a b ∈ Set.range F.emb ∧ (u τ)⁻¹.val a b ∈ Set.range F.em …`. Introduce `c`. Establish `hb` using `fun τ => GlobalTheory.T.localBasis_dualBasis_embeddedLattice _ _ _ _ lab τ w l Fact.out hlw _ (hlat c)`. Break down `isEmpty_or_nonempty T with hE | ⟨⟨τ0⟩⟩` into its components or cases. Use `⟨1, 1, fun τ => hE.elim τ, fun τ => hE.elim τ, fun τ => hE.elim τ, fun v => ?_⟩` and prove the remaining obligations.
+
+Establish `: m (P.y c)⁻¹ = 1` using `Subsingleton.elim _ _`. Use `show Λ0 (m (P.y c)⁻¹) _ = _`. Rewrite using `[this, inv_one, map_one (rhoK lam)]`. Both sides reduce to the same expression. Take `⟨B, hB⟩` from `(hb τ0).1`.
+
+Use `⟨invTrK (embGL lab B), (m (P.y c))⁻¹ * fun τ => Matrix.GeneralLinearGroup.map (e0.comp (lab τ)) B, fun τ => (hb τ).2.1, fun τ => (hb τ).2.2 B hB, fun τ a b => ⟨(hF _).2 ⟨?_, ?_⟩, (hF _).2 ⟨?_, ?_⟩⟩, fun v => ?_⟩` and prove the remaining obligations. Use `hmulL _ _ (fun a b => ?_) (fun a b => hL _) a b` and prove the remaining obligations. Rewrite using `[← map_inv]`. Conclude with `hmL _ τ a b`. Conclude with `(hint c B hB τ a b).1`.
+
+Rewrite using `[Pi.mul_apply, mul_inv_rev, Pi.inv_apply, inv_inv, ← map_inv]`. Conclude with `hmulL _ _ (fun a b => hL _) (hmL _ τ) a b`. Rewrite using `[Pi.mul_apply, mul_inv_rev, Pi.inv_apply, inv_inv]`. Conclude with `(hint c B hB τ a b).2`. Rewrite using `[← map_inv invTrK, ← map_inv (embGL lab), heq] show Λ0 (m (P.y c)⁻¹) _ = (Λ0 _ * Λ0 _) _`.
+
+Rewrite using `[← map_mul Λ0, map_inv m, mul_assoc]`. Establish `: ((fun τ => Matrix.GeneralLinearGroup.map (e0.comp (lab τ)) B) * fun τ => Matrix.GeneralLinearGroup.map e0 (embGL lab B⁻¹ τ)) = 1`. Use function extensionality and compare the values at `τ`. Use `show Matrix.GeneralLinearGroup.map (e0.comp (lab τ)) B * Matrix.GeneralLinearGroup.map (e0.comp (lab τ)) B⁻¹ = 1`. Rewrite using `[← map_mul, mul_inv_cancel, map_one]`.
+
+Rewrite using `[this, mul_one]`. Establish `hrange : ∀ x : K, ‖e0 x‖ ≤ 1 → e0 x ∈ Set.range F.emb` using `fun x hx => (hF _).2 ⟨hL x, hx⟩`. Use `⟨rd, h1, h2, h3, fun f f' A hA hA1 => h4 f f' A hA fun a ha => ?_, fun f hf g => ?_, fun f hf => ?_⟩` and prove the remaining obligations. Use `show Λ0 (m a) = 1`. Rewrite using `[hA1 a ha, map_one]`.
+
+Establish `hy : ∀ c, rd f (P.y c) ∈ F.latN lamW` using `fun c => by`. Take `⟨B, u, -, hB, hu, hv⟩` from `key c`. Rewrite using `[h5, hce, hθ, hv]`. Use `(hstab u hu _).1 (GlobalTheory.T.isPhi_mem_latN_of_frame_injective_shift _ l w e0 _ _ lam lamW _ F Φ hw hinj hrange hS hΦ _ ?_)` and prove the remaining obligations. Establish `hm : e ((f : S.Cl → S.V) c) ∈ nabAtr lab lam (Lat c)` using `hN c ▸ ⟨_, hf c, rfl⟩`.
+
+Establish `hm' : ((e ((f : S.Cl → S.V) c) : VV K lam) : Pol K T n) ∈ transLat lam (nabStd K lam) (fun τ => dualFr (tauLat lab τ (Lat c)))` using `hm`. Simplify using `only [transLat, Submodule.mem_iInf] at hm'`. Conclude with `hm' w B hB`. Rewrite using `[P.dec_spec g, mul_assoc, h1]`. Establish `h6` using `congrArg (Λ0 (m (P.decK g)⁻¹)) (h2 f (P.decK g) (P.y (P.decC g)))`.
+
+Establish `h7 : ∀ z, Λ0 (m (P.decK g)⁻¹) (Λ (P.decK g) z) = z` using `fun z => by show (Λ _ * Λ _) z = z`. Rewrite using `[← map_mul, inv_mul_cancel, map_one]`. Both sides reduce to the same expression. Rewrite `h6` using `[h7]`. Rewrite using `[h6]`.
+
+Use `(hstab _ (fun τ a b => ⟨hk (P.decK g)⁻¹ τ a b, ?_⟩) _).1 ?_` and prove the remaining obligations. Rewrite using `[Subgroup.coe_inv, map_inv, Pi.inv_apply, inv_inv]`. Conclude with `hk _ τ a b`. Take `⟨r, hr⟩` from `hχ (P.decK g)`. Take `⟨x, hx⟩` from `(GlobalTheory.LatBC.latN_iff F lamW _).1 (hy (P.decC g))`.
+
+Conclude with `(GlobalTheory.LatBC.latN_iff F lamW _).2 ⟨r • x, by rw [map_smulₛₗ, hr, hx]⟩`. Establish `hy : ∀ c, ∃ s : 𝓞 K, s ∉ w.asIdeal ∧ s • (f : S.Cl → S.V) c ∈ S.Del c` using `fun c => by`. Take `⟨B, u, hlat', hB, hu, hv⟩` from `key c`. Establish `h6` using `hf (P.y c)`. Rewrite `h6` using `[h5, hce, hθ, hv]`.
+
+Establish `h7` using `(hstab u⁻¹ (fun τ a b => ⟨(hu τ a b).2, by rw [Pi.inv_apply, inv_inv]; exact (hu τ a b).1⟩) _).2 h6`. Establish `h8 : ∀ z, Λ0 u⁻¹ (Λ0 u z) = z` using `fun z => by show (Λ0 _ * Λ0 _) z = z`. Rewrite using `[← map_mul, inv_mul_cancel, map_one]`. Both sides reduce to the same expression. Rewrite `h7` using `[h8]`.
+
+Establish `h9` using `GlobalTheory.T.mem_localisedStandardWeyl_of_lift_mem _ l w e0 _ _ lam lamW _ F Φ hw (fun x => ((hF _).1 ⟨x, rfl⟩).2) hS hΦ _ h7`. Establish `h10 : ((e ((f : S.Cl → S.V) c) : VV K lam) : Pol K T n) ∈ Formalism.HermitianLatticesTheory.localization₂ w.asIdeal (delP lam fun τ => dualFr (tauLat lab τ (Lat c)))`. Rewrite using `[(GlobalTheory.TransLoc.nabDelLoc_free_leVV.1 _ _ _ lam _ hlat' w B hB).2]`. Use `⟨_, h9, ?_⟩` and prove the remaining obligations. Use `show (rhoP lam B * rhoP lam B⁻¹) _ = _`.
+
+Rewrite using `[← map_mul, mul_inv_cancel, map_one]`. Both sides reduce to the same expression. Take `⟨s, hs1, hs2⟩` from `h10`. Use `⟨s, hs1, ?_⟩` and prove the remaining obligations. Establish `h11 : s • e ((f : S.Cl → S.V) c) ∈ delAtr lab lam (Lat c)` using `hs2`.
+
+Rewrite `h11` using `[← hD c]`. Take `⟨x, hx, hxe⟩` from `h11`. Establish `: x = s • (f : S.Cl → S.V) c` using `e.injective (by`. Rewrite using `[← algebraMap_smul K s, map_smul, algebraMap_smul]`. Conclude with `hxe)`.
+
+Conclude with `this ▸ hx`. Use `choose s hs1 hs2 using hy`. Use `⟨∏ c, s c, prod_mem (S := w.asIdeal.primeCompl) fun c _ => hs1 c, fun c => ?_⟩` and prove the remaining obligations. Rewrite using `[← Finset.prod_erase_mul _ _ (Finset.mem_univ c), mul_smul]`. Conclude with `Submodule.smul_mem _ _ (hs2 c)`.
+-/
 theorem exists_reading_lat {E K : Type} [Field E] [NumberField E] [Field K] [NumberField K] [StarRing K] {T : Type} [Fintype T]
     [DecidableEq T] {n : ℕ} {G Γ : Type} [Group G] [Group Γ] {ι : Γ →* G} {W : Type} [NormedAddCommGroup W] [InnerProductSpace ℂ W]
     {S : CSD K} {σ : K →+* ℂ} {ρ : Γ →* Module.End ℂ W} {J : Subgroup G} {χ : J →* ℂˣ} (P : ClassPres ι S σ ρ J χ)
@@ -192,6 +242,13 @@ theorem exists_reading_lat {E K : Type} [Field E] [NumberField E] [Field K] [Num
     rw [← Finset.prod_erase_mul _ _ (Finset.mem_univ c), mul_smul]
     exact Submodule.smul_mem _ _ (hs2 c)
 
+/- English proof (translation)
+Establish `hd : ∀ τ, φ (d τ) ≠ 0` using `fun τ => ((d τ).isUnit.map φ).ne_zero`. Establish `ha : φ a ≠ 0` using `(a.isUnit.map φ).ne_zero`. Establish `hp : (∏ τ, φ (d τ) ^ cs τ) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun τ _ => zpow_ne_zero _ (hd τ)`. Simplify using `only [zpow_neg, Finset.prod_inv_distrib] at h`. Establish `h2 : ∏ τ, φ (d τ) ^ cs τ = φ a * x`.
+
+Clear denominators, using `at h` for the nonvanishing conditions. Take the linear combination `-h`. Use `⟨?_, h2, by rintro rfl; simp at h⟩` and prove the remaining obligations. Establish `e : φ ((∏ τ, d τ ^ cs τ : Oˣ) : O) = ∏ τ, φ (d τ) ^ cs τ`. Rewrite using `[Units.coe_prod, map_prod]`.
+
+Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Use `map_zpow (Units.map (φ : O →* C)) (d τ) (cs τ)` as an intermediate fact. Conclude with `(congrArg Units.val this).trans (Units.val_zpow_eq_zpow_val _ _)`. Rewrite using `[Units.val_mul, map_mul, e, h2, map_units_inv, inv_mul_cancel_left₀ ha]`.
+-/
 theorem scalar_eq {O C T : Type} [CommRing O] [Field C] [Fintype T] (φ : O →+* C) (a : Oˣ) (d : T → Oˣ) (cs : T → ℤ) (x : C)
     (h : (φ a * ∏ τ, φ (d τ) ^ (-cs τ)) * x = 1) :
     φ ((a⁻¹ * ∏ τ, d τ ^ cs τ : Oˣ) : O) = x ∧ ∏ τ, φ (d τ) ^ cs τ = φ a * x ∧ x ≠ 0 := by
@@ -210,6 +267,9 @@ theorem scalar_eq {O C T : Type} [CommRing O] [Field C] [Fintype T] (φ : O →+
     exact (congrArg Units.val this).trans (Units.val_zpow_eq_zpow_val _ _)
   rw [Units.val_mul, map_mul, e, h2, map_units_inv, inv_mul_cancel_left₀ ha]
 
+/- English proof (translation)
+The claim follows from `smul_right_injective M hx (show x • a • u = x • r by rw [← h, hd, smul_smul, mul_comm])`.
+-/
 theorem smul_cancel {C M : Type} [Field C] [AddCommGroup M] [Module C M] {a x d : C} {u r : M} (hx : x ≠ 0) (hd : d = a * x)
     (h : d • u = x • r) : a • u = r :=
   smul_right_injective M hx (show x • a • u = x • r by rw [← h, hd, smul_smul, mul_comm])
@@ -224,6 +284,13 @@ def evG (ev : D.what₂.Tau → (FiniteAdeleRing (𝓞 D.host.F) D.host.F ⊗[D.
     Gf V →* (D.what₂.Tau → GL (Fin V.rank) (PadicAlgCl l)) :=
   MonoidHom.pi fun τ => (Matrix.GeneralLinearGroup.map (ev τ)).comp (Gf V).subtype
 
+/- English proof (translation)
+Choose the witnesses or unpack the hypotheses as in `⟨γE, hγ⟩ : ∃ γE, IsRatMat V γ γE := by`. Take `⟨x, hx⟩` from `γ`. Take `⟨y, -, hy⟩` from `Subgroup.mem_map.1 (Subgroup.mem_subgroupOf.1 hx)`. Conclude with `⟨y, hy.symm⟩`. Use `⟨γE, hγ, funext fun τ => Units.ext (Matrix.ext fun a b => ?_)⟩` and prove the remaining obligations.
+
+Establish `e : Units.val (Formalism.L2.Theta.finHom V (γ : Formalism.L2.Theta.GA D V)) a b = (1 : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F) ⊗ₜ[D.host.F] γE.val a b`. Establish `hγ' : Formalism.L2.Theta.matHom V (γ : Formalism.L2.Theta.GA D V) = _` using `hγ`. Rewrite using `[Formalism.L2.Theta.finHom, MonoidHom.comp_apply, hγ']`. Use `show (Algebra.TensorProduct.map (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sndA D.host.F) (AlgHom.id D.host.F D.host.E)) ((1 : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF D.host.F) ⊗ₜ[D.host.F] (γE.val a b)) = _`. Rewrite using `[Algebra.TensorProduct.map_tmul, map_one]`.
+
+Both sides reduce to the same expression. Use `show ev τ (Units.val (Formalism.L2.Theta.finHom V (γ : Formalism.L2.Theta.GA D V)) a b) = inc τ (γE.val a b)`. Rewrite using `[e]`. Conclude with `hev τ _`.
+-/
 theorem evG_rat {ev : D.what₂.Tau → (FiniteAdeleRing (𝓞 D.host.F) D.host.F ⊗[D.host.F] D.host.E →+* PadicAlgCl l)}
     {inc : D.what₂.Tau → (D.host.E →+* PadicAlgCl l)} (hev : ∀ τ x, ev τ (1 ⊗ₜ[D.host.F] x) = inc τ x) (γ : Formalism.L2.Theta.GQ V) :
     ∃ γE, IsRatMat V γ γE ∧ evG V ev (ratF V γ) = fun τ => Matrix.GeneralLinearGroup.map (inc τ) γE := by
@@ -252,6 +319,23 @@ variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotio
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Take `rfl : N = (Vc D j).rank` from `by simpa using Fintype.card_congr rk.toEquiv`. Take `rfl : rk = OrderIso.refl _` from `Subsingleton.elim _ _`. Take `⟨hw, hL, hio, hev, hkap, hchi⟩` from `hC`. Take `⟨gramR, c0R, c0L, tie⟩` from `p.charW.base.fam.tie`. Take `⟨e, -, hce, -, hN, hD⟩` from `tie.coefL j (p.R.mu w)`.
+
+Establish `hM` using `tie.mapL j`. Take `⟨hinj, hF⟩` from `GlobalTheory.T.intermediateField_padic_integers_eq_norm_le_one _ Lf`. Establish `hev' : ∀ τ, EvOk (e0.comp (labLL D τ)) (ev τ)` using `hev`. Establish `hk : ∀ (k : levJ p j (p.R.mu w)) τ, Matrix.GeneralLinearGroup.map (intEmb Lf) (kap k τ) = evG (Vc D j) ev k τ`. Introduce `k τ`.
+
+Use `Units.ext ((hkap k τ).trans ?_)` and prove the remaining obligations. Rewrite using `[kapMat, hbs, inv_one, Units.val_one, one_mul, mul_one]`. Both sides reduce to the same expression. Establish `hdet : ∀ (k : levJ p j (p.R.mu w)) τ, ((Matrix.GeneralLinearGroup.det (evG (Vc D j) ev k τ) : (PadicAlgCl (Formalism.EigenvalueLevelCeiling.plc w))ˣ) : PadicAlgCl (Formalism.EigenvalueLevelCeiling.plc w)) = intEmb Lf (kap k τ).val.det`. Introduce `k τ`.
+
+Rewrite using `[← hk, RingHom.map_det]`. Both sides reduce to the same expression. Establish `hχ : ∀ k : levJ p j (p.R.mu w), (intEmb Lf (chi k) * ∏ τ, intEmb Lf (kap k τ).val.det ^ (-cs τ)) * io.symm ((levChi p j (p.R.mu w) k : ℂˣ) : ℂ) = 1`. Introduce `k`. Apply `io.injective` to reduce the goal to its premises.
+
+Rewrite using `[map_mul, RingEquiv.apply_symm_apply, map_one]`. Conclude with `hchi k`. Establish `hsc` using `fun k : levJ p j (p.R.mu w) => scalar_eq (intEmb Lf) (chi k) (fun τ => Matrix.GeneralLinearGroup.det (kap k τ)) cs _ (hχ k)`. Take `⟨rd, h1, h2, h3, h4, h5, h6⟩` from `exists_reading_lat (p.R.B.L j (p.R.mu w)).pres (labLL D) _ (c0L j) e hce (fun c => hLat (Vc D j) ((p.R.B.L j (p.R.mu w)).pres.y c)) (fun c => GlobalTheory.RepsCompare.isLattice_hLat _ _) hN hD hM.2.1 hM.2.2 w e0 io hw hio (evG (Vc D j) ev) (fun γ => (evG_rat (Vc D j) (fun τ => (h …`. Use `⟨⟨e0, Subtype.val, rd, hw, fun x => (hF _).2 ⟨hL _, ?_⟩, fun f => ⟨?_, fun k g => ?_⟩, h3, fun i f g => ?_, h5, h6⟩, rfl, rfl⟩` and prove the remaining obligations.
+
+Conclude with `(GlobalTheory.T.norm_le_one_iff_integral_at_padicEmbedding_place _ _ w e0 hw _).2 ⟨1, (Ideal.ne_top_iff_one _).1 w.isPrime.ne_top, x, by simp⟩`. Introduce and unpack `_ ⟨γ, rfl⟩ g`. Conclude with `h1 f γ g`. Establish `h7` using `h2 f k g`. Rewrite `h7` using `[lamG_apply]`.
+
+Establish `h8` using `smul_cancel (hsc k).2.2 (Eq.trans (by simp only [Units.coe_prod, Units.val_zpow_eq_zpow_val, hdet k]; rfl) (hsc k).2.1) h7`. Rewrite `h8` using `[← funext (hk k)]`. Conclude with `h8`. Establish `hr : 1 ≤ i.1.2 ∧ i.1.2 ≤ (Vc D j).rank` using `⟨i.2.1, i.2.2.1⟩`. Establish `h7` using `h4 f _ _ ((p.R.B.L j (p.R.mu w)).hecke.op_eq i.1 hr f) (fun a ha => funext fun τ => Units.ext (GlobalTheory.EvLocal.map_eq_one_of_isLocEnv (Vc D j) p.R.pl _ i.1 a _ _ (hev' τ) i.2.2.2 ((p.R.B.L j (p.R.mu w)).hecke.hA_loc i.1 hr a ha))) g`.
+
+Use `h7.trans ?_` and prove the remaining obligations. Use `show _ = intEmb Lf 1 • _`. Rewrite using `[map_one, one_smul]`. Both sides reduce to the same expression.
+-/
 theorem reads_rank (j : Fin D.R.m) (w : HeightOneSpectrum (𝓞 D.what₂.LL)) [Fact (Formalism.EigenvalueLevelCeiling.plc w).Prime] (lamW : D.what₂.Tau → ℕ → ℕ)
     (cs : D.what₂.Tau → ℤ) (hS : Shift (fun τ => lamLdef (D := D) (Vc D j).rank ((j : ℕ) + 1) τ) lamW cs) {N : ℕ}
     (e0 : D.what₂.LL →+* PadicAlgCl (Formalism.EigenvalueLevelCeiling.plc w)) (io : PadicAlgCl (Formalism.EigenvalueLevelCeiling.plc w) ≃+* ℂ)
@@ -320,6 +404,9 @@ theorem reads_rank (j : Fin D.R.m) (w : HeightOneSpectrum (𝓞 D.what₂.LL)) [
 
 end Point
 
+/- English proof (translation)
+Use `⟨1, one_pos, fun _ _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun Fm _ _ _ => EvPt.of_forall fun x hx i p _ _ j P W hD _ w _ _ _ _ => ?_⟩⟩` and prove the remaining obligations. Use `choose cs hcs using hD.lam`. Conclude with `⟨false, fun τ => -cs τ, fun e0 io ev bs rk Lf _ kap chi hC hbs => reads_rank p j w W.lam cs hcs e0 io ev bs rk Lf kap chi hC hbs⟩`.
+-/
 theorem reads_of_small : InRange fun _ _ _ _ p j P W w => SmallAt p j P w → ReadsAt p j P W w := by
   refine ⟨1, one_pos, fun _ _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun Fm _ _ _ =>
     EvPt.of_forall fun x hx i p _ _ j P W hD _ w _ _ _ _ => ?_⟩⟩

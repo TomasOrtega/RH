@@ -53,6 +53,9 @@ def chiDet {n : ℕ} (N : Submodule (𝓞 X.E) (Sp X.E n)) : X.K :=
 def chiFK (a b : ℕ) (N : Submodule (𝓞 X.E) (Sp X.E a)) (N' : Submodule (𝓞 X.E) (Sp X.E b)) : X.K :=
   desc s.σ₀ (Base.chiFac χ a b (s.lat N) (s.lat N'))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (B : Base D cc δ) (cD : D.what₂.Tau → ℂ) (a b : ℕ)
     (N : Submodule (𝓞 X.E) (Sp X.E a)) (N' : Submodule (𝓞 X.E) (Sp X.E b)) :
     chiFK s χ a b N N' = desc (ambOf s B χ cD).σ₀ ((ambOf s B χ cD).chiF a b N N') := rfl
@@ -82,6 +85,9 @@ def sPrime (i : Fin Z.R.m) (τ : Z.X.Tau) : ℚ := sExp' Z.R ((Z.W.row τ).e i) 
 
 def sPlain (i : Fin Z.R.m) (τ : Z.X.Tau) : ℚ := sExp Z.R ((Z.W.row τ).e i) (i.1 + 1)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `P`. Unfold `muAt muAtT`. Distinguish the cases in `hP : P.1 ∈ Z.Pr.vGs`. Simplify using `only [if_pos hP]`. Simplify using `only [if_neg hP, h i hi P hP]`.
+-/
 theorem muAt_eq_muAtT (h : MuqTie Z.Ch sel mu cst) (i : ℕ) (hi : i < Z.R.m) :
     muAt Z.Ch sel mu cst i = muAtT Z.Ch sel mu cst i := by
   funext P
@@ -151,10 +157,16 @@ def CharValAtT : Prop :=
           PartBMu Z s χ sel mu cst u w i.1 ∧ PartC Z s χ sel mu cst u w i) ∧
         PartD Z s χ sel mu cst i.1
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ _ => rfl, fun _ _ => Iff.rfl⟩`.
+-/
 example {E : Type} [Field E] [NumberField E] [StarRing E] (n p : ℕ) (SB : Finset (HeightOneSpectrum (𝓞 E))) :
     StdOver p (stdLat E n) ∧ IsFrames (SB := SB) (stdLat E n) (fun _ => 1) :=
   ⟨fun _ _ => rfl, fun _ _ => Iff.rfl⟩
 
+/- English proof (translation)
+Introduce and unpack `rfl`. Simplify using `[UnitAt] at h`.
+-/
 theorem UnitAt.ne_zero {K : Type} [Field K] [NumberField K] {w : HeightOneSpectrum (𝓞 K)} {x : K} (h : UnitAt w x) : x ≠ 0 := by
   rintro rfl
   simp [UnitAt] at h

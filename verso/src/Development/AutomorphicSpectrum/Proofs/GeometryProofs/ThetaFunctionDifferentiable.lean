@@ -28,6 +28,17 @@ open GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Sl
 
 namespace GlobalTheory.CompanionTheory.Ar.Sl
 
+/- English proof (translation)
+Introduce `S G _ _ P z g a n s θ hθ w₀`. Establish `hm : a.pt w₀ (default : PrimeSpectrum ℂ) ∈ ⨆ i, P.L.U i`. Rewrite using `[P.isLB.cover]`. Discharge the goal by the elementary cases of `trivial`. Take `⟨i, hi'⟩` from `TopologicalSpace.Opens.mem_iSup.1 hm`.
+
+Establish `hi : ⊤ ≤ a.pt w₀ ⁻¹ᵁ P.L.U i` using `(GlobalTheory.top_le_preimage_iff_mem _ _).2 hi'`. Set `W : G.left.Opens` to `LB.wchart P.L (fun _ : Fin 1 => 𝟙 G.left) (fun _ => i)`. Set `Q : a.A.left.Opens` to `(P.L.pull a.φ).U (fun _ => i)`. Set `C : Set (Fin g → ℂ)` to `{w | ⊤ ≤ (a.u.ex w).left ⁻¹ᵁ Q}`. Establish `hCpt : ∀ w, w ∈ C → ⊤ ≤ a.pt w ⁻¹ᵁ P.L.U i` using `fun w h y hy => Set.mem_iInter.1 (h hy) PUnit.unit`.
+
+Establish `hptC : ∀ w, ⊤ ≤ a.pt w ⁻¹ᵁ P.L.U i → w ∈ C` using `fun w h y hy => Set.mem_iInter.2 fun _ => h hy`. Establish `hCV : ∀ w, w ∈ C → ⊤ ≤ (a.u.ex w).left ⁻¹ᵁ (a.φ ⁻¹ᵁ W)` using `fun w h y hy => Set.mem_iInter.2 fun _ => hCpt w h hy`. Establish `ho : IsOpen C` using `(a.u.hol Q 0).1`. Establish `hv : DifferentiableOn ℂ (fun w => valAt' (a.u.ex w).left (a.φ ⁻¹ᵁ W) ((a.φ.app W).hom (s.f fun _ => i))) C` using `(a.u.hol _ _).2.mono hCV`. Establish `hfr : DifferentiableOn ℂ (fun w => a.u.fr (fun _ => i) w ^ n) C` using `(a.u.fr_hol _).pow n`.
+
+Establish `hne : ∀ w ∈ C, a.u.fr (fun _ => i) w ^ n ≠ 0` using `fun w hw => pow_ne_zero n (a.u.fr_ne _ w hw)`. Establish `hq : DifferentiableOn ℂ θ C`. Use `(hv.mul (hfr.inv hne)).congr fun w hw => ?_` and prove the remaining obligations. Establish `e` using `hθ i w (hCpt w hw)`. Establish `e' : valF (a.pt w) W (s.f fun _ => i) = valAt' (a.pt w) W (s.f fun _ => i)` using `rfl`.
+
+Establish `e4 : valAt' (a.u.ex w).left (a.φ ⁻¹ᵁ W) ((a.φ.app W).hom (s.f fun _ => i)) = θ w * a.u.fr (fun _ => i) w ^ n` using `(GlobalTheory.valAt'_comp (a.u.ex w).left a.φ W (s.f fun _ => i)).trans (e'.symm.trans e)`. Conclude with `(mul_inv_cancel_right₀ (hne w hw) (θ w)).symm.trans (congrArg (· * (a.u.fr (fun _ => i) w ^ n)⁻¹) e4.symm)`. Conclude with `(hq.differentiableAt (ho.mem_nhds (hptC w₀ hi)))`.
+-/
 theorem isFn_differentiable : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G] [IsCommMonObj G] (P : RigLB G) (z : Sp ℂ ⟶ S) (g : ℕ) (a : ArchFrame P z g) (n : ℕ) (s : Out.H0 P.L n) (θ : (Fin g → ℂ) → ℂ), a.IsFn s θ → Differentiable ℂ θ := by
   intro S G _ _ P z g a n s θ hθ w₀
   have hm : a.pt w₀ (default : PrimeSpectrum ℂ) ∈ ⨆ i, P.L.U i := by

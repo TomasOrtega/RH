@@ -14,21 +14,35 @@ variable {K : Type} [Field K] [NumberField K] [StarRing K]
   {VN VR : Type} [AddCommGroup VN] [Module K VN] [AddCommGroup VR] [Module K VR]
   {ιN ιR : Type} [Fintype ιN] [DecidableEq ιN] [Fintype ιR] [DecidableEq ιR] {d n : ℕ}
 
+/- English proof (translation)
+Use `show ((X v)ᵀ)⁻¹⁻¹ = (X v)ᵀ`. Conclude with `Matrix.nonsing_inv_nonsing_inv _ (by rw [Matrix.det_transpose]; exact hX)`.
+-/
 theorem dualFrame_inv {ι : Type} [Fintype ι] [DecidableEq ι] (X : InfinitePlace K → Matrix ι ι ℂ) (v : InfinitePlace K)
     (hX : IsUnit (X v).det) : (Formalism.HN.dualFrame X v)⁻¹ = (X v)ᵀ := by
   show ((X v)ᵀ)⁻¹⁻¹ = (X v)ᵀ
   exact Matrix.nonsing_inv_nonsing_inv _ (by rw [Matrix.det_transpose]; exact hX)
 
+/- English proof (translation)
+Rewrite using `[Matrix.transpose_mul]`. Both sides reduce to the same expression.
+-/
 theorem transpose_isom {ι κ : Type} [Fintype ι] [Fintype κ] (U : Matrix ι κ ℂ) : (Uᵀ)ᴴ * Uᵀ = (U * Uᴴ)ᵀ := by
   rw [Matrix.transpose_mul]
   rfl
 
+/- English proof (translation)
+Rewrite using `[Matrix.transpose_mul]`. Use `congr 1`. Use extensionality with `i j`. Simplify using the standard rewrite rules.
+-/
 theorem conjT_transpose_isom {ι κ : Type} [Fintype ι] [Fintype κ] (U : Matrix ι κ ℂ) : ((Uᴴ)ᵀ)ᴴ * (Uᴴ)ᵀ = (Uᴴ * U)ᵀ := by
   rw [Matrix.transpose_mul]
   congr 1
   ext i j
   simp
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `only [LinearMap.toMatrix_apply, Basis.dualBasis_repr, Matrix.mul_apply, Matrix.transpose_apply, LinearEquiv.coe_coe, Finset.sum_mul]`. Rewrite using `[← hB]`. Use `conv_lhs => rw [← bN.sum_repr (eN (Pi.basisFun K (Fin d) b)), ← bR.sum_repr (eR (Pi.basisFun K (Fin n) a))]`. Simplify using `only [map_sum, map_smul, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul, Finset.mul_sum]`.
+
+Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`.
+-/
 private theorem toMatrix_eq_transpose_mul_mul_of_comp (bN : Basis ιN K VN) (bR : Basis ιR K VR) (eN : (Fin d → K) ≃ₗ[K] VN)
     (eR : (Fin n → K) ≃ₗ[K] VR) (Bk : VN →ₗ[K] Module.Dual K VR)
     (B : (Fin d → K) →ₗ[K] Module.Dual K (Fin n → K)) (hB : ∀ x y, Bk (eN x) (eR y) = B x y) :
@@ -45,6 +59,9 @@ private theorem toMatrix_eq_transpose_mul_mul_of_comp (bN : Basis ιN K VN) (bR 
   rw [Finset.sum_comm]
   exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring
 
+/- English proof (translation)
+Rewrite using `[toMatrix_eq_transpose_mul_mul_of_comp bN bR eN eR Bk B hB, Matrix.map_mul, Matrix.map_mul, Matrix.transpose_map]`. Both sides reduce to the same expression.
+-/
 private theorem toMatrix_map_embedding_eq_cP_mul (bN : Basis ιN K VN) (bR : Basis ιR K VR) (eN : (Fin d → K) ≃ₗ[K] VN)
     (eR : (Fin n → K) ≃ₗ[K] VR) (Bk : VN →ₗ[K] Module.Dual K VR)
     (B : (Fin d → K) →ₗ[K] Module.Dual K (Fin n → K)) (hB : ∀ x y, Bk (eN x) (eR y) = B x y)
@@ -54,6 +71,9 @@ private theorem toMatrix_map_embedding_eq_cP_mul (bN : Basis ιN K VN) (bR : Bas
   rw [toMatrix_eq_transpose_mul_mul_of_comp bN bR eN eR Bk B hB, Matrix.map_mul, Matrix.map_mul, Matrix.transpose_map]
   rfl
 
+/- English proof (translation)
+Establish `h` using `Matrix.l2_opNorm_mul A B`. Simplify `h` using `only [Matrix.l2_opNorm_def, LinearEquiv.trans_apply]`.
+-/
 private theorem opNorm_toEuclideanLin_mul_le {l m o : Type} [Fintype l] [Fintype m] [Fintype o] [DecidableEq l]
     [DecidableEq m] [DecidableEq o] (A : Matrix l m ℂ) (B : Matrix m o ℂ) :
     ‖LinearMap.toContinuousLinearMap (Matrix.toEuclideanLin (A * B))‖ ≤
@@ -62,6 +82,11 @@ private theorem opNorm_toEuclideanLin_mul_le {l m o : Type} [Fintype l] [Fintype
   have h := Matrix.l2_opNorm_mul A B
   simpa only [Matrix.l2_opNorm_def, LinearEquiv.trans_apply] using h
 
+/- English proof (translation)
+Establish `h1` using `Matrix.l2_opNorm_conjTranspose_mul_self W`. Establish `h2` using `Matrix.l2_opNorm_conjTranspose_mul_self (1 : Matrix m m ℂ)`. Rewrite `h1` using `[hW]`. Rewrite `h2` using `[Matrix.conjTranspose_one, Matrix.one_mul]`. Simplify using `only [Matrix.l2_opNorm_def, LinearEquiv.trans_apply] at h1 h2`.
+
+Establish `hs` using `norm_nonneg (LinearMap.toContinuousLinearMap (Matrix.toEuclideanLin W))`. Establish `ht` using `norm_nonneg (LinearMap.toContinuousLinearMap (Matrix.toEuclideanLin (1 : Matrix m m ℂ)))`. Establish `ht1 : ‖LinearMap.toContinuousLinearMap (Matrix.toEuclideanLin (1 : Matrix m m ℂ))‖ ≤ 1`. Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities.
+-/
 private theorem opNorm_toEuclideanLin_le_one_of_isometry {l m : Type} [Fintype l] [Fintype m] [DecidableEq l] [DecidableEq m]
     (W : Matrix l m ℂ) (hW : Wᴴ * W = 1) :
     ‖LinearMap.toContinuousLinearMap (Matrix.toEuclideanLin W)‖ ≤ 1 := by
@@ -76,6 +101,13 @@ private theorem opNorm_toEuclideanLin_le_one_of_isometry {l m : Type} [Fintype l
     nlinarith
   nlinarith
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Apply the tactic sequence `exact opNorm_toEuclideanLin_le_one_of_isometry _ hL`. Apply the tactic sequence `exact opNorm_toEuclideanLin_le_one_of_isometry _ hR`. Use `_ = _ := by ring`.
+
+Establish `hM : M = L' * (L * M * R) * R'`. Combine the equalities or inequalities in the displayed calculation. Use `conv_lhs => rw [hM]`. Combine the equalities or inequalities in the displayed calculation. Apply the tactic sequence `exact opNorm_toEuclideanLin_le_one_of_isometry _ hL'`.
+
+Apply the tactic sequence `exact opNorm_toEuclideanLin_le_one_of_isometry _ hR'`. Use `_ = _ := by ring`.
+-/
 private theorem opNorm_toEuclideanLin_unitary_mul_mul_eq {a b c e : Type} [Fintype a] [Fintype b] [Fintype c] [Fintype e]
     [DecidableEq a] [DecidableEq b] [DecidableEq c] [DecidableEq e]
     (M : Matrix a b ℂ) (L : Matrix c a ℂ) (R : Matrix b e ℂ) (L' : Matrix a c ℂ) (R' : Matrix e b ℂ)
@@ -111,6 +143,15 @@ private theorem opNorm_toEuclideanLin_unitary_mul_mul_eq {a b c e : Type} [Finty
           · exact opNorm_toEuclideanLin_le_one_of_isometry _ hR'
       _ = _ := by ring
 
+/- English proof (translation)
+Establish `key : (Formalism.HN.dualFrame XE v)⁻¹ * (LinearMap.toMatrix (Pi.basisFun K (Fin d)) (Pi.basisFun K (Fin n)).dualBasis B).map v.embedding * Xc v = (cU bR XR XE eR v)ᵀ * ((Formalism.HN.dualFrame XR v)⁻¹ * (LinearMap.toMatrix bN bR.dualBasis Bk).map v.embedding * XN v) * cU bN XN Xc …`. Establish `h1` using `basisChange_mul_X (b := bR) (e := eR) (X := XE) (XA := XR) (v := v) (hXR v)`. Establish `h2` using `basisChange_mul_X (b := bN) (e := eN) (X := Xc) (XA := XN) (v := v) (hXN v)`. Rewrite using `[dualFrame_inv XE v (hXE v), dualFrame_inv XR v (hXR v), toMatrix_map_embedding_eq_cP_mul bN bR eN eR Bk B hB v]`. Simplify using `only [Matrix.mul_assoc]`.
+
+Rewrite using `[h2, ← Matrix.mul_assoc (XE v)ᵀ, ← Matrix.transpose_mul, h1, Matrix.transpose_mul]`. Simplify using `only [Matrix.mul_assoc]`. Unfold `Formalism.HN.opNormAt`. Rewrite using `[key]`. Use `symm`.
+
+Use `opNorm_toEuclideanLin_unitary_mul_mul_eq _ _ _ ((cU bR XR XE eR v)ᴴ)ᵀ (cU bN XN Xc eN v)ᴴ ?_ ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Rewrite using `[transpose_isom, cU_mul_conj (h := hR) (hXA := hXR v) (hX := hXE v), Matrix.transpose_one]`. Conclude with `cU_conj_mul (h := hN) (hX := hXc v)`. Rewrite using `[conjT_transpose_isom, cU_conj_mul (h := hR) (hX := hXE v), Matrix.transpose_one]`. Rewrite using `[Matrix.conjTranspose_conjTranspose]`.
+
+Conclude with `cU_mul_conj (h := hN) (hXA := hXN v) (hX := hXc v)`. Rewrite using `[← Matrix.transpose_mul, cU_mul_conj (h := hR) (hXA := hXR v) (hX := hXE v), Matrix.transpose_one]`. Conclude with `cU_mul_conj (h := hN) (hXA := hXN v) (hX := hXc v)`.
+-/
 theorem opNormAt_tie (bN : Basis ιN K VN) (XN : InfinitePlace K → Matrix ιN ιN ℂ) (bR : Basis ιR K VR)
     (XR : InfinitePlace K → Matrix ιR ιR ℂ) (Xc : InfinitePlace K → Matrix (Fin d) (Fin d) ℂ)
     (XE : InfinitePlace K → Matrix (Fin n) (Fin n) ℂ) (eN : (Fin d → K) ≃ₗ[K] VN) (eR : (Fin n → K) ≃ₗ[K] VR)
@@ -145,6 +186,9 @@ theorem opNormAt_tie (bN : Basis ιN K VN) (XN : InfinitePlace K → Matrix ιN 
   · rw [← Matrix.transpose_mul, cU_mul_conj (h := hR) (hXA := hXR v) (hX := hXE v), Matrix.transpose_one]
   · exact cU_mul_conj (h := hN) (hXA := hXN v) (hX := hXc v)
 
+/- English proof (translation)
+Unfold `Formalism.HN.htMap`. Use `congr 1`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[opNormAt_tie bN XN bR XR Xc XE eN eR hN hR hXN hXR hXc hXE Bk B hB v]`.
+-/
 theorem htMap_tie (bN : Basis ιN K VN) (XN : InfinitePlace K → Matrix ιN ιN ℂ) (bR : Basis ιR K VR)
     (XR : InfinitePlace K → Matrix ιR ιR ℂ) (Xc : InfinitePlace K → Matrix (Fin d) (Fin d) ℂ)
     (XE : InfinitePlace K → Matrix (Fin n) (Fin n) ℂ) (eN : (Fin d → K) ≃ₗ[K] VN) (eR : (Fin n → K) ≃ₗ[K] VR)

@@ -22,6 +22,9 @@ def optInsertEquiv {α : Type} [DecidableEq α] (u : α) (s : Finset α) (hu : u
     · simp only [h, dite_true, Option.elim]; exact Subtype.ext h.symm
     · simp only [h, dite_false, Option.elim]
 
+/- English proof (translation)
+Establish `: Matrix.gram ℝ (f ∘ e) = (Matrix.gram ℝ f).submatrix e e`. Use extensionality with `i j`. Simplify using `[Matrix.gram]`. Rewrite using `[this, Matrix.det_submatrix_equiv_self]`.
+-/
 theorem gram_det_reindex {k : ℕ} {ι κ : Type} [Fintype ι] [DecidableEq ι] [Fintype κ] [DecidableEq κ] (e : κ ≃ ι)
     (f : ι → A0 k) : (Matrix.gram ℝ (f ∘ e)).det = (Matrix.gram ℝ f).det := by
   have : Matrix.gram ℝ (f ∘ e) = (Matrix.gram ℝ f).submatrix e e := by
@@ -32,6 +35,23 @@ end GlobalTheory.Chamber
 
 namespace GlobalTheory.Chamber
 
+/- English proof (translation)
+Introduce `k T u s hT hu hs x hx`. Establish `hmem : ∀ v ∈ s, v ∈ T ∧ v ≠ u` using `fun v hv => by`. Use `hs hv` as an intermediate fact. Rewrite `this` using `[Finset.mem_erase]`. Conclude with `⟨this.2, this.1⟩`.
+
+Establish `hus : u ∉ s` using `fun h => (hmem u h).2 rfl`. Establish `hex : ∀ v, ∃ κ : ℝ, 0 < κ ∧ ∃ t : ℝ, (v ∈ T ∧ v ≠ u → rt T v = κ • rt (T.erase u) v + t • rt T u ∧ ⟪rt (T.erase u) v, rt T u⟫_ℝ = 0)`. Introduce `v`. Distinguish the cases in `h : v ∈ T ∧ v ≠ u`. Take `⟨κ, hκ, t, h1, h2⟩` from `GlobalTheory.T.root_decompose_orthogonal hT hu h.1 h.2`.
+
+Conclude with `⟨κ, hκ, t, fun _ => ⟨h1, h2⟩⟩`. Conclude with `⟨1, one_pos, 0, fun h' => absurd h' h⟩`. Use `choose κ hκ t ht using hex`. Use `set S := T.erase u`. Use `set w0 := rt T u`.
+
+Establish `hrt : ∀ v ∈ s, rt T v = κ v • rt S v + t v • w0` using `fun v hv => (ht v (hmem v hv)).1`. Establish `horth : ∀ v ∈ s, ⟪rt S v, w0⟫_ℝ = 0` using `fun v hv => (ht v (hmem v hv)).2`. Establish `hdet : (Matrix.gram ℝ fun v : ↥(insert u s) => rt T v).det = ‖w0‖ ^ 2 * (∏ v ∈ s, κ v ^ 2) * (Matrix.gram ℝ fun v : ↥s => rt S v).det`. Rewrite using `[← gram_det_reindex (optInsertEquiv u s hus) (fun v : ↥(insert u s) => rt T v)]`. Establish `hf : ((fun v : ↥(insert u s) => rt T v) ∘ optInsertEquiv u s hus) = fun o : Option ↥s => o.elim w0 fun i => κ i • rt S i + t i • w0`.
+
+Use function extensionality and compare the values at `o`. Consider the cases of `o with`. Consider the case `none => rfl`. Consider the case `some v => exact hrt v.1 v.2`. Rewrite using `[hf, GlobalTheory.T.gram_det_option_formula w0 (fun i : ↥s => rt S i) (fun i => κ i) (fun i => t i) (fun i => horth i.1 i.2), Finset.prod_coe_sort s (fun v => κ v ^ 2)]`.
+
+Establish `hκpos : 0 < ∏ v ∈ s, κ v` using `Finset.prod_pos fun v _ => hκ v`. Establish `hsq : √(Matrix.gram ℝ fun v : ↥(insert u s) => rt T v).det = ‖w0‖ * (∏ v ∈ s, κ v) * √(Matrix.gram ℝ fun v : ↥s => rt S v).det`. Rewrite using `[hdet, show ‖w0‖ ^ 2 * (∏ v ∈ s, κ v ^ 2) = (‖w0‖ * ∏ v ∈ s, κ v) ^ 2 by`. Rewrite using `[mul_pow, Finset.prod_pow], Real.sqrt_mul (sq_nonneg _), Real.sqrt_sq (by positivity)]`. Establish `hinner : ∀ v ∈ s, ⟪x, rt T v⟫_ℝ = κ v * ⟪x, rt S v⟫_ℝ`.
+
+Introduce `v hv`. Rewrite using `[hrt v hv, inner_add_right, inner_smul_right, inner_smul_right, hx, mul_zero, add_zero]`. Establish `hprod : ∏ v ∈ s, (⟪x, rt T v⟫_ℝ)⁻¹ = (∏ v ∈ s, κ v)⁻¹ * ∏ v ∈ s, (⟪x, rt S v⟫_ℝ)⁻¹`. Rewrite using `[Finset.prod_congr rfl fun v hv => by rw [hinner v hv, mul_inv], Finset.prod_mul_distrib, Finset.prod_inv_distrib]`. Rewrite using `[hsq, hprod]`.
+
+Establish `: (∏ v ∈ s, κ v) ≠ 0` using `hκpos.ne'`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem rt_residue_identity : ∀ {k : ℕ} {T : Finset (SV k)} {u : SV k} (s : Finset (SV k)), IsPar T → u ∈ T → s ⊆ T.erase u →
   ∀ x : A0 k, ⟪x, rt T u⟫_ℝ = 0 →
   √(Matrix.gram ℝ fun v : ↥(insert u s) => rt T v).det * ∏ v ∈ s, (⟪x, rt T v⟫_ℝ)⁻¹ =

@@ -15,6 +15,19 @@ open scoped Classical
 
 namespace UpperTheory.V.Z.Tf.GlobalTraceComparison.Pi
 
+/- English proof (translation)
+Establish `hU : ∀ k : G, IsOpen {y : G | k⁻¹ * y ∈ O}` using `fun k => hO.preimage (continuous_const.mul continuous_id)`. Take `⟨T, hTK, hT⟩` from `hK.elim_nhds_subcover (fun k => {y : G | k⁻¹ * y ∈ O}) (fun k _ => (hU k).mem_nhds (by simpa using O.one_mem))`. Establish `hT' : ∀ k ∈ K, ∃ t ∈ T, t⁻¹ * k ∈ O` using `fun k hk => by`. Simplify using `using hT hk`. Set `M : Subgroup G` to `{ carrier := {x | ∀ t ∈ T, t⁻¹ * x * t ∈ O} one_mem' := fun t _ => by simpa using O.one_mem mul_mem' := fun {a b} ha hb t ht => by`.
+
+Use `O.mul_mem (ha t ht) (hb t ht)` as an intermediate fact. Simplify `this` using `[mul_assoc]`. Use the proof step `inv_mem' := fun {a} ha t ht => by`. Use `O.inv_mem (ha t ht)` as an intermediate fact. Simplify `this }` using `[mul_assoc]`.
+
+Use `⟨M, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `e : (M : Set G) = ⋂ t ∈ T, (fun x => t⁻¹ * x * t) ⁻¹' (O : Set G)`. Use extensionality with `x`. Simplify using `only [Set.mem_iInter, Set.mem_preimage]`. Both sides reduce to the same expression.
+
+Rewrite using `[e]`. Conclude with `isOpen_biInter_finset fun t _ => hO.preimage ((continuous_const.mul continuous_id).mul continuous_const)`. Introduce `x hx`. Take `⟨t, ht, h⟩` from `hT' 1 K.one_mem`. Establish `h1 : t⁻¹ ∈ O` using `by simpa using h`.
+
+Establish `h2` using `O.mul_mem (O.mul_mem (O.inv_mem h1) (hx t ht)) h1`. Establish `e : t⁻¹⁻¹ * (t⁻¹ * x * t) * t⁻¹ = x` using `by group`. Rewrite `h2` using `[e]`. Then use the resulting hypothesis. Introduce `k hk x hx t ht`. Take `⟨t', ht', h⟩` from `hT' (k⁻¹ * t) (K.mul_mem (K.inv_mem hk) (hTK t ht))`.
+
+Establish `h2` using `O.mul_mem (O.mul_mem (O.inv_mem h) (hx t' ht')) h`. Establish `e : (t'⁻¹ * (k⁻¹ * t))⁻¹ * (t'⁻¹ * x * t') * (t'⁻¹ * (k⁻¹ * t)) = t⁻¹ * (k * x * k⁻¹) * t` using `by group`. Rewrite `h2` using `[e]`. Then use the resulting hypothesis.
+-/
 private theorem core_exists {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     (K O : Subgroup G) (hK : IsCompact (K : Set G)) (hO : IsOpen (O : Set G)) :
     ∃ M : Subgroup G, IsOpen (M : Set G) ∧ M ≤ O ∧ ∀ k ∈ K, ∀ x ∈ M, k * x * k⁻¹ ∈ M := by
@@ -52,6 +65,15 @@ private theorem core_exists {G : Type} [Group G] [TopologicalSpace G] [IsTopolog
     have e : (t'⁻¹ * (k⁻¹ * t))⁻¹ * (t'⁻¹ * x * t') * (t'⁻¹ * (k⁻¹ * t)) = t⁻¹ * (k * x * k⁻¹) * t := by group
     rwa [e] at h2
 
+/- English proof (translation)
+Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty => exact fun k hk h0 _ => base k hk fun v hv => h0 v hv (by simp)`. Consider the case `insert v T hv ih`. Introduce `k hk h0 h1`. Take `⟨e, heH, heK, hev, heu⟩` from `h1 v (Finset.mem_insert_self _ _)`.
+
+Establish `hk1 : k * e⁻¹ ∈ H`. Use `ih _ (Kg.mul_mem hk (Kg.inv_mem heK)) (fun u hu huT => ?_) (fun u huT => ?_)` and prove the remaining obligations. Distinguish the cases in `huv : u = v`. Substitute `huv` using the available equality. Simplify using `[hev]`.
+
+Rewrite using `[map_mul, map_inv, heu u huv, inv_one, mul_one]`. Conclude with `h0 u hu (by simp [huv, huT])`. Establish `huv : u ≠ v` using `fun h => hv (h ▸ huT)`. Take `⟨e', h1', h2', h3', h4'⟩` from `h1 u (Finset.mem_insert_of_mem huT)`. Use `⟨e', h1', h2', ?_, h4'⟩` and prove the remaining obligations.
+
+Rewrite using `[h3', map_mul, map_inv, heu u huv, inv_one, mul_one]`. Simplify using `using H.mul_mem hk1 heH`.
+-/
 private theorem fin_reduce {G ι : Type} [Group G] {A : ι → Type} [∀ i, Group (A i)] (q : ∀ i, G →* A i)
     (Kg H : Subgroup G) (Y : Finset ι) (base : ∀ k ∈ Kg, (∀ v ∈ Y, q v k = 1) → k ∈ H) (T : Finset ι) :
     ∀ k ∈ Kg, (∀ v ∈ Y, v ∉ T → q v k = 1) →
@@ -87,6 +109,13 @@ private def stb {E : Type} [Field E] [NumberField E] [IsCMField E] (n : ℕ) (φ
     conv_lhs => rw [← ha]
     rw [← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]
 
+/- English proof (translation)
+Establish `hC : IsCompact ((Kf E n : Set (GF E n)) ∩ (H : Set (GF E n))ᶜ)` using `GlobalTheory.CompanionTheory.EulerV.isCompact_Kf.inter_right hH.isClosed_compl`. Take `⟨Y, hY⟩` from `hC.elim_finite_subcover (fun v : Pl E => {g : GF E n | qw n v false g ≠ 1}) (fun v => (isClosed_singleton.preimage (hq v)).isOpen_compl) (fun x hx => by`. Assume the negation of the conclusion as `hc`. Simplify using `only [Set.mem_iUnion, Set.mem_setOf_eq, not_exists, not_not] at hc`. Establish `: x = 1` using `GlobalTheory.LocFactor.glAf_ext fun v => by`.
+
+Rewrite using `[map_one]`. Conclude with `hc v`. Conclude with `hx.2 (this ▸ H.one_mem))`. Use `⟨Y, fun k hk h1 => by_contra fun hkH => ?_⟩` and prove the remaining obligations. Use `hY ⟨hk, hkH⟩` as an intermediate fact.
+
+Simplify using `only [Set.mem_iUnion, Set.mem_setOf_eq] at this`. Take `⟨v, hv, hne⟩` from `this`. Conclude with `hne (h1 v hv)`.
+-/
 private theorem exists_fin {E : Type} [Field E] [NumberField E] [IsCMField E] (n : ℕ)
     (hq : ∀ w : Pl E, Continuous (qw n w false)) (H : Subgroup (GF E n)) (hH : IsOpen (H : Set (GF E n))) :
     ∃ Y : Finset (Pl E), ∀ k ∈ Kf E n, (∀ v ∈ Y, qw n v false k = 1) → k ∈ H := by
@@ -106,6 +135,47 @@ private theorem exists_fin {E : Type} [Field E] [NumberField E] [IsCMField E] (n
   obtain ⟨v, hv, hne⟩ := this
   exact hne (h1 v hv)
 
+/- English proof (translation)
+Introduce `hP hS hJ E _ _ _ n π S Z hSec hZ hOff`. Take `⟨hinv, -, hloc, -, -, -, hK⟩` from `hS E n S hSec`. Take `⟨-, hcP, -, hSP⟩` from `hP E`. Establish `hcc : ∀ w : Pl E, cPl (cPl w) = w` using `fun w => (hcP w).1`. Establish `mem : ∀ (M : ∀ w : Pl E, Subgroup (GLw n w)) (x : GF E n), x ∈ Lev S M ↔ ∀ i : Pl E × Bool, Sl S i → qw n i.1 i.2 x ∈ M i.1`.
+
+Introduce `M x`. Simplify using `only [Lev, Subgroup.mem_iInf, Subgroup.mem_comap, Subtype.forall]`. Establish `memK : ∀ x : GF E n, x ∈ Kf E n ↔ ∀ u : Pl E, qw n u false x ∈ KGL u n`. Introduce `x`. Simplify using `only [Kf, Subgroup.mem_iInf, Subgroup.mem_comap]`.
+
+Both sides reduce to the same expression. Establish `hq : ∀ w : Pl E, Continuous (qw n w false)` using `fun w => (hloc w false).2.1`. Establish `hth : ∀ (u : Pl E) (g : GF E n), qw n (cPl u) false g = 1 → qw n u true g = 1`. Introduce `u g h`. Use `GlobalTheory.EulerTw.IntRead.map_thF (n := n) u g` as an intermediate fact.
+
+Express the relevant statement in the definitionally equal form `qw n u true g = _ at this`. Rewrite using `[this]`. Establish `h' : GeneralLinearGroup.map (pLoc E (GlobalTheory.EulerTw.cPl E u)) g = 1` using `h`. Rewrite using `[h', map_one]`. Establish `hC : ∀ (w : Pl E) (g : GF E n), qw n w true g = 1 → qw n (cPl w) false g = 1`.
+
+Introduce `w g h`. Use `hth (cPl w) (thF E n g) (by rw [hcc]; exact h)` as an intermediate fact. Express the relevant statement in the definitionally equal form `qw n (cPl w) false (thF E n (thF E n g)) = 1 at this`. Rewrite `this` using `[hinv]`. Then use the resulting hypothesis. Take `⟨ψ₀, hψ₀, hψ₀0⟩` from `(Submodule.ne_bot_iff _).1 π.ne_bot`.
+
+Take `⟨Y₀, hY₀⟩` from `exists_fin n hq (stb n ψ₀) (π.cusp ψ₀ hψ₀).1.level`. Use `set Z2 : Finset (Pl E) := Z ∪ Z.image cPl with hZ2`. Use `set Y : Finset (Pl E) := Y₀ ∪ Z2 with hY`. Use `set U : Subgroup (GF E n) := Kf E n ⊓ ⨅ v ∈ Y, (qw n v false).ker with hU`. Establish `memU : ∀ k, k ∈ U ↔ k ∈ Kf E n ∧ ∀ v ∈ Y, qw n v false k = 1`.
+
+Introduce `k`. Simplify using `only [hU, Subgroup.mem_inf, Subgroup.mem_iInf, MonoidHom.mem_ker]`. Take `⟨ψ, hψ, hψ0, hψU, hψP⟩` from `hJ E n π (Y \ Z2) (fun w hw => hOff w ⟨fun h => (Finset.mem_sdiff.1 hw).2 (Finset.mem_union_left _ h), fun h => (Finset.mem_sdiff.1 hw).2 (Finset.mem_union_right _ (Finset.mem_image.2 ⟨_, h, hcc w⟩))⟩) U (fun k hk w hw => ((memU k).1 hk).2 w (Finset.mem_sdiff.1 hw).1) ⟨ψ₀, hψ₀, h …`. Establish `hHo : IsOpen (stb n ψ : Set (GF E n))` using `(π.cusp ψ hψ).1.level`. Establish `hcore : ∀ w : Pl E, ∃ M : Subgroup (GLw n w), IsOpen (M : Set (GLw n w)) ∧ M ≤ KGL w n ⊓ (stb n ψ).comap (jw n w false) ⊓ (stb n ψ).comap (jw n w true) ∧ ∀ k ∈ KGL w n, ∀ x ∈ M, k * x * k⁻¹ ∈ M` using `fun w => core_exists _ _ (GlobalTheory.LFun.SatCompare.isOpen_isCompact_KGL w n).2 (((GlobalTheory.LFun.SatCompare.isOpen_isCompact_KGL w n).1.inter (hHo.preimage (hloc w false).1)).inter (hHo.preimage (hloc w true).1))`.
+
+Use `choose M hMo hMle hMn using hcore`. Use `⟨fun w => if w ∈ Z then M w else KGL w n, fun w => ?_, ψ, hψ, hψ0, fun k hk => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hw : w ∈ Z`. Simplify using `only [if_pos hw]`. Conclude with `⟨hMo w, fun x hx => (hMle w hx).1.1, hMn w, fun h => absurd hw h⟩`.
+
+Simplify using `only [if_neg hw]`. Conclude with `⟨(GlobalTheory.LFun.SatCompare.isOpen_isCompact_KGL w n).1, le_rfl, fun k hk x hx => (KGL w n).mul_mem ((KGL w n).mul_mem hk hx) ((KGL w n).inv_mem hk), fun _ => trivial⟩`. Establish `hkN` using `(mem _ k).1 hk`. Establish `hkK : k ∈ Kf E n` using `(hK k).1 ((mem _ k).2 fun i hi => by`. Use `hkN i hi` as an intermediate fact.
+
+Distinguish the cases in `hz : i.1 ∈ Z`. Simplify using `only [if_pos hz] at this`. Conclude with `(hMle _ this).1.1`. Simplify `this)` using `only [if_neg hz]`. Establish `hkv` using `(memK k).1 hkK`.
+
+Establish `hlocal : ∀ v : Pl E, jw n v false (qw n v false k) ∈ Kf E n ∧ qw n v false (jw n v false (qw n v false k)) = qw n v false k ∧ ∀ u, u ≠ v → qw n u false (jw n v false (qw n v false k)) = 1`. Introduce `v`. Establish `h1 : qw n v false (jw n v false (qw n v false k)) = qw n v false k` using `(hloc v false).2.2.1 _`. Establish `h2 : ∀ u, u ≠ v → qw n u false (jw n v false (qw n v false k)) = 1` using `fun u hu => pLoc_locGL_of_ne hu _`. Use `⟨(memK _).2 fun u => ?_, h1, h2⟩` and prove the remaining obligations.
+
+Distinguish the cases in `hu : u = v`. Substitute `hu` using the available equality. Rewrite using `[h1]`. Conclude with `hkv u`. Rewrite using `[h2 u hu]`.
+
+Conclude with `one_mem _`. Use `fin_reduce (fun v => qw n v false) (Kf E n) (stb n ψ) Y (fun k' hk' h' => hψU k' ((memU k').2 ⟨hk', h'⟩)) Y k hkK (fun v hv h => absurd hv h) (fun v hv => ?_)` and prove the remaining obligations. Distinguish the cases in `hvZ : v ∈ Z`. Establish `h0` using `hkN (v, false) ⟨(hZ v hvZ).1, by simp⟩`. Simplify using `only [if_pos hvZ] at h0`.
+
+Conclude with `⟨_, (hMle v h0).1.2, hlocal v⟩`. Distinguish the cases in `hvZ2 : v ∈ Z2`. Choose the witnesses or unpack the hypotheses as in `⟨w, hw, rfl⟩ : ∃ w ∈ Z, cPl w = v := by`. Break down `Finset.mem_union.1 hvZ2 with h | h` into its components or cases. Conclude with `absurd h hvZ`.
+
+Conclude with `Finset.mem_image.1 h`. Establish `hsp` using `(hZ w hw).2`. Establish `h0` using `hkN (w, true) ⟨(hZ w hw).1, fun _ => hsp⟩`. Simplify using `only [if_pos hw] at h0`. Use `set b := qw n w true k with hb`.
+
+Use `set e := jw n w true b with he`. Establish `heH : e ∈ stb n ψ` using `(hMle w h0).2`. Establish `hew : qw n w true e = b` using `(hloc w true).2.2.1 b`. Establish `hev : qw n (cPl w) false e = qw n (cPl w) false k`. Establish `: qw n (cPl w) false (k * e⁻¹) = 1` using `hC w _ (by`.
+
+Rewrite using `[map_mul, map_inv, hew, ← hb, mul_inv_cancel])`. Rewrite `this` using `[map_mul, map_inv, mul_inv_eq_one]`. Conclude with `this.symm`. Establish `heu : ∀ u, u ≠ cPl w → qw n u false e = 1`. Introduce `u hu`.
+
+Establish `hne : cPl u ≠ w` using `fun h => hu (by rw [← h, hcc])`. Use `GlobalTheory.EulerTw.IntRead.map_thF (n := n) u (locGL E n w b)` as an intermediate fact. Use `this.trans ?_` and prove the remaining obligations. Establish `h1 : GeneralLinearGroup.map (pLoc E (GlobalTheory.EulerTw.cPl E u)) (locGL E n w b) = 1` using `pLoc_locGL_of_ne hne b`. Rewrite using `[h1, map_one]`.
+
+Use `⟨e, heH, (memK _).2 fun u => ?_, hev, heu⟩` and prove the remaining obligations. Distinguish the cases in `hu : u = cPl w`. Substitute `hu` using the available equality. Rewrite using `[hev]`. Conclude with `hkv _`.
+
+Rewrite using `[heu u hu]`. Conclude with `one_mem _`. Establish `hvP : v ∈ Y \ Z2` using `Finset.mem_sdiff.2 ⟨hv, hvZ2⟩`. Conclude with `⟨_, GlobalTheory.LGrp.mem_fixed.1 (hψP v hvP) _ (hkv v), hlocal v⟩`.
+-/
 theorem levFix_pf :
     UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm.Places → SlotBasic → JointFix → LevFix := by
   intro hP hS hJ E _ _ _ n π S Z hSec hZ hOff

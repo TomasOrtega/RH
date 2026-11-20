@@ -38,9 +38,15 @@ def partRₗ (e : ((κ' → A) → ℂ) →ₗ[ℂ] (κ₁' → A) → ℂ) : ((
     show e (c • fun x => Φ _) _ = _
     rw [map_smul]; rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem partLₗ_apply (e : ((κ → A) → ℂ) →ₗ[ℂ] (κ₁ → A) → ℂ) (Φ : (κ ⊕ κ' → A) → ℂ) :
     partLₗ e Φ = partL e Φ := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem partRₗ_apply (e : ((κ' → A) → ℂ) →ₗ[ℂ] (κ₁' → A) → ℂ) (Φ : (κ ⊕ κ' → A) → ℂ) :
     partRₗ e Φ = partR e Φ := rfl
 
@@ -59,6 +65,9 @@ def conjLin {X Y : Type} (e : (X → ℂ) →ₗ[ℂ] (Y → ℂ)) : (X → ℂ)
     simp only [Pi.smul_apply, smul_eq_mul, RingHom.id_apply]
     rw [h, map_smul, Pi.smul_apply, smul_eq_mul, map_mul, Complex.conj_conj]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem conjLin_apply {X Y : Type} (e : (X → ℂ) →ₗ[ℂ] (Y → ℂ)) (φ : X → ℂ) (y : Y) :
     conjLin e φ y = starRingEnd ℂ (e (fun x => starRingEnd ℂ (φ x)) y) := rfl
 

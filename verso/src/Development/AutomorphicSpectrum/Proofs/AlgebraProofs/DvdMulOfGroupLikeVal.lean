@@ -18,10 +18,18 @@ section Norm
 variable {C : Type} [NontriviallyNormedField C] [IsUltrametricDist C]
   {O : Type} [CommRing O] [Algebra O C] {M : Type} [AddCommGroup M] [Module O M]
 
+/- English proof (translation)
+Rewrite using `[Algebra.smul_def, norm_mul]`. Conclude with `mul_le_of_le_one_left (norm_nonneg _) (h1 o)`.
+-/
 theorem norm_smul_le (h1 : ∀ o : O, ‖algebraMap O C o‖ ≤ 1) (o : O) (x : C) : ‖o • x‖ ≤ ‖x‖ := by
   rw [Algebra.smul_def, norm_mul]
   exact mul_le_of_le_one_left (norm_nonneg _) (h1 o)
 
+/- English proof (translation)
+Proceed by induction on `hm using Submodule.span_induction with`. Consider the case `mem x hx => exact h x hx`. Consider the case `zero => simpa using hr`. Consider the case `add x y _ _ hx hy`. Rewrite using `[map_add]`.
+
+Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le hx hy)`. Consider the case `smul o x _ hx => rw [map_smul]`. Conclude with `(norm_smul_le h1 _ _).trans hx`.
+-/
 theorem norm_le_of_mem_span (h1 : ∀ o : O, ‖algebraMap O C o‖ ≤ 1) (f : M →ₗ[O] C) {s : Set M}
     {r : ℝ} (hr : 0 ≤ r) (h : ∀ m ∈ s, ‖f m‖ ≤ r) {m : M} (hm : m ∈ Submodule.span O s) :
     ‖f m‖ ≤ r := by
@@ -32,6 +40,11 @@ theorem norm_le_of_mem_span (h1 : ∀ o : O, ‖algebraMap O C o‖ ≤ 1) (f : 
     rw [map_add]; exact (IsUltrametricDist.norm_add_le_max _ _).trans (max_le hx hy)
   | smul o x _ hx => rw [map_smul]; exact (norm_smul_le h1 _ _).trans hx
 
+/- English proof (translation)
+Take `⟨s, hs⟩` from `Module.Finite.fg_top (R := O) (M := M)`. Use `⟨∑ m ∈ s, ‖f m‖, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨m, rfl⟩`. Use `norm_le_of_mem_span h1 f (s := s) (Finset.sum_nonneg fun _ _ => norm_nonneg _) (fun m hm => Finset.single_le_sum (f := fun m => ‖f m‖) (fun _ _ => norm_nonneg _) hm) ?_` and prove the remaining obligations. Rewrite using `[hs]`.
+
+Discharge the goal by the elementary cases of `trivial`.
+-/
 theorem bddAbove_norm (h1 : ∀ o : O, ‖algebraMap O C o‖ ≤ 1) [Module.Finite O M] (f : M →ₗ[O] C) :
     BddAbove (Set.range fun m => ‖f m‖) := by
   obtain ⟨s, hs⟩ := Module.Finite.fg_top (R := O) (M := M)
@@ -43,16 +56,28 @@ theorem bddAbove_norm (h1 : ∀ o : O, ‖algebraMap O C o‖ ≤ 1) [Module.Fin
 
 def supN (f : WithConv (M →ₗ[O] C)) : ℝ := ⨆ m, ‖f.ofConv m‖
 
+/- English proof (translation)
+The claim follows from `le_ciSup (bddAbove_norm h1 f.ofConv) m`.
+-/
 theorem le_supN (h1 : ∀ o : O, ‖algebraMap O C o‖ ≤ 1) [Module.Finite O M]
     (f : WithConv (M →ₗ[O] C)) (m : M) : ‖f.ofConv m‖ ≤ supN f :=
   le_ciSup (bddAbove_norm h1 f.ofConv) m
 
+/- English proof (translation)
+The claim follows from `ciSup_le h`.
+-/
 theorem supN_le {f : WithConv (M →ₗ[O] C)} {r : ℝ} (h : ∀ m, ‖f.ofConv m‖ ≤ r) :
     supN f ≤ r := ciSup_le h
 
+/- English proof (translation)
+The claim follows from `Real.iSup_nonneg fun _ => norm_nonneg _`.
+-/
 theorem supN_nonneg (f : WithConv (M →ₗ[O] C)) : 0 ≤ supN f :=
   Real.iSup_nonneg fun _ => norm_nonneg _
 
+/- English proof (translation)
+Rewrite using `[supN, supN, Real.mul_iSup_of_nonneg (norm_nonneg c)]`. Use `congr 1`. Use extensionality with `m`. Rewrite using `[← norm_mul]`. Both sides reduce to the same expression.
+-/
 theorem supN_smul (c : C) (f : WithConv (M →ₗ[O] C)) : supN (c • f) = ‖c‖ * supN f := by
   rw [supN, supN, Real.mul_iSup_of_nonneg (norm_nonneg c)]
   congr 1
@@ -60,11 +85,19 @@ theorem supN_smul (c : C) (f : WithConv (M →ₗ[O] C)) : supN (c • f) = ‖c
   rw [← norm_mul]
   rfl
 
+/- English proof (translation)
+The claim follows from `supN_le fun m => (IsUltrametricDist.norm_add_le_max (f.ofConv m) (g.ofConv m)).trans (max_le_max (le_supN h1 f m) (le_supN h1 g m))`.
+-/
 theorem supN_add_le (h1 : ∀ o : O, ‖algebraMap O C o‖ ≤ 1) [Module.Finite O M]
     (f g : WithConv (M →ₗ[O] C)) : supN (f + g) ≤ max (supN f) (supN g) :=
   supN_le fun m => (IsUltrametricDist.norm_add_le_max (f.ofConv m) (g.ofConv m)).trans
     (max_le_max (le_supN h1 f m) (le_supN h1 g m))
 
+/- English proof (translation)
+Use `supN_le fun m => ?_` and prove the remaining obligations. Establish `h` using `(Coalgebra.Repr.arbitrary O m).convMul_apply f g`. Rewrite using `[h]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (mul_nonneg (supN_nonneg _) (supN_nonneg _)) fun i _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`.
+
+Conclude with `mul_le_mul (le_supN h1 f _) (le_supN h1 g _) (norm_nonneg _) (supN_nonneg _)`.
+-/
 theorem supN_mul_le (h1 : ∀ o : O, ‖algebraMap O C o‖ ≤ 1) [Module.Finite O M] [Coalgebra O M]
     (f g : WithConv (M →ₗ[O] C)) : supN (f * g) ≤ supN f * supN g := by
   refine supN_le fun m => ?_
@@ -75,6 +108,11 @@ theorem supN_mul_le (h1 : ∀ o : O, ‖algebraMap O C o‖ ≤ 1) [Module.Finit
   rw [norm_mul]
   exact mul_le_mul (le_supN h1 f _) (le_supN h1 g _) (norm_nonneg _) (supN_nonneg _)
 
+/- English proof (translation)
+Use `supN_le fun t => ?_` and prove the remaining obligations. Proceed by induction on `t with`. Consider the case `zero => simpa using hr`. Consider the case `tmul a b => exact h a b`. Consider the case `add x y hx hy`.
+
+Rewrite using `[map_add]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le hx hy)`.
+-/
 theorem supN_le_of_tmul {f : WithConv (M ⊗[O] M →ₗ[O] C)} {r : ℝ}
     (hr : 0 ≤ r) (h : ∀ a b, ‖f.ofConv (a ⊗ₜ b)‖ ≤ r) : supN f ≤ r := by
   refine supN_le fun t => ?_
@@ -84,6 +122,11 @@ theorem supN_le_of_tmul {f : WithConv (M ⊗[O] M →ₗ[O] C)} {r : ℝ}
   | add x y hx hy =>
     rw [map_add]; exact (IsUltrametricDist.norm_add_le_max _ _).trans (max_le hx hy)
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Use `supN_le_of_tmul (mul_nonneg (supN_nonneg _) (supN_nonneg _)) fun a b => ?_` and prove the remaining obligations. Rewrite using `[hh, norm_mul]`. Conclude with `mul_le_mul (le_supN h1 f _) (le_supN h1 g _) (norm_nonneg _) (supN_nonneg _)`. Rewrite using `[supN.eq_1 f, Real.iSup_mul_of_nonneg (supN_nonneg g)]`.
+
+Use `ciSup_le fun a => ?_` and prove the remaining obligations. Rewrite using `[supN.eq_1 g, Real.mul_iSup_of_nonneg (norm_nonneg _)]`. Use `ciSup_le fun b => ?_` and prove the remaining obligations. Rewrite using `[← norm_mul, ← hh]`. Conclude with `le_supN h1 h _`.
+-/
 theorem supN_eq_mul (h1 : ∀ o : O, ‖algebraMap O C o‖ ≤ 1) [Module.Finite O M]
     [Module.Finite O (M ⊗[O] M)] (f g : WithConv (M →ₗ[O] C))
     (h : WithConv (M ⊗[O] M →ₗ[O] C))
@@ -100,6 +143,11 @@ theorem supN_eq_mul (h1 : ∀ o : O, ‖algebraMap O C o‖ ≤ 1) [Module.Finit
     rw [← norm_mul, ← hh]
     exact le_supN h1 h _
 
+/- English proof (translation)
+Take `⟨s, hs⟩` from `hy.fg_adjoin_singleton`. Use `⟨∑ f ∈ s, supN f, fun k => supN_le fun m => ?_⟩` and prove the remaining obligations. Establish `hk : y ^ k ∈ Submodule.span O (s : Set (WithConv (M →ₗ[O] C)))`. Rewrite using `[hs]`. Conclude with `pow_mem (Algebra.self_mem_adjoin_singleton _ y) k`.
+
+Set `ev : WithConv (M →ₗ[O] C) →ₗ[O] C` to `{ toFun := fun f => f.ofConv m map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl }`. Conclude with `norm_le_of_mem_span h1 ev (Finset.sum_nonneg fun _ _ => supN_nonneg _) (fun f hf => (le_supN h1 f m).trans (Finset.single_le_sum (f := fun f => supN f) (fun _ _ => supN_nonneg _) hf)) hk`.
+-/
 theorem exists_supN_pow_le (h1 : ∀ o : O, ‖algebraMap O C o‖ ≤ 1) [Module.Finite O M]
     [Coalgebra O M] [IsCocomm O M] {y : WithConv (M →ₗ[O] C)} (hy : IsIntegral O y) :
     ∃ K : ℝ, ∀ k : ℕ, supN (y ^ k) ≤ K := by
@@ -120,6 +168,11 @@ end Norm
 
 section Main
 
+/- English proof (translation)
+Establish `hq' : algebraMap O C q ≠ 0` using `fun h => hq (hinj (by rw [h, map_zero]))`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, rfl⟩`. Rewrite using `[map_mul, inv_mul_cancel_left₀ hq']`. Conclude with `h1 z`.
+
+Introduce `h`. Take `⟨z, hz⟩` from `h2 _ h`. Use `⟨z, hinj ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, hz, mul_inv_cancel_left₀ hq']`.
+-/
 theorem dvd_iff_norm {C : Type} [NontriviallyNormedField C] {O : Type} [CommRing O] [Algebra O C]
     (hinj : Function.Injective (algebraMap O C)) (h1 : ∀ o : O, ‖algebraMap O C o‖ ≤ 1)
     (h2 : ∀ z : C, ‖z‖ ≤ 1 → z ∈ (algebraMap O C).range) {q : O} (hq : q ≠ 0) (x : O) :
@@ -134,6 +187,17 @@ theorem dvd_iff_norm {C : Type} [NontriviallyNormedField C] {O : Type} [CommRing
     refine ⟨z, hinj ?_⟩
     rw [map_mul, hz, mul_inv_cancel_left₀ hq']
 
+/- English proof (translation)
+Use `set y : WithConv (A →ₗ[O] C) := (algebraMap O C q)⁻¹ • extendHom O C A (toConv D) with hy`. Establish `hya : ∀ a, y.ofConv a = (algebraMap O C q)⁻¹ * algebraMap O C (D a)` using `fun _ => rfl`. Establish `: IsScalarTower O C (WithConv (A →ₗ[O] C))` using `⟨fun o c f => WithConv.ext (LinearMap.ext fun a => by`. Express the relevant statement in the definitionally equal form `(o • c) * f.ofConv a = o • (c * f.ofConv a)`. Rewrite using `[smul_mul_assoc])⟩`.
+
+Establish `hint : IsIntegral O y` using `GlobalTheory.IntegralOfPointValues.isIntegral_inv_smul_of_closed (B₀ := CartierDual O A) hinj hcl (extendHom O C A) (toConv D) q hq fun χ => by`. Take `⟨u, h3, h4⟩` from `exists_isGroupLikeElem χ`. Rewrite using `[← h4]`. Conclude with `hu u h3`. Establish `key` using `GlobalTheory.NearlyPrimitive.norm_smul_le_one C p hp _ _ supN supN (mulHom O C A) (inlHom O C A) (inrHom O C A) supN_smul supN_smul supN_nonneg supN_nonneg (supN_add_le h1) (supN_mul_le h1) (fun f => supN_le fun t => le_supN h1 f _) (fun f g => supN_eq_mul h1 f g _ fun a b => by …`.
+
+Establish `h` using `(dvd_iff_norm hinj h1 h2 hq _).1 (hD a b)`. Use `h using 2` and compare the differences between its conclusion and the goal. Express the relevant statement in the definitionally equal form `y.ofConv (a * b) - (extProd y 1).ofConv (a ⊗ₜ b) - (extProd 1 y).ofConv (a ⊗ₜ b) = _`. Rewrite using `[extProd_tmul, extProd_tmul, hya, hya, hya, LinearMap.convOne_apply, LinearMap.convOne_apply]`. Simplify using `only [map_sub, map_mul]`.
+
+Express the relevant statement in the definitionally equal form `_ - _ * algebraMap O C (counit (R := O) b) - algebraMap O C (counit (R := O) a) * _ = _`. Use the proof step `ring)`. Use the proof step `(algebraMap O C c) hc`. Rewrite using `[dvd_iff_norm hinj h1 h2 hq]`. Establish `h : (algebraMap O C q)⁻¹ * algebraMap O C (c * D a) = (algebraMap O C c • y).ofConv a`.
+
+Express the relevant statement in the definitionally equal form `_ = algebraMap O C c * y.ofConv a`. Rewrite using `[hya, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h]`. Conclude with `(le_supN h1 _ a).trans key`.
+-/
 theorem dvd_mul_of_groupLike (C : Type) [NontriviallyNormedField C] [IsUltrametricDist C]
     [IsAlgClosed C] [CharZero C] (p : ℕ) [Fact p.Prime] (hp : ‖(p : C)‖ = (p : ℝ)⁻¹)
     (O : Type) [CommRing O] [Algebra O C] (hinj : Function.Injective (algebraMap O C))
@@ -188,6 +252,33 @@ end Main
 
 section Diag
 
+/- English proof (translation)
+Set `A : Matrix (Fin r) (Fin m) O` to `fun j k => b.equivFun (g k) j`. Take `⟨P, Q, a, hP, hQ, hD⟩` from `ReciprocityTheory.PGsh.Up.Smith.smith_mat hv r m A`. Establish `hPP : P * P⁻¹ = 1` using `Matrix.mul_nonsing_inv P hP`. Establish `hPP' : P⁻¹ * P = 1` using `Matrix.nonsing_inv_mul P hP`. Establish `hQQ : Q * Q⁻¹ = 1` using `Matrix.mul_nonsing_inv Q hQ`.
+
+Set `φ : Fin r → F →ₗ[O] O` to `fun j => LinearMap.proj j ∘ₗ P.mulVecLin ∘ₗ b.equivFun.toLinearMap`. Set `e : Fin r → F` to `fun j => b.equivFun.symm fun i => P⁻¹ i j`. Establish `hφ : ∀ j w, φ j w = ∑ i, P j i * b.equivFun w i` using `fun j w => rfl`. Establish `he : ∀ j i, b.equivFun (e j) i = P⁻¹ i j` using `fun j i => by`. Express the relevant statement in the definitionally equal form `b.equivFun (b.equivFun.symm _) i = _`.
+
+Rewrite using `[b.equivFun.apply_symm_apply]`. Establish `hφe : ∀ l j, φ l (e j) = (1 : Matrix (Fin r) (Fin r) O) l j` using `fun l j => by`. Rewrite using `[hφ, ← hPP, Matrix.mul_apply]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [he]`. Establish `hsum : ∀ w, w = ∑ j, φ j w • e j` using `fun w => by`.
+
+Apply `b.equivFun.injective` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Rewrite using `[map_sum, Finset.sum_apply]`. Establish `h` using `congrFun (Matrix.mulVec_mulVec (b.equivFun w) P⁻¹ P) i`. Rewrite `h` using `[hPP', Matrix.one_mulVec]`.
+
+Rewrite using `[← h]`. Express the relevant statement in the definitionally equal form `∑ j, P⁻¹ i j * (P.mulVec (b.equivFun w)) j = _`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, Pi.smul_apply, he, smul_eq_mul, mul_comm]`. Both sides reduce to the same expression.
+
+Establish `hφg : ∀ j k, φ j (g k) = (P * A) j k` using `fun j k => by`. Rewrite using `[hφ, Matrix.mul_apply]`. Establish `hPA : ∀ j k, (P * A) j k = ∑ l : Fin m, (if (l : ℕ) = (j : ℕ) then a j else 0) * Q⁻¹ l k` using `fun j k => by`. Establish `h : P * A = P * A * Q * Q⁻¹` using `by rw [Matrix.mul_assoc (P * A), hQQ, Matrix.mul_one]`. Rewrite using `[h, Matrix.mul_apply]`.
+
+Conclude with `Finset.sum_congr rfl fun l _ => by rw [hD]`. Use `⟨φ, e, fun j => if (j : ℕ) < m then a j else 0, fun j => ?_, hsum, fun j k => ?_, fun j => ?_⟩` and prove the remaining obligations. Rewrite using `[hφe, Matrix.one_apply_eq]`. Rewrite using `[hφg, hPA]`. Express the relevant statement in the definitionally equal form `(if (j : ℕ) < m then a j else 0) ∣ _`.
+
+Distinguish the cases in `h : (j : ℕ) < m`. Rewrite using `[if_pos h]`. Use `Finset.dvd_sum fun l _ => ?_` and prove the remaining obligations. Use `split_ifs`. Conclude with `dvd_mul_right _ _`.
+
+Simplify using the standard rewrite rules. Establish `h0 : ∑ l : Fin m, (if (l : ℕ) = (j : ℕ) then a j else 0) * Q⁻¹ l k = 0` using `Finset.sum_eq_zero fun l _ => by rw [if_neg (fun hl : (l : ℕ) = j => h (hl ▸ l.2)), zero_mul]`. Rewrite using `[h0]`. Conclude with `dvd_zero _`. Distinguish the cases in `h : (j : ℕ) < m`.
+
+Simplify using `only [if_pos h]`. Set `x : F` to `∑ k, Q k ⟨j, h⟩ • g k`. Establish `hx : x ∈ Submodule.span O (Set.range g)` using `Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨k, rfl⟩)`. Establish `hφx : ∀ i, φ i x = if (j : ℕ) = (i : ℕ) then a i else 0` using `fun i => by`. Establish `h1 : φ i x = (P * A * Q) i ⟨j, h⟩`.
+
+Rewrite using `[Matrix.mul_apply, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, hφg, smul_eq_mul, mul_comm]`. Rewrite using `[h1, hD]`. Establish `hxe : a j • e j = x`.
+
+Rewrite using `[hsum x, Finset.sum_eq_single j]`. Rewrite using `[hφx, if_pos rfl]`. Introduce `i _ hij`. Rewrite using `[hφx, if_neg fun hh => hij (Fin.ext hh.symm), zero_smul]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[hxe]` and apply the resulting hypothesis. Simplify using `only [if_neg h, zero_smul]`. Conclude with `zero_mem _`.
+-/
 theorem exists_diag {C : Type} [Field C] {v : Valuation C NNReal} {O : Type} [CommRing O]
     [Algebra O C] (hv : v.Integers O) {F : Type} [AddCommGroup F] [Module O F] {r m : ℕ}
     (b : Module.Basis (Fin r) O F) (g : Fin m → F) :
@@ -270,6 +361,9 @@ section Renorm
 
 variable {C : Type} [Field C] (v : Valuation C NNReal)
 
+/- English proof (translation)
+Break down `le_max_iff.1 (v.map_add x y) with h | h` into its components or cases. Conclude with `le_max_of_le_left (Real.rpow_le_rpow (NNReal.coe_nonneg _) (by exact_mod_cast h) hs.le)`. Conclude with `le_max_of_le_right (Real.rpow_le_rpow (NNReal.coe_nonneg _) (by exact_mod_cast h) hs.le)`.
+-/
 theorem rpow_add_le (s : ℝ) (hs : 0 < s) (x y : C) :
     ((v (x + y) : NNReal) : ℝ) ^ s ≤ max (((v x : NNReal) : ℝ) ^ s) (((v y : NNReal) : ℝ) ^ s) := by
   rcases le_max_iff.1 (v.map_add x y) with h | h
@@ -286,6 +380,23 @@ def absOf (s : ℝ) (hs : 0 < s) : AbsoluteValue C ℝ where
   add_le' x y := (rpow_add_le v s hs x y).trans (max_le_add_of_nonneg
     (Real.rpow_nonneg (NNReal.coe_nonneg _) _) (Real.rpow_nonneg (NNReal.coe_nonneg _) _))
 
+/- English proof (translation)
+Establish `hpp : p.Prime` using `Fact.out`. Establish `hp1 : (1 : ℝ) < p` using `by exact_mod_cast hpp.one_lt`. Establish `hpc : (p : C) ≠ 0` using `Nat.cast_ne_zero.2 hpp.ne_zero`. Establish `hv0 : 0 < ((v (p : C) : NNReal) : ℝ)`. Establish `: v (p : C) ≠ 0` using `(Valuation.ne_zero_iff v).2 hpc`.
+
+Conclude with `pos_iff_ne_zero.2 this` after adjusting the coercions. Establish `hv1 : ((v (p : C) : NNReal) : ℝ) < 1` using `by exact_mod_cast hp`. Establish `hL : Real.log (v (p : C) : NNReal) < 0` using `Real.log_neg hv0 hv1`. Choose the witnesses or unpack the hypotheses as in `⟨s, hs, hps⟩ : ∃ s : ℝ, 0 < s ∧ ((v (p : C) : NNReal) : ℝ) ^ s = (p : ℝ)⁻¹ := by`. Use `⟨Real.log p / (-Real.log (v (p : C) : NNReal)), div_pos (Real.log_pos hp1) (neg_pos.2 hL), ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Real.rpow_def_of_pos hv0, show Real.log (v (p : C) : NNReal) * (Real.log p / (-Real.log (v (p : C) : NNReal))) = -Real.log p by`. Clear denominators, using `[hL.ne], Real.exp_neg, Real.exp_log (by linarith)]` for the nonvanishing conditions. Use `letI nf : NormedField C := (absOf v s hs).toNormedField`. Establish `hnorm : ∀ x : C, ‖x‖ = ((v x : NNReal) : ℝ) ^ s` using `fun x => rfl`. Establish `hpn : ‖(p : C)‖ = (p : ℝ)⁻¹` using `by rw [hnorm, hps]`.
+
+Use `letI nnf : NontriviallyNormedField C := NontriviallyNormedField.ofNormNeOne ⟨(p : C), hpc, by rw [hpn]; exact (inv_lt_one_of_one_lt₀ hp1).ne⟩`. Establish `ult : IsUltrametricDist C` using `IsUltrametricDist.isUltrametricDist_of_forall_norm_add_le_max_norm fun x y => rpow_add_le v s hs x y`. Establish `hinj : Function.Injective (algebraMap O C)` using `hv.hom_inj`. Establish `h1 : ∀ o : O, ‖algebraMap O C o‖ ≤ 1` using `fun o => by`. Rewrite using `[hnorm]`.
+
+Conclude with `Real.rpow_le_one (NNReal.coe_nonneg _) (by exact_mod_cast hv.map_le_one o) hs.le`. Establish `h2 : ∀ z : C, ‖z‖ ≤ 1 → z ∈ (algebraMap O C).range` using `fun z hz => by`. Use `hv.exists_of_le_one ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hlt`. Establish `h3 : (1 : ℝ) < ((v z : NNReal) : ℝ)` using `by exact_mod_cast not_le.1 hlt`.
+
+Rewrite `hz` using `[hnorm]`. Conclude with `absurd (Real.one_lt_rpow h3 hs) (not_lt.2 hz)`. Establish `hcl : ∀ z : C, IsIntegral O z → z ∈ (algebraMap O C).range` using `fun z hz => hv.exists_of_le_one (hv.mem_of_integral hz)`. Establish `hc : ‖algebraMap O C κ‖ ≤ (p : ℝ) ^ (-(1 / ((p : ℝ) - 1)))`. Establish `hk : ‖algebraMap O C κ‖ ^ (p - 1) ≤ (p : ℝ)⁻¹`.
+
+Rewrite using `[← hps, hnorm, ← Real.rpow_natCast, ← Real.rpow_mul (NNReal.coe_nonneg _), mul_comm, Real.rpow_mul (NNReal.coe_nonneg _), Real.rpow_natCast]`. Conclude with `Real.rpow_le_rpow (by positivity) (by exact_mod_cast hκ) hs.le`. Establish `hx : ‖algebraMap O C κ‖ ^ ((p : ℝ) - 1) ≤ (p : ℝ)⁻¹`. Rewrite using `[show (p : ℝ) - 1 = ((p - 1 : ℕ) : ℝ) by rw [Nat.cast_sub hpp.one_le, Nat.cast_one], Real.rpow_natCast]`. Conclude with `hk`.
+
+Rewrite using `[one_div, Real.rpow_neg (by linarith), ← Real.inv_rpow (by linarith)]`. Conclude with `(Real.le_rpow_inv_iff_of_pos (norm_nonneg _) (by positivity) (by linarith)).2 hx`. Conclude with `@dvd_mul_of_groupLike C nnf ult hac h0 p _ hpn O _ hA hinj h1 h2 hcl B _ _ _ _ _ q hq D hD hu κ hc a`.
+-/
 theorem dvd_mul_of_groupLike_val (p : ℕ) [Fact p.Prime] [hac : IsAlgClosed C] [h0 : CharZero C]
     (O : Type) [CommRing O] [hA : Algebra O C] (hv : v.Integers O) (hp : v (p : C) < 1)
     (B : Type) [CommRing B] [Bialgebra O B] [Coalgebra.IsCocomm O B]
@@ -351,6 +462,25 @@ section Level
 variable {p : ℕ} [Fact p.Prime] {C : Type} [Field C] [IsAlgClosed C] [CharZero C]
   {v : Valuation C NNReal} {O : Type} [CommRing O] [Algebra O C] [IsIntegrallyClosedIn O C]
 
+/- English proof (translation)
+Set `I : Ideal O` to `Ideal.span {q}`. Establish `hz : ∀ x : O, I.mkQ x = 0 → q ∣ x` using `fun x h => Ideal.mem_span_singleton.1 ((Submodule.Quotient.mk_eq_zero I).1 h)`. Establish `hz' : ∀ x : O, q ∣ x → I.mkQ x = 0` using `fun x h => (Submodule.Quotient.mk_eq_zero I).2 (Ideal.mem_span_singleton.2 h)`. Set `ψ0 : G.omega →ₗ[O] O ⧸ I` to `I.mkQ ∘ₗ φ`. Establish `hker : LinearMap.ker (G.omegaLevel n) ≤ LinearMap.ker ψ0` using `fun x hx => by`.
+
+Take `⟨u, rfl⟩` from `(G.omega_val_eq_zero_iff n x).1 hx`. Rewrite using `[LinearMap.mem_ker]`. Use `hz' _ ?_` and prove the remaining obligations. Rewrite using `[map_smul, smul_eq_mul]`. Conclude with `hqn.mul_right _`.
+
+Set `e` to `(G.omegaLevel n).quotKerEquivOfSurjective (G.omegaLevel_surjective n)`. Set `ψ : Cot O (G.A n) →ₗ[O] O ⧸ I` to `((LinearMap.ker (G.omegaLevel n)).liftQ ψ0 hker) ∘ₗ e.symm.toLinearMap`. Establish `hψ : ∀ x : G.omega, ψ (x.1 n) = I.mkQ (φ x)` using `fun x => by`. Establish `h : e.symm (x.1 n) = Submodule.Quotient.mk x`. Rewrite using `[LinearEquiv.symm_apply_eq]`.
+
+Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `(LinearMap.ker (G.omegaLevel n)).liftQ ψ0 hker (e.symm (x.1 n)) = _`. Rewrite using `[h]`. Both sides reduce to the same expression. Take `⟨D, hD⟩` from `Module.projective_lifting_property I.mkQ (ψ ∘ₗ AugCot.d (counitAlgHom O (G.A n))) (Submodule.mkQ_surjective I)`.
+
+Establish `hDa : ∀ a, I.mkQ (D a) = ψ (dUnit O a)` using `fun a => LinearMap.congr_fun hD a`. Establish `hdm : ∀ a b, ψ (dUnit O (a * b)) = counit (R` using `O) a • ψ (dUnit O b) + counit (R := O) b • ψ (dUnit O a) := fun a b => by`. Rewrite using `[dUnit, AugCot.d_mul, map_add, map_smul, map_smul]`. Both sides reduce to the same expression. Establish `key` using `dvd_mul_of_groupLike_val v p O hv hp (G.A n) q hq D (fun a b => hz _ (by`.
+
+Express the relevant statement in the definitionally equal form `I.mkQ (D (a * b) - counit (R := O) a • D b - counit (R := O) b • D a) = 0`. Rewrite using `[map_sub, map_sub, map_smul, map_smul, hDa, hDa, hDa, hdm]`. Use the proof step `abel))`. Use the proof step `(fun u hu => hz _ (by`. Take `⟨χ, hχ⟩` from `G.dual.pt_surjective C n (evalPoint u hu)`.
+
+Establish `h1 : charElem χ n = u` using `CartierDual.eq_of_forall_apply (R := O) fun f => by`. Establish `hχ' : χ.pt n = evalPoint u hu` using `hχ`. Rewrite using `[apply_charElem, hχ']`. Both sides reduce to the same expression. Rewrite using `[hDa, ← h1, ← dlog_val, hψ]`.
+
+Conclude with `hz' _ (hφ χ)))`. Use `κ hκ`. Take `⟨a, ha⟩` from `AugCot.d_surjective (counitAlgHom O (G.A n)) (w.1 n)`. Establish `h3 : q ∣ D a - φ w` using `hz _ (by`. Rewrite using `[map_sub, hDa, sub_eq_zero, ← hψ]`.
+
+Conclude with `congrArg ψ ha)`. Establish `h4` using `dvd_sub (key a) (h3.mul_left κ)`. Simplify `h4` using `[mul_sub]`.
+-/
 theorem dvd_mul_of_dvd_dlog (hv : v.Integers O) (hp : v (p : C) < 1) (G : PDivGroup p O) (n : ℕ)
     (q : O) (hq : q ≠ 0) (hqn : q ∣ (p : O) ^ n) (φ : G.omega →ₗ[O] O)
     (hφ : ∀ χ : G.dual.Tate, q ∣ φ (dlog G χ)) (κ : O)
@@ -413,6 +543,29 @@ namespace GlobalTheory.CompanionTheory.Ar.HT
 
 open CokerSharp
 
+/- English proof (translation)
+Introduce `p _ C _ _ _ v O _ _ _ hv hp hO _ G _ _ κ hκ w`. Establish `hpp : p.Prime` using `Fact.out`. Establish `: IsIntegrallyClosedIn O C` using `isIntegrallyClosedIn_iff.2 ⟨hv.hom_inj, fun hx => hv.exists_of_le_one (hv.mem_of_integral hx)⟩`. Use `G.dual.finite_tate C` as an intermediate fact. Take `⟨m, t, ht⟩` from `Module.Finite.exists_fin (R := ℤ_[p]) (M := G.dual.Tate)`.
+
+Set `g : Fin m → G.omega` to `fun k => dlog G (t k)`. Take `⟨φ, e, d, h1, h2, h3, h4⟩` from `exists_diag hv (Module.finBasis O G.omega) g`. Establish `hspan : Submodule.span O (Set.range g) ≤ LinearMap.range (dlogLinear G)` using `Submodule.span_le.2 (by`. Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `⟨1 ⊗ₜ t k, by simp [g]⟩)`.
+
+Distinguish the cases in `hκ0 : κ = 0`. Rewrite using `[hκ0, zero_smul]`. Conclude with `zero_mem _`. Establish `hpO : (p : O) ≠ 0` using `fun h => by`. Establish `h5 : algebraMap O C (p : O) = 0` using `by rw [h, map_zero]`.
+
+Rewrite `h5` using `[map_natCast]`. Conclude with `Nat.cast_ne_zero.2 hpp.ne_zero h5`. Choose the witnesses or unpack the hypotheses as in `⟨n, hn⟩ : ∃ n : ℕ, ¬ (p : O) ^ n ∣ κ := by`. Assume the negation of the conclusion as `hall`. Use `push Not at hall`.
+
+Use `hκ0 (hO.toIsHausdorff.haus' κ fun n => ?_)` and prove the remaining obligations. Rewrite using `[SModEq.zero, smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow, Ideal.mem_span_singleton]`. Conclude with `hall n`. Establish `hdlog : ∀ (j : Fin _) (q : O), (∀ k, q ∣ φ j (g k)) → ∀ χ : G.dual.Tate, q ∣ φ j (dlog G χ)` using `fun j q hk χ => by`. Establish `hχ : χ ∈ Submodule.span ℤ_[p] (Set.range t)` using `ht ▸ Submodule.mem_top`.
+
+Proceed by induction on `hχ using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨k, rfl⟩` from `hx`. Conclude with `hk k`. Consider the case `zero => simp`.
+
+Consider the case `add x y _ _ hx hy`. Rewrite using `[map_add, map_add]`. Conclude with `dvd_add hx hy`. Consider the case `smul a x _ hx`. Rewrite using `[dlog_smul (algebraMap ℤ_[p] O), map_smul, smul_eq_mul]`.
+
+Conclude with `hx.mul_left _`. Establish `key : ∀ j, κ • e j ∈ LinearMap.range (dlogLinear G)` using `fun j => by`. Break down `le_total (v (algebraMap O C ((p : O) ^ n))) (v (algebraMap O C (d j))) with h | h` into its components or cases. Establish `hd : d j ∣ (p : O) ^ n` using `hv.dvd_of_le h`. Establish `hd0 : d j ≠ 0` using `fun h0 => pow_ne_zero n hpO (zero_dvd_iff.1 (h0 ▸ hd))`.
+
+Establish `h5` using `dvd_mul_of_dvd_dlog hv hp G n (d j) hd0 hd (φ j) (hdlog j _ (h3 j)) κ hκ (e j)`. Rewrite `h5` using `[h1, mul_one]`. Take `⟨c, hc⟩` from `h5`. Rewrite using `[hc, mul_comm, mul_smul]`. Conclude with `Submodule.smul_mem _ _ (hspan (h4 j))`.
+
+Establish `hd : (p : O) ^ n ∣ d j` using `hv.dvd_of_le h`. Establish `h5` using `dvd_mul_of_dvd_dlog hv hp G n ((p : O) ^ n) (pow_ne_zero n hpO) dvd_rfl (φ j) (hdlog j _ fun k => hd.trans (h3 j k)) κ hκ (e j)`. Rewrite `h5` using `[h1, mul_one]`. Conclude with `absurd h5 hn`. Rewrite using `[h2 w, Finset.smul_sum]`.
+
+Use `Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Rewrite using `[smul_comm]`. Conclude with `Submodule.smul_mem _ _ (key j)`.
+-/
 theorem coker_dlog_killed : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C]
     (v : Valuation C NNReal) (O : Type) [CommRing O] [IsDomain O] [Algebra O C]
     (hv : v.Integers O) (hp : v (p : C) < 1) (hO : IsAdicComplete (Ideal.span {(p : O)}) O)

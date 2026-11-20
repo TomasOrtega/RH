@@ -9,6 +9,17 @@ open GlobalTheory.WeilM GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHeck
 open Formalism.IndefR.DatumF MeasureTheory GlobalTheory.FinWeil GlobalTheory.FinLatF GlobalTheory.RealWeilF GlobalTheory.WeilPartsF
 open PositivityTheory.ThKW PositivityTheory.ThKW.AutEtaA
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B hB nS nT JS JT hS hT ξ₀ _ hξ Λ hg hsd hc`. Establish `hσ` using `LatB.sg_sg hB.cm`. Take `⟨w, hw⟩` from `LatB.exists_w hB.cm hB.unram`. Take `⟨lam, hlam⟩` from `UpperTheory.TP.W.normK F E σ B hB`. Establish `H` using `isHeis_opFF hσ hS hT hξ hc hw`.
+
+Establish `hA` using `LatC.lat_sd hσ hB.std hg hsd`. Establish `hspan` using `GlobalTheory.T.span_heisenberg_translates_of_lattice_vacua_eq_top H _ hA (LatC.smooth_theta hg H hA)`. Establish `hidx : ∀ p, idx (latF F E nS nT Λ) ((latF F E nS nT Λ).map (rhoFF σ JS JT p)) ≠ 0` using `fun p => by`. Use `LatC.idx_ne_zero hg _ (AddMonoidHom.mk' (actOF σ JS JT p.1 p.2) (GlobalTheory.FinLatF.actOF_add _ _)) (LatC.continuous_act_right p.1 p.2) (fun l hl => actOF_mem_finSubF _ _ (lat_fin hl)) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨a, ha, rfl⟩`.
+
+Conclude with `⟨a, ha, rfl⟩`. Take `⟨Om, h1, h2⟩` from `GlobalTheory.T.exists_weil_representation_of_lattice_vacua H lam hlam _ hA hspan (rhoFF σ JS JT) (LatA.gamFF_rhoFF hS) hidx`. Use `⟨w, lam, Om, hw, hA, hspan, hidx, h1, fun p => (h2 p).1, fun p => (h2 p).2, hlam, fun x => ?_, LatC.near hg, LatC.near' hg, fun e he a ha => ?_⟩` and prove the remaining obligations. Take `⟨M, hM, hx⟩` from `lat_den hg (x : WOF F E nS nT) x.fin`. Use `⟨2 * M, by omega, fun l hl => ?_⟩` and prove the remaining obligations.
+
+Establish `h3 : gamFF σ JS JT ξ₀ B.ψ x (M • l) = 1`. Rewrite using `[H.nsmul_right, ← H.nsmul_left]`. Conclude with `H.iso hA hx hl`. Rewrite using `[mul_smul, LatC.symplOHF_two]`. Conclude with `h3`.
+
+Take `⟨hf, hfc, hcc⟩` from `LatB.split_parts he`. Conclude with `⟨LatB.idem_smul_mem he.1 hf ha, LatB.idem_smul_mem hcc hfc ha⟩`.
+-/
 theorem UpperTheory.TP.W.latK : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
     UpperTheory.TP.W.GoodK σ B → ∀ (nS nT : ℕ) (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E),
       IsHermND σ JS → IsHermND σ JT → ∀ ξ₀ : E, ξ₀ ≠ 0 → σ ξ₀ = -ξ₀ →

@@ -10,6 +10,9 @@ namespace NewtonPolygonValuation
 
 variable {L : Type} [Field L] (v : AddValuation L (WithTop ℝ))
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih => rw [prod_insert ha, sum_insert ha, AddValuation.map_mul, ih]`.
+-/
 lemma val_prod {ι : Type*} (s : Finset ι) (g : ι → L) :
     v (∏ i ∈ s, g i) = ∑ i ∈ s, v (g i) := by
   classical
@@ -17,6 +20,15 @@ lemma val_prod {ι : Type*} (s : Finset ι) (g : ι → L) :
   | empty => simp
   | insert a s ha ih => rw [prod_insert ha, sum_insert ha, AddValuation.map_mul, ih]
 
+/- English proof (translation)
+Establish `h` using `congrArg v hz`. Rewrite `h` using `[AddValuation.map_pow, AddValuation.map_one]`. Establish `hz0 : z ≠ 0`. Introduce and unpack `rfl`. Rewrite `hz` using `[zero_pow hN.ne']`.
+
+Conclude with `zero_ne_one hz`. Establish `hne : v z ≠ ⊤` using `(AddValuation.ne_top_iff v).2 hz0`. Take `⟨r, hr⟩` from `WithTop.ne_top_iff_exists.1 hne`. Rewrite `h`, the goal using `[← hr]`. Rewrite `h` using `[← WithTop.coe_nsmul]`.
+
+Establish `h1 : N • r = 0` using `by exact_mod_cast h`. Rewrite `h1` using `[nsmul_eq_mul]`. Establish `hr0 : r = 0`. Break down `mul_eq_zero.1 h1 with h2 | h2` into its components or cases. Conclude with `absurd h2 (by exact_mod_cast hN.ne')`.
+
+Conclude with `h2`. Rewrite using `[hr0]`. Both sides reduce to the same expression.
+-/
 lemma val_root_eq_zero {z : L} {N : ℕ} (hN : 0 < N) (hz : z ^ N = 1) : v z = 0 := by
   have h := congrArg v hz
   rw [AddValuation.map_pow, AddValuation.map_one] at h
@@ -37,6 +49,11 @@ lemma val_root_eq_zero {z : L} {N : ℕ} (hN : 0 < N) (hz : z ^ N = 1) : v z = 0
   rw [hr0]
   rfl
 
+/- English proof (translation)
+Rewrite using `[← geom_sum_mul, AddValuation.map_mul]`. Establish `h0 : (0 : WithTop ℝ) ≤ v (∑ k ∈ range i, ζ ^ k)`. Apply `AddValuation.map_le_sum` to reduce the goal to its premises. Introduce `k _`. Rewrite using `[AddValuation.map_pow, val_root_eq_zero v hN hζ, smul_zero]`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 lemma val_sub_one_le {ζ : L} {N : ℕ} (hN : 0 < N) (hζ : ζ ^ N = 1) (i : ℕ) :
     v (ζ - 1) ≤ v (ζ ^ i - 1) := by
   rw [← geom_sum_mul, AddValuation.map_mul]
@@ -47,6 +64,21 @@ lemma val_sub_one_le {ζ : L} {N : ℕ} (hN : 0 < N) (hζ : ζ ^ N = 1) (i : ℕ
   calc v (ζ - 1) = 0 + v (ζ - 1) := (zero_add _).symm
     _ ≤ _ := add_le_add h0 le_rfl
 
+/- English proof (translation)
+Use `Fact.mk hℓ` as an intermediate fact. Establish `hpos : 0 < ℓ ^ j` using `pow_pos hℓ.pos j`. Establish `: NeZero (ℓ ^ j)` using `⟨hpos.ne'⟩`. Establish `heq : ∀ μ ∈ primitiveRoots (ℓ ^ j) L, v (1 - μ) = v (z - 1)`. Introduce `μ hμ`.
+
+Rewrite `hμ` using `[mem_primitiveRoots hpos]`. Rewrite using `[AddValuation.map_sub_swap]`. Apply `le_antisymm` to reduce the goal to its premises. Take `⟨i, -, hi⟩` from `hμ.eq_pow_of_pow_eq_one hz.pow_eq_one`. Rewrite using `[← hi]`.
+
+Conclude with `val_sub_one_le v hpos hμ.pow_eq_one i`. Take `⟨i, -, hi⟩` from `hz.eq_pow_of_pow_eq_one hμ.pow_eq_one`. Rewrite using `[← hi]`. Conclude with `val_sub_one_le v hpos hz.pow_eq_one i`. Establish `hcyc` using `congrArg (eval 1) (cyclotomic_eq_prod_X_sub_primitiveRoots hz)`.
+
+Take `⟨k, rfl⟩ : ∃ k, j = k + 1` from `⟨j - 1, by omega⟩`. Rewrite `hcyc` using `[eval_one_cyclotomic_prime_pow, eval_prod]`. Simplify using `only [eval_sub, eval_X, eval_C] at hcyc`. Establish `h2` using `congrArg v hcyc`. Rewrite `h2` using `[hv, val_prod, sum_congr rfl heq, sum_const, hz.card_primitiveRoots]`.
+
+Establish `hne1 : z ≠ 1` using `hz.ne_one (Nat.one_lt_pow (by omega) hℓ.one_lt)`. Establish `hne : v (z - 1) ≠ ⊤` using `(AddValuation.ne_top_iff v).2 (sub_ne_zero.2 hne1)`. Take `⟨r, hr⟩` from `WithTop.ne_top_iff_exists.1 hne`. Rewrite `h2`, the goal using `[← hr]`. Rewrite `h2` using `[← WithTop.coe_nsmul]`.
+
+Establish `h3 : (1 : ℝ) = ((ℓ ^ (k + 1)).totient : ℝ) * r`. Use `WithTop.coe_injective h2` as an intermediate fact. Rewrite `this` using `[nsmul_eq_mul]`. Conclude with `this`. Establish `hφ : (0 : ℝ) < ((ℓ ^ (k + 1)).totient : ℝ)` using `by exact_mod_cast Nat.totient_pos.2 hpos`.
+
+Use `congr 1`. Clear the denominators using the available nonvanishing facts. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 lemma val_zeta_sub_one {ℓ j : ℕ} (hℓ : ℓ.Prime) (hj : 1 ≤ j) (hv : v (ℓ : L) = wt 1) {z : L}
     (hz : IsPrimitiveRoot z (ℓ ^ j)) :
     v (z - 1) = wt (1 / ((ℓ ^ j).totient : ℝ)) := by
@@ -85,12 +117,18 @@ lemma val_zeta_sub_one {ℓ j : ℕ} (hℓ : ℓ.Prime) (hj : 1 ≤ j) (hv : v (
   field_simp
   linarith
 
+/- English proof (translation)
+Rewrite using `[← add_sum_erase s g hi]`. Conclude with `AddValuation.map_add_eq_of_lt_left v (AddValuation.map_lt_sum v h0 hlt)`.
+-/
 lemma val_sum_eq_of_lt {ι : Type*} [DecidableEq ι] {s : Finset ι} {g : ι → L} {i₀ : ι}
     (hi : i₀ ∈ s) (h0 : v (g i₀) ≠ ⊤) (hlt : ∀ i ∈ s.erase i₀, v (g i₀) < v (g i)) :
     v (∑ i ∈ s, g i) = v (g i₀) := by
   rw [← add_sum_erase s g hi]
   exact AddValuation.map_add_eq_of_lt_left v (AddValuation.map_lt_sum v h0 hlt)
 
+/- English proof (translation)
+Proceed by induction on `a using WithTop.recTopCoe with`. Consider the case `top => simp`. Consider the case `coe r`. Rewrite using `[← WithTop.coe_add]`. Conclude with `WithTop.coe_lt_coe.2 (h r rfl)`.
+-/
 lemma wt_lt_add {a : WithTop ℝ} {x y : ℝ} (h : ∀ r : ℝ, a = r → x < r + y) :
     (x : WithTop ℝ) < a + y := by
   induction a using WithTop.recTopCoe with
@@ -99,6 +137,9 @@ lemma wt_lt_add {a : WithTop ℝ} {x y : ℝ} (h : ∀ r : ℝ, a = r → x < r 
     rw [← WithTop.coe_add]
     exact WithTop.coe_lt_coe.2 (h r rfl)
 
+/- English proof (translation)
+Rewrite using `[AddValuation.map_mul, AddValuation.map_pow, hx, ← WithTop.coe_nsmul, nsmul_eq_mul]`.
+-/
 lemma val_term {x : L} {s : ℝ} (hx : v x = wt s) (a : L) (i : ℕ) :
     v (a * x ^ i) = v a + wt (i * s) := by
   rw [AddValuation.map_mul, AddValuation.map_pow, hx, ← WithTop.coe_nsmul, nsmul_eq_mul]
@@ -107,6 +148,39 @@ end NewtonPolygonValuation
 
 open NewtonPolygonValuation
 
+/- English proof (translation)
+Introduce `L _ v ℓ e w j F z hℓ he hv hcoef hunit hz hφw`. Break down `Nat.eq_zero_or_pos j with rfl | hj` into its components or cases. Rewrite `hz` using `[pow_zero, IsPrimitiveRoot.one_right_iff]`. Substitute `hz` using the available equality. Establish `hw : w = 0`.
+
+Rewrite `hφw` using `[pow_zero, Nat.totient_one, Nat.cast_one]`. Establish `: e * w < 1` using `by exact_mod_cast hφw`. Break down `Nat.eq_zero_or_pos w with h | h` into its components or cases. Conclude with `h`. Conclude with `absurd this (by have := Nat.mul_le_mul he h; omega)`.
+
+Substitute `hw` using the available equality. Take `⟨i, hi, hvi⟩` from `hunit`. Take `rfl : i = 0` from `by omega`. Rewrite using `[sub_self, ← coeff_zero_eq_eval_zero, hvi]`. Simplify using the standard rewrite rules.
+
+Use `set φ : ℝ := ((ℓ ^ j).totient : ℝ) with hφdef`. Establish `hφpos : (0 : ℝ) < φ`. Rewrite using `[hφdef]`. Conclude with `Nat.totient_pos.2 (pow_pos hℓ.pos j)` after adjusting the coercions. Establish `hepos : (0 : ℝ) < e` using `by exact_mod_cast he`.
+
+Use `set t : ℝ := 1 / φ with htdef`. Establish `htpos : 0 < t` using `by positivity`. Establish `hx : v (z - 1) = wt t` using `val_zeta_sub_one v hℓ hj hv hz`. Establish `hex : ∃ i, i ≤ w ∧ v (F.coeff i) = wt 0`. Take `⟨i, hi, h⟩` from `hunit`.
+
+Conclude with `⟨i, hi, h⟩`. Use `set i₀ := Nat.find hex with hi₀def`. Establish `hi₀w : i₀ ≤ w` using `(Nat.find_spec hex).1`. Establish `hi₀v : v (F.coeff i₀) = wt 0` using `(Nat.find_spec hex).2`. Establish `hlow : ∀ i < i₀, wt (1 / e) ≤ v (F.coeff i)`.
+
+Introduce `i hi`. Establish `hn` using `Nat.find_min hex hi`. Break down `hcoef i with h | h` into its components or cases. Conclude with `absurd ⟨by omega, h⟩ hn`. Conclude with `h`.
+
+Establish `hnn : ∀ i, (0 : WithTop ℝ) ≤ v (F.coeff i)`. Introduce `i`. Break down `hcoef i with h | h` into its components or cases. Rewrite using `[h]`. Both sides reduce to the same expression.
+
+Use `le_trans ?_ h` and prove the remaining obligations. Conclude with `WithTop.coe_le_coe.2 (by positivity)`. Establish `hwt : (w : ℝ) * t < 1 / e`. Establish `h1 : ((e * w : ℕ) : ℝ) < φ` using `hφw`. Move the coercions through the operations in `at h1`.
+
+Rewrite using `[htdef, lt_div_iff₀ hepos]`. Rewrite using `[mul_one_div, div_mul_eq_mul_div, div_lt_one hφpos]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hne0 : F.coeff i₀ ≠ 0`. Rewrite using `[← AddValuation.ne_top_iff v, hi₀v]`.
+
+Conclude with `WithTop.coe_ne_top`. Establish `hmem : i₀ ∈ range (F.natDegree + 1)` using `mem_range.2 (Nat.lt_succ_of_le (le_natDegree_of_ne_zero hne0))`. Rewrite using `[eval_eq_sum_range]`. Rewrite using `[val_sum_eq_of_lt v hmem ?_ ?_]`. Rewrite using `[val_term v hx, hi₀v, ← WithTop.coe_add, zero_add]`.
+
+Apply `WithTop.coe_le_coe.2` to reduce the goal to its premises. Rewrite using `[htdef, mul_one_div]`. Conclude with `div_le_div_of_nonneg_right (by exact_mod_cast hi₀w) hφpos.le`. Rewrite using `[val_term v hx, hi₀v, ← WithTop.coe_add]`. Conclude with `WithTop.coe_ne_top`.
+
+Introduce `i hi`. Establish `hii : i ≠ i₀` using `(mem_erase.1 hi).1`. Rewrite using `[val_term v hx, val_term v hx, hi₀v, ← WithTop.coe_add, zero_add]`. Apply `wt_lt_add` to reduce the goal to its premises. Introduce `r hr`.
+
+Break down `lt_or_gt_of_ne hii with h | h` into its components or cases. Establish `h1` using `hlow i h`. Rewrite `h1` using `[hr]`. Establish `h1' : 1 / (e : ℝ) ≤ r` using `WithTop.coe_le_coe.1 h1`. Establish `: (i₀ : ℝ) * t ≤ w * t` using `mul_le_mul_of_nonneg_right (by exact_mod_cast hi₀w) htpos.le`.
+
+Establish `: (0 : ℝ) ≤ i * t` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1` using `hnn i`. Rewrite `h1` using `[hr]`. Establish `h1' : (0 : ℝ) ≤ r` using `WithTop.coe_le_coe.1 h1`.
+
+Establish `: (i₀ : ℝ) * t < i * t` using `mul_lt_mul_of_pos_right (by exact_mod_cast h) htpos`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem evaluation_bound : Evaluation := by
   intro L _ v ℓ e w j F z hℓ he hv hcoef hunit hz hφw
   classical

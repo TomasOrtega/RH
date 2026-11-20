@@ -13,6 +13,37 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK.Dbl GlobalTheory.Cont PositivityTheory.Rg.Sw
 open GlobalTheory.Doubling (absE)
 namespace PositivityTheory.SiegelWeilFormula.Kdil
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ d R w Ψ hΨ φ hφ g X a ha`. Take `⟨-, -, -, -, hTA⟩` from `hT`. Take `⟨hμ0, hμT, hTA'⟩` from `hTA F E σ d`. Take `⟨-, -, hGtop, -, -, -⟩` from `hAux F E σ d`. Take `⟨L, hL⟩` from `hLE F E σ d R w`.
+
+Take `⟨y₀, Ψ', hrep, hmaj⟩` from `hSD F E σ d R w L hL Ψ hΨ g`. Take `⟨Gf, hreal, hhol, hcont, hbd, hder⟩` from `hLF F E σ d R w L hL X a ha`. Take `⟨hUo, hUR, hUb⟩` from `hSO d.n X`. Establish `hcount` using `hMC E d.m d.n`. Use `set U := strip X with hU`.
+
+Establish `h0U : (0 : ℂ) ∈ U` using `by simpa using hUR 0`. Use `set Fm : GR d.n → ℂ → UA σ d.A.J → Matrix (Fin d.m) (Fin d.n) E → ℂ := fun y z h Xr => Gf (y₀ * y) z (R.loc w (mat h⁻¹ * incM F Xr)) * Ψ' (mat h⁻¹ * incM F Xr) with hFm`. Use `set ν : Measure (UA σ d.A.J) := (d.μ.restrict d.D Set.univ)⁻¹ • d.μ.restrict d.D with hν`. Establish `hav : ∀ f : UA σ d.A.J → ℂ, (⨍ h in d.D, f h ∂d.μ) = ∫ h, f h ∂ν` using `fun f => rfl`. Establish `hc : (d.μ.restrict d.D Set.univ)⁻¹ ≠ ⊤`.
+
+Rewrite using `[ENNReal.inv_ne_top, Measure.restrict_apply_univ]`. Conclude with `hμ0`. Use `haveI : IsFiniteMeasure (d.μ.restrict d.D) := isFiniteMeasure_restrict.mpr hμT`. Establish `hI : ∀ Φ ∈ d.sch, ∀ x, d.I Φ x = ∫ h, ∑' Xr : Matrix (Fin d.m) (Fin d.n) E, d.T (d.om x Φ) (mat h⁻¹ * incM F Xr) ∂ν`. Introduce `Φ hΦ x`.
+
+Rewrite using `[← hav]`. Use `show (⨍ h in d.D, thetaSum F (d.om x (d.S h Φ)) ∂d.μ) = _`. Repeatedly rewrite using `[hTP F E σ d Φ hΦ x]`. Establish `hT1 : ∀ P y', d.T (d.om (g * R.ι w y') (φ P)) = R.tens w (L (y₀ * y') (fP P)) Ψ'` using `fun P y' => hrep (φ P) (hφ P).1 (fP P) (hFP _ _ P) (hφ P).2 y'`. Take `⟨hHc, hHd, hHr⟩` from `hHM (GR d.n) (UA σ d.A.J) (Matrix (Fin d.m) (Fin d.n) E) ν U hUo hUb Fm (fun p h Xr => (hhol (y₀ * p) _).mul_const _) (fun h Xr => ((hcont (R.loc w (mat h⁻¹ * incM F Xr))).comp (f := fun q : GR d.n × ℂ => (y₀ * q.1, q.2)) (by fun_prop) (fun q hq => ⟨trivial, hq.2⟩)).mul continuou …`.
+
+Introduce `p t _`. Establish `e : (fun h => ∑' k, Fm p t h k) = fun h => thetaSum F (d.om (g * R.ι w (p * a t)) (d.S h (φ 1)))`. Use function extensionality and compare the values at `h`. Rewrite using `[hTP F E σ d (φ 1) (hφ 1).1, hT1 1 (p * a t)]`. Simplify using `only [hFm, _root_.PositivityTheory.SiegelWeilFormula.RD_k.tens, hreal, mul_assoc]`.
+
+Rewrite using `[e]`. Conclude with `((hTA' (φ 1) (hφ 1).1).1 _).aestronglyMeasurable.smul_measure _)`. Use the proof step `(by`. Introduce and unpack `⟨p, z⟩ ⟨-, hz⟩`. Take `⟨N, hN, C, δ, hδ, hCb⟩` from `hbd (y₀ * p, z) ⟨trivial, hz⟩`.
+
+Take `⟨K, hK⟩` from `hTB F E σ d _ (hmaj δ hδ)`. Use `⟨(fun q : GR d.n × ℂ => (y₀ * q.1, q.2)) ⁻¹' N, (Continuous.continuousAt (by fun_prop)).preimage_mem_nhds hN, fun h Xr => |C| * ‖R.tens w (fun u => (Real.exp (-δ * sq u) : ℂ)) Ψ' (mat h⁻¹ * incM F Xr)‖, fun _ => |C| * K, fun h => (hK h).1.mul_left _, (integrable_const _).smul_mea …` and prove the remaining obligations. Introduce `h`. Rewrite using `[tsum_mul_left]`. Conclude with `mul_le_mul_of_nonneg_left (hK h).2 (abs_nonneg C)`.
+
+Introduce `q' hq' hq'U h Xr`. Establish `hb1` using `hCb (y₀ * q'.1, q'.2) hq' hq'U (R.loc w (mat h⁻¹ * incM F Xr))`. Establish `he : 0 ≤ Real.exp (-δ * sq (R.loc w (mat h⁻¹ * incM F Xr)))` using `(Real.exp_pos _).le`. Simplify using `only [hFm, _root_.PositivityTheory.SiegelWeilFormula.RD_k.tens, norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg he]`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `clear_value Fm`. Use `⟨U, fun y z => ∫ h, ∑' k, Fm y z h k ∂ν, hUo, hUR, hHc, fun y => ⟨hHd y, ?_, ?_⟩⟩` and prove the remaining obligations. Introduce `t beta_reduce`. Rewrite using `[hI (φ 1) (hφ 1).1, hT1 1 (y * a t)]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `h`. Use `congr 1`. Use function extensionality and compare the values at `Xr`. Simplify using `only [hFm, _root_.PositivityTheory.SiegelWeilFormula.RD_k.tens, hreal, mul_assoc]`. Introduce `r`.
+
+Establish `key : ∀ y', ((mR (y₀ * y')).toBlocks₂₂).det ≠ 0 → iteratedDeriv r (fun z => ∫ h, ∑' k, Fm y' z h k ∂ν) 0 = d.I (φ ((dil (2 * Real.pi) X ^ r) 1)) (g * R.ι w y')`. Introduce `y' hy'`. Rewrite using `[hHr y' 0 h0U r, hI _ (hφ _).1, hT1]`. Use `congr 1`. Use function extensionality and compare the values at `h`.
+
+Use `congr 1`. Use function extensionality and compare the values at `Xr`. Simplify using `only [hFm, _root_.PositivityTheory.SiegelWeilFormula.RD_k.tens]`. Rewrite using `[iteratedDeriv_mul_const' (fun z => Gf (y₀ * y') z (R.loc w (mat h⁻¹ * incM F Xr))) _ r]`. Use `beta_reduce`.
+
+Rewrite using `[hder (y₀ * y') hy' r]`. Establish `hDC'` using `hDC (GR d.n) U hUo (fun y' z => ∫ h, ∑' k, Fm y' z h k ∂ν) hHc hHd r`. Establish `hpair : Continuous fun y' : GR d.n => (y', (0 : ℂ))` using `by fun_prop`. Establish `hcL : Continuous fun y' => iteratedDeriv r (fun z => ∫ h, ∑' k, Fm y' z h k ∂ν) 0` using `hDC'.comp_continuous hpair (fun _ => ⟨trivial, h0U⟩)`. Establish `hcR : Continuous fun y' => d.I (φ ((dil (2 * Real.pi) X ^ r) 1)) (g * R.ι w y')` using `(hTA' _ (hφ _).1).2.1.comp (continuous_const.mul (R.cont w))`.
+
+Establish `hden : Dense {y' : GR d.n | ((mR (y₀ * y')).toBlocks₂₂).det ≠ 0}` using `(hBD d.n).preimage (isOpenMap_mul_left y₀)`. Conclude with `congrFun (hcL.ext_on hden hcR key) y`.
+-/
 theorem gIdil_of_k (hT : _root_.PositivityTheory.SiegelWeilFormula.TAll_k) (hAux : _root_.PositivityTheory.SiegelWeilFormula.SiegelWeilDatumProperties) (hLE : _root_.PositivityTheory.SiegelWeilFormula.LocOpEx_k) (hTP : _root_.PositivityTheory.SiegelWeilFormula.Kdil.ThetaPt_k) (hFP : FPSw) (hMC : MatCount)
     (hSD : _root_.PositivityTheory.SiegelWeilFormula.Kdil.SplitDom_k) (hTB : _root_.PositivityTheory.SiegelWeilFormula.Kdil.ThetaBdd_k) (hLF : _root_.PositivityTheory.SiegelWeilFormula.Kdil.LocFamG_k) (hBD : BigDense) (hHM : HolMean)
     (hDC : DerCont) (hSO : StripOK) : _root_.PositivityTheory.SiegelWeilFormula.GIdil_k := by

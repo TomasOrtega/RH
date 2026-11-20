@@ -15,6 +15,17 @@ section
 
 variable {k : Type} [Field k] {Ω : Type} [Field Ω] [Algebra k Ω] {K : Type} {ι : K → Type} {K' : Type} {ι' : K' → Type}
 
+/- English proof (translation)
+Establish `key : ∀ m ∈ f.support, (m.prod fun p e => s p.1 ^ e) = ∏ x, s x ^ b x`. Introduce `m hm`. Establish `hw : Finsupp.weight (blockWeight ι) m = b` using `hf (mem_support_iff.mp hm)`. Rewrite using `[← hw]`. Simplify using `only [Finsupp.weight_apply, Finsupp.sum, blockWeight]`.
+
+Rewrite using `[Finsupp.prod]`. Repeatedly rewrite using `[Finset.sum_apply, Pi.smul_apply, smul_eq_mul, ← Finset.prod_pow_eq_pow_sum]`. Rewrite using `[Finset.prod_comm]`. Use `Finset.prod_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_eq_single p.1]`.
+
+Simplify using the standard rewrite rules. Introduce `x _ hx`. Simplify using `[Pi.single_apply, hx]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+
+Use `conv_lhs => rw [f.as_sum]`. Use `conv_rhs => rw [f.as_sum]`. Rewrite using `[map_sum, map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations. Rewrite using `[aeval_monomial, aeval_monomial]`.
+
+Repeatedly rewrite using `[mul_pow]`. Rewrite using `[Finsupp.prod_mul, key m hm]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem aeval_scale [Fintype K] [DecidableEq K] {L : Type} [CommRing L] [Algebra k L] (s : K → L) (w : (Σ b, ι b) → L)
     {f : MRing ι k} {b : K → ℕ} (hf : IsMultiHomog f b) :
     aeval (fun p => s p.1 * w p) f = (∏ x, s x ^ b x) * aeval w f := by
@@ -42,6 +53,15 @@ theorem aeval_scale [Fintype K] [DecidableEq K] {L : Type} [CommRing L] [Algebra
   rw [Finsupp.prod_mul, key m hm]
   ring
 
+/- English proof (translation)
+Establish `key : ∀ f : MRing ι k, pointConeMap k y (rename v f) = rename κ (pointConeMap k (y ∘ v) f)`. Introduce `f`. Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a => simp [pointConeMap]`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`.
+
+Consider the case `mul_X p n hp`. Rewrite using `[map_mul, map_mul, hp, map_mul, map_mul]`. Use `congr 1`. Simplify using `[pointConeMap, hv]`. Use extensionality with `f`.
+
+Simplify using `only [pointIdeal, Ideal.mem_comap, RingHom.mem_ker]`. Rewrite using `[show (rename v : MRing ι k →ₐ[k] MRing ι' k) f = rename v f from rfl, key]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[h, map_zero]`.
+
+Introduce `h`. Apply `MvPolynomial.rename_injective _ hκ` to reduce the goal to its premises. Rewrite using `[h, map_zero]`.
+-/
 theorem pointIdeal_comp (y : (Σ b, ι' b) → Ω) (κ : K → K') (hκ : Function.Injective κ) (v : (Σ b, ι b) → Σ b, ι' b)
     (hv : ∀ p, (v p).1 = κ p.1) : pointIdeal k (y ∘ v) = (pointIdeal k y).comap (rename v : MRing ι k →ₐ[k] MRing ι' k) := by
   have key : ∀ f : MRing ι k, pointConeMap k y (rename v f) = rename κ (pointConeMap k (y ∘ v) f) := by
@@ -63,6 +83,19 @@ theorem pointIdeal_comp (y : (Σ b, ι' b) → Ω) (κ : K → K') (hκ : Functi
     apply MvPolynomial.rename_injective _ hκ
     rw [h, map_zero]
 
+/- English proof (translation)
+Use `choose i hi using hz`. Set `s : K → Ω` to `fun x => z ⟨x, i x⟩`. Set `w : (Σ b, ι b) → Ω` to `fun p => z p / s p.1`. Establish `hwmem : ∀ p, w p ∈ fnField k z` using `fun p => IntermediateField.subset_adjoin _ _ ⟨p, ⟨p.1, i p.1⟩, rfl, rfl⟩`. Establish `hmem : ∀ h : MRing ι k, aeval w h ∈ fnField k z`.
+
+Introduce `h`. Proceed by induction on `h using MvPolynomial.induction_on with`. Consider the case `C a`. Rewrite using `[aeval_C]`. Conclude with `IntermediateField.algebraMap_mem _ a`.
+
+Consider the case `add p q hp hq`. Rewrite using `[map_add]`. Conclude with `add_mem hp hq`. Consider the case `mul_X p n hp`. Rewrite using `[map_mul, aeval_X]`.
+
+Conclude with `mul_mem hp (hwmem n)`. Establish `hzw : (fun p => s p.1 * w p) = z`. Use function extensionality and compare the values at `p`. Use `hi p.1` as an intermediate fact. Simplify using `only [s, w]`.
+
+Clear the denominators using the available nonvanishing facts. Establish `e : ∀ h : MRing ι k, IsMultiHomog h b → aeval z h = (∏ x, s x ^ b x) * aeval w h`. Introduce `h hh`. Rewrite using `[← aeval_scale s w hh, hzw]`. Establish `hP : (∏ x, s x ^ b x) ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun x _ => pow_ne_zero _ (hi x)`.
+
+Rewrite using `[e f hf, e g hg, mul_div_mul_left _ _ hP]`. Conclude with `div_mem (hmem f) (hmem g)`.
+-/
 private theorem aeval_div_mem_fnField_of_multiHomog {k : Type} [Field k] {Ω : Type} [Field Ω] [Algebra k Ω] {K : Type} {ι : K → Type}
     [Fintype K] [DecidableEq K] (z : (Σ b, ι b) → Ω) (hz : ∀ b, ∃ i, z ⟨b, i⟩ ≠ 0) {f g : MRing ι k} {b : K → ℕ}
     (hf : IsMultiHomog f b) (hg : IsMultiHomog g b) : aeval z f / aeval z g ∈ fnField k z := by
@@ -95,6 +128,25 @@ private theorem aeval_div_mem_fnField_of_multiHomog {k : Type} [Field k] {Ω : T
   rw [e f hf, e g hg, mul_div_mul_left _ _ hP]
   exact div_mem (hmem f) (hmem g)
 
+/- English proof (translation)
+Set `Ψ : MRing ι k →ₐ[k] L` to `φ.comp ((IsScalarTower.toAlgHom k (MRing ι k ⧸ P) (FractionRing (MRing ι k ⧸ P))).comp (Ideal.Quotient.mkₐ k P))`. Establish `hΨX : ∀ p, Ψ (X p) = t p.1 * c (z p)`. Introduce `p`. Rewrite using `[mul_comm]`. Conclude with `hφ p`.
+
+Establish `hΨ : ∀ {f : MRing ι k} {b : K → ℕ}, IsMultiHomog f b → Ψ f = (∏ x, t x ^ b x) * c (aeval z f)`. Introduce `f b hf`. Rewrite using `[MvPolynomial.aeval_unique Ψ]`. Establish `hfun : (⇑Ψ ∘ X) = fun p => t p.1 * c (z p)` using `funext hΨX`. Rewrite using `[hfun, aeval_scale t (fun p => c (z p)) hf]`.
+
+Use `congr 1`. Use `show _ = (c.comp (aeval z)) f`. Rewrite using `[MvPolynomial.comp_aeval]`. Establish `hT : ∀ b : K → ℕ, (∏ x, t x ^ b x) ≠ 0` using `fun b => Finset.prod_ne_zero_iff.mpr fun x _ => pow_ne_zero _ (ht x)`. Apply `le_antisymm` to reduce the goal to its premises.
+
+Unfold `homFracDegZero`. Rewrite using `[IntermediateField.adjoin_map, IntermediateField.adjoin_le_iff]`. Introduce and unpack `_ ⟨x, ⟨b, f, g, hf, hg, hgP, rfl⟩, rfl⟩`. Rewrite using `[map_div₀]`. Express the relevant statement in the definitionally equal form `Ψ f / Ψ g ∈ _`.
+
+Rewrite using `[hΨ hf, hΨ hg, mul_div_mul_left _ _ (hT b), ← map_div₀]`. Conclude with `⟨_, aeval_div_mem_fnField_of_multiHomog z hz hf hg, rfl⟩`. Unfold `fnField`. Rewrite using `[IntermediateField.adjoin_map, IntermediateField.adjoin_le_iff]`. Introduce and unpack `_ ⟨u, ⟨p, q, hpq, rfl⟩, rfl⟩`.
+
+Distinguish the cases in `hq : z q = 0`. Rewrite using `[hq, div_zero, map_zero]`. Conclude with `zero_mem _`. Establish `hXq : X q ∉ P`. Introduce `hm`.
+
+Establish `h0 : Ψ (X q) = 0`. Simplify using `[Ψ, Ideal.Quotient.eq_zero_iff_mem.mpr hm]`. Rewrite `h0` using `[hΨX]`. Conclude with `mul_ne_zero (ht q.1) ((map_ne_zero c).mpr hq) h0`. Use `⟨algebraMap _ (FractionRing (MRing ι k ⧸ P)) (Ideal.Quotient.mk P (X p)) / algebraMap _ (FractionRing (MRing ι k ⧸ P)) (Ideal.Quotient.mk P (X q)), ?_, ?_⟩` and prove the remaining obligations.
+
+Apply `IntermediateField.subset_adjoin` to reduce the goal to its premises. Use `⟨Pi.single q.1 1, X p, X q, ?_, ?_, hXq, rfl⟩` and prove the remaining obligations. Establish `h1` using `isWeightedHomogeneous_X k (blockWeight ι) p`. Simplify using `only [blockWeight, hpq] at h1`. Conclude with `h1`.
+
+Conclude with `isWeightedHomogeneous_X k (blockWeight ι) q`. Rewrite using `[map_div₀]`. Express the relevant statement in the definitionally equal form `Ψ (X p) / Ψ (X q) = _`. Rewrite using `[hΨX, hΨX, hpq, mul_div_mul_left _ _ (ht q.1), map_div₀]`.
+-/
 theorem map_homFrac [Fintype K] [DecidableEq K] {L : Type} [Field L] [Algebra k L] (P : Ideal (MRing ι k)) [P.IsPrime]
     (φ : FractionRing (MRing ι k ⧸ P) →ₐ[k] L) (c : Ω →ₐ[k] L) (t : K → L) (z : (Σ b, ι b) → Ω)
     (hz : ∀ b, ∃ i, z ⟨b, i⟩ ≠ 0) (ht : ∀ b, t b ≠ 0)
@@ -148,6 +200,9 @@ theorem map_homFrac [Fintype K] [DecidableEq K] {L : Type} [Field L] [Algebra k 
         change Ψ (X p) / Ψ (X q) = _
         rw [hΨX, hΨX, hpq, mul_div_mul_left _ _ (ht q.1), map_div₀]
 
+/- English proof (translation)
+Unfold `fnField`. Apply `IntermediateField.adjoin_le_iff.mpr` to reduce the goal to its premises. Introduce and unpack `t ⟨p, q, hpq, rfl⟩`. Apply `IntermediateField.subset_adjoin` to reduce the goal to its premises. Conclude with `⟨v p, v q, by rw [hv, hv, hpq], rfl⟩`.
+-/
 theorem fnField_comp_le (y : (Σ b, ι' b) → Ω) (κ : K → K') (v : (Σ b, ι b) → Σ b, ι' b) (hv : ∀ p, (v p).1 = κ p.1) :
     fnField k (y ∘ v) ≤ fnField k y := by
   unfold fnField
@@ -156,6 +211,25 @@ theorem fnField_comp_le (y : (Σ b, ι' b) → Ω) (κ : K → K') (v : (Σ b, �
   apply IntermediateField.subset_adjoin
   exact ⟨v p, v q, by rw [hv, hv, hpq], rfl⟩
 
+/- English proof (translation)
+Set `P'` to `pointIdeal k y`. Set `M` to `MvPolynomial K' Ω`. Set `L` to `FractionRing M`. Set `q : (MRing ι' k ⧸ P') →ₐ[k] M` to `Ideal.kerLiftAlg (pointConeMap k y)`. Establish `hq : Function.Injective q` using `Ideal.kerLiftAlg_injective _`.
+
+Set `g : (MRing ι' k ⧸ P') →ₐ[k] L` to `(IsScalarTower.toAlgHom k M L).comp q`. Establish `hg : Function.Injective g` using `(IsFractionRing.injective M L).comp hq`. Set `φ : FractionRing (MRing ι' k ⧸ P') →ₐ[k] L` to `IsFractionRing.liftAlgHom hg`. Set `c : Ω →ₐ[k] L` to `(IsScalarTower.toAlgHom k M L).comp (IsScalarTower.toAlgHom k Ω M)`. Set `t : K' → L` to `fun b => algebraMap M L (X b)`.
+
+Establish `ht : ∀ b, t b ≠ 0`. Introduce `b h`. Apply `X_ne_zero (R := Ω) b` to reduce the goal to its premises. Apply `IsFractionRing.injective M L` to reduce the goal to its premises. Rewrite using `[map_zero]`.
+
+Conclude with `h`. Establish `hφ : ∀ p, φ (algebraMap (MRing ι' k ⧸ P') _ (Ideal.Quotient.mk P' (X p))) = c (y p) * t p.1`. Introduce `p`. Simplify using `only [φ, IsFractionRing.liftAlgHom_apply, IsFractionRing.lift_algebraMap]`. Use `show algebraMap M L (q (Ideal.Quotient.mk P' (X p))) = _`.
+
+Rewrite using `[show q (Ideal.Quotient.mk P' (X p)) = pointConeMap k y (X p) from Ideal.kerLiftAlg_mk _ _]`. Simplify using `only [pointConeMap, aeval_X, map_mul]`. Both sides reduce to the same expression. Establish `h1` using `map_homFrac P' φ c t y hy ht hφ`. Set `φ₂` to `φ.comp (contractFracMap j P')`.
+
+Establish `hφ₂ : ∀ p, φ₂ (algebraMap _ (FractionRing (MRing (fun b => ι' (j b)) k ⧸ contractPrime j P')) (Ideal.Quotient.mk (contractPrime j P') (X p))) = c ((y ∘ blockIncl j ι') p) * (t ∘ j) p.1`. Introduce `p`. Establish `hc : contractQuot j P' (Ideal.Quotient.mk (contractPrime j P') (X p)) = Ideal.Quotient.mk P' (X (blockIncl j ι' p))` using `by show Ideal.Quotient.mk P' (rename (blockIncl j ι') (X p)) = _`. Rewrite using `[rename_X]`. Establish `hcf : contractFracMap j P' (algebraMap _ (FractionRing (MRing (fun b => ι' (j b)) k ⧸ contractPrime j P')) (Ideal.Quotient.mk (contractPrime j P') (X p))) = algebraMap _ (FractionRing (MRing ι' k ⧸ P')) (contractQuot j P' (Ideal.Quotient.mk (contractPrime j P') (X p)))`.
+
+Unfold `contractFracMap`. Use `erw [IsFractionRing.liftAlgHom_apply, IsFractionRing.lift_algebraMap]`. Both sides reduce to the same expression. Simplify using `only [φ₂, AlgHom.comp_apply]`. Rewrite using `[hcf, hc, hφ]`.
+
+Both sides reduce to the same expression. Establish `h2` using `map_homFrac (contractPrime j P') φ₂ c (t ∘ j) (y ∘ blockIncl j ι') (fun b => hy (j b)) (fun b => ht (j b)) hφ₂`. Unfold `relDeg`. Rewrite using `[← IntermediateField.relfinrank_map_map _ _ φ, IntermediateField.map_map, h1]`. Use `erw [h2]`.
+
+Conclude with `IntermediateField.relfinrank_map_map _ _ c`.
+-/
 theorem relDeg_pointIdeal [Fintype K] [DecidableEq K] [Fintype K'] [DecidableEq K'] (j : K ↪ K') (y : (Σ b, ι' b) → Ω)
     (hy : ∀ b, ∃ i, y ⟨b, i⟩ ≠ 0) [(pointIdeal k y).IsPrime] :
     relDeg j (pointIdeal k y) = IntermediateField.relfinrank (fnField k (y ∘ blockIncl j ι')) (fnField k y) := by
@@ -209,6 +283,35 @@ theorem relDeg_pointIdeal [Fintype K] [DecidableEq K] [Fintype K'] [DecidableEq 
 
 end
 
+/- English proof (translation)
+Introduce `k _ Ω _ _ K _ ι _ K' _ ι' _ κ v y d a hbm hy hyv`. Take `⟨hκ, hvinj, hv, hvs⟩` from `hbm`. Set `j : K ↪ K'` to `⟨κ, hκ⟩`. Set `τf : (Σ b, ι b) → Σ b : K, ι' (j b)` to `fun p => ⟨p.1, cast (congrArg ι' (hv p)) (v p).2⟩`. Establish `hτv : ∀ p, blockIncl j ι' (τf p) = v p`.
+
+Introduce `p`. Conclude with `Sigma.ext (hv p).symm (cast_heq _ _)`. Establish `hbinj : Function.Injective (blockIncl j ι')`. Introduce and unpack `⟨b1, i1⟩ ⟨b2, i2⟩ h`. Simplify using `only [blockIncl, Sigma.mk.inj_iff] at h`.
+
+Take `⟨h1, h2⟩` from `h`. Establish `hb : b1 = b2` using `hκ h1`. Substitute `hb` using the available equality. Simplify using `[eq_of_heq h2]`. Establish `hτinj : Function.Injective τf` using `fun p q h => hvinj (by rw [← hτv, ← hτv, h])`.
+
+Establish `hτsurj : Function.Surjective τf`. Introduce and unpack `⟨b, i⟩`. Take `⟨p, hp⟩` from `hvs ⟨κ b, i⟩ ⟨b, rfl⟩`. Conclude with `⟨p, hbinj (by rw [hτv, hp]; rfl)⟩`. Set `τ` to `Equiv.ofBijective τf ⟨hτinj, hτsurj⟩`.
+
+Set `z` to `y ∘ blockIncl j ι'`. Establish `hyvz : y ∘ v = z ∘ τ`. Use function extensionality and compare the values at `p`. Use `show y (v p) = y (blockIncl j ι' (τf p))`. Rewrite using `[hτv]`.
+
+Establish `hF1 : fnField k (y ∘ v) = fnField k z`. Rewrite using `[hyvz]`. Apply `le_antisymm` to reduce the goal to its premises. Conclude with `fnField_comp_le z id τ (fun p => rfl)`. Establish `hz : z = (z ∘ τ) ∘ τ.symm`.
+
+Use function extensionality and compare the values at `q`. Simplify using the standard rewrite rules. Use `conv_lhs => rw [hz]`. Conclude with `fnField_comp_le (z ∘ τ) id τ.symm (fun q => congrArg Sigma.fst (τ.apply_symm_apply q))`. Establish `hinum : inum k (y ∘ v) a = inum k z a`.
+
+Establish `hP : pointIdeal k (z ∘ τ) = (pointIdeal k z).comap (rename τ : MRing ι k →ₐ[k] MRing (fun b => ι' (j b)) k)` using `pointIdeal_comp z id Function.injective_id τ (fun p => rfl)`. Rewrite using `[hyvz]`. Unfold `inum`. Rewrite using `[hP, FieldNumbers.RenameIntNum.full k K K ι (fun b => ι' (j b)) (Equiv.refl K) τ (fun p => rfl)]`. Both sides reduce to the same expression.
+
+Establish `hzPt : IsPt k z d`. Take `⟨h1, h2, h3⟩` from `hyv`. Use `⟨fun b => ?_, ?_, h3⟩` and prove the remaining obligations. Take `⟨i, hi⟩` from `h1 b`. Use `⟨(τf ⟨b, i⟩).2, fun h0 => hi ?_⟩` and prove the remaining obligations.
+
+Use `show y (v ⟨b, i⟩) = 0`. Rewrite using `[← hτv]`. Conclude with `h0`. Rewrite using `[← hF1]`. Conclude with `h2`.
+
+Take `⟨hP'm, hrel, -⟩` from `ptDim k Ω K' ι' y d hy`. Take `⟨hPzm, hrelz, -⟩` from `ptDim k Ω K (fun b => ι' (j b)) z d hzPt`. Use `haveI : (pointIdeal k y).IsPrime := hP'm.isPrime`. Establish `hcon : contractPrime j (pointIdeal k y) = pointIdeal k z` using `(pointIdeal_comp y κ hκ (blockIncl j ι') (fun p => rfl)).symm`. Establish `hPF` using `(ProjectionFormulaDegree.of_divPushForward (DivPushForward.proof ContractRelDimLe.proof DivPushForwardLocalZero) k K K' j ι' (pointIdeal k y) hP'm d hrel (by rw [hcon]; exact hrelz) a).2`.
+
+Rewrite `hPF` using `[hcon]`. Establish `hrd` using `relDeg_pointIdeal (k := k) j y hy.1`. Establish `hle : fnField k z ≤ fnField k y` using `fnField_comp_le y κ (blockIncl j ι') (fun p => rfl)`. Use `haveI : FiniteDimensional (fnField k y) Ω := hy.2.1`. Unfold `num`.
+
+Rewrite using `[hinum, hF1, ← IntermediateField.relfinrank_mul_finrank_top hle]`. Unfold `inum`. Express the relevant statement in the definitionally equal form `_ * intNum k (pointIdeal k y) (fun i => pullDeg j (a i)) = _`. Rewrite using `[hPF, hrd]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem numPull : NumPull := by
   intro k _ Ω _ _ K _ ι _ K' _ ι' _ κ v y d a hbm hy hyv
   classical

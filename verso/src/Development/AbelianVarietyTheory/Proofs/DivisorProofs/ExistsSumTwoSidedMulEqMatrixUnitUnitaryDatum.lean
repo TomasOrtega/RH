@@ -12,6 +12,65 @@ section DensityCentralizer
 variable {F C : Type} [Field F] [Ring C] [Algebra F C] [FiniteDimensional F C]
   [Algebra.IsCentral F C] [IsSimpleRing C]
 
+/- English proof (translation)
+Set `S : Subalgebra F C` to `Subalgebra.centralizer F {γ}`. Establish `memS : ∀ z : C, z ∈ S ↔ ∃ w, ι w = z`. Introduce `z`. Rewrite using `[← hι z]`. Simplify using `[S, Subalgebra.mem_centralizer_iff, eq_comm]`.
+
+Establish `hιS : ∀ w, ι w ∈ S` using `fun w => (memS _).2 ⟨w, rfl⟩`. Establish `hγS : γ ∈ S` using `(memS γ).2 ((hι γ).1 rfl)`. Establish `hcomm : ∀ s t : C, s ∈ S → t ∈ S → s * t = t * s`. Introduce `s t hs ht`. Take `⟨a, rfl⟩` from `(memS s).1 hs`.
+
+Take `⟨b, rfl⟩` from `(memS t).1 ht`. Rewrite using `[← map_mul, ← map_mul, mul_comm]`. Set `j : L →+* S` to `{ toFun := fun w => ⟨ι w, hιS w⟩ map_one' := by ext; simp map_mul' := by intro a b; ext; simp map_zero' := by ext; simp map_add' := by intro a b; ext; simp }`. Establish `hj : Function.Bijective j`. Use `⟨fun a b h => hιinj (congrArg Subtype.val h), fun s => ?_⟩` and prove the remaining obligations.
+
+Take `⟨w, hw⟩` from `(memS s).1 s.2`. Conclude with `⟨w, Subtype.ext hw⟩`. Use `haveI : IsSimpleRing S := IsSimpleRing.of_ringEquiv (RingEquiv.ofBijective j hj) inferInstance`. Set `Φ : S ⊗[F] Cᵐᵒᵖ →ₐ[F] Module.End F C` to `(AlgHom.mulLeftRight F C).comp (Algebra.TensorProduct.map S.val (AlgHom.id F Cᵐᵒᵖ))`. Establish `hΦ : ∀ (s : S) (b : Cᵐᵒᵖ) (x : C), Φ (s ⊗ₜ b) x = (s : C) * x * b.unop`.
+
+Introduce `s b x`. Simplify using `[Φ, AlgHom.mulLeftRight_apply]`. Establish `hΦinj : Function.Injective Φ` using `(IsSimpleRing.injective_ringHom_or_subsingleton_codomain Φ.toRingHom).resolve_right (not_subsingleton _)`. Establish `hWl : ∀ t : S ⊗[F] Cᵐᵒᵖ, ∀ (s : S) (x : C), Φ t ((s : C) * x) = (s : C) * Φ t x`. Introduce `t`.
+
+Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => intro s x`. Simplify using the standard rewrite rules. Consider the case `tmul a b`. Introduce `s x`.
+
+Rewrite using `[hΦ, hΦ, ← mul_assoc, hcomm _ _ a.2 s.2, mul_assoc, mul_assoc, mul_assoc]`. Consider the case `add t u ht hu`. Introduce `s x`. Simplify using `only [map_add, LinearMap.add_apply, ht, hu, mul_add]`. Set `W : Submodule F (Module.End F C)` to `{ carrier := {f | ∀ (s : S) (x : C), f ((s : C) * x) = (s : C) * f x} add_mem' := by`.
+
+Introduce `a b ha hb s x`. Simplify using `only [Set.mem_setOf_eq] at ha hb`. Simplify using `[ha s x, hb s x, mul_add]`. Use the proof step `zero_mem' := by intro s x; simp`. Use the proof step `smul_mem' := by`.
+
+Introduce `c f hf s x`. Simplify using `only [Set.mem_setOf_eq] at hf`. Simplify using `[hf s x, mul_smul_comm] }`. Establish `hrange : LinearMap.range Φ.toLinearMap ≤ W`. Introduce and unpack `_ ⟨t, rfl⟩`.
+
+Conclude with `hWl t`. Set `θ : (Fin r → S) →ₗ[F] C` to `{ toFun := fun β => ∑ k, (β k : C) * e k map_add' := by intro a b; simp [add_mul, Finset.sum_add_distrib] map_smul' := by intro c a; simp [Finset.smul_sum, smul_mul_assoc] }`. Establish `hθ : ∀ β, θ β = ∑ k, (β k : C) * e k` using `fun β => rfl`. Establish `hθinj : Function.Injective θ`. Introduce `a b hab`.
+
+Set `wa : Fin r → L` to `fun k => ((memS _).1 (a k).2).choose`. Set `wb : Fin r → L` to `fun k => ((memS _).1 (b k).2).choose`. Establish `hwa : ∀ k, ι (wa k) = a k` using `fun k => ((memS _).1 (a k).2).choose_spec`. Establish `hwb : ∀ k, ι (wb k) = b k` using `fun k => ((memS _).1 (b k).2).choose_spec`. Establish `h1 : θ a = ∑ k, ι (wa k) * e k` using `by simp [hθ, hwa]`.
+
+Establish `h2 : θ a = ∑ k, ι (wb k) * e k` using `by rw [hab]; simp [hθ, hwb]`. Use `(he (θ a)).unique h1 h2` as an intermediate fact. Use function extensionality and compare the values at `k`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[← hwa, ← hwb, this]`.
+
+Establish `hθsurj : Function.Surjective θ`. Introduce `x`. Take `⟨c, hc, -⟩` from `he x`. Conclude with `⟨fun k => ⟨ι (c k), hιS _⟩, by simp [hθ, hc]⟩`. Set `θe : (Fin r → S) ≃ₗ[F] C` to `LinearEquiv.ofBijective θ ⟨hθinj, hθsurj⟩`.
+
+Establish `hθe : ∀ β, θe β = ∑ k, (β k : C) * e k` using `fun β => rfl`. Establish `hθsmul : ∀ (s : S) (x : C), θe.symm ((s : C) * x) = fun k => s * θe.symm x k`. Introduce `s x`. Rewrite using `[θe.symm_apply_eq, hθe]`. Use `conv_lhs => rw [← θe.apply_symm_apply x, hθe]`.
+
+Simplify using `[Finset.mul_sum, mul_assoc]`. Establish `hdimC : Module.finrank F C = r * Module.finrank F S`. Rewrite using `[← θe.finrank_eq, Module.finrank_pi_fintype]`. Simplify using the standard rewrite rules. Establish `hdS : n ≤ Module.finrank F S`.
+
+Set `γS : S` to `⟨γ, hγS⟩`. Establish `hmin : minpoly F γS = minpoly F γ`. Use `minpoly.algHom_eq S.val Subtype.val_injective γS` as an intermediate fact. Simplify `this.symm` using `[γS]`. Use `(linearIndependent_pow (K := F) γS).fintype_card_le_finrank` as an intermediate fact.
+
+Simplify `this` using `[hmin, hγ]`. Establish `hsrc : Module.finrank F (S ⊗[F] Cᵐᵒᵖ) = Module.finrank F S * n ^ 2`. Rewrite using `[Module.finrank_tensorProduct, MulOpposite.finrank, hC]`. Establish `hrk : Module.finrank F (LinearMap.range Φ.toLinearMap) = Module.finrank F S * n ^ 2`. Rewrite using `[LinearMap.finrank_range_of_inj hΦinj, hsrc]`.
+
+Set `Ψ : W →ₗ[F] (Fin r → Fin r → S)` to `{ toFun := fun f k => θe.symm ((f : Module.End F C) (e k)) map_add' := by intro a b; funext k; simp map_smul' := by intro c a; funext k; simp }`. Establish `hΨ : Function.Injective Ψ`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `f hf`. Establish `hfe : ∀ k, (f : Module.End F C) (e k) = 0`.
+
+Introduce `k`. Use `congrFun hf k` as an intermediate fact. Simplify `this` using `[Ψ]`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `LinearMap.ext` to reduce the goal to its premises.
+
+Introduce `x`. Take `⟨c, hc, -⟩` from `he x`. Rewrite using `[hc, map_sum]`. Establish `hfW` using `f.2`. Simplify using `only [W, Submodule.mem_mk, AddSubmonoid.mem_mk, AddSubsemigroup.mem_mk, Set.mem_setOf_eq] at hfW`.
+
+Simplify using `only [ZeroMemClass.coe_zero, LinearMap.zero_apply]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Rewrite using `[show ι (c k) = ((⟨ι (c k), hιS _⟩ : S) : C) from rfl, hfW, hfe, mul_zero]`. Establish `hW : Module.finrank F W ≤ r * (r * Module.finrank F S)`. Use `LinearMap.finrank_le_finrank_of_injective hΨ` as an intermediate fact.
+
+Simplify `this` using `[Module.finrank_pi_fintype]`. Establish `hrn : r ≤ n`. Establish `h1 : r * n ≤ n * n`. Combine the equalities or inequalities in the displayed calculation. Conclude with `Nat.le_of_mul_le_mul_right h1 hn`.
+
+Establish `hWeq : LinearMap.range Φ.toLinearMap = W`. Apply `Submodule.eq_of_le_of_finrank_le hrange` to reduce the goal to its premises. Rewrite using `[hrk]`. Use `hW.trans ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+
+Set `E : Module.End F C` to `LinearMap.mulRight F (e i) ∘ₗ (S.val.toLinearMap ∘ₗ ((LinearMap.proj i' : (Fin r → S) →ₗ[F] S) ∘ₗ θe.symm.toLinearMap))`. Establish `hE : ∀ x, E x = (θe.symm x i' : C) * e i` using `fun x => rfl`. Establish `hEW : E ∈ W`. Introduce `s x`. Rewrite using `[hE, hE, hθsmul]`.
+
+Simplify using `[mul_assoc]`. Rewrite `hEW` using `[← hWeq]`. Take `⟨t, ht⟩` from `hEW`. Establish `hrep : ∀ t : S ⊗[F] Cᵐᵒᵖ, ∃ (N : ℕ) (l : Fin N → L) (c : Fin N → C), ∀ x, Φ t x = ∑ k, ι (l k) * x * c k`. Introduce `t`.
+
+Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, Fin.elim0, Fin.elim0, by simp⟩`. Consider the case `tmul a b`. Take `⟨w, hw⟩` from `(memS a).1 a.2`. Conclude with `⟨1, fun _ => w, fun _ => b.unop, by intro x; simp [hΦ, hw]⟩`.
+
+Consider the case `add t u ht hu`. Take `⟨N₁, l₁, c₁, h₁⟩` from `ht`. Take `⟨N₂, l₂, c₂, h₂⟩` from `hu`. Conclude with `⟨N₁ + N₂, Fin.append l₁ l₂, Fin.append c₁ c₂, by`. Introduce `x`.
+
+Simplify using `[Fin.sum_univ_add, h₁, h₂]⟩`. Take `⟨N, l, c, hlc⟩` from `hrep t`. Use `⟨N, l, c, fun β => ?_⟩` and prove the remaining obligations. Use `set x := ∑ i'', ι (β i'') * e i'' with hx`. Establish `hsym : θe.symm x = fun k => ⟨ι (β k), hιS _⟩`.
+
+Rewrite using `[θe.symm_apply_eq, hθe]`. Rewrite using `[← hlc, show Φ t x = E x from congrArg (fun f => f x) ht, hE, hsym]`.
+-/
 theorem exists_sum_mul_mul_eq_matrixUnit (n : ℕ) (hn : 0 < n) (hC : Module.finrank F C = n ^ 2)
     (γ : C) (hγ : (minpoly F γ).natDegree = n)
     (L : Type) [Field L] (ι : L →+* C) (hιinj : Function.Injective ι)
@@ -189,6 +248,9 @@ theorem exists_sum_mul_mul_eq_matrixUnit (n : ℕ) (hn : 0 < n) (hC : Module.fin
 
 end DensityCentralizer
 
+/- English proof (translation)
+Introduce `p _ G γ hγ L _ _ ι hinj hι r e he i i'`. Conclude with `exists_sum_mul_mul_eq_matrixUnit G.n G.n_pos G.rankC (γ : G.C) hγ L ι.toRingHom hinj hι r e he i i'`.
+-/
 theorem exists_sum_mul_mul_eq_matrixUnit_htGroup : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p) (γ : G.Cˣ), (minpoly G.F (γ : G.C)).natDegree = G.n →
     ∀ (L : Type) [Field L] [NumberField L] (ι : L →ₐ[ℚ] G.C), Function.Injective ι →
     (∀ z : G.C, z * γ = γ * z ↔ ∃ w, ι w = z) → ∀ (r : ℕ) (e : Fin r → G.C),

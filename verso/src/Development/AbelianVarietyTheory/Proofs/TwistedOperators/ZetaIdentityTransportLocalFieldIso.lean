@@ -23,6 +23,11 @@ variable {k k' : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarc
 
 omit [IsNonarchimedeanLocalField k] [IsNonarchimedeanLocalField k'] in
 
+/- English proof (translation)
+Distinguish the cases in `hy : y = 0`. Substitute `hy` using the available equality. Simplify using the standard rewrite rules. Establish `h` using `hj.2.2 (x / y)`. Establish `h0 : 0 < valuation k y` using `zero_lt_iff.2 (by simpa using hy)`.
+
+Establish `h1 : 0 < valuation k' (j y)` using `zero_lt_iff.2 (by simpa using hy)`. Rewrite `h` using `[Valuation.mem_integer_iff, Valuation.mem_integer_iff, map_div₀, map_div₀, map_div₀, div_le_one₀ h0, div_le_one₀ h1]`. Then use the resulting hypothesis.
+-/
 theorem val_le_iff (hj : IsLocIso j) (x y : k) :
     valuation k' (j x) ≤ valuation k' (j y) ↔ valuation k x ≤ valuation k y := by
   by_cases hy : y = 0
@@ -33,6 +38,11 @@ theorem val_le_iff (hj : IsLocIso j) (x y : k) :
   rwa [Valuation.mem_integer_iff, Valuation.mem_integer_iff, map_div₀, map_div₀, map_div₀, div_le_one₀ h0,
     div_le_one₀ h1] at h
 
+/- English proof (translation)
+Establish `hlt : ∀ x, valuation k' (j x) < 1 ↔ valuation k x < 1` using `fun x => by`. Use `(val_le_iff hj 1 x).not` as an intermediate fact. Simplify `this` using `only [map_one, not_le]`. Take `⟨ϖ', h'⟩` from `exists_isUnif (k := k')`. Use `show valuation k' (j ϖ) = uniformizer k'`.
+
+Use `le_antisymm (le_uniformizer_iff.2 ((hlt _).2 (h ▸ uniformizer_lt_one))) ?_` and prove the remaining obligations. Take `⟨y, hy⟩` from `j.surjective ϖ'`. Rewrite using `[← show valuation k' (ϖ' : k') = uniformizer k' from h', ← hy, val_le_iff hj, show valuation k (ϖ : k) = uniformizer k from h, le_uniformizer_iff, ← hlt, hy]`. Conclude with `h' ▸ uniformizer_lt_one`.
+-/
 theorem isUnif_map (hj : IsLocIso j) {ϖ : kˣ} (h : IsUnif ϖ) : IsUnif (Units.map (j : k →* k') ϖ) := by
   have hlt : ∀ x, valuation k' (j x) < 1 ↔ valuation k x < 1 := fun x => by
     have := (val_le_iff hj 1 x).not
@@ -45,6 +55,17 @@ theorem isUnif_map (hj : IsLocIso j) {ϖ : kˣ} (h : IsUnif ϖ) : IsUnif (Units.
     show valuation k (ϖ : k) = uniformizer k from h, le_uniformizer_iff, ← hlt, hy]
   exact h' ▸ uniformizer_lt_one
 
+/- English proof (translation)
+Introduce `g hg`. Take `⟨x, hx, y, hy, rfl⟩` from `mem_shellSet.1 hg`. Establish `hu : ∀ r : ℤ, valuation k (((ϖ / ϖ') ^ r : kˣ) : k) = 1` using `fun r => by`. Establish `h1 : valuation k ((ϖ : k) / ϖ') = 1`. Rewrite using `[map_div₀, show valuation k (ϖ : k) = _ from h, show valuation k (ϖ' : k) = _ from h']`.
+
+Conclude with `div_self uniformizer_ne_zero`. Rewrite using `[Units.val_zpow_eq_zpow_val, map_zpow₀, Units.val_div_eq_div_val, h1, _root_.one_zpow]`. Establish `hd : ∀ c : n → kˣ, (∀ i, valuation k (c i : k) = 1) → ∀ i l, (diagGL c).val i l ∈ 𝒪[k]` using `fun c hc i l => by`. Rewrite using `[diagGL_val, diagonal_apply]`. Use `split_ifs`.
+
+Conclude with `(hc i).le`. Conclude with `zero_mem _`. Establish `hK : (diagGL fun i => (ϖ / ϖ') ^ m i) ∈ KO k n` using `(mem_KO_iff _).2 ⟨hd _ fun i => hu _, hd (fun i => ((ϖ / ϖ') ^ m i)⁻¹) fun i => by rw [← _root_.zpow_neg]; exact hu _⟩`. Use `mem_shellSet.2 ⟨_, mul_mem hx hK, y, hy, ?_⟩` and prove the remaining obligations. Use `congr 1`.
+
+Rewrite using `[mul_assoc]`. Use `congr 1`. Use `diagHom.map_mul (fun i => (ϖ / ϖ') ^ m i) (fun i => ϖ' ^ m i)` as an intermediate fact. Use `Eq.trans ?_ this` and prove the remaining obligations. Use `show SplitFlip.diagGL _ = SplitFlip.diagGL _`.
+
+Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `[← mul_zpow]`.
+-/
 theorem shellSet_subset {ϖ ϖ' : kˣ} (h : IsUnif ϖ) (h' : IsUnif ϖ') (m : n → ℤ) :
     shellSet ϖ m ⊆ shellSet ϖ' m := by
   intro g hg
@@ -78,11 +99,17 @@ def glEquiv (j : k ≃+* k') (n : Type) [Fintype n] [DecidableEq n] : GL n k ≃
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [ValuativeRel k'] [TopologicalSpace k']
   [IsNonarchimedeanLocalField k'] in
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem glEquiv_val (g : GL n k) : (glEquiv j n g).val = g.val.map j := rfl
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [ValuativeRel k'] [TopologicalSpace k']
   [IsNonarchimedeanLocalField k'] in
 
+/- English proof (translation)
+The claim follows from `Units.ext ((j : k →+* k').map_det g.val).symm`.
+-/
 theorem gdet_glEquiv (g : GL n k) : gdet (glEquiv j n g) = Units.map (j : k →* k') (gdet g) :=
   Units.ext ((j : k →+* k').map_det g.val).symm
 
@@ -91,10 +118,20 @@ def glHomeo (hj : IsLocIso j) (n : Type) [Fintype n] [DecidableEq n] : GL n k �
     continuous_toFun := isEmbedding_val_GL.continuous_iff.2 (Units.continuous_val.matrix_map hj.1)
     continuous_invFun := isEmbedding_val_GL.continuous_iff.2 (Units.continuous_val.matrix_map hj.2.1) }
 
+/- English proof (translation)
+Rewrite using `[mem_KO_iff, mem_KO_iff, ← map_inv]`. Simplify using `only [glEquiv_val, map_apply, hj.2.2]`.
+-/
 theorem glEquiv_mem_KO (hj : IsLocIso j) (g : GL n k) : glEquiv j n g ∈ KO k' n ↔ g ∈ KO k n := by
   rw [mem_KO_iff, mem_KO_iff, ← map_inv]
   simp only [glEquiv_val, map_apply, hj.2.2]
 
+/- English proof (translation)
+Rewrite using `[(shellSet_subset h' (isUnif_map hj h) m).antisymm (shellSet_subset (isUnif_map hj h) h' m)]`. Establish `hd : glEquiv j n (diagGL fun i => ϖ ^ m i) = diagGL fun i => (Units.map (j : k →* k') ϖ) ^ m i` using `Units.ext (by rw [glEquiv_val, diagGL_val, diagGL_val, diagonal_map (map_zero _)]; simp)`. Use extensionality with `g`. Rewrite using `[Set.mem_preimage, mem_shellSet, mem_shellSet, ← hd]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨x, hx, y, hy, H⟩`. Take `⟨x, rfl⟩` from `(glEquiv j n).surjective x`. Take `⟨y, rfl⟩` from `(glEquiv j n).surjective y`. Rewrite `H` using `[← map_mul, ← map_mul]`. Conclude with `⟨x, (glEquiv_mem_KO hj _).1 hx, y, (glEquiv_mem_KO hj _).1 hy, (glEquiv j n).injective H⟩`.
+
+Introduce and unpack `⟨x, hx, y, hy, rfl⟩`. Conclude with `⟨_, (glEquiv_mem_KO hj _).2 hx, _, (glEquiv_mem_KO hj _).2 hy, by rw [map_mul, map_mul]⟩`.
+-/
 theorem preimage_shellSet (hj : IsLocIso j) {ϖ : kˣ} {ϖ' : k'ˣ} (h : IsUnif ϖ) (h' : IsUnif ϖ') (m : n → ℤ) :
     glEquiv j n ⁻¹' shellSet ϖ' m = shellSet ϖ m := by
   rw [(shellSet_subset h' (isUnif_map hj h) m).antisymm (shellSet_subset (isUnif_map hj h) h' m)]
@@ -111,6 +148,9 @@ theorem preimage_shellSet (hj : IsLocIso j) {ϖ : kˣ} {ϖ' : k'ˣ} (h : IsUnif 
   · rintro ⟨x, hx, y, hy, rfl⟩
     exact ⟨_, (glEquiv_mem_KO hj _).2 hx, _, (glEquiv_mem_KO hj _).2 hy, by rw [map_mul, map_mul]⟩
 
+/- English proof (translation)
+Use `GlobalTheory.SplitWeil.nabs_map_of_homeomorph j hj.1 hj.2.1 x` as an intermediate fact. Unfold `apow`. Use `congr 2`.
+-/
 theorem apow_map (hj : IsLocIso j) (x : kˣ) (z : ℂ) : apow (Units.map (j : k →* k') x) z = apow x z := by
   have := GlobalTheory.SplitWeil.nabs_map_of_homeomorph j hj.1 hj.2.1 x
   unfold apow
@@ -121,9 +161,15 @@ variable [MeasurableSpace k] [BorelSpace k] [MeasurableSpace k'] [BorelSpace k']
 def glMeas (hj : IsLocIso j) (n : Type) [Fintype n] [DecidableEq n] : GL n k ≃ᵐ GL n k' :=
   (glHomeo hj n).toHomeomorph.toMeasurableEquiv
 
+/- English proof (translation)
+The claim follows from `(glHomeo hj n).isHaarMeasure_map μ`.
+-/
 theorem isHaar_map (hj : IsLocIso j) (μ : Measure (GL n k)) [μ.IsHaarMeasure] : (μ.map (glMeas hj n)).IsHaarMeasure :=
   (glHomeo hj n).isHaarMeasure_map μ
 
+/- English proof (translation)
+Use `isHaar_map hj (haarVol (KO k n))` as an intermediate fact. Use `eq_haarVol _ isOpen_KO le_rfl ?_` and prove the remaining obligations. Rewrite using `[MeasurableEquiv.map_apply, show glMeas hj n ⁻¹' (KO k' n : Set (GL n k')) = KO k n from Set.ext fun g => glEquiv_mem_KO hj g]`. Conclude with `haarVol_self isOpen_KO le_rfl`.
+-/
 theorem map_haarVol (hj : IsLocIso j) : (haarVol (KO k n)).map (glMeas hj n) = haarVol (KO k' n) := by
   have := isHaar_map hj (haarVol (KO k n))
   refine eq_haarVol _ isOpen_KO le_rfl ?_
@@ -133,6 +179,9 @@ theorem map_haarVol (hj : IsLocIso j) : (haarVol (KO k n)).map (glMeas hj n) = h
 
 variable {C : Type} [Fintype C] [DecidableEq C] {ν : kˣ →* ℂˣ} {ν' : k'ˣ →* ℂˣ}
 
+/- English proof (translation)
+Unfold `shell`. Rewrite using `[← map_haarVol hj, setIntegral_map_equiv, ← preimage_shellSet hj h h']`. Use `integral_congr_ae (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Use `show _ = φ (glEquiv j _ g).val * ν' (gdet (glEquiv j _ g)) * apow (gdet (glEquiv j _ g)) _`. Rewrite using `[gdet_glEquiv, apow_map hj, ← hν, glEquiv_val]`.
+-/
 theorem shell_map (hj : IsLocIso j) {ϖ : kˣ} {ϖ' : k'ˣ} (h : IsUnif ϖ) (h' : IsUnif ϖ')
     (hν : ∀ x, ν x = ν' (Units.map (j : k →* k') x)) (z : ℂ) (φ : Matrix n n k' → ℂ) (m : n → ℤ) :
     shell (haarVol (KO k n)) ϖ ν z (fun X => φ (X.map j)) m = shell (haarVol (KO k' n)) ϖ' ν' z φ m := by
@@ -144,6 +193,9 @@ theorem shell_map (hj : IsLocIso j) {ϖ : kˣ} {ϖ' : k'ˣ} (h : IsUnif ϖ) (h' 
 
 omit [DecidableEq C] in
 
+/- English proof (translation)
+Unfold `bigF shellSum`. Use `finsum_congr fun m => ?_` and prove the remaining obligations. Rewrite using `[← shell_map hj h h' hν]`. Simplify using `only [Matrix.map_mul]`.
+-/
 theorem bigF_map (hj : IsLocIso j) {a : ℕ} {ϖ : kˣ} {ϖ' : k'ˣ} (h : IsUnif ϖ) (h' : IsUnif ϖ')
     (hν : ∀ x, ν x = ν' (Units.map (j : k →* k') x)) (Ξ : Matrix (Fin a) C k' → ℂ) (X : Matrix (Fin a) C k) :
     bigF (haarVol (KO k (Fin a))) ϖ ν (fun X => Ξ (X.map j)) X = bigF (haarVol (KO k' (Fin a))) ϖ' ν' Ξ (X.map j) := by
@@ -154,6 +206,9 @@ theorem bigF_map (hj : IsLocIso j) {a : ℕ} {ϖ : kˣ} {ϖ' : k'ˣ} (h : IsUnif
 
 omit [DecidableEq C] in
 
+/- English proof (translation)
+Unfold `smallF`. Rewrite using `[integral_map_equiv]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Use `show _ = Ψ ((glEquiv j _ g).val * Y.map j) * ν' (gdet (glEquiv j _ g)) * apow (gdet (glEquiv j _ g)) _`. Rewrite using `[gdet_glEquiv, apow_map hj, ← hν, glEquiv_val, ← Matrix.map_mul]`.
+-/
 theorem smallF_map (hj : IsLocIso j) (μ : Measure (GL n k))
     (hν : ∀ x, ν x = ν' (Units.map (j : k →* k') x)) (Ψ : Matrix n C k' → ℂ) (Y : Matrix n C k) :
     smallF μ ν (fun Y => Ψ (Y.map j)) Y = smallF (μ.map (glMeas hj n)) ν' Ψ (Y.map j) := by
@@ -165,6 +220,17 @@ theorem smallF_map (hj : IsLocIso j) (μ : Measure (GL n k))
 
 end
 
+/- English proof (translation)
+Introduce `k _ _ _ _ _ _ k' _ _ _ _ _ _ j hj a A' _ _ C _ _ σ μ _ μ' _ ϖ ϖ' h h' ν β ν' β' hν`. Use `isHaar_map hj μ` as an intermediate fact. Establish `hc` using `Measure.isMulLeftInvariant_eq_smul (μ.map (glMeas hj A')) μ'`. Establish `hc0` using `(Measure.haarScalarFactor_pos_of_isHaarMeasure (μ.map (glMeas hj A')) μ').ne'`. Generalize the expression as in `Measure.haarScalarFactor (μ.map (glMeas hj A')) μ' = c at hc hc0`.
+
+Establish `hc1 : ((c : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast hc0`. Use `⟨((c : ℝ) : ℂ)⁻¹, inv_ne_zero hc1, fun Ξ Ψ H => funext fun g => ?_⟩` and prove the remaining obligations. Establish `H1` using `congrFun H (glEquiv j C g)`. Establish `hX : (X0 k σ * (invT g).val).map j = X0 k' σ * (invT (glEquiv j C g)).val`. Use extensionality with `i l`.
+
+Rewrite using `[map_apply, frameMatrixFirstColumnBlock_mul_apply, frameMatrixFirstColumnBlock_mul_apply]`. Both sides reduce to the same expression. Establish `hY : (Y0 k σ * g.val).map j = Y0 k' σ * (glEquiv j C g).val`. Use extensionality with `i l`. Rewrite using `[map_apply, frameMatrixSecondColumnBlock_mul_apply, frameMatrixSecondColumnBlock_mul_apply]`.
+
+Both sides reduce to the same expression. Establish `hS : smallF μ ν (fun Y => ((c : ℝ) : ℂ)⁻¹ * Ψ (Y.map j)) (Y0 k σ * g.val) = smallF μ' ν' Ψ (Y0 k' σ * (glEquiv j C g).val)`. Rewrite using `[smallF_map hj μ hν (fun Y => ((c : ℝ) : ℂ)⁻¹ * Ψ Y), hc, hY]`. Simplify using `only [smallF, integral_smul_nnreal_measure, mul_assoc, integral_const_mul, NNReal.smul_def, Complex.real_smul]`. Rewrite using `[inv_mul_cancel_left₀ hc1]`.
+
+Rewrite `H1` using `[bigZetaIntegral_eq, smallP, gdet_glEquiv, apow_map hj, apow_map hj, MonoidHom.mul_apply, ← hν, Units.val_mul]`. Rewrite using `[bigZetaIntegral_eq, smallP, bigF_map hj h h' hν, hS, hX, MonoidHom.mul_apply, Units.val_mul]`. Establish `hb : ((β' (Units.map (j : k →* k') (gdet g)) : ℂˣ) : ℂ) ≠ 0` using `Units.ne_zero _`. Apply `mul_left_cancel₀ hb` to reduce the goal to its premises. Take the linear combination `(β (gdet g) : ℂ) * H1`.
+-/
 theorem zeta_identity_transport : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] (k' : Type) [Field k'] [ValuativeRel k'] [TopologicalSpace k'] [IsNonarchimedeanLocalField k'] [MeasurableSpace k'] [BorelSpace k'] (j : k ≃+* k'), IsLocIso j → ∀ (a : ℕ) (A' : Type) [Fintype A'] [DecidableEq A'] (C : Type) [Fintype C] [DecidableEq C] (σ : Fin a ⊕ A' ≃ C)
     (μ : Measure (GL A' k)) [μ.IsHaarMeasure] (μ' : Measure (GL A' k')) [μ'.IsHaarMeasure] (ϖ : kˣ) (ϖ' : k'ˣ), IsUnif ϖ → IsUnif ϖ' →
     ∀ (ν β : kˣ →* ℂˣ) (ν' β' : k'ˣ →* ℂˣ), (∀ x, ν x = ν' (Units.map (j : k →* k') x)) →

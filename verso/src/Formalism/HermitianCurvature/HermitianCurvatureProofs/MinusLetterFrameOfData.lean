@@ -12,9 +12,15 @@ section Gen
 
 variable {B : Type} [Ring B]
 
+/- English proof (translation)
+Apply the tactic sequence `first | exact GlobalTheory.CommuteInvLeft.commute_inv_left .. | (apply GlobalTheory.CommuteInvLeft.commute_inv_left <;> assumption) | (intros; apply GlobalTheory.CommuteInvLeft.commute_inv_left <;> assumption) | (apply @GlobalTheory.CommuteInvLeft.commute_inv_left <;> assumption) …`.
+-/
 lemma comm_inv {x xi y : B} (h1 : x * xi = 1) (h2 : xi * x = 1) (h : Commute x y) : Commute xi y := by
   first | exact GlobalTheory.CommuteInvLeft.commute_inv_left .. | (apply GlobalTheory.CommuteInvLeft.commute_inv_left <;> assumption) | (intros; apply GlobalTheory.CommuteInvLeft.commute_inv_left <;> assumption) | (apply @GlobalTheory.CommuteInvLeft.commute_inv_left <;> assumption) | (intros; apply @GlobalTheory.CommuteInvLeft.commute_inv_left <;> assumption) | (apply @GlobalTheory.CommuteInvLeft.commute_inv_left <;> first | assumption | infer_instance) | exact @GlobalTheory.CommuteInvLeft.commute_inv_left B ‹_› x xi y h1 h2 h | exact @GlobalTheory.CommuteInvLeft.commute_inv_left B ‹_› x xi y h1 h2 | exact @GlobalTheory.CommuteInvLeft.commute_inv_left B ‹_› x xi y h1 | exact @GlobalTheory.CommuteInvLeft.commute_inv_left B ‹_› x xi y | exact @GlobalTheory.CommuteInvLeft.commute_inv_left B ‹_› x xi | exact @GlobalTheory.CommuteInvLeft.commute_inv_left B ‹_› x | exact @GlobalTheory.CommuteInvLeft.commute_inv_left B ‹_› | exact @GlobalTheory.CommuteInvLeft.commute_inv_left B
 
+/- English proof (translation)
+Establish `h3 : star xi * x = 1`. Use `congrArg star h1` as an intermediate fact. Rewrite `this` using `[star_mul, star_one, h]`. Then use the resulting hypothesis. Combine the equalities or inequalities in the displayed calculation.
+-/
 lemma star_inv [StarRing B] {x xi : B} (h1 : x * xi = 1) (h : star x = x) : star xi = xi := by
   have h3 : star xi * x = 1 := by
     have := congrArg star h1
@@ -23,6 +29,11 @@ lemma star_inv [StarRing B] {x xi : B} (h1 : x * xi = 1) (h : star x = x) : star
     _ = (star xi * x) * xi := by rw [mul_assoc]
     _ = xi := by rw [h3, one_mul]
 
+/- English proof (translation)
+Establish `hXZ : a * c' - c' * a + (c * a' - a' * c) = 0`. Establish `h : (Y - Y') • (a * c' - c' * a + (c * a' - a' * c)) = 0`. Take the linear combination `(norm := module) h1 + h2`. Conclude with `(smul_eq_zero.mp h).resolve_left (sub_ne_zero.mpr hne)`. Simplify using `only [neg_mul, mul_neg, mul_smul_comm, smul_mul_assoc]`.
+
+Take the linear combination `(norm := module) (-(Yb - Y)) • hXZ - h1`.
+-/
 lemma t21_commutator_identity [Algebra ℂ B] (a c a' c' : B) (Y Y' Yb : ℂ) (hne : Y ≠ Y')
     (h1 : (Y - Y') • (a * c' - c' * a) = c * a' - c' * a)
     (h2 : (Y' - Y) • (a' * c - c * a') = c' * a - c * a') :
@@ -38,14 +49,26 @@ end Gen
 
 variable {A S : Type} [Ring A] [StarRing A] [Algebra ℂ A] [StarModule ℂ A] [Fintype S] [DecidableEq S]
 
+/- English proof (translation)
+The claim follows from `(Matrix.scalar (Ix S)).map_mul x y`.
+-/
 lemma io_mul (x y : A) : (io (x * y) : SlopeTestRemainingChoices S A) = io x * io y := (Matrix.scalar (Ix S)).map_mul x y
 
+/- English proof (translation)
+The claim follows from `(Matrix.scalar (Ix S)).map_one`.
+-/
 lemma io_one : (io (1 : A) : SlopeTestRemainingChoices S A) = 1 := (Matrix.scalar (Ix S)).map_one
 
+/- English proof (translation)
+Use `show (io x : SlopeTestRemainingChoices S A) * io y = io y * io x`. Rewrite using `[← io_mul, ← io_mul, h]`.
+-/
 lemma io_comm {x y : A} (h : x * y = y * x) : Commute (io x : SlopeTestRemainingChoices S A) (io y) := by
   show (io x : SlopeTestRemainingChoices S A) * io y = io y * io x
   rw [← io_mul, ← io_mul, h]
 
+/- English proof (translation)
+Introduce `i j`. Use `show (eU c i j : SlopeTestRemainingChoices S A) * io x = io x * eU c i j`. Use extensionality with `u v`. Simplify using `only [io, Matrix.scalar_apply, Matrix.mul_diagonal, Matrix.diagonal_mul, eU, Matrix.of_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 lemma free_io (c : S) (x : A) : FreeOf c (io x : SlopeTestRemainingChoices S A) := by
   intro i j
   show (eU c i j : SlopeTestRemainingChoices S A) * io x = io x * eU c i j
@@ -53,63 +76,108 @@ lemma free_io (c : S) (x : A) : FreeOf c (io x : SlopeTestRemainingChoices S A) 
   simp only [io, Matrix.scalar_apply, Matrix.mul_diagonal, Matrix.diagonal_mul, eU, Matrix.of_apply]
   split_ifs <;> simp
 
+/- English proof (translation)
+Introduce `_ _` and use `Commute.one_right _`.
+-/
 lemma free_one (c : S) : FreeOf c (1 : SlopeTestRemainingChoices S A) := fun _ _ => Commute.one_right _
 
+/- English proof (translation)
+Introduce `_ _` and use `Commute.zero_right _`.
+-/
 lemma free_zero (c : S) : FreeOf c (0 : SlopeTestRemainingChoices S A) := fun _ _ => Commute.zero_right _
 
+/- English proof (translation)
+Introduce `i j` and use `(h i j).mul_right (h' i j)`.
+-/
 lemma free_mul {c : S} {b b' : SlopeTestRemainingChoices S A} (h : FreeOf c b) (h' : FreeOf c b') : FreeOf c (b * b') :=
   fun i j => (h i j).mul_right (h' i j)
 
+/- English proof (translation)
+Introduce `i j` and use `(h i j).add_right (h' i j)`.
+-/
 lemma free_add {c : S} {b b' : SlopeTestRemainingChoices S A} (h : FreeOf c b) (h' : FreeOf c b') : FreeOf c (b + b') :=
   fun i j => (h i j).add_right (h' i j)
 
+/- English proof (translation)
+Introduce `i j` and use `(h i j).neg_right`.
+-/
 lemma free_neg {c : S} {b : SlopeTestRemainingChoices S A} (h : FreeOf c b) : FreeOf c (-b) :=
   fun i j => (h i j).neg_right
 
+/- English proof (translation)
+Introduce `i j` and use `(h i j).smul_right k`.
+-/
 lemma free_smul {c : S} {b : SlopeTestRemainingChoices S A} (k : ℂ) (h : FreeOf c b) : FreeOf c (k • b) :=
   fun i j => (h i j).smul_right k
 
+/- English proof (translation)
+Introduce `i j` and use `(h i j).pow_right n`.
+-/
 lemma free_pow {c : S} {b : SlopeTestRemainingChoices S A} (h : FreeOf c b) (n : ℕ) : FreeOf c (b ^ n) :=
   fun i j => (h i j).pow_right n
 
+/- English proof (translation)
+Introduce `i j`. Use `(h j i).star_star` as an intermediate fact. Rewrite `this` using `[star_eU]`. Then use the resulting hypothesis.
+-/
 lemma free_star {c : S} {b : SlopeTestRemainingChoices S A} (h : FreeOf c b) : FreeOf c (star b) := by
   intro i j
   have := (h j i).star_star
   rwa [star_eU] at this
 
+/- English proof (translation)
+Introduce `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j`. Use `exacts [hp, hq, hr, hs]`.
+-/
 lemma freeOf2_of_entries {c : S} {p q r s : SlopeTestRemainingChoices S A} (hp : FreeOf c p) (hq : FreeOf c q) (hr : FreeOf c r)
     (hs : FreeOf c s) : FreeOf2 c !![p, q; r, s] := by
   intro i j
   fin_cases i <;> fin_cases j
   exacts [hp, hq, hr, hs]
 
+/- English proof (translation)
+Introduce `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j`. Use `exacts [hp, hq, hr, hs]`.
+-/
 lemma comm_lit {w p q r s : SlopeTestRemainingChoices S A} (hp : Commute w p) (hq : Commute w q) (hr : Commute w r)
     (hs : Commute w s) : ∀ i j, Commute w ((!![p, q; r, s] : M2 (SlopeTestRemainingChoices S A)) i j) := by
   intro i j
   fin_cases i <;> fin_cases j
   exacts [hp, hq, hr, hs]
 
+/- English proof (translation)
+Introduce `i j k l`. Rewrite using `[Matrix.mul_apply]`. Conclude with `Commute.sum_right _ _ _ fun m _ => (hM i m k l).mul_right (hN m j k l)`.
+-/
 lemma freeOf2_mul {c : S} {M N : M2 (SlopeTestRemainingChoices S A)} (hM : FreeOf2 c M) (hN : FreeOf2 c N) :
     FreeOf2 c (M * N) := by
   intro i j k l
   rw [Matrix.mul_apply]
   exact Commute.sum_right _ _ _ fun m _ => (hM i m k l).mul_right (hN m j k l)
 
+/- English proof (translation)
+Use `show ins a M * ins a N = ins a N * ins a M`. Rewrite using `[← ins_mul a M N fM, ← ins_mul a N M fN, h]`.
+-/
 lemma ins_comm_ins {a : S} {M N : M2 (SlopeTestRemainingChoices S A)} (fM : FreeOf2 a M) (fN : FreeOf2 a N) (h : M * N = N * M) :
     Commute (ins a M) (ins a N) := by
   show ins a M * ins a N = ins a N * ins a M
   rw [← ins_mul a M N fM, ← ins_mul a N M fN, h]
 
+/- English proof (translation)
+The claim follows from `Commute.mul_left (huv.mul_right (ins_comm a N u fu huN)) ((ins_comm a M v fv hvM).symm.mul_right (ins_comm_ins fM fN hMN))`.
+-/
 lemma comm_mul_ins {a : S} {u v : SlopeTestRemainingChoices S A} {M N : M2 (SlopeTestRemainingChoices S A)} (fu : FreeOf a u) (fv : FreeOf a v)
     (fM : FreeOf2 a M) (fN : FreeOf2 a N) (huv : Commute u v) (huN : ∀ i j, Commute u (N i j))
     (hvM : ∀ i j, Commute v (M i j)) (hMN : M * N = N * M) : Commute (u * ins a M) (v * ins a N) :=
   Commute.mul_left (huv.mul_right (ins_comm a N u fu huN))
     ((ins_comm a M v fv hvM).symm.mul_right (ins_comm_ins fM fN hMN))
 
+/- English proof (translation)
+The claim follows from `Commute.mul_left huw (ins_comm a M w fw hwM).symm`.
+-/
 lemma comm_mul_ins_one {a : S} {u w : SlopeTestRemainingChoices S A} {M : M2 (SlopeTestRemainingChoices S A)} (fw : FreeOf a w) (huw : Commute u w)
     (hwM : ∀ i j, Commute w (M i j)) : Commute (u * ins a M) w :=
   Commute.mul_left huw (ins_comm a M w fw hwM).symm
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation.
+-/
 lemma inv_mul_ins {a : S} {u ui : SlopeTestRemainingChoices S A} {M Mi : M2 (SlopeTestRemainingChoices S A)} (fui : FreeOf a ui) (fM : FreeOf2 a M)
     (h : u * ui = 1) (hc : ∀ i j, Commute ui (M i j)) (hM : M * Mi = 1) :
     u * ins a M * (ui * ins a Mi) = 1 := by
@@ -118,20 +186,37 @@ lemma inv_mul_ins {a : S} {u ui : SlopeTestRemainingChoices S A} {M Mi : M2 (Slo
     _ = (u * ui) * (ins a M * ins a Mi) := by simp only [mul_assoc]
     _ = 1 := by rw [h, one_mul, ← ins_mul a M Mi fM, hM, ins_one]
 
+/- English proof (translation)
+Rewrite using `[star_mul, ins_star a M fM, hM, hu, (ins_comm a M u fu hc).eq]`.
+-/
 lemma star_mul_ins {a : S} {u : SlopeTestRemainingChoices S A} {M : M2 (SlopeTestRemainingChoices S A)} (fu : FreeOf a u) (fM : FreeOf2 a M)
     (hu : star u = u) (hc : ∀ i j, Commute u (M i j)) (hM : Mᴴ = M) : star (u * ins a M) = u * ins a M := by
   rw [star_mul, ins_star a M fM, hM, hu, (ins_comm a M u fu hc).eq]
 
+/- English proof (translation)
+Simplify using the standard rewrite rules.
+-/
 lemma diag_mul (p s p' s' : SlopeTestRemainingChoices S A) :
     (!![p, 0; 0, s] * !![p', 0; 0, s'] : M2 (SlopeTestRemainingChoices S A)) = !![p * p', 0; 0, s * s'] := by
   simp
 
+/- English proof (translation)
+Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Matrix.conjTranspose_apply]`.
+-/
 lemma diag_star (p s : SlopeTestRemainingChoices S A) : (!![p, 0; 0, s] : M2 (SlopeTestRemainingChoices S A))ᴴ = !![star p, 0; 0, star s] := by
   ext i j
   fin_cases i <;> fin_cases j <;> simp [Matrix.conjTranspose_apply]
 
+/- English proof (translation)
+The claim follows from `Matrix.one_fin_two.symm`.
+-/
 lemma diag_one : (!![1, 0; 0, 1] : M2 (SlopeTestRemainingChoices S A)) = 1 := Matrix.one_fin_two.symm
 
+/- English proof (translation)
+Establish `h` using `sum_eU_diag (A := A) b`. Rewrite `h` using `[Fin.sum_univ_two]`. Establish `h0 : (eU b 0 0 : SlopeTestRemainingChoices S A) = 1 - eU b 1 1` using `eq_sub_of_add_eq h`. Unfold `Rht0 ins Q0`. Rewrite using `[Matrix.smul_mul, Matrix.smul_apply, Matrix.mul_apply]`.
+
+Use `congr 1`. Simplify using `only [Fin.sum_univ_two, Matrix.sub_apply, Matrix.smul_apply, Matrix.of_apply, Matrix.one_apply_eq]`. Simplify using `[h0, sub_mul, mul_sub, sub_smul]`. Use `module`.
+-/
 lemma Rht0_mul_10 (b : S) (d : ℂ) (M : M2 (SlopeTestRemainingChoices S A)) :
     (Rht0 b d * M : M2 (SlopeTestRemainingChoices S A)) 1 0 = (d - 1)⁻¹ • ins b !![d • M 1 0, 0; -M 0 0, (d - 1) • M 1 0] := by
   have h := sum_eU_diag (A := A) b
@@ -148,13 +233,22 @@ section Frame
 
 variable {r : ℕ} (L : LevelData A r) (f : FrameData S A)
 
+/- English proof (translation)
+The claim follows from `free_add (free_io b _) (free_mul (free_io b _) (h.2.2.2.2.2.2.2.2 Y))`.
+-/
 lemma free_l {b : S} (h : f.Free b) (Y : ℂ) : FreeOf b (f.l L Y) :=
   free_add (free_io b _) (free_mul (free_io b _) (h.2.2.2.2.2.2.2.2 Y))
 
+/- English proof (translation)
+The claim follows from `free_mul (free_mul (free_mul h.2.2.2.2.2.2.2.1 (free_pow (free_io b _) _)) (free_star (free_l L f h _))) (free_mul (free_pow (free_io b _) _) h.2.2.2.2.2.2.1)`.
+-/
 lemma free_m {b : S} (h : f.Free b) (Y : ℂ) : FreeOf b (f.m L Y) :=
   free_mul (free_mul (free_mul h.2.2.2.2.2.2.2.1 (free_pow (free_io b _) _)) (free_star (free_l L f h _)))
     (free_mul (free_pow (free_io b _) _) h.2.2.2.2.2.2.1)
 
+/- English proof (translation)
+Establish `h1 : (!![1, 0; io L.GG * m, io L.GG] * !![1, 0; -m, io L.GGi] : M2 (SlopeTestRemainingChoices S A)) = 1`. Rewrite using `[Matrix.mul_fin_two, ← diag_one]`. Simplify using `[← io_mul, L.GG_GGi, io_one]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 lemma tri_mul (m : SlopeTestRemainingChoices S A) :
     (!![io L.ζbi, 0; 0, io L.ζi] * !![1, 0; io L.GG * m, io L.GG]) *
       (!![1, 0; -m, io L.GGi] * !![io L.ζb, 0; 0, io L.ζ]) = (1 : M2 (SlopeTestRemainingChoices S A)) := by
@@ -165,6 +259,9 @@ lemma tri_mul (m : SlopeTestRemainingChoices S A) :
         !![io L.ζb, 0; 0, io L.ζ]) := by simp only [Matrix.mul_assoc]
     _ = 1 := by rw [h1, Matrix.one_mul, diag_mul, ← io_mul, ← io_mul, L.ζbi_ζb, L.ζi_ζ, io_one, diag_one]
 
+/- English proof (translation)
+Establish `h1 : (!![1, 0; -m, io L.GGi] * !![1, 0; io L.GG * m, io L.GG] : M2 (SlopeTestRemainingChoices S A)) = 1`. Rewrite using `[Matrix.mul_fin_two, ← diag_one]`. Simplify using `[← mul_assoc, ← io_mul, L.GGi_GG, io_one]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 lemma tri_mul' (m : SlopeTestRemainingChoices S A) :
     (!![1, 0; -m, io L.GGi] * !![io L.ζb, 0; 0, io L.ζ]) *
       (!![io L.ζbi, 0; 0, io L.ζi] * !![1, 0; io L.GG * m, io L.GG]) = (1 : M2 (SlopeTestRemainingChoices S A)) := by
@@ -177,27 +274,73 @@ lemma tri_mul' (m : SlopeTestRemainingChoices S A) :
 
 end Frame
 
+/- English proof (translation)
+The claim follows from `freeOf2_of_entries (free_smul _ (free_one b)) (free_zero b) (free_zero b) (free_one b)`.
+-/
 lemma freeOf2_diag_scalar (b : S) (α : ℂ) : FreeOf2 b (!![α • 1, 0; 0, 1] : M2 (SlopeTestRemainingChoices S A)) :=
   freeOf2_of_entries (free_smul _ (free_one b)) (free_zero b) (free_zero b) (free_one b)
 
+/- English proof (translation)
+The claim follows from `comm_lit ((Commute.one_right w).smul_right α) (Commute.zero_right w) (Commute.zero_right w) (Commute.one_right w)`.
+-/
 lemma comm_sc (w : SlopeTestRemainingChoices S A) (α : ℂ) : ∀ i j, Commute w ((!![α • 1, 0; 0, 1] : M2 (SlopeTestRemainingChoices S A)) i j) :=
   comm_lit ((Commute.one_right w).smul_right α) (Commute.zero_right w) (Commute.zero_right w)
     (Commute.one_right w)
 
+/- English proof (translation)
+Rewrite using `[diag_mul, diag_mul]`. Simplify using the standard rewrite rules.
+-/
 lemma sc_comm_diag (α : ℂ) (p s : SlopeTestRemainingChoices S A) :
     (!![α • 1, 0; 0, 1] * !![p, 0; 0, s] : M2 (SlopeTestRemainingChoices S A)) = !![p, 0; 0, s] * !![α • 1, 0; 0, 1] := by
   rw [diag_mul, diag_mul]
   simp
 
+/- English proof (translation)
+Rewrite using `[hp, hq, hr, hs]`.
+-/
 lemma lit_congr {p q r s p' q' r' s' : SlopeTestRemainingChoices S A} (hp : p = p') (hq : q = q') (hr : r = r') (hs : s = s') :
     (!![p, q; r, s] : M2 (SlopeTestRemainingChoices S A)) = !![p', q'; r', s'] := by
   rw [hp, hq, hr, hs]
 
+/- English proof (translation)
+Rewrite using `[diag_mul, ← diag_one]`. Simplify using `[smul_smul, mul_comm β α, h]`.
+-/
 lemma sc_inv {α β : ℂ} (h : α * β = 1) :
     (!![α • 1, 0; 0, 1] * !![β • 1, 0; 0, 1] : M2 (SlopeTestRemainingChoices S A)) = 1 := by
   rw [diag_mul, ← diag_one]
   simp [smul_smul, mul_comm β α, h]
 
+/- English proof (translation)
+Introduce `A S _ _ _ _ _ _ r L f b Yb h`. Take `⟨hSL, hF, hFree, hYb, hb, hb1, hbm, hq⟩` from `h`. Establish `hFree'` using `hFree`. Take `⟨fRR, fTT, fF, fFi, fx, fxi, fc, fci, fee⟩` from `hFree`. Take `⟨xb1, xb2⟩` from `hF.x_xi Yb hb`.
+
+Take `⟨xm1, xm2⟩` from `hF.x_xi (Yb - 1) hbm`. Establish `hYm : star (Yb - 1) = Yb - 1` using `by rw [star_sub, hYb, star_one]`. Establish `fC : FreeOf2 b (!![f.q (Yb - 1) • f.xi (Yb - 1), 0; 0, f.x Yb] : M2 (SlopeTestRemainingChoices S A))` using `freeOf2_of_entries (free_smul _ (fxi _)) (free_zero b) (free_zero b) (fx _)`. Establish `fCi : FreeOf2 b (!![(f.q (Yb - 1))⁻¹ • f.x (Yb - 1), 0; 0, f.xi Yb] : M2 (SlopeTestRemainingChoices S A))` using `freeOf2_of_entries (free_smul _ (fx _)) (free_zero b) (free_zero b) (fxi _)`. Establish `cC : ∀ w : SlopeTestRemainingChoices S A, (∀ Y, Commute (f.x Y) w) → ∀ i j, Commute w ((!![f.q (Yb - 1) • f.xi (Yb - 1), 0; 0, f.x Yb] : M2 (SlopeTestRemainingChoices S A)) i j)` using `fun w hw => comm_lit ((comm_inv xm1 xm2 (hw _)).symm.smul_right _) (Commute.zero_right w) (Commute.zero_right w) (hw _).symm`.
+
+Establish `cCi : ∀ w : SlopeTestRemainingChoices S A, (∀ Y, Commute (f.x Y) w) → ∀ i j, Commute w ((!![(f.q (Yb - 1))⁻¹ • f.x (Yb - 1), 0; 0, f.xi Yb] : M2 (SlopeTestRemainingChoices S A)) i j)` using `fun w hw => comm_lit ((hw _).symm.smul_right _) (Commute.zero_right w) (Commute.zero_right w) (comm_inv xb1 xb2 (hw _)).symm`. Establish `x_ci : ∀ Y, Commute (f.x Y) f.ci` using `fun Y => (comm_inv hF.c_ci.1 hF.c_ci.2 (hF.x_c Y).symm).symm`. Establish `fE : FreeOf2 b (!![io L.ζbi, 0; 0, io L.ζi] * !![1, 0; io L.GG * f.m L Yb, io L.GG] : M2 (SlopeTestRemainingChoices S A))` using `freeOf2_mul (freeOf2_of_entries (free_io b _) (free_zero b) (free_zero b) (free_io b _)) (freeOf2_of_entries (free_one b) (free_zero b) (free_mul (free_io b _) (free_m L f hFree' _)) (free_io b _))`. Establish `fEi : FreeOf2 b (!![1, 0; -f.m L Yb, io L.GGi] * !![io L.ζb, 0; 0, io L.ζ] : M2 (SlopeTestRemainingChoices S A))` using `freeOf2_mul (freeOf2_of_entries (free_one b) (free_zero b) (free_neg (free_m L f hFree' _)) (free_io b _)) (freeOf2_of_entries (free_io b _) (free_zero b) (free_zero b) (free_io b _))`. Use `{ module := hLM ℂ A S f.reg f.RR f.TT f.q b Yb hF.module fRR fTT (hF.inv_reg hb) hYb lowerLeftEntry_commute := ?_ inv_reg := fun Y hY => ⟨hF.inv_reg hY.1, hY.2.2⟩ F_Fi := ?_ Fi_F := ?_ x_xi := ?_ c_ci := ⟨?_, ?_⟩ x_commute := ?_ x_c := ?_ x_fn := ?_ x_nab := ?_ c_fn := ?_ x_star …` and prove the remaining obligations.
+
+Introduce `Y hY Y' hY'`. Use `show Commute ((Rht0 b (Yb - Y) * f.TT Y : M2 (SlopeTestRemainingChoices S A)) 1 0) ((Rht0 b (Yb - Y') * f.TT Y' : M2 (SlopeTestRemainingChoices S A)) 1 0)`. Distinguish the cases in `hne : Y = Y'`. Substitute `hne` using the available equality. Conclude with `Commute.refl _`.
+
+Rewrite using `[Rht0_mul_10, Rht0_mul_10]`. Use `(Commute.smul_right ?_ _).smul_left _` and prove the remaining obligations. Establish `ht` using `hF.lowerLeftEntry_commute Y hY.1 Y' hY'.1`. Establish `r1` using `hRTT ℂ (SlopeTestRemainingChoices S A) f.TT Y' Y (hF.module.rtt Y' hY'.1 Y hY.1) 0 0 1 0`. Establish `r2` using `hRTT ℂ (SlopeTestRemainingChoices S A) f.TT Y Y' (hF.module.rtt Y hY.1 Y' hY'.1) 0 0 1 0`.
+
+Use `ins_comm_ins (freeOf2_of_entries (free_smul _ (fTT _ _ _)) (free_zero b) (free_neg (fTT _ _ _)) (free_smul _ (fTT _ _ _))) (freeOf2_of_entries (free_smul _ (fTT _ _ _)) (free_zero b) (free_neg (fTT _ _ _)) (free_smul _ (fTT _ _ _))) ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_fin_two, Matrix.mul_fin_two]`. Establish `e10` using `t21_commutator_identity (f.TT Y 0 0) (f.TT Y 1 0) (f.TT Y' 0 0) (f.TT Y' 1 0) Y Y' Yb hne r1 r2`. Use `lit_congr ?_ (by simp) e10 ?_` and prove the remaining obligations. Simplify using `only [zero_mul, add_zero]`.
+
+Conclude with `((ht.smul_left _).smul_right _).eq`. Simplify using `only [mul_zero, zero_add]`. Conclude with `((ht.smul_left _).smul_right _).eq`. Use `show ins b _ * f.F * (f.Fi * ins b _) = 1`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `show f.Fi * ins b _ * (ins b _ * f.F) = 1`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [mul_assoc]`. Use `_ = 1 := by rw [← ins_mul b _ _ fEi, tri_mul', ins_one, mul_one, hF.Fi_F]`. Introduce and unpack `Y ⟨hYi, h0, h1⟩`.
+
+Take `⟨a1, a2⟩` from `hF.x_xi Y hYi`. Establish `h0' : Yb - Y ≠ 0` using `h0`. Establish `h1' : Yb - Y - 1 ≠ 0` using `sub_ne_zero.mpr h1`. Conclude with `⟨inv_mul_ins (fxi Y) (freeOf2_diag_scalar b _) a1 (comm_sc _ _) (sc_inv (by field_simp)), inv_mul_ins (fx Y) (freeOf2_diag_scalar b _) a2 (comm_sc _ _) (sc_inv (by field_simp))⟩`. Use `inv_mul_ins fci fC hF.c_ci.1 (cC f.ci x_ci) ?_` and prove the remaining obligations.
+
+Rewrite using `[diag_mul, ← diag_one, xb1, smul_mul_smul_comm, xm2, mul_inv_cancel₀ hq, one_smul]`. Use `inv_mul_ins fc fCi hF.c_ci.2 (cCi f.c hF.x_c) ?_` and prove the remaining obligations. Rewrite using `[diag_mul, ← diag_one, xb2, smul_mul_smul_comm, xm1, inv_mul_cancel₀ hq, one_smul]`. Introduce `Y Y'`. Conclude with `comm_mul_ins (fx Y) (fx Y') (freeOf2_diag_scalar b _) (freeOf2_diag_scalar b _) (hF.x_commute Y Y') (comm_sc _ _) (comm_sc _ _) (sc_comm_diag _ _ _)`.
+
+Introduce `Y`. Conclude with `comm_mul_ins (fx Y) fc (freeOf2_diag_scalar b _) fC (hF.x_c Y) (cC (f.x Y) (fun Y' => hF.x_commute Y' Y)) (comm_sc _ _) (sc_comm_diag _ _ _)`. Introduce `Y g hg`. Conclude with `comm_mul_ins_one (free_io b g) (hF.x_fn Y g hg) (comm_sc _ _)`. Introduce `Y`.
+
+Conclude with `comm_mul_ins_one (free_io b _) (hF.x_nab Y) (comm_sc _ _)`. Introduce `g hg`. Conclude with `comm_mul_ins_one (free_io b g) (hF.c_fn g hg) (cC (io g) (fun Y => hF.x_fn Y g hg))`. Introduce `Y hY`. Use `star_mul_ins (fx Y) (freeOf2_diag_scalar b _) (hF.x_star Y hY) (comm_sc _ _) ?_` and prove the remaining obligations.
+
+Rewrite using `[diag_star, star_smul, star_one, star_div₀, star_sub, star_sub, star_sub, hY, hYb, star_one]`. Use `star_mul_ins fc fC hF.c_star (cC f.c hF.x_c) ?_` and prove the remaining obligations. Rewrite using `[diag_star, star_smul, hF.module.q_real _ hYm, star_inv xm1 (hF.x_star _ hYm), hF.x_star _ hYb]`. Introduce `Y g hg`. Establish `gx : ∀ Y, Commute (io g) (f.x Y)` using `fun Y => (hF.x_fn Y g hg).symm`.
+
+Establish `gb : Commute (io g) (f.xi Yb)` using `(comm_inv xb1 xb2 (hF.x_fn Yb g hg)).symm`. Establish `gm : Commute (io g) (f.xi (Yb - 1))` using `(comm_inv xm1 xm2 (hF.x_fn (Yb - 1) g hg)).symm`. Establish `ge : ∀ Y, Commute (io g) (f.ee Y)` using `fun Y => (hF.ee_fn Y g hg).symm`. Establish `gD : Commute (io g) (f.DD Y Yb)` using `((ge Y).sub_right (ge Yb)).smul_right _`. Establish `gt : Commute (io g : SlopeTestRemainingChoices S A) (tz L)`.
+
+Establish `hz : L.ζbi ∈ zfns L` using `by simp [zfns]`. Use `io_comm ?_` and prove the remaining obligations. Rewrite using `[mul_smul_comm, smul_mul_assoc, L.fns_comm g (Or.inr hg) L.ζbi (Or.inr hz)]`. Conclude with `(ins_comm b _ (io g) (free_io b g) (comm_lit (ge Y) (Commute.zero_right _) ((gb.mul_right gm).smul_right _).neg_right ((((gb.mul_right (ge Y)).mul_right (gx Yb)).sub_right gD).add_right gt))).symm`.
+-/
 theorem minusStep_of (hLM : LetterMinus) (hRTT : RTTEntries) (hForm : MinusForm) (hTau : MinusTau)
     (hL : MinusL) : MinusStep := by
   intro A S _ _ _ _ _ _ r L f b Yb h
@@ -320,6 +463,9 @@ end Formalism.FourierDecayAlt.P.Fr10
 
 namespace Formalism.FourierDecayAlt.P
 
+/- English proof (translation)
+Introduce `_ _ _ _ hLM hRTT hForm hTau hL` and use `Fr10.minusStep_of hLM hRTT hForm hTau hL`.
+-/
 theorem minus_letter_frame_of_data : Formalism.FourierDecayAlt.Fr.MinusAssemble :=
   fun _ _ _ _ hLM hRTT hForm hTau hL => Fr10.minusStep_of hLM hRTT hForm hTau hL
 

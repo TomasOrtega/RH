@@ -14,11 +14,17 @@ namespace DiagonalDivisor
 
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
+/- English proof (translation)
+Unfold `divCycle`. Simplify using `[Finsupp.ofSupportFinite_coe, hW]`.
+-/
 theorem divCycle_of_mem {P W : Ideal (MRing ι)} {s : MRing ι} (hW : W ∈ divSupp P s) :
     divCycle P s W = multAt (P ⊔ Ideal.span {s}) W := by
   unfold divCycle
   simp [Finsupp.ofSupportFinite_coe, hW]
 
+/- English proof (translation)
+Unfold `divCycle`. Simplify using `[Finsupp.ofSupportFinite_coe, hW]`.
+-/
 theorem divCycle_of_not_mem {P W : Ideal (MRing ι)} {s : MRing ι} (hW : W ∉ divSupp P s) :
     divCycle P s W = 0 := by
   unfold divCycle
@@ -26,6 +32,15 @@ theorem divCycle_of_not_mem {P W : Ideal (MRing ι)} {s : MRing ι} (hW : W ∉ 
 
 open Classical in
 
+/- English proof (translation)
+Distinguish the cases in `hW : W ∈ divSupp P (s * u)`. Rewrite using `[if_pos hW]`. Distinguish the cases in `hWs : W ∈ divSupp P s`. Conclude with `divCycle_of_mem hWs`. Rewrite using `[divCycle_of_not_mem hWs]`.
+
+Establish `hWp : W.IsPrime` using `hW.1.1.1`. Distinguish the cases in `hsW : s ∈ W`. It suffices to derive a contradiction. Use `hWs ⟨⟨⟨hWp, sup_le (le_sup_left.trans hW.1.1.2) ((Ideal.span_singleton_le_iff_mem _).mpr hsW)⟩, fun Q hQ hQW => hW.1.2 ⟨hQ.1, ?_⟩ hQW⟩, hW.2⟩` and prove the remaining obligations. Conclude with `(sup_le_sup_left ((Ideal.span_singleton_le_iff_mem _).mpr (Ideal.mul_mem_right u _ (Ideal.mem_span_singleton_self s))) P).trans hQ.2`.
+
+Establish `hnle : ¬ P ⊔ Ideal.span {s} ≤ W` using `fun h => hsW (h (Ideal.mem_sup_right (Ideal.subset_span rfl)))`. Unfold `multAt`. Rewrite using `[dif_pos hWp, Module.length_eq_zero_iff.mpr (NumbersDVR.localizedQuot_subsingleton_of_not_le _ W hnle)]`. Both sides reduce to the same expression. Rewrite using `[if_neg hW]`.
+
+Use `divCycle_of_not_mem fun hWs => hW ⟨?_, hWs.2⟩` and prove the remaining obligations. Conclude with `NumbersDVR.mem_minimalPrimes_sup_span_mul hu hWs.1`.
+-/
 theorem divCycle_eq_ite {P : Ideal (MRing ι)} [P.IsPrime] {s u : MRing ι} (hu : u ∉ P)
     (W : Ideal (MRing ι)) :
     divCycle P s W = if W ∈ divSupp P (s * u) then multAt (P ⊔ Ideal.span {s}) W else 0 := by
@@ -54,6 +69,17 @@ end DiagonalDivisor
 
 open DiagonalDivisor in
 
+/- English proof (translation)
+Introduce `Ω _ ι ν κ _ _ _ E _ _ Φ _ _ x B e φ δ hS hG hD hx a ha`. Use `⟨hF Ω ι ν κ E Φ x B e φ δ hS hG hD hx a ha, ?_⟩` and prove the remaining obligations. Introduce `n g h hg hh hP hq`. Take `⟨hΔ, hW⟩` from `hO Ω ι ν κ E Φ x B e φ δ hS hG hD hx a ha n g h hg hh hP hq`. Establish `hPp : (T.wwIdeal x δ e φ (a 0) (a 1)).IsPrime` using `RingHom.ker_isPrime _`.
+
+Establish `ht : T.diagSec a ≠ 0`. Unfold `T.diagSec`. Conclude with `sub_ne_zero.mpr (fun h01 => absurd (ha.injective h01) (by decide))`. Establish `hgP : g ∉ T.wwIdeal x δ e φ (a 0) (a 1)`. Establish `hh'` using `(DiagRAux.not_mem_ker_iff_aeval_ne _ h _ hh).1 hP`.
+
+Conclude with `(DiagRAux.not_mem_ker_iff_aeval_ne _ g _ hg).2 (hq ▸ mul_ne_zero ht hh')`. Use extensionality with `W`. Establish `hcg` using `divCycle_eq_ite (s := g) hP W`. Establish `hch` using `divCycle_eq_ite (s := h) hgP W`. Rewrite `hch` using `[mul_comm h g]`.
+
+Simplify using `only [T.toZCycle, Finsupp.coe_sub, Pi.sub_apply, Finsupp.mapRange_apply, Finsupp.single_apply, hcg, hch]`. Distinguish the cases in `hWm : W ∈ divSupp (T.wwIdeal x δ e φ (a 0) (a 1)) (g * h)`. Rewrite using `[if_pos hWm, if_pos hWm, hW W hWm]`. Simplify using `only [eq_comm]`. Rewrite using `[if_neg hWm, if_neg hWm, if_neg (fun h' : T.wwIdeal x δ e φ (a 0) (a 0) = W => hWm (h' ▸ hΔ))]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem DiagDiv.proof (hF : DiagForms.Statement) (hO : DiagOrd.Statement) : DiagDiv.Statement := by
   intro Ω _ ι ν κ _ _ _ E _ _ Φ _ _ x B e φ δ hS hG hD hx a ha
   refine ⟨hF Ω ι ν κ E Φ x B e φ δ hS hG hD hx a ha, ?_⟩

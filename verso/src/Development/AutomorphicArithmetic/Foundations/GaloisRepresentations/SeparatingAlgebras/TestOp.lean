@@ -4,6 +4,23 @@ open GlobalTheory.CuspRep GlobalTheory.WeilDeligne GlobalTheory.Pst GlobalTheory
 open GlobalTheory.GalCut GlobalTheory.UnitaryBC GlobalTheory.Cong GlobalTheory.DefU
 open MeasureTheory GroundTheory.Automorphic.Spherical UpperTheory.Gal.Gen
 
+/- English proof (translation)
+Introduce `hG hS hX E _ _ _ a K w hw hK Φ`. Take `⟨p, hp, hpe, -⟩` from `hS a Φ`. Take `⟨C, hC⟩` from `hG E a K w hw hK`. Take `⟨f, hloc, -, -, hact⟩` from `hC p hp`. Take `⟨η, hη⟩ : ∃ η : Submodule ℂ (UA E a → ℂ) → ℂ, ∀ U (h : ∃ z, SatAt U w z), η U = evalAt h.choose p` from `⟨fun U => if h : ∃ z, SatAt U w z then evalAt h.choose p else 0, fun U h => dif_pos h⟩`.
+
+Use `⟨f, η, fun g hg => (Subgroup.mem_inf.1 (hloc g hg)).1, fun U hU => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Introduce `φ hφ hfix`. Distinguish the cases in `h0 : φ = 0`. Substitute `h0` using the available equality. Simplify using `[opOf]`.
+
+Establish `hz` using `hX E a K w hw hK U hU ⟨φ, hφ, h0, hfix⟩`. Rewrite using `[hη U hz]`. Conclude with `hact U hU _ hz.choose_spec φ hφ hfix`. Introduce and unpack `⟨φ, hφ, h0, hfix⟩`. Establish `hz` using `hX E a K w hw hK U hU ⟨φ, hφ, h0, hfix⟩`.
+
+Establish `key : ∀ z, SatAt U w z → evalAt z p = η U`. Introduce `z hzz`. Establish `h1` using `hact U hU z hzz φ hφ hfix`. Establish `h2` using `hact U hU _ hz.choose_spec φ hφ hfix`. Rewrite using `[hη U hz]`.
+
+Conclude with `smul_left_injective ℂ h0 (h1.symm.trans h2)`. Prove the components needed by the constructor for the conclusion. Introduce `hne z hzz`. Rewrite `hne` using `[← key z hzz, hpe z]`. Simplify using `using Finset.prod_ne_zero_iff.1 hne 1 (Finset.mem_univ _)`.
+
+Introduce `hgen`. Take `⟨z, hzz⟩` from `hz`. Rewrite using `[← key z hzz, hpe z]`. Use `Finset.prod_ne_zero_iff.2 fun σ _ => ?_` and prove the remaining obligations. Establish `hs : SatAt U w (z ∘ σ)`.
+
+Take `⟨τ, h1, h2⟩` from `hzz`. Use `⟨τ, h1, ?_⟩` and prove the remaining obligations. Establish `hm : Finset.univ.val.map (z ∘ σ) = Finset.univ.val.map z`. Rewrite using `[← Multiset.map_map, Multiset.map_univ_val_equiv]`. Rewrite using `[hm]`.
+
+Conclude with `h2`. Conclude with `hgen _ hs`.
+-/
 theorem UpperTheory.Gal.Gen.testOp_pf :
     UpperTheory.Gal.Gen.GlobOp → UpperTheory.Gal.Gen.SymEx → UpperTheory.Gal.Gen.SatEx → UpperTheory.Gal.Gen.TestOp := by
   intro hG hS hX E _ _ _ a K w hw hK Φ

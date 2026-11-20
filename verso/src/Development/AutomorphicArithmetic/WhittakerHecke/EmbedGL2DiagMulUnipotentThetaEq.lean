@@ -6,6 +6,11 @@ open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.RankTwoDesce
 open UpperTheory.ConvolutionTheory.R2.G (FS2 nE)
 open scoped Classical
 
+/- English proof (translation)
+Introduce `E _ _ D y x`. Establish `hm : ∀ (h : GL (Fin 2) (A ℚ)) (i j : Fin 2), (em E h).val i j = AdeleBaseChange.adeleMap ℚ E (h.val i j)` using `fun _ _ _ => rfl`. Establish `hn : ∀ (q : A E), (nU q).val = !![1, q; 0, 1]` using `fun _ => rfl`. Establish `hk : ∀ u t : A ℚ, D.mkE u t = AdeleBaseChange.adeleMap ℚ E u + AdeleBaseChange.adeleMap ℚ E t * rt D.θ` using `fun _ _ => rfl`. Use `Units.ext ?_` and prove the remaining obligations.
+
+Use extensionality with `i j`. Simplify using `only [nE, Units.val_mul, Matrix.mul_apply, Fin.sum_univ_two, hm]`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [aE, hn, hk, map_mul, mul_assoc]`.
+-/
 theorem UpperTheory.embedGL2_diag_mul_unipotent_theta_eq :
     ∀ (E : Type) [Field E] [NumberField E] (D : Dat ℚ E) (y : (A ℚ)ˣ) (x : A ℚ),
         em E (aE y) * gl (nU (D.mkE 0 x)) = nE D ![0, (y : A ℚ) * x] * em E (aE y) := by

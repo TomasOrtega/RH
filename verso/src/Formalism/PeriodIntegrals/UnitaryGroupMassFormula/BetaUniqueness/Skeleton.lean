@@ -61,6 +61,9 @@ def EigenvalueLastLineOne : Prop :=
     Lat.s0 Λ F F' F'' β₁ D.R.k = 1 → Lat.s0 Λ F F' F'' β₂ D.R.k = 1 →
       EigenOne Λ F F' β₁ β₂
 
+/- English proof (translation)
+Rewrite using `[(hS D).rank_eq, D.sp.Y_rank 0 (Nat.zero_le _)]`. Take `⟨j, hj⟩` from `D.R.m_even`. Establish `h2` using `D.R.two_le_m`. Simplify using `only [Ranks.rankY, Ranks.r, Ranks.rS, zero_mul, add_zero]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem finrank_hS (D : D7) : finrank D.host.E (hS D).V = D.R.k + 2 * D.R.rS + 1 := by
   rw [(hS D).rank_eq, D.sp.Y_rank 0 (Nat.zero_le _)]
   obtain ⟨j, hj⟩ := D.R.m_even
@@ -68,6 +71,11 @@ theorem finrank_hS (D : D7) : finrank D.host.E (hS D).V = D.R.k + 2 * D.R.rS + 1
   simp only [Ranks.rankY, Ranks.r, Ranks.rS, zero_mul, add_zero]
   omega
 
+/- English proof (translation)
+Introduce `D u u' Λ F F' F'' β₁ β₂ hF hT' hT'' hG' hG'' hP1 hP2 hs1 hs2`. Establish `hdim` using `finrank_hS D`. Establish `n'` using `h1 (hS D) Λ F F' hF.1 hF.2.2.1 hT'.1 hT'.2.2`. Establish `n''` using `h1 (hS D) Λ F F'' hF.1 hF.2.2.1 hT''.1 hT''.2.2`. Establish `hH` using `h2 (hS D) Λ F F' F'' β₁ β₂ D.R.k hF.1 hF.2.2.1 hT''.1 hdim n' n'' hs1 hs2`.
+
+Conclude with `h4 (hS D) Λ F F' F'' β₁ β₂ D.R.k hdim n' (h3 D u' F') hP1.1.1 hP2.1.1 hP1.2.1 hP2.2.1 hP1.2.2.1 hP2.2.2.1 hH (h5 D u u' Λ F F' F'' β₁ β₂ hF hT' hT'' hG' hG'' hP1 hP2 hs1 hs2)`.
+-/
 theorem betaLUniq_of (h1 : GramNondeg) (h2 : AgreeOnH) (h3 : WAniso) (h4 : LineReduce)
     (h5 : EigenvalueLastLineOne) : PI.BetaLUniq := by
   intro D u u' Λ F F' F'' β₁ β₂ hF hT' hT'' hG' hG'' hP1 hP2 hs1 hs2

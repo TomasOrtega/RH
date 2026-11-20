@@ -14,9 +14,83 @@ noncomputable section
 
 variable {e : ℕ} {X : Type} [TopologicalSpace X] [T2Space X] [CompactSpace X]
 
+/- English proof (translation)
+Introduce `k` and use `⟨A.holo k j, A.holo j k⟩`.
+-/
 theorem isCompatChart_chart (A : FinHolAtlas e X) (j : Fin A.n) : IsCompatChart A (A.chart j) :=
   fun k => ⟨A.holo k j, A.holo j k⟩
 
+/- English proof (translation)
+Establish `hcomp : ∀ i, IsCompatChart A ((Fin.cons ψ A.chart : Fin (A.n + 1) → OpenPartialHomeomorph X (Fin (e + 1) → ℂ)) i)`. Introduce `i`. Use `Fin.cases ?_ (fun j => ?_) i` and prove the remaining obligations. Simplify using `using hψ`. Simplify using `using isCompatChart_chart A j`.
+
+Take `⟨A', hAA', hin, -⟩` from `atlasOfCompat A _ hcomp (fun p => ⟨(A.cover p).choose.succ, by simpa using (A.cover p).choose_spec⟩)`. Take `⟨j0, hj0⟩` from `hin 0`. Simplify using `only [Fin.cons_zero] at hj0`. Use `set Φv : Fin (e + 1) → LocPot X := Fin.cons (LocPot.ofFun v) Φ with hΦvd`. Establish `hΦv : ∀ i, IsPotential A (Φv i)`.
+
+Introduce `i`. Use `Fin.cases ?_ (fun k => ?_) i` and prove the remaining obligations. Conclude with `isPotential_ofFun A v hv`. Conclude with `hΦ k`. Establish `hΦv' : ∀ i, IsPotential A' (Φv i)` using `fun i => isPotential_of_compatible hAA' (hΦv i)`.
+
+Use `set ℓ := logNormSec L s with hℓd`. Take `⟨hℓ', hAA'eq⟩` from `mIntAtlasIndep A A' hAA' Φv hΦv ℓ (hℓ Φv hΦv)`. Establish `hne : Nonempty (ChartPartition A')` using `existsPartition A'`. Establish `hvs : tsupport v ⊆ ψ.source` using `hvV.trans hVψ`. Take `⟨hv'C, hKc, hv'K⟩` from `contDiff_chartExt hψ hv hvs`.
+
+Establish `hU' : IsOpen (ψ '' V)` using `ψ.isOpen_image_of_subset_source hV hVψ`. Establish `hKU : ψ '' tsupport v ⊆ ψ '' V` using `Set.image_mono hvV`. Establish `hU'T : ψ '' V ⊆ ψ.target` using `by rintro _ ⟨p, hp, rfl⟩; exact ψ.map_source (hVψ hp)`. Establish `hKT : ψ '' tsupport v ⊆ ψ.target` using `hKU.trans hU'T`. Take `⟨ρt, hρC, hρc, hρU, O, hO, hKO, hO1⟩` from `exists_cutoff hKc hU' hKU`.
+
+Establish `hφL : ContDiffOn ℝ ∞ (L.φ x ∘ ψ.symm) ψ.target` using `(contDiffOn_compat hψ (L.isOpen_U x) (hL.1 x)).mono fun y hy => ⟨hy, hψL (ψ.map_target hy)⟩`. Establish `hFwC : ContDiff ℝ ∞ (fun y => ρt y * (L.φ x ∘ ψ.symm) y)` using `contDiff_mul_of_tsupport ψ.open_target hρC (hρU.trans hU'T) hφL`. Establish `hFwt : tsupport (fun y => ρt y * (L.φ x ∘ ψ.symm) y) ⊆ tsupport ρt` using `tsupport_mul_subset_left`. Establish `hFwc : IsCompact (tsupport (fun y => ρt y * (L.φ x ∘ ψ.symm) y))` using `hρc.of_isClosed_subset (isClosed_tsupport _) hFwt`. Use `set ρ := chartPush ψ ρt with hρd`.
+
+Use `set w := chartPush ψ (fun y => ρt y * (L.φ x ∘ ψ.symm) y) with hwd`. Establish `hρs : A.Smooth ρ` using `smooth_chartPush hψ hρC hρc (hρU.trans hU'T)`. Establish `hws : A.Smooth w` using `smooth_chartPush hψ hFwC hFwc (hFwt.trans (hρU.trans hU'T))`. Establish `hwsupp : tsupport w ⊆ ψ.source` using `tsupport_chartPush_source ψ hFwc (hFwt.trans (hρU.trans hU'T))`. Establish `hρsupp : tsupport ρ ⊆ ψ.source` using `tsupport_chartPush_source ψ hρc (hρU.trans hU'T)`.
+
+Establish `hρ1 : ∀ p ∈ tsupport v, ρ p = 1` using `fun p hp => by`. Simplify using `only [hρd, chartPush, Set.indicator_of_mem (hvs hp), Function.comp_apply]`. Conclude with `hO1 _ (hKO ⟨p, hp, rfl⟩)`. Establish `hwL : ∀ p ∈ ψ.source, ψ p ∈ O → w p = L.φ x p` using `fun p hp hpO => by`. Simplify using `only [hwd, chartPush, Set.indicator_of_mem hp, Function.comp_apply, hO1 _ hpO, one_mul, ψ.left_inv hp]`.
+
+Establish `hD0 : ∀ y ∈ ψ.target, ψ.symm y ∉ tsupport v → locDens A' Φv j0 y = 0`. Introduce `y hy hp`. Conclude with `locDens_cons_ofFun_eq_zero (A := A') v Φ j0 (by rw [hj0]; exact hy) (by rw [hj0]; exact hp)`. Establish `hDK : ∀ y ∈ ψ.target, y ∉ ψ '' tsupport v → locDens A' Φv j0 y = 0`. Introduce `y hy hyK`.
+
+Conclude with `hD0 y hy fun hp => hyK ⟨_, hp, ψ.right_inv hy⟩`. Establish `hb : mInt A' Φv ℓ = mInt A' Φv (fun p => ρ p * ℓ p)`. Apply `mInt_congr` to reduce the goal to its premises. Introduce `j y hy`. Distinguish the cases in `hp : (A'.chart j).symm y ∈ tsupport v`.
+
+Rewrite using `[hρ1 _ hp, one_mul]`. Establish `h0 : locDens A' Φv j y = 0` using `locDens_cons_ofFun_eq_zero v Φ j hy hp`. Rewrite using `[h0, mul_zero, mul_zero]`. Establish `hmiρ : MIntegrable A' Φv (fun p => ρ p * ℓ p)` using `mIntegrableMul A' Φv ℓ ρ hℓ' (smooth_continuous hρs)`. Establish `hc : mInt A' Φv (fun p => ρ p * ℓ p) = ∫ y in ψ.target, ρ (ψ.symm y) * ℓ (ψ.symm y) * locDens A' Φv j0 y`.
+
+Unfold `mInt`. Rewrite using `[dif_pos hne, mIntLocalize A' hne.some Φv hΦv' j0 (fun p => ρ p * ℓ p) (by rw [hj0]; exact tsupport_mul_subset_left.trans hρsupp) hmiρ, hj0]`. Establish `hG1 : IntegrableOn (fun y => ρ (ψ.symm y) * ℓ (ψ.symm y) * locDens A' Φv j0 y) ψ.target`. Establish `h` using `hmiρ j0 _ (by rw [hj0]; exact hKT) hKc`. Rewrite `h` using `[hj0]`.
+
+Use `h.of_forall_sdiff_eq_zero ψ.open_target.measurableSet ?_` and prove the remaining obligations. Introduce and unpack `y ⟨hy, hyK⟩`. Use `show ρ (ψ.symm y) * ℓ (ψ.symm y) * locDens A' Φv j0 y = 0`. Rewrite using `[hDK y hy hyK, mul_zero]`. Establish `hmiw : MIntegrable A' Φv w` using `mIntegrableCont A' Φv hΦv' w (smooth_continuous hws)`.
+
+Establish `hG2 : IntegrableOn (fun y => w (ψ.symm y) * locDens A' Φv j0 y) ψ.target`. Establish `h` using `hmiw j0 _ (by rw [hj0]; exact hKT) hKc`. Rewrite `h` using `[hj0]`. Use `h.of_forall_sdiff_eq_zero ψ.open_target.measurableSet ?_` and prove the remaining obligations. Introduce and unpack `y ⟨hy, hyK⟩`.
+
+Use `show w (ψ.symm y) * locDens A' Φv j0 y = 0`. Rewrite using `[hDK y hy hyK, mul_zero]`. Establish `hae : ∀ᵐ y ∂(volume.restrict ψ.target), Real.log ‖u (ψ.symm y) * ∏ i, y i ^ M i‖ * locDens A' Φv j0 y = ρ (ψ.symm y) * ℓ (ψ.symm y) * locDens A' Φv j0 y + w (ψ.symm y) * locDens A' Φv j0 y` using `by filter_upwards [ae_restrict_mem ψ.open_target.measurableSet, ae_restrict_of_ae ae_coord_ne_zero] with y hy hy0`. Distinguish the cases in `hp : ψ.symm y ∈ tsupport v`. Establish `hps : ψ.symm y ∈ ψ.source` using `hvs hp`.
+
+Establish `hψp : ψ (ψ.symm y) = y` using `ψ.right_inv hy`. Establish `hprod : ∏ i, y i ^ M i ≠ 0` using `Finset.prod_ne_zero_iff.2 fun i _ => zpow_ne_zero _ (hy0 i)`. Establish `hsx : s x (ψ.symm y) = u (ψ.symm y) * ∏ i, y i ^ M i` using `by rw [hsu _ hps, hψp]`. Establish `hsx0 : s x (ψ.symm y) ≠ 0` using `by rw [hsx]; exact mul_ne_zero (hu0 _ hps) hprod`. Establish `hℓp : ℓ (ψ.symm y) = Real.log ‖s x (ψ.symm y)‖ - L.φ x (ψ.symm y)` using `logNormSecLocal A L s x _ hs (hψL hps) hsx0`.
+
+Establish `hwp : w (ψ.symm y) = L.φ x (ψ.symm y)` using `hwL _ hps (by rw [hψp]; exact hKO ⟨_, hp, hψp⟩)`. Rewrite using `[hρ1 _ hp, hℓp, hwp, hsx]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hD0 y hy hp]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hsplit : ∫ y in ψ.target, ρ (ψ.symm y) * ℓ (ψ.symm y) * locDens A' Φv j0 y = (∫ y in ψ.target, Real.log ‖u (ψ.symm y) * ∏ i, y i ^ M i‖ * locDens A' Φv j0 y) - ∫ y in ψ.target, w (ψ.symm y) * locDens A' Φv j0 y`. Establish `h` using `integral_congr_ae hae`. Rewrite `h` using `[integral_add hG1 hG2]`. Rewrite using `[h]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hφ' : ∀ k, ContDiffOn ℝ ∞ ((Φ k).φ x ∘ ψ.symm) (ψ '' V)`. Introduce `k`. Use `(contDiffOn_compat hψ ((Φ k).isOpen_U x) ((hΦ k).1 x)).mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨p, hp, rfl⟩`. Conclude with `⟨ψ.map_source (hVψ hp), by simpa [ψ.left_inv (hVψ hp)] using hVΦ k hp⟩`.
+
+Establish `hu' : DifferentiableOn ℂ (u ∘ ψ.symm) (ψ '' V)` using `fun y hy => (analyticAt_compat_fun hψ hu (hU'T hy) (ψ.map_target (hU'T hy))).differentiableAt.differentiableWithinAt`. Establish `hu'0 : ∀ y ∈ ψ '' V, (u ∘ ψ.symm) y ≠ 0` using `fun y hy => hu0 _ (ψ.map_target (hU'T hy))`. Establish `hyp : PoincareLelongData (ψ '' V) (chartExt ψ v) (fun k => (Φ k).φ x ∘ ψ.symm)` using `⟨hU', hv'C.of_le (WithTop.coe_le_coe.2 le_top), hKc.of_isClosed_subset (isClosed_tsupport _) hv'K, hv'K.trans hKU, hφ'⟩`. Take `⟨-, hPL⟩` from `log_norm_integral_formula_snc e M (ψ '' V) (chartExt ψ v) _ (u ∘ ψ.symm) hyp hu' hu'0`. Establish `hdens0 : ∀ y, y ∉ ψ '' tsupport v → densV (chartExt ψ v) (fun k => (Φ k).φ x ∘ ψ.symm) y = 0`.
+
+Introduce `y hy`. Apply `maDens_cons_eq_zero` to reduce the goal to its premises. Use `filter_upwards [hKc.isClosed.isOpen_compl.mem_nhds hy] with y' hy'`. Conclude with `image_eq_zero_of_notMem_tsupport fun h => hy' (hv'K h)`. Establish `hDeq : ∀ y ∈ ψ.target, locDens A' Φv j0 y = densV (chartExt ψ v) (fun k => (Φ k).φ x ∘ ψ.symm) y`.
+
+Introduce `y hy`. Distinguish the cases in `hyK : y ∈ ψ '' tsupport v`. Take `⟨p, hp, hpy⟩` from `hyK`. Establish `hps : p ∈ ψ.source` using `hvs hp`. Establish `hsy : ψ.symm y = p` using `by rw [← hpy, ψ.left_inv hps]`.
+
+Rewrite using `[locDensBase A' Φv hΦv' j0 y (by rw [hj0]; exact hy) (Fin.cons p (fun _ => x)) ?_]`. Unfold `densV`. Apply `maDens_congr_germ` to reduce the goal to its premises. Introduce `i`. Use `Fin.cases ?_ (fun k => ?_) i` and prove the remaining obligations.
+
+Use `filter_upwards [ψ.open_target.mem_nhds hy] with y' hy'`. Simplify using `[hΦvd, hj0, chartExt, Set.indicator_of_mem hy', LocPot.ofFun]`. Use `filter_upwards with y'`. Simplify using `[hΦvd, hj0]`. Introduce `i`.
+
+Use `Fin.cases ?_ (fun k => ?_) i` and prove the remaining obligations. Simplify using `[hΦvd, LocPot.ofFun]`. Simplify `hVΦ k (hvV hp)` using `[hΦvd, hj0, hsy]`. Rewrite using `[hDK y hy hyK, hdens0 y hyK]`. Establish `he : ∫ y in ψ.target, Real.log ‖u (ψ.symm y) * ∏ i, y i ^ M i‖ * locDens A' Φv j0 y = ∑ i, (M i : ℝ) * ∫ w, chartExt ψ v (hypInclAt i w) * densHypAt i (fun k => (Φ k).φ x ∘ ψ.symm) w`.
+
+Rewrite using `[← hPL]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Function.comp_apply]`. Rewrite using `[hDeq y hy])`. Use `_ = _ := by`.
+
+Use `setIntegral_eq_integral_of_forall_compl_eq_zero fun y hy => ?_` and prove the remaining obligations. Establish `hyK : y ∉ ψ '' tsupport v` using `fun h => hy (hKT h)`. Rewrite using `[hdens0 y hyK, mul_zero]`. Establish `hΦw : ∀ i, IsPotential A ((Fin.cons (LocPot.ofFun w) Φ : Fin (e + 1) → LocPot X) i)`. Introduce `i`.
+
+Use `Fin.cases ?_ (fun k => ?_) i` and prove the remaining obligations. Conclude with `isPotential_ofFun A w hws`. Conclude with `hΦ k`. Establish `hΦL : ∀ i, IsPotential A ((Fin.cons L Φ : Fin (e + 1) → LocPot X) i)`. Introduce `i`.
+
+Use `Fin.cases ?_ (fun k => ?_) i` and prove the remaining obligations. Conclude with `hL`. Conclude with `hΦ k`. Establish `hf1 : ∫ y in ψ.target, w (ψ.symm y) * locDens A' Φv j0 y = mInt A' Φv w`. Unfold `mInt`.
+
+Rewrite using `[dif_pos hne, mIntLocalize A' hne.some Φv hΦv' j0 w (by rw [hj0]; exact hwsupp) hmiw, hj0]`. Establish `hf2 : mInt A' Φv w = mInt A' (Fin.cons (LocPot.ofFun w) Φ) v` using `(localSymm A' j0 v w (smoothOn_of_compatible hAA' isOpen_univ hv) (smoothOn_of_compatible hAA' isOpen_univ hws) (by rw [hj0]; exact hvs) Φ (fun k => isPotential_of_compatible hAA' (hΦ k))).symm`. Establish `hf3 : mInt A' (Fin.cons (LocPot.ofFun w) Φ) v = mInt A (Fin.cons (LocPot.ofFun w) Φ) v` using `((mIntAtlasIndep A A' hAA' _ hΦw v (mIntegrableCont A _ hΦw v (smooth_continuous hv))).2).symm`. Establish `hf4 : mInt A (Fin.cons (LocPot.ofFun w) Φ) v = mInt A (Fin.cons L Φ) v`. Apply `mInt_congr` to reduce the goal to its premises.
+
+Introduce `j y hy`. Distinguish the cases in `hp : v ((A.chart j).symm y) = 0`. Rewrite using `[hp, zero_mul, zero_mul]`. Use `congr 1`. Establish `hpt : (A.chart j).symm y ∈ tsupport v` using `subset_tsupport _ hp`.
+
+Establish `hps` using `hvs hpt`. Rewrite using `[locDensBase A _ hΦL j y hy (Fin.cons x (fun _ => (A.chart j).symm y)) ?_]`. Unfold `locDens`. Apply `maDens_congr_germ` to reduce the goal to its premises. Introduce `i`.
+
+Use `Fin.cases ?_ (fun k => ?_) i` and prove the remaining obligations. Establish `hN : IsOpen (ψ.source ∩ ψ ⁻¹' O)` using `ψ.continuousOn.isOpen_inter_preimage ψ.open_source hO`. Establish `hpN : (A.chart j).symm y ∈ ψ.source ∩ ψ ⁻¹' O` using `⟨hps, hKO ⟨_, hpt, rfl⟩⟩`. Use `filter_upwards [((A.chart j).continuousOn_symm.isOpen_inter_preimage (A.chart j).open_target hN).mem_nhds ⟨hy, hpN⟩] with y' hy'`. Simplify `hwL _ hy'.2.1 hy'.2.2` using `[LocPot.ofFun]`.
+
+Use `filter_upwards with y'`. Simplify using the standard rewrite rules. Introduce `i`. Use `Fin.cases ?_ (fun k => ?_) i` and prove the remaining obligations. Simplify using `using hψL hps`.
+
+Simplify using `using (Φ k).mem_U _`. Rewrite using `[hAA'eq, hb, hc, hsplit, he, hf1, hf2, hf3, hf4]`.
+-/
 theorem pl_chart (A : FinHolAtlas (e + 1) X) (L : LocPot X) (s : X → X → ℂ)
     (hL : IsPotential A L) (hs : IsSection A L s)
     (hℓ : ∀ Φ' : Fin (e + 1) → LocPot X, (∀ i, IsPotential A (Φ' i)) →

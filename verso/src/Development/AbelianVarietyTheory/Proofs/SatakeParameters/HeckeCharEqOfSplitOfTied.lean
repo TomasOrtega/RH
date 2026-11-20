@@ -17,10 +17,20 @@ def HeckeCharTie {R : Ranks} {H : Host R} {what₂ : Rows.Data R} (N : NData R H
     (∀ π w, A.unr (A.locG π w) ↔ (e π).UnrAt w) ∧
     ∀ π w, (e π).UnrAt w → A.frobEig (A.locG π w) = {(((e π).val w)⁻¹ : ℂˣ).1}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun π => (T.e1 π).1, fun _ _ h => T.e1.injective (Subtype.ext h), T.unr_iff, T.frob⟩`.
+-/
 theorem heckeCharTie_of_tied {D : D7} {C : CharFrame D} {nch : NChoice D} {Tp : TupTied D C nch}
     (T : NCharTied D C nch Tp) : HeckeCharTie D.nd D.naut :=
   ⟨fun π => (T.e1 π).1, fun _ _ h => T.e1.injective (Subtype.ext h), T.unr_iff, T.frob⟩
 
+/- English proof (translation)
+Use extensionality with `x : 1`. Use `set p := atFin v (unif v) with hp`. Establish `hpv : Valued.v (p : v.adicCompletion L) = WithZero.exp (-1 : ℤ)` using `unif_spec v`. Establish `hx0 : Valued.v (x : v.adicCompletion L) ≠ 0` using `by simp`. Use `set n : ℤ := WithZero.log (Valued.v (x : v.adicCompletion L)) with hn`.
+
+Establish `hxn : Valued.v (x : v.adicCompletion L) = WithZero.exp n` using `(WithZero.exp_log hx0).symm`. Establish `hunit : IsUnitAt v (x * p ^ n)`. Unfold `IsUnitAt`. Rewrite using `[Units.val_mul, Units.val_zpow_eq_zpow_val, map_mul, map_zpow₀, hpv, hxn, ← WithZero.exp_zsmul, ← WithZero.exp_add]`. Simplify using the standard rewrite rules.
+
+Establish `h1` using `hu _ hunit`. Establish `hp1 : χ.loc v p = 1` using `hv`. Rewrite `h1` using `[map_mul, map_zpow, hp1, one_zpow, mul_one]`. Conclude with `h1`.
+-/
 theorem loc_eq_one {L : Type} [Field L] [NumberField L] (χ : HChar L) (v : HeightOneSpectrum (𝓞 L))
     (hu : χ.UnrAt v) (hv : χ.val v = 1) : χ.loc v = 1 := by
   ext x : 1
@@ -39,12 +49,20 @@ theorem loc_eq_one {L : Type} [Field L] [NumberField L] (χ : HChar L) (v : Heig
   rw [map_mul, map_zpow, hp1, one_zpow, mul_one] at h1
   exact h1
 
+/- English proof (translation)
+Apply `H.φ₀.injective` to reduce the goal to its premises. Rewrite using `[NumberField.IsCMField.complexEmbedding_complexConj]`. Conclude with `(H.toHostAx.conjE_apply H.φ₀ z).symm`.
+-/
 theorem complexConj_eq {R : Ranks} (H : Host R) [IsCMField H.E] (z : H.E) :
     IsCMField.complexConj H.E z = H.conj z := by
   apply H.φ₀.injective
   rw [NumberField.IsCMField.complexEmbedding_complexConj]
   exact (H.toHostAx.conjE_apply H.φ₀ z).symm
 
+/- English proof (translation)
+Establish `: IsCMField H.E` using `H.isCMField_hostE`. Apply `Subtype.ext` to reduce the goal to its premises. Use `GlobalTheory.T.heckeChar_cm_eq_one_of_trivial_degree_one (maximalRealSubfield H.E) H.E ν.1 ν.2 ?_` and prove the remaining obligations. Use `filter_upwards [h, GlobalTheory.T.eventually_residueDegreeOne_prime_moved_by_galois (maximalRealSubfield H.E) H.E (IsCMField.complexConj H.E) (IsCMField.complexConj_ne_one H.E)] with w hw hs hd`. Take `⟨x, hx, hy⟩` from `hs hd`.
+
+Establish `hsp : IsSplitPl H w` using `⟨x, hx, fun y hyx => hy y (by rw [complexConj_eq]; exact hyx)⟩`. Conclude with `(GlobalTheory.HeckeSplit.trivAt_iff H.E ν w).2 (loc_eq_one ν w (hw hsp).1 (hw hsp).2)`.
+-/
 theorem eq_one_of_split {R : Ranks} (H : Host R) (ν : HChar H.E)
     (h : ∀ᶠ w in Filter.cofinite, IsSplitPl H w → ν.UnrAt w ∧ ν.val w = 1) : ν = 1 := by
   have : IsCMField H.E := H.isCMField_hostE
@@ -56,6 +74,13 @@ theorem eq_one_of_split {R : Ranks} (H : Host R) (ν : HChar H.E)
   have hsp : IsSplitPl H w := ⟨x, hx, fun y hyx => hy y (by rw [complexConj_eq]; exact hyx)⟩
   exact (GlobalTheory.HeckeSplit.trivAt_iff H.E ν w).2 (loc_eq_one ν w (hw hsp).1 (hw hsp).2)
 
+/- English proof (translation)
+Introduce and unpack `R H what₂ N A ⟨e, hinj, hunr, hfrob⟩ χ χ' hag`. Rewrite `hag` using `[GlobalTheory.IndefiniteRowSideFullHecke.AgreementAtAlmostAllSplitPrimes.agreeAtAlmostAllSplit_iff]`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[← mul_inv_eq_one]`. Apply `eq_one_of_split H` to reduce the goal to its premises.
+
+Use `filter_upwards [hag, A.locG_unr_ae χ, A.locG_unr_ae χ'] with w hw h1 h2 hs`. Establish `u1` using `(hunr χ w).1 h1`. Establish `u2` using `(hunr χ' w).1 h2`. Use `⟨fun x hx => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[HChar.loc_mul, HChar.loc_inv, u1 x hx, u2 x hx, inv_one, mul_one]`.
+
+Establish `hf` using `hfrob χ w u1`. Rewrite `hf` using `[hw hs, hfrob χ' w u2, Multiset.singleton_inj, Units.val_inj, inv_inj]`. Rewrite using `[HChar.val_mul, HChar.val_inv, hf, mul_inv_cancel]`.
+-/
 theorem heckeCharEqOfSplit_of_tie : ∀ (R : Ranks) (H : Host R) (what₂ : Rows.Data R) (N : NData R H what₂)
     (A : NAut N), HeckeCharTie N A → GlobalTheory.IndefiniteRowSideFullHecke.AgreementAtAlmostAllSplitPrimes.HeckeCharEqOfSplit N A := by
   rintro R H what₂ N A ⟨e, hinj, hunr, hfrob⟩ χ χ' hag
@@ -72,10 +97,16 @@ theorem heckeCharEqOfSplit_of_tie : ∀ (R : Ranks) (H : Host R) (what₂ : Rows
     rw [hw hs, hfrob χ' w u2, Multiset.singleton_inj, Units.val_inj, inv_inj] at hf
     rw [HChar.val_mul, HChar.val_inv, hf, mul_inv_cancel]
 
+/- English proof (translation)
+Introduce `χ χ' hw` and use `heckeCharEqOfSplit_of_tie R H what₂ N A h χ χ' ((GlobalTheory.IndefiniteRowSideFullHecke.AgreementAtAlmostAllSplitPrimes.agreeAtAlmostAllSplit_iff A χ χ').2 hw)`.
+-/
 theorem heckeSplitOne_of_tie {R : Ranks} {H : Host R} {what₂ : Rows.Data R} (N : NData R H what₂)
     (A : NAut N) (h : HeckeCharTie N A) : GlobalTheory.ThetaExh.HeckeSplitOne N A := fun χ χ' hw =>
   heckeCharEqOfSplit_of_tie R H what₂ N A h χ χ' ((GlobalTheory.IndefiniteRowSideFullHecke.AgreementAtAlmostAllSplitPrimes.agreeAtAlmostAllSplit_iff A χ χ').2 hw)
 
+/- English proof (translation)
+The claim follows from `heckeCharEqOfSplit_of_tie _ _ _ _ _ (heckeCharTie_of_tied T)`.
+-/
 theorem heckeCharEqOfSplit_of_tied {D : D7} {C : CharFrame D} {nch : NChoice D} {Tp : TupTied D C nch}
     (T : NCharTied D C nch Tp) : GlobalTheory.IndefiniteRowSideFullHecke.AgreementAtAlmostAllSplitPrimes.HeckeCharEqOfSplit D.nd D.naut :=
   heckeCharEqOfSplit_of_tie _ _ _ _ _ (heckeCharTie_of_tied T)

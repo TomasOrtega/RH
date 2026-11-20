@@ -9,6 +9,11 @@ noncomputable section
 
 namespace GlobalTheory.SepCusp
 
+/- English proof (translation)
+Distinguish the cases in `hne : (Finset.univ.filter fun b : Fin r => p ≤ (b : ℕ)).Nonempty`. Take `⟨b0, hb0, hmin⟩` from `Finset.exists_min_image _ w hne`. Use `⟨w b0 - 1, fun a ha => ?_, fun b hb => ?_⟩` and prove the remaining obligations. Use `h a b0 ha (Finset.mem_filter.mp hb0).2` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+
+Use `hmin b (Finset.mem_filter.mpr ⟨Finset.mem_univ _, hb⟩)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Take `⟨M, hM⟩` from `(Set.finite_range w).bddAbove`. Conclude with `⟨M, fun a _ => hM ⟨a, rfl⟩, fun b hb => absurd ⟨b, Finset.mem_filter.mpr ⟨Finset.mem_univ _, hb⟩⟩ hne⟩`.
+-/
 theorem exists_threshold {r : ℕ} (p : ℕ) (w : Fin r → ℤ)
     (h : ∀ a b : Fin r, (a : ℕ) < p → p ≤ (b : ℕ) → w a < w b) :
     ∃ M : ℤ, (∀ a : Fin r, (a : ℕ) < p → w a ≤ M) ∧ ∀ b : Fin r, p ≤ (b : ℕ) → M + 1 ≤ w b := by
@@ -24,6 +29,11 @@ theorem exists_threshold {r : ℕ} (p : ℕ) (w : Fin r → ℤ)
     exact ⟨M, fun a _ => hM ⟨a, rfl⟩,
       fun b hb => absurd ⟨b, Finset.mem_filter.mpr ⟨Finset.mem_univ _, hb⟩⟩ hne⟩
 
+/- English proof (translation)
+Rewrite using `[← Finset.sum_range_add_sum_Ico _ hp]`. Establish `h1 : ∑ k ∈ Finset.range p, a k * (L (k + 1) - L k) ≤ ∑ k ∈ Finset.range p, M * (L (k + 1) - L k)` using `Finset.sum_le_sum fun k hk => mul_le_mul_of_nonneg_right (ha k (Finset.mem_range.mp hk)) (sub_nonneg.mpr (hup k (Finset.mem_range.mp hk)))`. Establish `h2 : ∑ k ∈ Finset.Ico p r, a k * (L (k + 1) - L k) ≤ ∑ k ∈ Finset.Ico p r, (M + 1 / 2) * (L (k + 1) - L k)` using `Finset.sum_le_sum fun k hk => mul_le_mul_of_nonpos_right (hb k (Finset.mem_Ico.mp hk).1 (Finset.mem_Ico.mp hk).2) (sub_nonpos.mpr (hdown k (Finset.mem_Ico.mp hk).1 (Finset.mem_Ico.mp hk).2))`. Rewrite `h1` using `[← Finset.mul_sum, Finset.sum_range_sub, h0]`. Rewrite `h2` using `[← Finset.mul_sum, Finset.sum_Ico_sub L hp, hr]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem sum_le_of_unimodal (a L : ℕ → ℝ) (p r : ℕ) (hp : p ≤ r) (M : ℝ) (h0 : L 0 = 0) (hr : L r = 0)
     (hup : ∀ k < p, L k ≤ L (k + 1)) (hdown : ∀ k, p ≤ k → k < r → L (k + 1) ≤ L k)
     (ha : ∀ k < p, a k ≤ M) (hb : ∀ k, p ≤ k → k < r → M + 1 / 2 ≤ a k) :
@@ -44,6 +54,23 @@ theorem sum_le_of_unimodal (a L : ℕ → ℝ) (p r : ℕ) (hp : p ≤ r) (M : �
 
 variable {E : Type} [Field E] [NumberField E] [NumberField.IsCMField E] {r : ℕ} (X : Data E r)
 
+/- English proof (translation)
+Rewrite using `[rfac_eq X e he hx s hT τ la]`. Apply `Real.exp_le_exp.mpr` to reduce the goal to its premises. Establish `hρ` using `rho_pos X e he hx s hT τ`. Establish `hsg` using `hsg_of X hx τ`. Establish `hb : 0 ≤ 2 * X.c τ * (s τ).im` using `by have := c_pos X τ; positivity`.
+
+Establish `hp` using `X.p0_le`. Use `set L : ℕ → ℝ := fun i => Real.log (rho X e s x τ i) with hLdef`. Establish `hL0 : L 0 = 0` using `by simp [L, rho, mN_zero]`. Establish `hLr : L r = 0`. Simplify using `[L, rho, mN_top (hG_of X τ) X.p0 (mat x τ) (hx τ).1 hsg (e τ) (he τ).1]`.
+
+Establish `hup : ∀ k < X.p0, L k ≤ L (k + 1)` using `fun k hk => by`. Apply `Real.log_le_log (hρ k (by omega))` to reduce the goal to its premises. Simplify using `only [rho]`. Use `mN_up (hG_of X τ) X.p0 X.p0_le (mat x τ) hsg (e τ) (k + 1) hk k (Nat.le_succ k)` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+
+Establish `hdown : ∀ k, X.p0 ≤ k → k < r → L (k + 1) ≤ L k` using `fun k hk hkr => by`. Apply `Real.log_le_log (hρ (k + 1) hkr)` to reduce the goal to its premises. Simplify using `only [rho]`. Use `mN_down (hG_of X τ) X.p0 (mat x τ) hsg (e τ) k hk (k + 1) (Nat.le_succ k) hkr` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+
+Use `set a : ℕ → ℝ := fun k => if h : k < r then (la τ ⟨k, h⟩ : ℝ) / 2 else 0 with ha`. Establish `hsum : ∑ i : Fin r, (la τ i : ℝ) / 2 * (Real.log (rho X e s x τ ((i : ℕ) + 1)) - Real.log (rho X e s x τ i)) = ∑ k ∈ Finset.range r, a k * (L (k + 1) - L k)`. Rewrite using `[← Fin.sum_univ_eq_sum_range (fun k => a k * (L (k + 1) - L k)) r]`. Conclude with `Finset.sum_congr rfl fun i _ => by simp only [a, L, dif_pos i.2]`. Take `⟨M, hM1, hM2⟩` from `exists_threshold X.p0 (la τ) hsep`.
+
+Establish `hq : 1 + (s τ).im / X.ttV e x τ = rho X e s x τ X.p0`. Rewrite using `[Data.ttV, maj_eq X hx e τ (he τ).1, div_div_eq_mul_div, div_one]`. Simplify using `only [rho]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hsum, hq]`.
+
+Use `sum_le_of_unimodal a L X.p0 r hp ((M : ℝ) / 2) hL0 hLr hup hdown (fun k hk => ?_) (fun k hk hkr => ?_)` and prove the remaining obligations. Establish `hkr : k < r` using `by omega`. Establish `h1 : (la τ ⟨k, hkr⟩ : ℝ) ≤ M` using `by exact_mod_cast hM1 ⟨k, hkr⟩ hk`. Simplify using `only [a, dif_pos hkr]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `h1 : (M : ℝ) + 1 ≤ la τ ⟨k, hkr⟩` using `by exact_mod_cast hM2 ⟨k, hkr⟩ hk`. Simplify using `only [a, dif_pos hkr]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem rfac_le_of_sep (e : X.Ψ → Fin r → ℂ) (he : X.IsIsoV e) {x : Frame X.Ψ r} (hx : x ∈ X.dom)
     (s : X.Ψ → ℂ) (hT : X.flowV e s x ∈ X.dom) (τ : X.Ψ) (la : Wt X.Ψ r) (hs : 0 ≤ (s τ).im)
     (hsep : ∀ a b : Fin r, (a : ℕ) < X.p0 → X.p0 ≤ (b : ℕ) → la τ a < la τ b) :
@@ -91,6 +118,35 @@ theorem rfac_le_of_sep (e : X.Ψ → Fin r → ℂ) (he : X.IsIsoV e) {x : Frame
     simp only [a, dif_pos hkr]
     linarith
 
+/- English proof (translation)
+Use `⟨hP, fun ξ hξ x hx => ?_⟩` and prove the remaining obligations. Take `⟨C, hC⟩` from `hP.2`. Establish `hiso : X.IsIsoV (X.embV ξ)` using `fun τ => ⟨by rw [show X.embV ξ τ = Data.emb τ.1 ξ from rfl, hermC_emb, hξ.2.1, map_zero], emb_ne_zero τ.1 hξ.2.2⟩`. Use `set G := X.fj la ξ 0 P with hG`. Establish `hGb : ∀ y ∈ X.dom, ‖G y‖ * X.nfac la y ≤ C` using `fun y hy => FlowCoefficientBounds.fj_bound X la P C hC hξ 0 hy`.
+
+Establish `hGd : DifferentiableOn ℂ G X.dom` using `CuspCoefficientFlow.fj_diffOn X la P hP hξ 0`. Establish `hreal : ∀ s : X.Ψ → ℝ, G (X.flowV (X.embV ξ) (fun τ => (s τ : ℂ)) x) = cexp (4 * Real.pi * I * ∑ τ, (0 : X.Ψ → ℂ) τ * s τ) * G x`. Introduce `s`. Use `X.fj_flow_real la ξ hξ 0 P hP.1 ⟨C, hC⟩ x hx s` as an intermediate fact. Simplify using `only [Pi.zero_apply, Complex.ofReal_zero, zero_mul] at this ⊢`.
+
+Conclude with `this`. Establish `hcx` using `holomorphic_periodicity_extension r X (X.embV ξ) hiso G hGd 0 x hx hreal`. Assume the negation of the conclusion as `hne`. Establish `hN` using `FlowCoefficientBounds.nfac_pos X hx la`. Establish `hA : 0 < ‖G x‖ * X.nfac la x` using `mul_pos (norm_pos_iff.mpr hne) hN`.
+
+Establish `hmaj` using `maj_eq X hx (X.embV ξ) τ0 (hiso τ0).1`. Establish `hmpos` using `mN_pos (hG_of X τ0) X.p0 X.p0_le (mat x τ0) (hx τ0).1 (hsg_of X hx τ0) (X.embV ξ τ0) (hiso τ0).1 (hiso τ0).2`. Establish `htt : 0 < X.ttV (X.embV ξ) x τ0`. Rewrite using `[Data.ttV, hmaj]`. Use `c_pos X τ0` as an intermediate fact.
+
+Check the signs of the components of the expression. Use `set M : ℝ := |Real.log (C / (‖G x‖ * X.nfac la x))| + 1 with hM`. Establish `hM0 : 0 < M` using `by positivity`. Use `set t : ℝ := X.ttV (X.embV ξ) x τ0 * (Real.exp (2 * M) - 1) with ht`. Establish `ht0 : 0 < t` using `mul_pos htt (by linarith [Real.add_one_lt_exp (show (2 * M) ≠ 0 by positivity)])`.
+
+Set `s : X.Ψ → ℂ` to `fun τ => if τ = τ0 then I * t else 0`. Establish `hs0 : (s τ0).im = t` using `by simp [s]`. Establish `hdom : X.flowV (X.embV ξ) s x ∈ X.dom`. Use `(flowDomainCriterion_holds r X _ hiso x hx s).1.mpr fun τ => ?_` and prove the remaining obligations. Distinguish the cases in `h : τ = τ0`.
+
+Substitute `h` using the available equality. Rewrite using `[hs0]`. Establish `: 0 < t / X.ttV (X.embV ξ) x τ` using `div_pos ht0 htt`. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `[s, h]`.
+
+Establish `hq : 1 + (s τ0).im / X.ttV (X.embV ξ) x τ0 = Real.exp (2 * M)`. Rewrite using `[hs0, ht, mul_div_cancel_left₀ _ htt.ne']`. Expand and normalize the polynomial expressions, which then agree. Establish `hratio : X.nfac la x / X.nfac la (X.flowV (X.embV ξ) s x) ≤ Real.exp (-M)`. Rewrite using `[nfac_div, Finset.prod_eq_single τ0 (fun τ _ hτ => rfac_of_zero X _ hiso hx s hdom τ la (by simp [s, hτ])) (fun h => absurd (Finset.mem_univ τ0) h)]`.
+
+Use `(rfac_le_of_sep X _ hiso hx s hdom τ0 la (by rw [hs0]; exact ht0.le) hsep).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[hq, Real.log_exp]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `hNT` using `FlowCoefficientBounds.nfac_pos X hdom la`.
+
+Establish `hGT : G (X.flowV (X.embV ξ) s x) = G x`. Rewrite using `[hcx s hdom]`. Simplify using the standard rewrite rules. Establish `h1 : X.nfac la x ≤ X.nfac la (X.flowV (X.embV ξ) s x) * Real.exp (-M)`. Rewrite `hratio` using `[div_le_iff₀ hNT]`.
+
+Rewrite using `[mul_comm]`. Conclude with `hratio`. Establish `h2 : ‖G x‖ * X.nfac la x ≤ C * Real.exp (-M)`. Combine the equalities or inequalities in the displayed calculation. Break down `le_or_gt C 0 with hC0 | hC0` into its components or cases.
+
+Establish `: C * Real.exp (-M) ≤ 0` using `mul_nonpos_of_nonpos_of_nonneg hC0 (Real.exp_pos _).le`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hlt : Real.log (C / (‖G x‖ * X.nfac la x)) < M`. Use `le_abs_self (Real.log (C / (‖G x‖ * X.nfac la x)))` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `h3 : C / (‖G x‖ * X.nfac la x) < Real.exp M`. Rewrite using `[← Real.exp_log (div_pos hC0 hA)]`. Conclude with `Real.exp_lt_exp.mpr hlt`. Establish `h4 : C * Real.exp (-M) < ‖G x‖ * X.nfac la x`. Rewrite using `[Real.exp_neg, ← div_eq_mul_inv, div_lt_iff₀ (Real.exp_pos _)]`.
+
+Rewrite `h3` using `[div_lt_iff₀ hA]`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem mem_SS_of_sep_at (la : Wt X.Ψ r) (τ0 : X.Ψ) (P : Frame X.Ψ r → ℂ) (hP : X.IsBddSec la P)
     (hsep : ∀ a b : Fin r, (a : ℕ) < X.p0 → X.p0 ≤ (b : ℕ) → la τ0 a < la τ0 b) :
     P ∈ X.SS la := by
@@ -175,12 +231,18 @@ theorem mem_SS_of_sep_at (la : Wt X.Ψ r) (τ0 : X.Ψ) (P : Frame X.Ψ r → ℂ
       linarith
     linarith
 
+/- English proof (translation)
+Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Distinguish the cases in `h : NumberField.ComplexEmbedding.conjugate τ ∈ X.Ψ`. Conclude with `⟨⟨_, h⟩⟩`. Conclude with `⟨⟨τ, (X.cmType τ).mpr h⟩⟩`.
+-/
 theorem nonempty_type : Nonempty X.Ψ := by
   obtain ⟨τ⟩ : Nonempty (E →+* ℂ) := inferInstance
   by_cases h : NumberField.ComplexEmbedding.conjugate τ ∈ X.Ψ
   · exact ⟨⟨_, h⟩⟩
   · exact ⟨⟨τ, (X.cmType τ).mpr h⟩⟩
 
+/- English proof (translation)
+Take `⟨τ0⟩` from `nonempty_type X`. Conclude with `mem_SS_of_sep_at X la τ0 P hP (hsep τ0)`.
+-/
 theorem mem_SS_of_sep (E : Type) [Field E] [NumberField E] [NumberField.IsCMField E] (r : ℕ) (X : Data E r)
     (la : Wt X.Ψ r) (P : Frame X.Ψ r → ℂ) (hP : X.IsBddSec la P)
     (hsep : ∀ (τ : X.Ψ) (a b : Fin r), (a : ℕ) < X.p0 → X.p0 ≤ (b : ℕ) → la τ a < la τ b) :

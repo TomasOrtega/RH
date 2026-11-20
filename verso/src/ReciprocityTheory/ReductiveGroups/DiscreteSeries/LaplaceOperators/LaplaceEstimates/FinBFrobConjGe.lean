@@ -9,14 +9,25 @@ open scoped InnerProductSpace
 
 namespace ReciprocityTheory.ChartRestriction.DS.Lap
 
+/- English proof (translation)
+Use `show ((y⁻¹ : Formalism.REAL.UJ ε) : (Matrix (Fin n) (Fin n) ℂ)ˣ).val = _`. Rewrite using `[Subgroup.coe_inv, Matrix.coe_units_inv]`.
+-/
 theorem finB_umat_inv {n : ℕ} {ε : Fin n → Bool} (y : Formalism.REAL.UJ ε) :
     Formalism.MainNotions.S.umat y⁻¹ = (Formalism.MainNotions.S.umat y)⁻¹ := by
   show ((y⁻¹ : Formalism.REAL.UJ ε) : (Matrix (Fin n) (Fin n) ℂ)ˣ).val = _
   rw [Subgroup.coe_inv, Matrix.coe_units_inv]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem finB_umat_mul {n : ℕ} {ε : Fin n → Bool} (a b : Formalism.REAL.UJ ε) :
     Formalism.MainNotions.S.umat (a * b) = Formalism.MainNotions.S.umat a * Formalism.MainNotions.S.umat b := rfl
 
+/- English proof (translation)
+Establish `e : (fun y : Formalism.REAL.UJ ε => frob ((Formalism.MainNotions.S.umat y)⁻¹ * Formalism.MainNotions.S.umat γ) ^ (-b)) = fun y => (fun y' : Formalism.REAL.UJ ε => frob (Formalism.MainNotions.S.umat y') ^ (-b)) (γ⁻¹ * y)`. Use function extensionality and compare the values at `y`. Establish `h1 : (Formalism.MainNotions.S.umat y)⁻¹ * Formalism.MainNotions.S.umat γ = (Formalism.MainNotions.S.umat (γ⁻¹ * y))⁻¹`. Rewrite using `[← finB_umat_inv, ← finB_umat_inv, ← finB_umat_mul, _root_.mul_inv_rev, inv_inv]`. Simplify using `only`.
+
+Rewrite using `[h1, finB_frob_inv (unitary_matrix_mem_set ε _)]`. Rewrite using `[e]`. Conclude with `⟨hI.comp_mul_left γ⁻¹, integral_mul_left_eq_self (μ := Formalism.REAL.muG ε) (fun y' : Formalism.REAL.UJ ε => frob (Formalism.MainNotions.S.umat y') ^ (-b)) γ⁻¹⟩`.
+-/
 theorem finB_intJ_shift {k r : ℕ} (ε : Fin (2 * r + k + 1) → Bool) (b : ℝ)
     (hI : Integrable (fun y : Formalism.REAL.UJ ε => frob (Formalism.MainNotions.S.umat y) ^ (-b)) (Formalism.REAL.muG ε))
     (γ : Formalism.REAL.UJ ε) :
@@ -34,6 +45,13 @@ theorem finB_intJ_shift {k r : ℕ} (ε : Fin (2 * r + k + 1) → Bool) (b : ℝ
   exact ⟨hI.comp_mul_left γ⁻¹,
     integral_mul_left_eq_self (μ := Formalism.REAL.muG ε) (fun y' : Formalism.REAL.UJ ε => frob (Formalism.MainNotions.S.umat y') ^ (-b)) γ⁻¹⟩
 
+/- English proof (translation)
+Establish `hA` using `finB_one_le hY`. Establish `hB` using `finB_one_le hYg`. Establish `hG` using `finB_one_le hg`. Establish `hle` using `finB_le_mul hY g`. Establish `hAh : 0 ≤ frob Y ^ (-(β / 2))` using `Real.rpow_nonneg (by linarith) _`.
+
+Establish `hBh : 0 ≤ frob (Y⁻¹ * g) ^ (-(β / 2))` using `Real.rpow_nonneg (by linarith) _`. Establish `hGq : 0 ≤ frob g ^ (-(β / 4))` using `Real.rpow_nonneg (by linarith) _`. Break down `le_total (frob Y) (frob (Y⁻¹ * g)) with h | h` into its components or cases. Combine the equalities or inequalities in the displayed calculation. Use `S0.DecA.pb_real β (frob (Y⁻¹ * g)) (frob Y) (frob g) hβ hB hA (by linarith) hle h` as an intermediate fact.
+
+Rewrite `this` using `[mul_comm]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem finB_pair {k r : ℕ} {ε : Fin (2 * r + k + 1) → Bool} (β : ℝ) (hβ : 0 ≤ β) {Y g : Mat k r}
     (hY : Y ∈ UJset ε) (hg : g ∈ UJset ε) (hYg : Y⁻¹ * g ∈ UJset ε) :
     frob Y ^ (-β) * frob (Y⁻¹ * g) ^ (-β) ≤
@@ -54,10 +72,22 @@ theorem finB_pair {k r : ℕ} {ε : Fin (2 * r + k + 1) → Bool} (β : ℝ) (h�
     calc _ ≤ frob g ^ (-(β / 4)) * frob Y ^ (-(β / 2)) := this
       _ ≤ _ := mul_le_mul_of_nonneg_left (le_add_of_nonneg_right hBh) hGq
 
+/- English proof (translation)
+Use `show (1 : Mat k r)ᴴ * Formalism.QuantumDeterminants.Hpk k r * 1 = Formalism.QuantumDeterminants.Hpk k r`. Simplify using the standard rewrite rules.
+-/
 theorem finB_one_UH (k r : ℕ) : (1 : Mat k r) ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r) := by
   show (1 : Mat k r)ᴴ * Formalism.QuantumDeterminants.Hpk k r * 1 = Formalism.QuantumDeterminants.Hpk k r
   simp
 
+/- English proof (translation)
+Use `letI : NormedAddCommGroup (Mat k r) := Matrix.frobeniusNormedAddCommGroup`. Establish `hg : ∀ A : Mat k r, Formalism.FourierDecayAlt.B.gN A = ‖A‖`. Introduce `A`. Rewrite using `[Matrix.frobenius_norm_def, Formalism.FourierDecayAlt.B.gN, Real.sqrt_eq_rpow]`. Use `congr 1`.
+
+Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.normSq_eq_norm_sq, Real.rpow_two]`. Establish `hf : ∀ A : Mat k r, frob A = ‖A‖`. Introduce `A`. Rewrite using `[Matrix.frobenius_norm_def, frob, Real.sqrt_eq_rpow]`.
+
+Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Real.rpow_two]`. Use `⟨1 / (‖P⁻¹‖ * ‖P‖ + 1), by positivity, fun g => ?_⟩` and prove the remaining obligations. Establish `e : g = P⁻¹ * (P * g * P⁻¹) * P`.
+
+Simplify using `only [Matrix.mul_assoc, Matrix.nonsing_inv_mul_cancel_left _ _ hP, Matrix.nonsing_inv_mul _ hP, Matrix.mul_one]`. Establish `h1 : ‖g‖ ≤ ‖P⁻¹‖ * ‖P * g * P⁻¹‖ * ‖P‖` using `by conv_lhs => rw [e]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hg, hf, div_mul_eq_mul_div, one_mul, div_le_iff₀ (by positivity)]`. Use polynomial arithmetic with `[norm_nonneg (P * g * P⁻¹), norm_nonneg P⁻¹, norm_nonneg P, mul_nonneg (norm_nonneg P⁻¹) (norm_nonneg P)]`.
+-/
 theorem finB_frob_conj_ge {k r : ℕ} {P : Mat k r} (hP : IsUnit P.det) :
     ∃ c : ℝ, 0 < c ∧ ∀ g : Mat k r, c * Formalism.FourierDecayAlt.B.gN g ≤ frob (P * g * P⁻¹) := by
   letI : NormedAddCommGroup (Mat k r) := Matrix.frobeniusNormedAddCommGroup
@@ -86,6 +116,17 @@ theorem finB_frob_conj_ge {k r : ℕ} {P : Mat k r} (hP : IsUnit P.det) :
   nlinarith [norm_nonneg (P * g * P⁻¹), norm_nonneg P⁻¹, norm_nonneg P,
     mul_nonneg (norm_nonneg P⁻¹) (norm_nonneg P)]
 
+/- English proof (translation)
+Establish `hd : IsUnit P.det` using `(Matrix.isUnit_iff_isUnit_det P).1 hP.1`. Establish `hb0 : 0 ≤ b`. Establish `: 0 ≤ S0.bS k r` using `by unfold S0.bS S0.nS; positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨c0, hc0, hcg⟩` from `finB_frob_conj_ge hd`.
+
+Establish `h1` using `hIS k r z μW μN hz hT hW hN 1 (finB_one_UH k r) x hx b hb`. Simplify using `only [inv_one, Matrix.one_mul] at h1`. Establish `hae` using `ae_mem_unitary_nilpotent_product z μW μN hW hN`. Establish `hof : Continuous (fun g : Formalism.QuantumDeterminants.Mt k r => (Matrix.of g : Mat k r))` using `S0.Dec.of_cont k r`. Establish `hfc : Continuous (fun M : Mat k r => frob M)`.
+
+Establish `: (fun M : Mat k r => frob M) = fun M => Formalism.FourierDecayAlt.B.gN M` using `funext finB_frob_eq`. Rewrite using `[this]`. Conclude with `S0.Dec.gN_cont k r`. Establish `hgc : Continuous (fun p : Formalism.QuantumDeterminants.Mt k r × Formalism.QuantumDeterminants.Mt k r => P * (Matrix.of p.1 * Matrix.of p.2 * x) * P⁻¹)` using `(continuous_const.matrix_mul (((hof.comp continuous_fst).matrix_mul (hof.comp continuous_snd)).matrix_mul continuous_const)).matrix_mul continuous_const`. Use `Integrable.mono' (h1.const_mul (c0 ^ (-b))) ((hfc.comp hgc).measurable.pow_const _).aestronglyMeasurable ?_` and prove the remaining obligations.
+
+Use `filter_upwards [hae] with p hp`. Establish `hM : Matrix.of p.1 * Matrix.of p.2 * x ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r)` using `unitary_hermitian_form_mul_mem (unitary_hermitian_form_mul_mem hp.1.1 hp.2.1) hx`. Establish `hg1` using `S0.DecA.one_le_gN' hM`. Establish `hge` using `hcg (Matrix.of p.1 * Matrix.of p.2 * x)`. Establish `hpos : 0 < c0 * Formalism.FourierDecayAlt.B.gN (Matrix.of p.1 * Matrix.of p.2 * x)` using `by positivity`.
+
+Rewrite using `[Real.norm_eq_abs, abs_of_nonneg (Real.rpow_nonneg (by linarith) _)]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem finB_intS (hIS : S0.IntSStatement) {k r : ℕ} {ε : Fin (2 * r + k + 1) → Bool}
     {P : Mat k r} (hP : Formalism.MainNotions.S.IsCayley k r ε P) (z : Fin (2 * r + k + 1) → ℂ) (μW μN : Measure (Formalism.QuantumDeterminants.Mt k r))
     (hz : Formalism.QuantumDeterminants.inWb k r z) (hT : 0 < Formalism.QuantumDeterminants.Tz k r z)
@@ -123,6 +164,11 @@ theorem finB_intS (hIS : S0.IntSStatement) {k r : ℕ} {ε : Fin (2 * r + k + 1)
     _ = c0 ^ (-b) * Formalism.FourierDecayAlt.B.gN (Matrix.of p.1 * Matrix.of p.2 * x) ^ (-b) :=
         Real.mul_rpow hc0.le (by linarith)
 
+/- English proof (translation)
+Establish `ha' : aᴴ * Formalism.REAL.Jm ε * a = Formalism.REAL.Jm ε` using `(mir_inUJ_iff ε a).2 ha`. Establish `hb' : bᴴ * Formalism.REAL.Jm ε * b = Formalism.REAL.Jm ε` using `(mir_inUJ_iff ε b).2 hb`. Use `show inUJ ε (a * b)`. Rewrite using `[← mir_inUJ_iff]`. Use `show (a * b)ᴴ * Formalism.REAL.Jm ε * (a * b) = Formalism.REAL.Jm ε`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = Formalism.REAL.Jm ε := by rw [ha', hb']`.
+-/
 theorem finB_UJ_mul {k r : ℕ} {ε : Fin (2 * r + k + 1) → Bool} {a b : Mat k r} (ha : a ∈ UJset ε)
     (hb : b ∈ UJset ε) : a * b ∈ UJset ε := by
   have ha' : aᴴ * Formalism.REAL.Jm ε * a = Formalism.REAL.Jm ε := (mir_inUJ_iff ε a).2 ha
@@ -134,10 +180,20 @@ theorem finB_UJ_mul {k r : ℕ} {ε : Fin (2 * r + k + 1) → Bool} {a b : Mat k
         rw [Matrix.conjTranspose_mul]; simp only [Matrix.mul_assoc]
     _ = Formalism.REAL.Jm ε := by rw [ha', hb']
 
+/- English proof (translation)
+The claim follows from `isClosed_eq ((continuous_id.matrix_conjTranspose.matrix_mul continuous_const).matrix_mul continuous_id) continuous_const`.
+-/
 theorem finB_UJ_closed {k r : ℕ} (ε : Fin (2 * r + k + 1) → Bool) : IsClosed (UJset ε : Set (Mat k r)) :=
   isClosed_eq ((continuous_id.matrix_conjTranspose.matrix_mul continuous_const).matrix_mul continuous_id)
     continuous_const
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `hgap`. Establish `e : min (pOf ε : ℝ) (qOf ε : ℝ) = (S7.q0 ε : ℝ)` using `by unfold S7.q0; push_cast; rfl`. Rewrite `h2` using `[e]`. Establish `hn : (0 : ℝ) ≤ ((2 * r + k + 1 : ℕ) : ℝ)` using `Nat.cast_nonneg _`. Establish `hmax0 : 0 ≤ max (2 * ((2 * r + k + 1 : ℕ) : ℝ) * (S7.q0 ε : ℝ)) (2 * (r : ℝ) * ((2 * r + k + 1 : ℕ) : ℝ) ^ 2)` using `le_max_of_le_left (by positivity)`.
+
+Use `⟨?_, ?_, h2⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hq`. Establish `hq0 : S7.q0 ε = 0` using `by omega`. Rewrite `h2` using `[hq0]`. Simplify using `at h2`.
+
+Establish `: (0 : ℝ) ≤ max 0 (2 * (r : ℝ) * (2 * (r : ℝ) + (k : ℝ) + 1) ^ 2)` using `le_max_left _ _`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `: 0 ≤ 3 * ((2 * r + k + 1 : ℕ) : ℝ) / 2` using `by positivity`. Use `le_max_left (3 * ((2 * r + k + 1 : ℕ) : ℝ) / 2) (1 + ((2 * r + k + 1 : ℕ) : ℝ) * (pOf ε : ℝ) * (qOf ε : ℝ))` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem finB_gap {k r : ℕ} {ε : Fin (2 * r + k + 1) → Bool} {h : ℝ} (hgap : StepGap ε r h) :
     1 ≤ S7.q0 ε ∧ 0 < h ∧
       4 * max (2 * ((2 * r + k + 1 : ℕ) : ℝ) * (S7.q0 ε : ℝ)) (2 * (r : ℝ) * ((2 * r + k + 1 : ℕ) : ℝ) ^ 2) <

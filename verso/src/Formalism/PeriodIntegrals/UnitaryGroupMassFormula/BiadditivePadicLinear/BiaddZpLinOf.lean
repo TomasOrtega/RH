@@ -12,17 +12,26 @@ namespace PI.BiaddZpLinW
 
 open PI.BiaddZpLin
 
+/- English proof (translation)
+The claim follows from `PI.BeDiagZp.simeq_equivalence_additive`.
+-/
 theorem t0 : ∀ (p : ℕ) [Fact p.Prime] (σ : Type) (f g h f' g' : MvPowerSeries σ ℂ_[p]),
     Simeq f f ∧ (Simeq f g → Simeq g f) ∧ (Simeq f g → Simeq g h → Simeq f h) ∧
     (Simeq f g → Simeq f' g' → Simeq (f + f') (g + g')) :=
   PI.BeDiagZp.simeq_equivalence_additive
 
+/- English proof (translation)
+The claim follows from `PI.BeDiagZp.power_series_diagonal_linear`.
+-/
 theorem t1 : ∀ (p : ℕ) [Fact p.Prime] (σ τ : Type) [Finite σ] (f g : MvPowerSeries σ ℂ_[p])
     (s : σ → MvPowerSeries τ ℂ_[p]),
     (∀ i, MvPowerSeries.constantCoeff (s i) = 0) → (∀ i, IntegralMv (s i)) →
     Simeq f g → Simeq (MvPowerSeries.subst s f) (MvPowerSeries.subst s g) :=
   PI.BeDiagZp.power_series_diagonal_linear
 
+/- English proof (translation)
+The claim follows from `PI.BeDiagZp.OpsW.substOps_holds`.
+-/
 theorem t2 : ∀ (p : ℕ) [Fact p.Prime] (l ex ph : PowerSeries ℂ_[p]),
     PowerSeries.constantCoeff ex = 0 → PowerSeries.constantCoeff l = 0 →
     ∀ (σ τ : Type) [Finite σ] (s : σ → MvPowerSeries τ ℂ_[p]),
@@ -40,6 +49,9 @@ theorem t2 : ∀ (p : ℕ) [Fact p.Prime] (l ex ph : PowerSeries ℂ_[p]),
       MvPowerSeries.subst s (be l ex ph a b) = be l ex ph (MvPowerSeries.subst s a) (MvPowerSeries.subst s b) :=
   PI.BeDiagZp.OpsW.substOps_holds
 
+/- English proof (translation)
+The claim follows from `PI.BeDiagZp.IdentW.ident_holds`.
+-/
 theorem t3 : ∀ (p : ℕ) [Fact p.Prime] (l ex : PowerSeries ℂ_[p]),
     PowerSeries.constantCoeff ex = 0 → PowerSeries.subst ex l = PowerSeries.X →
     PowerSeries.constantCoeff l = 0 ∧
@@ -55,6 +67,9 @@ theorem t3 : ∀ (p : ℕ) [Fact p.Prime] (l ex : PowerSeries ℂ_[p]),
       mulBy l ex 0 a = 0 :=
   PI.BeDiagZp.IdentW.ident_holds
 
+/- English proof (translation)
+The claim follows from `PI.BeDiagZp.intSubst_holds`.
+-/
 theorem t5 : ∀ (p : ℕ) [Fact p.Prime] (σ τ : Type) [Finite σ] (f : MvPowerSeries σ ℂ_[p])
     (s : σ → MvPowerSeries τ ℂ_[p]),
     (∀ i, MvPowerSeries.constantCoeff (s i) = 0) → (∀ i, IntegralMv (s i)) →
@@ -63,24 +78,65 @@ theorem t5 : ∀ (p : ℕ) [Fact p.Prime] (σ τ : Type) [Finite σ] (f : MvPowe
 
 variable {p : ℕ} [Fact p.Prime]
 
+/- English proof (translation)
+Unfold `Simeq at *`. Rewrite using `[← e]`. Conclude with `h`.
+-/
 theorem simeq_congr {σ : Type} {f g f' g' : MvPowerSeries σ ℂ_[p]} (e : f - g = f' - g')
     (h : Simeq f g) : Simeq f' g' := by
   unfold Simeq at *
   rw [← e]
   exact h
 
+/- English proof (translation)
+Introduce `n`. Simplify using `only [IsIntP, Xv, MvPowerSeries.coeff_X]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem intX {σ : Type} (i : σ) : IntegralMv (Xv i : MvPowerSeries σ ℂ_[p]) := by
   intro n
   simp only [IsIntP, Xv, MvPowerSeries.coeff_X]
   split_ifs <;> simp
 
+/- English proof (translation)
+Introduce `n`. Simplify using `[IsIntP]`.
+-/
 theorem int0 {σ : Type} : IntegralMv (0 : MvPowerSeries σ ℂ_[p]) := by
   intro n
   simp [IsIntP]
 
+/- English proof (translation)
+Simplify using `[Xv]`.
+-/
 theorem ccX {σ : Type} (i : σ) : MvPowerSeries.constantCoeff (Xv i : MvPowerSeries σ ℂ_[p]) = 0 := by
   simp [Xv]
 
+/- English proof (translation)
+Take `⟨hl0, hI⟩` from `t3 p l ex hex hlex`. Establish `symm' : ∀ {σ : Type} {f g : MvPowerSeries σ ℂ_[p]}, Simeq f g → Simeq g f` using `fun {σ} {f g} h => (t0 p σ f g g g g).2.1 h`. Establish `trans' : ∀ {σ : Type} {f g k : MvPowerSeries σ ℂ_[p]}, Simeq f g → Simeq g k → Simeq f k` using `fun {σ} {f g k} a b => (t0 p σ f g k f f).2.2.1 a b`. Establish `add' : ∀ {σ : Type} {f g f' g' : MvPowerSeries σ ℂ_[p]}, Simeq f g → Simeq f' g' → Simeq (f + f') (g + g')` using `fun {σ} {f g f' g'} a b => (t0 p σ f g f f' g').2.2.2 a b`. Establish `rfl' : ∀ {σ : Type} (f : MvPowerSeries σ ℂ_[p]), Simeq f f` using `fun f => (t0 p _ f f f f f).1`.
+
+Establish `cA : ∀ {σ : Type} (a b : MvPowerSeries σ ℂ_[p]), MvPowerSeries.constantCoeff a = 0 → MvPowerSeries.constantCoeff b = 0 → MvPowerSeries.constantCoeff (add l ex a b) = 0` using `fun a b ha hb => (hI _ a b ha hb).1`. Establish `cM : ∀ {σ : Type} (c : ℂ_[p]) (a : MvPowerSeries σ ℂ_[p]), MvPowerSeries.constantCoeff a = 0 → MvPowerSeries.constantCoeff (mulBy l ex c a) = 0` using `fun c a ha => (hI _ a a ha ha).2.1 c`. Establish `comm : ∀ {σ : Type} (a b : MvPowerSeries σ ℂ_[p]), MvPowerSeries.constantCoeff a = 0 → MvPowerSeries.constantCoeff b = 0 → add l ex a b = add l ex b a` using `fun a b ha hb => (hI _ a b ha hb).2.2.1`. Establish `addM : ∀ {σ : Type} (a : MvPowerSeries σ ℂ_[p]), MvPowerSeries.constantCoeff a = 0 → ∀ c d, add l ex (mulBy l ex c a) (mulBy l ex d a) = mulBy l ex (c + d) a` using `fun a ha => (hI _ a a ha ha).2.2.2.2.1`. Establish `addS : ∀ {σ : Type} (a : MvPowerSeries σ ℂ_[p]), MvPowerSeries.constantCoeff a = 0 → ∀ c, add l ex (mulBy l ex c a) a = mulBy l ex (c + 1) a` using `fun a ha => (hI _ a a ha ha).2.2.2.2.2.1`.
+
+Establish `mul1 : ∀ {σ : Type} (a : MvPowerSeries σ ℂ_[p]), MvPowerSeries.constantCoeff a = 0 → mulBy l ex 1 a = a` using `fun a ha => (hI _ a a ha ha).2.2.2.2.2.2.1`. Establish `mul0 : ∀ {σ : Type} (a : MvPowerSeries σ ℂ_[p]), MvPowerSeries.constantCoeff a = 0 → mulBy l ex 0 a = 0` using `fun a ha => (hI _ a a ha ha).2.2.2.2.2.2.2`. Establish `addZ : ∀ {σ : Type} (a : MvPowerSeries σ ℂ_[p]), MvPowerSeries.constantCoeff a = 0 → add l ex a 0 = a`. Introduce `σ a ha`. Establish `e` using `addM a ha 1 0`.
+
+Rewrite `e` using `[mul1 a ha, mul0 a ha, add_zero, mul1 a ha]`. Conclude with `e`. Establish `K2 : ∀ a b c : MvPowerSeries (Fin 2) ℂ_[p], MvPowerSeries.constantCoeff a = 0 → MvPowerSeries.constantCoeff b = 0 → MvPowerSeries.constantCoeff c = 0 → IntegralMv a → IntegralMv b → IntegralMv c → Simeq (be l ex ph (add l ex a b) c) (be l ex ph a c + be l ex ph b c)`. Introduce `a b c ha hb hc ia ib ic`. Establish `hs : ∀ i, MvPowerSeries.constantCoeff (![a, b, c] i) = 0`.
+
+Apply the tactic sequence `intro i; fin_cases i <;> simpa`. Establish `is : ∀ i, IntegralMv (![a, b, c] i)`. Apply the tactic sequence `intro i; fin_cases i <;> simpa`. Establish `H` using `t1 p (Fin 3) (Fin 2) _ _ ![a, b, c] hs is hbi`. Take `⟨hsX, -, hsA, hr⟩` from `t2 p l ex ph hex hl0 (Fin 3) (Fin 2) ![a, b, c] hs`.
+
+Establish `e1` using `(hr _ _ (cA _ _ (ccX (0 : Fin 3)) (ccX (1 : Fin 3))) (ccX (2 : Fin 3))).2.2.2.2`. Establish `e2` using `(hr _ _ (ccX (0 : Fin 3)) (ccX (1 : Fin 3))).2.1`. Establish `e3` using `(hr _ _ (ccX (0 : Fin 3)) (ccX (2 : Fin 3))).2.2.2.2`. Establish `e4` using `(hr _ _ (ccX (1 : Fin 3)) (ccX (2 : Fin 3))).2.2.2.2`. Simplify using `only [hsA, e1, e2, e3, e4, hsX] at H`.
+
+Simplify using `using H`. Establish `c0 : MvPowerSeries.constantCoeff (Xv 0 : MvPowerSeries (Fin 2) ℂ_[p]) = 0` using `ccX 0`. Establish `c1 : MvPowerSeries.constantCoeff (Xv 1 : MvPowerSeries (Fin 2) ℂ_[p]) = 0` using `ccX 1`. Proceed by induction on `n with`. Consider the case `zero`.
+
+Rewrite using `[Nat.cast_zero, mul0 _ c0]`. Use `⟨int0, ?_⟩` and prove the remaining obligations. Establish `H` using `symm' (K2 0 0 0 (map_zero _) (map_zero _) (map_zero _) int0 int0 int0)`. Establish `z00 : add l ex (0 : MvPowerSeries (Fin 2) ℂ_[p]) 0 = 0` using `addZ 0 (map_zero _)`. Establish `z01 : add l ex (0 : MvPowerSeries (Fin 2) ℂ_[p]) (Xv 1) = Xv 1`.
+
+Rewrite using `[comm _ _ (map_zero _) c1, addZ _ c1]`. Use `simeq_congr ?_ H` and prove the remaining obligations. Rewrite using `[map_zero, zero_mul, sub_zero]`. Simplify using `only [be, z00, z01]`. Normalize the expressions using the abelian group laws.
+
+Consider the case `succ n ih`. Take `⟨iN, hN⟩` from `ih`. Establish `cN` using `cM (n : ℂ_[p]) _ c0`. Establish `eS : mulBy l ex ((n + 1 : ℕ) : ℂ_[p]) (Xv 0) = add l ex (mulBy l ex (n : ℂ_[p]) (Xv 0)) (Xv 0 : MvPowerSeries (Fin 2) ℂ_[p])`. Rewrite using `[addS _ c0, Nat.cast_succ]`.
+
+Rewrite using `[eS]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `hs : ∀ i, MvPowerSeries.constantCoeff (![mulBy l ex (n : ℂ_[p]) (Xv 0), (Xv 0 : MvPowerSeries (Fin 2) ℂ_[p])] i) = 0`. Apply the tactic sequence `intro i; fin_cases i <;> simpa`. Establish `is : ∀ i, IntegralMv (![mulBy l ex (n : ℂ_[p]) (Xv 0), (Xv 0 : MvPowerSeries (Fin 2) ℂ_[p])] i)`.
+
+Introduce `i`. Use `fin_cases i`. Simplify using `using iN`. Simplify using `using (intX 0 : IntegralMv (Xv 0 : MvPowerSeries (Fin 2) ℂ_[p]))`. Establish `H` using `t5 p (Fin 2) (Fin 2) _ _ hs is hgrp`.
+
+Take `⟨hsX, -, -, hr⟩` from `t2 p l ex ph hex hl0 (Fin 2) (Fin 2) _ hs`. Rewrite `H` using `[(hr _ _ (ccX (0 : Fin 2)) (ccX (1 : Fin 2))).2.1, hsX, hsX]`. Simplify using `using H`. Establish `H` using `K2 _ _ _ cN c0 c1 iN (intX 0) (intX 1)`. Establish `H2` using `trans' H (add' hN (rfl' (be l ex ph (Xv 0) (Xv 1))))`.
+
+Establish `e : MvPowerSeries.C (n : ℂ_[p]) * be l ex ph (Xv 0) (Xv 1) + be l ex ph (Xv 0) (Xv 1) = (MvPowerSeries.C ((n + 1 : ℕ) : ℂ_[p]) * be l ex ph (Xv 0) (Xv 1) : MvPowerSeries (Fin 2) ℂ_[p])`. Rewrite using `[Nat.cast_succ, map_add, map_one, add_mul, one_mul]`. Rewrite `H2` using `[e]`. Conclude with `H2`.
+-/
 theorem natCase (l ex ph : PowerSeries ℂ_[p]) (hex : PowerSeries.constantCoeff ex = 0)
     (hlex : PowerSeries.subst ex l = PowerSeries.X)
     (hgrp : IntegralMv (add l ex (Xv 0) (Xv 1) : MvPowerSeries (Fin 2) ℂ_[p]))
@@ -185,6 +241,9 @@ theorem natCase (l ex ph : PowerSeries ℂ_[p]) (hex : PowerSeries.constantCoeff
       rw [e] at H2
       exact H2
 
+/- English proof (translation)
+Introduce `p _ l ex ph hex hlex hgrp hbi n`. Conclude with `hC p l ex ph hex (t3 p l ex hex hlex).1 (fun k => (natCase l ex ph hex hlex hgrp hbi k).2) n`.
+-/
 theorem biaddZpLin_of (hC : Cont2) : PI.BiaddZpLin.Target := by
   intro p _ l ex ph hex hlex hgrp hbi n
   exact hC p l ex ph hex (t3 p l ex hex hlex).1 (fun k => (natCase l ex ph hex hlex hgrp hbi k).2) n

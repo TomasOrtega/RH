@@ -20,26 +20,43 @@ section Alg
 variable {A : Type} [CommRing A] {s : A →+* A} {n r : ℕ} {J : Matrix (Fin n) (Fin n) A}
   {X Y : Matrix (Fin n) (Fin r) A}
 
+/- English proof (translation)
+Rewrite using `[← diagonal_one, diagonal_sub]`.
+-/
 theorem diagonal_sub_one' (a : Fin r → A) : diagonal (fun i => a i - 1) = diagonal a - 1 := by
   rw [← diagonal_one, diagonal_sub]
 
+/- English proof (translation)
+Simplify using `only [frameTorMat, Matrix.add_mul, Matrix.mul_assoc _ (cT s Y * J), Matrix.mul_assoc _ (cT s X * J), xx, yx, diagonal_sub_one', Matrix.mul_sub]`. Simplify using the standard rewrite rules.
+-/
 theorem frameTorMat_mul_X (xx : cT s X * J * X = 0) (yx : cT s Y * J * X = 1) (d : Fin r → Aˣ) :
     frameTorMat s J X Y d * X = X * diagonal fun i => (d i : A) := by
   simp only [frameTorMat, Matrix.add_mul, Matrix.mul_assoc _ (cT s Y * J), Matrix.mul_assoc _ (cT s X * J), xx, yx,
     diagonal_sub_one', Matrix.mul_sub]
   simp
 
+/- English proof (translation)
+Simplify using `only [frameTorMat, Matrix.add_mul, Matrix.mul_assoc _ (cT s Y * J), Matrix.mul_assoc _ (cT s X * J), yy, xy, diagonal_sub_one', Matrix.mul_sub]`. Simplify using the standard rewrite rules.
+-/
 theorem frameTorMat_mul_Y (yy : cT s Y * J * Y = 0) (xy : cT s X * J * Y = 1) (d : Fin r → Aˣ) :
     frameTorMat s J X Y d * Y = Y * diagonal fun i => s ((d i)⁻¹ : Aˣ) := by
   simp only [frameTorMat, Matrix.add_mul, Matrix.mul_assoc _ (cT s Y * J), Matrix.mul_assoc _ (cT s X * J), yy, xy,
     diagonal_sub_one', Matrix.mul_sub]
   simp
 
+/- English proof (translation)
+Rewrite using `[frameTorMat, add_mulVec, add_mulVec, ← mulVec_mulVec, hy, mulVec_zero, ← mulVec_mulVec, hx, mulVec_zero]`. Simplify using the standard rewrite rules.
+-/
 theorem frameTorMat_mulVec {z : Fin n → A} (hx : (cT s X * J) *ᵥ z = 0) (hy : (cT s Y * J) *ᵥ z = 0)
     (d : Fin r → Aˣ) : frameTorMat s J X Y d *ᵥ z = z := by
   rw [frameTorMat, add_mulVec, add_mulVec, ← mulVec_mulVec, hy, mulVec_zero, ← mulVec_mulVec, hx, mulVec_zero]
   simp
 
+/- English proof (translation)
+Use `conv_lhs => rw [show frameTorMat s J X Y d⁻¹ = 1 + _ + _ from rfl, Matrix.mul_add, Matrix.mul_add, Matrix.mul_one]`. Simplify using `only [← Matrix.mul_assoc (frameTorMat s J X Y d), frameTorMat_mul_X xx yx, frameTorMat_mul_Y yy xy, Matrix.mul_assoc _ (diagonal _) (diagonal _), diagonal_mul_diagonal]`. Establish `h1 : ∀ i, (d i : A) * (((d⁻¹) i : Aˣ) - 1) = 1 - d i` using `fun i => by`. Rewrite using `[Pi.inv_apply, mul_sub, Units.mul_inv, mul_one]`. Establish `h2 : ∀ i, s ((d i)⁻¹ : Aˣ) * (s (((d⁻¹) i)⁻¹ : Aˣ) - 1) = 1 - s ((d i)⁻¹ : Aˣ)` using `fun i => by`.
+
+Rewrite using `[Pi.inv_apply, inv_inv, mul_sub, ← map_mul, Units.inv_mul, map_one, mul_one]`. Simplify using `only [h1, h2, frameTorMat, ← diagonal_sub, diagonal_one, Matrix.mul_sub, Matrix.sub_mul]`. Normalize the expressions using the abelian group laws.
+-/
 theorem frameTorMat_mul_inv (xx : cT s X * J * X = 0) (yy : cT s Y * J * Y = 0) (xy : cT s X * J * Y = 1)
     (yx : cT s Y * J * X = 1) (d : Fin r → Aˣ) : frameTorMat s J X Y d * frameTorMat s J X Y d⁻¹ = 1 := by
   conv_lhs => rw [show frameTorMat s J X Y d⁻¹ = 1 + _ + _ from rfl, Matrix.mul_add, Matrix.mul_add, Matrix.mul_one]
@@ -52,6 +69,11 @@ theorem frameTorMat_mul_inv (xx : cT s X * J * X = 0) (yy : cT s Y * J * Y = 0) 
   simp only [h1, h2, frameTorMat, ← diagonal_sub, diagonal_one, Matrix.mul_sub, Matrix.sub_mul]
   abel
 
+/- English proof (translation)
+Establish `cc : ∀ Z : Matrix (Fin n) (Fin r) A, cT s (cT s Z) = Z` using `fun Z => Matrix.ext fun i j => hs _`. Establish `cd : ∀ a : Fin r → A, cT s (diagonal a) = diagonal fun i => s (a i)` using `fun a => by`. Apply the tactic sequence `ext i j; by_cases h : i = j <;> simp [cT, diagonal, h, eq_comm]`. Establish `ca : ∀ P Q : Matrix (Fin n) (Fin n) A, cT s (P + Q) = cT s P + cT s Q` using `fun P Q => Matrix.ext fun i j => map_add s _ _`. Establish `hU : cT s (frameTorMat s J X Y d) * J = J * frameTorMat s J X Y d⁻¹`.
+
+Simplify using `only [frameTorMat, ca, Formalism.UG.cT_mul, Formalism.UG.cT_one, cc, hJ, cd, map_sub, map_one, hs, Pi.inv_apply, inv_inv, Matrix.add_mul, Matrix.mul_add, Matrix.mul_assoc, Matrix.one_mul, Matrix.mul_one]`. Normalize the expressions using the abelian group laws. Establish `hM' : frameTorMat s J X Y d⁻¹ * frameTorMat s J X Y d = 1`. Simplify `frameTorMat_mul_inv xx yy xy yx d⁻¹` using `only [inv_inv]`. Rewrite using `[hU, Matrix.mul_assoc, hM', Matrix.mul_one]`.
+-/
 theorem frameTorMat_unitary (hs : ∀ a, s (s a) = a) (hJ : cT s J = J) (xx : cT s X * J * X = 0)
     (yy : cT s Y * J * Y = 0) (xy : cT s X * J * Y = 1) (yx : cT s Y * J * X = 1) (d : Fin r → Aˣ) :
     cT s (frameTorMat s J X Y d) * J * frameTorMat s J X Y d = J := by
@@ -75,6 +97,9 @@ section Main
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 omit [NumberField F] [NumberField E] in
+/- English proof (translation)
+Establish `h1 : Continuous fun d : Fin r → Bˣ => diagonal fun i => (d i : B) - 1` using `Continuous.matrix_diagonal (continuous_pi fun i => (Units.continuous_val.comp (continuous_apply i)).sub continuous_const)`. Establish `h2 : Continuous fun d : Fin r → Bˣ => diagonal fun i => s ((d i)⁻¹ : Bˣ) - 1` using `Continuous.matrix_diagonal (continuous_pi fun i => (hs.comp (Units.continuous_coe_inv.comp (continuous_apply i))).sub continuous_const)`. Conclude with `(continuous_const.add ((continuous_const.matrix_mul h1).matrix_mul continuous_const)).add ((continuous_const.matrix_mul h2).matrix_mul continuous_const)`.
+-/
 theorem continuous_frameTorMat {B : Type} [CommRing B] [TopologicalSpace B] [IsTopologicalRing B] {s : B →+* B}
     (hs : Continuous s) {n r : ℕ} (J : Matrix (Fin n) (Fin n) B) (X Y : Matrix (Fin n) (Fin r) B) :
     Continuous (frameTorMat s J X Y) := by
@@ -86,6 +111,25 @@ theorem continuous_frameTorMat {B : Type} [CommRing B] [TopologicalSpace B] [IsT
   exact (continuous_const.add ((continuous_const.matrix_mul h1).matrix_mul continuous_const)).add
     ((continuous_const.matrix_mul h2).matrix_mul continuous_const)
 
+/- English proof (translation)
+Take `⟨_, _⟩` from `ring_facts (F := F) (E := E)`. Use `set s := sigR (AF F) σ`. Establish `hs : ∀ a, s (s a) = a` using `fun a => by`. Proceed by induction on `a using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+
+Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul a x => exact congrArg (a ⊗ₜ[F] ·) (sigma_sigma h x)`. Establish `c1 : ∀ {a b : ℕ} (Z : Matrix (Fin a) (Fin b) E), cT s (adMat F Z) = adMat F (cT (σ : E →+* E) Z)` using `fun Z => rfl`. Apply the tactic sequence `have c3 : ∀ {a : ℕ} (Z : Matrix (Fin n) (Fin a) E), (cT s (adMat F Z) * JR (AF F) J : Matrix (Fin a) (Fin n) (AF F ⊗[F] E)) = adMat F (cT (σ : E →+* E) Z * J) := fun Z => by rw [c1]; simp only [adMat, JR, Matrix.map_mul] <;> rfl`. Establish `c2 : ∀ Z Z' : Matrix (Fin n) (Fin r) E, (cT s (adMat F Z) * JR (AF F) J : Matrix (Fin r) (Fin n) (AF F ⊗[F] E)) * adMat F Z' = adMat F (cT (σ : E →+* E) Z * J * Z')` using `fun Z Z' => by`.
+
+Rewrite using `[c3]`. Simplify using `only [adMat, Matrix.map_mul]`. Establish `hJ' : cT s (JR (AF F) J) = JR (AF F) J` using `(c1 J).trans (congrArg (adMat F) (Matrix.ext fun i j => hJ.1 i j))`. Establish `xx : (cT s (adMat F X) * JR (AF F) J : Matrix (Fin r) (Fin n) (AF F ⊗[F] E)) * adMat F X = 0`. Rewrite using `[c2, hW.xx]`.
+
+Conclude with `Matrix.map_zero _ (map_zero _)`. Establish `yy : (cT s (adMat F Y) * JR (AF F) J : Matrix (Fin r) (Fin n) (AF F ⊗[F] E)) * adMat F Y = 0`. Rewrite using `[c2, hW.yy]`. Conclude with `Matrix.map_zero _ (map_zero _)`. Establish `xy : (cT s (adMat F X) * JR (AF F) J : Matrix (Fin r) (Fin n) (AF F ⊗[F] E)) * adMat F Y = 1`.
+
+Rewrite using `[c2, hW.xy]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`. Establish `yx : (cT s (adMat F Y) * JR (AF F) J : Matrix (Fin r) (Fin n) (AF F ⊗[F] E)) * adMat F X = 1`. Rewrite using `[c2, GlobalTheory.StdPar.yx h hJ hW]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`.
+
+Set `M` to `frameTorMat s (JR (AF F) J) (adMat F X) (adMat F Y)`. Establish `hinv : ∀ d, M d * M d⁻¹ = 1` using `frameTorMat_mul_inv xx yy xy yx`. Establish `hinv' : ∀ d, M d⁻¹ * M d = 1` using `fun d => by simpa only [inv_inv] using hinv d⁻¹`. Set `t : (Fin r → (AF F ⊗[F] E)ˣ) → GAd σ J` to `fun l => ⟨⟨M l, M l⁻¹, hinv l, hinv' l⟩, frameTorMat_unitary hs hJ' xx yy xy yx l⟩`. Establish `hc : Continuous M` using `continuous_frameTorMat (GlobalTheory.AdelicUnitaryTop.continuous_sigR (AF F) σ) _ _ _`.
+
+Use `⟨t, ?_, fun l => ⟨frameTorMat_mul_X xx yx l, ?_, fun z hz => ?_⟩⟩` and prove the remaining obligations. Use `Continuous.subtype_mk ((Units.continuous_iff (f := fun l => (⟨M l, M l⁻¹, hinv l, hinv' l⟩ : GL (Fin n) (AF F ⊗[F] E)))).2 ⟨hc, hc.comp continuous_inv⟩) _` and prove the remaining obligations. Use `(frameTorMat_mul_Y yy xy l).trans (congrArg (fun D => adMat F Y * diagonal D) (funext fun k => ?_))` and prove the remaining obligations. Rewrite using `[← map_inv]`. Both sides reduce to the same expression.
+
+Establish `key : ∀ C : Matrix (Fin n) (Fin r) E, z ∈ colPerp σ J C Set.univ → (cT s (adMat F C) * JR (AF F) J) *ᵥ z = 0` using `fun C hC => by`. Rewrite using `[c3]`. Use function extensionality and compare the values at `i`. Use `(Submodule.mem_iInf _).1 hC i` as an intermediate fact. Simplify using `using this`.
+
+Conclude with `frameTorMat_mulVec (key X hz.1) (key Y hz.2) l`.
+-/
 theorem exists_continuous_isIdTorusElt {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {r : ℕ}
     {X Y : Matrix (Fin n) (Fin r) E} (h : IsCMExt F E σ) (hJ : IsHermND σ J) (hW : IsWittFrame σ J X Y) :
     ∃ t : (Fin r → (AF F ⊗[F] E)ˣ) → GAd σ J, Continuous t ∧ ∀ l, IsIdTorusElt σ J X Y l (t l) := by

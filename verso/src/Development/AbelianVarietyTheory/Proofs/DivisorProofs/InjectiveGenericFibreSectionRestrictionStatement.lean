@@ -19,6 +19,9 @@ open scoped Classical
 open GlobalTheory.LieFilt
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.GenericFibreInj.app_injective | exact GlobalTheory.GenericFibreInj.app_injective | (intros; apply GlobalTheory.GenericFibreInj.app_injective <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.injective_generic_fibre_section_restriction : ∀ {F : Type} [Field F] [NumberField F] {X W : Scheme.{0}} {q : X ⟶ Sp (𝓞 F)} {s : W ⟶ Sp F} {jB : W ⟶ X} {d : ℕ},
     IsArithVar q d → IsPullback jB s q (spMap (algebraMap (𝓞 F) F)) → ∀ (V : X.Opens), IsAffineOpen V →
     Function.Injective (jB.app V) := by

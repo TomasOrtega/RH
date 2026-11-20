@@ -13,6 +13,9 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 
 namespace GlobalTheory
 
+/- English proof (translation)
+The claim follows from `KeyNormalForm.normal_form_of_parts unimodular_and_tangent_of_isAH isDiff_sum_smul_of_isLieComb isThetaFn_and_ne_zero_of_isFn exists_eq_mul_canonical_theta_of_sign_multiplier volume_fundamentalDomain_periodLattice setIntegral_periodLattice_eq_volume_mul_cube`.
+-/
 theorem keyIn_normal_form_and_archimedean_constant :
     ThetaUnifAV → ∀ (x : KeyIn ℂ) (u : HolUnif x.P.A x.P.L x.P.g) (Hm W : Matrix (Fin x.P.g) (Fin x.P.g) ℂ) (χ : u.Λ → ℂ)
       (θ : (Fin x.P.g → ℂ) → ℂ) (Fd : Set (Fin x.P.g → ℂ)) (nth nη : ℝ),

@@ -15,6 +15,27 @@ open GlobalTheory.Mum
 
 namespace GlobalTheory.MumPair
 
+/- English proof (translation)
+Introduce `Ω T _ _ _ _ jT hj A P φ hp hw k x x' y y' c hk hx hx' hy hy' hW`. Take `⟨⟨hL, -⟩, -⟩` from `GlobalTheory.lawsAndExpansions`. Use `haveI : IsCommMonObj A.A := A.isAb.comm`. Use `haveI : IsLocallyNoetherian (Sp T) := inferInstance`. Use `haveI : IsLocallyNoetherian (Sp Ω) := inferInstance`.
+
+Take `⟨c₀, hc₀, -⟩` from `(hL.weil (Sp T) P k (baseOver _)).1 y y' hy hy'`. Set `h : Over.mk ((baseOver (Sp Ω)).hom ≫ spMap jT) ⟶ baseOver (Sp T)` to `Over.homMk (spMap jT) (by simp)`. Establish `H1` using `GlobalTheory.CommPairing.weilIs_pull hL.globalFns P.isAb P.isLB h hc₀`. Establish `H2` using `(GlobalTheory.weilIs_grpPullback_of_comm' (Sp T) (Sp Ω) P.A A.A (spMap jT) φ P.L A.L P.isLB A.isLB hp hw (baseOver (Sp Ω)) k x x' (h ≫ y) (h ≫ y') _ hx.symm hx'.symm).2 H1`. Establish `inj : ∀ a b : baseOver (Sp Ω) ⟶ A.A, a.left ≫ φ = b.left ≫ φ → a = b`.
+
+Introduce `a b e`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `hp.1.hom_ext e` to reduce the goal to its premises. Rewrite using `[Over.w, Over.w]`. Establish `tors : ∀ (a : baseOver (Sp Ω) ⟶ A.A) (b : baseOver (Sp T) ⟶ P.A), a.left ≫ φ = spMap jT ≫ b.left → b ^ k = 1 → a ^ k = 1`.
+
+Introduce `a b e hb`. Apply `inj` to reduce the goal to its premises. Establish `e1 : (ReciprocityTheory.ChartRestriction.G.Geo.Tor.pushHom hp (baseOver (Sp Ω)) (a ^ k)) = (h ≫ b) ^ k`. Rewrite using `[map_pow]`. Use `congr 1`.
+
+Conclude with `Over.OverMorphism.ext e`. Establish `e2 : (ReciprocityTheory.ChartRestriction.G.Geo.Tor.pushHom hp (baseOver (Sp Ω)) 1) = (h ≫ b) ^ k`. Rewrite using `[map_one, ← MonObj.comp_pow, hb, MonObj.comp_one]`. Conclude with `(congrArg (fun z => z.left) e1).trans (congrArg (fun z => z.left) e2).symm`. Establish `hxk` using `tors x y hx hy`.
+
+Establish `hxk'` using `tors x' y' hx' hy'`. Establish `U` using `(hL.weil (Sp Ω) A k (baseOver _)).1 x x' hxk hxk'`. Establish `e3` using `U.unique H2 hW`. Establish `nat : ∀ a : T, (spMap jT).appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of T)).inv.hom a) = (Scheme.ΓSpecIso (CommRingCat.of Ω)).inv.hom (jT a)`. Introduce `a`.
+
+Use `congrArg (fun f => f.hom a) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom jT))` as an intermediate fact. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_ofHom] at this`. Conclude with `this.symm`. Establish `ginj : Function.Injective (spMap jT).appTop.hom`. Introduce `a b e`.
+
+Establish `ea : a = (Scheme.ΓSpecIso (CommRingCat.of T)).inv.hom ((Scheme.ΓSpecIso (CommRingCat.of T)).hom.hom a)`. Simplify using the standard rewrite rules. Establish `eb : b = (Scheme.ΓSpecIso (CommRingCat.of T)).inv.hom ((Scheme.ΓSpecIso (CommRingCat.of T)).hom.hom b)`. Simplify using the standard rewrite rules. Rewrite `e` using `[ea, eb, nat, nat]`.
+
+Establish `e'` using `congrArg (Scheme.ΓSpecIso (CommRingCat.of Ω)).hom.hom e`. Establish `key : ∀ z, (Scheme.ΓSpecIso (CommRingCat.of Ω)).hom.hom ((Scheme.ΓSpecIso (CommRingCat.of Ω)).inv.hom z) = z` using `fun z => by simp`. Rewrite `e'` using `[key, key]`. Rewrite using `[ea, eb, hj e']`. Establish `e4 : c₀ = unitOn c`.
+
+Apply `Units.ext` to reduce the goal to its premises. Apply `ginj` to reduce the goal to its premises. Conclude with `(congrArg Units.val e3).trans (nat (c : T)).symm`. Rewrite using `[← e4]`. Conclude with `hc₀`.
+-/
 theorem weilIs_of_spread : ∀ (Ω T : Type) [Field Ω] [CommRing T] [IsDomain T] [IsNoetherianRing T] (jT : T →+* Ω), Function.Injective jT → ∀ (A : PolAV (Sp Ω)) (P : PolAV (Sp T)) (φ : A.A.left ⟶ P.A.left), IsGrpPullback A.A P.A (spMap jT) φ → LBIso A.L (P.L.pull φ) → ∀ (k : ℕ) (x x' : baseOver (Sp Ω) ⟶ A.A) (y y' : baseOver (Sp T) ⟶ P.A) (c : Tˣ), 1 ≤ k → x.left ≫ φ = spMap jT ≫ y.left → x'.left ≫ φ = spMap jT ≫ y'.left → y ^ k = 1 → y' ^ k = 1 → WeilIs A.A A.L k x x' (unitOn (Units.map jT.toMonoidHom c)) → WeilIs P.A P.L k y y' (unitOn c) := by
   intro Ω T _ _ _ _ jT hj A P φ hp hw k x x' y y' c hk hx hx' hy hy' hW
   obtain ⟨⟨hL, -⟩, -⟩ := GlobalTheory.lawsAndExpansions

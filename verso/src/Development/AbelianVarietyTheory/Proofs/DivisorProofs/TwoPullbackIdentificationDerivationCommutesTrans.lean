@@ -20,20 +20,34 @@ open GlobalTheory.KS.DlogPol (gs_pbT gs_sub)
 
 namespace GlobalTheory.HeatConn.Comm
 
+/- English proof (translation)
+Rewrite using `[← gs_pull r β z U h, gs_eq β _ U h, gs_eq r z _ h]`. Conclude with `Scheme.Hom.germ_stalkMap_apply r (β ⁻¹ᵁ U) z h _`.
+-/
 theorem gs_stalkMap' {X X' Z : Scheme.{0}} (r : Z ⟶ X') (β : X' ⟶ X) (z : Z) (U : X.Opens) (h : β (r z) ∈ U)
     (a : Γ(X, U)) : (r.stalkMap z).hom (gs β (r z) U a) = gs (r ≫ β) z U a := by
   rw [← gs_pull r β z U h, gs_eq β _ U h, gs_eq r z _ h]
   exact Scheme.Hom.germ_stalkMap_apply r (β ⁻¹ᵁ U) z h _
 
+/- English proof (translation)
+Rewrite using `[spMap, spMap, spMap, ← Spec.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem spMap_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap (g.comp f) = spMap g ≫ spMap f := by
   rw [spMap, spMap, spMap, ← Spec.map_comp]; rfl
 
+/- English proof (translation)
+Rewrite using `[cst, cst, ← gs_pull _ (spMap ψ) z ⊤ trivial]`. Conclude with `congrArg (gs q z ⊤) (congrArg (fun ψ' => ψ'.hom a) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom ψ))).symm`.
+-/
 theorem cst_spMap {V V' : Type} [CommRing V] [CommRing V'] {Z : Scheme.{0}} (q : Z ⟶ Sp V) (ψ : V' →+* V) (z : Z)
     (a : V') : cst (q ≫ spMap ψ) z a = cst q z (ψ a) := by
   rw [cst, cst, ← gs_pull _ (spMap ψ) z ⊤ trivial]
   exact congrArg (gs q z ⊤) (congrArg (fun ψ' => ψ'.hom a) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom ψ))).symm
 
+/- English proof (translation)
+Take `⟨u, rfl⟩` from `GlobalTheory.cst_dvd_of_cst_mul_eq_zero q (sc y) (a := DualNumber.eps) (b := DualNumber.eps) (fun c hc => by`. Establish `h1 : c.fst = 0` using `by simpa using congrArg TrivSqZeroExt.snd hc`. Apply the tactic sequence `exact ⟨TrivSqZeroExt.inl c.snd, by ext <;> simp [h1]⟩) ht`. Rewrite using `[map_mul, cst, gs_stalkMap' sc q y ⊤ trivial, ← cst, hsc, cst_spMap]`. Establish `e0 : (TrivSqZeroExt.fstHom k k k).toRingHom DualNumber.eps = 0` using `by simp`.
+
+Rewrite using `[e0, cst, map_zero, gs_eq _ y ⊤ trivial, map_zero, map_zero, zero_mul]`.
+-/
 theorem stalkMap_eq_zero {k : Type} [Field k] {A₀ B' : Scheme.{0}} (q : B' ⟶ Sp (DualNumber k)) [Flat q]
     (sc : A₀ ⟶ B') (q₀ : A₀ ⟶ Sp k) (hsc : sc ≫ q = q₀ ≫ spMap (TrivSqZeroExt.fstHom k k k).toRingHom) (y : A₀)
     {t : B'.presheaf.stalk (sc y)} (ht : cst q (sc y) DualNumber.eps * t = 0) : (sc.stalkMap y).hom t = 0 := by
@@ -49,6 +63,9 @@ end GlobalTheory.HeatConn.Comm
 
 namespace GlobalTheory.HeatConn.Comm
 
+/- English proof (translation)
+Rewrite using `[← spMap_comp]`. Establish `: (TrivSqZeroExt.fstHom k k k).toRingHom.comp (algebraMap k (DualNumber k)) = RingHom.id k` using `by ext; simp`. Rewrite using `[this, spMap]`. Conclude with `Spec.map_id _`.
+-/
 theorem spMap_fst_alg (k : Type) [Field k] :
     spMap (TrivSqZeroExt.fstHom k k k).toRingHom ≫ spMap (algebraMap k (DualNumber k)) = 𝟙 _ := by
   rw [← spMap_comp]
@@ -57,6 +74,13 @@ theorem spMap_fst_alg (k : Type) [Field k] :
   rw [this, spMap]
   exact Spec.map_id _
 
+/- English proof (translation)
+Establish `e1` using `spMap_fst_alg k`. Establish `w : m₀ ≫ p = (q₀ ≫ spMap (TrivSqZeroExt.fstHom k k k).toRingHom) ≫ spMap (algebraMap k (DualNumber k)) ≫ s`. Rewrite using `[Category.assoc, reassoc_of% e1, h₀.w]`. Set `sc` to `h₂.lift m₀ _ w`. Establish `hs₂ : sc ≫ π₂ = m₀` using `h₂.lift_fst _ _ _`.
+
+Establish `hsq : sc ≫ q = q₀ ≫ spMap (TrivSqZeroExt.fstHom k k k).toRingHom` using `h₂.lift_snd _ _ _`. Establish `hspr : sc ≫ pr = 𝟙 _` using `h₀.hom_ext (by rw [Category.assoc, hpr₁, hs₂, Category.id_comp]) (by rw [Category.assoc, hpr₂, reassoc_of% hsq, e1, Category.comp_id, Category.id_comp])`. Establish `hR : IsPullback pr q q₀ (spMap (algebraMap k (DualNumber k)))` using `IsPullback.of_right (h₁₂ := m₀) (v₁₃ := p) (h₂₂ := s) (by rw [hpr₁]; exact h₂) hpr₂ h₀`. Establish `hL : IsPullback sc q₀ q (spMap (TrivSqZeroExt.fstHom k k k).toRingHom)` using `IsPullback.of_right (h₁₂ := pr) (v₁₃ := q₀) (h₂₂ := spMap (algebraMap k (DualNumber k))) (by rw [hspr, e1]; exact IsPullback.id_horiz q₀) hsq hR`. Establish `surj` using `(GlobalTheory.EpsIso.isHomeomorph_of_isPullback hL).2.surjective`.
+
+Use `⟨sc, hspr, hs₂, hsq, fun x => ?_⟩` and prove the remaining obligations. Take `⟨y, rfl⟩` from `surj x`. Use `congrArg (fun g : A₀ ⟶ A => g y) (h₃ _ sc q₀ hsq)` as an intermediate fact. Simplify using `using this`.
+-/
 theorem exists_sec {k : Type} [Field k] {S A A₀ B' : Scheme.{0}} (p : A ⟶ S) (s : Sp k ⟶ S) (q₀ : A₀ ⟶ Sp k)
     (q : B' ⟶ Sp (DualNumber k)) (m₀ : A₀ ⟶ A) (π₁ π₂ : B' ⟶ A) (pr : B' ⟶ A₀)
     (h₀ : IsPullback m₀ q₀ p s) (h₂ : IsPullback π₂ q p (spMap (algebraMap k (DualNumber k)) ≫ s))
@@ -90,12 +114,20 @@ end GlobalTheory.HeatConn.Comm
 namespace GlobalTheory.HeatConn.Comm
 
 open ReciprocityTheory.ChartRestriction.G.Out.PullGtPf in
+/- English proof (translation)
+Rewrite using `[Over.comp_left, Over.comp_left, toUnit_left', toUnit_left', Category.assoc, hc, ← Category.assoc, ← h.1.w, Category.assoc]`.
+-/
 theorem const_comm {S S' : Scheme.{0}} {f : S' ⟶ S} {A : Over S} [GrpObj A] {B : Over S'} [GrpObj B]
     {π : B.left ⟶ A.left} (h : IsGrpPullback B A f π) (c : 𝟙_ (Over S) ⟶ A) (c' : 𝟙_ (Over S') ⟶ B)
     (hc : c'.left ≫ π = f ≫ c.left) : (toUnit B ≫ c').left ≫ π = π ≫ (toUnit A ≫ c).left := by
   rw [Over.comp_left, Over.comp_left, toUnit_left', toUnit_left', Category.assoc, hc, ← Category.assoc,
     ← h.1.w, Category.assoc]
 
+/- English proof (translation)
+Set `x₀ : Over.mk (B.hom ≫ f) ⟶ A` to `Over.homMk π h.1.w`. Establish `e` using `h.2 B (𝟙 B) (toUnit B ≫ c') x₀ (toUnit _ ≫ c) (by simp [x₀]) (by`. Rewrite using `[Over.comp_left, Over.comp_left, ReciprocityTheory.ChartRestriction.G.Out.PullGtPf.toUnit_left', ReciprocityTheory.ChartRestriction.G.Out.PullGtPf.toUnit_left', Category.assoc, hc]`. Use the proof step `rfl)`. Establish `e2 : x₀ * (toUnit _ ≫ c) = x₀ ≫ (𝟙 A * (toUnit A ≫ c))`.
+
+Rewrite using `[MonObj.comp_mul, Category.comp_id, ← Category.assoc, comp_toUnit]`. Express the relevant statement in the definitionally equal form `(𝟙 B * (toUnit B ≫ c')).left ≫ π = π ≫ (𝟙 A * (toUnit A ≫ c)).left`. Rewrite using `[← e, e2]`. Both sides reduce to the same expression.
+-/
 theorem trans_comm {S S' : Scheme.{0}} {f : S' ⟶ S} {A : Over S} [GrpObj A] {B : Over S'} [GrpObj B]
     {π : B.left ⟶ A.left} (h : IsGrpPullback B A f π) (c : 𝟙_ (Over S) ⟶ A) (c' : 𝟙_ (Over S') ⟶ B)
     (hc : c'.left ≫ π = f ≫ c.left) :
@@ -111,6 +143,11 @@ theorem trans_comm {S S' : Scheme.{0}} {f : S' ⟶ S} {A : Over S} [GrpObj A] {B
   rw [← e, e2]
   rfl
 
+/- English proof (translation)
+Establish `hcB : ∀ y, c' y ≫ B'.hom = (𝟙_ (Over (Sp (DualNumber k)))).hom` using `fun y => (hc y).1`. Set `cB : Q.X → (𝟙_ (Over (Sp (DualNumber k))) ⟶ B')` to `fun y => Over.homMk (c' y) (hcB y)`. Establish `h1 : ∀ y, (cB y).left ≫ π₁ = spMap ρ ≫ (Q.c y).left` using `fun y => (hc y).2.1`. Establish `h2 : ∀ y, (cB y).left ≫ π₂ = spMap (constHom ρ) ≫ (Q.c y).left` using `fun y => (hc y).2.2`. Use `fin_cases j`.
+
+Conclude with `⟨𝟙 _, Category.id_comp _, (Category.id_comp _).trans (Category.comp_id _).symm, (Category.id_comp _).trans (Category.comp_id _).symm⟩`. Conclude with `⟨(padd B' (𝟙 B') (toUnit B' ≫ cB α)).left, Over.w _, trans_comm h₁ _ _ (h1 α), trans_comm h₂ _ _ (h2 α)⟩`. Conclude with `⟨(toUnit B' ≫ cB α).left, Over.w _, const_comm h₁ _ _ (h1 α), const_comm h₂ _ _ (h2 α)⟩`. Conclude with `⟨(toUnit B' ≫ η[B']).left, Over.w _, const_comm h₁ _ _ (ReciprocityTheory.ChartRestriction.G.Out.PullGtPf.IsGrpPullback.one_left h₁), const_comm h₂ _ _ (ReciprocityTheory.ChartRestriction.G.Out.PullGtPf.IsGrpPullback.one_left h₂)⟩`.
+-/
 theorem exists_lift {R : Type} [CommRing R] [IsDomain R] (Q : DegPre R) {k : Type} [Field k]
     (ρ : R →+* DualNumber k) (B' : Over (Sp (DualNumber k))) [GrpObj B'] (π₁ π₂ : B'.left ⟶ Q.P.A.left)
     (c' : Q.X → (Sp (DualNumber k) ⟶ B'.left)) (h₁ : IsGrpPullback B' Q.P.A (spMap ρ) π₁)
@@ -136,6 +173,37 @@ end GlobalTheory.HeatConn.Comm
 
 namespace GlobalTheory.HeatConn.Comm
 
+/- English proof (translation)
+Introduce `R _ _ Q k _ ρ A₀ _ m₀ hA₀ ed B' _ π₁ π₂ c' h₁ h₂ h₃ hc pr hpr₁ hpr₂ hD α j T hT₁ hT₂ W f Z b z hz`. Establish `hfA : Flat Q.P.A.hom`. Use `Q.P.smoothDim` as an intermediate fact. Establish `: Smooth Q.P.A.hom` using `SmoothOfRelativeDimension.smooth Q.P.g _`. Use `infer_instance`.
+
+Establish `hfB : Flat B'.hom` using `MorphismProperty.of_isPullback h₁.1 hfA`. Take `⟨φ', hφ'0, hφ'1, hφ'2⟩` from `exists_lift Q ρ B' π₁ π₂ c' h₁ h₂ hc α j`. Establish `e2 : spMap (constHom ρ) = spMap (algebraMap k (DualNumber k)) ≫ spMap ((TrivSqZeroExt.fstHom k k k).toRingHom.comp ρ)` using `spMap_comp _ _`. Take `⟨sc, hspr, hs₂, hsq, hpts⟩` from `exists_sec Q.P.A.hom _ A₀.hom B'.hom m₀ π₁ π₂ pr hA₀.1 (e2 ▸ h₂.1) h₃ hpr₁ hpr₂`. Establish `hpre : ∀ U : Q.P.A.left.Opens, π₂ ⁻¹ᵁ U ≤ π₁ ⁻¹ᵁ U` using `fun U x hx => by`.
+
+Express the relevant statement in the definitionally equal form `π₁ x ∈ U`. Rewrite using `[hpts x]`. Conclude with `hx`. Establish `hprle : ∀ U : Q.P.A.left.Opens, π₂ ⁻¹ᵁ U ≤ pr ⁻¹ᵁ (m₀ ⁻¹ᵁ U)` using `fun U x hx => by`. Express the relevant statement in the definitionally equal form `m₀ (pr x) ∈ U`.
+
+Establish `: (pr ≫ m₀) x ∈ U` using `by rw [hpr₁]; exact hx`. Simplify using `using this`. Establish `hφpr : φ' ≫ pr = pr ≫ T` using `hA₀.1.hom_ext (by rw [Category.assoc, Category.assoc, hpr₁, hφ'2, hT₁, ← Category.assoc, hpr₁]) (by rw [Category.assoc, Category.assoc, hpr₂, ← Category.assoc, hφ'0, hT₂, hpr₂])`. Use `set φ := Q.famφB α j with hφdef`. Establish `key : ∀ y : A₀.left, (T ≫ m₀) y ∈ W → gs (𝟙 _) y (m₀ ⁻¹ᵁ (φ ⁻¹ᵁ W)) (ed _ ((φ.app W).hom f)) = gs T y (m₀ ⁻¹ᵁ W) (ed W f)`.
+
+Introduce `y hy`. Establish `hy' : φ (m₀ y) ∈ W`. Establish `h` using `hy`. Rewrite `h` using `[hT₁]`. Apply the tactic sequence `all_goals simpa using h`.
+
+Establish `m₂ : sc y ∈ π₂ ⁻¹ᵁ (φ ⁻¹ᵁ W)`. Express the relevant statement in the definitionally equal form `φ (π₂ (sc y)) ∈ W`. Establish `: (sc ≫ π₂) y = m₀ y` using `by rw [hs₂]`. Simplify using `only [Scheme.Hom.comp_apply] at this`. Rewrite using `[this]`.
+
+Conclude with `hy'`. Establish `m₃ : φ' (sc y) ∈ π₂ ⁻¹ᵁ W`. Express the relevant statement in the definitionally equal form `π₂ (φ' (sc y)) ∈ W`. Establish `: (φ' ≫ π₂) (sc y) = φ (π₂ (sc y))` using `by rw [hφ'2]; simp`. Simplify using `only [Scheme.Hom.comp_apply] at this`.
+
+Rewrite using `[this]`. Conclude with `m₂`. Establish `eA` using `congrArg (gs (𝟙 B'.left) (sc y) (π₂ ⁻¹ᵁ (φ ⁻¹ᵁ W))) (hD (φ ⁻¹ᵁ W) ((φ.app W).hom f))`. Rewrite `eA` using `[gs_add (𝟙 _) (sc y) _ m₂, gs_mul (𝟙 _) (sc y) _ m₂, gs_pbT (𝟙 _) π₁ (sc y) (hpre _) m₂, gs_pbT (𝟙 _) π₂ (sc y) le_rfl m₂, gs_pbT (𝟙 _) pr (sc y) (hprle _) m₂, gs_constFn B'.hom _ (𝟙 _) (sc y) m₂]`. Establish `eB` using `congrArg (gs φ' (sc y) (π₂ ⁻¹ᵁ W)) (hD W f)`.
+
+Rewrite `eB` using `[gs_add φ' (sc y) _ m₃, gs_mul φ' (sc y) _ m₃, gs_pbT φ' π₁ (sc y) (hpre _) m₃, gs_pbT φ' π₂ (sc y) le_rfl m₃, gs_pbT φ' pr (sc y) (hprle _) m₃, gs_constFn B'.hom _ φ' (sc y) m₃, hφ'1, hφ'2, hφ'0, hφpr]`. Simplify using `only [Category.id_comp] at eA`. Establish `m₁' : φ (π₁ (sc y)) ∈ W` using `by rw [hpts]; exact m₂`. Rewrite `eB` using `[← gs_pull π₁ φ (sc y) W m₁', ← gs_pull π₂ φ (sc y) W m₂]`. Establish `hk : cst B'.hom (sc y) DualNumber.eps * (gs pr (sc y) (m₀ ⁻¹ᵁ (φ ⁻¹ᵁ W)) (ed _ ((φ.app W).hom f)) - gs (pr ≫ T) (sc y) (m₀ ⁻¹ᵁ W) (ed W f)) = 0`.
+
+Take the linear combination `eB - eA`. Establish `h0` using `stalkMap_eq_zero B'.hom sc A₀.hom hsq y hk`. Establish `hy0 : pr (sc y) = y`. Use `congrArg (fun g : A₀.left ⟶ A₀.left => g y) hspr` as an intermediate fact. Simplify using `using this`.
+
+Establish `ma : pr (sc y) ∈ m₀ ⁻¹ᵁ (φ ⁻¹ᵁ W)`. Express the relevant statement in the definitionally equal form `φ (m₀ (pr (sc y))) ∈ W`. Rewrite using `[hy0]`. Conclude with `hy'`. Establish `mb : (pr ≫ T) (sc y) ∈ m₀ ⁻¹ᵁ W`.
+
+Express the relevant statement in the definitionally equal form `m₀ ((pr ≫ T) (sc y)) ∈ W`. Simplify using `only [Scheme.Hom.comp_apply]`. Rewrite using `[hy0]`. Simplify using `using hy`. Rewrite `h0` using `[map_sub, gs_stalkMap' sc pr y _ ma, gs_stalkMap' sc (pr ≫ T) y _ mb, hspr, reassoc_of% hspr]`.
+
+Conclude with `sub_eq_zero.1 h0`. Establish `hyz : (T ≫ m₀) (b z) ∈ W` using `by simpa using hz`. Establish `mz1 : b z ∈ m₀ ⁻¹ᵁ (φ ⁻¹ᵁ W)`. Express the relevant statement in the definitionally equal form `φ (m₀ (b z)) ∈ W`. Establish `h` using `hyz`.
+
+Rewrite `h` using `[hT₁]`. Apply the tactic sequence `all_goals simpa using h`. Establish `mz2 : T (b z) ∈ m₀ ⁻¹ᵁ W`. Express the relevant statement in the definitionally equal form `m₀ (T (b z)) ∈ W`. Simplify using `using hyz`.
+
+Rewrite using `[gs_stalkMap b z _ mz1, key (b z) hyz, gs_stalkMap' b T z _ mz2]`.
+-/
 theorem commutes : ∀ {R : Type} [CommRing R] [IsDomain R] (Q : DegPre R) {k : Type} [Field k] (ρ : R →+* DualNumber k) (A₀ : Over (Sp k)) [GrpObj A₀] (m₀ : A₀.left ⟶ Q.P.A.left), IsGrpPullback A₀ Q.P.A (spMap ((TrivSqZeroExt.fstHom k k k).toRingHom.comp ρ)) m₀ → ∀ (ed : ∀ W : Q.P.A.left.Opens, Γ(Q.P.A.left, W) → Γ(A₀.left, m₀ ⁻¹ᵁ W)) (B' : Over (Sp (DualNumber k))) [GrpObj B'] (π₁ π₂ : B'.left ⟶ Q.P.A.left) (c' : Q.X → (Sp (DualNumber k) ⟶ B'.left)), IsGrpPullback B' Q.P.A (spMap ρ) π₁ → IsGrpPullback B' Q.P.A (spMap (constHom ρ)) π₂ → (∀ (Z : Scheme.{0}) (x : Z ⟶ B'.left) (y : Z ⟶ Sp k), x ≫ B'.hom = y ≫ spMap (TrivSqZeroExt.fstHom k k k).toRingHom → x ≫ π₁ = x ≫ π₂) → (∀ y, c' y ≫ B'.hom = 𝟙 _ ∧ c' y ≫ π₁ = spMap ρ ≫ (Q.c y).left ∧ c' y ≫ π₂ = spMap (constHom ρ) ≫ (Q.c y).left) → ∀ pr : B'.left ⟶ A₀.left, pr ≫ m₀ = π₂ → pr ≫ A₀.hom = B'.hom ≫ spMap (algebraMap k (DualNumber k)) → (∀ (W : Q.P.A.left.Opens) (f : Γ(Q.P.A.left, W)), pbT π₁ f (π₂ ⁻¹ᵁ W) = pbT π₂ f (π₂ ⁻¹ᵁ W) + constFn B'.hom (π₂ ⁻¹ᵁ W) DualNumber.eps * pbT pr (ed W f) (π₂ ⁻¹ᵁ W)) → Commutes Q m₀ ed := by
   intro R _ _ Q k _ ρ A₀ _ m₀ hA₀ ed B' _ π₁ π₂ c' h₁ h₂ h₃ hc pr hpr₁ hpr₂ hD α j T hT₁ hT₂ W f Z b z hz
   have hfA : Flat Q.P.A.hom := by

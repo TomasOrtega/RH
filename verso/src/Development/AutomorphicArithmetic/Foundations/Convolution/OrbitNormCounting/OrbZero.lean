@@ -4,11 +4,17 @@ open NumberField IsDedekindDomain Matrix Polynomial Filter
 open GlobalTheory.CuspRep GlobalTheory.PRep Formalism.UG Formalism.BasicNotions GlobalTheory.UnitaryBC GlobalTheory.BCT
 open scoped Classical TensorProduct
 
+/- English proof (translation)
+Unfold `GlobalTheory.BCT.avg`. Rewrite using `[finsum_eq_zero_of_forall_eq_zero fun q => hu _, mul_zero]`.
+-/
 private theorem UpperTheory.ConvolutionTheory.G3.orbZero_avg {H : Type} [Group H] (u : H → ℂ) (hu : ∀ x, u x = 0) :
     GlobalTheory.BCT.avg u = 0 := by
   unfold GlobalTheory.BCT.avg
   rw [finsum_eq_zero_of_forall_eq_zero fun q => hu _, mul_zero]
 
+/- English proof (translation)
+Introduce `G _ _ θ K δ f hf`. Unfold `GlobalTheory.BCT.twOrb`. Use `finsum_eq_zero_of_forall_eq_zero fun q => ?_` and prove the remaining obligations. Rewrite using `[UpperTheory.ConvolutionTheory.G3.orbZero_avg _ fun k => hf _ ⟨_, rfl⟩, mul_zero]`.
+-/
 theorem UpperTheory.ConvolutionTheory.G3.orbZero :
     UpperTheory.ConvolutionTheory.G3.OrbZero := by
   intro G _ _ θ K δ f hf

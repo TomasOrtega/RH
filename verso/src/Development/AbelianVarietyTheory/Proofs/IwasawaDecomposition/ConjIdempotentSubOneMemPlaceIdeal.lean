@@ -15,6 +15,13 @@ namespace GlobalTheory.Mem.SymChar
 
 variable {D : D7}
 
+/- English proof (translation)
+Proceed by induction on `hc using Submodule.span_induction with`. Consider the case `mem c hc`. Take `⟨a, ha, rfl⟩` from `hc`. Conclude with `GlobalTheory.Mem.SymFrame.inclE_smul_mem_wLf X w a ha hy`. Consider the case `zero => rw [zero_smul]`.
+
+Conclude with `zero_mem _`. Consider the case `add a b _ _ ha hb => rw [add_smul]`. Conclude with `add_mem ha hb`. Consider the case `smul r a _ ha`. Rewrite using `[smul_assoc]`.
+
+Conclude with `Submodule.smul_mem _ r ha`.
+-/
 theorem smul_mem_wLf_of_mem_wInt (X : HidaSetting D) (w : HeightOneSpectrum (𝓞 D.host.E))
     {c : X.B.I.E ⊗[X.B.I.F] Formalism.MainNotions.S.Af X.B.I.F} (hc : c ∈ wInt X w) {y : VA X.B.I} (hy : y ∈ X.B.I.Lf) :
     c • y ∈ Formalism.L2.SG.RowDict.wLf X w := by
@@ -28,6 +35,13 @@ theorem smul_mem_wLf_of_mem_wInt (X : HidaSetting D) (w : HeightOneSpectrum (�
     rw [smul_assoc]
     exact Submodule.smul_mem _ r ha
 
+/- English proof (translation)
+Set `J : Ideal (Formalism.L2.Herm.intAf X.B.I.F X.B.I.E)` to `{ carrier := {s | (s : X.B.I.E ⊗[X.B.I.F] Formalism.MainNotions.S.Af X.B.I.F) ∈ wInt X w} add_mem' := fun {a b} ha hb => by show ((a + b : Formalism.L2.Herm.intAf X.B.I.F X.B.I.E) : X.B.I.E ⊗[X.B.I.F] Formalism.MainNotions.S.Af X.B.I.F) ∈ wInt X w`. Rewrite using `[Subring.coe_add]`. Conclude with `add_mem ha hb`. Use the proof step `zero_mem' := by show ((0 : Formalism.L2.Herm.intAf X.B.I.F X.B.I.E) : X.B.I.E ⊗[X.B.I.F] Formalism.MainNotions.S.Af X.B.I.F) ∈ wInt X w`. Rewrite using `[ZeroMemClass.coe_zero]`.
+
+Conclude with `zero_mem _`. Use the proof step `smul_mem' := fun r {a} ha => by show ((r * a : Formalism.L2.Herm.intAf X.B.I.F X.B.I.E) : X.B.I.E ⊗[X.B.I.F] Formalism.MainNotions.S.Af X.B.I.F) ∈ wInt X w`. Conclude with `(wInt X w).smul_mem r ha }`. Establish `hle : idS X.B.I.F (Formalism.L2.SG.Pf.RowDictPf.wB X w).asIdeal ≤ J`. Use `Ideal.map_le_iff_le_comap.2 fun a ha => ?_` and prove the remaining obligations.
+
+Use `show ((oToS X.B.I.F X.B.I.E a : Formalism.L2.Herm.intAf X.B.I.F X.B.I.E) : X.B.I.E ⊗[X.B.I.F] Formalism.MainNotions.S.Af X.B.I.F) ∈ wInt X w`. Use `Submodule.subset_span ⟨a, ⟨RingOfIntegers.mapRingEquiv X.ιE a, ha, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[oToS_coe]`. Both sides reduce to the same expression. Conclude with `hle hs`.
+-/
 theorem mem_wInt_of_mem_idS (X : HidaSetting D) (w : HeightOneSpectrum (𝓞 D.host.E))
     {s : Formalism.L2.Herm.intAf X.B.I.F X.B.I.E}
     (hs : s ∈ idS X.B.I.F (Formalism.L2.SG.Pf.RowDictPf.wB X w).asIdeal) :
@@ -56,6 +70,17 @@ end GlobalTheory.Mem.SymChar
 
 namespace GlobalTheory.Mem.SymChar
 
+/- English proof (translation)
+Introduce `D X _ _ kv hg hne`. Use `set w := D.naut.plGw kv.1 kv.2 with hw`. Establish `h1 : 1 - X.ew - sigA X.B.I X.ew ∈ wInt X w` using `wInt_of_zmod X kv.1 hg (Formalism.L2.SG.Pf.SatGram.one_sub_ew X)`. Set `PP` to `Formalism.L2.SG.Pf.RowDictPf.wB X w`. Set `e : Formalism.L2.Herm.intAf X.B.I.F X.B.I.E` to `⟨X.ew, X.ew_int⟩`.
+
+Establish `hidem : e * (1 - e) = 0`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show X.ew * (1 - X.ew) = 0`. Rewrite using `[mul_sub, mul_one, X.ew_idem, sub_self]`. Establish `hr : resS X.B.I.F PP e * resS X.B.I.F PP (1 - e) = 0` using `by rw [← map_mul, hidem, map_zero]`.
+
+Establish `he : X.ew ∈ wInt X w`. Break down `mul_eq_zero.1 hr with h | h` into its components or cases. Conclude with `mem_wInt_of_mem_idS X w ((resS_eq_zero_iff PP e).1 h)`. It suffices to derive a contradiction. Apply `hne` to reduce the goal to its premises.
+
+Introduce `y hy`. Use `mem_wInt_of_mem_idS X w ((resS_eq_zero_iff PP (1 - e)).1 h)` as an intermediate fact. Conclude with `smul_mem_wLf_of_mem_wInt X w this hy`. Establish `e2 : sigA X.B.I X.ew - 1 = -X.ew - (1 - X.ew - sigA X.B.I X.ew)` using `by ring`. Rewrite using `[e2]`.
+
+Conclude with `sub_mem (neg_mem he) h1`.
+-/
 theorem sigA_ew_sub_one_mem_wInt : ∀ (D : D7) (X : HidaSetting D), X.B.I = Formalism.L2.SG.InstExistsPf.instOf D → (∀ x : X.B.I.E, HEq (X.ιE x) x) → ∀ (kv : Σ k : Fin 2, D.nd.PlG k), ((D.host.g kv.1 : ℕ) : 𝓞 D.host.E) ∈ (D.naut.plGw kv.1 kv.2).asIdeal → ¬ GlobalTheory.Mem.SymFrame.EwAt X (D.naut.plGw kv.1 kv.2) → sigA X.B.I X.ew - 1 ∈ GlobalTheory.Mem.SymChar.wInt X (D.naut.plGw kv.1 kv.2) := by
   intro D X _ _ kv hg hne
   set w := D.naut.plGw kv.1 kv.2 with hw

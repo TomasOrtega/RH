@@ -9,6 +9,9 @@ open MvPolynomial MeasureTheory Measure
 
 noncomputable section
 
+/- English proof (translation)
+Rewrite using `[((EuclideanSpace.equiv (Fin d) ℂ).toLinearEquiv.restrictScalars ℝ).finrank_eq]`. Simplify using `[Module.finrank_pi_fintype, Complex.finrank_real_complex, mul_comm]`.
+-/
 theorem finrank_real_euclideanSpace_complex (d : ℕ) :
     Module.finrank ℝ (EuclideanSpace ℂ (Fin d)) = 2 * d := by
   rw [((EuclideanSpace.equiv (Fin d) ℂ).toLinearEquiv.restrictScalars ℝ).finrank_eq]
@@ -19,12 +22,18 @@ instance isAddHaarMeasure_hausdorffMeasure_euclideanSpace_complex (d : ℕ) :
   have := isAddHaarMeasure_hausdorffMeasure (E := EuclideanSpace ℂ (Fin d))
   rwa [finrank_real_euclideanSpace_complex] at this
 
+/- English proof (translation)
+The claim follows from `(EuclideanSpace.equiv (Fin d) ℂ).toHomeomorph.toMeasurableEquiv.map_apply s`.
+-/
 theorem map_hausdorffMeasure_euclideanSpace_apply (d : ℕ) (s : Set (Fin d → ℂ)) :
     (μH[((2 * d : ℕ) : ℝ)] : Measure (EuclideanSpace ℂ (Fin d))).map
         (EuclideanSpace.equiv (Fin d) ℂ) s =
       μH[((2 * d : ℕ) : ℝ)] (EuclideanSpace.equiv (Fin d) ℂ ⁻¹' s) :=
   (EuclideanSpace.equiv (Fin d) ℂ).toHomeomorph.toMeasurableEquiv.map_apply s
 
+/- English proof (translation)
+Establish `h1 : (c : ENNReal) ≤ ENNReal.ofReal ((c : ℝ) + 1)`. Rewrite using `[← ENNReal.ofReal_coe_nnreal]`. Conclude with `ENNReal.ofReal_le_ofReal (by linarith)`. Rewrite using `[mul_assoc, ENNReal.ofReal_mul (p := (c : ℝ) + 1) (by positivity)]`. Conclude with `mul_le_mul_of_nonneg_right h1 (zero_le)`.
+-/
 theorem nnreal_mul_ofReal_le (c : NNReal) (C η α : ℝ) :
     (c : ENNReal) * ENNReal.ofReal (C * η ^ α) ≤ ENNReal.ofReal (((c : ℝ) + 1) * C * η ^ α) := by
   have h1 : (c : ENNReal) ≤ ENNReal.ofReal ((c : ℝ) + 1) := by
@@ -33,6 +42,23 @@ theorem nnreal_mul_ofReal_le (c : NNReal) (C η α : ℝ) :
   rw [mul_assoc, ENNReal.ofReal_mul (p := (c : ℝ) + 1) (by positivity)]
   exact mul_le_mul_of_nonneg_right h1 (zero_le)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h d Q hQ R hR set e := EuclideanSpace.equiv (Fin d) ℂ set K := ‖(e : EuclideanSpace ℂ (Fin d) →L[ℂ] (Fin d → ℂ))‖`. Establish `hK : 0 ≤ K` using `norm_nonneg _`. Take `⟨C, α, hC, hα, hb⟩` from `h d Q hQ ((K + 1) * R) (by positivity)`. Establish `hc` using `isAddLeftInvariant_eq_smul ((μH[((2 * d : ℕ) : ℝ)] : Measure (EuclideanSpace ℂ (Fin d))).map e) (volume : Measure (Fin d → ℂ))`.
+
+Use `set c := addHaarScalarFactor ((μH[((2 * d : ℕ) : ℝ)] : Measure (EuclideanSpace ℂ (Fin d))).map e) (volume : Measure (Fin d → ℂ))`. Use `⟨((c : ℝ) + 1) * C, α, by positivity, hα, fun η hη hη1 => ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Apply `measure_mono` to reduce the goal to its premises. Introduce and unpack `x ⟨hx, hxη⟩`.
+
+Use `⟨?_, hxη⟩` and prove the remaining obligations. Rewrite `hx`, the goal using `[mem_ball_zero_iff]`. Combine the equalities or inequalities in the displayed calculation. Use `_ = ((μH[((2 * d : ℕ) : ℝ)] : Measure (EuclideanSpace ℂ (Fin d))).map e) {x : Fin d → ℂ | x ∈ Metric.ball 0 ((K + 1) * R) ∧ ‖eval x Q‖ ≤ η} := (map_hausdorffMeasure_euclideanSpace_apply d _).symm`. Use `_ = (c : ENNReal) * volume {x : Fin d → ℂ | x ∈ Metric.ball 0 ((K + 1) * R) ∧ ‖eval x Q‖ ≤ η} := by`.
+
+Rewrite using `[hc]`. Both sides reduce to the same expression. Use `_ ≤ (c : ENNReal) * ENNReal.ofReal (C * η ^ α) := by gcongr; exact hb η hη hη1`. Use `_ ≤ _ := nnreal_mul_ofReal_le c C η α`. Introduce `h d Q hQ R hR set e := EuclideanSpace.equiv (Fin d) ℂ set K := ‖(e.symm : (Fin d → ℂ) →L[ℂ] EuclideanSpace ℂ (Fin d))‖`.
+
+Establish `hK : 0 ≤ K` using `norm_nonneg _`. Take `⟨C, α, hC, hα, hb⟩` from `h d Q hQ ((K + 1) * R) (by positivity)`. Establish `hc` using `isAddLeftInvariant_eq_smul (volume : Measure (Fin d → ℂ)) ((μH[((2 * d : ℕ) : ℝ)] : Measure (EuclideanSpace ℂ (Fin d))).map e)`. Use `set c := addHaarScalarFactor (volume : Measure (Fin d → ℂ)) ((μH[((2 * d : ℕ) : ℝ)] : Measure (EuclideanSpace ℂ (Fin d))).map e)`. Use `⟨((c : ℝ) + 1) * C, α, by positivity, hα, fun η hη hη1 => ?_⟩` and prove the remaining obligations.
+
+Combine the equalities or inequalities in the displayed calculation. Both sides reduce to the same expression. Use `_ = (c : ENNReal) * μH[((2 * d : ℕ) : ℝ)] (e ⁻¹' {x : Fin d → ℂ | x ∈ Metric.ball 0 R ∧ ‖eval x Q‖ ≤ η}) := by`. Rewrite using `[map_hausdorffMeasure_euclideanSpace_apply]`. Use `_ ≤ (c : ENNReal) * μH[((2 * d : ℕ) : ℝ)] {x : EuclideanSpace ℂ (Fin d) | x ∈ Metric.ball 0 ((K + 1) * R) ∧ ‖eval (fun i => x i) Q‖ ≤ η} := by gcongr`.
+
+Introduce and unpack `x ⟨hx, hxη⟩`. Use `⟨?_, hxη⟩` and prove the remaining obligations. Rewrite `hx`, the goal using `[mem_ball_zero_iff]`. Combine the equalities or inequalities in the displayed calculation. Use `_ ≤ (c : ENNReal) * ENNReal.ofReal (C * η ^ α) := by gcongr; exact hb η hη hη1`.
+
+Use `_ ≤ _ := nnreal_mul_ofReal_le c C η α`.
+-/
 theorem PolySublevel.equiv :
     GroundTheory.Heights₂.Heights.PolySublevel.Statement ↔ PolySublevel.Statement := by
   constructor

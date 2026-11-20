@@ -10,6 +10,17 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Introduce `D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X _ std t J S hD hS v j hj La Lb La' Lb' hab hab'`. Take `⟨-, -, hN, -⟩` from `GlobalTheory.TwV.DelB.sysS_ranks S`. Establish `hj1 : j + 1 ≤ D.R.m` using `hj`. Use function extensionality and compare the values at `z`. Rewrite using `[GlobalTheory.T.movedDatum_pair_eq_adelicDatum_two_points S hD hS j hj1 (hN j) (hN (j + 1)) La La' z, GlobalTheory.T.movedDatum_pair_eq_adelicDatum_two_points S hD hS j hj1 (hN j) (hN (j + 1)) Lb Lb' z]`.
+
+Establish `hc : J.chart std j (Nat.le_of_succ_le hj1) La = J.chart std j (Nat.le_of_succ_le hj1) Lb`. Take `⟨h1, h2, h3, -⟩` from `hab`. Break down `La with ⟨c, a⟩` into its components or cases. Break down `Lb with ⟨c', b⟩` into its components or cases. Simplify using `only at h3`.
+
+Substitute `h3` using the available equality. Conclude with `GlobalTheory.T.latticeTuple_chart_eq_of_same_component S hD hS j _ c a b h1 h2`. Establish `hc' : J.chart std (j + 1) hj1 La' = J.chart std (j + 1) hj1 Lb'`. Take `⟨h1, h2, h3, -⟩` from `hab'`. Break down `La' with ⟨c, a⟩` into its components or cases.
+
+Break down `Lb' with ⟨c', b⟩` into its components or cases. Simplify using `only at h3`. Substitute `h3` using the available equality. Conclude with `GlobalTheory.T.latticeTuple_chart_eq_of_same_component S hD hS (j + 1) _ c a b h1 h2`. Rewrite using `[hc, hc']`.
+
+Use `congrFun (S.law.away j hj1 _ _ (J.pt std j _ Lb) (J.pt std (j + 1) hj1 Lb') (J.pt std j _ La) (J.pt std (j + 1) hj1 La') ?_) _` and prove the remaining obligations. Introduce `v' hv'`. Establish `hne : v' ≠ ((A0 J).pl v).1` using `fun h => (GlobalTheory.T.level_badPrimes_coprime_residueChar S hD hS).2.2.1 v' hv' (h ▸ ((A0 J).pl v).2)`. Conclude with `⟨(GlobalTheory.T.adelicPoints_agreeAway_of_latticeTuples_agreeAway S hD hS v j _ La Lb hab).1 v' hne, (GlobalTheory.T.adelicPoints_agreeAway_of_latticeTuples_agreeAway S hD hS v (j + 1) hj1 La' Lb' hab').1 v' hne⟩`.
+-/
 theorem GlobalTheory.TwV.Xc.xiM_eq_of_sameAway : Sites (fun {D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X} [Fact (D.what₂.places.resChar w).Prime] {std t J} S => ∀ v j (hj : j < D.R.m) (La Lb : (sysS H X std).Lt j) (La' Lb' : (sysS H X std).Lt (j + 1)), SameAway (hT := hT) (H := H) (X := X) std v j La Lb → SameAway (hT := hT) (H := H) (X := X) std v (j + 1) La' Lb' → GlobalTheory.TwU.xiM (sysS H X std) (J.fd std) (J.xi0 std S.Xi) j La La' = GlobalTheory.TwU.xiM (sysS H X std) (J.fd std) (J.xi0 std S.Xi) j Lb Lb') := by
   intro D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X _ std t J S hD hS v j hj La Lb La' Lb' hab hab'
   obtain ⟨-, -, hN, -⟩ := GlobalTheory.TwV.DelB.sysS_ranks S

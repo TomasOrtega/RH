@@ -12,12 +12,20 @@ noncomputable def hintPt {D n : ℕ} (t0 : Fin n → ℂ) (z : BlockSphere D n) 
     Fin (D + 1) × Fin n → ℂ :=
   fun v => Fin.cases (t0 v.2) (fun i => spherePoint (z i) v.2) v.1
 
+/- English proof (translation)
+Unfold `blockSphereProb`. Conclude with `measurePreserving_piFinSuccAbove (fun _ : Fin (D + 1) => sphereProb n) 0`.
+-/
 theorem hint_mpSplit (D n : ℕ) (hn : 0 < n) :
     MeasurePreserving (MeasurableEquiv.piFinSuccAbove (fun _ : Fin (D + 1) => UnitSphereC n) 0)
       (blockSphereProb (D + 1) n) ((sphereProb n).prod (blockSphereProb D n)) := by
   unfold blockSphereProb
   exact measurePreserving_piFinSuccAbove (fun _ : Fin (D + 1) => sphereProb n) 0
 
+/- English proof (translation)
+Use `haveI : NeZero n := ⟨hn.ne'⟩`. Unfold `sphereProb`. Establish `hpos : 0 < Module.finrank ℝ (EuclideanSpace ℂ (Fin n))` using `Module.finrank_pos`. Establish `h1 : (volume : Measure (EuclideanSpace ℂ (Fin n))).toSphere Set.univ ≠ 0`. Rewrite using `[Measure.toSphere_apply_univ]`.
+
+Conclude with `mul_ne_zero (Nat.cast_ne_zero.mpr hpos.ne') (Metric.measure_ball_pos _ _ one_pos).ne'`. Establish `h2 : (volume : Measure (EuclideanSpace ℂ (Fin n))).toSphere Set.univ ≠ ⊤`. Rewrite using `[Measure.toSphere_apply_univ]`. Conclude with `ENNReal.mul_ne_top (ENNReal.natCast_ne_top _) measure_ball_lt_top.ne`. Conclude with `ProbabilityTheory.cond_isProbabilityMeasure_of_finite h1 h2`.
+-/
 private theorem isProbabilityMeasure_sphereProb' (n : ℕ) (hn : 0 < n) : IsProbabilityMeasure (sphereProb n) := by
   haveI : NeZero n := ⟨hn.ne'⟩
   unfold sphereProb
@@ -30,6 +38,13 @@ private theorem isProbabilityMeasure_sphereProb' (n : ℕ) (hn : 0 < n) : IsProb
     exact ENNReal.mul_ne_top (ENNReal.natCast_ne_top _) measure_ball_lt_top.ne
   exact ProbabilityTheory.cond_isProbabilityMeasure_of_finite h1 h2
 
+/- English proof (translation)
+Use `haveI := isProbabilityMeasure_sphereProb' n hn`. Use `haveI : SFinite (blockSphereProb D n) := by`. Unfold `blockSphereProb`. Use `infer_instance`. Establish `h` using `(measurePreserving_snd (μ := sphereProb n) (ν := blockSphereProb D n)).comp (hint_mpSplit D n hn)`.
+
+Establish `e : (fun z : BlockSphere (D + 1) n => fun i : Fin D => z i.succ) = Prod.snd ∘ ⇑(MeasurableEquiv.piFinSuccAbove (fun _ : Fin (D + 1) => UnitSphereC n) 0)`. Use function extensionality and compare the values at `z i`. Use `first`. Consider the case `rfl`. Consider the case `(simp [MeasurableEquiv.piFinSuccAbove_apply, Fin.removeNth]; done)`.
+
+Consider the case `(simp [MeasurableEquiv.piFinSuccAbove_apply, Fin.removeNth]; rfl)`. Consider the case `exact congrArg z (by simp)`. Rewrite using `[e]`. Conclude with `h`.
+-/
 theorem hint_mpTail (D n : ℕ) (hn : 0 < n) :
     MeasurePreserving (fun z : BlockSphere (D + 1) n => fun i : Fin D => z i.succ)
       (blockSphereProb (D + 1) n) (blockSphereProb D n) := by
@@ -50,6 +65,9 @@ theorem hint_mpTail (D n : ℕ) (hn : 0 < n) :
   rw [e]
   exact h
 
+/- English proof (translation)
+Use function extensionality and compare the values at `⟨i, j⟩`. Consider the cases of `i using Fin.cases with`. Consider the case `zero => simp [blockPoint, hintPt]`. Consider the case `succ i => simp [blockPoint, hintPt]`.
+-/
 theorem hint_blockPoint_eq {D n : ℕ} (z : BlockSphere (D + 1) n) :
     blockPoint z = hintPt (spherePoint (z 0)) (fun i : Fin D => z i.succ) := by
   funext ⟨i, j⟩
@@ -57,6 +75,13 @@ theorem hint_blockPoint_eq {D n : ℕ} (z : BlockSphere (D + 1) n) :
   | zero => simp [blockPoint, hintPt]
   | succ i => simp [blockPoint, hintPt]
 
+/- English proof (translation)
+Rewrite using `[MvPolynomial.eval_eq, MvPolynomial.eval_eq]`. Use `Finset.sum_congr rfl fun s hs => ?_` and prove the remaining obligations. Use `congr 1`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Distinguish the cases in `hv : v.1 = 0`.
+
+Establish `h0 : s v = 0`. Establish `hsum` using `hq s hs 0`. Rewrite `hsum` using `[ha]`. Establish `hle : s (0, v.2) ≤ ∑ j : Fin n, s (0, j)` using `Finset.single_le_sum (f := fun j => s (0, j)) (fun _ _ => Nat.zero_le _) (Finset.mem_univ _)`. Establish `hz : s (0, v.2) = 0` using `by omega`.
+
+Establish `hv' : v = (0, v.2)` using `Prod.ext hv rfl`. Rewrite using `[hv']`. Conclude with `hz`. Rewrite using `[h0, pow_zero, pow_zero]`. Rewrite using `[hxy v hv]`.
+-/
 theorem hint_eval_indep {D n : ℕ} {a : Fin (D + 1) → ℕ} {q : MvPolynomial (Fin (D + 1) × Fin n) ℂ}
     (hq : IsMultiHomogeneous a q) (ha : a 0 = 0) (x y : Fin (D + 1) × Fin n → ℂ)
     (hxy : ∀ v : Fin (D + 1) × Fin n, v.1 ≠ 0 → x v = y v) :
@@ -79,6 +104,11 @@ theorem hint_eval_indep {D n : ℕ} {a : Fin (D + 1) → ℕ} {q : MvPolynomial 
     rw [h0, pow_zero, pow_zero]
   · rw [hxy v hv]
 
+/- English proof (translation)
+Apply `continuous_pi` to reduce the goal to its premises. Introduce and unpack `⟨i, j⟩`. Consider the cases of `i using Fin.cases with`. Consider the case `zero`. Simplify using `only [hintPt, Fin.cases_zero]`.
+
+Conclude with `continuous_const`. Consider the case `succ i`. Simplify using `only [hintPt, Fin.cases_succ]`. Unfold `spherePoint`. Use `fun_prop`.
+-/
 theorem hint_continuous_pt {D n : ℕ} (t0 : Fin n → ℂ) :
     Continuous fun z : BlockSphere D n => hintPt t0 z := by
   apply continuous_pi
@@ -92,6 +122,11 @@ theorem hint_continuous_pt {D n : ℕ} (t0 : Fin n → ℂ) :
     unfold spherePoint
     fun_prop
 
+/- English proof (translation)
+Establish `hmeas : AEStronglyMeasurable (fun z : BlockSphere D n => Real.log ‖MvPolynomial.eval (hintPt t0 z) q‖) (blockSphereProb D n)` using `((continuous_norm.comp ((MvPolynomial.continuous_eval q).comp (hint_continuous_pt t0))).measurable.log).aestronglyMeasurable`. Rewrite using `[← (hint_mpTail D n hn).integrable_comp hmeas]`. Use `(ReciprocityTheory.MultiplicativeHeights.Closed.sphereLogIntegrable (D + 1) n a q hq0 hq).congr (Filter.Eventually.of_forall fun z => ?_)` and prove the remaining obligations. Simplify using `only [Function.comp_apply]`. Rewrite using `[hint_blockPoint_eq, hint_eval_indep hq ha _ (hintPt t0 (fun i : Fin D => z i.succ))]`.
+
+Introduce and unpack `⟨i, j⟩ hi`. Take `⟨k, rfl⟩` from `Fin.exists_succ_eq.2 hi`. Both sides reduce to the same expression.
+-/
 theorem hint_logInt_tail {D n : ℕ} (hn : 0 < n) {a : Fin (D + 1) → ℕ}
     {q : MvPolynomial (Fin (D + 1) × Fin n) ℂ} (hq0 : q ≠ 0) (hq : IsMultiHomogeneous a q)
     (ha : a 0 = 0) (t0 : Fin n → ℂ) :
@@ -111,6 +146,13 @@ theorem hint_logInt_tail {D n : ℕ} (hn : 0 < n) {a : Fin (D + 1) → ℕ}
   obtain ⟨k, rfl⟩ := Fin.exists_succ_eq.2 hi
   rfl
 
+/- English proof (translation)
+Establish `hA : MeasurableSet {z : BlockSphere D n | MvPolynomial.eval (hintPt t0 z) q = 0}` using `(isClosed_eq ((MvPolynomial.continuous_eval q).comp (hint_continuous_pt t0)) continuous_const).measurableSet`. Rewrite using `[ae_iff]`. Simplify using `only [not_not]`. Rewrite using `[← (hint_mpTail D n hn).measure_preimage hA.nullMeasurableSet]`. Establish `h0` using `ae_blockSphere_eval_ne_zero (D + 1) n a q hq0 hq`.
+
+Rewrite `h0` using `[ae_iff]`. Use `measure_mono_null (fun z hz => ?_) h0` and prove the remaining obligations. Simplify using `only [Set.mem_preimage, Set.mem_ofPred_eq] at hz`. Simplify using `only [Set.mem_ofPred_eq, not_not]`. Rewrite using `[hint_blockPoint_eq, hint_eval_indep hq ha _ (hintPt t0 (fun i : Fin D => z i.succ))]`.
+
+Conclude with `hz`. Introduce and unpack `⟨i, j⟩ hi`. Take `⟨k, rfl⟩` from `Fin.exists_succ_eq.2 hi`. Both sides reduce to the same expression.
+-/
 theorem hint_ae_tail {D n : ℕ} (hn : 0 < n) {a : Fin (D + 1) → ℕ}
     {q : MvPolynomial (Fin (D + 1) × Fin n) ℂ} (hq0 : q ≠ 0) (hq : IsMultiHomogeneous a q)
     (ha : a 0 = 0) (t0 : Fin n → ℂ) :
@@ -132,6 +174,11 @@ theorem hint_ae_tail {D n : ℕ} (hn : 0 < n) {a : Fin (D + 1) → ℕ}
   obtain ⟨k, rfl⟩ := Fin.exists_succ_eq.2 hi
   rfl
 
+/- English proof (translation)
+Use `haveI := sphereMeasure_isProbability hn`. Use `haveI := blockSphereMeasure_isProbability (B := D) hn`. Use `set G : UnitSphereC n × BlockSphere D n → ℝ := fun p => Real.log ‖MvPolynomial.eval (hintPt (spherePoint p.1) p.2) F‖ with hG`. Establish `hint : Integrable G ((sphereProb n).prod (blockSphereProb D n))`. Rewrite using `[← (hint_mpSplit D n hn).integrable_comp_emb (MeasurableEquiv.piFinSuccAbove (fun _ : Fin (D + 1) => UnitSphereC n) 0).measurableEmbedding]`.
+
+Use `(ReciprocityTheory.MultiplicativeHeights.Closed.sphereLogIntegrable (D + 1) n a F hF0 hF).congr (Filter.Eventually.of_forall fun z => ?_)` and prove the remaining obligations. Simplify using `only [Function.comp_apply, hG]`. Rewrite using `[hint_blockPoint_eq]`. Both sides reduce to the same expression. Conclude with `hint.integral_prod_right`.
+-/
 theorem hint_fubini {D n : ℕ} (hn : 0 < n) {a : Fin (D + 1) → ℕ}
     {F : MvPolynomial (Fin (D + 1) × Fin n) ℂ} (hF0 : F ≠ 0) (hF : IsMultiHomogeneous a F) :
     Integrable (fun z : BlockSphere D n =>
@@ -151,6 +198,19 @@ theorem hint_fubini {D n : ℕ} (hn : 0 < n) {a : Fin (D + 1) → ℕ}
     rfl
   exact hint.integral_prod_right
 
+/- English proof (translation)
+Use `set Lc : EuclideanSpace ℂ (Fin n) →ₗ[ℂ] ℂ := ∑ j, c j • (EuclideanSpace.proj j : EuclideanSpace ℂ (Fin n) →L[ℂ] ℂ).toLinearMap with hLc`. Establish `hL : ∀ x : EuclideanSpace ℂ (Fin n), Lc x = ∑ j, c j * WithLp.ofLp x j`. Introduce `x`. Simplify using `[hLc]`. Use `set H : Submodule ℝ (EuclideanSpace ℂ (Fin n)) := LinearMap.ker (Lc.restrictScalars ℝ) with hH`.
+
+Establish `hHtop : H ≠ ⊤`. Take `⟨j, hj⟩` from `Function.ne_iff.mp hc`. Introduce `htop`. Establish `hmem : EuclideanSpace.single j (1 : ℂ) ∈ H` using `htop ▸ Submodule.mem_top`. Rewrite `hmem` using `[hH, LinearMap.mem_ker, LinearMap.restrictScalars_apply, hL]`.
+
+Simplify using `at hmem`. Conclude with `hj hmem`. Establish `hvol : (volume : Measure (EuclideanSpace ℂ (Fin n))) H = 0` using `Measure.addHaar_submodule _ H hHtop`. Establish `hA : MeasurableSet {s : UnitSphereC n | ¬ (∑ j, c j * spherePoint s j ≠ 0)}`. Simplify using `only [not_not]`.
+
+Conclude with `(isClosed_eq (by unfold spherePoint; fun_prop) continuous_const).measurableSet`. Rewrite using `[ae_iff]`. Unfold `sphereProb`. Use `ProbabilityTheory.cond_absolutelyContinuous ?_` and prove the remaining obligations. Rewrite using `[Measure.toSphere_apply' (μ := (volume : Measure (EuclideanSpace ℂ (Fin n)))) hA]`.
+
+Apply `mul_eq_zero_of_right` to reduce the goal to its premises. Use `measure_mono_null ?_ hvol` and prove the remaining obligations. Introduce and unpack `_ ⟨r, _, _, ⟨s, hs, rfl⟩, rfl⟩`. Simplify using `only [Set.mem_setOf_eq, not_not] at hs`. Use `show r • (s : EuclideanSpace ℂ (Fin n)) ∈ H`.
+
+Use `H.smul_mem r ?_` and prove the remaining obligations. Rewrite using `[hH, LinearMap.mem_ker, LinearMap.restrictScalars_apply, hL]`. Simplify `hs` using `[spherePoint]`.
+-/
 theorem hint_lin_ae {n : ℕ} (c : Fin n → ℂ) (hc : c ≠ 0) :
     ∀ᵐ s ∂(sphereProb n), ∑ j, c j * spherePoint s j ≠ 0 := by
   classical

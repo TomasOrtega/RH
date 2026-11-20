@@ -20,6 +20,23 @@ noncomputable def multHom {X : Scheme.{0}} [IsIntegral X] [IsLocallyNoetherian X
     CartierDiv X →+ ℤ :=
   AddMonoidHom.mk' (fun D => D.mult z) fun D E => CartierDiv.mult_add D E z
 
+/- English proof (translation)
+Use `haveI : Ring.KrullDimLE 1 (X.presheaf.stalk z) := krullDimLE_of_coheight_le hz.le`. Take `⟨hD, hI⟩` from `hN z`. Establish `hnf : ¬ IsField (X.presheaf.stalk z)`. Introduce `hF`. Establish `h1` using `ringKrullDim_stalk_eq_coheight z`.
+
+Rewrite `h1` using `[ringKrullDim_eq_zero_of_isField hF, hz]`. Evaluate the numerical expressions using `at h1`. Use `haveI : Ring.DimensionLEOne (X.presheaf.stalk z) := ⟨fun hne hp => hp.isMaximal_of_ne_bot hne⟩`. Establish `hDD : IsDedekindDomain (X.presheaf.stalk z)` using `(isDedekindDomain_iff _ X.functionField).mpr ⟨hD, inferInstance, inferInstance, fun hx => (isIntegrallyClosed_iff X.functionField).mp hI hx⟩`. Establish `hTF` using `IsDiscreteValuationRing.TFAE (X.presheaf.stalk z) hnf`.
+
+Establish `hV : ValuationRing (X.presheaf.stalk z)` using `(hTF.out 2 1).mp hDD`. Establish `hord : Ring.ordFrac (X.presheaf.stalk z) f = 1`. Use `(Scheme.ord_eq_iff hz hf).1 h0` as an intermediate fact. Simplify `this` using `[Scheme.ordHom]`. Break down `ValuationRing.isInteger_or_isInteger (X.presheaf.stalk z) f with ⟨a, ha⟩ | ⟨r, hr⟩` into its components or cases.
+
+Conclude with `⟨a, ha⟩`. Establish `hr0 : r ≠ 0`. Introduce and unpack `rfl`. Simplify using `only [map_zero] at hr`. Conclude with `hf (inv_eq_zero.mp hr.symm)`.
+
+Establish `h2 : Ring.ordMonoidWithZeroHom (X.presheaf.stalk z) r = 1`. Rewrite using `[← Ring.ordFrac_eq_ord (K := X.functionField) _ hr0, hr, map_inv₀, hord, inv_one]`. Establish `hmem : r ∈ nonZeroDivisors (X.presheaf.stalk z)` using `mem_nonZeroDivisors_of_ne_zero hr0`. Take `⟨n, hn⟩` from `ENat.ne_top_iff_exists.mp (Ring.ord_ne_top hmem)`. Rewrite `h2` using `[Ring.ordMonoidWithZeroHom_eq_coe _ hmem hn.symm]`.
+
+Establish `hn1 : Multiplicative.ofAdd (n : ℤ) = 1` using `by exact_mod_cast h2`. Establish `hn0 : n = 0`. Establish `: (n : ℤ) = 0` using `by simpa using hn1`. Conclude with `this` after adjusting the coercions. Establish `h3 : Ring.ord (X.presheaf.stalk z) r = 0` using `by rw [← hn, hn0]; rfl`.
+
+Establish `hsub : Subsingleton (X.presheaf.stalk z ⧸ Ideal.span {r})` using `Module.length_eq_zero_iff.mp h3`. Establish `hu : IsUnit r` using `Ideal.span_singleton_eq_top.mp (Ideal.Quotient.subsingleton_iff.mp hsub)`. Use `⟨↑hu.unit⁻¹, ?_⟩` and prove the remaining obligations. Establish `hm : algebraMap (X.presheaf.stalk z) X.functionField (↑hu.unit⁻¹ : X.presheaf.stalk z) * algebraMap (X.presheaf.stalk z) X.functionField r = 1`. Rewrite using `[← map_mul]`.
+
+Simplify using the standard rewrite rules. Rewrite `hm` using `[hr]`. Conclude with `(mul_inv_eq_one₀ hf).1 hm`.
+-/
 private theorem regAt_of_ord_eq_zero_of_normal {X : Scheme.{0}} [IsIntegral X] [IsLocallyNoetherian X]
     (hN : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme X)
     {z : X} (hz : Order.coheight z = 1) {f : X.functionField} (hf : f ≠ 0)
@@ -69,6 +86,11 @@ private theorem regAt_of_ord_eq_zero_of_normal {X : Scheme.{0}} [IsIntegral X] [
     rw [hr] at hm
     exact (mul_inv_eq_one₀ hf).1 hm
 
+/- English proof (translation)
+Use `haveI : GlobalTheory.IsNormalScheme X := ⟨fun x => (hN x).1, fun x => (hN x).2⟩`. Rewrite using `[CartierDiv.eff_iff]`. Introduce `x g hg`. Apply `GlobalTheory.Discrepancy.regAt_of_forall_coheight_eq_one` to reduce the goal to its premises. Introduce `z hzx hz`.
+
+Take `⟨U, hxU, hU⟩` from `hg.exists_nhds`. Establish `hgz : E.IsEqn z g` using `hU z (hzx.mem_open U.isOpen hxU)`. Use `regAt_of_ord_eq_zero_of_normal hN hz g.ne_zero ?_` and prove the remaining obligations. Rewrite using `[← hgz.mult_eq]`. Conclude with `h z`.
+-/
 private theorem cartierDiv_eff_of_mult_eq_zero {X : Scheme.{0}} [IsIntegral X] [IsLocallyNoetherian X]
     (hN : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme X) (E : CartierDiv X)
     (h : ∀ z, E.mult z = 0) : E.Eff := by
@@ -83,6 +105,9 @@ private theorem cartierDiv_eff_of_mult_eq_zero {X : Scheme.{0}} [IsIntegral X] [
   rw [← hgz.mult_eq]
   exact h z
 
+/- English proof (translation)
+Use `CartierDiv.Eff.eq_zero (cartierDiv_eff_of_mult_eq_zero hN E h) (cartierDiv_eff_of_mult_eq_zero hN (-E) fun z => ?_)` and prove the remaining obligations. Use `show multHom z (-E) = 0`. Rewrite using `[map_neg]`. Conclude with `neg_eq_zero.mpr (h z)`.
+-/
 private theorem cartierDiv_eq_zero_of_mult_eq_zero {X : Scheme.{0}} [IsIntegral X] [IsLocallyNoetherian X]
     (hN : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme X) (E : CartierDiv X)
     (h : ∀ z, E.mult z = 0) : E = 0 := by
@@ -91,6 +116,13 @@ private theorem cartierDiv_eq_zero_of_mult_eq_zero {X : Scheme.{0}} [IsIntegral 
   rw [map_neg]
   exact neg_eq_zero.mpr (h z)
 
+/- English proof (translation)
+Take `⟨g, hg⟩` from `D.exists_isEqn z`. Rewrite using `[hg.mult_eq]`. Distinguish the cases in `hz : Order.coheight z = 1`. Take `⟨a, ha⟩` from `CartierDiv.eff_iff.mp hD z g hg`. Establish `ha0 : a ≠ 0`.
+
+Introduce and unpack `rfl`. Simplify using `only [map_zero] at ha`. Conclude with `g.ne_zero ha.symm`. Use `haveI : Ring.KrullDimLE 1 (X.presheaf.stalk z) := krullDimLE_of_coheight_le hz.le`. Rewrite using `[Scheme.le_ord_iff hz g.ne_zero, ← ha]`.
+
+Use `Ring.ordFrac_ge_one_of_ne_zero (R := X.presheaf.stalk z) (K := X.functionField) ha0` as an intermediate fact. Simplify `this` using `[Scheme.ordHom]`. Simplify using `[Scheme.ord_eq_zero_of_coheight_neq_one hz]`.
+-/
 private theorem cartierDiv_mult_nonneg_of_eff {X : Scheme.{0}} [IsIntegral X] [IsLocallyNoetherian X]
     {D : CartierDiv X} (hD : D.Eff) (z : X) : 0 ≤ D.mult z := by
   obtain ⟨g, hg⟩ := D.exists_isEqn z
@@ -107,6 +139,25 @@ private theorem cartierDiv_mult_nonneg_of_eff {X : Scheme.{0}} [IsIntegral X] [I
     simpa [Scheme.ordHom] using this
   · simp [Scheme.ord_eq_zero_of_coheight_neq_one hz]
 
+/- English proof (translation)
+Introduce `k _ _ Y _ _ q n _ hp Kc Q A hQ hA B Γ e hB hΓ hsupp hmult heq i hi`. Establish `hsm : Smooth q` using `SmoothOfRelativeDimension.smooth (n := n) (f := q)`. Take `⟨-, hN, -⟩` from `isReduced_isNormalScheme_isLocallyNoetherian_of_smooth_over_field k Y q hsm`. Take `⟨r, w, D, σ, hw, hD, hBw, hrel⟩` from `SncComp.relSnc_components k Y q n hp B hB`. Establish `hnn : ∀ z, 0 ≤ Γ.mult z` using `cartierDiv_mult_nonneg_of_eff hΓ`.
+
+Set `b : Fin r → ℕ` to `fun j => (Γ.mult (w j)).toNat`. Establish `hdec : Γ = ∑ j, b j • D j`. Use `sub_eq_zero.mp (cartierDiv_eq_zero_of_mult_eq_zero hN _ fun z => ?_)` and prove the remaining obligations. Use `show multHom z (Γ - ∑ j, b j • D j) = 0`. Rewrite using `[map_sub, map_sum]`.
+
+Simplify using `only [map_nsmul]`. Use `show Γ.mult z - ∑ j, b j • (D j).mult z = 0`. Distinguish the cases in `hz : ∃ j, z = w j`. Take `⟨j, rfl⟩` from `hz`. Rewrite using `[Finset.sum_eq_single j]`.
+
+Rewrite using `[(hD j).1]`. Simplify using `only [b, nsmul_eq_mul, mul_one]`. Use `hnn (w j)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Introduce `l _ hl`.
+
+Rewrite using `[(hD l).2 (w j) (fun h => hl (hw h.symm)), smul_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ j) h`. Use `push_neg at hz`. Rewrite using `[Finset.sum_eq_zero fun j _ => by rw [(hD j).2 z (hz j), smul_zero], sub_zero]`.
+
+Assume the negation of the conclusion as `hne`. Take `⟨j, hj⟩` from `hBw z (CartierDiv.coheight_eq_one_of_mult_ne_zero hne) (hsupp (CartierDiv.mem_supp_of_mult_ne_zero hne))`. Conclude with `hz j hj`. Establish `he : 0 < e`. Establish `h1` using `hmult (genericPoint Y)`.
+
+Establish `h2` using `hnn (genericPoint Y)`. Use linear arithmetic over natural numbers and integers. Establish `hb : ∀ j, b j < e`. Introduce `j`. Establish `h1` using `hmult (w j)`.
+
+Establish `h2` using `hnn (w j)`. Simplify using `only [b]`. Use linear arithmetic over natural numbers and integers. Rewrite `heq` using `[hdec, map_sum]`. Simplify using `only [map_nsmul, toPic_apply] at heq`.
+
+Conclude with `GlobalTheory.Div.vanishing_ample_snc_charZero k Y q n hp r (fun j => toLB (D j)) σ hrel Kc Q A hQ hA e b he hb heq i hi`.
+-/
 theorem vanishing_ample_snc_cartier : ∀ (k : Type) [Field k] [CharZero k] (Y : Scheme.{0}) [IsIntegral Y] [IsLocallyNoetherian Y] (q : Y ⟶ Sp k) (n : ℕ) [SmoothOfRelativeDimension n q], IsProjOver q → ∀ (Kc : CanonLB q n) (Q A : LB Y) (hQ : Q.IsLB) (hA : IsAmpleLB A) (B : Closeds Y) (Γ : CartierDiv Y) (e : ℕ), FinalTheorems.Snc (Scheme.IdealSheafData.vanishingIdeal B) → Γ.Eff → Γ.supp ≤ B → (∀ z, Γ.mult z < e) → e • cls Q hQ = e • cls Kc.bundle Kc.isLB + toPic Γ + cls A hA.isLB → ∀ i, 0 < i → Subsingleton (coh (twist (GlobalTheory.structureModule Y) Q) i) := by
   intro k _ _ Y _ _ q n _ hp Kc Q A hQ hA B Γ e hB hΓ hsupp hmult heq i hi
   have hsm : Smooth q := SmoothOfRelativeDimension.smooth (n := n) (f := q)

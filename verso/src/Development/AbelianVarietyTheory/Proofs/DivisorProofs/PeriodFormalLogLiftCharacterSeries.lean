@@ -20,6 +20,13 @@ noncomputable section
 
 namespace GlobalTheory.CharPeriod
 
+/- English proof (translation)
+Introduce `p _ B O Q _ _ _ _ θ hF x N ⟨o, ho⟩`. Take `⟨b, rfl⟩` from `hF.surj o`. Establish `hj : θ (x ^ N - p * b) = 0` using `by rw [map_sub, map_pow, ho, map_mul, map_natCast, sub_self]`. Take `⟨y, -, hy⟩` from `hF.pd _ hj`. Use `⟨N * p, ?_⟩` and prove the remaining obligations.
+
+Establish `h1 : (x ^ N - (x ^ N - p * b)) ∣ (x ^ N) ^ p - (x ^ N - p * b) ^ p` using `sub_dvd_pow_sub_pow _ _ _`. Rewrite `h1` using `[sub_sub_cancel]`. Rewrite using `[pow_mul]`. Establish `h2 : (x ^ N) ^ p = ((x ^ N) ^ p - (x ^ N - p * b) ^ p) + p * y` using `by rw [hy]; ring`. Rewrite using `[h2]`.
+
+Conclude with `dvd_add (dvd_trans (dvd_mul_right _ _) h1) (dvd_mul_right _ _)`.
+-/
 theorem pow_dvd_of_theta_pow_dvd : ∀ (p : ℕ) [Fact p.Prime] (B O Q : Type) [CommRing B] [CommRing Q] [CommRing O] [Algebra B Q] (θ : B →+* O), IsFrame p Q θ → ∀ (x : B) (N : ℕ), (p : O) ∣ θ x ^ N → ∃ M : ℕ, (p : B) ∣ x ^ M := by
   intro p _ B O Q _ _ _ _ θ hF x N ⟨o, ho⟩
   obtain ⟨b, rfl⟩ := hF.surj o
@@ -33,6 +40,9 @@ theorem pow_dvd_of_theta_pow_dvd : ∀ (p : ℕ) [Fact p.Prime] (B O Q : Type) [
   rw [h2]
   exact dvd_add (dvd_trans (dvd_mul_right _ _) h1) (dvd_mul_right _ _)
 
+/- English proof (translation)
+Proceed by induction on `n generalizing y with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[Function.iterate_succ_apply, pow_succ, pow_mul, ih]`. Conclude with `(_root_.frobeniusEquiv (PreTilt O p) p).apply_symm_apply y`.
+-/
 theorem root_iterate_pow {p : ℕ} [Fact p.Prime] {O : Type} [CommRing O] [Fact ¬IsUnit (p : O)]
     (n : ℕ) (y : PreTilt O p) : (root^[n] y) ^ (p ^ n) = y := by
   induction n generalizing y with
@@ -41,6 +51,11 @@ theorem root_iterate_pow {p : ℕ} [Fact p.Prime] {O : Type} [CommRing O] [Fact 
     rw [Function.iterate_succ_apply, pow_succ, pow_mul, ih]
     exact (_root_.frobeniusEquiv (PreTilt O p) p).apply_symm_apply y
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[pow_succ, ih]`. Use `push_cast`.
+
+Take the linear combination `(k : R) * hx`.
+-/
 theorem one_add_pow_of_sq_zero {R : Type} [CommRing R] {x : R} (hx : x * x = 0) (k : ℕ) :
     (1 + x) ^ k = 1 + k * x := by
   induction k with
@@ -50,6 +65,33 @@ theorem one_add_pow_of_sq_zero {R : Type} [CommRing R] {x : R} (hx : x * x = 0) 
     push_cast
     linear_combination (k : R) * hx
 
+/- English proof (translation)
+Introduce `p _ O _ _ _ ε hε F _ n k w q hw hq`. Establish `hF` using `F.frame`. Use `haveI := hF.complete`. Use `set r : F.B := F.a (teichmuller p (root^[n] ε)) with hr`. Establish `hθr : F.θ r = zeta ε n` using `by rw [hr, F.θ_a, fontaineTheta_teichmuller]; rfl`.
+
+Establish `hrp : r ^ (p ^ n) = 1 + F.a (Sandwich.mu ε)`. Rewrite using `[hr, ← map_pow, ← map_pow, root_iterate_pow, Sandwich.mu, map_sub, map_one]`. Expand and normalize the polynomial expressions, which then agree. Use `set x : F.B := (k : F.B) * F.a (Sandwich.mu ε) with hx`. Establish `hxx : x * x = 0`.
+
+Establish `h : F.a (Sandwich.mu ε) * F.a (Sandwich.mu ε) = 0`. Rewrite using `[← F.p_τ]`. Take the linear combination `((p : F.B) * p) * F.τ_sq`. Take the linear combination `((k : F.B) * k) * h`. Use `set e : F.B := r ^ k with he`.
+
+Establish `hθe : F.θ e = zeta ε n ^ k` using `by rw [he, map_pow, hθr]`. Establish `hep : e ^ (p ^ n) = 1 + x`. Establish `h : F.a (Sandwich.mu ε) * F.a (Sandwich.mu ε) = 0`. Rewrite using `[← F.p_τ]`. Take the linear combination `((p : F.B) * p) * F.τ_sq`.
+
+Rewrite using `[he, ← pow_mul, mul_comm, pow_mul, hrp, one_add_pow_of_sq_zero h]`. Establish `hpe : (p : F.B) ∣ (e - 1) ^ (p ^ n)`. Take `⟨s, hs⟩` from `exists_add_pow_prime_pow_eq (Fact.out : p.Prime) (e - 1) 1 n`. Rewrite `hs` using `[sub_add_cancel, one_pow, hep]`. Use `⟨k * F.τ - (e - 1) * s, ?_⟩` and prove the remaining obligations.
+
+Establish `: (p : F.B) * F.τ = F.a (Sandwich.mu ε)` using `F.p_τ`. Take the linear combination `-hs + hx - (k : F.B) * this`. Establish `hnile : ∀ i : Unit, ∃ N : ℕ, (p : F.B) ∣ (fun _ : Unit => e - 1) i ^ N` using `fun _ => ⟨_, hpe⟩`. Establish `hnilw : ∀ i : Unit, ∃ N : ℕ, (p : F.B) ∣ (fun _ : Unit => w - 1) i ^ N`. Introduce `_`.
+
+Establish `h1 : F.θ (w - 1) = F.θ (e - 1)` using `by rw [map_sub, map_sub, hw, hθe]`. Take `⟨s, hs⟩` from `hpe`. Conclude with `pow_dvd_of_theta_pow_dvd p F.B O F.Q F.θ hF (w - 1) (p ^ n) ⟨F.θ s, by rw [h1, ← map_pow, hs, map_mul, map_natCast]⟩`. Establish `hD` using `GlobalTheory.T.diffCoeffsInIdeal_top_powerSeries_log F.B F.Q`. Take `⟨q₁, hq₁, -⟩` from `GlobalTheory.T.existsUnique_hasPAdicPowerSeriesValue_of_diffCoeffs p F.B O F.Q F.θ hF Unit (fun _ => e - 1) hnile _ hD`.
+
+Establish `hJ : ∀ y ∈ RingHom.ker F.θ, ∃ y' ∈ RingHom.ker F.θ, y ^ p = p * y'`. Introduce `y hy`. Take `⟨y', hy', h⟩` from `hF.pd y hy`. Conclude with `⟨y', hy', h⟩`. Take `⟨j, -, b', hjb⟩` from `GlobalTheory.T.hasPAdicPowerSeriesValue_sub_mem_pd_ideal p F.B O F.Q F.θ hF Unit (fun _ => w - 1) hnilw (RingHom.ker F.θ) hJ (fun _ => e - 1) _ q q₁ (fun _ => by rw [RingHom.mem_ker, sub_sub_sub_cancel_right, map_sub, hw, hθe, sub_self]) hD hq hq₁ 0`.
+
+Take `⟨Ev, hEv, -⟩` from `(GlobalTheory.T.padicContinuousEvaluation_existsUnique_subst_natural p F.B F.B Unit (fun _ => e - 1) hnile).1`. Use `set u : Unit → MvPowerSeries Unit F.B := fun _ => (1 + X ()) ^ (p ^ n) - 1 with hu`. Establish `hu0 : ∀ j, constantCoeff (u j) = 0` using `fun _ => by simp [hu]`. Establish `hEu : (fun j => Ev (u j)) = fun _ : Unit => x`. Use function extensionality and compare the values at `j`.
+
+Simplify using `only [hu, map_sub, map_pow, map_add, map_one, hEv.1 ()]`. Rewrite using `[add_sub_cancel, hep, add_sub_cancel_left]`. Establish `h1 : HasVal p (fun j => Ev (u j)) (PowerSeries.log F.Q : MvPowerSeries Unit F.Q) (algebraMap F.B F.Q x)`. Rewrite using `[hEu]`. Conclude with `GlobalTheory.T.hasVal_log_of_mul_self_eq_zero' F.B F.Q p x hxx`.
+
+Establish `h2` using `GlobalTheory.T.pAdicEvaluation_subst_compatible_thickening p F.B O F.Q F.θ hF Unit (fun _ => e - 1) hnile Ev hEv Unit u _ _ hu0 hD h1`. Rewrite `h2` using `[hu, GlobalTheory.T.subst_one_add_X_pow_log_eq_nsmul F.B F.Q (p ^ n)]`. Establish `h3` using `(GlobalTheory.T.hasPAdicPowerSeriesValue_add_smul_map p F.B O F.Q F.θ hF Unit (fun _ => e - 1) _ 0 q₁ 0 hq₁).2.1 ((p ^ n : ℕ) : F.Q)`. Establish `h4` using `HasVal.unique hF h3 h2`. Use `⟨j + b', ?_⟩` and prove the remaining obligations.
+
+Rewrite `hjb` using `[pow_zero, one_mul]`. Establish `h5 : q = q₁ + algebraMap F.B F.Q (j + b')` using `by rw [← hjb]; ring`. Rewrite using `[h5, mul_add, ← Nat.cast_pow, h4]`. Simplify using `only [map_add, map_mul, map_natCast, map_pow]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem pow_mul_logValue : ∀ (p : ℕ) [Fact p.Prime] (O : Type) [CommRing O] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] (ε : PreTilt O p), IsPrimitiveSystem ε → ∀ (F : BFrame ε) [Algebra ℚ F.Q] (n k : ℕ) (w : F.B) (q : F.Q), F.θ w = zeta ε n ^ k → HasVal p (fun _ : Unit => w - 1) (PowerSeries.log F.Q : MvPowerSeries Unit F.Q) q → ∃ b : F.B, (p : F.Q) ^ n * q = algebraMap F.B F.Q (k * F.a (Sandwich.mu ε) + p ^ n * b) := by
   intro p _ O _ _ _ ε hε F _ n k w q hw hq
   have hF := F.frame
@@ -113,6 +155,19 @@ theorem pow_mul_logValue : ∀ (p : ℕ) [Fact p.Prime] (O : Type) [CommRing O] 
   push_cast
   ring
 
+/- English proof (translation)
+Introduce `p _ C _ _ _ v O _ _ _ _ _ hv ε hε F _ G d c χ g hg1 hgχ t`. Establish `hF` using `F.frame`. Use `haveI := hF.complete`. Establish `hD : DIn (⊤ : Ideal F.B) (formalLog (map (algebraMap F.B F.Q) g))` using `GlobalTheory.T.diffCoeffsInIdeal_top_formalLog_constOne F.B F.Q (Fin d) g hg1`. Establish `hnil : ∀ n (z : Fin d → F.B), (∀ i, F.θ (z i) = t.pt n (c.x n i)) → ∀ i, ∃ N : ℕ, (p : F.B) ∣ z i ^ N`.
+
+Introduce `n z hz i`. Take `⟨N, w, hw⟩` from `c.nil n i`. Conclude with `pow_dvd_of_theta_pow_dvd p F.B O F.Q F.θ hF (z i) N ⟨t.pt n w, by rw [hz, ← map_pow, hw, map_mul, map_natCast]⟩`. Establish `hex : ∀ (n : ℕ) (z : Fin d → F.B), (∀ i, F.θ (z i) = t.pt n (c.x n i)) → ∃ q : F.Q, HasVal p z (formalLog (map (algebraMap F.B F.Q) g)) q` using `fun n z hz => (GlobalTheory.T.existsUnique_hasPAdicPowerSeriesValue_of_diffCoeffs p F.B O F.Q F.θ hF (Fin d) z (hnil n z hz) _ hD).exists`. Establish `hcong : ∀ (n : ℕ) (z : Fin d → F.B) (q : F.Q), (∀ i, F.θ (z i) = t.pt n (c.x n i)) → HasVal p z (formalLog (map (algebraMap F.B F.Q) g)) q → ∃ b : F.B, (p : F.Q) ^ n * q = algebraMap F.B F.Q (F.a (Sandwich.mu ε * ofPadic p O (epsPairing hε G t χ)) + p ^ n * b)`.
+
+Introduce `n z q hz hq`. Take `⟨E, hE, -⟩` from `(GlobalTheory.T.padicContinuousEvaluation_existsUnique_subst_natural p F.B F.B (Fin d) z (hnil n z hz)).1`. Establish `hq1` using `GlobalTheory.T.hasVal_log_eval_of_hasVal_formalLog p F.B O F.Q F.θ hF (Fin d) z (hnil n z hz) E hE g q hg1 hq`. Establish `hθ` using `GlobalTheory.T.theta_eval_eq_zeta_pow_digit p O ε hε F G d c χ g hgχ t n z hz (hnil n z hz) E hE`. Take `⟨b, hb⟩` from `pow_mul_logValue p O ε hε F n _ (E g) q hθ hq1`.
+
+Use `set a := epsPairing hε G t χ`. Take `⟨e, he⟩` from `GlobalTheory.PDiv.pow_dvd_sub_digit n a`. Establish `hy : F.a (Sandwich.mu ε * ofPadic p O a) = (GlobalTheory.PDiv.digit n a : F.B) * F.a (Sandwich.mu ε) + p ^ n * F.a (Sandwich.mu ε * ofPadic p O e)`. Establish `h2 : ofPadic p O a = ofPadic p O (GlobalTheory.PDiv.digit n a : ℤ_[p]) + ofPadic p O ((p : ℤ_[p]) ^ n * e)`. Rewrite using `[← map_add, ← he, add_sub_cancel]`.
+
+Rewrite using `[h2]`. Simplify using `only [map_add, map_mul, map_pow, map_natCast]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨b - F.a (Sandwich.mu ε * ofPadic p O e), ?_⟩` and prove the remaining obligations. Rewrite using `[hb, hy]`.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Use `first`. Consider the case `exact ⟨hex, hcong⟩`. Consider the case `exact hcong`.
+-/
 theorem hasPeriod_formalLog_char : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] [IsDomain O], v.Integers O → ∀ (ε : PreTilt O p) (hε : IsPrimitiveSystem ε) (F : BFrame ε) [Algebra ℚ F.Q] (G : PDivGroup p O) (d : ℕ) (c : QLog.Chart G d) (χ : G.dual.Tate) (g : MvPowerSeries (Fin d) F.B), constantCoeff g = 1 → (∀ n, c.ev n (map F.θ g) = charElem χ n) → ∀ t, c.HasPeriod F.θ t (formalLog (map (algebraMap F.B F.Q) g)) (F.a (Sandwich.mu ε * ofPadic p O (epsPairing hε G t χ))) := by
   intro p _ C _ _ _ v O _ _ _ _ _ hv ε hε F _ G d c χ g hg1 hgχ t
   have hF := F.frame

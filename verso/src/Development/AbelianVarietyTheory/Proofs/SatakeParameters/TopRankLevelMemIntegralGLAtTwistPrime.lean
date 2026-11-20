@@ -8,6 +8,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.TopLevInt
 
+/- English proof (translation)
+Introduce `X Pr R Ch sel S mu cst j P hP g z hT`. Take `⟨g', hg', hpr, hat, -⟩` from `hT`. Unfold `rowLevTop at hg'`. Rewrite `hg'` using `[if_neg hP]`. Establish `hst : g' ∈ stabL X.E _ (stdAt X.E _ P.1)` using `(Subgroup.mem_inf.1 hg').1`.
+
+Use `show ∀ x, g x ∈ stdAt X.E (R.N j) P.1 ↔ x ∈ stdAt X.E (R.N j) P.1`. Introduce `x`. Establish `h1 : prXpG X.E (R.N j) (g x) = g' (prXpG X.E (R.N j) x)` using `LinearMap.congr_fun hpr x`. Establish `h2 : atNL X.E (R.N j) (R.N j - 1) (g x) = atNL X.E (R.N j) (R.N j - 1) x` using `LinearMap.congr_fun hat x`. Establish `h3` using `hst (prXpG X.E (R.N j) x)`.
+
+Rewrite `h3`, the goal using `[ciMem_stdAt, ciMem_stdAt]`. Rewrite using `[xt_split j (g x), xt_split j x, h1, h2, h3]`.
+-/
 theorem mem_GLint_of_topLev : ∀ {X : Fields} {Pr : Primes X} {R : Ranks} (Ch : Chars X Pr R.m)
   (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) {S : Set ℕ} (mu : Tup X.F X.E X.K S)
   (cst : LocCst X (rowSG Pr sel mu)) (j : ℕ) (P : rowSG Pr sel mu), P.1 ∉ Pr.vGs →

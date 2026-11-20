@@ -33,6 +33,11 @@ open scoped Matrix
 
 namespace GlobalTheory.Mem.R3.LiftLatBC
 
+/- English proof (translation)
+Substitute `hΓ g1` using the available equality. Consider the cases of `h1`. Consider the cases of `h2`. Consider the cases of `h3`. Consider the cases of `hH`.
+
+Consider the cases of `g2`. Consider the cases of `g3`. Consider the cases of `hθ`. Rewrite using `[inj (eq_of_heq he)]`.
+-/
 private theorem app_heq {Γ Γ' W W' : Type} (hΓ : Γ' = Γ) {nW : NormedAddCommGroup W} {nW' : NormedAddCommGroup W'}
     {iW : InnerProductSpace ℂ W} {iW' : InnerProductSpace ℂ W'} (h1 : HEq W' W) (h2 : HEq nW' nW) (h3 : HEq iW' iW)
     {H : HMod (Γ → W)} {H' : HMod (Γ' → W')} (hH : HEq H' H) (inj : Function.Injective H.e)
@@ -46,6 +51,15 @@ private theorem app_heq {Γ Γ' W W' : Type} (hΓ : Γ' = Γ) {nW : NormedAddCom
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Take `⟨P', _⟩` from `B'`. Take `⟨P, _⟩` from `B`. Simplify using `only at q`. Substitute `q` using the available equality. Establish `e0 : i = i'` using `Fin.ext hi`.
+
+Substitute `e0` using the available equality. Consider the cases of `M`. Consider the cases of `M'`. Simplify using `only at a b c d l e g`. Consider the cases of `a`.
+
+Consider the cases of `b`. Consider the cases of `c`. Consider the cases of `d`. Consider the cases of `l`. Consider the cases of `e`.
+
+Consider the cases of `g`. Establish `e' : X' = X` using `eq_of_heq hX`. Substitute `e'` using the available equality. Conclude with `⟨⟨rfl, HEq.rfl, HEq.rfl⟩, rfl⟩`.
+-/
 private theorem hmod_fields' {B B' : Base} (q : B'.toPre = B.toPre) {f : Fr B.toPre} {f' : Fr B'.toPre} {T : TwDat B} {T' : TwDat B'}
     {w : ColW B f T} {w' : ColW B' f' T'} {Z : w.Lt} {Z' : w'.Lt}
     (i : Fin (w.st Z).toD7.R.m) (i' : Fin (w'.st Z').toD7.R.m) (hi : (i : ℕ) = i')
@@ -69,6 +83,9 @@ private theorem hmod_fields' {B B' : Base} (q : B'.toPre = B.toPre) {f : Fr B.to
   subst e'
   exact ⟨⟨rfl, HEq.rfl, HEq.rfl⟩, rfl⟩
 
+/- English proof (translation)
+Establish `e : Links.cj (twAt D.what₂.embLL A3.A.v0) (R.phs i) • R.thG i t (R.jV i t x) = R.thG i t (R.jV i t x)` using `(congrArg (· • R.thG i t (R.jV i t x)) ((congrArg (Links.cj (twAt D.what₂.embLL A3.A.v0)) h).trans (map_one _))).trans (one_smul ℂ _)`. Conclude with `(by with_unfolding_all exact ((heq_of_eq e) :))`.
+-/
 private theorem theta_jL {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type} {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m}
     {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3) (i : Fin D.R.m) (t : T)
     (h : R.phs i = 1) (x : A3.A.fam.amb.FL i t) :
@@ -79,6 +96,13 @@ private theorem theta_jL {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : T
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Use `letI := z.alg`. Use `letI := z'.alg`. Establish `hM` using `hE.MW j j' hj`. Establish `h0` using `hmod_fields' q j j' hj _ _ hM.1 hM.2.1 hM.2.2.1 hM.2.2.2.1 hM.2.2.2.2.1 hM.2.2.2.2.2.1 hM.2.2.2.2.2.2.1 _ _ hM.2.2.2.2.2.2.2.2.1`. Establish `s` using `(sgAt_mk _ z.R.hv0).symm`.
+
+Establish `s'` using `(sgAt_mk _ z'.R.hv0).symm`. Establish `key : ∀ σ σ', (w.st Z).toD7.what₂.embLL = σ → (w'.st Z').toD7.what₂.embLL = σ' → (z'.R.HW j' σ').H = (z.R.HW j σ).H ∧ HEq (z'.R.HW j' σ').nH (z.R.HW j σ).nH ∧ HEq (z'.R.HW j' σ').iH (z.R.HW j σ).iH` using `fun σ σ' h h' => h ▸ h' ▸ h0.1`. Establish `g` using `key _ _ s s'`. Establish `hr` using `hE.ref j j' hj`. Establish `m` using `z.pins.char.base.models`.
+
+Establish `m'` using `z'.pins.char.base.models`. Establish `he` using `HEq.trans (heq_of_eq (m'.jV j' _ x')) (HEq.trans hx (heq_of_eq (m.jV j _ x)).symm)`. Conclude with `app_heq h0.2 (hE.BV j j' hj).1 (hE.cV j j' hj).1 (hE.cV j j' hj).2 hr.2.1 (m.HV j _).1 g.1 g.2.1 g.2.2 hr.2.2.2.1 he`.
+-/
 private theorem thG_extN {B B' : Base} (q : B'.toPre = B.toPre) {f : Fr B.toPre} {f' : Fr B'.toPre} {T : TwDat B} {T' : TwDat B'}
     {w : ColW B f T} {w' : ColW B' f' T'} {Z : w.Lt} {Z' : w'.Lt} {hX : B.fields.Ok} {hX' : B'.fields.Ok}
     {Wt : Set B.places.Pl} {Wt' : Set B'.places.Pl} {z : Dat (w.st Z) w.I hX T Wt} {z' : Dat (w'.st Z') w'.I hX' T' Wt'}
@@ -107,6 +131,17 @@ private theorem thG_extN {B B' : Base} (q : B'.toPre = B.toPre) {f : Fr B.toPre}
 end GlobalTheory.Mem.R3.LiftLatBC
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Introduce `h1 h2 h3 h4 h5 h6 h7`. Use `StepW.trans (StepW.and (GlobalTheory.T.typePrimeFiniteGroup_eq_extendedData h1 h2 h3 h4 h5 h6 h7) (StepW.and (GlobalTheory.T.baseLevelLift_extendedData_eq_map_smallerField h1 h2 h3 h4 h5 h6 h7) (StepW.and (GlobalTheory.T.goodCharacters_extendedData_eq_map_smallerData h1 h2 h3 h4 …` and prove the remaining obligations. Introduce `K B' f' T' w' _ _ H B f T w hE hff hPin hpx Z hX Wt z hG hGA hFine hHL Z' hX' hG' hGA' hVol z' hFine' hExt j j' hj φ hφ`. Take `⟨Hg, Hl, Hx, HL, Hb, Hc, Ha, Hn, Hs⟩` from `H`. Take `⟨e, he⟩` from `Hg B f T w hE hff hPin hpx Z hX Wt z hG hGA hFine hHL Z' hX' hG' hGA' hVol z' hFine' hExt j j' hj φ hφ`.
+
+Take `⟨hP, hψ⟩` from `Hl B f T w hE hff hPin hpx Z hX Wt z hG hGA hFine hHL Z' hX' hG' hGA' hVol z' hFine' hExt j j' hj φ hφ e he`. Establish `hXg` using `Hx B f T w hE hff hPin hpx Z hX Wt z hG hGA hFine hHL Z' hX' hG' hGA' hVol z' hFine' hExt j j' hj φ hφ e he`. Take `⟨L, hL, hC⟩` from `HL B f T w hE hff hPin hpx Z hX Wt z hG hGA hFine hHL Z' hX' hG' hGA' hVol z' hFine' hExt j j' hj φ hφ`. Take `⟨hli, hsp⟩` from `Hb B f T w hE hff hPin hpx Z hX Wt z hG hGA hFine hHL Z' hX' hG' hGA' hVol z' hFine' hExt j j' hj φ hφ L hL hC`. Establish `hcs` using `Hc B f T w hE hff hPin hpx Z hX Wt z hG hGA hFine hHL Z' hX' hG' hGA' hVol z' hFine' hExt j j' hj φ hφ L hL hC`.
+
+Establish `hac` using `Ha B f T w hE hff hPin hpx Z hX Wt z hG hGA hFine hHL Z' hX' hG' hGA' hVol z' hFine' hExt j j' hj φ hφ e he L hL hC`. Establish `hnb` using `Hn B f T w hE hff hPin hpx Z hX Wt z hG hGA hFine hHL Z' hX' hG' hGA' hVol z' hFine' hExt j j' hj φ hφ L hL hC`. Establish `hsb` using `Hs B f T w hE hff hPin hpx Z hX Wt z hG hGA hFine hHL Z' hX' hG' hGA' hVol z' hFine' hExt j j' hj φ hφ L hL hC`. Take `⟨C, hCL, c1, c2, c3, c4, c5⟩` from `GlobalTheory.Mem.R3.LiftLatBC.forms_of_semilinear_at φ e _ _ _ _ L hL hli hsp hcs hac hnb hsb`. Use `⟨e, C, ⟨c1, c2, c3, c4, c5, hXg, hP, hψ⟩, fun x => ?_⟩` and prove the remaining obligations.
+
+Use `letI := z.alg`. Use `letI := z'.alg`. Establish `hj0` using `hExt.jL j j' hj (Formalism.L2.Col.mtKOk (Pr := B.primes w.px) B.wts w.I.Ch w.I.sel (mu0F (X := B.fields) (tuOf w.I (usedOf w.I T Wt))).1 hX ((j : ℕ) + 1)) (Formalism.L2.Col.mtKOk (Pr := B'.primes w'.px) B'.wts w'.I.Ch w'.I.sel (mu0F (X := B'.fields) (tuOf w'.I (usedOf w'.I T' {v …`. Establish `hj1 : HEq (z'.R.B.jL j' (mu0F (X` using `B'.fields) (tuOf w'.I (usedOf w'.I T' {v | B'.places.resChar v ∈ T'.pl}))) ((by with_unfolding_all exact ((L x) :)))) (z.R.B.jL j (mu0F (X := B.fields) (tuOf w.I (usedOf w.I T Wt))) ((by with_unfolding_all exact (x :)))) := HEq.trans (heq_of_eq (congrArg _ ((by with_unfolding_all …`. Establish `h2` using `GlobalTheory.Mem.R3.LiftLatBC.thG_extN hE.1 hExt j j' hj _ _ hj1`.
+
+Use `HEq.trans (heq_of_eq (congrArg (fun y => (z'.R.toCx3 z'.F).θ' j' _ ((z'.R.toCx3 z'.F).jL j' _ y)) (hCL x))) ?_` and prove the remaining obligations. Use `HEq.trans (GlobalTheory.Mem.R3.LiftLatBC.theta_jL z'.R z'.F j' _ (z'.pins.phs j') _) (HEq.trans ?_ (GlobalTheory.Mem.R3.LiftLatBC.theta_jL z.R z.F j _ (z.pins.phs j) _).symm)` and prove the remaining obligations. Conclude with `(by with_unfolding_all exact (h2 :))`.
+-/
 theorem _root_.GlobalTheory.T.extendedData_lift_blockDatum_baseChange_one_matrix : GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.HarishChandraModules → GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.CasselmanWallach → GlobalTheory.Published.WeilRepresentationUnitaryPair → GlobalTheory.Published.DiscreteSeriesExists → GlobalTheory.Published.HarishChandraFinite → (StepW Pinned fun K B' f' T' w' => ∀ (B : Base) (f : Fr B.toPre) (T : TwDat B) (w : ColW B f T), Enl0 B B' →
   HEq f' f → Pinned K B f T w → HEq w'.px w.px → ∀ (Z : w.Lt) (hX : B.fields.Ok) (Wt : Set B.places.Pl)
     (z : Dat (w.st Z) w.I hX T Wt), GrpTrue Z.N f → GrpAt (w.st Z) w.I → Fine z → HoldsL z.R z.F →

@@ -10,6 +10,15 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+Establish `hli : LinearIndependent F ![(1 : E), ξ]`. Rewrite using `[LinearIndependent.pair_iff]`. Introduce `s t h`. Establish `h' : s • (1 : E) + -(t • ξ) = 0`. Establish `h0` using `congrArg σ h`.
+
+Simplify using `only [Algebra.smul_def, map_add, map_mul, AlgHom.commutes, map_one, hσξ, map_zero] at h0`. Simplify using `only [Algebra.smul_def]`. Take the linear combination `h0`. Establish `hs : (2 : E) * (s • (1 : E)) = 0` using `by linear_combination h + h'`. Establish `ht : (2 : E) * (t • ξ) = 0` using `by linear_combination h - h'`.
+
+Establish `hs'` using `(mul_eq_zero.1 hs).resolve_left two_ne_zero`. Establish `ht'` using `(mul_eq_zero.1 ht).resolve_left two_ne_zero`. Conclude with `⟨(smul_eq_zero.1 hs').resolve_right one_ne_zero, (smul_eq_zero.1 ht').resolve_right hξ⟩`. Establish `hsp` using `hli.span_eq_top_of_card_eq_finrank (by simp [h2])`. Establish `hy : y ∈ Submodule.span F (Set.range ![(1 : E), ξ])` using `by rw [hsp]; trivial`.
+
+Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun F).1 hy`. Use `⟨c 0, c 1, ?_⟩` and prove the remaining obligations. Rewrite using `[← hc, Fin.sum_univ_two]`. Simplify using `[Algebra.smul_def]`.
+-/
 theorem UpperTheory.TP.K.locUnit_coord {F E : Type} [Field F] [Field E] [CharZero E] [Algebra F E] {σ : E →ₐ[F] E}
     (h2 : Module.finrank F E = 2) {ξ : E} (hξ : ξ ≠ 0) (hσξ : σ ξ = -ξ) (y : E) :
     ∃ a b : F, y = algebraMap F E a + algebraMap F E b * ξ := by
@@ -33,6 +42,13 @@ theorem UpperTheory.TP.K.locUnit_coord {F E : Type} [Field F] [Field E] [CharZer
   rw [← hc, Fin.sum_univ_two]
   simp [Algebra.smul_def]
 
+/- English proof (translation)
+Take `⟨a, b, rfl⟩` from `UpperTheory.TP.K.locUnit_coord h2 hξ hσξ y`. Take `⟨p, q, hpq⟩` from `UpperTheory.TP.K.locUnit_coord h2 hξ hσξ (ξ * ξ)`. Establish `h'` using `congrArg σ hpq`. Simplify using `only [map_add, map_mul, AlgHom.commutes, hσξ] at h'`. Establish `h3 : (2 : E) * (ξ * ξ) = 2 * algebraMap F E p` using `by linear_combination hpq + h'`.
+
+Establish `h4 : ξ * ξ = algebraMap F E p` using `mul_left_cancel₀ two_ne_zero h3`. Use `⟨?_, 4 * b * b * p, ?_⟩` and prove the remaining obligations. Simplify using `only [map_add, map_sub, map_mul, map_neg, AlgHom.commutes, hσξ]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [map_add, map_mul, AlgHom.commutes, hσξ, map_ofNat, ← h4]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem UpperTheory.TP.K.locUnit_diff {F E : Type} [Field F] [Field E] [CharZero E] [Algebra F E] {σ : E →ₐ[F] E}
     (h2 : Module.finrank F E = 2) {ξ : E} (hξ : ξ ≠ 0) (hσξ : σ ξ = -ξ) (y : E) :
     σ (y - σ y) = -(y - σ y) ∧ ∃ c : F, algebraMap F E c = (y - σ y) * (y - σ y) := by
@@ -48,6 +64,13 @@ theorem UpperTheory.TP.K.locUnit_diff {F E : Type} [Field F] [Field E] [CharZero
   · simp only [map_add, map_mul, AlgHom.commutes, hσξ, map_ofNat, ← h4]
     ring
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Set `s : 𝓞 E →ₐ[𝓞 F] 𝓞 E` to `{ RingOfIntegers.mapRingHom (σ : E →+* E) with commutes' := fun r => by`. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Conclude with `σ.commutes (r : F) }`.
+
+Establish `hs : AlgHom.id (𝓞 F) (𝓞 E) = s` using `Algebra.FormallyUnramified.ext_of_iInf w (Ideal.iInf_pow_eq_bot_of_isDomain w hw) (fun x => Ideal.Quotient.eq.2 (hcon x))`. Establish `hx : ∀ x : 𝓞 E, σ (x : E) = x` using `fun x => (congrArg (fun t : 𝓞 E => (t : E)) (DFunLike.congr_fun hs x)).symm`. Take `⟨a, b, -, hab⟩` from `IsFractionRing.div_surjective (A := 𝓞 E) ξ`. Establish `h1 : σ ξ = ξ`. Rewrite using `[← hab, map_div₀]`.
+
+Conclude with `congrArg₂ (· / ·) (hx a) (hx b)`. Establish `h2 : (2 : E) * ξ = 0` using `by linear_combination hσξ - h1`. Conclude with `hξ ((mul_eq_zero.1 h2).resolve_left two_ne_zero)`.
+-/
 theorem UpperTheory.TP.K.locUnit_exists_diff_notMem (hu : Algebra.Unramified (𝓞 F) (𝓞 E)) {ξ : E} (hξ : ξ ≠ 0) (hσξ : σ ξ = -ξ)
     (w : Ideal (𝓞 E)) (hw : w ≠ ⊤) :
     ∃ x : 𝓞 E, x - RingOfIntegers.mapRingHom (σ : E →+* E) x ∉ w := by
@@ -70,6 +93,9 @@ theorem UpperTheory.TP.K.locUnit_exists_diff_notMem (hu : Algebra.Unramified (�
   have h2 : (2 : E) * ξ = 0 := by linear_combination hσξ - h1
   exact hξ ((mul_eq_zero.1 h2).resolve_left two_ne_zero)
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.Gs6.exists_locUnit hB hξ hσξ v`.
+-/
 theorem UpperTheory.TP.K.exists_locUnit {B : Base F E} (hB : UpperTheory.TP.W.GoodK σ B) {ξ : E} (hξ : ξ ≠ 0) (hσξ : σ ξ = -ξ) (v : Pl F) :
     ∃ u : (Fv F v ⊗[F] E)ˣ, (u : Fv F v ⊗[F] E) ∈ intLoc F E v ∧ ((u⁻¹ : (Fv F v ⊗[F] E)ˣ) : Fv F v ⊗[F] E) ∈ intLoc F E v ∧
       sigR (Fv F v) σ (u : Fv F v ⊗[F] E) = -(u : Fv F v ⊗[F] E) :=

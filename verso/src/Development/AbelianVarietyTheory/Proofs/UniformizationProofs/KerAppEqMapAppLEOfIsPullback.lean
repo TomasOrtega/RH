@@ -15,6 +15,11 @@ open GlobalTheory.UU
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `hpo` using `(isIso_pushoutSection_iff h (US := ⊤) (UT := ⊤) (UX := U) (UY := i ⁻¹ᵁ U) le_top le_top (by simp)).1 (isIso_pushoutSection_of_isAffineOpen h _ _ _ (isAffineOpen_top _) (isAffineOpen_top _) hU)`. Establish `hpo' : IsPushout ((Scheme.ΓSpecIso A).inv ≫ f.appLE ⊤ U le_top) β (i.app U) ((Scheme.ΓSpecIso C).inv ≫ f'.appLE ⊤ (i ⁻¹ᵁ U) le_top)`. Use `hpo.of_iso (Scheme.ΓSpecIso A) (Iso.refl _) (Scheme.ΓSpecIso C) (Iso.refl _) (by simp) ?_ (by simp [Scheme.Hom.appLE_eq_app]) (by simp)` and prove the remaining obligations. Rewrite using `[← Scheme.ΓSpecIso_naturality]`. Use `congr 1`.
+
+Conclude with `PrimeSection.ker_eq_map_of_isPushout hpo' hβ`.
+-/
 theorem ker_app_eq_map_appLE_of_isPullback {Y Z : Scheme.{0}} {A C : CommRingCat.{0}}
     {β : A ⟶ C} (hβ : Function.Surjective β) {f : Y ⟶ Spec A} {i : Z ⟶ Y} {f' : Z ⟶ Spec C}
     (h : IsPullback i f' f (Spec.map β)) {U : Y.Opens} (hU : IsAffineOpen U) :
@@ -31,6 +36,15 @@ theorem ker_app_eq_map_appLE_of_isPullback {Y Z : Scheme.{0}} {A C : CommRingCat
     congr 1
   exact PrimeSection.ker_eq_map_of_isPushout hpo' hβ
 
+/- English proof (translation)
+Establish `hr : IsClosedImmersion (red J)` using `IsClosedImmersion.spec_of_surjective _ Ideal.Quotient.mk_surjective`. Establish `hp : IsClosedImmersion (pullback.fst s (red J))` using `inferInstance`. Establish `hl : pullback.lift j s₀ w ≫ pullback.fst s (red J) = j` using `pullback.lift_fst _ _ _`. Establish `hker : j.ker = (pullback.fst s (red J)).ker`. Use `le_antisymm ?_ ?_` and prove the remaining obligations.
+
+Use `choose V hb hV hle using hloc`. Establish `hcov : ⨆ b, ((⟨V b, hV b⟩ : B.affineOpens) : B.Opens) = ⊤` using `eq_top_iff.2 fun b _ ↦ TopologicalSpace.Opens.mem_iSup.2 ⟨b, hb b⟩`. Use `Scheme.IdealSheafData.le_of_iSup_eq_top (fun b ↦ ⟨V b, hV b⟩) hcov fun b ↦ ?_` and prove the remaining obligations. Rewrite using `[Scheme.Hom.ker_apply, Scheme.Hom.ker_apply]`. Establish `e` using `ker_app_eq_map_appLE_of_isPullback (β := CommRingCat.ofHom (Ideal.Quotient.mk J)) Ideal.Quotient.mk_surjective (IsPullback.of_hasPullback s (red J)) (hV b)`.
+
+Rewrite `e` using `[CommRingCat.hom_ofHom, Ideal.mk_ker]`. Conclude with `(hle b).trans e.ge`. Use `(pullback.lift j s₀ w).le_ker_comp (pullback.fst s (red J))` as an intermediate fact. Rewrite `this` using `[hl]`. Then use the resulting hypothesis. Use `IsClosedImmersion.isIso_of_ker_eq j (pullback.fst s (red J)) _ hl hker` as an intermediate fact.
+
+Conclude with `.of_iso_pullback ⟨w⟩ (asIso (pullback.lift j s₀ w)) hl (pullback.lift_snd _ _ _)`.
+-/
 theorem isPullback_red_of_ker_app_le_map (A : Type) [CommRing A] (J : Ideal A)
     (B₀ B : Scheme.{0}) (j : B₀ ⟶ B) (s₀ : B₀ ⟶ Spec (CommRingCat.of (A ⧸ J)))
     (s : B ⟶ Spec (CommRingCat.of A)) (hj : IsClosedImmersion j) (w : j ≫ s = s₀ ≫ red J)

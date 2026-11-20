@@ -17,6 +17,13 @@ namespace TeichFrob
 
 variable (F : T.TeichFrob)
 
+/- English proof (translation)
+Take `⟨z, hz⟩` from `T.mem_span_pow.1 hx`. Establish `he : T.coeff (α * F.φ x - γ * x - y) n = T.red z`. Rewrite using `[hz]`. Simplify using `using T.coeff_π_pow_mul_add n z 0`. Establish `hred : T.red (z + α * (F.u ^ n * T.teich (t ^ p ^ F.a)) - γ * T.teich t) = 0`.
+
+Rewrite using `[map_sub, map_add, map_mul, map_mul, map_mul, map_pow, T.red_teich, T.red_teich, ← he]`. Take the linear combination `ht`. Take `⟨z', hz'⟩` from `T.red_eq_zero_iff.1 hred`. Establish `: α * F.φ (x + T.π ^ n * T.teich t) - γ * (x + T.π ^ n * T.teich t) - y = T.π ^ (n + 1) * z'`. Rewrite using `[map_add, F.φ_π_pow_mul_teich, pow_succ, mul_assoc, ← hz']`.
+
+Take the linear combination `hz`. Rewrite using `[this]`. Conclude with `T.π_pow_mul_mem le_rfl _`.
+-/
 theorem linStep_mem {α γ y x : Γ} {n : ℕ}
     (hx : α * F.φ x - γ * x - y ∈ Ideal.span {T.π ^ n}) {t : L}
     (ht : T.red α * T.red F.u ^ n * t ^ p ^ F.a - T.red γ * t +
@@ -44,6 +51,9 @@ def linApprox (α γ y : Γ) (r : ℕ → L → L) : ℕ → Γ
 def linCoeff (α γ y : Γ) (r : ℕ → L → L) (n : ℕ) : L :=
   r n (T.coeff (α * F.φ (F.linApprox α γ y r n) - γ * F.linApprox α γ y r n - y) n)
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simp [linApprox]`. Consider the case `succ n ih => rw [T.finSum_succ, ← ih]`. Both sides reduce to the same expression.
+-/
 theorem linApprox_eq_finSum (α γ y : Γ) (r : ℕ → L → L) (n : ℕ) :
     F.linApprox α γ y r n = T.finSum (F.linCoeff α γ y r) n := by
   induction n with
@@ -52,6 +62,9 @@ theorem linApprox_eq_finSum (α γ y : Γ) (r : ℕ → L → L) (n : ℕ) :
 
 variable {F}
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simp [linApprox]`. Consider the case `succ n ih => exact F.linStep_mem ih (hr n _)`.
+-/
 theorem linApprox_mem {α γ y : Γ} {r : ℕ → L → L}
     (hr : ∀ n e, T.red α * T.red F.u ^ n * r n e ^ p ^ F.a - T.red γ * r n e + e = 0) (n : ℕ) :
     α * F.φ (F.linApprox α γ y r n) - γ * F.linApprox α γ y r n - y ∈ Ideal.span {T.π ^ n} := by
@@ -72,6 +85,31 @@ namespace TeichFrob
 
 variable {F : T.TeichFrob}
 
+/- English proof (translation)
+Establish `hq` using `F.two_le_q ha`. Use `set q := p ^ F.a with hqdef`. Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Take `⟨hs, hsY⟩` from `T.finSum_gaussNorm_le hρ0 hρ1 (F.linCoeff α γ y r) hY n ih`.
+
+Rewrite `hs`, `hsY` using `[← F.linApprox_eq_finSum]`. Use `set s := F.linApprox α γ y r n`. Use `set σ := ρ ^ q`. Establish `hσ0 : 0 < σ` using `pow_pos hρ0 _`. Establish `hσ1 : σ < 1` using `pow_lt_one₀ hρ0.le hρ1 (by omega)`.
+
+Establish `hσρ : σ ≤ ρ` using `pow_le_of_le_one hρ0.le hρ1.le (by omega)`. Take `⟨hφ, hφn⟩` from `F.gaussNorm_zcoeff_map hρ0 hρ1 hs`. Establish `hασ` using `T.convergesAt_of_mem_int hα hσ0 hσ1`. Establish `hαφ` using `T.convergesAt_zcoeff_mul hσ0 hσ1 hασ hφ`. Establish `hαφn : gaussNorm (T.zcoeff (α * F.φ s)) σ ≤ Y ^ q`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `mul_le_mul (T.gaussNorm_le_one_of_mem_int hα hσ0 hσ1.le) ?_ (gaussNorm_nonneg hσ0) zero_le_one` and prove the remaining obligations. Rewrite using `[hφn]`. Conclude with `pow_le_pow_left₀ (gaussNorm_nonneg hρ0) hsY _`. Use `_ = Y ^ q := one_mul _`.
+
+Establish `hγσ : ConvergesAt (T.zcoeff γ) σ` using `convergesAt_of_le (T.zcoeff_neg_exists γ) hγ hσ0 hσρ`. Establish `hsσ : ConvergesAt (T.zcoeff s) σ` using `convergesAt_of_le (T.zcoeff_neg_exists s) hs hσ0 hσρ`. Establish `hyσ : ConvergesAt (T.zcoeff y) σ` using `convergesAt_of_le (T.zcoeff_neg_exists y) hy hσ0 hσρ`. Establish `hγs` using `T.convergesAt_zcoeff_mul hσ0 hσ1 hγσ hsσ`. Establish `hγsn : gaussNorm (T.zcoeff (γ * s)) σ ≤ Y ^ q`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hyn : gaussNorm (T.zcoeff y) σ ≤ Y ^ q` using `(T.gaussNorm_zcoeff_mono hσ0 hσρ hy).trans hyY`. Establish `hn1` using `T.convergesAt_zcoeff_neg hσ0 hσ1 hγs`. Establish `hn2` using `T.convergesAt_zcoeff_neg hσ0 hσ1 hyσ`. Establish `hc1` using `T.convergesAt_zcoeff_add hσ0 hσ1 hαφ hn1`.
+
+Establish `hE : α * F.φ s - γ * s - y = (α * F.φ s + -(γ * s)) + -y` using `by ring`. Establish `hG : gaussNorm (T.zcoeff (α * F.φ s - γ * s - y)) σ ≤ Y ^ q`. Rewrite using `[hE]`. Use `(T.gaussNorm_zcoeff_add_le hσ0 hσ1.le hc1 hn2).trans (max_le ?_ ?_)` and prove the remaining obligations. Use `(T.gaussNorm_zcoeff_add_le hσ0 hσ1.le hαφ hn1).trans (max_le hαφn ?_)` and prove the remaining obligations.
+
+Conclude with `(T.gaussNorm_zcoeff_neg_le hσ0 hσ1.le hγs).trans hγsn`. Conclude with `(T.gaussNorm_zcoeff_neg_le hσ0 hσ1.le hyσ).trans hyn`. Establish `hconv : ConvergesAt (T.zcoeff (α * F.φ s - γ * s - y)) σ`. Rewrite using `[hE]`. Conclude with `T.convergesAt_zcoeff_add hσ0 hσ1 hc1 hn2`.
+
+Use `set e := T.coeff (α * F.φ s - γ * s - y) n`. Establish `hen : ‖e‖ * σ ^ n ≤ Y ^ q`. Use `T.weight_natCast_le hconv n` as an intermediate fact. Rewrite `this` using `[zpow_natCast]`. Conclude with `this.trans hG`.
+
+Establish `hρn0 : 0 < ρ ^ n` using `pow_pos hρ0 n`. Establish `hρn1 : ρ ^ n ≤ 1` using `pow_le_one₀ hρ0.le hρ1.le`. Use `set Y' := Y / ρ ^ n`. Establish `hYY' : Y ≤ Y'` using `(le_div_iff₀ hρn0).2 (mul_le_of_le_one_right hY hρn1)`. Establish `hY' : 0 ≤ Y'` using `hY.trans hYY'`.
+
+Establish `he' : ‖e‖ ≤ Y' ^ q`. Rewrite using `[div_pow, le_div_iff₀ (pow_pos hρn0 _), ← pow_mul, mul_comm n q, pow_mul]`. Conclude with `hen`. Establish `hb : ‖T.red γ‖ ≤ Y' ^ (q - 1)`. Establish `h0` using `T.weight_natCast_le hγ 0`.
+
+Simplify using `only [Nat.cast_zero, zpow_zero, mul_one, coeff_zero] at h0`. Conclude with `h0.trans (hγY.trans (pow_le_pow_left₀ hY hYY' _))`. Establish `hc : ‖T.red α * T.red F.u ^ n‖ = 1` using `by rw [norm_mul, norm_pow, F.norm_red_u, one_pow, hα1, one_mul]`. Establish `ht` using `norm_le_of_root hq hc (hr n e) hY' he' hb`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem linCoeff_weight_le (ha : 0 < F.a) {α γ y : Γ} (hα : α ∈ T.int) {r : ℕ → L → L}
     (hr : ∀ n e, T.red α * T.red F.u ^ n * r n e ^ p ^ F.a - T.red γ * r n e + e = 0)
     (hα1 : ‖T.red α‖ = 1) {ρ : ℝ} (hρ0 : 0 < ρ) (hρ1 : ρ < 1)
@@ -150,6 +188,17 @@ theorem linCoeff_weight_le (ha : 0 < F.a) {α γ y : Γ} (hα : α ∈ T.int) {r
 
 variable (F)
 
+/- English proof (translation)
+Establish `hq` using `F.two_le_q ha`. Establish `hc0 : ∀ n : ℕ, T.red α * T.red F.u ^ n ≠ 0` using `fun n => by`. Use `mul_ne_zero (norm_ne_zero_iff.1 (by rw [hα1]; exact one_ne_zero)) (pow_ne_zero _ (norm_ne_zero_iff.1 (by rw [F.norm_red_u]; exact one_ne_zero)))` and prove the remaining obligations. Use `choose r hr _ using fun (n : ℕ) (e : L) => exists_root_of_isAlgClosed hq (hc0 n) (T.red γ) e`. Use `⟨T.ofCoeff (F.linCoeff α γ y r), ?_, fun ρ Y hρ0 hρ1 hγ hy hY hγY hyY n => ?_⟩` and prove the remaining obligations.
+
+Use `set x := T.ofCoeff (F.linCoeff α γ y r)`. Establish `hall : ∀ n, α * F.φ x - γ * x - y ∈ Ideal.span {T.π ^ n}` using `fun n => by`. Establish `h1 : x - F.linApprox α γ y r n ∈ Ideal.span {T.π ^ n}`. Rewrite using `[F.linApprox_eq_finSum]`. Conclude with `T.mk_sub_finSum_mem _ n`.
+
+Establish `: α * F.φ x - γ * x - y = (α * F.φ (F.linApprox α γ y r n) - γ * F.linApprox α γ y r n - y) + (α * F.φ (x - F.linApprox α γ y r n) - γ * (x - F.linApprox α γ y r n))`. Rewrite using `[map_sub]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `add_mem (linApprox_mem hr n) (sub_mem (Ideal.mul_mem_left _ _ (F.φ_mem_span_pow h1)) (Ideal.mul_mem_left _ _ h1))`.
+
+Establish `h0 : α * F.φ x - γ * x - y = 0` using `T.eq_of_coeff_eq (funext fun n => by`. Rewrite using `[T.coeff_zero_elem]`. Conclude with `T.coeff_of_mem_span (hall (n + 1)) n le_rfl)`. Conclude with `sub_eq_zero.1 h0`. Rewrite using `[T.coeff_ofCoeff]`.
+
+Conclude with `linCoeff_weight_le ha hα hr hα1 hρ0 hρ1 hγ hy hY hγY hyY n`.
+-/
 theorem exists_linear_sol [IsAlgClosed L] (ha : 0 < F.a) {α : Γ} (hα : α ∈ T.int)
     (hα1 : ‖T.red α‖ = 1) (γ y : Γ) :
     ∃ x : Γ, α * F.φ x - γ * x = y ∧ ∀ ρ Y : ℝ, 0 < ρ → ρ < 1 →

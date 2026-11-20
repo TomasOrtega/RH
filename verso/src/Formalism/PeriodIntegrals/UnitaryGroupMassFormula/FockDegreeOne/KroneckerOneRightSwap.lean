@@ -13,12 +13,20 @@ section Transport
 
 variable {m n : ℕ} {V V' : Type*} [AddCommGroup V] [Module ℂ V] [AddCommGroup V'] [Module ℂ V']
 
+/- English proof (translation)
+Unfold `hwSub wtSub`. Simplify using `[Submodule.mem_inf, Submodule.mem_iInf, LinearMap.mem_ker, sub_eq_zero]`.
+-/
 theorem mem_hwSub_iff (act : Mat m n →ₗ[ℂ] Module.End ℂ V) (ν : Ix m n → ℚ) (w : V) :
     w ∈ hwSub act ν ↔ (∀ a, act (Eab a a) w = ((ν a : ℚ) : ℂ) • w) ∧
       ∀ a b, posC a b → act (Eab a b) w = 0 := by
   unfold hwSub wtSub
   simp [Submodule.mem_inf, Submodule.mem_iInf, LinearMap.mem_ker, sub_eq_zero]
 
+/- English proof (translation)
+Take `⟨h0, hmem⟩` from `h`. Use `⟨fun h' => h0 (he (by rw [h', map_zero])), ?_⟩` and prove the remaining obligations. Rewrite `hmem`, the goal using `[mem_hwSub_iff]`. Use `⟨fun a => ?_, fun a b hab => ?_⟩` and prove the remaining obligations. Rewrite using `[hint, hmem.1 a, map_smul]`.
+
+Rewrite using `[hint, hmem.2 a b hab, map_zero]`.
+-/
 theorem isHW_map (act : Mat m n →ₗ[ℂ] Module.End ℂ V) (act' : Mat m n →ₗ[ℂ] Module.End ℂ V')
     (e : V →ₗ[ℂ] V') (he : Function.Injective e) (hint : ∀ X w, act' X (e w) = e (act X w))
     (ν : Ix m n → ℚ) (w : V) (h : IsHW act ν w) : IsHW act' ν (e w) := by
@@ -29,6 +37,11 @@ theorem isHW_map (act : Mat m n →ₗ[ℂ] Module.End ℂ V) (act' : Mat m n �
   · rw [hint, hmem.1 a, map_smul]
   · rw [hint, hmem.2 a b hab, map_zero]
 
+/- English proof (translation)
+Take `⟨h0, hmem⟩` from `h`. Use `⟨fun h' => h0 (by rw [h', map_zero]), ?_⟩` and prove the remaining obligations. Rewrite `hmem`, the goal using `[mem_hwSub_iff]`. Use `⟨fun a => ?_, fun a b hab => ?_⟩` and prove the remaining obligations. Apply `he` to reduce the goal to its premises.
+
+Rewrite using `[← hint, hmem.1 a, map_smul]`. Apply `he` to reduce the goal to its premises. Rewrite using `[← hint, hmem.2 a b hab, map_zero]`.
+-/
 theorem isHW_of_map (act : Mat m n →ₗ[ℂ] Module.End ℂ V) (act' : Mat m n →ₗ[ℂ] Module.End ℂ V')
     (e : V →ₗ[ℂ] V') (he : Function.Injective e) (hint : ∀ X w, act' X (e w) = e (act X w))
     (ν : Ix m n → ℚ) (w : V) (h : IsHW act' ν (e w)) : IsHW act ν w := by
@@ -41,6 +54,11 @@ theorem isHW_of_map (act : Mat m n →ₗ[ℂ] Module.End ℂ V) (act' : Mat m n
   · apply he
     rw [← hint, hmem.2 a b hab, map_zero]
 
+/- English proof (translation)
+Take `⟨W, hW, hv, hK, hty⟩` from `h`. Use `⟨W.map e, ?_, Submodule.mem_map_of_mem hv, ?_, ?_⟩` and prove the remaining obligations. Conclude with `Module.Finite.map W e`. Introduce `X hX w' hw'`. Take `⟨w, hw, rfl⟩` from `Submodule.mem_map.1 hw'`.
+
+Rewrite using `[hint]`. Conclude with `Submodule.mem_map_of_mem (hK X hX w hw)`. Introduce `ν w' hw' hhw`. Take `⟨w, hw, rfl⟩` from `Submodule.mem_map.1 hw'`. Conclude with `hty ν w hw (isHW_of_map act act' e he hint ν w hhw)`.
+-/
 theorem ofType_map (act : Mat m n →ₗ[ℂ] Module.End ℂ V) (act' : Mat m n →ₗ[ℂ] Module.End ℂ V')
     (e : V →ₗ[ℂ] V') (he : Function.Injective e) (hint : ∀ X w, act' X (e w) = e (act X w))
     (μ : Ix m n → ℚ) (v : V) (h : OfType act μ v) : OfType act' μ (e v) := by
@@ -61,6 +79,11 @@ section Rename
 
 variable {σ τ : Type*} (f : σ ≃ τ)
 
+/- English proof (translation)
+Use `conv_lhs => rw [← sum_homogeneousComponent φ]`. Rewrite using `[map_sum, map_sum]`. Establish `h : ∀ i, homogeneousComponent k (rename f (homogeneousComponent i φ)) = if k = i then rename f (homogeneousComponent i φ) else 0` using `fun i => homogeneousComponent_of_mem ((mem_homogeneousSubmodule _ _).2 ((homogeneousComponent_isHomogeneous i φ).rename_isHomogeneous))`. Repeatedly rewrite using `[h]`. Rewrite using `[Finset.sum_ite_eq]`.
+
+Use `split_ifs with hk`. Both sides reduce to the same expression. Rewrite using `[homogeneousComponent_eq_zero _ _ (by simp only [Finset.mem_range] at hk; omega), map_zero]`.
+-/
 theorem hc_rename (φ : MvPolynomial σ ℂ) (k : ℕ) :
     homogeneousComponent k (rename f φ) = rename f (homogeneousComponent k φ) := by
   conv_lhs => rw [← sum_homogeneousComponent φ]
@@ -75,6 +98,13 @@ theorem hc_rename (φ : MvPolynomial σ ℂ) (k : ℕ) :
   · rfl
   · rw [homogeneousComponent_eq_zero _ _ (by simp only [Finset.mem_range] at hk; omega), map_zero]
 
+/- English proof (translation)
+Unfold `minusPart`. Establish `hfin : Function.HasFiniteSupport (fun d : ℕ => homogeneousComponent d (A (homogeneousComponent (d + 2) P)))`. Use `(Set.finite_Iio P.totalDegree).subset ?_` and prove the remaining obligations. Introduce `d hd`. Assume the negation of the conclusion as `h`.
+
+Apply `hd` to reduce the goal to its premises. Simplify using `only [Set.mem_Iio, not_lt] at h`. Simplify using `only [homogeneousComponent_eq_zero (d + 2) P (by omega), map_zero]`. Rewrite using `[map_finsum (rename f) hfin]`. Use `finsum_congr fun d => ?_` and prove the remaining obligations.
+
+Rewrite using `[← hc_rename, ← hAB, ← hc_rename]`.
+-/
 theorem minusPart_rename (A : Module.End ℂ (MvPolynomial σ ℂ))
     (B : Module.End ℂ (MvPolynomial τ ℂ)) (hAB : ∀ Q, B (rename f Q) = rename f (A Q))
     (P : MvPolynomial σ ℂ) : rename f (minusPart A P) = minusPart B (rename f P) := by
@@ -97,16 +127,28 @@ variable {p q r s : ℕ}
 
 abbrev sw (p q r s : ℕ) : Ln p q r s ≃ Ln r s p q := Equiv.prodComm _ _
 
+/- English proof (translation)
+Apply the tactic sequence `rcases l with ⟨a | a, b | b⟩ <;> rfl`.
+-/
 theorem linePos_sw (l : Ln p q r s) : linePos (sw p q r s l) = linePos l := by
   rcases l with ⟨a | a, b | b⟩ <;> rfl
 
+/- English proof (translation)
+Rewrite using `[map_mul, rename_X]`.
+-/
 theorem rename_X_mul (l : Ln p q r s) (P : Pol p q r s) :
     rename (sw p q r s) (X l * P) = X (sw p q r s l) * rename (sw p q r s) P := by
   rw [map_mul, rename_X]
 
+/- English proof (translation)
+The claim follows from `(pderiv_rename (sw p q r s).injective l P).symm`.
+-/
 theorem rename_pderiv (l : Ln p q r s) (P : Pol p q r s) :
     rename (sw p q r s) (pderiv l P) = pderiv (sw p q r s l) (rename (sw p q r s) P) := (pderiv_rename (sw p q r s).injective l P).symm
 
+/- English proof (translation)
+Unfold `lowB`. Rewrite using `[linePos_sw]`. Use `split_ifs`. Conclude with `rename_pderiv l P`. Conclude with `rename_X_mul l P`.
+-/
 theorem rename_lowB (l : Ln p q r s) (P : Pol p q r s) :
     rename (sw p q r s) (lowB l P) = lowB (sw p q r s l) (rename (sw p q r s) P) := by
   unfold lowB
@@ -115,6 +157,11 @@ theorem rename_lowB (l : Ln p q r s) (P : Pol p q r s) :
   · exact rename_pderiv l P
   · exact rename_X_mul l P
 
+/- English proof (translation)
+Unfold `raiB`. Rewrite using `[linePos_sw]`. Use `split_ifs`. Conclude with `rename_X_mul l P`. Use `show rename _ (-(pderiv l P)) = -(pderiv (sw p q r s l) (rename _ P))`.
+
+Rewrite using `[map_neg, rename_pderiv]`.
+-/
 theorem rename_raiB (l : Ln p q r s) (P : Pol p q r s) :
     rename (sw p q r s) (raiB l P) = raiB (sw p q r s l) (rename (sw p q r s) P) := by
   unfold raiB
@@ -124,6 +171,11 @@ theorem rename_raiB (l : Ln p q r s) (P : Pol p q r s) :
   · show rename _ (-(pderiv l P)) = -(pderiv (sw p q r s l) (rename _ P))
     rw [map_neg, rename_pderiv]
 
+/- English proof (translation)
+Unfold `omE`. Simplify using `only [LinearMap.add_apply, Module.End.mul_apply, map_add, rename_raiB, rename_lowB]`. Use `congr 1`. Distinguish the cases in `h : l = l'`. Substitute `h` using the available equality.
+
+Simplify using the standard rewrite rules. Establish `h' : sw p q r s l ≠ sw p q r s l'` using `fun e => h ((sw p q r s).injective e)`. Simplify using `[h, h']`.
+-/
 theorem rename_omE (l l' : Ln p q r s) (P : Pol p q r s) :
     rename (sw p q r s) (omE l l' P) =
       omE (sw p q r s l) (sw p q r s l') (rename (sw p q r s) P) := by
@@ -136,6 +188,11 @@ theorem rename_omE (l l' : Ln p q r s) (P : Pol p q r s) :
   · have h' : sw p q r s l ≠ sw p q r s l' := fun e => h ((sw p q r s).injective e)
     simp [h, h']
 
+/- English proof (translation)
+Simplify using `only [omAct, LinearMap.sum_apply, LinearMap.smulRight_apply, Matrix.entryLinearMap_apply, LinearMap.smul_apply]`. Rewrite using `[map_sum]`. Simplify using `only [map_sum, map_smul, rename_omE]`. Use `Fintype.sum_equiv (sw p q r s) _ _ (fun l => ?_)` and prove the remaining obligations. Use `Fintype.sum_equiv (sw p q r s) _ _ (fun l' => ?_)` and prove the remaining obligations.
+
+Simplify using `[Matrix.submatrix_apply]`.
+-/
 theorem rename_omAct (M : Matrix (Ln p q r s) (Ln p q r s) ℂ) (P : Pol p q r s) :
     rename (sw p q r s) (omAct p q r s M P) =
       omAct r s p q (M.submatrix (sw p q r s).symm (sw p q r s).symm) (rename (sw p q r s) P) := by
@@ -147,6 +204,9 @@ theorem rename_omAct (M : Matrix (Ln p q r s) (Ln p q r s) ℂ) (P : Pol p q r s
   refine Fintype.sum_equiv (sw p q r s) _ _ (fun l' => ?_)
   simp [Matrix.submatrix_apply]
 
+/- English proof (translation)
+Use extensionality with `⟨b, a⟩ ⟨b', a'⟩`. Simplify using `[Matrix.kroneckerMapBilinear_apply_apply, Matrix.kroneckerMap_apply, mul_comm]`.
+-/
 theorem kronecker_one_left_swap (X : Mat p q) :
     ((Matrix.kroneckerMapBilinear (LinearMap.mul ℂ ℂ)).flip (1 : Mat r s) X).submatrix
         (sw p q r s).symm (sw p q r s).symm =
@@ -154,6 +214,9 @@ theorem kronecker_one_left_swap (X : Mat p q) :
   ext ⟨b, a⟩ ⟨b', a'⟩
   simp [Matrix.kroneckerMapBilinear_apply_apply, Matrix.kroneckerMap_apply, mul_comm]
 
+/- English proof (translation)
+Use extensionality with `⟨b, a⟩ ⟨b', a'⟩`. Simplify using `[Matrix.kroneckerMapBilinear_apply_apply, Matrix.kroneckerMap_apply, mul_comm]`.
+-/
 theorem kronecker_one_right_swap (Y : Mat r s) :
     ((Matrix.kroneckerMapBilinear (LinearMap.mul ℂ ℂ)) (1 : Mat p q) Y).submatrix
         (sw p q r s).symm (sw p q r s).symm =
@@ -161,21 +224,37 @@ theorem kronecker_one_right_swap (Y : Mat r s) :
   ext ⟨b, a⟩ ⟨b', a'⟩
   simp [Matrix.kroneckerMapBilinear_apply_apply, Matrix.kroneckerMap_apply, mul_comm]
 
+/- English proof (translation)
+Simplify using `only [fockAct1, fockAct2, LinearMap.comp_apply]`. Rewrite using `[rename_omAct, kronecker_one_left_swap]`.
+-/
 theorem rename_fockAct1 (X : Mat p q) (P : Pol p q r s) :
     rename (sw p q r s) (fockAct1 p q r s X P) = fockAct2 r s p q X (rename (sw p q r s) P) := by
   simp only [fockAct1, fockAct2, LinearMap.comp_apply]
   rw [rename_omAct, kronecker_one_left_swap]
 
+/- English proof (translation)
+Simplify using `only [fockAct1, fockAct2, LinearMap.comp_apply]`. Rewrite using `[rename_omAct, kronecker_one_right_swap]`.
+-/
 theorem rename_fockAct2 (Y : Mat r s) (P : Pol p q r s) :
     rename (sw p q r s) (fockAct2 p q r s Y P) = fockAct1 r s p q Y (rename (sw p q r s) P) := by
   simp only [fockAct1, fockAct2, LinearMap.comp_apply]
   rw [rename_omAct, kronecker_one_right_swap]
 
+/- English proof (translation)
+The claim follows from `rename_injective _ (sw p q r s).injective`.
+-/
 theorem rename_sw_injective (p q r s : ℕ) :
     Function.Injective (rename (R := ℂ) (sw p q r s)) := rename_injective _ (sw p q r s).injective
 
 def swL (p q r s : ℕ) : Pol p q r s →ₗ[ℂ] Pol r s p q := (rename (sw p q r s)).toLinearMap
 
+/- English proof (translation)
+Introduce `h1 p q r s μ P hP hOT hh`. Establish `hint : ∀ (X : Mat r s) (w : Pol p q r s), fockAct1 r s p q X (swL p q r s w) = swL p q r s (fockAct2 p q r s X w)` using `fun X w => (rename_fockAct2 X w).symm`. Establish `hOT'` using `ofType_map (fockAct2 p q r s) (fockAct1 r s p q) (swL p q r s) (rename_sw_injective p q r s) hint μ P hOT`. Establish `hP' : rename (sw p q r s) P ≠ 0` using `fun h => hP (rename_sw_injective p q r s (by rw [h, map_zero]))`. Establish `hh' : ∀ Z : Mat p q, IsPC Z → minusPart (fockAct2 r s p q Z) (rename (sw p q r s) P) = 0`.
+
+Introduce `Z hZ`. Rewrite using `[← minusPart_rename (sw p q r s) (fockAct1 p q r s Z) (fockAct2 r s p q Z) (fun Q => (rename_fockAct1 Z Q).symm) P, hh Z hZ, map_zero]`. Take `⟨d, hd, hmem⟩` from `h1 r s p q μ (rename (sw p q r s) P) hP' hOT' hh'`. Use `⟨d, hd, ?_⟩` and prove the remaining obligations. Establish `hback : rename (sw p q r s).symm (rename (sw p q r s) P) = P`.
+
+Rewrite using `[rename_rename]`. Simplify using the standard rewrite rules. Rewrite using `[← hback]`. Conclude with `(mem_homogeneousSubmodule _ _).2 (((mem_homogeneousSubmodule _ _).1 hmem).rename_isHomogeneous)`.
+-/
 theorem fock_swap_groups : Swap := by
   intro h1 p q r s μ P hP hOT hh
   have hint : ∀ (X : Mat r s) (w : Pol p q r s),
@@ -198,6 +277,11 @@ theorem fock_swap_groups : Swap := by
   exact (mem_homogeneousSubmodule _ _).2
     (((mem_homogeneousSubmodule _ _).1 hmem).rename_isHomogeneous)
 
+/- English proof (translation)
+Establish `hint : ∀ (X : Mat r s) (w : Pol p q r s), fockAct1 r s p q X (swL p q r s w) = swL p q r s (fockAct2 p q r s X w)` using `fun X w => (rename_fockAct2 X w).symm`. Establish `hw'` using `isHW_map (fockAct2 p q r s) (fockAct1 r s p q) (swL p q r s) (rename_sw_injective p q r s) hint μ v hw`. Establish `hv' : rename (sw p q r s) v ∈ homog (Ix r s × Ix p q) e` using `(mem_homogeneousSubmodule _ _).2 (((mem_homogeneousSubmodule _ _).1 hv).rename_isHomogeneous)`. Establish `hh' : Harm2 (rename (sw p q r s) v)`. Introduce `Z hZ`.
+
+Rewrite using `[← minusPart_rename (sw p q r s) (fockAct1 p q r s Z) (fockAct2 r s p q Z) (fun Q => (rename_fockAct1 Z Q).symm) v, hh Z hZ, map_zero]`. Conclude with `hT r s p q μ e (rename (sw p q r s) v) hv' hw' hh'`.
+-/
 theorem hwHarmDeg2 (hT : HwHarmDeg) (p q r s : ℕ) (μ : Ix r s → ℚ) (e : ℕ) (v : Pol p q r s)
     (hv : v ∈ homog (Ix p q × Ix r s) e) (hw : IsHW (fockAct2 p q r s) μ v)
     (hh : ∀ Z : Mat p q, IsPC Z → minusPart (fockAct1 p q r s Z) v = 0) :

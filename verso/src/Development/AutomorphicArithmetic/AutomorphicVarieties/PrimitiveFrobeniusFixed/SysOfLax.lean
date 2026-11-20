@@ -12,6 +12,11 @@ variable {Ω : Type} [Field Ω]
 private def Cg (A : ValuationSubring Ω) (u v : Ω) : Prop :=
   A.valuation u = 1 ∧ A.valuation v = 1 ∧ A.valuation (u - v) < 1
 
+/- English proof (translation)
+Use `⟨hu, ?_, h⟩` and prove the remaining obligations. Establish `h1 : A.valuation (-(u - v)) < A.valuation u` using `by rw [Valuation.map_neg, hu]; exact h`. Establish `h2` using `A.valuation.map_add_eq_of_lt_left h1`. Establish `h3 : u + -(u - v) = v` using `by ring`. Rewrite `h2` using `[h3, hu]`.
+
+Conclude with `h2`.
+-/
 private theorem cg_of (A : ValuationSubring Ω) {u v : Ω} (hu : A.valuation u = 1) (h : A.valuation (u - v) < 1) :
     Cg A u v := by
   refine ⟨hu, ?_, h⟩
@@ -21,6 +26,11 @@ private theorem cg_of (A : ValuationSubring Ω) {u v : Ω} (hu : A.valuation u =
   rw [h3, hu] at h2
   exact h2
 
+/- English proof (translation)
+Use `⟨by rw [map_mul, h.1, h'.1, one_mul], by rw [map_mul, h.2.1, h'.2.1, one_mul], ?_⟩` and prove the remaining obligations. Establish `: u * u' - v * v' = u * (u' - v') + (u - v) * v'` using `by ring`. Rewrite using `[this]`. Use `A.valuation.map_add_lt ?_ ?_` and prove the remaining obligations. Rewrite using `[map_mul, h.1, one_mul]`.
+
+Conclude with `h'.2.2`. Rewrite using `[map_mul, h'.2.1, mul_one]`. Conclude with `h.2.2`.
+-/
 private theorem cg_mul {A : ValuationSubring Ω} {u v u' v' : Ω} (h : Cg A u v) (h' : Cg A u' v') :
     Cg A (u * u') (v * v') := by
   refine ⟨by rw [map_mul, h.1, h'.1, one_mul], by rw [map_mul, h.2.1, h'.2.1, one_mul], ?_⟩
@@ -30,11 +40,19 @@ private theorem cg_mul {A : ValuationSubring Ω} {u v u' v' : Ω} (h : Cg A u v)
   · rw [map_mul, h.1, one_mul]; exact h'.2.2
   · rw [map_mul, h'.2.1, mul_one]; exact h.2.2
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => exact ⟨by simp, by simp, by simp⟩`. Consider the case `succ n ih => rw [pow_succ, pow_succ]`. Conclude with `cg_mul ih h`.
+-/
 private theorem cg_pow {A : ValuationSubring Ω} {u v : Ω} (h : Cg A u v) (n : ℕ) : Cg A (u ^ n) (v ^ n) := by
   induction n with
   | zero => exact ⟨by simp, by simp, by simp⟩
   | succ n ih => rw [pow_succ, pow_succ]; exact cg_mul ih h
 
+/- English proof (translation)
+Establish `hu : u ≠ 0` using `fun h0 => by have := h.1; rw [h0, map_zero] at this; exact zero_ne_one this`. Establish `hv : v ≠ 0` using `fun h0 => by have := h.2.1; rw [h0, map_zero] at this; exact zero_ne_one this`. Use `⟨by rw [map_inv₀, h.1, inv_one], by rw [map_inv₀, h.2.1, inv_one], ?_⟩` and prove the remaining obligations. Establish `: u⁻¹ - v⁻¹ = -((u - v) * u⁻¹ * v⁻¹)` using `by field_simp; ring`. Rewrite using `[this, Valuation.map_neg, map_mul, map_mul, map_inv₀, map_inv₀, h.1, h.2.1, inv_one, mul_one, mul_one]`.
+
+Conclude with `h.2.2`.
+-/
 private theorem cg_inv {A : ValuationSubring Ω} {u v : Ω} (h : Cg A u v) : Cg A u⁻¹ v⁻¹ := by
   have hu : u ≠ 0 := fun h0 => by have := h.1; rw [h0, map_zero] at this; exact zero_ne_one this
   have hv : v ≠ 0 := fun h0 => by have := h.2.1; rw [h0, map_zero] at this; exact zero_ne_one this
@@ -45,26 +63,44 @@ private theorem cg_inv {A : ValuationSubring Ω} {u v : Ω} (h : Cg A u v) : Cg 
 
 variable [Algebra ℚ Ω]
 
+/- English proof (translation)
+Simplify using `only [opP, map_mul, mul_pow, mul_div_mul_comm]`.
+-/
 private theorem opP_mul (δ : G ℚ Ω) (a : ℕ) (u v : Ω) : opP δ a (u * v) = opP δ a u * opP δ a v := by
   simp only [opP, map_mul, mul_pow, mul_div_mul_comm]
 
+/- English proof (translation)
+Simplify using `only [opP, map_div₀, div_pow]`. Rewrite using `[div_div_div_comm]`.
+-/
 private theorem opP_div (δ : G ℚ Ω) (a : ℕ) (u v : Ω) : opP δ a (u / v) = opP δ a u / opP δ a v := by
   simp only [opP, map_div₀, div_pow]
   rw [div_div_div_comm]
 
+/- English proof (translation)
+Simplify using `only [opP, map_pow, div_pow]`. Rewrite using `[← pow_mul, ← pow_mul, mul_comm]`.
+-/
 private theorem opP_pow (δ : G ℚ Ω) (a : ℕ) (u : Ω) (n : ℕ) : opP δ a (u ^ n) = opP δ a u ^ n := by
   simp only [opP, map_pow, div_pow]
   rw [← pow_mul, ← pow_mul, mul_comm]
 
+/- English proof (translation)
+Simplify using `only [opP, map_div₀, map_pow, h]`.
+-/
 private theorem map_opP (δ g : G ℚ Ω) (a : ℕ) (u : Ω) (h : g (δ u) = δ (g u)) :
     g (opP δ a u) = opP δ a (g u) := by
   simp only [opP, map_div₀, map_pow, h]
 
+/- English proof (translation)
+Establish `h0 : ζ ≠ 0` using `fun h0 => by rw [h0, zero_pow hN] at h; exact zero_ne_one h`. Rewrite using `[opP, hδ ζ h, div_self (pow_ne_zero _ h0)]`.
+-/
 private theorem opP_root (δ : G ℚ Ω) (a N : ℕ) (hN : N ≠ 0) (hδ : Pows N a δ) (ζ : Ω) (h : ζ ^ N = 1) :
     opP δ a ζ = 1 := by
   have h0 : ζ ≠ 0 := fun h0 => by rw [h0, zero_pow hN] at h; exact zero_ne_one h
   rw [opP, hδ ζ h, div_self (pow_ne_zero _ h0)]
 
+/- English proof (translation)
+Simplify using `only [nrm, map_pow, opP, map_div₀, h, map_prod]`. Rewrite using `[Finset.prod_pow, Finset.prod_div_distrib, Finset.prod_pow]`.
+-/
 private theorem nrm_opP (δ τ : G ℚ Ω) (a q n : ℕ) (u : Ω) (h : ∀ g : G ℚ Ω, g (δ u) = δ (g u)) :
     nrm q τ (opP δ a u ^ n) = opP δ a (nrm q τ u) ^ n := by
   simp only [nrm, map_pow, opP, map_div₀, h, map_prod]
@@ -72,9 +108,17 @@ private theorem nrm_opP (δ τ : G ℚ Ω) (a q n : ℕ) (u : Ω) (h : ∀ g : G
 
 end SlopeTestRemainingChoices
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.1.squarefree_of_dvd (Dvd.intro_left q rfl), fun p hp hd => h.2 p hp (hd.mul_left q)⟩`.
+-/
 private theorem admissible_of_integral_conj_le {l F r q d : ℕ} (h : ML.admitted l F r (q * d)) : ML.admitted l F r d :=
   ⟨h.1.squarefree_of_dvd (Dvd.intro_left q rfl), fun p hp hd => h.2 p hp (hd.mul_left q)⟩
 
+/- English proof (translation)
+Establish `hq` using `h.1`. Rewrite using `[Nat.Prime.coprime_iff_not_dvd hq]`. Introduce `hd`. Use `haveI : Fact q.Prime := ⟨hq⟩`. Apply `h.2.2.2` to reduce the goal to its premises.
+
+Establish `: (r : ZMod q) = 0` using `(ZMod.natCast_eq_zero_iff r q).2 hd`. Rewrite using `[this, orderOf_zero]`. Conclude with `dvd_zero l`.
+-/
 private theorem admissible_prime_coprime {l F r q : ℕ} (h : AdmP l F r q) : q.Coprime r := by
   have hq := h.1
   rw [Nat.Prime.coprime_iff_not_dvd hq]
@@ -85,6 +129,31 @@ private theorem admissible_prime_coprime {l F r q : ℕ} (h : AdmP l F r q) : q.
   rw [this, orderOf_zero]
   exact dvd_zero l
 
+/- English proof (translation)
+Introduce `Ω _ _ _ l N₀ m F r a hl _ hN hm hF X s hX δ hδ`. Establish `hN0 : N₀ ≠ 0`. Introduce and unpack `rfl`. Rewrite `hN` using `[Nat.coprime_zero_left]`. Conclude with `hl.one_lt.ne' hN`.
+
+Establish `hlm : l ^ m ≠ 0` using `pow_ne_zero _ hl.ne_zero`. Establish `hF0 : F ≠ 0` using `hF ▸ mul_ne_zero hN0 hlm`. Establish `hFd : ∀ d, ML.admitted l F r d → F * d ≠ 0` using `fun d hd => mul_ne_zero hF0 hd.1.ne_zero`. Establish `hcomm : ∀ d, ML.admitted l F r d → ∀ g h : G ℚ Ω, g (h (X d)) = h (g (X d))` using `fun d hd => (galBasic Ω (F * d) (hFd d hd)).2.2.2.2.2.1 (X d) (hX.fix d hd)`. Take `⟨-, -, -, hcop, -, -, -, -, -, hact⟩` from `placeBasic Ω`.
+
+Establish `hlt : ∀ (A : ValuationSubring Ω) (y : Ω), A.valuation (δ y) < 1 ↔ (δ⁻¹ • A).valuation y < 1` using `fun A y => by`. Use `(hact (δ⁻¹ • A) δ).2.2.2.1 y` as an intermediate fact. Rewrite `this` using `[smul_inv_smul]`. Then use the resulting hypothesis. Establish `heq : ∀ (A : ValuationSubring Ω) (y : Ω), A.valuation (δ y) = 1 ↔ (δ⁻¹ • A).valuation y = 1` using `fun A y => by`. Use `(hact (δ⁻¹ • A) δ).2.2.2.2 y` as an intermediate fact.
+
+Rewrite `this` using `[smul_inv_smul]`. Then use the resulting hypothesis. Establish `hov : ∀ (A : ValuationSubring Ω) (n : ℕ), Over (δ⁻¹ • A) n ↔ Over A n` using `fun A n => by`. Use `hlt A (n : Ω)` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Conclude with `this.symm`.
+
+Establish `hδu : ∀ d, ML.admitted l F r d → ∀ A : ValuationSubring Ω, ¬ Over A r → A.valuation (δ (X d)) = 1` using `fun d hd A hA => (heq A _).2 (hX.unit d hd _ fun h => hA ((hov A r).1 h))`. Establish `hζ : ∀ (n : ℕ) (ζ : Ω), ζ ^ (2 * F * n) = 1 → opP δ a ζ ^ (2 * N₀ * n) = 1` using `fun n ζ h => by`. Rewrite using `[← opP_pow]`. Use `opP_root δ a (l ^ m) hlm hδ _ ?_` and prove the remaining obligations. Rewrite using `[← pow_mul, ← h, hF]`.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Use `⟨fun d hd => ?_, fun d hd g hg => ?_, fun d hd A hA => ?_, fun d q hq hd => ?_, fun d q hq hd τ hτ hgen φ hφ => ?_, fun d q hq hd φ hφ A hA => ?_⟩` and prove the remaining obligations. Use `pow_ne_zero _ (div_ne_zero ?_ (pow_ne_zero _ (hX.ne d hd)))` and prove the remaining obligations. Conclude with `(map_ne_zero δ).2 (hX.ne d hd)`.
+
+Rewrite using `[map_pow, map_opP δ g a _ (hcomm d hd g δ), hX.fix d hd g hg]`. Rewrite using `[map_pow, opP, map_div₀, map_pow, hδu d hd A hA, hX.unit d hd A hA]`. Simplify using the standard rewrite rules. Introduce `h`. Break down `(Nat.Prime.dvd_mul hl).1 h with h | h` into its components or cases.
+
+Establish `h1` using `(hd.2 q hq (Dvd.intro d rfl)).2.1`. Establish `hlF : l ∣ F` using `hF ▸ Dvd.dvd.mul_left (dvd_pow_self l (by omega)) N₀`. Establish `h2 : l ∣ 1` using `((h1.of_dvd hlF).dvd_iff dvd_rfl).1 h`. Conclude with `hl.one_lt.ne' (Nat.dvd_one.1 h2)`. Conclude with `hX.cop d q hq hd h`.
+
+Take `⟨ζ, h1, h2⟩` from `hX.norm d q hq hd τ hτ hgen φ hφ`. Rewrite using `[nrm_opP δ τ a q _ _ (fun g => hcomm _ hd g δ), h2, opP_mul, mul_pow, hζ _ ζ h1, one_mul, opP_pow, opP_div, map_pow, map_opP δ φ⁻¹ a _ (hcomm d (admissible_of_integral_conj_le hd) _ δ), ← div_pow, ← pow_mul, ← pow_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Take `⟨ζ, h1, h2⟩` from `hX.cong d q hq hd φ hφ`.
+
+Establish `hr : ¬ Over A r` using `hcop A q r (admissible_prime_coprime (hd.2 q hq (Dvd.intro d rfl))) hA`. Establish `c1` using `cg_of A (hX.unit _ hd A hr) (h2 A hA)`. Establish `h3` using `(hlt A _).2 (h2 _ ((hov A q).2 hA))`. Rewrite `h3` using `[map_sub]`. Establish `c2` using `cg_of A (hδu _ hd A hr) h3`.
+
+Establish `c3` using `cg_pow (cg_mul c2 (cg_inv (cg_pow c1 a))) (2 * N₀ * (q * d))`. Rewrite `c3` using `[← div_eq_mul_inv, ← div_eq_mul_inv]`. Establish `c4 : A.valuation (opP δ a (X (q * d)) ^ (2 * N₀ * (q * d)) - opP δ a (ζ * φ⁻¹ (X d) ^ s d q) ^ (2 * N₀ * (q * d))) < 1` using `c3.2.2`. Rewrite `c4` using `[opP_mul, mul_pow, hζ _ ζ h1, one_mul, opP_pow, ← pow_mul]`. Rewrite using `[map_pow, map_opP δ φ⁻¹ a _ (hcomm d (admissible_of_integral_conj_le hd) _ δ), ← pow_mul]`.
+
+Establish `e : 2 * N₀ * d * (q * s d q) = s d q * (2 * N₀ * (q * d))` using `by ring`. Rewrite using `[e]`. Conclude with `c4`.
+-/
 theorem UpperTheory.V.ML.sysOfLax :
     ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (l N₀ m F r a : ℕ), l.Prime → l ≠ 2 → N₀.Coprime l → 1 ≤ m → F = N₀ * l ^ m → ∀ (X : ℕ → Ω) (s : ℕ → ℕ → ℕ), Lax l F r X s →
     ∀ δ : G ℚ Ω, Pows (l ^ m) a δ → Sys l F r (fun d => opP δ a (X d) ^ (2 * N₀ * d)) fun d q => q * s d q := by

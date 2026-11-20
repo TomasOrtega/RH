@@ -13,6 +13,17 @@ open GlobalTheory
 
 namespace GlobalTheory.PointDescent
 
+/- English proof (translation)
+Establish `h0 : a 0 = 1`. Use `ha 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`. Conclude with `mul_eq_left.1 this.symm`. Establish `key : ∀ y, ∃ x, a y = β x` using `fun y => by`.
+
+Establish `hy : y ∈ AddSubgroup.closure (Set.range b)` using `hb ▸ AddSubgroup.mem_top y`. Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem y hy`. Take `⟨k, rfl⟩` from `hy`. Conclude with `⟨_, hx k⟩`.
+
+Consider the case `zero => exact ⟨1, by rw [h0, map_one]⟩`. Consider the case `add y z _ _ hy hz`. Take `⟨u, hu⟩` from `hy`. Take `⟨v, hv⟩` from `hz`. Conclude with `⟨u * v, by rw [ha, hu, hv, map_mul]⟩`.
+
+Consider the case `neg y _ hy`. Take `⟨u, hu⟩` from `hy`. Use `⟨u⁻¹, ?_⟩` and prove the remaining obligations. Rewrite using `[map_inv, ← hu, eq_inv_iff_mul_eq_one, ← ha, neg_add_cancel, h0]`. Use `choose c₀ hc using key`.
+
+Conclude with `⟨c₀, fun y z => hβ (by rw [map_mul, ← hc, ← hc, ← hc, ha]), hc⟩`.
+-/
 theorem exists_lift {X I G H : Type*} [AddGroup X] [Group G] [Group H] (b : I → X)
     (hb : AddSubgroup.closure (Set.range b) = ⊤) (a : X → G) (ha : ∀ y z, a (y + z) = a y * a z) (β : H →* G)
     (hβ : Function.Injective β) (x₀ : I → H) (hx : ∀ k, a (b k) = β (x₀ k)) :
@@ -39,6 +50,9 @@ theorem exists_lift {X I G H : Type*} [AddGroup X] [Group G] [Group H] (b : I �
   choose c₀ hc using key
   exact ⟨c₀, fun y z => hβ (by rw [map_mul, ← hc, ← hc, ← hc, ha]), hc⟩
 
+/- English proof (translation)
+Set `ρ : Over.mk ((𝟙_ (Over S')).hom ≫ f) ⟶ 𝟙_ (Over S)` to `Over.homMk f ((Category.comp_id f).trans (Category.id_comp f).symm)`. Take `⟨c₀, h₁, h₂⟩` from `exists_lift b hb (fun y => pushHom h (𝟙_ (Over S')) (c y)) (fun y z => by rw [hc, map_mul]) (preHom (G := G) ρ) (fun u v huv => Over.OverMorphism.ext ((cancel_epi f).1 (congrArg (fun q => q.left) huv))) x₀ (fun k => Over.OverMorphism.ext (hx k))`. Conclude with `⟨c₀, h₁, fun y => congrArg (fun q => q.left) (h₂ y)⟩`.
+-/
 theorem exists_descent {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj G] [GrpObj G'] {f : S' ⟶ S} [Epi f]
     {Φ : G'.left ⟶ G.left} (h : IsGrpPullback G' G f Φ) {X I : Type*} [AddGroup X] (b : I → X)
     (hb : AddSubgroup.closure (Set.range b) = ⊤) (c : X → (𝟙_ (Over S') ⟶ G')) (hc : ∀ y z, c (y + z) = c y * c z)
@@ -52,6 +66,9 @@ theorem exists_descent {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj G
     (fun k => Over.OverMorphism.ext (hx k))
   exact ⟨c₀, h₁, fun y => congrArg (fun q => q.left) (h₂ y)⟩
 
+/- English proof (translation)
+Introduce `K₀ K _ _ i P₀ P Φ h X _ I b hb c hc x₀ hx`. Use `FieldBaseChange.flat_spMap i` as an intermediate fact. Use `FieldBaseChange.surjective_spMap i` as an intermediate fact. Establish `: Epi (spMap i)` using `Flat.epi_of_flat_of_surjective _`. Conclude with `exists_descent h b hb c hc x₀ hx`.
+-/
 theorem additive_points_descend : ∀ (K₀ K : Type) [Field K₀] [Field K] (i : K₀ →+* K) (P₀ : PolAV (Sp K₀)) (P : PolAV (Sp K)) (Φ : P.A.left ⟶ P₀.A.left), IsGrpPullback P.A P₀.A (spMap i) Φ → ∀ (X : Type) [AddCommGroup X] (I : Type) (b : I → X), AddSubgroup.closure (Set.range b) = ⊤ → ∀ c : X → (𝟙_ (Over (Sp K)) ⟶ P.A), (∀ y z, c (y + z) = padd P.A (c y) (c z)) → ∀ x₀ : I → (𝟙_ (Over (Sp K₀)) ⟶ P₀.A), (∀ k, (c (b k)).left ≫ Φ = spMap i ≫ (x₀ k).left) → ∃ c₀ : X → (𝟙_ (Over (Sp K₀)) ⟶ P₀.A), (∀ y z, c₀ (y + z) = padd P₀.A (c₀ y) (c₀ z)) ∧ ∀ y, (c y).left ≫ Φ = spMap i ≫ (c₀ y).left := by
   intro K₀ K _ _ i P₀ P Φ h X _ I b hb c hc x₀ hx
   have := FieldBaseChange.flat_spMap i

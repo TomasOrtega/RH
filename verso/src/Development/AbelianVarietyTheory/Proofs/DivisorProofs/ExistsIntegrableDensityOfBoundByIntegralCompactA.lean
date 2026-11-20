@@ -3,6 +3,41 @@ open MeasureTheory
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `X _ _ _ _ μ K hK hμK S hS Λ C hlin hbd`. Establish `hKm : MeasurableSet K` using `hK.isClosed.measurableSet`. Use `set ν := μ.restrict K with hν`. Use `haveI : IsFiniteMeasure ν := isFiniteMeasure_restrict.2 hμK.ne`. Establish `hmem : ∀ f : S, MemLp (f : X → ℂ) 2 ν`.
+
+Introduce `f`. Take `⟨M, hM⟩` from `hK.exists_bound_of_continuousOn (hS f f.2).continuousOn`. Conclude with `MemLp.of_bound (hS f f.2).aestronglyMeasurable M ((ae_restrict_iff' hKm).2 (Filter.Eventually.of_forall hM))`. Set `T : S →ₗ[ℂ] Lp ℂ 2 ν` to `{ toFun := fun f => (hmem f).toLp _ map_add' := fun f g => MemLp.toLp_add (hmem f) (hmem g) map_smul' := fun c f => MemLp.toLp_const_smul c (hmem f) }`. Establish `hT : ∀ f : S, T f = (hmem f).toLp _` using `fun f => rfl`.
+
+Establish `hΛ0 : Λ 0 = 0`. Use `hlin 0 S.zero_mem 0 S.zero_mem 1` as an intermediate fact. Simplify using `using this`. Set `Λ' : S →ₗ[ℂ] ℂ` to `{ toFun := fun f => Λ f map_add' := fun f g => by`. Use `hlin f f.2 g g.2 1` as an intermediate fact.
+
+Simplify using `using this`. Use the proof step `map_smul' := fun c f => by`. Use `hlin f f.2 0 S.zero_mem c` as an intermediate fact. Simplify `this }` using `[hΛ0]`. Establish `hΛ' : ∀ f : S, Λ' f = Λ f` using `fun f => rfl`.
+
+Establish `hkey : ∀ f : S, ∫ x in K, ‖(f : X → ℂ) x‖ ∂μ ≤ ((ν Set.univ) ^ (1/2 : ℝ)).toReal * ‖T f‖`. Introduce `f`. Establish `h12` using `eLpNorm_le_eLpNorm_mul_rpow_measure_univ (p := 1) (q := 2) (μ := ν) (by norm_num) (hS f f.2).aestronglyMeasurable`. Establish `hexp : (1 / (1 : ENNReal).toReal - 1 / (2 : ENNReal).toReal) = (1 / 2 : ℝ)` using `by norm_num`. Rewrite `h12` using `[hexp]`.
+
+Establish `hint : ∫ x in K, ‖(f : X → ℂ) x‖ ∂μ = (eLpNorm (f : X → ℂ) 1 ν).toReal`. Rewrite using `[integral_norm_eq_lintegral_enorm (hS f f.2).aestronglyMeasurable, eLpNorm_one_eq_lintegral_enorm]`. Establish `hfin : eLpNorm (f : X → ℂ) 2 ν * ν Set.univ ^ (1 / 2 : ℝ) ≠ ⊤` using `ENNReal.mul_ne_top (hmem f).eLpNorm_ne_top (ENNReal.rpow_ne_top_of_nonneg (by norm_num) (measure_ne_top _ _))`. Rewrite using `[hint, hT, Lp.norm_toLp]`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `set B : ℝ := max C 0 * ((ν Set.univ) ^ (1/2 : ℝ)).toReal with hBdef`. Establish `hB : ∀ f : S, ‖Λ' f‖ ≤ B * ‖T f‖`. Introduce `f`. Establish `hI0 : 0 ≤ ∫ x in K, ‖(f : X → ℂ) x‖ ∂μ` using `integral_nonneg (fun _ => norm_nonneg _)`. Rewrite using `[hΛ']`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hker : LinearMap.ker T ≤ LinearMap.ker Λ'`. Introduce `f hf`. Rewrite `hf`, the goal using `[LinearMap.mem_ker]`. Use `hB f` as an intermediate fact.
+
+Rewrite `this` using `[hf, norm_zero, mul_zero]`. Conclude with `norm_le_zero_iff.1 this`. Set `φ₀ : LinearMap.range T →ₗ[ℂ] ℂ` to `((LinearMap.ker T).liftQ Λ' hker).comp T.quotKerEquivRange.symm.toLinearMap`. Establish `hφ₀ : ∀ f : S, φ₀ ⟨T f, LinearMap.mem_range_self T f⟩ = Λ f`. Introduce `f`.
+
+Establish `h1 : T.quotKerEquivRange.symm ⟨T f, LinearMap.mem_range_self T f⟩ = Submodule.Quotient.mk f`. Rewrite using `[LinearEquiv.symm_apply_eq]`. Both sides reduce to the same expression. Simplify using `only [φ₀, LinearMap.coe_comp, LinearEquiv.coe_coe, Function.comp_apply, h1, Submodule.liftQ_apply, hΛ']`. Establish `hφb : ∀ v, ‖φ₀ v‖ ≤ B * ‖v‖`.
+
+Introduce and unpack `⟨v, f, rfl⟩`. Use `hφ₀ f` as an intermediate fact. Rewrite using `[this, ← hΛ']`. Conclude with `hB f`. Set `φ : StrongDual ℂ (LinearMap.range T)` to `φ₀.mkContinuous B hφb`.
+
+Take `⟨g, hg, -⟩` from `exists_extension_norm_eq (LinearMap.range T) φ`. Use `set a₀ : Lp ℂ 2 ν := (InnerProductSpace.toDual ℂ (Lp ℂ 2 ν)).symm g with ha₀`. Establish `hrep : ∀ f : S, inner ℂ a₀ (T f) = Λ f`. Introduce `f`. Rewrite using `[ha₀, InnerProductSpace.toDual_symm_apply]`.
+
+Use `hg ⟨T f, LinearMap.mem_range_self T f⟩` as an intermediate fact. Rewrite using `[this]`. Simplify using `only [φ, LinearMap.mkContinuous_apply]`. Conclude with `hφ₀ f`. Establish `hm : Measurable (a₀ : X → ℂ)` using `(Lp.stronglyMeasurable a₀).measurable`.
+
+Use `⟨K.indicator (fun x => starRingEnd ℂ (a₀ x)), (Complex.continuous_conj.measurable.comp hm).indicator hKm, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[integrable_indicator_iff hKm]`. Establish `: Integrable (a₀ : X → ℂ) ν` using `(Lp.memLp a₀).integrable (by norm_num)`. Conclude with `this.mono (Complex.continuous_conj.comp_aestronglyMeasurable this.1) (Filter.Eventually.of_forall fun x => by simp)`. Introduce `x hx`.
+
+Conclude with `Set.indicator_of_notMem hx _`. Introduce `f hf`. Establish `key` using `hrep ⟨f, hf⟩`. Rewrite `key` using `[L2.inner_def]`. Establish `hae : ((T ⟨f, hf⟩ : Lp ℂ 2 ν) : X → ℂ) =ᵐ[ν] f` using `MemLp.coeFn_toLp (hmem ⟨f, hf⟩)`.
+
+Rewrite using `[← key]`. Establish `hfun : (fun x => f x * K.indicator (fun x => starRingEnd ℂ (a₀ x)) x) = K.indicator (fun x => f x * starRingEnd ℂ (a₀ x))`. Use function extensionality and compare the values at `x`. Apply the tactic sequence `by_cases hx : x ∈ K <;> simp [hx]`. Rewrite using `[hfun, integral_indicator hKm]`.
+
+Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hae] with x hx`. Rewrite using `[hx]`. Simplify using `[mul_comm]`.
+-/
 theorem exists_integrable_density_of_bound_by_integral_compact : ∀ (X : Type) [TopologicalSpace X] [T2Space X] [MeasurableSpace X] [BorelSpace X] (μ : Measure X) (K : Set X), IsCompact K → μ K < ⊤ → ∀ (S : Submodule ℂ (X → ℂ)), (∀ f ∈ S, Continuous f) → ∀ (Λ : (X → ℂ) → ℂ) (C : ℝ), (∀ f ∈ S, ∀ f' ∈ S, ∀ c : ℂ, Λ (c • f + f') = c * Λ f + Λ f') → (∀ f ∈ S, ‖Λ f‖ ≤ C * ∫ x in K, ‖f x‖ ∂μ) → ∃ a : X → ℂ, Measurable a ∧ Integrable a μ ∧ (∀ x ∉ K, a x = 0) ∧ ∀ f ∈ S, ∫ x, f x * a x ∂μ = Λ f := by
   intro X _ _ _ _ μ K hK hμK S hS Λ C hlin hbd
   have hKm : MeasurableSet K := hK.isClosed.measurableSet

@@ -27,25 +27,48 @@ instance : Module F (Letter m F τ) := inferInstanceAs (Module F (_ ⧸ letterKe
 
 def letterQ : F ⊗[LL] D →ₗ[F] Letter m F τ := (letterKer m F τ).mkQ
 
+/- English proof (translation)
+The claim follows from `Submodule.mkQ_surjective _`.
+-/
 theorem letterQ_surjective : Function.Surjective (letterQ m F τ) := Submodule.mkQ_surjective _
 
+/- English proof (translation)
+The claim follows from `Submodule.ker_mkQ _`.
+-/
 theorem ker_letterQ : LinearMap.ker (letterQ m F τ) = letterKer m F τ := Submodule.ker_mkQ _
 
 def letterMk (x : D) : Letter m F τ := letterQ m F τ (1 ⊗ₜ x)
 
+/- English proof (translation)
+Simplify using `[letterMk]`.
+-/
 @[simp] theorem letterMk_zero : letterMk m F τ 0 = 0 := by simp [letterMk]
 
+/- English proof (translation)
+Simplify using `[letterMk, tmul_add]`.
+-/
 theorem letterMk_add (x y : D) : letterMk m F τ (x + y) = letterMk m F τ x + letterMk m F τ y := by
   simp [letterMk, tmul_add]
 
+/- English proof (translation)
+Rewrite using `[letterMk, letterMk, ← map_smul, tmul_smul, algebraMap_smul]`.
+-/
 theorem letterMk_smul (a : LL) (x : D) :
     letterMk m F τ (a • x) = algebraMap LL F a • letterMk m F τ x := by
   rw [letterMk, letterMk, ← map_smul, tmul_smul, algebraMap_smul]
 
+/- English proof (translation)
+Rewrite using `[letterMk, letterMk, ← map_smul, ← sub_eq_zero, ← map_sub, ← LinearMap.mem_ker, ker_letterQ]`. Conclude with `Submodule.mem_iSup_of_mem c ⟨1 ⊗ₜ x, rfl⟩`.
+-/
 theorem letterMk_mul (c : U) (x : D) : letterMk m F τ (m c x) = τ c • letterMk m F τ x := by
   rw [letterMk, letterMk, ← map_smul, ← sub_eq_zero, ← map_sub, ← LinearMap.mem_ker, ker_letterQ]
   exact Submodule.mem_iSup_of_mem c ⟨1 ⊗ₜ x, rfl⟩
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.SpanQuotientTensor.main`. Consider the case `exact _root_.GlobalTheory.SpanQuotientTensor.main`. Consider the case `(apply _root_.GlobalTheory.SpanQuotientTensor.main <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.SpanQuotientTensor.main <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.SpanQuotientTensor.main <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.SpanQuotientTensor.main ..)`.
+-/
 theorem span_letterMk : Submodule.span F (Set.range (letterMk m F τ)) = ⊤ := by
   first
   | exact @_root_.GlobalTheory.SpanQuotientTensor.main
@@ -55,6 +78,9 @@ theorem span_letterMk : Submodule.span F (Set.range (letterMk m F τ)) = ⊤ := 
   | (intros; apply @_root_.GlobalTheory.SpanQuotientTensor.main <;> first | assumption | infer_instance)
   | (intros; exact _root_.GlobalTheory.SpanQuotientTensor.main ..)
 
+/- English proof (translation)
+The claim follows from `LinearMap.ext_on_range (span_letterMk m F τ) h`.
+-/
 theorem letter_hom_ext {M : Type*} [AddCommGroup M] [Module F M] {f g : Letter m F τ →ₗ[F] M}
     (h : ∀ x, f (letterMk m F τ x) = g (letterMk m F τ x)) : f = g :=
   LinearMap.ext_on_range (span_letterMk m F τ) h
@@ -67,9 +93,17 @@ def letterMap (T : End LL D) (hT : ∀ c, T * m c = m c * T) : End F (Letter m F
     rw [LinearMap.baseChange_mul, LinearMap.baseChange_mul, End.mul_apply, End.mul_apply] at this
     simp [this])
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem letterMap_mk (T : End LL D) (hT : ∀ c, T * m c = m c * T) (x : D) :
     letterMap m F τ T hT (letterMk m F τ x) = letterMk m F τ (T x) := rfl
 
+/- English proof (translation)
+Use `⟨⟨(Set.finite_range fun i => letterMk m F τ (b i)).toFinset, eq_top_iff.mpr ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← span_letterMk, Submodule.span_le, Set.Finite.coe_toFinset]`. Introduce and unpack `_ ⟨x, rfl⟩`. Take `⟨c, rfl⟩` from `hb x`. Rewrite using `[letterMk, tmul_sum, map_sum]`.
+
+Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Use `letterMk_mul m F τ (c i) (b i)` as an intermediate fact. Rewrite `this` using `[letterMk]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`.
+-/
 theorem finiteDimensional_letter {ι : Type} [Fintype ι] (b : ι → D)
     (hb : ∀ x, ∃ c : ι → U, x = ∑ i, m (c i) (b i)) : FiniteDimensional F (Letter m F τ) := by
   refine ⟨⟨(Set.finite_range fun i => letterMk m F τ (b i)).toFinset, eq_top_iff.mpr ?_⟩⟩
@@ -93,6 +127,11 @@ variable {l : ℕ} [Fact l.Prime] {E Ω : Type} [Field E] [NumberField E] [Field
 
 def resDeg (l : ℕ) (w : HeightOneSpectrum (𝓞 E)) : ℕ := Nat.log l (normV w)
 
+/- English proof (translation)
+Establish `: Nontrivial (𝓞 E ⧸ w.asIdeal)` using `Ideal.Quotient.nontrivial_iff.mpr w.isPrime.ne_top`. Establish `: Finite (𝓞 E ⧸ w.asIdeal)` using `w.asIdeal.finiteQuotientOfFreeOfNeBot w.ne_bot`. Set `` to `Ideal.Quotient.field w.asIdeal`. Set `` to `Fintype.ofFinite (𝓞 E ⧸ w.asIdeal)`. Establish `: CharP (𝓞 E ⧸ w.asIdeal) l` using `(CharP.charP_iff_prime_eq_zero Fact.out).mpr (by`.
+
+Rewrite using `[← map_natCast (Ideal.Quotient.mk w.asIdeal), Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hw)`. Take `⟨n, -, hn⟩` from `FiniteField.card (𝓞 E ⧸ w.asIdeal) l`. Rewrite using `[resDeg, normV, Nat.card_eq_fintype_card, hn, Nat.log_pow (Fact.out : l.Prime).one_lt]`.
+-/
 theorem normV_eq_pow (hw : w ∈ placesOver E l) : normV w = l ^ resDeg l w := by
   have : Nontrivial (𝓞 E ⧸ w.asIdeal) := Ideal.Quotient.nontrivial_iff.mpr w.isPrime.ne_top
   have : Finite (𝓞 E ⧸ w.asIdeal) := w.asIdeal.finiteQuotientOfFreeOfNeBot w.ne_bot
@@ -111,6 +150,11 @@ variable {Bw}
 
 omit [NumberField E] in
 
+/- English proof (translation)
+Rewrite using `[valuation_lt_one_iff', hj, hj, map_inv₀, norm_inv]`. Break down `eq_or_ne x 0 with rfl | hx` into its components or cases. Simplify using the standard rewrite rules. Establish `h0 : 0 < ‖Bw.j x‖` using `norm_pos_iff.mpr ((_root_.map_ne_zero _).mpr hx)`. Simplify using `only [hx, false_or, not_le, one_lt_inv₀ h0]`.
+
+Conclude with `⟨fun h => h.2, fun h => ⟨h.le, h⟩⟩`.
+-/
 theorem Induces.valuation_lt_one_iff (hj : Induces Bw) (x : Ω) : A.valuation x < 1 ↔ ‖Bw.j x‖ < 1 := by
   rw [valuation_lt_one_iff', hj, hj, map_inv₀, norm_inv]
   rcases eq_or_ne x 0 with rfl | hx
@@ -119,6 +163,9 @@ theorem Induces.valuation_lt_one_iff (hj : Induces Bw) (x : Ω) : A.valuation x 
     simp only [hx, false_or, not_le, one_lt_inv₀ h0]
     exact ⟨fun h => h.2, fun h => ⟨h.le, h⟩⟩
 
+/- English proof (translation)
+Use `(h (l : 𝓞 E)).mp ?_` and prove the remaining obligations. Rewrite using `[hj.valuation_lt_one_iff]`. Simplify using `only [map_natCast]`. Rewrite using `[← map_natCast (algebraMap ℚ_[l] (Om l)), PadicAlgCl.norm_extends, Padic.norm_natCast_lt_one_iff]`.
+-/
 theorem Induces.mem_placesOver (hj : Induces Bw) (h : IsPlaceOver A w) : w ∈ placesOver E l := by
   refine (h (l : 𝓞 E)).mp ?_
   rw [hj.valuation_lt_one_iff]
@@ -130,6 +177,9 @@ variable (Bw) (h : IsPlaceOver A w)
 def weilToGK : ↥(Weil h) →* ↥(GK Bw.Kw) :=
   Bw.e.toMonoidHom.comp (Subgroup.inclusion (Weil_le_Dec h))
 
+/- English proof (translation)
+The claim follows from `Bw.e_comm _ x`.
+-/
 theorem weilToGK_j (σ : ↥(Weil h)) (x : Ω) :
     (weilToGK Bw h σ : GQ l) (Bw.j x) = Bw.j ((σ : G E Ω) x) := Bw.e_comm _ x
 
@@ -139,12 +189,24 @@ variable (l) in
 
 def alpha (σ : ↥(Weil h)) : ℤ := resDeg l w * deg σ
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih => rw [pow_succ, AlgHom.mul_apply, frobUr_root c m h0 hm hc, map_pow, ih, ← pow_mul, pow_succ]`.
+-/
 theorem frobUr_pow_root (n : ℕ) (c : ↥(MaximalUnramifiedExtension l)) (m : ℕ) (h0 : 0 < m) (hm : ¬ l ∣ m) (hc : c ^ m = 1) :
     (frobUr l ^ n) c = c ^ l ^ n := by
   induction n with
   | zero => simp
   | succ n ih => rw [pow_succ, AlgHom.mul_apply, frobUr_root c m h0 hm hc, map_pow, ih, ← pow_mul, pow_succ]
 
+/- English proof (translation)
+Establish `: ((weilToGK Bw h σ : GQ l) : Om l →ₐ[ℚ_[l]] Om l).comp ((MaximalUnramifiedExtension l).val.comp (frobUr l ^ (resDeg l w * b))) = (MaximalUnramifiedExtension l).val.comp (frobUr l ^ (resDeg l w * a))`. Use `kur_algHom_ext fun c m h0 hm hc => ?_` and prove the remaining obligations. Establish `hc' : (c : Om l) ^ m = 1` using `congrArg Subtype.val hc`. Establish `: IsAlgClosed Ω` using `IsAlgClosure.isAlgClosed E`. Establish `: CharZero Ω` using `charZero_of_injective_algebraMap (algebraMap E Ω).injective`.
+
+Establish `: NeZero m` using `⟨h0.ne'⟩`. Take `⟨z, hz⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot Ω m`. Take `⟨i, -, hi⟩` from `(hz.map_of_injective Bw.j.injective).eq_pow_of_pow_eq_one hc'`. Rewrite `hi` using `[← map_pow]`. Establish `hx : A.valuation (z ^ i) ≤ 1`.
+
+Rewrite using `[A.valuation_le_one_iff, hj, hi]`. Conclude with `(norm_eq_one_of_pow_eq_one h0 hc').le`. Establish `h1` using `hσ.2 _ hx`. Rewrite `h1` using `[hj.valuation_lt_one_iff, map_sub, map_pow Bw.j, map_pow Bw.j (z ^ i), ← weilToGK_j Bw h, hi, normV_eq_pow (hj.mem_placesOver h), ← pow_mul, ← pow_mul]`. Simplify using `only [AlgHom.comp_apply, frobUr_pow_root _ c m h0 hm hc, map_pow]`.
+
+Use `eq_of_pow_eq_one_of_norm_sub_lt hm ?_ ?_ h1` and prove the remaining obligations. Rewrite using `[← pow_mul, mul_comm, pow_mul, ← map_pow, IntermediateField.val_mk, hc', map_one, one_pow]`. Rewrite using `[← pow_mul, mul_comm, pow_mul, IntermediateField.val_mk, hc', one_pow]`. Conclude with `AlgHom.congr_fun this c`.
+-/
 theorem weilToGK_frobUr (hj : Induces Bw) (σ : ↥(Weil h)) {a b : ℕ}
     (hσ : ActsAs A (normV w) (σ : G E Ω) a b) (c : ↥(MaximalUnramifiedExtension l)) :
     (weilToGK Bw h σ : GQ l) (((frobUr l ^ (resDeg l w * b)) c : ↥(MaximalUnramifiedExtension l)) : Om l) =
@@ -180,20 +242,34 @@ variable {K : FinExt l} (ρ : Representation LL ↥(GK K) V) [FiniteDimensional 
 
 def phiU : (End LL ↥(Dpst P ρ))ˣ := ((End.isUnit_iff _).mpr (phiD_bijective (P := P) (ρ := ρ))).unit
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coe_phiU : (phiU P ρ : End LL ↥(Dpst P ρ)) = phiD P ρ := rfl
 
+/- English proof (translation)
+The claim follows from `Commute.units_zpow_right (u := phiU P ρ) (phiD_actD P ρ g).symm n`.
+-/
 theorem commute_actD_phiU (g : ↥(GK K)) (n : ℤ) :
     Commute (actD P ρ g) ((phiU P ρ ^ n : (End LL ↥(Dpst P ρ))ˣ) : End LL ↥(Dpst P ρ)) :=
   Commute.units_zpow_right (u := phiU P ρ) (phiD_actD P ρ g).symm n
 
 omit [FiniteDimensional ↥(MaximalUnramifiedExtension l) (DpstUr P ρ)] in
 
+/- English proof (translation)
+Proceed by induction on `n generalizing c with`. Consider the case `zero => simp`. Consider the case `succ n ih => rw [pow_succ, mul_assoc, phiD_mulD, ← mul_assoc, ih, mul_assoc, pow_succ, AlgHom.mul_apply]`.
+-/
 theorem phiD_pow_mulD (n : ℕ) (c : ↥(MaximalUnramifiedExtension l)) :
     phiD P ρ ^ n * mulD P ρ c = mulD P ρ ((frobUr l ^ n) c) * phiD P ρ ^ n := by
   induction n generalizing c with
   | zero => simp
   | succ n ih => rw [pow_succ, mul_assoc, phiD_mulD, ← mul_assoc, ih, mul_assoc, pow_succ, AlgHom.mul_apply]
 
+/- English proof (translation)
+Establish `: CharZero LL` using `charZero_of_injective_algebraMap (algebraMap ℚ_[l] LL).injective`. Establish `hl : (l : LL) ≠ 0` using `Nat.cast_ne_zero.mpr (Fact.out : l.Prime).ne_zero`. Establish `h1 : monD P ρ * ((phiU P ρ)⁻¹ : (End LL ↥(Dpst P ρ))ˣ) = (l : LL)⁻¹ • (((phiU P ρ)⁻¹ : (End LL ↥(Dpst P ρ))ˣ) * monD P ρ)`. Rewrite using `[eq_inv_smul_iff₀ hl, Units.eq_inv_mul_iff_mul_eq, mul_smul_comm, ← mul_assoc, ← smul_mul_assoc, coe_phiU, ← monD_phiD, ← coe_phiU, Units.mul_inv_cancel_right]`. Proceed by induction on `n using Int.induction_on with`.
+
+Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[zpow_add_one, Units.val_mul, ← mul_assoc, ih, smul_mul_assoc, mul_assoc, coe_phiU, monD_phiD, mul_smul_comm, smul_smul, zpow_add_one₀ hl, mul_assoc]`. Consider the case `pred n ih`. Rewrite using `[zpow_sub_one, Units.val_mul, ← mul_assoc, ih, smul_mul_assoc, mul_assoc, h1, mul_smul_comm, smul_smul, zpow_sub_one₀ hl, mul_assoc]`.
+-/
 theorem monD_phiU_zpow (n : ℤ) :
     monD P ρ * ((phiU P ρ ^ n : (End LL ↥(Dpst P ρ))ˣ) : End LL ↥(Dpst P ρ)) =
       (l : LL) ^ n • (((phiU P ρ ^ n : (End LL ↥(Dpst P ρ))ˣ) : End LL ↥(Dpst P ρ)) * monD P ρ) := by
@@ -225,13 +301,22 @@ def weilD : Representation LL ↥(Weil h) ↥(Dpst P ρ) where
       (commute_actD_phiU P ρ _ _).mul_mul_mul_comm]
     rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem weilD_apply (σ : ↥(Weil h)) : weilD Bw h P ρ σ = actD P ρ (weilToGK Bw h σ) *
     ((phiU P ρ ^ (-alpha l σ) : (End LL ↥(Dpst P ρ))ˣ) : End LL ↥(Dpst P ρ)) := rfl
 
+/- English proof (translation)
+Simplify using `[weilD_apply, alpha]`.
+-/
 theorem weilD_ineIncl (σ : ↥(Ine (F := E) A)) :
     weilD Bw h P ρ (ineIncl h σ) = actD P ρ (weilToGK Bw h (ineIncl h σ)) := by
   simp [weilD_apply, alpha]
 
+/- English proof (translation)
+Establish `: CharZero LL` using `charZero_of_injective_algebraMap (algebraMap ℚ_[l] LL).injective`. Establish `hl : (l : LL) ≠ 0` using `Nat.cast_ne_zero.mpr (Fact.out : l.Prime).ne_zero`. Rewrite using `[weilD_apply, ← mul_assoc, monD_actD, mul_assoc, mul_assoc, monD_phiU_zpow, mul_smul_comm, smul_smul, normV_eq_pow (hj.mem_placesOver h), Nat.cast_pow, ← zpow_natCast, ← zpow_mul, ← zpow_add₀ hl, alpha, add_neg_cancel, zpow_zero, one_smul]`.
+-/
 theorem weilD_monD (hj : Induces Bw) (σ : ↥(Weil h)) : weilD Bw h P ρ σ * monD P ρ =
     ((normV w : ℕ) : LL) ^ deg σ • (monD P ρ * weilD Bw h P ρ σ) := by
   have : CharZero LL := charZero_of_injective_algebraMap (algebraMap ℚ_[l] LL).injective
@@ -240,6 +325,11 @@ theorem weilD_monD (hj : Induces Bw) (σ : ↥(Weil h)) : weilD Bw h P ρ σ * m
     normV_eq_pow (hj.mem_placesOver h), Nat.cast_pow, ← zpow_natCast, ← zpow_mul, ← zpow_add₀ hl, alpha,
     add_neg_cancel, zpow_zero, one_smul]
 
+/- English proof (translation)
+Take `⟨a, b, hσ⟩` from `σ.2`. Establish `e : -alpha l σ = ((resDeg l w * b : ℕ) : ℤ) + -((resDeg l w * a : ℕ) : ℤ)`. Rewrite using `[alpha, deg_eq hσ]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Take `⟨c, rfl⟩` from `(Algebra.IsAlgebraic.algHom_bijective (frobUr l ^ (resDeg l w * a))).2 c`. Establish `h1 : (((phiU P ρ ^ (resDeg l w * a))⁻¹ : (End LL ↥(Dpst P ρ))ˣ) : End LL ↥(Dpst P ρ)) * mulD P ρ ((frobUr l ^ (resDeg l w * a)) c) = mulD P ρ c * ((phiU P ρ ^ (resDeg l w * a))⁻¹ : (End LL ↥(Dpst P ρ))ˣ)`. Rewrite using `[Units.inv_mul_eq_iff_eq_mul, ← mul_assoc, Units.eq_mul_inv_iff_mul_eq, Units.val_pow_eq_pow_val, coe_phiU, phiD_pow_mulD]`. Rewrite using `[weilD_apply, e, zpow_add, zpow_neg, zpow_natCast, zpow_natCast, Units.val_mul, mul_assoc, mul_assoc, h1, Units.val_pow_eq_pow_val, coe_phiU, ← mul_assoc (phiD P ρ ^ _), phiD_pow_mulD, ← mul_assoc, ← mul_assoc, actD_mulD P ρ _ _ _ (weilToGK_frobUr hj σ hσ c)]`. Simplify using `only [mul_assoc]`.
+-/
 theorem weilD_mulD (hj : Induces Bw) (σ : ↥(Weil h)) (c : ↥(MaximalUnramifiedExtension l)) :
     weilD Bw h P ρ σ * mulD P ρ c = mulD P ρ c * weilD Bw h P ρ σ := by
   obtain ⟨a, b, hσ⟩ := σ.2
@@ -256,6 +346,11 @@ theorem weilD_mulD (hj : Induces Bw) (σ : ↥(Weil h)) (c : ↥(MaximalUnramifi
     actD_mulD P ρ _ _ _ (weilToGK_frobUr hj σ hσ c)]
   simp only [mul_assoc]
 
+/- English proof (translation)
+Take `⟨K', hK'⟩` from `exists_actD_eq_one (P := P) (ρ := ρ)`. Use `K'.2` as an intermediate fact. Establish `hc : Continuous fun σ : ↥(Ine (F` using `E) A) => (weilToGK Bw h (ineIncl h σ) : GQ l) := continuous_subtype_val.comp (Bw.e_cont.comp (continuous_subtype_val.subtype_mk _))`. Use `.of_open ((IntermediateField.fixingSubgroup_isOpen K'.1).preimage hc) (by simp) fun σ hσ => ?_` and prove the remaining obligations. Rewrite using `[weilD_ineIncl]`.
+
+Use `hK' _ hσ fun c => ?_` and prove the remaining obligations. Rewrite using `[← weilD_ineIncl]`. Conclude with `weilD_mulD Bw h P ρ hj _ c`.
+-/
 theorem isSmooth_weilD (hj : Induces Bw) : IsSmooth (weilD Bw h P ρ) := by
   obtain ⟨K', hK'⟩ := exists_actD_eq_one (P := P) (ρ := ρ)
   have := K'.2

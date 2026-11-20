@@ -5,6 +5,9 @@ import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.Re
 
 open scoped Matrix
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.RealWeil.SchurSchwartz.schur_schwartz | exact GlobalTheory.RealWeil.SchurSchwartz.schur_schwartz | (intros; apply GlobalTheory.RealWeil.SchurSchwartz.schur_schwartz <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.schwartz_unitary_intertwiner_scalar : GlobalTheory.FunPr.Hypotheses₂ → ∀ (l : Type) [Fintype l] (U : GlobalTheory.RealWeil.Sch l →ₗ[ℂ] GlobalTheory.RealWeil.Sch l),
     (∀ (w : l ⊕ l → ℝ) (h h₁ : GlobalTheory.RealWeil.Sch l), ⇑h₁ = GlobalTheory.RealWeil.rhoFun w ⇑h →
       ⇑(U h₁) = GlobalTheory.RealWeil.rhoFun w ⇑(U h)) →

@@ -4,6 +4,17 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 
 open MeasureTheory PositivityTheory.Rg.Tf.Loc
 
+/- English proof (translation)
+Set `S : Setoid G` to `{ r := fun g g' => ∃ h ∈ H, ∃ u ∈ U, g = h * g' * u iseqv := { refl := fun g => ⟨1, H.one_mem, 1, U.one_mem, by simp⟩`. Use symmetry as in `:= by`. Introduce and unpack `g g' ⟨h, hh, u, hu, rfl⟩`. Conclude with `⟨h⁻¹, H.inv_mem hh, u⁻¹, U.inv_mem hu, by group⟩`. Use `trans := by`.
+
+Introduce and unpack `g g' g'' ⟨h₁, hh₁, u₁, hu₁, rfl⟩ ⟨h₂, hh₂, u₂, hu₂, rfl⟩`. Conclude with `⟨h₁ * h₂, H.mul_mem hh₁ hh₂, u₂ * u₁, U.mul_mem hu₂ hu₁, by group⟩ } }`. Set `f : Quotient S → G` to `fun q => if hq : ∃ i ∈ R, Quotient.mk S (x i) = q then x hq.choose else q.out`. Establish `hf : ∀ g, S.r g (f (Quotient.mk S g))`. Introduce `g`.
+
+Distinguish the cases in `hq : ∃ i ∈ R, Quotient.mk S (x i) = Quotient.mk S g`. Simplify using `only [f, dif_pos hq]`. Conclude with `Quotient.exact (hq.choose_spec.2.symm)`. Simplify using `only [f, dif_neg hq]`. Conclude with `Quotient.exact (Quotient.out_eq (Quotient.mk S g)).symm`.
+
+Use `⟨fun g => f (Quotient.mk S g), hf, ?_, ?_⟩` and prove the remaining obligations. Introduce `g h hh u hu`. Establish `: Quotient.mk S (h * g * u) = Quotient.mk S g` using `Quotient.sound ⟨h, hh, u, hu, rfl⟩`. Simplify using `only [this]`. Introduce `i hi`.
+
+Establish `hq : ∃ j ∈ R, Quotient.mk S (x j) = Quotient.mk S (x i)` using `⟨i, hi, rfl⟩`. Simplify using `only [f, dif_pos hq]`. Rewrite using `[hd _ hq.choose_spec.1 i hi (Quotient.exact hq.choose_spec.2)]`.
+-/
 private theorem exists_reps {G ι : Type} [Group G] (H U : Subgroup G) (R : Finset ι) (x : ι → G)
     (hd : ∀ i ∈ R, ∀ j ∈ R, (∃ h ∈ H, ∃ u ∈ U, x i = h * x j * u) → i = j) :
     ∃ r : G → G, (∀ g, ∃ h ∈ H, ∃ u ∈ U, g = h * r g * u) ∧ (∀ g, ∀ h ∈ H, ∀ u ∈ U, r (h * g * u) = r g) ∧
@@ -37,6 +48,67 @@ private theorem exists_reps {G ι : Type} [Group G] (H U : Subgroup G) (R : Fins
     simp only [f, dif_pos hq]
     rw [hd _ hq.choose_spec.1 i hi (Quotient.exact hq.choose_spec.2)]
 
+/- English proof (translation)
+Introduce `G _ _ _ _ _ _ _ _ μ hμ K H hKo hKc hHc hcomm ν hν ι R x V S hV hS hd`. Use `haveI : SFinite μ := inferInstance`. Use `haveI : LocallyCompactSpace H := hHc.locallyCompactSpace`. Use `haveI : SFinite ν := inferInstance`. Use `letI cH : CommGroup H := { (inferInstance : Group H) with mul_comm := fun a b => Subtype.ext (hcomm a a.2 b b.2) }`.
+
+Use `haveI : ν.IsInvInvariant := @Measure.IsHaarMeasure.isInvInvariant_of_regular H cH _ _ _ _ ν hν _ _`. Take `⟨rep, hrep, hinv, hfix⟩` from `exists_reps H K R x hd`. Set `W : G → Set H` to `fun y => {h | y⁻¹ * (h : G) * y ∈ K}`. Establish `hWcont : ∀ y : G, Continuous fun h : H => y⁻¹ * (h : G) * y` using `fun y => by fun_prop`. Establish `hWopen : ∀ y, IsOpen (W y)` using `fun y => hKo.preimage (hWcont y)`.
+
+Establish `hWpos : ∀ y, ν (W y) ≠ 0` using `fun y => ((hWopen y).measure_pos ν ⟨1, by simp [W, K.one_mem]⟩).ne'`. Establish `hWfin : ∀ y, ν (W y) ≠ ⊤`. Introduce `y`. Establish `hc : IsCompact (W y)`. Establish `e : W y = Subtype.val ⁻¹' ((fun k => y * k * y⁻¹) '' (K : Set G))`.
+
+Use extensionality with `h`. Simplify using `only [W, Set.mem_setOf_eq, Set.mem_preimage, Set.mem_image]`. Prove the components needed by the constructor for the conclusion. Introduce `hk`. Conclude with `⟨_, hk, by group⟩`.
+
+Introduce and unpack `⟨k, hk, hk'⟩`. Rewrite using `[← hk']`. Establish `e2 : y⁻¹ * (y * k * y⁻¹) * y = k` using `by group`. Rewrite using `[e2]`. Conclude with `hk`.
+
+Rewrite using `[e]`. Conclude with `hHc.isClosedEmbedding_subtypeVal.isCompact_preimage (hKc.image (by fun_prop))`. Conclude with `hc.measure_lt_top.ne`. Establish `hrepK : ∀ g, ∀ k ∈ K, rep (g * k) = rep g` using `fun g k hk => by`. Simplify using `using hinv g 1 H.one_mem k hk`.
+
+Establish `hrepH : ∀ g, ∀ h ∈ H, rep (h * g) = rep g` using `fun g h hh => by`. Simplify using `using hinv g h hh 1 K.one_mem`. Set `ρ : G → ENNReal` to `fun g => if (rep g)⁻¹ * g ∈ K then (ν (W (rep g)))⁻¹ else 0`. Establish `hρK : ∀ g, ∀ k ∈ K, ρ (g * k) = ρ g`. Introduce `g k hk`.
+
+Simplify using `only [ρ, hrepK g k hk, ← mul_assoc, K.mul_mem_cancel_right hk]`. Establish `hρm : Measurable ρ`. Establish `: IsLocallyConstant ρ`. Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `g`.
+
+Establish `ho : IsOpen ((fun z => g⁻¹ * z) ⁻¹' (K : Set G))` using `hKo.preimage (by fun_prop)`. Use `filter_upwards [ho.mem_nhds (by simp [K.one_mem])] with z hz`. Establish `: z = g * (g⁻¹ * z)` using `by group`. Rewrite using `[this, hρK g _ hz]`. Conclude with `this.continuous.measurable`.
+
+Establish `hρn : IsQuotNormaliser H ν ρ`. Use `⟨hρm, fun g => ?_⟩` and prove the remaining obligations. Take `⟨h0, hh0, k0, hk0, hg⟩` from `hrep g`. Use `set y := rep g with hy`. Establish `key : ∀ h : H, ρ (↑h * g) = (W y).indicator (fun _ => (ν (W y))⁻¹) (⟨h0, hh0⟩ * h)`.
+
+Introduce `h`. Establish `hr : rep (↑h * g) = y` using `hrepH g h h.2`. Simplify using `only [ρ, hr, Set.indicator, W, Set.mem_setOf_eq]`. Establish `e : y⁻¹ * (↑h * g) = (y⁻¹ * ↑(⟨h0, hh0⟩ * h : H) * y) * k0`. Rewrite using `[hg]`.
+
+Simplify using `only [Subgroup.coe_mul]`. Rewrite using `[(hcomm h0 hh0 h h.2).eq]`. Use `group`. Rewrite using `[e, K.mul_mem_cancel_right hk0]`. Repeatedly rewrite using `[key]`.
+
+Rewrite using `[lintegral_indicator_const_comp (measurable_const_mul _) (hWopen y).measurableSet]`. Rewrite using `[measure_preimage_mul, ENNReal.inv_mul_cancel (hWpos y) (hWfin y)]`. Break down `R.eq_empty_or_nonempty with hR | ⟨i0, hi0⟩` into its components or cases. Establish `hS0 : S = ∅`. Use extensionality with `g`.
+
+Simplify using `[hS g, hR]`. Simplify using `[quotIntegral, hS0, hR]`. Establish `hWV : ∀ i ∈ R, W (x i) = V`. Introduce `i hi`. Use extensionality with `h`.
+
+Conclude with `(hV i hi h).symm`. Establish `hV0 : ν V ≠ 0` using `hWV i0 hi0 ▸ hWpos (x i0)`. Establish `hVt : ν V ≠ ⊤` using `hWV i0 hi0 ▸ hWfin (x i0)`. Establish `hSK : ∀ g, ∀ k ∈ K, g ∈ S → g * k ∈ S`. Introduce `g k hk hg`.
+
+Take `⟨i, hi, h, hh, κ, hκ, rfl⟩` from `(hS _).1 hg`. Conclude with `(hS _).2 ⟨i, hi, h, hh, κ * k, K.mul_mem hκ hk, by group⟩`. Establish `hSH : ∀ g, ∀ h ∈ H, h * g ∈ S ↔ g ∈ S`. Introduce `g h hh`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hg`. Take `⟨i, hi, h', hh', κ, hκ, e⟩` from `(hS _).1 hg`. Use `(hS _).2 ⟨i, hi, h⁻¹ * h', H.mul_mem (H.inv_mem hh) hh', κ, hκ, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_assoc (h⁻¹ * h'), mul_assoc h⁻¹, ← mul_assoc h', ← e]`. Use `group`.
+
+Introduce `hg`. Take `⟨i, hi, h', hh', κ, hκ, rfl⟩` from `(hS _).1 hg`. Conclude with `(hS _).2 ⟨i, hi, h * h', H.mul_mem hh hh', κ, hκ, by group⟩`. Establish `hSo : IsOpen S`. Rewrite using `[isOpen_iff_forall_mem_open]`.
+
+Introduce `g hg`. Use `⟨(fun z => g⁻¹ * z) ⁻¹' (K : Set G), ?_, hKo.preimage (by fun_prop), by simp [K.one_mem]⟩` and prove the remaining obligations. Introduce `z hz`. Establish `: z = g * (g⁻¹ * z)` using `by group`. Rewrite using `[this]`.
+
+Conclude with `hSK g _ hz hg`. Set `F : G → ENNReal` to `S.indicator 1`. Establish `hFm : Measurable F` using `measurable_one.indicator hSo.measurableSet`. Establish `hFH : ∀ h ∈ H, ∀ g, F (h * g) = F g`. Introduce `h hh g`.
+
+Distinguish the cases in `hg : g ∈ S`. Simplify using `[F, hg, (hSH g h hh).2 hg]`. Simplify using `[F, hg, mt (hSH g h hh).1 hg]`. Establish `hex : ∃ ρ, IsQuotNormaliser H ν ρ` using `⟨ρ, hρn⟩`. Establish `hswap` using `lintegral_normaliser_eq (μG := μ) hFm hFH hex.choose_spec hρn`.
+
+Establish `hpt : ∀ g, F g * ρ g = ∑ i ∈ R, ((fun z => (x i)⁻¹ * z) ⁻¹' (K : Set G)).indicator (fun _ => (ν V)⁻¹) g`. Introduce `g`. Distinguish the cases in `hg : g ∈ S`. Take `⟨i, hi, h, hh, κ, hκ, rfl⟩` from `(hS _).1 hg`. Establish `hr : rep (h * x i * κ) = x i` using `by rw [hinv _ h hh κ hκ, hfix i hi]`.
+
+Rewrite using `[Finset.sum_eq_single_of_mem i hi]`. Simplify using `[F, Set.indicator_of_mem hg, ρ, hr, hWV i hi, Set.indicator]`. Introduce `j hj hji`. Rewrite using `[Set.indicator_of_notMem]`. Introduce `hm`.
+
+Apply `hji` to reduce the goal to its premises. Use `hd j hj i hi ⟨h, hh, κ * ((x j)⁻¹ * (h * x i * κ))⁻¹, K.mul_mem hκ (K.inv_mem hm), ?_⟩` and prove the remaining obligations. Use `group`. Establish `hF0 : F g = 0` using `Set.indicator_of_notMem hg _`. Rewrite using `[hF0, zero_mul]`.
+
+Use `symm`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `i hi`. Rewrite using `[Set.indicator_of_notMem]`. Introduce `hm`.
+
+Apply `hg` to reduce the goal to its premises. Conclude with `(hS _).2 ⟨i, hi, 1, H.one_mem, (x i)⁻¹ * g, hm, by group⟩`. Establish `hcomp : ∫⁻ g, F g * ρ g ∂μ = R.card * ((ν V)⁻¹ * μ K)`. Rewrite using `[lintegral_congr (fun g => hpt g), lintegral_finset_sum]`. Repeatedly rewrite using `[lintegral_indicator_const (hKo.measurableSet.preimage (measurable_const_mul _)), measure_preimage_mul]`.
+
+Rewrite using `[Finset.sum_const, nsmul_eq_mul]`. Introduce `i _`. Conclude with `measurable_const.indicator (hKo.measurableSet.preimage (measurable_const_mul _))`. Establish `hI : ∫⁻ g, F g * hex.choose g ∂μ = R.card * ((ν V)⁻¹ * μ K)` using `hswap.trans hcomp`. Establish `hfin : (R.card : ENNReal) * ((ν V)⁻¹ * μ K) ≠ ⊤` using `ENNReal.mul_ne_top (ENNReal.natCast_ne_top _) (ENNReal.mul_ne_top (ENNReal.inv_ne_top.2 hV0) hKc.measure_lt_top.ne)`.
+
+Establish `hpt2 : ∀ g, (S.indicator 1 g : ℂ) * (((hex.choose g).toReal : ℝ) : ℂ) = (((F g * hex.choose g).toReal : ℝ) : ℂ)`. Introduce `g`. Apply the tactic sequence `by_cases hg : g ∈ S <;> simp [F, hg]`. Unfold `quotIntegral`. Rewrite using `[dif_pos hex]`.
+
+Repeatedly rewrite using `[hpt2]`. Establish `hm2 : Measurable fun g => F g * hex.choose g` using `hFm.mul hex.choose_spec.1`. Rewrite using `[integral_complex_ofReal, integral_toReal hm2.aemeasurable (ae_lt_top hm2 (hI ▸ hfin)), hI]`. Use `congr 1`. Rewrite using `[ENNReal.toReal_mul, ENNReal.toReal_mul, ENNReal.toReal_inv, ENNReal.toReal_natCast, measureReal_def, measureReal_def]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem UpperTheory.Gal.InertialTypesAlt.L.cosetSum :
     UpperTheory.Gal.InertialTypesAlt.L.CosetSum := by
   intro G _ _ _ _ _ _ _ _ μ hμ K H hKo hKc hHc hcomm ν hν ι R x V S hV hS hd

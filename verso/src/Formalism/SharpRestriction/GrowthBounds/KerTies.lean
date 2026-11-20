@@ -9,14 +9,23 @@ noncomputable section
 
 namespace Formalism.MainNotions.FormalGroupSystem
 
+/- English proof (translation)
+Consider the cases of `j with`. Consider the case `zero => simp [Fills.Pj, NN]`. Consider the case `succ j => simp only [Fills.Pj, Places.withWt, NN]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem Pj_rank {p : ℕ} {G : GAtP p} (Fl : Fills G) (j : ℕ) : (Fl.Pj j).m + 1 = NN G.P.m Fl.t j := by
   cases j with
   | zero => simp [Fills.Pj, NN]
   | succ j => simp only [Fills.Pj, Places.withWt, NN]; omega
 
+/- English proof (translation)
+Use `h.2.1` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem GIdx.ne_two {R : Ranks} {H : Host R} {T p : ℕ} (h : GIdx H T p) : p ≠ 2 := by
   have := h.2.1; omega
 
+/- English proof (translation)
+Introduce `hd`. Establish `hc : H.cls p = .inertClass` using `h.2.2.1`. Unfold `Host.cls primeClass at hc`. Use `split_ifs at hc`.
+-/
 theorem GIdx.ne_d {R : Ranks} {H : Host R} {T p : ℕ} (h : GIdx H T p) : p ≠ H.d := by
   intro hd
   have hc : H.cls p = .inertClass := h.2.2.1

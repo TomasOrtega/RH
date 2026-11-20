@@ -16,6 +16,13 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK.Dbl PositivityTheory.Rg.Sw
 namespace PositivityTheory.SiegelWeilFormula.KFP
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
+/- English proof (translation)
+Take `⟨i1, i2, i3, i4⟩` from `(PositivityTheory.ThKCT.ideleTop F E).1`. Use `haveI : BorelSpace (AE F E) := ⟨rfl⟩`. Use `haveI : BorelSpace (Mx F E d.m d.n) := inferInstanceAs (BorelSpace (Fin d.m → Fin d.n → AE F E))`. Use `haveI : IsTopologicalAddGroup (Mx F E d.m d.n) := inferInstanceAs (IsTopologicalAddGroup (Fin d.m → Fin d.n → AE F E))`. Use `haveI := GlobalTheory.AdelicUnitaryTop.locallyCompact_adele F`.
+
+Use `haveI := GlobalTheory.AdelicUnitaryTop.secondCountable_adele F`. Use `haveI : BorelSpace (AF F) := ⟨rfl⟩`. Use `haveI : BorelSpace (Fin d.m × Fin d.n × Fin 2 → AF F) := Pi.borelSpace`. Set `e : (Fin d.m × Fin d.n × Fin 2 → AF F) ≃ᵐ Mx F E d.m d.n` to `(_root_.PositivityTheory.SiegelWeilFormula.KFock.cmbE_k d).toHomeomorph.toMeasurableEquiv`. Use `haveI : (Measure.map e.symm ν).IsAddHaarMeasure := ContinuousAddEquiv.isAddHaarMeasure_map ν (_root_.PositivityTheory.SiegelWeilFormula.KFock.cmbE_k d).symm`.
+
+Establish `h1 : MemLp (f ∘ e) 2 (Measure.map e.symm ν)`. Establish `hf' : f ∘ d.cmb ∈ schA F (Fin d.m × Fin d.n × Fin 2)` using `Submodule.mem_comap.mp hf`. Conclude with `memLpSchA _ BorelSpace.measurable_eq _ inferInstance hf'`. Establish `h2` using `(e.memLp_map_measure_iff).2 h1`. Rewrite `h2` using `[MeasurableEquiv.map_map_symm]`. Then use the resulting hypothesis.
+-/
 theorem memLp_schM_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) (ν : Measure (Mx F E d.m d.n)) (hν : ν.IsAddHaarMeasure) {f : Mx F E d.m d.n → ℂ}
     (hf : f ∈ d.schM) : MemLp f 2 ν := by
   obtain ⟨i1, i2, i3, i4⟩ := (PositivityTheory.ThKCT.ideleTop F E).1
@@ -38,11 +45,37 @@ def TL_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) : d.Fn →ₗ[�
   toFun := d.T
   map_add' := _root_.PositivityTheory.SiegelWeilFormula.KFock.T_add_k d
   map_smul' a Φ := _root_.PositivityTheory.SiegelWeilFormula.KFock.T_smul_k d a Φ
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `only [Darboux.rho, schr, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem rho_smul_k (w : Matrix (Fin d.m) (Fin d.n ⊕ Fin d.n) (AE F E)) (c : ℂ) (φ : d.Fn) :
     d.dd.rho d.B.ψ w (c • φ) = c • d.dd.rho d.B.ψ w φ := by
   funext x
   simp only [Darboux.rho, schr, Pi.smul_apply, smul_eq_mul]
   ring
+/- English proof (translation)
+Establish `hψ : IsStd d.B.ψ` using `d.ok.good.std`. Establish `hS` using `d.ok.dbl.weil.2.1.toIsSplitting`. Establish `hrho : ∀ w, ∀ φ ∈ d.sch, d.dd.rho d.B.ψ w φ ∈ d.sch` using `fun w φ hφ => GlobalTheory.SchrKeepsSchA.schr_mem_schA F d.B.ψ hψ d.κ _ φ hφ`. Establish `hpow : ∀ i : ℕ, d.om (k ^ i) Ω = χ ^ i • Ω`. Introduce `i`.
+
+Proceed by induction on `i with`. Consider the case `zero => simp`. Consider the case `succ i ih`. Rewrite using `[pow_succ, map_mul, Module.End.mul_apply, hk, map_smul, ih, smul_smul, pow_succ, mul_comm]`. Establish `hact : ∀ i : ℕ, actB (cA σ) (k ^ i) (actB (cA σ) (k⁻¹ ^ i) v) = v`.
+
+Introduce `i`. Establish `e1 : k ^ i * k⁻¹ ^ i = 1` using `by rw [inv_pow, mul_inv_cancel]`. Simplify using `only [actB]`. Rewrite using `[Matrix.mul_assoc, ← Matrix.transpose_mul, ← Units.val_mul, ← Subgroup.coe_mul, e1]`. Simplify using the standard rewrite rules.
+
+Use `set Ψ := d.dd.rho d.B.ψ v Ω with hΨdef`. Establish `hΨ : Ψ ∈ d.sch` using `hrho v Ω hΩ`. Establish `hterm : ∀ i : ℕ, (star χ)⁻¹ ^ i * _root_.PositivityTheory.SiegelWeilFormula.KFP.B_k ν Φ (d.dd.rho d.B.ψ (actB (cA σ) (k⁻¹ ^ i) v) Ω) = _root_.PositivityTheory.SiegelWeilFormula.KFP.B_k ν (d.om (k ^ i) Φ) Ψ`. Introduce `i`. Establish `h1` using `hU F E σ d ν hν (k ^ i) Φ hΦ (d.dd.rho d.B.ψ (actB (cA σ) (k⁻¹ ^ i) v) Ω) (hrho (actB (cA σ) (k⁻¹ ^ i) v) Ω hΩ)`.
+
+Establish `h2 : d.om (k ^ i) (d.dd.rho d.B.ψ (actB (cA σ) (k⁻¹ ^ i) v) Ω) = χ ^ i • Ψ`. Rewrite using `[hS.impl _ _ Ω hΩ, hact, hpow, _root_.PositivityTheory.SiegelWeilFormula.KFP.rho_smul_k]`. Rewrite `h1` using `[h2, _root_.PositivityTheory.SiegelWeilFormula.KFock.T_smul_k]`. Unfold `_root_.PositivityTheory.SiegelWeilFormula.KFP.B_k`. Rewrite using `[← h1]`.
+
+Establish `e3 : ∀ X, d.T (d.om (k ^ i) Φ) X * star ((χ ^ i • d.T Ψ) X) = star χ ^ i * (d.T (d.om (k ^ i) Φ) X * star (d.T Ψ X))`. Introduce `X`. Rewrite using `[Pi.smul_apply, smul_eq_mul, star_mul', star_pow]`. Expand and normalize the polynomial expressions, which then agree. Repeatedly rewrite using `[e3]`.
+
+Rewrite using `[integral_const_mul, ← mul_assoc, ← mul_pow, inv_mul_cancel₀ (star_ne_zero.2 hχ), one_pow, one_mul]`. Establish `hint : ∀ i : ℕ, Integrable (fun X => d.T (d.om (k ^ i) Φ) X * star (d.T Ψ X)) ν`. Introduce `i`. Establish `hA` using `_root_.PositivityTheory.SiegelWeilFormula.KFP.memLp_schM_k d ν hν ((hT.1 F E σ d).1 (d.om (k ^ i) Φ) (hS.pres (k ^ i) Φ hΦ))`. Establish `hB` using `(_root_.PositivityTheory.SiegelWeilFormula.KFP.memLp_schM_k d ν hν ((hT.1 F E σ d).1 Ψ hΨ)).star`.
+
+Conclude with `hA.integrable_mul hB`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[mul_assoc, hterm]`. Use `_ = ∫ X, ∑ i ∈ Finset.range (q.natDegree + 1), q.coeff i * (d.T (d.om (k ^ i) Φ) X * star (d.T Ψ X)) ∂ν := by`.
+
+Unfold `_root_.PositivityTheory.SiegelWeilFormula.KFP.B_k`. Rewrite using `[integral_finsetSum _ fun i _ => (hint i).const_mul _]`. Repeatedly rewrite using `[integral_const_mul]`. Use `_ = ∫ X, _root_.PositivityTheory.SiegelWeilFormula.KFP.TL_k d (∑ i ∈ Finset.range (q.natDegree + 1), q.coeff i • d.om (k ^ i) Φ) X * star (d.T Ψ X) ∂ν := by`. Use `congr 1`.
+
+Use function extensionality and compare the values at `X`. Rewrite using `[map_sum, Finset.sum_apply, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, Pi.smul_apply, smul_eq_mul, mul_assoc]`. Both sides reduce to the same expression.
+
+Use `_ = 0 := by`. Rewrite using `[hq, map_zero]`. Simplify using the standard rewrite rules.
+-/
 theorem B_rel'_k (hT : _root_.PositivityTheory.SiegelWeilFormula.TAll_k) (hU : _root_.PositivityTheory.SiegelWeilFormula.TUnit_k) {ν : Measure (Mx F E d.m d.n)} (hν : ν.IsAddHaarMeasure) {k : d.G} {χ : ℂ}
     (hχ : χ ≠ 0) {Ω : d.Fn} (hΩ : Ω ∈ d.sch) (hk : d.om k Ω = χ • Ω) {Φ : d.Fn} (hΦ : Φ ∈ d.sch) (q : Polynomial ℂ)
     (hq : ∑ i ∈ Finset.range (q.natDegree + 1), q.coeff i • d.om (k ^ i) Φ = 0)

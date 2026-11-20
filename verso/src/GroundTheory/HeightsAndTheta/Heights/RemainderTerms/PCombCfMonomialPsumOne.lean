@@ -8,12 +8,22 @@ open MvPolynomial Finset Comb
 
 namespace CombCfMonomialPsumOne
 
+/- English proof (translation)
+Rewrite using `[Finset.sum_update_of_mem (Finset.mem_univ i), Finset.sum_eq_add_sum_sdiff_singleton_of_mem (Finset.mem_univ i) l]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem sum_update_sub_one {m : ℕ} (l : Fin m → ℕ) (i : Fin m) (h : 1 ≤ l i) :
     ∑ j, Function.update l i (l i - 1) j + 1 = ∑ j, l j := by
   rw [Finset.sum_update_of_mem (Finset.mem_univ i),
     Finset.sum_eq_add_sum_sdiff_singleton_of_mem (Finset.mem_univ i) l]
   omega
 
+/- English proof (translation)
+Establish `hf : (fun j => ((Function.update l i (l i - 1) j - v j).factorial : ℚ)) = Function.update (fun j => ((l j - v j).factorial : ℚ)) i ((l i - 1 - v i).factorial : ℚ)`. Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Simplify using the standard rewrite rules.
+
+Simplify using `[Function.update_of_ne hj]`. Rewrite using `[hf, Finset.prod_update_of_mem (Finset.mem_univ i), Finset.prod_eq_mul_prod_sdiff_singleton_of_mem (Finset.mem_univ i) (fun j => ((l j - v j).factorial : ℚ))]`. Establish `h : l i - v i = (l i - 1 - v i) + 1` using `by omega`. Rewrite using `[h, Nat.factorial_succ]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem prod_factorial_update_sub_one {m : ℕ} (l v : Fin m → ℕ) (i : Fin m) (hi : v i < l i) :
     (∏ j, ((Function.update l i (l i - 1) j - v j).factorial : ℚ)) * ((l i - v i : ℕ) : ℚ) =
       ∏ j, ((l j - v j).factorial : ℚ) := by
@@ -35,6 +45,35 @@ end CombCfMonomialPsumOne
 
 open CombCfMonomialPsumOne in
 
+/- English proof (translation)
+Introduce `m n v l`. Proceed by induction on `n generalizing l with`. Consider the case `zero`. Rewrite using `[pow_zero, mul_one, cf_monomial]`. Distinguish the cases in `h : l = v`.
+
+Substitute `h` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[if_neg h, if_neg]`. Introduce and unpack `⟨hle, hs⟩`. Apply `h` to reduce the goal to its premises.
+
+Use function extensionality and compare the values at `i`. Use `(Finset.sum_eq_sum_iff_of_le (s := Finset.univ) (fun i _ => hle i)).1 (by simpa using hs.symm)` as an intermediate fact. Conclude with `(this i (Finset.mem_univ _)).symm`. Consider the case `succ n ih`. Rewrite using `[pow_succ, ← mul_assoc, cf_mul_psum]`.
+
+Simplify using `only [ih]`. Distinguish the cases in `hC : (∀ i, v i ≤ l i) ∧ ∑ i, l i = ∑ i, v i + (n + 1)`. Rewrite using `[if_pos hC]`. Take `⟨hle, hs⟩` from `hC`. Establish `hP : (∏ j, ((l j - v j).factorial : ℚ)) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun j _ => by positivity`.
+
+Rewrite using `[Finset.sum_congr rfl (g := fun i => (n.factorial : ℚ) * ((l i - v i : ℕ) : ℚ) / ∏ j, ((l j - v j).factorial : ℚ)) ?_]`. Rewrite using `[← Finset.sum_div, ← Finset.mul_sum, ← Nat.cast_sum]`. Establish `hsub : ∑ i, (l i - v i) + ∑ i, v i = ∑ i, l i`. Rewrite using `[← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun i _ => Nat.sub_add_cancel (hle i)`.
+
+Rewrite using `[show ∑ i, (l i - v i) = n + 1 by omega, Nat.factorial_succ]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Introduce `i _`. Distinguish the cases in `hi : v i < l i`.
+
+Establish `h1 : 1 ≤ l i` using `by omega`. Establish `hle' : ∀ j, v j ≤ Function.update l i (l i - 1) j` using `fun j => by`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Simplify using the standard rewrite rules.
+
+Use linear arithmetic over natural numbers and integers. Simplify using `[Function.update_of_ne hj, hle j]`. Establish `hs'` using `sum_update_sub_one l i h1`. Rewrite using `[if_pos h1, if_pos ⟨hle', by omega⟩, ← prod_factorial_update_sub_one l v i hi]`. Establish `hne : ((l i - v i : ℕ) : ℚ) ≠ 0` using `by exact_mod_cast (by omega : l i - v i ≠ 0)`.
+
+Establish `hQ : (∏ j, ((Function.update l i (l i - 1) j - v j).factorial : ℚ)) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun j _ => by positivity`. Clear the denominators using the available nonvanishing facts. Establish `heq : l i = v i` using `le_antisymm (not_lt.1 hi) (hle i)`. Rewrite using `[show ((l i - v i : ℕ) : ℚ) = 0 by rw [heq]; simp, mul_zero, zero_div]`. Distinguish the cases in `h1 : 1 ≤ l i`.
+
+Rewrite using `[if_pos h1, if_neg]`. Introduce and unpack `⟨h, _⟩`. Use `h i` as an intermediate fact. Simplify using `at this`. Use linear arithmetic over natural numbers and integers.
+
+Rewrite using `[if_neg h1]`. Rewrite using `[if_neg hC]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Distinguish the cases in `h1 : 1 ≤ l i`. Rewrite using `[if_pos h1]`.
+
+Distinguish the cases in `h2 : (∀ j, v j ≤ Function.update l i (l i - 1) j) ∧ ∑ j, Function.update l i (l i - 1) j = ∑ j, v j + n`. It suffices to derive a contradiction. Apply `hC` to reduce the goal to its premises. Take `⟨hle', hs'⟩` from `h2`. Establish `hle : ∀ j, v j ≤ l j` using `fun j => (hle' j).trans (by`.
+
+Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Function.update_of_ne hj])`. Use `sum_update_sub_one l i h1` as an intermediate fact.
+
+Conclude with `⟨hle, by omega⟩`. Rewrite using `[if_neg h2]`. Rewrite using `[if_neg h1]`.
+-/
 theorem CombCfMonomialPsumOne.proof : CombCfMonomialPsumOne.Statement := by
   intro m n v l
   induction n generalizing l with

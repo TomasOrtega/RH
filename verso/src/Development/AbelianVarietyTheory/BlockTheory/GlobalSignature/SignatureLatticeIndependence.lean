@@ -28,11 +28,20 @@ def CarriesLattice (W₁ W₂ : HSpace E) (e : W₁.V ≃ₗ[E] W₂.V) : Prop :
 def frameMatrix (W₁ W₂ : HSpace E) (e : W₁.V ≃ₗ[E] W₂.V) : Matrix (Fin W₂.rank) (Fin W₁.rank) E :=
   LinearMap.toMatrix W₁.frame W₂.frame e.toLinearMap
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example (W : HSpace E) : withLattice W W.L0 W.standardTuple_isLattice W.baseLattice_isUnimodular = W := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example (W : HSpace E) (L : Submodule (𝓞 E) W.V) (hL : Submodule.IsLattice E L)
     (hU : Formalism.HermitianLatticesTheory.IsUnimodular W.hT L) : (withLattice W L hL hU).gram = W.gram := rfl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ _ => rfl, fun _ => Iff.rfl, by simp [frameMatrix]⟩`.
+-/
 example (W : HSpace E) : IsIsometry W W (LinearEquiv.refl E W.V) ∧ CarriesLattice W W (LinearEquiv.refl E W.V) ∧
     frameMatrix W W (LinearEquiv.refl E W.V) = 1 :=
   ⟨fun _ _ => rfl, fun _ => Iff.rfl, by simp [frameMatrix]⟩
@@ -57,6 +66,9 @@ def IsConjugationBy {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [C
     (C : Matrix (Fin M₂) (Fin M₁) E) (Φ : HA R σ J₁ → HA R σ J₂) : Prop :=
   ∀ h : HA R σ J₁, Intertwines (baseChange R C) (pointMatrix R σ J₁ h) (pointMatrix R σ J₂ (Φ h))
 
+/- English proof (translation)
+Introduce `h`. Rewrite using `[Intertwines, baseChange, Matrix.map_one _ (map_zero _) (map_one _), Matrix.mul_one, Matrix.one_mul]`. Both sides reduce to the same expression.
+-/
 example {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [CommRing R] [Algebra F R]
     (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E) : IsConjugationBy R σ J J 1 id := by
   intro h

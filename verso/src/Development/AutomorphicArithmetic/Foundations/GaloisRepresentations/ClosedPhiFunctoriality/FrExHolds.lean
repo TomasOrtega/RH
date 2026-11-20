@@ -8,6 +8,15 @@ open NumberField IsDedekindDomain Formalism Formalism.ConjugateSelfDual Reciproc
 open scoped Formalism.Per NNReal
 open UpperTheory.Gal.ClosedPhiFromClosedTrace
 
+/- English proof (translation)
+Introduce `l _ K L₀ bk τp hτp P AI T a hL₀ r Cl Cv J hCl hcr`. Use `haveI := K.2`. Set `N : ℕ` to `Finset.univ.sup fun τ' : ↥K.1 →ₐ[ℚ_[l]] Om l => ((J τ').map Int.natAbs).sup`. Establish `hN : ∀ τ', ∀ n ∈ J τ', |n| ≤ (N : ℤ)`. Introduce `τ' n hn`.
+
+Rewrite using `[Int.abs_eq_natAbs]`. Establish `h1 : n.natAbs ≤ ((J τ').map Int.natAbs).sup` using `Multiset.le_sup (Multiset.mem_map_of_mem _ hn)`. Establish `h2 : ((J τ').map Int.natAbs).sup ≤ N` using `Finset.le_sup (f := fun τ' : ↥K.1 →ₐ[ℚ_[l]] Om l => ((J τ').map Int.natAbs).sup) (Finset.mem_univ τ')`. Conclude with `h1.trans h2` after adjusting the coercions. Establish `hsstCl : ∀ ρ₁ ∈ Cl, ∀ (L : FinExt l) (r' : ↥(GK K) →* GL (Fin a) ↥L.1) (R : Representation ↥L.1 ↥(GK K) (Fin a → ↥L.1)), L₀.1 ≤ L.1 → (∀ g v, R g v = (r' g).val *ᵥ v) → (∀ g i j, (((r' g).val i j : ↥L.1) : Om l) = (ρ₁ g).val i j) → IsSst P R` using `fun ρ₁ h L r' R h1 h2 h3 => (hCl ρ₁ h L r' R h1 h2 h3).1`.
+
+Establish `hsst : ∀ m, IsSst P (qRep (Cv.tw.ρ' m))` using `fun m => (GlobalTheory.T.isSemistable_latticeInMatrixAlgebraLayer l K L₀ P AI T a Cl _ (Cv.tw.ρ' m) (Cv.lay m)).1 hsstCl`. Establish `hfr : ∀ m, ∃ F : Frame bk N (Cv.tw.d' m) (fun g => (Cv.tw.ρ' m g).val), F.IsDR ∧ (IsCrys (P.PD K) (qRep (Cv.tw.ρ' m)) → F.IsCr)` using `fun m => GlobalTheory.T.exists_breuilKisinFrame_semistable_boundedJumps l K bk τp hτp P AI T N _ (Cv.tw.ρ' m) (Cv.cont' m) (hsst m) (GlobalTheory.T.layer_DdR_bounds_alt l K L₀ P AI T a Cl J N hL₀ hN _ (Cv.tw.ρ' m) (Cv.lay m) hCl)`. Use `choose F hFdr hFcr using hfr`. Take `⟨F₀, -, hF₀cr, rr, hlink⟩` from `GlobalTheory.T.exists_deRhamFrame_limitLattice_breuilKisinTower l K bk τp hτp Cv.d N Cv.ρ Cv.tw F hFdr`. Establish `hFc : ∀ m, (F m).IsCr` using `fun m => hFcr m ((GlobalTheory.T.isSemistable_latticeInMatrixAlgebraLayer l K L₀ P AI T a Cl _ (Cv.tw.ρ' m) (Cv.lay m)).2 hcr)`.
+
+Conclude with `⟨N, F, F₀, rr, hFc, hF₀cr hFc, hlink⟩`.
+-/
 theorem UpperTheory.Gal.ClosedPhiFromClosedTrace.frEx_holds :
     FrEx := by
   intro l _ K L₀ bk τp hτp P AI T a hL₀ r Cl Cv J hCl hcr

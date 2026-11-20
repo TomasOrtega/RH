@@ -12,6 +12,9 @@ section Val
 
 variable {K : Type} [Field K] [NumberField K] [StarRing K]
 
+/- English proof (translation)
+Unfold `Formalism.DivisionValues.vw`. Rewrite using `[show (x : K) = algebraMap (𝓞 K) K x from rfl, ← FractionalIdeal.coeIdeal_span_singleton, FractionalIdeal.count_coe]`. Simplify using `using hx`.
+-/
 private theorem vw_ringOfIntegers_eq_count_factors_span (w : Pl K) (x : 𝓞 K) (hx : x ≠ 0) :
     vw w (x : K) = ((Associates.mk w.asIdeal).count (Associates.mk (Ideal.span {x})).factors : ℤ) := by
   unfold Formalism.DivisionValues.vw
@@ -19,6 +22,9 @@ private theorem vw_ringOfIntegers_eq_count_factors_span (w : Pl K) (x : 𝓞 K) 
     FractionalIdeal.count_coe]
   simpa using hx
 
+/- English proof (translation)
+Rewrite using `[vw_ringOfIntegers_eq_count_factors_span w x hx]`. Use `first`. Consider the case `exact w.intValuation_if_neg hx`. Consider the case `(rw [w.intValuation_if_neg hx])`. Consider the case `(rw [IsDedekindDomain.HeightOneSpectrum.intValuation_def, if_neg hx])`.
+-/
 theorem intValuation_eq_exp (w : Pl K) (x : 𝓞 K) (hx : x ≠ 0) :
     w.intValuation x = WithZero.exp (-(vw w (x : K))) := by
   rw [vw_ringOfIntegers_eq_count_factors_span w x hx]
@@ -27,11 +33,19 @@ theorem intValuation_eq_exp (w : Pl K) (x : 𝓞 K) (hx : x ≠ 0) :
   | (rw [w.intValuation_if_neg hx])
   | (rw [IsDedekindDomain.HeightOneSpectrum.intValuation_def, if_neg hx])
 
+/- English proof (translation)
+Use `first`. Consider the case `exact WithZero.exp_le_exp.mp h`. Consider the case `simpa [WithZero.exp] using h`.
+-/
 private theorem le_of_withZero_exp_le_exp {a b : ℤ} (h : WithZero.exp a ≤ WithZero.exp b) : a ≤ b := by
   first
   | exact WithZero.exp_le_exp.mp h
   | simpa [WithZero.exp] using h
 
+/- English proof (translation)
+Establish `h` using `w.intValuation.map_add x y`. Rewrite `h` using `[intValuation_eq_exp w x hx, intValuation_eq_exp w y hy, intValuation_eq_exp w (x + y) hxy]`. Break down `le_max_iff.mp h with h1 | h1` into its components or cases. Establish `h2` using `le_of_withZero_exp_le_exp h1`. Conclude with `min_le_of_left_le (by omega)`.
+
+Establish `h2` using `le_of_withZero_exp_le_exp h1`. Conclude with `min_le_of_right_le (by omega)`.
+-/
 theorem vw_add_int (w : Pl K) (x y : 𝓞 K) (hx : x ≠ 0) (hy : y ≠ 0) (hxy : x + y ≠ 0) :
     min (vw w (x : K)) (vw w (y : K)) ≤ vw w ((x + y : 𝓞 K) : K) := by
   have h := w.intValuation.map_add x y
@@ -43,6 +57,9 @@ theorem vw_add_int (w : Pl K) (x y : 𝓞 K) (hx : x ≠ 0) (hy : y ≠ 0) (hxy 
   · have h2 := le_of_withZero_exp_le_exp h1
     exact min_le_of_right_le (by omega)
 
+/- English proof (translation)
+Unfold `Formalism.DivisionValues.vw`. Rewrite using `[← FractionalIdeal.spanSingleton_mul_spanSingleton, FractionalIdeal.count_mul]`. Conclude with `fun h => ha (FractionalIdeal.spanSingleton_eq_zero_iff.mp h)`. Conclude with `fun h => hb (FractionalIdeal.spanSingleton_eq_zero_iff.mp h)`.
+-/
 private theorem vw_mul_lemma (w : Pl K) (a b : K) (ha : a ≠ 0) (hb : b ≠ 0) :
     vw w (a * b) = vw w a + vw w b := by
   unfold Formalism.DivisionValues.vw
@@ -50,18 +67,35 @@ private theorem vw_mul_lemma (w : Pl K) (a b : K) (ha : a ≠ 0) (hb : b ≠ 0) 
   · exact fun h => ha (FractionalIdeal.spanSingleton_eq_zero_iff.mp h)
   · exact fun h => hb (FractionalIdeal.spanSingleton_eq_zero_iff.mp h)
 
+/- English proof (translation)
+Establish `h1` using `vw_mul_lemma w (a / b) b (div_ne_zero ha hb) hb`. Rewrite `h1` using `[div_mul_cancel₀ a hb]`. Use linear arithmetic over natural numbers and integers.
+-/
 private theorem vw_div_eq_sub_of_ne_zero (w : Pl K) (a b : K) (ha : a ≠ 0) (hb : b ≠ 0) :
     vw w (a / b) = vw w a - vw w b := by
   have h1 := vw_mul_lemma w (a / b) b (div_ne_zero ha hb) hb
   rw [div_mul_cancel₀ a hb] at h1
   omega
 
+/- English proof (translation)
+The claim follows from `vw_add_int w x y hx hy hxy`.
+-/
 private theorem min_vw_le_vw_add_of_ne_zero (w : Pl K) (x y : 𝓞 K) (hx : x ≠ 0) (hy : y ≠ 0)
     (hxy : x + y ≠ 0) :
     min (vw w (algebraMap (𝓞 K) K x)) (vw w (algebraMap (𝓞 K) K y)) ≤
       vw w (algebraMap (𝓞 K) K (x + y)) :=
   vw_add_int w x y hx hy hxy
 
+/- English proof (translation)
+Take `⟨x, d, hd, rfl⟩` from `IsFractionRing.div_surjective (A := 𝓞 K) a`. Take `⟨y, e, he, rfl⟩` from `IsFractionRing.div_surjective (A := 𝓞 K) b`. Establish `hd0 : algebraMap (𝓞 K) K d ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors hd`. Establish `he0 : algebraMap (𝓞 K) K e ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors he`. Establish `hde : algebraMap (𝓞 K) K (d * e) ≠ 0`.
+
+Rewrite using `[map_mul]`. Conclude with `mul_ne_zero hd0 he0`. Establish `h1 : algebraMap (𝓞 K) K x / algebraMap (𝓞 K) K d = algebraMap (𝓞 K) K (x * e) / algebraMap (𝓞 K) K (d * e)`. Rewrite using `[div_eq_div_iff hd0 hde, map_mul, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `h2 : algebraMap (𝓞 K) K y / algebraMap (𝓞 K) K e = algebraMap (𝓞 K) K (y * d) / algebraMap (𝓞 K) K (d * e)`. Rewrite using `[div_eq_div_iff he0 hde, map_mul, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `ha`, `hab`, the goal using `[h1]`. Rewrite `hb`, `hab`, the goal using `[h2]`.
+
+Rewrite `hab`, the goal using `[← add_div, ← map_add (algebraMap (𝓞 K) K)]`. Establish `nz : ∀ z : 𝓞 K, z ≠ 0 → algebraMap (𝓞 K) K z ≠ 0` using `fun z hz h => hz ((IsFractionRing.injective (𝓞 K) K) (by rw [h, map_zero]))`. Establish `hxe : x * e ≠ 0` using `fun h => ha (by rw [h, map_zero, zero_div])`. Establish `hyd : y * d ≠ 0` using `fun h => hb (by rw [h, map_zero, zero_div])`. Establish `hs : x * e + y * d ≠ 0` using `fun h => hab (by rw [h, map_zero, zero_div])`.
+
+Rewrite using `[vw_div_eq_sub_of_ne_zero w _ _ (nz _ hxe) hde, vw_div_eq_sub_of_ne_zero w _ _ (nz _ hyd) hde, vw_div_eq_sub_of_ne_zero w _ _ (nz _ hs) hde, min_sub_sub_right]`. Conclude with `sub_le_sub_right (min_vw_le_vw_add_of_ne_zero w _ _ hxe hyd hs) _`.
+-/
 theorem vw_add (w : Pl K) (a b : K) (ha : a ≠ 0) (hb : b ≠ 0) (hab : a + b ≠ 0) :
     min (vw w a) (vw w b) ≤ vw w (a + b) := by
   obtain ⟨x, d, hd, rfl⟩ := IsFractionRing.div_surjective (A := 𝓞 K) a
@@ -90,6 +124,15 @@ theorem vw_add (w : Pl K) (a b : K) (ha : a ≠ 0) (hb : b ≠ 0) (hab : a + b �
 
 def GeV (w : Pl K) (c : ℝ) (x : K) : Prop := x = 0 ∨ c ≤ (vw w x : ℝ)
 
+/- English proof (translation)
+Unfold `GeV at *`. Break down `hx with hx | hx` into its components or cases. Rewrite using `[hx, zero_add]`. Conclude with `hy`. Break down `hy with hy | hy` into its components or cases.
+
+Rewrite using `[hy, add_zero]`. Conclude with `Or.inr hx`. Distinguish the cases in `hx0 : x = 0`. Rewrite using `[hx0, zero_add]`. Conclude with `Or.inr hy`.
+
+Distinguish the cases in `hy0 : y = 0`. Rewrite using `[hy0, add_zero]`. Conclude with `Or.inr hx`. Distinguish the cases in `hxy : x + y = 0`. Conclude with `Or.inl hxy`.
+
+Use `right`. Establish `h` using `vw_add w x y hx0 hy0 hxy`. Establish `h2 : min (vw w x : ℝ) (vw w y : ℝ) ≤ (vw w (x + y) : ℝ)` using `by exact_mod_cast h`. Conclude with `le_trans (le_min hx hy) h2`.
+-/
 theorem GeV.add {w : Pl K} {c : ℝ} {x y : K} (hx : GeV w c x) (hy : GeV w c y) :
     GeV w c (x + y) := by
   unfold GeV at *
@@ -108,10 +151,22 @@ theorem GeV.add {w : Pl K} {c : ℝ} {x y : K} (hx : GeV w c x) (hy : GeV w c y)
   have h2 : min (vw w x : ℝ) (vw w y : ℝ) ≤ (vw w (x + y) : ℝ) := by exact_mod_cast h
   exact le_trans (le_min hx hy) h2
 
+/- English proof (translation)
+Conclude with `Finset.sum_induction f (GeV w c) (fun a b ha hb => GeV.add ha hb) (Or.inl rfl) h`.
+-/
 theorem GeV.sum {w : Pl K} {c : ℝ} {ι : Type} (s : Finset ι) (f : ι → K)
     (h : ∀ i ∈ s, GeV w c (f i)) : GeV w c (∑ i ∈ s, f i) := by
   exact Finset.sum_induction f (GeV w c) (fun a b ha hb => GeV.add ha hb) (Or.inl rfl) h
 
+/- English proof (translation)
+Unfold `GeV at *`. Break down `hx with hx | hx` into its components or cases. Use `left`. Rewrite using `[hx, zero_mul]`. Break down `hy with hy | hy` into its components or cases.
+
+Use `left`. Rewrite using `[hy, mul_zero]`. Distinguish the cases in `hx0 : x = 0`. Use `left`. Rewrite using `[hx0, zero_mul]`.
+
+Distinguish the cases in `hy0 : y = 0`. Use `left`. Rewrite using `[hy0, mul_zero]`. Use `right`. Rewrite using `[vw_mul_lemma w x y hx0 hy0]`.
+
+Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem GeV.mul {w : Pl K} {c c' : ℝ} {x y : K} (hx : GeV w c x) (hy : GeV w c' y) :
     GeV w (c + c') (x * y) := by
   unfold GeV at *
@@ -128,16 +183,29 @@ theorem GeV.mul {w : Pl K} {c c' : ℝ} {x y : K} (hx : GeV w c x) (hy : GeV w c
   push_cast
   linarith
 
+/- English proof (translation)
+Establish `h` using `GeV.mul hx hy`. Rewrite `h` using `[add_zero]`. Then use the resulting hypothesis.
+-/
 theorem GeV.mul0 {w : Pl K} {x y : K} (hx : GeV w 0 x) (hy : GeV w 0 y) : GeV w 0 (x * y) := by
   have h := GeV.mul hx hy
   rwa [add_zero] at h
 
+/- English proof (translation)
+Unfold `GeV`. Use `right`. Rewrite using `[h]`. Simplify using the standard rewrite rules.
+-/
 theorem GeV.of_eq_zero {w : Pl K} {x : K} (h : vw w x = 0) : GeV w 0 x := by
   unfold GeV
   right
   rw [h]
   simp
 
+/- English proof (translation)
+Unfold `GeV`. Distinguish the cases in `hx : x = 0`. Use `left`. Rewrite using `[hx]`. Use `first`.
+
+Consider the case `rfl`. Consider the case `simp`. Consider the case `exact map_zero (algebraMap (𝓞 K) K)`. Use `right`. Rewrite using `[vw_ringOfIntegers_eq_count_factors_span w x hx]`.
+
+Check the signs of the components of the expression.
+-/
 theorem GeV.int (w : Pl K) (x : 𝓞 K) : GeV w 0 (x : K) := by
   unfold GeV
   by_cases hx : x = 0
@@ -151,11 +219,19 @@ theorem GeV.int (w : Pl K) (x : 𝓞 K) : GeV w 0 (x : K) := by
   rw [vw_ringOfIntegers_eq_count_factors_span w x hx]
   positivity
 
+/- English proof (translation)
+Apply `GeV.of_eq_zero` to reduce the goal to its premises. Establish `h0` using `vw_pow w (1 : K) one_ne_zero 0`. Simplify using `using h0`.
+-/
 theorem GeV.one (w : Pl K) : GeV w 0 (1 : K) := by
   apply GeV.of_eq_zero
   have h0 := vw_pow w (1 : K) one_ne_zero 0
   simpa using h0
 
+/- English proof (translation)
+Apply `GeV.of_eq_zero` to reduce the goal to its premises. Establish `h1` using `vw_pow w (-1 : K) (neg_ne_zero.mpr one_ne_zero) 2`. Establish `h0` using `vw_pow w (1 : K) one_ne_zero 0`. Simplify using `at h0`. Rewrite `h1` using `[neg_one_sq, h0]`.
+
+Move the coercions through the operations in `at h1`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem GeV.negOne (w : Pl K) : GeV w 0 (-1 : K) := by
   apply GeV.of_eq_zero
   have h1 := vw_pow w (-1 : K) (neg_ne_zero.mpr one_ne_zero) 2
@@ -165,12 +241,18 @@ theorem GeV.negOne (w : Pl K) : GeV w 0 (-1 : K) := by
   push_cast at h1
   omega
 
+/- English proof (translation)
+Rewrite using `[sub_eq_add_neg, neg_eq_neg_one_mul]`. Conclude with `GeV.add hx (GeV.mul0 (GeV.negOne w) hy)`.
+-/
 theorem GeV.sub {w : Pl K} {x y : K} (hx : GeV w 0 x) (hy : GeV w 0 y) : GeV w 0 (x - y) := by
   rw [sub_eq_add_neg, neg_eq_neg_one_mul]
   exact GeV.add hx (GeV.mul0 (GeV.negOne w) hy)
 
 end Val
 
+/- English proof (translation)
+Unfold `ValAdd`. Introduce `K _ _ _ w a b ha hb hab`. Conclude with `vw_add w a b ha hb hab`.
+-/
 theorem valuation_add : ValAdd := by
   unfold ValAdd
   intro K _ _ _ w a b ha hb hab

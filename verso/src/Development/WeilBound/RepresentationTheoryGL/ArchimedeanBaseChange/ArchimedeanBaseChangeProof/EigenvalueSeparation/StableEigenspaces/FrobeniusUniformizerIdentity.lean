@@ -12,6 +12,9 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PairSp
 
 namespace PositivityTheory.Rg.BcB.E.E3
 
+/- English proof (translation)
+The claim follows from `asm_holds fintype_holds (GlobalTheory.CompanionTheory.LocSlice.locSlGlue sizet_holds GlobalTheory.CompanionTheory.CentralMult.multC GlobalTheory.CompanionTheory.InterpLoc.interpolation_local_L2_bound) (h sizet_holds) centeig_holds (GlobalTheory.CompanionTheory.CentRe.centReGlue_h …`.
+-/
 theorem frobenius_uniformizer_identity (h : LocNonPosGlue) : PositivityTheory.Rg.BcB.E.E3 :=
   asm_holds fintype_holds (GlobalTheory.CompanionTheory.LocSlice.locSlGlue sizet_holds GlobalTheory.CompanionTheory.CentralMult.multC GlobalTheory.CompanionTheory.InterpLoc.interpolation_local_L2_bound)
     (h sizet_holds) centeig_holds (GlobalTheory.CompanionTheory.CentRe.centReGlue_holds sizet_holds GlobalTheory.CompanionTheory.CentralMult.multC) hullaut_holds

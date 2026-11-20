@@ -14,6 +14,11 @@ open ValuativeRel
 
 namespace GlobalTheory.StairFrameFJ
 
+/- English proof (translation)
+Use `IsIntegral.of_pow (n := 2) two_pos ?_` and prove the remaining obligations. Establish `hsq : D.host.sqrtMinusD ^ 2 = -(D.host.d : D.host.E)`. Unfold `Host.sqrtMinusD`. Conclude with `D.host.sqd_sq`. Rewrite using `[hsq]`.
+
+Use `IsIntegral.neg ?_` and prove the remaining obligations. Simplify using `using (isIntegral_algebraMap (R := ℤ) (A := D.host.E) (x := (D.host.d : ℤ)))`.
+-/
 private theorem isIntegral_sqrtMinusD' (D : D7) : IsIntegral ℤ D.host.sqrtMinusD := by
   refine IsIntegral.of_pow (n := 2) two_pos ?_
   have hsq : D.host.sqrtMinusD ^ 2 = -(D.host.d : D.host.E) := by
@@ -23,6 +28,9 @@ private theorem isIntegral_sqrtMinusD' (D : D7) : IsIntegral ℤ D.host.sqrtMinu
   refine IsIntegral.neg ?_
   simpa using (isIntegral_algebraMap (R := ℤ) (A := D.host.E) (x := (D.host.d : ℤ)))
 
+/- English proof (translation)
+Unfold `Host.xi0`. Rewrite using `[neg_div, neg_neg, one_div, inv_inv]`. Use `IsIntegral.mul ?_ (isIntegral_sqrtMinusD' D)` and prove the remaining obligations. Simplify using `using (isIntegral_algebraMap (R := ℤ) (A := D.host.E) (x := ((Ideal.absNorm D.host.ccK : ℕ) : ℤ)))`.
+-/
 theorem isIntegral_inv_neg_xi0 (D : D7) : IsIntegral ℤ (-D.host.xi0)⁻¹ := by
 
   unfold Host.xi0
@@ -30,12 +38,18 @@ theorem isIntegral_inv_neg_xi0 (D : D7) : IsIntegral ℤ (-D.host.xi0)⁻¹ := b
   refine IsIntegral.mul ?_ (isIntegral_sqrtMinusD' D)
   simpa using (isIntegral_algebraMap (R := ℤ) (A := D.host.E) (x := ((Ideal.absNorm D.host.ccK : ℕ) : ℤ)))
 
+/- English proof (translation)
+Establish `h2 : IsIntegral 𝒪[k] y` using `hy.tower_top`. Take `⟨z, hz⟩` from `IsIntegrallyClosed.isIntegral_iff.1 h2`. Conclude with `hz ▸ z.2`.
+-/
 private theorem mem_integer_of_isIntegral_int {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] {y : k} (hy : IsIntegral ℤ y) : y ∈ 𝒪[k] := by
   have h2 : IsIntegral 𝒪[k] y := hy.tower_top
   obtain ⟨z, hz⟩ := IsIntegrallyClosed.isIntegral_iff.1 h2
   exact hz ▸ z.2
 
+/- English proof (translation)
+Establish `hy : IsIntegral ℤ (p.pr (incA D x⁻¹))` using `h.map ((p.pr.comp (incA D)).toIntAlgHom)`. Use `⟨⟨_, mem_integer_of_isIntegral_int hy⟩, ?_⟩` and prove the remaining obligations. Use `show p.pr (incA D x⁻¹) * p.pr (incA D x) = 1`. Rewrite using `[← map_mul, ← map_mul, inv_mul_cancel₀ hx, map_one, map_one]`.
+-/
 theorem exists_inv {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (p : GlobalTheory.FinPl.SplitPt D k) {x : D.host.E} (hx : x ≠ 0) (h : IsIntegral ℤ x⁻¹) :
     ∃ u : 𝒪[k], (u : k) * p.pr (incA D x) = 1 := by
@@ -44,6 +58,15 @@ theorem exists_inv {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSp
   show p.pr (incA D x⁻¹) * p.pr (incA D x) = 1
   rw [← map_mul, ← map_mul, inv_mul_cancel₀ hx, map_one, map_one]
 
+/- English proof (translation)
+Unfold `OnStd All`. Introduce `D hq T L μ₀ hL sc G W M _ F _ σ h' v hv`. Take `⟨k, _, _, _, _, p, hpv, hpe⟩` from `GlobalTheory.LatticeMembershipValuation.exists_splitPoint_at_S0 G.pl hv`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible 𝒪[k]`. Take `⟨β, j, hβ, hj, hcol, horth⟩` from `GlobalTheory.LatticeMembershipValuation.exists_stairFrame (p := p) hq hL G hv (2 * σ + 2) (by omega) h' hpv hpe hϖ`.
+
+Establish `hx0 : D.host.xi0 ≠ 0`. Conclude with `GlobalTheory.ChiGrid.cmHost_imaginaryGenerator_ne_zero`. Establish `hs : IsIntegral ℤ (star (-D.host.xi0))⁻¹`. Establish `h1 : IsIntegral ℤ (star (-D.host.xi0)⁻¹)` using `(isIntegral_inv_neg_xi0 D).map ((starRingEnd D.host.E).toIntAlgHom)`. Rewrite `h1` using `[star_inv₀]`. Then use the resulting hypothesis.
+
+Use `⟨k, inferInstance, inferInstance, inferInstance, inferInstance, p, β, j, ϖ, hpv, hpe, hβ, (IsDiscreteValuationRing.irreducible_iff_uniformizer ϖ).1 hϖ, exists_inv p (neg_ne_zero.2 hx0) (isIntegral_inv_neg_xi0 D), exists_inv p (star_ne_zero.2 (neg_ne_zero.2 hx0)) hs, hj, hcol, ?_⟩` and prove the remaining obligations. Introduce `m hm r`. Establish `hmr` using `horth m hm r`. Establish `hf : (fun x => p.pr (incA D x)) = ⇑(p.pr.comp (incA D))` using `rfl`. Rewrite `hmr` using `[hf, Matrix.map_mul, Matrix.mul_assoc]`.
+
+Simplify `hmr` using `[Matrix.mul_apply, Matrix.vecMul, dotProduct, Matrix.conjTranspose_apply]`.
+-/
 theorem exists_frame : OnStd fun {D} _ _ {sc} {G} W F => ∀ σ (h' : 2 * σ + 2 ≤ D.R.m), ∀ v ∈ G.pl.S0,
   ∃ (k : Type) (_ : Field k) (_ : ValuativeRel k) (_ : TopologicalSpace k) (_ : IsNonarchimedeanLocalField k)
     (p : GlobalTheory.FinPl.SplitPt D k) (β : GlobalTheory.FinPl.Frame p (G.V (.grid (2 * σ + 2) 0)) (Fin (G.V (.grid (2 * σ + 2) 0)).rank))

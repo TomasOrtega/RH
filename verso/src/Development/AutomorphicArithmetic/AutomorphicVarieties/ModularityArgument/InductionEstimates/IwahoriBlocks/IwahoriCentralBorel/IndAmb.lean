@@ -9,6 +9,17 @@ open UpperTheory.ConvolutionTheory UpperTheory.ConvolutionTheory.C PositivityThe
 open GlobalTheory.PRep GlobalTheory.SmGL Formalism.BasicNotions GlobalTheory.CuspRep
 open scoped TensorProduct Classical
 
+/- English proof (translation)
+Take `⟨⟨h1, h2⟩, h3⟩` from `hf`. Use `⟨⟨fun x => h1 (x * g), fun h x => ?_⟩, ?_⟩` and prove the remaining obligations. Use `show f (j h * x * g) = y h (f (x * g))`. Rewrite using `[mul_assoc, h2]`. Establish `h4 : IsOpen {a : G | rightReg ℂ G Y a f = f}` using `h3`.
+
+Establish `h5` using `h4.preimage (f := fun a : G => g⁻¹ * a * g) (by fun_prop)`. Use `show IsOpen {a : G | rightReg ℂ G Y a (rightReg ℂ G Y g f) = rightReg ℂ G Y g f}`. Use `h5 using 1` and compare the differences between its conclusion and the goal. Use extensionality with `a`. Simplify using `only [Set.mem_setOf_eq, Set.mem_preimage]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Use function extensionality and compare the values at `x`. Use `congrFun h (x * g⁻¹)` as an intermediate fact. Express the relevant statement in the definitionally equal form `f (x * g⁻¹ * a * g) = f (x * g⁻¹ * g) at this`.
+
+Express the relevant statement in the definitionally equal form `f (x * (g⁻¹ * a * g)) = f x`. Simplify `this` using `[mul_assoc]`. Introduce `h`. Use function extensionality and compare the values at `x`. Use `congrFun h (x * g)` as an intermediate fact.
+
+Express the relevant statement in the definitionally equal form `f (x * g * (g⁻¹ * a * g)) = f (x * g) at this`. Express the relevant statement in the definitionally equal form `f (x * a * g) = f (x * g)`. Simplify `this` using `[mul_assoc]`.
+-/
 private theorem indF_stable {G H Y : Type} [Group G] [Group H] [AddCommGroup Y] [Module ℂ Y] [TopologicalSpace G]
     [IsTopologicalGroup G] (j : H →* G) (y : Representation ℂ H Y) (X : Submodule ℂ Y) (g : G) (f : G → Y)
     (hf : f ∈ IndF j y X) : rightReg ℂ G Y g f ∈ IndF j y X := by
@@ -36,6 +47,27 @@ private theorem indF_stable {G H Y : Type} [Group G] [Group H] [AddCommGroup Y] 
       change f (x * a * g) = f (x * g)
       simpa [mul_assoc] using this
 
+/- English proof (translation)
+Use `⟨fun g f hf => indF_stable j y X g f hf, fun Q hQ hst => ?_⟩` and prove the remaining obligations. Set `Φ : (G → X) →ₗ[ℂ] (G → Y)` to `X.subtype.compLeft G`. Establish `hΦ : ∀ f x, Φ f x = (f x : Y)` using `fun _ _ => rfl`. Establish `hmem : ∀ f, f ∈ IndF j y' ⊤ ↔ Φ f ∈ IndF j y X`. Introduce `f`.
+
+Establish `hs : {a : G | rightReg ℂ G X a f = f} = {a : G | rightReg ℂ G Y a (Φ f) = Φ f}`. Use extensionality with `a`. Simplify using `only [Set.mem_setOf_eq]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+
+Use function extensionality and compare the values at `x`. Conclude with `congrArg Subtype.val (congrFun h x)`. Introduce `h`. Use function extensionality and compare the values at `x`. Conclude with `Subtype.ext (congrFun h x)`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨-, h2⟩, h3⟩`. Use `⟨⟨fun x => (f x).2, fun h x => ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hΦ, hΦ, h2, hy]`. Establish `h4 : IsOpen {a : G | rightReg ℂ G X a f = f}` using `h3`.
+
+Rewrite `h4` using `[hs]`. Conclude with `h4`. Introduce and unpack `⟨⟨-, h2⟩, h3⟩`. Use `⟨⟨fun x => trivial, fun h x => Subtype.ext ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hy]`.
+
+Conclude with `h2 h x`. Establish `h4 : IsOpen {a : G | rightReg ℂ G Y a (Φ f) = Φ f}` using `h3`. Rewrite `h4` using `[← hs]`. Conclude with `h4`. Establish `hsurj : ∀ F ∈ IndF j y X, ∃ f, Φ f = F` using `fun F hF => ⟨fun x => ⟨F x, hF.1.1 x⟩, rfl⟩`.
+
+Break down `H' (Q.comap Φ) (fun f hf => (hmem f).2 (hQ hf)) (fun g f hf => hst g (Φ f) hf) with h | h` into its components or cases. Use `left`. Rewrite using `[eq_bot_iff]`. Introduce `F hF`. Take `⟨f, rfl⟩` from `hsurj F (hQ hF)`.
+
+Establish `: f ∈ Q.comap Φ` using `hF`. Rewrite `this` using `[h, Submodule.mem_bot]`. Rewrite using `[this, map_zero]`. Conclude with `Submodule.zero_mem _`. Use `right`.
+
+Use `le_antisymm hQ fun F hF => ?_` and prove the remaining obligations. Take `⟨f, rfl⟩` from `hsurj F hF`. Establish `: f ∈ Q.comap Φ`. Rewrite using `[h]`. Conclude with `(hmem f).2 hF`.
+
+Conclude with `this`.
+-/
 private theorem simple_of_sub {G H Y : Type} [Group G] [Group H] [AddCommGroup Y] [Module ℂ Y] [TopologicalSpace G]
     [IsTopologicalGroup G] (j : H →* G) (y : Representation ℂ H Y) (X : Submodule ℂ Y) (y' : Representation ℂ H X)
     (hy : ∀ h v, (y' h v : Y) = y h v)
@@ -88,6 +120,25 @@ private theorem simple_of_sub {G H Y : Type} [Group G] [Group H] [AddCommGroup Y
       exact (hmem f).2 hF
     exact this
 
+/- English proof (translation)
+Introduce `r G _ _ _ P Y _ _ y X hX hop hloc`. Distinguish the cases in `h0 : X = ⊥`. Use `⟨fun g f hf => indF_stable _ y X g f hf, fun Q hQ _ => Or.inl ?_⟩` and prove the remaining obligations. Rewrite using `[eq_bot_iff]`. Introduce `F hF`.
+
+Rewrite using `[Submodule.mem_bot]`. Use function extensionality and compare the values at `x`. Use `(hQ hF).1.1 x` as an intermediate fact. Rewrite `this` using `[h0, Submodule.mem_bot]`. Conclude with `this`.
+
+Set `y' : Representation ℂ ((∀ i, P i) × PUnit.{1}) X` to `(GlobalTheory.PRep.sub y X hX.1).comp (MonoidHom.fst _ _)`. Establish `hy : ∀ a (v : X), (y' a v : Y) = y a.1 v` using `fun _ _ => rfl`. Establish `hirr : y'.IsIrreducible`. Establish `: Nontrivial X` using `Submodule.nontrivial_iff_ne_bot.2 h0`. Use `{ exists_pair_ne := ⟨⊥, ⊤, fun h => ?_⟩, eq_bot_or_eq_top := fun S => ?_ }` and prove the remaining obligations.
+
+Conclude with `bot_ne_top (α := Submodule ℂ X) (congrArg Subrepresentation.toSubmodule h)`. Break down `hX.2 (S.toSubmodule.map X.subtype) (Submodule.map_subtype_le _ _) (by` into its components or cases. Introduce and unpack `g _ ⟨v, hv, rfl⟩`. Conclude with `⟨y' (g, 1) v, S.apply_mem_toSubmodule _ hv, rfl⟩) with h | h`. Use `left`.
+
+Apply `Subrepresentation.toSubmodule_injective` to reduce the goal to its premises. Apply `Submodule.map_injective_of_injective X.injective_subtype` to reduce the goal to its premises. Rewrite using `[h]`. Conclude with `(Submodule.map_bot _).symm`. Use `right`.
+
+Apply `Subrepresentation.toSubmodule_injective` to reduce the goal to its premises. Apply `Submodule.map_injective_of_injective X.injective_subtype` to reduce the goal to its premises. Rewrite using `[h]`. Conclude with `(Submodule.map_subtype_top _).symm`. Establish `key` using `indProdG r P y' hirr (fun v => by`.
+
+Use `hop v v.2 using 2 with p` and compare the differences between its conclusion and the goal. Conclude with `funext fun p => propext Subtype.ext_iff) (fun i => by`. Take `⟨V, _, _, ρ, f, h1, h2, h3, h4⟩` from `hloc i`. Use `⟨V, inferInstance, inferInstance, ρ, f.codRestrict X h3, h1, fun h => h2 ?_, fun p v => Subtype.ext (h4 p v)⟩` and prove the remaining obligations. Use extensionality with `v`.
+
+Conclude with `congrArg Subtype.val (LinearMap.congr_fun h v))`. Use `simple_of_sub (piIncl P) y X (y'.comp (MonoidHom.inl _ _)) (fun _ _ => rfl) fun Q hQ hst => key Q hQ hst fun c f hf => ?_` and prove the remaining obligations. Establish `: (fun x => y' (1, c) (f x)) = f`. Use function extensionality and compare the values at `x`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Rewrite using `[hy]`. Simplify using the standard rewrite rules. Rewrite using `[this]`. Conclude with `hf`.
+-/
 theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.IwahoriBlocks.indAmb :
     ∀ {r : ℕ} {G : Fin r → Type} [∀ i, Group (G i)] [∀ i, TopologicalSpace (G i)] [∀ i, IsTopologicalGroup (G i)] (P : ∀ i, Subgroup (G i)) {Y : Type} [AddCommGroup Y] [Module ℂ Y]
       (y : Representation ℂ (∀ i, P i) Y) (X : Submodule ℂ Y), SimpleIn y X → (∀ v ∈ X, IsOpen {p : ∀ i, P i | y p v = v}) →

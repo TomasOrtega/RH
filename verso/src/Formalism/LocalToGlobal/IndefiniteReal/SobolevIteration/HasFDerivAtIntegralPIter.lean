@@ -15,24 +15,39 @@ def pIter (Φ : (Fin m → ℝ) → X → E) (j : ℕ) (t : Fin m → ℝ) (k : 
   iteratedFDeriv ℝ j (fun t => Φ t k) t
 
 omit [SecondCountableTopology X] [OpensMeasurableSpace X] [NormedSpace ℝ E] [CompleteSpace E] in
+/- English proof (translation)
+The claim follows from `mem_ae_iff.2 hμK`.
+-/
 theorem ae_mem_of_compl {μ : Measure X} {K : Set X} (hμK : μ Kᶜ = 0) : ∀ᵐ x ∂μ, x ∈ K := mem_ae_iff.2 hμK
 
 omit [NormedSpace ℝ E] [CompleteSpace E] in
+/- English proof (translation)
+Establish `h` using `hf.aestronglyMeasurable (μ := μ) hKm`. Rewrite `h` using `[Measure.restrict_eq_self_of_ae_mem (ae_mem_of_compl hμK)]`. Then use the resulting hypothesis.
+-/
 theorem aesm_of_continuousOn {μ : Measure X} {K : Set X} (hKm : MeasurableSet K) (hμK : μ Kᶜ = 0)
     {F : Type*} [NormedAddCommGroup F] {f : X → F} (hf : ContinuousOn f K) : AEStronglyMeasurable f μ := by
   have h := hf.aestronglyMeasurable (μ := μ) hKm
   rwa [Measure.restrict_eq_self_of_ae_mem (ae_mem_of_compl hμK)] at h
 
 omit [CompleteSpace E] in
+/- English proof (translation)
+The claim follows from `hc.comp (by fun_prop : Continuous fun k : X => (t, k)).continuousOn (fun _ hk => Set.mk_mem_prod (Set.mem_univ _) hk)`.
+-/
 theorem pIter_contOn_slice {K : Set X} {Φ : (Fin m → ℝ) → X → E} {j : ℕ}
     (hc : ContinuousOn (fun q : (Fin m → ℝ) × X => pIter Φ j q.1 q.2) (Set.univ ×ˢ K)) (t : Fin m → ℝ) :
     ContinuousOn (fun k => pIter Φ j t k) K :=
   hc.comp (by fun_prop : Continuous fun k : X => (t, k)).continuousOn
     (fun _ hk => Set.mk_mem_prod (Set.mem_univ _) hk)
 
+/- English proof (translation)
+Conclude with `ENat.natCast_lt_top j` after adjusting the coercions.
+-/
 private theorem natCast_lt_top_withTop_enat (j : ℕ) : (j : WithTop ℕ∞) < ∞ := by
   exact_mod_cast ENat.natCast_lt_top j
 
+/- English proof (translation)
+Establish `hd : Differentiable ℝ (iteratedFDeriv ℝ j (fun t => Φ t k))` using `hΦ.differentiable_iteratedFDeriv (natCast_lt_top_withTop_enat j)`. Establish `h2` using `(hd t).hasFDerivAt`. Rewrite `h2` using `[fderiv_iteratedFDeriv]`. Simplify `h2` using `[pIter]`.
+-/
 theorem hasFDerivAt_pIter {Φ : (Fin m → ℝ) → X → E} {k : X} (hΦ : ContDiff ℝ ∞ fun t => Φ t k) (j : ℕ)
     (t : Fin m → ℝ) :
     HasFDerivAt (fun t => pIter Φ j t k)
@@ -43,6 +58,13 @@ theorem hasFDerivAt_pIter {Φ : (Fin m → ℝ) → X → E} {k : X} (hΦ : Cont
   rw [fderiv_iteratedFDeriv] at h2
   simpa [pIter] using h2
 
+/- English proof (translation)
+Establish `hae : ∀ᵐ k ∂μ, k ∈ K` using `ae_mem_of_compl hμK`. Establish `hsm : ∀ (i : ℕ) (t : Fin m → ℝ), AEStronglyMeasurable (fun k => pIter Φ i t k) μ` using `fun i t => aesm_of_continuousOn hKm hμK (pIter_contOn_slice (hc i) t)`. Take `⟨C, hC⟩` from `((isCompact_closedBall t₀ 1).prod hK).exists_bound_of_continuousOn ((hc (j + 1)).mono (Set.prod_mono (Set.subset_univ _) subset_rfl))`. Take `⟨C₀, hC₀⟩` from `hK.exists_bound_of_continuousOn (pIter_contOn_slice (hc j) t₀)`. Use `hasFDerivAt_integral_of_dominated_of_fderiv_le (F := fun t k => pIter Φ j t k) (F' := fun t k => continuousMultilinearCurryLeftEquiv ℝ (fun _ : Fin (j + 1) => Fin m → ℝ) E (pIter Φ (j + 1) t k)) (bound := fun _ => C) (s := ball t₀ 1) (ball_mem_nhds t₀ zero_lt_one) ?_ ?_ ?_ ?_ (in …` and prove the remaining obligations.
+
+Use `filter_upwards with t using hsm j t`. Conclude with `Integrable.mono' (integrable_const C₀) (hsm j t₀) (by filter_upwards [hae] with k hk using hC₀ k hk)`. Conclude with `(LinearIsometryEquiv.continuous _).comp_aestronglyMeasurable (hsm (j + 1) t₀)`. Use `filter_upwards [hae] with k hk t ht`. Conclude with `(LinearIsometryEquiv.norm_map _ _).trans_le (hC (t, k) (Set.mk_mem_prod (ball_subset_closedBall ht) hk))`.
+
+Use `filter_upwards [hae] with k hk t _`. Conclude with `hasFDerivAt_pIter (hΦ k hk) j t`.
+-/
 theorem hasFDerivAt_integral_pIter {μ : Measure X} [IsFiniteMeasure μ] {K : Set X} (hK : IsCompact K)
     (hKm : MeasurableSet K) (hμK : μ Kᶜ = 0) {Φ : (Fin m → ℝ) → X → E}
     (hΦ : ∀ k ∈ K, ContDiff ℝ ∞ fun t => Φ t k)
@@ -74,12 +96,24 @@ theorem hasFDerivAt_integral_pIter {μ : Measure X} [IsFiniteMeasure μ] {K : Se
   · filter_upwards [hae] with k hk t _
     exact hasFDerivAt_pIter (hΦ k hk) j t
 
+/- English proof (translation)
+The claim follows from `L.toContinuousLinearEquiv.integral_comp_comm φ`.
+-/
 private theorem integral_linearIsometryEquiv_comp {α F G : Type*} [MeasurableSpace α] {μ : Measure α}
     [NormedAddCommGroup F] [NormedSpace ℝ F] [NormedAddCommGroup G] [NormedSpace ℝ G]
     (L : F ≃ₗᵢ[ℝ] G) (φ : α → F) :
     ∫ x, L (φ x) ∂μ = L (∫ x, φ x ∂μ) :=
   L.toContinuousLinearEquiv.integral_comp_comm φ
 
+/- English proof (translation)
+Establish `key : ∀ j : ℕ, iteratedFDeriv ℝ j (fun t => ∫ k, Φ t k ∂μ) = fun t => ∫ k, pIter Φ j t k ∂μ`. Introduce `j`. Proceed by induction on `j with`. Consider the case `zero`. Use function extensionality and compare the values at `t`.
+
+Simplify using `only [pIter, iteratedFDeriv_zero_eq_comp, Function.comp_apply]`. Rewrite using `[integral_linearIsometryEquiv_comp]`. Consider the case `succ j ih`. Rewrite using `[iteratedFDeriv_succ_eq_comp_left, ih]`. Use function extensionality and compare the values at `t`.
+
+Rewrite using `[Function.comp_apply, (hasFDerivAt_integral_pIter hK hKm hμK hΦ hc j t).fderiv, integral_linearIsometryEquiv_comp]`. Simplify using the standard rewrite rules. Use `⟨key, ?_⟩` and prove the remaining obligations. Apply `contDiff_of_differentiable_iteratedFDeriv` to reduce the goal to its premises. Introduce `i _`.
+
+Rewrite using `[key i]`. Introduce `t`. Conclude with `(hasFDerivAt_integral_pIter hK hKm hμK hΦ hc i t).differentiableAt`.
+-/
 theorem contDiff_integral_param {μ : Measure X} [IsFiniteMeasure μ] {K : Set X} (hK : IsCompact K)
     (hKm : MeasurableSet K) (hμK : μ Kᶜ = 0) {Φ : (Fin m → ℝ) → X → E}
     (hΦ : ∀ k ∈ K, ContDiff ℝ ∞ fun t => Φ t k)

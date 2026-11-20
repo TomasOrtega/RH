@@ -22,6 +22,23 @@ open scoped Classical
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
+/- English proof (translation)
+Establish `hd` using `Dc.dir_eq ℓ`. Generalize the expression as in `Dc.eL ℓ = L at hd ⊢`. Take `⟨t, ρ, b⟩` from `L`. Take `⟨τ, i, b'⟩` from `ℓ`. Simplify using `only [letterDir] at hd ⊢`.
+
+Establish `hb : b = b'`. Assume the negation of the conclusion as `hne`. Use `congrFun (congrFun hd b) (Dc.idx.symm (rowOf X Dc.hr (t, ρ)))` as an intermediate fact. Simplify using `[Pi.single_eq_of_ne hne] at this`. Substitute `hb` using the available equality.
+
+Establish `hj : Dc.idx.symm (rowOf X Dc.hr (t, ρ)) = Dc.e.symm ⟨τ, i⟩`. Assume the negation of the conclusion as `hne`. Use `congrFun (congrFun hd b) (Dc.idx.symm (rowOf X Dc.hr (t, ρ)))` as an intermediate fact. Rewrite `this` using `[Pi.single_eq_same, Pi.single_eq_same, Pi.single_eq_same, Pi.single_eq_of_ne hne]`. Conclude with `one_ne_zero this`.
+
+Establish `hi : Dc.idx (Dc.e.symm ⟨τ, i⟩) = (t, rowIdx Dc.hr ρ)` using `by rw [← hj, Equiv.apply_symm_apply]; rfl`. Establish `hty` using `Dc.ty_eq (Dc.e.symm ⟨τ, i⟩)`. Establish `hper : ∀ x v, per X x v (t, rowIdx Dc.hr ρ) = Formalism.L2.Pj.perFr X x v (Formalism.L2.PjFree.relab c σ τ) i` using `fun x v => by`. Use `Dc.per_eq x v (Dc.e.symm ⟨τ, i⟩)` as an intermediate fact. Rewrite `this` using `[pv, Function.comp_apply, hi, Equiv.apply_symm_apply]`. Then use the resulting hypothesis.
+
+Rewrite `hty` using `[hi, Equiv.apply_symm_apply]`. Use `⟨rfl, ?_⟩` and prove the remaining obligations. Break down `ρ with k | k` into its components or cases. Establish `h1 : Formalism.L2.PjFree.relab c σ τ = t.1` using `hty.symm.trans (rowType_rowOf_inl X Dc.hr t k)`. Rewrite `hper` using `[h1]`.
+
+Establish `h2` using `coord_eq_of_per_mem X t _ (by simp) i hper`. Rewrite `h2` using `[rowIdx_inl]`. Conclude with `Or.inl ⟨k, rfl, h1, by omega⟩`. Establish `h1 : Formalism.L2.PjFree.relab c σ τ = conjEmb t.1` using `hty.symm.trans (rowType_rowOf_inr X Dc.hr t k)`. Rewrite `hper` using `[h1]`.
+
+Establish `hk` using `k.2`. Establish `h2` using `coord_eq_of_per_conj X t _ (by rw [rowIdx_inr]; omega) i hper`. Rewrite `h2` using `[rowIdx_inr]`. Establish `h3` using `hm τ (by rw [h1]; exact (X.cmType t.1).1 t.2)`. Establish `h4 : (i : ℕ) < X.p0` using `lt_of_lt_of_le i.2 h3`.
+
+Conclude with `Or.inr ⟨k, rfl, h1, by omega⟩`.
+-/
 theorem letter_relab {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H} {l : Geo.Tor.Level H} {c : Coeff l} {σ : c.F →+* ℂ}
     {X : Data E r} {g q0 n : ℕ} {a : (E →+* ℂ) × ℕ → ℕ} (Dc : Dic Dw c σ X g q0 n a)
     (hm : ∀ τ, Formalism.L2.PjFree.relab c σ τ ∉ X.Ψ → Dw.mult τ ≤ X.p0) (ℓ : Formalism.L2.Pj.LtN Dw n) :

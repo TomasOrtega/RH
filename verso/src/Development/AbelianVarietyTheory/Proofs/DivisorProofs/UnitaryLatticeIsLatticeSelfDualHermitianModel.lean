@@ -12,9 +12,15 @@ noncomputable section
 
 namespace GlobalTheory.InertUnitOrb.SelfDualLat
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem stdH_eq_dot (K : UQ) {n : ℕ} (a b : Fin n → K.E) :
     stdH K n a b = a ⬝ᵥ (fun k => K.c (b k)) := rfl
 
+/- English proof (translation)
+Establish `hv : (fun k => K.c ((P *ᵥ v) k)) = P.map K.c *ᵥ (fun k => K.c (v k))`. Use function extensionality and compare the values at `k`. Conclude with `RingHom.map_mulVec (K.c : K.E →+* K.E) P v k`. Rewrite using `[stdH_eq_dot, stdH_eq_dot, hv, dotProduct_mulVec, ← vecMul_transpose, vecMul_vecMul, hP, vecMul_one]`.
+-/
 theorem stdH_mulVec (K : UQ) {n : ℕ} (P : Matrix (Fin n) (Fin n) K.E)
     (hP : Pᵀ * P.map K.c = 1) (u v : Fin n → K.E) :
     stdH K n (P *ᵥ u) (P *ᵥ v) = stdH K n u v := by
@@ -23,6 +29,11 @@ theorem stdH_mulVec (K : UQ) {n : ℕ} (P : Matrix (Fin n) (Fin n) K.E)
     exact RingHom.map_mulVec (K.c : K.E →+* K.E) P v k
   rw [stdH_eq_dot, stdH_eq_dot, hv, dotProduct_mulVec, ← vecMul_transpose, vecMul_vecMul, hP, vecMul_one]
 
+/- English proof (translation)
+Use extensionality with `v`. Prove the components needed by the constructor for the conclusion. Introduce `hv`. Establish `h` using `fun i => RingHom.mem_range.mp (hv i)`. Use `choose o ho using h`.
+
+Conclude with `⟨o, funext fun i => ho i⟩`. Introduce and unpack `⟨o, rfl⟩ i`. Conclude with `⟨o i, rfl⟩`.
+-/
 theorem intVec_eq_range (K : UQ) (n : ℕ) :
     intVec K n = LinearMap.range ((Algebra.linearMap K.O K.E).compLeft (Fin n)) := by
   ext v
@@ -34,16 +45,51 @@ theorem intVec_eq_range (K : UQ) (n : ℕ) :
   · rintro ⟨o, rfl⟩ i
     exact ⟨o i, rfl⟩
 
+/- English proof (translation)
+Rewrite using `[intVec_eq_range, LinearMap.range_eq_map]`. Conclude with `Submodule.FG.map _ Module.Finite.fg_top`.
+-/
 theorem intVec_fg (K : UQ) (n : ℕ) : (intVec K n).FG := by
   rw [intVec_eq_range, LinearMap.range_eq_map]
   exact Submodule.FG.map _ Module.Finite.fg_top
 
+/- English proof (translation)
+Introduce `j`. Distinguish the cases in `h : j = i`. Substitute `h; exact ⟨1, by simp⟩` using the available equality. Conclude with `⟨0, by simp [Pi.single_apply, h]⟩`.
+-/
 theorem single_mem_intVec (K : UQ) {n : ℕ} (i : Fin n) : (Pi.single i (1 : K.E) : Fin n → K.E) ∈ intVec K n := by
   intro j
   by_cases h : j = i
   · subst h; exact ⟨1, by simp⟩
   · exact ⟨0, by simp [Pi.single_apply, h]⟩
 
+/- English proof (translation)
+Introduce `E _ _ _ _ w hns K e he hint n B ψ x hx hψ q`. Use `set Qm : Matrix (Fin n) (Fin n) (w.adicCompletion E) := (((q⁻¹ : UL n w) : GLw n w) : Matrix (Fin n) (Fin n) (w.adicCompletion E)) with hQm`. Establish `hmem : ∀ g : GLw n w, g ∈ UL n w → g ∈ UJ (cj w) 1`. Introduce `g hg`. Simplify `hg` using `[UL, hns]`.
+
+Establish `hQ : cT (cj w) Qm * 1 * Qm = 1` using `hmem _ (q⁻¹).2`. Establish `h2 : (Qm.map (cj w))ᵀ * Qm = 1` using `by simpa [cT] using hQ`. Use `set P : Matrix (Fin n) (Fin n) K.E := Qm.map e.symm with hPdef`. Establish `hPc : P.map K.c = (Qm.map (cj w)).map e.symm`. Use extensionality with `i j`.
+
+Apply `e.injective` to reduce the goal to its premises. Simplify using `[hPdef, he]`. Establish `hP1 : (P.map K.c)ᵀ * P = 1`. Establish `h3` using `congrArg (e.symm.toRingHom.mapMatrix) h2`. Simplify using `only [map_mul, map_one, RingHom.mapMatrix_apply] at h3`.
+
+Rewrite using `[hPc, hPdef, ← Matrix.transpose_map]`. Simplify using `using h3`. Establish `hPR : P * (P.map K.c)ᵀ = 1` using `mul_eq_one_comm.mp hP1`. Establish `hPT : Pᵀ * P.map K.c = 1`. Establish `h4` using `congrArg Matrix.transpose hP1`.
+
+Simplify `h4` using `[Matrix.transpose_mul]`. Set `G : (Fin n → K.E) →ₗ[K.E] B.A` to `ψ.symm.toLinearMap ∘ₗ Matrix.toLin' (P.map K.c)ᵀ`. Establish `hGP : ∀ y, G (P *ᵥ ψ y) = y`. Introduce `y`. Simplify using `[G, Matrix.toLin'_apply, mulVec_mulVec, hP1]`.
+
+Establish `hPG : ∀ a, P *ᵥ ψ (G a) = a`. Introduce `a`. Simplify using `[G, Matrix.toLin'_apply, mulVec_mulVec, hPR]`. Establish `hmemL : ∀ y, y ∈ unitLat e B ψ q ↔ P *ᵥ ψ y ∈ intVec K n` using `fun y => Iff.rfl`. Establish `hmap : unitLat e B ψ q = (intVec K n).map (G.restrictScalars K.O)`.
+
+Use extensionality with `y`. Rewrite using `[hmemL]`. Prove the components needed by the constructor for the conclusion. Introduce `hy`. Conclude with `⟨P *ᵥ ψ y, hy, hGP y⟩`.
+
+Introduce and unpack `⟨a, ha, rfl⟩`. Rewrite using `[LinearMap.restrictScalars_apply, hPG]`. Conclude with `ha`. Use `⟨⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hmap]`.
+
+Conclude with `(intVec_fg K n).map _`. Rewrite using `[eq_top_iff]`. Establish `key : Submodule.map G ⊤ ≤ Submodule.span K.E (unitLat e B ψ q : Set B.A)`. Rewrite using `[← (Pi.basisFun K.E (Fin n)).span_eq, Submodule.map_span, Submodule.span_le]`. Introduce and unpack `_ ⟨_, ⟨i, rfl⟩, rfl⟩`.
+
+Apply `Submodule.subset_span` to reduce the goal to its premises. Use `show G _ ∈ unitLat e B ψ q`. Rewrite using `[hmemL, Pi.basisFun_apply, hPG]`. Conclude with `single_mem_intVec K i`. Introduce `y _`.
+
+Rewrite using `[← hGP y]`. Conclude with `key (Submodule.mem_map_of_mem trivial)`. Introduce `y`. Rewrite using `[hmemL]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hy z hz`. Rewrite `hz` using `[hmemL]`. Rewrite using `[← hψ, ← stdH_mulVec K P hPT]`. Unfold `stdH`. Apply `Subring.sum_mem` to reduce the goal to its premises.
+
+Introduce `k _`. Apply `Subring.mul_mem _ (hy k)` to reduce the goal to its premises. Take `⟨o, ho⟩` from `hz k`. Take `⟨o', ho'⟩` from `K.c_int o`. Conclude with `⟨o', by rw [← ho, ho']⟩`.
+
+Introduce `h i`. Establish `h5` using `h (G (Pi.single i 1)) (by rw [hmemL, hPG]; exact single_mem_intVec K i)`. Rewrite `h5` using `[← hψ, ← stdH_mulVec K P hPT, hPG]`. Simplify `h5` using `[stdH, Pi.single_apply, apply_ite]`.
+-/
 theorem unitLat_isLat_selfDual : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ (w : Pl E), ¬ IsSplitAt w → ∀ (K : UQ) (e : K.E ≃+* w.adicCompletion E), (∀ x, e (K.c x) = cj w (e x)) → (∀ x, x ∈ (algebraMap K.O K.E).range ↔ Valued.v (e x) ≤ 1) → ∀ (n : ℕ) (B : InvAlg K) (ψ : B.A ≃ₗ[K.E] (Fin n → K.E)), ∀ (x : B.Aˣ), B.σ (x : B.A) = x → (∀ y z, stdH K n (ψ y) (ψ z) = B.herm x y z) → ∀ q : UL n w, IsLat K.O K.E (unitLat e B ψ q) ∧ ∀ y, y ∈ unitLat e B ψ q ↔ ∀ z ∈ unitLat e B ψ q, B.herm x y z ∈ (algebraMap K.O K.E).range := by
   intro E _ _ _ _ w hns K e he hint n B ψ x hx hψ q
   set Qm : Matrix (Fin n) (Fin n) (w.adicCompletion E) :=

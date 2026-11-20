@@ -27,6 +27,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.HeatValues
 
+/- English proof (translation)
+Establish `h1 : ∀ (D : Derivation ℤ Ω Ω) (x : Ω), x ∈ J ^ (N + 1 + 1) → D x ∈ J ^ (N + 1)` using `fun D x hx => GlobalTheory.SymbolOne.deriv_mem_pow D J (N + 1) x hx`. Establish `h2 : ∀ (D : Derivation ℤ Ω Ω) (x : Ω), x ∈ J ^ (N + 1) → D x ∈ J ^ N` using `fun D x hx => GlobalTheory.SymbolOne.deriv_mem_pow D J N x hx`. Establish `le1 : J ^ (N + 1) ≤ J ^ N` using `Ideal.pow_le_pow_right (Nat.le_succ N)`. Establish `le2 : J ^ (N + 2) ≤ J ^ N` using `Ideal.pow_le_pow_right (by omega)`. Unfold `ringOp`.
+
+Use `add_mem (add_mem (sub_mem ?_ ?_) ?_) ?_` and prove the remaining obligations. Conclude with `Ideal.mul_mem_left _ _ (le1 (h1 d y hy))`. Conclude with `Ideal.sum_mem _ fun a _ => Ideal.sum_mem _ fun b _ => Ideal.mul_mem_left _ _ (h2 _ _ (h1 _ _ hy))`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.sum_mem _ fun a _ => Ideal.mul_mem_left _ _ (le1 (h1 _ _ hy)))`. Conclude with `Ideal.mul_mem_left _ _ (le2 hy)`.
+-/
 theorem ringOp_mem {Ω : Type} [CommRing Ω] (J : Ideal Ω) {n : ℕ} (d : Derivation ℤ Ω Ω)
     (δ : Fin n → Derivation ℤ Ω Ω) (Θ : Matrix (Fin n) (Fin n) Ω) (u : Fin n → Ω) (p p' : Ω) (k : ℕ)
     (N : ℕ) (y : Ω) (hy : y ∈ J ^ (N + 2)) :
@@ -44,6 +49,9 @@ theorem ringOp_mem {Ω : Type} [CommRing Ω] (J : Ideal Ω) {n : ℕ} (d : Deriv
   · exact Ideal.mul_mem_left _ _ (Ideal.sum_mem _ fun a _ => Ideal.mul_mem_left _ _ (le1 (h1 _ _ hy)))
   · exact Ideal.mul_mem_left _ _ (le2 hy)
 
+/- English proof (translation)
+Unfold `ringOp`. Simplify using `only [map_add, mul_add, Finset.sum_add_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem ringOp_add {Ω : Type} [CommRing Ω] {n : ℕ} (d : Derivation ℤ Ω Ω)
     (δ : Fin n → Derivation ℤ Ω Ω) (Θ : Matrix (Fin n) (Fin n) Ω) (u : Fin n → Ω) (p p' : Ω) (k : ℕ) (f g : Ω) :
     ringOp ⇑d (fun a => ⇑(δ a)) Θ u p p' k (f + g) =
@@ -52,6 +60,11 @@ theorem ringOp_add {Ω : Type} [CommRing Ω] {n : ℕ} (d : Derivation ℤ Ω Ω
   simp only [map_add, mul_add, Finset.sum_add_distrib]
   ring
 
+/- English proof (translation)
+Establish `e1 : ∀ a x, δ a (c * x) = c * δ a x` using `fun a x => by`. Rewrite using `[Derivation.leibniz, hc, smul_zero, add_zero, smul_eq_mul]`. Establish `e2 : ∀ a b, Θ a b * δ a (δ b (c * f)) = c * (Θ a b * δ a (δ b f))` using `fun a b => by`. Rewrite using `[e1, e1]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `e3 : ∀ a, u a * δ a (c * f) = c * (u a * δ a f)` using `fun a => by rw [e1]; ring`. Establish `e4 : d (c * f) = c * d f + f * d c` using `by rw [Derivation.leibniz, smul_eq_mul, smul_eq_mul]`. Unfold `ringOp`. Simplify using `only [e2, e3, ← Finset.mul_sum, e4]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem ringOp_mul {Ω : Type} [CommRing Ω] {n : ℕ} (d : Derivation ℤ Ω Ω)
     (δ : Fin n → Derivation ℤ Ω Ω) (Θ : Matrix (Fin n) (Fin n) Ω) (u : Fin n → Ω) (p p' : Ω) (k : ℕ) (c f : Ω)
     (hc : ∀ a, δ a c = 0) :
@@ -67,6 +80,15 @@ theorem ringOp_mul {Ω : Type} [CommRing Ω] {n : ℕ} (d : Derivation ℤ Ω Ω
   simp only [e2, e3, ← Finset.mul_sum, e4]
   ring
 
+/- English proof (translation)
+Rewrite using `[← sub_eq_zero]`. Use `IsHausdorff.haus' (I := J) _ fun N => ?_` and prove the remaining obligations. Rewrite using `[SModEq.zero, smul_eq_mul, Ideal.mul_top]`. Take `⟨S, hS1, hS2⟩` from `hs (N + 1)`. Take `⟨S', hS1', hS2'⟩` from `hs' (N + 1)`.
+
+Establish `split : ∀ (v : Idx → Ω) (A B : Finset Idx), ∑ α ∈ A ∪ B, v α = ∑ α ∈ A, v α + ∑ α ∈ B \ A, v α`. Introduce `v A B`. Rewrite using `[← Finset.union_sdiff_self_eq_union, Finset.sum_union Finset.disjoint_sdiff]`. Establish `m1 : s - ∑ α ∈ S ∪ S', t α ∈ J ^ (N + 2)`. Rewrite using `[split, sub_add_eq_sub_sub]`.
+
+Conclude with `sub_mem hS2 (Ideal.sum_mem _ fun α hα => hS1 α (Finset.mem_sdiff.1 hα).2)`. Establish `m2 : s' - ∑ α ∈ S ∪ S', t' α ∈ J ^ (N + 2)`. Rewrite using `[Finset.union_comm, split, sub_add_eq_sub_sub]`. Conclude with `sub_mem hS2' (Ideal.sum_mem _ fun α hα => hS1' α (Finset.mem_sdiff.1 hα).2)`. Establish `e : s' - c * T s = (s' - ∑ α ∈ S ∪ S', t' α) + c * T (-(s - ∑ α ∈ S ∪ S', t α))`.
+
+Simplify using `only [ht, ← Finset.mul_sum, ← map_sum, map_neg, map_sub]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `add_mem (Ideal.pow_le_pow_right (by omega) m2) (Ideal.mul_mem_left _ _ (hT N _ (neg_mem m1)))`.
+-/
 theorem eq_of_adic {Ω Idx : Type} [CommRing Ω] (J : Ideal Ω) [IsHausdorff J Ω] (T : Ω →+ Ω)
     (hT : ∀ N y, y ∈ J ^ (N + 2) → T y ∈ J ^ N) (c s s' : Ω) (t t' : Idx → Ω)
     (ht : ∀ α, t' α = c * T (t α))
@@ -99,11 +121,17 @@ end GlobalTheory.HeatValues
 
 namespace GlobalTheory.HeatValues
 
+/- English proof (translation)
+Rewrite using `[gs_eq (𝟙 (Sp Ω)) z ⊤ (show (𝟙 (Sp Ω) : Sp Ω ⟶ Sp Ω) z ∈ (⊤ : (Sp Ω).Opens) from trivial)]`. Both sides reduce to the same expression.
+-/
 theorem gs_id_eq {Ω : Type} [CommRing Ω] (z : Sp Ω) (a : Ω) :
     gs (𝟙 (Sp Ω)) z ⊤ ((Scheme.ΓSpecIso (CommRingCat.of Ω)).inv.hom a) = toStkA z a := by
   rw [gs_eq (𝟙 (Sp Ω)) z ⊤ (show (𝟙 (Sp Ω) : Sp Ω ⟶ Sp Ω) z ∈ (⊤ : (Sp Ω).Opens) from trivial)]
   rfl
 
+/- English proof (translation)
+The claim follows from `gs_id_eq z a`.
+-/
 theorem cst_id {Ω : Type} [CommRing Ω] (z : Sp Ω) (a : Ω) : cst (𝟙 (Sp Ω)) z a = toStkA z a :=
   gs_id_eq z a
 
@@ -114,14 +142,25 @@ noncomputable def cstR {A : Type} [CommRing A] {Z : Scheme.{0}} (q : Z ⟶ Sp A)
   map_zero' := by simp only [cst, map_zero, gs_eq q z ⊤ (show q z ∈ (⊤ : (Sp A).Opens) from trivial)]
   map_add' a b := by simp only [cst, map_add, gs_add q z ⊤ (show q z ∈ (⊤ : (Sp A).Opens) from trivial)]
 
+/- English proof (translation)
+The claim follows from `gs_id_eq z a`.
+-/
 theorem cstR_id {Ω : Type} [CommRing Ω] (z : Sp Ω) (a : Ω) : cstR (𝟙 (Sp Ω)) z a = toStkA z a :=
   gs_id_eq z a
 
+/- English proof (translation)
+The claim follows from `gs_add r z _ (hJ.mem φ r) _ _`.
+-/
 theorem sval_secAdd {X Y Z : Scheme.{0}} {L : LB X} {K : Type} [Fintype K] {φ : K → (Y ⟶ X)} {ε : K → ℤ}
     (s t : (LB.LinComb L φ ε).Sec) (r : Z ⟶ Y) (z : Z) {J : (Z ⟶ X) → L.ι} (hJ : Good L z J) :
     sval (DVR.SecOps.secAdd s t) r z J = sval s r z J + sval t r z J :=
   gs_add r z _ (hJ.mem φ r) _ _
 
+/- English proof (translation)
+Use `U.smooth` as an intermediate fact. Establish `: Flat G.hom` using `inferInstance`. Establish `hL` using `U.LG.isLB`. Take `⟨s, hs⟩` from `exists_sec hL (φ := fun _ : Fin 1 => pullback.fst G.hom (jK R) ≫ 𝟙 G.left) (ε := fun _ => (k : ℤ)) (φ' := fun _ : Fin 1 => pullback.fst G.hom (jK R)) (ε' := fun _ => (k : ℤ)) (fun _ _ _ => by simp only [Category.comp_id]) (DVR.pullSec U.LG.L _ _ σ (pullback.fst G.hom (jK R)))`. Take `⟨F, ⟨r₀, hr₀, σ₀, f₀, h₁, hf₁, hE⟩, -⟩` from `(U.expand k hk).1 s`.
+
+Establish `hσs : GeneratorPullback.SecScal U.LG.L (fun _ : Fin 1 => pullback.fst G.hom (jK R)) (fun _ => (k : ℤ)) s (fun _ : Fin 1 => 𝟙 G.left) (fun _ => (k : ℤ)) σ (pullback.fst G.hom (jK R)) 1` using `DVR.SectionScalarValuation.secScal_of_sval hL fun y J hJ => by`. Rewrite using `[hs _ _ y J hJ, DVR.SectionScalarValuation.sval_pullSec _ _ σ _ _ y hJ]`. Conclude with `⟨r₀, σ₀, f₀, F, hr₀, GlobalTheory.ExpInt.secIsMul_of_generic G hL k σ σ₀ s r₀ hσs h₁, hE, hf₁⟩`.
+-/
 theorem exists_integral {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D : DegData R I}
     {A : PolAV (Sp (FractionRing R))} {G : Over (Sp R)} [GrpObj G] [IsCommMonObj G]
     (U : Unif I D A G) (k : ℕ) (hk : 1 ≤ k) (σ : H0 U.LG.L k) :
@@ -144,6 +183,13 @@ theorem exists_integral {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D : 
       rw [hs _ _ y J hJ, DVR.SectionScalarValuation.sval_pullSec _ _ σ _ _ y hJ]
   exact ⟨r₀, σ₀, f₀, F, hr₀, GlobalTheory.ExpInt.secIsMul_of_generic G hL k σ σ₀ s r₀ hσs h₁, hE, hf₁⟩
 
+/- English proof (translation)
+Introduce `u hu hc z J hJ`. Establish `fe` using `(secRel_iff Q.P.isLB _ _ _ _ _ _ _ _ _ u).1 (F.fe mu α u hu hc) _ (𝟙 _) z J hJ`. Establish `a1` using `GlobalTheory.IntegralExpansion.sval_of_secScal (hf (α + k • mu)) (𝟙 _) z hJ`. Establish `a2` using `GlobalTheory.IntegralExpansion.sval_of_secScal (hf α) (DegPre.trF Q (FractionRing R) mu).left z hJ`. Establish `c1 : gs (DegPre.trF Q (FractionRing R) mu).left z ⊤ (scal (DegPre.BF Q (FractionRing R)).hom r₀) = gs (𝟙 _) z ⊤ (scal (DegPre.BF Q (FractionRing R)).hom r₀)`.
+
+Rewrite using `[GlobalTheory.ExpInt.gs_scal, GlobalTheory.ExpInt.gs_scal, Over.w (DegPre.trF Q (FractionRing R) mu), Category.id_comp]`. Establish `z0 : gs (𝟙 _) z ⊤ (scal (DegPre.BF Q (FractionRing R)).hom (0 : R)) = 0`. Rewrite using `[GlobalTheory.ExpInt.gs_scal]`. Conclude with `(cstR _ z).map_zero`. Simplify using `only [Category.id_comp] at a1 fe`.
+
+Rewrite using `[z0, zero_mul, add_zero, a1, fe, Over.comp_left, a2, c1]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem shiftEq_of_fam {R : Type} [CommRing R] [IsDomain R] (Q : DegPre R) (k : ℕ)
     (F : Fam Q (FractionRing R) k) (f : ∀ α, Q.SecB k α) (r₀ : R)
     (hf : ∀ α, GeneratorPullback.SecScal Q.P.L (DegPre.famφ Q (FractionRing R) α) (DegPre.famε k) (F.s α)
@@ -163,6 +209,13 @@ theorem shiftEq_of_fam {R : Type} [CommRing R] [IsDomain R] (Q : DegPre R) (k : 
   rw [z0, zero_mul, add_zero, a1, fe, Over.comp_left, a2, c1]
   ring
 
+/- English proof (translation)
+Establish `hM` using `Q.P.isLB`. Use `choose s hs using fun α => GlobalTheory.IndivisibleSection.exists_pull_val hM (f α) (DegPre.prB Q (FractionRing R)).left (φ' := DegPre.famφ Q (FractionRing R) α) (ε' := DegPre.famε k) (fun _ _ _ => Finset.prod_congr rfl fun i _ => by rw [DVR.GC.famφ_eq])`. Use `⟨⟨s, fun mu α u hu hc => (secRel_iff hM _ _ _ _ _ _ _ _ _ u).2 fun y J hJ => ?_⟩, fun α => DVR.SectionScalarValuation.secScal_of_sval hM fun y J hJ => (hs α _ (𝟙 _) y J hJ).symm⟩` and prove the remaining obligations. Establish `e` using `hf mu α u hu hc y J hJ`. Establish `z0 : gs (𝟙 _) y ⊤ (scal (DegPre.BF Q (FractionRing R)).hom (0 : R)) = 0`.
+
+Rewrite using `[GlobalTheory.ExpInt.gs_scal]`. Conclude with `(cstR _ y).map_zero`. Rewrite using `[hs _ _ (𝟙 _) y J hJ, hs _ _ _ y J hJ]`. Simplify using `only [Category.id_comp]`. Rewrite using `[e, z0, zero_mul, add_zero, Over.comp_left]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_fam {R : Type} [CommRing R] [IsDomain R] (Q : DegPre R) (k : ℕ) (f g : ∀ α, Q.SecB k α)
     (hf : ∀ mu α, ShiftEq Q k mu α (f α) (f (α + k • mu)) 0 (g (α + k • mu))) :
     ∃ F : Fam Q (FractionRing R) k, ∀ α, GeneratorPullback.SecScal Q.P.L (DegPre.famφ Q (FractionRing R) α) (DegPre.famε k)
@@ -185,6 +238,51 @@ end GlobalTheory.HeatValues
 
 namespace GlobalTheory.HeatValues
 
+/- English proof (translation)
+Substitute `hN` using the available equality. Use `haveI := hcompl`. Establish `hL` using `U.LG.isLB`. Establish `hM` using `D.toPre.P.isLB`. Use `set ξ := Y.Φ (Over.mk (spMap φ)) (Over.homMk x hx) with hξ`.
+
+Establish `hlies : GlobalTheory.RayEv.Transport.Lies U.toUnifPre x' ξ.b.left` using `fun e Z r y hy => (hpx e Z r y hy).1`. Take `⟨g', gM, hg', hgM, hfr⟩` from `GlobalTheory.TransportLimit.exists_frRel R (maximalIdeal R) D A G U.toUnifPre Ω φ x' hx' ξ.b.left hlies`. Take `⟨ρ, hρ⟩` from `GlobalTheory.FormalPoint.exists_ratio hL (φ := fun _ : PUnit => x') (ε := fun _ => 1) (φ' := fun _ : PUnit => x' ≫ 𝟙 G.left) (ε' := fun _ => 1) (fun _ _ _ => by simp only [Category.comp_id]) g' g hg' hg`. Establish `hxW : x (cpt Ω) ∈ h.W i0` using `(top_le_iff_cpt x _).1 hW`. Take `⟨JM, hJM, hJM0⟩` from `exists_good D.toPre.P.L hM (cpt Ω) (fun _ : PUnit => x ≫ Y.q.left) (fun _ => h.j i0) (fun _ _ _ => rfl) (fun _ => h.le i0 hxW)`.
+
+Take `⟨JL, hJL⟩ : ∃ JL, Good U.LG.L (cpt Ω) JL` from `by choose C hC using fun ψ : Sp Ω ⟶ G.left => exists_chart hL (ψ (cpt Ω))`. Conclude with `⟨C, hC⟩`. Establish `hbm : ⊤ ≤ (𝟙 (Sp Ω)) ⁻¹ᵁ LB.wchart D.toPre.P.L (fun _ : PUnit => ξ.b.left) (fun _ => JM (𝟙 _ ≫ ξ.b.left))` using `(top_le_iff_cpt _ _).2 (hJM.mem (fun _ : PUnit => ξ.b.left) (𝟙 _))`. Establish `hu` using `toStkA_valR (𝟙 (Sp Ω)) _ (cpt Ω) hbm (gM.s fun _ => JM (𝟙 _ ≫ ξ.b.left))`. Take `⟨uU, huU⟩` from `GlobalTheory.FormalValue.isUnit_valR _ _ hbm (gM.s fun _ => JM (𝟙 _ ≫ ξ.b.left))`.
+
+Establish `hκu : toStkA (cpt Ω) (uU : Ω) = (val gM (𝟙 _) (cpt Ω) JM).val` using `by rw [huU]; exact hu`. Set `ρU : Ωˣ` to `Units.map (Scheme.ΓSpecIso (CommRingCat.of Ω)).hom.hom.toMonoidHom ρ`. Establish `hρc : ∀ (Z : Scheme.{0}) (r : Z ⟶ Sp Ω) (z : Z), (gm r z ⊤ ρ).val = cstR r z (ρU : Ω)` using `fun Z r z => by`. Rewrite using `[← gs_unit r z ⊤ (show r z ∈ (⊤ : (Sp Ω).Opens) from trivial)]`. Use `show _ = gs r z ⊤ ((Scheme.ΓSpecIso (CommRingCat.of Ω)).inv.hom ((Scheme.ΓSpecIso (CommRingCat.of Ω)).hom.hom ρ.val))`.
+
+Rewrite using `[Iso.hom_inv_id_apply]`. Use `⟨ρU * uU⁻¹, fun k hk σ ω hσ => ?_⟩` and prove the remaining obligations. Take `⟨r₀, σ₀, f₀, F, hr₀, hσ₀, hE₀, hF₀⟩` from `exists_integral U k hk σ`. Establish `hsh₀` using `shiftEq_of_fam D.toPre k F f₀ r₀ hF₀`. Use `choose f₁ hf₁ using fun α => GlobalTheory.T.torusInvariant_heatOperator_acts_on_fourierTerms R D O oD Y n vH dd hinv Dr h hbasic k α (f₀ α)`.
+
+Establish `hsh₁ : ∀ mu α, ShiftEq D.toPre k mu α (f₁ α) (f₁ (α + k • mu)) 0 (f₀ (α + k • mu))` using `fun mu α => hdef k mu α (f₀ α) (f₁ α) (f₀ (α + k • mu)) (f₁ (α + k • mu)) hk (hsh₀ mu α) (hf₁ α) (hf₁ (α + k • mu))`. Take `⟨F₁, hF₁⟩` from `exists_fam D.toPre k f₁ f₀ hsh₁`. Take `⟨s₁, ⟨r₁, hr₁, σ₁, f₂, -, hf₂, hE₁⟩, -⟩` from `(U.expand k hk).2 F₁`. Establish `hf₂₁ : ∀ α, DVR.SecIsMul D.toPre.P.A.hom r₁ (f₂ α) (f₁ α)` using `fun α => GlobalTheory.IntegralExpansion.secIsMul_of_secScal hM _ (GlobalTheory.IntegralExpansion.prB_app_injective D.toPre) (hF₁ α) (by rw [Over.w (DegPre.prB D.toPre (FractionRing R))]; exact hf₂ α)`. Take `⟨hdφ, hact⟩` from `GlobalTheory.T.heatOperator_value_at_point_eq_ringOperator R Y.H D.toPre.P.A.left Y.q.left D.toPre.P.L n dd ⇑Dr h i0 Ω φ x hx δ hδ dΩ hW hd`.
+
+Take `⟨s₀, t₀, hs₀, ht₀, had₀⟩` from `GlobalTheory.RayEv.Transport.exists_adic_expansion R (maximalIdeal R) D A G U.toUnifPre Ω φ ξ (Over.homMk x' hx') hpx ξ.b.left rfl g' gM hg' hgM hfr k σ₀ f₀ hE₀`. Take `⟨s₂, t₂, hs₂, ht₂, had₂⟩` from `GlobalTheory.RayEv.Transport.exists_adic_expansion R (maximalIdeal R) D A G U.toUnifPre Ω φ ξ (Over.homMk x' hx') hpx ξ.b.left rfl g' gM hg' hgM hfr k σ₁ f₂ hE₁`. Establish `j0le : h.W i0 ≤ LB.wchart D.toPre.P.L (fun _ : Fin 1 => Y.q.left) (fun _ => h.j i0)` using `fun y hy => Set.mem_iInter.2 fun _ => h.le i0 hy`. Establish `termv : ∀ (α : D.toPre.X) (fα : D.toPre.SecB k α) (τ : SecM Y.q.left D.toPre.P.L k), IsTerm Y k α fα τ → toStkA (cpt Ω) (valR x (h.W i0) (rsT (τ.f fun _ => h.j i0) (h.W i0))) = sval fα (𝟙 (Sp Ω) ≫ ξ.b.left) (cpt Ω) JM * (val (ξ.s α) (𝟙 (Sp Ω)) (cpt Ω) JM).val`. Introduce `α fα τ hτ`.
+
+Establish `e1` using `hτ (Over.mk (spMap φ)) (Over.homMk x hx) (cpt Ω) JM hJM`. Establish `e2 : (Over.homMk x hx : Over.mk (spMap φ) ⟶ Y.H) ≫ Y.q = ξ.b` using `(Y.Φ_b _).symm`. Rewrite `e1` using `[e2]`. Rewrite using `[← gs_id_eq, GlobalTheory.NormGen.gs_valR (𝟙 _) x _ hW, Category.id_comp]`. Use `erw [GlobalTheory.KS.DlogPol.gs_rsT x (cpt Ω) j0le hxW]`.
+
+Use `Eq.trans ?_ e1` and prove the remaining obligations. Conclude with `(sval_of τ x (cpt Ω) JM _ fun _ => hJM0 PUnit.unit).symm`. Set `RO : Ω → Ω` to `ringOp ⇑dΩ (fun a => ⇑(δ a)) (φ.mapMatrix h.Θ) (fun a => φ (h.u a)) (valR x _ (h.p i0)) (valR x _ (h.p' i0)) k`. Establish `huu : (uU : Ω) ^ k * ((uU⁻¹ : Ωˣ) : Ω) ^ k = 1` using `by rw [← mul_pow, Units.mul_inv, one_pow]`. Establish `hρρ : (ρU : Ω) ^ k * ((ρU⁻¹ : Ωˣ) : Ω) ^ k = 1` using `by rw [← mul_pow, Units.mul_inv, one_pow]`.
+
+Establish `key : ∀ α, t₂ α = (φ r₁ * ((uU⁻¹ : Ωˣ) : Ω) ^ k) * RO (t₀ α * (uU : Ω) ^ k)`. Introduce `α`. Take `⟨τ, τ', hτ, hτ', hact'⟩` from `hf₁ α`. Establish `a0` using `termv α (f₀ α) τ hτ`. Establish `a1` using `termv α (f₁ α) τ' hτ'`.
+
+Establish `b0` using `ht₀ α _ (𝟙 (Sp Ω)) (cpt Ω) JM hJM`. Establish `b2` using `ht₂ α _ (𝟙 (Sp Ω)) (cpt Ω) JM hJM`. Use `erw [gs_id_eq] at b0 b2`. Establish `m2` using `GlobalTheory.IndivisibleSection.sval_of_secIsMul (hf₂₁ α) (𝟙 (Sp Ω) ≫ ξ.b.left) (cpt Ω) hJM`. Establish `cc : (𝟙 (Sp Ω) ≫ ξ.b.left) ≫ D.toPre.P.A.hom = 𝟙 (Sp Ω) ≫ spMap φ`.
+
+Rewrite using `[Category.assoc, Over.w ξ.b]`. Both sides reduce to the same expression. Rewrite `m2` using `[cc, cst_comp, cst_id]`. Establish `v0 : valR x (h.W i0) (rsT (τ.f fun _ => h.j i0) (h.W i0)) = t₀ α * (uU : Ω) ^ k`. Apply `toStkA_injective` to reduce the goal to its premises.
+
+Rewrite using `[a0, b0, map_mul, map_pow, hκu, Units.val_pow_eq_pow_val]`. Establish `v1 : φ r₁ * valR x (h.W i0) (rsT (τ'.f fun _ => h.j i0) (h.W i0)) = t₂ α * (uU : Ω) ^ k`. Apply `toStkA_injective` to reduce the goal to its premises. Rewrite using `[map_mul, a1, map_mul, map_pow, hκu, ← Units.val_pow_eq_pow_val, ← b2, m2, _root_.mul_assoc]`. Rewrite `v1` using `[hact k τ τ' hact', v0]`.
+
+Take the linear combination `(-(((uU⁻¹ : Ωˣ) : Ω) ^ k)) * v1 - t₂ α * huu`. Set `T : Ω →+ Ω` to `AddMonoidHom.mk' (fun y => RO (y * (uU : Ω) ^ k)) (fun a b => by`. Simplify using `only [RO, add_mul]`. Conclude with `ringOp_add _ _ _ _ _ _ _ _ _)`. Establish `hT : ∀ N y, y ∈ ((maximalIdeal R).map φ) ^ (N + 2) → T y ∈ ((maximalIdeal R).map φ) ^ N` using `fun N y hy => ringOp_mem _ dΩ δ _ _ _ _ k N _ (Ideal.mul_mem_right _ _ hy)`.
+
+Establish `hs₂e : s₂ = (φ r₁ * ((uU⁻¹ : Ωˣ) : Ω) ^ k) * T s₀` using `eq_of_adic _ T hT _ s₀ s₂ t₀ t₂ key had₀ had₂`. Establish `hTs : T s₀ = RO (s₀ * (uU : Ω) ^ k)` using `rfl`. Establish `hs0rel : s₀ * (ρU : Ω) ^ k = φ r₀ * ω`. Establish `a : sval σ₀ (𝟙 _ ≫ x') (cpt Ω) JL = _` using `hs₀ _ (𝟙 _) (cpt Ω) JL hJL`. Establish `b` using `GlobalTheory.IndivisibleSection.sval_of_secIsMul hσ₀ (𝟙 _ ≫ x') (cpt Ω) hJL`.
+
+Establish `c` using `hσ _ (𝟙 _) (cpt Ω) JL hJL`. Establish `d` using `hρ _ (𝟙 _) (cpt Ω) JL hJL`. Establish `cc : (𝟙 (Sp Ω) ≫ x') ≫ G.hom = 𝟙 _ ≫ spMap φ` using `by rw [Category.assoc, hx']`. Rewrite `b` using `[cc, cst_comp, cst_id]`. Use `erw [gs_id_eq] at a c`.
+
+Establish `e` using `b.symm.trans a`. Rewrite `e` using `[c]`. Use `erw [d] at e`. Rewrite `e` using `[mul_pow, Units.val_mul, Units.val_pow_eq_pow_val (gm _ _ _ ρ), hρc, cstR_id]`. Apply `toStkA_injective` to reduce the goal to its premises.
+
+Rewrite using `[map_mul, map_mul, map_pow]`. Use `(Units.mul_left_inj (val g (𝟙 _) (cpt Ω) JL ^ k)).1 ?_` and prove the remaining obligations. Take the linear combination `(-1 : (Sp Ω).presheaf.stalk (cpt Ω)) * e`. Set `c' : R` to `-(2 * (k : R) * r₁ * Dr r₀)`. Use `⟨r₁ * r₀, DVR.SecOps.secAdd σ₁ (DVR.SecOps.secScale (scal G.hom c') σ), s₂ * (ρU : Ω) ^ k + φ c' * ω, mul_ne_zero hr₁ hr₀, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `Z r z J hJ`. Establish `a : sval σ₁ (r ≫ x') z J = _` using `hs₂ Z r z J hJ`. Establish `c` using `hσ Z r z J hJ`. Establish `d` using `hρ Z r z J hJ`. Rewrite using `[sval_secAdd _ _ _ _ hJ, GlobalTheory.UU.ShiftExp.sval_secScale _ _ _ _ hJ, a, c]`.
+
+Use `erw [d]`. Rewrite using `[GlobalTheory.ExpInt.gs_scal, Category.assoc, hx', cst_comp, mul_pow, Units.val_mul, Units.val_pow_eq_pow_val (gm r z ⊤ ρ), hρc]`. Express the relevant statement in the definitionally equal form `cstR r z s₂ * _ + cstR r z (φ c') * (cstR r z ω * _) = cstR r z _ * _`. Rewrite using `[map_add, map_mul, map_mul, map_pow]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[hs₂e, hTs, show (ρU * uU⁻¹)⁻¹ = uU * ρU⁻¹ by rw [mul_inv_rev, inv_inv], Units.val_mul, Units.val_mul]`. Establish `hX : s₀ * (uU : Ω) ^ k = φ r₀ * (((uU : Ω) * ((ρU⁻¹ : Ωˣ) : Ω)) ^ k * ω)`. Take the linear combination `(((ρU⁻¹ : Ωˣ) : Ω) ^ k * (uU : Ω) ^ k) * hs0rel - s₀ * (uU : Ω) ^ k * hρρ`. Rewrite using `[hX]`. Simplify using `only [RO]`.
+
+Rewrite using `[ringOp_mul dΩ δ _ _ _ _ k (φ r₀) _ (fun a => hδφ a r₀), hdφ r₀]`. Simplify using `only [c', map_neg, map_mul, map_natCast, map_ofNat]`. Take the linear combination `(2 * (k : Ω) * φ r₁ * φ (Dr r₀) * ω) * ((ρU : Ω) ^ k * ((ρU⁻¹ : Ωˣ) : Ω) ^ k * huu + hρρ)`.
+-/
 theorem core {R : Type} [CommRing R] [IsDomain R] [IsLocalRing R] [IsNoetherianRing R]
     [IsAdicComplete (maximalIdeal R) R] [Algebra ℚ R] (D : DegData R (maximalIdeal R))
     {A : PolAV (Sp (FractionRing R))} {G : Over (Sp R)} [GrpObj G] [IsCommMonObj G]
@@ -341,6 +439,9 @@ theorem core {R : Type} [CommRing R] [IsDomain R] [IsLocalRing R] [IsNoetherianR
 
 end GlobalTheory.HeatValues
 
+/- English proof (translation)
+Introduce `E _ _ _ H R _ _ _ _ _ _ t P m tt gam _ _ _ Y n vH dd hinv v' _ D h hbasic hdef i0 Ω _ _ _ φ x x' δ hcompl hx hx' hδφ hδ hpx dΩ hW hd g hg`. Use `letI := H.starRing`. Take `⟨e, he⟩` from `GlobalTheory.HeatValues.core P.D P.U t.PP.L (congrArg (fun q => q.L) P.bundle) (𝓞 E) P.oD Y n vH dd hinv D h hbasic hdef i0 Ω φ x x' δ hcompl hx hx' hδφ hδ hpx dΩ hW hd g hg`. Conclude with `⟨e, _, _, he⟩`.
+-/
 theorem GlobalTheory.HeatValues.heat_values_at_point : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [IsNoetherianRing R] [IsAdicComplete (maximalIdeal R) R] [Algebra ℚ R] (t : SAB H (Sp R)) (P : PELUnif (maximalIdeal R) t) (m : ℕ) (tt : Fin m → R) (gam : Fin m → LinearMap.BilinForm ℤ P.D.toPre.X), IsMonomial P.D.toPre tt gam → (∀ i, tt i ≠ 0) → (∀ p : Sp R, p ∈ abLocus t.G ↔ ∏ i, tt i ∉ p.asIdeal) → letI := H.starRing; ∀ (Y : Ray P.oD) (n : ℕ) (vH : Module.Basis (Fin n) R (TanM (𝟙 (Sp R)) Y.H)) (dd : Fin n → Fld Y.H.left), (∀ a, IsInv Y.H (vH a) (dd a)) → ∀ (v' : Fin n → TanM (𝟙 (Sp R)) t.G), (∀ a, GlobalTheory.FormalPoint.IsPointOf P.U.toUnifPre (Y.Φ _ (tv (vH a))) (tv (v' a))) → ∀ (D : Derivation ℤ R R) (h : Heat Y.H Y.q.left P.D.toPre.P.L dd ⇑D), IsBasic Y h → HasDefect Y h (fun _ _ _ => 0) → ∀ (i0 : h.J) (Ω : Type) [CommRing Ω] [IsDomain Ω] [IsLocalRing Ω] (φ : R →+* Ω) (x : Sp Ω ⟶ Y.H.left) (x' : Sp Ω ⟶ t.G.left) (δ : Fin n → Derivation ℤ Ω Ω), IsAdicComplete ((maximalIdeal R).map φ) Ω → ∀ (hx : x ≫ Y.H.hom = spMap φ) (hx' : x' ≫ t.G.hom = spMap φ), (∀ a r, δ a (φ r) = 0) → (∀ a O f, ⊤ ≤ x ⁻¹ᵁ O → valR x O (dd a O f) = δ a (valR x O f)) → GlobalTheory.FormalPoint.IsPointOf P.U.toUnifPre (Y.Φ (Over.mk (spMap φ)) (Over.homMk x hx)) (Over.homMk x' hx') → ∀ (dΩ : Derivation ℤ Ω Ω), ⊤ ≤ x ⁻¹ᵁ h.W i0 → (∀ O f, O ≤ h.W i0 → ⊤ ≤ x ⁻¹ᵁ O → valR x O (h.d i0 O f) = dΩ (valR x O f)) → ∀ (g : GlobalTheory.RayEv.Transport.Frame t.PP.L (x' ≫ 𝟙 t.G.left)), g.IsGen → ∃ (e : Ωˣ) (p0 p0' : Ω), ∀ (k : ℕ), 1 ≤ k → ∀ (σ : SecM (𝟙 t.G.left) t.PP.L k) (ω : Ω), IsValue (𝟙 _) t.PP.L x' g k σ ω → ∃ (r : R) (σ' : SecM (𝟙 t.G.left) t.PP.L k) (ω' : Ω), r ≠ 0 ∧ IsValue (𝟙 _) t.PP.L x' g k σ' ω' ∧ ω' = φ r * ((e : Ω) ^ k * ringOp ⇑dΩ (fun a => ⇑(δ a)) (φ.mapMatrix h.Θ) (fun a => φ (h.u a)) p0 p0' k (((e⁻¹ : Ωˣ) : Ω) ^ k * ω)) := by
   intro E _ _ _ H R _ _ _ _ _ _ t P m tt gam _ _ _ Y n vH dd hinv v' _ D h hbasic hdef i0 Ω _ _ _ φ x x' δ hcompl
     hx hx' hδφ hδ hpx dΩ hW hd g hg

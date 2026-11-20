@@ -18,6 +18,9 @@ set_option synthInstance.maxHeartbeats 400000
 open GlobalTheory.LevelSeries
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.FockCoefInt.fockSubst_coeff_mem | exact GlobalTheory.FockCoefInt.fockSubst_coeff_mem | (intros; apply GlobalTheory.FockCoefInt.fockSubst_coeff_mem <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.fockSubstitution_homogeneous_coeff_mem_after_scaling : ∀ (D : D7) (m n : ℕ) (p : D.what₂.Tau → ℕ) (u : GlobalTheory.ExportSeries.GLR D n) (O : Subring ℂ) (z : ℂ),
     (∀ τ x y, z * (((u τ)⁻¹ : GL (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ) x y ∈ O ∧
       z * ((u τ : GL (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ) x y ∈ O) →

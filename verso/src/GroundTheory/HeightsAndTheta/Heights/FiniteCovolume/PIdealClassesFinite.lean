@@ -28,11 +28,43 @@ def scaledIdeal (I : AddSubgroup E) (hI : ∀ a : 𝓞 E, ∀ x ∈ I, (a : E) *
     push_cast
     ring
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_scaledIdeal {I : AddSubgroup E} {hI : ∀ a : 𝓞 E, ∀ x ∈ I, (a : E) * x ∈ I} {b : E}
     {y : 𝓞 E} : y ∈ scaledIdeal I hI b ↔ b⁻¹ * (y : E) ∈ I := Iff.rfl
 
 end Numbers
 
+/- English proof (translation)
+Set `rep : ClassGroup (𝓞 E) → nonZeroDivisors (Ideal (𝓞 E))` to `fun c => (ClassGroup.mk0_surjective c).choose`. Establish `hrep : ∀ c, ClassGroup.mk0 (rep c) = c` using `fun c => (ClassGroup.mk0_surjective c).choose_spec`. Set `J : ClassGroup (𝓞 E) → AddSubgroup E` to `fun c => ((rep c : Ideal (𝓞 E)).toAddSubgroup).map (algebraMap (𝓞 E) E).toAddMonoidHom`. Use `⟨Set.range J, Set.finite_range J, ?_⟩` and prove the remaining obligations. Introduce `I hfg hne hI`.
+
+Take `⟨S, hS⟩` from `hfg`. Take `⟨⟨b, hb0⟩, hb⟩` from `IsLocalization.exist_integer_multiples_of_finset (nonZeroDivisors (𝓞 E)) (S : Finset E)`. Establish `hbne : (b : E) ≠ 0`. Establish `: b ≠ 0` using `nonZeroDivisors.ne_zero hb0`. Conclude with `this` after adjusting the coercions.
+
+Establish `hint : ∀ x ∈ I, ∃ w : 𝓞 E, (w : E) = b * x`. Introduce `x hx`. Rewrite `hx` using `[← hS]`. Proceed by induction on `hx using AddSubgroup.closure_induction with`. Consider the case `mem x hx`.
+
+Take `⟨w, hw⟩` from `hb x hx`. Conclude with `⟨w, by rw [Algebra.smul_def] at hw; exact hw⟩`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨w, hw⟩` from `hx`.
+
+Take `⟨v, hv⟩` from `hy`. Conclude with `⟨w + v, by push_cast; linear_combination hw + hv⟩`. Consider the case `neg x _ hx`. Take `⟨w, hw⟩` from `hx`. Conclude with `⟨-w, by push_cast; linear_combination -hw⟩`.
+
+Set `𝔞` to `scaledIdeal I hI (b : E)`. Establish `hmem : ∀ z ∈ I, ∀ w : 𝓞 E, (w : E) = b * z → w ∈ 𝔞`. Introduce `z hz w hw`. Rewrite using `[mem_scaledIdeal, hw, ← mul_assoc, inv_mul_cancel₀ hbne, one_mul]`. Conclude with `hz`.
+
+Establish `h𝔞 : 𝔞 ∈ nonZeroDivisors (Ideal (𝓞 E))`. Apply `mem_nonZeroDivisors_of_ne_zero` to reduce the goal to its premises. Take `⟨z, hz, hz0⟩` from `(AddSubgroup.bot_or_exists_ne_zero I).resolve_left hne`. Take `⟨w, hw⟩` from `hint z hz`. Introduce `h0`.
+
+Establish `hw𝔞 : w ∈ 𝔞` using `hmem z hz w hw`. Rewrite `hw𝔞` using `[h0, Submodule.zero_eq_bot, Ideal.mem_bot]`. Rewrite `hw` using `[hw𝔞]`. Move the coercions through the operations in `at hw`. Conclude with `hz0 ((mul_eq_zero.1 hw.symm).resolve_left hbne)`.
+
+Use `set c := ClassGroup.mk0 ⟨𝔞, h𝔞⟩`. Take `⟨x, y, hx, hy, hxy⟩` from `ClassGroup.mk0_eq_mk0_iff.1 (hrep c).symm`. Establish `hxE : (x : E) ≠ 0` using `by exact_mod_cast hx`. Establish `hyE : (y : E) ≠ 0` using `by exact_mod_cast hy`. Use `⟨J c, ⟨c, rfl⟩, (y : E) / ((x : E) * b), div_ne_zero hyE (mul_ne_zero hxE hbne), ?_⟩` and prove the remaining obligations.
+
+Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce `hz`. Take `⟨w, hw⟩` from `hint z hz`. Establish `hxw : x * w ∈ Ideal.span {y} * (rep c : Ideal (𝓞 E))` using `hxy ▸ Ideal.mem_span_singleton_mul.2 ⟨w, hmem z hz w hw, rfl⟩`.
+
+Take `⟨v, hv, hvw⟩` from `Ideal.mem_span_singleton_mul.1 hxw`. Establish `hvw' : (y : E) * v = x * (b * z)`. Rewrite using `[← hw]`. Conclude with `hvw` after adjusting the coercions. Use `AddSubgroup.mem_map.2 ⟨(v : E), AddSubgroup.mem_map.2 ⟨v, hv, rfl⟩, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [AddMonoidHom.coe_mulLeft]`. Clear the denominators using the available nonvanishing facts. Take the linear combination `hvw'`. Introduce `hz`. Take `⟨u, hu, rfl⟩` from `AddSubgroup.mem_map.1 hz`.
+
+Take `⟨v, hv, rfl⟩` from `AddSubgroup.mem_map.1 hu`. Establish `hyv : y * v ∈ Ideal.span {x} * 𝔞` using `hxy.symm ▸ Ideal.mem_span_singleton_mul.2 ⟨v, hv, rfl⟩`. Take `⟨w, hw, hwv⟩` from `Ideal.mem_span_singleton_mul.1 hyv`. Establish `hwv' : (x : E) * w = y * v` using `by exact_mod_cast hwv`. Rewrite `hw` using `[mem_scaledIdeal]`.
+
+Use `hw using 1` and compare the differences between its conclusion and the goal. Simplify using `only [AddMonoidHom.coe_mulLeft, RingHom.toAddMonoidHom_eq_coe, AddMonoidHom.coe_coe]`. Clear the denominators using the available nonvanishing facts. Take the linear combination `-hwv'`.
+-/
 theorem IdealClassesFinite.proof (E) [Field E] [NumberField E] : IdealClassesFinite.Statement E := by
   classical
   let rep : ClassGroup (𝓞 E) → nonZeroDivisors (Ideal (𝓞 E)) := fun c => (ClassGroup.mk0_surjective c).choose

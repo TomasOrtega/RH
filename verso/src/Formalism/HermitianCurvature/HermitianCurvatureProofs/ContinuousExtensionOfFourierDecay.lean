@@ -7,6 +7,9 @@ noncomputable section
 
 namespace Formalism.FourierDecayAlt.P5.HerC.Fou
 
+/- English proof (translation)
+Use `choose! B hB using h`. Use `⟨∑ j ∈ Finset.range (m + 1), |B j|, fun j hj t => ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem unif_bound {X : Type*} (f : ℕ → X → ℝ) (m : ℕ) (h : ∀ j ≤ m, ∃ B, ∀ t, f j t ≤ B) :
     ∃ B, ∀ j ≤ m, ∀ t, f j t ≤ B := by
   choose! B hB using h
@@ -16,6 +19,17 @@ theorem unif_bound {X : Type*} (f : ℕ → X → ℝ) (m : ℕ) (h : ∀ j ≤ 
     _ ≤ ∑ j ∈ Finset.range (m + 1), |B j| :=
         Finset.single_le_sum (f := fun j => |B j|) (fun _ _ => abs_nonneg _) (Finset.mem_range.mpr (by omega))
 
+/- English proof (translation)
+Use `set E : ℂ → ℂ := fun t => ((1 + ‖t‖ ^ 2) ^ 2 : ℝ) • D t with hEdef`. Take `⟨D', hD'c, -, hD'eq⟩` from `smooth_bounded_of_fourier_decay D m C hD hdD`. Take `⟨E', hE'c, hE'b, hE'eq⟩` from `smooth_bounded_of_fourier_decay E m C hE hdE`. Establish `hEc : ∀ t, t ≠ 0 → ContinuousAt E t` using `fun t ht => by show ContinuousAt (fun t : ℂ => ((1 + ‖t‖ ^ 2) ^ 2 : ℝ) • D t) t`. Conclude with `(((continuous_const.add (continuous_norm.pow 2)).pow 2).continuousAt).smul (hc t ht)`.
+
+Establish `hw : ∀ x, E' x = ((1 + ‖x‖ ^ 2) ^ 2 : ℝ) • D' x`. Establish `hcont1 : Continuous E'` using `hE'c.continuous`. Establish `hcont2 : Continuous (fun x : ℂ => ((1 + ‖x‖ ^ 2) ^ 2 : ℝ) • D' x)` using `((continuous_const.add (continuous_norm.pow 2)).pow 2).smul hD'c.continuous`. Establish `h` using `Continuous.ext_on (dense_compl_singleton (0 : ℂ)) hcont1 hcont2 (fun x hx => by`. Establish `hx0 : x ≠ 0` using `hx`.
+
+Use `show E' x = ((1 + ‖x‖ ^ 2) ^ 2 : ℝ) • D' x`. Rewrite using `[hE'eq x (hEc x hx0), hD'eq x (hc x hx0)])`. Conclude with `fun x => congrFun h x`. Take `⟨B, hB⟩` from `unif_bound (fun j t => ‖iteratedFDeriv ℝ j E' t‖) m hE'b`. Take `⟨-, hdec, hint⟩` from `smooth_decay_of_weighted (V := ℂ) (by rw [Complex.finrank_real_complex]; norm_num) hE'c B hB hw`.
+
+Establish `hae : D' =ᵐ[volume] D`. Establish `: ∀ᵐ t ∂(volume : Measure ℂ), t ≠ 0`. Rewrite using `[ae_iff]`. Simplify using `using (measure_singleton (0 : ℂ))`. Use `filter_upwards [this] with t ht`.
+
+Conclude with `hD'eq t (hc t ht)`. Conclude with `⟨D', hD'c, fun t ht => hD'eq t (hc t ht), integral_congr_ae hae, hdec, hint⟩`.
+-/
 theorem smooth_extension_of_fourier_decay (D : ℂ → ℂ) (m : ℕ) (C : ℝ) (hD : Integrable D)
     (hE : Integrable (fun t : ℂ => ((1 + ‖t‖ ^ 2) ^ 2 : ℝ) • D t))
     (hc : ∀ t, t ≠ 0 → ContinuousAt D t)

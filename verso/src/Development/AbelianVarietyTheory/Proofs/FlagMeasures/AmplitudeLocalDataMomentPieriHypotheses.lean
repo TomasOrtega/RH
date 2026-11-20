@@ -20,9 +20,21 @@ open scoped InnerProductSpace ENNReal
 
 namespace GlobalTheory.Amp.LocalSetupGap
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun n => if h : n - 1 < k then u ⟨n - 1, h⟩ else 0, fun i => by simp⟩`.
+-/
 theorem exists_seq {k : ℕ} (u : Fin k → ℝ) : ∃ U : ℕ → ℝ, ∀ i : Fin k, U (i.val + 1) = u i :=
   ⟨fun n => if h : n - 1 < k then u ⟨n - 1, h⟩ else 0, fun i => by simp⟩
 
+/- English proof (translation)
+Establish `hnum` using `GlobalTheory.NumFam.num_fam k r lam u b bv ga h q0 hN`. Establish `hok : Formalism.FourierDecayAlt.ThreeDimData.GapOK k r (h / 2)` using `hnum.1.2.2.2.2`. Establish `hDG : ∀ ν : Fin (2 * r + k + 1) → ℤ, n1 ν ≤ q0 → (R ν).IsDG (PI.BesselPeriodGGP.eps48 k r) (fun a => lam a + (ν a : ℝ))`. Introduce `ν hν`. Take `⟨hp, hds⟩` from `hF ν hν`.
+
+Conclude with `⟨hp, hds, h / 2, (hnum.2 ν hν).2.2.1, hok⟩`. Establish `hex : ∀ ν : Fin (2 * r + k + 1) → ℤ, ∃ l : (R ν).H → Wp, n1 ν ≤ q0 → IsBeL (R ν) z π μW μN l`. Introduce `ν`. Distinguish the cases in `hν : n1 ν ≤ q0`. Take `⟨l, hl⟩` from `Gp91.GlobalTheory.T.bessel_gap_exists_functional hH.1 k r (PI.BesselPeriodGGP.eps48 k r) (fun a => lam a + (ν a : ℝ)) (h / 2) (R ν) Wp z π u μW μN μG νq (hDG ν hν) (hnum.2 ν hν).2.2.1 hok hS`.
+
+Conclude with `⟨l, fun _ => hl⟩`. Conclude with `⟨fun _ => 0, fun h' => absurd h' hν⟩`. Use `choose l hl using hex`. Use `⟨l, ?_⟩` and prove the remaining obligations. Unfold `Setup SideFam`.
+
+Use `⟨hN, hF, hS, fun ν hν => ⟨hl ν hν, ?_, ?_⟩⟩` and prove the remaining obligations. Conclude with `mul_pos hc (GlobalTheory.FamilyDegreeRatio.degree_ratios k r lam u b bv ga h q0 hN ν hν).1`. Introduce `w hw`. Conclude with `hd _ (R ν) (hDG ν hν) w hw`.
+-/
 theorem exists_setup (hH : GlobalTheory.GapIn.Hyp) {k r : ℕ} {Wp : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     [CompleteSpace Wp] [FiniteDimensional ℂ Wp] {lam : Fin (2 * r + k + 1) → ℝ} {u : ℕ → ℝ} {b bv ga h : ℝ} {q0 : ℕ}
     {z : Fin (2 * r + k + 1) → ℂ} {π : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ → (Wp →L[ℂ] Wp)}
@@ -56,6 +68,9 @@ theorem exists_setup (hH : GlobalTheory.GapIn.Hyp) {k r : ℕ} {Wp : Type} [Norm
   · intro w hw
     exact hd _ (R ν) (hDG ν hν) w hw
 
+/- English proof (translation)
+The claim follows from `FiniteDimensional.complete ℂ W.Wp; haveI := FiniteDimensional.complete ℂ W.Wq; ∃ (U U' : ℕ → ℝ) (l : ∀ ν, (R ν).H → W.Wp) (l' : ∀ ν, (R ν).H → W.Wq) (dg : (Fin (2 * D.R.rS + D.R.k + 1) → ℤ) → ℝ), Setup (lamD D τ) U (large₂.sc.b ^ max 2 Cu) (bOne D τ 1) ((D.R.r : ℝ) * (D.R.m : ℝ) …`.
+-/
 theorem exists_setup_both : GlobalTheory.GapIn.Hyp → ∀ (D : D7) (large₂ : SizeData₂ D) (C' Cl Cg cb Cu cT CT C0 : ℝ), HypZ D large₂ C' Cl Cg cb Cu cT CT C0 → 1000 ≤ Cl → ∀ τ w w' θ (W : LocW D.R.k D.R.rS), HypTT D w w' → 0 < θ → GoodW D τ w w' θ W → ∀ t ∈ GG D.R.k D.R.rS, (∀ n, n ∈ Nset D.R.k D.R.rS ↔ t * n * t⁻¹ ∈ Nset D.R.k D.R.rS) → (∀ z, inWb D.R.k D.R.rS z → (∀ h ∈ UWset D.R.k D.R.rS z, t * h = h * t) ∧ ∀ n ∈ Nset D.R.k D.R.rS, psi D.R.k D.R.rS z cStd n = psiS D z (t * n * t⁻¹)) → ∀ R : (Fin (2 * D.R.rS + D.R.k + 1) → ℤ) → Rep D.R.k D.R.rS, IsFam (lamD D τ) (D.R.k * D.R.m ^ 5) R → haveI := FiniteDimensional.complete ℂ W.Wp; haveI := FiniteDimensional.complete ℂ W.Wq; ∃ (U U' : ℕ → ℝ) (l : ∀ ν, (R ν).H → W.Wp) (l' : ∀ ν, (R ν).H → W.Wq) (dg : (Fin (2 * D.R.rS + D.R.k + 1) → ℤ) → ℝ), Setup (lamD D τ) U (large₂.sc.b ^ max 2 Cu) (bOne D τ 1) ((D.R.r : ℝ) * (D.R.m : ℝ) ^ 10) ((D.R.r : ℝ) ^ 19) (D.R.k * D.R.m ^ 5) W.z W.π W.μW (W.μN.map fun x => fun i j => (t⁻¹ * Matrix.of x * t) i j) W.μG (W.νS.map fun x => fun i j => (t⁻¹ * Matrix.of x) i j) R l dg ∧ Setup (lamD D τ) U' (large₂.sc.b ^ max 2 Cu) (bOne D τ 1) ((D.R.r : ℝ) * (D.R.m : ℝ) ^ 10) ((D.R.r : ℝ) ^ 19) (D.R.k * D.R.m ^ 5) W.z' W.π' W.μW' (W.μN.map fun x => fun i j => (t⁻¹ * Matrix.of x * t) i j) W.μG (W.νS'.map fun x => fun i j => (t⁻¹ * Matrix.of x) i j) R l' dg := by
   intro hH D large₂ C' Cl Cg cb Cu cT CT C0 hZ hCl τ w w' θ W hTT hθ hW t ht hNt hzt R hR
   have := FiniteDimensional.complete ℂ W.Wp

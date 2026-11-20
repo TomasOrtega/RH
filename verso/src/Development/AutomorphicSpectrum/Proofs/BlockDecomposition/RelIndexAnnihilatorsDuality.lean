@@ -8,6 +8,29 @@ open scoped Topology
 noncomputable section
 namespace GlobalTheory.CompanionTheory.IndexDuality
 
+/- English proof (translation)
+Establish `hQfin : Finite (H ⧸ H₀.addSubgroupOf H)` using `Nat.finite_of_card_ne_zero hfin`. Establish `hb0 : ∀ x, b x 0 = 1`. Introduce `x`. Establish `h` using `hr x 0 0`. Rewrite `h` using `[add_zero]`.
+
+Conclude with `(mul_left_cancel (a := b x 0) (by rw [mul_one]; exact h)).symm`. Establish `hb0' : ∀ y, b 0 y = 1`. Introduce `y`. Establish `h` using `hl 0 0 y`. Rewrite `h` using `[add_zero]`.
+
+Conclude with `(mul_left_cancel (a := b 0 y) (by rw [mul_one]; exact h)).symm`. Set `f : R₀ → H →+ Additive Circle` to `fun x => { toFun := fun y => Additive.ofMul (b x y) map_zero' := by simp [hb0] map_add' := fun y y' => by simp [hr] }`. Establish `hker : ∀ x : R₀, ∀ y ∈ H₀.addSubgroupOf H, f x y = 0`. Introduce `x y hy`. Rewrite `hy` using `[AddSubgroup.mem_addSubgroupOf]`.
+
+Simplify using `[f, hann x x.2 y hy]`. Set `g : R₀ → (H ⧸ H₀.addSubgroupOf H) →+ Additive Circle` to `fun x => QuotientAddGroup.lift (H₀.addSubgroupOf H) (f x) (hker x)`. Set `χ : R₀ → AddChar (H ⧸ H₀.addSubgroupOf H) Circle` to `fun x => { toFun := fun q => Additive.toMul (g x q) map_zero_eq_one' := by simp map_add_eq_mul' := fun q q' => by simp [map_add] }`. Establish `hχ : ∀ (x : R₀) (y : H), χ x (QuotientAddGroup.mk y) = b x y` using `fun x y => rfl`. Set `Ψ : R₀ →+ AddChar (H ⧸ H₀.addSubgroupOf H) Circle` to `{ toFun := χ map_zero' := by ext1 q`.
+
+Proceed by induction on `q using QuotientAddGroup.induction_on with`. Consider the case `H y`. Rewrite using `[hχ]`. Conclude with `hb0' y`. Use the proof step `map_add' := fun x x' => by ext1 q`.
+
+Proceed by induction on `q using QuotientAddGroup.induction_on with`. Consider the case `H y`. Rewrite using `[hχ]`. Express the relevant statement in the definitionally equal form `b (x + x') y = (χ x * χ x') (QuotientAddGroup.mk y)`. Rewrite using `[AddChar.mul_apply, hχ, hχ]`.
+
+Conclude with `hl x x' y }`. Establish `hkerle : Ψ.ker ≤ R.addSubgroupOf R₀`. Introduce `x hx`. Rewrite `hx` using `[AddMonoidHom.mem_ker]`. Rewrite using `[AddSubgroup.mem_addSubgroupOf]`.
+
+Use `hsep x x.2 (fun y hy => ?_)` and prove the remaining obligations. Use `congrArg (fun φ : AddChar (H ⧸ H₀.addSubgroupOf H) Circle => φ (QuotientAddGroup.mk ⟨y, hy⟩)) hx` as an intermediate fact. Simplify `this` using `[Ψ, hχ]`. Establish `: Fintype (H ⧸ H₀.addSubgroupOf H)` using `Fintype.ofFinite _`. Establish `hinjC : Function.Injective fun φ : AddChar (H ⧸ H₀.addSubgroupOf H) Circle => Circle.coeHom.compAddChar φ` using `MonoidHom.compAddChar_injective_right _ Circle.coe_injective`.
+
+Establish `: Finite (AddChar (H ⧸ H₀.addSubgroupOf H) Circle)` using `Finite.of_injective _ hinjC`. Establish `hcardC : Nat.card (AddChar (H ⧸ H₀.addSubgroupOf H) Circle) ≤ H₀.relIndex H`. Establish `h1` using `Nat.card_le_card_of_injective _ hinjC`. Rewrite `h1` using `[Nat.card_eq_fintype_card (α := AddChar (H ⧸ H₀.addSubgroupOf H) ℂ), AddChar.card_eq, ← Nat.card_eq_fintype_card]`. Conclude with `h1`.
+
+Establish `: Finite (R₀ ⧸ Ψ.ker)` using `Finite.of_injective _ (QuotientAddGroup.kerLift_injective Ψ)`. Establish `hkerfin : Ψ.ker.index ≤ Nat.card (AddChar (H ⧸ H₀.addSubgroupOf H) Circle)` using `Nat.card_le_card_of_injective _ (QuotientAddGroup.kerLift_injective Ψ)`. Establish `hker0 : Ψ.ker.index ≠ 0` using `AddSubgroup.index_ne_zero_of_finite`. Establish `hdvd` using `AddSubgroup.index_dvd_of_le hkerle`. Establish `hR0 : (R.addSubgroupOf R₀).index ≠ 0` using `fun h0 => hker0 (Nat.eq_zero_of_zero_dvd (h0 ▸ hdvd))`.
+
+Use `⟨hR0, ?_⟩` and prove the remaining obligations. Conclude with `(Nat.le_of_dvd (Nat.pos_of_ne_zero hker0) hdvd).trans (hkerfin.trans hcardC)`.
+-/
 theorem relIndex_le_of_pairing {X Y : Type} [AddCommGroup X] [AddCommGroup Y]
     (b : X → Y → Circle)
     (hl : ∀ x x' y, b (x + x') y = b x y * b x' y)
@@ -85,6 +108,11 @@ theorem relIndex_le_of_pairing {X Y : Type} [AddCommGroup X] [AddCommGroup Y]
   refine ⟨hR0, ?_⟩
   exact (Nat.le_of_dvd (Nat.pos_of_ne_zero hker0) hdvd).trans (hkerfin.trans hcardC)
 
+/- English proof (translation)
+Introduce `k _ _ _ _ ψ hψc hψ1 n A₀ A P₀ P hA₀c hA₀o hAc hAo hle hP₀ hP`. Establish `hfin : A₀.relIndex A ≠ 0` using `GlobalTheory.CompanionTheory.RelIndex.relIndex_ne_zero_of_isCompact_of_isOpen A A₀ hAc hA₀o hle`. Establish `h1` using `relIndex_le_of_pairing (fun ξ a : Fin n → k => ψ (ξ ⬝ᵥ a)) (fun ξ ξ' a => by simp [add_dotProduct, AddChar.map_add_eq_mul]) (fun ξ a a' => by simp [dotProduct_add, AddChar.map_add_eq_mul]) A₀ A P₀ P hfin (fun ξ hξ a ha => (hP₀ ξ).mp hξ a ha) (fun ξ _ h => (hP ξ).mpr h)`. Establish `h2` using `relIndex_le_of_pairing (fun a ξ : Fin n → k => ψ (ξ ⬝ᵥ a)) (fun a a' ξ => by simp [dotProduct_add, AddChar.map_add_eq_mul]) (fun a ξ ξ' => by simp [add_dotProduct, AddChar.map_add_eq_mul]) P P₀ A A₀ h1.1 (fun a _ ξ hξ => (hP ξ).mp hξ a ‹_›) (fun a _ h => by`. Assume the negation of the conclusion as `hna`.
+
+Take `⟨η, hη, hne⟩` from `GlobalTheory.CompanionTheory.CharacterBiduality.exists_annihilator_ne k ψ hψc hψ1 n A₀ hA₀c hA₀o a hna`. Conclude with `hne (h η ((hP₀ η).mpr hη)))`. Conclude with `le_antisymm h1.2 h2.2`.
+-/
 theorem relIndex_annihilator_eq : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (ψ : AddChar k Circle), Continuous ψ → ψ ≠ 1 →
     ∀ (n : ℕ) (A₀ A P₀ P : AddSubgroup (Fin n → k)), IsCompact (A₀ : Set (Fin n → k)) →

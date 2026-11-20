@@ -17,6 +17,13 @@ noncomputable section
 
 namespace GlobalTheory.BotRankSize
 
+/- English proof (translation)
+Establish `hk` using `D.R.k_even`. Establish `hm` using `D.R.m_even`. Establish `ht` using `D.R.t_odd`. Establish `h3` using `D.R.m_add_three_le_k`. Establish `h2` using `D.R.two_le_m`.
+
+Rewrite `hk`, `hm` using `[Nat.even_iff]`. Rewrite `ht` using `[Nat.odd_iff]`. Simplify using `only [SqNum.botBig, SqNum.botSmall, rankV, sLen, Formalism.BasicNotions.Ranks.r]`. Establish `e1 : (j + 1) * D.R.t = j * D.R.t + D.R.t` using `by ring`. Establish `e2 : (i + 1) * (D.R.k + D.R.m - 1 + 6) = i * (D.R.k + D.R.m - 1 + 6) + (D.R.k + D.R.m - 1 + 6)` using `by ring`.
+
+Rewrite using `[e1, e2]`. Generalize the expression as in `j * D.R.t = A`. Generalize the expression as in `i * (D.R.k + D.R.m - 1 + 6) = B`. Rewrite using `[Nat.even_iff]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem bot_arith (D : D7) (i j : ℕ) :
     Even (SqNum.botBig D i j + SqNum.botSmall D i j) ∧ SqNum.botSmall D i j + 2 < SqNum.botBig D i j ∧
       1 < SqNum.botSmall D i j := by
@@ -36,6 +43,9 @@ theorem bot_arith (D : D7) (i j : ℕ) :
   rw [Nat.even_iff]
   omega
 
+/- English proof (translation)
+Use `⟨0, fun ε CF _ => ⟨0, 0, fun C _ D large₂ _ _ _ T Lc μ₀ _ G => ?_⟩⟩` and prove the remaining obligations. Introduce `i j`. Conclude with `bot_arith D i j`.
+-/
 theorem bottom_ranks : GBig fun {D} {T} {Lc} {sc} G _ _ _ _ => ∀ i j : Fin D.R.m, Even (SqNum.botBig D i j + SqNum.botSmall D i j) ∧ SqNum.botSmall D i j + 2 < SqNum.botBig D i j ∧ 1 < SqNum.botSmall D i j := by
   refine ⟨0, fun ε CF _ => ⟨0, 0, fun C _ D large₂ _ _ _ T Lc μ₀ _ G => ?_⟩⟩
   intro i j

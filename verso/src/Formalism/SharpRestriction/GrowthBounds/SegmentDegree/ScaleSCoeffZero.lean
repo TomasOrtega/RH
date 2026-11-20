@@ -26,6 +26,15 @@ open Classical in
 
 def offDeg : (σ →₀ ℕ) →+ ℕ := Finsupp.liftAddHom fun v => if v ∈ S then AddMonoidHom.id ℕ else 0
 
+/- English proof (translation)
+Proceed by induction on `m using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add f g hf hg`. Establish `: (monomial (f + g) (1 : R)) = monomial f 1 * monomial g 1`. Rewrite using `[monomial_mul, one_mul]`.
+
+Rewrite using `[this, map_mul, hf, hg, map_add, pow_add, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `single v k`. Rewrite using `[← MvPolynomial.X_pow_eq_monomial, map_pow]`. Distinguish the cases in `hv : v ∈ S`.
+
+Establish `h1 : scaleS (R` using `R) S (MvPolynomial.X v) = Polynomial.X * Polynomial.C (MvPolynomial.X v) := by`. Simplify using `[scaleS, hv]`. Establish `h2 : offDeg S (Finsupp.single v k) = k` using `by simp [offDeg, hv]`. Rewrite using `[h1, h2, mul_pow, Polynomial.C_pow, mul_comm]`. Establish `h1 : scaleS (R` using `R) S (MvPolynomial.X v) = Polynomial.C (MvPolynomial.X v) := by`.
+
+Simplify using `[scaleS, hv]`. Establish `h2 : offDeg S (Finsupp.single v k) = 0` using `by simp [offDeg, hv]`. Rewrite using `[h1, h2, pow_zero, mul_one, Polynomial.C_pow]`.
+-/
 theorem scaleS_monomial (m : σ →₀ ℕ) :
     scaleS (R := R) S (monomial m 1) = Polynomial.C (monomial m 1) * Polynomial.X ^ offDeg S m := by
   classical
@@ -48,6 +57,11 @@ theorem scaleS_monomial (m : σ →₀ ℕ) :
       have h2 : offDeg S (Finsupp.single v k) = 0 := by simp [offDeg, hv]
       rw [h1, h2, pow_zero, mul_one, Polynomial.C_pow]
 
+/- English proof (translation)
+Establish `h : (Polynomial.constantCoeff.comp (scaleS (R` using `R) S : MvPolynomial σ R →+* Polynomial (MvPolynomial σ R))) = (kill (R := R) S : MvPolynomial σ R →+* MvPolynomial σ R) := by`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `a`. Simplify using `[scaleS, kill, MvPolynomial.algebraMap_eq]`. Introduce `v`.
+
+Apply the tactic sequence `by_cases hv : v ∈ S <;> simp [scaleS, kill, hv]`. Use `congrArg (fun g => g f) h` as an intermediate fact. Simplify `this` using `[Polynomial.constantCoeff_apply]`.
+-/
 theorem scaleS_coeff_zero (f : MvPolynomial σ R) : (scaleS S f).coeff 0 = kill S f := by
   classical
   have h : (Polynomial.constantCoeff.comp (scaleS (R := R) S : MvPolynomial σ R →+* Polynomial (MvPolynomial σ R))) =
@@ -60,6 +74,21 @@ theorem scaleS_coeff_zero (f : MvPolynomial σ R) : (scaleS S f).coeff 0 = kill 
   have := congrArg (fun g => g f) h
   simpa [Polynomial.constantCoeff_apply] using this
 
+/- English proof (translation)
+Rewrite `h`, the goal using `[linearIndependent_iff']`. Introduce `s a hsum`. Assume the negation of the conclusion as `hne`. Use `push Not at hne`. Take `⟨q0, hq0s, hq0⟩` from `hne`.
+
+Set `s'` to `s.filter fun q => a q ≠ 0`. Establish `hs' : s'.Nonempty` using `⟨q0, Finset.mem_filter.mpr ⟨hq0s, hq0⟩⟩`. Take `⟨q1, hq1, hmin⟩` from `Finset.exists_min_image s' (fun q => offDeg S (m q)) hs'`. Use `set δ := offDeg S (m q1) with hδ`. Establish `hsum' : ∑ q ∈ s', a q • (monomial (m q) (1 : R) * w q) = 0`.
+
+Rewrite using `[← hsum]`. Use `Finset.sum_subset (Finset.filter_subset _ _) ?_` and prove the remaining obligations. Introduce `q hq hq'`. Establish `: a q = 0`. Assume the negation of the conclusion as `hh`.
+
+Conclude with `hq' (Finset.mem_filter.mpr ⟨hq, hh⟩)`. Rewrite using `[this, zero_smul]`. Establish `hΘ` using `congrArg (fun P => (scaleS S P).coeff δ) hsum'`. Simplify using `only [map_sum, map_smul, map_mul, scaleS_monomial, Polynomial.finsetSum_coeff, Polynomial.coeff_smul, map_zero, Polynomial.coeff_zero] at hΘ`. Establish `hterm : ∀ q ∈ s', (Polynomial.C (monomial (m q) (1 : R)) * Polynomial.X ^ offDeg S (m q) * scaleS S (w q)).coeff δ = if offDeg S (m q) = δ then monomial (m q) (1 : R) * kill S (w q) else 0`.
+
+Introduce `q hq`. Rewrite using `[mul_assoc, Polynomial.coeff_C_mul, Polynomial.coeff_X_pow_mul']`. Establish `hle` using `hmin q hq`. Use `split_ifs with h1 h2 h2`. Rewrite using `[h2, Nat.sub_self, scaleS_coeff_zero]`.
+
+Conclude with `absurd (le_antisymm h1 hle) h2`. Conclude with `absurd (le_of_eq h2) h1`. Rewrite using `[mul_zero]`. Rewrite `hΘ` using `[Finset.sum_congr rfl fun q hq => by rw [hterm q hq]]`. Establish `hΘ' : ∑ q ∈ s'.filter (fun q => offDeg S (m q) = δ), a q • (monomial (m q) (1 : R) * kill S (w q)) = 0`.
+
+Rewrite using `[Finset.sum_filter]`. Use `Eq.trans (Finset.sum_congr rfl fun q _ => ?_) hΘ` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`. Use `h _ a hΘ' q1 (Finset.mem_filter.mpr ⟨hq1, rfl⟩)` as an intermediate fact. Conclude with `(Finset.mem_filter.mp hq1).2 this`.
+-/
 theorem li_of_kill {ι : Type} (m : ι → σ →₀ ℕ) (w : ι → MvPolynomial σ R)
     (h : LinearIndependent R fun q => monomial (m q) (1 : R) * kill S (w q)) :
     LinearIndependent R fun q => monomial (m q) (1 : R) * w q := by
@@ -131,6 +160,15 @@ def RestKey (C₀ : ℝ) : Prop :=
       LinearIndependent O fun q : X.Idx p K j (X.restr j b) =>
         monomial (X.monTau K j q.1.2.2) (1 : O) * kill (X.offSet K j) (X.wordEl K O j q.1)
 
+/- English proof (translation)
+Take `⟨-, -, h3, -⟩` from `hV`. Establish `key : ∀ d a : ℕ, a + d + 1 < r → F.fr j a < F.fr j (a + d + 1)`. Introduce `d`. Proceed by induction on `d with`. Consider the case `zero => intro a h`.
+
+Conclude with `h3 j a h`. Consider the case `succ d ih => intro a h; exact lt_trans (ih a (by omega)) (h3 j (a + d + 1) (by omega))`. Introduce `a b hab`. Establish `hab' : F.fr j a.val = F.fr j b.val` using `hab`. Assume the negation of the conclusion as `hne`.
+
+Establish `hne' : a.val ≠ b.val` using `fun h => hne (Fin.ext h)`. Establish `ha` using `a.isLt`. Establish `hb` using `b.isLt`. Break down `lt_or_gt_of_ne hne' with h | h` into its components or cases. Use `key (b.val - a.val - 1) a.val (by omega)` as an intermediate fact.
+
+Rewrite `this` using `[show a.val + (b.val - a.val - 1) + 1 = b.val by omega]`. Conclude with `absurd hab' (ne_of_lt this)`. Use `key (a.val - b.val - 1) b.val (by omega)` as an intermediate fact. Rewrite `this` using `[show b.val + (a.val - b.val - 1) + 1 = a.val by omega]`. Conclude with `absurd hab'.symm (ne_of_lt this)`.
+-/
 theorem fr_injective {n' r : ℕ} [NeZero n'] (F : Frames n' r) {L₁ N₁ : ℕ} (hV : F.Valid L₁ N₁) (j : ℤ) :
     Function.Injective fun a : Fin r => F.fr j a.val := by
   obtain ⟨-, -, h3, -⟩ := hV
@@ -153,12 +191,24 @@ theorem fr_injective {n' r : ℕ} [NeZero n'] (F : Frames n' r) {L₁ N₁ : ℕ
     rw [show b.val + (a.val - b.val - 1) + 1 = a.val by omega] at this
     exact absurd hab'.symm (ne_of_lt this)
 
+/- English proof (translation)
+Apply `rename_injective` to reduce the goal to its premises. Introduce `a b h`. Simplify using `only [Prod.mk.injEq] at h`. Conclude with `Prod.ext h.1 (Fin.castAdd_injective _ _ h.2)`.
+-/
 theorem plEmb_injective (O : Type) [CommRing O] (r K : ℕ) : Function.Injective (plEmb O r K) := by
   apply rename_injective
   intro a b h
   simp only [Prod.mk.injEq] at h
   exact Prod.ext h.1 (Fin.castAdd_injective _ _ h.2)
 
+/- English proof (translation)
+Introduce `p n' r K _ _ _ X O _ _ _ S hX hLa hk j b hB`. Establish `h1` using `li_of_kill (X.offSet K j) (fun q : X.Idx p K j (X.restr j b) => X.monTau K j q.1.2.2) (fun q => X.wordEl K O j q.1) (hK p n' r K X O S hX hLa hk j b hB)`. Use `set c0 : MvPolynomial (ℤ × Fin r) O := X.Dw O j ^ X.m0 K * (∏ i : Fin r, MvPolynomial.X (X.F.fr (j - 1) i.val, (0 : Fin r)) ^ ((b (X.F.fr (j - 1) i.val) : ℤ) - X.Bw p K j (X.F.fr (j - 1) i.val)).toNat) with hc0`. Establish `hD : X.Dw O j ≠ 0` using `Formalism.MainNotions.G.Joints.StandardMonomialSpace.detX_ne_zero _ (fr_injective X.F hX.valid (j - 1))`. Establish `hc0ne : c0 ≠ 0`.
+
+Use `mul_ne_zero (pow_ne_zero _ hD) (Finset.prod_ne_zero_iff.mpr fun i _ => pow_ne_zero _ (X_ne_zero _))` and prove the remaining obligations. Establish `hc : plEmb O r K c0 ≠ 0` using `(map_ne_zero_iff _ (plEmb_injective O r K)).mpr hc0ne`. Establish `h2` using `h1.map' (LinearMap.mulLeft O (plEmb O r K c0)) (LinearMap.ker_eq_bot.mpr fun x y hxy => mul_left_cancel₀ hc hxy)`. Establish `heq : (fun q : X.Idx p K j (X.restr j b) => X.famEl p K O j b q.1) = (⇑(LinearMap.mulLeft O ((plEmb O r K) c0)) ∘ fun q : X.Idx p K j (X.restr j b) => (monomial (X.monTau K j q.1.2.2)) (1 : O) * X.wordEl K O j q.1)`. Use function extensionality and compare the values at `q`.
+
+Simplify using `only [Function.comp, LinearMap.mulLeft_apply]`. Unfold `Dat.famEl Dat.wordEl Dat.monTau`. Rewrite using `[map_mul, ← hc0, mul_assoc]`. Use `congr 2`. Rewrite using `[MvPolynomial.monomial_sum_one, map_prod]`.
+
+Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[map_pow, ← MvPolynomial.X_pow_eq_monomial]`. Simplify using `[plEmb]`. Rewrite using `[heq]`. Conclude with `h2`.
+-/
 theorem restInd_of (C₀ : ℝ) (hK : RestKey C₀) : RestInd C₀ := by
   intro p n' r K _ _ _ X O _ _ _ S hX hLa hk j b hB
   have h1 := li_of_kill (X.offSet K j) (fun q : X.Idx p K j (X.restr j b) => X.monTau K j q.1.2.2)

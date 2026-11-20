@@ -6,6 +6,15 @@ open scoped ContDiff
 
 namespace GlobalTheory.ThK.ThetaLinSum
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B a a' G X om om' hKP hT ι _ z Ψ hΨ h`. Establish `lin` using `GlobalTheory.ThK.ThetaLin.I_lin F E σ B a a' G X om om' hKP hT`. Establish `h0 : G.M.I om 0 h = 0`. Establish `e` using `congrFun (lin 0 (Submodule.zero_mem _) 0 (Submodule.zero_mem _) 1) h`. Simplify using `only [one_smul, add_zero, Pi.add_apply] at e`.
+
+Take the linear combination `-e`. Establish `key : ∀ s : Finset ι, (∑ i ∈ s, z i • Ψ i) ∈ GlobalTheory.ThK.PolData B G.M ∧ G.M.I om (∑ i ∈ s, z i • Ψ i) h = ∑ i ∈ s, z i * G.M.I om (Ψ i) h`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact ⟨by simpa using Submodule.zero_mem _, by simpa using h0⟩`.
+
+Consider the case `insert j s hj ih`. Rewrite using `[Finset.sum_insert hj, Finset.sum_insert hj]`. Use `⟨Submodule.add_mem _ (Submodule.smul_mem _ _ (hΨ j)) ih.1, ?_⟩` and prove the remaining obligations. Establish `e` using `congrFun (lin (Ψ j) (hΨ j) _ ih.1 (z j)) h`. Rewrite using `[e, Pi.add_apply, Pi.smul_apply, smul_eq_mul, ih.2]`.
+
+Conclude with `(key Finset.univ).2`.
+-/
 theorem I_finset_sum : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E)
     (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), GlobalTheory.ThK.KP → IsTriple B G X om om' →

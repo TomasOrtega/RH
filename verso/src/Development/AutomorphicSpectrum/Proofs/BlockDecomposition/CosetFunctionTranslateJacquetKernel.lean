@@ -21,14 +21,27 @@ namespace GlobalTheory.CompanionTheory.BZPsiPG.FibKer
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Conclude with `Fin.append_left _ _ j`.
+-/
 theorem topPart_append_zero (i t : ℕ) (a : Fin t → k) : topP i t (Fin.append (0 : Fin i → k) a) = 0 := by
   funext j
   exact Fin.append_left _ _ j
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Conclude with `Fin.append_right _ _ j`.
+-/
 theorem middlePart_append_zero (i t : ℕ) (a : Fin t → k) : middlePart i t (Fin.append (0 : Fin i → k) a) = a := by
   funext j
   exact Fin.append_right _ _ j
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `v`. Establish `h1 : Multiplicative.ofAdd (topP i t (Fin.append (0 : Fin i → k) a)) = 1` using `congrArg Multiplicative.ofAdd (topPart_append_zero i t a)`. Establish `h2 : (fibAct t ρ₀ (Multiplicative.ofAdd (Fin.append (0 : Fin i → k) a)) (cosetFn t hc a z)).1 v = ρ₀ (Multiplicative.ofAdd (topP i t (Fin.append (0 : Fin i → k) a))) ((cosetFn t hc a z).1 (v + middlePart i t (Fin.append (0 : Fin i → k) a)))` using `rfl`. Rewrite using `[h2, h1, map_one, middlePart_append_zero]`.
+
+Use `show (cosetSet t c a).indicator (fun _ => z) (v + a) = (cosetSet t c 0).indicator (fun _ => z) v`. Establish `hs : (v + a ∈ cosetSet t c a) ↔ v ∈ cosetSet t c 0`. Establish `: v + a - a = v - 0` using `by simp`. Use `show Multiplicative.ofAdd (v + a - a) ∈ Lc t c ↔ Multiplicative.ofAdd (v - 0) ∈ Lc t c`. Rewrite using `[this]`.
+
+Distinguish the cases in `hv : v ∈ cosetSet t c 0`. Rewrite using `[Set.indicator_of_mem hv, Set.indicator_of_mem (hs.2 hv)]`. Rewrite using `[Set.indicator_of_notMem hv, Set.indicator_of_notMem (fun h => hv (hs.1 h))]`.
+-/
 theorem fibAct_cosetFn_translate (i t : ℕ) {Z : Type} [AddCommGroup Z] [Module ℂ Z]
     (ρ₀ : Representation ℂ (Multiplicative (Fin i → k)) Z) {c : k} (hc : c ≠ 0) (a : Fin t → k) (z : Z) :
     fibAct t ρ₀ (Multiplicative.ofAdd (Fin.append (0 : Fin i → k) a)) (cosetFn t hc a z) = cosetFn t hc 0 z := by
@@ -50,6 +63,11 @@ theorem fibAct_cosetFn_translate (i t : ℕ) {Z : Type} [AddCommGroup Z] [Module
   · rw [Set.indicator_of_mem hv, Set.indicator_of_mem (hs.2 hv)]
   · rw [Set.indicator_of_notMem hv, Set.indicator_of_notMem (fun h => hv (hs.1 h))]
 
+/- English proof (translation)
+Introduce `k _ _ _ _ i t Z _ _ ρ₀ c hc a z`. Establish `hgen : cosetFn t hc 0 z - cosetFn t hc a z ∈ twKer (fibAct t ρ₀) ⊤ 1`. Use `Submodule.subset_span ⟨⟨Multiplicative.ofAdd (Fin.append (0 : Fin i → k) a), trivial⟩, cosetFn t hc a z, ?_⟩` and prove the remaining obligations. Establish `h1 : (((1 : (⊤ : Subgroup (Multiplicative (Fin (i + t) → k))) →* ℂˣ) ⟨Multiplicative.ofAdd (Fin.append (0 : Fin i → k) a), trivial⟩ : ℂˣ) : ℂ) = 1` using `rfl`. Rewrite using `[h1, one_smul]`.
+
+Conclude with `congrArg (· - cosetFn t hc a z) (fibAct_cosetFn_translate i t ρ₀ hc a z).symm`. Use `Submodule.neg_mem _ hgen` as an intermediate fact. Rewrite `this` using `[neg_sub]`. Then use the resulting hypothesis.
+-/
 theorem cosetFn_sub_cosetFn_zero_mem_twKer : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (i t : ℕ) {Z : Type} [AddCommGroup Z] [Module ℂ Z] (ρ₀ : Representation ℂ (Multiplicative (Fin i → k)) Z) (c : k) (hc : c ≠ 0) (a : Fin t → k) (z : Z), cosetFn t hc a z - cosetFn t hc 0 z ∈ twKer (fibAct t ρ₀) ⊤ 1 := by
   intro k _ _ _ _ i t Z _ _ ρ₀ c hc a z
   have hgen : cosetFn t hc 0 z - cosetFn t hc a z ∈ twKer (fibAct t ρ₀) ⊤ 1 := by

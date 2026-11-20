@@ -28,6 +28,9 @@ def FactorNorm (X : Data E r) (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ)
   ∀ x ∈ X.dom, IsUnitFr X x → ∀ (θ : (Fin g → ℂ) → ℂ) (κ : ℂ), IsTheta1 X bas idx w x X.Λ θ →
     MeanOne X bas idx x X.Λ θ → (∀ z : Fin n → Fin g → ℂ, ∏ b, θ (z b) = κ * thA X bas idx v x z) → ‖κ‖ = ‖C‖
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hz`. Establish `hz' : ∀ z, θ z = 0` using `fun z => by_contra fun hne => hz ⟨z, hne⟩`. Take `⟨A, Fd, -, -, hI⟩` from `h`. Simplify using `[hz'] at hI`.
+-/
 theorem exists_ne_zero_of_meanOne {X : Data E r} {bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ} {idx : Fin g ≃ X.Ψ × Fin r}
     {x : Frame X.Ψ r} {L : Lt E r} {θ : (Fin g → ℂ) → ℂ} (h : MeanOne X bas idx x L θ) : ∃ z, θ z ≠ 0 := by
   by_contra hz
@@ -35,15 +38,38 @@ theorem exists_ne_zero_of_meanOne {X : Data E r} {bas : (Fin g ⊕ Fin g → ℤ
   obtain ⟨A, Fd, -, -, hI⟩ := h
   simp [hz'] at hI
 
+/- English proof (translation)
+Use `show Spec.map _ ≫ Spec.map _ = Spec.map _`. Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem spMap_comp' {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (f' : B →+* C) :
     spMap f' ≫ spMap f = spMap (f'.comp f) := by
   show Spec.map _ ≫ Spec.map _ = Spec.map _
   rw [← Spec.map_comp]
   rfl
 
+/- English proof (translation)
+Conclude with `⟨(Spec.preimage x).hom, (Spec.map_preimage x).symm⟩`.
+-/
 theorem exists_spMap' {A B : Type} [CommRing A] [CommRing B] (x : Sp B ⟶ Sp A) : ∃ β : A →+* B, x = spMap β := by
   exact ⟨(Spec.preimage x).hom, (Spec.map_preimage x).symm⟩
 
+/- English proof (translation)
+Establish `: CharZero k` using `(RingHom.charZero_iff β.injective).mp inferInstance`. Establish `hsq1 : (β (baseKA l).ρ) ^ 2 = -(H.d : k)`. Establish `e` using `congrArg β (baseKA l).ρ_sq`. Simplify using `using e`. Establish `hsq2 : (β₂ (baseKA l₂).ρ) ^ 2 = -(H.d : k)`.
+
+Establish `e` using `congrArg β₂ (baseKA l₂).ρ_sq`. Simplify using `using e`. Set `τE : E →ₐ[ℚ] k` to `IsAlgClosed.lift`. Set `τ : 𝓞 E →+* k` to `(τE : E →+* k).comp (algebraMap (𝓞 E) E)`. Establish `ht : (τ H.rt) ^ 2 = -(H.d : k)`.
+
+Establish `e` using `congrArg τ H.rt_sq`. Simplify using `using e`. Establish `D1` using `(Xo.univ.geom k (x ≫ π) β h).1`. Establish `D2` using `(Xo₂.univ.geom k x β₂ h₂).1`. Establish `P : ∀ n, LieMult Xo₂.univ.t.act x τ n ↔ LieMult Xo.univ.t.act (x ≫ π) τ n` using `fun n => GlobalTheory.LiePull.lieMult_pull (𝓞 E) Xo.X Xo₂.X Xo.univ.t.G Xo₂.univ.t.G π m.cm.F Xo.univ.t.act Xo₂.univ.t.act m.cart m.act k x τ n`.
+
+Set `b' : Base l₂ k` to `{ unit := fun n hn => (Nat.cast_ne_zero.mpr hn.ne').isUnit ρ := β₂ (baseKA l₂).ρ ρ_sq := hsq2 ζ := β₂ (baseKA l₂).ζ ζ_prim := (baseKA l₂).ζ_prim.map_of_injective β₂.injective }`. Take `⟨o', ⟨om⟩⟩` from `GlobalTheory.obj_pull E H Dw l₂ (KA l₂) k (baseKA l₂) b' β₂ Xo₂.X (Sp k) Xo₂.s (𝟙 (Sp k)) x rfl rfl (by rw [Category.id_comp]; exact h₂) Xo₂.univ`. Establish `P' : ∀ n, LieMult o'.t.act (𝟙 (Sp k)) τ n ↔ LieMult Xo₂.univ.t.act (𝟙 (Sp k) ≫ x) τ n` using `fun n => GlobalTheory.LiePull.lieMult_pull (𝓞 E) Xo₂.X (Sp k) Xo₂.univ.t.G o'.t.G x om.cm.F Xo₂.univ.t.act o'.t.act om.cart om.act k (𝟙 _) τ n`. Establish `U : ∀ n n', LieMult Xo₂.univ.t.act x τ n → LieMult Xo₂.univ.t.act x τ n' → n = n'`. Introduce `n n' hn hn'`.
+
+Establish `hn2` using `(P' n).mpr (by rw [Category.id_comp]; exact hn)`. Establish `hn2'` using `(P' n').mpr (by rw [Category.id_comp]; exact hn')`. Take `⟨bn⟩` from `(GlobalTheory.Serre.Lie.lieMult_id_iff o'.t.act τ n).mp hn2`. Take `⟨bn'⟩` from `(GlobalTheory.Serre.Lie.lieMult_id_iff o'.t.act τ n').mp hn2'`. Establish `e` using `(Module.finrank_eq_card_basis bn).symm.trans (Module.finrank_eq_card_basis bn')`.
+
+Simplify using `using e`. Assume the negation of the conclusion as `hne`. Establish `h21 : β₂ (baseKA l₂).ρ = -(β (baseKA l).ρ)`. Break down `sq_eq_sq_iff_eq_or_eq_neg.mp (hsq2.trans hsq1.symm) with e | e` into its components or cases. Conclude with `absurd e.symm hne`.
+
+Conclude with `e`. Break down `sq_eq_sq_iff_eq_or_eq_neg.mp (ht.trans hsq1.symm) with e | e` into its components or cases. Establish `hp : LieMult Xo₂.univ.t.act x τ Dw.p` using `(P _).mpr ((D1 τ).1 e)`. Establish `hq : LieMult Xo₂.univ.t.act x τ Dw.q` using `(D2 τ).2 (by rw [e]; exact hne)`. Conclude with `hpq (U _ _ hp hq)`.
+
+Establish `e' : τ H.rt = β₂ (baseKA l₂).ρ` using `e.trans h21.symm`. Establish `hp : LieMult Xo₂.univ.t.act x τ Dw.p` using `(D2 τ).1 e'`. Establish `hq : LieMult Xo₂.univ.t.act x τ Dw.q` using `(P _).mpr ((D1 τ).2 (by rw [e']; exact fun h' => hne h'.symm))`. Conclude with `hpq (U _ _ hp hq)`.
+-/
 theorem rho_eq_of_ne (hpq : Dw.p ≠ Dw.q) {l₂ : Geo.Tor.Level H} {Xo₂ : Moduli Dw l₂} {π : Xo₂.X ⟶ Xo.X}
     (m : SABMap Xo₂.univ.t Xo.univ.t π) {k : Type} [Field k] [IsAlgClosed k] {x : Sp k ⟶ Xo₂.X}
     {β : KA l →+* k} {β₂ : KA l₂ →+* k} (h : (x ≫ π) ≫ Xo.s = spMap β) (h₂ : x ≫ Xo₂.s = spMap β₂) :
@@ -98,6 +124,17 @@ theorem rho_eq_of_ne (hpq : Dw.p ≠ Dw.q) {l₂ : Geo.Tor.Level H} {Xo₂ : Mod
     have hq : LieMult Xo₂.univ.t.act x τ Dw.q := (P _).mpr ((D1 τ).2 (by rw [e']; exact fun h' => hne h'.symm))
     exact hpq (U _ _ hp hq)
 
+/- English proof (translation)
+Establish `hz : zeta l.A = 1`. Rewrite using `[hA]`. Simplify using `[zeta, Complex.exp_two_pi_mul_I]`. Use extensionality with `⟨z, hz'⟩`. Express the relevant statement in the definitionally equal form `z ∈ IntermediateField.adjoin ℚ {H.rt0, zeta l.A} at hz'`.
+
+Proceed by induction on `hz' using IntermediateField.adjoin_induction with`. Consider the case `mem x hx`. Break down `hx with rfl | rfl` into its components or cases. Conclude with `h`. Establish `e : (⟨zeta l.A, IntermediateField.subset_adjoin _ _ (by simp)⟩ : KA l) = 1` using `Subtype.ext hz`.
+
+Rewrite using `[e, map_one, map_one]`. Consider the case `algebraMap q => show β (algebraMap ℚ (KA l) q) = β' (algebraMap ℚ (KA l) q)`. Conclude with `DFunLike.congr_fun (RingHom.ext_rat (β.comp (algebraMap ℚ (KA l))) (β'.comp (algebraMap ℚ (KA l)))) q`. Consider the case `add x y hx hy ihx ihy => show β (⟨x, hx⟩ + ⟨y, hy⟩) = β' (⟨x, hx⟩ + ⟨y, hy⟩)`. Rewrite using `[map_add, map_add, ihx, ihy]`.
+
+Consider the case `mul x y hx hy ihx ihy => show β (⟨x, hx⟩ * ⟨y, hy⟩) = β' (⟨x, hx⟩ * ⟨y, hy⟩)`. Rewrite using `[map_mul, map_mul, ihx, ihy]`. Consider the case `inv x hx ih => show β (⟨x, hx⟩⁻¹) = β' (⟨x, hx⟩⁻¹)`. Distinguish the cases in `h0 : (⟨x, hx⟩ : KA l) = 0`. Rewrite using `[h0, _root_.inv_zero, map_zero, map_zero]`.
+
+Establish `e1 : β ⟨x, hx⟩ * β (⟨x, hx⟩⁻¹) = 1` using `by rw [← map_mul, mul_inv_cancel₀ h0, map_one]`. Establish `e2 : β' ⟨x, hx⟩ * β' (⟨x, hx⟩⁻¹) = 1` using `by rw [← map_mul, mul_inv_cancel₀ h0, map_one]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem ringHom_KA_ext_of_A_eq_one (hA : l.A = 1) {R : Type} [CommRing R] {β β' : KA l →+* R}
     (h : β (baseKA l).ρ = β' (baseKA l).ρ) : β = β' := by
   have hz : zeta l.A = 1 := by
@@ -130,6 +167,9 @@ private theorem ringHom_KA_ext_of_A_eq_one (hA : l.A = 1) {R : Type} [CommRing R
         _ = (β ⟨x, hx⟩ * β (⟨x, hx⟩⁻¹)) * β' (⟨x, hx⟩⁻¹) := by rw [← ih]; ring
         _ = β' (⟨x, hx⟩⁻¹) := by rw [e1, one_mul]
 
+/- English proof (translation)
+Conclude with `ringHom_KA_ext_of_A_eq_one hA h`.
+-/
 theorem emb_ext_of_one (hA : l.A = 1) {k : Type} [Field k] {β β' : KA l →+* k}
     (h : β (baseKA l).ρ = β' (baseKA l).ρ) : β = β' := by
   exact ringHom_KA_ext_of_A_eq_one hA h
@@ -137,6 +177,11 @@ theorem emb_ext_of_one (hA : l.A = 1) {k : Type} [Field k] {β β' : KA l →+* 
 def OverBase (d : DeltaDat Xo c n) : Prop :=
   ∀ h : KA l ≤ KA d.l₂, d.r ≫ Xo.s = d.Xo₂.s ≫ spMap (IntermediateField.inclusion h).toRingHom
 
+/- English proof (translation)
+Take `⟨γ1, e1⟩` from `exists_spMap' (t ≫ d.r ≫ Xo.s)`. Take `⟨γ2, e2⟩` from `exists_spMap' (t ≫ d.Xo₂.s)`. Establish `key : γ1 = γ2.comp (IntermediateField.inclusion h).toRingHom`. Apply `emb_ext_of_one hA` to reduce the goal to its premises. Set `ι` to `algebraMap K (AlgebraicClosure K)`.
+
+Apply `ι.injective` to reduce the goal to its premises. Establish `e` using `rho_eq_of_ne hpq d.m (x := spMap ι ≫ t) (β := ι.comp γ1) (β₂ := ι.comp γ2) (by simp only [Category.assoc]; rw [e1, spMap_comp']) (by rw [Category.assoc, e2, spMap_comp'])`. Conclude with `e`. Rewrite using `[e1, ← Category.assoc, e2, spMap_comp', key]`.
+-/
 theorem point_over_of_ne (hpq : Dw.p ≠ Dw.q) (hA : l.A = 1) (d : DeltaDat Xo c n) (h : KA l ≤ KA d.l₂)
     {K : Type} [Field K] (t : Sp K ⟶ d.Xo₂.X) :
     t ≫ d.r ≫ Xo.s = t ≫ d.Xo₂.s ≫ spMap (IntermediateField.inclusion h).toRingHom := by
@@ -151,6 +196,21 @@ theorem point_over_of_ne (hpq : Dw.p ≠ Dw.q) (hA : l.A = 1) (d : DeltaDat Xo c
     exact e
   rw [e1, ← Category.assoc, e2, spMap_comp', key]
 
+/- English proof (translation)
+Introduce `h`. Establish `: IsReduced d.Xo₂.X` using `GlobalTheory.UnivPol.isReduced d.Xo₂`. Use `set f := d.r ≫ Xo.s with hf`. Use `set g := d.Xo₂.s ≫ spMap (IntermediateField.inclusion h).toRingHom with hg`. Establish `hpt : ∀ p : d.Xo₂.X, d.Xo₂.X.fromSpecResidueField p ≫ f = d.Xo₂.X.fromSpecResidueField p ≫ g` using `fun p => point_over_of_ne hpq hA d h (K := d.Xo₂.X.residueField p) (d.Xo₂.X.fromSpecResidueField p)`.
+
+Set `φf` to `((Scheme.ΓSpecIso (CommRingCat.of (KA l))).inv ≫ f.appTop).hom`. Set `φg` to `((Scheme.ΓSpecIso (CommRingCat.of (KA l))).inv ≫ g.appTop).hom`. Establish `key : ∀ p : d.Xo₂.X, p ∉ d.Xo₂.X.basicOpen (φf (baseKA l).ρ - φg (baseKA l).ρ)`. Introduce `p hp`. Set `t` to `d.Xo₂.X.fromSpecResidueField p`.
+
+Establish `e1 : f.appTop ≫ t.appTop = g.appTop ≫ t.appTop`. Rewrite using `[← Scheme.Hom.comp_appTop, ← Scheme.Hom.comp_appTop, hpt p]`. Establish `e2 : t.appTop (φf (baseKA l).ρ - φg (baseKA l).ρ) = 0`. Rewrite using `[map_sub, sub_eq_zero]`. Conclude with `congrArg (fun u => u.hom ((Scheme.ΓSpecIso (CommRingCat.of (KA l))).inv.hom (baseKA l).ρ)) e1`.
+
+Establish `e3` using `Scheme.preimage_basicOpen_top t (φf (baseKA l).ρ - φg (baseKA l).ρ)`. Rewrite `e3` using `[e2, Scheme.basicOpen_zero]`. Take `⟨q⟩ : Nonempty ↥(Spec (d.Xo₂.X.residueField p))` from `⟨IsLocalRing.closedPoint _⟩`. Establish `hq : q ∈ t ⁻¹ᵁ d.Xo₂.X.basicOpen (φf (baseKA l).ρ - φg (baseKA l).ρ)`. Rewrite using `[Scheme.Hom.mem_preimage, Scheme.fromSpecResidueField_apply]`.
+
+Conclude with `hp`. Rewrite `hq` using `[e3]`. Simplify using `at hq`. Establish `hφ : φf = φg`. Apply `ringHom_KA_ext_of_A_eq_one hA` to reduce the goal to its premises.
+
+Rewrite using `[← sub_eq_zero]`. Apply `eq_zero_of_basicOpen_eq_bot` to reduce the goal to its premises. Rewrite using `[eq_bot_iff]`. Introduce `p hp`. Conclude with `(key p hp).elim`.
+
+Establish `h1 : (Scheme.ΓSpecIso (CommRingCat.of (KA l))).inv ≫ f.appTop = (Scheme.ΓSpecIso (CommRingCat.of (KA l))).inv ≫ g.appTop` using `CommRingCat.hom_ext hφ`. Rewrite `h1` using `[cancel_epi]`. Rewrite using `[← cancel_mono (Sp (KA l)).toSpecΓ, Scheme.toSpecΓ_naturality, Scheme.toSpecΓ_naturality, h1]`.
+-/
 theorem overBase_of_ne (hpq : Dw.p ≠ Dw.q) (hA : l.A = 1) (d : DeltaDat Xo c n) : OverBase d := by
   intro h
   have : IsReduced d.Xo₂.X := GlobalTheory.UnivPol.isReduced d.Xo₂
@@ -188,13 +248,26 @@ theorem overBase_of_ne (hpq : Dw.p ≠ Dw.q) (hA : l.A = 1) (d : DeltaDat Xo c n
   rw [cancel_epi] at h1
   rw [← cancel_mono (Sp (KA l)).toSpecΓ, Scheme.toSpecΓ_naturality, Scheme.toSpecΓ_naturality, h1]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_incl {S T : IntermediateField ℚ ℂ} (h : S ≤ T) (t : S) :
     (((IntermediateField.inclusion h).toRingHom t : T) : ℂ) = (t : ℂ) := rfl
 
+/- English proof (translation)
+Conclude with `RingHom.ext fun t => Subtype.ext ((hj t).trans (coe_incl h t).symm)`.
+-/
 theorem eq_incl {S T : IntermediateField ℚ ℂ} (h : S ≤ T) (j : S →+* T) (hj : ∀ t, ((j t : T) : ℂ) = (t : ℂ)) :
     j = (IntermediateField.inclusion h).toRingHom := by
   exact RingHom.ext fun t => Subtype.ext ((hj t).trans (coe_incl h t).symm)
 
+/- English proof (translation)
+Establish `hle : KA l ≤ KA d.l₂` using `by show IntermediateField.adjoin ℚ {H.rt0, zeta l.A} ≤ IntermediateField.adjoin ℚ {H.rt0, zeta d.l₂.A}`. Rewrite using `[hA, hA₂]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hl, -, ⟨j, hj, hjr⟩, hnab⟩`. Use `⟨hl, fun _ h => ?_, hnab⟩` and prove the remaining obligations.
+
+Rewrite `hjr` using `[eq_incl h j hj]`. Conclude with `hjr`. Introduce and unpack `⟨hl, hob, hnab⟩`. Use `⟨hl, by rw [hA]; exact Nat.coprime_one_right _, ⟨(IntermediateField.inclusion hle).toRingHom, coe_incl hle, ?_⟩, hnab⟩` and prove the remaining obligations. Distinguish the cases in `hpq : Dw.p = Dw.q`.
+
+Conclude with `hob hpq hle`. Conclude with `overBase_of_ne hpq hA d hle`.
+-/
 theorem isCover_iff (d : DeltaDat Xo c n) (hA : l.A = 1) (hA₂ : d.l₂.A = 1) :
     IsCover d ↔ d.IsLev ∧ (Dw.p = Dw.q → OverBase d) ∧ ∃ _ : StarRing (𝓞 E), IsNab d.Xo₂ d.c₂ d.nab₂ := by
   have hle : KA l ≤ KA d.l₂ := by
@@ -252,6 +325,9 @@ def ReadsUnit (D : Dic Dw c σ (U.X k) g q0 n a) (v : TF n g) (κ : ℂ) : Prop 
 
 variable {U W k}
 
+/- English proof (translation)
+Introduce `d _ hσ hl hA hg`. Conclude with `h d hσ hl hA (hG d hg)`.
+-/
 theorem ReadsAlg.mono {G G' : DeltaDat Xo c n → Prop} (hG : ∀ d, G' d → G d) {Dc : Dic Dw c σ (U.X k) W.g Dw.p n a}
     {v : TF n W.g} {C : ℂ} (h : ReadsAlg U W k G Dc v C) : ReadsAlg U W k G' Dc v C := by
   intro d _ hσ hl hA hg
@@ -280,6 +356,9 @@ def ValuesUnit (S : ℕ → ℕ → Prop) : Prop :=
       IsVac (U.X k) D.bas (H.w0 : E) (tens (stdLat E n) (U.X k).Λ) v →
       ∃ κ : ℂ, κ ≠ 0 ∧ IsModulus (U.X k) D.bas D.idx (H.w0 : E) v ‖κ‖ ∧ ReadsUnit U W k D v κ
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw hS' l Xo c σ r U hg hu hr hA W k n a hd Dc he v hv`. Take `⟨C, h1, h2, h3⟩` from `h E H Dw (hS _ _ hS') l Xo c σ r U hg hu hr hA W k n a hd Dc he v hv`. Conclude with `⟨C, h1, h2, ReadsAlg.mono (fun d hd hb => hd (hB _ _ hS' hb)) h3⟩`.
+-/
 theorem ValuesAlg.mono {S S' B B' : ℕ → ℕ → Prop} (hS : ∀ p q, S' p q → S p q)
     (hB : ∀ p q, S' p q → B p q → B' p q) (h : ValuesAlg S B) : ValuesAlg S' B' := by
   intro E _ _ _ H Dw hS' l Xo c σ r U hg hu hr hA W k n a hd Dc he v hv

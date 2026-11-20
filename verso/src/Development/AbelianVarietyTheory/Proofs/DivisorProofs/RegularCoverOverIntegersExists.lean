@@ -20,6 +20,15 @@ open Limits
 
 namespace GlobalTheory.RegCoverToIntegers
 
+/- English proof (translation)
+Set `T : Scheme.Pullback.Triplet f g` to `Scheme.Pullback.Triplet.ofPoint z`. Establish `hg : ((X.residueFieldCongr T.hy).inv ≫ g.residueFieldMap T.y).hom.Finite` using `((PullbackFinitePoint.residueDegree_ne_zero_iff_finite g _).1 h).comp (RingHom.Finite.of_surjective _ (ConcreteCategory.bijective_of_isIso (X.residueFieldCongr T.hy).inv).2)`. Establish `hl : T.tensorInl.hom.Finite` using `RingHom.finite_isStableUnderBaseChange.pushout_inl RingHom.finite_respectsIso _ _ hg`. Set `s : PrimeSpectrum T.tensor` to `Scheme.Pullback.SpecOfPoint z`. Establish `hs : T.SpecTensorTo s = z` using `Scheme.Pullback.SpecTensorTo_SpecOfPoint z`.
+
+Establish `hm : s.asIdeal.IsMaximal`. Use `Ideal.isMaximal_of_isIntegral_of_isMaximal_comap' T.tensorInl.hom hl.to_isIntegral s.asIdeal ?_` and prove the remaining obligations. Establish `hp : (s.asIdeal.comap T.tensorInl.hom).IsPrime` using `inferInstance`. Rewrite using `[Ideal.eq_bot_of_prime (s.asIdeal.comap T.tensorInl.hom)]`. Conclude with `Ideal.bot_isMaximal`.
+
+Use `letI := Ideal.Quotient.field s.asIdeal`. Set `ρ : T.tensor ⟶ CommRingCat.of (T.tensor ⧸ s.asIdeal)` to `CommRingCat.ofHom (Ideal.Quotient.mk s.asIdeal)`. Establish `hρ : ρ.hom.Finite` using `RingHom.Finite.of_surjective _ Ideal.Quotient.mk_surjective`. Set `q : Spec (CommRingCat.of (T.tensor ⧸ s.asIdeal))` to `(⊥ : PrimeSpectrum (T.tensor ⧸ s.asIdeal))`. Establish `hq : Spec.map ρ q = s` using `PrimeSpectrum.ext Ideal.mk_ker`.
+
+Establish `e : (Spec.map ρ ≫ T.SpecTensorTo) q = z`. Rewrite using `[Scheme.Hom.comp_apply, hq, hs]`. Rewrite using `[← e]`. Use `PullbackFinitePoint.residueDegree_ne_zero_of_fieldPoint _ _ T.x (T.tensorInl ≫ ρ) (hρ.comp hl) ?_ q` and prove the remaining obligations. Rewrite using `[Category.assoc, T.specTensorTo_fst, Spec.map_comp, Category.assoc]`.
+-/
 theorem residueDegree_fst_ne_zero {X Y₁ Y₂ : Scheme.{0}} (f : Y₁ ⟶ X) (g : Y₂ ⟶ X) (z : ↥(pullback f g))
     (h : g.residueDegree (pullback.snd f g z) ≠ 0) : (pullback.fst f g).residueDegree z ≠ 0 := by
   let T : Scheme.Pullback.Triplet f g := Scheme.Pullback.Triplet.ofPoint z
@@ -46,6 +55,9 @@ theorem residueDegree_fst_ne_zero {X Y₁ Y₂ : Scheme.{0}} (f : Y₁ ⟶ X) (g
   refine PullbackFinitePoint.residueDegree_ne_zero_of_fieldPoint _ _ T.x (T.tensorInl ≫ ρ) (hρ.comp hl) ?_ q
   rw [Category.assoc, T.specTensorTo_fst, Spec.map_comp, Category.assoc]
 
+/- English proof (translation)
+Establish `h₁ : CharZero Y.functionField` using `charZero_of_injective_ringHom (f := (Y.presheaf.germ ⊤ (genericPoint Y) trivial).hom) (germ_injective_of_isIntegral _ _ _)`. Set `f : Y.functionField →+* Y.residueField (genericPoint Y)` to `(Y.residue (genericPoint Y)).hom`. Conclude with `charZero_of_injective_ringHom f.injective`.
+-/
 theorem charZero_residueField_genericPoint (Y : Scheme.{0}) [IsIntegral Y] (hc : CharZero Γ(Y, ⊤)) :
     CharZero (Y.residueField (genericPoint Y)) := by
   have h₁ : CharZero Y.functionField := charZero_of_injective_ringHom
@@ -57,6 +69,23 @@ end GlobalTheory.RegCoverToIntegers
 
 namespace GlobalTheory.RegCoverToIntegers
 
+/- English proof (translation)
+Introduce `hRA K _ _ k _ S p _ h`. Set `t : S ⟶ Sp ℤ` to `p ≫ spMap (Int.castRingHom k)`. Set `u : Sp (𝓞 K) ⟶ Sp ℤ` to `spMap (Int.castRingHom (𝓞 K))`. Establish `hfin : (Int.castRingHom (𝓞 K)).Finite` using `RingHom.finite_algebraMap.2 inferInstance`. Establish `: IsFinite u` using `(IsFinite.SpecMap_iff _).2 hfin`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨y, hy⟩ : ∃ y : Sp (𝓞 K), u y = t (genericPoint S) := by`. Take `⟨y, hy⟩` from `RingHom.IsIntegral.comap_surjective (f := Int.castRingHom (𝓞 K)) hfin.to_isIntegral Int.cast_injective (t (genericPoint S))`. Conclude with `⟨y, hy⟩`. Take `⟨z, hz₁, hz₂⟩` from `Scheme.Pullback.exists_preimage_pullback (f := t) (g := u) _ _ hy.symm`. Establish `hz : (pullback.fst t u).residueDegree z ≠ 0`.
+
+Use `residueDegree_fst_ne_zero t u z ?_` and prove the remaining obligations. Conclude with `(PullbackFinitePoint.residueDegree_ne_zero_iff_finite u _).2 (residueFieldMap_finite_of_locallyQuasiFinite u _)`. Take `⟨Z, i, _, _, hi⟩` from `exists_isClosedImmersion_genericPoint z`. Set `g : Z ⟶ S` to `i ≫ pullback.fst t u`. Establish `: IsFinite g` using `inferInstance`.
+
+Establish `gen : g (genericPoint Z) = genericPoint S`. Simplify using `[g, hi, hz₁]`. Establish `deg : g.residueDegree (genericPoint Z) ≠ 0`. Rewrite using `[CurveDegreesCompare.residueDegree_comp, GlobalTheory.Published.residueDegree_of_isClosedImmersion i, mul_one, hi]`. Conclude with `hz`.
+
+Establish `hP : IsProjOver (g ≫ p)` using `GlobalTheory.isProjOver_comp_of_isFinite g h.isProjOver`. Establish `hfl : Flat ((g ≫ p) ≫ spMap (Int.castRingHom k))`. Rewrite using `[flat_int_iff_charZero]`. Establish `c₁ : CharZero Γ(S, ⊤)` using `h.charZero`. Establish `c₂` using `charZero_residueField_genericPoint S c₁`.
+
+Establish `c₃ : CharZero (Z.residueField (genericPoint Z))`. Establish `: ∀ s : S, s = genericPoint S → CharZero (S.residueField s)`. Introduce and unpack `_ rfl`. Conclude with `c₂`. Use `this _ gen` as an intermediate fact.
+
+Conclude with `(RingHom.charZero_iff (Scheme.Hom.residueFieldMap _ _).hom.injective).1 this`. Conclude with `(Z.Γevaluation (genericPoint Z)).hom.charZero`. Establish `hZ : IsArithVar (g ≫ p) 1` using `⟨h.isDomain, h.finite, inferInstance, hP, hfl, DimCover.topologicalKrullDim_eq k S Z p (g ≫ p) 1 h hP hfl g rfl gen deg⟩`. Take `⟨D⟩` from `RegCoverExists.nonempty_regCover hRA k Z (g ≫ p) hZ`. Use `⟨⟨D.Y, D.ρ ≫ g, ?_, ?_, ?_⟩, ⟨D.ρ ≫ i ≫ pullback.snd t u⟩⟩` and prove the remaining obligations.
+
+Simplify `D.reg` using `[Category.assoc]`. Simplify using `only [Scheme.Hom.comp_apply]`. Rewrite using `[D.generic, gen]`. Rewrite using `[CurveDegreesCompare.residueDegree_comp, D.generic]`. Conclude with `mul_ne_zero deg D.finite`.
+-/
 theorem exists_regCover_toIntegers : GlobalTheory.Published.RegularAlteration → ∀ (K : Type) [Field K] [NumberField K] (k : Type)
     [CommRing k] (S : Scheme.{0}) (p : S ⟶ Sp k) [IsIntegral S], IsArithVar p 1 →
     ∃ C : RegCover p, Nonempty (C.Y ⟶ Sp (𝓞 K)) := by

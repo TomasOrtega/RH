@@ -36,17 +36,29 @@ def lnId (hp : p.Prime) (hW : (p : ℂ) ∈ W.nonunits) : ∀ l : Ln Dw, Pad.Gen
   | (false, st) => z.genId hp hW (Option.some_get st.2).symm
   | (true, st) => NModel.GenIso.dual (z.genId hp hW (Option.some_get st.2).symm)
 
+/- English proof (translation)
+The claim follows from `(z.stepLB_of_some _ _).symm`.
+-/
 theorem lnLB_false (b : Bool) (st) : lnLB z b (false, st) = z.stepLB b st.1 := (z.stepLB_of_some _ _).symm
 
+/- English proof (translation)
+The claim follows from `congrArg FinLB.dual (z.stepLB_of_some _ _).symm`.
+-/
 theorem lnLB_true (b : Bool) (st) : lnLB z b (true, st) = (z.stepLB b st.1).dual :=
   congrArg FinLB.dual (z.stepLB_of_some _ _).symm
 
+/- English proof (translation)
+Take `rfl : (letterOf Dw st.1).get st.2 = x` from `Option.some.inj ((Option.some_get st.2).trans h)`. Both sides reduce to the same expression.
+-/
 theorem vdiv_lnId_false (hp : p.Prime) (hW : (p : ℂ) ∈ W.nonunits) (d : ℕ) (st) {x : Letter Dw}
     (h : letterOf Dw st.1 = some x) :
     vdiv hp hW d _ _ (lnId z hp hW (false, st)) = vdiv hp hW d _ _ (z.genId hp hW h) := by
   obtain rfl : (letterOf Dw st.1).get st.2 = x := Option.some.inj ((Option.some_get st.2).trans h)
   rfl
 
+/- English proof (translation)
+Rewrite using `[← vdiv_lnId_false z hp hW d st h]`. Conclude with `vdiv_dual hp hW d _ _ _`.
+-/
 theorem vdiv_lnId_true (hp : p.Prime) (hW : (p : ℂ) ∈ W.nonunits) (d : ℕ) (st) {x : Letter Dw}
     (h : letterOf Dw st.1 = some x) :
     vdiv hp hW d _ _ (lnId z hp hW (true, st)) = -vdiv hp hW d _ _ (z.genId hp hW h) := by

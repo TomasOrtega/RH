@@ -2,6 +2,19 @@ import Mathlib
 
 namespace GlobalTheory.PosFormAdjoint
 
+/- English proof (translation)
+Establish `key : ∀ a b : ℤ, 0 ≤ a ^ 2 * F u u + 2 * a * b * F u v + b ^ 2 * F v v`. Introduce `a b`. Establish `h1` using `hpos (a • u + b • v)`. Establish `e : F (a • u + b • v) (a • u + b • v) = a ^ 2 * F u u + 2 * a * b * F u v + b ^ 2 * F v v`. Simplify using `only [map_add, map_zsmul, AddMonoidHom.add_apply, AddMonoidHom.smul_apply, smul_eq_mul]`.
+
+Rewrite using `[hsym v u]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h1` using `[e]`. Conclude with `h1`. Break down `(hpos u).lt_or_eq with ht | ht` into its components or cases.
+
+Establish `h2` using `key (-(F u v)) (F u u)`. Establish `h3 : 0 ≤ F u u * (F u u * F v v - F u v ^ 2)` using `by nlinarith [h2]`. Establish `h4 : 0 ≤ F u u * F v v - F u v ^ 2`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`.
+
+Use polynomial arithmetic with `[mul_neg_of_pos_of_neg ht hc]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[← ht]`. Simplify using `only [zero_mul]`. Assume the negation of the conclusion as `hc`.
+
+Use `push_neg at hc`. Establish `hs : (1 : ℤ) ≤ F u v ^ 2` using `hc`. Establish `h2` using `key (-(F v v + 1) * F u v) 1`. Rewrite `h2` using `[← ht]`. Establish `hv` using `hpos v`.
+
+Use polynomial arithmetic with `[h2, hs, hv]`.
+-/
 theorem int_cauchy_schwarz {X : Type} [AddCommGroup X] (F : X →+ X →+ ℤ)
     (hsym : ∀ u v, F u v = F v u) (hpos : ∀ u, 0 ≤ F u u) (u v : X) :
     F u v ^ 2 ≤ F u u * F v v := by
@@ -33,6 +46,31 @@ theorem int_cauchy_schwarz {X : Type} [AddCommGroup X] (F : X →+ X →+ ℤ)
     have hv := hpos v
     nlinarith [h2, hs, hv]
 
+/- English proof (translation)
+Use `set S : ℤ := ∑ i ∈ Finset.range n, |c i| with hS`. Establish `hcast : (((∑ i ∈ Finset.range n, (c i).natAbs : ℕ) + 1 : ℕ) : ℤ) = S + 1`. Use `push_cast`. Simplify using `[hS, Int.natCast_natAbs]`. Rewrite using `[hcast]`.
+
+Establish `hS0 : 0 ≤ S` using `Finset.sum_nonneg (fun i _ => abs_nonneg _)`. Assume the negation of the conclusion as `H`. Use `push_neg at H`. Establish `ha0 : 0 < a 0`. Break down `(hpos 0).lt_or_eq with h | h` into its components or cases.
+
+Conclude with `h`. It suffices to derive a contradiction. Establish `h1` using `hlc 0`. Rewrite `h1`, `H` using `[← h]`. Simplify using `at h1 H`.
+
+Use polynomial arithmetic with `[sq_nonneg (a 1)]`. Establish `h01 : a 0 < a 1` using `by nlinarith`. Establish `hind : ∀ k, 0 < a k ∧ a 1 * a k ≤ a (k + 1) * a 0`. Introduce `k`. Proceed by induction on `k with`.
+
+Consider the case `zero => exact ⟨ha0, by simp [mul_comm]⟩`. Consider the case `succ k ih`. Take `⟨hk, hk'⟩` from `ih`. Establish `hk1 : 0 < a (k + 1)`. Assume the negation of the conclusion as `hc`.
+
+Use `push_neg at hc`. Use polynomial arithmetic with `[mul_pos (by linarith : (0:ℤ) < a 1) hk]`. Use `⟨hk1, ?_⟩` and prove the remaining obligations. Establish `h2` using `hlc k`. Establish `h3 : a k * (a 1 * a (k + 1)) ≤ a k * (a (k + 2) * a 0)`.
+
+Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left hk' hk1.le]`. Conclude with `le_of_mul_le_mul_left h3 hk`. Establish `hmono : ∀ k, a k ≤ a (k + 1)`. Introduce `k`. Take `⟨hk, hk'⟩` from `hind k`.
+
+Establish `: a 0 * a k ≤ a 0 * a (k + 1)` using `by nlinarith [mul_le_mul_of_nonneg_right h01.le hk.le]`. Conclude with `le_of_mul_le_mul_left this ha0`. Establish `hmono' : Monotone a` using `monotone_nat_of_le_succ hmono`. Break down `n with _ | m` into its components or cases. Simplify using `at hrec`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite `hrec` using `[Finset.sum_range_succ]`. Take `⟨hm, hm'⟩` from `hind m`. Establish `hle : -(∑ i ∈ Finset.range (m + 1), c i * a i) ≤ S * a m`. Rewrite using `[hS, Finset.sum_mul, ← Finset.sum_neg_distrib]`.
+
+Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `i hi`. Establish `hi' : i ≤ m` using `Nat.lt_succ_iff.mp (Finset.mem_range.mp hi)`. Establish `h1 : -(c i * a i) ≤ |c i| * a i`. Use `neg_abs_le (c i)` as an intermediate fact.
+
+Use polynomial arithmetic with `[hpos i]`. Establish `h2 : |c i| * a i ≤ |c i| * a m` using `mul_le_mul_of_nonneg_left (hmono' hi') (abs_nonneg _)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hrec' : a (m + 1) = -(∑ i ∈ Finset.range (m + 1), c i * a i)`. Rewrite using `[Finset.sum_range_succ]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `h5 : (S + 1) * a 0 * a m < a 1 * a m` using `by nlinarith`. Establish `h6 : (S + 1) * a m * a 0 < a (m + 1) * a 0` using `by nlinarith`. Establish `h7 : (S + 1) * a m < a (m + 1)` using `lt_of_mul_lt_mul_right h6 ha0.le`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem seq_bound (a c : ℕ → ℤ) (n : ℕ) (hpos : ∀ k, 0 ≤ a k)
     (hlc : ∀ k, a (k + 1) ^ 2 ≤ a k * a (k + 2))
     (hrec : a n + ∑ i ∈ Finset.range n, c i * a i = 0) :
@@ -102,6 +140,53 @@ end GlobalTheory.PosFormAdjoint
 
 namespace GlobalTheory.PosFormAdjoint
 
+/- English proof (translation)
+Introduce `X _ _ _ h h'`. Set `T : Module.End ℤ X` to `h'.toIntLinearMap * h.toIntLinearMap`. Establish `hT : ∀ u, T u = h' (h u)` using `fun u => rfl`. Set `p` to `T.charpoly`. Use `⟨(∑ i ∈ Finset.range p.natDegree, (-(p.coeff i)).natAbs) + 1, ?_⟩` and prove the remaining obligations.
+
+Introduce `q hq hq0 hqneg hcube hadj y`. Set `B : X →+ X →+ ℤ` to `AddMonoidHom.mk' (fun u => AddMonoidHom.mk' (fun v => q (u + v) - q u - q v) (fun a b => by`. Use `hcube u a b` as an intermediate fact. Rewrite using `[← add_assoc]`. Use the proof step `linarith))`.
+
+Use the proof step `(fun a b => by`. Use extensionality with `v`. Simplify using `only [AddMonoidHom.mk'_apply, AddMonoidHom.add_apply]`. Use `hcube a b v` as an intermediate fact. Use the proof step `linarith)`.
+
+Establish `hB : ∀ u v, B u v = q (u + v) - q u - q v` using `fun u v => rfl`. Establish `Bsym : ∀ u v, B u v = B v u`. Introduce `u v`. Rewrite using `[hB, hB, add_comm]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `Bdiag : ∀ u, B u u = 2 * q u`. Introduce `u`. Use `hcube u u (-u)` as an intermediate fact. Simplify using `only [add_neg_cancel_right, add_neg_cancel, hq0, hqneg] at this`. Rewrite using `[hB]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `Badj : ∀ u v, B (h u) v = B u (h' v)`. Introduce `u v`. Rewrite using `[hB, hB]`. Use `hadj u v` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `BT : ∀ u v, B (T u) v = B u (T v)`. Introduce `u v`. Rewrite using `[hT, hT, Bsym, ← Badj, Bsym, Badj]`. Establish `BTpow : ∀ k u v, B ((T ^ k) u) v = B u ((T ^ k) v)`.
+
+Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro u v`. Both sides reduce to the same expression. Consider the case `succ k ih`.
+
+Introduce `u v`. Rewrite using `[pow_succ', Module.End.mul_apply, BT, ih]`. Use `congr 1`. Rewrite using `[← Module.End.mul_apply, ← pow_succ, ← pow_succ']`. Set `G : X →+ X →+ ℤ` to `B.comp (T : X →+ X)`.
+
+Establish `hG : ∀ u v, G u v = B (T u) v` using `fun u v => rfl`. Establish `Gsym : ∀ u v, G u v = G v u`. Introduce `u v`. Rewrite using `[hG, hG, BT, Bsym]`. Establish `Gdiag : ∀ u, G u u = 2 * q (h u)`.
+
+Introduce `u`. Rewrite using `[hG, hT, Bsym, ← Badj, Bdiag]`. Establish `Bpos : ∀ u, 0 ≤ B u u` using `fun u => by rw [Bdiag]; linarith [hq u]`. Establish `Gpos : ∀ u, 0 ≤ G u u` using `fun u => by rw [Gdiag]; linarith [hq (h u)]`. Set `a : ℕ → ℤ` to `fun k => B ((T ^ k) y) y`.
+
+Establish `aB : ∀ i j, a (i + j) = B ((T ^ i) y) ((T ^ j) y)`. Introduce `i j`. Use `show B ((T ^ (i + j)) y) y = _`. Rewrite using `[pow_add, Module.End.mul_apply, BTpow]`. Conclude with `Bsym _ _`.
+
+Establish `aG : ∀ i j, a (i + j + 1) = G ((T ^ i) y) ((T ^ j) y)`. Introduce `i j`. Rewrite using `[hG, ← Module.End.mul_apply, ← pow_succ', add_right_comm, aB]`. Establish `apos : ∀ k, 0 ≤ a k`. Introduce `k`.
+
+Break down `Nat.even_or_odd' k with ⟨m, rfl | rfl⟩` into its components or cases. Rewrite using `[two_mul, aB]`. Conclude with `Bpos _`. Rewrite using `[two_mul, aG]`. Conclude with `Gpos _`.
+
+Establish `alc : ∀ k, a (k + 1) ^ 2 ≤ a k * a (k + 2)`. Introduce `k`. Break down `Nat.even_or_odd' k with ⟨m, rfl | rfl⟩` into its components or cases. Establish `e1 : a (2 * m + 1) = B ((T ^ m) y) ((T ^ (m + 1)) y)`. Rewrite using `[← aB]`.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : a (2 * m + 2) = B ((T ^ (m + 1)) y) ((T ^ (m + 1)) y)`. Rewrite using `[← aB]`. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, e2, two_mul, aB]`. Conclude with `int_cauchy_schwarz B Bsym Bpos _ _`. Establish `e1 : a (2 * m + 1 + 1) = G ((T ^ m) y) ((T ^ (m + 1)) y)`. Rewrite using `[← aG]`.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : a (2 * m + 1 + 2) = G ((T ^ (m + 1)) y) ((T ^ (m + 1)) y)`. Rewrite using `[← aG]`. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, e2, two_mul, aG]`. Conclude with `int_cauchy_schwarz G Gsym Gpos _ _`. Establish `hmonic : p.Monic` using `LinearMap.charpoly_monic T`. Establish `hrec : a p.natDegree + ∑ i ∈ Finset.range p.natDegree, p.coeff i * a i = 0`.
+
+Establish `hCH : (Polynomial.aeval T p) y = 0`. Rewrite using `[LinearMap.aeval_self_charpoly]`. Both sides reduce to the same expression. Rewrite `hCH` using `[Polynomial.aeval_eq_sum_range, Finset.sum_range_succ, hmonic.coeff_natDegree, one_smul]`. Establish `h2` using `congrArg (fun x => B x y) hCH`.
+
+Simplify using `only [LinearMap.add_apply, LinearMap.sum_apply, LinearMap.smul_apply, map_add, map_sum, map_zsmul, AddMonoidHom.add_apply, AddMonoidHom.finset_sum_apply, AddMonoidHom.smul_apply, smul_eq_mul, map_zero, AddMonoidHom.zero_apply] at h2`. Rewrite using `[add_comm]`. Conclude with `h2`. Establish `hb` using `seq_bound a (fun i => p.coeff i) p.natDegree apos alc hrec`. Establish `a0 : a 0 = 2 * q y` using `by show B ((T ^ 0) y) y = _; rw [pow_zero]; exact Bdiag y`.
+
+Establish `a1 : a 1 = 2 * q (h y)`. Use `aG 0 0` as an intermediate fact. Simplify using `only [zero_add, pow_zero] at this`. Rewrite using `[this]`. Conclude with `Gdiag y`.
+
+Rewrite `hb` using `[a0, a1]`. Establish `habs : ∀ i, (-(p.coeff i)).natAbs = (p.coeff i).natAbs` using `fun i => Int.natAbs_neg _`. Simplify using `only [habs]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem pos_form_adjoint_bound : ∀ (X : Type) [AddCommGroup X] [Module.Free ℤ X] [Module.Finite ℤ X]
     (h h' : X →+ X), ∃ C : ℕ, ∀ q : X → ℤ, (∀ y, 0 ≤ q y) → q 0 = 0 → (∀ y, q (-y) = q y) →
       (∀ x y z, q (x + y + z) + q x + q y + q z = q (x + y) + q (x + z) + q (y + z)) →

@@ -10,5 +10,8 @@ open GlobalTheory.FinPl (Lat idAt idOff intAt grpAt grpOff MxAt latV latA InK Mo
 open scoped nonZeroDivisors ContDiff
 open GlobalTheory.AscFin
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.AscFin.finLat_pcBF_A₁ | exact GlobalTheory.AscFin.finLat_pcBF_A₁ | (intros; apply GlobalTheory.AscFin.finLat_pcBF_A₁ <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.finite_lattice_standard_parabolic : OnStd fun {D} _ _ {sc} {G} W F => ∀ ρ (h : 2 * ρ + 2 ≤ D.R.m), FinLat (pcBF W F ρ h).A₁ := by
   first | exact @GlobalTheory.AscFin.finLat_pcBF_A₁ | exact GlobalTheory.AscFin.finLat_pcBF_A₁ | (intros; apply GlobalTheory.AscFin.finLat_pcBF_A₁ <;> assumption)

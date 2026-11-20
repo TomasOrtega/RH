@@ -17,6 +17,39 @@ open GlobalTheory.Poinc.Eq8 GlobalTheory.Poinc.Sep.Spz Classical
 
 namespace GlobalTheory.Poinc.Sep.Spz
 
+/- English proof (translation)
+Introduce `B H _ V _ _ _ hV G _ _ hG D A U ξ β hβ σ hσ k w hk hkV hw F _ _ _ c x hx hxσ κ _ b hb Gκ _ m hm τ hτ z hz hbσ`. Use `haveI : CharZero V := hV.2`. Establish `hid : spMap (RingHom.id V) = 𝟙 (Sp V)` using `Spec.map_id _`. Set `σ₀ : Sp V ⟶ G.left` to `hβ.1.lift σ (𝟙 _) (hσ.trans (Category.id_comp _).symm)`. Establish `hσ₀ : σ₀ ≫ β = σ` using `hβ.1.lift_fst _ _ _`.
+
+Establish `hσ₀' : σ₀ ≫ G.hom = 𝟙 _` using `hβ.1.lift_snd _ _ _`. Set `σ₁ : Over.mk (spMap (RingHom.id V)) ⟶ G` to `Over.homMk σ₀ (hσ₀'.trans hid.symm)`. Take `⟨s, s1, s2, s3, s4⟩` from `GlobalTheory.ToricTorsionUnif.main V hV G hG D A U k hk`. Establish `hwu : IsUnit w` using `IsUnit.of_pow_eq_one hw (by omega)`. Take `⟨u, rfl⟩` from `hwu`.
+
+Establish `hu : u ^ k = 1` using `Units.ext (by simpa using hw)`. Set `τV : Multiplicative D.toPre.X →* Vˣ` to `(zpowersHom Vˣ u).comp (AddMonoidHom.toMultiplicative c)`. Establish `hτV' : ∀ χ, τV χ = u ^ c (Multiplicative.toAdd χ)` using `fun χ => rfl`. Establish `hτV : τV ^ k = 1` using `MonoidHom.ext fun χ => by`. Rewrite using `[MonoidHom.pow_apply, hτV', ← zpow_natCast, ← zpow_mul, mul_comm, zpow_mul, zpow_natCast, hu, one_zpow]`.
+
+Both sides reduce to the same expression. Establish `hval : ∀ (L : Type) [Field L] (f : V →+* L) (n : ℤ), f ((u ^ n : Vˣ) : V) = f u ^ n` using `fun L _ f n => by`. Use `congrArg Units.val (map_zpow (Units.map (f : V →* L)) u n)` as an intermediate fact. Rewrite `this` using `[Units.val_zpow_eq_zpow_val]`. Conclude with `this`.
+
+Set `a : V →+* F` to `(algebraMap (FractionRing V) F).comp (algebraMap V (FractionRing V))`. Establish `ha : spMap a = spMap (algebraMap (FractionRing V) F) ≫ jK V` using `GlobalTheory.ToricTorsionSec.spMap_comp _ _`. Establish `hainj : Function.Injective a` using `(algebraMap (FractionRing V) F).injective.comp (IsFractionRing.injective V (FractionRing V))`. Use `haveI := U.gen_hom`. Use `haveI : IsMonHom U.gen.symm.hom := inferInstanceAs (IsMonHom U.gen.inv)`.
+
+Establish `hp₁ : IsGrpPullback A.A ((Over.pullback (jK V)).obj G) (𝟙 _) U.gen.inv.left` using `isGrpPullback_of_iso U.gen.symm`. Establish `hp₂` using `isGrpPullback_pullback G (jK V)`. Establish `hp : IsGrpPullback A.A G (jK V) (genMap U)` using `(hp₁.comp hp₂).congr (Category.id_comp _) rfl`. Take `⟨e, he⟩` from `GlobalTheory.LiePull.exists_pushEquiv hp (TFK (R := V) F) (spMap a) ha`. Set `ρ : Over.mk (spMap a) ⟶ Over.mk (spMap (RingHom.id V))` to `Over.homMk (spMap a) (by show spMap a ≫ spMap (RingHom.id V) = spMap a; rw [hid, Category.comp_id])`.
+
+Establish `hex : e x = ρ ≫ σ₁`. Use `Over.OverMorphism.ext (hβ.1.hom_ext ?_ ((Over.w _).trans (Over.w _).symm))` and prove the remaining obligations. Rewrite using `[he]`. Use `show (x.left ≫ genMap U) ≫ β = (spMap a ≫ σ₀) ≫ β`. Rewrite using `[Category.assoc, Category.assoc, hσ₀, ha, hxσ, Category.assoc]`.
+
+Use `haveI : IsSeparated G.hom := hG.separated`. Use `haveI : IsDominant (spMap a) := ⟨(PrimeSpectrum.denseRange_comap_iff_ker_le_nilRadical a).2 (by rw [(RingHom.injective_iff_ker_eq_bot _).1 hainj]; exact bot_le)⟩`. Establish `hσ₁ : σ₁ ^ k = 1`. Establish `h1 : ρ ≫ σ₁ ^ k = ρ ≫ 1`. Rewrite using `[MonObj.comp_pow, ← hex, ← map_pow, hx, map_one, MonObj.comp_one]`.
+
+Use `haveI : AlgebraicGeometry.IsReduced (Over.mk (spMap (RingHom.id V))).left := inferInstanceAs (AlgebraicGeometry.IsReduced (Sp V))`. Use `Over.OverMorphism.ext (ext_of_isDominant_of_isSeparated G.hom ((Over.w _).trans (Over.w _).symm) (spMap a) ?_)` and prove the remaining obligations. Conclude with `congrArg (·.left) h1`. Establish `hbl : IsLocalHom b` using `⟨fun y hy => by`. Assume the negation of the conclusion as `hn`.
+
+Rewrite `hy` using `[hb y (by simpa using (mem_maximalIdeal y).2 hn)]`. Conclude with `not_isUnit_zero hy⟩`. Establish `hτb : ∀ χ, (τ χ : κ) = b (τV χ : V)` using `fun χ => by`. Rewrite using `[hτV', hval]`. Conclude with `hτ (Multiplicative.toAdd χ)`.
+
+Establish `hτk : τ ^ k = 1` using `MonoidHom.ext fun χ => Units.ext (by`. Rewrite using `[MonoidHom.pow_apply, Units.val_pow_eq_pow_val, hτb, ← map_pow, ← Units.val_pow_eq_pow_val, ← MonoidHom.pow_apply, hτV]`. Use the proof step `simp)`. Establish `hσs : σ₁ = s V (RingHom.id V) τV hτV`. Use `GlobalTheory.LocalRigid.eq_of_pow_eq_of_closedPoint (Sp V) G hG.smooth V _ k hkV _ _ (by rw [hσ₁, s1]) κ b hbl ?_` and prove the remaining obligations.
+
+Rewrite using `[← s2 V κ (RingHom.id V) b b τV hτV τ hτk rfl hτb, s3 κ κ b hb b (RingHom.id κ) Gκ m hm τ hτk z rfl hz]`. Use `hβ.1.hom_ext ?_ ?_` and prove the remaining obligations. Use `show (spMap b ≫ σ₀) ≫ β = _`. Rewrite using `[Category.assoc, hσ₀, hbσ, Category.assoc]`. Use `show (spMap b ≫ σ₀) ≫ G.hom = _`.
+
+Rewrite using `[Category.assoc, hσ₀', Category.comp_id, ← s3 κ κ b hb b (RingHom.id κ) Gκ m hm τ hτk z rfl hz]`. Conclude with `(Over.w (s κ b τ hτk)).symm`. Set `τF : Multiplicative D.toPre.X →* Fˣ` to `(Units.map (a : V →* F)).comp τV`. Establish `hτF : τF ^ k = 1` using `MonoidHom.ext fun χ => by`. Rewrite using `[MonoidHom.pow_apply]`.
+
+Use `show Units.map (a : V →* F) (τV χ) ^ k = 1`. Rewrite using `[← map_pow, ← MonoidHom.pow_apply, hτV, MonoidHom.one_apply, map_one]`. Take `⟨q, hqy, hqt⟩` from `GlobalTheory.ZH.TorusPerp.exists_qkPt_tor D.tau_bimult (k := k) τF hτF`. Take `⟨f, ⟨i, -⟩, -⟩` from `GlobalTheory.TorsionIso.torsion_clause V (maximalIdeal V) hV.1 D A G hG U F k hk`. Establish `hq` using `(i q _).2 rfl`.
+
+Establish `hxq : x = f q`. Apply `e.injective` to reduce the goal to its premises. Use `Over.OverMorphism.ext ?_` and prove the remaining obligations. Rewrite using `[he (f q), s4 F a τF hτF q (f q) rfl hqy hqt hq, s2 V F (RingHom.id V) a a τV hτV τF hτF rfl (fun χ => rfl), ← hσs, hex]`. Both sides reduce to the same expression.
+
+Use `⟨τF, q, fun χ => ?_, hqy, hqt, hxq ▸ hq⟩` and prove the remaining obligations. Conclude with `hval F a (c χ)`.
+-/
 theorem torAt_of_closedPoint : ∀ (B : Scheme.{0}) (H : Over B) [GrpObj H] (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V], GlobalTheory.Mum.Base V → ∀ (G : Over (Sp V)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ (D : DegData V (maximalIdeal V)) (A : PolAV (Sp (FractionRing V))) (U : Unif (maximalIdeal V) D A G) (ξ : Sp V ⟶ B) (β : G.left ⟶ H.left), IsGrpPullback G H ξ β → ∀ (σ : Sp V ⟶ H.left), σ ≫ H.hom = ξ → ∀ (k : ℕ) (w : V), 1 ≤ k → IsUnit (k : V) → w ^ k = 1 → ∀ (F : Type) [Field F] [IsAlgClosed F] [Algebra (FractionRing V) F] (c : D.toPre.X →+ ℤ) (x : TFK (R := V) F ⟶ A.A), x ^ k = 1 → x.left ≫ genMap U ≫ β = spMap (algebraMap (FractionRing V) F) ≫ jK V ≫ σ → ∀ (κ : Type) [Field κ] (b : V →+* κ) (hb : ∀ y ∈ maximalIdeal V ^ (0 + 1), b y = 0) (Gκ : Over (Sp κ)) [GrpObj Gκ] (m : Gκ.left ⟶ G.left) (hm : IsGrpPullback Gκ G (spMap b) m) (τ : Multiplicative D.toPre.X →* κˣ), (∀ χ, (τ (Multiplicative.ofAdd χ) : κ) = b w ^ c χ) → ∀ (z : Over.mk (spMap (RingHom.id κ)) ⟶ splitTorus (Sp κ) D.toPre.X), (∀ χ, GlobalTheory.UU.chV z χ = unitOn (τ (Multiplicative.ofAdd χ))) → spMap b ≫ σ = (z ≫ GlobalTheory.TorusPart.gtTorus (U.gt 0) hb hm).left ≫ m ≫ β → TorAt U F k (algebraMap (FractionRing V) F (algebraMap V (FractionRing V) w)) c x := by
   intro B H _ V _ _ _ hV G _ _ hG D A U ξ β hβ σ hσ k w hk hkV hw F _ _ _ c x hx hxσ κ _ b hb Gκ _ m hm τ hτ z hz hbσ
   haveI : CharZero V := hV.2

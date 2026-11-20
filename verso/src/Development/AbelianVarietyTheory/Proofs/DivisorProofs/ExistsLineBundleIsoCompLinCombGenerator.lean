@@ -13,6 +13,9 @@ namespace GlobalTheory.LinCombComp
 
 variable {X Y Z : Scheme.{0}}
 
+/- English proof (translation)
+Establish `hm : f z ∈ M.U i ⊓ M.U j` using `⟨hi, hj⟩`. Conclude with `(gm_res f z _ hm _).symm.trans ((congrArg (gm f z _) (ht i j)).trans ((map_mul _ _ _).trans (congrArg _ (gm_res f z _ hm _))))`.
+-/
 theorem gm_gen {M : LB Y} {t : LB.Gen M} (ht : t.IsGen) (f : Z ⟶ Y) (z : Z) {i j : M.ι}
     (hi : f z ∈ M.U i) (hj : f z ∈ M.U j) :
     gm f z (M.U i) (t.s i) = gm f z (M.U i ⊓ M.U j) (M.g i j) * gm f z (M.U j) (t.s j) := by
@@ -20,6 +23,9 @@ theorem gm_gen {M : LB Y} {t : LB.Gen M} (ht : t.IsGen) (f : Z ⟶ Y) (z : Z) {i
   exact (gm_res f z _ hm _).symm.trans ((congrArg (gm f z _) (ht i j)).trans ((map_mul _ _ _).trans
     (congrArg _ (gm_res f z _ hm _))))
 
+/- English proof (translation)
+Establish `hm : f z ∈ (LB.div M N).U p ⊓ (LB.div M N).U q` using `⟨hp, hq⟩`. Use `show gm f z _ (res _ (M.g p.1 q.1) * (res _ (N.g p.2 q.2))⁻¹) = _`. Conclude with `(map_mul _ _ _).trans (congrArg₂ (· * ·) (gm_res f z _ hm _) ((map_inv _ _).trans (congrArg _ (gm_res f z _ hm _))))`.
+-/
 theorem gm_div (M N : LB Y) (f : Z ⟶ Y) (z : Z) (p q : (LB.div M N).ι)
     (hp : f z ∈ (LB.div M N).U p) (hq : f z ∈ (LB.div M N).U q) :
     gm f z ((LB.div M N).U p ⊓ (LB.div M N).U q) ((LB.div M N).g p q) =
@@ -29,11 +35,17 @@ theorem gm_div (M N : LB Y) (f : Z ⟶ Y) (z : Z) (p q : (LB.div M N).ι)
   exact (map_mul _ _ _).trans (congrArg₂ (· * ·) (gm_res f z _ hm _)
     ((map_inv _ _).trans (congrArg _ (gm_res f z _ hm _))))
 
+/- English proof (translation)
+The claim follows from `Finset.prod_eq_one fun k _ => by rw [gm_self hL (r ≫ φ k) z (Set.mem_iInter.1 hj k), one_zpow]`.
+-/
 theorem trF_self {L : LB X} (hL : L.IsLB) {K : Type} [Fintype K] (φ : K → (Y ⟶ X)) (ε : K → ℤ) (r : Z ⟶ Y)
     (z : Z) (j : K → L.ι) (hj : r z ∈ LB.wchart L φ j) : trF φ ε r z j j = 1 :=
   Finset.prod_eq_one fun k _ => by
     rw [gm_self hL (r ≫ φ k) z (Set.mem_iInter.1 hj k), one_zpow]
 
+/- English proof (translation)
+Rewrite using `[trF, trF, trF, Fintype.prod_sum_type, ← Finset.prod_inv_distrib]`. Use `congr 1`. Conclude with `Finset.prod_congr rfl fun k _ => zpow_neg _ _`.
+-/
 theorem trF_sum {L : LB X} {K K₁ : Type} [Fintype K] [Fintype K₁] (φ₀ : K → (Y ⟶ X)) (ε₀ : K → ℤ)
     (φ₁ : K₁ → (Y ⟶ X)) (ε₁ : K₁ → ℤ) (r : Z ⟶ Y) (z : Z) (j₁ j₁' : K₁ → L.ι) (j₀ j₀' : K → L.ι) :
     trF (Sum.elim φ₁ φ₀) (Sum.elim ε₁ (fun k => -ε₀ k)) r z (Sum.elim j₁ j₀) (Sum.elim j₁' j₀') =
@@ -42,6 +54,9 @@ theorem trF_sum {L : LB X} {K K₁ : Type} [Fintype K] [Fintype K₁] (φ₀ : K
   congr 1
   exact Finset.prod_congr rfl fun k _ => zpow_neg _ _
 
+/- English proof (translation)
+Introduce `_ hy` and use `Set.mem_iInter.2 fun k => by cases k with | inl k => exact Set.mem_iInter.1 hy.1 k | inr k => exact Set.mem_iInter.1 hy.2 k`.
+-/
 theorem wchart_sum_le (L : LB X) {K K₁ : Type} [Fintype K] [Fintype K₁] (φ₀ : K → (Y ⟶ X))
     (φ₁ : K₁ → (Y ⟶ X)) (j₁ : K₁ → L.ι) (j₀ : K → L.ι) :
     LB.wchart L φ₁ j₁ ⊓ LB.wchart L φ₀ j₀ ≤ LB.wchart L (Sum.elim φ₁ φ₀) (Sum.elim j₁ j₀) :=
@@ -54,6 +69,11 @@ end GlobalTheory.LinCombComp
 
 namespace GlobalTheory.LinCombComp
 
+/- English proof (translation)
+Establish `hp : (𝟙 Y) y ∈ (LB.div (LB.LinComb L φ₀ ε₀) A).U (j₀, a)` using `⟨h0, ha⟩`. Establish `hq : (𝟙 Y) y ∈ (LB.div (LB.LinComb L φ₀ ε₀) A).U (j₀', a')` using `⟨h0', ha'⟩`. Establish `e1` using `gm_gen hu (𝟙 Y) y hp hq`. Establish `e2` using `gm_div (LB.LinComb L φ₀ ε₀) A (𝟙 Y) y (j₀, a) (j₀', a') hp hq`. Establish `e3 : gm (𝟙 Y) y (LB.wchart L φ₀ j₀ ⊓ LB.wchart L φ₀ j₀') ((LB.LinComb L φ₀ ε₀).g j₀ j₀') = trF φ₀ ε₀ (𝟙 Y) y j₀ j₀'` using `gm_linComb L φ₀ ε₀ (𝟙 Y) y j₀ j₀' h0 h0'`.
+
+Rewrite `e1` using `[e2]`. Conclude with `e1.trans (congrArg (fun t => t * (gm (𝟙 Y) y (A.U a ⊓ A.U a') (A.g a a'))⁻¹ * gm (𝟙 Y) y (LB.wchart L φ₀ j₀' ⊓ A.U a') (u.s (j₀', a'))) e3)`.
+-/
 theorem gm_iso_linComb {X Y : Scheme.{0}} {L : LB X} {A : LB Y} {K : Type} [Fintype K]
     (φ₀ : K → (Y ⟶ X)) (ε₀ : K → ℤ) (u : LB.Iso A (LB.LinComb L φ₀ ε₀)) (hu : u.IsGen)
     (y : Y) (j₀ j₀' : K → L.ι) (a a' : A.ι) (h0 : y ∈ LB.wchart L φ₀ j₀) (ha : y ∈ A.U a)
@@ -75,6 +95,9 @@ end GlobalTheory.LinCombComp
 
 namespace GlobalTheory.LinCombComp
 
+/- English proof (translation)
+Rewrite using `[← trF_sum]`. Conclude with `gen_trans hc (𝟙 Y) y (wchart_sum_le L φ₀ φ₁ j₁ j₀ ⟨h1, h0⟩) (wchart_sum_le L φ₀ φ₁ j₁' j₀' ⟨h1', h0'⟩)`.
+-/
 theorem gm_gen_sum {X Y : Scheme.{0}} {L : LB X} {K K₁ : Type} [Fintype K] [Fintype K₁]
     (φ₀ : K → (Y ⟶ X)) (ε₀ : K → ℤ) (φ₁ : K₁ → (Y ⟶ X)) (ε₁ : K₁ → ℤ)
     (c : LB.Gen (LB.LinComb L (Sum.elim φ₁ φ₀) (Sum.elim ε₁ (fun k => -ε₀ k)))) (hc : c.IsGen)
@@ -90,6 +113,23 @@ end GlobalTheory.LinCombComp
 
 namespace GlobalTheory.LinCombComp
 
+/- English proof (translation)
+Establish `eu` using `gm_iso_linComb φ₀ ε₀ u hu`. Establish `ec` using `gm_gen_sum φ₀ ε₀ φ₁ ε₁ c hc`. Establish `glue : ∀ (j₁ : K₁ → L.ι) (a : A.ι), ∃ s : Γ(Y, LB.wchart L φ₁ j₁ ⊓ A.U a)ˣ, ∀ (Z' : Scheme.{0}) (q : Z' ⟶ Y) (z : Z') (j₀ : K → L.ι), q z ∈ LB.wchart L φ₁ j₁ → q z ∈ A.U a → q z ∈ LB.wchart L φ₀ j₀ → gm q z (LB.wchart L φ₁ j₁ ⊓ A.U a) s = gm q z (LB.wchart L (Sum.elim φ₁ φ₀) (Sum …`. Introduce `j₁ a`. Take `⟨W, hW⟩ : ∃ W : (K → L.ι) → Y.Opens, ∀ j₀, W j₀ = LB.wchart L φ₁ j₁ ⊓ A.U a ⊓ LB.wchart L φ₀ j₀` from `⟨_, fun _ => rfl⟩`.
+
+Establish `l₀ : ∀ j₀, W j₀ ≤ LB.wchart L φ₁ j₁ ⊓ A.U a` using `fun j₀ => (hW j₀).le.trans inf_le_left`. Establish `l₁ : ∀ j₀, W j₀ ≤ LB.wchart L (Sum.elim φ₁ φ₀) (Sum.elim j₁ j₀)` using `fun j₀ y hy => by`. Rewrite `hy` using `[hW]`. Conclude with `wchart_sum_le L φ₀ φ₁ j₁ j₀ ⟨hy.1.1, hy.2⟩`. Establish `l₂ : ∀ j₀, W j₀ ≤ LB.wchart L φ₀ j₀ ⊓ A.U a` using `fun j₀ y hy => by`.
+
+Rewrite `hy` using `[hW]`. Conclude with `⟨hy.2, hy.1.2⟩`. Take `⟨uu, hu'⟩ : ∃ uu : ∀ j₀, Γ(Y, W j₀)ˣ, ∀ (Z' : Scheme.{0}) (q : Z' ⟶ Y) (z : Z') (j₀ : K → L.ι), q z ∈ W j₀ → gm q z (W j₀) (uu j₀) = gm q z (LB.wchart L (Sum.elim φ₁ φ₀) (Sum.elim j₁ j₀)) (c.s (Sum.elim j₁ j₀)) * gm q z (LB.wchart L φ₀ j₀ ⊓ A.U a) (u.s (j₀, a))` from `⟨fun j₀ => res (l₁ j₀) (c.s (Sum.elim j₁ j₀)) * res (l₂ j₀) (u.s (j₀, a)), fun Z' q z j₀ h => (map_mul _ _ _).trans (congrArg₂ (· * ·) (gm_res q z (l₁ j₀) h _) (gm_res q z (l₂ j₀) h _))⟩`. Establish `memW : ∀ y j₀, y ∈ W j₀ ↔ (y ∈ LB.wchart L φ₁ j₁ ∧ y ∈ A.U a) ∧ y ∈ LB.wchart L φ₀ j₀` using `fun y j₀ => by`. Rewrite using `[hW]`.
+
+Conclude with `Iff.rfl`. Take `⟨s, hs⟩` from `glue_unit (LB.wchart L φ₁ j₁ ⊓ A.U a) W l₀ (fun y hy => by choose j₀ hj₀ using fun k => exists_chart hL (φ₀ k y)`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨j₀, (memW y j₀).2 ⟨hy, Set.mem_iInter.2 hj₀⟩⟩) uu (fun j₀ j₀' y hy => by`. Take `⟨⟨h1, ha⟩, h0⟩` from `(memW y j₀).1 hy.1`. Take `⟨-, h0'⟩` from `(memW y j₀').1 hy.2`.
+
+Use `(hu' Y (𝟙 Y) y j₀ hy.1).trans (Eq.trans ?_ (hu' Y (𝟙 Y) y j₀' hy.2).symm)` and prove the remaining obligations. Rewrite using `[ec y j₁ j₁ j₀ j₀' h1 h0 h1 h0', eu y j₀ j₀' a a h0 ha h0' ha, trF_self hL φ₁ ε₁ (𝟙 Y) y j₁ h1, gm_self hA (𝟙 Y) y ha, _root_.one_mul, _root_.inv_one, _root_.mul_one, _root_.mul_mul_mul_comm, _root_.inv_mul_cancel, _root_.one_mul])`. Use `⟨s, fun Z' q z j₀ h1 ha h0 => ?_⟩` and prove the remaining obligations. Establish `hy : q z ∈ W j₀` using `(memW _ j₀).2 ⟨⟨h1, ha⟩, h0⟩`. Conclude with `(gm_res q z (l₀ j₀) hy s).symm.trans ((congrArg (gm q z (W j₀)) (hs j₀)).trans (hu' Z' q z j₀ hy))`.
+
+Use `choose s hs using glue`. Use `⟨⟨fun p => s p.1 p.2⟩, fun p p' => unit_ext fun y hy => ?_, fun Z q z J a ha hJ => ?_⟩` and prove the remaining obligations. Take `⟨⟨h1, ha⟩, h1', ha'⟩` from `hy choose j₀ hj₀ using fun k => exists_chart hL (φ₀ k y)`. Establish `h0 : y ∈ LB.wchart L φ₀ j₀` using `Set.mem_iInter.2 hj₀`. Establish `key : gm (𝟙 Y) y (LB.wchart L φ₁ p.1 ⊓ A.U p.2) (s p.1 p.2) = (trF φ₁ ε₁ (𝟙 Y) y p.1 p'.1 * (gm (𝟙 Y) y (A.U p.2 ⊓ A.U p'.2) (A.g p.2 p'.2))⁻¹) * gm (𝟙 Y) y (LB.wchart L φ₁ p'.1 ⊓ A.U p'.2) (s p'.1 p'.2)`.
+
+Rewrite using `[hs p.1 p.2 Y (𝟙 Y) y j₀ h1 ha h0, hs p'.1 p'.2 Y (𝟙 Y) y j₀ h1' ha' h0, ec y p.1 p'.1 j₀ j₀ h1 h0 h1' h0, eu y j₀ j₀ p.2 p'.2 h0 ha h0 ha', trF_self hL φ₀ ε₀ (𝟙 Y) y j₀ h0, _root_.inv_one, _root_.mul_one, _root_.one_mul, _root_.mul_mul_mul_comm, _root_.mul_assoc]`. Establish `hm : y ∈ (LB.div (LB.LinComb L φ₁ ε₁) A).U p ⊓ (LB.div (LB.LinComb L φ₁ ε₁) A).U p'` using `⟨⟨h1, ha⟩, h1', ha'⟩`. Establish `ed` using `(gm_div _ _ (𝟙 Y) y p p' hm.1 hm.2).trans (congrArg (· * _) (gm_linComb L φ₁ ε₁ (𝟙 Y) y p.1 p'.1 h1 h1'))`. Conclude with `(gm_res _ y _ hm _).trans (key.trans ((congrArg₂ (· * ·) ed.symm (gm_res _ y _ hm _).symm).trans (map_mul _ _ _).symm))`. Establish `h1` using `hJ.mem φ₁ q`.
+
+Establish `h0` using `hJ.mem φ₀ q`. Use `(hs _ a Z q z (fun k => J (q ≫ φ₀ k)) h1 ha h0).trans ((mul_comm _ _).trans (congrArg _ ?_))` and prove the remaining obligations. Apply the tactic sequence `exact (val_of c q z J _ (fun k => by cases k <;> rfl)).symm`.
+-/
 theorem exists_iso_comp_val {X Y : Scheme.{0}} {L : LB X} {A : LB Y} {K K₁ : Type} [Fintype K] [Fintype K₁]
     (φ₀ : K → (Y ⟶ X)) (ε₀ : K → ℤ) (φ₁ : K₁ → (Y ⟶ X)) (ε₁ : K₁ → ℤ) (hL : L.IsLB) (hA : A.IsLB)
     (u : LB.Iso A (LB.LinComb L φ₀ ε₀)) (hu : u.IsGen)

@@ -27,12 +27,18 @@ namespace GlobalTheory.CompanionTheory.Ar.Flat.GagaC
 
 variable {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Sp Ω ⟶ X}
 
+/- English proof (translation)
+Establish `e : X.presheaf.germ N' (genPt ξ) h' (X.presheaf.map (homOfLE l).op v) = X.presheaf.germ N (genPt ξ) h v` using `TopCat.Presheaf.germ_res_apply _ _ _ _ _`. Conclude with `congrArg (Scheme.stalkClosedPointTo ξ).hom e`.
+-/
 theorem genV_res {N N' : X.Opens} (l : N' ≤ N) (h' : genPt ξ ∈ N') (h : genPt ξ ∈ N) (v : Γ(X, N)) :
     genV ξ N' h' (X.presheaf.map (homOfLE l).op v) = genV ξ N h v := by
   have e : X.presheaf.germ N' (genPt ξ) h' (X.presheaf.map (homOfLE l).op v) = X.presheaf.germ N (genPt ξ) h v :=
     TopCat.Presheaf.germ_res_apply _ _ _ _ _
   exact congrArg (Scheme.stalkClosedPointTo ξ).hom e
 
+/- English proof (translation)
+Take `⟨u, rfl⟩` from `hv`. Establish `e : genV ξ N h u * genV ξ N h (u⁻¹ : Γ(X, N)ˣ) = 1` using `by rw [← map_mul]; simp`. Use `⟨left_ne_zero_of_mul_eq_one e, ⟨_, genMap_germ N hq hN h _⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[inv_eq_of_mul_eq_one_right e]`. Conclude with `⟨_, genMap_germ N hq hN h _⟩`.
+-/
 theorem unitAt_genV {N : X.Opens} {q : X} (hq : genPt ξ ⤳ q) (hN : q ∈ N) (h : genPt ξ ∈ N) {v : Γ(X, N)}
     (hv : IsUnit v) : unitAt ξ ⟨q, hq⟩ (genV ξ N h v) := by
   obtain ⟨u, rfl⟩ := hv
@@ -46,6 +52,65 @@ end GlobalTheory.CompanionTheory.Ar.Flat.GagaC
 noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.Flat
 
+/- English proof (translation)
+Establish `dens` using `GlobalTheory.T.smooth_algebra_eq_zero_of_vanish_open`. Establish `chart` using `GlobalTheory.T.analytic_chart_vanishing_section`. Establish `unit` using `GlobalTheory.T.is_unit_of_nonvanishing_points`. Establish `trans` using `GlobalTheory.T.line_bundle_from_unit_ratios`. Establish `hch` using `GlobalTheory.T.analytic_chart_unit_section`.
+
+Establish `cmp` using `GlobalTheory.T.overlapping_analytic_charts_ratio`. Introduce `hG X s Ω _ _ ξ L W F hp hs hξs hgen hcl hVB hW h1 hext`. Use `haveI : Smooth s := hs`. Use `haveI : IsLocallyNoetherian X := LocallyOfFiniteType.isLocallyNoetherian s`. Take `⟨Z, hZ, hZc, -⟩` from `cpt_open_integral X Ω ξ hgen`.
+
+Establish `spid : spMap (RingHom.id ℂ) = 𝟙 (Sp ℂ)` using `by simp`. Use `choose Uo hUo b hb hfr using fun p : Cpt ξ => hVB p trivial`. Set `Uc : Cpt ξ → X.Opens` to `fun p => Uo p ⊓ Z`. Set `T : Cpt ξ → Ω` to `fun p => b p 0`. Establish `inZ : ∀ p q, q ∈ Uc p → genPt ξ ⤳ q` using `fun p q hq => (hZ q).1 hq.2`.
+
+Establish `memU : ∀ p : Cpt ξ, p.1 ∈ Uc p` using `fun p => ⟨hUo p, (hZ _).2 p.2⟩`. Establish `gen : ∀ (p q : Cpt ξ), q.1 ∈ Uc p → L.IsGenAt q (T p)` using `fun p q hq => by`. Take `⟨li, sp⟩` from `hfr p q trivial hq.1`. Use `⟨li.ne_zero 0, ?_⟩` and prove the remaining obligations. Rewrite using `[sp]`.
+
+Use `congr 1`. Use extensionality with `e`. Simplify using `[T, Fin.exists_fin_one, eq_comm]`. Establish `hunitW : ∀ (p : Cpt ξ) (q : X) (hq : genPt ξ ⤳ q), q ∈ Uc p → q ∈ W → unitAt ξ ⟨q, hq⟩ (T p)` using `fun p q hq a c => by`. Use `unitAt_div_of_isGenAt (h1 ⟨q, hq⟩ c) (gen p ⟨q, hq⟩ a)` as an intermediate fact.
+
+Simplify using `using this`. Set `V : Option (Cpt ξ) → X.Opens` to `fun o => o.elim ⟨(Z : Set X)ᶜ, hZc.isOpen_compl⟩ Uc`. Establish `hV1 : ∀ i, ∀ q ∈ V (some i), genPt ξ ⤳ q` using `fun i q hq => inZ i q hq`. Establish `hV2 : ∀ q ∈ V none, ¬ genPt ξ ⤳ q` using `fun q hq h => hq ((hZ q).2 h)`. Establish `hV3 : ∀ (i j : Cpt ξ) (q : X) (hq : genPt ξ ⤳ q), q ∈ V (some i) → q ∈ V (some j) → unitAt ξ ⟨q, hq⟩ (T j / T i)` using `fun i j q hq a c => unitAt_div_of_isGenAt (gen i ⟨q, hq⟩ a) (gen j ⟨q, hq⟩ c)`.
+
+Establish `hV4 : ⨆ i, V i = ⊤`. Use `top_le_iff.1 fun q _ => ?_` and prove the remaining obligations. Rewrite using `[TopologicalSpace.Opens.mem_iSup]`. Distinguish the cases in `h : q ∈ Z`. Conclude with `⟨some ⟨q, (hZ q).1 h⟩, memU ⟨q, (hZ q).1 h⟩⟩`.
+
+Conclude with `⟨none, h⟩`. Take `⟨g, hLB, hg⟩` from `trans X Ω ξ (Cpt ξ) V T hgen hV1 hV2 hV3 hV4`. Set `Rel : Cpt ξ → (Sp ℂ ⟶ X) → ℂ → Prop` to `fun p x c => ∃ (d : ℕ) (B : Set (Fin d → ℂ)) (Y : (Fin d → ℂ) → (Sp ℂ ⟶ X)) (H : (Fin d → ℂ) → ℂ) (b₁ : Fin d → ℂ), HChart s ξ W (Uc p) F (T p) B Y H ∧ b₁ ∈ B ∧ Y b₁ = x ∧ H b₁ = c`. Establish `relEx : ∀ (p : Cpt ξ) (x : Sp ℂ ⟶ X), x ≫ s = 𝟙 _ → centre x ∈ Uc p → ∃ c, Rel p x c`. Introduce `p x hx hm`.
+
+Establish `hc : genPt ξ ⤳ centre x` using `inZ p _ hm`. Take `⟨t, ht, he⟩` from `hext x hc (by rw [hx, spid])`. Establish `u` using `unitAt_div_of_isGenAt (gen p ⟨centre x, hc⟩ hm) ht`. Take `⟨N, hN, v, lN, uv, ev⟩` from `exists_unit_section hgen hc u (Uc p) hm`. Take `⟨d, B, Y, b₁, hC, hb₁, e₁, hin, hd⟩` from `chart dens X s Ω ξ W N x hs hgen hW hx hc hN`.
+
+Establish `gm : ∀ (q : X) (hq : genPt ξ ⤳ q) (h : q ∈ N), genMap ξ ⟨q, hq⟩ (X.presheaf.germ N q h v) = t / T p` using `fun q hq h => by`. Rewrite using `[genMap_germ N hq h (genPt_mem hc hN), ← genMap_germ N hc hN (genPt_mem hc hN), ev]`. Substitute `e₁` using the available equality. Take `⟨B₂, H, m₂, hH⟩` from `hch X s Ω ξ W (Uc p) N F (T p) t v d B Y b₁ hgen hC hb₁ hin lN hd uv gm (gen p p (memU p)).1 he`. Conclude with `⟨_, d, B₂, Y, H, b₁, hH, m₂, rfl, rfl⟩`.
+
+Establish `relCmp : ∀ (p p' : Cpt ξ) (x : Sp ℂ ⟶ X) (c c' r : ℂ), Rel p x c → Rel p' x c' → ValAt ξ x (T p' / T p) r → c = r * c'`. Introduce and unpack `p p' x c c' r ⟨d, B, Y, H, b₁, hH, m₁, rfl, rfl⟩ ⟨d', B', Y', H', b₂, hH', m₂, e, rfl⟩ hr`. Conclude with `cmp X s Ω ξ W (Uc p) (Uc p') F (T p) (T p') d d' B B' Y Y' H H' b₁ b₂ r hgen hH hH' (hunitW p) (hunitW p') m₁ m₂ e.symm hr`. Establish `relU : ∀ (p : Cpt ξ) (x : Sp ℂ ⟶ X) (c c' : ℂ), Rel p x c → Rel p x c' → c = c'` using `fun p x c c' a a' => by`. Establish `hz : genPt ξ ⤳ centre x`.
+
+Take `⟨d, B, Y, H, b₁, hH, m₁, rfl, -⟩` from `a`. Conclude with `hH.cpt b₁ m₁`. Use `relCmp p p x c c' 1 a a' (by` as an intermediate fact. Rewrite using `[div_self (gen p p (memU p)).1]`. Conclude with `ValAt.one hz)`.
+
+Simplify using `using this`. Set `h0 : Cpt ξ → (Sp ℂ ⟶ X) → ℂ` to `fun p x => if hh : ∃ c, Rel p x c then hh.choose else 0`. Establish `h0s : ∀ p x c, Rel p x c → h0 p x = c` using `fun p x c hc => by`. Establish `hh : ∃ c, Rel p x c` using `⟨c, hc⟩`. Simplify using `only [h0, dif_pos hh]`.
+
+Conclude with `relU p x _ _ hh.choose_spec hc`. Set `h : Option (Cpt ξ) → (Sp ℂ ⟶ X) → ℂ` to `fun o => o.elim (fun _ => 0) h0`. Set `LL : LB X` to `LB.mk (Option (Cpt ξ)) V g`. Establish `hhol : ∀ (i : LL.ι) (m : ℕ) (B : Set (Fin m → ℂ)) (y : (Fin m → ℂ) → (Sp ℂ ⟶ X)), IsOpen B → IsHolTo B y → (∀ b ∈ B, y b ≫ s = 𝟙 _ ∧ ⊤ ≤ y b ⁻¹ᵁ LL.U i) → DifferentiableOn ℂ (fun b => h i (y b)) B`. Introduce and unpack `(_ | p) m B y oB hy hb`.
+
+Conclude with `differentiableOn_const _`. Introduce `b₀ h₀`. Take `⟨c, hc⟩` from `relEx p (y b₀) (hb b₀ h₀).1 ((top_le_iff_centre _ _).1 (hb b₀ h₀).2)`. Take `⟨d, B₁, Y, H, b₁, hH, m₁, e, -⟩` from `hc`. Take `⟨ε, κ, ε0, sub, dκ, k₀, hκ⟩` from `hH.chart.factor m B y oB hy (fun b hb' => (hb b hb').1) b₀ h₀ b₁ m₁ e.symm`.
+
+Establish `eq : ∀ b ∈ ball b₀ ε, h (some p) (y b) = H (κ b)` using `fun b hb' => by`. Take `⟨k1, k2⟩` from `hκ b hb'`. Conclude with `h0s p _ _ ⟨d, B₁, Y, H, κ b, hH, k1, k2.symm, rfl⟩`. Establish `m₁' : κ b₀ ∈ B₁` using `k₀ ▸ m₁`. Establish `dH : DifferentiableAt ℂ H (κ b₀)` using `(hH.hol _ m₁').differentiableAt (hH.chart.isOpen.mem_nhds m₁')`.
+
+Establish `dk : DifferentiableAt ℂ κ b₀` using `dκ.differentiableAt (ball_mem_nhds _ ε0)`. Use `(DifferentiableAt.congr_of_eventuallyEq (dH.comp b₀ dk) ?_).differentiableWithinAt` and prove the remaining obligations. Use `filter_upwards [ball_mem_nhds b₀ ε0] with b hb'`. Conclude with `eq b hb'`. Establish `hcomp : ∀ (i j : LL.ι) (x : Sp ℂ ⟶ X), x ≫ s = 𝟙 _ → ⊤ ≤ x ⁻¹ᵁ (LL.U i ⊓ LL.U j) → h i x = valAt' x (LL.U i ⊓ LL.U j) (LL.g i j).val * h j x`.
+
+Introduce and unpack `(_ | p) (_ | p') x hx hm`. Simplify using `[h]`. Establish `m` using `(top_le_iff_centre _ _).1 hm`. Conclude with `absurd (inZ p' _ m.2) (hV2 _ m.1)`. Establish `m` using `(top_le_iff_centre _ _).1 hm`.
+
+Conclude with `absurd (inZ p _ m.1) (hV2 _ m.2)`. Establish `m` using `(top_le_iff_centre _ _).1 hm`. Take `⟨c, hc⟩` from `relEx p x hx m.1`. Take `⟨c', hc'⟩` from `relEx p' x hx m.2`. Establish `hz` using `inZ p _ m.1`.
+
+Establish `vr` using `ValAt.of_section m hz (hg p p' _ hz m)`. Use `show h0 p x = _ * h0 p' x`. Rewrite using `[h0s _ _ _ hc, h0s _ _ _ hc']`. Conclude with `relCmp p p' x c c' _ hc hc' vr`. Take `⟨σ, hσ⟩` from `hG X s hp hs LL hLB h hhol hcomp`.
+
+Establish `hne : ∀ (p : Cpt ξ) (x : Sp ℂ ⟶ X), x ≫ s = 𝟙 _ → centre x ∈ Uc p → h0 p x ≠ 0` using `fun p x hx hm => by`. Take `⟨c, hc⟩` from `relEx p x hx hm`. Rewrite using `[h0s _ _ _ hc]`. Take `⟨d, B, Y, H, b₁, hH, m₁, -, rfl⟩` from `hc`. Conclude with `hH.ne b₁ m₁`.
+
+Establish `hu : ∀ p, IsUnit (σ.f (some p))` using `fun p => unit X s (Uc p) _ inferInstance fun x hx hm => by`. Rewrite using `[show valAt' x (Uc p) (σ.f (some p)) = h0 p x from hσ (some p) x hx ((top_le_iff_centre _ _).2 hm)]`. Conclude with `hne p x hx hm`. Establish `gU : ∀ p : Cpt ξ, genPt ξ ∈ Uc p` using `fun p => genPt_mem p.2 (memU p)`. Set `c : Cpt ξ → Ω` to `fun p => genV ξ (Uc p) (gU p) (σ.f (some p))`.
+
+Establish `hcT : ∀ p p', c p * T p = c p' * T p'` using `fun p p' => by`. Establish `gI : genPt ξ ∈ Uc p ⊓ Uc p'` using `⟨gU p, gU p'⟩`. Establish `e` using `(congrArg (genV ξ (Uc p ⊓ Uc p') gI) (σ.compat (some p) (some p'))).trans (map_mul (genV ξ (Uc p ⊓ Uc p') gI) _ _)`. Establish `e₁` using `genV_res (ξ := ξ) (inf_le_left : Uc p ⊓ Uc p' ≤ Uc p) gI (gU p) (σ.f (some p))`. Establish `e₂` using `genV_res (ξ := ξ) (inf_le_right : Uc p ⊓ Uc p' ≤ Uc p') gI (gU p') (σ.f (some p'))`.
+
+Establish `e₃` using `(genMap_germ (ξ := ξ) (Uc p ⊓ Uc p') specializes_rfl gI gI (g (some p) (some p')).val).symm.trans (hg p p' _ specializes_rfl gI)`. Establish `e₄ : c p = T p' / T p * c p'` using `by show genV ξ (Uc p) (gU p) (σ.f (some p)) = _ * genV ξ (Uc p') (gU p') (σ.f (some p'))`. Rewrite using `[← e₁, ← e₂, ← e₃]`. Conclude with `e`. Establish `n₁` using `(gen p p (memU p)).1`.
+
+Rewrite using `[e₄]`. Clear the denominators using the available nonvanishing facts. Set `f : Ω` to `c ⟨genPt ξ, specializes_rfl⟩ * T ⟨genPt ξ, specializes_rfl⟩`. Establish `hf : ∀ p, f = c p * T p` using `fun p => hcT _ p`. Use `⟨f, 1, one_ne_zero, fun p => ?_, fun y hy hWy hc => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hf p]`. Conclude with `isGenAt_mul_of_unitAt (gen p p (memU p)) (unitAt_genV p.2 (memU p) (gU p) (hu p))`. Set `p : Cpt ξ` to `⟨centre y, hc⟩`. Establish `mU : centre y ∈ Uc p` using `memU p`. Establish `hyW : centre y ∈ W` using `(top_le_iff_centre _ _).1 hWy`.
+
+Establish `hy' : y ≫ s = 𝟙 _` using `by rw [hy, spid]`. Take `⟨r, -, hr⟩` from `ValAt.exists_ne_zero hgen hc (hunitW p _ hc mU hyW)`. Establish `v1 : ValAt ξ y (c p) (valAt' y (Uc p) (σ.f (some p)))` using `ValAt.of_section mU hc (genMap_germ _ hc mU (gU p) _)`. Establish `v2` using `ValAt.mul v1 hr`. Rewrite `v2` using `[show valAt' y (Uc p) (σ.f (some p)) = h0 p y from hσ (some p) y hy' ((top_le_iff_centre _ _).2 mU)]`.
+
+Take `⟨cc, hcc⟩` from `relEx p y hy' mU`. Establish `e : F y = h0 p y * r`. Rewrite using `[h0s _ _ _ hcc]`. Take `⟨d, B, Y, H, b₁, hH, m₁, rfl, rfl⟩` from `hcc`. Conclude with `hH.rel b₁ m₁ hyW r hr`.
+
+Rewrite using `[_root_.one_mul, e, hf p]`. Conclude with `v2`.
+-/
 theorem gaga_rat_C : GagaSections → ∀ (X : Scheme.{0}) (s : X ⟶ Sp ℂ) (Ω : Type) [Field Ω] [Algebra ℂ Ω] (ξ : Sp Ω ⟶ X) (L : Lat ξ Ω) (W : X.Opens) (F : (Sp ℂ ⟶ X) → ℂ), IsProper s → Smooth s → ξ ≫ s = spMap (algebraMap ℂ Ω) → IsCptGen ξ → ConstClosed ℂ Ω → L.IsVB 1 ⊤ → genPt ξ ∈ W → (∀ p : Cpt ξ, p.1 ∈ W → L.IsGenAt p 1) → (∀ (x : Sp ℂ ⟶ X) (h : genPt ξ ⤳ centre x), x ≫ s = spMap (RingHom.id ℂ) → ∃ t : Ω, L.IsGenAt ⟨centre x, h⟩ t ∧ ExtendsUnitAt s (RingHom.id ℂ) ξ W F t x) → ∃ (f : Ω) (κ : ℂ), κ ≠ 0 ∧ (∀ p : Cpt ξ, L.IsGenAt p f) ∧ ∀ y : Sp ℂ ⟶ X, y ≫ s = spMap (RingHom.id ℂ) → ⊤ ≤ y ⁻¹ᵁ W → genPt ξ ⤳ centre y → ValAt ξ y f (κ * F y) := by
   have dens := GlobalTheory.T.smooth_algebra_eq_zero_of_vanish_open
   have chart := GlobalTheory.T.analytic_chart_vanishing_section

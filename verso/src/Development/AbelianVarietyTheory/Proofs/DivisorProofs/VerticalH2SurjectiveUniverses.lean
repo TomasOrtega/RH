@@ -7,6 +7,37 @@ namespace GlobalTheory.CxCoh.VertSurjTwo
 universe a b
 variable {C' : Type b} [Category.{0} C']
 
+/- English proof (translation)
+Take `⟨z', α', η'⟩` from `c'`. Take `⟨hz, hα, hη, hd⟩` from `hc'`. Simplify using `only at hz hα hη hd`. Use `choose η w hη0 hηw using fun T ↦ (hq T).surj2 (η' T) (hd T)`. Establish `key2 : ∀ (T T' : C') (φ : T ⟶ T'), a2 T' (η T' - L.M2.map φ (η T)) = L'.d1 T' (α' T T' φ + L'.M1.map φ (w T) - w T')`.
+
+Introduce `T T' φ`. Establish `h` using `hη T T' φ`. Rewrite `h` using `[hηw T', hηw T]`. Simplify using `only [map_sub, map_add, a2m, ← L'.diffOne_natural] at h ⊢`. Take the linear combination `(norm := abel1) h`.
+
+Establish `cl2 : ∀ (T T' : C') (φ : T ⟶ T'), L.d2 T' (η T' - L.M2.map φ (η T)) = 0`. Introduce `T T' φ`. Rewrite using `[map_sub, L.diffTwo_natural, hη0, hη0, map_zero, sub_zero]`. Use `choose α₁ hα₁ using fun T T' φ ↦ (hq T').inj2 _ _ (cl2 T T' φ) (key2 T T' φ)`. Establish `cl1 : ∀ (T T' : C') (φ : T ⟶ T'), L'.d1 T' (α' T T' φ + L'.M1.map φ (w T) - w T' - a1 T' (α₁ T T' φ)) = 0`.
+
+Introduce `T T' φ`. Rewrite using `[map_sub (L'.d1 T'), ← key2, ← ad1, hα₁, sub_self]`. Use `choose α₂ f hα₂0 hα₂ using fun T T' φ ↦ (hq T').surj1 _ (cl1 T T' φ)`. Choose the witnesses or unpack the hypotheses as in `⟨α, hA, hB⟩ : ∃ α : L.M1.c1, (∀ (T T' : C') (φ : T ⟶ T'), L.d1 T' (α T T' φ) = η T' - L.M2.map φ (η T)) ∧ ∀ (T T' : C') (φ : T ⟶ T'), α' T T' φ + L'.M1.map φ (w T) - w T' = a1 T' (α T T' φ) + L'.d0 T' (f T T' φ) := by`. Use `⟨fun T T' φ ↦ α₁ T T' φ + α₂ T T' φ, fun T T' φ ↦ ?_, fun T T' φ ↦ ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [map_add, hα₁, hα₂0, add_zero]`. Establish `h` using `hα₂ T T' φ`. Simplify using `only [map_add]`. Take the linear combination `(norm := abel1) h`. Establish `clβ : ∀ (T T' T'' : C') (φ : T ⟶ T') (ψ : T' ⟶ T''), L.d1 T'' (α T T'' (φ ≫ ψ) - L.M1.map ψ (α T T' φ) - α T' T'' ψ) = 0`.
+
+Introduce `T T' T'' φ ψ`. Simplify using `only [map_sub, hA, L.diffOne_natural, L.M2.map_comp]`. Normalize the expressions using the abelian group laws. Establish `keyβ : ∀ (T T' T'' : C') (φ : T ⟶ T') (ψ : T' ⟶ T''), a1 T'' (α T T'' (φ ≫ ψ) - L.M1.map ψ (α T T' φ) - α T' T'' ψ) = L'.d0 T'' (z' T T' T'' φ ψ + (L'.M0.map ψ (f T T' φ) - f T T'' (φ ≫ ψ) + f T' T'' ψ))`. Introduce `T T' T'' φ ψ`.
+
+Establish `e1` using `hB T T'' (φ ≫ ψ)`. Establish `e2` using `congrArg (L'.M1.map ψ) (hB T T' φ)`. Establish `e3` using `hB T' T'' ψ`. Establish `h` using `hα T T' T'' φ ψ`. Simplify using `only [map_add, map_sub, ← L'.M1.map_comp, ← L'.diffZero_natural] at e2`.
+
+Simplify using `only [map_add, map_sub, a1m]`. Take the linear combination `(norm := abel1) e2 + e3 + h - e1`. Use `choose z₁ hz₁ using fun T T' T'' φ ψ ↦ (hq T'').inj1 _ _ (clβ T T' T'' φ ψ) (keyβ T T' T'' φ ψ)`. Establish `cl0 : ∀ (T T' T'' : C') (φ : T ⟶ T') (ψ : T' ⟶ T''), L'.d0 T'' (z' T T' T'' φ ψ + (L'.M0.map ψ (f T T' φ) - f T T'' (φ ≫ ψ) + f T' T'' ψ) - a0 T'' (z₁ T T' T'' φ ψ)) = 0`. Introduce `T T' T'' φ ψ`.
+
+Rewrite using `[map_sub (L'.d0 T''), ← keyβ, ← ad0, hz₁, sub_self]`. Use `choose z₂ hz₂0 hz₂ using fun T T' T'' φ ψ ↦ (hq T'').surj0 _ (cl0 T T' T'' φ ψ)`. Choose the witnesses or unpack the hypotheses as in `⟨z, hzd, hza⟩ : ∃ z : L.M0.c2, (∀ (T T' T'' : C') (φ : T ⟶ T') (ψ : T' ⟶ T''), L.d0 T'' (z T T' T'' φ ψ) = α T T'' (φ ≫ ψ) - L.M1.map ψ (α T T' φ) - α T' T'' ψ) ∧ ∀ (T T' T'' : C') (φ : T ⟶ T') (ψ : T' ⟶ T''), a0 T'' (z T T' T'' φ ψ) = z' T T' T'' φ ψ + (L'.M0.map ψ (f T T' φ) - …`. Use `⟨fun T T' T'' φ ψ ↦ z₁ T T' T'' φ ψ + z₂ T T' T'' φ ψ, fun T T' T'' φ ψ ↦ ?_, fun T T' T'' φ ψ ↦ ?_⟩` and prove the remaining obligations. Simplify using `only [map_add, hz₁, hz₂0, add_zero]`.
+
+Simplify using `only [map_add, hz₂]`. Normalize the expressions using the abelian group laws. Establish `hzc : ∀ (T T' T'' T''' : C') (φ : T ⟶ T') (ψ : T' ⟶ T'') (χ : T'' ⟶ T'''), L.M0.map χ (z T T' T'' φ ψ) + z T T'' T''' (φ ≫ ψ) χ = z T T' T''' φ (ψ ≫ χ) + z T' T'' T''' ψ χ`. Introduce `T T' T'' T''' φ ψ χ`. Use `sub_eq_zero.mp ((hq T''').inj0 _ ?_ ?_)` and prove the remaining obligations.
+
+Simplify using `only [map_sub, map_add, L.diffZero_natural, hzd, L.M1.map_comp, Category.assoc]`. Normalize the expressions using the abelian group laws. Establish `h` using `hz T T' T'' T''' φ ψ χ`. Simplify using `only [map_sub, map_add, a0m, hza, ← L'.M0.map_comp, Category.assoc]`. Take the linear combination `(norm := abel1) h`.
+
+Use `⟨(z, α, η), ⟨hzc, fun T T' T'' φ ψ ↦ ?_, fun T T' φ ↦ ?_, hη0⟩, (-f, w), ?_⟩` and prove the remaining obligations. Use `show α T T'' (φ ≫ ψ) = L.M1.map ψ (α T T' φ) + α T' T'' ψ + L.d0 T'' (z T T' T'' φ ψ)`. Rewrite using `[hzd]`. Normalize the expressions using the abelian group laws. Use `show η T' = L.M2.map φ (η T) + L.d1 T' (α T T' φ)`.
+
+Rewrite using `[hA]`. Normalize the expressions using the abelian group laws. Use `Prod.ext ?_ (Prod.ext ?_ ?_)` and prove the remaining obligations. Use function extensionality and compare the values at `T T' T'' φ ψ`. Simplify using `[Cx.D1, hza]`.
+
+Normalize the expressions using the abelian group laws. Use function extensionality and compare the values at `T T' φ`. Establish `h` using `hB T T' φ`. Simplify using `[Cx.D1]`. Take the linear combination `(norm := abel1) h`.
+
+Use function extensionality and compare the values at `T`. Simplify using `[Cx.D1, hηw T]`.
+-/
 theorem core {L L' : Cx C'} (a0 : ∀ T, L.M0.obj T →+ L'.M0.obj T) (a1 : ∀ T, L.M1.obj T →+ L'.M1.obj T)
     (a2 : ∀ T, L.M2.obj T →+ L'.M2.obj T)
     (a0m : ∀ {T T' : C'} (φ : T ⟶ T') x, a0 T' (L.M0.map φ x) = L'.M0.map φ (a0 T x))
@@ -101,6 +132,11 @@ theorem core {L L' : Cx C'} (a0 : ∀ T, L.M0.obj T →+ L'.M0.obj T) (a1 : ∀ 
     · funext T
       simp [Cx.D1, hηw T]
 
+/- English proof (translation)
+Introduce `y`. Take `⟨⟨c', hc'⟩, rfl⟩` from `QuotientAddGroup.mk_surjective y`. Take `⟨c, hc, g, hg⟩` from `core (L := K.res m.G) m.a0 m.a1 m.a2 m.compDegreeZero_natural m.compDegreeOne_natural m.compDegreeTwo_natural m.comp_commutes_diffZero m.comp_commutes_diffOne hq c' hc'`. Use `⟨QuotientAddGroup.mk ⟨c, hc⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[CxMap.h2, QuotientAddGroup.map_mk, QuotientAddGroup.eq]`.
+
+Use `⟨g, ?_⟩` and prove the remaining obligations. Use `show K'.D1 g = -(m.vert.p2 c) + c'`. Rewrite using `[hg]`. Use `show K'.D1 g = -(m.vert.p2 c) + (m.vert.p2 c + K'.D1 g)`. Normalize the expressions using the abelian group laws.
+-/
 theorem vertical_h2_surjective {C : Type a} [Category.{0} C] {K : Cx C} {K' : Cx C'} (m : CxMap K K')
     (hq : m.QAll) : Function.Surjective m.vert.h2 := by
   intro y
@@ -114,9 +150,15 @@ theorem vertical_h2_surjective {C : Type a} [Category.{0} C] {K : Cx C} {K' : Cx
   show K'.D1 g = -(m.vert.p2 c) + (m.vert.p2 c + K'.D1 g)
   abel
 
+/- English proof (translation)
+The claim follows from `fun m hq ↦ vertical_h2_surjective m hq`.
+-/
 theorem main.{a', b'} : VertHas.{a', b'} (fun m ↦ Function.Surjective m.h2) :=
   fun m hq ↦ vertical_h2_surjective m hq
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨main, main, main⟩`.
+-/
 theorem inst : VertHas.{1,1} (fun m ↦ Function.Surjective m.h2) ∧
     VertHas.{1,0} (fun m ↦ Function.Surjective m.h2) ∧ VertHas.{0,0} (fun m ↦ Function.Surjective m.h2) :=
   ⟨main, main, main⟩

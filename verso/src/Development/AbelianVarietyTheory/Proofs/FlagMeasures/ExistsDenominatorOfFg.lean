@@ -6,6 +6,17 @@ open scoped ENNReal
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Take `⟨s, hs⟩` from `Submodule.FG.map₂ B hM hM`. Use `⟨∏ a ∈ s, a.den, Finset.prod_pos fun a _ => a.den_pos, ?_⟩` and prove the remaining obligations. Establish `key : ∀ r ∈ Submodule.span ℤ (s : Set ℚ), ∃ n : ℤ, ((∏ a ∈ s, a.den : ℕ) : ℚ) * r = n`. Introduce `r hr`. Proceed by induction on `hr using Submodule.span_induction with`.
+
+Consider the case `mem a ha`. Take `⟨c, hc⟩` from `Finset.dvd_prod_of_mem (fun a : ℚ => a.den) (Finset.mem_coe.mp ha)`. Use `⟨c * a.num, ?_⟩` and prove the remaining obligations. Rewrite using `[hc]`. Use `push_cast`.
+
+Rewrite using `[← Rat.den_mul_eq_num]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `add a b _ _ ha hb`. Take `⟨m, hm⟩` from `ha`.
+
+Take `⟨n, hn⟩` from `hb`. Conclude with `⟨m + n, by rw [mul_add, hm, hn]; push_cast; ring⟩`. Consider the case `smul c a _ ha`. Take `⟨m, hm⟩` from `ha`. Conclude with `⟨c * m, by rw [zsmul_eq_mul, mul_left_comm, hm]; push_cast; ring⟩`.
+
+Introduce `x hx y hy`. Conclude with `key _ (hs ▸ Submodule.apply_mem_map₂ B hx hy)`.
+-/
 theorem exists_denominator_of_fg {V : Type} [AddCommGroup V] (B : V →ₗ[ℤ] V →ₗ[ℤ] ℚ)
     (M : Submodule ℤ V) (hM : M.FG) :
     ∃ d : ℕ, 0 < d ∧ ∀ x ∈ M, ∀ y ∈ M, ∃ n : ℤ, (d : ℚ) * B x y = n := by
@@ -31,6 +42,41 @@ theorem exists_denominator_of_fg {V : Type} [AddCommGroup V] (B : V →ₗ[ℤ] 
   intro x hx y hy
   exact key _ (hs ▸ Submodule.apply_mem_map₂ B hx hy)
 
+/- English proof (translation)
+Introduce `K V _ _ _ _ _ _ _ _ h U X M γ g hs hXU hrad hpos hM hMU hγ hγX hg hcong`. Establish `hiso : ∀ x y, h (γ x) (γ y) = h x y` using `hγ`. Establish `hrad' : ∀ y ∈ U, ∀ x ∈ X, h y x = 0` using `fun y hy x hx => by`. Rewrite using `[← hs.eq x y, hrad x hx y hy, map_zero]`. Set `B : V →ₗ[ℤ] V →ₗ[ℤ] ℚ` to `LinearMap.mk₂ ℤ (fun x y => Algebra.trace ℚ K (h x y)) (fun a b c => by simp) (fun c a b => by rw [map_zsmul h, LinearMap.smul_apply, map_zsmul]) (fun a b c => by simp) (fun c a b => by rw [map_zsmul (h a), map_zsmul])`.
+
+Establish `hB : ∀ x y, B x y = Algebra.trace ℚ K (h x y)` using `fun _ _ => rfl`. Take `⟨d, hd, hden⟩` from `exists_denominator_of_fg B (M.restrictScalars ℤ) (hM.restrictScalars)`. Establish `hnn : ∀ x ∈ U, 0 ≤ B x x` using `fun x hx => by`. Distinguish the cases in `hxX : x ∈ X`. Rewrite using `[hB, hrad x hxX x hx, map_zero]`.
+
+Conclude with `(hpos x hx hxX).le`. Establish `main : ∀ n : ℕ, ∀ x ∈ M, (d : ℚ) * B x x < n → γ x - x ∈ X`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`.
+
+Introduce `x hx hlt`. Use `hnn x (hMU x hx)` as an intermediate fact. Establish `: (0 : ℚ) ≤ d * B x x` using `by positivity`. Simplify using `at hlt`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Consider the case `succ n ih`. Introduce `x hx hlt`. Distinguish the cases in `hxX : x ∈ X`. Conclude with `X.sub_mem (hγX x hxX) hxX`. Take `⟨y, hy, hu⟩` from `hcong x hx`.
+
+Use `set u := γ x - x - (g : K) • y with hu_def`. Use `set z := γ x - x with hz_def`. Establish `hz : z = (g : K) • y + u` using `by rw [hu_def]; abel`. Establish `hxU` using `hMU x hx`. Establish `hyU` using `hMU y hy`.
+
+Establish `hzU : z ∈ U` using `hz ▸ U.add_mem (U.smul_mem _ hyU) (hXU hu)`. Establish `hγx : γ x = x + z` using `by rw [hz_def]; abel`. Establish `hγxU : γ x ∈ U` using `hγx ▸ U.add_mem hxU hzU`. Establish `h1 : B z z = (g : ℚ) ^ 2 * B y y`. Establish `e1 : B u z = 0` using `by rw [hB, hrad u hu z hzU, map_zero]`.
+
+Establish `e2 : B y u = 0` using `by rw [hB, hrad' y hyU u hu, map_zero]`. Establish `hz' : z = (g : ℤ) • y + u` using `by rw [hz, natCast_zsmul, Nat.cast_smul_eq_nsmul]`. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : B z z + B (γ x + x) (γ x + x) = 4 * B x x`. Establish `e : B (γ x) (γ x) = B x x` using `by rw [hB, hB, hiso]`.
+
+Rewrite using `[hz_def]`. Simplify using `only [map_add, map_sub, LinearMap.add_apply, LinearMap.sub_apply, e]`. Expand and normalize the polynomial expressions, which then agree. Establish `h3` using `hnn _ (U.add_mem hγxU hxU)`. Establish `hxp : 0 < B x x` using `hpos x hxU hxX`.
+
+Establish `hyn` using `hnn y hyU`. Establish `hg' : (9 : ℚ) ≤ (g : ℚ) ^ 2`. Establish `: (3 : ℚ) ≤ g` using `by exact_mod_cast hg`. Use the polynomial consequences of the given equalities and inequalities. Establish `hlt' : B y y < B x x` using `by nlinarith`.
+
+Establish `hd' : (0 : ℚ) < d` using `by exact_mod_cast hd`. Take `⟨a, ha⟩` from `hden x hx x hx`. Take `⟨b, hb⟩` from `hden y hy y hy`. Establish `hab : b < a`. Establish `: (b : ℚ) < a` using `by rw [← ha, ← hb]; exact mul_lt_mul_of_pos_left hlt' hd'`.
+
+Conclude with `this` after adjusting the coercions. Establish `han : a < n + 1`. Rewrite `hlt` using `[ha]`. Conclude with `hlt` after adjusting the coercions. Establish `hyX : γ y - y ∈ X` using `ih y hy (by`.
+
+Rewrite using `[hb]`. Establish `: b < n` using `by omega`. Conclude with `this)` after adjusting the coercions. Establish `hw : γ z - z ∈ X`. Establish `: γ z - z = (g : K) • (γ y - y) + (γ u - u)`.
+
+Rewrite using `[hz, map_add, map_smul, smul_sub]`. Normalize the expressions using the abelian group laws. Rewrite using `[this]`. Conclude with `X.add_mem (X.smul_mem _ hyX) (X.sub_mem (hγX u hu) hu)`. Establish `hzz : h z z = 0`.
+
+Establish `e` using `hiso x z`. Establish `e2 : h (γ x) (γ z - z) = 0` using `hrad' _ hγxU _ hw`. Rewrite `e2` using `[map_sub, e, hγx, map_add, LinearMap.add_apply]`. Take the linear combination `-e2`. Assume the negation of the conclusion as `hzX`.
+
+Use `hpos z hzU hzX` as an intermediate fact. Rewrite `this` using `[hzz, map_zero]`. Conclude with `lt_irrefl _ this`. Introduce `x hx`. Take `⟨n, hn⟩` from `exists_nat_gt ((d : ℚ) * B x x)`.
+
+Conclude with `main n x hx hn`.
+-/
 theorem isom_sub_mem_of_congr : ∀ (K V : Type) [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [Module K V] [FiniteDimensional K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] (h : V →ₗ⋆[K] V →ₗ[K] K) (U X : Submodule K V) (M : Submodule (𝓞 K) V) (γ : V ≃ₗ[K] V) (g : ℕ), h.IsSymm → X ≤ U → (∀ x ∈ X, ∀ y ∈ U, h x y = 0) → (∀ x ∈ U, x ∉ X → 0 < Algebra.trace ℚ K (h x x)) → M.FG → (∀ x ∈ M, x ∈ U) → γ ∈ Formalism.HermitianLatticesTheory.isom h → (∀ x ∈ X, γ x ∈ X) → 3 ≤ g → (∀ x ∈ M, ∃ y ∈ M, γ x - x - (g : K) • y ∈ X) → ∀ x ∈ M, γ x - x ∈ X := by
   intro K V _ _ _ _ _ _ _ _ h U X M γ g hs hXU hrad hpos hM hMU hγ hγX hg hcong
   have hiso : ∀ x y, h (γ x) (γ y) = h x y := hγ

@@ -19,6 +19,23 @@ open scoped TensorProduct
 open GlobalTheory.MovedDict Formalism.L2.Ker GlobalTheory.SignedHC
 noncomputable section
 namespace GlobalTheory.MovedKappa
+/- English proof (translation)
+Introduce `hP hI D Γ _ _ Pl0 T A Ks _ _ _ R ch hch p hp x y`. Establish `hC` using `ch.S.Z.crv`. Establish `hδ : ch.S.Z.δ ≠ 0` using `GlobalTheory.InertSign.delta_ne_zero hC`. Establish `he0` using `ch.S.Z.e0_is p hp`. Establish `hsd` using `_root_.GlobalTheory.T.twisted_moved_series_decomposition hP hI ch hch p hp x y`.
+
+Establish `hvac` using `_root_.GlobalTheory.T.twisted_moved_vacuum_integral hP hI ch hch p hp x y`. Establish `hc0 : (ch.S.Z.c0 p : ℂ) ≠ 0` using `Units.ne_zero _`. Consider the cases of `p with`. Consider the case `chi i j`. Take `⟨hi, rfl⟩` from `hp`.
+
+Establish `hconj` using `GlobalTheory.T.isVacuum_conj_of_negHermitianSpace ch.W.ψ ch.W.θ (ch.G.V (.grid (i + 1) D.R.m)) (ch.G.V (.grid i D.R.m)) (ch.W.cart (.grid (i + 1) D.R.m)) (ch.W.cart (.grid i D.R.m)) _ _ _ hvac`. Take `⟨Θ, hΘ, hΘ0, hjet⟩` from `fock_jets_moved ch.W.ψ ch.W.θ (ch.G.V (.grid (i + 1) D.R.m)) (ch.G.V (.grid i D.R.m)) (ch.W.cart (.grid (i + 1) D.R.m)) (ch.W.cart (.grid i D.R.m)) (ch.S.N.fr (.grid (i + 1) D.R.m)) (ch.S.N.fr (.grid i D.R.m)) (ch.S.N.fr_on _ ⟨hi, rfl⟩) (ch.S.N.fr_on _ ⟨by omega, rfl⟩) (ch.W.cart …`. Take `⟨κ, hκ, hd⟩` from `intertwining_mem_ne_zero hC ch.S.Z.pt0 he0 hsd.1 hsd.2 hΘ hΘ0`. Use `⟨κ / starRingEnd ℂ (ch.S.Z.c0 (.chi i D.R.m) : ℂ), fun k => ?_⟩` and prove the remaining obligations. Establish `h2` using `fun f => GlobalTheory.T.fockVector_negHermitianSpace_conj_monomial ch.W.ψ ch.W.θ (ch.G.V (.grid (i + 1) D.R.m)) (ch.G.V (.grid i D.R.m)) (ch.W.cart (.grid (i + 1) D.R.m)) (ch.W.cart (.grid i D.R.m)) (ch.S.N.frC (.grid (i + 1) D.R.m)) (ch.S.N.frC (.grid i D.R.m)) f ch.W.ψ_std ch.W …`.
+
+Use `show pureTensorO _ _ _ _ _ _ _ _ _ _ 0 = _`. Rewrite using `[h2]`. Establish `hj` using `hjet k`. Use `erw [hj]`. Rewrite using `[hκ, applyAt0_const_mul D _ hd, applyAt0_const_mul D _ hd]`.
+
+Use `show starRingEnd ℂ _ = _ * starRingEnd ℂ _`. Simplify using `only [map_mul, map_div₀, Complex.conj_conj]`. Establish `hc0' : starRingEnd ℂ (ch.S.Z.c0 (.chi i D.R.m) : ℂ) ≠ 0` using `(map_ne_zero _).2 hc0`. Clear the denominators using the available nonvanishing facts. Consider the case `mu t i j => exact absurd hp id`.
+
+Consider the case `core i => exact absurd hp id`. Consider the case `top t j`. Establish `hj1 : j + 1 ≤ D.R.m` using `hp`. Take `⟨Θ, hΘ, hΘ0, hjet⟩` from `fock_jets_moved ch.W.ψ ch.W.θ (ch.G.V (.top j)) (ch.G.V (.top (j + 1))) (ch.W.cart (.top j)) (ch.W.cart (.top (j + 1))) (ch.S.N.fr (.top j)) (ch.S.N.fr (.top (j + 1))) (ch.S.N.fr_on (.top j) (by show j ≤ D.R.m; omega)) (ch.S.N.fr_on (.top (j + 1)) hj1) (ch.W.cart_is (.top j) (by …`. Take `⟨κ, hκ, hd⟩` from `intertwining_mem_ne_zero hC ch.S.Z.pt0 he0 hsd.1 hsd.2 hΘ hΘ0`.
+
+Use `⟨κ / (ch.S.Z.c0 (.top t j) : ℂ), fun k => ?_⟩` and prove the remaining obligations. Use `show pureTensorO _ _ _ _ _ _ _ _ _ _ 0 = _`. Use `erw [hjet k]`. Rewrite using `[hκ, applyAt0_const_mul D _ hd, applyAt0_const_mul D _ hd]`. Use `show _ = _ * RingHom.id ℂ _`.
+
+Rewrite using `[RingHom.id_apply]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem fock_jets_of_moved_vacuum : _root_.GlobalTheory.FunPr.ThetaLocalInputs → (∀ D, GlobalTheory.NormSum.Inp D) → ∀ {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type}
     {A : FamIn D.what₂.LL Γ Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks}
     (ch : Choice R), ch.Is → ∀ (p : Pair T), DefPair D.R.m p → ∀ (x : FinPt ch.G p.small) (y : FinPt ch.G p.big),
@@ -89,6 +106,9 @@ open GlobalTheory.MovedDict Formalism.L2.Ker GlobalTheory.SignedHC
 open scoped TensorProduct
 open GlobalTheory.MovedDict Formalism.L2.Ker GlobalTheory.SignedHC
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.MovedKappa.fock_jets_of_moved_vacuum | exact _root_.GlobalTheory.MovedKappa.fock_jets_of_moved_vacuum | (intros; apply _root_.GlobalTheory.MovedKappa.fock_jets_of_moved_vacuum <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.movedKappa_fock_jets_span : _root_.GlobalTheory.FunPr.ThetaLocalInputs → (∀ D, GlobalTheory.NormSum.Inp D) → ∀ {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type}
     {A : FamIn D.what₂.LL Γ Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks}
     (ch : Choice R), ch.Is → ∀ (p : Pair T), DefPair D.R.m p → ∀ (x : FinPt ch.G p.small) (y : FinPt ch.G p.big),

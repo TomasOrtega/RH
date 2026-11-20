@@ -14,11 +14,17 @@ namespace GlobalTheory.CompletedLattice
 
 variable (D : D7)
 
+/- English proof (translation)
+Take `⟨Lt, h1, h2, -⟩` from `GlobalTheory.NormSum.exists_lattice_of_adelic_point D N`. Rewrite using `[← h2]`. Conclude with `(h1 1).1`.
+-/
 theorem moves_one (N : ℕ) : Moves D ((1 : GA D N) : GL (Fin N) (AE D)) (stdL D N) := by
   obtain ⟨Lt, h1, h2, -⟩ := GlobalTheory.NormSum.exists_lattice_of_adelic_point D N
   rw [← h2]
   exact (h1 1).1
 
+/- English proof (translation)
+Take `⟨τ⟩ : Nonempty D.what₂.Tau` from `⟨D.eTau.symm 1⟩`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Establish `h1 : δ * embT D τ (z i j) = δ * embT D τ (z' i j)` using `congrFun (congrFun (congrFun h τ) i) j`. Conclude with `(embT D τ).injective (mul_left_cancel₀ hδ h1)`.
+-/
 theorem pt_injective (cc : Ideal (𝓞 D.host.K)) {δ : ℂ} (hδ : δ ≠ 0) {N N' : ℕ}
     {z z' : Matrix (Fin N') (Fin N) D.host.E}
     (h : pt D (tor0 D cc δ) δ z = pt D (tor0 D cc δ) δ z') : z = z' := by
@@ -27,6 +33,21 @@ theorem pt_injective (cc : Ideal (𝓞 D.host.K)) {δ : ℂ} (hδ : δ ≠ 0) {N
   have h1 : δ * embT D τ (z i j) = δ * embT D τ (z' i j) := congrFun (congrFun (congrFun h τ) i) j
   exact (embT D τ).injective (mul_left_cancel₀ hδ h1)
 
+/- English proof (translation)
+Establish `hb : D.host.𝔟 ≠ ⊥`. Introduce `h`. Establish `h1` using `D.host.𝔟_spec.1`. Rewrite `h1` using `[h, Ideal.bot_mul]`. Conclude with `differentIdeal_ne_bot h1`.
+
+Establish `hB : ((D.host.𝔟 : Ideal (𝓞 D.host.E)) : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E) ≠ 0`. Rewrite using `[Ne, FractionalIdeal.coeIdeal_eq_zero]` and apply the resulting hypothesis. Use `⟨Ideal.absNorm D.host.𝔟, Nat.pos_of_ne_zero (by rwa [Ne, Ideal.absNorm_eq_zero_iff]), fun y hy => ?_⟩` and prove the remaining obligations. Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem y hy`.
+
+Take `⟨c, -, a, ha, s, hs, rfl⟩` from `hy`. Rewrite `ha` using `[FractionalIdeal.mem_coe]`. Unfold `Host.AA0 at ha`. Rewrite `ha` using `[FractionalIdeal.mem_inv_iff hB]`. Establish `h1` using `ha _ (FractionalIdeal.mem_coeIdeal_of_mem _ (Ideal.absNorm_mem D.host.𝔟))`.
+
+Take `⟨r, hr⟩` from `(FractionalIdeal.mem_one_iff _).1 h1`. Rewrite `hr` using `[map_natCast]`. Establish `h2 : inc D (r : D.host.E) ∈ OhE D` using `(AdLattice.incl_mem_iff (F := ℚ) _).2 ⟨r, rfl⟩`. Establish `h3 : inc D ((c : D.host.K) : D.host.E) ∈ OhE D` using `(AdLattice.incl_mem_iff (F := ℚ) _).2 ⟨algebraMap (𝓞 D.host.K) (𝓞 D.host.E) c, rfl⟩`. Establish `h4 : (Ideal.absNorm D.host.𝔟 : AE D) * (inc D ((((c : D.host.K) : D.host.E)) * a) * s) = inc D ((c : D.host.K) : D.host.E) * (inc D (r : D.host.E) * s)`.
+
+Establish `: (r : D.host.E) = a * (Ideal.absNorm D.host.𝔟 : D.host.E)` using `hr`. Rewrite using `[this, map_mul, map_mul, map_natCast]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h4]`. Conclude with `mul_mem h3 (mul_mem h2 hs)`.
+
+Consider the case `zero => rw [mul_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [mul_add]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [mul_neg]`.
+
+Conclude with `neg_mem hx`.
+-/
 theorem exists_mul_IhE_mem (cc : Ideal (𝓞 D.host.K)) :
     ∃ m : ℕ, 0 < m ∧ ∀ y ∈ IhE D cc, (m : AE D) * y ∈ OhE D := by
   have hb : D.host.𝔟 ≠ ⊥ := by
@@ -61,6 +82,19 @@ theorem exists_mul_IhE_mem (cc : Ideal (𝓞 D.host.K)) :
   | add x y _ _ hx hy => rw [mul_add]; exact add_mem hx hy
   | neg x _ hx => rw [mul_neg]; exact neg_mem hx
 
+/- English proof (translation)
+Introduce `D hg cc δ hc N N'`. Establish `hcc : cc ≠ ⊥` using `hc.1.1`. Establish `hδ : δ ≠ 0` using `(GlobalTheory.CurveLattice.lattice_of_curve D hg cc δ hc).2.1`. Establish `hn : 0 < Ideal.absNorm cc` using `Nat.pos_of_ne_zero (by rwa [Ne, Ideal.absNorm_eq_zero_iff])`. Establish `hA` using `GlobalTheory.NormSum.exists_pt_of_mem_La_moved D hg cc δ hcc N N' 1 1 _ _ (moves_one D N) (moves_one D N')`.
+
+Establish `hB` using `GlobalTheory.NormSum.pt_mem_La_of_adelic D hg cc δ hcc N N' 1 1 _ _ (moves_one D N) (moves_one D N')`. Simplify using `only [OneMemClass.coe_one, inv_one, Units.val_one, Matrix.one_mul, Matrix.mul_one] at hA hB`. Use `⟨fun z => ⟨fun h => hB z h, fun h => ?_⟩, fun x hx => ?_, fun ζ m hm => ?_, fun ζ => ?_, exists_mul_IhE_mem D cc, _, hn, GlobalTheory.AdelicApprox.absNorm_mul_mem_IhE D cc⟩` and prove the remaining obligations. Take `⟨z', h1, h2⟩` from `hA _ h`. Rewrite using `[pt_injective D cc hδ h1]`.
+
+Conclude with `h2`. Take `⟨z, h1, -⟩` from `hA x hx`. Conclude with `⟨z, h1⟩`. Use `choose e t ht h using fun (i : Fin N') (j : Fin N) => (GlobalTheory.AdelicApprox.approx_mod_ideal D cc hcc).1 (ζ i j) m hm`. Use `⟨Matrix.of e, Matrix.of t, ht, ?_⟩` and prove the remaining obligations.
+
+Use extensionality with `i j`. Rewrite using `[Matrix.map_apply, Matrix.add_apply, Matrix.smul_apply, nsmul_eq_mul, Matrix.of_apply, Matrix.of_apply, ← h]`. Expand and normalize the polynomial expressions, which then agree. Use `choose n hn0 h using fun k : Fin N' × Fin N => GlobalTheory.AdelicApprox.exists_denom D (ζ k.1 k.2)`. Use `⟨Ideal.absNorm cc * ∏ k, n k, Nat.mul_pos hn (Finset.prod_pos fun k _ => hn0 k), fun i j => ?_⟩` and prove the remaining obligations.
+
+Take `⟨c, hc⟩` from `Finset.dvd_prod_of_mem n (Finset.mem_univ (i, j))`. Establish `h1` using `GlobalTheory.AdelicApprox.absNorm_mul_mem_IhE D cc _ (mul_mem (natCast_mem (OhE D) c) (h (i, j)))`. Rewrite using `[Matrix.smul_apply, nsmul_eq_mul, hc]`. Use `h1 using 1` and compare the differences between its conclusion and the goal. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem completed_lattice : ∀ (D : D7), admG1 D → ∀ (cc : Ideal (𝓞 D.host.K)) (δ : ℂ), Crv D cc δ → ∀ (N N' : ℕ), (∀ z : Matrix (Fin N') (Fin N) D.host.E, z.map (inc D) ∈ latA D cc N N' ↔ pt D (tor0 D cc δ) δ z ∈ La0 D (tor0 D cc δ) N N') ∧ (∀ x ∈ La0 D (tor0 D cc δ) N N', ∃ z, x = pt D (tor0 D cc δ) δ z) ∧ (∀ (ζ : XA D N N') (m : ℕ), 0 < m → ∃ z : Matrix (Fin N') (Fin N) D.host.E, ∃ a ∈ latA D cc N N', z.map (inc D) = ζ + m • a) ∧ (∀ ζ : XA D N N', ∃ m : ℕ, 0 < m ∧ m • ζ ∈ latA D cc N N') ∧ (∃ m : ℕ, 0 < m ∧ ∀ y ∈ IhE D cc, (m : AE D) * y ∈ OhE D) ∧ (∃ m : ℕ, 0 < m ∧ ∀ s ∈ OhE D, (m : AE D) * s ∈ IhE D cc) := by
   intro D hg cc δ hc N N'
   have hcc : cc ≠ ⊥ := hc.1.1

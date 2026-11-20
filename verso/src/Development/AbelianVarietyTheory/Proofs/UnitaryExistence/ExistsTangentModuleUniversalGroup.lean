@@ -12,6 +12,27 @@ namespace GlobalTheory.TanMod
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj GlobalTheory.Frames
 
+/- English proof (translation)
+Establish `hl1 : equalizer.lift (spMap p1) h1 ≫ equalizer.ι f g = spMap p1` using `equalizer.lift_ι _ _`. Establish `hl2 : equalizer.lift (spMap p2) h2 ≫ equalizer.ι f g = spMap p2` using `equalizer.lift_ι _ _`. Establish `hrange : Set.range (equalizer.ι f g) = Set.univ`. Rewrite using `[Set.eq_univ_iff_forall]`. Introduce `x`.
+
+Establish `hx : (show PrimeSpectrum R from x) ∈ Set.range (PrimeSpectrum.comap p1)`. Rewrite using `[range_comap_of_surjective _ _ hs]`. Introduce `a ha`. Establish `h3 : a * a ∈ (show PrimeSpectrum R from x).asIdeal`. Rewrite using `[hn a ha]`.
+
+Conclude with `Ideal.zero_mem _`. Conclude with `((show PrimeSpectrum R from x).isPrime.mem_or_mem h3).elim id id`. Take `⟨y, hy⟩` from `hx`. Use `⟨equalizer.lift (spMap p1) h1 (show Sp A from y), ?_⟩` and prove the remaining obligations. Establish `h4` using `congrArg (fun φ : Sp A ⟶ Sp R => φ (show Sp A from y)) hl1`.
+
+Conclude with `h4.trans hy`. Establish `hc : (equalizer.ι f g).coborderRange = ⊤`. Apply `TopologicalSpace.Opens.ext` to reduce the goal to its premises. Establish `h5 : Set.range (equalizer.ι f g) ⊆ coborder (Set.range (equalizer.ι f g))` using `subset_coborder`. Rewrite `h5` using `[hrange]`.
+
+Establish `h5' : (↑(equalizer.ι f g).coborderRange : Set (Sp R)) = coborder (Set.range (equalizer.ι f g))` using `rfl`. Rewrite using `[h5', hrange]`. Conclude with `Set.univ_subset_iff.1 h5`. Establish `hci : IsClosedImmersion (equalizer.ι f g)`. Establish `: IsIso (equalizer.ι f g).coborderRange.ι` using `by rw [hc, ← Scheme.topIso_hom]; infer_instance`.
+
+Rewrite using `[← (equalizer.ι f g).liftCoborder_ι]`. Use `infer_instance`. Take `⟨I, e, he⟩` from `IsClosedImmersion.Spec_iff.mp hci`. Establish `hI : ∀ (p : R →+* A) (l : Sp A ⟶ equalizer f g), l ≫ equalizer.ι f g = spMap p → ∀ x ∈ I, p x = 0`. Introduce `p l hl x hx`.
+
+Rewrite `hl` using `[he, ← Category.assoc]`. Establish `h6 : Spec.map (Spec.preimage (l ≫ e.hom)) ≫ Spec.map (CommRingCat.ofHom (Ideal.Quotient.mk I)) = Spec.map (CommRingCat.ofHom p)` using `by rw [Spec.map_preimage]; exact hl`. Rewrite `h6` using `[← Spec.map_comp]`. Establish `h7` using `Spec.map_injective h6`. Establish `h8` using `congrArg (fun φ => φ.hom x) h7`.
+
+Simplify using `only [CommRingCat.hom_comp, CommRingCat.hom_ofHom, RingHom.comp_apply] at h8`. Rewrite using `[← h8, Ideal.Quotient.eq_zero_iff_mem.2 hx, map_zero]`. Establish `hbot : I = ⊥`. Use `le_bot_iff.mp fun x hx => ?_` and prove the remaining obligations. Conclude with `hk x (hI p1 _ hl1 x hx) (hI p2 _ hl2 x hx)`.
+
+Substitute `hbot` using the available equality. Establish `hiso : IsIso (equalizer.ι f g)`. Rewrite using `[he]`. Establish `: IsIso (CommRingCat.ofHom (Ideal.Quotient.mk (⊥ : Ideal (CommRingCat.of R))))`. Rewrite using `[ConcreteCategory.isIso_iff_bijective]`.
+
+Conclude with `(RingEquiv.quotientBot R).symm.bijective`. Use `infer_instance`. Rewrite using `[← cancel_epi (equalizer.ι f g), equalizer.condition]`.
+-/
 theorem spec_ext_two {R A : Type} [CommRing R] [CommRing A] (p1 p2 : R →+* A)
     (hs : Function.Surjective p1) (hn : ∀ x, p1 x = 0 → x * x = 0)
     (hk : ∀ x, p1 x = 0 → p2 x = 0 → x = 0) {X : Scheme.{0}} (f g : Sp R ⟶ X)
@@ -69,12 +90,18 @@ section Tan
 
 variable {X0 : Scheme.{0}} {S : Type} [CommRing S] (x0 : Sp S ⟶ X0)
 
+/- English proof (translation)
+Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Simplify using `only [homAt, Over.comp_left, Over.homMk_left, spMap, ← Spec.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem homAt_comp {A B C : Type} [CommRing A] [Algebra S A] [CommRing B] [Algebra S B] [CommRing C] [Algebra S C]
     (f : A →ₐ[S] B) (g : B →ₐ[S] C) : homAt x0 g ≫ homAt x0 f = homAt x0 (g.comp f) := by
   apply Over.OverMorphism.ext
   simp only [homAt, Over.comp_left, Over.homMk_left, spMap, ← Spec.map_comp]
   rfl
 
+/- English proof (translation)
+Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Simplify using `only [homAt, Over.homMk_left, Over.id_left, spMap]`. Conclude with `Spec.map_id _`.
+-/
 theorem homAt_id {A : Type} [CommRing A] [Algebra S A] : homAt x0 (AlgHom.id S A) = 𝟙 _ := by
   apply Over.OverMorphism.ext
   simp only [homAt, Over.homMk_left, Over.id_left, spMap]
@@ -89,13 +116,25 @@ variable {G : Over X0} [GrpObj G]
 def smT (a : S) (v : overAt x0 (DualNumber S) ⟶ G) : overAt x0 (DualNumber S) ⟶ G :=
   homAt x0 (tm (a • (LinearMap.id : S →ₗ[S] S))) ≫ v
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem smT_left (a : S) (v : overAt x0 (DualNumber S) ⟶ G) : (smT x0 a v).left = spMap (epsMul a) ≫ v.left := rfl
 
+/- English proof (translation)
+The claim follows from `MonObj.comp_mul _ _ _`.
+-/
 theorem smT_mul (a : S) (u w : overAt x0 (DualNumber S) ⟶ G) : smT x0 a (u * w) = smT x0 a u * smT x0 a w :=
   MonObj.comp_mul _ _ _
 
+/- English proof (translation)
+The claim follows from `MonObj.comp_one _`.
+-/
 theorem smT_one' (a : S) : smT x0 a (1 : overAt x0 (DualNumber S) ⟶ G) = 1 := MonObj.comp_one _
 
+/- English proof (translation)
+Simplify using `only [smT]`. Rewrite using `[← Category.assoc, homAt_comp, ← TrivSqZeroExt.map_comp_map]`. Use `congr 3`. Use `ext`. Simplify using the standard rewrite rules.
+-/
 theorem smT_smT (a b : S) (v : overAt x0 (DualNumber S) ⟶ G) : smT x0 a (smT x0 b v) = smT x0 (a * b) v := by
   simp only [smT]
   rw [← Category.assoc, homAt_comp, ← TrivSqZeroExt.map_comp_map]
@@ -103,14 +142,35 @@ theorem smT_smT (a b : S) (v : overAt x0 (DualNumber S) ⟶ G) : smT x0 a (smT x
   ext
   simp
 
+/- English proof (translation)
+Simplify using `only [smT, one_smul, tm]`. Rewrite using `[TrivSqZeroExt.map_id, homAt_id, Category.id_comp]`.
+-/
 theorem smT_unit (v : overAt x0 (DualNumber S) ⟶ G) : smT x0 1 v = v := by
   simp only [smT, one_smul, tm]
   rw [TrivSqZeroExt.map_id, homAt_id, Category.id_comp]
 
+/- English proof (translation)
+Simplify using `only [smT, Category.assoc]`.
+-/
 theorem smT_comp {G' : Over X0} (a : S) (v : overAt x0 (DualNumber S) ⟶ G) (φ : G ⟶ G') :
     homAt x0 (tm (a • (LinearMap.id : S →ₗ[S] S))) ≫ (v ≫ φ) = smT x0 a v ≫ φ := by
   simp only [smT, Category.assoc]
 
+/- English proof (translation)
+Establish `key : homAt x0 (tm (LinearMap.prod LinearMap.id LinearMap.id : S →ₗ[S] S × S)) ≫ v = (homAt x0 (tm (LinearMap.inl S S S)) ≫ v) * (homAt x0 (tm (LinearMap.inr S S S)) ≫ v)`. Establish `hz : (0 : S →ₗ[S] S) = (0 : S) • (LinearMap.id : S →ₗ[S] S)` using `by simp`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `spec_ext_two (tm (LinearMap.fst S S S) : TrivSqZeroExt S (S × S) →+* DualNumber S) (tm (LinearMap.snd S S S) : TrivSqZeroExt S (S × S) →+* DualNumber S)` to reduce the goal to its premises. Introduce `y`.
+
+Use `⟨tm (LinearMap.inl S S S) y, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp`. Introduce `x hx`. Establish `h1 : x.fst = 0` using `by simpa using congrArg TrivSqZeroExt.fst hx`. Apply the tactic sequence `ext <;> simp [h1]`.
+
+Introduce `x hx hx'`. Establish `h1 : x.fst = 0` using `by simpa using congrArg TrivSqZeroExt.fst hx`. Establish `h2 : x.snd.1 = 0` using `by simpa using congrArg TrivSqZeroExt.snd hx`. Establish `h3 : x.snd.2 = 0` using `by simpa using congrArg TrivSqZeroExt.snd hx'`. Apply the tactic sequence `ext <;> simp [h1, h2, h3]`.
+
+Establish `h : homAt x0 (tm (LinearMap.fst S S S)) ≫ homAt x0 (tm (LinearMap.prod LinearMap.id LinearMap.id : S →ₗ[S] S × S)) ≫ v = homAt x0 (tm (LinearMap.fst S S S)) ≫ ((homAt x0 (tm (LinearMap.inl S S S)) ≫ v) * (homAt x0 (tm (LinearMap.inr S S S)) ≫ v))`. Rewrite using `[MonObj.comp_mul, ← Category.assoc, ← Category.assoc, ← Category.assoc, homAt_comp, homAt_comp, homAt_comp, ← TrivSqZeroExt.map_comp_map, ← TrivSqZeroExt.map_comp_map, ← TrivSqZeroExt.map_comp_map, LinearMap.fst_prod, LinearMap.fst_comp_inl, LinearMap.fst_comp_inr, hz]`. Express the relevant statement in the definitionally equal form `_ = _ * smT x0 0 v`. Rewrite using `[h0, _root_.mul_one]`. Conclude with `congrArg (fun φ => φ.left) h`.
+
+Establish `h : homAt x0 (tm (LinearMap.snd S S S)) ≫ homAt x0 (tm (LinearMap.prod LinearMap.id LinearMap.id : S →ₗ[S] S × S)) ≫ v = homAt x0 (tm (LinearMap.snd S S S)) ≫ ((homAt x0 (tm (LinearMap.inl S S S)) ≫ v) * (homAt x0 (tm (LinearMap.inr S S S)) ≫ v))`. Rewrite using `[MonObj.comp_mul, ← Category.assoc, ← Category.assoc, ← Category.assoc, homAt_comp, homAt_comp, homAt_comp, ← TrivSqZeroExt.map_comp_map, ← TrivSqZeroExt.map_comp_map, ← TrivSqZeroExt.map_comp_map, LinearMap.snd_prod, LinearMap.snd_comp_inl, LinearMap.snd_comp_inr, hz]`. Express the relevant statement in the definitionally equal form `_ = smT x0 0 v * _`. Rewrite using `[h0, _root_.one_mul]`. Conclude with `congrArg (fun φ => φ.left) h`.
+
+Establish `h` using `congrArg (fun φ => homAt x0 (tm (LinearMap.coprod (a • (LinearMap.id : S →ₗ[S] S)) (b • (LinearMap.id : S →ₗ[S] S)))) ≫ φ) key`. Use `beta_reduce at h`. Rewrite `h` using `[MonObj.comp_mul, ← Category.assoc, ← Category.assoc, ← Category.assoc, homAt_comp, homAt_comp, homAt_comp, ← TrivSqZeroExt.map_comp_map, ← TrivSqZeroExt.map_comp_map, ← TrivSqZeroExt.map_comp_map, LinearMap.coprod_inl, LinearMap.coprod_inr]`. Establish `hs : (LinearMap.coprod (a • (LinearMap.id : S →ₗ[S] S)) (b • (LinearMap.id : S →ₗ[S] S))).comp (LinearMap.prod LinearMap.id LinearMap.id) = (a + b) • (LinearMap.id : S →ₗ[S] S)`. Use `ext`.
+
+Simplify using the standard rewrite rules. Rewrite `h` using `[hs]`. Conclude with `h`.
+-/
 theorem smT_add (v : overAt x0 (DualNumber S) ⟶ G) (h0 : smT x0 0 v = 1) (a b : S) :
     smT x0 (a + b) v = smT x0 a v * smT x0 b v := by
   have key : homAt x0 (tm (LinearMap.prod LinearMap.id LinearMap.id : S →ₗ[S] S × S)) ≫ v =
@@ -163,14 +223,25 @@ theorem smT_add (v : overAt x0 (DualNumber S) ⟶ G) (h0 : smT x0 0 v = 1) (a b 
   rw [hs] at h
   exact h
 
+/- English proof (translation)
+The claim follows from `(Category.assoc _ _ _).symm`.
+-/
 theorem smT_post (a : S) (v : overAt x0 (DualNumber S) ⟶ G) (φ : G ⟶ G) :
     smT x0 a (v ≫ φ) = smT x0 a v ≫ φ := (Category.assoc _ _ _).symm
 
+/- English proof (translation)
+Simplify using `only [spMap, ← Spec.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem spMap_comp' {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap g ≫ spMap f = spMap (g.comp f) := by
   simp only [spMap, ← Spec.map_comp]
   rfl
 
+/- English proof (translation)
+Establish `he : epsMul (0 : S) = (algebraMap S (DualNumber S)).comp (TrivSqZeroExt.fstHom S S S).toRingHom`. Apply `RingHom.ext` to reduce the goal to its premises. Introduce `r`. Apply the tactic sequence `ext <;> simp [epsMul, TrivSqZeroExt.algebraMap_eq_inl]`. Set `φ : overAt x0 (DualNumber S) ⟶ Over.mk x0` to `Over.homMk (spMap (algebraMap S (DualNumber S))) rfl`.
+
+Establish `h1 : (φ ≫ (1 : Over.mk x0 ⟶ G)) = 1` using `MonObj.comp_one φ`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[← h1, smT_left]`. Simplify using `only [Over.homMk_left, Over.comp_left, φ]`. Rewrite using `[he, ← spMap_comp', Category.assoc, hv]`.
+-/
 theorem smT_zero_of (W : overAt x0 (DualNumber S) ⟶ G)
     (hv : spMap (TrivSqZeroExt.fstHom S S S).toRingHom ≫ W.left = (1 : Over.mk x0 ⟶ G).left) :
     smT x0 0 W = 1 := by
@@ -185,6 +256,15 @@ theorem smT_zero_of (W : overAt x0 (DualNumber S) ⟶ G)
   simp only [Over.homMk_left, Over.comp_left, φ]
   rw [he, ← spMap_comp', Category.assoc, hv]
 
+/- English proof (translation)
+Establish `hid : (TrivSqZeroExt.fstHom S S S).toRingHom.comp (algebraMap S (DualNumber S)) = RingHom.id S`. Apply `RingHom.ext` to reduce the goal to its premises. Introduce `r`. Simplify using the standard rewrite rules. Set `ψ : Over.mk x0 ⟶ overAt x0 (DualNumber S)` to `Over.homMk (spMap (TrivSqZeroExt.fstHom S S S).toRingHom) (by show spMap (TrivSqZeroExt.fstHom S S S).toRingHom ≫ spMap (algebraMap S (DualNumber S)) ≫ x0 = x0`.
+
+Rewrite using `[← Category.assoc, spMap_comp', hid]`. Simplify using `[spMap])`. Establish `hψ : ψ ≫ homAt x0 (tm ((0 : S) • (LinearMap.id : S →ₗ[S] S))) = ψ`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Simplify using `only [Over.comp_left, ψ, Over.homMk_left, homAt]`.
+
+Rewrite using `[spMap_comp']`. Use `congr 1`. Apply `RingHom.ext` to reduce the goal to its premises. Introduce `r`. Simplify using the standard rewrite rules.
+
+Establish `h1 : ψ ≫ W = 1`. Rewrite using `[← hψ, Category.assoc]`. Express the relevant statement in the definitionally equal form `ψ ≫ smT x0 0 W = 1`. Rewrite using `[h, MonObj.comp_one]`. Conclude with `congrArg (fun φ => φ.left) h1`.
+-/
 theorem unit_of_smT_zero (W : overAt x0 (DualNumber S) ⟶ G) (h : smT x0 0 W = 1) :
     spMap (TrivSqZeroExt.fstHom S S S).toRingHom ≫ W.left = (1 : Over.mk x0 ⟶ G).left := by
   have hid : (TrivSqZeroExt.fstHom S S S).toRingHom.comp (algebraMap S (DualNumber S)) = RingHom.id S := by
@@ -230,20 +310,38 @@ def TanSp.pt (m : TanSp x0 G) : overAt x0 (DualNumber S) ⟶ G :=
 def TanSp.mk (W : overAt x0 (DualNumber S) ⟶ G) (h : smT x0 0 W = 1) : TanSp x0 G :=
   (Additive.ofMul (⟨W, h⟩ : (smHom (G := G) x0 0).ker) : Additive (smHom (G := G) x0 0).ker)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem TanSp.pt_mk (W : overAt x0 (DualNumber S) ⟶ G) (h : smT x0 0 W = 1) : (TanSp.mk W h).pt = W := rfl
 
+/- English proof (translation)
+The claim follows from `(Additive.toMul (show Additive (smHom (G := G) x0 0).ker from m)).2`.
+-/
 theorem TanSp.tan (m : TanSp x0 G) : smT x0 0 m.pt = 1 :=
   (Additive.toMul (show Additive (smHom (G := G) x0 0).ker from m)).2
 
+/- English proof (translation)
+The claim follows from `Subtype.ext h`.
+-/
 theorem TanSp.ext {m n : TanSp x0 G} (h : m.pt = n.pt) : m = n := Subtype.ext h
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem TanSp.pt_add (m n : TanSp x0 G) : (m + n).pt = m.pt * n.pt := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem TanSp.pt_zero : (0 : TanSp x0 G).pt = 1 := rfl
 
 instance : SMul S (TanSp x0 G) where
   smul a m := TanSp.mk (smT x0 a m.pt) (by rw [smT_smT, zero_mul, m.tan])
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem TanSp.pt_smul (a : S) (m : TanSp x0 G) : (a • m).pt = smT x0 a m.pt := rfl
 
 instance : Module S (TanSp x0 G) where
@@ -254,6 +352,9 @@ instance : Module S (TanSp x0 G) where
   add_smul a b m := TanSp.ext (smT_add x0 _ m.tan a b)
   zero_smul m := TanSp.ext m.tan
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => rfl`. Consider the case `insert i s hi ih => rw [Finset.sum_insert hi, Finset.prod_insert hi, TanSp.pt_add, ih]`.
+-/
 theorem TanSp.pt_sum {κ : Type} (s : Finset κ) (f : κ → TanSp x0 G) :
     (∑ i ∈ s, f i).pt = ∏ i ∈ s, (f i).pt := by
   classical
@@ -268,6 +369,9 @@ def TanSp.post (φ : G ⟶ G) (hφ : IsMonHom φ) : Module.End S (TanSp x0 G) wh
   map_add' m n := TanSp.ext (MonObj.mul_comp _ _ φ)
   map_smul' a m := TanSp.ext (smT_post x0 a _ φ).symm
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem TanSp.pt_post (φ : G ⟶ G) (hφ : IsMonHom φ) (m : TanSp x0 G) :
     (TanSp.post x0 φ hφ m).pt = m.pt ≫ φ := rfl
 
@@ -287,6 +391,13 @@ def TanSp.act {O : Type} [CommRing O] (A : OAct O G) : O →+* Module.End S (Tan
 
 end Tan
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo S _ x`. Use `⟨TanSp x Xo.univ.t.G, inferInstance, inferInstance, fun m => m.pt.left, TanSp.act x Xo.univ.t.act, fun m n h => TanSp.ext (Over.OverMorphism.ext h), fun w => ⟨fun h => ?_, ?_⟩, fun n b a w => ⟨?_, ?_⟩, fun a m => rfl, fun s m => rfl⟩` and prove the remaining obligations. Conclude with `⟨TanSp.mk (Over.homMk w h.1) (smT_zero_of x _ h.2), rfl⟩`. Introduce and unpack `⟨m, rfl⟩`. Conclude with `⟨Over.w m.pt, unit_of_smT_zero x _ m.tan⟩`.
+
+Introduce and unpack `⟨u, hu, rfl⟩`. Establish `: u = fun i => (a i • b i).pt` using `funext fun i => Over.OverMorphism.ext (hu i)`. Substitute `this` using the available equality. Rewrite using `[List.prod_ofFn, ← TanSp.pt_sum]`. Introduce and unpack `rfl`.
+
+Conclude with `⟨fun i => (a i • b i).pt, fun i => rfl, by rw [List.prod_ofFn, ← TanSp.pt_sum]⟩`.
+-/
 theorem exists_tangent_module : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (S : Type) [CommRing S] (x : Sp S ⟶ Xo.X), ∃ (N : Type) (_ : AddCommGroup N) (_ : Module S N) (v : N → (Sp (DualNumber S) ⟶ Xo.univ.t.G.left)) (ρ : 𝓞 E →+* Module.End S N), Function.Injective v ∧ (∀ w, IsTanAt x w ↔ w ∈ Set.range v) ∧ (∀ (n : ℕ) (b : Fin n → N) (a : Fin n → S) w, IsCombAt x (fun i => v (b i)) a w ↔ w = v (∑ i, a i • b i)) ∧ (∀ a m, v (ρ a m) = v m ≫ (Xo.univ.t.act.act a).left) ∧ ∀ (s : S) m, v (s • m) = spMap (epsMul s) ≫ v m := by
   intro E _ _ _ H Dw l Xo S _ x
   refine ⟨TanSp x Xo.univ.t.G, inferInstance, inferInstance, fun m => m.pt.left, TanSp.act x Xo.univ.t.act,

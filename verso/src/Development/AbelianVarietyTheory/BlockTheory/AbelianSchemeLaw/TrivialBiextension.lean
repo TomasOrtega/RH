@@ -95,6 +95,9 @@ def lamφ : ULift.{u} (Finset (Fin 2)) → ((G2 G).left ⟶ G.left) :=
 
 def lamε : ULift.{u} (Finset (Fin 2)) → ℤ := fun I => (-1) ^ (2 - I.down.card)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example (L : LB G.left) : abelian₂ G L = LB.LinComb L (lamφ G) lamε := rfl
 
 def Biext.IsCube [IsCommMonObj G] {L : RigLB G} (B : Biext G (abelian₂ G L.L)) (c : CubicalStr G L) : Prop :=
@@ -111,28 +114,46 @@ def LamBiextNonempty : Prop :=
   ∀ (S : Scheme.{u}) (G : Over S) [GrpObj G] [IsCommMonObj G] (L : RigLB G),
     Nonempty (CubicalStr G L) → Nonempty (Biext G (abelian₂ G L.L))
 
+/- English proof (translation)
+Introduce `S G _ _ L ⟨c⟩` and use `let ⟨B, _⟩ := h S G L c; ⟨B⟩`.
+-/
 theorem LamBiext.nonempty (h : LamBiext.{u}) : LamBiextNonempty.{u} :=
   fun S G _ _ L ⟨c⟩ => let ⟨B, _⟩ := h S G L c; ⟨B⟩
 
+/- English proof (translation)
+Rewrite using `[pt, pt, pt₃, ← Over.comp_left, comp_lift]`.
+-/
 lemma pt₃_pt {T : Over S} (a b c : T ⟶ G) (p q : G3 G ⟶ G) :
     pt₃ G a b c ≫ pt G p q = pt G (lift a (lift b c) ≫ p) (lift a (lift b c) ≫ q) := by
   rw [pt, pt, pt₃, ← Over.comp_left, comp_lift]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `⟨k⟩`. Apply the tactic sequence `fin_cases k <;> refine (pt₃_pt G _ _ _ _ _).trans ?_ <;>`. Simplify using `[law₁φ, padd, x3, comp_lift_assoc]`.
+-/
 lemma pt₃_law₁φ {T : Over S} (a a' b : T ⟶ G) :
     (fun k => pt₃ G a a' b ≫ law₁φ G (x3 G 0) (x3 G 1) (x3 G 2) k) = law₁φ G a a' b := by
   funext ⟨k⟩
   fin_cases k <;> refine (pt₃_pt G _ _ _ _ _).trans ?_ <;>
     simp [law₁φ, padd, x3, comp_lift_assoc]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `⟨k⟩`. Apply the tactic sequence `fin_cases k <;> refine (pt₃_pt G _ _ _ _ _).trans ?_ <;>`. Simplify using `[law₂φ, padd, x3, comp_lift_assoc]`.
+-/
 lemma pt₃_law₂φ {T : Over S} (a b b' : T ⟶ G) :
     (fun k => pt₃ G a b b' ≫ law₂φ G (x3 G 0) (x3 G 1) (x3 G 2) k) = law₂φ G a b b' := by
   funext ⟨k⟩
   fin_cases k <;> refine (pt₃_pt G _ _ _ _ _).trans ?_ <;>
     simp [law₂φ, padd, x3, comp_lift_assoc]
 
+/- English proof (translation)
+Rewrite using `[← Equiv.ulift.symm.sum_comp, Fin.sum_univ_three]`. Both sides reduce to the same expression.
+-/
 lemma sum_ulift_three (f : ULift.{u} (Fin 3) → ℤ) : ∑ k, f k = f ⟨0⟩ + f ⟨1⟩ + f ⟨2⟩ := by
   rw [← Equiv.ulift.symm.sum_comp, Fin.sum_univ_three]; rfl
 
+/- English proof (translation)
+Introduce `ψ`. Apply the tactic sequence `obtain ⟨c, hc⟩ : ∃ c : (T.left ⟶ (G2 G).left) → ℤ, ∀ (χ) (n : ℤ) (d : Decidable (χ = ψ)), (@ite _ (χ = ψ) d n 0) = n * c χ := ⟨fun χ => if χ = ψ then 1 else 0, fun χ n d => by split_ifs <;> simp [*]⟩`. Simplify using `only [hc]`. Simplify using `only [Fintype.sum_sum_type, sum_ulift_three, Sum.elim_inl, Sum.elim_inr, law₁φ, law₂φ, lawε, Matrix.cons_val, Matrix.cons_val_zero, Matrix.cons_val_one]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma compat_sameSum {T : Over S} (a a' b b' : T ⟶ G) :
     LB.SameSum
       (Sum.elim (law₂φ G (padd G a a') b b') (Sum.elim (law₁φ G a a' b) (law₁φ G a a' b')))
@@ -154,6 +175,9 @@ def trivLB (X : Scheme.{u}) : LB X := ⟨PUnit, fun _ => ⊤, fun _ _ => 1⟩
 section
 variable {X Y Z : Scheme.{u}} (L : LB X) {K K' : Type u} [Fintype K] [Fintype K']
 
+/- English proof (translation)
+Unfold `LB.pullGen`. Simplify using `only`. Use `erw [ht]`. Conclude with `(congrArg _ (map_one _)).trans (map_one _)`.
+-/
 lemma pull_one (φ : K → (Y ⟶ X)) (ε : K → ℤ) (t : LB.Gen (LB.LinComb L φ ε)) (h : Z ⟶ Y)
     (ht : ∀ j, t.s j = 1) (j) : (LB.pullGen L φ ε t h).s j = 1 := by
   unfold LB.pullGen
@@ -161,6 +185,9 @@ lemma pull_one (φ : K → (Y ⟶ X)) (ε : K → ℤ) (t : LB.Gen (LB.LinComb L
   erw [ht]
   exact (congrArg _ (map_one _)).trans (map_one _)
 
+/- English proof (translation)
+Unfold `LB.mulGen`. Simplify using `only`. Use `erw [ht, ht']`. Conclude with `(congrArg₂ (· * ·) (map_one _) (map_one _)).trans (_root_.mul_one _)`.
+-/
 lemma mul_one' (φ : K → (Y ⟶ X)) (ε : K → ℤ) (φ' : K' → (Y ⟶ X)) (ε' : K' → ℤ)
     (t : LB.Gen (LB.LinComb L φ ε)) (t' : LB.Gen (LB.LinComb L φ' ε'))
     (ht : ∀ j, t.s j = 1) (ht' : ∀ j, t'.s j = 1) (j) : (LB.mulGen L φ ε φ' ε' t t').s j = 1 := by
@@ -169,6 +196,9 @@ lemma mul_one' (φ : K → (Y ⟶ X)) (ε : K → ℤ) (φ' : K' → (Y ⟶ X)) 
   erw [ht, ht']
   exact (congrArg₂ (· * ·) (map_one _) (map_one _)).trans (_root_.mul_one _)
 
+/- English proof (translation)
+Introduce `j j' _ _ _`. Use `erw [ht, ht']`. Conclude with `(map_one _).trans (map_one _).symm`.
+-/
 lemma corr_one (φ : K → (Y ⟶ X)) (ε : K → ℤ) (φ' : K' → (Y ⟶ X)) (ε' : K' → ℤ)
     (t : LB.Gen (LB.LinComb L φ ε)) (t' : LB.Gen (LB.LinComb L φ' ε'))
     (ht : ∀ j, t.s j = 1) (ht' : ∀ j, t'.s j = 1) : LB.Gen.Corr L φ ε φ' ε' t t' := by
@@ -176,6 +206,9 @@ lemma corr_one (φ : K → (Y ⟶ X)) (ε : K → ℤ) (φ' : K' → (Y ⟶ X)) 
   erw [ht, ht']
   exact (map_one _).trans (map_one _).symm
 
+/- English proof (translation)
+Introduce `i j`. Establish `hg : (LB.LinComb (trivLB X) φ ε).g i j = 1` using `Finset.prod_eq_one fun k _ => (congrArg (· ^ ε k) ((congrArg _ (map_one _)).trans (map_one _))).trans (one_zpow _)`. Rewrite using `[hg]`. Conclude with `(map_one _).trans ((_root_.one_mul _).trans (map_one _)).symm`.
+-/
 lemma isGen_one (φ : K → (Y ⟶ X)) (ε : K → ℤ) :
     LB.Gen.IsGen (L := LB.LinComb (trivLB X) φ ε) ⟨fun _ => 1⟩ := by
   intro i j

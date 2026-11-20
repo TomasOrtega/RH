@@ -14,6 +14,9 @@ variable {n : ℕ}
 section LogL
 attribute [local instance] Matrix.linftyOpNormedRing Matrix.linftyOpNormedAlgebra
 
+/- English proof (translation)
+Use `first`. Consider the case `exact hasStrictFDerivAt_exp_zero`. Consider the case `exact hasStrictFDerivAt_exp_zero (𝕂 := ℂ)`. Consider the case `(rw [ContinuousLinearEquiv.coe_refl]; exact hasStrictFDerivAt_exp_zero)`. Consider the case `(rw [ContinuousLinearEquiv.coe_refl]; exact hasStrictFDerivAt_exp_zero (𝕂 := ℂ))`.
+-/
 lemma lcA_exp_strict :
     HasStrictFDerivAt (NormedSpace.exp : Matrix (Fin n) (Fin n) ℂ → Matrix (Fin n) (Fin n) ℂ)
       ((ContinuousLinearEquiv.refl ℂ (Matrix (Fin n) (Fin n) ℂ) :
@@ -24,6 +27,11 @@ lemma lcA_exp_strict :
   | (rw [ContinuousLinearEquiv.coe_refl]; exact hasStrictFDerivAt_exp_zero)
   | (rw [ContinuousLinearEquiv.coe_refl]; exact hasStrictFDerivAt_exp_zero (𝕂 := ℂ))
 
+/- English proof (translation)
+Establish `hf` using `lcA_exp_strict (n := n)`. Use `⟨hf.localInverse _ _ _, ?_, ?_, hf.eventually_left_inverse⟩` and prove the remaining obligations. Establish `h1` using `hf.localInverse_continuousAt.tendsto`. Establish `h2` using `hf.localInverse_apply_image`. Rewrite `h1`, `h2` using `[NormedSpace.exp_zero]`.
+
+Rewrite `h1` using `[h2]`. Then use the resulting hypothesis. Establish `h` using `hf.eventually_right_inverse`. Rewrite `h` using `[NormedSpace.exp_zero]`. Then use the resulting hypothesis.
+-/
 lemma exists_local_matrix_log : ∃ ℓ : Matrix (Fin n) (Fin n) ℂ → Matrix (Fin n) (Fin n) ℂ,
     Tendsto ℓ (𝓝 1) (𝓝 0) ∧ (∀ᶠ k in 𝓝 (1 : Matrix (Fin n) (Fin n) ℂ), NormedSpace.exp (ℓ k) = k) ∧
       (∀ᶠ Y in 𝓝 (0 : Matrix (Fin n) (Fin n) ℂ), ℓ (NormedSpace.exp Y) = Y) := by
@@ -36,6 +44,9 @@ lemma exists_local_matrix_log : ∃ ℓ : Matrix (Fin n) (Fin n) ℂ → Matrix 
   · have h := hf.eventually_right_inverse
     rwa [NormedSpace.exp_zero] at h
 
+/- English proof (translation)
+Use `first`. Consider the case `exact NormedSpace.exp_continuous`. Consider the case `exact NormedSpace.exp_continuous (𝕂 := ℂ)`. Consider the case `exact exp_continuous`.
+-/
 lemma continuous_matrix_exp_alt :
     Continuous (NormedSpace.exp : Matrix (Fin n) (Fin n) ℂ → Matrix (Fin n) (Fin n) ℂ) := by
   first
@@ -45,6 +56,9 @@ lemma continuous_matrix_exp_alt :
 
 end LogL
 
+/- English proof (translation)
+Use `first`. Consider the case `exact exists_local_matrix_log`. Consider the case `exact exists_local_matrix_log (n := n)`.
+-/
 lemma lcA_exists_log : ∃ ℓ : Matrix (Fin n) (Fin n) ℂ → Matrix (Fin n) (Fin n) ℂ,
     Tendsto ℓ (𝓝 1) (𝓝 0) ∧ (∀ᶠ k in 𝓝 (1 : Matrix (Fin n) (Fin n) ℂ), NormedSpace.exp (ℓ k) = k) ∧
       (∀ᶠ Y in 𝓝 (0 : Matrix (Fin n) (Fin n) ℂ), ℓ (NormedSpace.exp Y) = Y) := by
@@ -52,6 +66,27 @@ lemma lcA_exists_log : ∃ ℓ : Matrix (Fin n) (Fin n) ℂ → Matrix (Fin n) (
   | exact exists_local_matrix_log
   | exact exists_local_matrix_log (n := n)
 
+/- English proof (translation)
+Take `⟨L, hL1, hL2, hL3⟩` from `lcA_exists_log (n := n)`. Use `⟨L, hL1, ?_⟩` and prove the remaining obligations. Establish `hJJ : Jm ε * Jm ε = 1`. Rewrite using `[Jm, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `a`. Apply the tactic sequence `split_ifs <;> norm_num`. Establish `hJinv : (Jm ε)⁻¹ = Jm ε` using `Matrix.inv_eq_left_inv hJJ`. Establish `hJu : IsUnit (Jm ε)` using `⟨⟨Jm ε, Jm ε, hJJ, hJJ⟩, rfl⟩`. Establish `hA : Tendsto (fun k => (L k)ᴴ) (𝓝 1) (𝓝 0)`.
+
+Establish `h` using `hL1.star`. Rewrite `h` using `[star_zero]`. Conclude with `h`. Establish `hB : Tendsto (fun k => -(L k)) (𝓝 1) (𝓝 0)`. Establish `h` using `hL1.neg`.
+
+Rewrite `h` using `[neg_zero]`. Conclude with `h`. Establish `hC : Tendsto (fun k => Jm ε * L k * Jm ε) (𝓝 1) (𝓝 0)`. Establish `h` using `(hL1.const_mul (Jm ε)).mul_const (Jm ε)`. Rewrite `h` using `[mul_zero, zero_mul]`.
+
+Conclude with `h`. Use `filter_upwards [hL2, hA.eventually hL3, hB.eventually hL3, hC.eventually hL3] with k h2 hA' hB' hC' hk`. Establish `hk' : k ∈ Matrix.unitaryGroup (Fin n) ℂ ∧ k * Jm ε = Jm ε * k` using `hk`. Establish `hkk : kᴴ * k = 1`. Establish `h` using `hk'.1`.
+
+Rewrite `h` using `[Matrix.mem_unitaryGroup_iff']`. Conclude with `h`. Establish `e1 : NormedSpace.exp ((L k)ᴴ) = kᴴ` using `by rw [Matrix.exp_conjTranspose, h2]`. Establish `e2 : NormedSpace.exp (-(L k)) = kᴴ`. Rewrite using `[Matrix.exp_neg, h2]`.
+
+Conclude with `Matrix.inv_eq_left_inv hkk`. Establish `hstar : (L k)ᴴ = -(L k)`. Rewrite using `[← hA', e1, ← e2, hB']`. Establish `e3 : NormedSpace.exp (Jm ε * L k * Jm ε) = NormedSpace.exp (L k)`. Establish `h` using `Matrix.exp_conj (Jm ε) (L k) hJu`.
+
+Rewrite `h` using `[hJinv]`. Rewrite using `[h, h2, mul_assoc, hk'.2, ← mul_assoc, hJJ, one_mul]`. Establish `e4 : Jm ε * L k * Jm ε = L k`. Rewrite using `[← hC', e3, h2]`. Establish `hcomm : L k * Jm ε = Jm ε * L k`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `⟨⟨?_, hcomm⟩, h2⟩` and prove the remaining obligations. Use `show (L k)ᴴ * Jm ε + Jm ε * L k = 0`. Rewrite using `[hstar, neg_mul, ← hcomm]`. Use `first`.
+
+Consider the case `exact neg_add_cancel _`. Consider the case `simp`.
+-/
 lemma lcA_exists_klog (ε : Fin n → Bool) : ∃ ℓ : Matrix (Fin n) (Fin n) ℂ → Matrix (Fin n) (Fin n) ℂ,
     Tendsto ℓ (𝓝 1) (𝓝 0) ∧ ∀ᶠ k in 𝓝 (1 : Matrix (Fin n) (Fin n) ℂ),
       k ∈ Kset ε → inK ε (ℓ k) ∧ NormedSpace.exp (ℓ k) = k := by
@@ -105,6 +140,11 @@ lemma lcA_exists_klog (ε : Fin n → Bool) : ∃ ℓ : Matrix (Fin n) (Fin n) �
   | simp
 
 open scoped Matrix.Norms.L2Operator in
+/- English proof (translation)
+Establish `h : ContinuousOn (fun g : Matrix (Fin n) (Fin n) ℂ => CFC.log (gᴴ * g)) {g | inUJ ε g}`. Use `CFC.continuousOn_log.comp (by fun_prop) ?_` and prove the remaining obligations. Introduce `g hg`. Take `⟨hsa, hu, -⟩` from `PolarDecomposition.polar_isSelfAdjoint_isUnit_spectrum_pos hg`. Conclude with `⟨hsa, hu⟩`.
+
+Conclude with `h.const_smul (1 / 2 : ℝ)`.
+-/
 lemma lcA_polarL_continuousOn (ε : Fin n → Bool) :
     ContinuousOn (PolarDecomposition.polar_L (n := n)) {g | inUJ ε g} := by
   have h : ContinuousOn (fun g : Matrix (Fin n) (Fin n) ℂ => CFC.log (gᴴ * g)) {g | inUJ ε g} := by

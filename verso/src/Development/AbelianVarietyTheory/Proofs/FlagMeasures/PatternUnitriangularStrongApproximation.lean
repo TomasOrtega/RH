@@ -10,6 +10,13 @@ open scoped Pointwise ENNReal Classical
 
 namespace GlobalTheory.HL.PatternApprox
 
+/- English proof (translation)
+Establish `hfr : IsFractionRing 𝒪[Fp] Fp` using `(Valuation.integer.integers (valuation Fp)).isFractionRing`. Establish `halg : ∀ i, IsAlgebraic 𝒪[Fp] (x i)` using `fun i => (IsFractionRing.isAlgebraic_iff 𝒪[Fp] Fp Ep).mpr (Algebra.IsIntegral.isIntegral (R := Fp) (x i)).isAlgebraic`. Use `choose y hy0 hyi using fun i => (halg i).exists_integral_multiple`. Establish `hym : ∀ k, algebraMap Fp Ep (y k : Fp) ∈ O` using `fun k => by`. Rewrite using `[hO, show algebraMap Fp Ep (y k : Fp) = algebraMap 𝒪[Fp] Ep (y k) from (IsScalarTower.algebraMap_apply 𝒪[Fp] Fp Ep (y k)).symm]`.
+
+Conclude with `isIntegral_algebraMap`. Use `⟨∏ k, (y k : Fp), ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.prod_ne_zero_iff]`. Introduce `k _ h`. Conclude with `hy0 k (Subtype.ext (by simpa using h))`.
+
+Establish `h1 : algebraMap Fp Ep (y i : Fp) * x i ∈ O`. Rewrite using `[hO, show algebraMap Fp Ep (y i : Fp) = algebraMap 𝒪[Fp] Ep (y i) from (IsScalarTower.algebraMap_apply 𝒪[Fp] Fp Ep (y i)).symm, ← Algebra.smul_def]`. Conclude with `hyi i`. Rewrite using `[map_prod, ← Finset.prod_erase_mul _ _ (Finset.mem_univ i), mul_assoc]`. Conclude with `O.mul_mem (O.prod_mem fun k _ => hym k) h1`.
+-/
 theorem exists_clear {Fp Ep : Type} [Field Fp] [ValuativeRel Fp] [TopologicalSpace Fp]
     [IsNonarchimedeanLocalField Fp] [CommRing Ep] [Algebra Fp Ep] [Module.Finite Fp Ep]
     (O : Subring Ep) (hO : ∀ x, x ∈ O ↔ IsIntegral 𝒪[Fp] x) {ι : Type} [Fintype ι] (x : ι → Ep) :
@@ -35,6 +42,11 @@ theorem exists_clear {Fp Ep : Type} [Field Fp] [ValuativeRel Fp] [TopologicalSpa
 
 variable {R : Type} [CommRing R]
 
+/- English proof (translation)
+Rewrite using `[Matrix.det_of_upperTriangular]`. Use `Finset.prod_eq_one fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hs i i (fun h => lt_irrefl i (hI i i h))]`. Simplify using the standard rewrite rules. Introduce `i j hji`.
+
+Rewrite using `[hs i j (fun h => lt_asymm (hI i j h) hji)]`. Establish `hne : i ≠ j` using `fun h => by subst h; exact lt_irrefl _ hji`. Simplify using `[hne]`.
+-/
 theorem det_eq_one {m : ℕ} (I : Fin m → Fin m → Prop) (hI : ∀ i j, I i j → i < j)
     (s : Matrix (Fin m) (Fin m) R) (hs : ∀ i j, ¬ I i j → s i j = if i = j then 1 else 0) : s.det = 1 := by
   rw [Matrix.det_of_upperTriangular]
@@ -46,6 +58,9 @@ theorem det_eq_one {m : ℕ} (I : Fin m → Fin m → Prop) (hI : ∀ i j, I i j
     have hne : i ≠ j := fun h => by subst h; exact lt_irrefl _ hji
     simp [hne]
 
+/- English proof (translation)
+Set `S : Matrix (Fin m) (Fin m) O` to `fun i j => ⟨s i j, h i j⟩`. Establish `hS : O.subtype.mapMatrix S = s` using `by ext i j; rfl`. Introduce `i j`. Rewrite using `[← hS, ← RingHom.map_adjugate]`. Conclude with `(S.adjugate i j).2`.
+-/
 theorem adjugate_mem {m : ℕ} (O : Subring R) (s : Matrix (Fin m) (Fin m) R) (h : ∀ i j, s i j ∈ O) :
     ∀ i j, s.adjugate i j ∈ O := by
   let S : Matrix (Fin m) (Fin m) O := fun i j => ⟨s i j, h i j⟩
@@ -58,6 +73,29 @@ end GlobalTheory.HL.PatternApprox
 
 open GlobalTheory.HL.PatternApprox in
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ sig A m I hlt _htr c hc s hs hsint`. Establish `hinv : ∀ p, (s p)⁻¹ = (s p).adjugate` using `fun p => by`. Rewrite using `[Matrix.inv_def, det_eq_one I hlt (s p) (hs p), Ring.inverse_one, one_smul]`. Establish `hcl : ∀ p, ∃ a : ((A.loc p).Fp)ˣ, (IsIntM (A.L p) (s p) → a = 1) ∧ ∀ i j, algebraMap (A.loc p).Fp (A.loc p).Ep (a : (A.loc p).Fp) * (s p)⁻¹ i j ∈ (A.L p).O`. Introduce `p`.
+
+Use `haveI := (A.loc p).lf`. Use `haveI : Module.Free (A.loc p).Fp (A.loc p).Ep := (A.loc p).free`. Use `haveI : Module.Finite (A.loc p).Fp (A.loc p).Ep := Module.finite_of_finrank_eq_succ (A.loc p).rank`. Distinguish the cases in `h : IsIntM (A.L p) (s p)`. Use `⟨1, fun _ => rfl, fun i j => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Units.val_one, map_one, one_mul, hinv p]`. Conclude with `adjugate_mem (A.L p).O (s p) h i j`. Take `⟨a, ha0, ha⟩` from `exists_clear (A.L p).O (A.L p).O_def (fun ij : Fin m × Fin m => (s p)⁻¹ ij.1 ij.2)`. Conclude with `⟨Units.mk0 a ha0, fun h' => absurd h' h, fun i j => ha (i, j)⟩`. Use `choose c' hc'1 hc'2 using hcl`.
+
+Set `d : ∀ p, ((A.loc p).Fp)ˣ` to `fun p => c p * c' p`. Establish `hd : {p | ¬ ∃ u : (𝒪[(A.loc p).Fp])ˣ, ((u : 𝒪[(A.loc p).Fp]) : (A.loc p).Fp) = d p}.Finite`. Apply `(hc.union hsint).subset` to reduce the goal to its premises. Introduce `p hp`. Assume the negation of the conclusion as `hno`.
+
+Simplify using `only [Set.mem_union, Set.mem_setOf_eq, not_or, not_not] at hno`. Take `⟨⟨u, hu⟩, hint⟩` from `hno`. Conclude with `hp ⟨u, by simp [d, hc'1 p hint, hu]⟩`. Establish `hap` using `(GlobalTheory.T.strong_approximation_additive_quadratic_extension A d hd).2.1`. Establish `hx : ∀ i j, ∃ x : E, ∀ p, ∃ o ∈ (A.L p).O, (A.loc p).ιE x - s p i j = algebraMap (A.loc p).Fp (A.loc p).Ep (d p : (A.loc p).Fp) * o` using `fun i j => hap (fun p => s p i j) (hsint.subset fun p hp hi => hp (hi i j))`.
+
+Use `choose x hx using hx`. Use `⟨fun i j => if I i j then x i j else if i = j then 1 else 0, fun i j h => by simp [h], fun p i j => ?_⟩` and prove the remaining obligations. Use `set t : Matrix (Fin m) (Fin m) E := fun i j => if I i j then x i j else if i = j then 1 else 0 with ht`. Establish `hD : ∀ k l, ∃ o ∈ (A.L p).O, (t.map (A.loc p).ιE - s p) k l = algebraMap (A.loc p).Fp (A.loc p).Ep (d p : (A.loc p).Fp) * o`. Introduce `k l`.
+
+Distinguish the cases in `hkl : I k l`. Take `⟨o, ho, he⟩` from `hx k l p`. Use `⟨o, ho, ?_⟩` and prove the remaining obligations. Rewrite using `[← he]`. Use `show (A.loc p).ιE (t k l) - s p k l = (A.loc p).ιE (x k l) - s p k l`.
+
+Rewrite using `[ht]`. Simplify using `only [hkl, if_true]`. Use `⟨0, (A.L p).O.zero_mem, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.sub_apply, Matrix.map_apply, hs p k l hkl, mul_zero]`. Simplify using `only [ht, hkl, if_false]`.
+
+Apply the tactic sequence `split_ifs <;> simp`. Use `choose o ho hoeq using hD`. Establish `hunit : (s p)⁻¹ * s p = 1` using `Matrix.nonsing_inv_mul _ (by rw [det_eq_one I hlt (s p) (hs p)]; exact isUnit_one)`. Establish `heq : (s p)⁻¹ * t.map (A.loc p).ιE - 1 = (s p)⁻¹ * (t.map (A.loc p).ιE - s p)`. Rewrite using `[Matrix.mul_sub, hunit]`.
+
+Use `⟨∑ k, (algebraMap (A.loc p).Fp (A.loc p).Ep (c' p : (A.loc p).Fp) * (s p)⁻¹ i k) * o k j, (A.L p).O.sum_mem fun k _ => (A.L p).O.mul_mem (hc'2 p i k) (ho k j), ?_⟩` and prove the remaining obligations. Rewrite using `[heq, Matrix.mul_apply, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[hoeq k j]`. Simplify using `only [d, Units.val_mul, map_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem GlobalTheory.HL.pattern_strong_approx : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {sig : E →ₐ[F] E} (A : Places F E sig), ∀ (m : ℕ) (I : Fin m → Fin m → Prop), (∀ i j, I i j → i < j) → (∀ i j l, I i j → I j l → I i l) → ∀ c : ∀ p, ((A.loc p).Fp)ˣ, {p | ¬ ∃ u : (𝒪[(A.loc p).Fp])ˣ, ((u : 𝒪[(A.loc p).Fp]) : (A.loc p).Fp) = c p}.Finite → ∀ s : ∀ p, Matrix (Fin m) (Fin m) (A.loc p).Ep, (∀ p i j, ¬ I i j → s p i j = if i = j then 1 else 0) → {p | ¬ IsIntM (A.L p) (s p)}.Finite → ∃ t : Matrix (Fin m) (Fin m) E, (∀ i j, ¬ I i j → t i j = if i = j then 1 else 0) ∧ ∀ p i j, ∃ o ∈ (A.L p).O, ((s p)⁻¹ * t.map (A.loc p).ιE - 1) i j = algebraMap (A.loc p).Fp (A.loc p).Ep (c p) * o := by
   intro F E _ _ _ _ _ sig A m I hlt _htr c hc s hs hsint
   have hinv : ∀ p, (s p)⁻¹ = (s p).adjugate := fun p => by

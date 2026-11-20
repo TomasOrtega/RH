@@ -29,6 +29,13 @@ variable (F E) in
 
 def ofFinT : Af F ⊗[F] E →ₗ[F] AF F ⊗[F] E := (LinearMap.inr F (Ainf F) (Af F)).rTensor E
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy`. Rewrite using `[map_add, map_add, map_add, map_add]`. Use `conv_lhs => rw [hx, hy]`.
+
+Normalize the expressions using the abelian group laws. Consider the case `tmul a e`. Express the relevant statement in the definitionally equal form `a ⊗ₜ[F] e = ((a.1, 0) : AF F) ⊗ₜ[F] e + ((0, a.2) : AF F) ⊗ₜ[F] e`. Rewrite using `[← TensorProduct.add_tmul]`. Use `congr 1`.
+
+Conclude with `Prod.ext (add_zero _).symm (zero_add _).symm`.
+-/
 theorem decomp (z : AF F ⊗[F] E) : z = ofInfT F E (infT F E z) + ofFinT F E (finT F E z) := by
   induction z using TensorProduct.induction_on with
   | zero => simp
@@ -42,13 +49,42 @@ theorem decomp (z : AF F ⊗[F] E) : z = ofInfT F E (infT F E z) + ofFinT F E (f
     congr 1
     exact Prod.ext (add_zero _).symm (zero_add _).symm
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Express the relevant statement in the definitionally equal form `a ⊗ₜ[F] x i = a • ((1 : AF F) ⊗ₜ[F] x i)`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, mul_one]`.
+-/
 theorem tmul_eq_smul_incV {n : ℕ} (a : AF F) (x : Fin n → E) : (fun i => a ⊗ₜ[F] x i) = a • incV F x := by
   funext i
   change a ⊗ₜ[F] x i = a • ((1 : AF F) ⊗ₜ[F] x i)
   rw [TensorProduct.smul_tmul', smul_eq_mul, mul_one]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem infT_tmul (a : AF F) (e : E) : infT F E (a ⊗ₜ[F] e) = a.1 ⊗ₜ[F] e := rfl
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hz`. Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨a, ha, hv, x, hx, rfl⟩` from `hz`.
+
+Establish `h0 : a.1 = 0` using `(InfiniteAdeleRing.ringEquiv_mixedSpace F).map_eq_zero_iff.1 ha`. Rewrite using `[← tmul_eq_smul_incV]`. Use `⟨fun i => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[infT_tmul, h0, TensorProduct.zero_tmul]`. Conclude with `AddSubgroup.subset_closure ⟨a.2, fun v => hv v, x, hx, rfl⟩`.
+
+Consider the case `zero`. Use `⟨fun i => map_zero _, ?_⟩` and prove the remaining obligations. Establish `e : (fun i => finT F E ((0 : Fin n → AE F E) i)) = 0` using `funext fun i => map_zero _`. Rewrite using `[e]`. Conclude with `zero_mem _`.
+
+Consider the case `add y z _ _ hy hz`. Use `⟨fun i => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Pi.add_apply, map_add, hy.1 i, hz.1 i, add_zero]`. Establish `e : (fun i => finT F E ((y + z) i)) = (fun i => finT F E (y i)) + fun i => finT F E (z i)`. Use function extensionality and compare the values at `fun i => map_add _ _ _`.
+
+Rewrite using `[e]`. Conclude with `add_mem hy.2 hz.2`. Consider the case `neg y _ hy`. Use `⟨fun i => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Pi.neg_apply, map_neg, hy.1 i, neg_zero]`.
+
+Establish `e : (fun i => finT F E ((-y) i)) = -fun i => finT F E (y i)` using `funext fun i => map_neg _ _`. Rewrite using `[e]`. Conclude with `neg_mem hy.2`. Introduce and unpack `⟨hi, hf⟩`. Establish `e : z = fun i => ofFinT F E (finT F E (z i))` using `funext fun i => by conv_lhs => rw [decomp (z i)]`.
+
+Rewrite using `[hi i, map_zero, zero_add]`. Rewrite using `[e]`. It suffices to establish `H : ∀ y ∈ Formalism.MainNotions.StandardLattice.latHat F E (X.L : Set (Fin n → E)), (fun i => ofFinT F E (y i)) ∈ latHat X from H _ hf`. Introduce `y hy`. Proceed by induction on `hy using AddSubgroup.closure_induction with`.
+
+Consider the case `mem y hy`. Take `⟨a, ha, x, hx, rfl⟩` from `hy`. Conclude with `AddSubgroup.subset_closure ⟨show AF F from (0, a), map_zero _, fun v => ha v, x, hx, tmul_eq_smul_incV (show AF F from (0, a)) x⟩`. Consider the case `zero`. Establish `e : (fun i => ofFinT F E ((0 : Fin n → Af F ⊗[F] E) i)) = 0` using `funext fun i => map_zero _`.
+
+Rewrite using `[e]`. Conclude with `zero_mem _`. Consider the case `add y y' _ _ hy hy'`. Establish `e : (fun i => ofFinT F E ((y + y') i)) = (fun i => ofFinT F E (y i)) + fun i => ofFinT F E (y' i)`. Use function extensionality and compare the values at `fun i => map_add _ _ _`.
+
+Rewrite using `[e]`. Conclude with `add_mem hy hy'`. Consider the case `neg y _ hy`. Establish `e : (fun i => ofFinT F E ((-y) i)) = -fun i => ofFinT F E (y i)` using `funext fun i => map_neg _ _`. Rewrite using `[e]`.
+
+Conclude with `neg_mem hy`.
+-/
 theorem mem_latHat_iff {n : ℕ} (X : Spc F E n) (z : Fin n → AE F E) :
     z ∈ latHat X ↔ (∀ i, infT F E (z i) = 0) ∧
       (fun i => finT F E (z i)) ∈ Formalism.MainNotions.StandardLattice.latHat F E (X.L : Set (Fin n → E)) := by
@@ -99,6 +135,13 @@ theorem mem_latHat_iff {n : ℕ} (X : Spc F E n) (z : Fin n → AE F E) :
       have e : (fun i => ofFinT F E ((-y) i)) = -fun i => ofFinT F E (y i) := funext fun i => map_neg _ _
       rw [e]; exact neg_mem hy
 
+/- English proof (translation)
+Rewrite `hz`, the goal using `[mem_latHat_iff]`. Take `⟨hi, hf⟩` from `hz`. Use `⟨fun i => ?_, ?_⟩` and prove the remaining obligations. Establish `e : ((infT F E).toRingHom ∘ z) = 0` using `funext fun j => hi j`. Use `(RingHom.map_mulVec (infT F E).toRingHom (matHom (AF F) σ X.Jᵀ k).1 z i).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[e, Matrix.mulVec_zero]`. Both sides reduce to the same expression. Establish `e : (fun i => finT F E (((matHom (AF F) σ X.Jᵀ k).1 *ᵥ z) i)) = Formalism.MainNotions.StandardLattice.finMat σ X.Jᵀ k *ᵥ fun i => finT F E (z i)`. Use function extensionality and compare the values at `fun i => RingHom.map_mulVec (finT F E).toRingHom _ _ i`. Rewrite using `[e]`.
+
+Conclude with `((mem_levelOpen_iff_latHat σ X.Jᵀ hfg k).1 hk _).1 hf`.
+-/
 theorem mulVec_mem_latHat {n : ℕ} (σ : E →ₐ[F] E) (X : Spc F E n) (hfg : X.L.FG) {k : GAd σ X.Jᵀ}
     (hk : k ∈ levelOpen σ X.Jᵀ X.L) {z : Fin n → AE F E} (hz : z ∈ latHat X) :
     (matHom (AF F) σ X.Jᵀ k).1 *ᵥ z ∈ latHat X := by
@@ -115,6 +158,11 @@ theorem mulVec_mem_latHat {n : ℕ} (σ : E →ₐ[F] E) (X : Spc F E n) (hfg : 
     rw [e]
     exact ((mem_levelOpen_iff_latHat σ X.Jᵀ hfg k).1 hk _).1 hf
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n X hL g h1 h2`. Establish `hfg : X.L.FG` using `hL.fg`. Establish `hg : g ∈ levelOpen σ X.Jᵀ X.L` using `mem_levelOpen.2 h2`. Use `⟨fun w => h1 w, fun z hz => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.IwLine.mat_ofGAd]`.
+
+Conclude with `mulVec_mem_latHat σ X hfg hg hz`. Rewrite using `[← map_inv, GlobalTheory.IwLine.mat_ofGAd]`. Conclude with `mulVec_mem_latHat σ X hfg (inv_mem hg) hz`.
+-/
 theorem ofGAd_mem_stabK : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (B : Base F E) (n : ℕ) (X : Spc F E n), X.L.IsLattice E → ∀ g : GAd σ X.Jᵀ,
     (∀ w, Commute ((matHom w.Completion σ X.Jᵀ (projArch σ X.Jᵀ w g)).1.map (infEmb (B.emb w))) (X.θ w)) →

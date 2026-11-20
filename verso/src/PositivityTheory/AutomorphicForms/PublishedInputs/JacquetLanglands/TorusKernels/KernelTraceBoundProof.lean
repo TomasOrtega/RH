@@ -3,6 +3,13 @@ import PositivityTheory.AutomorphicForms.PublishedInputs.JacquetLanglands.TorusK
 open scoped ENNReal NNReal
 
 open UpperTheory.Esk in
+/- English proof (translation)
+Introduce `_ hE1 F I Gf ι _ _ _ _ D k a hH`. Take `⟨C, hC⟩` from `hE1 F I Gf ι D k a hH 1 one_pos`. Use `⟨C, fun T hT y => ⟨fun hy γ s hs _ => hy s hs, fun hy => ?_⟩⟩` and prove the remaining obligations. Simplify using `only [Dat.abelian₂, Set.mem_ofPred_eq, not_forall, not_le] at hy`. Take `⟨s, hs, hsT⟩` from `hy`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `ENNReal.tsum_le_tsum fun γ => ?_` and prove the remaining obligations. Distinguish the cases in `hγ : y ∈ D.LamF T γ`. Establish `hnf : γ ∈ {γ : PG F | ¬ Fix s γ}` using `fun hf => absurd (hγ s hs hf) (not_le.2 hsT)`. Rewrite using `[Set.indicator_of_mem hγ, Set.indicator_of_mem hnf]`.
+
+Rewrite using `[Set.indicator_of_notMem hγ]`. Simplify using the standard rewrite rules. Use `_ = ∑' γ : {γ : PG F // ¬ Fix s γ}, ‖D.kk k a γ.1 y‖ₑ := (tsum_subtype _ _).symm`. Use `_ ≤ C := hC y s hs (le_of_lt (hT.trans hsT))`.
+-/
 theorem UpperTheory.Esk.kernel_trace_bound_proof : UpperTheory.Esk.E0d → UpperTheory.Esk.E1 → UpperTheory.Esk.F5 := by
   intro _ hE1 F I Gf ι _ _ _ _ D k a hH
   obtain ⟨C, hC⟩ := hE1 F I Gf ι D k a hH 1 one_pos

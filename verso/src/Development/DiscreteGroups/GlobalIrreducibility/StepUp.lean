@@ -14,6 +14,17 @@ variable {E : Type} [Field E] [NumberField E] {w : HeightOneSpectrum (𝓞 E)} {
   {ψ₀ : AddChar (ZMod g) Circle} {ψ : AddChar (w.adicCompletion E) Circle}
 
 include hi in
+/- English proof (translation)
+Take `⟨x0, hx0⟩` from `exists_psi_ne_one i hψ h0`. Establish `hab : a ≠ b` using `fun h => by rw [h] at hb; omega`. Establish `hlt : a < b` using `by rw [Fin.lt_def]; omega`. Take `⟨k, hk⟩ : ∃ k : ℕ, d b = d a + ((k + 1 : ℕ) : ℤ)` from `⟨(d b - d a - 1).toNat, by omega⟩`. Establish `hyv : valuation (w.adicCompletion E) (i (x0 : ℚ_[g])) ≤ 1` using `(DzIso.valuation_le_iff i hi _).2 x0.2`.
+
+Use `set c : w.adicCompletion E := (GLnLocal.uniformizer (w.adicCompletion E) : w.adicCompletion E) ^ (k + 1) * i (x0 : ℚ_[g]) with hc_def`. Establish `hcv : valuation (w.adicCompletion E) c < 1` using `val_uniformizer_pow_lt k hyv`. Establish `hmem : tv a b hab c ∈ KOne (w.adicCompletion E) (Fin n)`. Rewrite using `[GlobalTheory.StepData.mem_KOne]`. Introduce `p q`.
+
+Use `show valuation (w.adicCompletion E) (((tv a b hab c : Matrix (Fin n) (Fin n) (w.adicCompletion E)) - 1) p q) < 1`. Rewrite using `[Matrix.sub_apply, tv_apply, add_sub_cancel_left]`. Use `split_ifs`. Conclude with `hcv`. Simplify using the standard rewrite rules.
+
+Establish `hconj : Iwasawa.torusPow (w.adicCompletion E) n d * tv a b hab c * (Iwasawa.torusPow (w.adicCompletion E) n d)⁻¹ = tv a b hab (i (x0 : ℚ_[g]))`. Apply the tactic sequence `rw [Iwasawa.torusPow, conj_tv, hc_def, torus_entry d a b k hk]`. Establish `key` using `hL _ (tv_mem_unipB a b hlt (i (x0 : ℚ_[g]))) (π (Iwasawa.torusPow (w.adicCompletion E) n d) (φ x))`. Rewrite `key` using `[superDiag_tv a b hb]`. Rewrite `key` using `[← hconj, rep_conj, fix_of_mem_KOne i hi τ π φ hφ hmem]`.
+
+Establish `hne : (ψ (i (x0 : ℚ_[g])) : ℂ) ≠ 1` using `fun h => hx0 (Circle.ext (by simpa using h))`. Establish `h2 : (1 - (ψ (i (x0 : ℚ_[g])) : ℂ)) * L (π (Iwasawa.torusPow (w.adicCompletion E) n d) (φ x)) = 0`. Rewrite using `[sub_mul, one_mul]`. Conclude with `sub_eq_zero.2 key`. Conclude with `(mul_eq_zero.1 h2).resolve_left (sub_ne_zero.2 hne.symm)`.
+-/
 theorem step_up (hψ : ∀ x : ℤ_[g], ψ (i (x : ℚ_[g])) = ψ₀ (PadicInt.toZMod x)) (h0 : ψ₀ ≠ 1) {n : ℕ}
     (τ : FDRep ℂ (Gn g n)) {V : Type} [AddCommGroup V] [Module ℂ V]
     (π : Representation ℂ (GL (Fin n) (w.adicCompletion E)) V) (φ : τ →ₗ[ℂ] V)

@@ -16,11 +16,17 @@ noncomputable section
 
 namespace GlobalTheory.MBLow.TrAdapt
 
+/- English proof (translation)
+Use `show Spec.map _ = Spec.map _ ≫ Spec.map _`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`.
+-/
 theorem spMap_comp' {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap (g.comp f) = spMap g ≫ spMap f := by
   show Spec.map _ = Spec.map _ ≫ Spec.map _
   rw [← Spec.map_comp, ← CommRingCat.ofHom_comp]
 
+/- English proof (translation)
+The claim follows from `RingHom.ext fun z => TrivSqZeroExt.ext (by simp [dualMap]) (by simp [dualMap])`.
+-/
 theorem dualMap_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     (dualMap g).comp (dualMap f) = dualMap (g.comp f) :=
   RingHom.ext fun z => TrivSqZeroExt.ext (by simp [dualMap]) (by simp [dualMap])
@@ -30,6 +36,9 @@ variable {R : Type} [CommRing R] [IsDomain R] {F F' : Type} [Field F] [Field F']
   (he : ∀ x, e (algebraMap (FractionRing R) F x) = algebraMap (FractionRing R) F' x)
 
 include he in
+/- English proof (translation)
+The claim follows from `RingHom.ext fun r => by simp [toF, he]`.
+-/
 theorem toF_comp : (e : F →+* F').comp (toF R F) = toF R F' :=
   RingHom.ext fun r => by simp [toF, he]
 
@@ -56,10 +65,19 @@ def sigE : TF (R := R) F' ⟶ TF (R := R) F :=
     congr 1
     exact RingHom.ext fun r => by simp [he])
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem rhoE_left : (rhoE e he).left = spMap (dualMap (e : F →+* F')) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem sigE_left : (sigE e he).left = spMap (e : F →+* F') := rfl
 
+/- English proof (translation)
+Rewrite using `[sigE_left, rhoE_left]`. Use `show spMap _ ≫ spMap _ = spMap _ ≫ spMap _`. Rewrite using `[← spMap_comp', ← spMap_comp']`. Use `congr 1`. Conclude with `RingHom.ext fun z => by simp [dualMap]`.
+-/
 theorem red_comm : (sigE e he).left ≫ redE F = redE F' ≫ (rhoE e he).left := by
   rw [sigE_left, rhoE_left]
   show spMap _ ≫ spMap _ = spMap _ ≫ spMap _
@@ -68,6 +86,13 @@ theorem red_comm : (sigE e he).left ≫ redE F = redE F' ≫ (rhoE e he).left :=
   exact RingHom.ext fun z => by simp [dualMap]
 
 include he in
+/- English proof (translation)
+Use `⟨fun h0 => ?_, fun hg hr th hth' hv x' hres hpb => ?_⟩` and prove the remaining obligations. Establish `h1` using `I.th_eq 1`. Rewrite `h1` using `[map_one, hh, hl]`. Rewrite using `[h1, Units.val_mul, Units.val_one, _root_.one_mul, _root_.one_mul, ← map_pow, RingEquiv.coe_toRingHom, ← map_mul, hk.1 h0, map_one]`. Take `⟨x, hx⟩` from `GlobalTheory.KeyPow.exists_keyPB x' (e.symm : F' →+* F)`.
+
+Establish `hc : (e.symm : F' →+* F).comp ((algebraMap (FractionRing R) F').comp (algebraMap R (FractionRing R))) = (algebraMap (FractionRing R) F).comp (algebraMap R (FractionRing R))` using `RingHom.ext fun r => by simp [← he]`. Establish `hpb'` using `GlobalTheory.keyPB_trans _ _ _ _ x' x _ _ hpb hx`. Rewrite `hpb'` using `[hc]`. Establish `hkx` using `hk.2 hg hr th hth' hv x (by rw [← hth]; exact hres) hpb'`. Establish `hf` using `hκ F' F (e.symm : F' →+* F) x' x hx`.
+
+Rewrite `hf` using `[hkx]`. Rewrite using `[hf]`. Simplify using the standard rewrite rules.
+-/
 theorem bKey_map (κ : Rule) (hκ : Funct κ) [CharZero F] [CharZero F'] (D : DegPre R) {N : NumD F} (ν : NumOf D F N)
     {N' : NumD F'} (ν' : NumOf D F' N') (I : NumD.Hom (e : F →+* F') N N') (hh : ∀ x, I.h x = 1) (hl : I.lam = 1)
     (hth : ν'.th = ν.th) (vB : Fin D.P.g → (epsR R ⟶ D.P.A)) (k : F) (hk : BKey κ ν vB k) :
@@ -90,6 +115,17 @@ theorem bKey_map (κ : Rule) (hκ : Funct κ) [CharZero F] [CharZero F'] (D : De
     simp
 
 include he in
+/- English proof (translation)
+Take `⟨hv, hz, hb, ht⟩` from `had`. Use `choose gm' hgm' using fun j => GlobalTheory.ConstLie.exists_isPullGt (rhoE e he) (gm j)`. Establish `hzT : rhoE e he ≫ DegPre.zeroT D (TE R F) = DegPre.zeroT D (TE R F')`. Simplify using `only [DegPre.zeroT, ← Category.assoc, comp_toUnit]`. Establish `hzF : sigE e he ≫ DegPre.zeroF D F = DegPre.zeroF D F'`.
+
+Simplify using `only [DegPre.zeroF, ← Category.assoc, comp_toUnit]`. Use `⟨gm', hgm', hv, fun j => ?_, fun i => ?_, fun l => ⟨?_, fun χ => ?_⟩⟩` and prove the remaining obligations. Take `⟨o, ho, hpo⟩` from `hz j`. Take `⟨o', ho'⟩` from `GlobalTheory.ConstLie.exists_isPullGt (sigE e he) (⟨o.b, o.s, o.isGen, o.s_zero, o.mult⟩ : GtPt D (TF (R := R) F))`. Use `⟨⟨o'.b, o'.s, o'.isGen, o'.s_zero, o'.mult⟩, ⟨?_, fun χ => ?_⟩, ?_, fun χ => ?_⟩` and prove the remaining obligations.
+
+Conclude with `Over.OverMorphism.ext (ho'.1.trans ((congrArg (fun q => (sigE e he).left ≫ q.left) ho.1).trans (congrArg Over.Hom.left hzF)))`. Use `corr_of_val D.P.isLB fun y J hJ => ?_` and prove the remaining obligations. Conclude with `((val_corr hJ (ho'.2 χ) _).trans ((val_pull hJ _ _ _).trans ((val_corr hJ (ho.2 χ) _).trans (val_one _)))).trans (val_one _).symm`. Use `ho'.1.trans ((congrArg ((sigE e he).left ≫ ·) hpo.1).trans ?_)` and prove the remaining obligations. Rewrite using `[← Category.assoc, red_comm, Category.assoc, ← (hgm' j).1]`.
+
+Use `corr_of_val D.P.isLB fun y J hJ => ?_` and prove the remaining obligations. Use `((val_corr hJ (ho'.2 χ) _).trans ((val_pull hJ _ _ _).trans ((val_corr hJ (hpo.2 χ) _).trans (val_pull hJ _ _ _)))).trans (Eq.trans ?_ ((val_pull hJ _ _ _).trans ((val_corr hJ ((hgm' j).2 χ) _).trans (val_pull hJ _ _ _))).symm)` and prove the remaining obligations. Rewrite using `[Category.id_comp, Category.id_comp, red_comm]`. Use `(hgm' _).1.trans ?_` and prove the remaining obligations. Rewrite using `[hb i, ← Category.assoc, rhoE_left, ← spMap_comp', dualMap_comp, toF_comp e he]`.
+
+Conclude with `Over.OverMorphism.ext ((hgm' _).1.trans ((congrArg (fun q => (rhoE e he).left ≫ q.left) (ht l).1).trans (congrArg Over.Hom.left hzT)))`. Take `⟨χ₀, rfl⟩` from `I.e.surjective χ`. Rewrite using `[heX, hpull _ _ (hgm' _), (ht l).2 χ₀, Module.Basis.map_repr]`. Simplify using `[dualMap]`.
+-/
 theorem adapted_map [CharZero F] [CharZero F'] (D : DegPre R) {N : NumD F} (ν : NumOf D F N)
     {N' : NumD F'} (ν' : NumOf D F' N') (I : NumD.Hom (e : F →+* F') N N') (heX : ∀ χ, ν'.eX (I.e χ) = ν.eX χ)
     (hpull : ∀ (gm : GtPt D (TE R F)) (gm' : GtPt D (TE R F')), GtPt.IsPull (spMap (dualMap (e : F →+* F'))) gm gm' →
@@ -131,6 +167,9 @@ theorem adapted_map [CharZero F] [CharZero F'] (D : DegPre R) {N : NumD F} (ν :
 
 end GlobalTheory.MBLow.TrAdapt
 
+/- English proof (translation)
+Introduce `κ hκ R _ _ D F F' _ _ _ _ _ _ e he N ν N' ν' I hh hl heX hth hpull vB`. Conclude with `⟨fun k hk => GlobalTheory.MBLow.TrAdapt.bKey_map e he κ hκ D ν ν' I hh hl hth vB k hk, fun r g bX σ gm had => GlobalTheory.MBLow.TrAdapt.adapted_map e he D ν ν' I heX hpull vB r g bX σ gm had⟩`.
+-/
 theorem GlobalTheory.MBLow.bKey_adapted_map : ∀ κ : Rule, Funct κ → ∀ (R : Type) [CommRing R] [IsDomain R] (D : DegPre R) (F F' : Type) [Field F] [Field F'] [CharZero F] [CharZero F'] [Algebra (FractionRing R) F] [Algebra (FractionRing R) F'] (e : F ≃+* F'), (∀ x, e (algebraMap (FractionRing R) F x) = algebraMap (FractionRing R) F' x) → ∀ (N : NumD F) (ν : NumOf D F N) (N' : NumD F') (ν' : NumOf D F' N') (I : NumD.Hom (e : F →+* F') N N'), (∀ x, I.h x = 1) → I.lam = 1 → (∀ χ, ν'.eX (I.e χ) = ν.eX χ) → ν'.th = ν.th → (∀ (gm : GtPt D (TE R F)) (gm' : GtPt D (TE R F')), GtPt.IsPull (spMap (dualMap (e : F →+* F'))) gm gm' → ∀ χ, vE (gm'.s χ) (𝟙 _) ν'.J = dualMap (e : F →+* F') (vE (gm.s χ) (𝟙 _) ν.J)) → ∀ (vB : Fin D.P.g → (epsR R ⟶ D.P.A)), (∀ k, BKey κ ν vB k → BKey κ ν' vB (e k)) ∧ ∀ (r g : ℕ) (bX : Module.Basis (Fin r) ℤ N.X) (σ : Fin g ≃ Fin D.P.g ⊕ Fin r) (gm : Fin g → GtPt D (TE R F)), Adapted ν vB bX σ gm → ∃ gm' : Fin g → GtPt D (TE R F'), (∀ j, GtPt.IsPull (spMap (dualMap (e : F →+* F'))) (gm j) (gm' j)) ∧ Adapted ν' vB (bX.map I.e.toIntLinearEquiv) σ gm' := by
   intro κ hκ R _ _ D F F' _ _ _ _ _ _ e he N ν N' ν' I hh hl heX hth hpull vB
   exact ⟨fun k hk => GlobalTheory.MBLow.TrAdapt.bKey_map e he κ hκ D ν ν' I hh hl hth vB k hk,

@@ -8,6 +8,9 @@ open GlobalTheory.HeckeGal GlobalTheory.Pst GlobalTheory.TripleGal GlobalTheory.
 open scoped Classical
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.LTPer.evalMod_sigma_of_congr | exact GlobalTheory.CompanionTheory.LTPer.evalMod_sigma_of_congr | (intros; apply GlobalTheory.CompanionTheory.LTPer.evalMod_sigma_of_congr <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.lubin_tate_commuting_series_unique : ∀ {B : Type} [CommRing B] {S : Subring B} {F : ℕ → Ideal B} {ϖ : B} {R : Type} [CommRing R], PerEnv S F ϖ →
     ∀ (h : R →+* B), (∀ c, h c ∈ S) → ∀ (π : R), h π = ϖ → ∀ (q : ℕ), 2 ≤ q → (∃ s ∈ S, (q : B) = ϖ * s) →
     ∀ (φ : PowerSeries R), PowerSeries.constantCoeff φ = 0 →

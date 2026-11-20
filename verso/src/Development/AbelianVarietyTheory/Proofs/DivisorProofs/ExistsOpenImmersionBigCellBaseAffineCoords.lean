@@ -17,18 +17,50 @@ noncomputable section
 
 namespace GlobalTheory.LogPole.CellBir
 
+/- English proof (translation)
+The claim follows from `(Spec.map_comp _ _).symm`.
+-/
 theorem spMap_comp_ringHom {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap g ≫ spMap f = spMap (g.comp f) := (Spec.map_comp _ _).symm
 
+/- English proof (translation)
+The claim follows from `inferInstanceAs (IsIso (Spec.map (RingEquiv.toCommRingCatIso (RingEquiv.ofRingHom f g h₁ h₂)).hom))`.
+-/
 theorem isIso_spMap_of_inverse {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) (g : B →+* A)
     (h₁ : f.comp g = RingHom.id B) (h₂ : g.comp f = RingHom.id A) : IsIso (spMap f) :=
   inferInstanceAs (IsIso (Spec.map (RingEquiv.toCommRingCatIso (RingEquiv.ofRingHom f g h₁ h₂)).hom))
 
+/- English proof (translation)
+The claim follows from `IsOpenImmersion.of_isLocalization g`.
+-/
 theorem isOpenImmersion_spMap_away {R : Type} [CommRing R] (g : R) :
     IsOpenImmersion (spMap (algebraMap R (Localization.Away g))) := IsOpenImmersion.of_isLocalization g
 
 set_option maxHeartbeats 3000000 in
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c TF Z hF U n e v hv W k L N h hW`. Take `⟨g, hnil, hU0, z, hz, hzU, hC, hX⟩` from `GlobalTheory.T.exists_bigCell_point_basicOpen_affineSpace_coords E H Dw l Xo c TF Z hF U n e v hv W k L N h hW`. Take `⟨φ, hφ⟩ : ∃ φ : MvPolynomial (VIx Dw) Γ(TF.Y.X, U.1) →+* Γ(Y₀ TF.X Z, W), φ = MvPolynomial.eval₂Hom ((toBase TF Z).appLE U.1 W h.2.1).hom (cellCoord N)` from `⟨_, rfl⟩`. Rewrite `hnil`, `hU0`, the goal using `[← hφ]`. Take `⟨ψ, hψ⟩ : ∃ ψ, ψ = ev z W hz` from `⟨_, rfl⟩`.
+
+Establish `hψφ : ψ.comp φ = algebraMap _ (Localization.Away g)`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `r`. Simplify using `only [RingHom.comp_apply, hφ, MvPolynomial.eval₂Hom_C, hψ]`. Conclude with `hC r`.
+
+Introduce `i`. Simplify using `only [RingHom.comp_apply, hφ, MvPolynomial.eval₂Hom_X', hψ]`. Conclude with `hX i`. Establish `hψu : IsUnit (ψ (φ g))`. Rewrite using `[← RingHom.comp_apply, hψφ]`.
+
+Conclude with `IsLocalization.Away.algebraMap_isUnit g`. Take `⟨ψ', hψ'c⟩ : ∃ ψ' : Localization.Away (φ g) →+* Localization.Away g, ψ'.comp (algebraMap _ _) = ψ` from `⟨_, IsLocalization.Away.lift_comp (φ g) hψu⟩`. Take `⟨θ, hθc⟩ : ∃ θ : Localization.Away g →+* Localization.Away (φ g), θ.comp (algebraMap _ _) = (algebraMap _ (Localization.Away (φ g))).comp φ` from `⟨Localization.awayMap φ g, IsLocalization.map_comp _⟩`. Establish `hz₀ : ⊤ ≤ (spMap (algebraMap Γ(Y₀ TF.X Z, W) (Localization.Away (φ g))) ≫ GlobalTheory.FlagMod.tau h.1) ⁻¹ᵁ W` using `GlobalTheory.FlagMod.le_preimage_comp _ (GlobalTheory.FlagMod.tau_le h.1 le_rfl)`. Establish `ev₀` using `GlobalTheory.FlagMod.ev_spMap_tau h.1 (algebraMap Γ(Y₀ TF.X Z, W) (Localization.Away (φ g))) hz₀`.
+
+Establish `hz' : ⊤ ≤ (spMap θ ≫ z) ⁻¹ᵁ W` using `GlobalTheory.FlagMod.le_preimage_comp _ hz`. Establish `ev' : ev (spMap θ ≫ z) W hz' = θ.comp ψ` using `by rw [hψ]; exact GlobalTheory.FlagMod.ev_spMap θ z W hz hz'`. Establish `hcomp : ∀ p, θ (ψ (φ p)) = algebraMap _ (Localization.Away (φ g)) (φ p)` using `fun p => by`. Rewrite using `[← RingHom.comp_apply ψ φ, hψφ, ← RingHom.comp_apply θ, hθc, RingHom.comp_apply]`. Establish `heq : spMap θ ≫ z = spMap (algebraMap Γ(Y₀ TF.X Z, W) (Localization.Away (φ g))) ≫ GlobalTheory.FlagMod.tau h.1`.
+
+Use `GlobalTheory.T.bigCell_point_eq_of_base_and_cellCoordinates_eq E H Dw l Xo c TF Z hF U n e v hv W k L N h _ _ _ hz' hz₀ (GlobalTheory.FlagMod.le_preimage_comp _ hzU) (hU0 _ _ hz₀ (by` and prove the remaining obligations. Rewrite using `[ev₀]`. Conclude with `IsLocalization.Away.algebraMap_isUnit _)) (fun r => ?_) (fun i => ?_)`. Use `hcomp (MvPolynomial.C r)` as an intermediate fact. Simplify using `only [hφ, MvPolynomial.eval₂Hom_C] at this`.
+
+Rewrite using `[ev', ev₀, RingHom.comp_apply]`. Conclude with `this`. Use `hcomp (MvPolynomial.X i)` as an intermediate fact. Simplify using `only [hφ, MvPolynomial.eval₂Hom_X'] at this`. Rewrite using `[ev', ev₀, RingHom.comp_apply]`.
+
+Conclude with `this`. Establish `hθψ : θ.comp ψ = algebraMap _ (Localization.Away (φ g))`. Conclude with `ev'.symm.trans ((GlobalTheory.FlagMod.ev_congr heq W hz' hz₀).trans ev₀)`. Establish `h1 : ψ'.comp θ = RingHom.id _` using `IsLocalization.ringHom_ext (Submonoid.powers g) ((congrArg (ψ'.comp ·) hθc).trans ((congrArg (·.comp φ) hψ'c).trans hψφ))`. Establish `h2 : θ.comp ψ' = RingHom.id _` using `IsLocalization.ringHom_ext (Submonoid.powers (φ g)) ((congrArg (θ.comp ·) hψ'c).trans hθψ)`.
+
+Use `haveI : Nontrivial (Localization.Away (φ g)) := OreLocalization.nontrivial_iff.mpr hnil`. Use `haveI : IsOpenImmersion (spMap (algebraMap Γ(Y₀ TF.X Z, W) (Localization.Away (φ g)))) := inferInstanceAs (IsOpenImmersion (Spec.map (CommRingCat.ofHom (algebraMap Γ(Y₀ TF.X Z, W) (Localization.Away (φ g))))))`. Use `⟨(spMap (algebraMap Γ(Y₀ TF.X Z, W) (Localization.Away (φ g)))).opensRange, ?_, ?_⟩` and prove the remaining obligations. Establish `x : Sp (Localization.Away (φ g))` using `(inferInstance : Nonempty (PrimeSpectrum (Localization.Away (φ g)))).some`. Conclude with `⟨⟨_, Set.mem_range_self x⟩⟩`.
+
+Establish `key : ((spMap (algebraMap Γ(Y₀ TF.X Z, W) (Localization.Away (φ g)))).opensRange).ι = (spMap (algebraMap Γ(Y₀ TF.X Z, W) (Localization.Away (φ g)))).isoOpensRange.inv ≫ spMap (algebraMap Γ(Y₀ TF.X Z, W) (Localization.Away (φ g)))`. Conclude with `(Iso.eq_inv_comp _).2 (Scheme.Hom.isoOpensRange_hom_ι _)`. Establish `hfac : spMap (algebraMap Γ(Y₀ TF.X Z, W) (Localization.Away (φ g))) ≫ spMap φ = spMap θ ≫ spMap (algebraMap _ (Localization.Away g))` using `(spMap_comp_ringHom φ _).trans ((congrArg spMap hθc.symm).trans (spMap_comp_ringHom _ θ).symm)`. Use `haveI : IsIso (spMap θ) := isIso_spMap_of_inverse θ ψ' h2 h1`. Use `haveI := isOpenImmersion_spMap_away g`.
+
+Establish `hoi : IsOpenImmersion ((spMap (algebraMap Γ(Y₀ TF.X Z, W) (Localization.Away (φ g)))).isoOpensRange.inv ≫ spMap θ ≫ spMap (algebraMap (MvPolynomial (VIx Dw) Γ(TF.Y.X, U.1)) (Localization.Away g)))` using `inferInstance`. Rewrite `hoi` using `[← hfac, ← Category.assoc, ← key]`. Conclude with `hoi`.
+-/
 theorem exists_isOpenImmersion : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (TF : TorFlag Xo c) (Z : Comp Xo c), FnAlgClosed Xo c → ∀ (U : TF.Y.X.affineOpens) (n : ℕ) (e : (Σ τ : E →+* ℂ, Fin (Dw.mult τ)) ≃ Fin n) (v : Fin n → (Sp (DualNumber Γ(TF.Y.X, U.1)) ⟶ TF.Y.t.G.left)), IsEigBasis TF U e v → ∀ (W : (Y₀ TF.X Z).Opens) (k : TF.X.F.J) (L N : ∀ σ : E →+* ℂ, Matrix (Fin (Dw.mult σ)) (Fin (Dw.mult σ)) Γ(Y₀ TF.X Z, W)) (h : IsCell TF Z U e v W k L N), Nonempty W → ∃ V : (Spec (CommRingCat.of Γ(Y₀ TF.X Z, W))).Opens, Nonempty V ∧ IsOpenImmersion (V.ι ≫ Spec.map (CommRingCat.ofHom (MvPolynomial.eval₂Hom ((toBase TF Z).appLE U.1 W h.2.1).hom (cellCoord N)))) := by
 
   intro E _ _ _ H Dw l Xo c TF Z hF U n e v hv W k L N h hW

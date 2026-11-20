@@ -10,6 +10,27 @@ open scoped Formalism.Per
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `l _ n _ _ K ρ M hM`. Use `set Mi : Matrix n n ℂ_[l] := ((M⁻¹ : GL n ℂ_[l]) : Matrix n n ℂ_[l]) with hMi`. Use `set a : ℝ := 1 + ∑ i, ∑ j, (‖(M : Matrix n n ℂ_[l]) i j‖ + ‖Mi i j‖) with ha`. Establish `hterm : ∀ i j, ‖(M : Matrix n n ℂ_[l]) i j‖ + ‖Mi i j‖ ≤ ∑ i, ∑ j, (‖(M : Matrix n n ℂ_[l]) i j‖ + ‖Mi i j‖)`. Introduce `i j`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hMa : ∀ i j, ‖(M : Matrix n n ℂ_[l]) i j‖ ≤ a`. Introduce `i j`. Use `hterm i j` as an intermediate fact. Use `norm_nonneg (Mi i j)` as an intermediate fact.
+
+Rewrite using `[ha]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hMia : ∀ i j, ‖Mi i j‖ ≤ a`. Introduce `i j`. Use `hterm i j` as an intermediate fact.
+
+Use `norm_nonneg ((M : Matrix n n ℂ_[l]) i j)` as an intermediate fact. Rewrite using `[ha]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `ha0 : 0 < a`. Rewrite using `[ha]; have : 0 ≤ ∑ i, ∑ j, (‖(M : Matrix n n ℂ_[l]) i j‖ + ‖Mi i j‖) := Finset.sum_nonneg (fun _ _ => Finset.sum_nonneg (fun _ _ => by positivity))`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨c, hc, hAx⟩` from `GlobalTheory.T.axLemma_padicComplexMatrix_galoisSubgroup_approximation l`. Use `⟨c * a ^ 2, by positivity, ?_⟩` and prove the remaining obligations. Introduce `H t ht hρ i j`. Use `set rC : ↥(GK K) → Matrix n n ℂ_[l] := fun g => (ρ g : Matrix n n ℚ_[l]).map (algebraMap ℚ_[l] ℂ_[l]) with hrCdef`.
+
+Establish `hrent : ∀ g : ↥(GK K), ∀ i j, (rC g - 1) i j = algebraMap ℚ_[l] ℂ_[l] (((ρ g : Matrix n n ℚ_[l]) - 1) i j)`. Introduce `g i j`. Establish `e : rC g - 1 = (algebraMap ℚ_[l] ℂ_[l]).mapMatrix ((ρ g : Matrix n n ℚ_[l]) - 1)`. Rewrite using `[map_sub, map_one]`. Both sides reduce to the same expression.
+
+Rewrite using `[e]`. Both sides reduce to the same expression. Establish `hrow : ∀ g ∈ H, ∀ i j, ‖(rC g - 1) i j‖ ≤ t`. Introduce `g hg i j`. Rewrite using `[hrent, norm_algebraMap']`.
+
+Conclude with `hρ g hg i j`. Establish `hY : ∀ g ∈ H, ∀ i j, ‖(Mi.map (Formalism.Per.σC (g : GQ l)) - Mi) i j‖ ≤ a * t`. Introduce `g hg i j`. Establish `hs` using `GlobalTheory.T.galois_inv_complexPadic_periodMatrix l n K ρ M hM g`. Establish `e : Mi.map (Formalism.Per.σC (g : GQ l)) - Mi = Mi * (rC g - 1)`.
+
+Rewrite using `[hMi, hs, mul_sub, mul_one]`. Rewrite using `[e]`. Conclude with `GlobalTheory.T.norm_mul_apply_le_of_ultrametric ℂ_[l] n Mi (rC g - 1) a t ha0.le ht.le hMia (hrow g hg) i j`. Take `⟨Z, hZ, hZb⟩` from `hAx n K H Mi (a * t) (by positivity) hY`. Use `⟨-((M : Matrix n n ℂ_[l]) * Z) i j, fun g hg => ?_⟩` and prove the remaining obligations.
+
+Establish `hcore` using `GlobalTheory.T.norm_apply_neg_mul_sub_sub_le_mul ℂ_[l] n (Formalism.Per.σC (g : GQ l)) (rC g) (M : Matrix n n ℂ_[l]) Mi Z a (c * (a * t)) t ha0.le (by positivity) ht.le (GlobalTheory.RingBasics.norm_σC _) (by rw [hMi]; exact M.mul_inv) (hM g) (hZ g hg) hMa hZb (hrow g hg) i j`. Rewrite `hcore` using `[hrent]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem ph_c_cob : ∀ (l : ℕ) [Fact l.Prime] (n : Type) [Fintype n] [DecidableEq n] (K : FinExt l) (ρ : ↥(GK K) →* GL n ℚ_[l]) (M : GL n ℂ_[l]), (∀ g : ↥(GK K), (ρ g : Matrix n n ℚ_[l]).map (algebraMap ℚ_[l] ℂ_[l]) * (M : Matrix n n ℂ_[l]).map (Formalism.Per.σC (g : GQ l)) = M) → ∃ b : ℝ, 0 < b ∧ ∀ (H : Subgroup ↥(GK K)) (t : ℝ), 0 < t → (∀ g ∈ H, ∀ i j, ‖((ρ g : Matrix n n ℚ_[l]) - 1) i j‖ ≤ t) → ∀ i j, ∃ y : ℂ_[l], ∀ g ∈ H, ‖Formalism.Per.σC (g : GQ l) y - y - algebraMap ℚ_[l] ℂ_[l] (((ρ g : Matrix n n ℚ_[l]) - 1) i j)‖ ≤ b * t ^ 2 := by
   intro l _ n _ _ K ρ M hM
   set Mi : Matrix n n ℂ_[l] := ((M⁻¹ : GL n ℂ_[l]) : Matrix n n ℂ_[l]) with hMi

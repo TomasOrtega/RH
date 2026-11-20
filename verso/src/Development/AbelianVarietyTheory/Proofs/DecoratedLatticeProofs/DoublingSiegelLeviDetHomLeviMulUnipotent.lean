@@ -13,6 +13,15 @@ open GlobalTheory.MixModel GlobalTheory.Core.Rk.SWLaw
 
 namespace GlobalTheory.Core.Rk.SWLaw
 
+/- English proof (translation)
+Introduce `D A p a c hp`. Establish `hM : Formalism.L2.Theta.mt (dblSp A) (p : GA D (dblSp A)) ⬝ (dblDec A).jX = (dblDec A).jX ⬝ a.1`. Rewrite using `[hp, GlobalTheory.MixModel.mt_mul, Matrix.mul_assoc, HypDec.nC_jX, HypDec.levi_jX]`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[GlobalTheory.Doubling.val_aOf]`.
+
+Use `show (GlobalTheory.Doubling.leviMat finSumFinEquiv (Formalism.L2.Theta.mt (dblSp A) (p : GA D (dblSp A)))).det = a.1.det`. Use `set M := Formalism.L2.Theta.mt (dblSp A) (p : GA D (dblSp A)) with hMdef`. Establish `key : GlobalTheory.Doubling.leviMat finSumFinEquiv M * rat A.gram⁻¹ = rat A.gram⁻¹ * a.1`. Use extensionality with `i j`. Establish `h` using `congrFun (congrFun hM (finSumFinEquiv (Sum.inl i))) j`.
+
+Simplify using `only [HypDec.jX, dblDec, rat, stackRows, Matrix.mul_apply, Matrix.map_apply, Matrix.submatrix_apply, Fin.sum_univ_add, finSumFinEquiv_apply_left, finSumFinEquiv_symm_apply_castAdd, finSumFinEquiv_symm_apply_natAdd, Matrix.fromRows_apply_inl, Matrix.fromRows_apply_inr, id] at h`. Simplify using `only [GlobalTheory.Doubling.leviMat, rat, Matrix.mul_apply, Matrix.add_apply, Matrix.toBlocks₁₁, Matrix.toBlocks₁₂, Matrix.of_apply, Matrix.submatrix_apply, Matrix.map_apply, finSumFinEquiv_apply_left, finSumFinEquiv_apply_right, add_mul, Finset.sum_add_distrib]`. Conclude with `h`. Establish `hu : IsUnit (rat (D` using `D) A.gram⁻¹).det := by`. Rewrite using `[rat, ← RingHom.mapMatrix_apply, ← RingHom.map_det]`.
+
+Conclude with `(Matrix.isUnit_nonsing_inv_det _ (gram_det_ne A).isUnit).map _`. Establish `hd` using `congrArg Matrix.det key`. Rewrite `hd` using `[Matrix.det_mul, Matrix.det_mul, mul_comm]`. Conclude with `hu.mul_left_cancel hd`.
+-/
 theorem aP_levi_mul_nC : ∀ (D : D7) (A : HSp D) (p : siegel A) (a : GL (Fin A.rank) (AE D)) (c : skewA D A.rank), (p : GA D (dblSp A)) = (dblDec A).levi a * (dblDec A).nC c → aP A p = Matrix.GeneralLinearGroup.det a := by
   intro D A p a c hp
   have hM : Formalism.L2.Theta.mt (dblSp A) (p : GA D (dblSp A)) ⬝ (dblDec A).jX = (dblDec A).jX ⬝ a.1 := by

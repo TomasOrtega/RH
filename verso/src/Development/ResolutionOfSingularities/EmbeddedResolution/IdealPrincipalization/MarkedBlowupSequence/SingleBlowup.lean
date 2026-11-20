@@ -19,12 +19,18 @@ open Classical in
 noncomputable def residualByPow {Y : Scheme.{u}} (A F : Y.IdealSheafData) (m : ℕ) : Y.IdealSheafData :=
   if h : ∃ B : Y.IdealSheafData, F ^ m * B = A then h.choose else ⊤
 
+/- English proof (translation)
+Establish `hx : residualByPow A F m = h.choose` using `dif_pos h`. Rewrite using `[hx]`. Conclude with `h.choose_spec`.
+-/
 theorem pow_mul_residualByPow {Y : Scheme.{u}} (A F : Y.IdealSheafData) (m : ℕ)
     (h : ∃ B : Y.IdealSheafData, F ^ m * B = A) : F ^ m * residualByPow A F m = A := by
   have hx : residualByPow A F m = h.choose := dif_pos h
   rw [hx]
   exact h.choose_spec
 
+/- English proof (translation)
+Proceed by induction on `E with`. Consider the case `nil => rfl`. Consider the case `cons a t ih => simp [Scheme.IdealSheafData.comap_id]`. Use the proof step `@[simp]`.
+-/
 private theorem map_comap_id_list_idealSheafData {X : Scheme.{u}} (E : List X.IdealSheafData) :
     E.map (fun D => D.comap (𝟙 X)) = E := by
   induction E with
@@ -32,6 +38,9 @@ private theorem map_comap_id_list_idealSheafData {X : Scheme.{u}} (E : List X.Id
   | cons a t ih => simp [Scheme.IdealSheafData.comap_id]
 
 @[simp]
+/- English proof (translation)
+Rewrite using `[Blowup.exceptionalIdeal_eq_comap, Scheme.IdealSheafData.comap_id]`.
+-/
 theorem exceptionalIdeal_id {X : Scheme.{u}} (Z : X.IdealSheafData) :
     Blowup.exceptionalIdeal (𝟙 X) Z = Z := by
   rw [Blowup.exceptionalIdeal_eq_comap, Scheme.IdealSheafData.comap_id]
@@ -65,6 +74,9 @@ private def singleBlowupBoundary {X : Scheme.{u}} (Z : X.IdealSheafData) (E : Li
   | (_ + 1) =>
       E.map (Blowup.strictTransform (Blowup.blowup.proj Z) Z) ++ [Blowup.exceptionalIdeal (Blowup.blowup.proj Z) Z]
 
+/- English proof (translation)
+Take `rfl : i = 0` from `Nat.lt_one_iff.mp hi`. Use `show Blowup.IsBlowupAlongIdealSheaf (Blowup.blowup.proj Z) Z`. Conclude with `Blowup.blowup.isBlowupAlongIdealSheaf_proj Z`.
+-/
 private theorem isBlowupAlongIdealSheaf_singleBlowupMap {X : Scheme.{u}} (Z : X.IdealSheafData) (i : ℕ) (hi : i < 1) :
     Blowup.IsBlowupAlongIdealSheaf (singleBlowupMap Z i) (singleBlowupCenter Z i) := by
   obtain rfl : i = 0 := Nat.lt_one_iff.mp hi
@@ -79,6 +91,9 @@ private def singleBlowupSequenceData {X : Scheme.{u}} (Z : X.IdealSheafData) : B
   center := singleBlowupCenter Z
   isBlowup := fun i hi => isBlowupAlongIdealSheaf_singleBlowupMap Z i hi
 
+/- English proof (translation)
+Consider the cases of `i with`. Consider the case `zero => show Blowup.blowup.proj Z = Blowup.blowup.proj Z ≫ 𝟙 X`. Conclude with `(Category.comp_id _).symm`. Consider the case `succ j => show Blowup.blowup.proj Z = 𝟙 (Blowup.blowup Z) ≫ Blowup.blowup.proj Z`. Conclude with `(Category.id_comp _).symm`.
+-/
 private theorem singleBlowupProj_succ {X : Scheme.{u}} (Z : X.IdealSheafData) (i : ℕ) :
     singleBlowupProj Z (i + 1) = singleBlowupMap Z i ≫ singleBlowupProj Z i := by
   cases i with
@@ -89,6 +104,9 @@ private theorem singleBlowupProj_succ {X : Scheme.{u}} (Z : X.IdealSheafData) (i
       show Blowup.blowup.proj Z = 𝟙 (Blowup.blowup Z) ≫ Blowup.blowup.proj Z
       exact (Category.id_comp _).symm
 
+/- English proof (translation)
+Introduce `i hi`. Take `rfl : i = 0` from `Nat.lt_one_iff.mp hi`. Use `show (Z.support : Set ↥X) ⊆ orderAtLeastLocus (I.comap (𝟙 X)) m`. Rewrite using `[Scheme.IdealSheafData.comap_id]`. Conclude with `hord`.
+-/
 private theorem singleBlowupCenter_support_subset_orderAtLeastLocus {X : Scheme.{u}} (I Z : X.IdealSheafData) (m : ℕ)
     (hord : (Z.support : Set ↥X) ⊆ orderAtLeastLocus I m) :
     ∀ i : ℕ, i < 1 →
@@ -99,6 +117,9 @@ private theorem singleBlowupCenter_support_subset_orderAtLeastLocus {X : Scheme.
   rw [Scheme.IdealSheafData.comap_id]
   exact hord
 
+/- English proof (translation)
+Introduce `i hi`. Take `rfl : i = 0` from `Nat.lt_one_iff.mp hi`. Use `show AlgebraicGeometry.Smooth (Z.subschemeι ≫ 𝟙 X ≫ p)`. Rewrite using `[Category.id_comp]`. Conclude with `hsm`.
+-/
 private theorem smooth_singleBlowupCenter_of_smooth {k : Type u} [Field k] {X : Scheme.{u}}
     {p : X ⟶ Spec (CommRingCat.of k)} (Z : X.IdealSheafData)
     (hsm : AlgebraicGeometry.Smooth (Z.subschemeι ≫ p)) :
@@ -110,6 +131,9 @@ private theorem smooth_singleBlowupCenter_of_smooth {k : Type u} [Field k] {X : 
   rw [Category.id_comp]
   exact hsm
 
+/- English proof (translation)
+Introduce `i hi`. Take `rfl : i = 0` from `Nat.lt_one_iff.mp hi`. Use `show HasStrictNormalCrossingsWith (𝟙 X ≫ p) Z (E.map (fun D => D.comap (𝟙 X)))`. Rewrite using `[map_comap_id_list_idealSheafData E, Category.id_comp]`. Conclude with `hsnc`.
+-/
 private theorem hasStrictNormalCrossingsWith_singleBlowupCenter {k : Type u} [Field k] {X : Scheme.{u}}
     {p : X ⟶ Spec (CommRingCat.of k)} (Z : X.IdealSheafData) (E : List X.IdealSheafData)
     (hsnc : HasStrictNormalCrossingsWith p Z E) :
@@ -121,6 +145,9 @@ private theorem hasStrictNormalCrossingsWith_singleBlowupCenter {k : Type u} [Fi
   rw [map_comap_id_list_idealSheafData E, Category.id_comp]
   exact hsnc
 
+/- English proof (translation)
+Introduce `i hi`. Take `rfl : i = 0` from `Nat.lt_one_iff.mp hi`. Use `show Blowup.exceptionalIdeal (Blowup.blowup.proj Z) Z ^ m * residualByPow (I.comap (Blowup.blowup.proj Z)) (Z.comap (Blowup.blowup.proj Z)) m = (I.comap (𝟙 X)).comap (Blowup.blowup.proj Z)`. Rewrite using `[Blowup.exceptionalIdeal_eq_comap, Scheme.IdealSheafData.comap_id]`. Conclude with `pow_mul_residualByPow _ _ _ hdiv`.
+-/
 private theorem exceptionalIdeal_pow_mul_singleBlowupResidualIdeal_succ {X : Scheme.{u}} (I Z : X.IdealSheafData) (m : ℕ)
     (hdiv : ∃ B : (Blowup.blowup Z).IdealSheafData,
       (Z.comap (Blowup.blowup.proj Z)) ^ m * B = I.comap (Blowup.blowup.proj Z)) :
@@ -135,6 +162,9 @@ private theorem exceptionalIdeal_pow_mul_singleBlowupResidualIdeal_succ {X : Sch
   rw [Blowup.exceptionalIdeal_eq_comap, Scheme.IdealSheafData.comap_id]
   exact pow_mul_residualByPow _ _ _ hdiv
 
+/- English proof (translation)
+Introduce `i hi`. Take `rfl : i = 0` from `Nat.lt_one_iff.mp hi`. Use `show E.map (Blowup.strictTransform (Blowup.blowup.proj Z) Z) ++ [Blowup.exceptionalIdeal (Blowup.blowup.proj Z) Z] = (E.map (fun D => D.comap (𝟙 X))).map (Blowup.strictTransform (Blowup.blowup.proj Z) Z) ++ [Blowup.exceptionalIdeal (Blowup.blowup.proj Z) Z]`. Rewrite using `[map_comap_id_list_idealSheafData E]`.
+-/
 private theorem singleBlowupBoundary_succ {X : Scheme.{u}} (Z : X.IdealSheafData)
     (E : List X.IdealSheafData) :
     ∀ i : ℕ, i < 1 →
@@ -181,29 +211,53 @@ variable {k : Type u} [Field k] {X : Scheme.{u}} {p : X ⟶ Spec (CommRingCat.of
     (Z.comap (Blowup.blowup.proj Z)) ^ m * B = I.comap (Blowup.blowup.proj Z))
 
 @[simp]
+/- English proof (translation)
+The claim follows from `rfl @[simp]`.
+-/
 theorem ofSingleBlowup_length :
     (ofSingleBlowup p I m E Z hsm hsnc hord hdiv).toBlowupSequenceData.length = 1 := rfl
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ofSingleBlowup_schemeAt_succ (i : ℕ) :
     (ofSingleBlowup p I m E Z hsm hsnc hord hdiv).toBlowupSequenceData.obj (i + 1) = Blowup.blowup Z := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ofSingleBlowup_schemeAt_zero :
     (ofSingleBlowup p I m E Z hsm hsnc hord hdiv).toBlowupSequenceData.obj 0 = X := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ofSingleBlowup_blowupMorphism_zero :
     (ofSingleBlowup p I m E Z hsm hsnc hord hdiv).toBlowupSequenceData.map 0 = Blowup.blowup.proj Z := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ofSingleBlowup_projectionToBase_one :
     (ofSingleBlowup p I m E Z hsm hsnc hord hdiv).proj 1 = Blowup.blowup.proj Z := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ofSingleBlowup_center_zero :
     (ofSingleBlowup p I m E Z hsm hsnc hord hdiv).toBlowupSequenceData.center 0 = Z := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ofSingleBlowup_ideal_one :
     (ofSingleBlowup p I m E Z hsm hsnc hord hdiv).ideal 1 =
       residualByPow (I.comap (Blowup.blowup.proj Z)) (Z.comap (Blowup.blowup.proj Z)) m := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ofSingleBlowup_boundary_one :
     (ofSingleBlowup p I m E Z hsm hsnc hord hdiv).boundary 1 =
       E.map (Blowup.strictTransform (Blowup.blowup.proj Z) Z) ++ [Blowup.exceptionalIdeal (Blowup.blowup.proj Z) Z] := rfl

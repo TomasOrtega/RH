@@ -11,5 +11,8 @@ open GlobalTheory.IndefiniteRowSideFullHecke.SphericalZero (swSec sZero)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.StdUnn.exists_unique_of_comp_finPart | exact GlobalTheory.StdUnn.exists_unique_of_comp_finPart | (intros; apply GlobalTheory.StdUnn.exists_unique_of_comp_finPart <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.existsUnique_adelicMatrix_realComponents_finitePart : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → ∀ (m n : ℕ) (z : D.what₂.Tau → Matrix (Fin m) (Fin n) ℂ) (x₀ : Mx D m n), ∃! x : Mx D m n, (∀ τ, compAt θ τ x = z τ) ∧ x.map (finPart D) = x₀.map (finPart D) := by
   first | exact @GlobalTheory.StdUnn.exists_unique_of_comp_finPart | exact GlobalTheory.StdUnn.exists_unique_of_comp_finPart | (intros; apply GlobalTheory.StdUnn.exists_unique_of_comp_finPart <;> assumption)

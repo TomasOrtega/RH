@@ -4,6 +4,35 @@ open Finset
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `k l c B Y lam v a hc hB hlam hv hW ha`. Take `⟨φ, hφ⟩ : ∃ φ : ℕ → ℕ, ∀ s, φ s = if -Y < lam s then s else s + 1` from `⟨_, fun _ => rfl⟩`. Establish `hmem : ∀ s ∈ Finset.Icc 1 (k - 1), φ s ∈ Finset.Icc 1 k`. Introduce `s hs`. Rewrite `hs`, the goal using `[Finset.mem_Icc]`.
+
+Apply the tactic sequence `rw [hφ]; split_ifs <;> omega`. Establish `hinj : ∀ s ∈ Finset.Icc 1 (k - 1), ∀ t ∈ Finset.Icc 1 (k - 1), φ s = φ t → s = t`. Introduce `s hs t ht h`. Rewrite `hs`, `ht` using `[Finset.mem_Icc]`. Rewrite `h` using `[hφ, hφ]`.
+
+Use `split_ifs at h with h1 h2 h2`. Conclude with `h`. Substitute `h` using the available equality. Use `hlam t ht.1 hs.2` as an intermediate fact. Combine the linear relations using `[not_lt.mp h2]`.
+
+Substitute `h` using the available equality. Use `hlam s hs.1 ht.2` as an intermediate fact. Combine the linear relations using `[not_lt.mp h1]`. Use linear arithmetic over natural numbers and integers. Establish `hR : ∀ s, 1 ≤ 1 + (1 + c) / max |lam s + Y| 1`.
+
+Introduce `s`. Establish `: 0 ≤ (1 + c) / max |lam s + Y| 1` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hkey : ∀ s ∈ Finset.Icc 1 (k - 1), a s ≤ (if φ s = l then B else 1) * (1 + (1 + c) / max |lam s + Y| 1) * |Y + 1 / 2 + v (φ s)|`. Introduce `s hs`.
+
+Establish `hw` using `hW _ (hmem s hs)`. Take `⟨h0, h1, h2⟩` from `ha s hs`. Establish `hr` using `hR s`. Use `split_ifs with hl`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite `hs` using `[Finset.mem_Icc]`. Take `⟨hv1, hv2⟩` from `hv s hs.1 (by omega)`. Establish `hd : |lam s + Y| ≤ |Y + 1 / 2 + v (φ s)|`. Rewrite `hl`, the goal using `[hφ]`. Use `split_ifs at hl ⊢ with hy`.
+
+Use `hv1 hl` as an intermediate fact. Rewrite using `[abs_of_pos (by linarith), abs_of_pos (by linarith)]; linarith`. Use `hv2 hl` as an intermediate fact. Use `not_lt.mp hy` as an intermediate fact. Rewrite using `[abs_of_nonpos (by linarith), abs_of_nonpos (by linarith)]; linarith`.
+
+Establish `hM : max |lam s + Y| 1 ≤ |Y + 1 / 2 + v (φ s)|` using `max_le hd hw`. Establish `hM1 : (1 : ℝ) ≤ max |lam s + Y| 1` using `le_max_right _ _`. Establish `hM2 : |lam s + Y| ≤ max |lam s + Y| 1` using `le_max_left _ _`. Establish `e : (1 + (1 + c) / max |lam s + Y| 1) * max |lam s + Y| 1 = max |lam s + Y| 1 + (1 + c)`. Clear the denominators using the available nonvanishing facts.
+
+Rewrite using `[one_mul]`. Combine the equalities or inequalities in the displayed calculation. Establish `hB' : ∏ s ∈ Finset.Icc 1 (k - 1), (if φ s = l then B else 1) ≤ B`. Rewrite using `[Finset.prod_ite, Finset.prod_const_one, mul_one, Finset.prod_const]`. Establish `hcard : ((Finset.Icc 1 (k - 1)).filter (fun s => φ s = l)).card ≤ 1`.
+
+Rewrite using `[Finset.card_le_one]`. Introduce `s hs t ht`. Rewrite `hs`, `ht` using `[Finset.mem_filter]`. Conclude with `hinj s hs.1 t ht.1 (hs.2.trans ht.2.symm)`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hW' : ∏ s ∈ Finset.Icc 1 (k - 1), |Y + 1 / 2 + v (φ s)| ≤ ∏ i ∈ Finset.Icc 1 k, |Y + 1 / 2 + v i|`. Rewrite using `[← Finset.prod_image (f := fun i => |Y + 1 / 2 + v i|) (g := φ) (fun s hs t ht h => hinj s hs t ht h)]`. Establish `hsub : (Finset.Icc 1 (k - 1)).image φ ⊆ Finset.Icc 1 k`. Introduce `i hi`. Take `⟨s, hs, rfl⟩` from `Finset.mem_image.mp hi`.
+
+Conclude with `hmem s hs`. Rewrite using `[← Finset.prod_sdiff hsub]`. Use `le_mul_of_one_le_left (Finset.prod_nonneg fun _ _ => abs_nonneg _) ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `h1 : 0 ≤ ∏ s ∈ Finset.Icc 1 (k - 1), (1 + (1 + c) / max |lam s + Y| 1)` using `Finset.prod_nonneg fun s _ => zero_le_one.trans (hR s)`. Establish `h2 : 0 ≤ ∏ s ∈ Finset.Icc 1 (k - 1), |Y + 1 / 2 + v (φ s)|` using `Finset.prod_nonneg fun _ _ => abs_nonneg _`. Conclude with `mul_le_mul (mul_le_mul_of_nonneg_right hB' h1) hW' h2 (mul_nonneg (by linarith) h1)`.
+-/
 theorem prod_le_of_interlacing_pairing :
     ∀ (k l : ℕ) (c B Y : ℝ) (lam v a : ℕ → ℝ), 0 ≤ c → 1 ≤ B → (∀ s : ℕ, 1 ≤ s → s + 1 ≤ k - 1 → lam (s + 1) ≤ lam s) → (∀ s : ℕ, 1 ≤ s → s + 1 ≤ k → (s ≠ l → lam s + 1 / 2 ≤ v s) ∧ (s + 1 ≠ l → v (s + 1) + 1 / 2 ≤ lam s)) → (∀ i ∈ Finset.Icc 1 k, 1 ≤ |Y + 1 / 2 + v i|) → (∀ s ∈ Finset.Icc 1 (k - 1), 0 ≤ a s ∧ a s ≤ |lam s + Y| + 1 + c ∧ a s ≤ B) → ∏ s ∈ Finset.Icc 1 (k - 1), a s ≤ B * (∏ s ∈ Finset.Icc 1 (k - 1), (1 + (1 + c) / max |lam s + Y| 1)) * ∏ i ∈ Finset.Icc 1 k, |Y + 1 / 2 + v i| := by
   intro k l c B Y lam v a hc hB hlam hv hW ha

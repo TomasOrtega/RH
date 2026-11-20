@@ -20,11 +20,17 @@ def conjSub (N : Subgroup G) (g : G) (h1 : ∀ x ∈ N, g * x * g⁻¹ ∈ N) (h
   right_inv x := Subtype.ext (show g * (g⁻¹ * (x : G) * g) * g⁻¹ = x by group)
   map_mul' x y := Subtype.ext (show g * ((x : G) * y) * g⁻¹ = (g * x * g⁻¹) * (g * y * g⁻¹) by group)
 
+/- English proof (translation)
+Use `show Continuous fun x : N => (⟨g * x * g⁻¹, h1 x x.2⟩ : N)`. Conclude with `Continuous.subtype_mk ((continuous_const.mul continuous_subtype_val).mul continuous_const) _`.
+-/
 theorem continuous_conjSub (N : Subgroup G) (g : G) (h1 : ∀ x ∈ N, g * x * g⁻¹ ∈ N)
     (h2 : ∀ x ∈ N, g⁻¹ * x * g ∈ N) : Continuous (conjSub N g h1 h2) := by
   show Continuous fun x : N => (⟨g * x * g⁻¹, h1 x x.2⟩ : N)
   exact Continuous.subtype_mk ((continuous_const.mul continuous_subtype_val).mul continuous_const) _
 
+/- English proof (translation)
+Use `show Continuous fun x : N => (⟨g⁻¹ * x * g, h2 x x.2⟩ : N)`. Conclude with `Continuous.subtype_mk ((continuous_const.mul continuous_subtype_val).mul continuous_const) _`.
+-/
 theorem continuous_conjSub_symm (N : Subgroup G) (g : G) (h1 : ∀ x ∈ N, g * x * g⁻¹ ∈ N)
     (h2 : ∀ x ∈ N, g⁻¹ * x * g ∈ N) : Continuous (conjSub N g h1 h2).symm := by
   show Continuous fun x : N => (⟨g⁻¹ * x * g, h2 x x.2⟩ : N)
@@ -32,6 +38,15 @@ theorem continuous_conjSub_symm (N : Subgroup G) (g : G) (h1 : ∀ x ∈ N, g * 
 
 variable [LocallyCompactSpace G] [T2Space G] [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G]
 
+/- English proof (translation)
+Use `haveI : LocallyCompactSpace N := hN.isClosedEmbedding_subtypeVal.locallyCompactSpace`. Use `haveI : SecondCountableTopology N := by first`. Consider the case `exact TopologicalSpace.Subtype.secondCountableTopology (N : Set G)`. Consider the case `exact Topology.IsInducing.subtypeVal.secondCountableTopology`. Consider the case `exact inducing_subtype_val.secondCountableTopology`.
+
+Consider the case `infer_instance`. Establish `hφc` using `continuous_conjSub N g h1 h2`. Establish `hφs` using `continuous_conjSub_symm N g h1 h2`. Use `haveI := MulEquiv.isHaarMeasure_map (Measure.haar : Measure N) (conjSub N g h1 h2) hφc hφs`. Use `⟨Measure.haarScalarFactor ((Measure.haar : Measure N).map (conjSub N g h1 h2)) Measure.haar, ?_⟩` and prove the remaining obligations.
+
+Establish `hc : Measurable (fun x : G => g * x * g⁻¹)` using `((continuous_const.mul continuous_id).mul continuous_const).measurable`. Establish `hcomp : (fun x : G => g * x * g⁻¹) ∘ (Subtype.val : N → G) = Subtype.val ∘ (conjSub N g h1 h2)`. Both sides reduce to the same expression. Unfold `haarSub`. Rewrite using `[Measure.map_map hc measurable_subtype_coe, hcomp, ← Measure.map_map measurable_subtype_coe hφc.measurable]`.
+
+Use `conv_lhs => rw [Measure.isMulLeftInvariant_eq_smul ((Measure.haar : Measure N).map (conjSub N g h1 h2)) Measure.haar]`. Rewrite using `[Measure.map_smul]`.
+-/
 theorem conj_eq_smul (N : Subgroup G) (hN : IsClosed (N : Set G)) (g : G) (h1 : ∀ x ∈ N, g * x * g⁻¹ ∈ N)
     (h2 : ∀ x ∈ N, g⁻¹ * x * g ∈ N) :
     ∃ c : ℝ≥0, (haarSub N hN).map (fun x => g * x * g⁻¹) = c • haarSub N hN := by
@@ -59,6 +74,33 @@ theorem conj_eq_smul (N : Subgroup G) (hN : IsClosed (N : Set G)) (g : G) (h1 : 
 
 end Conj
 
+/- English proof (translation)
+Introduce `G _ _ _ _ _ _ _ _ N H hN hnorm hdec h hh`. Take `⟨_, _, _, _, hfin, hpos⟩` from `hHaar G N hN`. Establish `hm : ∀ a : G, Measurable (fun x : G => a * x * a⁻¹)` using `fun a => ((continuous_const.mul continuous_id).mul continuous_const).measurable`. Establish `hcomp : ∀ a b : G, (fun x : G => a * b * x * (a * b)⁻¹) = (fun x : G => a * x * a⁻¹) ∘ (fun x : G => b * x * b⁻¹)` using `fun a b => by`. Use function extensionality and compare the values at `x`.
+
+Simplify using `only [Function.comp, mul_inv_rev, mul_assoc]`. Establish `hmap : ∀ a b : G, (haarSub N hN).map (fun x => a * b * x * (a * b)⁻¹) = ((haarSub N hN).map (fun x => b * x * b⁻¹)).map (fun x => a * x * a⁻¹)` using `fun a b => by`. Rewrite using `[Measure.map_map (hm a) (hm b), hcomp]`. Establish `hid : ∀ a : G, (haarSub N hN).map (fun x => a * a⁻¹ * x * (a * a⁻¹)⁻¹) = haarSub N hN` using `fun a => by`. Simplify using `only [mul_inv_cancel, one_mul, inv_one, mul_one]`.
+
+Conclude with `Measure.map_id'`. Establish `hsc : ∀ g ∈ H, ∃ c : ℝ≥0, (haarSub N hN).map (fun x => g * x * g⁻¹) = c • haarSub N hN` using `fun g hg => conj_eq_smul N hN g (hnorm g hg) (fun x hx => by`. Simplify using `using hnorm g⁻¹ (H.inv_mem hg) x hx)`. Take `⟨k, hk, p, hp, σ, hσ, hkp, hσp, C, hC, hC1, hCk⟩` from `hdec h hh`. Establish `hCpos : 0 < haarSub N hN C` using `lt_of_lt_of_le (hpos _ isOpen_interior hC1) (measure_mono interior_subset)`.
+
+Establish `hCfin : haarSub N hN C < ⊤` using `hfin C hC`. Establish `key : ∀ a b : ℝ≥0∞, a * haarSub N hN C = b * haarSub N hN C → a = b` using `fun a b hab => by first`. Consider the case `exact (ENNReal.mul_left_inj hCpos.ne' hCfin.ne).mp hab`. Consider the case `exact (ENNReal.mul_eq_mul_right hCpos.ne' hCfin.ne).mp hab`. Consider the case `(rw [mul_comm a, mul_comm b] at hab; exact (ENNReal.mul_right_inj hCpos.ne' hCfin.ne).mp hab)`.
+
+Consider the case `(rw [mul_comm a, mul_comm b] at hab; exact (ENNReal.mul_eq_mul_left hCpos.ne' hCfin.ne).mp hab)`. Establish `cancel : ∀ c d : ℝ≥0, c • haarSub N hN = d • haarSub N hN → c = d` using `fun c d hcd => by`. Establish `e` using `congrArg (fun μ : Measure G => μ C) hcd`. Simplify using `only [Measure.smul_apply, ENNReal.smul_def, smul_eq_mul] at e`. Conclude with `key _ _ e` after adjusting the coercions.
+
+Establish `hk1 : (haarSub N hN).map (fun x => k * x * k⁻¹) = haarSub N hN`. Take `⟨ck, hck⟩` from `hsc k hk`. Establish `hpre : (fun x : G => k * x * k⁻¹) ⁻¹' C = C` using `Set.ext fun x => hCk x`. Establish `e1 : (haarSub N hN).map (fun x => k * x * k⁻¹) C = haarSub N hN C`. Rewrite using `[Measure.map_apply (hm k) hC.measurableSet, hpre]`.
+
+Rewrite `e1` using `[hck]`. Establish `e3 : (ck : ℝ≥0∞) * haarSub N hN C = 1 * haarSub N hN C`. Simplify using `only [Measure.smul_apply, ENNReal.smul_def, smul_eq_mul] at e1`. Rewrite using `[one_mul]`. Conclude with `e1`.
+
+Establish `hck1 : ck = 1` using `by exact_mod_cast key _ _ e3`. Rewrite using `[hck, hck1, one_smul]`. Establish `hp1 : (haarSub N hN).map (fun x => p * x * p⁻¹) = haarSub N hN`. Take `⟨cp, hcp⟩` from `hsc p hp`. Take `⟨cs, hcs⟩` from `hsc σ hσ`.
+
+Take `⟨cs', hcs'⟩` from `hsc σ⁻¹ (H.inv_mem hσ)`. Establish `e1 : (cs' * cs) • haarSub N hN = (1 : ℝ≥0) • haarSub N hN`. Establish `e` using `hid σ`. Rewrite `e` using `[hmap, hcs', Measure.map_smul, hcs, smul_smul]`. Rewrite using `[e, one_smul]`.
+
+Establish `hss : cs' * cs = 1` using `cancel _ _ e1`. Establish `hpinv : (fun x : G => p⁻¹ * x * p⁻¹⁻¹) = (fun x : G => σ * p * σ⁻¹ * x * (σ * p * σ⁻¹)⁻¹)`. Rewrite using `[hσp]`. Establish `e2 : (haarSub N hN).map (fun x => p⁻¹ * x * p⁻¹⁻¹) = (cs' * cp * cs) • haarSub N hN`. Rewrite using `[hpinv, hmap (σ * p) σ⁻¹, hcs', Measure.map_smul, hmap σ p, hcp, Measure.map_smul, hcs, smul_smul, smul_smul]`.
+
+Establish `e3 : (cs' * cp * cs * cp) • haarSub N hN = (1 : ℝ≥0) • haarSub N hN`. Establish `e` using `hid p`. Rewrite `e` using `[hmap p p⁻¹, e2, Measure.map_smul, hcp, smul_smul]`. Rewrite using `[e, one_smul]`. Establish `hcp1 : cp = 1`.
+
+Establish `h4` using `cancel _ _ e3`. Establish `h5 : cp * cp = 1`. Combine the equalities or inequalities in the displayed calculation. Establish `h6 : (cp : ℝ) * cp = 1` using `by exact_mod_cast h5`. Establish `h7 : (cp : ℝ) = 1` using `by nlinarith [cp.2]`.
+
+Conclude with `h7` after adjusting the coercions. Rewrite using `[hcp, hcp1, one_smul]`. Rewrite using `[hkp, hmap, hp1, hk1]`.
+-/
 theorem genModOne_of (hHaar : GenHaarSub) : GenModOne := by
   intro G _ _ _ _ _ _ _ _ N H hN hnorm hdec h hh
   obtain ⟨_, _, _, _, hfin, hpos⟩ := hHaar G N hN

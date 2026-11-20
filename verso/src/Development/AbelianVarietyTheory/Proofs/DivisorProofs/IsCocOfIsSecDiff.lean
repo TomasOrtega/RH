@@ -13,6 +13,13 @@ set_option autoImplicit false
 
 namespace GlobalTheory.PtExt
 
+/- English proof (translation)
+Introduce `R _ A _ _ n hR b _ S _ u hu D _ _ D' _ _ D'' _ _ φ ψ x _`. Take `⟨E, _, _, χ, z, hχ, hz⟩` from `hR D'' (spOver ψ ≫ spOver φ ≫ x)`. Apply `hχ.injective` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `χ _ = χ (ψ _ + _)`. Rewrite using `[map_add]`.
+
+Establish `h1` using `hu D D'' (ψ.comp φ) x E χ z (by rw [hz, ← spOver_comp, Category.assoc])`. Establish `h2` using `hu D D' φ x E (χ.comp ψ) z (by rw [hz, ← spOver_comp, Category.assoc])`. Establish `h3` using `hu D' D'' ψ (spOver φ ≫ x) E χ z hz`. Rewrite `h2` using `[AlgHom.comp_apply]`. Rewrite using `[h1, h2, h3, ← spOver_comp, Category.assoc, AlgHom.comp_assoc]`.
+
+Normalize the expressions using the abelian group laws.
+-/
 theorem isCoc_of_isSecDiff : ∀ (R : Type) [CommRing R] (A : Over (Sp R)) [GrpObj A] [IsCommMonObj A] (n : ℕ), HasRoots A n → ∀ b : Fn0 A, IsTorsChar n b → ∀ S : SecFam A, (∀ (D : Type) [CommRing D] [Algebra R D] (x : Pt A D), IsSec n b x (S D x)) → ∀ u : Fn1 A, IsSecDiff n S u → IsCoc (whole A) u := by
   intro R _ A _ _ n hR b _ S _ u hu D _ _ D' _ _ D'' _ _ φ ψ x _
   obtain ⟨E, _, _, χ, z, hχ, hz⟩ := hR D'' (spOver ψ ≫ spOver φ ≫ x)

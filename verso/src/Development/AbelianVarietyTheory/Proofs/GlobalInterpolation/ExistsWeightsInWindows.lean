@@ -15,6 +15,29 @@ namespace GlobalTheory.EX
 
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.Inhab Formalism.L2.GlobalTheoryTheory GlobalTheory.EX NumberField
 
+/- English proof (translation)
+Introduce `eps C h0 h1 hS`. Establish `hLa : 1 ≤ C.GK.La` using `hS.2.2.2.2.2.2.2.2.2.2.2.2.2.2.1 _ (by simp [FC.cMid])`. Take `⟨CN, x1, hN⟩` from `GlobalTheory.topCount_and_lambda_bounds eps h0 h1`. Take `⟨x2, hP⟩` from `GlobalTheory.scale_poly_comparison eps 17 1 h0 one_pos`. Take `⟨x3, hR⟩` from `GlobalTheory.EX.rank_basic_bounds eps h0 h1`.
+
+Use `⟨max x1 (max x2 x3), fun s R H he hx hRV => ?_⟩` and prove the remaining obligations. Establish `hx1 : x1 ≤ s.x` using `le_trans (le_max_left _ _) hx`. Establish `hx2 : x2 ≤ s.x` using `le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) hx`. Establish `hx3 : x3 ≤ s.x` using `le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) hx`. Take `⟨-, -, hK⟩` from `hN s he hx1`.
+
+Establish `hLa1` using `(hK C.GK hLa).1`. Take `⟨-, -, hb, -, hb', -⟩` from `hP s he hx2`. Take `⟨-, -, hr, hkr, -⟩` from `hR s R he hx3 hRV`. Establish `hx1' : 1 ≤ s.x` using `s.one_lt_alt.le`. Establish `hxp : 0 < s.x` using `lt_of_lt_of_le one_pos hx1'`.
+
+Establish `hk5 : (R.k : ℝ) ≤ s.x ^ (5 : ℝ)` using `le_trans (by exact_mod_cast hkr) hr`. Establish `hk0 : (0 : ℝ) < R.k`. Use `R.m_add_three_le_k` as an intermediate fact. Conclude with `(by omega : 0 < R.k)` after adjusting the coercions. Establish `hX : 1 ≤ s.X'` using `Real.one_le_exp (Real.rpow_nonneg hxp.le _)`.
+
+Rewrite `hb` using `[Real.rpow_one]`. Rewrite `hb'` using `[sub_self, Real.rpow_zero, one_mul]`. Establish `h17 : 0 < s.x ^ (17 : ℝ)` using `Real.rpow_pos_of_pos hxp _`. Establish `hb17 : s.x ^ (17 : ℝ) ≤ s.b` using `le_trans (le_mul_of_one_le_right h17.le hX) hb`. Establish `hA : 1 ≤ s.a / ((R.k : ℝ) * s.x ^ (Scale.A / 2))`.
+
+Establish `h13 : 0 < s.x ^ (Scale.A / 2)` using `Real.rpow_pos_of_pos hxp _`. Rewrite using `[le_div_iff₀ (mul_pos hk0 h13), one_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Real.rpow_add hxp, ← Real.rpow_one_add' hxp.le (by norm_num)]`. Use `congr 1`.
+
+Unfold `Scale.A`. Evaluate the numerical expressions. Use `_ ≤ s.a := mul_le_mul_of_nonneg_left hb17 hxp.le`. Establish `hB : 1 ≤ 2 * (R.n : ℝ) * s.delta1 * s.x ^ s.eps * G.La C.GK s * s.b' / (R.k : ℝ)`. Rewrite using `[le_div_iff₀ hk0, one_mul]`.
+
+Establish `hn : (1 : ℝ) ≤ R.n`. Establish `: 1 ≤ R.n` using `R.ord_pos`. Conclude with `this` after adjusting the coercions. Establish `hd : 1 ≤ s.delta1 * s.x ^ s.eps`. Unfold `Scale.delta1`.
+
+Rewrite using `[← Real.rpow_add hxp]`. Conclude with `Real.one_le_rpow hx1' (by have := s.eps_pos; linarith)`. Establish `hL : 1 ≤ G.La C.GK s` using `le_trans (Real.one_le_rpow hx1' s.eps_pos.le) hLa1`. Establish `hkb : (R.k : ℝ) ≤ s.b'` using `le_trans hk5 (le_trans (Real.rpow_le_rpow_of_exponent_le hx1' (by norm_num)) hb')`. Establish `h2 : (1 : ℝ) ≤ 2 * (R.n : ℝ) * (s.delta1 * s.x ^ s.eps) * G.La C.GK s` using `one_le_mul_of_one_le_of_one_le (one_le_mul_of_one_le_of_one_le (by linarith) hd) hL`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `⟨fun _ => ⌈s.a⌉, fun _ => ⌈s.b'⌉, fun t _ => ⟨⟨Int.le_ceil _, ?_⟩, Int.le_ceil _, ?_⟩⟩` and prove the remaining obligations. Use `Int.ceil_lt_add_one s.a` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Use `Int.ceil_lt_add_one s.b'` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem exists_weights_in_windows : ∀ (eps : ℝ) (C : FC), 0 < eps → eps < 1 / 52 → Std C → ∃ x0 : ℝ,
     ∀ (s : Scale) (R : Ranks) (H : Host R), s.eps = eps → x0 ≤ s.x → RankVal s R →
       ∃ a b : R.A → ℤ, WinOK s C.GK H a b := by

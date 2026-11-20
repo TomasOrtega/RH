@@ -13,6 +13,11 @@ open GlobalTheory.Twist (resM app_resM)
 
 namespace GlobalTheory.ChainPts.AdaptedCoef
 
+/- English proof (translation)
+Establish `: (B₁.coord k) ∘ₗ q = B.coord (σ k)`. Use `B.ext fun j => ?_` and prove the remaining obligations. Distinguish the cases in `hj : j ∈ Set.range σ`. Take `⟨m, rfl⟩` from `hj`. Simplify using `[hq, Finsupp.single_apply, hσ.eq_iff]`.
+
+Establish `hne : j ≠ σ k` using `fun h => hj ⟨k, h.symm⟩`. Simplify using `[hz j hj, Finsupp.single_apply, hne]`. Conclude with `LinearMap.congr_fun this u`.
+-/
 theorem repr_map_of_basis {R M M₁ : Type} [CommRing R] [AddCommGroup M] [Module R M] [AddCommGroup M₁]
     [Module R M₁] {ι κ : Type} (B : Module.Basis ι R M) (B₁ : Module.Basis κ R M₁) (σ : κ → ι)
     (hσ : Function.Injective σ) (q : M →ₗ[R] M₁) (hq : ∀ k, q (B (σ k)) = B₁ k)
@@ -28,6 +33,9 @@ theorem repr_map_of_basis {R M M₁ : Type} [CommRing R] [AddCommGroup M] [Modul
       simp [hz j hj, Finsupp.single_apply, hne]
   exact LinearMap.congr_fun this u
 
+/- English proof (translation)
+Establish `: (B.coord j) ∘ₗ i = 0`. Use `B₁.ext fun k => ?_` and prove the remaining obligations. Establish `hne : σ k ≠ j` using `fun h => hj ⟨k, h⟩`. Simplify using `[hi, Finsupp.single_apply, hne]`. Conclude with `LinearMap.congr_fun this t`.
+-/
 theorem repr_map_eq_zero {R M M₁ : Type} [CommRing R] [AddCommGroup M] [Module R M] [AddCommGroup M₁]
     [Module R M₁] {ι κ : Type} (B : Module.Basis ι R M) (B₁ : Module.Basis κ R M₁) (σ : κ → ι)
     (i : M₁ →ₗ[R] M) (hi : ∀ k, i (B₁ k) = B (σ k)) (t : M₁) (j : ι) (hj : j ∉ Set.range σ) :
@@ -42,6 +50,9 @@ theorem repr_map_eq_zero {R M M₁ : Type} [CommRing R] [AddCommGroup M] [Module
 variable {X : Scheme.{0}} {F F₁ : X.Modules} {r r' : ℕ} {σ : Fin r' → Fin r} {U W : X.Opens}
   {s : Fin r → Γ(F, U)}
 
+/- English proof (translation)
+The claim follows from `repr_map_of_basis (hs.basis h) (h₁.basis h) σ hσ (GlobalTheory.QCoh.appLinear q W) (fun k => by rw [GlobalTheory.QCoh.appLinear_apply, hs.basis_apply, h₁.basis_apply, app_resM]) (fun j hj => by rw [GlobalTheory.QCoh.appLinear_apply, hs.basis_apply, app_resM, hz j hj, map_zero]) u …`.
+-/
 theorem repr_q (q : F ⟶ F₁) (hσ : Function.Injective σ) (hs : GlobalTheory.VB.IsFrame s)
     (hz : ∀ j, j ∉ Set.range σ → q.app U (s j) = 0)
     (h₁ : GlobalTheory.VB.IsFrame (fun k => q.app U (s (σ k)))) (h : W ≤ U) (u : Γ(F, W)) (k : Fin r') :
@@ -52,6 +63,9 @@ theorem repr_q (q : F ⟶ F₁) (hσ : Function.Injective σ) (hs : GlobalTheory
     (fun j hj => by
       rw [GlobalTheory.QCoh.appLinear_apply, hs.basis_apply, app_resM, hz j hj, map_zero]) u k
 
+/- English proof (translation)
+The claim follows from `repr_map_eq_zero (hs.basis h) (h₁.basis h) σ (GlobalTheory.QCoh.appLinear i W) (fun k => by rw [GlobalTheory.QCoh.appLinear_apply, hs.basis_apply, h₁.basis_apply, app_resM, hi]) t j hj`.
+-/
 theorem repr_i (i : F₁ ⟶ F) (q : F ⟶ F₁) (hs : GlobalTheory.VB.IsFrame s)
     (hi : ∀ k, i.app U (q.app U (s (σ k))) = s (σ k))
     (h₁ : GlobalTheory.VB.IsFrame (fun k => q.app U (s (σ k)))) (h : W ≤ U) (t : Γ(F₁, W)) (j : Fin r)
@@ -60,6 +74,13 @@ theorem repr_i (i : F₁ ⟶ F) (q : F ⟶ F₁) (hs : GlobalTheory.VB.IsFrame s
     (fun k => by
       rw [GlobalTheory.QCoh.appLinear_apply, hs.basis_apply, h₁.basis_apply, app_resM, hi]) t j hj
 
+/- English proof (translation)
+Introduce `X F F₁ i q _ r r' σ hσ U U' s s' hs hs' hi hz hi' hz' h₁ h₁' d l`. Consider the cases of `d`. Use `⟨fun k => ?_, fun j hj => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(h₁.basis inf_le_left).repr (resM F₁ inf_le_right (q.app U' (s' (σ l)))) k = (hs.basis inf_le_left).repr (resM F inf_le_right (s' (σ l))) (σ k)`. Rewrite using `[← app_resM, repr_q q hσ hs hz h₁]`.
+
+Express the relevant statement in the definitionally equal form `(hs.basis inf_le_left).repr (resM F inf_le_right (s' (σ l))) j = 0`. Rewrite using `[← hi' l, ← app_resM]`. Conclude with `repr_i i q hs hi h₁ _ _ j hj`. Use `⟨fun k => ?_, fun j hj => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(h₁'.basis inf_le_right).repr (resM F₁ inf_le_left (q.app U (s (σ k)))) l = (hs'.basis inf_le_right).repr (resM F inf_le_left (s (σ k))) (σ l)`.
+
+Rewrite using `[← app_resM, repr_q q hσ hs' hz' h₁']`. Express the relevant statement in the definitionally equal form `(hs'.basis inf_le_right).repr (resM F inf_le_left (s j)) (σ l) = 0`. Rewrite using `[← repr_q q hσ hs' hz' h₁', app_resM, hz j hj, map_zero, map_zero, Finsupp.zero_apply]`.
+-/
 theorem coef_adapted : ∀ {X : Scheme.{0}} {F F₁ : X.Modules} (i : F₁ ⟶ F) (q : F ⟶ F₁), i ≫ q = 𝟙 F₁ → ∀ {r r' : ℕ} (σ : Fin r' → Fin r), Function.Injective σ → ∀ {U U' : X.Opens} (s : Fin r → Γ(F, U)) (s' : Fin r → Γ(F, U')) (hs : GlobalTheory.VB.IsFrame s) (hs' : GlobalTheory.VB.IsFrame s'), (∀ k, i.app U (q.app U (s (σ k))) = s (σ k)) → (∀ j, j ∉ Set.range σ → q.app U (s j) = 0) → (∀ k, i.app U' (q.app U' (s' (σ k))) = s' (σ k)) → (∀ j, j ∉ Set.range σ → q.app U' (s' j) = 0) → ∀ (h₁ : GlobalTheory.VB.IsFrame (fun k => q.app U (s (σ k)))) (h₁' : GlobalTheory.VB.IsFrame (fun k => q.app U' (s' (σ k)))) (d : Bool) (l : Fin r'), (∀ k, coef d h₁ h₁' k l = coef d hs hs' (σ k) (σ l)) ∧ ∀ j, j ∉ Set.range σ → coef d hs hs' j (σ l) = 0 := by
   intro X F F₁ i q _ r r' σ hσ U U' s s' hs hs' hi hz hi' hz' h₁ h₁' d l
   cases d

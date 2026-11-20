@@ -8,6 +8,23 @@ open NumberField
 
 noncomputable section
 
+/- English proof (translation)
+Take `⟨KA, hKA, hA⟩` from `hA`. Take `⟨KR, hKR, hR⟩` from `hR`. Use `⟨max KA KR, le_max_of_le_left hKA, ?_⟩` and prove the remaining obligations. Introduce `E _ _ _ Wp Wq _ _ _ _ _ _ S T f χ ν' m₀ top A₀ hB v e L hFr _ hGQ hML X hX`. Establish `hAat` using `hA (max KA KR) (le_max_left _ _) E Wp Wq S T f χ ν' m₀ top A₀ hB v e L hFr hML`.
+
+Establish `hRat` using `hR (max KA KR) (le_max_right _ _) E Wp Wq S T f χ ν' m₀ top A₀ hB v e L hFr hGQ hML`. Establish `hAh : ∀ y, HReal (max KA KR) S T v e L (L.Ahat y)` using `fun y => by`. Take `⟨Θ, _, hΘ, _, hJ⟩` from `hAat y`. Conclude with `hReal_op Θ hΘ fun J hJ' => (hJ J hJ').1`. Establish `hAhv : ∀ y, HReal (max KA KR) S T v e L (L.Ahatv y)` using `fun y => by`.
+
+Take `⟨_, Θv, _, hΘv, hJ⟩` from `hAat y`. Conclude with `hReal_op Θv hΘv fun J hJ' => (hJ J hJ').2`. Establish `hRh : ∀ y : ℝ, HReal (max KA KR) S T v e L (RhM (D.parOf S v) L y)` using `fun y => by`. Take `⟨Θ, _, hΘ, _, hJ⟩` from `hRat y`. Conclude with `hReal_op Θ hΘ fun J hJ' => (hJ J hJ').1`.
+
+Establish `hRhv : ∀ y : ℝ, HReal (max KA KR) S T v e L (RhvM (D.parOf S v) L y)` using `fun y => by`. Take `⟨_, Θv, _, hΘv, hJ⟩` from `hRat y`. Conclude with `hReal_op Θv hΘv fun J hJ' => (hJ J hJ').2`. Establish `hx : ∀ y, xInvM (D.parOf S v) y ∈ Submonoid.closure (MA.bddSet (D.parOf S v) L)` using `fun y => jdh_kap_mem _ L _`. Take `⟨ν, hνi, hνr⟩` from `h4 (D.parOf S v)`.
+
+Establish `hR0n : ∀ j, HReal (max KA KR) S T v e L (L.R0 (ν j))` using `fun j => by`. Rewrite using `[h1 _ L hML _ (hνr j)]`. Use `hReal_sub (hReal_mul (hx _) (hRh _)) (hReal_sum _ _ fun l hl => ?_)` and prove the remaining obligations. Conclude with `hReal_mul (Submonoid.mul_mem _ (Submonoid.mul_mem _ (hx _) (jdh_SSn_mem _ L l hl)) (jdh_kap_mem _ L _)) (hAh _)`. Establish `hR0vn : ∀ j, HReal (max KA KR) S T v e L (L.R0v (ν j))` using `fun j => by`.
+
+Rewrite using `[h2 _ L hML _ (hνr j)]`. Use `hReal_sub (hReal_mul (hx _) (hRhv _)) (hReal_sum _ _ fun l hl => ?_)` and prove the remaining obligations. Conclude with `hReal_mul (Submonoid.mul_mem _ (Submonoid.mul_mem _ (hx _) (jdh_kap_mem _ L _)) (jdh_SSns_mem _ L l hl)) (hAhv _)`. Establish `key : HReal (max KA KR) S T v e L X`. Simplify using `only [MA.hatSet, Set.mem_union, Set.mem_range] at hX`.
+
+Break down `hX with ((⟨y, rfl⟩ | ⟨y, rfl⟩) | ⟨y, rfl⟩) | ⟨y, rfl⟩` into its components or cases. Conclude with `hAh y`. Rewrite using `[(h3 _ L ν hνi y).1]`. Conclude with `hReal_sum _ _ fun j _ => hReal_smul _ (hR0n j)`. Conclude with `hAhv y`.
+
+Rewrite using `[(h3 _ L ν hνi y).2]`. Conclude with `hReal_sum _ _ fun j _ => hReal_smul _ (hR0vn j)`. Conclude with `key`.
+-/
 theorem jDHatOpQQ_of_opA_opR_residue_splitting (hA : JDOpA) (hR : JDOpR) (h1 : ResidueSplittingModelAlgebra) (h2 : MirrorResidueSplittingModelAlgebra)
     (h3 : JDHatLagrange) (h4 : JDHatNodes) : JDHatOpQQ := by
   obtain ⟨KA, hKA, hA⟩ := hA

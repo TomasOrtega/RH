@@ -8,6 +8,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `hne : Nonempty (U : X.Opens)`. Take `⟨x, hx⟩` from `(TopologicalSpace.Opens.ne_bot_iff_nonempty _).mp hU0`. Conclude with `⟨⟨x, hx⟩⟩`. Use `haveI : IsDomain Γ(X, U) := IsIntegral.component_integral (U : X.Opens)`. Use `haveI : IsNoetherianRing Γ(X, U) := IsLocallyNoetherian.component_noetherian U`.
+
+Use `⟨inferInstance, inferInstance, ?_⟩` and prove the remaining obligations. Establish `hUa : IsAffineOpen (U : X.Opens)` using `U.2`. Use `IsIntegrallyClosed.of_localization_maximal fun p _ hp => ?_` and prove the remaining obligations. Establish `hy : hUa.fromSpec ⟨p, hp.isPrime⟩ ∈ (U : X.Opens)` using `hUa.range_fromSpec.le ⟨_, rfl⟩`. Use `letI := X.presheaf.algebra_section_stalk ⟨_, hy⟩`.
+
+Establish `hl` using `hUa.isLocalization_stalk' ⟨p, hp.isPrime⟩ hy`. Use `haveI := (hN (hUa.fromSpec ⟨p, hp.isPrime⟩)).2`. Conclude with `IsIntegrallyClosed.of_equiv (@IsLocalization.algEquiv _ _ p.primeCompl _ _ (X.presheaf.algebra_section_stalk ⟨_, hy⟩) hl (Localization.AtPrime p) _ _ _).toRingEquiv`.
+-/
 theorem affineOpen_ring_isDomain_noetherian_integrallyClosed (X : Scheme.{0}) (hX : IsIntegral X)
     (hN : Geo.Tor.IsNormalScheme X) (hL : IsLocallyNoetherian X) (U : X.affineOpens)
     (hU0 : (U : X.Opens) ≠ ⊥) :

@@ -19,6 +19,9 @@ def firstCols (D₁ D₂ : Type) [Fintype D₁] [Fintype D₂] : D₁ ≃ ↥(As
     · rfl
     · simp [Assignment.block] at hx
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h j; exact h _ (by simp [Assignment.block])`. Introduce and unpack `h (j | j) hj`. Conclude with `h j`. Simplify using `[Assignment.block] at hj`.
+-/
 theorem forall_mem_block_one {D₁ D₂ : Type} [Fintype D₁] [Fintype D₂] (p : D₁ ⊕ D₂ → Prop) :
     (∀ j ∈ Assignment.one.block D₁ D₂, p j) ↔ ∀ j : D₁, p (Sum.inl j) := by
   constructor
@@ -27,6 +30,9 @@ theorem forall_mem_block_one {D₁ D₂ : Type} [Fintype D₁] [Fintype D₂] (p
     · exact h j
     · simp [Assignment.block] at hj
 
+/- English proof (translation)
+Simplify using `[trace, Matrix.mul_apply]`.
+-/
 theorem sum_mul_eq_trace {A D : Type} [Fintype A] [Fintype D] {k : Type} [Field k] (X Z : Matrix A D k) :
     ∑ i, ∑ j, X i j * Z i j = trace (X * Zᵀ) := by
   simp [trace, Matrix.mul_apply]
@@ -34,6 +40,49 @@ theorem sum_mul_eq_trace {A D : Type} [Fintype A] [Fintype D] {k : Type} [Field 
 end GlobalTheory.BlockSubst
 
 open GlobalTheory.BlockSubst in
+/- English proof (translation)
+Introduce `k _ _ _ _ A D₁ D₂ _ _ _ _ _ _ ψ ϖ e hϖ hψ Φ hΦ M₁ hM₁ M₂ hM₂ Y`. Establish `triv : ∀ y ∈ 𝒪[k], ψ y = 1` using `fun y hy => (hψ 1).2 le_rfl y (by simpa using (show valuation k y ≤ 1 from hy))`. Use `set P := Assignment.one.block D₁ D₂ with hP`. Use `set E := firstCols D₁ D₂ with hE`. Use `set c : k := ((ϖ ^ e : kˣ) : k) with hc`.
+
+Take `⟨hM1, hM1'⟩` from `(mem_KO_iff M₁).1 hM₁`. Take `⟨hT1, hT1'⟩` from `(mem_KO_iff _).1 (invT_mem_KO hM₁)`. Establish `hsumP : ∀ f : ↥P → k, ∑ j : ↥P, f j = ∑ j : D₁, f (E j)` using `fun f => (Fintype.sum_equiv E _ _ fun _ => rfl).symm`. Establish `hX1 : ∀ (X : Matrix A (D₁ ⊕ D₂) k) (a : Matrix D₁ D₁ k) (b : Matrix D₂ D₂ k) i j, (X * fromBlocks a 0 0 b) i (Sum.inl j) = ∑ l, X i (Sum.inl l) * a l j`. Introduce `X a b i j`.
+
+Simplify using `[Matrix.mul_apply, Fintype.sum_sum_type]`. Establish `hX2 : ∀ (X : Matrix A (D₁ ⊕ D₂) k) (a : Matrix D₁ D₁ k) (b : Matrix D₂ D₂ k) i j, (X * fromBlocks a 0 0 b) i (Sum.inr j) = ∑ l, X i (Sum.inr l) * b l j`. Introduce `X a b i j`. Simplify using `[Matrix.mul_apply, Fintype.sum_sum_type]`. Use `set Y₁ : Matrix A D₁ k := Matrix.of fun i j => Y i (Sum.inl j) with hY₁`.
+
+Establish `hYH : ∀ i j, (Y * fromBlocks (invT M₁).val 0 0 M₂.val) i (Sum.inl j) = (Y₁ * (invT M₁).val) i j`. Introduce `i j`. Rewrite using `[hX1]`. Simplify using `[Y₁, Matrix.mul_apply]`. Establish `hinv : (invT M₁).val * M₁.valᵀ = 1`.
+
+Rewrite using `[invT_val, ← transpose_mul, Units.mul_inv, transpose_one]`. Establish `hinv' : M₁.val * ((invT M₁).val)ᵀ = 1`. Rewrite using `[invT_val, transpose_transpose, Units.mul_inv]`. Establish `hint : ∀ (X : Matrix A D₁ k) (B : Matrix D₁ D₁ k), (∀ i j, B i j ∈ 𝒪[k]) → (∀ i j, c * X i j ∈ 𝒪[k]) → ∀ i j, c * (X * B) i j ∈ 𝒪[k]`. Introduce `X B hB hX i j`.
+
+Rewrite using `[Matrix.mul_apply, Finset.mul_sum]`. Conclude with `Subring.sum_mem _ fun l _ => by rw [← mul_assoc]; exact mul_mem (hX i l) (hB l j)`. Establish `hcond : (∀ i, ∀ j ∈ P, c * Y i j ∈ 𝒪[k]) ↔ (∀ i, ∀ j ∈ P, c * (Y * fromBlocks (invT M₁).val 0 0 M₂.val) i j ∈ 𝒪[k])`. Simplify using `only [hP, forall_mem_block_one, hYH]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h`. Conclude with `hint Y₁ _ hT1 h`. Introduce `h i j`. Use `hint _ M₁.valᵀ (fun i j => by simpa using hM1 j i) h i j` as an intermediate fact. Rewrite `this` using `[Matrix.mul_assoc, hinv, Matrix.mul_one]`. Then use the resulting hypothesis.
+
+Use `set YH := Y * fromBlocks (invT M₁).val 0 0 M₂.val with hYHdef`. Establish `hset : ∀ T' : Matrix A ↥P k, setCols P YH (T' * M₁.val.submatrix E.symm E.symm) = setCols P Y T' * fromBlocks M₁.val 0 0 M₂.val`. Introduce `T'`. Use extensionality with `i (j | j)`. Rewrite using `[hX1]`.
+
+Simplify using `only [setCols, Matrix.of_apply]`. Rewrite using `[dif_pos (by simp [hP, Assignment.block]), Matrix.mul_apply, hsumP]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[dif_pos (by simp [hP, Assignment.block])]`. Simplify using `only [Matrix.submatrix_apply, Equiv.symm_apply_apply]`.
+
+Both sides reduce to the same expression. Rewrite using `[hX2]`. Simplify using `only [setCols, Matrix.of_apply]`. Rewrite using `[dif_neg (by simp [hP, Assignment.block]), hYHdef, hX2]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[dif_neg (by simp [hP, Assignment.block])]`. Establish `hpc : ∀ (Z : Matrix A (D₁ ⊕ D₂) k) (S : Matrix A ↥P k), pairCols P Z S = ∑ i, ∑ j : D₁, S i (E j) * Z i (Sum.inl j)`. Introduce `Z S`. Simplify using `only [pairCols]`. Conclude with `Finset.sum_congr rfl fun i _ => hsumP _`.
+
+Establish `hpair : ∀ T' : Matrix A ↥P k, pairCols P YH (T' * M₁.val.submatrix E.symm E.symm) = pairCols P Y T'`. Introduce `T'`. Use `set T₁ : Matrix A D₁ k := Matrix.of fun i j => T' i (E j) with hT₁`. Establish `hTN : ∀ i j, (T' * M₁.val.submatrix E.symm E.symm) i (E j) = (T₁ * M₁.val) i j`. Introduce `i j`.
+
+Rewrite using `[Matrix.mul_apply, hsumP]`. Simplify using `[T₁, Matrix.mul_apply]`. Rewrite using `[hpc, hpc]`. Simplify using `only [hTN, hYH]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[transpose_mul, Matrix.mul_assoc, ← Matrix.mul_assoc M₁.val, hinv', Matrix.one_mul]`. Use `_ = ∑ i, ∑ j, T' i (E j) * Y i (Sum.inl j) := (sum_mul_eq_trace T₁ Y₁).symm`. Rewrite using `[fourierSum_apply, fourierSum_apply]`. Use `beta_reduce`. Use `split_ifs with h1 h2 h2`.
+
+Use `congr 1`. Take `⟨u, hu⟩` from `hM₁`. Set `N : Matrix ↥P ↥P 𝒪[k]` to `u.val.submatrix E.symm E.symm`. Set `N' : Matrix ↥P ↥P 𝒪[k]` to `(u⁻¹).val.submatrix E.symm E.symm`. Establish `hN : N * N' = 1`.
+
+Simplify using `only [N, N', submatrix_mul_equiv, Units.mul_inv, submatrix_one_equiv]`. Establish `hNk : N.map (fun x => (x : k)) = M₁.val.submatrix E.symm E.symm`. Rewrite using `[← hu]`. Both sides reduce to the same expression. Establish `hF : ∀ T Z : Matrix A ↥P k, (∀ i j, valuation k (Z i j) ≤ valuation k ((ϖ ^ e : kˣ) : k)) → Φ (setCols P YH (T + Z)) * (ψ (pairCols P YH (T + Z)) : ℂ) = Φ (setCols P YH T) * (ψ (pairCols P YH T) : ℂ)`.
+
+Introduce `T Z hZ`. Establish `e1 : setCols P YH (T + Z) = setCols P YH T + setCols P 0 Z`. Apply the tactic sequence `ext i j; by_cases hj : j ∈ P <;> simp [setCols, hj]`. Establish `e2 : pairCols P YH (T + Z) = pairCols P YH T + pairCols P YH Z`. Simplify using `[pairCols, add_mul, Finset.sum_add_distrib]`.
+
+Rewrite using `[e1, e2, hΦ.2, AddChar.map_add_eq_mul, triv (pairCols P YH Z), mul_one]`. Use `Subring.sum_mem _ fun i _ => Subring.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Establish `h3` using `(Valuation.mem_integer_iff _ _).1 (h2 i j j.2)`. Rewrite `h3` using `[map_mul]`. Rewrite using `[Valuation.mem_integer_iff, map_mul]`.
+
+Conclude with `(show valuation k (Z i j) * valuation k (YH i j) ≤ valuation k ((ϖ ^ e : kˣ) : k) * valuation k (YH i j) by gcongr; exact hZ i j).trans h3`. Use `FourierDepth.mem_matLat_smul_stdLat.2 fun i j => ?_` and prove the remaining obligations. Distinguish the cases in `hj : j ∈ P`. Simplify `hZ i ⟨j, hj⟩` using `[setCols, hj]`. Simplify using `[setCols, hj]`.
+
+Establish `key : ∑ T : A → ↥P → Res k e, Φ (setCols P YH (liftRes T * N.map (fun x => (x : k)))) * (ψ (pairCols P YH (liftRes T * N.map (fun x => (x : k)))) : ℂ) = ∑ T : A → ↥P → Res k e, Φ (setCols P YH (liftRes T)) * (ψ (pairCols P YH (liftRes T)) : ℂ)` using `GlobalTheory.ColSubst.sum_liftRes_mul hϖ e N N' hN (fun T' => Φ (setCols P YH T') * (ψ (pairCols P YH T') : ℂ)) hF`. Rewrite using `[← key, hNk]`. Use `Finset.sum_congr rfl fun T _ => ?_` and prove the remaining obligations. Rewrite using `[hset, hpair]`. Conclude with `absurd (hcond.1 h1) h2`.
+
+Conclude with `absurd (hcond.2 h2) h1`. Both sides reduce to the same expression.
+-/
 theorem GlobalTheory.BlockSubst.fourierSum_blockDiag_one : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {A D₁ D₂ : Type} [Fintype A] [DecidableEq A] [Fintype D₁] [DecidableEq D₁] [Fintype D₂] [DecidableEq D₂]
     (ψ : AddChar k Circle) (ϖ : kˣ) (e : ℕ), IsUnif ϖ → HasConductor ψ 1 →

@@ -12,6 +12,9 @@ open GlobalTheory.LevDesc (TypeFrame grpHR grpGHR levDet secRing move)
 open GlobalTheory.IndefiniteRowSideFullHecke.LevelStructureAutomorphisms (LevelAut)
 open GlobalTheory.OrbitSep
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.exists_unit_of_cocycle_rightAction_charZero | exact GlobalTheory.exists_unit_of_cocycle_rightAction_charZero | (intros; apply GlobalTheory.exists_unit_of_cocycle_rightAction_charZero <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.hilbert90_finite_rightAction_charZero_field : ∀ (K : Type) [Field K] [CharZero K] (Γ : Type) [Group Γ] [Finite Γ] (σ : Γ → K →+* K),
     (∀ γ δ a, σ (γ * δ) a = σ δ (σ γ a)) → ∀ (c : Γ → Kˣ),
     (∀ γ δ, (c (γ * δ) : K) = σ δ (c γ) * c δ) → (∀ γ, (∀ a, σ γ a = a) → c γ = 1) →

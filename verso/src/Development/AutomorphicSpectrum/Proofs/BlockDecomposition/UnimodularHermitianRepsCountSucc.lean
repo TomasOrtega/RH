@@ -10,6 +10,9 @@ namespace GlobalTheory.CompanionTheory.UnrDens.HenselStep
 
 section Generic
 
+/- English proof (translation)
+Use `haveI := Fintype.ofFinite β`. Rewrite using `[Nat.card_congr (Equiv.sigmaFiberEquiv f).symm, Nat.card_sigma]`. Simplify using `[h, Nat.card_eq_fintype_card, mul_comm]`.
+-/
 theorem card_of_fibres {α β : Type*} [Finite α] [Finite β] (f : α → β) (c : ℕ)
     (h : ∀ b, Nat.card {a // f a = b} = c) : Nat.card α = Nat.card β * c := by
   classical
@@ -17,6 +20,11 @@ theorem card_of_fibres {α β : Type*} [Finite α] [Finite β] (f : α → β) (
   rw [Nat.card_congr (Equiv.sigmaFiberEquiv f).symm, Nat.card_sigma]
   simp [h, Nat.card_eq_fintype_card, mul_comm]
 
+/- English proof (translation)
+Use `Nat.card_congr (Equiv.ofBijective (fun y => b (Function.surjInv ha y)) ⟨?_, ?_⟩)` and prove the remaining obligations. Introduce `y y' h`. Use `(hab _ _).2 h` as an intermediate fact. Simplify `this` using `[Function.surjInv_eq]`. Introduce `z`.
+
+Take `⟨w, rfl⟩` from `hb z`. Conclude with `⟨a w, (hab _ _).1 (Function.surjInv_eq ha _)⟩`.
+-/
 theorem card_eq_of_surj {W A B : Type*} (a : W → A) (b : W → B) (ha : Function.Surjective a)
     (hb : Function.Surjective b) (hab : ∀ w w', a w = a w' ↔ b w = b w') :
     Nat.card A = Nat.card B := by
@@ -32,39 +40,70 @@ end Generic
 
 variable {R : Type} [CommRing R] {a b c : ℕ}
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[cT]`.
+-/
 theorem cT_add (σ : R →+* R) (x y : Matrix (Fin a) (Fin b) R) :
     cT σ (x + y) = cT σ x + cT σ y := by
   ext i j; simp [cT]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[cT]`.
+-/
 theorem cT_smul (σ : R →+* R) (r : R) (x : Matrix (Fin a) (Fin b) R) :
     cT σ (r • x) = σ r • cT σ x := by
   ext i j; simp [cT]
 
+/- English proof (translation)
+Simplify using `[cT, Matrix.map_mul, Matrix.transpose_mul]`.
+-/
 theorem cT_mul (σ : R →+* R) (x : Matrix (Fin a) (Fin b) R) (y : Matrix (Fin b) (Fin c) R) :
     cT σ (x * y) = cT σ y * cT σ x := by
   simp [cT, Matrix.map_mul, Matrix.transpose_mul]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[cT, h]`.
+-/
 theorem cT_cT (σ : R →+* R) (h : ∀ r, σ (σ r) = r) (x : Matrix (Fin a) (Fin b) R) :
     cT σ (cT σ x) = x := by
   ext i j; simp [cT, h]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[red]`.
+-/
 theorem red_add (ϖ : R) (k : ℕ) (x y : Matrix (Fin a) (Fin b) R) :
     red ϖ k (x + y) = red ϖ k x + red ϖ k y := by
   ext i j; simp [red]
 
+/- English proof (translation)
+Simplify using `[red, Matrix.map_mul]`.
+-/
 theorem red_mul (ϖ : R) (k : ℕ) (x : Matrix (Fin a) (Fin b) R) (y : Matrix (Fin b) (Fin c) R) :
     red ϖ k (x * y) = red ϖ k x * red ϖ k y := by
   simp [red, Matrix.map_mul]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[red, cT]`.
+-/
 theorem red_cT (σ : R →+* R) (ϖ : R) (h : σ ϖ = ϖ) (k : ℕ) (x : Matrix (Fin a) (Fin b) R) :
     red ϖ k (cT σ x) = cT (barσ σ ϖ h k) (red ϖ k x) := by
   ext i j; simp [red, cT]
 
+/- English proof (translation)
+Introduce `t` and use `⟨fun i j => Function.surjInv Ideal.Quotient.mk_surjective (t i j), by ext i j; exact Function.surjInv_eq _ _⟩`.
+-/
 theorem red_surjective (ϖ : R) (k : ℕ) :
     Function.Surjective (red ϖ k : Matrix (Fin a) (Fin b) R → _) := fun t =>
   ⟨fun i j => Function.surjInv Ideal.Quotient.mk_surjective (t i j), by
     ext i j; exact Function.surjInv_eq _ _⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h1 : ∀ i j, ∃ d, M i j = N i j + ϖ ^ k * d`. Introduce `i j`. Establish `h2 : Ideal.Quotient.mk (lev ϖ k) (M i j) = Ideal.Quotient.mk (lev ϖ k) (N i j)` using `congrFun (congrFun h i) j`.
+
+Take `⟨d, hd⟩` from `Ideal.mem_span_singleton'.1 (Ideal.Quotient.eq.1 h2)`. Conclude with `⟨d, by linear_combination -hd⟩`. Use `choose D hD using h1`. Conclude with `⟨Matrix.of D, by ext i j; simp [hD i j]⟩`. Introduce and unpack `⟨D, rfl⟩`.
+
+Use extensionality with `i j`. Use `Ideal.Quotient.eq.2 (Ideal.mem_span_singleton'.2 ⟨D i j, ?_⟩)` and prove the remaining obligations. Simplify using `[mul_comm]`.
+-/
 theorem red_eq_iff (ϖ : R) (k : ℕ) (M N : Matrix (Fin a) (Fin b) R) :
     red ϖ k M = red ϖ k N ↔ ∃ D : Matrix (Fin a) (Fin b) R, M = N + ϖ ^ k • D := by
   constructor
@@ -82,6 +121,9 @@ theorem red_eq_iff (ϖ : R) (k : ℕ) (M N : Matrix (Fin a) (Fin b) R) :
     refine Ideal.Quotient.eq.2 (Ideal.mem_span_singleton'.2 ⟨D i j, ?_⟩)
     simp [mul_comm]
 
+/- English proof (translation)
+Use extensionality with `i j`. Establish `h1 : ϖ ^ k • A i j = ϖ ^ k • B i j`. Simplify using `using congrFun (congrFun h i) j`. Conclude with `(hr.pow k) h1`.
+-/
 theorem smul_cancel {ϖ : R} (hr : IsSMulRegular R ϖ) (k : ℕ) {A B : Matrix (Fin a) (Fin b) R}
     (h : ϖ ^ k • A = ϖ ^ k • B) : A = B := by
   ext i j
@@ -89,6 +131,11 @@ theorem smul_cancel {ϖ : R} (hr : IsSMulRegular R ϖ) (k : ℕ) {A B : Matrix (
     simpa using congrFun (congrFun h i) j
   exact (hr.pow k) h1
 
+/- English proof (translation)
+Rewrite using `[red_eq_iff, red_eq_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨D, hD⟩`. Use `⟨D, smul_cancel hr k ?_⟩` and prove the remaining obligations. Rewrite using `[hD, smul_add, smul_smul, pow_one, pow_succ]`.
+
+Introduce and unpack `⟨D, rfl⟩`. Use `⟨D, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add, smul_smul, pow_one, pow_succ]`.
+-/
 theorem red_smul_iff {ϖ : R} (hr : IsSMulRegular R ϖ) (k : ℕ) (A B : Matrix (Fin a) (Fin b) R) :
     red ϖ (k + 1) (ϖ ^ k • A) = red ϖ (k + 1) (ϖ ^ k • B) ↔ red ϖ 1 A = red ϖ 1 B := by
   rw [red_eq_iff, red_eq_iff]
@@ -100,6 +147,9 @@ theorem red_smul_iff {ϖ : R} (hr : IsSMulRegular R ϖ) (k : ℕ) (A B : Matrix 
     refine ⟨D, ?_⟩
     rw [smul_add, smul_smul, pow_one, pow_succ]
 
+/- English proof (translation)
+Rewrite using `[cT_add, cT_smul, hc]`. Simplify using `only [Matrix.add_mul, Matrix.mul_add, Matrix.smul_mul, Matrix.mul_smul, smul_add, smul_smul]`. Normalize the expressions using the abelian group laws.
+-/
 theorem gram_expand (σ : R →+* R) {r : R} (hc : σ r = r) (S : Matrix (Fin a) (Fin a) R)
     (x y : Matrix (Fin a) (Fin b) R) :
     cT σ (x + r • y) * S * (x + r • y) =
@@ -108,6 +158,13 @@ theorem gram_expand (σ : R →+* R) {r : R} (hc : σ r = r) (S : Matrix (Fin a)
   simp only [Matrix.add_mul, Matrix.mul_add, Matrix.smul_mul, Matrix.mul_smul, smul_add, smul_smul]
   abel
 
+/- English proof (translation)
+Establish `hc : σ (ϖ ^ k) = ϖ ^ k` using `by rw [map_pow, hf]`. Establish `hq : red ϖ (k + 1) ((ϖ ^ k * ϖ ^ k) • (cT σ y * S * y)) = 0`. Establish `: red ϖ (k + 1) ((ϖ ^ k * ϖ ^ k) • (cT σ y * S * y)) = red ϖ (k + 1) 0`. Use `(red_eq_iff _ _ _ _).2 ⟨ϖ ^ (k - 1) • (cT σ y * S * y), ?_⟩` and prove the remaining obligations. Rewrite using `[smul_smul, zero_add, ← pow_add, ← pow_add]`.
+
+Use `congr 2`. Use linear arithmetic over natural numbers and integers. Rewrite using `[this]`. Use extensionality with `i j`. Simplify using `[red]`.
+
+Rewrite using `[gram_expand σ hc, red_add, hq, add_zero, ← hH, red_add, red_add]`. Rewrite using `[add_right_inj, red_smul_iff hr]`.
+-/
 theorem lift_iff {σ : R →+* R} {ϖ : R} (hf : σ ϖ = ϖ) (hr : IsSMulRegular R ϖ) {k : ℕ} (hk : 1 ≤ k)
     (S : Matrix (Fin a) (Fin a) R) (T H : Matrix (Fin b) (Fin b) R)
     (x y : Matrix (Fin a) (Fin b) R) (hH : cT σ x * S * x + ϖ ^ k • H = T) :
@@ -133,6 +190,9 @@ abbrev solSet (σ : R →+* R) (ϖ : R) (S : Matrix (Fin a) (Fin a) R) (T : Matr
     (k : ℕ) : Set (Matrix (Fin a) (Fin b) R) :=
   {x | red ϖ k (cT σ x * S * x) = red ϖ k T}
 
+/- English proof (translation)
+The claim follows from `Ideal.span_singleton_le_span_singleton.2 (pow_dvd_pow ϖ (Nat.le_succ k))`.
+-/
 theorem lev_succ_le_lev (ϖ : R) (k : ℕ) : lev ϖ (k + 1) ≤ lev ϖ k :=
   Ideal.span_singleton_le_span_singleton.2 (pow_dvd_pow ϖ (Nat.le_succ k))
 
@@ -140,10 +200,16 @@ def proj (ϖ : R) (k : ℕ) (t : Matrix (Fin a) (Fin b) (R ⧸ lev ϖ (k + 1))) 
     Matrix (Fin a) (Fin b) (R ⧸ lev ϖ k) :=
   t.map (Ideal.Quotient.factor (lev_succ_le_lev ϖ k))
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[proj, red]`.
+-/
 theorem proj_red (ϖ : R) (k : ℕ) (x : Matrix (Fin a) (Fin b) R) :
     proj ϖ k (red ϖ (k + 1) x) = red ϖ k x := by
   ext i j; simp [proj, red]
 
+/- English proof (translation)
+Establish `h1` using `congrArg (proj ϖ k) hx`. Simplify using `only [proj_red] at h1`. Conclude with `h1`.
+-/
 theorem solSet_succ {S : Matrix (Fin a) (Fin a) R} {T : Matrix (Fin b) (Fin b) R} {k : ℕ}
     {x : Matrix (Fin a) (Fin b) R} (hx : x ∈ solSet σ ϖ S T (k + 1)) : x ∈ solSet σ ϖ S T k := by
   have h1 := congrArg (proj ϖ k) hx
@@ -156,12 +222,34 @@ def down (σ : R →+* R) (ϖ : R) (S : Matrix (Fin a) (Fin a) R) (T : Matrix (F
     obtain ⟨x, hx, e⟩ := t.2
     exact ⟨x, solSet_succ hx, by rw [← e, proj_red]⟩⟩
 
+/- English proof (translation)
+Simplify using `only [red_add, red_mul, red_cT σ ϖ hf]`.
+-/
 theorem red_diff (hf : σ ϖ = ϖ) (S : Matrix (Fin a) (Fin a) R) (x y : Matrix (Fin a) (Fin b) R) :
     red ϖ 1 (cT σ y * S * x + cT σ x * S * y) =
       cT (barσ σ ϖ hf 1) (red ϖ 1 y) * red ϖ 1 S * red ϖ 1 x +
         cT (barσ σ ϖ hf 1) (red ϖ 1 x) * red ϖ 1 S * red ϖ 1 y := by
   simp only [red_add, red_mul, red_cT σ ϖ hf]
 
+/- English proof (translation)
+Take `⟨D, hD⟩` from `(red_eq_iff _ _ _ _).1 hx`. Establish `hH : cT σ x * S * x + ϖ ^ k • (-D) = T`. Rewrite using `[hD, smul_neg]`. Normalize the expressions using the abelian group laws. Establish `hG : cT σ (cT σ x * S * x) = cT σ x * S * x`.
+
+Rewrite using `[cT_mul, cT_mul, cT_cT σ h.inv, hS.1, Matrix.mul_assoc]`. Establish `hherm : cT σ (-D) = -D`. Apply `smul_cancel h.reg k` to reduce the goal to its premises. Establish `h1` using `congrArg (cT σ) hH`. Rewrite `h1` using `[cT_add, cT_smul, map_pow, h.fix_ϖ, hG, hT.1]`.
+
+Conclude with `add_left_cancel (h1.trans hH.symm)`. Establish `hf` using `h.fix_ϖ`. Establish `hgram : cT (barσ σ ϖ hf 1) (red ϖ 1 x) * red ϖ 1 S * red ϖ 1 x = red ϖ 1 T`. Rewrite using `[← red_cT σ ϖ hf, ← red_mul, ← red_mul]`. Use `(red_eq_iff _ _ _ _).2 ⟨ϖ ^ (k - 1) • D, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hD, smul_smul, ← pow_add]`. Use `congr 3`. Use linear arithmetic over natural numbers and integers. Establish `hdet : IsUnit (red ϖ 1 T).det`. Establish `h1` using `hT.2.map (Ideal.Quotient.mk (lev ϖ 1))`.
+
+Rewrite `h1` using `[RingHom.map_det]`. Conclude with `h1`. Establish `hcard` using `GlobalTheory.CompanionTheory.UnrDens.GramDiff.card_fibre_gram_differential _ (barσ σ ϖ hf 1) q ε (GlobalTheory.CompanionTheory.UnrDens.resAlg_of_isUnrQuad R σ ϖ q ε h) m n hnm (red ϖ 1 S) (red ϖ 1 T) (red ϖ 1 x) (red ϖ 1 (-D)) (by rw [← red_cT σ ϖ hf, hS.1]) (by rw [← red_cT σ ϖ …`. Rewrite using `[← hcard]`. Use `symm`.
+
+Set `W` to `{y : Matrix (Fin m) (Fin n) R // red ϖ 1 (cT σ y * S * x + cT σ x * S * y) = red ϖ 1 (-D)}`. Use `card_eq_of_surj (W := W) (fun w => ⟨red ϖ 1 w.1, by rw [← red_diff hf]; exact w.2⟩) (fun w => ⟨⟨red ϖ (k + 1) (x + ϖ ^ k • w.1), x + ϖ ^ k • w.1, (lift_iff hf h.reg hk S T (-D) x w.1 hH).2 w.2, rfl⟩, Subtype.ext (by show proj ϖ k (red ϖ (k + 1) (x + ϖ ^ k • w.1)) = s.1` and prove the remaining obligations. Rewrite using `[proj_red, hs]`. Conclude with `(red_eq_iff _ _ _ _).2 ⟨w.1, rfl⟩)⟩) ?_ ?_ ?_`. Introduce and unpack `⟨ybar, hy⟩`.
+
+Take `⟨y, rfl⟩` from `red_surjective ϖ 1 ybar`. Conclude with `⟨⟨y, by rw [red_diff hf]; exact hy⟩, rfl⟩`. Introduce and unpack `⟨⟨t, x', hx', rfl⟩, ht⟩`. Establish `h1 : red ϖ k x' = red ϖ k x`. Establish `h2 : proj ϖ k (red ϖ (k + 1) x') = s.1` using `congrArg Subtype.val ht`.
+
+Rewrite `h2` using `[proj_red, hs]`. Then use the resulting hypothesis. Take `⟨y, rfl⟩` from `(red_eq_iff _ _ _ _).1 h1`. Conclude with `⟨⟨y, (lift_iff hf h.reg hk S T (-D) x y hH).1 hx'⟩, rfl⟩`. Introduce `w w'`. Rewrite using `[Subtype.ext_iff, Subtype.ext_iff, Subtype.ext_iff]`.
+
+Use `show red ϖ 1 w.1 = red ϖ 1 w'.1 ↔ red ϖ (k + 1) (x + ϖ ^ k • w.1) = red ϖ (k + 1) (x + ϖ ^ k • w'.1)`. Rewrite using `[red_add, red_add, add_right_inj, red_smul_iff h.reg]`.
+-/
 theorem fibre_card {q : ℕ} {ε : ℤ} (h : IsUnrQuad R σ ϖ q ε) {m n : ℕ} (hnm : n ≤ m)
     {S : Matrix (Fin m) (Fin m) R} {T : Matrix (Fin n) (Fin n) R} (hS : IsUnimod σ S)
     (hT : IsUnimod σ T) {k : ℕ} (hk : 1 ≤ k) {x : Matrix (Fin m) (Fin n) R}
@@ -224,6 +312,13 @@ end GlobalTheory.CompanionTheory.UnrDens.HenselStep
 
 open GlobalTheory.CompanionTheory.UnrDens GlobalTheory.CompanionTheory.UnrDens.HenselStep in
 
+/- English proof (translation)
+Introduce `R _ σ ϖ q ε h m n hnm S T hS hT k hk`. Establish `hfin : ∀ j, Finite (R ⧸ lev ϖ j)` using `fun j => Nat.finite_of_card_ne_zero (by`. Rewrite using `[GlobalTheory.CompanionTheory.UnrDens.card_quot_lev R σ ϖ q ε h j]`. Conclude with `pow_ne_zero _ (by have := h.one_lt; omega))`. Use `haveI := hfin k`.
+
+Use `haveI := hfin (k + 1)`. Use `haveI : Finite (Matrix (Fin m) (Fin n) (R ⧸ lev ϖ k)) := by unfold Matrix; infer_instance`. Use `haveI : Finite (Matrix (Fin m) (Fin n) (R ⧸ lev ϖ (k + 1))) := by unfold Matrix; infer_instance`. Unfold `solCount`. Use `card_of_fibres (down σ ϖ S T k) _ ?_` and prove the remaining obligations.
+
+Introduce and unpack `⟨s, x, hx, rfl⟩`. Conclude with `fibre_card h hnm hS hT hk hx _ rfl`.
+-/
 theorem GlobalTheory.CompanionTheory.UnrDens.solCount_succ : ∀ (R : Type) [CommRing R] (σ : R →+* R) (ϖ : R) (q : ℕ) (ε : ℤ),
     IsUnrQuad R σ ϖ q ε → ∀ (m n : ℕ), n ≤ m → ∀ (S : Matrix (Fin m) (Fin m) R)
     (T : Matrix (Fin n) (Fin n) R), IsUnimod σ S → IsUnimod σ T → ∀ k : ℕ, 1 ≤ k →

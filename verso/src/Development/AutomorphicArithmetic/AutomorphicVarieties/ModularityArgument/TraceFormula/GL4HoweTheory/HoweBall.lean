@@ -2,6 +2,15 @@ import Development.AutomorphicArithmetic.Foundations.Convolution.TwistedLocalOrb
 
 open MeasureTheory ValuativeRel GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil GlobalTheory.IndefiniteRowSideFullHecke.IwahoriDoubleCosets UpperTheory.ConvolutionTheory.Loc
 
+/- English proof (translation)
+Introduce `E _ _ _ _ n ϖ hϖ c ρ hρ`. Establish `h1 : valuation E (ϖ : E) < 1` using `by rw [hϖ]; exact uniformizer_lt_one`. Establish `h0 : 0 < valuation E (ϖ : E)` using `by rw [hϖ]; exact uniformizer_pos`. Use `haveI : MulArchimedean (ValueGroupWithZero E) := isRankLeOne_iff_mulArchimedean.1 inferInstance`. Take `⟨N, hN⟩` from `exists_pow_lt₀ h1 (Units.mk0 ρ hρ.ne')`.
+
+Use `⟨N + |c| * n, fun a ha g hg i j => (hg i j).trans ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_zpow_eq_zpow_val, map_zpow₀]`. Use `le_trans ?_ hN.le` and prove the remaining obligations. Rewrite using `[← zpow_natCast]`. Use `zpow_le_zpow_right_of_le_one₀ h0 h1.le ?_` and prove the remaining obligations.
+
+Establish `hi` using `i.2`. Establish `hj` using `j.2`. Establish `h2 : |((i : ℕ) : ℤ) - ((j : ℕ) : ℤ)| ≤ n`. Apply the tactic sequence `rw [abs_le]; constructor <;> omega`. Establish `h3 : |c * (((i : ℕ) : ℤ) - ((j : ℕ) : ℤ))| ≤ |c| * n`.
+
+Rewrite using `[abs_mul]`. Conclude with `mul_le_mul_of_nonneg_left h2 (abs_nonneg _)`. Establish `h4` using `(abs_le.1 h3).1`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem UpperTheory.V.Z.Tf.L4.howeBall :
     ∀ (E : Type) [Field E] [ValuativeRel E] [TopologicalSpace E] [IsNonarchimedeanLocalField E] (n : ℕ) (ϖ : Eˣ), valuation E (ϖ : E) = uniformizer E → ∀ (c : ℤ) (ρ : ValueGroupWithZero E), 0 < ρ →
       ∃ a₀ : ℤ, ∀ a ≥ a₀, howeSet n ϖ a c ⊆ ball n ρ := by

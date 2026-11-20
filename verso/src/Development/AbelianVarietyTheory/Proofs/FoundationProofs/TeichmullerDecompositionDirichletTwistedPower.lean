@@ -11,25 +11,52 @@ variable {l : ℕ} [Fact l.Prime]
 
 noncomputable def emb (l : ℕ) [Fact l.Prime] : ℤ_[l] →+* Qbar l := (algebraMap ℚ_[l] (Qbar l)).comp PadicInt.Coe.ringHom
 
+/- English proof (translation)
+The claim follows from `PadicAlgCl.norm_extends l (x : ℚ_[l])`.
+-/
 theorem norm_emb (x : ℤ_[l]) : ‖emb l x‖ = ‖x‖ := PadicAlgCl.norm_extends l (x : ℚ_[l])
 
+/- English proof (translation)
+Take `⟨y, rfl⟩` from `h`. Rewrite using `[map_mul, norm_mul]`. Conclude with `mul_le_of_le_one_right (norm_nonneg _) (by rw [norm_emb]; exact PadicInt.norm_le_one y)`.
+-/
 theorem norm_emb_le_of_dvd {d x : ℤ_[l]} (h : d ∣ x) : ‖emb l x‖ ≤ ‖emb l d‖ := by
   obtain ⟨y, rfl⟩ := h
   rw [map_mul, norm_mul]
   exact mul_le_of_le_one_right (norm_nonneg _) (by rw [norm_emb]; exact PadicInt.norm_le_one y)
 
+/- English proof (translation)
+Establish `h` using `PadicAlgCl.norm_extends l (l : ℚ_[l])`. Rewrite `h` using `[map_natCast]`. Rewrite using `[h]`. Conclude with `Padic.norm_p_lt_one`.
+-/
 theorem norm_l_lt_one : ‖((l : ℕ) : Qbar l)‖ < 1 := by
   have h := PadicAlgCl.norm_extends l (l : ℚ_[l])
   rw [map_natCast] at h
   rw [h]
   exact Padic.norm_p_lt_one
 
+/- English proof (translation)
+Establish `h2` using `(Fact.out : l.Prime).two_le`. Establish `h1` using `congrArg norm hx`. Rewrite `h1` using `[norm_pow, norm_one]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) (by omega)).1 h1`.
+-/
 theorem norm_eq_one_of_pow {x : Qbar l} (hx : x ^ (l - 1) = 1) : ‖x‖ = 1 := by
   have h2 := (Fact.out : l.Prime).two_le
   have h1 := congrArg norm hx
   rw [norm_pow, norm_one] at h1
   exact (pow_eq_one_iff_of_nonneg (norm_nonneg _) (by omega)).1 h1
 
+/- English proof (translation)
+Establish `h2` using `(Fact.out : l.Prime).two_le`. Assume the negation of the conclusion as `hne`. Establish `hx1` using `norm_eq_one_of_pow hx`. Establish `hy1` using `norm_eq_one_of_pow hy`. Establish `hy0 : y ≠ 0` using `by rintro rfl; simp at hy1`.
+
+Use `set z := x / y with hz`. Establish `hz1 : z ^ (l - 1) = 1` using `by rw [hz, div_pow, hx, hy, div_one]`. Establish `hzn : ‖z‖ = 1` using `norm_eq_one_of_pow hz1`. Establish `hzne : z - 1 ≠ 0`. Introduce `h0`.
+
+Conclude with `hne ((div_eq_one_iff_eq hy0).1 (sub_eq_zero.1 h0))`. Establish `hzd : ‖z - 1‖ = ‖x - y‖`. Establish `: z - 1 = (x - y) / y` using `by rw [hz]; field_simp`. Rewrite using `[this, norm_div, hy1, div_one]`. Establish `hs : ∑ i ∈ Finset.range (l - 1), z ^ i = 0`.
+
+Use `geom_sum_mul z (l - 1)` as an intermediate fact. Rewrite `this` using `[hz1, sub_self]`. Conclude with `(mul_eq_zero.1 this).resolve_right hzne`. Establish `hb : ‖∑ i ∈ Finset.range (l - 1), (z ^ i - 1)‖ ≤ ‖z - 1‖`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (norm_nonneg _) fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[← geom_sum_mul, norm_mul]`. Use `mul_le_of_le_one_left (norm_nonneg _) ?_` and prove the remaining obligations. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one fun k _ => ?_` and prove the remaining obligations. Rewrite using `[norm_pow, hzn, one_pow]`. Establish `hsum : (1 : Qbar l) = (l : Qbar l) + ∑ i ∈ Finset.range (l - 1), (z ^ i - 1)`.
+
+Rewrite using `[Finset.sum_sub_distrib, hs, Finset.sum_const, Finset.card_range, nsmul_eq_mul, Nat.cast_sub (by omega)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `h3` using `IsUltrametricDist.norm_add_le_max (l : Qbar l) (∑ i ∈ Finset.range (l - 1), (z ^ i - 1))`. Rewrite `h3` using `[← hsum, norm_one]`.
+
+Conclude with `absurd h3 (not_le.2 (max_lt norm_l_lt_one (hb.trans_lt (hzd ▸ h))))`.
+-/
 theorem eq_of_pow_eq_one {x y : Qbar l} (hx : x ^ (l - 1) = 1) (hy : y ^ (l - 1) = 1) (h : ‖x - y‖ < 1) : x = y := by
   have h2 := (Fact.out : l.Prime).two_le
   by_contra hne
@@ -63,11 +90,23 @@ theorem eq_of_pow_eq_one {x y : Qbar l} (hx : x ^ (l - 1) = 1) (hy : y ^ (l - 1)
   rw [← hsum, norm_one] at h3
   exact absurd h3 (not_le.2 (max_lt norm_l_lt_one (hb.trans_lt (hzd ▸ h))))
 
+/- English proof (translation)
+Use `le_antisymm (PadicInt.norm_le_one _) (not_lt.1 fun h => hn ?_)` and prove the remaining obligations. Establish `h1 : ‖((n : ℤ) : ℤ_[l])‖ < 1` using `by simpa using h`. Conclude with `Int.natCast_dvd_natCast.1 ((PadicInt.norm_int_lt_one_iff_dvd _).1 h1)`.
+-/
 theorem norm_natCast_eq_one {n : ℕ} (hn : ¬ l ∣ n) : ‖(n : ℤ_[l])‖ = 1 := by
   refine le_antisymm (PadicInt.norm_le_one _) (not_lt.1 fun h => hn ?_)
   have h1 : ‖((n : ℤ) : ℤ_[l])‖ < 1 := by simpa using h
   exact Int.natCast_dvd_natCast.1 ((PadicInt.norm_int_lt_one_iff_dvd _).1 h1)
 
+/- English proof (translation)
+Establish `hp : l.Prime` using `Fact.out`. Establish `h2` using `hp.two_le`. Establish `hd : ‖Polynomial.aeval (c : ℤ_[l]) (Polynomial.derivative (Polynomial.X ^ (l - 1) - 1 : Polynomial ℤ_[l]))‖ = 1`. Establish `: Polynomial.aeval (c : ℤ_[l]) (Polynomial.derivative (Polynomial.X ^ (l - 1) - 1 : Polynomial ℤ_[l])) = (((l - 1) * c ^ (l - 1 - 1) : ℕ) : ℤ_[l])`. Simplify using `[Polynomial.derivative_X_pow]`.
+
+Rewrite using `[this]`. Use `norm_natCast_eq_one fun h => ?_` and prove the remaining obligations. Break down `(hp.dvd_mul).1 h with h | h` into its components or cases. Conclude with `absurd (Nat.le_of_dvd (by omega) h) (by omega)`. Conclude with `hc (hp.dvd_of_dvd_pow h)`.
+
+Establish `hv : ‖Polynomial.aeval (c : ℤ_[l]) (Polynomial.X ^ (l - 1) - 1 : Polynomial ℤ_[l])‖ < 1`. Establish `: Polynomial.aeval (c : ℤ_[l]) (Polynomial.X ^ (l - 1) - 1 : Polynomial ℤ_[l]) = (((c : ℤ) ^ (l - 1) - 1 : ℤ) : ℤ_[l])`. Simplify using the standard rewrite rules. Rewrite using `[this, PadicInt.norm_int_lt_one_iff_dvd, ← ZMod.intCast_zmod_eq_zero_iff_dvd]`. Use `push_cast`.
+
+Rewrite using `[ZMod.pow_card_sub_one_eq_one (by rwa [Ne, ZMod.natCast_eq_zero_iff]), sub_self]`. Take `⟨z, hz, hz1, -⟩` from `hensels_lemma (F := (Polynomial.X ^ (l - 1) - 1 : Polynomial ℤ_[l])) (a := (c : ℤ_[l])) (by rw [hd, one_pow]; exact hv)`. Rewrite `hz1` using `[hd]`. Use `⟨z, ?_, (PadicInt.norm_lt_one_iff_dvd _).1 hz1⟩` and prove the remaining obligations. Simplify `hz` using `[sub_eq_zero]`.
+-/
 theorem exists_root {c : ℕ} (hc : ¬ l ∣ c) : ∃ z : ℤ_[l], z ^ (l - 1) = 1 ∧ (l : ℤ_[l]) ∣ z - c := by
   have hp : l.Prime := Fact.out
   have h2 := hp.two_le
@@ -93,6 +132,15 @@ theorem exists_root {c : ℕ} (hc : ¬ l ∣ c) : ∃ z : ℤ_[l], z ^ (l - 1) =
   refine ⟨z, ?_, (PadicInt.norm_lt_one_iff_dvd _).1 hz1⟩
   simpa [sub_eq_zero] using hz
 
+/- English proof (translation)
+Establish `hp : l.Prime` using `Fact.out`. Use `haveI : NeZero (l ^ (R + 1)) := ⟨pow_ne_zero _ hp.ne_zero⟩`. Establish `h` using `GlobalTheory.sum_units_primePow_teichmuller_reindex l hl R ℕ (fun x => if x = (j : ZMod (l ^ (R + 1))) then 1 else 0)`. Establish `hcop : Nat.Coprime j (l ^ (R + 1))` using `Nat.Coprime.pow_right _ ((hp.coprime_iff_not_dvd).2 hj).symm`. Establish `hne : ∑ b : (ZMod (l ^ (R + 1)))ˣ, (if (b : ZMod (l ^ (R + 1))) = (j : ZMod (l ^ (R + 1))) then 1 else 0 : ℕ) ≠ 0`.
+
+Introduce `h0`. Use `Finset.sum_eq_zero_iff.1 h0 (ZMod.unitOfCoprime j hcop) (Finset.mem_univ _)` as an intermediate fact. Simplify using `at this`. Rewrite `hne` using `[h]`. Take `⟨c, -, hc⟩` from `Finset.exists_ne_zero_of_sum_ne_zero hne`.
+
+Take `⟨t, -, ht⟩` from `Finset.exists_ne_zero_of_sum_ne_zero hc`. Use `⟨(c : ZMod l).val, t, fun hd => ?_, ?_⟩` and prove the remaining obligations. Establish `h0 : (((c : ZMod l).val : ℕ) : ZMod l) = 0` using `(ZMod.natCast_eq_zero_iff _ _).2 hd`. Rewrite `h0` using `[ZMod.natCast_zmod_val]`. Conclude with `c.ne_zero h0`.
+
+Use `((ZMod.natCast_eq_natCast_iff _ _ _).1 ?_).symm` and prove the remaining obligations. Assume the negation of the conclusion as `h1`. Conclude with `ht (if_neg h1)`.
+-/
 theorem exists_decomp (hl : l ≠ 2) (R : ℕ) {j : ℕ} (hj : ¬ l ∣ j) :
     ∃ c t : ℕ, ¬ l ∣ c ∧ j ≡ c ^ (l ^ R) * (1 + l) ^ t [MOD l ^ (R + 1)] := by
   classical
@@ -116,10 +164,48 @@ theorem exists_decomp (hl : l ≠ 2) (R : ℕ) {j : ℕ} (hj : ¬ l ∣ j) :
     by_contra h1
     exact ht (if_neg h1)
 
+/- English proof (translation)
+Establish `h1` using `map_dvd (Int.castRingHom ℤ_[l]) (Nat.modEq_iff_dvd.1 h)`. Simplify using `using h1`.
+-/
 theorem dvd_of_modEq {n a b : ℕ} (h : a ≡ b [MOD n]) : (n : ℤ_[l]) ∣ (b : ℤ_[l]) - a := by
   have h1 := map_dvd (Int.castRingHom ℤ_[l]) (Nat.modEq_iff_dvd.1 h)
   simpa using h1
 
+/- English proof (translation)
+Introduce `l _ φ e R j hl`. Establish `hp : l.Prime` using `Fact.out`. Distinguish the cases in `hj : l ∣ j`. Use `⟨0, 0, Or.inl rfl, ?_, fun m hm _ ψ _ => ?_⟩` and prove the remaining obligations. Rewrite using `[(ZMod.natCast_eq_zero_iff _ _).2 hj, MulChar.map_nonunit _ not_isUnit_zero]`.
+
+Simplify using `[Cg]`. Rewrite using `[zero_mul]`. Use `MulChar.map_nonunit _ fun hu => ?_` and prove the remaining obligations. Establish `h1` using `(ZMod.isUnit_iff_coprime _ _).1 hu`. Establish `h2 : l ∣ Nat.gcd j (l ^ m)` using `Nat.dvd_gcd hj (dvd_pow_self l (by omega))`.
+
+Rewrite `h2` using `[h1]`. Conclude with `hp.one_lt.ne' (Nat.dvd_one.1 h2)`. Take `⟨c, t, hc, hjc⟩` from `exists_decomp hl R hj`. Take `⟨z, hz, hzc⟩` from `exists_root hc`. Use `set b : ℕ := c ^ (l ^ R) with hb`.
+
+Use `set w : ℤ_[l] := z ^ (l ^ R) with hw`. Establish `hw1 : w ^ (l - 1) = 1` using `by rw [hw, ← pow_mul, mul_comm, pow_mul, hz, one_pow]`. Establish `hwb : (l : ℤ_[l]) ^ (R + 1) ∣ w - b`. Use `dvd_sub_pow_of_dvd_sub hzc R` as an intermediate fact. Rewrite using `[hb]`.
+
+Use `push_cast`. Conclude with `this`. Establish `hj0 : (j : ZMod l) ≠ 0` using `by rwa [Ne, ZMod.natCast_eq_zero_iff]`. Establish `hφ : φ (j : ZMod l) ^ (l - 1) = 1` using `by rw [← map_pow, ZMod.pow_card_sub_one_eq_one hj0, map_one]`. Establish `hφn` using `norm_eq_one_of_pow hφ`.
+
+Establish `hε : (emb l w ^ e * φ (j : ZMod l)) ^ (l - 1) = 1`. Rewrite using `[mul_pow, hφ, mul_one, ← pow_mul, mul_comm, pow_mul, ← map_pow, hw1, map_one, one_pow]`. Use `⟨emb l w ^ e * φ (j : ZMod l), t, Or.inr hε, ?_, fun m hm hmR ψ hψ => ?_⟩` and prove the remaining obligations. Establish `h1 : (l : ℤ_[l]) ^ (R + 1) ∣ (j : ℤ_[l]) - w * (1 + l) ^ t`. Establish `h2` using `dvd_of_modEq (l := l) hjc.symm`.
+
+Move the coercions through the operations in `at h2`. Establish `h3 : (j : ℤ_[l]) - w * (1 + l) ^ t = (j - b * (1 + l) ^ t) - (w - b) * (1 + l) ^ t` using `by ring`. Rewrite using `[h3]`. Conclude with `dvd_sub h2 (hwb.mul_right _)`. Establish `h4 : (l : ℤ_[l]) ^ R ∣ (j : ℤ_[l]) ^ e - (w * (1 + l) ^ t) ^ e` using `((pow_dvd_pow _ (Nat.le_succ R)).trans h1).trans (sub_dvd_pow_sub_pow _ _ _)`.
+
+Establish `h5` using `norm_emb_le_of_dvd h4`. Simplify using `only [map_sub, map_pow, map_mul, map_add, map_one, map_natCast] at h5`. Unfold `Cg`. Establish `h6 : φ (j : ZMod l) * (j : Qbar l) ^ e - emb l w ^ e * φ (j : ZMod l) * ((1 + (l : Qbar l)) ^ e) ^ t = φ (j : ZMod l) * ((j : Qbar l) ^ e - (emb l w * (1 + (l : Qbar l)) ^ t) ^ e)` using `by ring`. Rewrite using `[h6, norm_mul, hφn, one_mul]`.
+
+Conclude with `h5`. Use `haveI : NeZero (l ^ m) := ⟨pow_ne_zero _ hp.ne_zero⟩`. Establish `hmd : l ^ m ∣ l ^ (R + 1)` using `pow_dvd_pow _ (by omega)`. Establish `hld : l ∣ l ^ m` using `dvd_pow_self l (by omega)`. Establish `hcc : Nat.Coprime c l` using `((hp.coprime_iff_not_dvd).2 hc).symm`.
+
+Establish `hbcop : Nat.Coprime b (l ^ m)` using `Nat.Coprime.pow _ _ hcc`. Establish `hb1 : b ^ (l - 1) ≡ 1 [MOD l ^ m]`. Establish `h1` using `Nat.ModEq.pow_totient (Nat.Coprime.pow_right (R + 1) hcc)`. Rewrite `h1` using `[Nat.totient_prime_pow_succ hp, pow_mul]`. Conclude with `h1.of_dvd hmd`.
+
+Establish `hb2 : (b : ZMod (l ^ m)) ^ (l - 1) = 1`. Use `(ZMod.natCast_eq_natCast_iff _ _ _).2 hb1` as an intermediate fact. Simplify using `using this`. Establish `hu : ZMod.unitOfCoprime b hbcop ^ (l - 1) = 1` using `Units.ext (by simpa using hb2)`. Establish `h7` using `hψ _ hu`.
+
+Rewrite `h7` using `[ZMod.coe_unitOfCoprime, ZMod.val_natCast]`. Establish `hvb : b % l ^ m ≡ b [MOD l]` using `(Nat.mod_modEq b (l ^ m)).of_dvd hld`. Establish `hbj : (b : ZMod l) = (j : ZMod l)`. Use `(ZMod.natCast_eq_natCast_iff _ _ _).2 (hjc.of_dvd (dvd_pow_self l (Nat.succ_ne_zero R)))` as an intermediate fact. Rewrite using `[this]`.
+
+Use `push_cast`. Simplify using the standard rewrite rules. Rewrite `h7` using `[(ZMod.natCast_eq_natCast_iff _ _ _).2 hvb, hbj]`. Establish `h8 : (l : ℤ_[l]) ∣ ((b % l ^ m : ℕ) : ℤ_[l]) ^ e - w ^ e`. Use `Dvd.dvd.trans ?_ (sub_dvd_pow_sub_pow _ _ _)` and prove the remaining obligations.
+
+Establish `h2` using `dvd_of_modEq (l := l) hvb.symm`. Establish `h3 : ((b % l ^ m : ℕ) : ℤ_[l]) - w = (((b % l ^ m : ℕ) : ℤ_[l]) - b) - (w - b)` using `by ring`. Rewrite using `[h3]`. Conclude with `dvd_sub h2 ((dvd_pow_self _ (Nat.succ_ne_zero R)).trans hwb)`. Establish `h9` using `(norm_emb_le_of_dvd h8).trans_lt (by rw [map_natCast]; exact norm_l_lt_one)`.
+
+Rewrite `h9` using `[map_sub, map_pow, map_pow, map_natCast]`. Establish `hψb : ψ⁻¹ (b : ZMod (l ^ m)) ^ (l - 1) = 1` using `by rw [← map_pow, hb2, map_one]`. Establish `h10 : ψ⁻¹ (b : ZMod (l ^ m)) = emb l w ^ e * φ (j : ZMod l)`. Use `eq_of_pow_eq_one hψb hε ?_` and prove the remaining obligations. Establish `h3 : ψ⁻¹ (b : ZMod (l ^ m)) - emb l w ^ e * φ (j : ZMod l) = (ψ⁻¹ (b : ZMod (l ^ m)) - ((b % l ^ m : ℕ) : Qbar l) ^ e * φ (j : ZMod l)) + (((b % l ^ m : ℕ) : Qbar l) ^ e - emb l w ^ e) * φ (j : ZMod l)` using `by ring`.
+
+Rewrite using `[h3]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans_lt (max_lt h7 ?_)` and prove the remaining obligations. Rewrite using `[norm_mul, hφn, mul_one]`. Conclude with `h9`. Rewrite using `[← h10, ← map_pow, ← map_mul, (ZMod.natCast_eq_natCast_iff _ _ _).2 (hjc.of_dvd hmd)]`.
+
+Use `push_cast`. Both sides reduce to the same expression.
+-/
 theorem teich : ∀ (l : ℕ) [Fact l.Prime] (φ : DirichletCharacter (Qbar l) l) (e R j : ℕ), l ≠ 2 →
     ∃ (ε : Qbar l) (t : ℕ), (ε = 0 ∨ ε ^ (l - 1) = 1) ∧
       Cg R (φ (j : ZMod l) * (j : Qbar l) ^ e) (ε * ((1 + (l : Qbar l)) ^ e) ^ t) ∧

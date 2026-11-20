@@ -24,6 +24,13 @@ open GlobalTheory.GalCut GlobalTheory.Published
 
 namespace GlobalTheory.QuadCharUnr
 
+/- English proof (translation)
+Establish `h2 : Module.finrank (maximalRealSubfield E) E = 2` using `Algebra.IsQuadraticExtension.finrank_eq_two _ _`. Establish `hu : Formalism.MainNotions.SchurIrreducible.IsUnram (E` using `E) (w.under (𝓞 (maximalRealSubfield E))) := by`. Distinguish the cases in `hs : Formalism.MainNotions.SchurIrreducible.IsSplit (E := E) (w.under (𝓞 (maximalRealSubfield E)))`. Conclude with `GlobalTheory.LFun.isUnram_of_isSplit h2 hs`. Use `GlobalTheory.LFun.isUnram_iff.2 fun u hu => ?_` and prove the remaining obligations.
+
+Take `rfl` from `GlobalTheory.LFun.eq_of_not_isSplit hs hu rfl`. Use `haveI := u.isPrime`. Conclude with `Algebra.isUnramifiedAt_iff_of_isDedekindDomain.1 hw`. Introduce `x hx`. Establish `hn` using `GlobalTheory.LFun.mem_normGroup_of_isUnram h2 hu hx`.
+
+Express the relevant statement in the definitionally equal form `Units.map _ (GlobalTheory.IdeleNormChar.normSign E (localIdele _ _ x)) = 1`. Rewrite using `[GlobalTheory.LFun.normSign_localIdele, GlobalTheory.QuadSymbol.eta_eq_one_iff.2 hn, map_one]`.
+-/
 theorem quadChar_unrAt_of_isUnramifiedAt (E : Type) [Field E] [NumberField E] [IsCMField E]
     (w : HeightOneSpectrum (𝓞 E)) (hw : Algebra.IsUnramifiedAt (𝓞 (maximalRealSubfield E)) w.asIdeal) :
     (quadChar E).UnrAt (w.under (𝓞 (maximalRealSubfield E))) := by

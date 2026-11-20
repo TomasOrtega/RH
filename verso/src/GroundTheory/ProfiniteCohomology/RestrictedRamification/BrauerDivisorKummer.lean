@@ -18,6 +18,17 @@ variable (L : IntermediateField K.1 (maxUnramifiedOutside K.1 ℚ̄ S)) [FiniteD
 
 omit [FiniteDimensional K.1 L] in
 
+/- English proof (translation)
+Establish `hLu : IsUnramifiedOutside S Lq` using `(isUnramifiedOutside_iff_le_maxUnramifiedOutside S).2 hLqle`. Take `⟨α, hα⟩` from `IsAlgClosed.exists_pow_nat_eq ((π : Lq) : ℚ̄) (Nat.pos_of_ne_zero hM)`. Establish `hαint : IsIntegral Lq α`. Use `IsIntegral.of_pow (Nat.pos_of_ne_zero hM) ?_` and prove the remaining obligations. Rewrite using `[hα]`.
+
+Conclude with `isIntegral_algebraMap (x := (π : Lq))`. Set `E : IntermediateField Lq ℚ̄` to `IntermediateField.adjoin Lq {α}`. Establish `: FiniteDimensional Lq E` using `IntermediateField.adjoin.finiteDimensional hαint`. Establish `: NumberField E` using `NumberField.of_module_finite Lq E`. Establish `hβ : IntermediateField.AdjoinSimple.gen Lq α ^ M = algebraMap Lq E (π : Lq)`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[SubmonoidClass.coe_pow, IntermediateField.AdjoinSimple.coe_gen, hα]`. Both sides reduce to the same expression. Establish `hEu : IsUnramifiedOutside (placesOver S) E`. Introduce `w hw`.
+
+Use `Global.Kummer.isUnramifiedIn_of_pow_eq π hβ (adjoin_gen_eq_top Lq α) w ?_ (hπ w)` and prove the remaining obligations. Introduce `hmem`. Establish `hv : underPlace (F` using `K.1) w ∉ S := fun h => hw (mem_placesOver_iff.2 h)`. Apply `hMS _ hv` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `((M : ℕ) : 𝓞 K.1) ∈ Ideal.comap (algebraMap (𝓞 K.1) (𝓞 Lq)) w.asIdeal`.
+
+Rewrite using `[Ideal.mem_comap, map_natCast]`. Conclude with `hmem`. Establish `hEF` using `(isUnramifiedOutside_restrictScalars_iff S hLu E).2 hEu`. Establish `: FiniteDimensional K.1 (E.restrictScalars K.1)` using `FiniteDimensional.trans K.1 Lq E`. Conclude with `⟨α, le_maxUnramifiedOutside S hEF (IntermediateField.mem_adjoin_simple_self Lq α), hα⟩`.
+-/
 theorem exists_mem_pow_eq_of_dvd_log_valuation (Lq : IntermediateField K.1 ℚ̄) [FiniteDimensional K.1 Lq]
     [NumberField Lq]
     (hLqle : Lq ≤ maxUnramifiedOutside K.1 ℚ̄ S) (M : ℕ) (hM : M ≠ 0)
@@ -50,6 +61,13 @@ theorem exists_mem_pow_eq_of_dvd_log_valuation (Lq : IntermediateField K.1 ℚ̄
   have : FiniteDimensional K.1 (E.restrictScalars K.1) := FiniteDimensional.trans K.1 Lq E
   exact ⟨α, le_maxUnramifiedOutside S hEF (IntermediateField.mem_adjoin_simple_self Lq α), hα⟩
 
+/- English proof (translation)
+Establish `hLqf : FiniteDimensional K.1 (L.map (maxUnramifiedOutside K.1 ℚ̄ S).val)` using `LinearEquiv.finiteDimensional (L.equivMap (maxUnramifiedOutside K.1 ℚ̄ S).val).toLinearEquiv`. Establish `hLqle : L.map (maxUnramifiedOutside K.1 ℚ̄ S).val ≤ maxUnramifiedOutside K.1 ℚ̄ S`. Introduce and unpack `z ⟨w, -, rfl⟩`. Conclude with `w.2`. Establish `: NumberField (L.map (maxUnramifiedOutside K.1 ℚ̄ S).val)` using `NumberField.of_module_finite K.1 _`.
+
+Take `⟨α, hαS, hα⟩` from `exists_mem_pow_eq_of_dvd_log_valuation (L.map (maxUnramifiedOutside K.1 ℚ̄ S).val) hLqle M hM hMS π hπ`. Establish `hα0 : (⟨α, hαS⟩ : maxUnramifiedOutside K.1 ℚ̄ S) ≠ 0`. Introduce `h`. Establish `h' : α = 0` using `congrArg Subtype.val h`. Rewrite `hα` using `[h', zero_pow hM]`.
+
+Conclude with `(π : (levelOfField L).1ˣ).ne_zero (Subtype.ext hα.symm)`. Conclude with `⟨Units.mk0 _ hα0, hα⟩`.
+-/
 theorem exists_pow_eq_of_dvd_log_valuation (M : ℕ) (hM : M ≠ 0)
     (hMS : ∀ v ∉ S, ((M : ℕ) : 𝓞 K.1) ∉ v.asIdeal) (π : (levelOfField L).1ˣ)
     (hπ : ∀ W : HeightOneSpectrum (𝓞 (levelOfField L).1),

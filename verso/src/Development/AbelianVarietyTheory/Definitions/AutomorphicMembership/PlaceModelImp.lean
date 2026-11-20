@@ -20,6 +20,9 @@ abbrev Late.D {B : Base} {C : Cols B} (a : Late B C) : D7 := a.st.toD7
 
 abbrev Stages.toLate (X : Stages) : Late X.B X.C := ⟨X.W, X.V, X.S, X.N, X.G⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem Stages.late_st (X : Stages) : X.toLate.st = X := rfl
 
 namespace R3.Tr
@@ -30,6 +33,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {B : Base} {C : Cols B} {a : Late B C} (b : Late B C)
 
+/- English proof (translation)
+Establish `h : c.cd = c'.cd` using `funext fun P => funext fun Q => by`. Take `⟨x, h0, ht, h1, h2⟩` from `c.trick P Q`. Conclude with `GlobalTheory.CompactDualUnique.eq_cd c' P Q _ _ x (c.haar P Q) (c.haar _ 0) (c.prob _) h0 ht h1 h2`. Consider the cases of `c`. Consider the cases of `c'`.
+
+Consider the cases of `h`. Both sides reduce to the same expression.
+-/
 theorem cd_eq (c c' : CDHaar) : c = c' := by
   have h : c.cd = c'.cd := funext fun P => funext fun Q => by
     obtain ⟨x, h0, ht, h1, h2⟩ := c.trick P Q
@@ -161,6 +169,9 @@ def face3 {A : FamIn3 a.D.what₂.LL G Pl0 I0 (List ℕ) T a.D.R.m} (x : Face3 a
 section Leaves
 set_option linter.unusedVariables false
 
+/- English proof (translation)
+Introduce `V f h` and use `{ left := (h.left) level := (h.level) cont := (h.cont) }`.
+-/
 theorem autFun_imp : ∀ V f, @IsAutFun a.D V f → @IsAutFun b.D ((V)) ((f)) := fun V f h =>
   { left := (h.left)
     level := (h.level)
@@ -172,10 +183,16 @@ def autFunB : type_of% (@IsAutFun b.D) := @fun V f => @IsAutFun a.D ((V)) ((f))
 
 variable (a) in
 
+/- English proof (translation)
+Use function extensionality and compare the values at `V f`. Conclude with `propext ⟨fun h => (autFun_imp a V f h), fun h => (@autFun_imp B C a b V f h)⟩`.
+-/
 theorem autFun_eq : @IsAutFun b.D = @autFunB B C a b := by
   funext V f
   exact propext ⟨fun h => (autFun_imp a V f h), fun h => (@autFun_imp B C a b V f h)⟩
 
+/- English proof (translation)
+Introduce `θ V f h` and use `{ toIsAutFun := (autFun_imp b V f h.toIsAutFun) smooth := (h.smooth) zfin := (h.zfin) growth := (h.growth) }`.
+-/
 theorem autFunSm_imp : ∀ θ V f, @IsAutFunSm a.D θ V f → @IsAutFunSm b.D ((θ)) ((V)) ((f)) := fun θ V f h =>
   { toIsAutFun := (autFun_imp b V f h.toIsAutFun)
     smooth := (h.smooth)
@@ -188,10 +205,16 @@ def autFunSmB : type_of% (@IsAutFunSm b.D) := @fun θ V f => @IsAutFunSm a.D ((�
 
 variable (a) in
 
+/- English proof (translation)
+Use function extensionality and compare the values at `θ V f`. Conclude with `propext ⟨fun h => (autFunSm_imp a θ V f h), fun h => (@autFunSm_imp B C a b θ V f h)⟩`.
+-/
 theorem autFunSm_eq : @IsAutFunSm b.D = @autFunSmB B C a b := by
   funext θ V f
   exact propext ⟨fun h => (autFunSm_imp a θ V f h), fun h => (@autFunSm_imp B C a b θ V f h)⟩
 
+/- English proof (translation)
+Introduce `V S θ M J χ f h` and use `{ aut := fun v => (autFunSm_imp b θ V (f v) (h.aut v)) cusp := (h.cusp) lev := (h.lev) equiv := (h.equiv) cont := (h.cont) }`.
+-/
 theorem multMap_imp : ∀ V S θ M J χ f, @IsMultMap a.D V S θ M J χ f → @IsMultMap b.D ((V)) ((S)) ((θ)) ((ds b M)) ((J)) ((χ)) ((f)) := fun V S θ M J χ f h =>
   { aut := fun v => (autFunSm_imp b θ V (f v) (h.aut v))
     cusp := (h.cusp)
@@ -205,10 +228,16 @@ def multMapB : type_of% (@IsMultMap b.D) := @fun V S θ M J χ f => @IsMultMap a
 
 variable (a) in
 
+/- English proof (translation)
+Use function extensionality and compare the values at `V S θ M J χ f`. Conclude with `propext ⟨fun h => (multMap_imp a V S θ M J χ f h), fun h => (@multMap_imp B C a b V S θ (@ds B C b a V S M) J χ f h)⟩`.
+-/
 theorem multMap_eq : @IsMultMap b.D = @multMapB B C a b := by
   funext V S θ M J χ f
   exact propext ⟨fun h => (multMap_imp a V S θ M J χ f h), fun h => (@multMap_imp B C a b V S θ (@ds B C b a V S M) J χ f h)⟩
 
+/- English proof (translation)
+Introduce `ψ S T f h` and use `{ quasi := (h.quasi) level := (h.level) cont := (h.cont) smooth := (h.smooth) }`.
+-/
 theorem thetaFun_imp : ∀ ψ S T f, @IsThetaFunO a.D ψ S T f → @IsThetaFunO b.D ((ψ)) ((S)) ((T)) ((f)) := fun ψ S T f h =>
   { quasi := (h.quasi)
     level := (h.level)
@@ -221,10 +250,16 @@ def thetaFunB : type_of% (@IsThetaFunO b.D) := @fun ψ S T f => @IsThetaFunO a.D
 
 variable (a) in
 
+/- English proof (translation)
+Use function extensionality and compare the values at `ψ S T f`. Conclude with `propext ⟨fun h => (thetaFun_imp a ψ S T f h), fun h => (@thetaFun_imp B C a b ψ S T f h)⟩`.
+-/
 theorem thetaFun_eq : @IsThetaFunO b.D = @thetaFunB B C a b := by
   funext ψ S T f
   exact propext ⟨fun h => (thetaFun_imp a ψ S T f h), fun h => (@thetaFun_imp B C a b ψ S T f h)⟩
 
+/- English proof (translation)
+Introduce `m n x1 x2 x3 x4 x5 x6 x7 h` and use `{ inf := (h.inf) theta := (h.theta) lat := (h.lat) fock := (h.fock) norm := (h.norm) }`.
+-/
 theorem vacuum_imp : ∀ m n x1 x2 x3 x4 x5 x6 x7, @IsVacuum a.D m n x1 x2 x3 x4 x5 x6 x7 → @IsVacuum b.D m n ((x1)) ((x2)) ((x3)) ((x4)) ((x5)) ((x6)) ((x7)) := fun m n x1 x2 x3 x4 x5 x6 x7 h =>
   { inf := (h.inf)
     theta := (h.theta)
@@ -238,10 +273,16 @@ def vacuumB : type_of% (@IsVacuum b.D) := @fun m n x1 x2 x3 x4 x5 x6 x7 => @IsVa
 
 variable (a) in
 
+/- English proof (translation)
+Use function extensionality and compare the values at `m n x1 x2 x3 x4 x5 x6 x7`. Conclude with `propext ⟨fun h => (vacuum_imp a m n x1 x2 x3 x4 x5 x6 x7 h), fun h => (@vacuum_imp B C a b m n x1 x2 x3 x4 x5 x6 x7 h)⟩`.
+-/
 theorem vacuum_eq : @IsVacuum b.D = @vacuumB B C a b := by
   funext m n x1 x2 x3 x4 x5 x6 x7
   exact propext ⟨fun h => (vacuum_imp a m n x1 x2 x3 x4 x5 x6 x7 h), fun h => (@vacuum_imp B C a b m n x1 x2 x3 x4 x5 x6 x7 h)⟩
 
+/- English proof (translation)
+Introduce `m n x1 x2 x3 x4 x5 x6 x7 x8 h` and use `{ trans := (h.trans) modul := (h.modul) vac := (h.vac) }`.
+-/
 theorem placeModel_imp : ∀ m n x1 x2 x3 x4 x5 x6 x7 x8, @IsPlaceModel a.D m n x1 x2 x3 x4 x5 x6 x7 x8 → @IsPlaceModel b.D m n ((x1)) ((x2)) ((x3)) ((x4)) ((x5)) ((x6)) ((x7)) ((x8)) := fun m n x1 x2 x3 x4 x5 x6 x7 x8 h =>
   { trans := (h.trans)
     modul := (h.modul)
@@ -253,10 +294,16 @@ def placeModelB : type_of% (@IsPlaceModel b.D) := @fun m n x1 x2 x3 x4 x5 x6 x7 
 
 variable (a) in
 
+/- English proof (translation)
+Use function extensionality and compare the values at `m n x1 x2 x3 x4 x5 x6 x7 x8`. Conclude with `propext ⟨fun h => (placeModel_imp a m n x1 x2 x3 x4 x5 x6 x7 x8 h), fun h => (@placeModel_imp B C a b m n x1 x2 x3 x4 x5 x6 x7 x8 h)⟩`.
+-/
 theorem placeModel_eq : @IsPlaceModel b.D = @placeModelB B C a b := by
   funext m n x1 x2 x3 x4 x5 x6 x7 x8
   exact propext ⟨fun h => (placeModel_imp a m n x1 x2 x3 x4 x5 x6 x7 x8 h), fun h => (@placeModel_imp B C a b m n x1 x2 x3 x4 x5 x6 x7 x8 h)⟩
 
+/- English proof (translation)
+Introduce `V W S S' θ M M' ω pt It h` and use `{ ne := (h.ne) bdd := (h.bdd) eqK := (h.eqK) eqg := (h.eqg) invK := (h.invK) invg := (h.invg) }`.
+-/
 theorem itW_imp : ∀ V W S S' θ M M' ω pt It, @IsItW a.D V W S S' θ M M' ω pt It → @IsItW b.D ((V)) ((W)) ((S)) ((S')) ((θ)) ((ds b M)) ((ds b M')) ((ω)) ((pt)) ((It)) := fun V W S S' θ M M' ω pt It h =>
   { ne := (h.ne)
     bdd := (h.bdd)
@@ -271,10 +318,16 @@ def itWB : type_of% (@IsItW b.D) := @fun V W S S' θ M M' ω pt It => @IsItW a.D
 
 variable (a) in
 
+/- English proof (translation)
+Use function extensionality and compare the values at `V W S S' θ M M' ω pt It`. Conclude with `propext ⟨fun h => (itW_imp a V W S S' θ M M' ω pt It h), fun h => (@itW_imp B C a b V W S S' θ (@ds B C b a V S M) (@ds B C b a W S' M') ω pt It h)⟩`.
+-/
 theorem itW_eq : @IsItW b.D = @itWB B C a b := by
   funext V W S S' θ M M' ω pt It
   exact propext ⟨fun h => (itW_imp a V W S S' θ M M' ω pt It h), fun h => (@itW_imp B C a b V W S S' θ (@ds B C b a V S M) (@ds B C b a W S' M') ω pt It h)⟩
 
+/- English proof (translation)
+Introduce `ψ θ S T x1 x2 x3 x4 x5 x6 h` and use `{ std := (h.std) inf := (h.inf) cartS := (h.cartS) cartT := (h.cartT) onbS := (h.onbS) onbT := (h.onbT) }`.
+-/
 theorem pairSetup_imp : ∀ ψ θ S T x1 x2 x3 x4 x5 x6, @Fock.Sk.PairSetup a.D ψ θ S T x1 x2 x3 x4 x5 x6 → @Fock.Sk.PairSetup b.D ((ψ)) ((θ)) ((S)) ((T)) ((x1)) ((x2)) ((x3)) ((x4)) ((x5)) ((x6)) := fun ψ θ S T x1 x2 x3 x4 x5 x6 h =>
   { std := (h.std)
     inf := (h.inf)
@@ -289,10 +342,16 @@ def pairSetupB : type_of% (@Fock.Sk.PairSetup b.D) := @fun ψ θ S T x1 x2 x3 x4
 
 variable (a) in
 
+/- English proof (translation)
+Use function extensionality and compare the values at `ψ θ S T x1 x2 x3 x4 x5 x6`. Conclude with `propext ⟨fun h => (pairSetup_imp a ψ θ S T x1 x2 x3 x4 x5 x6 h), fun h => (@pairSetup_imp B C a b ψ θ S T x1 x2 x3 x4 x5 x6 h)⟩`.
+-/
 theorem pairSetup_eq : @Fock.Sk.PairSetup b.D = @pairSetupB B C a b := by
   funext ψ θ S T x1 x2 x3 x4 x5 x6
   exact propext ⟨fun h => (pairSetup_imp a ψ θ S T x1 x2 x3 x4 x5 x6 h), fun h => (@pairSetup_imp B C a b ψ θ S T x1 x2 x3 x4 x5 x6 h)⟩
 
+/- English proof (translation)
+Introduce `G i1 i2 P I Ty T m A x1 x2 x3 h` and use `{ plI_inj := (h.plI_inj) okI := (h.okI) }`.
+-/
 theorem inertTie_imp : ∀ G i1 i2 P I Ty T m A x1 x2 x3, @Bridge.InertTie a.D G i1 i2 P I Ty T m A x1 x2 x3 → @Bridge.InertTie b.D G i1 i2 P I Ty T m ((A)) ((x1)) ((x2)) ((x3)) := fun G i1 i2 P I Ty T m A x1 x2 x3 h =>
   { plI_inj := (h.plI_inj)
     okI := (h.okI) }
@@ -303,10 +362,16 @@ def inertTieB : type_of% (@Bridge.InertTie b.D) := @fun G i1 i2 P I Ty T m A x1 
 
 variable (a) in
 
+/- English proof (translation)
+Use function extensionality and compare the values at `G i1 i2 P I Ty T m A x1 x2 x3`. Conclude with `propext ⟨fun h => (inertTie_imp a G i1 i2 P I Ty T m A x1 x2 x3 h), fun h => (@inertTie_imp B C a b G i1 i2 P I Ty T m A x1 x2 x3 h)⟩`.
+-/
 theorem inertTie_eq : @Bridge.InertTie b.D = @inertTieB B C a b := by
   funext G i1 i2 P I Ty T m A x1 x2 x3
   exact propext ⟨fun h => (inertTie_imp a G i1 i2 P I Ty T m A x1 x2 x3 h), fun h => (@inertTie_imp B C a b G i1 i2 P I Ty T m A x1 x2 x3 h)⟩
 
+/- English proof (translation)
+Introduce `G i1 i2 P T m A cR cL lR lL x x1 x2 x3 x4 x5 x6 x7 x8 x9 h` and use `{ ranks := (h.ranks) v0 := (h.v0) tauL_ok := (h.tauL_ok) pl_inj := (h.pl_inj) q := (h.q) S_fin := (h.S_fin) ok := (h.ok) gramR_eq := (h.gramR_eq) mapR := (h.mapR) mapL := (h.mapL) coefR := (h.coefR) coefL := (h.coefL) }`.
+-/
 theorem famTie_imp : ∀ G i1 i2 P T m A cR cL lR lL x x1 x2 x3 x4 x5 x6 x7 x8 x9, @Bridge.FamTie a.D G i1 i2 P T m A cR cL lR lL x x1 x2 x3 x4 x5 x6 x7 x8 x9 → @Bridge.FamTie b.D G i1 i2 P T m ((A)) ((cR)) ((cL)) ((lR)) ((lL)) ((@famReal B C a b G i1 i2 P T m A cR cL lR lL x)) ((x1)) ((x2)) ((x3)) ((x4)) ((x5)) ((x6)) ((x7)) ((x8)) ((x9)) := fun G i1 i2 P T m A cR cL lR lL x x1 x2 x3 x4 x5 x6 x7 x8 x9 h =>
   { ranks := (h.ranks)
     v0 := (h.v0)
@@ -327,10 +392,16 @@ def famTieB : type_of% (@Bridge.FamTie b.D) := @fun G i1 i2 P T m A cR cL lR lL 
 
 variable (a) in
 
+/- English proof (translation)
+Use function extensionality and compare the values at `G i1 i2 P T m A cR cL lR lL x x1 x2 x3 x4 x5 x6 x7 x8 x9`. Conclude with `propext ⟨fun h => (famTie_imp a G i1 i2 P T m A cR cL lR lL x x1 x2 x3 x4 x5 x6 x7 x8 x9 h), fun h => (@famTie_imp B C a b G i1 i2 P T m A cR cL lR lL (@famReal B C b a G i1 i2 P T m A cR cL lR lL x) x1 x2 x3 x4 x5 x6 x7 x8 x9 h)⟩`.
+-/
 theorem famTie_eq : @Bridge.FamTie b.D = @famTieB B C a b := by
   funext G i1 i2 P T m A cR cL lR lL x x1 x2 x3 x4 x5 x6 x7 x8 x9
   exact propext ⟨fun h => (famTie_imp a G i1 i2 P T m A cR cL lR lL x x1 x2 x3 x4 x5 x6 x7 x8 x9 h), fun h => (@famTie_imp B C a b G i1 i2 P T m A cR cL lR lL (@famReal B C b a G i1 i2 P T m A cR cL lR lL x) x1 x2 x3 x4 x5 x6 x7 x8 x9 h)⟩
 
+/- English proof (translation)
+Introduce `ψ S T x1 x2 ω h` and use `{ std := (h.std) hecS := (h.hecS) hecT := (h.hecT) resS := (h.resS) resT := (h.resT) om_pres := by rewrite [thetaFun_eq a b]; exact (h.om_pres) om_heis := by rewrite [thetaFun_eq a b]; exact (h.om_heis) om_aut := by rewrite [thetaFun_eq a b]; exact (h.om_aut) om_cont := by rewrit …`.
+-/
 theorem weilDatum_imp : ∀ ψ S T x1 x2 ω, @IsWeilDatumO a.D ψ S T x1 x2 ω → @IsWeilDatumO b.D ((ψ)) ((S)) ((T)) ((x1)) ((x2)) ((ω)) := fun ψ S T x1 x2 ω h =>
   { std := (h.std)
     hecS := (h.hecS)
@@ -350,10 +421,16 @@ def weilDatumB : type_of% (@IsWeilDatumO b.D) := @fun ψ S T x1 x2 ω => @IsWeil
 
 variable (a) in
 
+/- English proof (translation)
+Use function extensionality and compare the values at `ψ S T x1 x2 ω`. Conclude with `propext ⟨fun h => (weilDatum_imp a ψ S T x1 x2 ω h), fun h => (@weilDatum_imp B C a b ψ S T x1 x2 ω h)⟩`.
+-/
 theorem weilDatum_eq : @IsWeilDatumO b.D = @weilDatumB B C a b := by
   funext ψ S T x1 x2 ω
   exact propext ⟨fun h => (weilDatum_imp a ψ S T x1 x2 ω h), fun h => (@weilDatum_imp B C a b ψ S T x1 x2 ω h)⟩
 
+/- English proof (translation)
+Introduce `ψ S T x1 x2 ω h` and use `{ datum := (weilDatum_imp b ψ S T x1 x2 ω h.datum) inert := by delta WeilFull.SphInertAtO; rewrite [thetaFun_eq a b]; exact (h.inert) real := by delta WeilFull.RealAtO; rewrite [pairSetup_eq a b]; (try rewrite [thetaFun_eq a b]); exact (h.real) }`.
+-/
 theorem weilFull_imp : ∀ ψ S T x1 x2 ω, @WeilFull.IsWeilFull a.D ψ S T x1 x2 ω → @WeilFull.IsWeilFull b.D ((ψ)) ((S)) ((T)) ((x1)) ((x2)) ((ω)) := fun ψ S T x1 x2 ω h =>
   { datum := (weilDatum_imp b ψ S T x1 x2 ω h.datum)
     inert := by delta WeilFull.SphInertAtO; rewrite [thetaFun_eq a b]; exact (h.inert)
@@ -365,6 +442,9 @@ def weilFullB : type_of% (@WeilFull.IsWeilFull b.D) := @fun ψ S T x1 x2 ω => @
 
 variable (a) in
 
+/- English proof (translation)
+Use function extensionality and compare the values at `ψ S T x1 x2 ω`. Conclude with `propext ⟨fun h => (weilFull_imp a ψ S T x1 x2 ω h), fun h => (@weilFull_imp B C a b ψ S T x1 x2 ω h)⟩`.
+-/
 theorem weilFull_eq : @WeilFull.IsWeilFull b.D = @weilFullB B C a b := by
   funext ψ S T x1 x2 ω
   exact propext ⟨fun h => (weilFull_imp a ψ S T x1 x2 ω h), fun h => (@weilFull_imp B C a b ψ S T x1 x2 ω h)⟩
@@ -375,6 +455,9 @@ def multB : type_of% (@Mult.Mult b.D) := @fun V S θ M J χ => (@Mult (@Late.D B
 
 variable (a) in
 
+/- English proof (translation)
+Use function extensionality and compare the values at `V S θ M J χ`. Use `delta Mult.Mult`. Use `rewrite [multMap_eq a b]`. Conclude with `(Eq.refl (multB a b θ M J χ))`.
+-/
 theorem mult_eq : @Mult.Mult b.D = @multB B C a b := by
   funext V S θ M J χ
   delta Mult.Mult
@@ -389,6 +472,9 @@ def multTB : type_of% (@MultT b.D) := @fun V S θ M J χ => (@MultT (@Late.D B C
 
 variable (a) in
 
+/- English proof (translation)
+Use function extensionality and compare the values at `V S θ M J χ`. Use `delta MultT`. Use `rewrite [mult_eq a b]`. Conclude with `(Eq.refl (multTB a b θ M J χ))`.
+-/
 theorem multT_eq : @MultT b.D = @multTB B C a b := by
   funext V S θ M J χ
   delta MultT
@@ -398,6 +484,9 @@ theorem multT_eq : @MultT b.D = @multTB B C a b := by
 def castAlong {α β : Type} (e : α = β) (x : α) : {y : β // HEq x y} :=
   Classical.choice ⟨⟨cast e x, (cast_heq e x).symm⟩⟩
 
+/- English proof (translation)
+The claim follows from `(eq_of_heq (castAlong rfl x).2).symm`.
+-/
 theorem castAlong_rfl {α : Type} (x : α) : (castAlong rfl x).1 = x := (eq_of_heq (castAlong rfl x).2).symm
 
 section LiftTypes

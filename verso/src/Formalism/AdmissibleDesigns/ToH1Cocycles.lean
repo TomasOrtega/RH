@@ -41,16 +41,27 @@ def psiB {w : HeightOneSpectrum (𝓞 D.host.E)} (hw : w ∈ placesOver D.host.E
       c * eK (D.nbr i w hw) ((show VB i Dd from v) (H0.e0 a))
     rw [map_mul, RingEquiv.apply_symm_apply]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem psiB_apply {w : HeightOneSpectrum (𝓞 D.host.E)} (hw : w ∈ placesOver D.host.E (D.nd.l i))
     (v : TrV (eK (D.nbr i w hw)) (VB i Dd)) (a : Fin D.R.r) :
     psiB i Dd hw v a = eK (D.nbr i w hw) ((show VB i Dd from v) (H0.e0 a)) := rfl
 
+/- English proof (translation)
+The claim follows from `IsModuleTopology.continuous_of_linearMap (psiB i Dd hw)`.
+-/
 theorem psiB_cont {w : HeightOneSpectrum (𝓞 D.host.E)} (hw : w ∈ placesOver D.host.E (D.nd.l i)) :
     Continuous (psiB i Dd hw) :=
   IsModuleTopology.continuous_of_linearMap (psiB i Dd hw)
 
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+Establish `h1 : phi0 i Dd (qB i Dd v) = (Submodule.Quotient.mk (fun a => v (H0.e0 a)) : KOG (D.nd.O i) D.R.r)` using `by show (H0.kogEq D.R.r).symm (fun a => (qB i Dd v) (H0.e0 a)) = _`. Apply `(H0.kogEq D.R.r).injective` to reduce the goal to its premises. Rewrite using `[LinearEquiv.apply_symm_apply, H0.kogEq_apply, H0.kogTo_mk]`. Both sides reduce to the same expression. Rewrite using `[h1]`.
+
+Both sides reduce to the same expression.
+-/
 theorem psiB_comp {w : HeightOneSpectrum (𝓞 D.host.E)} (hw : w ∈ placesOver D.host.E (D.nd.l i))
     (v : VB i Dd) :
     Br.phi (D.nbr i w hw) D.R.r (phi0 i Dd (qB i Dd v)) = Submodule.Quotient.mk (psiB i Dd hw v) := by
@@ -76,6 +87,11 @@ variable {D : D7} {i : D.nd.Loc} (dc : TruncatedSeriesCountingIdentities.Decl D 
 set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a`. Rewrite using `[psiB_apply]`. Use `show _ = ∑ b, (Br.locM (D.nbr i _ hw) ((WpO D.nd i ρ π).comp (decS D.nd (plOf i dc n))) g) a b * psiB i Dd hw v b`. Use `show eK (D.nbr i _ hw) (∑ c, (Dd.ρk 0 (uElt Dd.r Dd.χ ((Br.iota D.nbr i _ hw g : decs D.host.E (Aw i dc) n) : GE D.nd))) (H0.e0 a) c • (show VB i Dd from v) c) = _`. Rewrite using `[map_sum, ← Equiv.sum_comp (H0.e0 (D := D))]`.
+
+Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Apply the tactic sequence `rw [H0.unipotent_block_zero_entry hD hN, Algebra.smul_def, map_mul, eK_apply, Br.toLLK_alg]`. Both sides reduce to the same expression.
+-/
 theorem psiB_equiv
     (hD : Formalism.RepresentationBoundsCohomology.ringDataObjects.RingDef (D.nd.O i) (D.nd.T i) (RepresentationBoundsCohomology.repX D.nd r) π (chiU D.nd i 1) (epsU D.nd i) g0 eB e₁ s Dd)
     (hN : RepresentationBoundsCohomology.NormAt D.nd r ρ π) (n : ℕ) (hw : plOf i dc n ∈ placesOver D.host.E (D.nd.l i))
@@ -115,6 +131,13 @@ variable {D : D7} (i : D.nd.Loc) (dc : TruncatedSeriesCountingIdentities.Decl D 
   [∀ w, Module (FractionRing (D.nd.O i)) (ReciprocityTheory.Gal.H1 (Dat w).ρT')]
   [∀ w, IsScalarTower (D.nd.O i) (FractionRing (D.nd.O i)) (ReciprocityTheory.Gal.H1 (Dat w).ρT')]
 
+/- English proof (translation)
+Set `S : Submodule (FractionRing (D.nd.O i)) (ReciprocityTheory.Gal.H1 (Dat n).ρT)` to `{ carrier := {a | ∃ c : ReciprocityTheory.Gal.Z1 (Dat n).ρT, Submodule.mkQ ((ReciprocityTheory.Gal.B1 (Dat n).ρT).comap (ReciprocityTheory.Gal.Z1 (Dat n).ρT).subtype) c = a ∧ c.1 ∈ fZ i dc n (Dat n).ρT} zero_mem' := ⟨0, map_zero _, (fZ i dc n (Dat n).ρT).zero_mem⟩ add_mem' := by`. Introduce and unpack `a b ⟨c, rfl, hc⟩ ⟨c', rfl, hc'⟩`. Conclude with `⟨c + c', map_add _ _ _, (fZ i dc n (Dat n).ρT).add_mem hc hc'⟩`. Use the proof step `smul_mem' := by`. Introduce and unpack `k a ⟨c, rfl, hc⟩`.
+
+Take `⟨kc, hkc, hmk⟩` from `KBKa.mk_smul (Dat n).ρT k c`. Use `⟨kc, hmk, ?_⟩` and prove the remaining obligations. Rewrite using `[hkc]`. Conclude with `(fZ i dc n (Dat n).ρT).smul_mem k hc }`. Establish `hle : HfW i dc VT VT' Dat n ≤ S`.
+
+Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨c, hc, rfl⟩`. Conclude with `⟨c, rfl, hc⟩`. Conclude with `hle hh`.
+-/
 theorem hfW_rep (n : ℕ) [ContinuousConstSMul (FractionRing (D.nd.O i)) (VT n)] (h : ReciprocityTheory.Gal.H1 (Dat n).ρT)
     (hh : h ∈ HfW i dc VT VT' Dat n) :
     ∃ c : ReciprocityTheory.Gal.Z1 (Dat n).ρT,
@@ -143,6 +166,15 @@ theorem hfW_rep (n : ℕ) [ContinuousConstSMul (FractionRing (D.nd.O i)) (VT n)]
 set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Introduce `x hx`. Take `⟨y, hy, rfl⟩` from `Submodule.mem_map.1 hx`. Take `⟨h, hh, rfl⟩` from `Submodule.mem_map.1 hy`. Take `⟨c, rfl, hcZ⟩` from `hfW_rep i dc VT VT' Dat n h hh`. Establish `hsym : ∀ g v, u.symm (Submodule.Quotient.mk ((Dat n).ρT g v)) = ρM g (u.symm (Submodule.Quotient.mk v))` using `fun g v => ReciprocityTheory.ChartRestriction.T2.trCompat_symm (MulEquiv.refl _) u ρM (Dat n).ρA hu g (Submodule.Quotient.mk v)`.
+
+Establish `hcoc : (fun g => u.symm (Submodule.Quotient.mk (c.1 g))) ∈ coZ1s ρM`. Introduce `g g'`. Establish `e` using `c.2.2 g g'`. Simplify using `only at e ⊢`. Rewrite using `[e, Submodule.Quotient.mk_add, map_add, hsym]`.
+
+Establish `hk : kRow (Dat n) ρM u hu ((Dat n).q (Submodule.mkQ _ c)) = Submodule.mkQ _ (⟨_, hcoc⟩ : coZ1s ρM)` using `by show ReciprocityTheory.ChartRestriction.T2.traceH1 (MulEquiv.refl _) u ρM (Dat n).ρA hu (ReciprocityTheory.ChartRestriction.T2.toH1Cocycles (Dat n).ρA ((Dat n).q (Submodule.mkQ _ c))) = _`. Simplify using `only [Formalism.RepresentationBoundsCohomology.LOC.LatData.q, ReciprocityTheory.Gal.mapH1, ReciprocityTheory.ChartRestriction.T2.toH1Cocycles, ReciprocityTheory.ChartRestriction.T2.traceH1, Submodule.mkQ_apply, Submodule.mapQ_apply]`. Use `congr 1`. Rewrite using `[hk]`. Use `Submodule.mem_map_of_mem (Submodule.mem_comap.2 (Submodule.mem_sup_left ⟨fun g => f (c.1 g), fZ_map i dc (Dat n).ρT ρV f hf _ hcZ, ?_⟩))` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `g`. Conclude with `(hq _).symm`.
+-/
 theorem frow_le_col (n : ℕ) [ContinuousConstSMul (FractionRing (D.nd.O i)) (VT n)]
     {M : Type} [AddCommGroup M] [Module (D.nd.O i) M] (ρM : Representation (D.nd.O i) ↥(Γn i dc n) M)
     (u : M ≃ₗ[D.nd.O i] (VT n ⧸ (Dat n).T)) (hu : ∀ g m, u (ρM g m) = (Dat n).ρA g (u m))
@@ -200,6 +232,9 @@ def idV (w : ℕ) :
   map_add' _ _ := rfl
   map_smul' _ _ := rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a`. Conclude with `KLat.matK_mulVec _ _ a`.
+-/
 theorem idV_equiv (w : ℕ) (g : decs Ek Aw w) (v : KLat.VT (O := O) bl w) :
     idV bl ρk w ((KLat.Dat r χ bl ρk ε Aw hK hε hM w).ρT g v) =
       resRep (uRep O (M := LatM O (FractionRing O) {a // bl a = 0} (ρk 0).toRingHom) r χ) (decs Ek Aw w) g
@@ -207,6 +242,9 @@ theorem idV_equiv (w : ℕ) (g : decs Ek Aw w) (v : KLat.VT (O := O) bl w) :
   funext a
   exact KLat.matK_mulVec _ _ a
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem uD_symm_mk (w : ℕ) (x : KLat.VT (O := O) bl w) :
     (KLat.uD r χ bl ρk ε Aw hK hε hM w).symm (Submodule.Quotient.mk x) =
       qVM O {a // bl a = 0} (ρk 0).toRingHom (idV bl ρk w x) := by
@@ -256,6 +294,9 @@ def FK (n : ℕ) : Submodule (D.nd.O i) (H1z (rhoM i dc Dd n)) :=
 
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+Unfold `FK Fρ`. Use `split_ifs`. Use `haveI : ContinuousMul (FractionRing (D.nd.O i)) := hK`. Conclude with `frow_le_col i dc _ _ (DatK i dc Dd hK hε hM) n (rhoM i dc Dd n) (uDK i dc Dd hK hε hM n) (KLat.huD Dd.r Dd.χ (RepresentationBoundsCohomology.blk D.R) Dd.ρk (epsU D.nd i) (Aw i dc) hK hε hM n) (rhoV i dc Dd n) (qB i Dd) (idV (RepresentationBoundsCohomology.blk D.R) Dd.ρk n) (idV_e …`. Conclude with `le_rfl`.
+-/
 theorem fK_le (n : ℕ) : FK i dc Dd hK hε hM n ≤ FcolK i dc Dd n := by
   unfold FK Fρ
   split_ifs
@@ -270,6 +311,9 @@ theorem fK_le (n : ℕ) : FK i dc Dd hK hε hM n ≤ FcolK i dc Dd n := by
 set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `n _ hw y hy`. Conclude with `bkLoc_col i dc ρ π _ Dd.r Dd.χ (phi0 i Dd) (invariants_map_equivariant hD hN) n hw (rhoV i dc Dd n) (qB i Dd) (psiB i Dd hw) (psiB_cont i Dd hw) (psiB_equiv dc hD hN n hw) (psiB_comp i Dd hw) y (fK_le i dc Dd hK hε hM n hy)`.
+-/
 theorem bkLoc_rec
     (hD : Formalism.RepresentationBoundsCohomology.ringDataObjects.RingDef (D.nd.O i) (D.nd.T i) (RepresentationBoundsCohomology.repX D.nd r) π (chiU D.nd i 1) (epsU D.nd i) g0 eB e₁ s Dd)
     (hN : RepresentationBoundsCohomology.NormAt D.nd r ρ π) :
@@ -280,6 +324,9 @@ theorem bkLoc_rec
     (psiB i Dd hw) (psiB_cont i Dd hw) (psiB_equiv dc hD hN n hw) (psiB_comp i Dd hw) y
     (fK_le i dc Dd hK hε hM n hy)
 
+/- English proof (translation)
+The claim follows from `tieSel1_rec_loc dc hD hN _ (bkLoc_rec i dc Dd hK hε hM hD hN)`.
+-/
 theorem tieSel1_K
     (hD : Formalism.RepresentationBoundsCohomology.ringDataObjects.RingDef (D.nd.O i) (D.nd.T i) (RepresentationBoundsCohomology.repX D.nd r) π (chiU D.nd i 1) (epsU D.nd i) g0 eB e₁ s Dd)
     (hN : RepresentationBoundsCohomology.NormAt D.nd r ρ π) :

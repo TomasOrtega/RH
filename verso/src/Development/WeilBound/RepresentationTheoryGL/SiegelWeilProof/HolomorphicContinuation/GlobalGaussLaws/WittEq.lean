@@ -13,6 +13,9 @@ namespace PositivityTheory.Rg.Sw.Glob.WEq
 local notation "hermF" => ReciprocityTheory.ChartRestriction.G.FD.herm
 local notation "ccF" => ReciprocityTheory.ChartRestriction.G.FD.cc
 
+/- English proof (translation)
+Simplify using `only [Module.Basis.equivFun_symm_apply, map_sum, LinearMap.map_smulₛₗ, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul, RingHom.id_apply]`. Simplify using `only [ReciprocityTheory.ChartRestriction.G.FD.herm, Matrix.transpose_apply, HSpace.gram, ReciprocityTheory.ChartRestriction.G.FD.cc, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[starRingEnd_apply, hst]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem coord_hT (D : D7) [IsCMField D.host.E] (hst : ∀ z : D.host.E, star z = IsCMField.complexConj D.host.E z)
     (V : HSp D) (x y : Fin V.rank → D.host.E) :
     V.hT (V.frame.equivFun.symm y) (V.frame.equivFun.symm x) = hermF (V.gram)ᵀ x y := by
@@ -23,6 +26,15 @@ theorem coord_hT (D : D7) [IsCMField D.host.E] (hst : ∀ z : D.host.E, star z =
   rw [starRingEnd_apply, hst]
   ring
 
+/- English proof (translation)
+Establish `c1 : Fintype.card {a // ε a = true} = Fintype.card {a : Fin r // (a : ℕ) < k}`. Rewrite using `[Fintype.card_subtype]`. Establish `e : {a : Fin r // (a : ℕ) < k} ≃ Fin k` using `⟨fun a => ⟨a, a.2⟩, fun i => ⟨⟨i, by omega⟩, i.2⟩, fun _ => rfl, fun _ => rfl⟩`. Rewrite using `[Fintype.card_congr e, Fintype.card_fin]`. Conclude with `he`.
+
+Establish `c2 : Fintype.card {a // ¬ ε a = true} = Fintype.card {a : Fin r // ¬ (a : ℕ) < k}`. Rewrite using `[Fintype.card_subtype_compl, Fintype.card_subtype_compl, c1]`. Set `e1` to `Fintype.equivOfCardEq c1`. Set `e2` to `Fintype.equivOfCardEq c2`. Use `⟨(Equiv.sumCompl (fun a => ε a = true)).symm.trans ((Equiv.sumCongr e1 e2).trans (Equiv.sumCompl (fun a : Fin r => (a : ℕ) < k))), fun a => ?_⟩` and prove the remaining obligations.
+
+Distinguish the cases in `h : ε a = true`. Rewrite using `[Equiv.trans_apply, Equiv.sumCompl_symm_apply_of_pos (p := fun a => ε a = true) h, Equiv.trans_apply, Equiv.sumCongr_apply, Sum.map_inl, Equiv.sumCompl_apply_inl, h]`. Conclude with `(decide_eq_true (e1 ⟨a, h⟩).2).symm`. Rewrite using `[Equiv.trans_apply, Equiv.sumCompl_symm_apply_of_neg (p := fun a => ε a = true) h, Equiv.trans_apply, Equiv.sumCongr_apply, Sum.map_inr, Equiv.sumCompl_apply_inr]`. Simplify using `only [Bool.not_eq_true] at h`.
+
+Rewrite using `[h]`. Conclude with `(decide_eq_false (e2 ⟨a, by simp [h]⟩).2).symm`.
+-/
 theorem perm_exists {r k : ℕ} (hk : k ≤ r) (ε : Fin r → Bool) (he : cnt ε true = k) :
     ∃ π : Equiv.Perm (Fin r), ∀ a, ε a = decide (((π a : Fin r) : ℕ) < k) := by
   classical
@@ -48,6 +60,55 @@ theorem perm_exists {r k : ℕ} (hk : k ≤ r) (ε : Fin r → Bool) (he : cnt �
     rw [h]
     exact (decide_eq_false (e2 ⟨a, by simp [h]⟩).2).symm
 
+/- English proof (translation)
+Introduce `D V k hk hS`. Use `letI hcm : IsCMField D.host.E := D.host.isCMField_hostE`. Establish `hst : ∀ z : D.host.E, star z = IsCMField.complexConj D.host.E z` using `fun _ => rfl`. Use `set r := V.rank with hrdef`. Use `set G₁ : Matrix (Fin r) (Fin r) D.host.E := (V.gram)ᵀ with hG₁`.
+
+Set `v : (Fin r → D.host.E) ≃ₗ[D.host.E] V.V` to `V.frame.equivFun.symm`. Set `L : Submodule (𝓞 D.host.E) (Fin r → D.host.E)` to `V.L0.map ((V.frame.equivFun : V.V →ₗ[D.host.E] (Fin r → D.host.E)).restrictScalars (𝓞 D.host.E))`. Establish `memL : ∀ x, x ∈ L ↔ v x ∈ V.L0`. Introduce `x`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨y, hy, rfl⟩`. Simplify `hy` using `[v]`. Introduce `hx`. Conclude with `⟨v x, hx, V.frame.equivFun.apply_symm_apply x⟩`. Establish `hL : ReciprocityTheory.MultiplicativeHeights.IsLattice L`.
+
+Use `⟨V.standardTuple_isLattice.fg.map _, ?_⟩` and prove the remaining obligations. Establish `hc : (L : Set (Fin r → D.host.E)) = V.frame.equivFun '' (V.L0 : Set V.V)`. Use extensionality with `x`. Simplify using `[L]`. Rewrite using `[hc, show (⇑V.frame.equivFun : V.V → (Fin r → D.host.E)) = ⇑(V.frame.equivFun : V.V →ₗ[D.host.E] (Fin r → D.host.E)) from rfl, Submodule.span_image, V.standardTuple_isLattice.span_eq_top, Submodule.map_top, LinearEquiv.range]`.
+
+Establish `hone : ∀ z : D.host.E, z ∈ (1 : Submodule (𝓞 D.host.E) D.host.E) ↔ z ∈ (1 : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E)`. Introduce `z`. Rewrite using `[Submodule.mem_one, FractionalIdeal.mem_one_iff]`. Establish `hdual : ∀ z : V.V, z ∈ V.L0 ↔ ∀ y ∈ V.L0, V.hT y z ∈ (1 : Submodule (𝓞 D.host.E) D.host.E)`. Introduce `z`.
+
+Establish `hu` using `V.baseLattice_isUnimodular`. Unfold `Formalism.HermitianLatticesTheory.IsUnimodular Formalism.HermitianLatticesTheory.dual at hu`. Use `conv_lhs => rw [← hu]`. Simplify using `[Formalism.E.hdual, Submodule.mem_iInf, Submodule.mem_comap]`. Establish `hmod : ∀ x, x ∈ L ↔ ∀ y ∈ L, hermF G₁ x y ∈ (1 : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E)`.
+
+Introduce `x`. Rewrite using `[memL, hdual]`. Prove the components needed by the constructor for the conclusion. Introduce `h y hy`. Rewrite using `[← coord_hT D hst V x y, ← hone]`.
+
+Conclude with `h _ ((memL y).1 hy)`. Introduce `h y' hy'`. Establish `hy : V.frame.equivFun y' ∈ L` using `(memL _).2 (by simpa [v] using hy')`. Use `h _ hy` as an intermediate fact. Rewrite `this` using `[← coord_hT D hst V x _, ← hone]`.
+
+Simplify `this` using `[v]`. Establish `hG : ∀ a b, ccF (G₁ a b) = G₁ b a`. Introduce `a b`. Use `V.herm.eq (V.frame b) (V.frame a)` as an intermediate fact. Simplify using `only [hG₁, Matrix.transpose_apply, HSpace.gram, ReciprocityTheory.ChartRestriction.G.FD.cc]`.
+
+Rewrite using `[← hst]`. Conclude with `this`. Establish `hd : G₁.det ≠ 0` using `by rw [hG₁, Matrix.det_transpose]; exact GlobalTheory.MassLinkSD.gram_det_ne V`. Establish `key : ∀ ρ : D.what₂.Tau, ∃ Q : Matrix (Fin r) (Fin r) ℂ, Q.det ≠ 0 ∧ (dSgn r k).map (tauE D ρ) = Qᵀ * G₁.map (tauE D ρ) * Q.map (starRingEnd ℂ)`. Introduce `ρ`.
+
+Take `⟨ε, fr, hfr, hdiag, hk1, hk2⟩` from `hS ρ`. Establish `hc` using `cnt_add ε`. Take `⟨π, hπ⟩` from `perm_exists (r := r) (k := k) (by omega) ε (by omega)`. Set `X : Matrix (Fin r) (Fin r) ℂ` to `(π.symm.toPEquiv).toMatrix`. Establish `hX : X.det ≠ 0`.
+
+Simplify using `only [X, Matrix.det_permutation]`. Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign π.symm) with h | h <;> simp [h]`. Establish `hfr' : fr.det ≠ 0` using `hfr.ne_zero`. Establish `hT' : (frᴴ)ᵀ = fr.map (starRingEnd ℂ)`. Use extensionality with `i j`.
+
+Simplify using `[Matrix.conjTranspose_apply]`. Establish `h1 : ReciprocityTheory.ChartRestriction.G.FD.gram (tauE D ρ) G₁ fr = Matrix.diagonal (sgn ε)`. Rewrite using `[GlobalTheory.Published.gram_eq, hG₁, Matrix.transpose_map]`. Establish `e : (HSpace.gram V).map (tauE D ρ) = gramAt D V ρ` using `rfl`. Rewrite using `[e]`.
+
+Use `congrArg Matrix.transpose hdiag` as an intermediate fact. Rewrite `this` using `[Matrix.diagonal_transpose, Matrix.transpose_mul, Matrix.transpose_mul, hT', ← Matrix.mul_assoc]`. Conclude with `this`. Establish `h2 : ReciprocityTheory.ChartRestriction.G.FD.gram (tauE D ρ) (dSgn r k) X = Matrix.diagonal (sgn ε)`. Establish `hXc : X.map (starRingEnd ℂ) = X`.
+
+Apply the tactic sequence `ext i j; simp only [X, Matrix.map_apply, PEquiv.toMatrix_apply]; split_ifs <;> simp`. Establish `hXt : Xᵀ = π.toPEquiv.toMatrix`. Simplify using `only [X]`. Rewrite using `[← PEquiv.toMatrix_symm, ← Equiv.toPEquiv_symm, Equiv.symm_symm]`. Rewrite using `[GlobalTheory.Published.gram_eq, hXc, hXt, PEquiv.toMatrix_toPEquiv_mul]`.
+
+Simplify using `only [X]`. Rewrite using `[PEquiv.mul_toMatrix_toPEquiv, Equiv.symm_symm, Matrix.submatrix_submatrix, dSgn, Matrix.diagonal_map (map_zero _), Function.comp_id, Function.id_comp, Matrix.submatrix_diagonal_equiv]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Establish `ha` using `hπ a`.
+
+Simplify using `only [Function.comp_apply, sgn]`. Rewrite using `[ha]`. Apply the tactic sequence `by_cases h : ((π a : Fin r) : ℕ) < k <;> simp [h]`. Conclude with `GlobalTheory.Published.Landherr.congr_of_gram_eq (G := G₁) (G' := dSgn r k) (tauE D ρ) hfr' hX (h1.trans h2.symm)`. Establish `hs : ∀ σ : D.host.E →+* ℂ, ∃ Q : Matrix (Fin r) (Fin r) ℂ, Q.det ≠ 0 ∧ (dSgn r k).map σ = Qᵀ * G₁.map σ * Q.map (starRingEnd ℂ)`.
+
+Introduce `σ`. Distinguish the cases in `h : ∃ ρ, tauE D ρ = NumberField.ComplexEmbedding.conjugate σ`. Take `⟨ρ, hρ⟩` from `h`. Use `GlobalTheory.Published.Landherr.congr_conjugate (G := G₁) (G' := dSgn r k) (tauE D ρ) (key ρ)` as an intermediate fact. Rewrite `this` using `[hρ, NumberField.ComplexEmbedding.involutive_conjugate D.host.E σ]`.
+
+Conclude with `this`. Take `⟨ρ, hρ⟩` from `(GlobalTheory.PointAtPlace.tauE_cm σ).2 h`. Rewrite using `[← hρ]`. Conclude with `key ρ`. Establish `hL' : ReciprocityTheory.MultiplicativeHeights.IsLattice (GlobalTheory.InertWitt.stdLat D.host.E r)` using `⟨(GlobalTheory.InertWitt.stdLat_isLattice D.host.E r).fg, (GlobalTheory.InertWitt.stdLat_isLattice D.host.E r).span_eq_top⟩`.
+
+Establish `hcc : ∀ z ∈ (1 : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E), ccF z ∈ (1 : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E)`. Introduce `z hz`. Rewrite `hz`, the goal using `[mem_one_iff_isIntegral]`. Conclude with `cc_isIntegral hz`. Use `haveI : Algebra.Unramified (𝓞 (maximalRealSubfield D.host.E)) (𝓞 D.host.E) := Formalism.L2.Pj.unramBridge D.host.E (Formalism.L2.Pj.cmUnram_conj D)`.
+
+Take `⟨P, hP, hPG⟩` from `GlobalTheory.SelfDualGenus.congr_of_modular (G := G₁) (G' := dSgn r k) (L := L) (L' := GlobalTheory.InertWitt.stdLat D.host.E r) (𝔟 := 1) (GlobalTheory.LocalQuad.landherr_of_hasseNormSt GlobalTheory.QNorm.hasseNormSt) GlobalTheory.QNorm.hasseNormSt one_ne_zero hcc hG (fun a b => …`. Set `f : (Fin k → D.host.E) →ₗ[D.host.E] V.V` to `v.toLinearMap ∘ₗ P.mulVecLin ∘ₗ extL hk`. Establish `hPi : Function.Injective P.mulVecLin`. Establish `hu : IsUnit P` using `(Matrix.isUnit_iff_isUnit_det P).2 (isUnit_iff_ne_zero.2 hP)`. Simplify `(Matrix.mulVec_injective_iff_isUnit.2 hu)` using `[Matrix.coe_mulVecLin]`.
+
+Establish `hf : Function.Injective f` using `v.injective.comp (hPi.comp (extL_injective hk))`. Establish `hfin : Module.finrank D.host.E (LinearMap.range f) = k`. Rewrite using `[LinearMap.finrank_range_of_inj hf, Module.finrank_fin_fun]`. Establish `hiso : ∀ x ∈ LinearMap.range f, ∀ y ∈ LinearMap.range f, V.hT x y = 0`. Introduce and unpack `_ ⟨u, rfl⟩ _ ⟨u', rfl⟩`.
+
+Use `show V.hT (v (P *ᵥ ext hk u)) (v (P *ᵥ ext hk u')) = 0`. Rewrite using `[coord_hT D hst V, GlobalTheory.SelfDualGenus.herm_mulVec, ← hPG, herm_ext]`. Unfold `Formalism.MainNotions.SchurIrreducible.wittIdx`. Use `le_csSup ⟨Module.finrank D.host.E V.V, ?_⟩ ⟨LinearMap.range f, hfin, hiso⟩` and prove the remaining obligations. Introduce and unpack `d ⟨W, rfl, -⟩`.
+
+Conclude with `Submodule.finrank_le W`.
+-/
 theorem wittLBeq : WittLBeq := by
   intro D V k hk hS
   letI hcm : IsCMField D.host.E := D.host.isCMField_hostE
@@ -182,6 +243,9 @@ end PositivityTheory.Rg.Sw.Glob.WEq
 
 namespace PositivityTheory.Rg.Sw.Glob
 
+/- English proof (translation)
+The claim follows from `WEq.wittLBeq`.
+-/
 theorem wittLBeq : WittLBeq := WEq.wittLBeq
 
 end PositivityTheory.Rg.Sw.Glob

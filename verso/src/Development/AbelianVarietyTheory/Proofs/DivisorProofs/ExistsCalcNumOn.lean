@@ -14,6 +14,9 @@ namespace GlobalTheory.Mean4O.CalcModel
 
 section Algebra
 
+/- English proof (translation)
+Establish `e : a = fun l => ∑ j, a l j • (Pi.single j 1 : J → ℝ)`. Use function extensionality and compare the values at `_ i`. Simplify using `[Pi.single_apply]`. Use `conv_lhs => rw [e, G.map_sum]`. Simplify using `only [G.map_smul_univ, smul_eq_mul]`.
+-/
 theorem expand {J : Type} [Fintype J] [DecidableEq J] {m : ℕ} (G : MultilinearMap ℝ (fun _ : Fin m => J → ℝ) ℝ)
     (a : Fin m → J → ℝ) : G a = ∑ r : Fin m → J, (∏ l, a l (r l)) * G fun l => Pi.single (r l) 1 := by
   have e : a = fun l => ∑ j, a l j • (Pi.single j 1 : J → ℝ) := by
@@ -22,12 +25,22 @@ theorem expand {J : Type} [Fintype J] [DecidableEq J] {m : ℕ} (G : Multilinear
   conv_lhs => rw [e, G.map_sum]
   simp only [G.map_smul_univ, smul_eq_mul]
 
+/- English proof (translation)
+Rewrite using `[show (G : _ → ℝ) = _ from funext (expand G)]`. Use `fun_prop`.
+-/
 theorem continuous_form {J : Type} [Fintype J] {m : ℕ} (G : MultilinearMap ℝ (fun _ : Fin m => J → ℝ) ℝ) :
     Continuous G := by
   classical
   rw [show (G : _ → ℝ) = _ from funext (expand G)]
   fun_prop
 
+/- English proof (translation)
+Set `P : MvPolynomial J ℝ` to `∑ r : Fin m → J, (∏ k, MvPolynomial.X (r k)) * MvPolynomial.C (G fun k => Pi.single (r k) 1)`. Establish `hP : ∀ a : J → ℝ, MvPolynomial.eval a P = G (fun _ => a)`. Introduce `a`. Rewrite using `[expand]`. Simplify using `only [P, map_sum, map_mul, map_prod, MvPolynomial.eval_X, MvPolynomial.eval_C]`.
+
+Establish `h0 : P = 0`. Use `MvPolynomial.funext_set (fun _ => Set.range (Int.cast : ℤ → ℝ)) (fun _ => Set.infinite_range_of_injective Int.cast_injective) fun x hx => ?_` and prove the remaining obligations. Use `choose n hn using fun j => hx j (Set.mem_univ j)`. Take `rfl : x = fun j => (n j : ℝ)` from `funext fun j => (hn j).symm`. Rewrite using `[hP, h, map_zero]`.
+
+Rewrite using `[← hP, h0, map_zero]`.
+-/
 theorem diag_zero_of_int {J : Type} [Fintype J] {m : ℕ} (G : MultilinearMap ℝ (fun _ : Fin m => J → ℝ) ℝ)
     (h : ∀ n : J → ℤ, G (fun _ j => (n j : ℝ)) = 0) (a : J → ℝ) : G (fun _ => a) = 0 := by
   classical
@@ -45,6 +58,15 @@ theorem diag_zero_of_int {J : Type} [Fintype J] {m : ℕ} (G : MultilinearMap �
     rw [hP, h, map_zero]
   rw [← hP, h0, map_zero]
 
+/- English proof (translation)
+Set `Fc : ContinuousMultilinearMap ℝ (fun _ : Fin (e + 1) => J → ℝ) ℝ` to `⟨F, continuous_form F⟩`. Establish `hd : ∀ t : ℝ, HasDerivAt (fun t : ℝ => F (fun _ => a + t • d)) 0 t`. Introduce `t`. Establish `h1 : HasDerivAt (fun t : ℝ => fun _ : Fin (e + 1) => a + t • d) (fun _ => d) t` using `hasDerivAt_pi.2 fun _ => by simpa using ((hasDerivAt_id t).smul_const d).const_add a`. Establish `h2` using `(Fc.hasFDerivAt (fun _ => a + t • d)).comp_hasDerivAt t h1`.
+
+Rewrite `h2` using `[ContinuousMultilinearMap.linearDeriv_apply]`. Use `h2.congr_deriv (Finset.sum_eq_zero fun i _ => ?_)` and prove the remaining obligations. Use `Eq.trans (congrArg F ?_) ((hs _ (Equiv.swap 0 i)).trans (h (a + t • d)))` and prove the remaining obligations. Use function extensionality and compare the values at `l`. Distinguish the cases in `hl : l = i`.
+
+Substitute `hl` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[Function.update_of_ne hl, Function.comp_apply]`. Establish `: Equiv.swap 0 i l ≠ 0` using `fun h0 => hl (by`. Rewrite `h0` using `[Equiv.swap_apply_eq_iff, Equiv.swap_apply_left]`.
+
+Conclude with `h0)`. Take `⟨l', hl'⟩` from `Fin.exists_succ_eq.2 this`. Rewrite using `[← hl', Fin.cons_succ]`. Simplify using `using is_const_of_deriv_eq_zero (fun t => (hd t).differentiableAt) (fun t => (hd t).deriv) t 0`.
+-/
 theorem diag_add_smul {J : Type} [Fintype J] {e : ℕ}
     (F : MultilinearMap ℝ (fun _ : Fin (e + 1) => J → ℝ) ℝ)
     (hs : ∀ (v : Fin (e + 1) → J → ℝ) (ρ : Equiv.Perm (Fin (e + 1))), F (v ∘ ρ) = F v) (d : J → ℝ)
@@ -70,6 +92,11 @@ theorem diag_add_smul {J : Type} [Fintype J] {e : ℕ}
       rw [← hl', Fin.cons_succ]
   simpa using is_const_of_deriv_eq_zero (fun t => (hd t).differentiableAt) (fun t => (hd t).deriv) t 0
 
+/- English proof (translation)
+Use `diag_zero_of_int F (fun n => ?_) a` and prove the remaining obligations. Establish `h2` using `diag_zero_of_int (F.curryLeft (Pi.single none 1)) h1`. Establish `h3` using `diag_add_smul F hs _ h2 (fun j => ((Function.update n none 0 j : ℤ) : ℝ)) (n none)`. Rewrite `h3` using `[h0 _ (by simp)]`. Use `Eq.trans (congrArg F ?_) h3` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `_ j`. Apply the tactic sequence `cases j <;> simp`.
+-/
 theorem diag_zero {ι : Type} [Fintype ι] [DecidableEq ι] {e : ℕ}
     (F : MultilinearMap ℝ (fun _ : Fin (e + 1) => Option ι → ℝ) ℝ)
     (hs : ∀ (v : Fin (e + 1) → Option ι → ℝ) (ρ : Equiv.Perm (Fin (e + 1))), F (v ∘ ρ) = F v)
@@ -94,10 +121,16 @@ def prodForm {J V : Type} [Fintype J] [AddCommGroup V] [Module ℝ V] (m : ℕ) 
   Φ.compMultilinearMap ((MultilinearMap.mkPiAlgebra ℝ (Fin m) (MvPolynomial J ℝ)).compLinearMap
     fun _ => (linL J).comp f)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem prodForm_apply {J V : Type} [Fintype J] [AddCommGroup V] [Module ℝ V] (m : ℕ)
     (Φ : MvPolynomial J ℝ →ₗ[ℝ] ℝ) (f : V →ₗ[ℝ] J → ℝ) (v : Fin m → V) :
     prodForm m Φ f v = Φ (∏ l, lin (f (v l))) := rfl
 
+/- English proof (translation)
+Rewrite using `[prodForm_apply, prodForm_apply]`. Conclude with `congrArg Φ (Equiv.prod_comp ρ fun l => lin (f (v l)))`.
+-/
 theorem prodForm_symm {J V : Type} [Fintype J] [AddCommGroup V] [Module ℝ V] (m : ℕ)
     (Φ : MvPolynomial J ℝ →ₗ[ℝ] ℝ) (f : V →ₗ[ℝ] J → ℝ) (v : Fin m → V) (ρ : Equiv.Perm (Fin m)) :
     prodForm m Φ f (v ∘ ρ) = prodForm m Φ f v := by
@@ -135,6 +168,9 @@ open InhabCalc
 
 variable {e : ℕ} {M : Man e} {ι : Type} [Fintype ι] (P : ι → M.Pot) (hP : ∀ i σ, IsPotential (M.A σ) (P i σ))
 
+/- English proof (translation)
+Use `(symForm_apply _ _ _ v).trans (Finset.sum_eq_zero fun s _ => ?_)` and prove the remaining obligations. Establish `: (((s.piecewise (fun i => ((LinearMap.inr ℝ (ι → ℝ) (smSub M)).comp (LinearMap.snd ℝ _ _)) (v i)) fun i => ((LinearMap.inl ℝ (ι → ℝ) (smSub M)).comp (LinearMap.fst ℝ _ _)) (v i)) ∘ pick s) 0).2 = 0`. Apply the tactic sequence `by_cases h : pick s 0 ∈ s <;> simp [Finset.piecewise, h, hv]`. Use `show intL M P hP _ _ = 0`. Rewrite using `[LinearMap.snd_apply, this, map_zero, MultilinearMap.zero_apply]`.
+-/
 theorem calcOf_num_zero (v : Fin (e + 1) → (ι → ℝ) × smSub M) (hv : ∀ l, (v l).2 = 0) :
     (calcOf M P hP).num v = 0 := by
   refine (symForm_apply _ _ _ v).trans (Finset.sum_eq_zero fun s _ => ?_)
@@ -161,6 +197,11 @@ def calcWith (Φ : MvPolynomial ι ℝ →ₗ[ℝ] ℝ) : Calc M where
     have : lin (0 : ι → ℝ) = 0 := (linL ι).map_zero
     exact (congrArg (fun x => Φ (x * _)) this).trans (by rw [zero_mul, map_zero])
 
+/- English proof (translation)
+Establish `h : (∑ i, a i • (show (calcWith P hP Φ).V from cls M P hP i)) = ((a, 0) : (ι → ℝ) × smSub M)`. Express the relevant statement in the definitionally equal form `(∑ i, a i • (((Pi.single i 1 : ι → ℝ), 0) : (ι → ℝ) × smSub M)) = _`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use function extensionality and compare the values at `j`. Simplify using `[Prod.fst_sum, Pi.single_apply]`.
+
+Simplify using `[Prod.snd_sum]`. Rewrite using `[h]`. Use `(congrArg₂ (· + ·) (calcOf_num_zero P hP _ fun _ => rfl) (prodForm_apply _ _ _ _)).trans ?_` and prove the remaining obligations. Rewrite using `[zero_add, Finset.prod_const, Finset.card_univ, Fintype.card_fin]`. Both sides reduce to the same expression.
+-/
 theorem calcWith_top (Φ : MvPolynomial ι ℝ →ₗ[ℝ] ℝ) (a : ι → ℝ) :
     (calcWith P hP Φ).top (∑ i, a i • (show (calcWith P hP Φ).V from cls M P hP i)) = Φ (lin a ^ (e + 1)) := by
   classical
@@ -177,6 +218,19 @@ theorem calcWith_top (Φ : MvPolynomial ι ℝ →ₗ[ℝ] ℝ) (a : ι → ℝ)
 
 variable {k : Type} [CommRing k] {X : Scheme.{0}} [IsIntegral X] {p : X ⟶ Sp k}
 
+/- English proof (translation)
+Introduce `u hu hu' hc Φ hΦ a`. Set `θ : (Option ι → ℝ) →ₗ[ℝ] K.V` to `∑ i, (LinearMap.proj (some i)).smulRight (v i) + (LinearMap.proj none).smulRight (K.ar u)`. Establish `hθ : ∀ a, θ a = ∑ i, a (some i) • v i + a none • K.ar u` using `fun a => by`. Simplify using `[θ, LinearMap.sum_apply]`. Establish `key` using `diag_zero (prodForm (e + 1) Φ LinearMap.id - ν • K.num.compLinearMap fun _ => θ) (fun w ρ => ?_) (fun n hn => ?_) (fun n => ?_) a`.
+
+Rewrite `key` using `[MultilinearMap.sub_apply, sub_eq_zero, prodForm_apply]`. Simplify `key` using `[hθ, Calc.top]`. Simplify using `only [MultilinearMap.sub_apply, prodForm_symm, MultilinearMap.smul_apply, MultilinearMap.compLinearMap_apply]`. Conclude with `congrArg (fun x => _ - ν • x) (K.symm (fun l => θ (w l)) ρ)`. Establish `hi : (comb (fun o : Option ι => o.elim (fnB (M.pull ε π ((2 : ℝ) • u)) hu' hc) L) n).Isometric (comb L fun i => n (some i))` using `HermLB.icls_eq_iff.1 (by simp [icls_comb, hn])`.
+
+Use `HermLB.IsSelfInter.unique hX (hi.isSelfInter hX (hΦ.1 n)) (h0 _)` as an intermediate fact. Rewrite using `[MultilinearMap.sub_apply, sub_eq_zero, prodForm_apply]`. Simplify `this` using `[hθ, hn, Calc.top]`. Set `L' : Option ι → HermLB p` to `fun o => o.elim (fnB (M.pull ε π ((2 : ℝ) • u)) hu' hc) L`. Set `A : Option (Option ι) → Option ι → ℤ` to `fun j => Pi.single (j.getD none) 1`.
+
+Apply the tactic sequence `have hΦ' := ((Published.arIso_holds k X p e hX).2 _ L' Φ hΦ).2.2 (Option (Option ι)) (fun o => o.elim (fnB (M.pull ε π ((2 : ℝ) • u)) hu' hc) L') A (fun j => by cases j <;> exact isometric_comb_single L' _)`. Establish `h1` using `H k X p e hX _ L' _ hu' hc _ hΦ' n`. Establish `h2u : M.Smooth ((2 : ℝ) • u)` using `(smSub M).smul_mem 2 hu`. Rewrite `h1` using `[hC u hu hu' hc n _ h2u, ← K.num_ar _ h2u (fun _ => _), map_smul, K.num.cons_smul]`. Simplify using `only [LinearMap.comp_apply, AlgHom.toLinearMap_apply, map_mul, map_pow, MvPolynomial.aeval_X, MvPolynomial.aeval_rename, A, lin_single, Function.comp_def, Option.getD_some, Option.getD_none, MvPolynomial.aeval_X_left_apply] at h1`.
+
+Rewrite using `[MultilinearMap.sub_apply, sub_eq_zero, prodForm_apply, Fin.prod_univ_succ]`. Establish `h3 : lin (Pi.single none 1 : Option ι → ℝ) = MvPolynomial.X none`. Simplify using `[lin, Pi.single_apply, apply_ite MvPolynomial.C]`. Establish `h4 : (fun l => θ ((Fin.cons (Pi.single none 1) fun _ j => (n j : ℝ) : Fin (e + 1) → Option ι → ℝ) l)) = Fin.cons (K.ar u) fun _ => ∑ i, (n (some i) : ℝ) • v i + (n none : ℝ) • K.ar u`. Use function extensionality and compare the values at `l`.
+
+Apply the tactic sequence `refine Fin.cases ?_ (fun l => ?_) l <;> simp [hθ]`. Simplify using `only [Fin.cons_zero, Fin.cons_succ, LinearMap.id_apply, h3, Finset.prod_const, Finset.card_univ, Fintype.card_fin, MultilinearMap.smul_apply, MultilinearMap.compLinearMap_apply, h4, h1, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem numOn_of (H : Published.ArChange) (hX : IsArithVar p e) {ε : (k →+* ℂ) → Fin (M.n + 1)}
     {π : ∀ σ, CxPts p σ → M.X (ε σ)} {ν : ℝ} {L : ι → HermLB p} (K : Calc M) (v : ι → K.V)
     (hC : K.ChernOn ε π ν L v)

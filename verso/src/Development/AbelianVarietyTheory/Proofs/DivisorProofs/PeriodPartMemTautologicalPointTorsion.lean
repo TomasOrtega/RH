@@ -13,6 +13,17 @@ open GlobalTheory.TInj
 
 namespace GlobalTheory.TInj
 
+/- English proof (translation)
+Introduce `o W _ _ _ T I _ ε n V _ _ D ω s e β ββ w hB hF hs F _ _ a`. Establish `hex` using `fun b => GlobalTheory.T.exists_tautological_point_torus_extension T ε n V D ω s e β ββ w hB hF hs F b`. Set `f : (Fin T.r → ℤ) → GtPtF D F` to `fun b => Classical.choose (hex b)`. Establish `hf : ∀ b, TautPt T ω s ε n D e β ββ w F b (f b)` using `fun b => Classical.choose_spec (hex b)`. Establish `hadd` using `GlobalTheory.T.tautological_point_torus_extension_add T ε n V D ω s e β ββ w hB hF F`.
+
+Establish `hzi` using `GlobalTheory.T.tautologicalPoint_zero_and_period T ε n V D ω s e β ββ w hB hF F`. Use `⟨⟨e.symm a, f a, ⟨f (((n : ℕ) : ℤ) • a), ?_, ?_⟩⟩, rfl, hf a⟩` and prove the remaining obligations. Use `⟨fun i => f (((i : ℕ) : ℤ) • a), ?_, ?_, rfl⟩` and prove the remaining obligations. Apply `(hzi _).1` to reduce the goal to its premises. Establish `h0 : (((0 : Fin (n + 1)) : ℕ) : ℤ) • a = 0` using `by simp`.
+
+Simplify using `only`. Rewrite using `[h0]`. Conclude with `hf 0`. Introduce `i`. Establish `h1 : ((i.succ : ℕ) : ℤ) • a = ((i.castSucc : ℕ) : ℤ) • a + a`.
+
+Simplify using `[add_smul]`. Establish `h3` using `hf (((i.succ : ℕ) : ℤ) • a)`. Rewrite `h3` using `[h1]`. Use `hadd _ _ _ _ _ (hf (((i.castSucc : ℕ) : ℤ) • a)) (hf a) h3` as an intermediate fact. Simplify `this` using `only [h1]`.
+
+Apply `(hzi _).2` to reduce the goal to its premises. Rewrite using `[e.apply_symm_apply]`. Conclude with `hf _`.
+-/
 theorem exists_qkPt_tautPt : ∀ {o W : Type} [CommRing o] [CommRing W] [IsLocalRing W] (T : TautBase o W) {I : Type} [Fintype I] (ε : I → LinearMap.BilinForm ℤ (Fin T.r → ℤ)) (n : ℕ) (V : Type) [CommRing V] [IsDomain V] (D : DegPre V) (ω : W →+* V) (s : I → V) (e : D.X ≃+ (Fin T.r → ℤ)) (β : D.P.A.left ⟶ T.B.left) (ββ : (G2 D.P.A).left ⟶ (G2 T.B).left) (w : LB.Iso (abelian₂ D.P.A D.P.L) ((abelian₂ T.B T.M.L).pull ββ)), D.TauBimult → From T ω s ε n D e β ββ w → (∀ i, s i ≠ 0) → ∀ (F : Type) [Field F] [Algebra (FractionRing V) F] (a : Fin T.r → ℤ), ∃ p : QkPt D F n, p.y = e.symm a ∧ TautPt T ω s ε n D e β ββ w F a p.g := by
   intro o W _ _ _ T I _ ε n V _ _ D ω s e β ββ w hB hF hs F _ _ a
   have hex := fun b => GlobalTheory.T.exists_tautological_point_torus_extension T ε n V D ω s e β ββ w hB hF hs F b

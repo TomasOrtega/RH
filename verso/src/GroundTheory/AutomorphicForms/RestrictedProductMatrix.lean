@@ -20,6 +20,9 @@ def unitsCongr (e : A ≃* B) (he : Continuous e) (he' : Continuous e.symm) : A�
     Units.continuous_iff.2 ⟨he'.comp Units.continuous_val, he'.comp Units.continuous_coe_inv⟩
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_unitsCongr_apply (e : A ≃* B) (he : Continuous e) (he' : Continuous e.symm) (u : Aˣ) :
     ((unitsCongr e he he' u : Bˣ) : B) = e u :=
   rfl
@@ -44,23 +47,35 @@ def matrixProdRingEquiv : Matrix m m (R₁ × R₂) ≃+* Matrix m m R₁ × Mat
   map_add' M N := rfl
 
 @[simp]
+/- English proof (translation)
+The claim follows from `rfl @[simp]`.
+-/
 theorem matrixProdRingEquiv_apply_fst (M : Matrix m m (R₁ × R₂)) (a b : m) :
     (matrixProdRingEquiv m R₁ R₂ M).1 a b = (M a b).1 :=
   rfl
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem matrixProdRingEquiv_apply_snd (M : Matrix m m (R₁ × R₂)) (a b : m) :
     (matrixProdRingEquiv m R₁ R₂ M).2 a b = (M a b).2 :=
   rfl
 
 variable [TopologicalSpace R₁] [TopologicalSpace R₂]
 
+/- English proof (translation)
+The claim follows from `(continuous_pi fun a => continuous_pi fun b => continuous_fst.comp ((continuous_apply b).comp (continuous_apply a))).prodMk (continuous_pi fun a => continuous_pi fun b => continuous_snd.comp ((continuous_apply b).comp (continuous_apply a)))`.
+-/
 theorem continuous_matrixProdRingEquiv : Continuous (matrixProdRingEquiv m R₁ R₂) :=
   (continuous_pi fun a => continuous_pi fun b =>
       continuous_fst.comp ((continuous_apply b).comp (continuous_apply a))).prodMk
     (continuous_pi fun a => continuous_pi fun b =>
       continuous_snd.comp ((continuous_apply b).comp (continuous_apply a)))
 
+/- English proof (translation)
+The claim follows from `continuous_pi fun a => continuous_pi fun b => ((continuous_apply_apply a b).comp continuous_fst).prodMk ((continuous_apply_apply a b).comp continuous_snd)`.
+-/
 theorem continuous_matrixProdRingEquiv_symm : Continuous (matrixProdRingEquiv m R₁ R₂).symm :=
   continuous_pi fun a => continuous_pi fun b =>
     ((continuous_apply_apply a b).comp continuous_fst).prodMk
@@ -78,11 +93,17 @@ def glProdEquiv : GL m (R₁ × R₂) ≃ₜ* GL m R₁ × GL m R₂ :=
         (β := Matrix m m R₂)).continuous_invFun }
 
 @[simp]
+/- English proof (translation)
+The claim follows from `rfl @[simp]`.
+-/
 theorem glProdEquiv_apply_fst (g : GL m (R₁ × R₂)) (a b : m) :
     (glProdEquiv m R₁ R₂ g).1 a b = (g a b).1 :=
   rfl
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem glProdEquiv_apply_snd (g : GL m (R₁ × R₂)) (a b : m) :
     (glProdEquiv m R₁ R₂ g).2 a b = (g a b).2 :=
   rfl
@@ -104,16 +125,25 @@ def matrixPiRingEquiv : Matrix m m (Π j, R j) ≃+* Π j, Matrix m m (R j) wher
   map_add' M N := rfl
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem matrixPiRingEquiv_apply (M : Matrix m m (Π j, R j)) (j : ι) (a b : m) :
     matrixPiRingEquiv m R M j a b = M a b j :=
   rfl
 
 variable [∀ j, TopologicalSpace (R j)]
 
+/- English proof (translation)
+The claim follows from `continuous_pi fun j => continuous_pi fun a => continuous_pi fun b => (continuous_apply j).comp ((continuous_apply b).comp (continuous_apply a))`.
+-/
 theorem continuous_matrixPiRingEquiv : Continuous (matrixPiRingEquiv m R) :=
   continuous_pi fun j => continuous_pi fun a => continuous_pi fun b =>
     (continuous_apply j).comp ((continuous_apply b).comp (continuous_apply a))
 
+/- English proof (translation)
+The claim follows from `continuous_pi fun a => continuous_pi fun b => continuous_pi fun j => (continuous_apply b).comp ((continuous_apply a).comp (continuous_apply j))`.
+-/
 theorem continuous_matrixPiRingEquiv_symm : Continuous (matrixPiRingEquiv m R).symm :=
   continuous_pi fun a => continuous_pi fun b => continuous_pi fun j =>
     (continuous_apply b).comp ((continuous_apply a).comp (continuous_apply j))
@@ -125,6 +155,9 @@ def glPiEquiv : GL m (Π j, R j) ≃ₜ* Π j, GL m (R j) :=
     (continuous_matrixPiRingEquiv_symm m R)).trans ContinuousMulEquiv.piUnits
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem glPiEquiv_apply (g : GL m (Π j, R j)) (j : ι) (a b : m) :
     glPiEquiv m R g j a b = g a b j :=
   rfl
@@ -153,6 +186,9 @@ def congrSets {A A' : (i : ι) → Set (R i)} (h : ∀ i, A i = A' i) :
       fun _ => continuous_id
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem congrSets_apply {A A' : (i : ι) → Set (R i)} (h : ∀ i, A i = A' i)
     (x : Πʳ i, [R i, A i]) (i : ι) : congrSets h x i = x i :=
   rfl
@@ -168,6 +204,9 @@ def congrSetsMul [∀ i, Monoid (R i)] {S S' : ι → Type*} [∀ i, SetLike (S 
   continuous_invFun := (congrSets h).symm.continuous
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem congrSetsMul_apply [∀ i, Monoid (R i)] {S S' : ι → Type*} [∀ i, SetLike (S i) (R i)]
     [∀ i, SubmonoidClass (S i) (R i)] [∀ i, SetLike (S' i) (R i)]
     [∀ i, SubmonoidClass (S' i) (R i)] {B : Π i, S i} {B' : Π i, S' i}
@@ -205,6 +244,9 @@ def piEquiv (hA : ∀ i, IsOpen (A i)) :
       (fun _ y => y a) (.of_forall fun _ _ hy => hy a (mem_univ a)) fun _ => continuous_apply a
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem piEquiv_apply (hA : ∀ i, IsOpen (A i)) (x : m → Πʳ i, [R i, A i]) (i : ι) (a : m) :
     piEquiv m hA x i a = x a i :=
   rfl
@@ -245,12 +287,18 @@ def matrixRingEquiv (hC : ∀ i (M : Matrix m m (R i)), M ∈ C i ↔ ∀ a b, M
 
 omit [∀ i, TopologicalSpace (R i)] in
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem matrixRingEquiv_apply (hC : ∀ i (M : Matrix m m (R i)), M ∈ C i ↔ ∀ a b, M a b ∈ B i)
     (M : Matrix m m (Πʳ i, [R i, B i])) (i : ι) (a b : m) :
     matrixRingEquiv m hC M i a b = M a b i :=
   rfl
 
 omit [∀ i, TopologicalSpace (R i)] [∀ i, SubringClass (S i) (R i)] in
+/- English proof (translation)
+The claim follows from `Set.ext fun M => hC i M`.
+-/
 theorem coe_eq_setOf (hC : ∀ i (M : Matrix m m (R i)), M ∈ C i ↔ ∀ a b, M a b ∈ B i) (i : ι) :
     (C i : Set (Matrix m m (R i))) = {M | ∀ a b, M a b ∈ B i} :=
   Set.ext fun M => hC i M
@@ -262,6 +310,9 @@ def matrixHomeomorph (hC : ∀ i (M : Matrix m m (R i)), M ∈ C i ↔ ∀ a b, 
 
 omit [∀ i, SubringClass (S i) (R i)] in
 
+/- English proof (translation)
+Rewrite using `[coe_eq_setOf m hC i]`. Simplify using `only [Set.ofPred_forall]`. Conclude with `isOpen_iInter_of_finite fun a => isOpen_iInter_of_finite fun b => (hB i).preimage ((continuous_apply b).comp (continuous_apply a))`.
+-/
 theorem isOpen_coe_of_forall (hC : ∀ i (M : Matrix m m (R i)), M ∈ C i ↔ ∀ a b, M a b ∈ B i)
     (hB : ∀ i, IsOpen (B i : Set (R i))) (i : ι) : IsOpen (C i : Set (Matrix m m (R i))) := by
   rw [coe_eq_setOf m hC i]
@@ -277,6 +328,9 @@ def matrixUnitsEquiv (hC : ∀ i (M : Matrix m m (R i)), M ∈ C i ↔ ∀ a b, 
     (GroundTheory.Global.RestrictedProduct.continuousUnitsEquiv (isOpen_coe_of_forall m hC hB))
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem matrixUnitsEquiv_apply (hC : ∀ i (M : Matrix m m (R i)), M ∈ C i ↔ ∀ a b, M a b ∈ B i)
     (hB : ∀ i, IsOpen (B i : Set (R i))) (g : GL m (Πʳ i, [R i, B i])) (i : ι) (a b : m) :
     (matrixUnitsEquiv m hC hB g i : Matrix m m (R i)) a b = g a b i :=

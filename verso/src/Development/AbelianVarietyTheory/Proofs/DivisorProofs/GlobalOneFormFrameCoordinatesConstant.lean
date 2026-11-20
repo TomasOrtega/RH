@@ -12,6 +12,17 @@ noncomputable section
 
 namespace GlobalTheory.AbCoh
 
+/- English proof (translation)
+Introduce `R _ C _ F hF n Φ`. Establish `hd : ∀ i (w : Glob1 F), d0 F (fun T ↦ Φ.δ i T (w.1 T)) = 0`. Introduce `i w`. Use function extensionality and compare the values at `T T' φ`. Rewrite using `[amitsur_d0_apply, w.2 φ, Φ.nat]`.
+
+Conclude with `sub_self _`. Set `c : Fin n → Glob1 F → R` to `fun i w ↦ (hF _ (hd i w)).exists.choose`. Establish `hc : ∀ i w T, Φ.δ i T (w.1 T) = algebraMap R (F.obj T) (c i w)` using `fun i w ↦ (hF _ (hd i w)).exists.choose_spec`. Establish `uniq : ∀ i w (r : R), (∀ T, Φ.δ i T (w.1 T) = algebraMap R (F.obj T) r) → c i w = r` using `fun i w r hr ↦ (hF _ (hd i w)).unique (hc i w) hr`. Use `⟨fun i ↦ { toFun := c i map_add' := fun w w' ↦ uniq i (w + w') _ (fun T ↦ by` and prove the remaining obligations.
+
+Rewrite using `[Submodule.coe_add, Pi.add_apply, map_add, hc, hc, map_add])`. Use the proof step `map_smul' := fun r w ↦ uniq i (r • w) _ (fun T ↦ by`. Rewrite using `[Submodule.coe_smul, Pi.smul_apply, ← algebraMap_smul (F.obj T) r (w.1 T), map_smul, hc, RingHom.id_apply, smul_eq_mul, smul_eq_mul, map_mul]) },`. Use `fun i w T ↦ hc i w T, fun w ↦ ?_⟩`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Use function extensionality and compare the values at `T`. Rewrite using `[Submodule.coe_sum, Finset.sum_apply]`. Use `conv_lhs => rw [Φ.sum T (w.1 T)]`. Use `Finset.sum_congr rfl fun i _ ↦ ?_` and prove the remaining obligations. Rewrite using `[hc, Submodule.coe_smul, Pi.smul_apply, algebraMap_smul]`.
+
+Both sides reduce to the same expression.
+-/
 theorem frame_coord : ∀ (R : Type) [CommRing R] (C : Type) [Category.{0} C] (F : C ⥤ CommAlgCat.{0} R),
     CohomZeroIsConstants F → ∀ (n : ℕ) (Φ : Frame F n), ∃ l : Fin n → (Glob1 F →ₗ[R] R),
       (∀ i (w : Glob1 F) T, Φ.δ i T (w.1 T) = algebraMap R (F.obj T) (l i w)) ∧

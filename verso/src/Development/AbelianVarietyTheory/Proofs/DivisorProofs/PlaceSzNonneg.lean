@@ -16,6 +16,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 def placeSz {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} (G : GridData L sc) (w : Pl D.host.E) : ℝ :=
   (cosExp G w : ℝ) * Real.log (Ideal.absNorm (w.under (𝓞 D.host.F)).asIdeal)
 
+/- English proof (translation)
+The claim follows from `mul_nonneg (Nat.cast_nonneg _) (Real.log_natCast_nonneg _)`.
+-/
 theorem placeSz_nonneg {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} (G : GridData L sc) (w : Pl D.host.E) :
     0 ≤ placeSz G w :=
   mul_nonneg (Nat.cast_nonneg _) (Real.log_natCast_nonneg _)
@@ -41,10 +44,16 @@ section Abs
 
 variable {D : D7}
 
+/- English proof (translation)
+The claim follows from `let ⟨y, e, h⟩ := h ⟨y, e, h.trans (Real.exp_le_exp.2 hB)⟩`.
+-/
 theorem absLe_mono {σ : D.what₂.LL →+* ℂ} {z : ℂ} {B B' : ℝ} (h : AbsLe σ z B) (hB : B ≤ B') : AbsLe σ z B' :=
   let ⟨y, e, h⟩ := h
   ⟨y, e, h.trans (Real.exp_le_exp.2 hB)⟩
 
+/- English proof (translation)
+Take `⟨y, e, hy⟩` from `h`. Take `⟨y', e', hy'⟩` from `h'`. Use `⟨y * y', by rw [map_mul, e, e'], ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, norm_mul, Real.exp_add]`. Conclude with `mul_le_mul hy hy' (norm_nonneg _) (Real.exp_pos _).le`.
+-/
 theorem absLe_mul {σ : D.what₂.LL →+* ℂ} {z z' : ℂ} {B B' : ℝ} (h : AbsLe σ z B) (h' : AbsLe σ z' B') :
     AbsLe σ (z * z') (B + B') := by
   obtain ⟨y, e, hy⟩ := h
@@ -53,6 +62,9 @@ theorem absLe_mul {σ : D.what₂.LL →+* ℂ} {z z' : ℂ} {B B' : ℝ} (h : A
   rw [map_mul, norm_mul, Real.exp_add]
   exact mul_le_mul hy hy' (norm_nonneg _) (Real.exp_pos _).le
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact ⟨1, map_one _, by simp⟩`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.prod_insert ha, Finset.sum_insert ha]`. Conclude with `absLe_mul (h a (Finset.mem_insert_self _ _)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))`.
+-/
 theorem absLe_prod {ι : Type} (s : Finset ι) {σ : D.what₂.LL →+* ℂ} (z : ι → ℂ) (B : ι → ℝ) (h : ∀ i ∈ s, AbsLe σ (z i) (B i)) :
     AbsLe σ (∏ i ∈ s, z i) (∑ i ∈ s, B i) := by
   classical
@@ -62,6 +74,9 @@ theorem absLe_prod {ι : Type} (s : Finset ι) {σ : D.what₂.LL →+* ℂ} (z 
     rw [Finset.prod_insert ha, Finset.sum_insert ha]
     exact absLe_mul (h a (Finset.mem_insert_self _ _)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))
 
+/- English proof (translation)
+Use `⟨(q : D.what₂.LL), map_ratCast _ _, ?_⟩` and prove the remaining obligations. Rewrite using `[map_ratCast, ← Complex.ofReal_ratCast, Complex.norm_real, Real.norm_eq_abs]`. Conclude with `h`.
+-/
 theorem absLe_rat (σ : D.what₂.LL →+* ℂ) (q : ℚ) {B : ℝ} (h : |(q : ℝ)| ≤ Real.exp B) : AbsLe σ (q : ℂ) B := by
   refine ⟨(q : D.what₂.LL), map_ratCast _ _, ?_⟩
   rw [map_ratCast, ← Complex.ofReal_ratCast, Complex.norm_real, Real.norm_eq_abs]
@@ -69,6 +84,11 @@ theorem absLe_rat (σ : D.what₂.LL →+* ℂ) (q : ℚ) {B : ℝ} (h : |(q : �
 
 end Abs
 
+/- English proof (translation)
+Rewrite using `[Finset.sum_coe_sort (locPl G t) (placeSz G)]`. Establish `h1 : ∑ w ∈ locPl G t, placeSz G w = ∑ w ∈ G.pl.W0, placeSz G w`. Use `(Finset.sum_subset (Finset.subset_union_left) fun w _ hw => ?_).symm` and prove the remaining obligations. Simplify using `[placeSz, (depthAt_of_notMem G hw).1]`. Rewrite using `[h1, sig]`.
+
+Unfold `Places.W0`. Use `(Finset.sum_image_le_of_nonneg fun w _ => placeSz_nonneg G w).trans (le_of_eq (Finset.sum_congr rfl fun v hv => ?_))` and prove the remaining obligations. Rewrite using `[placeSz, (depthAt_w G hv).1, G.pl.under_w hv]`.
+-/
 theorem sum_placeSz_le {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} (G : GridData L sc) (t : T) :
     ∑ w : locPl G t, placeSz G w ≤ sig G := by
   classical

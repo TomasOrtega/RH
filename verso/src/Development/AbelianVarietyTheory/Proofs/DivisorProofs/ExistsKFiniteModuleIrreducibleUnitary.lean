@@ -13,6 +13,9 @@ open scoped InnerProductSpace
 
 namespace GlobalTheory.CompanionTheory.KModExistsStep
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.CompanionTheory.KModExists.kModExists CompanionTheory.D.DSIC.hSmMod CompanionTheory.D.gk.admitted.kFin_mem_smoothVecs CompanionTheory.D.DSIC.hKFinStab CompanionTheory.D.DSIC.hStabLink CompanionTheory.D.DSIC.hHWofType CompanionTheory.D.DSIC.hTypeOfHW`.
+-/
 theorem kModExists_holds : CompanionTheory.D.LK.KModExists :=
   GlobalTheory.CompanionTheory.KModExists.kModExists CompanionTheory.D.DSIC.hSmMod CompanionTheory.D.gk.admitted.kFin_mem_smoothVecs CompanionTheory.D.DSIC.hKFinStab
     CompanionTheory.D.DSIC.hStabLink CompanionTheory.D.DSIC.hHWofType CompanionTheory.D.DSIC.hTypeOfHW

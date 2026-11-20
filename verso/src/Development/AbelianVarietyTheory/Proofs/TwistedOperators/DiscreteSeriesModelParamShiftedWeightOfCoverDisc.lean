@@ -21,15 +21,26 @@ namespace GlobalTheory.ArchRec.Direct
 
 def barRev {n : ℕ} (g : Mn n) : Mn n := (g.map (starRingEnd ℂ)).submatrix Fin.rev Fin.rev
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[barRev]`.
+-/
 theorem barRev_barRev {n : ℕ} (g : Mn n) : barRev (barRev g) = g := by
   ext i j
   simp [barRev]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [barRev, Matrix.submatrix_apply, Matrix.map_apply, Matrix.mul_apply, map_sum, map_mul]`. Conclude with `(Fintype.sum_equiv Fin.revPerm _ _ (fun x => by simp [Fin.revPerm_apply])).symm`.
+-/
 theorem barRev_mul {n : ℕ} (g h : Mn n) : barRev (g * h) = barRev g * barRev h := by
   ext i j
   simp only [barRev, Matrix.submatrix_apply, Matrix.map_apply, Matrix.mul_apply, map_sum, map_mul]
   exact (Fintype.sum_equiv Fin.revPerm _ _ (fun x => by simp [Fin.revPerm_apply])).symm
 
+/- English proof (translation)
+Use extensionality with `i j`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using `[barRev]`. Establish `h' : i.rev ≠ j.rev` using `fun h'' => h (Fin.rev_injective h'')`.
+
+Simplify using `[barRev, Matrix.one_apply, h, h']`.
+-/
 theorem barRev_one {n : ℕ} : barRev (1 : Mn n) = 1 := by
   ext i j
   by_cases h : i = j
@@ -37,10 +48,18 @@ theorem barRev_one {n : ℕ} : barRev (1 : Mn n) = 1 := by
   · have h' : i.rev ≠ j.rev := fun h'' => h (Fin.rev_injective h'')
     simp [barRev, Matrix.one_apply, h, h']
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[barRev, Matrix.conjTranspose_apply]`.
+-/
 theorem barRev_conjTranspose {n : ℕ} (g : Mn n) : barRev gᴴ = (barRev g)ᴴ := by
   ext i j
   simp [barRev, Matrix.conjTranspose_apply]
 
+/- English proof (translation)
+Use extensionality with `i j`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Apply the tactic sequence `by_cases hε : ε i.rev <;> simp [barRev, Formalism.REAL.Jm, hε]`. Establish `h' : i.rev ≠ j.rev` using `fun h'' => h (Fin.rev_injective h'')`.
+
+Simplify using `[barRev, Formalism.REAL.Jm, Matrix.diagonal_apply, h, h']`.
+-/
 theorem barRev_Jm {n : ℕ} (ε : Fin n → Bool) : barRev (Formalism.REAL.Jm ε) = Formalism.REAL.Jm (fun a => ε a.rev) := by
   ext i j
   by_cases h : i = j
@@ -49,6 +68,11 @@ theorem barRev_Jm {n : ℕ} (ε : Fin n → Bool) : barRev (Formalism.REAL.Jm ε
   · have h' : i.rev ≠ j.rev := fun h'' => h (Fin.rev_injective h'')
     simp [barRev, Formalism.REAL.Jm, Matrix.diagonal_apply, h, h']
 
+/- English proof (translation)
+Simplify using `only [Formalism.REAL.Kset, Set.mem_setOf_eq] at hg ⊢`. Take `⟨hu, hc⟩` from `hg`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite `hu`, the goal using `[Matrix.mem_unitaryGroup_iff]`. Rewrite using `[Matrix.star_eq_conjTranspose, ← barRev_conjTranspose, ← barRev_mul, ← Matrix.star_eq_conjTranspose, hu, barRev_one]`.
+
+Rewrite using `[← barRev_Jm, ← barRev_mul, hc, barRev_mul]`.
+-/
 theorem barRev_mem_K {n : ℕ} {ε : Fin n → Bool} {g : Mn n} (hg : g ∈ Formalism.REAL.Kset ε) :
     barRev g ∈ Formalism.REAL.Kset (fun a => ε a.rev) := by
   simp only [Formalism.REAL.Kset, Set.mem_setOf_eq] at hg ⊢
@@ -59,6 +83,11 @@ theorem barRev_mem_K {n : ℕ} {ε : Fin n → Bool} {g : Mn n} (hg : g ∈ Form
       barRev_one]
   · rw [← barRev_Jm, ← barRev_mul, hc, barRev_mul]
 
+/- English proof (translation)
+Establish `hK : ∀ g ∈ Formalism.REAL.Kset (fun a => ε a.rev), barRev g ∈ Formalism.REAL.Kset ε`. Introduce `g hg`. Simplify `barRev_mem_K hg` using `only [Fin.rev_rev]`. Simplify using `only [IsKFin, IsKStableOn]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨S, hS, hx, hst⟩`. Use `⟨S, hS, hx, fun g hg v hv => ?_⟩` and prove the remaining obligations. Simplify `hst (barRev g) (barRev_mem_K hg) v hv` using `only [barRev_barRev]`. Introduce and unpack `⟨S, hS, hx, hst⟩`. Conclude with `⟨S, hS, hx, fun g hg v hv => hst (barRev g) (hK g hg) v hv⟩`.
+-/
 theorem isKFin_barRev {n : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] (ε : Fin n → Bool)
     (σ : Mn n → (H →L[ℂ] H)) (x : H) :
     IsKFin (fun a => ε a.rev) (fun g => σ (barRev g)) x ↔ IsKFin ε σ x := by
@@ -73,6 +102,13 @@ theorem isKFin_barRev {n : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductS
   · rintro ⟨S, hS, hx, hst⟩
     exact ⟨S, hS, hx, fun g hg v hv => hst (barRev g) (hK g hg) v hv⟩
 
+/- English proof (translation)
+Take `⟨hanti, r, hr, hS⟩` from `h`. Use `⟨fun a b hab => ?_, fun a => -r a.rev, fun a => by simp [hr], ?_⟩` and prove the remaining obligations. Establish `hba : b.rev < a.rev` using `Fin.rev_lt_rev.mpr hab`. Simplify using `using hanti hba`. Rewrite using `[show dualPar S = S.image fun x => (-x.1, x.2) from rfl, hS, Finset.image_image]`.
+
+Use extensionality with `x`. Simplify using `only [Finset.mem_image, Finset.mem_univ, true_and, Function.comp_apply]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, rfl⟩`. Conclude with `⟨a.rev, by simp⟩`.
+
+Introduce and unpack `⟨a, rfl⟩`. Conclude with `⟨a.rev, rfl⟩`.
+-/
 theorem isEnum_rev {n : ℕ} {S : SPar} {lam : Fin n → ℝ} {ε : Fin n → Bool} (h : IsEnum S lam ε) :
     IsEnum (dualPar S) (fun a => -lam a.rev) (fun a => ε a.rev) := by
   obtain ⟨hanti, r, hr, hS⟩ := h
@@ -88,6 +124,11 @@ theorem isEnum_rev {n : ℕ} {S : SPar} {lam : Fin n → ℝ} {ε : Fin n → Bo
     · rintro ⟨a, rfl⟩
       exact ⟨a.rev, rfl⟩
 
+/- English proof (translation)
+Use extensionality with `i j`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using `[Formalism.REAL.Jm]`. Establish `h' : i.rev ≠ j.rev` using `fun h'' => h (Fin.rev_injective h'')`.
+
+Simplify using `[Formalism.REAL.Jm, Matrix.diagonal_apply, h, h']`.
+-/
 theorem Jm_rev {n : ℕ} (ε : Fin n → Bool) :
     Formalism.REAL.Jm (fun a => ε a.rev) = (Formalism.REAL.Jm ε).submatrix Fin.revPerm Fin.revPerm := by
   ext i j
@@ -114,16 +155,37 @@ def barModel {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSModel V S)
     rw [Jm_rev, Matrix.conjTranspose_submatrix, Matrix.submatrix_mul_equiv, Matrix.submatrix_mul_equiv, M.fr_gram]
     rfl
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[barRev, barMat, plainMat, Matrix.reindex_apply]`.
+-/
 theorem barRev_barMat {p q n : ℕ} (e : Ix p q ≃ Fin n) (g : Mat p q) :
     barRev (barMat (e.trans Fin.revPerm) g) = plainMat e g := by
   ext i j
   simp [barRev, barMat, plainMat, Matrix.reindex_apply]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[barRev, barMat, plainMat, Matrix.reindex_apply]`.
+-/
 theorem barRev_plainMat {p q n : ℕ} (e : Ix p q ≃ Fin n) (g : Mat p q) :
     barRev (plainMat (e.trans Fin.revPerm) g) = barMat e g := by
   ext i j
   simp [barRev, barMat, plainMat, Matrix.reindex_apply]
 
+/- English proof (translation)
+Introduce `D hB X V S M τ p q l₁ l₂ c hpq h₁ h₂ hpar hhas hS`. Take `⟨hsrc, htgt⟩` from `hB`. Establish `hds : ∀ τ, letI` using `M.nacg τ`. Use `letI := M.ips τ IsDS (fun a => M.ε τ a.rev) (fun a => -M.lam τ a.rev) (fun g => M.σ τ (barRev g)) := fun τ => GlobalTheory.T.isDiscreteSeries_conjugate_reverse_contragredient _ _ _ _ _ (M.ds τ)`. Establish `hset : GlobalTheory.IndefiniteRowSideFullHecke.BarMatrix.HidaSetting X p q l₁ l₂ c (fun τ => dualPar (S τ)) τ`.
+
+Use `⟨hpq, h₁, h₂, hpar, hhas, ?_⟩` and prove the remaining obligations. Use `show dualPar (S τ) = _`. Rewrite using `[hS]`. Take `⟨-, m, hm, hU⟩` from `hsrc X V _ (barModel M hds) τ p q l₁ l₂ c hset`. Take `⟨-, m', hm', hU'⟩` from `htgt X V _ (barModel M hds) τ p q l₁ l₂ c hset`.
+
+Take `rfl : m' = m` from `by exact_mod_cast hm'.trans hm.symm`. Use `⟨m', hm', fun e he b => ?_⟩` and prove the remaining obligations. Establish `he' : SignCompat ((barModel M hds).ε τ) (e.trans Fin.revPerm)`. Introduce `a`. Express the relevant statement in the definitionally equal form `M.ε τ ((e.trans Fin.revPerm) a).rev = a.isLeft`.
+
+Simplify using `[he a]`. Consider the cases of `b`. Take `⟨U, hUm⟩` from `hU _ he'`. Use `⟨U, ⟨fun x y => map_add U x y, fun z x => ?_, U.bijective, fun x => U.norm_map x, fun g x => ?_, fun x => ?_⟩⟩` and prove the remaining obligations. Conclude with `U.map_smul z x`.
+
+Establish `hg` using `hUm.grp g x`. Express the relevant statement in the definitionally equal form `_ = _ • U (M.σ τ (barRev (barMat (e.trans Fin.revPerm) _)) x) at hg`. Rewrite `hg` using `[barRev_barMat]`. Simplify `hg` using `[phi]`. Conclude with `(isKFin_barRev (M.ε τ) (M.σ τ) x).symm.trans (hUm.kfin x)`.
+
+Take `⟨U, hUm⟩` from `hU' _ he'`. Use `⟨U, ⟨fun x y => map_add U x y, fun z x => ?_, U.bijective, fun x => U.norm_map x, fun g x => ?_, fun x => ?_⟩⟩` and prove the remaining obligations. Conclude with `U.map_smulₛₗ z x`. Establish `hg` using `hUm.grp g x`. Express the relevant statement in the definitionally equal form `_ = _ • U (M.σ τ (barRev (plainMat (e.trans Fin.revPerm) _)) x) at hg`.
+
+Rewrite `hg` using `[barRev_plainMat]`. Simplify `hg` using `[phi]`. Conclude with `(isKFin_barRev (M.ε τ) (M.σ τ) x).symm.trans (hUm.kfin x)`.
+-/
 theorem directBridge : ∀ D : D7, GlobalTheory.IndefiniteRowSideFullHecke.BarMatrix.ModelsAreCoverSeries D → DirectBridge D := by
   intro D hB X V S M τ p q l₁ l₂ c hpq h₁ h₂ hpar hhas hS
   obtain ⟨hsrc, htgt⟩ := hB

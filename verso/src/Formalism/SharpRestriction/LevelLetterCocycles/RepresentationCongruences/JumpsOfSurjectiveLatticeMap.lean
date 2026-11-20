@@ -10,6 +10,13 @@ namespace Formalism.MainNotions.N.Ln17
 open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions.ArcLiftingSetup Module
 
 open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions.ArcLiftingSetup Formalism.MainNotions.N.Ln17 in
+/- English proof (translation)
+Introduce `D HW F hJ l _ K LL hG`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `T₁ T₂ f hS τ a ha`. Take `⟨c1, c2, hO⟩` from `hS`. Take `⟨T₀, ι, hses, c0⟩` from `Formalism.MainNotions.LiftingTheory.lker_HKer_D D HW F hJ.a22 l K 1 LL hG T₁ T₂ f ⟨c1, c2, hO⟩`.
+
+Conclude with `(hJ.a23 l K LL T₀ T₁ T₂ ι f hses c0 c1 c2 τ a).2 (Or.inr ha)`. Introduce `T₂ Y ι π cc _ c2 cY hext τ a ha`. Take `⟨cone, hone0⟩` from `Formalism.MainNotions.LiftingTheory.lone_HOne0_holds D HW F l K 1 LL hG`. Break down `(hJ.a23 l K LL T₂ Y _ ι π hext.1 c2 cY cone τ a).1 ha with h | h` into its components or cases. Conclude with `Or.inr h`.
+
+Conclude with `Or.inl (hone0 τ a h)`.
+-/
 theorem jumps_of_surjective_lattice_map : ∀ (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (hJ : UsedJ D HW F) (l : ℕ) [Fact l.Prime] (K LL : FinExt l) (hG : Good K 1 LL),
     (∀ (T₁ T₂ : LocLat ↥(GK K) ℚ_[l] ↥LL.1 ↥(OL LL)) (f : LatHom T₁.L T₂.L),
       Formalism.MainNotions.LiftingTheory.Sur ((HW l).W K 1 LL hG) f →

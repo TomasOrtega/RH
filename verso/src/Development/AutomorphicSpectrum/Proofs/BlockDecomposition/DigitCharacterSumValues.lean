@@ -22,9 +22,15 @@ def negCharC (ψ : AddChar F Circle) : AddChar F ℂ where
     rw [neg_add, AddChar.map_add_eq_mul]
     simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem negCharC_apply (ψ : AddChar F Circle) (x : F) :
     negCharC ψ x = ((ψ (-x) : Circle) : ℂ) := rfl
 
+/- English proof (translation)
+Take `⟨hc, h1, h0⟩` from `hψ`. Use `isTrivialOn_addCharConductor hc h1 x ?_` and prove the remaining obligations. Rewrite using `[h0]`. Conclude with `mem_valBall_zero_iff.2 hx`.
+-/
 theorem std_trivial_of_mem {ψ : AddChar F Circle} (hψ : Ad3.IsStd ψ) {x : F} (hx : x ∈ 𝒪[F]) :
     ψ x = 1 := by
   obtain ⟨hc, h1, h0⟩ := hψ
@@ -32,6 +38,13 @@ theorem std_trivial_of_mem {ψ : AddChar F Circle} (hψ : Ad3.IsStd ψ) {x : F} 
   rw [h0]
   exact mem_valBall_zero_iff.2 hx
 
+/- English proof (translation)
+Take `⟨hc, h1, h0⟩` from `hψ`. Establish `hnot` using `not_isTrivialOn_addCharConductor_sub_one hc h1`. Rewrite `hnot` using `[h0]`. Simplify using `only [IsTrivialOn, not_forall] at hnot`. Take `⟨x, hx, hne⟩` from `hnot`.
+
+Use `⟨x, ?_, hne⟩` and prove the remaining obligations. Establish `hϖ : (GLnLocal.uniformizer F : F) ≠ 0` using `Cartan.uniformizer_ne_zero F`. Establish `hp : (GLnLocal.uniformizer F : F) ∈ valBall F 1`. Rewrite using `[mem_valBall_iff_le_ord hϖ, ord_uniformizer (irreducible_uniformizer F)]`. Establish `h` using `mul_mem_valBall hp hx`.
+
+Rewrite `h` using `[show (1 : ℤ) + (0 - 1) = 0 by norm_num]`. Conclude with `mem_valBall_zero_iff.1 h`.
+-/
 theorem std_exists_ne_one {ψ : AddChar F Circle} (hψ : Ad3.IsStd ψ) :
     ∃ x : F, (GLnLocal.uniformizer F : F) * x ∈ 𝒪[F] ∧ ψ x ≠ 1 := by
   obtain ⟨hc, h1, h0⟩ := hψ
@@ -47,6 +60,13 @@ theorem std_exists_ne_one {ψ : AddChar F Circle} (hψ : Ad3.IsStd ψ) :
   rw [show (1 : ℤ) + (0 - 1) = 0 by norm_num] at h
   exact mem_valBall_zero_iff.1 h
 
+/- English proof (translation)
+Establish `h0 : ∀ x ∈ 𝒪[F], negCharC ψ x = 1` using `fun x hx => by`. Rewrite using `[negCharC_apply, std_trivial_of_mem hψ (neg_mem hx)]`. Simplify using the standard rewrite rules. Establish `h1 : ∃ x : F, (GLnLocal.uniformizer F : F) * x ∈ 𝒪[F] ∧ negCharC ψ x ≠ 1`. Take `⟨x, hx, hne⟩` from `std_exists_ne_one hψ`.
+
+Use `⟨-x, by rw [mul_neg]; exact neg_mem hx, ?_⟩` and prove the remaining obligations. Rewrite using `[negCharC_apply, neg_neg]`. Introduce `h`. Conclude with `hne (Circle.ext (by simpa using h))`. Establish `h` using `AddChar.sum_eq_zero_of_ne_one (GroundTheory.Automorphic.Spherical.residueChar_ne_one (negCharC ψ) h0 h1)`.
+
+Rewrite using `[← h]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`. Both sides reduce to the same expression.
+-/
 theorem sum_negCharC_residue_eq_zero {ψ : AddChar F Circle} (hψ : Ad3.IsStd ψ) :
     ∑ x : 𝓀[F], negCharC ψ ((residueLift F x : F) * (GLnLocal.uniformizer F : F)⁻¹) = 0 := by
   have h0 : ∀ x ∈ 𝒪[F], negCharC ψ x = 1 := fun x hx => by
@@ -65,6 +85,9 @@ theorem sum_negCharC_residue_eq_zero {ψ : AddChar F Circle} (hψ : Ad3.IsStd ψ
   rw [mul_comm]
   rfl
 
+/- English proof (translation)
+Establish `hϖ : (GLnLocal.uniformizer F : F) ≠ 0` using `Cartan.uniformizer_ne_zero F`. Rewrite using `[digitSum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[zpow_add₀ hϖ, zpow_natCast, mul_assoc]`.
+-/
 theorem digitSum_mul_zpow (j : ℕ) (c : Fin j → 𝓀[F]) (m : ℤ) :
     digitSum F j c * (GLnLocal.uniformizer F : F) ^ m =
       ∑ t : Fin j, (residueLift F (c t) : F) * (GLnLocal.uniformizer F : F) ^ (((t : ℕ) : ℤ) + m) := by
@@ -75,6 +98,19 @@ theorem digitSum_mul_zpow (j : ℕ) (c : Fin j → 𝓀[F]) (m : ℤ) :
 
 end CharSum
 
+/- English proof (translation)
+Introduce `F _ _ _ _ _ _ ψ hψ j m`. Prove the components needed by the constructor for the conclusion. Introduce `hm lift m to ℕ using hm`. Establish `hterm : ∀ c : Fin j → 𝓀[F], ((ψ (-(digitSum F j c) * (GLnLocal.uniformizer F : F) ^ (m : ℤ)) : Circle) : ℂ) = 1`. Introduce `c`.
+
+Rewrite using `[std_trivial_of_mem hψ, Circle.coe_one]`. Rewrite using `[zpow_natCast]`. Conclude with `mul_mem (neg_mem (digitSum_mem j c)) (pow_mem (GLnLocal.uniformizer F).2 m)`. Rewrite using `[Finset.sum_congr rfl fun c _ => hterm c]`. Simplify using `[qF, Nat.card_eq_fintype_card]`.
+
+Introduce `hm hj`. Take `⟨n, hn⟩ : ∃ n : ℕ, m = -((n : ℤ) + 1)` from `⟨(-m - 1).toNat, by omega⟩`. Establish `hnj : n < j` using `by omega`. Use `set G : Fin j → 𝓀[F] → ℂ := fun t x => negCharC ψ ((residueLift F x : F) * (GLnLocal.uniformizer F : F) ^ (((t : ℕ) : ℤ) + m)) with hG`. Establish `key` using `Finset.prod_univ_sum (fun _ : Fin j => (Finset.univ : Finset 𝓀[F])) G`.
+
+Rewrite `key` using `[Fintype.piFinset_univ]`. Establish `hterm : ∀ c : Fin j → 𝓀[F], ((ψ (-(digitSum F j c) * (GLnLocal.uniformizer F : F) ^ m) : Circle) : ℂ) = ∏ t, G t (c t)`. Introduce `c`. Rewrite using `[neg_mul, ← negCharC_apply, digitSum_mul_zpow, addChar_sum_eq_prod]`. Rewrite using `[Finset.sum_congr rfl fun c _ => hterm c, ← key]`.
+
+Use `Finset.prod_eq_zero (Finset.mem_univ (⟨n, hnj⟩ : Fin j)) ?_` and prove the remaining obligations. Establish `hexp : (((⟨n, hnj⟩ : Fin j) : ℕ) : ℤ) + m = -1`. Simplify using `only [hn]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [hG, hexp, _root_.zpow_neg_one]`.
+
+Conclude with `sum_negCharC_residue_eq_zero hψ`.
+-/
 theorem charsum : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] (ψ : AddChar F Circle), Ad3.IsStd ψ → ∀ (j : ℕ) (m : ℤ),
   (0 ≤ m → ∑ c : Fin j → 𝓀[F], ((ψ (-(digitSum F j c) * (GLnLocal.uniformizer F : F) ^ m) : Circle) : ℂ) = (qF F : ℂ) ^ j) ∧
   (m < 0 → -m ≤ j → ∑ c : Fin j → 𝓀[F], ((ψ (-(digitSum F j c) * (GLnLocal.uniformizer F : F) ^ m) : Circle) : ℂ) = 0) := by

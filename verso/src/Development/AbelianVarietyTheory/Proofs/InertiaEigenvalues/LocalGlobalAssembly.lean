@@ -9,6 +9,17 @@ open NumberField IsDedekindDomain Formalism Formalism.ConjugateSelfDual Reciproc
 
 namespace GlobalTheory.Proof.LocalGlobalAssembly
 
+/- English proof (translation)
+Introduce `D _ _ hZ a π hπ`. Establish `hπ' : π ∈ ZgoodN D.nd D.naut a` using `(D.Zgood_tie a π).1 hπ`. Take `⟨-, Sig, hX, hg⟩` from `id hπ'`. Establish `hHG : HG D.nd D.naut a` using `⟨π, hπ'⟩`. Establish `h1` using `((hZ a hHG).1 π hπ' Sig hX).2`.
+
+Establish `hE : eigC D.nd D.naut a π ≠ ⊥`. Take `⟨P, hP, -⟩` from `hX`. Introduce `h`. Apply `D.naut.typeV_ne a P` to reduce the goal to its premises. Rewrite using `[eq_bot_iff, ← h]`.
+
+Conclude with `le_iSup₂_of_le (f := fun P (_ : P ∈ {P | D.naut.ptV a P = some π}) => D.naut.typeV a P) P hP le_rfl`. Establish `hM : MjSig D.nd D.naut a Sig ≠ ⊥`. Introduce `h`. Apply `hE` to reduce the goal to its premises. Rewrite using `[← h1, h, Submodule.map_bot]`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨σ, hW, hσ⟩ : ∃ σ, HasParamW D.nd D.naut a σ Sig ∧ D.what₂.isot (D.nd.j a) σ ≠ ⊥ := by`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Apply `hM` to reduce the goal to its premises. Unfold `MjSig`.
+
+Conclude with `le_bot_iff.1 (iSup₂_le fun σ hW => (hc σ hW).le)`. Establish `hgr : D.nd.goodRow σ` using `(GlobalTheory.Proof.SplitPlaceGoodSignature.goodRow_iff_goodSig D.nd D.naut hW.2.2).2 hg`. Conclude with `⟨σ, Sig, ⟨hgr, hσ⟩, hW, hX⟩`.
+-/
 theorem main : ∀ D : D7, SumRepresentations.tie0 D → SumRepresentations.Conclusion42 D → SumRepresentations.ConclusionZ D → GlobalTheory.PtCore.GoodPtRow D := by
   intro D _ _ hZ a π hπ
   have hπ' : π ∈ ZgoodN D.nd D.naut a := (D.Zgood_tie a π).1 hπ

@@ -10,10 +10,18 @@ noncomputable section
 
 namespace GlobalTheory.CoefDuty.ExtRing
 
+/- English proof (translation)
+Substitute `h₀` using the available equality. Substitute `hl` using the available equality. Both sides reduce to the same expression.
+-/
 theorem qCast_trans {a p q : ℕ} [Fact a.Prime] [Fact p.Prime] [Fact q.Prime] (ι : Qbar a ≃+* ℂ) (h₀ : a = p)
     (h₁ : a = q) (hl : p = q) : qCast h₁ ι = qCast hl (qCast h₀ ι) := by
   subst h₀; subst hl; rfl
 
+/- English proof (translation)
+Take `⟨K, hK, hfd, -⟩` from `GlobalTheory.Proof.CoefField.exists_coefField ι hι`. Take `⟨t, ht⟩` from `(Module.Finite.fg_top : (⊤ : Submodule ℚ_[l] K).FG)`. Use `⟨t.image Subtype.val, fun x => ?_⟩` and prove the remaining obligations. Establish `hx : (⟨ι x, (hK _).2 ⟨x, rfl⟩⟩ : K) ∈ Submodule.span ℚ_[l] (t : Set K)` using `ht ▸ Submodule.mem_top`. Use `Submodule.mem_map_of_mem (f := K.val.toLinearMap) hx` as an intermediate fact.
+
+Rewrite `this` using `[← Submodule.span_image]`. Rewrite using `[Finset.coe_image]`. Conclude with `this`.
+-/
 theorem exists_gens {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     [Algebra ℤ_[l] O] [Module.Finite ℤ_[l] O] (ι : FractionRing O →+* Qbar l)
     (hι : ∀ z : ℤ_[l], ι (algebraMap O (FractionRing O) (algebraMap ℤ_[l] O z)) =
@@ -29,6 +37,21 @@ theorem exists_gens {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsDomain O
   rw [Finset.coe_image]
   exact this
 
+/- English proof (translation)
+Substitute `hl` using the available equality. Establish `hc' : ∀ x, c₁ x = c₀ x` using `fun x => by rw [hc]; rfl`. Simplify using `only [hc'] at hs₁ ⊢`. Take `⟨K₀, hK₀, -, hn₀⟩` from `GlobalTheory.Proof.CoefField.exists_coefField ι₀ hι₀`. Take `⟨K₁, hK₁, -, hn₁⟩` from `GlobalTheory.Proof.CoefField.exists_coefField ι₁ hι₁`.
+
+Establish `hsK : s ⊆ (K₁ : Set (Qbar l₀))`. Introduce `y hy`. Take `⟨x, hx⟩` from `hs₁ y hy`. Conclude with `(hK₁ y).2 ⟨x, c₀.injective hx⟩`. Establish `hspan : Submodule.span ℚ_[l₀] s ≤ K₁.toSubalgebra.toSubmodule` using `Submodule.span_le.2 hsK`.
+
+Set `f₀ : O₀ →+* Qbar l₀` to `ι₀.comp (algebraMap O₀ (FractionRing O₀))`. Set `f₁ : O₁ →+* Qbar l₀` to `ι₁.comp (algebraMap O₁ (FractionRing O₁))`. Establish `hf₁ : Function.Injective f₁` using `ι₁.injective.comp (IsFractionRing.injective O₁ (FractionRing O₁))`. Establish `hrange : ∀ z, f₀ z ∈ f₁.range`. Introduce `z`.
+
+Establish `h1 : f₀ z ∈ K₁` using `hspan (hs _)`. Take `⟨y, hy⟩` from `(hK₁ _).1 h1`. Establish `hle : ‖ι₀ (algebraMap O₀ (FractionRing O₀) z)‖ ≤ 1` using `(hn₀ _).2 ⟨z, rfl⟩`. Establish `hy1 : ‖ι₁ y‖ ≤ 1` using `by rw [hy]; exact hle`. Take `⟨u, rfl⟩` from `(hn₁ y).1 hy1`.
+
+Conclude with `⟨u, hy⟩`. Set `e₁ : O₁ ≃+* f₁.range` to `RingEquiv.ofBijective f₁.rangeRestrict ⟨fun a b h => hf₁ (congrArg Subtype.val h), f₁.rangeRestrict_surjective⟩`. Set `φ : O₀ →+* O₁` to `e₁.symm.toRingHom.comp (f₀.codRestrict f₁.range hrange)`. Establish `hφ : ∀ z, f₁ (φ z) = f₀ z`. Introduce `z`.
+
+Establish `: e₁ (φ z) = f₀.codRestrict f₁.range hrange z` using `e₁.apply_symm_apply _`. Conclude with `congrArg Subtype.val this`. Use `⟨φ, fun z => congrArg c₀ (hφ z), fun z z' hzz => ?_⟩` and prove the remaining obligations. Consider the cases of `eq_of_heq hzz`. Apply `hf₁` to reduce the goal to its premises.
+
+Rewrite using `[hφ]`. Express the relevant statement in the definitionally equal form `ι₀ _ = ι₁ _`. Rewrite using `[hι₀, hι₁]`.
+-/
 theorem exists_ringHom {l₀ l₁ : ℕ} [Fact l₀.Prime] [Fact l₁.Prime] (hl : l₀ = l₁)
     {O₀ : Type} [cr₀ : CommRing O₀] [dm₀ : IsDomain O₀] [dv₀ : IsDiscreteValuationRing O₀] [al₀ : Algebra ℤ_[l₀] O₀]
     [fi₀ : Module.Finite ℤ_[l₀] O₀]
@@ -86,6 +109,19 @@ end
 open GlobalTheory.CoefDuty.ExtRing in
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Introduce `_ D cf jE A low Pq S hL eig θ Bs M C tp _ _ _ _ _ _ big₀ L₀ hB₀`. Take `⟨Sp₀, ⟨Au₀⟩, -⟩` from `hB₀`. Establish `hg` using `fun i => exists_gens (Sp₀.iq i) (Sp₀.iq_alg i)`. Set `gens : ∀ i : L₀.X.nd.Loc, Finset (Qbar (L₀.X.nd.l i))` to `fun i => Classical.choose (hg i)`. Establish `hgens : ∀ i x, Sp₀.iq i x ∈ Submodule.span ℚ_[L₀.X.nd.l i] (gens i : Set (Qbar (L₀.X.nd.l i)))` using `fun i => Classical.choose_spec (hg i)`.
+
+Set `big₁ : D.what₂.places.Pl → Finset ℂ` to `fun w => (Finset.Icc 1 D.R.m).biUnion fun j => (L₀.X.nd.locs j w).biUnion fun i => (gens i).image fun y => qCast (L₀.X.nd.w_l i) (A.pl.ι (L₀.X.nd.w i)) y`. Establish `hbig : ∀ i y, y ∈ gens i → qCast (L₀.X.nd.w_l i) (A.pl.ι (L₀.X.nd.w i)) y ∈ big₁ (L₀.X.nd.w i)`. Introduce `i y hy`. Use `Finset.mem_biUnion.2 ⟨L₀.X.nd.j i, Finset.mem_Icc.2 (L₀.X.nd.j_range i), ?_⟩` and prove the remaining obligations. Conclude with `Finset.mem_biUnion.2 ⟨i, (L₀.X.nd.locs_mem _ _ i).2 ⟨rfl, rfl⟩, Finset.mem_image_of_mem _ hy⟩`.
+
+Use `⟨big₁, fun L₁ hB₁ i₀ i₁ hw => ?_⟩` and prove the remaining obligations. Take `⟨Sp₁, ⟨Au₁⟩, -⟩` from `hB₁`. Express the relevant statement in the definitionally equal form `L₀.X.nd.w i₀ = L₁.X.nd.w i₁ at hw`. Establish `hl : L₀.X.nd.l i₀ = L₁.X.nd.l i₁`. Conclude with `(L₀.X.nd.w_l i₀).symm.trans ((congrArg _ hw).trans (L₁.X.nd.w_l i₁))`.
+
+Use `haveI := L₀.X.nd.lPrime i₀`. Use `haveI := L₁.X.nd.lPrime i₁`. Establish `key : ∀ w (_ : L₀.X.nd.w i₀ = w) (h₁ : D.what₂.places.resChar w = L₁.X.nd.l i₁), qCast h₁ (A.pl.ι w) = qCast hl (qCast (L₀.X.nd.w_l i₀) (A.pl.ι (L₀.X.nd.w i₀)))`. Introduce `w hw' h₁`. Substitute `hw'` using the available equality.
+
+Conclude with `qCast_trans _ _ _ _`. Take `⟨φ, h1, h2⟩` from `exists_ringHom (O₀ := L₀.X.nd.O i₀) (O₁ := L₁.X.nd.O i₁) (cr₀ := L₀.X.nd.instO i₀) (dm₀ := L₀.X.nd.domO i₀) (dv₀ := L₀.X.nd.dvrO i₀) (al₀ := L₀.X.nd.algO i₀) (fi₀ := L₀.X.nd.finO i₀) (cr₁ := L₁.X.nd.instO i₁) (dm₁ := L₁.X.nd.domO i₁) (dv₁ := L₁.X.nd.dvrO i₁) (al₁ := L₁.X.nd.algO …`. Use `⟨φ, fun z => ?_, h2⟩` and prove the remaining obligations. Establish `e₀` using `fun x => (congrArg (fun g : Qbar (L₀.X.nd.l i₀) ≃+* ℂ => g (L₀.Y.naut.iotaQ i₀ x)) (Au₀.iotaQC i₀)).trans (congrArg (qCast (L₀.X.nd.w_l i₀) (A.pl.ι (L₀.X.nd.w i₀))) (DFunLike.congr_fun (Au₀.iotaQ i₀) x))`. Establish `e₁` using `fun x => (congrArg (fun g : Qbar (L₁.X.nd.l i₁) ≃+* ℂ => g (L₁.Y.naut.iotaQ i₁ x)) (Au₁.iotaQC i₁)).trans (congrArg (qCast (L₁.X.nd.w_l i₁) (A.pl.ι (L₁.X.nd.w i₁))) (DFunLike.congr_fun (Au₁.iotaQ i₁) x))`.
+
+Conclude with `(e₁ _).trans ((h1 z).trans (e₀ _).symm)`.
+-/
 theorem GlobalTheory.CoefDuty.ExtRing.ext_ring : HeckeStdPlain → ∀ (D : D7) (cf : CharFrame D) (jE : D.host.E →+* Qb) (A : SideA D cf jE) (low : Finset ℕ) (Pq : HeightOneSpectrum (𝓞 (maximalRealSubfield D.host.E)) → PlE D.host) (S : RatDat D.ntw) (hL : ∀ j, ℕ → PlE D.host → Module.End D.what₂.LL (S.WL j)) (eig : ℕ → D.what₂.FT → ℕ → PlE D.host → ↥D.LL0) (θ : ∀ kk : Fin 2, Multiplicative (ZMod (D.host.g kk)) →* (↥D.LL0)ˣ) (Bs : SideB D cf A.row low Pq S hL eig θ) (M : MtFam D) (C : NChoice D) (tp : TupTied D cf C), ChoiceSide D cf M Bs.exp C tp → MtInput D M tp.tup C.Q → (∀ x : D.LL0, star (x : D.what₂.LL) ∈ D.LL0) → (∀ j g, ∃ z : ℤ, eExp D j g = z) → (∀ v, v ∈ placesOver D.host.E D.host.pde ∨ v ∈ placesOver D.host.E D.host.pde' → IsSplitPl D.host v) → GlobalTheory.RowTie.ChebSplit D.nd → ∀ (big₀ : D.what₂.places.Pl → Finset ℂ) (L₀ : LocAll (lay0 D)), Built A M C tp.tup big₀ L₀ → ∃ big₁ : D.what₂.places.Pl → Finset ℂ, ∀ L₁ : LocAll (lay0 D), Built A M C tp.tup big₁ L₁ → ∀ (i₀ : L₀.lay.fixZ.nd.Loc) (i₁ : L₁.lay.fixZ.nd.Loc), L₀.lay.fixZ.nd.w i₀ = L₁.lay.fixZ.nd.w i₁ → ∃ φ : L₀.lay.fixZ.nd.O i₀ →+* L₁.lay.fixZ.nd.O i₁, (∀ z, iotaO L₁.lay.fixZ.nd L₁.lay.fixZ.naut i₁ (φ z) = iotaO L₀.lay.fixZ.nd L₀.lay.fixZ.naut i₀ z) ∧ ∀ (z : ℤ_[L₀.lay.fixZ.nd.l i₀]) (z' : ℤ_[L₁.lay.fixZ.nd.l i₁]), HEq z z' → φ (algebraMap _ _ z) = algebraMap _ _ z' := by
   classical
   intro _ D cf jE A low Pq S hL eig θ Bs M C tp _ _ _ _ _ _ big₀ L₀ hB₀

@@ -16,32 +16,53 @@ namespace CrystallineSemistableComparison.Pb
 
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.exists_twisting_line_data_projective N i`.
+-/
 theorem isO1At_exists {R : Type} [CommRing R] {X : Scheme.{0}} (N : ℕ) (i : X ⟶ PSpace R N) :
     ∃ D : E.LineData X, IsTautologicalLineAt D N i := GlobalTheory.T.exists_twisting_line_data_projective N i
 
+/- English proof (translation)
+Take `⟨N, i, hi, hip⟩` from `hp`. Take `⟨D, hD⟩` from `isO1At_exists N i`. Conclude with `⟨D, N, i, hi, hip, hD⟩`.
+-/
 theorem isO1_exists {R : Type} [CommRing R] {X : Scheme.{0}} (p : X ⟶ Sp R) (hp : IsProjOver p) :
     ∃ D : E.LineData X, IsTautologicalLine p D := by
   obtain ⟨N, i, hi, hip⟩ := hp
   obtain ⟨D, hD⟩ := isO1At_exists N i
   exact ⟨D, N, i, hi, hip, hD⟩
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.twisting_sheaf_base_change φ p D hD`.
+-/
 theorem isTwistingSheaf_pullback {R R' : Type} [CommRing R] [CommRing R'] (φ : R →+* R') {X : Scheme.{0}} (p : X ⟶ Sp R)
     (D : E.LineData X) (hD : IsTautologicalLine p D) :
     IsTautologicalLine (pullback.snd p (spMap φ)) (D.pb (pullback.fst p (spMap φ))) := GlobalTheory.T.twisting_sheaf_base_change φ p D hD
 
+/- English proof (translation)
+The claim follows from `isFirstChernDeRham_exists_of q d D hD`.
+-/
 theorem isFirstChernDeRham_exists {K : Type} [Field K] [CharZero K] {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of K))
     (d : ℕ) [SmoothOfRelativeDimension d q] (D : E.LineData X) (hD : IsTautologicalLine q D) :
     ∃ c : HdR q 2, IsFirstChernDeRham q D c := isFirstChernDeRham_exists_of q d D hD
 
+/- English proof (translation)
+The claim follows from `isFirstChernDeRham_unique_of q d D hD c c' hc hc'`.
+-/
 theorem isFirstChernDeRham_unique {K : Type} [Field K] [CharZero K] {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of K))
     (d : ℕ) [SmoothOfRelativeDimension d q] (D : E.LineData X) (hD : IsTautologicalLine q D) (c c' : HdR q 2)
     (hc : IsFirstChernDeRham q D c) (hc' : IsFirstChernDeRham q D c') : c = c' := isFirstChernDeRham_unique_of q d D hD c c' hc hc'
 
+/- English proof (translation)
+Take `⟨N, i, -, -, h, -⟩` from `hD`. Conclude with `h`.
+-/
 theorem isO1_etale {R : Type} [CommRing R] {X : Scheme.{0}} {p : X ⟶ Sp R} {D : E.LineData X} (hD : IsTautologicalLine p D) :
     Etale D.f := by
   obtain ⟨N, i, -, -, h, -⟩ := hD
   exact h
 
+/- English proof (translation)
+The claim follows from `powK_ne_zero_main q d D hD c hc`.
+-/
 theorem powK_ne_zero {K : Type} [Field K] [CharZero K] {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of K))
     [ConnectedSpace X] (d : ℕ) [SmoothOfRelativeDimension d q] (D : E.LineData X) (hD : IsTautologicalLine q D) (c : HdR q 2)
     (hc : IsFirstChernDeRham q D c) : powK q c d ≠ 0 := powK_ne_zero_main q d D hD c hc

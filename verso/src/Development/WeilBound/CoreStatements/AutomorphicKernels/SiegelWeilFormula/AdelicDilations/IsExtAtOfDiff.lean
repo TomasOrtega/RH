@@ -6,6 +6,19 @@ open Filter Topology GlobalTheory.Cont
 
 namespace PositivityTheory.SiegelWeilFormula.AStep
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero`. Introduce `f g s₀ _ hf`. Use `⟨fun i hi => absurd hi (Nat.not_lt_zero _), ?_⟩` and prove the remaining obligations. Simplify using `[iteratedDeriv_zero, hf.self_of_nhds]`.
+
+Consider the case `succ k ih`. Introduce `f g s₀ hg hf`. Use `set h : ℂ → ℂ := fun z => ((k : ℂ) + 1) * g z + (z - s₀) * deriv g z with hh`. Establish `hha : AnalyticAt ℂ h s₀`. Use `hg.deriv` as an intermediate fact.
+
+Simplify using `only [hh]`. Use `fun_prop`. Establish `hdf : deriv f =ᶠ[𝓝 s₀] fun z => (z - s₀) ^ k * h z`. Use `hf.deriv.trans ?_` and prove the remaining obligations. Use `filter_upwards [hg.eventually_analyticAt] with z hz`.
+
+Establish `hd : HasDerivAt (fun z => (z - s₀) ^ (k + 1) * g z) (((k + 1 : ℕ) : ℂ) * (z - s₀) ^ k * 1 * g z + (z - s₀) ^ (k + 1) * deriv g z) z` using `(((hasDerivAt_id z).sub_const s₀).pow (k + 1)).mul hz.differentiableAt.hasDerivAt`. Rewrite using `[hd.deriv, hh]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Take `⟨ih1, ih2⟩` from `ih (deriv f) h s₀ hha hdf`.
+
+Use `⟨fun i hi => ?_, ?_⟩` and prove the remaining obligations. Break down `i with _ | i` into its components or cases. Simplify using `[iteratedDeriv_zero, hf.self_of_nhds]`. Rewrite using `[iteratedDeriv_succ']; exact ih1 i (by omega)`. Rewrite using `[iteratedDeriv_succ', ih2, hh, Nat.factorial_succ]`.
+
+Use `push_cast`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem iterDerivPow (k : ℕ) : ∀ (f g : ℂ → ℂ) (s₀ : ℂ), AnalyticAt ℂ g s₀ → (f =ᶠ[𝓝 s₀] fun z => (z - s₀) ^ k * g z) →
     (∀ i < k, iteratedDeriv i f s₀ = 0) ∧ iteratedDeriv k f s₀ = (k.factorial : ℂ) * g s₀ := by
   induction k with
@@ -33,6 +46,9 @@ theorem iterDerivPow (k : ℕ) : ∀ (f g : ℂ → ℂ) (s₀ : ℂ), AnalyticA
       · rw [iteratedDeriv_succ']; exact ih1 i (by omega)
     · rw [iteratedDeriv_succ', ih2, hh, Nat.factorial_succ]; push_cast; simp; ring
 
+/- English proof (translation)
+Use `⟨p /ₘ (Polynomial.X - Polynomial.C s₀) ^ p.rootMultiplicity s₀, fun z => ?_, fun hp => Polynomial.eval_divByMonic_pow_rootMultiplicity_ne_zero s₀ hp⟩` and prove the remaining obligations. Use `conv_lhs => rw [← p.pow_mul_divByMonic_rootMultiplicity_eq s₀]`. Simplify using the standard rewrite rules.
+-/
 theorem polyFac (p : Polynomial ℂ) (s₀ : ℂ) :
     ∃ q : Polynomial ℂ, (∀ z, p.eval z = (z - s₀) ^ p.rootMultiplicity s₀ * q.eval z) ∧ (p ≠ 0 → q.eval s₀ ≠ 0) := by
   refine ⟨p /ₘ (Polynomial.X - Polynomial.C s₀) ^ p.rootMultiplicity s₀, fun z => ?_,
@@ -40,6 +56,11 @@ theorem polyFac (p : Polynomial ℂ) (s₀ : ℂ) :
   conv_lhs => rw [← p.pow_mul_divByMonic_rootMultiplicity_eq s₀]
   simp
 
+/- English proof (translation)
+Establish `hx : f x = g x` using `tendsto_nhds_unique (hf.tendsto.mono_left nhdsWithin_le_nhds) ((hg.tendsto.mono_left nhdsWithin_le_nhds).congr' h.symm)`. Use `filter_upwards [eventually_nhdsWithin_iff.mp h] with z hz`. Distinguish the cases in `e : z = x`. Substitute `e` using the available equality. Conclude with `hx`.
+
+Conclude with `hz e`.
+-/
 theorem eqNhds {f g : ℂ → ℂ} {x : ℂ} (h : f =ᶠ[𝓝[≠] x] g) (hf : ContinuousAt f x) (hg : ContinuousAt g x) :
     f =ᶠ[𝓝 x] g := by
   have hx : f x = g x :=
@@ -49,19 +70,37 @@ theorem eqNhds {f g : ℂ → ℂ} {x : ℂ} (h : f =ᶠ[𝓝[≠] x] g) (hf : C
   · subst e; exact hx
   · exact hz e
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨U, hs, hR, fun z hz => ((he.analyticOnNhd hU) z hz).meromorphicAt, t, fun z hz => heq z hz⟩`.
+-/
 theorem isExtAt_of_diff {U : Set ℂ} {e φ : ℂ → ℂ} {t : ℝ} {s₀ : ℂ} (hU : IsOpen U) (hR : IsRightDomain U) (hs : s₀ ∈ U)
     (he : DifferentiableOn ℂ e U) (heq : ∀ z : ℂ, t < z.re → e z = φ z) : IsExtAt φ s₀ e :=
   ⟨U, hs, hR, fun z hz => ((he.analyticOnNhd hU) z hz).meromorphicAt, t, fun z hz => heq z hz⟩
 
+/- English proof (translation)
+The claim follows from `(isMerExt_self isRightDomain_univ fun z _ => (hf.analyticAt z).meromorphicAt).isExtAt trivial`.
+-/
 theorem isExtAt_entire {f : ℂ → ℂ} (hf : Differentiable ℂ f) (s₀ : ℂ) : IsExtAt f s₀ f :=
   (isMerExt_self isRightDomain_univ fun z _ => (hf.analyticAt z).meromorphicAt).isExtAt trivial
 
+/- English proof (translation)
+Take `⟨q, hq, -⟩` from `polyFac p s₀`. Conclude with `(iterDerivPow _ _ (fun z => q.eval z) s₀ (q.differentiable.analyticAt s₀) (Eventually.of_forall hq)).1 j hj`.
+-/
 theorem pderiv_lt (p : Polynomial ℂ) (s₀ : ℂ) (j : ℕ) (hj : j < p.rootMultiplicity s₀) :
     iteratedDeriv j (fun z => p.eval z) s₀ = 0 := by
   obtain ⟨q, hq, -⟩ := polyFac p s₀
   exact (iterDerivPow _ _ (fun z => q.eval z) s₀ (q.differentiable.analyticAt s₀)
     (Eventually.of_forall hq)).1 j hj
 
+/- English proof (translation)
+Take `⟨H, hH, hHa, hHc⟩` from `hv`. Take `⟨q, hq, -⟩` from `polyFac p s₀`. Use `set k := p.rootMultiplicity s₀`. Establish `hE : IsExtAt (fun z => p.eval z * h z) s₀ e` using `isExtAt_of_diff hU hR hs he heq`. Establish `hP : IsExtAt (fun z => p.eval z * h z) s₀ (fun z => p.eval z * H z)` using `(isExtAt_entire p.differentiable s₀).mul hH`.
+
+Establish `hea : AnalyticAt ℂ e s₀` using `(he.analyticOnNhd hU) s₀ hs`. Establish `hPa : AnalyticAt ℂ (fun z => p.eval z * H z) s₀` using `(p.differentiable.analyticAt s₀).mul hHa`. Establish `h1 : e =ᶠ[𝓝 s₀] fun z => (z - s₀) ^ k * (q.eval z * H z)`. Use `(eqNhds (hE.eventuallyEq hP) hea.continuousAt hPa.continuousAt).trans (Eventually.of_forall fun z => ?_)` and prove the remaining obligations. Simplify using `only [hq z]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `A` using `iterDerivPow k e _ s₀ ((q.differentiable.analyticAt s₀).mul hHa) h1`. Establish `B` using `iterDerivPow k _ (fun z => q.eval z) s₀ (q.differentiable.analyticAt s₀) (Eventually.of_forall hq)`. Introduce `j hj`. Break down `hj.lt_or_eq with hj | hj` into its components or cases.
+
+Rewrite using `[A.1 j hj, B.1 j hj, zero_mul]`. Substitute `hj` using the available equality. Rewrite using `[A.2, B.2, Pi.mul_apply, hHc]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem ordVal (U : Set ℂ) (p : Polynomial ℂ) (e h : ℂ → ℂ) (t : ℝ) (s₀ c : ℂ) (hU : IsOpen U) (hR : IsRightDomain U)
     (hs : s₀ ∈ U) (hp : p ≠ 0) (he : DifferentiableOn ℂ e U) (heq : ∀ z : ℂ, t < z.re → e z = p.eval z * h z)
     (hv : HolValueAt h s₀ c) : ∀ j ≤ p.rootMultiplicity s₀, iteratedDeriv j e s₀ = iteratedDeriv j (fun z => p.eval z) s₀ * c := by
@@ -82,6 +121,21 @@ theorem ordVal (U : Set ℂ) (p : Polynomial ℂ) (e h : ℂ → ℂ) (t : ℝ) 
   · rw [A.1 j hj, B.1 j hj, zero_mul]
   · subst hj; rw [A.2, B.2, Pi.mul_apply, hHc]; ring
 
+/- English proof (translation)
+Take `⟨q, hq, hq0⟩` from `polyFac p s₀`. Establish `hq0` using `hq0 hp`. Use `set k := p.rootMultiplicity s₀`. Establish `hea : AnalyticAt ℂ e s₀` using `(he.analyticOnNhd hU) s₀ hs`. Take `⟨g, hg, hge⟩` from `(natCast_le_analyticOrderAt hea).1 ((natCast_le_analyticOrderAt_iff_iteratedDeriv_eq_zero hea).2 hlow)`.
+
+Establish `hge' : e =ᶠ[𝓝 s₀] fun z => (z - s₀) ^ k * g z` using `hge.mono fun z hz => by rw [hz, smul_eq_mul]`. Establish `A` using `(iterDerivPow k e g s₀ hg hge').2`. Establish `B` using `(iterDerivPow k _ (fun z => q.eval z) s₀ (q.differentiable.analyticAt s₀) (Eventually.of_forall hq)).2`. Establish `hgc : g s₀ = q.eval s₀ * c`. Rewrite `htop` using `[A, B]`.
+
+Establish `hf : (k.factorial : ℂ) ≠ 0` using `by exact_mod_cast Nat.factorial_ne_zero k`. Apply `mul_left_cancel₀ hf` to reduce the goal to its premises. Rewrite using `[htop]`. Expand and normalize the polynomial expressions, which then agree. Establish `hE : IsExtAt (fun z => p.eval z * h z) s₀ e` using `isExtAt_of_diff hU hR hs he heq`.
+
+Establish `hD : IsExtAt (fun z => p.eval z * h z / p.eval z) s₀ (fun z => e z / p.eval z)` using `hE.div (isExtAt_entire p.differentiable s₀)`. Take `⟨σ, hσ⟩` from `((Polynomial.finite_setOfPred_isRoot hp).image Complex.re).bddAbove`. Establish `hR' : EqRight (fun z => p.eval z * h z / p.eval z) h`. Use `⟨σ, fun z hz => ?_⟩` and prove the remaining obligations. Establish `hpz : p.eval z ≠ 0` using `fun h0 => by`.
+
+Use `hσ ⟨z, h0, rfl⟩` as an intermediate fact. Conclude with `absurd (mem_rightOf.1 hz) (not_lt.2 this)`. Conclude with `mul_div_cancel_left₀ (h z) hpz`. Use `(hD.congr hR').holValueAt_iff.2 ?_` and prove the remaining obligations. Establish `hlim : Tendsto (fun z => g z / q.eval z) (𝓝[≠] s₀) (𝓝 c)`.
+
+Establish `: ContinuousAt (fun z => g z / q.eval z) s₀` using `hg.continuousAt.div (q.differentiable.analyticAt s₀).continuousAt hq0`. Establish `hv : g s₀ / q.eval s₀ = c` using `by rw [hgc]; field_simp`. Rewrite using `[← hv]`. Conclude with `this.tendsto.mono_left nhdsWithin_le_nhds`. Use `hlim.congr' ?_` and prove the remaining obligations.
+
+Use `filter_upwards [nhdsWithin_le_nhds hge', self_mem_nhdsWithin] with z hz hz'`. Establish `hne : (z - s₀) ^ k ≠ 0` using `pow_ne_zero _ (sub_ne_zero.2 hz')`. Rewrite using `[hz, hq z, mul_div_mul_left _ _ hne]`.
+-/
 theorem wrap (U : Set ℂ) (p : Polynomial ℂ) (e h : ℂ → ℂ) (t : ℝ) (s₀ c : ℂ) (hU : IsOpen U) (hR : IsRightDomain U)
     (hs : s₀ ∈ U) (hp : p ≠ 0) (he : DifferentiableOn ℂ e U) (heq : ∀ z : ℂ, t < z.re → e z = p.eval z * h z)
     (hlow : ∀ j < p.rootMultiplicity s₀, iteratedDeriv j e s₀ = 0)
@@ -121,6 +175,9 @@ theorem wrap (U : Set ℂ) (p : Polynomial ℂ) (e h : ℂ → ℂ) (t : ℝ) (s
   have hne : (z - s₀) ^ k ≠ 0 := pow_ne_zero _ (sub_ne_zero.2 hz')
   rw [hz, hq z, mul_div_mul_left _ _ hne]
 
+/- English proof (translation)
+Establish `hx : Differentiable ℂ fun z => Complex.exp (α + β * z)` using `by fun_prop`. Establish `h1 : HolValueAt (fun z => Complex.exp (α + β * z)) s₀ (Complex.exp (α + β * s₀))` using `⟨_, isExtAt_entire hx s₀, hx.analyticAt s₀, rfl⟩`. Establish `h2` using `(h1.mul hv).congr ⟨t, fun z hz => (hl z hz).symm⟩`. Conclude with `hv'.unique h2`.
+-/
 theorem valLaw (h h' : ℂ → ℂ) (t : ℝ) (α β s₀ v v' : ℂ) (hl : ∀ z : ℂ, t < z.re → h' z = Complex.exp (α + β * z) * h z)
     (hv : HolValueAt h s₀ v) (hv' : HolValueAt h' s₀ v') : v' = Complex.exp (α + β * s₀) * v := by
   have hx : Differentiable ℂ fun z => Complex.exp (α + β * z) := by fun_prop
@@ -129,6 +186,27 @@ theorem valLaw (h h' : ℂ → ℂ) (t : ℝ) (α β s₀ v v' : ℂ) (hl : ∀ 
   have h2 := (h1.mul hv).congr ⟨t, fun z hz => (hl z hz).symm⟩
   exact hv'.unique h2
 
+/- English proof (translation)
+Take `⟨C, hC, hCa, hCv⟩` from `hv`. Take `⟨C', hC', hCa', hCv'⟩` from `hv'`. Take `⟨q, hq, -⟩` from `polyFac p s₀`. Use `set k := p.rootMultiplicity s₀`. Use `set E : ℂ → ℂ := fun z => Complex.exp (α + β * z) with hEdef`.
+
+Establish `hEd : Differentiable ℂ E` using `by simp only [hEdef]; fun_prop`. Use `set gp : ℂ → ℂ := fun z => (z - s₀) ^ (k - j) * q.eval z with hgp`. Establish `hgpa : AnalyticAt ℂ gp s₀`. Use `q.differentiable.analyticAt s₀` as an intermediate fact. Simplify using `only [hgp]`.
+
+Use `fun_prop`. Establish `hpj : ∀ z, p.eval z = (z - s₀) ^ j * gp z` using `fun z => by`. Rewrite using `[hq z, hgp]`. Simplify using `only`. Rewrite using `[← mul_assoc, ← pow_add, Nat.add_sub_cancel' hj]`.
+
+Establish `hP` using `(iterDerivPow j _ gp s₀ hgpa (Eventually.of_forall hpj)).2`. Establish `haa : AnalyticAt ℂ a s₀` using `(ha.analyticOnNhd hU) s₀ hs`. Establish `haa' : AnalyticAt ℂ a' s₀` using `(ha'.analyticOnNhd hU) s₀ hs`. Take `⟨ga, hga, hgae⟩` from `(natCast_le_analyticOrderAt haa).1 ((natCast_le_analyticOrderAt_iff_iteratedDeriv_eq_zero haa).2 hlo)`. Take `⟨ga', hga', hgae'⟩` from `(natCast_le_analyticOrderAt haa').1 ((natCast_le_analyticOrderAt_iff_iteratedDeriv_eq_zero haa').2 hlo')`.
+
+Simplify using `only [smul_eq_mul] at hgae hgae'`. Establish `hA` using `(iterDerivPow j a ga s₀ hga hgae).2`. Establish `hA'` using `(iterDerivPow j a' ga' s₀ hga' hgae').2`. Establish `hX : IsExtAt (fun z => p.eval z * (c₁ z + c₂ z) - p.eval z * c₁ z) s₀ (fun z => a z - p.eval z * C z)` using `(isExtAt_of_diff hU hR hs ha he).map₂ (· - ·) (fun _ => .fun_sub) ((isExtAt_entire p.differentiable s₀).mul hC)`. Establish `hX' : IsExtAt (fun z => p.eval z * (c₁' z + c₂' z) - p.eval z * c₁' z) s₀ (fun z => a' z - p.eval z * C' z)` using `(isExtAt_of_diff hU hR hs ha' he').map₂ (· - ·) (fun _ => .fun_sub) ((isExtAt_entire p.differentiable s₀).mul hC')`.
+
+Establish `hY : IsExtAt (fun z => E z * (p.eval z * (c₁ z + c₂ z) - p.eval z * c₁ z)) s₀ (fun z => E z * (a z - p.eval z * C z))` using `(isExtAt_entire hEd s₀).mul hX`. Establish `hY' : IsExtAt (fun z => p.eval z * (c₁' z + c₂' z) - p.eval z * c₁' z) s₀ (fun z => E z * (a z - p.eval z * C z))` using `hY.congr ⟨t, fun z hz => by simp only [hEdef]; rw [hl z hz]; ring⟩`. Establish `hev` using `hX'.eventuallyEq hY'`. Use `set Φ : ℂ → ℂ := fun z => ga z - gp z * C z with hΦ`. Use `set Φ' : ℂ → ℂ := fun z => ga' z - gp z * C' z with hΦ'`.
+
+Establish `hΦa : AnalyticAt ℂ (fun z => E z * Φ z) s₀`. Use `hEd.analyticAt s₀` as an intermediate fact. Simplify using `only [hΦ]`. Use `fun_prop`. Establish `hΦa' : AnalyticAt ℂ Φ' s₀` using `by simp only [hΦ']; fun_prop`.
+
+Establish `hlim : Φ' =ᶠ[𝓝[≠] s₀] fun z => E z * Φ z` using `by filter_upwards [hev, nhdsWithin_le_nhds hgae, nhdsWithin_le_nhds hgae', self_mem_nhdsWithin] with z h1 h2 h3 hz`. Establish `hne : (z - s₀) ^ j ≠ 0` using `pow_ne_zero _ (sub_ne_zero.2 hz)`. Apply `mul_left_cancel₀ hne` to reduce the goal to its premises. Use `h1` as an intermediate fact. Simplify using `only [h2, h3, hpj z] at this`.
+
+Simplify using `only [hΦ, hΦ']`. Take the linear combination `this`. Establish `hval : Φ' s₀ = E s₀ * Φ s₀` using `(eqNhds hlim hΦa'.continuousAt hΦa.continuousAt).self_of_nhds`. Simplify using `only [hΦ, hΦ', hEdef, hCv, hCv'] at hval`. Rewrite using `[hA, hA', hP]`.
+
+Take the linear combination `(j.factorial : ℂ) * hval`.
+-/
 theorem lawSep (U : Set ℂ) (p : Polynomial ℂ) (t : ℝ) (s₀ : ℂ) (j : ℕ) (a a' c₁ c₁' c₂ c₂' : ℂ → ℂ) (v v' α β : ℂ)
     (hU : IsOpen U) (hR : IsRightDomain U) (hs : s₀ ∈ U) (hp : p ≠ 0) (hj : j ≤ p.rootMultiplicity s₀)
     (ha : DifferentiableOn ℂ a U) (ha' : DifferentiableOn ℂ a' U)

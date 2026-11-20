@@ -40,8 +40,17 @@ open GlobalTheory.IndefiniteRowSideFullHecke.CMObjBundlePull
 
 namespace GlobalTheory.CMClaims
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.abelianSchemeLaws_all.1`.
+-/
 theorem laws : Out.Laws := GlobalTheory.abelianSchemeLaws_all.1
+/- English proof (translation)
+The claim follows from `GlobalTheory.abelianSchemeLaws_all.2.secTwist`.
+-/
 theorem secTwist : Out.SecTwistSt := GlobalTheory.abelianSchemeLaws_all.2.secTwist
+/- English proof (translation)
+Introduce `T K _ _ _ _ _ _ G G' _ _ hG hG' φ hφ` and use `GlobalTheory.existsUnique_hom_extension_semiAbelian T K G G' hG hG' φ hφ`.
+-/
 theorem homExt : CM.HomExtDvr := fun T K _ _ _ _ _ _ G G' _ _ hG hG' φ hφ =>
   GlobalTheory.existsUnique_hom_extension_semiAbelian T K G G' hG hG' φ hφ
 
@@ -61,16 +70,28 @@ variable [IsCommMonObj G'] {n : ℕ} {v : Fin n → (epsR R' ⟶ G')} (hv : IsLi
 
 def comb (c : Fin n → R') : epsR R' ⟶ G' := ((LieComb.lieComb_algebra R' G' n v hv.1).1 c).exists.choose
 
+/- English proof (translation)
+The claim follows from `have a := ((LieComb.lieComb_algebra R' G' n v hv.1).1 c).exists.choose_spec ⟨fun b => ((LieComb.lieComb_algebra R' G' n v hv.1).1 c).unique b a, fun b => b ▸ a⟩`.
+-/
 theorem isLieComb_iff (c : Fin n → R') (w : epsR R' ⟶ G') : IsLieComb c v w ↔ w = comb hv c :=
   have a := ((LieComb.lieComb_algebra R' G' n v hv.1).1 c).exists.choose_spec
   ⟨fun b => ((LieComb.lieComb_algebra R' G' n v hv.1).1 c).unique b a, fun b => b ▸ a⟩
 
+/- English proof (translation)
+The claim follows from `(isLieComb_iff hv c _).2 rfl`.
+-/
 theorem isLieComb_comb (c : Fin n → R') : IsLieComb c v (comb hv c) := (isLieComb_iff hv c _).2 rfl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun a => (hv.2 w a).exists.imp fun c b => ((isLieComb_iff hv c w).1 b).symm, fun ⟨c, a⟩ => a ▸ (LieComb.lieComb_algebra R' G' n v hv.1).2.1 _ _ (isLieComb_comb hv c)⟩`.
+-/
 theorem isTangent_iff (w : epsR R' ⟶ G') : IsTangent w ↔ ∃ c, comb hv c = w :=
   ⟨fun a => (hv.2 w a).exists.imp fun c b => ((isLieComb_iff hv c w).1 b).symm,
     fun ⟨c, a⟩ => a ▸ (LieComb.lieComb_algebra R' G' n v hv.1).2.1 _ _ (isLieComb_comb hv c)⟩
 
+/- English proof (translation)
+Introduce `a b e` and use `(hv.2 _ ((isTangent_iff hv _).2 ⟨a, rfl⟩)).unique (isLieComb_comb hv a) (e ▸ isLieComb_comb hv b)`.
+-/
 theorem comb_injective : Function.Injective (comb hv) := fun a b e =>
   (hv.2 _ ((isTangent_iff hv _).2 ⟨a, rfl⟩)).unique (isLieComb_comb hv a) (e ▸ isLieComb_comb hv b)
 
@@ -88,6 +109,13 @@ end Pair
 
 section Isog
 
+/- English proof (translation)
+Use `Nat.card_eq_of_bijective (fun x => ⟨F x.1, by rw [← map_pow, x.2, map_one]⟩) ⟨fun a b e => ?_, fun y => ?_⟩` and prove the remaining obligations. Establish `e₁ : F (a.1 / b.1) = 1` using `by rw [map_div, div_eq_one]; exact congrArg Subtype.val e`. Establish `e₂ : (a.1 / b.1) ^ (m + 2) = 1` using `by rw [div_pow, a.2, b.2, div_one]`. Rewrite `e₂` using `[pow_succ, hm _ e₁, _root_.one_mul, div_eq_one]`. Conclude with `Subtype.ext e₂`.
+
+Take `⟨x, hx⟩` from `hF y.1`. Establish `e₁ : (x ^ (m + 2)) ^ (m + 1) = 1` using `hm _ (by rw [map_pow, hx, y.2])`. Use `⟨⟨x ^ ((m + 1) * (m + 1)), ?_⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[← pow_mul, show (m + 1) * (m + 1) * (m + 2) = (m + 2) * (m + 1) * (m + 1) by ring, pow_mul, pow_mul, e₁, one_pow]`. Express the relevant statement in the definitionally equal form `F _ = y.1`.
+
+Rewrite using `[map_pow, hx, show (m + 1) * (m + 1) = (m + 2) * m + 1 by ring, pow_succ, pow_mul, y.2, one_pow, _root_.one_mul]`.
+-/
 theorem card_torsion_eq {M N : Type} [CommGroup M] [CommGroup N] (F : M →* N) (hF : Function.Surjective F) (m : ℕ)
     (hm : ∀ x, F x = 1 → x ^ (m + 1) = 1) :
     Nat.card {x : M // x ^ (m + 2) = 1} = Nat.card {y : N // y ^ (m + 2) = 1} := by
@@ -105,6 +133,9 @@ theorem card_torsion_eq {M N : Type} [CommGroup M] [CommGroup N] (F : M →* N) 
 
 variable {K : Type} [Field K] [NumberField K]
 
+/- English proof (translation)
+Take `⟨p, hp⟩` from `GeomSurj.exists_lift_of_surjective Φ.left y.left`. Use `⟨Over.homMk p ?_, Over.OverMorphism.ext hp⟩` and prove the remaining obligations. Rewrite using `[← Over.w Φ, ← Category.assoc, ← hp]`. Conclude with `Over.w y`.
+-/
 theorem onto_points {R k : Type} [CommRing R] [Field k] [IsAlgClosed k] {P Q : Over (Sp R)} (Φ : P ⟶ Q)
     [IsFinite Φ.left] [Surjective Φ.left] (t : Sp k ⟶ Sp R) (y : Over.mk t ⟶ Q) : ∃ x : Over.mk t ⟶ P, y = x ≫ Φ := by
   obtain ⟨p, hp⟩ := GeomSurj.exists_lift_of_surjective Φ.left y.left
@@ -155,12 +186,30 @@ def Readable (o : abelian₂.LamObj c p q) : Prop :=
     (∀ i (a : 𝓞 E), o.oaΨ.act a ≫ o.φΨ i = o.φΨ i ≫ o.oa.act a) ∧
     ∀ i (a : 𝓞 E), o.oa'.act a ≫ o.φ' i = o.φ' i ≫ o.oa.act a
 
+/- English proof (translation)
+The claim follows from `h.1`.
+-/
 theorem Readable.fibP {o : abelian₂.LamObj c p q} (h : Readable o) : abelian₂.IsFibreOf o.AΨ o.xΨ (abelian₂.gmap o.K₁) o.φΨg := h.1
+/- English proof (translation)
+The claim follows from `h.2.1`.
+-/
 theorem Readable.fibC {o : abelian₂.LamObj c p q} (h : Readable o) : abelian₂.IsFibreOf o.A' o.x' (abelian₂.gmap o.K₁) o.φ'g := h.2.1
+/- English proof (translation)
+The claim follows from `h.2.2.1 i`.
+-/
 theorem Readable.homP {o : abelian₂.LamObj c p q} (h : Readable o) (i : Fin p) : IsMonHom (o.φΨ i) := h.2.2.1 i
+/- English proof (translation)
+The claim follows from `h.2.2.2.1 i`.
+-/
 theorem Readable.homC {o : abelian₂.LamObj c p q} (h : Readable o) (i : Fin q) : IsMonHom (o.φ' i) := h.2.2.2.1 i
+/- English proof (translation)
+The claim follows from `h.2.2.2.2.1 i a`.
+-/
 theorem Readable.linP {o : abelian₂.LamObj c p q} (h : Readable o) (i : Fin p) (a : 𝓞 E) :
     o.oaΨ.act a ≫ o.φΨ i = o.φΨ i ≫ o.oa.act a := h.2.2.2.2.1 i a
+/- English proof (translation)
+The claim follows from `h.2.2.2.2.2 i a`.
+-/
 theorem Readable.linC {o : abelian₂.LamObj c p q} (h : Readable o) (i : Fin q) (a : 𝓞 E) :
     o.oa'.act a ≫ o.φ' i = o.φ' i ≫ o.oa.act a := h.2.2.2.2.2 i a
 

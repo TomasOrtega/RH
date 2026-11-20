@@ -17,6 +17,9 @@ open ValuativeRel
 
 variable {E : Type} [Field E] [NumberField E] {w : HeightOneSpectrum (𝓞 E)} {g : ℕ} [Fact g.Prime]
 
+/- English proof (translation)
+Establish `: (Valued.v : Valuation (w.adicCompletion E) (WithZero (Multiplicative ℤ))).Compatible` using `Valuation.Compatible.ofValuation _`. Establish `he` using `isEquiv (valuation (w.adicCompletion E)) (Valued.v : Valuation (w.adicCompletion E) (WithZero (Multiplicative ℤ)))`. Rewrite using `[he.lt_one_iff_lt_one, Valued.toNormedField.norm_lt_one_iff]`.
+-/
 theorem val_lt_iff (y : w.adicCompletion E) : valuation (w.adicCompletion E) y < 1 ↔ ‖y‖ < 1 := by
   have : (Valued.v : Valuation (w.adicCompletion E) (WithZero (Multiplicative ℤ))).Compatible :=
     Valuation.Compatible.ofValuation _
@@ -24,6 +27,9 @@ theorem val_lt_iff (y : w.adicCompletion E) : valuation (w.adicCompletion E) y <
     (Valued.v : Valuation (w.adicCompletion E) (WithZero (Multiplicative ℤ)))
   rw [he.lt_one_iff_lt_one, Valued.toNormedField.norm_lt_one_iff]
 
+/- English proof (translation)
+Establish `: (Valued.v : Valuation (w.adicCompletion E) (WithZero (Multiplicative ℤ))).Compatible` using `Valuation.Compatible.ofValuation _`. Establish `he` using `isEquiv (valuation (w.adicCompletion E)) (Valued.v : Valuation (w.adicCompletion E) (WithZero (Multiplicative ℤ)))`. Rewrite using `[he.le_one_iff_le_one, Valued.toNormedField.norm_le_one_iff]`.
+-/
 theorem val_le_iff (y : w.adicCompletion E) : valuation (w.adicCompletion E) y ≤ 1 ↔ ‖y‖ ≤ 1 := by
   have : (Valued.v : Valuation (w.adicCompletion E) (WithZero (Multiplicative ℤ))).Compatible :=
     Valuation.Compatible.ofValuation _
@@ -31,6 +37,9 @@ theorem val_le_iff (y : w.adicCompletion E) : valuation (w.adicCompletion E) y �
     (Valued.v : Valuation (w.adicCompletion E) (WithZero (Multiplicative ℤ)))
   rw [he.le_one_iff_le_one, Valued.toNormedField.norm_le_one_iff]
 
+/- English proof (translation)
+Establish `: (Valued.v : Valuation (w.adicCompletion E) (WithZero (Multiplicative ℤ))).Compatible` using `Valuation.Compatible.ofValuation _`. Establish `he` using `isEquiv (valuation (w.adicCompletion E)) (Valued.v : Valuation (w.adicCompletion E) (WithZero (Multiplicative ℤ)))`. Rewrite using `[he.lt_one_iff_lt_one]`. Rewrite using `[adic_valued_algebraMap, RingOfIntegers.coe_eq_algebraMap, HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.intValuation_lt_one_iff_mem]`. Conclude with `hx`.
+-/
 theorem val_lt_of_mem {x : 𝓞 E} (hx : x ∈ w.asIdeal) :
     valuation (w.adicCompletion E) (algebraMap E (w.adicCompletion E) (x : E)) < 1 := by
   have : (Valued.v : Valuation (w.adicCompletion E) (WithZero (Multiplicative ℤ))).Compatible :=
@@ -45,10 +54,16 @@ theorem val_lt_of_mem {x : 𝓞 E} (hx : x ∈ w.asIdeal) :
 variable (i : ℚ_[g] ≃+* w.adicCompletion E) (hi : Continuous i)
 
 include hi in
+/- English proof (translation)
+The claim follows from `(val_le_iff _).2 (GlobalTheory.TypeRec.Model.emb_le w g i.toRingHom hi _ z.2)`.
+-/
 theorem val_int_le (z : ℤ_[g]) : valuation (w.adicCompletion E) (i (z : ℚ_[g])) ≤ 1 :=
   (val_le_iff _).2 (GlobalTheory.TypeRec.Model.emb_le w g i.toRingHom hi _ z.2)
 
 include hi in
+/- English proof (translation)
+Establish `h1 : z ∈ RingHom.ker (PadicInt.toZMod (p` using `g)) := hz`. Rewrite `h1` using `[PadicInt.ker_toZMod, PadicInt.maximalIdeal_eq_span_p, Ideal.mem_span_singleton']`. Take `⟨c, rfl⟩` from `h1`. Rewrite using `[PadicInt.coe_mul, map_mul, map_mul, PadicInt.coe_natCast, map_natCast]`. Conclude with `mul_lt_one_of_nonneg_of_lt_one_right (val_int_le i hi c) zero_le ((val_lt_iff _).2 (Formalism.BasicNotions.Examples₂.LocF.norm_l_lt w g hw))`.
+-/
 theorem val_int_lt (hw : ((g : ℕ) : 𝓞 E) ∈ w.asIdeal) (z : ℤ_[g]) (hz : PadicInt.toZMod z = 0) :
     valuation (w.adicCompletion E) (i (z : ℚ_[g])) < 1 := by
   have h1 : z ∈ RingHom.ker (PadicInt.toZMod (p := g)) := hz
@@ -59,6 +74,13 @@ theorem val_int_lt (hw : ((g : ℕ) : 𝓞 E) ∈ w.asIdeal) (z : ℤ_[g]) (hz :
     ((val_lt_iff _).2 (Formalism.BasicNotions.Examples₂.LocF.norm_l_lt w g hw))
 
 include hi in
+/- English proof (translation)
+Establish `hs` using `IsLocalRing.surjective_units_map_of_local_ringHom (PadicInt.toZMod (p := g)) (ZMod.ringHom_surjective _) (IsLocalHom.of_surjective _ (ZMod.ringHom_surjective _))`. Set `f : ℤ_[g]ˣ →* (ZMod g)ˣ` to `Units.map (PadicInt.toZMod (p := g)).toMonoidHom`. Set `φ : ℤ_[g]ˣ →* ℂˣ` to `μ.comp ((Units.map i.toRingHom.toMonoidHom).comp (Units.map (algebraMap ℤ_[g] ℚ_[g]).toMonoidHom))`. Establish `hker : f.ker ≤ φ.ker` using `fun z hz => by`. Rewrite `hz`, the goal using `[MonoidHom.mem_ker]`.
+
+Apply `hT` to reduce the goal to its premises. Establish `h1 : PadicInt.toZMod ((z : ℤ_[g]) - 1) = 0`. Establish `e` using `congrArg Units.val hz`. Rewrite using `[map_sub, map_one, sub_eq_zero]`. Conclude with `e`.
+
+Use `val_int_lt i hi hw ((z : ℤ_[g]) - 1) h1` as an intermediate fact. Simplify `this` using `[φ]`. Conclude with `⟨f.liftOfSurjective hs ⟨φ, hker⟩, fun z => MonoidHom.liftOfRightInverse_comp_apply _ _ _ ⟨φ, hker⟩ z⟩`.
+-/
 theorem exists_red (hw : ((g : ℕ) : 𝓞 E) ∈ w.asIdeal) (μ : (w.adicCompletion E)ˣ →* ℂˣ)
     (hT : GlobalTheory.SplitWeil.IsTame μ) :
     ∃ θ : (ZMod g)ˣ →* ℂˣ, ∀ z : ℤ_[g]ˣ, θ (Units.map (PadicInt.toZMod (p := g)).toMonoidHom z) =
@@ -88,6 +110,11 @@ open ValuativeRel GlobalTheory.WeilDeligne GlobalTheory.LocGL GlobalTheory.LocLa
 variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] {g : ℕ} [Fact g.Prime]
   {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w}
 
+/- English proof (translation)
+Use `⟨LinearMap.id, fun e => (one_ne_zero : (1 : ℂ) ≠ 0) (LinearMap.congr_fun e (1 : ℂ)), fun k (v : ℂ) => ?_⟩` and prove the remaining obligations. Establish `h1 : Matrix.GeneralLinearGroup.det (GlobalTheory.GLp.inc g 1 k) = Units.map (algebraMap ℤ_[g] ℚ_[g]).toMonoidHom (Matrix.GeneralLinearGroup.det k)` using `by ext; simp [GlobalTheory.GLp.inc, RingHom.map_det]`. Establish `h2 : Matrix.GeneralLinearGroup.det (GlobalTheory.GLp.red g 1 k) = Units.map (PadicInt.toZMod (p` using `g)).toMonoidHom (Matrix.GeneralLinearGroup.det k) := by ext; simp [GlobalTheory.GLp.red, RingHom.map_det]`. Establish `e2 : Matrix.GeneralLinearGroup.det (Matrix.GeneralLinearGroup.map i.toRingHom (GlobalTheory.GLp.inc g 1 k)) = Units.map i.toRingHom.toMonoidHom (Matrix.GeneralLinearGroup.det (GlobalTheory.GLp.inc g 1 k))` using `by ext; simp`. Express the relevant statement in the definitionally equal form `((θ (Matrix.GeneralLinearGroup.det (GlobalTheory.GLp.red g 1 k)) : ℂˣ) : ℂ) • v = ((χ (Matrix.GeneralLinearGroup.det (Matrix.GeneralLinearGroup.map i.toRingHom (GlobalTheory.GLp.inc g 1 k))) : ℂˣ) : ℂ) • v`.
+
+Rewrite using `[e2, h1, h2, hθ]`.
+-/
 theorem inflates_units (i : ℚ_[g] ≃+* w.adicCompletion E) (θ : (ZMod g)ˣ →* ℂˣ) (χ : (w.adicCompletion E)ˣ →* ℂˣ)
     (hχ : GlobalTheory.SmGL.IsSmoothChar χ)
     (hθ : ∀ z : ℤ_[g]ˣ, θ (Units.map (PadicInt.toZMod (p := g)).toMonoidHom z) =
@@ -108,6 +135,19 @@ theorem inflates_units (i : ℚ_[g] ≃+* w.adicCompletion E) (θ : (ZMod g)ˣ �
     ((χ (Matrix.GeneralLinearGroup.det (Matrix.GeneralLinearGroup.map i.toRingHom (GlobalTheory.GLp.inc g 1 k))) : ℂˣ) : ℂ) • v
   rw [e2, h1, h2, hθ]
 
+/- English proof (translation)
+Use `haveI : IsLocalHom (PadicInt.toZMod (p := g)) := IsLocalHom.of_surjective _ (ZMod.ringHom_surjective _)`. Set `u₀ : (ZMod g)ˣ` to `ZMod.unitOfCoprime n hn`. Establish `hu₀ : IsUnit ((n : ℕ) : ℤ_[g])` using `isUnit_of_map_unit (PadicInt.toZMod (p := g)) _ (by`. Rewrite using `[map_natCast]`. Conclude with `u₀.isUnit)`.
+
+Take `⟨θ, hθ⟩` from `exists_red i hi hw μ htm`. Take `⟨P, hP, e⟩` from `GlobalTheory.Published.DepthZeroModel.exists_label L θ u₀ (by rw [ZMod.coe_unitOfCoprime]; exact hgen)`. Establish `h1` using `H E Ω g A w h rc ⟨a, ha, ε, hε, hl⟩ i hi κ L t ht hT 1 (GlobalTheory.SmGL.IrrRep.det (Fin 1) μ hμ) (IrrGL.isCusp_ofChar μ hμ) _ P hP (inflates_units i θ μ hμ hθ)`. Establish `h2 : rc (cls (GlobalTheory.SmGL.IrrRep.det (Fin 1) μ hμ)) = _` using `hl.one μ hμ`. Rewrite `h1` using `[h2, e, WD.inePol_of_mem_Ine _ ht, WD.lpOfChar, WD.charPol_mk, WDRep.ofChars_ρ, charpoly_diagEnd]`.
+
+Establish `h3` using `congrArg (fun p => p.coeff 0) h1`. Establish `h4 : μ (a (ineIncl h ⟨t, ht⟩)) = θ u₀` using `Units.ext (by simpa using h3)`. Establish `h5 : u₀ = Units.map (PadicInt.toZMod (p` using `g)).toMonoidHom hu₀.unit := Units.ext (by simp [u₀])`. Rewrite using `[h4, h5, hθ]`. Use `set y : (w.adicCompletion E)ˣ := Units.map i.toRingHom.toMonoidHom (Units.map (algebraMap ℤ_[g] ℚ_[g]).toMonoidHom hu₀.unit) with hy`.
+
+Establish `hyn : (y : w.adicCompletion E) = n` using `by simp [hy]`. Establish `hyi : valuation (w.adicCompletion E) ((y⁻¹ : (w.adicCompletion E)ˣ) : w.adicCompletion E) ≤ 1`. Establish `e4 : ((y⁻¹ : (w.adicCompletion E)ˣ) : w.adicCompletion E) = i (((hu₀.unit⁻¹ : ℤ_[g]ˣ) : ℤ_[g]) : ℚ_[g])`. Rewrite using `[hy, ← map_inv, ← map_inv]`. Both sides reduce to the same expression.
+
+Rewrite using `[e4]`. Conclude with `val_int_le i hi _`. Establish `h6 : μ (x * y⁻¹) = 1` using `htm _ (by`. Establish `e3 : ((x * y⁻¹ : (w.adicCompletion E)ˣ) : w.adicCompletion E) - 1 = ((x : w.adicCompletion E) - n) * ((y⁻¹ : (w.adicCompletion E)ˣ) : w.adicCompletion E)`. Rewrite using `[← hyn, sub_mul, Units.mul_inv]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[e3, map_mul]`. Conclude with `mul_lt_one_of_nonneg_of_lt_one_left zero_le hx hyi)`. Rewrite `h6` using `[map_mul, map_inv, mul_inv_eq_one]`. Conclude with `h6.symm`.
+-/
 theorem value_at_gen (H : GlobalTheory.Published.DepthZeroInertia) {a : Weil h →* (w.adicCompletion E)ˣ} {ha : IsLocalArtin h a}
     {ε : EpsFamily A} (hε : IsDeligneEps ε) {rc : IrrGL (w.adicCompletion E) → WD h} (hl : Laws a ha ε rc)
     (i : ℚ_[g] ≃+* w.adicCompletion E) (hi : Continuous i) (hw : ((g : ℕ) : 𝓞 E) ∈ w.asIdeal)
@@ -155,6 +195,33 @@ namespace GlobalTheory.DepthZeroRankOneLabel
 
 open GlobalTheory.TameRes
 
+/- English proof (translation)
+Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed E`. Use `haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap E Ω).injective`. Establish `hgp : g.Prime` using `Fact.out`. Establish `hg2 : 2 ≤ g` using `hgp.two_le`. Establish `hgΩ : ((g : ℕ) : Ω) ≠ 0` using `Nat.cast_ne_zero.mpr hgp.ne_zero`.
+
+Rewrite `hπ` using `[hN]`. Establish `hg1 : 0 < g - 1` using `by omega`. Take `⟨y, hy⟩` from `IsAlgClosed.exists_pow_nat_eq ((g : ℕ) : Ω) hg1`. Establish `hy0 : y ≠ 0` using `by rintro rfl; rw [zero_pow hg1.ne'] at hy; exact hgΩ hy.symm`. Establish `hTy : redThrough A κ (σ y / y) = ζ 1` using `hT 1 one_pos y (by rw [pow_one]; exact hy)`.
+
+Establish `hϖ0 : algebraMap E Ω (ϖ : E) ≠ 0`. Rewrite using `[ne_eq, map_eq_zero, RingOfIntegers.coe_eq_zero_iff]`. Introduce and unpack `rfl`. Conclude with `hϖ2 (zero_mem _)`. Establish `hπ0 : π ≠ 0` using `by rintro rfl; rw [zero_pow hg1.ne'] at hπ; exact hϖ0 hπ.symm`.
+
+Establish `hϖg : A.valuation (algebraMap E Ω (ϖ : E)) = A.valuation ((g : ℕ) : Ω)`. Establish `e : ((g : ℕ) : Ω) = algebraMap E Ω (((g : ℕ) : 𝓞 E) : E)` using `by simp`. Rewrite using `[e]`. Conclude with `le_antisymm (val_le_of_unif hAP hϖ hgP hgP2) (val_le_of_unif hAP hgP hϖ hϖ2)`. Establish `hπy : A.valuation π = A.valuation y`.
+
+Establish `h1 : A.valuation π ^ (g - 1) = A.valuation y ^ (g - 1)`. Rewrite using `[← map_pow, ← map_pow, hπ, hy, hϖg]`. Conclude with `(pow_left_inj₀ zero_le zero_le hg1.ne').mp h1`. Establish `hvy0 : A.valuation y ≠ 0` using `by simpa using hy0`. Establish `hw1 : A.valuation (π / y) = 1` using `by rw [map_div₀, hπy, div_self hvy0]`.
+
+Establish `hwσ : A.valuation (σ (π / y) - π / y) < 1` using `hσ.2 _ hw1.le`. Establish `hσy0 : σ y ≠ 0` using `fun h => hy0 (σ.injective (by rw [h, map_zero]))`. Establish `key : σ π / π - σ y / y = (σ y / y) * ((σ (π / y) - π / y) / (π / y))`. Rewrite using `[map_div₀]`. Clear the denominators using the available nonvanishing facts.
+
+Establish `hq : A.valuation (σ y / y) ≤ 1` using `(A.valuation_le_one_iff _).2 (tameQuot_mem A σ hg1 hgΩ hy)`. Establish `h1 : A.valuation (σ π / π - σ y / y) < 1`. Rewrite using `[key, map_mul, map_div₀ A.valuation (σ (π / y) - π / y), hw1, div_one]`. Combine the equalities or inequalities in the displayed calculation. Take `⟨a, -, hua⟩` from `exists_nat_sub_mem P g hN hgP u`.
+
+Establish `hua' : A.valuation (algebraMap E Ω (u : E) - (a : Ω)) < 1`. Use `(hAP (u - (a : 𝓞 E))).2 hua` as an intermediate fact. Simplify using `using this`. Establish `h3 : A.valuation (σ y / y - (a : Ω)) < 1`. Establish `e : σ y / y - (a : Ω) = -(σ π / π - σ y / y) + (σ π / π - algebraMap E Ω (u : E)) + (algebraMap E Ω (u : E) - (a : Ω))` using `by ring`.
+
+Rewrite using `[e]`. Use `Valuation.map_add_lt _ (Valuation.map_add_lt _ ?_ hv) hua'` and prove the remaining obligations. Rewrite using `[Valuation.map_neg]`. Conclude with `h1`. Establish `haA : (a : Ω) ∈ A` using `by exact_mod_cast (natCast_mem A a)`.
+
+Establish `hred : redThrough A κ (σ y / y) = (a : Formalism.CyclotomicNorms.Fbar g)`. Rewrite using `[redThrough_eq_of_val_sub κ (tameQuot_mem A σ hg1 hgΩ hy) haA h3]`. Unfold `redThrough`. Rewrite using `[dif_pos haA]`. Establish `: (⟨(a : Ω), haA⟩ : A) = (a : A)` using `Subtype.ext (by simp)`.
+
+Rewrite using `[this, map_natCast, map_natCast]`. Establish `hz : ζ 1 = (a : Formalism.CyclotomicNorms.Fbar g)` using `by rw [← hTy, hred]`. Use `⟨a, ?_, hua, by rw [map_natCast, hz]⟩` and prove the remaining obligations. Rewrite using `[Nat.coprime_comm, Nat.Prime.coprime_iff_not_dvd hgp]`. Introduce `hd`.
+
+Establish `h0 : (a : Formalism.CyclotomicNorms.Fbar g) = 0` using `(CharP.cast_eq_zero_iff (Formalism.CyclotomicNorms.Fbar g) g a).2 hd`. Establish `ho` using `(hζ 1 one_pos).1`. Rewrite `ho` using `[hz, h0, pow_one]`. Establish `hz0 : orderOf (0 : Formalism.CyclotomicNorms.Fbar g) = 0`. Rewrite using `[orderOf_eq_zero_iff']`.
+
+Introduce `n hn`. Rewrite using `[zero_pow (Nat.pos_iff_ne_zero.mp hn)]`. Conclude with `zero_ne_one`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem residue_of_cong {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
     (A : ValuationSubring Ω) (P : HeightOneSpectrum (𝓞 E)) (g : ℕ) [Fact g.Prime] (hAP : IsPlaceOver (F := E) A P)
     (hN : normV P = g) (hgP : ((g : ℕ) : 𝓞 E) ∈ P.asIdeal) (hgP2 : ((g : ℕ) : 𝓞 E) ∉ P.asIdeal ^ 2)
@@ -248,6 +315,15 @@ def labDatum {g : ℕ} [Fact g.Prime] (t : Formalism.CyclotomicNorms.Fbar g →*
 end GlobalTheory.DepthZeroRankOneLabel
 
 open GlobalTheory.WeilDeligne in
+/- English proof (translation)
+Establish `htame` using `GlobalTheory.SerSys.LabDepth.tame_of_isTameWD ((hl.depth (GlobalTheory.LocGL.IrrGL.ofChar μ hμ)).1 (by`. Use `GlobalTheory.LocLanglands.fixed_ne_bot_of_equiv (GlobalTheory.SmGL.IrrRep.nonempty_equiv_rep (Irr.ofDet 1 μ hμ).toIrrRep).some.symm ?_` and prove the remaining obligations. Use `(Submodule.ne_bot_iff _).2 ⟨(show (Irr.ofDet 1 μ hμ).V from (1 : ℂ)), GlobalTheory.Parabolic.mem_fixed.2 fun u hu => ?_, (one_ne_zero : (1 : ℂ) ≠ 0)⟩` and prove the remaining obligations. Establish `hu' : u ∈ GlobalTheory.SplitWeil.KOne ((D.naut.plGw k v).adicCompletion D.host.E) (Fin 1)` using `hu`. Establish `h1` using `GlobalTheory.StepData.mem_KOne.1 hu' 0 0`.
+
+Rewrite `h1` using `[Matrix.sub_apply, Matrix.one_apply_eq]`. Establish `h2 : μ (Matrix.GeneralLinearGroup.det u) = 1` using `hT _ (by`. Establish `e : ((Matrix.GeneralLinearGroup.det u : (_)ˣ) : (D.naut.plGw k v).adicCompletion D.host.E) = u.val 0 0`. Simplify using `[Matrix.det_fin_one]`. Rewrite using `[e]`.
+
+Conclude with `h1)`. Express the relevant statement in the definitionally equal form `(GlobalTheory.SmGL.detRep (Fin 1) μ) u (1 : ℂ) = (1 : ℂ)`. Simplify using `[GlobalTheory.SmGL.detRep, h2]))`. Rewrite `htame` using `[hl.one, WD.lpOfChar, WD.tame_mk]`. Introduce `σ hσ`.
+
+Establish `h2` using `LinearMap.congr_fun (htame σ hσ) (fun _ => 1)`. Establish `h3` using `congrFun h2 0`. Simplify using `using h3`.
+-/
 theorem GlobalTheory.DepthZeroRankOneLabel.wild_trivial (D : D7) (k : Fin 2) (v : D.nd.PlG k)
     (μ : ((D.naut.plGw k v).adicCompletion D.host.E)ˣ →* ℂˣ) (hμ : GlobalTheory.SmGL.IsSmoothChar μ) (hT : GlobalTheory.SplitWeil.IsTame μ)
     (a : Weil (D.nd.plOm.2 (D.naut.plGw k v)) →* ((D.naut.plGw k v).adicCompletion D.host.E)ˣ)
@@ -277,6 +353,17 @@ theorem GlobalTheory.DepthZeroRankOneLabel.wild_trivial (D : D7) (k : Fin 2) (v 
   have h3 := congrFun h2 0
   simpa using h3
 
+/- English proof (translation)
+Introduce `hDZ hL D Γ k v μ hμ hT u hu hex c hc`. Use `haveI : Fact (D.host.g k).Prime := ⟨D.host.g_prime k⟩`. Take `⟨a, ha, ε, hε, hl⟩` from `GlobalTheory.CuspRep.ParLaws.isRec_locRec hL (D.nd.plOm.2 (D.naut.plGw k v))`. Establish `hSet : GlobalTheory.WeilDeligne.TeichmullerInertiaLabelCondition (D.nd.plOm.1 (D.naut.plGw k v)) (D.naut.plGw k v) (D.ntypes.teichC k) (D.ntypes.tg k v)` using `.of_tameGenAt (GlobalTheory.TameLabels.normV_eq_of_split (D.host.g_prime k) (D.nd.g_split k) (D.naut.plGw_over k v)) (D.ntypes.tg_gen k v) (D.ntypes.teichC_inj k)`. Establish `e1 : rcAt hL D (D.naut.plGw k v) 1 (Irr.ofDet 1 μ hμ) = GlobalTheory.WeilDeligne.WD.lpOfChar _ (μ.comp a) (ha.smooth hμ)` using `hl.one μ hμ`.
+
+Establish `hwild : ∀ σ : GlobalTheory.WeilDeligne.Weil (D.nd.plOm.2 (D.naut.plGw k v)), (σ : G D.host.E D.nd.Om) ∈ GlobalTheory.WeilDeligne.Wild D.host.E (D.nd.plOm.1 (D.naut.plGw k v)) → (μ.comp a) σ = 1` using `GlobalTheory.DepthZeroRankOneLabel.wild_trivial D k v μ hμ hT a ha ε _ hl`. Establish `hval : μ (a ⟨D.ntypes.tg k v, GlobalTheory.WeilDeligne.Ine_le_Weil _ hSet.2.1⟩) = μ (Units.map (algebraMap D.host.E ((D.naut.plGw k v).adicCompletion D.host.E)).toMonoidHom (Units.mk0 (u : D.host.E) hu))`. Take `⟨I⟩` from `GlobalTheory.TypeRec.Model.nonempty_ident D`. Establish `hw` using `D.naut.plGw_over k v`. Establish `hN` using `GlobalTheory.TameLabels.normV_eq_of_split (D.host.g_prime k) (D.nd.g_split k) hw`.
+
+Establish `hw2 : ((D.host.g k : ℕ) : 𝓞 D.host.E) ∉ (D.naut.plGw k v).asIdeal ^ 2` using `fun h2 => by`. Establish `h0 : Ideal.span {((D.host.g k : ℕ) : 𝓞 D.host.E)} ≠ 0`. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `(D.host.g_prime k).ne_zero` after adjusting the coercions. Establish `hs` using `(UniqueFactorizationMonoid.squarefree_iff_nodup_normalizedFactors h0).2 (Formalism.MainNotions.ModuliIntegralCharts.H1.GSplit.split_of_ncard (D.host.g_prime k) (D.nd.g_split k)).2`.
+
+Use `hs (D.naut.plGw k v).asIdeal (by rw [← sq, Ideal.dvd_span_singleton]; exact h2)` as an intermediate fact. Conclude with `(D.naut.plGw k v).isPrime.ne_top (Ideal.isUnit_iff.1 this)`. Take `⟨ϖ, π, hϖ, hϖ2, hπ, hv⟩` from `hex`. Take `⟨n, hn, hun, hgen⟩` from `GlobalTheory.DepthZeroRankOneLabel.residue_of_cong _ _ _ (D.nd.plOm.2 _) hN hw hw2 (Γ.kv k v) _ (Γ.ζ k) (D.ntypes.tg_mem k v) (Γ.ζ_gen k) (Γ.tg_tame k v) u ϖ π hϖ hϖ2 hπ hv`. Establish `hx` using `GlobalTheory.DepthZeroRankOneLabel.val_lt_of_mem hun`.
+
+Conclude with `GlobalTheory.DepthZeroRankOneLabel.value_at_gen hDZ hε hl (I.i k v) (I.cont k v) hw (Γ.kv k v) (GlobalTheory.DepthZeroRankOneLabel.labDatum (D.ntypes.teichC k) (D.ntypes.teichC_inj k) (Γ.ζ k) (Γ.ζ_gen k)) _ (D.ntypes.tg_mem k v) (Γ.tg_tame k v) μ hμ hT n hn hgen _ (by simpa using …`. Unfold `labAt`. Rewrite using `[e1, GlobalTheory.WeilDeligne.WD.lab_lpOfChar_eq_iff hSet _ hwild c, hc, MonoidHom.comp_apply, hval]`.
+-/
 theorem GlobalTheory.DepthZeroRankOneLabel.lab_eq_of_tameRep : GlobalTheory.Published.DepthZeroInertia → ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (D : D7) (Γ : GrpSide D) (k : Fin 2) (v : D.nd.PlG k) (μ : ((D.naut.plGw k v).adicCompletion D.host.E)ˣ →* ℂˣ) (hμ : GlobalTheory.SmGL.IsSmoothChar μ), GlobalTheory.SplitWeil.IsTame μ → ∀ (u : 𝓞 D.host.E) (hu : (u : D.host.E) ≠ 0), (∃ (ϖ : 𝓞 D.host.E) (π : D.nd.Om), ϖ ∈ (D.naut.plGw k v).asIdeal ∧ ϖ ∉ (D.naut.plGw k v).asIdeal ^ 2 ∧ π ^ (normV (D.naut.plGw k v) - 1) = algebraMap D.host.E D.nd.Om (ϖ : D.host.E) ∧ (D.nd.plOm.1 (D.naut.plGw k v)).valuation (D.ntypes.tg k v π / π - algebraMap D.host.E D.nd.Om (u : D.host.E)) < 1) → ∀ c : ZMod (D.host.g k), D.ntypes.teichC k (algebraMap (ZMod (D.host.g k)) (Formalism.CyclotomicNorms.Fbar (D.host.g k)) c) = ((μ (Units.map (algebraMap D.host.E ((D.naut.plGw k v).adicCompletion D.host.E)).toMonoidHom (Units.mk0 (u : D.host.E) hu)) : ℂˣ) : ℂ) → labAt hL D k v (Irr.ofDet 1 μ hμ) = X - C c := by
   intro hDZ hL D Γ k v μ hμ hT u hu hex c hc
   haveI : Fact (D.host.g k).Prime := ⟨D.host.g_prime k⟩

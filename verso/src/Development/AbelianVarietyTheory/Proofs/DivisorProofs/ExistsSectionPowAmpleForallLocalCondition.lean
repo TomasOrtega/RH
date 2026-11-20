@@ -20,6 +20,9 @@ open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)
 
 variable {W : Scheme.{0}} [IsIntegral W] {H : LB W}
 
+/- English proof (translation)
+Use `(mem_nonzeroLocus_iff_powFn s hJ).trans ((LBGerm.isUnit_gs_iff (𝟙 W) (genericPoint W) (powChart H J) hJ (powFn s J)).trans ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `genericPoint W ∈ W.basicOpen (powFn s J) ↔ _`. Rewrite using `[← unitAt_fnOf_iff hJ hJ]`. Conclude with `⟨UnitAt.ne_zero, unitAt_genericPoint⟩`.
+-/
 theorem gen_mem_nonzeroLocus_iff {n : ℕ} (s : (lbPow H n).Sec) {J : PUnit → H.ι}
     (hJ : genericPoint W ∈ powChart H J) :
     genericPoint W ∈ nonzeroLocus s ↔ fnOf _ hJ (powFn s J) ≠ 0 := by
@@ -28,11 +31,23 @@ theorem gen_mem_nonzeroLocus_iff {n : ℕ} (s : (lbPow H n).Sec) {J : PUnit → 
   rw [← unitAt_fnOf_iff hJ hJ]
   exact ⟨UnitAt.ne_zero, unitAt_genericPoint⟩
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => rw [pow_zero]`. Conclude with `(unitAt_one x).regAt`. Consider the case `succ k ih => rw [pow_succ]`. Conclude with `ih.mul h`.
+-/
 theorem regAt_pow {x : W} {f : W.functionField} (h : RegAt x f) (k : ℕ) : RegAt x (f ^ k) := by
   induction k with
   | zero => rw [pow_zero]; exact (unitAt_one x).regAt
   | succ k ih => rw [pow_succ]; exact ih.mul h
 
+/- English proof (translation)
+Use `hA.compactSpace` as an intermediate fact. Use `hA.quasiSeparatedSpace` as an intermediate fact. Take `⟨q, hq, s, hys, hle, -⟩` from `hA.exists_affine_le hy`. Take `⟨N, hN⟩` from `exists_sec_eq_pow_mul (m := 0) hA.isLB s (fun J => resG W (inf_le_left.trans hle : nonzeroLocus s ⊓ powChart H J ≤ V) d) (LBGerm.mem_secOn_of_germ (M := lbPow H 0) _ fun z J J' hs hJ hJ' => by`. Rewrite using `[gm_lbPow_g 0 (𝟙 W) z J J' hJ hJ', pow_zero, Units.val_one, one_mul]`.
+
+Conclude with `(gs_res (𝟙 W) z (inf_le_left.trans hle : nonzeroLocus s ⊓ powChart H J ≤ V) ⟨hs, hJ⟩ d).trans (gs_res (𝟙 W) z (inf_le_left.trans hle : nonzeroLocus s ⊓ powChart H J' ≤ V) ⟨hs, hJ'⟩ d).symm)`. Take `⟨u, hu⟩` from `hN (N + 1) (Nat.le_succ N)`. Establish `key : ∀ (J : PUnit → H.ι) (hJ : genericPoint W ∈ powChart H J), fnOf _ hJ (powFn u J) = fnOf _ hJ (powFn s J) ^ (N + 1) * fnOf V (gen_mem hy) d`. Introduce `J hJ`. Establish `hη : genericPoint W ∈ nonzeroLocus s ⊓ powChart H J` using `⟨gen_mem hys, hJ⟩`.
+
+Establish `e` using `congrArg (fnOf _ hη) (hu J)`. Rewrite `e` using `[map_mul, map_pow, fnOf_resG, fnOf_resG, fnOf_resG]`. Then use the resulting hypothesis. Use `⟨0 + q * (N + 1), by nlinarith, u, _, hys, ?_, fun y' hy' i hi => ?_⟩` and prove the remaining obligations. Take `⟨J, hJ⟩` from `exists_chart (isLB_lbPow hA.isLB q) (genericPoint W)`. Rewrite using `[gen_mem_nonzeroLocus_iff u hJ, key J hJ]`.
+
+Conclude with `mul_ne_zero (pow_ne_zero _ ((gen_mem_nonzeroLocus_iff s hJ).1 (gen_mem hys))) hd`. Establish `hr : RegAt y' (fnOf _ (gen_mem hi) (powFn s i) ^ (N + 1))` using `regAt_pow (regAt_fnOf hi (gen_mem hi) (powFn s i)) (N + 1)`. Establish `e : fnOf _ (gen_mem hi) (u.f i) = _` using `key i (gen_mem hi)`. Rewrite using `[e]`. Conclude with `hP y' _ _ (hPd y' (hle hy')) hr`.
+-/
 theorem exists_local (hA : IsAmpleLB H) (P : W → W.functionField → Prop)
     (hP : ∀ y c c', P y c → RegAt y c' → P y (c' * c)) {y : W} {V : W.Opens} (hy : y ∈ V) (d : Γ(W, V))
     (hd : fnOf V (gen_mem hy) d ≠ 0) (hPd : ∀ y' ∈ V, P y' (fnOf V (gen_mem hy) d)) :
@@ -64,6 +79,13 @@ theorem exists_local (hA : IsAmpleLB H) (P : W → W.functionField → Prop)
     rw [e]
     exact hP y' _ _ (hPd y' (hle hy')) hr
 
+/- English proof (translation)
+Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty`. Use `⟨0, fun h => absurd h Finset.not_nonempty_empty, secOfFn H 1, ?_, fun a ha => absurd ha (Finset.notMem_empty a)⟩` and prove the remaining obligations. Rewrite using `[nonzeroLocus_secOfFn hL, Scheme.basicOpen_one]`. Discharge the goal by the elementary cases of `trivial`.
+
+Consider the case `insert b T hb ih`. Take `⟨n, -, t, ht, htP⟩` from `ih`. Use `⟨m b + n, fun _ => le_add_right (hm b), secMul (u b) t, (nonzeroLocus_secMul (u b) t).ge ⟨hu b, ht⟩, fun a ha y' hy' i hi => ?_⟩` and prove the remaining obligations. Establish `e : fnOf _ (gen_mem hi) ((secMul (u b) t).f i) = fnOf _ (gen_mem hi) ((u b).f i) * fnOf _ (gen_mem hi) (t.f i)` using `map_mul (fnOf _ (gen_mem hi)) ((u b).f i) (t.f i)`. Rewrite using `[e]`.
+
+Break down `Finset.mem_insert.1 ha with rfl | ha` into its components or cases. Rewrite using `[mul_comm]`. Conclude with `hP y' _ _ (hQ a y' hy' i hi) (regAt_fnOf hi (gen_mem hi) _)`. Conclude with `hP y' _ _ (htP a ha y' hy' i hi) (regAt_fnOf hi (gen_mem hi) _)`.
+-/
 theorem exists_prod (hL : H.IsLB) (P : W → W.functionField → Prop)
     (hP : ∀ y c c', P y c → RegAt y c' → P y (c' * c)) {ι : Type} (m : ι → ℕ) (hm : ∀ a, 1 ≤ m a)
     (u : ∀ a, (lbPow H (m a)).Sec) (hu : ∀ a, genericPoint W ∈ nonzeroLocus (u a)) (Q : ι → W → Prop)
@@ -95,6 +117,13 @@ end SecLocalCondition
 
 open SecLocalCondition in
 
+/- English proof (translation)
+Introduce `W _ H hA P hP hloc`. Use `hA.compactSpace` as an intermediate fact. Use `choose V hy d hd hPd using hloc`. Use `choose m hm u O hyO hu hQ using fun y => exists_local hA P hP (hy y) (d y) (hd y) (hPd y)`. Take `⟨T, hT⟩` from `exists_finset_iSup_eq_top O hyO`.
+
+Take `⟨n, hn, t, ht, htP⟩` from `exists_prod hA.isLB P hP m hm u hu (fun a y' => y' ∈ O a) hQ T`. Use `⟨n, hn ?_, t, (sec_ne_zero_iff t).2 ht, fun y i hi => ?_⟩` and prove the remaining obligations. Take `⟨a, -⟩` from `Opens.mem_iSup.1 (hT.ge (Set.mem_univ (genericPoint W)))`. Conclude with `⟨a, a.2⟩`. Take `⟨a, ha⟩` from `Opens.mem_iSup.1 (hT.ge (Set.mem_univ y))`.
+
+Conclude with `htP a a.2 y ha i hi`.
+-/
 theorem exists_sec_forall_local_condition : ∀ (W : Scheme.{0}) [IsIntegral W] (H : LB W), IsAmpleLB H →
     ∀ (P : W → W.functionField → Prop), (∀ y c c', P y c → RegAt y c' → P y (c' * c)) →
     (∀ y, ∃ (V : W.Opens) (hy : y ∈ V) (d : Γ(W, V)), fnOf V (gen_mem hy) d ≠ 0 ∧

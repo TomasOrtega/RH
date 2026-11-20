@@ -9,6 +9,33 @@ namespace GlobalTheory.LocRep
 open MeasureTheory Filter Topology in
 open scoped ContDiff in
 
+/- English proof (translation)
+Establish `hE' : ∀ w : E, ∃ φ : G → ℂ, Continuous φ ∧ ι (A w) =ᵐ[μ] φ` using `fun w => hE w w.2`. Use `choose ψ hψc hψae using hE'`. Establish `hadd : ∀ w w' : E, ψ (w + w') = fun x => ψ w x + ψ w' x` using `fun w w' => (Continuous.ae_eq_iff_eq μ (hψc _) ((hψc w).add (hψc w'))).1 (by filter_upwards [hψae (w + w'), _root_.GlobalTheory.LocRep.rep_add hlin (A w) (A w'), hψae w, hψae w'] with x h0 h1 h2 h3 show ψ (w + w') x = ψ w x + ψ w' x`. Rewrite using `[← h0, ← h2, ← h3, ← h1]`. Use the proof step `simp)`.
+
+Establish `hsmul : ∀ (a : ℂ) (w : E), ψ (a • w) = fun x => a * ψ w x` using `fun a w => (Continuous.ae_eq_iff_eq μ (hψc _) (continuous_const.mul (hψc w))).1 (by filter_upwards [hψae (a • w), _root_.GlobalTheory.LocRep.rep_smul hlin a (A w), hψae w] with x h0 h1 h2 show ψ (a • w) x = a * ψ w x`. Rewrite using `[← h0, ← h2, ← h1]`. Use the proof step `simp)`. Set `L : G → E →L[ℂ] ℂ` to `fun x => LinearMap.mkContinuousOfExistsBound { toFun := fun w => ψ w x map_add' := fun w w' => congrFun (hadd w w') x map_smul' := fun a w => by simpa using congrFun (hsmul a w) x } (by`. Take `⟨c, hc⟩` from `hB {x} isCompact_singleton`.
+
+Conclude with `⟨c, fun w => hc w w.2 _ (hψc w) (hψae w) x rfl⟩)`. Establish `hext : ∀ x, ∃ g : K →L[ℂ] ℂ, (∀ w : E, g w = L x w) ∧ ‖g‖ = ‖L x‖` using `fun x => exists_extension_norm_eq E (L x)`. Use `choose Λ hΛext hΛnorm using hext`. Establish `hbound : ∀ B, IsCompact B → ∃ c : ℝ, 0 ≤ c ∧ ∀ x ∈ B, ‖Λ x‖ ≤ c`. Introduce `B hBc`.
+
+Take `⟨c, hc⟩` from `hB B hBc`. Use `⟨max c 0, le_max_right _ _, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[hΛnorm]`. Use `ContinuousLinearMap.opNorm_le_bound _ (le_max_right _ _) fun w => ?_` and prove the remaining obligations. Conclude with `(hc w w.2 _ (hψc w) (hψae w) x hx).trans (mul_le_mul_of_nonneg_right (le_max_left _ _) (norm_nonneg _))`.
+
+Use `⟨Λ, fun v hv => ?_⟩` and prove the remaining obligations. Take `⟨u, hun, hu⟩` from `mem_closure_iff_seq_limit.1 hv`. Establish `hcont : ∀ n, Continuous fun x => Λ x (u n)` using `fun n => by`. Establish `h : (fun x => Λ x (u n)) = ψ ⟨u n, hun n⟩` using `funext fun x => hΛext x ⟨u n, hun n⟩`. Rewrite using `[h]`.
+
+Conclude with `hψc _`. Establish `hunif : ∀ B, IsCompact B → TendstoUniformlyOn (fun n x => Λ x (u n)) (fun x => Λ x v) atTop B`. Introduce `B hBc`. Take `⟨c, hc0, hc⟩` from `hbound B hBc`. Rewrite using `[Metric.tendstoUniformlyOn_iff]`.
+
+Introduce `ε hε`. Establish `hu'` using `(Metric.tendsto_nhds.1 hu) (ε / (c + 1)) (by positivity)`. Use `filter_upwards [hu'] with n hn x hx`. Rewrite using `[dist_eq_norm, ← map_sub]`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `mul_le_mul (hc x hx) ?_ (norm_nonneg _) hc0` and prove the remaining obligations. Rewrite using `[← dist_eq_norm, dist_comm]`. Conclude with `hn.le`. Use `_ < ε := by`. Rewrite using `[mul_div_assoc', div_lt_iff₀ (by positivity)]`.
+
+Use the polynomial consequences of the given equalities and inequalities. Establish `hcontv : Continuous fun x => Λ x v` using `(tendstoLocallyUniformly_iff_forall_isCompact.2 hunif).continuous (Eventually.of_forall hcont).frequently`. Establish `hint : ∀ C, IsCompact C → ∫ x in C, ι (A v) x ∂μ = ∫ x in C, Λ x v ∂μ`. Introduce `C hC`. Take `⟨Pr, hPr⟩` from `_root_.GlobalTheory.LocRep.exists_pairing hloc hlin hC`.
+
+Take `⟨c, hc0, hc⟩` from `hbound C hC`. Establish `h1 : Tendsto (fun n => Pr (A (u n))) atTop (𝓝 (Pr (A v)))` using `((Pr.continuous.comp A.continuous).tendsto v).comp hu`. Establish `h2 : ∀ n, Pr (A (u n)) = ∫ x in C, Λ x (u n) ∂μ` using `fun n => by`. Rewrite using `[hPr]`. Use `integral_congr_ae (ae_restrict_of_ae ?_)` and prove the remaining obligations.
+
+Use `filter_upwards [hψae ⟨u n, hun n⟩] with x hx`. Rewrite using `[hx]`. Conclude with `(hΛext x ⟨u n, hun n⟩).symm`. Establish `h3 : Tendsto (fun n => ∫ x in C, Λ x (u n) ∂μ) atTop (𝓝 (∫ x in C, Λ x v ∂μ))`. Rewrite using `[tendsto_iff_norm_sub_tendsto_zero]`.
+
+Use `squeeze_zero (fun n => norm_nonneg _) (g := fun n => c * ‖u n - v‖ * (μ C).toReal) (fun n => ?_) ?_` and prove the remaining obligations. Rewrite using `[← integral_sub ((hcont n).locallyIntegrable.integrableOn_isCompact hC) (hcontv.locallyIntegrable.integrableOn_isCompact hC)]`. Use `norm_setIntegral_le_of_norm_le_const hC.measure_lt_top fun x hx => ?_` and prove the remaining obligations. Rewrite using `[← map_sub]`. Conclude with `((Λ x).le_opNorm _).trans (mul_le_mul_of_nonneg_right (hc x hx) (norm_nonneg _))`.
+
+Establish `h4 : Tendsto (fun n => ‖u n - v‖) atTop (𝓝 0)` using `tendsto_iff_norm_sub_tendsto_zero.1 hu`. Simplify using `using (h4.const_mul c).mul_const (μ C).toReal`. Rewrite using `[← hPr]`. Conclude with `tendsto_nhds_unique (h1.congr h2) h3`. Conclude with `⟨hcontv, _root_.GlobalTheory.LocRep.rep_of_pairing hloc hcontv.locallyIntegrable hint⟩`.
+-/
 theorem _root_.GlobalTheory.LocRep.exists_eval_closure (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [LocallyCompactSpace G] [SecondCountableTopology G] [T2Space G] [MeasurableSpace G] [BorelSpace G]
     (μ : Measure G) [μ.IsHaarMeasure] (K : Type) [NormedAddCommGroup K] [InnerProductSpace ℂ K]

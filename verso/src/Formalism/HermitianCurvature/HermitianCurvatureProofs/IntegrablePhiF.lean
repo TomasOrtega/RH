@@ -17,6 +17,9 @@ def phiF (D : B.RealPlaceData k r Wp Wq) (σ : Mx k r → (H →L[ℂ] H)) (w0 x
   (aInt D.z cStd D.π σ w0 x (Matrix.of q.2) q.1.1).comp
     (X0.comp (bInt D.z' cStd D.π' σ w0 y (Matrix.of q.2) γ q.1.2))
 
+/- English proof (translation)
+Establish `hl` using `B7.continuous_ell (k := k) (r := r) z`. Unfold `psi`. Conclude with `Complex.continuous_exp.comp (continuous_const.mul (Complex.continuous_ofReal.comp (Complex.continuous_re.comp (continuous_const.mul hl))))`.
+-/
 theorem continuous_psi (z : Fin (2 * r + k + 1) → ℂ) (c : ℂ) :
     Continuous fun g : Mt k r => psi k r z c (Matrix.of g) := by
   have hl := B7.continuous_ell (k := k) (r := r) z

@@ -8,6 +8,9 @@ open Matrix
 
 namespace PSymplOmegaMem
 
+/- English proof (translation)
+Rewrite using `[symplOmega, dotProduct_mulVec, Matrix.mul_apply]`. Both sides reduce to the same expression.
+-/
 theorem mul_J_mul_transpose_apply {R : Type*} [CommRing R] {l : Type*} [Fintype l]
     [DecidableEq l] (M : Matrix (l ⊕ l) (l ⊕ l) R) (x y : l ⊕ l) :
     (M * J l R * Mᵀ) x y = symplOmega (M x) (M y) := by
@@ -16,6 +19,11 @@ theorem mul_J_mul_transpose_apply {R : Type*} [CommRing R] {l : Type*} [Fintype 
 
 end PSymplOmegaMem
 
+/- English proof (translation)
+Introduce `R _ l _ _ M`. Rewrite using `[SymplecticGroup.mem_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h x y`. Rewrite using `[← PSymplOmegaMem.mul_J_mul_transpose_apply, h]`.
+
+Introduce `h`. Use extensionality with `x y`. Rewrite using `[PSymplOmegaMem.mul_J_mul_transpose_apply, h]`.
+-/
 theorem SymplOmegaMem.proof : SymplOmegaMem.Statement := by
   intro R _ l _ _ M
   rw [SymplecticGroup.mem_iff]

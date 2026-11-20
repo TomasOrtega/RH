@@ -10,6 +10,11 @@ open Ad3 Ad3.S
 
 namespace GlobalTheory.CompanionTheory.ShimStep
 
+/- English proof (translation)
+Establish `e : Real.exp (C₁ * u) * Real.exp (C₂ * u) = Real.exp ((C₁ + C₂) * u)`. Rewrite using `[← Real.exp_add]`. Put the polynomial expressions in normal form. Establish `h12` using `mul_nonneg h₁ h₂`. Combine the equalities or inequalities in the displayed calculation.
+
+Apply `mul_le_mul (by linarith) _ (Real.exp_pos _).le (by positivity)` to reduce the goal to its premises. Apply `Real.exp_le_exp.2` to reduce the goal to its premises. Apply `mul_le_mul_of_nonneg_right _ hu` to reduce the goal to its premises. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem exp_mul_le {C₁ C₂ u : ℝ} (h₁ : 0 ≤ C₁) (h₂ : 0 ≤ C₂) (hu : 0 ≤ u) :
     (C₁ * Real.exp (C₁ * u)) * (C₂ * Real.exp (C₂ * u)) ≤
       (C₁ * C₂ + C₁ + C₂) * Real.exp ((C₁ * C₂ + C₁ + C₂) * u) := by
@@ -24,11 +29,27 @@ theorem exp_mul_le {C₁ C₂ u : ℝ} (h₁ : 0 ≤ C₁) (h₂ : 0 ≤ C₂) (
       apply mul_le_mul_of_nonneg_right _ hu
       linarith
 
+/- English proof (translation)
+Apply `mul_le_mul (le_abs_self C) _ (Real.exp_pos _).le (abs_nonneg C)` to reduce the goal to its premises. Conclude with `Real.exp_le_exp.2 (mul_le_mul_of_nonneg_right (le_abs_self C) hu)`.
+-/
 theorem abs_exp_le (C u : ℝ) (hu : 0 ≤ u) :
     C * Real.exp (C * u) ≤ |C| * Real.exp (|C| * u) := by
   apply mul_le_mul (le_abs_self C) _ (Real.exp_pos _).le (abs_nonneg C)
   exact Real.exp_le_exp.2 (mul_le_mul_of_nonneg_right (le_abs_self C) hu)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Establish `hop : IsOpen (HP (1 / 4))` using `isOpen_lt continuous_const continuous_re`. Use `hHI X m (HP (1 / 4)) F hop hmeas hdiff ?_` and prove the remaining obligations. Introduce `s₀ hs₀`. Take `⟨C, g, hC, hg, hg0, hb⟩` from `hbound (s₀.re + 1)`.
+
+Use `⟨fun x => (C * Real.exp (C * (|s₀.im| + 1) ^ 2)) * g x, hg.const_mul _, ?_⟩` and prove the remaining obligations. Establish `h1 : ∀ᶠ s in 𝓝 s₀, s ∈ HP (1 / 4)` using `hop.mem_nhds hs₀`. Establish `h2 : ∀ᶠ s : ℂ in 𝓝 s₀, s.re < s₀.re + 1` using `(continuous_re.tendsto s₀).eventually (gt_mem_nhds (by linarith))`. Establish `h3 : ∀ᶠ s : ℂ in 𝓝 s₀, |s.im| < |s₀.im| + 1` using `((continuous_abs.comp Complex.continuous_im).tendsto s₀).eventually (gt_mem_nhds (by simp))`. Use `filter_upwards [h1, h2, h3] with s a1 a2 a3 x`.
+
+Use `(hb s x a1 a2.le).trans ?_` and prove the remaining obligations. Establish `hq : s.im ^ 2 ≤ (|s₀.im| + 1) ^ 2`. Rewrite using `[← sq_abs s.im]`. Conclude with `pow_le_pow_left₀ (abs_nonneg _) a3.le 2`. Use `hg0 x` as an intermediate fact.
+
+Use `gcongr`. Introduce `b`. Take `⟨C, g, hC, hg, hg0, hb⟩` from `hbound b`. Establish `hI : 0 ≤ ∫ x, g x ∂m` using `integral_nonneg hg0`. Use `⟨C + C * ∫ x, g x ∂m, by positivity, fun s h1 h2 => ?_⟩` and prove the remaining obligations.
+
+Establish `hE : ‖∫ x, F s x ∂m‖ ≤ ∫ x, C * Real.exp (C * s.im ^ 2) * g x ∂m` using `norm_integral_le_of_norm_le (hg.const_mul _) (Filter.Eventually.of_forall fun x => hb s x h1 h2)`. Rewrite `hE` using `[integral_const_mul]`. Use `hE.trans ?_` and prove the remaining obligations. Establish `hCI` using `mul_nonneg hC hI`. Establish `hu` using `sq_nonneg s.im`.
+
+Establish `e1 : Real.exp (C * s.im ^ 2) ≤ Real.exp ((C + C * ∫ x, g x ∂m) * s.im ^ 2)` using `Real.exp_le_exp.2 (mul_le_mul_of_nonneg_right (by linarith) hu)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem integral_holo (hHI : HI) {X : Type} [MeasurableSpace X] (m : Measure X) (F : ℂ → X → ℂ)
     (hmeas : ∀ s ∈ HP (1 / 4), AEStronglyMeasurable (F s) m)
     (hdiff : ∀ x, DifferentiableOn ℂ (fun s => F s x) (HP (1 / 4)))
@@ -76,10 +97,18 @@ theorem integral_holo (hHI : HI) {X : Type} [MeasurableSpace X] (m : Measure X) 
 def fac (k ν : ℕ) (s : ℂ) : ℂ :=
   (1 / 2) * (Gamma (om k ν s - 1))⁻¹ * (4 * π : ℂ) ^ (om k ν s - 1)
 
+/- English proof (translation)
+Use `Real.pi_pos` as an intermediate fact. Conclude with `(by positivity : (4 * π : ℝ) ≠ 0)` after adjusting the coercions.
+-/
 theorem four_pi_ne : (4 * π : ℂ) ≠ 0 := by
   have := Real.pi_pos
   exact_mod_cast (by positivity : (4 * π : ℝ) ≠ 0)
 
+/- English proof (translation)
+Establish `hw : Differentiable ℂ fun s : ℂ => om k ν s - 1`. Unfold `om`. Use `fun_prop`. Establish `h1 : Differentiable ℂ fun s : ℂ => (Gamma (om k ν s - 1))⁻¹` using `differentiable_one_div_Gamma.comp hw`. Establish `h2 : Differentiable ℂ fun s : ℂ => (4 * π : ℂ) ^ (om k ν s - 1)` using `hw.const_cpow (Or.inl four_pi_ne)`.
+
+Unfold `fac`. Conclude with `(h1.const_mul _).mul h2`.
+-/
 theorem fac_differentiable (k ν : ℕ) : Differentiable ℂ (fac k ν) := by
   have hw : Differentiable ℂ fun s : ℂ => om k ν s - 1 := by
     unfold om; fun_prop
@@ -90,6 +119,25 @@ theorem fac_differentiable (k ν : ℕ) : Differentiable ℂ (fac k ν) := by
   unfold fac
   exact (h1.const_mul _).mul h2
 
+/- English proof (translation)
+Take `⟨C₀, h₀⟩` from `hG (-1) ((b + k + ν + 1) / 2)`. Establish `hpi` using `Real.pi_gt_three`. Use `set B : ℝ := (b + k + ν + 1) / 2 with hB`. Use `set K : ℝ := (4 * π) ^ B with hK`. Establish `hK0 : 0 < K` using `Real.rpow_pos_of_pos (by positivity) _`.
+
+Use `⟨|C₀| * (1 + K), by positivity, fun s h1 h2 => ?_⟩` and prove the remaining obligations. Establish `hre : (om k ν s - 1).re = (s.re + k + ν + 1) / 2 - 1`. Simplify using `[om]`. Establish `him : (om k ν s - 1).im = s.im / 2`. Simplify using `[om]`.
+
+Establish `hk0 : (0 : ℝ) ≤ k` using `Nat.cast_nonneg k`. Establish `hν0 : (0 : ℝ) ≤ ν` using `Nat.cast_nonneg ν`. Establish `g1` using `h₀ (om k ν s - 1) (by rw [hre]; linarith) (by rw [hre, hB]; linarith)`. Rewrite `g1` using `[him]`. Establish `g2 : ‖(4 * π : ℂ) ^ (om k ν s - 1)‖ ≤ K`.
+
+Establish `: (4 * π : ℂ) = ((4 * π : ℝ) : ℂ)` using `by push_cast; ring`. Rewrite using `[this, norm_cpow_eq_rpow_re_of_pos (by positivity), hre]`. Conclude with `Real.rpow_le_rpow_of_exponent_le (by linarith) (by rw [hB]; linarith)`. Establish `hu` using `sq_nonneg s.im`. Establish `g3 : C₀ * Real.exp (C₀ * (s.im / 2) ^ 2) ≤ |C₀| * Real.exp (|C₀| * s.im ^ 2)`.
+
+Apply `mul_le_mul (le_abs_self C₀) _ (Real.exp_pos _).le (abs_nonneg C₀)` to reduce the goal to its premises. Apply `Real.exp_le_exp.2` to reduce the goal to its premises. Use `le_abs_self C₀` as an intermediate fact. Establish `h0` using `abs_nonneg C₀`. Use polynomial arithmetic with `[mul_nonneg h0 hu]`.
+
+Establish `g4 : |C₀| * Real.exp (|C₀| * s.im ^ 2) * K ≤ |C₀| * (1 + K) * Real.exp (|C₀| * (1 + K) * s.im ^ 2)`. Establish `h0` using `abs_nonneg C₀`. Establish `e : Real.exp (|C₀| * s.im ^ 2) ≤ Real.exp (|C₀| * (1 + K) * s.im ^ 2)`. Apply `Real.exp_le_exp.2` to reduce the goal to its premises. Apply `mul_le_mul_of_nonneg_right _ hu` to reduce the goal to its premises.
+
+Use the polynomial consequences of the given equalities and inequalities. Combine the equalities or inequalities in the displayed calculation. Unfold `fac`. Rewrite using `[norm_mul, norm_mul]`. Establish `n2 : ‖(1 / 2 : ℂ)‖ = 1 / 2` using `by simp`.
+
+Rewrite using `[n2]`. Establish `hpos : 0 ≤ |C₀| * Real.exp (|C₀| * s.im ^ 2)` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Apply `mul_le_mul _ g2 (norm_nonneg _) (by positivity)` to reduce the goal to its premises. Use `g1.trans g3` as an intermediate fact.
+
+Establish `h3` using `norm_nonneg (Gamma (om k ν s - 1))⁻¹`. Combine the linear equalities and inequalities to obtain the conclusion. Use `_ ≤ _ := by rw [one_mul]; exact g4`.
+-/
 theorem fac_bound (hG : G0) (k ν : ℕ) (b : ℝ) : ∃ C : ℝ, 0 ≤ C ∧ ∀ s : ℂ, 1 / 4 < s.re → s.re ≤ b →
     ‖fac k ν s‖ ≤ C * Real.exp (C * s.im ^ 2) := by
   obtain ⟨C₀, h₀⟩ := hG (-1) ((b + k + ν + 1) / 2)
@@ -139,6 +187,11 @@ theorem fac_bound (hG : G0) (k ν : ℕ) (b : ℝ) : ∃ C : ℝ, 0 ≤ C ∧ �
         linarith
     _ ≤ _ := by rw [one_mul]; exact g4
 
+/- English proof (translation)
+Establish `hy` using `z.im_pos`. Establish `hp : z.im ^ (-((ν : ℝ) + 1) / 2) ≤ Ht z`. Establish `hν' : (ν : ℝ) ≤ 1` using `by exact_mod_cast hν`. Establish `hν0 : (0 : ℝ) ≤ ν` using `Nat.cast_nonneg ν`. Establish `e : -((ν : ℝ) + 1) / 2 = -(((ν : ℝ) + 1) / 2)` using `by ring`.
+
+Rewrite using `[e, Real.rpow_neg hy.le, ← Real.inv_rpow hy.le]`. Combine the equalities or inequalities in the displayed calculation. Establish `hp0 : 0 ≤ z.im ^ (-((ν : ℝ) + 1) / 2)` using `Real.rpow_nonneg hy.le _`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem th_le {C : ℝ} {ν : ℕ} (hν : ν ≤ 1) {z : ℍ} (h1 : 1 ≤ Ht z) (h2 : z.im⁻¹ ≤ Ht z)
     {x : ℝ} (hx : x ≤ C * z.im ^ (-((ν : ℝ) + 1) / 2)) : x ≤ |C| * Ht z := by
   have hy := z.im_pos
@@ -156,6 +209,33 @@ theorem th_le {C : ℝ} {ν : ℕ} (hν : ν ≤ 1) {z : ℍ} (h1 : 1 ≤ Ht z) 
     _ ≤ |C| * z.im ^ (-((ν : ℝ) + 1) / 2) := mul_le_mul_of_nonneg_right (le_abs_self C) hp0
     _ ≤ |C| * Ht z := mul_le_mul_of_nonneg_left hp (abs_nonneg C)
 
+/- English proof (translation)
+Take `⟨-, -, hp, hh⟩` from `hPR L k ν hL`. Take `⟨C₁, h₁⟩` from `hth`. Take `⟨C₂, A₂, h₂⟩` from `hp b`. Take `⟨C₃, A₃, h₃⟩` from `hEs b`. Use `set D : ℝ := |C₁| with hD`.
+
+Use `set P : ℝ := |C₂| with hP`. Use `set Q : ℝ := |C₃| * (1 + (L : ℝ) ^ A₃) with hQ`. Establish `hD0 : 0 ≤ D` using `abs_nonneg _`. Establish `hP0 : 0 ≤ P` using `abs_nonneg _`. Establish `hQ0 : 0 ≤ Q` using `by positivity`.
+
+Use `set R : ℝ := P * Q + P + Q with hR`. Establish `hR0 : 0 ≤ R` using `by positivity`. Use `⟨D * R + R, 1 + A₂ + A₃, by positivity, fun s z hs hb => ?_⟩` and prove the remaining obligations. Establish `hu` using `sq_nonneg s.im`. Distinguish the cases in `hz : β z = 0`.
+
+Establish `: 0 ≤ U.indicator (fun z => ‖f z‖ * Ht z ^ (1 + A₂ + A₃)) z`. Apply `Set.indicator_nonneg` to reduce the goal to its premises. Introduce `w _`. Use `(hh w).1` as an intermediate fact. Check the signs of the components of the expression.
+
+Simplify using `only [hz, Complex.ofReal_zero, zero_mul, norm_zero]`. Check the signs of the components of the expression. Rewrite using `[Set.indicator_of_mem (hU z hz)]`. Take `⟨g1, g2, g3, g4, g5⟩` from `hh z`. Establish `hH0 : 0 ≤ Ht z` using `by linarith`.
+
+Establish `b1 : ‖t z‖ ≤ D * Ht z` using `th_le hν g1 g2 (h₁ z)`. Establish `b2 : ‖pref L k ν s z‖ ≤ P * Real.exp (P * s.im ^ 2) * Ht z ^ A₂` using `(h₂ s z (by linarith) hb).trans (mul_le_mul_of_nonneg_right (abs_exp_le _ _ hu) (by positivity))`. Establish `b3 : ‖Es s (-1 / (z : ℂ) / (L : ℂ))‖ ≤ Q * Real.exp (Q * s.im ^ 2) * Ht z ^ A₃`. Use `(h₃ s _ hs hb g3).trans ?_` and prove the remaining obligations. Establish `c1 : (-1 / (z : ℂ) / (L : ℂ)).im ^ A₃ ≤ Ht z ^ A₃` using `pow_le_pow_left₀ g3.le g4 _`.
+
+Establish `c2 : (-1 / (z : ℂ) / (L : ℂ)).im⁻¹ ^ A₃ ≤ (L : ℝ) ^ A₃ * Ht z ^ A₃`. Rewrite using `[← mul_pow]`. Conclude with `pow_le_pow_left₀ (inv_pos.2 g3).le g5 _`. Establish `c3 : 0 ≤ (-1 / (z : ℂ) / (L : ℂ)).im ^ A₃ + (-1 / (z : ℂ) / (L : ℂ)).im⁻¹ ^ A₃`. Use `(inv_pos.2 g3).le` as an intermediate fact.
+
+Use `g3.le` as an intermediate fact. Check the signs of the components of the expression. Establish `hE : Real.exp (|C₃| * s.im ^ 2) ≤ Real.exp (Q * s.im ^ 2)`. Apply `Real.exp_le_exp.2` to reduce the goal to its premises. Apply `mul_le_mul_of_nonneg_right _ hu` to reduce the goal to its premises.
+
+Establish `: 0 ≤ (L : ℝ) ^ A₃` using `by positivity`. Establish `h0` using `abs_nonneg C₃`. Rewrite using `[hQ]`. Use the polynomial consequences of the given equalities and inequalities. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `bβ : ‖(β z : ℂ)‖ ≤ 1`. Rewrite using `[Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (hβ z).1]`. Conclude with `(hβ z).2`. Establish `hm` using `exp_mul_le hP0 hQ0 hu`. Establish `hHp : 0 ≤ Ht z ^ A₂` using `by positivity`.
+
+Establish `hHq : 0 ≤ Ht z ^ A₃` using `by positivity`. Establish `hf0` using `norm_nonneg (f z)`. Rewrite using `[norm_mul, norm_mul, norm_mul, norm_mul, Complex.norm_conj]`. Establish `hE2 : 0 ≤ P * Real.exp (P * s.im ^ 2) * Ht z ^ A₂` using `by positivity`. Establish `hE3 : 0 ≤ Q * Real.exp (Q * s.im ^ 2) * Ht z ^ A₃` using `by positivity`.
+
+Establish `hfin : D * (R * Real.exp (R * s.im ^ 2)) ≤ (D * R + R) * Real.exp ((D * R + R) * s.im ^ 2)`. Establish `e : Real.exp (R * s.im ^ 2) ≤ Real.exp ((D * R + R) * s.im ^ 2)`. Apply `Real.exp_le_exp.2` to reduce the goal to its premises. Apply `mul_le_mul_of_nonneg_right _ hu` to reduce the goal to its premises. Use polynomial arithmetic with `[mul_nonneg hD0 hR0]`.
+
+Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem integrand_bound (hPR : PR) (L k ν : ℕ) (hL : 0 < L) (hν : ν ≤ 1) (β : ℍ → ℝ)
     (hβ : ∀ z, 0 ≤ β z ∧ β z ≤ 1) (U : Set ℍ) (hU : ∀ z, β z ≠ 0 → z ∈ U) (f t : ℍ → ℂ)
     (Es : ℂ → ℂ → ℂ) (hth : ∃ C : ℝ, ∀ z : ℍ, ‖t z‖ ≤ C * z.im ^ (-((ν : ℝ) + 1) / 2))
@@ -242,6 +322,11 @@ theorem integrand_bound (hPR : PR) (L k ν : ℕ) (hL : 0 < L) (hν : ν ≤ 1) 
     _ ≤ D * (R * Real.exp (R * s.im ^ 2)) * (‖f z‖ * Ht z ^ (1 + A₂ + A₃)) := by gcongr
     _ ≤ _ := mul_le_mul_of_nonneg_right hfin (by positivity)
 
+/- English proof (translation)
+Establish `hc : Continuous fun z : ℍ => σ⁻¹ • z`. Establish `: (fun z : ℍ => σ⁻¹ • z) = fun z : ℍ => (((σ⁻¹ : SL(2, ℤ)) : SL(2, ℝ)) : GL (Fin 2) ℝ) • z` using `rfl`. Rewrite using `[this]`. Conclude with `continuous_const_smul _`. Establish `hcl : IsClosed 𝒟`.
+
+Establish `h1 : IsClosed {z : ℍ | 1 ≤ normSq (z : ℂ)}` using `isClosed_le continuous_const (Complex.continuous_normSq.comp UpperHalfPlane.continuous_coe)`. Establish `h2 : IsClosed {z : ℍ | |z.re| ≤ 1 / 2}` using `isClosed_le (continuous_abs.comp UpperHalfPlane.continuous_re) continuous_const`. Conclude with `h1.inter h2`. Conclude with `(hcl.preimage hc).measurableSet`.
+-/
 theorem measurableSet_translate (σ : SL(2, ℤ)) : MeasurableSet {z : ℍ | σ⁻¹ • z ∈ 𝒟} := by
   have hc : Continuous fun z : ℍ => σ⁻¹ • z := by
     have : (fun z : ℍ => σ⁻¹ • z) = fun z : ℍ => (((σ⁻¹ : SL(2, ℤ)) : SL(2, ℝ)) : GL (Fin 2) ℝ) • z := rfl
@@ -255,6 +340,41 @@ theorem measurableSet_translate (σ : SL(2, ℤ)) : MeasurableSet {z : ℍ | σ�
     exact h1.inter h2
   exact (hcl.preimage hc).measurableSet
 
+/- English proof (translation)
+Introduce `k N M _ _ hM h4 hk χ f a hf c`. Choose the witnesses or unpack the hypotheses as in `⟨ν, hν, hsign⟩ : ∃ ν : ℕ, ν ≤ 1 ∧ (c * DirichletCharacter.changeLevel hM χ⁻¹) (-1) = (-1) ^ ν := by`. Break down `(c * DirichletCharacter.changeLevel hM χ⁻¹).even_or_odd with h | h` into its components or cases. Conclude with `⟨0, by norm_num, by rw [pow_zero]; exact h⟩`. Conclude with `⟨1, le_rfl, by rw [pow_one]; exact h⟩`.
+
+Establish `hMpos : 0 < M` using `Nat.pos_of_ne_zero (NeZero.ne M)`. Establish `hL : 0 < 4 * M ^ 2` using `by positivity`. Take `⟨β, hβ, T, hT⟩` from `h0 (4 * M ^ 2) hL`. Take `⟨Es, e1, e2, e3, e4⟩` from `hE0 M k ν (dvd_trans (by norm_num) h4) c`. Take `⟨pr1, pr2, -, pr4⟩` from `hPR (4 * M ^ 2) k ν hL`.
+
+Establish `hM1 : 1 < M`. Use `Nat.le_of_dvd hMpos h4` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `: Fact (1 < M)` using `⟨hM1⟩`. Establish `hP0 : (fun n : ℤ => (c * DirichletCharacter.changeLevel hM χ⁻¹)⁻¹ (n : ZMod M)) 0 = 0` using `by show (c * DirichletCharacter.changeLevel hM χ⁻¹)⁻¹ ((0 : ℤ) : ZMod M) = 0`.
+
+Rewrite using `[Int.cast_zero]`. Conclude with `MulChar.map_nonunit _ not_isUnit_zero`. Establish `hP1 : ∀ n : ℤ, ‖(fun n : ℤ => (c * DirichletCharacter.changeLevel hM χ⁻¹)⁻¹ (n : ZMod M)) n‖ ≤ 1` using `fun n => DirichletCharacter.norm_le_one _ _`. Take `⟨hcont, -, -, hthC⟩` from `hB2 _ ν hν hP0 hP1`. Use `set t : ℍ → ℂ := fun z => th (fun n : ℤ => (c * DirichletCharacter.changeLevel hM χ⁻¹)⁻¹ (n : ZMod M)) ν z with ht`.
+
+Use `set U : Set ℍ := ⋃ σ ∈ T, {z : ℍ | σ⁻¹ • z ∈ 𝒟} with hUdef`. Establish `hUm : MeasurableSet U` using `Finset.measurableSet_biUnion T fun σ _ => measurableSet_translate σ`. Establish `hU : ∀ z, β z ≠ 0 → z ∈ U`. Introduce `z hz`. Take `⟨σ, hσ, h⟩` from `hT z hz`.
+
+Conclude with `Set.mem_biUnion hσ h`. Establish `hGint : ∀ A : ℕ, Integrable (U.indicator fun z => ‖f z‖ * Ht z ^ A)` using `fun A => (integrable_indicator_iff hUm).2 (integrableOn_finset_iUnion.2 fun σ _ => hD1 k N f σ A)`. Establish `hHt : ∀ z, 0 ≤ Ht z` using `fun z => by`. Use `(pr4 z).1` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hvim : ∀ z : ℍ, 0 < (-1 / (z : ℂ) / ((4 * M ^ 2 : ℕ) : ℂ)).im` using `fun z => (pr4 z).2.2.1`. Set `F : ℂ → ℍ → ℂ` to `fun s z => (β z : ℂ) * (f z * conj (t z) * pref (4 * M ^ 2) k ν s z * Es s (-1 / (z : ℂ) / ((4 * M ^ 2 : ℕ) : ℂ)))`. Establish `hvm : Measurable fun z : ℍ => -1 / (z : ℂ) / ((4 * M ^ 2 : ℕ) : ℂ)` using `(measurable_const.div UpperHalfPlane.continuous_coe.measurable).div_const _`. Establish `hfm : Measurable (f : ℍ → ℂ)` using `(ModularFormClass.continuous f).measurable`. Establish `hmeas : ∀ s ∈ HP (1 / 4), AEStronglyMeasurable (F s) volume`.
+
+Introduce `s hs`. Establish `hcj : Measurable fun z : ℍ => conj (t z)` using `(Complex.continuous_conj.comp hcont).measurable`. Establish `hβc : Measurable fun z : ℍ => (β z : ℂ)` using `Complex.measurable_ofReal.comp hβ.1`. Conclude with `(hβc.mul (((hfm.mul hcj).mul (pr2 s)).mul ((e2 s hs).comp hvm))).aestronglyMeasurable`. Establish `hdiff : ∀ z, DifferentiableOn ℂ (fun s => F s z) (HP (1 / 4))`.
+
+Introduce `z`. Conclude with `((((pr1 z).differentiableOn).const_mul _).mul (e1 _ (hvim z))).const_mul _`. Establish `hbound : ∀ b : ℝ, ∃ (C : ℝ) (g : ℍ → ℝ), 0 ≤ C ∧ Integrable g ∧ (∀ x, 0 ≤ g x) ∧ ∀ s x, 1 / 4 < s.re → s.re ≤ b → ‖F s x‖ ≤ C * Real.exp (C * s.im ^ 2) * g x`. Introduce `b`. Take `⟨C, A, hC, h⟩` from `integrand_bound hPR (4 * M ^ 2) k ν hL hν β hβ.2.1 U hU f t Es hthC e4 b`.
+
+Use `⟨C, _, hC, hGint A, fun z => ?_, h⟩` and prove the remaining obligations. Apply `Set.indicator_nonneg` to reduce the goal to its premises. Introduce `w _`. Use `hHt w` as an intermediate fact. Check the signs of the components of the expression.
+
+Take `⟨hcd, hcb⟩` from `integral_holo hHI volume F hmeas hdiff hbound`. Use `⟨fun s => (∫ z, F s z) * fac k ν s, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `hcd.mul (fac_differentiable k ν).differentiableOn`. Introduce `b`. Take `⟨C₁, hC₁, g₁⟩` from `hcb b`.
+
+Take `⟨C₂, hC₂, g₂⟩` from `fac_bound hG k ν b`. Use `⟨C₁ * C₂ + C₁ + C₂, fun s hs hb => ?_⟩` and prove the remaining obligations. Establish `hs' : 1 / 4 < s.re` using `by linarith`. Rewrite using `[norm_mul]`. Conclude with `(mul_le_mul (g₁ s hs' hb) (g₂ s hs' hb) (norm_nonneg _) (by positivity)).trans (exp_mul_le hC₁ hC₂ (sq_nonneg _))`.
+
+Introduce `s hs`. Establish `hEq : ∀ z : ℍ, F s z = ((s - 1) * DirichletCharacter.LFunction (c ^ 2) (2 * s)) * ((β z : ℂ) * (f z * conj (th (fun n : ℤ => (c * DirichletCharacter.changeLevel hM χ⁻¹)⁻¹ (n : ZMod M)) ν z) * pref (4 * M ^ 2) k ν s z * Ep c k ν s (-1 / (z : ℂ) / ((4 * M ^ 2 : ℕ) : ℂ))))`. Introduce `z`. Simplify using `only [F]`. Rewrite using `[e3 s _ hs (hvim z)]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hI : (∫ z, F s z) = ((s - 1) * DirichletCharacter.LFunction (c ^ 2) (2 * s)) * (2 * Gamma (om k ν s - 1) * (4 * π : ℂ) ^ (1 - om k ν s) * LSeries (fun n => (c * DirichletCharacter.changeLevel hM χ⁻¹) n * a (n ^ 2)) (s + k - 1))`. Simplify using `only [hEq]`. Rewrite using `[integral_const_mul, hS k N M ν hM h4 hk χ f a hf c hν hsign β hβ s hs]`. Establish `hre : 0 < (om k ν s - 1).re`.
+
+Establish `hk3 : (3 : ℝ) ≤ k` using `by exact_mod_cast hk`. Establish `hν0 : (0 : ℝ) ≤ ν` using `Nat.cast_nonneg ν`. Establish `: (om k ν s - 1).re = (s.re + k + ν + 1) / 2 - 1` using `by simp [om]`. Rewrite using `[this]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hΓ : Gamma (om k ν s - 1) * (Gamma (om k ν s - 1))⁻¹ = 1` using `mul_inv_cancel₀ (Complex.Gamma_ne_zero_of_re_pos hre)`. Establish `hc : (4 * π : ℂ) ^ (1 - om k ν s) * (4 * π : ℂ) ^ (om k ν s - 1) = 1`. Rewrite using `[← cpow_add _ _ four_pi_ne]`. Simplify using the standard rewrite rules. Use `show (∫ z, F s z) * fac k ν s = _`.
+
+Rewrite using `[hI]`. Unfold `fac`. Take the linear combination `((s - 1) * DirichletCharacter.LFunction (c ^ 2) (2 * s) * LSeries (fun n => (c * DirichletCharacter.changeLevel hM χ⁻¹) n * a (n ^ 2)) (s + k - 1) * (4 * π : ℂ) ^ (1 - om k ν s) * (4 * π : ℂ) ^ (om k ν s - 1)) * hΓ + ((s - 1) * DirichletCharacter.LFunction (c ^ 2) (2 * s) * LSeri …`.
+-/
 theorem shim_of (h0 : U0) (hB2 : B2) (hD1 : D1) (hE0 : E0) (hPR : PR) (hG : G0) (hHI : HI)
     (hS : S1) : Shim := by
   intro k N M _ _ hM h4 hk χ f a hf c

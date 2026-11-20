@@ -6,12 +6,20 @@ open GlobalTheory.KZ GlobalTheory.K4 UpperTheory.V.Z.Kato.Sym UpperTheory.Kd.K4 
 
 namespace UpperTheory.V.Z.Kato.Nb.SymmetricSquareCoefficients
 
+/- English proof (translation)
+Unfold `toGQ`. Rewrite using `[dif_pos h]`. Both sides reduce to the same expression.
+-/
 private theorem coeQ (m : Matrix (Fin 2) (Fin 2) ℤ) (h : 0 < m.det) :
     (((toGQ m : GQ) : GL (Fin 2) ℚ) : Matrix (Fin 2) (Fin 2) ℚ) = m.map (Int.castRingHom ℚ) := by
   unfold toGQ
   rw [dif_pos h]
   rfl
 
+/- English proof (translation)
+Establish `hmm : 0 < (m * m').det`. Rewrite using `[Matrix.det_mul]`. Conclude with `mul_pos h h'`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises.
+
+Simplify using `only [Subgroup.coe_mul, Units.val_mul, coeQ _ hmm, coeQ _ h, coeQ _ h', Matrix.map_mul]`.
+-/
 private theorem mulQ (m m' : Matrix (Fin 2) (Fin 2) ℤ) (h : 0 < m.det) (h' : 0 < m'.det) :
     toGQ (m * m') = toGQ m * toGQ m' := by
   have hmm : 0 < (m * m').det := by
@@ -21,22 +29,38 @@ private theorem mulQ (m m' : Matrix (Fin 2) (Fin 2) ℤ) (h : 0 < m.det) (h' : 0
   apply Units.ext
   simp only [Subgroup.coe_mul, Units.val_mul, coeQ _ hmm, coeQ _ h, coeQ _ h', Matrix.map_mul]
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[coeQ _ (by rw [Matrix.SpecialLinearGroup.det_coe]; norm_num)]`. Both sides reduce to the same expression.
+-/
 private theorem slQ (γ : SL(2, ℤ)) : toGQ (γ : Matrix (Fin 2) (Fin 2) ℤ) = ofSL γ := by
   apply Subtype.ext
   apply Units.ext
   rw [coeQ _ (by rw [Matrix.SpecialLinearGroup.det_coe]; norm_num)]
   rfl
 
+/- English proof (translation)
+Simplify `hN` using `[Matrix.det_fin_two_of]`.
+-/
 private theorem detD {N : ℕ} (hN : 0 < N) : (0 : ℤ) < (!![(N : ℤ), 0; 0, 1]).det := by
   simpa [Matrix.det_fin_two_of] using hN
 
 variable {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ}
 
+/- English proof (translation)
+Simplify using `only [eOm, Rat.cast_zero, mul_zero, Complex.exp_zero]`. Rewrite using `[← map_one ε]`. Conclude with `Function.leftInverse_invFun ε.injective 1`.
+-/
 private theorem eOm_zero : eOm ε 0 = 1 := by
   simp only [eOm, Rat.cast_zero, mul_zero, Complex.exp_zero]
   rw [← map_one ε]
   exact Function.leftInverse_invFun ε.injective 1
 
+/- English proof (translation)
+Establish `hN' : (N : ℚ) ≠ 0` using `by exact_mod_cast hN.ne'`. Establish `hg : (((toGQ !![(N : ℤ), 0; 0, 1] : GQ) : GL (Fin 2) ℚ) : Matrix (Fin 2) (Fin 2) ℚ) = !![(N : ℚ), 0; 0, 1]`. Rewrite using `[coeQ _ (detD hN)]`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp`.
+
+Establish `h10 : ent (toGQ !![(N : ℤ), 0; 0, 1]) 1 0 = 0` using `by simp [ent, hg]`. Establish `h00 : ent (toGQ !![(N : ℤ), 0; 0, 1]) 0 0 = N` using `by simp [ent, hg]`. Establish `h01 : ent (toGQ !![(N : ℤ), 0; 0, 1]) 0 1 = 0` using `by simp [ent, hg]`. Establish `h11 : ent (toGQ !![(N : ℤ), 0; 0, 1]) 1 1 = 1` using `by simp [ent, hg]`. Establish `key` using `X.exp_upper _ h10 f (r / N)`.
+
+Rewrite `key` using `[h00, h01, h11, div_one, div_one, mul_zero, div_mul_cancel₀ _ hN', eOm_zero, one_mul]`. Conclude with `key`.
+-/
 private theorem coeff_slD (X : Tower Ω ε) {N : ℕ} (hN : 0 < N) (f : X.K) (r : ℚ) :
     (X.exp (slD X N f)).coeff r = (X.exp f).coeff (r / N) := by
   have hN' : (N : ℚ) ≠ 0 := by exact_mod_cast hN.ne'
@@ -52,6 +76,9 @@ private theorem coeff_slD (X : Tower Ω ε) {N : ℕ} (hN : 0 < N) (f : X.K) (r 
   rw [h00, h01, h11, div_one, div_one, mul_zero, div_mul_cancel₀ _ hN', eOm_zero, one_mul] at key
   exact key
 
+/- English proof (translation)
+Apply `X.exp.toRingHom.injective` to reduce the goal to its premises. Use extensionality with `r`. Express the relevant statement in the definitionally equal form `(X.exp _).coeff r = (X.exp _).coeff r`. Rewrite using `[X.gal_exp, coeff_slD X hN, coeff_slD X hN, X.gal_exp]`.
+-/
 private theorem gal_slD (X : Tower Ω ε) {N : ℕ} (hN : 0 < N) (s : Ω ≃ₐ[ℚ] Ω) (f : X.K) :
     X.gal s (slD X N f) = slD X N (X.gal s f) := by
   apply X.exp.toRingHom.injective
@@ -59,6 +86,11 @@ private theorem gal_slD (X : Tower Ω ε) {N : ℕ} (hN : 0 < N) (s : Ω ≃ₐ[
   change (X.exp _).coeff r = (X.exp _).coeff r
   rw [X.gal_exp, coeff_slD X hN, coeff_slD X hN, X.gal_exp]
 
+/- English proof (translation)
+Establish `hD` using `detD hN`. Establish `hh' : 0 < h'.det`. Establish `key` using `congrArg Matrix.det e`. Rewrite `key` using `[Matrix.det_mul, Matrix.det_mul]`. Conclude with `(mul_pos_iff_of_pos_right hD).1 (key ▸ mul_pos hD hh)`.
+
+Unfold `slD`. Rewrite using `[← X.sl_mul, ← X.sl_mul, ← mulQ _ _ hD hh, ← mulQ _ _ hh' hD, e]`.
+-/
 private theorem sl_slD (X : Tower Ω ε) {N : ℕ} (hN : 0 < N) (h h' : Matrix (Fin 2) (Fin 2) ℤ) (hh : 0 < h.det)
     (e : !![(N : ℤ), 0; 0, 1] * h = h' * !![(N : ℤ), 0; 0, 1]) (f : X.K) :
     X.sl (toGQ h) (slD X N f) = slD X N (X.sl (toGQ h') f) := by
@@ -70,6 +102,13 @@ private theorem sl_slD (X : Tower Ω ε) {N : ℕ} (hN : 0 < N) (h h' : Matrix (
   unfold slD
   rw [← X.sl_mul, ← X.sl_mul, ← mulQ _ _ hD hh, ← mulQ _ _ hh' hD, e]
 
+/- English proof (translation)
+Use `⟨fun W _ => ⟨1, by simp⟩, fun f hf f' hf' => ⟨fun W hW => ?_, fun W hW => ?_⟩⟩` and prove the remaining obligations. Take `⟨g, hg⟩` from `hf W hW`. Take `⟨g', hg'⟩` from `hf' W hW`. Use `⟨g * g', ?_⟩` and prove the remaining obligations. Establish `key : ((f * f' : X.Kˣ) : X.K) / ((g * g' : X.Kˣ) : X.K) ^ m = ((f : X.K) / (g : X.K) ^ m) * ((f' : X.K) / (g' : X.K) ^ m)`.
+
+Rewrite using `[Units.val_mul, Units.val_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key, map_mul, hg, hg', one_mul]`. Take `⟨g, hg⟩` from `hf W hW`. Use `⟨g⁻¹, ?_⟩` and prove the remaining obligations.
+
+Establish `key : ((f⁻¹ : X.Kˣ) : X.K) / ((g⁻¹ : X.Kˣ) : X.K) ^ m = ((f : X.K) / (g : X.K) ^ m)⁻¹`. Rewrite using `[Units.val_inv_eq_inv_val, Units.val_inv_eq_inv_val, inv_div]`. Simplify using `only [inv_pow, div_inv_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key, map_inv₀, hg, inv_one]`.
+-/
 private theorem un_group (X : Tower Ω ε) (m : ℕ) :
     1 ∈ X.Un m ∧ ∀ f ∈ X.Un m, ∀ f' ∈ X.Un m, f * f' ∈ X.Un m ∧ f⁻¹ ∈ X.Un m := by
   refine ⟨fun W _ => ⟨1, by simp⟩, fun f hf f' hf' => ⟨fun W hW => ?_, fun W hW => ?_⟩⟩
@@ -90,6 +129,9 @@ private theorem un_group (X : Tower Ω ε) (m : ℕ) :
 
 variable [IsAlgClosure ℚ Ω]
 
+/- English proof (translation)
+Use `haveI := IsAlgClosure.isAlgClosed ℚ (K := Ω)`. Use `haveI := algebraRat.charZero Ω`. Use `haveI : NeZero (M : Ω) := ⟨Nat.cast_ne_zero.2 (NeZero.ne M)⟩`. Take `⟨ζ, hζ⟩` from `IsAlgClosed.exists_root (Polynomial.cyclotomic M Ω) (by rw [Polynomial.degree_cyclotomic]; exact_mod_cast (Nat.totient_pos.2 (NeZero.pos M)).ne')`. Conclude with `⟨ζ, Polynomial.isRoot_cyclotomic_iff.1 hζ⟩`.
+-/
 private theorem exPrim (M : ℕ) [NeZero M] : ∃ ζ : Ω, IsPrimitiveRoot ζ M := by
   haveI := IsAlgClosure.isAlgClosed ℚ (K := Ω)
   haveI := algebraRat.charZero Ω
@@ -98,6 +140,9 @@ private theorem exPrim (M : ℕ) [NeZero M] : ∃ ζ : Ω, IsPrimitiveRoot ζ M 
     (by rw [Polynomial.degree_cyclotomic]; exact_mod_cast (Nat.totient_pos.2 (NeZero.pos M)).ne')
   exact ⟨ζ, Polynomial.isRoot_cyclotomic_iff.1 hζ⟩
 
+/- English proof (translation)
+Take `⟨ζ, hζ⟩` from `exPrim (Ω := Ω) M`. Establish `hfin : IsOfFinOrder ζ` using `isOfFinOrder_iff_pow_eq_one.2 ⟨M, NeZero.pos M, hζ.pow_eq_one⟩`. Establish `key` using `hfin.pow_eq_pow_iff_modEq.1 (h ζ hζ.pow_eq_one)`. Rewrite `key` using `[← hζ.eq_orderOf]`. Conclude with `(ZMod.natCast_eq_natCast_iff _ _ _).2 key`.
+-/
 private theorem uniq (M : ℕ) [NeZero M] (a b : ℕ) (h : ∀ z : Ω, z ^ M = 1 → z ^ a = z ^ b) :
     (a : ZMod M) = b := by
   obtain ⟨ζ, hζ⟩ := exPrim (Ω := Ω) M
@@ -106,6 +151,11 @@ private theorem uniq (M : ℕ) [NeZero M] (a b : ℕ) (h : ∀ z : Ω, z ^ M = 1
   rw [← hζ.eq_orderOf] at key
   exact (ZMod.natCast_eq_natCast_iff _ _ _).2 key
 
+/- English proof (translation)
+Use `cycM_spec M s ?_ z hz` and prove the remaining obligations. Take `⟨ζ, hζ⟩` from `exPrim (Ω := Ω) M`. Establish `hsζ : IsPrimitiveRoot (s ζ) M` using `hζ.map_of_injective s.injective`. Take `⟨i, hi, hi'⟩` from `hζ.eq_pow_of_pow_eq_one hsζ.pow_eq_one`. Establish `hcop : i.Coprime M` using `(hζ.pow_iff_coprime (NeZero.pos M) i).1 (hi' ▸ hsζ)`.
+
+Use `⟨ZMod.unitOfCoprime i hcop, fun w hw => ?_⟩` and prove the remaining obligations. Take `⟨j, -, rfl⟩` from `hζ.eq_pow_of_pow_eq_one hw`. Rewrite using `[ZMod.coe_unitOfCoprime, ZMod.val_natCast, Nat.mod_eq_of_lt hi, map_pow, ← hi', ← pow_mul, ← pow_mul, mul_comm]`.
+-/
 private theorem cyc_app (M : ℕ) [NeZero M] (s : Ω ≃ₐ[ℚ] Ω) (z : Ω) (hz : z ^ M = 1) :
     s z = z ^ (cycM M s : ZMod M).val := by
   refine cycM_spec M s ?_ z hz
@@ -117,11 +167,19 @@ private theorem cyc_app (M : ℕ) [NeZero M] (s : Ω ≃ₐ[ℚ] Ω) (z : Ω) (h
   obtain ⟨j, -, rfl⟩ := hζ.eq_pow_of_pow_eq_one hw
   rw [ZMod.coe_unitOfCoprime, ZMod.val_natCast, Nat.mod_eq_of_lt hi, map_pow, ← hi', ← pow_mul, ← pow_mul, mul_comm]
 
+/- English proof (translation)
+Establish `key` using `uniq (Ω := Ω) M (cycM M s : ZMod M).val a (fun z hz => by rw [← cyc_app M s z hz, h z hz])`. Rewrite `key` using `[ZMod.natCast_zmod_val]`. Then use the resulting hypothesis.
+-/
 private theorem cyc_eq (M : ℕ) [NeZero M] (s : Ω ≃ₐ[ℚ] Ω) (a : ℕ) (h : ∀ z : Ω, z ^ M = 1 → s z = z ^ a) :
     (cycM M s : ZMod M) = a := by
   have key := uniq (Ω := Ω) M (cycM M s : ZMod M).val a (fun z hz => by rw [← cyc_app M s z hz, h z hz])
   rwa [ZMod.natCast_zmod_val] at key
 
+/- English proof (translation)
+Use `haveI : CharZero Ω := algebraRat.charZero Ω`. Use `haveI : Normal ℚ Ω := IsAlgClosure.normal ℚ Ω`. Take `⟨ζ, hζ⟩` from `exPrim (Ω := Ω) M`. Establish `hm : ∀ {ξ : Ω}, IsPrimitiveRoot ξ M → Polynomial.cyclotomic M ℚ = minpoly ℚ ξ` using `fun hξ => minpoly.eq_of_irreducible_of_monic (Polynomial.cyclotomic.irreducible_rat (NeZero.pos M)) (by rw [Polynomial.aeval_def, ← Polynomial.eval_map, Polynomial.map_cyclotomic]`. Conclude with `hξ.isRoot_cyclotomic (NeZero.pos M)) (Polynomial.cyclotomic.monic M ℚ)`.
+
+Take `⟨s, hs⟩` from `(Normal.minpoly_eq_iff_mem_orbit Ω).1 ((hm (hζ.pow_of_coprime _ (ZMod.val_coe_unit_coprime y))).symm.trans (hm hζ))`. Establish `hs' : s ζ = ζ ^ (y : ZMod M).val` using `hs`. Use `repM_spec M y ⟨s, fun w hw => ?_⟩ z hz` and prove the remaining obligations. Take `⟨i, -, rfl⟩` from `hζ.eq_pow_of_pow_eq_one hw`. Rewrite using `[map_pow, hs', ← pow_mul, ← pow_mul, mul_comm]`.
+-/
 private theorem rep_app (M : ℕ) [NeZero M] (y : (ZMod M)ˣ) (z : Ω) (hz : z ^ M = 1) :
     repM (Ω := Ω) M y z = z ^ (y : ZMod M).val := by
   haveI : CharZero Ω := algebraRat.charZero Ω
@@ -141,6 +199,19 @@ private theorem rep_app (M : ℕ) [NeZero M] (y : (ZMod M)ˣ) (z : Ω) (hz : z ^
 end UpperTheory.V.Z.Kato.Nb.SymmetricSquareCoefficients
 
 open UpperTheory.V.Z.Kato.Nb.SymmetricSquareCoefficients in
+/- English proof (translation)
+Introduce `Ω _ _ _ ε X N hN`. Take `⟨φ, hφ1, hφ2⟩` from `X.j_hol`. Establish `hover` using `GlobalTheory.T.overAffineJLine_comap_sl_gal ε X ε.injective ⟨φ, hφ2, hφ1⟩`. Use `⟨fun s f => gal_slD X hN s f, fun h h' hh e f => sl_slD X hN h h' hh e f, slQ, fun h h' hh hh' => mulQ h h' hh hh', fun m q f hf => ?_, fun m s f hf => ?_, un_group X, fun M _ s => ?_⟩` and prove the remaining obligations. Conclude with `KmapA.un_map X (X.sl q).toRingEquiv (fun W hW => (hover W hW).1 q) m f hf`.
+
+Conclude with `KmapA.un_map X (X.gal s) (fun W hW => (hover W hW).2 s) m f hf`. Use `⟨?_, fun t => ?_, fun y => ?_, ?_, fun M' _ hM' => ?_⟩` and prove the remaining obligations. Establish `hspec : ∀ z : Ω, z ^ M = 1 → s z = z ^ (cycM M s : ZMod M).val` using `fun z hz => cyc_app M s z hz`. Establish `heps : ∀ z : Ω, z ^ M = 1 → s z = z ^ (cyc M s).val`. Unfold `cyc`.
+
+Conclude with `Classical.epsilon_spec (p := fun y : ZMod M => ∀ z : Ω, z ^ M = 1 → s z = z ^ y.val) ⟨_, hspec⟩`. Establish `key` using `uniq (Ω := Ω) M (cyc M s).val (cycM M s : ZMod M).val (fun z hz => by rw [← heps z hz, hspec z hz])`. Rewrite `key` using `[ZMod.natCast_zmod_val, ZMod.natCast_zmod_val]`. Then use the resulting hypothesis. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_mul, cyc_eq M (s * t) ((cycM M s : ZMod M).val * (cycM M t : ZMod M).val) (fun z hz => by rw [AlgEquiv.mul_apply, cyc_app M t z hz, map_pow, cyc_app M s z hz, ← pow_mul]), Nat.cast_mul, ZMod.natCast_zmod_val, ZMod.natCast_zmod_val]`.
+
+Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[cyc_eq M (repM M y) (y : ZMod M).val (fun z hz => rep_app M y z hz), ZMod.natCast_zmod_val]`. Rewrite using `[mem_fixMu_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `hs`.
+
+Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[cyc_eq M s 1 (fun z hz => by rw [pow_one]; exact hs z hz), Nat.cast_one, Units.val_one]`. Introduce `hs z hz`. Rewrite using `[cyc_app M s z hz, hs, Units.val_one, ZMod.val_one_eq_one_mod]`. Establish `key : z ^ (1 % M) = z ^ 1` using `by conv_rhs => rw [← Nat.mod_add_div 1 M]`.
+
+Rewrite using `[pow_add, pow_mul, hz, one_pow, mul_one]`. Rewrite using `[key, pow_one]`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.coe_map, cyc_eq M' s (cycM M s : ZMod M).val (fun z hz => cyc_app M s z (by obtain ⟨k, hk⟩ := hM'; rw [hk, pow_mul, hz, one_pow]))]`. Simplify using `[ZMod.castHom_apply, ZMod.natCast_val]`.
+-/
 theorem UpperTheory.V.Z.Kato.Nb.sSlD :
     UpperTheory.V.Z.Kato.Nb.SSlD := by
   intro Ω _ _ _ ε X N hN

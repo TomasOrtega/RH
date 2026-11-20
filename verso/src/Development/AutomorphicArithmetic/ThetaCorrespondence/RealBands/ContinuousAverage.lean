@@ -7,9 +7,17 @@ open MeasureTheory Filter Matrix Formalism.REAL Formalism.MainNotions.S GlobalTh
 open GlobalTheory.Dec (IsHaarSub IsIsoC NW IsSqIntIrr)
 open scoped Topology InnerProductSpace
 
+/- English proof (translation)
+Unfold `wt`. Check the signs of the components of the expression.
+-/
 private theorem wt_pos' {n : ℕ} {ε : Fin n → Bool} (g : UJ ε) : 0 < wt g := by
   unfold wt; positivity
 
+/- English proof (translation)
+Unfold `wt`. Rewrite using `[← mul_pow]`. Establish `h1` using `(isCompact_ball n ε).2.1 (umat g) (umat h)`. Establish `e : umat (g * h) = umat g * umat h` using `rfl`. Rewrite using `[e]`.
+
+Establish `a` using `Real.sqrt_nonneg (hs (umat g))`. Establish `b` using `Real.sqrt_nonneg (hs (umat h))`. Use `pow_le_pow_left₀ (by positivity) ?_ _` and prove the remaining obligations. Use the polynomial consequences of the given equalities and inequalities.
+-/
 private theorem wt_mul_le {n : ℕ} {ε : Fin n → Bool} (g h : UJ ε) : wt (g * h) ≤ wt g * wt h := by
   unfold wt
   rw [← mul_pow]
@@ -21,14 +29,23 @@ private theorem wt_mul_le {n : ℕ} {ε : Fin n → Bool} (g h : UJ ε) : wt (g 
   refine pow_le_pow_left₀ (by positivity) ?_ _
   nlinarith
 
+/- English proof (translation)
+Unfold `wt`. Rewrite using `[(isCompact_ball n ε).2.2.1 g]`.
+-/
 private theorem wt_inv' {n : ℕ} {ε : Fin n → Bool} (g : UJ ε) : wt g⁻¹ = wt g := by
   unfold wt
   rw [(isCompact_ball n ε).2.2.1 g]
 
+/- English proof (translation)
+Unfold `wt`. Conclude with `(continuous_const.add (isCompact_ball n ε).2.2.2.sqrt).pow _`.
+-/
 private theorem continuous_wt' {n : ℕ} (ε : Fin n → Bool) : Continuous fun g : UJ ε => wt g := by
   unfold wt
   exact (continuous_const.add (isCompact_ball n ε).2.2.2.sqrt).pow _
 
+/- English proof (translation)
+Establish `h1 : wt m ≤ wt x * wt (x * m * y) * wt y`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← div_eq_mul_inv, le_div_iff₀ (wt_pos' m)]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem norm_translate_le {n : ℕ} {ε : Fin n → Bool} {f : UJ ε → ℂ} {C : ℝ}
     (hC : ∀ g, ‖f g‖ * wt g ≤ C) (x m y : UJ ε) : ‖f (x * m * y)‖ ≤ C * wt x * wt y * (wt m)⁻¹ := by
   have h1 : wt m ≤ wt x * wt (x * m * y) * wt y := by
@@ -45,6 +62,15 @@ private theorem norm_translate_le {n : ℕ} {ε : Fin n → Bool} {f : UJ ε →
         mul_le_mul_of_nonneg_right (hC _) (mul_pos (wt_pos' _) (wt_pos' _)).le
     _ = _ := by ring
 
+/- English proof (translation)
+Introduce `n ε f hf ⟨C, hC⟩`. Establish `hC0 : 0 ≤ C` using `le_trans (mul_nonneg (norm_nonneg _) (wt_pos' _).le) (hC 1)`. Use `⟨?_, fun S ν hν x => ?_⟩` and prove the remaining obligations. Establish `hH : IsHaarSub ((⊤ : Subgroup (UJ ε)) : Set (UJ ε)) (muG ε)` using `by haveI : (muG ε).IsHaarMeasure := by unfold muG; infer_instance`. Conclude with `GlobalTheory.Dec.isHaarSub_univ (muG ε)`.
+
+Use `((integrable_wt n ε ⊤ _ hH).const_mul C).mono' hf.aestronglyMeasurable (Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Rewrite using `[← div_eq_mul_inv, le_div_iff₀ (wt_pos' g)]`. Conclude with `hC g`. Rewrite using `[continuous_iff_continuousAt]`. Introduce `y₀`.
+
+Use `continuousAt_of_dominated (bound := fun m => C * wt x * (wt y₀ + 1) * (wt m)⁻¹) ?_ ?_ ((integrable_wt n ε S ν hν).const_mul _) ?_` and prove the remaining obligations. Conclude with `Eventually.of_forall fun y => (hf.comp ((continuous_const.mul continuous_id).mul continuous_const)).aestronglyMeasurable`. Establish `hn : ∀ᶠ y in 𝓝 y₀, wt y < wt y₀ + 1` using `(continuous_wt' ε).continuousAt.eventually (gt_mem_nhds (lt_add_one _)) filter_upwards [hn] with y hy`. Use `Eventually.of_forall fun m => (norm_translate_le hC x m y).trans ?_` and prove the remaining obligations. Use `wt_pos' x` as an intermediate fact.
+
+Use `wt_pos' m` as an intermediate fact. Use `gcongr`. Conclude with `Eventually.of_forall fun m => (hf.comp (continuous_const.mul continuous_id)).continuousAt`.
+-/
 theorem UpperTheory.Lit.Cusp.continuous_average :
     ∀ (n : ℕ) (ε : Fin n → Bool) (f : UJ ε → ℂ), Continuous f → Decays f → Integrable f (muG ε) ∧
       ∀ (S : Subgroup (UJ ε)) (ν : Measure (UJ ε)), IsHaarSub (S : Set (UJ ε)) ν →

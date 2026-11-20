@@ -38,6 +38,11 @@ section Total
 
 variable {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} {σ : k →+* ℂ} {D E : ℕ}
 
+/- English proof (translation)
+Use `hX.compactSpace σ` as an intermediate fact. Use `CxPts.secondCountableTopology_of_isProjOver σ hX.isProjOver` as an intermediate fact. Use `CxPts.t2Space_cxPts_of_isProjOver σ hX.isProjOver` as an intermediate fact. Take `⟨ν, w, _, -, -, -, h₁, h₂⟩` from `T.arithmetic_variety_partition_density k X p σ D hR`. Use `choose g hg e using fun j => h₁ _ (h j)`.
+
+Establish `i (j)` using `(hg j).integrable_of_hasCompactSupport (μ := ν) (HasCompactSupport.of_compactSpace _)`. Rewrite using `[(h₂ _ (fun y => ∑ j, a j * g j y) (continuous_finsetSum _ fun j _ => continuous_const.mul (hg j)) fun c y hy => by simp only [Finset.sum_mul, e _ c y hy, mul_assoc]).2, integral_finsetSum _ fun j _ => (i j).const_mul _]`. Conclude with `Finset.sum_congr rfl fun j _ => by rw [integral_const_mul, (h₂ _ _ (hg j) (e j)).2]`.
+-/
 theorem total_sum (hX : IsArithVar p E) (hR : Nonempty (AnRead p σ D)) {I : Type} [Fintype I] (a : I → ℝ)
     {τ : I → AlgChart p σ D → CxPts p σ → ℝ} (h : ∀ j, IsDens (τ j)) :
     total (fun c y => ∑ j, a j * τ j c y) = ∑ j, a j * total (τ j) := by
@@ -52,6 +57,9 @@ theorem total_sum (hX : IsArithVar p E) (hR : Nonempty (AnRead p σ D)) {I : Typ
     integral_finsetSum _ fun j _ => (i j).const_mul _]
   exact Finset.sum_congr rfl fun j _ => by rw [integral_const_mul, (h₂ _ _ (hg j) (e j)).2]
 
+/- English proof (translation)
+The claim follows from `(T.chern_matrix_is_form k X p σ (d + 1) _ _ (N.cInf σ)).isDens_mix (IsForm.sum Finset.univ fun i => T.bott_chern_matrix_is_form k X p σ (d + 1) _ _ _ _ _ _ _ (H.restrict (fl.isSubbundle i.succ) (fl.isVB i.succ) σ))`.
+-/
 theorem isDens_flagDens {F : X.Modules} {r : ℕ} {h : VMetric p F r} (H : h.IsCInf) (fl : Vert.Flag F r) (N : HermLB p)
     (d : ℕ) (σ : k →+* ℂ) : IsDens (flagDens h fl N d σ) :=
   (T.chern_matrix_is_form k X p σ (d + 1) _ _ (N.cInf σ)).isDens_mix (IsForm.sum Finset.univ fun i =>
@@ -64,6 +72,9 @@ section Chain
 variable {k : Type} [CommRing k] {X : Scheme.{0}} [IsIntegral X] {p : X ⟶ Sp k} {d : ℕ} {E : X.Modules} {r : ℕ}
   {h : VMetric p E r} {H : h.IsCInf} {f₁ f₂ f₃ : Vert.Flag E r}
 
+/- English proof (translation)
+Simplify using `[lin, Fintype.sum_sum_type]`.
+-/
 theorem rename_inl_lin {κ κ' : Type} [Fintype κ] [Fintype κ'] (n : κ → ℤ) :
     MvPolynomial.rename (Sum.inl : κ → κ ⊕ κ') (lin fun j => (n j : ℝ)) =
       lin fun j => ((Sum.elim n (fun _ => 0) j : ℤ) : ℝ) := by
@@ -71,10 +82,18 @@ theorem rename_inl_lin {κ κ' : Type} [Fintype κ] [Fintype κ'] (n : κ → �
 
 omit [IsIntegral X] in
 
+/- English proof (translation)
+The claim follows from `HermLB.icls_eq_iff.1 (by simp [icls_comb, Fintype.sum_sum_type])`.
+-/
 theorem isometric_comb_inl {κ κ' : Type} [Fintype κ] [Fintype κ'] (L : κ → HermLB p) (M : κ' → HermLB p) (n : κ → ℤ) :
     (comb (Sum.elim L M) (Sum.elim n fun _ => 0)).Isometric (comb L n) :=
   HermLB.icls_eq_iff.1 (by simp [icls_comb, Fintype.sum_sum_type])
 
+/- English proof (translation)
+Introduce `κ _ L Φ hΦ x x' hx hx' n`. Take `⟨Ψ, hΨ⟩` from `((hC.arExists k X p _ hX).2 (κ ⊕ Fin r) (Sum.elim L fun i => VMetric.grLB f₂ i H)).1`. Establish `e₁` using `h₁ _ _ Ψ hΨ (fun i => .inl (x i)) .inr hx (fun _ => .refl _) (Sum.elim n fun _ => 0)`. Establish `e₂` using `h₂ _ _ Ψ hΨ .inr (fun i => .inl (x' i)) (fun _ => .refl _) hx' (Sum.elim n fun _ => 0)`. Simplify using `only [bcPair_congr _ _ (isometric_comb_inl L _ n)] at e₁ e₂`.
+
+Rewrite using `[← isArFun_restrict_inl hC.arIso hX L _ hΦ hΨ, ← sub_add_sub_cancel _ (bcPair h f₂ (comb L n) d), ← e₁, ← e₂, ← map_add, map_mul, map_pow, rename_inl_lin]`. Use `congr 1`. Simplify using `only [map_sub, map_sum, map_pow, MvPolynomial.rename_X]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem compare_trans (hC : Published.ArCalc) (hX : IsArithVar p (d + 1)) (h₁ : Compare H d f₁ f₂)
     (h₂ : Compare H d f₂ f₃) : Compare H d f₁ f₃ := by
   intro κ _ L Φ hΦ x x' hx hx' n
@@ -88,6 +107,13 @@ theorem compare_trans (hC : Published.ArCalc) (hX : IsArithVar p (d + 1)) (h₁ 
   simp only [map_sub, map_sum, map_pow, MvPolynomial.rename_X]
   ring
 
+/- English proof (translation)
+Take `⟨Y, ρ, _, hρ, hJ⟩` from `FlagChain.exists_cov_joined hX f₁ f₂`. Take `⟨Z, τ, _, hτ, hs⟩` from `T.principalisation_generic_smooth_cover hP k Y (ρ ≫ p) _ hρ.1`. Establish `hc` using `hρ.comp hτ`. Establish `hJ'` using `(hJ.pull τ).pull_comp`. Rewrite `hs` using `[← Category.assoc]`.
+
+Generalize the expression as in `τ ≫ ρ = u at hc hJ' hs`. Establish `key : ∀ g, FlagChain.Joined (f₁.pull u) g → Compare (H.pull u rfl) d (f₁.pull u) g` using `fun g hg => by`. Proceed by induction on `hg with`. Consider the case `refl => exact T.adjacent_flags_height_comparison hC k Z _ d hc.1 hs _ r _ _ _ _ (Vert.Flag.adjacent_refl _)`. Consider the case `tail _ ha ih => exact compare_trans hC hc.1 ih (T.adjacent_flags_height_comparison hC k Z _ d hc.1 hs _ r _ _ _ _ ha)`.
+
+Introduce `κ _ L Φ hΦ x x' hx hx' n`. Establish `e` using `key _ hJ' κ _ _ ((hC.arProj k X Z p _ _ hX hc.1 u rfl hc.2.1 hc.2.2).2 κ L Φ hΦ) x x' (fun i => ((hx i).pull u rfl).trans (VMetric.isometric_grLB_pull k X Z p _ E r h H f₁ u rfl i).symm) (fun i => ((hx' i).pull u rfl).trans (VMetric.isometric_grLB_pull k X Z p _ E r h H f₂ u rfl …`. Simplify using `only [bcPair_congr _ _ (isometric_comb_pull L n u rfl), T.flag_height_pairing_pullback_degree k X Z p d u hX hc E r h H] at e`. Rewrite `e` using `[LinearMap.smul_apply, smul_eq_mul, ← mul_sub]`. Conclude with `mul_left_cancel₀ (Nat.cast_ne_zero.2 hc.2.2) e`.
+-/
 theorem compare (hC : Published.ArCalc) (hP : Published.Principalisation) (hX : IsArithVar p (d + 1)) (H : h.IsCInf)
     (f₁ f₂ : Vert.Flag E r) : Compare H d f₁ f₂ := by
   obtain ⟨Y, ρ, _, hρ, hJ⟩ := FlagChain.exists_cov_joined hX f₁ f₂
@@ -110,6 +136,13 @@ theorem compare (hC : Published.ArCalc) (hP : Published.Principalisation) (hX : 
 
 end Chain
 
+/- English proof (translation)
+Establish `: P ∈ Submodule.span ℝ (Set.range fun n : κ → ℤ => lin (fun x => (n x : ℝ)) ^ d)`. Assume the negation of the conclusion as `hn`. Take `⟨f, hf, hf'⟩` from `Submodule.exists_dual_map_eq_bot_of_notMem hn inferInstance`. Establish `h0` using `GlobalTheory.ArInt.Model.eq_zero_of_pow d (f ∘ₗ MvPolynomial.homogeneousComponent d) (fun n => by`. Establish `hh : (lin (fun x => (n x : ℝ)) ^ d).IsHomogeneous d` using `by simpa using (isHomogeneous_lin _).pow d`.
+
+Rewrite using `[LinearMap.comp_apply, MvPolynomial.homogeneousComponent_eq_self hh]`. Conclude with `(Submodule.mem_bot ℝ).1 (hf' ▸ Submodule.mem_map_of_mem (Submodule.subset_span ⟨n, rfl⟩)))`. Use `fun Q e he hQ => by`. Rewrite using `[LinearMap.comp_apply, MvPolynomial.homogeneousComponent_of_mem hQ, if_neg (Ne.symm he), map_zero]`. Use `LinearMap.congr_fun h0 P` as an intermediate fact.
+
+Rewrite `this` using `[LinearMap.comp_apply, MvPolynomial.homogeneousComponent_eq_self hP]`. Conclude with `hf this`. Take `⟨c, hc⟩` from `Finsupp.mem_span_range_iff_exists_finsupp.1 this`. Conclude with `⟨c.support, inferInstance, fun j => c j, fun j => j, (Finset.sum_coe_sort c.support fun n => c n • lin (fun x => (n x : ℝ)) ^ d).trans hc⟩`.
+-/
 theorem exists_sum_pow {κ : Type} [Fintype κ] {d : ℕ} {P : MvPolynomial κ ℝ} (hP : P.IsHomogeneous d) :
     ∃ (I : Type) (_ : Fintype I) (c : I → ℝ) (n : I → κ → ℤ), ∑ j, c j • lin (fun x => (n j x : ℝ)) ^ d = P := by
   have : P ∈ Submodule.span ℝ (Set.range fun n : κ → ℤ => lin (fun x => (n x : ℝ)) ^ d) := by
@@ -128,6 +161,11 @@ theorem exists_sum_pow {κ : Type} [Fintype κ] {d : ℕ} {P : MvPolynomial κ �
   exact ⟨c.support, inferInstance, fun j => c j, fun j => j, (Finset.sum_coe_sort c.support
     fun n => c n • lin (fun x => (n x : ℝ)) ^ d).trans hc⟩
 
+/- English proof (translation)
+Establish `h₁ : Fintype.card (Low m) = ∑ i : Fin m, (Finset.Ioi i).card`. Rewrite using `[← Finset.card_sigma, ← Finset.card_univ]`. Apply the tactic sequence `refine Finset.card_bij' (fun s _ => ⟨s.1.2, s.1.1⟩) (fun t ht => ⟨(t.2, t.1), by simpa using ht⟩) ?_ ?_ ?_ ?_ <;>`. Simplify using the standard rewrite rules. Use `⟨h₁, h₁.trans ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [Fin.card_Ioi]`. Rewrite using `[Fin.sum_univ_eq_sum_range (fun i => m - 1 - i), Finset.sum_range_reflect (fun i => i), Finset.sum_range_id]`.
+-/
 theorem card_low (m : ℕ) : Fintype.card (Low m) = ∑ i : Fin m, (Finset.Ioi i).card ∧
     Fintype.card (Low m) = m * (m - 1) / 2 := by
   have h₁ : Fintype.card (Low m) = ∑ i : Fin m, (Finset.Ioi i).card := by
@@ -138,6 +176,11 @@ theorem card_low (m : ℕ) : Fintype.card (Low m) = ∑ i : Fin m, (Finset.Ioi i
   simp only [Fin.card_Ioi]
   rw [Fin.sum_univ_eq_sum_range (fun i => m - 1 - i), Finset.sum_range_reflect (fun i => i), Finset.sum_range_id]
 
+/- English proof (translation)
+Rewrite using `[Fintype.card_sigma]`. Use `MvPolynomial.IsHomogeneous.prod _ _ _ fun a _ => ?_` and prove the remaining obligations. Rewrite using `[(card_low _).1]`. Use `MvPolynomial.IsHomogeneous.prod _ _ _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.card_eq_sum_ones]`.
+
+Conclude with `MvPolynomial.IsHomogeneous.prod _ _ _ fun i' _ => (MvPolynomial.isHomogeneous_X _ _).sub (MvPolynomial.isHomogeneous_X _ _)`.
+-/
 theorem isHomogeneous_vdm {ι : Type} [Fintype ι] (r : ι → ℕ) :
     (vdm r).IsHomogeneous (Fintype.card (Σ a, Low (r a))) := by
   rw [Fintype.card_sigma]
@@ -148,6 +191,9 @@ theorem isHomogeneous_vdm {ι : Type} [Fintype ι] (r : ι → ℕ) :
   exact MvPolynomial.IsHomogeneous.prod _ _ _ fun i' _ =>
     (MvPolynomial.isHomogeneous_X _ _).sub (MvPolynomial.isHomogeneous_X _ _)
 
+/- English proof (translation)
+Rewrite using `[mix_chg, mix_diagonal (fun j => a (e j)) fun j => m (e j), ← e.sum_comp]`. Establish `(j : Fin (d + 1)) : ∏ l ∈ Finset.univ.erase j, a (e l) = ∏ s' ∈ Finset.univ.erase (e j), a s'` using `Finset.prod_equiv e (by simp) fun _ _ => rfl`. Simplify using `only [this]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem mix_chg_diagonal {d : ℕ} {α : Type} [Fintype α] [DecidableEq α] (e : Fin (d + 1) ≃ α) (J : Matrix (Fin (d + 1)) (Fin (d + 1)) ℂ)
     (a m : α → ℝ) : mix d (chg J (diagonal fun j => (a (e j) : ℂ))) (chg J (diagonal fun j => (m (e j) : ℂ))) =
       ‖J.det‖ ^ 2 / Real.pi ^ (d + 1) * (d.factorial * ∑ s, m s * ∏ s' ∈ Finset.univ.erase s, a s') := by
@@ -157,6 +203,15 @@ theorem mix_chg_diagonal {d : ℕ} {α : Type} [Fintype α] [DecidableEq α] (e 
   simp only [this]
   ring
 
+/- English proof (translation)
+Establish `h₁` using `GlobalTheory.FlagFibre.FlagInt.lintegral_dens m Gᵀ hG.transpose`. Establish `hd` using `det_re_pos hG`. Establish `hc : GlobalTheory.TrueCx.flagConst m = (∏ l ∈ Finset.range m, (l.factorial : ℝ)) / Real.pi ^ Fintype.card (Low m)`. Rewrite using `[(card_low m).2, ← Finset.sum_range_id, ← Finset.prod_pow_eq_pow_sum, ← Finset.prod_div_distrib]`. Both sides reduce to the same expression.
+
+Establish `hp : 0 < ∏ l ∈ Finset.range m, (l.factorial : ℝ)` using `Finset.prod_pos fun _ _ => by positivity`. Simplify using `only [jacDens]`. Rewrite using `[integral_mul_const, integral_eq_lintegral_of_nonneg_ae (.of_forall (FlagFibre.dens_nonneg _)) (FlagFibre.measurable_dens _).aestronglyMeasurable, h₁, det_transpose, hc, ENNReal.toReal_ofReal (by positivity)]`. Establish `e : G.det.re ^ (1 - (m : ℤ)) * G.det.re ^ (m - 1) = 1`. Consider the cases of `m with`.
+
+Consider the case `zero => simp`. Consider the case `succ m`. Rewrite using `[Nat.add_sub_cancel, ← zpow_natCast, ← zpow_add₀ hd.ne']`. Simplify using the standard rewrite rules. Rewrite using `[div_mul_eq_mul_div, e]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem integral_jacDens {m : ℕ} {G : Matrix (Fin m) (Fin m) ℂ} (hG : G.PosDef) :
     ∫ n, jacDens G n = Real.pi ^ Fintype.card (Low m) / ∏ l ∈ Finset.range m, (l.factorial : ℝ) := by
   have h₁ := GlobalTheory.FlagFibre.FlagInt.lintegral_dens m Gᵀ hG.transpose
@@ -187,6 +242,17 @@ variable {k : Type} [CommRing k] {B Y : Scheme.{0}} [IsIntegral Y] {q : B ⟶ Sp
 
 omit [IsIntegral Y] in
 
+/- English proof (translation)
+Establish `hy` using `c.e.map_target hz`. Establish `hpos (a) : ∀ᶠ u in 𝓝 z, (((h a).met σ).G (cE a) (c.e.symm u)).PosDef` using `Filter.eventually_of_mem (c.e.open_target.mem_nhds hz) fun u hu => ((h a).met σ).posDef _ _ (hE a (c.e.map_target hu))`. Take `⟨K, hK, hJ⟩` from `T.jacobian_density_hermitian_metrics ι r d e (fun a u => ((h a).met σ).G (cE a) (c.e.symm u)) z (fun a => by`. Use `(H a σ (cE a) _ (hE a hy)).mContDiffAt c hy` as an intermediate fact. Rewrite using `[c.e.right_inv hz] at this) hpos` and apply the resulting hypothesis.
+
+Use `⟨_, K, fun a => (hpos a).self_of_nhds, hK, fun u => ?_⟩` and prove the remaining obligations. Establish `ht : pt e z u ∈ c'.e.target`. Rewrite using `[hc.2.1]`. Simplify `hz` using `only [Set.mem_setOf_eq, base_pt]`. Establish `hs` using `c'.e.map_target ht`.
+
+Take `⟨J, h₁, h₂, h₃, h₄⟩` from `hJ u`. Take `⟨b₁, b₂⟩` from `T.flag_bundle_chart_metric_compat k B Y q p π w ι r d e σ E h H fl c cE c' hc hf _ hs`. Rewrite `b₁`, `b₂` using `[c'.e.right_inv ht]`. Use `⟨hs, ?_, J, h₁, fun n => ?_, fun a => (b₂ a).trans (h₃ a), h₄⟩` and prove the remaining obligations. Use `hc.2.2 _ hs` as an intermediate fact.
+
+Rewrite `this` using `[c'.e.right_inv ht, base_pt]`. Conclude with `(c.e.left_inv (hc.1.le hs).1).symm.trans (congrArg c.e.symm this.symm)`. Rewrite using `[T.chernMat_linear_combination k Y p σ (d + 1) _ _ n c' _ hs]`. Simplify using `only [b₁, h₂, ← chg_smul]`. Rewrite using `[chg, ← Finset.sum_congr rfl fun _ _ => rfl]`.
+
+Simplify using `only [chg, ← Matrix.sum_mul, ← Matrix.mul_sum]`. Use `congr 2`. Use extensionality with `i j`. Apply the tactic sequence `by_cases hij : i = j <;> simp [Matrix.sum_apply, diagonal_apply, hij]`.
+-/
 theorem cell_forms {c : AlgChart q σ 1} {cE : ∀ a, Chart (E a) (r a)} {c' : AlgChart p σ (d + 1)}
     (hE : ∀ a, c.e.source ⊆ ptsIn q σ (cE a).U) (hc : IsCell e π w c c')
     (hf : ∀ a, IsCellFrame e π w c' a (h a) (fl a) (cE a)) {z : V 1} (hz : z ∈ c.e.target) :
@@ -233,6 +299,19 @@ variable (hq : IsRegSurf q) (hp : IsArithVar p (d + 1)) (hs : GenSmooth p (d + 1
   (hV : ∑ j, c j • lin (fun x => (n j x : ℝ)) ^ d = vdm r)
 include e hq hp hs hfl hd hV
 
+/- English proof (translation)
+Substitute `hd` using the available equality. Use `hp.finite_emb` as an intermediate fact. Use `Fintype.ofFinite (k →+* ℂ)` as an intermediate fact. Simplify using `only [bcPair, finsum_eq_sum_of_fintype, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`.
+
+Use `Finset.sum_eq_zero fun σ _ => ?_` and prove the remaining obligations. Establish `hR` using `(RegGenSmooth.genSmooth_of_isRegSurf k B q hq).1 σ`. Establish `hD (j)` using `isDens_flagDens ((H a).pull π w) (fl a) (comb (fun x : Σ a, Fin (r a) => VMetric.grLB (fl x.1) x.2 ((H x.1).pull π w)) (n j)) (Fintype.card (Σ a, Low (r a))) σ`. Rewrite using `[← total_sum hp (hs σ) c hD, ← total_zero (p := q) (σ := σ) (D := 1)]`. Use `T.arithmetic_density_pushforward_integral k B Y q p π w ι r _ e σ hq.toIsArithVar hp hR (hs σ) _ _ (IsDens.sum _ fun j => (hD j).mul continuous_const) isDens_zero fun y => ?_` and prove the remaining obligations.
+
+Take `⟨R⟩` from `hR`. Take `⟨i, hi⟩` from `R.cover y`. Take `⟨c₁, cE, c', hy, hE, hc, hf⟩` from `T.flag_bundle_chart_lift k B Y q p π w ι r _ e σ E h fl hfl _ y hi`. Use `⟨c₁, c', hy, hc, fun z hz => ?_⟩` and prove the remaining obligations. Take `⟨G, K, hG, hK, hu⟩` from `cell_forms H e hE hc hf hz`.
+
+Take `⟨κ, hκ⟩` from `T.vandermonde_boundary_term_sum_identity ι r a`. Establish `key (u : ∀ a, Low (r a) → ℂ) : ∑ j, c j * flagDens ((h a).pull π w) (fl a) (comb (fun x : Σ a, Fin (r a) => VMetric.grLB (fl x.1) x.2 ((H x.1).pull π w)) (n j)) _ σ c' (c'.e.symm (pt e z u)) = κ / Real.pi ^ (Fintype.card (Σ a, Low (r a)) + 1) * ∏ b, (jacDens (G b) (u b) * if b = …`. Take `⟨-, -, J, h₁, h₂, h₃, -⟩` from `hu u`. Establish `hm (j)` using `mix_chg_diagonal e J (fun s => ∑ x, (n j x : ℝ) * rootDiag (fun x => theta (G x.1) (K x.1) (u x.1) x.2) x s) (bcDiag a)`. Simplify using `only [flagDens, h₂, h₃, hm, mul_left_comm (c _) (_ / _)]`.
+
+Rewrite using `[← Finset.mul_sum, hκ I c n hV, h₁, Finset.prod_mul_distrib, Finset.prod_ite_eq', if_pos (Finset.mem_univ _)]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [key]`. Rewrite using `[integral_const_mul, integral_fintype_prod_volume_eq_prod fun b (x : Low (r b) → ℂ) => jacDens (G b) x * if b = a then ∑ i : Fin (r b), ((r b : ℝ) - 1 - 2 * (i : ℕ)) * theta (G b) (K b) x i else 1, Finset.prod_eq_zero (Finset.mem_univ a), mul_zero]`. Simplify using `only [if_true]`.
+
+Conclude with `T.jacobi_density_weighted_theta_integral_zero _ _ _ (hG a) (hK a)`.
+-/
 theorem sum_bcPair_taut (a : ι) : ∑ j, c j * bcPair ((h a).pull π w) (fl a)
     (comb (fun x : Σ a, Fin (r a) => VMetric.grLB (fl x.1) x.2 ((H x.1).pull π w)) (n j)) d = 0 := by
   subst hd
@@ -271,6 +350,23 @@ theorem sum_bcPair_taut (a : ι) : ∑ j, c j * bcPair ((h a).pull π w) (fl a)
   simp only [if_true]
   exact T.jacobi_density_weighted_theta_integral_zero _ _ _ (hG a) (hK a)
 
+/- English proof (translation)
+Substitute `hd` using the available equality. Use `hp.finite_emb` as an intermediate fact. Use `Fintype.ofFinite (k →+* ℂ)` as an intermediate fact. Simplify using `only [bcPair, VMetric.flagBc, VMetric.bcInt, finsum_eq_sum_of_fintype, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm, Finset.sum_comm (s := Finset.univ (α := Fin s))]`.
+
+Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Establish `hR` using `(RegGenSmooth.genSmooth_of_isRegSurf k B q hq).1 σ`. Establish `hD (j)` using `isDens_flagDens (Hg.pull π w) (m.pull π) (comb (fun x : Σ a, Fin (r a) => VMetric.grLB (fl x.1) x.2 ((H x.1).pull π w)) (n j)) (Fintype.card (Σ a, Low (r a))) σ`. Establish `hS (i : Fin s) : ((g.stepMet m i).met σ).IsCInf` using `Hg.restrict (m.isSubbundle i.succ) (m.isVB i.succ) σ`. Establish `hB (i : Fin s) : IsDens fun (c : AlgChart q σ 1) y => ((g.stepMet m i).met σ).bcDens (VMetric.stepSeq_shortExact m i) (m.isVB i.castSucc) (m.isVB_gr i) c y` using `CurveDens.isDens_bcDens _ _ _ (hS i)`.
+
+Simplify using `only [← CurveDens.total_bcDens _ _ _ (hS _), ← (total_eq_curve _).2.1]`. Rewrite using `[← total_sum hp (hs σ) c hD, ← total_sum hq.toIsArithVar hR (fun _ => ∏ a, ((r a).factorial : ℝ)) hB]`. Use `T.arithmetic_density_pushforward_integral k B Y q p π w ι r _ e σ hq.toIsArithVar hp hR (hs σ) _ _ (IsDens.sum _ fun j => (hD j).mul continuous_const) (IsDens.sum _ fun j => (hB j).mul continuous_const) fun y => ?_` and prove the remaining obligations. Take `⟨R⟩` from `hR`. Take `⟨i, hi⟩` from `R.cover y`.
+
+Take `⟨c₁, cE, c', hy, hE, hc, hf⟩` from `T.flag_bundle_chart_lift k B Y q p π w ι r _ e σ E h fl hfl _ y hi`. Use `⟨c₁, c', hy, hc, fun z hz => ?_⟩` and prove the remaining obligations. Take `⟨G, K, hG, hK, hu⟩` from `cell_forms H e hE hc hf hz`. Rewrite using `[← Finset.mul_sum]`. Use `set t := ∑ i, ((g.stepMet m i).met σ).bcDens (VMetric.stepSeq_shortExact m i) (m.isVB i.castSucc) (m.isVB_gr i) c₁ (c₁.e.symm z) with ht`.
+
+Establish `key (u : ∀ a, Low (r a) → ℂ) : ∑ j, c j * flagDens (g.pull π w) (m.pull π) (comb (fun x : Σ a, Fin (r a) => VMetric.grLB (fl x.1) x.2 ((H x.1).pull π w)) (n j)) _ σ c' (c'.e.symm (pt e z u)) = (t / Real.pi ^ Fintype.card (Σ a, Low (r a)) * ∏ a, ∏ l ∈ Finset.range (r a + 1), (l.fa …`. Take `⟨h₀, h₀', J, h₁, h₂, -, h₃⟩` from `hu u`. Establish `e₁ (f : Option (Σ a, Low (r a)) → ℝ) : ∑ s, baseDiag s * ∏ s' ∈ Finset.univ.erase s, f s' = ∏ s, f (some s)`. Rewrite using `[Fintype.sum_option]`. Simplify using `only [baseDiag, Option.elim, zero_mul, Finset.sum_const_zero, add_zero, one_mul]`.
+
+Apply the tactic sequence `exact (Finset.prod_bij (fun s _ => some s) (by simp) (by simp) (by rintro (_ | s) <;> simp) fun _ _ => rfl).symm`. Simplify using `only [flagDens, h₂, T.flag_matrix_pullback_chart k B Y q p π w ι r _ e σ F s g Hg m c₁ c' hc _ h₀, h₀', ← ht, mix_smul]`. Rewrite using `[← h₃]`. Establish `hm (j)` using `mix_chg_diagonal e J (fun s => ∑ x, (n j x : ℝ) * rootDiag (fun x => theta (G x.1) (K x.1) (u x.1) x.2) x s) baseDiag`. Simplify using `only [hm, e₁, mul_left_comm (c _) (_ * t), mul_left_comm (c _) (_ / _)]`.
+
+Rewrite using `[← Finset.mul_sum, ← Finset.mul_sum, T.vandermonde_weighted_root_product_sum ι r I c n hV, h₁]`. Use `Real.pi_ne_zero` as an intermediate fact. Rewrite using `[pow_succ Real.pi]`. Clear the denominators using the available nonvanishing facts. Simplify using `only [key]`.
+
+Rewrite using `[integral_const_mul, integral_fintype_prod_volume_eq_prod fun b (x : Low (r b) → ℂ) => jacDens (G b) x]`. Simplify using `only [integral_jacDens (hG _), Finset.prod_range_succ, Finset.prod_mul_distrib, Finset.prod_div_distrib, Finset.prod_pow_eq_pow_sum, Fintype.card_sigma]`. Use `Real.pi_ne_zero` as an intermediate fact. Establish `: ∏ a, ∏ l ∈ Finset.range (r a), (l.factorial : ℝ) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun _ _ => Finset.prod_ne_zero_iff.2 fun _ _ => by positivity`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem sum_bcPair_pull {F : B.Modules} {s : ℕ} {g : VMetric q F s} (Hg : g.IsCInf) (m : Vert.Flag F s) :
     ∑ j, c j * bcPair (g.pull π w) (m.pull π)
       (comb (fun x : Σ a, Fin (r a) => VMetric.grLB (fl x.1) x.2 ((H x.1).pull π w)) (n j)) d =
@@ -330,6 +426,15 @@ theorem sum_bcPair_pull {F : B.Modules} {s : ℕ} {g : VMetric q F s} (Hg : g.Is
 
 end Fibre
 
+/- English proof (translation)
+Establish `hc : Fintype.card (Σ a, Low (r a)) = ∑ a, r a * (r a - 1) / 2`. Rewrite using `[Fintype.card_sigma]`. Conclude with `Finset.sum_congr rfl fun a _ => (card_low _).2`. Establish `hs` using `T.flag_bundle_smooth_relative_dimension B Y π ι E r fl hE hfl`. Rewrite `hs` using `[← hc]`.
+
+Use `hq.toIsArithVar.isLocallyNoetherian` as an intermediate fact. Use `⟨?_, fun σ => ⟨⟨AlgChart p σ _, id, fun y => ?_⟩⟩⟩` and prove the remaining obligations. Establish `h₁` using `(T.krull_dim_smooth_surjective_total B Y π (Fintype.card (Σ a, Low (r a))) 1 (T.flag_bundle_projection_surjective B Y π ι E r fl hE hfl) hq.toIsArithVar.dim_eq).symm.trans hp.dim_eq`. Establish `h₂ : 1 + Fintype.card (Σ a, Low (r a)) + 1 = D + 1` using `by exact_mod_cast h₁`. Use linear arithmetic over natural numbers and integers.
+
+Take `⟨U, hU, _⟩` from `(RegGenSmooth.genSmooth_of_isRegSurf k B q hq).2 σ (PtsOver.map π w _ y)`. Establish `: SmoothOfRelativeDimension (Fintype.card (Σ a, Low (r a))) (π ∣_ U)` using `(smoothOfRelativeDimension_isStableUnderBaseChange _).of_isPullback (isPullback_morphismRestrict π U).flip hs`. Establish `: SmoothOfRelativeDimension (Fintype.card (Σ a, Low (r a)) + 1) ((π ⁻¹ᵁ U).ι ≫ p)`. Rewrite using `[← w, ← Category.assoc, ← morphismRestrict_ι, Category.assoc]`. Use `infer_instance`.
+
+Take `⟨W, x, hW, hz, hx⟩` from `ModelCharts.exists_etale_coords_of_opens p (Fintype.card (Σ a, Low (r a)) + 1) (π ⁻¹ᵁ U) (mem_ptsIn.1 (show y ∈ ptsIn p σ (π ⁻¹ᵁ U) from hU))`. Take `⟨c, hc, -⟩` from `AlgChart.exists_of_etale hW x hx (mem_ptsIn.2 hz)`. Conclude with `⟨c, hc⟩`.
+-/
 theorem dim_genSmooth {k : Type} [CommRing k] {B Y : Scheme.{0}} {q : B ⟶ Sp k} {p : Y ⟶ Sp k} {D : ℕ} (hq : IsRegSurf q)
     (hp : IsArithVar p D) {π : Y ⟶ B} (w : π ≫ q = p) {ι : Type} [Fintype ι] {E : ι → B.Modules} {r : ι → ℕ}
     (hE : ∀ a, IsVB (E a) (r a)) {fl : ∀ a, Vert.Flag ((Scheme.Modules.pullback π).obj (E a)) (r a)}
@@ -358,6 +463,15 @@ theorem dim_genSmooth {k : Type} [CommRing k] {B Y : Scheme.{0}} {q : B ⟶ Sp k
 
 open MvPolynomial GlobalTheory.CovTop in
 
+/- English proof (translation)
+Introduce `HP k _ B Y _ _ q p D hq hp π w ι _ E r h H fl hfl m _ Φ hΦ Ψ hΨ`. Take `⟨rfl, hs⟩` from `dim_genSmooth hq hp w (fun a => (h a).isVB) hfl`. Take `⟨I, _, c, n, hV⟩` from `exists_sum_pow (isHomogeneous_vdm r)`. Set `e : Fin (Fintype.card (Σ a, Low (r a)) + 1) ≃ Option (Σ a, Low (r a))` to `(Fintype.equivFinOfCardEq Fintype.card_option).symm`. Establish `key (a : ι) (j : I)` using `compare HP.p4 HP.q16 hp ((H a).pull π w) (fl a) ((m a).pull π) _ _ Ψ hΨ (fun i => .inl ⟨a, i⟩) (fun i => .inr ⟨a, i⟩) (fun _ => .refl _) (fun i => (VMetric.isometric_grLB_pull k B Y q p _ _ (h a) (H a) (m a) π w i).symm) (Sum.elim (n j) fun _ => 0)`.
+
+Simplify using `only [bcPair_congr _ _ (isometric_comb_inl _ _ _), ← rename_inl_lin] at key`. Establish `e₁ (a : ι)` using `(Finset.sum_congr rfl fun j (_ : j ∈ Finset.univ) => congrArg (c j * ·) (key a j))`. Simplify using `only [mul_sub, Finset.sum_sub_distrib, sum_bcPair_taut H e hq hp hs hfl rfl hV, sum_bcPair_pull H e hq hp hs hfl rfl hV (H _), zero_sub] at e₁`. Establish `e₂ : Ψ ((rename Sum.inl (∑ z : Σ a, Fin (r a), MvPolynomial.X z ^ 2) - rename Sum.inr (∑ z : Σ a, Fin (r a), MvPolynomial.X z ^ 2)) * rename Sum.inl (vdm r)) = -((∏ a, ((r a).factorial : ℝ)) * ∑ a, (h a).flagBc (m a))`. Rewrite using `[Finset.mul_sum, ← Finset.sum_neg_distrib, ← Finset.sum_congr rfl fun a _ => e₁ a, ← hV]`.
+
+Simplify using `only [← smul_eq_mul (α := ℝ), ← map_smul, ← map_sum Ψ]`. Use `congr 1`. Rewrite using `[Finset.sum_comm, map_sum (rename _) (fun j => c j • _), Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.smul_sum, ← Finset.sum_mul, map_smul, mul_smul_comm, map_pow]`.
+
+Simplify using `only [map_sum, map_pow, rename_X, Fintype.sum_sigma, Finset.sum_sub_distrib]`. Rewrite `e₂` using `[sub_mul, map_sub, ← map_mul, isArFun_restrict_inl HP.p4.arIso hp _ _ hΦ hΨ]`. Conclude with `(sub_eq_iff_eq_add'.1 e₂).trans (sub_eq_add_neg _ _).symm`.
+-/
 theorem taut_eq_pull_sub : Hypotheses2 → ∀ (k : Type) [CommRing k] (B Y : Scheme.{0}) [IsIntegral B] [IsIntegral Y] (q : B ⟶ Sp k) (p : Y ⟶ Sp k) (D : ℕ), IsRegSurf q → IsArithVar p D → ∀ (π : Y ⟶ B) (w : π ≫ q = p) (ι : Type) [Fintype ι] (E : ι → B.Modules) (r : ι → ℕ) (h : ∀ a, VMetric q (E a) (r a)) (H : ∀ a, (h a).IsCInf) (fl : ∀ a, Vert.Flag ((Scheme.Modules.pullback π).obj (E a)) (r a)), IsFlagBundle π E r fl → ∀ m : ∀ a, Vert.Flag (E a) (r a), (∀ a, (h a).FlagBcFinite (m a)) → ∀ Φ : MvPolynomial (Σ a, Fin (r a)) ℝ →ₗ[ℝ] ℝ, IsArFun (fun z : Σ a, Fin (r a) => VMetric.grLB (fl z.1) z.2 ((H z.1).pull π w)) D Φ → ∀ Ψ : MvPolynomial ((Σ a, Fin (r a)) ⊕ (Σ a, Fin (r a))) ℝ →ₗ[ℝ] ℝ, IsArFun (Sum.elim (fun z : Σ a, Fin (r a) => VMetric.grLB (fl z.1) z.2 ((H z.1).pull π w)) (fun z : Σ a, Fin (r a) => (VMetric.grLB (m z.1) z.2 (H z.1)).pull π w)) D Ψ → Φ ((∑ z : Σ a, Fin (r a), MvPolynomial.X z ^ 2) * (∏ a, ∏ i : Fin (r a), ∏ i' ∈ Finset.Ioi i, (MvPolynomial.X (⟨a, i'⟩ : Σ a, Fin (r a)) - MvPolynomial.X ⟨a, i⟩))) = Ψ (rename Sum.inr (∑ z : Σ a, Fin (r a), MvPolynomial.X z ^ 2) * rename Sum.inl (∏ a, ∏ i : Fin (r a), ∏ i' ∈ Finset.Ioi i, (MvPolynomial.X (⟨a, i'⟩ : Σ a, Fin (r a)) - MvPolynomial.X ⟨a, i⟩))) - (∏ a, ((r a).factorial : ℝ)) * ∑ a, (h a).flagBc (m a) := by
   intro HP k _ B Y _ _ q p D hq hp π w ι _ E r h H fl hfl m _ Φ hΦ Ψ hΨ
   obtain ⟨rfl, hs⟩ := dim_genSmooth hq hp w (fun a => (h a).isVB) hfl

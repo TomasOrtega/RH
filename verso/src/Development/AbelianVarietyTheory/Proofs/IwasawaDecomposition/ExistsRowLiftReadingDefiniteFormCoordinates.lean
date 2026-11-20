@@ -16,6 +16,27 @@ namespace GlobalTheory.Mem.R3.Rw.PkRead
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 I0 T A3 Ks _ _ _ R F cG hO hI hP hH y mA mL hA hL hAe hLe`. Take `⟨Φ, rep, hrep⟩` from `GlobalTheory.T.exists_finite_representatives_rowFiniteTypes D G Pl0 I0 T A3 Ks R F cG hI hP hH y`. Establish `hstar : ∀ x, D.what₂.embLL (star x) = starRingEnd ℂ (D.what₂.embLL x)` using `D.starLL_cx`. Establish `hint : ∀ z, IsIntegral ℤ (D.what₂.OtoLL z)` using `D.O_int`. Use `choose sA tA using fun b μ => GlobalTheory.T.exists_complexification_of_definiteGroupForms' D.what₂.LL D.what₂.O D.what₂.OtoLL D.what₂.embLL G (mA b μ) (idemOf A3.A.X) hstar hint (hA b μ)`.
+
+Use `choose sL tL using fun μ j => GlobalTheory.T.exists_complexification_of_definiteGroupForms' D.what₂.LL D.what₂.O D.what₂.OtoLL D.what₂.embLL G (mL μ j) (idemOf A3.A.X) hstar hint (hL μ j)`. Set `tA' : ∀ b μ, Tie1 D.what₂.embLL (mA b μ) (sA b μ)` to `fun b μ => (tA b μ).some`. Set `tL' : ∀ μ j, Tie1 D.what₂.embLL (mL μ j) (sL μ j)` to `fun μ j => (tL μ j).some`. Use `choose c hc using fun b => GlobalTheory.T.exists_levelChain_over_top_spaces D G Pl0 I0 T A3 Ks R F cG hI hP hH y Φ rep hrep b (mA b) (sA b) (tA' b) (hAe b)`. Take `⟨l, hl⟩` from `GlobalTheory.T.exists_lift_spaces_over_definite_forms D G Pl0 I0 T A3 Ks R F cG hO hI hP hH y Φ rep hrep mL sL tL' hLe`.
+
+Set `chT` to `fun b => (hc b).some`. Take `⟨nR, cR, Xo, hrr⟩` from `GlobalTheory.T.exists_rowBasis_from_referenceTuple_quotient D G Pl0 I0 T A3 Ks R F cG hP hH y true (c true).EE (chT true).jE (chT true).jE_inj (chT true).jE_range`. Use `haveI : Finite Φ := hrep.fin`. Use `letI : Fintype Φ := Fintype.ofFinite Φ`. Establish `hθ : IsInfFam R.θ` using `hP.char.base.models.inf`.
+
+Establish `hfin : FiniteDimensional ℂ (Mult.Mult R.θ (R.MY 0) (levS _ (R.βY 0) (R.dat0 (R.toRealDat.levR F.lv2 true))) (levChi _ (R.βY 0) (R.dat0 (R.toRealDat.levR F.lv2 true))))` using `hI.hc (Yc D 0) (D.sp.Y_sig _) _ R.θ (R.MY 0) _ _ hθ (hI.lev (Yc D 0) (R.βY 0) _).2`. Use `set Dall := Module.finrank ℂ (Mult.Mult R.θ (R.MY 0) (levS _ (R.βY 0) (R.dat0 (R.toRealDat.levR F.lv2 true))) (levChi _ (R.βY 0) (R.dat0 (R.toRealDat.levR F.lv2 true)))) with hDall`. Establish `hn : Dall = 0 → (c true).n = 0`. Introduce `h0`. Establish `hM : Mult.Mult R.θ (R.MY 0) (levS _ (R.βY 0) (R.dat0 (R.toRealDat.levR F.lv2 true))) (levChi _ (R.βY 0) (R.dat0 (R.toRealDat.levR F.lv2 true))) = ⊥` using `Submodule.finrank_eq_zero.1 h0`.
+
+Establish `hE : (y.C F.lv2).EEc true = ⊥` using `by show (Mult.goodPart R.θ (R.MY 0) (levS _ (R.βY 0) (R.dat0 (R.toRealDat.levR F.lv2 true))) (levChi _ (R.βY 0) (R.dat0 (R.toRealDat.levR F.lv2 true))) R.e0).map _ = ⊥`. Rewrite using `[eq_bot_iff.2 ((Mult.goodPart_le _ _ _ _ _).trans hM.le)]`. Conclude with `Submodule.map_bot _`. Establish `hr` using `(chT true).jE_range`. Rewrite `hr` using `[hE]`.
+
+Establish `h1` using `LinearMap.finrank_range_of_inj (chT true).jE_inj`. Rewrite `h1` using `[hr, finrank_bot]`. Establish `h2` using `Module.finrank_eq_card_basis (c true).bs.toBasis`. Rewrite `h2` using `[← h1, Fintype.card_fin]`. Conclude with `h2.symm`.
+
+Set `dp : ℝ` to `if Dall = 0 then 0 else 1 - ((c true).n : ℝ) / Dall`. Establish `hdelp : dp ≤ 1`. Simplify using `only [dp]`. Use `split_ifs`. Evaluate the numerical expressions.
+
+Establish `: (0 : ℝ) ≤ ((c true).n : ℝ) / Dall` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hD : (((c true).n : ℕ) : ℝ) = (1 - dp) * Dall`. Simplify using `only [dp]`. Use `split_ifs with h`.
+
+Rewrite using `[hn h, h]`. Simplify using the standard rewrite rules. Establish `: (Dall : ℝ) ≠ 0` using `by exact_mod_cast h`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+
+Use `⟨{ Φ := Φ, sA := sA, mL := mL, sL := sL, tL := tL', ch := c, lf := l, Dall := Dall, delp := dp, delp_le_one := hdelp, D_eq := hD, nR := nR, cR := cR, Xo := Xo }, rfl, ⟨?_⟩⟩` and prove the remaining obligations. Conclude with `{ rep := rep, reps := hrep, tA := tA', lawsA := hA, lawsL := hL, hA := hAe, hL := hLe, ch := chT, lf := hl.some, dall := rfl, rr := hrr }`.
+-/
 theorem exists_pkT : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 I0 T : Type) (A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3) (cG : G0 R.Pg D.R.r ≃* G0g D.nd), (∀ o : D.what₂.O, ∃ k : Ks, algebraMap Ks D.what₂.LL k = D.what₂.OtoLL o) → Inputs D → Pins R F cG → Holds R F → ∀ (y : Hd R.toRealDat), ∀ (mA : Bool → D.what₂.Tup → Mat1 D.what₂.LL G) (mL : D.what₂.Tup → ℕ → Mat1 D.what₂.LL G), (∀ b μ, (mA b μ).Laws D.what₂.embLL (idemOf A3.A.X)) → (∀ μ j, (mL μ j).Laws D.what₂.embLL (idemOf A3.A.X)) → (∀ b t, mA b (y.tup t) = rMat A3.A (levP F.lv2 b).1 (levP F.lv2 b).2 t) → (∀ (i : Fin D.R.m) t, mL (y.tup t) ((i : ℕ) + 1) = lMat A3.A F.lv2.P0 F.lv2.ψ0 i t) → ∃ p : PkD D G, p.mL = mL ∧ Nonempty (PkT F y mA p) := by
   intro D G _ _ Pl0 I0 T A3 Ks _ _ _ R F cG hO hI hP hH y mA mL hA hL hAe hLe
   obtain ⟨Φ, rep, hrep⟩ := GlobalTheory.T.exists_finite_representatives_rowFiniteTypes D G Pl0 I0 T A3 Ks R F cG hI hP hH y

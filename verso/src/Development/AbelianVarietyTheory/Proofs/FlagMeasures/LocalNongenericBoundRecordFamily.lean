@@ -7,6 +7,11 @@ open Formalism.BasicNotions Formalism.MainNotions
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `C hC`. Establish `h1 : ∀ k r : ℕ, 4 * r + 7 ≤ k → Formalism.MainNotions.NonGenericAndKTwoTheorems.NonGenericLocalBound k r C`. Introduce `k r hk F _ _ _ E _ _ _ _ M hM V _ _ H hV P hP`. Conclude with `GlobalTheory.T.hermitianDoubleCoset_amplitude_bound_local C hC M hM H r k P hk hV hP`. Establish `h2 : ∀ D : D7, Formalism.MainNotions.NonGenericAndKTwoTheorems.Conclusion1 D C` using `fun D hk => h1 _ _ hk`.
+
+Establish `h3 : ∀ D : D7, Formalism.MainNotions.UniformConstantsAndStatements.adm5 D C` using `fun D => h2 D`. Conclude with `⟨h1, fun D => ⟨h2 D, h2 D, h3 D⟩, fun Fm => ⟨fun x i => h2 _, fun x i => h3 _⟩⟩`.
+-/
 theorem local_nongeneric_bound_record_family :
     ∀ (C : ℝ), 39 ≤ C → (∀ k r : ℕ, 4 * r + 7 ≤ k → Formalism.MainNotions.NonGenericAndKTwoTheorems.NonGenericLocalBound k r C) ∧
       (∀ D : D7, Formalism.MainNotions.NonGenericAndKTwoTheorems.Conclusion1 D C ∧ Formalism.MainNotions.NonGenericAndKTwoTheorems.NonGenericLocalBoundOfLargeRank D C ∧ Formalism.MainNotions.UniformConstantsAndStatements.adm5 D C) ∧

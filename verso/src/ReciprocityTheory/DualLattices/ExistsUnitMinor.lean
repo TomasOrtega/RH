@@ -10,6 +10,13 @@ open ReciprocityTheory.PGsh.L2
 
 variable {C : Type} [Field C] {v : Valuation C NNReal}
 
+/- English proof (translation)
+Take `⟨c, hc, rfl⟩` from `hw`. Rewrite using `[hF]`. Simplify using `only [Matrix.mulVec, dotProduct]`. Use `v.map_sum_le fun x _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`.
+
+Use `mul_le_one₀ ?_ (zero_le) (hc x)` and prove the remaining obligations. Simplify using `only [freeMat, Matrix.of_apply]`. Use `split_ifs`. Rewrite using `[map_pow]`. Conclude with `pow_le_one₀ (zero_le) (ha _)`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem freePts_integral {n h : ℕ} {a : Fin n → C} (ha : ∀ τ, v (a τ) ≤ 1)
     (F : Lat v (Fin n × Fin h)) (hF : F.B = freeMat a h) {w : Fin n × Fin h → C} (hw : w ∈ F.pts)
     (y : Fin n × Fin h) : v (w y) ≤ 1 := by
@@ -27,8 +34,14 @@ theorem freePts_integral {n h : ℕ} {a : Fin n → C} (ha : ∀ τ, v (a τ) �
 
 def fder {n : ℕ} (a : Fin n → C) (τ : Fin n) : C := ∏ τ' ∈ Finset.univ.erase τ, (a τ - a τ')
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem prod_fder {n : ℕ} (a : Fin n → C) : ∏ τ, fder a τ = discr a := rfl
 
+/- English proof (translation)
+Establish `h : (∏ τ' ∈ s, (Polynomial.X - Polynomial.C (a τ'))) = (∏ τ' ∈ s, (Polynomial.X - Polynomial.C (⟨a τ', ha τ'⟩ : v.integer))).map v.integer.subtype`. Simplify using `[Polynomial.map_prod]`. Rewrite using `[h, Polynomial.coeff_map]`. Conclude with `(Valuation.mem_integer_iff _ _).1 (Subtype.prop _)`.
+-/
 private lemma valuation_coeff_prod_X_sub_C_le_one {n : ℕ} {a : Fin n → C} (ha : ∀ τ, v (a τ) ≤ 1)
     (s : Finset (Fin n)) (k : ℕ) :
     v ((∏ τ' ∈ s, (Polynomial.X - Polynomial.C (a τ'))).coeff k) ≤ 1 := by
@@ -38,6 +51,17 @@ private lemma valuation_coeff_prod_X_sub_C_le_one {n : ℕ} {a : Fin n → C} (h
   rw [h, Polynomial.coeff_map]
   exact (Valuation.mem_integer_iff _ _).1 (Subtype.prop _)
 
+/- English proof (translation)
+Establish `hdeg : (∏ τ' ∈ Finset.univ.erase τ, (Polynomial.X - Polynomial.C (a τ'))).natDegree < n`. Rewrite using `[Polynomial.natDegree_finset_prod_X_sub_C_eq_card, Finset.card_erase_of_mem (Finset.mem_univ _), Finset.card_univ, Fintype.card_fin]`. Conclude with `Nat.sub_lt (Fin.pos τ) one_pos`. Establish `heval : ∀ τ', (∏ τ'' ∈ Finset.univ.erase τ, (Polynomial.X - Polynomial.C (a τ''))).eval (a τ') = if τ' = τ then fder a τ else 0`. Introduce `τ'`.
+
+Rewrite using `[Polynomial.eval_prod]`. Simplify using `only [Polynomial.eval_sub, Polynomial.eval_X, Polynomial.eval_C]`. Use `split_ifs with h`. Substitute `h` using the available equality. Both sides reduce to the same expression.
+
+Conclude with `Finset.prod_eq_zero (Finset.mem_erase.2 ⟨h, Finset.mem_univ _⟩) (sub_self _)`. Use `⟨fun x => (∏ τ' ∈ Finset.univ.erase τ, (Polynomial.X - Polynomial.C (a τ'))).coeff x.1 * u x.2, fun x => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `mul_le_one₀ (valuation_coeff_prod_X_sub_C_le_one ha _ _) (zero_le) (hu _)`. Rewrite using `[hF]`.
+
+Use function extensionality and compare the values at `y`. Simplify using `only [Matrix.mulVec, dotProduct, Fintype.sum_prod_type, freeMat, Matrix.of_apply, ite_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Establish `hsum : ∑ k : Fin n, a y.1 ^ (k : ℕ) * ((∏ τ' ∈ Finset.univ.erase τ, (Polynomial.X - Polynomial.C (a τ'))).coeff k * u y.2) = (∏ τ' ∈ Finset.univ.erase τ, (Polynomial.X - Polynomial.C (a τ'))).eval (a y.1) * u y.2`. Rewrite using `[Polynomial.eval_eq_sum_range' hdeg, Finset.sum_mul, ← Fin.sum_univ_eq_sum_range (fun i => _ * a y.1 ^ i * u y.2)]`. Conclude with `Finset.sum_congr rfl fun k _ => by ring`.
+
+Rewrite using `[hsum, heval]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem conductor_mem {n h : ℕ} {a : Fin n → C} (ha : ∀ τ, v (a τ) ≤ 1)
     (F : Lat v (Fin n × Fin h)) (hF : F.B = freeMat a h) (τ : Fin n) (u : Fin h → C)
     (hu : ∀ l, v (u l) ≤ 1) :

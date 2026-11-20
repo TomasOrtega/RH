@@ -25,6 +25,11 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 noncomputable section
 namespace GlobalTheory.FixedKOneTransport
 
+/- English proof (translation)
+Take `⟨v, hv, hv0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot h`. Use `fun hb => hv0 (e.injective ?_)` and prove the remaining obligations. Establish `hmem : e v ∈ GlobalTheory.PRep.fixed ρ' H'`. Introduce `h'`. Take `⟨g, hg, hfg⟩` from `hH h'.2`.
+
+Establish `hgv : ρ g v = v` using `by simpa using hv ⟨g, hg⟩`. Simplify using `only [MonoidHom.one_apply, Units.val_one, one_smul]`. Rewrite using `[← hfg, ← he, hgv]`. Rewrite `hmem` using `[hb]`. Simplify using `using hmem`.
+-/
 theorem fixed_ne_bot_of_equiv {G G' V V' : Type} [Group G] [Group G'] [AddCommGroup V] [Module ℂ V]
     [AddCommGroup V'] [Module ℂ V'] (f : G →* G') (ρ : Representation ℂ G V) (ρ' : Representation ℂ G' V')
     (e : V ≃ₗ[ℂ] V') (he : ∀ g v, e (ρ g v) = ρ' (f g) (e v)) (H : Subgroup G) (H' : Subgroup G')
@@ -48,6 +53,13 @@ variable {k k' : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarc
 def integerEquiv (i : k ≃+* k') (hi : Continuous i) : 𝒪[k] ≃+* 𝒪[k'] :=
   (i.subringMap (s := 𝒪[k])).trans (RingEquiv.subringCongr (GlobalTheory.LocalFieldIso.map_integer i hi))
 
+/- English proof (translation)
+Introduce and unpack `_ ⟨a', ha', rfl⟩`. Use `set u := integerEquiv i hi`. Set `ψ : 𝓀[k'] →+* 𝓀[k]` to `IsLocalRing.ResidueField.map (u.symm : 𝒪[k'] →+* 𝒪[k])`. Use `⟨Matrix.GeneralLinearGroup.map (algebraMap 𝒪[k] k) (Matrix.GeneralLinearGroup.map (u.symm : 𝒪[k'] →+* 𝒪[k]) a'), ⟨_, ?_, rfl⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [SetLike.mem_coe, MonoidHom.mem_ker] at ha' ⊢`.
+
+Establish `h1 : Matrix.GeneralLinearGroup.map (IsLocalRing.residue 𝒪[k]) (Matrix.GeneralLinearGroup.map (u.symm : 𝒪[k'] →+* 𝒪[k]) a') = Matrix.GeneralLinearGroup.map ψ (Matrix.GeneralLinearGroup.map (IsLocalRing.residue 𝒪[k']) a')`. Use extensionality with `p q`. Simplify using `[ψ]`. Rewrite using `[h1, ha', map_one]`. Use extensionality with `p q`.
+
+Simplify using `only [u]`. Conclude with `congrArg Subtype.val ((integerEquiv i hi).apply_symm_apply _)`.
+-/
 theorem kOne_le_map (i : k ≃+* k') (hi : Continuous i) (n : Type) [Fintype n] [DecidableEq n] :
     GlobalTheory.SplitWeil.KOne k' n ≤ (GlobalTheory.SplitWeil.KOne k n).map (Matrix.GeneralLinearGroup.map i.toRingHom) := by
   rintro _ ⟨a', ha', rfl⟩
@@ -68,6 +80,11 @@ theorem kOne_le_map (i : k ≃+* k') (hi : Continuous i) (n : Type) [Fintype n] 
 
 end GlobalTheory.FixedKOneTransport
 
+/- English proof (translation)
+Introduce `k k' _ _ _ _ _ _ _ _ _ _ i hi x x' H hx`. Rewrite `H` using `[← GlobalTheory.LocLanglands.FieldCompat.cls_rep x]`. Take `⟨π', e, rfl, he⟩` from `GlobalTheory.TheRecTransport.exists_of_repRel _ H`. Set `φ` to `equivRep π'`. Establish `h2 : ∀ g v, φ.toLinearEquiv (π'.ρ g v) = π'.cl.rep.ρ g (φ.toLinearEquiv v)` using `fun g v => φ.toIntertwiningMap.isIntertwining _ _ g v`.
+
+Use `GlobalTheory.FixedKOneTransport.fixed_ne_bot_of_equiv (Matrix.GeneralLinearGroup.map i.toRingHom) x.rep π'.cl.rep.ρ (e.trans φ.toLinearEquiv) (fun g v => ?_) _ _ (GlobalTheory.FixedKOneTransport.kOne_le_map i hi _) hx` and prove the remaining obligations. Rewrite using `[LinearEquiv.trans_apply, LinearEquiv.trans_apply, he, h2]`.
+-/
 theorem GlobalTheory.FixedKOneTransport.fixed_kOne_transport : ∀ (k k' : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [CharZero k]
     [Field k'] [ValuativeRel k'] [TopologicalSpace k'] [IsNonarchimedeanLocalField k'] [CharZero k'] (i : k ≃+* k'),
     Continuous i → ∀ (x : GlobalTheory.LocGL.IrrGL k) (x' : GlobalTheory.LocGL.IrrGL k'), GlobalTheory.LocLanglands.RepRel i x x' →

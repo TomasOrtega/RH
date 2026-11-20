@@ -9,6 +9,11 @@ open scoped SchwartzMap Matrix
 
 namespace GlobalTheory.RealWeil
 
+/- English proof (translation)
+Rewrite using `[SchwartzMap.norm_toLp' (by simp) (by simp)]`. Establish `h2 : (2 : ENNReal).toReal = 2` using `by simp`. Simplify using `only [h2]`. Establish `hn : 0 ≤ ∫ x, ‖g x‖ ^ (2 : ℝ)` using `integral_nonneg fun x => by positivity`. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul hn]`.
+
+Evaluate the numerical expressions.
+-/
 theorem integral_norm_sq_eq_norm_toLp_sq {l : Type} [Fintype l] (g : Sch l) :
     ∫ x, ‖g x‖ ^ 2 = ‖g.toLp 2 volume‖ ^ 2 := by
   rw [SchwartzMap.norm_toLp' (by simp) (by simp)]
@@ -18,6 +23,21 @@ theorem integral_norm_sq_eq_norm_toLp_sq {l : Type} [Fintype l] (g : Sch l) :
   rw [← Real.rpow_natCast, ← Real.rpow_mul hn]
   norm_num
 
+/- English proof (translation)
+Introduce `hMp l _ _ _ X hX`. Take `⟨G, _, _, _, pr, om, omS, -, -, h3, h4, h5, h6⟩` from `hMp l`. Take `⟨γ, -, h0, hadd, hpr, hd⟩` from `h6 X hX`. Use `⟨fun t => (omS (γ t)).toLinearMap, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `s t f`.
+
+Simplify using `only [ContinuousLinearMap.coe_coe, hadd, map_mul, ContinuousLinearMap.mul_apply]`. Introduce `f`. Simplify using `[h0]`. Introduce `t w f f₁ h`. Simplify using `only [ContinuousLinearMap.coe_coe]`.
+
+Rewrite using `[← hpr t]`. Establish `hL : f₁.toLp 2 = rho w (f.toLp 2)`. Use `Lp.ext ((SchwartzMap.coeFn_toLp f₁ 2 volume).trans ?_)` and prove the remaining obligations. Use `Filter.EventuallyEq.symm ((coeFn_rho w _).trans ?_)` and prove the remaining obligations. Rewrite using `[h]`.
+
+Conclude with `rhoFun_congr w (SchwartzMap.coeFn_toLp f 2 volume)`. Establish `key : (omS (γ t) f₁).toLp 2 = rho ((pr (γ t) : Matrix (l ⊕ l) (l ⊕ l) ℝ) *ᵥ w) ((omS (γ t) f).toLp 2)`. Rewrite using `[← h4, hL, h3, h4]`. Establish `hae : ⇑(omS (γ t) f₁) =ᵐ[volume] rhoFun ((pr (γ t) : Matrix (l ⊕ l) (l ⊕ l) ℝ) *ᵥ w) ⇑(omS (γ t) f)`. Use `(SchwartzMap.coeFn_toLp (omS (γ t) f₁) 2 volume).symm.trans ?_` and prove the remaining obligations.
+
+Rewrite using `[key]`. Use `(coeFn_rho _ _).trans ?_` and prove the remaining obligations. Conclude with `rhoFun_congr _ (SchwartzMap.coeFn_toLp (omS (γ t) f) 2 volume)`. Establish `hc : Continuous (rhoFun ((pr (γ t) : Matrix (l ⊕ l) (l ⊕ l) ℝ) *ᵥ w) ⇑(omS (γ t) f))` using `(continuous_phase _).mul ((omS (γ t) f).continuous.comp (continuous_id.add continuous_const))`. Conclude with `(Continuous.ae_eq_iff_eq volume (omS (γ t) f₁).continuous hc).1 hae`.
+
+Introduce `t f`. Simplify using `only [ContinuousLinearMap.coe_coe]`. Rewrite using `[integral_norm_sq_eq_norm_toLp_sq, integral_norm_sq_eq_norm_toLp_sq, ← h4, LinearIsometryEquiv.norm_map]`. Introduce `f y`. Set `lam : Sch l →L[ℂ] ℂ` to `(BoundedContinuousFunction.evalCLM ℂ y).comp (SchwartzMap.toBoundedContinuousFunctionCLM ℂ _ ℂ)`.
+
+Establish `hlam : ∀ g : Sch l, lam g = g y` using `fun g => rfl`. Use `(metaplectic_schwartz_smooth h3 h4 h5).2.2 lam X hX γ h0 hpr hd f` as an intermediate fact. Simplify `this` using `only [hlam, ContinuousLinearMap.coe_coe]`.
+-/
 theorem metaplectic_oneParam_schwartz : GlobalTheory.Published.RealMetaplecticRepresentation →
     ∀ (l : Type) [Fintype l] [DecidableEq l] [Nonempty l] (X : Matrix (l ⊕ l) (l ⊕ l) ℝ),
       X ∈ LieAlgebra.Symplectic.sp l ℝ → ∃ U : ℝ → Sch l →ₗ[ℂ] Sch l, (∀ s t f, U (s + t) f = U s (U t f)) ∧

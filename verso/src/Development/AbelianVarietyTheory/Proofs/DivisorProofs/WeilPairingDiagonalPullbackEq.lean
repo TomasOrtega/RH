@@ -13,6 +13,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.DiagPull
 
+/- English proof (translation)
+Introduce `S A _ _ P hA hP n T u v c c' h h'`. Establish `hL : (P.pull (lift (𝟙 A) (𝟙 A)).left).IsLB` using `LB.isLB_pull hP _`. Establish `hw : LBIso (lbPow (P.pull (lift (𝟙 A) (𝟙 A)).left) 1) (P.pull (lift (𝟙 A) (𝟙 A)).left)`. Establish `h1 : (lbPow (P.pull (lift (𝟙 A) (𝟙 A)).left) 1).IsLB` using `LB.isLB_linComb hL _ _`. Use `(CechPic.cls_eq_iff h1 hL).1 ?_` and prove the remaining obligations.
+
+Rewrite using `[CechPic.cls_lbPow hL, one_smul]`. Establish `hu : u ≫ lift (𝟙 A) (𝟙 A) = lift u u` using `by simp`. Establish `hv : v ≫ lift (𝟙 A) (𝟙 A) = lift v v` using `by simp`. Rewrite `h` using `[← hu, ← hv]`. Establish `h2` using `WeilIsogeny.weilIs_pull_hom globalFns_holds hA hL hP (lift (𝟙 A) (𝟙 A)) hw h`.
+
+Rewrite `h2` using `[Nat.cast_one, Int.mul_one]`. Conclude with `CommutatorPairing.weilIs_unique globalFns_holds hA hL h2 h'`.
+-/
 theorem weilIs_diag_eq : ∀ (S : Scheme.{0}) (A : Over S) [GrpObj A] [IsCommMonObj A] (P : LB (G2 A).left),
     IsAbelianScheme A → P.IsLB → ∀ (n : ℤ) (T : Over S) (u v : T ⟶ A) (c c' : Γ(T.left, ⊤)ˣ),
     Out.WeilIs (G2 A) P n (lift u u) (lift v v) c → Out.WeilIs A (P.pull (lift (𝟙 A) (𝟙 A)).left) n u v c' →

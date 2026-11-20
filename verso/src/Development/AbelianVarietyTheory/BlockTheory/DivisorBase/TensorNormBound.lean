@@ -45,6 +45,13 @@ def TensorNormEq : Prop :=
     IsTensorMap A T → ∀ c : ι → ℝ, (∀ τ, IsLeast {d : ℝ | NormLeOne (A τ) d} (c τ)) →
       IsLeast {d : ℝ | NormLeAll T d} (∏ τ, c τ)
 
+/- English proof (translation)
+Apply `LinearMap.ext` to reduce the goal to its premises. Introduce and unpack `⟨F, hF⟩`. Proceed by induction on `hF using Submodule.span_induction with`. Consider the case `mem P hP`. Take `⟨f, hf, rfl⟩` from `hP`.
+
+Conclude with `(h fun τ => ⟨f τ, hf τ⟩).trans (h' fun τ => ⟨f τ, hf τ⟩).symm`. Consider the case `zero => exact (map_zero T).trans (map_zero T').symm`. Consider the case `add x y hx hy ihx ihy`. Establish `e : T (⟨x, hx⟩ + ⟨y, hy⟩) = T' (⟨x, hx⟩ + ⟨y, hy⟩)` using `by rw [map_add, map_add, ihx, ihy]`. Conclude with `e`.
+
+Consider the case `smul a x hx ih`. Establish `e : T (a • ⟨x, hx⟩) = T' (a • ⟨x, hx⟩)` using `by rw [map_smul, map_smul, ih]`. Conclude with `e`.
+-/
 theorem IsTensorMap.unique {lam : ι → DomWeight n} {lam' : ι → DomWeight n'}
     {A : ∀ τ, nablaSq ℂ n (lam τ) →ₗ[ℂ] nablaSq ℂ n' (lam' τ)} {T T' : VV ℂ lam →ₗ[ℂ] VV ℂ lam'}
     (h : IsTensorMap A T) (h' : IsTensorMap A T') : T = T' := by
@@ -62,9 +69,15 @@ theorem IsTensorMap.unique {lam : ι → DomWeight n} {lam' : ι → DomWeight n
     have e : T (a • ⟨x, hx⟩) = T' (a • ⟨x, hx⟩) := by rw [map_smul, map_smul, ih]
     exact e
 
+/- English proof (translation)
+Introduce `_` and use `rfl`.
+-/
 example (lam : ι → DomWeight n) : IsTensorMap (lam := lam) (lam' := lam) (fun _ => LinearMap.id) LinearMap.id :=
   fun _ => rfl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨zero_le_one, fun f => by simp⟩`.
+-/
 example (lam : DomWeight n) : NormLeOne (lam := lam) (lam' := lam) LinearMap.id 1 :=
   ⟨zero_le_one, fun f => by simp⟩
 

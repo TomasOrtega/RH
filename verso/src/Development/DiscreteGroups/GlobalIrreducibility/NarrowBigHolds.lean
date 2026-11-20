@@ -20,8 +20,14 @@ import Development.DiscreteGroups.GlobalIrreducibility.DzGalEps
 
 namespace DiscreteGroups.sglob.DzType
 
+/- English proof (translation)
+The claim follows from `DiscreteGroups.sglob.DzFe.lFE_of_fe DiscreteGroups.sglob.DzFe.fe`.
+-/
 theorem lFE : LFE := DiscreteGroups.sglob.DzFe.lFE_of_fe DiscreteGroups.sglob.DzFe.fe
 
+/- English proof (translation)
+Introduce `L Ω _ _ _ _ _ A v h`. Take `⟨rc, a, ha, -⟩` from `hX L Ω A v h`. Conclude with `⟨a, ha⟩`.
+-/
 theorem artEx_of (hX : GlobalTheory.Published.LocalLanglandsExists) : ∀ (L Ω : Type) [Field L] [NumberField L] [Field Ω] [Algebra L Ω]
     [IsAlgClosure L Ω] (A : ValuationSubring Ω) (v : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers L))
     (h : Formalism.ConjugateSelfDual.IsPlaceOver A v), ∃ a, GlobalTheory.LocLanglands.IsLocalArtin h a := by
@@ -29,6 +35,9 @@ theorem artEx_of (hX : GlobalTheory.Published.LocalLanglandsExists) : ∀ (L Ω 
   obtain ⟨rc, a, ha, -⟩ := hX L Ω A v h
   exact ⟨a, ha⟩
 
+/- English proof (translation)
+The claim follows from `narrowBig_of lCusp lDepth lTame (lMatchBig_of lCusp lDepth (lOneOf (lTameRec art chev)) (lPin_of_dig dig) lKondo (lFinPair lFE) lPsi (lGen bern) (lRed DiscreteGroups.sglob.LConv.cuspGen) lTw (galEps_of_art (artEx_of hX) (lTameRec art chev)))`.
+-/
 theorem narrowBig_holds (art : GlobalTheory.Published.GlobalArtinReciprocity) (chev : GlobalTheory.Published.ChevalleyUnits)
     (hX : GlobalTheory.Published.LocalLanglandsExists) (bern : GlobalTheory.Published.BernsteinUnitaryProductIrreducible) : NarrowBig :=
   narrowBig_of lCusp lDepth lTame

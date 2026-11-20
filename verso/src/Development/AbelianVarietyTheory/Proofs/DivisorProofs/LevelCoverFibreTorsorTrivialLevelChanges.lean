@@ -36,6 +36,9 @@ def quotEquiv {R M : Type} [CommRing R] [AddCommGroup M] [Module R M] (K : Submo
         LinearMap.id_apply]
       exact (Submodule.Quotient.eq _).2 (hgf a))
 
+/- English proof (translation)
+Establish `h : (I • ⊤ : Submodule R M) ≤ (I • ⊤ : Submodule R M).comap f`. Rewrite using `[← Submodule.map_le_iff_le_comap, Submodule.map_smul'']`. Conclude with `Submodule.smul_mono le_rfl le_top`. Conclude with `fun a ha => h ha`.
+-/
 theorem smul_top_comap {R M : Type} [CommRing R] [AddCommGroup M] [Module R M] (I : Ideal R) (f : M →ₗ[R] M) :
     ∀ a ∈ (I • ⊤ : Submodule R M), f a ∈ (I • ⊤ : Submodule R M) := by
   have h : (I • ⊤ : Submodule R M) ≤ (I • ⊤ : Submodule R M).comap f := by
@@ -43,6 +46,9 @@ theorem smul_top_comap {R M : Type} [CommRing R] [AddCommGroup M] [Module R M] (
     exact Submodule.smul_mono le_rfl le_top
   exact fun a ha => h ha
 
+/- English proof (translation)
+Take `⟨h, hh⟩` from `g.inv l₂.M (GlobalTheory.LevelFibre.level_pos l₂)`. Conclude with `⟨quotEquiv _ (g.f l₂.M) h (smul_top_comap _ _) (smul_top_comap _ _) (fun a => GlobalTheory.LevelFibre.mem_of_modN l₂ (hh a).2) (fun a => GlobalTheory.LevelFibre.mem_of_modN l₂ (hh a).1), fun a => rfl⟩`.
+-/
 theorem exists_gam_of_sim {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {Dw : Datum H} (l₂ : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H) (g : Sim Dw) :
     ∃ γ : Gam Dw l₂, ∀ a, γ (Submodule.Quotient.mk a) = Submodule.Quotient.mk (g.f l₂.M a) := by
@@ -51,6 +57,19 @@ theorem exists_gam_of_sim {E : Type} [Field E] [NumberField E] [IsCMField E] {H 
     (fun a => GlobalTheory.LevelFibre.mem_of_modN l₂ (hh a).2) (fun a => GlobalTheory.LevelFibre.mem_of_modN l₂ (hh a).1),
     fun a => rfl⟩
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c d hpq hlev hA hbase lift hlift k _ _ _ _ hk y₂ y₂' y hy`. Take `⟨hd, hM, -, -, -, hE, -, -, -⟩` from `id hlev`. Establish `hLaws : ReciprocityTheory.ChartRestriction.G.Out.Laws` using `GlobalTheory.T.abelianScheme_laws_unconditional.1`. Establish `hN` using `GlobalTheory.levelMaps_closed hLaws E H Dw hpq`. Use `⟨⟨fun h' => ?_, fun ⟨γ, hγ, hr⟩ => ?_⟩, fun γ γ' h₁ h₂ => GlobalTheory.T.levelStructureChange_framedGeometricPoint_unique E H Dw d.l₂ d.Xo₂ d.c₂ hpq hA lift hlift k y₂ y₂' γ γ' h₁ h₂⟩` and prove the remaining obligations.
+
+Take `⟨g, ρ, ν, hg, -, hmv, hfr⟩` from `GlobalTheory.exists_levMove_of_frOver hLaws E H Dw l Xo c 0 d hN hd hM hE d.r d.m hE k hk y y₂ y₂' hy h'`. Take `⟨γ, hγ⟩` from `exists_gam_of_sim d.l₂ g`. Establish `hl : ∀ a, lift γ a - g.f d.l₂.M a ∈ d.l₂.Mb • (⊤ : Submodule (𝓞 E) Dw.La)` using `fun a => by`. Establish `e` using `congrArg (fun f => f a) (hlift γ)`. Simplify using `only [LinearMap.coe_comp, Function.comp_apply, Submodule.mkQ_apply, LinearEquiv.coe_coe, hγ] at e`.
+
+Conclude with `(Submodule.Quotient.eq _).1 e`. Use `⟨γ, fun a => ?_, (GlobalTheory.LevelActionOfLifts.levR_congr hl y₂ y₂').2 ⟨ρ.hom, ν, inferInstance, ⟨hmv.1, hmv.2.1, fun a => ?_⟩, hfr⟩⟩` and prove the remaining obligations. Establish `h1 : lift γ a - g.f d.l₂.M a ∈ l.Mb • (⊤ : Submodule (𝓞 E) Dw.La)` using `Submodule.smul_mono_left hd.2.1 (hl a)`. Establish `h2` using `GlobalTheory.LevelFibre.sub_mem_of_inGam hd hg a`. Use `Submodule.add_mem _ h1 h2` as an intermediate fact.
+
+Rewrite `this` using `[sub_add_sub_cancel]`. Then use the resulting hypothesis. Establish `e : ∀ x x', d.Xo₂.univ.etaA x = d.Xo₂.univ.etaA x'` using `fun x x' => by`. Establish `h1` using `d.Xo₂.univ.etaA_ker x`. Establish `h2` using `d.Xo₂.univ.etaA_ker x'`. Rewrite `h1`, `h2` using `[hA, one_smul]`.
+
+Rewrite using `[h1, h2]`. Rewrite using `[e (LinearMap.id a) (g.f d.l₂.A a)]`. Conclude with `hmv.2.2 a`. Take `⟨ρ₂, ν₂, hi, hmv, hfr⟩` from `hr`. Take `⟨e₁, e₂⟩` from `GlobalTheory.T.levMove_comp_r_eq_of_trivial_mod E H Dw l Xo c 0 d hpq hlev hA hbase ρ₂ ν₂ (lift γ) LinearMap.id hi hmv hγ`.
+
+Take `⟨⟨ι, hι, hone⟩, -, -⟩` from `GlobalTheory.T.framedPointMove_calculus E H Dw l Xo c`. Conclude with `GlobalTheory.frOver_of_square_of_frMove E H Dw l Xo c 0 d (𝟙 _) ι ρ₂ ν₂ d.r d.m (by rw [e₁, Category.comp_id]) (by rw [e₂, hι, Category.comp_id]) k y y y₂ y₂' hy (hone k y) hfr`.
+-/
 theorem fibre_torsor : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (d : DeltaDat Xo c 0), 1 ≤ Dw.p + Dw.q → d.IsLev → d.l₂.A = 1 → (∀ h : KA l ≤ KA d.l₂, d.r ≫ Xo.s = d.Xo₂.s ≫ ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap (IntermediateField.inclusion h).toRingHom) → ∀ (lift : Gam Dw d.l₂ → Dw.La →ₗ[𝓞 E] Dw.La), IsLift lift → ∀ (k : Type) [Field k] [IsAlgClosed k] [Algebra c.F k] [Algebra d.c₂.F k], (∀ a : c.F, algebraMap d.c₂.F k (d.eF a) = algebraMap c.F k a) → ∀ (y₂ y₂' : FrPt d.Xo₂ d.c₂ k) (y : FrPt Xo c k), FrOver d y₂ y → (FrOver d y₂' y ↔ ∃ γ, CongMod l.Mb (lift γ) LinearMap.id ∧ levR (lift γ, LinearMap.id) y₂ y₂') ∧ ∀ γ γ', levR (lift γ, LinearMap.id) y₂ y₂' → levR (lift γ', LinearMap.id) y₂ y₂' → γ = γ' := by
   intro E _ _ _ H Dw l Xo c d hpq hlev hA hbase lift hlift k _ _ _ _ hk y₂ y₂' y hy
   obtain ⟨hd, hM, -, -, -, hE, -, -, -⟩ := id hlev

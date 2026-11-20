@@ -15,6 +15,9 @@ open MeasureTheory Filter Topology PositivityTheory.RgEis GlobalTheory.Companion
 noncomputable section
 namespace GlobalTheory.CompanionTheory.TubeFourier
 
+/- English proof (translation)
+Establish `h : (fun y : ℝ × ℝ => pt x y) = fun y => ((x.1 : ℂ) + (y.1 : ℂ) * Complex.I, (x.2 : ℂ) + (y.2 : ℂ) * Complex.I)`. Use function extensionality and compare the values at `y`. Simplify using `[pt, Complex.ext_iff]`. Rewrite using `[h]`. Use `fun_prop`.
+-/
 theorem continuous_pt (x : ℝ × ℝ) : Continuous fun y : ℝ × ℝ => pt x y := by
   have h : (fun y : ℝ × ℝ => pt x y) =
       fun y => ((x.1 : ℂ) + (y.1 : ℂ) * Complex.I, (x.2 : ℂ) + (y.2 : ℂ) * Complex.I) := by
@@ -23,12 +26,57 @@ theorem continuous_pt (x : ℝ × ℝ) : Continuous fun y : ℝ × ℝ => pt x y
   rw [h]
   fun_prop
 
+/- English proof (translation)
+Conclude with `Prod.ext (Complex.eta _) (Complex.eta _)`.
+-/
 theorem pt_re_im (l : ℂ × ℂ) : pt (l.1.re, l.2.re) (l.1.im, l.2.im) = l := by
   exact Prod.ext (Complex.eta _) (Complex.eta _)
 
+/- English proof (translation)
+Simplify using `[tube, pt]`.
+-/
 private lemma pt_mem_tube_iff {x y : ℝ × ℝ} {S : Set (ℝ × ℝ)} : pt x y ∈ tube S ↔ x ∈ S := by
   simp [tube, pt]
 
+/- English proof (translation)
+Introduce `X _ _ _ T _ _ m Ω F hΩ hV hmid`. Use `set G : Fin (m + 1) → T → ℂ × ℂ → X := fun i g => gauss (F i · g) with hGdef`. Establish `hGT : ∀ i g, GaussTube (G i g) (Ω i)` using `fun i g => gaussTube_of_tubeGood (hΩ i).2.2 g`. Establish `hind : ∀ i g, ∀ x ∈ Ω i, ∀ x' ∈ Ω i, ∀ t, phi (G i g) x t = phi (G i g) x' t` using `fun i g => GlobalTheory.T.tube_transform_independent_of_base X (Ω i) (G i g) (hΩ i).1 (hΩ i).2.1 (hGT i g)`. Establish `hstep : ∀ i : Fin m, ∀ g, ∀ x ∈ Ω i.castSucc, ∀ x' ∈ Ω i.succ, ∀ t, phi (G i.castSucc g) x t = phi (G i.succ g) x' t`.
+
+Introduce `i g x hx x' hx' t`. Take `⟨V, -, ⟨v, hv⟩, hVsub, hVeq⟩` from `hV i`. Rewrite using `[hind _ g x hx v (hVsub hv).1, hind _ g x' hx' v (hVsub hv).2]`. Unfold `phi`. Use `congr 1`.
+
+Use function extensionality and compare the values at `y`. Use `congr 1`. Simplify using `only [G, gauss]`. Rewrite using `[hVeq (pt v y) (pt_mem_tube_iff.2 hv) g]`. Establish `hQ : ∀ g t, ∀ k : Fin (m + 1), ∀ x ∈ Ω 0, ∀ x' ∈ Ω k, phi (G 0 g) x t = phi (G k g) x' t`.
+
+Introduce `g t k`. Proceed by induction on `k using Fin.induction with`. Consider the case `zero => exact fun x hx x' hx' => hind 0 g x hx x' hx' t`. Consider the case `succ i ih`. Introduce `x hx x' hx'`.
+
+Take `⟨V, -, ⟨v, hv⟩, hVsub, -⟩` from `hV i`. Rewrite using `[ih x hx v (hVsub hv).1]`. Conclude with `hstep i g v (hVsub hv).1 x' hx' t`. Establish `hne0 : (Ω 0).Nonempty`. Break down `Nat.eq_zero_or_pos m with hm | hm` into its components or cases.
+
+Substitute `hm` using the available equality. Take `⟨i, j, a, ha, b, hb, -⟩` from `hmid 0`. Take `rfl : i = 0` from `Fin.ext (Nat.lt_one_iff.1 i.isLt)`. Conclude with `⟨a, ha⟩`. Take `⟨V, -, ⟨v, hv⟩, hVsub, -⟩` from `hV ⟨0, hm⟩`.
+
+Establish `h0 : (Fin.castSucc (⟨0, hm⟩ : Fin m)) = 0`. Use `ext`. Simplify using the standard rewrite rules. Conclude with `⟨v, h0 ▸ (hVsub hv).1⟩`. Take `⟨x0, hx0⟩` from `hne0`.
+
+Use `set φ : ℝ × ℝ → T → X := fun t g => phi (G 0 g) x0 t with hφdef`. Establish `hall : ∀ i g, ∀ x ∈ Ω i, ∀ t, phi (G i g) x t = φ t g` using `fun i g x hx t => (hQ g t i x0 hx0 x hx).symm`. Establish `hGcont : ∀ i, ∀ x ∈ Ω i, Continuous (fun p : (ℝ × ℝ) × T => G i p.2 (pt x p.1))`. Introduce `i x hx`. Establish `hp : Continuous fun p : (ℝ × ℝ) × T => pt x p.1` using `(continuous_pt x).comp continuous_fst`.
+
+Establish `h1 : Continuous (fun p : (ℝ × ℝ) × T => F i (pt x p.1) p.2)`. Use `(hΩ i).2.2.cont.comp_continuous (hp.prodMk continuous_snd) ?_` and prove the remaining obligations. Introduce `p`. Conclude with `⟨pt_mem_tube_iff.2 hx, Set.mem_univ _⟩`. Establish `he : Continuous fun p : (ℝ × ℝ) × T => Complex.exp ((pt x p.1).1 ^ 2 + (pt x p.1).2 ^ 2)` using `Complex.continuous_exp.comp (((continuous_fst.comp hp).pow 2).add ((continuous_snd.comp hp).pow 2))`.
+
+Conclude with `he.smul h1`. Establish `hGbd : ∀ i, ∀ x ∈ Ω i, ∀ g : T, ∃ U ∈ 𝓝 g, ∃ M : ℝ, ∀ g' ∈ U, ∀ y : ℝ × ℝ, ‖G i g' (pt x y)‖ ≤ M * Real.exp (-(y.1 ^ 2 + y.2 ^ 2))`. Introduce `i x hx g`. Take `⟨U, hU, M, hM⟩` from `gauss_bound (hΩ i).2.2 (Set.singleton_subset_iff.2 hx) isCompact_singleton g`. Use `⟨U, hU, M, fun g' hg' y => ?_⟩` and prove the remaining obligations.
+
+Use `hM g' hg' (pt x y) (pt_mem_tube_iff.2 rfl)` as an intermediate fact. Simplify `this` using `[pt]`. Establish `hφcont : Continuous (fun p : (ℝ × ℝ) × T => φ p.1 p.2)` using `GlobalTheory.T.gaussian_tube_transform_continuous X T (G 0) x0 (hGcont 0 x0 hx0) (fun g => hGbd 0 x0 hx0 g)`. Establish `hφt : ∀ g : T, Continuous fun t => φ t g` using `fun g => hφcont.comp (show Continuous (fun t : ℝ × ℝ => (t, g)) by fun_prop)`. Establish `hdecay : ExpDecay φ`.
+
+Use `GlobalTheory.T.exponential_decay_by_midpoints X T φ {a | ∃ i, a ∈ Ω i} ?_ ?_` and prove the remaining obligations. Introduce and unpack `a ⟨i, ha⟩ g`. Take `⟨r, hr, hsub⟩` from `Metric.nhds_basis_closedBall.mem_iff.1 ((hΩ i).1.mem_nhds ha)`. Take `⟨U, hU, M, hM⟩` from `gauss_bound (hΩ i).2.2 hsub (isCompact_closedBall a r) g`. Use `⟨r, hr, U, hU, M * Real.pi, fun x hx1 hx2 g' hg' t => ?_⟩` and prove the remaining obligations.
+
+Establish `hxC : x ∈ Metric.closedBall a r`. Rewrite using `[Metric.mem_closedBall, Prod.dist_eq, Real.dist_eq, Real.dist_eq, max_le_iff]`. Conclude with `⟨hx1, hx2⟩`. Rewrite using `[← hall i g' x (hsub hxC) t]`. Use `GlobalTheory.T.gaussian_tube_transform_bound X (G i g') x M (fun y => ?_) t` and prove the remaining obligations.
+
+Use `hM g' hg' (pt x y) (pt_mem_tube_iff.2 hxC)` as an intermediate fact. Simplify `this` using `[pt]`. Introduce `x`. Take `⟨i, j, a, ha, b, hb, hx⟩` from `hmid x`. Conclude with `⟨a, ⟨i, ha⟩, b, ⟨j, hb⟩, hx⟩`.
+
+Use `⟨fun l g => inv (fun t => φ t g) l, ⟨?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `g p v`. Conclude with `(GlobalTheory.T.inverse_transform_holomorphic_lines X T φ hdecay hφt g p v).differentiableOn`. Conclude with `(GlobalTheory.T.inverse_transform_continuous X T φ hdecay hφcont).continuousOn`. Introduce `C _ hC g`.
+
+Take `⟨U, hU, M, hM⟩` from `GlobalTheory.T.inverse_transform_locally_bounded X T φ hdecay hφt C hC g`. Conclude with `⟨U, hU, M, fun l hl g' hg' => hM l hl g' hg'⟩`. Introduce `i l hl g`. Take `⟨x, hxdef⟩ : ∃ x : ℝ × ℝ, x = (l.1.re, l.2.re)` from `⟨_, rfl⟩`. Take `⟨y, hydef⟩ : ∃ y : ℝ × ℝ, y = (l.1.im, l.2.im)` from `⟨_, rfl⟩`.
+
+Establish `hx : x ∈ Ω i` using `hxdef ▸ hl`. Establish `hphi : phi (G i g) x = fun t => φ t g` using `funext fun t => hall i g x hx t`. Establish `hc1 : Continuous fun y' : ℝ × ℝ => G i g (pt x y')`. Establish `h` using `(hGcont i x hx).comp (show Continuous (fun y' : ℝ × ℝ => (y', g)) by fun_prop)`. Simplify `h` using `only [Function.comp_def]`.
+
+Take `⟨U, hU, M, hM⟩` from `hGbd i x hx g`. Take `⟨ε, hε, U', hU', M', hM'⟩` from `hdecay x g`. Establish `key` using `GlobalTheory.T.inverse_transform_recovers_function X (G i g) x hc1 ⟨M, fun y' => hM g (mem_of_mem_nhds hU) y'⟩ (by rw [hphi]; exact hφt g) ⟨ε, hε, M', fun t => by`. Rewrite using `[hall i g x hx t]`. Conclude with `hM' x (by simp [hε.le]) (by simp [hε.le]) g (mem_of_mem_nhds hU') t⟩ y`.
+
+Rewrite `key` using `[hphi, hxdef, hydef, pt_re_im]`. Simplify `key` using `[G, gauss]`.
+-/
 theorem tubeChain : TubeChain := by
   intro X _ _ _ T _ _ m Ω F hΩ hV hmid
   set G : Fin (m + 1) → T → ℂ × ℂ → X := fun i g => gauss (F i · g) with hGdef

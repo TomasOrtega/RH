@@ -11,6 +11,9 @@ variable {A : ValuationSubring K} {ϖ : K}
 
 variable {K : Type} [Field K] in
 variable {A : ValuationSubring K} {ϖ : K} in
+/- English proof (translation)
+Introduce `a b hb _`. Rewrite using `[map_zero, zero_pow hb.ne']`. Conclude with `zero_le'`.
+-/
 theorem _root_.GlobalTheory.AxSen.ge_zero (q : ℚ) : _root_.GlobalTheory.AxSen.Ge A ϖ 0 q := by
   intro a b hb _
   rw [map_zero, zero_pow hb.ne']
@@ -18,6 +21,9 @@ theorem _root_.GlobalTheory.AxSen.ge_zero (q : ℚ) : _root_.GlobalTheory.AxSen.
 
 variable {K : Type} [Field K] in
 variable {A : ValuationSubring K} {ϖ : K} in
+/- English proof (translation)
+Introduce `a b hb hab` and use `h a b hb (hab.trans (mul_le_mul_of_nonneg_right hq (Nat.cast_nonneg b)))`.
+-/
 theorem _root_.GlobalTheory.AxSen.Ge.mono {w : K} {q q' : ℚ}
     (h : _root_.GlobalTheory.AxSen.Ge A ϖ w q) (hq : q' ≤ q) :
     _root_.GlobalTheory.AxSen.Ge A ϖ w q' :=
@@ -25,6 +31,9 @@ theorem _root_.GlobalTheory.AxSen.Ge.mono {w : K} {q q' : ℚ}
 
 variable {K : Type} [Field K] in
 variable {A : ValuationSubring K} {ϖ : K} in
+/- English proof (translation)
+Introduce `a b hb hab` and use `(pow_le_pow_left' hw b).trans (h a b hb hab)`.
+-/
 theorem _root_.GlobalTheory.AxSen.Ge.of_le {w w' : K} {q : ℚ}
     (h : _root_.GlobalTheory.AxSen.Ge A ϖ w q) (hw : A.valuation w' ≤ A.valuation w) :
     _root_.GlobalTheory.AxSen.Ge A ϖ w' q :=
@@ -32,6 +41,9 @@ theorem _root_.GlobalTheory.AxSen.Ge.of_le {w w' : K} {q : ℚ}
 
 variable {K : Type} [Field K] in
 variable {A : ValuationSubring K} {ϖ : K} in
+/- English proof (translation)
+Break down `le_total (A.valuation w) (A.valuation w') with hle | hle` into its components or cases. Conclude with `h'.of_le ((Valuation.map_add _ _ _).trans (max_le hle le_rfl))`. Conclude with `h.of_le ((Valuation.map_add _ _ _).trans (max_le le_rfl hle))`.
+-/
 theorem _root_.GlobalTheory.AxSen.Ge.add {w w' : K} {q : ℚ}
     (h : _root_.GlobalTheory.AxSen.Ge A ϖ w q) (h' : _root_.GlobalTheory.AxSen.Ge A ϖ w' q) :
     _root_.GlobalTheory.AxSen.Ge A ϖ (w + w') q := by
@@ -41,12 +53,18 @@ theorem _root_.GlobalTheory.AxSen.Ge.add {w w' : K} {q : ℚ}
 
 variable {K : Type} [Field K] in
 variable {A : ValuationSubring K} {ϖ : K} in
+/- English proof (translation)
+The claim follows from `h.of_le (by rw [Valuation.map_sub_swap])`.
+-/
 theorem _root_.GlobalTheory.AxSen.Ge.symm {x y : K} {q : ℚ}
     (h : _root_.GlobalTheory.AxSen.Ge A ϖ (x - y) q) : _root_.GlobalTheory.AxSen.Ge A ϖ (y - x) q :=
   h.of_le (by rw [Valuation.map_sub_swap])
 
 variable {K : Type} [Field K] in
 variable {A : ValuationSubring K} {ϖ : K} in
+/- English proof (translation)
+Use `h.add h'` as an intermediate fact. Rewrite `this` using `[sub_add_sub_cancel]`. Then use the resulting hypothesis.
+-/
 theorem _root_.GlobalTheory.AxSen.Ge.trans {x y z : K} {q : ℚ}
     (h : _root_.GlobalTheory.AxSen.Ge A ϖ (x - y) q) (h' : _root_.GlobalTheory.AxSen.Ge A ϖ (y - z) q) :
     _root_.GlobalTheory.AxSen.Ge A ϖ (x - z) q := by
@@ -55,6 +73,17 @@ theorem _root_.GlobalTheory.AxSen.Ge.trans {x y z : K} {q : ℚ}
 
 variable {K : Type} [Field K] in
 variable {A : ValuationSubring K} {ϖ : K} in
+/- English proof (translation)
+Introduce `a b hb hab`. Establish `hv : A.valuation ϖ ≠ 0` using `(Valuation.ne_zero_iff _).2 h0`. Establish `hd : 0 < q.den` using `q.den_pos`. Establish `hd' : 0 < q'.den` using `q'.den_pos`. Establish `h₁` using `h (q.num * q'.den * b) (q.den * q'.den * b) (by positivity) (le_of_eq (by push_cast; rw [← Rat.mul_den_eq_num q]; ring))`.
+
+Establish `h₂` using `h' (q'.num * q.den * b) (q.den * q'.den * b) (by positivity) (le_of_eq (by push_cast; rw [← Rat.mul_den_eq_num q']; ring))`. Establish `hexp : a * ((q.den * q'.den : ℕ) : ℤ) ≤ (q.num * q'.den * b + q'.num * q.den * b)`. Establish `hq : ((a * ((q.den * q'.den : ℕ) : ℤ) : ℤ) : ℚ) ≤ ((q.num * q'.den * b + q'.num * q.den * b : ℤ) : ℚ)`. Use `push_cast`. Rewrite using `[← Rat.mul_den_eq_num q, ← Rat.mul_den_eq_num q']`.
+
+Establish `hdd : (0 : ℚ) ≤ q.den * q'.den` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Conclude with `hq` after adjusting the coercions. Establish `key : (A.valuation (w * w') ^ b) ^ (q.den * q'.den) ≤ (A.valuation ϖ ^ a) ^ (q.den * q'.den)`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[map_mul, mul_pow, mul_pow, ← pow_mul, ← pow_mul, mul_comm b]`. Use `_ ≤ A.valuation ϖ ^ (q.num * q'.den * b) * A.valuation ϖ ^ (q'.num * q.den * b) := mul_le_mul' h₁ h₂`. Use `_ = A.valuation ϖ ^ (q.num * q'.den * b + q'.num * q.den * b) := by`. Rewrite using `[← zpow_add₀ hv]`. Use `_ ≤ A.valuation ϖ ^ (a * ((q.den * q'.den : ℕ) : ℤ)) := zpow_le_zpow_right_of_le_one₀ (zero_lt_iff.2 hv) h1 hexp`.
+
+Use `_ = (A.valuation ϖ ^ a) ^ (q.den * q'.den) := by rw [zpow_mul, zpow_natCast]`. Conclude with `(pow_le_pow_iff_left₀ zero_le' zero_le' (by positivity)).1 key`.
+-/
 theorem _root_.GlobalTheory.AxSen.Ge.mul (h0 : ϖ ≠ 0) (h1 : A.valuation ϖ ≤ 1)
     {w w' : K} {q q' : ℚ} (h : _root_.GlobalTheory.AxSen.Ge A ϖ w q)
     (h' : _root_.GlobalTheory.AxSen.Ge A ϖ w' q') :
@@ -93,6 +122,11 @@ theorem _root_.GlobalTheory.AxSen.Ge.mul (h0 : ϖ ≠ 0) (h1 : A.valuation ϖ �
 
 variable {K : Type} [Field K] in
 variable {A : ValuationSubring K} {ϖ : K} in
+/- English proof (translation)
+Introduce `a b hb hab`. Establish `h₁` using `h (a * N) b hb (by`. Use `push_cast`. Combine the equalities or inequalities in the displayed calculation. Use `(pow_le_pow_iff_left₀ zero_le' zero_le' hN.ne').1 ?_` and prove the remaining obligations.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_pow, ← pow_mul, ← pow_mul, mul_comm]`. Use `_ ≤ A.valuation ϖ ^ (a * (N : ℤ)) := h₁`. Use `_ = (A.valuation ϖ ^ a) ^ N := by rw [zpow_mul, zpow_natCast]`.
+-/
 theorem _root_.GlobalTheory.AxSen.Ge.root {w : K} {q : ℚ} {N : ℕ} (hN : 0 < N)
     (h : _root_.GlobalTheory.AxSen.Ge A ϖ (w ^ N) (q * N)) : _root_.GlobalTheory.AxSen.Ge A ϖ w q := by
   intro a b hb hab
@@ -108,6 +142,13 @@ theorem _root_.GlobalTheory.AxSen.Ge.root {w : K} {q : ℚ} {N : ℕ} (hN : 0 < 
 
 variable {K : Type} [Field K] in
 variable {A : ValuationSubring K} {ϖ : K} in
+/- English proof (translation)
+Introduce `a b hb hab`. Establish `hv : A.valuation ϖ ≠ 0` using `(Valuation.ne_zero_iff _).2 h0`. Establish `hc0 : A.valuation c ≠ 0`. Introduce `hc0`. Rewrite `hc` using `[hc0]`.
+
+Conclude with `pow_ne_zero e hv (le_zero_iff.1 hc)`. Establish `h₁` using `h (a + e * b) b hb (by push_cast; linarith [hab, sub_mul q (e : ℚ) b])`. Rewrite `h₁` using `[map_mul, mul_pow, zpow_add₀ hv]`. Establish `h₂ : A.valuation ϖ ^ ((e : ℤ) * (b : ℤ)) ≤ A.valuation c ^ b`. Rewrite using `[zpow_mul, zpow_natCast, zpow_natCast]`.
+
+Conclude with `pow_le_pow_left' hc b`. Use `(mul_le_mul_iff_of_pos_right (zero_lt_iff.2 (pow_ne_zero b hc0))).1 ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem _root_.GlobalTheory.AxSen.Ge.div (h0 : ϖ ≠ 0) (h1 : A.valuation ϖ ≤ 1)
     {c w : K} {q : ℚ} {e : ℕ} (hc : A.valuation ϖ ^ e ≤ A.valuation c)
     (h : _root_.GlobalTheory.AxSen.Ge A ϖ (c * w) q) :
@@ -130,6 +171,13 @@ theorem _root_.GlobalTheory.AxSen.Ge.div (h0 : ϖ ≠ 0) (h1 : A.valuation ϖ �
 
 variable {K : Type} [Field K] in
 variable {A : ValuationSubring K} {ϖ : K} in
+/- English proof (translation)
+Establish `hv : A.valuation ϖ ≠ 0` using `(Valuation.ne_zero_iff _).2 h0`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h₁` using `h m 1 one_pos (by simp)`. Rewrite `h₁` using `[pow_one, zpow_natCast, ← map_pow]`.
+
+Use `⟨w / ϖ ^ m, ?_, by field_simp⟩` and prove the remaining obligations. Rewrite using `[← ValuationSubring.valuation_le_one_iff, map_div₀]`. Conclude with `(div_le_one₀ (zero_lt_iff.2 ((Valuation.ne_zero_iff _).2 (pow_ne_zero m h0)))).2 h₁`. Introduce and unpack `⟨z, hz, rfl⟩ a b hb hab`. Establish `hz' : A.valuation z ≤ 1` using `(ValuationSubring.valuation_le_one_iff A z).2 hz`.
+
+Establish `hab' : a ≤ ((m * b : ℕ) : ℤ)`. Establish `: (a : ℚ) ≤ ((m * b : ℕ) : ℚ)` using `by push_cast; exact hab`. Conclude with `this` after adjusting the coercions. Rewrite using `[map_mul, mul_pow, map_pow]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem _root_.GlobalTheory.AxSen.ge_natCast_iff (h0 : ϖ ≠ 0) (h1 : A.valuation ϖ ≤ 1) {w : K}
     {m : ℕ} : _root_.GlobalTheory.AxSen.Ge A ϖ w m ↔ ∃ z ∈ A, w = ϖ ^ m * z := by
   have hv : A.valuation ϖ ≠ 0 := (Valuation.ne_zero_iff _).2 h0
@@ -154,6 +202,11 @@ theorem _root_.GlobalTheory.AxSen.ge_natCast_iff (h0 : ϖ ≠ 0) (h1 : A.valuati
 variable {K : Type} [Field K] in
 variable {A : ValuationSubring K} {ϖ : K} in
 
+/- English proof (translation)
+Introduce `a b hb hab`. Establish `hv : A.valuation ϖ ≠ 0` using `(Valuation.ne_zero_iff _).2 h0`. Establish `h₁` using `h a b hb hab`. Establish `hpos : 0 < A.valuation ϖ ^ a` using `zero_lt_iff.2 (zpow_ne_zero a hv)`. Rewrite `h₁`, the goal using `[← div_le_one₀ hpos, ← map_pow, ← map_zpow₀, ← map_div₀, ValuationSubring.valuation_le_one_iff]`.
+
+Use `hf _ h₁` as an intermediate fact. Rewrite `this` using `[map_div₀, map_pow, map_zpow₀, hϖ]`. Then use the resulting hypothesis.
+-/
 theorem _root_.GlobalTheory.AxSen.Ge.map (h0 : ϖ ≠ 0) (f : K →+* K)
     (hf : ∀ x ∈ A, f x ∈ A) (hϖ : f ϖ = ϖ) {w : K} {q : ℚ}
     (h : _root_.GlobalTheory.AxSen.Ge A ϖ w q) : _root_.GlobalTheory.AxSen.Ge A ϖ (f w) q := by

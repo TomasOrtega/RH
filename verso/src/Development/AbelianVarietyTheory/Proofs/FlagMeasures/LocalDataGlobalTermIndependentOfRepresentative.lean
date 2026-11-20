@@ -19,6 +19,11 @@ section Gen
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {S : HSpace E} {r : ℕ} {T T' : E}
   {Λ : Submodule (𝓞 E) S.V}
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(Submodule.span E (Set.range F₁.fl.e)).map _ = Submodule.span E (Set.range F₂.fl.e)`. Rewrite using `[Submodule.map_span, ← Set.range_comp]`. Use `congr 1`. Establish `: (f : S.V →ₗ[E] S.V) ∘ F₁.fl.e = F₂.fl.e`. Use function extensionality and compare the values at `b`.
+
+Use `h b.castSucc` as an intermediate fact. Rewrite `this` using `[Formalism.L2.SG.Pf.frame_castSucc_td, Formalism.L2.SG.Pf.frame_castSucc_td]`. Simplify using `[this]`. Rewrite using `[this]`.
+-/
 theorem xsp_map_of_frame {F₁ F₂ : LFlag S r T'} (f : S.V ≃ₗ[E] S.V) (h : ∀ a, frame F₂ a = f (frame F₁ a)) :
     (Xsp F₁).map (f : S.V →ₗ[E] S.V) = Xsp F₂ := by
   change (Submodule.span E (Set.range F₁.fl.e)).map _ = Submodule.span E (Set.range F₂.fl.e)
@@ -31,6 +36,15 @@ theorem xsp_map_of_frame {F₁ F₂ : LFlag S r T'} (f : S.V ≃ₗ[E] S.V) (h :
     simp [this]
   rw [this]
 
+/- English proof (translation)
+Establish `hmX : (Xsp F₁).map (m : S.V →ₗ[E] S.V) = Xsp F₁` using `nlam_map hm`. Establish `hnmX` using `xsp_map_of_frame (n * m) hfr`. Establish `hnX : (Xsp F₁).map (n : S.V →ₗ[E] S.V) = Xsp F₂`. Use `map_of_mem_iff fun x => ?_` and prove the remaining obligations. Establish `e : n x = (n * m) (m.symm x)` using `by simp [LinearEquiv.mul_apply]`.
+
+Rewrite using `[e, mem_iff_of_map hnmX, mem_iff_of_map (map_symm hmX)]`. Establish `hi : n⁻¹ ∈ NLam Λ F` using `Formalism.L2.SG.Pf.nlamPf_inv hn`. Introduce `x' hx' l hl`. Establish `e : l - (n * m) x' = n (n⁻¹ l - m x')`. Rewrite using `[map_sub]`.
+
+Simplify using `[LinearEquiv.mul_apply]`. Rewrite using `[e, ngx_iff hn.1 (nlam_map hn) hnX g]`. Establish `e2 : n⁻¹ l - m x' = (l - x') + ((n⁻¹ l - l) - (m x' - x'))` using `by abel`. Rewrite using `[e2]`. Use `(Submodule.add_mem_iff_left _ ?_).symm` and prove the remaining obligations.
+
+Use `Submodule.sub_mem _ ?_ ?_` and prove the remaining obligations. Use `Submodule.mem_sup_left (Submodule.mem_sup_right ⟨?_, hi.2.2 l hl.2⟩)` and prove the remaining obligations. Conclude with `Λ.sub_mem ((aut_mem_iff hi.1 l).2 hl.1) hl.1`. Use `Submodule.mem_sup_right ⟨?_, hm.2.2 x' hx'.2⟩` and prove the remaining obligations. Conclude with `Λ.sub_mem ((aut_mem_iff hm.1 x').2 hx'.1) hx'.1`.
+-/
 theorem iota_of_dc {F : LFlag S r T} {F₁ F₂ : LFlag S r T'} {n m : S.V ≃ₗ[E] S.V} (g : ℕ)
     (hn : n ∈ NLam Λ F) (hm : m ∈ NLam Λ F₁) (hfr : ∀ a, frame F₂ a = (n * m) (frame F₁ a)) :
     IotaCompat Λ F F₁ F₂ (n * m) g := by
@@ -59,6 +73,11 @@ end Gen
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Introduce `D Z u u' F0 Λ hΛ F₁ F₂ h1 h2 hG hdc p P hP d`. Establish `key : ∀ A B : LFlag (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E), PD D Λ (lf D F0) u' A → PD D Λ (lf D F0) u' B → Gval (lf D F0) A ≠ 0 → DCRel Λ (lf D F0) A B → Over P d (locU Z p Λ (lf D F0) A (Tu D u) (Tu D u')) → Over P d (locU Z p Λ (lf D F0) B (Tu D u) (Tu D u'))`. Introduce `A B hA hB hGA hAB`. Take `⟨n, hn, m, hm, hfr, -⟩` from `hAB`. Conclude with `GlobalTheory.T.global_terms_same_doubleCoset_same_local_data D Z u u' F0 Λ hΛ A B hA hB hGA n ⟨hn.1.1, hn.2.1, hn.2.2⟩ m ⟨hm.1.1, hm.2.1, hm.2.2⟩ (Formalism.L2.SG.Pf.isAutLam_mul hn.1 hm.1).2 (fun a => hfr a) (iota_of_dc (gS D) hn hm (fun a => hfr a)) p P hP d`.
+
+Use `⟨key F₁ F₂ h1 h2 hG hdc, key F₂ F₁ h2 h1 ?_ (Formalism.L2.SG.Pf.dcrel_symm _ _ hdc)⟩` and prove the remaining obligations. Rewrite using `[Formalism.L2.SG.Pf.gval_rel (h := hdc)]`. Conclude with `hG`.
+-/
 theorem rep_indep : ∀ (D : D7) (Z : LocDat D), ∀ (u u' : D.what₂.Word) (F0 : FlagG (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E)) (Λ : Submodule (𝓞 D.host.E) (VS D).V), IsRowLat D F0 Λ → ∀ F₁ F₂ : LFlag (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E), PD D Λ (lf D F0) u' F₁ → PD D Λ (lf D F0) u' F₂ → Gval (lf D F0) F₁ ≠ 0 → DCRel Λ (lf D F0) F₁ F₂ → ∀ (p : PlF D) (P : LocNG.FPair (locH Z p) D.R.rS), P.RelG (LocNG.theta (Z.M p)) → ∀ d, Over P d (locU Z p Λ (lf D F0) F₁ (Tu D u) (Tu D u')) ↔ Over P d (locU Z p Λ (lf D F0) F₂ (Tu D u) (Tu D u')) := by
   intro D Z u u' F0 Λ hΛ F₁ F₂ h1 h2 hG hdc p P hP d
   have key : ∀ A B : LFlag (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E), PD D Λ (lf D F0) u' A → PD D Λ (lf D F0) u' B →

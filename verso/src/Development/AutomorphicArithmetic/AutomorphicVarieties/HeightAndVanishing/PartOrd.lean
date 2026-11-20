@@ -2,6 +2,21 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.HeightAndVanishing
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.Base UpperTheory.Top UpperTheory.V.HV
 
+/- English proof (translation)
+Establish `hcx : Commute (x ^ e) x` using `(Commute.refl x).pow_left e`. Establish `hcomm : Commute (x ^ e) (x * (x ^ e)⁻¹)` using `hcx.mul_right (Commute.refl _).inv_right`. Establish `hyz : x ^ e * (x * (x ^ e)⁻¹) = x`. Rewrite using `[← mul_assoc, hcx.eq, mul_inv_cancel_right]`. Establish `hoy : orderOf (x ^ e) ∣ P`.
+
+Apply `orderOf_dvd_of_pow_eq_one` to reduce the goal to its premises. Rewrite using `[← pow_mul, orderOf_dvd_iff_pow_eq_one.mp]`. Rewrite using `[hn, mul_comm P C]`. Conclude with `Nat.mul_dvd_mul_right h1 P`. Establish `hoz : orderOf (x * (x ^ e)⁻¹) ∣ C`.
+
+Apply `orderOf_dvd_of_pow_eq_one` to reduce the goal to its premises. Rewrite using `[(hcx.symm.inv_right).mul_pow, inv_pow, ← pow_mul]`. Establish `: x ^ (e * C) = x ^ C`. Rewrite using `[pow_eq_pow_iff_modEq, hn]`. Use `Nat.ModEq.mul_right' C h2` as an intermediate fact.
+
+Simplify using `using this`. Rewrite using `[this, mul_inv_cancel]`. Establish `hco' : (orderOf (x ^ e)).Coprime (orderOf (x * (x ^ e)⁻¹))` using `Nat.Coprime.of_dvd hoy hoz hco`. Establish `hprod : orderOf (x ^ e) * orderOf (x * (x ^ e)⁻¹) = P * C`. Rewrite using `[← hcomm.orderOf_mul_eq_mul_orderOf_of_coprime hco', hyz, hn]`.
+
+Take `⟨a, ha⟩` from `hoy`. Take `⟨b, hb⟩` from `hoz`. Establish `hab : a * b = 1`. Establish `: P * C * (a * b) = P * C * 1`. Combine the equalities or inequalities in the displayed calculation.
+
+Conclude with `Nat.eq_of_mul_eq_mul_left (Nat.mul_pos hP hC) this`. Establish `ha1 : a = 1` using `Nat.eq_one_of_mul_eq_one_right hab`. Establish `hb1 : b = 1` using `Nat.eq_one_of_mul_eq_one_left hab`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[ha, ha1, mul_one]`.
+
+Rewrite using `[hb, hb1, mul_one]`.
+-/
 private theorem orderOf_pow_coprime_parts {Γ : Type} [Group Γ] (x : Γ) (P C e : ℕ) (hn : orderOf x = P * C)
     (hP : 0 < P) (hC : 0 < C) (hco : P.Coprime C) (h1 : C ∣ e) (h2 : e ≡ 1 [MOD P]) :
     orderOf (x ^ e) = P ∧ orderOf (x * (x ^ e)⁻¹) = C := by
@@ -40,6 +55,29 @@ private theorem orderOf_pow_coprime_parts {Γ : Type} [Group Γ] (x : Γ) (P C e
   · rw [ha, ha1, mul_one]
   · rw [hb, hb1, mul_one]
 
+/- English proof (translation)
+Introduce `Γ _ l hl x hx`. Establish `hn0 : orderOf x ≠ 0` using `hx.ne'`. Take `⟨P, hPd⟩ : ∃ P, P = ordProj[l] (orderOf x)` from `⟨_, rfl⟩`. Take `⟨C, hCd⟩ : ∃ C, C = ordCompl[l] (orderOf x)` from `⟨_, rfl⟩`. Take `⟨e, hed⟩ : ∃ e, e = C ^ Nat.totient P` from `⟨_, rfl⟩`.
+
+Establish `hPC : P * C = orderOf x` using `by rw [hPd, hCd]; exact Nat.ordProj_mul_ordCompl_eq_self _ _`. Establish `hP : 0 < P` using `by rw [hPd]; exact pow_pos hl.pos _`. Establish `hC : 0 < C` using `by rw [hCd]; exact Nat.ordCompl_pos l hn0`. Establish `hlC : ¬ l ∣ C` using `by rw [hCd]; exact Nat.not_dvd_ordCompl hl hn0`. Establish `hcoC : l.Coprime C` using `(Nat.Prime.coprime_iff_not_dvd hl).2 hlC`.
+
+Establish `hco : P.Coprime C` using `by rw [hPd]; exact hcoC.pow_left _`. Establish `hlp : lPart l x = x ^ e` using `by rw [hed, hPd, hCd]; rfl`. Establish `hlpr : lPrime l x = x * (lPart l x)⁻¹` using `rfl`. Establish `h1 : C ∣ e` using `by rw [hed]; exact dvd_pow_self _ (Nat.totient_pos.2 hP).ne'`. Establish `h2 : e ≡ 1 [MOD P]` using `by rw [hed]; exact Nat.ModEq.pow_totient hco.symm`.
+
+Take `⟨hA, hB⟩` from `orderOf_pow_coprime_parts x P C e hPC.symm hP hC hco h1 h2`. Rewrite `hA`, `hB` using `[← hlp]`. Rewrite `hB` using `[← hlpr]`. Rewrite using `[← hCd, ← hPd]`. Use `⟨hA, hB, hB ▸ hlC, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hlp]`. Conclude with `Subgroup.pow_mem _ (Subgroup.mem_zpowers x) _`. Rewrite using `[hlpr, hlp]`. Conclude with `Subgroup.mul_mem _ (Subgroup.mem_zpowers x) (Subgroup.inv_mem _ (Subgroup.pow_mem _ (Subgroup.mem_zpowers x) _))`. Introduce `hnd`.
+
+Establish `hf : (orderOf x).factorization l = 0` using `Nat.factorization_eq_zero_of_not_dvd hnd`. Establish `ho : orderOf (lPart l x) = 1` using `by rw [hA, hPd, hf, pow_zero]`. Establish `h1'` using `orderOf_eq_one_iff.mp ho`. Conclude with `⟨h1', by rw [hlpr, h1', inv_one, mul_one]⟩`. Introduce and unpack `a b hab habx hna ⟨s, hs⟩`.
+
+Establish `hcoa : (orderOf a).Coprime l` using `Nat.Coprime.symm ((Nat.Prime.coprime_iff_not_dvd hl).2 hna)`. Establish `hob : orderOf b ∣ l ^ s` using `orderOf_dvd_of_pow_eq_one hs`. Establish `hab' : (orderOf a).Coprime (orderOf b)` using `Nat.Coprime.coprime_dvd_right hob (hcoa.pow_right s)`. Establish `hx' : orderOf x = orderOf a * orderOf b`. Rewrite using `[← habx]`.
+
+Conclude with `hab.orderOf_mul_eq_mul_orderOf_of_coprime hab'`. Establish `hoaC : orderOf a ∣ C`. Establish `hd : orderOf a ∣ P * C` using `by rw [hPC, hx']; exact dvd_mul_right _ _`. Establish `hcP : (orderOf a).Coprime P` using `by rw [hPd]; exact hcoa.pow_right _`. Conclude with `hcP.dvd_of_dvd_mul_left hd`.
+
+Establish `hobP : orderOf b ∣ P`. Establish `hd : orderOf b ∣ P * C` using `by rw [hPC, hx']; exact dvd_mul_left _ _`. Establish `hcC : (orderOf b).Coprime C` using `Nat.Coprime.coprime_dvd_left hob (hcoC.pow_left s)`. Conclude with `hcC.dvd_of_dvd_mul_right hd`. Establish `hae : a ^ e = 1` using `orderOf_dvd_iff_pow_eq_one.mp (hoaC.trans h1)`.
+
+Establish `hbe : b ^ e = b`. Use `(pow_eq_pow_iff_modEq (x := b) (n := e) (m := 1)).2 (h2.of_dvd hobP)` as an intermediate fact. Simplify using `using this`. Establish `hpart : lPart l x = b`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `⟨?_, hpart⟩` and prove the remaining obligations. Rewrite using `[hlpr, hpart, ← habx, mul_inv_cancel_right]`.
+-/
 theorem UpperTheory.V.HV.partOrd :
     ∀ (Γ : Type) [Group Γ] (l : ℕ), l.Prime → ∀ x : Γ, 0 < orderOf x →
       orderOf (lPart l x) = ordProj[l] (orderOf x) ∧ orderOf (lPrime l x) = ordCompl[l] (orderOf x) ∧ ¬ l ∣ orderOf (lPrime l x) ∧

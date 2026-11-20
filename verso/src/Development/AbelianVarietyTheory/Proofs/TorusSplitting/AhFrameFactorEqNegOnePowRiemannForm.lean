@@ -15,6 +15,29 @@ namespace GlobalTheory.FrameSign
 
 open GlobalTheory.AppellHumbertTrivial GlobalTheory.FrameUnits GlobalTheory.CubeValues
 
+/- English proof (translation)
+Establish `hld : ∀ k, Differentiable ℂ (lam k)` using `fun k => (LinearMap.toContinuousLinearMap (lam k)).differentiable`. Set `D : (K → Ix) → Set (Fin g → ℂ)` to `fun j => {z | ∀ k, lam k z ∈ W (j k)}`. Establish `hDo : ∀ j, IsOpen (D j)` using `fun j => by`. Simplify using `only [D, Set.setOf_forall]`. Conclude with `isOpen_iInter_of_finite fun k => (hWo (j k)).preimage (hld k).continuous`.
+
+Establish `hcov : ∀ z, ∃ j, z ∈ D j` using `fun z => by choose a ha using hWc`. Conclude with `⟨fun k => a (lam k z), fun k => ha _⟩`. Set `F : (K → Ix) → (Fin g → ℂ) → ℂ` to `fun j z => ∏ k, fr (j k) (lam k z) ^ ε k`. Establish `hF0 : ∀ j z, z ∈ D j → F j z ≠ 0` using `fun j z hz => Finset.prod_ne_zero_iff.2 fun k _ => zpow_ne_zero _ (hne _ _ (hz k))`. Take `⟨ψ, hψ, hG⟩` from `PullHermitian.exists_glue D hDo hcov (fun j z => T j z * (F j z)⁻¹) (fun j => by`.
+
+Establish `dF : DifferentiableOn ℂ (fun z => ∏ k, fr (j k) (lam k z) ^ ε k) (D j)` using `differentiableOn_fun_prod _ fun k => DifferentiableOn.zpow ((hd (j k)).comp (hld k).differentiableOn fun z hz => hz k) (Or.inl fun z hz => hne _ _ (hz k))`. Conclude with `(hTd j).mul (dF.inv (hF0 j)))`. Use the proof step `(fun j j' z hz hz' => by`. Establish `e3` using `hTc j j' z hz hz'`. Establish `c1 : F j z = (∏ k, c (j k) (j' k) (lam k z) ^ ε k) * F j' z`.
+
+Simplify using `only [F]`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[hc _ _ _ (hz k) (hz' k), mul_zpow]`. Rewrite using `[← div_eq_mul_inv, ← div_eq_mul_inv, div_eq_div_iff (hF0 _ _ hz) (hF0 _ _ hz'), e3, c1]`.
+
+Use the proof step `ring)`. Establish `hψ0 : ∀ z, ψ z ≠ 0` using `fun z => by`. Take `⟨j, hj⟩` from `hcov z`. Rewrite using `[hG j z hj]`. Conclude with `mul_ne_zero (hT0 j z hj) (inv_ne_zero (hF0 j z hj))`.
+
+Establish `hper : ∀ l ∈ S, ∀ z, ψ (z + l) = (∏ k, χ (lam k l) ^ ε k) * Complex.exp (Real.pi * ∑ k, (ε k : ℂ) * hermForm Hm (lam k z) (lam k l) + Real.pi / 2 * ∑ k, (ε k : ℂ) * hermForm Hm (lam k l) (lam k l)) * ψ z` using `fun l hl z => by`. Take `⟨j, hj⟩` from `hcov z`. Establish `hj' : z + l ∈ D j` using `fun k => by`. Rewrite using `[map_add]`. Conclude with `hWp _ (hΛ l hl k) _ _ (hj k)`.
+
+Establish `c1 : F j z = (∏ k, χ (lam k l) ^ ε k) * Complex.exp (Real.pi * ∑ k, (ε k : ℂ) * hermForm Hm (lam k z) (lam k l) + Real.pi / 2 * ∑ k, (ε k : ℂ) * hermForm Hm (lam k l) (lam k l)) * F j (z + l)`. Simplify using `only [F]`. Rewrite using `[Finset.mul_sum, Finset.mul_sum, ← Finset.sum_add_distrib, Complex.exp_sum, ← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[hf _ (hΛ l hl k) (j k) (lam k z) (hj k), map_add, mul_zpow, mul_zpow, ← Complex.exp_int_mul]`.
+
+Use `congr 3`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hG j z hj, hG j _ hj', hTp l hl]`. Establish `key : ∀ a b c d : ℂ, b ≠ 0 → c ≠ 0 → b = a * c → d * c⁻¹ = a * (d * b⁻¹)`. Introduce and unpack `a _ c d h1 h2 rfl`.
+
+Use `left_ne_zero_of_mul h1` as an intermediate fact. Clear the denominators using the available nonvanishing facts. Conclude with `key _ _ _ _ (hF0 j z hj) (hF0 j _ hj') c1`. Take `⟨h1, h2⟩` from `form_eq_zero_and_const hS ψ hψ hψ0 (fun z w => ∑ k, (ε k : ℂ) * hermForm Hm (lam k z) (lam k w)) (continuous_finset_sum _ fun k _ => continuous_const.mul ((continuous_hermForm_self Hm).comp (hld k).continuous)) (fun z z' w => by simp only [map_add, hermForm_add_left, mul_add, Fin …`. Simplify using `only [map_smul, hermForm_smul_left, Finset.mul_sum]`.
+
+Conclude with `Finset.sum_congr rfl fun k _ => by ring)`. Use the proof step `(fun z w => by`. Simplify using `only [star_sum, star_mul', star_intCast]`. Conclude with `Finset.sum_congr rfl fun k _ => by rw [hermForm_swap hH])`. Use the proof step `(fun l hl => ⟨_, by simp [norm_prod, norm_zpow, hχ _ (hΛ l hl _)], hper l hl⟩)`.
+
+Introduce `l hl`. Use `hper l hl 0` as an intermediate fact. Rewrite `this` using `[h1, h1, h2, mul_zero, mul_zero, add_zero, Complex.exp_zero, _root_.mul_one]`. Conclude with `(mul_eq_right₀ (hψ0 0)).1 this.symm`.
+-/
 theorem prod_factor_eq_one {g : ℕ} {Ix K : Type} [Fintype K] {S : Set (Fin g → ℂ)} {R : ℝ}
     (hS : ∀ z, ∃ l ∈ S, ‖z + l‖ ≤ R) {Hm : Matrix (Fin g) (Fin g) ℂ} (hH : Hm.IsHermitian)
     (χ : (Fin g → ℂ) → ℂ) (W : Ix → Set (Fin g → ℂ)) (hWo : ∀ j, IsOpen (W j)) (hWc : ∀ z, ∃ j, z ∈ W j)
@@ -107,6 +130,15 @@ theorem prod_factor_eq_one {g : ℕ} {Ix K : Type} [Fintype K] {S : Set (Fin g �
   rw [h1, h1, h2, mul_zero, mul_zero, add_zero, Complex.exp_zero, _root_.mul_one] at this
   exact (mul_eq_right₀ (hψ0 0)).1 this.symm
 
+/- English proof (translation)
+Establish `z0 : ∀ w, hermForm Hm 0 w = 0` using `fun w => by simp [hermForm]`. Rewrite `ha`, `hs` using `[z0, mul_zero, zero_add, zero_add]`. Establish `hab : f (a + b) ≠ 0` using `fun h => h0 (by rw [hs, h, mul_zero])`. Establish `e1 : hermForm Hm a b - hermForm Hm b a = n * (2 * Complex.I)`. Rewrite using `[hermForm_swap hH a b, Complex.star_def, Complex.sub_conj, hn]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : ((((Int.negOnePow n : ℤˣ) : ℤ)) : ℂ) = Complex.exp (n * (Real.pi * Complex.I))`. Rewrite using `[Complex.exp_int_mul, Complex.exp_pi_mul_I, Int.cast_negOnePow]`. Establish `e3 : Complex.exp (Real.pi / 2 * hermForm Hm a a) * Complex.exp (Real.pi * hermForm Hm a b + Real.pi / 2 * hermForm Hm b b) = Complex.exp (n * (Real.pi * Complex.I)) * Complex.exp (Real.pi / 2 * hermForm Hm (a + b) (a + b))`.
+
+Rewrite using `[← Complex.exp_add, ← Complex.exp_add, hermForm_add_left, hermForm_add_right, hermForm_add_right]`. Use `congr 1`. Take the linear combination `(Real.pi / 2 : ℂ) * e1`. Use `mul_right_cancel₀ (mul_ne_zero (Complex.exp_ne_zero (Real.pi / 2 * hermForm Hm (a + b) (a + b))) hab) ?_` and prove the remaining obligations. Rewrite using `[e2]`.
+
+Rewrite `ha` using `[hb]`. Take the linear combination `ha - hs + x * y * f (a + b) * e3`.
+-/
 theorem factor_add {g : ℕ} {Hm : Matrix (Fin g) (Fin g) ℂ} (hH : Hm.IsHermitian) (f : (Fin g → ℂ) → ℂ)
     (a b : Fin g → ℂ) (x y s : ℂ) (n : ℤ) (hn : (hermForm Hm a b).im = n) (h0 : f 0 ≠ 0)
     (ha : f 0 = x * Complex.exp (Real.pi * hermForm Hm 0 a + Real.pi / 2 * hermForm Hm a a) * f (0 + a))
@@ -134,6 +166,11 @@ theorem factor_add {g : ℕ} {Hm : Matrix (Fin g) (Fin g) ℂ} (hH : Hm.IsHermit
   rw [hb] at ha
   linear_combination ha - hs + x * y * f (a + b) * e3
 
+/- English proof (translation)
+Set `Λ : Submodule ℤ (Fin g → ℂ)` to `P.range.toIntSubmodule`. Use `haveI : DiscreteTopology Λ := hd`. Use `haveI : IsZLattice ℝ Λ := ⟨hs⟩`. Set `b` to `(Module.Free.chooseBasis ℤ Λ).ofZLatticeBasis ℝ Λ`. Use `⟨∑ i, ‖b i‖, fun z => ⟨-(ZSpan.floor b z : Fin g → ℂ), Λ.neg_mem ?_, ?_⟩⟩` and prove the remaining obligations.
+
+Conclude with `((Module.Free.chooseBasis ℤ Λ).ofZLatticeBasis_span ℝ Λ).le (ZSpan.floor b z).2`. Rewrite using `[← sub_eq_add_neg, ← ZSpan.fract_apply]`. Conclude with `ZSpan.norm_fract_le b z`.
+-/
 theorem exists_period_norm_le' {g : ℕ} {La : Type} [AddCommGroup La] (P : La →+ (Fin g → ℂ))
     (hd : DiscreteTopology P.range) (hs : Submodule.span ℝ (Set.range P) = ⊤) :
     ∃ R : ℝ, ∀ z : Fin g → ℂ, ∃ l ∈ Set.range P, ‖z + l‖ ≤ R := by
@@ -146,6 +183,9 @@ theorem exists_period_norm_le' {g : ℕ} {La : Type} [AddCommGroup La] (P : La �
   · rw [← sub_eq_add_neg, ← ZSpan.fract_apply]
     exact ZSpan.norm_fract_le b z
 
+/- English proof (translation)
+Establish `h` using `congrArg Units.val (PullHermitian.unitVal_iso x w hw J J' j j' hJ hJ' hj hj')`. Rewrite `h` using `[Units.val_mul, Units.val_mul, Units.val_inv_eq_inv_val]`. Simplify using `only [← PullHermitian.valAt'_eq_unitVal] at h`. Rewrite using `[← val_linComb x valAt'_rules L φ ε J J' hJ hJ', zpow_neg_one, mul_comm (_ ⁻¹), PullHermitian.valAt'_eq_unitVal x (U := ((L.LinComb φ ε).div L).U (J, j)) (PullHermitian.inf_of x hJ hj), PullHermitian.valAt'_eq_unitVal x (U := ((L.LinComb φ ε).div L).U (J', j')) (PullHermitian.inf …`. Conclude with `h`.
+-/
 theorem val_iso_linComb {X : Scheme.{0}} (x : Sp ℂ ⟶ X) (L : LB X) {K : Type} [Fintype K] (φ : K → (X ⟶ X))
     (ε : K → ℤ) (w : LB.Iso L (L.LinComb φ ε)) (hw : w.IsGen) (J J' : K → L.ι) (j j' : L.ι)
     (hJ : ⊤ ≤ x ⁻¹ᵁ L.wchart φ J) (hJ' : ⊤ ≤ x ⁻¹ᵁ L.wchart φ J') (hj : ⊤ ≤ x ⁻¹ᵁ L.U j)
@@ -162,6 +202,11 @@ theorem val_iso_linComb {X : Scheme.{0}} (x : Sp ℂ ⟶ X) (L : LB X) {K : Type
     PullHermitian.valAt'_eq_unitVal x (U := ((L.LinComb φ ε).div L).U (J', j')) (PullHermitian.inf_of x hJ' hj')]
   exact h
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `h U f`. Establish `hm : Differentiable ℂ (fun z : Fin g → ℂ => ((0 : Fin 0 → ℂ), z))` using `by fun_prop`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `h1.preimage hm.continuous using 1` and compare the differences between its conclusion and the goal. Use extensionality with `z`.
+
+Conclude with `⟨fun hz => ⟨⟨trivial, trivial⟩, hz⟩, fun hz => hz.2⟩`. Use `h2.comp (s := {z | ⊤ ≤ e z ⁻¹ᵁ U}) hm.differentiableOn fun z hz => ⟨⟨trivial, trivial⟩, hz⟩` as an intermediate fact. Conclude with `this`.
+-/
 theorem hol_slice {X : Scheme.{0}} {g : ℕ} (e : (Fin g → ℂ) → (Sp ℂ ⟶ X))
     (h : IsHolTo ((Set.univ : Set (Fin 0 → ℂ)) ×ˢ (Set.univ : Set (Fin g → ℂ))) (fun bz => e bz.2))
     (U : X.Opens) (f : Γ(X, U)) :
@@ -179,6 +224,47 @@ end GlobalTheory.FrameSign
 
 open GlobalTheory.FrameSign GlobalTheory.CubeValues in
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo σ g ty Fu i Pm Hm χl fr hP hF a`. Take `⟨hH, -, him, hd, hne, hc, -, hf⟩` from `hF`. Take `⟨R, hR⟩` from `exists_period_norm_le' Pm hP.2.2.1 hP.2.2.2.1`. Take `⟨w, hw⟩` from `Xo.univ.t.prim`. Establish `hch : ∀ z, ∃ j, ⊤ ≤ (Fu.ex i Pm z).left ⁻¹ᵁ Xo.univ.t.PP.L.U j` using `fun z => PullHermitian.exists_chart _ Xo.univ.t.PP.isLB`.
+
+Establish `hex : ∀ b z, Fu.ex i Pm (z + Pm b) = Fu.ex i Pm z` using `fun b z => by`. Rewrite using `[Fu.ex_add i Pm hP, (Fu.ex_ker i Pm hP (Pm b)).2 ⟨b, rfl⟩, _root_.mul_one]`. Establish `hhol : ∀ (U : Xo.univ.t.G.left.Opens) (f : Γ(Xo.univ.t.G.left, U)), IsOpen {z | ⊤ ≤ (Fu.ex i Pm z).left ⁻¹ᵁ U} ∧ DifferentiableOn ℂ (fun z => valAt' (Fu.ex i Pm z).left U f) {z | ⊤ ≤ (Fu.ex i Pm z).left ⁻¹ᵁ U}` using `hol_slice (fun z => (Fu.ex i Pm z).left) (Fu.hol i 0 Set.univ (fun _ => Pm) isOpen_univ ⟨fun _ _ => hP, fun _ => differentiableOn_const _⟩).2`. Set `Wl : (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ)` to `LinearMap.pi fun k => ty k (H.w0 : E) • LinearMap.proj k`. Establish `hWl : ∀ z, Fu.ex i Pm (Wl z) = Fu.ex i Pm z ≫ Xo.univ.t.act.act H.w0` using `fun z => Fu.ex_lin i Pm hP H.w0 z`.
+
+Establish `hWP : ∀ b, Wl (Pm b) = Pm (H.w0 • b)` using `fun b => funext fun k => (hP.1 H.w0 b k).symm`. Set `lam0 : Finset (Fin 2) → (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ)` to `fun I => ∑ s ∈ I, ![LinearMap.id, Wl] s`. Establish `huniv : (Finset.univ : Finset (Finset (Fin 2))) = {∅, {0}, {1}, {0, 1}}` using `by decide`. Establish `l0 : ∀ z, lam0 ∅ z = 0` using `fun z => by simp [lam0]`. Establish `l1 : ∀ z, lam0 {0} z = z` using `fun z => by simp [lam0]`.
+
+Establish `l2 : ∀ z, lam0 {1} z = Wl z` using `fun z => by simp [lam0]`. Establish `l3 : ∀ z, lam0 {0, 1} z = z + Wl z` using `fun z => by simp [lam0]`. Establish `hlam0 : ∀ I z, (Fu.ex i Pm z).left ≫ (psum Xo.univ.t.G ![𝟙 Xo.univ.t.G, Xo.univ.t.act.act H.w0] I).left = (Fu.ex i Pm (lam0 I z)).left`. Introduce `I z`. Rewrite using `[← Over.comp_left]`.
+
+Use `congr 1`. Establish `h0 : Fu.ex i Pm 0 = 1` using `(Fu.ex_ker i Pm hP 0).2 (zero_mem _)`. Establish `hI : I ∈ ({∅, {0}, {1}, {0, 1}} : Finset (Finset (Fin 2)))` using `huniv ▸ Finset.mem_univ I`. Simplify using `only [Finset.mem_insert, Finset.mem_singleton] at hI`. Break down `hI with rfl | rfl | rfl | rfl` into its components or cases.
+
+Rewrite using `[l0, h0]`. Conclude with `MonObj.comp_one _`. Rewrite using `[l1]`. Express the relevant statement in the definitionally equal form `_ ≫ (𝟙 Xo.univ.t.G * 1) = _`. Simplify using the standard rewrite rules.
+
+Rewrite using `[l2, hWl]`. Express the relevant statement in the definitionally equal form `_ ≫ (Xo.univ.t.act.act H.w0 * 1) = _`. Simplify using the standard rewrite rules. Rewrite using `[l3, Fu.ex_add i Pm hP, hWl]`. Express the relevant statement in the definitionally equal form `_ ≫ (𝟙 Xo.univ.t.G * (Xo.univ.t.act.act H.w0 * 1)) = _`.
+
+Simplify using `[MonObj.comp_mul]`. Establish `hwc : ∀ (J : ULift.{0} (Finset (Fin 2)) → Xo.univ.t.PP.L.ι) z, (∀ I, ⊤ ≤ (Fu.ex i Pm (lam0 I.down z)).left ⁻¹ᵁ Xo.univ.t.PP.L.U (J I)) → ⊤ ≤ (Fu.ex i Pm z).left ⁻¹ᵁ Xo.univ.t.PP.L.wchart (fun I : ULift.{0} (Finset (Fin 2)) => (psum Xo.univ.t.G ![𝟙 Xo.univ.t.G, Xo.univ.t.act.act H …` using `fun J z h => (le_preimage_wchart _ _ _ _).2 fun I => by rw [hlam0]; exact h I`. Establish `key` using `prod_factor_eq_one (K := Option (ULift.{0} (Finset (Fin 2)))) hR hH χl (fun j => {z | ⊤ ≤ (Fu.ex i Pm z).left ⁻¹ᵁ Xo.univ.t.PP.L.U j}) (fun j => (hhol _ 0).1) hch (by`. Introduce and unpack `_ ⟨b, rfl⟩ j z hz`. Simplify `hz)` using `only [Set.mem_setOf_eq, hex]`.
+
+Use `fr (fun j j' z => valAt' (Fu.ex i Pm z).left (Xo.univ.t.PP.L.U j ⊓ Xo.univ.t.PP.L.U j') (Xo.univ.t.PP.L.g j j').val) hd hne`. Use the proof step `(fun j j' z hz hz' => hc j j' z ((le_preimage_inf _ _ _).2 ⟨hz, hz'⟩))`. Use the proof step `(by`. Introduce and unpack `_ ⟨b, rfl⟩`. Take `⟨j, -⟩` from `hch 0`.
+
+Conclude with `(hf b j 0).1)`. Use the proof step `(by`. Introduce and unpack `_ ⟨b, rfl⟩ j z hz`. Conclude with `(hf b j z).2 hz)`. Use the proof step `(fun k => k.elim (-1) fun I => (-1) ^ (2 - I.down.card))`.
+
+Use the proof step `(fun k => k.elim LinearMap.id fun I => lam0 I.down)`. Use the proof step `(by`. Introduce and unpack `_ ⟨b, rfl⟩ (_ | ⟨I⟩)`. Conclude with `⟨b, rfl⟩`. Use `⟨∑ s ∈ I.down, ![b, H.w0 • b] s, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [lam0, Option.elim, map_sum, LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Use `fin_cases s`. Both sides reduce to the same expression. Conclude with `(hWP b).symm)`.
+
+Use the proof step `(fun j z => valAt' (Fu.ex i Pm z).left _ (w.s (fun I => j (some I), j none)).val)`. Use the proof step `(fun j => (hhol _ _).2.mono fun z hz => (le_preimage_inf _ _ _).2 ⟨hwc _ z fun I => hz (some I), hz none⟩)`. Use the proof step `(fun j z hz => val_unit_ne_zero _ valAt'_rules ((le_preimage_inf _ _ _).2 ⟨hwc _ z fun I => hz (some I), hz none⟩) _)`. Use the proof step `(fun j j' z hz hz' => by`. Use `(val_iso_linComb _ _ _ _ w hw _ _ _ _ (hwc _ z fun I => hz (some I)) (hwc _ z fun I => hz' (some I)) (hz none) (hz' none)).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[Fintype.prod_option]`. Simplify using `only [hlam0]`. Use the proof step `rfl)`. Use the proof step `(by`. Introduce and unpack `_ ⟨b, rfl⟩ j z`.
+
+Simplify using `only [hex])`. Use the proof step `(Pm a) ⟨a, rfl⟩`. Establish `hadd : ∀ b b', χl (Pm (b + b')) = χl (Pm b) * χl (Pm b') * ((Int.negOnePow ((Fu.Di i).EF b b') : ℤˣ) : ℤ)` using `fun b b' => by`. Take `⟨j, hj⟩` from `hch 0`. Establish `hj' : ⊤ ≤ (Fu.ex i Pm (Pm b)).left ⁻¹ᵁ Xo.univ.t.PP.L.U j`.
+
+Rewrite using `[← zero_add (Pm b), hex]`. Conclude with `hj`. Establish `h3` using `(hf (b + b') j 0).2 hj`. Rewrite `h3`, the goal using `[map_add]`. Conclude with `factor_add hH (fr j) _ _ _ _ _ _ (him b b') (hne j 0 hj) ((hf b j 0).2 hj) ((hf b' j _).2 hj') h3`.
+
+Establish `hn : ∀ b, χl (Pm b) ≠ 0` using `fun b => by`. Take `⟨j, -⟩` from `hch 0`. Conclude with `norm_ne_zero_iff.1 (by rw [(hf b j 0).1]; exact one_ne_zero)`. Establish `h0 : χl 0 = 1`. Use `hadd 0 0` as an intermediate fact.
+
+Establish `n0` using `hn 0`. Simplify using `only [add_zero, map_zero, Int.negOnePow_zero, Units.val_one, Int.cast_one, _root_.mul_one] at this n0`. Conclude with `(mul_eq_left₀ n0).1 this.symm`. Rewrite `key` using `[Fintype.prod_option]`. Simplify using `only [Option.elim] at key`.
+
+Rewrite `key` using `[Fintype.prod_equiv Equiv.ulift (fun I : ULift.{0} (Finset (Fin 2)) => χl (lam0 I.down (Pm a)) ^ ((-1 : ℤ) ^ (2 - I.down.card))) (fun I : Finset (Fin 2) => χl (lam0 I (Pm a)) ^ ((-1 : ℤ) ^ (2 - I.card))) (fun I => rfl), huniv, Finset.prod_insert (by decide), Finset.prod_insert (b …`. Establish `c01 : ({0, 1} : Finset (Fin 2)).card = 2` using `by decide`. Establish `n1` using `hn a`. Establish `n2` using `hn (H.w0 • a)`. Rewrite `key` using `[c01]`.
+
+Generalize the expression as in `(((Int.negOnePow ((Fu.Di i).EF a (H.w0 • a)) : ℤˣ) : ℤ) : ℂ) = s at key ⊢`. Evaluate the numerical expressions using `at key`. Clear denominators, using `at key` for the nonvanishing conditions. Conclude with `key.symm`.
+-/
 theorem GlobalTheory.ahFrame_factor_eq_negOnePow : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (σ : KA l →+* ℂ) (g : ℕ) (ty : Fin g → (E →+* ℂ)) (Fu : FamilyUnif Xo σ ty) (i : Fin Fu.n) (Pm : (Fu.Di i).La →+ (Fin g → ℂ)) (Hm : Matrix (Fin g) (Fin g) ℂ) (χl : (Fin g → ℂ) → ℂ) (fr : Xo.univ.t.PP.L.ι → (Fin g → ℂ) → ℂ), IsPeriod (Fu.Di i) ty Pm → AHFrame Fu i Pm Hm χl fr → ∀ a, χl (Pm a) = ((Int.negOnePow ((Fu.Di i).EF a (H.w0 • a)) : ℤˣ) : ℤ) := by
   intro E _ _ _ H Dw l Xo σ g ty Fu i Pm Hm χl fr hP hF a
   obtain ⟨hH, -, him, hd, hne, hc, -, hf⟩ := hF

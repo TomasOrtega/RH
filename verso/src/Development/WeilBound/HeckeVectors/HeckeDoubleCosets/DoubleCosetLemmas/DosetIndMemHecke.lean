@@ -5,6 +5,13 @@ namespace CompanionTheory.D.Upq.DoubleCosetLemmas
 
 open NumberField IsDedekindDomain Formalism.UG GlobalTheory.LFun GlobalTheory.CompanionTheory.Ipf.Val
 
+/- English proof (translation)
+Use `⟨fun a b g => ?_, {m}, fun g hg => ?_⟩` and prove the remaining obligations. Establish `: (a : G) * g * b ∈ DoubleCoset.doubleCoset m (K : Set G) K ↔ g ∈ DoubleCoset.doubleCoset m (K : Set G) K`. Simplify using `only [DoubleCoset.mem_doubleCoset]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, y, hy, e⟩`.
+
+Conclude with `⟨(a : G)⁻¹ * x, K.mul_mem (K.inv_mem a.2) hx, y * (b : G)⁻¹, K.mul_mem hy (K.inv_mem b.2), by`. Rewrite using `[show g = (a : G)⁻¹ * ((a : G) * g * b) * (b : G)⁻¹ by group, e]; group⟩`. Introduce and unpack `⟨x, hx, y, hy, rfl⟩`. Conclude with `⟨a * x, K.mul_mem a.2 hx, y * b, K.mul_mem hy b.2, by group⟩`. Simplify using `only [dosetInd, Set.indicator_apply, this, Pi.one_apply]`.
+
+Take `⟨x, hx, y, hy, e⟩` from `DoubleCoset.mem_doubleCoset.1 (Set.mem_of_indicator_ne_zero hg)`. Conclude with `⟨m, Finset.mem_singleton_self m, ⟨x, hx⟩, ⟨y, hy⟩, e⟩`.
+-/
 theorem dosetInd_mem_hecke {G : Type} [Group G] (K : Subgroup G) (m : G) :
     dosetInd ℂ K m ∈ Hecke ℂ K := by
   classical
@@ -24,6 +31,9 @@ theorem dosetInd_mem_hecke {G : Type} [Group G] (K : Subgroup G) (m : G) :
 
 variable {K : Type} [Field K] [NumberField K] {v : HeightOneSpectrum (𝓞 K)} {c : ℕ}
 
+/- English proof (translation)
+Take `⟨z, hz⟩` from `GlobalTheory.ChainOnto.SatHeckeChar.heckeVec_eq_smul_of_isSatVecGL K v c B _ (dosetInd_mem_hecke (KGL v c) m)`. Take `⟨V₀, _, _, ρ₀, x₀, h₀, h₁⟩` from `h`. Rewrite using `[hz V ρ x hx, smul_left_injective ℂ h₀.1 ((hz V₀ ρ₀ x₀ h₀).symm.trans h₁)]`.
+-/
 theorem IsSphEig.apply {B : Multiset ℂˣ} {m : GL (Fin c) (Cv v)} {lam : ℂ} (h : IsSphEig v B m lam)
     {V : Type} [AddCommGroup V] [Module ℂ V] {ρ : Representation ℂ (GL (Fin c) (Cv v)) V} {x : V}
     (hx : IsSatVecGL v ρ x B) : heckeVec ρ (KGL v c) (dosetInd ℂ (KGL v c) m) x = lam • x := by

@@ -4,6 +4,11 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KottwitzPairScalarI
 open Matrix NumberField GlobalTheory.LKTrip GlobalTheory.LKRes GlobalTheory.LKMid GlobalTheory.LKCount
 open scoped TensorProduct Classical
 
+/- English proof (translation)
+Introduce `p _ G P Q`. Establish `e : Equivalence (Pair.Rel (G` using `G)) := GlobalTheory.T.kottwitzPairScalarIsomorphic_equivalence p G`. Establish `key : ∀ A B : Pair G, (Quot.mk Pair.Rel A = Quot.mk Pair.Rel B ↔ A.Rel B)`. Introduce `A B`. Rewrite using `[Quot.eq, e.eqvGen_iff]`.
+
+Use `⟨key P Q, ?_⟩` and prove the remaining obligations. Conclude with `(key _ _).1 (Quot.out_eq _)`.
+-/
 theorem GlobalTheory.LKMid.Pair.mk_eq_iff_rel_and_out_rel :
     ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p) (P Q : Pair G),
       (Quot.mk Pair.Rel P = Quot.mk Pair.Rel Q ↔ P.Rel Q) ∧

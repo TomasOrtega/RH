@@ -17,22 +17,34 @@ namespace GlobalTheory.LeviChar
 
 open GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition
 
+/- English proof (translation)
+Unfold `GlobalTheory.IndefiniteRowSideFullHecke.WittDecompositions.detPow`. Apply `Real.rpow_pos_of_pos` to reduce the goal to its premises. Conclude with `NNReal.coe_pos.2 (pos_iff_ne_zero.2 ((Group.isUnit (Matrix.GeneralLinearGroup.det a)).map (GlobalTheory.Doubling.absE D.host.F D.host.E)).ne_zero)`.
+-/
 theorem detPow_pos' {D : D7} {r : ℕ} (a : GL (Fin r) (AE D)) (n : ℕ) : 0 < GlobalTheory.IndefiniteRowSideFullHecke.WittDecompositions.detPow a n := by
   unfold GlobalTheory.IndefiniteRowSideFullHecke.WittDecompositions.detPow
   apply Real.rpow_pos_of_pos
   exact NNReal.coe_pos.2 (pos_iff_ne_zero.2
     ((Group.isUnit (Matrix.GeneralLinearGroup.det a)).map (GlobalTheory.Doubling.absE D.host.F D.host.E)).ne_zero)
 
+/- English proof (translation)
+Unfold `GlobalTheory.IndefiniteRowSideFullHecke.WittDecompositions.detPow`. Rewrite using `[map_mul, map_mul, NNReal.coe_mul, Real.mul_rpow (NNReal.coe_nonneg _) (NNReal.coe_nonneg _)]`.
+-/
 theorem detPow_mul' {D : D7} {r : ℕ} (a b : GL (Fin r) (AE D)) (n : ℕ) :
     GlobalTheory.IndefiniteRowSideFullHecke.WittDecompositions.detPow (a * b) n = GlobalTheory.IndefiniteRowSideFullHecke.WittDecompositions.detPow a n * GlobalTheory.IndefiniteRowSideFullHecke.WittDecompositions.detPow b n := by
   unfold GlobalTheory.IndefiniteRowSideFullHecke.WittDecompositions.detPow
   rw [map_mul, map_mul, NNReal.coe_mul, Real.mul_rpow (NNReal.coe_nonneg _) (NNReal.coe_nonneg _)]
 
+/- English proof (translation)
+Establish `h` using `detPow_mul' (1 : GL (Fin r) (AE D)) 1 n`. Rewrite `h` using `[mul_one]`. Conclude with `mul_left_cancel₀ (detPow_pos' 1 n).ne' (h.symm.trans (mul_one _).symm)`.
+-/
 theorem detPow_one' {D : D7} {r : ℕ} (n : ℕ) : GlobalTheory.IndefiniteRowSideFullHecke.WittDecompositions.detPow (1 : GL (Fin r) (AE D)) n = 1 := by
   have h := detPow_mul' (1 : GL (Fin r) (AE D)) 1 n
   rw [mul_one] at h
   exact mul_left_cancel₀ (detPow_pos' 1 n).ne' (h.symm.trans (mul_one _).symm)
 
+/- English proof (translation)
+Unfold `GlobalTheory.IndefiniteRowSideFullHecke.WittDecompositions.detPow`. Establish `h1 : Continuous fun a : GL (Fin r) (AE D) => Matrix.GeneralLinearGroup.det a` using `Matrix.GeneralLinearGroup.continuous_det`. Establish `h2` using `(GlobalTheory.Doubling.continuous_absE (F := D.host.F) (E := D.host.E))`. Conclude with `(NNReal.continuous_coe.comp (h2.comp h1)).rpow_const (fun _ => Or.inr (by positivity))`.
+-/
 theorem continuous_detPow' {D : D7} {r : ℕ} (n : ℕ) :
     Continuous fun a : GL (Fin r) (AE D) => GlobalTheory.IndefiniteRowSideFullHecke.WittDecompositions.detPow a n := by
   unfold GlobalTheory.IndefiniteRowSideFullHecke.WittDecompositions.detPow
@@ -45,6 +57,63 @@ set_option maxHeartbeats 400000 in
 
 open GlobalTheory.MixModel in
 
+/- English proof (translation)
+Introduce `D V V' W r C B hs ψ χS χT ω hω χS' χT' ω' hω'`. Take `⟨d, hdC, hdB, hker⟩` from `GlobalTheory.T.exists_wittDecomposition_isotropicSplit_unipotent D V V' r C B hs`. Take `⟨μ₀, 𝓨₀, h₀⟩` from `GlobalTheory.MixModel.exists_isCovolOne D W.rank r`. Establish `hind` using `fun f hf μ 𝓨 (hμ : IsCovolOne (GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.ratMx D W.rank r) μ 𝓨) => GlobalTheory.T.thetaRestrictIsotropic_indep_covolume_measure D V V' W r C B hs d hdC hdB ψ f hf μ₀ μ 𝓨₀ 𝓨 h₀ hμ`. Set `s : GL (Fin r) (AE D) → GA D V' → GA D V` to `fun a g' => d.levi a * d.emb0 g'`.
+
+Establish `hsC : ∀ a g', HMul.hMul (mt V (s a g')) (C.map (incA D)) = HMul.hMul (C.map (incA D)) a.val`. Introduce `a g'`. Substitute `hdC` using the available equality. Use `show mt V (d.levi a * d.emb0 g') ⬝ d.jX = d.jX ⬝ a.1`. Rewrite using `[mt_mul, Matrix.mul_assoc, d.wittDecomp_anisotropicEmbedding_inclX, d.levi_jX]`.
+
+Establish `hsB : ∀ a g', HMul.hMul (mt V (s a g')) (B.map (incA D)) = HMul.hMul (B.map (incA D)) (mt V' g')`. Introduce `a g'`. Substitute `hdB` using the available equality. Use `show mt V (d.levi a * d.emb0 g') ⬝ d.j0 = d.j0 ⬝ mt V' g'`. Rewrite using `[mt_mul, Matrix.mul_assoc, d.wittDecomp_anisotropicEmbedding_inclAnisotropic, ← Matrix.mul_assoc, d.wittDecomp_levi_inclAnisotropic]`.
+
+Establish `hsmul : ∀ a₁ g₁ a₂ g₂, s (a₁ * a₂) (g₁ * g₂) = s a₁ g₁ * s a₂ g₂`. Introduce `a₁ g₁ a₂ g₂`. Use `show d.levi (a₁ * a₂) * d.emb0 (g₁ * g₂) = d.levi a₁ * d.emb0 g₁ * (d.levi a₂ * d.emb0 g₂)`. Rewrite using `[map_mul, map_mul, show d.levi a₁ * d.emb0 g₁ * (d.levi a₂ * d.emb0 g₂) = d.levi a₁ * (d.emb0 g₁ * d.levi a₂) * d.emb0 g₂ by simp only [mul_assoc], d.wittHyperbolic_anisotropic_commute_levi]`. Simplify using `only [mul_assoc]`.
+
+Establish `hs1 : s 1 1 = 1` using `by simp [s]`. Establish `hc` using `fun a g' => GlobalTheory.T.restriction_wittTower_intertwines_levi_weilRep D V V' W r C B hs ψ χS χT ω hω χS' χT' ω' hω' μ₀ 𝓨₀ h₀ a g' (s a g') (hsC a g') (hsB a g') 1`. Use `choose c hc using hc`. Use `set R := res V V' W C B μ₀ 𝓨₀ with hR`. Establish `dpos` using `fun a : GL (Fin r) (AE D) => detPow_pos' a W.rank`.
+
+Establish `dmul` using `fun a b : GL (Fin r) (AE D) => detPow_mul' a b W.rank`. Establish `d1 : GlobalTheory.IndefiniteRowSideFullHecke.WittDecompositions.detPow (1 : GL (Fin r) (AE D)) W.rank = 1` using `detPow_one' W.rank`. Establish `dcont : Continuous fun a : GL (Fin r) (AE D) => GlobalTheory.IndefiniteRowSideFullHecke.WittDecompositions.detPow a W.rank` using `continuous_detPow' W.rank`. Distinguish the cases in `hz : ∃ f₀, IsThetaFunO ψ V W f₀ ∧ R f₀ ≠ 0`. Use `swap`.
+
+Use `push_neg at hz`. Use `⟨1, 1, ⟨continuous_const, fun _ => rfl⟩, ⟨continuous_const, fun _ _ => rfl⟩, ?_⟩` and prove the remaining obligations. Introduce `μ 𝓨 hμ a g' m _ _ f hf`. Rewrite using `[hind _ (hω.om_pres _ f hf) μ 𝓨 hμ, hind f hf μ 𝓨 hμ, hz _ (hω.om_pres _ f hf), hz f hf, map_zero, smul_zero]`. Take `⟨f₀, hf₀, hne⟩` from `hz`.
+
+Establish `hRth : IsThetaFunO ψ V' W (R f₀)` using `((GlobalTheory.TowerRestrict.res_theta D V V' W r C B hs ψ hω.std μ₀ 𝓨₀ h₀).1 f₀ hf₀).2.1`. Establish `hinj : ∀ (g' : GA D V') (v : WO V' W → ℂ), ω' (g', 1) v = 0 → v = 0`. Introduce `g' v hv`. Establish `: ω' (g'⁻¹, 1) (ω' (g', 1) v) = v`. Rewrite using `[← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, inv_mul_cancel, mul_one, ← Prod.one_eq_mk, map_one, Module.End.one_apply]`.
+
+Rewrite using `[← this, hv, map_zero]`. Establish `huniq : ∀ (g' : GA D V') (k₁ k₂ : ℂ), k₁ • ω' (g', 1) (R f₀) = k₂ • ω' (g', 1) (R f₀) → k₁ = k₂`. Introduce `g' k₁ k₂ h`. Establish `hw : ω' (g', 1) (R f₀) ≠ 0` using `fun h0 => hne (hinj g' _ h0)`. Conclude with `smul_left_injective ℂ hw h`.
+
+Set `K : GL (Fin r) (AE D) → GA D V' → ℂ` to `fun a g' => (c a g' : ℂ) * (GlobalTheory.IndefiniteRowSideFullHecke.WittDecompositions.detPow a W.rank : ℂ)`. Establish `hK : ∀ a g' f, IsThetaFunO ψ V W f → R (ω (s a g', 1) f) = K a g' • ω' (g', 1) (R f)` using `fun a g' f hf => hc a g' f hf`. Establish `Kmul : ∀ a₁ g₁ a₂ g₂, K (a₁ * a₂) (g₁ * g₂) = K a₁ g₁ * K a₂ g₂`. Introduce `a₁ g₁ a₂ g₂`. Apply `huniq (g₁ * g₂)` to reduce the goal to its premises.
+
+Rewrite using `[← hK _ _ f₀ hf₀, hsmul, show ((s a₁ g₁ * s a₂ g₂, (1 : GA D W)) : GA D V × GA D W) = (s a₁ g₁, 1) * (s a₂ g₂, 1) by`. Rewrite using `[Prod.mk_mul_mk, mul_one], map_mul, Module.End.mul_apply, hK _ _ _ (hω.om_pres _ f₀ hf₀), hK _ _ f₀ hf₀,`. Use the proof step `map_smul, smul_smul, ← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, mul_one]`. Establish `cmul : ∀ a₁ g₁ a₂ g₂, c (a₁ * a₂) (g₁ * g₂) = c a₁ g₁ * c a₂ g₂`. Introduce `a₁ g₁ a₂ g₂`.
+
+Establish `h` using `Kmul a₁ g₁ a₂ g₂`. Simplify using `only [K, dmul] at h`. Establish `hd : ((GlobalTheory.IndefiniteRowSideFullHecke.WittDecompositions.detPow a₁ W.rank * GlobalTheory.IndefiniteRowSideFullHecke.WittDecompositions.detPow a₂ W.rank : ℝ) : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 (mul_pos (dpos a₁) (dpos a₂)).ne'`. Apply `Circle.coe_inj.1` to reduce the goal to its premises. Rewrite using `[Circle.coe_mul]`.
+
+Apply `mul_right_cancel₀ hd` to reduce the goal to its premises. Rewrite using `[h, Complex.ofReal_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `c11 : c 1 1 = 1`. Establish `h` using `huniq 1 (K 1 1) 1 (by rw [← hK _ _ f₀ hf₀, hs1, ← Prod.one_eq_mk, ← Prod.one_eq_mk, map_one, map_one, Module.End.one_apply, Module.End.one_apply, one_smul])`.
+
+Simplify using `only [K, d1, Complex.ofReal_one, mul_one] at h`. Conclude with `Circle.coe_inj.1 (by rw [h, Circle.coe_one])`. Set `μa : GL (Fin r) (AE D) →* Circle` to `{ toFun := fun a => c a 1 map_one' := c11 map_mul' := fun a b => by rw [← cmul, mul_one] }`. Set `ξ : GA D V' →* Circle` to `{ toFun := fun g => c 1 g map_one' := c11 map_mul' := fun g g' => by rw [← cmul, mul_one] }`. Establish `csplit : ∀ a g', c a g' = μa a * ξ g'`.
+
+Introduce `a g'`. Use `cmul a 1 1 g'` as an intermediate fact. Rewrite `this` using `[mul_one, one_mul]`. Then use the resulting hypothesis. Use `⟨μa, ξ, ⟨?_, ?_⟩, ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Take `⟨x₁, hx₁⟩` from `Function.ne_iff.1 hne`.
+
+Establish `hΦ` using `GlobalTheory.T.continuous_restrictedWeilFirstFactor_apply D V V' W r C B ψ χS χT ω hω μ₀ 𝓨₀ h₀ f₀ hf₀ x₁`. Establish `heq : ∀ a, ((μa a : Circle) : ℂ) = R (ω (d.levi a, 1) f₀) x₁ / ((GlobalTheory.IndefiniteRowSideFullHecke.WittDecompositions.detPow a W.rank : ℂ) * R f₀ x₁)`. Introduce `a`. Establish `h` using `congrFun (hK a 1 f₀ hf₀) x₁`. Rewrite `h` using `[show s a 1 = d.levi a by simp [s], ← Prod.one_eq_mk, map_one, Module.End.one_apply, Pi.smul_apply, smul_eq_mul]`.
+
+Rewrite using `[h, eq_div_iff (mul_ne_zero (Complex.ofReal_ne_zero.2 (dpos a).ne') hx₁)]`. Simplify using `only [K]`. Rewrite using `[← mul_assoc]`. Both sides reduce to the same expression. Use `continuous_induced_rng.2 ?_` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `Continuous fun a => ((μa a : Circle) : ℂ)`. Simplify using `only [heq]`. Conclude with `(hΦ.comp d.continuous_levi).div ((Complex.continuous_ofReal.comp dcont).mul continuous_const) fun a => mul_ne_zero (Complex.ofReal_ne_zero.2 (dpos a).ne') hx₁`. Introduce `a₀`. Establish `h` using `huniq 1 (K (Matrix.GeneralLinearGroup.map (incA D) a₀) 1) 1 (by`.
+
+Rewrite using `[← hK _ _ f₀ hf₀, one_smul, ← Prod.one_eq_mk, map_one, Module.End.one_apply, show s (Matrix.GeneralLinearGroup.map (incA D) a₀) 1 = d.levi (Matrix.GeneralLinearGroup.map (incA D) a₀) by`. Simplify using `[s]]`. Conclude with `GlobalTheory.T.thetaRestriction_invariant_rationalLeviGL D V V' W r C B hs d hdC hdB ψ χS χT ω hω μ₀ 𝓨₀ h₀ a₀ f₀ hf₀)`. Simplify using `only [K] at h`. Establish `hn` using `congrArg norm h`.
+
+Rewrite `hn` using `[norm_mul, Circle.norm_coe, one_mul, Complex.norm_real, Real.norm_of_nonneg (dpos _).le, norm_one]`. Rewrite `h` using `[hn, Complex.ofReal_one, mul_one]`. Conclude with `Circle.coe_inj.1 (by rw [Circle.coe_one]; exact h)`. Use `continuous_induced_rng.2 ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Continuous fun g => ((ξ g : Circle) : ℂ)`.
+
+Rewrite using `[continuous_iff_continuousAt]`. Introduce `g₀`. Establish `hw : ω' (g₀, 1) (R f₀) ≠ 0` using `fun h0 => hne (hinj g₀ _ h0)`. Take `⟨x₁, hx₁⟩` from `Function.ne_iff.1 hw`. Establish `hΦ` using `(GlobalTheory.T.continuous_restrictedWeilFirstFactor_apply D V V' W r C B ψ χS χT ω hω μ₀ 𝓨₀ h₀ f₀ hf₀ x₁).comp d.continuous_embed`.
+
+Establish `hΨ : Continuous fun g : GA D V' => ω' (g, 1) (R f₀) x₁` using `(hω'.om_cont (R f₀) hRth x₁).comp (continuous_id.prodMk continuous_const)`. Establish `heq : ∀ g, ω' (g, 1) (R f₀) x₁ ≠ 0 → ((ξ g : Circle) : ℂ) = R (ω (d.emb0 g, 1) f₀) x₁ / ω' (g, 1) (R f₀) x₁`. Introduce `g hg`. Establish `h` using `congrFun (hK 1 g f₀ hf₀) x₁`. Rewrite `h` using `[show s 1 g = d.emb0 g by simp [s], Pi.smul_apply, smul_eq_mul]`.
+
+Rewrite using `[h, eq_div_iff hg]`. Simplify using `only [K, d1, Complex.ofReal_one, mul_one]`. Both sides reduce to the same expression. Establish `hq : ContinuousAt (fun g => R (ω (d.emb0 g, 1) f₀) x₁ / ω' (g, 1) (R f₀) x₁) g₀` using `hΦ.continuousAt.div hΨ.continuousAt hx₁`. Conclude with `hq.congr ((hΨ.continuousAt.eventually_ne hx₁).mono fun g hg => (heq g hg).symm)`.
+
+Introduce `γ hγ`. Establish `h` using `huniq γ (K 1 γ) 1 (by`. Rewrite using `[← hK _ _ f₀ hf₀, one_smul, show s 1 γ = d.emb0 γ by simp [s]]`. Conclude with `GlobalTheory.T.rational_unitary_acts_on_thetaRestriction_smaller D V V' W r C B hs d hdC hdB ψ χS χT ω hω χS' χT' ω' hω' μ₀ 𝓨₀ h₀ γ hγ f₀ hf₀)`. Simplify using `only [K, d1, Complex.ofReal_one, mul_one] at h`.
+
+Conclude with `Circle.coe_inj.1 (by rw [Circle.coe_one]; exact h)`. Introduce `μ 𝓨 hμ a g' m h1 h2 f hf`. Take `⟨n, hn⟩ : ∃ n, n = (s a g')⁻¹ * m` from `⟨_, rfl⟩`. Establish `hmn : s a g' * n = m` using `by rw [hn, mul_inv_cancel_left]`. Establish `hnC : HMul.hMul (mt V n) (C.map (incA D)) = C.map (incA D)`.
+
+Rewrite using `[hn, mt_mul, Matrix.mul_assoc, h1, ← hsC a g', ← Matrix.mul_assoc, mt_inv_mul, Matrix.one_mul]`. Establish `hnB : HMul.hMul (mt V n) (B.map (incA D)) = B.map (incA D)`. Rewrite using `[hn, mt_mul, Matrix.mul_assoc, h2, ← hsB a g', ← Matrix.mul_assoc, mt_inv_mul, Matrix.one_mul]`. Establish `hnI : n ∈ NI V C` using `hker n hnC hnB`. Establish `hnf` using `hω.om_pres (n, 1) f hf`.
+
+Establish `key : ω (m, 1) f = ω (s a g', 1) (ω (n, 1) f)`. Rewrite using `[← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, mul_one, hmn]`. Establish `hk : R (ω (n, 1) f) = R f` using `GlobalTheory.T.wittTower_restriction_unipotentRadical_invariant D V V' W r C B hs ψ χS χT ω hω μ₀ 𝓨₀ h₀ ⟨n, hnI⟩ f hf`. Rewrite using `[hind _ (hω.om_pres _ f hf) μ 𝓨 hμ, hind f hf μ 𝓨 hμ, key, hK a g' _ hnf, hk]`. Simplify using `only [K, csplit, Circle.coe_mul]`.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem levi_scalars_autChar : ∀ (D : D7) (V V' W : HSp D) (r : ℕ) (C : Matrix (Fin V.rank) (Fin r) D.host.E) (B : Matrix (Fin V.rank) (Fin V'.rank) D.host.E), GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.IsIsoSplit V V' C B → ∀ (ψ : AddChar (AF D.host.F) ℂ) (χS χT : (AE D)ˣ →* Circle) (ω : GA D V × GA D W →* Module.End ℂ (WO V W → ℂ)), IsWeilDatumO ψ V W χS χT ω → ∀ (χS' χT' : (AE D)ˣ →* Circle) (ω' : GA D V' × GA D W →* Module.End ℂ (WO V' W → ℂ)), IsWeilDatumO ψ V' W χS' χT' ω' → ∃ (μa : GL (Fin r) (AE D) →* Circle) (ξ : GA D V' →* Circle), GlobalTheory.IndefiniteRowSideFullHecke.WittDecompositions.IsAutCharGL r μa ∧ GlobalTheory.IndefiniteRowSideFullHecke.WittDecompositions.IsAutCharU V' ξ ∧ ∀ (μ : Measure (Mx D W.rank r)) (𝓨 : Set (Mx D W.rank r)), IsCovolOne (GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.ratMx D W.rank r) μ 𝓨 → ∀ (a : GL (Fin r) (AE D)) (g' : GA D V') (m : GA D V), HMul.hMul (Formalism.L2.Theta.mt V m) (C.map (incA D)) = HMul.hMul (C.map (incA D)) a.val → HMul.hMul (Formalism.L2.Theta.mt V m) (B.map (incA D)) = HMul.hMul (B.map (incA D)) (Formalism.L2.Theta.mt V' g') → ∀ f, IsThetaFunO ψ V W f → GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.res V V' W C B μ 𝓨 (ω (m, 1) f) = ((μa a : ℂ) * (GlobalTheory.IndefiniteRowSideFullHecke.WittDecompositions.detPow a W.rank : ℂ) * (ξ g' : ℂ)) • ω' (g', 1) (GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.res V V' W C B μ 𝓨 f) := by
   intro D V V' W r C B hs ψ χS χT ω hω χS' χT' ω' hω'
   obtain ⟨d, hdC, hdB, hker⟩ := GlobalTheory.T.exists_wittDecomposition_isotropicSplit_unipotent D V V' r C B hs

@@ -15,6 +15,15 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.RealMult.LevelLift
 
+/- English proof (translation)
+Take `⟨φ, rfl⟩ : ∃ φ : R →+* Ω, spMap φ = t` from `⟨(Spec.preimage t).hom, Spec.map_preimage t⟩`. Use `⟨spMap (φ.comp (algebraMap ℂ R)), ?_⟩` and prove the remaining obligations. Establish `e : φ = (φ.comp (algebraMap ℂ R)).comp (π : R →+* ℂ)`. Use extensionality with `r`. Establish `hk : r - algebraMap ℂ R (π r) ∈ RingHom.ker π`.
+
+Rewrite using `[RingHom.mem_ker, map_sub, AlgHom.commutes]`. Simplify using the standard rewrite rules. Take `⟨n, hn⟩` from `hπ _ hk`. Establish `h0 : φ (r - algebraMap ℂ R (π r)) = 0`. Establish `: φ (r - algebraMap ℂ R (π r)) ^ n = 0` using `by rw [← map_pow, hn, map_zero]`.
+
+Conclude with `pow_eq_zero_iff'.mp this |>.1`. Rewrite `h0` using `[map_sub, sub_eq_zero]`. Simplify using `using h0`. Use `conv_rhs => rw [e]`. Use `show Spec.map _ ≫ Spec.map _ = Spec.map _`.
+
+Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem exists_factor_of_nil {R : Type} [CommRing R] [Algebra ℂ R] (π : R →ₐ[ℂ] ℂ)
     (hπ : ∀ x ∈ RingHom.ker π, IsNilpotent x) (Ω : Type) [Field Ω] (t : Sp Ω ⟶ Sp R) :
     ∃ t₀ : Sp Ω ⟶ Sp ℂ, t₀ ≫ spMap (π : R →+* ℂ) = t := by
@@ -35,6 +44,9 @@ theorem exists_factor_of_nil {R : Type} [CommRing R] [Algebra ℂ R] (π : R →
   rw [← Spec.map_comp]
   rfl
 
+/- English proof (translation)
+Introduce `F _ _ _ 𝔠 N hN R _ _ π hπ X' X₀ i h α₀`. Use `X'.ab.smooth` as an intermediate fact. Establish `hy : ∀ k, ∃ q : 𝟙_ (Over (Sp R)) ⟶ X'.A, q ^ N = 1 ∧ (α₀.pt k).left ≫ i = spMap (π : R →+* ℂ) ≫ q.left` using `fun k => GlobalTheory.T.lift_torsion_point_nilpotent π hπ X'.A X₀.A i h.grp N hN (α₀.pt k) (α₀.tors k)`. Use `choose q hq1 hq2 using hy`. Conclude with `GlobalTheory.T.level_structure_descends h (fun Ω _ _ t => exists_factor_of_nil π hπ Ω t) α₀ q hq1 hq2`.
+-/
 theorem level_lift : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (𝔠 : FracId F) (N : ℕ), 1 ≤ N →
     ∀ (R : Type) [CommRing R] [Algebra ℂ R] (π : R →ₐ[ℂ] ℂ), (∀ x ∈ RingHom.ker π, IsNilpotent x) →
     ∀ (X' : Obj F 𝔠 (Sp R)) (X₀ : Obj F 𝔠 (Sp ℂ)) (i : X₀.A.left ⟶ X'.A.left),

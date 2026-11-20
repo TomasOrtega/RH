@@ -2,6 +2,11 @@ import Development.AutomorphicArithmetic.CharacterBoxes.TwistForm
 
 open Formalism.HC Formalism.FrobeniusOrbits UpperTheory.Top
 
+/- English proof (translation)
+Establish `h1 : (-(d : ℤ)) ≡ 1 [ZMOD (p : ℤ)]`. Apply `Int.modEq_iff_dvd.2` to reduce the goal to its premises. Establish `h2` using `Int.natCast_dvd_natCast.2 h`. Move the coercions through the operations in `at h2`. Establish `h3 : (1 : ℤ) - -(d : ℤ) = (d : ℤ) + 1` using `by ring`.
+
+Rewrite using `[h3]`. Conclude with `h2`. Rewrite using `[jacobiSym.mod_left' h1, jacobiSym.one_left]`.
+-/
 private theorem jac_neg_of_dvd {p d : ℕ} (h : p ∣ d + 1) : jacobiSym (-(d : ℤ)) p = 1 := by
   have h1 : (-(d : ℤ)) ≡ 1 [ZMOD (p : ℤ)] := by
     apply Int.modEq_iff_dvd.2
@@ -12,6 +17,11 @@ private theorem jac_neg_of_dvd {p d : ℕ} (h : p ∣ d + 1) : jacobiSym (-(d : 
     exact h2
   rw [jacobiSym.mod_left' h1, jacobiSym.one_left]
 
+/- English proof (translation)
+Establish `hno : Odd n` using `Nat.odd_iff.2 (by omega)`. Rewrite using `[jacobiSym.neg _ ha]`. Break down `Nat.odd_mod_four_iff.1 (Nat.odd_iff.1 ha) with h | h` into its components or cases. Rewrite using `[ZMod.χ₄_nat_one_mod_four h, one_mul, jacobiSym.quadratic_reciprocity_one_mod_four h hno]`. Rewrite using `[ZMod.χ₄_nat_three_mod_four h, jacobiSym.quadratic_reciprocity_three_mod_four h hn]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem jac_neg_recip {n a : ℕ} (hn : n % 4 = 3) (ha : Odd a) :
     jacobiSym (-(n : ℤ)) a = jacobiSym (a : ℤ) n := by
   have hno : Odd n := Nat.odd_iff.2 (by omega)
@@ -21,6 +31,11 @@ private theorem jac_neg_recip {n a : ℕ} (hn : n % 4 = 3) (ha : Odd a) :
   · rw [ZMod.χ₄_nat_three_mod_four h, jacobiSym.quadratic_reciprocity_three_mod_four h hn]
     ring
 
+/- English proof (translation)
+Introduce `eps Y q d hw`. Establish `hq4 : q % 4 = 3` using `by have := hw.q_mod; omega`. Establish `hd4 : d % 4 = 3` using `by have := hw.d_mod; omega`. Use `⟨⟨hw.q_prime, hw.d_prime, hw.q_mod, hw.d_mod, jac_neg_of_dvd hw.d_q⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce `p hp hp2 hpY`.
+
+Conclude with `jac_neg_of_dvd (hw.d_small p hp hp2 hpY)`. Introduce `a ha`. Conclude with `⟨jac_neg_recip hq4 ha, jac_neg_recip hd4 ha⟩`.
+-/
 theorem UpperTheory.Top.pairHyp :
     ∀ (eps Y : ℝ) (q d : ℕ), WinPair eps Y q d → HostHyp q d ∧
       (∀ p : ℕ, p.Prime → p ≠ 2 → (p : ℝ) ≤ Y ^ (eps / 5) → jacobiSym (-(d : ℤ)) p = 1) ∧

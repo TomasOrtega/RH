@@ -6,6 +6,11 @@ open ValuativeRel Matrix GlobalTheory.SmGL GlobalTheory.SplitWeil UpperTheory.V.
 
 namespace UpperTheory.V.AlgebraTools.PermCard
 
+/- English proof (translation)
+Rewrite using `[← map_inv, Units.val_mul, Units.val_mul]`. Simplify using `only [mul_apply, pm_apply]`. Rewrite using `[Fintype.sum_eq_single (w b), Fintype.sum_eq_single (w a)]`. Simplify using the standard rewrite rules. Introduce `x hx`.
+
+Rewrite using `[if_neg, zero_mul]`. Introduce and unpack `rfl`. Conclude with `hx (by simp)`. Introduce `x hx`. Rewrite using `[if_neg hx, mul_zero]`.
+-/
 private theorem conj_apply {R : Type} [CommRing R] {n : ℕ} (w : Equiv.Perm (Fin n)) (g : GL (Fin n) R) (a b : Fin n) :
     (((pm R n w)⁻¹ * g * pm R n w : GL (Fin n) R) : Matrix (Fin n) (Fin n) R) a b =
       (g : Matrix (Fin n) (Fin n) R) (w a) (w b) := by
@@ -20,6 +25,9 @@ private theorem conj_apply {R : Type} [CommRing R] {n : ℕ} (w : Equiv.Perm (Fi
   · intro x hx
     rw [if_neg hx, mul_zero]
 
+/- English proof (translation)
+Use extensionality with `i j`. Use `show f ((pm R n w : Matrix (Fin n) (Fin n) R) i j) = _`. Rewrite using `[pm_apply, pm_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 private theorem map_pm {R S : Type} [CommRing R] [CommRing S] {n : ℕ} (f : R →+* S) (w : Equiv.Perm (Fin n)) :
     GeneralLinearGroup.map (n := Fin n) f (pm R n w) = pm S n w := by
   ext i j
@@ -27,6 +35,19 @@ private theorem map_pm {R S : Type} [CommRing R] [CommRing S] {n : ℕ} (f : R �
   rw [pm_apply, pm_apply]
   split_ifs <;> simp
 
+/- English proof (translation)
+Establish `hm : ∀ (c : ι) (q : MulAction.orbit I (w : G ⧸ I)), (x c * s) • (q : G ⧸ I) ∈ MulAction.orbit I ((s * w : G) : G ⧸ I)`. Introduce and unpack `c ⟨_, g, rfl⟩`. Take `⟨a, b, hb, e⟩` from `h2 g g.2`. Use `⟨⟨x c * b, mul_mem (hx c) hb⟩, ?_⟩` and prove the remaining obligations. Use `show ((x c * b * (s * w) : G) : G ⧸ I) = ((x c * s * (g * w) : G) : G ⧸ I)`.
+
+Rewrite using `[QuotientGroup.eq]`. Establish `: x c * s * (g * w) = x c * (s * g) * w` using `by group`. Rewrite using `[this, e]`. Use `h3 a using 1` and compare the differences between its conclusion and the goal. Use `group`.
+
+Set `f : ι × MulAction.orbit I (w : G ⧸ I) → MulAction.orbit I ((s * w : G) : G ⧸ I)` to `fun p => ⟨_, hm p.1 p.2⟩`. Establish `hf : Function.Bijective f`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, _, g, rfl⟩ ⟨c', _, g', rfl⟩ e`. Establish `e1 : (x c * s) • ((g : G) • (w : G ⧸ I)) = (x c' * s) • ((g' : G) • (w : G ⧸ I))` using `congrArg Subtype.val e`.
+
+Establish `e2 : ((x c' * s * (g' * w) : G) : G ⧸ I) = ((x c * s * (g * w) : G) : G ⧸ I)` using `e1.symm`. Rewrite `e2` using `[QuotientGroup.eq]`. Establish `hc : c = c'` using `h4 c c' g g.2 g' g'.2 (by convert e2 using 1; group)`. Substitute `hc` using the available equality. Conclude with `Prod.ext rfl (Subtype.ext (smul_left_cancel _ e1))`.
+
+Introduce and unpack `⟨_, g, rfl⟩`. Take `⟨c, b, hb, e⟩` from `h1 g g.2`. Use `⟨(c, ⟨_, ⟨b, hb⟩, rfl⟩), Subtype.ext ?_⟩` and prove the remaining obligations. Use `show ((x c * s * (b * w) : G) : G ⧸ I) = ((g * (s * w) : G) : G ⧸ I)`. Rewrite using `[← mul_assoc, ← e, mul_assoc]`.
+
+Rewrite using `[← Nat.card_coe_set_eq, ← Nat.card_coe_set_eq, ← Nat.card_prod, Nat.card_eq_of_bijective f hf]`.
+-/
 private theorem ncard_orbit {G ι : Type} [Group G] (I : Subgroup G) (s w : G) (x : ι → G) (hx : ∀ c, x c ∈ I)
     (h1 : ∀ g ∈ I, ∃ c, ∃ b ∈ I, g * s = x c * s * b)
     (h2 : ∀ g ∈ I, ∃ c, ∃ b ∈ I, s * g = b * (s * x c))
@@ -65,6 +86,29 @@ private theorem ncard_orbit {G ι : Type} [Group G] (I : Subgroup G) (s w : G) (
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n : ℕ}
 
+/- English proof (translation)
+Use `choose r hr using IsLocalRing.residue_surjective (R := 𝒪[k])`. Take `⟨x, hx, hxu, ho, h2⟩` from `simpleOrbit k n C i j hij r hr`. Establish `hU : unipO k n ≤ iwC k n C` using `le_sup_right.trans le_sup_left`. Establish `hlt : i < j` using `by rw [Fin.lt_def]; omega`. Take `⟨hmem, -, -, hun⟩` from `memIwC k n C`.
+
+Establish `hdiag : ∀ g ∈ iwC k n C, ∀ a, valuation k ((g : Matrix (Fin n) (Fin n) k) a a) = 1`. Introduce `g hg a`. Take `⟨c, ⟨d, -, rfl⟩, e⟩` from `((hmem g).1 hg).2 a`. Rewrite using `[← e]`. Conclude with `(hun _).1 ⟨d, trivial, rfl⟩`.
+
+Establish `hlow : ∀ g ∈ iwC k n C, ∀ a b, b < a → valuation k ((g : Matrix (Fin n) (Fin n) k) a b) < 1` using `fun g hg => (mem_iwahori.1 ((hmem g).1 hg).1).2`. Rewrite using `[map_mul]`. Use `ncard_orbit (iwC k n C) _ _ x (fun c => hU (hxu c)) ?_ h2 ?_ ?_` and prove the remaining obligations. Introduce `g hg`. Take `⟨c, hc, -⟩` from `(ho ((g * pm k n (Equiv.swap i j) : GL (Fin n) k) : GL (Fin n) k ⧸ iwC k n C)).1 ⟨⟨g, hg⟩, rfl⟩`.
+
+Conclude with `⟨c, _, QuotientGroup.eq.1 hc, by group⟩`. Introduce `c`. Establish `hK : pm k n w ∈ KO k (Fin n)` using `⟨pm 𝒪[k] n w, map_pm _ w⟩`. Establish `hK' : (pm k n w)⁻¹ * x c * pm k n w ∈ KO k (Fin n)` using `mul_mem (mul_mem (inv_mem hK) (hxu c).2) hK`. Use `hU ⟨(mem_unipB k).2 ⟨fun a b hab => ?_, fun a => ?_⟩, hK'⟩` and prove the remaining obligations.
+
+Rewrite using `[conj_apply, hx, Matrix.add_apply, one_apply_ne (w.injective.ne hab.ne'), single_apply, if_neg, add_zero]`. Introduce and unpack `⟨rfl, rfl⟩`. Simplify using `only [Equiv.Perm.coe_inv, Equiv.symm_apply_apply] at hw`. Conclude with `lt_asymm hw hab`. Rewrite using `[conj_apply, hx, Matrix.add_apply, one_apply_eq, single_apply, if_neg, add_zero]`.
+
+Introduce and unpack `⟨h, h'⟩`. Conclude with `hlt.ne (h.trans h'.symm)`. Introduce `c c' g hg g' hg' h set d : k := algebraMap 𝒪[k] k (r c) - algebraMap 𝒪[k] k (r c') with hd`. Establish `hz : (((x c')⁻¹ * x c : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) = 1 + single i j d`. Rewrite using `[Units.val_mul, Units.inv_mul_eq_iff_eq_mul, hx, hx, add_mul, mul_add, mul_add, one_mul, one_mul, mul_one, single_mul_single_of_ne _ _ _ _ hlt.ne', add_zero, add_assoc, ← single_add, hd, sub_add_cancel]`.
+
+Establish `hy : (((pm k n (Equiv.swap i j))⁻¹ * ((x c')⁻¹ * x c) * pm k n (Equiv.swap i j) : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) = 1 + single j i d`. Use extensionality with `a b`. Rewrite using `[conj_apply, hz]`. Simplify using `only [Matrix.add_apply, one_apply, single_apply, Equiv.apply_eq_iff_eq]`. Use `congr 2`.
+
+Rewrite using `[← Equiv.symm_apply_eq, ← Equiv.symm_apply_eq, Equiv.symm_swap, Equiv.swap_apply_left, Equiv.swap_apply_right]`. Establish `h5` using `hlow _ h _ _ hw`. Rewrite `h5` using `[conj_apply, Units.val_mul, Units.val_mul, hy, mul_add, add_mul, mul_one, Matrix.add_apply]`. Simplify using `only [Equiv.Perm.coe_inv, Equiv.apply_symm_apply] at h5`. Establish `h6` using `hlow _ (mul_mem (inv_mem hg') hg) j i hlt`.
+
+Rewrite `h6` using `[Units.val_mul]`. Establish `h7 : (((g'⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) * single j i d * (g : Matrix (Fin n) (Fin n) k)) j i = ((g'⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) j j * d * (g : Matrix (Fin n) (Fin n) k) i i`. Rewrite using `[mul_apply, Fintype.sum_eq_single i, mul_single_apply_same]`. Introduce `a ha`. Rewrite using `[mul_single_apply_of_ne _ _ _ _ _ ha, zero_mul]`.
+
+Establish `h8` using `Valuation.map_sub_lt _ h5 h6`. Rewrite `h8` using `[add_sub_cancel_left, h7, map_mul, map_mul, hdiag _ (inv_mem hg'), hdiag _ hg, one_mul, mul_one, hd, ← map_sub]`. Establish `h9 : IsLocalRing.residue 𝒪[k] (r c - r c') = 0`. Rewrite using `[IsLocalRing.residue_eq_zero_iff, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, (Valuation.integer.integers (valuation k)).isUnit_iff_valuation_eq_one]`. Conclude with `h8.ne`.
+
+Rewrite `h9` using `[map_sub, hr, hr, sub_eq_zero]`. Then use the resulting hypothesis.
+-/
 private theorem step (C : Subgroup 𝓀[k]ˣ) (w : Equiv.Perm (Fin n)) (i j : Fin n) (hij : (j : ℕ) = i + 1)
     (hw : w⁻¹ i < w⁻¹ j) :
     (MulAction.orbit (iwC k n C) ((pm k n (Equiv.swap i j * w) : GL (Fin n) k) : GL (Fin n) k ⧸ iwC k n C)).ncard =
@@ -133,6 +177,17 @@ private theorem step (C : Subgroup 𝓀[k]ˣ) (w : Equiv.Perm (Fin n)) (i j : Fi
 end UpperTheory.V.AlgebraTools.PermCard
 
 open UpperTheory.V.AlgebraTools.PermCard in
+/- English proof (translation)
+Introduce `k _ _ _ _ n C w`. Generalize the expression as in `hm : invLen w = m`. Proceed by induction on `m generalizing w with`. Consider the case `zero`. Rewrite using `[(lenStep n w).2.1 hm, map_one, pow_zero, Set.ncard_eq_one]`.
+
+Use `⟨_, Set.eq_singleton_iff_unique_mem.2 ⟨MulAction.mem_orbit_self _, ?_⟩⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨g, rfl⟩`. Use `show (((g : GL (Fin n) k) * 1 : GL (Fin n) k) : GL (Fin n) k ⧸ iwC k n C) = _`. Rewrite using `[QuotientGroup.eq]`. Simplify using `using g.2`.
+
+Consider the case `succ m ih`. Establish `hw : w ≠ 1`. Introduce and unpack `rfl`. Establish `: invLen (1 : Equiv.Perm (Fin n)) = 0`. Rewrite using `[invLen, Finset.card_eq_zero, Finset.filter_eq_empty_iff]`.
+
+Conclude with `fun p _ h => lt_asymm h.1 h.2`. Use linear arithmetic over natural numbers and integers. Take `⟨i, j, hij, hlt⟩` from `(lenStep n w).2.2 hw`. Establish `hl` using `((lenStep n w).1 i j hij).2 hlt`. Establish `hs` using `step C (Equiv.swap i j * w) i j hij (by simpa using hlt)`.
+
+Rewrite `hs` using `[Equiv.swap_mul_self_mul]`. Rewrite using `[hs, ih _ (by omega), pow_succ']`.
+-/
 theorem UpperTheory.V.AlgebraTools.permCard :
     ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : ℕ) (C : Subgroup 𝓀[k]ˣ) (w : Equiv.Perm (Fin n)), (MulAction.orbit (iwC k n C) ((pm k n w : GL (Fin n) k) : GL (Fin n) k ⧸ iwC k n C)).ncard = resCard k ^ invLen w := by
   intro k _ _ _ _ n C w

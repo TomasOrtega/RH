@@ -15,22 +15,34 @@ section
 
 variable {ι : Type w} (P : (Opens X)ᵒᵖ ⥤ AddCommGrpCat.{u}) (U : ι → Opens X)
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 lemma res_congr {n : ℕ} (σ : Cochain P U n) {j₁ j₂ : Fin (n + 1) → ι} (h : j₁ = j₂)
     {V : Opens X} (h₁ : V ≤ inter U j₁) (h₂ : V ≤ inter U j₂) :
     res P h₁ (σ j₁) = res P h₂ (σ j₂) := by
   subst h
   rfl
 
+/- English proof (translation)
+Introduce `x hx`. Rewrite using `[mem_inter_iff]`. Conclude with `fun _ => hx`.
+-/
 lemma le_inter_const {n : ℕ} (a : ι) : U a ≤ inter U (fun _ : Fin n => a) := by
   intro x hx
   rw [mem_inter_iff]
   exact fun _ => hx
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `only [SetLike.mem_coe, Opens.mem_inf, mem_inter_iff, Fin.forall_fin_succ, Function.comp]`.
+-/
 lemma inter_succ {n : ℕ} (i : Fin (n + 2) → ι) :
     inter U i = U (i 0) ⊓ inter U (i ∘ Fin.succ) := by
   ext x
   simp only [SetLike.mem_coe, Opens.mem_inf, mem_inter_iff, Fin.forall_fin_succ, Function.comp]
 
+/- English proof (translation)
+Rewrite using `[d_apply, Fin.sum_univ_two]`. Simplify using `[sub_eq_add_neg]`.
+-/
 lemma d_zero_apply (σ : Cochain P U 0) (i : Fin 2 → ι) :
     d P U 0 σ i = res P (inter_le_comp U i (0 : Fin 2).succAbove) (σ (i ∘ (0 : Fin 2).succAbove)) -
       res P (inter_le_comp U i (1 : Fin 2).succAbove) (σ (i ∘ (1 : Fin 2).succAbove)) := by
@@ -40,6 +52,9 @@ lemma d_zero_apply (σ : Cochain P U 0) (i : Fin 2 → ι) :
 def constCochain {V : Opens X} (hUV : ∀ a, U a ≤ V) (s : P.obj (op V)) : Cochain P U 0 :=
   fun i => res P ((inter_le U i 0).trans (hUV (i 0))) s
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Rewrite using `[d_zero_apply]`. Simplify using `only [constCochain, res_res, sub_self]`. Both sides reduce to the same expression.
+-/
 lemma d_constCochain {V : Opens X} (hUV : ∀ a, U a ≤ V) (s : P.obj (op V)) :
     d P U 0 (constCochain P U hUV s) = 0 := by
   funext i
@@ -54,6 +69,21 @@ variable (P : (Opens X)ᵒᵖ ⥤ AddCommGrpCat.{u})
 
 include hP in
 
+/- English proof (translation)
+Set `sf : ∀ j, P.obj (op (U j))` to `fun j => res P (le_inter_const U j) (τ (fun _ => j))`. Establish `compat : TopCat.Presheaf.IsCompatible P U sf`. Introduce `i j`. Establish `h` using `congrFun hτ ![i, j]`. Rewrite `h` using `[d_zero_apply]`.
+
+Establish `hle : U i ⊓ U j ≤ inter U ![i, j]`. Introduce `x hx`. Rewrite using `[mem_inter_iff]`. Introduce `a`. Use `fin_cases a`.
+
+Conclude with `hx.1`. Conclude with `hx.2`. Rewrite `h` using `[Pi.zero_apply]`. Establish `h'` using `congrArg (res P hle) h`. Rewrite `h'` using `[map_sub, res_res, res_res, map_zero, sub_eq_zero]`.
+
+Establish `e0 : (![i, j] ∘ (0 : Fin 2).succAbove) = fun _ : Fin 1 => j`. Use function extensionality and compare the values at `a`. Use `fin_cases a`. Both sides reduce to the same expression. Establish `e1 : (![i, j] ∘ (1 : Fin 2).succAbove) = fun _ : Fin 1 => i`.
+
+Use function extensionality and compare the values at `a`. Use `fin_cases a`. Both sides reduce to the same expression. Rewrite `h'` using `[res_congr P U τ e0 _ ((inf_le_right).trans (le_inter_const U j)), res_congr P U τ e1 _ ((inf_le_left).trans (le_inter_const U i))]`. Express the relevant statement in the definitionally equal form `res P inf_le_left (sf i) = res P inf_le_right (sf j)`.
+
+Simplify using `only [sf, res_res]`. Conclude with `h'.symm`. Take `⟨t, ht, -⟩` from `TopCat.Sheaf.existsUnique_gluing' (⟨P, hP⟩ : TopCat.Sheaf AddCommGrpCat.{u} X) U V (fun a => homOfLE (hUV a)) hV sf compat`. Use `⟨t, fun i => ?_⟩` and prove the remaining obligations. Establish `hi : (fun _ : Fin 1 => i 0) = i` using `funext fun a => by rw [Subsingleton.elim a 0]`.
+
+Establish `ht' : res P (hUV (i 0)) t = sf (i 0)` using `ht (i 0)`. Rewrite using `[← res_res P (inter_le U i 0) (hUV (i 0)), ht']`. Simplify using `only [sf, res_res]`. Conclude with `(res_congr P U τ hi _ le_rfl).trans (res_refl _ _ _)`.
+-/
 lemma exists_glue {ι : Type w} (U : ι → Opens X) (V : Opens X) (hUV : ∀ a, U a ≤ V)
     (hV : V ≤ iSup U) (τ : Cochain P U 0) (hτ : d P U 0 τ = 0) :
     ∃ t : P.obj (op V), ∀ i : Fin 1 → ι,
@@ -93,6 +123,13 @@ lemma exists_glue {ι : Type w} (U : ι → Opens X) (V : Opens X) (hUV : ∀ a,
 
 variable {P} in
 
+/- English proof (translation)
+Introduce `n σ hσ`. Use `choose τ hτ using fun i => hsurj i (σ i)`. Establish `hτ' : push U g (n + 1) τ = σ` using `funext hτ`. Establish `h0 : push U g (n + 2) (d I U (n + 1) τ) = 0` using `by rw [push_d, hτ', hσ]`. Use `choose ρ hρ using fun j => hex j _ (congrFun h0 j)`.
+
+Establish `hρ' : push U f (n + 2) ρ = d I U (n + 1) τ` using `funext hρ`. Establish `hρc : d F U (n + 2) ρ = 0`. Apply `push_injective U f (n + 3) (fun j => hinj j)` to reduce the goal to its premises. Rewrite using `[map_zero, push_d, hρ', d_d]`. Take `⟨α, hα⟩` from `hF (n + 1) ρ hρc`.
+
+Establish `hc : d I U (n + 1) (τ - push U f (n + 1) α) = 0`. Rewrite using `[map_sub, ← push_d, hα, hρ', sub_self]`. Take `⟨β, hβ⟩` from `hI n _ hc`. Use `⟨push U g n β, ?_⟩` and prove the remaining obligations. Rewrite using `[← push_d, hβ, map_sub, hτ', push_comp, hfg, push_zero', sub_zero]`.
+-/
 lemma CechAcyclic.of_shortExact' {ι : Type w} (U : ι → Opens X)
     {F I Q : (Opens X)ᵒᵖ ⥤ AddCommGrpCat.{u}} (f : F ⟶ I) (g : I ⟶ Q) (hfg : f ≫ g = 0)
     (hinj : ∀ {n : ℕ} (i : Fin (n + 1) → ι), Function.Injective (f.app (op (inter U i))))
@@ -121,21 +158,33 @@ section
 variable {S : ShortComplex (TopCat.Sheaf AddCommGrpCat.{u} X)} (hS : S.ShortExact)
 
 include hS in
+/- English proof (translation)
+Establish `: Mono S.f` using `hS.mono_f`. Establish `: Mono S.f.hom` using `(TopCat.Sheaf.forget AddCommGrpCat.{u} X).map_mono S.f`. Conclude with `(AddCommGrpCat.mono_iff_injective _).1 ((NatTrans.mono_iff_mono_app _).1 this W)`.
+-/
 lemma app_injective_of_shortExact (W : (Opens X)ᵒᵖ) : Function.Injective (S.f.hom.app W) := by
   have : Mono S.f := hS.mono_f
   have : Mono S.f.hom := (TopCat.Sheaf.forget AddCommGrpCat.{u} X).map_mono S.f
   exact (AddCommGrpCat.mono_iff_injective _).1 ((NatTrans.mono_iff_mono_app _).1 this W)
 
 include hS in
+/- English proof (translation)
+The claim follows from `TopCat.Sheaf.sections_exact_of_left_exact hS.1 hS.2 y hy`.
+-/
 lemma app_exact_of_shortExact (W : Opens X) (y : S.X₂.obj.obj (op W))
     (hy : S.g.hom.app (op W) y = 0) : ∃ x, S.f.hom.app (op W) x = y :=
   TopCat.Sheaf.sections_exact_of_left_exact hS.1 hS.2 y hy
 
 set_option backward.isDefEq.respectTransparency false in
+/- English proof (translation)
+Rewrite using `[← ObjectProperty.FullSubcategory.comp_hom, S.zero]`. Both sides reduce to the same expression.
+-/
 lemma comp_hom_eq_zero : S.f.hom ≫ S.g.hom = 0 := by
   rw [← ObjectProperty.FullSubcategory.comp_hom, S.zero]
   rfl
 
+/- English proof (translation)
+Rewrite using `[← ConcreteCategory.comp_apply, ← NatTrans.comp_app, comp_hom_eq_zero]`. Both sides reduce to the same expression.
+-/
 lemma app_comp_apply_eq_zero (W : (Opens X)ᵒᵖ) (x : S.X₁.obj.obj W) :
     S.g.hom.app W (S.f.hom.app W x) = 0 := by
   rw [← ConcreteCategory.comp_apply, ← NatTrans.comp_app, comp_hom_eq_zero]
@@ -151,6 +200,13 @@ def CechCondition (F : TopCat.Sheaf AddCommGrpCat.{u} X) : Prop :=
 
 variable {B}
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero`. Establish `: inter U i = U (i 0)` using `le_antisymm (inter_le U i 0) (by`. Introduce `x hx`. Rewrite using `[mem_inter_iff]`.
+
+Introduce `a`. Rewrite using `[Fin.fin_one_eq_zero a])` and apply the resulting hypothesis. Rewrite using `[this]`. Conclude with `hU _`. Consider the case `succ n ih`.
+
+Rewrite using `[inter_succ]`. Conclude with `hinf _ _ (hU _) (ih _)`.
+-/
 lemma inter_mem (hinf : ∀ V W, B V → B W → B (V ⊓ W)) {ι : Type w} (U : ι → Opens X)
     (hU : ∀ a, B (U a)) {n : ℕ} (i : Fin (n + 1) → ι) : B (inter U i) := by
   induction n with

@@ -42,6 +42,9 @@ structure LawsM (a : Weil h →* (w.adicCompletion E)ˣ) (ha : IsLocalArtin h a)
   depth : ∀ x, Good x → fixed x.rep (KOne (w.adicCompletion E) (Fin x.1)) ≠ ⊥ → IsTameWD (rc x)
   type : TypeLaw h rc
 
+/- English proof (translation)
+Take `⟨a, ha, ε, k⟩` from `toV' H`. Take `⟨_, _, k'⟩` from `H`. Conclude with `⟨a, ha, ε, k.dim, k.one, k.langlands, k.det, k.prod, k.supp, k.sph, k.sat, k.cusp, k.nu_eq, k.absCentral, k.twist, k.central, k.dual, k.inj, k'.depth, k'.type⟩`.
+-/
 theorem opn (rc : IrrGL (w.adicCompletion E) → WD h) (H : IsRecT h rc) :
     ∃ (a : Weil h →* (w.adicCompletion E)ˣ) (ha : IsLocalArtin h a) (ε : EpsFamily A), LawsM a ha ε rc := by
   obtain ⟨a, ha, ε, k⟩ := toV' H
@@ -49,6 +52,9 @@ theorem opn (rc : IrrGL (w.adicCompletion E) → WD h) (H : IsRecT h rc) :
   exact ⟨a, ha, ε, k.dim, k.one, k.langlands, k.det, k.prod, k.supp, k.sph, k.sat, k.cusp, k.nu_eq, k.absCentral,
     k.twist, k.central, k.dual, k.inj, k'.depth, k'.type⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨a, ha, k.dim, k.one, k.langlands, fun x => (k.cusp x).1, k.nu_eq, k.absCentral, k.twist, k.central, k.dual, k.inj, k.depth, k.type⟩`.
+-/
 theorem cls_of {a : Weil h →* (w.adicCompletion E)ˣ} {ha : IsLocalArtin h a} {ε : EpsFamily A}
     {rc : IrrGL (w.adicCompletion E) → WD h} (k : LawsM a ha ε rc) : IsRecT h rc :=
   ⟨a, ha, k.dim, k.one, k.langlands, fun x => (k.cusp x).1, k.nu_eq, k.absCentral, k.twist, k.central, k.dual, k.inj,

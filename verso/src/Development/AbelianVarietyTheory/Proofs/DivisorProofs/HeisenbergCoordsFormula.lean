@@ -7,6 +7,9 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.IndefiniteRowSideFullH
 
 namespace GlobalTheory.QhtUnip
 
+/- English proof (translation)
+Establish `h : (cA σ).comp (cA σ) = AlgHom.id (AF F) (AE F E)`. Apply `Algebra.TensorProduct.ext'` to reduce the goal to its premises. Introduce `a e`. Simplify using `[cA, hσ]`. Conclude with `congrArg (fun f => f z) h`.
+-/
 theorem cA_cA_of_invol {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (hσ : ∀ e, σ (σ e) = e) (z : AE F E) : cA σ (cA σ z) = z := by
   have h : (cA σ).comp (cA σ) = AlgHom.id (AF F) (AE F E) := by
@@ -15,6 +18,13 @@ theorem cA_cA_of_invol {F E : Type} [Field F] [NumberField F] [Field E] [NumberF
     simp [cA, hσ]
   exact congrArg (fun f => f z) h
 
+/- English proof (translation)
+Use `⟨fun k => ?_, ?_⟩` and prove the remaining obligations. Establish `h1` using `congrFun (congrFun hU (Sum.inl (Sum.inr k))) (Sum.inr 0)`. Simplify using `[Matrix.mul_apply, Heisenberg₂, gI, Matrix.fromBlocks, Fintype.sum_sum_type, Matrix.one_apply] at h1`. Take the linear combination `h1`. Establish `h2` using `congrFun (congrFun hU (Sum.inr 0)) (Sum.inr 0)`.
+
+Simplify using `[Matrix.mul_apply, Heisenberg₂, gI, Matrix.fromBlocks, Fintype.sum_sum_type] at h2`. Establish `hQ : (∑ k, (∑ j, w j * inclR (F` using `F) (AF F) (J₁ j k)) * cA σ (w k)) = ∑ j, ∑ k, w j * inclR (F := F) (AF F) (J₁ j k) * cA σ (w k) := by`. Repeatedly rewrite using `[Finset.sum_mul]`. Conclude with `Finset.sum_comm`. Rewrite `h2` using `[hQ]`.
+
+Establish `h3` using `congrArg (cA σ) h2`. Simplify using `only [map_add, map_neg, map_zero, cA_cA_of_invol σ hσ] at h3`. Rewrite using `[map_add, map_mul, map_ofNat]`. Take the linear combination `h3 - h2`.
+-/
 theorem heis_rel_of_unit {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (hσ : ∀ e, σ (σ e) = e) {m : ℕ} (J₁ : Matrix (Fin m) (Fin m) E) (a w : Fin m → AE F E) (α : AE F E)
     (hU : (Heisenberg₂ a w α)ᵀ * (gI J₁).map (inclR (F := F) (AF F)) * (Heisenberg₂ a w α).map (cA σ) =
@@ -38,6 +48,9 @@ theorem heis_rel_of_unit {F E : Type} [Field F] [NumberField F] [Field E] [Numbe
     rw [map_add, map_mul, map_ofNat]
     linear_combination h3 - h2
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hσ B m W r s hW W₁ H i₀ i₁ hA g a w α hg`. Establish `hU` using `GlobalTheory.T.coords_preserve_gram_matrix F E σ hσ B W r s hW W₁ H i₀ i₁ hA g`. Rewrite `hU` using `[hg]`. Conclude with `heis_rel_of_unit σ hσ W₁.J a w α hU`.
+-/
 theorem heis_rel : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), (∀ e, σ (σ e) = e) → ∀ (B : Base F E) {m : ℕ} (W : Spc F E (m + 2)) (r s : ℕ), W.IsSkew σ B r s →
     ∀ (W₁ : Spc F E m) (H : Plane E (m + 2) m) (i₀ i₁ : ℕ), H.IsAdapted σ B W W₁ i₀ i₁ → ∀ (g : UA σ W.J) (a w : Fin m → AE F E) (α : AE F E), crd H g = Heisenberg₂ a w α →
       (∀ k, a k = -∑ j, inclR (F := F) (AF F) (W₁.J k j) * cA σ (w j)) ∧

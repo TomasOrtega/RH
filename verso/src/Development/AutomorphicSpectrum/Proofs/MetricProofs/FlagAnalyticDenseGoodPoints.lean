@@ -17,12 +17,18 @@ namespace GlobalTheory.CompanionTheory.Ar.PB.WSq.FC.DensR
 
 variable {K : Type} {ι : K → Type}
 
+/- English proof (translation)
+Take `⟨c, hc, rfl⟩` from `h`. Use `⟨fun k => (c k)⁻¹, fun k => inv_ne_zero (hc k), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `p`. Simplify using `[hc p.1]`.
+-/
 theorem orbit_symm {z z' : (Σ k, ι k) → ℂ} (h : SameOrbit z z') : SameOrbit z' z := by
   obtain ⟨c, hc, rfl⟩ := h
   refine ⟨fun k => (c k)⁻¹, fun k => inv_ne_zero (hc k), ?_⟩
   funext p
   simp [hc p.1]
 
+/- English proof (translation)
+Take `⟨c, hc, rfl⟩` from `h`. Take `⟨c', hc', rfl⟩` from `h'`. Use `⟨fun k => c k * c' k, fun k => mul_ne_zero (hc k) (hc' k), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `p`. Simplify using `[mul_assoc]`.
+-/
 theorem orbit_trans {z z' z'' : (Σ k, ι k) → ℂ} (h : SameOrbit z z') (h' : SameOrbit z' z'') :
     SameOrbit z z'' := by
   obtain ⟨c, hc, rfl⟩ := h
@@ -31,11 +37,19 @@ theorem orbit_trans {z z' z'' : (Σ k, ι k) → ℂ} (h : SameOrbit z z') (h' :
   funext p
   simp [mul_assoc]
 
+/- English proof (translation)
+Take `⟨c, hc, rfl⟩` from `h`. Conclude with `⟨fun k => c k.1, fun k => hc k.1, rfl⟩`.
+-/
 theorem orbit_basePart {σ : Type} (blk : σ → Option K) {z z' : (Σ k, ι k) → ℂ} (h : SameOrbit z z') :
     SameOrbit (basePart blk z) (basePart blk z') := by
   obtain ⟨c, hc, rfl⟩ := h
   exact ⟨fun k => c k.1, fun k => hc k.1, rfl⟩
 
+/- English proof (translation)
+Unfold `minorIJ`. Distinguish the cases in `e : I.card = J.card`. Simplify using `only [dif_pos e, Matrix.det_apply', Matrix.submatrix_apply]`. Use `Finset.analyticOnNhd_fun_sum _ fun σ _ => ?_` and prove the remaining obligations. Conclude with `analyticOnNhd_const.mul (Finset.analyticOnNhd_fun_prod _ fun i _ => hh _ _)`.
+
+Simplify using `only [dif_neg e]`. Conclude with `analyticOnNhd_const`.
+-/
 theorem analytic_minorIJ {m N : ℕ} {V : Set (Fin m → ℂ)} {h : (Fin m → ℂ) → Matrix (Fin N) (Fin N) ℂ}
     (hh : ∀ r s, AnalyticOnNhd ℂ (fun u => h u r s) V) (I J : Finset (Fin N)) :
     AnalyticOnNhd ℂ (fun u => minorIJ (h u) I J) V := by
@@ -53,6 +67,21 @@ namespace GlobalTheory.CompanionTheory.Ar.PB.WSq.FC
 
 open DensR in
 
+/- English proof (translation)
+Introduce `K _ ι _ Φ _ y Ψ _ _ N j M n d BM FA l x hx V hV hxV`. Establish `hlift : FA.Re.R.lift x x ∈ mcPts (mCoordIdeal y)` using `FA.Re.R.mem x x (FA.Re.R.mem_U x)`. Take `⟨h₀, hh₀, hso₀⟩` from `GlobalTheory.T.exists_flag_point_in_orbit K ι Φ y Ψ N j M n BM l (FA.pr (FA.Re.π x)) hx _ hlift (FA.pr_eq x)`. Establish `hgood` using `GlobalTheory.CompanionTheory.Ar.PB.WSq.FC.bvec_good K ι Φ y Ψ N j M n BM l`. Establish `han : ∀ (m : ℕ) (V : Set (Fin m → ℂ)) (bp : (Fin m → ℂ) → BM.Rb.X) (hh : Ψ → (Fin m → ℂ) → Matrix (Fin N) (Fin N) ℂ), IsOpen V → ContinuousOn bp V → (∀ k, AnalyticOnNhd ℂ (BM.Rb.A.chart k ∘ bp) (V ∩ bp ⁻¹' (BM.Rb.A.chart k).source)) → (∀ u ∈ V, bp u ∈ BM.O l) → (∀ τ' r s, Analyti …`.
+
+Introduce `m V bp hh hV hc ha hm hhan _ q`. Establish `hval` using `GlobalTheory.T.base_chart_holomorphic_composition K ι Φ y Ψ N j M n BM l m V bp hV hc ha hm`. Distinguish the cases in `hk : ∀ p, M.blk p ≠ some q.1`. Simplify using `only [FC.flagPt, dif_pos hk]`. Conclude with `hval.1 _`.
+
+Simplify using `only [FC.flagPt, dif_neg hk]`. Use `Finset.analyticOnNhd_fun_sum _ fun I _ => ?_` and prove the remaining obligations. Use `(hval.2 _ fun b hb => ((hgood b hb).2.1.2.1 q I).1).mul ?_` and prove the remaining obligations. Conclude with `analytic_minorIJ (fun r s => hhan _ r s) _ _`. Take `⟨x', hx'V, b', hb', h', hh', hso', hmin⟩` from `GlobalTheory.T.base_metric_vector_log_resolution K ι Φ y Ψ N j M n BM K ι (mCoordIdeal y) FA.Re.J (d + 1) FA.Re.R FA.J_top l (fun b h => FC.flagPt M (BM.F l) (FC.bvec BM l b) h) (fun _ => 1) (fun _ => ⟨fun a => by simp, fun a b hab => Matrix.one_apply_ne hab.ne⟩) han (fun b hb h …`.
+
+Establish `hg'` using `hgood b' hb'.1`. Establish `hpr : FA.pr (FA.Re.π x') = b'`. Use `BM.Rb.inj _ _ (fun hc => by simpa using hc.2 1 Submodule.mem_top) ?_` and prove the remaining obligations. Use `orbit_trans (orbit_symm (FA.pr_eq x')) (orbit_trans (orbit_basePart M.blk hso') ?_)` and prove the remaining obligations. Rewrite using `[FC.basePart_flagPt]`.
+
+Conclude with `hg'.2.2.2`. Use `⟨x', hx'V, hpr ▸ hb', fun p => ?_⟩` and prove the remaining obligations. Rewrite using `[hpr]`. Rewrite using `[GlobalTheory.CompanionTheory.Ar.PB.WSq.FC.plk_ne_zero_iff_of_sameOrbit K ι Φ y Ψ N j M (BM.F l) _ _ _ p hso']`. Consider the cases of `hp : M.blk p with`.
+
+Consider the case `none => simp [FC.plk, hp]`. Consider the case `some k`. Establish `hprop : IsProperStep N j p.2`. Assume the negation of the conclusion as `hc`. Use `(M.blk_none p).2 hc` as an intermediate fact.
+
+Simplify using `[hp] at this`. Rewrite using `[GlobalTheory.CompanionTheory.Ar.PB.WSq.FC.plk_flagPt K ι Φ y Ψ N j M (BM.F l) _ h' p k (BM.isFrame l) hg'.1 hg'.2.1 (fun τ' => (hh' τ').1) hp]`. Conclude with `(hmin p.1 p.2 hprop).1`.
+-/
 theorem dens_r : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Φ : Type) [Field Φ] (y : (Σ k, ι k) → Φ) (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N j : ℕ) (M : FlagModel y Ψ N j) (n d : ℕ) (BM : BaseMetric M n) (FA : FlagAn BM d) (l : Fin BM.q) (x : FA.Re.R.X), FA.pr (FA.Re.π x) ∈ BM.O l → ∀ V, IsOpen V → x ∈ V → ∃ x' ∈ V, FA.pr (FA.Re.π x') ∈ BM.O l \ bdry BM.s ∧ ∀ p, FC.plk M (BM.F l) (FC.bvec BM l (FA.pr (FA.Re.π x'))) (FA.Re.R.lift x' x') p ≠ 0 := by
   intro K _ ι _ Φ _ y Ψ _ _ N j M n d BM FA l x hx V hV hxV
   have hlift : FA.Re.R.lift x x ∈ mcPts (mCoordIdeal y) := FA.Re.R.mem x x (FA.Re.R.mem_U x)

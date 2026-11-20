@@ -38,12 +38,24 @@ structure Facts (D : D7) (C : NChoice D) : Prop extends Core D where
   same : GlobalTheory.PtCore.SameTwist D C
   good : GoodFTAll D
 
+/- English proof (translation)
+The claim follows from `h.adm.1.1`.
+-/
 theorem Core.admA {D : D7} (h : Core D) : SumRepresentations.AdmA D := h.adm.1.1
 
+/- English proof (translation)
+The claim follows from `h.what₂.rank L`.
+-/
 theorem Core.a3 {D : D7} (h : Core D) (L : SizeData₂ D) : TwistedPlaces.adm3 L := h.what₂.rank L
 
+/- English proof (translation)
+The claim follows from `h.adm.2.2`.
+-/
 theorem Core.isot {D : D7} (h : Core D) : Rows.IsotInternal D.what₂ := h.adm.2.2
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem residualIrreducibility_forms_equivalent (D : D7) : SumRepresentations.adm6 D ↔ ResidualIrreducibleRankR D := Iff.rfl
 
 end GlobalTheory.NFacts

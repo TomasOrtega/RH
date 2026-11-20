@@ -14,6 +14,9 @@ open scoped Real ContDiff
 
 namespace GlobalTheory.TorsionForm.OneVec
 
+/- English proof (translation)
+Introduce `E _ _ _ g m B τ M j h hD β b hb ι s G hG u z`. Conclude with `curv_finset_sum_of_diff τ h β b u s G (fun i => (hG i).differentiable (by simp)) z fun i _ => GlobalTheory.T.superconnection_differentiable hD β hb (G i) (hG i) u z`.
+-/
 theorem curv_sum : ∀ {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] [FiniteDimensional ℂ E] {g m : ℕ}
     {B : Set E} {τ : E → Matrix (Fin g) (Fin g) ℂ} {M : Submodule ℤ (Fl g)} {j : Fl g → Pt E g → ℂ}
     {h : Pt E g → ℝ}, IsDatum B τ M j h → ∀ (β : Fin m → E) {b : E}, b ∈ B → ∀ {ι : Type} (s : Finset ι)

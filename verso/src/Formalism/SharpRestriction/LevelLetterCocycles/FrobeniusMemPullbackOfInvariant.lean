@@ -16,18 +16,32 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {PD : PeriodData G Qp K₀ K B BdR} {LL O : Type} [Field LL] [Algebra Qp LL] [TopologicalSpace LL]
     [CommRing O] [Algebra O LL] {v : AddValuation LL (WithTop ℚ)} {n : ℕ}
 
+/- English proof (translation)
+Unfold `letE`. Rewrite using `[← Pi.single_mul, mul_one]`.
+-/
 theorem letE_mul_self_eq (i : ZMod n) : (letE i : LetA O n) * letE i = letE i := by
   unfold letE
   rw [← Pi.single_mul, mul_one]
 
+/- English proof (translation)
+Rewrite using `[smul_smul, letE_mul_self_eq]`.
+-/
 theorem idempotent_smul_smul (W : LocWach PD LL O v n) (T : LocLat G Qp LL O) (i : ZMod n)
     (x : W.DD T) : (letE i : LetA O n) • (letE i : LetA O n) • x = (letE i : LetA O n) • x := by
   rw [smul_smul, letE_mul_self_eq]
 
+/- English proof (translation)
+Apply the tactic sequence `rw [← algebraMap_smul W.EE a x, W.φD_smul, W.φE_ext, algebraMap_smul] <;> rfl`.
+-/
 private theorem phiD_letA_smul_eq_phiA_smul_phiD (W : LocWach PD LL O v n) (T : LocLat G Qp LL O)
     (a : LetA O n) (x : W.DD T) : W.φD T (a • x) = W.φA a • W.φD T x := by
   rw [← algebraMap_smul W.EE a x, W.φD_smul, W.φE_ext, algebraMap_smul] <;> rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Use `show W.φ₀ ((letE (i - 1) : LetA O n) (j - 1)) = (letE i : LetA O n) j`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Simplify using `[letE]`.
+
+Establish `h' : j - 1 ≠ i - 1` using `fun e => h (sub_left_inj.mp e)`. Simplify using `[letE, Pi.single_apply, h, h']`.
+-/
 private theorem phiA_letE_sub_one_eq_letE (W : LocWach PD LL O v n) (i : ZMod n) :
     W.φA (letE (i - 1) : LetA O n) = letE i := by
   funext j
@@ -38,10 +52,18 @@ private theorem phiA_letE_sub_one_eq_letE (W : LocWach PD LL O v n) (i : ZMod n)
   · have h' : j - 1 ≠ i - 1 := fun e => h (sub_left_inj.mp e)
     simp [letE, Pi.single_apply, h, h']
 
+/- English proof (translation)
+Rewrite using `[phiD_letA_smul_eq_phiA_smul_phiD, phiA_letE_sub_one_eq_letE]`.
+-/
 theorem frobenius_idempotent_shift (W : LocWach PD LL O v n) (T : LocLat G Qp LL O) (i : ZMod n) (x : W.DD T) :
     W.φD T ((letE (i - 1) : LetA O n) • x) = (letE i : LetA O n) • W.φD T x := by
   rw [phiD_letA_smul_eq_phiA_smul_phiD, phiA_letE_sub_one_eq_letE]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Use `show W.γ₀ g ((letE i : LetA O n) j) = (letE i : LetA O n) j`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Simplify using `[letE]`.
+
+Simplify using `[letE, Pi.single_apply, h]`.
+-/
 private theorem letGamma_letE_eq_letE (W : LocWach PD LL O v n) (g : W.Gam) (i : ZMod n) :
     letγ (W.γ₀ g) (letE i : LetA O n) = letE i := by
   funext j
@@ -51,23 +73,46 @@ private theorem letGamma_letE_eq_letE (W : LocWach PD LL O v n) (g : W.Gam) (i :
     simp [letE]
   · simp [letE, Pi.single_apply, h]
 
+/- English proof (translation)
+Rewrite using `[← algebraMap_smul W.EE (letE i : LetA O n) x, W.γD_smul, W.γE_ext, algebraMap_smul, letGamma_letE_eq_letE]`.
+-/
 theorem gammaD_idempotent_smul (W : LocWach PD LL O v n) (T : LocLat G Qp LL O) (g : W.Gam) (i : ZMod n)
     (x : W.DD T) : W.γD T g ((letE i : LetA O n) • x) = (letE i : LetA O n) • W.γD T g x := by
   rw [← algebraMap_smul W.EE (letE i : LetA O n) x, W.γD_smul, W.γE_ext, algebraMap_smul,
     letGamma_letE_eq_letE]
 
+/- English proof (translation)
+Rewrite using `[← algebraMap_smul (LetA O n) (((PD.p : ℕ) : O) ^ N) x, map_pow, map_natCast]`.
+-/
 theorem natCast_pow_smul_eq_algebra (W : LocWach PD LL O v n) (T : LocLat G Qp LL O) (N : ℕ) (x : W.DD T) :
     ((PD.p : ℕ) : O) ^ N • x = ((PD.p : ℕ) : LetA O n) ^ N • x := by
   rw [← algebraMap_smul (LetA O n) (((PD.p : ℕ) : O) ^ N) x, map_pow, map_natCast]
 
+/- English proof (translation)
+Rewrite using `[map_pow, map_natCast]`.
+-/
 theorem frobeniusA_natCast_pow (W : LocWach PD LL O v n) (N : ℕ) :
     W.φA (((PD.p : ℕ) : LetA O n) ^ N) = ((PD.p : ℕ) : LetA O n) ^ N := by
   rw [map_pow, map_natCast]
 
+/- English proof (translation)
+Rewrite using `[map_pow, map_natCast]`.
+-/
 theorem gammaA_natCast_pow (W : LocWach PD LL O v n) (g : W.Gam) (N : ℕ) :
     W.γA g (((PD.p : ℕ) : LetA O n) ^ N) = ((PD.p : ℕ) : LetA O n) ^ N := by
   rw [map_pow, map_natCast]
 
+/- English proof (translation)
+Take `⟨⟨r, b, hb, huniq, -⟩, -⟩` from `hm`. Distinguish the cases in `he : e = 0`. Conclude with `Or.inl he`. Use `right`. Introduce `β hβ`.
+
+Establish `heN : e ∈ W.N W.one`. Rewrite using `[hspan]`. Conclude with `Submodule.mem_span_singleton_self e`. Establish `hkill : ∀ y ∈ W.N W.one, β • y = 0`. Introduce `y hy`.
+
+Rewrite `hy` using `[hspan]`. Take `⟨c, rfl⟩` from `Submodule.mem_span_singleton.mp hy`. Rewrite using `[smul_smul, mul_comm, ← smul_smul, hβ, smul_zero]`. Take `⟨a, ha, hu⟩` from `huniq e heN`. Establish `hr : 0 < r`.
+
+Break down `Nat.eq_zero_or_pos r with h0 | h0` into its components or cases. Substitute `h0` using the available equality. Conclude with `(he (by simpa using ha)).elim`. Conclude with `h0`. Establish `hz : ∑ j, β • b j = 0` using `Finset.sum_eq_zero fun j _ => hkill _ (hb j).1`.
+
+Establish `h2 : e = ∑ j, (a j + β) • b j`. Simplify using `only [add_smul, Finset.sum_add_distrib]`. Rewrite using `[← ha, hz, add_zero]`. Establish `h3` using `congrFun (hu (fun j => a j + β) h2) ⟨0, hr⟩`. Simplify using `using h3`.
+-/
 theorem basis_vector_eq_zero_or_torsionFree (W : LocWach PD LL O v n) (e : W.DD W.one)
     (hspan : W.N W.one = Submodule.span (LetA O n) {e}) (π' : LetA O n)
     (hm : Formalism.MainNotions.DeltaInvariantLattices.wachModuleOverLetters W W.one π') : e = 0 ∨ ∀ β : LetA O n, β • e = 0 → β = 0 := by
@@ -97,6 +142,15 @@ theorem basis_vector_eq_zero_or_torsionFree (W : LocWach PD LL O v n) (e : W.DD 
   have h3 := congrFun (hu (fun j => a j + β) h2) ⟨0, hr⟩
   simpa using h3
 
+/- English proof (translation)
+Take `⟨hd, -, hf⟩` from `hO`. Use `haveI := hd`. Use `haveI : NeZero PD.p := ⟨PD.hp.ne_zero⟩`. Take `⟨ζ, hζ⟩` from `hζ`. Establish `hLL : ((PD.p : ℕ) : LL) ≠ 0` using `hζ.neZero'.out`.
+
+Establish `hpO : ((PD.p : ℕ) : O) ≠ 0`. Introduce `h0`. Apply `hLL` to reduce the goal to its premises. Rewrite using `[← map_natCast (algebraMap O LL), h0, map_zero]`. Establish `hpS : ((PD.p : ℕ) : PowerSeries O) ≠ 0`.
+
+Introduce `h0`. Apply `hpO` to reduce the goal to its premises. Establish `h1` using `congrArg PowerSeries.constantCoeff h0`. Rewrite `h1` using `[map_natCast, map_zero]`. Then use the resulting hypothesis. Use function extensionality and compare the values at `j`.
+
+Establish `hj` using `congrFun h j`. Simplify using `only [Pi.mul_apply, Pi.pow_apply, Pi.natCast_apply, Pi.zero_apply] at hj`. Break down `mul_eq_zero.mp hj with h1 | h1` into its components or cases. Conclude with `((pow_ne_zero N hpS) h1).elim`. Conclude with `h1`.
+-/
 theorem eq_zero_of_natCast_pow_mul (hζ : ∃ ζ : LL, IsPrimitiveRoot ζ PD.p)
     (hO : ∃ _ : IsDomain O, IsDiscreteValuationRing O ∧ IsFractionRing O LL) (N : ℕ) (β : LetA O n)
     (h : ((PD.p : ℕ) : LetA O n) ^ N * β = 0) : β = 0 := by
@@ -121,6 +175,13 @@ theorem eq_zero_of_natCast_pow_mul (hζ : ∃ ζ : LL, IsPrimitiveRoot ζ PD.p)
   · exact ((pow_ne_zero N hpS) h1).elim
   · exact h1
 
+/- English proof (translation)
+Take `⟨⟨r, b, hb, huniq, -⟩, -⟩` from `hm`. Take `⟨a, ha, -⟩` from `huniq t ht`. Establish `ht' : t = ∑ j, a j • ((letE (i - 1) : LetA O n) • b j)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.smul_sum]`.
+
+Conclude with `Finset.sum_congr rfl fun j _ => by rw [smul_smul, smul_smul, mul_comm]`. Rewrite using `[ht', map_sum]`. Use `Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Rewrite using `[phiD_letA_smul_eq_phiA_smul_phiD]`. Apply `Submodule.smul_mem` to reduce the goal to its premises.
+
+Unfold `pullJ`. Apply `Submodule.subset_span` to reduce the goal to its premises. Use `⟨(letE (i - 1) : LetA O n) • b j, ⟨(W.N T).smul_mem _ (hb j).1, idempotent_smul_smul W T (i - 1) (b j), fun δ hδ => ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[gammaD_idempotent_smul, (hb j).2 δ hδ]`. Simplify using the standard rewrite rules.
+-/
 theorem frobenius_mem_pullback_of_invariant (W : LocWach PD LL O v n) (T : LocLat G Qp LL O) (π' : LetA O n)
     (hm : Formalism.MainNotions.DeltaInvariantLattices.wachModuleOverLetters W T π') (i : ZMod n) (t : W.DD T) (ht : t ∈ W.N T)
     (hl : (letE (i - 1) : LetA O n) • t = t) : W.φD T t ∈ pullJ W T (i - 1) 1 := by
@@ -143,10 +204,38 @@ theorem frobenius_mem_pullback_of_invariant (W : LocWach PD LL O v n) (T : LocLa
   · rw [gammaD_idempotent_smul, (hb j).2 δ hδ]
   · simp
 
+/- English proof (translation)
+Rewrite using `[← algebraMap_smul W.EE a x, map_smul, algebraMap_smul]`.
+-/
 private theorem locWach_map_letA_smul_comm (W : LocWach PD LL O v n) {T Y : LocLat G Qp LL O}
     (f : LatHom T.L Y.L) (a : LetA O n) (x : W.DD T) : W.map f (a • x) = a • W.map f x := by
   rw [← algebraMap_smul W.EE a x, map_smul, algebraMap_smul]
 
+/- English proof (translation)
+Introduce `x hx`. Unfold `Formalism.MainNotions.DeltaInvariantLattices.φspan at hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨z0, hz0, rfl⟩` from `hx`.
+
+Take `⟨y, hy, rfl⟩` from `(hz0 : z0 ∈ (W.N Y).map ((letE (i - 1) : LetA O n) • LinearMap.id))`. Simplify using `only [LinearMap.smul_apply, LinearMap.id_apply]`. Use `set z : W.DD Y := (letE (i - 1) : LetA O n) • y with hzdef`. Establish `hz_idem : (letE (i - 1) : LetA O n) • z = z`. Rewrite using `[hzdef]`.
+
+Conclude with `idempotent_smul_smul W Y (i - 1) y`. Establish `hzN : z ∈ W.N Y` using `(W.N Y).smul_mem _ hy`. Establish `hπz` using `W.map_N π hY hO z hzN`. Choose the witnesses or unpack the hypotheses as in `⟨c, hc, hc0⟩ : ∃ c : LetA O n, c • e' = W.map π z ∧ (e' = 0 → c = 0) := by`. Distinguish the cases in `he : e' = 0`.
+
+Rewrite `hπz` using `[hspan, he, Submodule.span_zero_singleton, Submodule.mem_bot]`. Conclude with `⟨0, by rw [zero_smul, hπz], fun _ => rfl⟩`. Rewrite `hπz` using `[hspan]`. Take `⟨c, hc⟩` from `Submodule.mem_span_singleton.mp hπz`. Conclude with `⟨c, hc, fun h => (he h).elim⟩`.
+
+Establish `hπlet : W.map π z = (letE (i - 1) : LetA O n) • W.map π z`. Rewrite using `[← locWach_map_letA_smul_comm, hz_idem]`. Establish `hce : c • e' = ((letE (i - 1) : LetA O n) * c) • e'`. Rewrite using `[← smul_smul, hc]`. Conclude with `hπlet`.
+
+Establish `hw : W.map π (((PD.p : ℕ) : LetA O n) ^ N • z - c • ε) = 0`. Rewrite using `[map_sub, locWach_map_letA_smul_comm W π _ z, locWach_map_letA_smul_comm W π c ε, hεπ, ← hc, hce]`. Simplify using `only [smul_smul]`. Rewrite using `[sub_eq_zero]`. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree. Take `⟨y', hy'⟩` from `(hker _).mp hw`. Establish `hι : W.map ι ((letE (i - 1) : LetA O n) • y') = ((PD.p : ℕ) : LetA O n) ^ N • z - c • ((letE (i - 1) : LetA O n) • ε)`. Rewrite using `[locWach_map_letA_smul_comm, hy', smul_sub, smul_comm (letE (i - 1) : LetA O n) _ z, hz_idem, smul_comm (letE (i - 1) : LetA O n) c ε]`. Establish `hyN : (letE (i - 1) : LetA O n) • y' ∈ W.N T`.
+
+Apply `hsat` to reduce the goal to its premises. Rewrite using `[hι]`. Conclude with `sub_mem ((W.N Y).smul_mem _ hzN) ((W.N Y).smul_mem _ ((W.N Y).smul_mem _ hεN))`. Establish `hp` using `frobenius_mem_pullback_of_invariant W T π' hmT i _ hyN (idempotent_smul_smul W T (i - 1) y')`. Establish `e1 : W.φD Y (((PD.p : ℕ) : LetA O n) ^ N • z) = ((PD.p : ℕ) : LetA O n) ^ N • W.φD Y z`.
+
+Rewrite using `[phiD_letA_smul_eq_phiA_smul_phiD, frobeniusA_natCast_pow]`. Establish `e2 : W.φD Y (c • (letE (i - 1) : LetA O n) • ε) = (W.φA c * (letE i : LetA O n)) • W.φD Y ε`. Rewrite using `[phiD_letA_smul_eq_phiA_smul_phiD, frobenius_idempotent_shift, smul_smul]`. Use `⟨_, hp, W.φA c * (letE i : LetA O n), ?_, fun h => by rw [hc0 h, map_zero, zero_mul]⟩` and prove the remaining obligations. Rewrite using `[W.map_φ, hι, map_sub, e1, e2, sub_add_cancel]`.
+
+Consider the case `zero => exact ⟨0, Submodule.zero_mem _, 0, by simp, fun _ => rfl⟩`. Consider the case `add a b _ _ ha hb`. Take `⟨q1, hq1, β1, h11, h21⟩` from `ha`. Take `⟨q2, hq2, β2, h12, h22⟩` from `hb`. Use `⟨q1 + q2, Submodule.add_mem _ hq1 hq2, β1 + β2, ?_, fun h => by rw [h21 h, h22 h, add_zero]⟩` and prove the remaining obligations.
+
+Rewrite using `[smul_add, h11, h12, map_add, add_smul]`. Normalize the expressions using the abelian group laws. Consider the case `smul c a _ ha`. Take `⟨q, hq, β, h1, h2⟩` from `ha`. Use `⟨c • q, Submodule.smul_mem _ _ hq, c * β, ?_, fun h => by rw [h2 h, mul_zero]⟩` and prove the remaining obligations.
+
+Rewrite using `[smul_comm, h1, smul_add, locWach_map_letA_smul_comm, smul_smul]`.
+-/
 theorem pullback_span_of_exact (W : LocWach PD LL O v n) {T Y : LocLat G Qp LL O} (ι : LatHom T.L Y.L)
     (π : LatHom Y.L W.one.L) (hY : IsCrys PD Y.ρ) (hO : IsCrys PD W.one.ρ)
     (hker : ∀ x, W.map π x = 0 ↔ ∃ y, W.map ι y = x) (hsat : ∀ x, W.map ι x ∈ W.N Y → x ∈ W.N T)

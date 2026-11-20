@@ -4,6 +4,9 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.Foundations.IsFirstChernClassOfLineBundle
 open GlobalTheory.NeedB Polynomial
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.KummerCob.divisor_descends | exact GlobalTheory.KummerCob.divisor_descends | (intros; apply GlobalTheory.KummerCob.divisor_descends <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.kummer_divisor_descends_functionField : ∀ (k K Ω : Type) [Field k] [IsAlgClosed k] [CharZero k] [Field K] [Algebra k[X] K] [Algebra (RatFunc k) K]
     [IsScalarTower k[X] (RatFunc k) K] [FiniteDimensional (RatFunc k) K] [Field Ω] [Algebra K Ω] [IsAlgClosure K Ω]
     (N : ℕ) (ζ : Ω), 0 < N → IsPrimitiveRoot ζ N →

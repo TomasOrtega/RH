@@ -14,16 +14,31 @@ namespace UpperTheory.V.Z.Win
 variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
   {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)}
 
+/- English proof (translation)
+The claim follows from `((GlobalTheory.LocLanglandsBridge.localLanglandsGL_of_depthZero_zelevinsky_bernstein N.loc.llc N.loc.conv N.loc.dzc N.loc.dzi N.loc.brauer N.loc.chev N.aut.art N.loc.exh N.loc.multi N.loc.cos N.loc.zel N.loc.geo N.loc.bz).1 E Ω A w h).exists`.
+-/
 theorem exRec (N : GlobalTheory.Mem.LiteralAutomorphy.LitN) (h : IsPlaceOver A w) : ∃ rc, IsRec h rc :=
   ((GlobalTheory.LocLanglandsBridge.localLanglandsGL_of_depthZero_zelevinsky_bernstein N.loc.llc N.loc.conv N.loc.dzc N.loc.dzi N.loc.brauer N.loc.chev
     N.aut.art N.loc.exh N.loc.multi N.loc.cos N.loc.zel N.loc.geo N.loc.bz).1 E Ω A w h).exists
 
+/- English proof (translation)
+The claim follows from `recTExists E Ω A w h`.
+-/
 theorem exRec' (_N : GlobalTheory.Mem.LiteralAutomorphy.LitN) (h : IsPlaceOver A w) : ∃ rc, IsRecT h rc := recTExists E Ω A w h
 
+/- English proof (translation)
+The claim follows from `(H.1 E Ω A w h).exists`.
+-/
 theorem exLL (H : GlobalTheory.Published.LocalLanglandsGL) (h : IsPlaceOver A w) : ∃ rc, IsRec h rc := (H.1 E Ω A w h).exists
 
+/- English proof (translation)
+The claim follows from `recTExists E Ω A w h`.
+-/
 theorem exLL' (_H : True) (h : IsPlaceOver A w) : ∃ rc, IsRecT h rc := recTExists E Ω A w h
 
+/- English proof (translation)
+Use `intros`. Conclude with `exRec (by assumption : UpperTheory.V.Af.Hypotheses₂).litN _`.
+-/
 theorem exists_rec_alt : type_of% @UpperTheory.V.Af.Hypotheses₂.exists_rec := by
   intros
   exact exRec (by assumption : UpperTheory.V.Af.Hypotheses₂).litN _

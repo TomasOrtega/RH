@@ -62,6 +62,11 @@ def HeckeCorrespondenceStatement : Prop :=
   ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l),
     HeckeCorrespondence Xo
 
+/- English proof (translation)
+Use `⟨fun a x hx => ?_, fun x hx a _ => ?_, inferInstance, by simp⟩` and prove the remaining obligations. Use `t.act.hom a` as an intermediate fact. Rewrite `hx`, the goal using `[Subgroup.mem_bot]`. Rewrite using `[hx, MonObj.one_comp]`. Use `t.act.hom a` as an intermediate fact.
+
+Rewrite `hx` using `[Subgroup.mem_bot]`. Rewrite using `[hx, MonObj.one_comp]`.
+-/
 example {k : Type} [Field k] (t : SAB H (Sp k)) (P : Ideal (𝓞 E)) : IsHeckeDatum t P 0 ⊥ := by
   refine ⟨fun a x hx => ?_, fun x hx a _ => ?_, inferInstance, by simp⟩
   · have := t.act.hom a
@@ -71,6 +76,9 @@ example {k : Type} [Field k] (t : SAB H (Sp k)) (P : Ideal (𝓞 E)) : IsHeckeDa
     rw [Subgroup.mem_bot] at hx
     rw [hx, MonObj.one_comp]
 
+/- English proof (translation)
+Take `⟨x₁, x₂, x₃, rfl, ⟨h₁, -⟩, ⟨-, h₂⟩, ⟨h₃, -⟩⟩` from `hx`. Rewrite `h₂` using `[Subgroup.mem_bot]`. Establish `hc : ∀ u v : Pts t, Commute u v` using `fun u v => mul_comm u v`. Rewrite using `[(hc _ _).mul_pow, (hc _ _).mul_pow, h₁, h₂, h₃, _root_.mul_one, _root_.mul_one]`.
+-/
 example {k : Type} [Field k] (t : SAB H (Sp k)) (p : ℕ) (P : Ideal (𝓞 E)) (x : Pts t)
     (hx : x ∈ heckeKernel t p P ⊥) : x ^ p = 1 := by
   obtain ⟨x₁, x₂, x₃, rfl, ⟨h₁, -⟩, ⟨-, h₂⟩, ⟨h₃, -⟩⟩ := hx

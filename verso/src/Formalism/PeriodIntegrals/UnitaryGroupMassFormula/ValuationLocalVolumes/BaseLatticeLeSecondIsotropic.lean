@@ -34,16 +34,34 @@ def Pm (v : PlX X) (c : Fv X.B.I.F v) (w : (VS D).V) : Submodule (𝓞 D.host.E)
     exact oev_mul v (incl_mem v (⟨X.ιE.symm (o : D.host.E),
       (RingOfIntegers.isIntegral_coe o).map (X.ιE.symm : D.host.E →+* X.B.I.E).toIntAlgHom⟩ : 𝓞 X.B.I.E)) hy
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem pm_iff (v : PlX X) (c : Fv X.B.I.F v) (w y : (VS D).V) : y ∈ Pm X v c w ↔
     sc (E := X.B.I.E) v c * inclR (F := X.B.I.F) (Fv X.B.I.F v) (X.ιE.symm ((VS D).hT w y)) ∈ OEv (E := X.B.I.E) v :=
   Iff.rfl
 
+/- English proof (translation)
+Rewrite using `[pm_iff, h, map_zero, map_zero, mul_zero]`. Conclude with `Submodule.zero_mem _`.
+-/
 theorem pm_zero (v : PlX X) (c : Fv X.B.I.F v) (w y : (VS D).V) (h : (VS D).hT w y = 0) : y ∈ Pm X v c w := by
   rw [pm_iff, h, map_zero, map_zero, mul_zero]; exact Submodule.zero_mem _
 
+/- English proof (translation)
+Rewrite using `[map_smul, smul_eq_mul]`.
+-/
 theorem hT_smul_right (w y : (VS D).V) (x : D.host.E) : (VS D).hT w (x • y) = x * (VS D).hT w y := by
   rw [map_smul, smul_eq_mul]
 
+/- English proof (translation)
+Rewrite using `[X.Lam_split]`. Use `sup_le (sup_le ?_ ?_) ?_` and prove the remaining obligations. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨b, x, _, rfl⟩`. Conclude with `pm_zero X v _ _ _ (by rw [hT_smul_right, X.ee, mul_zero])`.
+
+Introduce `y hy`. Conclude with `pm_zero X v _ _ _ (X.Lb_perp y hy a).1`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨b, x, hx, rfl⟩`. Use `(pm_iff X v _ _ _).2 ?_` and prove the remaining obligations.
+
+Rewrite using `[hT_smul_right, X.ef]`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Rewrite using `[if_pos rfl, mul_one]`. Conclude with `(hD v a).1 x hx`.
+
+Rewrite using `[if_neg hab, mul_zero, map_zero, map_zero, mul_zero]`. Conclude with `Submodule.zero_mem _`.
+-/
 theorem base_lattice_le_first_isotropic (hD : OmVDdLoc X) (v : PlX X) (a : Fin D.R.rS) :
     (VS D).L0 ≤ Pm X v (alp v D.R.rS a.castSucc) (X.eX a) := by
   rw [X.Lam_split]
@@ -61,6 +79,15 @@ theorem base_lattice_le_first_isotropic (hD : OmVDdLoc X) (v : PlX X) (a : Fin D
     · subst hab; rw [if_pos rfl, mul_one]; exact (hD v a).1 x hx
     · rw [if_neg hab, mul_zero, map_zero, map_zero, mul_zero]; exact Submodule.zero_mem _
 
+/- English proof (translation)
+Rewrite using `[X.Lam_split]`. Use `sup_le (sup_le ?_ ?_) ?_` and prove the remaining obligations. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨b, x, hx, rfl⟩`. Use `(pm_iff X v _ _ _).2 ?_` and prove the remaining obligations.
+
+Rewrite using `[hT_smul_right, ← (VS D).herm.eq (X.eX b) (X.fY a), X.ef]`. Distinguish the cases in `hab : b = a`. Substitute `hab` using the available equality. Rewrite using `[if_pos rfl, map_one, mul_one]`. Conclude with `(hD v b).2 x hx`.
+
+Rewrite using `[if_neg hab, map_zero, mul_zero, map_zero, map_zero, mul_zero]`. Conclude with `Submodule.zero_mem _`. Introduce `y hy`. Conclude with `pm_zero X v _ _ _ (X.Lb_perp y hy a).2`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨b, x, _, rfl⟩`. Conclude with `pm_zero X v _ _ _ (by rw [hT_smul_right, X.ff, mul_zero])`.
+-/
 theorem base_lattice_le_second_isotropic (hD : OmVDdLoc X) (v : PlX X) (a : Fin D.R.rS) :
     (VS D).L0 ≤ Pm X v (alp v D.R.rS a.castSucc)⁻¹ (X.fY a) := by
   rw [X.Lam_split]
@@ -78,6 +105,11 @@ theorem base_lattice_le_second_isotropic (hD : OmVDdLoc X) (v : PlX X) (a : Fin 
     rintro _ ⟨b, x, _, rfl⟩
     exact pm_zero X v _ _ _ (by rw [hT_smul_right, X.ff, mul_zero])
 
+/- English proof (translation)
+Use `⟨∑ i, X.ιE (l i) • X.bas i, (X.L_eq l).1 hl, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `j`. Establish `h : X.bas.repr (∑ i, X.ιE (l i) • X.bas i) j = X.ιE (l j)`. Simplify using `[map_sum, Module.Basis.repr_self, Finsupp.single_apply]`. Simplify using `only [crdOf]`.
+
+Rewrite using `[h, RingEquiv.symm_apply_apply]`.
+-/
 theorem crd_of_L (l : Fin X.B.I.n → X.B.I.E) (hl : l ∈ X.B.I.L) :
     ∃ y ∈ (VS D).L0, crdOf X.B.I X.ιE X.bas y = l := by
   refine ⟨∑ i, X.ιE (l i) • X.bas i, (X.L_eq l).1 hl, ?_⟩
@@ -87,6 +119,13 @@ theorem crd_of_L (l : Fin X.B.I.n → X.B.I.E) (hl : l ∈ X.B.I.L) :
   simp only [crdOf]
   rw [h, RingEquiv.symm_apply_apply]
 
+/- English proof (translation)
+Apply the tactic sequence `have herm_entry : ∀ i j, star (X.B.I.J i j) = X.B.I.J j i := fun i j => by`. Use `congrFun (congrFun X.B.I.J_herm j) i` as an intermediate fact. Simplify `this` using `[Formalism.UG.IsHerm, Formalism.UG.cT, starRingEnd_apply]`. Unfold `Formalism.UG.hform`. Rewrite using `[Finset.sum_comm, star_sum]`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[star_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [starRingEnd_apply, star_mul, star_star]`. Rewrite using `[herm_entry]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hform_star (l x : Fin X.B.I.n → X.B.I.E) :
     star (Formalism.UG.hform (starRingEnd X.B.I.E) X.B.I.J l x) = Formalism.UG.hform (starRingEnd X.B.I.E) X.B.I.J x l := by
   have herm_entry : ∀ i j, star (X.B.I.J i j) = X.B.I.J j i := fun i j => by
@@ -101,6 +140,11 @@ theorem hform_star (l x : Fin X.B.I.n → X.B.I.E) :
   rw [herm_entry]
   ring
 
+/- English proof (translation)
+Take `⟨y, hy, rfl⟩` from `crd_of_L X l hl`. Rewrite using `[hR_smulE_right]`. Establish `h1 : hR (Fv X.B.I.F v) X.B.I.cm.sig X.B.I.J (ratV (F` using `X.B.I.F) (Fv X.B.I.F v) (crdOf X.B.I X.ιE X.bas y)) (ratV (F := X.B.I.F) (Fv X.B.I.F v) (crdOf X.B.I X.ιE X.bas w)) = inclR (F := X.B.I.F) (Fv X.B.I.F v) (hE X.B.I.cm.sig X.B.I.J (crdOf X.B.I X.ιE X.bas y) (crdOf X.B.I X.ιE X.bas w)) := hR_ratTup (Fv X.B.I.F v) X.B.I.cm.sig X.B.I …`. Establish `h2 : hE X.B.I.cm.sig X.B.I.J (crdOf X.B.I X.ιE X.bas y) (crdOf X.B.I X.ιE X.bas w) = X.B.I.cm.sig (X.ιE.symm ((VS D).hT w y))`. Rewrite using `[← hE_crdOf]`.
+
+Conclude with `(hform_star X _ _).symm`. Rewrite using `[h1, h2, ← sigR_inclR]`. Establish `hsc : sc (E` using `X.B.I.E) v s = sigR (Fv X.B.I.F v) X.B.I.cm.sig (sc (E := X.B.I.E) v s) := (sigR_tmul_one (Fv X.B.I.F v) X.B.I.cm.sig s).symm`. Rewrite using `[hsc, ← map_mul]`. Conclude with `sigR_oev X.B.I.cm.sig v ((pm_iff X v s w y).1 (hP hy))`.
+-/
 theorem pair_mem (v : PlX X) (s : Fv X.B.I.F v) (w : (VS D).V) (l : Fin X.B.I.n → X.B.I.E) (hl : l ∈ X.B.I.L)
     (hP : (VS D).L0 ≤ Pm X v s w) :
     hR (Fv X.B.I.F v) X.B.I.cm.sig X.B.I.J (ratV (F := X.B.I.F) (Fv X.B.I.F v) l)
@@ -121,11 +165,29 @@ theorem pair_mem (v : PlX X) (s : Fv X.B.I.F v) (w : (VS D).V) (l : Fin X.B.I.n 
   rw [hsc, ← map_mul]
   exact sigR_oev X.B.I.cm.sig v ((pm_iff X v s w y).1 (hP hy))
 
+/- English proof (translation)
+Rewrite using `[← tupH_eq]`. Both sides reduce to the same expression.
+-/
 theorem yTup_eq (v : PlX X) (i : Fin (D.R.rS + 1 + D.R.rS)) :
     yTup X u' v i = sc (E := X.B.I.E) v (scl X v i) •
       ratV (F := X.B.I.F) (Fv X.B.I.F v) (crdOf X.B.I X.ιE X.bas (hv X u' i)) := by
   rw [← tupH_eq]; rfl
 
+/- English proof (translation)
+Introduce `v i hi`. Establish `hpair : ∀ l ∈ X.B.I.L, hR (Fv X.B.I.F v) X.B.I.cm.sig X.B.I.J (ratV (F` using `X.B.I.F) (Fv X.B.I.F v) l) (yTup X u' v i) ∈ OEv (E := X.B.I.E) v := by`. Introduce `l hl`. Rewrite using `[yTup_eq]`. Use `Fin.addCases (fun j hj => ?_) (fun b _ => ?_) i hi` and prove the remaining obligations.
+
+Break down `Fin.eq_castSucc_or_eq_last j with ⟨a, rfl⟩ | rfl` into its components or cases. Establish `hs : scl X v (Fin.castAdd D.R.rS a.castSucc) = alp v D.R.rS a.castSucc`. Simplify using `only [scl, Fin.append_left]`. Establish `hw : hv X u' (Fin.castAdd D.R.rS a.castSucc) = X.eX a`. Simplify using `only [hv, Fin.append_left, Fin.snoc_castSucc]`.
+
+Rewrite using `[hs, hw]`. Conclude with `pair_mem X v _ _ l hl (base_lattice_le_first_isotropic X hD v a)`. Conclude with `absurd rfl hj`. Establish `hs : scl X v (Fin.natAdd (D.R.rS + 1) b) = (alp v D.R.rS b.castSucc)⁻¹`. Simplify using `only [scl, Fin.append_right]`.
+
+Establish `hw : hv X u' (Fin.natAdd (D.R.rS + 1) b) = X.fY b`. Simplify using `only [hv, Fin.append_right]`. Rewrite using `[hs, hw]`. Conclude with `pair_mem X v _ _ l hl (base_lattice_le_second_isotropic X hD v b)`. Use `((omVSD_of X (omVSDBwd_holds X)) v _).2 fun x hx => ?_` and prove the remaining obligations.
+
+Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨l, hl, rfl⟩` from `hx`. Conclude with `hpair l hl`. Consider the case `zero => rw [OmW.hR_zero_left]`.
+
+Conclude with `Submodule.zero_mem _`. Consider the case `add x x' _ _ h1 h2 => rw [OmW.hR_add_left]`. Conclude with `Submodule.add_mem _ h1 h2`. Consider the case `smul c x _ h`. Express the relevant statement in the definitionally equal form `hR (Fv X.B.I.F v) X.B.I.cm.sig X.B.I.J ((c : Fv X.B.I.F v) • x) _ ∈ _`.
+
+Rewrite using `[OmW.hR_smul_left]`. Conclude with `oev_smul v h`.
+-/
 theorem omVMemEF_of (hD : OmVDdLoc X) : OmVMemEF X u' := by
   intro v i hi
   have hpair : ∀ l ∈ X.B.I.L, hR (Fv X.B.I.F v) X.B.I.cm.sig X.B.I.J (ratV (F := X.B.I.F) (Fv X.B.I.F v) l)

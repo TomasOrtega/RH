@@ -17,6 +17,15 @@ noncomputable section
 
 namespace GlobalTheory.Mix
 
+/- English proof (translation)
+Introduce `k _ X Y p q σ π hπ M s`. Use `⟨GlobalTheory.Cartier.secPull s π, GlobalTheory.Cartier.nonzeroLocus_secPull s π, fun y => Weight.nsq_pull_secPull M.φ π hπ s y, ?_⟩` and prove the remaining obligations. Introduce `_ _ _ hη hs hs' w i hw`. Establish `hc : w ∈ (M.B.pull π).U (fun _ => i)`. Rewrite using `[GlobalTheory.Cartier.pull_U]`.
+
+Conclude with `hw`. Establish `hg : genericPoint Y ∈ (M.B.pull π).U (fun _ => i)` using `gen_mem hc`. Establish `hg' : genericPoint Y ∈ π ⁻¹ᵁ M.B.U i`. Establish `h` using `hg`. Rewrite `h` using `[GlobalTheory.Cartier.pull_U]`.
+
+Conclude with `h`. Establish `h0 : genericPoint X ∈ M.B.U i` using `gen_mem hw`. Establish `e : ((ratOfSec (L` using `(M.pull π hπ).B) (GlobalTheory.Cartier.secPull s π) hs' fun _ => i : Y.functionFieldˣ) : Y.functionField) = TrueGeo.SmallSec.fnMap π hη (ratOfSec s hs i : X.functionField) := by`. Rewrite using `[val_ratOfSec h0, TrueGeo.SmallSec.fnMap_fnOf π hη h0 hg']`. Conclude with `(val_ratOfSec (L := M.B.pull π) (s := GlobalTheory.Cartier.secPull s π) (hs := hs') hg).trans (fnOf_resG (GlobalTheory.Cartier.pull_U M.B π fun _ => i).le hg _)`.
+
+Conclude with `((presents_divOfRatSec _ _).isEqn (fun _ => i) w hc).mult_eq.trans (congrArg (Scheme.ord · w) e)`.
+-/
 theorem exists_secPull_props : ∀ (k : Type) [CommRing k] (X Y : Scheme.{0}) (p : X ⟶ Sp k) (q : Y ⟶ Sp k) (σ : k →+* ℂ) (π : Y ⟶ X) (hπ : π ≫ p = q) (M : MLine p σ) (s : M.B.Sec), ∃ s' : (M.pull π hπ).B.Sec, nonzeroLocus s' = π ⁻¹ᵁ nonzeroLocus s ∧ (∀ y, (M.pull π hπ).φ.nsq (secVal q σ s') y = M.φ.nsq (secVal p σ s) (ptMap π hπ σ y)) ∧ ∀ [IsIntegral X] [IsIntegral Y] [IsLocallyNoetherian Y] (hη : π (genericPoint Y) ⤳ genericPoint X) (hs : genericPoint X ∈ nonzeroLocus s) (hs' : genericPoint Y ∈ nonzeroLocus s') (w : Y) (i : M.B.ι), π w ∈ M.B.U i → (divOfSec (M.pull π hπ).φ.isLB s' hs').mult w = Scheme.ord (TrueGeo.SmallSec.fnMap π hη (ratOfSec s hs i : X.functionField)) w := by
   intro k _ X Y p q σ π hπ M s
   refine ⟨GlobalTheory.Cartier.secPull s π, GlobalTheory.Cartier.nonzeroLocus_secPull s π, fun y =>

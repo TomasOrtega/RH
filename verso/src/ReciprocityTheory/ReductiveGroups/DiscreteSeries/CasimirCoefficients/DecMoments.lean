@@ -15,6 +15,11 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Unfold `Matrix.rank`. Rewrite using `[Matrix.mulVecLin_add]`. Combine the equalities or inequalities in the displayed calculation. Apply `Submodule.finrank_mono` to reduce the goal to its premises. Introduce and unpack `_ ⟨v, rfl⟩`.
+
+Conclude with `Submodule.add_mem_sup ⟨v, rfl⟩ ⟨v, rfl⟩`. Use `_ ≤ _ := Submodule.finrank_add_le_finrank_add_finrank _ _`.
+-/
 lemma dm_rank_add (A B : Matrix (Fin n) (Fin n) ℂ) : (A + B).rank ≤ A.rank + B.rank := by
   unfold Matrix.rank
   rw [Matrix.mulVecLin_add]
@@ -25,6 +30,9 @@ lemma dm_rank_add (A B : Matrix (Fin n) (Fin n) ℂ) : (A + B).rank ≤ A.rank +
         exact Submodule.add_mem_sup ⟨v, rfl⟩ ⟨v, rfl⟩
     _ ≤ _ := Submodule.finrank_add_le_finrank_add_finrank _ _
 
+/- English proof (translation)
+Establish `h` using `congrFun (congrFun hYp.2 a) b`. Simplify using `only [Jm, Matrix.mul_diagonal, Matrix.neg_apply, Matrix.diagonal_mul, hab] at h`. Use `split_ifs at h`. Take the linear combination `(1 / 2 : ℂ) * h`. Take the linear combination `(-1 / 2 : ℂ) * h`.
+-/
 lemma dm_zero_of_eq {ε : Fin n → Bool} {Y : Matrix (Fin n) (Fin n) ℂ} (hYp : inP ε Y) (a b : Fin n)
     (hab : ε a = ε b) : Y a b = 0 := by
   have h := congrFun (congrFun hYp.2 a) b
@@ -33,6 +41,15 @@ lemma dm_zero_of_eq {ε : Fin n → Bool} {Y : Matrix (Fin n) (Fin n) ℂ} (hYp 
   · linear_combination (1 / 2 : ℂ) * h
   · linear_combination (-1 / 2 : ℂ) * h
 
+/- English proof (translation)
+Use `set P : Matrix (Fin n) (Fin n) ℂ := Matrix.diagonal fun a => if ε a then 1 else 0 with hPd`. Use `set Q : Matrix (Fin n) (Fin n) ℂ := Matrix.diagonal fun a => if ε a then 0 else 1 with hQd`. Establish `hY : Y = P * Y * Q + Q * Y * P`. Use extensionality with `a b`. Simplify using `only [hPd, hQd, Matrix.add_apply, Matrix.mul_diagonal, Matrix.diagonal_mul]`.
+
+Apply the tactic sequence `by_cases ha : ε a <;> by_cases hb : ε b <;> simp [ha, hb] <;>`. Conclude with `dm_zero_of_eq hYp a b (by simp [ha, hb])`. Establish `hP : P.rank = pOf ε`. Rewrite using `[hPd, Matrix.rank_diagonal, Fintype.card_subtype]`. Unfold `pOf`.
+
+Apply the tactic sequence `congr 1; ext a; by_cases h : ε a <;> simp [h]`. Establish `hQ : Q.rank = qOf ε`. Rewrite using `[hQd, Matrix.rank_diagonal, Fintype.card_subtype]`. Unfold `qOf`. Apply the tactic sequence `congr 1; ext a; by_cases h : ε a <;> simp [h]`.
+
+Establish `h1 : (P * Y * Q).rank ≤ q0 ε` using `le_min ((Matrix.rank_mul_le_left _ _).trans ((Matrix.rank_mul_le_left _ _).trans hP.le)) ((Matrix.rank_mul_le_right _ _).trans hQ.le)`. Establish `h2 : (Q * Y * P).rank ≤ q0 ε` using `le_min ((Matrix.rank_mul_le_right _ _).trans hP.le) ((Matrix.rank_mul_le_left _ _).trans ((Matrix.rank_mul_le_left _ _).trans hQ.le))`. Combine the equalities or inequalities in the displayed calculation.
+-/
 lemma dm_rank_le {ε : Fin n → Bool} {Y : Matrix (Fin n) (Fin n) ℂ} (hYp : inP ε Y) :
     Y.rank ≤ 2 * q0 ε := by
   classical
@@ -62,6 +79,11 @@ lemma dm_rank_le {ε : Fin n → Bool} {Y : Matrix (Fin n) (Fin n) ℂ} (hYp : i
     _ ≤ q0 ε + q0 ε := add_le_add h1 h2
     _ = 2 * q0 ε := by ring
 
+/- English proof (translation)
+Establish `hdet : IsUnit U.det` using `Matrix.isUnit_det_of_left_inverse (Matrix.mem_unitaryGroup_iff'.1 hU)`. Establish `hdet' : IsUnit Uᴴ.det` using `Matrix.isUnit_det_of_right_inverse (Matrix.mem_unitaryGroup_iff'.1 hU)`. Establish `h1 : Y.rank = (univ.filter fun j => y j ≠ 0).card`. Rewrite using `[hY, Matrix.rank_mul_eq_left_of_isUnit_det _ _ hdet', Matrix.rank_mul_eq_right_of_isUnit_det _ _ hdet, Matrix.rank_diagonal, Fintype.card_subtype]`. Simplify using `[Complex.ofReal_eq_zero]`.
+
+Rewrite using `[← h1]`. Conclude with `dm_rank_le hYp`.
+-/
 lemma dm_card_le {ε : Fin n → Bool} {Y U : Matrix (Fin n) (Fin n) ℂ} {y : Fin n → ℝ}
     (hU : U ∈ Matrix.unitaryGroup (Fin n) ℂ) (hY : Y = U * Matrix.diagonal (fun j => (y j : ℂ)) * Uᴴ)
     (hYp : inP ε Y) : (univ.filter fun j => y j ≠ 0).card ≤ 2 * q0 ε := by
@@ -74,6 +96,9 @@ lemma dm_card_le {ε : Fin n → Bool} {Y U : Matrix (Fin n) (Fin n) ℂ} {y : F
   rw [← h1]
   exact dm_rank_le hYp
 
+/- English proof (translation)
+The claim follows from `|∑ j ∈ J, y j| ≤ Real.sqrt (2 * q0 ε) * Real.sqrt (hs Y) := by unfold hs have key : ∀ M : Matrix (Fin n) (Fin n) ℂ, (((∑ i, ∑ j, ‖M i j‖ ^ 2 : ℝ)) : ℂ) = (M * Mᴴ).trace := by intro M simp only [Matrix.trace, Matrix.diag, Matrix.mul_apply, Matrix.conjTranspose_apply, Complex.ofRea …`.
+-/
 lemma dm_range {ε : Fin n → Bool} {Y U : Matrix (Fin n) (Fin n) ℂ} {y : Fin n → ℝ}
     (hU : U ∈ Matrix.unitaryGroup (Fin n) ℂ) (hY : Y = U * Matrix.diagonal (fun j => (y j : ℂ)) * Uᴴ)
     (hYp : inP ε Y) (J : Finset (Fin n)) :
@@ -119,6 +144,13 @@ lemma dm_range {ε : Fin n → Bool} {Y U : Matrix (Fin n) (Fin n) ℂ} {y : Fin
   refine hcs.trans (mul_le_mul_of_nonneg_right ?_ (Finset.sum_nonneg fun j _ => sq_nonneg _))
   exact_mod_cast hcard
 
+/- English proof (translation)
+Establish `hd : ∀ a, Y a a = 0` using `fun a => dm_zero_of_eq hYp a a rfl`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `h` using `dm_mass hU hi`. Establish `h2 : ∑ J : {J : Finset (Fin n) // J.card = i}, dmW U hi J = 1` using `by exact_mod_cast h`. Conclude with `h2`.
+
+Establish `h` using `dm_mean hU hY hd hi`. Establish `h2 : ∑ J : {J : Finset (Fin n) // J.card = i}, dmW U hi J * (∑ j ∈ J.1, y j) = 0`. Conclude with `h` after adjusting the coercions. Conclude with `h2`. Establish `h` using `(dm_var hU hY hd hi).trans (dm_rhs hY i)`.
+
+Establish `h2 : ∑ J : {J : Finset (Fin n) // J.card = i}, dmW U hi J * (∑ j ∈ J.1, y j) ^ 2 = ∑ a : Fin n, ∑ b : Fin n, if (b : ℕ) < i ∧ i ≤ (a : ℕ) then ‖Y a b‖ ^ 2 else 0`. Conclude with `h` after adjusting the coercions. Conclude with `h2`. Introduce `J`. Conclude with `dm_range hU hY hYp J.1`.
+-/
 theorem dec_moments {ε : Fin n → Bool} {Y U : Matrix (Fin n) (Fin n) ℂ} {y : Fin n → ℝ}
     (hU : U ∈ Matrix.unitaryGroup (Fin n) ℂ) (hY : Y = U * Matrix.diagonal (fun j => (y j : ℂ)) * Uᴴ)
     (hYp : inP ε Y) (i : ℕ) (hi : i ≤ n) :

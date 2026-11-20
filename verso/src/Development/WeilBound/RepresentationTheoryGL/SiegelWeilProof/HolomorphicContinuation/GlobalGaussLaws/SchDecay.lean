@@ -24,6 +24,9 @@ def kap (μ : Measure (Mx D m n)) (π : Mx D m n → (Fin m → Fin n → ℂ)) 
   Classical.epsilon (Pk μ π B)
 
 set_option synthInstance.maxHeartbeats 800000 in
+/- English proof (translation)
+Use `GlobalTheory.Doubling.isTopologicalRing_tens (F := D.host.F) (E := D.host.E) (R := AF D.host.F)` as an intermediate fact. Establish `: BorelSpace (Mx D V.rank n)` using `⟨rfl⟩`. Apply `Classical.epsilon_spec` to reduce the goal to its premises. Establish `hρc : Continuous fun u : Fin V.rank → Fin n → ℂ => (1 + ‖u‖) ^ (-rr V.rank n)` using `(continuous_const.add continuous_norm).rpow_const fun u => Or.inl (add_pos_of_pos_of_nonneg one_pos (norm_nonneg u)).ne'`. Conclude with `LocCellT.tauFact μ (piF θ τ fr) (continuous_piF hθ τ fr) (sIns τ fr) (fun z u => by rw [(piF θ τ fr).map_add, piF_sIns hθ τ hdet]) (Bw ψ V θ τ fr Ψ x) (continuous_Bw hθ hψ hΨ x).measurable (fun z u => Bw_add hθ hdet ψ hΨ x z u) (fun u => (1 + ‖u‖) ^ (-rr V.rank n)) hρc (fun u => …`.
+-/
 theorem kap_spec {θ : InfFam D} (hθ : IsInfFam θ) {V : HSp D} {τ : D.what₂.Tau}
     {fr : Matrix (Fin V.rank) (Fin V.rank) ℂ} (hdet : IsUnit fr.det) (μ : Measure (Mx D V.rank n)) [μ.IsAddHaarMeasure]
     {Ψ : Mx D V.rank n → ℂ} (hΨ : AwayCls θ τ fr Ψ) {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F ψ)
@@ -40,6 +43,11 @@ theorem kap_spec {θ : InfFam D} (hθ : IsInfFam θ) {V : HSp D} {τ : D.what₂
     (fun u => (1 + ‖u‖) ^ (-rr V.rank n)) hρc (fun u => Real.rpow_pos_of_pos (by positivity) _)
     (hint_int hθ hdet μ hΨ hψ x)
 
+/- English proof (translation)
+Take `⟨S, rfl⟩` from `hf`. Use `set k : ℕ := Module.finrank ℝ (Fin m → Fin n → ℂ) + 1 with hk`. Use `⟨2 ^ k * (Finset.Iic (k, 0)).sup (schwartzSeminormFamily ℂ (Fin m → Fin n → ℂ) ℂ) S, fun u => ?_⟩` and prove the remaining obligations. Establish `h` using `SchwartzMap.one_add_le_sup_seminorm_apply (𝕜 := ℂ) (m := (k, 0)) le_rfl le_rfl S u`. Rewrite `h` using `[norm_iteratedFDeriv_zero]`.
+
+Establish `hpos : 0 < (1 + ‖u‖) ^ k` using `by positivity`. Establish `e : (1 + ‖u‖) ^ (-rr m n) = ((1 + ‖u‖) ^ k)⁻¹`. Rewrite using `[rr, Real.rpow_neg (by positivity), Real.rpow_natCast]`. Rewrite using `[e, ← div_eq_mul_inv, le_div_iff₀ hpos, mul_comm]`. Conclude with `h`.
+-/
 theorem sch_decay (f : (Fin m → Fin n → ℂ) → ℂ) (hf : IsSch f) :
     ∃ C, ∀ u, ‖f u‖ ≤ C * (1 + ‖u‖) ^ (-rr m n) := by
   obtain ⟨S, rfl⟩ := hf

@@ -11,9 +11,17 @@ open GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Regular (RegChar
 
 noncomputable section
 
+/- English proof (translation)
+The claim follows from `Real.tendsto_log_atTop.comp tendsto_inv_nhdsGT_zero`.
+-/
 theorem ell_tendsto_atTop : Tendsto ell (𝓝[>] 0) atTop :=
   Real.tendsto_log_atTop.comp tendsto_inv_nhdsGT_zero
 
+/- English proof (translation)
+Establish `h1 : Tendsto (fun t => Real.log (ell t) ^ 1 / (1 * ell t + 0)) (𝓝[>] 0) (𝓝 0)` using `(Real.tendsto_pow_log_div_mul_add_atTop 1 0 1 one_ne_zero).comp ell_tendsto_atTop`. Establish `h2 : Tendsto (fun t : ℝ => t) (𝓝[>] 0) (𝓝 0)` using `tendsto_id.mono_left nhdsWithin_le_nhds`. Establish `h` using `(h1.const_mul C).add (h2.const_mul C)`. Simplify using `only [mul_zero, add_zero, pow_one, one_mul] at h`. Use `h.congr fun t => ?_` and prove the remaining obligations.
+
+Simplify using `only [errorWithLinear, errE]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem logErrorBound_tendsto_zero (C : ℝ) : Tendsto (errorWithLinear C) (𝓝[>] 0) (𝓝 0) := by
   have h1 : Tendsto (fun t => Real.log (ell t) ^ 1 / (1 * ell t + 0)) (𝓝[>] 0) (𝓝 0) :=
     (Real.tendsto_pow_log_div_mul_add_atTop 1 0 1 one_ne_zero).comp ell_tendsto_atTop
@@ -24,6 +32,9 @@ theorem logErrorBound_tendsto_zero (C : ℝ) : Tendsto (errorWithLinear C) (𝓝
   simp only [errorWithLinear, errE]
   ring
 
+/- English proof (translation)
+Use `filter_upwards [self_mem_nhdsWithin, ell_tendsto_atTop.eventually_gt_atTop 1] with t (ht : 0 < t) hl`. Establish `hlog : 0 < Real.log (ell t)` using `Real.log_pos hl`. Establish `h0 : 0 ≤ errE C t` using `div_nonneg (mul_nonneg hC.le hlog.le) (by linarith)`. Establish `hCt : 0 < C * t` using `mul_pos hC ht`. Apply the tactic sequence `refine ⟨ht, ?_, ?_⟩ <;> simp only [errorWithLinear] <;> linarith`.
+-/
 theorem logErrorBound_eventually_pos (C : ℝ) (hC : 0 < C) :
     ∀ᶠ t in 𝓝[>] 0, 0 < t ∧ 0 < errorWithLinear C t ∧ C * t ≤ errorWithLinear C t := by
   filter_upwards [self_mem_nhdsWithin, ell_tendsto_atTop.eventually_gt_atTop 1] with t (ht : 0 < t) hl
@@ -36,6 +47,9 @@ section C2
 
 variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
 
+/- English proof (translation)
+Introduce `u hu`. Use `filter_upwards [(eventually_all_finset T).2 fun i hi => h i hi u hu] with n hn x hx`. Take `⟨i, hi, hx⟩` from `Set.mem_iUnion₂.1 hx`. Conclude with `hn i hi x hx`.
+-/
 theorem tendstoUniformlyOn_finset_biUnion {α β ι κ : Type*} [UniformSpace β] {F : κ → α → β}
     {f : α → β} {p : Filter κ} (T : Finset ι) (S : ι → Set α)
     (h : ∀ i ∈ T, TendstoUniformlyOn F f p (S i)) : TendstoUniformlyOn F f p (⋃ i ∈ T, S i) := by
@@ -44,6 +58,11 @@ theorem tendstoUniformlyOn_finset_biUnion {α β ι κ : Type*} [UniformSpace β
   obtain ⟨i, hi, hx⟩ := Set.mem_iUnion₂.1 hx
   exact hn i hi x hx
 
+/- English proof (translation)
+Establish `hd : ∀ t y, fderiv ℝ (fun y => G t y - a t) y = fderiv ℝ (G t) y` using `fun t y => fderiv_sub_const (a t)`. Establish `hd' : ∀ t, fderiv ℝ (fun y => G t y - a t) = fderiv ℝ (G t)` using `fun t => funext (hd t)`. Use `⟨Metric.tendstoUniformlyOn_iff.2 fun e he => ?_, by simpa only [hd'] using h.2.1, by simpa only [hd'] using h.2.2⟩` and prove the remaining obligations. Use `filter_upwards [Metric.tendstoUniformlyOn_iff.1 h.1 (e / 2) (by positivity), Metric.tendsto_nhds.1 ha (e / 2) (by positivity)] with t h1 h2 y hy`. Establish `h3` using `h1 y hy`.
+
+Rewrite `h3`, `h2`, the goal using `[Real.dist_eq]`. Rewrite `h2` using `[sub_zero]`. Establish `h4` using `abs_add_le (f y - G t y) (a t)`. Rewrite using `[show f y - (G t y - a t) = f y - G t y + a t by ring]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem TendstoC2On.sub_const {G : ℝ → E → ℝ} {f : E → ℝ} {K : Set E} {a : ℝ → ℝ}
     (h : TendstoC2On G f K) (ha : Tendsto a (𝓝[>] 0) (𝓝 0)) :
     TendstoC2On (fun t y => G t y - a t) f K := by
@@ -61,6 +80,11 @@ theorem TendstoC2On.sub_const {G : ℝ → E → ℝ} {f : E → ℝ} {K : Set E
   rw [show f y - (G t y - a t) = f y - G t y + a t by ring]
   linarith
 
+/- English proof (translation)
+Establish `e0 : ∀ t, (∀ y ∈ U, F t y = G t y) → ∀ y ∈ U, F t =ᶠ[𝓝 y] G t` using `fun t ht y hy => Filter.eventually_of_mem (hU.mem_nhds hy) ht`. Use `⟨h.1.congr ?_, h.2.1.congr ?_, h.2.2.congr ?_⟩` and prove the remaining obligations. Use `filter_upwards [hFG] with t ht y hy`. Conclude with `(ht y (hLU hy)).symm`. Use `filter_upwards [hFG] with t ht y hy`.
+
+Conclude with `(e0 t ht y (hLU hy)).fderiv_eq.symm`. Use `filter_upwards [hFG] with t ht y hy`. Establish `h' : fderiv ℝ (F t) =ᶠ[𝓝 y] fderiv ℝ (G t)` using `Filter.eventually_of_mem (hU.mem_nhds (hLU hy)) fun z hz => (e0 t ht z hz).fderiv_eq`. Conclude with `h'.fderiv_eq.symm`.
+-/
 theorem TendstoC2On.congr_open {F G : ℝ → E → ℝ} {f : E → ℝ} {L U : Set E} (hU : IsOpen U)
     (hLU : L ⊆ U) (hFG : ∀ᶠ t in 𝓝[>] 0, ∀ y ∈ U, F t y = G t y) (h : TendstoC2On G f L) :
     TendstoC2On F f L := by
@@ -78,6 +102,37 @@ theorem TendstoC2On.congr_open {F G : ℝ → E → ℝ} {f : E → ℝ} {L U : 
 
 end C2
 
+/- English proof (translation)
+Introduce `X _ _ _ D A R ρ Cη η hη C hC hcmp k K hK hKs`. Take `⟨t₀, ht₀, hcmp⟩` from `hcmp`. Establish `hloc : ∀ y₀ ∈ K, ∃ r > 0, TendstoC2On (fun t y => R.glued R.φ ρ η C t ((A.chart k).symm y)) (fun y => R.φ ((A.chart k).symm y)) (closedBall y₀ r)`. Introduce `y₀ hy₀`. Take `⟨N, J, c, hNo, hx₀, hcJ, hJN, -, hglue⟩` from `hL D A R ρ Cη η hη ((A.chart k).symm y₀)`.
+
+Establish `hO : IsOpen ((A.chart k).target ∩ (A.chart k).symm ⁻¹' (R.Yo ∩ N))` using `(A.chart k).isOpen_inter_preimage_symm (R.isOpen_Yo.inter hNo)`. Take `⟨r, hr, hball⟩` from `Metric.isOpen_iff.1 hO y₀ ⟨(hKs hy₀).1, (hKs hy₀).2, hx₀⟩`. Establish `hLO : closedBall y₀ (r / 2) ⊆ (A.chart k).target ∩ (A.chart k).symm ⁻¹' (R.Yo ∩ N)` using `(closedBall_subset_ball (by linarith)).trans hball`. Use `⟨r / 2, by positivity, ?_⟩` and prove the remaining obligations. Set `jj : Fin R.n → Fin R.n` to `fun j => if j ∈ J then j else c`.
+
+Establish `hjj : ∀ j, jj j ∈ J` using `fun j => by`. Distinguish the cases in `h : j ∈ J`. Simplify using `only [jj, h, if_true]`. Simplify using `only [jj, h, if_false]`. Conclude with `hcJ`.
+
+Establish `hdata` using `fun j => hA D A R ρ Cη η hη C hC (jj j) k (closedBall y₀ (r / 2)) (isCompact_closedBall _ _) (fun y hy => ⟨(hLO hy).1, (hLO hy).2.1, hJN _ (hjj j) (hLO hy).2.2⟩)`. Use `choose Uj hUo hLU hfC hargC hT M hM using hdata`. Set `U` to `((A.chart k).target ∩ (A.chart k).symm ⁻¹' N) ∩ ⋂ j, Uj j`. Establish `hUo' : IsOpen U` using `((A.chart k).isOpen_inter_preimage_symm hNo).inter (isOpen_iInter_of_finite hUo)`. Establish `hLU' : closedBall y₀ (r / 2) ⊆ U` using `fun y hy => ⟨⟨(hLO hy).1, (hLO hy).2.2⟩, Set.mem_iInter.2 fun j => hLU j hy⟩`.
+
+Establish `hUj : ∀ j, U ⊆ Uj j` using `fun j y hy => Set.mem_iInter.1 hy.2 j`. Set `u : ℝ → Fin R.n → (Fin D → ℂ) → ℝ` to `fun t j y => if j ∈ J then R.regArg R.φ ρ η C t j ((A.chart k).symm y) else R.regArg R.φ ρ η C t c ((A.chart k).symm y) - errorWithLinear C t`. Set `a : Fin R.n → ℝ → ℝ` to `fun j t => if j ∈ J then 0 else errorWithLinear C t`. Establish `ha : ∀ j, Tendsto (a j) (𝓝[>] 0) (𝓝 0)` using `fun j => by`. Distinguish the cases in `h : j ∈ J`.
+
+Simplify using `only [a, h, if_true]`. Conclude with `tendsto_const_nhds`. Simplify using `only [a, h, if_false]`. Conclude with `logErrorBound_tendsto_zero C`. Establish `hu : ∀ t j, u t j = fun y => R.regArg R.φ ρ η C t (jj j) ((A.chart k).symm y) - a j t`.
+
+Introduce `t j`. Use function extensionality and compare the values at `y`. Distinguish the cases in `h : j ∈ J`. Simplify using `only [u, jj, a, h, if_true, sub_zero]`. Simplify using `only [u, jj, a, h, if_false]`.
+
+Establish `: Nonempty (Fin R.n)` using `⟨c⟩`. Set `Mt : ℝ` to `∑ j, |M j|`. Establish `H` using `RegularizedMaxConvergenceC2.proof (Fin R.n) U (closedBall y₀ (r / 2)) (fun y => R.φ ((A.chart k).symm y)) u (errorWithLinear C) (fun t => Mt * (t + errorWithLinear C t)) hUo' hLU' ((hfC c).mono (hUj c)) ?ev (logErrorBound_tendsto_zero C) ?conv ?grad ?ratio`. Use `TendstoC2On.congr_open hUo' hLU' ?_ H filter_upwards [logErrorBound_eventually_pos C hC, nhdsWithin_le_nhds (Iio_mem_nhds ht₀), self_mem_nhdsWithin] with t ht (htt : t < t₀) (ht0 : 0 < t) y hy` and prove the remaining obligations. Conclude with `hglue C t ht.2.1 (hcmp t ht0 htt) _ hy.1.2`.
+
+Use `case ev => filter_upwards [logErrorBound_eventually_pos C hC, eventually_all.2 fun j => hargC j] with t ht hcd`. Use `⟨ht.2.1, fun j => ?_⟩` and prove the remaining obligations. Rewrite using `[hu]`. Conclude with `((hcd j).mono (hUj j)).sub contDiffOn_const`. Use `case conv =>`.
+
+Introduce `j`. Establish `e : (fun t => u t j) = fun t y => R.regArg R.φ ρ η C t (jj j) ((A.chart k).symm y) - a j t`. Use function extensionality and compare the values at `t`. Conclude with `hu t j`. Rewrite using `[e]`.
+
+Conclude with `(hT j).sub_const (ha j)`. Use `case grad => filter_upwards [logErrorBound_eventually_pos C hC, eventually_all.2 fun j => hM j] with t ht hMj j y hy`. Rewrite using `[hu t j, fderiv_sub_const]`. Establish `hnn : 0 ≤ t + errorWithLinear C t` using `by linarith [ht.1, ht.2.1]`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `case ratio =>`. Establish `hK0 : Tendsto (fun t => Mt ^ 2 * (1 / C + 1) ^ 2 * errorWithLinear C t) (𝓝[>] 0) (𝓝 0)`. Simplify using `using (logErrorBound_tendsto_zero C).const_mul (Mt ^ 2 * (1 / C + 1) ^ 2)`. Use `squeeze_zero' ?_ ?_ hK0` and prove the remaining obligations. Use `filter_upwards [logErrorBound_eventually_pos C hC] with t ht`.
+
+Conclude with `div_nonneg (sq_nonneg _) ht.2.1.le`. Use `filter_upwards [logErrorBound_eventually_pos C hC] with t ht`. Take `⟨ht, hε, hCt⟩` from `ht`. Rewrite using `[div_le_iff₀ hε]`. Establish `h1 : t ≤ 1 / C * errorWithLinear C t`.
+
+Rewrite using `[one_div_mul_eq_div, le_div_iff₀ hC]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2 : 0 ≤ t + errorWithLinear C t` using `by linarith`. Establish `h3 : t + errorWithLinear C t ≤ (1 / C + 1) * errorWithLinear C t` using `by linarith`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `choose! r hr hTr using hloc`. Take `⟨T, hTK, hcov⟩` from `hK.elim_nhds_subcover (fun y => closedBall y (r y)) fun y hy => closedBall_mem_nhds y (hr y hy)`. Conclude with `⟨(tendstoUniformlyOn_finset_biUnion T _ fun y hy => (hTr y (hTK y hy)).1).mono hcov, (tendstoUniformlyOn_finset_biUnion T _ fun y hy => (hTr y (hTK y hy)).2.1).mono hcov, (tendstoUniformlyOn_finset_biUnion T _ fun y hy => (hTr y (hTK y hy)).2.2).mono hcov⟩`.
+-/
 theorem PropertyF.proof (hL : GluedLocal.Statement) (hA : ArgumentConvergenceC2.Statement) : PropertyF.Statement := by
   intro X _ _ _ D A R ρ Cη η hη C hC hcmp k K hK hKs
   obtain ⟨t₀, ht₀, hcmp⟩ := hcmp

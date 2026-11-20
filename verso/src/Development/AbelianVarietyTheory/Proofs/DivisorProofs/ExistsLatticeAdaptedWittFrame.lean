@@ -17,6 +17,17 @@ open Formalism.UG (cT)
 noncomputable section
 namespace GlobalTheory.AdaptedWitt
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hcm _ n J hJ L₀ hL₀ hd r X Y hW`. Take `⟨m, I, Q, hn, IX, IY, XI, YI, QX, QY, QI, hQ, h1, hG⟩` from `GlobalTheory.T.witt_frame_orthogonal_complement_basis F E σ hcm n r J hJ X Y hW`. Establish `YX : cT (σ : E →+* E) Y * J * X = 1`. Use extensionality with `i j`. Establish `h` using `congrArg (fun M => σ (M j i)) hW.xy`.
+
+Simplify using `only [Formalism.UG.cT, Matrix.mul_apply, map_sum, map_mul, Matrix.transpose_apply, Matrix.map_apply, AlgHom.coe_toRingHom, sigma_sigma hcm, hJ.1] at h`. Rewrite `h`, the goal using `[Matrix.one_apply]`. Simplify using `only [Formalism.UG.cT, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, AlgHom.coe_toRingHom]`. Establish `e : ∀ a b, X b j * J a b * σ (Y a i) = σ (Y a i) * J a b * X b j` using `fun a b => by ring`. Simplify using `only [Finset.sum_mul, e] at h`.
+
+Simplify using `only [Finset.sum_mul]`. Rewrite using `[Finset.sum_comm, h]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using the standard rewrite rules.
+
+Simplify using `[hij, Ne.symm hij]`. Take `⟨L', hL', hd'⟩` from `GlobalTheory.T.self_dual_lattice_projection_criterion F E σ n m r J hJ.2 L₀ hL₀ hd (GlobalTheory.T.self_dual_lattice_integral_projection F E σ n J hJ.2 L₀ hL₀ hd) X Y I Q hW.xx XI QX QI hG.2 hQ h1`. Take `⟨L, hL, hdL, hs⟩` from `HypAdapt.exists_lattice_hyp σ J hJ.2 hG.2 hL' hd' hW.xx hW.yy YX hW.xy XI YI QX QY QI hQ h1`. Use `choose b δ hb hc using HypAdapt.exists_arch_frame_hyp σ J hcm hn hG (X := X) (Y := Y) (I := I) hW.xx hW.yy YX hW.xy IX IY XI YI rfl`. Use `haveI := hL`.
+
+Take `⟨a, -, ha⟩` from `Frames.exists_isLatticeFrame_of_arch L b`. Conclude with `⟨L, a, hL, hdL, hs, fun w => ⟨δ w, by rw [ha w]; exact hb w⟩, fun w => ⟨_, by rw [map_inv, ha w]; exact hc w⟩⟩`.
+-/
 theorem exists_isAdapted : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E),
     IsCMExt F E σ → Algebra.Unramified (𝓞 F) (𝓞 E) → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J →
     ∀ L₀ : Submodule (𝓞 E) (Fin n → E), Submodule.IsLattice E L₀ → (∀ v, IsSelfDualAt σ J L₀ v) →

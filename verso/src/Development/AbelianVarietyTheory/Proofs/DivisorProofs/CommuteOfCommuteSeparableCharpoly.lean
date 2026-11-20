@@ -4,6 +4,9 @@ open Matrix Polynomial
 namespace GlobalTheory
 
 open Matrix Polynomial in
+/- English proof (translation)
+Rewrite `h` using `[← Matrix.mem_spectrum_iff_isRoot_charpoly, spectrum.mem_iff, Matrix.isUnit_iff_isUnit_det, isUnit_iff_ne_zero, not_not, ← Matrix.exists_mulVec_eq_zero_iff]`. Take `⟨v, hv0, hv⟩` from `h`. Use `⟨v, hv0, ?_⟩` and prove the remaining obligations. Rewrite `hv` using `[Matrix.sub_mulVec, Algebra.algebraMap_eq_smul_one, Matrix.smul_mulVec, Matrix.one_mulVec, sub_eq_zero]`. Conclude with `hv.symm`.
+-/
 private theorem exists_eigenvector_of_isRoot_charpoly {L : Type} [Field L] {n : ℕ}
     (y : Matrix (Fin n) (Fin n) L) (r : L) (h : y.charpoly.IsRoot r) :
     ∃ v : Fin n → L, v ≠ 0 ∧ y *ᵥ v = r • v := by
@@ -16,6 +19,9 @@ private theorem exists_eigenvector_of_isRoot_charpoly {L : Type} [Field L] {n : 
   exact hv.symm
 
 open Matrix Polynomial in
+/- English proof (translation)
+Rewrite using `[← Matrix.linearIndependent_cols_iff_isUnit]`. Conclude with `Module.End.eigenvectors_linearIndependent' (Matrix.toLin' y) μ hμ v (fun j => ⟨Module.End.mem_eigenspace_iff.mpr (by simpa using hv j), hv0 j⟩)`.
+-/
 private theorem isUnit_of_eigenvector_columns_of_injective {L : Type} [Field L] {n : ℕ}
     (y : Matrix (Fin n) (Fin n) L) (μ : Fin n → L) (hμ : Function.Injective μ)
     (v : Fin n → Fin n → L) (hv0 : ∀ j, v j ≠ 0) (hv : ∀ j, y *ᵥ v j = μ j • v j) :
@@ -25,6 +31,11 @@ private theorem isUnit_of_eigenvector_columns_of_injective {L : Type} [Field L] 
     (fun j => ⟨Module.End.mem_eigenspace_iff.mpr (by simpa using hv j), hv0 j⟩)
 
 open Matrix Polynomial in
+/- English proof (translation)
+Use extensionality with `i j`. Establish `hij` using `congrFun (congrFun hm i) j`. Rewrite `hij` using `[Matrix.mul_diagonal, Matrix.diagonal_mul]`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality.
+
+Simplify using the standard rewrite rules. Rewrite using `[Matrix.diagonal_apply_ne _ h]`. Establish `hne : μ j - μ i ≠ 0` using `sub_ne_zero.mpr fun e => h (hμ e).symm`. Establish `: m i j * (μ j - μ i) = 0` using `by rw [mul_sub, hij, mul_comm]; ring`. Conclude with `(mul_eq_zero.mp this).resolve_right hne`.
+-/
 private theorem eq_diagonal_of_commute_diagonal_injective {L : Type} [Field L] {n : ℕ}
     (μ : Fin n → L) (hμ : Function.Injective μ) (m : Matrix (Fin n) (Fin n) L)
     (hm : m * diagonal μ = diagonal μ * m) : m = diagonal fun i => m i i := by
@@ -40,6 +51,25 @@ private theorem eq_diagonal_of_commute_diagonal_injective {L : Type} [Field L] {
     exact (mul_eq_zero.mp this).resolve_right hne
 
 open Matrix Polynomial in
+/- English proof (translation)
+Use `set s := y.charpoly.roots.toFinset with hs_def`. Establish `hs : s.card = n`. Rewrite using `[hs_def, Multiset.toFinset_card_of_nodup (nodup_roots hy), IsAlgClosed.card_roots_eq_natDegree, Matrix.charpoly_natDegree_eq_dim, Fintype.card_fin]`. Set `e : Fin n ≃ s` to `(s.equivFin.trans (finCongr hs)).symm`. Set `μ : Fin n → L` to `fun i => (e i : L)`.
+
+Establish `hμ : Function.Injective μ` using `fun i j hij => e.injective (Subtype.ext hij)`. Establish `hroot : ∀ i, y.charpoly.IsRoot (μ i)` using `fun i => by`. Establish `hmem : (μ i) ∈ s` using `(e i).2`. Rewrite `hmem` using `[hs_def, Multiset.mem_toFinset]`. Conclude with `(mem_roots hy.ne_zero).mp hmem`.
+
+Use `choose v hv0 hv using fun i => exists_eigenvector_of_isRoot_charpoly y (μ i) (hroot i)`. Use `set P : Matrix (Fin n) (Fin n) L := Matrix.of fun i j => v j i with hP`. Establish `hPu : IsUnit P` using `isUnit_of_eigenvector_columns_of_injective y μ hμ v hv0 hv`. Establish `hdet : IsUnit P.det` using `(Matrix.isUnit_iff_isUnit_det P).mp hPu`. Use `set Q := P⁻¹ with hQ`.
+
+Establish `hPQ : P * Q = 1` using `Matrix.mul_nonsing_inv P hdet`. Establish `hQP : Q * P = 1` using `Matrix.nonsing_inv_mul P hdet`. Establish `hPQ' : ∀ X : Matrix (Fin n) (Fin n) L, P * (Q * X) = X` using `fun X => by`. Rewrite using `[← Matrix.mul_assoc, hPQ, Matrix.one_mul]`. Establish `hQP' : ∀ X : Matrix (Fin n) (Fin n) L, Q * (P * X) = X` using `fun X => by`.
+
+Rewrite using `[← Matrix.mul_assoc, hQP, Matrix.one_mul]`. Establish `hyP : y * P = P * diagonal μ`. Use extensionality with `i j`. Rewrite using `[Matrix.mul_diagonal]`. Use `congrFun (hv j) i` as an intermediate fact.
+
+Simplify `this` using `[hP, Matrix.mul_apply, Matrix.mulVec, dotProduct, mul_comm]`. Establish `hD : Q * y * P = diagonal μ`. Rewrite using `[Matrix.mul_assoc, hyP, hQP']`. Establish `hcomm : ∀ m : Matrix (Fin n) (Fin n) L, m * y = y * m → (Q * m * P) * diagonal μ = diagonal μ * (Q * m * P)` using `fun m hm => by`. Rewrite using `[← hD]`.
+
+Simplify using `only [Matrix.mul_assoc, hPQ']`. Rewrite using `[← Matrix.mul_assoc m y P, hm, Matrix.mul_assoc]`. Establish `hA` using `eq_diagonal_of_commute_diagonal_injective μ hμ _ (hcomm a ha)`. Establish `hB` using `eq_diagonal_of_commute_diagonal_injective μ hμ _ (hcomm b hb)`. Establish `hAB : (Q * a * P) * (Q * b * P) = (Q * b * P) * (Q * a * P)`.
+
+Rewrite using `[hA, hB, Matrix.diagonal_mul_diagonal, Matrix.diagonal_mul_diagonal]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Conclude with `mul_comm _ _`. Establish `key : ∀ c d : Matrix (Fin n) (Fin n) L, c * d = P * ((Q * c * P) * (Q * d * P)) * Q` using `fun c d => by`.
+
+Simplify using `only [Matrix.mul_assoc, hPQ', hPQ, Matrix.mul_one]`. Rewrite using `[key a b, key b a, hAB]`.
+-/
 private theorem commute_of_commute_of_charpoly_separable_of_isAlgClosed {L : Type} [Field L]
     [IsAlgClosed L] {n : ℕ} (y a b : Matrix (Fin n) (Fin n) L) (hy : y.charpoly.Separable)
     (ha : a * y = y * a) (hb : b * y = y * b) : a * b = b * a := by
@@ -92,6 +122,13 @@ private theorem commute_of_commute_of_charpoly_separable_of_isAlgClosed {L : Typ
 
 open Matrix Polynomial in
 
+/- English proof (translation)
+Introduce `K _ n y a b hy ha hb`. Set `f : K →+* AlgebraicClosure K` to `algebraMap K (AlgebraicClosure K)`. Establish `hyL : (y.map f).charpoly.Separable`. Rewrite using `[Matrix.charpoly_map]`. Conclude with `hy.map`.
+
+Establish `haL : a.map f * y.map f = y.map f * a.map f`. Rewrite using `[← Matrix.map_mul, ← Matrix.map_mul, ha]`. Establish `hbL : b.map f * y.map f = y.map f * b.map f`. Rewrite using `[← Matrix.map_mul, ← Matrix.map_mul, hb]`. Establish `h` using `commute_of_commute_of_charpoly_separable_of_isAlgClosed _ _ _ hyL haL hbL`.
+
+Rewrite `h` using `[← Matrix.map_mul, ← Matrix.map_mul]`. Conclude with `Matrix.map_injective f.injective h`.
+-/
 theorem _root_.GlobalTheory.commute_of_commute_separable_charpoly :
     ∀ (K : Type) [Field K] (n : ℕ) (y a b : Matrix (Fin n) (Fin n) K), y.charpoly.Separable →
       a * y = y * a → b * y = y * b → a * b = b * a := by

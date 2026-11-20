@@ -10,6 +10,9 @@ section Compl
 
 variable {k V : Type*} [Field k] [AddCommGroup V] [Module k V]
 
+/- English proof (translation)
+Take `⟨W, hW⟩` from `Submodule.exists_isCompl (U ⊔ k ∙ e)`. Use `⟨k ∙ e ⊔ W, ⟨h.disjoint_sup_right_of_disjoint_sup_left hW.disjoint, ?_⟩, Submodule.mem_sup_left (Submodule.mem_span_singleton_self e)⟩` and prove the remaining obligations. Rewrite using `[codisjoint_iff, ← sup_assoc]`. Conclude with `hW.sup_eq_top`.
+-/
 theorem exists_isCompl_mem {U : Submodule k V} {e : V} (h : Disjoint U (k ∙ e)) :
     ∃ C : Submodule k V, IsCompl U C ∧ e ∈ C := by
   obtain ⟨W, hW⟩ := Submodule.exists_isCompl (U ⊔ k ∙ e)
@@ -18,6 +21,11 @@ theorem exists_isCompl_mem {U : Submodule k V} {e : V} (h : Disjoint U (k ∙ e)
   rw [codisjoint_iff, ← sup_assoc]
   exact hW.sup_eq_top
 
+/- English proof (translation)
+Take `⟨W0, hW0⟩` from `Submodule.exists_isCompl (R' ⊓ K)`. Use `⟨W0 ⊓ K, ⟨?_, ?_⟩, inf_le_right⟩` and prove the remaining obligations. Rewrite using `[disjoint_iff, eq_bot_iff, ← hW0.inf_eq_bot]`. Conclude with `le_inf (inf_le_inf_left _ inf_le_right) (inf_le_right.trans inf_le_left)`. Establish `hm : (R' ⊓ K) ⊔ (W0 ⊓ K) = K`.
+
+Rewrite using `[← sup_inf_assoc_of_le W0 (inf_le_right : R' ⊓ K ≤ K), hW0.sup_eq_top, top_inf_eq]`. Rewrite using `[codisjoint_iff, eq_top_iff, ← h]`. Use `sup_le le_sup_left ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem exists_isCompl_le {R' K : Submodule k V} (h : R' ⊔ K = ⊤) : ∃ W : Submodule k V, IsCompl R' W ∧ W ≤ K := by
   obtain ⟨W0, hW0⟩ := Submodule.exists_isCompl (R' ⊓ K)
   refine ⟨W0 ⊓ K, ⟨?_, ?_⟩, inf_le_right⟩
@@ -36,6 +44,33 @@ section Field
 
 variable {k : Type*} [Field k] {n : ℕ}
 
+/- English proof (translation)
+Establish `he : A *ᵥ Pi.single (Fin.last n) 1 = Pi.single (Fin.last n) 1`. Use function extensionality and compare the values at `i`. Simplify using `[Matrix.mulVec, dotProduct, Pi.single_apply, hA]`. Establish `hRK : LinearMap.range A.mulVecLin ⊔ K = ⊤`. Rewrite using `[eq_top_iff]`.
+
+Introduce `v _`. Take `⟨x, hx⟩` from `hK v`. Rewrite using `[show v = A *ᵥ x + (v - A *ᵥ x) by abel]`. Conclude with `Submodule.add_mem_sup (LinearMap.mem_range.2 ⟨x, Matrix.mulVecLin_apply A x⟩) hx`. Take `⟨W, hW, hWK⟩` from `exists_isCompl_le hRK`.
+
+Establish `hdisj : Disjoint (LinearMap.ker A.mulVecLin) (k ∙ (Pi.single (Fin.last n) 1 : Fin (n + 1) → k))`. Rewrite using `[Submodule.disjoint_def]`. Introduce `x hx1 hx2`. Take `⟨t, rfl⟩` from `Submodule.mem_span_singleton.1 hx2`. Rewrite `hx1` using `[LinearMap.mem_ker, map_smul, Matrix.mulVecLin_apply, he]`.
+
+Conclude with `hx1`. Take `⟨C, hC, heC⟩` from `exists_isCompl_mem hdisj`. Establish `hdim : finrank k (LinearMap.ker A.mulVecLin) = finrank k W`. Establish `h1` using `LinearMap.finrank_range_add_finrank_ker A.mulVecLin`. Establish `h2` using `Submodule.finrank_add_eq_of_isCompl hW`.
+
+Use linear arithmetic over natural numbers and integers. Set `φ` to `LinearEquiv.ofFinrankEq _ _ hdim`. Set `h : (Fin (n + 1) → k) →ₗ[k] (Fin (n + 1) → k)` to `W.subtype ∘ₗ φ.toLinearMap ∘ₗ (LinearMap.ker A.mulVecLin).projectionOnto C hC`. Establish `hHv : ∀ v, LinearMap.toMatrix' h *ᵥ v = h v` using `fun v => by`. Rewrite using `[← Matrix.toLin'_apply, Matrix.toLin'_toMatrix']`.
+
+Use `⟨LinearMap.toMatrix' h, fun j => ?_, fun i => ?_, ?_⟩` and prove the remaining obligations. Establish `hc : (fun i => LinearMap.toMatrix' h i j) = h (Pi.single j 1)`. Use function extensionality and compare the values at `i`. Rewrite using `[LinearMap.toMatrix'_apply]`. Rewrite using `[hc]`.
+
+Conclude with `hWK (φ _).2`. Establish `h0 : (LinearMap.ker A.mulVecLin).projectionOnto C hC (Pi.single (Fin.last n) 1) = 0` using `Submodule.linearProjOfIsCompl_apply_right hC ⟨_, heC⟩`. Rewrite using `[LinearMap.toMatrix'_apply]`. Simplify using `[h, h0]`. Introduce `hdet`.
+
+Take `⟨v, hv0, hv⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 hdet`. Apply `hv0` to reduce the goal to its premises. Rewrite `hv` using `[Matrix.add_mulVec, hHv]`. Establish `hvt : v ∈ LinearMap.ker A.mulVecLin ⊔ C` using `by rw [hC.sup_eq_top]; exact Submodule.mem_top`. Take `⟨x, hx, c, hc, rfl⟩` from `Submodule.mem_sup.1 hvt`.
+
+Establish `hfx : A *ᵥ x = 0`. Rewrite using `[← Matrix.mulVecLin_apply]`. Conclude with `LinearMap.mem_ker.1 hx`. Establish `hproj : (LinearMap.ker A.mulVecLin).projectionOnto C hC (x + c) = ⟨x, hx⟩`. Rewrite using `[map_add, Submodule.linearProjOfIsCompl_apply_left hC ⟨x, hx⟩, Submodule.linearProjOfIsCompl_apply_right hC ⟨c, hc⟩, add_zero]`.
+
+Establish `hv' : A *ᵥ c + (φ ⟨x, hx⟩ : Fin (n + 1) → k) = 0`. Establish `e : h (x + c) = (φ ⟨x, hx⟩ : Fin (n + 1) → k)`. Simplify using `only [h, LinearMap.comp_apply, hproj]`. Both sides reduce to the same expression. Rewrite `hv` using `[Matrix.mulVec_add, hfx, zero_add, e]`.
+
+Conclude with `hv`. Establish `hz : A *ᵥ c = 0`. Use `Submodule.disjoint_def.1 hW.disjoint _ (LinearMap.mem_range.2 ⟨c, Matrix.mulVecLin_apply A c⟩) ?_` and prove the remaining obligations. Rewrite using `[eq_neg_of_add_eq_zero_left hv']`. Conclude with `W.neg_mem (φ _).2`.
+
+Establish `hφ : φ ⟨x, hx⟩ = 0`. Rewrite `hv'` using `[hz, zero_add]`. Conclude with `Subtype.ext hv'`. Establish `hx0 : x = 0`. Use `congrArg Subtype.val (φ.map_eq_zero_iff.1 hφ)` as an intermediate fact.
+
+Simplify using `using this`. Establish `hc0 : c = 0` using `Submodule.disjoint_def.1 hC.disjoint c (LinearMap.mem_ker.2 (by rw [Matrix.mulVecLin_apply]; exact hz)) hc`. Rewrite using `[hx0, hc0, add_zero]`.
+-/
 theorem srLift_field (A : Matrix (Fin (n + 1)) (Fin (n + 1)) k) (K : Submodule k (Fin (n + 1) → k))
     (hA : ∀ i, A i (Fin.last n) = if i = Fin.last n then 1 else 0)
     (hK : ∀ v, ∃ x, v - A *ᵥ x ∈ K) :
@@ -132,6 +167,25 @@ def Kbar (m : Ideal R) [m.IsMaximal] (K : Submodule R (Fin (n + 1) → R)) :
       obtain ⟨c', rfl⟩ := Ideal.Quotient.mk_surjective c
       exact ⟨c' • a, K.smul_mem c' ha, by funext i; simp [redV]⟩ }
 
+/- English proof (translation)
+Use `letI := Ideal.Quotient.field m`. Set `Ab : Matrix (Fin (n + 1)) (Fin (n + 1)) (R ⧸ m)` to `A.map (Ideal.Quotient.mk m)`. Establish `hAb : ∀ i, Ab i (Fin.last n) = if i = Fin.last n then 1 else 0`. Introduce `i`. Simplify using `only [Ab, Matrix.map_apply, hA i]`.
+
+Apply the tactic sequence `split_ifs <;> simp`. Establish `hKb : ∀ v, ∃ x, v - Ab *ᵥ x ∈ Kbar m K`. Introduce `v`. Take `⟨w, rfl⟩ : ∃ w : Fin (n + 1) → R, redV m w = v` from `⟨fun i => (Ideal.Quotient.mk_surjective (v i)).choose,`. Use function extensionality and compare the values at `fun i => (Ideal.Quotient.mk_surjective (v i)).choose_spec⟩`.
+
+Take `⟨x, hx⟩` from `hK w`. Use `⟨redV m x, ?_⟩` and prove the remaining obligations. Use `show _ ∈ redV m '' (K : Set (Fin (n + 1) → R))`. Use `⟨w - A *ᵥ x, hx, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`.
+
+Simplify using `[redV, Ab, Matrix.mulVec, dotProduct, map_sum]`. Take `⟨Hb, hHcol, hHlast, hdet⟩` from `srLift_field Ab (Kbar m K) hAb hKb`. Establish `hlift : ∀ j, ∃ g : Fin (n + 1) → R, g ∈ K ∧ redV m g = fun i => Hb i j`. Introduce `j`. Take `⟨g, hg, hge⟩` from `hHcol j`.
+
+Conclude with `⟨g, hg, hge⟩`. Use `choose g hgK hgr using hlift`. Set `G : Matrix (Fin (n + 1)) (Fin (n + 1)) R` to `fun i j => if j = Fin.last n then 0 else g j i`. Use `⟨G, fun j => ?_, fun i => by simp [G], ?_⟩` and prove the remaining obligations. Distinguish the cases in `hj : j = Fin.last n`.
+
+Simplify using `only [G, hj, if_true]`. Conclude with `K.zero_mem`. Simplify using `only [G, hj, if_false]`. Conclude with `hgK j`. Introduce `hmem`.
+
+Apply `hdet` to reduce the goal to its premises. Establish `e : Ideal.Quotient.mk m (A + G).det = (Ab + Hb).det`. Rewrite using `[RingHom.map_det, RingHom.mapMatrix_apply]`. Use `congr 1`. Use extensionality with `i j`.
+
+Simplify using `only [Matrix.map_apply, Matrix.add_apply, map_add, Ab]`. Use `congr 1`. Distinguish the cases in `hj : j = Fin.last n`. Substitute `hj` using the available equality. Rewrite using `[hHlast i, show G i (Fin.last n) = 0 from if_pos rfl, map_zero]`.
+
+Rewrite using `[show G i j = g j i from if_neg hj]`. Conclude with `congrFun (hgr j) i`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem exists_local (m : Ideal R) [hm : m.IsMaximal] (A : Matrix (Fin (n + 1)) (Fin (n + 1)) R)
     (K : Submodule R (Fin (n + 1) → R)) (hA : ∀ i, A i (Fin.last n) = if i = Fin.last n then 1 else 0)
     (hK : ∀ v, ∃ x, v - A *ᵥ x ∈ K) :
@@ -184,6 +238,15 @@ theorem exists_local (m : Ideal R) [hm : m.IsMaximal] (A : Matrix (Fin (n + 1)) 
     calc (Ab + Hb).det = Ideal.Quotient.mk m (A + G).det := e.symm
       _ = 0 := Ideal.Quotient.eq_zero_iff_mem.2 hmem
 
+/- English proof (translation)
+Establish `hb : ∀ m' ∈ S, m' ≠ m → ∃ b, b ∈ m' ∧ b - 1 ∈ m`. Introduce `m' hm' hne`. Establish `h1 : (1 : R) ∈ m ⊔ m'`. Rewrite using `[Ideal.IsMaximal.coprime_of_ne (hS m hm) (hS m' hm') (Ne.symm hne)]`. Conclude with `Submodule.mem_top`.
+
+Take `⟨a, ha, b, hb, hab⟩` from `Submodule.mem_sup.1 h1`. Use `⟨b, hb, ?_⟩` and prove the remaining obligations. Rewrite using `[show b - 1 = -a by rw [← hab]; ring]`. Conclude with `m.neg_mem ha`. Use `choose! b hbm hb1 using hb`.
+
+Use `⟨∏ m' ∈ S.erase m, b m', ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← Ideal.Quotient.eq, map_prod, map_one]`. Apply `Finset.prod_eq_one` to reduce the goal to its premises. Introduce `m' hm'`. Rewrite `hm'` using `[Finset.mem_erase]`.
+
+Rewrite using `[Ideal.Quotient.eq.2 (hb1 m' hm'.2 hm'.1), map_one]`. Introduce `m' hm' hne`. Rewrite using `[← Finset.mul_prod_erase (S.erase m) b (Finset.mem_erase.2 ⟨hne, hm'⟩)]`. Conclude with `Ideal.mul_mem_right _ _ (hbm m' hm' hne)`.
+-/
 theorem exists_idem (S : Finset (Ideal R)) (hS : ∀ m ∈ S, m.IsMaximal) (m : Ideal R) (hm : m ∈ S) :
     ∃ e : R, e - 1 ∈ m ∧ ∀ m' ∈ S, m' ≠ m → e ∈ m' := by
   classical
@@ -207,6 +270,21 @@ theorem exists_idem (S : Finset (Ideal R)) (hS : ∀ m ∈ S, m.IsMaximal) (m : 
     rw [← Finset.mul_prod_erase (S.erase m) b (Finset.mem_erase.2 ⟨hne, hm'⟩)]
     exact Ideal.mul_mem_right _ _ (hbm m' hm' hne)
 
+/- English proof (translation)
+Set `S` to `hfin.toFinset`. Establish `hSm : ∀ m ∈ S, m.IsMaximal` using `fun m hm => hfin.mem_toFinset.1 hm`. Establish `hloc : ∀ m ∈ S, ∃ G : Matrix (Fin (n + 1)) (Fin (n + 1)) R, (∀ j, (fun i => G i j) ∈ K) ∧ (∀ i, G i (Fin.last n) = 0) ∧ (A + G).det ∉ m` using `fun m hm => by haveI := hSm m hm`. Conclude with `exists_local m A K hA hK`. Use `choose! G hGK hGl hGd using hloc`.
+
+Establish `hidem : ∀ m ∈ S, ∃ e : R, e - 1 ∈ m ∧ ∀ m' ∈ S, m' ≠ m → e ∈ m'` using `fun m hm => exists_idem S hSm m hm`. Use `choose! e he1 he0 using hidem`. Use `⟨∑ m ∈ S, e m • G m, fun j => ?_, fun i => ?_, ?_⟩` and prove the remaining obligations. Establish `hc : (fun i => (∑ m ∈ S, e m • G m) i j) = ∑ m ∈ S, e m • fun i => G m i j`. Use function extensionality and compare the values at `i`.
+
+Simplify using `[Matrix.sum_apply, Finset.sum_apply]`. Rewrite using `[hc]`. Conclude with `K.sum_mem fun m hm => K.smul_mem _ (hGK m hm j)`. Rewrite using `[Matrix.sum_apply]`. Conclude with `Finset.sum_eq_zero fun m hm => by rw [Matrix.smul_apply, hGl m hm i, smul_zero]`.
+
+Assume the negation of the conclusion as `hu`. Take `⟨M, hM, hdetM⟩` from `exists_max_ideal_of_mem_nonunits (mem_nonunits_iff.2 hu)`. Establish `hMS : M ∈ S` using `hfin.mem_toFinset.2 hM`. Apply `hGd M hMS` to reduce the goal to its premises. Rewrite `hdetM`, the goal using `[← Ideal.Quotient.eq_zero_iff_mem]`.
+
+Rewrite `hdetM`, the goal using `[RingHom.map_det, RingHom.mapMatrix_apply]`. Use `hdetM using 2` and compare the differences between its conclusion and the goal. Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, Matrix.add_apply, map_add]`. Use `congr 1`.
+
+Rewrite using `[Matrix.sum_apply, map_sum, Finset.sum_eq_single M]`. Establish `h1 : Ideal.Quotient.mk M (e M) = 1`. Rewrite using `[← map_one (Ideal.Quotient.mk M)]`. Conclude with `Ideal.Quotient.eq.2 (he1 M hMS)`. Rewrite using `[Matrix.smul_apply, smul_eq_mul, map_mul, h1, one_mul]`.
+
+Introduce `b hb hbM`. Rewrite using `[Matrix.smul_apply, smul_eq_mul, map_mul, Ideal.Quotient.eq_zero_iff_mem.2 (he0 b hb M hMS (Ne.symm hbM)), zero_mul]`. Introduce `h`. Conclude with `absurd hMS h`.
+-/
 theorem srLift_of_finite (hfin : {m : Ideal R | m.IsMaximal}.Finite) (A : Matrix (Fin (n + 1)) (Fin (n + 1)) R)
     (K : Submodule R (Fin (n + 1) → R)) (hA : ∀ i, A i (Fin.last n) = if i = Fin.last n then 1 else 0)
     (hK : ∀ v, ∃ x, v - A *ᵥ x ∈ K) :

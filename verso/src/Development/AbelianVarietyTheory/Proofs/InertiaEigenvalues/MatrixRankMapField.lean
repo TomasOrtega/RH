@@ -1,6 +1,9 @@
 import Mathlib
 open Matrix
 namespace GlobalTheory
+/- English proof (translation)
+Rewrite using `[← diagonal_one, ← diagonal_zero, fromBlocks_diagonal, rank_diagonal, ← diagonal_one, ← diagonal_zero, fromBlocks_diagonal, rank_diagonal]`. Apply the tactic sequence `exact Fintype.card_congr (Equiv.subtypeEquivRight fun i => by cases i <;> simp)`.
+-/
 private lemma rank_fromBlocks_one_zero_lemma {F G : Type} [Field F] [Field G] (r s : ℕ) :
     (fromBlocks (1 : Matrix (Fin r) (Fin r) F) 0 0 (0 : Matrix (Fin s) (Fin s) F)).rank =
       (fromBlocks (1 : Matrix (Fin r) (Fin r) G) 0 0 (0 : Matrix (Fin s) (Fin s) G)).rank := by
@@ -8,6 +11,15 @@ private lemma rank_fromBlocks_one_zero_lemma {F G : Type} [Field F] [Field G] (r
   rw [← diagonal_one, ← diagonal_zero, fromBlocks_diagonal, rank_diagonal,
     ← diagonal_one, ← diagonal_zero, fromBlocks_diagonal, rank_diagonal]
   exact Fintype.card_congr (Equiv.subtypeEquivRight fun i => by cases i <;> simp)
+/- English proof (translation)
+Take `⟨V, U, e, hV, hU, h⟩` from `exists_rank_normal_form M`. Establish `hVd : IsUnit V.det` using `(isUnit_iff_isUnit_det _).1 hV`. Establish `hUd : IsUnit U.det` using `(isUnit_iff_isUnit_det _).1 hU`. Establish `hV' : IsUnit (V.map φ).det`. Rewrite using `[← RingHom.mapMatrix_apply, ← RingHom.map_det]`.
+
+Conclude with `hVd.map φ`. Establish `hU' : IsUnit (U.map φ).det`. Rewrite using `[← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Conclude with `hUd.map φ`. Establish `hmap : V.map φ * M.map φ * U.map φ = (fromBlocks (1 : Matrix (Fin M.rank) (Fin M.rank) L) 0 0 0).submatrix e e`.
+
+Rewrite using `[← Matrix.map_mul, ← Matrix.map_mul, h, ← submatrix_map, fromBlocks_map]`. Simplify using the standard rewrite rules. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[rank_mul_eq_left_of_isUnit_det _ _ hU', rank_mul_eq_right_of_isUnit_det _ _ hV']`. Use `_ = (fromBlocks (1 : Matrix (Fin M.rank) (Fin M.rank) K) 0 0 0).rank := by`.
+
+Rewrite using `[hmap, rank_submatrix]`. Conclude with `rank_fromBlocks_one_zero_lemma _ _`. Use `_ = (V * M * U).rank := by rw [h, rank_submatrix]`. Use `_ = M.rank := by`. Rewrite using `[rank_mul_eq_left_of_isUnit_det _ _ hUd, rank_mul_eq_right_of_isUnit_det _ _ hVd]`.
+-/
 theorem matrix_rank_map_field {K L : Type} [Field K] [Field L] (φ : K →+* L) {n : ℕ}
     (M : Matrix (Fin n) (Fin n) K) : (M.map φ).rank = M.rank := by
   classical

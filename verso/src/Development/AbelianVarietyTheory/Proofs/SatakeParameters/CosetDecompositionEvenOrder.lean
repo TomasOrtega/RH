@@ -4,6 +4,9 @@ open NumberField IsDedekindDomain Formalism.MainNotions.G Formalism.L2.Col Forma
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[pow_succ, Subgroup.mul_mem_iff_of_index_two hH, Nat.even_add_one, ih]`. Simplify using `[ha]`.
+-/
 theorem pow_mem_iff_even_of_index_two_notMem {G : Type} [Group G] (H : Subgroup G) (hH : H.index = 2)
     (a : G) (ha : a ∉ H) (k : ℕ) : a ^ k ∈ H ↔ Even k := by
   induction k with
@@ -12,6 +15,55 @@ theorem pow_mem_iff_even_of_index_two_notMem {G : Type} [Group G] (H : Subgroup 
     rw [pow_succ, Subgroup.mul_mem_iff_of_index_two hH, Nat.even_add_one, ih]
     simp [ha]
 
+/- English proof (translation)
+Establish `hφk` using `pow_mem_iff_even_of_index_two_notMem H hH φ hφ`. Establish `hck` using `pow_mem_iff_even_of_index_two_notMem H hH c hc`. Establish `hev : Even (orderOf φ)` using `(hφk _).1 (by rw [pow_orderOf_eq_one]; exact H.one_mem)`. Establish `hpos : 0 < orderOf φ` using `orderOf_pos φ`. Establish `hcinv : c⁻¹ = c` using `inv_eq_of_mul_eq_one_right hcc`.
+
+Establish `hce : ∀ k : ℕ, Even k → c ^ k = 1`. Introduce and unpack `k ⟨m, rfl⟩`. Rewrite using `[pow_add, ← mul_pow, hcc, one_pow]`. Establish `hco : ∀ k : ℕ, ¬ Even k → c ^ k = c`. Introduce `k hk`.
+
+Take `⟨m, rfl⟩` from `Nat.not_even_iff_odd.1 hk`. Rewrite using `[pow_succ, hce _ (even_two_mul m), one_mul]`. Use `⟨by obtain ⟨m, hm⟩ := hev; omega, hev, ?_⟩` and prove the remaining obligations. Use `set Z := Subgroup.zpowers φ with hZ`. Set `D : Subgroup G` to `Z ⊔ Subgroup.zpowers c`.
+
+Establish `hZD : Z ≤ D` using `le_sup_left`. Establish `hcD : c ∈ D` using `(le_sup_right : Subgroup.zpowers c ≤ D) (Subgroup.mem_zpowers c)`. Establish `hφD : φ ∈ D` using `hZD (Subgroup.mem_zpowers φ)`. Establish `hD : ∀ x ∈ D, x ∈ Z ∨ x * c ∈ Z`. Introduce `x hx`.
+
+Take `⟨y, hy, z, hz, rfl⟩` from `Subgroup.mem_sup.1 hx`. Take `⟨k, rfl⟩` from `(mem_powers_iff_mem_zpowers.2 hz : z ∈ Submonoid.powers c)`. Distinguish the cases in `hk : Even k`. Use `left`. Simplify `hy` using `[hce k hk]`.
+
+Use `right`. Simplify `hy` using `[hco k hk, mul_assoc, hcc]`. Establish `hZpow : ∀ x ∈ Z, ∃ s : Fin (orderOf φ), φ ^ s.val = x`. Introduce `x hx`. Take `⟨k, rfl⟩` from `(mem_powers_iff_mem_zpowers.2 hx : x ∈ Submonoid.powers φ)`.
+
+Conclude with `⟨⟨k % orderOf φ, Nat.mod_lt _ hpos⟩, pow_mod_orderOf φ k⟩`. Establish `hr : ∀ q : G ⧸ D, ∃ a : G, a ∈ H ∧ (a : G ⧸ D) = q`. Introduce `q`. Take `⟨a, rfl⟩` from `QuotientGroup.mk_surjective q`. Distinguish the cases in `ha : a ∈ H`.
+
+Conclude with `⟨a, ha, rfl⟩`. Use `⟨a * c, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Subgroup.mul_mem_iff_of_index_two hH]`. Simplify using `[ha, hc]`. Conclude with `QuotientGroup.mk_mul_of_mem a hcD`.
+
+Use `choose r hrH hrq using hr`. Set `e : Fin (Nat.card (G ⧸ D)) ≃ G ⧸ D` to `(Finite.equivFin (G ⧸ D)).symm`. Set `g : Fin (Nat.card (G ⧸ D)) → G` to `fun v => r (e v)`. Establish `hgH : ∀ v, g v ∈ H` using `fun v => hrH _`. Establish `key : ∀ v v', g v' * (g v)⁻¹ ∈ D → v = v'`.
+
+Introduce `v v' h`. Apply `e.injective` to reduce the goal to its premises. Rewrite using `[← hrq (e v), ← hrq (e v'), QuotientGroup.eq, mul_comm]`. Conclude with `h`. Establish `cover : ∀ x : G, ∃ v, g v * x⁻¹ ∈ D`.
+
+Introduce `x`. Use `⟨e.symm (x : G ⧸ D), ?_⟩` and prove the remaining obligations. Establish `h` using `hrq (x : G ⧸ D)`. Rewrite `h` using `[eq_comm, QuotientGroup.eq, mul_comm]`. Simplify `h` using `[g]`.
+
+Set `f : (Σ _ : Fin (Nat.card (G ⧸ D)), Fin (orderOf φ)) → H` to `fun p => ⟨φ ^ p.2.val * g p.1 * c ^ p.2.val, by`. Rewrite using `[Subgroup.mul_mem_iff_of_index_two hH, H.mul_mem_cancel_right (hgH _), hφk, hck]⟩`. Establish `hf : Function.Bijective f`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨v, s⟩ ⟨v', t⟩ h`.
+
+Establish `h' : φ ^ s.val * g v * c ^ s.val = φ ^ t.val * g v' * c ^ t.val` using `congrArg Subtype.val h`. Establish `hv : v = v'`. Apply `key` to reduce the goal to its premises. Establish `: g v' * (g v)⁻¹ = φ ^ s.val * c ^ s.val * (φ ^ t.val * c ^ t.val)⁻¹`. Rewrite using `[← div_eq_mul_inv, ← div_eq_mul_inv, div_eq_div_iff_mul_eq_mul]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[this]`. Conclude with `D.mul_mem (D.mul_mem (D.pow_mem hφD _) (D.pow_mem hcD _)) (D.inv_mem (D.mul_mem (D.pow_mem hφD _) (D.pow_mem hcD _)))`. Substitute `hv` using the available equality. Establish `h2 : φ ^ s.val * c ^ s.val = φ ^ t.val * c ^ t.val`.
+
+Apply `mul_left_cancel (a := g v)` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Establish `hZp : ∀ k : ℕ, φ ^ k ∈ Z` using `fun k => Z.pow_mem (Subgroup.mem_zpowers φ) k`. Establish `h3 : φ ^ s.val = φ ^ t.val`. Apply the tactic sequence `by_cases hs : Even s.val <;> by_cases ht : Even t.val`.
+
+Simplify `h2` using `[hce _ hs, hce _ ht]`. It suffices to derive a contradiction. Rewrite `h2` using `[hce _ hs, hco _ ht, mul_one]`. Conclude with `hcZ ((Z.mul_mem_cancel_left (hZp t.val)).1 (h2 ▸ hZp s.val))`. It suffices to derive a contradiction.
+
+Rewrite `h2` using `[hco _ hs, hce _ ht, mul_one]`. Conclude with `hcZ ((Z.mul_mem_cancel_left (hZp s.val)).1 (h2 ▸ hZp t.val))`. Rewrite `h2` using `[hco _ hs, hco _ ht]`. Conclude with `mul_right_cancel h2`. Establish `h4 : s = t` using `Fin.ext (pow_injOn_Iio_orderOf s.2 t.2 h3)`.
+
+Substitute `h4` using the available equality. Both sides reduce to the same expression. Introduce and unpack `⟨h, hh⟩`. Take `⟨v, hv⟩` from `cover h`. Establish `hv' : h * (g v)⁻¹ ∈ D`.
+
+Use `D.inv_mem hv` as an intermediate fact. Rewrite `this` using `[mul_inv_rev, inv_inv]`. Then use the resulting hypothesis. Establish `hH' : h * (g v)⁻¹ ∈ H` using `H.mul_mem hh (H.inv_mem (hgH v))`. Break down `hD _ hv' with h1 | h1` into its components or cases. Take `⟨s, hs⟩` from `hZpow _ h1`.
+
+Use `⟨⟨v, s⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Establish `hes : Even s.val` using `(hφk _).1 (hs ▸ hH')`. Use `show φ ^ s.val * g v * c ^ s.val = h`. Rewrite using `[hce _ hes, hs]`. Simplify using the standard rewrite rules.
+
+Take `⟨s, hs⟩` from `hZpow _ h1`. Use `⟨⟨v, s⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Establish `hes : ¬ Even s.val`. Rewrite using `[← hφk, hs, H.mul_mem_cancel_left hH']`. Conclude with `hc`.
+
+Use `show φ ^ s.val * g v * c ^ s.val = h`. Rewrite using `[hco _ hes, hs]`. Combine the equalities or inequalities in the displayed calculation. Use `⟨Nat.card (G ⧸ D), g, Equiv.ofBijective f hf, Nat.card_pos, fun v s => rfl, fun v v' h => key v v' (hZD h), ?_, ?_⟩` and prove the remaining obligations. Introduce `v v' h`.
+
+Establish `h1 : g v' * c * (g v)⁻¹ = g v' * (g v)⁻¹ * c` using `by ac_rfl`. Rewrite `h` using `[h1]`. Establish `hv` using `key v v' ((D.mul_mem_cancel_right hcD).1 (hZD h))`. Substitute `hv` using the available equality. Conclude with `hcZ (by simpa using h)`.
+
+Introduce `x`. Take `⟨v, hv⟩` from `cover x`. Use `⟨v, (hD _ hv).imp id fun h => ?_⟩` and prove the remaining obligations. Establish `h1 : g v * c * x⁻¹ = g v * x⁻¹ * c` using `by ac_rfl`. Rewrite using `[h1]` and apply the resulting hypothesis.
+-/
 theorem frobenius_orbit_positions_comm (G : Type) [CommGroup G] [Finite G] (H : Subgroup G) (φ c : G)
     (hH : H.index = 2) (hφ : φ ∉ H) (hc : c ∉ H) (hcc : c * c = 1) (hcZ : c ∉ Subgroup.zpowers φ) :
     2 ≤ orderOf φ ∧ Even (orderOf φ) ∧ ∃ (N : ℕ) (g : Fin N → G) (pos : (Σ _ : Fin N, Fin (orderOf φ)) ≃ H), 0 < N ∧ (∀ v s, (pos ⟨v, s⟩ : G) = φ ^ s.val * g v * c ^ s.val) ∧ (∀ v v', g v' * (g v)⁻¹ ∈ Subgroup.zpowers φ → v = v') ∧ (∀ v v', g v' * c * (g v)⁻¹ ∉ Subgroup.zpowers φ) ∧ ∀ x : G, ∃ v, g v * x⁻¹ ∈ Subgroup.zpowers φ ∨ g v * c * x⁻¹ ∈ Subgroup.zpowers φ := by
@@ -140,6 +192,9 @@ theorem frobenius_orbit_positions_comm (G : Type) [CommGroup G] [Finite G] (H : 
     have h1 : g v * c * x⁻¹ = g v * x⁻¹ * c := by ac_rfl
     rwa [h1]
 
+/- English proof (translation)
+Introduce `G inst _ H φ c hcomm`. Use `letI : CommGroup G := { inst with mul_comm := hcomm }`. Conclude with `frobenius_orbit_positions_comm G H φ c`.
+-/
 theorem frobenius_orbit_positions : ∀ (G : Type) [Group G] [Finite G] (H : Subgroup G) (φ c : G), (∀ a b : G, a * b = b * a) → H.index = 2 → φ ∉ H → c ∉ H → c * c = 1 → c ∉ Subgroup.zpowers φ → 2 ≤ orderOf φ ∧ Even (orderOf φ) ∧ ∃ (N : ℕ) (g : Fin N → G) (pos : (Σ _ : Fin N, Fin (orderOf φ)) ≃ H), 0 < N ∧ (∀ v s, (pos ⟨v, s⟩ : G) = φ ^ s.val * g v * c ^ s.val) ∧ (∀ v v', g v' * (g v)⁻¹ ∈ Subgroup.zpowers φ → v = v') ∧ (∀ v v', g v' * c * (g v)⁻¹ ∉ Subgroup.zpowers φ) ∧ ∀ x : G, ∃ v, g v * x⁻¹ ∈ Subgroup.zpowers φ ∨ g v * c * x⁻¹ ∈ Subgroup.zpowers φ := by
   intro G inst _ H φ c hcomm
   letI : CommGroup G := { inst with mul_comm := hcomm }

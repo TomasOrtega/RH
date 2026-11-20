@@ -14,6 +14,11 @@ section
 
 variable {Z O L : Type} [CommRing Z] [CommRing O] [AddCommGroup L] [Module O L]
 
+/- English proof (translation)
+Proceed by induction on `u using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul z x`. Rewrite using `[LinearMap.baseChange_tmul]`. Conclude with `hφ z a x`.
+
+Consider the case `add u v hu hv => simp only [map_add, hu, hv, smul_add]`.
+-/
 theorem padic_act {N : ℕ} (φ : (Z ⊗[ℤ] L) ≃ₗ[Z] (Fin N → Z ⊗[ℤ] O))
     (hφ : ∀ (z : Z) (a : O) (x : L), φ (z ⊗ₜ (a • x)) = ((1 : Z) ⊗ₜ[ℤ] a : Z ⊗[ℤ] O) • φ (z ⊗ₜ x)) (a : O)
     (u : Z ⊗[ℤ] L) :
@@ -26,6 +31,13 @@ theorem padic_act {N : ℕ} (φ : (Z ⊗[ℤ] L) ≃ₗ[Z] (Fin N → Z ⊗[ℤ]
     exact hφ z a x
   | add u v hu hv => simp only [map_add, hu, hv, smul_add]
 
+/- English proof (translation)
+Establish `hs : ∀ x y, B x y = - B y x`. Introduce `x y`. Establish `h` using `hB (x + y)`. Simplify using `only [map_add, LinearMap.add_apply, hB, zero_add, add_zero] at h`. Conclude with `eq_neg_of_add_eq_zero_right h`.
+
+Proceed by induction on `u using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul z x`. Proceed by induction on `v using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+
+Consider the case `tmul w y`. Rewrite using `[LinearMap.BilinForm.baseChange_tmul, LinearMap.BilinForm.baseChange_tmul, hs x y, neg_smul, mul_comm]`. Consider the case `add v w hv hw => simp only [map_add, LinearMap.add_apply, hv, hw, neg_add]`. Consider the case `add u u' hu hu' => simp only [map_add, LinearMap.add_apply, hu, hu', neg_add]`.
+-/
 private theorem baseChange_antisymm_of_self_eq_zero (B : LinearMap.BilinForm ℤ L) (hB : ∀ x, B x x = 0) (u v : Z ⊗[ℤ] L) :
     B.baseChange Z u v = - B.baseChange Z v u := by
   have hs : ∀ x y, B x y = - B y x := by
@@ -43,6 +55,11 @@ private theorem baseChange_antisymm_of_self_eq_zero (B : LinearMap.BilinForm ℤ
     | add v w hv hw => simp only [map_add, LinearMap.add_apply, hv, hw, neg_add]
   | add u u' hu hu' => simp only [map_add, LinearMap.add_apply, hu, hu', neg_add]
 
+/- English proof (translation)
+Proceed by induction on `u using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul z x => rw [LinearMap.BilinForm.baseChange_tmul, hB, zero_smul]`. Consider the case `add u v hu hv`. Simplify using `only [map_add, LinearMap.add_apply, hu, hv]`.
+
+Rewrite using `[baseChange_antisymm_of_self_eq_zero B hB u v]`. Normalize the expressions using the abelian group laws.
+-/
 theorem padic_alt (B : LinearMap.BilinForm ℤ L) (hB : ∀ x, B x x = 0) (u : Z ⊗[ℤ] L) :
     B.baseChange Z u u = 0 := by
   induction u using TensorProduct.induction_on with
@@ -53,6 +70,13 @@ theorem padic_alt (B : LinearMap.BilinForm ℤ L) (hB : ∀ x, B x x = 0) (u : Z
     rw [baseChange_antisymm_of_self_eq_zero B hB u v]
     abel
 
+/- English proof (translation)
+Proceed by induction on `u using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul z x`. Proceed by induction on `v using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+
+Consider the case `tmul w y`. Rewrite using `[LinearMap.baseChange_tmul, LinearMap.baseChange_tmul]`. Simplify using `only [AddMonoidHom.coe_toIntLinearMap, LinearMap.toAddMonoidHom_coe, LinearMap.lsmul_apply, LinearMap.BilinForm.baseChange_tmul]`. Rewrite using `[hB]`. Consider the case `add v w hv hw => simp only [map_add, hv, hw]`.
+
+Consider the case `add u u' hu hu' => simp only [map_add, LinearMap.add_apply, hu, hu']`.
+-/
 theorem padic_adj (bar : O ≃+* O) (B : LinearMap.BilinForm ℤ L) (hB : ∀ (a : O) x y, B (a • x) y = B x (bar a • y))
     (a : O) (u v : Z ⊗[ℤ] L) :
     B.baseChange Z (LinearMap.baseChange Z (LinearMap.lsmul O L a).toAddMonoidHom.toIntLinearMap u) v =
@@ -70,6 +94,21 @@ theorem padic_adj (bar : O ≃+* O) (B : LinearMap.BilinForm ℤ L) (hB : ∀ (a
     | add v w hv hw => simp only [map_add, hv, hw]
   | add u u' hu hu' => simp only [map_add, LinearMap.add_apply, hu, hu']
 
+/- English proof (translation)
+Use `⟨(B.baseChange Z).compl₁₂ φ.symm.toLinearMap φ.symm.toLinearMap, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `u v`. Simplify using the standard rewrite rules. Introduce `x`. Simplify using `[padic_alt B h1]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `x y hxy`. Apply `φ.symm.injective` to reduce the goal to its premises. Apply `h2.1` to reduce the goal to its premises. Use `LinearMap.ext fun w => ?_` and prove the remaining obligations.
+
+Use `LinearMap.congr_fun hxy (φ w)` as an intermediate fact. Simplify using `using this`. Introduce `f`. Take `⟨u, hu⟩` from `h2.2 (f.comp φ.toLinearMap)`. Use `⟨φ u, LinearMap.ext fun y => ?_⟩` and prove the remaining obligations.
+
+Use `LinearMap.congr_fun hu (φ.symm y)` as an intermediate fact. Simplify using `using this`. Introduce `a x y`. Take `⟨u, rfl⟩` from `φ.surjective x`. Take `⟨v, rfl⟩` from `φ.surjective y`.
+
+Proceed by induction on `a using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul z c`. Establish `hz : ∀ (c' : O) (w : Z ⊗[ℤ] L), (z ⊗ₜ[ℤ] c' : Z ⊗[ℤ] O) • φ w = z • φ (LinearMap.baseChange Z (LinearMap.lsmul O L c').toAddMonoidHom.toIntLinearMap w)`. Introduce `c' w`.
+
+Rewrite using `[padic_act φ hφ c' w, ← smul_assoc, TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Rewrite using `[Algebra.TensorProduct.map_tmul]`. Establish `e1 : (AlgHom.id Z Z) z = z` using `rfl`. Establish `e2 : bar.toRingHom.toIntAlgHom c = bar c` using `rfl`. Rewrite using `[e1, e2, hz, hz]`.
+
+Simplify using `only [LinearMap.map_smul, LinearMap.compl₁₂_apply, LinearEquiv.coe_coe, LinearEquiv.symm_apply_apply, LinearMap.smul_apply, padic_adj bar B h3]`. Consider the case `add a a' ha ha' => simp only [add_smul, map_add, LinearMap.add_apply, ha, ha']`.
+-/
 theorem padic_form {N : ℕ} (bar : O ≃+* O) (φ : (Z ⊗[ℤ] L) ≃ₗ[Z] (Fin N → Z ⊗[ℤ] O))
     (hφ : ∀ (z : Z) (a : O) (x : L), φ (z ⊗ₜ (a • x)) = ((1 : Z) ⊗ₜ[ℤ] a : Z ⊗[ℤ] O) • φ (z ⊗ₜ x))
     (B : LinearMap.BilinForm ℤ L) (h1 : ∀ x, B x x = 0) (h2 : Function.Bijective (B.baseChange Z))
@@ -114,6 +153,13 @@ theorem padic_form {N : ℕ} (bar : O ≃+* O) (φ : (Z ⊗[ℤ] L) ≃ₗ[Z] (F
 
 end
 
+/- English proof (translation)
+Take `⟨a, b, hab⟩` from `h`. Establish `hp : (p : ℤ_[p]) ∈ IsLocalRing.maximalIdeal ℤ_[p]`. Rewrite using `[PadicInt.maximalIdeal_eq_span_p]`. Conclude with `Ideal.mem_span_singleton_self _`. Establish `hN : (⊤ : Submodule ℤ_[p] R) ≤ (Ideal.span {a * d}).restrictScalars ℤ_[p]`.
+
+Use `Submodule.le_of_le_smul_of_le_jacobson_bot (I := IsLocalRing.maximalIdeal ℤ_[p]) Module.Finite.fg_top (IsLocalRing.maximalIdeal_le_jacobson _) ?_` and prove the remaining obligations. Introduce `x _`. Establish `hx : x = a * d * x + (p : ℤ_[p]) • (b * x)`. Rewrite using `[Algebra.smul_def, map_natCast]`. Take the linear combination `(-x) * hab`.
+
+Rewrite using `[hx]`. Conclude with `Submodule.add_mem_sup (Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _)) (Submodule.smul_mem_smul hp Submodule.mem_top)`. Take `⟨y, hy⟩` from `Ideal.mem_span_singleton'.mp (hN Submodule.mem_top : (1 : R) ∈ _)`. Establish `hu : IsUnit (a * d)` using `IsUnit.of_mul_eq_one y (by rw [mul_comm]; exact hy)`. Conclude with `isUnit_of_mul_isUnit_right hu`.
+-/
 theorem padic_unit (p : ℕ) [Fact p.Prime] (R : Type) [CommRing R] [Algebra ℤ_[p] R] [Module.Finite ℤ_[p] R] (d : R)
     (h : IsCoprime d (p : R)) : IsUnit d := by
   obtain ⟨a, b, hab⟩ := h
@@ -134,12 +180,30 @@ theorem padic_unit (p : ℕ) [Fact p.Prime] (R : Type) [CommRing R] [Algebra ℤ
   have hu : IsUnit (a * d) := IsUnit.of_mul_eq_one y (by rw [mul_comm]; exact hy)
   exact isUnit_of_mul_isUnit_right hu
 
+/- English proof (translation)
+Establish `h1 : Module.Finite ℤ L` using `Module.Finite.trans (𝓞 E) L`. Establish `h2 : Module.Flat ℤ L` using `Module.Flat.trans ℤ (𝓞 E) L`. Conclude with `⟨h1, inferInstance⟩`.
+-/
 theorem padic_freeZ (E : Type) [Field E] [NumberField E] (L : Type) [AddCommGroup L] [Module (𝓞 E) L]
     [Module.Finite (𝓞 E) L] [Module.Projective (𝓞 E) L] : Module.Finite ℤ L ∧ Module.Free ℤ L := by
   have h1 : Module.Finite ℤ L := Module.Finite.trans (𝓞 E) L
   have h2 : Module.Flat ℤ L := Module.Flat.trans ℤ (𝓞 E) L
   exact ⟨h1, inferInstance⟩
 
+/- English proof (translation)
+Introduce `E _ _ _ bar hbar hunr p _ L L' _ _ _ _ _ _ _ _ B B' hrk h1 h2 h3 k1 k2 k3`. Take `⟨_, _⟩` from `padic_freeZ E L`. Take `⟨_, _⟩` from `padic_freeZ E L'`. Take `⟨φ, hφ⟩` from `tw_g_free E p L`. Establish `hL'` using `tw_g_free E p L'`.
+
+Rewrite `hL'` using `[← hrk]`. Take `⟨φ', hφ'⟩` from `hL'`. Take `⟨ψ, hψ, a1, a2, a3⟩` from `padic_form bar φ hφ B h1 (GlobalTheory.CompanionTheory.UnimodularBaseChange.bijective_baseChange ℤ_[p] L B h2) h3`. Take `⟨ψ', hψ', b1, b2, b3⟩` from `padic_form bar φ' hφ' B' k1 (GlobalTheory.CompanionTheory.UnimodularBaseChange.bijective_baseChange ℤ_[p] L' B' k2) k3`. Take `⟨lam, l1, l2⟩` from `tw_g_lam E bar hbar hunr p`.
+
+Take `⟨θ, hθ⟩` from `tw_g_theta E bar hbar hunr p Fact.out`. Establish `hbb : ∀ a, bar (bar a) = a` using `fun a => RingOfIntegers.ext (by`. Rewrite using `[hbar, hbar, IsCMField.complexConj_apply_apply])`. Establish `hσ : ∀ r : ℤ_[p] ⊗[ℤ] 𝓞 E, Algebra.TensorProduct.map (AlgHom.id ℤ_[p] ℤ_[p]) bar.toRingHom.toIntAlgHom (Algebra.TensorProduct.map (AlgHom.id ℤ_[p] ℤ_[p]) bar.toRingHom.toIntAlgHom r) = r`. Introduce `r`.
+
+Proceed by induction on `r using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul z a`. Rewrite using `[Algebra.TensorProduct.map_tmul, Algebra.TensorProduct.map_tmul]`. Conclude with `congrArg (z ⊗ₜ[ℤ] ·) (hbb a)`.
+
+Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`. Establish `hu : ∃ t : ℤ_[p] ⊗[ℤ] 𝓞 E, IsUnit (t - Algebra.TensorProduct.map (AlgHom.id ℤ_[p] ℤ_[p]) bar.toRingHom.toIntAlgHom t)`. Use `⟨1 ⊗ₜ θ, padic_unit p _ _ ?_⟩` and prove the remaining obligations. Use `hθ.map (Algebra.TensorProduct.includeRight (R := ℤ) (A := ℤ_[p]) (B := 𝓞 E)).toRingHom` as an intermediate fact. Rewrite `this` using `[map_natCast, map_sub]`.
+
+Conclude with `this`. Take `⟨e, he⟩` from `tw_g_std ℤ_[p] _ _ hσ lam l1 l2 _ (tw_g_semi p _ _ hσ hu _) ψ ψ' a1 a2 a3 b1 b2 b3`. Use `⟨φ ≪≫ₗ e.restrictScalars ℤ_[p] ≪≫ₗ φ'.symm, fun a x => ?_, fun u v => ?_⟩` and prove the remaining obligations. Apply `φ'.injective` to reduce the goal to its premises. Rewrite using `[padic_act φ' hφ']`.
+
+Simplify using `only [LinearEquiv.trans_apply, LinearEquiv.apply_symm_apply, LinearEquiv.restrictScalars_apply]`. Rewrite using `[hφ, map_smul]`. Rewrite using `[← hψ', ← hψ]`. Simplify using `only [LinearEquiv.trans_apply, LinearEquiv.apply_symm_apply, LinearEquiv.restrictScalars_apply]`. Conclude with `he _ _`.
+-/
 theorem tw_g_padic : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (bar : 𝓞 E ≃+* 𝓞 E), (∀ a : 𝓞 E, ((bar a : 𝓞 E) : E) = IsCMField.complexConj E (a : E)) → Algebra.Unramified (𝓞 (maximalRealSubfield E)) (𝓞 E) → ∀ (p : ℕ) [Fact p.Prime] (L L' : Type) [AddCommGroup L] [Module (𝓞 E) L] [Module.Finite (𝓞 E) L] [Module.Projective (𝓞 E) L] [AddCommGroup L'] [Module (𝓞 E) L'] [Module.Finite (𝓞 E) L'] [Module.Projective (𝓞 E) L'] (B : LinearMap.BilinForm ℤ L) (B' : LinearMap.BilinForm ℤ L'), Module.finrank (𝓞 E) L = Module.finrank (𝓞 E) L' → (∀ x, B x x = 0) → Function.Bijective B → (∀ (a : 𝓞 E) x y, B (a • x) y = B x (bar a • y)) → (∀ x, B' x x = 0) → Function.Bijective B' → (∀ (a : 𝓞 E) x y, B' (a • x) y = B' x (bar a • y)) → ∃ φ : (ℤ_[p] ⊗[ℤ] L) ≃ₗ[ℤ_[p]] (ℤ_[p] ⊗[ℤ] L'), (∀ (a : 𝓞 E) (x : L), φ (1 ⊗ₜ (a • x)) = LinearMap.baseChange ℤ_[p] (LinearMap.lsmul (𝓞 E) L' a).toAddMonoidHom.toIntLinearMap (φ (1 ⊗ₜ x))) ∧ ∀ u v, B'.baseChange ℤ_[p] (φ u) (φ v) = B.baseChange ℤ_[p] u v := by
   intro E _ _ _ bar hbar hunr p _ L L' _ _ _ _ _ _ _ _ B B' hrk h1 h2 h3 k1 k2 k3
   obtain ⟨_, _⟩ := padic_freeZ E L

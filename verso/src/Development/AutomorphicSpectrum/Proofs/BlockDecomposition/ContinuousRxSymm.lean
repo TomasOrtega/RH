@@ -18,12 +18,21 @@ variable {R : Type} [CommRing R] {n : ℕ}
 def rx : GL (Fin (n + n)) R ≃* GL (Fin n ⊕ Fin n) R :=
   Units.mapEquiv (Matrix.reindexAlgEquiv R R (finSumFinEquiv (m := n) (n := n)).symm).toMulEquiv
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem rx_val (g : GL (Fin (n + n)) R) : (rx g).1 = g.1.submatrix finSumFinEquiv finSumFinEquiv := rfl
 
+/- English proof (translation)
+Rewrite using `[← map_inv]`. Both sides reduce to the same expression.
+-/
 theorem rx_inv_val (g : GL (Fin (n + n)) R) :
     ((rx g)⁻¹ : GL (Fin n ⊕ Fin n) R).1 = (g⁻¹ : GL (Fin (n + n)) R).1.submatrix finSumFinEquiv finSumFinEquiv := by
   rw [← map_inv]; rfl
 
+/- English proof (translation)
+Use `Units.continuous_iff.2 ⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `(Units.continuous_val.matrix_submatrix _ _)`. Establish `: (fun g : GL (Fin (n + n)) R => (((rx g)⁻¹ : GL (Fin n ⊕ Fin n) R) : Matrix _ _ R)) = fun g => (g⁻¹ : GL (Fin (n + n)) R).1.submatrix finSumFinEquiv finSumFinEquiv` using `funext rx_inv_val`. Rewrite using `[this]`. Conclude with `(Units.continuous_coe_inv.matrix_submatrix _ _)`.
+-/
 theorem continuous_rx [TopologicalSpace R] : Continuous (rx : GL (Fin (n + n)) R → GL (Fin n ⊕ Fin n) R) := by
   refine Units.continuous_iff.2 ⟨?_, ?_⟩
   · exact (Units.continuous_val.matrix_submatrix _ _)
@@ -32,6 +41,11 @@ theorem continuous_rx [TopologicalSpace R] : Continuous (rx : GL (Fin (n + n)) R
     rw [this]
     exact (Units.continuous_coe_inv.matrix_submatrix _ _)
 
+/- English proof (translation)
+Use `Units.continuous_iff.2 ⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `(Units.continuous_val.matrix_submatrix _ _)`. Establish `: (fun g : GL (Fin n ⊕ Fin n) R => (((rx.symm g)⁻¹ : GL (Fin (n + n)) R) : Matrix _ _ R)) = fun g => (g⁻¹ : GL (Fin n ⊕ Fin n) R).1.submatrix finSumFinEquiv.symm finSumFinEquiv.symm`. Use function extensionality and compare the values at `g`. Rewrite using `[← map_inv]`.
+
+Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `(Units.continuous_coe_inv.matrix_submatrix _ _)`.
+-/
 theorem continuous_rx_symm [TopologicalSpace R] :
     Continuous (rx.symm : GL (Fin n ⊕ Fin n) R → GL (Fin (n + n)) R) := by
   refine Units.continuous_iff.2 ⟨?_, ?_⟩
@@ -42,6 +56,13 @@ theorem continuous_rx_symm [TopologicalSpace R] :
     rw [this]
     exact (Units.continuous_coe_inv.matrix_submatrix _ _)
 
+/- English proof (translation)
+Establish `key : (Formalism.UG.cT c g * J * g).map c = gᵀ * J * g.map c`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, hJ]`. Use `congr 2`. Use extensionality with `i j`. Simplify using `[Formalism.UG.cT, hc]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[← key, h, hJ]`. Introduce `h`. Establish `h2` using `congrArg (fun M => M.map c) h`.
+
+Simplify using `only [Matrix.map_mul, hJ] at h2`. Establish `e : (gᵀ).map c = Formalism.UG.cT c g` using `by ext i j; simp [Formalism.UG.cT]`. Establish `e2 : (g.map c).map c = g` using `by ext i j; simp [hc]`. Rewrite `h2` using `[e, e2]`. Then use the resulting hypothesis.
+-/
 theorem form_iff {ι : Type} [Fintype ι] (c : R →+* R) (hc : ∀ x, c (c x) = x) {J : Matrix ι ι R} (hJ : J.map c = J)
     (g : Matrix ι ι R) : Formalism.UG.cT c g * J * g = J ↔ gᵀ * J * g.map c = J := by
   have key : (Formalism.UG.cT c g * J * g).map c = gᵀ * J * g.map c := by
@@ -59,6 +80,15 @@ theorem form_iff {ι : Type} [Fintype ι] (c : R →+* R) (hc : ∀ x, c (c x) =
     have e2 : (g.map c).map c = g := by ext i j; simp [hc]
     rwa [e, e2] at h2
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h r c`. Establish `hs : ∀ i, (Pi.single c (1 : R) : ι → R) i ∈ O` using `fun i => by`. Distinguish the cases in `e : i = c`. Substitute `e` using the available equality.
+
+Simplify using `[O.one_mem]`. Simplify using `[e, O.zero_mem]`. Use `⟨by simpa using (h _).1 hs r, ?_⟩` and prove the remaining obligations. Establish `h2` using `(h (((m⁻¹ : GL ι R).1) *ᵥ Pi.single c 1)).2 (by`. Rewrite using `[Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec]`.
+
+Conclude with `hs) r`. Simplify using `using h2`. Introduce `h y`. Establish `key : ∀ (M : Matrix ι ι R), (∀ r c, M r c ∈ O) → ∀ y : ι → R, (∀ i, y i ∈ O) → ∀ i, (M *ᵥ y) i ∈ O` using `fun M hM y hy i => O.sum_mem fun j _ => O.mul_mem (hM i j) (hy j)`. Use `⟨key _ (fun r c => (h r c).1) y, fun hy => ?_⟩` and prove the remaining obligations.
+
+Use `key _ (fun r c => (h r c).2) _ hy` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec]`. Then use the resulting hypothesis.
+-/
 theorem keeps_iff_int {ι : Type} [Fintype ι] [DecidableEq ι] (O : Subring R) (m : GL ι R) :
     (∀ y : ι → R, (∀ i, y i ∈ O) ↔ ∀ i, (m.1 *ᵥ y) i ∈ O) ↔
       ∀ r c, m.1 r c ∈ O ∧ (m⁻¹ : GL ι R).1 r c ∈ O := by
@@ -85,6 +115,9 @@ section Sub
 
 variable {R : Type} {n : ℕ}
 
+/- English proof (translation)
+Use `⟨fun h => ?_, fun h => h ▸ rfl⟩` and prove the remaining obligations. Use extensionality with `i j`. Use `congrFun (congrFun h (finSumFinEquiv.symm i)) (finSumFinEquiv.symm j)` as an intermediate fact. Simplify using `using this`.
+-/
 theorem sub_inj {X Y : Matrix (Fin (n + n)) (Fin (n + n)) R} :
     X.submatrix finSumFinEquiv finSumFinEquiv = Y.submatrix finSumFinEquiv finSumFinEquiv ↔ X = Y := by
   refine ⟨fun h => ?_, fun h => h ▸ rfl⟩
@@ -98,6 +131,9 @@ section Std
 
 variable (D : D7) {n : ℕ}
 
+/- English proof (translation)
+Establish `h` using `isCMExt_host D`. Take `⟨τ⟩ : Nonempty (D.host.E →+* ℂ)` from `inferInstance`. Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[h.2.2.2 τ, h.2.2.2 τ]`. Simplify using the standard rewrite rules.
+-/
 theorem sig_sig (x : D.host.E) : D.sp.cm.sig (D.sp.cm.sig x) = x := by
   have h := isCMExt_host D
   obtain ⟨τ⟩ : Nonempty (D.host.E →+* ℂ) := inferInstance
@@ -105,6 +141,11 @@ theorem sig_sig (x : D.host.E) : D.sp.cm.sig (D.sp.cm.sig x) = x := by
   rw [h.2.2.2 τ, h.2.2.2 τ]
   simp
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a e`. Express the relevant statement in the definitionally equal form `a ⊗ₜ[D.host.F] D.sp.cm.sig (D.sp.cm.sig e) = _`. Rewrite using `[sig_sig]`.
+
+Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`.
+-/
 theorem sigR_sigR (z : AE D) : sigR (AF D.host.F) D.sp.cm.sig (sigR (AF D.host.F) D.sp.cm.sig z) = z := by
   induction z using TensorProduct.induction_on with
   | zero => simp
@@ -113,21 +154,33 @@ theorem sigR_sigR (z : AE D) : sigR (AF D.host.F) D.sp.cm.sig (sigR (AF D.host.F
     rw [sig_sig]
   | add x y hx hy => rw [map_add, map_add, hx, hy]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem sigR_inclR (x : D.host.E) :
     sigR (AF D.host.F) D.sp.cm.sig (inclR (AF D.host.F) x) = inclR (AF D.host.F) (D.sp.cm.sig x) := rfl
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, GlobalTheory.StdUnn.Jst, GlobalTheory.StdUnn.blk4, Matrix.submatrix_apply]`. Apply the tactic sequence `rcases finSumFinEquiv.symm i with a | a <;> rcases finSumFinEquiv.symm j with b | b <;>`. Apply the tactic sequence `simp [Matrix.one_apply] <;> split_ifs <;> simp`.
+-/
 theorem Jst_map : (GlobalTheory.StdUnn.Jst D n).map D.sp.cm.sig = GlobalTheory.StdUnn.Jst D n := by
   ext i j
   simp only [Matrix.map_apply, GlobalTheory.StdUnn.Jst, GlobalTheory.StdUnn.blk4, Matrix.submatrix_apply]
   rcases finSumFinEquiv.symm i with a | a <;> rcases finSumFinEquiv.symm j with b | b <;>
     simp [Matrix.one_apply] <;> split_ifs <;> simp
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, JR, sigR_inclR]`. Rewrite using `[← Matrix.map_apply (f := D.sp.cm.sig), Jst_map]`.
+-/
 theorem JR_map : (JR (AF D.host.F) (GlobalTheory.StdUnn.Jst D n)).map (sigR (AF D.host.F) D.sp.cm.sig) =
     JR (AF D.host.F) (GlobalTheory.StdUnn.Jst D n) := by
   ext i j
   simp only [Matrix.map_apply, JR, sigR_inclR]
   rw [← Matrix.map_apply (f := D.sp.cm.sig), Jst_map]
 
+/- English proof (translation)
+Establish `key : ∀ x y, (JR (AF D.host.F) (GlobalTheory.StdUnn.Jst D n)).submatrix finSumFinEquiv finSumFinEquiv x y = inclR (F` using `D.host.F) (E := D.host.E) (AF D.host.F) ((Matrix.fromBlocks 0 1 (-1) 0 : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) D.host.E) x y) := fun x y => by`. Simplify using `only [JR, GlobalTheory.StdUnn.Jst, GlobalTheory.StdUnn.blk4, Matrix.submatrix_apply, Matrix.map_apply, Equiv.symm_apply_apply]`. Use extensionality with `x y`. Rewrite using `[key]`. Apply the tactic sequence `rcases x with a | a <;> rcases y with b | b <;> simp [Ad.J, Matrix.one_apply, apply_ite (inclR (F := D.host.F) (E := D.host.E) (AF D.host.F))]`.
+-/
 theorem J_eq : (JR (AF D.host.F) (GlobalTheory.StdUnn.Jst D n)).submatrix finSumFinEquiv finSumFinEquiv =
     Ad.J (AE D) (-1) (Fin n) := by
   have key : ∀ x y, (JR (AF D.host.F) (GlobalTheory.StdUnn.Jst D n)).submatrix finSumFinEquiv finSumFinEquiv x y =
@@ -139,6 +192,11 @@ theorem J_eq : (JR (AF D.host.F) (GlobalTheory.StdUnn.Jst D n)).submatrix finSum
 
 variable (χ : (AE D)ˣ →* Circle)
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(rx g).1ᵀ * Ad.J (AE D) (-1) (Fin n) * (rx g).1.map (sigR (AF D.host.F) D.sp.cm.sig) = Ad.J (AE D) (-1) (Fin n) ↔ Formalism.UG.cT (sigR (AF D.host.F) D.sp.cm.sig) g.1 * JR (AF D.host.F) (GlobalTheory.StdUnn.Jst D n) * g.1 = JR (AF D.host.F) (GlobalTheory.StdUnn.Jst D n)`. Rewrite using `[form_iff _ (sigR_sigR D) (JR_map D), ← J_eq, rx_val, ← sub_inj (X := _ * _ * _)]`. Establish `: (g.1ᵀ * JR (AF D.host.F) (GlobalTheory.StdUnn.Jst D n) * g.1.map (sigR (AF D.host.F) D.sp.cm.sig)).submatrix finSumFinEquiv finSumFinEquiv = (g.1.submatrix finSumFinEquiv finSumFinEquiv)ᵀ * (JR (AF D.host.F) (GlobalTheory.StdUnn.Jst D n)).submatrix finSumFinEquiv finSumFinEquiv …`. Rewrite using `[← Matrix.submatrix_mul_equiv _ _ finSumFinEquiv finSumFinEquiv finSumFinEquiv, ← Matrix.submatrix_mul_equiv _ _ finSumFinEquiv finSumFinEquiv finSumFinEquiv]`. Both sides reduce to the same expression.
+
+Rewrite using `[this]`.
+-/
 theorem mem_uSub_iff (g : GL (Fin (n + n)) (AE D)) :
     rx g ∈ (adCM D.sp.cm.sig χ).uSub (-1) (Fin n) ↔ g ∈ HR (AF D.host.F) D.sp.cm.sig (GlobalTheory.StdUnn.Jst D n) := by
   change (rx g).1ᵀ * Ad.J (AE D) (-1) (Fin n) * (rx g).1.map (sigR (AF D.host.F) D.sp.cm.sig) = Ad.J (AE D) (-1) (Fin n) ↔
@@ -155,11 +213,17 @@ theorem mem_uSub_iff (g : GL (Fin (n + n)) (AE D)) :
 def toU (g : GlobalTheory.StdUnn.G D n) : UD D χ n :=
   ⟨rx (matHom _ D.sp.cm.sig (GlobalTheory.StdUnn.Jst D n) g), (mem_uSub_iff D χ _).2 (Subtype.prop (p := (· ∈ HR _ _ _)) g)⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toU_val (g : GlobalTheory.StdUnn.G D n) : (toU D χ g).1 = rx (matHom _ D.sp.cm.sig (GlobalTheory.StdUnn.Jst D n) g) := rfl
 
 def ofU (u : UD D χ n) : GlobalTheory.StdUnn.G D n :=
   (⟨rx.symm u.1, (mem_uSub_iff D χ _).1 (by simpa using u.2)⟩ : HR (AF D.host.F) D.sp.cm.sig (GlobalTheory.StdUnn.Jst D n))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ofU_val (u : UD D χ n) : matHom _ D.sp.cm.sig (GlobalTheory.StdUnn.Jst D n) (ofU D χ u) = rx.symm u.1 := rfl
 
 def Psi (n : ℕ) : GlobalTheory.StdUnn.G D n ≃ₜ* UD D χ n where
@@ -171,6 +235,9 @@ def Psi (n : ℕ) : GlobalTheory.StdUnn.G D n ≃ₜ* UD D χ n where
   continuous_toFun := (continuous_rx.comp (isEmbedding_matHom _ _ _).continuous).subtype_mk _
   continuous_invFun := (isEmbedding_matHom _ _ _).continuous_iff.2 (continuous_rx_symm.comp continuous_subtype_val)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem Psi_val (g : GlobalTheory.StdUnn.G D n) : (Psi D χ n g).1 = rx (matHom _ D.sp.cm.sig (GlobalTheory.StdUnn.Jst D n) g) := rfl
 
 end Std

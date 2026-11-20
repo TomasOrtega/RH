@@ -34,6 +34,9 @@ def NbarLeviChartReg.Statement : Prop :=
           q * levi (S.R.chartFun (S.regWeight t) k) (S.R.chart k (M.proj z)) v +
             p * levi (fun y => Real.log (D.A'.h y)) z w
 
+/- English proof (translation)
+Introduce `II Ψ _ _ K _ ι _ Ω _ _ E _ _ D O Lt _ _ _ X B p q t hs z hz w hw k hk`. Conclude with `h II Ψ K ι Ω E D X.H X.M X.S X.S_tied B p q t hs z hz w hw k hk`.
+-/
 theorem NbarLeviChart.of_reg (h : NbarLeviChartReg.Statement) : LowerBoundFree.NbarLeviChart.Statement := by
   intro II Ψ _ _ K _ ι _ Ω _ _ E _ _ D O Lt _ _ _ X B p q t hs z hz w hw k hk
   exact h II Ψ K ι Ω E D X.H X.M X.S X.S_tied B p q t hs z hz w hw k hk
@@ -43,6 +46,9 @@ namespace Line
 variable (II : IntersectionSystem)
   (hII : ∀ W : Ideal (MRing (PBlk 2)), IsArithVar W 1 → 0 ≤ II Unit (PBlk 2) W 1 ![fsLine 2])
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(projLineFamilySetting II hII).S_tied, NbarLeviChartFam.hyps_inhabited II hII⟩`.
+-/
 theorem NbarLeviChartReg.hyps_inhabited :
     (projLineFamilySetting II hII).S.IsTied ∧
     ∃ t : ℝ, 0 < t ∧ (projLineFamilySetting II hII).M.atlas.Smooth ((projLineFamilySetting II hII).S.regWeight t) ∧

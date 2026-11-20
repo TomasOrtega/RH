@@ -21,6 +21,13 @@ noncomputable section
 
 namespace GlobalTheory.DegStepG
 
+/- English proof (translation)
+Introduce `hH0 τ w w' _ θ _ W _ lam' hl A hA I s hs A' hA'`. Establish `hZ : GlobalTheory.Amp.HypZ D large₂ C' Cl Cg cb Cu cT CT C0` using `hH0`. Establish `hcard : (I.card : ℝ) ≤ D.R.r`. Rewrite using `[← Formalism.MainNotions.BridgeLemma₂.deg_cast_r]`. Establish `: I.card ≤ 2 * D.R.rS + D.R.k + 1`.
+
+Use `Finset.card_le_univ I` as an intermediate fact. Rewrite `this` using `[Fintype.card_fin]`. Then use the resulting hypothesis. Conclude with `this` after adjusting the coercions. Establish `hr0 : (0 : ℝ) ≤ D.R.r` using `Nat.cast_nonneg _`. Establish `h1 : l1dist lam' (lamD D τ) ≤ Cn * D.R.k * (D.R.m : ℝ) ^ 3 + D.R.r` using `by linarith`.
+
+Establish `h2 : l1dist (lam' + s • epsI I) (lamD D τ) ≤ Cn * D.R.k * (D.R.m : ℝ) ^ 3 + D.R.r` using `le_trans (Formalism.MainNotions.BridgeLemma.l1_distance_sign_step _ _ s hs I) (by linarith)`. Take `⟨g1, gok⟩` from `hnear D large₂ C' Cl Cg cb Cu cT CT C0 hZ hCl hm τ lam' h1`. Take `⟨g2, _⟩` from `hnear D large₂ C' Cl Cg cb Cu cT CT C0 hZ hCl hm τ _ h2`. Conclude with `GlobalTheory.T.formalDegree_ratio_eq_harishChandra_ratio_largeGap hH D W lam' (lam' + s • epsI I) A A' _ hA hA' g1 g2 gok`.
+-/
 theorem vandLine (hH : GlobalTheory.GapIn.Hyp) (Cn m₀ : ℝ)
     (hnear : ∀ (D : D7) (large₂ : SizeData₂ D) (C' Cl Cg cb Cu cT CT C0 : ℝ), GlobalTheory.Amp.HypZ D large₂ C' Cl Cg cb Cu cT CT C0 →
       1000 ≤ Cl → m₀ ≤ D.R.m → ∀ (τ : D.what₂.Tau) (lam' : Fin (2 * D.R.rS + D.R.k + 1) → ℝ),
@@ -44,6 +51,11 @@ theorem vandLine (hH : GlobalTheory.GapIn.Hyp) (Cn m₀ : ℝ)
   obtain ⟨g2, _⟩ := hnear D large₂ C' Cl Cg cb Cu cT CT C0 hZ hCl hm τ _ h2
   exact GlobalTheory.T.formalDegree_ratio_eq_harishChandra_ratio_largeGap hH D W lam' (lam' + s • epsI I) A A' _ hA hA' g1 g2 gok
 
+/- English proof (translation)
+Introduce `_ hH _ Cg cb Cu cT CT C0 C1`. Use `⟨1, 1000, zero_le_one, fun eps Fm _ hCl _ Cn => ?_⟩` and prove the remaining obligations. Take `⟨m₀, hnear⟩` from `GlobalTheory.T.gap_near_placeParameter_half_noncompactGap Cn`. Take `⟨x0, hx0⟩` from `GlobalTheory.family_sizes_eventually_large eps Fm m₀`. Use `⟨x0, fun x hx i => ?_⟩` and prove the remaining obligations.
+
+Conclude with `Formalism.MainNotions.BridgeLemma₂.degree_ratio_one_of_vandermonde _ _ _ _ _ _ _ _ _ _ _ _ (vandLine hH Cn m₀ hnear (Fm.D x i) (Fm.L x i) _ _ _ _ _ _ _ _ _ hCl (hx0 x hx i).2.1)`.
+-/
 theorem degI_along_family : Formalism.HermitianLatticesTheory.SiegelMassRatio → GlobalTheory.GapIn.Hyp → BpJoin.ThmBpDS →
     ∀ Cg cb Cu cT CT C0 C1 : ℝ, ∃ C thr : ℝ, 0 ≤ C ∧ ∀ (eps : ℝ) (Fm : FamP eps), thr ≤ sC' Fm → thr ≤ sCl Fm →
       PX.RanksF Fm C0 Cg cb Cu cT CT → ∀ Cn : ℝ,

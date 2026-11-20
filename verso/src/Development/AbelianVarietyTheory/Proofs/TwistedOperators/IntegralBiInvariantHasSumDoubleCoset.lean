@@ -7,6 +7,11 @@ open scoped Pointwise
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.TwistedOperatorMainTheorem.main_thm`. Consider the case `exact _root_.GlobalTheory.TwistedOperatorMainTheorem.main_thm`. Consider the case `(apply _root_.GlobalTheory.TwistedOperatorMainTheorem.main_thm <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.TwistedOperatorMainTheorem.main_thm <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.TwistedOperatorMainTheorem.main_thm <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.TwistedOperatorMainTheorem.main_thm ..)`.
+-/
 theorem integral_biInvariant_hasSum_doubleCoset :
     ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [MeasurableSpace G] [BorelSpace G]
   (m : Measure G) [m.IsHaarMeasure] (J : Subgroup G), IsOpen (J : Set G) → IsCompact (J : Set G) →

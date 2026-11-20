@@ -10,6 +10,13 @@ open Polynomial
 
 variable {E : Type} [Field E] [NumberField E]
 
+/- English proof (translation)
+Use `haveI := v.isPrime`. Set `Rv` to `Localization.AtPrime v.asIdeal`. Use `haveI : IsDiscreteValuationRing Rv := IsLocalization.AtPrime.isDiscreteValuationRing_of_dedekind_domain (𝓞 E) v.ne_bot Rv`. Take `⟨q, hq⟩` from `ValuationRing.cond (algebraMap (𝓞 E) Rv a) (algebraMap (𝓞 E) Rv b)`. Take `⟨⟨t, d⟩, hq'⟩` from `IsLocalization.surj v.asIdeal.primeCompl q`.
+
+Establish `hinj` using `IsLocalization.injective Rv (Ideal.primeCompl_le_nonZeroDivisors v.asIdeal)`. Break down `hq with h | h` into its components or cases. Use `⟨d, t, d.2, Or.inl (hinj ?_)⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, ← hq', ← h]`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `⟨d, t, d.2, Or.inr (hinj ?_)⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, ← hq', ← h]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_compare (v : HeightOneSpectrum (𝓞 E)) (a b : 𝓞 E) :
     ∃ d t : 𝓞 E, d ∉ v.asIdeal ∧ (d * b = t * a ∨ d * a = t * b) := by
 
@@ -30,6 +37,21 @@ theorem exists_compare (v : HeightOneSpectrum (𝓞 E)) (a b : 𝓞 E) :
 
 variable {l : ℕ} [Fact l.Prime]
 
+/- English proof (translation)
+Establish `hI : IsIntegral ℤ (c (x : E))` using `(NumberField.RingOfIntegers.isIntegral_coe x).map c.toIntAlgHom`. Take `⟨P, hPm, hP⟩` from `hI`. Use `set y := c (x : E) with hy`. Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`.
+
+Establish `hcoef : ∀ z : ℤ, ‖((z : PadicAlgCl l))‖ ≤ 1` using `fun z => by`. Rewrite using `[← map_intCast (algebraMap ℚ_[l] (PadicAlgCl l)), PadicAlgCl.norm_extends]`. Conclude with `Padic.norm_int_le_one z`. Use `set n := P.natDegree with hndef`. Establish `hn : 0 < n`.
+
+Assume the negation of the conclusion as `h0`. Use `push_neg at h0`. Establish `h1 : P = 1` using `Polynomial.eq_one_of_monic_natDegree_zero hPm (by omega)`. Rewrite `hP` using `[h1]`. Simplify using `at hP`.
+
+Establish `heq : y ^ n = -∑ i ∈ Finset.range n, (P.coeff i : PadicAlgCl l) * y ^ i`. Establish `h` using `hP`. Rewrite `h` using `[hPm.as_sum]`. Simplify using `only [Polynomial.eval₂_add, Polynomial.eval₂_X_pow, Polynomial.eval₂_finset_sum, Polynomial.eval₂_mul, Polynomial.eval₂_C] at h`. Rewrite using `[eq_neg_iff_add_eq_zero]`.
+
+Simplify using `using h`. Establish `hle : ‖y ^ n‖ ≤ ‖y‖ ^ (n - 1)`. Rewrite using `[heq, norm_neg]`. Apply `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (by positivity)` to reduce the goal to its premises. Introduce `i hi`.
+
+Rewrite using `[norm_mul, norm_pow]`. Establish `hi' : i ≤ n - 1`. Use `Finset.mem_range.mp hi` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite `hle` using `[norm_pow]`. Establish `hlt2 : ‖y‖ ^ (n - 1) < ‖y‖ ^ n` using `pow_lt_pow_right₀ hlt (by omega)`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem norm_int_le (c : E →+* PadicAlgCl l) (x : 𝓞 E) : ‖c (x : E)‖ ≤ 1 := by
   have hI : IsIntegral ℤ (c (x : E)) := (NumberField.RingOfIntegers.isIntegral_coe x).map c.toIntAlgHom
   obtain ⟨P, hPm, hP⟩ := hI
@@ -69,11 +91,33 @@ theorem norm_int_le (c : E →+* PadicAlgCl l) (x : 𝓞 E) : ‖c (x : E)‖ �
   have hlt2 : ‖y‖ ^ (n - 1) < ‖y‖ ^ n := pow_lt_pow_right₀ hlt (by omega)
   linarith
 
+/- English proof (translation)
+The claim follows from `le_antisymm (norm_int_le c d) (not_lt.mp fun h => hd ((hc d).mpr h))`.
+-/
 theorem norm_unit (c : E →+* PadicAlgCl l) (v : HeightOneSpectrum (𝓞 E))
     (hc : ∀ x : 𝓞 E, x ∈ v.asIdeal ↔ ‖c (x : E)‖ < 1) {d : 𝓞 E} (hd : d ∉ v.asIdeal) :
     ‖c (d : E)‖ = 1 :=
   le_antisymm (norm_int_le c d) (not_lt.mp fun h => hd ((hc d).mpr h))
 
+/- English proof (translation)
+Distinguish the cases in `hx0 : x = 0`. Simplify using `[hx0]`. Take `⟨a, b, hbm, hab⟩` from `IsFractionRing.div_surjective (A := 𝓞 E) x`. Establish `hb : (b : E) ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors hbm`. Substitute `hab` using the available equality.
+
+Establish `hcb : ∀ φ : E →+* PadicAlgCl l, ‖φ (b : E)‖ ≠ 0` using `fun φ => by`. Rewrite using `[norm_ne_zero_iff]`. Conclude with `(map_ne_zero φ).mpr hb`. Take `⟨d, t, hd, h | h⟩` from `exists_compare v a b`. It suffices to derive a contradiction.
+
+Establish `ha : (a : E) ≠ 0`. Introduce `ha`. Apply `hx0` to reduce the goal to its premises. Use `show (a : E) / (b : E) = 0`. Rewrite using `[ha, zero_div]`.
+
+Establish `hE : (d : E) * b = t * a` using `by exact_mod_cast congrArg (fun z : 𝓞 E => (z : E)) h`. Establish `hmul : ‖c (d : E)‖ * ‖c (b : E)‖ = ‖c (t : E)‖ * ‖c (a : E)‖`. Rewrite using `[← norm_mul, ← norm_mul, ← map_mul c, ← map_mul c, hE]`. Rewrite `hmul` using `[norm_unit c v hc hd, one_mul]`. Establish `hca : 0 < ‖c (a : E)‖` using `norm_pos_iff.mpr ((map_ne_zero c).mpr ha)`.
+
+Establish `hct : 0 < ‖c (t : E)‖`. Break down `(norm_nonneg (c (t : E))).lt_or_eq with h' | h'` into its components or cases. Conclude with `h'`. Rewrite `hmul` using `[← h', zero_mul]`. Conclude with `absurd hmul (hcb c)`.
+
+Establish `htle` using `norm_int_le c t`. Express the relevant statement in the definitionally equal form `‖c ((a : E) / (b : E))‖ < 1 at hx`. Rewrite `hx` using `[map_div₀, norm_div, hmul, div_lt_one (mul_pos hct hca)]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hE : (d : E) * a = t * b` using `by exact_mod_cast congrArg (fun z : 𝓞 E => (z : E)) h`.
+
+Establish `hmul : ∀ φ : E →+* PadicAlgCl l, (∀ y : 𝓞 E, y ∈ v.asIdeal ↔ ‖φ (y : E)‖ < 1) → ‖φ (a : E)‖ = ‖φ (t : E)‖ * ‖φ (b : E)‖`. Introduce `φ hφ`. Establish `h1 : ‖φ (d : E)‖ * ‖φ (a : E)‖ = ‖φ (t : E)‖ * ‖φ (b : E)‖`. Rewrite using `[← norm_mul, ← norm_mul, ← map_mul φ, ← map_mul φ, hE]`. Rewrite `h1` using `[norm_unit φ v hφ hd, one_mul]`. Then use the resulting hypothesis.
+
+Express the relevant statement in the definitionally equal form `‖c ((a : E) / (b : E))‖ < 1 at hx`. Rewrite `hx` using `[map_div₀, norm_div, hmul c hc, mul_div_assoc, div_self (hcb c), mul_one]`. Establish `ht : t ∈ v.asIdeal` using `(hc t).mpr hx`. Establish `h2` using `(hc' t).mp ht`. Use `show ‖c' ((a : E) / (b : E))‖ < 1`.
+
+Rewrite using `[map_div₀, norm_div, hmul c' hc', mul_div_assoc, div_self (hcb c'), mul_one]`. Conclude with `h2`.
+-/
 theorem lt_one_of_lt_one (c c' : E →+* PadicAlgCl l) (v : HeightOneSpectrum (𝓞 E))
     (hc : ∀ x : 𝓞 E, x ∈ v.asIdeal ↔ ‖c (x : E)‖ < 1)
     (hc' : ∀ x : 𝓞 E, x ∈ v.asIdeal ↔ ‖c' (x : E)‖ < 1) (x : E) (hx : ‖c x‖ < 1) :
@@ -124,6 +168,19 @@ theorem lt_one_of_lt_one (c c' : E →+* PadicAlgCl l) (v : HeightOneSpectrum (�
     rw [map_div₀, norm_div, hmul c' hc', mul_div_assoc, div_self (hcb c'), mul_one]
     exact h2
 
+/- English proof (translation)
+Use `set n := f.natDegree with hn`. Use `set M : ℝ := max 1 (max ‖β‖ ‖γ‖) with hM`. Establish `hM1 : 1 ≤ M` using `le_max_left _ _`. Establish `hMn : 0 < M ^ n` using `pow_pos (by linarith) n`. Use `set δ : ℝ := ε / (2 * M ^ n) with hδ`.
+
+Establish `hδpos : 0 < δ` using `by positivity`. Use `choose g hg using fun i => Padic.rat_dense l (f.coeff i) hδpos`. Set `G : ℚ[X]` to `∑ i ∈ Finset.range (n + 1), C (g i) * X ^ i`. Establish `key : ∀ x : PadicAlgCl l, ‖x‖ ≤ M → ‖aeval x G - aeval x f‖ < ε`. Introduce `x hx`.
+
+Establish `e1 : aeval x G = ∑ i ∈ Finset.range (n + 1), algebraMap ℚ_[l] (PadicAlgCl l) (g i : ℚ_[l]) * x ^ i`. Simplify using `only [G, map_sum, map_mul, map_pow, aeval_C, aeval_X, map_ratCast, eq_ratCast]`. Establish `e2 : aeval x f = ∑ i ∈ Finset.range (n + 1), algebraMap ℚ_[l] (PadicAlgCl l) (f.coeff i) * x ^ i`. Rewrite using `[aeval_eq_sum_range, ← hn]`. Simplify using `only [Algebra.smul_def]`.
+
+Rewrite using `[e1, e2, ← Finset.sum_sub_distrib]`. Establish `hle : ‖∑ i ∈ Finset.range (n + 1), (algebraMap ℚ_[l] (PadicAlgCl l) (g i : ℚ_[l]) * x ^ i - algebraMap ℚ_[l] (PadicAlgCl l) (f.coeff i) * x ^ i)‖ ≤ δ * M ^ n`. Apply `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (by positivity)` to reduce the goal to its premises. Introduce `i hi`. Establish `hi' : i ≤ n` using `Nat.lt_succ_iff.mp (Finset.mem_range.mp hi)`.
+
+Rewrite using `[← sub_mul, ← map_sub, norm_mul, PadicAlgCl.norm_extends, norm_pow, norm_sub_rev]`. Establish `hxi : ‖x‖ ^ i ≤ M ^ n` using `(pow_le_pow_left₀ (norm_nonneg x) hx i).trans (pow_le_pow_right₀ hM1 hi')`. Conclude with `mul_le_mul (hg i).le hxi (by positivity) hδpos.le`. Establish `hlt : δ * M ^ n < ε`. Rewrite using `[hδ, div_mul_eq_mul_div, mul_div_assoc]`.
+
+Establish `: M ^ n / (2 * M ^ n) = 1 / 2` using `by field_simp`. Rewrite using `[this]`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `lt_of_le_of_lt hle hlt`. Conclude with `⟨G, key β (le_trans (le_max_left _ _) (le_max_right _ _)), key γ (le_trans (le_max_right _ _) (le_max_right _ _))⟩`.
+-/
 theorem approx (β γ : PadicAlgCl l) (f : ℚ_[l][X]) {ε : ℝ} (hε : 0 < ε) :
     ∃ G : ℚ[X], ‖aeval β G - aeval β f‖ < ε ∧ ‖aeval γ G - aeval γ f‖ < ε := by
 
@@ -163,11 +220,19 @@ theorem approx (β γ : PadicAlgCl l) (f : ℚ_[l][X]) {ε : ℝ} (hε : 0 < ε)
   exact ⟨G, key β (le_trans (le_max_left _ _) (le_max_right _ _)),
     key γ (le_trans (le_max_right _ _) (le_max_right _ _))⟩
 
+/- English proof (translation)
+Rewrite using `[← IntermediateField.adjoin_simple_toSubalgebra_of_isAlgebraic (Algebra.IsAlgebraic.isAlgebraic α), hα, IntermediateField.top_toSubalgebra]`.
+-/
 theorem adjoin_eq_top {α : E} (hα : IntermediateField.adjoin ℚ {α} = ⊤) :
     Algebra.adjoin ℚ {α} = ⊤ := by
   rw [← IntermediateField.adjoin_simple_toSubalgebra_of_isAlgebraic (Algebra.IsAlgebraic.isAlgebraic α), hα,
     IntermediateField.top_toSubalgebra]
 
+/- English proof (translation)
+Establish `h1` using `AlgHom.ext_of_adjoin_eq_top (adjoin_eq_top hα) (φ₁ := f.toRatAlgHom) (φ₂ := g.toRatAlgHom) (by`. Introduce `x hx`. Rewrite using `[Set.mem_singleton_iff.mp hx]`. Conclude with `h)`. Use extensionality with `x`.
+
+Conclude with `AlgHom.congr_fun h1 x`.
+-/
 theorem ringHom_ext {α : E} (hα : IntermediateField.adjoin ℚ {α} = ⊤) {B : Type} [Field B]
     [CharZero B] (f g : E →+* B) (h : f α = g α) : f = g := by
   have h1 := AlgHom.ext_of_adjoin_eq_top (adjoin_eq_top hα) (φ₁ := f.toRatAlgHom) (φ₂ := g.toRatAlgHom)
@@ -178,12 +243,30 @@ theorem ringHom_ext {α : E} (hα : IntermediateField.adjoin ℚ {α} = ⊤) {B 
   ext x
   exact AlgHom.congr_fun h1 x
 
+/- English proof (translation)
+Rewrite using `[map_pow, map_natCast, norm_pow]`. Use `congr 1`. Rewrite using `[← map_natCast (algebraMap ℚ_[l] (PadicAlgCl l)), PadicAlgCl.norm_extends, Padic.norm_p]`.
+-/
 theorem norm_natCast_pow (c : E →+* PadicAlgCl l) (m : ℕ) :
     ‖c ((l : E) ^ m)‖ = ((l : ℝ)⁻¹) ^ m := by
   rw [map_pow, map_natCast, norm_pow]
   congr 1
   rw [← map_natCast (algebraMap ℚ_[l] (PadicAlgCl l)), PadicAlgCl.norm_extends, Padic.norm_p]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Set `c' : E →+* PadicAlgCl l` to `c.comp (s : E →+* E)`. Establish `hc' : ∀ x : 𝓞 E, x ∈ v.asIdeal ↔ ‖c' (x : E)‖ < 1` using `fun x => by`. Establish `h1 : s • x ∈ v.asIdeal ↔ x ∈ v.asIdeal`. Use `Ideal.smul_mem_pointwise_smul_iff (a := s) (S := v.asIdeal) (x := x)` as an intermediate fact.
+
+Rewrite `this` using `[hs]`. Then use the resulting hypothesis. Rewrite using `[← h1, hc (s • x)]`. Both sides reduce to the same expression. Use `set β := c α with hβ`. Use `set γ := c (s α) with hγ`.
+
+Use `set g := minpoly ℚ_[l] β with hgdef`. Establish `ha : 0 < ‖aeval γ g‖` using `norm_pos_iff.2 hne`. Establish `hl1 : (1 : ℝ) < l` using `by exact_mod_cast (Fact.out : l.Prime).one_lt`. Establish `hlinv : ((l : ℝ)⁻¹) < 1` using `inv_lt_one_of_one_lt₀ hl1`. Take `⟨m, hm⟩` from `exists_pow_lt_of_lt_one (half_pos ha) hlinv`.
+
+Establish `hδ : 0 < ((l : ℝ)⁻¹) ^ m` using `by positivity`. Take `⟨G, h1, h2⟩` from `approx β γ g hδ`. Establish `hg : aeval β g = 0` using `minpoly.aeval _ _`. Rewrite `h1` using `[hg, sub_zero]`. Establish `hy1 : c (aeval α G) = aeval β G` using `(aeval_algHom_apply c.toRatAlgHom α G).symm`.
+
+Establish `hy2 : c' (aeval α G) = aeval γ G` using `(aeval_algHom_apply c'.toRatAlgHom α G).symm`. Establish `hlE : ((l : E) ^ m) ≠ 0` using `pow_ne_zero _ (by exact_mod_cast (Fact.out : l.Prime).ne_zero)`. Establish `hx : ‖c (aeval α G / (l : E) ^ m)‖ < 1`. Rewrite using `[map_div₀, norm_div, norm_natCast_pow, hy1, div_lt_one hδ]`. Conclude with `h1`.
+
+Establish `hx'` using `lt_one_of_lt_one c c' v hc hc' _ hx`. Rewrite `hx'` using `[map_div₀, norm_div, norm_natCast_pow, hy2, div_lt_one hδ]`. Establish `h3 : ‖aeval γ g‖ ≤ ‖aeval γ G‖ + ‖aeval γ G - aeval γ g‖`. Use `norm_sub_le (aeval γ G) (aeval γ G - aeval γ g)` as an intermediate fact. Simplify using `using this`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem root_of_stab (c : E →+* PadicAlgCl l) (α : E) (s : E ≃ₐ[ℚ] E)
     (v : HeightOneSpectrum (𝓞 E)) (hc : ∀ x : 𝓞 E, x ∈ v.asIdeal ↔ ‖c (x : E)‖ < 1)
     (hs : s • v.asIdeal = v.asIdeal) :
@@ -220,6 +303,13 @@ theorem root_of_stab (c : E →+* PadicAlgCl l) (α : E) (s : E ≃ₐ[ℚ] E)
     simpa using this
   linarith
 
+/- English proof (translation)
+Take `⟨σ, hσ⟩` from `minpoly.exists_algEquiv_of_root' (K := ℚ_[l]) (L := PadicAlgCl l) (Algebra.IsAlgebraic.isAlgebraic (c α)) hroot`. Establish `hcomp : ((σ : PadicAlgCl l →+* PadicAlgCl l).comp c) = c.comp (s : E →+* E)` using `ringHom_ext hα _ _ hσ`. Establish `hn : ∀ x : E, ‖c (s x)‖ = ‖c x‖` using `fun x => by`. Establish `h` using `DFunLike.congr_fun hcomp x`. Express the relevant statement in the definitionally equal form `σ (c x) = c (s x) at h`.
+
+Rewrite using `[← h]`. Conclude with `(spectralNorm_eq_of_equiv σ (c x)).symm`. Establish `hmem : ∀ x : 𝓞 E, s • x ∈ v.asIdeal ↔ x ∈ v.asIdeal` using `fun x => by`. Rewrite using `[hc, hc]`. Conclude with `iff_of_eq (congrArg (· < (1 : ℝ)) (hn x))`.
+
+Use extensionality with `y`. Rewrite using `[Ideal.mem_pointwise_smul_iff_inv_smul_mem, ← hmem (s⁻¹ • y), smul_inv_smul]`.
+-/
 theorem stab_of_root (c : E →+* PadicAlgCl l) {α : E}
     (hα : IntermediateField.adjoin ℚ {α} = ⊤) (s : E ≃ₐ[ℚ] E)
     (v : HeightOneSpectrum (𝓞 E)) (hc : ∀ x : 𝓞 E, x ∈ v.asIdeal ↔ ‖c (x : E)‖ < 1)
@@ -240,6 +330,17 @@ theorem stab_of_root (c : E →+* PadicAlgCl l) {α : E}
   ext y
   rw [Ideal.mem_pointwise_smul_iff_inv_smul_mem, ← hmem (s⁻¹ • y), smul_inv_smul]
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[IntermediateField.adjoin_le_iff]`. Introduce and unpack `_ ⟨e, rfl⟩`. Establish `he : e ∈ Algebra.adjoin ℚ {α}`. Rewrite using `[adjoin_eq_top hα]`.
+
+Discharge the goal by the elementary cases of `trivial`. Proceed by induction on `he using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Rewrite using `[Set.mem_singleton_iff.mp hx]`. Conclude with `IntermediateField.mem_adjoin_simple_self _ _`.
+
+Consider the case `algebraMap q`. Establish `e1 : c (algebraMap ℚ E q) = algebraMap ℚ_[l] (PadicAlgCl l) (q : ℚ_[l])`. Rewrite using `[eq_ratCast, map_ratCast, map_ratCast]`. Rewrite using `[e1]`. Conclude with `IntermediateField.algebraMap_mem _ _`.
+
+Consider the case `add x y _ _ hx hy`. Rewrite using `[map_add]`. Conclude with `add_mem hx hy`. Consider the case `mul x y _ _ hx hy`. Rewrite using `[map_mul]`.
+
+Conclude with `mul_mem hx hy`. Rewrite using `[IntermediateField.adjoin_simple_le_iff]`. Conclude with `IntermediateField.subset_adjoin _ _ ⟨α, rfl⟩`.
+-/
 theorem adjoin_range_eq (c : E →+* PadicAlgCl l) {α : E}
     (hα : IntermediateField.adjoin ℚ {α} = ⊤) :
     IntermediateField.adjoin ℚ_[l] (Set.range c) = IntermediateField.adjoin ℚ_[l] {c α} := by
@@ -267,6 +368,13 @@ theorem adjoin_range_eq (c : E →+* PadicAlgCl l) {α : E}
   · rw [IntermediateField.adjoin_simple_le_iff]
     exact IntermediateField.subset_adjoin _ _ ⟨α, rfl⟩
 
+/- English proof (translation)
+Establish `hmin : minpoly ℚ (c α) = minpoly ℚ α` using `minpoly.algHom_eq c.toRatAlgHom c.injective α`. Establish `hdvd` using `minpoly.dvd_map_of_isScalarTower ℚ ℚ_[l] (c α)`. Establish `hr' : aeval r (minpoly ℚ α) = 0`. Take `⟨q, hq⟩` from `hdvd`. Establish `: aeval r (map (algebraMap ℚ ℚ_[l]) (minpoly ℚ (c α))) = 0`.
+
+Rewrite using `[hq, map_mul, hr, zero_mul]`. Rewrite `this` using `[aeval_map_algebraMap, hmin]`. Then use the resulting hypothesis. Establish `hsplit : (map (algebraMap ℚ E) (minpoly ℚ α)).Splits` using `Normal.splits inferInstance α`. Establish `hne : minpoly ℚ α ≠ 0` using `minpoly.ne_zero (Algebra.IsIntegral.isIntegral α)`. Establish `hmem : r ∈ (minpoly ℚ α).rootSet (PadicAlgCl l)` using `mem_rootSet.2 ⟨hne, hr'⟩`.
+
+Rewrite `hmem` using `[← hsplit.image_rootSet c.toRatAlgHom]`. Take `⟨e, he, rfl⟩` from `hmem`. Take `⟨s, hs⟩` from `minpoly.exists_algEquiv_of_root' (K := ℚ) (L := E) (Algebra.IsAlgebraic.isAlgebraic α) (mem_rootSet.1 he).2`. Conclude with `⟨s, by rw [hs]; rfl⟩`.
+-/
 theorem exists_aut_of_root (c : E →+* PadicAlgCl l) [IsGalois ℚ E] (α : E)
     {r : PadicAlgCl l} (hr : aeval r (minpoly ℚ_[l] (c α)) = 0) :
     ∃ s : E ≃ₐ[ℚ] E, c (s α) = r := by
@@ -287,6 +395,17 @@ theorem exists_aut_of_root (c : E →+* PadicAlgCl l) [IsGalois ℚ E] (α : E)
     (Algebra.IsAlgebraic.isAlgebraic α) (mem_rootSet.1 he).2
   exact ⟨s, by rw [hs]; rfl⟩
 
+/- English proof (translation)
+Introduce `l _ E _ _ c _ v hc`. Take `⟨α, hα⟩` from `Field.exists_primitive_element ℚ E`. Establish `hint : IsIntegral ℚ_[l] (c α)` using `Algebra.IsIntegral.isIntegral _`. Rewrite using `[adjoin_range_eq c hα, IntermediateField.adjoin.finrank hint]`. Use `set g := minpoly ℚ_[l] (c α) with hg`.
+
+Establish `hg0 : g ≠ 0` using `minpoly.ne_zero hint`. Establish `hsep : g.Separable` using `(minpoly.irreducible hint).separable`. Establish `hcard : Fintype.card (g.rootSet (PadicAlgCl l)) = g.natDegree` using `card_rootSet_eq_natDegree hsep (IsAlgClosed.splits _)`. Rewrite using `[← hcard, ← Nat.card_eq_fintype_card]`. Use `symm`.
+
+Use `Nat.card_congr (Equiv.ofBijective (fun s => ⟨c (s.1 α), mem_rootSet.2 ⟨hg0, root_of_stab c α s.1 v hc s.2⟩⟩) ⟨?_, ?_⟩)` and prove the remaining obligations. Introduce and unpack `⟨s, hs⟩ ⟨t, ht⟩ h`. Establish `h1 : c (s α) = c (t α)` using `congrArg Subtype.val h`. Establish `h2 : s α = t α` using `c.injective h1`. Establish `h3` using `ringHom_ext hα (s : E →+* E) (t : E →+* E) h2`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Use extensionality with `x`. Conclude with `DFunLike.congr_fun h3 x`. Introduce and unpack `⟨r, hr⟩`. Take `⟨s, rfl⟩` from `exists_aut_of_root c α (mem_rootSet.1 hr).2`.
+
+Conclude with `⟨⟨s, stab_of_root c hα s v hc (mem_rootSet.1 hr).2⟩, rfl⟩`.
+-/
 theorem finrank_adjoin_range_eq_card_stabilizer :
     ∀ (l : ℕ) [Fact l.Prime] (E : Type) [Field E] [NumberField E] (c : E →+* PadicAlgCl l)
       [IsGalois ℚ E] (v : HeightOneSpectrum (𝓞 E)),

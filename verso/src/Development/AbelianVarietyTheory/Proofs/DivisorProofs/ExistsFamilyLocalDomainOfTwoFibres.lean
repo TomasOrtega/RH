@@ -20,11 +20,17 @@ namespace GlobalTheory.MBLow.TwoFibres
 
 open GlobalTheory.ZM
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Conclude with `(congrArg (fun q => q.hom (u : o)) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom β))).symm`.
+-/
 theorem unitS_spMap_eq {o R : Type} [CommRing o] [CommRing R] (β : o →+* R) (u : oˣ) :
     unitS (spMap β) u = unitOn (Units.map β.toMonoidHom u) := by
   apply Units.ext
   exact (congrArg (fun q => q.hom (u : o)) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom β))).symm
 
+/- English proof (translation)
+Rewrite using `[SpreadLevel.unitS_comp, unitS_spMap_eq β]`. Conclude with `(unitS_spMap_eq i _).trans (congrArg unitOn (Units.ext rfl))`.
+-/
 theorem unitS_spMap_comp {o R R' : Type} [CommRing o] [CommRing R] [CommRing R'] (β : o →+* R) (i : R →+* R')
     (u : oˣ) : unitS (spMap i ≫ spMap β) u = unitOn (Units.map (i.comp β).toMonoidHom u) := by
   rw [SpreadLevel.unitS_comp, unitS_spMap_eq β]
@@ -63,12 +69,20 @@ def ofLevel {o : Type} [CommRing o] {g k : ℕ} (hk : 0 < k) (b : TBase o k) {K 
   act := fun e => e.elim
   hom := fun e => e.elim
 
+/- English proof (translation)
+Substitute `hg` using the available equality. Both sides reduce to the same expression.
+-/
 theorem ofLevel_lab {o : Type} [CommRing o] {g k : ℕ} (hk : 0 < k) (b : TBase o k) {K : Type} [Field K]
     [IsAlgClosed K] (s : Sp K ⟶ Sp o) (P : PolAV (Sp K)) (hg : P.g = g) {ze : Γ(Sp K, ⊤)ˣ} (l : Level P k ze)
     (hze : ze = unitS s b.ζ) (a : Ix g k) : (ofLevel hk b s P hg l hze).lab a = levelPoint l hg a := by
   subst hg
   rfl
 
+/- English proof (translation)
+Establish `hx : (fun a => (Over.homMk (𝟙 (Sp K)) (by simp) : Over.mk (𝟙 (Sp K)) ⟶ Out.baseOver (Sp K)) ≫ (ofLevel hk b s P hg l hze).lab a) = levelPoint l hg`. Use function extensionality and compare the values at `a`. Establish `e : (Over.homMk (𝟙 (Sp K)) (by simp) : Over.mk (𝟙 (Sp K)) ⟶ Out.baseOver (Sp K)) = 𝟙 _` using `by ext; rfl`. Rewrite using `[e, Category.id_comp, ofLevel_lab]`. Substitute `hg` using the available equality.
+
+Conclude with `(congrArg (fun x => IsThetaPt P k x (fun a => Ex.fnOf (w a))) hx).mpr h`.
+-/
 theorem ofLevel_hasTh {o : Type} [CommRing o] {g k : ℕ} (hk : 0 < k ^ 2) (b : TBase o (k ^ 2)) {K : Type} [Field K]
     [IsAlgClosed K] (s : Sp K ⟶ Sp o) (P : PolAV (Sp K)) (hg : P.g = g) {ze : Γ(Sp K, ⊤)ˣ}
     (l : Level P (k ^ 2) ze) (hze : ze = unitS s b.ζ) (w : Ix g (k ^ 2) → K)
@@ -83,6 +97,9 @@ theorem ofLevel_hasTh {o : Type} [CommRing o] {g k : ℕ} (hk : 0 < k ^ 2) (b : 
   subst hg
   exact (congrArg (fun x => IsThetaPt P k x (fun a => Ex.fnOf (w a))) hx).mpr h
 
+/- English proof (translation)
+Set `U : Over.mk ((Out.baseOver S').hom ≫ f) ⟶ Out.baseOver S` to `Over.homMk f (by simp)`. Establish `e : ∀ i, pushHom h (Out.baseOver S') (x' i) = preHom U (x i)` using `fun i => Over.OverMorphism.ext (hx i)`. Use `congrArg (fun z => z.left) ((SpreadLevel.map_linComb (pushHom h (Out.baseOver S')) x' c).trans ((congrArg (fun z => Out.linComb z c) (funext e)).trans (SpreadLevel.map_linComb (preHom U) x c).symm))` as an intermediate fact. Conclude with `this`.
+-/
 theorem linComb_push {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj G] [GrpObj G'] {f : S' ⟶ S}
     {φ : G'.left ⟶ G.left} (h : IsGrpPullback G' G f φ) {m : ℕ} (x' : Fin m → (Out.baseOver S' ⟶ G'))
     (x : Fin m → (Out.baseOver S ⟶ G)) (hx : ∀ i, (x' i).left ≫ φ = f ≫ (x i).left) (c : Fin m → ℕ) :
@@ -100,6 +117,19 @@ namespace GlobalTheory.MBLow
 
 open GlobalTheory.ZM GlobalTheory.MBLow.TwoFibres
 
+/- English proof (translation)
+Introduce `g n hn hodd`. Take `⟨hL, hL2⟩` from `abelianSchemeLaws_all`. Take `⟨j₀, H⟩` from `exists_tObj_of_veryDense hL hL2 g PEmpty (fun e => e.elim) 0 n hn hodd`. Use `⟨j₀, fun j hj o _ _ ζ W _ _ _ _ β v K₀ K₁ _ _ _ _ i₀ i₁ hW P₀ P₁ h₀ h₁ l₀ l₁ hT₀ hT₁ => ?_⟩` and prove the remaining obligations. Establish `hk : 0 < (n ^ j) ^ 2` using `pow_pos (pow_pos hn.pos _) _`.
+
+Establish `hζ : IsPrimitiveRoot ζ ((n ^ j) ^ 2)`. Use `IsPrimitiveRoot.of_map_of_injective (f := (Units.map (Scheme.ΓSpecIso (CommRingCat.of K₀)).inv.hom.toMonoidHom).comp (Units.map (i₀.comp β).toMonoidHom)) l₀.prim ?_` and prove the remaining obligations. Conclude with `(Units.map_injective (ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of K₀)).inv).1).comp (Units.map_injective (i₀.comp β).injective)`. Set `b : TBase o ((n ^ j) ^ 2)` to `{ ζ := ζ unit := (Nat.cast_ne_zero.2 hk.ne').isUnit prim := fun K _ β' => (IsPrimitiveRoot.coe_units_iff.2 hζ).map_of_injective β'.injective }`. Set `t₀` to `ofLevel hk b (spMap i₀ ≫ spMap β) P₀ h₀ l₀ (unitS_spMap_comp β i₀ ζ).symm`.
+
+Set `t₁` to `ofLevel hk b (spMap i₁ ≫ spMap β) P₁ h₁ l₁ (unitS_spMap_comp β i₁ ζ).symm`. Establish `hS₀ : t₀.Shape (fun e => e.elim) 0` using `fun e => e.elim`. Establish `hS₁ : t₁.Shape (fun e => e.elim) 0` using `fun e => e.elim`. Establish `hh₀ : t₀.HasTh (𝟙 _) (fun a => i₀ (v a))` using `ofLevel_hasTh hk b _ P₀ h₀ l₀ (unitS_spMap_comp β i₀ ζ).symm _ hT₀`. Establish `hh₁ : t₁.HasTh (𝟙 _) (fun a => i₁ (v a))` using `ofLevel_hasTh hk b _ P₁ h₁ l₁ (unitS_spMap_comp β i₁ ζ).symm _ hT₁`.
+
+Establish `hvd : VeryDense (objPrimes b (fun e : PEmpty => e.elim) 0 β v)`. Introduce `q f hq hf`. Break down `hW q hq with rfl | rfl` into its components or cases. Conclude with `⟨_, ⟨K₀, inferInstance, inferInstance, i₀, t₀, rfl, hS₀, hh₀⟩, hq, le_rfl, hf⟩`. Conclude with `⟨_, ⟨K₁, inferInstance, inferInstance, i₁, t₁, rfl, hS₁, hh₁⟩, hq, le_rfl, hf⟩`.
+
+Take `⟨t, -, ht⟩` from `H j hj o b W β v hvd`. Take `⟨φ₀, hp₀, hL₀, hpt₀, -⟩` from `ht K₀ i₀ t₀ hS₀ hh₀`. Take `⟨φ₁, hp₁, hL₁, hpt₁, -⟩` from `ht K₁ i₁ t₁ hS₁ hh₁`. Use `haveI := t.ab.comm`. Use `⟨t.pol, t.lab, φ₀, φ₁, rfl, fun a => DenseBasis.linComb_pow_eq_one t.pt t.torsion _, hp₀, hp₁, hL₀, hL₁, fun a => ?_, fun a => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← ofLevel_lab hk b (spMap i₀ ≫ spMap β) P₀ h₀ l₀ (unitS_spMap_comp β i₀ ζ).symm a]`. Conclude with `linComb_push hp₀ t₀.pt t.pt hpt₀ _`. Rewrite using `[← ofLevel_lab hk b (spMap i₁ ≫ spMap β) P₁ h₁ l₁ (unitS_spMap_comp β i₁ ζ).symm a]`. Conclude with `linComb_push hp₁ t₁.pt t.pt hpt₁ _`.
+-/
 theorem exists_family_of_two_fibres : ∀ g n : ℕ, n.Prime → Odd n → ∃ j₀ : ℕ, ∀ j ≥ j₀, ∀ (o : Type) [Field o] [CharZero o] (ζ : oˣ) (W : Type) [CommRing W] [IsDomain W] [IsNoetherianRing W] [IsLocalRing W] (β : o →+* W) (v : (Fin (2 * g) → ZMod ((n ^ j) ^ 2)) → W) (K₀ K₁ : Type) [Field K₀] [IsAlgClosed K₀] [Field K₁] [IsAlgClosed K₁] (i₀ : W →+* K₀) (i₁ : W →+* K₁), (∀ q : Ideal W, q.IsPrime → q = RingHom.ker i₀ ∨ q = RingHom.ker i₁) → ∀ (P₀ : PolAV (Sp K₀)) (P₁ : PolAV (Sp K₁)) (h₀ : P₀.g = g) (h₁ : P₁.g = g) (l₀ : Out.Level P₀ ((n ^ j) ^ 2) (unitOn (Units.map (i₀.comp β).toMonoidHom ζ))) (l₁ : Out.Level P₁ ((n ^ j) ^ 2) (unitOn (Units.map (i₁.comp β).toMonoidHom ζ))), (IsThetaPt P₀ (n ^ j) (levelPoint l₀ h₀) fun a => fnOf (i₀ (v a))) → (IsThetaPt P₁ (n ^ j) (levelPoint l₁ h₁) fun a => fnOf (i₁ (v a))) → ∃ (P : PolAV (Sp W)) (pt : (Fin (2 * g) → ZMod ((n ^ j) ^ 2)) → (baseOver (Sp W) ⟶ P.A)) (φ₀ : P₀.A.left ⟶ P.A.left) (φ₁ : P₁.A.left ⟶ P.A.left), P.g = g ∧ (∀ a, pt a ^ ((n ^ j) ^ 2) = 1) ∧ IsGrpPullback P₀.A P.A (spMap i₀) φ₀ ∧ IsGrpPullback P₁.A P.A (spMap i₁) φ₁ ∧ LBIso P₀.L (P.L.pull φ₀) ∧ LBIso P₁.L (P.L.pull φ₁) ∧ (∀ a, (levelPoint l₀ h₀ a).left ≫ φ₀ = spMap i₀ ≫ (pt a).left) ∧ ∀ a, (levelPoint l₁ h₁ a).left ≫ φ₁ = spMap i₁ ≫ (pt a).left := by
   intro g n hn hodd
   obtain ⟨hL, hL2⟩ := abelianSchemeLaws_all

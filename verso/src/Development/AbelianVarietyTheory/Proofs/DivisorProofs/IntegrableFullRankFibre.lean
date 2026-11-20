@@ -8,12 +8,20 @@ open MeasureTheory Matrix Topology
 
 namespace GlobalTheory.RankFibre
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[GlobalTheory.SplitFlip.frameMatrixFirstColumnBlock_mul_apply]`. Simplify using `[GlobalTheory.SplitFlip.X0, Matrix.one_apply, eq_comm]`.
+-/
 theorem X0_mul_X0_transpose (k : Type) [Field k] (a b : ℕ) :
     GlobalTheory.SplitFlip.X0 k (finSumFinEquiv (m := a) (n := b)) * (GlobalTheory.SplitFlip.X0 k (finSumFinEquiv (m := a) (n := b)))ᵀ = 1 := by
   ext i j
   rw [GlobalTheory.SplitFlip.frameMatrixFirstColumnBlock_mul_apply]
   simp [GlobalTheory.SplitFlip.X0, Matrix.one_apply, eq_comm]
 
+/- English proof (translation)
+Establish `h1 : A.rank = Fintype.card (Fin a)`. Use `le_antisymm (by simpa using A.rank_le_width) ?_` and prove the remaining obligations. Simplify `Matrix.rank_mul_le_left A (GlobalTheory.SplitFlip.X0 k (finSumFinEquiv (m := a) (n := b)))` using `[h]`. Establish `hli : LinearIndependent k A.row`. Rewrite `h1` using `[rank_eq_finrank_span_row]`.
+
+Rewrite using `[linearIndependent_iff_card_eq_finrank_span, eq_comm]`. Conclude with `h1`. Conclude with `Matrix.linearIndependent_rows_iff_isUnit.1 hli`.
+-/
 theorem isUnit_of_rank_mul_X0 {k : Type} [Field k] {a b : ℕ} (A : Matrix (Fin a) (Fin a) k)
     (h : (A * GlobalTheory.SplitFlip.X0 k (finSumFinEquiv (m := a) (n := b))).rank = a) : IsUnit A := by
   have h1 : A.rank = Fintype.card (Fin a) := by
@@ -24,6 +32,19 @@ theorem isUnit_of_rank_mul_X0 {k : Type} [Field k] {a b : ℕ} (A : Matrix (Fin 
     rw [linearIndependent_iff_card_eq_finrank_span, eq_comm]; exact h1
   exact Matrix.linearIndependent_rows_iff_isUnit.1 hli
 
+/- English proof (translation)
+Introduce `k _ _ _ _ _ _ a b ν hν Φ hΦ`. Take `⟨⟨hl, hK⟩, hrk⟩` from `hΦ`. Use `set X0 := GlobalTheory.SplitFlip.X0 k (finSumFinEquiv (m := a) (n := b)) with hX0`. Establish `hc1 : IsLocallyConstant fun g : GL (Fin a) k => Φ (g.val * X0)` using `hl.comp_continuous (Units.continuous_val.matrix_mul continuous_const)`. Establish `hc2` using `GlobalTheory.GodementJacquet.isLocallyConstant_char_det (k := k) (n := Fin a) hν`.
+
+Establish `hc3 : IsLocallyConstant fun g : GL (Fin a) k => GlobalTheory.SplitFlip.apow (GlobalTheory.SplitFlip.gdet g) (((a + b : ℕ) : ℂ) / 2)` using `((GlobalTheory.SplitWeil.isLocallyConstant_nabs k).comp_continuous GeneralLinearGroup.continuous_det).comp fun x => ((x : ℝ) : ℂ) ^ (((a + b : ℕ) : ℂ) / 2)`. Establish `hcont` using `((hc1.mul hc2).mul hc3).continuous`. Use `set D : Set (Matrix (Fin a) (Fin a) k) := {A | Φ (A * X0) ≠ 0} with hD`. Establish `hDc : IsClosed D`. Conclude with `(hl.isOpen_fiber 0).isClosed_compl.preimage (show Continuous fun A : Matrix (Fin a) (Fin a) k => A * X0 from continuous_id.matrix_mul continuous_const)`.
+
+Establish `hDsub : D ⊆ (fun M : Matrix (Fin a) (Fin (a + b)) k => M * X0ᵀ) '' tsupport Φ`. Introduce `A hA`. Use `⟨A * X0, subset_tsupport _ hA, ?_⟩` and prove the remaining obligations. Use `show A * X0 * X0ᵀ = A`. Rewrite using `[Matrix.mul_assoc, hX0, X0_mul_X0_transpose, Matrix.mul_one]`.
+
+Establish `hDcpt : IsCompact D` using `(hK.image (show Continuous fun M : Matrix (Fin a) (Fin (a + b)) k => M * X0ᵀ from continuous_id.matrix_mul continuous_const)).of_isClosed_subset hDc hDsub`. Establish `hDr : D ⊆ Set.range fun g : GL (Fin a) k => g.val`. Introduce `A hA`. Establish `hr : (A * X0).rank = a`. Assume the negation of the conclusion as `hne`.
+
+Conclude with `hA (hrk _ hne)`. Conclude with `⟨(isUnit_of_rank_mul_X0 A hr).unit, rfl⟩`. Establish `hS : IsCompact ((fun g : GL (Fin a) k => g.val) ⁻¹' D)` using `GlobalTheory.SplitFlip.isEmbedding_val_GL.isInducing.isCompact_preimage' hDcpt hDr`. Establish `hcs : HasCompactSupport fun g : GL (Fin a) k => Φ (g.val * X0) * (ν (GlobalTheory.SplitFlip.gdet g) : ℂ) * GlobalTheory.SplitFlip.apow (GlobalTheory.SplitFlip.gdet g) (((a + b : ℕ) : ℂ) / 2)`. Use `HasCompactSupport.intro hS fun g hg => ?_` and prove the remaining obligations.
+
+Establish `: Φ (g.val * X0) = 0` using `not_not.1 hg`. Simplify using `[this]`. Conclude with `hcont.integrable_of_hasCompactSupport hcs`.
+-/
 theorem integrable_fibre_integrand : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] (a b : ℕ) (ν : kˣ →* ℂˣ), GlobalTheory.SmGL.IsSmoothChar ν → ∀ Φ ∈ GlobalTheory.RankFibre.fullRankSB k a (a + b), MeasureTheory.Integrable (fun g : GL (Fin a) k => Φ (g.val * GlobalTheory.SplitFlip.X0 k finSumFinEquiv) * (ν (GlobalTheory.SplitFlip.gdet g) : ℂ) * GlobalTheory.SplitFlip.apow (GlobalTheory.SplitFlip.gdet g) (((a + b : ℕ) : ℂ) / 2)) (GlobalTheory.SplitFlip.haarVol (GlobalTheory.SplitWeil.KO k (Fin a))) := by
   intro k _ _ _ _ _ _ a b ν hν Φ hΦ
   obtain ⟨⟨hl, hK⟩, hrk⟩ := hΦ

@@ -13,6 +13,9 @@ namespace DualFamily
 open NumberField in
 open scoped nonZeroDivisors in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] in
+/- English proof (translation)
+Unfold `_root_.ReciprocityTheory.ChartRestriction.G.FD.herm`. Simplify using `[Matrix.one_apply]`.
+-/
 lemma _root_.GlobalTheory.DualFamily.herm_one_eq {n : ℕ} (x y : Fin n → E) :
     _root_.ReciprocityTheory.ChartRestriction.G.FD.herm 1 x y = ∑ a, x a * _root_.ReciprocityTheory.ChartRestriction.G.FD.cc (y a) := by
   unfold _root_.ReciprocityTheory.ChartRestriction.G.FD.herm
@@ -21,6 +24,9 @@ lemma _root_.GlobalTheory.DualFamily.herm_one_eq {n : ℕ} (x y : Fin n → E) :
 open NumberField in
 open scoped nonZeroDivisors in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] in
+/- English proof (translation)
+Rewrite using `[_root_.GlobalTheory.DualFamily.herm_one_eq, _root_.GlobalTheory.DualFamily.herm_one_eq]`. Unfold `_root_.ReciprocityTheory.ChartRestriction.G.FD.cc`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, IsCMField.complexConj_apply_apply, mul_comm]`.
+-/
 lemma _root_.GlobalTheory.DualFamily.herm_one_symm {n : ℕ} (x y : Fin n → E) :
     _root_.ReciprocityTheory.ChartRestriction.G.FD.herm 1 x y = _root_.ReciprocityTheory.ChartRestriction.G.FD.cc (_root_.ReciprocityTheory.ChartRestriction.G.FD.herm 1 y x) := by
   rw [_root_.GlobalTheory.DualFamily.herm_one_eq, _root_.GlobalTheory.DualFamily.herm_one_eq]
@@ -32,6 +38,9 @@ lemma _root_.GlobalTheory.DualFamily.herm_one_symm {n : ℕ} (x y : Fin n → E)
 open NumberField in
 open scoped nonZeroDivisors in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] in
+/- English proof (translation)
+Unfold `_root_.ReciprocityTheory.ChartRestriction.G.FD.cc`. Conclude with `ha.map (RingHom.toIntAlgHom (IsCMField.complexConj E).toRingEquiv.toRingHom)`.
+-/
 lemma _root_.GlobalTheory.DualFamily.isIntegral_cc {a : E} (ha : IsIntegral ℤ a) :
     IsIntegral ℤ (_root_.ReciprocityTheory.ChartRestriction.G.FD.cc a) := by
   unfold _root_.ReciprocityTheory.ChartRestriction.G.FD.cc
@@ -41,6 +50,9 @@ open NumberField in
 open scoped nonZeroDivisors in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] in
 
+/- English proof (translation)
+Use `⟨fun a => _root_.ReciprocityTheory.ChartRestriction.G.FD.cc (f fun b => if a = b then 1 else 0), fun u => ?_⟩` and prove the remaining obligations. Rewrite using `[f.pi_apply_eq_sum_univ u, _root_.GlobalTheory.DualFamily.herm_one_eq]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Unfold `_root_.ReciprocityTheory.ChartRestriction.G.FD.cc`. Rewrite using `[IsCMField.complexConj_apply_apply, smul_eq_mul]`.
+-/
 lemma _root_.GlobalTheory.DualFamily.exists_herm_eq {n : ℕ} (f : (Fin n → E) →ₗ[E] E) :
     ∃ w : Fin n → E, ∀ u, f u = _root_.ReciprocityTheory.ChartRestriction.G.FD.herm 1 u w := by
   refine ⟨fun a => _root_.ReciprocityTheory.ChartRestriction.G.FD.cc (f fun b => if a = b then 1 else 0), fun u => ?_⟩
@@ -54,6 +66,11 @@ open scoped nonZeroDivisors in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] in
 omit [IsCMField E] in
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h`. Take `⟨j, hj⟩` from `Function.ne_iff.mp h`. Establish `htop : Λ.map (LinearMap.proj (R` using `𝓞 E) (φ := fun _ : Fin n => E) j) = ⊤ := by`. Use `eq_top_iff.mpr fun x _ => ⟨(x / w j) • w, hw _, ?_⟩` and prove the remaining obligations. Simplify using `[div_mul_cancel₀ _ hj]`.
+
+Establish `: Module.Finite (𝓞 E) E` using `⟨by rw [← htop]; exact hfg.map _⟩`. Use `Algebra.IsIntegral.of_finite (𝓞 E) E` as an intermediate fact. Conclude with `RingOfIntegers.not_isField E (isField_of_isIntegral_of_isField (IsFractionRing.injective (𝓞 E) E) (Field.toIsField E))`.
+-/
 lemma _root_.GlobalTheory.DualFamily.eq_zero_of_line {n : ℕ} (Λ : Submodule (𝓞 E) (Fin n → E))
     (hfg : Λ.FG) (w : Fin n → E) (hw : ∀ c : E, c • w ∈ Λ) : w = 0 := by
   by_contra h
@@ -69,6 +86,13 @@ lemma _root_.GlobalTheory.DualFamily.eq_zero_of_line {n : ℕ} (Λ : Submodule (
 open NumberField in
 open scoped nonZeroDivisors in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] in
+/- English proof (translation)
+Assume the negation of the conclusion as `h`. Take `⟨f, hf0, hle⟩` from `Submodule.exists_le_ker_of_lt_top _ (lt_top_iff_ne_top.mpr h)`. Take `⟨w, hw⟩` from `_root_.GlobalTheory.DualFamily.exists_herm_eq f`. Establish `hline : ∀ c : E, c • w ∈ Λ` using `fun c => hdual _ fun y hy => by`. Establish `hfy : f y = 0` using `LinearMap.mem_ker.mp (hle (Submodule.subset_span hy))`.
+
+Establish `hsmul : _root_.ReciprocityTheory.ChartRestriction.G.FD.herm 1 (c • w) y = c * _root_.ReciprocityTheory.ChartRestriction.G.FD.herm 1 w y`. Simplify using `only [_root_.GlobalTheory.DualFamily.herm_one_eq, Pi.smul_apply, smul_eq_mul, Finset.mul_sum, mul_assoc]`. Rewrite using `[hsmul, _root_.GlobalTheory.DualFamily.herm_one_symm w y, ← hw, hfy]`. Unfold `_root_.ReciprocityTheory.ChartRestriction.G.FD.cc`. Rewrite using `[map_zero, mul_zero]`.
+
+Conclude with `isIntegral_zero`. Establish `hw0` using `_root_.GlobalTheory.DualFamily.eq_zero_of_line Λ hfg w hline`. Conclude with `hf0 (LinearMap.ext fun u => by simp [hw u, hw0, _root_.GlobalTheory.DualFamily.herm_one_eq, _root_.ReciprocityTheory.ChartRestriction.G.FD.cc])`.
+-/
 lemma _root_.GlobalTheory.DualFamily.span_eq_top {n : ℕ} (Λ : Submodule (𝓞 E) (Fin n → E)) (hfg : Λ.FG)
     (hdual : ∀ x, (∀ y ∈ Λ, IsIntegral ℤ (_root_.ReciprocityTheory.ChartRestriction.G.FD.herm 1 x y)) → x ∈ Λ) :
     Submodule.span E (Λ : Set (Fin n → E)) = ⊤ := by
@@ -93,6 +117,19 @@ open NumberField in
 open scoped nonZeroDivisors in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] in
 omit [IsCMField E] in
+/- English proof (translation)
+Take `⟨t, htΛ, hts, hli⟩` from `exists_linearIndependent E (Λ : Set (Fin n → E))`. Set `b : Module.Basis t E (Fin n → E)` to `Module.Basis.mk hli (le_of_eq (by rw [Subtype.range_coe, hts, hspan]))`. Establish `hb : ∀ i, b i ∈ Λ` using `fun i => by rw [Module.Basis.mk_apply]; exact htΛ i.2`. Use `Module.Finite.finite_basis b` as an intermediate fact. Use `Fintype.ofFinite t` as an intermediate fact.
+
+Use `⟨b.constr E fun i => ((g ⟨b i, hb i⟩ : 𝓞 E) : E), fun y => ?_⟩` and prove the remaining obligations. Take `⟨d, hd⟩` from `IsLocalization.exist_integer_multiples (nonZeroDivisors (𝓞 E)) Finset.univ (b.repr y)`. Establish `hd' : ∀ i, ∃ x : 𝓞 E, algebraMap (𝓞 E) E x = (d : 𝓞 E) • b.repr y i` using `fun i => hd i (Finset.mem_univ _)`. Use `choose a ha using hd'`. Establish `hdy : (d : 𝓞 E) • y = ∑ i, a i • (⟨b i, hb i⟩ : Λ)`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[Submodule.coe_smul, Submodule.coe_sum]`. Use `conv_lhs => rw [← b.sum_repr y]`. Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Submodule.coe_smul, ← algebraMap_smul E (a i), ha i, smul_assoc]`. Establish `hg` using `congrArg (fun z => ((g z : 𝓞 E) : E)) hdy`. Simplify using `only [map_smul, map_sum, smul_eq_mul, RingOfIntegers.coe_eq_algebraMap, map_mul] at hg`. Simplify using `only [RingOfIntegers.coe_eq_algebraMap]`. Establish `hd0 : algebraMap (𝓞 E) E d ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors d.2`.
+
+Apply `mul_left_cancel₀ hd0` to reduce the goal to its premises. Rewrite using `[hg]`. Use `conv_lhs => rw [← b.sum_repr (y : Fin n → E)]`. Rewrite using `[map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_smul, Module.Basis.constr_basis, ha i, smul_eq_mul, Algebra.smul_def]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private lemma exists_linearForm_extend_of_span_eq_univ {n : ℕ} (Λ : Submodule (𝓞 E) (Fin n → E))
     (hspan : Submodule.span E (Λ : Set (Fin n → E)) = ⊤) (g : Λ →ₗ[𝓞 E] 𝓞 E) :
     ∃ φ : (Fin n → E) →ₗ[E] E, ∀ y : Λ, φ y = g y := by
@@ -131,6 +168,19 @@ private lemma exists_linearForm_extend_of_span_eq_univ {n : ℕ} (Λ : Submodule
 open NumberField in
 open scoped nonZeroDivisors in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] in
+/- English proof (translation)
+Establish `hspan` using `_root_.GlobalTheory.DualFamily.span_eq_top Λ hfg hdual`. Use `⟨hspan, ?_⟩` and prove the remaining obligations. Establish `: Module.Finite (𝓞 E) Λ` using `Module.Finite.iff_fg.mpr hfg`. Use `Module.finitePresentation_of_finite (𝓞 E) Λ` as an intermediate fact. Establish `: Module.Projective (𝓞 E) Λ` using `Module.Flat.projective_of_finitePresentation`.
+
+Take `⟨m, π, hπ⟩` from `Module.Finite.exists_fin' (𝓞 E) Λ`. Take `⟨σ, hσ⟩` from `Module.projective_lifting_property π LinearMap.id hπ`. Establish `hext : ∀ j : Fin m, ∃ φ : (Fin n → E) →ₗ[E] E, ∀ y (hy : y ∈ Λ), φ y = σ ⟨y, hy⟩ j` using `fun j => (exists_linearForm_extend_of_span_eq_univ Λ hspan ((LinearMap.proj j).comp σ)).imp fun φ h y hy => h ⟨y, hy⟩`. Use `choose φ hφ using hext`. Use `choose w hw using fun j => _root_.GlobalTheory.DualFamily.exists_herm_eq (φ j)`.
+
+Set `v : Fin m → Fin n → E` to `fun j => (π fun k => if j = k then 1 else 0 : Λ)`. Use `⟨m, v, w, fun j => (π _).2, fun j => hdual _ fun y hy => ?_, fun u => ?_⟩` and prove the remaining obligations. Rewrite using `[_root_.GlobalTheory.DualFamily.herm_one_symm, ← hw, hφ j y hy]`. Conclude with `_root_.GlobalTheory.DualFamily.isIntegral_cc (RingOfIntegers.isIntegral_coe _)`. Establish `hL : (∑ j, (φ j).smulRight (v j)) = LinearMap.id`.
+
+Use `LinearMap.ext_on hspan fun y hy => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.sum_apply, LinearMap.smulRight_apply, LinearMap.id_apply]`. Establish `hy' : y = ((π (σ ⟨y, hy⟩) : Λ) : Fin n → E)`. Rewrite using `[← LinearMap.comp_apply, hσ]`. Both sides reduce to the same expression.
+
+Use `conv_rhs => rw [hy', π.pi_apply_eq_sum_univ]`. Rewrite using `[Submodule.coe_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Submodule.coe_smul, hφ j y hy, RingOfIntegers.coe_eq_algebraMap, algebraMap_smul]`. Establish `hu` using `congrArg (fun L : (Fin n → E) →ₗ[E] (Fin n → E) => L u) hL`.
+
+Simplify using `only [LinearMap.sum_apply, LinearMap.smulRight_apply, LinearMap.id_apply, hw] at hu`. Conclude with `hu.symm`.
+-/
 theorem _root_.GlobalTheory.exists_dual_family {n : ℕ} (Λ : Submodule (𝓞 E) (Fin n → E))
     (hfg : Λ.FG)
     (hint : ∀ x ∈ Λ, ∀ y ∈ Λ, IsIntegral ℤ (_root_.ReciprocityTheory.ChartRestriction.G.FD.herm 1 x y))

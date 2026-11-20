@@ -12,6 +12,11 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `: JacobsonSpace X` using `LocallyOfFiniteType.jacobsonSpace f`. Take `⟨x, hxW, hx⟩` from `nonempty_inter_closedPoints hW W.isOpen.isLocallyClosed`. Establish `hc : IsClosedImmersion (X.fromSpecResidueField x)` using `isClosed_singleton_iff_isClosedImmersion.mp hx`. Establish `hfin : IsFinite (X.fromSpecResidueField x ≫ f)` using `isFinite_iff_locallyOfFiniteType_of_jacobsonSpace.mpr inferInstance`. Take `⟨φ, hφ⟩` from `Spec.map_surjective (X.fromSpecResidueField x ≫ f)`.
+
+Rewrite `hfin` using `[← hφ, IsFinite.SpecMap_iff]`. Set `: Algebra k (X.residueField x)` to `φ.hom.toAlgebra`. Use `⟨X.residueField x, inferInstance, inferInstance, hfin, X.fromSpecResidueField x, hφ.symm, ?_⟩` and prove the remaining obligations. Rewrite using `[Scheme.range_fromSpecResidueField]`. Simplify using `using hxW`.
+-/
 theorem exists_finite_point_mem_opens {k : Type} [Field k] {X : Scheme.{0}} (f : X ⟶ Spec (CommRingCat.of k))
     [LocallyOfFiniteType f] (W : X.Opens) (hW : (W : Set X).Nonempty) :
     ∃ (L : Type) (_ : Field L) (_ : Algebra k L), FiniteDimensional k L ∧
@@ -29,6 +34,9 @@ theorem exists_finite_point_mem_opens {k : Type} [Field k] {X : Scheme.{0}} (f :
   rw [Scheme.range_fromSpecResidueField]
   simpa using hxW
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo c W hW`. Use `Xo.smooth` as an intermediate fact. Establish `: Smooth Xo.s` using `SmoothOfRelativeDimension.smooth D.dim Xo.s`. Conclude with `exists_finite_point_mem_opens (pullback.snd _ _) W hW`.
+-/
 theorem moduli_exists_algebraic_point :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (W : (Xo.XF c).Opens), (W : Set (Xo.XF c)).Nonempty → ∃ (L : Type) (_ : Field L) (_ : Algebra c.F L), FiniteDimensional c.F L ∧ ∃ y : Sp L ⟶ Xo.XF c, y ≫ pullback.snd _ _ = spMap (algebraMap c.F L) ∧ Set.range y ⊆ W := by
   intro E _ _ _ H D l Xo c W hW

@@ -4,6 +4,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.Ultra
 open Filter UpperTheory.V.AlgebraTools
 open scoped TensorProduct
 
+/- English proof (translation)
+Establish `hm : s + 1 ≤ l ^ e` using `le_of_lt (lt_of_lt_of_le hs (Nat.pow_le_pow_right hl.pos (Nat.sub_le e j)))`. Establish `hC : (l ^ e).choose (s + 1) ≠ 0` using `(Nat.choose_pos hm).ne'`. Establish `hv : (s + 1).factorization l < e - j`. Establish `h1 : l ^ (s + 1).factorization l ≤ s + 1` using `Nat.le_of_dvd (Nat.succ_pos s) (Nat.ordProj_dvd (s + 1) l)`. Conclude with `(Nat.pow_lt_pow_iff_right hl.one_lt).1 (lt_of_le_of_lt h1 hs)`.
+
+Rewrite using `[hl.pow_dvd_iff_le_factorization hC, Nat.factorization_choose_prime_pow hl hm (Nat.succ_ne_zero s)]`. Use linear arithmetic over natural numbers and integers.
+-/
 private theorem UpperTheory.V.AlgebraTools.prime_pow_dvd_choose (l : ℕ) (hl : l.Prime) (e j s : ℕ) (hj : j ≤ e)
     (hs : s + 1 < l ^ (e - j)) : l ^ j ∣ (l ^ e).choose (s + 1) := by
   have hm : s + 1 ≤ l ^ e :=
@@ -16,6 +21,13 @@ private theorem UpperTheory.V.AlgebraTools.prime_pow_dvd_choose (l : ℕ) (hl : 
   rw [hl.pow_dvd_iff_le_factorization hC, Nat.factorization_choose_prime_pow hl hm (Nat.succ_ne_zero s)]
   omega
 
+/- English proof (translation)
+Introduce `R _ l hl y e j k hj hk`. Establish `hN : (1 + y) ^ l ^ e - 1 = ∑ s ∈ Finset.range (l ^ e), y ^ (s + 1) * ((l ^ e).choose (s + 1) : R)`. Rewrite using `[add_comm, add_pow, Finset.sum_range_succ']`. Simplify using the standard rewrite rules. Rewrite using `[hN]`.
+
+Use `Ideal.sum_mem _ fun s _ => ?_` and prove the remaining obligations. Distinguish the cases in `hks : k ≤ s + 1`. Apply `Ideal.mem_sup_left` to reduce the goal to its premises. Rewrite using `[Ideal.mem_span_singleton]`. Conclude with `Dvd.dvd.mul_right (pow_dvd_pow y hks) _`.
+
+Apply `Ideal.mem_sup_right` to reduce the goal to its premises. Rewrite using `[Ideal.mem_span_singleton]`. Take `⟨c, hc⟩` from `UpperTheory.V.AlgebraTools.prime_pow_dvd_choose l hl e j s hj (by omega)`. Conclude with `⟨y ^ (s + 1) * c, by rw [hc]; push_cast; ring⟩`.
+-/
 theorem UpperTheory.V.AlgebraTools.one_add_pow_sub_one_mem :
     ∀ (R : Type) [CommRing R] (l : ℕ), l.Prime → ∀ (y : R) (e j k : ℕ), j ≤ e → k ≤ l ^ (e - j) →
       (1 + y) ^ l ^ e - 1 ∈ Ideal.span {y ^ k} ⊔ Ideal.span {(l : R) ^ j} := by

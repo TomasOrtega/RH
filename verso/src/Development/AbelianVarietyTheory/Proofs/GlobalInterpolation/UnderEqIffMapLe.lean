@@ -13,6 +13,11 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 
 omit [NumberField E] in
 
+/- English proof (translation)
+Rewrite using `[Ideal.map_le_iff_le_comap]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl`. Conclude with `le_rfl`. Introduce `h`.
+
+Apply `HeightOneSpectrum.ext` to reduce the goal to its premises. Conclude with `(v.isMaximal.eq_of_le (Q.under (𝓞 F)).isPrime.ne_top h).symm`.
+-/
 theorem under_eq_iff_map_le (v : HeightOneSpectrum (𝓞 F)) (Q : HeightOneSpectrum (𝓞 E)) :
     Q.under (𝓞 F) = v ↔ Ideal.map (algebraMap (𝓞 F) (𝓞 E)) v.asIdeal ≤ Q.asIdeal := by
   rw [Ideal.map_le_iff_le_comap]
@@ -23,6 +28,9 @@ theorem under_eq_iff_map_le (v : HeightOneSpectrum (𝓞 F)) (Q : HeightOneSpect
     apply HeightOneSpectrum.ext
     exact (v.isMaximal.eq_of_le (Q.under (𝓞 F)).isPrime.ne_top h).symm
 
+/- English proof (translation)
+Rewrite using `[under_eq_iff_map_le, h, Q.isPrime.mul_le]`. Use `or_congr ⟨fun h => ?_, fun h => h ▸ le_rfl⟩ ⟨fun h => ?_, fun h => h ▸ le_rfl⟩` and prove the remaining obligations. Conclude with `HeightOneSpectrum.ext (P.isMaximal.eq_of_le Q.isPrime.ne_top h).symm`. Conclude with `HeightOneSpectrum.ext (P'.isMaximal.eq_of_le Q.isPrime.ne_top h).symm`.
+-/
 theorem under_eq_iff (v : HeightOneSpectrum (𝓞 F)) (P P' : HeightOneSpectrum (𝓞 E))
     (h : Ideal.map (algebraMap (𝓞 F) (𝓞 E)) v.asIdeal = P.asIdeal * P'.asIdeal) (Q : HeightOneSpectrum (𝓞 E)) :
     Q.under (𝓞 F) = v ↔ (Q = P ∨ Q = P') := by
@@ -31,12 +39,24 @@ theorem under_eq_iff (v : HeightOneSpectrum (𝓞 F)) (P P' : HeightOneSpectrum 
   · exact HeightOneSpectrum.ext (P.isMaximal.eq_of_le Q.isPrime.ne_top h).symm
   · exact HeightOneSpectrum.ext (P'.isMaximal.eq_of_le Q.isPrime.ne_top h).symm
 
+/- English proof (translation)
+Introduce `h`. Rewrite `h` using `[← Ideal.dvd_iff_le, sq, mul_dvd_mul_iff_left P.ne_bot, Ideal.dvd_iff_le]`. Conclude with `hne (HeightOneSpectrum.ext (P'.isMaximal.eq_of_le P.isPrime.ne_top h).symm)`.
+-/
 theorem not_mul_le_sq (P P' : HeightOneSpectrum (𝓞 E)) (hne : P ≠ P') :
     ¬ P.asIdeal * P'.asIdeal ≤ P.asIdeal ^ 2 := by
   intro h
   rw [← Ideal.dvd_iff_le, sq, mul_dvd_mul_iff_left P.ne_bot, Ideal.dvd_iff_le] at h
   exact hne (HeightOneSpectrum.ext (P'.isMaximal.eq_of_le P.isPrime.ne_top h).symm)
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ χ v P P' hχ h1 h2 hne hv`. Take `⟨π, hπ⟩` from `v.valuation_exists_uniformizer F`. Establish `h0 : π ≠ 0`. Introduce and unpack `rfl`. Rewrite `hπ` using `[map_zero]`.
+
+Conclude with `WithZero.exp_ne_zero hπ.symm`. Establish `hab : aboveF (L` using `E) F v = {P, P'} := by`. Use extensionality with `Q`. Rewrite using `[aboveF, Set.Finite.mem_toFinset, Finset.mem_insert, Finset.mem_singleton]`. Conclude with `under_eq_iff v P P' hv Q`.
+
+Establish `key : ∀ Q : HeightOneSpectrum (𝓞 E), Q.under (𝓞 F) = v → χ.UnrAt Q → ¬ Ideal.map (algebraMap (𝓞 F) (𝓞 E)) v.asIdeal ≤ Q.asIdeal ^ 2 → χ.locK Q (upF F (Units.mk0 π h0)) = χ.val Q`. Introduce `Q hQ hunr hu`. Use `χ.val_eq hunr _ ?_` and prove the remaining obligations. Substitute `hQ` using the available equality. Use `show Valued.v ((algebraMap F E π : E) : Q.adicCompletion E) = _`.
+
+Rewrite using `[HeightOneSpectrum.valuedAdicCompletion_eq_valuation', GlobalTheory.MuConj.valuation_up Q hu, hπ]`. Establish `h` using `hχ.1 v (Units.mk0 π h0)`. Rewrite `h` using `[HChar.resFin_apply, hab, Finset.prod_pair hne, key P ((under_eq_iff v P P' hv _).2 (Or.inl rfl)) h1 (hv ▸ not_mul_le_sq P P' hne), key P' ((under_eq_iff v P P' hv _).2 (Or.inr rfl)) h2 (by rw [hv, mul_comm]; exact not_mul_le_sq P' P hne.symm)]`. Conclude with `eq_inv_of_mul_eq_one_right h`.
+-/
 theorem val_eq_inv_of_split : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (χ : Formalism.L2.Host.HChar E) (v : HeightOneSpectrum (𝓞 F)) (P P' : HeightOneSpectrum (𝓞 E)),
     χ.TrivOn F → χ.UnrAt P → χ.UnrAt P' → P ≠ P' →

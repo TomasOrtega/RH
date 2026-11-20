@@ -40,11 +40,17 @@ section Pair
 
 open NumberField IsDedekindDomain Formalism.L2.Host GlobalTheory.CuspRep GlobalTheory.UnitaryBC GlobalTheory.SmGL GlobalTheory.DiscSpec
 
+/- English proof (translation)
+The claim follows from `Quotient.exact (eq_of_heq (Sigma.mk.inj ((H E N hN).2.2.1 V hV a d a d π π' h h' e e').2).2)`.
+-/
 theorem iso (H : GlobalTheory.CompanionTheory.Hypotheses₂.DiscreteSpectrumUsed) {E : Type} [Field E] [NumberField E] [IsTotallyComplex E]
     {N a d : ℕ} (hN : 1 ≤ N) {V : Submodule ℂ (Sm E N)} (hV : IsDiscrete V) {π π' : CuspSub E a} (h : IsNormalised π)
     (h' : IsNormalised π') (e : IsSpehOf V π d) (e' : IsSpehOf V π' d) : π.Iso π' :=
   Quotient.exact (eq_of_heq (Sigma.mk.inj ((H E N hN).2.2.1 V hV a d a d π π' h h' e e').2).2)
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.ThetaPull.isCsd_of_iso (iso H hN hV (GlobalTheory.ThetaPull.isNormalised_thetaSub hπ) hπ (GlobalTheory.ThetaPull.isSpehOf_thetaSub hV.stable hc h) h)`.
+-/
 theorem isCsd_of_isSpehOf (H : GlobalTheory.CompanionTheory.Hypotheses₂.DiscreteSpectrumUsed) {E : Type} [Field E] [NumberField E]
     [IsCMField E] {N a d : ℕ} (hN : 1 ≤ N) {V : Submodule ℂ (Sm E N)} (hV : IsDiscrete V)
     (hc : IsCsdGL V) {π : CuspSub E a} (hπ : IsNormalised π) (h : IsSpehOf V π d) : π.IsCsd :=
@@ -59,6 +65,11 @@ open NumberField IsDedekindDomain GlobalTheory.CuspRep GlobalTheory.UnitaryBC Gl
 
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
+/- English proof (translation)
+Take `⟨V, hV, hS⟩` from `(H E a ha).2.1 a 1 P (one_mul a) hP`. Establish `hc` using `(H E a ha).2.2.2 V hV a 1 P hP hS`. Take `⟨-, σ', -, hσ'⟩` from `hc.exLoc w`. Take `⟨hd, h1⟩` from `hc.loc w ρ σ' hρ hσ'`. Take `⟨hd', h2⟩` from `GlobalTheory.LocGL.isSpeh_one (GlobalTheory.LocGL.IrrGL.of ρ.ρ ρ.smooth ρ.irred)`.
+
+Take `⟨e⟩` from `h1.unique h2`. Establish `hu` using `GlobalTheory.T.discreteAutomorphicRepGL_localComponent_isUnitarisable E a V hV w σ' hσ'`. Conclude with `isUnitarisable_of_equiv' ((GlobalTheory.LocGL.IrrGL.equivOf ρ.ρ ρ.smooth ρ.irred).trans e).symm hu`.
+-/
 theorem isUnitarisable_of_isLocComp (H : GlobalTheory.CompanionTheory.Hypotheses₂.DiscreteSpectrumUsed) {E : Type} [Field E] [NumberField E]
     [IsCMField E] {a : ℕ} (ha : 1 ≤ a) (P : CuspSub E a) (hP : GlobalTheory.DiscSpec.IsNormalised P)
     (w : HeightOneSpectrum (𝓞 E)) (ρ : LocIrr w a) (hρ : P.IsLocComp w ρ) : IsUnitarisable ρ.ρ := by
@@ -71,6 +82,19 @@ theorem isUnitarisable_of_isLocComp (H : GlobalTheory.CompanionTheory.Hypotheses
   have hu := GlobalTheory.T.discreteAutomorphicRepGL_localComponent_isUnitarisable E a V hV w σ' hσ'
   exact isUnitarisable_of_equiv' ((GlobalTheory.LocGL.IrrGL.equivOf ρ.ρ ρ.smooth ρ.irred).trans e).symm hu
 
+/- English proof (translation)
+Establish `hN : ∀ i, 1 ≤ N i` using `bc.pos`. Establish `hc : ∀ i, GlobalTheory.DiscSpec.HasSpehComp (V i) (P i) (d i)` using `fun i => (H E (N i) (hN i)).2.2.2 (V i) (bc.discrete i) (a i) (d i) (P i) (hPn i) (hPs i)`. Use `choose ρ σ' hρ hσ' using fun i w => (hc i).exLoc w`. Use `choose m' hm1 hm2 using fun i τ => (hc i).inf τ`. Establish `hmm : ∀ i τ, m i τ = GlobalTheory.DefiniteBC.spehInf (d i) (m' i τ)` using `fun i τ => (hasInfCharGL_unique (bc.discrete i).ne_bot (bc.inf i τ) (hm2 i τ)).trans (spehInf_eq _ _)`.
+
+Establish `hpos : ∀ i, 1 ≤ a i ∧ 1 ≤ d i` using `fun i => by`. Use `hN i` as an intermediate fact. Rewrite `this` using `[hNad i]`. Conclude with `⟨Nat.one_le_iff_ne_zero.2 fun e => by simp [e] at this, Nat.one_le_iff_ne_zero.2 fun e => by simp [e] at this⟩`. Establish `hcsd : ∀ i, (P i).IsCsd` using `fun i => GlobalTheory.CompanionTheory.Hypotheses₂.Used.isCsd_of_isSpehOf H (hN i) (bc.discrete i) (bc.csd i) (hPn i) (hPs i)`.
+
+Establish `hsp : ∀ i w, GlobalTheory.LocGL.IsSpeh (GlobalTheory.LocGL.IrrGL.of (ρ i w).ρ (ρ i w).smooth (ρ i w).irred) (d i) (σ i w).ρ` using `fun i w => (hc i).loc w (ρ i w) (σ i w) (hρ i w) (bc.loc i w)`. Establish `hun : ∀ i w, IsUnitarisable (ρ i w).ρ ∧ IsUnitarisable (σ i w).ρ` using `fun i w => ⟨GlobalTheory.CompanionTheory.Hypotheses₂.Used.isUnitarisable_of_isLocComp H (hpos i).1 (P i) (hPn i) w (ρ i w) (hρ i w), GlobalTheory.T.discreteAutomorphicRepGL_localComponent_isUnitarisable E (N i) (V i) (bc.discrete i) w (σ i w) (bc.loc i w)⟩`. Establish `hm0 : ∀ i τ, m i τ ≠ 0` using `fun i τ h0 => by`. Establish `h1` using `(bc.inf i τ).1`. Rewrite `h1` using `[h0, Multiset.card_zero]`.
+
+Use `hN i` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Take `rfl : N = fun i => d i * a i` from `funext hNad`. Use `⟨c, a, d, h, P, ρ, m', σ, ⟨hpos, hcsd, hρ, hm1, fun τ lam hl => ?_, fun i j hd hs => ?_, ?_⟩, fun i w => ⟨(hun i w).1, (hun i w).2, hsp i w⟩, bc.split⟩` and prove the remaining obligations. Rewrite using `[← bc.weight τ lam hl]`.
+
+Conclude with `Finset.sum_congr rfl fun i _ => (hmm i τ).symm`. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Take `⟨lam, hl⟩` from `hW E n hn π hπ τ`. Use `GlobalTheory.eq_of_nodup_sum_multiset_of_eq (Fin c) (m · τ) (bc.weight τ lam hl ▸ nodup_infOfWeight lam) i j (hm0 i τ) ?_` and prove the remaining obligations. Rewrite using `[hmm i τ, hmm j τ, hd, hasInfChar_eq_of_sigma hs (hm1 i τ) (hm1 j τ)]`.
+
+Introduce `w s ϖ q hs hU α hα`. Conclude with `GlobalTheory.T.satakeParameter_spherical_product_spehQuotients E w c n a d h (ρ · w) (σ · w) (fun i => (hpos i).2) (fun i => hsp i w) _ (bc.inert w s ϖ q hs hU α hα)`.
+-/
 theorem baseChange_speh_of_discreteSeries (H : GlobalTheory.CompanionTheory.Hypotheses₂.DiscreteSpectrumUsed)
     (hW : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ), 1 ≤ n →
       ∀ π : Submodule ℂ (UA E n → ℂ), IsAutRepU π → ∀ τ : E →+* ℂ, ∃ lam : Formalism.BasicNotions.DomWeight n, HasWeightAt π τ lam)

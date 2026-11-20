@@ -9,6 +9,11 @@ namespace PositivityTheory.Rg.Ming.GermX
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Use extensionality with `y`. Simplify using `only [Set.mem_setOf_eq, Set.mem_preimage]`. Rewrite using `[Set.mem_smul_set_iff_inv_smul_mem]`. Express the relevant statement in the definitionally equal form `_ ↔ valuation k (((c⁻¹ : kˣ) : k) * (-a + y)) ≤ 1`. Establish `hc : (0 : ValueGroupWithZero k) < valuation k (c : k)`.
+
+Rewrite using `[zero_lt_iff, ne_eq, map_eq_zero]`. Conclude with `c.ne_zero`. Rewrite using `[map_mul, Units.val_inv_eq_inv_val, map_inv₀, neg_add_eq_sub, inv_mul_le_iff₀ hc, mul_one]`.
+-/
 theorem valSet_eq (a : k) (c : kˣ) :
     {y : k | valuation k (y - a) ≤ valuation k (c : k)} = (fun y => -a + y) ⁻¹' (c • (𝒪[k] : Set k)) := by
   ext y
@@ -20,10 +25,20 @@ theorem valSet_eq (a : k) (c : kˣ) :
     exact c.ne_zero
   rw [map_mul, Units.val_inv_eq_inv_val, map_inv₀, neg_add_eq_sub, inv_mul_le_iff₀ hc, mul_one]
 
+/- English proof (translation)
+Rewrite using `[valSet_eq]`. Conclude with `(continuous_add_left (-a)).isOpen_preimage _ ((GlobalTheory.SplitWeil.isOpen_int k).smul c)`.
+-/
 theorem isOpen_valSet (a : k) (c : kˣ) : IsOpen {y : k | valuation k (y - a) ≤ valuation k (c : k)} := by
   rw [valSet_eq]
   exact (continuous_add_left (-a)).isOpen_preimage _ ((GlobalTheory.SplitWeil.isOpen_int k).smul c)
 
+/- English proof (translation)
+Take `⟨t, ht0, ht1⟩` from `Valuation.IsNontrivial.exists_lt_one (v := valuation k)`. Establish `hpos : (0 : ValueGroupWithZero k) < valuation k t`. Rewrite using `[zero_lt_iff, ne_eq, map_eq_zero]`. Conclude with `ht0`. Establish `hs : 1 < valuation k t⁻¹`.
+
+Rewrite using `[map_inv₀]`. Conclude with `(one_lt_inv₀ hpos).2 ht1`. Use `SigmaCompactSpace.of_countable (Set.range fun n : ℕ => {x : k | valuation k x ≤ valuation k t⁻¹ ^ n}) (Set.countable_range _) ?_ ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨n, rfl⟩`. Conclude with `IsNonarchimedeanLocalField.isCompact_closedBall k _`.
+
+Use `Set.eq_univ_of_forall fun x => ?_` and prove the remaining obligations. Take `⟨n, hn⟩` from `MulArchimedean.arch (valuation k x) hs`. Conclude with `Set.mem_sUnion.2 ⟨_, ⟨n, rfl⟩, hn⟩`.
+-/
 private theorem vol_valSet_lemma : SigmaCompactSpace k := by
   obtain ⟨t, ht0, ht1⟩ := Valuation.IsNontrivial.exists_lt_one (v := valuation k)
   have hpos : (0 : ValueGroupWithZero k) < valuation k t := by
@@ -40,6 +55,9 @@ private theorem vol_valSet_lemma : SigmaCompactSpace k := by
     obtain ⟨n, hn⟩ := MulArchimedean.arch (valuation k x) hs
     exact Set.mem_sUnion.2 ⟨_, ⟨n, rfl⟩, hn⟩
 
+/- English proof (translation)
+Use `haveI := hν.1`. Rewrite using `[valSet_eq, measure_preimage_add]`. Conclude with `GlobalTheory.SplitWeil.Model.nabs_vol ν hν c`.
+-/
 theorem vol_valSet [MeasurableSpace k] [BorelSpace k] (ν : Measure k) (hν : IsUnitVol ν) (a : k) (c : kˣ) :
     ν {y : k | valuation k (y - a) ≤ valuation k (c : k)} = ENNReal.ofReal (nabs k c) := by
   haveI := hν.1
@@ -48,6 +66,9 @@ theorem vol_valSet [MeasurableSpace k] [BorelSpace k] (ν : Measure k) (hν : Is
 
 variable {n r : ℕ}
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `only [ballM, Set.mem_setOf_eq]`. Conclude with `⟨fun h i _ l _ => h i l, fun h i l => h i (Set.mem_univ _) l (Set.mem_univ _)⟩`.
+-/
 theorem ballM_eq_pi (c : kˣ) (x₀ : Matrix (Fin n) (Fin r) k) :
     (ballM c x₀ : Set (Matrix (Fin n) (Fin r) k)) =
       (Set.univ.pi fun i => Set.univ.pi fun l => {y : k | valuation k (y - x₀ i l) ≤ valuation k (c : k)} :
@@ -56,11 +77,19 @@ theorem ballM_eq_pi (c : kˣ) (x₀ : Matrix (Fin n) (Fin r) k) :
   simp only [ballM, Set.mem_setOf_eq]
   exact ⟨fun h i _ l _ => h i l, fun h i l => h i (Set.mem_univ _) l (Set.mem_univ _)⟩
 
+/- English proof (translation)
+Rewrite using `[ballM_eq_pi]`. Conclude with `MeasurableSet.univ_pi fun i => MeasurableSet.univ_pi fun l => (isOpen_valSet _ c).measurableSet`.
+-/
 theorem measurableSet_ballM [MeasurableSpace k] [BorelSpace k] (c : kˣ) (x₀ : Matrix (Fin n) (Fin r) k) :
     MeasurableSet (ballM c x₀) := by
   rw [ballM_eq_pi]
   exact MeasurableSet.univ_pi fun i => MeasurableSet.univ_pi fun l => (isOpen_valSet _ c).measurableSet
 
+/- English proof (translation)
+Use `haveI := hν.1`. Use `haveI := vol_valSet_lemma (k := k)`. Establish `h1 : (Measure.pi fun _ : Fin n => Measure.pi fun _ : Fin r => ν) (Set.univ.pi fun i => Set.univ.pi fun l => {y : k | valuation k (y - x₀ i l) ≤ valuation k (c : k)}) = ∏ _i : Fin n, ∏ _l : Fin r, ENNReal.ofReal (nabs k c)`. Rewrite using `[Measure.pi_pi]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Measure.pi_pi]`. Conclude with `Finset.prod_congr rfl fun l _ => vol_valSet ν hν _ c`. Rewrite using `[← h1, ballM_eq_pi]`. Both sides reduce to the same expression.
+-/
 theorem volM_ballM [MeasurableSpace k] [BorelSpace k] (ν : Measure k) (hν : IsUnitVol ν) (c : kˣ)
     (x₀ : Matrix (Fin n) (Fin r) k) :
     volM ν (Fin n) (Fin r) (ballM c x₀) = ∏ _i : Fin n, ∏ _l : Fin r, ENNReal.ofReal (nabs k c) := by
@@ -76,6 +105,11 @@ theorem volM_ballM [MeasurableSpace k] [BorelSpace k] (ν : Measure k) (hν : Is
   rw [← h1, ballM_eq_pi]
   rfl
 
+/- English proof (translation)
+Rewrite using `[volM_ballM ν hν c x₀, ENNReal.toReal_prod]`. Use `Finset.prod_ne_zero_iff.2 fun i _ => ?_` and prove the remaining obligations. Rewrite using `[ENNReal.toReal_prod]`. Use `Finset.prod_ne_zero_iff.2 fun l _ => ?_` and prove the remaining obligations. Rewrite using `[ENNReal.toReal_ofReal (GlobalTheory.SplitWeil.nabs_pos k c).le]`.
+
+Conclude with `(GlobalTheory.SplitWeil.nabs_pos k c).ne'`.
+-/
 theorem volM_ballM_ne_zero [MeasurableSpace k] [BorelSpace k] (ν : Measure k) (hν : IsUnitVol ν) (c : kˣ)
     (x₀ : Matrix (Fin n) (Fin r) k) : (volM ν (Fin n) (Fin r) (ballM c x₀)).toReal ≠ 0 := by
   rw [volM_ballM ν hν c x₀, ENNReal.toReal_prod]
@@ -85,17 +119,26 @@ theorem volM_ballM_ne_zero [MeasurableSpace k] [BorelSpace k] (ν : Measure k) (
   rw [ENNReal.toReal_ofReal (GlobalTheory.SplitWeil.nabs_pos k c).le]
   exact (GlobalTheory.SplitWeil.nabs_pos k c).ne'
 
+/- English proof (translation)
+Rewrite using `[volM_ballM ν hν, volM_ballM ν hν]`.
+-/
 theorem volM_ballM_eq [MeasurableSpace k] [BorelSpace k] (ν : Measure k) (hν : IsUnitVol ν) (c : kˣ)
     (x₀ x₁ : Matrix (Fin n) (Fin r) k) :
     volM ν (Fin n) (Fin r) (ballM c x₀) = volM ν (Fin n) (Fin r) (ballM c x₁) := by
   rw [volM_ballM ν hν, volM_ballM ν hν]
 
+/- English proof (translation)
+Rewrite using `[integral_indicator_const _ (measurableSet_ballM c x₀)]`. Simplify using `[Measure.real]`.
+-/
 theorem integral_ind [MeasurableSpace k] [BorelSpace k] (ν : Measure k) (c : kˣ) (x₀ : Matrix (Fin n) (Fin r) k) :
     ∫ x, (ballM c x₀).indicator (fun _ => (1 : ℂ)) x ∂volM ν (Fin n) (Fin r) =
       ((volM ν (Fin n) (Fin r) (ballM c x₀)).toReal : ℂ) := by
   rw [integral_indicator_const _ (measurableSet_ballM c x₀)]
   simp [Measure.real]
 
+/- English proof (translation)
+Establish `hfin : volM ν (Fin n) (Fin r) (ballM c x₀) ≠ ⊤`. Introduce `h`. Conclude with `volM_ballM_ne_zero ν hν c x₀ (by rw [h]; rfl)`. Conclude with `(integrable_indicator_iff (measurableSet_ballM c x₀)).2 (integrableOn_const hfin)`.
+-/
 theorem integrable_ind [MeasurableSpace k] [BorelSpace k] (ν : Measure k) (hν : IsUnitVol ν) (c : kˣ)
     (x₀ : Matrix (Fin n) (Fin r) k) :
     Integrable ((ballM c x₀).indicator (fun _ => (1 : ℂ))) (volM ν (Fin n) (Fin r)) := by
@@ -110,15 +153,28 @@ namespace PositivityTheory.Rg.Ming.GermX
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Introduce `_ hx i l` and use `(hx i l).trans hle`.
+-/
 theorem ballM_mono {n r : ℕ} {c c' : kˣ} (hle : valuation k (c : k) ≤ valuation k (c' : k))
     {x₀ : Matrix (Fin n) (Fin r) k} : ballM c x₀ ⊆ ballM c' x₀ :=
   fun _ hx i l => (hx i l).trans hle
 
+/- English proof (translation)
+Take `⟨H, rfl⟩` from `hh`. Conclude with `(H.val i j).2`.
+-/
 theorem KO_entry {N : ℕ} {h : GL (Fin N) k} (hh : h ∈ KO k (Fin N)) (i j : Fin N) :
     valuation k (h.val i j) ≤ 1 := by
   obtain ⟨H, rfl⟩ := hh
   exact (H.val i j).2
 
+/- English proof (translation)
+Take `⟨g, rfl⟩` from `hh`. Establish `h1 : valuation k ((Matrix.GeneralLinearGroup.det g : (𝒪[k])ˣ) : 𝒪[k]) ≤ 1` using `((Matrix.GeneralLinearGroup.det g : (𝒪[k])ˣ) : 𝒪[k]).2`. Establish `h3 : valuation k ((Matrix.GeneralLinearGroup.det g : (𝒪[k])ˣ) : 𝒪[k]) * valuation k (((Matrix.GeneralLinearGroup.det g)⁻¹ : (𝒪[k])ˣ) : 𝒪[k]) = 1`. Rewrite using `[← map_mul, ← Subring.coe_mul, Units.mul_inv]`. Simplify using the standard rewrite rules.
+
+Establish `h4 : ((Matrix.GeneralLinearGroup.det (Matrix.GeneralLinearGroup.map (algebraMap 𝒪[k] k) g) : kˣ) : k) = ((Matrix.GeneralLinearGroup.det g : (𝒪[k])ˣ) : 𝒪[k])`. Simplify using `only [Matrix.GeneralLinearGroup.map, Matrix.GeneralLinearGroup.val_det_apply]`. Conclude with `(RingHom.map_det (algebraMap 𝒪[k] k) g.val).symm`. Rewrite using `[h4]`. Use `le_antisymm h1 ?_` and prove the remaining obligations.
+
+Combine the equalities or inequalities in the displayed calculation. Conclude with `(((Matrix.GeneralLinearGroup.det g)⁻¹ : (𝒪[k])ˣ) : 𝒪[k]).2`. Use `_ = _ := mul_one _`.
+-/
 theorem KO_det {N : ℕ} {h : GL (Fin N) k} (hh : h ∈ KO k (Fin N)) :
     valuation k ((Matrix.GeneralLinearGroup.det h : kˣ) : k) = 1 := by
   obtain ⟨g, rfl⟩ := hh
@@ -140,6 +196,13 @@ theorem KO_det {N : ℕ} {h : GL (Fin N) k} (hh : h ∈ KO k (Fin N)) :
       exact (((Matrix.GeneralLinearGroup.det g)⁻¹ : (𝒪[k])ˣ) : 𝒪[k]).2
     _ = _ := mul_one _
 
+/- English proof (translation)
+Introduce `i j`. Establish `hinv : h⁻¹ ∈ KO k (Fin N)` using `inv_mem hh`. Establish `key : (h⁻¹).val - 1 = (h⁻¹).val * (1 - h.val)`. Rewrite using `[Matrix.mul_sub, Matrix.mul_one, Units.inv_mul]`. Establish `e : (h⁻¹).val i j - (1 : Matrix (Fin N) (Fin N) k) i j = ((h⁻¹).val * (1 - h.val)) i j`.
+
+Rewrite using `[← key]`. Both sides reduce to the same expression. Rewrite using `[e, Matrix.mul_apply]`. Use `Valuation.map_sum_le _ fun l _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`.
+
+Establish `hb : valuation k ((1 - h.val) l j) ≤ valuation k (c : k)`. Rewrite using `[Matrix.sub_apply, Valuation.map_sub_swap]`. Conclude with `hc l j`. Apply the tactic sequence `exact (mul_le_mul' (KO_entry hinv i l) hb).trans_eq (one_mul _)`.
+-/
 theorem inv_close {N : ℕ} {h : GL (Fin N) k} (hh : h ∈ KO k (Fin N)) {c : kˣ}
     (hc : h.val ∈ ballM c (1 : Matrix (Fin N) (Fin N) k)) : (h⁻¹).val ∈ ballM c (1 : Matrix (Fin N) (Fin N) k) := by
   intro i j
@@ -157,6 +220,29 @@ theorem inv_close {N : ℕ} {h : GL (Fin N) k} (hh : h ∈ KO k (Fin N)) {c : k�
     exact hc l j
   exact (mul_le_mul' (KO_entry hinv i l) hb).trans_eq (one_mul _)
 
+/- English proof (translation)
+Use `set e := GlobalTheory.GodementJacquet.eMat k r t with he_def`. Use `set D : Matrix (Fin (r + t)) (Fin (r + t)) k := (x - e) * e.transpose with hD`. Establish `he01 : ∀ i j, valuation k (e i j) ≤ 1`. Introduce `i j`. Simplify using `only [he_def, GlobalTheory.GodementJacquet.eMat, Matrix.of_apply]`.
+
+Apply the tactic sequence `split_ifs <;> simp`. Establish `hDc : ∀ i j, valuation k (D i j) ≤ valuation k (c : k)`. Introduce `i j`. Rewrite using `[hD, Matrix.mul_apply]`. Use `Valuation.map_sum_le _ fun l _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_mul, Matrix.sub_apply, Matrix.transpose_apply]`. Conclude with `(mul_le_mul' (hx i l) (he01 j l)).trans_eq (mul_one _)`. Establish `hD1 : ∀ i j, valuation k (D i j) ≤ 1` using `fun i j => (hDc i j).trans hc.le`. Establish `heTe : e.transpose * e = 1`. Use extensionality with `j j'`.
+
+Rewrite using `[Matrix.mul_apply, Matrix.one_apply]`. Simplify using `only [Matrix.transpose_apply, he_def, GlobalTheory.GodementJacquet.eMat, Matrix.of_apply]`. Rewrite using `[Finset.sum_eq_single (Fin.castAdd t j)]`. Simplify using `[Fin.ext_iff]`. Introduce `b _ hb`.
+
+Establish `hbj : (b : ℕ) ≠ j` using `fun h => hb (Fin.ext h)`. Simplify using `[hbj]`. Simplify using the standard rewrite rules. Set `D' : Matrix (Fin (r + t)) (Fin (r + t)) 𝒪[k]` to `fun i j => ⟨D i j, hD1 i j⟩`. Set `M : Matrix (Fin (r + t)) (Fin (r + t)) 𝒪[k]` to `1 + D'`.
+
+Establish `hres : M.map (IsLocalRing.residue 𝒪[k]) = 1`. Use extensionality with `i j`. Simplify using `only [M, Matrix.map_apply, Matrix.add_apply, map_add]`. Establish `h0 : IsLocalRing.residue 𝒪[k] (D' i j) = 0`. Rewrite using `[IsLocalRing.residue_eq_zero_iff, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, Valuation.Integer.not_isUnit_iff_valuation_lt_one]`.
+
+Conclude with `(hDc i j).trans_lt hc`. Rewrite using `[h0, add_zero]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using the standard rewrite rules.
+
+Simplify using `[Matrix.one_apply_ne hij]`. Establish `hdet : IsUnit M.det`. Apply `isUnit_of_map_unit (IsLocalRing.residue 𝒪[k])` to reduce the goal to its premises. Rewrite using `[RingHom.map_det, RingHom.mapMatrix_apply, hres, Matrix.det_one]`. Conclude with `isUnit_one`.
+
+Set `g : GL (Fin (r + t)) 𝒪[k]` to `((Matrix.isUnit_iff_isUnit_det M).2 hdet).unit`. Establish `hgv : (Matrix.GeneralLinearGroup.map (algebraMap 𝒪[k] k) g).val = 1 + D`. Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `algebraMap 𝒪[k] k ((1 + D') i j) = (1 + D) i j`. Rewrite using `[Matrix.add_apply, Matrix.add_apply, map_add]`.
+
+Use `congr 1`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Matrix.one_apply_ne hij]`.
+
+Use `⟨Matrix.GeneralLinearGroup.map (algebraMap 𝒪[k] k) g, ⟨g, rfl⟩, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hgv]`. Introduce `i j`. Simplify `hDc i j` using `[Matrix.add_apply]`. Rewrite using `[hgv, Matrix.add_mul, Matrix.one_mul, hD, Matrix.mul_assoc, heTe, Matrix.mul_one, add_sub_cancel]`.
+-/
 theorem transport {r t : ℕ} {c : kˣ} (hc : valuation k (c : k) < 1) {x : Matrix (Fin (r + t)) (Fin r) k}
     (hx : x ∈ ballM c (GlobalTheory.GodementJacquet.eMat k r t)) :
     ∃ h : GL (Fin (r + t)) k, h ∈ KO k (Fin (r + t)) ∧ h.val ∈ ballM c (1 : Matrix (Fin (r + t)) (Fin (r + t)) k) ∧
@@ -218,6 +304,15 @@ theorem transport {r t : ℕ} {c : kˣ} (hc : valuation k (c : k) < 1) {x : Matr
     simpa [Matrix.add_apply] using hDc i j
   · rw [hgv, Matrix.add_mul, Matrix.one_mul, hD, Matrix.mul_assoc, heTe, Matrix.mul_one, add_sub_cancel]
 
+/- English proof (translation)
+Establish `hemb` using `Units.isEmbedding_embedProduct (M := Matrix (Fin N) (Fin N) k)`. Rewrite `hS` using `[hemb.isInducing.nhds_eq_comap, Filter.mem_comap]`. Take `⟨t, ht, hts⟩` from `hS`. Rewrite `ht` using `[map_one]`. Take `⟨U, hU, V, hV, hUV⟩` from `mem_nhds_prod_iff.1 ht`.
+
+Establish `hV' : MulOpposite.op ⁻¹' V ∈ 𝓝 (1 : Matrix (Fin N) (Fin N) k)` using `MulOpposite.continuous_op.continuousAt hV`. Take `⟨c₁, hc₁, hb₁⟩` from `(hb k N N).2.1 1 U hU`. Take `⟨c₂, hc₂, hb₂⟩` from `(hb k N N).2.1 1 _ hV'`. Establish `fin : ∀ c : kˣ, valuation k (c : k) < 1 → valuation k (c : k) ≤ valuation k (c₁ : k) → valuation k (c : k) ≤ valuation k (c₂ : k) → ∃ c : kˣ, valuation k (c : k) < 1 ∧ ∀ h ∈ KO k (Fin N), h.val ∈ ballM c (1 : Matrix (Fin N) (Fin N) k) → h ∈ S`. Introduce `c hc h1 h2`.
+
+Use `⟨c, hc, fun h hh hx => hts ?_⟩` and prove the remaining obligations. Use `show Units.embedProduct _ h ∈ t`. Rewrite using `[Units.embedProduct_apply]`. Conclude with `hUV ⟨hb₁ (ballM_mono h1 hx), hb₂ (ballM_mono h2 (inv_close hh hx))⟩`. Break down `le_total (valuation k (c₁ : k)) (valuation k (c₂ : k)) with h12 | h12` into its components or cases.
+
+Conclude with `fin c₁ hc₁ le_rfl h12`. Conclude with `fin c₂ hc₂ h12 le_rfl`.
+-/
 theorem nbhd (hb : BallSt) {N : ℕ} (S : Set (GL (Fin N) k)) (hS : S ∈ 𝓝 (1 : GL (Fin N) k)) :
     ∃ c : kˣ, valuation k (c : k) < 1 ∧ ∀ h ∈ KO k (Fin N),
       h.val ∈ ballM c (1 : Matrix (Fin N) (Fin N) k) → h ∈ S := by
@@ -249,6 +344,11 @@ namespace PositivityTheory.Rg.Ming.GermX
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
   [MeasurableSpace k] [BorelSpace k]
 
+/- English proof (translation)
+Establish `hinv : valuation k ((u⁻¹ : kˣ) : k) = 1`. Rewrite using `[Units.val_inv_eq_inv_val, map_inv₀, hu, inv_one]`. Apply `le_antisymm` to reduce the goal to its premises. Use `GlobalTheory.SplitWeil.nabs_le_of_valuation_le (k := k) (x := u) (y := 1) (by simp [hu])` as an intermediate fact. Simplify `this` using `[GlobalTheory.SplitWeil.nabs_one]`.
+
+Use `GlobalTheory.SplitWeil.nabs_le_of_valuation_le (k := k) (x := 1) (y := u) (by simp [hu])` as an intermediate fact. Simplify `this` using `[GlobalTheory.SplitWeil.nabs_one]`.
+-/
 theorem nabs_eq_one {u : kˣ} (hu : valuation k (u : k) = 1) : nabs k u = 1 := by
   have hinv : valuation k ((u⁻¹ : kˣ) : k) = 1 := by
     rw [Units.val_inv_eq_inv_val, map_inv₀, hu, inv_one]
@@ -259,6 +359,9 @@ theorem nabs_eq_one {u : kˣ} (hu : valuation k (u : k) = 1) : nabs k u = 1 := b
     simpa [GlobalTheory.SplitWeil.nabs_one] using this
 
 omit [MeasurableSpace k] [BorelSpace k] in
+/- English proof (translation)
+Simplify using `[om, hμ, hn, GlobalTheory.SplitWeil.Model.nabs_one]`.
+-/
 theorem om_one_left {N M : ℕ} (μ : kˣ →* ℂˣ) (h : GL (Fin N) k)
     (hμ : μ (Matrix.GeneralLinearGroup.det h) = 1) (hn : nabs k (Matrix.GeneralLinearGroup.det h) = 1)
     (Φ : Matrix (Fin N) (Fin M) k → ℂ) (x : Matrix (Fin N) (Fin M) k) :
@@ -266,9 +369,23 @@ theorem om_one_left {N M : ℕ} (μ : kˣ →* ℂˣ) (h : GL (Fin N) k)
   simp [om, hμ, hn, GlobalTheory.SplitWeil.Model.nabs_one]
 
 omit [MeasurableSpace k] [BorelSpace k] in
+/- English proof (translation)
+Introduce `i l` and use `by simp`.
+-/
 theorem mem_ballM_self {n r : ℕ} (c : kˣ) (x : Matrix (Fin n) (Fin r) k) : x ∈ ballM c x :=
   fun i l => by simp
 
+/- English proof (translation)
+Take `⟨h, hK, hb1, hhe⟩` from `transport hc hx`. Establish `hmem` using `hcS h hK hb1`. Establish `hw : π h w = w` using `hmem.1`. Establish `hμh : μ (Matrix.GeneralLinearGroup.det h) = 1` using `hmem.2`. Establish `hn : nabs k (Matrix.GeneralLinearGroup.det h) = 1` using `nabs_eq_one (KO_det hK)`.
+
+Establish `hx' : (h⁻¹ : GL (Fin (r + t)) k).val * x = GlobalTheory.GodementJacquet.eMat k r t`. Rewrite using `[← hhe, ← Matrix.mul_assoc, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mul]`. Establish `hom : (I c' x).1 = om μ (1 : GL (Fin r) k) h (I c' (GlobalTheory.GodementJacquet.eMat k r t)).1`. Use function extensionality and compare the values at `y`. Rewrite using `[om_one_left μ h hμh hn, hI, hI]`.
+
+Establish `hiff : (h⁻¹ : GL (Fin (r + t)) k).val * y ∈ ballM c' (GlobalTheory.GodementJacquet.eMat k r t) ↔ y ∈ ballM c' x`. Establish `key` using `((hb k (r + t) r).1 c' x).2.2.2.2 h⁻¹ (inv_mem hK) 1 (one_mem _) y`. Rewrite `key` using `[Units.val_one, Matrix.mul_one, Matrix.mul_one, hx']`. Conclude with `key`. Distinguish the cases in `hy : y ∈ ballM c' x`.
+
+Rewrite using `[Set.indicator_of_mem hy, Set.indicator_of_mem (hiff.2 hy)]`. Establish `hy' : (h⁻¹ : GL (Fin (r + t)) k).val * y ∉ ballM c' (GlobalTheory.GodementJacquet.eMat k r t)` using `fun h' => hy (hiff.1 h')`. Rewrite using `[Set.indicator_of_notMem hy, Set.indicator_of_notMem hy']`. Establish `key` using `hE 1 h (I c' (GlobalTheory.GodementJacquet.eMat k r t)) (I c' x) hom w`. Rewrite `key` using `[hw]`.
+
+Simplify using `using key`.
+-/
 theorem inv_ball (hb : BallSt) {r t : ℕ} (μ : kˣ →* ℂˣ) {V W : Type} [AddCommGroup V] [Module ℂ V]
     [AddCommGroup W] [Module ℂ W] (σ : Representation ℂ (GL (Fin r) k) V)
     (π : Representation ℂ (GL (Fin (r + t)) k) W)
@@ -304,6 +421,15 @@ theorem inv_ball (hb : BallSt) {r t : ℕ} (μ : kˣ →* ℂˣ) {V W : Type} [A
   rw [hw] at key
   simpa using key
 
+/- English proof (translation)
+Use `haveI := hν.1`. Establish `hΨ : Ψ = ∑ x ∈ S, Ψ.1 x • I c' x`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[Submodule.coe_sum]`. Use `conv_lhs => rw [hsum]`.
+
+Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[Submodule.coe_smul, hI]`. Establish `hB : B Ψ w = (∑ x ∈ S, Ψ.1 x) • B (I c' x₀) w` using `by conv_lhs => rw [hΨ]`. Rewrite using `[map_sum, LinearMap.sum_apply, Finset.sum_smul]`. Use `Finset.sum_congr rfl fun x hx => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_smul, LinearMap.smul_apply, hA x (hS x hx)]`. Establish `hfun : ∀ y, Ψ.1 y = ∑ x ∈ S, Ψ.1 x • (ballM c' x).indicator (fun _ => (1 : ℂ)) y`. Introduce `y`. Use `conv_lhs => rw [hsum]`. Simplify using `only [Finset.sum_apply, Pi.smul_apply]`.
+
+Establish `hint : ∫ y, Ψ.1 y ∂volM ν (Fin n) (Fin r) = (∑ x ∈ S, Ψ.1 x) * ((volM ν (Fin n) (Fin r) (ballM c' x₀)).toReal : ℂ)`. Rewrite using `[integral_congr_ae (Filter.Eventually.of_forall hfun), integral_finset_sum S (f := fun x a => Ψ.1 x • (ballM c' x).indicator (fun _ => (1 : ℂ)) a) (fun x _ => (integrable_ind ν hν c' x).smul (Ψ.1 x)), Finset.sum_mul]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[integral_smul, integral_ind, volM_ballM_eq ν hν c' x x₀, smul_eq_mul]`. Rewrite using `[hB, hint, smul_smul, mul_comm (∑ x ∈ S, Ψ.1 x)]`.
+-/
 theorem decomp_smul (ν : Measure k) (hν : IsUnitVol ν) {n r : ℕ} {V W : Type} [AddCommGroup V] [Module ℂ V]
     [AddCommGroup W] [Module ℂ W] (B : SB (Matrix (Fin n) (Fin r) k) →ₗ[ℂ] W →ₗ[ℂ] V) (w : W)
     (I : kˣ → Matrix (Fin n) (Fin r) k → SB (Matrix (Fin n) (Fin r) k))
@@ -344,6 +470,27 @@ namespace PositivityTheory.Rg.Ming
 
 open PositivityTheory.Rg.Ming.GermX
 
+/- English proof (translation)
+Introduce `k _ _ _ _ _ _ ν hν r t μ V _ _ W _ _ σ π B hμ hπ hE w`. Use `set e := GlobalTheory.GodementJacquet.eMat k r t with he`. Establish `hdet : Continuous (Matrix.GeneralLinearGroup.det : GL (Fin (r + t)) k → kˣ)`. Rewrite using `[Units.continuous_iff]`. Prove the components needed by the constructor for the conclusion.
+
+Conclude with `Units.continuous_val.matrix_det`. Conclude with `Units.continuous_coe_inv.matrix_det`. Establish `hopen : IsOpen {h : GL (Fin (r + t)) k | μ (Matrix.GeneralLinearGroup.det h) = 1}`. Establish `h0` using `hμ.preimage hdet`. Use `h0 using 1` and compare the differences between its conclusion and the goal.
+
+Use extensionality with `h`. Simplify using `[MonoidHom.mem_ker]`. Establish `hS : ({h : GL (Fin (r + t)) k | π h w = w} ∩ {h | μ (Matrix.GeneralLinearGroup.det h) = 1}) ∈ 𝓝 (1 : GL (Fin (r + t)) k)` using `Filter.inter_mem ((hπ w).mem_nhds (by simp)) (hopen.mem_nhds (by simp))`. Take `⟨c, hc, hcS⟩` from `nbhd hb _ hS`. Set `I : kˣ → Matrix (Fin (r + t)) (Fin r) k → SB (Matrix (Fin (r + t)) (Fin r) k)` to `fun c x => ⟨(ballM c x).indicator (fun _ => (1 : ℂ)), ((hb k (r + t) r).1 c x).2.2.1⟩`.
+
+Establish `hI : ∀ c x, (I c x).1 = (ballM c x).indicator (fun _ => (1 : ℂ))` using `fun _ _ => rfl`. Establish `hmin : ∀ a b : kˣ, ∃ d : kˣ, valuation k (d : k) ≤ valuation k (a : k) ∧ valuation k (d : k) ≤ valuation k (b : k)`. Introduce `a b`. Break down `le_total (valuation k (a : k)) (valuation k (b : k)) with hab | hab` into its components or cases. Conclude with `⟨a, le_rfl, hab⟩`.
+
+Conclude with `⟨b, hab, le_rfl⟩`. Use `⟨(((volM ν (Fin (r + t)) (Fin r) (ballM c e)).toReal : ℂ))⁻¹ • B (I c e) w, c, fun Φ hΦ => ?_⟩` and prove the remaining obligations. Take `⟨c₀, hc₀⟩` from `(hb k (r + t) r).2.2 Φ`. Take `⟨c₁, hc₁⟩` from `(hb k (r + t) r).2.2 (I c e)`. Take `⟨c', hc'a, hc'b⟩` from `hmin c₀ c₁`.
+
+Take `⟨S, hS1, hS2⟩` from `hc₀ c' hc'a`. Take `⟨S', hS1', hS2'⟩` from `hc₁ c' hc'b`. Establish `hA : ∀ x ∈ ballM c e, B (I c' x) w = B (I c' e) w` using `fun x hx => inv_ball hb μ σ π B hE w I hI hc hcS c' x hx`. Establish `hSR : ∀ x ∈ S, x ∈ ballM c e` using `fun x hx => hΦ x (hS1 x hx x (mem_ballM_self c' x)).2`. Establish `hSR' : ∀ x ∈ S', x ∈ ballM c e`.
+
+Introduce `x hx`. Establish `hne` using `(hS1' x hx x (mem_ballM_self c' x)).2`. Assume the negation of the conclusion as `hn`. Apply `hne` to reduce the goal to its premises. Rewrite using `[hI, Set.indicator_of_notMem hn]`.
+
+Establish `h1` using `decomp_smul ν hν B w I hI c' e (ballM c e) hA Φ S hSR hS2`. Establish `h2` using `decomp_smul ν hν B w I hI c' e (ballM c e) hA (I c e) S' hSR' hS2'`. Establish `h3 : ∫ y, (I c e).1 y ∂volM ν (Fin (r + t)) (Fin r) = ((volM ν (Fin (r + t)) (Fin r) (ballM c e)).toReal : ℂ)` using `integral_ind ν c e`. Rewrite `h2` using `[h3]`. Establish `hv' : ((volM ν (Fin (r + t)) (Fin r) (ballM c' e)).toReal : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 (volM_ballM_ne_zero ν hν c' e)`.
+
+Establish `hvc : ((volM ν (Fin (r + t)) (Fin r) (ballM c e)).toReal : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 (volM_ballM_ne_zero ν hν c e)`. Establish `hBce : B (I c e) w = (((volM ν (Fin (r + t)) (Fin r) (ballM c' e)).toReal : ℂ)⁻¹ * ((volM ν (Fin (r + t)) (Fin r) (ballM c e)).toReal : ℂ)) • B (I c' e) w`. Rewrite using `[mul_smul, ← h2, smul_smul, inv_mul_cancel₀ hv', one_smul]`. Establish `hBΦ : B Φ w = (((volM ν (Fin (r + t)) (Fin r) (ballM c' e)).toReal : ℂ)⁻¹ * ∫ y, Φ.1 y ∂volM ν (Fin (r + t)) (Fin r)) • B (I c' e) w`. Rewrite using `[mul_smul, ← h1, smul_smul, inv_mul_cancel₀ hv', one_smul]`.
+
+Rewrite using `[hBΦ, hBce, smul_smul, smul_smul]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem germ (hb : BallSt) : GermSt := by
   intro k _ _ _ _ _ _ ν hν r t μ V _ _ W _ _ σ π B hμ hπ hE w
   set e := GlobalTheory.GodementJacquet.eMat k r t with he

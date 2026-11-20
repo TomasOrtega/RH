@@ -9,6 +9,31 @@ open GlobalTheory.PRep GlobalTheory.SmGL ValuativeRel PositivityTheory.Lbc
 
 namespace GlobalTheory.CompanionTheory.Lbc
 
+/- English proof (translation)
+Introduce `k _ _ _ _ N h d hd J hJo hJc hJf hpos V _ _ π hπ t ht T hT v hv`. Use `set e := leviEmb k (stdBlocks d hd) with he`. Establish `hdom : ∀ r : ℕ, IsDominant k N J d hd (t ^ r)`. Introduce `r`. Proceed by induction on `r with`.
+
+Consider the case `zero => simpa using (isDominant_one_and_mul k N J h d hd).1`. Consider the case `succ r ih`. Rewrite using `[pow_succ]`. Conclude with `(isDominant_one_and_mul k N J h d hd).2 _ _ ih ht.1`. Establish `hecke : ∀ r : ℕ, IsHeckeOp π J (e (t ^ r)) (T ^ r)`.
+
+Introduce `r`. Proceed by induction on `r with`. Consider the case `zero`. Introduce `w l _`. Simplify using the standard rewrite rules.
+
+Consider the case `succ r ih`. Rewrite using `[pow_succ, pow_succ T]`. Conclude with `GlobalTheory.T.jacquet_fixed_first_condition k N h d hd J hJo hJc hJf hpos V π hπ _ _ (hdom r) ht.1 _ _ ih hT`. Establish `key : ∀ u ∈ twKer π (unipRad k (stdBlocks d hd)) 1, ∃ R : ℕ, ∀ r ≥ R, ∀ l : Module.Dual ℂ V, (∀ x ∈ J, l ∘ₗ π x = l) → l (π (e t ^ r) u) = 0`. Introduce `u hu`.
+
+Proceed by induction on `hu using Submodule.span_induction with`. Consider the case `mem u hu`. Take `⟨n, w, rfl⟩` from `hu`. Take `⟨R, hR⟩` from `GlobalTheory.T.strictly_dominant_contracts_unipotent k N h d hd J hJo hJc hJf hpos t ht (n : GL (Fin N) k) n.2`. Use `⟨R, fun r hr l hl => ?_⟩` and prove the remaining obligations.
+
+Take `⟨j, rfl⟩` from `Nat.exists_eq_add_of_le hr`. Establish `hmem : e t ^ (R + j) * (n : GL (Fin N) k) * (e t ^ (R + j))⁻¹ ∈ KN k N J d hd`. Use `(hdom j).1 _ hR` as an intermediate fact. Rewrite `this` using `[map_pow]`. Use `this using 1` and compare the differences between its conclusion and the goal.
+
+Rewrite using `[add_comm R j, pow_add]`. Use `group`. Both sides reduce to the same expression. Establish `hx` using `hl _ hmem.1`. Establish `hy` using `LinearMap.congr_fun hx (π (e t ^ (R + j)) w)`.
+
+Simplify using `only [LinearMap.comp_apply] at hy`. Establish `hz : π (e t ^ (R + j) * (n : GL (Fin N) k) * (e t ^ (R + j))⁻¹) (π (e t ^ (R + j)) w) = π (e t ^ (R + j)) (π (n : GL (Fin N) k) w)`. Rewrite using `[← Module.End.mul_apply, ← map_mul, ← Module.End.mul_apply, ← map_mul]`. Use `congr 2`. Use `group`.
+
+Rewrite `hy` using `[hz]`. Simplify using `only [MonoidHom.one_apply, Units.val_one, one_smul, map_sub, hy, sub_self]`. Consider the case `zero => exact ⟨0, fun r _ l _ => by simp⟩`. Consider the case `add a b _ _ ha hb`. Take `⟨A, hA⟩` from `ha`.
+
+Take `⟨B, hB⟩` from `hb`. Use `⟨max A B, fun r hr l hl => ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, map_add, hA r (le_trans (le_max_left _ _) hr) l hl, hB r (le_trans (le_max_right _ _) hr) l hl, add_zero]`. Consider the case `smul c a _ ha`. Take `⟨A, hA⟩` from `ha`.
+
+Use `⟨A, fun r hr l hl => ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, map_smul, hA r hr l hl, smul_zero]`. Take `⟨R, hR⟩` from `key _ ((Submodule.Quotient.mk_eq_zero _).1 hv)`. Use `⟨R, ?_⟩` and prove the remaining obligations. Establish `h0 : (((T ^ R) v : fixed π J) : V) = 0`.
+
+Use `GlobalTheory.T.fixed_vector_zero_of_dual _ J hJc V π hπ _ ((T ^ R) v).2 fun l hl => ?_` and prove the remaining obligations. Rewrite using `[← hecke R v l hl, map_pow]`. Conclude with `hR R le_rfl l hl`. Conclude with `Subtype.ext h0`.
+-/
 theorem heckeOp_nilpotent_on_ker :
     ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (N h : ℕ) (d : Fin h → ℕ) (hd : ∑ a, d a = N) (J : Subgroup (GL (Fin N) k)), IsOpen (J : Set (GL (Fin N) k)) → IsCompact (J : Set (GL (Fin N) k)) → HasIwahoriFact k N J d hd → (∀ a, 0 < d a) → ∀ (V : Type) [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL (Fin N) k) V), IsSmooth π → ∀ t : Levi k (Bl d), IsStrictlyDominant k N J d hd t → ∀ T : Module.End ℂ (fixed π J), IsHeckeOp π J (leviEmb k (stdBlocks d hd) t) T → ∀ v : fixed π J, (Submodule.Quotient.mk (v : V) : Jacquet π (unipRad k (stdBlocks d hd))) = 0 → ∃ r : ℕ, (T ^ r) v = 0 := by
   intro k _ _ _ _ N h d hd J hJo hJc hJf hpos V _ _ π hπ t ht T hT v hv

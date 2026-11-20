@@ -12,6 +12,9 @@ open GlobalTheory.Doubling (absE)
 
 namespace GlobalTheory.EisRestrict
 
+/- English proof (translation)
+Simplify using `only [hE, Formalism.UG.hform, Formalism.UG.cT, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, GlobalTheory.EisMidHt.firstColumn, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`.
+-/
 theorem hE_col0v_entry {F E : Type} [Field F] [Field E] [Algebra F E] (σ : E →ₐ[F] E) {n r : ℕ}
     (J : Matrix (Fin n) (Fin n) E) (A B : Matrix (Fin n) (Fin (r + 1)) E) :
     hE σ J (GlobalTheory.EisMidHt.firstColumn A) (GlobalTheory.EisMidHt.firstColumn B) = (Formalism.UG.cT (σ : E →+* E) A * J * B) 0 0 := by
@@ -19,6 +22,17 @@ theorem hE_col0v_entry {F E : Type} [Field F] [Field E] [Algebra F E] (σ : E �
     GlobalTheory.EisMidHt.firstColumn, Finset.sum_mul]
   rw [Finset.sum_comm]
 
+/- English proof (translation)
+Use `set x₀ := GlobalTheory.EisMidHt.firstColumn X`. Use `set y₀ := GlobalTheory.EisMidHt.firstColumn Y`. Establish `hyx : Formalism.UG.cT (σ : E →+* E) Y * J * X = 1` using `GlobalTheory.StdPar.yx hσ hJ hW`. Establish `hxy : hE σ J x₀ y₀ = 1` using `by rw [hE_col0v_entry, hW.xy]; simp`. Establish `hyx' : hE σ J y₀ x₀ = 1` using `by rw [hE_col0v_entry, hyx]; simp`.
+
+Establish `hxx : hE σ J x₀ x₀ = 0` using `by rw [hE_col0v_entry, hW.xx]; simp`. Establish `hyy : hE σ J y₀ y₀ = 0` using `by rw [hE_col0v_entry, hW.yy]; simp`. Set `φ` to `(hRight σ J x₀).prod (hRight σ J y₀)`. Establish `hker : LinearMap.ker φ = V0 σ J X Y`. Rewrite using `[LinearMap.ker_prod]`.
+
+Both sides reduce to the same expression. Establish `hsurj : LinearMap.range φ = ⊤`. Rewrite using `[LinearMap.range_eq_top]`. Introduce and unpack `⟨a, b⟩`. Use `⟨a • y₀ + b • x₀, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [φ, LinearMap.prod_apply, Pi.prod, map_add, map_smul, Prod.mk.injEq]`. Simplify using `only [hRight, LinearMap.coe_mk, AddHom.coe_mk, smul_eq_mul, Function.prod, Prod.smul_mk, Prod.mk_add_mk]`. Rewrite using `[hxy, hyx', hxx, hyy]`. Simplify using the standard rewrite rules. Establish `h` using `LinearMap.finrank_range_add_finrank_ker φ`.
+
+Rewrite `h` using `[hsurj, hker, finrank_top, Module.finrank_prod, Module.finrank_self, Module.finrank_fin_fun]`. Simplify using `only [dim]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem dim_add_two (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (n : ℕ) (J : Matrix (Fin n) (Fin n) E) (r : ℕ) (X Y : Matrix (Fin n) (Fin (r + 1)) E)
     (hσ : IsCMExt F E σ) (hJ : IsHermND σ J) (hW : IsWittFrame σ J X Y) :

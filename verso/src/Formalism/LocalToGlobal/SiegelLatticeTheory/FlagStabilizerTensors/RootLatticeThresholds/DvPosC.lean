@@ -10,12 +10,22 @@ namespace Formalism.MainNotions.S
 
 variable {n : ℕ} {ε : Fin n → Bool} {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
 
+/- English proof (translation)
+Establish `h1 : Continuous fun g : Formalism.REAL.UJ ε => σ (umat g) v` using `(hU.2.2 v).comp_continuous (Units.continuous_val.comp continuous_subtype_val) (fun g => g.2)`. Conclude with `continuous_const.inner h1`.
+-/
 theorem continuous_coefOn_of {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} (hU : IsURepOn (UJset ε) σ)
     (v w : H) : Continuous (coefOn (ε := ε) σ v w) := by
   have h1 : Continuous fun g : Formalism.REAL.UJ ε => σ (umat g) v :=
     (hU.2.2 v).comp_continuous (Units.continuous_val.comp continuous_subtype_val) (fun g => g.2)
   exact continuous_const.inner h1
 
+/- English proof (translation)
+Establish `hc : Continuous (coefOn (ε` using `ε) σ w w) := continuous_coefOn_of hU w w`. Establish `hf : Continuous fun g => ‖coefOn (ε` using `ε) σ w w g‖ ^ 2 := (continuous_norm.comp hc).pow 2`. Establish `h1 : coefOn (ε` using `ε) σ w w 1 = ⟪w, w⟫_ℂ := by show ⟪w, σ (umat (1 : Formalism.REAL.UJ ε)) w⟫_ℂ = ⟪w, w⟫_ℂ`. Establish `hu : umat (1 : Formalism.REAL.UJ ε) = 1` using `rfl`. Rewrite using `[hu, hU.1.1, ContinuousLinearMap.one_apply]`.
+
+Establish `hne : (1 : Formalism.REAL.UJ ε) ∈ Function.support fun g => ‖coefOn (ε` using `ε) σ w w g‖ ^ 2 := by`. Rewrite using `[Function.mem_support]`. Use `show ‖coefOn (ε := ε) σ w w 1‖ ^ 2 ≠ 0`. Rewrite using `[h1]`. Conclude with `pow_ne_zero 2 (norm_ne_zero_iff.2 (inner_self_ne_zero.2 hw))`.
+
+Establish `hopen : IsOpen (Function.support fun g => ‖coefOn (ε` using `ε) σ w w g‖ ^ 2) := isOpen_ne_fun hf continuous_const`. Rewrite using `[integral_pos_iff_support_of_nonneg (fun g => sq_nonneg _) hI]`. Conclude with `hopen.measure_pos μ ⟨1, hne⟩`.
+-/
 theorem integral_coefOn_sq_pos {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} (hU : IsURepOn (UJset ε) σ)
     {w : H} (hw : w ≠ 0) (μ : Measure (Formalism.REAL.UJ ε)) (hμ : μ.IsOpenPosMeasure)
     (hI : Integrable (fun g => ‖coefOn (ε := ε) σ w w g‖ ^ 2) μ) :
@@ -36,6 +46,9 @@ theorem integral_coefOn_sq_pos {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ]
   rw [integral_pos_iff_support_of_nonneg (fun g => sq_nonneg _) hI]
   exact hopen.measure_pos μ ⟨1, hne⟩
 
+/- English proof (translation)
+The claim follows from `div_pos (pow_pos (norm_pos_iff.2 hw) 4) (integral_coefOn_sq_pos hU hw μ hμ hI)`.
+-/
 theorem fdegOf_pos_of {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} (hU : IsURepOn (UJset ε) σ)
     {w : H} (hw : w ≠ 0) (μ : Measure (Formalism.REAL.UJ ε)) (hμ : μ.IsOpenPosMeasure)
     (hI : Integrable (fun g => ‖coefOn (ε := ε) σ w w g‖ ^ 2) μ) : 0 < fdegOf μ σ w :=
@@ -45,6 +58,11 @@ end Formalism.MainNotions.S
 
 namespace Formalism.L2.SG.Pf.MassDataX
 
+/- English proof (translation)
+Establish `hw : X.B.w v ≠ 0`. Introduce `h`. Establish `h1` using `(X.low v).1`. Rewrite `h1` using `[h, norm_zero]`. Conclude with `zero_ne_one h1`.
+
+Establish `hμ : (Formalism.REAL.muG (X.B.I.ε v)).IsOpenPosMeasure`. Unfold `Formalism.REAL.muG`. Use `infer_instance`. Conclude with `Formalism.MainNotions.S.fdegOf_pos_of (X.ds v).2.2.1 hw _ hμ ((X.ds v).2.2.2.2.1 (X.B.w v) (X.B.w v)).norm.integrable_sq`.
+-/
 theorem dvPosC_holds {D : Formalism.BasicNotions.D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D)
     (v : NumberField.InfinitePlace X.B.I.F) : 0 < X.dv v := by
   have hw : X.B.w v ≠ 0 := by

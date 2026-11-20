@@ -18,11 +18,17 @@ variable {D : D7} {u : D.what₂.Word} {Ch : ℕ → Type} {chOf : ∀ i, (D.mem
 
 def eX {k : ℕ} (l : DomWeight k) : ℝ := (Formalism.REAL.fockF (extremal ℂ k l) (extremal ℂ k l)).re
 
+/- English proof (translation)
+Establish `h` using `(Formalism.GradedWeylDivisibility.fockPos _ _ (Formalism.L2.Ker.lm_extremal_ne (K := ℂ) l)).1`. Rewrite `h` using `[Formalism.L2.Ker.nm_fockF_self (extremal ℂ k l), Complex.ofReal_re]`. Conclude with `h`.
+-/
 theorem eX_pos {k : ℕ} (l : DomWeight k) : 0 < eX l := by
   have h := (Formalism.GradedWeylDivisibility.fockPos _ _ (Formalism.L2.Ker.lm_extremal_ne (K := ℂ) l)).1
   rw [Formalism.L2.Ker.nm_fockF_self (extremal ℂ k l), Complex.ofReal_re] at h
   exact h
 
+/- English proof (translation)
+Unfold `normFock eX`. Rewrite using `[Formalism.L2.Ker.nm_fockF_self (extremal ℂ k l), Complex.div_ofReal_re, Complex.ofReal_re]`.
+-/
 theorem normFock_re {k : ℕ} (l : DomWeight k) (f : MvPolynomial (Fin k × Fin k) ℂ) :
     (normFock l f f).re = (Formalism.REAL.fockF f f).re / eX l := by
   unfold normFock eX
@@ -31,11 +37,25 @@ theorem normFock_re {k : ℕ} (l : DomWeight k) (f : MvPolynomial (Fin k × Fin 
 def cF (D : D7) (u : D.what₂.Word) (τ : D.what₂.Tau) : ℝ :=
   (D.fm u).beOn τ * Real.sqrt (eX ((D.fm u).sg τ) / eX ((D.fm u).lam D.R.m τ))
 
+/- English proof (translation)
+Unfold `cF`. Rewrite using `[mul_pow, Real.sq_sqrt (div_nonneg (eX_pos _).le (eX_pos _).le)]`.
+-/
 theorem cF_sq (τ : D.what₂.Tau) :
     cF D u τ ^ 2 = (D.fm u).beOn τ ^ 2 * (eX ((D.fm u).sg τ) / eX ((D.fm u).lam D.R.m τ)) := by
   unfold cF
   rw [mul_pow, Real.sq_sqrt (div_nonneg (eX_pos _).le (eX_pos _).le)]
 
+/- English proof (translation)
+Establish `hI` using `interlaceTr D u (sg_interlace Tf.valP) τ`. Establish `hI'` using `(Formalism.L2.Ker.interlace_iff _ _ (Nm_succ D.R)).1 hI`. Establish `hS` using `Formalism.L2.Ker.sameShiftTr D u τ hI`. Establish `hf' : f ∈ nablaSq ℂ _ (lamTr D u τ)`. Rewrite using `[Formalism.L2.Col.nablaSq_eq_delSq]`.
+
+Unfold `lamTr`. Rewrite using `[delSq_wSh]`. Conclude with `hf`. Establish `h` using `Formalism.L2.Ker.nm_le _ _ _ hI' hS f hf'`. Establish `hb : (D.fm u).beOn τ ^ 2 = ((Formalism.L2.Col.Br.cBr (Nm_succ D.R).symm (lamTr D u τ) (sgTr D u τ) : ℤ) : ℝ) ^ 2 * Formalism.L2.Col.Br.kapBr ℝ (Nm_succ D.R).symm (lamTr D u τ) (sgTr D u τ)`.
+
+Rewrite using `[beOn_closedS Tf hB τ]`. Unfold `Formalism.L2.Ker.beOnVal`. Rewrite using `[mul_pow, sq_abs, Real.sq_sqrt (Formalism.L2.Ker.nm_kapR_pos _ _ _ hI' hS).le]`. Establish `eS : eX (sgTr D u τ) = eX ((D.fm u).sg τ)` using `by unfold eX sgTr; rw [extremal_wSh]`. Establish `eL : eX (lamTr D u τ) = eX ((D.fm u).lam D.R.m τ)` using `by unfold eX lamTr; rw [extremal_wSh]`.
+
+Rewrite `h` using `[normFock_re, normFock_re, eS, eL, ← hb]`. Establish `hs` using `eX_pos ((D.fm u).sg τ)`. Establish `hl` using `eX_pos ((D.fm u).lam D.R.m τ)`. Rewrite `h` using `[div_le_iff₀ hs]`. Rewrite using `[cF_sq]`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem factor_le (Tf : FormsTiedSym D u Ch chOf) (hB : Formalism.L2.Ker.BeOnTie D u) (τ : D.what₂.Tau)
     (f : MvPolynomial (Fin (D.R.N D.R.m) × Fin (D.R.N D.R.m)) ℂ) (hf : f ∈ delSq ℂ _ ((D.fm u).lam D.R.m τ)) :
     (Formalism.REAL.fockF (Formalism.L2.Ker.brOne ℂ (Nm_succ D.R).symm (lamTr D u τ) (sgTr D u τ) f)
@@ -61,6 +81,13 @@ theorem factor_le (Tf : FormsTiedSym D u Ch chOf) (hB : Formalism.L2.Ker.BeOnTie
   calc _ ≤ (D.fm u).beOn τ ^ 2 * ((Formalism.REAL.fockF f f).re / eX ((D.fm u).lam D.R.m τ)) * eX ((D.fm u).sg τ) := h
     _ = _ := by field_simp
 
+/- English proof (translation)
+Establish `key` using `hT D.what₂.Tau (D.R.N D.R.m) (D.R.N D.R.m - 1) (fun τ => delSq ℂ _ ((D.fm u).lam D.R.m τ)) (fun τ => Formalism.L2.Ker.brOne ℂ (Nm_succ D.R).symm (lamTr D u τ) (sgTr D u τ)) (cF D u) (fun τ f hf => factor_le Tf hB τ f hf) P hP`. Establish `eprod : ∀ {k : ℕ} (l : D.what₂.Tau → DomWeight k), ∏ τ, Formalism.REAL.fockF (extremal ℂ k (l τ)) (extremal ℂ k (l τ)) = ((∏ τ, eX (l τ) : ℝ) : ℂ)`. Introduce `k l`. Rewrite using `[Complex.ofReal_prod]`. Conclude with `Finset.prod_congr rfl fun τ _ => Formalism.L2.Ker.nm_fockF_self _`.
+
+Unfold `Formalism.L2.Forms.nfAll`. Rewrite using `[eprod, eprod, Complex.div_ofReal_re, Complex.div_ofReal_re]`. Establish `hs : 0 < ∏ τ, eX ((D.fm u).sg τ)` using `Finset.prod_pos fun τ _ => eX_pos _`. Establish `hl : 0 < ∏ τ, eX ((D.fm u).lam D.R.m τ)` using `Finset.prod_pos fun τ _ => eX_pos _`. Establish `hc : ∏ τ, cF D u τ ^ 2 = (∏ τ, (D.fm u).beOn τ ^ 2) * ((∏ τ, eX ((D.fm u).sg τ)) / ∏ τ, eX ((D.fm u).lam D.R.m τ))`.
+
+Rewrite using `[← Finset.prod_div_distrib, ← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_congr rfl fun τ _ => cF_sq τ`. Rewrite `key` using `[hc]`. Rewrite using `[div_le_iff₀ hs]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem nfAll_brTen_le (hT : BlockFockBound) (Tf : FormsTiedSym D u Ch chOf) (hB : Formalism.L2.Ker.BeOnTie D u)
     (P : MvPolynomial (D.what₂.Tau × Fin (D.R.N D.R.m) × Fin (D.R.N D.R.m)) ℂ) (hP : P ∈ Formalism.L2.Forms.CSpan ((D.fm u).lam D.R.m)) :
     (Formalism.L2.Forms.nfAll (D.fm u).sg (Formalism.L2.Ker.brTen D u P) (Formalism.L2.Ker.brTen D u P)).re ≤

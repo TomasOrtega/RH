@@ -13,6 +13,11 @@ section Gen
 
 variable {G V : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [AddCommGroup V] [Module ℂ V]
 
+/- English proof (translation)
+Rewrite using `[isOpen_iff_mem_nhds]`. Introduce `g₀ hg₀`. Establish `ho : IsOpen ((fun g => g₀⁻¹ * g) ⁻¹' U)` using `hU.preimage (by fun_prop)`. Use `Filter.mem_of_superset (ho.mem_nhds (by simpa using h1)) fun g hg => ?_` and prove the remaining obligations. Establish `h2 : ρ (g₀⁻¹ * g) x = x` using `hx _ hg`.
+
+Establish `hg₀' : ρ g₀ x = x` using `hg₀`. Express the relevant statement in the definitionally equal form `ρ g x = x`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem stab_open (ρ : Representation ℂ G V) (x : V) (U : Set G) (hU : IsOpen U) (h1 : (1 : G) ∈ U)
     (hx : ∀ g ∈ U, ρ g x = x) : IsOpen {g | ρ g x = x} := by
   rw [isOpen_iff_mem_nhds]
@@ -40,6 +45,11 @@ def smV (ρ : Representation ℂ G V) : Submodule ℂ V where
     have h1 : ρ g x = x := hg
     rw [map_smul, h1]
 
+/- English proof (translation)
+Introduce `x hx`. Express the relevant statement in the definitionally equal form `IsOpen {h | ρ h (ρ g x) = ρ g x}`. Use `stab_open ρ _ ((fun h => g⁻¹ * h * g) ⁻¹' {h | ρ h x = x}) ((show IsOpen {h | ρ h x = x} from hx).preimage (by fun_prop)) (by simp) fun h hh => ?_` and prove the remaining obligations. Establish `e : ρ (g⁻¹ * h * g) x = x` using `hh`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[← Module.End.mul_apply, ← Module.End.mul_apply, ← map_mul, ← map_mul, mul_assoc, mul_inv_cancel_left]`. Use `_ = ρ g x := by rw [e]`.
+-/
 theorem smV_stable (ρ : Representation ℂ G V) (g : G) : smV ρ ≤ Submodule.comap (ρ g) (smV ρ) := by
   intro x hx
   change IsOpen {h | ρ h (ρ g x) = ρ g x}
@@ -50,6 +60,11 @@ theorem smV_stable (ρ : Representation ℂ G V) (g : G) : smV ρ ≤ Submodule.
         rw [← Module.End.mul_apply, ← Module.End.mul_apply, ← map_mul, ← map_mul, mul_assoc, mul_inv_cancel_left]
     _ = ρ g x := by rw [e]
 
+/- English proof (translation)
+Introduce `x`. Establish `e : {g | ρ.subrepresentation (smV ρ) (smV_stable ρ) g x = x} = {g | ρ g x.1 = x.1}`. Use extensionality with `g`. Conclude with `Subtype.ext_iff`. Rewrite using `[e]`.
+
+Conclude with `x.2`.
+-/
 theorem smV_smooth (ρ : Representation ℂ G V) : GlobalTheory.PRep.IsSmooth (ρ.subrepresentation (smV ρ) (smV_stable ρ)) := by
   intro x
   have e : {g | ρ.subrepresentation (smV ρ) (smV_stable ρ) g x = x} = {g | ρ g x.1 = x.1} := by
@@ -61,6 +76,9 @@ end Gen
 
 variable {F : Type} [Field F] [NumberField F] [IsTotallyReal F]
 
+/- English proof (translation)
+Set `ρ` to `(TR.finRep F 2).subrepresentation (smV (TR.finRep F 2)) (smV_stable _)`. Establish `hx : φ ∈ smV (TR.finRep F 2)` using `hφ.aut.level`. Establish `h` using `fixGlob F _ ρ (smV_smooth _) c ⟨φ, hx⟩ fun w u hu => Subtype.ext (hφ.level w u hu)`. Introduce `u hu`. Conclude with `congrArg Subtype.val (h u hu)`.
+-/
 theorem fix_of (k : InfinitePlace F → ℕ) (c : Pl F → ℕ) (ω : HChar F) (φ : TR.Sm F 2) (hφ : IsHolV k c ω φ) :
     φ ∈ Hi.fixd (TR.finRep F 2) (Kc c) := by
   let ρ := (TR.finRep F 2).subrepresentation (smV (TR.finRep F 2)) (smV_stable _)
@@ -82,10 +100,38 @@ private def rot (θ : TR.Rinf F) : GL (Fin 2) (TR.Rinf F) where
     fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_succ] <;> linarith
 
 omit [NumberField F] [IsTotallyReal F] in
+/- English proof (translation)
+Use extensionality with `i j v`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [rot, Matrix.mul_apply, Fin.sum_univ_succ, Real.cos_add, Real.sin_add] <;> ring`.
+-/
 private theorem rot_add (θ θ' : TR.Rinf F) : rot (θ + θ') = rot θ * rot θ' := by
   ext i j v
   fin_cases i <;> fin_cases j <;> simp [rot, Matrix.mul_apply, Fin.sum_univ_succ, Real.cos_add, Real.sin_add] <;> ring
 
+/- English proof (translation)
+Choose the witnesses or unpack the hypotheses as in `⟨g, hg⟩ : ∃ g, φ.1 g ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `h0 (Subtype.ext (funext h))`. Use `set e : TR.Rinf F := Pi.single v 1 with he`.
+
+Establish `hr0 : rot ((0 : ℝ) • e) = 1`. Use extensionality with `i j u`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [rot]`. Establish `hd0 : ∀ g, HasDerivAt (fun t : ℝ => φ.1 (g * TR.infGL F 2 (rot (t • e)))) (Complex.I * (k v : ℕ) * φ.1 g) 0` using `fun g => by`. Establish `h1` using `TR.hasDerivAt_curve φ g (fun t : ℝ => rot (t • e)) (TR.toL (Matrix.single 0 1 e) - TR.toL (Matrix.single 1 0 e)) hr0 (by`.
+
+Use `hasDerivAt_pi.2 fun i => hasDerivAt_pi.2 fun j => hasDerivAt_pi.2 fun u => ?_` and prove the remaining obligations. Establish `hc` using `((hasDerivAt_id (0 : ℝ)).mul_const (e u)).cos`. Establish `hs` using `((hasDerivAt_id (0 : ℝ)).mul_const (e u)).sin`. Apply the tactic sequence `fin_cases i <;> fin_cases j`. Simplify `hc` using `[rot]`.
+
+Simplify `hs` using `[rot]`. Simplify `hs.fun_neg` using `[rot]`. Simplify `hc)` using `[rot]`. Rewrite `h1` using `[← TR.lie_apply, map_sub]`. Conclude with `h1.congr_deriv (congrArg (fun x : TR.Sm F 2 => x.1 g) (hφ.wt v))`.
+
+Use `set f : ℝ → ℂ := fun t => φ.1 (g * TR.infGL F 2 (rot (t • e))) with hf`. Establish `hd : ∀ t, HasDerivAt f (Complex.I * (k v : ℕ) * f t) t` using `fun t => by`. Establish `h1` using `HasDerivAt.comp_sub_const t t ((sub_self t).symm ▸ hd0 (g * TR.infGL F 2 (rot (t • e))))`. Use `h1.congr_of_eventuallyEq (Filter.Eventually.of_forall fun s => ?_)` and prove the remaining obligations. Simplify using `only [hf]`.
+
+Rewrite using `[mul_assoc, ← map_mul, ← rot_add, ← add_smul, add_sub_cancel]`. Establish `hc : ∀ t : ℝ, HasDerivAt (fun t : ℝ => f t * Complex.exp (-(Complex.I * (k v : ℕ) * t))) 0 t` using `fun t => by`. Establish `h1` using `(hd t).mul (((Complex.ofRealCLM.hasDerivAt (x := t)).const_mul (Complex.I * (k v : ℕ))).fun_neg.cexp)`. Conclude with `h1.congr_deriv (by simp; ring)`. Establish `h2` using `is_const_of_deriv_eq_zero (fun t => (hc t).differentiableAt) (fun t => (hc t).deriv) Real.pi 0`.
+
+Establish `hu : (1 - 2 * e) * (1 - 2 * e) = 1`. Use function extensionality and compare the values at `w`. Distinguish the cases in `h : w = v`. Substitute `h` using the available equality. Simplify using `[he]`.
+
+Evaluate the numerical expressions. Simplify using `[he, h]`. Set `u : (TR.Rinf F)ˣ` to `⟨1 - 2 * e, 1 - 2 * e, hu, hu⟩`. Establish `h3 : rot (Real.pi • e) = GeneralLinearGroup.scalar (Fin 2) u`. Use extensionality with `i j w`.
+
+Distinguish the cases in `h : w = v`. Apply the tactic sequence `subst h fin_cases i <;> fin_cases j <;> simp [rot, u, he] <;> norm_num`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [rot, u, he, h]`. Establish `h4 : Units.map (GlobalTheory.CuspRep.corner (TR.sInf F)) u = ReciprocityTheory.Neutral.Bridge.HCFR.infIdele F v (-1)`. Use `Units.ext (Prod.ext (funext fun w => ?_) ?_)` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `(1 - TR.infEq F 1 + TR.infEq F (1 - 2 * e)) w = Pi.mulSingle (M := fun w : InfinitePlace F => w.Completion) v (-1) w`. Rewrite using `[map_one, sub_self, zero_add]`. Express the relevant statement in the definitionally equal form `(InfinitePlace.Completion.ringEquivRealOfIsReal (IsTotallyReal.isReal w)).symm ((1 - 2 * e) w) = _`. Distinguish the cases in `h : w = v`. Substitute `h` using the available equality.
+
+Rewrite using `[show (1 - 2 * e) w = -1 by simp [he]; norm_num]`. Simplify using the standard rewrite rules. Simplify using `[he, h]`. Express the relevant statement in the definitionally equal form `(1 : Af F) - 0 + 0 = 1`. Simplify using the standard rewrite rules.
+
+Simplify using `only [hf, hr0, h3, TR.infGL, map_one, mul_one] at h2`. Rewrite `h2` using `[GlobalTheory.CuspRep.cornerGL_scalar, h4, ← GlobalTheory.CuspRep.scalar_comm, hφ.cent]`. Rewrite `h2` using `[Complex.ofReal_zero, mul_zero, neg_zero, Complex.exp_zero, mul_one, Complex.exp_neg, mul_right_comm, mul_eq_right₀ hg, mul_inv_eq_one₀ (Complex.exp_ne_zero _)]`. Conclude with `h2`.
+-/
 theorem sign_holV {k c} {ω : HChar F} {φ : TR.Sm F 2} (hφ : IsHolV k c ω φ) (h0 : φ ≠ 0) (v : InfinitePlace F) :
     ((ω.locInf v (-1) : ℂˣ) : ℂ) = Complex.exp (Complex.I * (k v : ℕ) * Real.pi) := by
   classical
@@ -150,15 +196,28 @@ theorem sign_holV {k c} {ω : HChar F} {φ : TR.Sm F 2} (hφ : IsHolV k c ω φ)
     mul_eq_right₀ hg, mul_inv_eq_one₀ (Complex.exp_ne_zero _)] at h2
   exact h2
 
+/- English proof (translation)
+Introduce `v`. Rewrite using `[sign_holV hφ h0 v, show Complex.I * ((k v : ℕ) : ℂ) * (Real.pi : ℂ) = (k v : ℕ) * ((Real.pi : ℂ) * Complex.I) by ring, Complex.exp_nat_mul, Complex.exp_pi_mul_I]`.
+-/
 theorem sgn_of {k c} {ω : HChar F} {φ : TR.Sm F 2} (hφ : IsHolV k c ω φ) (h0 : φ ≠ 0) : Sgn k ω := by
   intro v
   rw [sign_holV hφ h0 v, show Complex.I * ((k v : ℕ) : ℂ) * (Real.pi : ℂ) = (k v : ℕ) * ((Real.pi : ℂ) * Complex.I) by ring,
     Complex.exp_nat_mul, Complex.exp_pi_mul_I]
 
+/- English proof (translation)
+Rewrite using `[zc, finGL, GlobalTheory.CuspRep.cornerGL_scalar]`. Both sides reduce to the same expression.
+-/
 theorem fin_zc (z : (Af F)ˣ) : finGL F 2 (zc F z) = GeneralLinearGroup.scalar (Fin 2) (finId F z) := by
   rw [zc, finGL, GlobalTheory.CuspRep.cornerGL_scalar]
   rfl
 
+/- English proof (translation)
+Establish `hfix` using `fix_of k c ω φ hφ`. Choose the witnesses or unpack the hypotheses as in `⟨g, hg⟩ : ∃ g, φ.1 g ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `h0 (Subtype.ext (funext h))`.
+
+Establish `h1 : ∀ z, zc F z ∈ Kc c → (ω.1.comp (finId F)) z = 1`. Introduce `z hz`. Establish `e` using `congrArg (fun ψ : TR.Sm F 2 => ψ.1 g) (hfix _ hz)`. Express the relevant statement in the definitionally equal form `φ.1 (g * finGL F 2 (zc F z)) = φ.1 g at e`. Rewrite `e` using `[fin_zc, ← GlobalTheory.CuspRep.scalar_comm, hφ.cent, mul_eq_right₀ hg]`.
+
+Conclude with `Units.ext e`. Take `⟨χ, hχ⟩` from `exChi (GF F) (Af F)ˣ (Kc c) (zc F) (ω.1.comp (finId F)) (fun z => zc_center z) h1`. Conclude with `⟨χ, hχ⟩`.
+-/
 theorem chi_of {k c} {ω : HChar F} {φ : TR.Sm F 2} (hφ : IsHolV k c ω φ) (h0 : φ ≠ 0) : ∃ χ, IsChi c ω χ := by
   have hfix := fix_of k c ω φ hφ
   obtain ⟨g, hg⟩ : ∃ g, φ.1 g ≠ 0 := by
@@ -177,6 +236,9 @@ theorem chi_of {k c} {ω : HChar F} {φ : TR.Sm F 2} (hφ : IsHolV k c ω φ) (h
 end UpperTheory.Esk.HyperbolicSetupLemmas
 
 open UpperTheory.Esk.HyperbolicSetupLemmas in
+/- English proof (translation)
+Introduce `F _ _ _ k c ω φ hφ h0`. Conclude with `⟨sgn_of hφ h0, fix_of k c ω φ hφ, chi_of hφ h0⟩`.
+-/
 theorem UpperTheory.Esk.hyperbolic_terms_setup_proof : UpperTheory.Esk.H0 := by
   intro F _ _ _ k c ω φ hφ h0
   exact ⟨sgn_of hφ h0, fix_of k c ω φ hφ, chi_of hφ h0⟩

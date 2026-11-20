@@ -2,6 +2,9 @@ import Development.AutomorphicArithmetic.Foundations.Convolution.LocalGroupAnaly
 open PositivityTheory.Rg.Tf.Geo UpperTheory.ConvolutionTheory.G UpperTheory.ConvolutionTheory.T4
 open MeasureTheory NumberField GroundTheory.Automorphic GroundTheory.Automorphic.Reduction GroundTheory.Global GroundTheory.Global.AdeleBaseChange PositivityTheory.Rg.Tf.Core PositivityTheory.Rg.Tf.Loc
 
+/- English proof (translation)
+Establish `h : ((Subgroup.centralizer {g} : Subgroup G) : Set G) = {x | g * x = x * g}`. Use extensionality with `x`. Conclude with `Subgroup.mem_centralizer_singleton_iff.trans eq_comm`. Rewrite using `[h]`. Conclude with `isClosed_eq (continuous_const.mul continuous_id) (continuous_id.mul continuous_const)`.
+-/
 private theorem cenClosed {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [T2Space G] (g : G) :
     IsClosed ((Subgroup.centralizer {g} : Subgroup G) : Set G) := by
   have h : ((Subgroup.centralizer {g} : Subgroup G) : Set G) = {x | g * x = x * g} := by
@@ -10,14 +13,55 @@ private theorem cenClosed {G : Type} [Group G] [TopologicalSpace G] [IsTopologic
   rw [h]
   exact isClosed_eq (continuous_const.mul continuous_id) (continuous_id.mul continuous_const)
 
+/- English proof (translation)
+The claim follows from `(cenClosed g).isClosedEmbedding_subtypeVal.locallyCompactSpace`.
+-/
 private theorem cenLC {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [T2Space G]
     [LocallyCompactSpace G] (g : G) : LocallyCompactSpace (Subgroup.centralizer {g} : Subgroup G) :=
   (cenClosed g).isClosedEmbedding_subtypeVal.locallyCompactSpace
 
+/- English proof (translation)
+The claim follows from `mem_normOneGL_iff_detModule.1 (rationalGL_le_normOneGL ⟨δ, rfl⟩)`.
+-/
 private theorem diag_mem {E : Type} [Field E] [NumberField E] {n : ℕ} (δ : GL (Fin n) E) :
     detModule E n (AdelicGLn.diagonal E n δ) = 1 :=
   mem_normOneGL_iff_detModule.1 (rationalGL_le_normOneGL ⟨δ, rfl⟩)
 
+/- English proof (translation)
+Introduce `hQ hS hU hT hSpl hN3 hN5 _ F E _ _ _ _ _ _ σ hσ n hn μE μF hE hF`. Take `⟨⟨eE, heE⟩, hG⟩` from `hSpl F E σ hσ n hn`. Set `l : Measure {r : ℝ // 0 < r}` to `Measure.haar`. Establish `hl : Uni l` using `(hU _ l inferInstance).2 mul_comm`. Establish `hUE : Uni μE` using `(hU _ μE hE).1 inferInstance`.
+
+Establish `hUF : Uni μF` using `(hU _ μF hF).1 inferInstance`. Set `eF : G1 F n × {r : ℝ // 0 < r} ≃ₜ* GA F n` to `(glNormOneSplitting (K := F) hn).symm`. Use `⟨(μE.prod l).map eE, (μF.prod l).map eF, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(hS (G1 E n) (G1 E n) _ (GA E n) (GA E n) μE (MonoidHom.id _) μE l ⟨hUE, Topology.IsClosedEmbedding.id, hUE⟩ hl eE eE (MonoidHom.id _) (fun _ => rfl)).1.1`. Conclude with `(hS (G1 F n) (G1 F n) _ (GA F n) (GA F n) μF (MonoidHom.id _) μF l ⟨hUF, Topology.IsClosedEmbedding.id, hUF⟩ hl eF eF (MonoidHom.id _) (fun _ => rfl)).1.1`.
+
+Introduce `γ γ₁ hγ hreg ν hν`. Take `⟨⟨eT, heT⟩, j, hj, hjv⟩` from `hG γ γ₁ hγ`. Use `haveI : LocallyCompactSpace (Subgroup.centralizer {γ₁} : Subgroup (G1 F n)) := cenLC γ₁`. Use `haveI : SecondCountableTopology (Subgroup.centralizer {γ₁} : Subgroup (G1 F n)) := TopologicalSpace.Subtype.secondCountableTopology _`. Use `haveI : LocallyCompactSpace (TA γ) := cenLC _`.
+
+Use `haveI : SecondCountableTopology (TA γ) := TopologicalSpace.Subtype.secondCountableTopology _`. Establish `hUν : Uni ν` using `(hU _ ν hν).2 ((hT F n γ hreg).2.2.2 γ₁ hγ)`. Establish `hPF : Pair μF (Subgroup.centralizer {γ₁} : Subgroup (G1 F n)).subtype ν` using `⟨hUF, (cenClosed γ₁).isClosedEmbedding_subtypeVal, hUν⟩`. Establish `sF` using `hS (G1 F n) (Subgroup.centralizer {γ₁} : Subgroup (G1 F n)) _ (GA F n) (TA γ) μF (Subgroup.centralizer {γ₁} : Subgroup (G1 F n)).subtype ν l hPF hl eF eT (TA γ).subtype (fun x => heT x)`. Establish `hPE : Pair μE j ν` using `⟨hUE, hj, hUν⟩`.
+
+Establish `sE` using `hS (G1 E n) (Subgroup.centralizer {γ₁} : Subgroup (G1 F n)) _ (GA E n) (TA γ) μE j ν l hPE hl eE eT ((mapGL n (adeleMap F E)).comp (TA γ).subtype) (fun x => by`. Rewrite using `[heE, MonoidHom.comp_apply, Subgroup.subtype_apply, heT, map_mul, hjv])`. Use `⟨(ν.prod l).map eT, sF.1.2.2.1, ?_, ?_⟩` and prove the remaining obligations. Introduce `Φ hΦ`. Establish `inv : ∀ (t : TA γ) (g : GA F n), FF γ Φ ((TA γ).subtype t * g) = FF γ Φ g`.
+
+Introduce `t g`. Establish `ht : (t : GA F n) * AdelicGLn.diagonal F n γ = AdelicGLn.diagonal F n γ * t` using `Subgroup.mem_centralizer_singleton_iff.1 t.2`. Establish `hc : ((t : GA F n) * g)⁻¹ * AdelicGLn.diagonal F n γ * ((t : GA F n) * g) = g⁻¹ * AdelicGLn.diagonal F n γ * g`. Rewrite using `[_root_.mul_inv_rev, mul_assoc g⁻¹, mul_assoc g⁻¹, mul_assoc, ← mul_assoc _ (t : GA F n) g, ← ht]`. Use `group`.
+
+Simplify using `only [FF, Subgroup.subtype_apply, hc]`. Rewrite using `[← (sF.2 (FF γ Φ) hΦ inv)]`. Establish `hx : (fun x : G1 F n => FF γ Φ (eF (x, 1))) = fun x => avg Φ (x⁻¹ * γ₁ * x)`. Use function extensionality and compare the values at `x`. Establish `h1 : eF (x, 1) = (x : GA F n)`.
+
+Express the relevant statement in the definitionally equal form `(x : GA F n) * centralSection F n 1 = x`. Rewrite using `[map_one, mul_one]`. Rewrite using `[h1]`. Simplify using `only [FF, avg, Subgroup.coe_mul, Subgroup.coe_inv, hγ]`. Rewrite using `[hx]`.
+
+Both sides reduce to the same expression. Introduce `δ hδ Φ hΦ`. Establish `inv : ∀ (t : TA γ) (g : GA E n), FE σ δ Φ (((mapGL n (adeleMap F E)).comp (TA γ).subtype) t * g) = FE σ δ Φ g`. Introduce `t g`. Establish `ht : (t : GA F n) * AdelicGLn.diagonal F n γ = AdelicGLn.diagonal F n γ * t` using `Subgroup.mem_centralizer_singleton_iff.1 t.2`.
+
+Establish `h3` using `(hN3 F E σ hσ n hn δ γ hreg hδ (mapGL n (adeleMap F E) (t : GA F n))).2 ⟨t, ht, rfl⟩`. Establish `hc : (mapGL n (adeleMap F E) (t : GA F n) * g)⁻¹ * AdelicGLn.diagonal E n δ * mapGL n (galAd σ) (mapGL n (adeleMap F E) (t : GA F n) * g) = g⁻¹ * AdelicGLn.diagonal E n δ * mapGL n (galAd σ) g`. Rewrite using `[map_mul, _root_.mul_inv_rev]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [FE, MonoidHom.comp_apply, Subgroup.subtype_apply, hc]`.
+
+Rewrite using `[← (sE.2 (FE σ δ Φ) hΦ inv)]`. Establish `h1 : ∀ x : G1 E n, eE (x, 1) = (x : GA E n)`. Introduce `x`. Rewrite using `[heE]`. Simplify using `only [map_one, mul_one]`.
+
+Establish `hm : ∀ x : G1 E n, (x : GA E n)⁻¹ * AdelicGLn.diagonal E n δ * mapGL n (galAd σ) (x : GA E n) ∈ normOneGL E n`. Introduce `x`. Establish `hx : detModule E n (x : GA E n) = 1` using `mem_normOneGL_iff_detModule.1 x.2`. Rewrite using `[mem_normOneGL_iff_detModule, map_mul, map_mul, map_inv, (hN5 F E σ hσ n hn).2.2, hx, diag_mem]`. Simplify using the standard rewrite rules.
+
+Establish `hx : (fun x : G1 E n => ext0 (avg Φ) ((x : GA E n)⁻¹ * AdelicGLn.diagonal E n δ * mapGL n (galAd σ) (x : GA E n))) = fun x => FE σ δ Φ (eE (x, 1))`. Use function extensionality and compare the values at `x`. Rewrite using `[h1, ext0, dif_pos (hm x)]`. Both sides reduce to the same expression. Rewrite using `[hx]`.
+
+Establish `hmeas : Measurable fun x : G1 E n => FE σ δ Φ (eE (x, 1))`. Simplify using `only [h1]`. Conclude with `hΦ.comp measurable_subtype_coe`. Establish `hinv : ∀ (t : Subgroup.centralizer {γ₁}) (g : G1 E n), FE σ δ Φ (eE (j t * g, 1)) = FE σ δ Φ (eE (g, 1))`. Introduce `t g`.
+
+Establish `h2` using `inv (eT (t, 1)) (g : GA E n)`. Establish `h4 : ((mapGL n (adeleMap F E)).comp (TA γ).subtype) (eT (t, 1)) = (j t : GA E n)`. Rewrite using `[MonoidHom.comp_apply, Subgroup.subtype_apply, heT, hjv]`. Simplify using `only [map_one, mul_one]`. Rewrite `h2` using `[h4]`.
+
+Rewrite using `[h1, h1]`. Simplify using `using h2`. Establish `hq` using `hQ (GA E n) (Subgroup.centralizer {γ₁} : Subgroup (G1 F n)) (normOneGL E n) isClosed_normOneGL μE j ν hPE _ hmeas hinv`. Establish `hj' : (fun t : Subgroup.centralizer {γ₁} => (j t : GA E n)) = fun t : Subgroup.centralizer {γ₁} => mapGL n (adeleMap F E) ((t : G1 F n) : GA F n)` using `funext hjv`. Rewrite `hq` using `[hj']`.
+
+Conclude with `hq`.
+-/
 theorem UpperTheory.globalOrbitalComparison_of_split :
     QSub → SplitQ → UniOf → TComm → Spl → N3 → N5 → CentBC → Glob := by
   intro hQ hS hU hT hSpl hN3 hN5 _ F E _ _ _ _ _ _ σ hσ n hn μE μF hE hF

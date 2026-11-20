@@ -32,11 +32,19 @@ def reesSubmodule : Submodule (reesAlgebra I) (PolynomialModule A M) where
 
 variable {I M}
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 lemma mem_reesSubmodule_iff {p : PolynomialModule A M} :
     p ∈ reesSubmodule I M ↔ ∀ n, p.coeff n ∈ I ^ n • (⊤ : Submodule A M) := Iff.rfl
 
 variable (I M)
 
+/- English proof (translation)
+Introduce `n`. Rewrite using `[PolynomialModule.coeff_single, Finsupp.single_apply]`. Use `split_ifs with h`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+
+Conclude with `zero_mem _`.
+-/
 lemma single_zero_mem_reesSubmodule (m : M) :
     PolynomialModule.single A 0 m ∈ reesSubmodule I M := by
   intro n
@@ -46,6 +54,19 @@ lemma single_zero_mem_reesSubmodule (m : M) :
     simp
   · exact zero_mem _
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Introduce `p hp`. Establish `key : ∀ n, ∀ x ∈ I ^ n • (⊤ : Submodule A M), PolynomialModule.single A n x ∈ Submodule.span (reesAlgebra I) (Set.range (PolynomialModule.single A 0 : M → _))`. Introduce `n x hx`. Use `Submodule.smul_induction_on hx ?_ ?_` and prove the remaining obligations.
+
+Introduce `a ha m _`. Establish `hmem : monomial n a ∈ reesAlgebra I` using `reesAlgebra.monomial_mem.2 ha`. Establish `: PolynomialModule.single A n (a • m) = (⟨monomial n a, hmem⟩ : reesAlgebra I) • PolynomialModule.single A 0 m`. Express the relevant statement in the definitionally equal form `_ = monomial n a • PolynomialModule.single A 0 m`. Rewrite using `[PolynomialModule.monomial_smul_single, add_zero]`.
+
+Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨m, rfl⟩)`. Introduce `x y hx hy`. Rewrite using `[PolynomialModule.single_add]`. Conclude with `add_mem hx hy`.
+
+Establish `hp' : p = ∑ n ∈ p.coeff.support, PolynomialModule.single A n (p.coeff n)`. Apply `PolynomialModule.coeff_injective` to reduce the goal to its premises. Use extensionality with `k`. Rewrite using `[PolynomialModule.coeff_sum, Finsupp.finsetSum_apply]`. Simplify using `only [PolynomialModule.coeff_single, Finsupp.single_apply]`.
+
+Rewrite using `[Finset.sum_ite_eq']`. Use `split_ifs with h`. Both sides reduce to the same expression. Conclude with `Finsupp.notMem_support_iff.1 h`. Rewrite using `[hp']`.
+
+Conclude with `Submodule.sum_mem _ fun n _ => key n _ (hp n)`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨m, rfl⟩`. Conclude with `single_zero_mem_reesSubmodule I M m`.
+-/
 theorem reesSubmodule_eq_span :
     reesSubmodule I M =
       Submodule.span (reesAlgebra I) (Set.range (PolynomialModule.single A 0 : M → _)) := by

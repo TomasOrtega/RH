@@ -10,6 +10,21 @@ set_option autoImplicit false
 
 namespace GlobalTheory.FlagCell2
 
+/- English proof (translation)
+Establish `hU : ∀ a c : Fin s, c < a → upU y a c = 0`. Introduce `a c h`. Simplify using `[upU, Matrix.of_apply, not_lt.mpr h.le, h.ne']`. Establish `hUd : ∀ a : Fin s, upU y a a = 1`. Introduce `a`.
+
+Simplify using `[upU, Matrix.of_apply]`. Establish `hdiag : ∀ i, b i i ≠ 0`. Establish `h1 : b.det = ∏ i, b i i` using `Matrix.det_of_lowerTriangular b (fun i j h => hb i j h)`. Rewrite `hdet` using `[h1]`. Introduce `i`.
+
+Conclude with `(Finset.prod_ne_zero_iff.mp hdet) i (Finset.mem_univ _)`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.det_of_upperTriangular (fun a c h => hU a c h)]`. Simplify using `[hUd]`. Introduce `k`.
+
+Establish `hmul : (b * upU y).submatrix (Subtype.val : {a : Fin s // (a : ℕ) < k} → Fin s) (Subtype.val : {a : Fin s // (a : ℕ) < k} → Fin s) = b.submatrix (Subtype.val : {a : Fin s // (a : ℕ) < k} → Fin s) (Subtype.val : {a : Fin s // (a : ℕ) < k} → Fin s) * (upU y).submatrix (Subtype.val …`. Use extensionality with `i j`. Simplify using `only [Matrix.submatrix_apply, Matrix.mul_apply]`. Rewrite using `[← Fintype.sum_subtype_add_sum_subtype (fun a : Fin s => (a : ℕ) < k)]`. Establish `h0 : ∑ l : {a : Fin s // ¬ (a : ℕ) < k}, b i.1 l.1 * upU y l.1 j.1 = 0`.
+
+Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `l _`. Establish `: i.1 < l.1`. Use `i.2` as an intermediate fact. Use `l.2` as an intermediate fact.
+
+Rewrite using `[Fin.lt_iff_val_lt_val]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hb _ _ this, zero_mul]`. Rewrite using `[h0, add_zero]`. Rewrite using `[hmul, Matrix.det_mul]`.
+
+Use `mul_ne_zero ?_ ?_` and prove the remaining obligations. Rewrite using `[Matrix.det_of_lowerTriangular _ (fun i j h => hb i.1 j.1 h)]`. Conclude with `Finset.prod_ne_zero_iff.mpr (fun i _ => hdiag i.1)`. Rewrite using `[Matrix.det_of_upperTriangular (fun i j h => hU i.1 j.1 h)]`. Simplify using `[hUd]`.
+-/
 theorem lowMul_upU_leadMinor_ne_zero (K : Type) [Field K] (s : ℕ) (y : Low s → K) (b : Matrix (Fin s) (Fin s) K) (hb : ∀ i j, i < j → b i j = 0) (hdet : b.det ≠ 0) :
     (upU y).det = 1 ∧ ∀ k : ℕ, ((b * upU y).submatrix (Subtype.val : {a : Fin s // (a : ℕ) < k} → Fin s) Subtype.val).det ≠ 0 := by
   have hU : ∀ a c : Fin s, c < a → upU y a c = 0 := by

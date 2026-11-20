@@ -20,6 +20,27 @@ open Complex Matrix
 
 namespace GlobalTheory.CompanionTheory.Metric
 
+/- English proof (translation)
+Introduce `g τ h Hm a c Λ θ κ b hs hp hh ha hc hΛ hH hθ hper hb hmean`. Establish `h₁ : ∀ i, (fun i => (a i : ℂ)) i = 0 ∨ (fun i => (a i : ℂ)) i = 1 / 2` using `fun i => by`. Apply the tactic sequence `rcases ha i with e | e <;> simp [e]`. Establish `h₂ : ∀ i, (fun i => (c i : ℂ)) i = 0 ∨ (fun i => (c i : ℂ)) i = 1 / 2` using `fun i => by`. Apply the tactic sequence `rcases hc i with e | e <;> simp [e]`.
+
+Establish `hbc : (b : ℂ) ≠ 0` using `by exact_mod_cast hb.ne'`. Take `⟨Fd, hFd, -⟩` from `GlobalTheory.ThetaMean.exists_fundamentalDomain_mean_norm_sq_thetaChar g τ h (fun i => (a i : ℂ)) (fun i => (c i : ℂ)) Λ.toAddSubgroup hs hp hh h₁ h₂ hΛ`. Establish `hFdΛ : IsAddFundamentalDomain Λ Fd volume` using `hFd`. Establish `hb2` using `hmean Fd hFdΛ`. Establish `hsq` using `GlobalTheory.Dict.VacNorm.norm_sq_of_mean (τ := τ) (h := h) (A := Λ.toAddSubgroup) (H := hermForm Hm) (θ := fun z => θ z / b) (a := κ / b) ⟨hs, hp⟩ hh h₁ h₂ hΛ (fun z w => by`.
+
+Rewrite using `[hH]`. Use the proof step `rfl)`. Use the proof step `(fun z => by`. Simplify using `only [hθ, GlobalTheory.CanTh.canTh, GlobalTheory.CanTh.imInv]`. Use the proof step `ring)`.
+
+Use the proof step `(fun p hp' => by`. Take `⟨ε, hε, hz⟩` from `hper p hp'`. Establish `hε0 : ε ≠ 0`. Introduce `e`. Simplify using `[e] at hε`.
+
+Use `⟨ε⁻¹, by simp [hε], fun z => ?_⟩` and prove the remaining obligations. Establish `e2 : hermForm Hm (z + (1 / 2 : ℂ) • p) p = hermForm Hm z p + 1 / 2 * hermForm Hm p p`. Simplify using `only [hermForm, add_dotProduct, smul_dotProduct, smul_eq_mul]`. Simplify using `only [hz, e2]`. Establish `e3 : Complex.exp (-(((1 : ℕ) : ℂ) * Real.pi * (hermForm Hm z p + 1 / 2 * hermForm Hm p p))) * Complex.exp (Real.pi * hermForm Hm z p + Real.pi / 2 * hermForm Hm p p) = 1`.
+
+Rewrite using `[← Complex.exp_add]`. Simplify using `only [Nat.cast_one]`. Put the polynomial expressions in normal form. Simplify using the standard rewrite rules. Establish `e1 : ε⁻¹ * ε = 1` using `inv_mul_cancel₀ hε0`.
+
+Take the linear combination `(θ z / b * Complex.exp (-(((1 : ℕ) : ℂ) * Real.pi * (hermForm Hm z p + 1 / 2 * hermForm Hm p p))) * Complex.exp (Real.pi * hermForm Hm z p + Real.pi / 2 * hermForm Hm p p)) * e1 + (θ z / b) * e3)`. Use `hFd`. Use the proof step `(by`. Establish `hint : ∀ z, ‖θ z / (b : ℂ)‖ ^ 2 * Real.exp (-Real.pi * (hermForm Hm z z).re) = (b ^ 2)⁻¹ * (‖θ z‖ * Real.exp (-(Real.pi * ((1 : ℕ) : ℝ) / 2) * (hermForm Hm z z).re)) ^ 2`. Introduce `z`.
+
+Rewrite using `[norm_div, Complex.norm_real, Real.norm_eq_abs, abs_of_pos hb, mul_pow, div_pow, ← Real.exp_nat_mul]`. Establish `: ((2 : ℕ) : ℝ) * (-(Real.pi * ((1 : ℕ) : ℝ) / 2) * (hermForm Hm z z).re) = -Real.pi * (hermForm Hm z z).re`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`.
+
+Expand and normalize the polynomial expressions, which then agree. Simplify using `only [hint]`. Rewrite using `[MeasureTheory.integral_const_mul, mul_div_assoc, ← hb2]`. Conclude with `inv_mul_cancel₀ (pow_ne_zero _ hb.ne'))`. Establish `hD : 0 < Real.sqrt (2 ^ g * (τ.map Complex.im).det)` using `Real.sqrt_pos.2 (mul_pos (by positivity) hp.det_pos)`.
+
+Rewrite `hsq` using `[norm_div, Complex.norm_real, Real.norm_eq_abs, abs_of_pos hb, div_pow, div_eq_iff (pow_ne_zero _ hb.ne')]`. Rewrite using `[hsq]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem mean_sq_fixes_norm_const :
     ∀ (g : ℕ) (τ h Hm : Matrix (Fin g) (Fin g) ℂ) (a c : Fin g → ℝ) (Λ : Submodule ℤ (Fin g → ℂ))
     (θ : (Fin g → ℂ) → ℂ) (κ : ℂ) (b : ℝ),

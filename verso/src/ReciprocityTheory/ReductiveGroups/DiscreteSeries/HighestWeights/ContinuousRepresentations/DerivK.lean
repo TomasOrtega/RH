@@ -11,6 +11,9 @@ open ReciprocityTheory.ChartRestriction.DS ReciprocityTheory.ChartRestriction.DS
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Simplify using `[onepCurve]`.
+-/
 lemma onepCurve_zero (ε : Fin n → Bool) {X : Matrix (Fin n) (Fin n) ℂ} (hX : inK ε X) :
     onepCurve ε hX 0 = 1 := by
   apply Subtype.ext
@@ -18,6 +21,9 @@ lemma onepCurve_zero (ε : Fin n → Bool) {X : Matrix (Fin n) (Fin n) ℂ} (hX 
   apply Units.ext
   simp [onepCurve]
 
+/- English proof (translation)
+Establish `h` using `hf.mul hg`. Rewrite `h` using `[hf0, hg0, one_mul, mul_one]`. Conclude with `h`.
+-/
 lemma hasDerivAt_mul_of_one {A : Type*} [NormedRing A] [NormedAlgebra ℝ A] {f g : ℝ → A} {a b : A}
     (hf : HasDerivAt f a 0) (hg : HasDerivAt g b 0) (hf0 : f 0 = 1) (hg0 : g 0 = 1) :
     HasDerivAt (fun t => f t * g t) (a + b) 0 := by
@@ -25,6 +31,15 @@ lemma hasDerivAt_mul_of_one {A : Type*} [NormedRing A] [NormedAlgebra ℝ A] {f 
   rw [hf0, hg0, one_mul, mul_one] at h
   exact h
 
+/- English proof (translation)
+Use `choose dτs hdτs using fun s => h (p s) V (τ.comp (emb s)) (hτ.comp (hemb s))`. Use `⟨(dτs true).comp (blk true) + (dτs false).comp (blk false), fun X hX γ hγ => ?_⟩` and prove the remaining obligations. Establish `hγeq : ∀ t, γ t = emb true (onepCurve _ (hblk true X hX) t) * emb false (onepCurve _ (hblk false X hX) t)`. Introduce `t`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Conclude with `(hγ t).trans (hsplit X hX t).symm`. Establish `hd1` using `hdτs true (blk true X) (hblk true X hX) (onepCurve _ (hblk true X hX)) (toMK_onepCurve _ (hblk true X hX))`. Establish `hd2` using `hdτs false (blk false X) (hblk false X hX) (onepCurve _ (hblk false X hX)) (toMK_onepCurve _ (hblk false X hX))`.
+
+Establish `hprod` using `hasDerivAt_mul_of_one hd1 hd2 (by simp [onepCurve_zero]) (by simp [onepCurve_zero])`. Establish `hfun : (fun t => ((τ (γ t) : unitary (V →L[ℂ] V)) : V →L[ℂ] V)) = fun t => (((τ.comp (emb true)) (onepCurve _ (hblk true X hX) t) : unitary (V →L[ℂ] V)) : V →L[ℂ] V) * (((τ.comp (emb false)) (onepCurve _ (hblk false X hX) t) : unitary (V →L[ℂ] V)) : V →L[ℂ] V)`. Use function extensionality and compare the values at `t`. Rewrite using `[hγeq t, map_mul]`. Both sides reduce to the same expression.
+
+Rewrite using `[hfun]`. Simplify using `using hprod`.
+-/
 theorem derivExists_of_split (h : DerivExistsAllPosStatement) (ε : Fin n → Bool)
     (p : Bool → ℕ) (emb : ∀ s, KG (fun _ : Fin (p s) => true) →* KG ε)
     (hemb : ∀ s, Continuous (emb s))
@@ -63,6 +78,11 @@ theorem derivExists_of_split (h : DerivExistsAllPosStatement) (ε : Fin n → Bo
   rw [hfun]
   simpa using hprod
 
+/- English proof (translation)
+Introduce `n ε V _ _ _ τ hτ`. Use `derivExists_of_split h ε (blkP ε) (blkEmbed ε) (continuous_blkEmbed ε) (blkRes ε) (fun s X hX => inK_blkRes hX s) (fun X hX t => ?_) V τ hτ` and prove the remaining obligations. Establish `hc` using `blk_curve hX (onepCurve ε hX) (toMK_onepCurve ε hX) (onepCurve _ (inK_blkRes hX true)) (toMK_onepCurve _ (inK_blkRes hX true)) (onepCurve _ (inK_blkRes hX false)) (toMK_onepCurve _ (inK_blkRes hX false)) t`. Establish `h1` using `congrArg toMK hc`. Rewrite `h1` using `[toMK_onepCurve]`.
+
+Conclude with `h1.symm`.
+-/
 theorem derivExists_of (h : DerivExistsAllPosStatement) : DerivExistsStatement := by
   intro n ε V _ _ _ τ hτ
   refine derivExists_of_split h ε (blkP ε) (blkEmbed ε) (continuous_blkEmbed ε) (blkRes ε)

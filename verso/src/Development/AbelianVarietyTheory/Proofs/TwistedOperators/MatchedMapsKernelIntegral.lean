@@ -22,6 +22,19 @@ open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 
 local notation "pureT" => GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure
 
+/- English proof (translation)
+Unfold `GlobalTheory.SquareAgree.algD at hΦ`. Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨f, φ, hf, hφ, hv, rfl⟩` from `hx`. Establish `hfin` using `Filter.eventually_cofinite.1 hv`.
+
+Use `⟨hfin.toFinset, 1, fun _ => f, fun _ => φ, fun _ => ⟨hf, hφ, fun v hvT => ?_⟩, by simp⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Conclude with `hvT (hfin.mem_toFinset.2 h)`. Consider the case `zero`. Conclude with `⟨∅, 0, Fin.elim0, Fin.elim0, fun i => i.elim0, by simp⟩`.
+
+Consider the case `add x y _ _ hx hy`. Take `⟨T₁, m₁, f₁, φ₁, h₁, rfl⟩` from `hx`. Take `⟨T₂, m₂, f₂, φ₂, h₂, rfl⟩` from `hy`. Use `⟨T₁ ∪ T₂, m₁ + m₂, Fin.append f₁ f₂, Fin.append φ₁ φ₂, fun i => ?_, ?_⟩` and prove the remaining obligations. Use `Fin.addCases (fun i => ?_) (fun i => ?_) i` and prove the remaining obligations.
+
+Simplify using `only [Fin.append_left]`. Conclude with `⟨(h₁ i).1, (h₁ i).2.1, fun v hv => (h₁ i).2.2 v (fun h => hv (Finset.mem_union_left _ h))⟩`. Simplify using `only [Fin.append_right]`. Conclude with `⟨(h₂ i).1, (h₂ i).2.1, fun v hv => (h₂ i).2.2 v (fun h => hv (Finset.mem_union_right _ h))⟩`. Rewrite using `[Fin.sum_univ_add]`.
+
+Simplify using `[Fin.append_left, Fin.append_right]`. Consider the case `smul c x _ hx`. Take `⟨T, m, f, φ, h, rfl⟩` from `hx`. Use `⟨T, m, fun i => c • f i, φ, fun i => ⟨(M.Pol ψ emb).smul_mem c (h i).1, (h i).2⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.smul_sum]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use function extensionality and compare the values at `x`. Simplify using `only [Pi.smul_apply, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure, SchwartzMap.smul_apply, smul_eq_mul, mul_assoc]`.
+-/
 theorem exists_decomp {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} {n d : ℕ} {Y : Spc F E n} {Wd : Spc F E d} (M : Model σ Y Wd)
     (ψ : AddChar (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF F) ℂ) (emb : (w : InfinitePlace F) → GlobalTheory.AdelicU.EmbOver E w)
@@ -60,6 +73,17 @@ theorem exists_decomp {F E : Type} [Field F] [NumberField F] [Field E] [NumberFi
     funext x
     simp only [Pi.smul_apply, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure, SchwartzMap.smul_apply, smul_eq_mul, mul_assoc]
 
+/- English proof (translation)
+Introduce `hP F E _ _ _ _ _ σ Bs a a' G Xc om om' R Rf hM γ hγ Φ hΦ Φ₁ hd`. Take `⟨T, m, f, φ, hfφ, rfl⟩` from `exists_decomp G.M Bs.ψ Bs.emb hΦ`. Take `⟨D, hDmem, hD⟩` from `(GlobalTheory.T.polynomial_datum_action_of_pair hP F E σ Bs _ _ G.V G.W G.M _ _ om _ _ _ _ (GlobalTheory.ThK.RealUniq.isPair_V hM.triple)).1 γ hγ`. Establish `hstd` using `hM.triple.geo.hM.std`. Establish `hacts : ∀ i, ActsD (evI F) (fun t => ⇑(om (γ (Multiplicative.ofAdd t), 1))) ⇑(f i) ⇑(D (f i))` using `fun i => (hD (f i) (hfφ i).1 (D (f i))).2 rfl`.
+
+Establish `hrest : ∀ i, Rest (evI F) ⇑(f i) (GlobalTheory.EvZeroInf.finPart (φ i))`. Introduce `i`. Use `GlobalTheory.ThK.EvUniqInf.rest_pure (f i) (φ i) (hfφ i).2.1 ?_` and prove the remaining obligations. Use `filter_upwards [hstd, (Filter.eventually_cofinite.2 (by simpa using T.finite_toSet) : ∀ᶠ v in Filter.cofinite, v ∉ T)] with v hv hvT`. Rewrite using `[(hfφ i).2.2 v hvT, hv]`.
+
+Establish `hpure : ∀ i x, HasDerivAt (fun t : ℝ => om (γ (Multiplicative.ofAdd t), 1) (pureT (f i) (φ i)) x) (pureT (D (f i)) (φ i) x) 0`. Introduce `i x`. Rewrite using `[GlobalTheory.EvZeroInf.pure_eq_tens, GlobalTheory.EvZeroInf.pure_eq_tens]`. Conclude with `hacts i _ (hrest i) x`. Establish `hsum : ∀ x, HasDerivAt (fun t : ℝ => om (γ (Multiplicative.ofAdd t), 1) (∑ i, pureT (f i) (φ i)) x) (∑ i, pureT (D (f i)) (φ i) x) 0`.
+
+Introduce `x`. Use `(HasDerivAt.sum (u := Finset.univ) (fun i _ => hpure i x)).congr_of_eventuallyEq (Filter.Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Simplify using `[map_sum, Finset.sum_apply]`. Establish `hΦ₁ : Φ₁ = ∑ i, pureT (D (f i)) (φ i)`. Use function extensionality and compare the values at `x`.
+
+Rewrite using `[Finset.sum_apply]`. Conclude with `(hd x).unique (hsum x)`. Establish `hp0 : ∀ i, R.p (D (f i)) = 0` using `fun i => hM.real.quot.lie γ hγ (f i) (hfφ i).1 (D (f i)) (hacts i)`. Use `⟨T ∪ Xc.T, Finset.subset_union_right, m, fun i => D (f i), φ, fun i => ⟨hDmem _ (hfφ i).1, (hfφ i).2.1, fun v hv => (hfφ i).2.2 v (fun h => hv (Finset.mem_union_left _ h))⟩, hΦ₁, ?_⟩` and prove the remaining obligations. Simplify using `[hp0]`.
+-/
 theorem polZero_deriv_V : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (Bs : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) (a a' : ℕ) (G : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo σ a a') (Xc : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chars F E)
     (om : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ G.V G.W) (om' : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ G.V' G.W) (R : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.RealMaps F a a')

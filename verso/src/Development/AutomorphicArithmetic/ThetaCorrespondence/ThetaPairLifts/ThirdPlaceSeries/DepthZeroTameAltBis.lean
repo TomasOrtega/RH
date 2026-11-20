@@ -18,6 +18,13 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 open scoped Pointwise
 namespace GlobalTheory.DepthZeroType
+/- English proof (translation)
+Introduce `hp h2 hL D P hR i w hwS hk Q σ hσ`. Take `⟨S, hS, -, -⟩` from `_root_.GlobalTheory.T.exists_true_reading_with_laws_suppLaws hp.fin hL D P hR`. Establish `hw : IsSplitPl D.host w` using `hk.elim fun k h => isSplitPl_of_over D k w h`. Establish `ht` using `(_root_.GlobalTheory.MuTameQS.main_alt_alt hL D P S hS i w hw (Or.inl hwS)).1`. Take `⟨v, hv0, hv⟩` from `(_root_.GlobalTheory.T.type_block_of_tame_at_split_place hL D P S hS i w hw hk ht).2 Q`.
+
+Establish `hfix : v ∈ GlobalTheory.PRep.fixed ((S i w hw).rep Q).π (GlobalTheory.SplitWeil.KOne (w.adicCompletion D.host.E) (Fin (D.R.r + D.R.t)))`. Introduce `h`. Use `GlobalTheory.JacBlock.KOne_le_stab ht hv h.2` as an intermediate fact. Rewrite using `[MonoidHom.one_apply, Units.val_one, one_smul]`. Conclude with `this`.
+
+Rewrite using `[P.T.inePol w _ σ (mem_Ine_of_wild D w hσ), (S i w hw).locV Q, hS.rc]`. Conclude with `_root_.GlobalTheory.DepthZeroLoc.main_m_alt hp.bz h2 hL D w _ _ ⟨v, hfix, hv0⟩ (hk.elim fun k h => UpperTheory.One.M.isQg_of_over D k w h) σ hσ`.
+-/
 theorem depthZero_tame_alt : _root_.GlobalTheory.NRows.ThetaLocalInputsAlt → GlobalTheory.Published.DepthZeroSupport → ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (D : D7) (P : _root_.GlobalTheory.NPin.CharacterChoiceData hL D), (∀ i : D.nd.Loc, Nonempty (RowMod D P.rep (D.nd.j i))) → GlobalTheory.HubX.DepthZeroG D := by
   intro hp h2 hL D P hR i w hwS hk Q σ hσ
   obtain ⟨S, hS, -, -⟩ := _root_.GlobalTheory.T.exists_true_reading_with_laws_suppLaws hp.fin hL D P hR

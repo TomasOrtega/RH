@@ -15,22 +15,37 @@ open PI.PhNormUnits
 
 variable {p : ℕ} [Fact p.Prime]
 
+/- English proof (translation)
+Simplify using `only [PI.PhNormUnits.zc, PadicInt.coe_mul, map_mul]`.
+-/
 theorem zc_mul (a b : ℤ_[p]) : zc (a * b) = zc a * zc b := by
   simp only [PI.PhNormUnits.zc, PadicInt.coe_mul, map_mul]
 
+/- English proof (translation)
+Simplify using `only [PI.PhNormUnits.zc, PadicInt.coe_one, map_one]`.
+-/
 theorem zc_one : zc (1 : ℤ_[p]) = 1 := by
   simp only [PI.PhNormUnits.zc, PadicInt.coe_one, map_one]
 
+/- English proof (translation)
+Establish `h : ((2 : ℤ_[p]) : ℚ_[p]) = 2`. Use `PadicInt.coe_natCast (p := p) 2` as an intermediate fact. Simplify using `using this`. Simplify using `only [PI.PhNormUnits.zc, h, map_ofNat]`.
+-/
 theorem zc_two : zc (2 : ℤ_[p]) = 2 := by
   have h : ((2 : ℤ_[p]) : ℚ_[p]) = 2 := by
     have := PadicInt.coe_natCast (p := p) 2
     simpa using this
   simp only [PI.PhNormUnits.zc, h, map_ofNat]
 
+/- English proof (translation)
+Use `show ‖algebraMap ℚ_[p] ℂ_[p] (a : ℚ_[p])‖ = ‖a‖`. Rewrite using `[norm_algebraMap', PadicInt.padic_norm_e_of_padicInt]`.
+-/
 theorem norm_zc (a : ℤ_[p]) : ‖zc a‖ = ‖a‖ := by
   show ‖algebraMap ℚ_[p] ℂ_[p] (a : ℚ_[p])‖ = ‖a‖
   rw [norm_algebraMap', PadicInt.padic_norm_e_of_padicInt]
 
+/- English proof (translation)
+Establish `h2 : ‖((2 : ℕ) : ℚ_[p])‖ = 1` using `Padic.norm_natCast_eq_one_iff.mpr ((Nat.coprime_primes (Fact.out) Nat.prime_two).mpr hp2)`. Establish `h2' : ‖(2 : ℚ_[p])‖ = 1` using `by exact_mod_cast h2`. Establish `e : algebraMap ℚ_[p] ℂ_[p] 2 = 2` using `map_ofNat _ 2`. Rewrite using `[← e, norm_algebraMap', h2']`.
+-/
 theorem norm_two_of (hp2 : p ≠ 2) : ‖(2 : ℂ_[p])‖ = 1 := by
   have h2 : ‖((2 : ℕ) : ℚ_[p])‖ = 1 :=
     Padic.norm_natCast_eq_one_iff.mpr ((Nat.coprime_primes (Fact.out) Nat.prime_two).mpr hp2)
@@ -38,6 +53,9 @@ theorem norm_two_of (hp2 : p ≠ 2) : ‖(2 : ℂ_[p])‖ = 1 := by
   have e : algebraMap ℚ_[p] ℂ_[p] 2 = 2 := map_ofNat _ 2
   rw [← e, norm_algebraMap', h2']
 
+/- English proof (translation)
+Rewrite `h` using `[norm_zc]`. Take `⟨u, hu⟩` from `PadicInt.isUnit_iff.mpr h`. Use `⟨((u⁻¹ : ℤ_[p]ˣ) : ℤ_[p]), ?_⟩` and prove the remaining obligations. Rewrite using `[← zc_mul, ← hu, Units.mul_inv, zc_one]`.
+-/
 theorem zc_inv_of (n : ℤ_[p]) (h : ‖zc n‖ = 1) : ∃ m : ℤ_[p], zc n * zc m = 1 := by
   rw [norm_zc] at h
   obtain ⟨u, hu⟩ := PadicInt.isUnit_iff.mpr h
@@ -52,12 +70,22 @@ variable {l ex : PowerSeries ℂ_[p]} (hex0 : PowerSeries.constantCoeff ex = 0)
 
 include hSub hex0 hinv in
 
+/- English proof (translation)
+The claim follows from `(hSub p Unit τ (fun _ => w) (fun _ => hw0) (fun _ => hw)).1 f g h`.
+-/
 theorem simeq_subst1 {τ : Type} (w : MvPowerSeries τ ℂ_[p]) (hw0 : MvPowerSeries.constantCoeff w = 0)
     (hw : IntegralMv w) {f g : MvPowerSeries Unit ℂ_[p]} (h : Simeq f g) :
     Simeq (MvPowerSeries.subst (fun _ => w) f) (MvPowerSeries.subst (fun _ => w) g) :=
   (hSub p Unit τ (fun _ => w) (fun _ => hw0) (fun _ => hw)).1 f g h
 
 include hSub hex0 hinv in
+/- English proof (translation)
+Establish `hs0 : ∀ i, MvPowerSeries.constantCoeff (![x, y] i) = 0`. Introduce `i`. Use `fin_cases i`. Simplify using `using hx0`. Simplify using `using hy0`.
+
+Establish `hsI : ∀ i, PI.PhNormUnits.IntegralMv (![x, y] i)`. Introduce `i`. Use `fin_cases i`. Simplify using `using hx`. Simplify using `using hy`.
+
+Conclude with `(hSub p (Fin 2) τ ![x, y] hs0 hsI).1 f g h`.
+-/
 theorem simeq_subst2 {τ : Type} (x y : MvPowerSeries τ ℂ_[p]) (hx0 : MvPowerSeries.constantCoeff x = 0)
     (hy0 : MvPowerSeries.constantCoeff y = 0) (hx : IntegralMv x) (hy : IntegralMv y)
     {f g : MvPowerSeries (Fin 2) ℂ_[p]} (h : Simeq f g) :
@@ -74,6 +102,11 @@ theorem simeq_subst2 {τ : Type} (x y : MvPowerSeries τ ℂ_[p]) (hx0 : MvPower
 
 include hSub hex0 hinv in
 
+/- English proof (translation)
+Establish `hs : ∀ i : Unit, MvPowerSeries.constantCoeff ((fun _ : Unit => w) i) = 0` using `fun _ => hw0`. Establish `hv : MvPowerSeries.constantCoeff (PI.PhNormUnits.Xv () : MvPowerSeries Unit ℂ_[p]) = 0` using `constantCoeff_var ()`. Establish `hsm : MvPowerSeries.constantCoeff (PI.PhNormUnits.mulBy l ex c (PI.PhNormUnits.Xv () : MvPowerSeries Unit ℂ_[p])) = 0` using `constantCoeff_formalSMul hex0 hinv c _ hv`. Establish `eL : MvPowerSeries.subst (fun _ : Unit => w) (PI.PhNormUnits.phAt ph (PI.PhNormUnits.mulBy l ex c (PI.PhNormUnits.Xv () : MvPowerSeries Unit ℂ_[p]))) = PI.PhNormUnits.phAt ph (PI.PhNormUnits.mulBy l ex c w)`. Rewrite using `[sb_phAt (fun _ : Unit => w) hs ph _ hsm, sb_mulBy (fun _ : Unit => w) hs hex0 hinv c _ hv, sb_X (fun _ : Unit => w) hs ()]`.
+
+Establish `eR : MvPowerSeries.subst (fun _ : Unit => w) (MvPowerSeries.C N * PI.PhNormUnits.phAt ph (PI.PhNormUnits.Xv () : MvPowerSeries Unit ℂ_[p])) = MvPowerSeries.C N * PI.PhNormUnits.phAt ph w`. Rewrite using `[sb_C_mul (fun _ : Unit => w) hs N, sb_phAt (fun _ : Unit => w) hs ph _ hv, sb_X (fun _ : Unit => w) hs ()]`. Establish `key` using `simeq_subst1 hSub hex0 hinv w hw0 hw h`. Rewrite `key` using `[eL, eR]`. Conclude with `key`.
+-/
 theorem norm_at {ph : PowerSeries ℂ_[p]} (c N : ℂ_[p])
     (h : Simeq (phAt ph (mulBy l ex c (Xv ())) : MvPowerSeries Unit ℂ_[p]) (MvPowerSeries.C N * phAt ph (Xv ())))
     {τ : Type} (w : MvPowerSeries τ ℂ_[p]) (hw0 : MvPowerSeries.constantCoeff w = 0) (hw : IntegralMv w) :
@@ -106,6 +139,13 @@ variable {l ex ph : PowerSeries ℂ_[p]} (hex0 : PowerSeries.constantCoeff ex = 
       (be l ex ph (Xv 0) (Xv 2) + be l ex ph (Xv 1) (Xv 2)))
 
 include hE hSub hex0 hinv hIA in
+/- English proof (translation)
+Establish `h0 : MvPowerSeries.constantCoeff (PI.PhNormUnits.Xv 0 : MvPowerSeries (Fin 2) ℂ_[p]) = 0` using `constantCoeff_var 0`. Establish `h1 : MvPowerSeries.constantCoeff (PI.PhNormUnits.Xv 1 : MvPowerSeries (Fin 2) ℂ_[p]) = 0` using `constantCoeff_var 1`. Establish `hA` using `norm_at hSub hex0 hinv c N hU (PI.PhNormUnits.add l ex (PI.PhNormUnits.Xv 0) (PI.PhNormUnits.Xv 1) : MvPowerSeries (Fin 2) ℂ_[p]) (constantCoeff_formalAdd hex0 hinv _ _ h0 h1) hIA`. Establish `hX` using `norm_at hSub hex0 hinv c N hU (PI.PhNormUnits.Xv 0 : MvPowerSeries (Fin 2) ℂ_[p]) h0 (int_X 0)`. Establish `hY` using `norm_at hSub hex0 hinv c N hU (PI.PhNormUnits.Xv 1 : MvPowerSeries (Fin 2) ℂ_[p]) h1 (int_X 1)`.
+
+Establish `hsum` using `sSub hE (sSub hE hA hX) hY`. Establish `eL : PI.PhNormUnits.be l ex ph (PI.PhNormUnits.mulBy l ex c (PI.PhNormUnits.Xv 0 : MvPowerSeries (Fin 2) ℂ_[p])) (PI.PhNormUnits.mulBy l ex c (PI.PhNormUnits.Xv 1)) = PI.PhNormUnits.phAt ph (PI.PhNormUnits.mulBy l ex c (PI.PhNormUnits.add l ex (PI.PhNormUnits.Xv 0) (PI.PhNormUnit …`. Rewrite using `[mulBy_add hex0 hinv c _ _ h0 h1]`. Both sides reduce to the same expression. Establish `eR : MvPowerSeries.C N * PI.PhNormUnits.be l ex ph (PI.PhNormUnits.Xv 0 : MvPowerSeries (Fin 2) ℂ_[p]) (PI.PhNormUnits.Xv 1) = MvPowerSeries.C N * PI.PhNormUnits.phAt ph (PI.PhNormUnits.add l ex (PI.PhNormUnits.Xv 0) (PI.PhNormUnits.Xv 1)) - MvPowerSeries.C N * PI.PhNormUnits.phA …`.
+
+Simplify using `only [PI.PhNormUnits.be]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[eL, eR]`. Conclude with `hsum`.
+-/
 theorem units_i (c N : ℂ_[p])
     (hU : Simeq (phAt ph (mulBy l ex c (Xv ())) : MvPowerSeries Unit ℂ_[p]) (MvPowerSeries.C N * phAt ph (Xv ()))) :
     Simeq (be l ex ph (mulBy l ex c (Xv 0)) (mulBy l ex c (Xv 1)) : MvPowerSeries (Fin 2) ℂ_[p])
@@ -133,6 +173,11 @@ theorem units_i (c N : ℂ_[p])
   exact hsum
 
 include hE hSub hC hD hex0 hinv hph hIA hB in
+/- English proof (translation)
+Establish `h0 : MvPowerSeries.constantCoeff (PI.PhNormUnits.Xv 0 : MvPowerSeries (Fin 2) ℂ_[p]) = 0` using `constantCoeff_var 0`. Establish `h1 : MvPowerSeries.constantCoeff (PI.PhNormUnits.Xv 1 : MvPowerSeries (Fin 2) ℂ_[p]) = 0` using `constantCoeff_var 1`. Establish `hcomp : PI.PhNormUnits.mulBy l ex d (PI.PhNormUnits.mulBy l ex c (PI.PhNormUnits.Xv 1 : MvPowerSeries (Fin 2) ℂ_[p])) = PI.PhNormUnits.mulBy l ex (PI.PhNormUnits.zc n) (PI.PhNormUnits.Xv 1)`. Rewrite using `[mulBy_mulBy hex0 hinv d c _ h1, mul_comm d c, hn]`. Establish `key` using `be_zp hE hSub hex0 hinv hB hC hD hph hIA (PI.PhNormUnits.Xv 0 : MvPowerSeries (Fin 2) ℂ_[p]) (PI.PhNormUnits.Xv 1) h0 h1 (int_X 0) (int_X 1) n`.
+
+Rewrite using `[hcomp, hn]`. Conclude with `sSymm hE key`.
+-/
 theorem units_ii (c d : ℂ_[p]) (n : ℤ_[p]) (hn : c * d = zc n) :
     Simeq (MvPowerSeries.C (c * d) * be l ex ph (Xv 0) (Xv 1) : MvPowerSeries (Fin 2) ℂ_[p])
       (be l ex ph (Xv 0) (mulBy l ex d (mulBy l ex c (Xv 1)))) := by
@@ -147,6 +192,19 @@ theorem units_ii (c d : ℂ_[p]) (n : ℤ_[p]) (hn : c * d = zc n) :
   exact sSymm hE key
 
 include hE hSub hex0 hinv in
+/- English proof (translation)
+Establish `h0 : MvPowerSeries.constantCoeff (PI.PhNormUnits.Xv 0 : MvPowerSeries (Fin 2) ℂ_[p]) = 0` using `constantCoeff_var 0`. Establish `h1 : MvPowerSeries.constantCoeff (PI.PhNormUnits.Xv 1 : MvPowerSeries (Fin 2) ℂ_[p]) = 0` using `constantCoeff_var 1`. Establish `hy0 : MvPowerSeries.constantCoeff (PI.PhNormUnits.mulBy l ex c⁻¹ (PI.PhNormUnits.Xv 1 : MvPowerSeries (Fin 2) ℂ_[p])) = 0` using `constantCoeff_formalSMul hex0 hinv _ _ h1`. Establish `hcs0 : MvPowerSeries.constantCoeff (PI.PhNormUnits.mulBy l ex c (PI.PhNormUnits.Xv 0 : MvPowerSeries (Fin 2) ℂ_[p])) = 0` using `constantCoeff_formalSMul hex0 hinv _ _ h0`. Establish `hcs1 : MvPowerSeries.constantCoeff (PI.PhNormUnits.mulBy l ex c (PI.PhNormUnits.Xv 1 : MvPowerSeries (Fin 2) ℂ_[p])) = 0` using `constantCoeff_formalSMul hex0 hinv _ _ h1`.
+
+Establish `hdc1 : MvPowerSeries.constantCoeff (PI.PhNormUnits.mulBy l ex d (PI.PhNormUnits.mulBy l ex c (PI.PhNormUnits.Xv 1 : MvPowerSeries (Fin 2) ℂ_[p]))) = 0` using `constantCoeff_formalSMul hex0 hinv _ _ hcs1`. Establish `hs : ∀ i, MvPowerSeries.constantCoeff (![(PI.PhNormUnits.Xv 0 : MvPowerSeries (Fin 2) ℂ_[p]), PI.PhNormUnits.mulBy l ex c⁻¹ (PI.PhNormUnits.Xv 1)] i) = 0`. Introduce `i`. Use `fin_cases i`. Simplify using the standard rewrite rules.
+
+Simplify using `using hy0`. Establish `hs0 : MvPowerSeries.subst ![(PI.PhNormUnits.Xv 0 : MvPowerSeries (Fin 2) ℂ_[p]), PI.PhNormUnits.mulBy l ex c⁻¹ (PI.PhNormUnits.Xv 1)] (PI.PhNormUnits.Xv 0 : MvPowerSeries (Fin 2) ℂ_[p]) = PI.PhNormUnits.Xv 0`. Rewrite using `[sb_X _ hs 0]`. Simplify using the standard rewrite rules. Establish `hs1 : MvPowerSeries.subst ![(PI.PhNormUnits.Xv 0 : MvPowerSeries (Fin 2) ℂ_[p]), PI.PhNormUnits.mulBy l ex c⁻¹ (PI.PhNormUnits.Xv 1)] (PI.PhNormUnits.Xv 1 : MvPowerSeries (Fin 2) ℂ_[p]) = PI.PhNormUnits.mulBy l ex c⁻¹ (PI.PhNormUnits.Xv 1)`.
+
+Rewrite using `[sb_X _ hs 1]`. Simplify using the standard rewrite rules. Establish `hcc : PI.PhNormUnits.mulBy l ex c (PI.PhNormUnits.mulBy l ex c⁻¹ (PI.PhNormUnits.Xv 1 : MvPowerSeries (Fin 2) ℂ_[p])) = PI.PhNormUnits.Xv 1`. Rewrite using `[mulBy_mulBy hex0 hinv c c⁻¹ _ h1, mul_inv_cancel₀ hc, mulBy_one hex0 hinv _ h1]`. Establish `eL : MvPowerSeries.subst ![(PI.PhNormUnits.Xv 0 : MvPowerSeries (Fin 2) ℂ_[p]), PI.PhNormUnits.mulBy l ex c⁻¹ (PI.PhNormUnits.Xv 1)] (PI.PhNormUnits.be l ex ph (PI.PhNormUnits.mulBy l ex c (PI.PhNormUnits.Xv 0 : MvPowerSeries (Fin 2) ℂ_[p])) (PI.PhNormUnits.mulBy l ex c (PI.PhNor …`.
+
+Rewrite using `[sb_be _ hs hex0 hinv ph _ _ hcs0 hcs1, sb_mulBy _ hs hex0 hinv c _ h0, sb_mulBy _ hs hex0 hinv c _ h1, hs0, hs1, hcc]`. Establish `eR : MvPowerSeries.subst ![(PI.PhNormUnits.Xv 0 : MvPowerSeries (Fin 2) ℂ_[p]), PI.PhNormUnits.mulBy l ex c⁻¹ (PI.PhNormUnits.Xv 1)] (PI.PhNormUnits.be l ex ph (PI.PhNormUnits.Xv 0 : MvPowerSeries (Fin 2) ℂ_[p]) (PI.PhNormUnits.mulBy l ex d (PI.PhNormUnits.mulBy l ex c (PI.PhNorm …`. Rewrite using `[sb_be _ hs hex0 hinv ph _ _ h0 hdc1, sb_mulBy _ hs hex0 hinv d _ hcs1, sb_mulBy _ hs hex0 hinv c _ h1, hs0, hs1, hcc]`. Establish `key` using `simeq_subst2 hSub hex0 hinv (PI.PhNormUnits.Xv 0 : MvPowerSeries (Fin 2) ℂ_[p]) (PI.PhNormUnits.mulBy l ex c⁻¹ (PI.PhNormUnits.Xv 1)) h0 hy0 (int_X 0) hw h`. Rewrite `key` using `[eL, eR]`.
+
+Conclude with `key`.
+-/
 theorem units_iv (c d : ℂ_[p]) (hc : c ≠ 0)
     (hw : IntegralMv (mulBy l ex c⁻¹ (Xv 1) : MvPowerSeries (Fin 2) ℂ_[p]))
     (h : Simeq (be l ex ph (mulBy l ex c (Xv 0)) (mulBy l ex c (Xv 1)) : MvPowerSeries (Fin 2) ℂ_[p])

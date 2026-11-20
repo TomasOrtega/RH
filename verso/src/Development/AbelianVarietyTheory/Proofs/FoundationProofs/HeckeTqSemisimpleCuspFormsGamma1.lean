@@ -10,12 +10,20 @@ open scoped Manifold
 
 namespace GlobalTheory.HeckeFamilyMatrices.SemisimpleLevelOne
 
+/- English proof (translation)
+Use extensionality with `γ`. Simplify using `only [GlobalTheory.Hk.lev, Subgroup.mem_inf, CongruenceSubgroup.Gamma0_mem, and_iff_left_iff_imp]`. Introduce `_`. Conclude with `Subsingleton.elim _ _`.
+-/
 lemma lev_one (N : ℕ) : GlobalTheory.Hk.lev N 1 = CongruenceSubgroup.Gamma1 N := by
   ext γ
   simp only [GlobalTheory.Hk.lev, Subgroup.mem_inf, CongruenceSubgroup.Gamma0_mem, and_iff_left_iff_imp]
   intro _
   exact Subsingleton.elim _ _
 
+/- English proof (translation)
+Introduce `N k q σ hN _ hq hqN hσ f c n h`. Take `⟨-, -, hT, hD, -⟩` from `GlobalTheory.SlashUpperTriangularMatrices.bridge`. Establish `hT' : TqF (k : ℤ) q σ = GlobalTheory.Hk.heckeT (k : ℤ) q σ` using `funext fun F => hT _ _ _ F hq.pos`. Establish `hσ' : GlobalTheory.Hk.IsDia N 1 (q : ℤ) σ` using `(hD N 1 (q : ℤ) σ).1 (by simpa using hσ)`. Rewrite `h`, the goal using `[hT']`.
+
+Set `g : CuspForm (GlobalTheory.Hk.lev N 1) (k : ℤ)` to `f.copy ⇑f rfl (by rw [lev_one])`. Conclude with `GlobalTheory.T.heckeTOperatorExplicit_semisimple_cuspForms N 1 q (k : ℤ) σ c n (by omega) one_pos hq (by simpa using hqN) hσ' g h`.
+-/
 theorem tq_semisimple : ∀ (N k q : ℕ) (σ : SL(2, ℤ)), 5 ≤ N → 3 ≤ k → q.Prime → ¬ q ∣ N →
     IsDiam N 1 (q : ZMod N) σ →
     ∀ (f : CuspForm (CongruenceSubgroup.Gamma1 N) (k : ℤ)) (c : ℂ) (n : ℕ),

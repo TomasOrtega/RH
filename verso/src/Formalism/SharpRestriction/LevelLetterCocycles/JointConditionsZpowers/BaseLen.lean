@@ -8,6 +8,19 @@ section Len
 
 variable {O : Type} [CommRing O]
 
+/- English proof (translation)
+Establish `hker : ∀ i, Ideal.span {a} ≤ LinearMap.ker (LinearMap.toSpanSingleton O M (m i))`. Introduce `i`. Rewrite using `[Ideal.span_singleton_le_iff_mem, LinearMap.mem_ker, LinearMap.toSpanSingleton_apply]`. Conclude with `hk i`. Set `ψ : Fin n → (O ⧸ Ideal.span {a}) →ₗ[O] M` to `fun i => (Ideal.span {a}).liftQ (LinearMap.toSpanSingleton O M (m i)) (hker i)`.
+
+Set `φ : (Fin n → O ⧸ Ideal.span {a}) →ₗ[O] M` to `∑ i, (ψ i).comp (LinearMap.proj i : (Fin n → O ⧸ Ideal.span {a}) →ₗ[O] O ⧸ Ideal.span {a})`. Establish `hsurj : Function.Surjective φ`. Rewrite using `[← LinearMap.range_eq_top, eq_top_iff, ← hspan, Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Use `⟨Pi.single i (Submodule.Quotient.mk (1 : O)), ?_⟩` and prove the remaining obligations.
+
+Use `show (∑ j, (ψ j).comp (LinearMap.proj j : (Fin n → O ⧸ Ideal.span {a}) →ₗ[O] O ⧸ Ideal.span {a})) (Pi.single i (Submodule.Quotient.mk (1 : O))) = m i`. Use `first`. Consider the case `rw [LinearMap.sum_apply]`. Consider the case `rw [LinearMap.coe_fn_sum, Finset.sum_apply]`. Rewrite using `[Finset.sum_eq_single i]`.
+
+Use `first`. Consider the case `(show (ψ i) ((Pi.single i (Submodule.Quotient.mk (1 : O)) : Fin n → O ⧸ Ideal.span {a}) i) = m i`. Rewrite using `[Pi.single_eq_same]`. Use `show (LinearMap.toSpanSingleton O M (m i)) 1 = m i`. Use the proof step `simp)`.
+
+Consider the case `(simp [ψ]; exact one_smul O (m i))`. Consider the case `(simp [ψ]; rfl)`. Introduce `j _ hj`. Simplify using `[hj]`. Simplify using the standard rewrite rules.
+
+Combine the equalities or inequalities in the displayed calculation. Consider the case `(rw [Module.length_pi_of_fintype]; simp)`. Consider the case `(rw [Module.length_pi]; simp)`.
+-/
 theorem length_le_of_span {M : Type} [AddCommGroup M] [Module O M] {n : ℕ} (m : Fin n → M) (a : O)
     (hspan : Submodule.span O (Set.range m) = ⊤) (hk : ∀ i, a • m i = 0) :
     Module.length O M ≤ (n : ℕ∞) * Module.length O (O ⧸ Ideal.span {a}) := by
@@ -47,6 +60,11 @@ theorem length_le_of_span {M : Type} [AddCommGroup M] [Module O M] {n : ℕ} (m 
           | (rw [Module.length_pi_of_fintype]; simp)
           | (rw [Module.length_pi]; simp)
 
+/- English proof (translation)
+Establish `hs : Function.Surjective f.rangeRestrict`. Introduce and unpack `⟨_, x, rfl⟩`. Conclude with `⟨x, rfl⟩`. Establish `hex : Function.Exact (LinearMap.ker f).subtype f.rangeRestrict` using `by first`. Consider the case `exact LinearMap.exact_iff.2 (by rw [LinearMap.ker_rangeRestrict, Submodule.range_subtype])`.
+
+Consider the case `exact fun y => ⟨fun hy => ⟨⟨y, LinearMap.mem_ker.2 (congrArg Subtype.val hy)⟩, rfl⟩, by rintro ⟨z, rfl⟩; exact Subtype.ext (LinearMap.mem_ker.1 z.2)⟩`. Rewrite using `[Module.length_eq_add_of_exact (LinearMap.ker f).subtype f.rangeRestrict Subtype.val_injective hs hex]`. Conclude with `add_le_add le_rfl (Module.length_le_of_injective (LinearMap.range f).subtype Subtype.val_injective)`.
+-/
 private theorem length_le_length_ker_add_length {N P : Type} [AddCommGroup N] [Module O N]
     [AddCommGroup P] [Module O P] (f : N →ₗ[O] P) :
     Module.length O N ≤ Module.length O ↥(LinearMap.ker f) + Module.length O P := by
@@ -63,6 +81,23 @@ private theorem length_le_length_ker_add_length {N P : Type} [AddCommGroup N] [M
   exact add_le_add le_rfl
     (Module.length_le_of_injective (LinearMap.range f).subtype Subtype.val_injective)
 
+/- English proof (translation)
+Proceed by induction on `c with`. Consider the case `zero`. Establish `hs : Subsingleton ↥(Submodule.torsionBy O M (a ^ 0))`. Use `⟨fun x y => Subtype.ext ?_⟩` and prove the remaining obligations. Establish `h1 : ∀ z : M, a ^ 0 • z = 0 → z = 0` using `fun z hz => by`.
+
+Rewrite `hz` using `[pow_zero, one_smul]`. Then use the resulting hypothesis. Establish `hx` using `x.2`. Establish `hy` using `y.2`. Rewrite `hx`, `hy` using `[Submodule.mem_torsionBy_iff]`. Rewrite using `[h1 _ hx, h1 _ hy]`.
+
+Establish `h0 : Module.length O ↥(Submodule.torsionBy O M (a ^ 0)) = 0` using `by first`. Consider the case `exact Module.length_eq_zero_iff.2 hs`. Consider the case `exact Module.length_eq_zero`. Rewrite using `[h0]`. Use `first`.
+
+Consider the case `exact zero_le _`. Consider the case `exact zero_le`. Consider the case `simp`. Consider the case `succ c ih`. Establish `hpow : a * a ^ c = a ^ (c + 1)` using `by ring`.
+
+Set `f : ↥(Submodule.torsionBy O M (a ^ (c + 1))) →ₗ[O] ↥(Submodule.torsionBy O M a)` to `LinearMap.codRestrict (Submodule.torsionBy O M a) (a ^ c • (Submodule.torsionBy O M (a ^ (c + 1))).subtype) (fun x => by`. Establish `hx` using `x.2`. Rewrite `hx` using `[Submodule.mem_torsionBy_iff]`. Rewrite using `[Submodule.mem_torsionBy_iff]`. Use `show a • a ^ c • (x : M) = 0`.
+
+Rewrite using `[smul_smul, hpow]`. Conclude with `hx)`. Set `g : ↥(LinearMap.ker f) →ₗ[O] ↥(Submodule.torsionBy O M (a ^ c))` to `LinearMap.codRestrict (Submodule.torsionBy O M (a ^ c)) ((Submodule.torsionBy O M (a ^ (c + 1))).subtype ∘ₗ (LinearMap.ker f).subtype) (fun y => by`. Establish `hy` using `congrArg Subtype.val (LinearMap.mem_ker.1 y.2)`. Rewrite using `[Submodule.mem_torsionBy_iff]`.
+
+Conclude with `hy)`. Establish `hg : Function.Injective g`. Introduce `y z h`. Establish `h'` using `congrArg Subtype.val h`. Conclude with `Subtype.ext (Subtype.ext h')`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem length_torsionBy_pow_le {M : Type} [AddCommGroup M] [Module O M] (a : O) (c : ℕ) :
     Module.length O ↥(Submodule.torsionBy O M (a ^ c)) ≤ (c : ℕ∞) * Module.length O ↥(Submodule.torsionBy O M a) := by
   induction c with
@@ -125,6 +160,25 @@ section Quot
 variable {O LL V : Type} [CommRing O] [Field LL] [Algebra O LL] [AddCommGroup V] [Module LL V] [Module O V]
   [IsScalarTower O LL V]
 
+/- English proof (translation)
+Establish `hinv : ∀ v : V, a • ((algebraMap O LL a)⁻¹ • v) = v` using `fun v => by`. Rewrite using `[← algebraMap_smul LL a, smul_smul, mul_inv_cancel₀ ha, one_smul]`. Establish `hmem : ∀ i, (Submodule.Quotient.mk ((algebraMap O LL a)⁻¹ • b i) : V ⧸ T) ∈ Submodule.torsionBy O (V ⧸ T) a`. Introduce `i`. Rewrite using `[Submodule.mem_torsionBy_iff, ← Submodule.Quotient.mk_smul, hinv, Submodule.Quotient.mk_eq_zero, hT]`.
+
+Conclude with `Submodule.subset_span ⟨i, rfl⟩`. Set `m : Fin n → ↥(Submodule.torsionBy O (V ⧸ T) a)` to `fun i => ⟨_, hmem i⟩`. Use `length_le_of_span m a ?_ ?_` and prove the remaining obligations. Rewrite using `[eq_top_iff]`. Introduce and unpack `⟨y, hy⟩ -`.
+
+Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective T y`. Establish `hy'` using `hy`. Rewrite `hy'` using `[Submodule.mem_torsionBy_iff, ← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero, hT, Submodule.mem_span_range_iff_exists_fun]`. Take `⟨c, hc⟩` from `hy'`. Establish `hx : x = ∑ i, c i • ((algebraMap O LL a)⁻¹ • b i)`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← algebraMap_smul LL a x, smul_smul, inv_mul_cancel₀ ha, one_smul]`. Use `_ = ∑ i, c i • ((algebraMap O LL a)⁻¹ • b i) := by`. Rewrite using `[← hc, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Use `first`. Consider the case `exact smul_comm _ _ _`. Consider the case `rw [← algebraMap_smul LL (c i) ((algebraMap O LL a)⁻¹ • b i), smul_smul, mul_comm, ← smul_smul, algebraMap_smul]`. Establish `he : (⟨Submodule.Quotient.mk x, hy⟩ : ↥(Submodule.torsionBy O (V ⧸ T) a)) = ∑ i, c i • m i`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Use `first`. Consider the case `(rw [Submodule.coe_sum]; simp only [Submodule.coe_smul, m])`. Consider the case `simp only [AddSubmonoidClass.coe_finset_sum, SetLike.val_smul, m]`. Rewrite using `[hx]`. Use `first`.
+
+Consider the case `(change T.mkQ _ = ∑ i, c i • T.mkQ ((algebraMap O LL a)⁻¹ • b i)`. Rewrite using `[map_sum]`. Simplify using `only [map_smul])`. Consider the case `simp [Submodule.Quotient.mk_sum]`. Rewrite using `[he]`.
+
+Conclude with `sum_mem fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Introduce `i`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `h` using `hmem i`. Rewrite `h` using `[Submodule.mem_torsionBy_iff]`.
+
+Conclude with `h`.
+-/
 theorem length_torsion_quot (T : Submodule O V) {n : ℕ} (b : Fin n → V)
     (hT : T = Submodule.span O (Set.range b)) (a : O) (ha : algebraMap O LL a ≠ 0) :
     Module.length O ↥(Submodule.torsionBy O (V ⧸ T) a) ≤ (n : ℕ∞) * Module.length O (O ⧸ Ideal.span {a}) := by
@@ -176,6 +230,11 @@ theorem length_torsion_quot (T : Submodule O V) {n : ℕ} (b : Fin n → V)
     rw [Submodule.mem_torsionBy_iff] at h
     exact h
 
+/- English proof (translation)
+Establish `hle : W ≤ Submodule.torsionBy O (V ⧸ T) (a ^ c)` using `fun x hx => by`. Rewrite using `[Submodule.mem_torsionBy_iff]`. Conclude with `hW x hx`. Establish `h3` using `length_torsion_quot T b hT a ha`. Combine the equalities or inequalities in the displayed calculation.
+
+Consider the case `exact mul_le_mul' le_rfl h3`. Consider the case `gcongr`. Use `_ = (n : ℕ∞) * (c : ℕ∞) * Module.length O (O ⧸ Ideal.span {a}) := by ring`.
+-/
 theorem length_le_of_killed (T : Submodule O V) {n : ℕ} (b : Fin n → V)
     (hT : T = Submodule.span O (Set.range b)) (a : O) (ha : algebraMap O LL a ≠ 0) (c : ℕ)
     (W : Submodule O (V ⧸ T)) (hW : ∀ x ∈ W, a ^ c • x = 0) :

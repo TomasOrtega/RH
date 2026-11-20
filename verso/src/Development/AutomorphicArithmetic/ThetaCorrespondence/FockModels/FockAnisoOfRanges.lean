@@ -50,12 +50,18 @@ def FockAnisoGt (D : D7) : Prop :=
     (∀ g, Integrable (GlobalTheory.AutomorphicL2Unitary.descend (GQ B) fun h => thetaKO omh g h φ) (autMeasure B mH)) ∧
     GlobalTheory.Eis.EisValueAt A (flat A a (swSec A B omh ν 𝓕 φ) (sZero A B)) (sZero A B) (GlobalTheory.ThetaMean.thetaMean omh mH φ)
 
+/- English proof (translation)
+Introduce `ψ A B hA hAB hB χB omh homh a hmaj θ sS sB hθ hS hBc hKc ν 𝓕 hcov mH hmH φ hF`. Break down `le_or_gt B.rank (2 * A.rank) with h | h` into its components or cases. Conclude with `h1 ψ A B hA hAB h hB χB omh homh a hmaj θ sS sB hθ hS hBc hKc ν 𝓕 hcov mH hmH φ hF`. Conclude with `h2 ψ A B hA h hB χB omh homh a hmaj θ sS sB hθ hS hBc hKc ν 𝓕 hcov mH hmH φ hF`.
+-/
 theorem fockAniso_of_ranges (D : D7) (h1 : FockAnisoLe D) (h2 : FockAnisoGt D) : SiegelWeilFockAniso D := by
   intro ψ A B hA hAB hB χB omh homh a hmaj θ sS sB hθ hS hBc hKc ν 𝓕 hcov mH hmH φ hF
   rcases le_or_gt B.rank (2 * A.rank) with h | h
   · exact h1 ψ A B hA hAB h hB χB omh homh a hmaj θ sS sB hθ hS hBc hKc ν 𝓕 hcov mH hmH φ hF
   · exact h2 ψ A B hA h hB χB omh homh a hmaj θ sS sB hθ hS hBc hKc ν 𝓕 hcov mH hmH φ hF
 
+/- English proof (translation)
+Introduce `D ψ A B _hA hab hle hB χB omh homh a hmaj θ sS sB hθ hS hBc hKc ν 𝓕 hcov mH hmH φ hF`. Establish `hI : HasIwasawa D.sp.cm.sig (dblSp A).gram (Khat A a)` using `GlobalTheory.T.adelicIwasawa_doubledGroup_selfDualLattice D A (frameLat A) a (GlobalTheory.WeilAtPlace.isSelfDualC_frameLat A) hmaj`. Establish `hw : Formalism.MainNotions.SchurIrreducible.wittIdx B = 0` using `by rw [GlobalTheory.RallisIP.wittIdx_eq_wittIndex]; exact hB`. Conclude with `hSW D ψ A B hab hle (by omega) χB omh homh a hmaj hI θ sS sB hθ hS hBc hKc ν 𝓕 hcov mH hmH φ hF`.
+-/
 theorem fockAniso_le (hSW : GlobalTheory.Published.SiegelWeilUnitaryConvergent) : ∀ D, FockAnisoLe D := by
   intro D ψ A B _hA hab hle hB χB omh homh a hmaj θ sS sB hθ hS hBc hKc ν 𝓕 hcov mH hmH φ hF
   have hI : HasIwasawa D.sp.cm.sig (dblSp A).gram (Khat A a) :=
@@ -63,6 +69,9 @@ theorem fockAniso_le (hSW : GlobalTheory.Published.SiegelWeilUnitaryConvergent) 
   have hw : Formalism.MainNotions.SchurIrreducible.wittIdx B = 0 := by rw [GlobalTheory.RallisIP.wittIdx_eq_wittIndex]; exact hB
   exact hSW D ψ A B hab hle (by omega) χB omh homh a hmaj hI θ sS sB hθ hS hBc hKc ν 𝓕 hcov mH hmH φ hF
 
+/- English proof (translation)
+Establish `e : (sZero A B).re = ((B.rank : ℝ) - A.rank) / 2`. Simplify using `[sZero]`. Rewrite using `[e]`. Establish `: (2 * A.rank : ℝ) < B.rank` using `by exact_mod_cast h`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem re_sZero_gt {D : D7} (A B : HSp D) (h : 2 * A.rank < B.rank) : (A.rank : ℝ) / 2 < (sZero A B).re := by
   have e : (sZero A B).re = ((B.rank : ℝ) - A.rank) / 2 := by
     simp [sZero]
@@ -70,6 +79,15 @@ theorem re_sZero_gt {D : D7} (A B : HSp D) (h : 2 * A.rank < B.rank) : (A.rank :
   have : (2 * A.rank : ℝ) < B.rank := by exact_mod_cast h
   linarith
 
+/- English proof (translation)
+Introduce `hWeil D ψ A B ha hab hB χB omh homh a hmaj θ sS sB hθ hS hBc hKc ν 𝓕 hcov mH hmH φ hF`. Establish `hφ` using `hF.1`. Establish `hK` using `GlobalTheory.T.fock_vector_finite_under_compact_commuting_cartan D ψ θ (dblSp A) B 1 χB omh sS sB homh hθ hS hBc (Khat A a) (isCompact_Khat A a) hKc φ hF`. Establish `hI : HasIwasawa D.sp.cm.sig (dblSp A).gram (Khat A a)` using `GlobalTheory.T.adelicIwasawa_doubledGroup_selfDualLattice D A (frameLat A) a (GlobalTheory.WeilAtPlace.isSelfDualC_frameLat A) hmaj`. Establish `hwitt : Formalism.MainNotions.SchurIrreducible.wittIdx B = 0 ∨ A.rank + Formalism.MainNotions.SchurIrreducible.wittIdx B < B.rank`.
+
+Rewrite using `[GlobalTheory.RallisIP.wittIdx_eq_wittIndex]`. Conclude with `Or.inl hB`. Take `⟨-, hW2⟩` from `hWeil D A B mH hmH ha hwitt`. Take `⟨hint, hser⟩` from `hW2 ψ χB omh homh φ hφ`. Use `⟨hint, ?_⟩` and prove the remaining obligations.
+
+Establish `hsum : ∀ g, GlobalTheory.Eis.eis A (GlobalTheory.SiegelFormula.swSection A B ν 𝓕 omh φ) g = ⨍ q, descend (GQ B) (fun h => thetaKO omh g h φ) q ∂autMeasure B mH` using `fun g => ((hser hab ν 𝓕 hcov).2 g).2`. Establish `hmem` using `GlobalTheory.T.doublingSiegelWeilSection_mem_degeneratePrincipalSeries GlobalTheory.weilRepresentationUnitaryPair D ψ A B χB omh homh ν 𝓕 hcov φ hφ a hK`. Establish `hv` using `GlobalTheory.Eis.SphConv.eisValueAt_flat hI hmem (GlobalTheory.Eis.sphConv D A a hI) (isHeckeCharacter_inv_of_isHeckeCharacter homh.hecT) (re_sZero_gt A B hab)`. Establish `he : GlobalTheory.Eis.eis A (swSec A B omh ν 𝓕 φ) = GlobalTheory.ThetaMean.thetaMean omh mH φ`. Use function extensionality and compare the values at `g`.
+
+Rewrite using `[← swSection_eq_swSec]`. Conclude with `hsum g`. Rewrite `hv` using `[he]`. Conclude with `hv`.
+-/
 theorem fockAniso_gt : GlobalTheory.Published.WeilSiegelFormulaUnitary → ∀ D, FockAnisoGt D := by
   intro hWeil D ψ A B ha hab hB χB omh homh a hmaj θ sS sB hθ hS hBc hKc ν 𝓕 hcov mH hmH φ hF
   have hφ := hF.1
@@ -96,6 +114,9 @@ theorem fockAniso_gt : GlobalTheory.Published.WeilSiegelFormulaUnitary → ∀ D
 
 def FA : Prop := ∀ D : D7, GlobalTheory.BottomRallis.SiegelWeilFockAniso D
 
+/- English proof (translation)
+Introduce `D` and use `fockAniso_of_ranges D (fockAniso_le hC D) (fockAniso_gt hW D)`.
+-/
 theorem fa_of (hC : GlobalTheory.Published.SiegelWeilUnitaryConvergent) (hW : GlobalTheory.Published.WeilSiegelFormulaUnitary) : FA :=
   fun D => fockAniso_of_ranges D (fockAniso_le hC D) (fockAniso_gt hW D)
 

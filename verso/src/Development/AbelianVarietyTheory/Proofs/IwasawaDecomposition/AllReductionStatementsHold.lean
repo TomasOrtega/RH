@@ -26,6 +26,11 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 
 namespace GlobalTheory.HeightCounting.Up
 
+/- English proof (translation)
+Introduce `hCW hHM hW hD hU hH hP hS hL hA hPt`. Establish `hMt : SMt` using `GlobalTheory.T.multiplicity_of_primitive hP`. Establish `hRat : SRat hL` using `GlobalTheory.HeightCounting.RatSide.sRat_of_duties hU hP hS (GlobalTheory.HeightCounting.Up.IsotAtStates.isot_allSt hW hD hH hP) hL`. Establish `hPar : ParSt hL` using `GlobalTheory.T.parameter_statement_all hP hMt hL`. Establish `hEta : SEta hL` using `GlobalTheory.StEta.sEta hP hL hPt`.
+
+Establish `hFin` using `GlobalTheory.T.finiteness_of_localLanglands hW hD hP hL hA hEta (GlobalTheory.HeightCounting.Up.sXd_all hL)`. Establish `hG` using `GlobalTheory.HeightCounting.UpPin.steps_pin hL 0`. Use `⟨GlobalTheory.T.reduction_to_local_langlands_A hP hA.pht hL, hMt, hRat, GlobalTheory.SCuspRows.sCusp_of_parSt hP hL hPar hRat, hG.1 (GlobalTheory.T.settingsFormsExistList_of_localLanglands hP hS hL 0), hG.2.1 (GlobalTheory.T.second_bound_of_primitive hP hS hL 0), hG.2.2.1 (Global …` and prove the remaining obligations. Conclude with `⟨GlobalTheory.T.settingsFormsExistList_of_localLanglands hP hS hL c, GlobalTheory.T.second_bound_of_primitive hP hS hL c, GlobalTheory.T.moduliPointsExistList_of_localLanglands hP hS hL c, hFin.2 c⟩`.
+-/
 theorem reductionStatements_of_casselmanWallach : GlobalTheory.Published.CasselmanWallach → GlobalTheory.Published.HarishChandraModules → GlobalTheory.Published.WeilRepresentationUnitaryPair → GlobalTheory.Published.DiscreteSeriesExists →
     GlobalTheory.Published.DiscreteSeriesUpqUnique → HypH → PrN → SerN →
     ∀ hL : GlobalTheory.Published.LocalLanglandsGL, ArchCmp hL → PtSt hL →

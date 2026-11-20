@@ -15,6 +15,9 @@ def lft (c : yoneda.obj U ⟶ Q) : yoneda.obj U ⟶ P :=
   yonedaEquiv.symm (hφ (op U) (yonedaEquiv c)).choose
 
 @[reassoc (attr := simp)]
+/- English proof (translation)
+Apply `yonedaEquiv.injective` to reduce the goal to its premises. Rewrite using `[yonedaEquiv_comp, lft, Equiv.apply_symm_apply]`. Conclude with `(hφ (op U) (yonedaEquiv c)).choose_spec`.
+-/
 lemma lft_comp (c : yoneda.obj U ⟶ Q) : lft φ hφ U c ≫ φ = c := by
   apply yonedaEquiv.injective
   rw [yonedaEquiv_comp, lft, Equiv.apply_symm_apply]
@@ -29,9 +32,15 @@ def sf (n : ℕ) (x : yoneda.obj U ⟶ (Arrow.mk φ).cechNerve.obj (op ⦋n⦌))
 def sf' (c : yoneda.obj U ⟶ Q) : yoneda.obj U ⟶ (Arrow.mk φ).cechNerve.obj (op ⦋0⦌) :=
   lft φ hφ U c ≫ WidePullback.lift φ (fun _ => 𝟙 P) (by simp)
 
+/- English proof (translation)
+Simplify using `[sf']`.
+-/
 lemma sf'_comp_aug (c : yoneda.obj U ⟶ Q) : sf' φ hφ U c ≫ (Arrow.mk φ).augmentedCechNerve.hom.app (op ⦋0⦌) = c := by
   simp [sf']
 
+/- English proof (translation)
+Simplify using `[SimplicialObject.δ, SimplexCategory.δ, sf, sf']`. Use extensionality with `j`. Use `fin_cases j`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+-/
 lemma sf_zero_comp_δ_one (x : yoneda.obj U ⟶ (Arrow.mk φ).cechNerve.obj (op ⦋0⦌)) :
     sf φ hφ U 0 x ≫ (Arrow.mk φ).cechNerve.δ 1 =
       sf' φ hφ U (x ≫ (Arrow.mk φ).augmentedCechNerve.hom.app (op ⦋0⦌)) := by
@@ -41,6 +50,9 @@ lemma sf_zero_comp_δ_one (x : yoneda.obj U ⟶ (Arrow.mk φ).cechNerve.obj (op 
     simp
   · simp
 
+/- English proof (translation)
+Simplify using `[SimplicialObject.δ, SimplexCategory.δ, sf]`. Use extensionality with `j`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+-/
 lemma sf_comp_δ_zero (n : ℕ) (x : yoneda.obj U ⟶ (Arrow.mk φ).cechNerve.obj (op ⦋n⦌)) :
     sf φ hφ U n x ≫ (Arrow.mk φ).cechNerve.δ 0 = x := by
   dsimp [SimplicialObject.δ, SimplexCategory.δ, sf]
@@ -48,6 +60,9 @@ lemma sf_comp_δ_zero (n : ℕ) (x : yoneda.obj U ⟶ (Arrow.mk φ).cechNerve.ob
   · simp
   · simp
 
+/- English proof (translation)
+Simplify using `[SimplicialObject.δ, SimplexCategory.δ, sf]`. Use extensionality with `j`. Apply the tactic sequence `induction j using Fin.cases <;> simp`. Simplify using the standard rewrite rules.
+-/
 lemma sf_succ_comp_δ_succ (n : ℕ) (i : Fin (n + 2)) (x : yoneda.obj U ⟶ (Arrow.mk φ).cechNerve.obj (op ⦋n + 1⦌)) :
     sf φ hφ U (n + 1) x ≫ (Arrow.mk φ).cechNerve.δ i.succ = sf φ hφ U n (x ≫ (Arrow.mk φ).cechNerve.δ i) := by
   dsimp [SimplicialObject.δ, SimplexCategory.δ, sf]
@@ -55,6 +70,9 @@ lemma sf_succ_comp_δ_succ (n : ℕ) (i : Fin (n + 2)) (x : yoneda.obj U ⟶ (Ar
   · induction j using Fin.cases <;> simp
   · simp
 
+/- English proof (translation)
+Simplify using `[SimplicialObject.σ, SimplexCategory.σ, sf]`. Use extensionality with `j`. Apply the tactic sequence `induction j using Fin.cases <;> simp`. Simplify using the standard rewrite rules.
+-/
 lemma sf_comp_σ_succ (n : ℕ) (i : Fin (n + 1)) (x : yoneda.obj U ⟶ (Arrow.mk φ).cechNerve.obj (op ⦋n⦌)) :
     sf φ hφ U n x ≫ (Arrow.mk φ).cechNerve.σ i.succ = sf φ hφ U (n + 1) (x ≫ (Arrow.mk φ).cechNerve.σ i) := by
   dsimp [SimplicialObject.σ, SimplexCategory.σ, sf]
@@ -78,6 +96,15 @@ def toConst : (Arrow.mk φ).augmentedCechNerve ⟶ SimplicialObject.Augmented.co
   w := by ext : 1; simp
 
 include hφ in
+/- English proof (translation)
+Set `G : PSh ⥤ ModuleCat.{1} (ULift.{1} R)` to `(evaluation _ _).obj (op U) ⋙ uliftFunctor.{1} ⋙ ModuleCat.free (ULift.{1} R)`. Set `X` to `(Arrow.mk φ).augmentedCechNerve`. Set `e1 : coyoneda.obj (op (yoneda.obj U)) ⋙ ModuleCat.free (ULift.{1} R) ≅ G` to `Functor.isoWhiskerRight (largeCurriedYonedaLemma.app (op U)) (ModuleCat.free (ULift.{1} R))`. Set `ed0 : ExtraDegeneracy (((whiskering _ _).obj (coyoneda.obj (op (yoneda.obj U)) ⋙ ModuleCat.free (ULift.{1} R))).obj X)` to `(ed φ hφ U).map (ModuleCat.free (ULift.{1} R))`. Set `ed1 : ExtraDegeneracy (((whiskering _ _).obj G).obj X)` to `ed0.ofIso (((whiskering _ _).mapIso e1).app X)`.
+
+Establish `h1` using `ed1.homotopyEquiv.quasiIso_hom`. Establish `h2` using `((ExtraDegeneracy.const Q).map G).homotopyEquiv.quasiIso_hom`. Establish `nat` using `(AlgebraicTopology.AlternatingFaceMapComplex.ε (C := ModuleCat.{1} (ULift.{1} R))).naturality (((whiskering _ _).obj G).map (toConst φ))`. Establish `hp : (point ⋙ ChainComplex.single₀ _).map (((whiskering _ _).obj G).map (toConst φ)) = 𝟙 _`. Express the relevant statement in the definitionally equal form `(ChainComplex.single₀ _).map (G.map (𝟙 Q)) = 𝟙 _`.
+
+Rewrite using `[G.map_id, CategoryTheory.Functor.map_id]`. Rewrite `nat` using `[hp, Category.comp_id]`. Use `haveI : QuasiIso (AlgebraicTopology.AlternatingFaceMapComplex.ε.app (((whiskering _ _).obj G).obj (SimplicialObject.Augmented.const.obj Q))) := h2`. Rewrite using `[← quasiIso_iff_comp_right _ (AlgebraicTopology.AlternatingFaceMapComplex.ε.app (((whiskering _ _).obj G).obj (SimplicialObject.Augmented.const.obj Q)))]`. Establish `key : QuasiIso ((drop ⋙ AlgebraicTopology.alternatingFaceMapComplex (ModuleCat.{1} (ULift.{1} R))).map (((whiskering _ _).obj G).map (toConst φ)) ≫ AlgebraicTopology.AlternatingFaceMapComplex.ε.app (((whiskering _ _).obj G).obj (SimplicialObject.Augmented.const.obj Q)))`.
+
+Rewrite using `[nat]`. Conclude with `h1`. Conclude with `key`.
+-/
 theorem free_sections_quasiIso (R : Type) [CommRing R] :
     QuasiIso ((AlgebraicTopology.alternatingFaceMapComplex (ModuleCat.{1} (ULift.{1} R))).map
       (((SimplicialObject.whiskering _ _).obj ((evaluation _ _).obj (op U) ⋙ uliftFunctor.{1} ⋙
@@ -115,6 +142,9 @@ end GlobalTheory.EtC.CechSplit
 
 namespace GlobalTheory.EtC
 
+/- English proof (translation)
+Introduce `R _ P Q φ hφ`. Conclude with `chains_quasiIso_of_sections R _ (fun U => CechSplit.free_sections_quasiIso φ hφ U R)`.
+-/
 theorem chains_cechNerve_quasiIso_of_surjective : ∀ (R : Type) [CommRing R] {P Q : PSh} (φ : P ⟶ Q),
     (∀ U, Function.Surjective (φ.app U)) →
       QuasiIso ((chains R).map (show (Arrow.mk φ).cechNerve ⟶ disc.obj Q from

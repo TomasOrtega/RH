@@ -18,6 +18,15 @@ noncomputable section
 
 namespace GlobalTheory.ParPt
 
+/- English proof (translation)
+Introduce `R R' _ _ _ A A' φ m v hy f`. Set `E` to `SqExt.ofModule R R' R'`. Set `E'` to `SqExt.dual R'`. Establish `hy'` using `pt_w v`. Establish `hc : ∀ r : R, RingHom.id (DualNumber R') (algebraMap R (DualNumber R') r) = algebraMap R' (DualNumber R') (algebraMap R R' r)` using `fun r => IsScalarTower.algebraMap_apply R R' (DualNumber R') r`.
+
+Establish `e₀ : spMap (RingHom.id R') ≫ spMap (E.π : E.C →+* E.B) ≫ v.left ≫ φ = (spMap (E'.π : E'.C →+* E'.B) ≫ v.left) ≫ φ`. Rewrite using `[Category.assoc, ← Category.assoc, ← Cris.spMap_comp]`. Both sides reduce to the same expression. Establish `e : spMap (RingHom.id (DualNumber R')) ≫ v.left ≫ φ = v.left ≫ φ`. Rewrite using `[Cris.spMap_id, Category.id_comp]`.
+
+Set `Φ : E.thick _ (E.red_w hy) ⟶ m.obj (E'.thick _ (E'.red_w hy'))` to `{ φ := { RingHom.id (DualNumber R') with commutes' := hc } φ₀ := RingHom.id R' comm := fun b => rfl dp := isDPMorphism_sqDP E.sq E'.sq _ fun a ha => ha pt := e₀ }`. Set `a : Thick.triv E.C _ hy ⟶ m.obj (Thick.triv E'.C _ hy')` to `Thick.trivHom { RingHom.id (DualNumber R') with commutes' := hc } e`. Set `b : Thick.triv E.B _ (E.red_w hy) ⟶ m.obj (Thick.triv E'.B _ (E'.red_w hy'))` to `Thick.trivHom { RingHom.id R' with commutes' := fun _ => rfl } e₀`. Establish `k1` using `Form.ev_sq f a (m.functor.map (E'.idHom hy')) (E.idHom hy) Φ rfl rfl fun _ => rfl`. Establish `k2` using `Form.ev_sq f b (m.functor.map (E'.secHom (E'.red_w hy') E'.i E'.π_i)) (E.secHom (E.red_w hy) E.i E.π_i) Φ rfl rfl fun c => rfl`.
+
+Establish `k : E'.val v.left hy' (m.pullForm f).1 = E.val (v.left ≫ φ) hy f.1` using `(congrArg₂ (fun u v : E'.C => u - v) k2 k1).trans (add_sub_add_right_eq_sub (G := E'.C) _ _ _)`. Rewrite using `[tanVal_apply]`. Conclude with `congrArg (TrivSqZeroExt.snd (R := R')) k`.
+-/
 theorem tanVal_pullForm_ofModule : ∀ (R R' : Type) [CommRing R] [CommRing R'] [Algebra R R'] (A : Over (Sp R)) (A' : Over (Sp R')) (φ : A'.left ⟶ A.left) (m : IsMor (dp0 R) (A.hom ≫ 𝟙 (Sp R)) (dp0 R') (A'.hom ≫ 𝟙 (Sp R')) (algebraMap R R') φ) (v : epsR R' ⟶ A') (hy : (v.left ≫ φ) ≫ A.hom ≫ 𝟙 (Sp R) = spMap (algebraMap R (DualNumber R'))) (f : Form (A.hom ≫ 𝟙 (Sp R))), tanVal v (m.pullForm f) = TrivSqZeroExt.snd ((SqExt.ofModule R R' R').val (v.left ≫ φ) hy f.1) := by
   intro R R' _ _ _ A A' φ m v hy f
   let E := SqExt.ofModule R R' R'

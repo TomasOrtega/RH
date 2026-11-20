@@ -19,5 +19,8 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.KFourier MeasureTheory
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.KFourier.finrank_polyV_le | exact GlobalTheory.KFourier.finrank_polyV_le | (intros; apply GlobalTheory.KFourier.finrank_polyV_le <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.finrank_compactUnitaryPolyFunDegLE_le : ∀ {n : ℕ} (ε : Fin n → Bool) (d : ℕ), Module.finrank ℂ (polyV ε d) ≤ (d + 1) ^ (2 * n ^ 2) := by
   first | exact @GlobalTheory.KFourier.finrank_polyV_le | exact GlobalTheory.KFourier.finrank_polyV_le | (intros; apply GlobalTheory.KFourier.finrank_polyV_le <;> assumption)

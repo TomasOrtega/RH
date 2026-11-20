@@ -17,6 +17,11 @@ open GlobalTheory.IndefiniteRowSideFullHecke.PairingFromOuterAgreement (outer Is
 
 variable {E : Type} [Field E] [NumberField E]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hf, hp⟩`. Establish `hfin : Module.Finite ℤ Y` using `Module.Finite.trans (𝓞 E) Y`. Establish `hfl : Module.Flat ℤ Y` using `Module.Flat.trans ℤ (𝓞 E) Y`. Conclude with `⟨hfin, inferInstance⟩`.
+
+Introduce and unpack `⟨hf, hfr⟩`. Conclude with `⟨Module.Finite.of_restrictScalars_finite ℤ (𝓞 E) Y, GlobalTheory.PointStepCompare.projective_of_free E⟩`.
+-/
 theorem finite_projective_iff (Y : Type) [AddCommGroup Y] [Module (𝓞 E) Y] :
     (Module.Finite (𝓞 E) Y ∧ Module.Projective (𝓞 E) Y) ↔ (Module.Finite ℤ Y ∧ Module.Free ℤ Y) := by
   constructor
@@ -33,6 +38,13 @@ def IsConj (cj : E → E) : Prop := ∀ c : 𝓞 E, cj c = IsCMField.complexConj
 
 variable {Y : Type} [AddCommGroup Y] [Module (𝓞 E) Y]
 
+/- English proof (translation)
+Introduce `β`. Express the relevant statement in the definitionally equal form `((∀ a b, β a b = β b a) ∧ ∀ (c c' : 𝓞 E), (c' : E) = cj (c : E) → ∀ a b, β (c • a) b = β a (c' • b)) ↔ _`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hs, hb⟩`. Use `⟨hs, fun a x y => hb a _ ?_ x y⟩` and prove the remaining obligations.
+
+Rewrite using `[h a, IsCMField.coe_ringOfIntegersComplexConj]`. Introduce and unpack `⟨hs, hb⟩`. Use `⟨hs, fun c c' hc x y => ?_⟩` and prove the remaining obligations. Establish `hc' : c' = IsCMField.ringOfIntegersComplexConj E c`. Apply `RingOfIntegers.ext` to reduce the goal to its premises.
+
+Rewrite using `[hc, h c, IsCMField.coe_ringOfIntegersComplexConj]`. Rewrite using `[hc']`. Conclude with `hb c x y`.
+-/
 theorem isBalancedSpace (h : IsConj cj) : IsBalancedSpace E (SymB cj Y) := by
   intro β
   change ((∀ a b, β a b = β b a) ∧ ∀ (c c' : 𝓞 E), (c' : E) = cj (c : E) → ∀ a b, β (c • a) b = β a (c' • b)) ↔ _
@@ -79,6 +91,13 @@ def exponentOfOuter {n : ℕ} (x x' : Fin n → Y) (hl : IsPosHerm E (outer E x 
 
 variable [Module.Finite (𝓞 E) Y] [Module.Projective (𝓞 E) Y]
 
+/- English proof (translation)
+Take `⟨D⟩` from `GlobalTheory.IndefiniteRowSideFullHecke.TraceFormDualSystem.nonempty_dualSystem E Y`. Set `g : Fin (D.n * D.n) ≃ Fin D.n × Fin D.n` to `finProdFinEquiv.symm`. Set `x : Fin (D.n * D.n) → Y` to `fun k => e.form (D.y (g k).1) (D.y (g k).2) • D.e (g k).1`. Set `x' : Fin (D.n * D.n) → Y` to `fun k => D.e (g k).2`. Establish `hfo : ∀ y y', e.form y y' = outer E x x' y y'`.
+
+Introduce `y y'`. Rewrite using `[D.form_eq e y y']`. Conclude with `(Equiv.sum_comp g (fun p => y (e.form (D.y p.1) (D.y p.2) • D.e p.1) * bar E (y' (D.e p.2)))).symm`. Use `⟨D.n * D.n, x, x', hfo, ?_, ?_⟩` and prove the remaining obligations. Introduce `η η'`.
+
+Rewrite using `[← hfo, ← hfo]`. Conclude with `e.hermitian η η'`. Introduce `η hη τ`. Rewrite using `[← hfo]`. Conclude with `e.pos τ η hη`.
+-/
 theorem exists_outer (e : Exponent E Y) : ∃ (n : ℕ) (x x' : Fin n → Y),
     (∀ y y', e.form y y' = outer E x x' y y') ∧ IsPosHerm E (outer E x x') := by
   obtain ⟨D⟩ := GlobalTheory.IndefiniteRowSideFullHecke.TraceFormDualSystem.nonempty_dualSystem E Y
@@ -98,6 +117,9 @@ theorem exists_outer (e : Exponent E Y) : ∃ (n : ℕ) (x x' : Fin n → Y),
     rw [← hfo]
     exact e.pos τ η hη
 
+/- English proof (translation)
+Take `⟨_, _⟩` from `(finite_projective_iff (E := E) Y).1 ⟨inferInstance, inferInstance⟩`. Take `⟨n, x, x', hpos, hval⟩` from `GlobalTheory.PointStepCompare.exists_exponent E (isBalancedSpace (Y := Y) h) l hl.1 hl.2`. Use `⟨exponentOfOuter x x' hpos, fun β => ?_⟩` and prove the remaining obligations. Rewrite using `[hval β, GlobalTheory.IndefiniteRowSideFullHecke.TraceFormDualSystem.pairing_of_sum _ _ x x' (fun y y' => rfl)]`. Both sides reduce to the same expression.
+-/
 theorem exists_exponent (h : IsConj cj) {l : SymB cj Y →ₗ[ℝ] ℝ} (hl : Admissible l) :
     ∃ e : Exponent E Y, ∀ β, l β = pairing e (formsEquiv Y h β) := by
   obtain ⟨_, _⟩ := (finite_projective_iff (E := E) Y).1 ⟨inferInstance, inferInstance⟩
@@ -107,6 +129,11 @@ theorem exists_exponent (h : IsConj cj) {l : SymB cj Y →ₗ[ℝ] ℝ} (hl : Ad
   rw [hval β, GlobalTheory.IndefiniteRowSideFullHecke.TraceFormDualSystem.pairing_of_sum _ _ x x' (fun y y' => rfl)]
   rfl
 
+/- English proof (translation)
+Take `⟨_, _⟩` from `(finite_projective_iff (E := E) Y).1 ⟨inferInstance, inferInstance⟩`. Take `⟨n, x, x', hfo, hpos⟩` from `exists_outer e`. Take `⟨l, hi, hp, hl⟩` from `GlobalTheory.PointStepCompare.exists_functional E (isBalancedSpace (Y := Y) h) hw hpos`. Use `⟨l, ⟨hi, hp⟩, fun β => ?_⟩` and prove the remaining obligations. Rewrite using `[hl β, GlobalTheory.IndefiniteRowSideFullHecke.TraceFormDualSystem.pairing_of_sum e _ x x' hfo]`.
+
+Both sides reduce to the same expression.
+-/
 theorem exists_functional (h : IsConj cj) {w : 𝓞 E} (hw : w + bar E w = 1) (e : Exponent E Y) :
     ∃ l : SymB cj Y →ₗ[ℝ] ℝ, Admissible l ∧ ∀ β, l β = pairing e (formsEquiv Y h β) := by
   obtain ⟨_, _⟩ := (finite_projective_iff (E := E) Y).1 ⟨inferInstance, inferInstance⟩
@@ -116,6 +143,29 @@ theorem exists_functional (h : IsConj cj) {w : 𝓞 E} (hw : w + bar E w = 1) (e
   rw [hl β, GlobalTheory.IndefiniteRowSideFullHecke.TraceFormDualSystem.pairing_of_sum e _ x x' hfo]
   rfl
 
+/- English proof (translation)
+Establish `hdiag : ∀ (f : Exponent E Y) (η : Module.Dual (𝓞 E) Y) (τ : E →+* ℂ), pairing f (formsEquiv Y h ⟨GlobalTheory.PointStepCompare.rankOne E η τ, (isBalancedSpace h _).2 (GlobalTheory.PointStepCompare.rankOne_balanced E η τ)⟩) = (τ (f.form η η : E)).re / 2`. Introduce `f η τ`. Take `⟨n, x, x', hfo, -⟩` from `exists_outer f`. Rewrite using `[GlobalTheory.IndefiniteRowSideFullHecke.TraceFormDualSystem.pairing_of_sum f _ x x' hfo, hfo, GlobalTheory.PointStepCompare.re_outer E x x' η τ]`. Both sides reduce to the same expression.
+
+Establish `him : ∀ (f : Exponent E Y) (η : Module.Dual (𝓞 E) Y) (τ : E →+* ℂ), (τ (f.form η η : E)).im = 0`. Introduce `f η τ`. Establish `h2 : τ (f.form η η : E) = starRingEnd ℂ (τ (f.form η η : E))` using `by conv_lhs => rw [f.hermitian η η]`. Conclude with `GlobalTheory.PointStepCompare.emb_bar E τ _`. Establish `h3` using `congrArg Complex.im h2`.
+
+Rewrite `h3` using `[Complex.conj_im]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hself : ∀ η, e.form η η = e'.form η η`. Introduce `η`. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`.
+
+Apply `RingOfIntegers.ext` to reduce the goal to its premises. Apply `τ.injective` to reduce the goal to its premises. Apply `Complex.ext` to reduce the goal to its premises. Establish `h1` using `hp ⟨GlobalTheory.PointStepCompare.rankOne E η τ, (isBalancedSpace h _).2 (GlobalTheory.PointStepCompare.rankOne_balanced E η τ)⟩`. Rewrite `h1` using `[hdiag, hdiag]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[him e, him e']`. Choose the witnesses or unpack the hypotheses as in `⟨a, ha⟩ : ∃ a : 𝓞 E, bar E a ≠ a := by`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`.
+
+Apply `IsCMField.complexConj_ne_one (K := E)` to reduce the goal to its premises. Apply `AlgEquiv.ext` to reduce the goal to its premises. Introduce `z`. Take `⟨u, v, -, rfl⟩` from `IsFractionRing.div_surjective (A := 𝓞 E) z`. Establish `hu : ∀ u : 𝓞 E, IsCMField.complexConj E (algebraMap (𝓞 E) E u) = algebraMap (𝓞 E) E u`.
+
+Introduce `u`. Use `congrArg (fun t : 𝓞 E => (t : E)) (hcon u)` as an intermediate fact. Simplify using `using this`. Rewrite using `[map_div₀, hu, hu, AlgEquiv.one_apply]`. Establish `hform : ∀ y y', e.form y y' = e'.form y y'`.
+
+Introduce `y y'`. Establish `expand : ∀ (f : Exponent E Y) (c : 𝓞 E), f.form (y + c • y') (y + c • y') = f.form y y + c * bar E c * f.form y' y' + bar E c * f.form y y' + c * bar E (f.form y y')`. Introduce `f c`. Simplify using `only [map_add, AddMonoidHom.add_apply, f.smul_left, f.smul_right]`. Rewrite using `[f.hermitian y y']`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `E1` using `(expand e 1).symm.trans ((hself _).trans (expand e' 1))`. Establish `E2` using `(expand e a).symm.trans ((hself _).trans (expand e' a))`. Rewrite `E1`, `E2` using `[hself y, hself y']`. Simplify using `only [map_one, one_mul, mul_one] at E1`.
+
+Establish `hprod : (a - bar E a) * (e.form y y' - e'.form y y') = 0`. Take the linear combination `a * E1 - E2`. Break down `mul_eq_zero.1 hprod with h0 | h0` into its components or cases. Conclude with `absurd (sub_eq_zero.1 h0).symm ha`. Conclude with `sub_eq_zero.1 h0`.
+
+Consider the cases of `e`. Consider the cases of `e'`. Use `congr 1`. Conclude with `AddMonoidHom.ext fun y => AddMonoidHom.ext fun y' => hform y y'`.
+-/
 theorem exponent_ext (h : IsConj cj) {e e' : Exponent E Y}
     (hp : ∀ β, pairing e (formsEquiv Y h β) = pairing e' (formsEquiv Y h β)) : e = e' := by
 
@@ -194,6 +244,9 @@ def exponentEquiv (h : IsConj cj) {w : 𝓞 E} (hw : w + bar E w = 1) :
       exact ⟨e, Subtype.ext (LinearMap.ext fun β =>
         ((exists_functional h hw e).choose_spec.2 β).trans (he β).symm)⟩⟩
 
+/- English proof (translation)
+Take `⟨_, _⟩` from `(finite_projective_iff (E := E) Y).1 ⟨inferInstance, inferInstance⟩`. Take `⟨l, hi, hp⟩` from `GlobalTheory.PointStepCompare.exists_admissible E (isBalancedSpace (Y := Y) h)`. Conclude with `⟨l b, l, ⟨hi, hp⟩, rfl⟩`.
+-/
 theorem functionalValues_nonempty (h : IsConj cj) (b : SymB cj Y) : (functionalValues b).Nonempty := by
   obtain ⟨_, _⟩ := (finite_projective_iff (E := E) Y).1 ⟨inferInstance, inferInstance⟩
   obtain ⟨l, hi, hp⟩ := GlobalTheory.PointStepCompare.exists_admissible E (isBalancedSpace (Y := Y) h)

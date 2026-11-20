@@ -19,16 +19,25 @@ noncomputable def piMap {K K' : ι → CochainComplex (ModuleCat.{u} k) ℕ} (g 
   piLift fun v => piProj K v ≫ g v
 
 @[reassoc (attr := simp)]
+/- English proof (translation)
+The claim follows from `HomologicalComplex.hom_ext _ _ fun _ => ModuleCat.hom_ext (LinearMap.ext fun _ => rfl) @[reassoc (attr := simp)]`.
+-/
 theorem piLift_piMap {M : CochainComplex (ModuleCat.{u} k) ℕ}
     {K K' : ι → CochainComplex (ModuleCat.{u} k) ℕ} (h : ∀ v, M ⟶ K v) (g : ∀ v, K v ⟶ K' v) :
     piLift h ≫ piMap g = piLift fun v => h v ≫ g v :=
   HomologicalComplex.hom_ext _ _ fun _ => ModuleCat.hom_ext (LinearMap.ext fun _ => rfl)
 
 @[reassoc (attr := simp)]
+/- English proof (translation)
+The claim follows from `HomologicalComplex.hom_ext _ _ fun _ => ModuleCat.hom_ext (LinearMap.ext fun _ => rfl)`.
+-/
 theorem piMap_piProj {K K' : ι → CochainComplex (ModuleCat.{u} k) ℕ} (g : ∀ v, K v ⟶ K' v)
     (v : ι) : piMap g ≫ piProj K' v = piProj K v ≫ g v :=
   HomologicalComplex.hom_ext _ _ fun _ => ModuleCat.hom_ext (LinearMap.ext fun _ => rfl)
 
+/- English proof (translation)
+Use `ModuleCat.hom_ext (LinearMap.ext fun h => funext fun v => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(HomologicalComplex.homologyMap (piProj K' v) n).hom ((HomologicalComplex.homologyMap (piMap g) n).hom h) = (HomologicalComplex.homologyMap (g v) n).hom ((HomologicalComplex.homologyMap (piProj K v) n).hom h)`. Rewrite using `[hom_apply_hom_apply_of_comp_eq (HomologicalComplex.homologyMap_comp _ _ n).symm h, hom_apply_hom_apply_of_comp_eq (HomologicalComplex.homologyMap_comp _ _ n).symm h, piMap_piProj]`.
+-/
 theorem homologyMap_piMap_piHomologyIso_hom {K K' : ι → CochainComplex (ModuleCat.{u} k) ℕ}
     (g : ∀ v, K v ⟶ K' v) (n : ℕ) :
     HomologicalComplex.homologyMap (piMap g) n ≫ (piHomologyIso K' n).hom =
@@ -48,6 +57,9 @@ noncomputable def piShortComplex (S : ι → ShortComplex (CochainComplex (Modul
     (HomologicalComplex.hom_ext _ _ fun n => ModuleCat.hom_ext (LinearMap.ext fun x =>
       funext fun v => hom_apply_hom_apply_of_comp_eq (congrArg (·.f n) (S v).zero) (x v)))
 
+/- English proof (translation)
+The claim follows from `HomologicalComplex.shortExact_of_degreewise_shortExact _ fun n => by have h := fun v => (HomologicalComplex.shortExact_iff_degreewise_shortExact (S v)).1 (hS v) n refine { exact := ?_, mono_f := ?_, epi_g := ?_ } · rw [ShortComplex.moduleCat_exact_iff] intro (x : ∀ v, (S v).X₂.X …`.
+-/
 theorem piShortComplex_shortExact {S : ι → ShortComplex (CochainComplex (ModuleCat.{u} k) ℕ)}
     (hS : ∀ v, (S v).ShortExact) : (piShortComplex S).ShortExact :=
   HomologicalComplex.shortExact_of_degreewise_shortExact _ fun n => by
@@ -95,6 +107,9 @@ noncomputable abbrev localCohomologyIso (n : ℕ) :
       ModuleCat.of k (∀ v, cohomology (Aᵥ v) n) :=
   piHomologyIso _ n
 
+/- English proof (translation)
+The claim follows from `homologyMap_piLift_piHomologyIso_hom _ _ n`.
+-/
 theorem homologyMap_localRes_localCohomologyIso_hom (n : ℕ) :
     HomologicalComplex.homologyMap (localRes φ A Aᵥ a) n ≫ (localCohomologyIso Aᵥ n).hom =
       globalToLocal φ A Aᵥ a n :=
@@ -105,6 +120,9 @@ noncomputable def localToCompact (n : ℕ) :
   (localCohomologyIso Aᵥ n).inv ≫ mappingCoconeNat.homologyδ (localRes φ A Aᵥ a) n
 
 @[reassoc (attr := simp)]
+/- English proof (translation)
+Establish `h` using `mappingCoconeNat.homologyMap_fst_homologyMap_assoc (localRes φ A Aᵥ a) n (localCohomologyIso Aᵥ n).hom`. Rewrite `h` using `[homologyMap_localRes_localCohomologyIso_hom, zero_comp]`. Conclude with `h`. Use the proof step `@[reassoc (attr := simp)]`.
+-/
 theorem compactToGlobal_globalToLocal (n : ℕ) :
     compactToGlobal φ A Aᵥ a n ≫ globalToLocal φ A Aᵥ a n = 0 := by
   have h := mappingCoconeNat.homologyMap_fst_homologyMap_assoc (localRes φ A Aᵥ a) n
@@ -113,6 +131,9 @@ theorem compactToGlobal_globalToLocal (n : ℕ) :
   exact h
 
 @[reassoc (attr := simp)]
+/- English proof (translation)
+Establish `h` using `mappingCoconeNat.homologyMap_homologyδ (localRes φ A Aᵥ a) n`. Rewrite `h` using `[← Iso.hom_inv_id_assoc (localCohomologyIso Aᵥ n) (mappingCoconeNat.homologyδ _ n), ← Category.assoc, homologyMap_localRes_localCohomologyIso_hom]`. Conclude with `h`. Use the proof step `@[reassoc (attr := simp)]`.
+-/
 theorem globalToLocal_localToCompact (n : ℕ) :
     globalToLocal φ A Aᵥ a n ≫ localToCompact φ A Aᵥ a n = 0 := by
   have h := mappingCoconeNat.homologyMap_homologyδ (localRes φ A Aᵥ a) n
@@ -121,6 +142,9 @@ theorem globalToLocal_localToCompact (n : ℕ) :
   exact h
 
 @[reassoc (attr := simp)]
+/- English proof (translation)
+Establish `h` using `congrArg ((localCohomologyIso Aᵥ n).inv ≫ ·) (mappingCoconeNat.homologyδ_homologyMap_fst (localRes φ A Aᵥ a) n)`. Simplify using `only [comp_zero, ← Category.assoc] at h`. Conclude with `h`.
+-/
 theorem localToCompact_compactToGlobal (n : ℕ) :
     localToCompact φ A Aᵥ a n ≫ compactToGlobal φ A Aᵥ a (n + 1) = 0 := by
   have h := congrArg ((localCohomologyIso Aᵥ n).inv ≫ ·)
@@ -128,6 +152,9 @@ theorem localToCompact_compactToGlobal (n : ℕ) :
   simp only [comp_zero, ← Category.assoc] at h
   exact h
 
+/- English proof (translation)
+Use `(ShortComplex.exact_iff_of_iso ?_).1 (mappingCoconeNat.homology_exact₃ (localRes φ A Aᵥ a) n)` and prove the remaining obligations. Conclude with `ShortComplex.isoMk (Iso.refl _) (Iso.refl _) (localCohomologyIso Aᵥ n) ((Category.id_comp _).trans (Category.comp_id _).symm) ((Category.id_comp _).trans (homologyMap_localRes_localCohomologyIso_hom φ A Aᵥ a n).symm)`.
+-/
 theorem compactCohomology_exact_global (n : ℕ) :
     (ShortComplex.mk _ _ (compactToGlobal_globalToLocal φ A Aᵥ a n)).Exact := by
   refine (ShortComplex.exact_iff_of_iso ?_).1
@@ -136,6 +163,9 @@ theorem compactCohomology_exact_global (n : ℕ) :
     ((Category.id_comp _).trans (Category.comp_id _).symm)
     ((Category.id_comp _).trans (homologyMap_localRes_localCohomologyIso_hom φ A Aᵥ a n).symm)
 
+/- English proof (translation)
+Use `(ShortComplex.exact_iff_of_iso ?_).1 (mappingCoconeNat.homology_exact₁ (localRes φ A Aᵥ a) n)` and prove the remaining obligations. Conclude with `ShortComplex.isoMk (Iso.refl _) (localCohomologyIso Aᵥ n) (Iso.refl _) ((Category.id_comp _).trans (homologyMap_localRes_localCohomologyIso_hom φ A Aᵥ a n).symm) ((Iso.hom_inv_id_assoc _ _).trans (Category.comp_id _).symm)`.
+-/
 theorem compactCohomology_exact_local (n : ℕ) :
     (ShortComplex.mk _ _ (globalToLocal_localToCompact φ A Aᵥ a n)).Exact := by
   refine (ShortComplex.exact_iff_of_iso ?_).1
@@ -144,6 +174,9 @@ theorem compactCohomology_exact_local (n : ℕ) :
     ((Category.id_comp _).trans (homologyMap_localRes_localCohomologyIso_hom φ A Aᵥ a n).symm)
     ((Iso.hom_inv_id_assoc _ _).trans (Category.comp_id _).symm)
 
+/- English proof (translation)
+Use `(ShortComplex.exact_iff_of_iso ?_).1 (mappingCoconeNat.homology_exact₂ (localRes φ A Aᵥ a) n)` and prove the remaining obligations. Conclude with `ShortComplex.isoMk (localCohomologyIso Aᵥ n) (Iso.refl _) (Iso.refl _) ((Iso.hom_inv_id_assoc _ _).trans (Category.comp_id _).symm) ((Category.id_comp _).trans (Category.comp_id _).symm)`.
+-/
 theorem compactCohomology_exact_compact (n : ℕ) :
     (ShortComplex.mk _ _ (localToCompact_compactToGlobal φ A Aᵥ a n)).Exact := by
   refine (ShortComplex.exact_iff_of_iso ?_).1
@@ -152,6 +185,9 @@ theorem compactCohomology_exact_compact (n : ℕ) :
     ((Iso.hom_inv_id_assoc _ _).trans (Category.comp_id _).symm)
     ((Category.id_comp _).trans (Category.comp_id _).symm)
 
+/- English proof (translation)
+The claim follows from `mappingCoconeNat.mono_homologyMap_fst_zero _`.
+-/
 theorem mono_compactToGlobal_zero : Mono (compactToGlobal φ A Aᵥ a 0) :=
   mappingCoconeNat.mono_homologyMap_fst_zero _
 
@@ -164,6 +200,9 @@ variable {A B C : Rep.{u} k G} [IsDiscreteRep A] [IsDiscreteRep B] [IsDiscreteRe
   [∀ v, IsDiscreteRep (Cᵥ v)] {a : ∀ v, Rep.res (φ v).toMonoidHom A ⟶ Aᵥ v}
   {b : ∀ v, Rep.res (φ v).toMonoidHom B ⟶ Bᵥ v} {c : ∀ v, Rep.res (φ v).toMonoidHom C ⟶ Cᵥ v}
 
+/- English proof (translation)
+Use extensionality with `n x : 3`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `σ`. Conclude with `congrArg (fun F : Rep.res ψ A ⟶ B' => F.hom (x.1 (⇑ψ ∘ σ))) hg`.
+-/
 theorem cochainsMapAlong_comp_cochainsMap {H' : Type u} [Group H'] [TopologicalSpace H']
     [IsTopologicalGroup H'] (ψ : H' →* G) (hψ : Continuous ψ)
     {A' B' : Rep.{u} k H'} [IsDiscreteRep A'] [IsDiscreteRep B'] (a' : Rep.res ψ A ⟶ A')
@@ -175,6 +214,9 @@ theorem cochainsMapAlong_comp_cochainsMap {H' : Type u} [Group H'] [TopologicalS
   funext σ
   exact congrArg (fun F : Rep.res ψ A ⟶ B' => F.hom (x.1 (⇑ψ ∘ σ))) hg
 
+/- English proof (translation)
+Rewrite using `[localRes, localRes, piLift_piMap]`. Use `HomologicalComplex.hom_ext _ _ fun n => ModuleCat.hom_ext (LinearMap.ext fun x =>` and prove the remaining obligations. Use function extensionality and compare the values at `fun v => ?_)`. Conclude with `hom_apply_hom_apply_eq_of_comp_eq (congrArg (·.f n) (cochainsMapAlong_comp_cochainsMap _ (continuous_toMonoidHom (φ v)) (a v) (b v) g (gᵥ v) (hg v))) x`.
+-/
 theorem localRes_naturality (g : A ⟶ B) (gᵥ : ∀ v, Aᵥ v ⟶ Bᵥ v)
     (hg : ∀ v, a v ≫ gᵥ v = (Rep.resFunctor (φ v).toMonoidHom).map g ≫ b v) :
     localRes φ A Aᵥ a ≫ piMap (fun v => cochainsMap (gᵥ v)) =
@@ -199,6 +241,11 @@ noncomputable def compactCohomologyMap (g : A ⟶ B) (gᵥ : ∀ v, Aᵥ v ⟶ B
 
 omit [∀ v, IsDiscreteRep (Bᵥ v)] [∀ v, IsDiscreteRep (Cᵥ v)] [IsDiscreteRep B] [IsDiscreteRep C] in
 @[simp]
+/- English proof (translation)
+Establish `h : compactCochainsMap φ (𝟙 A) (fun v => 𝟙 (Aᵥ v)) (a` using `a) (fun _ => (Category.comp_id _).trans (Category.id_comp _).symm) = 𝟙 _ := by`. Use extensionality with `n : 1`. Use `ModuleCat.hom_ext (LinearMap.ext fun (p : (cochainsComplex A).X n × shiftNegOneX (piComplex fun v => cochainsComplex (Aᵥ v)) n) => Prod.ext rfl ?_)` and prove the remaining obligations. Consider the cases of `n with`. Consider the case `zero => rfl`.
+
+Consider the case `succ n => rfl`. Conclude with `(congrArg (HomologicalComplex.homologyMap · n) h).trans (HomologicalComplex.homologyMap_id _ n)`.
+-/
 theorem compactCohomologyMap_id (n : ℕ) :
     compactCohomologyMap φ (𝟙 A) (fun v => 𝟙 (Aᵥ v)) (a := a) (fun _ => (Category.comp_id _).trans (Category.id_comp _).symm) n = 𝟙 _ := by
   have h : compactCochainsMap φ (𝟙 A) (fun v => 𝟙 (Aᵥ v)) (a := a) (fun _ => (Category.comp_id _).trans (Category.id_comp _).symm) = 𝟙 _ := by
@@ -214,6 +261,11 @@ theorem compactCohomologyMap_id (n : ℕ) :
 variable (g : A ⟶ B) (gᵥ : ∀ v, Aᵥ v ⟶ Bᵥ v)
   (hg : ∀ v, a v ≫ gᵥ v = (Rep.resFunctor (φ v).toMonoidHom).map g ≫ b v)
 
+/- English proof (translation)
+Establish `h : compactCochainsMap φ (g ≫ g') (fun v => gᵥ v ≫ gᵥ' v) (fun v => by rw [reassoc_of% hg v, hg' v, Functor.map_comp, Category.assoc]) = compactCochainsMap φ g gᵥ hg ≫ compactCochainsMap φ g' gᵥ' hg'`. Use extensionality with `n : 1`. Use `ModuleCat.hom_ext (LinearMap.ext fun (p : (cochainsComplex A).X n × shiftNegOneX (piComplex fun v => cochainsComplex (Aᵥ v)) n) => Prod.ext rfl ?_)` and prove the remaining obligations. Consider the cases of `n with`. Consider the case `zero => rfl`.
+
+Consider the case `succ n => rfl`. Conclude with `(congrArg (HomologicalComplex.homologyMap · n) h).trans (HomologicalComplex.homologyMap_comp _ _ n)`.
+-/
 theorem compactCohomologyMap_comp (g' : B ⟶ C) (gᵥ' : ∀ v, Bᵥ v ⟶ Cᵥ v)
     (hg' : ∀ v, b v ≫ gᵥ' v = (Rep.resFunctor (φ v).toMonoidHom).map g' ≫ c v) (n : ℕ) :
     compactCohomologyMap φ (g ≫ g') (fun v => gᵥ v ≫ gᵥ' v)
@@ -233,6 +285,9 @@ theorem compactCohomologyMap_comp (g' : B ⟶ C) (gᵥ' : ∀ v, Bᵥ v ⟶ Cᵥ
 
 include hg in
 
+/- English proof (translation)
+Establish `h` using `congrArg (fun F => HomologicalComplex.homologyMap F n ≫ (localCohomologyIso Bᵥ n).hom) (localRes_naturality φ g gᵥ hg)`. Simplify using `only [HomologicalComplex.homologyMap_comp, Category.assoc] at h`. Establish `e1 : HomologicalComplex.homologyMap (localRes φ A Aᵥ a) n ≫ HomologicalComplex.homologyMap (piMap fun v => cochainsMap (gᵥ v)) n ≫ (localCohomologyIso Bᵥ n).hom = (HomologicalComplex.homologyMap (localRes φ A Aᵥ a) n ≫ (localCohomologyIso Aᵥ n).hom) ≫ ModuleCat.ofHom (LinearMap.p …`. Conclude with `(congrArg (HomologicalComplex.homologyMap (localRes φ A Aᵥ a) n ≫ ·) (homologyMap_piMap_piHomologyIso_hom (fun v => cochainsMap (gᵥ v)) n)).trans (Category.assoc _ _ _).symm`. Conclude with `(congrArg (cohomologyMap g n ≫ ·) (homologyMap_localRes_localCohomologyIso_hom φ B Bᵥ b n).symm).trans (h.symm.trans (e1.trans (congrArg (· ≫ ModuleCat.ofHom (LinearMap.pi fun v => (cohomologyMap (gᵥ v) n).hom.comp (LinearMap.proj v))) (homologyMap_localRes_localCohomologyIso_hom …`.
+-/
 theorem cohomologyMap_globalToLocal (n : ℕ) :
     cohomologyMap g n ≫ globalToLocal φ B Bᵥ b n =
       globalToLocal φ A Aᵥ a n ≫ ModuleCat.ofHom (LinearMap.pi fun v =>
@@ -255,6 +310,11 @@ theorem cohomologyMap_globalToLocal (n : ℕ) :
           (cohomologyMap (gᵥ v) n).hom.comp (LinearMap.proj v)))
         (homologyMap_localRes_localCohomologyIso_hom φ A Aᵥ a n))))
 
+/- English proof (translation)
+Establish `h2 : (localCohomologyIso Aᵥ n).inv ≫ HomologicalComplex.homologyMap (piMap fun v => cochainsMap (gᵥ v)) n = ModuleCat.ofHom (LinearMap.pi fun v => (cohomologyMap (gᵥ v) n).hom.comp (LinearMap.proj v)) ≫ (localCohomologyIso Bᵥ n).inv`. Rewrite using `[Iso.inv_comp_eq, ← Category.assoc, Iso.eq_comp_inv]`. Conclude with `homologyMap_piMap_piHomologyIso_hom _ n`. Establish `h` using `congrArg ((localCohomologyIso Aᵥ n).inv ≫ ·) (mappingCoconeNat.homologyδ_naturality (cochainsMap g) (piMap fun v => cochainsMap (gᵥ v)) (localRes_naturality φ g gᵥ hg) n)`. Simplify using `only [← Category.assoc] at h`.
+
+Rewrite `h` using `[h2, Category.assoc]`. Conclude with `h`.
+-/
 theorem localToCompact_compactCohomologyMap (n : ℕ) :
     localToCompact φ A Aᵥ a n ≫ compactCohomologyMap φ g gᵥ hg (n + 1) =
       ModuleCat.ofHom (LinearMap.pi fun v => (cohomologyMap (gᵥ v) n).hom.comp (LinearMap.proj v)) ≫
@@ -289,6 +349,9 @@ noncomputable def localResShortComplex :
   comm₁₂ := localRes_naturality φ S.f (fun v => (Sᵥ v).f) fun v => (s v).comm₁₂
   comm₂₃ := localRes_naturality φ S.g (fun v => (Sᵥ v).g) fun v => (s v).comm₂₃
 
+/- English proof (translation)
+The claim follows from `(HomologicalComplex.homologyMap_comp _ _ n).symm.trans ((congrArg (HomologicalComplex.homologyMap · n) (mappingCoconeNat.mapShortComplex (localResShortComplex φ S Sᵥ s)).zero).trans (HomologicalComplex.homologyMap_zero _ _ n))`.
+-/
 theorem compactCohomologyMap_f_g (n : ℕ) :
     compactCohomologyMap φ S.f (fun v => (Sᵥ v).f) (fun v => (s v).comm₁₂) n ≫
       compactCohomologyMap φ S.g (fun v => (Sᵥ v).g) (fun v => (s v).comm₂₃) n = 0 :=
@@ -299,6 +362,9 @@ theorem compactCohomologyMap_f_g (n : ℕ) :
 
 variable {S Sᵥ}
 
+/- English proof (translation)
+The claim follows from `mappingCoconeNat.shortExact_mapShortComplex _ (cochainsShortComplex_shortExact hS) (piShortComplex_shortExact fun v => cochainsShortComplex_shortExact (hSᵥ v))`.
+-/
 theorem compactCochains_shortExact (hS : S.ShortExact) (hSᵥ : ∀ v, (Sᵥ v).ShortExact) :
     (mappingCoconeNat.mapShortComplex (localResShortComplex φ S Sᵥ s)).ShortExact :=
   mappingCoconeNat.shortExact_mapShortComplex _ (cochainsShortComplex_shortExact hS)
@@ -313,18 +379,27 @@ noncomputable def compactδ (hS : S.ShortExact) (hSᵥ : ∀ v, (Sᵥ v).ShortEx
 
 include hS hSᵥ in
 
+/- English proof (translation)
+The claim follows from `(compactCochains_shortExact φ s hS hSᵥ).homology_exact₂ n`.
+-/
 theorem compactCohomology_exact₂ (n : ℕ) :
     (ShortComplex.mk (compactCohomologyMap φ S.f (fun v => (Sᵥ v).f) (fun v => (s v).comm₁₂) n)
       (compactCohomologyMap φ S.g (fun v => (Sᵥ v).g) (fun v => (s v).comm₂₃) n)
       (compactCohomologyMap_f_g φ S Sᵥ s n)).Exact :=
   (compactCochains_shortExact φ s hS hSᵥ).homology_exact₂ n
 
+/- English proof (translation)
+The claim follows from `(compactCochains_shortExact φ s hS hSᵥ).homology_exact₃ n (n + 1) rfl`.
+-/
 theorem compactCohomology_exact₃ (n : ℕ) :
     (ShortComplex.mk (compactCohomologyMap φ S.g (fun v => (Sᵥ v).g) (fun v => (s v).comm₂₃) n)
       (compactδ φ s hS hSᵥ n)
       ((compactCochains_shortExact φ s hS hSᵥ).comp_δ n (n + 1) rfl)).Exact :=
   (compactCochains_shortExact φ s hS hSᵥ).homology_exact₃ n (n + 1) rfl
 
+/- English proof (translation)
+The claim follows from `(compactCochains_shortExact φ s hS hSᵥ).homology_exact₁ n (n + 1) rfl`.
+-/
 theorem compactCohomology_exact₁ (n : ℕ) :
     (ShortComplex.mk (compactδ φ s hS hSᵥ n)
       (compactCohomologyMap φ S.f (fun v => (Sᵥ v).f) (fun v => (s v).comm₁₂) (n + 1))

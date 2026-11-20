@@ -13,6 +13,9 @@ variable {E F : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E] [FiniteD
   [MeasurableSpace E] [BorelSpace E]
   [NormedAddCommGroup F] [InnerProductSpace ℂ F] [CompleteSpace F]
 
+/- English proof (translation)
+Introduce `f g h`. Use `(LinearMap.ker_eq_bot (f := (Lp.toTemperedDistributionCLM F (volume : Measure E) 2 : Lp F 2 (volume : Measure E) →ₗ[ℂ] 𝓢'(E, F)))).1 (Lp.ker_toTemperedDistributionCLM_eq_bot (F := F) (μ := (volume : Measure E)))` as an intermediate fact. Conclude with `this h`.
+-/
 theorem toTemperedDistribution_injective :
     Function.Injective (fun f : Lp F 2 (volume : Measure E) ↦ (f : 𝓢'(E, F))) := by
   intro f g h
@@ -32,16 +35,25 @@ def sobolevSubmodule (s : ℝ) : Submodule ℂ 𝓢'(E, F) where
 def sobolevToLp {s : ℝ} (u : sobolevSubmodule E F s) : Lp F 2 (volume : Measure E) :=
   Classical.choose u.2
 
+/- English proof (translation)
+The claim follows from `Classical.choose_spec u.2`.
+-/
 theorem besselPotential_eq_sobolevToLp {s : ℝ} (u : sobolevSubmodule E F s) :
     besselPotential E F s (u : 𝓢'(E, F)) = (sobolevToLp u : 𝓢'(E, F)) :=
   Classical.choose_spec u.2
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl`. Conclude with `besselPotential_eq_sobolevToLp u`. Introduce `h`. Conclude with `toTemperedDistribution_injective ((besselPotential_eq_sobolevToLp u).symm.trans h)`.
+-/
 theorem sobolevToLp_eq_iff {s : ℝ} (u : sobolevSubmodule E F s) (f : Lp F 2 (volume : Measure E)) :
     sobolevToLp u = f ↔ besselPotential E F s (u : 𝓢'(E, F)) = (f : 𝓢'(E, F)) := by
   constructor
   · rintro rfl; exact besselPotential_eq_sobolevToLp u
   · intro h; exact toTemperedDistribution_injective ((besselPotential_eq_sobolevToLp u).symm.trans h)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨f, by simp⟩`.
+-/
 theorem memSobolev_besselPotential_neg (s : ℝ) (f : Lp F 2 (volume : Measure E)) :
     MemSobolev s 2 (besselPotential E F (-s) (f : 𝓢'(E, F))) :=
   ⟨f, by simp⟩
@@ -68,6 +80,9 @@ def sobolevEquivLp (s : ℝ) : sobolevSubmodule E F s ≃ₗ[ℂ] Lp F 2 (volume
     rw [sobolevToLp_eq_iff]
     simp
 
+/- English proof (translation)
+The claim follows from `(besselPotential_eq_sobolevToLp u).symm`.
+-/
 theorem sobolevEquivLp_apply {s : ℝ} (u : sobolevSubmodule E F s) :
     (sobolevEquivLp E F s u : 𝓢'(E, F)) = besselPotential E F s (u : 𝓢'(E, F)) :=
   (besselPotential_eq_sobolevToLp u).symm
@@ -97,8 +112,14 @@ instance : InnerProductSpace ℂ (SobolevSpace E F s) :=
 
 def toDistribution (u : SobolevSpace E F s) : 𝓢'(E, F) := Subtype.val (show sobolevSubmodule E F s from u)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem norm_def (u : SobolevSpace E F s) : ‖u‖ = ‖bessel s u‖ := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem inner_def (u v : SobolevSpace E F s) :
     inner ℂ u v = inner ℂ (bessel s u) (bessel s v) := rfl
 
@@ -112,16 +133,28 @@ def besselₗᵢ (s : ℝ) : SobolevSpace E F s ≃ₗᵢ[ℂ] Lp F 2 (volume : 
   toLinearEquiv := bessel s
   norm_map' _ := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem besselₗᵢ_apply (u : SobolevSpace E F s) : besselₗᵢ s u = bessel s u := rfl
 
+/- English proof (translation)
+The claim follows from `sobolevEquivLp_apply _`.
+-/
 theorem toDistribution_bessel (u : SobolevSpace E F s) :
     (bessel s u : 𝓢'(E, F)) = besselPotential E F s (toDistribution u) :=
   sobolevEquivLp_apply _
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toDistribution_bessel_symm (f : Lp F 2 (volume : Measure E)) :
     toDistribution ((bessel (E := E) (F := F) s).symm f) = besselPotential E F (-s) (f : 𝓢'(E, F)) :=
   rfl
 
+/- English proof (translation)
+Rewrite using `[← toDistribution_bessel_symm, LinearEquiv.symm_apply_apply]`.
+-/
 theorem toDistribution_eq_besselPotential (u : SobolevSpace E F s) :
     toDistribution u = besselPotential E F (-s) (bessel s u : 𝓢'(E, F)) := by
   rw [← toDistribution_bessel_symm, LinearEquiv.symm_apply_apply]
@@ -130,27 +163,48 @@ instance : CompleteSpace (SobolevSpace E F s) :=
   (completeSpace_congr (e := (besselₗᵢ (E := E) (F := F) s).toEquiv)
     (besselₗᵢ s).isometry.isUniformEmbedding).2 inferInstance
 
+/- English proof (translation)
+The claim follows from `fun _ _ h ↦ Subtype.ext h`.
+-/
 theorem toDistribution_injective :
     Function.Injective (toDistribution : SobolevSpace E F s → 𝓢'(E, F)) :=
   fun _ _ h ↦ Subtype.ext h
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem toDistribution_add (u v : SobolevSpace E F s) :
     toDistribution (u + v) = toDistribution u + toDistribution v := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem toDistribution_smul (c : ℂ) (u : SobolevSpace E F s) :
     toDistribution (c • u) = c • toDistribution u := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem toDistribution_zero : toDistribution (0 : SobolevSpace E F s) = 0 := rfl
 
+/- English proof (translation)
+The claim follows from `(show sobolevSubmodule E F s from u).2`.
+-/
 theorem memSobolev_toDistribution (u : SobolevSpace E F s) : MemSobolev s 2 (toDistribution u) :=
   (show sobolevSubmodule E F s from u).2
 
 def mk (u : 𝓢'(E, F)) (hu : MemSobolev s 2 u) : SobolevSpace E F s :=
   (⟨u, hu⟩ : sobolevSubmodule E F s)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem toDistribution_mk (u : 𝓢'(E, F)) (hu : MemSobolev s 2 u) :
     toDistribution (mk u hu) = u := rfl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun ⟨v, hv⟩ ↦ hv ▸ memSobolev_toDistribution v, fun hu ↦ ⟨mk u hu, rfl⟩⟩`.
+-/
 theorem exists_toDistribution_eq_iff (u : 𝓢'(E, F)) :
     (∃ v : SobolevSpace E F s, toDistribution v = u) ↔ MemSobolev s 2 u :=
   ⟨fun ⟨v, hv⟩ ↦ hv ▸ memSobolev_toDistribution v, fun hu ↦ ⟨mk u hu, rfl⟩⟩
@@ -161,6 +215,9 @@ def toDistributionCLM : SobolevSpace E F s →L[ℂ] 𝓢'(E, F) :=
   besselPotential E F (-s) ∘L Lp.toTemperedDistributionCLM F (volume : Measure E) 2 ∘L
     (besselₗᵢ (E := E) (F := F) s).toContinuousLinearEquiv.toContinuousLinearMap
 
+/- English proof (translation)
+Rewrite using `[toDistribution_eq_besselPotential]`. Both sides reduce to the same expression.
+-/
 @[simp] theorem toDistributionCLM_apply (u : SobolevSpace E F s) :
     toDistributionCLM E F s u = toDistribution u := by
   rw [toDistribution_eq_besselPotential]
@@ -172,6 +229,9 @@ section Multiplication
 
 variable {m : E → ℂ} {C : ℝ}
 
+/- English proof (translation)
+The claim follows from `(Lp.memLp h).of_le_mul (c := C) (hm.1.continuous.aestronglyMeasurable.smul (Lp.aestronglyMeasurable h)) (ae_of_all _ fun x ↦ by rw [norm_smul]; exact mul_le_mul_of_nonneg_right (hC x) (norm_nonneg _))`.
+-/
 theorem memLp_smul_of_bounded (hm : m.HasTemperateGrowth) (hC : ∀ x, ‖m x‖ ≤ C)
     (h : Lp F 2 (volume : Measure E)) : MemLp (fun x ↦ m x • h x) 2 (volume : Measure E) :=
   (Lp.memLp h).of_le_mul (c := C)
@@ -183,10 +243,16 @@ def boundedMulLp (hm : m.HasTemperateGrowth) (hC : ∀ x, ‖m x‖ ≤ C) (h : 
     Lp F 2 (volume : Measure E) :=
   (memLp_smul_of_bounded hm hC h).toLp _
 
+/- English proof (translation)
+The claim follows from `(memLp_smul_of_bounded hm hC h).coeFn_toLp`.
+-/
 theorem coeFn_boundedMulLp (hm : m.HasTemperateGrowth) (hC : ∀ x, ‖m x‖ ≤ C)
     (h : Lp F 2 (volume : Measure E)) : boundedMulLp hm hC h =ᵐ[volume] fun x ↦ m x • h x :=
   (memLp_smul_of_bounded hm hC h).coeFn_toLp
 
+/- English proof (translation)
+Use extensionality with `φ`. Simplify using `only [Lp.toTemperedDistribution_apply, smulLeftCLM_apply_apply, SchwartzMap.smulLeftCLM_apply_apply hm]`. Apply `integral_congr_ae` to reduce the goal to its premises. Use `filter_upwards [coeFn_boundedMulLp hm hC h] with x hx`. Rewrite using `[hx, smul_smul, mul_comm, smul_eq_mul]`.
+-/
 theorem toTemperedDistribution_boundedMulLp (hm : m.HasTemperateGrowth) (hC : ∀ x, ‖m x‖ ≤ C)
     (h : Lp F 2 (volume : Measure E)) :
     (boundedMulLp hm hC h : 𝓢'(E, F)) = smulLeftCLM F m (h : 𝓢'(E, F)) := by
@@ -197,6 +263,9 @@ theorem toTemperedDistribution_boundedMulLp (hm : m.HasTemperateGrowth) (hC : �
   filter_upwards [coeFn_boundedMulLp hm hC h] with x hx
   rw [hx, smul_smul, mul_comm, smul_eq_mul]
 
+/- English proof (translation)
+Apply `Lp.norm_le_mul_norm_of_ae_le_mul` to reduce the goal to its premises. Use `filter_upwards [coeFn_boundedMulLp hm hC h] with x hx`. Rewrite using `[hx, norm_smul]`. Conclude with `mul_le_mul_of_nonneg_right (hC x) (norm_nonneg _)`.
+-/
 theorem norm_boundedMulLp_le (hm : m.HasTemperateGrowth) (hC : ∀ x, ‖m x‖ ≤ C)
     (h : Lp F 2 (volume : Measure E)) : ‖boundedMulLp hm hC h‖ ≤ C * ‖h‖ := by
   apply Lp.norm_le_mul_norm_of_ae_le_mul
@@ -204,6 +273,9 @@ theorem norm_boundedMulLp_le (hm : m.HasTemperateGrowth) (hC : ∀ x, ‖m x‖ 
   rw [hx, norm_smul]
   exact mul_le_mul_of_nonneg_right (hC x) (norm_nonneg _)
 
+/- English proof (translation)
+Rewrite using `[fourierMultiplierCLM_apply, Lp.fourier_toTemperedDistribution_eq, ← toTemperedDistribution_boundedMulLp hm hC, Lp.fourierInv_toTemperedDistribution_eq]`.
+-/
 theorem fourierMultiplierCLM_toTemperedDistribution (hm : m.HasTemperateGrowth)
     (hC : ∀ x, ‖m x‖ ≤ C) (f : Lp F 2 (volume : Measure E)) :
     fourierMultiplierCLM F m (f : 𝓢'(E, F)) =
@@ -211,6 +283,9 @@ theorem fourierMultiplierCLM_toTemperedDistribution (hm : m.HasTemperateGrowth)
   rw [fourierMultiplierCLM_apply, Lp.fourier_toTemperedDistribution_eq,
     ← toTemperedDistribution_boundedMulLp hm hC, Lp.fourierInv_toTemperedDistribution_eq]
 
+/- English proof (translation)
+Establish `h1 : ‖(𝓕⁻ (boundedMulLp hm hC (𝓕 f)) : Lp F 2 (volume : Measure E))‖ = ‖boundedMulLp hm hC (𝓕 f)‖` using `(Lp.fourierTransformₗᵢ E F).symm.norm_map _`. Rewrite using `[h1]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem norm_fourierInv_boundedMulLp_le (hm : m.HasTemperateGrowth) (hC : ∀ x, ‖m x‖ ≤ C)
     (f : Lp F 2 (volume : Measure E)) :
     ‖(𝓕⁻ (boundedMulLp hm hC (𝓕 f)) : Lp F 2 (volume : Measure E))‖ ≤ C * ‖f‖ := by
@@ -224,25 +299,45 @@ end Multiplication
 
 def weight (r : ℝ) (ξ : E) : ℂ := (((1 + ‖ξ‖ ^ 2) ^ (r / 2) : ℝ) : ℂ)
 
+/- English proof (translation)
+Unfold `weight`. Use `fun_prop`.
+-/
 theorem weight_hasTemperateGrowth (r : ℝ) : (weight r : E → ℂ).HasTemperateGrowth := by
   unfold weight; fun_prop
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem besselPotential_eq_fourierMultiplierCLM (r : ℝ) :
     besselPotential E F r = fourierMultiplierCLM F (weight r) := rfl
 
+/- English proof (translation)
+Unfold `weight`. Rewrite using `[← Complex.ofReal_mul, ← Real.rpow_add (by positivity)]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem weight_mul_weight (r r' : ℝ) (ξ : E) : weight r ξ * weight r' ξ = weight (r + r') ξ := by
   unfold weight
   rw [← Complex.ofReal_mul, ← Real.rpow_add (by positivity)]
   congr 2; ring
 
+/- English proof (translation)
+Unfold `weight`. Rewrite using `[Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (by positivity)]`.
+-/
 theorem norm_weight (r : ℝ) (ξ : E) : ‖weight r ξ‖ = (1 + ‖ξ‖ ^ 2) ^ (r / 2) := by
   unfold weight
   rw [Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (by positivity)]
 
+/- English proof (translation)
+Check the signs of the components of the expression.
+-/
 theorem weight_pos (r : ℝ) (ξ : E) : 0 < (1 + ‖ξ‖ ^ 2) ^ (r / 2) := by positivity
 
 variable {m : E → ℂ} {C s t : ℝ}
 
+/- English proof (translation)
+Establish `h` using `hC 0`. Establish `hp : 0 < (1 + ‖(0 : E)‖ ^ 2) ^ ((s - t) / 2)` using `by positivity`. Assume the negation of the conclusion as `hneg`. Use `push Not at hneg`. Establish `: C * (1 + ‖(0 : E)‖ ^ 2) ^ ((s - t) / 2) < 0` using `mul_neg_of_neg_of_pos hneg hp`.
+
+Combine the linear relations using `[norm_nonneg (m 0)]`.
+-/
 theorem bound_nonneg (hC : ∀ ξ, ‖m ξ‖ ≤ C * (1 + ‖ξ‖ ^ 2) ^ ((s - t) / 2)) : 0 ≤ C := by
   have h := hC 0
   have hp : 0 < (1 + ‖(0 : E)‖ ^ 2) ^ ((s - t) / 2) := by positivity
@@ -251,6 +346,9 @@ theorem bound_nonneg (hC : ∀ ξ, ‖m ξ‖ ≤ C * (1 + ‖ξ‖ ^ 2) ^ ((s -
   have : C * (1 + ‖(0 : E)‖ ^ 2) ^ ((s - t) / 2) < 0 := mul_neg_of_neg_of_pos hneg hp
   linarith [norm_nonneg (m 0)]
 
+/- English proof (translation)
+Rewrite using `[norm_mul, norm_weight]`. Establish `h1` using `hC ξ`. Establish `hp` using `weight_pos (t - s) ξ`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_assoc, ← Real.rpow_add (by positivity), show (s - t) / 2 + (t - s) / 2 = 0 by ring, Real.rpow_zero, mul_one]`.
+-/
 theorem bounded_mul_weight (hC : ∀ ξ, ‖m ξ‖ ≤ C * (1 + ‖ξ‖ ^ 2) ^ ((s - t) / 2)) (ξ : E) :
     ‖m ξ * weight (t - s) ξ‖ ≤ C := by
   rw [norm_mul, norm_weight]
@@ -263,12 +361,20 @@ theorem bounded_mul_weight (hC : ∀ ξ, ‖m ξ‖ ≤ C * (1 + ‖ξ‖ ^ 2) ^
         rw [mul_assoc, ← Real.rpow_add (by positivity),
           show (s - t) / 2 + (t - s) / 2 = 0 by ring, Real.rpow_zero, mul_one]
 
+/- English proof (translation)
+The claim follows from `hm.mul (weight_hasTemperateGrowth _)`.
+-/
 theorem hasTemperateGrowth_mul_weight (hm : m.HasTemperateGrowth) (r : ℝ) :
     (fun ξ ↦ m ξ * weight r ξ).HasTemperateGrowth :=
   hm.mul (weight_hasTemperateGrowth _)
 
 namespace SobolevSpace
 
+/- English proof (translation)
+Rewrite using `[toDistribution_eq_besselPotential, besselPotential_eq_fourierMultiplierCLM, besselPotential_eq_fourierMultiplierCLM, fourierMultiplierCLM_fourierMultiplierCLM_apply (weight_hasTemperateGrowth _) hm, fourierMultiplierCLM_fourierMultiplierCLM_apply ((weight_hasTemperateGrowth _).m …`. Establish `key : (weight (-s) * m * weight t : E → ℂ) = fun ξ ↦ m ξ * weight (t - s) ξ`. Use function extensionality and compare the values at `ξ`. Simplify using `only [Pi.mul_apply]`. Rewrite using `[mul_comm (weight (-s) ξ) (m ξ), mul_assoc, weight_mul_weight]`.
+
+Use `congr 2`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key]`.
+-/
 theorem besselPotential_fourierMultiplier (hm : m.HasTemperateGrowth) (u : SobolevSpace E F s) :
     besselPotential E F t (fourierMultiplierCLM F m (toDistribution u)) =
       fourierMultiplierCLM F (fun ξ ↦ m ξ * weight (t - s) ξ) (bessel s u : 𝓢'(E, F)) := by
@@ -284,6 +390,9 @@ theorem besselPotential_fourierMultiplier (hm : m.HasTemperateGrowth) (u : Sobol
     congr 2; ring
   rw [key]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨_, by rw [besselPotential_fourierMultiplier hm u, fourierMultiplierCLM_toTemperedDistribution (hasTemperateGrowth_mul_weight hm (t - s)) (bounded_mul_weight hC)]⟩`.
+-/
 theorem memSobolev_fourierMultiplier (hm : m.HasTemperateGrowth)
     (hC : ∀ ξ, ‖m ξ‖ ≤ C * (1 + ‖ξ‖ ^ 2) ^ ((s - t) / 2)) (u : SobolevSpace E F s) :
     MemSobolev t 2 (fourierMultiplierCLM F m (toDistribution u)) :=
@@ -299,6 +408,9 @@ def multiplierₗ (hm : m.HasTemperateGrowth)
   map_add' u v := toDistribution_injective (by simp)
   map_smul' c u := toDistribution_injective (by simp)
 
+/- English proof (translation)
+Apply `toTemperedDistribution_injective` to reduce the goal to its premises. Simplify using `only`. Rewrite using `[toDistribution_bessel, ← fourierMultiplierCLM_toTemperedDistribution]`. Conclude with `besselPotential_fourierMultiplier hm u`.
+-/
 theorem bessel_multiplierₗ (hm : m.HasTemperateGrowth)
     (hC : ∀ ξ, ‖m ξ‖ ≤ C * (1 + ‖ξ‖ ^ 2) ^ ((s - t) / 2)) (u : SobolevSpace E F s) :
     bessel t (multiplierₗ hm hC u) =
@@ -316,15 +428,24 @@ def multiplier (hm : m.HasTemperateGrowth)
     rw [norm_def, norm_def, bessel_multiplierₗ]
     exact norm_fourierInv_boundedMulLp_le _ _ _
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem toDistribution_multiplier (hm : m.HasTemperateGrowth)
     (hC : ∀ ξ, ‖m ξ‖ ≤ C * (1 + ‖ξ‖ ^ 2) ^ ((s - t) / 2)) (u : SobolevSpace E F s) :
     toDistribution (multiplier hm hC u) = fourierMultiplierCLM F m (toDistribution u) := rfl
 
+/- English proof (translation)
+The claim follows from `LinearMap.mkContinuous_norm_le _ (bound_nonneg hC) _`.
+-/
 theorem norm_multiplier_le (hm : m.HasTemperateGrowth)
     (hC : ∀ ξ, ‖m ξ‖ ≤ C * (1 + ‖ξ‖ ^ 2) ^ ((s - t) / 2)) :
     ‖multiplier (E := E) (F := F) hm hC‖ ≤ C :=
   LinearMap.mkContinuous_norm_le _ (bound_nonneg hC) _
 
+/- English proof (translation)
+The claim follows from `((multiplier hm hC).le_opNorm u).trans (mul_le_mul_of_nonneg_right (norm_multiplier_le hm hC) (norm_nonneg _))`.
+-/
 theorem norm_multiplier_apply_le (hm : m.HasTemperateGrowth)
     (hC : ∀ ξ, ‖m ξ‖ ≤ C * (1 + ‖ξ‖ ^ 2) ^ ((s - t) / 2)) (u : SobolevSpace E F s) :
     ‖multiplier hm hC u‖ ≤ C * ‖u‖ :=
@@ -333,6 +454,9 @@ theorem norm_multiplier_apply_le (hm : m.HasTemperateGrowth)
 
 end SobolevSpace
 
+/- English proof (translation)
+Rewrite using `[@norm_sq_eq_re_inner ℂ, MeasureTheory.L2.inner_def, ← integral_re (MeasureTheory.L2.integrable_inner (𝕜 := ℂ) f f)]`. Repeatedly rewrite using `[inner_self_eq_norm_sq]`.
+-/
 theorem Lp_two_norm_sq_eq_integral (f : Lp F 2 (volume : Measure E)) :
     ‖f‖ ^ 2 = ∫ x, ‖f x‖ ^ 2 := by
   rw [@norm_sq_eq_re_inner ℂ, MeasureTheory.L2.inner_def,
@@ -342,12 +466,18 @@ theorem Lp_two_norm_sq_eq_integral (f : Lp F 2 (volume : Measure E)) :
 def fourierFun {s : ℝ} (u : SobolevSpace E F s) (ξ : E) : F :=
   weight (-s) ξ • (𝓕 (SobolevSpace.bessel s u) : Lp F 2 (volume : Measure E)) ξ
 
+/- English proof (translation)
+Rewrite using `[← Lp.fourier_toTemperedDistribution_eq, SobolevSpace.toDistribution_bessel, besselPotential_eq_fourierMultiplierCLM, fourierMultiplierCLM_apply, fourier_fourierInv_eq]`.
+-/
 theorem smulLeftCLM_weight_fourier {s : ℝ} (u : SobolevSpace E F s) :
     smulLeftCLM F (weight s) (𝓕 (SobolevSpace.toDistribution u)) =
       ((𝓕 (SobolevSpace.bessel s u) : Lp F 2 (volume : Measure E)) : 𝓢'(E, F)) := by
   rw [← Lp.fourier_toTemperedDistribution_eq, SobolevSpace.toDistribution_bessel,
     besselPotential_eq_fourierMultiplierCLM, fourierMultiplierCLM_apply, fourier_fourierInv_eq]
 
+/- English proof (translation)
+Rewrite using `[Lp.toTemperedDistribution_apply]`. Use `congr 1`. Use extensionality with `ξ`. Rewrite using `[SchwartzMap.smulLeftCLM_apply_apply (weight_hasTemperateGrowth r)]`. Simplify using `only [smul_smul, smul_eq_mul, mul_comm]`.
+-/
 theorem integral_smul_weight (r : ℝ) (φ : 𝓢(E, ℂ)) (g : Lp F 2 (volume : Measure E)) :
     (g : 𝓢'(E, F)) (SchwartzMap.smulLeftCLM ℂ (weight r) φ) =
       ∫ ξ, φ ξ • (weight r ξ • g ξ) := by
@@ -356,6 +486,11 @@ theorem integral_smul_weight (r : ℝ) (φ : 𝓢(E, ℂ)) (g : Lp F 2 (volume :
   rw [SchwartzMap.smulLeftCLM_apply_apply (weight_hasTemperateGrowth r)]
   simp only [smul_smul, smul_eq_mul, mul_comm]
 
+/- English proof (translation)
+Establish `h1 : 𝓕 (SobolevSpace.toDistribution u) = smulLeftCLM F (weight (-s)) (smulLeftCLM F (weight s) (𝓕 (SobolevSpace.toDistribution u)))`. Rewrite using `[smulLeftCLM_smulLeftCLM_apply (weight_hasTemperateGrowth _) (weight_hasTemperateGrowth _)]`. Establish `: (weight s * weight (-s) : E → ℂ) = fun _ ↦ 1`. Use function extensionality and compare the values at `ξ`. Simplify using `only [Pi.mul_apply]`.
+
+Rewrite using `[weight_mul_weight]`. Simplify using `[weight]`. Rewrite using `[this, smulLeftCLM_const, one_smul]`. Rewrite using `[h1, smulLeftCLM_weight_fourier, smulLeftCLM_apply_apply, integral_smul_weight]`. Both sides reduce to the same expression.
+-/
 theorem fourier_apply_eq_integral {s : ℝ} (u : SobolevSpace E F s) (φ : 𝓢(E, ℂ)) :
     𝓕 (SobolevSpace.toDistribution u) φ = ∫ ξ, φ ξ • fourierFun u ξ := by
   have h1 : 𝓕 (SobolevSpace.toDistribution u) =
@@ -367,15 +502,24 @@ theorem fourier_apply_eq_integral {s : ℝ} (u : SobolevSpace E F s) (φ : 𝓢(
   rw [h1, smulLeftCLM_weight_fourier, smulLeftCLM_apply_apply, integral_smul_weight]
   rfl
 
+/- English proof (translation)
+The claim follows from `(weight_hasTemperateGrowth (-s)).1.continuous.aestronglyMeasurable.smul (Lp.aestronglyMeasurable _)`.
+-/
 theorem fourierFun_aestronglyMeasurable {s : ℝ} (u : SobolevSpace E F s) :
     AEStronglyMeasurable (fourierFun u) (volume : Measure E) :=
   (weight_hasTemperateGrowth (-s)).1.continuous.aestronglyMeasurable.smul
     (Lp.aestronglyMeasurable _)
 
+/- English proof (translation)
+Rewrite using `[fourierFun, smul_smul, weight_mul_weight]`. Simplify using `[weight]`.
+-/
 theorem weight_smul_fourierFun {s : ℝ} (u : SobolevSpace E F s) (ξ : E) :
     weight s ξ • fourierFun u ξ = (𝓕 (SobolevSpace.bessel s u) : Lp F 2 (volume : Measure E)) ξ := by
   rw [fourierFun, smul_smul, weight_mul_weight]; simp [weight]
 
+/- English proof (translation)
+Rewrite using `[SobolevSpace.norm_def, ← Lp.norm_fourier_eq, Lp_two_norm_sq_eq_integral]`. Use `congr 1`. Use extensionality with `ξ`. Rewrite using `[← weight_smul_fourierFun, norm_smul, norm_weight, mul_pow, ← Real.rpow_natCast, ← Real.rpow_mul (by positivity)]`. Evaluate the numerical expressions.
+-/
 theorem norm_sq_eq_integral {s : ℝ} (u : SobolevSpace E F s) :
     ‖u‖ ^ 2 = ∫ ξ, (1 + ‖ξ‖ ^ 2) ^ s * ‖fourierFun u ξ‖ ^ 2 := by
   rw [SobolevSpace.norm_def, ← Lp.norm_fourier_eq, Lp_two_norm_sq_eq_integral]
@@ -384,6 +528,15 @@ theorem norm_sq_eq_integral {s : ℝ} (u : SobolevSpace E F s) :
     ← Real.rpow_mul (by positivity)]
   norm_num
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hu set v : SobolevSpace E F s := SobolevSpace.mk u hu`. Use `⟨fourierFun v, ?_, fourier_apply_eq_integral v⟩` and prove the remaining obligations. Establish `: (fun ξ ↦ weight s ξ • fourierFun v ξ) = ⇑(𝓕 (SobolevSpace.bessel s v) : Lp F 2 (volume : Measure E))`. Use function extensionality and compare the values at `ξ`.
+
+Conclude with `weight_smul_fourierFun v ξ`. Rewrite using `[this]`. Conclude with `Lp.memLp _`. Introduce and unpack `⟨g, hg, hφ⟩`. Rewrite using `[memSobolev_iff_exists_smulLeftCLM_fourier]`.
+
+Use `⟨hg.toLp _, ?_⟩` and prove the remaining obligations. Use extensionality with `φ`. Rewrite using `[smulLeftCLM_apply_apply, hφ, Lp.toTemperedDistribution_apply]`. Apply `integral_congr_ae` to reduce the goal to its premises. Use `filter_upwards [hg.coeFn_toLp] with ξ hξ`.
+
+Use `erw [SchwartzMap.smulLeftCLM_apply_apply (weight_hasTemperateGrowth s)]`. Rewrite using `[hξ]`. Simplify using `only [smul_smul, smul_eq_mul, mul_comm]`.
+-/
 theorem memSobolev_iff_fourier {s : ℝ} (u : 𝓢'(E, F)) :
     MemSobolev s 2 u ↔ ∃ g : E → F, MemLp (fun ξ ↦ weight s ξ • g ξ) 2 (volume : Measure E) ∧
       ∀ φ : 𝓢(E, ℂ), 𝓕 u φ = ∫ ξ, φ ξ • g ξ := by
@@ -406,6 +559,17 @@ theorem memSobolev_iff_fourier {s : ℝ} (u : 𝓢'(E, F)) :
     rw [hξ]
     simp only [smul_smul, smul_eq_mul, mul_comm]
 
+/- English proof (translation)
+Establish `hL : hg.toLp _ = (𝓕 (SobolevSpace.bessel s u) : Lp F 2 (volume : Measure E))`. Apply `toTemperedDistribution_injective` to reduce the goal to its premises. Simplify using `only`. Rewrite using `[← smulLeftCLM_weight_fourier]`. Use extensionality with `φ`.
+
+Rewrite using `[smulLeftCLM_apply_apply, hφ, Lp.toTemperedDistribution_apply]`. Apply `integral_congr_ae` to reduce the goal to its premises. Use `filter_upwards [hg.coeFn_toLp] with ξ hξ`. Rewrite using `[hξ, SchwartzMap.smulLeftCLM_apply_apply (weight_hasTemperateGrowth s)]`. Simplify using `only [smul_smul, smul_eq_mul, mul_comm]`.
+
+Establish `hae : (fun ξ ↦ weight s ξ • g ξ) =ᵐ[volume] fun ξ ↦ weight s ξ • fourierFun u ξ`. Establish `h2 : ⇑(hg.toLp _) =ᵐ[volume] ⇑(𝓕 (SobolevSpace.bessel s u) : Lp F 2 (volume : Measure E))` using `by rw [hL]`. Use `filter_upwards [hg.coeFn_toLp, h2] with ξ h1 h2`. Rewrite using `[← h1, h2, weight_smul_fourierFun]`. Establish `hg' : g =ᵐ[volume] fourierFun u` using `by filter_upwards [hae] with ξ h`.
+
+Establish `hw : weight s ξ ≠ 0`. Unfold `weight`. Conclude with `(weight_pos s ξ).ne'` after adjusting the coercions. Conclude with `smul_right_injective F hw h`. Use `⟨hg', ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[norm_sq_eq_integral]`. Apply `integral_congr_ae` to reduce the goal to its premises. Use `filter_upwards [hg'] with ξ h`. Rewrite using `[h]`.
+-/
 theorem norm_sq_eq_integral_of_fourier {s : ℝ} (u : SobolevSpace E F s) (g : E → F)
     (hg : MemLp (fun ξ ↦ weight s ξ • g ξ) 2 (volume : Measure E))
     (hφ : ∀ φ : 𝓢(E, ℂ), 𝓕 (SobolevSpace.toDistribution u) φ = ∫ ξ, φ ξ • g ξ) :
@@ -436,6 +600,13 @@ theorem norm_sq_eq_integral_of_fourier {s : ℝ} (u : SobolevSpace E F s) (g : E
   filter_upwards [hg'] with ξ h
   rw [h]
 
+/- English proof (translation)
+Use `ae_eq_zero_of_integral_contDiff_smul_eq_zero (h₁.sub h₂) fun g g_smooth g_cpt ↦ by` as an intermediate fact. Establish `hc₁ : HasCompactSupport (Complex.ofRealCLM ∘ g)` using `g_cpt.comp_left rfl`. Establish `hc₂ : ContDiff ℝ ∞ (Complex.ofRealCLM ∘ g)` using `by fun_prop`. Use `set φ := hc₁.toSchwartzMap hc₂`. Establish `hφ : ∀ x, φ x = (g x : ℂ)` using `fun x ↦ rfl`.
+
+Establish `hφc : HasCompactSupport φ` using `hc₁`. Establish `i₁ : Integrable (fun x ↦ φ x • g₁ x) (volume : Measure E)` using `h₁.integrable_smul_left_of_hasCompactSupport φ.continuous hφc`. Establish `i₂ : Integrable (fun x ↦ φ x • g₂ x) (volume : Measure E)` using `h₂.integrable_smul_left_of_hasCompactSupport φ.continuous hφc`. Establish `e : ∀ x, g x • (g₁ - g₂) x = φ x • g₁ x - φ x • g₂ x` using `fun x ↦ by`. Rewrite using `[hφ, Pi.sub_apply, smul_sub, Complex.coe_smul, Complex.coe_smul]`.
+
+Repeatedly rewrite using `[e]`. Rewrite using `[integral_sub i₁ i₂, h φ hφc, sub_self]`. Use `filter_upwards [this] with x hx`. Conclude with `sub_eq_zero.1 hx`.
+-/
 theorem ae_eq_of_integral_schwartz_smul_eq {g₁ g₂ : E → F}
     (h₁ : LocallyIntegrable g₁ (volume : Measure E)) (h₂ : LocallyIntegrable g₂ (volume : Measure E))
     (h : ∀ φ : 𝓢(E, ℂ), HasCompactSupport φ → ∫ x, φ x • g₁ x = ∫ x, φ x • g₂ x) :
@@ -457,6 +628,9 @@ theorem ae_eq_of_integral_schwartz_smul_eq {g₁ g₂ : E → F}
   filter_upwards [this] with x hx
   exact sub_eq_zero.1 hx
 
+/- English proof (translation)
+Simplify using `using! VectorFourier.integral_fourierIntegral_smul_eq_flip (L := innerₗ E) Real.continuous_fourierChar continuous_inner φ.integrable hg`.
+-/
 theorem integral_fourier_smul_eq_of_integrable (φ : 𝓢(E, ℂ)) {g : E → F}
     (hg : Integrable g (volume : Measure E)) :
     ∫ ξ, 𝓕 φ ξ • g ξ = ∫ x, φ x • 𝓕 g x := by
@@ -468,6 +642,9 @@ namespace SobolevSpace
 def lpEquivSobolevZero : Lp F 2 (volume : Measure E) ≃ₗᵢ[ℂ] SobolevSpace E F 0 :=
   (besselₗᵢ 0).symm
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `toDistribution ((bessel 0).symm f) = _`. Rewrite using `[toDistribution_bessel_symm, neg_zero, besselPotential_zero]`. Both sides reduce to the same expression.
+-/
 @[simp] theorem toDistribution_l2Equiv (f : Lp F 2 (volume : Measure E)) :
     toDistribution (lpEquivSobolevZero f) = (f : 𝓢'(E, F)) := by
   change toDistribution ((bessel 0).symm f) = _
@@ -476,6 +653,9 @@ def lpEquivSobolevZero : Lp F 2 (volume : Measure E) ≃ₗᵢ[ℂ] SobolevSpace
 
 variable {s t : ℝ}
 
+/- English proof (translation)
+Rewrite using `[norm_one, one_mul]`. Conclude with `Real.one_le_rpow (by nlinarith [sq_nonneg ‖ξ‖]) (by linarith)`.
+-/
 theorem one_bound (h : t ≤ s) (ξ : E) :
     ‖(1 : ℂ)‖ ≤ 1 * (1 + ‖ξ‖ ^ 2) ^ ((s - t) / 2) := by
   rw [norm_one, one_mul]
@@ -484,11 +664,17 @@ theorem one_bound (h : t ≤ s) (ξ : E) :
 def inclusion (h : t ≤ s) : SobolevSpace E F s →L[ℂ] SobolevSpace E F t :=
   multiplier (m := fun _ ↦ (1 : ℂ)) (Function.HasTemperateGrowth.const 1) (one_bound h)
 
+/- English proof (translation)
+Rewrite using `[inclusion, toDistribution_multiplier, fourierMultiplierCLM_const]`. Simplify using the standard rewrite rules.
+-/
 @[simp] theorem toDistribution_inclusion (h : t ≤ s) (u : SobolevSpace E F s) :
     toDistribution (inclusion h u) = toDistribution u := by
   rw [inclusion, toDistribution_multiplier, fourierMultiplierCLM_const]
   simp
 
+/- English proof (translation)
+Use `norm_multiplier_apply_le (m := fun _ ↦ (1 : ℂ)) (F := F) (Function.HasTemperateGrowth.const 1) (one_bound h) u` as an intermediate fact. Rewrite `this` using `[one_mul]`. Conclude with `this`.
+-/
 theorem norm_inclusion_apply_le (h : t ≤ s) (u : SobolevSpace E F s) :
     ‖inclusion h u‖ ≤ ‖u‖ := by
   have := norm_multiplier_apply_le (m := fun _ ↦ (1 : ℂ)) (F := F)
@@ -505,9 +691,15 @@ variable {s : ℝ}
 def ofSchwartz (s : ℝ) (φ : 𝓢(E, F)) : SobolevSpace E F s :=
   mk (φ : 𝓢'(E, F)) φ.memSobolev
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem toDistribution_ofSchwartz (φ : 𝓢(E, F)) :
     toDistribution (ofSchwartz s φ) = (φ : 𝓢'(E, F)) := rfl
 
+/- English proof (translation)
+Rewrite using `[LinearIsometryEquiv.symm_apply_eq, besselₗᵢ_apply]`. Apply `toTemperedDistribution_injective` to reduce the goal to its premises. Simplify using `only`. Rewrite using `[toDistribution_bessel, toDistribution_ofSchwartz, Lp.toTemperedDistribution_toLp_eq, ← fourierMultiplierCLM_toTemperedDistributionCLM_eq (weight_hasTemperateGrowth _), ← besselPotential_eq_fourierMultiplierCLM, besselPotential_besselPotential_apply]`. Simplify using the standard rewrite rules.
+-/
 theorem besselₗᵢ_symm_toLp (ψ : 𝓢(E, F)) :
     (besselₗᵢ s).symm (ψ.toLp 2) =
       ofSchwartz s (SchwartzMap.fourierMultiplierCLM F (weight (-s)) ψ) := by
@@ -519,6 +711,9 @@ theorem besselₗᵢ_symm_toLp (ψ : 𝓢(E, F)) :
     ← besselPotential_eq_fourierMultiplierCLM, besselPotential_besselPotential_apply]
   simp
 
+/- English proof (translation)
+Establish `h : DenseRange (fun ψ : 𝓢(E, F) ↦ (besselₗᵢ (E` using `E) (F := F) s).symm (ψ.toLp 2)) := (besselₗᵢ s).symm.toHomeomorph.surjective.denseRange.comp (SchwartzMap.denseRange_toLpCLM (p := 2) ENNReal.ofNat_ne_top) (besselₗᵢ s).symm.continuous`. Use `Dense.mono ?_ h` and prove the remaining obligations. Introduce and unpack `_ ⟨ψ, rfl⟩`. Conclude with `⟨_, (besselₗᵢ_symm_toLp ψ).symm⟩`.
+-/
 theorem denseRange_ofSchwartz : DenseRange (ofSchwartz (E := E) (F := F) s) := by
   have h : DenseRange (fun ψ : 𝓢(E, F) ↦ (besselₗᵢ (E := E) (F := F) s).symm (ψ.toLp 2)) :=
     (besselₗᵢ s).symm.toHomeomorph.surjective.denseRange.comp
@@ -529,6 +724,11 @@ theorem denseRange_ofSchwartz : DenseRange (ofSchwartz (E := E) (F := F) s) := b
   exact ⟨_, (besselₗᵢ_symm_toLp ψ).symm⟩
 
 open LineDeriv in
+/- English proof (translation)
+Rewrite using `[show (s - (s - 1)) / 2 = 1 / 2 by ring, ← Real.sqrt_eq_rpow, norm_mul, Complex.norm_real, Real.norm_eq_abs]`. Establish `h2 : ‖(2 * Real.pi * Complex.I)‖ = 2 * Real.pi`. Rewrite using `[norm_mul, Complex.norm_I, mul_one, norm_mul, Complex.norm_real, Complex.norm_two, Real.norm_eq_abs, abs_of_pos Real.pi_pos]`. Rewrite using `[h2]`. Establish `h : |inner ℝ ξ v| ≤ ‖v‖ * √(1 + ‖ξ‖ ^ 2)`.
+
+Combine the equalities or inequalities in the displayed calculation. Conclude with `Real.le_sqrt_of_sq_le (by linarith)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem lineDeriv_bound (v : E) (ξ : E) :
     ‖(2 * Real.pi * Complex.I) * ((inner ℝ ξ v : ℝ) : ℂ)‖ ≤
       (2 * Real.pi * ‖v‖) * (1 + ‖ξ‖ ^ 2) ^ ((s - (s - 1)) / 2) := by
@@ -555,6 +755,9 @@ def lineDerivCLM (v : E) : SobolevSpace E F s →L[ℂ] SobolevSpace E F (s - 1)
     (by fun_prop) (lineDeriv_bound v)
 
 open LineDeriv in
+/- English proof (translation)
+Rewrite using `[lineDerivCLM, toDistribution_multiplier, lineDeriv_eq_fourierMultiplierCLM]`. Establish `h` using `fourierMultiplierCLM_smul (F := F) (g := fun x : E ↦ ((inner ℝ x v : ℝ) : ℂ)) (by fun_prop) (2 * Real.pi * Complex.I)`. Rewrite using `[← smul_apply, ← h]`. Both sides reduce to the same expression.
+-/
 @[simp] theorem toDistribution_lineDerivCLM (v : E) (u : SobolevSpace E F s) :
     toDistribution (lineDerivCLM v u) = ∂_{v} (toDistribution u) := by
   rw [lineDerivCLM, toDistribution_multiplier, lineDeriv_eq_fourierMultiplierCLM]
@@ -563,6 +766,9 @@ open LineDeriv in
   rw [← smul_apply, ← h]
   rfl
 
+/- English proof (translation)
+The claim follows from `norm_multiplier_apply_le _ _ u`.
+-/
 theorem norm_lineDerivCLM_apply_le (v : E) (u : SobolevSpace E F s) :
     ‖lineDerivCLM v u‖ ≤ 2 * Real.pi * ‖v‖ * ‖u‖ :=
   norm_multiplier_apply_le _ _ u

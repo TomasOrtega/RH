@@ -20,6 +20,9 @@ section Norms
 
 variable {C : Type} [NontriviallyNormedField C] [IsUltrametricDist C]
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using hb`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le (h a (Finset.mem_insert_self _ _)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi)))`.
+-/
 theorem norm_sum_le_of_le {ι : Type} (s : Finset ι) (g : ι → C) {b : ℝ} (hb : 0 ≤ b) (h : ∀ i ∈ s, ‖g i‖ ≤ b) :
     ‖∑ i ∈ s, g i‖ ≤ b := by
   classical
@@ -30,6 +33,9 @@ theorem norm_sum_le_of_le {ι : Type} (s : Finset ι) (g : ι → C) {b : ℝ} (
     exact (IsUltrametricDist.norm_add_le_max _ _).trans
       (max_le (h a (Finset.mem_insert_self _ _)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi)))
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[Nat.cast_succ]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le ih (by simp))`.
+-/
 theorem norm_natCast_le_one' (n : ℕ) : ‖(n : C)‖ ≤ 1 := by
   induction n with
   | zero => simp
@@ -37,11 +43,25 @@ theorem norm_natCast_le_one' (n : ℕ) : ‖(n : C)‖ ≤ 1 := by
     rw [Nat.cast_succ]
     exact (IsUltrametricDist.norm_add_le_max _ _).trans (max_le ih (by simp))
 
+/- English proof (translation)
+Consider the cases of `n with`. Consider the case `ofNat n => simpa using norm_natCast_le_one' (C := C) n`. Consider the case `negSucc n => rw [Int.cast_negSucc, norm_neg]`. Conclude with `norm_natCast_le_one' _`.
+-/
 theorem norm_intCast_le_one' (n : ℤ) : ‖(n : C)‖ ≤ 1 := by
   cases n with
   | ofNat n => simpa using norm_natCast_le_one' (C := C) n
   | negSucc n => rw [Int.cast_negSucc, norm_neg]; exact norm_natCast_le_one' _
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h`. Use `push_neg at h`. Take `⟨Q, hQm, hQ⟩` from `hz`. Rewrite `hQ` using `[hQm.as_sum]`. Simplify using `only [Polynomial.eval₂_add, Polynomial.eval₂_X_pow, Polynomial.eval₂_finset_sum, Polynomial.eval₂_mul, Polynomial.eval₂_C] at hQ`.
+
+Establish `e : z ^ Q.natDegree = -∑ i ∈ Finset.range Q.natDegree, (algebraMap ℤ C) (Q.coeff i) * z ^ i` using `eq_neg_of_add_eq_zero_left hQ`. Break down `Nat.eq_zero_or_pos Q.natDegree with h0 | h0` into its components or cases. Rewrite `e` using `[h0]`. Simplify using `at e`. Establish `hs : ‖∑ i ∈ Finset.range Q.natDegree, (algebraMap ℤ C) (Q.coeff i) * z ^ i‖ ≤ ‖z‖ ^ (Q.natDegree - 1)`.
+
+Use `norm_sum_le_of_le _ _ (by positivity) fun i hi => ?_` and prove the remaining obligations. Rewrite using `[norm_mul, norm_pow, algebraMap_int_eq, eq_intCast]`. Establish `hi' : i ≤ Q.natDegree - 1` using `by have := Finset.mem_range.1 hi; omega`. Combine the equalities or inequalities in the displayed calculation. Rewrite `hs` using `[← norm_neg, ← e, norm_pow]`.
+
+Establish `: ‖z‖ ^ Q.natDegree = ‖z‖ ^ (Q.natDegree - 1) * ‖z‖`. Rewrite using `[← pow_succ]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers. Rewrite `hs` using `[this]`.
+
+Establish `hp : 0 < ‖z‖ ^ (Q.natDegree - 1)` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem norm_le_one_of_isIntegral {z : C} (hz : IsIntegral ℤ z) : ‖z‖ ≤ 1 := by
   by_contra h
   push_neg at h
@@ -67,12 +87,18 @@ theorem norm_le_one_of_isIntegral {z : C} (hz : IsIntegral ℤ z) : ‖z‖ ≤ 
   have hp : 0 < ‖z‖ ^ (Q.natDegree - 1) := by positivity
   nlinarith
 
+/- English proof (translation)
+Rewrite using `[Polynomial.aeval_eq_sum_range]`. Use `norm_sum_le_of_le _ _ zero_le_one fun i _ => ?_` and prove the remaining obligations. Rewrite using `[zsmul_eq_mul, norm_mul, norm_pow]`. Conclude with `mul_le_one₀ (norm_intCast_le_one' _) (by positivity) (pow_le_one₀ (norm_nonneg _) hz)`.
+-/
 theorem norm_aeval_le_one (R : Polynomial ℤ) {z : C} (hz : ‖z‖ ≤ 1) : ‖Polynomial.aeval z R‖ ≤ 1 := by
   rw [Polynomial.aeval_eq_sum_range]
   refine norm_sum_le_of_le _ _ zero_le_one fun i _ => ?_
   rw [zsmul_eq_mul, norm_mul, norm_pow]
   exact mul_le_one₀ (norm_intCast_le_one' _) (by positivity) (pow_le_one₀ (norm_nonneg _) hz)
 
+/- English proof (translation)
+Establish `e` using `congrArg (Polynomial.aeval z) (Polynomial.divX_mul_X_add R)`. Rewrite `e` using `[map_add, map_mul, Polynomial.aeval_X, Polynomial.aeval_C, hR, algebraMap_int_eq, eq_intCast]`. Establish `e2 : ((R.coeff 0 : ℤ) : C) = -(Polynomial.aeval z R.divX * z)` using `by linear_combination e`. Rewrite using `[e2, norm_neg, norm_mul]`. Conclude with `mul_le_of_le_one_left (norm_nonneg _) (norm_aeval_le_one _ hz)`.
+-/
 theorem norm_coeff_zero_le {z : C} (R : Polynomial ℤ) (hR : Polynomial.aeval z R = 0) (hz : ‖z‖ ≤ 1) :
     ‖((R.coeff 0 : ℤ) : C)‖ ≤ ‖z‖ := by
   have e := congrArg (Polynomial.aeval z) (Polynomial.divX_mul_X_add R)
@@ -81,6 +107,15 @@ theorem norm_coeff_zero_le {z : C} (R : Polynomial ℤ) (hR : Polynomial.aeval z
   rw [e2, norm_neg, norm_mul]
   exact mul_le_of_le_one_left (norm_nonneg _) (norm_aeval_le_one _ hz)
 
+/- English proof (translation)
+Establish `hcop : Nat.Coprime b p` using `((Nat.Prime.coprime_iff_not_dvd hp).2 hb).symm`. Establish `e : (b : ℤ) * Nat.gcdA b p + (p : ℤ) * Nat.gcdB b p = 1`. Use `Nat.gcd_eq_gcd_ab b p` as an intermediate fact. Rewrite `this` using `[hcop.gcd_eq_one]`. Conclude with `this.symm` after adjusting the coercions.
+
+Establish `e' : (b : C) * (Nat.gcdA b p : C) + (p : C) * (Nat.gcdB b p : C) = 1`. Use `congrArg (Int.cast : ℤ → C) e` as an intermediate fact. Move the coercions through the operations in `at this`. Conclude with `this`. Establish `h1 : (1 : ℝ) ≤ max ‖(b : C)‖ (p : ℝ)⁻¹`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[norm_mul, norm_mul, hpC]`. Conclude with `max_le_max (mul_le_of_le_one_right (norm_nonneg _) (norm_intCast_le_one' _)) (mul_le_of_le_one_right (by positivity) (norm_intCast_le_one' _))`. Establish `hp1 : (p : ℝ)⁻¹ < 1` using `inv_lt_one_of_one_lt₀ (by exact_mod_cast hp.one_lt)`. Break down `le_max_iff.1 h1 with h | h` into its components or cases.
+
+Conclude with `h`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem one_le_norm_natCast {p : ℕ} (hp : p.Prime) (hpC : ‖(p : C)‖ = (p : ℝ)⁻¹) {b : ℕ} (hb : ¬ p ∣ b) :
     1 ≤ ‖(b : C)‖ := by
   have hcop : Nat.Coprime b p := ((Nat.Prime.coprime_iff_not_dvd hp).2 hb).symm
@@ -107,6 +142,17 @@ theorem one_le_norm_natCast {p : ℕ} (hp : p.Prime) (hpC : ‖(p : C)‖ = (p :
 
 end Norms
 
+/- English proof (translation)
+Establish `ha : (minpoly ℤ γ).coeff 0 ≠ 0`. Introduce `h`. Establish `hq` using `minpoly.coeff_zero_ne_zero (A := ℚ) (IsIntegral.tower_top hi) h0`. Rewrite `hq` using `[minpoly.isIntegrallyClosed_eq_field_fractions' ℚ hi, Polynomial.coeff_map, h, map_zero]`. Conclude with `hq rfl`.
+
+Take `⟨e, b, hb, hab⟩` from `Nat.exists_eq_pow_mul_and_not_dvd (Int.natAbs_ne_zero.2 ha) p hp.ne_one`. Use `⟨e, fun C _ _ hpC f => ?_⟩` and prove the remaining obligations. Establish `hz : Polynomial.aeval (f γ) (minpoly ℤ γ) = 0`. Rewrite using `[show f γ = f.toIntAlgHom γ from rfl, Polynomial.aeval_algHom_apply, minpoly.aeval, map_zero]`. Establish `h1` using `norm_coeff_zero_le (minpoly ℤ γ) hz (norm_le_one_of_isIntegral (hi.map f.toIntAlgHom))`.
+
+Establish `h2 : ‖(((minpoly ℤ γ).coeff 0 : ℤ) : C)‖ = ‖((((minpoly ℤ γ).coeff 0).natAbs : ℕ) : C)‖`. Break down `Int.natAbs_eq ((minpoly ℤ γ).coeff 0) with h | h` into its components or cases. Use `conv_lhs => rw [h]`. Simplify using the standard rewrite rules. Use `conv_lhs => rw [h]`.
+
+Simplify using the standard rewrite rules. Rewrite `h1` using `[h2, hab, Nat.cast_mul, Nat.cast_pow, norm_mul, norm_pow, hpC]`. Establish `h3` using `one_le_norm_natCast hp hpC hb`. Establish `hpos : 0 < ‖f γ‖` using `norm_pos_iff.2 ((map_ne_zero f).2 h0)`. Establish `hpp : (0 : ℝ) < (p : ℝ) ^ e` using `pow_pos (by exact_mod_cast hp.pos) e`.
+
+Establish `h4 : ((p : ℝ) ^ e)⁻¹ ≤ ‖f γ‖`. Rewrite using `[← inv_pow]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[inv_le_comm₀ hpos hpp]`. Conclude with `h4`.
+-/
 theorem exists_exp {K : Type} [Field K] [CharZero K] {p : ℕ} (hp : p.Prime) {γ : K} (h0 : γ ≠ 0)
     (hi : IsIntegral ℤ γ) : ∃ e : ℕ, ∀ (C : Type) [NontriviallyNormedField C] [IsUltrametricDist C],
       ‖(p : C)‖ = (p : ℝ)⁻¹ → ∀ f : K →+* C, ‖f γ‖⁻¹ ≤ (p : ℝ) ^ e := by
@@ -150,16 +196,27 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
 def bcT (v : TanM x t.G) : TanM (spMap φ ≫ x) t.G :=
   GlobalTheory.LieMet.tanOf (GlobalTheory.LieMet.isTan_map φ rfl (GlobalTheory.LieMet.isTan_tv v))
 
+/- English proof (translation)
+Establish `h` using `(GlobalTheory.LieMet.isComb_iff u a (∑ i, a i • u i)).2 rfl`. Establish `h2` using `GlobalTheory.LatDRFree.comb_map t φ h`. Conclude with `(GlobalTheory.LieMet.isComb_iff (fun i => bcT t φ x (u i)) (fun i => φ (a i)) _).1 h2`.
+-/
 theorem bcT_sum {m : ℕ} (a : Fin m → S) (u : Fin m → TanM x t.G) :
     bcT t φ x (∑ i, a i • u i) = ∑ i, φ (a i) • bcT t φ x (u i) := by
   have h := (GlobalTheory.LieMet.isComb_iff u a (∑ i, a i • u i)).2 rfl
   have h2 := GlobalTheory.LatDRFree.comb_map t φ h
   exact (GlobalTheory.LieMet.isComb_iff (fun i => bcT t φ x (u i)) (fun i => φ (a i)) _).1 h2
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.LieMet.tan_ext (Category.assoc _ _ _).symm`.
+-/
 theorem bcT_act (a : 𝓞 E) (v : TanM x t.G) :
     bcT t φ x (actR (x0 := x) t.act a v) = actR (x0 := spMap φ ≫ x) t.act a (bcT t φ x v) :=
   GlobalTheory.LieMet.tan_ext (Category.assoc _ _ _).symm
 
+/- English proof (translation)
+Establish `hn : Q.natDegree < Q.natDegree + 1` using `Nat.lt_succ_self _`. Establish `hn' : (Q.map φ).natDegree < Q.natDegree + 1` using `lt_of_le_of_lt Polynomial.natDegree_map_le hn`. Rewrite using `[Polynomial.aeval_eq_sum_range' hn, Polynomial.aeval_eq_sum_range' hn']`. Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply, ← map_pow, Finset.sum_range, Polynomial.coeff_map]`. Rewrite using `[bcT_sum]`.
+
+Simplify using `only [bcT_act]`.
+-/
 theorem bcT_aeval (α : 𝓞 E) (Q : Polynomial S) (v : TanM x t.G) :
     bcT t φ x (Polynomial.aeval (actR (x0 := x) t.act α) Q v) =
       Polynomial.aeval (actR (x0 := spMap φ ≫ x) t.act α) (Q.map φ) (bcT t φ x v) := by
@@ -181,6 +238,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 open Classical in
 
+/- English proof (translation)
+Use `Finset.prod_induction _ (_root_.IsIntegral ℤ) (fun _ _ => IsIntegral.mul) isIntegral_one fun τ _ => ?_` and prove the remaining obligations. Establish `hα : _root_.IsIntegral ℤ α` using `Algebra.IsIntegral.isIntegral α`. Conclude with `(hα.map (embK c σ).toIntAlgHom).sub (hα.map (embK c τ).toIntAlgHom)`.
+-/
 theorem integral_prod_sub {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {l : Level H} (c : Coeff l) (α : 𝓞 E) (σ : E →+* ℂ) :
     _root_.IsIntegral ℤ (∏ τ ∈ Finset.univ.erase σ, (embK c σ α - embK c τ α)) := by
@@ -188,6 +248,35 @@ theorem integral_prod_sub {E : Type} [Field E] [NumberField E] [IsCMField E] {H 
   have hα : _root_.IsIntegral ℤ α := Algebra.IsIntegral.isIntegral α
   exact (hα.map (embK c σ).toIntAlgHom).sub (hα.map (embK c τ).toIntAlgHom)
 
+/- English proof (translation)
+Introduce `E i1 i2 i3 H Dw l c X t p hp`. Establish `: CharZero c.F` using `RingHom.charZero c.F.val.toRingHom`. Take `⟨α, hinj, -, -⟩` from `exists_sepElt (E := E) (F := c.F) c.F.val.toRingHom (embK c) (fun τ a => embK_coe c τ a)`. Set `gm : (E →+* ℂ) → c.F` to `fun σ => ∏ τ ∈ Finset.univ.erase σ, (embK c σ α - embK c τ α)`. Establish `hgm0 : ∀ σ, gm σ ≠ 0` using `fun σ => Finset.prod_ne_zero_iff.2 fun τ hτ => sub_ne_zero.2 fun h => (Finset.ne_of_mem_erase hτ) (hinj h).symm`.
+
+Use `choose e he using fun σ => exists_exp hp (hgm0 σ) (integral_prod_sub c α σ)`. Use `⟨∑ σ, e σ, fun C _ _ hpC f x u hu j => ?_⟩` and prove the remaining obligations. Set `eq` to `Equiv.ofBijective _ (GlobalTheory.Proof.frame_combination_coeff_unique.get_bijective Dw)`. Establish `hget : ∀ i, eq i = (letters Dw).get i` using `fun _ => rfl`. Generalize the expression as in `hy : (letters Dw).get j = y`.
+
+Take `⟨σ, k⟩` from `y`. Establish `hj : eq.symm ⟨σ, k⟩ = j` using `by rw [← hy]; exact eq.symm_apply_apply j`. Establish `hfgm : f (gm σ) ≠ 0` using `(map_ne_zero f).2 (hgm0 σ)`. Establish `hn1 : ‖f (gm σ)‖ ≤ 1` using `norm_le_one_of_isIntegral ((integral_prod_sub c α σ).map f.toIntAlgHom)`. Establish `hpos : 0 < ‖f (gm σ)‖` using `norm_pos_iff.2 hfgm`.
+
+Use `⟨‖f (gm σ)‖⁻¹, (one_le_inv₀ hpos).2 hn1, (he σ C hpC f).trans (pow_le_pow_right₀ (by exact_mod_cast hp.one_lt.le) (Finset.single_le_sum (fun _ _ => Nat.zero_le _) (Finset.mem_univ σ))), ?_⟩` and prove the remaining obligations. Introduce and unpack `r ⟨cg, hcg0, hcgz, ⟨w, ⟨xO, rfl, vO, hvO, rfl⟩, hc⟩, rfl⟩`. Set `xC` to `spMap (intO C).subtype ≫ xO`. Set `ρ` to `actR (x0 := xC) (S := C) t.act`. Set `U : GlobalTheory.ShFam.Pad.Letter Dw → TanM xC t.G` to `fun y => GlobalTheory.LieMet.tanOf (hu.1 y.1 y.2).1`.
+
+Establish `hU : ∀ y (a : 𝓞 E), ρ a (U y) = f (embK c y.1 a) • U y` using `fun y a => GlobalTheory.LieMet.tan_ext ((hu.1 y.1 y.2).2 a)`. Set `lam : (E →+* ℂ) → intO C` to `fun τ => ⟨f (embK c τ α), norm_le_one_of_isIntegral (((Algebra.IsIntegral.isIntegral (R := ℤ) α).map (embK c τ).toIntAlgHom).map f.toIntAlgHom)⟩`. Set `Q : Polynomial (intO C)` to `∏ τ ∈ Finset.univ.erase σ, (Polynomial.X - Polynomial.C (lam τ))`. Set `wv : TanM xC t.G` to `bcT t (intO C).subtype xO (GlobalTheory.LieMet.tanOf hvO)`. Establish `hw : wv = ∑ i, cg i • U ((letters Dw).get i)` using `(GlobalTheory.LieMet.isComb_iff (fun i => U ((letters Dw).get i)) cg wv).1 hc`.
+
+Establish `hval : ∀ y : GlobalTheory.ShFam.Pad.Letter Dw, Polynomial.aeval (ρ α) (Q.map (intO C).subtype) (U y) = (if y.1 = σ then f (gm σ) else 0) • U y`. Introduce `y`. Rewrite using `[aevalS_eig (ρ α) (hU y α)]`. Use `congr 1`. Simplify using `only [Q, Polynomial.map_prod, Polynomial.map_sub, Polynomial.map_X, Polynomial.map_C, map_prod, map_sub, Polynomial.aeval_X, Polynomial.aeval_C]`.
+
+Use `split_ifs with h`. Substitute `h` using the available equality. Simplify using `only [gm, map_prod, map_sub]`. Both sides reduce to the same expression. Conclude with `Finset.prod_eq_zero (Finset.mem_erase.2 ⟨h, Finset.mem_univ _⟩) (sub_self _)`.
+
+Establish `hg2 : ∀ y, (letters Dw).get (eq.symm y) = y` using `fun y => eq.apply_symm_apply y`. Set `cf : Fin (Dw.mult σ) → C` to `fun i => f (gm σ) * cg (eq.symm ⟨σ, i⟩)`. Establish `hsum : Polynomial.aeval (ρ α) (Q.map (intO C).subtype) wv = ∑ i, cf i • U ⟨σ, i⟩`. Rewrite using `[hw, map_sum]`. Simplify using `only [map_smul, hval]`.
+
+Rewrite using `[← Equiv.sum_comp eq.symm]`. Simplify using `only [hg2]`. Rewrite using `[Fintype.sum_sigma, Finset.sum_eq_single σ]`. Use `Finset.sum_congr rfl fun i _ => ?_ dsimp only` and prove the remaining obligations. Rewrite using `[if_pos rfl, smul_smul, mul_comm]`.
+
+Introduce `τ _ hτ`. Conclude with `Finset.sum_eq_zero fun i _ => by dsimp only; rw [if_neg hτ, zero_smul, smul_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ σ) h`. Use `⟨cf, ?_, ?_, ⟨_, ?_, (GlobalTheory.LieMet.isComb_iff (fun i => U ⟨σ, i⟩) cf _).2 hsum⟩, ?_⟩` and prove the remaining obligations.
+
+Use `show f (gm σ) * cg (eq.symm ⟨σ, k⟩) ≠ 0`. Rewrite using `[hj]`. Conclude with `mul_ne_zero hfgm hcg0`. Introduce `i hi show f (gm σ) * cg (eq.symm ⟨σ, i⟩) = 0`. Rewrite using `[hcgz _ ?_, mul_zero]`.
+
+Assume the negation of the conclusion as `hle`. Use `push_neg at hle`. Break down `hle.lt_or_eq with hlt | heq` into its components or cases. Establish `h1` using `List.pairwise_iff_get.1 (GlobalTheory.Proof.frame_combination_coeff_unique.pairwise_letters Dw) _ _ hlt`. Rewrite `h1` using `[hg2, hy]`.
+
+Establish `h3 : (i : ℕ) < k` using `h1 rfl`. Establish `h4 : (k : ℕ) < i` using `Fin.lt_iff_val_lt_val.1 hi`. Use linear arithmetic over natural numbers and integers. Establish `h1` using `congrArg eq heq`. Rewrite `h1` using `[Equiv.apply_symm_apply, hget, hy]`.
+
+Establish `h2 : i = k` using `eq_of_heq (Sigma.mk.inj_iff.1 h1).2`. Conclude with `absurd hi (by rw [h2]; exact lt_irrefl _)`. Conclude with `⟨xO, rfl, (tv (Polynomial.aeval (actR (x0 := xO) t.act α) Q (GlobalTheory.LieMet.tanOf hvO))).left, GlobalTheory.LieMet.isTan_tv _, congrArg (fun z => (tv z).left) (bcT_aeval t (intO C).subtype xO α Q _)⟩`. Use `show ‖f (gm σ)‖⁻¹ * ‖cg j‖⁻¹ = ‖f (gm σ) * cg (eq.symm ⟨σ, k⟩)‖⁻¹`. Rewrite using `[hj, norm_mul, mul_inv]`.
+-/
 theorem scale : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} (Dw : Datum H)
     {l : Level H} (c : Coeff l) {X : Scheme.{0}} (t : SAB H X) (p : ℕ), p.Prime → ∃ m : ℕ, ∀ (C : Type)
     [NontriviallyNormedField C] [IsUltrametricDist C], ‖(p : C)‖ = (p : ℝ)⁻¹ → ∀ (f : c.F →+* C) (x : Sp C ⟶ X)

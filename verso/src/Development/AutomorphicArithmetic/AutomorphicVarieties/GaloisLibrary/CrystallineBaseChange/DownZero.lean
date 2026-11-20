@@ -10,18 +10,30 @@ open UpperHalfPlane hiding I
 
 namespace UpperTheory.V.Br
 
+/- English proof (translation)
+Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [aff, Matrix.mul_apply, Fin.sum_univ_two, add_comm]`.
+-/
 private theorem aff_mul' (y z : ℝˣ) (x t : ℝ) : aff y x * aff z t = aff (y * z) (x + y * t) := by
   refine Units.ext (Matrix.ext fun i j => ?_)
   fin_cases i <;> fin_cases j <;> simp [aff, Matrix.mul_apply, Fin.sum_univ_two, add_comm]
 
+/- English proof (translation)
+Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [aff]`.
+-/
 private theorem aff_one' : aff (1 : ℝˣ) (0 : ℝ) = 1 := by
   refine Units.ext (Matrix.ext fun i j => ?_)
   fin_cases i <;> fin_cases j <;> simp [aff]
 
+/- English proof (translation)
+Use `inv_eq_of_mul_eq_one_left ?_` and prove the remaining obligations. Rewrite using `[aff_mul', inv_mul_cancel, neg_add_cancel, aff_one']`.
+-/
 private theorem aff_inv' (y : ℝˣ) (x : ℝ) : (aff y x)⁻¹ = aff y⁻¹ (-((y⁻¹ : ℝˣ) * x)) := by
   refine inv_eq_of_mul_eq_one_left ?_
   rw [aff_mul', inv_mul_cancel, neg_add_cancel, aff_one']
 
+/- English proof (translation)
+Rewrite using `[one_mul, ← map_mul, aff_mul', one_mul]`. Unfold `down`. Establish `h : Units.mk0 (t +ᵥ z).im (t +ᵥ z).im_pos.ne' = Units.mk0 z.im z.im_pos.ne'` using `Units.ext (vadd_im t z)`. Rewrite using `[h, vadd_im, vadd_re]`. Simplify using the standard rewrite rules.
+-/
 private theorem down_vadd (k : ℕ) (φ : GA ℚ 2 → ℂ) (t : ℝ) (z : ℍ) :
     down k φ (t +ᵥ z) = ((z.im ^ (-((k : ℝ) / 2)) : ℝ) : ℂ) *
       φ (upR (aff 1 t) * (1 * upR (aff (Units.mk0 z.im z.im_pos.ne') z.re))) := by
@@ -31,6 +43,9 @@ private theorem down_vadd (k : ℕ) (φ : GA ℚ 2 → ℂ) (t : ℝ) (z : ℍ) 
   rw [h, vadd_im, vadd_re]
   simp
 
+/- English proof (translation)
+Establish `h0 : 0 ≤ B` using `zero_le_one.trans h1`. Use `(pi_norm_le_iff_of_nonneg h0).2 fun i => (pi_norm_le_iff_of_nonneg h0).2 fun j => (pi_norm_le_iff_of_nonneg h0).2 fun v => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `|(aff y x).val i j| ≤ B`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [aff, *]`.
+-/
 private theorem norm_aff (y : ℝˣ) (x B : ℝ) (h1 : 1 ≤ B) (hy : |(y : ℝ)| ≤ B) (hx : |x| ≤ B) :
     ‖TR.toL (Matrix.GeneralLinearGroup.map (algebraMap ℝ (TR.Rinf ℚ)) (aff y x)).val‖ ≤ B := by
   have h0 : 0 ≤ B := zero_le_one.trans h1
@@ -39,6 +54,13 @@ private theorem norm_aff (y : ℝˣ) (x B : ℝ) (h1 : 1 ≤ B) (hy : |(y : ℝ)
   change |(aff y x).val i j| ≤ B
   fin_cases i <;> fin_cases j <;> simp [aff, *]
 
+/- English proof (translation)
+Establish `hN1 : (1 : ℝ) ≤ N` using `by exact_mod_cast hN`. Establish `hB : (1 : ℝ) ≤ N * z.im` using `by nlinarith`. Establish `hB2 : (N : ℝ) ≤ N * z.im` using `by nlinarith`. Establish `hi : |(z.im)⁻¹| ≤ 1`. Rewrite using `[abs_of_pos (inv_pos.2 z.im_pos)]`.
+
+Conclude with `inv_le_one_of_one_le₀ h1`. Establish `a1` using `norm_aff (Units.mk0 z.im z.im_pos.ne') z.re (N * z.im) hB (by rw [Units.val_mk0, abs_of_pos z.im_pos]; nlinarith) (h2.trans hB2)`. Establish `a2` using `norm_aff (Units.mk0 z.im z.im_pos.ne')⁻¹ (-(((Units.mk0 z.im z.im_pos.ne')⁻¹ : ℝˣ) * z.re)) (N * z.im) hB (by rw [Units.val_inv_eq_inv_val, Units.val_mk0]; exact hi.trans hB) (by`. Rewrite using `[Units.val_inv_eq_inv_val, Units.val_mk0, abs_neg, abs_mul]`. Conclude with `(mul_le_of_le_one_left (abs_nonneg _) hi).trans (h2.trans hB2))`.
+
+Unfold `TR.height`. Rewrite using `[← map_inv, aff_inv']`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 private theorem height_aff (N : ℕ) (hN : 0 < N) (z : ℍ) (h1 : 1 ≤ z.im) (h2 : |z.re| ≤ N) :
     TR.height (Matrix.GeneralLinearGroup.map (algebraMap ℝ (TR.Rinf ℚ)) (aff (Units.mk0 z.im z.im_pos.ne') z.re)) ≤
       3 * N * z.im := by
@@ -61,6 +83,17 @@ private theorem height_aff (N : ℕ) (hN : 0 < N) (z : ℍ) (h1 : 1 ≤ z.im) (h
 end UpperTheory.V.Br
 
 open UpperTheory.V.Br in
+/- English proof (translation)
+Introduce `k φ hc hl`. Take `⟨N, hN, hm⟩` from `cuspMean φ hc 1`. Take `⟨C, m, hg⟩` from `hc.1.growth 1`. Use `perZero _ N hN (downHol k φ hl) (fun z => ?_) ⟨|C| * (3 * N) ^ m, m, fun z h1 h2 => ?_⟩ fun z => ?_` and prove the remaining obligations. Establish `h` using `(hm (aff (Units.mk0 z.im z.im_pos.ne') z.re)).1 0`.
+
+Establish `h0` using `down_vadd k φ.1 0 z`. Rewrite `h0` using `[zero_vadd]`. Rewrite using `[down_vadd, h0]`. Simplify using `only [zero_add] at h`. Rewrite using `[h]`.
+
+Establish `h` using `hg (Matrix.GeneralLinearGroup.map (algebraMap ℝ (TR.Rinf ℚ)) (aff (Units.mk0 z.im z.im_pos.ne') z.re))`. Rewrite `h` using `[one_mul]`. Establish `h3` using `height_aff N hN z h1 h2`. Establish `h4 : 0 ≤ TR.height (Matrix.GeneralLinearGroup.map (algebraMap ℝ (TR.Rinf ℚ)) (aff (Units.mk0 z.im z.im_pos.ne') z.re))`. Unfold `TR.height`.
+
+Check the signs of the components of the expression. Establish `h5 : z.im ^ (-((k : ℝ) / 2)) ≤ 1` using `Real.rpow_le_one_of_one_le_of_nonpos h1 (neg_nonpos.2 (by positivity))`. Unfold `down`. Rewrite using `[norm_mul, Complex.norm_real, Real.norm_of_nonneg (Real.rpow_nonneg z.im_pos.le _)]`. Use `(mul_le_of_le_one_left (norm_nonneg _) h5).trans (h.trans ?_)` and prove the remaining obligations.
+
+Rewrite using `[mul_assoc, ← mul_pow]`. Conclude with `mul_le_mul (le_abs_self C) (pow_le_pow_left₀ h4 h3 m) (pow_nonneg h4 m) (abs_nonneg C)`. Simplify using `only [down_vadd]`. Rewrite using `[intervalIntegral.integral_const_mul, (hm _).2, mul_zero]`.
+-/
 theorem UpperTheory.V.Br.downZero :
     UpperTheory.V.Br.DownZero := by
   intro k φ hc hl

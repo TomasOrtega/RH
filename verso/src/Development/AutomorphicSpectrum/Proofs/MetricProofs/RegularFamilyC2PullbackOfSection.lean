@@ -8,6 +8,17 @@ namespace GlobalTheory.CompanionTheory.Ar.Giv
 
 noncomputable section
 
+/- English proof (translation)
+Rewrite using `[isOpen_iff_mem_nhds]`. Introduce `x hx`. Establish `hx0 : s x x ≠ 0` using `hx`. Take `⟨j, hj⟩` from `A.cover x`. Establish `hleft : (A.chart j).symm (A.chart j x) = x` using `(A.chart j).left_inv hj`.
+
+Establish `hmem : A.chart j x ∈ (A.chart j).target ∩ (A.chart j).symm ⁻¹' L.U x` using `⟨(A.chart j).map_source hj, by show (A.chart j).symm (A.chart j x) ∈ L.U x`. Rewrite using `[hleft]`. Conclude with `L.mem_U x⟩`. Establish `hg : ContinuousAt (s x ∘ (A.chart j).symm) (A.chart j x)` using `(hs.1 x j _ hmem).continuousAt`. Establish `hne : (s x ∘ (A.chart j).symm) (A.chart j x) ≠ 0`.
+
+Simplify `hx0` using `[Function.comp_apply, hleft]`. Establish `h1 : ∀ᶠ y in 𝓝 x, (s x ∘ (A.chart j).symm) (A.chart j y) ≠ 0` using `((A.chart j).continuousAt hj).eventually (hg.eventually_ne hne)`. Establish `h2 : ∀ᶠ y in 𝓝 x, y ∈ (A.chart j).source` using `(A.chart j).open_source.mem_nhds hj`. Establish `h3 : ∀ᶠ y in 𝓝 x, y ∈ L.U x` using `(L.isOpen_U x).mem_nhds (L.mem_U x)`. Use `filter_upwards [h1, h2, h3] with y hy1 hy2 hy3`.
+
+Establish `hsy : s x y ≠ 0`. Simplify `hy1` using `[Function.comp_apply, (A.chart j).left_inv hy2]`. Introduce `hb`. Establish `hb0 : s y y = 0` using `hb`. Establish `heq` using `hs.2 x y y ⟨hy3, L.mem_U y⟩`.
+
+Rewrite `heq` using `[hb0, norm_zero, zero_mul]`. Conclude with `(mul_ne_zero (norm_ne_zero_iff.2 hsy) (Real.exp_ne_zero _)) heq`.
+-/
 theorem isOpen_compl_bdry {e : ℕ} {X : Type} [TopologicalSpace X] {A : FinHolAtlas e X}
     {L : LocPot X} {s : X → X → ℂ} (hs : IsSection A L s) : IsOpen (bdry s)ᶜ := by
   rw [isOpen_iff_mem_nhds]
@@ -36,6 +47,9 @@ theorem isOpen_compl_bdry {e : ℕ} {X : Type} [TopologicalSpace X] {A : FinHolA
   rw [hb0, norm_zero, zero_mul] at heq
   exact (mul_ne_zero (norm_ne_zero_iff.2 hsy) (Real.exp_ne_zero _)) heq
 
+/- English proof (translation)
+Establish `key` using `GroundTheory.Heights₂.Heights.AnalyticLimit.C2ConvergencePullback.proof A' A h hh (bdry s)ᶜ hO phT ph (ph ∘ h) hph (fun _ _ => rfl) hT (fun k K hK hKs => hC k K hKs hK)`. Introduce `j K hKs hK`. Conclude with `key j K hK hKs`.
+-/
 theorem regular_family_C2_pullback_of_open {e e' : ℕ} {X X' : Type} [TopologicalSpace X] [TopologicalSpace X']
     (A : FinHolAtlas e X) (A' : FinHolAtlas e' X') (h : X' → X) (hh : HoloMap A' A h)
     (s : X → X → ℂ) (ph : X → ℝ) (phT : ℝ → X → ℝ) (hO : IsOpen (bdry s)ᶜ)
@@ -48,6 +62,9 @@ theorem regular_family_C2_pullback_of_open {e e' : ℕ} {X X' : Type} [Topologic
   intro j K hKs hK
   exact key j K hK hKs
 
+/- English proof (translation)
+The claim follows from `regular_family_C2_pullback_of_open A A' h hh s ph phT (isOpen_compl_bdry hs) hph hT hC`.
+-/
 theorem regular_family_C2_pullback_of_section {e e' : ℕ} {X X' : Type} [TopologicalSpace X] [TopologicalSpace X']
     (A : FinHolAtlas e X) (A' : FinHolAtlas e' X') (h : X' → X) (hh : HoloMap A' A h)
     (L : LocPot X) (s : X → X → ℂ) (ph : X → ℝ) (phT : ℝ → X → ℝ) (hs : IsSection A L s)

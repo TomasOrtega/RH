@@ -10,6 +10,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.PtExt
 
+/- English proof (translation)
+Establish `hne : Nonempty (𝟙_ (Over (Sp R))).left` using `inferInstanceAs (Nonempty (PrimeSpectrum R))`. Take `⟨p⟩` from `hne`. Set `e : 𝟙_ (Over (Sp R)) ⟶ A ⊗ B` to `lift η[A] η[B]`. Establish `h : e.left.base p ∈ (⨆ i, P.U i)` using `by rw [hP.cover]; trivial`. Take `⟨i, -⟩` from `TopologicalSpace.Opens.mem_iSup.1 h`.
+
+Conclude with `⟨i⟩`.
+-/
 theorem nonempty_ι_of_isLB (R : Type) [CommRing R] [Nontrivial R] (A B : Over (Sp R)) [GrpObj A] [GrpObj B]
     (P : LB (A ⊗ B).left) (hP : P.IsLB) : Nonempty P.ι := by
   have hne : Nonempty (𝟙_ (Over (Sp R))).left := inferInstanceAs (Nonempty (PrimeSpectrum R))
@@ -19,6 +24,11 @@ theorem nonempty_ι_of_isLB (R : Type) [CommRing R] [Nontrivial R] (A B : Over (
   obtain ⟨i, -⟩ := TopologicalSpace.Opens.mem_iSup.1 h
   exact ⟨i⟩
 
+/- English proof (translation)
+Introduce `R _ _ A B _ _ P hP`. Establish `hne` using `nonempty_ι_of_isLB R A B P hP`. Use `⟨fun D _ _ x ↦ if h : Sm (chartsA P) x then h.choose else Classical.choice hne, ?_⟩` and prove the remaining obligations. Introduce `D _ _ x h`. Simplify using `only [dif_pos h]`.
+
+Conclude with `h.choose_spec`.
+-/
 theorem exists_isChoice : ∀ (R : Type) [CommRing R] [Nontrivial R] (A B : Over (Sp R)) [GrpObj A] [GrpObj B] (P : LB (A ⊗ B).left), P.IsLB → ∃ j : ∀ (D : Type) [CommRing D] [Algebra R D], Pt A D → P.ι, IsChoice P j := by
   intro R _ _ A B _ _ P hP
   have hne := nonempty_ι_of_isLB R A B P hP

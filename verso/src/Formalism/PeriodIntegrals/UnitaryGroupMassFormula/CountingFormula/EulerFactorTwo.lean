@@ -7,6 +7,45 @@ namespace PI.UnitaryGroupMassFormula.CntFormula
 
 open Formalism.MainNotions.S
 
+/- English proof (translation)
+Establish `hrank` using `L.rank`. Establish `: Module.Free F E` using `L.free`. Establish `: FiniteDimensional F E` using `Module.finite_of_finrank_pos (by rw [hrank]; norm_num)`. Establish `: Nontrivial E` using `Module.nontrivial_of_finrank_pos (R := F) (by rw [hrank]; norm_num)`. Establish `: IsReduced E` using `L.reduced`.
+
+Distinguish the cases in `hfield : ∀ x : E, x ≠ 0 → IsUnit x`. Conclude with `Or.inl hfield`. Use `right`. Take `⟨x, hx⟩` from `not_forall.1 hfield`. Take `⟨hx0, hxu⟩` from `_root_.not_imp.1 hx`.
+
+Establish `hfix : ∀ y : E, L.cj y = y → ∃ a : F, algebraMap F E a = y` using `fun y hy => (L.cj_fix y).1 hy`. Take `⟨a, ha⟩` from `hfix (x * L.cj x) (by rw [map_mul, L.cj_cj, mul_comm])`. Establish `hN : x * L.cj x = 0`. Assume the negation of the conclusion as `hne`. Apply `hxu` to reduce the goal to its premises.
+
+Establish `ha0 : a ≠ 0`. Introduce and unpack `rfl`. Rewrite `ha` using `[map_zero]`. Conclude with `hne ha.symm`. Use `IsUnit.of_mul_eq_one (L.cj x * algebraMap F E a⁻¹) ?_` and prove the remaining obligations.
+
+Rewrite using `[← mul_assoc, ← ha, ← map_mul, mul_inv_cancel₀ ha0, map_one]`. Take `⟨t, ht⟩` from `hfix (x + L.cj x) (by rw [map_add, L.cj_cj, add_comm])`. Establish `ht0 : t ≠ 0`. Introduce and unpack `rfl`. Rewrite `ht` using `[map_zero]`.
+
+Establish `hc : L.cj x = -x` using `by linear_combination -ht`. Establish `hsq : x ^ 2 = 0`. Rewrite `hN` using `[hc]`. Take the linear combination `-hN`. Conclude with `hx0 (IsReduced.eq_zero x ⟨2, hsq⟩)`.
+
+Establish `hcu : L.cj (algebraMap F E t⁻¹) = algebraMap F E t⁻¹` using `L.cj.commutes _`. Establish `hpq : x * algebraMap F E t⁻¹ + L.cj x * algebraMap F E t⁻¹ = 1`. Rewrite using `[← add_mul, ← ht, ← map_mul, mul_inv_cancel₀ ht0, map_one]`. Use `set p := x * algebraMap F E t⁻¹ with hp`. Use `set q := L.cj x * algebraMap F E t⁻¹ with hq`.
+
+Establish `hpq0 : p * q = 0`. Rewrite using `[hp, hq]`. Take the linear combination `(algebraMap F E t⁻¹ * algebraMap F E t⁻¹) * hN`. Establish `hqp : q * p = 0` using `by rw [mul_comm]; exact hpq0`. Establish `hcp : L.cj p = q` using `by rw [hp, hq, map_mul, hcu]`.
+
+Establish `hcq : L.cj q = p` using `by rw [hp, hq, map_mul, hcu, L.cj_cj]`. Establish `hpp : p * p = p`. Establish `h : p * (p + q) = p` using `by rw [hpq, mul_one]`. Take the linear combination `h - hpq0`. Establish `hqq : q * q = q`.
+
+Establish `h : (p + q) * q = q` using `by rw [hpq, one_mul]`. Take the linear combination `h - hpq0`. Establish `hp0 : p ≠ 0`. Introduce `h`. Establish `h1 : q = 1` using `by rw [← hpq, h, zero_add]`.
+
+Apply `one_ne_zero (α := E)` to reduce the goal to its premises. Rewrite using `[← h1, ← hcp, h, map_zero]`. Establish `hq0 : q ≠ 0`. Introduce `h`. Establish `h1 : p = 1` using `by rw [← hpq, h, add_zero]`.
+
+Apply `one_ne_zero (α := E)` to reduce the goal to its premises. Rewrite using `[← h1, ← hcq, h, map_zero]`. Set `g : (F × F) →ₐ[F] E` to `{ toFun := fun z => z.1 • p + z.2 • q map_one' := by simp [hpq] map_mul' := fun z w => by`. Simplify using `only [Prod.fst_mul, Prod.snd_mul, Algebra.smul_def, map_mul]`. Take the linear combination `(-(algebraMap F E z.1 * algebraMap F E w.1)) * hpp - (algebraMap F E z.2 * algebraMap F E w.2) * hqq - (algebraMap F E z.1 * algebraMap F E w.2 + algebraMap F E z.2 * algebraMap F E w.1) * hpq0`.
+
+Use the proof step `map_zero' := by simp`. Use the proof step `map_add' := fun z w => by`. Simplify using `only [Prod.fst_add, Prod.snd_add, add_smul]`. Normalize the expressions using the abelian group laws. Use the proof step `commutes' := fun r => by`.
+
+Simplify using `only [Prod.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply]`. Rewrite using `[← smul_add, hpq, Algebra.algebraMap_eq_smul_one] }`. Establish `ginj : Function.Injective g`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `z hz`.
+
+Establish `hz' : z.1 • p + z.2 • q = 0` using `hz`. Establish `h1 : z.1 • p = 0`. Establish `h` using `congrArg (· * p) hz'`. Simplify using `only [add_mul, smul_mul_assoc, hpp, hqp, smul_zero, add_zero, zero_mul] at h`. Conclude with `h`.
+
+Establish `h2 : z.2 • q = 0`. Establish `h` using `congrArg (· * q) hz'`. Simplify using `only [add_mul, smul_mul_assoc, hqq, hpq0, smul_zero, zero_add, zero_mul] at h`. Conclude with `h`. Rewrite `h1`, `h2` using `[smul_eq_zero]`.
+
+Conclude with `Prod.ext (h1.resolve_right hp0) (h2.resolve_right hq0)`. Establish `gsurj : Function.Surjective g`. Establish `hdim : Module.finrank F (F × F) = Module.finrank F E`. Rewrite using `[Module.finrank_prod, Module.finrank_self, hrank]`. Conclude with `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank hdim (f := g.toLinearMap)).1 ginj`.
+
+Set `e0` to `AlgEquiv.ofBijective g ⟨ginj, gsurj⟩`. Use `⟨e0.symm, fun y => ?_⟩` and prove the remaining obligations. Take `⟨z, rfl⟩` from `gsurj y`. Establish `hez : e0.symm (g z) = z` using `e0.symm_apply_apply z`. Establish `hcz : L.cj (g z) = g z.swap` using `by show L.cj (z.1 • p + z.2 • q) = z.2 • p + z.1 • q`.
+
+Rewrite using `[map_add, map_smul, map_smul, hcp, hcq, add_comm]`. Rewrite using `[hcz, hez]`. Conclude with `e0.symm_apply_apply z.swap`.
+-/
 theorem locE_isUnit_or_exists_algEquiv_prod_swap {F E : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [CommRing E]
     [Algebra F E] [TopologicalSpace E] (L : Loc.LocE F E) :
     (∀ x : E, x ≠ 0 → IsUnit x) ∨ ∃ e : E ≃ₐ[F] F × F, ∀ x, e (L.cj x) = (e x).swap := by

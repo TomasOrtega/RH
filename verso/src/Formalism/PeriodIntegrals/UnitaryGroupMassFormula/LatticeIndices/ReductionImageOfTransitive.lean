@@ -30,6 +30,11 @@ def StTransA (p : TypX X) : Prop :=
       ∃ π : Op X p →+* ZMod (gOf p), Function.Surjective π ∧
         RingHom.ker π = Ideal.span {((gOf p : ℕ) : Op X p)} ∧ TransA X p θ Q π
 
+/- English proof (translation)
+Take `⟨θ, hθ, Q, hL, π, hπ, hker, hT⟩` from `h`. Take `⟨ψ, hψ, hk, hform⟩` from `hC X p θ hθ Q hL (stK_holds X p).choose (stK_holds X p).choose_spec.1`. Use `⟨π, hπ, hker, (stK_holds X p).choose, (stK_holds X p).choose_spec.1, ψ, hψ, hk, 1, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[map_one, inv_one, one_mul, mul_one]`. Establish `hx : (x : HAp X p) ∈ KvX X p` using `(Set.ext_iff.mp (stK_holds X p).choose_spec.1 (x : HAp X p)).1 x.2`.
+
+Conclude with `hT x hx (ψ x) (hform x)`.
+-/
 theorem stFrameA_of_trans (hC : LatCoreX) (p : TypX X) (h : StTransA X p) : StFrameA X p := by
   obtain ⟨θ, hθ, Q, hL, π, hπ, hker, hT⟩ := h
   obtain ⟨ψ, hψ, hk, hform⟩ := hC X p θ hθ Q hL (stK_holds X p).choose (stK_holds X p).choose_spec.1

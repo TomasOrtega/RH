@@ -4,6 +4,11 @@ namespace GlobalTheory.PolynomialCoeffEq
 
 open Module
 
+/- English proof (translation)
+Use `conv_lhs => rw [← v.sum_repr x]`. Rewrite using `[map_sum, LinearMap.sum_apply]`. Simplify using `only [map_smul, LinearMap.smul_apply, smul_eq_mul]`. Rewrite using `[Finset.sum_eq_single k]`. Introduce `i _ hik`.
+
+Rewrite using `[hv i k hik, mul_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ k) h`.
+-/
 theorem coeff_eq {R : Type} [AddCommGroup R] [Module ℝ R]
     (g : R →ₗ[ℝ] R →ₗ[ℝ] ℝ) {n : ℕ} (v : Basis (Fin n) ℝ R)
     (hv : ∀ i j, i ≠ j → g (v i) (v j) = 0) (x : R) (k : Fin n) :
@@ -17,6 +22,13 @@ theorem coeff_eq {R : Type} [AddCommGroup R] [Module ℝ R]
   · intro h
     exact absurd (Finset.mem_univ k) h
 
+/- English proof (translation)
+Introduce `R _ _ _ g hsym hpos`. Establish `h2 : Invertible (2 : ℝ)` using `invertibleOfNonzero two_ne_zero`. Take `⟨v, hv⟩` from `LinearMap.BilinForm.exists_orthogonal_basis (B := g) ⟨hsym⟩`. Establish `hv' : ∀ i j, i ≠ j → g (v i) (v j) = 0` using `LinearMap.BilinForm.iIsOrtho_def.mp hv`. Establish `hpos' : ∀ k, 0 < g (v k) (v k)` using `fun k => hpos _ (v.ne_zero k)`.
+
+Use `⟨_, fun k => (Real.sqrt (g (v k) (v k)))⁻¹ • v k, fun x => ?_⟩` and prove the remaining obligations. Use `conv_rhs => rw [← v.sum_repr x]`. Use `Finset.sum_congr rfl (fun k _ => ?_)` and prove the remaining obligations. Rewrite using `[map_smul, smul_eq_mul, coeff_eq g v hv' x k, smul_smul]`. Use `congr 1`.
+
+Establish `hs` using `Real.mul_self_sqrt (hpos' k).le`. Establish `he : (Real.sqrt (g (v k) (v k)))⁻¹ * (v.repr x k * g (v k) (v k)) * (Real.sqrt (g (v k) (v k)))⁻¹ = v.repr x k * (g (v k) (v k) * (Real.sqrt (g (v k) (v k)) * Real.sqrt (g (v k) (v k)))⁻¹)`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[he, hs, mul_inv_cancel₀ (hpos' k).ne', mul_one]`.
+-/
 theorem main : ∀ {R : Type} [inst : AddCommGroup R] [inst_1 : Module ℝ R] [FiniteDimensional ℝ R] (g : R →ₗ[ℝ] R →ₗ[ℝ] ℝ), (∀ (u v : R), ((g : R → R →ₗ[ℝ] ℝ) u : R → ℝ) v = ((g : R → R →ₗ[ℝ] ℝ) v : R → ℝ) u) → (∀ (u : R), u ≠ (0 : R) → (0 : ℝ) < ((g : R → R →ₗ[ℝ] ℝ) u : R → ℝ) u) → ∃ (n : ℕ) (e : Fin n → R), ∀ (x : R), ∑ k : Fin n, ((g : R → R →ₗ[ℝ] ℝ) x : R → ℝ) (e k) • e k = x := by
   intro R _ _ _ g hsym hpos
   have h2 : Invertible (2 : ℝ) := invertibleOfNonzero two_ne_zero

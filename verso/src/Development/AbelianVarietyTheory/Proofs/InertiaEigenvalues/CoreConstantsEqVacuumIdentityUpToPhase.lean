@@ -26,6 +26,11 @@ namespace GlobalTheory.LevelSeries.PinBase
 
 variable {D : D7}
 
+/- English proof (translation)
+Set `δ : GL (Fin V.rank) D.host.E` to `⟨b, bᴴ, mul_eq_one_comm.1 hb, hb⟩`. Establish `hδ : δ ∈ Formalism.UG.UJ (D.sp.cm.sig : D.host.E →+* D.host.E) V.gram`. Express the relevant statement in the definitionally equal form `Formalism.UG.cT _ b * V.gram * b = V.gram`. Rewrite using `[hV, Matrix.mul_one]`. Conclude with `hb`.
+
+Establish `hA : Formalism.UG.bc (inclR (AF D.host.F)) δ ∈ HR (AF D.host.F) D.sp.cm.sig V.gram`. Express the relevant statement in the definitionally equal form `Formalism.UG.cT _ (b.map (incA D)) * V.gram.map (incA D) * b.map (incA D) = V.gram.map (incA D)`. Establish `e : Formalism.UG.cT (sigR (AF D.host.F) D.sp.cm.sig) (b.map (incA D)) = bᴴ.map (incA D)` using `rfl`. Rewrite using `[e, ← Matrix.map_mul, ← Matrix.map_mul, hV, Matrix.mul_one, hb]`. Conclude with `⟨⟨_, hA⟩, ⟨δ, hδ, rfl⟩, rfl, rfl⟩`.
+-/
 theorem exists_rat_of_unitary (V : HSp D) (hV : V.gram = 1) (b : Matrix (Fin V.rank) (Fin V.rank) D.host.E)
     (hb : bᴴ * b = 1) : ∃ β ∈ GQ V, Formalism.L2.Theta.mt V β = b.map (incA D) ∧ Formalism.L2.Theta.mt V β⁻¹ = bᴴ.map (incA D) := by
   let δ : GL (Fin V.rank) D.host.E := ⟨b, bᴴ, mul_eq_one_comm.1 hb, hb⟩
@@ -39,6 +44,15 @@ theorem exists_rat_of_unitary (V : HSp D) (hV : V.gram = 1) (b : Matrix (Fin V.r
     rw [e, ← Matrix.map_mul, ← Matrix.map_mul, hV, Matrix.mul_one, hb]
   exact ⟨⟨_, hA⟩, ⟨δ, hδ, rfl⟩, rfl, rfl⟩
 
+/- English proof (translation)
+Establish `h1 : Formalism.L2.Theta.mt W 1 = 1` using `rfl`. Unfold `actO`. Rewrite using `[h1, Matrix.one_mul, hγ]`. Proceed by induction on `hu using AddSubgroup.closure_induction with`. Consider the case `mem w hw`.
+
+Take `⟨α, hα, h0, a, ha, s, hs, t, ht, rfl⟩` from `hw`. Use `AddSubgroup.subset_closure ⟨α, hα, h0, a, ha, d *ᵥ s, hd s hs, t, ht, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Simplify using `only [hV, Matrix.mul_apply, Matrix.of_apply, Matrix.map_apply, Matrix.conjTranspose_apply, Matrix.one_apply, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true, Matrix.mulVec, dotProduct, star_sum, star_mul', Finset.mul_sum, TensorProduct.tmul_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `_ * ((1 : AF D.host.F) ⊗ₜ[D.host.F] _) = _`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, mul_one]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Consider the case `zero => rw [Matrix.zero_mul]`.
+
+Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [Matrix.add_mul]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [Matrix.neg_mul]`. Conclude with `neg_mem hx`.
+-/
 theorem actO_mem_of_rat (V W : HSp D) (hV : V.gram = 1) (LV : Set (Fin V.rank → D.host.E)) (LW : Set (Fin W.rank → D.host.E))
     (γ : GA D V) (d : Matrix (Fin V.rank) (Fin V.rank) D.host.E) (hγ : Formalism.L2.Theta.mt V γ⁻¹ = dᴴ.map (incA D))
     (hd : ∀ s ∈ LV, d *ᵥ s ∈ LV) {u : WO V W} (hu : u ∈ latO V W LV LW fun _ => True) :
@@ -62,6 +76,9 @@ theorem actO_mem_of_rat (V W : HSp D) (hV : V.gram = 1) (LV : Set (Fin V.rank �
   | add x y _ _ hx hy => rw [Matrix.add_mul]; exact add_mem hx hy
   | neg x _ hx => rw [Matrix.neg_mul]; exact neg_mem hx
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.OrthonormalLatticeThetaValues.realPt, Matrix.mul_apply, Matrix.of_apply, Matrix.map_apply, TensorProduct.tmul_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ * ((1 : AF D.host.F) ⊗ₜ[D.host.F] _) = _`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, mul_one]`.
+-/
 theorem realPt_mul (V W : HSp D) (X : Matrix (Fin W.rank) (Fin V.rank) D.host.E) (b : Matrix (Fin V.rank) (Fin V.rank) D.host.E) :
     HMul.hMul (GlobalTheory.IndefiniteRowSideFullHecke.OrthonormalLatticeThetaValues.realPt V W X : Matrix (Fin W.rank) (Fin V.rank) (AE D)) (b.map (incA D)) =
       GlobalTheory.IndefiniteRowSideFullHecke.OrthonormalLatticeThetaValues.realPt V W (X * b) := by
@@ -73,6 +90,17 @@ theorem realPt_mul (V W : HSp D) (X : Matrix (Fin W.rank) (Fin V.rank) D.host.E)
 
 open scoped ComplexOrder in
 
+/- English proof (translation)
+Take `⟨β, hβ, e1, e2⟩` from `exists_rat_of_unitary V hP.std b hb`. Establish `hv` using `GlobalTheory.WeilVacMove.isVacO_om D ψ θ V W χV χW om hP.weil hP.inf (fun _ => 1) (fun _ => 1) s s _ _ _ _ β 1 (fun τ => by rw [Matrix.one_mul, Matrix.mul_one]) (fun τ => by`. Establish `: compAt θ τ (Formalism.L2.Theta.mt W 1) = 1`. Rewrite using `[show Formalism.L2.Theta.mt W 1 = 1 from rfl]`. Conclude with `Matrix.map_one _ (by simp) (by simp)`.
+
+Rewrite using `[this, Matrix.one_mul, Matrix.mul_one])`. Use the proof step `(fun u => ⟨fun hu => ⟨actO V W β⁻¹ 1 u, actO_mem_of_rat V W hP.std _ _ β⁻¹ bᴴ (by rw [inv_inv, Matrix.conjTranspose_conjTranspose, e1]) h2 hu, by`. Use `GlobalTheory.WeilVacMove.actO_inv_actO β⁻¹ (1 : GA D W) u` as an intermediate fact. Rewrite `this` using `[inv_inv, inv_one]`. Conclude with `this.symm⟩,`.
+
+Use `fun ⟨u₀, hu₀, e⟩ => e ▸ actO_mem_of_rat V W hP.std _ _ β b e2 h1 hu₀⟩) f hf`. Establish `hg : ∀ τ, IsCartanInv (gramAt D V τ) 1` using `fun τ => by`. Rewrite using `[GlobalTheory.AdTh.PhaseMap.gramAt_one hP.std]`. Conclude with `⟨by simp, by simp, by simpa using Matrix.PosDef.one⟩`. Take `⟨c, hc, hcf⟩` from `GlobalTheory.VacUnique.vacUniqueO D ψ θ hf.1 hP.inf V W _ s hP.sigV hP.sigW hg hs ΛV ΛW h3 h4 f _ hf hv`.
+
+Use `⟨c, hc, fun g X => ?_⟩` and prove the remaining obligations. Establish `h` using `GlobalTheory.RatSubst.om_rat_left_apply D ψ V W χV χW om hP.weil _ (hP.weil.om_pres (1, g) f hf.2.theta) β hβ (GlobalTheory.IndefiniteRowSideFullHecke.OrthonormalLatticeThetaValues.realPt V W X)`. Establish `hcomm : om (β, 1) (om (1, g) f) = om (1, g) (om (β, 1) f)`. Rewrite using `[← Module.End.mul_apply, ← Module.End.mul_apply, ← map_mul, ← map_mul, Prod.mk_mul_mk, Prod.mk_mul_mk, one_mul, mul_one, one_mul, mul_one]`. Rewrite `h` using `[hcomm, hcf, map_smul]`.
+
+Unfold `actO at h`. Rewrite `h` using `[inv_inv, show Formalism.L2.Theta.mt W 1 = 1 from rfl, Matrix.one_mul, e1, realPt_mul]`. Conclude with `h.symm`.
+-/
 theorem exists_phase {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {V W : HSp D} {χV χW : (AE D)ˣ →* Circle}
     {om : GA D V × GA D W →* Module.End ℂ (WO V W → ℂ)} (hP : IsPair ψ θ V W χV χW om)
     {ΛV : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)} {ΛW : Submodule (𝓞 D.host.E) (Fin W.rank → D.host.E)}
@@ -112,6 +140,17 @@ theorem exists_phase {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {V W : HSp
   rw [inv_inv, show Formalism.L2.Theta.mt W 1 = 1 from rfl, Matrix.one_mul, e1, realPt_mul] at h
   exact h.symm
 
+/- English proof (translation)
+Use `⟨fun x hx => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[h] at hx choose y hy using fun a => Submodule.mem_one.1 (hx a trivial)`. Establish `e : b *ᵥ x = ∑ a, y a • fun i => b i a`. Use function extensionality and compare the values at `i`. Simplify using `[Matrix.mulVec, dotProduct, ← hy, Algebra.smul_def, mul_comm]`.
+
+Rewrite using `[e, h']`. Conclude with `Submodule.sum_mem _ fun a _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, rfl⟩)`. Rewrite `hx` using `[h']`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`.
+
+Take `⟨a, rfl⟩` from `hx`. Rewrite using `[h]`. Introduce `j _`. Express the relevant statement in the definitionally equal form `(bᴴ * b) j a ∈ (1 : Submodule (𝓞 D.host.E) D.host.E)`. Rewrite using `[hb, Matrix.one_apply]`.
+
+Use `split_ifs`. Conclude with `Submodule.mem_one.2 ⟨1, map_one _⟩`. Conclude with `zero_mem _`. Consider the case `zero => rw [Matrix.mulVec_zero]`. Conclude with `zero_mem _`.
+
+Consider the case `add x y _ _ hx hy => rw [Matrix.mulVec_add]`. Conclude with `add_mem hx hy`. Consider the case `smul a x _ hx => rw [Matrix.mulVec_smul]`. Conclude with `Submodule.smul_mem _ _ hx`.
+-/
 theorem mulVec_mem_of_basis {n : ℕ} (Λ : Submodule (𝓞 D.host.E) (Fin n → D.host.E)) (b : Matrix (Fin n) (Fin n) D.host.E)
     (hb : bᴴ * b = 1) (h : Λ = Formalism.L2.Pj.stdLat D.host.E n)
     (h' : Λ = Submodule.span (𝓞 D.host.E) (Set.range fun a i => b i a)) :
@@ -139,6 +178,9 @@ theorem mulVec_mem_of_basis {n : ℕ} (Λ : Submodule (𝓞 D.host.E) (Fin n →
     | add x y _ _ hx hy => rw [Matrix.mulVec_add]; exact add_mem hx hy
     | smul a x _ hx => rw [Matrix.mulVec_smul]; exact Submodule.smul_mem _ _ hx
 
+/- English proof (translation)
+Introduce and unpack `ρ ⟨τ, hτ⟩ e`. Take `rfl : τ = tauE D ρ` from `e`. Rewrite using `[← h0.mul, ← CcModel.realM_mt hθ W (γ * h) (tauE D ρ) ⟨ρ, rfl⟩ _ (hθ ρ)]`. Conclude with `congrFun ha.2.2 ⟨_, hτ⟩`.
+-/
 theorem frAt_of_atComp {W : HSp D} {S : D.what₂.Tau → Finset (ℚ × Bool)} (M : Formalism.IndefR.Mult.DSModel W S) {θ : InfFam D}
     (hθ : IsInfFam θ) {r : ℕ} (hr : W.rank = r) {Comp : Type} {X : Comp → Data D.host.E r}
     {dict : GA D W → Σ k, Frame (X k).Ψ r} {x₀ : (D.host.E →+* ℂ) → Matrix (Fin r) (Fin r) ℂ} (h0 : IsModelBaseFrameFamily M hr x₀)
@@ -148,6 +190,11 @@ theorem frAt_of_atComp {W : HSp D} {S : D.what₂.Tau → Finset (ℚ × Bool)} 
   rw [← h0.mul, ← CcModel.realM_mt hθ W (γ * h) (tauE D ρ) ⟨ρ, rfl⟩ _ (hθ ρ)]
   exact congrFun ha.2.2 ⟨_, hτ⟩
 
+/- English proof (translation)
+Use `letI : Algebra c.F ℂ := σ.toAlgebra`. Establish `hU' : Formalism.L2.PjFree.IsUnf (Formalism.L2.PjFree.Unf.ofPj U)` using `hU`. Take `⟨W0⟩` from `nonempty_uw hU'`. Establish `hsd : SelfD (U.X k) (U.X k).Λ` using `(uw_lattice _ H Dw l Xo c σ _ _ hσ hU' h1 W0 k).2.1`. Take `⟨A, hA⟩` from `hg`.
+
+Establish `hd` using `((GlobalTheory.Dict.reads_existsUnique_theta E H Dw l Xo c r _ _ bas idx _ x.1 _ _ A hb x.2 hsd 1 _).2 Y.θ hA).1`. Use `GlobalTheory.FrameEquiv.exists_apply_pv_ne_zero E r _ _ bas idx hb x.1 x.2 _ hd.continuous fun h0 => ?_` and prove the remaining obligations. Establish `h9` using `Y.c9`. Simplify using `[h0] at h9`.
+-/
 theorem exists_theta_ne_zero {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Geo.Tor.Host E} {Dw : Datum H}
     {l : Geo.Tor.Level H} {Xo : Moduli Dw l} {c : Coeff l} {σ : c.F →+* ℂ} {r : ℕ} {U : Unf Xo c σ r} {k : U.Comp}
     {x : (U.X k).dom} (hσ : GoodEmb c σ) (hU : IsUnf U) (h1 : 1 ≤ r) (Wt : PullbackSections.UnfAt U k x) (Y : PullbackSections.UnitAt Wt)
@@ -165,6 +212,35 @@ theorem exists_theta_ne_zero {E : Type} [Field E] [NumberField E] [IsCMField E] 
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T0 A T _ R F κ v₀ hL hlev hgrp hfam hmod hthP hT i hS hV hpin`. Establish `hC : GlobalTheory.Core5 R F` using `⟨hlev, hgrp, hfam, hmod, hthP⟩`. Establish `hj` using `inR i`. Establish `hσ : GoodEmb T.Q.c T.σ₀` using `T.toCore.good_σ₀`. Establish `hU` using `hL.unf _ hj _ hσ`.
+
+Establish `hθ : IsInfFam R.θ` using `hmod.inf`. Take `⟨hP, hV0, h1, h2, h3, h4, h5⟩` from `GlobalTheory.AdTh.RecPair.isPair_record_ofFive D G Pl0 T0 A _ R F hC i A.μ0 hS`. Establish `hM` using `GlobalTheory.AdTh.models_at_record_ofFive D G Pl0 T0 A T R F κ v₀ hC hT i T.σ₀ rfl`. Establish `hχ : (Lift.chrTh (R.toLevCh.mu A.μ0) R.eta ((i : ℕ) + 1)).1 = T.chiW ((i : ℕ) + 1) T.σ₀`. Rewrite using `[chiTie_of_chiR T R hT.alg hT.laws.pins.2.2.1 hT.chiR i]`.
+
+Use `ext1 x`. Express the relevant statement in the definitionally equal form `R.mu0 _ x * R.xi A.μ0 x = _`. Rewrite using `[TwistFactorCompare.eq_one_of_chrEq_one (χ := R.xi A.μ0) (hC.lev.xi_base ▸ hC.lev.xi A.μ0) x, mul_one]`. Establish `hcast : ∀ (W : HSp D) (hV : T.V ((i : ℕ) + 1) T.σ₀ = W), MuVal W (T.chiW ((i : ℕ) + 1) T.σ₀) (castDict hV (T.mu ((i : ℕ) + 1) T.σ₀)) ∧ (∀ γ ∈ GQ W, ∀ h, castDict hV (T.mu ((i : ℕ) + 1) T.σ₀) (γ * h) = castDict hV (T.mu ((i : ℕ) + 1) T.σ₀) h) ∧ ∀ h, castDict hV (T.mu ((i : ℕ) + 1) …`. Introduce `W hV`.
+
+Substitute `hV` using the available equality. Establish `hu` using `hL.muUnit _ hj _ hσ`. Conclude with `⟨hL.muVal _ hj _ hσ, fun γ hγ h => (hu.1 γ h).trans (by rw [hu.2.2.1 γ hγ, one_mul]; rfl), fun h => norm_ne_zero_iff.1 ((hu.2.1 _).trans_ne one_ne_zero)⟩`. Take `⟨hmu, hmuQ, hmu0⟩` from `hcast _ hV`. Take `⟨-, -, -, -, -, -, hr1, hrt, -, -, hdom, -⟩` from `hM (castDict hV (T.dict ((i : ℕ) + 1) T.σ₀) 1).1`.
+
+Take `⟨cc, hcc⟩` from `GlobalTheory.AdTh.CcEx.exists_ccIs_of_pair GlobalTheory.chartIndependence_unconditional hP (hχ ▸ hmu) hmuQ (rank_Wc i) hrt _ hσ hU hr1 hL.pins.2.1.2 hdom hV0 h1 h2 h3 h4 h5 _ _ (fun k => (hM k).1) (fun k => (hM k).2.1) (fun k => (hM k).2.2.1) (hthP.vP i A.μ0).1 (castDict hV (T.di …`. Establish `hres : res T (sg0 D A) = T.toCore.σ₀`. Rewrite using `[show sg0 D A = D.what₂.embLL from sgAt_mk _ R.hv0, res_embLL T hT.alg hL.pins.2.2.1]`. Establish `h0 : IsModelBaseFrameFamily (R.MW i (sg0 D A)) (rank_Wc i) (T.x₀ ((i : ℕ) + 1) T.toCore.σ₀)` using `hres ▸ hT.x0 i (sg0 D A) (base_embedding_good T R hT.alg hL.pins.2.2.1)`. Establish `hΨ : ∀ k, ∀ τ ∈ ((T.U ((i : ℕ) + 1) T.σ₀).X k).Ψ, ∃ ρ, τ = tauE D ρ` using `fun k τ hτ => ReciprocityTheory.ChartRestriction.G.PullbackSections.Pf.exists_tau_of_inPsi T.Q hL.pins.1 τ (((hU.2.1 k).2 τ).1 hτ)`.
+
+Take `⟨ph, b, hph, hb, hpin⟩` from `hpin`. Establish `hbb : bᴴ * b = 1`. Use extensionality with `a a'`. Establish `h` using `hb.1 a a'`. Rewrite `h` using `[hS.1]`.
+
+Simplify using `only [Matrix.one_apply, mul_ite, mul_one, mul_zero, ite_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true] at h`. Rewrite using `[Matrix.one_apply, ← h, Matrix.mul_apply]`. Both sides reduce to the same expression. Take `⟨k1, k2⟩` from `mulVec_mem_of_basis (R.ΛV i) b hbb (SetLike.coe_injective h5) (SetLike.coe_injective (h1.trans hb.2))`. Take `⟨c, hc, hmove⟩` from `exists_phase hP h3 h4 (GlobalTheory.FrameEquiv.isCartanInv_cart_model _) (hthP.vP i A.μ0).1 b hbb k1 k2`.
+
+Use `⟨c * ph, by rw [norm_mul, hc, hph, one_mul], fun k => ?_, fun h γ ha => ?_⟩` and prove the remaining obligations. Rewrite using `[norm_mul, norm_mul, hc, hph, hL.cUnit _ hj _ hσ k, one_mul, one_mul]`. It suffices to establish `e : c * ph * T.cE ((i : ℕ) + 1) T.σ₀ (castDict hV (T.dict ((i : ℕ) + 1) T.σ₀) h).1 = cc (castDict hV (T.dict ((i : ℕ) + 1) T.σ₀) h).1 by beta_reduce`. Rewrite using `[e]`. Conclude with `hcc.2 h γ ha`.
+
+Take `⟨hx, Wt, ⟨Y⟩⟩` from `GlobalTheory.IndefiniteRowSideFullHecke.OrthonormalLatticeThetaValues.exists_witness T i T.σ₀ hV hL.toLawsM hσ h`. Take `⟨bas, idx, hs, hi, hgr, hH⟩` from `GlobalTheory.FrameConst.exists_genReads_of_unitAt hσ hU hr1 Wt Y`. Take `⟨v, hv⟩` from `exists_theta_ne_zero hσ hU hr1 Wt Y hs hgr`. Set `X' : Matrix (Fin (Wc D i).rank) (Fin (Vc D i).rank) D.host.E` to `Matrix.of fun m _ => v (Fin.cast (rank_Wc i) m)`. Establish `hX : X' * bᴴ * b = X'` using `by rw [Matrix.mul_assoc, hbb, Matrix.mul_one]`.
+
+Establish `hpv : GlobalTheory.IndefiniteRowSideFullHecke.OrthonormalLatticeThetaValues.perVec Wt v = pv _ idx (castDict hV (T.dict ((i : ℕ) + 1) T.σ₀) h).2 v`. Use function extensionality and compare the values at `fun j => (hi.1 _ v j).symm`. Establish `p` using `hpin h γ ha.1 (frAt_of_atComp _ hθ (rank_Wc i) h0 ha) hx Wt Y (X' * bᴴ) (fun _ => pv _ idx (castDict hV (T.dict ((i : ℕ) + 1) T.σ₀) h).2 v) fun a => by`. Rewrite using `[← hpv]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `m`. Conclude with `(congrFun (congrFun hX (Fin.cast (rank_Wc i).symm m)) a).symm`. Establish `key` using `hcc.2 h γ ha hx Wt.g bas idx Wt.e hs hi Y.θ hgr _ (GlobalTheory.FrameConst.realPt_fin (Vc D i) (Wc D i) X')`. Establish `hzz : AdTh.zOf R.θ (Vc D i) (Wc D i) (rank_Wc i) _ idx (castDict hV (T.dict ((i : ℕ) + 1) T.σ₀) h).2 (GlobalTheory.IndefiniteRowSideFullHecke.OrthonormalLatticeThetaValues.realPt (Vc D i) (Wc D i) X') = fun _ => pv _ idx (castDict hV (T.dict ((i : ℕ) + 1) T.σ₀) h).2 v`. Use function extensionality and compare the values at `a j`.
+
+Rewrite using `[pv, Function.comp_apply, ← perC_emb, AdTh.zOf]`. Use `congr 1`. Use function extensionality and compare the values at `τ m`. Rewrite using `[GlobalTheory.FrameConst.realM_realPt hθ _ _ _ (hΨ _ _ τ.2)]`. Both sides reduce to the same expression.
+
+Rewrite `key` using `[hzz, ← hX, hmove]`. Rewrite `p` using `[GlobalTheory.IndefiniteRowSideFullHecke.OrthonormalLatticeThetaValues.thetaAt_eq]`. Simplify using `only [hH] at p`. Rewrite `key` using `[neg_mul, Complex.exp_neg]`. Establish `hprod : ∏ _a : Fin (Vc D i).rank, Y.θ (pv _ idx (castDict hV (T.dict ((i : ℕ) + 1) T.σ₀) h).2 v) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun _ _ => hv`.
+
+Use `mul_right_cancel₀ (mul_ne_zero (hmu0 h) hprod) ?_` and prove the remaining obligations. Establish `hE` using `mul_inv_cancel₀ (Complex.exp_ne_zero ((Real.pi / 2 : ℂ) * ∑ _a : Fin (Vc D i).rank, GlobalTheory.Dict.hx _ bas idx (castDict hV (T.dict ((i : ℕ) + 1) T.σ₀) h).2 (pv _ idx (castDict hV (T.dict ((i : ℕ) + 1) T.σ₀) h).2 v) (pv _ idx (castDict hV (T.dict ((i : ℕ) + 1) T.σ₀) h).2 v)))`. Generalize the expression as in `cexp _ = Ex at p key hE`. Generalize the expression as in `∏ _a : Fin (Vc D i).rank, Y.θ _ = P at p key ⊢`. Take the linear combination `(-c) * p + Ex * key + (cc _ * castDict hV (T.mu ((i : ℕ) + 1) T.σ₀) h * P) * hE`.
+-/
 theorem baseCc_of_framePin : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : Formalism.L2.DIV.FamIn D.what₂.LL G Pl0 T0 D.R.m) (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F) (F : Face D A) (κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)) (v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec), LawsJ T → R.toLevCh.Is A.μ0 → R.IsGrp F → R.IsFam → R.IsModels → R.IsThP → TieIn T R κ v₀ → ∀ (i : Fin D.R.m), VStd D i → ∀ hV : T.V ((i : ℕ) + 1) T.σ₀ = Wc D i, GlobalTheory.IndefiniteRowSideFullHecke.OrthonormalLatticeThetaValues.FramePin T R i T.σ₀ hV → ∃ ph : ℂ, ‖ph‖ = 1 ∧ BaseCc T R i hV ph := by
   intro D G _ _ Pl0 T0 A T _ R F κ v₀ hL hlev hgrp hfam hmod hthP hT i hS hV hpin
   have hC : GlobalTheory.Core5 R F := ⟨hlev, hgrp, hfam, hmod, hthP⟩

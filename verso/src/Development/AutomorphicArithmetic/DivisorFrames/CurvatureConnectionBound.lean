@@ -6,12 +6,20 @@ open Matrix Filter Topology
 open scoped ComplexOrder
 
 open GlobalTheory.HermFrame in
+/- English proof (translation)
+Rewrite using `[GlobalTheory.ConnPointwise.gnorm_one_eq]`. Use `(pi_norm_le_iff_of_nonneg (Real.sqrt_nonneg _)).2 fun k => Real.le_sqrt_of_sq_le ?_` and prove the remaining obligations. Conclude with `Finset.single_le_sum (f := fun a => ‖v a‖ ^ 2) (fun l _ => by positivity) (Finset.mem_univ k)`.
+-/
 private theorem norm_le_gnorm_one' {g : ℕ} (v : Fin g → ℂ) : ‖v‖ ≤ gnorm 1 v := by
   rw [GlobalTheory.ConnPointwise.gnorm_one_eq]
   refine (pi_norm_le_iff_of_nonneg (Real.sqrt_nonneg _)).2 fun k => Real.le_sqrt_of_sq_le ?_
   exact Finset.single_le_sum (f := fun a => ‖v a‖ ^ 2) (fun l _ => by positivity) (Finset.mem_univ k)
 
 open GlobalTheory.HermFrame in
+/- English proof (translation)
+Rewrite using `[GlobalTheory.ConnPointwise.gnorm_one_eq]`. Use `Real.sqrt_le_iff.2 ⟨by positivity, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_pow]`. Use `mul_le_mul_of_nonneg_right ?_ (by positivity)` and prove the remaining obligations.
+
+Conclude with `Nat.le_self_pow two_ne_zero g` after adjusting the coercions.
+-/
 private theorem gnorm_one_le' {g : ℕ} (v : Fin g → ℂ) : gnorm 1 v ≤ g * ‖v‖ := by
   rw [GlobalTheory.ConnPointwise.gnorm_one_eq]
   refine Real.sqrt_le_iff.2 ⟨by positivity, ?_⟩
@@ -24,12 +32,50 @@ private theorem gnorm_one_le' {g : ℕ} (v : Fin g → ℂ) : gnorm 1 v ≤ g * 
         exact_mod_cast Nat.le_self_pow two_ne_zero g
 
 open GlobalTheory.HermFrame in
+/- English proof (translation)
+Rewrite using `[gnorm, gnorm, form_smul, Complex.re_ofReal_mul, Real.sqrt_mul (by positivity), Real.sqrt_sq (by positivity)]`.
+-/
 private theorem gnorm_scaled' {g : ℕ} {d : ℝ} (hd : 0 < d) (v : Fin g → ℂ) :
     gnorm ((((d⁻¹ ^ 2 : ℝ)) : ℂ) • (1 : Matrix (Fin g) (Fin g) ℂ)) v = d⁻¹ * gnorm 1 v := by
   rw [gnorm, gnorm, form_smul, Complex.re_ofReal_mul, Real.sqrt_mul (by positivity),
     Real.sqrt_sq (by positivity)]
 
 open GlobalTheory.HermFrame GlobalTheory.CurvInterp GlobalTheory.CurvInterp.Block GlobalTheory.IndefiniteRowSideFullHecke.HodgePeriodGram in
+/- English proof (translation)
+Introduce `e ι _ μ ρ U H δ hρ ⟨n, k, hk, g, rk, τ₀, B, φ, Q, κ, hP, hφ, hφ0, hφ1, hQ, hcard, hli, hκ, hH⟩ hδ`. Take `⟨ρ₁, c₀, C, hρ₁, hρ₁', -, -, -, h1, h2⟩` from `GlobalTheory.HodgeChartRow.hodgeChartBounds_of_schur_lemW GlobalTheory.schur_block_lower_bound GlobalTheory.smul_inv_mul_posSemidef_uniform_bound n k g rk hk τ₀ B hP`. Set `ε : (Σ τ, Fin (μ τ)) ≃ Fin g` to `Fintype.equivFinOfCardEq hcard`. Set `A : (Fin e → ℂ) → Matrix (Fin g) (Fin g) ℂ` to `fun z => of fun l i => Q (ε.symm i).1 z (ε.symm i).2 l`. Establish `hA : ∀ z ∈ Metric.ball (0 : Fin e → ℂ) ρ, ∀ i l, AnalyticAt ℂ (fun x => A x i l) z` using `fun z hz i l => GlobalTheory.SCV.analyticOnNhd_of_differentiableOn Metric.isOpen_ball (hQ _ _ _) z hz`.
+
+Establish `hφa` using `GlobalTheory.SCV.analyticOnNhd_of_differentiableOn Metric.isOpen_ball hφ`. Establish `hA0 : IsUnit (A 0).det`. Rewrite using `[← det_transpose, ← isUnit_iff_isUnit_det, ← linearIndependent_rows_iff_isUnit]`. Conclude with `hli.comp ε.symm ε.symm.injective`. Take `⟨b, hb0, hb⟩` from `holo_local_bounds (hA 0 (Metric.mem_ball_self hρ)) hA0`.
+
+Establish `hnear : ∀ᶠ z in 𝓝 (0 : Fin e → ℂ), ‖φ z‖ < ρ₁` using `(hφa 0 (Metric.mem_ball_self hρ)).continuousAt.norm.eventually_lt continuousAt_const (by simpa [hφ0] using hρ₁)`. Take `⟨ρ₃, hρ₃, h3⟩` from `Metric.eventually_nhds_iff_ball.1 ((hb.and hnear).and hδ)`. Use `set ρ' := min (ρ / 2) ρ₃ with hρ'`. Establish `l2 : ρ' ≤ ρ / 2` using `min_le_left _ _`. Establish `l3 : ρ' ≤ ρ₃` using `min_le_right _ _`.
+
+Establish `l0 : ρ' ≤ ρ` using `by linarith`. Establish `hρ'0 : 0 < ρ'` using `lt_min (by positivity) hρ₃`. Use `set V : Set (Fin e → ℂ) := Metric.ball 0 ρ' ∩ U with hVdef`. Set `G : (Fin e → ℂ) → Matrix (Fin e) (Fin e) ℂ` to `fun z => ((((δ z)⁻¹ ^ 2 : ℝ)) : ℂ) • 1`. Establish `hV : ∀ z ∈ V, z ∈ Metric.ball (0 : Fin e → ℂ) ρ ∧ z ∈ U` using `fun z hz => ⟨Metric.ball_subset_ball l0 hz.1, hz.2⟩`.
+
+Establish `h3'` using `fun z (hz : z ∈ V) => (h3 z (Metric.ball_subset_ball l3 hz.1)).1`. Establish `hd` using `fun z (hz : z ∈ V) => (h3 z (Metric.ball_subset_ball l3 hz.1)).2 hz.2`. Establish `hVo : IsOpen V` using `isOpen_iff_mem_nhds.2 fun z hz => inter_mem (Metric.isOpen_ball.mem_nhds hz.1) (mem_of_superset (Metric.ball_mem_nhds z (hd z hz).1) (hd z hz).2.2)`. Establish `hG : ∀ z ∈ V, (G z).PosSemidef` using `fun z hz => PosSemidef.one.smul (by rw [Complex.zero_le_real]; positivity)`. Establish `hGn : ∀ z ∈ V, ∀ w, gnorm (G z) w = (δ z)⁻¹ * gnorm 1 w` using `fun z hz w => gnorm_scaled' (hd z hz).1 w`.
+
+Establish `hH'` using `fun z (hz : z ∈ V) => hH z (hV z hz).1 (hV z hz).2`. Use `set m := min 1 (ρ / 2) with hm`. Establish `hm0 : 0 < m` using `lt_min one_pos (by positivity)`. Establish `hm1 : m ≤ 1` using `min_le_left _ _`. Establish `hm2 : m ≤ ρ / 2` using `min_le_right _ _`.
+
+Use `set D : ℝ := ((n : ℝ) + 1) * (8 * Real.pi) / m with hD`. Establish `hD0 : 0 ≤ D` using `by positivity`. Establish `hS : ∀ z ∈ V, ∀ w, gnorm (poincareGram k (φ z)) (fderiv ℂ φ z w) ≤ D * gnorm (G z) w` using `fun z hz w => by`. Take `⟨d0, d1, d2⟩` from `hd z hz`. Establish `s1 : Metric.ball z (δ z * m) ⊆ Metric.ball 0 ρ` using `Metric.ball_subset_ball' (by`.
+
+Use `Metric.mem_ball.1 hz.1` as an intermediate fact. Use the proof step `nlinarith)`. Establish `s2 : Metric.ball z (δ z * m) ⊆ U` using `(Metric.ball_subset_ball (by nlinarith)).trans d2`. Use `(UpperTheory.poincare_derivative_bound e n k hk φ z (δ z * m) (by positivity) (hφ.mono s1) (fun x hx => (hH x (s1 hx) (s2 hx)).1) w).trans ?_` and prove the remaining obligations. Rewrite using `[hGn z hz]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hD]`. Clear the denominators using the available nonvanishing facts. Use `_ ≤ D * ((δ z)⁻¹ * gnorm 1 w) := by gcongr; exact norm_le_gnorm_one' w`. Take `⟨p0, p1, p2⟩` from `bounds_pullback (V := V) (G := G) (φ := φ) (le_max_right C 0) (le_max_right D 1) hVo hG (fun w hw => (GlobalTheory.HodgeGramLocal.hodgeGram_local n k g rk hk τ₀ B hP w ⟨fun i => (hw.1 i).trans_le (hρ₁'.trans (by norm_num)), hw.2⟩).1) (h1.mono (le_max_left _ _)) (h2.mono (le_max_l …`.
+
+Take `⟨q0, q1, q2⟩` from `bounds_dual_changeFrame (A := A) (by positivity) hb0 p0 p1 p2 (fun z hz => hA z (hV z hz).1) fun z hz => by`. Take `⟨⟨a1, a2, a3, a4⟩, -⟩` from `h3' z hz`. Use `⟨a1, a2, a3, fun ξ => (a4 ξ).trans (mul_le_mul_of_nonneg_left ?_ hb0)⟩` and prove the remaining obligations. Rewrite using `[hGn z hz]`. Conclude with `(norm_le_gnorm_one' ξ).trans (le_mul_of_one_le_left (gnorm_nonneg _ _) ((one_le_inv₀ (hd z hz).1).2 (hd z hz).2.1))`.
+
+Establish `hent : ∀ z ∈ V, ∀ (p p' : Σ τ, Fin (μ τ)), ((A z)ᵀ * dualGram (hodgeGram hk τ₀ B (φ z)) * (A z)ᴴᵀ) (ε p) (ε p') = (Q p.1 z * (hodgeGram hk τ₀ B (φ z))⁻¹ * (Q p'.1 z)ᴴ) p.2 p'.2` using `fun z hz p p' => by`. Establish `hs : (hodgeGram hk τ₀ B (φ z)).IsSymm` using `IsSymm.ext fun a c => by`. Establish `hB : ∀ i, (B i c a : ℝ) = B i a c` using `fun i => by simpa using (hP.psd i).isHermitian.apply a c`. Simplify using `[hodgeGram, imPeriod, Matrix.sum_apply, hB, (hP.symm _ (hH' z hz).1.1).apply]`. Rewrite using `[dualGram, transpose_nonsing_inv, hs.eq]`.
+
+Simplify using `only [mul_apply, transpose_apply, conjTranspose_apply, A, of_apply]`. Rewrite using `[ε.symm_apply_apply, ε.symm_apply_apply]`. Use `set C₁ : ℝ := b * (max C 0 * max D 1 ^ 2 * b + b) with hC₁`. Use `set C₂ : ℝ := max C₁ (max C 0 * max D 1 ^ 2) with hC₂`. Establish `hC₂0 : 0 ≤ C₂` using `le_max_of_le_right (by positivity)`.
+
+Establish `key : ∀ τ, OneFormBound V (fun _ => (1 : Matrix (Fin (μ τ)) (Fin (μ τ)) ℂ)) G (conn (H τ)) C₂` using `fun τ => by`. Use `(bounds_block (H := H τ) (j := fun a => ε ⟨τ, a⟩) (hκ τ) (ε.injective.comp sigma_mk_injective) q0 (q1.mono (le_max_left _ _)) (q2.mono (le_max_right _ _)) (fun z hz s a hs => ?_) fun z hz => ?_).2.1` and prove the remaining obligations. Take `⟨⟨τ', a'⟩, rfl⟩` from `ε.surjective s`. Establish `hne : τ' ≠ τ` using `by rintro rfl; exact hs ⟨a', rfl⟩`. Rewrite using `[hent z hz, (hH' z hz).2.2 τ' τ hne, Matrix.zero_apply]`.
+
+Rewrite using `[(hH' z hz).2.1 τ]`. Use `congr 1`. Use extensionality with `a a'`. Conclude with `(hent z hz ⟨τ, a⟩ ⟨τ, a'⟩).symm`. Use `⟨C₂ * e * ∑ τ, (μ τ : ℝ), by positivity, ?_⟩` and prove the remaining obligations.
+
+Use `filter_upwards [Metric.ball_mem_nhds (0 : Fin e → ℂ) hρ'0] with z hz hU τ ξ v`. Establish `hzV : z ∈ V` using `⟨hz, hU⟩`. Establish `d0` using `(hd z hzV).1`. Establish `k1` using `(key τ z hzV).2.2 ξ`. Rewrite `k1` using `[hGn z hzV]`.
+
+Establish `k2 : (μ τ : ℝ) ≤ ∑ τ, (μ τ : ℝ)` using `Finset.single_le_sum (f := fun τ => (μ τ : ℝ)) (fun _ _ => by positivity) (Finset.mem_univ τ)`. Combine the equalities or inequalities in the displayed calculation. Use `mul_le_mul (k1.trans ?_) ((gnorm_one_le' v).trans ?_) (gnorm_nonneg _ _) (by positivity)` and prove the remaining obligations. Use `gcongr`. Conclude with `gnorm_one_le' ξ`.
+
+Use `gcongr`. Use `_ = (C₂ * e * ∑ τ, (μ τ : ℝ)) / δ z * ‖ξ‖ * ‖v‖ := by rw [div_eq_mul_inv]; ring`.
+-/
 theorem UpperTheory.curvature_connection_bound :
     ∀ (e : ℕ) (ι : Type) [Fintype ι] (μ : ι → ℕ) (ρ : ℝ) (U : Set (Fin e → ℂ)) (H : ∀ τ, (Fin e → ℂ) → Matrix (Fin (μ τ)) (Fin (μ τ)) ℂ) (δ : (Fin e → ℂ) → ℝ), 0 < ρ → GlobalTheory.CurvInterp.IsBlockModel ρ U H → (∀ᶠ z in 𝓝 (0 : Fin e → ℂ), z ∈ U → 0 < δ z ∧ δ z ≤ 1 ∧ Metric.ball z (δ z) ⊆ U) → ∃ C : ℝ, 0 ≤ C ∧ ∀ᶠ z in 𝓝 (0 : Fin e → ℂ), z ∈ U → ∀ (τ : ι) (ξ : Fin e → ℂ) (v : Fin (μ τ) → ℂ), ‖GlobalTheory.HermFrame.conn (H τ) z ξ *ᵥ v‖ ≤ C / δ z * ‖ξ‖ * ‖v‖ := by
   intro e ι _ μ ρ U H δ hρ ⟨n, k, hk, g, rk, τ₀, B, φ, Q, κ, hP, hφ, hφ0, hφ1, hQ, hcard, hli, hκ, hH⟩ hδ

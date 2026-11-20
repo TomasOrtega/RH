@@ -13,6 +13,9 @@ variable {LL Qp : Type} [Field LL] [Field Qp] [Algebra Qp LL]
   [AddCommGroup V₂] [Module LL V₂] [Module Qp V₂] [IsScalarTower Qp LL V₂]
   {B₁ B₂ : Type} [AddCommGroup B₁] [Module Qp B₁] [AddCommGroup B₂] [Module Qp B₂]
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v b => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+-/
 theorem pfMapFl_map_comm (f : V₁ →ₗ[LL] V₂) (g : B₁ →ₗ[Qp] B₂) (z : V₁ ⊗[Qp] B₁) :
     AlgebraTensorModule.map f (LinearMap.id : B₂ →ₗ[Qp] B₂)
         (AlgebraTensorModule.map (LinearMap.id : V₁ →ₗ[LL] V₁) g z) =
@@ -45,16 +48,25 @@ abbrev pfMapFl_Fb : T₁.V ⊗[Qp] B →ₗ[LL] T₂.V ⊗[Qp] B :=
 abbrev pfMapFl_FdR : T₁.V ⊗[Qp] BdR →ₗ[LL] T₂.V ⊗[Qp] BdR :=
   AlgebraTensorModule.map F.f (LinearMap.id : BdR →ₗ[Qp] BdR)
 
+/- English proof (translation)
+The claim follows from `(pfMapFl_map_comm F.f (PD.ι.toLinearMap.restrictScalars Qp) z).symm`.
+-/
 theorem pfMapFl_ιV (z : T₁.V ⊗[Qp] B) :
     ιV PD (LL := LL) (V := T₂.V) (pfMapFl_Fb F z) =
       pfMapFl_FdR F (ιV PD (LL := LL) (V := T₁.V) z) :=
   (pfMapFl_map_comm F.f (PD.ι.toLinearMap.restrictScalars Qp) z).symm
 
+/- English proof (translation)
+The claim follows from `(pfMapFl_map_comm F.f PD.φ.toLinearMap z).symm`.
+-/
 theorem pfMapFl_φ (z : T₁.V ⊗[Qp] B) :
     φVB PD (LL := LL) (V := T₂.V) (pfMapFl_Fb F z) =
       pfMapFl_Fb F (φVB PD (LL := LL) (V := T₁.V) z) :=
   (pfMapFl_map_comm F.f PD.φ.toLinearMap z).symm
 
+/- English proof (translation)
+Proceed by induction on `s generalizing z with`. Consider the case `zero => rfl`. Consider the case `succ s ih => rw [pow_succ, pow_succ, Module.End.mul_apply, Module.End.mul_apply, pfMapFl_φ, ih]`.
+-/
 theorem pfMapFl_φpow (s : ℕ) (z : T₁.V ⊗[Qp] B) :
     ((φVB PD (LL := LL) (V := T₂.V) : Module.End LL (T₂.V ⊗[Qp] B)) ^ s)
         (pfMapFl_Fb F z) =
@@ -63,6 +75,11 @@ theorem pfMapFl_φpow (s : ℕ) (z : T₁.V ⊗[Qp] B) :
   | zero => rfl
   | succ s ih => rw [pow_succ, pow_succ, Module.End.mul_apply, Module.End.mul_apply, pfMapFl_φ, ih]
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x b => simp [actVB, F.equiv]`. Consider the case `add x y hx hy`. Simplify using `only [map_add]`.
+
+Rewrite using `[hx, hy]`.
+-/
 theorem pfMapFl_act (g : G) (z : T₁.V ⊗[Qp] B) :
     actVB PD T₂.ρ g (pfMapFl_Fb F z) = pfMapFl_Fb F (actVB PD T₁.ρ g z) := by
   induction z using TensorProduct.induction_on with
@@ -72,6 +89,9 @@ theorem pfMapFl_act (g : G) (z : T₁.V ⊗[Qp] B) :
     simp only [map_add]
     rw [hx, hy]
 
+/- English proof (translation)
+Simplify using `only [Dcris, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, sub_eq_zero] at hz ⊢`. Introduce `g`. Rewrite using `[pfMapFl_act, hz g]`.
+-/
 theorem pfMapFl_dcris (z : T₁.V ⊗[Qp] B) (hz : z ∈ Dcris PD T₁.ρ) :
     pfMapFl_Fb F z ∈ Dcris PD T₂.ρ := by
   simp only [Dcris, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply,
@@ -79,6 +99,11 @@ theorem pfMapFl_dcris (z : T₁.V ⊗[Qp] B) (hz : z ∈ Dcris PD T₁.ρ) :
   intro g
   rw [pfMapFl_act, hz g]
 
+/- English proof (translation)
+Rewrite `hz`, the goal using `[DcrisL, Submodule.mem_inf]`. Use `⟨pfMapFl_dcris F z hz.1, ?_⟩` and prove the remaining obligations. Establish `h2` using `hz.2`. Simplify using `only [Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, sub_eq_zero] at h2 ⊢`. Introduce `c`.
+
+Establish `h3 : mulVB (K₀` using `K₀) (B := B) (V := T₂.V) (LL := LL) c (pfMapFl_Fb F z) = pfMapFl_Fb F (mulVB (K₀ := K₀) (B := B) (V := T₁.V) (LL := LL) c z) := (pfMapFl_map_comm F.f (LinearMap.mulLeft Qp (algebraMap K₀ B c)) z).symm`. Rewrite using `[h3, h2 c, map_smul]`.
+-/
 theorem pfMapFl_dcrisL (τ₀ : K₀ →ₐ[Qp] LL) (z : T₁.V ⊗[Qp] B) (hz : z ∈ DcrisL PD T₁.ρ τ₀) :
     pfMapFl_Fb F z ∈ DcrisL PD T₂.ρ τ₀ := by
   rw [DcrisL, Submodule.mem_inf] at hz ⊢
@@ -92,12 +117,18 @@ theorem pfMapFl_dcrisL (τ₀ : K₀ →ₐ[Qp] LL) (z : T₁.V ⊗[Qp] B) (hz :
     (pfMapFl_map_comm F.f (LinearMap.mulLeft Qp (algebraMap K₀ B c)) z).symm
   rw [h3, h2 c, map_smul]
 
+/- English proof (translation)
+Take `⟨w, rfl⟩` from `hz`. Conclude with `⟨AlgebraTensorModule.map F.f LinearMap.id w, (pfMapFl_map_comm F.f ((PD.Fil a).restrictScalars Qp).subtype w).symm⟩`.
+-/
 theorem pfMapFl_filV (a : ℤ) (z : T₁.V ⊗[Qp] BdR) (hz : z ∈ FilV PD (LL := LL) (V := T₁.V) a) :
     pfMapFl_FdR F z ∈ FilV PD (LL := LL) (V := T₂.V) a := by
   obtain ⟨w, rfl⟩ := hz
   exact ⟨AlgebraTensorModule.map F.f LinearMap.id w,
     (pfMapFl_map_comm F.f ((PD.Fil a).restrictScalars Qp).subtype w).symm⟩
 
+/- English proof (translation)
+Rewrite `hz`, the goal using `[FilCris, Submodule.mem_inf, Submodule.mem_comap]`. Use `⟨pfMapFl_dcris F z hz.1, ?_⟩` and prove the remaining obligations. Rewrite using `[pfMapFl_ιV]`. Conclude with `pfMapFl_filV F a _ hz.2`.
+-/
 theorem pfMapFl_filCris (a : ℤ) (z : T₁.V ⊗[Qp] B) (hz : z ∈ FilCris PD T₁.ρ a) :
     pfMapFl_Fb F z ∈ FilCris PD T₂.ρ a := by
   rw [FilCris, Submodule.mem_inf, Submodule.mem_comap] at hz ⊢
@@ -105,6 +136,11 @@ theorem pfMapFl_filCris (a : ℤ) (z : T₁.V ⊗[Qp] B) (hz : z ∈ FilCris PD 
   rw [pfMapFl_ιV]
   exact pfMapFl_filV F a _ hz.2
 
+/- English proof (translation)
+Establish `hx' : ιV PD (LL` using `LL) (V := T₁.V) (x : T₁.V ⊗[Qp] B) ∈ FilLev W T₁ c s u := hx`. Take `⟨y', hy', hxy⟩` from `Submodule.mem_map.1 hx'`. Take `⟨y, hy, rfl⟩` from `Submodule.mem_map.1 hy'`. Use `show ιV PD (LL := LL) (V := T₂.V) (pfMapFl_Fb F (x : T₁.V ⊗[Qp] B)) ∈ FilLev W T₂ c s u`. Use `Submodule.mem_map.2 ⟨_, Submodule.mem_map.2 ⟨pfMapFl_Fb F y, ⟨pfMapFl_filCris F u y hy.1, pfMapFl_dcrisL F _ y hy.2⟩, rfl⟩, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[pfMapFl_φpow, pfMapFl_ιV, pfMapFl_ιV, hxy]`.
+-/
 theorem pfMapFl_filD {c : ZMod n} (h : MemD W F c) (s : ℕ) (u : ℤ) (x : Dc W T₁ c)
     (hx : x ∈ FilD W T₁ c s u) : dmapOf h x ∈ FilD W T₂ c s u := by
   have hx' : ιV PD (LL := LL) (V := T₁.V) (x : T₁.V ⊗[Qp] B) ∈ FilLev W T₁ c s u := hx
@@ -121,6 +157,13 @@ section Xi
 
 variable {T₁ T₂ : LocLat G Qp LL O} {F : LatHom T₁.L T₂.L} {c : ZMod n}
 
+/- English proof (translation)
+Establish `hx' : ∀ i, cf x i ∈ (Tw (LL` using `LL) (D := Dc W T₁ c) 0 i).baseChange (KsW W s) := hx`. Use `show ∀ i, cf (ambF h s x) i ∈ (Tw (LL := LL) (D := Dc W T₂ c) 0 i).baseChange (KsW W s)`. Introduce `i`. Establish `hi` using `hx' i`. Establish `hc : cf (ambF h s x) i = (dmapOf h).baseChange (KsW W s) (cf x i)` using `rfl`.
+
+Rewrite using `[hc]`. Unfold `Tw at hi ⊢`. Use `split_ifs at hi ⊢ with h0`. Rewrite using `[Submodule.baseChange_top]`. Conclude with `Submodule.mem_top`.
+
+Rewrite `hi`, the goal using `[Submodule.baseChange_bot, Submodule.mem_bot]`. Rewrite using `[hi, map_zero]`.
+-/
 theorem pfMapFl_ambF_xi (h : MemD W F c) (s : ℕ) (x : Amb LL (KsW W s) (Dc W T₁ c))
     (hx : x ∈ Xi (KsW W s) (Tw (LL := LL) (D := Dc W T₁ c) 0)) :
     ambF h s x ∈ Xi (KsW W s) (Tw (LL := LL) (D := Dc W T₂ c) 0) := by
@@ -137,6 +180,9 @@ theorem pfMapFl_ambF_xi (h : MemD W F c) (s : ℕ) (x : Amb LL (KsW W s) (Dc W T
   · rw [Submodule.baseChange_bot, Submodule.mem_bot] at hi ⊢
     rw [hi, map_zero]
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem pfMapFl_mem_FlS {hΔ : DeltaRho hR uZ ιZ c} {ell : ℕ} (Λ f' : PowerSeries O) (s : ℕ)
     (e : LvT hR uZ ιZ T₁ c hΔ ell) :
     e ∈ FlS (hR := hR) (uZ := uZ) (ιZ := ιZ) (T := T₁) (c := c) (hΔ := hΔ) (ell := ell) Λ f' s ↔
@@ -151,6 +197,9 @@ variable {T₁ T₂ : LocLat G Qp LL O} {C₁ : Coord W (baseIdOf hR) T₁} {C�
   {F : LatHom T₁.L T₂.L} {c : ZMod n} {ell : ℕ} {H : ℕ → ℕ} {κ₁ κ₂ : PowerSeries O} {r₁ r₂ : ℕ}
   {lam₁ : Fin r₁ → Dc W T₁ c} {lam₂ : Fin r₂ → Dc W T₂ c}
 
+/- English proof (translation)
+Introduce `s hs e he`. Take `⟨x, hx, hex⟩` from `(pfMapFl_mem_FlS (hΔ := Hy₁.delta) (Formalism.ExponentWindows.abelian₂ (baseIdOf hR).Bs.p H ell) ((baseIdOf hR).Bs.ff' ell j M g) s e).1 he`. Use `(pfMapFl_mem_FlS (hΔ := Hy₂.delta) (Formalism.ExponentWindows.abelian₂ (baseIdOf hR).Bs.p H ell) ((baseIdOf hR).Bs.ff' ell j M g) s _).2 ⟨ambF Mh.memD s x, pfMapFl_ambF_xi Mh.memD s x hx, ?_⟩` and prove the remaining obligations. Establish `hsm` using `(prEOf Mh (hΔ₁ := Hy₁.delta) (hΔ₂ := Hy₂.delta) ell).map_smul (Formalism.ExponentWindows.abelian₂ (baseIdOf hR).Bs.p H ell) e`. Use `erw [← hsm, prL_prEOf Mh s hs, hex, Mh.smul]`.
+-/
 theorem mapFl_holds
     (Hy₁ : LvHyp Lb hR uZ ιZ C₁ c ell (Formalism.ExponentWindows.abelian₂ (baseIdOf hR).Bs.p H ell) κ₁ lam₁)
     (Hy₂ : LvHyp Lb hR uZ ιZ C₂ c ell (Formalism.ExponentWindows.abelian₂ (baseIdOf hR).Bs.p H ell) κ₂ lam₂)
@@ -168,6 +217,15 @@ theorem mapFl_holds
     (Formalism.ExponentWindows.abelian₂ (baseIdOf hR).Bs.p H ell) e
   erw [← hsm, prL_prEOf Mh s hs, hex, Mh.smul]
 
+/- English proof (translation)
+Introduce `s _ hk w hw`. Establish `hw' : ∑ k, algebraMap O LL (w k) • lam₁ k ∈ FilD W T₁ c s ((b s : ℕ) : ℤ)`. Use `hw` as an intermediate fact. Simplify using `only [UL, Submodule.mem_mk, AddSubmonoid.mem_mk, AddSubsemigroup.mem_mk, Set.mem_ofPred_eq, hk, UOf] at this`. Conclude with `this`.
+
+Establish `hmap` using `pfMapFl_filD F hD s _ _ hw'`. Establish `hsum : dmapOf hD (∑ k, algebraMap O LL (w k) • lam₁ k) = ∑ l, algebraMap O LL (P w l) • lam₂ l`. Rewrite using `[map_sum]`. Simplify using `only [map_smul, hLamP, Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_smul, ← LinearMap.toMatrix'_mulVec P w]`. Simplify using `only [Matrix.mulVec, dotProduct, map_sum]`. Use `congrArg (· • lam₂ l) (Finset.sum_congr rfl fun k _ => ?_)` and prove the remaining obligations. Rewrite using `[map_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite `hmap` using `[hsum]`. Use `show ∑ l, algebraMap O LL (P w l) • lam₂ l ∈ UOf (kind s) (b s) η (FilD W T₂ c s)`. Rewrite using `[hk]`. Conclude with `hmap`.
+-/
 theorem cMap_holds (hD : MemD W F c) (kind : ℕ → Kind) (b : ℕ → ℕ) (η : ℕ)
     (P : (Fin r₁ → O) →ₗ[O] (Fin r₂ → O))
     (hLamP : ∀ k, dmapOf hD (lam₁ k) = ∑ l, algebraMap O LL (LinearMap.toMatrix' P l k) • lam₂ l) :

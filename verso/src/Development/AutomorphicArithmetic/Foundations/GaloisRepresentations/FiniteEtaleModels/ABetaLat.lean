@@ -9,6 +9,13 @@ open GlobalTheory.UPel.HT.HeckeAd (IsTranslA heckeSubA)
 open scoped TensorProduct
 open UpperTheory.Gal.FiniteEtaleModels
 
+/- English proof (translation)
+Establish `G' : (Ideal.span {a} ⊔ Ideal.span {(n : A)}) * 𝔟 = Ideal.span {(n : A)}` using `G`. Establish `hle : (Ideal.span {a} ⊔ Ideal.span {(n : A)}) * 𝔟 ≤ 𝔟` using `Ideal.mul_le.mpr fun x _ y hy => 𝔟.mul_mem_left x hy`. Establish `hN : (n : A) ∈ 𝔟`. Apply `hle` to reduce the goal to its premises. Rewrite using `[G']`.
+
+Conclude with `Ideal.mem_span_singleton_self _`. Use `⟨hN, fun c hc => ?_⟩` and prove the remaining obligations. Establish `hmem : a * c ∈ (Ideal.span {a} ⊔ Ideal.span {(n : A)}) * 𝔟` using `Ideal.mul_mem_mul (Ideal.mem_sup_left (Ideal.mem_span_singleton_self a)) hc`. Rewrite `hmem` using `[G', Ideal.mem_span_singleton]`. Take `⟨d, hd⟩` from `hmem`.
+
+Conclude with `⟨d, by rw [mul_comm]; exact hd⟩`.
+-/
 private theorem gen_facts {A : Type} [CommRing A] {a : A} {n : ℕ} {𝔟 : Ideal A} (G : IsGen a n 𝔟) :
     (n : A) ∈ 𝔟 ∧ ∀ c ∈ 𝔟, ∃ d, c * a = (n : A) * d := by
   have G' : (Ideal.span {a} ⊔ Ideal.span {(n : A)}) * 𝔟 = Ideal.span {(n : A)} := G
@@ -25,6 +32,41 @@ private theorem gen_facts {A : Type} [CommRing A] {a : A} {n : ℕ} {𝔟 : Idea
   obtain ⟨d, hd⟩ := hmem
   exact ⟨d, by rw [mul_comm]; exact hd⟩
 
+/- English proof (translation)
+Establish `hnm : ∀ v : L, m₁ • (n • v) = (n * m₁) • v`. Introduce `v`. Rewrite using `[mul_comm, mul_smul]`. Establish `memW1 : ∀ v : L, (∃ z, algebraMap A O a₁ • v = (n * m₁) • z) → v ∈ W₁` using `fun v h => (BaseTypeSubspacesMapOntoBothSides v).mp h`. Establish `ex : ∀ y : L, ∃ y' z, m₁ • g (algebraMap A O a₂ • y) = algebraMap A O a₁ • y' + (n * m₁) • z`.
+
+Introduce `y`. Apply `PairingFactorsThroughPeriods` to reduce the goal to its premises. Introduce `c hc`. Take `⟨d, hd⟩` from `hc2 c (hle hc)`. Take `⟨z, hz⟩` from `h1 (algebraMap A O c) (algebraMap A O a₂ • y)`.
+
+Establish `e1 : algebraMap A O c • algebraMap A O a₂ • y = n • (algebraMap A O d • y)`. Rewrite using `[smul_smul, ← map_mul, hd, map_mul, map_natCast, ← smul_smul, Nat.cast_smul_eq_nsmul]`. Use `⟨g (algebraMap A O d • y) - z, ?_⟩` and prove the remaining obligations. Rewrite `hz` using `[e1, map_nsmul]`. Rewrite using `[smul_comm (algebraMap A O c) m₁, eq_sub_of_add_eq hz.symm, mul_comm n m₁, mul_smul]`.
+
+Simplify using `only [smul_sub]`. Use `choose β z0 hβ using ex`. Use `⟨β, ?_, ?_, ?_, ?_, fun y => ⟨z0 y, hβ y⟩⟩` and prove the remaining obligations. Introduce `x y`. Apply `memW1` to reduce the goal to its premises.
+
+Use `⟨z0 x + z0 y - z0 (x + y), ?_⟩` and prove the remaining obligations. Establish `h` using `hβ (x + y)`. Rewrite `h` using `[smul_add, map_add, smul_add, hβ x, hβ y]`. Rewrite using `[smul_sub, smul_add, eq_sub_of_add_eq h.symm]`. Simplify using `only [smul_add, smul_sub]`.
+
+Normalize the expressions using the abelian group laws. Introduce `c x`. Apply `memW1` to reduce the goal to its premises. Take `⟨w, hw⟩` from `h1 c (algebraMap A O a₂ • x)`. Establish `hc` using `hβ (c • x)`.
+
+Establish `comm1 : algebraMap A O a₂ • c • x = c • algebraMap A O a₂ • x`. Rewrite using `[smul_smul, smul_smul, Algebra.commutes]`. Establish `comm2 : algebraMap A O a₁ • c • β x = c • algebraMap A O a₁ • β x`. Rewrite using `[smul_smul, smul_smul, Algebra.commutes]`. Use `⟨w - z0 (c • x) + c • z0 x, ?_⟩` and prove the remaining obligations.
+
+Rewrite `hc` using `[comm1, hw, smul_add, hnm]`. Establish `hx' : c • (m₁ • g (algebraMap A O a₂ • x)) = c • (algebraMap A O a₁ • β x + (n * m₁) • z0 x)`. Rewrite using `[hβ x]`. Rewrite `hx'` using `[smul_add, smul_comm c m₁, smul_comm c (n * m₁)]`. Rewrite `hc` using `[hx']`.
+
+Rewrite using `[smul_sub, comm2, eq_sub_of_add_eq hc.symm]`. Simplify using `only [smul_add, smul_sub]`. Normalize the expressions using the abelian group laws. Introduce `y`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hy`. Take `⟨z, hz⟩` from `(BaseTypeSubspacesMapOntoBothSides (β y)).mpr hy`. Establish `h` using `hβ y`. Rewrite `h` using `[hz, ← smul_add, ← hnm]`. Establish `e` using `cancel m₁ hm _ _ h`.
+
+Take `⟨v, hv⟩` from `h2 _ _ e`. Conclude with `(ProjectionSandwichLength y).mp ⟨v, hv⟩`. Introduce `hy`. Take `⟨v, hv⟩` from `(ProjectionSandwichLength y).mpr hy`. Apply `memW1` to reduce the goal to its premises.
+
+Use `⟨g v - z0 y, ?_⟩` and prove the remaining obligations. Establish `h` using `hβ y`. Rewrite `h` using `[hv, map_nsmul, hnm]`. Rewrite using `[smul_sub, eq_sub_of_add_eq h.symm]`. Introduce `x hx`.
+
+Establish `hu : ∀ c ∈ 𝔟₂, ∃ z, algebraMap A O c • (algebraMap A O a₁ • x) = (n * m₁) • z`. Introduce `c hc`. Take `⟨z, hz⟩` from `(BaseTypeSubspacesMapOntoBothSides _).mpr (hx c hc)`. Conclude with `⟨z, by rw [smul_smul, ← Algebra.commutes a₁, ← smul_smul, hz]⟩`. Take `⟨w, hw⟩` from `hu _ hn2`.
+
+Rewrite `hw` using `[map_natCast, Nat.cast_smul_eq_nsmul, mul_smul]`. Establish `hu1` using `cancel n hn _ _ hw`. Establish `hw2 : ∀ c ∈ 𝔟₂, ∃ z, algebraMap A O c • w = n • z`. Introduce `c hc`. Take `⟨z, hz⟩` from `hu c hc`.
+
+Rewrite `hz` using `[hu1, smul_comm (algebraMap A O c) m₁ w, ← hnm]`. Conclude with `⟨z, cancel m₁ hm _ _ hz⟩`. Take `⟨y0, z0', hy0⟩` from `DegreeKernelLowerBound w hw2`. Take `⟨y1, z1, hy1⟩` from `h3 y0`. Take `⟨z2, hz2⟩` from `h1 (algebraMap A O a₂) y1`.
+
+Use `⟨y1, memW1 _ ⟨z0' - algebraMap A O a₂ • z1 - z2 + z0 y1, ?_⟩⟩` and prove the remaining obligations. Establish `hb` using `hβ y1`. Rewrite `hb` using `[hz2, hy1]`. Simplify using `only [smul_add] at hb`. Rewrite `hb` using `[smul_comm (algebraMap A O a₂) n z1]`.
+
+Simplify using `only [hnm] at hb`. Rewrite using `[smul_sub, hu1, hy0, smul_add, hnm, eq_sub_of_add_eq hb.symm]`. Simplify using `only [smul_add, smul_sub]`. Normalize the expressions using the abelian group laws.
+-/
 private theorem reindex_lattice_of_ideals {A O L : Type} [CommRing A] [Ring O] [Algebra A O] [AddCommGroup L] [Module O L]
     (cancel : ∀ k : ℕ, 0 < k → ∀ x y : L, k • x = k • y → x = y)
     (𝔟₁ 𝔟₂ : Ideal A) (W₁ W₂ : Submodule O L) (n m₁ : ℕ) (a₁ a₂ : A) (hn : 0 < n) (hm : 0 < m₁) (hle : 𝔟₁ ≤ 𝔟₂)
@@ -125,6 +167,13 @@ private theorem reindex_lattice_of_ideals {A O L : Type} [CommRing A] [Ring O] [
     simp only [smul_add, smul_sub]
     abel
 
+/- English proof (translation)
+Introduce `hL q _ D 𝔟₁ 𝔟₂ n m₁ a₁ a₂ hn hm hle G1 G2 g h1 h2 h3`. Establish `cancel : ∀ k : ℕ, 0 < k → ∀ x y : D.La, k • x = k • y → x = y`. Introduce `k hk x y h`. Use `haveI := D.freeLa`. Establish `h' : (k : ℤ) • (x - y) = 0`.
+
+Rewrite using `[smul_sub, natCast_zsmul, natCast_zsmul, h, sub_self]`. Break down `smul_eq_zero.mp h' with h0 | h0` into its components or cases. Conclude with `absurd h0 (by exact_mod_cast hk.ne')`. Conclude with `sub_eq_zero.mp h0`. Take `⟨BaseTypeSubspacesMapOntoBothSides, PairingFactorsThroughPeriods⟩` from `hL q D a₁ (n * m₁) 𝔟₁ (Nat.mul_pos hn hm) G1`.
+
+Take `⟨ProjectionSandwichLength, DegreeKernelLowerBound⟩` from `hL q D a₂ n 𝔟₂ hn G2`. Take `⟨hn2, hc2⟩` from `gen_facts G2`. Take `⟨β, hadd, hlin, hker, honto, hmain⟩` from `reindex_lattice_of_ideals cancel 𝔟₁ 𝔟₂ (wSub D 𝔟₁ 1) (wSub D 𝔟₂ 1) n m₁ a₁ a₂ hn hm hle hn2 hc2 BaseTypeSubspacesMapOntoBothSides PairingFactorsThroughPeriods ProjectionSandwichLength DegreeKernelLowerBound g h1 h2 h3`. Conclude with `⟨β, ⟨hadd, hlin, hker, honto⟩, hmain⟩`.
+-/
 theorem UpperTheory.Gal.FiniteEtaleModels.betaLat_holds :
     LatGen → BetaLat := by
   intro hL q _ D 𝔟₁ 𝔟₂ n m₁ a₁ a₂ hn hm hle G1 G2 g h1 h2 h3

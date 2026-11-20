@@ -4,6 +4,11 @@ open Finset
 
 namespace Formalism.BranchingDeterminantCap
 
+/- English proof (translation)
+Unfold `TransferDeg`. Introduce `S _ rk nS dgA dgB la degP h1 h2 h3 hla hR`. Establish `hR0 : 0 ≤ ∑ s, nS s * rk s` using `Finset.sum_nonneg fun s _ => hR s`. Establish `hBA : |∑ s, dgB s - ∑ s, nS s * dgA s| ≤ 13 / 2 * la * ∑ s, nS s * rk s`. Rewrite using `[← Finset.sum_sub_distrib, Finset.mul_sum]`.
+
+Conclude with `(Finset.abs_sum_le_sum_abs _ _).trans (Finset.sum_le_sum fun s _ => h1 s)`. Establish `hlR : 0 ≤ la * ∑ s, nS s * rk s` using `mul_nonneg hla hR0`. Rewrite `hBA`, the goal using `[abs_le]`. Take `⟨hBA1, hBA2⟩` from `hBA`. Apply the tactic sequence `constructor <;> linarith`.
+-/
 theorem degreeTransferBound : TransferDeg := by
   unfold TransferDeg
   intro S _ rk nS dgA dgB la degP h1 h2 h3 hla hR
@@ -16,6 +21,21 @@ theorem degreeTransferBound : TransferDeg := by
   obtain ⟨hBA1, hBA2⟩ := hBA
   constructor <;> linarith
 
+/- English proof (translation)
+Unfold `TransferMean`. Introduce `S _ rk nS dg nbar de la ka HH0 muP0 muPs muR0 muRs hnbar hde0 hde13 hla hka hrk hR hn hR0 hRs hdg hPs hP0`. Rewrite `hR0`, `hRs` using `[abs_le]`. Take `⟨hR0a, hR0b⟩` from `hR0`. Take `⟨hRsa, hRsb⟩` from `hRs`.
+
+Establish `hD : ∑ s, dg s ≤ (∑ s, rk s) * (HH0 + ka * la)`. Rewrite using `[Finset.sum_mul]`. Conclude with `Finset.sum_le_sum fun s _ => hdg s`. Establish `hWlo : (1 - de) * nbar * ∑ s, rk s ≤ ∑ s, nS s * rk s`. Rewrite using `[Finset.mul_sum]`.
+
+Conclude with `Finset.sum_le_sum fun s _ => mul_le_mul_of_nonneg_right (hn s).1 (hrk s)`. Establish `hmuP0 : muP0 ≤ HH0 + ka * la + 2 * la`. Establish `h : muP0 * ∑ s, rk s ≤ (HH0 + ka * la + 2 * la) * ∑ s, rk s` using `by linarith`. Conclude with `le_of_mul_le_mul_right h hR`. Use `⟨by linarith, ?_⟩` and prove the remaining obligations.
+
+Establish `hW : 0 < ∑ s, nS s * rk s`. Establish `: 0 < (1 - de) * nbar * ∑ s, rk s` using `mul_pos (mul_pos (by linarith) hnbar) hR`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `key : ∑ s, ((HH0 + ka * la) * (nS s * rk s) - (1 + de) * nbar * ((HH0 + ka * la) * rk s) + (1 + de) * nbar * dg s) ≤ ∑ s, nS s * dg s`. Use `Finset.sum_le_sum fun s _ => ?_` and prove the remaining obligations.
+
+Use polynomial arithmetic with `[mul_nonneg (sub_nonneg.2 (hdg s)) (sub_nonneg.2 (hn s).2)]`. Simplify using `only [Finset.sum_add_distrib, Finset.sum_sub_distrib, ← Finset.mul_sum] at key`. Establish `hnn : 0 ≤ (1 + de) * nbar` using `mul_nonneg (by linarith) hnbar.le`. Establish `h3 : (1 + de) * nbar * (muP0 * ∑ s, rk s) ≤ (1 + de) * nbar * ((∑ s, dg s) + 2 * la * ∑ s, rk s)` using `mul_le_mul_of_nonneg_left hP0 hnn`. Establish `hY : 0 ≤ (1 + 3 * de) * (HH0 + ka * la + 2 * la - muP0)` using `mul_nonneg (by linarith) (by linarith)`.
+
+Establish `h1 : (1 + 3 * de) * (HH0 + ka * la + 2 * la - muP0) * ((1 - de) * nbar * ∑ s, rk s) ≤ (1 + 3 * de) * (HH0 + ka * la + 2 * la - muP0) * ∑ s, nS s * rk s` using `mul_le_mul_of_nonneg_left hWlo hY`. Establish `h2 : 0 ≤ (HH0 + ka * la + 2 * la - muP0) * nbar * (∑ s, rk s) * (de * (1 - 3 * de))` using `mul_nonneg (mul_nonneg (mul_nonneg (by linarith) hnbar.le) hR.le) (mul_nonneg hde0 (by linarith))`. Establish `hmain : (-muPs) * ∑ s, nS s * rk s ≤ (17 / 2 * la - (HH0 + ka * la) + (1 + 3 * de) * (HH0 + ka * la + 2 * la - muP0)) * ∑ s, nS s * rk s`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hmuPs` using `le_of_mul_le_mul_right hmain hW`.
+
+Establish `hXY : 3 * de * (HH0 + ka * la + 2 * la - muP0) ≤ 3 * de * (-muR0 + HH0 + (2 * ka + 2) * la)` using `mul_le_mul_of_nonneg_left (by linarith) (by linarith)`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem meanTransferBound : TransferMean := by
   unfold TransferMean
   intro S _ rk nS dg nbar de la ka HH0 muP0 muPs muR0 muRs hnbar hde0 hde13 hla hka hrk hR hn
@@ -63,6 +83,13 @@ theorem meanTransferBound : TransferMean := by
     mul_le_mul_of_nonneg_left (by linarith) (by linarith)
   linarith
 
+/- English proof (translation)
+Unfold `PassageAssembly`. Introduce `S _ rk nS dg nbar lam0 HH0 muP0 muPs mu0 muC f r g Q C0 hnbar hlam0 hrk hR hf hr hg hn h0 hC hdg hPs hP0 hZQ hQ hfrQ hC0`. Establish `hde0 : 0 ≤ 8 * f * r / g` using `div_nonneg (mul_nonneg (mul_nonneg (by norm_num) hf) hr) hg.le`. Establish `hdeQ : 8 * f * r / g * (3 * Q) ≤ 1`. Rewrite using `[div_mul_eq_mul_div, div_le_one hg]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hMT` using `meanTransferBound`. Unfold `TransferMean at hMT`. Use `set de := 8 * f * r / g with hde`. Establish `hde13 : de ≤ 1 / 3` using `by nlinarith [mul_nonneg hde0 (sub_nonneg.2 hQ)]`.
+
+Take `⟨_, hB⟩` from `hMT S rk nS dg nbar de lam0 1 HH0 muP0 muPs (-mu0) (-muC) hnbar hde0 hde13 hlam0 zero_le_one hrk hR hn (by rw [one_mul]; exact h0) (by rw [one_mul]; exact hC) (fun s => by rw [one_mul]; exact hdg s) hPs hP0`. Establish `hZ : 3 * de * (mu0 + HH0 + 4 * lam0) ≤ 3 * de * Q` using `mul_le_mul_of_nonneg_left hZQ (by linarith)`. Establish `hC' : 0 ≤ (C0 - 25 / 2) * lam0` using `mul_nonneg (by linarith) hlam0`. Apply the tactic sequence `constructor <;> linarith`.
+-/
 theorem meanShiftAssembly : PassageAssembly := by
   unfold PassageAssembly
   intro S _ rk nS dg nbar lam0 HH0 muP0 muPs mu0 muC f r g Q C0 hnbar hlam0 hrk hR hf hr hg hn

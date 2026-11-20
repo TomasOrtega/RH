@@ -11,6 +11,9 @@ namespace PAscAll
 
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E]
 
+/- English proof (translation)
+Use `⟨m₁, h, (Multiset.nodup_of_le hle hnd).of_map _, fun x hx y hy => ?_⟩` and prove the remaining obligations. Take `⟨k, hk⟩` from `hint (x + z) (Multiset.mem_of_le hle (Multiset.mem_map_of_mem _ hx)) (y + z) (Multiset.mem_of_le hle (Multiset.mem_map_of_mem _ hy))`. Conclude with `⟨k, by rw [← hk]; ring⟩`.
+-/
 theorem regInt_of_le {n : ℕ} {V : Submodule ℂ (Sm E n)} {τ : E →+* ℂ} {m m₁ : Multiset ℂ} {z : ℂ}
     (hnd : m.Nodup) (hint : ∀ x ∈ m, ∀ y ∈ m, ∃ k : ℤ, x - y = k) (hle : m₁.map (· + z) ≤ m)
     (h : HasInfCharGL V τ m₁) : RegInt V τ := by
@@ -19,6 +22,15 @@ theorem regInt_of_le {n : ℕ} {V : Submodule ℂ (Sm E n)} {τ : E →+* ℂ} {
     (y + z) (Multiset.mem_of_le hle (Multiset.mem_map_of_mem _ hy))
   exact ⟨k, by rw [← hk]; ring⟩
 
+/- English proof (translation)
+Use `set S : Set (ℕ × ℂ) := {p | 0 < p.1 ∧ p.1 < N ∧ p.2 ∈ ExpV p.1 V} with hSdef`. Establish `hfin : S.Finite`. Use `((Set.finite_Ioo 0 N).biUnion fun r hr => (hF E N V hV r hr.1 hr.2).image (Prod.mk r)).subset ?_` and prove the remaining obligations. Introduce `p hp`. Conclude with `Set.mem_iUnion₂.2 ⟨p.1, ⟨hp.1, hp.2.1⟩, p.2, hp.2.2, rfl⟩`.
+
+Take `⟨r₀, hr₀, hr₀N, c₀, hc₀⟩` from `hne`. Establish `hD : ∀ m : ℕ, 0 < m → m < N → (0 : ℝ) < m * ((N : ℝ) - m)` using `fun m h0 h1 => mul_pos (by exact_mod_cast h0) (sub_pos.2 (by exact_mod_cast h1))`. Set `f : ℕ × ℂ → ℝ` to `fun p => -pE E N p.1 p.2 / ((p.1 : ℝ) * ((N : ℝ) - p.1))`. Take `⟨⟨r, c⟩, ⟨hr, hrN, hc⟩, hmin⟩` from `Set.exists_min_image S f hfin ⟨(r₀, c₀), hr₀, hr₀N, hc₀⟩`. Establish `hneg : pE E N r c < 0`.
+
+Take `⟨φ, hφ, hcφ⟩` from `hc`. Conclude with `hN E N φ (hV.aut φ hφ) (hV.sqInt φ hφ) r hr hrN c hcφ`. Use `⟨r, c, f (r, c), hr, hrN, hc, div_pos (neg_pos.2 hneg) (hD r hr hrN), ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [f]`. Rewrite using `[neg_mul, div_mul_cancel₀ _ (hD r hr hrN).ne', neg_neg]`.
+
+Introduce `m hm hmN c' hc'`. Establish `h1` using `(le_div_iff₀ (hD m hm hmN)).1 (hmin (m, c') ⟨hm, hmN, hc'⟩)`. Combine the linear relations using `[neg_mul (f (r, c)) ((m : ℝ) * ((N : ℝ) - m))]`.
+-/
 theorem exists_extremal (hF : ExpFin) (hN : ExpNeg) {N : ℕ} (V : Submodule ℂ (Sm E N)) (hV : IsDiscrete V)
     (hne : ∃ r, 0 < r ∧ r < N ∧ (ExpV r V).Nonempty) :
     ∃ (r : ℕ) (c : ℂ) (lam : ℝ), 0 < r ∧ r < N ∧ c ∈ ExpV r V ∧ 0 < lam ∧
@@ -46,6 +58,25 @@ theorem exists_extremal (hF : ExpFin) (hN : ExpNeg) {N : ℕ} (V : Submodule ℂ
 
 end PAscAll
 
+/- English proof (translation)
+Introduce `E _ _ _ N`. Proceed by induction on `N using Nat.strong_induction_on with`. Consider the case `_ N ih`. Introduce `hN1 V hV τ hτ`. Break down `hD E N hN1 V hV with ⟨π, hu, hn, h⟩ | hne` into its components or cases.
+
+Conclude with `⟨N, 1, π, hu, hn, h⟩`. Take `⟨r, c, lam, hr0, hrN, hc, hlam, hpc, hbd⟩` from `PAscAll.exists_extremal hF hN V hV hne`. Take `⟨s, rfl⟩ : ∃ s, N = r + s` from `⟨N - r, by omega⟩`. Establish `hs0 : 0 < s` using `by omega`. Establish `hd : (0 : ℝ) < (Module.finrank ℚ E : ℝ)` using `by exact_mod_cast Module.finrank_pos`.
+
+Establish `hdC : (Module.finrank ℚ E : ℂ) ≠ 0` using `by exact_mod_cast Module.finrank_pos.ne'`. Establish `hpc' : pE E (r + s) r c = -lam * (r * s)` using `by rw [hpc]; push_cast; ring`. Take `⟨T, hT⟩` from `hS E r s hr0 hs0 V hV c hc`. Establish `hL2` using `hC E r s hr0 hs0 V c T lam hlam hT hpc' hbd`. Take `⟨V₁, V₂, hV₁, hV₂, hemb⟩` from `hP E r s hr0 hs0 V hV c _ _ T hT hL2`.
+
+Take `⟨m, hm, hnd, hint⟩` from `hτ`. Take `⟨m₁, m₂, hm₁, hm₂, he⟩` from `hI E r s V V₁ V₂ _ _ hV hV₁ hV₂ hemb τ m hm`. Establish `hτ₁ : RegInt V₁ τ` using `PAscAll.regInt_of_le hnd hint (he ▸ Multiset.le_add_right _ _) hm₁`. Establish `hτ₂ : RegInt V₂ τ` using `PAscAll.regInt_of_le hnd hint (he ▸ Multiset.le_add_left _ _) hm₂`. Take `⟨a₁, d₁, π₁, hu₁, hn₁, h₁⟩` from `ih r (by omega) hr0 V₁ hV₁ τ hτ₁`.
+
+Take `⟨a₂, d₂, π₂, hu₂, hn₂, h₂⟩` from `ih s (by omega) hs0 V₂ hV₂ τ hτ₂`. Establish `hr' : (r : ℂ) ≠ 0` using `by exact_mod_cast hr0.ne'`. Establish `hs' : (s : ℂ) ≠ 0` using `by exact_mod_cast hs0.ne'`. Establish `hsum : (r : ℂ) * (c / (r * (Module.finrank ℚ E : ℂ))) + s * (-c / (s * (Module.finrank ℚ E : ℂ))) = 0` using `by field_simp; ring`. Establish `hre : (c / (r * (Module.finrank ℚ E : ℂ))).re < (s : ℝ) / 2`.
+
+Establish `e : (r : ℂ) * (Module.finrank ℚ E : ℂ) = (((r : ℝ) * (Module.finrank ℚ E : ℝ) : ℝ) : ℂ)` using `by push_cast; ring`. Establish `hrR : (0 : ℝ) < r` using `by exact_mod_cast hr0`. Rewrite using `[e, Complex.div_ofReal_re, div_lt_iff₀ (mul_pos hrR hd)]`. Establish `h3 : c.re / (Module.finrank ℚ E : ℝ) < (r : ℝ) * s / 2`. Establish `h4` using `hpc'`.
+
+Unfold `pE at h4`. Move the coercions through the operations in `at h4`. Use polynomial arithmetic with `[mul_pos hlam (mul_pos hrR (show (0 : ℝ) < s by exact_mod_cast hs0))]`. Rewrite `h3` using `[div_lt_iff₀ hd]`. Use the polynomial consequences of the given equalities and inequalities.
+
+Take `⟨hsig, hz₁, hz₂⟩` from `hSS E r s hr0 hs0 V V₁ V₂ _ _ hV hV₁ hV₂ hemb τ ⟨m, hm, hnd, hint⟩ hsum hre a₁ d₁ a₂ d₂ π₁ π₂ hu₁ hn₁ (h₁ π₁ (Setoid.refl π₁)) hu₂ hn₂ (h₂ π₂ (Setoid.refl π₂))`. Take `⟨rfl, hq⟩` from `Sigma.mk.inj_iff.mp hsig`. Establish `hiso : π₁.Iso π₂` using `Quotient.exact (eq_of_heq hq)`. Rewrite `hemb` using `[hz₁, hz₂]`. Use `⟨a₁, d₁ + d₂, π₁, hu₁, hn₁, fun π' h' => ?_⟩` and prove the remaining obligations.
+
+Conclude with `hSt E r s a₁ d₁ d₂ V V₁ V₂ π' hV hV₁ hV₂ hemb (h₁ π' h') (h₂ π' ((CuspSub.setoid E a₁).iseqv.trans ((CuspSub.setoid E a₁).iseqv.symm hiso) h'))`.
+-/
 theorem ascAll_of (hD : Dich) (hF : ExpFin) (hN : ExpNeg) (hS : Slice) (hC : Chord) (hP : Proj) (hI : InfInd2)
     (hSS : StringStep) (hSt : Stages) : AscAll := by
   intro E _ _ _ N

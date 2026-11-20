@@ -14,6 +14,15 @@ set_option autoImplicit false
 
 namespace GlobalTheory.LogKSDiv.LocalExt
 
+/- English proof (translation)
+Establish `hmem : ∀ a, ∃ b, φ b = D (φ a)`. Introduce `a`. Take `⟨r, s, ⟨u, hu⟩, hrs⟩` from `hfr a`. Use `⟨(h (d r) - a * h (d s)) * ((u⁻¹ : Aˣ) : A), ?_⟩` and prove the remaining obligations. Establish `e1 : D (φ a * φ (h s)) = φ (h (d r))` using `by rw [← map_mul, hrs, hD]`.
+
+Rewrite `e1` using `[Derivation.leibniz, hD, smul_eq_mul, smul_eq_mul]`. Establish `hinv : φ (h s) * φ ((u⁻¹ : Aˣ) : A) = 1` using `by rw [← map_mul, ← hu, Units.mul_inv, map_one]`. Rewrite using `[map_mul, map_sub, map_mul, ← e1]`. Take the linear combination `(D (φ a)) * hinv`. Use `choose δ0 hδ0 using hmem`.
+
+Set `δ : Derivation k A A` to `{ toFun := δ0 map_add' := fun a b => hφ (by simp only [hδ0, map_add]) map_smul' := fun c a => hφ (by`. Simplify using `only [RingHom.id_apply, Algebra.smul_def, map_mul, hk, hδ0]`. Rewrite using `[← Algebra.smul_def, D.map_smul, Algebra.smul_def])`. Use the proof step `map_one_eq_zero' := hφ (by show φ (δ0 1) = φ 0; rw [hδ0, map_one, Derivation.map_one_eq_zero, map_zero])`. Use the proof step `leibniz' := fun a b => hφ (by show φ (δ0 (a * b)) = φ (a • δ0 b + b • δ0 a)`.
+
+Simplify using `only [hδ0, map_mul, map_add, smul_eq_mul, Derivation.leibniz]) }`. Use `⟨δ, fun a => (hδ0 a).symm, fun r => hφ ?_⟩` and prove the remaining obligations. Use `show φ (δ0 (h r)) = _`. Rewrite using `[hδ0, hD]`.
+-/
 theorem exists_restrict_der {k A K R : Type} [CommRing k] [CommRing A] [CommRing K] [CommRing R]
     [Algebra k A] [Algebra k K] (φ : A →+* K) (hφ : Function.Injective φ)
     (hk : ∀ c : k, φ (algebraMap k A c) = algebraMap k K c)
@@ -49,6 +58,13 @@ end GlobalTheory.LogKSDiv.LocalExt
 
 namespace GlobalTheory.LogKSDiv.LocalExt
 
+/- English proof (translation)
+Use `letI := X.presheaf.algebra_section_stalk (⟨B.ι y, hy⟩ : U.1)`. Use `haveI := U.2.isLocalization_stalk ⟨B.ι y, hy⟩`. Set `e` to `asIso (B.ι.stalkMap y)`. Take `⟨⟨r, s⟩, hrs⟩` from `IsLocalization.surj (U.2.primeIdealOf ⟨B.ι y, hy⟩).asIdeal.primeCompl (e.inv.hom a)`. Use `⟨r, s, (IsLocalization.map_units (X.presheaf.stalk (B.ι y)) s).map (B.ι.stalkMap y).hom, ?_⟩` and prove the remaining obligations.
+
+Establish `h2` using `congrArg (B.ι.stalkMap y).hom hrs`. Rewrite `h2` using `[map_mul]`. Establish `h3 : (B.ι.stalkMap y).hom (e.inv.hom a) = a`. Express the relevant statement in the definitionally equal form `(e.inv ≫ e.hom).hom a = a`. Rewrite using `[Iso.inv_hom_id]`.
+
+Both sides reduce to the same expression. Rewrite `h2` using `[h3]`. Conclude with `h2`.
+-/
 theorem exists_frac_germ {X : Scheme.{0}} (B : X.Opens) (y : B.toScheme) (U : X.affineOpens) (hy : B.ι y ∈ U.1)
     (a : B.toScheme.presheaf.stalk y) :
     ∃ r s : Γ(X, U.1), IsUnit ((B.ι.stalkMap y).hom (X.presheaf.germ U.1 (B.ι y) hy s)) ∧
@@ -75,11 +91,17 @@ namespace GlobalTheory.LogKSDiv
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l}
 
+/- English proof (translation)
+The claim follows from `(Scheme.Hom.germ_stalkMap_apply _ _ _ _ _).symm`.
+-/
 theorem stalkHom_eq_stalkMap (TF : TorFlag Xo c) (Z : Comp Xo c) (x : X₀ TF.Y Z) (U : TF.Y.X.affineOpens)
     (hx : (barComp TF.Y Z).ι x ∈ U.1) (r : Γ(TF.Y.X, U.1)) :
     stalkHom TF Z x U hx r = ((barComp TF.Y Z).ι.stalkMap x).hom (TF.Y.X.presheaf.germ U.1 _ hx r) :=
   (Scheme.Hom.germ_stalkMap_apply _ _ _ _ _).symm
 
+/- English proof (translation)
+Take `⟨r, s, hu, e⟩` from `LocalExt.exists_frac_germ (barComp TF.Y Z) x U hx a`. Conclude with `⟨r, s, by rw [stalkHom_eq_stalkMap]; exact hu, by rw [stalkHom_eq_stalkMap, stalkHom_eq_stalkMap]; exact e⟩`.
+-/
 theorem stalkHom_frac (TF : TorFlag Xo c) (Z : Comp Xo c) (x : X₀ TF.Y Z) (U : TF.Y.X.affineOpens)
     (hx : (barComp TF.Y Z).ι x ∈ U.1) (a : (X₀ TF.Y Z).presheaf.stalk x) :
     ∃ r s : Γ(TF.Y.X, U.1), IsUnit (stalkHom TF Z x U hx s) ∧ a * stalkHom TF Z x U hx s = stalkHom TF Z x U hx r := by
@@ -88,6 +110,11 @@ theorem stalkHom_frac (TF : TorFlag Xo c) (Z : Comp Xo c) (x : X₀ TF.Y Z) (U :
 
 end GlobalTheory.LogKSDiv
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c TF Z _ _ x U _ hx ρ hρ d D hD`. Use `letI := (GlobalTheory.Cartier.constFn (s₀ TF.Y Z)).toAlgebra`. Use `letI := (GlobalTheory.LogKSDiv.stalkAlg TF Z x).toAlgebra`. Establish `key` using `fun j => GlobalTheory.LogKSDiv.LocalExt.exists_restrict_der (k := c.F) (algebraMap ((X₀ TF.Y Z).presheaf.stalk x) (X₀ TF.Y Z).functionField) (IsFractionRing.injective _ _) (fun c => RingHom.congr_fun (GlobalTheory.LogKSDiv.algebraMap_comp_stalkAlg TF Z x) c) (GlobalTheory.LogKSDi …`. Use `choose δ h1 h2 using key`.
+
+Conclude with `⟨δ, h1, h2⟩`.
+-/
 theorem GlobalTheory.LogKSDiv.exists_stalkDer_extend : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (TF : TorFlag Xo c) (Z : Comp Xo c), ∀ [IsIntegral (X₀ TF.Y Z)] [SmoothOfRelativeDimension Dw.dim (s₀ TF.Y Z)] (x : X₀ TF.Y Z) (U : TF.Y.X.affineOpens), U.1 ≤ barComp TF.Y Z → ∀ (hx : (barComp TF.Y Z).ι x ∈ U.1) (ρ : Γ(TF.Y.X, U.1) →+* (X₀ TF.Y Z).functionField), (∀ r, ρ r = algebraMap ((X₀ TF.Y Z).presheaf.stalk x) (X₀ TF.Y Z).functionField (GlobalTheory.LogKSDiv.stalkHom TF Z x U hx r)) → ∀ (d : Fin Dw.dim → Derivation ℤ Γ(TF.Y.X, U.1) Γ(TF.Y.X, U.1)) (D : Fin Dw.dim → GlobalTheory.LogKSDiv.GenDer TF Z), (letI := (GlobalTheory.Cartier.constFn (s₀ TF.Y Z)).toAlgebra; ∀ j r, (show Derivation c.F (X₀ TF.Y Z).functionField (X₀ TF.Y Z).functionField from D j) (ρ r) = ρ (d j r)) → letI := (GlobalTheory.LogKSDiv.stalkAlg TF Z x).toAlgebra; ∃ δ : Fin Dw.dim → Derivation c.F ((X₀ TF.Y Z).presheaf.stalk x) ((X₀ TF.Y Z).presheaf.stalk x), (letI := (GlobalTheory.Cartier.constFn (s₀ TF.Y Z)).toAlgebra; ∀ j a, (show Derivation c.F (X₀ TF.Y Z).functionField (X₀ TF.Y Z).functionField from D j) (algebraMap ((X₀ TF.Y Z).presheaf.stalk x) (X₀ TF.Y Z).functionField a) = algebraMap ((X₀ TF.Y Z).presheaf.stalk x) (X₀ TF.Y Z).functionField (δ j a)) ∧ ∀ j r, δ j (GlobalTheory.LogKSDiv.stalkHom TF Z x U hx r) = GlobalTheory.LogKSDiv.stalkHom TF Z x U hx (d j r) := by
   intro E _ _ _ H Dw l Xo c TF Z _ _ x U _ hx ρ hρ d D hD
   letI := (GlobalTheory.Cartier.constFn (s₀ TF.Y Z)).toAlgebra

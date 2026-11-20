@@ -8,6 +8,11 @@ open PositivityTheory.RgEis
 
 variable {G : Type} [Group G]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h1 : b * a⁻¹ ∈ P.subgroupOf Γ` using `QuotientGroup.rightRel_apply.mp (Quotient.exact h)`. Simplify using `using Subgroup.mem_subgroupOf.mp h1`. Introduce `h`.
+
+Apply `Quotient.sound` to reduce the goal to its premises. Apply `QuotientGroup.rightRel_apply.mpr` to reduce the goal to its premises. Apply `Subgroup.mem_subgroupOf.mpr` to reduce the goal to its premises. Simplify using `using h`.
+-/
 theorem cos_mk_eq_iff {P Γ : Subgroup G} (a b : Γ) :
     (Quotient.mk (QuotientGroup.rightRel (P.subgroupOf Γ)) a : Cos P Γ) = Quotient.mk _ b ↔
       (b : G) * (a : G)⁻¹ ∈ P := by
@@ -21,11 +26,17 @@ theorem cos_mk_eq_iff {P Γ : Subgroup G} (a b : Γ) :
     apply Subgroup.mem_subgroupOf.mpr
     simpa using h
 
+/- English proof (translation)
+Establish `h'` using `(cos_mk_eq_iff (P := P) (Γ := Γ) (Quotient.out q) (Quotient.out q')).mpr h`. Rewrite `h'` using `[Quotient.out_eq, Quotient.out_eq]`. Conclude with `h'`.
+-/
 theorem cos_eq_of_rep {P Γ : Subgroup G} {q q' : Cos P Γ} (h : rep q' * (rep q)⁻¹ ∈ P) : q = q' := by
   have h' := (cos_mk_eq_iff (P := P) (Γ := Γ) (Quotient.out q) (Quotient.out q')).mpr h
   rw [Quotient.out_eq, Quotient.out_eq] at h'
   exact h'
 
+/- English proof (translation)
+Use `⟨rep (Quotient.mk _ a : Cos P Γ) * (a : G)⁻¹, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `Γ.mul_mem (Quotient.out (Quotient.mk _ a : Cos P Γ)).2 (Γ.inv_mem a.2)`. Conclude with `(cos_mk_eq_iff (P := P) (Γ := Γ) a (Quotient.out (Quotient.mk _ a : Cos P Γ))).mp (Quotient.out_eq _).symm`. Conclude with `(inv_mul_cancel_right _ _).symm`.
+-/
 theorem rep_mk {P Γ : Subgroup G} (a : Γ) :
     ∃ p ∈ Γ, p ∈ P ∧ rep (Quotient.mk (QuotientGroup.rightRel (P.subgroupOf Γ)) a : Cos P Γ) = p * a := by
   refine ⟨rep (Quotient.mk _ a : Cos P Γ) * (a : G)⁻¹, ?_, ?_, ?_⟩
@@ -34,6 +45,13 @@ theorem rep_mk {P Γ : Subgroup G} (a : Γ) :
       (Quotient.out_eq _).symm
   · exact (inv_mul_cancel_right _ _).symm
 
+/- English proof (translation)
+Introduce `g'`. Establish `hinj : Function.Injective (fun q' : Cos P' Γ' => (Quotient.mk _ ⟨φ (rep q'), hΓ (rep q') (Quotient.out q').2⟩ : Cos P Γ))`. Introduce `q₁ q₂ h`. Establish `h'` using `(cos_mk_eq_iff (P := P) (Γ := Γ) _ _).mp h`. Apply `cos_eq_of_rep` to reduce the goal to its premises.
+
+Establish `hmem : rep q₂ * (rep q₁)⁻¹ ∈ Γ'` using `Γ'.mul_mem (Quotient.out q₂).2 (Γ'.inv_mem (Quotient.out q₁).2)`. Use `hP _ hmem ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_inv]`. Conclude with `h'`. Use `((hc (φ g')).comp_injective hinj).congr fun q' => ?_` and prove the remaining obligations.
+
+Take `⟨p, hpΓ, hpP, hp⟩` from `rep_mk (P := P) (Γ := Γ) ⟨φ (rep q'), hΓ (rep q') (Quotient.out q').2⟩`. Use `show Real.exp (l (rep (Quotient.mk _ ⟨φ (rep q'), hΓ (rep q') (Quotient.out q').2⟩ : Cos P Γ) * φ g')) = Real.exp (l (φ (rep q' * g')))`. Rewrite using `[hp, map_mul, mul_assoc, hl p hpΓ hpP]`.
+-/
 theorem conv_comap {G' : Type} [Group G'] (φ : G' →* G) {Γ P : Subgroup G} {Γ' P' : Subgroup G'} {l : G → ℝ}
     (hΓ : ∀ γ ∈ Γ', φ γ ∈ Γ) (hP : ∀ γ ∈ Γ', φ γ ∈ P → γ ∈ P')
     (hl : ∀ γ ∈ Γ, γ ∈ P → ∀ g, l (γ * g) = l g) (hc : Conv Γ P l) :
@@ -55,6 +73,13 @@ theorem conv_comap {G' : Type} [Group G'] (φ : G' →* G) {Γ P : Subgroup G} {
     Real.exp (l (φ (rep q' * g')))
   rw [hp, map_mul, mul_assoc, hl p hpΓ hpP]
 
+/- English proof (translation)
+Introduce `g`. Establish `hinj : Function.Injective (fun q : Cos (P₁ ⊓ P₂) Γ => ((Quotient.mk _ (Quotient.out q) : Cos P₁ Γ), (Quotient.mk _ (Quotient.out q) : Cos P₂ Γ)))`. Introduce `q q' h`. Establish `e1` using `(cos_mk_eq_iff (P := P₁) (Γ := Γ) _ _).mp (congrArg Prod.fst h)`. Establish `e2` using `(cos_mk_eq_iff (P := P₂) (Γ := Γ) _ _).mp (congrArg Prod.snd h)`.
+
+Conclude with `cos_eq_of_rep (Subgroup.mem_inf.mpr ⟨e1, e2⟩)`. Establish `hprod : Summable fun x : Cos P₁ Γ × Cos P₂ Γ => Real.exp (l₁ (rep x.1 * g)) * Real.exp (l₂ (rep x.2 * g))`. Conclude with `Summable.mul_of_nonneg (c₁ g) (c₂ g) (fun _ => (Real.exp_pos _).le) (fun _ => (Real.exp_pos _).le)`. Use `(hprod.comp_injective hinj).congr fun q => ?_` and prove the remaining obligations. Take `⟨p₁, hp₁Γ, hp₁P, hp₁⟩` from `rep_mk (P := P₁) (Γ := Γ) (Quotient.out q)`.
+
+Take `⟨p₂, hp₂Γ, hp₂P, hp₂⟩` from `rep_mk (P := P₂) (Γ := Γ) (Quotient.out q)`. Use `show Real.exp (l₁ (rep (Quotient.mk _ (Quotient.out q) : Cos P₁ Γ) * g)) * Real.exp (l₂ (rep (Quotient.mk _ (Quotient.out q) : Cos P₂ Γ) * g)) = Real.exp (l₁ (rep q * g) + l₂ (rep q * g))`. Rewrite using `[hp₁, hp₂, mul_assoc, mul_assoc, h₁ p₁ hp₁Γ hp₁P, h₂ p₂ hp₂Γ hp₂P, Real.exp_add]`. Both sides reduce to the same expression.
+-/
 theorem conv_inf {Γ P₁ P₂ : Subgroup G} {l₁ l₂ : G → ℝ}
     (h₁ : ∀ γ ∈ Γ, γ ∈ P₁ → ∀ g, l₁ (γ * g) = l₁ g) (h₂ : ∀ γ ∈ Γ, γ ∈ P₂ → ∀ g, l₂ (γ * g) = l₂ g)
     (c₁ : Conv Γ P₁ l₁) (c₂ : Conv Γ P₂ l₂) : Conv Γ (P₁ ⊓ P₂) fun g => l₁ g + l₂ g := by
@@ -78,6 +103,17 @@ theorem conv_inf {Γ P₁ P₂ : Subgroup G} {l₁ l₂ : G → ℝ}
   rw [hp₁, hp₂, mul_assoc, mul_assoc, h₁ p₁ hp₁Γ hp₁P, h₂ p₂ hp₂Γ hp₂P, Real.exp_add]
   rfl
 
+/- English proof (translation)
+Introduce `hPar E R _ _ _ _ _ _ _ A hA hGr ι _ _ ε s hIwa`. Establish `inv : ∀ {H : Type} [Group H] [TopologicalSpace H] {Γ K P : Subgroup H} {η : H → ℝ} (c : ℝ), IsHt Γ K P η → ∀ γ ∈ Γ, γ ∈ P → ∀ g, c * η (γ * g) = c * η g`. Introduce `H _ _ Γ K P η c h γ hγ hγP g`. Rewrite using `[h.left γ hγP g, h.rat γ hγ hγP, zero_add]`. Establish `hconv : ∀ (t : Set ι) (x : ℝ), (∀ g : A.U ε ι, A.uH ε t g = A.htGL (Sum.inl '' t) g.1) → IsHt (A.ratGL (ι ⊕ ι)) (A.kGL (ι ⊕ ι)) (stab R (Sum.inl '' t)) (A.htGL (Sum.inl '' t)) → Conv (A.ratGL (ι ⊕ ι)) (stab R (Sum.inl '' t)) (fun g => x * A.htGL (Sum.inl '' t) g) → Conv (A.uΓ ε ι …`.
+
+Introduce `t x heq hHt hc`. Establish `h` using `conv_comap (A.uSub ε ι).subtype (Γ := A.ratGL (ι ⊕ ι)) (P := stab R (Sum.inl '' t)) (Γ' := A.uΓ ε ι) (P' := A.uQ ε t) (l := fun g => x * A.htGL (Sum.inl '' t) g) (fun γ hγ => Subgroup.mem_subgroupOf.mp hγ) (fun γ _ hγ => Subgroup.mem_subgroupOf.mpr hγ) (inv x hHt) hc`. Establish `hfun : (fun g : A.U ε ι => x * A.uH ε t g) = fun g => x * A.htGL (Sum.inl '' t) ((A.uSub ε ι).subtype g)`. Use function extensionality and compare the values at `g`. Conclude with `congrArg (fun r => x * r) (heq g)`.
+
+Rewrite using `[hfun]`. Conclude with `h`. Establish `hIwaU : Iwa (A.uQ ε (Set.univ : Set ι) ⊓ A.uQ ε Set.univ) (A.uK ε ι)`. Introduce `g`. Take `⟨p, hp, k, hk, hg⟩` from `hIwa g`.
+
+Conclude with `⟨p, Subgroup.mem_inf.mpr ⟨(Subgroup.mem_inf.mp hp).2, (Subgroup.mem_inf.mp hp).2⟩, k, hk, hg⟩`. Take `⟨Rs, hRs⟩` from `hGr (ι ⊕ ι) (Sum.inl '' s)`. Take `⟨Ru, hRu⟩` from `hGr (ι ⊕ ι) (Sum.inl '' (Set.univ : Set ι))`. Establish `hs` using `(hPar E R A hA ι ε s).2 hIwa`. Establish `hu` using `(hPar E R A hA ι ε Set.univ).2 hIwaU`.
+
+Establish `hGs` using `(hPar E R A hA (ι ⊕ ι) ε (Sum.inl '' s)).1.2.2.2.1`. Establish `hGu` using `(hPar E R A hA (ι ⊕ ι) ε (Sum.inl '' (Set.univ : Set ι))).1.2.2.2.1`. Use `⟨max Rs Ru, fun y hy => ?_, fun x y hx hy => ?_⟩` and prove the remaining obligations. Conclude with `hconv Set.univ y hu.2.2 hGu (hRu y (lt_of_le_of_lt (le_max_right _ _) hy))`. Conclude with `conv_inf (l₁ := fun g => x * A.uH ε s g) (l₂ := fun g => y * A.uH ε Set.univ g) (inv x hs.2.1) (inv y hu.2.1) (hconv s x hs.2.2 hGs (hRs x (lt_of_le_of_lt (le_max_left _ _) hx))) (hconv Set.univ y hu.2.2 hGu (hRu y (lt_of_le_of_lt (le_max_right _ _) hy)))`.
+-/
 theorem convU_of_parLaw : ParLaw → ConvU := by
   intro hPar E R _ _ _ _ _ _ _ A hA hGr ι _ _ ε s hIwa
   have inv : ∀ {H : Type} [Group H] [TopologicalSpace H] {Γ K P : Subgroup H} {η : H → ℝ} (c : ℝ),

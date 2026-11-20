@@ -13,6 +13,11 @@ set_option synthInstance.maxHeartbeats 400000
 
 namespace GlobalTheory.LatCmpQ
 
+/- English proof (translation)
+Establish `e1 : (N : R) • (g - 1) = (m : R) • w`. Use extensionality with `i j`. Simplify using `only [Matrix.smul_apply, Matrix.sub_apply, smul_eq_mul]`. Conclude with `hwe i j`. Establish `e2 : ((N : R) • (g - 1)) *ᵥ y = N • (g *ᵥ y) - N • y`.
+
+Rewrite using `[Matrix.smul_mulVec, Matrix.sub_mulVec, Matrix.one_mulVec, Nat.cast_smul_eq_nsmul, smul_sub]`. Establish `e3 : ((m : R) • w) *ᵥ y = m • (w *ᵥ y)`. Rewrite using `[Matrix.smul_mulVec, Nat.cast_smul_eq_nsmul]`. Rewrite using `[← e3, ← e1, e2]`. Normalize the expressions using the abelian group laws.
+-/
 theorem nsmul_mulVec_eq {R : Type*} [CommRing R] {n : ℕ} (N m : ℕ) (g w : Matrix (Fin n) (Fin n) R)
     (hwe : ∀ i j, (N : R) * (g i j - (1 : Matrix (Fin n) (Fin n) R) i j) = (m : R) * w i j) (y : Fin n → R) :
     N • (g *ᵥ y) = N • y + m • (w *ᵥ y) := by
@@ -29,6 +34,9 @@ theorem nsmul_mulVec_eq {R : Type*} [CommRing R] {n : ℕ} (N m : ℕ) (g w : Ma
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Use `choose w hw hwe using hg`. Establish `key` using `nsmul_mulVec_eq N (a ^ 2) g (Matrix.of w) hwe y`. Rewrite using `[key]`. Conclude with `add_mem (AddSubgroup.nsmul_mem _ hy N) (GlobalTheory.HatIntSmul.sq_smul_mulVec_mem_hat D n Λ a h1 h2 _ hw y hy)`.
+-/
 theorem step {D : D7} {n : ℕ} (Λ : Submodule (𝓞 D.host.E) (Fin n → D.host.E)) (a N : ℕ)
     (h1 : ∀ x ∈ Formalism.L2.Pj.stdLat D.host.E n, (a : 𝓞 D.host.E) • x ∈ Λ) (h2 : ∀ x ∈ Λ, (a : 𝓞 D.host.E) • x ∈ Formalism.L2.Pj.stdLat D.host.E n)
     (g : Matrix (Fin n) (Fin n) (Af D.host.F ⊗[D.host.F] D.host.E))
@@ -43,6 +51,21 @@ theorem step {D : D7} {n : ℕ} (Λ : Submodule (𝓞 D.host.E) (Fin n → D.hos
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `D ρ hρ i j b Q h hQ hS hsupp`. Establish `hΛ : ∀ x, x ∈ (ρ.B i j b).F.ΛS ↔ x ∈ L0c D (Vc D j)`. Take `⟨_, _, _, h1, h2⟩` from `hρ.latS i j b`. Introduce `x`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hx`. Simplify using `using h2 x hx`. Introduce `hx`. Simplify using `using h1 x hx`. Take `⟨a, ha, hs1, hs2⟩` from `GlobalTheory.LatSandwich.sandwich D (Vc D j) (ρ.B i j b).F.ΛS hΛ`.
+
+Take `⟨c, hc⟩` from `GlobalTheory.SuppIntCong.cong_one_of_suppAt D (Vc D j) Q hQ a ha hS hsupp`. Establish `ev : ∀ x : Fin (Vc D j).rank → D.host.E, (fun k => (1 : Af D.host.F) ⊗ₜ[D.host.F] ((((normProd Q ^ c : ℕ) : 𝓞 D.host.E) • x) k)) = (normProd Q ^ c) • (fun k => (1 : Af D.host.F) ⊗ₜ[D.host.F] x k)`. Introduce `x`. Use function extensionality and compare the values at `k`. Rewrite using `[Pi.smul_apply, Pi.smul_apply, Nat.cast_smul_eq_nsmul]`.
+
+Conclude with `map_nsmul ((TensorProduct.mk D.host.F (Af D.host.F) D.host.E) 1) _ _`. Establish `hmul : ((finPt (Vc D j) (h * hQ)).1⁻¹).val = (finHom (Vc D j) hQ)⁻¹.val * ((finPt (Vc D j) h).1⁻¹).val`. Establish `e : (finPt (Vc D j) (h * hQ)).1 = finHom (Vc D j) h * finHom (Vc D j) hQ` using `map_mul (finHom (Vc D j)) h hQ`. Rewrite using `[e, _root_.mul_inv_rev, Units.val_mul]`. Both sides reduce to the same expression.
+
+Establish `hmul' : ((finPt (Vc D j) h).1⁻¹).val = (finHom (Vc D j) hQ).val * ((finPt (Vc D j) (h * hQ)).1⁻¹).val`. Rewrite using `[hmul, ← Matrix.mul_assoc, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mul]`. Use `⟨c, fun x hx => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite `hx`, the goal using `[GlobalTheory.LatAtHLat.mem_latAt_iff_hat]`. Rewrite using `[ev x, Matrix.mulVec_smul, hmul, ← Matrix.mulVec_mulVec]`.
+
+Conclude with `step _ a _ hs1 hs2 _ (fun i j => (hc i j).2) hx`. Rewrite `hx`, the goal using `[GlobalTheory.LatAtHLat.mem_latAt_iff_hat]`. Establish `hst` using `step _ a _ hs1 hs2 _ (fun i j => (hc i j).1) hx`. Rewrite `hst` using `[Matrix.mulVec_mulVec, ← hmul']`. Rewrite using `[ev x, Matrix.mulVec_smul]`.
+
+Conclude with `hst`.
+-/
 theorem latAt_translate_bounded : ∀ (D : D7) (ρ : Setup D.ntw), ρ.Good → ∀ (i : D.ntw.Tw) (j : Fin D.R.m) (b : Bool) (Q : Finset (Pl D.host.E)) (h hQ : GA D (Vc D j)), SplitSet Q → SuppAt (idem Q) (Vc D j) hQ → ∃ c : ℕ, (∀ x ∈ (ρ.B i j b).latAt (finPt (Vc D j) h), ((normProd Q ^ c : ℕ) : 𝓞 D.host.E) • x ∈ (ρ.B i j b).latAt (finPt (Vc D j) (h * hQ))) ∧ ∀ x ∈ (ρ.B i j b).latAt (finPt (Vc D j) (h * hQ)), ((normProd Q ^ c : ℕ) : 𝓞 D.host.E) • x ∈ (ρ.B i j b).latAt (finPt (Vc D j) h) := by
   intro D ρ hρ i j b Q h hQ hS hsupp
   have hΛ : ∀ x, x ∈ (ρ.B i j b).F.ΛS ↔ x ∈ L0c D (Vc D j) := by

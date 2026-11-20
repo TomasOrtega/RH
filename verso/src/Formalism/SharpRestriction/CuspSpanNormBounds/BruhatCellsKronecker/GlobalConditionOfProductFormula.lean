@@ -33,16 +33,27 @@ def Uw (p : HeightOneSpectrum (𝓞 F)) (w : (A p).Ep) : AddSubgroup (A p).Ep :=
 
 variable {A δ}
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_Uw (p : HeightOneSpectrum (𝓞 F)) (w u : (A p).Ep) :
     u ∈ Uw A δ p w ↔ u ∈ (A p).O ∧ w * algebraMap _ _ (δ p) * u ∈ (A p).O := Iff.rfl
 
 variable (H : DiffHyp A δ)
 include H
 
+/- English proof (translation)
+Use `H.top p` as an intermediate fact. Conclude with `(H.opn p).inter ((H.opn p).preimage (continuous_const_mul (w * algebraMap _ _ (δ p))))`.
+-/
 theorem isOpen_Uw (p : HeightOneSpectrum (𝓞 F)) (w : (A p).Ep) : IsOpen (Uw A δ p w : Set (A p).Ep) := by
   have := H.top p
   exact (H.opn p).inter ((H.opn p).preimage (continuous_const_mul (w * algebraMap _ _ (δ p))))
 
+/- English proof (translation)
+Establish `h1 : w * u * algebraMap _ _ (δ p) ∈ (A p).O`. Use `hu.2` as an intermediate fact. Establish `e : w * u * algebraMap _ _ (δ p) = w * algebraMap _ _ (δ p) * u` using `by ring`. Rewrite using `[e]`. Conclude with `this`.
+
+Use `(H.dual p (w * u)).2 h1 1 (A p).O.one_mem` as an intermediate fact. Rewrite `this` using `[mul_one]`. Then use the resulting hypothesis.
+-/
 theorem psi_Uw (p : HeightOneSpectrum (𝓞 F)) (w u : (A p).Ep) (hu : u ∈ Uw A δ p w) : (A p).psiE (w * u) = 1 := by
   have h1 : w * u * algebraMap _ _ (δ p) ∈ (A p).O := by
     have := hu.2
@@ -52,16 +63,33 @@ theorem psi_Uw (p : HeightOneSpectrum (𝓞 F)) (w u : (A p).Ep) (hu : u ∈ Uw 
   rwa [mul_one] at this
 
 omit H in
+/- English proof (translation)
+Use extensionality with `u`. Conclude with `⟨fun h => h.1, fun h => ⟨h, (A p).O.mul_mem hw h⟩⟩`.
+-/
 theorem Uw_eq (p : HeightOneSpectrum (𝓞 F)) (w : (A p).Ep) (hw : w * algebraMap _ _ (δ p) ∈ (A p).O) :
     (Uw A δ p w : Set (A p).Ep) = ((A p).O : Set (A p).Ep) := by
   ext u
   exact ⟨fun h => h.1, fun h => ⟨h, (A p).O.mul_mem hw h⟩⟩
 
+/- English proof (translation)
+Establish `: z ∈ (1 : FractionalIdeal (𝓞 E)⁰ E)` using `(mem_iff_forall_atP (F := F) 1 z).2 (fun p => (int_iff (A p) H.hinv H.hfix z).1 (h p))`. Conclude with `(FractionalIdeal.mem_one_iff _).1 this`.
+-/
 theorem int_of_forall (z : E) (h : ∀ p, (A p).ιE z ∈ (A p).O) : ∃ z' : 𝓞 E, (z' : E) = z := by
   have : z ∈ (1 : FractionalIdeal (𝓞 E)⁰ E) :=
     (mem_iff_forall_atP (F := F) 1 z).2 (fun p => (int_iff (A p) H.hinv H.hfix z).1 (h p))
   exact (FractionalIdeal.mem_one_iff _).1 this
 
+/- English proof (translation)
+Take `⟨t, ht⟩` from `H.sa U hU hfin (Function.update (fun _ => 0) p y) (by`. Use `(Set.finite_singleton p).subset ?_` and prove the remaining obligations. Introduce `p' hp'`. Assume the negation of the conclusion as `hne`. Apply `hp'` to reduce the goal to its premises.
+
+Rewrite using `[Function.update_of_ne hne]`. Conclude with `(A p').O.zero_mem)`. Establish `h1 : (A p).ιE t - y ∈ U p`. Use `ht p` as an intermediate fact. Rewrite `this` using `[Function.update_self]`. Then use the resulting hypothesis.
+
+Establish `h2 : ∀ p', p' ≠ p → (A p').ιE t ∈ U p'`. Introduce `p' hne`. Use `ht p'` as an intermediate fact. Rewrite `this` using `[Function.update_of_ne hne, sub_zero]`. Then use the resulting hypothesis. Take `⟨z, hz⟩` from `int_of_forall H t (by`.
+
+Introduce `p'`. Distinguish the cases in `hne : p' = p`. Substitute `hne` using the available equality. Use `(A p').O.add_mem (hle p' h1) hy` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis.
+
+Conclude with `hle p' (h2 p' hne))`. Conclude with `⟨z, by rw [hz]; exact h1, fun p' hne => by rw [hz]; exact h2 p' hne⟩`.
+-/
 theorem approx_gen (p : HeightOneSpectrum (𝓞 F)) (U : ∀ p, AddSubgroup (A p).Ep) (hU : ∀ p, IsOpen (U p : Set (A p).Ep))
     (hle : ∀ p, (U p : Set (A p).Ep) ⊆ (A p).O)
     (hfin : {p | (U p : Set (A p).Ep) ≠ ((A p).O : Set (A p).Ep)}.Finite) (y : (A p).Ep) (hy : y ∈ (A p).O) :
@@ -94,9 +122,15 @@ def chiX (A : ∀ p : HeightOneSpectrum (𝓞 F), LocAt F E sig p) (p : HeightOn
     (((A p).ιE.toAddMonoidHom.comp (AddMonoidHom.mulLeft x)).comp (algebraMap (𝓞 E) E).toAddMonoidHom)
 
 omit H in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem chiX_apply (p : HeightOneSpectrum (𝓞 F)) (x : E) (z : 𝓞 E) :
     chiX A p x z = (A p).psiE ((A p).ιE (x * (z : E))) := rfl
 
+/- English proof (translation)
+Establish `e : (A p).ιE x * y = (A p).ιE (x * (z : E)) - (A p).ιE x * ((A p).ιE (z : E) - y)`. Rewrite using `[map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, AddChar.map_sub_eq_div, h2, psi_Uw H p _ _ h1, div_one]`.
+-/
 theorem psi_of_approx (p : HeightOneSpectrum (𝓞 F)) (x : E) (y : (A p).Ep) (z : 𝓞 E)
     (h1 : (A p).ιE (z : E) - y ∈ Uw A δ p ((A p).ιE x)) (h2 : (A p).psiE ((A p).ιE (x * (z : E))) = 1) :
     (A p).psiE ((A p).ιE x * y) = 1 := by
@@ -104,6 +138,25 @@ theorem psi_of_approx (p : HeightOneSpectrum (𝓞 F)) (x : E) (y : (A p).Ep) (z
     rw [map_mul]; ring
   rw [e, AddChar.map_sub_eq_div, h2, psi_Uw H p _ _ h1, div_one]
 
+/- English proof (translation)
+Take `⟨S, hS⟩` from `(Module.Finite.fg_top : (⊤ : Submodule ℤ (𝓞 E)).FG)`. Establish `hT : (⋃ z ∈ S, Function.mulSupport fun p => (A p).psiE ((A p).ιE (x * (z : E)))).Finite` using `Set.Finite.biUnion S.finite_toSet (fun z _ => (H.pf _).1)`. Use `hT.subset ?_` and prove the remaining obligations. Introduce `p hp`. Assume the negation of the conclusion as `hnot`.
+
+Apply `hp` to reduce the goal to its premises. Establish `hS1 : ∀ z ∈ S, chiX A p x z = 1`. Introduce `z hz`. Assume the negation of the conclusion as `hne`. Conclude with `hnot (Set.mem_biUnion hz hne)`.
+
+Establish `hall : ∀ z : 𝓞 E, chiX A p x z = 1`. Introduce `z`. Establish `hz : z ∈ Submodule.span ℤ (S : Set (𝓞 E))` using `by rw [hS]; trivial`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem z hz => exact hS1 z hz`.
+
+Consider the case `zero => exact AddChar.map_zero_eq_one _`. Consider the case `add a b _ _ ha hb => rw [AddChar.map_add_eq_mul, ha, hb, one_mul]`. Consider the case `smul n a _ ha => rw [AddChar.map_zsmul_eq_zpow, ha, one_zpow]`. Use `(H.dual p _).1 fun y hy => ?_` and prove the remaining obligations. Take `⟨z, hz, -⟩` from `approx_gen H p (Function.update (fun p' => (A p').O.toAddSubgroup) p (Uw A δ p ((A p).ιE x))) (by`.
+
+Introduce `p'`. Distinguish the cases in `hne : p' = p`. Substitute `hne` using the available equality. Rewrite using `[Function.update_self]`. Conclude with `isOpen_Uw H _ _`.
+
+Rewrite using `[Function.update_of_ne hne]`. Conclude with `H.opn p')`. Use the proof step `(by`. Introduce `p'`. Distinguish the cases in `hne : p' = p`.
+
+Substitute `hne` using the available equality. Rewrite using `[Function.update_self]`. Conclude with `fun u hu => hu.1`. Rewrite using `[Function.update_of_ne hne]`. Conclude with `fun u hu => hu)`.
+
+Use the proof step `(by`. Use `(Set.finite_singleton p).subset ?_` and prove the remaining obligations. Introduce `p' hp'`. Assume the negation of the conclusion as `hne`. Apply `hp'` to reduce the goal to its premises.
+
+Rewrite using `[Function.update_of_ne hne]`. Use the proof step `rfl) y hy`. Rewrite `hz` using `[Function.update_self]`. Conclude with `psi_of_approx H p x y z hz (hall z)`.
+-/
 theorem bad_finite (x : E) : {p | (A p).ιE x * algebraMap _ _ (δ p) ∉ (A p).O}.Finite := by
   obtain ⟨S, hS⟩ := (Module.Finite.fg_top : (⊤ : Submodule ℤ (𝓞 E)).FG)
   have hT : (⋃ z ∈ S, Function.mulSupport fun p => (A p).psiE ((A p).ιE (x * (z : E)))).Finite :=
@@ -146,6 +199,13 @@ theorem bad_finite (x : E) : {p | (A p).ιE x * algebraMap _ _ (δ p) ∉ (A p).
   rw [Function.update_self] at hz
   exact psi_of_approx H p x y z hz (hall z)
 
+/- English proof (translation)
+Use `(H.dual p _).1 fun y hy => ?_` and prove the remaining obligations. Take `⟨z, hz, hz'⟩` from `approx_gen H p (fun p' => Uw A δ p' ((A p').ιE x)) (fun p' => isOpen_Uw H _ _) (fun p' u hu => hu.1) ((bad_finite H x).subset (by`. Introduce `p' hp' hmem`. Conclude with `hp' (Uw_eq p' _ hmem))) y hy`. Use `psi_of_approx H p x y z hz ?_` and prove the remaining obligations.
+
+Take `⟨n, hn⟩` from `hx z`. Establish `h1` using `(H.pf (x * (z : E))).2`. Rewrite using `[finprod_eq_single _ p (by`. Introduce `p' hne`. Rewrite using `[map_mul]`.
+
+Conclude with `psi_Uw H p' _ _ (hz' p' hne)), hn] at h1`. Rewrite using `[h1]`. Rewrite using `[Complex.exp_eq_one_iff]`. Conclude with `⟨n, by push_cast; ring⟩`.
+-/
 theorem diff_fwd (x : E) (hx : ∀ z : 𝓞 E, ∃ n : ℤ, Algebra.trace ℚ E (x * (z : E)) = n) (p : HeightOneSpectrum (𝓞 F)) :
     (A p).ιE x * algebraMap _ _ (δ p) ∈ (A p).O := by
   refine (H.dual p _).1 fun y hy => ?_
@@ -165,6 +225,13 @@ theorem diff_fwd (x : E) (hx : ∀ z : 𝓞 E, ∃ n : ℤ, Algebra.trace ℚ E 
   rw [Complex.exp_eq_one_iff]
   exact ⟨n, by push_cast; ring⟩
 
+/- English proof (translation)
+Establish `h1` using `(H.pf (x * (z : E))).2`. Rewrite using `[finprod_eq_one_of_forall_eq_one (by`. Introduce `p`. Rewrite using `[map_mul]`. Conclude with `(H.dual p _).2 (h p) _ (ιE_int (A p) z))] at h1`.
+
+Take `⟨n, hn⟩` from `Complex.exp_eq_one_iff.1 h1.symm`. Use `⟨n, ?_⟩` and prove the remaining obligations. Establish `h2 : (2 * (Real.pi : ℂ) * Complex.I) ≠ 0`. Simplify using `[Real.pi_ne_zero]`. Establish `h3 : (((Algebra.trace ℚ E (x * (z : E)) : ℚ) : ℂ)) = (n : ℂ)`.
+
+Apply `mul_left_cancel₀ h2` to reduce the goal to its premises. Rewrite using `[hn]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `h3` after adjusting the coercions.
+-/
 theorem diff_bwd (x : E) (h : ∀ p, (A p).ιE x * algebraMap _ _ (δ p) ∈ (A p).O) (z : 𝓞 E) :
     ∃ n : ℤ, Algebra.trace ℚ E (x * (z : E)) = n := by
   have h1 := (H.pf (x * (z : E))).2
@@ -182,6 +249,13 @@ theorem diff_bwd (x : E) (h : ∀ p, (A p).ιE x * algebraMap _ _ (δ p) ∈ (A 
   exact_mod_cast h3
 
 omit H in
+/- English proof (translation)
+Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => exact ⟨1, one_notMem p, by simp⟩`. Consider the case `insert x S _ ih`. Take `⟨a, ha, hS⟩` from `ih (fun y hy => h y (Finset.mem_insert_of_mem hy))`. Take `⟨b, hb, hx⟩` from `h x (Finset.mem_insert_self _ _)`.
+
+Use `⟨a * b, mul_notMem ha hb, fun y hy => ?_⟩` and prove the remaining obligations. Break down `Finset.mem_insert.1 hy with rfl | hy` into its components or cases. Rewrite using `[cmul, map_mul, mul_assoc]`. Conclude with `int_smul_mem _ a _ hx`. Rewrite using `[cmul, mul_comm (a : F), map_mul, mul_assoc]`.
+
+Conclude with `int_smul_mem _ b _ (hS y hy)`.
+-/
 theorem exists_common (p : HeightOneSpectrum (𝓞 F)) (S : Finset E) (c : E)
     (h : ∀ x ∈ S, atP p (1 : FractionalIdeal (𝓞 E)⁰ E) (x * c)) :
     ∃ a : 𝓞 F, a ∉ p.asIdeal ∧ ∀ x ∈ S, algebraMap F E (a : F) * (x * c) ∈ (1 : FractionalIdeal (𝓞 E)⁰ E) := by
@@ -197,6 +271,17 @@ theorem exists_common (p : HeightOneSpectrum (𝓞 F)) (S : Finset E) (c : E)
 
 omit H in
 
+/- English proof (translation)
+Establish `hN : IsNoetherian (𝓞 E) (I : Submodule (𝓞 E) E)` using `FractionalIdeal.isNoetherian I`. Take `⟨S, hS⟩ : (I : Submodule (𝓞 E) E).FG` from `(Submodule.fg_top _).1 (hN.noetherian ⊤)`. Take `⟨a, ha, haS⟩` from `exists_common p S c (fun x hx => h x (by`. Establish `: x ∈ (I : Submodule (𝓞 E) E)` using `by rw [← hS]; exact Submodule.subset_span hx`. Conclude with `this))`.
+
+Use `⟨a, ha, ?_⟩` and prove the remaining obligations. Rewrite using `[FractionalIdeal.mem_inv_iff hI]`. Introduce `y hy`. Establish `hy' : y ∈ Submodule.span (𝓞 E) (S : Set E)` using `by rw [hS]; exact hy`. Use `clear hy`.
+
+Proceed by induction on `hy' using Submodule.span_induction with`. Consider the case `mem y hyS`. Use `haS y hyS` as an intermediate fact. Establish `e : algebraMap F E (a : F) * c * y = algebraMap F E (a : F) * (y * c)` using `by ring`. Rewrite using `[e]`.
+
+Conclude with `this`. Consider the case `zero => rw [mul_zero]`. Conclude with `((1 : FractionalIdeal (𝓞 E)⁰ E) : Submodule (𝓞 E) E).zero_mem`. Consider the case `add y y' hy1 hy2 ih1 ih2`. Rewrite using `[mul_add]`.
+
+Conclude with `((1 : FractionalIdeal (𝓞 E)⁰ E) : Submodule (𝓞 E) E).add_mem ih1 ih2`. Consider the case `smul r y hy1 ih1`. Rewrite using `[mul_smul_comm]`. Conclude with `((1 : FractionalIdeal (𝓞 E)⁰ E) : Submodule (𝓞 E) E).smul_mem r ih1`.
+-/
 theorem memLocalizedAt_inv (p : HeightOneSpectrum (𝓞 F)) (I : FractionalIdeal (𝓞 E)⁰ E) (hI : I ≠ 0) (c : E)
     (h : ∀ x ∈ I, atP p (1 : FractionalIdeal (𝓞 E)⁰ E) (x * c)) : atP p I⁻¹ c := by
   have hN : IsNoetherian (𝓞 E) (I : Submodule (𝓞 E) E) := FractionalIdeal.isNoetherian I
@@ -224,6 +309,13 @@ theorem memLocalizedAt_inv (p : HeightOneSpectrum (𝓞 F)) (I : FractionalIdeal
 
 omit H in
 
+/- English proof (translation)
+Use `(A p).lf` as an intermediate fact. Establish `hv0 : valuation (A p).Fp (δ p) ≠ 0` using `(Valuation.ne_zero_iff _).2 hδ`. Establish `hs : {y | valuation (A p).Fp (y - δ p) < valuation (A p).Fp (δ p)} ∈ nhds (δ p)`. Rewrite using `[IsValuativeTopology.mem_nhds_iff]`. Use `⟨Units.mk0 _ hv0, ?_⟩` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨z, hz, rfl⟩`. Use `show valuation (A p).Fp (δ p + z - δ p) < valuation (A p).Fp (δ p)`. Rewrite using `[add_sub_cancel_left]`. Conclude with `hz`. Take `⟨c, hc⟩` from `(A p).dense.mem_nhds hs`.
+
+Conclude with `⟨c, Valuation.map_eq_of_sub_lt _ hc⟩`.
+-/
 theorem exists_val_eq (p : HeightOneSpectrum (𝓞 F)) (hδ : δ p ≠ 0) :
     ∃ c : F, valuation (A p).Fp ((A p).ιF c) = valuation (A p).Fp (δ p) := by
   have := (A p).lf
@@ -238,6 +330,21 @@ theorem exists_val_eq (p : HeightOneSpectrum (𝓞 F)) (hδ : δ p ≠ 0) :
   obtain ⟨c, hc⟩ := (A p).dense.mem_nhds hs
   exact ⟨c, Valuation.map_eq_of_sub_lt _ hc⟩
 
+/- English proof (translation)
+Use `set w : (A p).Ep := 1 + algebraMap _ _ ϖ * o with hw`. Establish `hϖO : ϖ ∈ 𝒪[(A p).Fp]`. Rewrite using `[Valuation.mem_integer_iff]`. Conclude with `hϖ.le`. Establish `hwO : w ∈ (A p).O` using `(A p).O.add_mem (A p).O.one_mem ((A p).O.mul_mem (alg_mem_O _ _ hϖO) ho)`.
+
+Establish `hcw : (A p).cj w = 1 + algebraMap _ _ ϖ * (A p).cj o`. Rewrite using `[hw, map_add, map_one, map_mul, AlgEquiv.commutes]`. Take `⟨n, hn⟩` from `H.cjfix p (w * (A p).cj w) (by rw [map_mul, H.cjcj]; ring)`. Establish `hco` using `cj_mem (A p) o ho`. Establish `h1 : algebraMap (A p).Fp (A p).Ep ((n - 1) * ϖ⁻¹) = o + (A p).cj o + algebraMap _ _ ϖ * (o * (A p).cj o)`.
+
+Establish `h2 : algebraMap (A p).Fp (A p).Ep ϖ * algebraMap (A p).Fp (A p).Ep ϖ⁻¹ = 1`. Rewrite using `[← map_mul, mul_inv_cancel₀ hϖ0, map_one]`. Rewrite using `[map_mul, map_sub, map_one, hn, hcw, hw]`. Take the linear combination `(o + (A p).cj o + algebraMap _ _ ϖ * (o * (A p).cj o)) * h2`. Establish `h3 : (n - 1) * ϖ⁻¹ ∈ 𝒪[(A p).Fp]`.
+
+Apply `mem_OF_of_alg (A p)` to reduce the goal to its premises. Rewrite using `[h1]`. Conclude with `(A p).O.add_mem ((A p).O.add_mem ho hco) ((A p).O.mul_mem (alg_mem_O _ _ hϖO) ((A p).O.mul_mem ho hco))`. Establish `h4 : valuation (A p).Fp (n - 1) < 1`. Rewrite `h3` using `[Valuation.mem_integer_iff, map_mul, map_inv₀]`.
+
+Establish `hv0 : 0 < valuation (A p).Fp ϖ` using `zero_lt_iff.2 ((Valuation.ne_zero_iff _).2 hϖ0)`. Use `(mul_inv_le_iff₀ hv0).1 h3` as an intermediate fact. Rewrite `this` using `[one_mul]`. Conclude with `lt_of_le_of_lt this hϖ`. Establish `h5 : valuation (A p).Fp n = 1`.
+
+Use `Valuation.map_eq_of_sub_lt (valuation (A p).Fp) (x := 1) (y := n) (by rw [map_one]; exact h4)` as an intermediate fact. Rewrite `this` using `[map_one]`. Then use the resulting hypothesis. Establish `hn0 : n ≠ 0`. Introduce `h0`. Rewrite `h5` using `[h0, map_zero]`.
+
+Conclude with `zero_ne_one h5`. Establish `hni : n⁻¹ ∈ 𝒪[(A p).Fp]`. Rewrite using `[Valuation.mem_integer_iff, map_inv₀, h5, inv_one]`. Use `⟨(A p).cj w * algebraMap _ _ n⁻¹, (A p).O.mul_mem (cj_mem _ _ hwO) (alg_mem_O _ _ hni), ?_⟩` and prove the remaining obligations. Rewrite using `[← mul_assoc, ← hn, ← map_mul, mul_inv_cancel₀ hn0, map_one]`.
+-/
 theorem unit_of (p : HeightOneSpectrum (𝓞 F)) (ϖ : (A p).Fp) (hϖ0 : ϖ ≠ 0) (hϖ : valuation (A p).Fp ϖ < 1)
     (o : (A p).Ep) (ho : o ∈ (A p).O) :
     ∃ w' ∈ (A p).O, (1 + algebraMap _ _ ϖ * o) * w' = 1 := by
@@ -276,6 +383,11 @@ theorem unit_of (p : HeightOneSpectrum (𝓞 F)) (ϖ : (A p).Fp) (hϖ0 : ϖ ≠ 
   rw [← mul_assoc, ← hn, ← map_mul, mul_inv_cancel₀ hn0, map_one]
 
 omit H in
+/- English proof (translation)
+Rewrite using `[FractionalIdeal.mem_dual (one_ne_zero : (1 : FractionalIdeal (𝓞 E)⁰ E) ≠ 0)]`. Prove the components needed by the constructor for the conclusion. Introduce `h z`. Take `⟨n, hn⟩` from `h (z : E) ((FractionalIdeal.mem_one_iff _).2 ⟨z, rfl⟩)`. Conclude with `⟨n, by rw [Algebra.traceForm_apply] at hn; rw [← hn]; rfl⟩`.
+
+Introduce `h a ha`. Take `⟨z, rfl⟩` from `(FractionalIdeal.mem_one_iff _).1 ha`. Take `⟨n, hn⟩` from `h z`. Conclude with `⟨n, by rw [Algebra.traceForm_apply]; rw [show algebraMap (𝓞 E) E z = (z : E) from rfl, hn]; rfl⟩`.
+-/
 theorem mem_dual_iff (x : E) : x ∈ FractionalIdeal.dual ℤ ℚ (1 : FractionalIdeal (𝓞 E)⁰ E) ↔
     ∀ z : 𝓞 E, ∃ n : ℤ, Algebra.trace ℚ E (x * (z : E)) = n := by
   rw [FractionalIdeal.mem_dual (one_ne_zero : (1 : FractionalIdeal (𝓞 E)⁰ E) ≠ 0)]
@@ -289,12 +401,58 @@ theorem mem_dual_iff (x : E) : x ∈ FractionalIdeal.dual ℤ ℚ (1 : Fractiona
     exact ⟨n, by rw [Algebra.traceForm_apply]; rw [show algebraMap (𝓞 E) E z = (z : E) from rfl, hn]; rfl⟩
 
 omit H in
+/- English proof (translation)
+Use `val_iff (A p) 1 a` as an intermediate fact. Rewrite `this` using `[map_one, map_one, map_one]`. Rewrite using `[← not_le, ← not_le, this]`.
+-/
 theorem vlt_iff (p : HeightOneSpectrum (𝓞 F)) (a : F) :
     valuation (A p).Fp ((A p).ιF a) < 1 ↔ p.valuation F a < 1 := by
   have := val_iff (A p) 1 a
   rw [map_one, map_one, map_one] at this
   rw [← not_le, ← not_le, this]
 
+/- English proof (translation)
+Establish `hdd : ((differentIdeal ℤ (𝓞 E) : Ideal (𝓞 E)) : FractionalIdeal (𝓞 E)⁰ E) = (FractionalIdeal.dual ℤ ℚ (1 : FractionalIdeal (𝓞 E)⁰ E))⁻¹` using `coeIdeal_differentIdeal ℤ ℚ E (𝓞 E)`. Use `set I : FractionalIdeal (𝓞 E)⁰ E := FractionalIdeal.dual ℤ ℚ (1 : FractionalIdeal (𝓞 E)⁰ E) with hIdef`. Establish `hI0 : I ≠ 0` using `FractionalIdeal.dual_ne_zero ℤ ℚ (one_ne_zero : (1 : FractionalIdeal (𝓞 E)⁰ E) ≠ 0)`. Establish `hδ` using `H.hδ p`. Establish `hvδ : valuation (A p).Fp (δ p) ≠ 0` using `(Valuation.ne_zero_iff _).2 hδ`.
+
+Take `⟨c, hc⟩` from `exists_val_eq (A := A) (δ := δ) p hδ`. Establish `hιc : (A p).ιF c ≠ 0`. Introduce `h0`. Rewrite `hc` using `[h0, map_zero]`. Conclude with `hvδ hc.symm`.
+
+Establish `hc0 : c ≠ 0`. Introduce and unpack `rfl`. Conclude with `hιc (map_zero _)`. Establish `hac : algebraMap F E c ≠ 0`. Rewrite using `[Ne, map_eq_zero]`.
+
+Conclude with `hc0`. Use `⟨c, hc, ?_⟩` and prove the remaining obligations. Establish `hb : atP p I⁻¹ (algebraMap F E c)`. Use `memLocalizedAt_inv p I hI0 _ fun x hx => ?_` and prove the remaining obligations. Rewrite using `[← int_iff (A p) H.hinv H.hfix, map_mul, ιE_alg, mul_comm]`.
+
+Establish `h1` using `diff_fwd H x ((mem_dual_iff x).1 hx) p`. Rewrite `h1` using `[mul_comm]`. Conclude with `(scal_iff (A p) ((A p).O : Set (A p).Ep) (O_scal _) _ _ hιc hδ hc _).2 h1`. Establish `hcinv : atP p I (algebraMap F E c)⁻¹`. Take `⟨π0, hπ0, hπ00⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot p.ne_bot`.
+
+Use `set ϖ : (A p).Fp := (A p).ιF (π0 : F) with hϖdef`. Establish `hϖ : valuation (A p).Fp ϖ < 1` using `(vlt_iff p _).2 ((p.valuation_lt_one_iff_mem π0).2 hπ0)`. Establish `hϖ0 : ϖ ≠ 0`. Rewrite using `[hϖdef, Ne, map_eq_zero]`. Conclude with `fun h => hπ00 (by exact_mod_cast h)`.
+
+Use `H.top p` as an intermediate fact. Take `⟨x0, hx0⟩` from `H.sa (Function.update (fun p' => Uw A δ p' ((A p').ιE 1)) p ((A p).O.toAddSubgroup.comap (AddMonoidHom.mulLeft (algebraMap _ _ (δ p * ϖ⁻¹))))) (by`. Introduce `p'`. Distinguish the cases in `hne : p' = p`. Substitute `hne` using the available equality.
+
+Rewrite using `[Function.update_self]`. Conclude with `(H.opn p').preimage (continuous_const_mul _)`. Rewrite using `[Function.update_of_ne hne]`. Conclude with `isOpen_Uw H _ _)`. Use the proof step `(by`.
+
+Use `((bad_finite H 1).insert p).subset ?_` and prove the remaining obligations. Introduce `p' hp'`. Distinguish the cases in `hne : p' = p`. Conclude with `Set.mem_insert_iff.2 (Or.inl hne)`. Use `Set.mem_insert_iff.2 (Or.inr fun hmem => hp' ?_)` and prove the remaining obligations.
+
+Rewrite using `[Function.update_of_ne hne]`. Conclude with `Uw_eq p' _ hmem)`. Use the proof step `(Function.update (fun _ => 0) p (algebraMap _ _ (δ p)⁻¹))`. Use the proof step `(by`. Use `(Set.finite_singleton p).subset ?_` and prove the remaining obligations.
+
+Introduce `p' hp'`. Assume the negation of the conclusion as `hne`. Apply `hp'` to reduce the goal to its premises. Rewrite using `[Function.update_of_ne hne]`. Conclude with `(A p').O.zero_mem)`.
+
+Establish `h1 : algebraMap _ _ (δ p * ϖ⁻¹) * ((A p).ιE x0 - algebraMap _ _ (δ p)⁻¹) ∈ (A p).O`. Use `hx0 p` as an intermediate fact. Rewrite `this` using `[Function.update_self, Function.update_self]`. Then use the resulting hypothesis. Use `set o := algebraMap (A p).Fp (A p).Ep (δ p * ϖ⁻¹) * ((A p).ιE x0 - algebraMap _ _ (δ p)⁻¹) with ho`. Establish `e1 : algebraMap (A p).Fp (A p).Ep ϖ * algebraMap (A p).Fp (A p).Ep ϖ⁻¹ = 1`.
+
+Rewrite using `[← map_mul, mul_inv_cancel₀ hϖ0, map_one]`. Establish `e2 : algebraMap (A p).Fp (A p).Ep (δ p) * algebraMap (A p).Fp (A p).Ep (δ p)⁻¹ = 1`. Rewrite using `[← map_mul, mul_inv_cancel₀ hδ, map_one]`. Establish `hw : (A p).ιE x0 * algebraMap _ _ (δ p) = 1 + algebraMap _ _ ϖ * o`. Rewrite using `[ho, map_mul]`.
+
+Take the linear combination `(-(algebraMap (A p).Fp (A p).Ep (δ p) * ((A p).ιE x0 - algebraMap _ _ (δ p)⁻¹))) * e1 + e2`. Establish `hall : ∀ p', (A p').ιE x0 * algebraMap _ _ (δ p') ∈ (A p').O`. Introduce `p'`. Distinguish the cases in `hne : p' = p`. Substitute `hne` using the available equality.
+
+Rewrite using `[hw]`. Use `(A p').O.add_mem (A p').O.one_mem ((A p').O.mul_mem (alg_mem_O _ _ ?_) h1)` and prove the remaining obligations. Rewrite using `[Valuation.mem_integer_iff]`. Conclude with `hϖ.le`. Use `hx0 p'` as an intermediate fact.
+
+Rewrite `this` using `[Function.update_of_ne hne, Function.update_of_ne hne, sub_zero]`. Establish `h2 : (A p').ιE 1 * algebraMap _ _ (δ p') * (A p').ιE x0 ∈ (A p').O` using `this.2`. Rewrite `h2` using `[map_one, one_mul, mul_comm]`. Conclude with `h2`. Establish `hx0I : x0 ∈ I` using `(mem_dual_iff x0).2 (diff_bwd H x0 hall)`.
+
+Take `⟨w', hw'O, hw'⟩` from `unit_of H p ϖ hϖ0 hϖ o h1`. Rewrite `hw'` using `[← hw]`. Establish `hx00 : x0 ≠ 0`. Introduce and unpack `rfl`. Rewrite `hw'` using `[map_zero, zero_mul, zero_mul]`.
+
+Conclude with `zero_ne_one hw'`. Establish `hinv : (A p).ιE x0⁻¹ = algebraMap _ _ (δ p) * w'`. Establish `e3 : (A p).ιE x0⁻¹ * (A p).ιE x0 = 1` using `by rw [← map_mul, inv_mul_cancel₀ hx00, map_one]`. Take the linear combination `(-((A p).ιE x0⁻¹)) * hw' + (algebraMap _ _ (δ p) * w') * e3`. Establish `h3 : atP p (1 : FractionalIdeal (𝓞 E)⁰ E) ((algebraMap F E c)⁻¹ * x0⁻¹)`.
+
+Rewrite using `[← int_iff (A p) H.hinv H.hfix, map_mul, hinv, ← map_inv₀, ιE_alg, map_inv₀, ← mul_assoc, ← map_mul]`. Use `(A p).O.mul_mem (alg_mem_O _ _ ?_) hw'O` and prove the remaining obligations. Rewrite using `[Valuation.mem_integer_iff, map_mul, map_inv₀, hc, inv_mul_cancel₀ hvδ]`. Establish `h4` using `memLocalization_mul h3 (memLocalization_of_mem (p := p) hx0I)`. Rewrite `h4` using `[one_mul, mul_assoc, inv_mul_cancel₀ hx00, mul_one]`. Then use the resulting hypothesis.
+
+Rewrite using `[hdd]`. Use `⟨hac, fun x => ⟨fun hx => ?_, fun hx => ?_⟩⟩` and prove the remaining obligations. Use `memLocalization_mul hx hcinv` as an intermediate fact. Rewrite `this` using `[inv_mul_cancel₀ hI0, ← div_eq_mul_inv]`. Then use the resulting hypothesis. Use `memLocalization_mul hx hb` as an intermediate fact.
+
+Rewrite `this` using `[one_mul, div_mul_cancel₀ _ hac]`. Then use the resulting hypothesis.
+-/
 theorem locGen_diff (p : HeightOneSpectrum (𝓞 F)) :
     ∃ c : F, valuation (A p).Fp ((A p).ιF c) = valuation (A p).Fp (δ p) ∧
       LocGen p ((differentIdeal ℤ (𝓞 E) : Ideal (𝓞 E)) : FractionalIdeal (𝓞 E)⁰ E) (algebraMap F E c) := by
@@ -400,6 +558,11 @@ theorem locGen_diff (p : HeightOneSpectrum (𝓞 F)) :
 
 omit H in
 
+/- English proof (translation)
+Use `⟨inv_ne_zero h.1, fun x => ⟨fun hx => ?_, fun hx => ?_⟩⟩` and prove the remaining obligations. Use `memLocalization_mul hx h.self` as an intermediate fact. Rewrite `this` using `[inv_mul_cancel₀ hI, ← div_inv_eq_mul]`. Then use the resulting hypothesis. Establish `h1 : atP p I⁻¹ c⁻¹` using `memLocalizedAt_inv p I hI _ fun y hy => by`. Rewrite using `[← div_eq_mul_inv]`.
+
+Conclude with `(h.2 y).1 (memLocalization_of_mem hy)`. Use `memLocalization_mul hx h1` as an intermediate fact. Rewrite `this` using `[one_mul, div_inv_eq_mul, mul_assoc, mul_inv_cancel₀ h.1, mul_one]`. Then use the resulting hypothesis.
+-/
 theorem LocGen.inv {p : HeightOneSpectrum (𝓞 F)} {I : FractionalIdeal (𝓞 E)⁰ E} {c : E} (hI : I ≠ 0) (h : LocGen p I c) :
     LocGen p I⁻¹ c⁻¹ := by
   refine ⟨inv_ne_zero h.1, fun x => ⟨fun hx => ?_, fun hx => ?_⟩⟩
@@ -419,6 +582,11 @@ open scoped ComplexOrder
 
 variable {D : Formalism.BasicNotions.D7}
 
+/- English proof (translation)
+Take `⟨-, hδ, -, hO, hpsi, -⟩` from `hA`. Rewrite using `[← hO, ← (M p).L.additive_character_dual_ring]`. Establish `e2 : algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (δ p) * algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (δ p)⁻¹ = 1`. Rewrite using `[← map_mul, mul_inv_cancel₀ hδ, map_one]`. Use `forall₂_congr fun y _ => ?_` and prove the remaining obligations.
+
+Establish `e : w * algebraMap _ _ (δ p) * y * algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (δ p)⁻¹ = w * y`. Take the linear combination `(w * y) * e2`. Rewrite using `[hpsi, e, AddChar.map_neg_eq_inv, inv_eq_one]`.
+-/
 theorem dual_of_agree (δ : ∀ p, (D.s.atP p).Fp) (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep) (p : PlF D)
     (hA : Agree δ M p) (w : (D.s.atP p).Ep) :
     (∀ y ∈ (D.s.atP p).O, (D.s.atP p).psiE (w * y) = 1) ↔ w * algebraMap _ _ (δ p) ∈ (D.s.atP p).O := by
@@ -431,6 +599,9 @@ theorem dual_of_agree (δ : ∀ p, (D.s.atP p).Fp) (M : ∀ p : PlF D, Loc.Model
     linear_combination (w * y) * e2
   rw [hpsi, e, AddChar.map_neg_eq_inv, inv_eq_one]
 
+/- English proof (translation)
+The claim follows from `conjF_inv hfix := conjF_fix hδ := fun p => (hA p).2.1 dual := fun p w => dual_of_agree δ M p (hA p) w opn := fun p => by have := (hA p).1.loc have := (hA p).1.char0 have := top_of_OK (M p) (hA p).1 have h := (O_top (M p).L).1 rwa [(hA p).2.2.2.1] at h top := fun p => top_of_OK (M …`.
+-/
 theorem diffHyp_of (δ : ∀ p, (D.s.atP p).Fp) (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep)
     (hA : ∀ p, Agree δ M p) (h6 : adm6 D) (h7 : adm7 D) : DiffHyp (fun p : PlF D => D.s.atP p) δ where
   hinv := conjF_inv
@@ -453,14 +624,23 @@ theorem diffHyp_of (δ : ∀ p, (D.s.atP p).Fp) (M : ∀ p : PlF D, Loc.Model (D
   sa := h6
   pf := h7.2
 
+/- English proof (translation)
+The claim follows from `locGen_diff (diffHyp_of δ M hA h6 h7) p`.
+-/
 theorem isDiffGen_of_agree (δ : ∀ p, (D.s.atP p).Fp) (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep)
     (hA : ∀ p, Agree δ M p) (h6 : adm6 D) (h7 : adm7 D) (p : PlF D) : IsDiffGen δ p :=
   locGen_diff (diffHyp_of δ M hA h6 h7) p
 
+/- English proof (translation)
+The claim follows from `laIsPeriod_of δ M hA (isDiffGen_of_agree δ M hA h6 h7) ν s`.
+-/
 theorem laIsPeriod_of_adm (δ : ∀ p, (D.s.atP p).Fp) (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep)
     (hA : ∀ p, Agree δ M p) (h6 : adm6 D) (h7 : adm7 D) (ν s : ℕ) : LaIsPeriod δ M ν s :=
   laIsPeriod_of δ M hA (isDiffGen_of_agree δ M hA h6 h7) ν s
 
+/- English proof (translation)
+The claim follows from `global_condition_of_local_agreement δ M hA (isDiffGen_of_agree δ M hA h6 h7) i hi`.
+-/
 theorem global_condition_of_product_formula (δ : ∀ p, (D.s.atP p).Fp) (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep)
     (hA : ∀ p, Agree δ M p) (h6 : adm6 D) (h7 : adm7 D) (i : ℕ) (hi : i ≤ D.R.rS + 1) : G4 δ M i :=
   global_condition_of_local_agreement δ M hA (isDiffGen_of_agree δ M hA h6 h7) i hi
@@ -487,6 +667,11 @@ def LocalModelsAtRemainingPrimes (δ : ∀ p, (D.s.atP p).Fp) (M : ∀ p : PlF D
           ∀ x0 : ι, ((((∏ᶠ p, (detNrmP M δ T T' p (hd x0)) ^ (-(2 * (s : ℤ)))) : ℝ) : ℂ) •
             (Matrix.of fun x y => ∏ᶠ p, locK M δ T T' p m (hd x) (hd y)) - ∑ a ∈ S, Th a).PosSemidef
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `h.2.2.2`. Introduce `h`. Establish `h1` using `G3lat_of δ M hA (isDiffGen_of_agree δ M hA h6 h7) (nu D.R.rS (m + 1) (m + s)) s`.
+
+Conclude with `⟨h1.1, h1.2.1, h1.2.2, h⟩`.
+-/
 theorem block_condition_iff_fourth_clause (δ : ∀ p, (D.s.atP p).Fp) (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep)
     (hA : ∀ p, Agree δ M p) (h6 : adm6 D) (h7 : adm7 D) (m s : ℕ) : G3blk δ M m s ↔ LocalModelsAtRemainingPrimes δ M m s := by
   constructor
@@ -495,6 +680,9 @@ theorem block_condition_iff_fourth_clause (δ : ∀ p, (D.s.atP p).Fp) (M : ∀ 
     have h1 := G3lat_of δ M hA (isDiffGen_of_agree δ M hA h6 h7) (nu D.R.rS (m + 1) (m + s)) s
     exact ⟨h1.1, h1.2.1, h1.2.2, h⟩
 
+/- English proof (translation)
+Use `lattice_statement_of_root_gram_blocks X cN fun hk => ?_` and prove the remaining obligations. Take `⟨δ, M, hA, h2, h3⟩` from `h hk`. Conclude with `⟨δ, M, hA, G1root_of_agree δ M hA, h2, fun m s hs hm => (block_condition_iff_fourth_clause δ M hA h6 h7 m s).2 (h3 m s hs hm)⟩`.
+-/
 theorem statement_of_local_block_conditions {Y : TermTie D} (X : TermLocs D Y) (cN : D.what₂.Word → D.what₂.Word → ℝ)
     (h6 : adm6 D) (h7 : adm7 D)
     (h : 4 * D.R.rS + 8 ≤ D.R.k →
@@ -516,6 +704,11 @@ section G
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
   {sig : E →ₐ[F] E} {p : HeightOneSpectrum (𝓞 F)} (A : LocAt F E sig p)
 
+/- English proof (translation)
+Establish `hgS : A.ιF (((gp * ot : ℕ)) : F) = ((gp : ℕ) : A.Fp) * ((ot : ℕ) : A.Fp)`. Rewrite using `[map_natCast]`. Use `push_cast`. Both sides reduce to the same expression. Rewrite using `[map_mul, ιE_alg, map_mul, map_pow, map_pow, hgS, mul_comm, map_mul, mul_assoc]`.
+
+Use `scal_iff A (A.O : Set A.Ep) (O_scal A) _ _ (pow_ne_zero _ (mul_ne_zero hg ho)) (pow_ne_zero _ hg) ?_ _` and prove the remaining obligations. Rewrite using `[map_pow, map_pow, map_mul, hvo, mul_one]`.
+-/
 theorem cond_gen' (c : F) (ν gp ot : ℕ) (hg : ((gp : ℕ) : A.Fp) ≠ 0) (ho : ((ot : ℕ) : A.Fp) ≠ 0)
     (hvo : valuation A.Fp ((ot : ℕ) : A.Fp) = 1) (k : ℕ) (y : E) :
     A.ιE (y * algebraMap F E ((((gp * ot : ℕ)) : F) ^ k * c ^ ν)) ∈ A.O ↔
@@ -528,6 +721,21 @@ theorem cond_gen' (c : F) (ν gp ot : ℕ) (hg : ((gp : ℕ) : A.Fp) ≠ 0) (ho 
 
 variable {ell : ℕ} (sg : SplitAt A.Fp A.Ep A.cj ell)
 
+/- English proof (translation)
+Establish `hq : (sg.q : A.Fp) ≠ 0` using `fun h0 => sg.q_irr.ne_zero (Subtype.ext h0)`. Rewrite using `[O_split A sg, O_split A sg]`. Simplify using `only [map_mul, map_sub, map_pow, map_neg, map_one, e_alg, AlgEquiv.apply_symm_apply, sg.e_cj, Formalism.FourierDecayAlt.I.orderR, Set.mem_ofPred_eq, Prod.fst_mul, Prod.snd_mul, Prod.fst_sub, Prod.snd_sub, Prod.fst_swap, Prod.snd_swap, Prod.pow_fst, Prod.pow_snd, Prod.fst_neg, Pro …`. Use `set a := (sg.e X).1`. Use `set b := (sg.e X).2`.
+
+Use `set q := (sg.q : A.Fp)`. Apply the tactic sequence `rcases neg_one_pow_eq_or A.Fp s with hs | hs <;> rw [hs]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2, t, ht, h3⟩`. Establish `e : a - 1 * b = t`.
+
+Apply `mul_left_cancel₀ hq` to reduce the goal to its premises. Take the linear combination `h3`. Use `⟨⟨by rwa [mul_comm], by rw [mul_comm]; simpa using h2⟩, by rw [e]; exact ht, ?_⟩` and prove the remaining obligations. Establish `: b - 1 * a = -t` using `by rw [← e]; ring`. Rewrite using `[this]`.
+
+Conclude with `(𝒪[A.Fp]).neg_mem ht`. Introduce and unpack `⟨⟨h1, h2⟩, h3, _⟩`. Conclude with `⟨by rwa [mul_comm], by rw [one_mul, mul_comm]; exact h2, _, h3, by ring⟩`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2, t, ht, h3⟩`.
+
+Establish `e : a - -1 * b = t`. Apply `mul_left_cancel₀ hq` to reduce the goal to its premises. Take the linear combination `h3`. Use `⟨⟨by rwa [mul_comm], ?_⟩, by rw [e]; exact ht, ?_⟩` and prove the remaining obligations. Establish `: q * b = -(-1 * b * q)` using `by ring`.
+
+Rewrite using `[this]`. Conclude with `(𝒪[A.Fp]).neg_mem h2`. Establish `: b - -1 * a = t` using `by rw [← e]; ring`. Rewrite using `[this]`. Conclude with `ht`.
+
+Introduce and unpack `⟨⟨h1, h2⟩, h3, _⟩`. Use `⟨by rwa [mul_comm], ?_, _, h3, by ring⟩` and prove the remaining obligations. Establish `: -1 * b * q = -(q * b)` using `by ring`. Rewrite using `[this]`. Conclude with `(𝒪[A.Fp]).neg_mem h2`.
+-/
 theorem typed_iff' (s : ℕ) (X : A.Ep) :
     sg.e (sg.e.symm ((sg.e X).1, (-1) ^ s * (sg.e X).2) * algebraMap A.Fp A.Ep (sg.q : A.Fp)) ∈
         Formalism.FourierDecayAlt.I.orderR (𝒪[A.Fp]) (sg.q : A.Fp) ↔
@@ -570,6 +778,15 @@ end G
 
 variable {D : Formalism.BasicNotions.D7}
 
+/- English proof (translation)
+Take `⟨L, sp, mu⟩` from `Mp`. Break down `hm with ⟨h1, h⟩ | ⟨g, sg, h1, h, he, hq⟩` into its components or cases. Take `rfl : sp = none` from `h1`. Rewrite using `[twist_none p s X h, gpart_none p h]`. Establish `hR : ((⟨L, none, mu⟩ : Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep)).R = (D.s.atP p).O` using `hO`.
+
+Rewrite using `[hR]`. Simplify using `only [Nat.cast_one, map_one, mul_one, one_mul]`. Use `⟨fun hX => ⟨hX, ?_⟩, fun hX => hX.1⟩` and prove the remaining obligations. Use `(D.s.atP p).O.sub_mem hX ((D.s.atP p).O.mul_mem ?_ (cj_mem _ _ hX))` and prove the remaining obligations. Conclude with `(D.s.atP p).O.pow_mem ((D.s.atP p).O.neg_mem (D.s.atP p).O.one_mem) s`.
+
+Break down `sp with _ | g0` into its components or cases. Conclude with `absurd h1 (by simp)`. Establish `hgg : g0 = g` using `Option.some.inj h1`. Substitute `hgg` using the available equality. Rewrite using `[mem_R_split, he, hq, twist_some p s X sg h, gpart_some p sg h, ← sg.q_eq]`.
+
+Conclude with `typed_iff' (D.s.atP p) sg s X`.
+-/
 theorem twist_membership_iff_integral_inv (p : PlF D) (Mp : Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep) (hO : Mp.L.O = (D.s.atP p).O)
     (hm : (Mp.split = none ∧ (D.s.atP p).split = none) ∨
       ∃ g sg, Mp.split = some g ∧ (D.s.atP p).split = some sg ∧ g.e = sg.e ∧ g.q = sg.q) (s : ℕ) (X : (D.s.atP p).Ep) :
@@ -597,6 +814,11 @@ def tModInv (δ : ∀ p, (D.s.atP p).Fp) (p : PlF D) (ν s : ℕ) (x : D.host.E)
   algebraMap _ _ ((δ p * ((oth p : ℕ) : (D.s.atP p).Fp)⁻¹) ^ ν) *
     (twist p s ((D.s.atP p).ιE x) * algebraMap _ _ ((gpart p : ℕ) : (D.s.atP p).Fp))
 
+/- English proof (translation)
+Break down `h : (D.s.atP p).split with _ | sg` into its components or cases. Rewrite using `[twist_none p s _ h, twist_none p s _ h]`. Rewrite using `[twist_some p s _ sg h, twist_some p s _ sg h]`. Apply `sg.e.injective` to reduce the goal to its premises. Rewrite using `[map_mul, AlgEquiv.apply_symm_apply, AlgEquiv.apply_symm_apply, map_mul]`.
+
+Establish `hs : ((-1 : (D.s.atP p).Fp) ^ s) * (-1) ^ s = 1` using `by rw [← mul_pow]; simp`. Use `ext`. Simplify using the standard rewrite rules. Simplify using `only [Prod.snd_mul]`. Take the linear combination `((sg.e x).2 * (sg.e y).2) * hs`.
+-/
 theorem twist_mul (p : PlF D) (s : ℕ) (x y : (D.s.atP p).Ep) : twist p s x * twist p s y = x * y := by
   rcases h : (D.s.atP p).split with _ | sg
   · rw [twist_none p s _ h, twist_none p s _ h]
@@ -609,6 +831,13 @@ theorem twist_mul (p : PlF D) (s : ℕ) (x y : (D.s.atP p).Ep) : twist p s x * t
     · simp only [Prod.snd_mul]
       linear_combination ((sg.e x).2 * (sg.e y).2) * hs
 
+/- English proof (translation)
+Establish `ho` using `natFp_ne_zero p _ (oth_ne_zero p)`. Establish `hg` using `natFp_ne_zero p _ (gpart_ne_zero p)`. Establish `hb : (δ p * ((oth p : ℕ) : (D.s.atP p).Fp)⁻¹) ^ ν ≠ 0` using `pow_ne_zero _ (mul_ne_zero hδ (inv_ne_zero ho))`. Rewrite using `[tMod_eq δ p hδ, tModInv]`. Establish `e1 : algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (((δ p * ((oth p : ℕ) : (D.s.atP p).Fp)⁻¹) ^ ν)⁻¹) * algebraMap _ _ ((δ p * ((oth p : ℕ) : (D.s.atP p).Fp)⁻¹) ^ ν) = 1`.
+
+Rewrite using `[← map_mul, inv_mul_cancel₀ hb, map_one]`. Establish `e2 : algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (((gpart p : ℕ) : (D.s.atP p).Fp)⁻¹) * algebraMap _ _ ((gpart p : ℕ) : (D.s.atP p).Fp) = 1`. Rewrite using `[← map_mul, inv_mul_cancel₀ hg, map_one]`. Establish `e3 : twist p s ((D.s.atP p).ιE t) * twist p s ((D.s.atP p).ιE t⁻¹) = 1`. Rewrite using `[twist_mul, ← map_mul, mul_inv_cancel₀ ht, map_one]`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem tMod_mul_tModInv (δ : ∀ p, (D.s.atP p).Fp) (p : PlF D) (hδ : δ p ≠ 0) (ν s : ℕ) (t : D.host.E) (ht : t ≠ 0) :
     tMod δ p ν s t * tModInv δ p ν s t⁻¹ = 1 := by
   have ho := natFp_ne_zero p _ (oth_ne_zero p)
@@ -630,15 +859,28 @@ theorem tMod_mul_tModInv (δ : ∀ p, (D.s.atP p).Fp) (p : PlF D) (hδ : δ p �
         algebraMap _ _ ((gpart p : ℕ) : (D.s.atP p).Fp)) := by ring
     _ = 1 := by rw [e1, e2, e3]; ring
 
+/- English proof (translation)
+Unfold `gdd`. Rewrite using `[zpow_neg, zpow_neg, mul_inv, FractionalIdeal.spanSingleton_inv]`.
+-/
 theorem gdd_neg (a b : ℤ) : gdd (D := D) (-a) (-b) = (gdd (D := D) a b)⁻¹ := by
   unfold gdd
   rw [zpow_neg, zpow_neg, mul_inv, FractionalIdeal.spanSingleton_inv]
 
+/- English proof (translation)
+Set `_` to `cmE D`. Rewrite using `[gdd_eq_idl]`. Conclude with `Formalism.FourierDecayAlt.P.S6x2.idl_ne_zero D.host.E _ a b (gS_pos D)`.
+-/
 theorem gdd_ne_zero (a b : ℤ) : gdd (D := D) a b ≠ 0 := by
   let _ := cmE D
   rw [gdd_eq_idl]
   exact Formalism.FourierDecayAlt.P.S6x2.idl_ne_zero D.host.E _ a b (gS_pos D)
 
+/- English proof (translation)
+Establish `ho` using `natFp_ne_zero p _ (oth_ne_zero p)`. Establish `hg` using `natFp_ne_zero p _ (gpart_ne_zero p)`. Establish `hvo` using `v_nat p _ (oth_not_dvd p)`. Establish `hδ` using `hA.2.1`. Establish `hιc : (D.s.atP p).ιF c ≠ 0`.
+
+Rewrite using `[Ne, map_eq_zero]`. Conclude with `hc`. Establish `e1 : tModInv δ p ν s x ∈ (M p).R ↔ twist p s (algebraMap _ _ (((D.s.atP p).ιF c) ^ ν) * (D.s.atP p).ιE x) * algebraMap _ _ ((gpart p : ℕ) : (D.s.atP p).Fp) ∈ (M p).R`. Rewrite using `[tModInv, twist_alg, mul_assoc]`. Use `scal_iff (D.s.atP p) ((M p).R : Set (D.s.atP p).Ep) (R_scal (M p)) _ _ (pow_ne_zero _ (mul_ne_zero hδ (inv_ne_zero ho))) (pow_ne_zero _ hιc) ?_ _` and prove the remaining obligations.
+
+Rewrite using `[map_pow, map_pow, map_mul, map_inv₀, hvo, inv_one, mul_one, hv]`. Rewrite using `[e1, ← gpart_mul_oth p, cond_gen' (D.s.atP p) c ν (gpart p) (oth p) hg ho hvo 1 x, cond_gen' (D.s.atP p) c ν (gpart p) (oth p) hg ho hvo 0 (x - (-1) ^ s * D.conjF x), tw_gen (D.s.atP p), pow_one, pow_zero, map_one, one_mul]`. Conclude with `twist_membership_iff_integral_inv p (M p) hA.2.2.2.1 (agree_split δ M p hA) s _`.
+-/
 theorem locP_iff (δ : ∀ p, (D.s.atP p).Fp) (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep) (p : PlF D)
     (hA : Agree δ M p) (c : D.host.F) (hc : c ≠ 0)
     (hv : valuation (D.s.atP p).Fp ((D.s.atP p).ιF c) = valuation (D.s.atP p).Fp (δ p)) (ν s : ℕ) (x : D.host.E) :
@@ -665,6 +907,15 @@ theorem locP_iff (δ : ∀ p, (D.s.atP p).Fp) (M : ∀ p : PlF D, Loc.Model (D.s
     tw_gen (D.s.atP p), pow_one, pow_zero, map_one, one_mul]
   exact twist_membership_iff_integral_inv p (M p) hA.2.2.2.1 (agree_split δ M p hA) s _
 
+/- English proof (translation)
+Use `show (x ∈ gdd (D := D) (-1) (-(ν : ℤ)) ∧ x - (-1) ^ s * D.conjF x ∈ gdd (D := D) 0 (-(ν : ℤ))) ↔ _`. Rewrite using `[mem_iff_forall_atP (F := D.host.F) (gdd (D := D) (-1) (-(ν : ℤ))) x, mem_iff_forall_atP (F := D.host.F) (gdd (D := D) 0 (-(ν : ℤ))) (x - (-1) ^ s * D.conjF x), ← forall_and]`. Use `forall_congr' fun p => ?_` and prove the remaining obligations. Take `⟨c, hv, hg⟩` from `hd p`. Establish `hc : c ≠ 0`.
+
+Introduce `h0`. Conclude with `hg.1 (by rw [h0, map_zero])`. Establish `h1` using `((locGen_gdd p c hg 1 ν).inv (gdd_ne_zero _ _)).2 x`. Establish `h2` using `((locGen_gdd p c hg 0 ν).inv (gdd_ne_zero _ _)).2 (x - (-1) ^ s * D.conjF x)`. Rewrite `h1`, `h2` using `[← gdd_neg, div_inv_eq_mul, ← int_iff (D.s.atP p) conjF_inv conjF_fix]`.
+
+Rewrite using `[locP_iff δ M p (hA p) c hc hv ν s x]`. Use `and_congr ?_ ?_` and prove the remaining obligations. Conclude with `h1`. Establish `e : (-((0 : ℕ) : ℤ)) = 0` using `by simp`. Rewrite `h2` using `[e]`.
+
+Conclude with `h2`.
+-/
 theorem localCondition_iff (δ : ∀ p, (D.s.atP p).Fp) (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep)
     (hA : ∀ p, Agree δ M p) (hd : ∀ p, IsDiffGen δ p) (ν s : ℕ) (x : D.host.E) :
     x ∈ LaP (D := D) ν s ↔ ∀ p, tModInv δ p ν s x ∈ (M p).R := by
@@ -700,6 +951,9 @@ def LocalGeneratorsModelsAgree (D : Formalism.BasicNotions.D7) {Y : TermTie D} (
       (hA : ∀ p, Agree δ M p), G2 δ M (X δ M hA) cN ∧
       (∀ m s, 1 ≤ s → m + s ≤ D.R.rS + 1 → LocalModelsAtRemainingPrimes δ M m s)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h hk`. Take `⟨δ, M, hA, -, h2, h3, -⟩` from `h hk`. Conclude with `⟨δ, M, hA, h2, fun m s hs hm => (h3 m s hs hm).2.2.2⟩`. Conclude with `statement_of_local_block_conditions X cN h6 h7`.
+-/
 theorem statement_iff_local_models {Y : TermTie D} (X : TermLocs D Y) (cN : D.what₂.Word → D.what₂.Word → ℝ)
     (h6 : adm6 D) (h7 : adm7 D) : aux₃ D X cN ↔ LocalGeneratorsModelsAgree D X cN := by
   constructor
@@ -708,6 +962,9 @@ theorem statement_iff_local_models {Y : TermTie D} (X : TermLocs D Y) (cN : D.wh
     exact ⟨δ, M, hA, h2, fun m s hs hm => (h3 m s hs hm).2.2.2⟩
   · exact statement_of_local_block_conditions X cN h6 h7
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h hA => (statement_iff_local_models X cN hA.2.2.2.2.2.1 hA.2.2.2.2.2.2.1).1 (h hA), fun h hA => (statement_iff_local_models X cN hA.2.2.2.2.2.1 hA.2.2.2.2.2.2.1).2 (h hA)⟩`.
+-/
 theorem packet_iff_local_models {Y : TermTie D} (X : TermLocs D Y) (cN : D.what₂.Word → D.what₂.Word → ℝ) (C : ℝ) :
     Stmt D X cN C ↔ (admitted D X cN C → LocalGeneratorsModelsAgree D X cN) :=
   ⟨fun h hA => (statement_iff_local_models X cN hA.2.2.2.2.2.1 hA.2.2.2.2.2.2.1).1 (h hA),
@@ -715,12 +972,18 @@ theorem packet_iff_local_models {Y : TermTie D} (X : TermLocs D Y) (cN : D.what�
 
 variable {eps : ℝ} (Fm : FamP eps) {Y : ∀ x, Fm.x1 < x → ∀ i : Fm.Ix x, TermTie (Fm.D x i)}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨OwnEv.mono fun _ _ x i h hx => (statement_iff_local_models _ _ (h6 x i) (h7 x i)).1 (h hx), OwnEv.mono fun _ _ x i h hx => (statement_iff_local_models _ _ (h6 x i) (h7 x i)).2 (h hx)⟩`.
+-/
 theorem family_statement_iff_local_models (X : ∀ x (hx : Fm.x1 < x) (i : Fm.Ix x), TermLocs (Fm.D x i) (Y x hx i))
     (cN : ∀ x (i : Fm.Ix x), (Fm.D x i).what₂.Word → (Fm.D x i).what₂.Word → ℝ) (h6 : admF6 Fm) (h7 : admF7 Fm) :
     OrbitValuationBound Fm X cN ↔ OwnEv Fm fun _ _ x i => ∀ hx : Fm.x1 < x, LocalGeneratorsModelsAgree (Fm.D x i) (X x hx i) (cN x i) :=
   ⟨OwnEv.mono fun _ _ x i h hx => (statement_iff_local_models _ _ (h6 x i) (h7 x i)).1 (h hx),
     OwnEv.mono fun _ _ x i h hx => (statement_iff_local_models _ _ (h6 x i) (h7 x i)).2 (h hx)⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h hA => (family_statement_iff_local_models Fm X cN hA.2.2.2.2.2.1 hA.2.2.2.2.2.2.1).1 (h hA), fun h hA => (family_statement_iff_local_models Fm X cN hA.2.2.2.2.2.1 hA.2.2.2.2.2.2.1).2 (h hA)⟩`.
+-/
 theorem family_packet_iff_local_models (X : ∀ x (hx : Fm.x1 < x) (i : Fm.Ix x), TermLocs (Fm.D x i) (Y x hx i))
     (cN : ∀ x (i : Fm.Ix x), (Fm.D x i).what₂.Word → (Fm.D x i).what₂.Word → ℝ) :
     KudlaFamilyStatement Fm X cN ↔ (AdmF Fm X cN →

@@ -13,6 +13,9 @@ namespace GlobalTheory.ZM.SymmCommutant
 
 open Matrix in
 
+/- English proof (translation)
+Use `congrFun (congrFun (H v) (0, i)) (b, j)` as an intermediate fact. Simplify `this` using `[Matrix.mul_apply, Fintype.sum_prod_type, Matrix.kronecker, Matrix.kroneckerMap_apply, Matrix.single_apply, Matrix.one_apply, ite_and]`.
+-/
 theorem entry_of_commute {K : Type} [Field K] {h : ℕ}
     (Ψ : Matrix (Fin 8 × Fin h) (Fin 8 × Fin h) K)
     (H : ∀ v : Fin 8, Matrix.kronecker (Matrix.single (0 : Fin 8) v (1 : K))
@@ -25,6 +28,23 @@ theorem entry_of_commute {K : Type} [Field K] {h : ℕ}
     Matrix.single_apply, Matrix.one_apply, ite_and] using this
 
 open Matrix in
+/- English proof (translation)
+Establish `hAB : A * B = 1` using `mul_eq_one_comm.mp hBA`. Establish `hBtA : Bᵀ * A = 1`. Establish `: (Aᵀ * B)ᵀ = 1` using `by rw [hA.eq, hAB, Matrix.transpose_one]`. Simplify `this` using `[Matrix.transpose_mul]`. Establish `kmul : ∀ X Y : Matrix (Fin 8) (Fin 8) K, Matrix.kronecker X (1 : Matrix (Fin h) (Fin h) K) * Matrix.kronecker Y (1 : Matrix (Fin h) (Fin h) K) = Matrix.kronecker (X * Y) (1 : Matrix (Fin h) (Fin h) K)`.
+
+Introduce `X Y`. Simplify using `only [Matrix.kronecker]`. Rewrite using `[← Matrix.mul_kronecker_mul, Matrix.one_mul]`. Establish `ktr : ∀ X : Matrix (Fin 8) (Fin 8) K, (Matrix.kronecker X (1 : Matrix (Fin h) (Fin h) K))ᵀ = Matrix.kronecker Xᵀ (1 : Matrix (Fin h) (Fin h) K)`. Introduce `X`.
+
+Simplify using `only [Matrix.kronecker]`. Rewrite using `[← Matrix.kroneckerMap_transpose, Matrix.transpose_one]`. Use `set Ψ := Θ * Matrix.kronecker A (1 : Matrix (Fin h) (Fin h) K) with hΨ`. Establish `hc : ∀ v : Fin 8, Matrix.kronecker (Matrix.single (0 : Fin 8) v (1 : K)) (1 : Matrix (Fin h) (Fin h) K) * Ψ = Ψ * Matrix.kronecker (Matrix.single (0 : Fin 8) v (1 : K)) (1 : Matrix (Fin h) (Fin h) K)`. Introduce `v`.
+
+Rewrite using `[hΨ, ← Matrix.mul_assoc, H v, ktr, Matrix.mul_assoc, Matrix.mul_assoc Θ, kmul, kmul]`. Use `congr 2`. Rewrite using `[Matrix.transpose_mul, Matrix.transpose_mul, Matrix.transpose_transpose, hA.eq, Matrix.mul_assoc, Matrix.mul_assoc, hBtA, Matrix.mul_one]`. Establish `he` using `entry_of_commute Ψ hc`. Establish `hΘΨ : Θ = Ψ * Matrix.kronecker B (1 : Matrix (Fin h) (Fin h) K)`.
+
+Rewrite using `[hΨ, Matrix.mul_assoc, kmul, hAB]`. Simplify using `[Matrix.kronecker]`. Establish `h1 : ∀ a b i j, Θ (a, i) (b, j) = B a b * Ψ (0, i) (0, j)`. Introduce `a b i j`. Use `congrFun (congrFun hΘΨ (a, i)) (b, j)` as an intermediate fact.
+
+Rewrite using `[this, Matrix.mul_apply, Fintype.sum_prod_type]`. Simplify using `only [he a]`. Simplify using `[Matrix.kronecker, Matrix.kroneckerMap_apply, Matrix.one_apply, mul_comm]`. Use `⟨h1, fun i j => ?_⟩` and prove the remaining obligations. Establish `h00 : ∑ b, A 0 b * B b 0 = 1`.
+
+Use `congrFun (congrFun hAB 0) 0` as an intermediate fact. Simplify `this` using `[Matrix.mul_apply]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hΨ, Matrix.mul_apply, Fintype.sum_prod_type]`. Simplify using `[Matrix.kronecker, Matrix.kroneckerMap_apply, Matrix.one_apply]`.
+
+Use `_ = ∑ b, (A 0 b * B b 0) * Ψ (0, j) (0, i) := by`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[← hΘ.apply (0, i) (b, j), h1, hA.apply b 0]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = Ψ (0, j) (0, i) := by rw [← Finset.sum_mul, h00, _root_.one_mul]`.
+-/
 theorem core {K : Type} [Field K] {h : ℕ} (A B : Matrix (Fin 8) (Fin 8) K)
     (hA : A.IsSymm) (hBA : B * A = 1)
     (Θ : Matrix (Fin 8 × Fin h) (Fin 8 × Fin h) K) (hΘ : Θ.IsSymm)
@@ -92,6 +112,13 @@ namespace GlobalTheory.ZM
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField in
 open scoped CategoryTheory.Obj TensorProduct in
+/- English proof (translation)
+Establish `hX : ∀ u v : Fin 8, (Ei * (Matrix.single u v (1 : ℤ)).transpose * Em).map (Int.cast : ℤ → K) = Matrix.of fun c d => (Ei c v : K) * (Em u d : K)`. Introduce `u v`. Use extensionality with `c d`. Simplify using `[Matrix.mul_apply, Matrix.single_apply, Matrix.transpose_apply, Finset.sum_ite_eq', Finset.sum_ite_eq, ite_and]`. Establish `hA : ∀ u v : Fin 8, (Matrix.single u v (1 : ℤ)).map (Int.cast : ℤ → K) = Matrix.single u v (1 : K)`.
+
+Introduce `u v`. Use extensionality with `a b`. Simplify using `only [Matrix.map_apply, Matrix.single_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `e` using `congrFun (congrFun (hΘ 0 v) (0, i)) (c, j)`.
+
+Rewrite `e` using `[hA, hX]`. Simplify using `only [Matrix.mul_apply, Matrix.kronecker, Matrix.kroneckerMap_apply, Matrix.transpose_apply, Matrix.of_apply, Fintype.sum_prod_type, Matrix.single_apply, Matrix.one_apply] at e`. Simplify `e` using `[Finset.mul_sum, _root_.mul_comm, _root_.mul_left_comm, _root_.mul_assoc]`.
+-/
 private lemma entry_eq_sum_of_mul_eq_mul_kronecker (K : Type) [Field K] (h : ℕ)
     (Ei Em : Matrix (Fin 8) (Fin 8) ℤ) (Θ : Matrix (Fin 8 × Fin h) (Fin 8 × Fin h) K)
     (hΘ : ∀ u v : Fin 8, Matrix.kronecker ((Matrix.single u v (1 : ℤ)).map (Int.cast : ℤ → K))
@@ -118,6 +145,25 @@ private lemma entry_eq_sum_of_mul_eq_mul_kronecker (K : Type) [Field K] (h : ℕ
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField in
 open scoped CategoryTheory.Obj TensorProduct in
 
+/- English proof (translation)
+Introduce `K _ h Em Ei V hEm hEiEm hV`. Set `B : Matrix (Fin 8 × Fin h) (Fin 8 × Fin h) K → Fin h → Fin h → K` to `fun Θ i j => ∑ d, Θ (0, i) (d, j) * (Em 0 d : K)`. Establish `key : ∀ Θ ∈ V, ∀ v c i j, Θ (v, i) (c, j) = (Ei c v : K) * B Θ i j` using `fun Θ hΘ v c i j => entry_eq_sum_of_mul_eq_mul_kronecker K h Ei Em Θ (hV Θ hΘ).2 v c i j`. Establish `hsum : ∑ d, (Ei 0 d : K) * (Em 0 d : K) = 1`. Establish `e` using `congrFun (congrFun hEiEm 0) 0`.
+
+Simplify using `only [Matrix.mul_apply, Matrix.one_apply_eq] at e`. Establish `e' : ∑ d, Ei 0 d * Em 0 d = 1`. Rewrite using `[← e]; exact Finset.sum_congr rfl fun d _ => by rw [hEm.apply 0 d]`. Establish `e''` using `congrArg (Int.cast : ℤ → K) e'`. Move the coercions through the operations in `at e''`.
+
+Conclude with `e''`. Establish `symmB : ∀ Θ ∈ V, ∀ i j, B Θ i j = B Θ j i`. Introduce `Θ hΘ i j`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← key Θ hΘ d 0 j i, (hV Θ hΘ).1.apply (0, i) (d, j)]`.
+
+Use `_ = B Θ j i * ∑ d, (Ei 0 d : K) * (Em 0 d : K) := by`. Rewrite using `[Finset.mul_sum]; exact Finset.sum_congr rfl fun d _ => by ring`. Use `_ = B Θ j i := by rw [hsum, _root_.mul_one]`. Set `L : V →ₗ[K] (Sym2 (Fin h) → K)` to `{ toFun := fun Θ s => B Θ (Quot.out s).1 (Quot.out s).2 map_add' := by`. Introduce `x y`.
+
+Use function extensionality and compare the values at `s`. Simplify using `[B, Finset.sum_add_distrib, add_mul]`. Use the proof step `map_smul' := by`. Introduce `r x`. Use function extensionality and compare the values at `s`.
+
+Simplify using `[B, Finset.mul_sum, _root_.mul_assoc] }`. Establish `inj : Function.Injective L`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `Θ hΘ0`. Establish `hB : ∀ i j, B Θ i j = 0`.
+
+Introduce `i j`. Establish `hs` using `congrFun hΘ0 s(i, j)`. Establish `hout : s((Quot.out s(i, j)).1, (Quot.out s(i, j)).2) = s(i, j)` using `Quot.out_eq _`. Break down `Sym2.eq_iff.1 hout with ⟨h1, h2⟩ | ⟨h1, h2⟩` into its components or cases. Establish `: B Θ (Quot.out s(i, j)).1 (Quot.out s(i, j)).2 = 0` using `hs`.
+
+Rewrite `this` using `[h1, h2]`. Then use the resulting hypothesis. Establish `: B Θ (Quot.out s(i, j)).1 (Quot.out s(i, j)).2 = 0` using `hs`. Rewrite `this` using `[h1, h2]`. Rewrite `this` using `[symmB Θ Θ.2]`. Then use the resulting hypothesis. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Use extensionality with `⟨v, i⟩ ⟨c, j⟩`. Rewrite using `[key Θ Θ.2, hB]`. Simplify using the standard rewrite rules. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Module.finrank_fintype_fun_eq_card, Sym2.card, Fintype.card_fin, Nat.choose_two_right, Nat.add_sub_cancel, mul_comm]`.
+-/
 theorem _root_.GlobalTheory.ZM.finrank_symm_commutant_le : ∀ (K : Type) [Field K] (h : ℕ) (Em Ei : Matrix (Fin 8) (Fin 8) ℤ) (V : Submodule K (Matrix (Fin 8 × Fin h) (Fin 8 × Fin h) K)), Em.IsSymm → Ei * Em = 1 → (∀ Θ ∈ V, Θ.IsSymm ∧ ∀ u v : Fin 8, Matrix.kronecker ((Matrix.single u v (1 : ℤ)).map (Int.cast : ℤ → K)) (1 : Matrix (Fin h) (Fin h) K) * Θ = Θ * (Matrix.kronecker ((Ei * (Matrix.single u v (1 : ℤ)).transpose * Em).map (Int.cast : ℤ → K)) (1 : Matrix (Fin h) (Fin h) K)).transpose) → Module.finrank K V ≤ h * (h + 1) / 2 := by
   intro K _ h Em Ei V hEm hEiEm hV
   let B : Matrix (Fin 8 × Fin h) (Fin 8 × Fin h) K → Fin h → Fin h → K :=

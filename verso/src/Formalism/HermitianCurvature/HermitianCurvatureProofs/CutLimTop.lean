@@ -7,6 +7,17 @@ open Formalism.FourierDecayAlt Formalism.QuantumDeterminants Filter Topology
 
 noncomputable section
 
+/- English proof (translation)
+Take `⟨c₃, hc₃⟩` from `Formalism.FourierDecayAlt.P.PBE.vecV_cut_empty`. Use `⟨c₃, ?_⟩` and prove the remaining obligations. Introduce `Wp Wq _ _ _ _ _ _ P p nn G A b₀ hA hG hGk γ hγ`. Establish `hcut : ∀ (n : ℕ) (g : B.Mat P.k P.r), cutN P.k P.r n g = 1 - Formalism.FourierDecayAlt.P.JCx2.pdPsi ((n : ℝ) + 1) g`. Introduce `n g`.
+
+Rewrite using `[Formalism.FourierDecayAlt.P.JCx2.pdPsi, sub_sub_cancel]`. Both sides reduce to the same expression. Establish `hv` using `hc₃ P.k P.r Wp Wq p.T.base p.ν' p.m₀ γ G A b₀ (fun n g => cutN P.k P.r n g) hA hG hGk hcut`. Establish `key : ∃ K : ℂ, ∀ F : B.Mat P.k P.r → (Wq →L[ℂ] Wp), TBB.Ew p nn F (P.r + 1) [] γ = (K * B.hsInner (D.vecV p.T.base p.ν' p.m₀ F γ) (D.vecV p.T.base p.ν' p.m₀ F γ)).re`. Use `⟨?_, fun F => ?_⟩` and prove the remaining obligations.
+
+Use `swap`. Unfold `TBB.Ew TBB.NP KB.Pl.RR D.RRplace`. Rewrite using `[dif_pos ⟨hγ, hγ⟩, dif_neg (show ¬ (P.r + 1 ≤ P.r) by omega), if_pos rfl, if_pos rfl]`. Take `⟨K, hK⟩` from `key`. Simplify using `only [hK]`.
+
+Establish `hs : Continuous (fun V : Wq →L[ℂ] Wp => B.hsVec V)`. Unfold `B.hsVec`. Use `fun_prop`. Establish `hcont : Continuous (fun V : Wq →L[ℂ] Wp => (K * B.hsInner V V).re)`. Unfold `B.hsInner`.
+
+Conclude with `Complex.continuous_re.comp (continuous_const.mul (hs.inner hs))`. Conclude with `(hcont.tendsto _).comp hv`.
+-/
 theorem limTopN_of_decay : ∃ c₃ : ℝ, ∀ (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]
     (P : M.Par) (p : KB.Pl P Wp Wq) (nn : ℝ → ℝ) (G : B.Mat P.k P.r → (Wq →L[ℂ] Wp)) (A b₀ : ℝ),
@@ -39,6 +50,9 @@ theorem limTopN_of_decay : ∃ c₃ : ℝ, ∀ (Wp Wq : Type) [NormedAddCommGrou
     exact Complex.continuous_re.comp (continuous_const.mul (hs.inner hs))
   exact (hcont.tendsto _).comp hv
 
+/- English proof (translation)
+Take `⟨c₃, hc₃⟩` from `limTopN_of_decay`. Use `⟨c₃, ?_⟩` and prove the remaining obligations. Introduce `Wp Wq _ _ _ _ _ _ P p nn χ F A₀ hA hχ hF hFk ε hε`. Take `⟨b₀, hb₀⟩` from `Formalism.FourierDecayAlt.P.PBE.cutF_inCC p.T.base hχ hF hε A₀ 0 (by simp)`. Conclude with `hc₃ Wp Wq P p nn (D.cutF p.T.base χ F ε) A₀ b₀ hA hb₀ (Formalism.FourierDecayAlt.P.JCTx6.Link2.ckOn_cutF p.T.base hχ hFk ε)`.
+-/
 theorem limTopN_cut_of_inCC : ∃ c₃ : ℝ, ∀ (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]
     (P : M.Par) (p : KB.Pl P Wp Wq) (nn χ : ℝ → ℝ) (F : B.Mat P.k P.r → (Wq →L[ℂ] Wp)) (A₀ : ℝ),

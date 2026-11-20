@@ -5,6 +5,9 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.MassComputations.Contin
 
 open Formalism.L2.SG.TypedSets
 
+/- English proof (translation)
+The claim follows from `MassDataMassesW.massDataMasses_of_strongApprox hH hK hC hSA (MassDataMassesW.fundamental_domain_of_compact_open hK MassDataMassesW.nRatBridge_holds)`.
+-/
 theorem massDataMasses_of' (hH : MassDataMassesW.HinfCompact) (hK : MassDataMassesW.KCompactOpen)
     (hC : MassDataMassesW.ClassFinite) (hSA : MassDataMassesW.StrongApproxN) :
     ∀ {D : Formalism.BasicNotions.D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (hb : Formalism.L2.SG.AdBridge.AdBridgeIso X.B.I)
@@ -13,6 +16,9 @@ theorem massDataMasses_of' (hH : MassDataMassesW.HinfCompact) (hK : MassDataMass
       (A : Formalism.L2.SG.TypedSets.AnIn), Formalism.L2.SG.TypedSets.InMassesAt X hb hK FdN FdN' u u' X0 L A :=
   MassDataMassesW.massDataMasses_of_strongApprox hH hK hC hSA (MassDataMassesW.fundamental_domain_of_compact_open hK MassDataMassesW.nRatBridge_holds)
 
+/- English proof (translation)
+Introduce `D X`. Conclude with `massDataMasses_of' hH MassDataMassesW.kCompactOpen_holds hC hSA X`.
+-/
 theorem masses_at_instance (hH : MassDataMassesW.HinfCompact) (hC : MassDataMassesW.ClassFinite)
     (hSA : MassDataMassesW.StrongApproxN) :
     ∀ {D : Formalism.BasicNotions.D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (hb : Formalism.L2.SG.AdBridge.AdBridgeIso X.B.I)

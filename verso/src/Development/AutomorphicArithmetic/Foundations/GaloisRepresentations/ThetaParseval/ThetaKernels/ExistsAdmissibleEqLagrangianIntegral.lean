@@ -23,6 +23,31 @@ end GlobalTheory.LagrThetaAdm
 namespace GlobalTheory.LagrThetaAdm
 open GlobalTheory.ThetaTrCont GlobalTheory.WeilSchrodinger
 open scoped Classical
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B hB nS nT JT JB ξ κ _ co hrat ν 𝓕 hν h𝓕`. Establish `hψ : IsCharAF F B.ψ` using `GlobalTheory.StdCharFromIsStd.isCharAF hB.std`. Use `set Cm : Matrix (Fin (nT + nT)) (Fin nT) (AF F ⊗[F] E) := (diagCols (Fin nT) : Matrix (Fin nT ⊕ Fin nT) (Fin nT) (AF F ⊗[F] E)).submatrix finSumFinEquiv.symm id with hCm`. Take `⟨i1, i2, i3, i4, i5, K, hK, hKc⟩` from `GlobalTheory.AdelicMatrixLatticeF.lattice F E nS nT`. Use `haveI : BorelSpace (WOF F E nS nT) := ⟨rfl⟩`.
+
+Use `haveI : Countable (ratLF F E nS nT) := TopologicalSpace.separableSpace_iff_countable.1 inferInstance`. Establish `hfin : ν 𝓕 < ⊤` using `GlobalTheory.measure_addFundamentalDomain_lt_top_of_cocompact (G := WOF F E nS nT) (ratLF F E nS nT) hK hKc ν h𝓕`. Use `haveI : IsFiniteMeasure (ν.restrict 𝓕) := ⟨by rw [Measure.restrict_apply_univ]; exact hfin⟩`. Use `haveI : IsModuleTopology (AF F) (Matrix (Fin (nT + nT)) (Fin nS) (AE F E)) := inferInstanceAs (IsModuleTopology (AF F) (Fin (nT + nT) → Fin nS → AE F E))`. Establish `hce : Continuous co.e` using `IsModuleTopology.continuous_of_linearMap co.e.toLinearMap`.
+
+Use `haveI : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) _`. Establish `hCu : Continuous fun u : WOF F E nS nT => Cm * u` using `continuous_const.matrix_mul continuous_id`. Establish `hcont : ∀ Φ ∈ schA F κ, Continuous fun u : WOF F E nS nT => thetaTr F co B.ψ Φ (Cm * u)` using `fun Φ hΦ => ((schA_cont F B.ψ hψ.1 hψ.2.1 hΦ).2.comp hce).comp hCu`. Establish `hint : ∀ Φ ∈ schA F κ, Integrable (fun u => thetaTr F co B.ψ Φ (Cm * u)) (ν.restrict 𝓕)` using `fun Φ hΦ => by`. Take `⟨C, hC⟩` from `thetaSum_schA_bdd F B.ψ hψ.1 hψ.2.1 hΦ`.
+
+Conclude with `Integrable.of_bound (hcont Φ hΦ).aestronglyMeasurable C (Filter.Eventually.of_forall fun u => hC _)`. Establish `hadd : ∀ Φ ∈ schA F κ, ∀ Ψ ∈ schA F κ, ∀ w, thetaTr F co B.ψ (Φ + Ψ) w = thetaTr F co B.ψ Φ w + thetaTr F co B.ψ Ψ w`. Introduce `Φ hΦ Ψ hΨ w`. Establish `e : schr B.ψ (co.e w) (Φ + Ψ) = schr B.ψ (co.e w) Φ + schr B.ψ (co.e w) Ψ`. Use function extensionality and compare the values at `fun x => by simp [schr, mul_add]`.
+
+Use `show thetaSum F (schr B.ψ (co.e w) (Φ + Ψ)) = thetaSum F (schr B.ψ (co.e w) Φ) + thetaSum F (schr B.ψ (co.e w) Ψ)`. Rewrite using `[e]`. Conclude with `((schA_cont F B.ψ hψ.1 hψ.2.1 hΦ).1 _).tsum_add ((schA_cont F B.ψ hψ.1 hψ.2.1 hΨ).1 _)`. Establish `hsmul : ∀ (a : ℂ) (Φ : (κ → AF F) → ℂ) w, thetaTr F co B.ψ (a • Φ) w = a * thetaTr F co B.ψ Φ w`. Introduce `a Φ w`.
+
+Establish `e : schr B.ψ (co.e w) (a • Φ) = a • schr B.ψ (co.e w) Φ` using `funext fun x => by`. Simplify using `only [schr, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Use `show thetaSum F (schr B.ψ (co.e w) (a • Φ)) = a * thetaSum F (schr B.ψ (co.e w) Φ)`. Rewrite using `[e, thetaSum_smul]`.
+
+Set `L : schA F κ →ₗ[ℂ] ℂ` to `{ toFun := fun Φ => GlobalTheory.LagrTheta.lagrInt ν 𝓕 Cm (thetaTr F co B.ψ Φ) map_add' := fun Φ Ψ => by show ∫ u in 𝓕, thetaTr F co B.ψ (Φ.1 + Ψ.1) (Cm * u) ∂ν = ∫ u in 𝓕, thetaTr F co B.ψ Φ.1 (Cm * u) ∂ν + ∫ u in 𝓕, thetaTr F co B.ψ Ψ.1 (Cm * u) ∂ν`. Repeatedly rewrite using `[hadd Φ.1 Φ.2 Ψ.1 Ψ.2]`. Conclude with `integral_add (hint _ Φ.2) (hint _ Ψ.2)`. Use the proof step `map_smul' := fun a Φ => by show ∫ u in 𝓕, thetaTr F co B.ψ (a • Φ.1) (Cm * u) ∂ν = a • ∫ u in 𝓕, thetaTr F co B.ψ Φ.1 (Cm * u) ∂ν`. Repeatedly rewrite using `[hsmul]`.
+
+Rewrite using `[integral_const_mul, smul_eq_mul] }`. Take `⟨l, hl⟩` from `LinearMap.exists_extend L`. Establish `hlL : ∀ Φ (hΦ : Φ ∈ schA F κ), l Φ = L ⟨Φ, hΦ⟩` using `fun Φ hΦ => LinearMap.congr_fun hl ⟨Φ, hΦ⟩`. Use `⟨l, ?_, fun Φ hΦ => hlL Φ hΦ⟩` and prove the remaining obligations. Introduce `g hg`.
+
+Take `⟨k, c, hc, hb⟩` from `thetaSum_pure_le F B.ψ hψ.2.1 hg`. Establish `hmem : ∀ f : SchwartzMap (κ → mixedEmbedding.mixedSpace F) ℂ, pureA F f g ∈ schA F κ` using `fun f => Submodule.subset_span ⟨f, g, hg, rfl⟩`. Establish `hsn : ∀ f : SchwartzMap (κ → mixedEmbedding.mixedSpace F) ℂ, (Finset.Iic (k, 0)).sup (fun m => SchwartzMap.seminorm ℝ m.1 m.2) f = ((Finset.Iic (k, 0)).sup (schwartzSeminormFamily ℂ (κ → mixedEmbedding.mixedSpace F) ℂ)) f`. Introduce `f`. Rewrite using `[Seminorm.finset_sup_apply, Seminorm.finset_sup_apply]`.
+
+Use `congr 2`. Use `⟨SchwartzMap.mkCLMtoNormedSpace (σ := RingHom.id ℂ) (fun f => L ⟨pureA F f g, hmem f⟩) (fun f f' => ?_) (fun a f => ?_) ⟨Finset.Iic (k, 0), c * ν.real 𝓕, mul_nonneg hc measureReal_nonneg, fun f => ?_⟩, fun f => ?_⟩` and prove the remaining obligations. Rewrite using `[← map_add]`. Use `congr 1`. Conclude with `Subtype.ext (funext fun x => by simp [pureA, add_mul])`.
+
+Rewrite using `[RingHom.id_apply, ← map_smul]`. Use `congr 1`. Conclude with `Subtype.ext (funext fun x => by simp [pureA, mul_assoc])`. Use `show ‖∫ u in 𝓕, thetaTr F co B.ψ (pureA F f g) (Cm * u) ∂ν‖ ≤ _`. Use `(norm_setIntegral_le_of_norm_le_const hfin fun u _ => hb f (co.e (Cm * u))).trans (le_of_eq ?_)` and prove the remaining obligations.
+
+Rewrite using `[hsn]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `hlL _ (hmem f)`.
+-/
 theorem exists_admissible_eq_lagrangian_integral : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
     _root_.UpperTheory.TP.W.GoodK σ B → ∀ (nS nT : ℕ) (JT : Matrix (Fin nT) (Fin nT) E) (JB : Matrix (Fin nS) (Fin nS) E) (ξ : AF F ⊗[F] E)
       (κ : Type) [Fintype κ]

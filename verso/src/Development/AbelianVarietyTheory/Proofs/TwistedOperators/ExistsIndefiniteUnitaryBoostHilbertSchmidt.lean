@@ -6,11 +6,67 @@ noncomputable section
 
 namespace GlobalTheory.Boost
 
+/- English proof (translation)
+Use extensionality with `i`. Simplify using `[mulVec, dotProduct, vecMulVec, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun j _ => by ring` and prove the remaining obligations.
+-/
 theorem vmv_mulVec {m : ℕ} (u v w : Fin m → ℂ) : vecMulVec u v *ᵥ w = (v ⬝ᵥ w) • u := by
   ext i
   simp [mulVec, dotProduct, vecMulVec, Finset.sum_mul]
   refine Finset.sum_congr rfl fun j _ => by ring
 
+/- English proof (translation)
+Introduce `m ε a b ha hb hn`. Use `set c2 : ℝ := ∑ j, ‖a j‖ ^ 2 with hc2`. Use `set nb : ℝ := ∑ j, ‖b j‖ ^ 2 with hnb`. Establish `hnb0 : 0 ≤ nb` using `Finset.sum_nonneg fun _ _ => by positivity`. Establish `hc1 : 1 ≤ c2` using `by linarith`.
+
+Establish `hJa : Jm ε *ᵥ a = a`. Use extensionality with `i`. Simplify using `only [Jm, mulVec_diagonal]`. Apply the tactic sequence `cases h : ε i <;> simp [ha i, h]`. Establish `hJb : Jm ε *ᵥ b = -b`.
+
+Use extensionality with `i`. Simplify using `only [Jm, mulVec_diagonal]`. Apply the tactic sequence `cases h : ε i <;> simp [hb i, h]`. Establish `hJa' : ∀ w, star a ⬝ᵥ (Jm ε *ᵥ w) = star a ⬝ᵥ w`. Introduce `w`.
+
+Simplify using `only [Jm, mulVec_diagonal, dotProduct]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Apply the tactic sequence `cases h : ε i <;> simp [ha i, h]`. Establish `hJb' : ∀ w, star b ⬝ᵥ (Jm ε *ᵥ w) = -(star b ⬝ᵥ w)`. Introduce `w`.
+
+Simplify using `only [Jm, mulVec_diagonal, dotProduct, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Apply the tactic sequence `cases h : ε i <;> simp [hb i, h]`. Establish `haa : star a ⬝ᵥ a = (c2 : ℂ)`. Simplify using `only [dotProduct, hc2, Pi.star_apply, RCLike.star_def, Complex.conj_mul']`.
+
+Use `push_cast`. Both sides reduce to the same expression. Establish `hbb : star b ⬝ᵥ b = (c2 : ℂ) - 1`. Establish `: star b ⬝ᵥ b = (nb : ℂ)`. Simplify using `only [dotProduct, hnb, Pi.star_apply, RCLike.star_def, Complex.conj_mul']`.
+
+Use `push_cast`. Both sides reduce to the same expression. Rewrite using `[this, hn]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hab : star a ⬝ᵥ b = 0`. Simplify using `only [dotProduct]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Apply the tactic sequence `cases h : ε i <;> simp [ha i, hb i, h]`. Establish `hba : star b ⬝ᵥ a = 0`.
+
+Simplify using `only [dotProduct]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Apply the tactic sequence `cases h : ε i <;> simp [ha i, hb i, h]`. Use `set s : ℝ := Real.sqrt c2 with hs`. Establish `hs1 : 1 ≤ s` using `by rw [hs]; exact Real.one_le_sqrt.mpr hc1`.
+
+Establish `hss : s ^ 2 = c2` using `Real.sq_sqrt (by linarith)`. Use `set S : ℂ := (s : ℂ) with hS`. Establish `hS0 : S ≠ 0` using `by rw [hS]; exact_mod_cast (by linarith : s ≠ 0)`. Establish `hS1 : S + 1 ≠ 0` using `by rw [hS]; exact_mod_cast (by linarith : s + 1 ≠ 0)`. Establish `hSS : S ^ 2 = (c2 : ℂ)` using `by rw [hS]; exact_mod_cast hss`.
+
+Use `set α : ℂ := (S - 1) / S ^ 2 with hα`. Use `set β : ℂ := 1 / (S + 1) with hβ`. Use `set γ : ℂ := 1 / S with hγ`. Establish `hsα : star α = α` using `by simp [hα, hS, Complex.conj_ofReal]`. Establish `hsβ : star β = β` using `by simp [hβ, hS, Complex.conj_ofReal]`.
+
+Establish `hsγ : star γ = γ` using `by simp [hγ, hS, Complex.conj_ofReal]`. Use `set A : Matrix (Fin m) (Fin m) ℂ := 1 + α • vecMulVec a (star a) + β • vecMulVec b (star b) + γ • (vecMulVec b (star a) + vecMulVec a (star b)) with hA`. Establish `hmul : ∀ w, A *ᵥ w = w + (α * (star a ⬝ᵥ w) + γ * (star b ⬝ᵥ w)) • a + (β * (star b ⬝ᵥ w) + γ * (star a ⬝ᵥ w)) • b`. Introduce `w`. Simplify using `only [hA, add_mulVec, smul_mulVec, one_mulVec, vmv_mulVec]`.
+
+Use `module`. Establish `hherm : Aᴴ = A`. Simplify using `only [hA, conjTranspose_add, conjTranspose_smul, conjTranspose_one, conjTranspose_vecMulVec, star_star, hsα, hsβ, hsγ]`. Rewrite using `[add_comm (vecMulVec a (star b))]`. Establish `hU : A ∈ UJset ε` using `by show Aᴴ * Jm ε * A = Jm ε`.
+
+Rewrite using `[hherm, Matrix.ext_iff_mulVec]`. Introduce `v`. Rewrite using `[← mulVec_mulVec, ← mulVec_mulVec, hmul, hmul]`. Simplify using `only [mulVec_add, mulVec_smul, hJa, hJb, dotProduct_add, dotProduct_smul, dotProduct_neg, hJa', hJb', haa, hbb, hab, hba, smul_eq_mul]`. Use `set p := star a ⬝ᵥ v`.
+
+Use `set q := star b ⬝ᵥ v`. Establish `hX : α * p + γ * q + α * (p + (α * p + γ * q) * (c2 : ℂ)) + γ * (-q - (β * q + γ * p) * ((c2 : ℂ) - 1)) = 0`. Rewrite using `[hα, hβ, hγ, ← hSS]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hY : -(β * q + γ * p) + β * (-q - (β * q + γ * p) * ((c2 : ℂ) - 1)) + γ * (p + (α * p + γ * q) * (c2 : ℂ)) = 0`. Rewrite using `[hα, hβ, hγ, ← hSS]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Take the linear combination `(norm := module) hX • a + hY • b`.
+
+Establish `hAa : A *ᵥ a = S • (a + b)`. Rewrite using `[hmul, haa, hba]`. Apply the tactic sequence `have e1 : α * (c2 : ℂ) + 1 = S := by rw [hα, ← hSS]; field_simp; try ring`. Apply the tactic sequence `have e2 : γ * (c2 : ℂ) = S := by rw [hγ, ← hSS]; field_simp; try ring`. Take the linear combination `(norm := module) e1 • a + e2 • b`.
+
+Establish `hsq : A * A = 1 + (2 * α + α ^ 2 * (c2 : ℂ) + γ ^ 2 * ((c2 : ℂ) - 1)) • vecMulVec a (star a) + (2 * β + β ^ 2 * ((c2 : ℂ) - 1) + γ ^ 2 * (c2 : ℂ)) • vecMulVec b (star b) + (2 * γ + α * γ * (c2 : ℂ) + γ * β * ((c2 : ℂ) - 1)) • (vecMulVec a (star b) + vecMulVec b (star a))`. Rewrite using `[Matrix.ext_iff_mulVec]`. Introduce `v`. Rewrite using `[← mulVec_mulVec, hmul, hmul]`. Simplify using `only [add_mulVec, smul_mulVec, one_mulVec, vmv_mulVec, dotProduct_add, dotProduct_smul, haa, hbb, hab, hba, smul_eq_mul]`.
+
+Use `module`. Establish `htr : trace (A * A) = (m : ℂ) + 4 * (c2 : ℂ) - 4`. Establish `e1 : a ⬝ᵥ star a = (c2 : ℂ)` using `by rw [dotProduct_comm]; exact haa`. Establish `e2 : b ⬝ᵥ star b = (c2 : ℂ) - 1` using `by rw [dotProduct_comm]; exact hbb`. Establish `e3 : a ⬝ᵥ star b = 0` using `by rw [dotProduct_comm]; exact hba`.
+
+Establish `e4 : b ⬝ᵥ star a = 0` using `by rw [dotProduct_comm]; exact hab`. Rewrite using `[hsq]`. Simplify using `only [trace_add, trace_smul, trace_one, trace_vecMulVec, Fintype.card_fin, smul_eq_mul, e1, e2, e3, e4]`. Rewrite using `[hα, hβ, hγ, ← hSS]`. Clear the denominators using the available nonvanishing facts.
+
+Apply the tactic sequence `try ring`. Establish `hT : ∑ i, ∑ j, ‖A i j‖ ^ 2 = (m : ℝ) + 4 * c2 - 4`. Establish `: ((∑ i, ∑ j, ‖A i j‖ ^ 2 : ℝ) : ℂ) = trace (A * A)`. Use `push_cast`. Simplify using `only [trace, Matrix.diag, mul_apply]`.
+
+Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← Complex.mul_conj']`. Use `congr 1`. Use `congrFun (congrFun hherm j) i` as an intermediate fact. Rewrite `this` using `[conjTranspose_apply]`.
+
+Use `show _ = A j i`. Conclude with `this`. Rewrite `this` using `[htr]`. Conclude with `this` after adjusting the coercions. Establish `hab2 : ∑ i, ‖a i + b i‖ ^ 2 = c2 + nb`.
+
+Rewrite using `[hc2, hnb, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Apply the tactic sequence `cases h : ε i <;> simp [ha i, hb i, h]`. Use `⟨A, hU, fun i => ?_, ?_⟩` and prove the remaining obligations. Use `congrFun hAa i` as an intermediate fact.
+
+Rewrite `this` using `[Pi.smul_apply, Pi.add_apply, smul_eq_mul]`. Conclude with `this`. Establish `h0 : 0 ≤ ∑ i, ∑ j, ‖A i j‖ ^ 2` using `Finset.sum_nonneg fun i _ => Finset.sum_nonneg fun j _ => sq_nonneg _`. Unfold `hsn`. Rewrite using `[Real.sq_sqrt h0, hT, hab2]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem boost_exists : ∀ (m : ℕ) (ε : Fin m → Bool) (a b : Fin m → ℂ), (∀ i, ε i = false → a i = 0) → (∀ i, ε i = true → b i = 0) → ∑ i, ‖a i‖ ^ 2 = 1 + ∑ i, ‖b i‖ ^ 2 → ∃ A ∈ UJset ε, (∀ i, ∑ j, A i j * a j = (Real.sqrt (∑ j, ‖a j‖ ^ 2) : ℂ) * (a i + b i)) ∧ hsn A ^ 2 ≤ (m : ℝ) + 2 * ∑ i, ‖a i + b i‖ ^ 2 := by
   intro m ε a b ha hb hn
   set c2 : ℝ := ∑ j, ‖a j‖ ^ 2 with hc2

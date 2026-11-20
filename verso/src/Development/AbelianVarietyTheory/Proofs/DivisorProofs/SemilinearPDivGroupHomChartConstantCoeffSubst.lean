@@ -13,6 +13,19 @@ noncomputable section
 
 namespace GlobalTheory.Katz
 
+/- English proof (translation)
+Introduce `p k k' _ _ σ d e G G' c c' s φ hφ`. Establish `hconst : ∀ j, constantCoeff (φ j) = 0` using `fun j => by`. Establish `h1` using `(GlobalTheory.T.counit_cotangentClass_powerSeriesEvalAtNilpotent k' e (G'.A 0) (c'.x 0) (c'.nil 0) (c'.aug 0) (φ j)).1`. Express the relevant statement in the definitionally equal form `Coalgebra.counit (R := k') (c'.ev 0 (φ j)) = _ at h1`. Rewrite using `[← h1, hφ 0 j, (s.app 0).counit_map, c.aug, map_zero]`.
+
+Use `⟨hconst, fun n g => ?_⟩` and prove the remaining obligations. Establish `hy : ∀ j, IsNilpotent (s.app n (c.x n j))` using `fun j => (c.nil n j).map (s.app n).toRingHom`. Establish `h1` using `(GlobalTheory.T.nilpotent_eval_commutes_subst_and_algebraMap k' (Fin d) (G'.A n)).1 (Fin e) (c'.ev n) (fun t => by`. Express the relevant statement in the definitionally equal form `IsNilpotent (evA k' (c'.x n) (c'.nil n) (X t))`. Rewrite using `[GlobalTheory.T.powerSeriesEvalAtNilpotent_X_eq_coordinate]`.
+
+Conclude with `c'.nil n t) φ hconst _ hy (fun j => hφ n j) (MvPowerSeries.map σ g)`. Rewrite using `[h1]`. Use `letI : Algebra k (G'.A n) := ((algebraMap k' (G'.A n)).comp σ).toAlgebra`. Set `S : G.A n →ₐ[k] G'.A n` to `{ (s.app n).toRingHom with commutes' := fun r => (s.app n).map_algebraMap r }`. Establish `h2` using `(GlobalTheory.T.nilpotent_eval_commutes_subst_and_algebraMap k (Fin d) (G.A n)).2 (G'.A n) S (c.x n) (c.nil n) _ hy (fun _ => rfl) g`.
+
+Express the relevant statement in the definitionally equal form `_ = S (evA k (c.x n) (c.nil n) g)`. Rewrite using `[h2]`. Set `M : MvPowerSeries (Fin d) k →ₐ[k] G'.A n` to `{ (evA k' _ hy : MvPowerSeries (Fin d) k' →+* G'.A n).comp (MvPowerSeries.map σ) with commutes' := fun r => by`. Express the relevant statement in the definitionally equal form `evA k' _ hy (MvPowerSeries.map σ (algebraMap k _ r)) = algebraMap k' _ (σ r)`. Rewrite using `[MvPowerSeries.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply, MvPowerSeries.map_C, ← (evA k' _ hy).commutes (σ r), MvPowerSeries.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply] }`.
+
+Establish `hM : M = evA k _ hy` using `GlobalTheory.T.mvPowerSeries_algHom_ext_of_isNilpotent_X k (Fin d) (G'.A n) M _ (fun i => by`. Express the relevant statement in the definitionally equal form `IsNilpotent (evA k' _ hy (MvPowerSeries.map σ (X i)))`. Rewrite using `[MvPowerSeries.map_X, GlobalTheory.T.powerSeriesEvalAtNilpotent_X_eq_coordinate]`. Conclude with `hy i)`. Use the proof step `(fun i => by`.
+
+Express the relevant statement in the definitionally equal form `evA k' _ hy (MvPowerSeries.map σ (X i)) = _`. Rewrite using `[MvPowerSeries.map_X, GlobalTheory.T.powerSeriesEvalAtNilpotent_X_eq_coordinate, GlobalTheory.T.powerSeriesEvalAtNilpotent_X_eq_coordinate])`. Conclude with `AlgHom.congr_fun hM g`.
+-/
 theorem semiHom_constantCoeff_and_ev : ∀ (p : ℕ) (k k' : Type) [CommRing k] [CommRing k'] (σ : k →+* k') (d e : ℕ) (G : PDivGroup p k) (G' : PDivGroup p k') (c : Chart G d) (c' : Chart G' e) (s : SemiHom σ G' G) (φ : Fin d → MvPowerSeries (Fin e) k'), (∀ n j, c'.ev n (φ j) = s.app n (c.x n j)) → (∀ j, constantCoeff (φ j) = 0) ∧ ∀ n g, c'.ev n (subst φ (MvPowerSeries.map σ g)) = s.app n (c.ev n g) := by
   intro p k k' _ _ σ d e G G' c c' s φ hφ
   have hconst : ∀ j, constantCoeff (φ j) = 0 := fun j => by

@@ -10,6 +10,11 @@ open private UpperTheory.Lit.Car.regAlg_of_coh UpperTheory.Lit.Car.mem_of_induce
 
 namespace UpperTheory.Lit.Car
 
+/- English proof (translation)
+Introduce `E Ω _ _ _ _ _ _ l _ ι a ha _ π hd hcoh`. Establish `hreg` using `UpperTheory.Lit.Car.regAlg_of_coh E a π hcoh`. Establish `hc : π.IsCsd` using `GlobalTheory.CsdBack.isCsd_of_paired hF E a π (hGK E a π) hd`. Take `⟨r, wt, HT, hr⟩` from `hG.of_isCsd Ω ι (by omega) hreg hc`. Use `⟨r, hr.cont, hr.ss, hr.away, fun P AI hT w A h O _ _ _ Bw hj => ⟨hT.elim fun T => hr.isPstAt hB T h Bw hj, fun σ hσ rc hrc => ?_⟩⟩` and prove the remaining obligations.
+
+Conclude with `(h1 E Ω l ι a ha π hc hreg r wt HT hr P AI hT w (UpperTheory.Lit.Car.mem_of_induces h Bw hj) A h O Bw hj σ hσ rc hrc).2.1.1`.
+-/
 theorem csdMonoOdd_of (hF : GlobalTheory.Published.AutomorphicFormsFiniteGL) (hGK : GlobalTheory.Published.GelfandKazhdanDual)
     (hG : GlobalTheory.Published.GaloisRepOfPolarizedCuspidal) (hB : GlobalTheory.Published.DeRhamPotSemistable) (h1 : LocalGlobalAboveLAlt.LocalGlobalSubnormal) :
     UpperTheory.V.Lev.CsdMonoOdd := by

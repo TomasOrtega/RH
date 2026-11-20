@@ -36,9 +36,15 @@ def IsMemberP (N₁ : ℕ) {φ : InvFun (𝓞 E)} {V : Type} [CommRing V] [IsDom
     ∃ (D : DegPre (Φ.V y)) (p : IsPullDeg ρ Cm.P.D.toPre D),
       IsThetaTerms₀ D N₁ p.xe.symm fun mu c => Φ.term y (fun _ => e.symm mu) c
 
+/- English proof (translation)
+The claim follows from `h`.
+-/
 theorem HasTraitsP.rescale {Φ : VPre (H.bar : 𝓞 E → 𝓞 E) (min Dw.p Dw.q) !![(1 : ℤ)] A} (h : HasTraitsP ζ Φ)
     (v : ∀ y, (Φ.V y)ˣ) : HasTraitsP ζ (Φ.rescale v) := h
 
+/- English proof (translation)
+The claim follows from `h`.
+-/
 theorem HasTraitsP.toVSys {Φ : VPre (H.bar : 𝓞 E → 𝓞 E) (min Dw.p Dw.q) !![(1 : ℤ)] A} (h : HasTraitsP ζ Φ) (N₁ : ℕ)
     (hl : Φ.abelian₂) (hf : Φ.Four N₁) : HasTraits ζ (Φ.toVSys N₁ hl hf) := h
 

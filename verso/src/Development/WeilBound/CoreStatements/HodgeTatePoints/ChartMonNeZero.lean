@@ -22,6 +22,9 @@ def prj (σ' : E →+* Ω) : 𝔐.Li →ₗ[Ω] 𝔐.Li := eigProj (𝔐.ρ.comp
 
 variable {𝔐}
 
+/- English proof (translation)
+Rewrite using `[LatBasic.mem_eigSp]`. Simplify using `only [HodgeCpt.Vgen, GlobalTheory.CompanionTheory.Ar.eigSp, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, sub_eq_zero, hσ]`. Use `⟨fun h a => ?_, fun h a => h _⟩` and prove the remaining obligations. Take `⟨a, rfl⟩` from `H.bar.surjective a`. Conclude with `h a`.
+-/
 theorem mem_Vgen {s : CMType H ⊕ CMType H} {σ' : E →+* Ω} (hσ : ∀ a : 𝓞 E, σ' a = 𝔐.emb s (H.bar a)) (x : 𝔐.Li) :
     x ∈ HT.eigSp (𝔐.ρ.comp (H.bar : 𝓞 E →+* 𝓞 E)) σ' ↔ x ∈ 𝔐.Vgen s := by
   rw [LatBasic.mem_eigSp]
@@ -31,18 +34,32 @@ theorem mem_Vgen {s : CMType H ⊕ CMType H} {σ' : E →+* Ω} (hσ : ∀ a : �
   obtain ⟨a, rfl⟩ := H.bar.surjective a
   exact h a
 
+/- English proof (translation)
+The claim follows from `(mem_Vgen hσ _).1 (LatBasic.eigProj_mem _ _ x)`.
+-/
 theorem prj_mem {s : CMType H ⊕ CMType H} {σ' : E →+* Ω} (hσ : ∀ a : 𝓞 E, σ' a = 𝔐.emb s (H.bar a)) (x : 𝔐.Li) :
     prj 𝔐 σ' x ∈ 𝔐.Vgen s := (mem_Vgen hσ _).1 (LatBasic.eigProj_mem _ _ x)
 
+/- English proof (translation)
+The claim follows from `LatBasic.eigProj_of_mem ((mem_Vgen hσ _).2 hx)`.
+-/
 theorem prj_of_mem {s : CMType H ⊕ CMType H} {σ' : E →+* Ω} (hσ : ∀ a : 𝓞 E, σ' a = 𝔐.emb s (H.bar a))
     {x : 𝔐.Li} (hx : x ∈ 𝔐.Vgen s) : prj 𝔐 σ' x = x := LatBasic.eigProj_of_mem ((mem_Vgen hσ _).2 hx)
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `[eigProj, prj, h, LinearMap.sum_apply]`.
+-/
 theorem eigProj_eq_comp (ρΩ : 𝓞 E →+* Module.End Ω (Module.Dual Ω 𝔐.Li))
     (h : ∀ (a : 𝓞 E) (w : Module.Dual Ω 𝔐.Li), ρΩ a w = w ∘ₗ 𝔐.ρ (H.bar a)) (σ' : E →+* Ω)
     (w : Module.Dual Ω 𝔐.Li) : eigProj ρΩ σ' w = w ∘ₗ prj 𝔐 σ' := by
   ext x
   simp [eigProj, prj, h, LinearMap.sum_apply]
 
+/- English proof (translation)
+Set `q : Cpt 𝔐.ξ` to `⟨genPt 𝔐.ξ, specializes_rfl⟩`. Take `⟨U, hU, b, hF, hb⟩` from `Fl.sub s q trivial`. Take `⟨U', hU', b', hV, hb'⟩` from `𝔐.vb s q trivial`. Establish `h1` using `(hb q trivial hU).2`. Establish `h2 : 𝔐.V s q = _` using `(hb' q trivial hU').2`.
+
+Establish `h3` using `congrArg (fun N : Submodule (regAt 𝔐.ξ q) 𝔐.Li => Submodule.span Ω (N : Set 𝔐.Li)) (h1.symm.trans h2)`. Simplify using `only [Submodule.span_span_of_tower] at h3`. Rewrite using `[← flagStep_top, ← hF, flagStep_top, h3]`. Conclude with `hV`.
+-/
 theorem span_flag (Fl : 𝔐.Flag) (s : CMType H ⊕ CMType H) :
     Submodule.span Ω (Set.range (Fl.b s)) = 𝔐.Vgen s := by
   let q : Cpt 𝔐.ξ := ⟨genPt 𝔐.ξ, specializes_rfl⟩
@@ -55,15 +72,28 @@ theorem span_flag (Fl : 𝔐.Flag) (s : CMType H ⊕ CMType H) :
   rw [← flagStep_top, ← hF, flagStep_top, h3]
   exact hV
 
+/- English proof (translation)
+Take `⟨_, _, -, -, -, h, -⟩` from `Fl.generic`. Conclude with `h s`.
+-/
 theorem li_flag (Fl : 𝔐.Flag) (s : CMType H ⊕ CMType H) : LinearIndependent Ω (Fl.b s) := by
   obtain ⟨_, _, -, -, -, h, -⟩ := Fl.generic
   exact h s
 
+/- English proof (translation)
+The claim follows from `(RingHom.charZero_iff 𝔐.cst.injective).1 inferInstance`.
+-/
 theorem charZero (𝔐 : HodgeCpt Y S y) : CharZero Ω :=
   (RingHom.charZero_iff 𝔐.cst.injective).1 inferInstance
 
 variable {p : ℕ} {o : Type} [CommRing o] [Algebra o Ω]
 
+/- English proof (translation)
+Proceed by induction on `ha using Algebra.adjoin_induction with`. Consider the case `mem x hx => obtain ⟨j, rfl⟩ := hx`. Conclude with `hq.2 j`. Consider the case `algebraMap r`. Take `⟨a, b, hb, h⟩` from `(ho _).1 ⟨r, rfl⟩`.
+
+Establish `hu` using `unitAt_nat q b (by rintro rfl; exact hb (dvd_zero _)) fun r hr hd => by`. Assume the negation of the conclusion as `hn`. Conclude with `hb (hz r hr hn ▸ hd)`. Rewrite using `[h, div_eq_mul_inv]`. Conclude with `mul_mem (intCast_mem _ a) hu.2.2`.
+
+Consider the case `add x y _ _ hx hy => exact add_mem hx hy`. Consider the case `mul x y _ _ hx hy => exact mul_mem hx hy`.
+-/
 theorem chart_le (hp : p.Prime)
     (ho : ∀ x : Ω, x ∈ (algebraMap o Ω).range ↔ ∃ (a : ℤ) (b : ℕ), ¬ p ∣ b ∧ x = (a : Ω) / (b : Ω))
     {t : ∀ k, J k} {q : Cpt 𝔐.ξ} (hq : InChart 𝔐.ξ (mseg y) t q) (hz : OverZp 𝔐 p q) (a : Ω)
@@ -80,6 +110,13 @@ theorem chart_le (hp : p.Prime)
   | add x y _ _ hx hy => exact add_mem hx hy
   | mul x y _ _ hx hy => exact mul_mem hx hy
 
+/- English proof (translation)
+Use `haveI := charZero 𝔐`. Take `⟨q, h1, h2, h3⟩` from `exists_point (x := mseg y) 𝔐.tie t ht (chartRing o (mseg y) t) (fun j => Algebra.subset_adjoin ⟨j, rfl⟩) m`. Use `⟨q, h1, fun r hr hf => ?_, h2⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Use `hf (h3 r fun hrm => ?_)` and prove the remaining obligations.
+
+Take `⟨u, hu⟩` from `(ho ((1 : ℤ) / (r : Ω))).2 ⟨1, r, fun h => hne ((Nat.prime_dvd_prime_iff_eq hp hr).1 h).symm, rfl⟩`. Establish `: algebraMap o (chartRing o (mseg y) t) u * r = 1`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `hr0 : (r : Ω) ≠ 0` using `Nat.cast_ne_zero.2 hr.ne_zero`. Use `show algebraMap o Ω u * ((r : chartRing o (mseg y) t) : Ω) = 1`.
+
+Rewrite using `[hu]`. Simplify using `[hr0]`. Conclude with `hm.ne_top ((Ideal.eq_top_iff_one m).2 (this ▸ m.mul_mem_left _ hrm))`.
+-/
 theorem exists_pt (hp : p.Prime)
     (ho : ∀ x : Ω, x ∈ (algebraMap o Ω).range ↔ ∃ (a : ℤ) (b : ℕ), ¬ p ∣ b ∧ x = (a : Ω) / (b : Ω))
     {t : ∀ k, J k} (ht : mseg y t ≠ 0) (m : Ideal (chartRing o (mseg y) t)) [hm : m.IsPrime] :
@@ -100,6 +137,49 @@ theorem exists_pt (hp : p.Prime)
     simp [hr0]
   exact hm.ne_top ((Ideal.eq_top_iff_one m).2 (this ▸ m.mul_mem_left _ hrm))
 
+/- English proof (translation)
+Establish `hp : p.Prime` using `Fact.out`. Take `⟨q, hq, hz, hR⟩` from `exists_pt (𝔐 := 𝔐) hp ho t.2 m`. Take `⟨U, hU, b, hF, hb⟩` from `Fl.sub s q trivial`. Establish `hb` using `hb q trivial hU`. Establish `hbV : ∀ i, b i ∈ 𝔐.V s q` using `fun i => by rw [hb.2]; exact Submodule.subset_span ⟨i, rfl⟩`.
+
+Establish `hbG : ∀ i, b i ∈ 𝔐.Vgen s` using `fun i => by`. Rewrite using `[← span_flag Fl s, ← flagStep_top, ← hF, flagStep_top]`. Conclude with `Submodule.subset_span ⟨i, rfl⟩`. Establish `key : (∀ w ∈ (Dc t).om', ∀ i, d * w (b i) ∈ regAt 𝔐.ξ q) ∧ ∀ w : Module.Dual Ω 𝔐.Li, w ∘ₗ prj 𝔐 σ' = w → (∀ i, d * w (b i) ∈ regAt 𝔐.ξ q) → ∃ w₀ ∈ Submodule.span (regAt 𝔐.ξ q) ((Dc t).om' : Set (Module.Dual Ω 𝔐.Li)), w₀ ∘ₗ prj 𝔐 σ' = w`. Distinguish the cases in `hf : InFibre 𝔐.ξ p q`.
+
+Establish `hV : 𝔐.V s q = 𝔐.HT p s q` using `Lat.patch_of_unique S _ _ hpS hf fun p' hp' h => hz p' (𝔐.S_prime p' hp') h`. Establish `hom` using `hD.om'_loc t q hq hf`. Prove the components needed by the constructor for the conclusion. Introduce `w hw i`. Establish `h1` using `(hfib q hq hz _).1 (hV ▸ hbV i)`.
+
+Establish `h2` using `((𝔐.M.mem_htDual_iff _ _ _ _ q _).1 h1).2 w (by show w ∈ omP 𝔐 p q`. Rewrite using `[hom]`. Conclude with `Submodule.subset_span hw)`. Simplify using `using h2`. Introduce `w hw hreg`.
+
+Take `⟨U', hU', f, hfs, hf'⟩` from `hfree.2 s q hf`. Establish `hf'` using `hf' q hf hU'`. Use `haveI : FiniteDimensional Ω (𝔐.Vgen s) := by`. Rewrite using `[← span_flag Fl s]`. Conclude with `FiniteDimensional.span_of_finite Ω (Set.finite_range _)`.
+
+Establish `h1` using `mem_span_of_dual (regAt 𝔐.ξ q) f hf'.1 hfs ((𝔐.Vgen s).dualRestrict w) fun e he => by`. Establish `h2 : (e : 𝔐.Li) ∈ 𝔐.M.htDual 𝔐.t.PP.L (p ^ 𝔐.R p) 𝔐.ρ (𝔐.emb s) q`. Use `(𝔐.M.mem_htDual_iff _ _ _ _ q _).2 ⟨e.2, fun w' hw' => ?_⟩` and prove the remaining obligations. Establish `h3 : (𝔐.Vgen s).dualRestrict w' ∈ Submodule.span (regAt 𝔐.ξ q) (Set.range f)`. Rewrite using `[← hf'.2]`.
+
+Conclude with `⟨w', hw', rfl⟩`. Conclude with `apply_mem_of_span (regAt 𝔐.ξ q) (Module.Dual.eval Ω _ e) _ (by rintro _ ⟨j, rfl⟩; exact he j) _ h3`. Establish `h4 : d⁻¹ • (e : 𝔐.Li) ∈ 𝔐.V s q`. Rewrite using `[hV, hfib q hq hz, smul_smul, mul_inv_cancel₀ hd, one_smul]`. Conclude with `h2`.
+
+Rewrite `h4` using `[hb.2]`. Establish `h5` using `apply_mem_of_span (regAt 𝔐.ξ q) (d • w) _ (by rintro _ ⟨j, rfl⟩; exact hreg j) _ h4`. Simplify `h5` using `[inv_mul_cancel_left₀ hd]`. Rewrite `h1` using `[← hf'.2]`. Take `⟨w₀, hw₀, h2⟩` from `h1`.
+
+Use `⟨w₀, hom ▸ hw₀, ?_⟩` and prove the remaining obligations. Rewrite using `[← hw]`. Use extensionality with `x`. Conclude with `LinearMap.congr_fun h2 ⟨_, prj_mem hσ x⟩`. Establish `hV : 𝔐.V s q = 𝔐.dR s q` using `Lat.patch_of_not S _ _ fun p' hp' h => hf (hz p' (𝔐.S_prime p' hp') h ▸ h)`.
+
+Take `⟨hdu, hσR⟩` from `hoff q hq hz hf`. Establish `hom` using `hD.om_loc t q hq hz`. Establish `hpu : unitAt 𝔐.ξ q (p : Ω)` using `not_not.1 hf`. Prove the components needed by the constructor for the conclusion. Introduce `w hw i`.
+
+Establish `h1 : (Dc t).om' ≤ (Dc t).om` using `sup_le (Submodule.span_le.2 (by rintro _ ⟨x, rfl⟩; exact (Dc t).h_mem x)) (by rintro _ ⟨x, hx, rfl⟩; exact (Dc t).om.smul_mem _ hx)`. Establish `h2 : w ∈ 𝔐.M.omLat q` using `by rw [hom]; exact Submodule.subset_span (h1 hw)`. Conclude with `mul_mem hdu.2.1 (h2 _ (hV ▸ hbV i : b i ∈ 𝔐.dR s q).1)`. Introduce `w hw hreg`. Use `⟨w, ?_, hw⟩` and prove the remaining obligations.
+
+Establish `h1 : w ∈ 𝔐.M.omLat q`. Introduce `e he`. Establish `h2 : prj 𝔐 σ' e ∈ 𝔐.V s q`. Rewrite using `[hV]`. Use `⟨?_, prj_mem hσ e⟩` and prove the remaining obligations.
+
+Simplify using `only [prj, eigProj, LinearMap.sum_apply, LinearMap.smul_apply]`. Use `Submodule.sum_mem _ fun k _ => ?_` and prove the remaining obligations. Use `haveI := 𝔐.t.act.hom (H.bar (RingOfIntegers.basis E k))`. Conclude with `Submodule.smul_mem (𝔐.M.lat q) (⟨_, hσR _⟩ : regAt 𝔐.ξ q) (lat_stable 𝔐.M _ _ (𝔐.act (H.bar (RingOfIntegers.basis E k))) q e he)`. Rewrite `h2` using `[hb.2]`.
+
+Rewrite using `[← hw]`. Use `apply_mem_of_span (regAt 𝔐.ξ q) w _ ?_ _ h2` and prove the remaining obligations. Introduce and unpack `_ ⟨j, rfl⟩`. Use `mul_mem hdu.2.2 (hreg j)` as an intermediate fact. Rewrite `this` using `[inv_mul_cancel_left₀ hd]`. Then use the resulting hypothesis.
+
+Rewrite `h1` using `[hom]`. Use `Submodule.span_le.2 ?_ h1` and prove the remaining obligations. Introduce `x hx`. Establish `h3 : ((p : chartRing o (mseg y) t.1) ^ 𝔐.R p) • x ∈ (Dc t).om'` using `Submodule.mem_sup_right ⟨x, hx, rfl⟩`. Establish `h4` using `Submodule.smul_mem (Submodule.span (regAt 𝔐.ξ q) ((Dc t).om' : Set (Module.Dual Ω 𝔐.Li))) (⟨_, pow_mem hpu.2.2 (𝔐.R p)⟩ : regAt 𝔐.ξ q) (Submodule.subset_span h3)`.
+
+Establish `h5 : ((p : Ω)⁻¹ ^ 𝔐.R p) • (((p : chartRing o (mseg y) t.1) ^ 𝔐.R p : chartRing o (mseg y) t.1) : Ω) • x = x`. Rewrite using `[smul_smul]`. Simplify using `[hpu.1]`. Conclude with `h5 ▸ h4`. Establish `hP` using `eigProj_eq_comp (Dc t).ρΩ (hD.act t) σ'`.
+
+Use `⟨regAt 𝔐.ξ q, hR, b, hb.1, hF, fun i => ?_, ?_, fun w hw hreg => ?_⟩` and prove the remaining obligations. Take `⟨τ, hτ⟩` from `exists_lead (Fl.b s) b hF i`. Establish `h1` using `FlagGrGen.gr_isGenAt _ _ _ _ (𝔐.V s) _ (Fl.b s) b q i τ (li_flag Fl s) hF hb hτ`. Conclude with `⟨τ, hτ, (hg q hq i τ h1).1, (hg q hq i τ h1).2, h1.1⟩`. Introduce and unpack `_ ⟨w, hw, rfl⟩ i show d * eigProj (Dc t).ρΩ σ' w (b i) ∈ _`.
+
+Rewrite using `[hP, LinearMap.comp_apply, prj_of_mem hσ (hbG i)]`. Conclude with `key.1 w hw i`. Take `⟨w₀, h0, rfl⟩` from `key.2 w hw hreg`. Use `exists_smul_mem m (regAt 𝔐.ξ q) hR _ _ ?_` and prove the remaining obligations. Rewrite using `[← hP]`.
+
+Use `clear hw hreg`. Proceed by induction on `h0 using Submodule.span_induction with`. Consider the case `mem x hx => exact Submodule.subset_span ⟨x, hx, rfl⟩`. Consider the case `zero => rw [map_zero]`. Conclude with `zero_mem _`.
+
+Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`. Consider the case `smul c x _ hx`. Establish `: eigProj (Dc t).ρΩ σ' (c • x) = c • eigProj (Dc t).ρΩ σ' x` using `map_smul _ (c : Ω) x`. Rewrite using `[this]`.
+
+Conclude with `Submodule.smul_mem _ c hx`.
+-/
 theorem locFrame [Fact p.Prime] (hpS : p ∈ S)
     (ho : ∀ x : Ω, x ∈ (algebraMap o Ω).range ↔ ∃ (a : ℤ) (b : ℕ), ¬ p ∣ b ∧ x = (a : Ω) / (b : Ω))
     {Dc : ∀ s : {s : ∀ k, J k // mseg y s ≠ 0},
@@ -220,6 +300,11 @@ theorem locFrame [Fact p.Prime] (hpS : p ∈ S)
       have : eigProj (Dc t).ρΩ σ' (c • x) = c • eigProj (Dc t).ρΩ σ' x := map_smul _ (c : Ω) x
       rw [this]; exact Submodule.smul_mem _ c hx
 
+/- English proof (translation)
+Use `exists_basis_frames (prj 𝔐 σ') (Fl.b s) (fun e => span_flag Fl s ▸ prj_mem hσ e) (fun e he => prj_of_mem hσ (span_flag Fl s ▸ he)) _ ?_ d hd g hg0 (locFrame hpS ho hD hfree Fl t s σ' hσ d hd g hfib hoff hg)` and prove the remaining obligations. Introduce and unpack `_ ⟨w, -, rfl⟩`. Use `show eigProj (Dc t).ρΩ σ' w ∘ₗ _ = eigProj (Dc t).ρΩ σ' w`. Rewrite using `[eigProj_eq_comp (Dc t).ρΩ (hD.act t) σ']`. Use extensionality with `x`.
+
+Simplify using `only [LinearMap.comp_apply, prj_of_mem hσ (prj_mem hσ x)]`.
+-/
 theorem label_basis [Fact p.Prime] (hpS : p ∈ S)
     (ho : ∀ x : Ω, x ∈ (algebraMap o Ω).range ↔ ∃ (a : ℤ) (b : ℕ), ¬ p ∣ b ∧ x = (a : Ω) / (b : Ω))
     {Dc : ∀ s : {s : ∀ k, J k // mseg y s ≠ 0},
@@ -244,6 +329,9 @@ theorem label_basis [Fact p.Prime] (hpS : p ∈ S)
   ext x
   simp only [LinearMap.comp_apply, prj_of_mem hσ (prj_mem hσ x)]
 
+/- English proof (translation)
+Introduce and unpack `_ ⟨w, -, rfl⟩`. Use `show eigProj (Dc t).ρΩ σ' w ∘ₗ _ = eigProj (Dc t).ρΩ σ' w`. Rewrite using `[eigProj_eq_comp (Dc t).ρΩ (hD.act t) σ']`. Use extensionality with `x`. Simplify using `only [LinearMap.comp_apply, prj_of_mem hσ (prj_mem hσ x)]`.
+-/
 theorem omHT_comp {Dc : ∀ s : {s : ∀ k, J k // mseg y s ≠ 0},
       HTChart (chartRing o (mseg y) s.1) Ω (cmConj E) p (𝔐.R p) (D.p + D.q) (Module.Dual Ω 𝔐.Li)}
     (hD : IsHTFamily 𝔐 p o Dc) (t : {s : ∀ k, J k // mseg y s ≠ 0})
@@ -255,6 +343,13 @@ theorem omHT_comp {Dc : ∀ s : {s : ∀ k, J k // mseg y s ≠ 0},
   ext x
   simp only [LinearMap.comp_apply, prj_of_mem hσ (prj_mem hσ x)]
 
+/- English proof (translation)
+Establish `h1 : ∀ δ ∈ differentIdeal ℤ (𝓞 E), ∃ a : A, σ δ = a * ds`. Introduce `δ hδ`. Establish `: σ δ ∈ Submodule.span A {algebraMap A Ω ds}`. Rewrite using `[h]`. Conclude with `Submodule.subset_span ⟨δ, hδ, rfl⟩`.
+
+Take `⟨a, ha⟩` from `Submodule.mem_span_singleton.1 this`. Conclude with `⟨a, ha.symm⟩`. Use `⟨h1, fun h0 => ?_, ?_⟩` and prove the remaining obligations. Take `⟨x, hx, hx0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot (differentIdeal_ne_bot (A := ℤ) (B := 𝓞 E))`. Take `⟨a, ha⟩` from `h1 x hx`.
+
+Rewrite `ha` using `[h0, mul_zero, map_eq_zero]`. Conclude with `hx0 (by exact_mod_cast ha)`. Rewrite using `[← h]`. Conclude with `Submodule.mem_span_singleton_self _`.
+-/
 theorem diff_facts {A : Subalgebra o Ω} {σ : E →+* Ω} {ds : A} (h : GeneratesDiff σ ds) :
     (∀ δ ∈ differentIdeal ℤ (𝓞 E), ∃ a : A, σ δ = a * ds) ∧ (ds : Ω) ≠ 0 ∧
       (ds : Ω) ∈ Submodule.span A {y : Ω | ∃ x ∈ differentIdeal ℤ (𝓞 E), y = σ (x : E)} := by
@@ -271,6 +366,15 @@ theorem diff_facts {A : Subalgebra o Ω} {σ : E →+* Ω} {ds : A} (h : Generat
     exact hx0 (by exact_mod_cast ha)
   · rw [← h]; exact Submodule.mem_span_singleton_self _
 
+/- English proof (translation)
+Take `⟨h1, h0, -⟩` from `diff_facts h`. Establish `key : ∀ x : E, ∃ u ∈ regAt 𝔐.ξ q, σ x = u * ds`. Introduce `x`. Take `⟨n, hn, δ, hδ, hx⟩` from `exists_nat_diff x`. Take `⟨a, ha⟩` from `h1 δ hδ`.
+
+Establish `hu` using `unitAt_nat q n hn fun r hr _ => by`. Assume the negation of the conclusion as `hr'`. Conclude with `hf (hz r hr hr' ▸ hr')`. Use `⟨(n : Ω)⁻¹ * a, mul_mem hu.2.2 (hA _ a.2), ?_⟩` and prove the remaining obligations. Rewrite using `[_root_.mul_assoc, ← ha, hx, map_mul, map_natCast, inv_mul_cancel_left₀ hu.1]`.
+
+Use `⟨⟨h0, hA _ ds.2, ?_⟩, fun x => ?_⟩` and prove the remaining obligations. Take `⟨u, hu, h2⟩` from `key 1`. Rewrite `h2` using `[map_one]`. Rewrite using `[← eq_inv_of_mul_eq_one_left h2.symm]` and apply the resulting hypothesis. Take `⟨u, hu, h2⟩` from `key x`.
+
+Rewrite using `[h2]`. Conclude with `mul_mem hu (hA _ ds.2)`.
+-/
 theorem off_facts {A : Subalgebra o Ω} {σ : E →+* Ω} {ds : A} (h : GeneratesDiff σ ds) {q : Cpt 𝔐.ξ}
     (hA : ∀ a ∈ A, a ∈ regAt 𝔐.ξ q) (hz : OverZp 𝔐 p q) (hf : ¬ InFibre 𝔐.ξ p q) :
     unitAt 𝔐.ξ q (ds : Ω) ∧ ∀ x : E, σ x ∈ regAt 𝔐.ξ q := by
@@ -291,6 +395,21 @@ theorem off_facts {A : Subalgebra o Ω} {σ : E →+* Ω} {ds : A} (h : Generate
   · obtain ⟨u, hu, h2⟩ := key x
     rw [h2]; exact mul_mem hu (hA _ ds.2)
 
+/- English proof (translation)
+Take `⟨h1, h0, h2⟩` from `diff_facts h`. Prove the components needed by the constructor for the conclusion. Introduce `he`. Proceed by induction on `he using Submodule.span_induction with`. Consider the case `mem x hx`.
+
+Generalize the expression as in `(ds : Ω) = z at h2`. Proceed by induction on `h2 using Submodule.span_induction with`. Consider the case `mem u hu => obtain ⟨δ, hδ, rfl⟩ := hu`. Rewrite using `[hσ]`. Conclude with `hx.2 δ hδ`.
+
+Consider the case `zero => rw [zero_smul]`. Conclude with `zero_mem _`. Consider the case `add u v _ _ hu hv => rw [add_smul]`. Conclude with `add_mem hu hv`. Consider the case `smul a u _ hu`.
+
+Establish `: (a • u) • x = (⟨a, hA _ a.2⟩ : regAt 𝔐.ξ q) • u • x` using `mul_smul (a : Ω) u x`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ hu`. Consider the case `zero => rw [smul_zero]`. Conclude with `zero_mem _`.
+
+Consider the case `add x y _ _ hx hy => rw [smul_add]`. Conclude with `add_mem hx hy`. Consider the case `smul a x _ hx`. Establish `: (ds : Ω) • a • x = a • (ds : Ω) • x` using `smul_comm (ds : Ω) (a : Ω) x`. Rewrite using `[this]`.
+
+Conclude with `Submodule.smul_mem _ _ hx`. Introduce `he`. Use `Submodule.subset_span ⟨?_, fun δ hδ => ?_⟩` and prove the remaining obligations. Use `(GlobalTheory.CompanionTheory.Ar.eigSp 𝔐.ρ σ₀).smul_mem (ds : Ω)⁻¹ (𝔐.M.mem_eigSp_of_mem_htDual _ _ _ _ he)` as an intermediate fact. Rewrite `this` using `[smul_smul, inv_mul_cancel₀ h0, one_smul]`. Then use the resulting hypothesis.
+
+Take `⟨a, ha⟩` from `h1 δ hδ`. Rewrite using `[← hσ, ha, mul_smul]`. Conclude with `Submodule.smul_mem _ (⟨a, hA _ a.2⟩ : regAt 𝔐.ξ q) he`.
+-/
 theorem mem_htW {A : Subalgebra o Ω} {σ : E →+* Ω} {ds : A} (h : GeneratesDiff σ ds) {q : Cpt 𝔐.ξ}
     (hA : ∀ a ∈ A, a ∈ regAt 𝔐.ξ q) (σ₀ : 𝓞 E →+* Ω) (hσ : ∀ a : 𝓞 E, σ (a : E) = σ₀ a) (n : ℕ) (e : 𝔐.Li) :
     e ∈ 𝔐.M.htW 𝔐.t.PP.L n 𝔐.ρ σ₀ (differentIdeal ℤ (𝓞 E)) q ↔
@@ -321,12 +440,23 @@ theorem mem_htW {A : Subalgebra o Ω} {σ : E →+* Ω} {ds : A} (h : GeneratesD
       rw [← hσ, ha, mul_smul]
       exact Submodule.smul_mem _ (⟨a, hA _ a.2⟩ : regAt 𝔐.ξ q) he
 
+/- English proof (translation)
+The claim follows from `Finset.prod_ne_zero_iff.2 fun k hk => zpow_ne_zero _ (Finset.prod_ne_zero_iff.1 ht k hk)`.
+-/
 theorem chartMon_ne_zero {t : ∀ k, J k} (ht : mseg y t ≠ 0) (a : K → ℤ) : chartMon y t a ≠ 0 :=
   Finset.prod_ne_zero_iff.2 fun k hk => zpow_ne_zero _ (Finset.prod_ne_zero_iff.1 ht k hk)
 
+/- English proof (translation)
+The claim follows from `dif_pos a.2`.
+-/
 theorem rootIdx_left (τ : CMType H) (a : Fin D.p) :
     HodgeCpt.rootIdx D (τ, Fin.castAdd D.q a) = ⟨.inl τ, a⟩ := dif_pos a.2
 
+/- English proof (translation)
+Unfold `HodgeCpt.rootIdx`. Rewrite using `[dif_neg (by simp)]`. Use `congr 1`. Apply `Fin.ext` to reduce the goal to its premises. Use `a.2` as an intermediate fact.
+
+Simplify using `only [Fin.val_natAdd, Fin.val_rev]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem rootIdx_right (τ : CMType H) (a : Fin D.q) :
     HodgeCpt.rootIdx D (τ, Fin.natAdd D.p a.rev) = ⟨.inr τ, a⟩ := by
   unfold HodgeCpt.rootIdx
@@ -339,6 +469,23 @@ theorem rootIdx_right (τ : CMType H) (a : Fin D.q) :
 
 end Label
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo c O _ β Y S Ω _ K _ J _ y 𝔐 p hp hpS o _ _ ho Dc Fl xdeg e τ σ d hD hfree hroot hσ hdiff`. Establish `he : ∀ r, e r ≠ 0` using `fun r => (hroot r).1`. Establish `hbb : ∀ a : 𝓞 E, H.bar (H.bar a) = a` using `fun a => by`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show ((H.bar (H.bar a) : 𝓞 E) : E) = a`.
+
+Rewrite using `[H.bar_eq, H.bar_eq, IsCMField.complexConj_apply_apply]`. Establish `hσM : ∀ a : 𝓞 E, σ a = 𝔐.emb (.inr τ) (H.bar a)` using `fun a => by`. Rewrite using `[hσ]`. Use `show _ = 𝔐.emb (.inl τ) (H.bar (H.bar a))`. Rewrite using `[hbb]`.
+
+Establish `hσW : ∀ a : 𝓞 E, σ.comp (cmConj E).toRingHom a = 𝔐.emb (.inl τ) (H.bar a)` using `fun a => by`. Rewrite using `[← hσ, H.bar_eq]`. Both sides reduce to the same expression. Take `⟨wM, hwM⟩` from `shape_M (o := o) (r := D.q) (prj 𝔐 σ) (Fl.b (.inr τ)) (li_flag Fl _) (fun x => by have := prj_mem hσM x; rw [← span_flag Fl] at this; exact this) (fun a => e (τ, Fin.natAdd D.p a)) (fun a => he _)`. Use `⟨fun a => Module.Dual.eval Ω _ ((d * e (τ, Fin.castAdd D.q a)) • Fl.b (.inl τ) a), wM, fun t => ?_⟩` and prove the remaining obligations.
+
+Take `⟨ds, rfl, hds⟩` from `hdiff t`. Establish `hd0` using `(diff_facts hds).2.1`. Establish `hm` using `fun r => chartMon_ne_zero t.2 (xdeg r)`. Take `⟨nW, hnW⟩` from `label_basis hpS ho hD hfree Fl t (.inl τ) _ hσW ds hd0 (fun a : Fin D.p => chartMon y t.1 (xdeg (τ, Fin.castAdd D.q a)) * e (τ, Fin.castAdd D.q a)) (fun a => mul_ne_zero (hm _) (he _)) (fun q hq hz x => mem_htW hds (chart_le hp.out ho hq hz) _ hσ _ x) (fun q hq hz hf => ⟨(off_fac …`. Establish `h1` using `(hroot (τ, Fin.castAdd D.q a)).2 q trivial t.1 hq`.
+
+Establish `h2 : HodgeCpt.rootSgn D (τ, Fin.castAdd D.q a) = 1` using `if_pos a.2`. Unfold `HodgeCpt.Flag.rootLat at h1`. Rewrite `h1` using `[rootIdx_left, h2]`. Establish `h3` using `tens_gen _ q 1 (Or.inl rfl) u _ hu h1`. Rewrite `h3` using `[zpow_one]`.
+
+Conclude with `h3)`. Take `⟨nM, hnM⟩` from `label_basis hpS ho hD hfree Fl t (.inr τ) _ hσM 1 one_ne_zero (fun a : Fin D.q => (chartMon y t.1 (xdeg (τ, Fin.natAdd D.p a.rev)) * e (τ, Fin.natAdd D.p a.rev))⁻¹) (fun a => inv_ne_zero (mul_ne_zero (hm _) (he _))) (fun q hq hz x => by rw [one_smul]; rfl) (fun q hq hz hf => ⟨⟨on …`. Establish `h1` using `(hroot (τ, Fin.natAdd D.p a.rev)).2 q trivial t.1 hq`. Establish `h2 : HodgeCpt.rootSgn D (τ, Fin.natAdd D.p a.rev) = -1` using `if_neg (by simp)`. Unfold `HodgeCpt.Flag.rootLat at h1`.
+
+Rewrite `h1` using `[rootIdx_right, h2]`. Establish `h3` using `tens_gen _ q (-1) (Or.inr rfl) u _ hu h1`. Rewrite `h3` using `[zpow_neg_one]`. Establish `e1 : ∀ x : Ω, u / x⁻¹ = x / u⁻¹` using `fun x => by rw [div_inv_eq_mul, div_inv_eq_mul, mul_comm]`. Establish `e2 : ∀ x : Ω, x⁻¹ / u = u⁻¹ / x` using `fun x => by rw [div_eq_mul_inv, div_eq_mul_inv, mul_comm]`.
+
+Rewrite using `[e1, e2]`. Conclude with `⟨h3.2, h3.1⟩)`. Take `⟨bW, hbW⟩` from `shape_alt (r := D.p) (Fl.b (.inl τ)) (fun a => ds * e (τ, Fin.castAdd D.q a)) (fun a => mul_ne_zero hd0 (he _)) _ (fun a => chartMon y t.1 (xdeg (τ, Fin.castAdd D.q a))) (fun a => hm _) nW (fun i => ⟨(hnW i).1, (hnW i).2.trans (by rw [mul_left_comm])⟩)`. Take `⟨bM, hbM⟩` from `hwM _ _ (omHT_comp hD t hσM) (fun a => chartMon y t.1 (xdeg (τ, Fin.natAdd D.p a))) nM (fun i => ⟨(hnM i).1, (hnM i).2.trans (by rw [_root_.one_mul, inv_inv])⟩)`. Conclude with `⟨bW, bM, hbW, hbM⟩`.
+-/
 theorem chart_flag_bases : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (S : Finset ℕ) (Ω : Type) [Field Ω] (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (y : (Σ k, J k) → Ω) (𝔐 : HodgeCpt Y S y) (p : ℕ) [Fact p.Prime] (hpS : p ∈ S) (o : Type) [CommRing o] [Algebra o Ω] (ho : ∀ x : Ω, x ∈ (algebraMap o Ω).range ↔ ∃ (a : ℤ) (b : ℕ), ¬ p ∣ b ∧ x = (a : Ω) / (b : Ω)) (Dc : ∀ s : {s : ∀ k, J k // mseg y s ≠ 0}, HTChart (chartRing o (mseg y) s.1) Ω (cmConj E) p (𝔐.R p) (D.p + D.q) (Module.Dual Ω 𝔐.Li)) (Fl : 𝔐.Flag) (xdeg : CMType H × Fin (D.p + D.q) → K → ℤ) (e : CMType H × Fin (D.p + D.q) → Ω) (τ : CMType H) (σ : E →+* Ω) (d : Ω), IsHTFamily 𝔐 p o Dc → HTFree 𝔐 p → Fl.RootLines xdeg e → (∀ a : 𝓞 E, σ (a : E) = 𝔐.emb (Sum.inl τ) a) → (∀ s : {s : ∀ k, J k // mseg y s ≠ 0}, ∃ ds : chartRing o (mseg y) s.1, (ds : Ω) = d ∧ GeneratesDiff σ ds) → ∃ (wW : Fin D.p → Module.Dual Ω (Module.Dual Ω 𝔐.Li)) (wM : Fin D.q → Module.Dual Ω 𝔐.Li), ∀ s : {s : ∀ k, J k // mseg y s ≠ 0}, ∃ (bW : Module.Basis (Fin D.p) (chartRing o (mseg y) s.1) (Module.Dual (chartRing o (mseg y) s.1) ((Dc s).omHT (σ.comp (cmConj E).toRingHom)))) (bM : Module.Basis (Fin D.q) (chartRing o (mseg y) s.1) ((Dc s).omHT σ)), (∀ a : Fin D.p, ∃ cf : Fin D.p → Ω, (∀ a', a < a' → cf a' = 0) ∧ cf a = chartMon y s.1 (xdeg (τ, Fin.castAdd D.q a)) ∧ ∀ z : (Dc s).omHT (σ.comp (cmConj E).toRingHom), (bW a z).1 = ∑ a', cf a' * wW a' z.1) ∧ ∀ a : Fin D.q, ∃ cf : Fin D.q → Ω, (∀ a', a < a' → cf a' = 0) ∧ cf a = chartMon y s.1 (xdeg (τ, Fin.natAdd D.p a)) ∧ (bM a).1 = ∑ a', cf a' • wM a' := by
   intro E _ _ _ H D l Xo c O _ β Y S Ω _ K _ J _ y 𝔐 p hp hpS o _ _ ho Dc Fl xdeg e τ σ d hD hfree hroot hσ hdiff
   have he : ∀ r, e r ≠ 0 := fun r => (hroot r).1

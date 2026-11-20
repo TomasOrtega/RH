@@ -27,6 +27,11 @@ namespace GlobalTheory.GSep.TorCharUnique
 
 attribute [local instance] GlobalTheory.TorusExt.gtGroup in
 
+/- English proof (translation)
+Establish `hL : Laws` using `GlobalTheory.T.abelianScheme_laws_unconditional.1`. Set `F` to `AlgebraicClosure (FractionRing R)`. Establish `hf : (algebraMap (FractionRing R) F).comp (algebraMap (FractionRing R) (FractionRing R)) = algebraMap (FractionRing R) F` using `RingHom.ext fun _ => rfl`. Use `(GlobalTheory.ArcExt.equiv_qkExt_iff (algebraMap (FractionRing R) F) hf D.tau_bimult p p').1 ?_` and prove the remaining obligations. Use `GlobalTheory.TorsionMapInj.qkToAk_injective_closed R J hB D A G hG U F k hk _ _ (GlobalTheory.TorsionExt.fieldMap (R := R) (FractionRing R) F ≫ x) ?_ ?_` and prove the remaining obligations.
+
+Conclude with `(GlobalTheory.TorsionExt.qkToAkU_iff_of_algebra hL.globalFns hL.kerPow U hk ((GlobalTheory.TorusExt.qkExt_iff D.tau_bimult _ hf p _).2 rfl) x).1 h`. Conclude with `(GlobalTheory.TorsionExt.qkToAkU_iff_of_algebra hL.globalFns hL.kerPow U hk ((GlobalTheory.TorusExt.qkExt_iff D.tau_bimult _ hf p' _).2 rfl) x).1 h'`.
+-/
 theorem equiv_of_qkToAkU {R : Type} [CommRing R] [IsDomain R] {J : Ideal R} (hB : AdmBase R J) {D : DegData R J}
     {A : PolAV (Sp (FractionRing R))} {G : Over (Sp R)} [GrpObj G] [IsCommMonObj G] (hG : IsSemiAbelian G)
     (U : Unif J D A G) {k : ℕ} (hk : 1 ≤ k) (p p' : QkPt D.toPre (FractionRing R) k)
@@ -46,6 +51,15 @@ theorem equiv_of_qkToAkU {R : Type} [CommRing R] [IsDomain R] {J : Ideal R} (hB 
 
 attribute [local instance] GlobalTheory.TorusExt.gtGroup in
 
+/- English proof (translation)
+Introduce `I X₁ z₁ act V _ _ _ ev Y _ t δ 𝔪 τ χ χ' h h'`. Take `⟨p, x, hy, hg, hq, hx⟩` from `h.2 _ ((isTor_iff _ _).2 (GlobalTheory.TorusExt.isTorusPtF_torusPt χ))`. Take `⟨p', x', hy', hg', hq', hx'⟩` from `h'.2 _ ((isTor_iff _ _).2 (GlobalTheory.TorusExt.isTorusPtF_torusPt χ'))`. Choose the witnesses or unpack the hypotheses as in `rfl : x = x' := by`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
+
+Use `𝔪.cart.1.hom_ext (hx.trans hx'.symm) ?_` and prove the remaining obligations. Rewrite using `[Over.w, Over.w]`. Establish `hB : AdmBase V (maximalIdeal V)` using `⟨𝔪.cn.1, inferInstance, 𝔪.cn.2.1, 𝔪.cn.2.2.1⟩`. Establish `hn : 1 ≤ X₁.S.r * X₁.S.N` using `Nat.mul_pos X₁.S.r_pos (lt_of_lt_of_le two_pos X₁.S.N_ge)`. Take `⟨z, hz, he⟩` from `(GlobalTheory.TorusExt.equiv_iff 𝔪.D.tau_bimult _ _).1 (equiv_of_qkToAkU hB 𝔪.semi 𝔪.U hn p p' x hq hq')`.
+
+Rewrite `hz` using `[hy, hy', zero_add]`. Establish `hz0 : z = 0`. Establish `: ((X₁.S.r * X₁.S.N : ℕ) : ℤ) • z = 0` using `by rw [natCast_zsmul]; exact hz.symm`. Conclude with `(smul_eq_zero.1 this).resolve_left (by exact_mod_cast (by omega))`. Rewrite `he` using `[hz0, map_zero, add_zero, hg, hg']`.
+
+Conclude with `(Additive.ofMul.injective (GlobalTheory.TorusExt.torusPt_injective he)).symm`.
+-/
 theorem torChar_unique : ∀ (I : Type) (X₁ : GlobalTheory.GSep.GSet) (z₁ : X₁.M.Z) (act : I → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)) (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V] (ev : X₁.M.Z.presheaf.stalk z₁ →+* V) (Y : Type) [AddCommGroup Y] (t : Y → V) (δ : I → Y → Y) (𝔪 : GlobalTheory.GSep.GMem X₁ z₁ act V ev Y t δ) (τ : X₁.S.Gam) (χ χ' : Multiplicative 𝔪.D.toPre.X →* (FractionRing V)ˣ), GlobalTheory.GSep.TransTerms.TorChar 𝔪 τ χ → GlobalTheory.GSep.TransTerms.TorChar 𝔪 τ χ' → χ = χ' := by
   intro I X₁ z₁ act V _ _ _ ev Y _ t δ 𝔪 τ χ χ' h h'
   obtain ⟨p, x, hy, hg, hq, hx⟩ := h.2 _ ((isTor_iff _ _).2 (GlobalTheory.TorusExt.isTorusPtF_torusPt χ))

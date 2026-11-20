@@ -16,6 +16,9 @@ set_option autoImplicit false
 
 namespace GlobalTheory.DescNorm
 
+/- English proof (translation)
+Introduce `X Y f L φ u hφ z i i' j j' hi hi' hj hj'`. Establish `m : ∀ a b, pullback.fst f f z ∈ L.U a → pullback.snd f f z ∈ L.U b → (𝟙 (pullback f f)) z ∈ chart f L a b` using `fun a b ha hb => ⟨ha, hb⟩`. Simplify using `only [twist, map_mul]`. Rewrite using `[gm_res (𝟙 _) z le_top (m i' j' hi' hj'), gm_res (𝟙 _) z le_top (m i j hi hj), hφ z i i' j j' hi hi' hj hj']`. The two sides agree by associativity and commutativity.
+-/
 theorem twist_descCompat : ∀ {X Y : Scheme.{0}} (f : X ⟶ Y) (L : LB X) (φ : ∀ i j, Γ(pullback f f, chart f L i j)ˣ) (u : Γ(pullback f f, ⊤)ˣ), DescCompat f L φ → DescCompat f L (twist f L φ u) := by
   intro X Y f L φ u hφ z i i' j j' hi hi' hj hj'
   have m : ∀ a b, pullback.fst f f z ∈ L.U a → pullback.snd f f z ∈ L.U b → (𝟙 (pullback f f)) z ∈ chart f L a b :=
@@ -24,6 +27,13 @@ theorem twist_descCompat : ∀ {X Y : Scheme.{0}} (f : X ⟶ Y) (L : LB X) (φ :
   rw [gm_res (𝟙 _) z le_top (m i' j' hi' hj'), gm_res (𝟙 _) z le_top (m i j hi hj), hφ z i i' j j' hi hi' hj hj']
   ac_rfl
 
+/- English proof (translation)
+Introduce `K _ _ A A' B _ _ _ q P hA hA' hB hq _ _ _ hP hadd hzero hker`. Take `⟨φ₀, hφ₀⟩` from `GlobalTheory.T.exists_descentDatumCompatible_of_lineBundle_iso _ P hP (GlobalTheory.T.lineBundle_iso_pullback_fst_snd_of_additive_trivial_kernel K A A' B q P hA hA' hB hq hP hadd hker)`. Take `⟨τ, hτ⟩` from `hzero`. Take `⟨u, hu⟩` from `GlobalTheory.T.exists_globalUnit_twist_normalise_descent_family K A A' B q P τ hP hτ φ₀ hφ₀`. Establish `hc : DescCompat (q ▷ B).left P (twist (q ▷ B).left P φ₀ u)` using `twist_descCompat _ P φ₀ u hφ₀`.
+
+Take `⟨D, hD⟩` from `GlobalTheory.T.exists_descentCocycleDefect_of_compatible _ P _ hP hc`. Establish `h1` using `GlobalTheory.T.descentCocycleDefect_normalised_eq_one K A A' B q P τ hP _ D hu hD`. Establish `h2` using `GlobalTheory.T.globalUnit_tripleFibreProduct_invariant_setGroupCoordZero K A A' B q hB D`. Use `⟨twist (q ▷ B).left P φ₀ u, hc, fun w i j k hi hj hk => ?_⟩` and prove the remaining obligations. Establish `e` using `hD _ (𝟙 _) w i j k hi hj hk`.
+
+Rewrite `e` using `[← h2 w, h1 w, _root_.one_mul, Category.id_comp, Category.id_comp, Category.id_comp]`. Conclude with `e.symm`.
+-/
 theorem descentDatum_of_additive : ∀ (K : Type) [Field K] [IsAlgClosed K] (A A' B : Over (Sp K)) [GrpObj A] [GrpObj A'] [GrpObj B] (q : A ⟶ A') (P : LB (A ⊗ B).left), IsAbelianScheme A → IsAbelianScheme A' → IsAbelianScheme B → IsMonHom q → IsFinite q.left → Flat q.left → Surjective q.left → P.IsLB → IsAdditive P → Triv (ev P (𝟙 A) (1 : A ⟶ B)) → (∀ (T : Over (Sp K)) (x : T ⟶ A), x ≫ q = 1 → Triv (ev P (fst T B ≫ x) (snd T B))) → ∃ φ : ∀ i j, Γ(pullback (q ▷ B).left (q ▷ B).left, GlobalTheory.LBDescent.chart (q ▷ B).left P i j)ˣ, GlobalTheory.LBDescent.DescCompat (q ▷ B).left P φ ∧ GlobalTheory.LBDescent.DescCocycle (q ▷ B).left P φ := by
   intro K _ _ A A' B _ _ _ q P hA hA' hB hq _ _ _ hP hadd hzero hker
   obtain ⟨φ₀, hφ₀⟩ := GlobalTheory.T.exists_descentDatumCompatible_of_lineBundle_iso _ P hP (GlobalTheory.T.lineBundle_iso_pullback_fst_snd_of_additive_trivial_kernel K A A' B q P hA hA' hB hq hP hadd hker)

@@ -15,6 +15,13 @@ open GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.NumbersDVR.Bundl
 
 namespace GlobalTheory.CompanionTheory.Ar.CommonFlag
 
+/- English proof (translation)
+Take `⟨k, f, cc, hf, hcc, hsum, hb⟩` from `B.frame c hc`. Choose the witnesses or unpack the hypotheses as in `⟨l, hl⟩ : ∃ l, f l ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Simplify using `[h] at hsum`.
+
+Take `⟨b, hli, hsp, hiff⟩` from `hb l`. Apply the tactic sequence `have hbl : ∀ q, ∃ n : ℕ, f l ^ n • b q ∈ B.lat c := fun q => (hiff (b q)).2 ⟨Pi.single q 1, fun q' => ⟨0, by by_cases h : q' = q <;> simp [h]⟩, by simp [Pi.single_apply]⟩`. Use `choose n hn using hbl`. Use `⟨(Module.Basis.mk hli hsp.ge).unitsSMul fun q => Units.mk0 (f l ^ n q) (pow_ne_zero _ hl), fun q => ?_⟩` and prove the remaining obligations. Rewrite using `[Module.Basis.unitsSMul_apply, Module.Basis.mk_apply]`.
+
+Conclude with `hn q`.
+-/
 theorem exists_basis_mem {O Ω τ V : Type} [CommRing O] [Field Ω] [Algebra O Ω] [AddCommGroup V]
     [Module Ω V] {N : ℕ} {y : τ → Ω} (B : ChartBundle O y N V) {c : τ} (hc : y c ≠ 0) :
     ∃ w : Module.Basis (Fin N) Ω V, ∀ i, w i ∈ B.lat c := by
@@ -34,6 +41,17 @@ theorem exists_basis_mem {O Ω τ V : Type} [CommRing O] [Field Ω] [Algebra O �
   rw [Module.Basis.unitsSMul_apply, Module.Basis.mk_apply]
   exact hn q
 
+/- English proof (translation)
+Introduce `O _ _ _ Ω _ _ K _ _ ι _ x d hx N n V _ _ E hE`. Take `⟨hK, hx0, hinj, hT⟩` from `(PositivityTheory.Xgn.A_join_model.isModelOver_iff x d).1 hx`. Use `choose s₀ hs₀ using hx0`. Establish `hs : mseg x s₀ ≠ 0` using `Finset.prod_ne_zero_iff.2 fun k _ => hs₀ k`. Take `⟨w, hw⟩` from `exists_basis_mem (E 0) hs`.
+
+Establish `hgen : ∀ j, ∃ (a : K → ℤ) (M : ℕ) (φ : Fin M → Module.Dual Ω V), IsTwistedDualGens x (E j) a φ` using `fun j => by`. Take `⟨a, ha⟩` from `TwistedDualGensExist.proof O Ω K ι x N V (E j)`. Conclude with `⟨a, ha a le_rfl⟩`. Use `choose a M φ hφ using hgen`. Take `⟨hz, hfn⟩` from `GlobalTheory.CompanionTheory.Ar.Num.plucker_birat O Ω K ι x N V (Fin (n + 1)) E M a φ hφ w s₀ hs`.
+
+Establish `hfn'` using `hfn fun j i => by`. Take `⟨c, hc, hcw⟩` from `(hE j s₀ hs).1 (w i) (hw i)`. Conclude with `⟨c, (map_ne_zero_iff _ hinj).2 hc, hcw⟩`. Establish `hpull : ∀ j, ∃ EB : ChartBundle O (mseg (joinCoord x (pluckerCoord φ w))) N V, IsPull O x (pluckerCoord φ w) (E j) EB` using `fun j => (GlobalTheory.CompanionTheory.Ar.Num.PullExists.main O Ω K ι x N V (E j)).1 _ _ (pluckerCoord φ w)`. Use `choose EB hEB using hpull`.
+
+Use `⟨Fin (n + 1) × Fin (N + 1), inferInstance, inferInstance, pluckerIdx N M, inferInstance, pluckerCoord φ w, EB, w, fun j => pluckerDeg (a j) j, ?_, hfn', fun j => ⟨hEB j, PositivityTheory.Xgn.t_plucker_frame O Ω K ι x N V (Fin (n + 1)) E M a φ hφ w j (EB j) (hEB j)⟩⟩` and prove the remaining obligations. Use `(PositivityTheory.Xgn.A_join_model.isModelOver_iff _ d).2 ⟨inferInstance, ?_, hinj, ?_⟩` and prove the remaining obligations. Introduce and unpack `(k | k)`. Conclude with `⟨s₀ k, hs₀ k⟩`. Conclude with `hz k`.
+
+Rewrite using `[hfn', hT]`.
+-/
 theorem main : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (Ω : Type) [Field Ω] [Algebra O Ω] (K : Type) [Fintype K] [DecidableEq K] (ι : K → Type) [∀ k, Fintype (ι k)] (x : (Σ k, ι k) → Ω) (d : ℕ), GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.NumbersDVR.Bundles.IsModelOver O (mcIdeal O x) d → ∀ (N n : ℕ) (V : Type) [AddCommGroup V] [Module Ω V] (E : Fin (n + 1) → ChartBundle O (mseg x) N V), (∀ j, SameGeneric O x (E 0) (E j)) → ∃ (K' : Type) (_ : Fintype K') (_ : DecidableEq K') (ι' : K' → Type) (_ : ∀ k, Fintype (ι' k)) (z : (Σ k, ι' k) → Ω) (EB : Fin (n + 1) → ChartBundle O (mseg (joinCoord x z)) N V) (w : Module.Basis (Fin N) Ω V) (b : Fin (n + 1) → Fin N → K ⊕ K' → ℤ), GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.NumbersDVR.Bundles.IsModelOver O (mcIdeal O (joinCoord x z)) d ∧ fnField O (joinCoord x z) = fnField O x ∧ ∀ j, IsPull O x z (E j) (EB j) ∧ IsFlagFrame (joinCoord x z) (EB j) w (b j) := by
   intro O _ _ _ Ω _ _ K _ _ ι _ x d hx N n V _ _ E hE
   obtain ⟨hK, hx0, hinj, hT⟩ := (PositivityTheory.Xgn.A_join_model.isModelOver_iff x d).1 hx

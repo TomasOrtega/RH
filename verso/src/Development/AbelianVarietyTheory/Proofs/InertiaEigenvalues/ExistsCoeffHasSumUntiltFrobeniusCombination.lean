@@ -7,6 +7,9 @@ open scoped Formalism.Per
 noncomputable section
 namespace GlobalTheory.PSer
 
+/- English proof (translation)
+Establish `h0 : (0 : ℤ) < h` using `by exact_mod_cast hh`. Use `Int.emod_lt_of_pos k h0` as an intermediate fact. Use `Int.emod_nonneg k h0.ne'` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem emod_toNat_lt (h : ℕ) (hh : 1 ≤ h) (k : ℤ) : (k % (h : ℤ)).toNat < h := by
   have h0 : (0 : ℤ) < h := by exact_mod_cast hh
   have := Int.emod_lt_of_pos k h0
@@ -16,6 +19,11 @@ theorem emod_toNat_lt (h : ℕ) (hh : 1 ≤ h) (k : ℤ) : (k % (h : ℤ)).toNat
 def reCoef (l : ℕ) [Fact l.Prime] (h : ℕ) (hh : 1 ≤ h) (μ : Fin h → ℂ_[l]) (k : ℤ) : ℂ_[l] :=
   (l : ℂ_[l]) ^ (-(k / (h : ℤ))) * μ ⟨(k % (h : ℤ)).toNat, emod_toNat_lt h hh k⟩
 
+/- English proof (translation)
+Establish `hl : (l : ℂ_[l]) ≠ 0` using `by exact_mod_cast (Fact.out : l.Prime).ne_zero`. Establish `h0 : (h : ℤ) ≠ 0` using `by exact_mod_cast (by omega : h ≠ 0)`. Establish `e1 : (k + h) / (h : ℤ) = k / h + 1`. Use `Int.add_mul_ediv_right k 1 h0` as an intermediate fact. Simplify using `using this`.
+
+Establish `e2 : (k + h) % (h : ℤ) = k % h` using `by simp`. Unfold `reCoef`. Simplify using `only [e1, e2]`. Rewrite using `[neg_add, zpow_add₀ hl, zpow_neg_one]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem reCoef_add (l : ℕ) [Fact l.Prime] (h : ℕ) (hh : 1 ≤ h) (μ : Fin h → ℂ_[l]) (k : ℤ) :
     reCoef l h hh μ k = (l : ℂ_[l]) * reCoef l h hh μ (k + h) := by
   have hl : (l : ℂ_[l]) ≠ 0 := by exact_mod_cast (Fact.out : l.Prime).ne_zero
@@ -28,6 +36,13 @@ theorem reCoef_add (l : ℕ) [Fact l.Prime] (h : ℕ) (hh : 1 ≤ h) (μ : Fin h
   rw [neg_add, zpow_add₀ hl, zpow_neg_one]
   field_simp
 
+/- English proof (translation)
+Establish `h0 : (h : ℤ) ≠ 0` using `by exact_mod_cast (by omega : h ≠ 0)`. Establish `hi0 : (0 : ℤ) ≤ (i : ℤ)` using `by positivity`. Establish `hih : (i : ℤ) < h` using `by exact_mod_cast i.isLt`. Establish `e1 : (n * h + i) / (h : ℤ) = n`. Rewrite using `[add_comm, Int.add_mul_ediv_right _ _ h0, Int.ediv_eq_zero_of_lt hi0 hih, zero_add]`.
+
+Establish `e2 : (n * h + i) % (h : ℤ) = i`. Rewrite using `[add_comm, Int.add_mul_emod_self_right, Int.emod_eq_of_lt hi0 hih]`. Unfold `reCoef`. Use `congr 2`. Rewrite using `[e1]`.
+
+Use `ext`. Simplify using `[e2]`.
+-/
 theorem reCoef_at (l : ℕ) [Fact l.Prime] (h : ℕ) (hh : 1 ≤ h) (μ : Fin h → ℂ_[l]) (n : ℤ) (i : Fin h) :
     reCoef l h hh μ (n * h + i) = (l : ℂ_[l]) ^ (-n) * μ i := by
   have h0 : (h : ℤ) ≠ 0 := by exact_mod_cast (by omega : h ≠ 0)
@@ -42,12 +57,40 @@ theorem reCoef_at (l : ℕ) [Fact l.Prime] (h : ℕ) (hh : 1 ≤ h) (μ : Fin h 
   · rw [e1]
   · ext; simp [e2]
 
+/- English proof (translation)
+Establish `hi0 : (0 : ℤ) ≤ ((i : ℕ) : ℤ)` using `by positivity`. Establish `hih : ((i : ℕ) : ℤ) < h` using `by exact_mod_cast i.isLt`. Rewrite using `[add_comm, Int.add_mul_emod_self_right, Int.emod_eq_of_lt hi0 hih]`.
+-/
 theorem emod_at (h : ℕ) (hh : 1 ≤ h) (n : ℤ) (i : Fin h) :
     (n * h + ((i : ℕ) : ℤ)) % (h : ℤ) = ((i : ℕ) : ℤ) := by
   have hi0 : (0 : ℤ) ≤ ((i : ℕ) : ℤ) := by positivity
   have hih : ((i : ℕ) : ℤ) < h := by exact_mod_cast i.isLt
   rw [add_comm, Int.add_mul_emod_self_right, Int.emod_eq_of_lt hi0 hih]
 
+/- English proof (translation)
+Introduce `l _ h μ hh hμ`. Establish `h0 : (h : ℤ) ≠ 0` using `by exact_mod_cast (by omega : h ≠ 0)`. Use `⟨reCoef l h hh μ, reCoef_add l h hh μ, ?_, ?_⟩` and prove the remaining obligations. Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, μ i ≠ 0 := by`. Assume the negation of the conclusion as `H`.
+
+Use `push_neg at H`. Conclude with `hμ (funext H)`. Use `⟨((i : ℕ) : ℤ), ?_⟩` and prove the remaining obligations. Use `reCoef_at l h hh μ 0 i` as an intermediate fact. Simplify using `only [zero_mul, zero_add, neg_zero, zpow_zero, one_mul] at this`.
+
+Rewrite using `[this]`. Conclude with `hi`. Introduce `x hx`. Set `f : ℤ → ℂ_[l]` to `fun k => reCoef l h hh μ k * sh (pw k x)`. Set `F : Fin h → ℤ → ℂ_[l]` to `fun i k => if k % (h : ℤ) = ((i : ℕ) : ℤ) then f k else 0`.
+
+Establish `hF : ∀ k, f k = ∑ i, F i k`. Introduce `k`. Establish `hn : 0 ≤ k % (h : ℤ)` using `Int.emod_nonneg k h0`. Rewrite using `[Finset.sum_eq_single ⟨(k % (h : ℤ)).toNat, emod_toNat_lt h hh k⟩]`. Simplify using `only [F]; rw [if_pos (by simp [Int.toNat_of_nonneg hn])]`.
+
+Introduce `b _ hb`. Simplify using `only [F]`. Rewrite using `[if_neg]`. Introduce `hbk`. Apply `hb` to reduce the goal to its premises.
+
+Use `ext`. Simplify using `only`. Use linear arithmetic over natural numbers and integers. Introduce `hc`. Conclude with `absurd (Finset.mem_univ _) hc`.
+
+Establish `hFi : ∀ i : Fin h, HasSum (F i) (μ i * lam h i x)`. Introduce `i`. Establish `hg : Function.Injective (fun n : ℤ => n * h + ((i : ℕ) : ℤ))`. Introduce `a b e`. Establish `e' : a * (h : ℤ) = b * h` using `by simpa using e`.
+
+Conclude with `mul_right_cancel₀ h0 e'`. Rewrite using `[← hg.hasSum_iff]`. Use `((GlobalTheory.T.untiltFrobeniusLaurentSeries_hasSum_bound_frobenius l h i ‖sh x‖ x hh hx le_rfl).1).mul_left (μ i)` as an intermediate fact. Establish `heq : (F i ∘ fun n : ℤ => n * h + ((i : ℕ) : ℤ)) = fun n : ℤ => μ i * ((l : ℂ_[l]) ^ (-n) * sh (pw (n * h + ((i : ℕ) : ℤ)) x))`. Use function extensionality and compare the values at `n`.
+
+Simplify using `only [Function.comp, F, f]`. Rewrite using `[if_pos (emod_at h hh n i), reCoef_at]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[heq]`. Conclude with `this`.
+
+Introduce `k hk`. Simplify using `only [F]`. Rewrite using `[if_neg]`. Introduce `hki`. Apply `hk` to reduce the goal to its premises.
+
+Use `⟨k / h, ?_⟩` and prove the remaining obligations. Use `Int.ediv_mul_add_emod k (h : ℤ)` as an intermediate fact. Simplify using `only`. Rewrite using `[← hki]`. Combine the linear relations using `[mul_comm (k / (h : ℤ)) (h : ℤ)]`.
+
+Use `hasSum_sum (s := Finset.univ) (fun i _ => hFi i)` as an intermediate fact. Establish `hf : f = fun k => ∑ i, F i k` using `funext hF`. Use `show HasSum f _`. Rewrite using `[hf]`. Conclude with `this`.
+-/
 theorem exists_coef_hasSum_lam : ∀ (l : ℕ) [Fact l.Prime] (h : ℕ) (μ : Fin h → ℂ_[l]), 1 ≤ h → μ ≠ 0 →
     ∃ m : ℤ → ℂ_[l], (∀ k, m k = (l : ℂ_[l]) * m (k + h)) ∧ (∃ k, m k ≠ 0) ∧
       ∀ x : Fl l, ‖sh x‖ < 1 →

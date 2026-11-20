@@ -38,30 +38,54 @@ def T (P : Y) : Set Y := (A.chart (A.pick P)).symm ''
 
 def χ (P : Y) : Y → ℝ := A.chiC (A.pick P) (D.β P)
 
+/- English proof (translation)
+Introduce and unpack `_ ⟨u, hu, rfl⟩`. Establish `h` using `D.sub P hP hu`. Conclude with `⟨(A.chart (A.pick P)).map_target h.1, h.2⟩`.
+-/
 theorem K_sub {P : Y} (hP : P ∈ Sf) : D.K P ⊆ (A.chart (A.pick P)).source ∩ D.W P := by
   rintro _ ⟨u, hu, rfl⟩
   have h := D.sub P hP hu
   exact ⟨(A.chart (A.pick P)).map_target h.1, h.2⟩
 
+/- English proof (translation)
+The claim follows from `A.isCompact_chartImage (isCompact_closedBall _ _) fun _ hu => (D.sub P hP hu).1`.
+-/
 theorem K_compact {P : Y} (hP : P ∈ Sf) : IsCompact (D.K P) :=
   A.isCompact_chartImage (isCompact_closedBall _ _) fun _ hu => (D.sub P hP hu).1
 
+/- English proof (translation)
+The claim follows from `image_mono diff_subset`.
+-/
 theorem T_sub_K (P : Y) : D.T P ⊆ D.K P := image_mono diff_subset
 
+/- English proof (translation)
+The claim follows from `A.isCompact_chartImage ((isCompact_closedBall _ _).diff isOpen_ball) fun _ hu => (D.sub P hP hu.1).1`.
+-/
 theorem T_compact {P : Y} (hP : P ∈ Sf) : IsCompact (D.T P) :=
   A.isCompact_chartImage ((isCompact_closedBall _ _).diff isOpen_ball)
     fun _ hu => (D.sub P hP hu.1).1
 
+/- English proof (translation)
+The claim follows from `A.chiC_smooth (D.smooth P) (D.supp P) (isCompact_closedBall _ _) fun _ hu => (D.sub P hP hu).1`.
+-/
 theorem χ_smooth {P : Y} (hP : P ∈ Sf) : A.SmoothFn (D.χ P) :=
   A.chiC_smooth (D.smooth P) (D.supp P) (isCompact_closedBall _ _) fun _ hu => (D.sub P hP hu).1
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h`. Conclude with `hy (A.chiC_eq_zero (D.supp P) h)`.
+-/
 theorem χ_supp (P : Y) (y : Y) (hy : D.χ P y ≠ 0) : y ∈ D.K P := by
   by_contra h; exact hy (A.chiC_eq_zero (D.supp P) h)
 
+/- English proof (translation)
+Introduce `h` and use `Set.disjoint_left.1 (D.disj P hP Q hQ hPQ) (D.K_sub hP hy).2 (D.K_sub hQ h).2`.
+-/
 theorem not_mem_K {P Q : Y} (hP : P ∈ Sf) (hQ : Q ∈ Sf) (hPQ : P ≠ Q) {y : Y}
     (hy : y ∈ D.K P) : y ∉ D.K Q := fun h =>
   Set.disjoint_left.1 (D.disj P hP Q hQ hPQ) (D.K_sub hP hy).2 (D.K_sub hQ h).2
 
+/- English proof (translation)
+Establish `hopen : IsOpen ((A.chart j).target ∩ (A.chart j).symm ⁻¹' (D.K P)ᶜ)` using `(A.chart j).isOpen_inter_preimage_symm (D.K_compact hP).isClosed.isOpen_compl`. Use `filter_upwards [hopen.mem_nhds ⟨(A.chart j).map_source hj, by simp [(A.chart j).left_inv hj, hy]⟩] with v hv`. Assume the negation of the conclusion as `h`. Conclude with `hv.2 (D.χ_supp P _ h)`.
+-/
 theorem eventually_χ_zero {P : Y} (hP : P ∈ Sf) (j : ι) {y : Y} (hj : y ∈ (A.chart j).source)
     (hy : y ∉ D.K P) : ∀ᶠ v in 𝓝 (A.chart j y), D.χ P ((A.chart j).symm v) = 0 := by
   have hopen : IsOpen ((A.chart j).target ∩ (A.chart j).symm ⁻¹' (D.K P)ᶜ) :=
@@ -70,6 +94,11 @@ theorem eventually_χ_zero {P : Y} (hP : P ∈ Sf) (j : ι) {y : Y} (hj : y ∈ 
     with v hv
   by_contra h; exact hv.2 (D.χ_supp P _ h)
 
+/- English proof (translation)
+Establish `hc : ContinuousOn ((A.chart (A.pick P)) ∘ (A.chart j).symm) (ovl A.chart j (A.pick P))` using `(A.trans_contDiffOn j (A.pick P)).continuousOn`. Establish `hopen : IsOpen (ovl A.chart j (A.pick P) ∩ ((A.chart (A.pick P)) ∘ (A.chart j).symm) ⁻¹' ball (A.chart (A.pick P) P) (D.r1 P))` using `hc.isOpen_inter_preimage (A.isOpen_ovl j _) isOpen_ball`. Establish `hmem : A.chart j y ∈ ovl A.chart j (A.pick P) ∩ ((A.chart (A.pick P)) ∘ (A.chart j).symm) ⁻¹' ball (A.chart (A.pick P) P) (D.r1 P)` using `⟨A.mem_ovl hj hyP, by simpa [Function.comp, (A.chart j).left_inv hj] using hb⟩`. Use `filter_upwards [hopen.mem_nhds hmem] with v hv`. Use `⟨hv.1.2, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[χ, A.chiC_of_mem hv.1.2]`. Conclude with `D.one P _ (ball_subset_closedBall hv.2)`.
+-/
 theorem eventually_χ_one {P : Y} (j : ι) {y : Y} (hj : y ∈ (A.chart j).source)
     (hyP : y ∈ (A.chart (A.pick P)).source)
     (hb : A.chart (A.pick P) y ∈ ball (A.chart (A.pick P) P) (D.r1 P)) :

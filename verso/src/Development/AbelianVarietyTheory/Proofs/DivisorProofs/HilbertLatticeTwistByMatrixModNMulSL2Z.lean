@@ -10,6 +10,11 @@ open scoped Classical MatrixGroups nonZeroDivisors
 
 namespace GlobalTheory.HilbFam.TwistSL
 
+/- English proof (translation)
+Introduce `j _`. Establish `h0` using `hw 0 (Set.mem_univ _)`. Establish `h1` using `hw 1 (Set.mem_univ _)`. Establish `e : Matrix.vecMul w (B.map (Int.cast : ℤ → F)) j = B 0 j • w 0 + B 1 j • w 1`. Simplify using `[Matrix.vecMul, dotProduct, Fin.sum_univ_two, mul_comm]`.
+
+Express the relevant statement in the definitionally equal form `Matrix.vecMul w (B.map (Int.cast : ℤ → F)) j ∈ (1 : Submodule (𝓞 F) F)`. Rewrite using `[e]`. Conclude with `Submodule.add_mem _ (zsmul_mem h0 _) (zsmul_mem h1 _)`.
+-/
 theorem vecMul_mem_stdLat {F : Type} [Field F] [NumberField F] (B : Matrix (Fin 2) (Fin 2) ℤ) {w : Fin 2 → F}
     (hw : w ∈ stdLat F) : Matrix.vecMul w (B.map (Int.cast : ℤ → F)) ∈ stdLat F := by
   intro j _
@@ -21,10 +26,22 @@ theorem vecMul_mem_stdLat {F : Type} [Field F] [NumberField F] (B : Matrix (Fin 
   rw [e]
   exact Submodule.add_mem _ (zsmul_mem h0 _) (zsmul_mem h1 _)
 
+/- English proof (translation)
+The claim follows from `Matrix.map_mul (f := Int.castRingHom R)`.
+-/
 theorem map_cast_mul (R : Type) [CommRing R] (A B : Matrix (Fin 2) (Fin 2) ℤ) :
     (A * B).map (Int.cast : ℤ → R) = A.map (Int.cast : ℤ → R) * B.map (Int.cast : ℤ → R) :=
   Matrix.map_mul (f := Int.castRingHom R)
 
+/- English proof (translation)
+Introduce `F _ _ _ N L α γ hL`. Take `⟨A, rfl⟩ : ∃ A : Matrix (Fin 2) (Fin 2) ℤ, α = A.map (Int.cast : ℤ → ZMod N)` from `⟨α.map (ZMod.cast : ZMod N → ℤ), by ext i j; simp⟩`. Rewrite using `[← map_cast_mul]`. Establish `hinv : ((γ⁻¹ : SL(2, ℤ)) : Matrix (Fin 2) (Fin 2) ℤ).map (Int.cast : ℤ → F) * (γ : Matrix (Fin 2) (Fin 2) ℤ).map (Int.cast : ℤ → F) = 1`. Rewrite using `[← map_cast_mul, ← Matrix.SpecialLinearGroup.coe_mul, inv_mul_cancel, Matrix.SpecialLinearGroup.coe_one]`.
+
+Conclude with `Matrix.map_one _ Int.cast_zero Int.cast_one`. Use extensionality with `v`. Rewrite using `[GlobalTheory.T.mem_hilbertLatticeTwist_iff_lift F N L _ v hL]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, w, hw, rfl⟩`.
+
+Use `⟨Matrix.vecMul y (A.map (Int.cast : ℤ → F)) + (N : F) • Matrix.vecMul w (((γ⁻¹ : SL(2, ℤ)) : Matrix (Fin 2) (Fin 2) ℤ).map (Int.cast : ℤ → F)), ?_, ?_⟩` and prove the remaining obligations. Conclude with `(GlobalTheory.T.mem_hilbertLatticeTwist_iff_lift F N L A _ hL).2 ⟨y, hy, _, vecMul_mem_stdLat _ hw, rfl⟩`. Rewrite using `[LinearMap.restrictScalars_apply, Matrix.vecMulLinear_apply, Matrix.add_vecMul, Matrix.smul_vecMul, Matrix.vecMul_vecMul, Matrix.vecMul_vecMul, hinv, Matrix.vecMul_one, map_cast_mul]`. Introduce and unpack `⟨u, hu, rfl⟩`. Take `⟨y, hy, w, hw, rfl⟩` from `(GlobalTheory.T.mem_hilbertLatticeTwist_iff_lift F N L A _ hL).1 hu`.
+
+Use `⟨y, hy, _, vecMul_mem_stdLat (γ : Matrix (Fin 2) (Fin 2) ℤ) hw, ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.restrictScalars_apply, Matrix.vecMulLinear_apply, Matrix.add_vecMul, Matrix.smul_vecMul, Matrix.vecMul_vecMul, map_cast_mul]`.
+-/
 theorem twist_mul_sl : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (N : ℕ) (L : Lat F) (α : Matrix (Fin 2) (Fin 2) (ZMod N)) (γ : SL(2, ℤ)), L ≤ stdLat F → twist N L (α * (γ : Matrix (Fin 2) (Fin 2) ℤ).map (Int.cast : ℤ → ZMod N)) = mulMat (twist N L α) (γ : Matrix (Fin 2) (Fin 2) ℤ) := by
   intro F _ _ _ N L α γ hL
   obtain ⟨A, rfl⟩ : ∃ A : Matrix (Fin 2) (Fin 2) ℤ, α = A.map (Int.cast : ℤ → ZMod N) :=

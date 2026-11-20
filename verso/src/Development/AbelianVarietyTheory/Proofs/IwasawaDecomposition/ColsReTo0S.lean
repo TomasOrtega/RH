@@ -42,6 +42,9 @@ def fullS (X : Formalism.L2.Herm.FullTiedS D) : Formalism.L2.Herm.FullTiedS (set
     ad := { X.ad with } }
 
 set_option maxHeartbeats 4000000 in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem fullS_to0 (X : Formalism.L2.Herm.FullTiedS D) : (fullS N h X).to0 = herm0S N h X.to0 := rfl
 
 set_option maxHeartbeats 4000000 in
@@ -60,15 +63,24 @@ variable {B : Base} {f : Fr B.toPre} {T : TwDat B}
 variable (w : ColW B f T) (Z : w.Lt) (N : ∀ u, Submodule (𝓞 B.LL) (Z.V.div.Nu u).V) (h : B.Word → ℝ)
 
 set_option maxHeartbeats 4000000 in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem fullS_cols (X : Formalism.L2.Herm.FullTiedS (w.D Z)) :
     (fullS (D := w.D Z) N h X).cols = hermRe (setDivZ Z N h) X.cols := rfl
 
 set_option maxHeartbeats 4000000 in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem colsRe_to0S (C : ColsTiedSym (w.D Z)) (u : B.Word) :
     ((colsRe (setDivZ Z N h) C).forms u).to0 = forms0S (D := w.D Z) N h (C.forms u).to0 := rfl
 
 set_option maxHeartbeats 8000000 in
 
+/- English proof (translation)
+Introduce `u` and use `{ hC u with gl := { (hC u).gl with } }`.
+-/
 theorem stdC_tr (C : ColsTiedSym (w.D Z)) (hC : TC.StdC w.I w.l Z C) :
     TC.StdC w.I w.l (setDivZ Z N h) (colsRe (setDivZ Z N h) C) := fun u =>
   { hC u with gl := { (hC u).gl with } }

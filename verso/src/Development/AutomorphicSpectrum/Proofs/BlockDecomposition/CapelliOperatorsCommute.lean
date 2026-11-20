@@ -10,6 +10,13 @@ namespace GlobalTheory.CompanionTheory.CTFin.CapComm
 
 open Formalism.REAL
 
+/- English proof (translation)
+Establish `hm : ∀ a b, X a b ∈ Subalgebra.centralizer ℂ ({x} : Set A)` using `fun a b => (Subalgebra.mem_centralizer_iff ℂ).2 fun _ hg => by rw [hg]; exact (h a b).eq`. Establish `hq : qdet X u ∈ Subalgebra.centralizer ℂ ({x} : Set A)`. Unfold `qdet qminor`. Use `Subalgebra.sum_mem _ fun σ _ => Subalgebra.mul_mem _ (Subalgebra.intCast_mem _ _) ?_` and prove the remaining obligations. Use `Subalgebra.list_prod_mem _ fun y hy => ?_` and prove the remaining obligations.
+
+Take `⟨j, rfl⟩` from `List.mem_ofFn.mp hy`. Unfold `Tm`. Use `Subalgebra.add_mem _ ?_ (hm _ _)` and prove the remaining obligations. Use `split_ifs`. Conclude with `Subalgebra.algebraMap_mem _ _`.
+
+Conclude with `Subalgebra.zero_mem _`. Conclude with `(Subalgebra.mem_centralizer_iff ℂ).1 hq x rfl`.
+-/
 theorem commute_qdet_of {A : Type} [Ring A] [Algebra ℂ A] {k : ℕ} {X : Fin k → Fin k → A} {x : A}
     (h : ∀ a b, Commute x (X a b)) (u : ℂ) : Commute x (qdet X u) := by
   have hm : ∀ a b, X a b ∈ Subalgebra.centralizer ℂ ({x} : Set A) := fun a b =>
@@ -26,10 +33,16 @@ theorem commute_qdet_of {A : Type} [Ring A] [Algebra ℂ A] {k : ℕ} {X : Fin k
     · exact Subalgebra.zero_mem _
   exact (Subalgebra.mem_centralizer_iff ℂ).1 hq x rfl
 
+/- English proof (translation)
+The claim follows from `commute_qdet_of (fun a b => qDetCentral A k X hX u a b) v`.
+-/
 theorem qdet_commute_self {A : Type} [Ring A] [Algebra ℂ A] {k : ℕ} {X : Fin k → Fin k → A}
     (hX : GlRel X) (u v : ℂ) : Commute (qdet X u) (qdet X v) :=
   commute_qdet_of (fun a b => qDetCentral A k X hX u a b) v
 
+/- English proof (translation)
+Establish `hE` using `glRel_Eop (E := E) (a := r + s) τ`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `qdet_commute_self (GlobalTheory.CapHC.glRel_restrict hE _ (Fin.castAdd_injective _ _)) _ _`. Conclude with `(GlobalTheory.CapHC.qdet_comm hE _ _).symm`. Conclude with `qdet_commute_self (GlobalTheory.CapHC.glRel_restrict hE _ (Fin.natAdd_injective _ _)) _ _`.
+-/
 theorem capR_capS_commute (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (r s : ℕ) (τ : E →+* ℂ)
     (u v : ℂ) :
     Commute (capR r s τ u) (capR r s τ v) ∧ Commute (capR r s τ u) (capS r s τ v) ∧

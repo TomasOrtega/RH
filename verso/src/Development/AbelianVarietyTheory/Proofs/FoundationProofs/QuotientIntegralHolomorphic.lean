@@ -11,6 +11,17 @@ open Filter Topology
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `hS : 0 ≤ ∑ j, ‖s j‖` using `Finset.sum_nonneg fun j _ => norm_nonneg _`. Distinguish the cases in `h1 : ‖y‖ ≤ 1`. Combine the linear equalities and inequalities to obtain the conclusion. Use `push_neg at h1`. Consider the cases of `n with`.
+
+Consider the case `zero => simp at hy`. Consider the case `succ m`. Establish `hyn : y ^ (m + 1) = -∑ j, s j * y ^ (j : ℕ)` using `eq_neg_of_add_eq_zero_left hy`. Establish `hle : ‖y‖ ^ (m + 1) ≤ (∑ j, ‖s j‖) * ‖y‖ ^ m`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `Finset.sum_le_sum fun j _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul, norm_pow]`. Use `gcongr`. Conclude with `h1.le`. Conclude with `Nat.lt_succ_iff.1 j.isLt`.
+
+Use `_ = (∑ j, ‖s j‖) * ‖y‖ ^ m := by rw [Finset.sum_mul]`. Establish `hpos : 0 < ‖y‖ ^ m` using `pow_pos (by linarith) _`. Rewrite `hle` using `[pow_succ]`. Establish `: ‖y‖ ≤ ∑ j, ‖s j‖`. Assume the negation of the conclusion as `hc`.
+
+Use `push_neg at hc`. Use `mul_lt_mul_of_pos_left hc hpos` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem norm_root_monic_le (n : ℕ) (s : Fin n → ℂ) (y : ℂ)
     (hy : y ^ n + ∑ j, s j * y ^ (j : ℕ) = 0) : ‖y‖ ≤ 1 + ∑ j, ‖s j‖ := by
   have hS : 0 ≤ ∑ j, ‖s j‖ := Finset.sum_nonneg fun j _ => norm_nonneg _
@@ -45,6 +56,47 @@ end GlobalTheory
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `U n A D s hU hUc hA hD hs ⟨z₁, hz₁U, hz₁⟩ heq`. Establish `hiso : ∀ z₀ ∈ U, ∀ᶠ w in 𝓝[≠] z₀, D w ≠ 0`. Introduce `z₀ hz₀`. Assume the negation of the conclusion as `hcon`. Rewrite `hcon` using `[Filter.not_eventually]`.
+
+Simplify using `only [not_not] at hcon`. Use `(hD.analyticOnNhd hU).eqOn_zero_of_preconnected_of_frequently_eq_zero hUc hz₀ hcon` as an intermediate fact. Conclude with `hz₁ (this hz₁U)`. Establish `hroot : ∀ w ∈ U, D w ≠ 0 → (A w / D w) ^ n + ∑ j, s j w * (A w / D w) ^ (j : ℕ) = 0`. Introduce `w hw hDw`.
+
+Establish `hDn : D w ^ n ≠ 0` using `pow_ne_zero _ hDw`. Establish `key : D w ^ n * ((A w / D w) ^ n + ∑ j, s j w * (A w / D w) ^ (j : ℕ)) = A w ^ n + ∑ j, s j w * A w ^ (j : ℕ) * D w ^ (n - j)`. Rewrite using `[mul_add, Finset.mul_sum]`. Use `congr 1`. Rewrite using `[div_pow, mul_div_cancel₀ _ hDn]`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `hj : (j : ℕ) ≤ n` using `j.isLt.le`. Establish `hsplit : D w ^ n = D w ^ (j : ℕ) * D w ^ (n - j)`. Rewrite using `[← pow_add, Nat.add_sub_cancel' hj]`. Rewrite using `[hsplit, div_pow]`.
+
+Clear the denominators using the available nonvanishing facts. Use `heq w hw` as an intermediate fact. Rewrite `this` using `[← key]`. Conclude with `(mul_eq_zero.1 this).resolve_left hDn`. Establish `hAz : ∀ w ∈ U, D w = 0 → A w = 0`.
+
+Introduce `w hw hDw`. Use `heq w hw` as an intermediate fact. Establish `hsum : ∑ j : Fin n, s j w * A w ^ (j : ℕ) * D w ^ (n - j) = 0`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Use `j.isLt` as an intermediate fact.
+
+Rewrite using `[hDw, zero_pow (by omega : n - (j : ℕ) ≠ 0), mul_zero]`. Rewrite `this` using `[hsum, add_zero]`. Break down `Nat.eq_zero_or_pos n with hn | hn` into its components or cases. Substitute `hn` using the available equality. Simplify using `at this`.
+
+Conclude with `(pow_eq_zero_iff hn.ne').1 this`. Take `⟨h, hh⟩ : ∃ h : ℂ → ℂ, ∀ z, h z = if D z = 0 then limUnder (𝓝[≠] z) (fun w => A w / D w) else A z / D z` from `⟨_, fun z => rfl⟩`. Establish `hdiffAt : ∀ z₀ ∈ U, DifferentiableAt ℂ h z₀`. Introduce `z₀ hz₀`. Establish `hUn : U ∈ 𝓝 z₀` using `hU.mem_nhds hz₀`.
+
+Distinguish the cases in `hDz : D z₀ = 0`. Establish `h1 : ∀ᶠ w in 𝓝 z₀, w ∈ U` using `hUn`. Establish `h2 : ∀ᶠ w in 𝓝 z₀, w ≠ z₀ → D w ≠ 0` using `eventually_nhdsWithin_iff.1 (hiso z₀ hz₀)`. Establish `h3 : ∀ᶠ w in 𝓝 z₀, ∀ j, ‖s j w‖ < ‖s j z₀‖ + 1`. Rewrite using `[Filter.eventually_all]`.
+
+Introduce `j`. Establish `hc : ContinuousAt (fun w => ‖s j w‖) z₀` using `((hs j).differentiableAt hUn).continuousAt.norm`. Conclude with `hc.eventually (Iio_mem_nhds (lt_add_one _))`. Take `⟨r, hr, hball⟩` from `Metric.eventually_nhds_iff_ball.1 (h1.and (h2.and h3))`. Establish `hsub : ∀ w ∈ Metric.ball z₀ r, w ∈ U` using `fun w hw => (hball w hw).1`.
+
+Establish `hne : ∀ w ∈ Metric.ball z₀ r, w ≠ z₀ → D w ≠ 0` using `fun w hw => (hball w hw).2.1`. Establish `hsb : ∀ w ∈ Metric.ball z₀ r, ∀ j, ‖s j w‖ < ‖s j z₀‖ + 1` using `fun w hw => (hball w hw).2.2`. Establish `hfd : DifferentiableOn ℂ (fun w => A w / D w) (Metric.ball z₀ r \ {z₀})`. Introduce `w hw`. Establish `hwU : U ∈ 𝓝 w` using `hU.mem_nhds (hsub w hw.1)`.
+
+Conclude with `((hA.differentiableAt hwU).div (hD.differentiableAt hwU) (hne w hw.1 hw.2)).differentiableWithinAt`. Establish `hbd : BddAbove (norm ∘ (fun w => A w / D w) '' (Metric.ball z₀ r \ {z₀}))`. Use `⟨1 + ∑ j, (‖s j z₀‖ + 1), ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨w, hw, rfl⟩`. Use `GlobalTheory.norm_root_monic_le n (fun j => s j w) (A w / D w) (hroot w (hsub w hw.1) (hne w hw.1 hw.2))` as an intermediate fact.
+
+Use `show ‖A w / D w‖ ≤ _`. Use `this.trans ?_` and prove the remaining obligations. Use `gcongr with j`. Conclude with `(hsb w hw.1 j).le`. Establish `hg` using `Complex.differentiableOn_update_limUnder_of_bddAbove (Metric.ball_mem_nhds z₀ hr) hfd hbd`.
+
+Establish `heqg : h =ᶠ[𝓝 z₀] Function.update (fun w => A w / D w) z₀ (limUnder (𝓝[≠] z₀) (fun w => A w / D w))` using `by filter_upwards [Metric.ball_mem_nhds z₀ hr] with w hw`. Distinguish the cases in `hw0 : w = z₀`. Substitute `hw0` using the available equality. Rewrite using `[hh, if_pos hDz, Function.update_self]`. Rewrite using `[hh, if_neg (hne w hw hw0), Function.update_of_ne hw0]`.
+
+Conclude with `(hg.differentiableAt (Metric.ball_mem_nhds z₀ hr)).congr_of_eventuallyEq heqg`. Establish `hDc : ContinuousAt D z₀` using `(hD.differentiableAt hUn).continuousAt`. Establish `heqf : h =ᶠ[𝓝 z₀] fun w => A w / D w` using `by filter_upwards [hDc.eventually_ne hDz] with w hw`. Rewrite using `[hh, if_neg hw]`. Conclude with `((hA.differentiableAt hUn).div (hD.differentiableAt hUn) hDz).congr_of_eventuallyEq heqf`.
+
+Use `⟨h, fun z hz => (hdiffAt z hz).differentiableWithinAt, ?_, ?_⟩` and prove the remaining obligations. Introduce `z hz`. Distinguish the cases in `hDz : D z = 0`. Rewrite using `[hDz, mul_zero]`. Conclude with `hAz z hz hDz`.
+
+Rewrite using `[hh, if_neg hDz, div_mul_cancel₀ _ hDz]`. Introduce `z hz`. Distinguish the cases in `hDz : D z = 0`. Establish `hUn : U ∈ 𝓝 z` using `hU.mem_nhds hz`. Establish `hFd : DifferentiableAt ℂ (fun w => h w ^ n + ∑ j, s j w * h w ^ (j : ℕ)) z`.
+
+Apply `((hdiffAt z hz).pow n).add` to reduce the goal to its premises. Establish `hsum` using `DifferentiableAt.sum (u := Finset.univ) (A := fun (j : Fin n) (w : ℂ) => s j w * h w ^ (j : ℕ)) (fun j _ => ((hs j).differentiableAt hUn).mul ((hdiffAt z hz).pow _))`. Use `hsum using 1` and compare the differences between its conclusion and the goal. Use extensionality with `w`. Simplify using `[Finset.sum_apply]`.
+
+Establish `hev : ∀ᶠ w in 𝓝[≠] z, h w ^ n + ∑ j, s j w * h w ^ (j : ℕ) = 0` using `by filter_upwards [hiso z hz, nhdsWithin_le_nhds hUn] with w hw hwU`. Rewrite using `[hh, if_neg hw]`. Conclude with `hroot w hwU hw`. Establish `ht : Tendsto (fun w => h w ^ n + ∑ j, s j w * h w ^ (j : ℕ)) (𝓝[≠] z) (𝓝 0)` using `tendsto_const_nhds.congr' (hev.mono fun w hw => hw.symm)`. Conclude with `tendsto_nhds_unique (hFd.continuousAt.tendsto.mono_left nhdsWithin_le_nhds) ht`.
+
+Rewrite using `[hh, if_neg hDz]`. Conclude with `hroot z hz hDz`.
+-/
 theorem quotient_integral_holomorphic : ∀ (U : Set ℂ) (n : ℕ) (A D : ℂ → ℂ) (s : Fin n → ℂ → ℂ), IsOpen U → IsPreconnected U → DifferentiableOn ℂ A U → DifferentiableOn ℂ D U → (∀ j, DifferentiableOn ℂ (s j) U) → (∃ z ∈ U, D z ≠ 0) → (∀ z ∈ U, A z ^ n + ∑ j, s j z * A z ^ (j : ℕ) * D z ^ (n - j) = 0) → ∃ h : ℂ → ℂ, DifferentiableOn ℂ h U ∧ (∀ z ∈ U, A z = h z * D z) ∧ ∀ z ∈ U, h z ^ n + ∑ j, s j z * h z ^ (j : ℕ) = 0 := by
   intro U n A D s hU hUc hA hD hs ⟨z₁, hz₁U, hz₁⟩ heq
   classical

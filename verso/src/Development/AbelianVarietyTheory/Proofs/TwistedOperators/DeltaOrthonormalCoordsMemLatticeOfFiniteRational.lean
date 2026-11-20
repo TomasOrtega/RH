@@ -34,6 +34,13 @@ open Matrix
 
 variable {D : D7}
 
+/- English proof (translation)
+Establish `ha' : a ∈ D.host.ccE * D.host.AA0` using `by rw [← Host.AA]; exact ha`. Use `FractionalIdeal.mul_induction_on ha' (fun x hx y hy => ?_) (fun x y hx hy => add_mem hx hy)` and prove the remaining obligations. Rewrite `hx` using `[Host.ccE]`. Take `⟨x', hx', rfl⟩` from `(FractionalIdeal.mem_coeIdeal _).1 hx`. Use `clear hx`.
+
+Proceed by induction on `hx' using Submodule.span_induction with`. Consider the case `mem w hw`. Take `⟨c, hc, rfl⟩` from `hw`. Conclude with `Submodule.subset_span ⟨c, hc, y, hy, rfl⟩`. Consider the case `zero => simp`.
+
+Consider the case `add u w _ _ hu hw => rw [map_add, add_mul]`. Conclude with `add_mem hu hw`. Consider the case `smul o u _ hu`. Rewrite using `[smul_eq_mul, map_mul, mul_assoc]`. Conclude with `Submodule.smul_mem _ o hu`.
+-/
 theorem AA_le_Iid (a : D.host.E) (ha : a ∈ (D.host.AA : Submodule (𝓞 D.host.E) D.host.E)) :
     a ∈ GlobalTheory.InertSign.Iid D D.host.ccK := by
   have ha' : a ∈ D.host.ccE * D.host.AA0 := by rw [← Host.AA]; exact ha
@@ -51,6 +58,11 @@ theorem AA_le_Iid (a : D.host.E) (ha : a ∈ (D.host.AA : Submodule (𝓞 D.host
     rw [smul_eq_mul, map_mul, mul_assoc]
     exact Submodule.smul_mem _ o hu
 
+/- English proof (translation)
+Establish `hS' : frS.1ᴴ * S.gram * frS.1 = 1` using `hS`. Establish `e : ∀ (s : Fin S.rank → D.host.E) (t : Fin T.rank → D.host.E), GlobalTheory.LatVac.genMap S T a s t = a • Matrix.vecMulVec t (star s ᵥ* S.gram)`. Introduce `s t`. Use extensionality with `i j`. Simplify using `only [GlobalTheory.LatVac.genMap, Matrix.of_apply, Matrix.smul_apply, Matrix.vecMulVec_apply, Matrix.vecMul, dotProduct, smul_eq_mul, Pi.star_apply, mul_assoc]`.
+
+Rewrite using `[e, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_vecMulVec, Matrix.vecMulVec_mul, Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec, Matrix.star_mulVec, Matrix.vecMul_vecMul, Matrix.vecMul_vecMul, ← Matrix.mul_assoc, hS', Matrix.vecMul_one]`.
+-/
 theorem coord_genMap {S T : HSp D} (frS : GL (Fin S.rank) D.host.E) (frT : GL (Fin T.rank) D.host.E)
     (hS : Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) frS.1 * S.gram * frS.1 = 1)
     (a : D.host.E) (s' : Fin S.rank → D.host.E) (t' : Fin T.rank → D.host.E) :
@@ -66,6 +78,11 @@ theorem coord_genMap {S T : HSp D} (frS : GL (Fin S.rank) D.host.E) (frT : GL (F
     Units.inv_mul, Matrix.one_mulVec, Matrix.star_mulVec, Matrix.vecMul_vecMul, Matrix.vecMul_vecMul, ← Matrix.mul_assoc, hS',
     Matrix.vecMul_one]
 
+/- English proof (translation)
+Use `GlobalTheory.ThetaLatImage.mem_homL.2 fun x hx => ?_` and prove the remaining obligations. Take `⟨o, ho⟩` from `(((GlobalTheory.InertSign.sd_iff D Ls).1 hLs).2.2 x).1 hx s' hs'`. Establish `e : Matrix.vecMulVec t' (star s') *ᵥ x = o • t'`. Use function extensionality and compare the values at `i`. Rewrite using `[Pi.smul_apply, ← algebraMap_smul D.host.E o (t' i), ho, smul_eq_mul]`.
+
+Simplify using `only [Matrix.mulVec, dotProduct, Matrix.vecMulVec_apply, GlobalTheory.InertSign.hE, Pi.star_apply, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun j _ => by rw [bridge_star_holds D.R D.host]; ring`. Rewrite using `[e]`. Conclude with `Lt.smul_mem o ht'`.
+-/
 theorem vecMulVec_mem_homL {N N' : ℕ} {Ls : Submodule (𝓞 D.host.E) (Fin N → D.host.E)}
     {Lt : Submodule (𝓞 D.host.E) (Fin N' → D.host.E)} (hLs : SD D Ls) {s' : Fin N → D.host.E} (hs' : s' ∈ Ls)
     {t' : Fin N' → D.host.E} (ht' : t' ∈ Lt) : Matrix.vecMulVec t' (star s') ∈ homL D Ls Lt := by
@@ -79,6 +96,13 @@ theorem vecMulVec_mem_homL {N N' : ℕ} {Ls : Submodule (𝓞 D.host.E) (Fin N �
   rw [e]
   exact Lt.smul_mem o ht'
 
+/- English proof (translation)
+Proceed by induction on `hw using AddSubgroup.closure_induction with`. Consider the case `mem w hw`. Take `⟨a, ha, s, ⟨s', hs', rfl⟩, t, ⟨t', ht', rfl⟩, rfl⟩` from `hw`. Rewrite using `[coord_genMap frS frT hS]`. Conclude with `Submodule.subset_span ⟨a, AA_le_Iid a ha, _, vecMulVec_mem_homL hLs hs' ht', rfl⟩`.
+
+Consider the case `zero => rw [Matrix.mul_zero, Matrix.zero_mul]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [Matrix.mul_add, Matrix.add_mul]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [Matrix.mul_neg, Matrix.neg_mul]`.
+
+Conclude with `neg_mem hx`.
+-/
 theorem coord_mem_RL {S T : HSp D} (frS : GL (Fin S.rank) D.host.E) (frT : GL (Fin T.rank) D.host.E)
     (hS : Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) frS.1 * S.gram * frS.1 = 1)
     {Ls : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)} {Lt : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)}
@@ -94,6 +118,15 @@ theorem coord_mem_RL {S T : HSp D} (frS : GL (Fin S.rank) D.host.E) (frT : GL (F
   | add x y _ _ hx hy => rw [Matrix.mul_add, Matrix.add_mul]; exact add_mem hx hy
   | neg x _ hx => rw [Matrix.mul_neg, Matrix.neg_mul]; exact neg_mem hx
 
+/- English proof (translation)
+Introduce `D S T frS frT hS hT Ls Lt hLs hLt δ v hv`. Take `⟨ΛS, hΛS, hSD⟩` from `GlobalTheory.T.isSelfDual_image_orthonormalFrame_lattice S frS hS Ls hLs`. Take `⟨ΛT, hΛT, hTD⟩` from `GlobalTheory.T.isSelfDual_image_orthonormalFrame_lattice T frT hT Lt hLt`. Take `⟨ψ, hψ⟩` from `GlobalTheory.StdAdelicChar.exists_isStdChar D`. Rewrite `hv` using `[← hΛS, ← hΛT]`.
+
+Establish `hrat` using `(GlobalTheory.AdForm.RatLat.finTens_mem_iff hψ hSD hTD v).1 hv`. Rewrite `hrat` using `[hΛS, hΛT]`. Establish `hpt` using `GlobalTheory.ThetaLatImage.pt_mem_La (δ := δ) (coord_mem_RL frS frT hS hLs hrat) 1`. Rewrite `hpt` using `[one_smul]`. Use `hpt using 1` and compare the differences between its conclusion and the goal.
+
+Use function extensionality and compare the values at `τ a b`. Rewrite using `[GlobalTheory.ThetaLatImage.pt_apply]`. Establish `hi : (GlobalTheory.FockPos.frAt frT τ)⁻¹ = (frT⁻¹).1.map (tauE D τ)`. Use `Matrix.inv_eq_right_inv ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.FockPos.frAt, ← Matrix.map_mul, Units.mul_inv, Matrix.map_one _ (map_zero _) (map_one _)]`.
+
+Establish `hv' : Matrix.of (GlobalTheory.VacUnique.infRat S T v τ) = v.map (tauE D τ)` using `rfl`. Use `show δ * ((GlobalTheory.FockPos.frAt frT τ)⁻¹ * Matrix.of (GlobalTheory.VacUnique.infRat S T v τ) * GlobalTheory.FockPos.frAt frS τ) a b = _`. Rewrite using `[hi, hv', GlobalTheory.FockPos.frAt, ← Matrix.map_mul, ← Matrix.map_mul]`. Both sides reduce to the same expression.
+-/
 theorem mem_La_of_finRat : ∀ {D : D7} (S T : HSp D) (frS : GL (Fin S.rank) D.host.E) (frT : GL (Fin T.rank) D.host.E), Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) frS.1 * S.gram * frS.1 = 1 → Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) frT.1 * T.gram * frT.1 = 1 → ∀ (Ls : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)) (Lt : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)), SD D Ls → SD D Lt → ∀ (δ : ℂ) (v : Matrix (Fin T.rank) (Fin S.rank) D.host.E), GlobalTheory.VacUnique.finRat S T v ∈ latO S T (GlobalTheory.MovedDict.inV frS Ls) (GlobalTheory.MovedDict.inV frT Lt) (fun _ => True) → δ • (fun τ a b => ((GlobalTheory.FockPos.frAt frT τ)⁻¹ * Matrix.of (GlobalTheory.VacUnique.infRat S T v τ) * GlobalTheory.FockPos.frAt frS τ) a b) ∈ Formalism.MainNotions.TaylorLogMetric.La D (Formalism.MainNotions.TaylorLogMetric.tor0 D D.host.ccK δ) Ls Lt := by
   intro D S T frS frT hS hT Ls Lt hLs hLt δ v hv
   obtain ⟨ΛS, hΛS, hSD⟩ := GlobalTheory.T.isSelfDual_image_orthonormalFrame_lattice S frS hS Ls hLs

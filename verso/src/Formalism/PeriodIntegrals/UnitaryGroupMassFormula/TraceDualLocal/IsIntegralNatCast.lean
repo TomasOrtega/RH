@@ -9,9 +9,41 @@ open scoped TensorProduct
 
 variable {K : Type} [Field K] [NumberField K] {ℓ : ℕ} [Fact ℓ.Prime]
 
+/- English proof (translation)
+Simplify using `using isIntegral_algebraMap (R := ℤ) (A := K) (x := (n : ℤ))`.
+-/
 theorem isIntegral_natCast' (n : ℕ) : IsIntegral ℤ (n : K) := by
   simpa using isIntegral_algebraMap (R := ℤ) (A := K) (x := (n : ℤ))
 
+/- English proof (translation)
+Establish `hℓ0 : ℓ ≠ 0` using `(Fact.out : ℓ.Prime).ne_zero`. Establish `h1 : ∀ i, ‖(ℓ : ℚ_[ℓ]) ^ D * (BA K ℓ).repr y i‖ ≤ 1`. Introduce `i`. Use `mem_S.1 (by simpa using h 1) i` as an intermediate fact. Rewrite `this` using `[BA_repr_natPow_mul, PadicInt.mem_subring_iff]`. Then use the resulting hypothesis.
+
+Set `wv : Module.Free.ChooseBasisIndex ℤ (𝓞 K) → ℤ_[ℓ]` to `fun i => ⟨(ℓ : ℚ_[ℓ]) ^ D * (BA K ℓ).repr y i, h1 i⟩`. Set `n : Module.Free.ChooseBasisIndex ℤ (𝓞 K) → ℕ` to `fun i => PadicInt.appr (wv i) D`. Establish `hsp : ∀ i, ∃ e : ℤ_[ℓ], e * (ℓ : ℤ_[ℓ]) ^ D = wv i - n i` using `fun i => Ideal.mem_span_singleton'.1 (PadicInt.appr_spec D (wv i))`. Use `choose e he using hsp`. Set `u : K` to `∑ i, (n i : K) * integralBasis K i`.
+
+Establish `hu : IsIntegral ℤ u`. Use `IsIntegral.sum _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[integralBasis_apply]`. Conclude with `(isIntegral_natCast' _).mul (RingOfIntegers.isIntegral_coe _)`. Establish `hℓD : (ℓ : K) ^ D ≠ 0` using `pow_ne_zero _ (Nat.cast_ne_zero.2 hℓ0)`.
+
+Set `s : K` to `((ℓ : K) ^ D)⁻¹ * u`. Establish `hsu : (ℓ : K) ^ D * s = u` using `mul_inv_cancel_left₀ hℓD u`. Establish `hm : y - 1 ⊗ₜ s ∈ S K ℓ`. Rewrite using `[mem_S]`. Introduce `i`.
+
+Rewrite using `[map_sub, Finsupp.sub_apply, BA_repr_tmul]`. Establish `hs : (integralBasis K).repr s i = (n i : ℚ) / (ℓ : ℚ) ^ D`. Establish `hs' : s = ∑ j, ((n j : ℚ) / (ℓ : ℚ) ^ D) • integralBasis K j`. Simplify using `only [s, u, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Rat.smul_def]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hs', Module.Basis.repr_sum_self]`. Rewrite using `[hs]`.
+
+Establish `h2 : ((e i * (ℓ : ℤ_[ℓ]) ^ D : ℤ_[ℓ]) : ℚ_[ℓ]) = ((wv i - n i : ℤ_[ℓ]) : ℚ_[ℓ])` using `by rw [he i]`. Rewrite `h2` using `[PadicInt.coe_mul, PadicInt.coe_pow, PadicInt.coe_sub, PadicInt.coe_natCast, PadicInt.coe_natCast]`. Express the relevant statement in the definitionally equal form `_ = (ℓ : ℚ_[ℓ]) ^ D * (BA K ℓ).repr y i - _ at h2`. Establish `hℓq : (ℓ : ℚ_[ℓ]) ^ D ≠ 0` using `pow_ne_zero _ (Nat.cast_ne_zero.2 hℓ0)`. Establish `hn : (n i : ℚ_[ℓ]) = (ℓ : ℚ_[ℓ]) ^ D * (BA K ℓ).repr y i - (e i : ℚ_[ℓ]) * (ℓ : ℚ_[ℓ]) ^ D`.
+
+Take the linear combination `h2`. Establish `key : (BA K ℓ).repr y i - (((n i : ℚ) / (ℓ : ℚ) ^ D : ℚ) : ℚ_[ℓ]) = (e i : ℚ_[ℓ])`. Use `push_cast`. Rewrite using `[hn]`. Clear the denominators using the available nonvanishing facts.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key, PadicInt.mem_subring_iff]`. Conclude with `(e i).norm_le_one`. Establish `hpow : ∀ k : ℕ, (ℓ : ℚ_[ℓ] ⊗[ℚ] K) ^ D * (1 ⊗ₜ s) ^ k ∈ S K ℓ`. Introduce `k`.
+
+Establish `e1 : (1 ⊗ₜ s : ℚ_[ℓ] ⊗[ℚ] K) = y + -(y - 1 ⊗ₜ s)` using `by ring`. Rewrite using `[e1, add_pow, Finset.mul_sum]`. Use `Subring.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Rewrite using `[show (ℓ : ℚ_[ℓ] ⊗[ℚ] K) ^ D * (y ^ j * (-(y - 1 ⊗ₜ s)) ^ (k - j) * (k.choose j : ℚ_[ℓ] ⊗[ℚ] K)) = ((ℓ : ℚ_[ℓ] ⊗[ℚ] K) ^ D * y ^ j) * ((-(y - 1 ⊗ₜ s)) ^ (k - j) * (k.choose j : ℚ_[ℓ] ⊗[ℚ] K)) by ring]`. Conclude with `Subring.mul_mem _ (h j) (Subring.mul_mem _ (Subring.pow_mem _ (Subring.neg_mem _ hm) _) (natCast_mem _ _))`.
+
+Establish `hint : ∀ k : ℕ, IsIntegral ℤ ((ℓ : K) ^ D * s ^ k)`. Introduce `k`. Apply `isIntegral_of_tmul_mem (ℓ := ℓ) _ (D * k)` to reduce the goal to its premises. Rewrite using `[show (ℓ : K) ^ (D * k) * ((ℓ : K) ^ D * s ^ k) = (ℓ : K) ^ D * ((ℓ : K) ^ D * s) ^ k by`. Rewrite using `[mul_pow, pow_mul]`.
+
+Use the proof step `ring, hsu]`. Conclude with `((isIntegral_natCast' ℓ).pow D).mul (hu.pow k)`. Establish `e2 : (1 ⊗ₜ ((ℓ : K) ^ D * s ^ k) : ℚ_[ℓ] ⊗[ℚ] K) = (ℓ : ℚ_[ℓ] ⊗[ℚ] K) ^ D * (1 ⊗ₜ s) ^ k`. Rewrite using `[← Algebra.TensorProduct.includeRight_apply, map_mul, map_pow, map_pow, map_natCast, Algebra.TensorProduct.includeRight_apply]`. Rewrite using `[e2]`.
+
+Conclude with `hpow k`. Establish `hs_int : IsIntegral ℤ s`. Use `isIntegral_of_pow_bdd s (ℓ ^ D) (pow_ne_zero _ hℓ0) fun k => ?_` and prove the remaining obligations. Use `push_cast`. Conclude with `hint k`.
+
+Establish `e3 : y = 1 ⊗ₜ s + (y - 1 ⊗ₜ s)` using `by ring`. Rewrite using `[e3]`. Conclude with `Subring.add_mem _ (tmul_mem_S s hs_int) hm`.
+-/
 theorem mem_S_of_pow (y : ℚ_[ℓ] ⊗[ℚ] K) (D : ℕ) (h : ∀ n : ℕ, (ℓ : ℚ_[ℓ] ⊗[ℚ] K) ^ D * y ^ n ∈ S K ℓ) :
     y ∈ S K ℓ := by
   have hℓ0 : ℓ ≠ 0 := (Fact.out : ℓ.Prime).ne_zero

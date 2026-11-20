@@ -37,10 +37,18 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 section Basic
 variable {a b : Type} [Fintype a] [DecidableEq a] [Fintype b] [DecidableEq b]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `only [om, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem om_smul (μ : kˣ →* ℂˣ) (g : GL a k) (h : GL b k) (z : ℂ) (Φ : Matrix b a k → ℂ) :
     om μ g h (z • Φ) = z • om μ g h Φ := by
   funext x; simp only [om, Pi.smul_apply, smul_eq_mul]; ring
 
+/- English proof (translation)
+Use `not_congr ⟨fun H => ?_, fun H => ?_⟩` and prove the remaining obligations. Use `om_mul μ g⁻¹ g h⁻¹ h Φ` as an intermediate fact. Rewrite `this` using `[inv_mul_cancel, inv_mul_cancel, om_one, H]`. Rewrite using `[this]`. Simplify using `using om_smul μ g⁻¹ h⁻¹ 0 Φ`.
+
+Rewrite using `[H]`. Simplify using `using om_smul μ g h 0 Φ`.
+-/
 theorem om_ne_zero (μ : kˣ →* ℂˣ) (g : GL a k) (h : GL b k) {Φ : Matrix b a k → ℂ} :
     om μ g h Φ ≠ 0 ↔ Φ ≠ 0 := by
   refine not_congr ⟨fun H => ?_, fun H => ?_⟩
@@ -49,6 +57,9 @@ theorem om_ne_zero (μ : kˣ →* ℂˣ) (g : GL a k) (h : GL b k) {Φ : Matrix 
     rw [this]; simpa using om_smul μ g⁻¹ h⁻¹ 0 Φ
   · rw [H]; simpa using om_smul μ g h 0 Φ
 
+/- English proof (translation)
+Take `⟨x, u, hu, rfl⟩` from `Radical.exists_of_mem_R hr`. Conclude with `⟨_, Radical.conj_mem x hu, x, by simp⟩`.
+-/
 theorem exists_of_mem_R {n : Type} [Fintype n] [DecidableEq n] {c p : ℕ} {r : GL (n ⊕ Fin c) k}
     (hr : r ∈ R k n c p) : ∃ u ∈ N k n c p, ∃ g, r = u * embX c g := by
   obtain ⟨x, u, hu, rfl⟩ := Radical.exists_of_mem_R hr
@@ -63,6 +74,9 @@ variable [MeasurableSpace k] [BorelSpace k] {ψ : AddChar k Circle} {ν : Measur
   {Φ : Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k → ℂ}
 
 omit [BorelSpace k] [DecidableEq n] [DecidableEq n'] in
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `only [opE, Pi.smul_apply, smul_eq_mul, mul_assoc, integral_const_mul]`.
+-/
 theorem opE_smul (p : ℕ) (z : ℂ) (Φ : Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k → ℂ) :
     opE ψ ν p (z • Φ) = z • opE ψ ν p Φ := by
   funext x
@@ -70,6 +84,11 @@ theorem opE_smul (p : ℕ) (z : ℂ) (Φ : Matrix (n ⊕ Fin c) (n' ⊕ Fin (c +
 
 variable [ν.IsAddHaarMeasure]
 
+/- English proof (translation)
+Establish `e : om μ (u' * embX (c + 1) g' * h' * (j' : GL (n' ⊕ Fin (c + 1)) k)) h Φ = om μ u' 1 (om μ (embX (c + 1) g') 1 (om μ h' h (om μ (j' : GL (n' ⊕ Fin (c + 1)) k) 1 Φ)))`. Rewrite using `[← om_mul, ← om_mul, ← om_mul]`. Simplify using the standard rewrite rules. Unfold `flat`. Rewrite using `[e, RootExSource.opE_om_source k n n' c 1 le_rfl hc ψ ν μ _ _ hu, (opE_om_embX k n n' c 1 le_rfl hc ψ ν μ _).2, H.1, om_smul, opE_smul, om_smul, smul_smul, smul_smul, show ((c : ℝ) + 2) / 2 - (1 : ℕ) = c / 2 by push_cast; ring]`.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem flat_source (hc : 1 ≤ c) (H : HasTypes μ P' P Φ) {u' : GL (n' ⊕ Fin (c + 1)) k} (hu : u' ∈ N k n' (c + 1) 1)
     (g' : GL n' k) (j' : P'.J) (h' : GL (n' ⊕ Fin (c + 1)) k) (h : GL (n ⊕ Fin c) k) :
     flat ψ ν μ Φ (u' * embX (c + 1) g' * h' * (j' : GL (n' ⊕ Fin (c + 1)) k)) h =
@@ -84,6 +103,11 @@ theorem flat_source (hc : 1 ≤ c) (H : HasTypes μ P' P Φ) {u' : GL (n' ⊕ Fi
     show ((c : ℝ) + 2) / 2 - (1 : ℕ) = c / 2 by push_cast; ring]
   congr 1; ring
 
+/- English proof (translation)
+Establish `e : om μ h' (u * embX c g * h * (j : GL (n ⊕ Fin c) k)) Φ = om μ 1 u (om μ 1 (embX c g) (om μ h' h (om μ 1 (j : GL (n ⊕ Fin c) k) Φ)))`. Rewrite using `[← om_mul, ← om_mul, ← om_mul]`. Simplify using the standard rewrite rules. Unfold `flat`. Rewrite using `[e, opE_om_target_unipotent k n n' c 1 le_rfl hc ψ ν μ _ _ hu, (opE_om_embX k n n' c 1 le_rfl hc ψ ν μ _).1, H.2, om_smul, opE_smul, om_smul, smul_smul, smul_smul, Nat.cast_one]`.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem flat_target (hc : 1 ≤ c) (H : HasTypes μ P' P Φ) {u : GL (n ⊕ Fin c) k} (hu : u ∈ N k n c 1)
     (g : GL n k) (j : P.J) (h' : GL (n' ⊕ Fin (c + 1)) k) (h : GL (n ⊕ Fin c) k) :
     flat ψ ν μ Φ h' (u * embX c g * h * (j : GL (n ⊕ Fin c) k)) =
@@ -99,6 +123,11 @@ theorem flat_target (hc : 1 ≤ c) (H : HasTypes μ P' P Φ) {u : GL (n ⊕ Fin 
     Nat.cast_one]
   congr 1; ring
 
+/- English proof (translation)
+Take `⟨r', hr', j', hj', rfl⟩` from `(DoubleCoset.eq _ _ _ _).1 e'`. Take `⟨r, hr, j, hj, rfl⟩` from `(DoubleCoset.eq _ _ _ _).1 e`. Take `⟨u', hu', g', rfl⟩` from `exists_of_mem_R hr'`. Take `⟨u, hu, g, rfl⟩` from `exists_of_mem_R hr`. Establish `n1 : ∀ (x : kˣ) (t : ℝ), ((nabs k x ^ t : ℝ) : ℂ) ≠ 0` using `fun x t => Complex.ofReal_ne_zero.2 (Real.rpow_pos_of_pos (nabs_pos k x) _).ne'`.
+
+Establish `n2 : ∀ (l : ℂˣ) (z : Circle) (x : kˣ) (t : ℝ) (f : Matrix n n' k → ℂ), ((l : ℂ) * (z : ℂ) * ((nabs k x ^ t : ℝ) : ℂ)) • f ≠ 0 ↔ f ≠ 0` using `fun l z x t f => by`. Rewrite using `[smul_ne_zero_iff, and_iff_right (mul_ne_zero (mul_ne_zero l.ne_zero z.coe_ne_zero) (n1 x t))]`. Rewrite using `[flat_source hc H hu' g' ⟨j', hj'⟩, flat_target hc H hu g ⟨j, hj⟩, n2 _ _ _ _, om_ne_zero, n2 _ _ _ _, om_ne_zero]`.
+-/
 theorem flat_ne_zero_congr (hc : 1 ≤ c) (H : HasTypes μ P' P Φ) {h₁' h₂' : GL (n' ⊕ Fin (c + 1)) k}
     {h₁ h₂ : GL (n ⊕ Fin c) k}
     (e' : DoubleCoset.mk (R k n' (c + 1) 1) P'.J h₁' = DoubleCoset.mk (R k n' (c + 1) 1) P'.J h₂')
@@ -116,10 +145,20 @@ theorem flat_ne_zero_congr (hc : 1 ≤ c) (H : HasTypes μ P' P Φ) {h₁' h₂'
   rw [flat_source hc H hu' g' ⟨j', hj'⟩, flat_target hc H hu g ⟨j, hj⟩,
     n2 _ _ _ _, om_ne_zero, n2 _ _ _ _, om_ne_zero]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun ⟨_, e, h0⟩ => (flat_ne_zero_congr hc H rfl e).1 h0, fun h0 => ⟨h, rfl, h0⟩⟩`.
+-/
 theorem mem_idxAt (hc : 1 ≤ c) (H : HasTypes μ P' P Φ) {h' : GL (n' ⊕ Fin (c + 1)) k} {h : GL (n ⊕ Fin c) k} :
     DoubleCoset.mk (R k n c 1) P.J h ∈ idxAt ψ ν μ Φ P.J h' ↔ flat ψ ν μ Φ h' h ≠ 0 :=
   ⟨fun ⟨_, e, h0⟩ => (flat_ne_zero_congr hc H rfl e).1 h0, fun h0 => ⟨h, rfl, h0⟩⟩
 
+/- English proof (translation)
+Establish `hΨ` using `om_mem_SB μ h' 1 hΦ`. Take `⟨Λ, hΛ, hinv⟩` from `sb_matrix_exists_isOpen_addSubgroup k _ _ _ hΨ`. Take `⟨Ω, hΩ, hs⟩` from `opE_support_compact_mod_R k n n' c 1 le_rfl hc ψ hψ.continuous hψ.ne_one ν _ hΨ.2 Λ hΛ`. Take `⟨S, hS⟩` from `QuotInt.finite_quot J hJ hΩ`. Use `(S.finite_toSet.image fun q => DoubleCoset.mk (R k n c 1) J q.out).subset ?_` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨h, rfl, h0⟩`. Take `⟨x₀, hx⟩` from `Function.ne_iff.1 h0`. Take `⟨r, hr, w, hw, rfl⟩` from `hs μ _ (subset_tsupport _) hinv (fun _ => 1) (IsLocallyConstant.const 1) h x₀ (by`. Simplify using `only [one_mul]`. Rewrite using `[show (fun x => om μ 1 h (om μ h' 1 Φ) x) = om μ h' h Φ by rw [← om_mul]; simp]`.
+
+Conclude with `hx)`. Use `⟨(w : _ ⧸ J), hS w hw, (DoubleCoset.eq _ _ _ _).2 ⟨r, hr, ((w : _ ⧸ J).out)⁻¹ * w, ?_, by simp [mul_assoc]⟩⟩` and prove the remaining obligations. Conclude with `QuotientGroup.eq.1 (QuotientGroup.out_eq' _)`.
+-/
 theorem idxAt_finite (hψ : HasConductor ψ 1) (hc : 1 ≤ c) (hΦ : Φ ∈ SB _) {J : Subgroup (GL (n ⊕ Fin c) k)}
     (hJ : IsOpen (J : Set (GL (n ⊕ Fin c) k))) (h' : GL (n' ⊕ Fin (c + 1)) k) : (idxAt ψ ν μ Φ J h').Finite := by
   have hΨ := om_mem_SB μ h' 1 hΦ
@@ -136,6 +175,9 @@ theorem idxAt_finite (hψ : HasConductor ψ 1) (hc : 1 ≤ c) (hΦ : Φ ∈ SB _
   refine ⟨(w : _ ⧸ J), hS w hw, (DoubleCoset.eq _ _ _ _).2 ⟨r, hr, ((w : _ ⧸ J).out)⁻¹ * w, ?_, by simp [mul_assoc]⟩⟩
   exact QuotientGroup.eq.1 (QuotientGroup.out_eq' _)
 
+/- English proof (translation)
+Introduce `n n' _ _ _ _ c hc μ P' P Φ hΦ _ hJ H`. Use `⟨fun h' h => opE_mem_SB 1 ψ ν (om_mem_SB μ h' h hΦ), idxAt_finite hψ hc hΦ hJ.1, fun u hu => flat_source hc H hu, fun u hu => flat_target hc H hu, fun _ _ _ _ => flat_ne_zero_congr hc H, fun h₁' h₂' e => ?_, fun b h' h => ?_⟩` and prove the remaining obligations. Use extensionality with `β`. Conclude with `exists_congr fun h => and_congr_right fun _ => flat_ne_zero_congr hc H e rfl`. Rewrite using `[mem_idxAt hc H, Ne, xi_eq_zero_iff ψ ν μ Φ hJ.1 hJ.2]`.
+-/
 theorem stepWellDefined (hψ : HasConductor ψ 1) : StepWellDefined ψ ν := by
   intro n n' _ _ _ _ c hc μ P' P Φ hΦ _ hJ H
   refine ⟨fun h' h => opE_mem_SB 1 ψ ν (om_mem_SB μ h' h hΦ), idxAt_finite hψ hc hΦ hJ.1,
@@ -145,11 +187,19 @@ theorem stepWellDefined (hψ : HasConductor ψ 1) : StepWellDefined ψ ν := by
     exact exists_congr fun h => and_congr_right fun _ => flat_ne_zero_congr hc H e rfl
   · rw [mem_idxAt hc H, Ne, xi_eq_zero_iff ψ ν μ Φ hJ.1 hJ.2]
 
+/- English proof (translation)
+The claim follows from `nabs_eq_one_of_valuation_eq_one (((T.isCO_prX_Cgrp_and_det_valuation_deltaR_eq_one k n c J hJ h).2 g ⟨u, hu, mem_Cgrp.2 ⟨mul_mem (Subgroup.mem_sup_right hu) (Subgroup.mem_sup_left ⟨g, rfl⟩), hm⟩⟩).1)`.
+-/
 theorem nabs_det_of_mem {J : Subgroup (GL (n ⊕ Fin c) k)} (hJ : IsCO J) {h u : GL (n ⊕ Fin c) k} (hu : u ∈ N k n c 1)
     {g : GL n k} (hm : h⁻¹ * (u * embX c g) * h ∈ J) : nabs k (Matrix.GeneralLinearGroup.det g) = 1 :=
   nabs_eq_one_of_valuation_eq_one (((T.isCO_prX_Cgrp_and_det_valuation_deltaR_eq_one k n c J hJ h).2 g ⟨u, hu, mem_Cgrp.2
     ⟨mul_mem (Subgroup.mem_sup_right hu) (Subgroup.mem_sup_left ⟨g, rfl⟩), hm⟩⟩).1)
 
+/- English proof (translation)
+Use `flat_target (ψ := ψ) (ν := ν) hc H hu g (⟨_, hm⟩ : P.J)⁻¹ h' h` as an intermediate fact. Rewrite `this` using `[show u * embX c g * h * (((⟨_, hm⟩ : P.J)⁻¹ : P.J) : GL (n ⊕ Fin c) k) = h by simp [mul_assoc], nabs_det_of_mem hJ hu hm, map_inv, inv_inv, AddChar.map_neg_eq_inv]`. Use `conv_rhs => rw [this, smul_smul]`. Use `Circle.coe_ne_zero (ψ (simpleSum u))` as an intermediate fact. Use `symm`.
+
+Use `one_smul ℂ _` and compare the differences between its conclusion and the goal. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
+-/
 theorem target_law (hc : 1 ≤ c) (hJ : IsCO P.J) (H : HasTypes μ P' P Φ) (h' : GL (n' ⊕ Fin (c + 1)) k)
     (h : GL (n ⊕ Fin c) k) {u : GL (n ⊕ Fin c) k} (hu : u ∈ N k n c 1) (g : GL n k)
     (hm : h⁻¹ * (u * embX c g) * h ∈ P.J) :
@@ -164,6 +214,11 @@ theorem target_law (hc : 1 ≤ c) (hJ : IsCO P.J) (H : HasTypes μ P' P Φ) (h' 
   convert one_smul ℂ _
   simp; field_simp
 
+/- English proof (translation)
+Use `flat_source (ψ := ψ) (ν := ν) hc H hu g (⟨_, hm⟩ : P'.J)⁻¹ h' h` as an intermediate fact. Rewrite `this` using `[show u * embX (c + 1) g * h' * (((⟨_, hm⟩ : P'.J)⁻¹ : P'.J) : GL (n' ⊕ Fin (c + 1)) k) = h' by simp [mul_assoc], nabs_det_of_mem hJ hu hm, map_inv]`. Use `conv_rhs => rw [this, smul_smul]`. Use `Circle.coe_ne_zero (ψ (simpleSum u))` as an intermediate fact. Use `symm`.
+
+Use `one_smul ℂ _` and compare the differences between its conclusion and the goal. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
+-/
 theorem source_law (hc : 1 ≤ c) (hJ : IsCO P'.J) (H : HasTypes μ P' P Φ) (h' : GL (n' ⊕ Fin (c + 1)) k)
     (h : GL (n ⊕ Fin c) k) {u : GL (n' ⊕ Fin (c + 1)) k} (hu : u ∈ N k n' (c + 1) 1) (g : GL n' k)
     (hm : h'⁻¹ * (u * embX (c + 1) g) * h' ∈ P'.J) :
@@ -182,9 +237,17 @@ end Step
 section Laws
 variable [MeasurableSpace k] [BorelSpace k] {ψ : AddChar k Circle} {ν : Measure k} [ν.IsAddHaarMeasure]
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ _ _ hc _ _ _ _ _ hJ _ H h' h _ hu g hm` and use `source_law hc hJ H h' h hu g hm`.
+-/
 theorem sourceLaw : SourceLaw ψ ν :=
   fun _ _ _ _ _ _ _ hc _ _ _ _ _ hJ _ H h' h _ hu g hm => source_law hc hJ H h' h hu g hm
 
+/- English proof (translation)
+Use `choose z hz using H`. Establish `h0 : ∀ g : S, z g g.2 ≠ 0` using `fun g e => (om_ne_zero μ 1 (g : GL b k)).2 hf (by rw [hz g g.2, e, zero_smul])`. Use `⟨MonoidHom.mk' (fun g => Units.mk0 _ (h0 g)) fun g g' => Units.ext (smul_left_injective ℂ hf ?_), fun g => hz g g.2⟩` and prove the remaining obligations. Use `om_mul μ 1 1 (g : GL b k) g' f` as an intermediate fact. Rewrite `this` using `[hz g' g'.2, om_smul, hz g g.2, smul_smul, mul_one, mul_comm]`.
+
+Conclude with `(hz _ (g * g').2).symm.trans this`.
+-/
 theorem exists_char {a b : Type} [Fintype a] [DecidableEq a] [Fintype b] [DecidableEq b] (μ : kˣ →* ℂˣ)
     (S : Subgroup (GL b k)) {f : Matrix b a k → ℂ} (hf : f ≠ 0) (H : ∀ g ∈ S, ∃ z : ℂ, om μ 1 g f = z • f) :
     ∃ χ : S →* ℂˣ, ∀ g : S, om μ 1 (g : GL b k) f = (χ g : ℂ) • f := by
@@ -197,10 +260,18 @@ theorem exists_char {a b : Type} [Fintype a] [DecidableEq a] [Fintype b] [Decida
   exact (hz _ (g * g').2).symm.trans this
 
 omit [BorelSpace k] [ν.IsAddHaarMeasure] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem xi_eq_smul {n n' : Type} [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n'] {c : ℕ} (μ : kˣ →* ℂˣ)
     (Φ : Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k → ℂ) (J : Subgroup (GL (n ⊕ Fin c) k)) (b h' h) :
     xi ψ ν μ Φ J b h' h = (((volNat ν b (Cgrp J h))⁻¹ : ℝ) : ℂ) • flat ψ ν μ Φ h' h := rfl
 
+/- English proof (translation)
+Introduce `n n' _ _ _ _ c hc μ P' P Φ hΦ _ hJ H h' h`. Use `⟨fun u hu => target_law hc hJ H h' h hu, fun h0 => ?_⟩` and prove the remaining obligations. Take `⟨χ, hχ⟩` from `exists_char μ (prX (Cgrp P.J h)) h0 fun g ⟨u, hu, hm⟩ => ⟨_, target_law hc hJ H h' h hu g (mem_Cgrp.1 hm).2⟩`. Use `⟨χ, fun g u hu hm => smul_left_injective ℂ h0 ((hχ g).symm.trans (target_law hc hJ H h' h hu g hm)), fun g => ⟨hχ g, fun b => ?_, fun V' V _ _ _ _ π' π θ hθ φ => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[xi_eq_smul, om_smul, hχ, smul_comm]`.
+
+Rewrite using `[← hθ 1 g φ (flat ψ ν μ Φ h' h) (opE_mem_SB 1 ψ ν (om_mem_SB μ h' h hΦ)), map_one, Module.End.one_apply]`. Conclude with `(congrArg _ (hχ g)).trans (map_smul _ _ _)`.
+-/
 theorem targetLaw : TargetLaw ψ ν := by
   intro n n' _ _ _ _ c hc μ P' P Φ hΦ _ hJ H h' h
   refine ⟨fun u hu => target_law hc hJ H h' h hu, fun h0 => ?_⟩
@@ -215,10 +286,20 @@ theorem targetLaw : TargetLaw ψ ν := by
 variable {s : ℕ} {X : ℕ → Type} [∀ j, Fintype (X j)] [∀ j, DecidableEq (X j)] {Z : Type} [Fintype Z] [DecidableEq Z]
 
 omit [MeasurableSpace k] [BorelSpace k] in
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(hT.2.2 j c h).1, (hT.2.2 j c h).2.1⟩`.
+-/
 theorem isCO_lev {T : Chain k s X Z} (hT : T.Regular) (j c h) : IsCO (T.lev j c h).J :=
   ⟨(hT.2.2 j c h).1, (hT.2.2 j c h).2.1⟩
 
 omit [MeasurableSpace k] [BorelSpace k] in
+/- English proof (translation)
+Take `rfl : u = 1` from `Units.ext (Matrix.ext fun r t => Model.mem_N_iff.1 hu r t (by`. Apply the tactic sequence `rcases r with r | r <;> rcases t with t | t <;> simp [lev]))`. Establish `e : om (T.mu (s + 1)) (embX (0 + 1) g) 1 (om (T.mu (s + 1)) h 1 (T.Phi s 0 rfl)) = ((T.lev s (0 + 1) rfl).lam ⟨_, hm⟩ : ℂ) • om (T.mu (s + 1)) h 1 (T.Phi s 0 rfl)`. Rewrite using `[← om_smul, ← (hL.1 s 0 rfl).1 ⟨_, hm⟩, ← om_mul, ← om_mul]`. Simplify using `[mul_assoc]`.
+
+Establish `d : Matrix.GeneralLinearGroup.det (embX (0 + 1) g) = Matrix.GeneralLinearGroup.det g` using `Units.ext (by simp [Matrix.GeneralLinearGroup.val_det_apply, Radical.embX_val])`. Use function extensionality and compare the values at `x`. Establish `w : withCol x y * (embX (0 + 1) g).val = withCol (x * g.val) y`. Simplify using `[withCol, Radical.embX_val, fromBlocks_multiply]`. Use `congrFun e (withCol x y)` as an intermediate fact.
+
+Rewrite `this` using `[om, d]`. Simplify using `only [inv_one, Units.val_one, Matrix.one_mul, w] at this`. Rewrite using `[om, Radical.simpleSum_eq_zero (by simp [Matrix.one_apply])]`. Simplify `this` using `[Chain.Psi, nabs_one]`.
+-/
 theorem psi_law (ψ : AddChar k Circle) {T : Chain k s X Z} (hL : T.Laws) (h) {u} (hu : u ∈ N k (X s) (0 + 1) 1)
     (g : GL (X s) k) (hm : h⁻¹ * (u * embX (0 + 1) g) * h ∈ (T.lev s (0 + 1) rfl).J) (y : X (s + 1) → k) :
     om (T.mu (s + 1)) g 1 (fun x₀ => T.Psi h x₀ y) =
@@ -239,6 +320,9 @@ theorem psi_law (ψ : AddChar k Circle) {T : Chain k s X Z} (hL : T.Laws) (h) {u
   rw [om, Radical.simpleSum_eq_zero (by simp [Matrix.one_apply])]
   simpa [Chain.Psi, nabs_one] using this
 
+/- English proof (translation)
+Rewrite using `[Chain.entry, xi_eq_smul, om_smul, target_law (by omega) (isCO_lev hT _ _ _) (hL.1 j (c + 1) (by omega)) h' h hu g hm, smul_comm]`.
+-/
 theorem entry_target {T : Chain k s X Z} (hT : T.Regular) (hL : T.Laws) (j c) (H : j + 1 + c = s) (h' h) {u}
     (hu : u ∈ N k (X (j + 1)) (c + 1) 1) (g) (hm : h⁻¹ * (u * embX (c + 1) g) * h ∈ (T.lev (j + 1) (c + 1) (by omega)).J) :
     om (T.mu (j + 1)) 1 g (T.entry ψ ν j c H h' h) =
@@ -247,6 +331,11 @@ theorem entry_target {T : Chain k s X Z} (hT : T.Regular) (hL : T.Laws) (j c) (H
   rw [Chain.entry, xi_eq_smul, om_smul,
     target_law (by omega) (isCO_lev hT _ _ _) (hL.1 j (c + 1) (by omega)) h' h hu g hm, smul_comm]
 
+/- English proof (translation)
+Introduce `s X _ _ Z _ _ T hT hL`. Use `⟨?_, fun h u hu => psi_law ψ hL h hu⟩` and prove the remaining obligations. Introduce and unpack `j c H h' h h'' g ⟨u, hu, hm⟩ x x'`. Establish `hm` using `(mem_Cgrp.1 hm).2`. Apply the tactic sequence `rw [entry_target hT hL j (c + 1) _ h' h hu g hm, show T.entry ψ ν (j + 1) c H h h'' = _ from xi_eq_smul _ _ _ _ _ _, om_smul, source_law (by omega) (isCO_lev hT _ _ _) (hL.1 (j + 1) (c + 1) (by omega)) h h'' hu g hm]`.
+
+Use `Circle.coe_ne_zero (ψ (simpleSum u))` as an intermediate fact. Simplify using `only [Pi.smul_apply, smul_eq_mul, Units.val_inv_eq_inv_val]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem chainInvariant : ChainInvariant ψ ν := by
   intro s X _ _ Z _ _ T hT hL
   refine ⟨?_, fun h u hu => psi_law ψ hL h hu⟩
@@ -258,6 +347,11 @@ theorem chainInvariant : ChainInvariant ψ ν := by
   simp only [Pi.smul_apply, smul_eq_mul, Units.val_inv_eq_inv_val]
   field_simp
 
+/- English proof (translation)
+Introduce and unpack `j X _ _ Z _ _ T hT hL h' h g ⟨u, hu, hm⟩ x x' y`. Establish `hm` using `(mem_Cgrp.1 hm).2`. Rewrite using `[entry_target hT hL j 0 _ h' h hu g hm, psi_law ψ hL h hu g hm]`. Use `Circle.coe_ne_zero (ψ (simpleSum u))` as an intermediate fact. Simplify using `only [Pi.smul_apply, smul_eq_mul, Units.val_inv_eq_inv_val]`.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem chainInvariantLast : ChainInvariantLast ψ ν := by
   rintro j X _ _ Z _ _ T hT hL h' h g ⟨u, hu, hm⟩ x x' y
   have hm := (mem_Cgrp.1 hm).2
@@ -266,6 +360,11 @@ theorem chainInvariantLast : ChainInvariantLast ψ ν := by
   simp only [Pi.smul_apply, smul_eq_mul, Units.val_inv_eq_inv_val]
   field_simp
 
+/- English proof (translation)
+Proceed by induction on `j with`. Consider the case `zero => intro c h`. Rewrite using `[hA.zero]`. Conclude with `Set.finite_singleton _`. Consider the case `succ j ih`.
+
+Introduce `c h`. Use `Set.Finite.of_finite_image ?_ (hA.bij j c h).injOn` and prove the remaining obligations. Rewrite using `[(hA.bij j c h).image_eq]`. Conclude with `(ih _ _).biUnion fun g _ => idxAt_finite hψ (by omega) (hT.1 _ _ _) (hT.2.2 _ _ _).1 g`.
+-/
 theorem reps_finite (hψ : HasConductor ψ 1) {T : Chain k s X Z} (hT : T.Regular) {A : RepFam k s X}
     (hA : T.IsRepSystem A ψ ν) (j : ℕ) : ∀ c h, (A j c h).Finite := by
   induction j with
@@ -276,6 +375,13 @@ theorem reps_finite (hψ : HasConductor ψ 1) {T : Chain k s X Z} (hT : T.Regula
     rw [(hA.bij j c h).image_eq]
     exact (ih _ _).biUnion fun g _ => idxAt_finite hψ (by omega) (hT.1 _ _ _) (hT.2.2 _ _ _).1 g
 
+/- English proof (translation)
+Proceed by induction on `j with`. Consider the case `zero => intro c h`. Rewrite using `[hA.zero, hA'.zero]`. Consider the case `succ j ih`. Introduce `c h`.
+
+Rewrite using `[(hA.bij j c h).image_eq, (hA'.bij j c h).image_eq]`. Establish `key : ∀ {B B' : Set (GL (X j ⊕ Fin (c + 1 + 1)) k)}, DoubleCoset.mk (R k (X j) (c + 1 + 1) 1) (T.lev j (c + 1 + 1) (by omega)).J '' B = DoubleCoset.mk (R k (X j) (c + 1 + 1) 1) (T.lev j (c + 1 + 1) (by omega)).J '' B' → ⋃ g ∈ B, T.idx ψ ν j c h g ⊆ ⋃ g ∈ B', T.idx ψ ν j c h g`. Introduce `B B' e β hβ`. Take `⟨g, hg, x, rfl, hx⟩` from `Set.mem_iUnion₂.1 hβ`. Take `⟨g', hg', e'⟩` from `e ▸ Set.mem_image_of_mem _ hg`.
+
+Conclude with `Set.mem_iUnion₂.2 ⟨g', hg', x, rfl, (flat_ne_zero_congr (by omega) (hL.1 j (c + 1) (by omega)) e' rfl).2 hx⟩`. Conclude with `(key (ih _ _)).antisymm (key (ih _ _).symm)`.
+-/
 theorem reps_image {T : Chain k s X Z} (hL : T.Laws) {A A' : RepFam k s X}
     (hA : T.IsRepSystem A ψ ν) (hA' : T.IsRepSystem A' ψ ν) (j : ℕ) : ∀ c (h : j + c = s),
     DoubleCoset.mk (R k (X j) (c + 1) 1) (T.lev j (c + 1) (by omega)).J '' A j c h =
@@ -296,6 +402,11 @@ theorem reps_image {T : Chain k s X Z} (hL : T.Laws) {A A' : RepFam k s X}
         (flat_ne_zero_congr (by omega) (hL.1 j (c + 1) (by omega)) e' rfl).2 hx⟩
     exact (key (ih _ _)).antisymm (key (ih _ _).symm)
 
+/- English proof (translation)
+Introduce `s X _ _ Z _ _ T hT hL`. Use `⟨fun j c h g g' => ?_, fun A hA => ⟨reps_finite hψ hT hA, fun A' hA' => reps_image hL hA hA', fun ϖ hϖ => ?_, fun c₁ c₂ => (GlobalTheory.T.finite_quotient_cosets_scaledStandardLatticeBox k _ c₁ c₂).subset fun yb ⟨y, hy, e, _⟩ => ⟨y, hy, e⟩⟩⟩` and prove the remaining obligations. Conclude with `(stepWellDefined hψ _ _ (c + 1) (by omega) _ _ _ _ (hT.1 _ _ _) (isCO_lev hT _ _ _) (isCO_lev hT _ _ _) (hL.1 j (c + 1) (by omega))).2.2.2.2.2.2 _ g g'`. Take `⟨e, he, H⟩` from `GlobalTheory.T.exists_adapted_exponent_schwartzBruhat_lastColumn k _ _ _ ((reps_finite hψ hT hA s 0 rfl).image fun g => om (T.mu (s + 1)) g 1 (T.Phi s 0 rfl)) (by`. Introduce and unpack `_ ⟨g, -, rfl⟩`.
+
+Conclude with `om_mem_SB _ _ _ (hT.1 _ _ _)) ϖ hϖ`. Conclude with `⟨e, he, fun g hg => H _ ⟨g, hg, rfl⟩⟩`.
+-/
 theorem chainFinite (hψ : HasConductor ψ 1) : ChainFinite ψ ν := by
   intro s X _ _ Z _ _ T hT hL
   refine ⟨fun j c h g g' => ?_, fun A hA => ⟨reps_finite hψ hT hA, fun A' hA' => reps_image hL hA hA',
@@ -314,9 +425,19 @@ variable [MeasurableSpace k] [BorelSpace k] {ν : Measure k} [ν.IsAddHaarMeasur
   {n : Type} [Fintype n] [DecidableEq n] {c : ℕ}
 
 omit [MeasurableSpace k] [BorelSpace k] in
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hH.1.preimage continuous_subtype_val, (VolN.isClosed_N 1).isClosedEmbedding_subtypeVal.isCompact_preimage hH.2⟩`.
+-/
 theorem isCO_subgroupOf {H : Subgroup (GL (n ⊕ Fin c) k)} (hH : IsCO H) : IsCO (H.subgroupOf (N k n c 1)) :=
   ⟨hH.1.preimage continuous_subtype_val, (VolN.isClosed_N 1).isClosedEmbedding_subtypeVal.isCompact_preimage hH.2⟩
 
+/- English proof (translation)
+Take `⟨bG, -⟩` from `volGL_haar k (n ⊕ Fin c) ν`. Use `VolN.isHaarMeasure_volN (n := n) (c := c) ν 1` as an intermediate fact. Establish `e : (Cgrp J h).subgroupOf (N k n c 1) = (J.comap (MulAut.conj h⁻¹).toMonoidHom).subgroupOf (N k n c 1)`. Use extensionality with `u`. Conclude with `⟨fun H => H.2, fun H => ⟨(le_sup_right : N k n c 1 ≤ R k n c 1) u.2, H⟩⟩`.
+
+Unfold `volNat`. Rewrite using `[e]`. Use `GlobalTheory.T.haar_compactOpen_ratio_eq_zpow_of_topNilpotent (N k n c 1) (volN ν n c 1) _ hq (fun u U hU => ?_) _ _ (isCO_subgroupOf (isOpen_isCompact_conj h hJ.1 hJ.2)) (isCO_subgroupOf (isOpen_isCompact_conj b SplitFlip.isOpen_KO SplitFlip.isCompact_KO))` and prove the remaining obligations. Take `⟨V, hV, hVU⟩` from `(mem_nhds_subtype _ _ _).1 hU`. Take `⟨m, hm⟩` from `GlobalTheory.T.rootExchangeUnipotent_exists_residueCardPow_mem_nhds k n c 1 hq u u.2 V hV`.
+
+Conclude with `⟨m, hVU hm⟩`.
+-/
 theorem volNat_zpow (hq : (resCard k).Prime) {J : Subgroup (GL (n ⊕ Fin c) k)} (hJ : IsCO J)
     (h b : GL (n ⊕ Fin c) k) : ∃ z : ℤ, volNat ν b (Cgrp J h) = (resCard k : ℝ) ^ z := by
   obtain ⟨bG, -⟩ := volGL_haar k (n ⊕ Fin c) ν
@@ -333,6 +454,13 @@ theorem volNat_zpow (hq : (resCard k).Prime) {J : Subgroup (GL (n ⊕ Fin c) k)}
   obtain ⟨m, hm⟩ := GlobalTheory.T.rootExchangeUnipotent_exists_residueCardPow_mem_nhds k n c 1 hq u u.2 V hV
   exact ⟨m, hVU hm⟩
 
+/- English proof (translation)
+Introduce `n _ _ c hc J hJ h`. Take `⟨hC, hd⟩` from `GlobalTheory.T.isCO_prX_Cgrp_and_det_valuation_deltaR_eq_one k n c J hJ h`. Use `⟨hC, hd, GlobalTheory.T.exists_parabolicDoubleCosetFunction_eq_one k n c J h fun g hg => (hd g hg).2, fun hq => volNat_zpow hq hJ h, fun m hm => ?_⟩` and prove the remaining obligations. Establish `hv` using `GlobalTheory.T.parabolicHaarVolume_conjIntersection_eq_mul k ν n c J h hC.1`. Take `⟨h0, h1⟩` from `volN_Cgrp ν hJ.1 hJ.2 h`.
+
+Establish `m0 : m (prX (Cgrp J h)) ≠ 0` using `hC.1.measure_ne_zero m ⟨1, one_mem _⟩`. Establish `m1 : m (prX (Cgrp J h)) ≠ ⊤` using `hC.2.measure_lt_top.ne`. Establish `v0 : volR ν m (Cgrp J h) ≠ 0` using `by rw [hv]; exact mul_ne_zero h0 m0`. Establish `v1 : volR ν m (Cgrp J h) ≠ ⊤` using `by rw [hv]; exact ENNReal.mul_ne_top h1 m1`. Use `⟨hv m, v0, v1, fun b => ?_, fun μG hμG f hf z => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hv, rescale, volNat, Measure.smul_apply, smul_eq_mul, ENNReal.toReal_mul, ENNReal.toReal_mul, ENNReal.toReal_inv]`. Expand and normalize the polynomial expressions, which then agree. Establish `key` using `GlobalTheory.T.isQuotInt_cosetFn_alt k ν n c J hJ h m (volR ν m (Cgrp J h)).toReal (ENNReal.toReal_pos v0 v1).ne' (fun u hu g => by rw [GlobalTheory.T.integral_indicator_Cgrp_translate_eq_deltaR_mul k ν n c hc J hJ h hC m u hu g, hv, ENNReal.toReal_mul]) μG f hf`. Conclude with `⟨fun hz => (QuotInt.quotInt_unique_exists k n c 1 le_rfl hc ν m μG f).1 _ _ hz key, fun e => e ▸ key⟩`.
+-/
 theorem cosetMeasure : CosetMeasure ν := by
   intro n _ _ c hc J hJ h
   obtain ⟨hC, hd⟩ := GlobalTheory.T.isCO_prX_Cgrp_and_det_valuation_deltaR_eq_one k n c J hJ h
@@ -351,6 +479,13 @@ theorem cosetMeasure : CosetMeasure ν := by
       (fun u hu g => by rw [GlobalTheory.T.integral_indicator_Cgrp_translate_eq_deltaR_mul k ν n c hc J hJ h hC m u hu g, hv, ENNReal.toReal_mul]) μG f hf
     exact ⟨fun hz => (QuotInt.quotInt_unique_exists k n c 1 le_rfl hc ν m μG f).1 _ _ hz key, fun e => e ▸ key⟩
 
+/- English proof (translation)
+Introduce `n _ _ c hc J hJ b h m hm μG hμG h1 f hf`. Take `⟨hC, -, -, -, H⟩` from `cosetMeasure (ν := ν) n c hc J hJ h`. Take `⟨s1, s2⟩` from `isOpen_isCompact_conj b (SplitFlip.isOpen_KO (n := n ⊕ Fin c)) SplitFlip.isCompact_KO`. Take `⟨s3, s4⟩` from `volN_ne_zero_ne_top ν 1 s1 s2`. Establish `hm' : (rescale ν b m).IsHaarMeasure` using `Measure.IsHaarMeasure.smul m (ENNReal.inv_ne_zero.2 s4) (ENNReal.inv_ne_top.2 s3)`.
+
+Establish `key` using `(H _ hm').2.2.2.2 μG hμG f hf`. Use `⟨_, (key _).2 rfl, fun z' hz => (key _).1 hz, ?_⟩` and prove the remaining obligations. Establish `m0 : (m (prX (Cgrp J h))).toReal ≠ 0` using `(ENNReal.toReal_pos (hC.1.measure_ne_zero m ⟨1, one_mem _⟩) hC.2.measure_lt_top.ne).ne'`. Rewrite using `[(H m hm).2.2.2.1 b, h1, ← mul_assoc, ← Complex.ofReal_mul]`. Use `congr 2`.
+
+Use `(volNat_Cgrp_pos ν hJ.1 hJ.2 b h).ne'` as an intermediate fact. Simplify using `only [ENNReal.toReal_one]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem volumeCancels : VolumeCancels ν := by
   intro n _ _ c hc J hJ b h m hm μG hμG h1 f hf
   obtain ⟨hC, -, -, -, H⟩ := cosetMeasure (ν := ν) n c hc J hJ h
@@ -373,6 +508,15 @@ end Volumes
 section First
 variable [MeasurableSpace k] [BorelSpace k] {ψ : AddChar k Circle} {ν : Measure k} [ν.IsAddHaarMeasure]
 
+/- English proof (translation)
+Use `⟨fun c hc => ?_, fun c hc h γ hγ => ?_⟩` and prove the remaining obligations. Take `⟨h1, h2, h3⟩` from `H c hc`. Use `⟨h1, h2, ?_⟩` and prove the remaining obligations. Use `choose hm hlam using h2`. Establish `hK : ∀ γ : prX (Cgrp (C.lev 0 c hc).J 1), (γ : GL (X 0) k) ∈ K₀` using `fun γ => h1 ▸ γ.2`.
+
+Set `ι : prX (Cgrp (C.lev 0 c hc).J 1) →* (C.lev 0 c hc).J` to `((embX c).comp (Subgroup.subtype _)).codRestrict _ fun γ => hm γ (hK γ)`. Use `⟨((C.lev 0 c hc).lam.comp ι)⁻¹, fun γ u hu hu' => ?_, fun γ => ?_⟩` and prove the remaining obligations. Establish `hu'' : u ∈ (C.lev 0 c hc).J` using `by simpa using mul_mem hu' (inv_mem (hm γ (hK γ)))`. Rewrite using `[← h3 u hu hu'', show (⟨_, hu'⟩ : (C.lev 0 c hc).J) = ⟨u, hu''⟩ * ι γ from Subtype.ext (by simp; rfl), map_mul]`. Simplify using the standard rewrite rules.
+
+Clear the denominators using the available nonvanishing facts. Rewrite using `[← hlam γ (hK γ)]`. Conclude with `Units.inv_mul _`. Take `⟨hm, e⟩` from `(H (c + 1 + 1) (by omega)).2.1 γ hγ`. Rewrite using `[source_law (by omega) (isCO_lev hT _ _ _) (hL.1 0 (c + 1) hc) 1 h (one_mem _) γ (by simpa using hm), Radical.simpleSum_eq_zero (by simp [Matrix.one_apply]), ← e]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem firstVertex {s : ℕ} {X : ℕ → Type} [∀ j, Fintype (X j)] [∀ j, DecidableEq (X j)] {Z : Type} [Fintype Z]
     [DecidableEq Z] {C : Chain k s X Z} (hT : C.Regular) (hL : C.Laws) {K₀ : Set (GL (X 0) k)}
     {lam : GL (X 0) k → ℂ} (H : ∀ c (H : 0 + c = s + 1), (prX (Cgrp (C.lev 0 c H).J 1) : Set (GL (X 0) k)) = K₀ ∧
@@ -399,6 +543,11 @@ theorem firstVertex {s : ℕ} {X : ℕ → Type} [∀ j, Fintype (X j)] [∀ j, 
       Radical.simpleSum_eq_zero (by simp [Matrix.one_apply]), ← e]
     simp
 
+/- English proof (translation)
+Introduce `s t _ _`. Use `⟨fun κ ϖ hϖ => ⟨GlobalTheory.T.exists_genericLevelOfFrame k ψ hψ ϖ hϖ _ _, fun ρ _ => GlobalTheory.T.exists_isSymmetricPositionLevel k ψ hψ ϖ hϖ ρ _ _, fun P hP μ hμ => ?_⟩, fun κ _ _ δ hδ η hη => ?_⟩` and prove the remaining obligations. Use `firstVertex (Chain.ofType_regular _ _ _ _ _) (Chain.ofType_laws _ _ _ _ _) (GlobalTheory.T.firstVertex_iteratedLevelChain_in_frame k ψ ϖ s t κ P ?_ μ hμ)` and prove the remaining obligations. Break down `hP with hP | ⟨ρ, -, hP⟩` into its components or cases. Use `exacts [GlobalTheory.T.genericLevelOfFrame_block_and_character k ψ ϖ _ _ P hP, GlobalTheory.T.symmetricPositionLevel_shape_on_parabolic k ψ ϖ ρ _ _ P hP]`.
+
+Conclude with `firstVertex (Chain.ofTwist_regular _ _ _ _ _) (Chain.ofTwist_laws _ _ _ hη _ _) (GlobalTheory.T.firstVertex_parahoricLevelChain_twist k ψ hψ s t κ δ hδ η)`.
+-/
 theorem firstVertexChains (hψ : HasConductor ψ 1) : FirstVertexChains ψ ν := by
   intro s t _ _
   refine ⟨fun κ ϖ hϖ => ⟨GlobalTheory.T.exists_genericLevelOfFrame k ψ hψ ϖ hϖ _ _, fun ρ _ => GlobalTheory.T.exists_isSymmetricPositionLevel k ψ hψ ϖ hϖ ρ _ _, fun P hP μ hμ => ?_⟩,
@@ -412,6 +561,9 @@ theorem firstVertexChains (hψ : HasConductor ψ 1) : FirstVertexChains ψ ν :=
 
 end First
 
+/- English proof (translation)
+Introduce `k _ _ _ _ _ _ ψ ν hψ hν`. Use `hν.1` as an intermediate fact. Conclude with `⟨stepWellDefined hψ, chainFinite hψ, cosetMeasure, volumeCancels, targetLaw, sourceLaw, chainInvariant, chainInvariantLast, firstVertexChains hψ⟩`.
+-/
 theorem entries_wellDefined : GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum.Statement := by
   intro k _ _ _ _ _ _ ψ ν hψ hν
   have := hν.1

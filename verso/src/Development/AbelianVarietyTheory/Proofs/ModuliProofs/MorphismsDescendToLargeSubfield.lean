@@ -10,6 +10,19 @@ open scoped CategoryTheory.Obj TensorProduct
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `K _ K₀ X₀ X p₀ p φ Z q _ _ _ I _ f hX hf`. Establish `hX' : IsPullback φ p p₀ (spMap (algebraMap K₀ K))` using `hX`. Take `⟨R, g, ⟨s, rfl⟩, -, hg⟩` from `Spread.exists_fg_forall_comp_eq (A := K) p₀ q (fun j ↦ hX'.isoPullback.inv ≫ f j) (fun j ↦ by rw [Category.assoc, hf, IsPullback.isoPullback_inv_fst_assoc]) ⊥ Subalgebra.fg_bot`. Use `⟨s, fun K₁ h hs X₁ p₁ φ₁ ψ h₁ hψ₁ hψ₂ ↦ ?_⟩` and prove the remaining obligations. Establish `hle : ∀ x ∈ Algebra.adjoin K₀ (s : Set K), x ∈ K₁`.
+
+Introduce `x hx`. Proceed by induction on `hx using Algebra.adjoin_induction with`. Consider the case `mem x hx => exact hs hx`. Consider the case `algebraMap r => exact h r.2`. Consider the case `add x y _ _ hx hy => exact add_mem hx hy`.
+
+Consider the case `mul x y _ _ hx hy => exact mul_mem hx hy`. Set `e : Algebra.adjoin K₀ (s : Set K) →+* K₁` to `(Algebra.adjoin K₀ (s : Set K)).val.toRingHom.codRestrict K₁ fun x ↦ hle x x.2`. Establish `he₁ : spMap e ≫ spMap (algebraMap K₀ (Algebra.adjoin K₀ (s : Set K))) = spMap (Subfield.inclusion h)`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Both sides reduce to the same expression.
+
+Establish `he₂ : spMap K₁.subtype ≫ spMap e = spMap (Algebra.adjoin K₀ (s : Set K)).val.toRingHom`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Both sides reduce to the same expression. Set `u : X₁ ⟶ pullback p₀ (spMap (algebraMap K₀ (Algebra.adjoin K₀ (s : Set K))))` to `pullback.lift φ₁ (p₁ ≫ spMap e) (by rw [Category.assoc, he₁, h₁.w])`. Establish `hu : ψ ≫ u = hX'.isoPullback.hom ≫ Spread.bcMap p₀ (Algebra.adjoin K₀ (s : Set K)).val`.
+
+Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, Category.assoc, Spread.bcMap_fst, IsPullback.isoPullback_hom_fst, pullback.lift_fst, hψ₁]`. Rewrite using `[Category.assoc, Category.assoc, Spread.bcMap_snd, IsPullback.isoPullback_hom_snd_assoc, pullback.lift_snd, ← Category.assoc, hψ₂, Category.assoc, he₂]`. Use `⟨fun j ↦ u ≫ g j, fun j ↦ ⟨?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← Category.assoc, hu, Category.assoc, (hg j).2, Iso.hom_inv_id_assoc]`.
+
+Rewrite using `[Category.assoc, (hg j).1, pullback.lift_fst_assoc]`.
+-/
 theorem morphisms_descend_to_large_subfield :
     ∀ (K : Type) [Field K] (K₀ : Subfield K) (X₀ X : Scheme.{0}) (p₀ : X₀ ⟶ Sp K₀) (p : X ⟶ Sp K) (φ : X ⟶ X₀) (Z : Scheme.{0}) (q : Z ⟶ Sp K₀) [QuasiCompact p₀] [QuasiSeparated p₀] [LocallyOfFinitePresentation q] (I : Type) [Finite I] (f : I → (X ⟶ Z)), IsPullback φ p p₀ (spMap K₀.subtype) → (∀ j, f j ≫ q = φ ≫ p₀) → ∃ s : Finset K, ∀ (K₁ : Subfield K) (h : K₀ ≤ K₁), (s : Set K) ⊆ K₁ → ∀ (X₁ : Scheme.{0}) (p₁ : X₁ ⟶ Sp K₁) (φ₁ : X₁ ⟶ X₀) (ψ : X ⟶ X₁), IsPullback φ₁ p₁ p₀ (spMap (Subfield.inclusion h)) → ψ ≫ φ₁ = φ → ψ ≫ p₁ = p ≫ spMap K₁.subtype → ∃ f₁ : I → (X₁ ⟶ Z), ∀ j, ψ ≫ f₁ j = f j ∧ f₁ j ≫ q = φ₁ ≫ p₀ := by
   intro K _ K₀ X₀ X p₀ p φ Z q _ _ _ I _ f hX hf

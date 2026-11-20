@@ -17,6 +17,17 @@ open GlobalTheory GlobalTheory.CxPts GlobalTheory.VB
 
 namespace GlobalTheory.VMetric
 
+/- English proof (translation)
+Take `⟨Z, _, t₁, t₂, w, hZ, g₁, g₂, r₁, r₂⟩` from `RegCover.exists_common hX M₁.toRegCover M₂.toRegCover`. Establish `e₁ : t₁ ≫ M₁.ρ ≫ p = (t₁ ≫ M₁.ρ) ≫ p` using `(Category.assoc _ _ _).symm`. Establish `e₂ : t₂ ≫ M₂.ρ ≫ p = (t₁ ≫ M₁.ρ) ≫ p` using `by rw [w, Category.assoc]`. Take `⟨f₁, F₁⟩` from `GlobalTheory.FlagPull.isFlagCh2_pull hA k _ _ Z _ M₁.reg.toIsArithVar hZ t₁ e₁ g₁ r₁ _ _ _ M₁.cInf M₁.flag`. Take `⟨f₂, F₂⟩` from `GlobalTheory.FlagPull.isFlagCh2_pull hA k _ _ Z _ M₂.reg.toIsArithVar hZ t₂ e₂ g₂ r₂ _ _ _ M₂.cInf M₂.flag`.
+
+Establish `key : ∀ (Y : Scheme.{0}) (ρ : Y ⟶ X) (t : Z ⟶ Y) (u : Z ⟶ X) (q : Z ⟶ Sp k) (_ : t ≫ ρ = u) (hu : u ≫ p = q) (e : t ≫ ρ ≫ p = q) (H : ((h.pull ρ rfl).pull t e).IsCInf) (f : Vert.Flag ((Scheme.Modules.pullback t).obj ((Scheme.Modules.pullback ρ).obj E)) r) (a : ℝ), IsFlagCh2 H f a …`. Introduce and unpack `Y ρ t _ q rfl hu e H f a ha`. Establish `I` using `(GlobalTheory.VMetric.isIsometry_pull_id_comp k X p E r h).2 Y Z _ q ρ t rfl e hu`. Establish `H' : (h.pull (t ≫ ρ) hu).IsCInf`. Rewrite using `[(VMetric.isIsometry_iff _).1 I]`.
+
+Conclude with `H.map _`. Conclude with `⟨H', _, (GlobalTheory.VMetric.isFlagCh2_ofIso k Z q _ _ r _ _ _ H H' f a I).1 ha⟩`. Take `⟨H₁, f₁', A₁⟩` from `key _ M₁.ρ t₁ _ _ rfl rfl e₁ _ f₁ _ ((F₁ a₁).1 h₁)`. Take `⟨H₂, f₂', A₂⟩` from `key _ M₂.ρ t₂ _ _ w.symm rfl e₂ _ f₂ _ ((F₂ a₂).1 h₂)`. Establish `A` using `GlobalTheory.isFlagCh2_indep hA k Z _ hreg hZ _ r _ H₁ f₁' f₂' _ _ A₁ A₂`.
+
+Establish `d : M₁.deg * t₁.residueDegree (genericPoint Z) = M₂.deg * t₂.residueDegree (genericPoint Z)`. Establish `c₁` using `CurveDegreesCompare.residueDegree_comp t₁ M₁.ρ (genericPoint Z)`. Establish `c₂` using `CurveDegreesCompare.residueDegree_comp t₂ M₂.ρ (genericPoint Z)`. Rewrite `c₁` using `[g₁]`. Rewrite `c₂` using `[g₂, ← w, c₁]`.
+
+Conclude with `c₂`. Establish `d' : (M₁.deg : ℝ) * t₁.residueDegree (genericPoint Z) = M₂.deg * t₂.residueDegree (genericPoint Z)` using `by exact_mod_cast d`. Establish `n₂ : (t₂.residueDegree (genericPoint Z) : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 r₂`. Use `mul_left_cancel₀ n₂ ?_` and prove the remaining obligations. Take the linear combination `(M₁.deg : ℝ) * A - a₁ * d'`.
+-/
 theorem FlagModel.mul_deg_eq (hA : GlobalTheory.Published.ArCalc) {k : Type} [CommRing k] {X : Scheme.{0}}
     {p : X ⟶ Sp k} [IsIntegral X]
     (hreg : ∀ (Y : Scheme.{0}) (q : Y ⟶ Sp k) [IsIntegral Y], IsArithVar q 1 → Nonempty (RegCover q))
@@ -58,6 +69,11 @@ theorem FlagModel.mul_deg_eq (hA : GlobalTheory.Published.ArCalc) {k : Type} [Co
   refine mul_left_cancel₀ n₂ ?_
   linear_combination (M₁.deg : ℝ) * A - a₁ * d'
 
+/- English proof (translation)
+Take `⟨M₀⟩` from `GlobalTheory.FlagModelExists.nonempty_flagModel k X p hreg hX E r h hn`. Take `⟨a₀, h₀⟩` from `GlobalTheory.VMetric.exists_isFlagCh2 hA k _ _ M₀.reg _ r _ M₀.cInf M₀.flag`. Use `⟨a₀ / M₀.deg, ⟨M₀⟩, fun M => ?_⟩` and prove the remaining obligations. Take `⟨a, ha⟩` from `GlobalTheory.VMetric.exists_isFlagCh2 hA k _ _ M.reg _ r _ M.cInf M.flag`. Establish `e` using `FlagModel.mul_deg_eq hA hreg hX M₀ M h₀ ha`.
+
+Establish `n : (M₀.deg : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 M₀.deg_pos.ne'`. Use `ha using 1` and compare the differences between its conclusion and the goal. Clear the denominators using the available nonvanishing facts. Take the linear combination `e`.
+-/
 theorem IsCInfNorm.exists_isCh2Deg (hA : GlobalTheory.Published.ArCalc) {k : Type} [CommRing k] {X : Scheme.{0}}
     {p : X ⟶ Sp k} [IsIntegral X]
     (hreg : ∀ (Y : Scheme.{0}) (q : Y ⟶ Sp k) [IsIntegral Y], IsArithVar q 1 → Nonempty (RegCover q))

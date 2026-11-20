@@ -17,6 +17,9 @@ open GlobalTheory GlobalTheory.USep
 open GlobalTheory.Poinc.ThetaOne GlobalTheory.Poinc.Sep GlobalTheory.UT GlobalTheory.FieldBaseChange
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.USep.EvG.ThetaVal.theta_values | exact GlobalTheory.USep.EvG.ThetaVal.theta_values | (intros; apply GlobalTheory.USep.EvG.ThetaVal.theta_values <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.thetaGenerator_values_scalar_mul_localUnit : ∀ (V₁ : Type) [CommRing V₁] [IsDomain V₁] [IsLocalRing V₁], IsCN V₁ → (∀ m : ℕ, m ≠ 0 → IsUnit (m : V₁)) →
     ∀ (D : DegPre V₁) (τ₀ : GlobalTheory.UChart.Gens D) (W₀ : Type) [CommRing W₀] (ib : W₀ →+* V₁) (B₀ : Over (Sp W₀)) [GrpObj B₀]
       (M₀ : LB B₀.left) (c₀ : D.X → (Sp W₀ ⟶ B₀.left))

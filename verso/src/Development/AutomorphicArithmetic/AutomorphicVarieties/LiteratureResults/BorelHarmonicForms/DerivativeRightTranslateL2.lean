@@ -29,6 +29,9 @@ def IsFrame {n : ℕ} (e : Fin n → Herm E a) : Prop := ∀ X : Herm E a, X = �
 def shift {A : Type} [Ring A] [Module ℝ A] (L : Lie E a →ₗ[ℝ] A) (r : ℝ) : Lie E a →ₗ[ℝ] A :=
   L + (r • ell E a).smulRight 1
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem shift_apply {A : Type} [Ring A] [Module ℝ A] (L : Lie E a →ₗ[ℝ] A) (r : ℝ) (X : Lie E a) :
     shift L r X = L X + (r * ell E a X) • (1 : A) := rfl
 
@@ -56,8 +59,16 @@ structure IsPos (H : W →ₗ⋆[ℂ] W →ₗ[ℂ] ℂ) (N : Submodule ℂ W) :
 def cmp {d : ℕ} (i : Fin d) : W ⊗[ℂ] (Fin d → ℂ) →ₗ[ℂ] W :=
   (TensorProduct.rid ℂ W).toLinearMap ∘ₗ LinearMap.lTensor W (LinearMap.proj i)
 
+/- English proof (translation)
+Simplify using `[cmp]`.
+-/
 @[simp] theorem cmp_tmul {d : ℕ} (i : Fin d) (φ : W) (v : Fin d → ℂ) : cmp i (φ ⊗ₜ[ℂ] v) = v i • φ := by simp [cmp]
 
+/- English proof (translation)
+Proceed by induction on `m using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, TensorProduct.add_tmul, Finset.sum_add_distrib, hx, hy]`. Consider the case `tmul φ v`. Simplify using `only [cmp_tmul, TensorProduct.smul_tmul, ← TensorProduct.tmul_sum]`.
+
+Use `congr 1`. Use extensionality with `j`. Simplify using `[Pi.single_apply]`.
+-/
 theorem sum_cmp {d : ℕ} (m : W ⊗[ℂ] (Fin d → ℂ)) : ∑ i, cmp i m ⊗ₜ[ℂ] (Pi.single i 1 : Fin d → ℂ) = m := by
   induction m using TensorProduct.induction_on with
   | zero => simp
@@ -70,14 +81,23 @@ theorem sum_cmp {d : ℕ} (m : W ⊗[ℂ] (Fin d → ℂ)) : ∑ i, cmp i m ⊗�
 
 def tens (d : ℕ) (N : Submodule ℂ W) : Submodule ℂ (W ⊗[ℂ] (Fin d → ℂ)) := ⨅ i, N.comap (cmp i)
 
+/- English proof (translation)
+Simplify using `[tens]`.
+-/
 theorem mem_tens {d : ℕ} {N : Submodule ℂ W} {m : W ⊗[ℂ] (Fin d → ℂ)} : m ∈ tens d N ↔ ∀ i, cmp i m ∈ N := by
   simp [tens]
 
+/- English proof (translation)
+Rewrite using `[← sum_cmp m]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.subset_span ⟨_, _, h i, rfl⟩`.
+-/
 theorem mem_span_of_cmp {d : ℕ} {P : W → Prop} {m : W ⊗[ℂ] (Fin d → ℂ)} (h : ∀ i, P (cmp i m)) :
     m ∈ Submodule.span ℂ {x : W ⊗[ℂ] (Fin d → ℂ) | ∃ φ v, P φ ∧ x = φ ⊗ₜ[ℂ] v} := by
   rw [← sum_cmp m]
   exact Submodule.sum_mem _ fun i _ => Submodule.subset_span ⟨_, _, h i, rfl⟩
 
+/- English proof (translation)
+Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨φ, v, hφ, rfl⟩`. Conclude with `mem_tens.2 fun i => by rw [cmp_tmul]; exact N.smul_mem _ (h φ hφ)`.
+-/
 theorem span_le_tens {d : ℕ} {P : W → Prop} {N : Submodule ℂ W} (h : ∀ φ, P φ → φ ∈ N) :
     Submodule.span ℂ {x : W ⊗[ℂ] (Fin d → ℂ) | ∃ φ v, P φ ∧ x = φ ⊗ₜ[ℂ] v} ≤ tens d N := by
   refine Submodule.span_le.2 ?_
@@ -88,6 +108,9 @@ def tform {d : ℕ} (H : W →ₗ⋆[ℂ] W →ₗ[ℂ] ℂ) (G : Matrix (Fin d)
     W ⊗[ℂ] (Fin d → ℂ) →ₗ⋆[ℂ] W ⊗[ℂ] (Fin d → ℂ) →ₗ[ℂ] ℂ :=
   ∑ i, ∑ j, G i j • (H ∘ₛₗ cmp i).compl₂ (cmp j)
 
+/- English proof (translation)
+Simplify using `[tform, LinearMap.sum_apply]`.
+-/
 theorem tform_apply {d : ℕ} (H : W →ₗ⋆[ℂ] W →ₗ[ℂ] ℂ) (G : Matrix (Fin d) (Fin d) ℂ) (x y : W ⊗[ℂ] (Fin d → ℂ)) :
     tform H G x y = ∑ i, ∑ j, G i j * H (cmp i x) (cmp j y) := by
   simp [tform, LinearMap.sum_apply]
@@ -102,6 +125,11 @@ variable {E : Type} [Field E] {a : ℕ} {M : Type} [AddCommGroup M] [Module ℂ 
 def del {q : ℕ} (ω : Herm E a [⋀^Fin (q + 1)]→ₗ[ℝ] M) : Herm E a [⋀^Fin q]→ₗ[ℝ] M :=
   ∑ j, ((L (toL (e j).1)).restrictScalars ℝ).compAlternatingMap (ω.curryLeft (e j))
 
+/- English proof (translation)
+Establish `h : ∀ (s : Finset (Fin n)) (f : Fin n → Herm E a [⋀^Fin q]→ₗ[ℝ] M), (∑ j ∈ s, f j) X = ∑ j ∈ s, f j X` using `fun s f => by`. Proceed by induction on `s using Finset.cons_induction with`. Consider the case `empty => rfl`. Consider the case `cons j s hj ih => rw [Finset.sum_cons, Finset.sum_cons, AlternatingMap.add_apply, ih]`. Rewrite using `[del, h]`.
+
+Both sides reduce to the same expression.
+-/
 theorem del_apply {q : ℕ} (ω : Herm E a [⋀^Fin (q + 1)]→ₗ[ℝ] M) (X : Fin q → Herm E a) :
     del L e ω X = ∑ j, L (toL (e j).1) (ω (Matrix.vecCons (e j) X)) := by
   have h : ∀ (s : Finset (Fin n)) (f : Fin n → Herm E a [⋀^Fin q]→ₗ[ℝ] M), (∑ j ∈ s, f j) X = ∑ j ∈ s, f j X := fun s f => by
@@ -120,11 +148,17 @@ def ip (H : M →ₗ⋆[ℂ] M →ₗ[ℂ] ℂ) {q : ℕ} (ω η : Herm E a [⋀
 
 def adj [NumberField E] (A B : Lie E a →ₗ[ℝ] Module.End ℂ M) (r : ℝ) : Lie E a →ₗ[ℝ] Module.End ℂ M := shift B (-r) - shift A r
 
+/- English proof (translation)
+Simplify using `only [adj, LinearMap.sub_apply, shift_apply, LinearMap.add_apply, LinearMap.smul_apply, Module.End.one_apply]`. Use `module`.
+-/
 theorem adj_apply [NumberField E] (A B : Lie E a →ₗ[ℝ] Module.End ℂ M) (r : ℝ) (X : Lie E a) (m : M) :
     adj A B r X m = B X m - A X m - (2 * r * ell E a X) • m := by
   simp only [adj, LinearMap.sub_apply, shift_apply, LinearMap.add_apply, LinearMap.smul_apply, Module.End.one_apply]
   module
 
+/- English proof (translation)
+Use `LinearMap.ext fun X => LinearMap.ext fun m => ?_` and prove the remaining obligations. Simplify using `only [shift_apply, LinearMap.add_apply, LinearMap.smul_apply, Module.End.one_apply]`. Use `module`.
+-/
 theorem shift_add_shift [NumberField E] (A B : Lie E a →ₗ[ℝ] Module.End ℂ M) (r : ℝ) : shift A r + shift B (-r) = A + B := by
   refine LinearMap.ext fun X => LinearMap.ext fun m => ?_
   simp only [shift_apply, LinearMap.add_apply, LinearMap.smul_apply, Module.End.one_apply]
@@ -145,8 +179,14 @@ def smA (Ξ : AlgRep E a) : Lie E a →ₗ[ℝ] Module.End ℂ (Sm E a ⊗[ℂ] 
 
 def smB (Ξ : AlgRep E a) : Lie E a →ₗ[ℝ] Module.End ℂ (Sm E a ⊗[ℂ] (Fin Ξ.d → ℂ)) := smLie Ξ - smA Ξ
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem smA_apply (Ξ : AlgRep E a) (X : Lie E a) : smA Ξ X = (lie E a X).rTensor _ := rfl
 
+/- English proof (translation)
+The claim follows from `add_sub_cancel_left _ _`.
+-/
 theorem smB_apply (Ξ : AlgRep E a) (X : Lie E a) : smB Ξ X = (Matrix.toLin' (Ξ.dmat X)).lTensor _ :=
   add_sub_cancel_left _ _
 
@@ -160,6 +200,9 @@ def incl (π : CuspSub E a) (Ξ : AlgRep E a) : (π.V ⊗[ℂ] (Fin Ξ.d → ℂ
 def inclCo (π : CuspSub E a) (Ξ : AlgRep E a) {q : ℕ} (ω : Herm E a [⋀^Fin q]→ₗ[ℝ] (π.V ⊗[ℂ] (Fin Ξ.d → ℂ))) :
     Herm E a [⋀^Fin q]→ₗ[ℝ] (Sm E a ⊗[ℂ] (Fin Ξ.d → ℂ)) := ((incl π Ξ).restrictScalars ℝ).compAlternatingMap ω
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem inclCo_apply (π : CuspSub E a) (Ξ : AlgRep E a) {q : ℕ} (ω : Herm E a [⋀^Fin q]→ₗ[ℝ] (π.V ⊗[ℂ] (Fin Ξ.d → ℂ))) (X : Fin q → Herm E a) :
     inclCo π Ξ ω X = incl π Ξ (ω X) := rfl
 
@@ -510,6 +553,15 @@ def Count : Prop :=
     (∀ (q s : ℕ) (f : Fin s → X), Function.Injective f → (∀ i, f i ∈ S ∧ deg (f i) = q) → (s : Cardinal) ≤ κ q) →
     (S.card : Cardinal) ≤ Cardinal.sum κ
 
+/- English proof (translation)
+Introduce `E _ _ _ a ha U hUo hUc Ξ S hS hC`. Take `⟨n, e, he⟩` from `h1 E a`. Take `⟨r, hr⟩` from `h2 E a Ξ`. Establish `hex : ∀ π : CuspSub E a, ∃ (q : ℕ) (ω : Herm E a [⋀^Fin q]→ₗ[ℝ] (Sm E a ⊗[ℂ] (Fin Ξ.d → ℂ))), π ∈ S → ω ≠ 0 ∧ IsHarm U Ξ r e ω ∧ ∀ X, ω X ∈ tens Ξ.d π.V` using `fun π => by`. Distinguish the cases in `h : π ∈ S`.
+
+Take `⟨q, ω, hω⟩` from `h3 E a ha n e he U hUc π Ξ r hr (hC π h).1 (hC π h).2`. Conclude with `⟨q, ω, fun _ => hω⟩`. Conclude with `⟨0, 0, fun h' => absurd h' h⟩`. Use `choose deg w hw using hex`. Use `h8 _ S deg _ fun q s f hf hq => ?_` and prove the remaining obligations.
+
+Establish `hex2 : ∀ i, ∃ ω : Herm E a [⋀^Fin q]→ₗ[ℝ] (Sm E a ⊗[ℂ] (Fin Ξ.d → ℂ)), ω ≠ 0 ∧ IsHarm U Ξ r e ω ∧ ∀ X, ω X ∈ tens Ξ.d (f i).V` using `fun i => by`. Take `⟨hi, rfl⟩` from `hq i`. Conclude with `⟨w _, hw _ hi⟩`. Use `choose ω h0 hH hV using hex2`. Use `hD E a ha U hUo hUc Ξ q s ω (fun i => ⟨((h5 E a n e U Ξ r q).2 _).1 (hH i), (hH i).closed⟩) fun c hc => ?_` and prove the remaining obligations.
+
+Break down `Nat.eq_zero_or_pos s with rfl | hs` into its components or cases. Conclude with `Subsingleton.elim _ _`. Establish `hi` using `(hq ⟨0, hs⟩).1`. Conclude with `h7 E a Ξ.d q s f (fun i j h => hf (hS _ (hq i).1 _ (hq j).1 h)) ω h0 hV c (h6 hB E a ha n e he U hUo hUc Ξ r hr (h4 E a ha U hUo hUc _ Ξ (hC _ hi).1 (hC _ hi).2) q _ ((h5 E a n e U Ξ r q).1 s ω c hH) hc)`.
+-/
 theorem borelInjC_of_steps (hD : DeRhamInj) (h1 : FrameEx) (h2 : OneReal) (h3 : HarmEx) (h4 : UnitTriv) (h5 : HarmLin)
     (h6 : NoExact) (h7 : Indep) (h8 : Count) (hB : BorelC) : UpperTheory.V.Published.BorelInjC := by
   intro E _ _ _ a ha U hUo hUc Ξ S hS hC

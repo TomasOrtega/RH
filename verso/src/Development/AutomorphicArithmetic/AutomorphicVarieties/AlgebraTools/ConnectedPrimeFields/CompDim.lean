@@ -6,6 +6,15 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.Conne
 
 open IsLocalRing UpperTheory.V.AlgebraTools.Conn
 
+/- English proof (translation)
+Introduce `R _ _ hC p q s hp hq`. Establish `hpq : p ≤ q` using `le_sup_left.trans hq.1.2`. Use `haveI := hp`. Use `haveI := hq.1.1`. Take `⟨-, hDF⟩` from `dimFormula (hC p hp)`.
+
+Use `set f := Ideal.Quotient.mk p`. Establish `hf : Function.Surjective f` using `Ideal.Quotient.mk_surjective`. Establish `hker : RingHom.ker f ≤ q` using `by rw [Ideal.mk_ker]; exact hpq`. Use `haveI hQ : (q.map f).IsPrime := Ideal.map_isPrime_of_surjective hf hker`. Establish `hmin : q.map f ∈ (Ideal.span ((s.image f : Finset (R ⧸ p)) : Set (R ⧸ p))).minimalPrimes`.
+
+Rewrite using `[Finset.coe_image, ← Ideal.map_span, Ideal.minimalPrimes_map_of_surjective hf]`. Use `⟨q, ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[Ideal.mk_ker, sup_comm]`. Conclude with `hq`. Establish `hh : (q.map f).height ≤ s.card` using `(Ideal.height_le_card_of_mem_minimalPrimes_span_finset hmin).trans (by exact_mod_cast Finset.card_image_le)`.
+
+Establish `e` using `hDF (q.map f)`. Rewrite `e` using `[ringKrullDim_eq_of_ringEquiv (DoubleQuot.quotQuotEquivQuotOfLE hpq)]`. Rewrite using `[← e, add_comm]`. Use `gcongr`. Conclude with `hh` after adjusting the coercions.
+-/
 theorem UpperTheory.V.AlgebraTools.Conn.compDim :
     ∀ {R : Type} [CommRing R] [IsNoetherianRing R], CohenType R → ∀ (p q : Ideal R) (s : Finset R), p.IsPrime →
       q ∈ (p ⊔ Ideal.span (s : Set R)).minimalPrimes → ringKrullDim (R ⧸ p) ≤ ringKrullDim (R ⧸ q) + s.card := by

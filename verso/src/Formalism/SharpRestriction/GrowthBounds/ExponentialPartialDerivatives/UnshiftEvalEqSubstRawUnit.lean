@@ -27,18 +27,34 @@ def rawU : RawChart C d I (Fin dd) where
   j' := 0
   big := fun _ _ => False
 
+/- English proof (translation)
+The claim follows from `Y.rawCol_sg v`.
+-/
 theorem rawU_sg (v : Fin dd → C) : (rawU Y d u).sg v = un1 (Y.sgP v) := Y.rawCol_sg v
 
+/- English proof (translation)
+Use `show MvPowerSeries.constantCoeff (un1 (Y.ex i)) = 0`. Rewrite using `[constantCoeff_uncurry, Y.ex_const i]`.
+-/
 theorem constantCoeff_rawUnit_exp (i : Fin dd) : MvPowerSeries.constantCoeff ((rawU Y d u).ex i) = 0 := by
   show MvPowerSeries.constantCoeff (un1 (Y.ex i)) = 0
   rw [constantCoeff_uncurry, Y.ex_const i]
 
+/- English proof (translation)
+Use `show _ = MvPowerSeries.subst (fun j => un1 (Y.ex j)) (un1 f)`. Rewrite using `[eval_single_eq_subst, subst_oneVariableUncurry_eq_subst (b := fun q : Fin 1 × Fin dd => Y.ex q.2) (fun q => Y.ex_const q.2), subst_singlePointUncurry (fun j => by rw [constantCoeff_uncurry, Y.ex_const j])]`.
+-/
 theorem unshift_eval_eq_subst_rawUnit (f : PS C 1 dd) :
     un1 (ev (n := 1) ![Y.ex] f) = MvPowerSeries.subst (rawU Y d u).ex (un1 f) := by
   show _ = MvPowerSeries.subst (fun j => un1 (Y.ex j)) (un1 f)
   rw [eval_single_eq_subst, subst_oneVariableUncurry_eq_subst (b := fun q : Fin 1 × Fin dd => Y.ex q.2) (fun q => Y.ex_const q.2),
     subst_singlePointUncurry (fun j => by rw [constantCoeff_uncurry, Y.ex_const j])]
 
+/- English proof (translation)
+Establish `hlin0` using `lin_const (rawU Y d u) g`. Establish `hL` using `MvPowerSeries.hasSubst_of_constantCoeff_zero hlin0`. Establish `hx0 : ∀ i, MvPowerSeries.constantCoeff ((rawU Y d u).ex i) = 0` using `constantCoeff_rawUnit_exp Y d u`. Establish `e1 : MvPowerSeries.subst (rawU Y d u).ex (un1 (Y.dF ((rawU Y d u).u g k) j)) = ∑ i, MvPowerSeries.C ((rawU Y d u).u g k i) * MvPowerSeries.pderiv C i ((rawU Y d u).ex j)`. Rewrite using `[← unshift_eval_eq_subst_rawUnit Y d u, ← hE, uncurry_linear_combination]`.
+
+Simplify using `only [← pderiv_uncurry]`. Both sides reduce to the same expression. Unfold `RawChart.expG`. Rewrite using `[Formalism.G.LogCR.pderiv_subst hlin0, ← MvPowerSeries.subst_comp_subst_apply (MvPowerSeries.hasSubst_of_constantCoeff_zero hx0) hL]`. Simplify using `only [pderiv_lin]`.
+
+Rewrite using `[e1, ← MvPowerSeries.coe_substAlgHom hL, map_sum, MvPowerSeries.coe_substAlgHom]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[MvPowerSeries.subst_mul hL, MvPowerSeries.subst_C, mul_comm]`.
+-/
 theorem pderiv_expG_U (hE : ExDerSt Y) (g : Fin 2) (k : I g)
     (j : Fin dd) :
     MvPowerSeries.pderiv C k ((rawU Y d u).expG g j) =
@@ -59,6 +75,25 @@ theorem pderiv_expG_U (hE : ExDerSt Y) (g : Fin 2) (k : I g)
   refine Finset.sum_congr rfl fun i _ => ?_
   rw [MvPowerSeries.subst_mul hL, MvPowerSeries.subst_C, mul_comm]
 
+/- English proof (translation)
+Introduce `g k`. Establish `hvI : ∀ i, V.Ge 0 ((rawU Y d u).u (1 - g) k i)` using `fun i => hu (1 - g) k i`. Establish `hE0 : ∀ q : Fin 2 × Fin dd, MvPowerSeries.constantCoeff ((rawU Y d u).expPt q.1 q.2) = 0` using `fun q => by`. Rewrite using `[expPt_eq]`. Conclude with `upG_const _ (constantCoeff_subst_zero (lin_const (rawU Y d u) q.1) (constantCoeff_rawUnit_exp Y d u q.2))`.
+
+Establish `hES` using `MvPowerSeries.hasSubst_of_constantCoeff_zero hE0`. Establish `hd : ∀ (g' : Fin 2) (j : Fin dd), MvPowerSeries.pderiv C (⟨1 - g, k⟩ : WV I) ((rawU Y d u).expPt g' j) = if g' = 1 - g then MvPowerSeries.subst ((rawU Y d u).expPt (1 - g)) (un1 (Y.dF ((rawU Y d u).u (1 - g) k) j)) else 0`. Introduce `g' j`. Use `split_ifs with hg`. Rewrite using `[hg, expPt_eq, pderiv_upG_same, pderiv_expG_U Y d u (exDer_holds Y) (1 - g) k j, upG_subst (1 - g) (a := (rawU Y d u).expG (1 - g)) (fun i => constantCoeff_subst_zero (lin_const (rawU Y d u) (1 - g)) (constantCoeff_rawUnit_exp Y d u i))]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `i`. Conclude with `(expPt_eq _ _ _).symm`. Rewrite using `[expPt_eq, pderiv_upG_ne (1 - g) g' hg k]`. Establish `hch : MvPowerSeries.pderiv C (⟨1 - g, k⟩ : WV I) (MvPowerSeries.subst (fun q : Fin 2 × Fin dd => (rawU Y d u).expPt q.1 q.2) Y.h) = ∑ j, MvPowerSeries.subst (fun q : Fin 2 × Fin dd => (rawU Y d u).expPt q.1 q.2) (MvPowerSeries.pderiv C ((1 - g : Fin 2), j) Y.h) * MvPowerSeries.su …`.
+
+Rewrite using `[Formalism.G.LogCR.pderiv_subst hE0, Fintype.sum_prod_type, Finset.sum_eq_single (1 - g)]`. Simplify using `only [hd, if_true]`. Introduce `g' _ hg'`. Simplify using `only [hd, if_neg hg', mul_zero, Finset.sum_const_zero]`. Introduce `h`.
+
+Conclude with `absurd (Finset.mem_univ _) h`. Use `set J : PS C 2 dd := (∑ j, ev (n := 2) ![pt C dd (1 - g)] (Y.dF ((rawU Y d u).u (1 - g) k) j) * MvPowerSeries.pderiv C ((1 - g : Fin 2), j) Y.h) + ev (n := 2) ![pt C dd g] (Y.sgP ((rawU Y d u).u (1 - g) k)) with hJd`. Establish `hsubD : MvPowerSeries.subst (fun q : Fin 2 × Fin dd => (rawU Y d u).expPt q.1 q.2) (∑ j, ev (n` using `2) ![pt C dd (1 - g)] (Y.dF ((rawU Y d u).u (1 - g) k) j) * MvPowerSeries.pderiv C ((1 - g : Fin 2), j) Y.h) = ∑ j, MvPowerSeries.subst (fun q : Fin 2 × Fin dd => (rawU Y d u).expPt q.1 q.2) (MvPowerSeries.pderiv C ((1 - g : Fin 2), j) Y.h) * MvPowerSeries.subst ((rawU Y d u).exp …`. Rewrite using `[← MvPowerSeries.coe_substAlgHom hES, map_sum, MvPowerSeries.coe_substAlgHom]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[MvPowerSeries.subst_mul hES, subst_exp_eval_two _ hE0, mul_comm]`. Establish `hJ : IntS V J`. Establish `hg2 : ∀ x : Fin 2, x = 0 ∨ x = 1` using `by decide`. Break down `hg2 g with rfl | rfl` into its components or cases. Establish `h` using `germII_holds Y _ hvI`.
+
+Use `h using 2` and compare the differences between its conclusion and the goal. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[ev_pt_dF]`. Both sides reduce to the same expression. Establish `h` using `germIIM_holds Y _ hvI`.
+
+Use `h using 2` and compare the differences between its conclusion and the goal. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[ev_pt_dF]`. Both sides reduce to the same expression. Use `⟨J, hJ, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[dVar_eq]`. Use `show MvPowerSeries.pderiv C _ (((Y.k : ℕ) : C) • MvPowerSeries.subst (fun q : Fin 2 × Fin dd => (rawU Y d u).expPt q.1 q.2) Y.h) = _`. Rewrite using `[Derivation.map_smul, hch, ← hsubD, hJd, MvPowerSeries.subst_add hES, subst_exp_eval_two _ hE0, rawU_sg Y d u, add_sub_cancel_right]`. Both sides reduce to the same expression.
+-/
 theorem derAt_rawU (hu : ∀ g c i, V.Ge 0 (u g c i)) : DerAt V (rawU Y d u) := by
   intro g k
   have hvI : ∀ i, V.Ge 0 ((rawU Y d u).u (1 - g) k i) := fun i => hu (1 - g) k i
@@ -122,6 +157,25 @@ theorem derAt_rawU (hu : ∀ g c i, V.Ge 0 (u g c i)) : DerAt V (rawU Y d u) := 
     add_sub_cancel_right]
   rfl
 
+/- English proof (translation)
+Introduce `τ _ γ γ' hγ hγ'`. Use `set ρ : Fin 2 × Fin dd → MvPowerSeries τ C := fun q => ![γ, γ'] q.1 q.2 with hρ`. Establish `hρ0 : ∀ q, MvPowerSeries.constantCoeff (ρ q) = 0`. Introduce and unpack `⟨b, j⟩`. Use `fin_cases b`.
+
+Conclude with `(hγ j).1`. Conclude with `(hγ' j).1`. Establish `hρI : ∀ q, IntS V (ρ q)`. Introduce and unpack `⟨b, j⟩`. Use `fin_cases b`.
+
+Conclude with `(hγ j).2`. Conclude with `(hγ' j).2`. Establish `hρS` using `MvPowerSeries.hasSubst_of_constantCoeff_zero hρ0`. Use `set γ'' : Fin dd → MvPowerSeries τ C := fun j => MvPowerSeries.subst ρ (Y.B.G.F j) with hγ''`. Establish `hγ''0 : ∀ j, MvPowerSeries.constantCoeff (γ'' j) = 0` using `fun j => constantCoeff_subst_zero hρ0 (Y.B.G.const j)`.
+
+Establish `hev : ∀ (a : Pt C 2 dd), (∀ j, MvPowerSeries.constantCoeff (a j) = 0) → ∀ f : PS C 1 dd, MvPowerSeries.subst ρ (ev ![a] f) = MvPowerSeries.subst (fun j => MvPowerSeries.subst ρ (a j)) (un1 f)`. Introduce `a ha f`. Rewrite using `[eval_single_eq_subst, MvPowerSeries.subst_comp_subst_apply (MvPowerSeries.hasSubst_of_constantCoeff_zero fun q : Fin 1 × Fin dd => ha q.2) hρS, subst_singlePointUncurry (fun j => constantCoeff_subst_zero hρ0 (ha j))]`. Establish `hp0 : (fun j => MvPowerSeries.subst ρ (pt C (n` using `2) dd 0 j)) = γ := by`. Use function extensionality and compare the values at `j`.
+
+Use `show MvPowerSeries.subst ρ (MvPowerSeries.X ((0 : Fin 2), j)) = γ j`. Rewrite using `[MvPowerSeries.subst_X hρS]`. Both sides reduce to the same expression. Establish `hp1 : (fun j => MvPowerSeries.subst ρ (pt C (n` using `2) dd 1 j)) = γ' := by`. Use function extensionality and compare the values at `j`.
+
+Use `show MvPowerSeries.subst ρ (MvPowerSeries.X ((1 : Fin 2), j)) = γ' j`. Rewrite using `[MvPowerSeries.subst_X hρS]`. Both sides reduce to the same expression. Establish `hpa : (fun j => MvPowerSeries.subst ρ (addOf Y.B.G.F (pt C (n` using `2) dd 0) (pt C (n := 2) dd 1) j)) = γ'' := by`. Use function extensionality and compare the values at `j`.
+
+Rewrite using `[addOf_pts]`. Establish `hc0 : ∀ j, MvPowerSeries.constantCoeff (pt C (n` using `2) dd 0 j) = 0 := fun j => MvPowerSeries.constantCoeff_X _`. Establish `hc1 : ∀ j, MvPowerSeries.constantCoeff (pt C (n` using `2) dd 1 j) = 0 := fun j => MvPowerSeries.constantCoeff_X _`. Establish `hca : ∀ j, MvPowerSeries.constantCoeff (addOf Y.B.G.F (pt C (n` using `2) dd 0) (pt C (n := 2) dd 1) j) = 0 := fun j => by rw [addOf_pts]; exact Y.B.G.const j`. Use `⟨γ'', fun j => ⟨hγ''0 j, IntS.subst hρ0 hρI (Y.intF j)⟩, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `i`. Establish `h` using `congrArg (MvPowerSeries.subst ρ) (Y.lg_add i)`. Rewrite `h` using `[← MvPowerSeries.coe_substAlgHom hρS, map_add, MvPowerSeries.coe_substAlgHom hρS, hev _ hca, hev _ hc0, hev _ hc1, hpa, hp0, hp1]`. Conclude with `h`. Introduce `v hv`.
+
+Establish `h` using `IntS.subst hρ0 hρI (germI_holds Y v hv)`. Rewrite `h` using `[← MvPowerSeries.coe_substAlgHom hρS, map_sub, map_sub, MvPowerSeries.coe_substAlgHom hρS, hev _ hca, hev _ hc0, hev _ hc1, hpa, hp0, hp1, ← rawU_sg Y d u v]`. Conclude with `h`.
+-/
 theorem addM_rawU : AddM V (rawU Y d u) := by
   intro τ _ γ γ' hγ hγ'
   set ρ : Fin 2 × Fin dd → MvPowerSeries τ C := fun q => ![γ, γ'] q.1 q.2 with hρ

@@ -23,6 +23,11 @@ def PhiM (μ : Fin n → ℤ) (z : Matrix (Fin n) (Fin n) ℂ) : ℂ :=
 
 def OmegaSet (n : ℕ) : Set (Matrix (Fin n) (Fin n) ℂ) := {z | ∀ i : Fin n, lead ((i : ℕ) + 1) z ≠ 0}
 
+/- English proof (translation)
+Establish `h1 : IsClosed {g : Matrix (Fin n) (Fin n) ℂ | star g * g = 1 ∧ g * star g = 1}` using `(isClosed_eq (continuous_star.mul continuous_id) continuous_const).inter (isClosed_eq (continuous_id.mul continuous_star) continuous_const)`. Establish `h2 : IsClosed {g : Matrix (Fin n) (Fin n) ℂ | g * Jm ε = Jm ε * g}` using `isClosed_eq (continuous_id.mul continuous_const) (continuous_const.mul continuous_id)`. Use `h1.inter h2 using 1` and compare the differences between its conclusion and the goal. Use extensionality with `g`. Simplify using `only [Kset, Set.mem_setOf_eq, Set.mem_inter_iff, Matrix.unitaryGroup]`.
+
+Conclude with `Iff.rfl`.
+-/
 lemma isClosed_Kset (ε : Fin n → Bool) : IsClosed (Kset ε) := by
   have h1 : IsClosed {g : Matrix (Fin n) (Fin n) ℂ | star g * g = 1 ∧ g * star g = 1} :=
     (isClosed_eq (continuous_star.mul continuous_id) continuous_const).inter
@@ -34,6 +39,11 @@ lemma isClosed_Kset (ε : Fin n → Bool) : IsClosed (Kset ε) := by
   simp only [Kset, Set.mem_setOf_eq, Set.mem_inter_iff, Matrix.unitaryGroup]
   exact Iff.rfl
 
+/- English proof (translation)
+Use `show IsClosed {g : UJ ε | toM g ∈ Kset ε}`. Conclude with `(isClosed_Kset ε).preimage (by first`. Consider the case `fun_prop`. Consider the case `continuity`. Consider the case `exact continuous_subtype_val`.
+
+Consider the case `exact Units.continuous_val.comp continuous_subtype_val)`.
+-/
 lemma isClosed_KG (ε : Fin n → Bool) : IsClosed ((KG ε : Set (UJ ε))) := by
   show IsClosed {g : UJ ε | toM g ∈ Kset ε}
   exact (isClosed_Kset ε).preimage (by first

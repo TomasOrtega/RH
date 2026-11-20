@@ -8,6 +8,11 @@ namespace GlobalTheory.SmallDiscZeros
 
 open Complex DirichletCharacter ArithmeticFunction MeasureTheory Filter Topology in
 open scoped Classical in
+/- English proof (translation)
+Unfold `_root_.GlobalTheory.Lin.derSeries`. Rewrite using `[Complex.ofReal_tsum]`. Use `tsum_congr fun n ↦ ?_` and prove the remaining obligations. Simplify using `only`. Rewrite using `[MulChar.one_apply (isUnit_of_subsingleton _)]`.
+
+Use `push_cast`. Rewrite using `[Complex.ofReal_cpow (Nat.cast_nonneg n)]`. Simplify using the standard rewrite rules.
+-/
 private lemma derSeries_one_eq_tsum_vonMangoldt (σ : ℝ) :
     _root_.GlobalTheory.Lin.derSeries (fun n ↦ (1 : DirichletCharacter ℂ 1) n) 0 ((σ : ℂ) + (0 : ℝ) * I) =
       ((∑' n : ℕ, vonMangoldt n * (n : ℝ) ^ (-σ) : ℝ) : ℂ) := by
@@ -22,12 +27,18 @@ private lemma derSeries_one_eq_tsum_vonMangoldt (σ : ℝ) :
 
 open Complex DirichletCharacter ArithmeticFunction MeasureTheory Filter Topology in
 open scoped Classical in
+/- English proof (translation)
+Rewrite using `[zero_add, pow_one, div_eq_mul_inv, ← Complex.ofReal_natCast, Complex.re_ofReal_mul]`.
+-/
 private lemma re_natCast_div_pow_zero_add_one (m : ℕ) (z : ℂ) :
     ((m : ℂ) / z ^ (0 + 1)).re = m * (z⁻¹).re := by
   rw [zero_add, pow_one, div_eq_mul_inv, ← Complex.ofReal_natCast, Complex.re_ofReal_mul]
 
 open Complex DirichletCharacter ArithmeticFunction MeasureTheory Filter Topology in
 open scoped Classical in
+/- English proof (translation)
+Simplify using `only [_root_.GlobalTheory.Lin.zerosDisc, Set.mem_setOf_eq] at hw`. Take `⟨-, h1, h0⟩` from `hw`. Assume the negation of the conclusion as `h`. Conclude with `LFunction_ne_zero_of_one_le_re χ h1 (not_lt.mp h) h0`.
+-/
 private lemma re_lt_one_of_mem_zerosDisc {q : ℕ} [NeZero q] {χ : DirichletCharacter ℂ q} {c w : ℂ}
     {R : ℝ} (hw : w ∈ _root_.GlobalTheory.Lin.zerosDisc χ c R) : w.re < 1 := by
   simp only [_root_.GlobalTheory.Lin.zerosDisc, Set.mem_setOf_eq] at hw
@@ -37,12 +48,20 @@ private lemma re_lt_one_of_mem_zerosDisc {q : ℕ} [NeZero q] {χ : DirichletCha
 
 open Complex DirichletCharacter ArithmeticFunction MeasureTheory Filter Topology in
 open scoped Classical in
+/- English proof (translation)
+Rewrite using `[Complex.inv_re]`. Conclude with `div_nonneg h (Complex.normSq_nonneg _)`.
+-/
 private lemma inv_re_nonneg_of_re_nonneg {z : ℂ} (h : 0 ≤ z.re) : 0 ≤ (z⁻¹).re := by
   rw [Complex.inv_re]
   exact div_nonneg h (Complex.normSq_nonneg _)
 
 open Complex DirichletCharacter ArithmeticFunction MeasureTheory Filter Topology in
 open scoped Classical in
+/- English proof (translation)
+Establish `h` using `LSeriesSummable_vonMangoldt (s := (σ : ℂ)) (by simpa using hσ)`. Establish `h' : Summable fun n ↦ ‖LSeries.term (fun n ↦ (vonMangoldt n : ℂ)) (σ : ℂ) n‖` using `summable_norm_iff.mpr h`. Use `h'.congr fun n ↦ ?_` and prove the remaining obligations. Rewrite using `[LSeries.norm_term_eq]`. Break down `eq_or_ne n 0 with rfl | hn` into its components or cases.
+
+Simplify using the standard rewrite rules. Rewrite using `[if_neg hn, Complex.ofReal_re, Complex.norm_real, Real.norm_of_nonneg vonMangoldt_nonneg, Real.rpow_neg (Nat.cast_nonneg n), div_eq_mul_inv]`.
+-/
 private lemma summable_vonMangoldt_mul_rpow_neg {σ : ℝ} (hσ : 1 < σ) :
     Summable fun n : ℕ ↦ vonMangoldt n * (n : ℝ) ^ (-σ) := by
   have h := LSeriesSummable_vonMangoldt (s := (σ : ℂ)) (by simpa using hσ)
@@ -57,6 +76,11 @@ private lemma summable_vonMangoldt_mul_rpow_neg {σ : ℝ} (hσ : 1 < σ) :
 
 open Complex DirichletCharacter ArithmeticFunction MeasureTheory Filter Topology in
 open scoped Classical in
+/- English proof (translation)
+Unfold `_root_.GlobalTheory.Lin.derSeries`. Use `tsum_of_norm_bounded (summable_vonMangoldt_mul_rpow_neg hs).hasSum fun n ↦ ?_` and prove the remaining obligations. Break down `eq_or_ne n 0 with rfl | hn` into its components or cases. Simplify using the standard rewrite rules. Simplify using `only [pow_zero, Nat.factorial_zero, Nat.cast_one, div_one, mul_one]`.
+
+Rewrite using `[norm_mul, norm_mul, Complex.norm_natCast_cpow_of_pos (Nat.pos_of_ne_zero hn), Complex.norm_real, Real.norm_of_nonneg vonMangoldt_nonneg, Complex.neg_re]`. Conclude with `mul_le_mul_of_nonneg_right (mul_le_of_le_one_right vonMangoldt_nonneg (DirichletCharacter.norm_le_one χ _)) (by positivity)`.
+-/
 private lemma norm_derSeries_le_tsum_vonMangoldt {q : ℕ} (χ : DirichletCharacter ℂ q) {s : ℂ}
     (hs : 1 < s.re) :
     ‖_root_.GlobalTheory.Lin.derSeries (fun n ↦ χ n) 0 s‖ ≤
@@ -74,6 +98,13 @@ private lemma norm_derSeries_le_tsum_vonMangoldt {q : ℕ} (χ : DirichletCharac
 
 open Complex DirichletCharacter ArithmeticFunction MeasureTheory Filter Topology in
 open scoped Classical in
+/- English proof (translation)
+Use `set z : ℂ := ((1 + r : ℝ) : ℂ) + t * I - w with hz`. Establish `hzre : z.re = 1 + r - w.re` using `by simp [hz]`. Establish `hzre' : r < z.re` using `by linarith`. Establish `hznorm : ‖z‖ ≤ 2 * r`. Establish `hz' : z = (r : ℂ) - (w - (1 + t * I))` using `by rw [hz]; push_cast; ring`.
+
+Rewrite using `[hz']`. Combine the equalities or inequalities in the displayed calculation. Establish `hpos : 0 < Complex.normSq z`. Use `Complex.normSq_pos.mpr fun h ↦ ?_` and prove the remaining obligations. Rewrite `hzre'` using `[h, Complex.zero_re]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[Complex.inv_re, div_le_div_iff₀ (by positivity) hpos, Complex.normSq_eq_norm_sq]`. Use polynomial arithmetic with `[mul_le_mul hznorm hznorm (norm_nonneg _) (by positivity : (0 : ℝ) ≤ 2 * r)]`.
+-/
 private lemma inv_re_ge_of_norm_sub_le {t r : ℝ} {w : ℂ} (hr : 0 < r) (hw : ‖w - (1 + t * I)‖ ≤ r)
     (hre : w.re < 1) : 1 / (4 * r) ≤ ((((1 + r : ℝ) : ℂ) + t * I - w)⁻¹).re := by
   set z : ℂ := ((1 + r : ℝ) : ℂ) + t * I - w with hz
@@ -95,6 +126,43 @@ private lemma inv_re_ge_of_norm_sub_le {t r : ℝ} {w : ℂ} (hr : 0 < r) (hw : 
 open Complex DirichletCharacter ArithmeticFunction MeasureTheory Filter Topology in
 open scoped Classical in
 
+/- English proof (translation)
+Take `⟨C, hC, hmain⟩` from `_root_.GlobalTheory.LogDerivHigher.main`. Use `⟨6 + 4 * C, by positivity, ?_⟩` and prove the remaining obligations. Introduce `q _ χ t r hχt hr hr2`. Establish `hσ1 : 1 < 1 + r` using `by linarith`. Establish `hσ2 : 1 + r ≤ 2` using `by linarith`.
+
+Establish `hq : (1 : ℝ) ≤ q` using `Nat.one_le_cast.mpr (Nat.pos_of_ne_zero (NeZero.ne q))`. Establish `hL0 : 0 ≤ Real.log (q * (|t| + 2))` using `Real.log_nonneg (by nlinarith [abs_nonneg t])`. Establish `hTS : _root_.GlobalTheory.Lin.zerosDisc χ (1 + t * I) r ⊆ _root_.GlobalTheory.Lin.zerosDisc χ (2 + t * I) 3`. Introduce `w hw`. Simplify using `only [_root_.GlobalTheory.Lin.zerosDisc, Set.mem_setOf_eq] at hw ⊢`.
+
+Use `⟨?_, hw.2⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Take `⟨hfin, -, hbound⟩` from `hmain q χ (1 + r) t 0 hσ1 hσ2`. Take `⟨hfin₁, -, hbound₁⟩` from `hmain 1 1 (1 + r) 0 0 hσ1 hσ2`. Establish `hTfin` using `hfin.subset hTS`.
+
+Use `⟨hTfin, ?_⟩` and prove the remaining obligations. Use `set G : ℝ := ∑' n : ℕ, vonMangoldt n * (n : ℝ) ^ (-(1 + r)) with hG`. Establish `hG_le : G ≤ 1 / r + C`. Rewrite `hbound₁` using `[derSeries_one_eq_tsum_vonMangoldt, if_pos rfl]`. Establish `hP : (1 : ℂ) / (((1 + r : ℝ) : ℂ) + (0 : ℝ) * I - 1) ^ (0 + 1) = ((1 / r : ℝ) : ℂ)` using `by push_cast; ring`.
+
+Rewrite `hbound₁` using `[hP]`. Establish `hZ₁ : 0 ≤ (∑ᶠ w ∈ _root_.GlobalTheory.Lin.zerosDisc (1 : DirichletCharacter ℂ 1) (2 + (0 : ℝ) * I) 3, ((_root_.GlobalTheory.Lin.ord (1 : DirichletCharacter ℂ 1) w : ℕ) : ℂ) / (((1 + r : ℝ) : ℂ) + (0 : ℝ) * I - w) ^ (0 + 1)).re`. Rewrite using `[finsum_mem_eq_finite_toFinset_sum _ hfin₁, Complex.re_sum]`. Use `Finset.sum_nonneg fun w hw ↦ ?_` and prove the remaining obligations. Rewrite using `[re_natCast_div_pow_zero_add_one]`.
+
+Establish `hw'` using `re_lt_one_of_mem_zerosDisc ((Set.Finite.mem_toFinset hfin₁).mp hw)`. Use `mul_nonneg (Nat.cast_nonneg _) (inv_re_nonneg_of_re_nonneg ?_)` and prove the remaining obligations. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hre` using `(Complex.re_le_norm _).trans hbound₁`.
+
+Rewrite `hre` using `[Complex.add_re, Complex.sub_re, Complex.ofReal_re, Complex.ofReal_re]`. Establish `hlog : Real.log ((1 : ℕ) * (|(0 : ℝ)| + 2)) ≤ 1`. Evaluate the numerical expressions. Combine the linear relations using `[Real.log_two_lt_d9]`. Establish `hCl : C * Real.log ((1 : ℕ) * (|(0 : ℝ)| + 2)) / (1 + r) ^ 0 ≤ C`.
+
+Rewrite using `[pow_zero, div_one]`. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish `key : ∀ (X Y W : ℂ) (B : ℝ), ‖(X - Y) + W‖ ≤ B → ‖W‖ ≤ B + ‖X‖ + ‖Y‖`. Introduce `X Y W B h`.
+
+Establish `hW : W = ((X - Y) + W) - X + Y` using `by ring`. Rewrite using `[hW]`. Combine the equalities or inequalities in the displayed calculation. Use `(norm_add_le _ _).trans ?_` and prove the remaining obligations. Use `gcongr`.
+
+Conclude with `norm_sub_le _ _`. Use `_ ≤ B + ‖X‖ + ‖Y‖ := by linarith`. Establish `hZnorm` using `key _ _ _ _ hbound`. Rewrite `hZnorm` using `[pow_zero, div_one]`. Establish `hre : (((1 + r : ℝ) : ℂ) + t * I).re = 1 + r` using `by simp`.
+
+Establish `hA` using `norm_derSeries_le_tsum_vonMangoldt χ (s := ((1 + r : ℝ) : ℂ) + t * I) (by rw [hre]; exact hσ1)`. Rewrite `hA` using `[hre]`. Establish `hZn : ‖∑ᶠ w ∈ _root_.GlobalTheory.Lin.zerosDisc χ (2 + t * I) 3, ((_root_.GlobalTheory.Lin.ord χ w : ℕ) : ℂ) / (((1 + r : ℝ) : ℂ) + t * I - w) ^ (0 + 1)‖ ≤ C * Real.log (q * (|t| + 2)) + G + 1` using `by split_ifs at hZnorm with h1`. Establish `ht : 2 ≤ |t|` using `hχt.resolve_left (not_not.mpr h1)`. Establish `him : |t| ≤ ‖((1 + r : ℝ) : ℂ) + t * I - 1‖`.
+
+Use `Complex.abs_im_le_norm (((1 + r : ℝ) : ℂ) + t * I - 1)` as an intermediate fact. Simplify using `using this`. Establish `hY : ‖(1 : ℂ) / (((1 + r : ℝ) : ℂ) + t * I - 1) ^ (0 + 1)‖ ≤ 1`. Rewrite using `[zero_add, pow_one, norm_div, norm_one, div_le_one (by linarith)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite `hZnorm` using `[norm_zero]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hZre : (∑ᶠ w ∈ _root_.GlobalTheory.Lin.zerosDisc χ (1 + t * I) r, (_root_.GlobalTheory.Lin.ord χ w : ℝ)) * (1 / (4 * r)) ≤ (∑ᶠ w ∈ _root_.GlobalTheory.Lin.zerosDisc χ (2 + t * I) 3, ((_root_.GlobalTheory.Lin.ord χ w : ℕ) : ℂ) / (((1 + r : ℝ) : ℂ) + t * I - w) ^ (0 + 1)).re`. Rewrite using `[finsum_mem_eq_finite_toFinset_sum _ hTfin, Finset.sum_mul, finsum_mem_eq_finite_toFinset_sum _ hfin, Complex.re_sum]`.
+
+Use `(Finset.sum_le_sum fun w hw ↦ ?_).trans (Finset.sum_le_sum_of_subset_of_nonneg (Set.Finite.toFinset_subset_toFinset.mpr hTS) fun w hw _ ↦ ?_)` and prove the remaining obligations. Rewrite using `[re_natCast_div_pow_zero_add_one]`. Establish `hw'` using `(Set.Finite.mem_toFinset hTfin).mp hw`. Use `mul_le_mul_of_nonneg_left (inv_re_ge_of_norm_sub_le hr ?_ (re_lt_one_of_mem_zerosDisc hw')) (Nat.cast_nonneg _)` and prove the remaining obligations. Simplify using `only [_root_.GlobalTheory.Lin.zerosDisc, Set.mem_setOf_eq] at hw'`.
+
+Conclude with `hw'.1`. Rewrite using `[re_natCast_div_pow_zero_add_one]`. Establish `hw'` using `re_lt_one_of_mem_zerosDisc ((Set.Finite.mem_toFinset hfin).mp hw)`. Use `mul_nonneg (Nat.cast_nonneg _) (inv_re_nonneg_of_re_nonneg ?_)` and prove the remaining obligations. Simplify using the standard rewrite rules.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Use `set N := ∑ᶠ w ∈ _root_.GlobalTheory.Lin.zerosDisc χ (1 + t * I) r, (_root_.GlobalTheory.Lin.ord χ w : ℝ) with hN`. Use `set L := Real.log (q * (|t| + 2)) with hL`. Establish `h1 : N * (1 / (4 * r)) ≤ C * L + G + 1` using `hZre.trans ((Complex.re_le_norm _).trans hZn)`. Establish `h2 : N ≤ 4 * r * (C * L + G + 1)`.
+
+Establish `h4` using `mul_le_mul_of_nonneg_left h1 (by positivity : (0 : ℝ) ≤ 4 * r)`. Establish `e : 4 * r * (N * (1 / (4 * r))) = N` using `by field_simp`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h3 : 4 * r * (C * L + G + 1) ≤ 4 * (C * (r * L)) + 4 + 4 * r * (C + 1)`. Establish `e : 4 * r * (1 / r) = 4` using `by field_simp`.
+
+Establish `h5` using `mul_le_mul_of_nonneg_left hG_le (by positivity : (0 : ℝ) ≤ 4 * r)`. Use the polynomial consequences of the given equalities and inequalities. Establish `hrL : 0 ≤ r * L` using `by positivity`. Establish `h6` using `mul_le_mul_of_nonneg_right hr2 (by positivity : (0 : ℝ) ≤ C + 1)`. Use polynomial arithmetic with `[mul_nonneg hC.le hrL]`.
+-/
 theorem _root_.GlobalTheory.SmallDiscZeros.few_zeros : ∃ C : ℝ, 0 < C ∧ ∀ (q : ℕ) [NeZero q] (χ : DirichletCharacter ℂ q) (t r : ℝ), (χ ≠ 1 ∨ 2 ≤ |t|) → 0 < r → r ≤ 1 / 2 → (_root_.GlobalTheory.Lin.zerosDisc χ (1 + t * I) r).Finite ∧ (∑ᶠ w ∈ _root_.GlobalTheory.Lin.zerosDisc χ (1 + t * I) r, (_root_.GlobalTheory.Lin.ord χ w : ℝ)) ≤ C * (1 + r * Real.log (q * (|t| + 2))) := by
   obtain ⟨C, hC, hmain⟩ := _root_.GlobalTheory.LogDerivHigher.main
   refine ⟨6 + 4 * C, by positivity, ?_⟩

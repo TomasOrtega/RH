@@ -9,6 +9,21 @@ open AlgebraicGeometry CategoryTheory GlobalTheory.CompanionTheory.Ar NumberFiel
 
 namespace PositivityTheory.HtPt.Mb
 
+/- English proof (translation)
+Introduce `A _ _ _ K _ _ _ L _ _ _ _ _`. Set `A₀` to `Algebra.EssFiniteType.subalgebra ℤ A`. Set `S` to `Algebra.EssFiniteType.submonoid ℤ A`. Establish `hS : ∀ a : A, ∃ u s : A₀, IsUnit (s : A) ∧ a * s = u` using `fun a => by`. Take `⟨⟨u, s⟩, e⟩` from `IsLocalization.surj S a`.
+
+Conclude with `⟨u, s, IsLocalization.map_units A s, e⟩`. Establish `: FaithfulSMul A₀ K` using `(faithfulSMul_iff_algebraMap_injective _ _).2 ((IsFractionRing.injective A K).comp Subtype.val_injective)`. Establish `: IsFractionRing A₀ K` using `IsFractionRing.of_field _ _ fun z => by`. Take `⟨a, b, hb, rfl⟩` from `IsFractionRing.div_surjective (A := A) z`. Take `⟨u, s, hs, e⟩` from `hS a`.
+
+Take `⟨v, t, ht, e'⟩` from `hS b`. Use `⟨u * t, v * s, ?_⟩` and prove the remaining obligations. Establish `h1 : algebraMap A K s ≠ 0` using `(hs.map _).ne_zero`. Establish `h2 : algebraMap A K t ≠ 0` using `(ht.map _).ne_zero`. Use `show _ = algebraMap A K (u * t) / algebraMap A K (v * s)`.
+
+Rewrite using `[← e, ← e']`. Simplify using `only [map_mul]`. Rewrite using `[mul_assoc, mul_assoc, mul_comm (algebraMap A K t), mul_div_mul_right _ _ (mul_ne_zero h1 h2)]`. Establish `hfin : Module.Finite A₀ (integralClosure A₀ L)` using `GroundTheory.Heights₂.Heights.Model.FiniteIntegralClosure.proof A₀ K L`. Take `⟨g, hg⟩ : (Subalgebra.toSubmodule (integralClosure A₀ L)).FG` from `Module.Finite.iff_fg.1 hfin`.
+
+Use `(Module.Finite.iff_fg (N := Subalgebra.toSubmodule (integralClosure A L))).2 ⟨g, le_antisymm ?_ ?_⟩` and prove the remaining obligations. Use `Submodule.span_le.2 fun y hy => ?_` and prove the remaining obligations. Establish `h : y ∈ Subalgebra.toSubmodule (integralClosure A₀ L)` using `hg ▸ Submodule.subset_span hy`. Conclude with `IsIntegral.tower_top (R := A₀) h`. Introduce `y hy`.
+
+Take `⟨m, hm⟩` from `IsIntegral.exists_multiple_integral_of_isLocalization S y (hy : IsIntegral A y)`. Establish `h : m • y ∈ Submodule.span A₀ (g : Set L)`. Rewrite using `[hg]`. Conclude with `hm`. Establish `h' : (m.1 : A) • y ∈ Submodule.span A (g : Set L)` using `Submodule.span_le_restrictScalars A₀ A _ h`.
+
+Take `⟨w, hw⟩` from `(IsLocalization.map_units A m).exists_left_inv`. Use `Submodule.smul_mem _ w h'` as an intermediate fact. Establish `hw' : w * (m.1 : A) = 1` using `hw`. Rewrite `this` using `[smul_smul, hw', one_smul]`. Then use the resulting hypothesis.
+-/
 theorem fin_closure : ∀ (A : Type) [CommRing A] [IsDomain A] [Algebra.EssFiniteType ℤ A] (K : Type) [Field K] [Algebra A K] [IsFractionRing A K] (L : Type) [Field L] [Algebra K L] [FiniteDimensional K L] [Algebra A L] [IsScalarTower A K L], Module.Finite A (integralClosure A L) := by
   intro A _ _ _ K _ _ _ L _ _ _ _ _
   let A₀ := Algebra.EssFiniteType.subalgebra ℤ A

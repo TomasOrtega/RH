@@ -13,6 +13,9 @@ section Gen
 variable {V : Type} [TopologicalSpace V] [T2Space V] [LocallyCompactSpace V]
   [TotallyDisconnectedSpace V]
 
+/- English proof (translation)
+Take `⟨s, hs, hsW, hsc⟩` from `local_compact_nhds (hW.mem_nhds hx)`. Take `⟨K, hKmem, hxK, hKsub⟩` from `(loc_compact_Haus_tot_disc_of_zero_dim (H := V)).exists_subset_of_mem_open (mem_interior_iff_mem_nhds.2 hs) isOpen_interior`. Establish `hKc : IsClopen K` using `hKmem`. Conclude with `⟨K, hsc.of_isClosed_subset hKc.1 (hKsub.trans interior_subset), hKc.2, hxK, hKsub.trans (interior_subset.trans hsW)⟩`.
+-/
 theorem exists_compact_open {W : Set V} (hW : IsOpen W) {x : V} (hx : x ∈ W) :
     ∃ K, IsCompact K ∧ IsOpen K ∧ x ∈ K ∧ K ⊆ W := by
   obtain ⟨s, hs, hsW, hsc⟩ := local_compact_nhds (hW.mem_nhds hx)
@@ -24,6 +27,13 @@ theorem exists_compact_open {W : Set V} (hW : IsOpen W) {x : V} (hx : x ∈ W) :
 
 variable [SecondCountableTopology V]
 
+/- English proof (translation)
+Use `choose K hK using fun x : W => exists_compact_open hW x.2`. Take `⟨T, hTc, hTU⟩` from `TopologicalSpace.isOpen_iUnion_countable K (fun x => (hK x).2.1)`. Use `⟨K '' T, hTc.image K, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨x, _, rfl⟩`. Conclude with `⟨(hK x).1, (hK x).2.1, (hK x).2.2.2⟩`.
+
+Rewrite using `[sUnion_image, hTU]`. Use extensionality with `y`. Simplify using `only [mem_iUnion]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hy⟩`.
+
+Conclude with `(hK x).2.2.2 hy`. Introduce `hy`. Conclude with `⟨⟨y, hy⟩, (hK ⟨y, hy⟩).2.2.1⟩`.
+-/
 theorem open_eq_countable_union {W : Set V} (hW : IsOpen W) :
     ∃ T : Set (Set V), T.Countable ∧ (∀ K ∈ T, IsCompact K ∧ IsOpen K ∧ K ⊆ W) ∧ ⋃₀ T = W := by
   choose K hK using fun x : W => exists_compact_open hW x.2
@@ -42,6 +52,21 @@ theorem open_eq_countable_union {W : Set V} (hW : IsOpen W) :
 
 variable [MeasurableSpace V] [BorelSpace V]
 
+/- English proof (translation)
+Establish `key : ∀ O, IsOpen O → O ⊆ U → m O = m' O`. Introduce `O hO hOU`. Take `⟨T, hTc, hT, hTO⟩` from `open_eq_countable_union hO`. Break down `T.eq_empty_or_nonempty with he | hne` into its components or cases. Rewrite using `[← hTO, he, sUnion_empty, measure_empty, measure_empty]`.
+
+Take `⟨g, rfl⟩` from `hTc.exists_eq_range hne`. Establish `hacc : ∀ n, IsCompact (accumulate g n) ∧ IsOpen (accumulate g n) ∧ accumulate g n ⊆ U`. Introduce `n`. Establish `hg : ∀ k, IsCompact (g k) ∧ IsOpen (g k) ∧ g k ⊆ O` using `fun k => hT _ ⟨k, rfl⟩`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[accumulate_def]`. Conclude with `(finite_le_nat n).isCompact_biUnion fun k _ => (hg k).1`. Rewrite using `[accumulate_def]`. Conclude with `isOpen_biUnion fun k _ => (hg k).2.1`. Rewrite using `[accumulate_def]`.
+
+Conclude with `iUnion₂_subset fun k _ => (hg k).2.2.trans hOU`. Rewrite using `[← hTO, sUnion_range, measure_iUnion_eq_iSup_accumulate, measure_iUnion_eq_iSup_accumulate]`. Use `congr 1`. Use function extensionality and compare the values at `n`. Conclude with `(hK _ (hacc n).1 (hacc n).2.1 (hacc n).2.2).2`.
+
+Establish `hres : m.restrict U = m'.restrict U`. Take `⟨T, hTc, hT, hTU⟩` from `open_eq_countable_union hU`. Rewrite using `[← hTU]`. Use `(Measure.restrict_sUnion_congr hTc).2 fun K hKT => ?_` and prove the remaining obligations. Take `⟨hKc, hKo, hKU⟩` from `hT K hKT`.
+
+Take `⟨hfin, heq⟩` from `hK K hKc hKo hKU`. Use `haveI : IsFiniteMeasure (m.restrict K) := ⟨by rw [Measure.restrict_apply_univ]; exact hfin⟩`. Use `ext_of_generate_finite {s | IsOpen s} BorelSpace.measurable_eq isPiSystem_isOpen ?_ ?_` and prove the remaining obligations. Introduce `O hO`. Rewrite using `[Measure.restrict_apply hO.measurableSet, Measure.restrict_apply hO.measurableSet]`.
+
+Conclude with `key _ (hO.inter hKo) (inter_subset_right.trans hKU)`. Rewrite using `[Measure.restrict_apply_univ, Measure.restrict_apply_univ, heq]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem measure_ext_of_compactOpen {U : Set V} (hU : IsOpen U) (m m' : Measure V)
     (h0 : m Uᶜ = 0) (h0' : m' Uᶜ = 0)
     (hK : ∀ K, IsCompact K → IsOpen K → K ⊆ U → m K < ∞ ∧ m K = m' K) : m = m' := by
@@ -90,6 +115,17 @@ variable {V X Y : Type} [TopologicalSpace V] [T2Space V] [LocallyCompactSpace V]
   [TopologicalSpace X] [MeasurableSpace X] [BorelSpace X] [T2Space X] [LocallyCompactSpace X]
   [SecondCountableTopology X]
 
+/- English proof (translation)
+Establish `hKcl : IsClopen K` using `⟨hKc.isClosed, hKo⟩`. Establish `hKm : MeasurableSet K` using `hKo.measurableSet`. Establish `hcont : Continuous (K.indicator (1 : V → ℝ))` using `hKcl.continuous_indicator continuous_const`. Establish `hcs : HasCompactSupport (K.indicator (1 : V → ℝ))` using `HasCompactSupport.intro hKc fun x hx => by simp [hx]`. Establish `hts : tsupport (K.indicator (1 : V → ℝ)) ⊆ U` using `(closure_minimal (support_indicator_subset) hKcl.1).trans hKU`.
+
+Take `⟨hint, hco⟩` from `h.2.2 _ hcont hcs hts`. Establish `hEq : (fun b => ∫ v, K.indicator (1 : V → ℝ) v ∂(fib b)) = fun b => (fib b K).toReal`. Use function extensionality and compare the values at `b`. Rewrite using `[integral_indicator_one hKm]`. Both sides reduce to the same expression.
+
+Use `⟨fun b => ?_, ?_⟩` and prove the remaining obligations. Establish `hfi` using `(hint b (mem_univ b)).2`. Establish `hl : ∫⁻ x, ‖K.indicator (1 : V → ℝ) x‖ₑ ∂(fib b) = fib b K`. Rewrite using `[← lintegral_indicator_one hKm]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `x`. Apply the tactic sequence `by_cases hx : x ∈ K <;> simp [hx]`. Rewrite using `[← hl]`. Conclude with `hfi`. Rewrite using `[← hEq]`.
+
+Conclude with `continuousOn_univ.1 hco`.
+-/
 theorem fib_compactOpen {μ : Measure V} {ν : Measure X} {f : V → Y} {ι : X → Y} {U : Set V}
     {fib : X → Measure V} (h : IsFibreFamily μ f ι U ν Set.univ fib) {K : Set V}
     (hKc : IsCompact K) (hKo : IsOpen K) (hKU : K ⊆ U) :
@@ -121,6 +157,19 @@ theorem fib_compactOpen {μ : Measure V} {ν : Measure X} {f : V → Y} {ι : X 
 variable (μ : Measure V) (ν : Measure X) [IsFiniteMeasureOnCompacts ν] [ν.IsOpenPosMeasure]
   (f : V → Y) (ι : X → Y) (U : Set V)
 
+/- English proof (translation)
+Establish `hm : MeasurableSet (K ∩ f ⁻¹' (ι '' S))` using `hKm.inter (hA S hS)`. Rewrite using `[h.2.1 _ (measurable_one.indicator hm), ← lintegral_indicator hS]`. Use `congr 1`. Use function extensionality and compare the values at `b`. Rewrite using `[lintegral_indicator_one hm]`.
+
+Establish `hC` using `h.1 b`. Distinguish the cases in `hb : b ∈ S`. Rewrite using `[indicator_of_mem hb]`. Apply `le_antisymm` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation.
+
+Apply `measure_mono` to reduce the goal to its premises. Introduce `v hv`. Distinguish the cases in `hv' : v ∈ f ⁻¹' {ι b} ∩ U`. Use `left`. Conclude with `⟨hv, ⟨b, hb, hv'.1.symm⟩⟩`.
+
+Use `right`. Conclude with `hv'`. Use `_ ≤ fib b (K ∩ f ⁻¹' (ι '' S)) + fib b (f ⁻¹' {ι b} ∩ U)ᶜ := measure_union_le _ _`. Use `_ = fib b (K ∩ f ⁻¹' (ι '' S)) := by rw [hC, add_zero]`. Conclude with `measure_mono inter_subset_left`.
+
+Establish `hz : fib b (K ∩ f ⁻¹' (ι '' S)) = 0`. Apply `measure_mono_null _ hC` to reduce the goal to its premises. Introduce `v hv hvC`. Take `⟨b', hb', he⟩` from `hv.2`. Establish `: ι b' = ι b` using `he.trans hvC.1`.
+
+Rewrite `hb'` using `[hι this]`. Conclude with `hb hb'`. Rewrite using `[hz]`. Simplify using `[hb]`.
+-/
 theorem fib_setLIntegral (hA : ∀ S : Set X, MeasurableSet S → MeasurableSet (f ⁻¹' (ι '' S)))
     (hι : Function.Injective ι) {fib : X → Measure V} (h : IsFibreFamily μ f ι U ν Set.univ fib)
     {K : Set V} (hKm : MeasurableSet K) (S : Set X) (hS : MeasurableSet S) :
@@ -155,6 +204,19 @@ theorem fib_setLIntegral (hA : ∀ S : Set X, MeasurableSet S → MeasurableSet 
     rw [hz]
     simp [hb]
 
+/- English proof (translation)
+Establish `hKeq : ∀ K, IsCompact K → IsOpen K → K ⊆ U → ∀ b, fib b K = fib' b K`. Introduce `K hKc hKo hKU`. Establish `hK1` using `fib_compactOpen h hKc hKo hKU`. Establish `hK2` using `fib_compactOpen h' hKc hKo hKU`. Establish `hKm : MeasurableSet K` using `hKo.measurableSet`.
+
+Establish `hm1 : Measurable (fun b => fib b K)`. Establish `: (fun b => fib b K) = fun b => ENNReal.ofReal ((fib b K).toReal)`. Use function extensionality and compare the values at `b`. Rewrite using `[ENNReal.ofReal_toReal (hK1.1 b).ne]`. Rewrite using `[this]`.
+
+Conclude with `hK1.2.measurable.ennreal_ofReal`. Establish `hm2 : Measurable (fun b => fib' b K)`. Establish `: (fun b => fib' b K) = fun b => ENNReal.ofReal ((fib' b K).toReal)`. Use function extensionality and compare the values at `b`. Rewrite using `[ENNReal.ofReal_toReal (hK2.1 b).ne]`.
+
+Rewrite using `[this]`. Conclude with `hK2.2.measurable.ennreal_ofReal`. Establish `hae : (fun b => fib b K) =ᵐ[ν] fun b => fib' b K` using `ae_eq_of_forall_setLIntegral_eq_of_sigmaFinite hm1 hm2 fun S hS _ => by`. Rewrite using `[fib_setLIntegral μ ν f ι U hA hι h hKm S hS, fib_setLIntegral μ ν f ι U hA hι h' hKm S hS]`. Establish `hae' : (fun b => (fib b K).toReal) =ᵐ[ν] fun b => (fib' b K).toReal` using `hae.mono fun b hb => by simp only at hb ⊢; rw [hb]`.
+
+Establish `heq` using `(hK1.2.ae_eq_iff_eq ν hK2.2).1 hae'`. Introduce `b`. Conclude with `(ENNReal.toReal_eq_toReal_iff' (hK1.1 b).ne (hK2.1 b).ne).1 (congrFun heq b)`. Use function extensionality and compare the values at `b`. Establish `h0 : fib b Uᶜ = 0` using `measure_mono_null (compl_subset_compl.2 inter_subset_right) (h.1 b)`.
+
+Establish `h0' : fib' b Uᶜ = 0` using `measure_mono_null (compl_subset_compl.2 inter_subset_right) (h'.1 b)`. Conclude with `measure_ext_of_compactOpen hU (fib b) (fib' b) h0 h0' fun K hKc hKo hKU => ⟨(fib_compactOpen h hKc hKo hKU).1 b, hKeq K hKc hKo hKU b⟩`.
+-/
 theorem fib_unique (hA : ∀ S : Set X, MeasurableSet S → MeasurableSet (f ⁻¹' (ι '' S)))
     (hι : Function.Injective ι) (hU : IsOpen U) (fib fib' : X → Measure V)
     (h : IsFibreFamily μ f ι U ν Set.univ fib) (h' : IsFibreFamily μ f ι U ν Set.univ fib') :

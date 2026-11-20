@@ -35,32 +35,53 @@ section API
 
 variable {M} {T : UTrait Xo c} {ξ : Sp T.V ⟶ M.Z} {x y : Ω} {a b : ℕ}
 
+/- English proof (translation)
+Rewrite using `[Subsingleton.elim v (IsLocalRing.closedPoint (FractionRing T.V))]`.
+-/
 theorem specializes_genericImage (T : UTrait Xo c) (ξ : Sp T.V ⟶ M.Z) (v : Sp (FractionRing T.V)) :
     (jK T.V ≫ ξ) v ⤳ (jK T.V ≫ ξ) (IsLocalRing.closedPoint (FractionRing T.V)) := by
   rw [Subsingleton.elim v (IsLocalRing.closedPoint (FractionRing T.V))]
 
+/- English proof (translation)
+The claim follows from `h.1`.
+-/
 theorem UOrdGe.mem_O (h : UOrdGe M T ξ x a) :
     x ∈ M.O ((jK T.V ≫ ξ) (IsLocalRing.closedPoint (FractionRing T.V))) :=
   h.1
 
+/- English proof (translation)
+Take `⟨u, hu⟩` from `h`. Rewrite using `[hu, map_ne_zero_iff _ (IsFractionRing.injective T.V (FractionRing T.V))]`. Conclude with `mul_ne_zero (pow_ne_zero _ T.irr.ne_zero) u.ne_zero`.
+-/
 theorem UOrdEq.val_ne_zero (h : UOrdEq M T ξ x a) : M.val (jK T.V ≫ ξ) x ≠ 0 := by
   obtain ⟨u, hu⟩ := h
   rw [hu, map_ne_zero_iff _ (IsFractionRing.injective T.V (FractionRing T.V))]
   exact mul_ne_zero (pow_ne_zero _ T.irr.ne_zero) u.ne_zero
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hx`. Conclude with `h.val_ne_zero (RatModel.val_of_notMem _ hx)`.
+-/
 theorem UOrdEq.mem_O (h : UOrdEq M T ξ x a) :
     x ∈ M.O ((jK T.V ≫ ξ) (IsLocalRing.closedPoint (FractionRing T.V))) := by
   by_contra hx
   exact h.val_ne_zero (RatModel.val_of_notMem _ hx)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.mem_O, h.elim fun w hw => ⟨w, hw⟩⟩`.
+-/
 theorem UOrdEq.ordGe (h : UOrdEq M T ξ x a) : UOrdGe M T ξ x a :=
   ⟨h.mem_O, h.elim fun w hw => ⟨w, hw⟩⟩
 
+/- English proof (translation)
+Take `⟨hx, w, hw⟩` from `h`. Use `⟨hx, T.ϖ ^ (a - b) * w, ?_⟩` and prove the remaining obligations. Rewrite using `[hw, ← mul_assoc, ← pow_add, Nat.add_sub_cancel' hba]`.
+-/
 theorem UOrdGe.mono (h : UOrdGe M T ξ x a) (hba : b ≤ a) : UOrdGe M T ξ x b := by
   obtain ⟨hx, w, hw⟩ := h
   refine ⟨hx, T.ϖ ^ (a - b) * w, ?_⟩
   rw [hw, ← mul_assoc, ← pow_add, Nat.add_sub_cancel' hba]
 
+/- English proof (translation)
+Take `⟨-, w, hw⟩` from `h`. Take `⟨u, hu⟩` from `h'`. Establish `e` using `IsFractionRing.injective T.V (FractionRing T.V) (hw.symm.trans hu)`. Establish `hd : T.ϖ ^ b ∣ T.ϖ ^ a` using `(Units.dvd_mul_right (u := u)).1 ⟨w, e.symm⟩`. Conclude with `(pow_dvd_pow_iff T.irr.ne_zero T.irr.not_isUnit).1 hd`.
+-/
 theorem UOrdGe.le_of_ordEq (h : UOrdGe M T ξ x b) (h' : UOrdEq M T ξ x a) : b ≤ a := by
   obtain ⟨-, w, hw⟩ := h
   obtain ⟨u, hu⟩ := h'
@@ -68,18 +89,32 @@ theorem UOrdGe.le_of_ordEq (h : UOrdGe M T ξ x b) (h' : UOrdEq M T ξ x a) : b 
   have hd : T.ϖ ^ b ∣ T.ϖ ^ a := (Units.dvd_mul_right (u := u)).1 ⟨w, e.symm⟩
   exact (pow_dvd_pow_iff T.irr.ne_zero T.irr.not_isUnit).1 hd
 
+/- English proof (translation)
+The claim follows from `le_antisymm (h.ordGe.le_of_ordEq h') (h'.ordGe.le_of_ordEq h)`.
+-/
 theorem UOrdEq.unique (h : UOrdEq M T ξ x a) (h' : UOrdEq M T ξ x b) : a = b :=
   le_antisymm (h.ordGe.le_of_ordEq h') (h'.ordGe.le_of_ordEq h)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨1, by rw [RatModel.val_one, pow_zero, Units.val_one, mul_one, map_one]⟩`.
+-/
 theorem uOrdEq_one (T : UTrait Xo c) (ξ : Sp T.V ⟶ M.Z) : UOrdEq M T ξ 1 0 :=
   ⟨1, by rw [RatModel.val_one, pow_zero, Units.val_one, mul_one, map_one]⟩
 
+/- English proof (translation)
+Take `⟨hx0, w, hw⟩` from `hx`. Take `⟨hy0, w', hw'⟩` from `hy`. Use `⟨Subalgebra.add_mem _ hx0 hy0, w + w', ?_⟩` and prove the remaining obligations. Rewrite using `[RatModel.val_add (specializes_genericImage T ξ) hx0 hy0, hw, hw', ← map_add, mul_add]`.
+-/
 theorem UOrdGe.add (hx : UOrdGe M T ξ x a) (hy : UOrdGe M T ξ y a) : UOrdGe M T ξ (x + y) a := by
   obtain ⟨hx0, w, hw⟩ := hx
   obtain ⟨hy0, w', hw'⟩ := hy
   refine ⟨Subalgebra.add_mem _ hx0 hy0, w + w', ?_⟩
   rw [RatModel.val_add (specializes_genericImage T ξ) hx0 hy0, hw, hw', ← map_add, mul_add]
 
+/- English proof (translation)
+Take `⟨hx0, w, hw⟩` from `hx`. Take `⟨hy0, w', hw'⟩` from `hy`. Use `⟨Subalgebra.mul_mem _ hx0 hy0, w * w', ?_⟩` and prove the remaining obligations. Rewrite using `[RatModel.val_mul (specializes_genericImage T ξ) hx0 hy0, hw, hw', ← map_mul, pow_add]`. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem UOrdGe.mul (hx : UOrdGe M T ξ x a) (hy : UOrdGe M T ξ y b) : UOrdGe M T ξ (x * y) (a + b) := by
   obtain ⟨hx0, w, hw⟩ := hx
   obtain ⟨hy0, w', hw'⟩ := hy
@@ -88,6 +123,11 @@ theorem UOrdGe.mul (hx : UOrdGe M T ξ x a) (hy : UOrdGe M T ξ y b) : UOrdGe M 
   congr 1
   ring
 
+/- English proof (translation)
+Establish `e` using `RatModel.val_mul (specializes_genericImage T ξ) hx.mem_O hy.mem_O`. Take `⟨u, hu⟩` from `hx`. Take `⟨v, hv⟩` from `hy`. Use `⟨u * v, ?_⟩` and prove the remaining obligations. Rewrite using `[e, hu, hv, ← map_mul, pow_add, Units.val_mul]`.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem UOrdEq.mul (hx : UOrdEq M T ξ x a) (hy : UOrdEq M T ξ y b) : UOrdEq M T ξ (x * y) (a + b) := by
   have e := RatModel.val_mul (specializes_genericImage T ξ) hx.mem_O hy.mem_O
   obtain ⟨u, hu⟩ := hx
@@ -97,6 +137,11 @@ theorem UOrdEq.mul (hx : UOrdEq M T ξ x a) (hy : UOrdEq M T ξ y b) : UOrdEq M 
   congr 1
   ring
 
+/- English proof (translation)
+Establish `e` using `RatModel.val_mul (specializes_genericImage T ξ) hx.1 hi.1`. Take `⟨-, w, hw⟩` from `hx`. Take `⟨-, w', hw'⟩` from `hi`. Rewrite `e` using `[mul_inv_cancel₀ h0, RatModel.val_one, hw, hw', ← map_mul, ← map_one (algebraMap T.V (FractionRing T.V))]`. Establish `e'` using `IsFractionRing.injective T.V (FractionRing T.V) e`.
+
+Simplify using `only [pow_zero, one_mul] at e'`. Conclude with `⟨(IsUnit.of_mul_eq_one w' e'.symm).unit, hw⟩`.
+-/
 theorem UOrdGe.ordEq_zero_of_inv (h0 : x ≠ 0) (hx : UOrdGe M T ξ x 0) (hi : UOrdGe M T ξ x⁻¹ 0) : UOrdEq M T ξ x 0 := by
   have e := RatModel.val_mul (specializes_genericImage T ξ) hx.1 hi.1
   obtain ⟨-, w, hw⟩ := hx
@@ -106,9 +151,15 @@ theorem UOrdGe.ordEq_zero_of_inv (h0 : x ≠ 0) (hx : UOrdGe M T ξ x 0) (hi : U
   simp only [pow_zero, one_mul] at e'
   exact ⟨(IsUnit.of_mul_eq_one w' e'.symm).unit, hw⟩
 
+/- English proof (translation)
+Introduce `h` and use `absurd (h.le_of_ordEq (uOrdEq_one T ξ)) (by omega)`.
+-/
 example (T : UTrait Xo c) (ξ : Sp T.V ⟶ M.Z) : ¬ UOrdGe M T ξ 1 1 :=
   fun h => absurd (h.le_of_ordEq (uOrdEq_one T ξ)) (by omega)
 
+/- English proof (translation)
+Introduce `hi` and use `absurd (hx.le_of_ordEq ((hx.mono (Nat.zero_le 1)).ordEq_zero_of_inv h0 hi)) (by omega)`.
+-/
 example (h0 : x ≠ 0) (hx : UOrdGe M T ξ x 1) : ¬ UOrdGe M T ξ x⁻¹ 0 := fun hi =>
   absurd (hx.le_of_ordEq ((hx.mono (Nat.zero_le 1)).ordEq_zero_of_inv h0 hi)) (by omega)
 
@@ -123,6 +174,9 @@ def ULocTuples {X X' : Scheme.{0}} (U₀ : M.Z.Opens) (u₀ : U₀.toScheme ⟶ 
 
 variable {M}
 
+/- English proof (translation)
+Take `⟨_, _, _, _, t, -, h⟩` from `h`. Take `⟨k, hk⟩` from `h (ξ (IsLocalRing.closedPoint T.V))`. Take `⟨n, hn, -⟩` from `hk T ξ hT specializes_rfl`. Conclude with `⟨n, hn⟩`.
+-/
 theorem ULocTuples.exists_nat {X X' : Scheme.{0}} {U₀ : M.Z.Opens} {u₀ : U₀.toScheme ⟶ X} {a : X' ⟶ X}
     {cc : X' ⟶ Xo.XF c} {φ : InvFun (𝓞 E)} {ι : ℕ} (h : ULocTuples M U₀ u₀ a cc φ ι) {T : UTrait Xo c} {ξ : Sp T.V ⟶ M.Z}
     (hT : UThroughU M U₀ u₀ a cc T ξ) : ∃ a : ℕ, (a : ℝ) = ι * φ.evalZ T.be := by

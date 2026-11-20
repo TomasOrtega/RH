@@ -36,18 +36,30 @@ namespace FunctorialResolution.EmbeddedResolution
 
 namespace TrivialDivisorContinuation
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 private theorem hom_apply_congr {A B : Scheme.{u}} {f g : A ⟶ B} (h : f = g) (x : ↥A) : f x = g x := by
   subst h; rfl
 
+/- English proof (translation)
+Substitute `h` using the available equality. Conclude with `hx`.
+-/
 private theorem mem_support_of_eq {A : Scheme.{u}} {M : A.IdealSheafData} {x y : ↥A} (h : x = y)
     (hx : y ∈ M.support) : x ∈ M.support := by
   subst h; exact hx
 
+/- English proof (translation)
+The claim follows from `(hom_apply_congr (FunctorialResolution.EmbeddedResolution.BlowupSequenceData.projectionToBase_zero n) (n.isoZero.inv w)).trans (Scheme.inv_hom_apply n.isoZero w)`.
+-/
 private theorem projectionToBase_zero_isoObjZero_inv_apply {W : Scheme.{u}} (n : FunctorialResolution.EmbeddedResolution.BlowupSequenceData W) (w : ↥W) :
     (n.projectionToBase 0) (n.isoZero.inv w) = w :=
   (hom_apply_congr (FunctorialResolution.EmbeddedResolution.BlowupSequenceData.projectionToBase_zero n) (n.isoZero.inv w)).trans
     (Scheme.inv_hom_apply n.isoZero w)
 
+/- English proof (translation)
+Establish `h2 : (↑M.support : Set ↥A) = ∅` using `(AlgebraicGeometry.Scheme.IdealSheafData.eq_top_iff_support_eq_empty M).mp h`. Introduce `hx`. Establish `hx' : x ∈ (↑M.support : Set ↥A)` using `hx`. Rewrite `hx'` using `[h2]`. Conclude with `hx'`.
+-/
 private theorem notMem_support_of_eq_top {A : Scheme.{u}} {M : A.IdealSheafData} (h : M = ⊤)
     (x : ↥A) : x ∉ M.support := by
   have h2 : (↑M.support : Set ↥A) = ∅ :=
@@ -57,6 +69,9 @@ private theorem notMem_support_of_eq_top {A : Scheme.{u}} {M : A.IdealSheafData}
   rw [h2] at hx'
   exact hx'
 
+/- English proof (translation)
+The claim follows from `hImageDisjoint (g z) hz x hx`.
+-/
 private theorem false_of_mem_support_comp {X' Y W Z : Scheme.{u}} (q : X' ⟶ Y) (pr : W ⟶ Y)
     (M : W.IdealSheafData)
     (hImageDisjoint : ∀ y : ↥W, y ∈ M.support → ∀ x : ↥X', q x ≠ pr y)
@@ -64,6 +79,9 @@ private theorem false_of_mem_support_comp {X' Y W Z : Scheme.{u}} (q : X' ⟶ Y)
     (hz : g z ∈ M.support) : False :=
   hImageDisjoint (g z) hz x hx
 
+/- English proof (translation)
+The claim follows from `hImageDisjoint (h (g z)) hz x hx`.
+-/
 private theorem false_of_mem_support_comp_comp {X' Y W Z Z' : Scheme.{u}} (q : X' ⟶ Y)
     (pr : W ⟶ Y) (M : W.IdealSheafData)
     (hImageDisjoint : ∀ y : ↥W, y ∈ M.support → ∀ x : ↥X', q x ≠ pr y)
@@ -71,6 +89,39 @@ private theorem false_of_mem_support_comp_comp {X' Y W Z Z' : Scheme.{u}} (q : X
     (hz : h (g z) ∈ M.support) : False :=
   hImageDisjoint (h (g z)) hz x hx
 
+/- English proof (translation)
+Use `set Dj := (s.boundary s.length).get ⟨j₁, hj⟩ with hDtopDef`. Establish `hmapeq : s.toMarkedSequenceOfBlowups.projectionToBase s.toMarkedSequenceOfBlowups.length = s.toBlowupSequenceData.projectionToBase s.length` using `FunctorialResolution.EmbeddedResolution.BlowupSequenceData.toSequenceOfBlowups_projectionToBase s.toBlowupSequenceData s.length`. Establish `hImageDisjoint : ∀ y : ↥(s.obj s.length), y ∈ Dj.support → ∀ x'' : ↥X', q x'' ≠ (s.toBlowupSequenceData.projectionToBase s.length) y`. Introduce `y hy x'' hxy`. Establish `hpb` using `D.isPullback_lastMap`.
+
+Establish `hcomm : (s.toMarkedSequenceOfBlowups.projectionToBase s.toMarkedSequenceOfBlowups.length) y = q x''` using `(hom_apply_congr hmapeq y).trans hxy.symm`. Take `⟨w, hw1, -⟩` from `AlgebraicGeometry.Scheme.Pullback.exists_preimage_pullback y x'' hcomm`. Establish `h1 : D.lastMap (hpb.isoPullback.inv w) = y` using `(hom_apply_congr hpb.isoPullback_inv_fst w).trans hw1`. Establish `h4 : (hpb.isoPullback.inv w) ∈ (Dj.comap D.lastMap).support` using `Scheme.IdealSheafData.mem_support_comap.mpr (mem_support_of_eq h1 hy)`. Conclude with `notMem_support_of_eq_top hComapTop _ h4`.
+
+Establish `hb : (FunctorialResolution.EmbeddedResolution.MaxContactCoverData.derivedTriple S s hft [] 0).boundary = s.boundary s.length`. Rewrite using `[FunctorialResolution.EmbeddedResolution.MaxContactCoverData.derivedTriple_boundary]`. Simplify using the standard rewrite rules. Establish `hj' : j₁ < (FunctorialResolution.EmbeddedResolution.MaxContactCoverData.derivedTriple S s hft [] 0).boundary.length`. Rewrite using `[hb]`.
+
+Conclude with `hj`. Establish `hget : (FunctorialResolution.EmbeddedResolution.MaxContactCoverData.derivedTriple S s hft [] 0).boundary.get ⟨j₁, hj'⟩ = Dj`. Rewrite using `[hDtopDef]`. Establish `hgen : ∀ (L L' : List (s.obj s.length).IdealSheafData), L = L' → ∀ (h1 : j₁ < L.length) (h2 : j₁ < L'.length), L.get ⟨j₁, h1⟩ = L'.get ⟨j₁, h2⟩`. Introduce and unpack `L L' rfl h1 h2`.
+
+Both sides reduce to the same expression. Conclude with `hgen _ _ hb hj' hj`. Establish `hOB` using `FunctorialResolution.EmbeddedResolution.LowerDimReductionPullback.isOrderBoundedByMult_derivedTriple hstar S hV hm hO s hft [] 0 hVc`. Establish `hbalanced` using `FunctorialResolution.EmbeddedResolution.LowerDimReductionPullback.isBalanced_derivedTriple hstar S hV hm hO s hft [] 0 hVc`. Take `⟨Dv, bb, -, hD0, hcen, hbtrue, hstrictD, -, -⟩` from `hspec.shape (FunctorialResolution.EmbeddedResolution.MaxContactCoverData.derivedTriple S s hft [] 0) hVc hP hOB hbalanced hj'`.
+
+Establish `hInduction : ∀ r : ℕ, r ≤ (A j₁ (FunctorialResolution.EmbeddedResolution.MaxContactCoverData.derivedTriple S s hft [] 0)).length → ∀ z : ↥((A j₁ (FunctorialResolution.EmbeddedResolution.MaxContactCoverData.derivedTriple S s hft [] 0)).schemeAt r), z ∈ (Dv r).support → ((A j₁ (Fun …`. Introduce `r`. Proceed by induction on `r with`. Consider the case `zero`. Introduce `_ z hz`.
+
+Rewrite `hz` using `[hD0, hget]`. Conclude with `mem_support_of_eq (hom_apply_congr (FunctorialResolution.EmbeddedResolution.SequenceOfBlowups.projectionToBase_zero _) z) (Scheme.IdealSheafData.mem_support_comap.mp hz)`. Consider the case `succ r ih`. Introduce `hr z hz`. Establish `hrlt : r < (A j₁ (FunctorialResolution.EmbeddedResolution.MaxContactCoverData.derivedTriple S s hft [] 0)).length` using `hr`.
+
+Establish `hmem : ((A j₁ (FunctorialResolution.EmbeddedResolution.MaxContactCoverData.derivedTriple S s hft [] 0)).transitionMapSucc r) z ∈ (Dv r).support`. Distinguish the cases in `hc : bb = true ∧ r = 0`. Take `⟨hb1, hb2⟩` from `hc`. Substitute `hb2` using the available equality. Take `⟨-, -, hD1⟩` from `hbtrue hb1`.
+
+Establish `hz' : z ∈ (Dv 1).support` using `hz`. Rewrite `hz'` using `[hD1]`. Conclude with `Scheme.IdealSheafData.mem_support_comap.mp hz'`. Rewrite `hz` using `[hstrictD r hrlt hc]`. Conclude with `FunctorialResolution.EmbeddedResolution.support_strictTransform_subset_preimage _ _ _ hz`.
+
+Establish `hnext` using `ih (le_of_lt hrlt) _ hmem`. Conclude with `mem_support_of_eq (hom_apply_congr (FunctorialResolution.EmbeddedResolution.SequenceOfBlowups.projectionToBase_succ _ r) z) hnext`. Establish `hcent : ∀ nn : FunctorialResolution.EmbeddedResolution.BlowupSequenceData (s.obj s.length), nn = FunctorialResolution.EmbeddedResolution.BlowupSequenceData.ofSequenceOfBlowups (A j₁ (FunctorialResolution.EmbeddedResolution.MaxContactCoverData.derivedTriple S s hft [] 0)).toSequen …`. Introduce and unpack `nn rfl r z hz hr`. Establish `hr' : r < (A j₁ (FunctorialResolution.EmbeddedResolution.MaxContactCoverData.derivedTriple S s hft [] 0)).length` using `hr`.
+
+Establish `hz2 : z ∈ ((A j₁ (FunctorialResolution.EmbeddedResolution.MaxContactCoverData.derivedTriple S s hft [] 0)).center r).support` using `hz`. Establish `hmem` using `hInduction r (le_of_lt hr') z (hcen r hr' hz2)`. Conclude with `mem_support_of_eq (hom_apply_congr (FunctorialResolution.EmbeddedResolution.BlowupSequenceData.ofSequenceOfBlowups_projectionToBase (A j₁ (FunctorialResolution.EmbeddedResolution.MaxContactCoverData.derivedTriple S s hft [] 0)).toSequenceOfBlowups r) z) hmem`. Establish `c : FunctorialResolution.EmbeddedResolution.SequenceOfBlowupsPullback q s'.toSequenceOfBlowups s.toSequenceOfBlowups`. Rewrite using `[← FunctorialResolution.EmbeddedResolution.MarkedBlowupSequenceData.toMarkedSequence_toSequenceOfBlowups s, ← FunctorialResolution.EmbeddedResolution.MarkedBlowupSequenceData.toMarkedSequence_toSequenceOfBlowups s']`.
+
+Conclude with `D`. Establish `hcd : ∀ (tt : FunctorialResolution.EmbeddedResolution.MarkedBlowupSequenceData (s.proj s.length ≫ S.structMap) (s.ideal s.length) S.mult (s.boundary s.length)), (s.append tt hinv).toSequenceOfBlowups = (s.toBlowupSequenceData.append tt.toBlowupSequenceData).toSequenceOfBlowups` using `fun tt => congrArg FunctorialResolution.EmbeddedResolution.BlowupSequenceData.toSequenceOfBlowups ((FunctorialResolution.EmbeddedResolution.MarkedBlowupSequenceData.append_toBlowupSequenceData s tt hinv).trans rfl)`. Establish `main : ∀ (tt : FunctorialResolution.EmbeddedResolution.MarkedBlowupSequenceData (s.proj s.length ≫ S.structMap) (s.ideal s.length) S.mult (s.boundary s.length)), tt.toBlowupSequenceData = FunctorialResolution.EmbeddedResolution.BlowupSequenceData.ofSequenceOfBlowups (A j₁ (Functo …`. Introduce `tt htt`. Establish `hcn` using `hcent tt.toBlowupSequenceData htt`.
+
+Rewrite using `[FunctorialResolution.EmbeddedResolution.MarkedBlowupSequenceData.toMarkedSequence_toSequenceOfBlowups s', FunctorialResolution.EmbeddedResolution.MarkedBlowupSequenceData.toMarkedSequence_toSequenceOfBlowups (s.append tt hinv), hcd tt]`. Use `FunctorialResolution.EmbeddedResolution.SequenceOfBlowupsPullback.nonempty_append_of_disjoint_centers q s'.toBlowupSequenceData s.toBlowupSequenceData tt.toBlowupSequenceData c ?_` and prove the remaining obligations. Introduce `i hi1 hi2 z hz x'' hx`. Break down `eq_or_lt_of_le hi1 with he | hlt` into its components or cases. Substitute `he` using the available equality.
+
+Rewrite `hz` using `[FunctorialResolution.EmbeddedResolution.BlowupSequenceData.append_center_length]`. Rewrite `hx` using `[FunctorialResolution.EmbeddedResolution.BlowupSequenceData.projectionToBase_append_of_le_length _ _ (le_refl _)]`. Establish `hz1` using `Scheme.IdealSheafData.mem_support_comap.mp hz`. Establish `hz2` using `Scheme.IdealSheafData.mem_support_comap.mp hz1`. Establish `hy` using `hcn 0 _ hz2 (by omega)`.
+
+Conclude with `false_of_mem_support_comp q (s.toBlowupSequenceData.projectionToBase s.length) Dj hImageDisjoint _ z x'' hx (mem_support_of_eq (projectionToBase_zero_isoObjZero_inv_apply _ _).symm hy)`. Rewrite `hz` using `[FunctorialResolution.EmbeddedResolution.BlowupSequenceData.append_center_of_length_lt _ _ hlt]`. Rewrite `hx` using `[FunctorialResolution.EmbeddedResolution.BlowupSequenceData.projectionToBase_append_of_length_lt _ _ hlt]`. Establish `hz1` using `Scheme.IdealSheafData.mem_support_comap.mp hz`. Establish `hy` using `hcn (i - s.toBlowupSequenceData.length) _ hz1 (by omega)`.
+
+Conclude with `false_of_mem_support_comp_comp q (s.toBlowupSequenceData.projectionToBase s.length) Dj hImageDisjoint _ (tt.toBlowupSequenceData.projectionToBase (i - s.toBlowupSequenceData.length)) z x'' hx hy`. Take `⟨hmk, heq, -⟩` from `FunctorialResolution.EmbeddedResolution.LowerDimReductionPullback.appendLowerDimReduction_eq_append hstar hinv T P A B j₁ hspec (fun S' _ i => A i S') (fun _ _ _ => rfl) S hV hm hO s [] 0 hft hdim hP hVc (by simpa using hj) (fun Dx hDx => FunctorialResolution.EmbeddedResolution.B …`. Rewrite using `[heq]`. Conclude with `main _ (FunctorialResolution.EmbeddedResolution.BlowupSequenceData.toMarkedBlowupSequenceData_toBlowupSequenceData _ _ _ _ _ _)`.
+-/
 theorem nonempty_pullback_appendLowerDimReduction_of_comap_eq_top
     (P : ℕ → Prop) (A : ℕ → PrincipalizationAssignment.{u}) (B : PrincipalizationAssignment.{u}) (j₁ : ℕ)
     (S : MarkedIdealWithBoundary.{u}) {X' : Scheme.{u}} (q : X' ⟶ S.scheme) [AlgebraicGeometry.Smooth q]

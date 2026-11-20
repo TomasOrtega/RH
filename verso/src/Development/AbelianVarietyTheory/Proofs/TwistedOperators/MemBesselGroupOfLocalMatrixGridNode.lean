@@ -24,6 +24,47 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.RowRepBes
 open GlobalTheory.LocGrp GlobalTheory.LocMod
 
+/- English proof (translation)
+Establish `hσ : σ ≤ 2 * σ + 1` using `by omega`. Establish `hσ' : σ < 2 * σ + 1` using `by omega`. Set `E : Fin A.rank ⊕ Fin 1 ≃ Fin (GlobalTheory.Doubling.hsum A (GlobalTheory.SeeSaw.Model.nLine D)).rank` to `finSumFinEquiv`. Set `φ : D.host.E →+* k` to `p.π.comp (incA D)`. Use `set dd := diagDec (besDec d rfl) l hl with hdd`.
+
+Use `set o := GlobalTheory.OrthSumExists.orthDecHsum D A (GlobalTheory.SeeSaw.Model.nLine D) with ho`. Set `F : Frame k B.rank (Fin A.rank ⊕ Fin (2 * σ + 1))` to `{ β := sumCols d p.π b u, γ := Γ, βγ := h2, γβ := h1 }`. Set `FA : Frame k A.rank (Fin A.rank)` to `{ β := b, γ := b', βγ := hb, γβ := hb' }`. Set `F₀ : Frame k (GlobalTheory.Doubling.hsum A (GlobalTheory.SeeSaw.Model.nLine D)).rank (Fin A.rank ⊕ Fin 1)` to `{ β := (fromBlocks b 0 0 (1 : Matrix (Fin 1) (Fin 1) k)).submatrix E.symm id γ := (fromBlocks b' 0 0 (1 : Matrix (Fin 1) (Fin 1) k)).submatrix id E.symm βγ := by`. Use `(submatrix_mul_equiv _ _ _ (Equiv.refl _) _).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[fromBlocks_multiply]`. Simplify using `[hb]`. Use `γβ := by`. Use `(submatrix_mul_equiv _ _ _ E.symm _).trans ?_` and prove the remaining obligations. Rewrite using `[fromBlocks_multiply]`.
+
+Simplify using `[hb'] }`. Establish `hloc : p.IsLoc F g x`. Use `⟨hg, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = sumCols d p.π b u * x.val * Γ`. Rewrite using `[e, ← Matrix.mul_assoc, h2, Matrix.one_mul, Matrix.mul_assoc, h2, Matrix.mul_one]`.
+
+Establish `vX : ∀ r (i : Fin σ), φ (d.a r (Fin.castLE hσ i)) = φ (l i)⁻¹ * (dd.jX.map p.π) r i` using `fun r i => by`. Express the relevant statement in the definitionally equal form `_ = _ * φ (((besDec d rfl).e * diagonal l) r i)`. Rewrite using `[mul_diagonal, ← map_mul, mul_left_comm, inv_mul_cancel₀ (hl i), mul_one]`. Both sides reduce to the same expression. Establish `vY : ∀ r (i : Fin σ), φ (d.a r (Fin.castLE hσ i).rev) = φ (star (l i)) * (dd.jY.map p.π) r i` using `fun r i => by`.
+
+Express the relevant statement in the definitionally equal form `_ = _ * φ (((besDec d rfl).e' * diagonal fun a => (star (l a))⁻¹) r i)`. Rewrite using `[mul_diagonal, ← map_mul, mul_left_comm, mul_inv_cancel₀ (star_ne_zero.2 (hl i)), mul_one]`. Both sides reduce to the same expression. Establish `core : ∀ {Z : Type} (X : Matrix (Fin A.rank ⊕ Fin 1) Z k), dd.j0.map p.π * X.submatrix E.symm id = fromCols ((frameMat B A d.ι).map φ) ((midCol d rfl).map φ) * X` using `fun X => by`. Establish `e : dd.j0.map p.π = (fromCols ((frameMat B A d.ι).map φ) ((midCol d rfl).map φ)).submatrix id E.symm`.
+
+Rewrite using `[← fromCols_map]`. Both sides reduce to the same expression. Conclude with `(congrArg (· * X.submatrix E.symm id) e).trans (submatrix_mul_equiv _ _ _ E.symm _)`. Establish `jA : dd.j0.map p.π * o.jA.map p.π = (frameMat B A d.ι).map φ`. Establish `e : o.jA.map p.π = (fromRows (1 : Matrix (Fin A.rank) (Fin A.rank) k) (0 : Matrix (Fin 1) (Fin A.rank) k)).submatrix E.symm id`.
+
+Rewrite using `[← Matrix.map_one φ (map_zero _) (map_one _), ← Matrix.map_zero φ (map_zero _), ← fromRows_map]`. Both sides reduce to the same expression. Rewrite using `[e, core, fromCols_mul_fromRows, Matrix.mul_one, Matrix.mul_zero, add_zero]`. Establish `jB : dd.j0.map p.π * o.jB.map p.π = (midCol d rfl).map φ`. Establish `e : o.jB.map p.π = (fromRows (0 : Matrix (Fin A.rank) (Fin 1) k) (1 : Matrix (Fin 1) (Fin 1) k)).submatrix E.symm id`.
+
+Rewrite using `[← Matrix.map_one φ (map_zero _) (map_one _), ← Matrix.map_zero φ (map_zero _), ← fromRows_map]`. Both sides reduce to the same expression. Use `(congrArg (dd.j0.map p.π * ·) e).trans ((core _).trans ?_)` and prove the remaining obligations. Rewrite using `[fromCols_mul_fromRows, Matrix.mul_one, Matrix.mul_zero, zero_add]`. Establish `fX : ∀ (i : Fin σ) r, F.β r (Sum.inr (Fin.castLE hσ i)) = u (Fin.castLE hσ i) * φ (l i)⁻¹ * (dd.jX.map p.π) r i` using `fun i r => (mul_diagonal u _ _ _).trans ((mul_comm _ _).trans ((congrArg (u _ * ·) (vX r i)).trans (mul_assoc _ _ _).symm))`.
+
+Establish `fY : ∀ (i : Fin σ) r, F.β r (Sum.inr (Fin.castLE hσ i).rev) = u (Fin.castLE hσ i).rev * φ (star (l i)) * (dd.jY.map p.π) r i` using `fun i r => (mul_diagonal u _ _ _).trans ((mul_comm _ _).trans ((congrArg (u _ * ·) (vY r i)).trans (mul_assoc _ _ _).symm))`. Establish `fZ : ∀ r, F.β r (Sum.inr ⟨σ, hσ'⟩) = u ⟨σ, hσ'⟩ * (dd.j0.map p.π * o.jB.map p.π) r (0 : Fin 1)` using `fun r => (mul_diagonal u _ _ _).trans ((mul_comm _ _).trans (congrArg (u _ * ·) (congrFun (congrFun jB r) (0 : Fin 1)).symm))`. Establish `ec` using `core (fromBlocks b 0 0 (1 : Matrix (Fin 1) (Fin 1) k))`. Rewrite `ec` using `[fromCols_mul_fromBlocks, Matrix.mul_zero, Matrix.mul_zero, add_zero, zero_add, Matrix.mul_one]`. Take `⟨Φ, hΦ⟩` from `exists_hom p F`.
+
+Establish `hN : N k (Fin A.rank) (2 * σ + 1) (σ + 1) ≤ (besGrp dd o).comap Φ`. Use `(Subgroup.closure_le _).2 fun y hy => Subgroup.mem_sup_left (flag_of_strict p dd F₀ F (Sum.elim (Sum.map id fun _ => ⟨σ, hσ'⟩) (Sum.elim (fun i : Fin σ => Sum.inr (Fin.castLE hσ i)) fun i : Fin σ => Sum.inr (Fin.castLE hσ i).rev)) ?_ (Sum.elim (Sum.elim (fun _ => 1) fun _ => u ⟨σ …` and prove the remaining obligations. Introduce and unpack `(a | j)`. Conclude with `⟨Sum.inl (Sum.inl a), rfl⟩`. Break down `lt_trichotomy j.val σ with h | h | h` into its components or cases.
+
+Conclude with `⟨Sum.inr (Sum.inl ⟨j.val, h⟩), rfl⟩`. Conclude with `⟨Sum.inl (Sum.inr 0), congrArg Sum.inr (Fin.ext h.symm)⟩`. Conclude with `⟨Sum.inr (Sum.inr ⟨2 * σ - j.val, by omega⟩), congrArg Sum.inr (Fin.ext (by`. Simplify using `only [Fin.val_rev, Fin.val_castLE]`. Use the proof step `omega))⟩`.
+
+Introduce and unpack `r ((a | a) | i | i)`. Conclude with `(congrFun (congrFun ec r) (Sum.inl a)).symm.trans (one_mul _).symm`. Conclude with `(mul_diagonal u _ _ _).trans ((mul_comm _ _).trans (congrArg (u _ * ·) (congrFun (congrFun ec r) (Sum.inr a)).symm))`. Conclude with `fX i r`. Conclude with `fY i r`.
+
+Introduce and unpack `((a | a) | i | i)`. Both sides reduce to the same expression. Both sides reduce to the same expression. Both sides reduce to the same expression. Use `i.2` as an intermediate fact.
+
+Simplify using `only [GlobalTheory.RootEx.lev, wlev, Sum.elim_inr, Fin.val_rev, Fin.val_castLE]`. Use linear arithmetic over natural numbers and integers. Establish `hle : symR k (Fin A.rank) (2 * σ + 1) ≤ (besGrp dd o).comap Φ`. Rewrite using `[symR, symN_odd]`. Use `sup_le ?_ hN` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨g₀, rfl⟩`. Take `⟨h, hh⟩` from `Witness.exists_isLoc p FA g₀`. Establish `eA : mt B (dd.emb0 (o.emb (h, 1))) ⬝ (dd.j0 ⬝ o.jA) = dd.j0 ⬝ o.jA ⬝ mt A h`. Rewrite using `[cancel₂ (dd.wittDecomp_anisotropicEmbedding_inclAnisotropic _), Matrix.mul_assoc, o.emb_jA, Matrix.mul_assoc]`. Establish `eB : mt B (dd.emb0 (o.emb (h, 1))) ⬝ (dd.j0 ⬝ o.jB) = dd.j0 ⬝ o.jB`.
+
+Rewrite using `[cancel₂ (dd.wittDecomp_anisotropicEmbedding_inclAnisotropic _), Matrix.mul_assoc, o.emb_jB, GlobalTheory.MixModel.mt_one, Matrix.mul_one]`. Establish `eZ` using `map_fix p eB`. Rewrite `eZ` using `[Matrix.map_mul]`. Establish `hm : p.IsLoc F (dd.emb0 (o.emb (h, 1))) (embX (2 * σ + 1) g₀)`. Use `⟨suppAt_wittLeviEmbedding dd (suppAt_emb o hh.1), eq_embX F _ g₀ ((dd.j0 ⬝ o.jA).map p.π * FA.β) (fun r a => ?_) (intertwine p eA hh) fun j => ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `((frameMat B A d.ι).map φ * b) r a = _`. Rewrite using `[Matrix.map_mul, jA]`. Break down `lt_trichotomy j.val σ with hj | hj | hj` into its components or cases. Conclude with `fix_col (map_fix p (dd.wittDecomp_anisotropicEmbedding_inclX _)) _ ⟨j.val, hj⟩ (fX ⟨j.val, hj⟩)`. Take `rfl : j = ⟨σ, hσ'⟩` from `Fin.ext hj`.
+
+Conclude with `fix_col eZ _ (0 : Fin 1) fZ`. Take `⟨q, rfl⟩ : ∃ q : Fin σ, j = (Fin.castLE hσ q).rev` from `⟨⟨2 * σ - j.1, by omega⟩, Fin.ext (by simp only [Fin.val_rev, Fin.val_castLE]; omega)⟩`. Conclude with `fix_col (map_fix p (dd.wittDecomp_anisotropicEmbedding_inclY _)) _ q (fY q)`. Express the relevant statement in the definitionally equal form `Φ _ ∈ besGrp _ _`. Rewrite using `[isLoc_unique p (hΦ _) hm]`.
+
+Conclude with `Subgroup.mem_sup_right ⟨h, rfl⟩`. Rewrite using `[isLoc_unique p hloc (hΦ x)]`. Conclude with `hle hx`.
+-/
 theorem mem_bes {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (p : Place D k)
     {A B : HSp D} {σ : ℕ} (d : HermitianOrthogonalExtensionData A B (2 * σ + 1) (-1)) (l : Fin σ → D.host.E) (hl : ∀ a, l a ≠ 0)
     {b b' : Matrix (Fin A.rank) (Fin A.rank) k} (hb : b * b' = 1) (hb' : b' * b = 1) {u : Fin (2 * σ + 1) → k}
@@ -145,6 +186,9 @@ end GlobalTheory.RowRepBes
 namespace GlobalTheory.RowRepBes
 open GlobalTheory.LocMod
 
+/- English proof (translation)
+Substitute `h ha hb` using the available equality. Take `⟨Γ, h1, h2, e⟩` from `frame_val d w hF`. Rewrite `h1`, `h2`, `e` using `[hp]`. Conclude with `mem_bes p d l hl (GlobalTheory.StdFrames.loc w β).mul_inv (GlobalTheory.StdFrames.loc w β).inv_mul h1 h2 hg (e g) hx`.
+-/
 theorem mem_besGrp_of_symR {D : D7} {A B : HSp D} {c σ : ℕ} (d : HermitianOrthogonalExtensionData A B c (-1)) (h : c = 2 * σ + 1)
     (l : Fin σ → D.host.E) (hl : ∀ a, l a ≠ 0) (w : Pl D.host.E) (β : GL (Fin A.rank) (Lev.EAf D))
     (β' : GL (Fin B.rank) (Lev.EAf D)) (u : Fin c → Kw w) (hF : IsSumFrame d w β β' u) {a b : ℕ} (ha : a = A.rank)
@@ -156,6 +200,9 @@ theorem mem_besGrp_of_symR {D : D7} {A B : HSp D} {c σ : ℕ} (d : HermitianOrt
   rw [hp] at h1 h2 e
   exact mem_bes p d l hl (GlobalTheory.StdFrames.loc w β).mul_inv (GlobalTheory.StdFrames.loc w β).inv_mul h1 h2 hg (e g) hx
 
+/- English proof (translation)
+Introduce `D T L sc G W U S t ht w hw ew hew j σ hj hj' h' h hs hx`. Establish `he : IsIdemSum ew {w}` using `⟨⟨fun _ => ew, fun PP hPP => by rw [Finset.mem_singleton.1 hPP]; exact hew, (Finset.sum_singleton (fun _ => ew) w).symm⟩, hew.1.2.1⟩`. Take `⟨p, hp, rfl⟩` from `GlobalTheory.PlcAtW.exists_plc D w ew he`. Conclude with `mem_besGrp_of_symR (G.rowDec j hj') (by omega) _ _ w _ _ _ (S.row t ht w hw j hj') (topRank_eq G t w hj) (rank_vertex G t w (X := (D.R.m, j)) ⟨le_rfl, hj⟩) _ p (RingHom.ext fun x => (hp.2.1 x).symm) h hs hx`.
+-/
 theorem mem_besGrp_of_locAt : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {W : G.Weil} {U : Set T} (S : GridChoice W U) {t : T}, t ∈ U → ∀ {w : Pl D.host.E}, w ∈ locPl G t → ∀ (ew : AE D), Formalism.L2.NTheta.IsIdemAt ew w → ∀ {j σ : ℕ} (hj : j ≤ D.R.m) (hj' : j < D.R.m) (h' : j + 2 * σ + 2 = D.R.m) (h : GA D (G.V (.grid D.R.m j))), SuppAt ew _ h → GlobalTheory.RowRep.locAt S.B t w j hj h ∈ rowR (G := locGrid G t w) one_le_sLen (j := j) hj' → h ∈ besGrp (besDecAt G j σ h') (GlobalTheory.OrthSumExists.orthDecHsum D _ _) := by
   intro D T L sc G W U S t ht w hw ew hew j σ hj hj' h' h hs hx
   have he : IsIdemSum ew {w} := ⟨⟨fun _ => ew, fun PP hPP => by rw [Finset.mem_singleton.1 hPP]; exact hew,

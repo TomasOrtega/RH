@@ -8,10 +8,18 @@ namespace UpperTheory.Gal.productCup_of_system
 section
 variable {d : ℕ} {S E : Type} [CommRing S] [Algebra ℂ S] [AddCommGroup E] [Module ℂ E] (T : Sys d S E)
 
+/- English proof (translation)
+Simplify using `[uni]`.
+-/
 private lemma card_uni {β κ : Type} [LinearOrder β] [LinearOrder κ] (I : Finset β) (J : Finset κ) :
     (uni I J).card = I.card + J.card := by
   simp [uni]
 
+/- English proof (translation)
+Simplify using `only [uni, Finset.mem_map, Finset.mem_disjSum, Equiv.coe_toEmbedding]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, (⟨i, hi, rfl⟩ | ⟨l, hl, rfl⟩), rfl⟩`. Conclude with `Or.inl ⟨i, hi, rfl⟩`. Conclude with `Or.inr ⟨l, hl, rfl⟩`.
+
+Introduce and unpack `(⟨i, hi, rfl⟩ | ⟨l, hl, rfl⟩)`. Conclude with `⟨Sum.inl i, Or.inl ⟨i, hi, rfl⟩, rfl⟩`. Conclude with `⟨Sum.inr l, Or.inr ⟨l, hl, rfl⟩, rfl⟩`.
+-/
 private lemma mem_uni {β κ : Type} [LinearOrder β] [LinearOrder κ] (I : Finset β) (J : Finset κ)
     (t : β ⊕ₗ κ) : t ∈ uni I J ↔ (∃ i ∈ I, t = toLex (Sum.inl i)) ∨ ∃ l ∈ J, t = toLex (Sum.inr l) := by
   simp only [uni, Finset.mem_map, Finset.mem_disjSum, Equiv.coe_toEmbedding]
@@ -23,19 +31,31 @@ private lemma mem_uni {β κ : Type} [LinearOrder β] [LinearOrder κ] (I : Fins
     · exact ⟨Sum.inl i, Or.inl ⟨i, hi, rfl⟩, rfl⟩
     · exact ⟨Sum.inr l, Or.inr ⟨l, hl, rfl⟩, rfl⟩
 
+/- English proof (translation)
+Unfold `detC`. Rewrite using `[dif_pos hc, Finset.orderEmbOfFin_unique hc hs hf]`.
+-/
 private lemma detC_eq {κ : Type} [LinearOrder κ] {p : ℕ} (ρ : κ → Fin p → S) (s : Finset κ)
     (f : Fin p → κ) (hc : s.card = p) (hs : ∀ x, f x ∈ s) (hf : StrictMono f) :
     detC ρ s = (Matrix.of fun a b => ρ (f a) b).det := by
   unfold detC
   rw [dif_pos hc, Finset.orderEmbOfFin_unique hc hs hf]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private lemma rowMu_inr (l : Mi d) (m : Fin (d + 1)) : T.rowMu (toLex (Sum.inr l)) m =
     (if m = (ofLex l).1 then (T.X m * T.Y (ofLex l).2 : S) else 0) -
       if m = (ofLex l).2 then (T.X m * T.Y (ofLex l).1 : S) else 0 := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private lemma rowMu_inl (i m : Fin (d + 1)) : T.rowMu (toLex (Sum.inl i)) m =
     (Pi.single i 1 : Fin (d + 1) → S) m := rfl
 
+/- English proof (translation)
+Take `⟨t, rfl⟩` from `toLex.surjective t`. Break down `t with i | l` into its components or cases. Simplify using `[rowMu_inl, app]`. Simplify using `only [rowMu_inr, Pi.one_apply, mul_one, Finset.sum_sub_distrib, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Both sides reduce to the same expression.
+-/
 private lemma rowMu_sum (t : Fin (d + 1) ⊕ₗ Mi d) :
     ∑ b, T.rowMu t b * (1 : Fin (d + 1) → S) b = app (fun _ => (1 : S)) T.mu t := by
   obtain ⟨t, rfl⟩ := toLex.surjective t
@@ -45,6 +65,9 @@ private lemma rowMu_sum (t : Fin (d + 1) ⊕ₗ Mi d) :
       Finset.mem_univ, if_true]
     rfl
 
+/- English proof (translation)
+Simplify using `only [rowMu_inr, sub_mul, ite_mul, zero_mul, Finset.sum_sub_distrib, Finset.sum_ite_eq', Finset.mem_univ, if_true, Units.val_mul]`. Establish `h1 : ((T.X (ofLex l).1 : Sˣ) : S) * (((T.X (ofLex l).1)⁻¹ : Sˣ) : S) = 1` using `Units.mul_inv _`. Establish `h2 : ((T.X (ofLex l).2 : Sˣ) : S) * (((T.X (ofLex l).2)⁻¹ : Sˣ) : S) = 1` using `Units.mul_inv _`. Take the linear combination `((T.Y (ofLex l).1 : S) * (T.Y (ofLex l).2 : S)) * (h1 - h2)`.
+-/
 private lemma rowMu_null (l : Mi d) :
     ∑ m, T.rowMu (toLex (Sum.inr l)) m * ((T.Y m * (T.X m)⁻¹ : Sˣ) : S) = 0 := by
   simp only [rowMu_inr, sub_mul, ite_mul, zero_mul, Finset.sum_sub_distrib, Finset.sum_ite_eq',
@@ -53,6 +76,15 @@ private lemma rowMu_null (l : Mi d) :
   have h2 : ((T.X (ofLex l).2 : Sˣ) : S) * (((T.X (ofLex l).2)⁻¹ : Sˣ) : S) = 1 := Units.mul_inv _
   linear_combination ((T.Y (ofLex l).1 : S) * (T.Y (ofLex l).2 : S)) * (h1 - h2)
 
+/- English proof (translation)
+Unfold `detC`. Use `split_ifs with h`. Use `set A : Matrix (Fin (d + 1)) (Fin (d + 1)) S := Matrix.of fun a b => T.rowMu ((uni ∅ L).orderEmbOfFin h a) b with hA`. Establish `hAv : A.mulVec (fun m => ((T.Y m * (T.X m)⁻¹ : Sˣ) : S)) = 0`. Use function extensionality and compare the values at `a`.
+
+Establish `hmem : (uni ∅ L).orderEmbOfFin h a ∈ uni ∅ L` using `Finset.orderEmbOfFin_mem _ _ _`. Rewrite `hmem` using `[mem_uni]`. Break down `hmem with ⟨i, hi, _⟩ | ⟨l, _, hl⟩` into its components or cases. Simplify using `at hi`. Simplify using `only [Matrix.mulVec, dotProduct, hA, Matrix.of_apply, hl, Pi.zero_apply]`.
+
+Conclude with `rowMu_null T l`. Establish `h0` using `congrArg A.adjugate.mulVec hAv`. Rewrite `h0` using `[Matrix.mulVec_mulVec, Matrix.adjugate_mul, Matrix.mulVec_zero, Matrix.smul_mulVec, Matrix.one_mulVec]`. Establish `h1` using `congrFun h0 0`. Simplify using `only [Pi.smul_apply, smul_eq_mul, Pi.zero_apply] at h1`.
+
+Conclude with `(Units.mul_left_eq_zero (T.Y 0 * (T.X 0)⁻¹)).1 h1`. Both sides reduce to the same expression.
+-/
 private lemma detC_left (L : Finset (Mi d)) : detC T.rowMu (uni ∅ L) = 0 := by
   unfold detC
   split_ifs with h
@@ -74,6 +106,9 @@ private lemma detC_left (L : Finset (Mi d)) : detC T.rowMu (uni ∅ L) = 0 := by
     exact (Units.mul_left_eq_zero (T.Y 0 * (T.X 0)⁻¹)).1 h1
   · rfl
 
+/- English proof (translation)
+Rewrite using `[detC_eq T.rowMu _ (fun a => toLex (Sum.inl a)) (by simp [card_uni]) (fun x => (mem_uni _ _ _).2 (Or.inl ⟨x, Finset.mem_univ _, rfl⟩)) (fun a b h => Sum.Lex.inl_strictMono h)]`. Establish `: (Matrix.of fun a b => T.rowMu (toLex (Sum.inl a)) b) = (1 : Matrix (Fin (d + 1)) (Fin (d + 1)) S)`. Use extensionality with `a b`. Simplify using `[rowMu_inl, Matrix.one_apply, Pi.single_apply, eq_comm]`. Rewrite using `[this, Matrix.det_one]`.
+-/
 private lemma detC_univ : detC T.rowMu (uni Finset.univ ∅) = 1 := by
   rw [detC_eq T.rowMu _ (fun a => toLex (Sum.inl a)) (by simp [card_uni])
     (fun x => (mem_uni _ _ _).2 (Or.inl ⟨x, Finset.mem_univ _, rfl⟩))
@@ -83,6 +118,27 @@ private lemma detC_univ : detC T.rowMu (uni Finset.univ ∅) = 1 := by
     simp [rowMu_inl, Matrix.one_apply, Pi.single_apply, eq_comm]
   rw [this, Matrix.det_one]
 
+/- English proof (translation)
+Set `f : Fin (d + 1) → Fin (d + 1) ⊕ₗ Mi d` to `Fin.cons (toLex (Sum.inl 0)) fun l => toLex (Sum.inr (dj 0 l))`. Establish `hf0 : f 0 = toLex (Sum.inl 0)` using `rfl`. Establish `hfs : ∀ l : Fin d, f l.succ = toLex (Sum.inr (dj 0 l))` using `fun _ => rfl`. Establish `hmono : StrictMono f`. Introduce `a b h`.
+
+Proceed by induction on `a using Fin.cases with`. Consider the case `zero`. Proceed by induction on `b using Fin.cases with`. Consider the case `zero => exact absurd h (lt_irrefl _)`. Consider the case `succ b => rw [hf0, hfs]`.
+
+Conclude with `Sum.Lex.inl_lt_inr _ _`. Consider the case `succ a`. Proceed by induction on `b using Fin.cases with`. Consider the case `zero => exact absurd h (Fin.not_lt_zero _)`. Consider the case `succ b`.
+
+Rewrite using `[hfs, hfs]`. Conclude with `Sum.Lex.inr_strictMono ((dj 0).strictMono (Fin.succ_lt_succ_iff.1 h))`. Establish `hmem : ∀ x, f x ∈ uni {0} (img (dj 0))`. Introduce `x`. Proceed by induction on `x using Fin.cases with`.
+
+Consider the case `zero => exact (mem_uni _ _ _).2 (Or.inl ⟨0, by simp, rfl⟩)`. Consider the case `succ l => exact (mem_uni _ _ _).2 (Or.inr ⟨dj 0 l, by simp [img], rfl⟩)`. Rewrite using `[detC_eq T.rowMu _ f (by simp [card_uni, img, add_comm]) hmem hmono]`. Establish `hrow : ∀ (l : Fin d) (m : Fin (d + 1)), T.rowMu (f l.succ) m = (if m = l.succ then (T.X m * T.Y 0 : S) else 0) - if m = 0 then (T.X m * T.Y l.succ : S) else 0`. Introduce `l m`.
+
+Establish `e1 : (ofLex (dj (0 : Fin (d + 1)) l)).1 = l.succ` using `by simp [dj]`. Establish `e2 : (ofLex (dj (0 : Fin (d + 1)) l)).2 = 0` using `rfl`. Rewrite using `[hfs, rowMu_inr, e1, e2]`. Rewrite using `[Matrix.det_of_lowerTriangular]`. Rewrite using `[Fin.prod_univ_succ]`.
+
+Simplify using `only [Matrix.of_apply, hf0, rowMu_inl, Pi.single_eq_same, one_mul, hrow]`. Simplify using `[Finset.prod_mul_distrib, Fin.succ_ne_zero]`. Introduce `i j hij`. Establish `hij' : i < j` using `hij`. Simplify using `only [Matrix.of_apply]`.
+
+Proceed by induction on `i using Fin.cases with`. Consider the case `zero`. Rewrite using `[hf0, rowMu_inl]`. Simplify using `[Pi.single_apply, (Fin.pos_iff_ne_zero.1 hij')]`. Consider the case `succ l`.
+
+Rewrite using `[hrow]`. Establish `h1 : j ≠ l.succ` using `ne_of_gt hij'`. Establish `h2 : j ≠ 0`. Introduce and unpack `rfl`. Conclude with `Fin.not_lt_zero _ hij'`.
+
+Simplify using `[h1, h2]`.
+-/
 private lemma detC_top : detC T.rowMu (uni {0} (img (dj 0))) =
     (∏ l : Fin d, (T.X l.succ : S)) * (T.Y 0 : S) ^ d := by
   let f : Fin (d + 1) → Fin (d + 1) ⊕ₗ Mi d :=
@@ -138,6 +194,11 @@ end
 
 end UpperTheory.Gal.productCup_of_system
 
+/- English proof (translation)
+Introduce `hDet d S E _ _ _ _ T`. Use `⟨?_, detC_left T, detC_univ T, detC_top T⟩` and prove the remaining obligations. Establish `h` using `hDet S S (Algebra.lmul ℂ S) (Fin (d + 1) ⊕ₗ Mi d) (d + 1) T.rowMu 1 1`. Simplify using `only [rowMu_sum] at h`. Establish `e : (fun s => (Algebra.lmul ℂ S) (detC T.rowMu s) (1 : S)) = detC T.rowMu`.
+
+Use function extensionality and compare the values at `s`. Simplify using the standard rewrite rules. Rewrite `h` using `[e]`. Then use the resulting hypothesis.
+-/
 theorem UpperTheory.Gal.productCup_of_system.thMu_of :
     Det → ThMu := by
   intro hDet d S E _ _ _ _ T

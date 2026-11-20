@@ -9,6 +9,11 @@ noncomputable def UpperTheory.Reformulated.B.Qk42.FGe :
     fun {R : Type} [CommRing R] (m : Fin (4 : ℕ) → ℤ) (p : ℤ) (X : UpperTheory.Reformulated.B.Qk42.M4 R) ↦
       ∀ (i j : Fin (4 : ℕ)), m i - m j < p → X i j = (0 : R)
 
+/- English proof (translation)
+Introduce `R _ m p q A B hA hB i j hij`. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Distinguish the cases in `hk : m i - m k < p`. Rewrite using `[hA i k hk, zero_mul]`.
+
+Rewrite using `[hB k j (by omega), mul_zero]`.
+-/
 theorem UpperTheory.Reformulated.B.Qk42.mul :
     ∀ {R : Type} [inst : CommRing R] {m : Fin (4 : ℕ) → ℤ} {p q : ℤ} {A B : UpperTheory.Reformulated.B.Qk42.M4 R},
       UpperTheory.Reformulated.B.Qk42.FGe m p A → UpperTheory.Reformulated.B.Qk42.FGe m q B → UpperTheory.Reformulated.B.Qk42.FGe m (p + q) (A * B) := by

@@ -19,11 +19,19 @@ open GlobalTheory.Member
 
 namespace GlobalTheory.Member
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ`. Conclude with `Matrix.mul_assoc (α := ℂ) _ (mat x τ) (mat b τ)`.
+-/
 theorem frame_rmul_lact {E : Type} [Field E] [NumberField E] [IsCMField E] {Ψ : Finset (E →+* ℂ)} {r : ℕ}
     (γ : GL (Fin r) E) (x b : Frame Ψ r) : rmul (lact γ x) b = lact γ (rmul x b) := by
   funext τ
   exact Matrix.mul_assoc (α := ℂ) _ (mat x τ) (mat b τ)
 
+/- English proof (translation)
+Take `⟨γ', hm', he⟩` from `hd.1 g`. Establish `hu` using `GlobalTheory.T.marking_component_unique_frame_unique_arithmeticGroup D H Dw l Xo c σ V r C hC g`. Establish `hk : k = (dict g).1` using `hu.1 _ _ _ _ hm hm'`. Substitute `hk` using the available equality. Take `⟨δ, hδ, e⟩` from `hu.2 _ _ _ hm hm'`.
+
+Use `⟨δ, hδ, ?_⟩` and prove the remaining obligations. Rewrite using `[← e, ← he]`.
+-/
 theorem dict_eq_of_mark (D : D7) (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E) (Dw : Datum H) (l : Level H)
     (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (V : HSp D) (r : ℕ) (C : Ctx Xo c σ V r) (hC : C.OK)
     (dict : GA D V → Σ k, Frame (C.M.X k).Ψ r) (hd : C.IsDict dict) (g : GA D V) (k : Fin C.F.n)
@@ -37,6 +45,13 @@ theorem dict_eq_of_mark (D : D7) (H : ReciprocityTheory.ChartRestriction.G.Geo.T
   refine ⟨δ, hδ, ?_⟩
   rw [← e, ← he]
 
+/- English proof (translation)
+Introduce `D H Dw l Xo c σ V r C hC dict hd`. Use `⟨fun g h hh => ?_, fun k x hx => ?_⟩` and prove the remaining obligations. Take `⟨γ, hm, he⟩` from `hd.1 g`. Establish `hm2` using `(GlobalTheory.T.markingRule_translate_stable D H Dw l Xo c σ V r C hC g _ γ hm).2.2.1 h hh`. Take `⟨δ, hδ, e⟩` from `dict_eq_of_mark D H Dw l Xo c σ V r C hC dict hd (g * h) _ γ hm2`.
+
+Use `⟨δ, hδ, ?_⟩` and prove the remaining obligations. Rewrite using `[e, ← mul_assoc, (GlobalTheory.T.memberDictionary_frames_orthonormal_unit D H Dw l Xo c σ V r C hC (γ * g) _).2.2.2.2.2.1 h, ← he]`. Take `⟨x₀, b, hb, ho, hx₀⟩` from `(GlobalTheory.UnitFrames.frame_mul_triangular_orthonormal D.host.E r (C.M.X k).p0 (C.M.X k).Ψ (C.M.X k).Gm (C.M.X k).Gm_herm).1 x hx`. Take `⟨u, hu, hux⟩` from `(GlobalTheory.T.memberDictionary_frames_orthonormal_unit D H Dw l Xo c σ V r C hC 1 k).2.2.2.2.2.2 x₀ ho`. Take `⟨f, hf, hm⟩` from `GlobalTheory.T.exists_finiteAdelic_element_marking_component D H Dw l Xo c σ V r C hC k`.
+
+Establish `hm2` using `(GlobalTheory.T.markingRule_translate_stable D H Dw l Xo c σ V r C hC f k 1 hm).2.2.1 u hu`. Take `⟨δ, hδ, e⟩` from `dict_eq_of_mark D H Dw l Xo c σ V r C hC dict hd (f * u) k 1 hm2`. Use `⟨f * u, δ, hδ, b, hb, ?_⟩` and prove the remaining obligations. Rewrite using `[e, one_mul, ← (GlobalTheory.T.adelicUnitary_eq_real_mul_finite_split D V).2.1 u hu f hf, (GlobalTheory.T.memberDictionary_frames_orthonormal_unit D H Dw l Xo c σ V r C hC u k).2.2.2.2.1 f hf, hux, hx₀, frame_rmul_lact]`.
+-/
 theorem dict_real_equivariant_onto : ∀ (D : D7) (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (V : HSp D) (r : ℕ) (C : Ctx Xo c σ V r), C.OK → ∀ dict, C.IsDict dict → (∀ g, ∀ h ∈ GinfC V, ∃ γ' ∈ (C.M.X (dict g).1).Γ, dict (g * h) = ⟨(dict g).1, lact γ' (rmul (dict g).2 (archMat V C.th C.hr (fun k => C.fr 1 k) h (dict g).1))⟩) ∧ ∀ k, ∀ x ∈ (C.M.X k).dom, ∃ g, ∃ γ ∈ (C.M.X k).Γ, ∃ b ∈ Bor (C.M.X k).Ψ r, dict g = ⟨k, rmul (lact γ x) b⟩ := by
   intro D H Dw l Xo c σ V r C hC dict hd
   refine ⟨fun g h hh => ?_, fun k x hx => ?_⟩

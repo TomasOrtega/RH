@@ -13,6 +13,15 @@ section abstract
 
 variable {R : Type} [CommRing R] [IsDomain R] {π : R} (O : Subring R)
 
+/- English proof (translation)
+Establish `hu : ∀ a : O, IsUnit (a : R) → IsUnit a`. Introduce `a ha`. Take `⟨k, v, v', hv, hv', h1, h2⟩` from `h4 a a.2 ha.ne_zero`. Break down `k with _ | k` into its components or cases. Use `IsUnit.of_mul_eq_one (⟨v', hv'⟩ : O) (Subtype.ext ?_)` and prove the remaining obligations.
+
+Simplify using `[h2, h1]`. It suffices to derive a contradiction. Rewrite `ha` using `[h2, pow_succ', mul_assoc]`. Conclude with `hπ.not_isUnit (isUnit_of_mul_isUnit_left ha)`. Establish `hirr : Irreducible (⟨π, hO⟩ : O)`.
+
+Use `⟨fun h => hπ.not_isUnit (h.map O.subtype), fun a b hab => ?_⟩` and prove the remaining obligations. Conclude with `(hπ.isUnit_or_isUnit (congrArg Subtype.val hab)).imp (hu a) (hu b)`. Establish `: IsDiscreteValuationRing O`. Use `IsDiscreteValuationRing.ofHasUnitMulPowIrreducibleFactorization ⟨_, hirr, ?_⟩` and prove the remaining obligations. Introduce `x hx`.
+
+Take `⟨k, v, v', hv, hv', h1, h2⟩` from `h4 x x.2 (fun h => hx (Subtype.ext h))`. Use `⟨k, ⟨⟨v, hv⟩, ⟨v', hv'⟩, Subtype.ext h1, Subtype.ext (by simp [mul_comm v' v, h1])⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Simplify using `[h2]`. Use `infer_instance`.
+-/
 theorem pid_of_fact (hπ : Irreducible π) (hO : π ∈ O)
     (h4 : ∀ w ∈ O, w ≠ 0 → ∃ (k : ℕ) (v v' : R), v ∈ O ∧ v' ∈ O ∧ v * v' = 1 ∧ w = π ^ k * v) :
     IsPrincipalIdealRing O := by
@@ -36,6 +45,11 @@ theorem pid_of_fact (hπ : Irreducible π) (hO : π ∈ O)
     simp [h2]
   infer_instance
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simpa using hx`. Consider the case `succ n ih`. Take `⟨v, hv, h⟩` from `h1 _ hx ⟨π ^ n * x, by ring⟩`. Use `ih ?_` and prove the remaining obligations.
+
+Establish `: π ^ n * x = v` using `mul_left_cancel₀ hπ (by rw [← h]; ring)`. Rewrite using `[this]` and apply the resulting hypothesis.
+-/
 theorem sat_pow (hπ : π ≠ 0) (h1 : ∀ w ∈ O, π ∣ w → ∃ v ∈ O, w = π * v) (n : ℕ) (x : R)
     (hx : π ^ n * x ∈ O) : x ∈ O := by
   induction n with
@@ -59,6 +73,25 @@ def divSub {d : ℕ} (Y : Matrix (Fin d) (Fin d) R) (a : R) : Submodule O (Fin d
     rw [this, Matrix.mulVec_smul]
     exact Dvd.dvd.mul_left (hx i) _
 
+/- English proof (translation)
+Use `set N := divSub O Y a with hN`. Establish `hmem : ∀ v : Fin d → O, (⟨a, haO⟩ : O) • v ∈ N`. Introduce `v i`. Establish `: (fun j => (((⟨a, haO⟩ : O) • v) j : R)) = a • fun j => (v j : R)` using `rfl`. Rewrite using `[this, Matrix.mulVec_smul]`.
+
+Conclude with `Dvd.intro _ rfl`. Set `f : (Fin d → O) →ₗ[O] N` to `LinearMap.codRestrict N ((⟨a, haO⟩ : O) • LinearMap.id) hmem`. Establish `hf : Function.Injective f`. Introduce `v w h`. Use function extensionality and compare the values at `i`.
+
+Use `congrArg (fun z : N => ((z.1 i : O) : R)) h` as an intermediate fact. Conclude with `Subtype.ext (mul_left_cancel₀ ha this)`. Establish `hr : Module.finrank O N = d`. Apply `le_antisymm` to reduce the goal to its premises. Simplify using `using N.finrank_le`.
+
+Simplify using `using LinearMap.finrank_le_finrank_of_injective hf`. Set `b` to `Module.finBasisOfFinrankEq O N hr`. Set `P : Matrix (Fin d) (Fin d) R` to `Matrix.of fun i j => ((b j).1 i : R)`. Establish `hspan : ∀ x : Fin d → R, (∀ i, x i ∈ O) → (∀ i, a ∣ (Y *ᵥ x) i) → ∃ w : Fin d → R, (∀ i, w i ∈ O) ∧ x = P *ᵥ w`. Introduce `x hx hd`.
+
+Set `z : N` to `⟨fun i => ⟨x i, hx i⟩, hd⟩`. Use `⟨fun j => (b.repr z j : R), fun j => (b.repr z j).2, funext fun i => ?_⟩` and prove the remaining obligations. Use `congrArg (fun z : N => ((z.1 i : O) : R)) (b.sum_repr z)` as an intermediate fact. Use `Eq.trans this.symm ?_` and prove the remaining obligations. Rewrite using `[Submodule.coe_sum, Finset.sum_apply, AddSubmonoidClass.coe_finset_sum]`.
+
+Conclude with `Finset.sum_congr rfl fun j _ => mul_comm _ _`. Use `⟨P, fun i j => ((b j).1 i).2, ?_, fun i j => (b j).2 i, hspan⟩` and prove the remaining obligations. Establish `hcol : ∀ j : Fin d, ∃ w : Fin d → R, (∀ i, w i ∈ O) ∧ a • (Pi.single j 1 : Fin d → R) = P *ᵥ w`. Introduce `j`. Use `hspan _ (fun i => ?_) (fun i => ?_)` and prove the remaining obligations.
+
+Distinguish the cases in `h : i = j`. Simplify using `[h, haO]`. Simplify using `[h]`. Rewrite using `[Matrix.mulVec_smul]`. Conclude with `Dvd.intro _ rfl`.
+
+Use `choose w _ hw using hcol`. Establish `hPQ : P * Matrix.of (fun i j => w j i) = a • (1 : Matrix (Fin d) (Fin d) R)`. Use extensionality with `i j`. Use `congrFun (hw j) i` as an intermediate fact. Simplify using `only [Matrix.mulVec, dotProduct, Pi.smul_apply, Pi.single_apply] at this`.
+
+Simplify using `[Matrix.mul_apply, ← this, Matrix.one_apply]`. Introduce `h0`. Use `congrArg Matrix.det hPQ` as an intermediate fact. Rewrite `this` using `[Matrix.det_mul, h0, zero_mul, Matrix.det_smul, Matrix.det_one, mul_one]`. Conclude with `pow_ne_zero _ ha this.symm`.
+-/
 theorem exists_basis_matrix [IsPrincipalIdealRing O] {d : ℕ} (Y : Matrix (Fin d) (Fin d) R) (a : R) (ha : a ≠ 0)
     (haO : a ∈ O) :
     ∃ P : Matrix (Fin d) (Fin d) R, (∀ i j, P i j ∈ O) ∧ P.det ≠ 0 ∧ (∀ i j, a ∣ (Y * P) i j) ∧
@@ -111,6 +144,25 @@ theorem exists_basis_matrix [IsPrincipalIdealRing O] {d : ℕ} (Y : Matrix (Fin 
   rw [Matrix.det_mul, h0, zero_mul, Matrix.det_smul, Matrix.det_one, mul_one] at this
   exact pow_ne_zero _ ha this.symm
 
+/- English proof (translation)
+Take `⟨P, hPO, hP, hdv, hspan⟩` from `exists_basis_matrix O Y (π ^ c) (pow_ne_zero _ hπ) (O.pow_mem hO c)`. Use `choose y hy using hdv`. Establish `hY' : π ^ c • Matrix.of y = Y * P`. Use extensionality with `i j`. Simplify using `[hy]`.
+
+Establish `key : ∀ v : Fin d → R, (∀ i, v i ∈ O) → ∀ n : ℕ, (∀ i, π ^ n ∣ (Y *ᵥ v) i) → ∃ w : Fin d → R, (∀ i, w i ∈ O) ∧ π ^ c • v = π ^ n • (P *ᵥ w)`. Introduce `v hv n hn`. Use `choose z hz using hn`. Establish `hz' : Y *ᵥ v = π ^ n • z` using `funext hz`. Set `x : Fin d → R` to `((u⁻¹ : Rˣ) : R) • (Y.adjugate *ᵥ z)`.
+
+Establish `hx : π ^ c • v = π ^ n • x`. Establish `h` using `congrArg (fun t => ((u⁻¹ : Rˣ) : R) • (Y.adjugate *ᵥ t)) hz'`. Simplify using `only [Matrix.mulVec_mulVec, Matrix.adjugate_mul, Matrix.mulVec_smul, Matrix.smul_mulVec, Matrix.one_mulVec, hdet] at h`. Rewrite `h` using `[smul_smul, mul_left_comm, Units.inv_mul, mul_one, smul_comm]`. Conclude with `h`.
+
+Establish `hYx : Y *ᵥ x = π ^ c • z`. Simplify using `only [x, Matrix.mulVec_mulVec, Matrix.mul_adjugate, Matrix.mulVec_smul, Matrix.smul_mulVec, Matrix.one_mulVec, hdet]`. Rewrite using `[smul_smul, mul_left_comm, Units.inv_mul, mul_one]`. Take `⟨w, hw, hxw⟩` from `hspan x (fun i => sat_pow O hπ h1 n _ (by`. Use `congrFun hx i` as an intermediate fact.
+
+Simplify using `only [Pi.smul_apply, smul_eq_mul] at this`. Rewrite using `[← this]`. Conclude with `O.mul_mem (O.pow_mem hO c) (hv i))) (fun i => by rw [hYx]; exact Dvd.intro _ rfl)`. Conclude with `⟨w, hw, by rw [hx, hxw]⟩`. Use `⟨c, P, Matrix.of y, hPO, hP, hY', key, fun w hw hd => ?_⟩` and prove the remaining obligations.
+
+Take `⟨w', -, h⟩` from `key (P *ᵥ w) (fun i => by`. Simplify using `only [Matrix.mulVec, dotProduct]`. Conclude with `O.sum_mem fun j _ => O.mul_mem (hPO i j) (hw j)) (c + 1) (fun i => by`. Rewrite using `[Matrix.mulVec_mulVec, ← hY', Matrix.smul_mulVec, pow_succ]`. Conclude with `mul_dvd_mul_left _ (hd i))`.
+
+Establish `h2 : P *ᵥ (w - π • w') = 0`. Use function extensionality and compare the values at `i`. Use `congrFun h i` as an intermediate fact. Simplify using `only [Pi.smul_apply, smul_eq_mul] at this`. Rewrite using `[Matrix.mulVec_sub, Matrix.mulVec_smul]`.
+
+Simplify using `only [Pi.sub_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply]`. Use `mul_left_cancel₀ (pow_ne_zero c hπ) ?_` and prove the remaining obligations. Take the linear combination `this`. Establish `h3` using `Matrix.eq_zero_of_mulVec_eq_zero hP h2`. Introduce `i`.
+
+Conclude with `⟨w' i, sub_eq_zero.1 (congrFun h3 i)⟩`.
+-/
 theorem lattice_abstract [IsPrincipalIdealRing O] (hπ : π ≠ 0) (hO : π ∈ O)
     (h1 : ∀ w ∈ O, π ∣ w → ∃ v ∈ O, w = π * v) {d : ℕ} (Y : Matrix (Fin d) (Fin d) R) (c : ℕ) (u : Rˣ)
     (hdet : Y.det = π ^ c * u) :
@@ -165,6 +217,13 @@ theorem lattice_abstract [IsPrincipalIdealRing O] (hπ : π ≠ 0) (hO : π ∈ 
 
 end abstract
 
+/- English proof (translation)
+Introduce `l _ K bk d Y1 hY`. Take `⟨h1, -, -, h4, -⟩` from `GlobalTheory.T.integral_elements_unit_factorization l K bk`. Establish `hirr : Irreducible (l : WCb l)` using `WittVector.irreducible l`. Establish `: PerfectRing (Cb l) l`. Use `PerfectRing.ofSurjective _ l fun x => ?_` and prove the remaining obligations.
+
+Take `⟨a, b, -, rfl⟩` from `IsFractionRing.div_surjective (A := OCb l) x`. Take `⟨a', rfl⟩` from `surjective_frobenius (OCb l) l a`. Take `⟨b', rfl⟩` from `surjective_frobenius (OCb l) l b`. Conclude with `⟨algebraMap (OCb l) (Cb l) a' / algebraMap (OCb l) (Cb l) b', by`. Simplify using `[frobenius_def, div_pow, map_pow]⟩`.
+
+Take `⟨c, u, hu⟩` from `WittVector.exists_eq_pow_p_mul' Y1.det hY`. Use `pid_of_fact bk.OE hirr (natCast_mem _ l) h4` as an intermediate fact. Conclude with `lattice_abstract bk.OE hirr.ne_zero (natCast_mem _ l) h1 Y1 c u hu`.
+-/
 theorem exists_lattice_basis : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (d : ℕ) (Y1 : Matrix (Fin d) (Fin d) (WCb l)), Y1.det ≠ 0 → ∃ (m : ℕ) (P Y' : Matrix (Fin d) (Fin d) (WCb l)), (∀ i j, P i j ∈ bk.OE) ∧ P.det ≠ 0 ∧ (l : WCb l) ^ m • Y' = Y1 * P ∧ (∀ v : Fin d → WCb l, (∀ i, v i ∈ bk.OE) → ∀ n : ℕ, (∀ i, (l : WCb l) ^ n ∣ (Y1 *ᵥ v) i) → ∃ w : Fin d → WCb l, (∀ i, w i ∈ bk.OE) ∧ (l : WCb l) ^ m • v = (l : WCb l) ^ n • (P *ᵥ w)) ∧ ∀ w : Fin d → WCb l, (∀ i, w i ∈ bk.OE) → (∀ i, (l : WCb l) ∣ (Y' *ᵥ w) i) → ∀ i, (l : WCb l) ∣ w i := by
   intro l _ K bk d Y1 hY
   obtain ⟨h1, -, -, h4, -⟩ := GlobalTheory.T.integral_elements_unit_factorization l K bk

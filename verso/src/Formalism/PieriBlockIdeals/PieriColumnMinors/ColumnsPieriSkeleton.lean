@@ -6,6 +6,13 @@ namespace Formalism.CohomologicalDescent.ColumnMinorsFromPieri
 
 open Formalism.CohomologicalDescent.Symmetrization Formalism.CohomologicalDescent.BinaryFormsExample
 
+/- English proof (translation)
+Introduce `O K V P q _ _ _ _ _ _ _ _ _ _ _ S B n w lam2 DelL xi lam l e i' hl hu h1 h2 h3 h4 hsym hpos hfd hdiag hhw h6 h8 h9`. Establish `hF : LP.FormMod S.EW (B.restrict S.W)` using `{ gl := generators_satisfy_gl_relations S`. Use symmetry as in `:= fun x y => hsym _ _`. Use `pos := fun x hx => hpos _ (fun h => hx (Subtype.ext h))`. Use `adj := fun a b x y => h3 _ _ _ _`.
+
+Use `diag := hdiag }`. Establish `h7` using `LP.pieri_rule K P S.W q S.EW (B.restrict S.W) lam2 hF hhw n`. Establish `h5 : ∀ v : V, (∀ x : V, B x v = 0) → v = 0`. Introduce `v hv`. Assume the negation of the conclusion as `hne`.
+
+Conclude with `absurd (hv v) (ne_of_gt (hpos v hne))`. Conclude with `LC.lemma_d_skeleton_four O K V P q S B n w lam2 DelL xi lam l e i' hl hu h1 h2 h3 h4 h5 h6 h7 h8 h9`.
+-/
 theorem lemma_d_skeleton_five : LemmaDSkeleton5 := by
   intro O K V P q _ _ _ _ _ _ _ _ _ _ _ S B n w lam2 DelL xi lam l e i' hl hu h1 h2 h3 h4 hsym hpos hfd hdiag hhw h6 h8 h9
   have hF : LP.FormMod S.EW (B.restrict S.W) :=
@@ -21,6 +28,9 @@ theorem lemma_d_skeleton_five : LemmaDSkeleton5 := by
     exact absurd (hv v) (ne_of_gt (hpos v hne))
   exact LC.lemma_d_skeleton_four O K V P q S B n w lam2 DelL xi lam l e i' hl hu h1 h2 h3 h4 h5 h6 h7 h8 h9
 
+/- English proof (translation)
+Introduce `hP p q w lam2 hanti hle n tau hcol z hz`. Conclude with `Formalism.CohomologicalDescent.LC.columns_from_pieri ℚ (Fin p) _ q _ n lam2 (hP p q w lam2 hanti hle n) tau (by simpa using hcol) z hz`.
+-/
 theorem columns_real_of_pieri_real : ColumnsRealOfPieriReal := by
   intro hP p q w lam2 hanti hle n tau hcol z hz
   exact Formalism.CohomologicalDescent.LC.columns_from_pieri ℚ (Fin p) _ q _ n lam2 (hP p q w lam2 hanti hle n) tau

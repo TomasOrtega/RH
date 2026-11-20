@@ -8,6 +8,9 @@ open Complex Classical
 
 namespace PI.SSE
 
+/- English proof (translation)
+Simplify using `only [qf, map_add]`. Rewrite using `[← Complex.exp_add, ← Complex.exp_add]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma qf_add (A ω v z : ℂ) (hA : A ≠ 0) :
     qf A v (z + ω) * qf A ω z =
       cexp (Real.pi * ((starRingEnd ℂ) v * ω - (starRingEnd ℂ) ω * v) / (2 * A)) *
@@ -18,6 +21,9 @@ lemma qf_add (A ω v z : ℂ) (hA : A ≠ 0) :
   field_simp
   ring
 
+/- English proof (translation)
+Simplify using `only [qf, map_neg]`. Rewrite using `[← Complex.exp_add, ← Complex.exp_zero]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma qf_neg (A ω z : ℂ) (hA : A ≠ 0) : qf A ω (z + -ω) * qf A (-ω) z = 1 := by
   simp only [qf, map_neg]
   rw [← Complex.exp_add, ← Complex.exp_zero]
@@ -25,9 +31,15 @@ lemma qf_neg (A ω z : ℂ) (hA : A ≠ 0) : qf A ω (z + -ω) * qf A (-ω) z = 
   field_simp
   ring
 
+/- English proof (translation)
+Simplify using `[qf]`.
+-/
 lemma qf_zero (A z : ℂ) : qf A 0 z = 1 := by
   simp [qf]
 
+/- English proof (translation)
+Introduce `z`. Combine the equalities or inequalities in the displayed calculation.
+-/
 lemma rel_add (G : ℂ → ℂ) (A ω v s t : ℂ) (hA : A ≠ 0)
     (hω : ∀ z, G (z + ω) = s * (qf A ω z * G z)) (hv : ∀ z, G (z + v) = t * (qf A v z * G z)) :
     ∀ z, G (z + (ω + v)) = s * t *
@@ -39,6 +51,9 @@ lemma rel_add (G : ℂ → ℂ) (A ω v s t : ℂ) (hA : A ≠ 0)
     _ = s * t * (qf A v (z + ω) * qf A ω z) * G z := by ring
     _ = _ := by rw [qf_add A ω v z hA]; ring
 
+/- English proof (translation)
+Introduce `z`. Establish `h` using `hω (z + -ω)`. Rewrite `h` using `[neg_add_cancel_right]`. Rewrite using `[h, show s' * (qf A (-ω) z * (s * (qf A ω (z + -ω) * G (z + -ω)))) = (s * s') * (qf A ω (z + -ω) * qf A (-ω) z) * G (z + -ω) by ring, hss, qf_neg A ω z hA]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma rel_neg (G : ℂ → ℂ) (A ω s s' : ℂ) (hA : A ≠ 0) (hss : s * s' = 1)
     (hω : ∀ z, G (z + ω) = s * (qf A ω z * G z)) :
     ∀ z, G (z + -ω) = s' * (qf A (-ω) z * G z) := by
@@ -49,9 +64,15 @@ lemma rel_neg (G : ℂ → ℂ) (A ω s s' : ℂ) (hA : A ≠ 0) (hss : s * s' =
       (s * s') * (qf A ω (z + -ω) * qf A (-ω) z) * G (z + -ω) by ring, hss, qf_neg A ω z hA]
   ring
 
+/- English proof (translation)
+Rewrite using `[Complex.exp_int_mul, Complex.exp_pi_mul_I]`.
+-/
 lemma exp_int_pi (k : ℤ) : cexp (k * (Real.pi * I)) = (-1 : ℂ) ^ k := by
   rw [Complex.exp_int_mul, Complex.exp_pi_mul_I]
 
+/- English proof (translation)
+Establish `h1 : (-1 : ℂ) ≠ 0` using `by norm_num`. Rewrite using `[← zpow_add₀ h1, ← zpow_add₀ h1, show a + b + k = c + (a + b + k - c) by ring, zpow_add₀ h1, h.neg_one_zpow, mul_one]`.
+-/
 lemma zsign (a b k c : ℤ) (h : Even (a + b + k - c)) :
     (-1 : ℂ) ^ a * (-1 : ℂ) ^ b * (-1 : ℂ) ^ k = (-1 : ℂ) ^ c := by
   have h1 : (-1 : ℂ) ≠ 0 := by norm_num
@@ -61,6 +82,13 @@ lemma zsign (a b k c : ℤ) (h : Even (a + b + k - c)) :
 def Rel (G : ℂ → ℂ) (A v₁ v₂ : ℂ) (m n : ℤ) : Prop :=
   ∀ z, G (z + (m * v₁ + n * v₂)) = (-1 : ℂ) ^ (m + n + m * n) * (qf A (m * v₁ + n * v₂) z * G z)
 
+/- English proof (translation)
+Unfold `Rel at h h' ⊢`. Introduce `z`. Establish `key` using `rel_add G A ((m : ℂ) * v₁ + n * v₂) ((c : ℂ) * v₁ + d * v₂) _ _ hA h h' z`. Establish `hsum : (m : ℂ) * v₁ + n * v₂ + ((c : ℂ) * v₁ + d * v₂) = ((m + c : ℤ) : ℂ) * v₁ + ((n + d : ℤ) : ℂ) * v₂` using `by push_cast; ring`. Establish `hdiff : (starRingEnd ℂ) ((c : ℂ) * v₁ + d * v₂) * ((m : ℂ) * v₁ + n * v₂) - (starRingEnd ℂ) ((m : ℂ) * v₁ + n * v₂) * ((c : ℂ) * v₁ + d * v₂) = ((c * n - m * d : ℤ) : ℂ) * ((starRingEnd ℂ) v₁ * v₂ - v₁ * (starRingEnd ℂ) v₂)`.
+
+Simplify using `only [map_add, map_mul, map_intCast]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hexp : cexp (Real.pi * ((starRingEnd ℂ) ((c : ℂ) * v₁ + d * v₂) * ((m : ℂ) * v₁ + n * v₂) - (starRingEnd ℂ) ((m : ℂ) * v₁ + n * v₂) * ((c : ℂ) * v₁ + d * v₂)) / (2 * A)) = (-1 : ℂ) ^ (c * n - m * d)`. Rewrite using `[← exp_int_pi, hdiff, hI]`.
+
+Use `congr 1`. Clear the denominators using the available nonvanishing facts. Rewrite using `[← hsum, key, hexp, zsign (m + n + m * n) (c + d + c * d) (c * n - m * d) (m + c + (n + d) + (m + c) * (n + d)) ⟨-(m * d), by ring⟩]`.
+-/
 lemma rel_comb (G : ℂ → ℂ) (A v₁ v₂ : ℂ) (hA : A ≠ 0)
     (hI : (starRingEnd ℂ) v₁ * v₂ - v₁ * (starRingEnd ℂ) v₂ = 2 * I * A) (m n c d : ℤ)
     (h : Rel G A v₁ v₂ m n) (h' : Rel G A v₁ v₂ c d) : Rel G A v₁ v₂ (m + c) (n + d) := by
@@ -84,6 +112,15 @@ lemma rel_comb (G : ℂ → ℂ) (A v₁ v₂ : ℂ) (hA : A ≠ 0)
   rw [← hsum, key, hexp, zsign (m + n + m * n) (c + d + c * d) (c * n - m * d) (m + c + (n + d) + (m + c) * (n + d))
     ⟨-(m * d), by ring⟩]
 
+/- English proof (translation)
+Establish `hv₁ : v₁ ≠ 0`. Introduce and unpack `rfl`. Simplify using `at h`. Establish `him : ((starRingEnd ℂ) v₁ * ((p : ℂ) * v₁ + q * v₂)).im = q * ((starRingEnd ℂ) v₁ * v₂).im`. Simplify using `[Complex.mul_im, Complex.mul_re]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite `him` using `[hpq, mul_zero, Complex.zero_im]`. Establish `hq : (q : ℝ) = 0`. Break down `mul_eq_zero.mp him.symm with h' | h'` into its components or cases. Conclude with `h'`.
+
+Conclude with `absurd h' h`. Establish `hq' : q = 0` using `by exact_mod_cast hq`. Substitute `hq'` using the available equality. Simplify using `only [Int.cast_zero, zero_mul, add_zero, mul_eq_zero] at hpq`. Break down `hpq with hp | hp` into its components or cases.
+
+Conclude with `⟨by exact_mod_cast hp, rfl⟩`. Conclude with `absurd hp hv₁`.
+-/
 lemma indep (v₁ v₂ : ℂ) (h : ((starRingEnd ℂ) v₁ * v₂).im ≠ 0) (p q : ℤ)
     (hpq : (p : ℂ) * v₁ + q * v₂ = 0) : p = 0 ∧ q = 0 := by
   have hv₁ : v₁ ≠ 0 := by
@@ -104,6 +141,17 @@ lemma indep (v₁ v₂ : ℂ) (h : ((starRingEnd ℂ) v₁ * v₂).im ≠ 0) (p 
   · exact ⟨by exact_mod_cast hp, rfl⟩
   · exact absurd hp hv₁
 
+/- English proof (translation)
+Distinguish the cases in `hmem : ((m : ℂ) * v₁ + n * v₂) / 2 ∈ PI.lat2 v₁ v₂`. Rewrite using `[if_pos hmem]`. Unfold `PI.lat2 at hmem`. Take `⟨p, q, hpq⟩` from `AddSubgroup.mem_closure_pair.mp hmem`. Rewrite `hpq` using `[zsmul_eq_mul, zsmul_eq_mul]`.
+
+Take `⟨h1, h2⟩` from `indep v₁ v₂ h (m - 2 * p) (n - 2 * q) (by push_cast; linear_combination (-2 : ℂ) * hpq)`. Take `rfl : m = 2 * p` from `by omega`. Take `rfl : n = 2 * q` from `by omega`. Conclude with `Even.neg_one_zpow ⟨p + q + 2 * p * q, by ring⟩`. Rewrite using `[if_neg hmem]`.
+
+Establish `hodd : Odd (m + n + m * n)`. Apply the tactic sequence `rcases Int.even_or_odd m with ⟨a, ha⟩ | ⟨a, ha⟩ <;> rcases Int.even_or_odd n with ⟨b, hb⟩ | ⟨b, hb⟩`. It suffices to derive a contradiction. Apply `hmem` to reduce the goal to its premises. Unfold `PI.lat2`.
+
+Use `AddSubgroup.mem_closure_pair.mpr ⟨a, b, ?_⟩` and prove the remaining obligations. Rewrite using `[zsmul_eq_mul, zsmul_eq_mul, ha, hb]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Conclude with `⟨2 * a + b + 2 * a * b, by rw [ha, hb]; ring⟩`.
+
+Conclude with `⟨a + 2 * b + 2 * a * b, by rw [ha, hb]; ring⟩`. Conclude with `⟨2 * a + 2 * b + 2 * a * b + 1, by rw [ha, hb]; ring⟩`. Conclude with `hodd.neg_one_zpow`.
+-/
 lemma psi_eq (v₁ v₂ : ℂ) (h : ((starRingEnd ℂ) v₁ * v₂).im ≠ 0) (m n : ℤ) :
     (-1 : ℂ) ^ (m + n + m * n) =
       if ((m : ℂ) * v₁ + n * v₂) / 2 ∈ PI.lat2 v₁ v₂ then 1 else -1 := by
@@ -131,6 +179,29 @@ lemma psi_eq (v₁ v₂ : ℂ) (h : ((starRingEnd ℂ) v₁ * v₂).im ≠ 0) (m
       · exact ⟨2 * a + 2 * b + 2 * a * b + 1, by rw [ha, hb]; ring⟩
     exact hodd.neg_one_zpow
 
+/- English proof (translation)
+Introduce `v₁ v₂ hpos G h₁ h₂ ω hω z`. Establish `hne : ((starRingEnd ℂ) v₁ * v₂).im ≠ 0` using `hpos.ne'`. Establish `hA : ((((starRingEnd ℂ) v₁ * v₂).im : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast hne`. Establish `hI : (starRingEnd ℂ) v₁ * v₂ - v₁ * (starRingEnd ℂ) v₂ = 2 * I * ((((starRingEnd ℂ) v₁ * v₂).im : ℝ) : ℂ)`. Apply the tactic sequence `apply Complex.ext <;> simp [Complex.mul_re, Complex.mul_im] <;> ring`.
+
+Use `set A : ℂ := ((((starRingEnd ℂ) v₁ * v₂).im : ℝ) : ℂ) with hAdef`. Establish `r10 : Rel G A v₁ v₂ 1 0`. Introduce `z`. Establish `e : ((1 : ℤ) : ℂ) * v₁ + ((0 : ℤ) : ℂ) * v₂ = v₁` using `by push_cast; ring`. Rewrite using `[e, h₁ z]`.
+
+Evaluate the numerical expressions. Establish `r01 : Rel G A v₁ v₂ 0 1`. Introduce `z`. Establish `e : ((0 : ℤ) : ℂ) * v₁ + ((1 : ℤ) : ℂ) * v₂ = v₂` using `by push_cast; ring`. Rewrite using `[e, h₂ z]`.
+
+Evaluate the numerical expressions. Establish `r00 : Rel G A v₁ v₂ 0 0`. Introduce `z`. Simplify using `[qf_zero]`. Establish `rm10 : Rel G A v₁ v₂ (-1) 0`.
+
+Introduce `z`. Establish `hn` using `rel_neg G A v₁ (-1) (-1) hA (by norm_num) (fun z => by rw [h₁ z]; ring) z`. Establish `e : ((-1 : ℤ) : ℂ) * v₁ + ((0 : ℤ) : ℂ) * v₂ = -v₁` using `by push_cast; ring`. Rewrite using `[e, hn]`. Evaluate the numerical expressions.
+
+Establish `r0m1 : Rel G A v₁ v₂ 0 (-1)`. Introduce `z`. Establish `hn` using `rel_neg G A v₂ (-1) (-1) hA (by norm_num) (fun z => by rw [h₂ z]; ring) z`. Establish `e : ((0 : ℤ) : ℂ) * v₁ + ((-1 : ℤ) : ℂ) * v₂ = -v₂` using `by push_cast; ring`. Rewrite using `[e, hn]`.
+
+Evaluate the numerical expressions. Establish `hcol : ∀ m : ℤ, Rel G A v₁ v₂ m 0`. Introduce `m`. Use `Int.induction_on m r00 (fun i hi => ?_) (fun i hi => ?_)` and prove the remaining obligations. Establish `h` using `rel_comb G A v₁ v₂ hA hI _ _ _ _ hi r10`.
+
+Apply the tactic sequence `convert h using 2 <;> omega`. Establish `h` using `rel_comb G A v₁ v₂ hA hI _ _ _ _ hi rm10`. Apply the tactic sequence `convert h using 2 <;> omega`. Establish `hall : ∀ m n : ℤ, Rel G A v₁ v₂ m n`. Introduce `m n`.
+
+Use `Int.induction_on n (hcol m) (fun i hi => ?_) (fun i hi => ?_)` and prove the remaining obligations. Establish `h` using `rel_comb G A v₁ v₂ hA hI _ _ _ _ hi r01`. Apply the tactic sequence `convert h using 2 <;> omega`. Establish `h` using `rel_comb G A v₁ v₂ hA hI _ _ _ _ hi r0m1`. Apply the tactic sequence `convert h using 2 <;> omega`.
+
+Establish `hω'` using `hω`. Unfold `PI.lat2 at hω'`. Take `⟨m, n, rfl⟩` from `AddSubgroup.mem_closure_pair.mp hω'`. Establish `e : m • v₁ + n • v₂ = (m : ℂ) * v₁ + n * v₂` using `by rw [zsmul_eq_mul, zsmul_eq_mul]`. Rewrite using `[e, ← psi_eq v₁ v₂ hne m n]`.
+
+Conclude with `hall m n z`.
+-/
 theorem latExt : LatExt := by
   intro v₁ v₂ hpos G h₁ h₂ ω hω z
   have hne : ((starRingEnd ℂ) v₁ * v₂).im ≠ 0 := hpos.ne'

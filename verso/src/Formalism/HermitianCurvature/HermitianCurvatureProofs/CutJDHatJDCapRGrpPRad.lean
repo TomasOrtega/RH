@@ -71,6 +71,13 @@ def JDRChainP : Prop :=
 
 def JDRConseq : Prop := JDRTop → JDRStepA → JDRStepB → JDRChainP
 
+/- English proof (translation)
+Establish `hCh` using `hC hT hA hS`. Introduce `k r`. Take `⟨σ, hσ, hBσ⟩` from `hB k r`. Use `⟨-σ⁻¹, ?_⟩` and prove the remaining obligations. Introduce `Wp Wq _ _ _ _ z z' π π' D Y hz hz' hD J hJ c hc g hg hx`.
+
+Establish `h1` using `hBσ (Wq →L[ℂ] Wp) z z' Y J hz c hc g hg`. Establish `h2` using `congrArg Neg.neg (hCh Wp Wq k r z z' π π' D Y hz hz' hD J hJ c hc g hg hx)`. Use `clear hBσ hCh hB hT hA hS hC`. Simplify using `only [Pi.neg_apply, neg_neg] at h2`. Simplify using `only [rhGrp, dMul, drbF, Pi.add_apply] at h2 ⊢`.
+
+Rewrite using `[← h2]`. Simplify using `only [FN, Q.resG, h1]`. Simplify using `only [smul_smul, smul_neg, neg_smul]`. Apply the tactic sequence `match_scalars <;> field_simp <;> ring`.
+-/
 theorem jDRRadP_of_parts (hB : JDRBeta) (hT : JDRTop) (hA : JDRStepA) (hS : JDRStepB) (hC : JDRConseq) :
     JDRRadP := by
   have hCh := hC hT hA hS

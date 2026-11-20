@@ -16,6 +16,23 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 noncomputable section
 namespace GlobalTheory.CompactStable
 variable {D : D7}
+/- English proof (translation)
+Introduce `_ D ψ θ _ hθ ε M X A B χS χT ω eS eT hω hE Xs Ws Mo ψ' χX χW om τ hH hR Φ hΦ _ hF N hN k hk f hf f₁ hact`. Take `⟨-, hstd, -, hdX, -, hdW, -, -, -, -, hW, -, -⟩` from `hH`. Take `⟨f₀, r, hv, hv0, hP⟩` from `hF`. Take `rfl` from `hR.psi`. Take `rfl` from `Eqv.eq_thetaC D hθ`.
+
+Take `⟨T, hT, hTi⟩` from `GlobalTheory.T.thetaTransform_darbouxModel_linear_injective D Mo ψ' (sgn ε M).gram (Equiv.refl (Fin X.rank)) hR.good hstd hdX hdW (gram_det_ne (sgn ε M))`. Establish `hinj : ∀ a ∈ schA D.host.F (Fin M.rank × Fin X.rank), ∀ b ∈ schA D.host.F (Fin M.rank × Fin X.rank), GlobalTheory.TripleRead.thO Mo ψ' (sgn ε M).gram (Equiv.refl (Fin X.rank)) a = GlobalTheory.TripleRead.thO Mo ψ' (sgn ε M).gram (Equiv.refl (Fin X.rank)) b → a = b`. Introduce `a ha b hb e`. Rewrite `e` using `[← hT a ha, ← hT b hb, ← sub_eq_zero, ← map_sub]`. Conclude with `sub_eq_zero.1 (hTi _ (Submodule.sub_mem _ ha hb) e)`.
+
+Establish `hr0 : r ≠ 0`. Introduce and unpack `rfl`. Apply `hv0` to reduce the goal to its premises. Establish `e1 : ptF ψ' (Eqv.thetaC D) (frSgn ε A) B f₀ 1 = f₀`. Establish `: (1 : PolF D X.rank M.rank) = MvPolynomial.basisMonomials _ ℂ 0` using `by simp`.
+
+Rewrite using `[this]`. Conclude with `(Module.Basis.constr_basis _ _ _ _).trans (by simp [opPow])`. Establish `e2 : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.tens (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI D.host.F) (Φ 1) 0 = 0`. Use function extensionality and compare the values at `x`. Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.tens]`.
+
+Rewrite using `[← e1, ← (hP 1).2, e2, ← hT 0 (Submodule.zero_mem _), map_zero]`. Establish `hcan : ∀ (g : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.SInf D.host.F (Fin M.rank × Fin X.rank)) (Q : PolF D X.rank M.rank), GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.tens (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI D.host.F) g r ∈ …`. Introduce `g Q hg e`. Conclude with `DFunLike.coe_injective (tens_inj (hP Q).1.1 hr0 (hinj _ hg _ (hP Q).1.2 (e.trans (hP Q).2.symm)))`. Establish `hi : Function.Injective (ptF ψ' (Eqv.thetaC D) (frSgn ε A) B f₀)` using `fun P Q e => hΦ (hcan _ Q (hP P).1.2 ((hP P).2.trans e))`.
+
+Take `⟨h, hh, rfl⟩` from `exists_of_mem_KInf B hR.JW (fun w => (hR.cart w).imp fun t ht => ⟨ht.1, ht.2.2⟩) hk`. Establish `key` using `closure_stable (frSgn ε A) B hθ hω hE hv hv0 hi N (fun t Y hY P hP => hN ⟨(t, Y), hY⟩ P hP) hh`. Take `⟨P, hPN, rfl⟩` from `hf`. Take `⟨Q, hQ, e⟩` from `key P hPN`. Use `⟨Q, hQ, (hcan f₁ Q ?_ ?_).symm⟩` and prove the remaining obligations.
+
+Rewrite using `[← hact r (hP P).1]`. Use `letI := GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.invTwo (F := D.host.F)`. Conclude with `hW.1.1.pres _ _ (hP P).1.2`. Establish `h1 : GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.conjU M (GlobalTheory.RealDict.sgE (D` using `D) ε) hR.JX 1 = 1 := Subtype.ext (by show GeneralLinearGroup.map (cA D) (Formalism.L2.Theta.matHom M 1) = 1; rw [map_one, map_one])`. Establish `h2` using `hR.transp _ (hP P).1.2 1 h`.
+
+Rewrite `h2` using `[h1, (hP P).2]`. Establish `h3 : ω.toSgn ε (1, h) = ω (1, h)` using `congrArg ω (Prod.ext (map_one (ofSgn ε M)) rfl)`. Rewrite `e` using `[h3]`. Rewrite using `[← hact r (hP P).1]`. Conclude with `h2.trans e`.
+-/
 theorem maximal_compact_stable_theta_subspace : _root_.GlobalTheory.FunPr.ThetaLocalInputs →
   ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsStdChar D ψ (-1) → IsInfFam θ →
   ∀ (ε : Bool) (M X : HSp D) (A : Fr M) (B : Fr X) (χS χT : (AE D)ˣ →* Circle) (ω : WRep M X) (eS eT : D.what₂.Tau → ℚ),
@@ -93,6 +110,9 @@ open GlobalTheory.SquareComm
 open scoped ComplexConjugate
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.CompactStable.maximal_compact_stable_theta_subspace | exact _root_.GlobalTheory.CompactStable.maximal_compact_stable_theta_subspace | (intros; apply _root_.GlobalTheory.CompactStable.maximal_compact_stable_theta_subspace <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.theta_subspace_stable_maximal_compact : _root_.GlobalTheory.FunPr.ThetaLocalInputs →
   ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsStdChar D ψ (-1) → IsInfFam θ →
   ∀ (ε : Bool) (M X : HSp D) (A : Fr M) (B : Fr X) (χS χT : (AE D)ˣ →* Circle) (ω : WRep M X) (eS eT : D.what₂.Tau → ℚ),

@@ -52,6 +52,9 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RankinSelber
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SubsingletonJacquetIff
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MemStdMaxParabolicOfBlockParabolicLeConj
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Introduce `_ _ _ _ _ _ _ _ _ _`. Conclude with `⟨⟨⟩⟩`.
+-/
 theorem _root_.GlobalTheory.T.column_twisted_args_first : GlobalTheory.Published.GlobalArtinReciprocity → GlobalTheory.Published.ChevalleyUnits → GlobalTheory.Published.BrauerDegreeZero → GlobalTheory.Published.LocalConverseGL → GlobalTheory.Published.LanglandsExhaustionGL → GlobalTheory.Published.StandardCosocleGL → GlobalTheory.Published.BernsteinZelevinskyFiniteness → ∀ hL : GlobalTheory.Published.LocalLanglandsGL, GlobalTheory.HeightCounting.LpCmp hL := by
   intro _ _ _ _ _ _ _ _ _ _
   exact ⟨⟨⟩⟩

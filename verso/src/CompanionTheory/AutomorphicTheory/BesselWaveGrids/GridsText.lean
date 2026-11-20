@@ -10,6 +10,11 @@ section shift
 
 variable {P : M.Par} {lam : Fin (2 * P.r + P.k + 1) → ℝ} {c g b : ℝ} {l n₀ : ℕ}
 
+/- English proof (translation)
+Use `(movedData_of_hyp (P := shP P P.u (uPlus P.u l n₀)) h hu (by omega) hlk (fun i hi => ?_) ?_).toPair` and prove the remaining obligations. Use `show uPlus P.u l n₀ i = P.u i`. Simplify using `only [uPlus, if_neg hi]`. Use `show |uPlus P.u l n₀ (l + 1)| ≤ b`. Establish `h1` using `abs_le.1 (hu.u_le l hl1 hlk.le)`.
+
+Establish `h2` using `abs_le.1 (hu.u_le (l + 1) (by omega) hlk)`. Establish `h3 : (0 : ℝ) ≤ n₀` using `Nat.cast_nonneg _`. Simplify using `only [uPlus, if_true]`. Rewrite using `[abs_le]`. Apply the tactic sequence `constructor <;> linarith`.
+-/
 theorem pairData_plus (h : HypLam P.k P.r lam c g b) (hu : HypType P.k P.r lam P.u b) (hl1 : 1 ≤ l)
     (hlk : l < P.k) (hposition : (2 * n₀ + 1 : ℝ) ≤ P.u l - P.u (l + 1)) :
     PairData (shP P P.u (uPlus P.u l n₀)) (l + 1) (lamN lam) c g b := by
@@ -24,6 +29,11 @@ theorem pairData_plus (h : HypLam P.k P.r lam c g b) (hu : HypType P.k P.r lam P
     rw [abs_le]
     constructor <;> linarith
 
+/- English proof (translation)
+Use `(movedData_of_hyp (P := shP P P.u (uMinus P.u l n₀)) h hu hl1 hlk.le (fun i hi => ?_) ?_).toPair` and prove the remaining obligations. Use `show uMinus P.u l n₀ i = P.u i`. Simplify using `only [uMinus, if_neg hi]`. Use `show |uMinus P.u l n₀ l| ≤ b`. Establish `h1` using `abs_le.1 (hu.u_le l hl1 hlk.le)`.
+
+Establish `h2` using `abs_le.1 (hu.u_le (l + 1) (by omega) hlk)`. Establish `h3 : (0 : ℝ) ≤ n₀` using `Nat.cast_nonneg _`. Simplify using `only [uMinus, if_true]`. Rewrite using `[abs_le]`. Apply the tactic sequence `constructor <;> linarith`.
+-/
 theorem pairData_minus (h : HypLam P.k P.r lam c g b) (hu : HypType P.k P.r lam P.u b) (hl1 : 1 ≤ l)
     (hlk : l < P.k) (hposition : (2 * n₀ + 1 : ℝ) ≤ P.u l - P.u (l + 1)) :
     PairData (shP P P.u (uMinus P.u l n₀)) l (lamN lam) c g b := by
@@ -38,6 +48,9 @@ theorem pairData_minus (h : HypLam P.k P.r lam c g b) (hu : HypType P.k P.r lam 
     rw [abs_le]
     constructor <;> linarith
 
+/- English proof (translation)
+Establish `: (0 : ℝ) ≤ r` using `Nat.cast_nonneg _`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem len_le (r : ℕ) : 15 * ((r : ℝ) + 1) * (2 * r + 1) ≤ 30 * ((r : ℝ) + 1) ^ 2 + 6 := by
   have : (0 : ℝ) ≤ r := Nat.cast_nonneg _
   nlinarith
@@ -49,6 +62,11 @@ section grid
 variable {P : M.Par} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]
 
+/- English proof (translation)
+Establish `e : GroundTheory.BlockD.FourierDecayAlt.WaveGridLiftGrid.Pst P.k P.r (lamN lam) c = PStar lam c`. Use function extensionality and compare the values at `fun y => Pst_lamN P.k P.r lam c y`. Rewrite using `[← e]`. Use `grids_text p 3 (3 * (P.r + 1)) (by omega) (lamN lam) c g b hL (le_trans (le_of_eq ?_) hlen)` and prove the remaining obligations. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem grids_PStar (p : KB.Pl P Wp Wq) (lam : Fin (2 * P.r + P.k + 1) → ℝ) (c g b : ℝ)
     (hL : PairData P p.l0 (lamN lam) c g b)
     (hlen : 15 * ((P.r : ℝ) + 1) * (2 * P.r + 1) ≤ |P.u p.l0 - P.u' p.l0|) :
@@ -62,11 +80,17 @@ theorem grids_PStar (p : KB.Pl P Wp Wq) (lam : Fin (2 * P.r + P.k + 1) → ℝ) 
   push_cast
   ring
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨one_le_gridΛ _ _ _, gridΛ_le P b CT _ le_rfl hb hCT (mul_pos p.hP.1.T_pos p.hP.1.T'_pos) hTT⟩`.
+-/
 theorem gridΛ_bounds (p : KB.Pl P Wp Wq) (b CT : ℝ) (hb : 3 ≤ b) (hCT : 0 ≤ CT)
     (hTT : b ^ (-(CT * ((2 * P.r + 2 : ℕ) : ℝ))) ≤ P.T * P.T') :
     1 ≤ gridΛ P b (3 * (P.r + 1)) ∧ gridΛ P b (3 * (P.r + 1)) ≤ b ^ ((6 + CT) * ((2 * P.r + 2 : ℕ) : ℝ)) :=
   ⟨one_le_gridΛ _ _ _, gridΛ_le P b CT _ le_rfl hb hCT (mul_pos p.hP.1.T_pos p.hP.1.T'_pos) hTT⟩
 
+/- English proof (translation)
+The claim follows from `grids_PStar p lam c g b ((lamData_of_hyp h hu hu').toPair p.hl.1 p.hl.2.1) ((len_le P.r).trans hlen)`.
+-/
 theorem grids_diff (p : KB.Pl P Wp Wq) (lam : Fin (2 * P.r + P.k + 1) → ℝ) (c g b : ℝ)
     (h : HypLam P.k P.r lam c g b) (hu : HypType P.k P.r lam P.u b) (hu' : HypType P.k P.r lam P.u' b)
     (hlen : 30 * ((P.r : ℝ) + 1) ^ 2 + 6 ≤ |P.u p.l0 - P.u' p.l0|) :
@@ -75,6 +99,11 @@ theorem grids_diff (p : KB.Pl P Wp Wq) (lam : Fin (2 * P.r + P.k + 1) → ℝ) (
         (3 * (P.r + 1)) :=
   grids_PStar p lam c g b ((lamData_of_hyp h hu hu').toPair p.hl.1 p.hl.2.1) ((len_le P.r).trans hlen)
 
+/- English proof (translation)
+Substitute `e1 e2` using the available equality. Establish `hn₀R : (n₀ : ℝ) = 30 * ((P.r : ℝ) + 1) ^ 2 + 6` using `by rw [hn₀]; push_cast; ring`. Use `grids_PStar q lam c g b (by rw [e3]; exact pairData_plus h hu hl1 hlk hposition) ?_` and prove the remaining obligations. Rewrite using `[e3]`. Use `show _ ≤ |P.u (l + 1) - uPlus P.u l n₀ (l + 1)|`.
+
+Simplify using `only [uPlus, if_true]`. Rewrite using `[show P.u (l + 1) - (P.u (l + 1) + n₀) = -(n₀ : ℝ) by ring, abs_neg, abs_of_nonneg (Nat.cast_nonneg _), hn₀R]`. Conclude with `len_le P.r`.
+-/
 theorem grids_plus {up up' : ℕ → ℝ} (q : KB.Pl (shP P up up') Wp Wq) (lam : Fin (2 * P.r + P.k + 1) → ℝ)
     (c g b : ℝ) (l n₀ : ℕ) (h : HypLam P.k P.r lam c g b) (hu : HypType P.k P.r lam P.u b)
     (hn₀ : n₀ = 30 * (P.r + 1) ^ 2 + 6) (hl1 : 1 ≤ l) (hlk : l < P.k)
@@ -93,6 +122,11 @@ theorem grids_plus {up up' : ℕ → ℝ} (q : KB.Pl (shP P up up') Wp Wq) (lam 
   rw [show P.u (l + 1) - (P.u (l + 1) + n₀) = -(n₀ : ℝ) by ring, abs_neg, abs_of_nonneg (Nat.cast_nonneg _), hn₀R]
   exact len_le P.r
 
+/- English proof (translation)
+Substitute `e1 e2` using the available equality. Establish `hn₀R : (n₀ : ℝ) = 30 * ((P.r : ℝ) + 1) ^ 2 + 6` using `by rw [hn₀]; push_cast; ring`. Use `grids_PStar q lam c g b (by rw [e3]; exact pairData_minus h hu hl1 hlk hposition) ?_` and prove the remaining obligations. Rewrite using `[e3]`. Use `show _ ≤ |P.u l - uMinus P.u l n₀ l|`.
+
+Simplify using `only [uMinus, if_true]`. Rewrite using `[show P.u l - (P.u l - n₀) = (n₀ : ℝ) by ring, abs_of_nonneg (Nat.cast_nonneg _), hn₀R]`. Conclude with `len_le P.r`.
+-/
 theorem grids_minus {um um' : ℕ → ℝ} (q : KB.Pl (shP P um um') Wp Wq) (lam : Fin (2 * P.r + P.k + 1) → ℝ)
     (c g b : ℝ) (l n₀ : ℕ) (h : HypLam P.k P.r lam c g b) (hu : HypType P.k P.r lam P.u b)
     (hn₀ : n₀ = 30 * (P.r + 1) ^ 2 + 6) (hl1 : 1 ≤ l) (hlk : l < P.k)

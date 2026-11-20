@@ -9,6 +9,9 @@ namespace DiscreteGroups.sglob.DzFp
 
 variable {k : Type} [Field k]
 
+/- English proof (translation)
+Establish `hc : ((ψ s)⁻¹ : Circle) ≠ 1` using `by rwa [ne_eq, inv_eq_one]`. Establish `hc' : (((ψ s)⁻¹ : Circle) : ℂ) ≠ 1` using `fun h' => hc (Circle.ext (by rw [h', Circle.coe_one]))`. Establish `h0 : ((((ψ s)⁻¹ : Circle) : ℂ) - 1) * z = 0` using `by rw [sub_mul, one_mul, ← h, sub_self]`. Conclude with `(mul_eq_zero.1 h0).resolve_left (sub_ne_zero.2 hc')`.
+-/
 theorem eq_zero_of_eq_inv_mul {ψ : AddChar k Circle} {s : k} (hs : ψ s ≠ 1) {z : ℂ}
     (h : z = (((ψ s)⁻¹ : Circle) : ℂ) * z) : z = 0 := by
   have hc : ((ψ s)⁻¹ : Circle) ≠ 1 := by rwa [ne_eq, inv_eq_one]
@@ -16,6 +19,19 @@ theorem eq_zero_of_eq_inv_mul {ψ : AddChar k Circle} {s : k} (hs : ψ s ≠ 1) 
   have h0 : ((((ψ s)⁻¹ : Circle) : ℂ) - 1) * z = 0 := by rw [sub_mul, one_mul, ← h, sub_self]
   exact (mul_eq_zero.1 h0).resolve_left (sub_ne_zero.2 hc')
 
+/- English proof (translation)
+Take `⟨i, hi⟩` from `exists_descent π⁻¹ (inv_ne_one.2 hπ)`. Take `⟨s, hs⟩` from `AddChar.ne_one_iff.1 hψ`. Establish `hne : i.succ ≠ i.castSucc` using `(ne_of_lt Fin.castSucc_lt_succ).symm`. Establish `ha : (Pi.single i.castSucc s : Fin (k' + 1) → k) i.succ = 0` using `by rw [Pi.single_apply, if_neg hne]`. Establish `hemem : colElt (Pi.single i.castSucc s) i.succ ha ∈ unipB k (Fin (k' + 1))` using `colElt_mem _ _ ha fun r hr => by`.
+
+Rewrite using `[Pi.single_apply, if_neg (ne_of_gt (lt_trans Fin.castSucc_lt_succ hr))]`. Establish `hesd : superDiag (colElt (Pi.single i.castSucc s) i.succ ha) = s`. Rewrite using `[superDiag_colElt, Pi.single_eq_same]`. Establish `hf : (GroundTheory.Automorphic.permGL k π)⁻¹ * colElt (Pi.single i.castSucc s) i.succ ha * GroundTheory.Automorphic.permGL k π ∈ lowB k (k' + 1)`. Use `mem_lowB.2 fun r c hrc => ?_` and prove the remaining obligations.
+
+Rewrite using `[permConj_apply, colElt_apply, Matrix.one_apply_ne (π.injective.ne (ne_of_lt hrc))]`. Distinguish the cases in `hc : π c = i.succ`. Establish `hr : π r ≠ i.castSucc`. Introduce `hr`. Establish `h1' : π⁻¹ i.succ = c` using `by rw [← hc]; simp`.
+
+Establish `h2' : π⁻¹ i.castSucc = r` using `by rw [← hr]; simp`. Rewrite `hi` using `[h1', h2']`. Conclude with `absurd hrc (not_lt.2 hi.le)`. Rewrite using `[if_pos hc, Pi.single_apply, if_neg hr, zero_add]`. Rewrite using `[if_neg hc, zero_add]`.
+
+Establish `key : W (GroundTheory.Automorphic.permGL k π * b) = (((ψ s)⁻¹ : Circle) : ℂ) * W (GroundTheory.Automorphic.permGL k π * b)`. Establish `e1 : colElt (Pi.single i.castSucc s) i.succ ha * (GroundTheory.Automorphic.permGL k π * b) = GroundTheory.Automorphic.permGL k π * (((GroundTheory.Automorphic.permGL k π)⁻¹ * colElt (Pi.single i.castSucc s) i.succ ha * GroundTheory.Automorphic.permGL k π) * b)` using `by group`. Use `h1 _ hemem (GroundTheory.Automorphic.permGL k π * b)` as an intermediate fact. Rewrite `this` using `[hesd, e1, h2 _ (mul_mem hf hb), ← h2 b hb (GroundTheory.Automorphic.permGL k π)]`. Conclude with `this`.
+
+Conclude with `eq_zero_of_eq_inv_mul hs key`.
+-/
 theorem vanish_perm {k' : ℕ} (ψ : AddChar k Circle) (hψ : ψ ≠ 1) (W : GL (Fin (k' + 1)) k → ℂ)
     (h1 : ∀ u ∈ unipB k (Fin (k' + 1)), ∀ x, W (u * x) = (((ψ (superDiag u))⁻¹ : Circle) : ℂ) * W x)
     (h2 : ∀ b ∈ lowB k (k' + 1), ∀ x, W (x * b) = W x)
@@ -52,6 +68,23 @@ theorem vanish_perm {k' : ℕ} (ψ : AddChar k Circle) (hψ : ψ ≠ 1) (W : GL 
     exact this
   exact eq_zero_of_eq_inv_mul hs key
 
+/- English proof (translation)
+Consider the cases of `m with`. Consider the case `zero => exact ⟨1, one_mem _, x, mem_lowB.2 fun i => i.elim0, (one_mul x).symm⟩`. Consider the case `succ k'`. Establish `hww : ∀ z, longElt (k' + 1) k * (longElt (k' + 1) k * z) = z` using `fun z => by`. Rewrite using `[← mul_assoc, longElt_mul_self, one_mul]`.
+
+Take `⟨σ, hσ⟩` from `GroundTheory.Automorphic.exists_mem_doubleCoset_permGL (x * longElt (k' + 1) k)`. Take `⟨b1, hb1, b2, hb2, he⟩` from `DoubleCoset.mem_doubleCoset.1 hσ`. Establish `hb2' : longElt (k' + 1) k * b2 * longElt (k' + 1) k ∈ lowB k (k' + 1)`. Use `mem_lowB.2 fun i j hij => ?_` and prove the remaining obligations. Rewrite using `[Units.val_mul, Units.val_mul, mul_longElt_apply, longElt_mul_apply]`.
+
+Conclude with `(GroundTheory.Automorphic.mem_borel_iff b2).1 hb2 _ _ (Fin.rev_lt_rev.2 hij)`. Establish `hd : ∀ i, (b1 : Matrix (Fin (k' + 1)) (Fin (k' + 1)) k) i i ≠ 0` using `GroundTheory.Automorphic.borel_diag_ne_zero hb1`. Set `t : GL (Fin (k' + 1)) k` to `⟨diagonal fun i => (b1 : Matrix (Fin (k' + 1)) (Fin (k' + 1)) k) i i, diagonal fun i => ((b1 : Matrix (Fin (k' + 1)) (Fin (k' + 1)) k) i i)⁻¹, by rw [diagonal_mul_diagonal, ← diagonal_one]; congr 1; funext i; exact mul_inv_cancel₀ (hd i), by rw [diagonal_mul_diagonal, ← diagonal_ …`. Establish `hu : b1 * t⁻¹ ∈ unipB k (Fin (k' + 1))`. Use `(mem_unipB k).2 ⟨fun i j hji => ?_, fun i => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Units.val_mul] show ((b1 : Matrix (Fin (k' + 1)) (Fin (k' + 1)) k) * (diagonal _ : Matrix (Fin (k' + 1)) (Fin (k' + 1)) k)) i j = 0`. Rewrite using `[mul_diagonal, (GroundTheory.Automorphic.mem_borel_iff b1).1 hb1 i j hji, zero_mul]`. Rewrite using `[Units.val_mul] show ((b1 : Matrix (Fin (k' + 1)) (Fin (k' + 1)) k) * (diagonal _ : Matrix (Fin (k' + 1)) (Fin (k' + 1)) k)) i i = 1`. Rewrite using `[mul_diagonal, mul_inv_cancel₀ (hd i)]`. Establish `hPw : GroundTheory.Automorphic.permGL k σ * longElt (k' + 1) k = GroundTheory.Automorphic.permGL k (σ * Fin.revPerm)`.
+
+Rewrite using `[longElt_eq_permGL, map_mul]`. Establish `ht : (GroundTheory.Automorphic.permGL k (σ * Fin.revPerm))⁻¹ * t * GroundTheory.Automorphic.permGL k (σ * Fin.revPerm) ∈ lowB k (k' + 1)`. Use `mem_lowB.2 fun r c hrc => ?_` and prove the remaining obligations. Rewrite using `[permConj_apply]`. Conclude with `diagonal_apply_ne _ ((σ * Fin.revPerm).injective.ne (ne_of_lt hrc))`.
+
+Establish `hx' : x = b1 * GroundTheory.Automorphic.permGL k (σ * Fin.revPerm) * (longElt (k' + 1) k * b2 * longElt (k' + 1) k)`. Combine the equalities or inequalities in the displayed calculation. Use `_ = b1 * GroundTheory.Automorphic.permGL k σ * b2 * longElt (k' + 1) k := by rw [he]`. Use `_ = _ := by rw [← hPw]; simp only [mul_assoc, hww]`. Establish `hx'' : x = (b1 * t⁻¹) * (GroundTheory.Automorphic.permGL k (σ * Fin.revPerm) * (((GroundTheory.Automorphic.permGL k (σ * Fin.revPerm))⁻¹ * t * GroundTheory.Automorphic.permGL k (σ * Fin.revPerm)) * (longElt (k' + 1) k * b2 * longElt (k' + 1) k)))`.
+
+Rewrite using `[hx']`. Use `group`. Distinguish the cases in `hπ : σ * Fin.revPerm = 1`. Use `⟨b1 * t⁻¹, hu, _, mul_mem ht hb2', ?_⟩` and prove the remaining obligations. Rewrite using `[hx'', hπ, map_one, one_mul]`.
+
+It suffices to derive a contradiction. Apply `hx` to reduce the goal to its premises. Establish `h0` using `vanish_perm ψ hψ W h1 h2 _ hπ _ (mul_mem ht hb2')`. Rewrite using `[hx'', h1 _ hu, h0, mul_zero]`.
+-/
 theorem supp {m : ℕ} (ψ : AddChar k Circle) (hψ : ψ ≠ 1) (W : GL (Fin m) k → ℂ)
     (h1 : ∀ u ∈ unipB k (Fin m), ∀ x, W (u * x) = (((ψ (superDiag u))⁻¹ : Circle) : ℂ) * W x)
     (h2 : ∀ b ∈ lowB k m, ∀ x, W (x * b) = W x) (x : GL (Fin m) k) (hx : W x ≠ 0) :

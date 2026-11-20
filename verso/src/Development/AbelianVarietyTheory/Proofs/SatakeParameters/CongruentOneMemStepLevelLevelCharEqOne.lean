@@ -14,6 +14,35 @@ noncomputable section
 
 namespace GlobalTheory.LevOne
 
+/- English proof (translation)
+Introduce `X Pr R Ch sel S mu cst L G m2 hX hPr hCh hsel hL j hj b P k hk`. Take `⟨hkG, hkC⟩` from `GlobalTheory.T.mem_integralGL_principalCongruence_of_cols_cong P.1 (cst.D P) k (hL.cst_ok.D_pos P) hk`. Use `set κ : GLint X.E (R.N j) P.1 := ⟨k, hkG⟩ with hκdef`. Establish `hψ : cst.psi P (Loc.n1Arg (GlobalTheory.CongLevel.extE (cOf R j) k)) = 1`. Rewrite using `[GlobalTheory.Mem.Col2.LevMod.unipotentArg_extendByIdOnLastCoords]`.
+
+Conclude with `hL.cst_ok.psi_int P 0 (by simpa using GlobalTheory.CongLevel.intAt_nat P.1 0)`. Establish `hq : ((qOf P.1 : ℕ) : X.E) ≠ 0` using `GlobalTheory.TopStep.qOf_ne_zero`. Distinguish the cases in `hP : P.1 ∈ Pr.vGs`. Establish `hD1 : cst.D P = 1` using `hL.depthG P hP`. Establish `hdu` using `GlobalTheory.Mem.Col2.degOneUnram_of_mem_vGs hX.ok hPr hP`.
+
+Establish `hd : ∀ a : X.E, IntAt P.1 a → redP P.1 a = 0 → IntAt P.1 (a / (qOf P.1 : X.E))` using `fun a ha h0 => GlobalTheory.TopStep.intAt_div_of_redP hdu.2 ha h0`. Establish `hred : ∀ x ∈ stdAt X.E (R.N j) P.1, redV P.1 (k x) = redV P.1 x`. Establish `h1` using `GlobalTheory.TopStep.redGL_of_prinCong (by omega : 0 < cst.D P) hkC`. Introduce `x hx`. Establish `h2` using `GlobalTheory.TopStep.redV_redGL κ hx`.
+
+Rewrite `h2` using `[h1, Units.val_one, Matrix.one_mulVec]`. Conclude with `h2`. Establish `hh` using `hL.stabG j b P hP`. Use `⟨GlobalTheory.CongLevel.extE (cOf R j) k, GlobalTheory.Mem.Col2.LevMod.extE_mem_Cbe cst.sharp j P.1 hP hd (L.h j b P) hh k hkG hred, GlobalTheory.CongLevel.extE_inX _ k, ?_⟩` and prove the remaining obligations. Establish `hh'` using `hh`.
+
+Unfold `lamYat at hh'`. Rewrite `hh'` using `[if_pos hP]`. Establish `hcong` using `GlobalTheory.CongLevel.conj_cong (qOf P.1) _ _ (L.h j b P) hh' (GlobalTheory.CongLevel.extE_cong P.1 (qOf P.1) (cOf R j) (fun i => i + 1) hd k hkG hred)`. Establish `h1` using `GlobalTheory.T.rowCharacter_id_add_q_smul_latticePreserving_eq_one Ch mu cst.sharp j P.1 hP ((qOf P.1 : X.E)⁻¹ • (((L.h j b P)⁻¹ * GlobalTheory.CongLevel.extE (cOf R j) k * L.h j b P : AutY X R j).toLinearMap - LinearMap.id)) fun x hx => by`. Establish `hx'` using `hx`.
+
+Unfold `lamYat at hx' ⊢`. Rewrite `hx'`, the goal using `[if_pos hP]`. Establish `h2` using `hcong x hx'`. Rewrite using `[LinearMap.smul_apply, LinearMap.sub_apply, LinearMap.id_apply, LinearEquiv.coe_coe]`. Conclude with `h2`.
+
+Rewrite `h1` using `[smul_inv_smul₀ hq, add_sub_cancel]`. Unfold `chiInv`. Rewrite using `[h1, hψ, inv_one, one_mul]`. Establish `hstd : ∀ x, x ∈ lamYat (Pr` using `Pr) (R := R) j P.1 ↔ x ∈ stdAt X.E (R.N j + cOf R j) P.1 := by`. Introduce `x`.
+
+Unfold `lamYat`. Rewrite using `[if_neg hP]`. Unfold `LocE.lamY`. Rewrite using `[GlobalTheory.CongLevel.mem_sclLat, GlobalTheory.TopStep.mem_stdAt]`. Simplify using `only [LocE.scE, Pi.zero_apply, Nat.cast_zero, ite_self, zpow_zero, inv_one, one_mul]`.
+
+Establish `hbd` using `hL.boundQ j b P hP`. Establish `hbd' : ∀ x ∈ stdAt X.E (R.N j + cOf R j) P.1, (L.h j b P)⁻¹ x ∈ stdAt X.E (R.N j + cOf R j) P.1 ∧ ((qOf P.1 : X.E) ^ j) • (L.h j b P) x ∈ stdAt X.E (R.N j + cOf R j) P.1` using `fun x hx => by`. Establish `h1` using `hbd x ((hstd x).2 hx)`. Conclude with `⟨(hstd _).1 h1.1, (hstd _).1 h1.2⟩`. Establish `hjD : j + 1 ≤ cst.D P`.
+
+Establish `h1` using `hL.depthQ' P hP`. Establish `h2` using `hL.hm`. Use linear arithmetic over natural numbers and integers. Establish `hg` using `GlobalTheory.T.conj_extend_principalCongruence_cong_one_mod_q P.1 (cOf R j) j (cst.D P) (L.h j b P) κ hkC hjD hbd'`. Establish `hginv` using `GlobalTheory.T.conj_extend_principalCongruence_cong_one_mod_q P.1 (cOf R j) j (cst.D P) (L.h j b P) κ⁻¹ (inv_mem hkC) hjD hbd'`.
+
+Establish `einv : ((L.h j b P)⁻¹ * GlobalTheory.CongLevel.extE (cOf R j) κ.1 * L.h j b P)⁻¹ = (L.h j b P)⁻¹ * GlobalTheory.CongLevel.extE (cOf R j) (κ⁻¹).1 * L.h j b P`. Rewrite using `[mul_inv_rev, mul_inv_rev, inv_inv, GlobalTheory.CongLevel.extE_inv, mul_assoc]`. Both sides reduce to the same expression. Use `⟨GlobalTheory.CongLevel.extE (cOf R j) k, ⟨GlobalTheory.CongLevel.extendByIdOnLastCoordsLinearEquiv_mem_firstRowGroup _ k, ?_⟩, GlobalTheory.CongLevel.extE_inX _ k, ?_⟩` and prove the remaining obligations. Establish `e : (MulAut.conj (L.h j b P)⁻¹).toMonoidHom (GlobalTheory.CongLevel.extE (cOf R j) k) = (L.h j b P)⁻¹ * GlobalTheory.CongLevel.extE (cOf R j) k * L.h j b P` using `by simp show (MulAut.conj (L.h j b P)⁻¹).toMonoidHom (GlobalTheory.CongLevel.extE (cOf R j) k) ∈ Jat (Pr := Pr) cst.sharp j P.1`.
+
+Rewrite using `[e]`. Unfold `Jat`. Rewrite using `[if_neg hP]`. Use `GlobalTheory.T.mem_parahoric_of_cong_one_mod_q P.1 (R.k + j) (R.N j) (cOf R j) _ hg ?_` and prove the remaining obligations. Rewrite using `[einv]`.
+
+Conclude with `hginv`. Unfold `chiInv`. Rewrite using `[hψ, inv_one, one_mul]`. Unfold `lamRow`. Rewrite using `[if_neg hP]`.
+
+Conclude with `GlobalTheory.T.blockDetResidueChar_eq_one_of_cong_mod_q P.1 _ (R.k + j) (R.N j) (R.N j + cOf R j) _ (by omega) hg`.
+-/
 theorem cong_mem_level_chr_one : ∀ {X : Fields} {Pr : Primes X} {R : Ranks} (Ch : Chars X Pr R.m) (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E))
     {S : Set ℕ} (mu : Tup X.F X.E X.K S) (cst : LocCst X (rowSG Pr sel mu)) (L : ChIdx X Pr R (QE sel (mu : Chr X.F X.E X.K))) (G : ChGlob X R.m) (m2 : ℕ),
     X.AbelianUnramifiedExtensionConditions → Pr.Ok → Ch.Ok → IsSel X sel → L.Ok Ch sel mu cst G m2 → ∀ (j : ℕ), j ≤ m2 → ∀ (b : L.β j) (P : rowSG Pr sel mu)

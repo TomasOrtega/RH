@@ -15,9 +15,15 @@ namespace Formalism.L2.G.Cmp
 def bcE {A B : Type} [CommRing A] [CommRing B] {n : Type} [Fintype n] [DecidableEq n] (e : A ≃+* B) : GL n A ≃* GL n B :=
   Units.mapEquiv (RingEquiv.mapMatrix e).toMulEquiv
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem bcE_symm_apply {A B : Type} [CommRing A] [CommRing B] {n : Type} [Fintype n] [DecidableEq n] (e : A ≃+* B) (g : GL n B)
     (a b : n) : ((bcE e).symm g : Matrix n n A) a b = e.symm ((g : Matrix n n B) a b) := rfl
 
+/- English proof (translation)
+Use `first`. Consider the case `rfl`. Consider the case `(subst h; rfl)`. Consider the case `simp [castGL]`.
+-/
 theorem castGL_symm_apply {a b : ℕ} (h : a = b) (R : Type) [CommRing R] (g : GL (Fin b) R) (x y : Fin a) :
     ((castGL h R).symm g : Matrix (Fin a) (Fin a) R) x y = (g : Matrix (Fin b) (Fin b) R) (Fin.cast h x) (Fin.cast h y) := by
   first
@@ -40,6 +46,9 @@ def toF (I : LocId L p nV W Qq) {m : ℕ} (hk : m + 1 = R.k) (v : Fin nV) :
     GL (Fin (m + 1)) Qq ≃* GL (Fin R.k) ((I.plc v).adicCompletion F) :=
   ((castGL hk Qq).trans (bcE (I.eQ v))).trans (MulAut.conj (frV I v))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toF_symm (I : LocId L p nV W Qq) {m : ℕ} (hk : m + 1 = R.k) (v : Fin nV)
     (X : GL (Fin R.k) ((I.plc v).adicCompletion F)) :
     (toF I hk v).symm X = (castGL hk Qq).symm ((bcE (I.eQ v)).symm ((frV I v)⁻¹ * X * frV I v)) := rfl
@@ -50,6 +59,9 @@ def prP (I : LocId L p nV W Qq) {m : ℕ} (hk : m + 1 = R.k) : GA sp →* (Fin n
   MonoidHom.pi fun v => (toF I hk v).symm.toMonoidHom.comp
     ((bc (fstV I v)).comp ((bc (prV (E := E) (I.plc v))).comp (UPts sp.cm.sig sp.gram0 (FiniteAdeleRing (𝓞 F) F)).subtype))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem prP_apply (I : LocId L p nV W Qq) {m : ℕ} (hk : m + 1 = R.k) (x : GA sp) (v : Fin nV) :
     prP I hk x v = (toF I hk v).symm (bc (fstV I v) (bc (prV (E := E) (I.plc v)) (x : GL (Fin R.k) _))) := rfl
 
@@ -57,6 +69,9 @@ def jQ (I : LocId L p nV W Qq) (hdet : IsUnit sp.gram0.det) {m : ℕ} (hk : m + 
     (Fin nV → GL (Fin (m + 1)) Qq) →* GA sp :=
   (jP I hdet).comp (MonoidHom.pi fun v => (toF I hk v).toMonoidHom.comp (Pi.evalMonoidHom _ v))
 
+/- English proof (translation)
+Use function extensionality and compare the values at `v`. Rewrite using `[prP_apply]`. Use `jP_at I hdet (fun v => toF I hk v (g v)) v` as an intermediate fact. Use `show (toF I hk v).symm (bc (fstV I v) (bc (prV (E := E) (I.plc v)) (jP I hdet (fun v => toF I hk v (g v)) : GL (Fin R.k) _))) = g v`. Rewrite using `[this, MulEquiv.symm_apply_apply]`.
+-/
 theorem prP_jQ (I : LocId L p nV W Qq) (hdet : IsUnit sp.gram0.det) {m : ℕ} (hk : m + 1 = R.k)
     (g : Fin nV → GL (Fin (m + 1)) Qq) : prP I hk (jQ I hdet hk g) = g := by
   funext v
@@ -74,6 +89,15 @@ def HypAtP (I : LocId L p nV W Qq) : Prop :=
       ∀ a b, ((((frV I v)⁻¹ * bc (fstV I v) x * frV I v)⁻¹ : GL (Fin R.k) _) : Matrix (Fin R.k) (Fin R.k) _) a b ∈
         (I.plc v).adicCompletionIntegers F)
 
+/- English proof (translation)
+Rewrite using `[stabStd_iff, ← map_inv, toF_symm, toF_symm]`. Establish `key : ∀ M : GL (Fin R.k) ((I.plc v).adicCompletion F), (∀ a b, ((castGL hk Qq).symm ((bcE (I.eQ v)).symm M) : Matrix (Fin (m + 1)) (Fin (m + 1)) Qq) a b ∈ (algebraMap W Qq).range) ↔ ∀ a b, (M : Matrix (Fin R.k) (Fin R.k) _) a b ∈ (I.plc v).adicCompletionIntegers F`. Introduce `M`. Establish `h1 : ∀ a b, ((castGL hk Qq).symm ((bcE (I.eQ v)).symm M) : Matrix (Fin (m + 1)) (Fin (m + 1)) Qq) a b ∈ (algebraMap W Qq).range ↔ (M : Matrix (Fin R.k) (Fin R.k) _) (Fin.cast hk a) (Fin.cast hk b) ∈ (I.plc v).adicCompletionIntegers F`. Introduce `a b`.
+
+Rewrite using `[castGL_symm_apply, bcE_symm_apply]`. Use `I.completion_integers_iff v ((I.eQ v).symm ((M : Matrix (Fin R.k) (Fin R.k) _) (Fin.cast hk a) (Fin.cast hk b)))` as an intermediate fact. Rewrite `this` using `[RingEquiv.apply_symm_apply]`. Conclude with `this`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h a b`. Use `(h1 (Fin.cast hk.symm a) (Fin.cast hk.symm b)).1 (h _ _)` as an intermediate fact. Simplify using `using this`. Introduce `h a b`. Conclude with `(h1 a b).2 (h _ _)`.
+
+Establish `e : (frV I v)⁻¹ * X⁻¹ * frV I v = ((frV I v)⁻¹ * X * frV I v)⁻¹` using `by group`. Rewrite using `[key, e, key]`.
+-/
 theorem toF_symm_stab (I : LocId L p nV W Qq) {m : ℕ} (hk : m + 1 = R.k) (v : Fin nV)
     (X : GL (Fin R.k) ((I.plc v).adicCompletion F)) :
     (toF I hk v).symm X ∈ stabStd (k := m + 1) (Qq := Qq) W ↔

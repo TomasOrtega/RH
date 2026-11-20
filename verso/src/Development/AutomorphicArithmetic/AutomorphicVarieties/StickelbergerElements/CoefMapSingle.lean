@@ -28,6 +28,9 @@ def Zl (l : ℕ) [Fact l.Prime] : Subring ℚ where
   mul_mem' {x y} hx hy h := ((Fact.out : l.Prime).dvd_mul.1 (h.trans (Rat.mul_den_dvd x y))).elim hx hy
   neg_mem' {x} hx := by simpa using hx
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_Zl {l : ℕ} [Fact l.Prime] {x : ℚ} : x ∈ Zl l ↔ ¬ l ∣ x.den := Iff.rfl
 
 section Elements
@@ -59,6 +62,9 @@ variable {G Γ : Type} [CommGroup G] [CommGroup Γ]
 def coefMap (R Γ : Type) [CommRing R] [CommGroup Γ] : MonoidAlgebra ℤ Γ →+* MonoidAlgebra R Γ :=
   (MonoidAlgebra.lift ℤ (MonoidAlgebra R Γ) Γ (MonoidAlgebra.of R Γ)).toRingHom
 
+/- English proof (translation)
+Simplify using `[coefMap, MonoidAlgebra.smul_single]`.
+-/
 theorem coefMap_single (R : Type) [CommRing R] (g : Γ) (n : ℤ) :
     coefMap R Γ (MonoidAlgebra.single g n) = MonoidAlgebra.single g (n : R) := by
   simp [coefMap, MonoidAlgebra.smul_single]
@@ -75,6 +81,9 @@ def IntAt (l : ℕ) [Fact l.Prime] (r : ℕ) (z : MonoidAlgebra ℚ Γ) : Prop :
 
 end Maps
 
+/- English proof (translation)
+Establish `h : ((5 : ℕ) : ZMod 7)⁻¹ = 3` using `ZMod.inv_eq_of_mul_eq_one 7 _ _ (by decide)`. Rewrite using `[Eone, jv, yCl, h]`. Evaluate the decidable proposition.
+-/
 example : Eone 7 5 1 = 0 := by
   have h : ((5 : ℕ) : ZMod 7)⁻¹ = 3 := ZMod.inv_eq_of_mul_eq_one 7 _ _ (by decide)
   rw [Eone, jv, yCl, h]

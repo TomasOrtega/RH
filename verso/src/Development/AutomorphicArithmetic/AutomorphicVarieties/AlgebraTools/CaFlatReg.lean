@@ -5,6 +5,19 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.CaCot
 
 open IsLocalRing UpperTheory.V.AlgebraTools
 
+/- English proof (translation)
+Use `set I := (maximalIdeal A).map (algebraMap A B) with hI`. Take `⟨s, y, -, hy, hs⟩` from `cotInd_extend A κ x hx`. Take `⟨t, w, -, hw, ht⟩` from `cotInd_extend (B ⧸ I) Empty (fun e => e.elim) ⟨fun e => e.elim, fun _ _ e => e.elim⟩`. Use `choose v hv using fun j => Ideal.Quotient.mk_surjective (w j)`. Establish `hw' : Ideal.span (Set.range w) = maximalIdeal (B ⧸ I)`.
+
+Rewrite using `[← hw, Set.Sum.elim_range, Set.range_eq_empty (ι := Empty), Set.empty_union]`. Establish `hmap : (maximalIdeal B).map (Ideal.Quotient.mk I) = maximalIdeal (B ⧸ I)` using `IsLocalRing.map_maximalIdeal_of_surjective _ Ideal.Quotient.mk_surjective`. Establish `hIle : I ≤ maximalIdeal B` using `IsLocalRing.map_maximalIdeal_le _`. Use `⟨s, t, Sum.elim (fun i => algebraMap A B (Sum.elim x y i)) v, fun k => rfl, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Set.Sum.elim_range, Ideal.span_union]`.
+
+Establish `h1 : Ideal.span (Set.range fun i => algebraMap A B (Sum.elim x y i)) = I`. Rewrite using `[hI, ← hy, Ideal.map_span, ← Set.range_comp]`. Both sides reduce to the same expression. Establish `h2 : (Ideal.span (Set.range v)).map (Ideal.Quotient.mk I) = maximalIdeal (B ⧸ I)`. Rewrite using `[Ideal.map_span, ← Set.range_comp, ← hw']`.
+
+Use `congr 2`. Use function extensionality and compare the values at `j`. Conclude with `hv j`. Establish `h3` using `congrArg (Ideal.comap (Ideal.Quotient.mk I)) (h2.trans hmap.symm)`. Rewrite `h3` using `[Ideal.comap_map_quotientMk, Ideal.comap_map_quotientMk, sup_eq_right.2 hIle]`.
+
+Rewrite using `[h1, h3]`. Use `haveI : Algebra.HasGoingDown A B := Algebra.HasGoingDown.of_flat`. Establish `H` using `Ideal.height_eq_height_add_of_liesOver_of_hasGoingDown (maximalIdeal A) (maximalIdeal B)`. Rewrite `H` using `[← hI, hmap]`. Establish `H'` using `congrArg (fun a : ℕ∞ => (a : WithBot ℕ∞)) H`.
+
+Simplify using `only [WithBot.coe_add, IsLocalRing.maximalIdeal_height_eq_ringKrullDim] at H'`. Rewrite using `[H', ← IsRegularLocalRing.spanFinrank_maximalIdeal (R := A), ← IsRegularLocalRing.spanFinrank_maximalIdeal (R := B ⧸ I), ← hs, ← ht]`. Simplify using the standard rewrite rules.
+-/
 private theorem flat_regular_cotangent_extension
     (A B : Type) [CommRing A] [IsRegularLocalRing A] [CommRing B] [IsLocalRing B] [IsNoetherianRing B]
     [Algebra A B] [IsLocalHom (algebraMap A B)] [Module.Flat A B]
@@ -45,6 +58,13 @@ private theorem flat_regular_cotangent_extension
       ← IsRegularLocalRing.spanFinrank_maximalIdeal (R := B ⧸ I), ← hs, ← ht]
     simp
 
+/- English proof (translation)
+Introduce `A B _ _ _ _ _ _ _ _ _`. Prove the components needed by the constructor for the conclusion. Take `⟨s, t, z, -, hz, hc⟩` from `flat_regular_cotangent_extension A B Empty (fun e => e.elim) ⟨fun e => e.elim, fun _ _ e => e.elim⟩`. Apply `IsRegularLocalRing.of_spanFinrank_maximalIdeal_le` to reduce the goal to its premises. Rewrite using `[← hc, ← hz, Nat.cast_le]`.
+
+Use `(Submodule.spanFinrank_span_le_ncard_of_finite (Set.finite_range z)).trans ?_` and prove the remaining obligations. Rewrite using `[← Set.image_univ, ← Nat.card_eq_fintype_card, ← Set.ncard_univ]`. Conclude with `Set.ncard_image_le`. Introduce `κ _ x hx`. Take `⟨s, t, z, hzx, hz, hc⟩` from `flat_regular_cotangent_extension A B κ x hx`.
+
+Establish `h1` using `ringKrullDim_le_spanFinrank_maximalIdeal B`. Rewrite `h1` using `[← hc, Nat.cast_le]`. Establish `h2` using `(cotInd_of_span B _ z hz h1).comp (fun k : κ => Sum.inl (Sum.inl k)) (Sum.inl_injective.comp Sum.inl_injective)`. Establish `h3 : (z ∘ fun k : κ => Sum.inl (Sum.inl k)) = fun k => algebraMap A B (x k)` using `funext hzx`. Rewrite `h2` using `[h3]`. Then use the resulting hypothesis.
+-/
 theorem UpperTheory.V.AlgebraTools.regular_of_flat_fibre :
     ∀ (A B : Type) [CommRing A] [IsRegularLocalRing A] [CommRing B] [IsLocalRing B] [IsNoetherianRing B]
       [Algebra A B] [IsLocalHom (algebraMap A B)] [Module.Flat A B]

@@ -11,6 +11,9 @@ namespace GlobalTheory.BCT.ClSumParam
 
 variable {G : Type} [Group G]
 
+/- English proof (translation)
+Use `⟨fun x => ⟨1, by simp⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `x y ⟨g, rfl⟩`. Conclude with `⟨g⁻¹, by simp only [map_inv, inv_inv]; group⟩`. Introduce and unpack `x y z ⟨g, rfl⟩ ⟨h, rfl⟩`. Conclude with `⟨g * h, by simp only [map_mul, _root_.mul_inv_rev]; group⟩`.
+-/
 theorem twRel_equiv (θ : G →* G) : Equivalence fun x y : G => ∃ g, y = g⁻¹ * x * θ g := by
   refine ⟨fun x => ⟨1, by simp⟩, ?_, ?_⟩
   · rintro x y ⟨g, rfl⟩
@@ -18,13 +21,32 @@ theorem twRel_equiv (θ : G →* G) : Equivalence fun x y : G => ∃ g, y = g⁻
   · rintro x y z ⟨g, rfl⟩ ⟨h, rfl⟩
     exact ⟨g * h, by simp only [map_mul, _root_.mul_inv_rev]; group⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => (twRel_equiv θ).eqvGen_iff.1 (Quot.eqvGen_exact h), fun h => Quot.sound h⟩`.
+-/
 theorem twCl_eq_iff (θ : G →* G) (x y : G) :
     (Quot.mk _ x : TwCl θ) = Quot.mk _ y ↔ ∃ g, y = g⁻¹ * x * θ g :=
   ⟨fun h => (twRel_equiv θ).eqvGen_iff.1 (Quot.eqvGen_exact h), fun h => Quot.sound h⟩
 
+/- English proof (translation)
+The claim follows from `(twCl_eq_iff θ _ _).1 (Quot.out_eq (Quot.mk _ x : TwCl θ)).symm`.
+-/
 theorem rep_mk (θ : G →* G) (x : G) : ∃ g, TwCl.rep (θ := θ) (Quot.mk _ x) = g⁻¹ * x * θ g :=
   (twCl_eq_iff θ _ _).1 (Quot.out_eq (Quot.mk _ x : TwCl θ)).symm
 
+/- English proof (translation)
+Introduce `G _ _ θ Kg S f C ι N hιS hsurj hinj hSinv horb hN`. Set `φ : C → TwCl θ` to `fun c => Quot.mk _ (ι c)`. Establish `hφinj : Function.Injective φ` using `fun c c' h => hinj c c' ((twCl_eq_iff θ _ _).1 h)`. Use `set F : TwCl θ → ℂ := fun c => if c.rep ∈ S then (fun _ => (1 : ℂ)) c.rep * twOrb θ Kg c.rep f else 0 with hF`. Establish `hsupp : Function.support F ⊆ Set.range φ`.
+
+Introduce `c hc`. Assume the negation of the conclusion as `hnot`. Apply `hc` to reduce the goal to its premises. Establish `: c.rep ∉ S`. Introduce `hrep`.
+
+Take `⟨c', g, hg⟩` from `hsurj _ hrep`. Apply `hnot` to reduce the goal to its premises. Use `⟨c', ?_⟩` and prove the remaining obligations. Establish `h1 : (Quot.mk _ (ι c') : TwCl θ) = Quot.mk _ c.rep` using `(twCl_eq_iff θ _ _).2 ⟨g, hg⟩`. Conclude with `h1.trans (Quot.out_eq c)`.
+
+Simplify using `[F, this]`. Establish `hcomp : ∀ c, F (φ c) = N c`. Introduce `c`. Take `⟨g, hg⟩` from `rep_mk θ (ι c)`. Establish `hmem : TwCl.rep (θ` using `θ) (φ c) ∈ S := by show TwCl.rep (θ := θ) (Quot.mk _ (ι c)) ∈ S`.
+
+Rewrite using `[hg, hSinv]`. Conclude with `hιS c`. Simplify using `only [F, if_pos hmem, one_mul]`. Use `show twOrb θ Kg (TwCl.rep (θ := θ) (Quot.mk _ (ι c))) f = N c`. Rewrite using `[hg, horb, hN]`.
+
+Unfold `clSum`. Use `show ∑ᶠ c, F c = _`. Rewrite using `[← finsum_congr hcomp, ← finsum_mem_range hφinj, ← finsum_mem_inter_support, Set.inter_eq_right.2 hsupp, finsum_mem_support]`.
+-/
 theorem clSum_eq_finsum_param : ∀ (G : Type) [Group G] [TopologicalSpace G] (θ : G →* G) (Kg : Subgroup G) (S : Set G)
     (f : G → ℂ) (C : Type) (ι : C → G) (N : C → ℂ), (∀ c, ι c ∈ S) → (∀ y ∈ S, ∃ c g, y = g⁻¹ * ι c * θ g) →
     (∀ c c', (∃ g, ι c' = g⁻¹ * ι c * θ g) → c = c') → (∀ y g, g⁻¹ * y * θ g ∈ S ↔ y ∈ S) →

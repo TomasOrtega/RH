@@ -10,10 +10,16 @@ open scoped RestrictedProduct
 
 variable {F : Type} [Field F] [NumberField F]
 
+/- English proof (translation)
+Conclude with `PI.AdicCompletionValuation.isCompact_adicCompletionIntegers F v`.
+-/
 theorem isCompact_integers (v : HeightOneSpectrum (𝓞 F)) :
     IsCompact (v.adicCompletionIntegers F : Set (v.adicCompletion F)) := by
   exact PI.AdicCompletionValuation.isCompact_adicCompletionIntegers F v
 
+/- English proof (translation)
+Use `first`. Consider the case `exact Valued.isOpen_valuationSubring _`. Consider the case `exact Valued.isOpen_integer _`.
+-/
 theorem isOpen_integers (v : HeightOneSpectrum (𝓞 F)) :
     IsOpen (v.adicCompletionIntegers F : Set (v.adicCompletion F)) := by
   first
@@ -23,9 +29,15 @@ theorem isOpen_integers (v : HeightOneSpectrum (𝓞 F)) :
 def Oint (F : Type) [Field F] [NumberField F] : Set (FiniteAdeleRing (𝓞 F) F) :=
   {x | ∀ v : HeightOneSpectrum (𝓞 F), x v ∈ v.adicCompletionIntegers F}
 
+/- English proof (translation)
+Conclude with `RestrictedProduct.isOpen_forall_mem fun v => isOpen_integers v`.
+-/
 theorem isOpen_Oint : IsOpen (Oint F) := by
   exact RestrictedProduct.isOpen_forall_mem fun v => isOpen_integers v
 
+/- English proof (translation)
+Introduce `v`. Conclude with `coe_algebraMap_mem (𝓞 F) F v m`.
+-/
 theorem algebraMap_int_mem_Oint (m : 𝓞 F) :
     algebraMap F (FiniteAdeleRing (𝓞 F) F) (m : F) ∈ Oint F := by
   intro v

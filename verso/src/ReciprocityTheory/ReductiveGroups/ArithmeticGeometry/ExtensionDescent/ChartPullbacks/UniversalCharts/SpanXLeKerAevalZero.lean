@@ -27,6 +27,9 @@ abbrev zR {κ : Type} (m : ℕ) (j : κ) : JetR R κ m := Ideal.Quotient.mk _ (M
 
 variable (R)
 
+/- English proof (translation)
+Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩`. Simplify using the standard rewrite rules.
+-/
 theorem span_X_le_ker_aeval_zero (κ : Type) :
     Ideal.span (Set.range (MvPolynomial.X : κ → MvPolynomial κ R)) ≤
       RingHom.ker (MvPolynomial.aeval (R := R) (fun _ : κ => (0 : R))) := by
@@ -40,10 +43,16 @@ def jetAug (κ : Type) (m : ℕ) : JetR R κ m →ₐ[R] R :=
 
 variable {R}
 
+/- English proof (translation)
+Use `show MvPolynomial.aeval (fun _ : κ => (0 : R)) (MvPolynomial.X j) = 0`. Simplify using the standard rewrite rules.
+-/
 theorem jetAug_zR {κ : Type} (m : ℕ) (j : κ) : jetAug R κ m (zR m j) = 0 := by
   show MvPolynomial.aeval (fun _ : κ => (0 : R)) (MvPolynomial.X j) = 0
   simp
 
+/- English proof (translation)
+Apply `Ideal.Quotient.algHom_ext` to reduce the goal to its premises. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `j`. Conclude with `h j`.
+-/
 theorem jet_ext {κ : Type} {m : ℕ} {A : Type} [CommRing A] [Algebra R A] {ψ₁ ψ₂ : JetR R κ m →ₐ[R] A}
     (h : ∀ j, ψ₁ (zR (R := R) m j) = ψ₂ (zR (R := R) m j)) : ψ₁ = ψ₂ := by
   apply Ideal.Quotient.algHom_ext
@@ -66,12 +75,22 @@ def jetLift {κ : Type} {m : ℕ} {A : Type} [CommRing A] [Algebra R A] (J : Ide
     rw [hJ] at h2
     exact h2)
 
+/- English proof (translation)
+Use `show MvPolynomial.aeval b (MvPolynomial.X j) = b j`. Simplify using the standard rewrite rules.
+-/
 theorem jetLift_zR {κ : Type} {m : ℕ} {A : Type} [CommRing A] [Algebra R A] (J : Ideal A)
     (hJ : J ^ (m + 1) = ⊥) (b : κ → A) (hb : ∀ j, b j ∈ J) (j : κ) :
     jetLift R J hJ b hb (zR m j) = b j := by
   show MvPolynomial.aeval b (MvPolynomial.X j) = b j
   simp
 
+/- English proof (translation)
+Establish `hs : Set.range (MvPolynomial.X : κ → MvPolynomial κ R) = MvPolynomial.X '' Set.univ`. Rewrite using `[Set.image_univ]`. Rewrite using `[hs, MvPolynomial.mem_ideal_span_X_image]`. Introduce `mono hm`. Assume the negation of the conclusion as `hcon`.
+
+Use `push Not at hcon`. Establish `h0 : mono = 0`. Use extensionality with `i`. Conclude with `hcon i (Set.mem_univ i)`. Substitute `h0` using the available equality.
+
+Rewrite `hm` using `[MvPolynomial.mem_support_iff, MvPolynomial.coeff_sub, MvPolynomial.coeff_C, if_pos rfl]`. Apply `hm` to reduce the goal to its premises. Rewrite using `[sub_eq_zero, MvPolynomial.aeval_zero', ← MvPolynomial.constantCoeff_eq]`. Both sides reduce to the same expression.
+-/
 theorem sub_const_mem_span_X {κ : Type} (p : MvPolynomial κ R) :
     p - MvPolynomial.C (MvPolynomial.aeval (fun _ : κ => (0 : R)) p) ∈
       Ideal.span (Set.range (MvPolynomial.X : κ → MvPolynomial κ R)) := by
@@ -91,6 +110,11 @@ theorem sub_const_mem_span_X {κ : Type} (p : MvPolynomial κ R) :
   rw [sub_eq_zero, MvPolynomial.aeval_zero', ← MvPolynomial.constantCoeff_eq]
   rfl
 
+/- English proof (translation)
+Establish `hle : RingHom.ker (jetAug R κ m) ≤ (Ideal.span (Set.range (MvPolynomial.X : κ → MvPolynomial κ R))).map (Ideal.Quotient.mk _)`. Introduce `x hx`. Take `⟨p, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Establish `hp : MvPolynomial.aeval (fun _ : κ => (0 : R)) p = 0` using `hx`. Use `sub_const_mem_span_X (R := R) p` as an intermediate fact.
+
+Rewrite `this` using `[hp, map_zero, sub_zero]`. Conclude with `Ideal.mem_map_of_mem _ this`. Rewrite using `[← le_bot_iff]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem ker_jetAug_pow (κ : Type) (m : ℕ) : (RingHom.ker (jetAug R κ m)) ^ (m + 1) = ⊥ := by
   have hle : RingHom.ker (jetAug R κ m) ≤
       (Ideal.span (Set.range (MvPolynomial.X : κ → MvPolynomial κ R))).map (Ideal.Quotient.mk _) := by
@@ -108,9 +132,15 @@ theorem ker_jetAug_pow (κ : Type) (m : ℕ) : (RingHom.ker (jetAug R κ m)) ^ (
         (Ideal.map_pow _ _ _).symm
     _ = ⊥ := Ideal.map_quotient_self _
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨m + 1, by rw [ker_jetAug_pow, Ideal.zero_eq_bot]⟩`.
+-/
 theorem ker_jetAug_nil (κ : Type) (m : ℕ) : IsNilpotent (RingHom.ker (jetAug R κ m)) :=
   ⟨m + 1, by rw [ker_jetAug_pow, Ideal.zero_eq_bot]⟩
 
+/- English proof (translation)
+The claim follows from `jetAug_zR m j`.
+-/
 theorem zR_mem_ker {κ : Type} (m : ℕ) (j : κ) : zR (R := R) m j ∈ RingHom.ker (jetAug R κ m) :=
   jetAug_zR m j
 
@@ -127,6 +157,15 @@ abbrev sX (j : Fin n) : S := algebraMap (MvPolynomial (Fin n) R) S (MvPolynomial
 
 variable [Algebra.FormallyEtale (MvPolynomial (Fin n) R) S] (ε : S →ₐ[R] R)
 
+/- English proof (translation)
+Set `ρ : MvPolynomial (Fin n) R →ₐ[R] A` to `φ₁.comp (IsScalarTower.toAlgHom R (MvPolynomial (Fin n) R) S)`. Establish `hρ2 : φ₂.comp (IsScalarTower.toAlgHom R (MvPolynomial (Fin n) R) S) = ρ`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `j`. Conclude with `(hs j).symm`.
+
+Use `letI : Algebra (MvPolynomial (Fin n) R) A := ρ.toRingHom.toAlgebra`. Use `haveI : IsScalarTower R (MvPolynomial (Fin n) R) A := IsScalarTower.of_algebraMap_eq (fun r => (ρ.commutes r).symm)`. Set `ψ₁ : S →ₐ[MvPolynomial (Fin n) R] A` to `{ φ₁.toRingHom with commutes' := fun p => rfl }`. Set `ψ₂ : S →ₐ[MvPolynomial (Fin n) R] A` to `{ φ₂.toRingHom with commutes' := fun p => AlgHom.congr_fun hρ2 p }`. Establish `: ψ₁ = ψ₂`.
+
+Apply `Algebra.FormallyUnramified.lift_unique (RingHom.ker aug) hJ` to reduce the goal to its premises. Use extensionality with `x`. Simplify using `only [AlgHom.comp_apply, Ideal.Quotient.mkₐ_eq_mk]`. Rewrite using `[Ideal.Quotient.eq, RingHom.mem_ker, map_sub, sub_eq_zero]`. Conclude with `(AlgHom.congr_fun h1 x).trans (AlgHom.congr_fun h2 x).symm`.
+
+Use extensionality with `x`. Conclude with `AlgHom.congr_fun this x`.
+-/
 theorem etale_ext {A : Type} [CommRing A] [Algebra R A] (aug : A →ₐ[R] R)
     (hJ : IsNilpotent (RingHom.ker aug)) (φ₁ φ₂ : S →ₐ[R] A) (h1 : aug.comp φ₁ = ε) (h2 : aug.comp φ₂ = ε)
     (hs : ∀ j : Fin n, φ₁ (sX (S := S) R j) = φ₂ (sX (S := S) R j)) : φ₁ = φ₂ := by
@@ -150,6 +189,23 @@ theorem etale_ext {A : Type} [CommRing A] [Algebra R A] (aug : A →ₐ[R] R)
   ext x
   exact AlgHom.congr_fun this x
 
+/- English proof (translation)
+Set `ρ : MvPolynomial (Fin n) R →ₐ[R] A` to `MvPolynomial.aeval b`. Use `letI : Algebra (MvPolynomial (Fin n) R) A := ρ.toRingHom.toAlgebra`. Use `haveI : IsScalarTower R (MvPolynomial (Fin n) R) A := IsScalarTower.of_algebraMap_eq (fun r => (ρ.commutes r).symm)`. Set `J` to `RingHom.ker aug`. Set `mk : A →ₐ[MvPolynomial (Fin n) R] A ⧸ J` to `Ideal.Quotient.mkₐ _ J`.
+
+Establish `hmkR : ∀ a : A, mk a = Ideal.Quotient.mk J (algebraMap R A (aug a))`. Introduce `a`. Use `show Ideal.Quotient.mk J a = Ideal.Quotient.mk J (algebraMap R A (aug a))`. Rewrite using `[Ideal.Quotient.eq, RingHom.mem_ker, map_sub, AlgHom.commutes, Algebra.algebraMap_self, RingHom.id_apply, sub_self]`. Set `f₀r : S →+* A ⧸ J` to `(Ideal.Quotient.mk J).comp ((algebraMap R A).comp ε.toRingHom)`.
+
+Establish `hf₀ : ∀ p : MvPolynomial (Fin n) R, f₀r (algebraMap _ S p) = algebraMap _ (A ⧸ J) p`. Establish `: f₀r.comp (algebraMap (MvPolynomial (Fin n) R) S) = algebraMap (MvPolynomial (Fin n) R) (A ⧸ J)`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `r show Ideal.Quotient.mk J (algebraMap R A (ε (algebraMap (MvPolynomial (Fin n) R) S (MvPolynomial.C r)))) = Ideal.Quotient.mk J (ρ (MvPolynomial.C r))`. Rewrite using `[MvPolynomial.aeval_C, show algebraMap (MvPolynomial (Fin n) R) S (MvPolynomial.C r) = algebraMap R S r from (IsScalarTower.algebraMap_apply R (MvPolynomial (Fin n) R) S r).symm, AlgHom.commutes, Algebra.algebraMap_self, RingHom.id_apply]`.
+
+Introduce `j show Ideal.Quotient.mk J (algebraMap R A (ε (sX R j))) = Ideal.Quotient.mk J (ρ (MvPolynomial.X j))`. Rewrite using `[MvPolynomial.aeval_X, Ideal.Quotient.eq, RingHom.mem_ker, map_sub, AlgHom.commutes, Algebra.algebraMap_self, RingHom.id_apply, hb, sub_self]`. Conclude with `fun p => RingHom.congr_fun this p`. Set `f₀ : S →ₐ[MvPolynomial (Fin n) R] A ⧸ J` to `{ f₀r with commutes' := hf₀ }`. Establish `hmk : Function.Surjective mk` using `Ideal.Quotient.mk_surjective`.
+
+Establish `hker : IsNilpotent (RingHom.ker (mk : A →+* A ⧸ J))`. Establish `: RingHom.ker (mk : A →+* A ⧸ J) = J` using `Ideal.mk_ker`. Rewrite using `[this]`. Conclude with `hJ`. Set `φ'` to `Algebra.FormallySmooth.liftOfSurjective f₀ mk hmk hker`.
+
+Establish `hφ' : mk.comp φ' = f₀` using `Algebra.FormallySmooth.comp_liftOfSurjective f₀ mk hmk hker`. Use `⟨φ'.restrictScalars R, ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Establish `e1` using `AlgHom.congr_fun hφ' x`. Simplify using `only [AlgHom.comp_apply] at e1`.
+
+Rewrite `e1` using `[hmkR]`. Establish `e2 : (Ideal.Quotient.mk J) (algebraMap R A (aug (φ' x))) = (Ideal.Quotient.mk J) (algebraMap R A (ε x))` using `e1`. Rewrite `e2` using `[Ideal.Quotient.eq, RingHom.mem_ker, map_sub, AlgHom.commutes, AlgHom.commutes, Algebra.algebraMap_self, RingHom.id_apply, RingHom.id_apply, sub_eq_zero]`. Conclude with `e2`. Introduce `j show φ' (algebraMap (MvPolynomial (Fin n) R) S (MvPolynomial.X j)) = b j`.
+
+Rewrite using `[AlgHom.commutes]`. Use `show ρ (MvPolynomial.X j) = b j`. Conclude with `MvPolynomial.aeval_X b j`.
+-/
 theorem etale_exists {A : Type} [CommRing A] [Algebra R A] (aug : A →ₐ[R] R)
     (hJ : IsNilpotent (RingHom.ker aug)) (b : Fin n → A) (hb : ∀ j, aug (b j) = ε (sX R j)) :
     ∃ φ : S →ₐ[R] A, aug.comp φ = ε ∧ ∀ j, φ (sX R j) = b j := by

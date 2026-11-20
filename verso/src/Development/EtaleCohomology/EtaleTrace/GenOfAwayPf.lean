@@ -12,10 +12,16 @@ def pg {X : Scheme.{0}} [IsIntegral X] (ι : X ⟶ PN k N) (U : (PN k N).Opens)
     (hU : genericPoint X ∈ ι ⁻¹ᵁ U) : Γ(PN k N, U) →+* X.functionField :=
   (ι.app U ≫ X.presheaf.germ _ (genericPoint X) hU).hom
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pg_apply {X : Scheme.{0}} [IsIntegral X] (ι : X ⟶ PN k N) (U : (PN k N).Opens)
     (hU : genericPoint X ∈ ι ⁻¹ᵁ U) (s : Γ(PN k N, U)) :
     pg ι U hU s = X.presheaf.germ _ (genericPoint X) hU (ι.app U s) := rfl
 
+/- English proof (translation)
+Use `show (((PN k N).presheaf.map (homOfLE hVU).op ≫ ι.app V) ≫ X.presheaf.germ _ _ hV).hom s = _`. Rewrite using `[Scheme.Hom.naturality, Category.assoc, TopCat.Presheaf.germ_res]`. Both sides reduce to the same expression.
+-/
 theorem pg_res {X : Scheme.{0}} [IsIntegral X] (ι : X ⟶ PN k N) {U V : (PN k N).Opens} (hVU : V ≤ U)
     (hV : genericPoint X ∈ ι ⁻¹ᵁ V) (hU : genericPoint X ∈ ι ⁻¹ᵁ U) (s : Γ(PN k N, U)) :
     pg ι V hV ((PN k N).presheaf.map (homOfLE hVU).op s) = pg ι U hU s := by
@@ -23,11 +29,19 @@ theorem pg_res {X : Scheme.{0}} [IsIntegral X] (ι : X ⟶ PN k N) {U V : (PN k 
   rw [Scheme.Hom.naturality, Category.assoc, TopCat.Presheaf.germ_res]
   rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem away_eq {X : Scheme.{0}} [IsIntegral X] (ι : X ⟶ PN k N) {n : ℕ}
     (f : MvPolynomial (Fin (N + 1)) k) (hf : f ∈ A k N n) (h : genericPoint X ∈ ι ⁻¹ᵁ Proj.basicOpen (A k N) f)
     (m : ℕ) (g : MvPolynomial (Fin (N + 1)) k) (hg : g ∈ A k N (m • n)) :
     away ι f hf h m g hg = pg ι _ h (Proj.awayToSection _ f (Away.mk _ hf m g hg)) := rfl
 
+/- English proof (translation)
+Apply `HomogeneousLocalization.val_injective` to reduce the goal to its premises. Simplify using `only [HomogeneousLocalization.val_mul, HomogeneousLocalization.val_pow, awayMap_mk, Away.val_mk, Localization.mk_pow, Localization.mk_mul]`. Rewrite using `[Localization.mk_eq_mk_iff, Localization.r_iff_exists]`. Use `⟨1, ?_⟩` and prove the remaining obligations. Simplify using `only [Submonoid.coe_mul, SubmonoidClass.coe_pow, OneMemClass.coe_one, one_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem away_identity (x f g : MvPolynomial (Fin (N + 1)) k) {n m : ℕ} (hx : x ∈ A k N 1) (hf : f ∈ A k N n)
     (hg : g ∈ A k N (m • n)) (hf' : f ∈ A k N (n • 1)) (hg' : g ∈ A k N ((m * n) • 1)) :
     awayMap (A k N) hx (show x * f = f * x from mul_comm _ _) (Away.mk _ hf m g hg) *
@@ -41,6 +55,9 @@ theorem away_identity (x f g : MvPolynomial (Fin (N + 1)) k) {n m : ℕ} (hx : x
   simp only [Submonoid.coe_mul, SubmonoidClass.coe_pow, OneMemClass.coe_one, one_mul]
   ring
 
+/- English proof (translation)
+Apply `HomogeneousLocalization.val_injective` to reduce the goal to its premises. Simplify using `only [Away.val_mk, HomogeneousLocalization.val_one]`. Rewrite using `[← Localization.mk_one, Localization.mk_eq_mk_iff, Localization.r_iff_exists]`. Conclude with `⟨1, by simp⟩`.
+-/
 theorem away_self_pow (x : MvPolynomial (Fin (N + 1)) k) (hx : x ∈ A k N 1) (n : ℕ)
     (h : x ^ n ∈ A k N (n • 1)) : Away.mk (A k N) hx n (x ^ n) h = 1 := by
   apply HomogeneousLocalization.val_injective
@@ -48,10 +65,20 @@ theorem away_self_pow (x : MvPolynomial (Fin (N + 1)) k) (hx : x ∈ A k N 1) (n
   rw [← Localization.mk_one, Localization.mk_eq_mk_iff, Localization.r_iff_exists]
   exact ⟨1, by simp⟩
 
+/- English proof (translation)
+Substitute `hmn` using the available equality. Conclude with `away_self_pow x hx m h`.
+-/
 theorem away_self_pow' (x : MvPolynomial (Fin (N + 1)) k) (hx : x ∈ A k N 1) {m n : ℕ} (hmn : m = n)
     (h : x ^ n ∈ A k N (m • 1)) : Away.mk (A k N) hx m (x ^ n) h = 1 := by
   subst hmn; exact away_self_pow x hx m h
 
+/- English proof (translation)
+Establish `hF : genericPoint X ∈ ι ⁻¹ᵁ Proj.basicOpen (A k N) (MvPolynomial.X i * f)`. Rewrite using `[Proj.basicOpen_mul]`. Conclude with `⟨hi, hfη⟩`. Establish `e1 : ∀ y, pg ι _ hF (Proj.awayToSection _ (MvPolynomial.X i * f) (awayMap (A k N) hf (show MvPolynomial.X i * f = MvPolynomial.X i * f from rfl) y)) = pg ι _ hi (Proj.awayToSection _ (MvPolynomial.X i) y)` using `fun y => by`. Use `congr($(Proj.awayMap_awayToSection (A k N) hf (show MvPolynomial.X i * f = MvPolynomial.X i * f from rfl)) y)` as an intermediate fact.
+
+Rewrite `this` using `[ConcreteCategory.comp_apply, ConcreteCategory.comp_apply]`. Use `erw [this]`. Conclude with `pg_res ι _ hF hi _`. Establish `e2 : ∀ y, pg ι _ hF (Proj.awayToSection _ (MvPolynomial.X i * f) (awayMap (A k N) (X_mem k N i) (show MvPolynomial.X i * f = f * MvPolynomial.X i from mul_comm _ _) y)) = pg ι _ hfη (Proj.awayToSection _ f y)` using `fun y => by`. Use `congr($(Proj.awayMap_awayToSection (A k N) (X_mem k N i) (show MvPolynomial.X i * f = f * MvPolynomial.X i from mul_comm _ _)) y)` as an intermediate fact.
+
+Rewrite `this` using `[ConcreteCategory.comp_apply, ConcreteCategory.comp_apply]`. Use `erw [this]`. Conclude with `pg_res ι _ hF hfη _`. Rewrite using `[away_eq, away_eq, away_eq, ← e2, ← e1, ← e1, ← map_pow, ← map_mul, ← away_identity _ _ _ _ hf hg hf' hg', map_mul, map_pow]`. Simplify using `only [map_mul, map_pow]`.
+-/
 theorem key {X : Scheme.{0}} [IsIntegral X] (ι : X ⟶ PN k N) (i : Fin (N + 1))
     (hi : genericPoint X ∈ ι ⁻¹ᵁ Proj.basicOpen (A k N) (MvPolynomial.X i)) {n : ℕ}
     (f : MvPolynomial (Fin (N + 1)) k) (hf : f ∈ A k N n) (hfη : genericPoint X ∈ ι ⁻¹ᵁ Proj.basicOpen (A k N) f)
@@ -81,6 +108,13 @@ theorem key {X : Scheme.{0}} [IsIntegral X] (ι : X ⟶ PN k N) (i : Fin (N + 1)
     map_mul, map_pow]
   simp only [map_mul, map_pow]
 
+/- English proof (translation)
+Introduce `y hy`. Establish `hyU : y ∈ Proj.basicOpen (A k N) (MvPolynomial.X i)` using `(PN k N).basicOpen_le _ hy`. Set `y' : (Proj.basicOpen (A k N) (MvPolynomial.X i : MvPolynomial (Fin (N + 1)) k)).toScheme` to `⟨y, hyU⟩`. Establish `h1 : y' ∈ (Proj.basicOpen (A k N) (MvPolynomial.X i : MvPolynomial (Fin (N + 1)) k)).ι ⁻¹ᵁ (PN k N).basicOpen (Proj.awayToSection (A k N) (MvPolynomial.X i) (Away.mk _ (X_mem k N i) n f hf'))` using `hy`. Rewrite `h1` using `[← Scheme.Opens.toSpecΓ_preimage_basicOpen, ← SpecMap_preimage_basicOpen]`.
+
+Establish `ht : Away.isLocalizationElem (X_mem k N i) hf = Away.mk _ (X_mem k N i) n f hf'`. Apply `val_injective` to reduce the goal to its premises. Simplify using `[Away.val_mk]`. Establish `h2 : y' ∈ Proj.basicOpenToSpec (A k N) (MvPolynomial.X i) ⁻¹ᵁ PrimeSpectrum.basicOpen (Away.isLocalizationElem (X_mem k N i) hf)`. Rewrite using `[ht]`.
+
+Conclude with `h1`. Rewrite `h2` using `[← Proj.awayι_preimage_basicOpen (A k N) (X_mem k N i) one_pos hf hn, ← Scheme.Hom.comp_preimage, ← Proj.basicOpenIsoSpec_inv_ι _ _ (X_mem k N i) one_pos, ← Proj.basicOpenIsoSpec_hom _ _ (X_mem k N i) one_pos, Iso.hom_inv_id_assoc]`. Conclude with `h2`.
+-/
 theorem basicOpen_le (i : Fin (N + 1)) {n : ℕ} (hn : 0 < n) (f : MvPolynomial (Fin (N + 1)) k)
     (hf : f ∈ A k N n) (hf' : f ∈ A k N (n • 1)) :
     (PN k N).basicOpen (Proj.awayToSection (A k N) (MvPolynomial.X i) (Away.mk _ (X_mem k N i) n f hf')) ≤
@@ -101,6 +135,17 @@ theorem basicOpen_le (i : Fin (N + 1)) {n : ℕ} (hn : 0 < n) (f : MvPolynomial 
     Iso.hom_inv_id_assoc] at h2
   exact h2
 
+/- English proof (translation)
+Introduce `k _ X _ p N ι hp i h hE n hn f hf`. Establish `hf' : f ∈ A k N (n • 1)` using `by simpa using hf`. Establish `hfv : away ι (MvPolynomial.X i) (X_mem k N i) h n f hf' = eval₂ (kHom p) (coordAt ι i h) f` using `hE n f hf'`. Use `⟨⟨fun hfη => ?_, fun hne => ?_⟩, fun m g hg hfη => ?_⟩` and prove the remaining obligations. Establish `hx : (MvPolynomial.X i : MvPolynomial (Fin (N + 1)) k) ^ n ∈ A k N (1 • n)`.
+
+Simplify using `using SetLike.pow_mem_graded n (X_mem k N i)`. Establish `hx' : (MvPolynomial.X i : MvPolynomial (Fin (N + 1)) k) ^ n ∈ A k N ((1 * n) • 1)`. Simplify using `using SetLike.pow_mem_graded n (X_mem k N i)`. Establish `h1 : away ι (MvPolynomial.X i) (X_mem k N i) h (1 * n) _ hx' = 1`. Rewrite using `[away_eq, away_self_pow' _ _ (one_mul n), map_one, map_one]`.
+
+Use `key ι i h f hf hfη 1 _ hx hf' hx'` as an intermediate fact. Rewrite `this` using `[h1, hfv]`. Introduce `h0`. Rewrite `this` using `[h0]`. Simplify using `at this`.
+
+Establish `hu : IsUnit (X.presheaf.germ _ (genericPoint X) h (ι.app _ (Proj.awayToSection _ (MvPolynomial.X i) (Away.mk _ (X_mem k N i) n f hf'))))`. Rewrite `hne` using `[← hfv]`. Conclude with `isUnit_iff_ne_zero.mpr hne`. Rewrite `hu` using `[← Scheme.mem_basicOpen, ← Scheme.preimage_basicOpen]`. Conclude with `basicOpen_le i hn f hf hf' hu`.
+
+Establish `hg' : g ∈ A k N ((m * n) • 1)` using `by simpa using hg`. Use `key ι i h f hf hfη m g hg hf' hg'` as an intermediate fact. Rewrite `this` using `[hfv, hE (m * n) g hg']`. Conclude with `this`.
+-/
 theorem GenOfAway_of : GenOfAway := by
   intro k _ X _ p N ι hp i h hE n hn f hf
   have hf' : f ∈ A k N (n • 1) := by simpa using hf

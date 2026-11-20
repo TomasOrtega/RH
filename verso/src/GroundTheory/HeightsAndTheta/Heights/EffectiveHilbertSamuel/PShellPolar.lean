@@ -8,11 +8,19 @@ open MeasureTheory Set
 
 noncomputable section
 
+/- English proof (translation)
+Rewrite using `[← Module.finrank_mul_finrank ℝ ℂ (EuclideanSpace ℂ (Fin D)), Complex.finrank_real_complex, finrank_euclideanSpace_fin]`.
+-/
 theorem finrank_real_euclideanSpace_complex (D : ℕ) :
     Module.finrank ℝ (EuclideanSpace ℂ (Fin D)) = 2 * D := by
   rw [← Module.finrank_mul_finrank ℝ ℂ (EuclideanSpace ℂ (Fin D)), Complex.finrank_real_complex,
     finrank_euclideanSpace_fin]
 
+/- English proof (translation)
+Establish `h` using `Complex.volume_sum_rpow_lt_one (ι := Fin D) (p := 2) one_le_two`. Simplify using `only [Real.rpow_two] at h`. Rewrite using `[h]`. Use `congr 1`. Establish `h2 : (2 : ℝ) / 2 + 1 = 2` using `by norm_num`.
+
+Establish `h3 : 2 * (Fintype.card (Fin D) : ℝ) / 2 + 1 = (D : ℝ) + 1`. Rewrite using `[Fintype.card_fin]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h2, h3, Real.Gamma_two, Real.Gamma_nat_eq_factorial, mul_one, Fintype.card_fin]`.
+-/
 theorem volume_sum_normSq_lt_one (D : ℕ) :
     volume {w : Fin D → ℂ | ∑ i, ‖w i‖ ^ 2 < 1} =
       ENNReal.ofReal (Real.pi ^ D / (D.factorial : ℝ)) := by
@@ -25,6 +33,33 @@ theorem volume_sum_normSq_lt_one (D : ℕ) :
     rw [Fintype.card_fin]; ring
   rw [h2, h3, Real.Gamma_two, Real.Gamma_nat_eq_factorial, mul_one, Fintype.card_fin]
 
+/- English proof (translation)
+Introduce `D hD a b ha hab`. Establish `hb : 0 < b` using `lt_of_lt_of_le ha hab`. Establish `hdim` using `finrank_real_euclideanSpace_complex D`. Establish `: Nontrivial (EuclideanSpace ℂ (Fin D))` using `Module.nontrivial_of_finrank_pos (R := ℝ) (by rw [hdim]; omega)`. Use `set L : (Fin D → ℂ) ≃L[ℝ] EuclideanSpace ℂ (Fin D) := (PiLp.continuousLinearEquiv 2 ℝ (fun _ : Fin D => ℂ)).symm with hL`.
+
+Use `set e : (Fin D → ℂ) ≃ᵐ EuclideanSpace ℂ (Fin D) := L.toHomeomorph.toMeasurableEquiv with he`. Use `set μ : Measure (EuclideanSpace ℂ (Fin D)) := Measure.map e volume with hμ`. Establish `: μ.IsAddHaarMeasure` using `L.isAddHaarMeasure_map volume`. Establish `hnorm : ∀ w : Fin D → ℂ, ‖e w‖ ^ 2 = ∑ i, ‖w i‖ ^ 2`. Introduce `w`.
+
+Rewrite using `[EuclideanSpace.norm_sq_eq]`. Both sides reduce to the same expression. Use `set f : ℝ → ℝ := fun r => if a ≤ r ^ 2 ∧ r ^ 2 ≤ b then ((r ^ 2) ^ D)⁻¹ else 0 with hf`. Establish `hS : MeasurableSet {w : Fin D → ℂ | a ≤ ∑ i, ‖w i‖ ^ 2 ∧ ∑ i, ‖w i‖ ^ 2 ≤ b}`. Establish `hc : Continuous fun w : Fin D → ℂ => ∑ i, ‖w i‖ ^ 2` using `by fun_prop`.
+
+Conclude with `(isClosed_le continuous_const hc).measurableSet.inter (isClosed_le hc continuous_const).measurableSet`. Rewrite using `[← lintegral_indicator hS]`. Establish `hpt : ∀ w : Fin D → ℂ, {w : Fin D → ℂ | a ≤ ∑ i, ‖w i‖ ^ 2 ∧ ∑ i, ‖w i‖ ^ 2 ≤ b}.indicator (fun w => ENNReal.ofReal (((∑ i, ‖w i‖ ^ 2) ^ D)⁻¹)) w = ENNReal.ofReal (f ‖e w‖)`. Introduce `w`. Simplify using `only [hf, hnorm, indicator, mem_ofPred_eq]`.
+
+Apply the tactic sequence `split_ifs <;> simp`. Repeatedly rewrite using `[hpt]`. Establish `hrad : EqOn (fun y : ℝ => y ^ (Module.finrank ℝ (EuclideanSpace ℂ (Fin D)) - 1) • f y) ((Icc (Real.sqrt a) (Real.sqrt b)).indicator fun y => y⁻¹) (Ioi 0)`. Introduce `y hy`. Establish `hy : 0 < y` using `hy`.
+
+Establish `hmem : y ∈ Icc (Real.sqrt a) (Real.sqrt b) ↔ a ≤ y ^ 2 ∧ y ^ 2 ≤ b`. Rewrite using `[mem_Icc, Real.sqrt_le_left hy.le, Real.le_sqrt' hy]`. Simplify using `only [hf, indicator, hmem, smul_eq_mul, hdim]`. Use `split_ifs`. Establish `hk : 2 * D - 1 + 1 = 2 * D` using `by omega`.
+
+Establish `hp : (y ^ 2) ^ D = y ^ (2 * D - 1) * y`. Rewrite using `[← pow_mul, ← pow_succ, hk]`. Rewrite using `[hp]`. Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules.
+
+Establish `hcont : IntegrableOn (fun y : ℝ => y⁻¹) (Icc (Real.sqrt a) (Real.sqrt b))`. Use `ContinuousOn.integrableOn_Icc (continuousOn_id.inv₀ fun y hy => ?_)` and prove the remaining obligations. Conclude with `(lt_of_lt_of_le (Real.sqrt_pos.2 ha) hy.1).ne'`. Establish `hIoi : IntegrableOn (fun y : ℝ => y ^ (Module.finrank ℝ (EuclideanSpace ℂ (Fin D)) - 1) • f y) (Ioi 0)` using `(integrableOn_congr_fun hrad measurableSet_Ioi).2 ((integrable_indicator_iff measurableSet_Icc).2 hcont).integrableOn`. Establish `hint_μ : Integrable (fun x : EuclideanSpace ℂ (Fin D) => f ‖x‖) μ` using `(integrable_fun_norm_addHaar μ).2 hIoi`.
+
+Establish `hint : Integrable (fun w : Fin D → ℂ => f ‖e w‖) volume` using `(integrable_map_equiv e (fun x => f ‖x‖)).1 hint_μ`. Establish `hnn : 0 ≤ᵐ[volume] fun w : Fin D → ℂ => f ‖e w‖`. Use `Filter.Eventually.of_forall fun w => ?_` and prove the remaining obligations. Simplify using `only [hf, Pi.zero_apply]`. Apply the tactic sequence `split_ifs <;> positivity`.
+
+Rewrite using `[← ofReal_integral_eq_lintegral_ofReal hint hnn]`. Use `congr 1`. Establish `h1 : ∫ w, f ‖e w‖ = ∫ x, f ‖x‖ ∂μ` using `(integral_map_equiv e (fun x => f ‖x‖)).symm`. Establish `h2 : ∫ y in Ioi (0 : ℝ), y ^ (Module.finrank ℝ (EuclideanSpace ℂ (Fin D)) - 1) • f y = Real.log (b / a) / 2`. Rewrite using `[setIntegral_congr_fun measurableSet_Ioi hrad, setIntegral_indicator measurableSet_Icc, inter_eq_right.2 (show Icc (Real.sqrt a) (Real.sqrt b) ⊆ Ioi 0 from fun y hy => lt_of_lt_of_le (Real.sqrt_pos.2 ha) hy.1), integral_Icc_eq_integral_Ioc, ← intervalIntegral.integral_of_le (Real …`.
+
+Establish `h3 : μ.real (Metric.ball 0 1) = Real.pi ^ D / (D.factorial : ℝ)`. Rewrite using `[Measure.real, hμ, Measure.map_apply e.measurable Metric.isOpen_ball.measurableSet]`. Establish `hpre : e ⁻¹' Metric.ball 0 1 = {w : Fin D → ℂ | ∑ i, ‖w i‖ ^ 2 < 1}`. Use extensionality with `w`. Simplify using `only [mem_preimage, mem_ball_zero_iff, mem_ofPred_eq]`.
+
+Rewrite using `[← hnorm w, sq_lt_one_iff₀ (norm_nonneg _)]`. Rewrite using `[hpre, volume_sum_normSq_lt_one, ENNReal.toReal_ofReal (by positivity)]`. Rewrite using `[h1, integral_fun_norm_addHaar μ, h2, h3, hdim, nsmul_eq_mul, smul_eq_mul]`. Establish `hfac : (D.factorial : ℝ) = D * ((D - 1).factorial : ℝ)`. Rewrite using `[← Nat.mul_factorial_pred (by omega : D ≠ 0)]; push_cast; ring`.
+
+Establish `hD0 : (D : ℝ) ≠ 0` using `by exact_mod_cast (by omega : D ≠ 0)`. Rewrite using `[hfac]`. Clear the denominators using the available nonvanishing facts. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem ShellPolar.proof : ShellPolar.Statement := by
   intro D hD a b ha hab
   have hb : 0 < b := lt_of_lt_of_le ha hab

@@ -26,23 +26,35 @@ namespace GlobalTheory.CommVac
 
 variable {D : D7}
 
+/- English proof (translation)
+Unfold `symplO hO`. Simplify using `only [Matrix.add_apply, map_add, mul_add, add_mul, Finset.sum_add_distrib]`.
+-/
 theorem symplO_add_right (S T : HSp D) (x y y' : WO S T) :
     symplO S T x (y + y') = symplO S T x y + symplO S T x y' := by
   unfold symplO hO
   simp only [Matrix.add_apply, map_add, mul_add, add_mul, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Unfold `hO`. Simplify using `only [Matrix.smul_apply, smul_eq_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`.
+-/
 theorem hO_smul_left (S T : HSp D) (a : AE D) (x y : WO S T) : hO S T (a • x) y = a * hO S T x y := by
   unfold hO
   simp only [Matrix.smul_apply, smul_eq_mul, Finset.mul_sum]
   exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ =>
     Finset.sum_congr rfl fun _ _ => by ring
 
+/- English proof (translation)
+Unfold `hO`. Simplify using `only [Matrix.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`.
+-/
 theorem hO_smul_right (S T : HSp D) (a : AE D) (x y : WO S T) : hO S T x (a • y) = cA D a * hO S T x y := by
   unfold hO
   simp only [Matrix.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]
   exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ =>
     Finset.sum_congr rfl fun _ _ => by ring
 
+/- English proof (translation)
+Unfold `symplO`. Rewrite using `[hO_smul_left, hO_smul_right, ha]`.
+-/
 theorem symplO_smul_comm (S T : HSp D) {a : AE D} (ha : cA D a = a) (x y : WO S T) :
     symplO S T (a • x) y = symplO S T x (a • y) := by
   unfold symplO
@@ -50,6 +62,35 @@ theorem symplO_smul_comm (S T : HSp D) {a : AE D} (ha : cA D a = a) (x y : WO S 
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `D _ T L μ0 hL sc G W M _ i hi e he w hw hinf`. Take `⟨hsdS, hsdT⟩` from `GlobalTheory.CosetRow.selfDual_chi hL G i hi`. Take `⟨h1, -, h3⟩` from `GlobalTheory.T.self_dual_lattice_pairing_dual D W.ψ _ _ (G.latS (.chi i 0)) (G.latT (.chi i 0)) W.ψ_std hsdS hsdT`. Establish `hlat` using `(W.vac_is i hi).2.lat`. Establish `hee : e * e = e` using `GlobalTheory.PlaceDatum.idemSum_mul_self he`.
+
+Establish `hec : e * cA D e = 0` using `he.2`. Establish `hce : cA D e * cA D e = cA D e` using `by rw [← map_mul, hee]`. Establish `hff : (1 - e - cA D e) * (1 - e - cA D e) = 1 - e - cA D e`. Take the linear combination `hee + hce + 2 * hec`. Establish `hfc : cA D (1 - e - cA D e) = 1 - e - cA D e`.
+
+Rewrite using `[map_sub, map_sub, map_one, Formalism.L2.Theta.cA_cA]`. Expand and normalize the polynomial expressions, which then agree. Establish `hfint : finPart D (1 - e - cA D e) ∈ intAE D` using `GlobalTheory.AdIdem.idempotent_mem_intAE D _ (by rw [← map_mul, hff])`. Establish `hef : ∀ e', IsIdemSum e' G.pl.W0 → e' * (1 - e - cA D e) = 0` using `fun e' he' => by`. Rewrite using `[GlobalTheory.StepVecSum.idemSum_eq (G.V (.grid 0 0)) he he']`.
+
+Take the linear combination `-hee - hec`. Establish `hdep : ∀ u ∈ latO (G.pS (.chi i 0)) (G.pT (.chi i 0)) (G.latS (.chi i 0) : Set _) (G.latT (.chi i 0) : Set _) (fun _ => True), (1 - e - cA D e) • u ∈ depLat G (.chi i 0)` using `fun u hu => ⟨GlobalTheory.LatticeStable.smul_mem_latO D _ _ _ _ _ _ hfint u hu, fun e' he' => by`. Rewrite using `[smul_smul, hef e' he', zero_smul]`. Conclude with `AddSubgroup.zero_mem _⟩`. Establish `key : ∀ u ∈ latO (G.pS (.chi i 0)) (G.pT (.chi i 0)) (G.latS (.chi i 0) : Set _) (G.latT (.chi i 0) : Set _) (fun _ => True), W.ψ (symplO _ _ w ((1 - e - cA D e) • u)) = 1`.
+
+Introduce `u hu`. Take `⟨v, hvdef⟩ : ∃ v, v = (1 - e - cA D e) • u` from `⟨_, rfl⟩`. Rewrite using `[← hvdef]`. Establish `hv : v ∈ latO (G.pS (.chi i 0)) (G.pT (.chi i 0)) (G.latS (.chi i 0) : Set _) (G.latT (.chi i 0) : Set _) (fun _ => True)` using `hvdef ▸ GlobalTheory.LatticeStable.smul_mem_latO D _ _ _ _ _ _ hfint u hu`. Establish `hpiece : ∀ c : AE D, finPart D c ∈ intAE D → c • v ∈ depLat G (.chi i 0)` using `fun c hc => by`.
+
+Rewrite using `[hvdef, smul_smul, mul_comm, ← smul_smul]`. Conclude with `hdep _ (GlobalTheory.LatticeStable.smul_mem_latO D _ _ _ _ _ c hc u hu)`. Establish `hadd : ∀ a b : AE D, W.ψ (symplO _ _ w (a • v)) = 1 → W.ψ (symplO _ _ w (b • v)) = 1 → W.ψ (symplO _ _ w ((a + b) • v)) = 1` using `fun a b ha hb => by`. Rewrite using `[add_smul, symplO_add_right, AddChar.map_add_eq_mul, ha, hb, one_mul]`. Establish `hsplit : ∀ e₁, IsSplitIdem D e₁ → W.ψ (symplO _ _ w (e₁ • v)) = 1` using `fun e₁ h₁ => hw.2 e₁ h₁ _ (hpiece _ (GlobalTheory.SplitHomLattice.idem_int h₁)) (fun a b => by rw [Matrix.smul_apply, smul_eq_mul, ← mul_assoc, h₁.1])`.
+
+Establish `hQ` using `GlobalTheory.FinPl.FlatFix.finite_two (D := D) (fun _ => True)`. Establish `hmemQ : ∀ x, x ∈ hQ.toFinset ↔ True ∧ (2 : 𝓞 D.host.F) ∈ x.asIdeal` using `fun x => hQ.mem_toFinset`. Establish `hch : ∀ x, x ∈ hQ.toFinset → ∃ e₁ ε, IsSplitIdem D e₁ ∧ IsPlaceIdem D x ε ∧ e₁ + cA D e₁ = algebraMap (AF D.host.F) (AE D) ε`. Introduce `x hx`. Break down `(GlobalTheory.T.isTameFinitePlaceHermitian_all D x).2 with h | h` into its components or cases.
+
+Conclude with `absurd ((hmemQ x).1 hx).2 h`. Conclude with `h`. Use `choose! es εs hes hεs hsum using hch`. Establish `hdec` using `GlobalTheory.FinPl.FlatFix.indicatorIdempotent_eq_add_sum (fun _ => True) hQ.toFinset hmemQ εs hεs`. Establish `hvc : algebraMap (AF D.host.F) (AE D) (GlobalTheory.SelfDualAt.cP (fun _ => True)) • v = v`.
+
+Use extensionality with `a b`. Rewrite using `[Matrix.smul_apply, smul_eq_mul]`. Conclude with `GlobalTheory.SelfDualAt.algebraMap_placeIdempotent_mul _ _ (GlobalTheory.FinPl.LatMem.latO_mxAt hv a b)`. Rewrite using `[← hvc, hdec, map_add, map_sum]`. Use `hadd _ _ ?_ ?_` and prove the remaining obligations.
+
+Establish `hβ` using `GlobalTheory.FinPl.FlatFix.int_alg_pair (D := D) (GlobalTheory.FinPl.FlatFix.halfOff_int (D := D) fun _ => True)`. Establish `e2 : algebraMap (AF D.host.F) (AE D) (pairA D.host.F 0 (GlobalTheory.FinPl.FlatFix.halfOff (fun _ => True) + GlobalTheory.FinPl.FlatFix.halfOff (D` using `D) (fun _ => True))) • v = 2 • (algebraMap (AF D.host.F) (AE D) (pairA D.host.F 0 (GlobalTheory.FinPl.FlatFix.halfOff (D := D) (fun _ => True))) • v) := by`. Rewrite using `[GlobalTheory.FinPl.FlatFix.pair_add, map_add, add_smul, two_nsmul]`. Rewrite using `[e2]`. Conclude with `hw.1 _ (hpiece _ hβ)`.
+
+Use `Finset.sum_induction _ (fun c => W.ψ (symplO _ _ w (c • v)) = 1) hadd ?_ ?_` and prove the remaining obligations. Establish `h0` using `symplO_add_right (G.pS (.chi i 0)) (G.pT (.chi i 0)) w 0 0`. Rewrite `h0` using `[add_zero]`. Establish `h0' : symplO (G.pS (.chi i 0)) (G.pT (.chi i 0)) w 0 = 0` using `by linear_combination -h0`. Use `show W.ψ (symplO _ _ w ((0 : AE D) • v)) = 1`.
+
+Rewrite using `[zero_smul, h0', AddChar.map_zero_eq_one]`. Introduce `x hx`. Rewrite using `[← hsum x hx]`. Conclude with `hadd _ _ (hsplit _ (hes x hx)) (hsplit _ (GlobalTheory.IdemSumVac.isSplitIdem_cA (hes x hx)))`. Establish `hfin' : ((1 - e - cA D e) • w).map (infPart D) = 0`.
+
+Use extensionality with `a b`. Use `congrFun (congrFun hinf a) b` as an intermediate fact. Simplify using `only [Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, map_mul, Matrix.zero_apply] at this ⊢`. Rewrite using `[this, mul_zero]`. Establish `hmem : (1 - e - cA D e) • w ∈ latO (G.pS (.chi i 0)) (G.pT (.chi i 0)) (G.latS (.chi i 0) : Set _) (G.latT (.chi i 0) : Set _) (fun _ => True)` using `(h1 _ hfin').2 fun u' hu' => by rw [symplO_smul_comm _ _ hfc]; exact key u' hu'`.
+
+Take `⟨ε, -, hε⟩` from `h3 _ hlat _ hmem`. Conclude with `⟨ε, hε _ hlat⟩`.
+-/
 theorem heisO_offPart_vac : All fun {D} _ _ _ {G} W _ => ∀ i, i < D.R.m → ∀ e : AE D, IsIdemSum e G.pl.W0 →
     ∀ w ∈ Ann W.ψ (G.pS (.chi i 0)) (G.pT (.chi i 0)) (depLat G (.chi i 0)), w.map (infPart D) = 0 →
     ∃ c : ℂ, heisO W.ψ (G.pS (.chi i 0)) (G.pT (.chi i 0)) ((1 - e - cA D e) • w) (W.vac i) = c • W.vac i := by

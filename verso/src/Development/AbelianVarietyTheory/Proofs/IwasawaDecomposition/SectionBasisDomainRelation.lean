@@ -14,6 +14,17 @@ namespace GlobalTheory.TorRef
 
 open GlobalTheory.FramePull in
 
+/- English proof (translation)
+Take `⟨σ, hσ⟩` from `GlobalTheory.Recombine.exists_lin hL h b c`. Take `⟨τ, hτ⟩` from `GlobalTheory.Recombine.exists_lin hL (𝟙 T) (fun _ : Fin 1 => s) (fun _ => a)`. Establish `: Flat (fst T G).left` using `inferInstanceAs (Flat (pullback.fst T.hom G.hom))`. Establish `: IsSchemeTheoreticallyDominant (u ▷ G).left` using `IsSchemeTheoreticallyDominant.of_isPullback (whisker_isPullback u).flip`. Establish `: QuasiCompact (u ▷ G).left` using `MorphismProperty.of_isPullback (whisker_isPullback u).flip inferInstance`.
+
+Establish `hg : ∀ (y : (T' ⊗ G).left) (x : Γ(T.left, ⊤)), gs ((u ▷ G).left ≫ (fst T G).left) y ⊤ x = gs (fst T' G).left y ⊤ (u.left.appTop.hom x)` using `fun y x => by`. Rewrite using `[← Over.comp_left, whiskerRight_fst, Over.comp_left]`. Conclude with `(gs_pull _ u.left y ⊤ trivial _).symm`. Establish `e : τ = σ` using `sec_ext_of_inj (φ := fun _ : Fin 1 => (snd T G).left) (ε := fun _ => (N : ℤ)) hL (u ▷ G).left (u ▷ G).left.app_injective fun y J hJ => by`. Establish `a₁` using `(lin_iff _ _ _ _).1 hτ _ (u ▷ G).left y J hJ`.
+
+Establish `a₂` using `(lin_iff _ _ _ _).1 hσ _ (u ▷ G).left y J hJ`. Establish `a₃` using `H y J hJ`. Establish `a₄` using `hs _ (𝟙 _) y J hJ`. Rewrite `a₄` using `[Category.id_comp]`. Rewrite `a₁` using `[Fin.sum_univ_one, id_whiskerRight, Over.id_left, Category.comp_id, hg, ← a₄]`.
+
+Use `a₁.trans (a₃.trans (Eq.trans ?_ a₂.symm))` and prove the remaining obligations. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hg, comp_whiskerRight, Over.comp_left]`. Substitute `e` using the available equality. Introduce `z J hJ`.
+
+Establish `a₁` using `hτ z J hJ`. Rewrite `a₁` using `[Fin.sum_univ_one, id_whiskerRight, Over.id_left]`. Conclude with `a₁.symm.trans (hσ z J hJ)`.
+-/
 theorem linA_of_dominant {S : Scheme.{0}} {G : Over S} [Flat G.hom] {L : LB G.left} (hL : L.IsLB) {N : ℕ}
     {T T' B : Over S} (u : T' ⟶ T) [IsSchemeTheoreticallyDominant u.left] [QuasiCompact u.left] (h : T ⟶ B) {n : ℕ}
     (b : Fin n → LB.Sec (LPow G L (N : ℤ) B)) (c : Fin n → Γ(T.left, ⊤)) (a : Γ(T.left, ⊤))
@@ -47,6 +58,11 @@ theorem linA_of_dominant {S : Scheme.{0}} {G : Over S} [Flat G.hom] {L : LB G.le
   rw [Fin.sum_univ_one, id_whiskerRight, Over.id_left] at a₁
   exact a₁.symm.trans (hσ z J hJ)
 
+/- English proof (translation)
+Introduce `E _ _ _ H R _ t N n b W _ _ φ c a s s' h₁ h₂`. Use `t.semi.smooth` as an intermediate fact. Establish `: IsDominant (jK W)` using `DVR.isDominant_jK`. Establish `: IsSchemeTheoreticallyDominant (jC φ (algebraMap W (FractionRing W))).left` using `IsSchemeTheoreticallyDominant.of_isDominant (jK W)`. Establish `: QuasiCompact (jC φ (algebraMap W (FractionRing W))).left` using `inferInstanceAs (QuasiCompact (jK W))`.
+
+Establish `e : ∀ x : W, (jC φ (algebraMap W (FractionRing W))).left.appTop.hom (GlobalTheory.OneBasis.fnR x) = GlobalTheory.OneBasis.fnR (algebraMap W (FractionRing W) x)` using `fun x => GlobalTheory.OneBasis.Calc.appTop_fnR _ x`. Use `linA_of_dominant t.PP.isLB (jC φ (algebraMap W (FractionRing W))) (toBase φ) b _ _ s s' (GlobalTheory.FramePull.isPull_of_lin h₁) ?_` and prove the remaining obligations. Rewrite using `[jC_toBase]`. Simplify using `only [e]`. Conclude with `h₂`.
+-/
 theorem linA_of_fractionRing : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (R : Type) [CommRing R]
     (t : SAB H (Sp R)) (N n : ℕ) (b : Fin n → LB.Sec (LPow t.G t.PP.L (N : ℤ) (Over.mk (𝟙 (Sp R)))))
     (W : Type) [CommRing W] [IsDomain W] (φ : R →+* W) (c : Fin n → W) (a : W)

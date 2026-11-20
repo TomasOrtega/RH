@@ -11,11 +11,29 @@ open PositivityTheory.Rg.Tf.Core PositivityTheory.Rg.Tf.Adel PositivityTheory.Rg
 open scoped ENNReal NumberField.AdeleRing InnerProductSpace ComplexConjugate
 open UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial
 
+/- English proof (translation)
+Rewrite using `[norm_mul, sq]`. Conclude with `mul_le_mul (norm_apply_le_locHeight g i j) (norm_apply_le_locHeight g p q) (norm_nonneg _) (locHeight_pos g).le`.
+-/
 private theorem hpq_loc {E : Type*} [NormedField E] {n : ℕ} (g : GL (Fin n) E) (i j p q : Fin n) :
     ‖(g : Matrix (Fin n) (Fin n) E) i j * (g : Matrix (Fin n) (Fin n) E) p q‖ ≤ locHeight g ^ 2 := by
   rw [norm_mul, sq]
   exact mul_le_mul (norm_apply_le_locHeight g i j) (norm_apply_le_locHeight g p q) (norm_nonneg _) (locHeight_pos g).le
 
+/- English proof (translation)
+Rewrite `hy` using `[Matrix.det_fin_two]`. Simplify using `only [Matrix.submatrix_apply] at hy`. Establish `hi : ∀ w : InfinitePlace K, ‖(y : 𝔸[K]).1 w‖ ≤ 2 * locHeight (infAt w h) ^ 2`. Introduce `w`. Establish `e : (y : 𝔸[K]).1 w = (infAt w h : Matrix (Fin n) (Fin n) w.Completion) (r 0) (c 0) * (infAt w h : Matrix (Fin n) (Fin n) w.Completion) (r 1) (c 1) - (infAt w h : Matrix (Fin n) (Fin n) w.Completion) (r 0) (c 1) * (infAt w h : Matrix (Fin n) (Fin n) w.Completion) (r 1) (c 0)`.
+
+Rewrite using `[hy]`. Both sides reduce to the same expression. Rewrite using `[e]`. Use `(norm_sub_le _ _).trans ?_` and prove the remaining obligations. Establish `h1` using `hpq_loc (infAt w h) (r 0) (c 0) (r 1) (c 1)`.
+
+Establish `h2` using `hpq_loc (infAt w h) (r 0) (c 1) (r 1) (c 0)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hf : ∀ v : IsDedekindDomain.HeightOneSpectrum (𝓞 K), ‖(y : 𝔸[K]).2 v‖ ≤ locHeight (finAt v h) ^ 2`. Introduce `v`. Establish `e : (y : 𝔸[K]).2 v = (finAt v h : Matrix (Fin n) (Fin n) (v.adicCompletion K)) (r 0) (c 0) * (finAt v h : Matrix (Fin n) (Fin n) (v.adicCompletion K)) (r 1) (c 1) + -((finAt v h : Matrix (Fin n) (Fin n) (v.adicCompletion K)) (r 0) (c 1) * (finAt v h : Matrix (Fin n) (Fin n) (v.ad …`.
+
+Rewrite using `[hy, sub_eq_add_neg]`. Both sides reduce to the same expression. Rewrite using `[e]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le (hpq_loc _ _ _ _ _) ?_)` and prove the remaining obligations. Rewrite using `[norm_neg]`.
+
+Conclude with `hpq_loc _ _ _ _ _`. Use `set s := (finite_mulSupport_locHeight_finAt h).union (GroundTheory.Global.IdeleGroup.finite_mulSupport_norm y)`. Establish `h1 : ∏ᶠ v : IsDedekindDomain.HeightOneSpectrum (𝓞 K), locHeight (finAt v h) = ∏ v ∈ s.toFinset, locHeight (finAt v h)` using `finprod_eq_prod_of_mulSupport_subset _ fun v hv => by`. Simplify using `only [Set.Finite.coe_toFinset, Set.mem_union]`. Conclude with `Or.inl hv`.
+
+Establish `h2 : ∏ᶠ v : IsDedekindDomain.HeightOneSpectrum (𝓞 K), ‖(y : 𝔸[K]).2 v‖ = ∏ v ∈ s.toFinset, ‖(y : 𝔸[K]).2 v‖` using `finprod_eq_prod_of_mulSupport_subset _ fun v hv => by`. Simplify using `only [Set.Finite.coe_toFinset, Set.mem_union]`. Conclude with `Or.inr hv`. Rewrite using `[GroundTheory.Global.IdeleGroup.ideleModule_eq, AutomorphicForm.height, h1, h2, mul_pow, ← mul_assoc, ← Finset.prod_pow, ← Finset.prod_pow, ← Finset.prod_mul_distrib]`. Use `mul_le_mul (Finset.prod_le_prod (fun w _ => by positivity) fun w _ => ?_) (Finset.prod_le_prod (fun v _ => norm_nonneg _) fun v _ => hf v) (Finset.prod_nonneg fun v _ => norm_nonneg _) (Finset.prod_nonneg fun w _ => by positivity)` and prove the remaining obligations.
+
+Rewrite using `[← pow_mul, mul_comm w.mult 2, pow_mul, ← mul_pow]`. Conclude with `pow_le_pow_left₀ (norm_nonneg _) (hi w) _`.
+-/
 private theorem hpq_minor {K : Type} [Field K] [NumberField K] {n : ℕ} (h : AdelicGLn.AdelicGL K n) (r c : Fin 2 → Fin n)
     (y : GroundTheory.Global.IdeleGroup K) (hy : (y : 𝔸[K]) = ((h : Matrix (Fin n) (Fin n) 𝔸[K]).submatrix r c).det) :
     (GroundTheory.Global.IdeleGroup.ideleModule K y : ℝ) ≤ (∏ w : InfinitePlace K, (2 : ℝ) ^ w.mult) * AutomorphicForm.height h ^ 2 := by
@@ -56,6 +74,11 @@ private theorem hpq_minor {K : Type} [Field K] [NumberField K] {n : ℕ} (h : Ad
   rw [← pow_mul, mul_comm w.mult 2, pow_mul, ← mul_pow]
   exact pow_le_pow_left₀ (norm_nonneg _) (hi w) _
 
+/- English proof (translation)
+Establish `h1 : ∀ (M : Matrix (Fin (2 + 2)) (Fin (2 + 2)) R) (i : Fin 2) j, (unipMatrix X * M) (Fin.natAdd 2 i) j = M (Fin.natAdd 2 i) j`. Introduce `M i j`. Apply the tactic sequence `have : (blockEntry X * M) (Fin.natAdd 2 i) j = 0 := by`. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun l _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[blockEntry_apply, dif_neg (by simp), zero_mul]`. Rewrite using `[unipMatrix, add_mul, one_mul, Matrix.add_apply, this, add_zero]`. Use extensionality with `i j`. Rewrite using `[Matrix.submatrix_apply, Units.val_mul, coe_unipGL, mul_assoc, h1, Matrix.mul_apply, Matrix.mul_apply, Fin.sum_univ_add]`. Simplify using `only [blk, Matrix.reindex_apply, Matrix.submatrix_apply, finSumFinEquiv_symm_apply_natAdd, finSumFinEquiv_symm_apply_castAdd, Matrix.fromBlocks_apply₂₁, Matrix.fromBlocks_apply₂₂, Matrix.zero_apply, zero_mul, Finset.sum_const_zero, zero_add]`.
+-/
 private theorem hpq_rows {R : Type} [CommRing R] (X : UPos (2 + 2) 2 → R) (a b : GL (Fin 2) R) (k : Matrix (Fin (2 + 2)) (Fin (2 + 2)) R)
     (c : Fin 2 → Fin (2 + 2)) :
     (((unipGL X * blk a b : GL (Fin (2 + 2)) R) : Matrix (Fin (2 + 2)) (Fin (2 + 2)) R) * k).submatrix (Fin.natAdd 2) c =
@@ -72,6 +95,25 @@ private theorem hpq_rows {R : Type} [CommRing R] (X : UPos (2 + 2) 2 → R) (a b
   simp only [blk, Matrix.reindex_apply, Matrix.submatrix_apply, finSumFinEquiv_symm_apply_natAdd, finSumFinEquiv_symm_apply_castAdd,
     Matrix.fromBlocks_apply₂₁, Matrix.fromBlocks_apply₂₂, Matrix.zero_apply, zero_mul, Finset.sum_const_zero, zero_add]
 
+/- English proof (translation)
+Introduce `K _ _`. Use `set D : ℝ := (∏ w : InfinitePlace K, (2 : ℝ) ^ w.mult) * heightConst K (2 + 2) ^ 2 with hD`. Establish `hc1` using `one_le_heightConst (K := K) (n := 2 + 2)`. Establish `hD0 : 0 < D` using `mul_pos (Finset.prod_pos fun w _ => by positivity) (by positivity)`. Use `⟨2, Real.log D, two_pos, fun g => ?_⟩` and prove the remaining obligations.
+
+Take `⟨X, m₁, m₂, t, k, hk, hg⟩` from `iwa g`. Establish `ht : HH g = t`. Rewrite using `[hg, (hpSpec (K := K)).1, ((hpSpec (K := K)).2.1 k hk).1, add_zero]`. Establish `key : ∀ γ : Gam K (2 + 2), Real.exp t ≤ D * AutomorphicForm.height (((γ : G1 K (2 + 2)) * g : G1 K (2 + 2)) : AdelicGLn.AdelicGL K (2 + 2)) ^ 2`. Introduce `γ`.
+
+Take `⟨δ, hδ⟩ : ∃ δ : GL (Fin (2 + 2)) K, AdelicGLn.diagonal K (2 + 2) δ = ((γ⁻¹ : Gam K (2 + 2)) : G1 K (2 + 2))` from `(γ⁻¹).2`. Use `set h : AdelicGLn.AdelicGL K (2 + 2) := (((γ : G1 K (2 + 2)) * g : G1 K (2 + 2)) : AdelicGLn.AdelicGL K (2 + 2)) with hh`. Use `set b : AdelicGLn.AdelicGL K 2 := (m₂ : AdelicGLn.AdelicGL K 2) * zt K (-t) with hb`. Establish `hb' : (detModule K 2 b : ℝ) = Real.exp (-t)`. Rewrite using `[hb, map_mul, mem_normOneGL_iff_detModule.1 m₂.2, one_mul, zt, detModule_centralSection two_pos]`.
+
+Establish `e1 : AdelicGLn.diagonal K (2 + 2) δ = unipGL X * blk ((m₁ : AdelicGLn.AdelicGL K 2) * zt K t) b * ((k : AdelicGLn.AdelicGL K (2 + 2)) * h⁻¹)`. Rewrite using `[← mul_assoc, hb, ← (blkLaws (K := K)).1, ← coe_unipOne, ← Subgroup.coe_mul, ← Subgroup.coe_mul, ← hg, hδ, hh]`. Simplify using the standard rewrite rules. Take `⟨c, -, hc⟩` from `(pluck δ δ).1`. Establish `e2 : algebraMap K 𝔸[K] ((δ : Matrix (Fin (2 + 2)) (Fin (2 + 2)) K).submatrix (Fin.natAdd 2) c).det = (b : Matrix (Fin 2) (Fin 2) 𝔸[K]).det * ((((k : AdelicGLn.AdelicGL K (2 + 2)) * h⁻¹ : AdelicGLn.AdelicGL K (2 + 2)) : Matrix (Fin (2 + 2)) (Fin (2 + 2)) 𝔸[K]).submatrix (Fin.natAd …`.
+
+Rewrite using `[← Matrix.det_mul, ← hpq_rows X ((m₁ : AdelicGLn.AdelicGL K 2) * zt K t) b, ← Units.val_mul, ← e1, RingHom.map_det]`. Both sides reduce to the same expression. Establish `h3` using `hpq_minor ((k : AdelicGLn.AdelicGL K (2 + 2)) * h⁻¹) (Fin.natAdd 2) c ((AdelicGLn.det K 2 b)⁻¹ * GroundTheory.Global.IdeleGroup.diagonal K (Units.mk0 _ hc)) (by`. Rewrite using `[Units.val_mul, GroundTheory.Global.IdeleGroup.coe_diagonal, Units.val_mk0, e2, ← AdelicGLn.coe_det, Units.inv_mul_cancel_left])`. Rewrite `h3` using `[map_mul, GroundTheory.Global.IdeleGroup.ideleModule_diagonal, mul_one, map_inv, Positive.coe_inv]`.
+
+Express the relevant statement in the definitionally equal form `(detModule K 2 b : ℝ)⁻¹ ≤ _ at h3`. Rewrite `h3` using `[hb', Real.exp_neg, inv_inv]`. Establish `h4` using `height_mul_le (k : AdelicGLn.AdelicGL K (2 + 2)) h⁻¹`. Rewrite `h4` using `[height_eq_one_of_mem_maxCompact (k := (k : AdelicGLn.AdelicGL K (2 + 2))) hk, mul_one, height_inv]`. Use `h3.trans ?_` and prove the remaining obligations.
+
+Rewrite using `[hD, mul_assoc, ← mul_pow]`. Conclude with `mul_le_mul_of_nonneg_left (pow_le_pow_left₀ (height_pos _).le h4 _) (Finset.prod_nonneg fun w _ => by positivity)`. Establish `hs : 0 < Real.sqrt (Real.exp t / D)` using `Real.sqrt_pos.2 (div_pos (Real.exp_pos t) hD0)`. Establish `hq : Real.sqrt (Real.exp t / D) ≤ qht g`. Use `le_ciInf fun γ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Real.sqrt_le_left (height_pos _).le, div_le_iff₀ hD0, mul_comm]`. Conclude with `key γ`. Establish `h5` using `Real.log_le_log hs hq`. Rewrite `h5` using `[Real.log_sqrt (div_pos (Real.exp_pos t) hD0).le, Real.log_div (Real.exp_pos t).ne' hD0.ne', Real.log_exp]`. Rewrite using `[ht]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.hpQht :
     ∀ {K : Type} [Field K] [NumberField K], ∃ c C : ℝ, 0 < c ∧ ∀ g : G1 K (2 + 2), HH g ≤ c * Real.log (qht g) + C := by
   intro K _ _

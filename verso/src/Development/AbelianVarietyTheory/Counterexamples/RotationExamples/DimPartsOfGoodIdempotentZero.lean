@@ -43,6 +43,9 @@ def DimAtWith {Pg : Finset (Pl D.host.E)} (e : G0 Pg D.R.r →₀ ℂ) (P : Leve
       (Lev.levChi (D.sp.W j) β₁ (datWj D j h1 h2 Pg P)) (eLin (D.sp.W j) β₁ (datWj D j h1 h2 Pg P) e) S c
     FiniteDimensional ℂ A ∧ FiniteDimensional ℂ B ∧ Module.finrank ℂ B = Module.finrank ℂ A
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem dimPartsAt_iff {Pg : Finset (Pl D.host.E)} (h : IsRecPlaces D Pg) (P : LevelP Pg D.R.r ℂ) :
     DimPartsAt h P ↔ DimAtWith (eCoef h) P := Iff.rfl
 
@@ -84,15 +87,29 @@ def recMatching {Pg : Finset (Pl D.host.E)} (h : IsRecPlaces D Pg) : Matching D 
       rw [← hab]
       exact Ideal.add_mem _ (Ideal.mul_mem_left _ _ h3) (Ideal.mul_mem_left _ _ h2)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem recMatching_eCoef {Pg : Finset (Pl D.host.E)} (h : IsRecPlaces D Pg) : (recMatching h).eCoef = eCoef h := rfl
 
+/- English proof (translation)
+Introduce `D h1 h2 Pg h ψ hψ` and use `(dimPartsAt_iff h _).2 (recMatching_eCoef h ▸ H D h1 h2 Pg (recMatching h) ψ hψ)`.
+-/
 theorem dimParts_of_anyMatching (H : DimPartsAnyMatching) : DimParts := fun D h1 h2 Pg h ψ hψ =>
   (dimPartsAt_iff h _).2 (recMatching_eCoef h ▸ H D h1 h2 Pg (recMatching h) ψ hψ)
 
+/- English proof (translation)
+Use extensionality with `F x`. Simplify using `[eLin, Lev.eAct]`.
+-/
 theorem eLin_zero (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (L : LevDat D.host.E ℂ V.rank) : eLin V β L 0 = 0 := by
   ext F x
   simp [eLin, Lev.eAct]
 
+/- English proof (translation)
+Rewrite using `[eq_bot_iff]`. Introduce `T hT`. Establish `h` using `hT.2`. Establish `h0 : Mult.postOn M (0 : (GA D V → ℂ) →ₗ[ℂ] (GA D V → ℂ)) T = 0`. Use extensionality with `v`.
+
+Simplify using `[Mult.postOn]`. Simplify using `only [SetLike.mem_coe, LinearMap.mem_ker, LinearMap.sub_apply, h0, LinearMap.id_apply, zero_sub, neg_eq_zero] at h`. Simplify using `using h`.
+-/
 theorem goodPart_zero {V : HSp D} {S : D.what₂.Tau → SPar} (θ : InfFam D) (M : Mult.DSModel V S) (J : Set (GA D V))
     (χ : GA D V → ℂ) : Mult.goodPart θ M J χ 0 = ⊥ := by
   rw [eq_bot_iff]
@@ -103,6 +120,13 @@ theorem goodPart_zero {V : HSp D} {S : D.what₂.Tau → SPar} (θ : InfFam D) (
   simp only [SetLike.mem_coe, LinearMap.mem_ker, LinearMap.sub_apply, h0, LinearMap.id_apply, zero_sub, neg_eq_zero] at h
   simpa using h
 
+/- English proof (translation)
+Introduce `θ _ j h1 h2 M₀ M₁ β₀ β₁ _ _ S _ _ c A B`. Establish `hA : A = ⊥`. Simplify using `only [A, Mult.EEpart, Mult.EErec, Mult.EE]`. Use `erw [eLin_zero, goodPart_zero]`. Simplify using the standard rewrite rules.
+
+Establish `hB : B = ⊥`. Simplify using `only [B, Mult.Wpart, Mult.WgoodRec, Mult.Wgood]`. Use `erw [eLin_zero, goodPart_zero]`. Simplify using the standard rewrite rules. Rewrite using `[hA, hB]`.
+
+Conclude with `⟨inferInstance, inferInstance, by simp⟩`.
+-/
 theorem dimAtWith_zero {Pg : Finset (Pl D.host.E)} (P : LevelP Pg D.R.r ℂ) : DimAtWith 0 P := by
   intro θ _ j h1 h2 M₀ M₁ β₀ β₁ _ _ S _ _ c A B
   have hA : A = ⊥ := by
@@ -114,12 +138,32 @@ theorem dimAtWith_zero {Pg : Finset (Pl D.host.E)} (P : LevelP Pg D.R.r ℂ) : D
   rw [hA, hB]
   exact ⟨inferInstance, inferInstance, by simp⟩
 
+/- English proof (translation)
+Introduce `Pg h ψ _`. Establish `: eCoef h = 0` using `by simp [eCoef, h0]`. Rewrite using `[dimPartsAt_iff, this]`. Conclude with `dimAtWith_zero _`.
+-/
 theorem dimParts_of_good_idempotent_zero (h0 : D.ntypes.e0 = 0) : DimensionDecompositionAtBasePrime D := by
   intro Pg h ψ _
   have : eCoef h = 0 := by simp [eCoef, h0]
   rw [dimPartsAt_iff, this]
   exact dimAtWith_zero _
 
+/- English proof (translation)
+Introduce `τ n hn`. Establish `hk` using `D.R.m_add_three_le_k`. Establish `hm` using `D.R.two_le_m`. Establish `hg : (D.R.r : ℝ) ≤ Formalism.BasicNotions.LevelStarExponents.gapS D Pm.Cgap`. Unfold `Formalism.BasicNotions.LevelStarExponents.gapS`.
+
+Establish `h1 : D.R.r ≤ D.R.N D.R.m * D.R.m ^ 10`. Establish `a : D.R.r ≤ D.R.N D.R.m`. Unfold `Ranks.r Ranks.N`. Establish `: D.R.m ≤ D.R.m * (D.R.t + 1)` using `Nat.le_mul_of_pos_right _ (by omega)`. Use linear arithmetic over natural numbers and integers.
+
+Conclude with `a.trans (Nat.le_mul_of_pos_right _ (by positivity))`. Establish `h2 : (D.R.r : ℝ) ≤ (D.R.N D.R.m : ℝ) * (D.R.m : ℝ) ^ 10` using `by exact_mod_cast h1`. Establish `h3 : 0 ≤ Pm.Cgap * D.R.k * (D.R.m : ℝ) ^ 4` using `by have := Pm.Cgap_pos; positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨s1, s2, s3⟩` from `Pm.sig_gaps τ`.
+
+Establish `cast : ∀ x : ℚ, Formalism.BasicNotions.LevelStarExponents.gapS D Pm.Cgap < (x : ℝ) → (D.R.r : ℚ) ≤ x` using `fun x hx => by`. Establish `: ((D.R.r : ℚ) : ℝ) ≤ (x : ℝ)` using `by push_cast; linarith`. Conclude with `this` after adjusting the coercions. Unfold `Ranks.r at hn`. Unfold `Formalism.L2.NTheta.lamAt`.
+
+Distinguish the cases in `h1 : n + 1 < D.R.k - 1`. Rewrite using `[dif_pos h1, dif_pos (by omega : n < D.R.k - 1)]`. Use `cast _ (s1 n h1)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Distinguish the cases in `h2 : n + 1 = D.R.k - 1`.
+
+Rewrite using `[dif_neg h1, dif_pos (by omega : n < D.R.k - 1), dif_pos (by omega : n + 1 - (D.R.k - 1) < D.R.m)]`. Use `cast _ (s2 (by omega) (by omega))` as an intermediate fact. Establish `e1 : (⟨n, by omega⟩ : Fin (D.R.k - 1)) = ⟨D.R.k - 2, by omega⟩` using `Fin.ext (by simp only; omega)`. Establish `e2 : (⟨n + 1 - (D.R.k - 1), by omega⟩ : Fin D.R.m) = ⟨0, by omega⟩` using `Fin.ext (by simp only; omega)`. Rewrite using `[e1, e2]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[dif_neg h1, dif_neg (by omega : ¬ n < D.R.k - 1), dif_pos (by omega : n + 1 - (D.R.k - 1) < D.R.m), dif_pos (by omega : n - (D.R.k - 1) < D.R.m)]`. Use `cast _ (s3 (n - (D.R.k - 1)) (by omega))` as an intermediate fact. Establish `e2 : (⟨n + 1 - (D.R.k - 1), by omega⟩ : Fin D.R.m) = ⟨n - (D.R.k - 1) + 1, by omega⟩` using `Fin.ext (by simp only; omega)`. Rewrite using `[e2]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem paramGap_of_params (L : SizeData₂ D) (Pm : ParameterChoice' D L) : ParamGap D := by
   intro τ n hn
   have hk := D.R.m_add_three_le_k

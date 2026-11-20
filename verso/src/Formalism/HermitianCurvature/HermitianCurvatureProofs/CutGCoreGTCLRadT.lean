@@ -5,6 +5,9 @@ import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutGCoreGTCLRadTTay
 
 namespace Formalism.FourierDecayAlt.P.CutMP.Gauge.GC
 
+/- English proof (translation)
+The claim follows from `radial_torus_of_jets_taylor jet_finite_order_along_level jet_radial_holds taylor_expansion_holds`.
+-/
 theorem radial_torus_local_holds : GTCLRadT :=
   radial_torus_of_jets_taylor jet_finite_order_along_level jet_radial_holds taylor_expansion_holds
 

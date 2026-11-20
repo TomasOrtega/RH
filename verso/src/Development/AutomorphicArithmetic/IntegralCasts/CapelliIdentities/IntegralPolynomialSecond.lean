@@ -9,6 +9,11 @@ noncomputable def UpperTheory.Reformulated.B.IntegralPolynomialSecond.IntegralMv
     fun {σ : Type u_1} {p : ℕ} [Fact (Nat.Prime p)] (F : MvPowerSeries σ ℂ_[p]) ↦
       ∀ (n : σ →₀ ℕ), UpperTheory.Reformulated.B.IntegralPolynomialSecond.IsIntP ((MvPowerSeries.coeff n : MvPowerSeries σ ℂ_[p] → ℂ_[p]) F)
 
+/- English proof (translation)
+Introduce `p _ σ F G hF hG n`. Express the relevant statement in the definitionally equal form `‖MvPowerSeries.coeff n (F * G)‖ ≤ 1`. Rewrite using `[MvPowerSeries.coeff_mul]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one ?_` and prove the remaining obligations. Introduce `q _`.
+
+Rewrite using `[norm_mul]`. Conclude with `mul_le_one₀ (hF q.1) (norm_nonneg _) (hG q.2)`.
+-/
 theorem UpperTheory.Reformulated.B.IntegralPolynomialSecond.intMv_mul.{u_1} :
     ∀ {p : ℕ} [inst : Fact (Nat.Prime p)] {σ : Type u_1} {F G : MvPowerSeries σ ℂ_[p]},
       UpperTheory.Reformulated.B.IntegralPolynomialSecond.IntegralMv F → UpperTheory.Reformulated.B.IntegralPolynomialSecond.IntegralMv G → UpperTheory.Reformulated.B.IntegralPolynomialSecond.IntegralMv (F * G) := by

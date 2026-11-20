@@ -18,6 +18,9 @@ abbrev ext2 (K : HomologicalComplex₂ C (ComplexShape.down ℕ) (ComplexShape.d
     HomologicalComplex₂ C (ComplexShape.up ℤ) (ComplexShape.up ℤ) :=
   (ext1 K).extend ComplexShape.embeddingDownNat
 
+/- English proof (translation)
+Simplify using the standard rewrite rules.
+-/
 lemma fN (a : ℕ) : ComplexShape.embeddingDownNat.f a = -(a : ℤ) := by simp
 
 variable (K : HomologicalComplex₂ C (ComplexShape.down ℕ) (ComplexShape.down ℕ))
@@ -28,6 +31,11 @@ def kX {p q : ℤ} {a b : ℕ}
   (HomologicalComplex.eval _ _ q).mapIso (HomologicalComplex.extendXIso _ ComplexShape.embeddingDownNat ha) ≪≫
     HomologicalComplex.extendXIso _ ComplexShape.embeddingDownNat hb
 
+/- English proof (translation)
+Break down `le_or_gt p 0 with hp | hp` into its components or cases. Establish `hq : 0 < q` using `by omega`. Take `⟨a, rfl⟩ : ∃ a : ℕ, p = -(a:ℤ)` from `⟨(-p).toNat, by omega⟩`. Use `IsZero.of_iso ?_ ((HomologicalComplex.eval _ _ q).mapIso (HomologicalComplex.extendXIso _ ComplexShape.embeddingDownNat (i := a) (fN a)))` and prove the remaining obligations. Conclude with `HomologicalComplex.isZero_extend_X _ _ _ (fun i hi => by simp at hi; omega)`.
+
+Conclude with `(HomologicalComplex.eval _ _ q).map_isZero (HomologicalComplex.isZero_extend_X _ _ _ (fun i hi => by simp at hi; omega))`.
+-/
 lemma isZero_ext_of_pos {p q : ℤ} (h : 0 < p ∨ 0 < q) : IsZero (((ext2 K).X p).X q) := by
   rcases le_or_gt p 0 with hp | hp
   · have hq : 0 < q := by omega
@@ -41,12 +49,20 @@ lemma isZero_ext_of_pos {p q : ℤ} (h : 0 < p ∨ 0 < q) : IsZero (((ext2 K).X 
 abbrev kN (a b : ℕ) : ((ext2 K).X (-(a : ℤ))).X (-(b : ℤ)) ≅ (K.X a).X b :=
   kX K (p := -(a : ℤ)) (q := -(b : ℤ)) (a := a) (b := b) (fN a) (fN b)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma kN_hom (a b : ℕ) :
     (kN K a b).hom = (HomologicalComplex.extendXIso
       (ext1 K)
       ComplexShape.embeddingDownNat (i := a) (i' := -(a : ℤ)) (fN _)).hom.f (-(b : ℤ)) ≫
       (HomologicalComplex.extendXIso (K.X a) ComplexShape.embeddingDownNat (i := b) (i' := -(b : ℤ)) (fN _)).hom := rfl
 
+/- English proof (translation)
+Establish `h` using `HomologicalComplex.extend_d_eq (ext1 K) ComplexShape.embeddingDownNat (i := a + 1) (j := a) (i' := -((a + 1 : ℕ) : ℤ)) (j' := -(a : ℤ)) (fN _) (fN _)`. Establish `hh` using `HomologicalComplex.extendMap_f (K.d (a + 1) a) ComplexShape.embeddingDownNat (i := b) (i' := -(b:ℤ)) (fN _)`. Rewrite using `[h, kN_hom, kN_hom]`. Simplify using `only [HomologicalComplex.comp_f, Category.assoc]`. Establish `e1 : ∀ {A B : CochainComplex C ℤ} (φ : A ≅ B) (n : ℤ), φ.inv.f n ≫ φ.hom.f n = 𝟙 _` using `fun φ n => by`.
+
+Rewrite using `[← HomologicalComplex.comp_f, Iso.inv_hom_id, HomologicalComplex.id_f]`. Rewrite using `[reassoc_of% (e1 _ (-(b : ℤ)))]`. Rewrite using `[hh]`. Simplify using `only [Category.assoc, Iso.inv_hom_id, Category.comp_id]`.
+-/
 lemma kX_d₁ (a b : ℕ) :
     ((ext2 K).d (-((a + 1 : ℕ) : ℤ)) (-(a : ℤ))).f (-(b : ℤ)) ≫ (kN K a b).hom =
       (kN K (a + 1) b).hom ≫ (K.d (a + 1) a).f b := by
@@ -62,6 +78,11 @@ lemma kX_d₁ (a b : ℕ) :
   rw [hh]
   simp only [Category.assoc, Iso.inv_hom_id, Category.comp_id]
 
+/- English proof (translation)
+Use `HomologicalComplex.Hom.comm (HomologicalComplex.extendXIso (ext1 K) ComplexShape.embeddingDownNat (i := a) (i' := -(a:ℤ)) (fN _)).hom (-((b + 1 : ℕ) : ℤ)) (-(b : ℤ))` as an intermediate fact. Establish `h2` using `HomologicalComplex.extend_d_eq (K.X a) ComplexShape.embeddingDownNat (i := b + 1) (j := b) (i' := -((b + 1 : ℕ) : ℤ)) (j' := -(b : ℤ)) (fN _) (fN _)`. Rewrite using `[kN_hom, kN_hom]`. Establish `e` using `this =≫ (HomologicalComplex.extendXIso (K.X a) ComplexShape.embeddingDownNat (i := b) (i' := -(b:ℤ)) (fN _)).hom`. Simplify using `only [Category.assoc] at e`.
+
+Rewrite using `[← e, h2]`. Simplify using `only [Category.assoc, Iso.inv_hom_id, Category.comp_id]`.
+-/
 lemma kX_d₂ (a b : ℕ) :
     ((ext2 K).X (-(a : ℤ))).d (-((b + 1 : ℕ) : ℤ)) (-(b : ℤ)) ≫ (kN K a b).hom =
       (kN K a (b + 1)).hom ≫ (K.X a).d (b + 1) b := by
@@ -86,6 +107,9 @@ def cmp {p q n : ℤ} (a b m : ℕ) (ha : ComplexShape.embeddingDownNat.f a = p)
   (kX K ha hb).hom ≫ K.ιTotal (ComplexShape.down ℕ) a b m h ≫
     ((K.total (ComplexShape.down ℕ)).extendXIso ComplexShape.embeddingDownNat hm).inv
 
+/- English proof (translation)
+Take `rfl : a = a'` from `ComplexShape.embeddingDownNat.injective_f (ha.trans ha'.symm)`. Take `rfl : b = b'` from `ComplexShape.embeddingDownNat.injective_f (hb.trans hb'.symm)`. Take `rfl : m = m'` from `ComplexShape.embeddingDownNat.injective_f (hm.trans hm'.symm)`. Both sides reduce to the same expression.
+-/
 lemma cmp_congr {p q n : ℤ} (a b m a' b' m' : ℕ) (ha : ComplexShape.embeddingDownNat.f a = p)
     (hb : ComplexShape.embeddingDownNat.f b = q) (hm : ComplexShape.embeddingDownNat.f m = n)
     (h : ComplexShape.π (ComplexShape.down ℕ) (ComplexShape.down ℕ) (ComplexShape.down ℕ) (a, b) = m)
@@ -107,6 +131,9 @@ def homF (n : ℤ) : ((ext2 K).total (ComplexShape.up ℤ)).X n ⟶
         (by simp only [ComplexShape.π_def] at h ⊢; omega)
     else 0)
 
+/- English proof (translation)
+Rewrite using `[homF, HomologicalComplex₂.ι_totalDesc, dif_pos (by omega)]`. Conclude with `cmp_congr K _ _ _ a b m _ _ _ _ (fN a) (fN b) (fN m) h`.
+-/
 lemma ι_homF (a b m : ℕ) (h : a + b = m) :
     (ext2 K).ιTotal (ComplexShape.up ℤ) (-(a : ℤ)) (-(b : ℤ)) (-(m : ℤ)) (by simp only [ComplexShape.π_def]; omega) ≫
       homF K (-(m : ℤ)) =
@@ -122,6 +149,9 @@ def invC {n : ℤ} (m : ℕ) (hm : ComplexShape.embeddingDownNat.f m = n) :
     K.totalDesc (fun a b h => (kN K a b).inv ≫ (ext2 K).ιTotal (ComplexShape.up ℤ) (-(a : ℤ)) (-(b : ℤ)) n
       (by simp only [ComplexShape.π_def] at h ⊢; simp at hm; omega))
 
+/- English proof (translation)
+Take `rfl : m = m'` from `ComplexShape.embeddingDownNat.injective_f (hm.trans hm'.symm)`. Both sides reduce to the same expression.
+-/
 lemma invC_congr {n : ℤ} (m m' : ℕ) (hm : ComplexShape.embeddingDownNat.f m = n)
     (hm' : ComplexShape.embeddingDownNat.f m' = n) : invC K m hm = invC K m' hm' := by
   obtain rfl : m = m' := ComplexShape.embeddingDownNat.injective_f (hm.trans hm'.symm)
@@ -131,6 +161,9 @@ def invF (n : ℤ) : ((K.total (ComplexShape.down ℕ)).extend ComplexShape.embe
     ((ext2 K).total (ComplexShape.up ℤ)).X n :=
   if hn : n ≤ 0 then invC K (-n).toNat (by simp; omega) else 0
 
+/- English proof (translation)
+Rewrite using `[invF, dif_pos (by omega), invC_congr K _ m _ (fN m), invC, Iso.inv_hom_id_assoc, HomologicalComplex₂.ι_totalDesc]`.
+-/
 lemma ι_invF (a b m : ℕ) (h : a + b = m) :
     K.ιTotal (ComplexShape.down ℕ) a b m h ≫
       ((K.total (ComplexShape.down ℕ)).extendXIso ComplexShape.embeddingDownNat (fN m)).inv ≫ invF K (-(m : ℤ)) =
@@ -144,6 +177,11 @@ end Tot
 section Tot2
 variable [K.HasTotal (ComplexShape.down ℕ)] [(ext2 K).HasTotal (ComplexShape.up ℤ)]
 
+/- English proof (translation)
+Use extensionality with `p q h`. Distinguish the cases in `hpq : p ≤ 0 ∧ q ≤ 0`. Take `⟨a, rfl⟩ : ∃ a : ℕ, p = -(a:ℤ)` from `⟨(-p).toNat, by omega⟩`. Take `⟨b, rfl⟩ : ∃ b : ℕ, q = -(b:ℤ)` from `⟨(-q).toNat, by omega⟩`. Take `rfl : n = -((a + b : ℕ) : ℤ)` from `by simp only [ComplexShape.π_def] at h; omega`.
+
+Rewrite using `[reassoc_of% (ι_homF K a b (a + b) rfl), ι_invF K a b (a + b) rfl, Iso.hom_inv_id_assoc, Category.comp_id]`. Conclude with `(isZero_ext_of_pos K (by omega)).eq_of_src _ _`.
+-/
 lemma homF_invF (n : ℤ) : homF K n ≫ invF K n = 𝟙 _ := by
   ext p q h
   by_cases hpq : p ≤ 0 ∧ q ≤ 0
@@ -154,6 +192,11 @@ lemma homF_invF (n : ℤ) : homF K n ≫ invF K n = 𝟙 _ := by
       Iso.hom_inv_id_assoc, Category.comp_id]
   · exact (isZero_ext_of_pos K (by omega)).eq_of_src _ _
 
+/- English proof (translation)
+Distinguish the cases in `hn : n ≤ 0`. Take `⟨m, rfl⟩ : ∃ m : ℕ, n = -(m:ℤ)` from `⟨(-n).toNat, by omega⟩`. Rewrite using `[← cancel_epi ((K.total (ComplexShape.down ℕ)).extendXIso ComplexShape.embeddingDownNat (fN m)).inv]`. Use extensionality with `a b h`. Rewrite using `[reassoc_of% (ι_invF K a b m h), ι_homF K a b m h, Iso.inv_hom_id_assoc, Category.comp_id]`.
+
+Conclude with `(HomologicalComplex.isZero_extend_X _ _ _ (fun i hi => by simp at hi; omega)).eq_of_src _ _`.
+-/
 lemma invF_homF (n : ℤ) : invF K n ≫ homF K n = 𝟙 _ := by
   by_cases hn : n ≤ 0
   · obtain ⟨m, rfl⟩ : ∃ m : ℕ, n = -(m:ℤ) := ⟨(-n).toNat, by omega⟩
@@ -162,9 +205,25 @@ lemma invF_homF (n : ℤ) : invF K n ≫ homF K n = 𝟙 _ := by
     rw [reassoc_of% (ι_invF K a b m h), ι_homF K a b m h, Iso.inv_hom_id_assoc, Category.comp_id]
   · exact (HomologicalComplex.isZero_extend_X _ _ _ (fun i hi => by simp at hi; omega)).eq_of_src _ _
 
+/- English proof (translation)
+Rewrite using `[Int.negOnePow_neg, Int.negOnePow_def, zpow_natCast]`.
+-/
 lemma negOnePow_negNat (a : ℕ) : (-(a : ℤ)).negOnePow = (-1 : ℤˣ) ^ a := by
   rw [Int.negOnePow_neg, Int.negOnePow_def, zpow_natCast]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `i + 1 = j at hij`. Use extensionality with `p q h`. Distinguish the cases in `hpq : p ≤ 0 ∧ q ≤ 0`. Take `⟨a, rfl⟩ : ∃ a : ℕ, p = -(a:ℤ)` from `⟨(-p).toNat, by omega⟩`. Take `⟨b, rfl⟩ : ∃ b : ℕ, q = -(b:ℤ)` from `⟨(-q).toNat, by omega⟩`.
+
+Take `rfl : i = -((a + b : ℕ) : ℤ)` from `by simp only [ComplexShape.π_def] at h; omega`. Break down `Nat.eq_zero_or_pos (a + b) with hab | hab` into its components or cases. Conclude with `(HomologicalComplex.isZero_extend_X _ _ _ (fun i hi => by simp at hi; omega)).eq_of_tgt _ _`. Take `⟨k, hk⟩ : ∃ k, a + b = k + 1` from `⟨a + b - 1, by omega⟩`. Take `rfl : j = -(k : ℤ)` from `by omega`.
+
+Rewrite using `[reassoc_of% (ι_homF K a b (a + b) rfl), HomologicalComplex.extend_d_eq _ ComplexShape.embeddingDownNat (i := a + b) (j := k) (fN _) (fN _), Iso.inv_hom_id_assoc]`. Simplify using `only [HomologicalComplex₂.total_d, Preadditive.add_comp, Preadditive.comp_add, Category.assoc, HomologicalComplex₂.ι_D₁_assoc, HomologicalComplex₂.ι_D₂_assoc]`. Establish `hd₁ : (kN K a b).hom ≫ K.d₁ (ComplexShape.down ℕ) a b k ≫ ((K.total (ComplexShape.down ℕ)).extendXIso ComplexShape.embeddingDownNat (fN k)).inv = (ext2 K).d₁ (ComplexShape.up ℤ) (-(a : ℤ)) (-(b : ℤ)) (-(k : ℤ)) ≫ homF K (-(k : ℤ))`. Break down `a with _ | a'` into its components or cases. Rewrite using `[K.d₁_eq_zero _ _ _ _ (by intro hr; change _ + 1 = 0 at hr; omega), (ext2 K).d₁_eq' _ (i₁' := 1) (by simp only [ComplexShape.up_Rel]; omega) _ _, (isZero_ext_of_pos K (p := 1) (q := -(b:ℤ)) (Or.inl one_pos)).eq_of_src ((ext2 K).ιTotalOrZero (ComplexShape.up ℤ) 1 (-(b : ℤ)) (-(k : …`.
+
+Simplify using the standard rewrite rules. Rewrite using `[K.d₁_eq _ (i₁' := a') rfl _ _ (by simp only [ComplexShape.π_def]; omega), (ext2 K).d₁_eq _ (i₁' := -(a' : ℤ)) (by simp only [ComplexShape.up_Rel]; omega) _ _ (by simp only [ComplexShape.π_def]; omega)]`. Establish `e1 : ComplexShape.ε₁ (ComplexShape.down ℕ) (ComplexShape.down ℕ) (ComplexShape.down ℕ) (a' + 1, b) = 1` using `rfl`. Establish `e2 : ComplexShape.ε₁ (ComplexShape.up ℤ) (ComplexShape.up ℤ) (ComplexShape.up ℤ) (-((a' + 1 : ℕ) : ℤ), -(b : ℤ)) = 1` using `rfl`. Rewrite using `[e1, e2, one_smul, one_smul, Category.assoc, Category.assoc, ι_homF K a' b k (by omega), reassoc_of% (kX_d₁ K a' b)]`.
+
+Establish `hd₂ : (kN K a b).hom ≫ K.d₂ (ComplexShape.down ℕ) a b k ≫ ((K.total (ComplexShape.down ℕ)).extendXIso ComplexShape.embeddingDownNat (fN k)).inv = (ext2 K).d₂ (ComplexShape.up ℤ) (-(a : ℤ)) (-(b : ℤ)) (-(k : ℤ)) ≫ homF K (-(k : ℤ))`. Break down `b with _ | b'` into its components or cases. Rewrite using `[K.d₂_eq_zero _ _ _ _ (by intro hr; change _ + 1 = 0 at hr; omega), (ext2 K).d₂_eq' _ _ (i₂' := 1) (by simp only [ComplexShape.up_Rel]; omega) _, (isZero_ext_of_pos K (p := -(a : ℤ)) (q := 1) (Or.inr one_pos)).eq_of_src ((ext2 K).ιTotalOrZero (ComplexShape.up ℤ) (-(a : ℤ)) 1 (-(k …`. Simplify using the standard rewrite rules. Rewrite using `[K.d₂_eq _ _ (i₂' := b') rfl _ (by simp only [ComplexShape.π_def]; omega), (ext2 K).d₂_eq _ _ (i₂' := -(b' : ℤ)) (by simp only [ComplexShape.up_Rel]; omega) _ (by simp only [ComplexShape.π_def]; omega)]`.
+
+Establish `e1 : ComplexShape.ε₂ (ComplexShape.down ℕ) (ComplexShape.down ℕ) (ComplexShape.down ℕ) (a, b' + 1) = (-1 : ℤˣ) ^ a` using `rfl`. Establish `e2 : ComplexShape.ε₂ (ComplexShape.up ℤ) (ComplexShape.up ℤ) (ComplexShape.up ℤ) (-(a : ℤ), -((b' + 1 : ℕ) : ℤ)) = (-(a : ℤ)).negOnePow` using `rfl`. Rewrite using `[e1, e2, negOnePow_negNat, Linear.units_smul_comp, Linear.units_smul_comp, Linear.comp_units_smul, Category.assoc, Category.assoc, ι_homF K a b' k (by omega), reassoc_of% (kX_d₂ K a b')]`. Rewrite using `[hd₁, hd₂]`. Conclude with `(isZero_ext_of_pos K (by omega)).eq_of_src _ _`.
+-/
 lemma homF_comm (i j : ℤ) (hij : (ComplexShape.up ℤ).Rel i j) :
     homF K i ≫ ((K.total (ComplexShape.down ℕ)).extend ComplexShape.embeddingDownNat).d i j =
       ((ext2 K).total (ComplexShape.up ℤ)).d i j ≫ homF K j := by
@@ -230,6 +289,9 @@ def totIso : (ext2 K).total (ComplexShape.up ℤ) ≅ (K.total (ComplexShape.dow
   HomologicalComplex.Hom.isoOfComponents (fun n => ⟨homF K n, invF K n, homF_invF K n, invF_homF K n⟩)
     (fun i j h => homF_comm K i j h)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma totIso_inv_f (n : ℤ) : (totIso K).inv.f n = invF K n := rfl
 
 end Tot3
@@ -260,6 +322,11 @@ def diagIso (X : SimplicialObject Spc) :
   (ComplexShape.embeddingDownNat.extendFunctor _).mapIso ((alternatingFaceMapComplex _).mapIso (diagSIso R X))
 
 set_option backward.isDefEq.respectTransparency false in
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(HomologicalComplex.extendMap ((alternatingFaceMapComplex _).map (diagSIso R X).hom) ComplexShape.embeddingDownNat).f (-(n:ℤ)) = _`. Rewrite using `[HomologicalComplex.extendMap_f _ _ (fN n)]`. Establish `h1 : ((alternatingFaceMapComplex (Shv R)).map (diagSIso R X).hom).f n = 𝟙 _`. Rewrite using `[AlgebraicTopology.alternatingFaceMapComplex_map_f]`. Both sides reduce to the same expression.
+
+Rewrite using `[h1, Category.id_comp]`. Both sides reduce to the same expression.
+-/
 lemma diagIso_hom_f (X : SimplicialObject Spc) (n : ℕ) :
     (diagIso R X).hom.f (-(n : ℤ)) = (chainsXIso R (bidiag.obj X) n).hom ≫
       ((diagCx ((freeBi R).obj X)).extendXIso ComplexShape.embeddingDownNat (fN n)).inv := by
@@ -271,6 +338,9 @@ lemma diagIso_hom_f (X : SimplicialObject Spc) (n : ℕ) :
   rw [h1, Category.id_comp]
   rfl
 
+/- English proof (translation)
+Rewrite using `[awO, if_pos (by omega), ev_map_bop, awP]`. Conclude with `((free R).map_comp _ _).symm`.
+-/
 lemma ev_awO (X : SimplicialObject Spc) (n a : ℕ) (ha : a ≤ n) :
     (ev ((freeBi R).obj X)).map (awO n a (n - a)) = (free R).map (awP X n a (n - a)) := by
   rw [awO, if_pos (by omega), ev_map_bop, awP]
@@ -280,6 +350,13 @@ end Sheaves
 
 set_option backward.isDefEq.respectTransparency false in
 
+/- English proof (translation)
+Introduce `R _ X ⟨e, he⟩`. Use `haveI : (ext2 (dbl ((freeBi R).obj X))).HasTotal (ComplexShape.up ℤ) := hasTotal_biChains R X`. Use `⟨(HomotopyEquiv.ofIso (diagIso R X)).trans ((extHE e).trans (HomotopyEquiv.ofIso (totIso (dbl ((freeBi R).obj X))).symm)), fun n => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(diagIso R X).hom.f (-(n:ℤ)) ≫ (HomologicalComplex.extendMap e.hom ComplexShape.embeddingDownNat).f (-(n:ℤ)) ≫ (totIso (dbl ((freeBi R).obj X))).inv.f (-(n:ℤ)) = _`. Rewrite using `[diagIso_hom_f, HomologicalComplex.extendMap_f _ _ (fN n), he n, totIso_inv_f]`.
+
+Simplify using `only [Category.assoc, Iso.inv_hom_id_assoc]`. Rewrite using `[awZ, awF]`. Use `congr 1`. Simplify using `only [Preadditive.sum_comp]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+
+Establish `h` using `ι_invF (dbl ((freeBi R).obj X)) (a : ℕ) (n - a) n (by omega)`. Rewrite using `[Category.assoc, ev_awO R X n a (by omega)]`. Conclude with `(congrArg ((GlobalTheory.EtC.free R).map (awP X n a (n - a)) ≫ ·) h).trans rfl`.
+-/
 theorem homotopyEquiv_chains_totChains : ∀ (R : Type) [CommRing R] (X : SimplicialObject GlobalTheory.EtC.Spc), (∃ e : HomotopyEquiv (diagCx ((freeBi R).obj X)) (tot ((freeBi R).obj X)), ∀ n : ℕ, e.hom.f n = awF _ n) → ∃ e : HomotopyEquiv ((GlobalTheory.EtC.chains R).obj (GlobalTheory.EtC.bidiag.obj X)) (totChains R X), ∀ n : ℕ, e.hom.f (-(n : ℤ)) = awZ R X n := by
   intro R _ X ⟨e, he⟩
   haveI : (ext2 (dbl ((freeBi R).obj X))).HasTotal (ComplexShape.up ℤ) := hasTotal_biChains R X

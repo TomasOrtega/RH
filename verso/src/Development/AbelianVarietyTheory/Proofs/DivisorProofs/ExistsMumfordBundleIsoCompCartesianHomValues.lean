@@ -12,6 +12,15 @@ open GlobalTheory.HalfBC GlobalTheory.PrimCocycle
 
 namespace GlobalTheory.TautPull
 
+/- English proof (translation)
+Introduce `S S' S₁ B G G' _ _ _ _ _ _ M L L' f φ gp β₂ hM hL hL' w v hw hv`. Establish `hΛB : (abelian₂ B M).IsLB` using `DVR.linComb_isLB _ hM _ _`. Establish `hΛ : (abelian₂ G L).IsLB` using `DVR.linComb_isLB _ hL _ _`. Establish `hΛ' : (abelian₂ G' L').IsLB` using `DVR.linComb_isLB _ hL' _ _`. Take `⟨w'', T⟩` from `exists_comp hΛ w (lamIso gp v) ((isGen_iff _).1 hw) (pgen_lamIso gp v ((isGen_iff v).1 hv)) hΛB hΛ'`.
+
+Use `⟨w'', (isGen_iff _).2 (T.pgen_comp hΛ ((isGen_iff _).1 hw) (pgen_lamIso gp v ((isGen_iff v).1 hv))), ?_⟩` and prove the remaining obligations. Introduce `Z p z J J₁ J' hJ hJ₁ hJ'`. Establish `t` using `T Z p z (fun I => J (p ≫ (sqOf gp ≫ β₂) ≫ lamφ B I)) (fun I => J₁ ((p ≫ sqOf gp) ≫ lamφ G I)) (fun I => J' (p ≫ lamφ G' I)) (Set.mem_iInter.2 fun I => hJ (p ≫ (sqOf gp ≫ β₂) ≫ lamφ B I)) (Set.mem_iInter.2 fun I => hJ₁ ((p ≫ sqOf gp) ≫ lamφ G I)) (Set.mem_iInter.2 fun I => hJ' (p …`. Use `t.trans (congrArg₂ (· * ·) ?_ ?_)` and prove the remaining obligations. Use `show _ = gw w (p ≫ sqOf gp) z (fun I => J ((p ≫ sqOf gp) ≫ β₂ ≫ lamφ B I)) (fun I => J₁ ((p ≫ sqOf gp) ≫ lamφ G I))`.
+
+Simplify using `only [Category.assoc]`. Rewrite using `[gw_lamIso gp v p z _ _ (fun I => by`. Use `hJ₁ ((p ≫ sqOf gp) ≫ lamφ G I)` as an intermediate fact. Rewrite `this`, the goal using `[Category.assoc, sqOf_lamφ, ← Category.assoc]`. Conclude with `this) (fun I => hJ' (p ≫ lamφ G' I))]`.
+
+Use `Finset.prod_congr rfl fun I _ => ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, sqOf_lamφ, ← Category.assoc]`.
+-/
 theorem lamIso_comp_exists : ∀ {S S' S₁ : Scheme.{0}} {B : Over S₁} {G : Over S} {G' : Over S'} [GrpObj B] [IsCommMonObj B] [GrpObj G] [IsCommMonObj G] [GrpObj G'] [IsCommMonObj G'] {M : LB B.left} {L : LB G.left} {L' : LB G'.left} {f : S' ⟶ S} {φ : G'.left ⟶ G.left} (gp : IsGrpPullback G' G f φ) {β₂ : (G2 G).left ⟶ (G2 B).left}, M.IsLB → L.IsLB → L'.IsLB → ∀ (w : LB.Iso (abelian₂ G L) ((abelian₂ B M).pull β₂)) (v : LB.Iso L' (L.pull φ)), w.IsGen → v.IsGen → ∃ w'' : LB.Iso (abelian₂ G' L') ((abelian₂ B M).pull (sqOf gp ≫ β₂)), w''.IsGen ∧ ∀ (Z : Scheme.{0}) (p : Z ⟶ (G2 G').left) (z : Z) (J : (Z ⟶ B.left) → M.ι) (J₁ : (Z ⟶ G.left) → L.ι) (J' : (Z ⟶ G'.left) → L'.ι), Good M z J → Good L z J₁ → Good L' z J' → lamVal w'' p z J J' = lamVal w (p ≫ sqOf gp) z J J₁ * ∏ I, gw v (p ≫ lamφ G' I) z (J₁ ((p ≫ lamφ G' I) ≫ φ)) (J' (p ≫ lamφ G' I)) ^ lamε I := by
   intro S S' S₁ B G G' _ _ _ _ _ _ M L L' f φ gp β₂ hM hL hL' w v hw hv
   have hΛB : (abelian₂ B M).IsLB := DVR.linComb_isLB _ hM _ _

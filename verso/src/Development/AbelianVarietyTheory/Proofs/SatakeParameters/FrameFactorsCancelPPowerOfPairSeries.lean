@@ -4,6 +4,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.TwV.DelB
 
+/- English proof (translation)
+Introduce `p _ X _ E hfin hst g hLT T pos F j La La'`. Establish `hp : (p : ℂ_[p]) ≠ 0` using `Nat.cast_ne_zero.2 (Fact.out : p.Prime).ne_zero`. Use `show E.iK (Pend.eS _ j La * (Pend.eT _ j La')⁻¹) * pPow X j La La' = 1`. Simplify using `only [Pend.eS, Pend.eT]`. Rewrite using `[pPow_eq_prod]`.
+
+Rewrite using `[map_mul, map_inv₀, map_prod, map_prod]`. Simplify using `only [map_zpow₀, map_natCast]`. Rewrite using `[← Finset.prod_inv_distrib, ← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]`. Use `Finset.prod_eq_one (fun v _ => ?_)` and prove the remaining obligations. Rewrite using `[← zpow_neg, ← zpow_add₀ hp, ← zpow_add₀ hp]`.
+
+Use `show (p : ℂ_[p]) ^ _ = 1`. Put the polynomial expressions in normal form. Simplify using the standard rewrite rules.
+-/
 theorem eFac_mul_pPow : ∀ (p : ℕ) [Fact p.Prime] (X : Sys p) [IsFractionRing X.G.O X.G.Kf] (E : CEmbC X.G) (hfin : ∀ j c, (X.Lv.lev j c).FinClasses) (hst : FinStab X.Lv) (g : GL3Theta.G1 p) (hLT : LTIso g) (T : Type) (pos : (Σ v : X.Pl, Fin (X.G.P.n' v)) ≃ T) (F : ∀ j, X.Lt j → X.Lt (j + 1) → MvPowerSeries (T × Fin ((X.Pj (j + 1)).m + 1) × Fin ((X.Pj j).m + 1)) ℂ_[p]) (j : ℕ) (La : X.Lt j) (La' : X.Lt (j + 1)), E.iK ((pendT X E hfin hst hLT pos F).eS j La * ((pendT X E hfin hst hLT pos F).eT j La')⁻¹) * pPow X j La La' = 1 := by
   intro p _ X _ E hfin hst g hLT T pos F j La La'
   have hp : (p : ℂ_[p]) ≠ 0 := Nat.cast_ne_zero.2 (Fact.out : p.Prime).ne_zero

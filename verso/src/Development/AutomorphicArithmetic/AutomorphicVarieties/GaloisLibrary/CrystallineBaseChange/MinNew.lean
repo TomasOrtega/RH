@@ -2,6 +2,15 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Crys
 import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.CrystallineBaseChange.ExistsEigenform
 
 open CongruenceSubgroup UpperTheory.V.Af UpperTheory.V.Sd in
+/- English proof (translation)
+Introduce `N`. Proceed by induction on `N using Nat.strong_induction_on with`. Consider the case `_ N ih`. Introduce `k hN hk χ g`. Distinguish the cases in `hnew : ∀ (M' : ℕ), M' ∣ N → M' ≠ N → ∀ (g' : CuspForm (Subgroup.map (Matrix.SpecialLinearGroup.mapGL ℝ) (CongruenceSubgroup.Gamma1 M')) ↑k) (χ' : DirichletCharacter ℂ M'), HasChar k χ' ⇑g' → (∀ᶠ (p : ℕ) in Filter.cofinite, Nat.Prime p → IsEigAt k χ' (⇑g') p (coef (⇑g.f) p)) → g' …`.
+
+Use `⟨⟨N, Nat.pos_of_ne_zero (NeZero.ne N), g.f, χ, g.char, g.one, fun p hp _ => g.eig p hp, hnew⟩, hN, g, rfl, Filter.Eventually.of_forall fun _ _ => rfl⟩` and prove the remaining obligations. Use `push_neg at hnew`. Take `⟨M', hdvd, hne, g', χ', hc, hev, hg0⟩` from `hnew`. Establish `hM0 : M' ≠ 0`. Introduce and unpack `rfl`.
+
+Conclude with `NeZero.ne N (Nat.eq_zero_of_zero_dvd hdvd)`. Use `haveI : NeZero M' := ⟨hM0⟩`. Establish `hlt : M' < N` using `lt_of_le_of_ne (Nat.le_of_dvd (Nat.pos_of_ne_zero (NeZero.ne N)) hdvd) hne`. Take `⟨g'', hg''⟩` from `UpperTheory.V.Br.eigEx M' k hk χ' g' hc hg0 (coef (⇑g.f))`. Take `⟨f, hf, h, hhf, hha⟩` from `ih M' hlt k hk χ' g''`.
+
+Use `⟨f, hf, h, hhf, ?_⟩` and prove the remaining obligations. Use `filter_upwards [hha, hev] with p h1 h2 hp`. Rewrite using `[h1 hp, hg'' p hp (h2 hp)]`. Both sides reduce to the same expression.
+-/
 theorem UpperTheory.V.Br.minNew :
     UpperTheory.V.Br.MinNew := by
   intro N

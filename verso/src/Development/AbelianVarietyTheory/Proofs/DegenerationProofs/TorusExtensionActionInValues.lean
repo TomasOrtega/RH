@@ -16,6 +16,11 @@ section
 variable {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {F : Type} [Field F] [Algebra (FractionRing R) F]
   {O : Type} [CommRing O] [StarRing O] [Module O D.X]
 
+/- English proof (translation)
+Establish `vv : ∀ (u : LB.Gen (LB.LinComb D.P.L (rosatiφ D.P.A (oa.onB.act (star a)) (oa.onB.act a)) rosatiε)) χ, val (LB.mulGen D.P.L _ _ _ _ (g.s (star a • χ)) (LB.pullGen D.P.L _ _ u (lift (cP D _ χ) g.b).left)) (𝟙 (TF (R` using `R) F).left) y J = val (g.s (star a • χ)) (𝟙 _) y J * val₂ u y J (cP D _ χ) g.b := fun u χ => (val_mul hJ _ _ _).trans (congrArg₂ (· * ·) rfl ((val_pull hJ _ _ _).trans (by rw [Category.id_comp]; rfl)))`. Use `⟨fun h => ⟨h.1, fun χ => (val_corr hJ (h.2 _ hu.1 hu.2 χ) _).symm.trans (vv _ χ)⟩, fun ⟨hb, hv⟩ => ⟨hb, fun u' hu' u₀ χ => corr_pt D.P.isLB (fun U _ h => ?_) (mulGen_isGen _ _ _ _ _ _ _ (g.isGen _) (pullGen_isGen _ _ _ _ hu' _)) (g'.isGen χ) hJ ((vv u' χ).trans ((congrArg₂ (· * · …` and prove the remaining obligations. Use `(prod_sum₂ (K := Fin 4) (K' := Fin 6) (U := U) _ (prod_gt g.b (star a • χ) h) (prod_ros _ _ (cP D _ χ) g.b h)).trans ?_` and prove the remaining obligations. Rewrite using `[prod_gt, TorusExt.cPoint_smul oa, hb]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises.
+
+Simplify using `only [ofMul_mul, ofMul_inv]`. Normalize the expressions using the abelian group laws.
+-/
 theorem gtAct_pt (hG : GlobalFnsSt) {y : (TF (R := R) F).left} {J : ((TF (R := R) F).left ⟶ D.P.A.left) → D.P.L.ι}
     (hJ : Good D.P.L y J) (oa : D.OAct O) (a : O)
     {u : LB.Gen (LB.LinComb D.P.L (rosatiφ D.P.A (oa.onB.act (star a)) (oa.onB.act a)) rosatiε)}
@@ -40,6 +45,17 @@ theorem gtAct_pt (hG : GlobalFnsSt) {y : (TF (R := R) F).left} {J : ((TF (R := R
   abel
 end
 
+/- English proof (translation)
+Introduce `hG R _ _ D F _ _ N ν O _ _`. Use `⟨fun oa x => ?_, fun oa x ρ ⟨u, hu, u₀, hρ⟩ g g' v v' h h' => ?_⟩` and prove the remaining obligations. Use `oa.hom x` as an intermediate fact. Use `oa.hom (star x)` as an intermediate fact. Establish `hr` using `oa.rosati (star x)`.
+
+Rewrite `hr` using `[star_star]`. Take `⟨u, hu, u₀⟩` from `exists_ros hG D.P.isAb D.P.isLB _ _ hr`. Conclude with `⟨_, u, hu, u₀, fun _ _ => rfl⟩`. Set `y : Sp F` to `(⊥ : PrimeSpectrum F)`. Establish `hJ` using `good ν y`.
+
+Take `⟨a, b⟩` from `(pt_iff ν y _ _).1 h`. Take `⟨a', b'⟩` from `(pt_iff ν y _ _).1 h'`. Rewrite using `[gtAct_pt hG hJ oa x ⟨hu, u₀⟩, ν.eX.surjective.forall]`. Use `and_congr ?_ (forall_congr' fun χ => ?_)` and prove the remaining obligations. Rewrite using `[← a, ← a', actV, ν.eA.eq_symm_apply]`.
+
+Establish `e` using `b (ν.eX.symm (star x • ν.eX χ))`. Rewrite `e` using `[ν.eX.apply_symm_apply]`. Establish `r : toStk y (ρ (N.c χ) v.b) = (val₂ u y ν.J (cP D _ (ν.eX χ)) g.b).val`. Rewrite using `[hρ, toStk_vF _ _ hJ, c_eq, a]`. Both sides reduce to the same expression.
+
+Rewrite using `[← (toStk y).injective.eq_iff, map_mul, r, ← e, ← b', ← Units.val_inj, Units.val_mul]`. Both sides reduce to the same expression.
+-/
 theorem gtAct_values : GlobalFnsSt → ∀ (R : Type) [CommRing R] [IsDomain R] (D : DegPre R) (F : Type) [Field F] [Algebra (FractionRing R) F] (N : NumD F) (ν : NumOf D F N) (O : Type) [CommRing O] [StarRing O], (∀ (oa : D.P.OAct O) (x : O), ∃ ρ, RosV ν oa x ρ) ∧ ∀ [Module O D.X] (oa : D.OAct O) (x : O) (ρ : N.A → N.A → F), RosV ν oa.onB x ρ → ∀ g g' v v', ν.Pt g v → ν.Pt g' v' → (GtAct oa x g g' ↔ v'.b = actV ν oa.onB x v.b ∧ ∀ χ, (v'.s χ : F) = v.s (ν.eX.symm (star x • ν.eX χ)) * ρ (N.c χ) v.b) := by
   intro hG R _ _ D F _ _ N ν O _ _
   refine ⟨fun oa x => ?_, fun oa x ρ ⟨u, hu, u₀, hρ⟩ g g' v v' h h' => ?_⟩

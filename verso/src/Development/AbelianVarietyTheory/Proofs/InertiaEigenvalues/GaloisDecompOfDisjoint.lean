@@ -7,6 +7,21 @@ open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.Weakl
 open scoped Formalism.Per
 namespace GlobalTheory.InertiaEigenvalues
 
+/- English proof (translation)
+Introduce `l _ K M _ _ hKM g`. Set `r : GQ l →* (K ≃ₐ[ℚ_[l]] K)` to `AlgEquiv.restrictNormalHom (F := ℚ_[l]) (K₁ := Om l) K`. Establish `hr : ∀ (σ : GQ l) (y : K), ((r σ y : K) : Om l) = σ (y : Om l)` using `fun σ y => AlgEquiv.restrictNormal_commutes σ K y`. Set `H : Subgroup (K ≃ₐ[ℚ_[l]] K)` to `M.fixingSubgroup.map r`. Establish `hfix : IntermediateField.fixedField H = ⊥`.
+
+Rewrite using `[eq_bot_iff]`. Introduce `x hx`. Establish `hxM : (x : Om l) ∈ M`. Rewrite using `[← InfiniteGalois.fixedField_fixingSubgroup M]`. Introduce `k`.
+
+Use `hx ⟨r k, Subgroup.mem_map_of_mem r k.2⟩` as an intermediate fact. Establish `h2` using `congrArg (fun z : K => (z : Om l)) this`. Express the relevant statement in the definitionally equal form `(k : GQ l) (x : Om l) = x`. Simplify `h2` using `[hr]`. Establish `hxKM : (x : Om l) ∈ K ⊓ M` using `⟨x.2, hxM⟩`.
+
+Rewrite `hxKM` using `[hKM, IntermediateField.mem_bot]`. Take `⟨c, hc⟩` from `hxKM`. Rewrite using `[IntermediateField.mem_bot]`. Use `⟨c, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Simplify using `using hc`. Establish `hH : H = ⊤`. Rewrite using `[← IntermediateField.fixingSubgroup_fixedField H, hfix, IntermediateField.fixingSubgroup_bot]`. Establish `hg : r g ∈ H` using `by rw [hH]; exact Subgroup.mem_top _`. Take `⟨k, hk, hkg⟩` from `Subgroup.mem_map.mp hg`.
+
+Use `⟨g * k⁻¹, ?_, k, hk, by group⟩` and prove the remaining obligations. Rewrite using `[IntermediateField.mem_fixingSubgroup_iff]`. Introduce `x hx`. Establish `h1 : r (g * k⁻¹) = 1` using `by rw [map_mul, map_inv, ← hkg, mul_inv_cancel]`. Use `hr (g * k⁻¹) ⟨x, hx⟩` as an intermediate fact.
+
+Rewrite `this` using `[h1]`. Simplify using `using this.symm`.
+-/
 theorem galois_decomp_of_disjoint : ∀ (l : ℕ) [Fact l.Prime] (K M : IntermediateField ℚ_[l] (Om l)), FiniteDimensional ℚ_[l] K → IsGalois ℚ_[l] K → K ⊓ M = ⊥ → ∀ g : GQ l, ∃ h ∈ K.fixingSubgroup, ∃ k ∈ M.fixingSubgroup, g = h * k := by
   intro l _ K M _ _ hKM g
   let r : GQ l →* (K ≃ₐ[ℚ_[l]] K) := AlgEquiv.restrictNormalHom (F := ℚ_[l]) (K₁ := Om l) K

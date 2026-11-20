@@ -14,15 +14,24 @@ namespace FlagModelJoinLeftAlt
 
 variable {K K' K₂ : Type} {ι : K → Type} {ι' : K' → Type} {ι₂ : K₂ → Type}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Apply the tactic sequence `rcases k with k | k | k <;> rfl`.
+-/
 theorem assocDeg_pullDeg (a : K → ℤ) :
     assocDeg (K₂ := K₂) (pullDeg (K' := K') a) = pullDeg (K' := K' ⊕ K₂) a := by
   funext k
   rcases k with k | k | k <;> rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem assocVar_comp_liftVar :
     assocVar (ι := ι) (ι' := ι') ι₂ ∘ liftVar ι' = liftVar (Sum.elim ι' ι₂) :=
   rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Apply the tactic sequence `cases k <;> simp [pullDeg]`.
+-/
 theorem pullDeg_sub (a b : K → ℤ) :
     pullDeg (K' := K') a - pullDeg (K' := K') b = pullDeg (K' := K') (a - b) := by
   funext k
@@ -32,6 +41,15 @@ end FlagModelJoinLeftAlt
 
 open FlagModelJoinLeftAlt in
 
+/- English proof (translation)
+Introduce `O _ _ _ Ω _ _ K _ ι _ x d N V _ _ E E' _ _ F K₂ _ ι₂ _ w hZ hfn EB E'B hp hp'`. Take `⟨ψ, -, -, -, hdeg, hdeg', hf, hg⟩` from `hFlag O Ω K ι x F.K' F.ι' F.z K₂ ι₂ w N V E E' F.EB F.E'B F.pull F.pull' F.flag EB E'B hp hp'`. Use `⟨ψ, fun I I₁ hI hI₁ G r y y' f g hv c Q hc hG hQ => ?_⟩` and prove the remaining obligations. Establish `hvert : ∀ i, IndefiniteRowSideFullHecke.NumbersDVR.Bundles.IsVertDiv O (IndefiniteRowSideFullHecke.NumbersDVR.Bundles.mcIdeal O (joinCoord x F.z)) (Fin.append F.flag.deg (fun l => pullDeg (K'` using `F.K') (y l)) i - Fin.append F.flag.deg' (fun l => pullDeg (K' := F.K') (y' l)) i) (Fin.append F.flag.f (fun l => rename (liftVar F.ι') (f l)) i) (Fin.append F.flag.g (fun l => rename (liftVar F.ι') (g l)) i) := by`. Introduce `i`.
+
+Use `Fin.addCases (fun j => ?_) (fun j => ?_) i` and prove the remaining obligations. Simplify using `only [Fin.append_left]`. Conclude with `F.flag.vert j`. Simplify using `only [Fin.append_right, pullDeg_sub]`. Conclude with `hVert O Ω K ι x F.K' F.ι' F.z _ _ _ (hv j)`.
+
+Establish `hH : (rename (Fin.castAdd r) G * rename (Fin.natAdd N) Q).IsHomogeneous (d + 1)`. Establish `h : (rename (Fin.castAdd r) G * rename (Fin.natAdd N) Q).IsHomogeneous (c + (d + 1 - c))` using `hG.rename_isHomogeneous.mul hQ.rename_isHomogeneous`. Rewrite `h` using `[show c + (d + 1 - c) = d + 1 by omega]`. Then use the resulting hypothesis. Unfold `FlagModel.value`. Rewrite using `[hNum O Ω K ι x F.K' F.ι' F.z K₂ ι₂ w d F.model hZ (hfn.trans F.birat.symm) I I₁ hI hI₁ (N + r) _ _ _ _ hvert _ hH]`.
+
+Apply the tactic sequence `congr 1 <;> funext i <;> refine Fin.addCases (fun j => ?_) (fun j => ?_) i <;>`. Simplify using `[hdeg, hdeg', hf, hg, assocDeg_pullDeg, assocVar_comp_liftVar]`.
+-/
 theorem FlagModelJoinLeftAlt.proof (hVert : JoinVerticalDivisor.Statement)
     (hFlag : FlagPairJoinLeft.Statement) (hNum : PairNumberJoinLeft.Statement) :
     FlagModelJoinLeftAlt.Statement := by

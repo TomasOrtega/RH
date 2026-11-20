@@ -40,11 +40,17 @@ def supNorm (v : E.carrier) : ℝ := ⨆ σ : K →+* ℂ, E.normAt σ v
 
 def firstMin : ℝ := ⨅ v : {v : E.carrier // v ≠ 0}, E.supNorm v
 
+/- English proof (translation)
+Introduce `a x ha hx`. Rewrite `hx`, the goal using `[Submodule.mem_bot]`. Conclude with `(smul_eq_zero.mp hx).resolve_left ha`.
+-/
 theorem saturated_bot : E.Saturated ⊥ := by
   intro a x ha hx
   rw [Submodule.mem_bot] at hx ⊢
   exact (smul_eq_zero.mp hx).resolve_left ha
 
+/- English proof (translation)
+The claim follows from `fun _ _ _ _ ↦ Submodule.mem_top`.
+-/
 theorem saturated_top : E.Saturated ⊤ := fun _ _ _ _ ↦ Submodule.mem_top
 
 end HermitianBundle
@@ -133,6 +139,9 @@ namespace HermitianBundle
 
 variable {K : Type} [Field K] [NumberField K] (E : HermitianBundle.{0} K)
 
+/- English proof (translation)
+Unfold `HermitianBundle.rank`. Establish `hle : Module.finrank (𝓞 K) G ≤ 1` using `h1 ▸ Submodule.finrank_le G`. Establish `hpos : Module.finrank (𝓞 K) G ≠ 0` using `fun h ↦ hG (Submodule.finrank_eq_zero.mp h)`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem rank_eq_one_of_ne_bot (h1 : Module.finrank (𝓞 K) E.carrier = 1)
     {G : Submodule (𝓞 K) E.carrier} (hG : G ≠ ⊥) : E.rank G = 1 := by
   unfold HermitianBundle.rank
@@ -140,6 +149,21 @@ theorem rank_eq_one_of_ne_bot (h1 : Module.finrank (𝓞 K) E.carrier = 1)
   have hpos : Module.finrank (𝓞 K) G ≠ 0 := fun h ↦ hG (Submodule.finrank_eq_zero.mp h)
   omega
 
+/- English proof (translation)
+Take `⟨g, hgG, hg0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hG`. Set `s : Fin 1 → G` to `fun _ ↦ ⟨g, hgG⟩`. Set `t : Fin 1 → (⊤ : Submodule (𝓞 K) E.carrier)` to `fun _ ↦ ⟨g, Submodule.mem_top⟩`. Establish `hs : LinearIndependent (𝓞 K) s` using `linearIndependent_unique_iff.mpr (fun h ↦ hg0 (congrArg Subtype.val h))`. Establish `ht : LinearIndependent (𝓞 K) t` using `linearIndependent_unique_iff.mpr (fun h ↦ hg0 (congrArg Subtype.val h))`.
+
+Establish `hrt : E.rank ⊤ = 1` using `E.rank_eq_one_of_ne_bot h1 (by`. Introduce `h`. Establish `: Nontrivial E.carrier` using `Module.nontrivial_of_finrank_eq_succ h1`. Conclude with `top_ne_bot h)`. Rewrite using `[E.degree_eq_of_linearIndependent G hs (by rw [Fintype.card_fin, E.rank_eq_one_of_ne_bot h1 hG]), E.degree_eq_of_linearIndependent ⊤ ht (by rw [Fintype.card_fin, hrt])]`.
+
+Use `sub_le_sub_right ?_ _` and prove the remaining obligations. Establish `hfin : Finite ((⊤ : Submodule (𝓞 K) E.carrier) ⧸ Submodule.span (𝓞 K) (Set.range t))` using `finite_quotient_span ht (by rw [Fintype.card_fin, finrank_top, h1])`. Establish `hle : Submodule.span (𝓞 K) (Set.range s) ≤ (Submodule.span (𝓞 K) (Set.range t)).comap (Submodule.inclusion le_top)`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`.
+
+Conclude with `Submodule.subset_span ⟨i, rfl⟩`. Set `φ` to `Submodule.mapQ _ _ (Submodule.inclusion (le_top : G ≤ ⊤)) hle`. Establish `hinj : Function.Injective φ`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `m hm`.
+
+Take `⟨x, rfl⟩` from `Submodule.mkQ_surjective _ m`. Rewrite `hm` using `[Submodule.mkQ_apply, Submodule.mapQ_apply, Submodule.Quotient.mk_eq_zero]`. Rewrite using `[Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Establish `hrt' : Set.range t = {⟨g, Submodule.mem_top⟩}` using `Set.range_const`. Establish `hrs : Set.range s = {⟨g, hgG⟩}` using `Set.range_const`.
+
+Rewrite `hm` using `[hrt', Submodule.mem_span_singleton]`. Rewrite using `[hrs, Submodule.mem_span_singleton]`. Take `⟨a, ha⟩` from `hm`. Use `⟨a, Subtype.ext ?_⟩` and prove the remaining obligations. Use `congrArg Subtype.val ha` as an intermediate fact.
+
+Simplify using `using this`. Establish `hfin' : Finite (G ⧸ Submodule.span (𝓞 K) (Set.range s))` using `Finite.of_injective φ hinj`. Establish `hcard` using `Nat.card_le_card_of_injective φ hinj`. Establish `hpos : 0 < Nat.card (G ⧸ Submodule.span (𝓞 K) (Set.range s))` using `Nat.card_pos`. Conclude with `Real.log_le_log (by exact_mod_cast hpos) (by exact_mod_cast hcard)`.
+-/
 theorem degree_le_degree_top (h1 : Module.finrank (𝓞 K) E.carrier = 1)
     {G : Submodule (𝓞 K) E.carrier} (hG : G ≠ ⊥) : E.degree G ≤ E.degree ⊤ := by
   obtain ⟨g, hgG, hg0⟩ := Submodule.exists_mem_ne_zero_of_ne_bot hG
@@ -183,6 +207,15 @@ theorem degree_le_degree_top (h1 : Module.finrank (𝓞 K) E.carrier = 1)
   have hpos : 0 < Nat.card (G ⧸ Submodule.span (𝓞 K) (Set.range s)) := Nat.card_pos
   exact Real.log_le_log (by exact_mod_cast hpos) (by exact_mod_cast hcard)
 
+/- English proof (translation)
+Establish `: Nontrivial E.carrier` using `Module.nontrivial_of_finrank_eq_succ h1`. Use `⟨rfl, rfl, ?_, ?_, ?_, Subsingleton.strictAnti _⟩` and prove the remaining obligations. Use `Fin.strictMono_iff_lt_succ.mpr fun i ↦ ?_ fin_cases i` and prove the remaining obligations. Conclude with `bot_lt_top`. Introduce `i fin_cases i`.
+
+Conclude with `E.saturated_bot`. Conclude with `E.saturated_top`. Introduce `i G hG _ fin_cases i`. Establish `hG' : G ≠ ⊥` using `ne_bot_of_gt hG`. Establish `hrt : E.rank ⊤ = 1` using `E.rank_eq_one_of_ne_bot h1 top_ne_bot`.
+
+Establish `hrb : E.rank ⊥ = 0` using `by simp [HermitianBundle.rank]`. Establish `hd : (0 : ℝ) < Module.finrank ℚ K` using `by exact_mod_cast Module.finrank_pos`. Express the relevant statement in the definitionally equal form `E.relSlope ⊥ G ≤ E.relSlope ⊥ ⊤`. Simplify using `only [relSlope, normDegree, E.rank_eq_one_of_ne_bot h1 hG', hrt, hrb, degree_bot]`. Simplify using `only [Nat.cast_one, Nat.cast_zero, sub_zero, zero_div, div_one]`.
+
+Conclude with `div_le_div_of_nonneg_right (E.degree_le_degree_top h1 hG') hd.le`.
+-/
 theorem isCanonicalFiltration_of_finrank_one (h1 : Module.finrank (𝓞 K) E.carrier = 1) :
     E.IsCanonicalFiltration (trivialFlag E) := by
   have : Nontrivial E.carrier := Module.nontrivial_of_finrank_eq_succ h1
@@ -205,6 +238,9 @@ theorem isCanonicalFiltration_of_finrank_one (h1 : Module.finrank (𝓞 K) E.car
     simp only [Nat.cast_one, Nat.cast_zero, sub_zero, zero_div, div_one]
     exact div_le_div_of_nonneg_right (E.degree_le_degree_top h1 hG') hd.le
 
+/- English proof (translation)
+Establish `: Nontrivial E.carrier` using `Module.nontrivial_of_finrank_eq_succ h1`. Use `⟨by omega, fun G hG ↦ ?_⟩` and prove the remaining obligations. Simplify using `only [slope, normDegree, E.rank_eq_one_of_ne_bot h1 hG, E.rank_eq_one_of_ne_bot h1 top_ne_bot, Nat.cast_one, div_one]`. Establish `hd : (0 : ℝ) < Module.finrank ℚ K` using `by exact_mod_cast Module.finrank_pos`. Conclude with `div_le_div_of_nonneg_right (E.degree_le_degree_top h1 hG) hd.le`.
+-/
 theorem semistable_of_finrank_one (h1 : Module.finrank (𝓞 K) E.carrier = 1) : E.Semistable := by
   have : Nontrivial E.carrier := Module.nontrivial_of_finrank_eq_succ h1
   refine ⟨by omega, fun G hG ↦ ?_⟩
@@ -215,19 +251,34 @@ theorem semistable_of_finrank_one (h1 : Module.finrank (𝓞 K) E.carrier = 1) :
 
 end HermitianBundle
 
+/- English proof (translation)
+The claim follows from `HermitianBundle.semistable_of_finrank_one _ (Module.finrank_self (𝓞 ℚ))`.
+-/
 example : ratIntegers.Semistable :=
   HermitianBundle.semistable_of_finrank_one _ (Module.finrank_self (𝓞 ℚ))
 
+/- English proof (translation)
+The claim follows from `HermitianBundle.isCanonicalFiltration_of_finrank_one _ (Module.finrank_self (𝓞 K))`.
+-/
 theorem isCanonicalFiltration_integers (K : Type) [Field K] [NumberField K] :
     (HermitianBundle.integers K).IsCanonicalFiltration (trivialFlag (HermitianBundle.integers K)) :=
   HermitianBundle.isCanonicalFiltration_of_finrank_one _ (Module.finrank_self (𝓞 K))
 
+/- English proof (translation)
+The claim follows from `isCanonicalFiltration_integers ℚ`.
+-/
 example : ratIntegers.IsCanonicalFiltration (trivialFlag ratIntegers) :=
   isCanonicalFiltration_integers ℚ
 
+/- English proof (translation)
+The claim follows from `isCanonicalFiltration_integers ℚ`.
+-/
 example : ratIntegers.IsCanonicalFiltration (m := 0 + 1) (trivialFlag ratIntegers) :=
   isCanonicalFiltration_integers ℚ
 
+/- English proof (translation)
+The claim follows from `one_pos`.
+-/
 example : (0 : ℝ) < 1 := one_pos
 
 end

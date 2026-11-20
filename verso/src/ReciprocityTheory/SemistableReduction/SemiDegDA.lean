@@ -7,11 +7,19 @@ namespace ReciprocityTheory.MultiplicativeHeights
 open Matrix NumberField
 open scoped ComplexOrder MatrixOrder
 
+/- English proof (translation)
+Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, dotProduct_mulVec, star_mulVec]`.
+-/
 theorem sdd_quad_conj {n m : ℕ} (P : Matrix (Fin n) (Fin m) ℂ) (Q : Matrix (Fin n) (Fin n) ℂ)
     (w : Fin m → ℂ) :
     star w ⬝ᵥ ((Pᴴ * Q * P) *ᵥ w) = star (P *ᵥ w) ⬝ᵥ (Q *ᵥ (P *ᵥ w)) := by
   rw [← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, dotProduct_mulVec, star_mulVec]
 
+/- English proof (translation)
+Take `⟨B, hB⟩` from `CStarAlgebra.nonneg_iff_eq_star_mul_self.mp (Matrix.nonneg_iff_posSemidef.mpr hA.posSemidef)`. Use `⟨B, hB, ?_⟩` and prove the remaining obligations. Rewrite using `[isUnit_iff_ne_zero]`. Introduce `h0`. Establish `hp` using `hA.det_pos`.
+
+Rewrite `hp` using `[hB, star_eq_conjTranspose, det_mul, h0, mul_zero]`. Conclude with `lt_irrefl _ hp`.
+-/
 theorem sdd_factor {n : ℕ} {A : Matrix (Fin n) (Fin n) ℂ} (hA : A.PosDef) :
     ∃ B : Matrix (Fin n) (Fin n) ℂ, A = Bᴴ * B ∧ IsUnit B.det := by
   obtain ⟨B, hB⟩ :=
@@ -23,6 +31,11 @@ theorem sdd_factor {n : ℕ} {A : Matrix (Fin n) (Fin n) ℂ} (hA : A.PosDef) :
   rw [hB, star_eq_conjTranspose, det_mul, h0, mul_zero] at hp
   exact lt_irrefl _ hp
 
+/- English proof (translation)
+Establish `h` using `orthonormal_iff_ite.mp hD.eigenvectorBasis.orthonormal i i`. Rewrite `h` using `[if_pos rfl, PiLp.inner_apply]`. Rewrite using `[← h]`. Simplify using `only [dotProduct, Pi.star_apply, RCLike.inner_apply]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations.
+
+Simplify using `[Complex.star_def, mul_comm]`.
+-/
 theorem sdd_star_self_eig {n : ℕ} {D : Matrix (Fin n) (Fin n) ℂ} (hD : D.IsHermitian) (i : Fin n) :
     star (⇑(hD.eigenvectorBasis i)) ⬝ᵥ (⇑(hD.eigenvectorBasis i)) = 1 := by
   have h := orthonormal_iff_ite.mp hD.eigenvectorBasis.orthonormal i i
@@ -32,11 +45,17 @@ theorem sdd_star_self_eig {n : ℕ} {D : Matrix (Fin n) (Fin n) ℂ} (hD : D.IsH
   refine Finset.sum_congr rfl fun x _ => ?_
   simp [Complex.star_def, mul_comm]
 
+/- English proof (translation)
+Rewrite using `[hD.mulVec_eigenvectorBasis, dotProduct_smul, sdd_star_self_eig hD i]`. Simplify using the standard rewrite rules.
+-/
 theorem sdd_quad_eig {n : ℕ} {D : Matrix (Fin n) (Fin n) ℂ} (hD : D.IsHermitian) (i : Fin n) :
     star (⇑(hD.eigenvectorBasis i)) ⬝ᵥ (D *ᵥ ⇑(hD.eigenvectorBasis i)) = (hD.eigenvalues i : ℂ) := by
   rw [hD.mulVec_eigenvectorBasis, dotProduct_smul, sdd_star_self_eig hD i]
   simp
 
+/- English proof (translation)
+Rewrite using `[hD.det_eq_prod_eigenvalues, norm_prod]`. Apply `Finset.prod_le_one (fun i _ => norm_nonneg _)` to reduce the goal to its premises. Introduce `i _`. Establish `hi` using `h (hD.eigenvectorBasis i)`. Rewrite `hi` using `[sdd_quad_eig hD i, sdd_star_self_eig hD i, Complex.one_re]`. Then use the resulting hypothesis.
+-/
 theorem sdd_det_abs_le_one {n : ℕ} {D : Matrix (Fin n) (Fin n) ℂ} (hD : D.IsHermitian)
     (h : ∀ w : Fin n → ℂ, ‖star w ⬝ᵥ (D *ᵥ w)‖ ≤ (star w ⬝ᵥ w).re) : ‖D.det‖ ≤ 1 := by
   rw [hD.det_eq_prod_eigenvalues, norm_prod]
@@ -45,6 +64,11 @@ theorem sdd_det_abs_le_one {n : ℕ} {D : Matrix (Fin n) (Fin n) ℂ} (hD : D.Is
   have hi := h (hD.eigenvectorBasis i)
   rwa [sdd_quad_eig hD i, sdd_star_self_eig hD i, Complex.one_re] at hi
 
+/- English proof (translation)
+Establish `hev : ∀ i, 1 ≤ hD.eigenvalues i`. Introduce `i`. Establish `hi` using `h (hD.eigenvectorBasis i)`. Rewrite `hi` using `[sdd_quad_eig hD i, sdd_star_self_eig hD i, Complex.one_re, Complex.ofReal_re]`. Then use the resulting hypothesis. Establish `hdet : D.det = ((∏ i, hD.eigenvalues i : ℝ) : ℂ)`.
+
+Rewrite using `[hD.det_eq_prod_eigenvalues, Complex.ofReal_prod]`. Both sides reduce to the same expression. Rewrite using `[hdet, Complex.ofReal_re]`. Use `⟨rfl, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem sdd_det_ge_one {n : ℕ} {D : Matrix (Fin n) (Fin n) ℂ} (hD : D.IsHermitian)
     (h : ∀ w : Fin n → ℂ, (star w ⬝ᵥ w).re ≤ (star w ⬝ᵥ (D *ᵥ w)).re) :
     D.det = ((D.det.re : ℝ) : ℂ) ∧ 1 ≤ D.det.re := by
@@ -60,6 +84,9 @@ theorem sdd_det_ge_one {n : ℕ} {D : Matrix (Fin n) (Fin n) ℂ} (hD : D.IsHerm
   calc (1 : ℝ) = ∏ _i : Fin n, (1 : ℝ) := by simp
     _ ≤ _ := Finset.prod_le_prod (fun _ _ => zero_le_one) (fun i _ => hev i)
 
+/- English proof (translation)
+Use `⟨?_, fun w => sdd_quad_conj B⁻¹ X w⟩` and prove the remaining obligations. Establish `h1 : B⁻¹ * B = 1` using `Matrix.nonsing_inv_mul B hu`. Establish `h2 : Bᴴ * (B⁻¹)ᴴ = 1` using `by rw [← conjTranspose_mul, h1, conjTranspose_one]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem sdd_congr {n : ℕ} (B X : Matrix (Fin n) (Fin n) ℂ) (hu : IsUnit B.det) :
     X = Bᴴ * ((B⁻¹)ᴴ * X * B⁻¹) * B ∧
     ∀ w : Fin n → ℂ, star w ⬝ᵥ (((B⁻¹)ᴴ * X * B⁻¹) *ᵥ w) =
@@ -70,6 +97,9 @@ theorem sdd_congr {n : ℕ} (B X : Matrix (Fin n) (Fin n) ℂ) (hu : IsUnit B.de
   calc X = (Bᴴ * (B⁻¹)ᴴ) * X * (B⁻¹ * B) := by rw [h1, h2, Matrix.one_mul, Matrix.mul_one]
     _ = _ := by simp only [Matrix.mul_assoc]
 
+/- English proof (translation)
+Establish `hw : B *ᵥ (B⁻¹ *ᵥ w) = w`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv B hu, Matrix.one_mulVec]`. Establish `e` using `sdd_quad_conj B 1 (B⁻¹ *ᵥ w)`. Rewrite `e` using `[Matrix.mul_one, hw, Matrix.one_mulVec]`. Conclude with `e.symm`.
+-/
 theorem sdd_quad_self {n : ℕ} (B : Matrix (Fin n) (Fin n) ℂ) (hu : IsUnit B.det) (w : Fin n → ℂ) :
     star w ⬝ᵥ w = star (B⁻¹ *ᵥ w) ⬝ᵥ ((Bᴴ * B) *ᵥ (B⁻¹ *ᵥ w)) := by
   have hw : B *ᵥ (B⁻¹ *ᵥ w) = w := by
@@ -78,17 +108,30 @@ theorem sdd_quad_self {n : ℕ} (B : Matrix (Fin n) (Fin n) ℂ) (hu : IsUnit B.
   rw [Matrix.mul_one, hw, Matrix.one_mulVec] at e
   exact e.symm
 
+/- English proof (translation)
+Rewrite using `[det_mul, det_conjTranspose, Complex.star_def, Complex.conj_mul']`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sdd_norm_det_sq {n : ℕ} (B : Matrix (Fin n) (Fin n) ℂ) :
     (Bᴴ * B).det = ((‖B.det‖ ^ 2 : ℝ) : ℂ) := by
   rw [det_mul, det_conjTranspose, Complex.star_def, Complex.conj_mul']
   push_cast
   ring
 
+/- English proof (translation)
+Rewrite using `[det_mul, det_mul, ← sdd_norm_det_sq B, det_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sdd_det_congr {n : ℕ} (B D : Matrix (Fin n) (Fin n) ℂ) :
     (Bᴴ * D * B).det = ((‖B.det‖ ^ 2 : ℝ) : ℂ) * D.det := by
   rw [det_mul, det_mul, ← sdd_norm_det_sq B, det_mul]
   ring
 
+/- English proof (translation)
+Take `⟨B, hAB, hu⟩` from `sdd_factor hA`. Take `⟨hCe, hq⟩` from `sdd_congr B C hu`. Establish `hDh : ((B⁻¹)ᴴ * C * B⁻¹).IsHermitian`. Simplify using `only [IsHermitian, conjTranspose_mul, conjTranspose_conjTranspose, hC.eq, Matrix.mul_assoc]`. Establish `hD1 : ‖((B⁻¹)ᴴ * C * B⁻¹).det‖ ≤ 1`.
+
+Apply `sdd_det_abs_le_one hDh` to reduce the goal to its premises. Introduce `w`. Rewrite using `[hq w, sdd_quad_self B hu w, ← hAB]`. Conclude with `h _`. Establish `hdetA : A.det = ((‖B.det‖ ^ 2 : ℝ) : ℂ)` using `by rw [hAB, sdd_norm_det_sq]`.
+
+Rewrite using `[hCe, sdd_det_congr, hdetA, Complex.ofReal_re, norm_mul, Complex.norm_real, Real.norm_of_nonneg (sq_nonneg _)]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem sdd_absDet {n : ℕ} (A C : Matrix (Fin n) (Fin n) ℂ) (hA : A.PosDef) (hC : C.IsHermitian)
     (h : ∀ v : Fin n → ℂ, ‖star v ⬝ᵥ (C *ᵥ v)‖ ≤ (star v ⬝ᵥ (A *ᵥ v)).re) :
     ‖C.det‖ ≤ A.det.re := by
@@ -107,6 +150,13 @@ theorem sdd_absDet {n : ℕ} (A C : Matrix (Fin n) (Fin n) ℂ) (hA : A.PosDef) 
   calc ‖B.det‖ ^ 2 * ‖((B⁻¹)ᴴ * C * B⁻¹).det‖ ≤ ‖B.det‖ ^ 2 * 1 := by gcongr
     _ = _ := mul_one _
 
+/- English proof (translation)
+Take `⟨B, hXB, hu⟩` from `sdd_factor hX`. Take `⟨hYe, hq⟩` from `sdd_congr B Y hu`. Establish `hDh : ((B⁻¹)ᴴ * Y * B⁻¹).IsHermitian`. Simplify using `only [IsHermitian, conjTranspose_mul, conjTranspose_conjTranspose, hY.eq, Matrix.mul_assoc]`. Take `⟨hDr, hD1⟩` from `sdd_det_ge_one hDh (fun w => by`.
+
+Rewrite using `[hq w, sdd_quad_self B hu w, ← hXB]`. Conclude with `h _)`. Establish `hdetX : X.det = ((‖B.det‖ ^ 2 : ℝ) : ℂ)` using `by rw [hXB, sdd_norm_det_sq]`. Establish `hBpos : 0 < ‖B.det‖ ^ 2` using `pow_pos (norm_pos_iff.mpr hu.ne_zero) 2`. Rewrite using `[hdetX, hYe, sdd_det_congr, hDr, Complex.ofReal_re, ← Complex.ofReal_mul, Complex.ofReal_re]`.
+
+Conclude with `⟨hBpos, le_mul_of_one_le_right hBpos.le hD1⟩`.
+-/
 theorem sdd_det_mono {n : ℕ} (X Y : Matrix (Fin n) (Fin n) ℂ) (hX : X.PosDef) (hY : Y.IsHermitian)
     (h : ∀ v : Fin n → ℂ, (star v ⬝ᵥ (X *ᵥ v)).re ≤ (star v ⬝ᵥ (Y *ᵥ v)).re) :
     0 < X.det.re ∧ X.det.re ≤ Y.det.re := by
@@ -126,6 +176,9 @@ def embM {K : Type} [Field K] [NumberField K] {r k : ℕ} (σ : K →+* ℂ) (b 
     Matrix (Fin r) (Fin k) ℂ :=
   Matrix.of fun l i => σ (b i l)
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [gramX, embM, embVec, Matrix.of_apply, Matrix.mul_apply, conjTranspose_apply, dotProduct, Matrix.mulVec, Pi.star_apply, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`.
+-/
 theorem sdd_gramX_eq {K : Type} [Field K] [NumberField K] {r k m : ℕ}
     (H : Matrix (Fin r) (Fin r) ℂ) (σ : K →+* ℂ) (b : Fin k → Fin r → K) (c : Fin m → Fin r → K) :
     gramX H σ b c = (embM σ b)ᴴ * H * embM σ c := by
@@ -135,10 +188,22 @@ theorem sdd_gramX_eq {K : Type} [Field K] [NumberField K] {r k m : ℕ}
   rw [Finset.sum_comm]
   exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring
 
+/- English proof (translation)
+The claim follows from `sdd_gramX_eq H σ b b`.
+-/
 theorem sdd_gramC_eq {K : Type} [Field K] [NumberField K] {r k : ℕ}
     (H : Matrix (Fin r) (Fin r) ℂ) (σ : K →+* ℂ) (b : Fin k → Fin r → K) :
     gramC H σ b = (embM σ b)ᴴ * H * embM σ b := sdd_gramX_eq H σ b b
 
+/- English proof (translation)
+Set `M : Matrix (Fin r) (Fin k) K` to `Matrix.of fun l i => b i l`. Establish `hM : Function.Injective M.mulVecLin`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `x hx`. Establish `hs : ∑ i, x i • b i = M.mulVecLin x`.
+
+Use extensionality with `l`. Simplify using `[M, Matrix.mulVec, dotProduct, mul_comm, Finset.sum_apply]`. Rewrite `hs` using `[hx]`. Conclude with `funext (Fintype.linearIndependent_iff.mp hb x hs)`. Take `⟨g, hg⟩` from `LinearMap.exists_leftInverse_of_injective M.mulVecLin (LinearMap.ker_eq_bot.mpr hM)`.
+
+Establish `hLM : LinearMap.toMatrix' g * M = 1`. Apply `Matrix.toLin'.injective` to reduce the goal to its premises. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Rewrite using `[Matrix.toLin'_apply, Matrix.toLin'_apply, Matrix.one_mulVec, ← Matrix.mulVec_mulVec, LinearMap.toMatrix'_mulVec]`. Conclude with `LinearMap.congr_fun hg x`.
+
+Establish `hE : embM σ b = M.map σ` using `rfl`. Introduce `x y hxy`. Establish `e` using `congrArg ((LinearMap.toMatrix' g).map σ).mulVec hxy`. Simplify using `only [hE, Matrix.mulVec_mulVec, ← Matrix.map_mul, hLM, Matrix.map_one _ (map_zero σ) (map_one σ), Matrix.one_mulVec] at e`. Conclude with `e`.
+-/
 theorem sdd_embM_inj {K : Type} [Field K] [NumberField K] {r k : ℕ} (σ : K →+* ℂ)
     (b : Fin k → Fin r → K) (hb : LinearIndependent K b) : Function.Injective (embM σ b).mulVec := by
   classical
@@ -165,6 +230,11 @@ theorem sdd_embM_inj {K : Type} [Field K] [NumberField K] {r k : ℕ} (σ : K �
     Matrix.one_mulVec] at e
   exact e
 
+/- English proof (translation)
+Establish `e : star x ⬝ᵥ (diagonal (fun l => (d l : ℂ)) *ᵥ x) = ∑ l, ((d l * ‖x l‖ ^ 2 : ℝ) : ℂ)`. Simplify using `only [dotProduct, mulVec_diagonal, Pi.star_apply]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.star_def, ← mul_assoc, mul_comm ((starRingEnd ℂ) (x l)), mul_assoc, Complex.conj_mul']`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, ← Complex.ofReal_sum, Complex.ofReal_re]`.
+-/
 theorem sdd_diag_quad {r : ℕ} (d : Fin r → ℝ) (x : Fin r → ℂ) :
     (star x ⬝ᵥ (diagonal (fun l => (d l : ℂ)) *ᵥ x)).re = ∑ l, d l * ‖x l‖ ^ 2 := by
   have e : star x ⬝ᵥ (diagonal (fun l => (d l : ℂ)) *ᵥ x) = ∑ l, ((d l * ‖x l‖ ^ 2 : ℝ) : ℂ) := by
@@ -175,6 +245,11 @@ theorem sdd_diag_quad {r : ℕ} (d : Fin r → ℝ) (x : Fin r → ℂ) :
     ring
   rw [e, ← Complex.ofReal_sum, Complex.ofReal_re]
 
+/- English proof (translation)
+Rewrite using `[sdd_quad_conj, sdd_quad_conj, sdd_diag_quad, sdd_diag_quad]`. Use `Finset.sum_le_sum fun l _ => ?_` and prove the remaining obligations. Establish `hrow : (B1 *ᵥ v) l = if e ≤ (l : ℕ) then (E *ᵥ v) l else 0`. Apply the tactic sequence `by_cases hc : e ≤ (l : ℕ) <;> simp [Matrix.mulVec, dotProduct, hB1, hc]`. Rewrite using `[hrow]`.
+
+Use `split_ifs`. Conclude with `le_rfl`. Rewrite using `[norm_zero]`. Use polynomial arithmetic with `[hd l, sq_nonneg ‖(E *ᵥ v) l‖]`.
+-/
 theorem sdd_cut_quad {r k : ℕ} (d : Fin r → ℝ) (hd : ∀ l, 0 ≤ d l) (e : ℕ)
     (E B1 : Matrix (Fin r) (Fin k) ℂ) (hB1 : ∀ l j, B1 l j = if e ≤ (l : ℕ) then E l j else 0)
     (v : Fin k → ℂ) :
@@ -190,6 +265,13 @@ theorem sdd_cut_quad {r k : ℕ} (d : Fin r → ℝ) (hd : ∀ l, 0 ≤ d l) (e 
   · rw [norm_zero]
     nlinarith [hd l, sq_nonneg ‖(E *ᵥ v) l‖]
 
+/- English proof (translation)
+Use `set G := Bᴴ * H * B with hGdef`. Establish `hGG : G⁻¹ * G = 1` using `Matrix.nonsing_inv_mul G hu`. Establish `hGinvH : (G⁻¹)ᴴ = G⁻¹` using `by rw [conjTranspose_nonsing_inv, hG.eq]`. Establish `hYH : (Bᴴ * H * C)ᴴ = Cᴴ * H * B`. Rewrite using `[conjTranspose_mul, conjTranspose_mul, conjTranspose_conjTranspose, hH, Matrix.mul_assoc]`.
+
+Establish `hXh : (G⁻¹ * (Bᴴ * H * C))ᴴ = (Cᴴ * H * B) * G⁻¹`. Rewrite using `[conjTranspose_mul, hYH, hGinvH]`. Establish `hcanc : ∀ Z : Matrix (Fin k₀) (Fin k₁) ℂ, G⁻¹ * (Bᴴ * (H * (B * Z))) = Z`. Introduce `Z`. Establish `hz : Bᴴ * (H * (B * Z)) = G * Z` using `by simp only [hGdef, Matrix.mul_assoc]`.
+
+Rewrite using `[hz, ← Matrix.mul_assoc, hGG, Matrix.one_mul]`. Rewrite using `[conjTranspose_sub, conjTranspose_mul, hXh]`. Simplify using `only [Matrix.sub_mul, Matrix.mul_sub, Matrix.mul_assoc, hcanc]`. Normalize the expressions using the abelian group laws.
+-/
 theorem sdd_schur {r k₀ k₁ : ℕ} (B : Matrix (Fin r) (Fin k₀) ℂ) (C : Matrix (Fin r) (Fin k₁) ℂ)
     (H : Matrix (Fin r) (Fin r) ℂ) (hH : Hᴴ = H) (hG : (Bᴴ * H * B).IsHermitian)
     (hu : IsUnit (Bᴴ * H * B).det) :

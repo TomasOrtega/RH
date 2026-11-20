@@ -8,6 +8,9 @@ open NumberField
 
 namespace KLinesProductFormula
 
+/- English proof (translation)
+Establish `h` using `congr_arg (fun z : ℂ => ‖z‖) (Algebra.norm_eq_prod_embeddings ℚ ℂ x)`. Rewrite `h` using `[norm_prod, ← Fintype.prod_equiv (RingHom.equivRatAlgHom K ℂ) (fun f => ‖f x‖) (fun φ => ‖φ x‖) fun _ => by simp [RingHom.equivRatAlgHom_apply]]`. Rewrite using `[← h, eq_ratCast, ← Real.norm_eq_abs, ← Complex.norm_real, Complex.ofReal_ratCast]`.
+-/
 theorem prod_norm_embeddings (K : Type) [Field K] [NumberField K] (x : K) :
     ∏ σ : K →+* ℂ, ‖σ x‖ = |((Algebra.norm ℚ x : ℚ) : ℝ)| := by
   classical
@@ -18,6 +21,9 @@ theorem prod_norm_embeddings (K : Type) [Field K] [NumberField K] (x : K) :
 
 end KLinesProductFormula
 
+/- English proof (translation)
+Introduce `K _ _ x hx`. Rewrite using `[← KLinesProductFormula.prod_norm_embeddings K x, Real.log_prod]`. Introduce `σ _`. Conclude with `norm_ne_zero_iff.mpr ((map_ne_zero σ).mpr hx)`.
+-/
 theorem LinesProductFormula.proof : LinesProductFormula.Statement := by
   intro K _ _ x hx
   rw [← KLinesProductFormula.prod_norm_embeddings K x, Real.log_prod]

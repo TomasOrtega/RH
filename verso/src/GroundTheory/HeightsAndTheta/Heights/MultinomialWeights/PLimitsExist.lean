@@ -9,6 +9,15 @@ namespace GroundTheory.Heights₂.Heights.TheoremB
 
 open MvPolynomial Finset Filter Topology
 
+/- English proof (translation)
+Establish `hs : Summable ((primesAbove S B0).indicator g)` using `summable_subtype_iff_indicator.mp hg`. Rewrite using `[_root_.tsum_subtype]`. Establish `h'` using `(tendsto_add_atTop_iff_nat 1).mpr hs.hasSum.tendsto_sum_nat`. Use `h'.congr (fun B => ?_)` and prove the remaining obligations. Establish `hsub : primesIn S B0 B ⊆ range (B + 1)`.
+
+Introduce `p hp`. Simplify using `only [primesIn, mem_filter, mem_Ioc] at hp`. Conclude with `mem_range.2 (Nat.lt_succ_of_le hp.1.2)`. Rewrite using `[← Finset.sum_subset hsub ?_]`. Use `Finset.sum_congr rfl (fun p hp => ?_)` and prove the remaining obligations.
+
+Simplify using `only [primesIn, mem_filter, mem_Ioc] at hp`. Conclude with `Set.indicator_of_mem (show p ∈ primesAbove S B0 from ⟨hp.2.1, hp.2.2, hp.1.1⟩) g`. Introduce `p hp hpn`. Use `Set.indicator_of_notMem (fun hmem => hpn ?_) g` and prove the remaining obligations. Take `⟨h1, h2, h3⟩` from `hmem`.
+
+Simplify using `only [primesIn, mem_filter, mem_Ioc]`. Conclude with `⟨⟨h3, Nat.le_of_lt_succ (mem_range.1 hp)⟩, h1, h2⟩`.
+-/
 theorem tendsto_sum_primesIn {d : IndexData} (S : EndSystem d) (B0 : ℕ) (g : ℕ → ℝ)
     (hg : Summable (fun p : primesAbove S B0 => g p)) :
     Tendsto (fun B : ℕ => ∑ p ∈ primesIn S B0 B, g p) atTop
@@ -31,12 +40,24 @@ theorem tendsto_sum_primesIn {d : IndexData} (S : EndSystem d) (B0 : ℕ) (g : �
     simp only [primesIn, mem_filter, mem_Ioc]
     exact ⟨⟨h3, Nat.le_of_lt_succ (mem_range.1 hp)⟩, h1, h2⟩
 
+/- English proof (translation)
+Take `⟨Q, hQh, hQ⟩` from `RestTerms.CoinvAboveTop.full ℚ d.f d.N (d.D + 1) F hF (Nat.lt_succ_self _)`. Conclude with `⟨Q, hF, fun k _ τ => hQh k τ, hQ⟩`.
+-/
 theorem homDecomp_exists {d : IndexData} {F : XPoly d} (hF : F.IsHomogeneous (d.D + 1)) :
     ∃ Q : ℕ → Fin d.f → XPoly d, IsHomDecomp d F Q := by
   obtain ⟨Q, hQh, hQ⟩ :=
     RestTerms.CoinvAboveTop.full ℚ d.f d.N (d.D + 1) F hF (Nat.lt_succ_self _)
   exact ⟨Q, hF, fun k _ τ => hQh k τ, hQ⟩
 
+/- English proof (translation)
+Take `⟨B1, hB1⟩` from `h82 d S hin B0`. Take `⟨C, hC⟩` from `hB1 F Q hQ`. Establish `hR : Tendsto (fun B : ℕ => ∑ p ∈ primesIn S B0 B, rest₂ d S.vol p (S.frob p) Q) atTop (𝓝 (restTot S B0 Q))` using `tendsto_sum_primesIn S B0 _ (summable_abs_iff.mp (hsum d S B0 F Q hQ.2.2))`. Establish `hlog : Tendsto (fun B : ℕ => C * Real.log B / B) atTop (𝓝 0)`. Establish `h` using `((Real.tendsto_pow_log_div_mul_add_atTop 1 0 1 one_ne_zero).comp tendsto_natCast_atTop_atTop).const_mul C`.
+
+Rewrite `h` using `[mul_zero]`. Use `h.congr (fun B => ?_)` and prove the remaining obligations. Simplify using `[mul_div_assoc]`. Establish `hE : Tendsto (fun B : ℕ => S.PP B0 F - (S.vol * (S.hh F - aB S B0 B * (shSum d F : ℝ) - bB S B0 B * (totSum d F : ℝ)) + ∑ p ∈ primesIn S B0 B, rest₂ d S.vol p (S.frob p) Q)) atTop (𝓝 0)`. Use `squeeze_zero_norm' ?_ hlog` and prove the remaining obligations.
+
+Use `filter_upwards [eventually_ge_atTop (max (B0 + 1) B1)] with B hB`. Rewrite using `[Real.norm_eq_abs]`. Conclude with `hC B (lt_of_lt_of_le (Nat.lt_succ_self B0) (le_trans (le_max_left _ _) hB)) (le_trans (le_max_right _ _) hB)`. Use `⟨(0 - S.PP B0 F + S.vol * S.hh F + restTot S B0 Q) / S.vol, ?_⟩` and prove the remaining obligations. Establish `hc1 : Tendsto (fun _ : ℕ => S.PP B0 F) atTop (𝓝 (S.PP B0 F))` using `tendsto_const_nhds`.
+
+Establish `hc2 : Tendsto (fun _ : ℕ => S.vol * S.hh F) atTop (𝓝 (S.vol * S.hh F))` using `tendsto_const_nhds`. Use `((((hE.sub hc1).add hc2).add hR).div_const S.vol).congr (fun B => ?_)` and prove the remaining obligations. Rewrite using `[div_eq_iff S.vol_pos.ne']`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem combo_tendsto (h82 : HeightSumIdentity.Statement) (hsum : RestSummable.Statement)
     {d : IndexData} (S : EndSystem d) (hin : HeightIdentityInputs S) (B0 : ℕ)
     (F : XPoly d) (Q : ℕ → Fin d.f → XPoly d) (hQ : IsHomDecomp d F Q) :
@@ -69,6 +90,13 @@ theorem combo_tendsto (h82 : HeightSumIdentity.Statement) (hsum : RestSummable.S
   rw [div_eq_iff S.vol_pos.ne']
   ring
 
+/- English proof (translation)
+Introduce `d S hin B0`. Take `⟨F1, F2, hF1, hF2, hdet⟩` from `hpair d S.f_pos`. Take `⟨Q1, hQ1⟩` from `homDecomp_exists hF1`. Take `⟨Q2, hQ2⟩` from `homDecomp_exists hF2`. Take `⟨L1, h1⟩` from `combo_tendsto h82 hsum S hin B0 F1 Q1 hQ1`.
+
+Take `⟨L2, h2⟩` from `combo_tendsto h82 hsum S hin B0 F2 Q2 hQ2`. Establish `hdetR : (shSum d F1 : ℝ) * (totSum d F2 : ℝ) - (totSum d F1 : ℝ) * (shSum d F2 : ℝ) ≠ 0`. Conclude with `hdet` after adjusting the coercions. Use `⟨((totSum d F2 : ℝ) * L1 - (totSum d F1 : ℝ) * L2) / ((shSum d F1 : ℝ) * (totSum d F2 : ℝ) - (totSum d F1 : ℝ) * (shSum d F2 : ℝ)), ((shSum d F1 : ℝ) * L2 - (shSum d F2 : ℝ) * L1) / ((shSum d F1 : ℝ) * (totSum d F2 : ℝ) - (totSum d F1 : ℝ) * (shSum d F2 : ℝ)), ?_, ?_⟩` and prove the remaining obligations. Use `(((h1.const_mul (totSum d F2 : ℝ)).sub (h2.const_mul (totSum d F1 : ℝ))).div_const _).congr (fun B => ?_)` and prove the remaining obligations.
+
+Rewrite using `[div_eq_iff hdetR]`. Expand and normalize the polynomial expressions, which then agree. Use `(((h2.const_mul (shSum d F1 : ℝ)).sub (h1.const_mul (shSum d F2 : ℝ))).div_const _).congr (fun B => ?_)` and prove the remaining obligations. Rewrite using `[div_eq_iff hdetR]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem LimitsExist.proof (h82 : HeightSumIdentity.Statement) (hpair : ShTotInvertiblePair.Statement)
     (hsum : RestSummable.Statement) : LimitsExist.Statement := by
   intro d S hin B0

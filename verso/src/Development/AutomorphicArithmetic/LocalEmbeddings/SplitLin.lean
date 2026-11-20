@@ -42,6 +42,9 @@ noncomputable section Helpers
 namespace GlobalTheory.SplitLin.OppLagr
 open scoped TensorProduct
 
+/- English proof (translation)
+Use function extensionality and compare the values at `Y`. Simplify using `only [GlobalTheory.SplitFlip.omA, GlobalTheory.SplitFlip.omB, GlobalTheory.SplitFlip.gdet_invT, map_inv, inv_inv, MonoidHom.inv_apply, GlobalTheory.SplitFlip.apow_inv, neg_div, neg_neg, GlobalTheory.SplitFlip.invT_invT, GlobalTheory.SplitFlip.invT_inv_val]`.
+-/
 theorem omA_invT {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {A D : Type} [Fintype A] [DecidableEq A] [Fintype D] [DecidableEq D]
     (ν α : kˣ →* ℂˣ) (g : GL A k) (h : GL D k) (Ψ : Matrix A D k → ℂ) :
@@ -50,6 +53,13 @@ theorem omA_invT {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsN
   simp only [GlobalTheory.SplitFlip.omA, GlobalTheory.SplitFlip.omB, GlobalTheory.SplitFlip.gdet_invT, map_inv, inv_inv,
     MonoidHom.inv_apply, GlobalTheory.SplitFlip.apow_inv, neg_div, neg_neg, GlobalTheory.SplitFlip.invT_invT, GlobalTheory.SplitFlip.invT_inv_val]
 
+/- English proof (translation)
+Use `symm`. Apply `inv_mul_eq_one.mp` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_mul, GlobalTheory.SplitFlip.invT_inv_val, Units.val_one]`. Establish `h1 : (b⁻¹).1ᵀ * P.1 = s • J`.
+
+Rewrite using `[hP, Matrix.mul_smul, ← Matrix.mul_assoc, ← Matrix.transpose_mul, Units.mul_inv, Matrix.transpose_one, Matrix.one_mul]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Units.val_mul, Matrix.transpose_mul, Matrix.mul_assoc]`. Use `_ = P.1 * (P⁻¹).1 := by`. Rewrite using `[h1, Matrix.mul_smul, Matrix.smul_mul, hU, Matrix.mul_smul, Matrix.smul_mul, hP, Matrix.smul_mul]`.
+
+Use `_ = 1 := Units.mul_inv P`.
+-/
 theorem conj_eq_invT {k : Type} [Field k] {n : ℕ} (b P G G' : GL (Fin n) k) (J : Matrix (Fin n) (Fin n) k) (s : k)
     (hU : G.1ᵀ * J * G'.1 = J) (hP : P.1 = s • (b.1ᵀ * J)) :
     P * G' * P⁻¹ = GlobalTheory.SplitFlip.invT (b⁻¹ * G * b) := by
@@ -65,6 +75,15 @@ theorem conj_eq_invT {k : Type} [Field k] {n : ℕ} (b P G G' : GL (Fin n) k) (J
         rw [h1, Matrix.mul_smul, Matrix.smul_mul, hU, Matrix.mul_smul, Matrix.smul_mul, hP, Matrix.smul_mul]
     _ = 1 := Units.mul_inv P
 
+/- English proof (translation)
+Take `⟨hrs, A, hA⟩` from `h`. Establish `hNN : Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℂ) 0 0 (-1 : Matrix (Fin s) (Fin s) ℂ) * Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℂ) 0 0 (-1 : Matrix (Fin s) (Fin s) ℂ) = 1`. Rewrite using `[Matrix.fromBlocks_multiply]`. Simplify using `[Matrix.fromBlocks_one]`. Establish `hN : IsUnit (Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℂ) 0 0 (-1 : Matrix (Fin s) (Fin s) ℂ))` using `⟨⟨_, _, hNN, hNN⟩, rfl⟩`.
+
+Establish `h1` using `Matrix.rank_of_isUnit _ hN`. Establish `h2 : (Aᵀ * M * A.map star).rank ≤ M.rank` using `(Matrix.rank_mul_le_left _ _).trans (Matrix.rank_mul_le_right _ _)`. Rewrite `h2` using `[hA, h1]`. Simplify using `only [Fintype.card_sum, Fintype.card_fin, hrs] at h2`. Establish `h3 : LinearMap.range M.mulVecLin = ⊤`.
+
+Apply `Submodule.eq_top_of_finrank_eq` to reduce the goal to its premises. Use `M.rank_le_width` as an intermediate fact. Simplify using `only [Matrix.rank, Fintype.card_fin] at h2 this`. Rewrite using `[Module.finrank_fin_fun]`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hu : IsUnit M` using `(Matrix.mulVec_surjective_iff_isUnit).mp (LinearMap.range_eq_top.mp h3)`. Conclude with `((Matrix.isUnit_iff_isUnit_det M).mp hu).ne_zero`.
+-/
 theorem det_ne_zero_of_hasSig {n r s : ℕ} {M : Matrix (Fin n) (Fin n) ℂ} (h : HasSig M r s) : M.det ≠ 0 := by
   obtain ⟨hrs, A, hA⟩ := h
   have hNN : Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℂ) 0 0 (-1 : Matrix (Fin s) (Fin s) ℂ) *
@@ -91,14 +110,29 @@ open scoped TensorProduct
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[h.2.2.2 τ, h.2.2.2 τ, star_star]`.
+-/
 theorem conj_conj (h : IsCMExt F E σ) (x : E) : σ (σ x) = x := by
   obtain ⟨τ⟩ : Nonempty (E →+* ℂ) := inferInstance
   apply τ.injective
   rw [h.2.2.2 τ, h.2.2.2 τ, star_star]
 
+/- English proof (translation)
+The claim follows from `AlgHom.ext fun x => by simp [conj_conj h]`.
+-/
 theorem comp_comp (h : IsCMExt F E σ) {K : Type} [Ring K] [Algebra F K] (t : E →ₐ[F] K) : (t.comp σ).comp σ = t :=
   AlgHom.ext fun x => by simp [conj_conj h]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Establish `hfix : ∀ x, σ x = x` using `fun x => by`. Assume the negation of the conclusion as `hne`. Conclude with `hc (x - σ x) (sub_ne_zero.mpr (Ne.symm hne)) (by rw [map_sub, conj_conj h]; ring)`.
+
+Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Establish `hreal : ComplexEmbedding.IsReal τ`. Rewrite using `[ComplexEmbedding.isReal_iff]`. Use extensionality with `x`. Rewrite using `[ComplexEmbedding.conjugate_coe_eq]`.
+
+Use `h.2.2.2 τ x` as an intermediate fact. Rewrite `this` using `[hfix]`. Conclude with `this.symm`. Establish `hc'` using `h.2.1.isComplex (InfinitePlace.mk τ)`. Rewrite `hc'` using `[← InfinitePlace.not_isReal_iff_isComplex]`.
+
+Conclude with `hc' (InfinitePlace.isReal_mk_iff.mpr hreal)`.
+-/
 theorem exists_anti (h : IsCMExt F E σ) : ∃ ξ : E, ξ ≠ 0 ∧ σ ξ = -ξ := by
   by_contra hc
   push_neg at hc
@@ -117,6 +151,17 @@ theorem exists_anti (h : IsCMExt F E σ) : ∃ ξ : E, ξ ≠ 0 ∧ σ ξ = -ξ 
   rw [← InfinitePlace.not_isReal_iff_isComplex] at hc'
   exact hc' (InfinitePlace.isReal_mk_iff.mpr hreal)
 
+/- English proof (translation)
+Take `⟨ξ, hξ0, hξ⟩` from `exists_anti h`. Establish `hli : LinearIndependent F ![(1 : E), ξ]`. Rewrite using `[LinearIndependent.pair_iff]`. Introduce `s u hsu`. Simplify using `only [Algebra.smul_def, mul_one] at hsu`.
+
+Establish `h2` using `congrArg σ hsu`. Simplify using `only [map_add, map_mul, AlgHom.commutes, hξ, map_zero] at h2`. Establish `h3 : algebraMap F E u * ξ = 0` using `by linear_combination (hsu - h2) / 2`. Establish `hu : u = 0` using `(map_eq_zero (algebraMap F E)).mp ((mul_eq_zero.mp h3).resolve_right hξ0)`. Substitute `hu` using the available equality.
+
+Use `⟨(map_eq_zero (algebraMap F E)).mp (by simpa using hsu), rfl⟩` and prove the remaining obligations. Establish `hcard : Fintype.card (Fin 2) = Module.finrank F E` using `by rw [h.2.2.1]; rfl`. Set `b` to `basisOfLinearIndependentOfCardEqFinrank hli hcard`. Establish `hb : ∀ i, b i = ![(1 : E), ξ] i` using `fun i => by simp [b]`. Use `⟨(1 : AF F) ⊗ₜ[F] ξ, ⟨?_, ?_, ⟨Algebra.TensorProduct.basis (AF F) b, ?_, ?_⟩⟩⟩` and prove the remaining obligations.
+
+Apply the tactic sequence `refine ⟨⟨(1 : AF F) ⊗ₜ[F] ξ, (1 : AF F) ⊗ₜ[F] ξ⁻¹, ?_, ?_⟩, rfl⟩ <;>`. Simplify using `[Algebra.TensorProduct.tmul_mul_tmul, hξ0, ← Algebra.TensorProduct.one_def]`. Simplify using `[cA, Algebra.TensorProduct.map_tmul, hξ, TensorProduct.tmul_neg]`. Rewrite using `[Algebra.TensorProduct.basis_apply, hb]`. Both sides reduce to the same expression.
+
+Rewrite using `[Algebra.TensorProduct.basis_apply, hb]`. Both sides reduce to the same expression.
+-/
 theorem exists_isQuad (h : IsCMExt F E σ) : ∃ ξ : AE F E, IsQuad (cA σ) ξ := by
   obtain ⟨ξ, hξ0, hξ⟩ := exists_anti h
   have hli : LinearIndependent F ![(1 : E), ξ] := by
@@ -146,6 +191,25 @@ open scoped TensorProduct
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+Take `⟨ξ, hξ⟩` from `exists_isQuad h`. Use extensionality with `x`. Set `L` to `GlobalTheory.SplitGLLift.liftPair (v := v) h t`. Establish `key : ∀ p q : Fv F v × Fv F v, p + q + p * q = 0 → (1 + L p) * (1 + L q) = 1`. Introduce `p q hpq`.
+
+Use `congrArg L hpq` as an intermediate fact. Rewrite `this` using `[map_add, map_add, map_mul, map_zero]`. Take the linear combination `this`. Establish `hx1 : ((x : Fv F v) - 1, (0 : Fv F v)) + (((x⁻¹ : (Fv F v)ˣ) : Fv F v) - 1, 0) + ((x : Fv F v) - 1, (0 : Fv F v)) * (((x⁻¹ : (Fv F v)ˣ) : Fv F v) - 1, 0) = 0`. Use `Prod.ext ?_ ?_` and prove the remaining obligations.
+
+Simplify using `only [Prod.fst_add, Prod.fst_mul, Prod.fst_zero]`. Take the linear combination `Units.mul_inv x`. Simplify using the standard rewrite rules. Establish `hx2 : (((x⁻¹ : (Fv F v)ˣ) : Fv F v) - 1, (0 : Fv F v)) + ((x : Fv F v) - 1, (0 : Fv F v)) + (((x⁻¹ : (Fv F v)ˣ) : Fv F v) - 1, 0) * ((x : Fv F v) - 1, (0 : Fv F v)) = 0`. Use `Prod.ext ?_ ?_` and prove the remaining obligations.
+
+Simplify using `only [Prod.fst_add, Prod.fst_mul, Prod.fst_zero]`. Take the linear combination `Units.mul_inv x`. Simplify using the standard rewrite rules. Set `z : (AE F E)ˣ` to `⟨1 + L ((x : Fv F v) - 1, 0), 1 + L (((x⁻¹ : (Fv F v)ˣ) : Fv F v) - 1, 0), key _ _ hx1, key _ _ hx2⟩`. Establish `hzt : Units.map (piW t).toMonoidHom z = x`.
+
+Use `ext`. Simplify using `[z, L, GlobalTheory.SplitGLLift.piW_liftPair]`. Establish `hzc : piW (t.comp σ) (z : AE F E) = 1`. Simplify using `[z, L, GlobalTheory.SplitGLLift.piW_comp_liftPair]`. Establish `hzA : At (evFin F v) ((z : AE F E) - 1)`.
+
+Simplify `GlobalTheory.SplitGLLift.at_liftPair h t ((x : Fv F v) - 1, 0)` using `[z, L]`. Set `z' : (AE F E)ˣ` to `Units.map (cA σ : AE F E →* AE F E) z`. Establish `hz'v : (z' : AE F E) = 1 + L (0, (x : Fv F v) - 1)`. Simplify using `[z', z, L, GlobalTheory.SplitGLLift.cA_liftPair]`. Establish `hz't : Units.map (piW (t.comp σ)).toMonoidHom z' = x`.
+
+Use `ext`. Simplify using `[hz'v, L, GlobalTheory.SplitGLLift.piW_comp_liftPair]`. Establish `hz'c : piW ((t.comp σ).comp σ) (z' : AE F E) = 1`. Rewrite using `[comp_comp h, hz'v]`. Simplify using `[L, GlobalTheory.SplitGLLift.piW_liftPair]`.
+
+Establish `hz'A : At (evFin F v) ((z' : AE F E) - 1)`. Simplify `GlobalTheory.SplitGLLift.at_liftPair h t (0, (x : Fv F v) - 1)` using `[hz'v, L]`. Establish `e1` using `GlobalTheory.ChrLocal.chrW_piW_eq F E σ h χ v t z hzA hzc`. Establish `e2` using `GlobalTheory.ChrLocal.chrW_piW_eq F E σ h χ v (t.comp σ) z' hz'A hz'c`. Rewrite `e1` using `[hzt]`.
+
+Rewrite `e2` using `[hz't]`. Rewrite using `[MonoidHom.inv_apply, e1, e2, ResEtaPow.map_conj hξ hχ z, map_inv]`.
+-/
 theorem chrW_comp (h : IsCMExt F E σ) (χ : Chr F E) {m : ℕ}
     (hχ : ResEtaPow (Units.map (algebraMap F (AF F)).toMonoidHom).range χ m) {v : Pl F} (t : E →ₐ[F] Fv F v) :
     chrW χ (t.comp σ) = (chrW χ t)⁻¹ := by
@@ -199,12 +263,18 @@ open scoped TensorProduct
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+Establish `: (J.map t).det = t J.det` using `(AlgHom.map_det t J).symm`. Rewrite using `[this]`. Conclude with `(map_ne_zero t).mpr hJ`.
+-/
 theorem det_map_ne_zero {m : ℕ} {J : Matrix (Fin m) (Fin m) E} (hJ : J.det ≠ 0) {K : Type} [Field K] [Algebra F K]
     (t : E →ₐ[F] K) : (J.map t).det ≠ 0 := by
   have : (J.map t).det = t J.det := (AlgHom.map_det t J).symm
   rw [this]
   exact (map_ne_zero t).mpr hJ
 
+/- English proof (translation)
+Take `w` from `Classical.arbitrary (InfinitePlace F)`. Establish `h` using `det_ne_zero_of_hasSig (hX.sig w)`. Introduce `h0`. Apply `h` to reduce the goal to its premises. Rewrite using `[show (X.J.map (B.emb w).1).det = (B.emb w).1 X.J.det from (RingHom.map_det (B.emb w).1 X.J).symm, h0, map_zero]`.
+-/
 theorem det_ne_zero_herm {B : Base F E} {m : ℕ} {X : Spc F E m} {r s : ℕ} (hX : X.IsHerm σ B r s) : X.J.det ≠ 0 := by
   obtain w := Classical.arbitrary (InfinitePlace F)
   have h := det_ne_zero_of_hasSig (hX.sig w)
@@ -212,6 +282,9 @@ theorem det_ne_zero_herm {B : Base F E} {m : ℕ} {X : Spc F E m} {r s : ℕ} (h
   apply h
   rw [show (X.J.map (B.emb w).1).det = (B.emb w).1 X.J.det from (RingHom.map_det (B.emb w).1 X.J).symm, h0, map_zero]
 
+/- English proof (translation)
+Take `w` from `Classical.arbitrary (InfinitePlace F)`. Establish `h` using `det_ne_zero_of_hasSig (hX.sig w)`. Introduce `h0`. Apply `h` to reduce the goal to its premises. Rewrite using `[Matrix.det_smul, show (X.J.map (B.emb w).1).det = (B.emb w).1 X.J.det from (RingHom.map_det (B.emb w).1 X.J).symm, h0, map_zero, mul_zero]`.
+-/
 theorem det_ne_zero_skew {B : Base F E} {m : ℕ} {X : Spc F E m} {r s : ℕ} (hX : X.IsSkew σ B r s) : X.J.det ≠ 0 := by
   obtain w := Classical.arbitrary (InfinitePlace F)
   have h := det_ne_zero_of_hasSig (hX.sig w)
@@ -239,6 +312,11 @@ open GlobalTheory.Div.CoordOpp (piW_cA incM_map_piW unit_map)
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {v : Pl F}
 
+/- English proof (translation)
+Take `⟨a1, a2⟩` from `at_evFin_iff.1 hz`. Use `GlobalTheory.Doubling.adele_ext (fun w => by rw [a1, map_zero]) fun w => ?_` and prove the remaining obligations. Distinguish the cases in `e : w = v`. Substitute `e` using the available equality. Conclude with `split_ext h t (by rw [map_zero, map_zero]; exact h1) (by rw [map_zero, map_zero]; exact h2)`.
+
+Rewrite using `[a2 w e, map_zero]`.
+-/
 theorem eq_zero_of_at (h : IsCMExt F E σ) (t : E →ₐ[F] Fv F v) {z : AE F E} (hz : At (evFin F v) z) (h1 : piW t z = 0)
     (h2 : piW (t.comp σ) z = 0) : z = 0 := by
   obtain ⟨a1, a2⟩ := at_evFin_iff.1 hz
@@ -248,6 +326,13 @@ theorem eq_zero_of_at (h : IsCMExt F E σ) (t : E →ₐ[F] Fv F v) {z : AE F E}
     exact split_ext h t (by rw [map_zero, map_zero]; exact h1) (by rw [map_zero, map_zero]; exact h2)
   · rw [a2 w e, map_zero]
 
+/- English proof (translation)
+Establish `hz : At (evFin F v) (g * incM F P - incM F P * N)` using `fun u hu => by`. Rewrite using `[show g * incM F P - incM F P * N = (g - 1) * incM F P - incM F P * (N - 1) by`. Rewrite using `[Matrix.sub_mul, Matrix.mul_sub, Matrix.one_mul, Matrix.mul_one]`. Use the proof step `abel,`. Use the proof step `smul_sub, ← Matrix.smul_mul, ← Matrix.mul_smul, hg u hu, hN u hu, Matrix.zero_mul, Matrix.mul_zero, sub_zero]`.
+
+Establish `k : ∀ τ : E →ₐ[F] Fv F v, g.map (piW τ) * P.map τ = P.map τ * N.map (piW τ) → ∀ i j, piW τ ((g * incM F P - incM F P * N) i j) = 0` using `fun τ e i j => by`. Rewrite `e` using `[← incM_map_piW, ← Matrix.map_mul, ← Matrix.map_mul]`. Rewrite using `[Matrix.sub_apply, map_sub, sub_eq_zero]`. Conclude with `congrFun (congrFun e i) j`. Rewrite using `[← sub_eq_zero]`.
+
+Use extensionality with `i j`. Conclude with `eq_zero_of_at h t (fun u hu => congrFun (congrFun (hz u hu) i) j) (k _ h1 i j) (k _ h2 i j)`.
+-/
 theorem adelic_intertwine (h : IsCMExt F E σ) (t : E →ₐ[F] Fv F v) {D I : Type} [Fintype D] [DecidableEq D] [Fintype I]
     [DecidableEq I] {g : Matrix D D (AE F E)} {P : Matrix D I E} {N : Matrix I I (AE F E)} (hg : At (evFin F v) (g - 1))
     (hN : At (evFin F v) (N - 1)) (h1 : g.map (piW t) * P.map t = P.map t * N.map (piW t))
@@ -269,20 +354,37 @@ theorem adelic_intertwine (h : IsCMExt F E σ) (t : E →ₐ[F] Fv F v) {D I : T
 def idl (h : IsCMExt F E σ) (t : E →ₐ[F] Fv F v) : (Fv F v)ˣ × (Fv F v)ˣ →* (AE F E)ˣ :=
   (Units.map (oneAdd (liftPair h t))).comp MulEquiv.prodUnits.symm.toMonoidHom
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem idl_val (h : IsCMExt F E σ) (t : E →ₐ[F] Fv F v) (x y : (Fv F v)ˣ) :
     (idl h t (x, y) : AE F E) = 1 + liftPair h t ((x : Fv F v) - 1, (y : Fv F v) - 1) := rfl
 
+/- English proof (translation)
+Rewrite using `[idl_val, map_add, map_one, piW_liftPair, add_sub_cancel]`.
+-/
 theorem piW_idl (h : IsCMExt F E σ) (t : E →ₐ[F] Fv F v) (x y : (Fv F v)ˣ) : piW t (idl h t (x, y) : AE F E) = x := by
   rw [idl_val, map_add, map_one, piW_liftPair, add_sub_cancel]
 
+/- English proof (translation)
+Rewrite using `[idl_val, map_add, map_one, piW_comp_liftPair, add_sub_cancel]`.
+-/
 theorem piW_comp_idl (h : IsCMExt F E σ) (t : E →ₐ[F] Fv F v) (x y : (Fv F v)ˣ) :
     piW (t.comp σ) (idl h t (x, y) : AE F E) = y := by
   rw [idl_val, map_add, map_one, piW_comp_liftPair, add_sub_cancel]
 
+/- English proof (translation)
+Rewrite using `[idl_val, add_sub_cancel_left]`. Conclude with `at_liftPair h t _`.
+-/
 theorem at_idl (h : IsCMExt F E σ) (t : E →ₐ[F] Fv F v) (x y : (Fv F v)ˣ) :
     At (evFin F v) ((idl h t (x, y) : AE F E) - 1) := by
   rw [idl_val, add_sub_cancel_left]; exact at_liftPair h t _
 
+/- English proof (translation)
+Establish `e1` using `GlobalTheory.ChrLocal.chrW_piW_eq F E σ h χ v t (idl h t (x, 1)) (at_idl h t _ _) (piW_comp_idl h t _ _)`. Establish `e2` using `GlobalTheory.ChrLocal.chrW_piW_eq F E σ h χ v (t.comp σ) (idl h t (1, y)) (at_idl h t _ _) (by rw [GlobalTheory.SplitLin.OppLagr.comp_comp h]; exact piW_idl h t _ _)`. Rewrite `e1` using `[show Units.map (piW t).toMonoidHom (idl h t (x, 1)) = x from Units.ext (piW_idl h t _ _)]`. Rewrite `e2` using `[show Units.map (piW (t.comp σ)).toMonoidHom (idl h t (1, y)) = y from Units.ext (piW_comp_idl h t _ _)]`. Rewrite using `[e1, e2, show (x, y) = (x, 1) * (1, y) by simp, map_mul, map_mul, Circle.coe_mul]`.
+
+Both sides reduce to the same expression.
+-/
 theorem chr_idl (h : IsCMExt F E σ) (χ : Chr F E) (t : E →ₐ[F] Fv F v) (x y : (Fv F v)ˣ) :
     (χ (idl h t (x, y)) : ℂ) = (chrW χ t x : ℂ) * (chrW χ (t.comp σ) y : ℂ) := by
   have e1 := GlobalTheory.ChrLocal.chrW_piW_eq F E σ h χ v t (idl h t (x, 1)) (at_idl h t _ _) (piW_comp_idl h t _ _)
@@ -293,6 +395,11 @@ theorem chr_idl (h : IsCMExt F E σ) (χ : Chr F E) (t : E →ₐ[F] Fv F v) (x 
   rw [e1, e2, show (x, y) = (x, 1) * (1, y) by simp, map_mul, map_mul, Circle.coe_mul]
   rfl
 
+/- English proof (translation)
+Establish `hN : ∀ z : Fv F v ⊗[F] E, Algebra.norm (Fv F v) z = splitProj t z * splitProj (t.comp σ) z` using `fun z => by`. Use `congrArg (splitProj t) (GlobalTheory.Doubling.algebraMap_norm_eq h z)` as an intermediate fact. Rewrite `this` using `[AlgHom.commutes, map_mul, ← splitProj_comp]`. Conclude with `this`. Rewrite using `[absE_of_mem (v := v) (mem_idelesAt.2 (at_idl h t x y)), GlobalTheory.Doubling.absEv_apply, coe_nnnorm, hN, norm_mul, ← ((GlobalTheory.CompletionNorm.norm_nabs_valuation F v).1 x).1, ← ((GlobalTheory.CompletionNorm.norm_nabs_valuation F v).1 y).1]`.
+
+Conclude with `congrArg₂ (fun p q : Fv F v => ‖p‖ * ‖q‖) (piW_idl h t x y) (piW_comp_idl h t x y)`.
+-/
 theorem absE_idl (h : IsCMExt F E σ) (t : E →ₐ[F] Fv F v) (x y : (Fv F v)ˣ) :
     (absE F E (idl h t (x, y)) : ℝ) = GlobalTheory.SplitWeil.nabs (Fv F v) x * GlobalTheory.SplitWeil.nabs (Fv F v) y := by
   have hN : ∀ z : Fv F v ⊗[F] E, Algebra.norm (Fv F v) z = splitProj t z * splitProj (t.comp σ) z := fun z => by
@@ -303,6 +410,11 @@ theorem absE_idl (h : IsCMExt F E σ) (t : E →ₐ[F] Fv F v) (x y : (Fv F v)ˣ
     ← ((GlobalTheory.CompletionNorm.norm_nabs_valuation F v).1 x).1, ← ((GlobalTheory.CompletionNorm.norm_nabs_valuation F v).1 y).1]
   exact congrArg₂ (fun p q : Fv F v => ‖p‖ * ‖q‖) (piW_idl h t x y) (piW_comp_idl h t x y)
 
+/- English proof (translation)
+Rewrite using `[chr_idl, absE_idl, GlobalTheory.SplitLin.OppLagr.chrW_comp h χ hχ, MonoidHom.inv_apply, map_inv, inv_inv, ← GlobalTheory.SplitWeil.nabs_mul, Complex.ofReal_cpow (GlobalTheory.SplitWeil.nabs_pos _ _).le, neg_div, ← GlobalTheory.SplitFlip.apow_inv]`. Use `GlobalTheory.SplitFlip.apow_mul x y⁻¹ ((a : ℂ) / 2)` as an intermediate fact. Rewrite `this` using `[GlobalTheory.SplitFlip.apow]`. Use `push_cast`. Rewrite using `[this]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem char_idl (h : IsCMExt F E σ) (χ : Chr F E) {m : ℕ}
     (hχ : ResEtaPow (Units.map (algebraMap F (AF F)).toMonoidHom).range χ m) (t : E →ₐ[F] Fv F v) (x y : (Fv F v)ˣ) (a : ℕ) :
     (χ (idl h t (x, y⁻¹)) : ℂ) * (((absE F E (idl h t (x, y⁻¹)) : ℝ) ^ ((a : ℝ) / 2) : ℝ) : ℂ) =
@@ -336,6 +448,9 @@ section Algebra
 
 variable {K : Type} [CommRing K] {β : Type} [Fintype β] [DecidableEq β]
 
+/- English proof (translation)
+Simplify using `only [diagCols, fromRows_mul, fromBlocks_mul_fromRows, Matrix.mul_one, Matrix.one_mul, fromRows_ext_iff] at h`. Establish `h6 : fromBlocks a b c d * fromBlocks 1 0 1 1 = fromBlocks 1 0 1 1 * (fromBlocks T b 0 (d - b) : Matrix (β ⊕ β) (β ⊕ β) K)`. Simplify using `[fromBlocks_multiply, h.1, h.2]`. Simplify `congrArg det h6` using `[det_fromBlocks_zero₁₂, det_fromBlocks_zero₂₁]`.
+-/
 theorem det_of_diag {a b c d T : Matrix β β K}
     (h : fromBlocks a b c d * (diagCols β : Matrix (β ⊕ β) β K) = (diagCols β : Matrix (β ⊕ β) β K) * T) :
     (fromBlocks a b c d).det = T.det * (d - b).det := by
@@ -345,6 +460,19 @@ theorem det_of_diag {a b c d T : Matrix β β K}
     simp [fromBlocks_multiply, h.1, h.2]
   simpa [det_fromBlocks_zero₁₂, det_fromBlocks_zero₂₁] using congrArg det h6
 
+/- English proof (translation)
+Take `⟨a, b, c, d, rfl⟩ : ∃ a b c d, P = fromBlocks a b c d` from `⟨_, _, _, _, (fromBlocks_toBlocks P).symm⟩`. Establish `hd` using `det_of_diag h`. Establish `hT : IsUnit T.det` using `isUnit_of_mul_isUnit_left (hd ▸ hP)`. Establish `h3` using `congrArg (· * (diagCols β : Matrix (β ⊕ β) β K)) hU`. Simplify using `only [Matrix.mul_assoc] at h3`.
+
+Take `⟨u, w, huw⟩ : ∃ u w, P' * (diagCols β : Matrix (β ⊕ β) β K) = fromRows u w` from `⟨_, _, (fromRows_toRows _).symm⟩`. Rewrite `h3`, the goal using `[huw]`. Simplify using `only [diagCols, fromBlocks_transpose, fromRows_mul, fromBlocks_mul_fromRows, Matrix.mul_one, Matrix.one_mul, Matrix.zero_mul, add_zero, zero_add, fromRows_ext_iff, Matrix.neg_mul, Matrix.mul_neg] at h h3 ⊢`. Establish `e : Tᵀ * J * (u - w) = 0`. Establish `e1 : Tᵀ * (J * u) = aᵀ * (J * u) + bᵀ * (J * u)` using `by rw [← h.1, transpose_add, Matrix.add_mul]`.
+
+Establish `e2 : Tᵀ * (J * w) = cᵀ * (J * w) + dᵀ * (J * w)` using `by rw [← h.2, transpose_add, Matrix.add_mul]`. Rewrite using `[Matrix.mul_assoc, Matrix.mul_sub, Matrix.mul_sub, e1, e2]`. Use `Eq.trans ?_ ((congrArg₂ (· + ·) h3.1 h3.2).trans (add_neg_cancel J))` and prove the remaining obligations. Normalize the expressions using the abelian group laws. Establish `hu : IsUnit (Tᵀ * J)` using `(Matrix.isUnit_iff_isUnit_det _).2 (by rw [det_mul, det_transpose]; exact hT.mul hJ)`.
+
+Take `rfl : u = w` from `sub_eq_zero.1 (hu.mul_right_eq_zero.1 e)`. Use `⟨u, ⟨rfl, rfl⟩, ?_⟩` and prove the remaining obligations. Establish `h4 : (d - b)ᵀ * J * u = J`. Rewrite using `[transpose_sub, Matrix.mul_assoc, Matrix.sub_mul]`. Use `Eq.trans ?_ ((congrArg Neg.neg h3.2).trans (neg_neg J))` and prove the remaining obligations.
+
+Normalize the expressions using the abelian group laws. Establish `h5 : (d - b).det * u.det = 1`. Use `congrArg det h4` as an intermediate fact. Rewrite `this` using `[det_mul, det_mul, det_transpose]`. Conclude with `hJ.mul_left_cancel (by linear_combination this)`.
+
+Rewrite using `[hd, mul_assoc, h5, mul_one]`.
+-/
 theorem adj_diag {P P' : Matrix (β ⊕ β) (β ⊕ β) K} {J T : Matrix β β K} (hJ : IsUnit J.det) (hP : IsUnit P.det)
     (hU : Pᵀ * fromBlocks J 0 0 (-J) * P' = fromBlocks J 0 0 (-J))
     (h : P * (diagCols β : Matrix (β ⊕ β) β K) = (diagCols β : Matrix (β ⊕ β) β K) * T) :
@@ -378,13 +506,22 @@ theorem adj_diag {P P' : Matrix (β ⊕ β) (β ⊕ β) K} {J T : Matrix β β K
     exact hJ.mul_left_cancel (by linear_combination this)
   rw [hd, mul_assoc, h5, mul_one]
 
+/- English proof (translation)
+Rewrite using `[diagCols, transpose_fromRows, mul_fromCols, transpose_one, Matrix.mul_one]`.
+-/
 theorem mul_diagCols {α : Type} (z : Matrix α β K) : z * (diagCols β : Matrix (β ⊕ β) β K)ᵀ = fromCols z z := by
   rw [diagCols, transpose_fromRows, mul_fromCols, transpose_one, Matrix.mul_one]
 
+/- English proof (translation)
+Apply the tactic sequence `ext (i | i) j <;> by_cases hij : i = j <;> simp [diagCols, hij]`.
+-/
 theorem diagCols_map {L : Type} [CommRing L] (f : K →+* L) :
     (diagCols β : Matrix (β ⊕ β) β K).map f = diagCols β := by
   ext (i | i) j <;> by_cases hij : i = j <;> simp [diagCols, hij]
 
+/- English proof (translation)
+Unfold `symp`. Use `congr 2`. Unfold `hTens`. Simplify using `only [dbl, Fintype.sum_sum_type, fromCols_apply_inl, fromCols_apply_inr, fromBlocks_apply₁₁, fromBlocks_apply₁₂, fromBlocks_apply₂₁, fromBlocks_apply₂₂, Matrix.zero_apply, Matrix.neg_apply, mul_zero, zero_mul, Finset.sum_const_zero, add_zero, zero_add, mul_neg, neg_mul, Finset.su …`. Rewrite using `[Finset.sum_add_distrib, Finset.sum_neg_distrib, sub_eq_add_neg]`.
+-/
 theorem symp_dbl_diag {R : Type} [CommRing R] [Algebra R K] (c : K →ₐ[R] K) {α : Type} [Fintype α] [DecidableEq α] (ξ : K)
     (JA : Matrix α α K) (JB : Matrix β β K) (x₁ x₂ z : Matrix α β K) :
     symp (R := R) c ξ JA (dbl JB) (fromCols x₁ x₂) (fromCols z z) = symp (R := R) c ξ JA JB (x₁ - x₂) z := by
@@ -397,6 +534,9 @@ theorem symp_dbl_diag {R : Type} [CommRing R] [Algebra R K] (c : K →ₐ[R] K) 
     Finset.sum_sub_distrib]
   rw [Finset.sum_add_distrib, Finset.sum_neg_distrib, sub_eq_add_neg]
 
+/- English proof (translation)
+Establish `e : ∀ M Q : Matrix α β K, ∑ k, ∑ l, M k l * Q k l = Matrix.trace (M * Qᵀ)`. Introduce `M Q`. Simplify using `[Matrix.trace, Matrix.mul_apply]`. Rewrite using `[e, e, Matrix.transpose_mul, Matrix.transpose_mul, Matrix.transpose_transpose, show A * Y * B * Pᵀ = A * (Y * B * Pᵀ) by simp only [Matrix.mul_assoc], Matrix.trace_mul_comm]`. Simplify using `only [Matrix.mul_assoc, Matrix.transpose_transpose]`.
+-/
 theorem pairing_mul {α : Type} [Fintype α] (A : Matrix α α K) (Y : Matrix α β K) (B : Matrix β β K) (P : Matrix α β K) :
     ∑ k, ∑ l, (A * Y * B) k l * P k l = ∑ k, ∑ l, Y k l * (Aᵀ * P * Bᵀ) k l := by
   have e : ∀ M Q : Matrix α β K, ∑ k, ∑ l, M k l * Q k l = Matrix.trace (M * Qᵀ) := by
@@ -406,6 +546,9 @@ theorem pairing_mul {α : Type} [Fintype α] (A : Matrix α α K) (Y : Matrix α
     show A * Y * B * Pᵀ = A * (Y * B * Pᵀ) by simp only [Matrix.mul_assoc], Matrix.trace_mul_comm]
   simp only [Matrix.mul_assoc, Matrix.transpose_transpose]
 
+/- English proof (translation)
+Take `⟨g, hg⟩` from `(ι.domRestrict S).exists_leftInverse_of_injective (LinearMap.ker_eq_bot.2 fun x y e => Subtype.ext (h x.2 y.2 e))`. Conclude with `⟨l ∘ₗ S.subtype ∘ₗ g, fun φ hφ => congrArg (fun x : S => l x) (LinearMap.congr_fun hg ⟨φ, hφ⟩)⟩`.
+-/
 theorem exists_factor {V V' : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup V'] [Module ℂ V'] (ι : V →ₗ[ℂ] V')
     (S : Submodule ℂ V) (h : Set.InjOn ι S) (l : V →ₗ[ℂ] ℂ) : ∃ m : V' →ₗ[ℂ] ℂ, ∀ φ ∈ S, m (ι φ) = l φ := by
   obtain ⟨g, hg⟩ := (ι.domRestrict S).exists_leftInverse_of_injective
@@ -419,6 +562,27 @@ section Local
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
   {α β : Type} [Fintype α] [DecidableEq α] [Fintype β] [DecidableEq β]
 
+/- English proof (translation)
+Set `σ : α × β ≃ α × β` to `Equiv.refl _`. Set `e : Matrix α (β ⊕ β) k ≃ₜ (α × β ⊕ α × β → k)` to `{ toEquiv := (flat (dblNum σ)).toEquiv continuous_toFun := continuous_pi fun q => (continuous_id (X := Matrix α (β ⊕ β) k)).matrix_elem _ _ continuous_invFun := continuous_matrix fun i j => continuous_apply ((dblNum σ).symm (i, j)) }`. Establish `he : ∀ X Y : Matrix α β k, e (fromCols X Y) = Sum.elim (flat σ X) (flat σ Y)` using `flat_fromCols σ`. Establish `s1 : ∀ φ ∈ SB (α × β ⊕ α × β → k), (fun Y => φ (e Y)) ∈ SB (Matrix α (β ⊕ β) k)` using `fun φ hφ => ⟨hφ.1.comp_continuous e.continuous, hφ.2.comp_homeomorph e⟩`. Establish `s2 : ∀ f ∈ SB (Matrix α (β ⊕ β) k), (fun x => f (e.symm x)) ∈ SB (α × β ⊕ α × β → k)` using `fun f hf => ⟨hf.1.comp_continuous e.symm.continuous, hf.2.comp_homeomorph e.symm⟩`.
+
+Set `l` to `m ∘ₗ LinearMap.funLeft ℂ ℂ e`. Establish `hl0 : ∀ f, l (fun x => f (e.symm x)) = m f` using `fun f => congrArg m (funext fun Y => congrArg f (e.symm_apply_apply Y))`. Establish `hl : ∀ x y : α × β → k, ∀ φ ∈ SB (α × β ⊕ α × β → k), l (schr ψ (Sum.elim x x, Sum.elim y (-y)) φ) = l φ`. Introduce `x y φ hφ`. Take `⟨C, rfl⟩` from `(flat σ).surjective x`.
+
+Take `⟨D, rfl⟩` from `(flat σ).surjective y`. Establish `s3 : (fun Y => φ (e (Y + fromCols C C))) ∈ SB (Matrix α (β ⊕ β) k)` using `⟨(s1 φ hφ).1.comp_continuous (continuous_add_const _), (s1 φ hφ).2.comp_homeomorph (Homeomorph.addRight _)⟩`. Use `Eq.trans ?_ ((hmu D _ s3).trans (htr C _ (s1 φ hφ)))` and prove the remaining obligations. Use `congrArg m (funext fun Y => ?_)` and prove the remaining obligations. Take `⟨Y₁, Y₂, rfl⟩ : ∃ Y₁ Y₂, Y = fromCols Y₁ Y₂` from `⟨_, _, (fromCols_toCols Y).symm⟩`.
+
+Establish `ea : e (fromCols Y₁ Y₂ + fromCols C C) = e (fromCols Y₁ Y₂) + e (fromCols C C)` using `rfl`. Use `show schr ψ _ φ (e _) = _`. Rewrite using `[ea, he, he, schr]`. Use `congr 2`. Simplify using `only [toCols₁_fromCols, toCols₂_fromCols, sumElim_dotProduct_sumElim, dotProduct_neg, add_neg_cancel, mul_zero, add_zero, Matrix.sub_apply, sub_mul, Finset.sum_sub_distrib, ← sub_eq_add_neg]`.
+
+Simplify using `only [dotProduct, Fintype.sum_prod_type]`. Both sides reduce to the same expression. Set `G : Matrix (α × β) (α × β) k` to `(1 : Matrix α α k) ⊗ₖ (T⁻¹).val`. Establish `hG : G.det = ((GeneralLinearGroup.det T)⁻¹ ^ Fintype.card α : kˣ)`. Rewrite using `[det_kronecker, det_one, one_pow, one_mul, ← map_inv, Units.val_pow_eq_pow_val]`.
+
+Both sides reduce to the same expression. Set `g₀ : GL (α × β) k` to `GeneralLinearGroup.mkOfDetNeZero G (hG ▸ Units.ne_zero _)`. Establish `hg : GeneralLinearGroup.det g₀ = (GeneralLinearGroup.det T)⁻¹ ^ Fintype.card α` using `Units.ext hG`. Establish `hgx : ∀ X : Matrix α β k, g₀.val.mulVec (flat σ X) = flat σ (X * (T⁻¹).valᵀ)`. Introduce `X`.
+
+Use function extensionality and compare the values at `q`. Use `show ∑ q', G q q' * X q'.1 q'.2 = (X * (T⁻¹).valᵀ) q.1 q.2`. Rewrite using `[Fintype.sum_prod_type, mul_apply]`. Simplify using `[G, kroneckerMap_apply, one_apply, mul_comm]`. Establish `h1 : (g⁻¹).val * (diagCols β : Matrix (β ⊕ β) β k) = (diagCols β : Matrix (β ⊕ β) β k) * (T⁻¹).val`.
+
+Use `congrArg (fun N => (g⁻¹).val * N * (T⁻¹).val) h` as an intermediate fact. Simplify using `only [← Matrix.mul_assoc, Units.inv_mul, Matrix.one_mul] at this`. Rewrite using `[this, Matrix.mul_assoc, Units.mul_inv, Matrix.mul_one]`. Set `R : Matrix α (β ⊕ β) k ≃ₜ Matrix α (β ⊕ β) k` to `{ toFun := fun Y => Y * (GlobalTheory.SplitFlip.invT g).val invFun := fun Y => Y * ((GlobalTheory.SplitFlip.invT g)⁻¹).val left_inv := fun Y => by simp only [Matrix.mul_assoc, Units.mul_inv, Matrix.mul_one] right_inv := fun Y => by simp only [Matrix.mul_assoc, Units.inv_mul, Matr …`. Establish `hf' : (fun Y => f (Y * (GlobalTheory.SplitFlip.invT g).val)) ∈ SB (Matrix α (β ⊕ β) k)` using `⟨hf.1.comp_continuous R.continuous, hf.2.comp_homeomorph R⟩`.
+
+Establish `key` using `diag_invariant_comp ψ hψ hψ1 l hl g₀ (s2 _ hf) (s2 _ hf') (fun x => by`. Take `⟨X, rfl⟩` from `(flat σ).surjective x`. Rewrite using `[hgx, ← he, ← he, e.symm_apply_apply, e.symm_apply_apply, ← mul_diagCols, ← mul_diagCols, GlobalTheory.SplitFlip.invT_val, Matrix.mul_assoc, Matrix.mul_assoc, ← transpose_mul, ← transpose_mul, h1])`. Rewrite `key` using `[hl0 f, hl0 (fun Y => f (Y * (GlobalTheory.SplitFlip.invT g).val)), hg]`. Rewrite using `[← key, ← mul_assoc, GlobalTheory.SplitFlip.apow, Complex.cpow_natCast, GlobalTheory.SplitWeil.nabs]`.
+
+Establish `hpos : (0 : ℝ) < distribHaarChar k (GeneralLinearGroup.det T)` using `distribHaarChar_pos (A := k)`. Establish `hne : ((distribHaarChar k (GeneralLinearGroup.det T) : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast hpos.ne'`. Simplify using `only [map_pow, map_inv, NNReal.coe_pow, NNReal.coe_inv, Complex.ofReal_pow, Complex.ofReal_inv]`. Rewrite using `[← mul_pow, mul_inv_cancel₀ hne, one_pow, one_mul]`.
+-/
 theorem form_comp_invT [Invertible (2 : k)] (ψ : AddChar k ℂ) (hψ : Continuous ψ) (hψ1 : ψ ≠ 1)
     (m : (Matrix α (β ⊕ β) k → ℂ) →ₗ[ℂ] ℂ)
     (htr : ∀ C : Matrix α β k, ∀ f ∈ SB (Matrix α (β ⊕ β) k), m (fun Y => f (Y + fromCols C C)) = m f)
@@ -506,6 +670,15 @@ open scoped GlobalTheory.VacAny
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {v : Pl F}
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Use `push Not at hne`. Take `⟨Φ, hΦ, h0⟩` from `GlobalTheory.DiagForm.exists_lDiag_ne (F := F) (κ := κ)`. Rewrite `hΦ` using `[GlobalTheory.WeylSpan.schA_eq_span_pure]`. Use `h0 ((Submodule.span_le (p := LinearMap.ker (GlobalTheory.DiagForm.lDiag F κ))).2 ?_ hΦ)` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨f, φs, h1, h2, rfl⟩`. Take `⟨r, hr, hrt⟩` from `GlobalTheory.PureFactor.exists_rest_factor v f φs h2`. Use `hne r (fun φ hφ => ⟨hr, ?_⟩) (φs v) (h1 v)` as an intermediate fact. Rewrite `this` using `[hrt, Function.update_eq_self]`. Then use the resulting hypothesis. Rewrite using `[hrt φ]`.
+
+Use `GlobalTheory.TensUniq.pure_mem_schA f _ (fun w => ?_) (GlobalTheory.PureFactor.update_eventually φs v φ h2)` and prove the remaining obligations. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Rewrite using `[Function.update_self]`. Conclude with `hφ`.
+
+Rewrite using `[Function.update_of_ne hw]`. Conclude with `h1 w`.
+-/
 theorem exists_rest_ne (κ : Type) [Fintype κ] (v : Pl F) :
     ∃ R : (κ ⊕ κ → AF F) → ℂ, (∀ φ ∈ SB (κ ⊕ κ → Fv F v), Rest (evFin F v) φ R) ∧
       ∃ φ ∈ SB (κ ⊕ κ → Fv F v), GlobalTheory.DiagForm.lDiag F κ (tens (evFin F v) φ R) ≠ 0 := by
@@ -525,6 +698,9 @@ theorem exists_rest_ne (κ : Type) [Fintype κ] (v : Pl F) :
     · subst hw; rw [Function.update_self]; exact hφ
     · rw [Function.update_of_ne hw]; exact h1 w
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨of fun i j => liftPair h t (P₀ i j, P₁ i j), fun a ha => Matrix.ext fun _ _ => at_liftPair h t _ a ha, Matrix.ext fun _ _ => piW_liftPair h t _, Matrix.ext fun _ _ => piW_comp_liftPair h t _⟩`.
+-/
 theorem exists_lift (h : IsCMExt F E σ) (t : E →ₐ[F] Fv F v) {α β : Type} (P₀ P₁ : Matrix α β (Fv F v)) :
     ∃ u : Matrix α β (AE F E), At (evFin F v) u ∧ u.map (piW t) = P₀ ∧ u.map (piW (t.comp σ)) = P₁ :=
   ⟨of fun i j => liftPair h t (P₀ i j, P₁ i j), fun a ha => Matrix.ext fun _ _ => at_liftPair h t _ a ha,
@@ -532,6 +708,11 @@ theorem exists_lift (h : IsCMExt F E σ) (t : E →ₐ[F] Fv F v) {α β : Type}
 
 omit [NumberField E] in
 
+/- English proof (translation)
+Introduce `a ha`. Set `I : Ideal (AE F E)` to `LinearMap.ker (LinearMap.lsmul (AE F E) (AE F E) (algebraMap (AF F) (AE F E) a))`. Establish `hI : ∀ z, z ∈ I ↔ a • z = 0` using `fun z => by`. Rewrite using `[Algebra.smul_def]`. Both sides reduce to the same expression.
+
+Establish `e : (Ideal.Quotient.mk I).mapMatrix N = (Ideal.Quotient.mk I).mapMatrix 1` using `Matrix.ext fun i j => Ideal.Quotient.eq.2 ((hI _).2 (congrFun (congrFun (h a ha) i) j))`. Rewrite using `[← hI, ← Ideal.Quotient.eq, RingHom.map_det, e, map_one, det_one, map_one]`.
+-/
 theorem at_det {β : Type} [Fintype β] [DecidableEq β] {N : Matrix β β (AE F E)} (h : At (evFin F v) (N - 1)) :
     At (evFin F v) (N.det - 1) := by
   intro a ha
@@ -542,6 +723,27 @@ theorem at_det {β : Type} [Fintype β] [DecidableEq β] {N : Matrix β β (AE F
     Matrix.ext fun i j => Ideal.Quotient.eq.2 ((hI _).2 (congrFun (congrFun (h a ha) i) j))
   rw [← hI, ← Ideal.Quotient.eq, RingHom.map_det, e, map_one, det_one, map_one]
 
+/- English proof (translation)
+Use `set P := (p : GL (Fin d ⊕ Fin d) (AE F E)).val with hP`. Establish `hPu : IsUnit P.det` using `Matrix.isUnits_det_units _`. Establish `hc : (dsum c).val * (diagCols (Fin d) : Matrix (Fin d ⊕ Fin d) (Fin d) (Fv F v)) = (diagCols (Fin d) : Matrix (Fin d ⊕ Fin d) (Fin d) (Fv F v)) * c.val`. Simplify using `[dsum, diagCols, fromBlocks_mul_fromRows, fromRows_mul]`. Establish `hl : (locMatD t c p).val = ((dsum c)⁻¹).val * P.map (piW t) * (dsum c).val` using `rfl`.
+
+Establish `h1 : P.map (piW t) * (diagCols (Fin d) : Matrix (Fin d ⊕ Fin d) (Fin d) (Fv F v)) = (diagCols (Fin d) : Matrix (Fin d ⊕ Fin d) (Fin d) (Fv F v)) * (c.val * T * (c⁻¹).val)`. Use `congrArg (fun Z => (dsum c).val * Z * (c⁻¹).val) hT` as an intermediate fact. Simplify using `only [hl, ← Matrix.mul_assoc, Units.mul_inv, Matrix.one_mul, hc] at this`. Rewrite `this` using `[Matrix.mul_assoc (P.map _), hc, Matrix.mul_assoc, Matrix.mul_assoc _ c.val, Units.mul_inv, Matrix.mul_one]`. Simplify `this` using `only [Matrix.mul_assoc]`.
+
+Establish `hU : (P.map (piW t))ᵀ * fromBlocks (J.map t) 0 0 (-J.map t) * P.map (piW (t.comp σ)) = fromBlocks (J.map t) 0 0 (-J.map t)`. Use `congrArg (fun M => M.map (piW t)) (show Pᵀ * dbl (incM F J) * P.map (cA σ) = dbl (incM F J) from p.2)` as an intermediate fact. Establish `e1 : (dbl (incM F J)).map (piW t) = fromBlocks (J.map t) 0 0 (-J.map t)`. Rewrite using `[← incM_map_piW]`. Apply the tactic sequence `ext (i | i) (j | j) <;> simp [dbl]`.
+
+Establish `e2 : (P.map (cA σ)).map (piW t) = P.map (piW (t.comp σ))` using `Matrix.ext fun i j => piW_cA σ t _`. Simplify `this` using `only [Matrix.map_mul, Matrix.transpose_map, e1, e2]`. Establish `hd : ∀ τ : E →ₐ[F] Fv F v, ∀ {β : Type} [Fintype β] [DecidableEq β] (Z : Matrix β β (AE F E)), (Z.map (piW τ)).det = piW τ Z.det` using `fun τ _ _ _ Z => (RingHom.map_det _ _).symm`. Take `⟨T', h2, h3⟩` from `adj_diag hJ (hd t P ▸ hPu.map _) hU h1`. Take `⟨u, hu, hu1, hu2⟩` from `exists_lift h t (c.val * T * (c⁻¹).val - 1) (T' - 1)`.
+
+Establish `m1 : (1 + u).map (piW t) = c.val * T * (c⁻¹).val`. Rewrite using `[Matrix.map_add _ (map_add _), hu1, Matrix.map_one _ (map_zero _) (map_one _), add_sub_cancel]`. Establish `m2 : (1 + u).map (piW (t.comp σ)) = T'`. Rewrite using `[Matrix.map_add _ (map_add _), hu2, Matrix.map_one _ (map_zero _) (map_one _), add_sub_cancel]`. Establish `hu' : At (evFin F v) (1 + u - 1)` using `by rwa [add_sub_cancel_left]`.
+
+Establish `hΔ : ∀ τ : E →ₐ[F] Fv F v, (diagCols (Fin d) : Matrix (Fin d ⊕ Fin d) (Fin d) E).map τ = diagCols (Fin d)` using `fun τ => diagCols_map (τ : E →+* Fv F v)`. Establish `hN` using `adelic_intertwine h t (g := P) (P := (diagCols (Fin d) : Matrix (Fin d ⊕ Fin d) (Fin d) E)) hp hu' (by rw [m1, hΔ]; exact h1) (by rw [m2, hΔ]; exact h2)`. Rewrite `hN` using `[show incM F (diagCols (Fin d) : Matrix (Fin d ⊕ Fin d) (Fin d) E) = diagCols (Fin d) from diagCols_map (inclR (F := F) (E := E) (AF F) : E →+* AE F E)]`. Establish `hNu : IsUnit (1 + u).det`. Use `hN` as an intermediate fact.
+
+Rewrite `this` using `[← fromBlocks_toBlocks P]`. Establish `e` using `det_of_diag this`. Rewrite `e` using `[fromBlocks_toBlocks]`. Conclude with `isUnit_of_mul_isUnit_left (e ▸ hPu)`. Establish `dT : (c.val * T * (c⁻¹).val).det = T.det` using `det_units_conj c T`.
+
+Establish `hTu : IsUnit T.det` using `by rw [← dT, ← m1, hd]; exact hNu.map _`. Establish `hT'u : IsUnit T'.det` using `by rw [← m2, hd]; exact hNu.map _`. Use `⟨((Matrix.isUnit_iff_isUnit_det _).2 hTu).unit, hT'u.unit⁻¹, ((Matrix.isUnit_iff_isUnit_det _).2 hNu).unit, rfl, hN, Units.ext ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[inv_inv, ← sub_eq_zero]`. Use `eq_zero_of_at h t (fun a ha => ?_) ?_ ?_` and prove the remaining obligations.
+
+Rewrite using `[← sub_sub_sub_cancel_right _ _ 1, smul_sub, at_idl h t _ _ a ha, sub_zero]`. Conclude with `at_det hu' a ha`. Rewrite using `[map_sub, piW_idl, sub_eq_zero]`. Conclude with `(hd t (1 + u)).symm.trans (by rw [m1, dT]; rfl)`. Rewrite using `[map_sub, piW_comp_idl, sub_eq_zero]`.
+
+Conclude with `(hd (t.comp σ) (1 + u)).symm.trans (by rw [m2]; rfl)`. Use `eq_mul_inv_of_mul_eq (Units.ext ?_) show (locMatD t c p).val.det * T'.det = T.det` and prove the remaining obligations. Rewrite using `[hl, det_units_conj', h3, dT]`.
+-/
 theorem exists_siegel (h : IsCMExt F E σ) (t : E →ₐ[F] Fv F v) {d : ℕ} {J : Matrix (Fin d) (Fin d) E}
     (hJ : IsUnit (J.map t).det) (c : GL (Fin d) (Fv F v)) {p : UD σ J} (hp : p ∈ UDAt σ J (evFin F v))
     {T : Matrix (Fin d) (Fin d) (Fv F v)}
@@ -609,6 +811,11 @@ theorem exists_siegel (h : IsCMExt F E σ) (t : E →ₐ[F] Fv F v) {d : ℕ} {J
     show (locMatD t c p).val.det * T'.det = T.det
     rw [hl, det_units_conj', h3, dT]
 
+/- English proof (translation)
+Establish `hA : At (evFin F v) (symp (R` using `AF F) (cA σ) (-1) (incM F J) (incM F K) x z) := by`. Introduce `a ha`. Establish `h0 : ∀ i j, a • x i j = 0` using `fun i j => congrFun (congrFun (hx a ha) i) j`. Rewrite using `[symp, ← map_smul, ← mul_smul_comm, hTens]`. Simplify using `only [Finset.smul_sum, ← smul_mul_assoc, h0, zero_mul, Finset.sum_const_zero, mul_zero, map_zero]`.
+
+Rewrite using `[GlobalTheory.VacAny.eq_atPlace_of_at v _ hA]`. Use `show GlobalTheory.LatVac.psiAt ψ v (evFin F v _) = _`. Rewrite using `[GlobalTheory.LinCoords.splitTrace' h v t J K hJ hK x z hx, hz]`. Simplify using the standard rewrite rules.
+-/
 theorem psi_symp (h : IsCMExt F E σ) (ψ : AddChar (AF F) ℂ) (t : E →ₐ[F] Fv F v) {n d : ℕ} {J : Matrix (Fin n) (Fin n) E}
     {K : Matrix (Fin d) (Fin d) E} (hJ : ∀ i j, σ (J j i) = J i j) (hK : ∀ i j, σ (K j i) = -K i j)
     {x z : Matrix (Fin n) (Fin d) (AE F E)} (hx : At (evFin F v) x) (hz : z.map (piW t) = 0) :
@@ -629,6 +836,31 @@ end Adelic
 open GlobalTheory.DblScal GlobalTheory.SplitLin.JacGeom
 open scoped GlobalTheory.VacAny
 
+/- English proof (translation)
+Introduce `_ F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP v t b c dd omd hdd hW hloc ιd hι cd hcd p hp ⟨T, hT⟩`. Establish `hcm : IsCMExt F E σ` using `hP.base.cm`. Establish `hstd` using `hP.base.std`. Establish `hX : IsUnit (X.J.map t).det` using `isUnit_iff_ne_zero.2 (GlobalTheory.SplitLin.OppLagr.det_map_ne_zero (GlobalTheory.SplitLin.OppLagr.det_ne_zero_herm hP.herm) t)`. Establish `hK : IsUnit (W.J.map t).det` using `isUnit_iff_ne_zero.2 (GlobalTheory.SplitLin.OppLagr.det_map_ne_zero (GlobalTheory.SplitLin.OppLagr.det_ne_zero_skew hP.skew) t)`.
+
+Take `⟨R, hR, φ₀, hφ₀, h0⟩` from `exists_rest_ne (Fin n × Fin d) v`. Set `lam : ((Fin n × Fin d ⊕ Fin n × Fin d → Fv F v) → ℂ) →ₗ[ℂ] ℂ` to `GlobalTheory.DiagForm.lDiag F (Fin n × Fin d) ∘ₗ { toFun := fun φ => tens (evFin F v) φ R map_add' := fun _ _ => funext fun _ => add_mul _ _ _ map_smul' := fun _ _ => funext fun _ => mul_assoc _ _ _ }`. Establish `hlam : ∀ φ, lam φ = GlobalTheory.DiagForm.lDiag F (Fin n × Fin d) (tens (evFin F v) φ R)` using `fun _ => rfl`. Take `⟨m, hm⟩` from `exists_factor ιd _ hι.bij.injOn lam`. Establish `hinv : ∀ z : Matrix (Fin n) (Fin d) (AE F E), ∀ Φ ∈ schA F (Fin n × Fin d ⊕ Fin n × Fin d), GlobalTheory.DiagForm.lDiag F _ (dd.rho B.ψ (fromCols z z) Φ) = GlobalTheory.DiagForm.lDiag F _ Φ` using `fun z Φ hΦ => by`.
+
+Rewrite using `[Darboux.rho, hdd z z, GlobalTheory.DiagForm.lDiag_schr B.ψ _ _ hΦ]`. Establish `hat : ∀ z : Matrix (Fin n) (Fin d) (AE F E), At (evFin F v) z → At (evFin F v) (fromCols z z)` using `fun z hz a ha => by`. Apply the tactic sequence `ext i (j | j) <;> exact congrFun (congrFun (hz a ha) i) j`. Establish `hrho : ∀ z : Matrix (Fin n) (Fin d) (AE F E), At (evFin F v) z → ∀ φ ∈ SB (Fin n × Fin d ⊕ Fin n × Fin d → Fv F v), ∃ φ₁ ∈ SB (Fin n × Fin d ⊕ Fin n × Fin d → Fv F v), Acts (evFin F v) (dd.rho B.ψ (fromCols z z)) φ φ₁ ∧ m (ιd φ₁) = m (ιd φ)` using `fun z hz φ hφ => by`. Establish `h1` using `GlobalTheory.SchrSB.schr_mem_SB B.ψ hstd.1 v (GlobalTheory.LatVac.locCo dd v (fromCols z z)) φ hφ`.
+
+Establish `h2` using `GlobalTheory.VacBridge.rho_acts_locCo dd B.ψ v _ (hat z hz) φ`. Use `⟨_, h1, h2, ?_⟩` and prove the remaining obligations. Rewrite using `[hm _ h1, hm _ hφ, hlam, hlam, ← h2 R (hR φ hφ), hinv z _ (hR φ hφ).2]`. Establish `hco : ∀ Y₁ Y₂ : Matrix (Fin n) (Fin d) (Fv F v), (b⁻¹).val * fromCols (b.val * Y₁ * c.valᵀ) (b.val * Y₂ * c.valᵀ) * ((dsum c)⁻¹).valᵀ = fromCols Y₁ Y₂`. Introduce `Y₁ Y₂`.
+
+Establish `e : ∀ Y : Matrix (Fin n) (Fin d) (Fv F v), (b⁻¹).val * (b.val * Y * c.valᵀ) * (c⁻¹).valᵀ = Y` using `fun Y => by`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, Units.inv_mul, Matrix.one_mul, Matrix.mul_assoc, ← transpose_mul, Units.inv_mul, transpose_one, Matrix.mul_one]`. Rewrite using `[show ((dsum c)⁻¹).val = fromBlocks (c⁻¹).val 0 0 (c⁻¹).val from rfl, mul_fromCols, fromBlocks_transpose, fromCols_mul_fromBlocks, transpose_zero, Matrix.mul_zero, Matrix.mul_zero, add_zero, zero_add, e, e]`. Establish `htr : ∀ C : Matrix (Fin n) (Fin d) (Fv F v), ∀ f ∈ SB (Matrix (Fin n) (Fin d ⊕ Fin d) (Fv F v)), m (fun Y => f (Y + fromCols C C)) = m f`. Introduce `C f hf`.
+
+Take `⟨φ, hφ, rfl⟩` from `hι.bij.surjOn hf`. Take `⟨z, hz, z1, z2⟩` from `exists_lift hcm t (b.val * C * c.valᵀ) 0`. Take `⟨φ₁, hφ₁, ha, e⟩` from `hrho z hz φ hφ`. Rewrite using `[← e]`. Use `congrArg m (funext fun Y => ?_)` and prove the remaining obligations.
+
+Rewrite using `[hι.trans _ (hat z hz) (by rw [fromCols_map, z2, fromCols_zero]) φ hφ φ₁ hφ₁ ha Y, fromCols_map, z1, hco]`. Establish `hmu : ∀ D : Matrix (Fin n) (Fin d) (Fv F v), ∀ f ∈ SB (Matrix (Fin n) (Fin d ⊕ Fin d) (Fv F v)), m (fun Y => GlobalTheory.LatVac.psiAt B.ψ v (∑ i, ∑ j, (Y.toCols₁ - Y.toCols₂) i j * D i j) * f Y) = m f`. Introduce `D f hf`. Take `⟨φ, hφ, rfl⟩` from `hι.bij.surjOn hf`. Take `⟨z, hz, z1, z2⟩` from `exists_lift hcm t 0 (-((X.J.map t)⁻¹ * ((b⁻¹).valᵀ * D * (c⁻¹).val) * ((W.J.map t)⁻¹)ᵀ))`.
+
+Take `⟨φ₁, hφ₁, ha, e⟩` from `hrho z hz φ hφ`. Rewrite using `[← e]`. Use `congrArg m (funext fun Y => ?_)` and prove the remaining obligations. Take `⟨Y₁, Y₂, rfl⟩ : ∃ Y₁ Y₂, Y = fromCols Y₁ Y₂` from `⟨_, _, (fromCols_toCols Y).symm⟩`. Take `⟨x₁, hx₁, a1, a2⟩` from `exists_lift hcm t (b.val * Y₁ * c.valᵀ) 0`.
+
+Take `⟨x₂, hx₂, b1, b2⟩` from `exists_lift hcm t (b.val * Y₂ * c.valᵀ) 0`. Establish `hx : At (evFin F v) (fromCols x₁ x₂)` using `fun a ha => by`. Use extensionality with `i (j | j)`. Use `exacts [congrFun (congrFun (hx₁ a ha) i) j, congrFun (congrFun (hx₂ a ha) i) j]`. Establish `key` using `hι.mult _ (hat z hz) (by rw [fromCols_map, z1, fromCols_zero]) φ hφ φ₁ hφ₁ ha _ hx (by rw [fromCols_map, a2, b2, fromCols_zero])`.
+
+Rewrite `key` using `[fromCols_map, a1, b1, hco, symp_dbl_diag, psi_symp hcm B.ψ t hP.herm.herm hP.skew.skew (fun a ha => by rw [smul_sub, hx₁ a ha, hx₂ a ha, sub_zero]) z1, Matrix.map_sub _ (map_sub _), a1, b1, z2, ← Matrix.sub_mul, ← Matrix.mul_sub, pairing_mul]`. Rewrite using `[key, toCols₁_fromCols, toCols₂_fromCols]`. Establish `e2 : b.valᵀ * -(X.J.map t * -((X.J.map t)⁻¹ * ((b⁻¹).valᵀ * D * (c⁻¹).val) * ((W.J.map t)⁻¹)ᵀ) * (W.J.map t)ᵀ) * c.valᵀᵀ = D`. Rewrite using `[Matrix.mul_neg (X.J.map t), Matrix.neg_mul, neg_neg, transpose_transpose, ← Matrix.mul_assoc (X.J.map t), ← Matrix.mul_assoc (X.J.map t), Matrix.mul_nonsing_inv _ hX, Matrix.one_mul, Matrix.mul_assoc _ _ (W.J.map t)ᵀ, ← transpose_mul, Matrix.mul_nonsing_inv _ hK, transpose_one, …`. Rewrite using `[e2]`.
+
+Take `⟨T₀, y, N, rfl, hN, hdet, hp'⟩` from `exists_siegel hcm t hK c hp hT`. Take `⟨φ₁, hφ₁, ha⟩` from `hloc p hp φ₀ hφ₀`. Establish `k1` using `hW.2.2 _ GlobalTheory.DiagForm.lDiag_adm (fun z Φ hΦ => by rw [mul_diagCols]; exact hinv z Φ hΦ) p N hN _ (hR φ₀ hφ₀).2`. Rewrite `k1` using `[ha R (hR φ₀ hφ₀), GlobalTheory.ModuNorm.modu_norm_eq_absE F E hcm.1, hdet, Fintype.card_fin, char_idl hcm χX hP.resX, ← hlam, ← hlam, ← hm _ hφ₁, hcd p hp φ₀ hφ₀ φ₁ hφ₁ ha, map_smul, form_comp_invT _ (GlobalTheory.SchrSB.continuous_psiAt _ hstd.1 v) (GlobalTheory.PsiNontriv.psiA …`. Establish `k2` using `mul_right_cancel₀ h0 k1`.
+
+Use `mul_right_cancel₀ (GlobalTheory.SplitFlip.apow_ne_zero (GlobalTheory.SplitFlip.gdet T₀) (n : ℂ)) ?_` and prove the remaining obligations. Establish `k3` using `GlobalTheory.SplitFlip.apow_add (GlobalTheory.SplitFlip.gdet T₀) (-(n : ℂ) / 2) n`. Rewrite `k3` using `[show -(n : ℂ) / 2 + n = n / 2 by ring]`. Rewrite using `[k2, hp', map_mul, Units.val_mul, GlobalTheory.SplitFlip.apow_mul, k3]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem scalar_siegel : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ)
     (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' →
     ∀ (v : Pl F) (t : E →ₐ[F] Fv F v) (b : GL (Fin n) (Fv F v)) (c : GL (Fin d) (Fv F v))
@@ -742,6 +974,17 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 open GlobalTheory.DblScal in
+/- English proof (translation)
+Introduce `hPr F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP v t b c ι hι κ hκ h hh`. Take `⟨⟨-, dd, omd, hdc, hws, hbox⟩, -, -⟩` from `hP.weil`. Establish `hspl` using `hws.2.1`. Establish `hloc` using `GlobalTheory.T.double_splitting_pair_identity hPr F E σ B n d X W M χX χW om r s r' s' hP dd omd hspl v`. Take `⟨ιd, hιd, hprod⟩` from `GlobalTheory.T.linear_model_double_splitting hPr F E σ B n d X W M χX χW om r s r' s' hP v t b c ι hι dd hdc`.
+
+Take `⟨cd, hcd⟩` from `GlobalTheory.T.double_scaling_local_identity hPr F E σ B n d X W M χX χW om r s r' s' hP v t b c dd omd hspl hloc ιd hιd`. Take `⟨χd, hχd⟩` from `GlobalTheory.T.double_scaling_local_equivariance hPr F E σ B n d X W M χX χW om r s r' s' hP v t b c dd omd hspl hloc ιd hιd cd hcd`. Take `⟨gd, hgd⟩` from `exists_diag_one h`. Establish `hgdAt : gd ∈ UDAt σ W.J (evFin F v)`. Introduce `u hu`.
+
+Express the relevant statement in the definitionally equal form `u • (((gd : GL (Fin d ⊕ Fin d) (AE F E)) : Matrix (Fin d ⊕ Fin d) (Fin d ⊕ Fin d) (AE F E)) - 1) = 0`. Establish `h1 : u • (mat h - 1) = 0` using `hh u hu`. Rewrite using `[hgd, fromBlocks_sub_one, Matrix.fromBlocks_smul, h1]`. Simplify using the standard rewrite rules. Establish `e1 : κ h = cd gd` using `GlobalTheory.T.linear_model_compact_equivariance hPr F E σ B n d X W M χX χW om r s r' s' hP v t b c ι hι κ hκ dd omd hdc hspl (fun g gd' hg φ₁ hφ₁ φ₂ hφ₂ => hbox g gd' hg φ₁ hφ₁ φ₂ hφ₂) hloc ιd hιd hprod cd hcd h hh gd hgd`.
+
+Take `⟨p, hpAt, hp⟩` from `GlobalTheory.T.double_scaling_iwasawa_decomposition F E σ B n d X W M χX χW om r s r' s' hP v t c (fixDiag (locMat t c h))`. Establish `e5` using `GlobalTheory.SplitLin.DblSiegelScal.scalar_siegel hPr F E σ B n d X W M χX χW om r s r' s' hP v t b c dd omd hdc hws hloc ιd hιd cd hcd p hpAt ⟨1, by rw [hp]; exact fixDiag_diag _⟩`. Rewrite `e5` using `[hp, gdet_fixDiag]`. Establish `f1 : cd gd = χd (GlobalTheory.SplitFlip.gdet (locMat t c h))` using `by rw [hχd gd hgdAt, gdet_locMatD_diag t c h gd hgd]`. Establish `f2 : cd p = χd (GlobalTheory.SplitFlip.gdet (locMat t c h))` using `by rw [hχd p hpAt, hp, gdet_fixDiag]`.
+
+Rewrite using `[e1, f1, ← f2]`. Conclude with `e5`.
+-/
 theorem GlobalTheory.SplitLin.scalW_main : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ)
     (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' →
     ∀ (v : Pl F) (t : E →ₐ[F] Fv F v) (b : GL (Fin n) (Fv F v)) (c : GL (Fin d) (Fv F v)), ∀ ι, M.IsLinW B.ψ t b c ι →
@@ -780,6 +1023,17 @@ section
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK GlobalTheory.KSplit
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
+/- English proof (translation)
+Introduce `hP F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hp v t b c ι hι g hg h hh φ hφ φ₁ hφ₁ hA`. Take `⟨hex, -, -⟩` from `GlobalTheory.T.theta_action_exists hP F E σ B n d X W M χX χW om r s r' s' hp v`. Establish `oneX : (1 : UA σ X.J) ∈ UAt σ X (evFin F v)` using `fun u _ => by show u • (mat (1 : UA σ X.J) - 1) = 0`. Simplify using `[mat]`. Establish `oneW : (1 : UA σ W.J) ∈ UAt σ W (evFin F v)` using `fun u _ => by show u • (mat (1 : UA σ W.J) - 1) = 0`.
+
+Simplify using `[mat]`. Establish `hspl` using `hp.weil.isUSplitting`. Take `⟨φ', ⟨hφ', hA'⟩, -⟩` from `hex 1 oneX h hh φ hφ`. Take `⟨φ'', ⟨hφ'', hA''⟩, -⟩` from `hex g hg 1 oneW φ' hφ'`. Establish `hcomp : Acts (evFin F v) (om (g, h)) φ φ''`.
+
+Introduce `R hR`. Establish `e : om (g, h) = om (g, 1) * om (1, h)` using `by rw [← map_mul]; simp`. Establish `hR' : Rest (evFin F v) φ' R` using `⟨hR.1, by rw [← hA' R hR]; exact hspl.pres (1, h) _ hR.2⟩`. Rewrite using `[e, Module.End.mul_apply, hA' R hR, hA'' R hR']`. Establish `e1 : φ₁ = φ''` using `(hex g hg h hh φ hφ).unique ⟨hφ₁, hA⟩ ⟨hφ'', hcomp⟩`.
+
+Take `⟨κW, hW⟩` from `GlobalTheory.T.linear_model_unitary_conjugate hP F E σ B n d X W M χX χW om r s r' s' hp v t b c ι hι`. Take `⟨κX, hX⟩` from `GlobalTheory.T.linear_model_compact_conjugate_exists hP F E σ B n d X W M χX χW om r s r' s' hp v t b c ι hι`. Establish `sW` using `GlobalTheory.SplitLin.scalW_main hP F E σ B n d X W M χX χW om r s r' s' hp v t b c ι hι κW hW h hh`. Establish `sX` using `GlobalTheory.T.linear_model_unitary_intertwines hP F E σ B n d X W M χX χW om r s r' s' hp v t b c ι hι κX hX g hg`. Rewrite using `[e1, hX g hg φ' hφ' φ'' hφ'' hA'', hW h hh φ hφ φ' hφ' hA', sW, sX]`.
+
+Use function extensionality and compare the values at `Y`. Simplify using `only [GlobalTheory.SplitFlip.omA, Pi.smul_apply, smul_eq_mul, Fintype.card_fin, MonoidHom.inv_apply, Units.val_inv_eq_inv_val, inv_inv, Matrix.mul_assoc]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem GlobalTheory.SplitLin.om_linW_split : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ)
     (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' →
     ∀ (v : Pl F) (t : E →ₐ[F] Fv F v) (b : GL (Fin n) (Fv F v)) (c : GL (Fin d) (Fv F v)), ∀ ι, M.IsLinW B.ψ t b c ι →
@@ -818,6 +1072,21 @@ section
 open scoped Matrix
 open GlobalTheory.SplitLin.OppLagr in
 
+/- English proof (translation)
+Introduce `hPr F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP v t b c ι hι g hg h hh φ hφ φ₁ hφ₁ hA`. Establish `hcm : IsCMExt F E σ` using `hP.base.cm`. Establish `hJX : (X.J.map t).det ≠ 0` using `det_map_ne_zero (det_ne_zero_herm hP.herm) t`. Establish `hJW : (W.J.map t).det ≠ 0` using `det_map_ne_zero (det_ne_zero_skew hP.skew) t`. Establish `hb : b.1.det ≠ 0` using `((Matrix.isUnit_iff_isUnit_det _).mp b.isUnit).ne_zero`.
+
+Establish `hc : c.1.det ≠ 0` using `((Matrix.isUnit_iff_isUnit_det _).mp c.isUnit).ne_zero`. Set `P : GL (Fin n) (Fv F v)` to `Matrix.nonsingInvUnit (-(b.1ᵀ * X.J.map t)) (isUnit_iff_ne_zero.mpr (by`. Rewrite using `[Matrix.det_neg, Matrix.det_mul, Matrix.det_transpose]`. Conclude with `mul_ne_zero (pow_ne_zero _ (by norm_num)) (mul_ne_zero hb hJX)))`. Set `Q : GL (Fin d) (Fv F v)` to `Matrix.nonsingInvUnit (c.1ᵀ * W.J.map t) (isUnit_iff_ne_zero.mpr (by`.
+
+Rewrite using `[Matrix.det_mul, Matrix.det_transpose]`. Conclude with `mul_ne_zero hc hJW))`. Establish `hPv : P.1 = -(b.1ᵀ * X.J.map t)` using `rfl`. Establish `hQv : Q.1 = c.1ᵀ * W.J.map t` using `rfl`. Establish `hW2 : M.IsLinW B.ψ (t.comp σ) P⁻¹ Q⁻¹ ι`.
+
+Unfold `Model.IsLinW`. Unfold `Model.IsLinBar at hι`. Rewrite using `[comp_comp hcm]`. Use `hι using 2` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `u`.
+
+Simplify using `only [inv_inv, hPv, hQv, Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.neg_mul, Matrix.mul_assoc]`. Establish `key` using `GlobalTheory.SplitLin.om_linW_split hPr F E σ B n d X W M χX χW om r s r' s' hP v (t.comp σ) P⁻¹ Q⁻¹ ι hW2 g hg h hh φ hφ φ₁ hφ₁ hA`. Establish `eg : locMat (t.comp σ) P⁻¹ g = GlobalTheory.SplitFlip.invT (locMat t b g)`. Express the relevant statement in the definitionally equal form `P⁻¹⁻¹ * _ * P⁻¹ = GlobalTheory.SplitFlip.invT (b⁻¹ * _ * b)`. Rewrite using `[inv_inv]`.
+
+Conclude with `conj_eq_invT b P _ _ (X.J.map t) (-1) (GlobalTheory.Div.CoordOpp.unit_map σ g t) (by rw [hPv, neg_one_smul])`. Establish `eh : locMat (t.comp σ) Q⁻¹ h = GlobalTheory.SplitFlip.invT (locMat t c h)`. Express the relevant statement in the definitionally equal form `Q⁻¹⁻¹ * _ * Q⁻¹ = GlobalTheory.SplitFlip.invT (c⁻¹ * _ * c)`. Rewrite using `[inv_inv]`. Conclude with `conj_eq_invT c Q _ _ (W.J.map t) 1 (GlobalTheory.Div.CoordOpp.unit_map σ h t) (by rw [hQv, one_smul])`.
+
+Rewrite using `[key, eg, eh, chrW_comp hcm χW hP.resW, chrW_comp hcm χX hP.resX, inv_inv, omA_invT]`.
+-/
 theorem GlobalTheory.SplitLin.OppLagr.act_linBar : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ)
     (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' →
     ∀ (v : Pl F) (t : E →ₐ[F] Fv F v) (b : GL (Fin n) (Fv F v)) (c : GL (Fin d) (Fv F v)), ∀ ι, M.IsLinBar B.ψ t b c ι →

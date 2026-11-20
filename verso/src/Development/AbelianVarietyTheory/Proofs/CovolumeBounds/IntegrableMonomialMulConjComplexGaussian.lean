@@ -15,6 +15,9 @@ noncomputable def complexGaussian (g : ℕ) : Measure E :=
 
 variable {E}
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h`. Establish `h1` using `GaussianFourier.integral_rexp_neg_mul_sq_norm (V := E) hb`. Rewrite `h1` using `[integral_undef h]`. Conclude with `absurd h1 (by positivity)`.
+-/
 theorem integrable_exp_neg_mul_norm_sq {b : ℝ} (hb : 0 < b) :
     Integrable fun z : E => exp (-b * ‖z‖ ^ 2) := by
   by_contra h
@@ -22,6 +25,9 @@ theorem integrable_exp_neg_mul_norm_sq {b : ℝ} (hb : 0 < b) :
   rw [integral_undef h] at h1
   exact absurd h1 (by positivity)
 
+/- English proof (translation)
+Rewrite using `[GaussianFourier.integral_rexp_neg_mul_sq_norm hb, hE, ← rpow_natCast]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem integral_exp_neg_mul_norm_sq {g : ℕ} (hE : Module.finrank ℝ E = 2 * g) {b : ℝ}
     (hb : 0 < b) : ∫ z : E, exp (-b * ‖z‖ ^ 2) = (π / b) ^ g := by
   rw [GaussianFourier.integral_rexp_neg_mul_sq_norm hb, hE, ← rpow_natCast]
@@ -29,6 +35,9 @@ theorem integral_exp_neg_mul_norm_sq {g : ℕ} (hE : Module.finrank ℝ E = 2 * 
   push_cast
   ring
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Establish `h` using `integral_exp_neg_mul_norm_sq hE one_pos`. Establish `hi` using `integrable_exp_neg_mul_norm_sq (E := E) one_pos`. Simplify using `only [neg_mul, one_mul, div_one] at h hi`. Rewrite using `[complexGaussian, withDensity_apply _ MeasurableSet.univ, Measure.restrict_univ, ← ofReal_integral_eq_lintegral_ofReal (hi.const_mul _) (.of_forall fun z => by positivity), integral_const_mul, h, inv_mul_cancel₀ (by positivity), ENNReal.ofReal_one]`.
+-/
 theorem isProbabilityMeasure_complexGaussian {g : ℕ} (hE : Module.finrank ℝ E = 2 * g) :
     IsProbabilityMeasure (complexGaussian E g) := by
   constructor
@@ -39,6 +48,11 @@ theorem isProbabilityMeasure_complexGaussian {g : ℕ} (hE : Module.finrank ℝ 
     ← ofReal_integral_eq_lintegral_ofReal (hi.const_mul _) (.of_forall fun z => by positivity),
     integral_const_mul, h, inv_mul_cancel₀ (by positivity), ENNReal.ofReal_one]
 
+/- English proof (translation)
+Break down `subsingleton_or_nontrivial E with h | h` into its components or cases. Conclude with `Integrable.of_finite`. Rewrite using `[integrable_fun_norm_addHaar volume (f := fun r => r ^ n * exp (-b * r ^ 2))]`. Use `integrableOn_rpow_mul_exp_neg_mul_sq hb (s := ((Module.finrank ℝ E - 1 + n : ℕ) : ℝ)) (lt_of_lt_of_le neg_one_lt_zero (by positivity))` as an intermediate fact. Use `this.congr_fun (fun x _ => ?_) measurableSet_Ioi` and prove the remaining obligations.
+
+Simplify using `only [rpow_natCast, smul_eq_mul, pow_add, mul_assoc]`.
+-/
 theorem integrable_norm_pow_mul_exp_neg_mul_norm_sq (n : ℕ) {b : ℝ} (hb : 0 < b) :
     Integrable fun z : E => ‖z‖ ^ n * exp (-b * ‖z‖ ^ 2) := by
   rcases subsingleton_or_nontrivial E with h | h
@@ -64,10 +78,22 @@ end Kernel
 
 section Monomials
 
+/- English proof (translation)
+Rewrite using `[finrank_real_of_complex, finrank_euclideanSpace]`.
+-/
 theorem finrank_real_euclideanSpace_complex (ι : Type*) [Fintype ι] :
     Module.finrank ℝ (EuclideanSpace ℂ ι) = 2 * Fintype.card ι := by
   rw [finrank_real_of_complex, finrank_euclideanSpace]
 
+/- English proof (translation)
+Set `e : EuclideanSpace ℂ ι ≃L[ℝ] (ι → ℂ)` to `PiLp.continuousLinearEquiv 2 ℝ fun _ : ι => ℂ`. Express the relevant statement in the definitionally equal form `MeasurePreserving e`. Use `⟨e.continuous.measurable, ?_⟩` and prove the remaining obligations. Take `⟨c, hc⟩ : ∃ c : NNReal, Measure.map e volume = c • (volume : Measure (ι → ℂ))` from `⟨_, Measure.isAddLeftInvariant_eq_smul _ _⟩`. Establish `h1 : ∫ w : ι → ℂ, ∏ i, exp (-1 * ‖w i‖ ^ 2) = π ^ Fintype.card ι`.
+
+Rewrite using `[integral_fintype_prod_volume_eq_pow fun w : ℂ => exp (-1 * ‖w‖ ^ 2), integral_exp_neg_mul_norm_sq (E := ℂ) (g := 1) (by simp) one_pos]`. Simplify using the standard rewrite rules. Establish `h2 : ∫ w : ι → ℂ, ∏ i, exp (-1 * ‖w i‖ ^ 2) ∂(Measure.map e volume) = π ^ Fintype.card ι`. Rewrite using `[integral_map e.continuous.measurable.aemeasurable (Continuous.aestronglyMeasurable (by fun_prop))]`. Use `integral_exp_neg_mul_norm_sq (finrank_real_euclideanSpace_complex ι) one_pos` as an intermediate fact.
+
+Rewrite `this` using `[div_one]`. Rewrite using `[← this]`. Use `integral_congr_ae (.of_forall fun z => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[← exp_sum, EuclideanSpace.norm_sq_eq, Finset.mul_sum]`.
+
+Both sides reduce to the same expression. Rewrite `h2` using `[hc, integral_smul_nnreal_measure, h1, NNReal.smul_def, smul_eq_mul, mul_eq_right₀ (by positivity)]`. Rewrite using `[hc, show c = 1 by exact_mod_cast h2, one_smul]`.
+-/
 theorem volume_preserving_ofLp_complex (ι : Type*) [Fintype ι] :
     MeasurePreserving (@WithLp.ofLp 2 (ι → ℂ)) := by
   let e : EuclideanSpace ℂ ι ≃L[ℝ] (ι → ℂ) := PiLp.continuousLinearEquiv 2 ℝ fun _ : ι => ℂ
@@ -101,6 +127,9 @@ section Fin
 noncomputable abbrev fockMeasure (g : ℕ) : Measure (EuclideanSpace ℂ (Fin g)) :=
   complexGaussian (EuclideanSpace ℂ (Fin g)) g
 
+/- English proof (translation)
+Rewrite using `[finrank_real_euclideanSpace_complex, Fintype.card_fin]`.
+-/
 theorem finrank_real_euclideanSpace_complex_fin (g : ℕ) :
     Module.finrank ℝ (EuclideanSpace ℂ (Fin g)) = 2 * g := by
   rw [finrank_real_euclideanSpace_complex, Fintype.card_fin]

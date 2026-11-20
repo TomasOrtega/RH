@@ -11,5 +11,8 @@ open scoped NumberField.AdeleRing ValuativeRel
 open GroundTheory.Global.AdicLiesOver
 open GlobalTheory.CompanionTheory.CenTheta
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.CenTheta.W_central | exact GlobalTheory.CompanionTheory.CenTheta.W_central | (intros; apply GlobalTheory.CompanionTheory.CenTheta.W_central <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.local_whittaker_central_character : ∀ (K : Type) [Field K] [NumberField K], Module.finrank ℚ K = 2 → ∀ (c : HeckeCharacter K) (v : Pl) (m : LM c v), m.ok → ∀ (a : (Qv v)ˣ) (g : GL (Fin 2) (Qv v)), m.W (dg2 a a * g) = omW m a * m.W g := by
   first | exact @GlobalTheory.CompanionTheory.CenTheta.W_central | exact GlobalTheory.CompanionTheory.CenTheta.W_central | (intros; apply GlobalTheory.CompanionTheory.CenTheta.W_central <;> assumption)

@@ -13,6 +13,9 @@ namespace Formalism.L2.Ker.Cd
 
 open Formalism.BasicNotions Formalism.HermitianLatticesTheory Formalism.L2.DIV Formalism.L2.Col Formalism.L2.Host Formalism.FrobeniusOrbits
 
+/- English proof (translation)
+The claim follows from `Formalism.L2.Ker.Cd.IntegralLatticeDensity.SO.stdOK B hcc hδ`.
+-/
 theorem Base.stdOK {D : Car} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (B : Base D cc δ) (hcc : TaylorLogMetric.IsCurveIdeal D cc)
     (hδ : TaylorLogMetric.IsDiscriminantTwelfthRootOfIdealLattice D cc δ) : B.StdOK :=
   Formalism.L2.Ker.Cd.IntegralLatticeDensity.SO.stdOK B hcc hδ

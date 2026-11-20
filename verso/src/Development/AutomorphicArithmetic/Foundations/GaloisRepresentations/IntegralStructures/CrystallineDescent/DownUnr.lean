@@ -9,6 +9,17 @@ open UpperTheory.V.Af (FrobEig algSat RepIso)
 open UpperTheory.V.Af.Bc (res)
 open UpperTheory.Gal.Int.Core
 
+/- English proof (translation)
+Introduce `E Ω _ _ _ _ _ _ l _ ι a π Q P hP ρ w B hB hQdec hyp hl A h`. Take `⟨w', hunder, h', hN⟩` from `GlobalTheory.PlaceNormDec.exists_place_normV_eq E Ω Q w A h (hQdec A h)`. Establish `hB' : (CG.mk P).HasSat w' B`. Establish `e` using `hP.sat w' 1 B (by rw [pow_one, hunder, hN]) (hunder ▸ hB)`. Simplify using `using e`.
+
+Establish `hlw : ((l : ℕ) : 𝓞 Q.K) ∉ w'.asIdeal`. Introduce `hw`. Apply `hl` to reduce the goal to its premises. Establish `e1` using `(h ((l : ℕ) : 𝓞 E))`. Establish `e2` using `(h' ((l : ℕ) : 𝓞 Q.K))`.
+
+Simplify using `only [map_natCast] at e1 e2`. Conclude with `e1.1 (e2.2 hw)`. Establish `hcl` using `hyp w' hunder hB' hlw A h'`. Rewrite `hcl` using `[hN]`. Use `⟨fun s hs => ?_, fun σ hσ => ?_⟩` and prove the remaining obligations.
+
+Take `⟨s', rfl⟩` from `hQdec A h (Ine_le_Dec A hs)`. Conclude with `hcl.1 s' hs`. Take `⟨σ', rfl⟩` from `hQdec A h hσ.1`. Establish `e` using `hcl.2 σ' hσ`. Rewrite using `[← map_inv]`.
+
+Conclude with `e`.
+-/
 theorem UpperTheory.Gal.Int.Core.downUnr_holds :
     SphDown .unr := by
   intro E Ω _ _ _ _ _ _ l _ ι a π Q P hP ρ w B hB hQdec hyp hl A h

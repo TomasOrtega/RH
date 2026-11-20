@@ -11,6 +11,19 @@ section
 noncomputable section
 open Formalism.BasicNotions Formalism.MainNotions GlobalTheory.BigTop GlobalTheory.BigTop.Fun GlobalTheory.SqTop NumberField
 open Formalism.L2.Indef.Tree Formalism.L2.Indef.Tree.ArchimedeanLeafBounds.Cuts
+/- English proof (translation)
+Establish `hQ` using `_root_.GlobalTheory.T.forallLeaves_fitted_of_gBig _ hS hd GlobalTheory.T.archimedeanBound_bottomPairs_norms_grid`. Use `_root_.GlobalTheory.BigTop.Fun.LeafConditions.mono hQ ?_` and prove the remaining obligations. Introduce `D L hT Gi Gl Kc Y cX ex Csz p CF d C CH _ hd`. Use `⟨hd, fun hq => ?_⟩` and prove the remaining obligations. Take `⟨a, ha⟩` from `hd.2`.
+
+Establish `hsq` using `ha.sq`. Establish `hA` using `hq d.zA d.zA' hsq.norms`. Use `show ArchimedeanHeightBound d.zA d.zA' (d.O.bArch C p.Z.b)`. Establish `eN : (d.O.N : ℝ) = (GlobalTheory.ChiGrid.bigN D : ℝ)`. Use `D.R.m_add_three_le_k` as an intermediate fact.
+
+Establish `hr : D.R.r = D.R.k + D.R.m - 1` using `rfl`. Use `norm_cast`. Use `show D.R.k + D.R.m * (D.R.t + (D.R.k + D.R.m + 5) + 1) = D.R.k + D.R.m * (D.R.t + (GlobalTheory.ChiGrid.sLen D) + 1)`. Unfold `GlobalTheory.ChiGrid.sLen`. Rewrite using `[hr]`.
+
+Use `congr 3`. Use linear arithmetic over natural numbers and integers. Establish `eB : d.O.Bw = (GlobalTheory.FunObj.SqNum.maxWt D 1 : ℝ)` using `hsq.weight`. Establish `eS : d.O.cS = Real.log (GlobalTheory.FunObj.SqNum.levQ d.G.pl)`. Rewrite using `[GlobalTheory.FunObj.SqNum.log_levQ]`.
+
+Both sides reduce to the same expression. Establish `ef : (d.O.f : ℝ) = D.R.f` using `rfl`. Establish `e1 : d.O.bArch C p.Z.b = C * D.R.f * (2 * (GlobalTheory.ChiGrid.bigN D : ℝ)) * (GlobalTheory.FunObj.SqNum.maxWt D 1 : ℝ) * (Real.log p.Z.b + Real.log ((GlobalTheory.FunObj.SqNum.maxWt D 1 : ℝ) * (2 * (GlobalTheory.ChiGrid.bigN D : ℝ)))) + C * D.R.f * (GlobalTheory.ChiGrid.bigN D …`. Unfold `FunData.bArch`. Rewrite using `[eN, eB, eS, ef]`.
+
+Rewrite using `[e1]`. Conclude with `hA`.
+-/
 theorem GlobalTheory.BigTop.Fun.arch_tie_of_logDeriv_bound (hS : _root_.GlobalTheory.BigTop.Fun.SettingAtPoint)
     (hd : Closed FamHyp fun Fm _ => _root_.GlobalTheory.BigTop.EventuallyAtPoints Fm fun x _ i _ => |(Fm.L x i).logDerivativeAtOne| ≤ (Fm.L x i).sc.x ^ (Fm.L x i).sc.eps)
     (_hA : GlobalTheory.NormSum.ArchSt) (_hB : BotSmall) : _root_.GlobalTheory.BigTop.Fun.ArchimedeanCondition @Comparison₂ := by

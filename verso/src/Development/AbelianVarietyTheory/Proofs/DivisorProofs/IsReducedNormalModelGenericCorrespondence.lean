@@ -9,6 +9,21 @@ namespace GlobalTheory.UPel.HT.ES
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.UPel.HT GlobalTheory.UPel.HT.Hecke
 
+/- English proof (translation)
+Establish `haff : ∀ (V : Y.Opens), IsAffineOpen V → ∀ g : Γ(Y, V), IsNilpotent g → g = 0`. Introduce `V hV g hg`. Set `q : Γ(Y, V)` to `(p : Γ(Y, V))`. Set `O` to `Y.basicOpen q`. Set `ρ : Γ(Y, V) →+* Γ(Y, O)` to `(Y.presheaf.map (homOfLE (Y.basicOpen_le q)).op).hom`.
+
+Use `letI : Algebra Γ(Y, V) Γ(Y, O) := ρ.toAlgebra`. Use `haveI : IsLocalization.Away q Γ(Y, O) := hV.isLocalization_basicOpen q`. Establish `hu : IsUnit ((p : ℕ) : Γ(O.toScheme, ⊤))`. Establish `h1 : IsUnit (algebraMap Γ(Y, V) Γ(Y, O) q)` using `IsLocalization.Away.algebraMap_isUnit q`. Rewrite `h1` using `[map_natCast]`.
+
+Use `h1.map (O.topIso.inv.hom)` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Take `⟨f₀, hf₀⟩` from `hfac O.toScheme O.ι hu`. Use `haveI : IsOpenImmersion (f₀ ≫ i) := hf₀ ▸ inferInstance`. Use `haveI : IsOpenImmersion f₀ := IsOpenImmersion.of_comp f₀ i`.
+
+Use `haveI : IsReduced O.toScheme := isReduced_of_isOpenImmersion f₀`. Use `haveI : _root_.IsReduced Γ(Y, O) := isReduced_of_injective (O.topIso.inv.hom) (O.topIso.commRingCatIsoToRingEquiv.symm.injective)`. Establish `h0 : algebraMap Γ(Y, V) Γ(Y, O) g = 0` using `(hg.map (algebraMap Γ(Y, V) Γ(Y, O))).eq_zero`. Take `⟨⟨_, k, rfl⟩, hk⟩` from `(IsLocalization.map_eq_zero_iff (Submonoid.powers q) _ g).1 h0`. Establish `hk' : q ^ k * g = 0` using `hk`.
+
+Use `clear hk h0`. Proceed by induction on `k with`. Consider the case `zero => simpa using hk'`. Consider the case `succ k ih => exact ih (hp V _ (by rw [pow_succ', _root_.mul_assoc] at hk'; exact hk'))`. Use `⟨fun U => ⟨fun f hf => ?_⟩⟩` and prove the remaining obligations.
+
+Use `Y.sheaf.eq_of_locally_eq' (fun V : {V : Y.affineOpens // V.1 ≤ U} => V.1.1) U (fun V => homOfLE V.2) ?_ f 0 fun V => ?_` and prove the remaining obligations. Introduce `y hy`. Take `⟨_, ⟨V, hV, rfl⟩, hyV, hVU⟩` from `Y.isBasis_affineOpens.exists_subset_of_mem_open hy U.isOpen`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨⟨⟨V, hV⟩, hVU⟩, hyV⟩`. Rewrite using `[map_zero]`.
+
+Conclude with `haff V.1.1 V.1.2 _ (hf.map _)`.
+-/
 theorem isReduced_of_pReg_of_factor (p : ℕ) {Y₀ Y : Scheme.{0}} [IsReduced Y₀] (i : Y₀ ⟶ Y) [IsOpenImmersion i]
     (hp : ∀ (U : Y.Opens) (f : Γ(Y, U)), (p : Γ(Y, U)) * f = 0 → f = 0)
     (hfac : ∀ (S : Scheme.{0}) (f : S ⟶ Y), IsUnit ((p : ℕ) : Γ(S, ⊤)) → ∃ f₀ : S ⟶ Y₀, f₀ ≫ i = f) :
@@ -48,6 +63,11 @@ theorem isReduced_of_pReg_of_factor (p : ℕ) {Y₀ Y : Scheme.{0}} [IsReduced Y
   · rw [map_zero]
     exact haff V.1.1 V.1.2 _ (hf.map _)
 
+/- English proof (translation)
+Introduce `p _ D R _ _ _ _ b N _ M Y₀ s₀ gs hgs _ Y s i _ _ hfl hfac`. Use `haveI := M.smooth`. Use `haveI : Smooth M.s := SmoothOfRelativeDimension.smooth (D.a * (D.n - 1)) M.s`. Use `haveI : IsReduced Y₀ := GlobalTheory.isReduced_of_smooth_of_isReduced (gs ≫ (M.X.basicOpen ((p : ℕ) : Γ(M.X, ⊤))).ι ≫ M.s)`. Establish `hR : ∀ a : R, (p : R) * a = 0 → a = 0` using `fun a ha => (mul_eq_zero.1 ha).resolve_left (Nat.cast_ne_zero.2 (Fact.out : p.Prime).ne_zero)`.
+
+Use `haveI := hfl`. Conclude with `isReduced_of_pReg_of_factor p i (fun U f hf => pReg_of_flat (p := p) (s ≫ M.s) hR U f hf) hfac`.
+-/
 theorem isReduced_normalModel_of_generic : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] [CharZero R] (b : Base D R) (N : ℕ), (p : R) ∈ IsLocalRing.maximalIdeal R → ∀ (M : Model b N) (Y₀ : Scheme.{0}) (s₀ : Y₀ ⟶ M.X) (gs : Y₀ ⟶ (M.X.basicOpen ((p : ℕ) : Γ(M.X, ⊤))).toScheme), gs ≫ (M.X.basicOpen ((p : ℕ) : Γ(M.X, ⊤))).ι = s₀ → Etale gs → ∀ (Y : Scheme.{0}) (s : Y ⟶ M.X) (i : Y₀ ⟶ Y), IsOpenImmersion i → i ≫ s = s₀ → Flat (s ≫ M.s) → (∀ (S : Scheme.{0}) (f : S ⟶ Y), IsUnit ((p : ℕ) : Γ(S, ⊤)) → ∃ f₀ : S ⟶ Y₀, f₀ ≫ i = f) → IsReduced Y := by
   intro p _ D R _ _ _ _ b N _ M Y₀ s₀ gs hgs _ Y s i _ _ hfl hfac
   haveI := M.smooth

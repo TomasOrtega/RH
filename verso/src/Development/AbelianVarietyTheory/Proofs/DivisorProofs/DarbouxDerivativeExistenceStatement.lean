@@ -7,6 +7,9 @@ open scoped TensorProduct Matrix
 open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK GlobalTheory.ThK.PlaneEv
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ThK.PlaneEv.LineDer.derivLines | exact GlobalTheory.ThK.PlaneEv.LineDer.derivLines | (intros; apply GlobalTheory.ThK.PlaneEv.LineDer.derivLines <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.darboux_derivative_existence : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (α β κ : Type) [Fintype α]
     [DecidableEq α] [Fintype β] [DecidableEq β] [Fintype κ] (ψ : AddChar (AF F) ℂ) (JA : Matrix α α (AE F E))
     (JB : Matrix β β (AE F E)) (co : Darboux (symp (R := AF F) (cA σ) (-1) JA JB) κ), IsStd ψ → GlobalTheory.RealLift.DerEx →

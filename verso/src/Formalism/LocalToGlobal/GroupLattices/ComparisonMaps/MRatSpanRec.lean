@@ -15,12 +15,18 @@ variable {p : ℕ} {O Kf : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationR
 
 abbrev modLL : Module LL (FnP P α) := Module.compHom _ e
 
+/- English proof (translation)
+Introduce `i L`. Take `⟨Q, hQ⟩` from `h i L`. Take `⟨Q', hQ'⟩` from `h' i L`. Conclude with `⟨Q + Q', by rw [map_add, hQ, hQ']; rfl⟩`.
+-/
 theorem isRational_add {F F' : FnP P α} (h : RatFnP P α e F) (h' : RatFnP P α e F') : RatFnP P α e (F + F') := by
   intro i L
   obtain ⟨Q, hQ⟩ := h i L
   obtain ⟨Q', hQ'⟩ := h' i L
   exact ⟨Q + Q', by rw [map_add, hQ, hQ']; rfl⟩
 
+/- English proof (translation)
+Introduce `i L`. Take `⟨Q, hQ⟩` from `h i L`. Use `⟨MvPolynomial.C a * Q, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, MvPolynomial.map_C, hQ, ← MvPolynomial.smul_eq_C_mul]`. Both sides reduce to the same expression.
+-/
 theorem isRational_smul (a : LL) {F : FnP P α} (h : RatFnP P α e F) : RatFnP P α e (e a • F) := by
   intro i L
   obtain ⟨Q, hQ⟩ := h i L
@@ -45,8 +51,14 @@ def cmpF : FormsLL P α e Mi →+ FnP P α :=
   letI := modLL P α e
   (formsLL P α e Mi).subtype.toAddMonoidHom
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cmpF_apply (x : FormsLL P α e Mi) : cmpF P α e Mi x = x.1 := rfl
 
+/- English proof (translation)
+Rewrite using `[cmpF_apply]`. Conclude with `x.2.2`.
+-/
 theorem cmpF_rat (x : FormsLL P α e Mi) : RatFnP P α e (cmpF P α e Mi x) := by rw [cmpF_apply]; exact x.2.2
 
 def intLL : Set (FormsLL P α e Mi) := {x | cmpF P α e Mi x ∈ Mi}
@@ -72,6 +84,13 @@ def equivRec (h : ValRat c) u (w : D.what₂.places.Pl) (hg : GIdx D.host (D.mem
       obtain ⟨x, hx⟩ := (range_cmp c h u w hg F.1).2 F.2
       exact ⟨x, Subtype.ext hx⟩⟩
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `hx`. Use `(c.cmp_M u w hg).symm.le.trans ?_` and prove the remaining obligations.
+
+Apply `Submodule.span_mono` to reduce the goal to its premises. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Use `⟨equivRec c h u w hg x, ?_, rfl⟩` and prove the remaining obligations. Use `show c.cmp u w hg x ∈ (D.gat u w hg).M`. Rewrite using `[← c.cmp_M u w hg]`.
+
+Conclude with `Submodule.subset_span ⟨x, hx, rfl⟩`.
+-/
 theorem mRatSpan_rec (h : ValRat c) u (w : D.what₂.places.Pl) (hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)) :
     MRatSpan (D.gat u w hg).P (D.gat u w hg).comp (c.embW u w hg) (D.gat u w hg).M := by
   apply le_antisymm

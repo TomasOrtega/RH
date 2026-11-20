@@ -13,11 +13,19 @@ open Formalism.MainNotions.Gaps.LevGap Formalism.MainNotions.Gaps.LG
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Establish `hpz : Prime (p : ℤ)` using `Nat.prime_iff_prime_int.mp hp`. Conclude with `((Ideal.span_singleton_prime hpz.ne_zero).mpr hpz).isMaximal (by simpa [Ideal.span_singleton_eq_bot] using hpz.ne_zero)`.
+-/
 private theorem span_natPrime_isMaximal (p : ℕ) (hp : p.Prime) : (Ideal.span {(p : ℤ)}).IsMaximal := by
   have hpz : Prime (p : ℤ) := Nat.prime_iff_prime_int.mp hp
   exact ((Ideal.span_singleton_prime hpz.ne_zero).mpr hpz).isMaximal
     (by simpa [Ideal.span_singleton_eq_bot] using hpz.ne_zero)
 
+/- English proof (translation)
+Establish `hmax` using `span_natPrime_isMaximal p hp`. Prove the components needed by the constructor for the conclusion. Use `hmax.eq_of_le (Ideal.comap_ne_top _ hQ.ne_top) ?_` and prove the remaining obligations. Rewrite using `[Ideal.span_le, Set.singleton_subset_iff]`. Use `show algebraMap ℤ (𝓞 K) (p : ℤ) ∈ Q`.
+
+Simplify using `using h`.
+-/
 private theorem liesOver_span_of_natCast_mem_flag_measures {K : Type} [Field K] [NumberField K] (p : ℕ) (hp : p.Prime)
     (Q : Ideal (𝓞 K)) [hQ : Q.IsPrime] (h : (p : 𝓞 K) ∈ Q) : Q.LiesOver (Ideal.span {(p : ℤ)}) := by
   have hmax := span_natPrime_isMaximal p hp
@@ -27,6 +35,15 @@ private theorem liesOver_span_of_natCast_mem_flag_measures {K : Type} [Field K] 
   show algebraMap ℤ (𝓞 K) (p : ℤ) ∈ Q
   simpa using h
 
+/- English proof (translation)
+Establish `hpz : Prime (p : ℤ)` using `Nat.prime_iff_prime_int.mp hp`. Rewrite using `[← Set.ncard_image_of_injective _ (fun a b h => HeightOneSpectrum.ext h)]`. Use `congr 1`. Use extensionality with `Q`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨v, hv, rfl⟩`. Conclude with `⟨v.isPrime, liesOver_span_of_natCast_mem_flag_measures p hp v.asIdeal hv⟩`. Introduce and unpack `⟨hQ, hl⟩`. Establish `hne : Q ≠ ⊥`. Introduce and unpack `rfl`.
+
+Establish `h1` using `hl.over`. Rewrite `h1` using `[Ideal.under_bot]`. Conclude with `(by simpa [Ideal.span_singleton_eq_bot] using hpz.ne_zero : Ideal.span {(p : ℤ)} ≠ ⊥) h1`. Use `⟨⟨Q, hQ, hne⟩, ?_, rfl⟩` and prove the remaining obligations. Establish `h2 : ((p : ℤ)) ∈ Q.under ℤ` using `hl.over ▸ Ideal.subset_span rfl`.
+
+Simplify `h2` using `[Ideal.mem_comap]`.
+-/
 private theorem ncard_places_dvd_eq_ncard_primesOver (K : Type) [Field K] [NumberField K] (p : ℕ) (hp : p.Prime) :
     {v : HeightOneSpectrum (𝓞 K) | (p : 𝓞 K) ∈ v.asIdeal}.ncard =
       ((Ideal.span {(p : ℤ)}).primesOver (𝓞 K)).ncard := by
@@ -47,6 +64,9 @@ private theorem ncard_places_dvd_eq_ncard_primesOver (K : Type) [Field K] [Numbe
     have h2 : ((p : ℤ)) ∈ Q.under ℤ := hl.over ▸ Ideal.subset_span rfl
     simpa [Ideal.mem_comap] using h2
 
+/- English proof (translation)
+The claim follows from `span_natPrime_isMaximal p hp ∑ q : (Ideal.span {(p : ℤ)}).primesOver (𝓞 K), q.1.ramificationIdx ℤ * q.1.inertiaDeg ℤ = Module.finrank ℚ K := by have := span_natPrime_isMaximal p hp rw [Ideal.sum_ramification_inertia_eq_finrank, RingOfIntegers.rank]`.
+-/
 private theorem sum_ramificationIdx_mul_inertiaDeg_primesOver (K : Type) [Field K] [NumberField K] (p : ℕ) (hp : p.Prime) :
     haveI := span_natPrime_isMaximal p hp
     ∑ q : (Ideal.span {(p : ℤ)}).primesOver (𝓞 K), q.1.ramificationIdx ℤ * q.1.inertiaDeg ℤ =
@@ -54,6 +74,9 @@ private theorem sum_ramificationIdx_mul_inertiaDeg_primesOver (K : Type) [Field 
   have := span_natPrime_isMaximal p hp
   rw [Ideal.sum_ramification_inertia_eq_finrank, RingOfIntegers.rank]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h`. Establish `hlt : ∑ j, 1 < ∑ j, f j` using `Finset.sum_lt_sum (fun j _ => hpos j) ⟨i, Finset.mem_univ _, by have := hpos i; omega⟩`. Simplify using `[hs] at hlt`.
+-/
 private theorem eq_one_of_pos_of_sum_eq_card {ι : Type} [Fintype ι] (f : ι → ℕ) (hpos : ∀ i, 0 < f i)
     (hs : ∑ i, f i = Fintype.card ι) (i : ι) : f i = 1 := by
   by_contra h
@@ -61,6 +84,11 @@ private theorem eq_one_of_pos_of_sum_eq_card {ι : Type} [Fintype ι] (f : ι �
     Finset.sum_lt_sum (fun j _ => hpos j) ⟨i, Finset.mem_univ _, by have := hpos i; omega⟩
   simp [hs] at hlt
 
+/- English proof (translation)
+Use `span_natPrime_isMaximal p hp` as an intermediate fact. Use `liesOver_span_of_natCast_mem_flag_measures p hp Q h` as an intermediate fact. Establish `key` using `eq_one_of_pos_of_sum_eq_card (fun q : (Ideal.span {(p : ℤ)}).primesOver (𝓞 K) => q.1.ramificationIdx ℤ * q.1.inertiaDeg ℤ) (fun q => by`. Use `q.2.1` as an intermediate fact. Conclude with `Nat.mul_pos (Ideal.ramificationIdx_pos _ _) (Ideal.inertiaDeg_pos _ _))`.
+
+Use the proof step `(by rw [sum_ramificationIdx_mul_inertiaDeg_primesOver K p hp, ← hs, ncard_places_dvd_eq_ncard_primesOver K p hp, Set.ncard_eq_toFinset_card', Set.toFinset_card]) ⟨Q, hQ, inferInstance⟩`. Conclude with `mul_eq_one.mp key`.
+-/
 private theorem ramificationIdx_inertiaDeg_eq_one_of_ncard_eq_finrank (K : Type) [Field K] [NumberField K] (p : ℕ) (hp : p.Prime)
     (hs : {v : HeightOneSpectrum (𝓞 K) | (p : 𝓞 K) ∈ v.asIdeal}.ncard = Module.finrank ℚ K)
     (Q : Ideal (𝓞 K)) [hQ : Q.IsPrime] (h : (p : 𝓞 K) ∈ Q) :
@@ -74,6 +102,13 @@ private theorem ramificationIdx_inertiaDeg_eq_one_of_ncard_eq_finrank (K : Type)
     (by rw [sum_ramificationIdx_mul_inertiaDeg_primesOver K p hp, ← hs, ncard_places_dvd_eq_ncard_primesOver K p hp, Set.ncard_eq_toFinset_card', Set.toFinset_card]) ⟨Q, hQ, inferInstance⟩
   exact mul_eq_one.mp key
 
+/- English proof (translation)
+Unfold `SplitsIn placesOver at hs`. Establish `hwp : (p : 𝓞 E) ∈ w`. Establish `h1 : algebraMap (𝓞 F) (𝓞 E) (p : 𝓞 F) ∈ w`. Establish `h2 : (p : 𝓞 F) ∈ w.under (𝓞 F)` using `hl.over ▸ hv`. Simplify `h2` using `[Ideal.mem_comap]`.
+
+Simplify using `using h1`. Take `⟨he, hf⟩` from `ramificationIdx_inertiaDeg_eq_one_of_ncard_eq_finrank E p hp hs w hwp`. Establish `te` using `Ideal.ramificationIdx_tower (R := ℤ) (q := v) (r := w)`. Establish `tf` using `Ideal.inertiaDeg_tower (R := ℤ) (q := v) (r := w)`. Rewrite `te` using `[he, eq_comm, mul_eq_one]`.
+
+Rewrite `tf` using `[hf, eq_comm, mul_eq_one]`. Conclude with `⟨⟨te.1, tf.1⟩, te.2, tf.2⟩`.
+-/
 theorem ram_inertia_tower (p : ℕ) (hp : p.Prime) (hs : SplitsIn E p) (v : Ideal (𝓞 F)) [v.IsPrime]
     (hv : (p : 𝓞 F) ∈ v) (w : Ideal (𝓞 E)) [hw : w.IsPrime] [hl : w.LiesOver v] :
     (v.ramificationIdx ℤ = 1 ∧ v.inertiaDeg ℤ = 1) ∧
@@ -91,6 +126,13 @@ theorem ram_inertia_tower (p : ℕ) (hp : p.Prime) (hs : SplitsIn E p) (v : Idea
   rw [hf, eq_comm, mul_eq_one] at tf
   exact ⟨⟨te.1, tf.1⟩, te.2, tf.2⟩
 
+/- English proof (translation)
+Use `span_natPrime_isMaximal p hp` as an intermediate fact. Rewrite using `[ncard_places_dvd_eq_ncard_primesOver F p hp, ← sum_ramificationIdx_mul_inertiaDeg_primesOver F p hp, Set.ncard_eq_toFinset_card', Set.toFinset_card, Fintype.card_eq_sum_ones]`. Use `Finset.sum_congr rfl (fun q _ => ?_)` and prove the remaining obligations. Establish `hq1 : q.1.IsPrime` using `q.2.1`. Establish `hq2 : q.1.LiesOver (Ideal.span {(p : ℤ)})` using `q.2.2`.
+
+Establish `hpne : Ideal.span {(p : ℤ)} ≠ ⊥`. Simplify `hp.ne_zero` using `[Ideal.span_singleton_eq_bot]`. Establish `hqmax : q.1.IsMaximal` using `hq1.isMaximal (Ideal.ne_bot_of_liesOver_of_ne_bot hpne q.1)`. Establish `hpq : (p : 𝓞 F) ∈ q.1`. Establish `h1 : ((p : ℤ)) ∈ q.1.under ℤ` using `hq2.over ▸ Ideal.subset_span rfl`.
+
+Simplify `h1` using `[Ideal.mem_comap]`. Take `⟨w, hwm, hw⟩` from `Ideal.exists_maximal_ideal_liesOver_of_isIntegral (S := 𝓞 E) q.1`. Establish `hwp : w.IsPrime` using `hwm.isPrime`. Take `⟨⟨he, hf⟩, -⟩` from `ram_inertia_tower (E := E) p hp hs q.1 hpq w`. Rewrite using `[he, hf]`.
+-/
 theorem ncard_base (p : ℕ) (hp : p.Prime) (hs : SplitsIn E p) :
     {v : HeightOneSpectrum (𝓞 F) | (p : 𝓞 F) ∈ v.asIdeal}.ncard = Module.finrank ℚ F := by
   have := span_natPrime_isMaximal p hp
@@ -110,6 +152,11 @@ theorem ncard_base (p : ℕ) (hp : p.Prime) (hs : SplitsIn E p) :
   obtain ⟨⟨he, hf⟩, -⟩ := ram_inertia_tower (E := E) p hp hs q.1 hpq w
   rw [he, hf]
 
+/- English proof (translation)
+Establish `hsum` using `Ideal.sum_ramification_inertia_eq_finrank v.asIdeal (𝓞 E)`. Rewrite `hsum` using `[← IsFractionRing.finrank_eq (𝓞 F) F (𝓞 E) E, h2]`. Establish `hcard : Fintype.card (v.asIdeal.primesOver (𝓞 E)) = 2`. Rewrite using `[Fintype.card_eq_sum_ones, ← hsum]`. Use `Finset.sum_congr rfl (fun q _ => ?_)` and prove the remaining obligations.
+
+Establish `hq1 : q.1.IsPrime` using `q.2.1`. Establish `hq2 : q.1.LiesOver v.asIdeal` using `q.2.2`. Take `⟨-, he, hf⟩` from `ram_inertia_tower (E := E) p hp hs v.asIdeal hv q.1`. Rewrite using `[he, hf]`. Conclude with `Fintype.one_lt_card_iff.mp (by omega)`.
+-/
 theorem exists_two (h2 : Module.finrank F E = 2) (p : ℕ) (hp : p.Prime) (hs : SplitsIn E p)
     (v : HeightOneSpectrum (𝓞 F)) (hv : (p : 𝓞 F) ∈ v.asIdeal) :
     ∃ w w' : v.asIdeal.primesOver (𝓞 E), w ≠ w' := by
@@ -124,6 +171,11 @@ theorem exists_two (h2 : Module.finrank F E = 2) (p : ℕ) (hp : p.Prime) (hs : 
     rw [he, hf]
   exact Fintype.one_lt_card_iff.mp (by omega)
 
+/- English proof (translation)
+Take `⟨b, hb⟩` from `hy`. Establish `hint : IsIntegral ℤ b`. Establish `h1 : IsIntegral ℤ (algebraMap F E b)` using `hb ▸ RingOfIntegers.isIntegral_coe y`. Conclude with `(isIntegral_algHom_iff (IsScalarTower.toAlgHom ℤ F E) (algebraMap F E).injective).mp h1`. Use `⟨⟨b, hint⟩, ?_⟩` and prove the remaining obligations.
+
+Apply `RingOfIntegers.ext` to reduce the goal to its premises. Conclude with `hb`.
+-/
 theorem exists_int (y : 𝓞 E) (hy : ∃ b, algebraMap F E b = (y : E)) :
     ∃ b : 𝓞 F, algebraMap (𝓞 F) (𝓞 E) b = y := by
   obtain ⟨b, hb⟩ := hy
@@ -134,6 +186,21 @@ theorem exists_int (y : 𝓞 E) (hy : ∃ b, algebraMap F E b = (y : E)) :
   apply RingOfIntegers.ext
   exact hb
 
+/- English proof (translation)
+Establish `hw1 : w.1.IsPrime` using `w.2.1`. Establish `hl : w.1.LiesOver v.asIdeal` using `w.2.2`. Establish `hw1' : w'.1.IsPrime` using `w'.2.1`. Establish `hl' : w'.1.LiesOver v.asIdeal` using `w'.2.2`. Establish `hwmax : w.1.IsMaximal` using `hw1.isMaximal (Ideal.ne_bot_of_liesOver_of_ne_bot v.ne_bot w.1)`.
+
+Establish `hnle : ¬ w.1 ≤ w'.1` using `fun hle => hne (Subtype.ext (hwmax.eq_of_le hw1'.ne_top hle))`. Take `⟨a, haw, haw'⟩` from `SetLike.not_le_iff_exists.mp hnle`. Establish `hsa : IsIntegral ℤ (σ (a : E))` using `(RingOfIntegers.isIntegral_coe a).map (σ.restrictScalars ℤ)`. Set `sa : 𝓞 E` to `⟨σ a, hsa⟩`. Establish `hsa' : (sa : E) = σ a` using `rfl`.
+
+Establish `hfixed : ∀ y : 𝓞 E, σ (y : E) = y → ∃ b : 𝓞 F, algebraMap (𝓞 F) (𝓞 E) b = y` using `fun y hy => exists_int y (hfix _ hy)`. Take `⟨t, ht⟩` from `hfixed (a + sa) (by simp [hsa', hσ, add_comm])`. Take `⟨N, hN⟩` from `hfixed (a * sa) (by simp [hsa', hσ, mul_comm])`. Establish `hmem : ∀ (P : Ideal (𝓞 E)), P.LiesOver v.asIdeal → ∀ b : 𝓞 F, b ∈ v.asIdeal → algebraMap (𝓞 F) (𝓞 E) b ∈ P`. Introduce `P hP b hb`.
+
+Establish `h1 : b ∈ P.under (𝓞 F)` using `hP.over ▸ hb`. Conclude with `h1`. Establish `hmem' : ∀ b : 𝓞 F, algebraMap (𝓞 F) (𝓞 E) b ∈ w.1 → b ∈ v.asIdeal`. Introduce `b hb`. Establish `h1 : b ∈ w.1.under (𝓞 F)` using `hb`.
+
+Conclude with `hl.over ▸ h1`. Establish `hNv : N ∈ v.asIdeal` using `hmem' N (by rw [hN]; exact w.1.mul_mem_right _ haw)`. Use `sc_core σ hσ hfix h2 v a t N ?_ ?_ hNv ?_` and prove the remaining obligations. Use `show ((algebraMap (𝓞 F) (𝓞 E) t : 𝓞 E) : E) = _`. Rewrite using `[ht]`.
+
+Both sides reduce to the same expression. Use `show ((algebraMap (𝓞 F) (𝓞 E) N : 𝓞 E) : E) = _`. Rewrite using `[hN]`. Both sides reduce to the same expression. Introduce `htv`.
+
+Establish `h1 : a + sa ∈ w'.1` using `ht ▸ hmem w'.1 hl' t htv`. Establish `h2' : a * sa ∈ w'.1` using `hN ▸ hmem w'.1 hl' N hNv`. Break down `hw1'.mem_or_mem h2' with h | h` into its components or cases. Conclude with `haw' h`. Conclude with `haw' (by simpa using w'.1.sub_mem h1 h)`.
+-/
 theorem nonempty_splitCore (σ : E →ₐ[F] E) (hσ : ∀ x, σ (σ x) = x)
     (hfix : ∀ x, σ x = x → ∃ a, algebraMap F E a = x) (h2 : Module.finrank F E = 2)
     (v : HeightOneSpectrum (𝓞 F)) (w w' : v.asIdeal.primesOver (𝓞 E)) (hne : w ≠ w') :
@@ -176,6 +243,13 @@ theorem nonempty_splitCore (σ : E →ₐ[F] E) (hσ : ∀ x, σ (σ x) = x)
     · exact haw' h
     · exact haw' (by simpa using w'.1.sub_mem h1 h)
 
+/- English proof (translation)
+Introduce `h2`. Use `liesOver_span_of_natCast_mem_flag_measures p hp v.asIdeal hv` as an intermediate fact. Establish `hpne : Ideal.span {(p : ℤ)} ≠ ⊥`. Simplify `hp.ne_zero` using `[Ideal.span_singleton_eq_bot]`. Rewrite `he` using `[← Ideal.ramificationIdx'_eq_ramificationIdx (R := ℤ) (p := Ideal.span {(p : ℤ)}) (q := v.asIdeal) hpne]`.
+
+Establish `hmap : Ideal.map (algebraMap ℤ (𝓞 K)) (Ideal.span {(p : ℤ)}) ≤ v.asIdeal ^ 2`. Rewrite using `[Ideal.map_span, Set.image_singleton, Ideal.span_le, Set.singleton_subset_iff]`. Simplify using `using h2`. Unfold `Ideal.ramificationIdx' at he`. Distinguish the cases in `hb : BddAbove {n | Ideal.map (algebraMap ℤ (𝓞 K)) (Ideal.span {(p : ℤ)}) ≤ v.asIdeal ^ n}`.
+
+Establish `h3` using `le_csSup hb (show 2 ∈ {n | Ideal.map (algebraMap ℤ (𝓞 K)) (Ideal.span {(p : ℤ)}) ≤ v.asIdeal ^ n} from hmap)`. Use linear arithmetic over natural numbers and integers. Rewrite `he` using `[Nat.sSup_of_not_bddAbove hb]`. Conclude with `zero_ne_one he`.
+-/
 private theorem natCast_not_mem_sq_of_ramificationIdx_eq_one (K : Type) [Field K] [NumberField K] (p : ℕ) (hp : p.Prime)
     (v : HeightOneSpectrum (𝓞 K)) (hv : (p : 𝓞 K) ∈ v.asIdeal) (he : v.asIdeal.ramificationIdx ℤ = 1) :
     (p : 𝓞 K) ∉ v.asIdeal ^ 2 := by
@@ -194,6 +268,13 @@ private theorem natCast_not_mem_sq_of_ramificationIdx_eq_one (K : Type) [Field K
   · rw [Nat.sSup_of_not_bddAbove hb] at he
     exact zero_ne_one he
 
+/- English proof (translation)
+Establish `hc : ((p : ℕ) : v.adicCompletion K) = (((p : ℕ) : K) : v.adicCompletion K)` using `by first`. Consider the case `exact (map_natCast (algebraMap K (v.adicCompletion K)) p).symm`. Consider the case `norm_cast`. Consider the case `rfl`. Rewrite using `[hc, HeightOneSpectrum.valuedAdicCompletion_eq_valuation', ← map_natCast (algebraMap (𝓞 K) K) p, HeightOneSpectrum.valuation_of_algebraMap]`.
+
+Establish `h0 : v.intValuation (p : 𝓞 K) ≠ 0` using `v.intValuation_ne_zero _ (by exact_mod_cast hp.ne_zero)`. Establish `h1` using `(v.intValuation_le_pow_iff_mem (p : 𝓞 K) 1).mpr (by simpa using hv)`. Establish `h2 : ¬ v.intValuation (p : 𝓞 K) ≤ WithZero.exp (-((2 : ℕ) : ℤ))` using `fun h => hnot ((v.intValuation_le_pow_iff_mem _ 2).mp h)`. Rewrite `h1`, `h2`, the goal using `[← WithZero.exp_log h0]`. Rewrite `h1`, `h2` using `[WithZero.exp_le_exp]`.
+
+Use `congr 1`. Move the coercions through the operations in `at h1 h2`. Use linear arithmetic over natural numbers and integers.
+-/
 private theorem val_lemma_7 (K : Type) [Field K] [NumberField K] (p : ℕ) (hp : p.Prime)
     (v : HeightOneSpectrum (𝓞 K)) (hv : (p : 𝓞 K) ∈ v.asIdeal) (hnot : (p : 𝓞 K) ∉ v.asIdeal ^ 2) :
     Valued.v ((p : ℕ) : v.adicCompletion K) = WithZero.exp (-1 : ℤ) := by
@@ -214,6 +295,17 @@ private theorem val_lemma_7 (K : Type) [Field K] [NumberField K] (p : ℕ) (hp :
   push_cast at h1 h2
   omega
 
+/- English proof (translation)
+Establish `hu : IsUnifV K v ((p : ℕ) : v.adicCompletion K)` using `hval`. Establish `hne` using `Formalism.UG.P.tjcosets_ne_zero v _ hu`. Establish `hpc : ((p : v.adicCompletionIntegers K) : v.adicCompletion K) = ((p : ℕ) : v.adicCompletion K)`. Simplify using the standard rewrite rules. Establish `hpm : (p : v.adicCompletionIntegers K) ∈ IsLocalRing.maximalIdeal (v.adicCompletionIntegers K)`.
+
+Rewrite using `[← IsLocalRing.residue_eq_zero_iff]`. Use `(Formalism.UG.P.tjcosets_mem_max v _).mpr ?_` and prove the remaining obligations. Rewrite using `[hpc, hval, ← WithZero.exp_zero, WithZero.exp_lt_exp]`. Evaluate the numerical expressions. Use extensionality with `x`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hx`. Establish `h0 : IsLocalRing.residue _ x = 0` using `(IsLocalRing.residue_eq_zero_iff x).mpr hx`. Establish `hm` using `(Formalism.UG.P.tjcosets_hmax v _ hu x).mpr h0`. Use `Ideal.mem_span_singleton'.mpr ⟨⟨_, hm⟩, ?_⟩` and prove the remaining obligations.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Use `show (((p : ℕ) : v.adicCompletion K)⁻¹ * (x : v.adicCompletion K)) * ((p : v.adicCompletionIntegers K) : v.adicCompletion K) = x`. Rewrite using `[hpc]`. Clear the denominators using the available nonvanishing facts. Introduce `hx`.
+
+Take `⟨a, rfl⟩` from `Ideal.mem_span_singleton'.mp hx`. Conclude with `Ideal.mul_mem_left _ a hpm`.
+-/
 private theorem maximalIdeal_adicCompletionIntegers_eq_span_of_valued (K : Type) [Field K] [NumberField K] (p : ℕ) (v : HeightOneSpectrum (𝓞 K))
     (hval : Valued.v ((p : ℕ) : v.adicCompletion K) = WithZero.exp (-1 : ℤ)) :
     IsLocalRing.maximalIdeal (v.adicCompletionIntegers K) = Ideal.span {(p : v.adicCompletionIntegers K)} := by
@@ -241,6 +333,15 @@ private theorem maximalIdeal_adicCompletionIntegers_eq_span_of_valued (K : Type)
     obtain ⟨a, rfl⟩ := Ideal.mem_span_singleton'.mp hx
     exact Ideal.mul_mem_left _ a hpm
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ cm p hp hs`. Establish `hσ : ∀ x, cm.sig (cm.sig x) = x` using `fun x => star_star x`. Establish `hfix : ∀ x, cm.sig x = x → ∃ a, algebraMap F E a = x` using `fun x hx => (cm.fixed x).mp hx`. Establish `hF` using `ncard_base (F := F) (E := E) p hp hs`. Use `⟨hF, fun v hv => ⟨?_, ?_, ?_⟩⟩` and prove the remaining obligations.
+
+Take `⟨-, hf⟩` from `ramificationIdx_inertiaDeg_eq_one_of_ncard_eq_finrank F p hp hF v.asIdeal hv`. Use `span_natPrime_isMaximal p hp` as an intermediate fact. Use `v.isMaximal` as an intermediate fact. Establish `hlo` using `liesOver_span_of_natCast_mem_flag_measures p hp v.asIdeal hv`. Rewrite `hf` using `[Ideal.inertiaDeg_eq_of_isMaximal (Ideal.span {(p : ℤ)}) v.asIdeal]`.
+
+Use `letI := Ideal.Quotient.field (Ideal.span {(p : ℤ)})`. Establish `: Module.Finite (ℤ ⧸ Ideal.span {(p : ℤ)}) (𝓞 F ⧸ v.asIdeal)` using `Module.finite_of_finrank_eq_succ hf`. Set `e` to `LinearEquiv.ofFinrankEq (ℤ ⧸ Ideal.span {(p : ℤ)}) (𝓞 F ⧸ v.asIdeal) (by rw [Module.finrank_self, hf])`. Unfold `kv`. Rewrite using `[fm_card_residue v, ← Nat.card_congr e.toEquiv, Nat.card_congr (Int.quotientSpanNatEquivZMod p).toEquiv, Nat.card_zmod]`.
+
+Take `⟨he, -⟩` from `ramificationIdx_inertiaDeg_eq_one_of_ncard_eq_finrank F p hp hF v.asIdeal hv`. Conclude with `maximalIdeal_adicCompletionIntegers_eq_span_of_valued F p v (val_lemma_7 F p hp v hv (natCast_not_mem_sq_of_ramificationIdx_eq_one F p hp v hv he))`. Take `⟨w, w', hne⟩` from `exists_two (F := F) (E := E) cm.deg2 p hp hs v hv`. Take `⟨s⟩` from `nonempty_splitCore cm.sig hσ hfix cm.deg2 v w w' hne`. Conclude with `⟨s.φ, s.sig, s.alg⟩`.
+-/
 theorem split_place : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E] (cm : CMData F E) (p : ℕ), p.Prime → SplitsIn E p → ({v : HeightOneSpectrum (𝓞 F) | (p : 𝓞 F) ∈ v.asIdeal}.ncard = Module.finrank ℚ F) ∧ ∀ (v : HeightOneSpectrum (𝓞 F)), (p : 𝓞 F) ∈ v.asIdeal → Nat.card (kv F v) = p ∧ IsLocalRing.maximalIdeal (v.adicCompletionIntegers F) = Ideal.span {(p : v.adicCompletionIntegers F)} ∧ ∃ sp : E ⊗[F] v.adicCompletion F ≃+* v.adicCompletion F × v.adicCompletion F, (∀ x, sp (sigR cm.sig (v.adicCompletion F) x) = swapR _ (sp x)) ∧ ∀ a : v.adicCompletion F, sp ((1 : E) ⊗ₜ[F] a) = (a, a) := by
   intro F E _ _ _ _ _ _ cm p hp hs
   have hσ : ∀ x, cm.sig (cm.sig x) = x := fun x => star_star x

@@ -23,6 +23,9 @@ namespace GlobalTheory.SiegUnram
 
 open GlobalTheory.FamRep
 
+/- English proof (translation)
+The claim follows from `LBIso.trans hM' (pull_isLB hM h) hN' a (LBIso.trans (pull_isLB hM h) (pull_isLB hN h) hN' (lbIso_pull H h) b.symm)`.
+-/
 theorem iso_up {Y Y' : Scheme.{0}} {M N : LB Y} {M' N' : LB Y'} {h : Y' ⟶ Y} (hM : M.IsLB) (hN : N.IsLB)
     (hM' : M'.IsLB) (hN' : N'.IsLB) (a : LBIso M' (M.pull h)) (b : LBIso N' (N.pull h)) (H : LBIso M N) :
     LBIso M' N' :=
@@ -35,6 +38,9 @@ variable {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj G] [GrpObj G'] 
 
 include h in
 
+/- English proof (translation)
+Take `⟨w, hw⟩` from `H`. Use `LBIso.chartPull (chartPullId _) (chartPullOut L _ _ U.left _ fun I => ?_) (iso_linComb ((isGen_iff w).1 hw) _ _)` and prove the remaining obligations. Use `psum_push h _ _ U (fun i => ?_) I.down` and prove the remaining obligations. Use `fin_cases i`. Use `exacts [Over.OverMorphism.ext ha, Over.OverMorphism.ext hb]`.
+-/
 theorem iso_cubeLB_pull {T : Over S} {T' : Over S'} (U : Over.mk (T'.hom ≫ f) ⟶ T) (H : LBIso L' (L.pull φ))
     {a' b' : T' ⟶ G'} {a b : T ⟶ G} (ha : a'.left ≫ φ = U.left ≫ a.left) (hb : b'.left ≫ φ = U.left ≫ b.left) :
     LBIso (cubeLB G' ![a', b'] L') ((cubeLB G ![a, b] L).pull U.left) := by
@@ -47,6 +53,13 @@ theorem iso_cubeLB_pull {T : Over S} {T' : Over S'} (U : Over.mk (T'.hom ≫ f) 
 
 include h in
 
+/- English proof (translation)
+Set `U : Over.mk (G'.hom ≫ f) ⟶ G` to `Over.homMk φ h.1.w`. Set `V : Over.mk ((G' ⊗ G').hom ≫ f) ⟶ G ⊗ G` to `lift (pushPt h.1.w (fst G' G')) (pushPt h.1.w (snd G' G'))`. Establish `e₁ : (fst G' G').left ≫ φ = V.left ≫ (fst G G).left` using `congrArg (fun q => q.left) (show pushPt h.1.w (fst G' G') = V ≫ fst G G from (lift_fst _ _).symm)`. Establish `e₂ : (snd G' G').left ≫ φ = V.left ≫ (snd G G).left` using `congrArg (fun q => q.left) (show pushPt h.1.w (snd G' G') = V ≫ snd G G from (lift_snd _ _).symm)`. Use `⟨Over.OverMorphism.ext (h.1.hom_ext ?_ (by rw [Over.w, Over.w])), ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← h.2 G' w' v' (U ≫ w) (U ≫ v) hw.symm hv.symm, ← MonObj.comp_mul, A₁]`. Conclude with `(Category.comp_id _).trans (Category.id_comp _).symm`. Conclude with `iso_up (DVR.linComb_isLB _ hL _ _) (DVR.linComb_isLB _ hL _ _) (DVR.linComb_isLB _ hL' _ _) (DVR.linComb_isLB _ hL' _ _) (iso_cubeLB_pull h V H (by rw [Over.comp_left, Over.comp_left, Category.assoc, hw, reassoc_of% e₁]) e₂) (iso_cubeLB_pull h V H e₁ (by rw [Over.comp_left, Over. …`. Establish `i : LBIso (cubeLB G' ![𝟙 G', w'] L') ((cubeLB G ![𝟙 G, w] L).pull φ)` using `iso_cubeLB_pull h U H ((Category.id_comp _).trans (Category.comp_id _).symm) hw`. Establish `a : (cubeLB G ![𝟙 G, w] L).IsLB` using `DVR.linComb_isLB _ hL _ _`.
+
+Establish `a' : (cubeLB G' ![𝟙 G', w'] L').IsLB` using `DVR.linComb_isLB _ hL' _ _`. Conclude with `iso_up hL a hL' a' H i A₃`.
+-/
 theorem prim_up (hL : L.IsLB) (hL' : L'.IsLB) (H : LBIso L' (L.pull φ)) {w v : G ⟶ G} {w' v' : G' ⟶ G'}
     (hw : w'.left ≫ φ = φ ≫ w.left) (hv : v'.left ≫ φ = φ ≫ v.left) (A₁ : w * v = 𝟙 G)
     (A₂ : LBIso (cubeLB G ![fst G G ≫ w, snd G G] L) (cubeLB G ![fst G G, snd G G ≫ v] L))
@@ -77,6 +90,15 @@ end Group
 variable {o : Type} [CommRing o] {S S' : Scheme.{0}} {g k : ℕ} {J : Type} {b : TBase o k} {s : S ⟶ Sp o}
   {s' : S' ⟶ Sp o}
 
+/- English proof (translation)
+Take `⟨e, he, hL, hact, -⟩` from `h`. Use `letI := t.ab.comm`. Establish `: IsMonHom e.symm.hom` using `inferInstanceAs (IsMonHom e.inv)`. Establish `h₁ : IsGrpPullback t.A τ.G (𝟙 _) e.inv.left` using `isGrpPullback_of_iso e.symm`. Establish `ih : e.inv.left ≫ e.hom.left = 𝟙 _` using `by rw [← Over.comp_left, e.inv_hom_id, Over.id_left]`.
+
+Establish `hL₁ : LBIso t.L (τ.PP.L.pull e.inv.left)` using `LBIso.chartPull (chartPullSec t.L _ _ ih) (ReciprocityTheory.ChartRestriction.G.Geo.Tor.chartPullPull τ.PP.L _ _ rfl) hL.symm`. Establish `hj : ∀ j, (t.act j).left ≫ e.inv.left = e.inv.left ≫ (τ.act.act (a j)).left` using `fun j => by`. Rewrite using `[← Over.comp_left, ← Over.comp_left]`. Use `congr 1`. Rewrite using `[Iso.comp_inv_eq, Category.assoc, hact, e.inv_hom_id_assoc]`.
+
+Use `prim_up h₁ τ.PP.isLB t.isLB hL₁ (hj w) (hj w') ?_ ?_ ?_` and prove the remaining obligations. Rewrite using `[hw, hw', ← τ.act.add, GlobalTheory.HostModel.cmHost_bar_halfIntegerGenerator, add_sub_cancel, τ.act.one]`. Rewrite using `[hw, hw']`. Conclude with `τ.adj _`. Rewrite using `[hw]`.
+
+Conclude with `τ.prim`.
+-/
 theorem prim_of_isPEL {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {a : J → 𝓞 E}
     {bas : (Fin (2 * g) → ℤ) ≃ₗ[ℤ] D.La} {ρ : o} {t : TObj g k J b s} {τ : SAB H S} {w w' : J} (hw : a w = H.w0)
     (hw' : a w' = H.bar H.w0) (h : IsPEL D a bas ρ t τ) : t.Prim w w' := by
@@ -96,6 +118,9 @@ theorem prim_of_isPEL {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Ho
   · rw [hw, hw']; exact τ.adj _
   · rw [hw]; exact τ.prim
 
+/- English proof (translation)
+Take `⟨ψ, h', hL', -, hact'⟩` from `T`. Use `letI := t.ab.comm`. Use `letI := t'.ab.comm`. Conclude with `prim_up h' t.isLB t'.isLB hL' (hact' w) (hact' w') prim.1 prim.2.1 prim.2.2`.
+-/
 theorem prim_of_tMap {t : TObj g k J b s} {t' : TObj g k J b s'} {f : S' ⟶ S} {w w' : J} (T : TMap t' t f)
     (prim : t.Prim w w') : t'.Prim w w' := by
   obtain ⟨ψ, h', hL', -, hact'⟩ := T
@@ -103,11 +128,23 @@ theorem prim_of_tMap {t : TObj g k J b s} {t' : TObj g k J b s'} {f : S' ⟶ S} 
   letI := t'.ab.comm
   exact prim_up h' t.isLB t'.isLB hL' (hact' w) (hact' w') prim.1 prim.2.1 prim.2.2
 
+/- English proof (translation)
+Take `⟨N, i, hi, -, rfl⟩` from `h`. Use `isProper_str o N` as an intermediate fact. Use `infer_instance`.
+-/
 theorem locallyOfFiniteType_of_isQProjOver (h : IsQProjOver s) : LocallyOfFiniteType s := by
   obtain ⟨N, i, hi, -, rfl⟩ := h
   have := isProper_str o N
   infer_instance
 
+/- English proof (translation)
+Set `q : Sp K ⟶ Sp (DualNumber K)` to `spMap (TrivSqZeroExt.fstHom K K K).toRingHom`. Set `r : Sp (DualNumber K) ⟶ Sp K` to `spMap (algebraMap K (DualNumber K))`. Establish `hqr : q ≫ r = 𝟙 _` using `GlobalTheory.ConstTheta.fst_comp_const`. Establish `hy' : y = r ≫ q ≫ y` using `hy`. Take `⟨t₀, io, c₁, c₂, c₃, c₄⟩` from `GlobalTheory.tObj_pull o g k J b _ _ s (q ≫ s) q t rfl`.
+
+Establish `h₀ : IsGrpPullback t₀.A G (q ≫ y) (io ≫ χ)` using `c₁.comp h`. Set `ψ : t.A.left ⟶ t₀.A.left` to `h₀.1.lift χ (t.A.hom ≫ r) (by rw [h.1.w, Category.assoc, ← hy'])`. Establish `i₁ : ψ ≫ io ≫ χ = χ` using `h₀.1.lift_fst _ _ _`. Establish `i₂ : ψ ≫ t₀.A.hom = t.A.hom ≫ r` using `h₀.1.lift_snd _ _ _`. Establish `k₀ : IsGrpPullback t.A t₀.A r ψ` using `h₀.cancel (h.congr hy' i₁.symm) i₂`.
+
+Establish `k₁ : io ≫ ψ = 𝟙 _`. Apply `h₀.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, i₁, Category.id_comp]`. Rewrite using `[Category.assoc, i₂, ← Category.assoc, c₁.1.w, Category.assoc, hqr, Category.id_comp, Category.comp_id]`. Establish `T₁` using `GlobalTheory.ConstTheta.tMap_of_const L₁ L₂ L₃ o g k J b w w' K _ _ t t₀ io ψ prim c₁ c₂ c₃ c₄ k₀ k₁`.
+
+Establish `T₂` using `tMap_comp T₁ ⟨io, c₁, c₂, c₃, c₄⟩`. Unfold `constPt`. Rewrite using `[Category.comp_id]`. Conclude with `T₂`.
+-/
 theorem tMap_constPt (L₁ : Out.Laws) (L₂ : Out.Laws2)
     (L₃ : ∀ (S : Scheme.{0}) (P : Out.PolAV S) (M : LB P.A.left), M.IsLB → ∃ t : LB.Gen (Theta P.A M), t.IsGen)
     {K : Type} [Field K] {s : Sp (DualNumber K) ⟶ Sp o} (t : TObj g k J b s) {w w' : J} (prim : t.Prim w w')
@@ -133,6 +170,15 @@ theorem tMap_constPt (L₁ : Out.Laws) (L₂ : Out.Laws2)
   rw [Category.comp_id]
   exact T₂
 
+/- English proof (translation)
+Introduce `L₁ L₂ L₃ E _ _ _ H D g J _ a w w' bas _ _ hw hw' _ k o _ b em ρ _ _ _ _ _ _ X s t τ hrep hpel p Ag _ _ _ bas' _ O _ i z bb _ _ _ T sT f hT tT c u hm ⟨e, he, _⟩ hu ⟨φ, _, hφ, _⟩`. Establish `h₁` using `locallyOfFiniteType_of_isQProjOver hrep.qproj`. Establish `h₂ : LocallyOfFiniteType (u ≫ pullback.snd _ _)`. Rewrite using `[hu]`. Conclude with `MorphismProperty.of_isPullback (P := @LocallyOfFiniteType) hT h₁`.
+
+Use `GlobalTheory.TangentCriterion.unramified_quasiFinite_of_tangent _ _ u (locallyOfFiniteType_of_comp u (pullback.snd _ _)) fun K _ x hx => ?_` and prove the remaining obligations. Establish `hc : ∀ {Y Z : Scheme.{0}} (y : Sp (DualNumber K) ⟶ Y) (v : Y ⟶ Z), constPt y ≫ v = constPt (y ≫ v)` using `fun y v => by simp only [constPt, Category.assoc]`. Take `⟨tx, Tx⟩` from `GlobalTheory.tObj_pull o g k J b _ _ _ _ x tT rfl`. Take `⟨ψ, hψ, -⟩` from `id Tx`. Establish `: IsMonHom e.symm.hom` using `inferInstanceAs (IsMonHom e.inv)`.
+
+Establish `g₁` using `(hψ.comp (isGrpPullback_of_iso e.symm)).comp hφ`. Establish `Tf` using `tMap_comp Tx hm`. Establish `T₁` using `tMap_constPt L₁ L₂ L₃ tx (prim_of_tMap Tf (prim_of_isPEL hw hw' hpel)) g₁ (by`. Rewrite using `[Category.comp_id, ← hc, ← Category.assoc, hx, Category.assoc])`. Establish `T₂` using `tMap_comp T₁ Tf`.
+
+Rewrite `T₂` using `[hc, Category.id_comp, ← hc]`. Establish `hs : x ≫ sT = constPt x ≫ sT` using `by rw [← hu, ← Category.assoc, hx, Category.assoc]`. Use `hT.hom_ext (hrep.inj _ _ _ _ tx ?_ Tf T₂) hs` and prove the remaining obligations. Rewrite using `[Category.assoc, Category.assoc, hT.w, ← Category.assoc, hs, Category.assoc]`.
+-/
 theorem formallyUnramified_and_locallyQuasiFinite : Out.Laws → Out.Laws2 → (∀ (S : Scheme.{0}) (P : Out.PolAV S) (M : LB P.A.left), M.IsLB → ∃ t : LB.Gen (Theta P.A M), t.IsGen) → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (g : ℕ) (J : Type) [Finite J] (a : J → 𝓞 E) (w w' : J) (bas : (Fin (2 * g) → ℤ) ≃ₗ[ℤ] D.La), 1 ≤ D.p + D.q → IsSympBasis D bas → a w = H.w0 → a w' = H.bar H.w0 → Subring.closure (Set.range a) = ⊤ → ∀ (k : ℕ) (o : Type) [CommRing o] (b : TBase o k) (em : o →+* ℂ) (ρ : o), Odd k → 3 ≤ k → (∃ N' : ℕ, k = N' ^ 2) → em ρ = H.rt0 → em (b.ζ : o) = zeta k → ArBase em → ∀ (X : Scheme.{0}) (s : X ⟶ Sp o) (t : TObj g k J b s) (τ : SAB H X), PELRep D a bas ρ t → IsPEL D a bas ρ t τ → ∀ (p : ℕ) (Ag : SiegelFamily g p k), p.Prime → k.Coprime p → SRep Ag → ∀ (bas' : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] D.La), (∀ x y, D.EF (bas' x) (bas' y) = omegaStd x y) → ∀ (O : Type) [CommRing O] (i : O →+* ℂ) (z : ZP p k →+* O) (bb : o →+* O), Function.Injective i → GlobalTheory.Models.IsInc (ZP p k).subtype i z → GlobalTheory.Models.IsInc em i bb → ∀ (T : Scheme.{0}) (sT : T ⟶ Sp O) (f : T ⟶ X), IsPullback f sT s (spMap bb) → ∀ (tT : TObj g k J b (sT ≫ spMap bb)) (c : SiegPre g k (zetaZP p k) (sT ≫ spMap z)) (u : T ⟶ pullback Ag.s (spMap z)), TMap tT t f → TSieg bas bas' tT c → u ≫ pullback.snd _ _ = sT → SiegPB c Ag.univ (u ≫ pullback.fst _ _) → FormallyUnramified u ∧ LocallyQuasiFinite u := by
   intro L₁ L₂ L₃ E _ _ _ H D g J _ a w w' bas _ _ hw hw' _ k o _ b em ρ _ _ _ _ _ _ X s t τ hrep hpel p Ag _ _ _ bas' _
     O _ i z bb _ _ _ T sT f hT tT c u hm ⟨e, he, _⟩ hu ⟨φ, _, hφ, _⟩

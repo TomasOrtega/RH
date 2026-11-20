@@ -38,6 +38,11 @@ def ordF (v : HeightOneSpectrum (𝓞 L)) (k : Lˣ) : ℤ := -WithZero.log (v.va
 
 def infDiag : Lˣ →* Ideles L := ∏ w : InfinitePlace L, (infIdele L w).comp (atInf w)
 
+/- English proof (translation)
+Take `⟨π, hπ⟩` from `v.valuation_exists_uniformizer L`. Establish `h0 : π ≠ 0`. Introduce and unpack `rfl`. Rewrite `hπ` using `[map_zero]`. Conclude with `WithZero.exp_ne_zero hπ.symm`.
+
+Use `⟨Units.mk0 π h0, ?_⟩` and prove the remaining obligations. Use `show Valued.v ((π : L) : v.adicCompletion L) = _`. Rewrite using `[HeightOneSpectrum.valuedAdicCompletion_eq_valuation', hπ]`.
+-/
 theorem exists_unif (v : HeightOneSpectrum (𝓞 L)) : ∃ k : Lˣ, IsUnifAt v (atFin v k) := by
   obtain ⟨π, hπ⟩ := v.valuation_exists_uniformizer L
   have h0 : π ≠ 0 := by
@@ -50,6 +55,9 @@ theorem exists_unif (v : HeightOneSpectrum (𝓞 L)) : ∃ k : Lˣ, IsUnifAt v (
 
 def unif (v : HeightOneSpectrum (𝓞 L)) : Lˣ := Classical.choose (exists_unif v)
 
+/- English proof (translation)
+The claim follows from `Classical.choose_spec (exists_unif v)`.
+-/
 theorem unif_spec (v : HeightOneSpectrum (𝓞 L)) : IsUnifAt v (atFin v (unif v)) :=
   Classical.choose_spec (exists_unif v)
 
@@ -111,6 +119,11 @@ def ProductRule : Prop :=
   ∀ S : Finset (HeightOneSpectrum (𝓞 L)), (∀ v, v ∉ S → χ.UnrAt v) → ∀ k : Lˣ,
     χ.inf k * (∏ v ∈ S, χ.locK v k) * (∏ᶠ (v : HeightOneSpectrum (𝓞 L)) (_ : v ∉ S), χ.val v ^ ordF v k) = 1
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h x hx _`. Conclude with `h x hx`. Introduce `h x hx`. Use `h x hx ?_` and prove the remaining obligations.
+
+Establish `h1 : Valued.v ((x : v.adicCompletion L) - 1) ≤ max (Valued.v (x : v.adicCompletion L)) (Valued.v (1 : v.adicCompletion L))` using `Valuation.map_sub _ _ _`. Rewrite `h1` using `[hx, map_one, max_self]`. Simplify using `using h1`.
+-/
 theorem unrAt_iff (v : HeightOneSpectrum (𝓞 L)) : χ.UnrAt v ↔ χ.LevelLe v 0 := by
   constructor
   · intro h x hx _; exact h x hx
@@ -121,6 +134,11 @@ theorem unrAt_iff (v : HeightOneSpectrum (𝓞 L)) : χ.UnrAt v ↔ χ.LevelLe v
     rw [hx, map_one, max_self] at h1
     simpa using h1
 
+/- English proof (translation)
+Establish `hu : IsUnitAt v (x * (atFin v (unif v))⁻¹)`. Establish `h2` using `unif_spec v`. Unfold `IsUnitAt IsUnifAt at *`. Rewrite using `[Units.val_mul, Units.val_inv_eq_inv_val, map_mul, map_inv₀, hx, h2]`. Conclude with `mul_inv_cancel₀ (by simp)`.
+
+Establish `h3` using `h _ hu`. Rewrite `h3` using `[map_mul, map_inv, mul_inv_eq_one]`. Conclude with `h3`.
+-/
 theorem val_eq {v : HeightOneSpectrum (𝓞 L)} (h : χ.UnrAt v) (x : (v.adicCompletion L)ˣ) (hx : IsUnifAt v x) :
     χ.loc v x = χ.val v := by
   have hu : IsUnitAt v (x * (atFin v (unif v))⁻¹) := by
@@ -132,14 +150,41 @@ theorem val_eq {v : HeightOneSpectrum (𝓞 L)} (h : χ.UnrAt v) (x : (v.adicCom
   rw [map_mul, map_inv, mul_inv_eq_one] at h3
   exact h3
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem loc_mul (χ χ' : HChar L) (v : HeightOneSpectrum (𝓞 L)) (x) : (χ * χ').loc v x = χ.loc v x * χ'.loc v x := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem loc_inv (χ : HChar L) (v : HeightOneSpectrum (𝓞 L)) (x) : (χ⁻¹).loc v x = (χ.loc v x)⁻¹ := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem loc_one (v : HeightOneSpectrum (𝓞 L)) (x) : (1 : HChar L).loc v x = 1 := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem locInf_mul (χ χ' : HChar L) (w : InfinitePlace L) (x) : (χ * χ').locInf w x = χ.locInf w x * χ'.locInf w x := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem locInf_inv (χ : HChar L) (w : InfinitePlace L) (x) : (χ⁻¹).locInf w x = (χ.locInf w x)⁻¹ := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem val_mul (χ χ' : HChar L) (v : HeightOneSpectrum (𝓞 L)) : (χ * χ').val v = χ.val v * χ'.val v := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem val_inv (χ : HChar L) (v : HeightOneSpectrum (𝓞 L)) : (χ⁻¹).val v = (χ.val v)⁻¹ := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem inf_mul (χ χ' : HChar L) (k : Lˣ) : (χ * χ').inf k = χ.inf k * χ'.inf k := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem inf_inv (χ : HChar L) (k : Lˣ) : (χ⁻¹).inf k = (χ.inf k)⁻¹ := rfl
 
 def bar : HChar L :=
@@ -155,6 +200,9 @@ section Res
 
 variable (F : Type) [Field F] [NumberField F] [Algebra F L]
 
+/- English proof (translation)
+Establish `hfin` using `IsDedekindDomain.primesOver_finite v.asIdeal (𝓞 L)`. Use `(hfin.preimage (f := HeightOneSpectrum.asIdeal) (fun _ _ _ _ h => HeightOneSpectrum.ext h)).subset ?_` and prove the remaining obligations. Introduce and unpack `P rfl`. Conclude with `⟨P.isPrime, ⟨rfl⟩⟩`.
+-/
 theorem finite_aboveF (v : HeightOneSpectrum (𝓞 F)) :
     {P : HeightOneSpectrum (𝓞 L) | P.under (𝓞 F) = v}.Finite := by
   have hfin := IsDedekindDomain.primesOver_finite v.asIdeal (𝓞 L)
@@ -303,80 +351,143 @@ variable {L : Type} [Field L] [NumberField L] {F : Type} [Field F] [NumberField 
 
 namespace HChar
 
+/- English proof (translation)
+Simplify using `[HChar.resFin]`.
+-/
 theorem resFin_apply (χ : HChar L) (v : HeightOneSpectrum (𝓞 F)) (k : Fˣ) :
     χ.resFin v k = ∏ P ∈ aboveF (L := L) F v, χ.locK P (upF F k) := by
   simp [HChar.resFin]
 
+/- English proof (translation)
+Simplify using `[HChar.resInf]`.
+-/
 theorem resInf_apply (χ : HChar L) (w : InfinitePlace F) (k : Fˣ) :
     χ.resInf w k = ∏ w' ∈ aboveInf (L := L) F w, χ.locInf w' (atInf w' (upF F k)) := by
   simp [HChar.resInf]
 
+/- English proof (translation)
+Rewrite using `[resFin_apply, resFin_apply, resFin_apply, ← Finset.prod_mul_distrib]`. Both sides reduce to the same expression.
+-/
 theorem resFin_mul (χ χ' : HChar L) (v : HeightOneSpectrum (𝓞 F)) (k : Fˣ) :
     (χ * χ').resFin v k = χ.resFin v k * χ'.resFin v k := by
   rw [resFin_apply, resFin_apply, resFin_apply, ← Finset.prod_mul_distrib]; rfl
 
+/- English proof (translation)
+Rewrite using `[resFin_apply, resFin_apply, ← Finset.prod_inv_distrib]`. Both sides reduce to the same expression.
+-/
 theorem resFin_inv (χ : HChar L) (v : HeightOneSpectrum (𝓞 F)) (k : Fˣ) :
     (χ⁻¹).resFin v k = (χ.resFin v k)⁻¹ := by
   rw [resFin_apply, resFin_apply, ← Finset.prod_inv_distrib]; rfl
 
+/- English proof (translation)
+Rewrite using `[resInf_apply, resInf_apply, resInf_apply, ← Finset.prod_mul_distrib]`. Both sides reduce to the same expression.
+-/
 theorem resInf_mul (χ χ' : HChar L) (w : InfinitePlace F) (k : Fˣ) :
     (χ * χ').resInf w k = χ.resInf w k * χ'.resInf w k := by
   rw [resInf_apply, resInf_apply, resInf_apply, ← Finset.prod_mul_distrib]; rfl
 
+/- English proof (translation)
+Rewrite using `[resInf_apply, resInf_apply, ← Finset.prod_inv_distrib]`. Both sides reduce to the same expression.
+-/
 theorem resInf_inv (χ : HChar L) (w : InfinitePlace F) (k : Fˣ) :
     (χ⁻¹).resInf w k = (χ.resInf w k)⁻¹ := by
   rw [resInf_apply, resInf_apply, ← Finset.prod_inv_distrib]; rfl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun v k => by rw [resFin_mul, h.1, h'.1, one_mul], fun w k => by rw [resInf_mul, h.2, h'.2, one_mul]⟩`.
+-/
 theorem TrivOn.mul {χ χ' : HChar L} (h : χ.TrivOn F) (h' : χ'.TrivOn F) : (χ * χ').TrivOn F :=
   ⟨fun v k => by rw [resFin_mul, h.1, h'.1, one_mul], fun w k => by rw [resInf_mul, h.2, h'.2, one_mul]⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun v k => by rw [resFin_inv, h.1, inv_one], fun w k => by rw [resInf_inv, h.2, inv_one]⟩`.
+-/
 theorem TrivOn.inv {χ : HChar L} (h : χ.TrivOn F) : (χ⁻¹).TrivOn F :=
   ⟨fun v k => by rw [resFin_inv, h.1, inv_one], fun w k => by rw [resInf_inv, h.2, inv_one]⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun v k => by rw [resFin_mul, h.1, h'.1, mul_one], fun w k => by rw [resInf_mul, h.2, h'.2, mul_one]⟩`.
+-/
 theorem ResEta.mul {χ ξ : HChar L} (h : χ.ResEta F) (h' : ξ.TrivOn F) : (χ * ξ).ResEta F :=
   ⟨fun v k => by rw [resFin_mul, h.1, h'.1, mul_one], fun w k => by rw [resInf_mul, h.2, h'.2, mul_one]⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun v k => by rw [resFin_mul, resFin_inv, h.1, h'.1, mul_inv_cancel], fun w k => by rw [resInf_mul, resInf_inv, h.2, h'.2, mul_inv_cancel]⟩`.
+-/
 theorem ResEta.div {χ χ' : HChar L} (h : χ.ResEta F) (h' : χ'.ResEta F) : (χ' * χ⁻¹).TrivOn F :=
   ⟨fun v k => by rw [resFin_mul, resFin_inv, h.1, h'.1, mul_inv_cancel],
     fun w k => by rw [resInf_mul, resInf_inv, h.2, h'.2, mul_inv_cancel]⟩
 
+/- English proof (translation)
+Introduce `x hx hx'` and use `by rw [loc_mul, h x hx hx', h' x hx hx', one_mul]`.
+-/
 theorem LevelLe.mul {χ χ' : HChar L} {v : HeightOneSpectrum (𝓞 L)} {n : ℕ} (h : χ.LevelLe v n) (h' : χ'.LevelLe v n) :
     (χ * χ').LevelLe v n := fun x hx hx' => by rw [loc_mul, h x hx hx', h' x hx hx', one_mul]
 
+/- English proof (translation)
+Introduce `x hx hx'` and use `by rw [loc_inv, h x hx hx', inv_one]`.
+-/
 theorem LevelLe.inv {χ : HChar L} {v : HeightOneSpectrum (𝓞 L)} {n : ℕ} (h : χ.LevelLe v n) :
     (χ⁻¹).LevelLe v n := fun x hx hx' => by rw [loc_inv, h x hx hx', inv_one]
 
+/- English proof (translation)
+Introduce `x hx` and use `by rw [loc_mul, h x hx, h' x hx, one_mul]`.
+-/
 theorem UnrAt.mul {χ χ' : HChar L} {v : HeightOneSpectrum (𝓞 L)} (h : χ.UnrAt v) (h' : χ'.UnrAt v) :
     (χ * χ').UnrAt v := fun x hx => by rw [loc_mul, h x hx, h' x hx, one_mul]
 
+/- English proof (translation)
+Introduce `x hx` and use `by rw [loc_inv, h x hx, inv_one]`.
+-/
 theorem UnrAt.inv {χ : HChar L} {v : HeightOneSpectrum (𝓞 L)} (h : χ.UnrAt v) :
     (χ⁻¹).UnrAt v := fun x hx => by rw [loc_inv, h x hx, inv_one]
 
+/- English proof (translation)
+Introduce `x hx _` and use `h x hx`.
+-/
 theorem UnrAt.levelLe {χ : HChar L} {v : HeightOneSpectrum (𝓞 L)} (h : χ.UnrAt v) (n : ℕ) : χ.LevelLe v n :=
   fun x hx _ => h x hx
 
+/- English proof (translation)
+Introduce `x` and use `by show ‖((χ.1 x * χ'.1 x : ℂˣ) : ℂ)‖ = 1 rw [Units.val_mul, norm_mul, h x, h' x, one_mul]`.
+-/
 theorem IsUnitary.mul {χ χ' : HChar L} (h : χ.IsUnitary) (h' : χ'.IsUnitary) : (χ * χ').IsUnitary := fun x => by
   show ‖((χ.1 x * χ'.1 x : ℂˣ) : ℂ)‖ = 1
   rw [Units.val_mul, norm_mul, h x, h' x, one_mul]
 
+/- English proof (translation)
+Introduce `x` and use `by show ‖(((χ.1 x)⁻¹ : ℂˣ) : ℂ)‖ = 1 rw [Units.val_inv_eq_inv_val, norm_inv, h x, inv_one]`.
+-/
 theorem IsUnitary.inv {χ : HChar L} (h : χ.IsUnitary) : (χ⁻¹).IsUnitary := fun x => by
   show ‖(((χ.1 x)⁻¹ : ℂˣ) : ℂ)‖ = 1
   rw [Units.val_inv_eq_inv_val, norm_inv, h x, inv_one]
 
+/- English proof (translation)
+Introduce `k` and use `by rw [inf_mul, h' k, mul_one]; exact h k`.
+-/
 theorem HasInf.mul_triv {I : Type} [Fintype I] {φ : I → L →+* ℂ} {n : I → ℤ} {χ ξ : HChar L}
     (h : χ.HasInf φ n) (h' : ∀ k, ξ.inf k = 1) : (χ * ξ).HasInf φ n := fun k => by
   rw [inf_mul, h' k, mul_one]; exact h k
 
+/- English proof (translation)
+Rewrite using `[inf_mul, inf_inv, mul_inv_eq_one]`. Conclude with `Units.ext ((h' k).trans (h k).symm)`.
+-/
 theorem HasInf.div {I : Type} [Fintype I] {φ : I → L →+* ℂ} {n : I → ℤ} {χ χ' : HChar L}
     (h : χ.HasInf φ n) (h' : χ'.HasInf φ n) (k : Lˣ) : (χ' * χ⁻¹).inf k = 1 := by
   rw [inf_mul, inf_inv, mul_inv_eq_one]
   exact Units.ext ((h' k).trans (h k).symm)
 
+/- English proof (translation)
+Take `⟨n, hn, h⟩` from `h`. Conclude with `⟨n, hn, h.mul_triv h'⟩`.
+-/
 theorem HasInfQ.mul_triv {I : Type} [Fintype I] {φ : I → L →+* ℂ} {a : I → ℚ} {χ ξ : HChar L}
     (h : χ.HasInfQ φ a) (h' : ∀ k, ξ.inf k = 1) : (χ * ξ).HasInfQ φ a := by
   obtain ⟨n, hn, h⟩ := h
   exact ⟨n, hn, h.mul_triv h'⟩
 
+/- English proof (translation)
+Take `⟨n, hn, h⟩` from `h`. Take `⟨n', hn', h'⟩` from `h'`. Establish `e : n' = n` using `funext fun i => by exact_mod_cast (hn' i).trans (hn i).symm`. Substitute `e` using the available equality. Conclude with `h.div h' k`.
+-/
 theorem HasInfQ.div {I : Type} [Fintype I] {φ : I → L →+* ℂ} {a : I → ℚ} {χ χ' : HChar L}
     (h : χ.HasInfQ φ a) (h' : χ'.HasInfQ φ a) (k : Lˣ) : (χ' * χ⁻¹).inf k = 1 := by
   obtain ⟨n, hn, h⟩ := h
@@ -391,23 +502,41 @@ end General
 
 variable {R : Ranks} {H : Formalism.BasicNotions.Host R}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ => by show ‖((1 : ℂˣ) : ℂ)‖ = 1; simp, fun _ _ _ => rfl, fun _ => rfl, fun v k => by rw [HChar.resFin_apply]; exact Finset.prod_eq_one fun _ _ => rfl, fun w k => by rw [HChar.resInf_apply]; exact Finset.prod_eq_one fun _ _ => rfl⟩`.
+-/
 theorem isClsF_one : IsClsF H (1 : HChar H.E) :=
   ⟨fun _ => by show ‖((1 : ℂˣ) : ℂ)‖ = 1; simp, fun _ _ _ => rfl, fun _ => rfl,
     fun v k => by rw [HChar.resFin_apply]; exact Finset.prod_eq_one fun _ _ => rfl,
     fun w k => by rw [HChar.resInf_apply]; exact Finset.prod_eq_one fun _ _ => rfl⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.unitary.mul hξ.unitary, fun v => (h.unr v).mul (hξ.unr v), h.res.mul hξ.triv, h.inf.mul_triv hξ.inf⟩`.
+-/
 theorem IsEtaT.mul_cls {χ ξ : HChar H.E} (h : IsEtaT H χ) (hξ : IsClsF H ξ) : IsEtaT H (χ * ξ) :=
   ⟨h.unitary.mul hξ.unitary, fun v => (h.unr v).mul (hξ.unr v), h.res.mul hξ.triv, h.inf.mul_triv hξ.inf⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h'.unitary.mul h.unitary.inv, fun v => (h'.unr v).mul (h.unr v).inv, h.inf.div h'.inf, h.res.div h'.res⟩`.
+-/
 theorem IsEtaT.div_cls {χ χ' : HChar H.E} (h : IsEtaT H χ) (h' : IsEtaT H χ') : IsClsF H (χ' * χ⁻¹) :=
   ⟨h'.unitary.mul h.unitary.inv, fun v => (h'.unr v).mul (h.unr v).inv, h.inf.div h'.inf, h.res.div h'.res⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.unitary.mul hξ.unitary, fun v => (h.unr v).mul (hξ.unr v), h.triv.mul hξ.triv, h.inf.mul_triv hξ.inf⟩`.
+-/
 theorem IsChiPsi.mul_cls {χ ξ : HChar H.E} (h : IsChiPsi H χ) (hξ : IsClsF H ξ) : IsChiPsi H (χ * ξ) :=
   ⟨h.unitary.mul hξ.unitary, fun v => (h.unr v).mul (hξ.unr v), h.triv.mul hξ.triv, h.inf.mul_triv hξ.inf⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h'.unitary.mul h.unitary.inv, fun v => (h'.unr v).mul (h.unr v).inv, h.inf.div h'.inf, h'.triv.mul h.triv.inv⟩`.
+-/
 theorem IsChiPsi.div_cls {χ χ' : HChar H.E} (h : IsChiPsi H χ) (h' : IsChiPsi H χ') : IsClsF H (χ' * χ⁻¹) :=
   ⟨h'.unitary.mul h.unitary.inv, fun v => (h'.unr v).mul (h.unr v).inv, h.inf.div h'.inf, h'.triv.mul h.triv.inv⟩
 
+/- English proof (translation)
+The claim follows from `h.unitary.mul h.unitary unr v := (h.unr v).mul (h.unr v) triv := by refine ⟨fun v k => ?_, fun w k => ?_⟩ · rw [HChar.resFin_mul, h.res.1] unfold etaFin split_ifs · rw [← mul_zpow]; simp · simp · rw [HChar.resInf_mul, h.res.2] unfold etaInf split_ifs <;> simp inf k := by rw [HCha …`.
+-/
 theorem IsEtaT.sq_chiPsi {χ : HChar H.E} (h : IsEtaT H χ) : IsChiPsi H (χ * χ) where
   unitary := h.unitary.mul h.unitary
   unr v := (h.unr v).mul (h.unr v)
@@ -427,12 +556,22 @@ theorem IsEtaT.sq_chiPsi {χ : HChar H.E} (h : IsEtaT H χ) : IsChiPsi H (χ * �
     rw [← zpow_add' (by right; left; norm_num)]
     norm_num
 
+/- English proof (translation)
+Establish `h` using `P.pb_over k`. Rewrite `h` using `[← hw]`. Establish `h2 : algebraMap (𝓞 H.K) (𝓞 H.E) ((H.g k : ℕ) : 𝓞 H.K) ∈ w.asIdeal` using `h`. Rewrite `h2` using `[map_natCast]`. Then use the resulting hypothesis.
+-/
 theorem PiBar.overP (P : PiBar H) {k : Fin 2} {w : HeightOneSpectrum (𝓞 H.E)} (hw : P.Div k w) : OverP H (H.g k) w := by
   have h := P.pb_over k
   rw [← hw] at h
   have h2 : algebraMap (𝓞 H.K) (𝓞 H.E) ((H.g k : ℕ) : 𝓞 H.K) ∈ w.asIdeal := h
   rwa [map_natCast] at h2
 
+/- English proof (translation)
+Establish `hna : ((a : ℕ) : 𝓞 H.E) ∉ w.asIdeal`. Introduce `hmem`. Take `⟨u, v, huv⟩` from `(Nat.isCoprime_iff_coprime.mpr ha)`. Establish `h1 : (1 : 𝓞 H.E) ∈ w.asIdeal`. Establish `e : (1 : 𝓞 H.E) = (u : 𝓞 H.E) * ((a : ℕ) : 𝓞 H.E) + (v : 𝓞 H.E) * ((p : ℕ) : 𝓞 H.E)`.
+
+Use `congrArg (fun z : ℤ => (z : 𝓞 H.E)) huv` as an intermediate fact. Move the coercions through the operations in `at this`. Conclude with `this.symm`. Rewrite using `[e]`. Conclude with `w.asIdeal.add_mem (w.asIdeal.mul_mem_left _ hmem) (w.asIdeal.mul_mem_left _ hw)`.
+
+Conclude with `w.isPrime.ne_top ((Ideal.eq_top_iff_one _).mpr h1)`. Establish `h` using `valued_algebraMap_eq_one H.E w _ hna`. Use `show Valued.v (algebraMap H.E (w.adicCompletion H.E) (x : H.E)) = 1`. Rewrite using `[hx]`. Simplify using `using h`.
+-/
 theorem isUnitAt_nat {p a : ℕ} {w : HeightOneSpectrum (𝓞 H.E)} (hw : OverP H p w) (ha : a.Coprime p) {x : H.Eˣ}
     (hx : (x : H.E) = (a : H.E)) : IsUnitAt w (atFin w x) := by
   have hna : ((a : ℕ) : 𝓞 H.E) ∉ w.asIdeal := by
@@ -451,6 +590,9 @@ theorem isUnitAt_nat {p a : ℕ} {w : HeightOneSpectrum (𝓞 H.E)} (hw : OverP 
   rw [hx]
   simpa using h
 
+/- English proof (translation)
+The claim follows from `h.unitary.mul hξ.unitary triv := h.triv.mul hξ.triv inf := h.inf.mul_triv hξ.inf unr v hv := (h.unr v hv).mul (hξ.unr v) tame v := (h.tame v).mul ((hξ.unr v).levelLe 1) atg k w hw a ha x hx := by have h1 : ξ.locK w x = 1 := hξ.unr w _ (isUnitAt_nat (P.overP hw) ha hx) show χ.locK …`.
+-/
 theorem IsMu0.mul_cls {P : PiBar H} {W : Omg H} {e : R.Psi → ℚ} {j : ℕ} {χ ξ : HChar H.E}
     (h : IsMu0 P W e j χ) (hξ : IsClsF H ξ) : IsMu0 P W e j (χ * ξ) where
   unitary := h.unitary.mul hξ.unitary
@@ -463,6 +605,9 @@ theorem IsMu0.mul_cls {P : PiBar H} {W : Omg H} {e : R.Psi → ℚ} {j : ℕ} {�
     show χ.locK w x * ξ.locK w x = _
     rw [h1, mul_one, h.atg k w hw a ha x hx]
 
+/- English proof (translation)
+The claim follows from `h'.unitary.mul h.unitary.inv unr v := by by_cases hv : ∀ k, ¬ OverP H (H.g k) v · exact (h'.unr v hv).mul (h.unr v hv).inv · push Not at hv obtain ⟨k, hk⟩ := hv exact hg k v hk inf := h.inf.div h'.inf triv := h'.triv.mul h.triv.inv`.
+-/
 theorem IsMu0.div_cls {P : PiBar H} {W : Omg H} {e : R.Psi → ℚ} {j : ℕ} {χ χ' : HChar H.E}
     (h : IsMu0 P W e j χ) (h' : IsMu0 P W e j χ')
     (hg : ∀ k v, OverP H (H.g k) v → (χ' * χ⁻¹).UnrAt v) : IsClsF H (χ' * χ⁻¹) where
@@ -480,6 +625,9 @@ def Mu0Unique (P : PiBar H) (W : Omg H) (e : R.Psi → ℚ) (j : ℕ) : Prop :=
   (∀ k, {v : HeightOneSpectrum (𝓞 H.E) | OverP H (H.g k) v}.ncard = Module.finrank ℚ H.E) →
     ∀ χ χ' : HChar H.E, IsMu0 P W e j χ → IsMu0 P W e j χ' → IsClsF H (χ' * χ⁻¹)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨0, one_pow _⟩ triv := isClsF_one.triv tame := fun _ _ _ _ => rfl ram := fun v => ⟨fun _ => Finset.notMem_empty v, fun _ _ _ => rfl⟩ atl := fun _ _ _ => rfl split := fun _ hv => absurd hv (Finset.notMem_empty _)`.
+-/
 theorem isPsi_one (l : ℕ) : IsPsi (H := H) l ∅ (1 : HChar H.E) where
   ord := ⟨0, one_pow _⟩
   triv := isClsF_one.triv
@@ -488,6 +636,9 @@ theorem isPsi_one (l : ℕ) : IsPsi (H := H) l ∅ (1 : HChar H.E) where
   atl := fun _ _ _ => rfl
   split := fun _ hv => absurd hv (Finset.notMem_empty _)
 
+/- English proof (translation)
+Introduce `x` and use `by have h1 : (χ.1 x) ^ n = 1 := by have := congrArg (fun ξ : HChar L => ξ.1 x) h exact this have h2 : ‖((χ.1 x : ℂˣ) : ℂ)‖ ^ n = 1 := by rw [← norm_pow, ← Units.val_pow_eq_pow_val, h1]; simp exact (pow_eq_one_iff_of_nonneg (norm_nonneg _) hn.ne').mp h2`.
+-/
 theorem HChar.isUnitary_of_order {L : Type} [Field L] [NumberField L] {χ : HChar L} {n : ℕ} (hn : 0 < n) (h : χ.OrderDvd n) :
     χ.IsUnitary := fun x => by
   have h1 : (χ.1 x) ^ n = 1 := by
@@ -497,6 +648,9 @@ theorem HChar.isUnitary_of_order {L : Type} [Field L] [NumberField L] {χ : HCha
     rw [← norm_pow, ← Units.val_pow_eq_pow_val, h1]; simp
   exact (pow_eq_one_iff_of_nonneg (norm_nonneg _) hn.ne').mp h2
 
+/- English proof (translation)
+Take `⟨n, hn, ho⟩` from `h.fin`. Conclude with `HChar.isUnitary_of_order hn ho`.
+-/
 theorem IsDelta.unitary {p : ℕ} {χ : HChar H.E} (h : IsDelta (H := H) p χ) : χ.IsUnitary := by
   obtain ⟨n, hn, ho⟩ := h.fin
   exact HChar.isUnitary_of_order hn ho

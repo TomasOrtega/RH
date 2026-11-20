@@ -19,6 +19,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `O _ _ W V _ _ _ _ θ₀ D₀ _ o₀ D _ hD ob hx hcl hact hB w0 hP`. Establish `hG : GlobalFnsSt` using `GlobalTheory.allSixLaws.1.globalFns`. Establish `hc : ∀ a : O, ob.act a ≫ hD.e.hom = hD.e.hom ≫ (Over.pullback (specOf θ₀)).map (o₀.onB.act a)`. Introduce `a`. Establish `a₂ : ((Over.pullback (specOf θ₀)).map (o₀.onB.act a)).left ≫ pullback.fst D₀.P.A.hom (specOf θ₀) = pullback.fst _ _ ≫ (o₀.onB.act a).left` using `pullback.lift_fst _ _ _`.
+
+Use `Over.OverMorphism.ext (pullback.hom_ext ?_ ?_)` and prove the remaining obligations. Establish `h` using `hact a`. Simplify using `only [Over.comp_left, Category.assoc] at h ⊢`. Conclude with `h.trans (congrArg (fun q => hD.e.hom.left ≫ q) a₂.symm)`. Conclude with `(Over.w (ob.act a ≫ hD.e.hom)).trans (Over.w (hD.e.hom ≫ (Over.pullback (specOf θ₀)).map (o₀.onB.act a))).symm`.
+
+Set `o : D.OAct O` to `⟨ob, hcl, fun a => GlobalTheory.tauBal_of_isPullDeg hG _ _ θ₀ D₀ D hD (o₀.onB.act a) (o₀.onB.act (star a)) (ob.act a) (ob.act (star a)) (o₀.onB.hom _) (o₀.onB.hom _) (o₀.onB.rosati a) (hc a) (hc (star a)) (fun y => a • y) (fun y => star a • y) (fun y => a • y) (fun y => star a • …`. Conclude with `⟨GlobalTheory.TauPull.tauBimult_pull hG hD hB, o, rfl, GlobalTheory.traceFormTwistIso_of_overPullback _ _ θ₀ D₀ D hD O o₀ o hx hc w0 hP⟩`.
+-/
 theorem tauBimult_and_exists_oAct_of_pullDeg : ∀ {O : Type} [CommRing O] [StarRing O] {W V : Type} [CommRing W] [IsDomain W] [CommRing V] [IsDomain V] {θ₀ : W →+* V} {D₀ : DegPre W} [Module O D₀.X] (o₀ : D₀.OAct O) {D : DegPre V} [Module O D.X] (hD : IsPullDeg θ₀ D₀ D) (ob : D.P.OAct O), (∀ (a : O) y, hD.xe (a • y) = a • hD.xe y) → (∀ (a : O) y, D.c (a • y) = D.c y ≫ ob.act a) → (∀ a : O, (ob.act a).left ≫ hD.e.hom.left ≫ pullback.fst D₀.P.A.hom (specOf θ₀) = (hD.e.hom.left ≫ pullback.fst D₀.P.A.hom (specOf θ₀)) ≫ (o₀.onB.act a).left) → D₀.TauBimult → ∀ w0 : O, TraceFormTwistIso D₀ o₀ w0 → D.TauBimult ∧ ∃ o : D.OAct O, o.onB = ob ∧ TraceFormTwistIso D o w0 := by
   intro O _ _ W V _ _ _ _ θ₀ D₀ _ o₀ D _ hD ob hx hcl hact hB w0 hP
   have hG : GlobalFnsSt := GlobalTheory.allSixLaws.1.globalFns

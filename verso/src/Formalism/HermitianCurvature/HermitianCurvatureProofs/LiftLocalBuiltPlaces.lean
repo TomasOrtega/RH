@@ -19,12 +19,21 @@ def lamLift (S : C.HidaSetting E Wp Wq) (b s : ℕ) (v : Fin S.f) : ℝ :=
   (2 * Real.pi / S.G.g) ^ (-(S6.nuBlock S.G.r b s)) * Real.exp 1 * (28 * S.G.N / S.G.lenI) ^ (2 * (b - 1) + s) *
     J.supA S.G S.de S.de' S.T S.T' S.l false (S.pl v)
 
+/- English proof (translation)
+Unfold `C.HidaSetting.g Sz.Glob.g`. Use `push_cast`. Both sides reduce to the same expression.
+-/
 theorem g_cast' (S : C.HidaSetting E Wp Wq) : ((S.g : ℕ) : ℝ) = S.G.g := by
   unfold C.HidaSetting.g Sz.Glob.g; push_cast; rfl
 
+/- English proof (translation)
+Simplify using `only [C.HidaSetting.cutHi, C.HidaSetting.cutLo, Sz.Glob.lenI, Sz.Glob.place]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem len_eq' (S : C.HidaSetting E Wp Wq) (v : Fin S.f) : S.cutHi v - S.cutLo v = S.G.lenI := by
   simp only [C.HidaSetting.cutHi, C.HidaSetting.cutLo, Sz.Glob.lenI, Sz.Glob.place]; ring
 
+/- English proof (translation)
+Establish `hg' : (0 : ℝ) < (S.g : ℝ)` using `by rw [g_cast']; exact hg`. Rewrite using `[norm_lamB S hg' b s, g_cast', zpow_neg, ← inv_zpow, inv_div]`.
+-/
 theorem norm_lamB' (S : C.HidaSetting E Wp Wq) (hg : 0 < S.G.g) (b s : ℕ) :
     ‖lamB S b s‖ = (2 * Real.pi / S.G.g) ^ (-(S6.nuBlock S.G.r b s)) := by
   have hg' : (0 : ℝ) < (S.g : ℝ) := by rw [g_cast']; exact hg
@@ -33,6 +42,9 @@ theorem norm_lamB' (S : C.HidaSetting E Wp Wq) (hg : 0 < S.G.g) (b s : ℕ) :
 variable {Cb Cc : ℝ} {S : C.HidaSetting E Wp Wq} {p : ∀ v, KB.Pl (D.parOf S v) (Wp (S.pl v)) (Wq (S.pl v))}
   {f : ∀ v : Fin S.f, B.Mat S.G.k S.G.r → (Wq (S.pl v) →L[ℂ] Wp (S.pl v))} {χ : ℝ → ℝ} {A₀ : ℝ}
 
+/- English proof (translation)
+Establish `hGo` using `hB.2.2.2.2.2.2.2.2.2.2.1`. Establish `h` using `(hGo v).1`. Rewrite `h` using `[len_eq']`. Establish `: (0 : ℝ) < 6 * (S.Ntop : ℝ) ^ 3 + 6 * S.Ntop` using `by have := PBD.ntop_ge S; positivity`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem lenI_pos' (hB : KB.IsLeadingFormSetting Cb Cc S p f χ A₀) (v : Fin S.f) : 0 < S.G.lenI := by
   have hGo := hB.2.2.2.2.2.2.2.2.2.2.1
   have h := (hGo v).1
@@ -40,6 +52,11 @@ theorem lenI_pos' (hB : KB.IsLeadingFormSetting Cb Cc S p f χ A₀) (v : Fin S.
   have : (0 : ℝ) < 6 * (S.Ntop : ℝ) ^ 3 + 6 * S.Ntop := by have := PBD.ntop_ge S; positivity
   linarith
 
+/- English proof (translation)
+Take `⟨hg, hk⟩` from `glob_pos' hB`. Establish `hl` using `lenI_pos' hB v`. Establish `hN : (0 : ℝ) ≤ S.G.N` using `by unfold Sz.Glob.N; positivity`. Establish `hA` using `supA_nonneg S hg hk v false`. Unfold `lamLift`.
+
+Establish `: 0 < 2 * Real.pi / S.G.g` using `by positivity`. Check the signs of the components of the expression.
+-/
 theorem lamLift_nonneg (hB : KB.IsLeadingFormSetting Cb Cc S p f χ A₀) (b s : ℕ) (v : Fin S.f) : 0 ≤ lamLift S b s v := by
   obtain ⟨hg, hk⟩ := glob_pos' hB
   have hl := lenI_pos' hB v
@@ -49,6 +66,13 @@ theorem lamLift_nonneg (hB : KB.IsLeadingFormSetting Cb Cc S p f χ A₀) (b s :
   have : 0 < 2 * Real.pi / S.G.g := by positivity
   positivity
 
+/- English proof (translation)
+Take `⟨hg, hk⟩` from `glob_pos' hB`. Establish `hl` using `lenI_pos' hB v`. Establish `hCA : Cc ≤ S.CA` using `hB.2.2.2.2.2.2.2.2.2.2.2.2.2.1`. Establish `hN : (0:ℝ) ≤ S.G.N` using `by unfold Sz.Glob.N; positivity`. Establish `hcg : (0:ℝ) ≤ (28 * S.G.N / S.G.lenI) ^ (2 * (b - 1) + s)` using `by positivity`.
+
+Establish `h` using `(Formalism.FourierDecayAlt.P.frame_threshold_bound_holds (InfinitePlace E) S.G S.CA S.de S.de' S.T S.T' S.l (S.pl v) hg hl (hCc.trans hCA) (fun one => supA_nonneg S hg hk v one)).1 b s (Real.exp 1) ((28 * S.G.N / S.G.lenI) ^ (2 * (b - 1) + s)) hb (Real.exp_pos 1).le le_rfl hcg le …`. Establish `hdec : decide (b = 1 ∧ s + 1 = 1) = false` using `decide_eq_false (by omega)`. Rewrite `h` using `[hdec]`. Use `⟨lamLift_nonneg hB b s v, ?_⟩` and prove the remaining obligations. Use `show lamLift S b s v ≤ (if b + s ≤ S.G.r + 1 then _ else _)`.
+
+Rewrite using `[if_pos hbs]`. Unfold `lamLift`. Conclude with `h`.
+-/
 theorem thr_lift (hCc : 28 * Real.exp 1 ≤ Cc) (hB : KB.IsLeadingFormSetting Cb Cc S p f χ A₀) (b s : ℕ) (hb : 1 ≤ b)
     (hs : 1 ≤ s) (hbs : b + s ≤ S.G.r + 1) (v : Fin S.f) :
     0 ≤ lamLift S b s v ∧ lamLift S b s v ≤ S.base.szL b s v := by
@@ -68,6 +92,15 @@ theorem thr_lift (hCc : 28 * Real.exp 1 ≤ Cc) (hB : KB.IsLeadingFormSetting Cb
   unfold lamLift
   exact h
 
+/- English proof (translation)
+Take `⟨hg, hk⟩` from `glob_pos' hB`. Establish `hl` using `lenI_pos' hB v`. Rewrite using `[norm_lamB' S hg b s]`. Establish `hexp : 2 * (j - s) + s = 2 * (b - 1) + s` using `by omega`. Establish `hl1' : ∀ c, ∑ i, |F7.lagCo (grid c) i| ≤ (28 * S.G.N / S.G.lenI) ^ (2 * (b - 1) + s)` using `fun c => (hl1 c).trans_eq (by rw [hexp, ntop_eq_N', len_eq'])`.
+
+Unfold `lamLift`. Use `set cg := (28 * S.G.N / S.G.lenI) ^ (2 * (b - 1) + s) with hcg`. Use `set Tf := (2 * Real.pi / S.G.g) ^ (-(S6.nuBlock S.G.r b s)) with hTf`. Use `set A := J.supA S.G S.de S.de' S.T S.T' S.l false (S.pl v) with hA`. Establish `hA0 : 0 ≤ A` using `supA_nonneg S hg hk v _`.
+
+Establish `hgg : 0 < 2 * Real.pi / S.G.g` using `by positivity`. Establish `hTf0 : 0 ≤ Tf` using `by positivity`. Establish `hprod : (∏ c, ∑ i, |F7.lagCo (grid c) i|) ≤ cg ^ K`. Combine the equalities or inequalities in the displayed calculation. Establish `h1 : 0 ≤ Tf ^ K * (Real.exp 1 * A) ^ K` using `by positivity`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem lift_K (hB : KB.IsLeadingFormSetting Cb Cc S p f χ A₀) (v : Fin S.f) (b s j K : ℕ) (hjb : b + s = j + 1)
     (grid : Fin K → Fin (2 * (j - s) + s + 1) → ℝ)
     (hl1 : ∀ c, ∑ i, |F7.lagCo (grid c) i| ≤ (28 * (S.Ntop : ℝ) / (S.cutHi v - S.cutLo v)) ^ (2 * (j - s) + s)) :
@@ -96,6 +129,9 @@ theorem lift_K (hB : KB.IsLeadingFormSetting Cb Cc S p f χ A₀) (v : Fin S.f) 
     _ ≤ cg ^ K * (Tf ^ K * (Real.exp 1 * A) ^ K) := mul_le_mul_of_nonneg_right hprod h1
     _ = (Tf * Real.exp 1 * cg * A) ^ K := by ring
 
+/- English proof (translation)
+Rewrite using `[norm_pow, norm_mul, norm_mul, norm_inv, Complex.norm_real, Real.norm_of_nonneg (norm_nonneg _), norm_pow, norm_neg, norm_one, one_pow, mul_one, mul_inv_cancel₀ (norm_ne_zero_iff.2 (lamB_ne S hg b s)), one_pow]`.
+-/
 theorem norm_u (S : C.HidaSetting E Wp Wq) (hg : (0 : ℝ) < S.g) (b s K : ℕ) :
     ‖((((‖lamB S b s‖ : ℝ) : ℂ) * (-1) ^ (s - 1) * (lamB S b s)⁻¹) ^ K)‖ = 1 := by
   rw [norm_pow, norm_mul, norm_mul, norm_inv, Complex.norm_real, Real.norm_of_nonneg (norm_nonneg _), norm_pow,

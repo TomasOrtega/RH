@@ -9,6 +9,21 @@ open scoped Pointwise ENNReal Classical
 
 namespace GlobalTheory.HL
 
+/- English proof (translation)
+Introduce `G _ H K _ hc`. Establish `e : ∀ (g : G) (A B : Subgroup G), (MulAut.conj g • A).relIndex (MulAut.conj g • B) = A.relIndex B` using `fun g A B => Subgroup.relIndex_map_map_of_injective (f := (MulAut.conj g).toMonoidHom) A B (MulAut.conj g).injective`. Establish `key : ∀ K' : Subgroup G, K.relIndex K' ≠ 0 → K'.relIndex K ≠ 0 → ∀ a ∈ H, invVol K (MulAut.conj a • K') = invVol K (MulAut.conj a • K) * invVol K K'`. Introduce `K' h1 h2 a ha`. Establish `p1 : K.relIndex (MulAut.conj a • K') ≠ 0` using `Subgroup.relIndex_ne_zero_trans (hc a ha).1 (by rw [e]; exact h1)`.
+
+Establish `p2 : (MulAut.conj a • K').relIndex K ≠ 0` using `Subgroup.relIndex_ne_zero_trans (by rw [e]; exact h2) (hc a ha).2`. Rewrite using `[(invVol_mul_pos_le_conj K (MulAut.conj a • K) _ (hc a ha).1 (hc a ha).2 p1 p2).1, (invVol_mul_pos_le_conj K K' K' h1 h2 h1 h2).2.2.2 a]`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `a ha b hb`. Rewrite using `[map_mul, mul_smul]`.
+
+Conclude with `key _ (hc b hb).1 (hc b hb).2 a ha`. Introduce `a ha`. Conclude with `(invVol_mul_pos_le_conj K _ _ (hc a ha).1 (hc a ha).2 (hc a ha).1 (hc a ha).2).2.1`. Introduce `α hα a _`. Establish `h1 : (MulAut.conj a • K).map α.toMonoidHom = MulAut.conj (α a) • K.map α.toMonoidHom`.
+
+Express the relevant statement in the definitionally equal form `(K.map (MulAut.conj a).toMonoidHom).map α.toMonoidHom = (K.map α.toMonoidHom).map (MulAut.conj (α a)).toMonoidHom`. Rewrite using `[Subgroup.map_map, Subgroup.map_map]`. Use `congr 1`. Use extensionality with `x`. Simplify using the standard rewrite rules.
+
+Rewrite `h1` using `[hα]`. Establish `f : ∀ A B : Subgroup G, (A.map α.toMonoidHom).relIndex (B.map α.toMonoidHom) = A.relIndex B` using `fun A B => Subgroup.relIndex_map_map_of_injective (f := α.toMonoidHom) A B α.injective`. Establish `f1` using `f K (MulAut.conj a • K)`. Establish `f2` using `f (MulAut.conj a • K) K`. Rewrite `f1`, `f2` using `[hα, h1]`.
+
+Rewrite using `[invVol, invVol, f1, f2]`. Introduce `K' h1 h2 a ha`. Use `⟨key K' h1 h2 a ha, fun h => ?_⟩` and prove the remaining obligations. Establish `k` using `key K' h1 h2 a ha`. Rewrite `k` using `[h]`.
+
+Establish `pos` using `(invVol_mul_pos_le_conj K K' K' h1 h2 h1 h2).2.1`. Conclude with `mul_right_cancel₀ pos.ne' (by rw [← k, one_mul])`.
+-/
 theorem invVol_conj_modular : ∀ {G : Type} [Group G] (H K : Subgroup G), K ≤ H → (∀ h ∈ H, K.relIndex (MulAut.conj h • K) ≠ 0 ∧ (MulAut.conj h • K).relIndex K ≠ 0) → (∀ a ∈ H, ∀ b ∈ H, invVol K (MulAut.conj (a * b) • K) = invVol K (MulAut.conj a • K) * invVol K (MulAut.conj b • K)) ∧ (∀ a ∈ H, 0 < invVol K (MulAut.conj a • K)) ∧ (∀ α : G ≃* G, K.map α.toMonoidHom = K → ∀ a ∈ H, invVol K (MulAut.conj (α a) • K) = invVol K (MulAut.conj a • K)) ∧ ∀ K' : Subgroup G, K.relIndex K' ≠ 0 → K'.relIndex K ≠ 0 → ∀ a ∈ H, invVol K (MulAut.conj a • K') = invVol K (MulAut.conj a • K) * invVol K K' ∧ (MulAut.conj a • K' = K' → invVol K (MulAut.conj a • K) = 1) := by
   intro G _ H K _ hc
   have e : ∀ (g : G) (A B : Subgroup G),

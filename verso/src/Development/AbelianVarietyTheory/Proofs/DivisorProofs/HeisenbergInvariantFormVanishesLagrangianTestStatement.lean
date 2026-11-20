@@ -10,6 +10,9 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LatAtVAtStable
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.KFinLoc
 open scoped TensorProduct Matrix
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.InertLagUniq.exists_test | exact GlobalTheory.InertLagUniq.exists_test | (intros; apply GlobalTheory.InertLagUniq.exists_test <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.heisenberg_invariant_form_vanishes_lagrangian_test : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n d : ℕ)
     (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (ψ : AddChar (AF F) ℂ) (v : Pl F), PsiUnr ψ v →
     ∀ (m : ℕ) (C : Matrix (Fin d) (Fin m) (AE F E)), GlobalTheory.InertVacLag.IsLagrAt σ W v C →

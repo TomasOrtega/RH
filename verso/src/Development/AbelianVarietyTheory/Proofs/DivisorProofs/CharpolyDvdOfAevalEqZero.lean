@@ -8,6 +8,13 @@ open Polynomial Matrix Formalism.UG
 
 namespace GlobalTheory.SepCharpoly
 
+/- English proof (translation)
+Introduce `R _ _ n M p hs hp`. Set `K` to `FractionRing R`. Set `f : R →+* K` to `algebraMap R K`. Establish `hf : Function.Injective f` using `IsFractionRing.injective R K`. Rewrite using `[← Polynomial.map_dvd_map f hf M.charpoly_monic, ← Matrix.charpoly_map]`.
+
+Use `GlobalTheory.ClassParam.charpoly_dvd_of_aeval (M.map f) ?_ (p.map f) ?_` and prove the remaining obligations. Rewrite using `[Matrix.charpoly_map]`. Conclude with `hs.map`. Rewrite using `[show M.map f = (f.mapMatrix : Matrix (Fin n) (Fin n) R →+* _) M from rfl]`. Use `congrArg (AlgHom.mapMatrix (m := Fin n) (Algebra.ofId R K)) hp` as an intermediate fact.
+
+Rewrite `this` using `[← aeval_algHom_apply, map_zero]`. Rewrite using `[aeval_map_algebraMap]`. Conclude with `this`.
+-/
 theorem charpoly_dvd_of_aeval_eq_zero :
     ∀ (R : Type) [CommRing R] [IsDomain R] (n : ℕ) (M : Matrix (Fin n) (Fin n) R) (p : R[X]),
       M.charpoly.Separable → aeval M p = 0 → M.charpoly ∣ p := by

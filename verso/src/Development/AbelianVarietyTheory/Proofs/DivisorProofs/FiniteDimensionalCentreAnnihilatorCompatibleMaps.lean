@@ -14,10 +14,18 @@ namespace GlobalTheory.AutGrowth.KilledFin
 
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 
+/- English proof (translation)
+The claim follows from `commute_Zalg (fun X => GlobalTheory.SpehInfChar.cap_commute_act τ u (.lie X)) hz`.
+-/
 theorem cap_commute_Zalg (τ : E →+* ℂ) (u : ℂ) {z : Module.End ℂ (Sm E a)} (hz : z ∈ Zalg E a) :
     Commute (cap τ u) z :=
   commute_Zalg (fun X => GlobalTheory.SpehInfChar.cap_commute_act τ u (.lie X)) hz
 
+/- English proof (translation)
+Establish `hle : Zalg E a ≤ Subalgebra.centralizer ℂ {z'}`. Use `Algebra.adjoin_le ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨τ, u, rfl⟩`. Rewrite using `[SetLike.mem_coe, Subalgebra.mem_centralizer_iff]`. Introduce `y hy`.
+
+Rewrite using `[Set.mem_singleton_iff.1 hy]`. Conclude with `(cap_commute_Zalg τ u hz').eq.symm`. Establish `h` using `hle hz`. Rewrite `h` using `[Subalgebra.mem_centralizer_iff]`. Conclude with `(h z' rfl).symm`.
+-/
 theorem Zalg_commute {z z' : Module.End ℂ (Sm E a)} (hz : z ∈ Zalg E a) (hz' : z' ∈ Zalg E a) :
     Commute z z' := by
   have hle : Zalg E a ≤ Subalgebra.centralizer ℂ {z'} := by
@@ -44,6 +52,9 @@ def postZ (z : Module.End ℂ (Sm E a)) (hz : z ∈ Zalg E a) : Module.End ℂ (
   map_add' T T' := by ext; simp
   map_smul' c T := by ext; simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem postZ_apply (z : Module.End ℂ (Sm E a)) (hz : z ∈ Zalg E a) (T : mapsJ φ L) :
     (postZ φ L z hz T).1 = z ∘ₗ T.1 := rfl
 
@@ -59,6 +70,11 @@ end GlobalTheory.AutGrowth.KilledFin
 
 namespace GlobalTheory.AutGrowth.KilledFin
 
+/- English proof (translation)
+Use `haveI : FiniteDimensional ℂ (A ⧸ LinearMap.ker ev) := LinearEquiv.finiteDimensional (ev.quotKerEquivRange).symm`. Establish `hR : FiniteDimensional ℂ (LinearMap.range ρ.toLinearMap)`. Rewrite using `[← Submodule.range_liftQ (LinearMap.ker ev) ρ.toLinearMap hker]`. Use `infer_instance`. Establish `hle : Subalgebra.toSubmodule (Algebra.adjoin ℂ S) ≤ LinearMap.range ρ.toLinearMap`.
+
+Introduce `x hx`. Take `⟨y, rfl⟩` from `Algebra.adjoin_le hS hx`. Conclude with `⟨y, rfl⟩`. Conclude with `Submodule.finiteDimensional_of_le hle`.
+-/
 theorem fd_adjoin_of_ker_le (M : Type) [AddCommGroup M] [Module ℂ M] (A : Type) [Ring A] [Algebra ℂ A]
     (V : Type) [AddCommGroup V] [Module ℂ V] (ρ : A →ₐ[ℂ] Module.End ℂ M) (ev : A →ₗ[ℂ] V)
     (hev : FiniteDimensional ℂ (LinearMap.range ev)) (hker : LinearMap.ker ev ≤ LinearMap.ker ρ.toLinearMap)
@@ -78,6 +94,23 @@ end GlobalTheory.AutGrowth.KilledFin
 
 namespace GlobalTheory.AutGrowth.KilledFin
 
+/- English proof (translation)
+Introduce `hP E _ _ _ a φ hφ L hL`. Establish `hcap : ∀ (τ : E →+* ℂ) (u : ℂ), cap (a` using `a) τ u ∈ Zalg E a := fun τ u => Algebra.subset_adjoin ⟨τ, u, rfl⟩`. Set `S : Set (Module.End ℂ (mapsJ φ L))` to `{s | ∃ τ u, s = postZ φ L (cap τ u) (hcap τ u)}`. Use `GlobalTheory.T.finiteDimensional_of_commuting_finiteAlgebra_jointEigen (mapsJ φ L) S ?_ ?_ ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨τ, u, rfl⟩ _ ⟨τ', u', rfl⟩`.
+
+Use `LinearMap.ext fun T => Subtype.ext (LinearMap.ext fun w => ?_)` and prove the remaining obligations. Use `show cap τ u (cap τ' u' (T.1 w)) = cap τ' u' (cap τ u (T.1 w))`. Rewrite using `[← Module.End.mul_apply, (Zalg_commute (hcap τ u) (hcap τ' u')).eq, Module.End.mul_apply]`. Set `ev : Zalg E a →ₗ[ℂ] Sm E a` to `(LinearMap.applyₗ φ).comp (Zalg E a).val.toLinearMap`. Establish `hker : LinearMap.ker ev ≤ LinearMap.ker (postZAlg φ L).toLinearMap`.
+
+Introduce `z hz`. Rewrite `hz`, the goal using `[LinearMap.mem_ker]`. Use `LinearMap.ext fun T => Subtype.ext (LinearMap.ext fun w => ?_)` and prove the remaining obligations. Establish `hT : T.1 ∈ maps L (spanK E a φ) (spanK_stable φ) ∧ ∀ z ∈ Zalg E a, z φ = 0 → ∀ w, z (T.1 w) = 0` using `T.2`. Conclude with `hT.2 z.1 z.2 hz w`.
+
+Establish `hev : FiniteDimensional ℂ (LinearMap.range ev)`. Establish `h1 : LinearMap.range ev ≤ Submodule.span ℂ ((fun z : Module.End ℂ (Sm E a) => z φ) '' Zalg E a)`. Introduce and unpack `_ ⟨z, rfl⟩`. Conclude with `Submodule.subset_span ⟨z.1, z.2, rfl⟩`. Use `haveI := hφ.zfin`.
+
+Conclude with `Submodule.finiteDimensional_of_le h1`. Use `fd_adjoin_of_ker_le (mapsJ φ L) (Zalg E a) (Sm E a) (postZAlg φ L) ev hev hker S ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨τ, u, rfl⟩`. Conclude with `⟨⟨cap τ u, hcap τ u⟩, rfl⟩`. Introduce `c`.
+
+Set `J` to `⨅ s ∈ S, LinearMap.ker (s - algebraMap ℂ (Module.End ℂ (mapsJ φ L)) (c s))`. Set `N : Submodule ℂ (spanK E a φ →ₗ[ℂ] Sm E a)` to `J.map (mapsJ φ L).subtype`. Establish `hNle : N ≤ maps L (spanK E a φ) (spanK_stable φ)`. Introduce and unpack `_ ⟨T, _, rfl⟩`. Establish `hT : T.1 ∈ maps L (spanK E a φ) (spanK_stable φ) ∧ ∀ z ∈ Zalg E a, z φ = 0 → ∀ w, z (T.1 w) = 0` using `T.2`.
+
+Conclude with `hT.1`. Establish `hNe : ∀ T ∈ N, ∀ (τ : E →+* ℂ) (u : ℂ), cap τ u ∘ₗ T = c (postZ φ L (cap τ u) (hcap τ u)) • T`. Introduce and unpack `_ ⟨T, hT, rfl⟩ τ u`. Establish `hT' : T ∈ ⨅ s ∈ S, LinearMap.ker (s - algebraMap ℂ (Module.End ℂ (mapsJ φ L)) (c s))` using `hT`. Establish `h` using `(Submodule.mem_iInf _).1 ((Submodule.mem_iInf _).1 hT' (postZ φ L (cap τ u) (hcap τ u))) ⟨τ, u, rfl⟩`.
+
+Rewrite `h` using `[LinearMap.mem_ker, LinearMap.sub_apply, sub_eq_zero, Module.algebraMap_end_apply]`. Conclude with `congrArg Subtype.val h`. Establish `hN : FiniteDimensional ℂ N` using `GlobalTheory.T.finiteDimensional_eigen_intertwiners hP E a L hL (spanK E a φ) (spanK_stable φ) hφ.kfin (fun τ u => c (postZ φ L (cap τ u) (hcap τ u))) N hNle hNe`. Conclude with `LinearEquiv.finiteDimensional (Submodule.equivMapOfInjective (mapsJ φ L).subtype Subtype.val_injective J).symm`.
+-/
 theorem finiteDimensional_mapsJ : GlobalTheory.Published.AutomorphicFormsFiniteGL → ∀ (E : Type) [Field E] [NumberField E]
     [IsTotallyComplex E] (a : ℕ) (φ : Sm E a), IsAutForm φ → ∀ L : Subgroup (GL (Fin a) (Af E)),
     IsOpen (L : Set (GL (Fin a) (Af E))) → FiniteDimensional ℂ (mapsJ φ L) := by

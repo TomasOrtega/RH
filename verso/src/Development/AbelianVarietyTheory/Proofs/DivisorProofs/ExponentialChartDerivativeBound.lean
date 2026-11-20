@@ -24,11 +24,19 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F} {Z : Model Xo c β}
   [SmoothOfRelativeDimension Dw.dim (genStr Z)] {σ : c.F →+* ℂ} {g : ℕ}
 
+/- English proof (translation)
+Use `conv_lhs => rw [← (eigBasis f).sum_repr v]`. Simplify using `only [eigBasis_apply]`.
+-/
 theorem eq_sum_vec {y : CxPts (genStr Z) σ} (f : EigFrame Z σ (y.1 ≫ genι Z)) (v : TanM (y.1 ≫ genι Z) Z.t.G) :
     v = ∑ p : Pad.Letter Dw, (eigBasis f).repr v p • f.vec p.1 p.2 := by
   conv_lhs => rw [← (eigBasis f).sum_repr v]
   simp only [eigBasis_apply]
 
+/- English proof (translation)
+Set `q` to `Fintype.equivFin (Pad.Letter Dw)`. Establish `hc : IsCombAtG Z.t (y.1 ≫ genι Z) (fun i => (tv (f.vec (q.symm i).1 (q.symm i).2)).left) (fun i => (eigBasis f).repr v (q.symm i)) (tv v).left`. Rewrite using `[LieMet.isComb_iff]`. Use `conv_lhs => rw [eq_sum_vec f v]`. Conclude with `(Equiv.sum_comp q.symm (fun p => (eigBasis f).repr v p • f.vec p.1 p.2)).symm`.
+
+Establish `h2` using `ExpDirs.isDerivAt0_of_comb e0 (fun i => f.tan (q.symm i).1 (q.symm i).2) (fun i => hW (q.symm i)) (isTan_tv v) hc`. Rewrite `h2` using `[Equiv.sum_comp q.symm (fun p => (eigBasis f).repr v p • W p)]`. Conclude with `(huniq _ (isTan_tv v)).unique hw h2`.
+-/
 theorem dir_eq_sum {y : CxPts (genStr Z) σ} (ε : (Fin g → ℂ) → (Sp ℂ ⟶ Z.t.G.left))
     (e0 : ε 0 = (1 : Over.mk (y.1 ≫ genι Z) ⟶ Z.t.G).left)
     (huniq : ∀ v, IsTanAtG Z.t (y.1 ≫ genι Z) v → ∃! w, IsDerivAt0 ε w v) (f : EigFrame Z σ (y.1 ≫ genι Z))
@@ -55,6 +63,13 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F} {Z : Model Xo c β}
   [SmoothOfRelativeDimension Dw.dim (genStr Z)] {σ : c.F →+* ℂ} {g : ℕ}
 
+/- English proof (translation)
+Use `set a : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → ℂ := fun τ b => (eigBasis f).repr v ⟨τ, b⟩ with ha`. Establish `hv : v = ∑ τ, ∑ b, a τ b • f.vec τ b` using `by conv_lhs => rw [eq_sum_vec f v]`. Conclude with `Fintype.sum_sigma _`. Establish `hoff : ∀ τ τ', τ ≠ τ' → x.met σ y (∑ b, a τ b • f.vec τ b) (∑ b, a τ' b • f.vec τ' b) = 0`. Introduce `τ τ' hne`.
+
+Simplify using `only [map_sum, map_smulₛₗ, LinearMap.sum_apply, LinearMap.smul_apply, x.met_vec_eq_zero f f hne, smul_zero, Finset.sum_const_zero]`. Use `conv_lhs => rw [hv]`. Rewrite using `[map_sum (x.met σ y), LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[map_sum (x.met σ y _), Finset.sum_eq_single τ (fun τ' _ h => hoff τ τ' (Ne.symm h)) (by simp)]`.
+
+Conclude with `form_sum _ _ _ _`.
+-/
 theorem met_eq_sum_gram (x : OddPrimesWithRootsOfUnity Z) {y : CxPts (genStr Z) σ} (f : EigFrame Z σ (y.1 ≫ genι Z))
     (v : TanM (y.1 ≫ genι Z) Z.t.G) :
     x.met σ y v v = ∑ τ, star (fun b => (eigBasis f).repr v ⟨τ, b⟩) ⬝ᵥ
@@ -74,6 +89,13 @@ theorem met_eq_sum_gram (x : OddPrimesWithRootsOfUnity Z) {y : CxPts (genStr Z) 
   rw [map_sum (x.met σ y _), Finset.sum_eq_single τ (fun τ' _ h => hoff τ τ' (Ne.symm h)) (by simp)]
   exact form_sum _ _ _ _
 
+/- English proof (translation)
+Use `set a : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → ℂ := fun τ b => (eigBasis f).repr v ⟨τ, b⟩ with ha`. Establish `hw' : w = ∑ τ, ∑ b, a τ b • W ⟨τ, b⟩`. Rewrite using `[dir_eq_sum ε e0 huniq f W hW v w hw]`. Conclude with `Fintype.sum_sigma _`. Establish `h1 : ‖w‖ ≤ ∑ τ, ‖∑ b, a τ b • W ⟨τ, b⟩‖` using `hw' ▸ norm_sum_le _ _`.
+
+Establish `h2 : ‖w‖ ^ 2 ≤ (Fintype.card (E →+* ℂ) : ℝ) * ∑ τ, ‖∑ b, a τ b • W ⟨τ, b⟩‖ ^ 2`. Use `(pow_le_pow_left₀ (norm_nonneg _) h1 2).trans ?_` and prove the remaining obligations. Use `sq_sum_le_card_mul_sum_sq (s := Finset.univ) (f := fun τ : E →+* ℂ => ‖∑ b, a τ b • W ⟨τ, b⟩‖)` as an intermediate fact. Simplify `this` using `[Finset.card_univ]`. Use `h2.trans ?_` and prove the remaining obligations.
+
+Rewrite using `[met_eq_sum_gram x f v, Complex.re_sum, Finset.mul_sum, Finset.mul_sum]`. Use `Finset.sum_le_sum fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[_root_.mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left (hC τ (a τ)) (Nat.cast_nonneg _)`.
+-/
 theorem sq_norm_dir_le (x : OddPrimesWithRootsOfUnity Z) {y : CxPts (genStr Z) σ} (ε : (Fin g → ℂ) → (Sp ℂ ⟶ Z.t.G.left))
     (e0 : ε 0 = (1 : Over.mk (y.1 ≫ genι Z) ⟶ Z.t.G).left)
     (huniq : ∀ v, IsTanAtG Z.t (y.1 ≫ genι Z) v → ∃! w, IsDerivAt0 ε w v) (f : EigFrame Z σ (y.1 ≫ genι Z))
@@ -101,6 +123,13 @@ end Point2
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `D A N j S κ s x σ n g e ex he y₀ hy₀`. Take `⟨U, hU, C, hC0, hC⟩` from `h0_le_exp_coord D A N j S κ s x σ n g e ex he y₀ hy₀`. Take `⟨V, φ, F, B, a, hB, hb₀, hBt, ha, hab⟩` from `exists_frameFam_of_isExpChart _ _ _ _ _ _ _ _ _ σ n g e ex he y₀ hy₀`. Use `⟨U ∩ (e.source ∩ e ⁻¹' B), Filter.inter_mem hU (Filter.inter_mem (e.open_source.mem_nhds hy₀) ((e.continuousAt hy₀).preimage_mem_nhds (hB.mem_nhds hb₀))), (Fintype.card (D.host.E →+* ℂ) : ℝ) * C, by positivity, ?_⟩` and prove the remaining obligations. Introduce and unpack `y ⟨hyU, hy, hyB⟩ v w hw`.
+
+Establish `hab1 : (a (e y)).1 = y` using `(hab _ hyB).1.trans (e.left_inv hy)`. Take `⟨p, hp⟩ : ∃ p : CxFr s.T.Z σ, p.1 = y` from `⟨a (e y), hab1⟩`. Take `⟨y₁, f⟩` from `p`. Simplify using `only at hp`. Substitute `hp` using the available equality.
+
+Establish `e0 : ex y₁ 0 = 1` using `by simpa using he.2.2.2.1 _ hy 0 0`. Establish `huniq` using `(he.2.2.2.2.2 y₁ hy).2`. Use `choose W hW using fun z : Pad.Letter S.Dw => (huniq _ (f.tan z.1 z.2)).exists`. Conclude with `sq_norm_dir_le x (fun u => (ex y₁ u).left) (congrArg (·.left) e0) huniq f W hW hC0 (fun τ u => (hC y₁ hyU f W hW τ u).1) v w hw`.
+-/
 theorem exp_coord_sq_le_met : ∀ (D : D7) (A : Amb D) (N j : ℕ) (S : Sig A N j) (κ : Lv A) (s : FinalTheorems S κ) (x : ToroidalCompactificationData s) (σ : κ.c.F →+* ℂ) (n g : ℕ) (e : OpenPartialHomeomorph (CxPts (genStr s.T.Z) σ) (Fin n → ℂ)) (ex : ExpMaps s.T.Z σ g), IsExpChart e ex → ∀ y₀ ∈ e.source, ∃ U ∈ 𝓝 y₀, ∃ C : ℝ, 0 ≤ C ∧ ∀ y ∈ U, ∀ (v : TanM (y.1 ≫ genι s.T.Z) s.T.Z.t.G) (w : Fin g → ℂ), IsDerivAt0 (fun u => (ex y u).left) w (tv v).left → ‖w‖ ^ 2 ≤ C * (x.met σ y v v).re := by
   intro D A N j S κ s x σ n g e ex he y₀ hy₀
   classical

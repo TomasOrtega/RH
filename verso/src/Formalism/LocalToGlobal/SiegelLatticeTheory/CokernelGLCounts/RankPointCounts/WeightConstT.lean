@@ -16,6 +16,13 @@ section Pos
 
 variable {D : D7}
 
+/- English proof (translation)
+Take `⟨L, U, hL, hU, hZ⟩` from `hc`. Establish `hL' : IsLo L` using `⟨fun a => (hL a a).2 rfl, fun a b hab => (hL a b).1 hab⟩`. Establish `hU' : IsUp U` using `⟨fun a => (hU a a).2 rfl, fun a b hab => (hU b a).1 hab⟩`. Establish `hS : Formalism.MainNotions.S.ZhatOM (ZhatL F F') = ZhatL F F' * Sg D.host.E D.R.rS`. Use extensionality with `a b`.
+
+Simplify using `[Formalism.MainNotions.S.ZhatOM, Sg, mul_diagonal, mul_comm]`. Establish `key : ∀ l (hl : l ≤ D.R.rS + 1), leadMinorE (ZhatL F F') l * epsL (D` using `D) D.R.rS l hl = Dmin w l := by`. Introduce `l hl`. Rewrite using `[← leadMinor_Sg, ← hS, hZ, leadMinor_LMU hL' hU', dmin_eq']`. Establish `n1` using `norm_eq_of _ _ _ (key (D.R.rS + 1) le_rfl) (epsL_sq _ _) (star_epsL _ _)`.
+
+Establish `n2` using `norm_eq_of _ _ _ (key D.R.rS (Nat.le_succ _)) (epsL_sq _ _) (star_epsL _ _)`. Simplify using `only [Gval, Gflag, Gpt, conjF_star]`. Unfold `Formalism.MainNotions.S.Dl`. Rewrite using `[n1, n2]`.
+-/
 theorem gPoint_eq_gval {T T' : ℕ} (F : LFlag (VS D) D.R.rS (T : D.host.E)) (F' : LFlag (VS D) D.R.rS (T' : D.host.E))
     (w : Point D.host.E (D.R.rS + 1)) (hc : IsInCell (Formalism.MainNotions.S.ZhatOM (ZhatL F F')) w) :
     Gpt T T' w = Gval F F' := by
@@ -34,6 +41,11 @@ theorem gPoint_eq_gval {T T' : ℕ} (F : LFlag (VS D) D.R.rS (T : D.host.E)) (F'
   unfold Formalism.MainNotions.S.Dl
   rw [n1, n2]
 
+/- English proof (translation)
+Take `⟨F', ⟨hP, -⟩, hG, hc⟩` from `h`. Establish `e` using `gPoint_eq_gval (T := Tu D u) (T' := Tu D u') (lf D F0) F' w hc`. Introduce `τ`. Express the relevant statement in the definitionally equal form `0 < (D.host.emb (D.eTau τ) (Gpt (Tu D u) (Tu D u') w)).re`. Rewrite using `[e]`.
+
+Conclude with `(Formalism.MainNotions.LatticeGluingRadicals.b_G_pos (Formalism.MainNotions.LatticeGluingRadicals.p_starConj D) (Formalism.MainNotions.BridgeLemma.tie_Tu_pos D u) (lf D F0) F' rfl hP.1.2 hG (Formalism.MainNotions.LatticeGluingRadicals.p_posX D _ (Formalism.MainNotions.BridgeLemma …`.
+-/
 theorem atPt_totPos {u u' : D.what₂.Word} {F0 : FlagG (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E)}
     {what₂ : Finset (Submodule (NumberField.RingOfIntegers D.host.E) (VS D).V)}
     (t : Formalism.L2.SG.TermDef.Term D u u' F0 what₂) (w : Point D.host.E (D.R.rS + 1)) (h : t.atPt w) :
@@ -52,8 +64,16 @@ section Use
 
 variable {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (Y : Formalism.L2.SG.Full.Full X) (u u' : D.what₂.Word)
 
+/- English proof (translation)
+Introduce `t w _ h` and use `atPt_totPos t w h`.
+-/
 theorem eligTotPos_holds : EligTotPos X Y u u' := fun t w _ h => atPt_totPos t w h
 
+/- English proof (translation)
+Unfold `Formalism.L2.SG.MassDataConc.kapN`. Establish `hr : 0 < D.host.rdE`. Unfold `Formalism.BasicNotions.Host.rdE`. Conclude with `Real.rpow_pos_of_pos (abs_pos.mpr (Int.cast_ne_zero.mpr (NumberField.discr_ne_zero _))) _`. Establish `hg : 0 < ((Formalism.MainNotions.S.Lat.gS D : ℕ) : ℝ)` using `Nat.cast_pos.mpr (Nat.mul_pos (D.host.g_prime 0).pos (D.host.g_prime 1).pos)`.
+
+Conclude with `mul_pos (pow_pos hr _) (inv_pos.mpr (pow_pos hg _))`.
+-/
 theorem kapN_pos : 0 < Formalism.L2.SG.MassDataConc.kapN D := by
   unfold Formalism.L2.SG.MassDataConc.kapN
   have hr : 0 < D.host.rdE := by
@@ -63,6 +83,13 @@ theorem kapN_pos : 0 < Formalism.L2.SG.MassDataConc.kapN D := by
     Nat.cast_pos.mpr (Nat.mul_pos (D.host.g_prime 0).pos (D.host.g_prime 1).pos)
   exact mul_pos (pow_pos hr _) (inv_pos.mpr (pow_pos hg _))
 
+/- English proof (translation)
+Use `⟨Real.sqrt (Formalism.L2.SG.MassDataConc.ngFac D / (Formalism.L2.SG.MassDataConc.kapN D * nc)), fun p w hp hreal ht => ?_⟩` and prove the remaining obligations. Take `⟨t, -, hat⟩` from `ht`. Establish `hT` using `atPt_totPos t w hat`. Rewrite using `[nW_eq X u u' p w hp hreal hT hnc]`. Establish `hK : 0 ≤ Formalism.L2.SG.MassDataConc.ngFac D / (Formalism.L2.SG.MassDataConc.kapN D * nc)`.
+
+Use `div_nonneg ?_ (mul_pos kapN_pos hnc).le` and prove the remaining obligations. Unfold `Formalism.L2.SG.MassDataConc.ngFac`. Conclude with `pow_nonneg (Real.sqrt_nonneg _) _`. Establish `hn0 : 0 ≤ n0 nc (D.mem u).A.T (D.mem u').A.T w`. Unfold `n0`.
+
+Conclude with `mul_nonneg hnc.le (pow_nonneg (Real.sqrt_nonneg _) _)`. Rewrite using `[Real.sqrt_mul hK, Real.sqrt_mul hn0, Real.sqrt_sq_eq_abs, abs_mul, abs_of_nonneg (Real.sqrt_nonneg _)]`.
+-/
 theorem weightBound_holds {nc : ℝ} (hnc : 0 < nc) : Formalism.L2.SG.RowsAbsX.WeightBound X Y u u' nc := by
   refine ⟨Real.sqrt (Formalism.L2.SG.MassDataConc.ngFac D / (Formalism.L2.SG.MassDataConc.kapN D * nc)), fun p w hp hreal ht => ?_⟩
   obtain ⟨t, -, hat⟩ := ht

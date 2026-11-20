@@ -8,6 +8,25 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.RedCov
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hcm n J hJ r X Y hW δ hδ hp`. Establish `hF` using `pfrA hcm hJ hW`. Establish `hinc : Function.Injective (inclR (F` using `F) (E := E) (AF F)) := fun a b h => congrFun (ratV_injective (F := F) (n := 1) (a₁ := fun _ => a) (a₂ := fun _ => b) (funext fun _ => h)) 0`. Take `⟨g, hg⟩ : ∃ g : GL (Fin n) E, (matHom _ σ J δ).1 = (g : Matrix (Fin n) (Fin n) E).map (inclR (F` from `F) (AF F)) := by`. Take `⟨g, -, hg⟩` from `Subgroup.mem_map.1 (show (((show ↥(HR (AF F) σ J) from δ) : HR (AF F) σ J) : GL (Fin n) (AF F ⊗[F] E)) ∈ (Formalism.UG.UJ (σ : E →+* E) J).map (Formalism.UG.bc (inclR (AF F))) from hδ)`.
+
+Conclude with `⟨g, (congrArg Units.val hg).symm⟩`. Use `set Bq : Matrix (Fin (r + 1)) (Fin (r + 1)) E := cT (σ : E →+* E) Y * J * ((g : Matrix (Fin n) (Fin n) E) * X) with hBq`. Establish `hBm : Bm σ J X Y δ = Bq.map (inclR (F` using `F) (AF F)) := by`. Unfold `Bm coefM JR`. Rewrite using `[hg, hBq, Matrix.map_mul, Matrix.map_mul, Matrix.map_mul, cT_map_inclR]`.
+
+Take `⟨hbt, he⟩` from `(mem_minPar_iff hF).1 hp`. Rewrite `hbt`, `he` using `[hBm]`. Establish `hgX : (g : Matrix (Fin n) (Fin n) E) * X = X * Bq`. Apply `Matrix.map_injective hinc` to reduce the goal to its premises. Simplify using `only`.
+
+Rewrite using `[Matrix.map_mul, Matrix.map_mul, ← hg]`. Conclude with `he`. Establish `hlow : ∀ k : Fin (r + 1), k ≠ 0 → Bq k 0 = 0` using `fun k hk => by`. Apply `hinc` to reduce the goal to its premises. Use `hbt (show id (0 : Fin (r + 1)) < id k from Fin.pos_of_ne_zero hk)` as an intermediate fact.
+
+Simplify using `using this`. Establish `hcol : (g : Matrix (Fin n) (Fin n) E) *ᵥ Xᵀ 0 = Bq 0 0 • Xᵀ 0`. Use function extensionality and compare the values at `i`. Establish `h1` using `congrFun (congrFun hgX i) 0`. Rewrite `h1` using `[Matrix.mul_apply, Matrix.mul_apply, Finset.sum_eq_single (0 : Fin (r + 1)) (fun k _ hk => by rw [hlow k hk, mul_zero]) (fun h => absurd (Finset.mem_univ _) h)]`.
+
+Simplify `h1` using `[Matrix.mulVec, dotProduct, mul_comm]`. Establish `hx : Xᵀ 0 ≠ 0` using `fun h0 => by`. Establish `h1` using `congrFun (congrFun hW.xy 0) 0`. Rewrite `h1` using `[GlobalTheory.SiegelSet.gram_apply, h0, map_zero, LinearMap.zero_apply, Matrix.one_apply_eq]`. Conclude with `zero_ne_one h1`.
+
+Establish `hb : Bq 0 0 ≠ 0` using `fun h0 => hx (by`. Rewrite `hcol` using `[h0, zero_smul]`. Establish `h2` using `congrArg (fun v => ((g⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) *ᵥ v) hcol`. Simplify `h2)` using `[Matrix.mulVec_mulVec, ← Units.val_mul]`. Use `⟨(Bq 0 0)⁻¹, inv_ne_zero hb, ?_⟩` and prove the remaining obligations.
+
+Establish `h3 : (g : Matrix (Fin n) (Fin n) E) *ᵥ ((Bq 0 0)⁻¹ • Xᵀ 0) = Xᵀ 0`. Rewrite using `[Matrix.mulVec_smul, hcol, smul_smul, inv_mul_cancel₀ hb, one_smul]`. Unfold `Sends`. Rewrite using `[hg]`. Use function extensionality and compare the values at `i`.
+
+Establish `h4` using `RingHom.map_mulVec (inclR (F := F) (E := E) (AF F)) (g : Matrix (Fin n) (Fin n) E) ((Bq 0 0)⁻¹ • Xᵀ 0) i`. Rewrite `h4` using `[h3]`. Conclude with `h4.symm`.
+-/
 theorem exists_sends_of_rat_mem_minPar : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J →
     ∀ (r : ℕ) (X Y : Matrix (Fin n) (Fin (r + 1)) E), IsWittFrame σ J X Y →

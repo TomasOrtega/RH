@@ -22,10 +22,20 @@ section General
 variable {G V V' X : Type} [Group G] [AddCommGroup V] [Module ℂ V] [AddCommGroup V'] [Module ℂ V'] [AddCommGroup X]
   [Module ℂ X]
 
+/- English proof (translation)
+The claim follows from `le_iSup₂_of_le (f := fun (T : V →ₗ[ℂ] X) (_ : ∀ g, T ∘ₗ I g = ρ g ∘ₗ T) => LinearMap.range T) T hT le_rfl`.
+-/
 theorem range_le_imgSpan {I : Representation ℂ G V} {ρ : Representation ℂ G X} (T : V →ₗ[ℂ] X)
     (hT : ∀ g, T ∘ₗ I g = ρ g ∘ₗ T) : LinearMap.range T ≤ imgSpan I ρ :=
   le_iSup₂_of_le (f := fun (T : V →ₗ[ℂ] X) (_ : ∀ g, T ∘ₗ I g = ρ g ∘ₗ T) => LinearMap.range T) T hT le_rfl
 
+/- English proof (translation)
+Use `iSup₂_le fun T hT => ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨v, rfl⟩`. Use `range_le_imgSpan (T ∘ₗ I c⁻¹) (fun g => ?_) ⟨I c v, ?_⟩` and prove the remaining obligations. Use `LinearMap.ext fun w => ?_` and prove the remaining obligations. Establish `h1` using `LinearMap.congr_fun (hT (c⁻¹ * g * c)) (I c⁻¹ w)`.
+
+Simplify using `only [LinearMap.comp_apply, h] at h1 ⊢`. Rewrite `h1` using `[show c * (c⁻¹ * g * c) * c⁻¹ = g by group]`. Rewrite using `[← h1, ← Module.End.mul_apply (I c⁻¹), ← Module.End.mul_apply (I _) (I c⁻¹), ← map_mul, ← map_mul]`. Use `congr 3`. Use `group`.
+
+Rewrite using `[LinearMap.comp_apply, ← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]`.
+-/
 theorem imgSpan_conj_le (I : Representation ℂ G V) (ρ ρ' : Representation ℂ G X) (c : G)
     (h : ∀ g, ρ' g = ρ (c * g * c⁻¹)) : imgSpan I ρ' ≤ imgSpan I ρ := by
   refine iSup₂_le fun T hT => ?_
@@ -40,6 +50,9 @@ theorem imgSpan_conj_le (I : Representation ℂ G V) (ρ ρ' : Representation �
     group
   · rw [LinearMap.comp_apply, ← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]
 
+/- English proof (translation)
+Use `iSup₂_le fun T hT => ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨v, rfl⟩`. Use `range_le_imgSpan (T ∘ₗ φ.toIntertwiningMap.toLinearMap) (fun g => ?_) ⟨φ.symm v, ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.comp_assoc, φ.toIntertwiningMap.isIntertwining' g, ← LinearMap.comp_assoc, hT, LinearMap.comp_assoc]`. Conclude with `congrArg T (φ.toLinearEquiv.apply_symm_apply v)`.
+-/
 theorem imgSpan_equiv_le {I : Representation ℂ G V} {I' : Representation ℂ G V'} (φ : I.Equiv I')
     (ρ : Representation ℂ G X) : imgSpan I' ρ ≤ imgSpan I ρ := by
   refine iSup₂_le fun T hT => ?_
@@ -48,6 +61,9 @@ theorem imgSpan_equiv_le {I : Representation ℂ G V} {I' : Representation ℂ G
   · rw [LinearMap.comp_assoc, φ.toIntertwiningMap.isIntertwining' g, ← LinearMap.comp_assoc, hT, LinearMap.comp_assoc]
   · exact congrArg T (φ.toLinearEquiv.apply_symm_apply v)
 
+/- English proof (translation)
+Establish `: imgSpan I ρ ≤ (imgSpan I ρ).comap (ρ g)`. Use `iSup₂_le fun T hT => ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨v, rfl⟩`. Conclude with `range_le_imgSpan T hT ⟨I g v, LinearMap.congr_fun (hT g) v⟩`. Conclude with `fun x hx => this hx`.
+-/
 theorem imgSpan_stable (I : Representation ℂ G V) (ρ : Representation ℂ G X) (g : G) :
     ∀ x ∈ imgSpan I ρ, ρ g x ∈ imgSpan I ρ := by
   have : imgSpan I ρ ≤ (imgSpan I ρ).comap (ρ g) := by
@@ -58,6 +74,11 @@ theorem imgSpan_stable (I : Representation ℂ G V) (ρ : Representation ℂ G X
 
 end General
 
+/- English proof (translation)
+Use `⟨⟨e.symm.toPEquiv.toMatrix, e.toPEquiv.toMatrix, ?_, ?_⟩, fun g => Units.ext ?_⟩` and prove the remaining obligations. Rewrite using `[← PEquiv.toMatrix_trans, ← Equiv.toPEquiv_trans]`. Simplify using the standard rewrite rules. Rewrite using `[← PEquiv.toMatrix_trans, ← Equiv.toPEquiv_trans]`. Simplify using the standard rewrite rules.
+
+Use `show Matrix.reindex e e g.val = e.symm.toPEquiv.toMatrix * g.val * e.toPEquiv.toMatrix`. Rewrite using `[PEquiv.toMatrix_toPEquiv_mul, PEquiv.mul_toMatrix_toPEquiv]`. Both sides reduce to the same expression.
+-/
 theorem exists_glReindex_eq_conj {k : Type} [Field k] {n : Type} [Fintype n] [DecidableEq n] (e : n ≃ n) :
     ∃ w : GL n k, ∀ g, glReindex e g = w * g * w⁻¹ := by
   refine ⟨⟨e.symm.toPEquiv.toMatrix, e.toPEquiv.toMatrix, ?_, ?_⟩, fun g => Units.ext ?_⟩
@@ -69,6 +90,11 @@ theorem exists_glReindex_eq_conj {k : Type} [Field k] {n : Type} [Fintype n] [De
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+Establish `e : mat (m * m') = mat m * mat m'` using `rfl`. Establish `e1 : mat (γ * h₁) = mat γ * mat h₁` using `rfl`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[e, ← Matrix.mulVec_mulVec, h'.1, Matrix.mulVec_smul, h.1, smul_smul, Units.val_mul, mul_comm]`. Rewrite using `[e, ← Matrix.mulVec_mulVec, h'.2.1, Matrix.mulVec_smul, h.2.1, smul_smul, mul_inv_rev, Units.val_mul, map_mul]`.
+
+Rewrite using `[e, Matrix.mul_assoc, h'.2.2, e1, ← Matrix.mul_assoc, h.2.2, Matrix.mul_assoc]`.
+-/
 theorem isLevi_mul {n n₁ : ℕ} {W : Spc F E n} {W₁ : Spc F E n₁} {H : Plane E n n₁} {t s : (AE F E)ˣ}
     {γ h₁ : UA σ W₁.J} {m m' : UA σ W.J} (h : IsLevi (W₁ := W₁) H t γ m) (h' : IsLevi (W₁ := W₁) H s h₁ m') :
     IsLevi (W₁ := W₁) H (t * s) (γ * h₁) (m * m') := by
@@ -79,6 +105,11 @@ theorem isLevi_mul {n n₁ : ℕ} {W : Spc F E n} {W₁ : Spc F E n₁} {H : Pla
   · rw [e, ← Matrix.mulVec_mulVec, h'.2.1, Matrix.mulVec_smul, h.2.1, smul_smul, mul_inv_rev, Units.val_mul, map_mul]
   · rw [e, Matrix.mul_assoc, h'.2.2, e1, ← Matrix.mul_assoc, h.2.2, Matrix.mul_assoc]
 
+/- English proof (translation)
+Establish `hi : mat m⁻¹ * mat m = 1` using `GlobalTheory.UnipCT.mat_inv_mul' m`. Establish `hg : mat γ * mat γ⁻¹ = 1` using `GlobalTheory.CTLevi.mat_mul_inv' γ`. Establish `h1 : mat m *ᵥ incV F H.x = incV F H.x` using `by simpa using h.1`. Establish `h2 : mat m *ᵥ incV F H.y = incV F H.y` using `by simpa using h.2.1`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [Units.val_one, one_smul] conv_lhs => rw [← h1]`. Rewrite using `[Matrix.mulVec_mulVec, hi, Matrix.one_mulVec]`. Simplify using `only [inv_one, Units.val_one, map_one, one_smul] conv_lhs => rw [← h2]`. Rewrite using `[Matrix.mulVec_mulVec, hi, Matrix.one_mulVec]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem isLevi_inv {n n₁ : ℕ} {W : Spc F E n} {W₁ : Spc F E n₁} {H : Plane E n n₁}
     {γ : UA σ W₁.J} {m : UA σ W.J} (h : IsLevi (W₁ := W₁) H 1 γ m) : IsLevi (W₁ := W₁) H 1 γ⁻¹ m⁻¹ := by
   have hi : mat m⁻¹ * mat m = 1 := GlobalTheory.UnipCT.mat_inv_mul' m
@@ -97,6 +128,9 @@ theorem isLevi_inv {n n₁ : ℕ} {W : Spc F E n} {W₁ : Spc F E n₁} {H : Pla
       _ = mat m⁻¹ * (mat m * incM F H.ι) * mat γ⁻¹ := by rw [h.2.2]
       _ = incM F H.ι * mat γ⁻¹ := by rw [← Matrix.mul_assoc (mat m⁻¹), hi, Matrix.one_mul]
 
+/- English proof (translation)
+Establish `hc : IsLevi (W₁` using `W₁) H t 1 (m * m'⁻¹) := by`. Simplify using `using isLevi_mul h (isLevi_inv h')`. Rewrite using `[← hT t _ hc (m' * y), mul_assoc, inv_mul_cancel_left]`.
+-/
 theorem law_levi {n n₁ : ℕ} {W : Spc F E n} {W₁ : Spc F E n₁} {H : Plane E n n₁} {χ : Chr F E} {z : ℝ}
     {T : UA σ W.J → ℂ} (hT : HasLaw W₁ H χ z T) {t : (AE F E)ˣ} {γ : UA σ W₁.J} {m m' : UA σ W.J}
     (h : IsLevi (W₁ := W₁) H t γ m) (h' : IsLevi (W₁ := W₁) H 1 γ m') (y : UA σ W.J) :
@@ -105,6 +139,9 @@ theorem law_levi {n n₁ : ℕ} {W : Spc F E n} {W₁ : Spc F E n₁} {H : Plane
     simpa using isLevi_mul h (isLevi_inv h')
   rw [← hT t _ hc (m' * y), mul_assoc, inv_mul_cancel_left]
 
+/- English proof (translation)
+Rewrite using `[law_levi hT h h']`. Simplify using the standard rewrite rules.
+-/
 theorem law_levi_one {n n₁ : ℕ} {W : Spc F E n} {W₁ : Spc F E n₁} {H : Plane E n n₁} {χ : Chr F E} {z : ℝ}
     {T : UA σ W.J → ℂ} (hT : HasLaw W₁ H χ z T) {γ : UA σ W₁.J} {m m' : UA σ W.J}
     (h : IsLevi (W₁ := W₁) H 1 γ m) (h' : IsLevi (W₁ := W₁) H 1 γ m') (y : UA σ W.J) :
@@ -112,6 +149,9 @@ theorem law_levi_one {n n₁ : ℕ} {W : Spc F E n} {W₁ : Spc F E n₁} {H : P
   rw [law_levi hT h h']
   simp
 
+/- English proof (translation)
+Establish `h'` using `isLevi_inv h`. Use `GlobalTheory.CTLevi.conj_mem m⁻¹ u (by simpa using h'.1) (fun z => ⟨mat γ⁻¹ *ᵥ z, by rw [Matrix.mulVec_mulVec, h'.2.2, ← Matrix.mulVec_mulVec]⟩) hu` as an intermediate fact. Simplify using `using this`.
+-/
 theorem conj_mem_unip {n n₁ : ℕ} {W : Spc F E n} {W₁ : Spc F E n₁} {H : Plane E n n₁} {γ : UA σ W₁.J} {m u : UA σ W.J}
     (h : IsLevi (W₁ := W₁) H 1 γ m) (hu : u ∈ unip σ W H) : m * u * m⁻¹ ∈ unip σ W H := by
   have h' := isLevi_inv h
@@ -121,6 +161,13 @@ theorem conj_mem_unip {n n₁ : ℕ} {W : Spc F E n} {W₁ : Spc F E n₁} {H : 
 
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Use `push Not at hne`. Use `h (zb - za) (MonoidHom.ext fun a => Units.ext ?_)` and prove the remaining obligations. Establish `h1` using `hne a`. Establish `n1 : GlobalTheory.SplitWeil.nabs (Fv F v) 1 = 1` using `GlobalTheory.SmGL.nabs_eq_one _ (by simp)`.
+
+Rewrite `h1` using `[inv_one, GlobalTheory.JacGeom.chr_idl, GlobalTheory.JacGeom.chr_idl, GlobalTheory.JacGeom.absE_idl, n1, map_one, map_one, Units.val_one, mul_one, mul_one, mul_one]`. Establish `hp` using `GlobalTheory.SmGL.nabs_pos' (Fv F v) a`. Establish `hz : ((GlobalTheory.SplitWeil.nabs (Fv F v) a ^ za : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast (Real.rpow_pos_of_pos hp za).ne'`. Rewrite using `[GlobalTheory.SmGL.val_absPow_ofReal, Real.rpow_sub hp, MonoidHom.mul_apply, MonoidHom.inv_apply, Units.val_mul, Units.val_inv_eq_inv_val, Complex.ofReal_div, eq_div_iff hz]`. Establish `hb : ((chrW β τ a : ℂˣ) : ℂ) ≠ 0` using `Units.ne_zero _`.
+
+Clear the denominators using the available nonvanishing facts. Rewrite using `[h1]`.
+-/
 theorem exists_law_ne (hcm : IsCMExt F E σ) {α β : Chr F E} {v : Pl F} {τ : E →ₐ[F] Fv F v} (h : NotRealPow τ α β)
     (za zb : ℝ) : ∃ a : (Fv F v)ˣ,
       (α (GlobalTheory.JacGeom.idl hcm τ (a, 1⁻¹)) : ℂ) * (((GlobalTheory.Doubling.absE F E (GlobalTheory.JacGeom.idl hcm τ (a, 1⁻¹)) : ℝ) ^ za : ℝ) : ℂ) ≠
@@ -142,6 +189,37 @@ theorem exists_law_ne (hcm : IsCMExt F E σ) {α β : Chr F E} {v : Pl F} {τ : 
 
 open GlobalTheory.SmGL GlobalTheory.PRep GlobalTheory.IndLineGL GlobalTheory.SplitUnitLift in
 
+/- English proof (translation)
+Introduce `hK F E _ _ _ _ _ σ hcm α β v τ hgen hα hβ kα hres n n₁ W W₁ H hn hxx hyy hxy horth hgram εW hermW hJW ε₁ herm₁ hJ₁ x x' eW e₁ Kh S hreg hloc`. Take `rfl : n = x + 2 + x'` from `by simpa using (Fintype.card_congr eW).symm`. Take `rfl : n₁ = x + x'` from `by simpa using (Fintype.card_congr e₁).symm`. Establish `hdet : ∀ {d : ℕ} (J : Matrix (Fin d) (Fin d) E), IsUnit (J.map τ).det → J.det ≠ 0` using `fun J hJ h0 => by`. Establish `hd : (J.map τ).det = τ J.det` using `(AlgHom.map_det τ J).symm`.
+
+Rewrite `hJ` using `[hd, h0, map_zero]`. Conclude with `not_isUnit_zero hJ`. Establish `hcc` using `GlobalTheory.T.skew_hermitian_plane_unipotent_identity F E σ hcm _ _ W W₁ H hn hxx hyy hxy horth hgram εW hermW (hdet _ hJW) (hdet _ hJ₁)`. Set `e : (Σ i : Fin 3, Fin (blk3 (x + x') i)) ≃ Fin (x + 2 + x')` to `Fintype.equivOfCardEq (by simp [Fin.sum_univ_three]; omega)`. Take `⟨c, hcu, hcm1, hct⟩` from `GlobalTheory.T.hyperbolic_plane_gram_restriction F E σ hcm v τ _ _ W W₁ H hn hxx hyy hxy horth hgram εW hermW hJW ε₁ herm₁ hJ₁ e`.
+
+Take `⟨a, ha⟩` from `exists_law_ne hcm hgen ((x' : ℝ) / 2) (((x + 2 : ℕ) : ℝ) / 2)`. Take `⟨D, Λ, hD1, hD2, hD3⟩` from `GlobalTheory.T.levi_character_cusp_integral F E σ _ _ W W₁ H α β _ _ hcc _ _ (hct a 1) ha`. Establish `sα : IsSmoothChar (chrW α τ)` using `(GlobalTheory.ChrWLocal.chrW_local F E α hα v τ).1.1`. Establish `sβ : IsSmoothChar (chrW β τ)` using `(GlobalTheory.ChrWLocal.chrW_local F E β hβ v τ).1.1`. Take `⟨l, A, hl, hA1, hA2⟩` from `GlobalTheory.T.induced_character_composition_series hK.geometricLemmaFiltration (Fv F v) x x' _ _ sα sβ hgen e`.
+
+Take `⟨φW⟩` from `GlobalTheory.T.determinant_induced_rep_equiv_product (Fv F v) (x + 2) x' (chrW α τ) (chrW β τ)`. Take `⟨φ₁⟩` from `GlobalTheory.T.determinant_induced_rep_equiv_product (Fv F v) x x' (chrW α τ) (chrW β τ)`. Take `⟨w, hw⟩` from `exists_glReindex_eq_conj (k := Fv F v) eW`. Take `⟨w₁, hw₁⟩` from `exists_glReindex_eq_conj (k := Fv F v) e₁`. Set `π : Representation ℂ (GL (Fin (x + 2 + x')) (Fv F v)) (UA σ W.J → ℂ)` to `(rightReg ℂ (UA σ W.J) ℂ).comp ((liftU hcm τ W.J εW hermW hJW).comp (MulAut.conj c).toMonoidHom)`.
+
+Establish `hπ : ∀ g φ, π g φ = fun z => φ (z * liftU hcm τ W.J εW hermW hJW (c * g * c⁻¹))` using `fun _ _ => rfl`. Establish `hle : imgSpan (GlobalTheory.ThK.MidJac.detInd (x + 2) x' (chrW α τ) (chrW β τ)) (rtrAt hcm τ W.J εW hermW hJW eW) ≤ imgSpan (prod₂ (detRep (Fin (x + 2)) (chrW α τ)) (detRep (Fin x') (chrW β τ))) π`. Use `(imgSpan_equiv_le φW.symm _).trans (imgSpan_conj_le _ _ _ (c⁻¹ * w) fun g => ?_)` and prove the remaining obligations. Use `show rightReg ℂ (UA σ W.J) ℂ (liftU hcm τ W.J εW hermW hJW (glReindex eW g)) = rightReg ℂ (UA σ W.J) ℂ (liftU hcm τ W.J εW hermW hJW (c * (c⁻¹ * w * g * (c⁻¹ * w)⁻¹) * c⁻¹))`. Rewrite using `[hw]`.
+
+Use `congr 2`. Use `group`. Establish `hle₁ : imgSpan (prod₂ (detRep (Fin x) (chrW α τ)) (detRep (Fin x') (chrW β τ))) ((rightReg ℂ (UA σ W₁.J) ℂ).comp (liftU hcm τ W₁.J ε₁ herm₁ hJ₁)) ≤ imgSpan (GlobalTheory.ThK.MidJac.detInd x x' (chrW α τ) (chrW β τ)) (rtrAt hcm τ W₁.J ε₁ herm₁ hJ₁ e₁)`. Use `(imgSpan_equiv_le φ₁ _).trans (imgSpan_conj_le _ _ _ w₁⁻¹ fun g => ?_)` and prove the remaining obligations. Use `show rightReg ℂ (UA σ W₁.J) ℂ (liftU hcm τ W₁.J ε₁ herm₁ hJ₁ g) = rightReg ℂ (UA σ W₁.J) ℂ (liftU hcm τ W₁.J ε₁ herm₁ hJ₁ (glReindex e₁ (w₁⁻¹ * g * w₁⁻¹⁻¹)))`.
+
+Rewrite using `[hw₁]`. Use `congr 2`. Use `group`. Establish `hinj : Function.Injective (liftU hcm τ W₁.J ε₁ herm₁ hJ₁)` using `fun g g' h => Units.ext (by`. Rewrite using `[← liftU_piW hcm τ W₁.J ε₁ herm₁ hJ₁ g, ← liftU_piW hcm τ W₁.J ε₁ herm₁ hJ₁ g', h])`.
+
+Introduce `g hg y₁`. Unfold `alphaSpan at hg`. Proceed by induction on `hg using Submodule.span_induction with`. Consider the case `zero => exact zero_mem _`. Consider the case `add g g' _ _ h h' => exact add_mem h h'`.
+
+Consider the case `smul r g _ h => exact Submodule.smul_mem _ r h`. Consider the case `mem g hg`. Take `⟨f, hf, fa, fb, hs, h, -, hex, hg⟩` from `hg`. Use `choose M hM using hex`. Take `⟨hfD, hfa⟩` from `hD1 f fa fb (hreg f hf).1 (hreg f hf).2 hs`.
+
+Set `Λ₁ : (UA σ W.J → ℂ) →ₗ[ℂ] (UA σ W₁.J → ℂ)` to `LinearMap.funLeft ℂ ℂ M ∘ₗ Λ`. Establish `hΛ₁ : ∀ φ ∈ D, ∀ g' h₁, Λ₁ (π g' φ) h₁ = Λ φ (M h₁ * liftU hcm τ W.J εW hermW hJW (c * g' * c⁻¹))` using `fun φ hφ g' h₁ => congrFun (hD2 φ hφ _).2 (M h₁)`. Establish `key` using `GlobalTheory.T.representation_restriction_intertwiner_exists (Fv F v) _ _ e _ _ _ _ (prod₂ (detRep (Fin (x + 2)) (chrW α τ)) (detRep (Fin x') (chrW β τ))) (prod₂ (detRep (Fin x) (chrW α τ)) (detRep (Fin x') (chrW β τ))) π (liftU hcm τ W₁.J ε₁ herm₁ hJ₁) (isSmooth_prod₂ _ _) hinj …`. Rewrite using `[hΛ₁ φ hφ.1, show M h₁ * liftU hcm τ W.J εW hermW hJW (c * u * c⁻¹) = M h₁ * liftU hcm τ W.J εW hermW hJW (c * u * c⁻¹) * (M h₁)⁻¹ * M h₁ by group]`. Conclude with `(hD3 φ hφ.1).2 _ (conj_mem_unip (hM h₁) (hcu u hu)) _)`.
+
+Use the proof step `(fun φ hφ k => funext fun h₁ => by`. Rewrite using `[hΛ₁ φ hφ.1]`. Use `law_levi_one (hD3 φ hφ.1).1 (by simpa using isLevi_mul (hM h₁) (hcm1 k)) (hM (h₁ * liftU hcm τ W₁.J ε₁ herm₁ hJ₁ k)) 1` as an intermediate fact. Rewrite `this` using `[mul_one, mul_one]`. Use `Eq.trans ?_ this` and prove the remaining obligations.
+
+Use the proof step `simp)`. Use the proof step `(fun φ hφ t₁ t₂ => funext fun h₁ => by`. Rewrite using `[hΛ₁ φ hφ.1]`. Establish `h2` using `isLevi_mul (hM h₁) (hct t₁ t₂)`. Rewrite `h2` using `[one_mul, mul_one]`.
+
+Use `law_levi (hD3 φ hφ.1).1 h2 (hM h₁) 1` as an intermediate fact. Rewrite `this` using `[mul_one, mul_one, GlobalTheory.JacGeom.char_idl hcm α hres]`. Conclude with `this)`. Use the proof step `(fun z => f (z * (M y₁ * h))) ⟨(hD2 f hfD _).1, hle (hloc f hf _)⟩`. Use `hle₁ ?_` and prove the remaining obligations.
+
+Use `key using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `h₁`. Establish `h2` using `isLevi_mul (hM h₁) (hM y₁)`. Rewrite `h2` using `[one_mul]`. Rewrite using `[hg _ _ h2, mul_assoc, ← hfa]`.
+
+Conclude with `(congrFun (hD2 f hfD (M y₁ * h)).2 (M h₁)).symm`.
+-/
 theorem hasLocType_alphaSpan : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (hcm : IsCMExt F E σ) (α β : Chr F E) (v : Pl F) (τ : E →ₐ[F] Fv F v), NotRealPow τ α β →
     IsHecke F E α → IsHecke F E β → ∀ kα : ℕ, ResEtaPow (Units.map (algebraMap F (AF F)).toMonoidHom).range α kα →

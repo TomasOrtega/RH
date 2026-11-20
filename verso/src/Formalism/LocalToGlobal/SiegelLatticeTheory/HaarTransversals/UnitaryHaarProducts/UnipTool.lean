@@ -15,28 +15,49 @@ def InPat (lv : ι → ℕ) (k : ℕ) (Z : Matrix ι ι K) : Prop := ∀ i j, lv
 
 variable {lv : ι → ℕ} {k l : ℕ} {Z W : Matrix ι ι K}
 
+/- English proof (translation)
+Introduce `i j _`. Simplify using the standard rewrite rules.
+-/
 theorem inPat_zero (k : ℕ) : InPat lv k (0 : Matrix ι ι K) := by
   intro i j _
   simp
 
+/- English proof (translation)
+Introduce `i j h`. Simplify using `[hZ i j h, hW i j h]`.
+-/
 theorem inPat_add (hZ : InPat lv k Z) (hW : InPat lv k W) : InPat lv k (Z + W) := by
   intro i j h
   simp [hZ i j h, hW i j h]
 
+/- English proof (translation)
+Introduce `i j h`. Simplify using `[hZ i j h, hW i j h]`.
+-/
 theorem inPat_sub (hZ : InPat lv k Z) (hW : InPat lv k W) : InPat lv k (Z - W) := by
   intro i j h
   simp [hZ i j h, hW i j h]
 
+/- English proof (translation)
+Introduce `i j h`. Simplify using `[hZ i j h]`.
+-/
 theorem inPat_neg (hZ : InPat lv k Z) : InPat lv k (-Z) := by
   intro i j h
   simp [hZ i j h]
 
+/- English proof (translation)
+Introduce `i j h`. Simplify using `[hZ i j h]`.
+-/
 theorem inPat_smul (c : K) (hZ : InPat lv k Z) : InPat lv k (c • Z) := by
   intro i j h
   simp [hZ i j h]
 
+/- English proof (translation)
+Introduce `i j h` and use `hZ i j (by omega)`.
+-/
 theorem inPat_mono (hkl : k ≤ l) (hZ : InPat lv l Z) : InPat lv k Z := fun i j h => hZ i j (by omega)
 
+/- English proof (translation)
+Introduce `i j h`. Establish `hij : i ≠ j`. Introduce and unpack `rfl`. Use linear arithmetic over natural numbers and integers. Conclude with `Matrix.one_apply_ne hij`.
+-/
 theorem inPat_one : InPat lv 0 (1 : Matrix ι ι K) := by
   intro i j h
   have hij : i ≠ j := by
@@ -44,6 +65,11 @@ theorem inPat_one : InPat lv 0 (1 : Matrix ι ι K) := by
     omega
   exact Matrix.one_apply_ne hij
 
+/- English proof (translation)
+Introduce `i j h`. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun m _ => ?_` and prove the remaining obligations. Distinguish the cases in `h1 : lv m < lv i + k`. Rewrite using `[hZ i m h1, zero_mul]`.
+
+Rewrite using `[hW m j (by omega), mul_zero]`.
+-/
 theorem inPat_mul (hZ : InPat lv k Z) (hW : InPat lv l W) : InPat lv (k + l) (Z * W) := by
   intro i j h
   rw [Matrix.mul_apply]
@@ -52,6 +78,11 @@ theorem inPat_mul (hZ : InPat lv k Z) (hW : InPat lv l W) : InPat lv (k + l) (Z 
   · rw [hZ i m h1, zero_mul]
   · rw [hW m j (by omega), mul_zero]
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero`. Rewrite using `[pow_zero, Nat.mul_zero]`. Conclude with `inPat_one`. Consider the case `succ m ih`.
+
+Rewrite using `[pow_succ, mul_add_one]`. Conclude with `inPat_mul ih hZ`.
+-/
 theorem inPat_pow (hZ : InPat lv k Z) (m : ℕ) : InPat lv (k * m) (Z ^ m) := by
   induction m with
   | zero =>
@@ -61,19 +92,31 @@ theorem inPat_pow (hZ : InPat lv k Z) (m : ℕ) : InPat lv (k * m) (Z ^ m) := by
     rw [pow_succ, mul_add_one]
     exact inPat_mul ih hZ
 
+/- English proof (translation)
+Introduce `i j hij`. Rewrite using `[Matrix.sum_apply]`. Conclude with `Finset.sum_eq_zero fun a ha => h a ha i j hij`.
+-/
 theorem inPat_sum {α : Type*} {s : Finset α} {f : α → Matrix ι ι K} (h : ∀ a ∈ s, InPat lv k (f a)) :
     InPat lv k (∑ a ∈ s, f a) := by
   intro i j hij
   rw [Matrix.sum_apply]
   exact Finset.sum_eq_zero fun a ha => h a ha i j hij
 
+/- English proof (translation)
+Use extensionality with `i j`. Use `hL j` as an intermediate fact. Conclude with `hZ i j (by omega)`.
+-/
 theorem eq_zero_of_inPat {L : ℕ} (hL : ∀ i, lv i < L) (hZ : InPat lv L Z) : Z = 0 := by
   ext i j
   have := hL j
   exact hZ i j (by omega)
 
+/- English proof (translation)
+The claim follows from `eq_zero_of_inPat hL (inPat_mono (by nlinarith) (inPat_pow hZ L))`.
+-/
 theorem pow_eq_zero_of_inPat {L : ℕ} (hk : 1 ≤ k) (hL : ∀ i, lv i < L) (hZ : InPat lv k Z) : Z ^ L = 0 := eq_zero_of_inPat hL (inPat_mono (by nlinarith) (inPat_pow hZ L))
 
+/- English proof (translation)
+Introduce `i j h`. Simplify using `[Matrix.map_apply, hZ i j h]`.
+-/
 theorem inPat_map {K' : Type*} [CommRing K'] (f : K →+* K') (hZ : InPat lv k Z) : InPat lv k (Z.map f) := by
   intro i j h
   simp [Matrix.map_apply, hZ i j h]
@@ -90,6 +133,13 @@ variable {lv : ι → ℕ} {T k : ℕ}
 
 def sharp (J J' M : Matrix ι ι K) : Matrix ι ι K := J' * Mᴴ * J
 
+/- English proof (translation)
+Introduce `i j hij`. Unfold `sharp`. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun b _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply, Finset.sum_mul]`.
+
+Use `Finset.sum_eq_zero fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.conjTranspose_apply]`. Distinguish the cases in `ha : J' i a = 0`. Simplify using `[ha]`. Distinguish the cases in `hb : J b j = 0`.
+
+Simplify using `[hb]`. Establish `e1` using `hJ' i a ha`. Establish `e2` using `hJ b j hb`. Rewrite using `[hZ b a (by omega), star_zero, mul_zero, zero_mul]`.
+-/
 theorem inPat_sharp {J J' Z : Matrix ι ι K} (hJ : Graded lv T J) (hJ' : Graded lv T J') (hZ : InPat lv k Z) :
     InPat lv k (sharp J J' Z) := by
   intro i j hij
@@ -109,21 +159,39 @@ theorem inPat_sharp {J J' Z : Matrix ι ι K} (hJ : Graded lv T J) (hJ' : Graded
 
 variable {J J' : Matrix ι ι K}
 
+/- English proof (translation)
+Simplify using `only [sharp, conjTranspose_add, Matrix.mul_add, Matrix.add_mul]`.
+-/
 theorem sharp_add (M N : Matrix ι ι K) : sharp J J' (M + N) = sharp J J' M + sharp J J' N := by
   simp only [sharp, conjTranspose_add, Matrix.mul_add, Matrix.add_mul]
 
+/- English proof (translation)
+Simplify using `only [sharp, conjTranspose_sub, Matrix.mul_sub, Matrix.sub_mul]`.
+-/
 theorem sharp_sub (M N : Matrix ι ι K) : sharp J J' (M - N) = sharp J J' M - sharp J J' N := by
   simp only [sharp, conjTranspose_sub, Matrix.mul_sub, Matrix.sub_mul]
 
+/- English proof (translation)
+Simplify using `only [sharp, conjTranspose_neg, Matrix.mul_neg, Matrix.neg_mul]`.
+-/
 theorem sharp_neg (M : Matrix ι ι K) : sharp J J' (-M) = -sharp J J' M := by
   simp only [sharp, conjTranspose_neg, Matrix.mul_neg, Matrix.neg_mul]
 
+/- English proof (translation)
+Simplify using `only [sharp, conjTranspose_smul, mul_smul_comm, smul_mul_assoc]`.
+-/
 theorem sharp_smul (c : K) (M : Matrix ι ι K) : sharp J J' (c • M) = star c • sharp J J' M := by
   simp only [sharp, conjTranspose_smul, mul_smul_comm, smul_mul_assoc]
 
+/- English proof (translation)
+Simplify using `only [sharp, conjTranspose_one, Matrix.mul_one, h]`.
+-/
 theorem sharp_one (h : J' * J = 1) : sharp J J' (1 : Matrix ι ι K) = 1 := by
   simp only [sharp, conjTranspose_one, Matrix.mul_one, h]
 
+/- English proof (translation)
+Use `first`. Consider the case `exact mul_eq_one_comm.mp h`. Consider the case `exact (by`. Rewrite using `[← Matrix.inv_eq_right_inv h]`. Conclude with `Matrix.nonsing_inv_mul M (Matrix.isUnit_det_of_right_inverse h))`.
+-/
 theorem mul_comm_one {M N : Matrix ι ι K} (h : M * N = 1) : N * M = 1 := by
   first
   | exact mul_eq_one_comm.mp h
@@ -131,18 +199,30 @@ theorem mul_comm_one {M N : Matrix ι ι K} (h : M * N = 1) : N * M = 1 := by
       rw [← Matrix.inv_eq_right_inv h]
       exact Matrix.nonsing_inv_mul M (Matrix.isUnit_det_of_right_inverse h))
 
+/- English proof (translation)
+Unfold `sharp`. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc Mᴴ, hM, h]`.
+-/
 theorem sharp_mul_self (h : J' * J = 1) {M : Matrix ι ι K} (hM : Mᴴ * J * M = J) : sharp J J' M * M = 1 := by
   unfold sharp
   rw [Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc Mᴴ, hM, h]
 
+/- English proof (translation)
+The claim follows from `mul_comm_one (sharp_mul_self h hM)`.
+-/
 theorem self_mul_sharp (h : J' * J = 1) {M : Matrix ι ι K} (hM : Mᴴ * J * M = J) : M * sharp J J' M = 1 := mul_comm_one (sharp_mul_self h hM)
 
+/- English proof (translation)
+Unfold `sharp`. Rewrite using `[Matrix.mul_assoc, hX, Matrix.mul_neg, ← Matrix.mul_assoc, h, Matrix.one_mul]`.
+-/
 theorem sharp_of_skew (h : J' * J = 1) {X : Matrix ι ι K} (hX : Xᴴ * J = -(J * X)) : sharp J J' X = -X := by
   unfold sharp
   rw [Matrix.mul_assoc, hX, Matrix.mul_neg, ← Matrix.mul_assoc, h, Matrix.one_mul]
 
 variable [Invertible (2 : K)]
 
+/- English proof (translation)
+Establish `h2 : (2 : K) * star (⅟2 : K) = 1`. Use `congrArg star (invOf_mul_self (2 : K))` as an intermediate fact. Rewrite `this` using `[star_mul, star_one, star_ofNat]`. Conclude with `this`. Conclude with `(invOf_eq_right_inv h2).symm`.
+-/
 theorem star_half : star (⅟2 : K) = ⅟2 := by
   have h2 : (2 : K) * star (⅟2 : K) = 1 := by
     have := congrArg star (invOf_mul_self (2 : K))
@@ -150,16 +230,27 @@ theorem star_half : star (⅟2 : K) = ⅟2 := by
     exact this
   exact (invOf_eq_right_inv h2).symm
 
+/- English proof (translation)
+Rewrite using `[← add_smul, invOf_two_add_invOf_two, one_smul]`.
+-/
 theorem half_add_half (M : Matrix ι ι K) : (⅟2 : K) • M + (⅟2 : K) • M = M := by
   rw [← add_smul, invOf_two_add_invOf_two, one_smul]
 
 def proj (J J' M : Matrix ι ι K) : Matrix ι ι K := (⅟2 : K) • (M - sharp J J' M)
 
+/- English proof (translation)
+Unfold `proj`. Conclude with `inPat_smul _ (inPat_sub hM (inPat_sharp hJ hJ' hM))`.
+-/
 theorem inPat_proj (hJ : Graded lv T J) (hJ' : Graded lv T J') {M : Matrix ι ι K} (hM : InPat lv k M) :
     InPat lv k (proj J J' M) := by
   unfold proj
   exact inPat_smul _ (inPat_sub hM (inPat_sharp hJ hJ' hM))
 
+/- English proof (translation)
+Establish `e1 : (M - J' * Mᴴ * J)ᴴ * J = -(J * (M - J' * Mᴴ * J))`. Establish `a : J * (M * J') * J = J * M`. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, h, Matrix.mul_one]`. Establish `b : J * (J' * Mᴴ * J) = Mᴴ * J`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, h', Matrix.one_mul]`.
+
+Rewrite using `[conjTranspose_sub, conjTranspose_mul, conjTranspose_mul, conjTranspose_conjTranspose, hJh, hJ'h, Matrix.sub_mul, Matrix.mul_sub, a, b, neg_sub]`. Unfold `proj sharp`. Rewrite using `[conjTranspose_smul, star_half, smul_mul_assoc, mul_smul_comm, e1, smul_neg]`.
+-/
 theorem proj_skew (hJh : Jᴴ = J) (hJ'h : J'ᴴ = J') (h : J' * J = 1) (h' : J * J' = 1) (M : Matrix ι ι K) :
     (proj J J' M)ᴴ * J = -(J * proj J J' M) := by
   have e1 : (M - J' * Mᴴ * J)ᴴ * J = -(J * (M - J' * Mᴴ * J)) := by
@@ -172,11 +263,23 @@ theorem proj_skew (hJh : Jᴴ = J) (hJ'h : J'ᴴ = J') (h : J' * J = 1) (h' : J 
   unfold proj sharp
   rw [conjTranspose_smul, star_half, smul_mul_assoc, mul_smul_comm, e1, smul_neg]
 
+/- English proof (translation)
+Unfold `proj`. Rewrite using `[sharp_of_skew h hX, sub_neg_eq_add, smul_add, half_add_half]`.
+-/
 theorem proj_of_skew (h : J' * J = 1) {X : Matrix ι ι K} (hX : Xᴴ * J = -(J * X)) :
     proj J J' X = X := by
   unfold proj
   rw [sharp_of_skew h hX, sub_neg_eq_add, smul_add, half_add_half]
 
+/- English proof (translation)
+Take `⟨Z, rfl⟩ : ∃ Z, x = Z + 1` from `⟨x - 1, (sub_add_cancel x 1).symm⟩`. Rewrite `hx1`, the goal using `[add_sub_cancel_right]`. Establish `hA : InPat lv k (sharp J J' Z)` using `inPat_sharp hJ hJ' hx1`. Establish `h0` using `sharp_mul_self h hx`. Rewrite `h0` using `[sharp_add, sharp_one h]`.
+
+Establish `e : sharp J J' Z * Z + sharp J J' Z + Z = 0`. Establish `t : sharp J J' Z * Z + sharp J J' Z + Z = (sharp J J' Z + 1) * (Z + 1) - 1` using `by noncomm_ring`. Rewrite using `[t, h0, sub_self]`. Establish `hz : -(sharp J J' Z * Z) = sharp J J' Z + Z` using `neg_eq_iff_add_eq_zero.mpr (by rw [← add_assoc]; exact e)`. Establish `key : Z - proj J J' Z = (⅟2 : K) • -(sharp J J' Z * Z)`.
+
+Rewrite using `[hz, proj, smul_sub, smul_add]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[half_add_half]`. Use `_ = (⅟2 : K) • sharp J J' Z + (⅟2 : K) • Z := by abel`. Rewrite using `[key]`.
+
+Conclude with `inPat_smul _ (inPat_neg (inPat_mul hA hx1))`.
+-/
 theorem sub_proj_of_unitary (hJ : Graded lv T J) (hJ' : Graded lv T J') (h : J' * J = 1)
     {x : Matrix ι ι K} (hx : xᴴ * J * x = J) (hx1 : InPat lv k (x - 1)) :
     InPat lv (k + k) ((x - 1) - proj J J' (x - 1)) := by
@@ -212,15 +315,24 @@ def cay (N : ℕ) (Z : Matrix ι ι K) : Matrix ι ι K := 1 + Z * geo N ((⅟2 
 
 variable {lv : ι → ℕ} {k : ℕ}
 
+/- English proof (translation)
+Unfold `geo`. Conclude with `inPat_sum fun j _ => inPat_mono (Nat.zero_le _) (inPat_pow hZ j)`.
+-/
 theorem inPat_geo {Z : Matrix ι ι K} (hZ : InPat lv k Z) (N : ℕ) : InPat lv 0 (geo N Z) := by
   unfold geo
   exact inPat_sum fun j _ => inPat_mono (Nat.zero_le _) (inPat_pow hZ j)
 
+/- English proof (translation)
+Unfold `geo`. Rewrite using `[Finset.sum_range_succ', Finset.mul_sum]`. Simplify using `only [pow_succ', pow_zero]`.
+-/
 theorem geo_succ (N : ℕ) (Y : Matrix ι ι K) : geo (N + 1) Y = Y * geo N Y + 1 := by
   unfold geo
   rw [Finset.sum_range_succ', Finset.mul_sum]
   simp only [pow_succ', pow_zero]
 
+/- English proof (translation)
+Unfold `cay`. Rewrite using `[geo_succ, add_sub_cancel_left, Matrix.mul_add, Matrix.mul_one, add_sub_cancel_right]`. Use `inPat_mul hZ (inPat_mul (inPat_smul (⅟2 : K) hZ) (inPat_geo (inPat_smul (⅟2 : K) hZ) N))` as an intermediate fact. Rewrite `this` using `[Nat.add_zero]`. Then use the resulting hypothesis.
+-/
 theorem cay_sub (N : ℕ) {Z : Matrix ι ι K} (hZ : InPat lv k Z) : InPat lv (k + k) (cay (N + 1) Z - 1 - Z) := by
   unfold cay
   rw [geo_succ, add_sub_cancel_left, Matrix.mul_add, Matrix.mul_one, add_sub_cancel_right]
@@ -228,12 +340,20 @@ theorem cay_sub (N : ℕ) {Z : Matrix ι ι K} (hZ : InPat lv k Z) : InPat lv (k
     (inPat_geo (inPat_smul (⅟2 : K) hZ) N))
   rwa [Nat.add_zero] at this
 
+/- English proof (translation)
+Unfold `cay`. Rewrite using `[add_sub_cancel_left]`. Use `inPat_mul hZ (inPat_geo (inPat_smul (⅟2 : K) hZ) N)` as an intermediate fact. Rewrite `this` using `[Nat.add_zero]`. Then use the resulting hypothesis.
+-/
 theorem cay_sub_one (N : ℕ) {Z : Matrix ι ι K} (hZ : InPat lv k Z) : InPat lv k (cay N Z - 1) := by
   unfold cay
   rw [add_sub_cancel_left]
   have := inPat_mul hZ (inPat_geo (inPat_smul (⅟2 : K) hZ) N)
   rwa [Nat.add_zero] at this
 
+/- English proof (translation)
+Establish `h2 : f (⅟2 : K) = ⅟2`. Use `(invOf_eq_right_inv ?_).symm` and prove the remaining obligations. Rewrite using `[← map_ofNat f 2, ← map_mul, mul_invOf_self, map_one]`. Establish `hm : ∀ M : Matrix ι ι K, M.map f = f.mapMatrix M` using `fun _ => rfl`. Establish `hs : f.mapMatrix ((⅟2 : K) • Z) = (⅟2 : K') • f.mapMatrix Z`.
+
+Use extensionality with `a b`. Simplify using `[h2]`. Unfold `cay geo`. Rewrite using `[hm, hm, map_add, map_one, map_mul, map_sum]`. Simplify using `only [map_pow, hs]`.
+-/
 theorem cay_map {K' : Type*} [CommRing K'] [Invertible (2 : K')] (f : K →+* K') (N : ℕ) (Z : Matrix ι ι K) :
     (cay N Z).map f = cay N (Z.map f) := by
   have h2 : f (⅟2 : K) = ⅟2 := by
@@ -247,6 +367,9 @@ theorem cay_map {K' : Type*} [CommRing K'] [Invertible (2 : K')] (f : K →+* K'
   rw [hm, hm, map_add, map_one, map_mul, map_sum]
   simp only [map_pow, hs]
 
+/- English proof (translation)
+Unfold `cay geo`. Use `first`. Consider the case `fun_prop`. Consider the case `exact continuous_const.add (continuous_id.mul (continuous_finset_sum _ fun j _ => (continuous_const.smul continuous_id).pow j))`.
+-/
 theorem cay_continuous (N : ℕ) {ι' : Type*} [Fintype ι'] [DecidableEq ι'] :
     Continuous fun Z : Matrix ι' ι' ℂ => cay N Z := by
   unfold cay geo
@@ -257,6 +380,27 @@ theorem cay_continuous (N : ℕ) {ι' : Type*} [Fintype ι'] [DecidableEq ι'] :
 
 variable [StarRing K]
 
+/- English proof (translation)
+Take `⟨Y, hYdef⟩ : ∃ Y, Y = (⅟2 : K) • Z` from `⟨_, rfl⟩`. Rewrite `hN` using `[← hYdef]`. Establish `hZY : Z = Y + Y`. Rewrite using `[hYdef]`. Conclude with `(half_add_half Z).symm`.
+
+Establish `hY : Yᴴ * J = -(J * Y)`. Rewrite using `[hYdef, conjTranspose_smul, star_half, smul_mul_assoc, hZ, mul_smul_comm, smul_neg]`. Establish `hpow : ∀ j : ℕ, Yᴴ ^ j * J = J * (-Y) ^ j`. Introduce `j`. Proceed by induction on `j with`.
+
+Consider the case `zero => simp`. Consider the case `succ j ih`. Rewrite using `[pow_succ', Matrix.mul_assoc, ih, ← Matrix.mul_assoc, hY, pow_succ', ← Matrix.mul_assoc, Matrix.mul_neg, Matrix.neg_mul]`. Establish `hS : (geo N Y)ᴴ * J = J * geo N (-Y)`. Unfold `geo`.
+
+Rewrite using `[conjTranspose_sum, Finset.sum_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[conjTranspose_pow, hpow]`. Establish `h1 : (1 - Y) * geo N Y = 1`. Unfold `geo`.
+
+Rewrite using `[mul_neg_geom_sum, hN, sub_zero]`. Establish `hN' : (-Y) ^ N = 0` using `by rw [neg_pow, hN, mul_zero]`. Establish `h2 : geo N (-Y) * (1 + Y) = 1`. Unfold `geo`. Use `geom_sum_mul_neg (-Y) N` as an intermediate fact.
+
+Rewrite `this` using `[sub_neg_eq_add, hN', sub_zero]`. Conclude with `this`. Establish `hS1 : geo N Y = 1 + Y * geo N Y`. Use `h1` as an intermediate fact. Rewrite `this` using `[Matrix.sub_mul, Matrix.one_mul, sub_eq_iff_eq_add]`.
+
+Conclude with `this`. Establish `hC : cay N Z = 1 + Z * geo N Y`. Rewrite using `[hYdef]`. Both sides reduce to the same expression. Establish `hC2 : cay N Z = (1 + Y) * geo N Y`.
+
+Rewrite using `[hC, hZY, Matrix.add_mul, Matrix.add_mul, Matrix.one_mul]`. Combine the equalities or inequalities in the displayed calculation. Establish `hA : (1 + Y)ᴴ * J = J * (1 - Y)`. Rewrite using `[conjTranspose_add, conjTranspose_one, Matrix.add_mul, Matrix.one_mul, hY, Matrix.mul_sub, Matrix.mul_one, sub_eq_add_neg]`. Establish `hcomm : (1 - Y) * (1 + Y) = (1 + Y) * (1 - Y)` using `by noncomm_ring`.
+
+Rewrite using `[hC2, conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hA]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = J * (geo N (-Y) * (1 + Y)) * ((1 - Y) * geo N Y) := by`.
+
+Rewrite using `[hS, hcomm]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = J := by rw [h2, h1, Matrix.mul_one, Matrix.mul_one]`.
+-/
 theorem cay_unitary {J : Matrix ι ι K} {N : ℕ} {Z : Matrix ι ι K} (hZ : Zᴴ * J = -(J * Z))
     (hN : ((⅟2 : K) • Z) ^ N = 0) : (cay N Z)ᴴ * J * cay N Z = J := by
   obtain ⟨Y, hYdef⟩ : ∃ Y, Y = (⅟2 : K) • Z := ⟨_, rfl⟩
@@ -319,6 +463,11 @@ variable {ι : Type*} [Fintype ι] [DecidableEq ι] {K : Type*} [CommRing K]
 
 variable {lv : ι → ℕ} {k : ℕ}
 
+/- English proof (translation)
+Take `⟨A, rfl⟩ : ∃ A, a = 1 + A` from `⟨a - 1, by abel⟩`. Take `⟨B, rfl⟩ : ∃ B, b = 1 + B` from `⟨b - 1, by abel⟩`. Take `⟨C, rfl⟩ : ∃ C, c = 1 + C` from `⟨c - 1, by abel⟩`. Simplify using `only [add_sub_cancel_left] at ha hb hc ⊢`. Establish `e : (1 + A) * (1 + B) * (1 + C) - 1 - (A + B + C) = A * B + A * C + B * C + A * B * C` using `by noncomm_ring`.
+
+Rewrite using `[e]`. Conclude with `inPat_add (inPat_add (inPat_add (inPat_mul ha hb) (inPat_mul ha hc)) (inPat_mul hb hc)) (inPat_mono (by omega) (inPat_mul (inPat_mul ha hb) hc))`.
+-/
 theorem filtered_mul_mul_sub_sub {a b c : Matrix ι ι K} (ha : InPat lv k (a - 1)) (hb : InPat lv k (b - 1))
     (hc : InPat lv k (c - 1)) : InPat lv (k + k) (a * b * c - 1 - ((a - 1) + (b - 1) + (c - 1))) := by
   obtain ⟨A, rfl⟩ : ∃ A, a = 1 + A := ⟨a - 1, by abel⟩
@@ -333,6 +482,9 @@ theorem filtered_mul_mul_sub_sub {a b c : Matrix ι ι K} (ha : InPat lv k (a - 
 
 variable [StarRing K] [Invertible (2 : K)] {T : ℕ} {J J' : Matrix ι ι K}
 
+/- English proof (translation)
+Establish `e : sharp J J' (cay (N + 1) W) - 1 - sharp J J' W = sharp J J' (cay (N + 1) W - 1 - W)`. Rewrite using `[sharp_sub, sharp_sub, sharp_one h]`. Rewrite using `[e]`. Conclude with `inPat_sharp hJ hJ' (cay_sub N hW)`.
+-/
 theorem sharp_cay_sub (hJ : Graded lv T J) (hJ' : Graded lv T J') (h : J' * J = 1) (N : ℕ)
     {W : Matrix ι ι K} (hW : InPat lv k W) :
     InPat lv (k + k) (sharp J J' (cay (N + 1) W) - 1 - sharp J J' W) := by
@@ -342,6 +494,9 @@ theorem sharp_cay_sub (hJ : Graded lv T J) (hJ' : Graded lv T J') (h : J' * J = 
   rw [e]
   exact inPat_sharp hJ hJ' (cay_sub N hW)
 
+/- English proof (translation)
+Establish `e : sharp J J' (cay N W) - 1 = sharp J J' (cay N W - 1)`. Rewrite using `[sharp_sub, sharp_one h]`. Rewrite using `[e]`. Conclude with `inPat_sharp hJ hJ' (cay_sub_one N hW)`.
+-/
 theorem sharp_cay_sub_one (hJ : Graded lv T J) (hJ' : Graded lv T J') (h : J' * J = 1) (N : ℕ)
     {W : Matrix ι ι K} (hW : InPat lv k W) : InPat lv k (sharp J J' (cay N W) - 1) := by
   have e : sharp J J' (cay N W) - 1 = sharp J J' (cay N W - 1) := by
@@ -349,6 +504,13 @@ theorem sharp_cay_sub_one (hJ : Graded lv T J) (hJ' : Graded lv T J') (h : J' * 
   rw [e]
   exact inPat_sharp hJ hJ' (cay_sub_one N hW)
 
+/- English proof (translation)
+Establish `hSf : InPat lv k (proj J J' (x - 1))` using `inPat_proj hJ hJ' hx1`. Establish `hSY : InPat lv k (proj J J' (x - 1) - Y)` using `inPat_sub hSf hY`. Establish `hAS : sharp J J' (proj J J' (x - 1)) = -proj J J' (x - 1)` using `sharp_of_skew h (proj_skew hJh hJ'h h h' (x - 1))`. Establish `t1` using `sharp_cay_sub hJ hJ' h N hY`. Establish `t2` using `sharp_cay_sub hJ hJ' h N hSY`.
+
+Establish `t3` using `sub_proj_of_unitary hJ hJ' h hx hx1`. Establish `t4` using `filtered_mul_mul_sub_sub (sharp_cay_sub_one hJ hJ' h (N + 1) hY) hx1 (sharp_cay_sub_one hJ hJ' h (N + 1) hSY)`. Establish `key` using `inPat_add (inPat_add (inPat_add t4 t1) t2) t3`. Rewrite `key` using `[sharp_sub, hAS]`. Use `key using 1` and compare the differences between its conclusion and the goal.
+
+Normalize the expressions using the abelian group laws.
+-/
 theorem step_mat (hJ : Graded lv T J) (hJ' : Graded lv T J') (hJh : Jᴴ = J) (hJ'h : J'ᴴ = J')
     (h : J' * J = 1) (h' : J * J' = 1) (N : ℕ) {x Y : Matrix ι ι K} (hx : xᴴ * J * x = J)
     (hx1 : InPat lv k (x - 1)) (hY : InPat lv k Y) (hYs : Yᴴ * J = -(J * Y)) :
@@ -374,6 +536,15 @@ section Cover
 
 variable {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
 
+/- English proof (translation)
+Establish `main : ∀ n k, k + n = m → ∃ C : Set G, IsCompact C ∧ ∀ x ∈ R k, ∃ γ ∈ Γ, ∃ c ∈ C, x = γ * c`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `k hk`.
+
+Establish `hkm : k = m` using `by omega`. Substitute `hkm` using the available equality. Use `⟨{1}, isCompact_singleton, fun x hx => ⟨1, h1, 1, Set.mem_singleton 1, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hm x hx, one_mul]`. Consider the case `succ n ih`.
+
+Introduce `k hk`. Take `⟨C, hC, hCx⟩` from `ih (k + 1) (by omega)`. Use `⟨C * S k, hC.mul (hS k), fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨γ, hγ, y, hy, s, hs, rfl⟩` from `hstep k (by omega) x hx`. Take `⟨γ', hγ', c, hc, rfl⟩` from `hCx y hy`.
+
+Conclude with `⟨γ * γ', hΓ _ hγ _ hγ', c * s, Set.mul_mem_mul hc hs, by simp only [mul_assoc]⟩`. Conclude with `main m 0 (zero_add m)`.
+-/
 theorem cover_of_steps (Γ : Set G) (hΓ : ∀ a ∈ Γ, ∀ b ∈ Γ, a * b ∈ Γ) (h1 : (1 : G) ∈ Γ)
     (R : ℕ → Set G) (m : ℕ) (hm : ∀ x ∈ R m, x = 1) (S : ℕ → Set G) (hS : ∀ k, IsCompact (S k))
     (hstep : ∀ k < m, ∀ x ∈ R k, ∃ γ ∈ Γ, ∃ y ∈ R (k + 1), ∃ s ∈ S k, x = γ * y * s) :

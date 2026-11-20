@@ -14,6 +14,9 @@ noncomputable def strictMonoEquivPowersetCard (a : ℕ) (n : Type*) [LinearOrder
      right_inv := fun _ => by ext; rfl } : {s : Fin a → n // StrictMono s} ≃ (Fin a ↪o n)).trans
     Set.powersetCard.ofFinEmbEquiv
 
+/- English proof (translation)
+Establish `h : Set.powersetCard.ofFinEmbEquiv.symm (strictMonoEquivPowersetCard a n s) = OrderEmbedding.ofStrictMono s.1 s.2` using `Equiv.symm_apply_apply _ _`. Conclude with `congrArg (fun f : Fin a ↪o n => (f : Fin a → n)) h`.
+-/
 theorem subsetEnum_strictMonoEquivPowersetCard (a : ℕ) {n : Type*} [LinearOrder n]
     (s : {s : Fin a → n // StrictMono s}) :
     subsetEnum (strictMonoEquivPowersetCard a n s) = s.1 := by
@@ -21,6 +24,13 @@ theorem subsetEnum_strictMonoEquivPowersetCard (a : ℕ) {n : Type*} [LinearOrde
       OrderEmbedding.ofStrictMono s.1 s.2 := Equiv.symm_apply_apply _ _
   exact congrArg (fun f : Fin a ↪o n => (f : Fin a → n)) h
 
+/- English proof (translation)
+Introduce `N a M hM`. Use `set e := strictMonoEquivPowersetCard a (Fin N)`. Establish `hC : (Matrix.of fun s s' : {s : Fin a → Fin N // StrictMono s} => (Matrix.of fun i i' : Fin a => M (s'.1 i') (s.1 i)).det) = (compoundMatrix a Mᵀ).submatrix e e`. Use extensionality with `s s'`. Establish `he : ∀ s, subsetEnum (e s) = s.1` using `subsetEnum_strictMonoEquivPowersetCard a`.
+
+Simplify using `only [submatrix_apply, compoundMatrix, of_apply, he]`. Both sides reduce to the same expression. Establish `hT : Mᵀ * (Mᵀ)ᴴ = 1`. Rewrite `hM` using `[mem_unitaryGroup_iff']`. Establish `h1 : Mᵀ * (Mᵀ)ᴴ = (star M * M)ᵀ`.
+
+Use extensionality with `i j`. Simplify using `[mul_apply, mul_comm]`. Rewrite using `[h1, hM, transpose_one]`. Rewrite using `[hC, mem_unitaryGroup_iff, star_eq_conjTranspose, conjTranspose_submatrix, submatrix_mul_equiv, ← compoundMatrix_conjTranspose, ← compoundMatrix_mul, hT, compoundMatrix_one, submatrix_one_equiv]`.
+-/
 theorem minorsMatrix_mem_unitaryGroup : ∀ {N a : ℕ} (M : Matrix (Fin N) (Fin N) ℂ),
     M ∈ Matrix.unitaryGroup (Fin N) ℂ →
     (Matrix.of fun s s' : {s : Fin a → Fin N // StrictMono s} =>

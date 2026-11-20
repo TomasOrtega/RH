@@ -6,6 +6,9 @@ import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.Ex
 open MeasureTheory Matrix Formalism.REAL Formalism.MainNotions.S Formalism.L2.Theta GlobalTheory.Count GlobalTheory.FlagMeas GlobalTheory.FlagLeviGroup GlobalTheory.GKModule GlobalTheory.RealInd
 open scoped InnerProductSpace
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.RealInd.exists_kLevi_equivariant_ne_zero | exact GlobalTheory.RealInd.exists_kLevi_equivariant_ne_zero | (intros; apply GlobalTheory.RealInd.exists_kLevi_equivariant_ne_zero <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.continuous_section_levi_equivariant : ∀ (n : ℕ) (ε : Fin n → Bool) (D : Datum ε), ∃ φ : UJ ε → D.V, Continuous φ ∧ φ 1 ≠ 0 ∧
     ∀ m ∈ leviOne ε D.W, m ∈ KG ε → ∀ g, φ (m * g) = D.σ (uMat m) (φ g) := by
   first | exact @GlobalTheory.RealInd.exists_kLevi_equivariant_ne_zero | exact GlobalTheory.RealInd.exists_kLevi_equivariant_ne_zero | (intros; apply GlobalTheory.RealInd.exists_kLevi_equivariant_ne_zero <;> assumption)

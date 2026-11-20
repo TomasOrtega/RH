@@ -14,9 +14,19 @@ namespace GlobalTheory.CompanionTheory.LTPer.Tilt.GalDiv
 
 variable {l : ℕ} [Fact l.Prime]
 
+/- English proof (translation)
+The claim follows from `(AddMonoidHomClass.isometry_of_norm (omC (l := l)) norm_omC).continuous`.
+-/
 theorem continuous_omC : Continuous (omC (l := l)) :=
   (AddMonoidHomClass.isometry_of_norm (omC (l := l)) norm_omC).continuous
 
+/- English proof (translation)
+Establish `ht : Filter.Tendsto (fun N => ∑ i ∈ Finset.range N, oc K (c i) * omC y ^ i) Filter.atTop (nhds (omC x))`. Establish `h1` using `(continuous_omC (l := l)).continuousAt.tendsto.comp hs.tendsto_sum_nat`. Use `h1.congr fun N => ?_` and prove the remaining obligations. Simplify using `only [Function.comp, map_sum, map_mul, map_pow]`. Both sides reduce to the same expression.
+
+Establish `h2` using `(ht.sub_const (∑ i ∈ Finset.range D, oc K (c i) * omC y ^ i)).norm`. Use `le_of_tendsto h2 ?_` and prove the remaining obligations. Use `filter_upwards [Filter.eventually_ge_atTop D] with N hN`. Rewrite using `[← Finset.sum_Ico_eq_sub _ hN]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (by positivity) fun k hk => ?_` and prove the remaining obligations.
+
+Rewrite using `[norm_mul, norm_pow]`. Conclude with `(mul_le_of_le_one_left (by positivity) (norm_oc_le_one K _)).trans (pow_le_pow_of_le_one (norm_nonneg _) hy (Finset.mem_Ico.1 hk).1)`.
+-/
 theorem tail_le (K : FinExt l) (c : ℕ → ↥(OL K)) (y x : Om l) (hy : ‖omC y‖ ≤ 1)
     (hs : HasSum (fun k : ℕ => ((c k : ↥K.1) : Om l) * y ^ k) x) (D : ℕ) :
     ‖omC x - ∑ i ∈ Finset.range D, oc K (c i) * omC y ^ i‖ ≤ ‖omC y‖ ^ D := by
@@ -35,6 +45,11 @@ theorem tail_le (K : FinExt l) (c : ℕ → ↥(OL K)) (y x : Om l) (hy : ‖omC
   exact (mul_le_of_le_one_left (by positivity) (norm_oc_le_one K _)).trans
     (pow_le_pow_of_le_one (norm_nonneg _) hy (Finset.mem_Ico.1 hk).1)
 
+/- English proof (translation)
+Establish `h1 : ‖sh (∑ i ∈ Finset.range D, b i * y ^ i) - ∑ i ∈ Finset.range D, B i * Y ^ i‖ ≤ ρ` using `near_sum hρ _ fun i _ => near_mul (by rw [norm_pow]; exact pow_le_one₀ (norm_nonneg _) hY) (hb i) (near_pow hρ hY hy i)`. Establish `h2` using `near_sub hρ hA h1`. Rewrite using `[norm_eq_norm_sh]`. Use `set x := a - ∑ i ∈ Finset.range D, b i * y ^ i`. Use `set W := A - ∑ i ∈ Finset.range D, B i * Y ^ i`.
+
+Establish `e : sh x = (sh x - W) + W` using `by ring`. Rewrite using `[e]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le_max h2 le_rfl)`.
+-/
 theorem norm_read {ρ : ℝ} (hρ : ‖(l : ℂ_[l])‖ ≤ ρ) (a y : Tl l) (b : ℕ → Tl l)
     (A Y : ℂ_[l]) (B : ℕ → ℂ_[l]) (D : ℕ) (hY : ‖Y‖ ≤ 1) (hA : ‖sh a - A‖ ≤ ρ)
     (hy : ‖sh y - Y‖ ≤ ρ) (hb : ∀ i, ‖sh (b i) - B i‖ ≤ ρ) :
@@ -51,6 +66,9 @@ theorem norm_read {ρ : ℝ} (hρ : ‖(l : ℂ_[l])‖ ≤ ρ) (a y : Tl l) (b 
   rw [e]
   exact (IsUltrametricDist.norm_add_le_max _ _).trans (max_le_max h2 le_rfl)
 
+/- English proof (translation)
+Rewrite using `[sub_pow_char_pow, sum_pow_char_pow]`. Use `congrArg _ (Finset.sum_congr rfl fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[mul_pow, ← pow_mul, ← pow_mul, mul_comm i]`.
+-/
 theorem pow_read (N : ℕ) (a y : Tl l) (b : ℕ → Tl l) (D : ℕ) :
     (a - ∑ i ∈ Finset.range D, b i * y ^ i) ^ l ^ N =
       a ^ l ^ N - ∑ i ∈ Finset.range D, b i ^ l ^ N * (y ^ l ^ N) ^ i := by
@@ -58,6 +76,9 @@ theorem pow_read (N : ℕ) (a y : Tl l) (b : ℕ → Tl l) (D : ℕ) :
   refine congrArg _ (Finset.sum_congr rfl fun i _ => ?_)
   rw [mul_pow, ← pow_mul, ← pow_mul, mul_comm i]
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ m ih`. Rewrite using `[← add_assoc, mul_add, mul_one, add_comm (f * m) f, pow_add, pow_mul, hu, ih]`.
+-/
 theorem pow_compat {f : ℕ} {u : ℕ → Tl l} (hu : ∀ n, u (n + 1) ^ l ^ f = u n) (n m : ℕ) :
     u (n + m) ^ l ^ (f * m) = u n := by
   induction m with
@@ -65,11 +86,17 @@ theorem pow_compat {f : ℕ} {u : ℕ → Tl l} (hu : ∀ n, u (n + 1) ^ l ^ f =
   | succ m ih =>
     rw [← add_assoc, mul_add, mul_one, add_comm (f * m) f, pow_add, pow_mul, hu, ih]
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ m ih => rw [mul_add, mul_one, add_comm (f * m) f, pow_add, pow_mul, hx, ih]`.
+-/
 theorem pow_fixed {f : ℕ} {x : Tl l} (hx : x ^ l ^ f = x) (m : ℕ) : x ^ l ^ (f * m) = x := by
   induction m with
   | zero => simp
   | succ m ih => rw [mul_add, mul_one, add_comm (f * m) f, pow_add, pow_mul, hx, ih]
 
+/- English proof (translation)
+Take `⟨N, hN⟩` from `exists_pow_lt_of_lt_one hε h1`. Use `⟨N + 2, by omega, (pow_le_pow_of_le_one h0 h1.le ?_).trans hN.le⟩` and prove the remaining obligations. Establish `h2 : N + 2 < l ^ (N + 2)` using `Nat.lt_pow_self (Fact.out : l.Prime).one_lt`. Establish `h3 : l ^ (N + 2) ≤ l ^ (f * (N + 2))` using `Nat.pow_le_pow_right (Fact.out : l.Prime).pos (Nat.le_mul_of_pos_left _ hf)`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem exists_pow_le {f : ℕ} (hf : 0 < f) {ρ ε : ℝ} (h0 : 0 ≤ ρ) (h1 : ρ < 1) (hε : 0 < ε) :
     ∃ m, 2 ≤ m ∧ ρ ^ l ^ (f * m) ≤ ε := by
   obtain ⟨N, hN⟩ := exists_pow_lt_of_lt_one hε h1
@@ -79,6 +106,23 @@ theorem exists_pow_le {f : ℕ} (hf : 0 < f) {ρ ε : ℝ} (h0 : 0 ≤ ρ) (h1 :
     Nat.pow_le_pow_right (Fact.out : l.Prime).pos (Nat.le_mul_of_pos_left _ hf)
   omega
 
+/- English proof (translation)
+Introduce `l _ K π z f hf hl hπ hz1 hz2 u hu hun r₀ hr hrn hu0 g c hs n D`. Rewrite using `[GroundTheory.PAdicHodge.preTilt_dvd_iff_norm_le, norm_pow]`. Use `set ρ := ‖oc K π‖ with hρdef`. Establish `hρ0 : 0 ≤ ρ` using `norm_nonneg _`. Establish `hε : 0 < ‖u n‖ ^ D` using `pow_pos (norm_pos_iff.2 (hu0 n)) D`.
+
+Take `⟨m, hm, hmρ⟩` from `exists_pow_le (l := l) hf hρ0 hπ hε`. Use `set k := n + m with hk`. Establish `hk2 : 2 ≤ k` using `by omega`. Establish `hzk : ‖omC (z k)‖ ≤ 1` using `(hz1 k).le`. Establish `hnorm : ‖omC (z k)‖ ≤ ‖u k‖`.
+
+Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`. Establish `e : omC (z k) = sh (u k) - (sh (u k) - omC (z k))` using `by ring`. Establish `h3 : ‖omC (z k)‖ ≤ max ‖sh (u k)‖ ρ` using `by conv_lhs => rw [e, sub_eq_add_neg]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le_max le_rfl (by rw [norm_neg]; exact hun k))`.
+
+Break down `le_max_iff.1 h3 with h4 | h4` into its components or cases. Rewrite `h4` using `[← norm_eq_norm_sh]`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear relations using `[hz2 k hk2]`. Establish `hA : ‖sh (actT g (u k)) - omC (g (z k))‖ ≤ ρ`.
+
+Rewrite using `[sh_actT, ← galCp_omC, ← map_sub, norm_galCp]`. Conclude with `hun k`. Establish `hread` using `norm_read hl (actT g (u k)) (u k) (fun i => r₀ (c i)) (omC (g (z k))) (omC (z k)) (fun i => oc K (c i)) D hzk hA (hun k) (fun i => hrn _)`. Establish `htail` using `tail_le K c (z k) (g (z k)) hzk (hs k) D`. Establish `hx : ‖actT g (u k) - ∑ i ∈ Finset.range D, r₀ (c i) * u k ^ i‖ ≤ max ρ (‖u k‖ ^ D)` using `hread.trans (max_le_max le_rfl (htail.trans (pow_le_pow_left₀ (norm_nonneg _) hnorm D)))`.
+
+Establish `hpow` using `pow_read (f * m) (actT g (u k)) (u k) (fun i => r₀ (c i)) D`. Establish `hc : u k ^ l ^ (f * m) = u n` using `pow_compat hu n m`. Establish `ha : actT g (u k) ^ l ^ (f * m) = actT g (u n)` using `by rw [← map_pow, hc]`. Simplify using `only [pow_fixed (hr _) m, hc, ha] at hpow`. Rewrite using `[← hpow, norm_pow]`.
+
+Establish `hun' : ‖u k‖ ^ l ^ (f * m) = ‖u n‖` using `by rw [← norm_pow, hc]`. Use `(pow_le_pow_left₀ (norm_nonneg _) hx _).trans ?_` and prove the remaining obligations. Break down `le_total ρ (‖u k‖ ^ D) with h | h` into its components or cases. Rewrite using `[max_eq_right h, ← pow_mul, mul_comm, pow_mul, hun']`. Rewrite using `[max_eq_left h]`.
+
+Conclude with `hmρ`.
+-/
 theorem galdiv : ∀ {l : ℕ} [Fact l.Prime] (K : FinExt l) (π : ↥(OL K)) (z : ℕ → Om l) (f : ℕ), 0 < f →
     ‖(l : ℂ_[l])‖ ≤ ‖oc K π‖ → ‖oc K π‖ < 1 →
     (∀ n, ‖omC (z n)‖ < 1) → (∀ n, 2 ≤ n → ‖oc K π‖ < ‖omC (z n)‖) →

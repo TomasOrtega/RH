@@ -5,10 +5,18 @@ namespace GlobalTheory.AdicTorsion
 
 variable {A : Type} [CommRing A] {f : A} {N : Type} [AddCommGroup N] [Module A N]
 
+/- English proof (translation)
+Rewrite using `[← pow_mul_pow_sub f hkj, mul_comm, mul_smul, hk, smul_zero]`.
+-/
 theorem pow_smul_eq_zero_of_le {n : N} {k j : ℕ} (hk : f ^ k • n = 0) (hkj : k ≤ j) :
     f ^ j • n = 0 := by
   rw [← pow_mul_pow_sub f hkj, mul_comm, mul_smul, hk, smul_zero]
 
+/- English proof (translation)
+Establish `h1` using `x.property hkj`. Rewrite `h1` using `[← hb, ← ha]`. Establish `h2 : b - a ∈ (Ideal.span {f} ^ k • ⊤ : Submodule A A)`. Rewrite using `[← Submodule.Quotient.eq]`. Simplify using `using h1`.
+
+Rewrite `h2` using `[smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow, Ideal.mem_span_singleton]`. Take `⟨c, hc⟩` from `h2`. Establish `: (b - a) • n = 0` using `by rw [hc, mul_comm, mul_smul, hk, smul_zero]`. Rewrite `this` using `[sub_smul, sub_eq_zero]`. Conclude with `this.symm`.
+-/
 theorem lift_smul_eq_of_le (x : AdicCompletion (Ideal.span {f}) A) {n : N} {k j : ℕ}
     (hk : f ^ k • n = 0) (hkj : k ≤ j) {a b : A}
     (ha : Submodule.Quotient.mk a = x.val k) (hb : Submodule.Quotient.mk b = x.val j) :
@@ -24,6 +32,9 @@ theorem lift_smul_eq_of_le (x : AdicCompletion (Ideal.span {f}) A) {n : N} {k j 
   rw [sub_smul, sub_eq_zero] at this
   exact this.symm
 
+/- English proof (translation)
+Break down `le_total k j with h | h` into its components or cases. Conclude with `lift_smul_eq_of_le x hk h ha hb`. Conclude with `(lift_smul_eq_of_le x hj h hb ha).symm`.
+-/
 theorem lift_smul_eq (x : AdicCompletion (Ideal.span {f}) A) {n : N} {k j : ℕ}
     (hk : f ^ k • n = 0) (hj : f ^ j • n = 0) {a b : A}
     (ha : Submodule.Quotient.mk a = x.val k) (hb : Submodule.Quotient.mk b = x.val j) :
@@ -38,6 +49,9 @@ noncomputable def act (h : ∀ n : N, ∃ k : ℕ, f ^ k • n = 0)
     (x : AdicCompletion (Ideal.span {f}) A) (n : N) : N :=
   Classical.choose (Submodule.Quotient.mk_surjective _ (x.val (Classical.choose (h n)))) • n
 
+/- English proof (translation)
+The claim follows from `lift_smul_eq x (Classical.choose_spec (h n)) hk (Classical.choose_spec (Submodule.Quotient.mk_surjective _ _)) ha`.
+-/
 theorem act_eq (h : ∀ n : N, ∃ k : ℕ, f ^ k • n = 0) (x : AdicCompletion (Ideal.span {f}) A)
     {n : N} {k : ℕ} (hk : f ^ k • n = 0) {a : A} (ha : Submodule.Quotient.mk a = x.val k) :
     act f h x n = a • n :=
@@ -74,6 +88,9 @@ noncomputable def actBil (h : ∀ n : N, ∃ k : ℕ, f ^ k • n = 0) :
       obtain ⟨a, ha⟩ := Submodule.Quotient.mk_surjective _ (x.val k)
       rw [act_eq h x hk ha, act_eq h x hc ha, smul_comm])
 
+/- English proof (translation)
+Take `⟨k, hk⟩` from `h n`. Rewrite using `[act_eq h _ hk (a := 1) (by rw [AdicCompletion.of_apply]; rfl), one_smul]`.
+-/
 theorem act_of_one (h : ∀ n : N, ∃ k : ℕ, f ^ k • n = 0) (n : N) :
     act f h (AdicCompletion.of (Ideal.span {f}) A 1) n = n := by
   obtain ⟨k, hk⟩ := h n
@@ -83,6 +100,11 @@ end GlobalTheory.AdicTorsion
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Use `⟨fun n m => ?_⟩` and prove the remaining obligations. Establish `key : ∀ n : N, n = 0` using `fun n => by`. Establish `e` using `congrArg (TensorProduct.lift (AdicTorsion.actBil f h)) (Subsingleton.elim (AdicCompletion.of (Ideal.span {f}) A 1 ⊗ₜ[A] n) 0)`. Rewrite `e` using `[map_zero, TensorProduct.lift.tmul]`. Simplify `e` using `[AdicTorsion.actBil, AdicTorsion.act_of_one]`.
+
+Rewrite using `[key n, key m]`.
+-/
 theorem subsingleton_of_adicCompletion_tensor (A : Type) [CommRing A] (f : A) (N : Type)
     [AddCommGroup N] [Module A N] (h : ∀ n : N, ∃ k : ℕ, f ^ k • n = 0)
     (hT : Subsingleton (TensorProduct A (AdicCompletion (Ideal.span {f}) A) N)) :
@@ -95,6 +117,9 @@ theorem subsingleton_of_adicCompletion_tensor (A : Type) [CommRing A] (f : A) (N
     simpa [AdicTorsion.actBil, AdicTorsion.act_of_one] using e
   rw [key n, key m]
 
+/- English proof (translation)
+The claim follows from `@subsingleton_of_adicCompletion_tensor`.
+-/
 example : ∀ (A : Type) [CommRing A] (f : A) (N : Type) [AddCommGroup N] [Module A N],
     (∀ n : N, ∃ k : ℕ, f ^ k • n = 0) →
     Subsingleton (TensorProduct A (AdicCompletion (Ideal.span {f}) A) N) → Subsingleton N :=

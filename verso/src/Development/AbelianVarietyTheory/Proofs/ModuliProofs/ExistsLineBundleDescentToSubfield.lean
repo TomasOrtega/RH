@@ -25,6 +25,11 @@ omit [∀ i, CompactSpace (D.obj i)] in
 set_option backward.isDefEq.respectTransparency false in
 include hc in
 
+/- English proof (translation)
+Establish `(j : Over i) : CompactSpace ((opensDiagram D i U).obj j)` using `isCompact_iff_compactSpace.mp (QuasiCompact.isCompact_preimage _ U.2 hU)`. Establish `(j : Over i) : QuasiSeparatedSpace ((opensDiagram D i U).obj j)` using `(isQuasiSeparated_iff_quasiSeparatedSpace _ (D.map _ ⁻¹ᵁ _).2).mp (.of_quasiSeparatedSpace _)`. Take `⟨j, t, hj⟩` from `exists_appTop_π_eq_of_isLimit _ _ (isLimitOpensCone D _ hc i U) ((π i ⁻¹ᵁ U).topIso.inv s)`. Use `⟨j.left, j.hom, (D.map j.hom ⁻¹ᵁ U).topIso.hom t, ?_⟩` and prove the remaining obligations. Establish `h` using `(congrArg (π i ⁻¹ᵁ U).topIso.hom hj.symm).trans (Iso.inv_hom_id_apply _ s)`.
+
+Establish `e : ∀ {X Y : Scheme.{0}} (f : X ⟶ Y) (U : Y.Opens) (V : X.Opens) (e : V ≤ f ⁻¹ᵁ U) (t : Γ(U.toScheme, ⊤)), (f.appLE U V e).hom (U.topIso.hom t) = V.topIso.hom ((f.resLE U V e).appTop t)`. Introduce `X Y f U V e t`. Rewrite using `[Scheme.Hom.appTop, Scheme.Hom.resLE_app_top, CommRingCat.comp_apply, CommRingCat.comp_apply, Iso.inv_hom_id_apply]`. Conclude with `(e _ _ _ _ t).trans h`.
+-/
 theorem exists_appLE_eq {i : I} {U : (D.obj i).Opens} (hU : IsCompact (U : Set (D.obj i)))
     (s : Γ(X, π i ⁻¹ᵁ U)) :
     ∃ (j : I) (f : j ⟶ i) (t : Γ(D.obj j, D.map f ⁻¹ᵁ U)),
@@ -48,6 +53,17 @@ theorem exists_appLE_eq {i : I} {U : (D.obj i).Opens} (hU : IsCompact (U : Set (
 omit [∀ i, CompactSpace (D.obj i)] in
 include hc in
 
+/- English proof (translation)
+Take `⟨j, f, t, ht⟩` from `exists_appLE_eq D π w hc hU s.val`. Establish `h₁ : π j ⁻¹ᵁ (D.map f ⁻¹ᵁ U) ≤ π j ⁻¹ᵁ (D.obj j).basicOpen t`. Establish `h` using `X.basicOpen_of_isUnit (ht ▸ s.isUnit)`. Rewrite `h` using `[Scheme.basicOpen_appLE]`. Rewrite using `[← Scheme.Hom.comp_preimage, w, ← h]`.
+
+Conclude with `inf_le_right`. Take `⟨k, g, hg⟩` from `exists_map_preimage_le_map_preimage D _ hc (QuasiCompact.isCompact_preimage (f := D.map f) _ U.2 hU) h₁`. Establish `le : D.map (g ≫ f) ⁻¹ᵁ U ≤ D.map g ⁻¹ᵁ (D.map f ⁻¹ᵁ U)`. Rewrite using `[D.map_comp, Scheme.Hom.comp_preimage]`. Establish `hu : IsUnit (((D.map g).appLE _ _ le).hom t)`.
+
+Use `(D.obj k).toRingedSpace.isUnit_of_isUnit_germ _ _ fun y hy => ?_` and prove the remaining obligations. Use `((D.obj k).mem_basicOpen _ y hy).1 ?_` and prove the remaining obligations. Rewrite using `[Scheme.basicOpen_appLE]`. Conclude with `⟨hy, hg (le hy)⟩`. Use `⟨k, g ≫ f, hu.unit, fun y hy => Units.ext ?_⟩` and prove the remaining obligations.
+
+Establish `hy'` using `cone_preimage_le D π w (g ≫ f) U hy`. Rewrite using `[gm_val _ y _ hy', gm_val (𝟙 X) y _ hy, IsUnit.unit_spec, ← ht]`. Establish `e : (D.map g).appLE _ _ le ≫ (π k).appLE _ _ (cone_preimage_le D π w (g ≫ f) U) = (π j).appLE _ _ (cone_preimage_le D π w f U)`. Simplify using `only [Scheme.Hom.appLE_comp_appLE, w]`. Rewrite using `[← e]`.
+
+Conclude with `(TopCat.Presheaf.germ_res_apply X.presheaf (homOfLE (cone_preimage_le D π w (g ≫ f) U)) y hy _).symm`.
+-/
 theorem exists_unit_eq {i : I} {U : (D.obj i).Opens} (hU : IsCompact (U : Set (D.obj i)))
     (s : Γ(X, π i ⁻¹ᵁ U)ˣ) :
     ∃ (j : I) (f : j ⟶ i) (t : Γ(D.obj j, D.map f ⁻¹ᵁ U)ˣ), ∀ y : X, y ∈ π i ⁻¹ᵁ U →
@@ -77,6 +93,9 @@ theorem exists_unit_eq {i : I} {U : (D.obj i).Opens} (hU : IsCompact (U : Set (D
   exact (TopCat.Presheaf.germ_res_apply X.presheaf
     (homOfLE (cone_preimage_le D π w (g ≫ f) U)) y hy _).symm
 
+/- English proof (translation)
+The claim follows from `top_le_iff.1 fun y _ => by obtain ⟨i, hi⟩ := hcov (F y) exact TopologicalSpace.Opens.mem_iSup.2 ⟨fun _ => i, mem_pull.2 hi⟩ g_self J := unit_ext fun y hy => by rw [gm_res (𝟙 Z) y _ hy, map_one, gm_pull_g M F (𝟙 Z) y J J hy hy] exact mul_eq_left.1 (hco y _ _ _ (mem_pull.1 hy) (mem …`.
+-/
 theorem pull_isLB_of_germ {Y Z : Scheme.{0}} (M : LB Y) (F : Z ⟶ Y) (hcov : ∀ y : Y, ∃ a, y ∈ M.U a)
     (hco : ∀ (z : Z) a b c, F z ∈ M.U a → F z ∈ M.U b → F z ∈ M.U c →
       gm F z _ (M.g a b) * gm F z _ (M.g b c) = gm F z _ (M.g a c)) : (M.pull F).IsLB where
@@ -95,6 +114,15 @@ theorem pull_isLB_of_germ {Y Z : Scheme.{0}} (M : LB Y) (F : Z ⟶ Y) (hcov : �
 omit [∀ i, CompactSpace (D.obj i)] in
 include hc in
 
+/- English proof (translation)
+Establish `l₁ : ∀ a b c, M.U a ⊓ M.U b ⊓ M.U c ≤ M.U a ⊓ M.U b` using `fun a b c => inf_le_left`. Establish `l₂ : ∀ a b c, M.U a ⊓ M.U b ⊓ M.U c ≤ M.U b ⊓ M.U c` using `fun a b c _ hy => ⟨hy.1.2, hy.2⟩`. Establish `l₃ : ∀ a b c, M.U a ⊓ M.U b ⊓ M.U c ≤ M.U a ⊓ M.U c` using `fun a b c _ hy => ⟨hy.1.1, hy.2⟩`. Take `⟨k, g, hk⟩` from `exists_common_refinement (i := j) (fun (p : M.ι × M.ι × M.ι) k g => pullU (D.map g) _ (res (l₁ p.1 p.2.1 p.2.2) (M.g p.1 p.2.1) * res (l₂ p.1 p.2.1 p.2.2) (M.g p.2.1 p.2.2)) = pullU (D.map g) _ (res (l₃ p.1 p.2.1 p.2.2) (M.g p.1 p.2.2))) (by`. Introduce `p k g k' g' h`.
+
+Rewrite using `[D.map_comp]`. Conclude with `congrArg (pullU (D.map g') _) h)`. Use the proof step `(by`. Introduce and unpack `⟨a, b, c⟩`. Use `exists_pullU_eq D π w hc ?_ _ _ fun y hy => ?_` and prove the remaining obligations.
+
+Conclude with `QuasiSeparatedSpace.inter_isCompact _ _ (M.U a ⊓ M.U b).isOpen (QuasiSeparatedSpace.inter_isCompact _ _ (M.U a).isOpen (hM a) (M.U b).isOpen (hM b)) (M.U c).isOpen (hM c)`. Rewrite using `[map_mul, gm_res _ y _ hy, gm_res _ y _ hy, gm_res _ y _ hy]`. Conclude with `h y a b c hy.1.1 hy.1.2 hy.2)`. Use `⟨k, g, fun z a b c ha hb hc' => ?_⟩` and prove the remaining obligations. Establish `hz : D.map g z ∈ M.U a ⊓ M.U b ⊓ M.U c` using `⟨⟨ha, hb⟩, hc'⟩`.
+
+Establish `e` using `(gm_id_pullU (D.map g) z _ hz _).symm.trans ((congrArg (gm (𝟙 (D.obj k)) z (D.map g ⁻¹ᵁ (M.U a ⊓ M.U b ⊓ M.U c))) (hk (a, b, c))).trans (gm_id_pullU (D.map g) z _ hz _))`. Rewrite `e` using `[map_mul, gm_res _ z _ hz, gm_res _ z _ hz, gm_res _ z _ hz]`. Then use the resulting hypothesis.
+-/
 theorem exists_cocycle {j : I} (M : LB (D.obj j)) [Finite M.ι]
     (hM : ∀ a, IsCompact (M.U a : Set (D.obj j)))
     (h : ∀ (y : X) a b c, π j y ∈ M.U a → π j y ∈ M.U b → π j y ∈ M.U c →
@@ -130,6 +158,23 @@ theorem exists_cocycle {j : I} (M : LB (D.obj j)) [Finite M.ι]
 
 include hc in
 
+/- English proof (translation)
+Establish `: CompactSpace X` using `Scheme.compactSpace_of_isLimit D _ hc`. Establish `loc : ∀ x : X, ∃ (W : X.Opens) (e : L.ι), IsAffineOpen W ∧ x ∈ W ∧ W ≤ L.U e`. Introduce `x`. Take `⟨p, hp⟩` from `exists_chart hL x`. Take `⟨_, ⟨V, hV, rfl⟩, hx, hle⟩` from `X.isBasis_affineOpens.exists_subset_of_mem_open hp (L.U p).isOpen`.
+
+Conclude with `⟨V, p, hV, hx, hle⟩`. Use `choose W e hW hx hle using loc`. Take `⟨σ, hσ⟩` from `CompactSpace.elim_nhds_subcover (fun x => (W x : Set X)) (fun x => (W x).isOpen.mem_nhds (hx x))`. Establish `cov : IsOpenCover (fun a : σ => W a)` using `top_le_iff.1 fun x _ => by`. Take `⟨a, ha, hx⟩` from `Set.mem_iUnion₂.1 (hσ.ge (Set.mem_univ x))`.
+
+Conclude with `Opens.mem_iSup.2 ⟨⟨a, ha⟩, hx⟩`. Take `⟨i, V, hV, hVW⟩` from `Scheme.exists_isOpenCover_and_isAffine_of_finite D _ hc (fun a : σ => W a) cov (fun a => hW a)`. Establish `hle' : ∀ a : σ, π i ⁻¹ᵁ V a ≤ L.U (e a)` using `fun a => (hVW a).2.ge.trans (hle a)`. Establish `l : ∀ a b : σ, π i ⁻¹ᵁ (V a ⊓ V b) ≤ L.U (e a) ⊓ L.U (e b)` using `fun a b y hy => ⟨hle' a hy.1, hle' b hy.2⟩`. Establish `le : ∀ {j k : I} (f : j ⟶ i) (g : k ⟶ j) (U : (D.obj i).Opens), D.map (g ≫ f) ⁻¹ᵁ U ≤ D.map g ⁻¹ᵁ (D.map f ⁻¹ᵁ U)` using `fun f g U => by`.
+
+Rewrite using `[D.map_comp, Scheme.Hom.comp_preimage]`. Take `⟨j, f, hj⟩` from `exists_common_refinement (i := i) (fun (p : σ × σ) j f => ∃ t : Γ(D.obj j, D.map f ⁻¹ᵁ (V p.1 ⊓ V p.2))ˣ, ∀ y : X, y ∈ π i ⁻¹ᵁ (V p.1 ⊓ V p.2) → gm (π j) y (D.map f ⁻¹ᵁ (V p.1 ⊓ V p.2)) t = gm (𝟙 X) y (π i ⁻¹ᵁ (V p.1 ⊓ V p.2)) (res (l p.1 p.2) (L.g (e p.1) (e p.2)))) (by`. Introduce and unpack `a j f k g ⟨t, ht⟩`. Use `⟨res (le f g _) (pullU (D.map g) _ t), fun y hy => ?_⟩` and prove the remaining obligations. Establish `hy'` using `cone_preimage_le D π w (g ≫ f) _ hy`.
+
+Use `(gm_res_pullU (π k) (D.map g) y (le f g (V a.1 ⊓ V a.2)) hy' t).trans ?_` and prove the remaining obligations. Rewrite using `[w g]`. Conclude with `ht y hy)`. Use the proof step `(fun p => exists_unit_eq D π w hc (QuasiSeparatedSpace.inter_isCompact _ _ (V p.1).isOpen (hVW p.1).1.isCompact (V p.2).isOpen (hVW p.2).1.isCompact) _)`. Use `choose t ht using hj`.
+
+Set `M : LB (D.obj j)` to `⟨σ, fun a => D.map f ⁻¹ᵁ V a, fun a b => t (a, b)⟩`. Establish `mem : ∀ (y : X) a, π j y ∈ M.U a → y ∈ π i ⁻¹ᵁ V a` using `fun y a h => by`. Rewrite using `[← w f]`. Conclude with `h`. Establish `val : ∀ (y : X) a b, π j y ∈ M.U a → π j y ∈ M.U b → gm (π j) y (M.U a ⊓ M.U b) (M.g a b) = gm (𝟙 X) y _ (L.g (e a.1) (e b.1))` using `fun y a b ha hb =>`.
+
+Establish `hy : y ∈ π i ⁻¹ᵁ (V a ⊓ V b)` using `⟨mem y a ha, mem y b hb⟩`. Use the proof step `(ht (a, b) y hy).trans (gm_res (𝟙 X) y _ hy _)`. Establish `: Finite M.ι` using `inferInstanceAs (Finite σ)`. Take `⟨k, g, hk⟩` from `exists_cocycle D π w hc M (fun a => ((hVW a).1.preimage (D.map f)).isCompact) (fun y a b c ha hb hc' => by`. Rewrite using `[val y a b ha hb, val y b c hb hc', val y a c ha hc']`.
+
+Conclude with `gm_cocycle hL (𝟙 X) y (hle' a (mem y a ha)) (hle' b (mem y b hb)) (hle' c (mem y c hc')))`. Use `⟨k, M.pull (D.map g), pull_isLB_of_germ M _ (fun y => hV.exists_mem (D.map f y)) hk, ?_⟩` and prove the remaining obligations. Establish `c₁ : ChartPull (M.pull (π j)) L (𝟙 X)` using `{ idx := fun J => e (J PUnit.unit).1 le := fun J y hy => hle' _ (mem y _ (mem_pull.1 hy)) g := fun y J J' hJ hJ' => (gm_pull_g M (π j) (𝟙 X) y J J' hJ hJ').trans (val y _ _ (mem_pull.1 hJ) (mem_pull.1 hJ')) }`. Conclude with `LBIso.chartPull (chartPullId L) (chartPullLinComb M (D.map g) (fun _ : PUnit => π k) (fun _ => π j) (fun _ => 1) (𝟙 X) (fun _ => (w g).trans (Category.id_comp _).symm)) (LBIso.chartPull (chartPullId L) c₁ (PolBaseChange.lbIso_refl hL))`.
+-/
 theorem exists_lb_of_isLimit (L : LB X) (hL : L.IsLB) :
     ∃ (k : I) (M : LB (D.obj k)), M.IsLB ∧ LBIso L (M.pull (π k)) := by
   have : CompactSpace X := Scheme.compactSpace_of_isLimit D _ hc
@@ -192,6 +237,15 @@ theorem exists_lb_of_isLimit (L : LB X) (hL : L.IsLB) :
 
 end Limit
 
+/- English proof (translation)
+Establish `h : (⊥ : Subalgebra k C).FG` using `Subalgebra.fg_bot`. Use `FGAbove.isFiltered h` as an intermediate fact. Take `⟨hc⟩` from `nonempty_isLimit_baseChange pB h`. Establish `: ∀ {i j} (f : i ⟶ j), IsAffineHom ((baseChangeDiagram (⊥ : Subalgebra k C) pB).map f)` using `fun _ => isAffineHom_baseChangeMap pB _`. Establish `q : ∀ (A : Type) [CommRing A] [Algebra k A], CompactSpace ↥(pullback pB (spMap (algebraMap k A))) ∧ QuasiSeparatedSpace ↥(pullback pB (spMap (algebraMap k A)))`.
+
+Introduce `A _ _`. Establish `q₁ : QuasiCompact (pullback.snd pB (spMap (algebraMap k A)))` using `quasiCompact_isStableUnderBaseChange.of_isPullback (IsPullback.of_hasPullback _ _) ‹_›`. Establish `q₂ : QuasiSeparated (pullback.snd pB (spMap (algebraMap k A)))` using `quasiSeparated_isStableUnderBaseChange.of_isPullback (IsPullback.of_hasPullback _ _) ‹_›`. Conclude with `⟨QuasiCompact.compactSpace_of_compactSpace (pullback.snd pB (spMap (algebraMap k A))), quasiSeparatedSpace_of_quasiSeparated (pullback.snd pB (spMap (algebraMap k A)))⟩`. Establish `: ∀ i, CompactSpace ((baseChangeDiagram (⊥ : Subalgebra k C) pB).obj i)` using `fun i => (q i.unop.1).1`.
+
+Establish `: ∀ i, QuasiSeparatedSpace ((baseChangeDiagram (⊥ : Subalgebra k C) pB).obj i)` using `fun i => (q i.unop.1).2`. Establish `hc' : IsLimit (schemeConeOfFamily (baseChangeDiagram (⊥ : Subalgebra k C) pB) (X` using `X) (fun R => hX.isoPullback.hom ≫ baseChangeMap pB R.unop.1.val) (fun {R T} f => (Category.assoc _ _ _).trans (congrArg _ (baseChangeMap_comp pB (Subalgebra.inclusion (show T.unop.1 ≤ R.unop.1 from leOfHom f.unop)) R.unop.1.val)))) := hc.ofIsoLimit (Cone.ext hX.isoPullback.symm f …`. Take `⟨R, M, hM, hI⟩` from `exists_lb_of_isLimit _ _ _ hc' L hL`. Use `⟨R.unop.1, M, hX.isoPullback.hom ≫ baseChangeMap pB R.unop.1.val, R.unop.2.1, hM, ?_, ?_, hI⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, baseChangeMap_fst, IsPullback.isoPullback_hom_fst]`.
+
+Rewrite using `[Category.assoc, baseChangeMap_snd, IsPullback.isoPullback_hom_snd_assoc]`.
+-/
 theorem exists_fg_lb {k : Type} [Field k] {C : Type} [CommRing C] [Algebra k C] {B X : Scheme.{0}}
     (pB : B ⟶ Sp k) [QuasiCompact pB] [QuasiSeparated pB] (p : X ⟶ Sp C) (φ : X ⟶ B)
     (hX : IsPullback φ p pB (spMap (algebraMap k C))) (L : LB X) (hL : L.IsLB) :
@@ -226,6 +280,17 @@ theorem exists_fg_lb {k : Type} [Field k] {C : Type} [CommRing C] [Algebra k C] 
   · rw [Category.assoc, baseChangeMap_fst, IsPullback.isoPullback_hom_fst]
   · rw [Category.assoc, baseChangeMap_snd, IsPullback.isoPullback_hom_snd_assoc]
 
+/- English proof (translation)
+Introduce `K _ K₀ X₀ X p₀ p φ _ _ L hL hX`. Take `⟨R, M, ρ, ⟨s, hs⟩, hM, h₁, h₂, hI⟩` from `exists_fg_lb (k := K₀) (C := K) p₀ p φ hX L hL`. Use `⟨s, fun K₁ h hsK X₁ p₁ φ₁ ψ hX₁ e₁ e₂ => ?_⟩` and prove the remaining obligations. Establish `hR : ∀ x ∈ R, x ∈ K₁`. Introduce `x hx`.
+
+Rewrite `hx` using `[← hs]`. Proceed by induction on `hx using Algebra.adjoin_induction with`. Consider the case `mem x hx => exact hsK hx`. Consider the case `algebraMap r => exact h r.2`. Consider the case `add x y _ _ hx hy => exact add_mem hx hy`.
+
+Consider the case `mul x y _ _ hx hy => exact mul_mem hx hy`. Set `ι : R →+* K₁` to `R.val.toRingHom.codRestrict K₁ fun x => hR x x.2`. Set `r : X₁ ⟶ pullback p₀ (spMap (algebraMap K₀ R))` to `pullback.lift φ₁ (p₁ ≫ spMap ι) (by`. Rewrite using `[hX₁.w, Category.assoc, spMap_comp_ring]`. Use the proof step `rfl)`.
+
+Establish `hr : ψ ≫ r = ρ`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, pullback.lift_fst, e₁, h₁]`. Rewrite using `[Category.assoc, pullback.lift_snd, ← Category.assoc, e₂, h₂, Category.assoc, spMap_comp_ring]`. Both sides reduce to the same expression.
+
+Conclude with `⟨M.pull r, pull_isLB hM r, LBIso.chartPull (chartPullId L) (chartPullLinComb M r (fun _ : PUnit => ψ) (fun _ => ρ) (fun _ => 1) (𝟙 X) (fun _ => hr.trans (Category.id_comp _).symm)) hI⟩`.
+-/
 theorem exists_lb_subfield : ∀ (K : Type) [Field K] (K₀ : Subfield K) (X₀ X : Scheme.{0}) (p₀ : X₀ ⟶ Sp K₀)
     (p : X ⟶ Sp K) (φ : X ⟶ X₀) [QuasiCompact p₀] [QuasiSeparated p₀] (L : LB X), L.IsLB →
     IsPullback φ p p₀ (spMap K₀.subtype) → ∃ s : Finset K, ∀ (K₁ : Subfield K) (h : K₀ ≤ K₁),

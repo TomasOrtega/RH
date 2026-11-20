@@ -12,6 +12,9 @@ section Lin
 
 variable {E V : Type} [Field E] [AddCommGroup V] [Module E V] {M : ℕ}
 
+/- English proof (translation)
+Apply `LinearEquiv.ext` to reduce the goal to its premises. Introduce `v`. Apply `b.equivFun.injective` to reduce the goal to its premises. Rewrite using `[equivFun_linOf, LinearEquiv.mul_apply, equivFun_linOf, equivFun_linOf, Units.val_mul, Matrix.mulVec_mulVec]`.
+-/
 theorem linOf_mul (b : Module.Basis (Fin M) E V) (u w : GL (Fin M) E) :
     linOf b (u * w) = linOf b u * linOf b w := by
   apply LinearEquiv.ext
@@ -20,6 +23,9 @@ theorem linOf_mul (b : Module.Basis (Fin M) E V) (u w : GL (Fin M) E) :
   rw [equivFun_linOf, LinearEquiv.mul_apply, equivFun_linOf, equivFun_linOf, Units.val_mul,
     Matrix.mulVec_mulVec]
 
+/- English proof (translation)
+Apply `LinearEquiv.ext` to reduce the goal to its premises. Introduce `v`. Apply `b.equivFun.injective` to reduce the goal to its premises. Rewrite using `[equivFun_linOf, Units.val_one, Matrix.one_mulVec]`. Both sides reduce to the same expression.
+-/
 theorem linOf_one (b : Module.Basis (Fin M) E V) : linOf b (1 : GL (Fin M) E) = 1 := by
   apply LinearEquiv.ext
   intro v
@@ -29,11 +35,49 @@ theorem linOf_one (b : Module.Basis (Fin M) E V) : linOf b (1 : GL (Fin M) E) = 
 
 end Lin
 
+/- English proof (translation)
+Use extensionality with `v`. Simplify using `[gmap, Submodule.mem_map]`.
+-/
 theorem gmap_one {E V : Type} [Field E] [NumberField E] [AddCommGroup V] [Module E V] [Module (𝓞 E) V]
     [IsScalarTower (𝓞 E) E V] (X : Submodule (𝓞 E) V) : gmap (1 : V ≃ₗ[E] V) X = X := by
   ext v
   simp [gmap, Submodule.mem_map]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ V _ _ _ _ _ M J b L0 hσσ hH hdet hL0 g hg`. Take `⟨⟨c1, hc1, hup⟩, ⟨c2, hc2, hlow⟩⟩` from `crdBounds F E V M b L0 hL0`. Take `⟨u, hu, hu'⟩` from `up_nat (crdOf b L0) ⟨c1, hc1, hup⟩`. Take `⟨k, hk, hk'⟩` from `low_nat (crdOf b L0) ⟨c2, hc2, hlow⟩`. Take `⟨dJ, hdJ, hdJi⟩` from `mat_den J`.
+
+Take `⟨dI, hdI, hdIi⟩` from `mat_den J⁻¹`. Take `⟨dg, hdg, hdgi⟩` from `mat_den ((g⁻¹ : GL (Fin M) E) : Matrix (Fin M) (Fin M) E)`. Use `set Nn : ℕ := dg * dI * dJ * (u * k) with hNn`. Establish `hNpos : 0 < Nn` using `by positivity`. Use `⟨(Nn : 𝓞 F), by exact_mod_cast hNpos.ne', fun D' hD' γ hγ S hS hcong => ?_⟩` and prove the remaining obligations.
+
+Take `⟨c, rfl⟩` from `hD'`. Use `choose r hr y hy using hcong`. Use `set R : 𝓞 E := ∏ q : Fin M × Fin M, r q.1 q.2 with hRd`. Establish `hRS : R ∈ S` using `Submonoid.prod_mem _ fun q _ => hr q.1 q.2`. Use `set cE : E := algebraMap F E ((c : 𝓞 F) : F) with hcE`.
+
+Establish `hcEi : IsIntegral ℤ cE` using `c.isIntegral_coe.algebraMap`. Establish `hz : ∀ i j, ∃ z : E, IsIntegral ℤ z ∧ (R : E) * ((g : Matrix (Fin M) (Fin M) E) i j - (γ : Matrix (Fin M) (Fin M) E) i j) = (Nn : E) * cE * z`. Introduce `i j`. Take `⟨q, hq⟩` from `Finset.dvd_prod_of_mem (fun q : Fin M × Fin M => r q.1 q.2) (Finset.mem_univ (i, j))`. Use `⟨(q : E) * (y i j : E), q.isIntegral_coe.mul (y i j).isIntegral_coe, ?_⟩` and prove the remaining obligations.
+
+Establish `e1 : (R : E) = (r i j : E) * (q : E)` using `by rw [hRd, hq]; push_cast; rfl`. Rewrite using `[e1, mul_comm (r i j : E) (q : E), mul_assoc, hy i j]`. Establish `e2 : algebraMap F E (((Nn : 𝓞 F) * c : 𝓞 F) : F) = (Nn : E) * cE`. Establish `e5 : (((Nn : 𝓞 F) * c : 𝓞 F) : F) = (Nn : F) * ((c : 𝓞 F) : F)` using `by push_cast; ring`. Rewrite using `[e5, map_mul, map_natCast]`.
+
+Rewrite using `[e2]`. Expand and normalize the polynomial expressions, which then agree. Use `choose z hzi hze using hz`. Use `set gi : Matrix (Fin M) (Fin M) E := ((g⁻¹ : GL (Fin M) E) : Matrix (Fin M) (Fin M) E) with hgi`. Use `set K : GL (Fin M) E := g⁻¹ * γ with hKd`.
+
+Use `set Km : Matrix (Fin M) (Fin M) E := (K : Matrix (Fin M) (Fin M) E) with hKm`. Establish `hgig : gi * (g : Matrix (Fin M) (Fin M) E) = 1`. Rewrite using `[hgi, ← Units.val_mul, inv_mul_cancel, Units.val_one]`. Use `set e0 : Fin M → Fin M → E := fun i j => -cE * ∑ l, ((dg : E) * gi i l) * z l j with he0d`. Establish `he0i : ∀ i j, IsIntegral ℤ (e0 i j)` using `fun i j => (hcEi.neg).mul (IsIntegral.sum _ fun l _ => (hdgi i l).mul (hzi l j))`.
+
+Establish `hK1 : ∀ i j, (algebraMap (𝓞 E) E R) * (Km - 1) i j = ((u * k : ℕ) : E) * (((dI * dJ : ℕ) : E) * e0 i j)`. Introduce `i j`. Establish `eK : Km - 1 = gi * ((γ : Matrix (Fin M) (Fin M) E) - (g : Matrix (Fin M) (Fin M) E))`. Rewrite using `[hKm, hKd, Units.val_mul, Matrix.mul_sub, hgig]`. Rewrite using `[eK, Matrix.mul_apply, Finset.mul_sum, he0d]`.
+
+Simplify using `only [Matrix.sub_apply, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Use `hze l j` as an intermediate fact. Express the relevant statement in the definitionally equal form `(R : E) * (gi i l * ((γ : Matrix (Fin M) (Fin M) E) l j - (g : Matrix (Fin M) (Fin M) E) l j)) = _`. Establish `e3 : (R : E) * (gi i l * ((γ : Matrix (Fin M) (Fin M) E) l j - (g : Matrix (Fin M) (Fin M) E) l j)) = -(gi i l * ((R : E) * ((g : Matrix (Fin M) (Fin M) E) l j - (γ : Matrix (Fin M) (Fin M) E) l j)))` using `by ring`.
+
+Rewrite using `[e3, this, hNn]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hKu : K ∈ PI.UnitaryApproxDefs.UJ (σ : E →+* E) J` using `(PI.UnitaryApproxDefs.UJ (σ : E →+* E) J).mul_mem ((PI.UnitaryApproxDefs.UJ (σ : E →+* E) J).inv_mem hg) hγ`. Establish `hKu' : PI.UnitaryApproxDefs.cT (σ : E →+* E) Km * J * Km = J` using `hKu`.
+
+Establish `hJJ : J⁻¹ * J = 1` using `Matrix.nonsing_inv_mul _ hdet`. Use `set KImage : Matrix (Fin M) (Fin M) E := ((K⁻¹ : GL (Fin M) E) : Matrix (Fin M) (Fin M) E) with hKim`. Establish `hKK : Km * KImage = 1` using `by rw [hKm, hKim, ← Units.val_mul, mul_inv_cancel, Units.val_one]`. Establish `hKinv : KImage = J⁻¹ * PI.UnitaryApproxDefs.cT (σ : E →+* E) Km * J`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hcs : PI.UnitaryApproxDefs.cT (σ : E →+* E) (Km - 1) = PI.UnitaryApproxDefs.cT (σ : E →+* E) Km - 1`. Establish `h1` using `PI.UnitaryApproxDefs.cT_one (n := Fin M) (σ : E →+* E)`. Unfold `PI.UnitaryApproxDefs.cT at h1 ⊢`. Rewrite using `[Matrix.map_sub _ (map_sub _), Matrix.transpose_sub, h1]`. Establish `hKi1 : KImage - 1 = J⁻¹ * PI.UnitaryApproxDefs.cT (σ : E →+* E) (Km - 1) * J`.
+
+Rewrite using `[hKinv, hcs, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, hJJ]`. Establish `hR0 : σ (algebraMap (𝓞 E) E R) = algebraMap (𝓞 E) E R` using `hS R hRS`. Establish `hK2 : ∀ i j, (algebraMap (𝓞 E) E R) * (KImage - 1) i j = ((u * k : ℕ) : E) * (∑ a, ∑ b', ((dI : E) * J⁻¹ i a) * σ (e0 b' a) * ((dJ : E) * J b' j))`. Introduce `i j`. Rewrite using `[hKi1]`.
+
+Simplify using `only [Matrix.mul_apply, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b' _ => ?_` and prove the remaining obligations. Establish `hσK : (algebraMap (𝓞 E) E R) * σ ((Km - 1) b' a) = ((u * k : ℕ) : E) * (((dI * dJ : ℕ) : E) * σ (e0 b' a))`. Rewrite using `[← hR0, ← map_mul, hK1 b' a, map_mul, map_mul, map_natCast, map_natCast]`.
+
+Establish `hX : PI.UnitaryApproxDefs.cT (σ : E →+* E) (Km - 1) a b' = σ ((Km - 1) b' a)` using `rfl`. Rewrite using `[hX]`. Combine the equalities or inequalities in the displayed calculation. Establish `h1 : gmap (linOf b K) L0 ≤ locS S L0` using `gmap_le_locS b L0 S K fun x hx => ⟨R, hRS, glob_stab (F := F) b L0 hu' hk' Km R _ (fun i j => (isIntegral_natCast _).mul (he0i i j)) hK1 hx⟩`. Establish `h2 : gmap (linOf b K⁻¹) L0 ≤ locS S L0` using `gmap_le_locS b L0 S K⁻¹ fun x hx => ⟨R, hRS, glob_stab (F := F) b L0 hu' hk' KImage R _ (fun i j => IsIntegral.sum _ fun a _ => IsIntegral.sum _ fun b' _ => ((hdIi i a).mul (int_sigma (σ : E →+* E) (he0i b' a))).mul (hdJi b' j)) hK2 hx⟩`.
+
+Establish `h3 : L0 ≤ locS S (gmap (linOf b K) L0)`. Establish `e4 : gmap (linOf b K) (gmap (linOf b K⁻¹) L0) = L0`. Rewrite using `[← gmap_comp, ← linOf_mul, mul_inv_cancel, linOf_one, gmap_one]`. Combine the equalities or inequalities in the displayed calculation. Establish `hKeq : locS S (gmap (linOf b K) L0) = locS S L0` using `locS_eq_of S h1 h3`.
+
+Establish `hγK : γ = g * K` using `by rw [hKd, mul_inv_cancel_left]`. Rewrite using `[hγK, linOf_mul, gmap_comp, ← gmap_locS, hKeq, gmap_locS]`.
+-/
 theorem lattices_close_locally : LatClose := by
   intro F E _ _ _ _ _ σ V _ _ _ _ _ M J b L0 hσσ hH hdet hL0 g hg
   classical

@@ -21,6 +21,11 @@ open scoped Classical
 
 namespace GlobalTheory.CoverDegProj
 
+/- English proof (translation)
+Use `haveI : IsAffine U := hU`. Use `haveI : IsAffine (π ⁻¹ᵁ U) := hπU`. Rewrite using `[HasRingHomProperty.iff_of_isAffine (P := @Etale), Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE, morphismRestrict_appLE]`. Use `(Scheme.Hom.appLE_congr π _ (Scheme.Opens.ι_image_top U) (V' := π ⁻¹ᵁ U) ?_ (fun φ => RingHom.Etale φ.hom)).2 ?_` and prove the remaining obligations. Rewrite using `[Scheme.Hom.preimage_top, Scheme.Opens.ι_image_top]`.
+
+Rewrite using `[← Scheme.Hom.app_eq_appLE]`. Conclude with `hét`.
+-/
 theorem etale_morphismRestrict {X Y : Scheme.{0}} (π : Y ⟶ X) (U : X.Opens) (hU : IsAffineOpen U)
     (hπU : IsAffineOpen (π ⁻¹ᵁ U)) (hét : (π.app U).hom.Etale) : Etale (π ∣_ U) := by
   haveI : IsAffine U := hU
@@ -32,6 +37,21 @@ theorem etale_morphismRestrict {X Y : Scheme.{0}} (π : Y ⟶ X) (U : X.Opens) (
   · rw [Scheme.Hom.preimage_top, Scheme.Opens.ι_image_top]
   · rw [← Scheme.Hom.app_eq_appLE]; exact hét
 
+/- English proof (translation)
+Substitute `hπ` using the available equality. Establish `hE` using `etale_morphismRestrict π U hU hπU hét`. Take `⟨f, g, hfg, hz⟩` from `exists_basicOpen_le_affine_inter hU hW (π z) ⟨hzU, hzW⟩`. Establish `hW'U : X.basicOpen f ≤ U` using `X.basicOpen_le f`. Establish `hW'W : X.basicOpen f ≤ W` using `hfg ▸ X.basicOpen_le g`.
+
+Establish `hW' : IsAffineOpen (X.basicOpen f)` using `hU.basicOpen f`. Establish `hV : IsAffineOpen (π ⁻¹ᵁ X.basicOpen f)`. Rewrite using `[Scheme.Hom.preimage_basicOpen]`. Conclude with `hπU.basicOpen _`. Establish `hVU : π ⁻¹ᵁ X.basicOpen f ≤ π ⁻¹ᵁ U` using `fun y hy => hW'U hy`.
+
+Establish `h : π ⁻¹ᵁ X.basicOpen f ≤ π ⁻¹ᵁ W` using `fun y hy => hW'W hy`. Use `⟨π ⁻¹ᵁ X.basicOpen f, hV, hz, h, ?_⟩` and prove the remaining obligations. Establish `e1 : MvPolynomial.eval₂Hom (ReciprocityTheory.ChartRestriction.G.DVR.FlatBC.algX (π ≫ p) (π ⁻¹ᵁ X.basicOpen f)) (fun a => (π.appLE W _ h).hom (x a)) = (π.appLE W _ h).hom.comp (MvPolynomial.eval₂Hom (ReciprocityTheory.ChartRestriction.G.DVR.FlatBC.algX p W) x)`. Rewrite using `[MvPolynomial.comp_eval₂Hom, GlobalTheory.CoverDeg.algX_comp p π W _ h]`. Rewrite using `[e1]`.
+
+Use `RingHom.Etale.stableUnderComposition _ _ hx ?_` and prove the remaining obligations. Establish `e2 : π.appLE W (π ⁻¹ᵁ X.basicOpen f) h = X.presheaf.map (homOfLE hW'W).op ≫ π.appLE (X.basicOpen f) (π ⁻¹ᵁ X.basicOpen f) le_rfl`. Rewrite using `[Scheme.Hom.map_appLE]`. Rewrite using `[e2, CommRingCat.hom_comp]`. Use `RingHom.Etale.stableUnderComposition _ _ (GlobalTheory.CoverDeg.etale_map_basicOpen hW g _ hfg hW'W) ?_` and prove the remaining obligations.
+
+Establish `ha : IsAffineOpen (U.ι ⁻¹ᵁ X.basicOpen f)` using `hW'.preimage_of_isOpenImmersion U.ι (by rw [Scheme.Opens.opensRange_ι]; exact hW'U)`. Establish `hb : IsAffineOpen ((π ⁻¹ᵁ U).ι ⁻¹ᵁ (π ⁻¹ᵁ X.basicOpen f))` using `hV.preimage_of_isOpenImmersion _ (by rw [Scheme.Opens.opensRange_ι]; exact hVU)`. Establish `e3 : (π ⁻¹ᵁ U).ι ⁻¹ᵁ (π ⁻¹ᵁ X.basicOpen f) ≤ (π ∣_ U) ⁻¹ᵁ (U.ι ⁻¹ᵁ X.basicOpen f)`. Rewrite using `[← Scheme.Hom.comp_preimage, ← Scheme.Hom.comp_preimage, morphismRestrict_ι]`. Use `HasRingHomProperty.appLE @Etale (π ∣_ U) hE ⟨_, ha⟩ ⟨_, hb⟩ e3` as an intermediate fact.
+
+Rewrite `this` using `[morphismRestrict_appLE]`. Use `(Scheme.Hom.appLE_congr π _ ?_ ?_ (fun φ => RingHom.Etale φ.hom)).1 this` and prove the remaining obligations. Rewrite using `[Scheme.Hom.image_preimage_eq_opensRange_inf, Scheme.Opens.opensRange_ι]`. Conclude with `inf_eq_right.2 hW'U`. Rewrite using `[Scheme.Hom.image_preimage_eq_opensRange_inf, Scheme.Opens.opensRange_ι]`.
+
+Conclude with `inf_eq_right.2 hVU`.
+-/
 theorem etale_pullback_coords_of_etale {k : Type} [CommRing k] {X Y : Scheme.{0}} {p : X ⟶ Sp k} {q : Y ⟶ Sp k}
     (π : Y ⟶ X) (hπ : π ≫ p = q) (D : ℕ) (U : X.Opens) (hU : IsAffineOpen U)
     (hπU : IsAffineOpen (π ⁻¹ᵁ U)) (hét : (π.app U).hom.Etale) (W : X.Opens) (x : Fin D → Γ(X, W))
@@ -76,6 +96,19 @@ theorem etale_pullback_coords_of_etale {k : Type} [CommRing k] {X Y : Scheme.{0}
   · rw [Scheme.Hom.image_preimage_eq_opensRange_inf, Scheme.Opens.opensRange_ι]; exact inf_eq_right.2 hW'U
   · rw [Scheme.Hom.image_preimage_eq_opensRange_inf, Scheme.Opens.opensRange_ι]; exact inf_eq_right.2 hVU
 
+/- English proof (translation)
+Introduce `k _ X Y _ _ p q σ D hpP hqP π hπ hη hδ`. Use `haveI : CharZero k := RingHom.charZero σ`. Take `⟨U, hU, hxU, hV, he, hf, hr⟩` from `GlobalTheory.GenFinEtField.exists_affine_finite_etale_free k X Y p q hpP hqP π hπ hη hδ`. Use `⟨U, hxU, fun y hy => ?_, fun z hz c hc => ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.encard_fibre_eq_encard_ringHom π hπ U hU hV σ y hy]`.
+
+Conclude with `GlobalTheory.EtaleComplexPoints.encard_complexPoints_eq_rank (π.app U).hom _ he hf hr _`. Use `set y := PtsOver.map π hπ (spMap σ) z with hy`. Establish `hyc : y ∈ ptsIn p σ c.U` using `c.source_subset hc`. Establish `hpt : ∀ W : X.Opens, y ∈ ptsIn p σ W → π (z.1 (IsLocalRing.closedPoint ℂ)) ∈ W`. Introduce `W hW`.
+
+Use `mem_ptsIn.1 hW` as an intermediate fact. Conclude with `this`. Take `⟨V, hVa, hzV, h, hVe⟩` from `etale_pullback_coords_of_etale π hπ D U hU hV he c.U c.x c.affine c.etale _ (hpt U hz) (hpt c.U hyc)`. Take `⟨c'', hc'', hU'', hx''⟩` from `AlgChart.exists_of_etale (σ := σ) hVa _ hVe (mem_ptsIn.2 hzV)`. Establish `key : ∀ w ∈ c''.e.source, w ∈ ptsIn q σ V ∧ ∀ a, c''.e w a = ev q σ V ((π.appLE c.U V h).hom (c.x a)) w`.
+
+Break down `c'' with ⟨e, U', aff, x', et, ss, ae, ho⟩` into its components or cases. Simplify using `only at hU'' hx'' ⊢`. Substitute `hU''` using the available equality. Establish `hx : x' = fun a => (π.appLE c.U U' h).hom (c.x a)` using `hx''`. Substitute `hx` using the available equality.
+
+Conclude with `fun w hw => ⟨ss hw, ae w hw⟩`. Establish `hS : IsOpen (c''.e.source ∩ PtsOver.map π hπ (spMap σ) ⁻¹' c.e.source)` using `(PtsOver.continuous_map π hπ (spMap σ)).continuousOn.isOpen_inter_preimage c''.e.open_source c.e.open_source`. Use `⟨c''.restr _ hS, ⟨hc'', hc'', hc⟩, fun w hw => ⟨hw.2.2, ?_⟩⟩` and prove the remaining obligations. Establish `hw' : w ∈ c''.e.source` using `hw.1`. Take `⟨hwV, hwe⟩` from `key w hw'`.
+
+Use extensionality with `a`. Express the relevant statement in the definitionally equal form `c''.e w a = c.e (PtsOver.map π hπ (spMap σ) w) a`. Rewrite using `[hwe a, c.apply_eq _ hw.2.2 a]`. Conclude with `valR_appLE w.1 π h hwV _`.
+-/
 theorem exists_open_covering_charts : ∀ (F : Type) [Field F] (X Y : Scheme.{0}) [IsIntegral X] [IsIntegral Y] (p : X ⟶ Sp F) (q : Y ⟶ Sp F) (σ : F →+* ℂ) (D : ℕ), IsProjOver p → IsProjOver q → ∀ (π : Y ⟶ X) (hπ : π ≫ p = q), π (genericPoint Y) = genericPoint X → π.residueDegree (genericPoint Y) ≠ 0 → ∃ U : X.Opens, genericPoint X ∈ U ∧ (∀ y ∈ ptsIn p σ U, (ptMap π hπ σ ⁻¹' {y}).encard = (π.residueDegree (genericPoint Y) : ℕ∞)) ∧ (∀ z : CxPts q σ, ptMap π hπ σ z ∈ ptsIn p σ U → ∀ c : AlgChart p σ D, ptMap π hπ σ z ∈ c.e.source → ∃ c' : AlgChart q σ D, z ∈ c'.e.source ∧ ∀ w ∈ c'.e.source, ptMap π hπ σ w ∈ c.e.source ∧ c'.e w = c.e (ptMap π hπ σ w)) := by
   intro k _ X Y _ _ p q σ D hpP hqP π hπ hη hδ
   haveI : CharZero k := RingHom.charZero σ

@@ -17,6 +17,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {D : D7} {θ : InfF D}
 
+/- English proof (translation)
+Establish `e : Wf.om V W χ χ' (γ * g, h) = Wf.om V W χ χ' (γ, 1) * Wf.om V W χ χ' (g, h)`. Rewrite using `[← map_mul, Prod.mk_mul_mk, one_mul]`. Unfold `WeilFun.ker`. Rewrite using `[e, Module.End.mul_apply]`. Conclude with `ha.elim (fun ha => Wf.om_aut V W χ χ' ha γ hγ 1 (one_mem _) _) fun ha => (hW.weil V W χ χ' ha).aut γ hγ 1 (one_mem _) _`.
+-/
 theorem ker_leftE {ψ : AddChar (AF D.host.F) ℂ} (Wf : WeilFun D ψ) (hW : Wf.EqRank) {V W : HSp D} {χ χ' : IdC D}
     (ha : admitted V W χ χ' ∨ AdmE V W χ χ') (Φ : ThS ψ V W) {γ : GA D V} (hγ : γ ∈ GQ V) (g h) :
     Wf.ker V W χ χ' Φ (γ * g) h = Wf.ker V W χ χ' Φ g h := by
@@ -27,6 +30,19 @@ theorem ker_leftE {ψ : AddChar (AF D.host.F) ℂ} (Wf : WeilFun D ψ) (hW : Wf.
   exact ha.elim (fun ha => Wf.om_aut V W χ χ' ha γ hγ 1 (one_mem _) _)
     fun ha => (hW.weil V W χ χ' ha).aut γ hγ 1 (one_mem _) _
 
+/- English proof (translation)
+Distinguish the cases in `h : (admitted V W χ χ' ∨ AdmE V W χ χ') ∧ V.SigOK`. Establish `k : ∀ (Φ : ThS ψ V W) (F : CuspS θ V), (∀ h, IntegrableOn (fun g => Wf.ker V W χ χ' Φ g h * F.1 g) (dom V) (mu V)) ∧ IsAutFunSm θ W fun h => ∫ g in dom V, Wf.ker V W χ χ' Φ g h * F.1 g ∂(mu V)` using `fun Φ F => h.1.elim (fun ha => hL θ hθ ψ hψ Wf V W χ χ' ha _ _ (quot_mu V) Φ F.1 (cuspF hθ F)) fun ha => hE θ hθ ψ hψ V W χ χ' ha _ (hW.weil V W χ χ' ha) _ _ (quot_mu V) Φ F.1 (cuspF hθ F)`. Use `⟨LinearMap.mk₂ ℂ (fun Φ F => ⟨_, Submodule.subset_span (k Φ F).2⟩) ?_ ?_ ?_ ?_, fun h' => absurd h h', ?_⟩` and prove the remaining obligations. Introduce `Φ Φ' F`. Use extensionality with `x`.
+
+Simplify using `only [Submodule.coe_add, Pi.add_apply]`. Rewrite using `[← integral_add ((k Φ F).1 x) ((k Φ' F).1 x)]`. Simplify using `[WeilFun.ker, add_mul]`. Introduce `c Φ F`. Use extensionality with `x`.
+
+Simplify using `only [Submodule.coe_smul, Pi.smul_apply]`. Rewrite using `[← integral_smul]`. Simplify using `[WeilFun.ker, mul_assoc]`. Introduce `Φ F F'`. Use extensionality with `x`.
+
+Simplify using `only [Submodule.coe_add, Pi.add_apply]`. Rewrite using `[← integral_add ((k Φ F).1 x) ((k Φ F').1 x)]`. Simplify using `[mul_add]`. Introduce `c Φ F`. Use extensionality with `x`.
+
+Simplify using `only [Submodule.coe_smul, Pi.smul_apply]`. Rewrite using `[← integral_smul]`. Simplify using `[mul_left_comm]`. Introduce `ha hV μ 𝓕 hμ Φ F x`. Use `integral_mu hV hμ (fun g => Wf.ker V W χ χ' Φ g x * F.1 g) fun γ hγ g => ?_` and prove the remaining obligations.
+
+Rewrite using `[ker_leftE Wf hW ha Φ hγ g x, (cuspF hθ F).1.left γ hγ]`. Conclude with `⟨0, fun _ => rfl, fun h1 h2 => absurd ⟨h1, h2⟩ h⟩`.
+-/
 theorem exists_liftE (hL : LiftAut D) (hE : LiftAutEq D) (hθ : IsInfFam θ) {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1))
     (Wf : WeilFun D ψ) (hW : Wf.EqRank) (V W : HSp D) (χ χ' : IdC D) :
     ∃ t : ThS ψ V W →ₗ[ℂ] CuspS θ V →ₗ[ℂ] AFs θ W, (¬ ((admitted V W χ χ' ∨ AdmE V W χ χ') ∧ V.SigOK) → t = 0) ∧
@@ -248,6 +264,9 @@ def recKE : KfinTied (recWE hP hT hB hL hE hθ hψ Wf hW Tw Rc) where
     obtain rfl : θ' = θ := (GlobalTheory.Mem.InfFamUnique.existsUnique_infFam D).unique h' hθ
     exact mem_KfinS hθ hψ Rc.dec hV hW' Φ⟩
 
+/- English proof (translation)
+Introduce `_ _ _ hμ _ hs φ F hφ` and use `clause_inl hB hθ hψ Rc ho hA hι f hμ hs φ F hφ`.
+-/
 theorem besGlobE_inl {A B : HSp D} {ι : A.V →ₗ[D.host.E] B.V} (ho : Odd (B.rank - A.rank)) (hA : A.SigOK)
     (hι : HSpace.IsIsomEmb A B ι) (f : Odd (B.rank - A.rank) → Bes1 A B ι) :
     BesGlob (recTE hP hT hB hL hE hθ hψ Wf hW Tw Rc) ψ (f ho).1 (.inl f : PosT A B ι) :=
@@ -267,6 +286,9 @@ def recBE : BesselTied D (recXE hP hT hB hL hE hθ hψ Wf hW Tw Rc) (recTE hP hT
     · obtain ⟨u, hu⟩ := hp
       exact absurd hu (inr_ne A B ι x _)
 
+/- English proof (translation)
+The claim follows from `hθ forms V := Set.ext fun φ => ⟨fun ⟨x, hx⟩ => hx ▸ aut hθ x, fun h => ⟨⟨φ, Submodule.subset_span h⟩, rfl⟩⟩ typ V P F := Iff.rfl sch V V' := range_ThS V V' chr μ j := rfl eta := rfl col u μ j φ := rfl row μ j F := rfl phi μ j := rfl phiUp μ j hj x := transp_apply hψ (rank_Y_ne (r …`.
+-/
 theorem realisesE : RealisesE (θ := θ) (recBE hP hT hB hL hE hθ hψ Wf hW Tw Rc) Wf Tw Rc where
   inf := hθ
   forms V := Set.ext fun φ => ⟨fun ⟨x, hx⟩ => hx ▸ aut hθ x, fun h => ⟨⟨φ, Submodule.subset_span h⟩, rfl⟩⟩
@@ -309,6 +331,9 @@ theorem realisesE : RealisesE (θ := θ) (recBE hP hT hB hL hE hθ hψ Wf hW Tw 
 
 end Record
 
+/- English proof (translation)
+Introduce `D hP hT hB hL hE θ hθ ψ hψ Wf hW Tw Rc`. Conclude with `⟨_, _, _, recBE hP hT hB hL hE hθ hψ Wf hW Tw Rc, rfl, realisesE hP hT hB hL hE hθ hψ Wf hW Tw Rc⟩`.
+-/
 theorem exists_realisedE : ∀ D : D7, PetInt D → TopInt D → BesInt D → LiftAut D → LiftAutEq D → ∀ (θ : InfF D), IsInfFam θ → ∀ (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (Wf : WeilFun D ψ), Wf.EqRank → ∀ (Tw : Tow D) (Rc : RecFun D θ ψ), ∃ (X : ThetaX D) (T : ThetaTied D X) (W : WeilTied D X T) (B : BesselTied D X T W) (h : W.ψ = ψ), RealisesE (θ := θ) B (h ▸ Wf) Tw (h ▸ Rc) := by
   intro D hP hT hB hL hE θ hθ ψ hψ Wf hW Tw Rc
   exact ⟨_, _, _, recBE hP hT hB hL hE hθ hψ Wf hW Tw Rc, rfl, realisesE hP hT hB hL hE hθ hψ Wf hW Tw Rc⟩

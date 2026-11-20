@@ -36,6 +36,9 @@ def finCoconeIsColimit : IsColimit (finCocone A B) := by
     apply Subtype.ext
     exact h
 
+/- English proof (translation)
+The claim follows from `Algebra.finite_adjoin_of_finite_of_isIntegral t.finite_toSet (fun x _ => Algebra.IsIntegral.isIntegral x)`.
+-/
 theorem finite_finDiag [Algebra.IsIntegral A B] (t : Finset B) :
     Module.Finite A (Algebra.adjoin A (t : Set B)) :=
   Algebra.finite_adjoin_of_finite_of_isIntegral t.finite_toSet
@@ -46,6 +49,13 @@ end
 
 namespace GlobalTheory.EtC.IntAcyc
 
+/- English proof (translation)
+Introduce `R _ F hF A B _ _ _ _ hA`. Take `⟨hHens, hSep⟩` from `hA`. Introduce `n hn`. It suffices to establish `h : ∀ x : H R (sp B) F n, x = 0 from ⟨fun x y => by rw [h x, h y]⟩`. Introduce `x`.
+
+Take `⟨j, y, hy⟩` from `(GlobalTheory.T.etaleCohomology_filteredColimit_rings_finitary R F hF (Finset B) (finDiag A B) (finCocone A B) (finCoconeIsColimit A B) n).1 x`. Use `haveI := finite_finDiag A B j`. Take `⟨ι, hι, T, hT, hAl, e, hH, hS⟩` from `GlobalTheory.finite_algebra_strictly_henselian_pi A (Algebra.adjoin A (j : Set B))`. Establish `hac : AcycF R (sp ((finDiag A B).obj j)) F` using `GlobalTheory.T.acycF_of_pi_sh' R F ι T ((finDiag A B).obj j) ⟨e.toRingEquiv⟩ (fun i => ⟨hH i, (hS i).1⟩)`. Use `haveI := hac n hn`.
+
+Establish `hy0 : y = 0` using `Subsingleton.elim _ _`. Rewrite using `[← hy, hy0]`. Conclude with `map_zero _`.
+-/
 theorem acycF_of_isIntegral : ∀ (R : Type) [CommRing R] (F : Shv R), Finitary F →
     ∀ (A B : Type) [CommRing A] [CommRing B] [Algebra A B] [Algebra.IsIntegral A B],
       SH A → AcycF R (sp B) F := by

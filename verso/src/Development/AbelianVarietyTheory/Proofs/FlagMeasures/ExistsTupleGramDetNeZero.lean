@@ -6,12 +6,26 @@ open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 
 namespace GlobalTheory.NondegTuple
 
+/- English proof (translation)
+Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[h.2.2.2 τ, h.2.2.2 τ, star_star]`.
+-/
 theorem conj_conj {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} (h : IsCMExt F E σ) (x : E) : σ (σ x) = x := by
   obtain ⟨τ⟩ : Nonempty (E →+* ℂ) := inferInstance
   apply τ.injective
   rw [h.2.2.2 τ, h.2.2.2 τ, star_star]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hσ n J hJ a ha`. Establish `hc : ∀ t, (σ : E →+* E) ((σ : E →+* E) t) = t` using `conj_conj hσ`. Take `⟨P, d, -, hd, hfix, hne⟩` from `GlobalTheory.HermDiag.exists_congr_diagonal (c := (σ : E →+* E)) (G := J) two_ne_zero hc (fun i j => hJ.1 j i)`. Establish `hg : gramE σ J (fun i k => σ (P k (Fin.castLE ha i))) = Matrix.diagonal fun i => d (Fin.castLE ha i)`. Use extensionality with `i j`.
+
+Establish `h1` using `congrFun (congrFun hd (Fin.castLE ha i)) (Fin.castLE ha j)`. Rewrite `h1` using `[GlobalTheory.HermDiag.transpose_mul_mul_map_apply, GlobalTheory.HermDiag.dotProduct_mulVec_comp_eq_sum]`. Establish `h2 : Matrix.diagonal d (Fin.castLE ha i) (Fin.castLE ha j) = Matrix.diagonal (fun i => d (Fin.castLE ha i)) i j`. Simplify using `only [Matrix.diagonal_apply, (Fin.castLE_injective ha).eq_iff]`. Rewrite using `[← h2, ← h1]`.
+
+Simplify using `only [gramE, hE, Formalism.UG.hform, RingHom.coe_coe, conj_conj hσ]`. Use `⟨fun i k => σ (P k (Fin.castLE ha i)), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hg, Matrix.det_diagonal]`. Conclude with `Finset.prod_ne_zero_iff.2 fun i _ => hne hJ.2 _`. Introduce `i j`.
+
+Rewrite using `[hg]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Rewrite using `[Matrix.diagonal_apply_eq]`. Conclude with `hfix _`.
+
+Rewrite using `[Matrix.diagonal_apply_ne _ hij, Matrix.diagonal_apply_ne _ (Ne.symm hij), map_zero]`.
+-/
 theorem exists_tuple_gram_det_ne_zero :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
       (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J →

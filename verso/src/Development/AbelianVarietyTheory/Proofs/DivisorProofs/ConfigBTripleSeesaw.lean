@@ -15,6 +15,37 @@ noncomputable section
 
 namespace GlobalTheory.MixVPlaneRescaled
 
+/- English proof (translation)
+Establish `hP` using `(GlobalTheory.ThK.Check.isPair_of_isTriple hT).1`. Establish `hs` using `IsUWeilPair.isUSplitting hP.weil`. Establish `hstd : IsStd B.ψ` using `hP.base.std`. Establish `hc : ∀ t : E, cA σ (inclR (F` using `F) (AF F) t) = inclR (F := F) (AF F) (σ t) := fun t => rfl`. Establish `hact : ∀ w, actAB (cA σ) ((k, 1) : UA σ G.V.J × UA σ G.W.J) w = mat k * w`.
+
+Introduce `w`. Simplify using `[actAB, mat]`. Establish `hcomp : ∀ w w' Φ, symp (cA σ) (-1) (incM F G.V.J) (incM F G.W.J) w w' = 0 → G.M.co.rho B.ψ w (G.M.co.rho B.ψ w' Φ) = G.M.co.rho B.ψ (w + w') Φ`. Introduce `w w' Φ h0`. Simplify using `only [Darboux.rho]`.
+
+Establish `hlaw : ∀ (v v' : (Fin a × Fin (a + a') → AF F) × (Fin a × Fin (a + a') → AF F)) (φ : (Fin a × Fin (a + a') → AF F) → ℂ), schr B.ψ v (schr B.ψ v' φ) = B.ψ (⅟(2 : AF F) * (v.1 ⬝ᵥ v'.2 - v'.1 ⬝ᵥ v.2)) • schr B.ψ (v + v') φ`. Introduce `v v' φ`. Use function extensionality and compare the values at `x`. Simplify using `only [schr, Pi.smul_apply, smul_eq_mul, ← mul_assoc, ← AddChar.map_add_eq_mul, Prod.fst_add, Prod.snd_add, add_assoc, add_dotProduct, dotProduct_add]`. Use `congr 2`.
+
+Take the linear combination `(-(v.1 ⬝ᵥ v'.2)) * invOf_mul_self (2 : AF F)`. Rewrite using `[hlaw, ← G.M.co.form, h0, mul_zero, AddChar.map_zero_eq_one, one_smul, ← map_add]`. Establish `hcol : ∀ m, ∑ i, ∑ j, H₀.ι i m * (G.V.J i j * σ (H₀.x j)) = 0`. Introduce `m`. Establish `h` using `(hH₀.orth (Pi.single m 1)).1`.
+
+Simplify using `only [form, reS, Matrix.mulVec_single_one, dotProduct, Matrix.mulVec] at h`. Simplify `h` using `[Finset.mul_sum, Pi.single_apply, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.sum_mul]`. Establish `hperp : ∀ (z : Matrix (Fin n₁) (Fin (a + a')) (AE F E)) (q : Fin (a + a') → AE F E), symp (cA σ) (-1) (incM F G.V.J) (incM F G.W.J) (incM F H₀.ι * z) (Matrix.vecMulVec (incV F H₀.x) q) = 0`. Introduce `z q`. Establish `hinner : ∀ j, ∑ i, ∑ l, (incM F H₀.ι * z) i j * incM F G.V.J i l * cA σ (incV F H₀.x l) = 0`.
+
+Introduce `j`. Establish `e1 : ∀ i l, (incM F H₀.ι * z) i j * incM F G.V.J i l * cA σ (incV F H₀.x l) = ∑ m, z m j * inclR (F` using `F) (AF F) (H₀.ι i m * (G.V.J i l * σ (H₀.x l))) := by`. Introduce `i l`. Rewrite using `[Matrix.mul_apply, Finset.sum_mul, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations.
+
+Simplify using `only [incM, incV, Matrix.map_apply, hc, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Repeatedly rewrite using `[e1]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `[map_sum, Finset.mul_sum]`.
+
+Use `_ = 0 := Finset.sum_eq_zero fun m _ => by rw [hcol m, map_zero, mul_zero]`. Establish `hTn : hTens (cA σ) (incM F G.V.J) (incM F G.W.J) (incM F H₀.ι * z) (Matrix.vecMulVec (incV F H₀.x) q) = 0`. Unfold `hTens`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations.
+
+Establish `e2 : ∀ i l, ∑ r, (incM F H₀.ι * z) i j * incM F G.V.J i l * incM F G.W.J j r * cA σ (Matrix.vecMulVec (incV F H₀.x) q l r) = ((incM F H₀.ι * z) i j * incM F G.V.J i l * cA σ (incV F H₀.x l)) * ∑ r, incM F G.W.J j r * cA σ (q r)`. Introduce `i l`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations. Simplify using `only [Matrix.vecMulVec_apply, map_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Repeatedly rewrite using `[e2, ← Finset.sum_mul, hinner j, zero_mul]`. Simplify using `[symp, hTn]`. Use `choose β hβ using fun j : Fin n₁ => hι (Pi.single j 1)`. Establish `hgι : mat k * incM F H₀.ι = incM F H₀.ι + Matrix.vecMulVec (incV F H₀.x) β`.
+
+Use extensionality with `i j`. Establish `h` using `congrFun (hβ j) i`. Rewrite `h` using `[Matrix.mulVec_mulVec, Matrix.mulVec_single_one, Matrix.mulVec_single_one]`. Simplify `h` using `[Matrix.vecMulVec_apply, mul_comm]`. Use `⟨fun z Φ hΦ => ?_, fun u hu Φ hΦ => ?_⟩` and prove the remaining obligations.
+
+Establish `hΨ` using `hs.pres (k, 1) Φ hΦ`. Rewrite using `[hs.impl (k, 1) _ Φ hΦ, hact]`. Establish `hw : mat k * (incM F H₀.ι * z * (incM F H'.ι)ᵀ) = incM F H₀.ι * (z * (incM F H'.ι)ᵀ) + Matrix.vecMulVec (incV F H₀.x) (incM F H'.ι *ᵥ (β ᵥ* z))`. Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc, hgι, Matrix.add_mul]`. Use `congr 1`.
+
+Rewrite using `[Matrix.vecMulVec_mul, ← Matrix.vecMul_vecMul, Matrix.vecMul_transpose]`. Establish `hh` using `he.Heisenberg₂ z _ (GlobalTheory.HeisSchA.rho_mem_schA G.M B.ψ hstd (Matrix.vecMulVec (incV F H₀.x) (incM F H'.ι *ᵥ (β ᵥ* z))) _ hΨ)`. Rewrite using `[hw, ← hcomp _ _ _ (hperp _ _), ← Matrix.mul_assoc, hh, he.inv _ (Or.inr ⟨_, rfl⟩) _ hΨ]`. Establish `hΨ` using `hs.pres (k, 1) Φ hΦ`. Rewrite using `[hs.impl (k, 1) _ Φ hΦ, hact]`.
+
+Break down `hu with ⟨y, rfl⟩ | ⟨z, rfl⟩` into its components or cases. Rewrite using `[Matrix.mul_vecMulVec]`. Conclude with `he.inv _ (Or.inl ⟨_, rfl⟩) _ hΨ`. Rewrite using `[Matrix.mul_vecMulVec, hx]`. Use `he.inv _ (Or.inr ⟨c • z, ?_⟩) _ hΨ` and prove the remaining obligations.
+
+Rewrite using `[Matrix.mulVec_smul]`. Use extensionality with `i j`. Simplify using `[Matrix.vecMulVec_apply]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem twist_heis_inv (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W)
     (hT : IsTriple B G X om om') (V₂ : Spc F E a) (n₁ d₁ : ℕ) (X₁ : Spc F E n₁) (W₁ : Spc F E d₁) (H₀ : Plane E a n₁)
@@ -115,6 +146,9 @@ theorem twist_heis_inv (F E : Type) [Field F] [NumberField F] [Field E] [NumberF
 section
 open scoped Classical
 
+/- English proof (translation)
+Introduce `g _`. Use `⟨g (fun i => (y i).2) • ((BoundedContinuousFunction.evalCLM ℂ (fun i => evI F (y i))).comp (SchwartzMap.toBoundedContinuousFunctionCLM ℂ _ ℂ)), fun f => ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.coe_proj, Function.eval, ContinuousLinearMap.coe_smul', Pi.smul_apply, ContinuousLinearMap.coe_comp', Function.comp_apply, smul_eq_mul, pureA]`. Rewrite using `[mul_comm]`. Both sides reduce to the same expression.
+-/
 theorem proj_adm (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] (y : κ → AF F) :
     (LinearMap.proj y : ((κ → AF F) → ℂ) →ₗ[ℂ] ℂ) ∈ (adeleClass F).adm κ := by
   intro g _
@@ -127,6 +161,11 @@ theorem proj_adm (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] (
 
 end
 
+/- English proof (translation)
+Introduce `hKP F E _ _ _ _ _ σ B a b G G₁ H H' hC X om om' om₁ om₁' hT hT₁ V₂ n₁ X₁ H₀ j₀ j₁ M₂ e₂ hV₂ hH₀ hM₂ he k c hx hι`. Establish `hP` using `(GlobalTheory.ThK.Check.isPair_of_isTriple hT).1`. Establish `hS` using `IsUWeilPair.isUSplitting hP.weil`. Take `⟨h1, h2⟩` from `twist_heis_inv F E σ B a (b + 2) G X om om' hT V₂ n₁ (a + b) X₁ G₁.W H₀ H' j₀ j₁ M₂ e₂ hH₀ he k c hx hι`. Use `GlobalTheory.T.config_b_triple_seesaw_identity hKP F E σ B a b G G₁ H H' hC X om om' om₁ om₁' hT hT₁ V₂ n₁ X₁ H₀ j₀ j₁ M₂ e₂ hV₂ hH₀ hM₂ he (e₂ ∘ₗ om (k, 1)) h1 h2 fun y => ?_` and prove the remaining obligations.
+
+Use `hS.adm (k, 1) _ (GlobalTheory.T.eigen_intertwiner_good_models F E σ B _ _ _ _ G.V G.W X₁ G₁.W G.M M₂ H₀.ι H'.ι _ e₂ hP.good hM₂ he _ (proj_adm F _ y))` as an intermediate fact. Rewrite `this` using `[LinearMap.comp_assoc]`. Then use the resulting hypothesis.
+-/
 theorem twist_scalar : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a b : ℕ) (G : Geo σ a (b + 2)) (G₁ : Geo σ a b) (H : Plane E (b + 2) b) (H' : Plane E (a + (b + 2)) (a + b)), CfgB B G G₁ H H' → ∀ (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W) (om₁ : Rep σ G₁.V G₁.W) (om₁' : Rep σ G₁.V' G₁.W), IsTriple B G X om om' → IsTriple B G₁ X om₁ om₁' → ∀ (V₂ : Spc F E a) (n₁ : ℕ) (X₁ : Spc F E n₁) (H₀ : Plane E a n₁) (j₀ j₁ : ℕ) (M₂ : Model σ X₁ G₁.W) (e₂ : Fn F a (a + (b + 2)) →ₗ[ℂ] Fn F n₁ (a + b)), (reS G.V V₂).IsHerm σ B (a - G.p) G.p → H₀.IsAdapted σ B (reS G.V V₂) X₁ j₀ j₁ → M₂.IsGood B.ψ → IsEv B G.M M₂ H₀.ι H'.ι (isoA H₀ H') e₂ →
     ∀ (k : UA σ G.V.J) (c : AE F E), mat k *ᵥ incV F H₀.x = c • incV F H₀.x →
     (∀ z : Fin n₁ → AE F E, ∃ d : AE F E, mat k *ᵥ (incM F H₀.ι *ᵥ z) = incM F H₀.ι *ᵥ z + d • incV F H₀.x) →

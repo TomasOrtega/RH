@@ -6,6 +6,23 @@ open scoped InnerProductSpace
 
 namespace GlobalTheory.LeviProj
 
+/- English proof (translation)
+Use `haveI : LocallyCompactSpace P := cP.locallyCompactSpace`. Use `haveI : LocallyCompactSpace M := cM.locallyCompactSpace`. Use `haveI : LocallyCompactSpace A := cA.locallyCompactSpace`. Set `N' : Subgroup P` to `N.subgroupOf P`. Use `haveI : N'.Normal := ⟨fun u hu p => norm p p.2 u hu⟩`.
+
+Use `haveI : IsClosed (N' : Set P) := cN.preimage continuous_subtype_val`. Set `ψ : M × A →* P` to `(Subgroup.inclusion hM).noncommCoprod (Subgroup.inclusion hA) fun m t => Subtype.ext (comm m m.2 t t.2)`. Establish `hψ : ∀ z : M × A, (ψ z : G) = z.1 * z.2` using `fun z => rfl`. Set `φ : M × A →* P ⧸ N'` to `(QuotientGroup.mk' N').comp ψ`. Establish `cφ : Continuous φ`.
+
+Use `QuotientGroup.continuous_mk.comp (Continuous.subtype_mk ?_ _)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Continuous fun z : M × A => (z.1 : G) * z.2`. Conclude with `(continuous_subtype_val.comp continuous_fst).mul (continuous_subtype_val.comp continuous_snd)`. Establish `key : ∀ u ∈ N, ∀ (m : M) (t : A) (h : u * m * t ∈ P), φ (m, t) = (⟨_, h⟩ : P)` using `fun u hu m t h => by`. Use `QuotientGroup.eq.2 ?_` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `((m : G) * t)⁻¹ * (u * m * t) ∈ N`. Use `norm _ (P.inv_mem (P.mul_mem (hM m.2) (hA t.2))) u hu` as an intermediate fact. Rewrite `this` using `[inv_inv, mul_assoc, ← mul_assoc u]`. Then use the resulting hypothesis. Establish `sφ : Function.Surjective φ` using `fun q => by`. Take `⟨⟨p, hp⟩, rfl⟩` from `QuotientGroup.mk_surjective q`.
+
+Take `⟨u, hu, m, hm, t, ht, rfl⟩` from `surj p hp`. Conclude with `⟨_, key u hu ⟨m, hm⟩ ⟨t, ht⟩ hp⟩`. Establish `iφ : Function.Injective φ` using `(injective_iff_map_eq_one φ).2 fun z hz => by`. Use `inj z.1 z.1.2 z.2 z.2.2 ((QuotientGroup.eq_one_iff (N := N') (ψ z)).1 hz)` as an intermediate fact. Conclude with `Prod.ext (Subtype.ext this.1) (Subtype.ext this.2)`.
+
+Set `e` to `MulEquiv.ofBijective φ ⟨iφ, sφ⟩`. Establish `ce : Continuous e.symm` using `(e.toEquiv.toHomeomorphOfContinuousOpen cφ (φ.isOpenMap_of_sigmaCompact sφ cφ)).symm.continuous`. Use `⟨fun g => if h : g ∈ P then (e.symm (⟨g, h⟩ : P)).1 else 1, ?_, fun p hp => ?_, fun p hp q hq => ?_, fun u hu m hm t ht => ?_⟩` and prove the remaining obligations. Rewrite using `[continuousOn_iff_continuous_restrict]`. Establish `: Continuous fun p : P => ((e.symm p).1 : G)` using `continuous_subtype_val.comp (continuous_fst.comp (ce.comp QuotientGroup.continuous_mk))`.
+
+Conclude with `this.congr fun p => by simp`. Simplify using `only [dif_pos hp, SetLike.coe_mem]`. Simplify using `only [dif_pos hp, dif_pos hq, dif_pos (P.mul_mem hp hq)]`. Rewrite using `[← Subgroup.coe_mul, ← Prod.fst_mul, ← map_mul]`. Both sides reduce to the same expression.
+
+Establish `h : u * m * t ∈ P` using `P.mul_mem (P.mul_mem (hN hu) (hM hm)) (hA ht)`. Simplify using `only [dif_pos h]`. Rewrite using `[e.symm_apply_eq.2 (key u hu ⟨m, hm⟩ ⟨t, ht⟩ h).symm]`.
+-/
 theorem exists_proj_of_closed {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [T2Space G]
     [LocallyCompactSpace G] [SecondCountableTopology G] (P N M A : Subgroup G) (cP : IsClosed (P : Set G))
     (cN : IsClosed (N : Set G)) (cM : IsClosed (M : Set G)) (cA : IsClosed (A : Set G)) (hN : N ≤ P) (hM : M ≤ P)
@@ -60,6 +77,9 @@ theorem exists_proj_of_closed {G : Type} [Group G] [TopologicalSpace G] [IsTopol
 
 variable {n a : ℕ} {ε : Fin n → Bool} {j : Fin a → ℕ} {W : Flag n a}
 
+/- English proof (translation)
+Use `hp _ h` as an intermediate fact. Rewrite `this` using `[mulVec_sub, mulVec_smul, mulVec_mulVec, mulVec_mulVec, mulVec_mulVec, GlobalTheory.RealIwasawa.uMat_mul_inv, one_mulVec]`. Then use the resulting hypothesis.
+-/
 theorem conj_scalar {p g : UJ ε} {U' : Submodule ℂ (Fin n → ℂ)} {c : ℂ} {y : Fin n → ℂ}
     (hp : ∀ y ∈ U', uMat p *ᵥ y ∈ U') (h : uMat g *ᵥ (uMat p⁻¹ *ᵥ y) - c • (uMat p⁻¹ *ᵥ y) ∈ U') :
     uMat (p * g * p⁻¹) *ᵥ y - c • y ∈ U' := by
@@ -67,6 +87,9 @@ theorem conj_scalar {p g : UJ ε} {U' : Submodule ℂ (Fin n → ℂ)} {c : ℂ}
   rwa [mulVec_sub, mulVec_smul, mulVec_mulVec, mulVec_mulVec, mulVec_mulVec, GlobalTheory.RealIwasawa.uMat_mul_inv,
     one_mulVec] at this
 
+/- English proof (translation)
+Introduce `z hz` and use `by have e := conjTranspose_inv_mul_Jm p⁻¹ rw [inv_inv] at e rw [mulVec_mulVec, ← e, ← mulVec_mulVec, dotProduct_mulVec, ← star_mulVec] exact hy _ (hp z hz)`.
+-/
 theorem keeps_orth {p : UJ ε} {U : Submodule ℂ (Fin n → ℂ)} (hp : ∀ y ∈ U, uMat p *ᵥ y ∈ U) {y : Fin n → ℂ}
     (hy : ∀ z ∈ U, star z ⬝ᵥ (Jm ε *ᵥ y) = 0) : ∀ z ∈ U, star z ⬝ᵥ (Jm ε *ᵥ (uMat p⁻¹ *ᵥ y)) = 0 := fun z hz => by
   have e := conjTranspose_inv_mul_Jm p⁻¹
@@ -74,12 +97,20 @@ theorem keeps_orth {p : UJ ε} {U : Submodule ℂ (Fin n → ℂ)} (hp : ∀ y �
   rw [mulVec_mulVec, ← e, ← mulVec_mulVec, dotProduct_mulVec, ← star_mulVec]
   exact hy _ (hp z hz)
 
+/- English proof (translation)
+Establish `hq` using `(parab ε W).inv_mem hp`. Use `⟨fun i y hy => ?_, fun y hy => ?_⟩` and prove the remaining obligations. Simplify `hu.1 i _ (hq _ y hy))` using `using conj_scalar (c := 1) (hp _) (by simpa`. Simplify `hu.2 _ (keeps_orth (hp _) hy))` using `using conj_scalar (c := 1) (hp _) (by simpa`.
+-/
 theorem conj_mem_flagN {p u : UJ ε} (hp : p ∈ parab ε W) (hu : u ∈ flagN ε W) : p * u * p⁻¹ ∈ flagN ε W := by
   have hq := (parab ε W).inv_mem hp
   refine ⟨fun i y hy => ?_, fun y hy => ?_⟩
   · simpa using conj_scalar (c := 1) (hp _) (by simpa using hu.1 i _ (hq _ y hy))
   · simpa using conj_scalar (c := 1) (hp _) (by simpa using hu.2 _ (keeps_orth (hp _) hy))
 
+/- English proof (translation)
+Establish `hp : l ∈ parab ε W` using `fun i y hy => (hl i y hy).1`. Establish `hq` using `(parab ε W).inv_mem hp`. Establish `: IsSplit ε W x (l * t * l⁻¹)`. Use `⟨(leviSub ε W).mul_mem ((leviSub ε W).mul_mem hl ht.1) ((leviSub ε W).inv_mem hl), fun i y hy => ?_, fun y hy => ?_⟩` and prove the remaining obligations. Conclude with `conj_scalar (hp _) (ht.2.1 i _ (hq _ y hy))`.
+
+Simplify `ht.2.2 _ (keeps_orth (hp _) hy))` using `using conj_scalar (c := 1) (hp _) (by simpa`. Conclude with `mul_inv_eq_iff_eq_mul.1 ((existsUnique_isSplit hW x).unique this ht)`.
+-/
 theorem comm_of_isSplit (hW : IsIsoFlag ε j W) {l t : UJ ε} {x : Fin a → ℝ} (hl : l ∈ flagM ε W)
     (ht : IsSplit ε W x t) : l * t = t * l := by
   have hp : l ∈ parab ε W := fun i y hy => (hl i y hy).1
@@ -91,6 +122,23 @@ theorem comm_of_isSplit (hW : IsIsoFlag ε j W) {l t : UJ ε} {x : Fin a → ℝ
     · simpa using conj_scalar (c := 1) (hp _) (by simpa using ht.2.2 _ (keeps_orth (hp _) hy))
   exact mul_inv_eq_iff_eq_mul.1 ((existsUnique_isSplit hW x).unique this ht)
 
+/- English proof (translation)
+Introduce `n a ε j W hW hj`. Take `⟨⟨N, eN⟩, cN, kN⟩` from `UnipRad.flagN_subgroup_closed_keeps n ε a j W hW`. Establish `mN : ∀ {u}, u ∈ N ↔ u ∈ flagN ε W` using `fun {u} => by rw [← eN]; rfl`. Take `⟨h, hc, h1, -, hh⟩` from `exists_height hW hj`. Establish `hx : ∀ m ∈ leviOne ε W, ∀ x t, IsSplit ε W x t → h (m * t) = x` using `fun m hm x t ht => by`.
+
+Simplify `hh 1 (mN.1 N.one_mem) m hm x t ht 1` using `[h1]`. Set `A : Subgroup (UJ ε)` to `{ carrier := {t | ∃ x, IsSplit ε W x t} one_mem' := ⟨0, isSplit_one⟩ mul_mem' := fun ⟨_, h⟩ ⟨_, h'⟩ => ⟨_, h.mul h'⟩ inv_mem' := fun {t} ⟨x, h⟩ => by`. Take `⟨t', h', -⟩` from `existsUnique_isSplit hW (-x)`. Use `h.mul h'` as an intermediate fact. Rewrite `this` using `[add_neg_cancel]`.
+
+Conclude with `⟨_, inv_eq_of_mul_eq_one_right ((existsUnique_isSplit hW 0).unique this isSplit_one) ▸ h'⟩ }`. Establish `cA : IsClosed (A : Set (UJ ε))`. Establish `: (A : Set (UJ ε)) = {t | IsSplit ε W (h t) t}`. Use extensionality with `t`. Use `⟨fun ⟨x, ht⟩ => ?_, fun ht => ⟨_, ht⟩⟩` and prove the remaining obligations.
+
+Use `hx 1 (one_mem _) x t ht` as an intermediate fact. Rewrite `this` using `[one_mul]`. Rewrite using `[Set.mem_ofPred_eq, this]` and apply the resulting hypothesis. Rewrite using `[this]`. Simplify using `only [IsSplit, Set.ofPred_and, Set.ofPred_forall]`.
+
+Use `(isClosed_flagM W).inter (IsClosed.inter ?_ ?_)` and prove the remaining obligations. Conclude with `isClosed_iInter fun i => isClosed_iInter fun y => isClosed_iInter fun _ => (W _).closed_of_finiteDimensional.preimage ((continuous_uMat.matrix_mulVec continuous_const).sub (by fun_prop))`. Conclude with `isClosed_iInter fun y => isClosed_iInter fun _ => (W _).closed_of_finiteDimensional.preimage ((continuous_uMat.matrix_mulVec continuous_const).sub continuous_const)`. Establish `hN : N ≤ parab ε W` using `fun u hu => kN u (mN.1 hu)`. Establish `hM : leviOne ε W ≤ parab ε W` using `fun m hm i y hy => (hm.1 i y hy).1`.
+
+Establish `hA : A ≤ parab ε W` using `fun t ⟨_, ht⟩ i y hy => (ht.1 i y hy).1`. Take `⟨μ, c, m1, m2, m3⟩` from `exists_proj_of_closed (parab ε W) N (leviOne ε W) A isClosed_parab (eN ▸ cN) (isClosed_leviOne hW hj) cA hN hM hA (fun p hp u hu => mN.2 (conj_mem_flagN hp (mN.1 hu))) (fun m hm t ⟨_, ht⟩ => comm_of_isSplit hW hm.1 ht) (fun m hm t ⟨x, ht⟩ hu => by`. Establish `e : m * t = 1` using `GlobalTheory.RealIwasawa.eq_one_of_mul_mem_compact hW _ (mN.1 hu) _ ((leviSub ε W).inv_mem ((leviSub ε W).mul_mem hm.1 ht.1)) (by rw [mul_inv_cancel]; exact (compactSub ε).one_mem)`. Use `hx m hm x t ht` as an intermediate fact. Rewrite `this` using `[e, h1]`.
+
+Establish `e' : t = 1` using `(existsUnique_isSplit hW x).unique ht (this ▸ isSplit_one)`. Conclude with `⟨by simpa [e'] using e, e'⟩)`. Use the proof step `(fun p hp => by`. Take `⟨u, hu, m, hm, x, t, ht, rfl⟩` from `exists_langlands_decomp hW hj hp`. Conclude with `⟨u, mN.2 hu, m, hm, t, ⟨x, ht⟩, rfl⟩)`.
+
+Conclude with `⟨μ, c, m1, m2, fun u hu m hm x t ht => ⟨mul_mem (mul_mem (hN (mN.2 hu)) (hM hm)) (hA ⟨x, ht⟩), m3 u (mN.2 hu) m hm t ⟨x, ht⟩⟩⟩`.
+-/
 theorem exists_leviOne_part : ∀ (n a : ℕ) (ε : Fin n → Bool) (j : Fin a → ℕ) (W : Flag n a), IsIsoFlag ε j W →
     (∀ i, 1 ≤ j i) →
     ∃ μ : UJ ε → UJ ε, ContinuousOn μ (parab ε W : Set (UJ ε)) ∧ (∀ p ∈ parab ε W, μ p ∈ leviOne ε W) ∧

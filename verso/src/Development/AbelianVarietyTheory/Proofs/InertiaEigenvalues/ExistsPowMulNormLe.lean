@@ -7,12 +7,18 @@ import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.AcrisTorsio
 
 namespace GlobalTheory.NatCastNormLtOne
 
+/- English proof (translation)
+Establish `h : (l : K) = algebraMap ℚ_[l] K (l : ℚ_[l])` using `by simp`. Rewrite using `[h, norm_algebraMap']`. Conclude with `Padic.norm_p_lt_one`.
+-/
 theorem norm_natCast_lt_one {l : ℕ} [Fact (Nat.Prime l)] {K : Type} [NormedField K]
     [NormedAlgebra ℚ_[l] K] : ‖(l : K)‖ < 1 := by
   have h : (l : K) = algebraMap ℚ_[l] K (l : ℚ_[l]) := by simp
   rw [h, norm_algebraMap']
   exact Padic.norm_p_lt_one
 
+/- English proof (translation)
+Establish `h : Filter.Tendsto (fun n : ℕ => ‖x‖ ^ n * ‖a‖) Filter.atTop (nhds (0 * ‖a‖))` using `(tendsto_pow_atTop_nhds_zero_of_lt_one (norm_nonneg x) hx).mul_const _`. Rewrite `h` using `[zero_mul]`. Take `⟨n, hn⟩` from `(h.eventually (gt_mem_nhds (zero_lt_one' ℝ))).exists`. Conclude with `⟨n, by rw [norm_mul, norm_pow]; exact hn.le⟩`.
+-/
 theorem exists_pow_mul_norm_le {K : Type} [NormedField K] {x : K} (hx : ‖x‖ < 1) (a : K) :
     ∃ n : ℕ, ‖x ^ n * a‖ ≤ 1 := by
   have h : Filter.Tendsto (fun n : ℕ => ‖x‖ ^ n * ‖a‖) Filter.atTop (nhds (0 * ‖a‖)) :=
@@ -21,6 +27,19 @@ theorem exists_pow_mul_norm_le {K : Type} [NormedField K] {x : K} (hx : ‖x‖ 
   obtain ⟨n, hn⟩ := (h.eventually (gt_mem_nhds (zero_lt_one' ℝ))).exists
   exact ⟨n, by rw [norm_mul, norm_pow]; exact hn.le⟩
 
+/- English proof (translation)
+Establish `hpow : ∀ (k : ℕ) (w : V), w ∈ T → (l : K) ^ k • w ∈ T`. Introduce `k w hw`. Establish `h : (l : K) ^ k = algebraMap O K ((l : O) ^ k)` using `by simp`. Rewrite using `[h, algebraMap_smul]`. Conclude with `T.smul_mem _ hw`.
+
+Establish `hv : v ∈ Submodule.span K (T : Set V)` using `by rw [hT]; trivial`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx => exact ⟨0, by simpa using hx⟩`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `add x y _ _ hx hy`.
+
+Take `⟨n, hn⟩` from `hx`. Take `⟨m, hm⟩` from `hy`. Use `⟨n + m, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add]`. Use `T.add_mem ?_ ?_` and prove the remaining obligations.
+
+Rewrite using `[add_comm, pow_add, mul_smul]`. Conclude with `hpow _ _ hn`. Rewrite using `[pow_add, mul_smul]`. Conclude with `hpow _ _ hm`. Consider the case `smul a x _ hx`.
+
+Take `⟨n, hn⟩` from `hx`. Take `⟨m, hm⟩` from `exists_pow_mul_norm_le (norm_natCast_lt_one (l := l) (K := K)) a`. Take `⟨b, hb⟩` from `(GlobalTheory.BK.IsUnitBall.mem_range_iff (O := O) ((l : K) ^ m * a)).2 hm`. Use `⟨m + n, ?_⟩` and prove the remaining obligations. Establish `h : (l : K) ^ (m + n) • a • x = b • ((l : K) ^ n • x)`.
+
+Rewrite using `[← algebraMap_smul K b, hb, smul_smul, smul_smul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h]`. Conclude with `T.smul_mem _ hn`.
+-/
 theorem exists_pow_smul_mem {l : ℕ} [hl : Fact (Nat.Prime l)] {O K : Type} [CommRing O]
     [NormedField K] [Algebra O K] [GlobalTheory.BK.IsUnitBall O K] [NormedAlgebra ℚ_[l] K]
     {V : Type} [AddCommGroup V] [Module K V] [Module O V] [IsScalarTower O K V]
@@ -55,6 +74,9 @@ theorem exists_pow_smul_mem {l : ℕ} [hl : Fact (Nat.Prime l)] {O K : Type} [Co
     rw [h]
     exact T.smul_mem _ hn
 
+/- English proof (translation)
+Introduce `l _ O K _ _ _ _ _ G _ _ T v`. Conclude with `exists_pow_smul_mem T.L.T T.L.span v`.
+-/
 theorem main : ∀ {l : ℕ} [hl : Fact (Nat.Prime l)] {O K : Type} [inst : CommRing O]
     [inst_1 : NormedField K] [inst_2 : Algebra O K] [GlobalTheory.BK.IsUnitBall O K]
     [inst_4 : NormedAlgebra ℚ_[l] K] {G : Type} [inst_5 : Group G] [inst_6 : TopologicalSpace G]

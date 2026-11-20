@@ -7,6 +7,9 @@ open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G.Geo.T
 
 namespace CrystallineSemistableComparison.Jump
 
+/- English proof (translation)
+Establish `h : Ep * (T * Φ) = Ep * (Φ * T')`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, hE, np, Matrix.mul_assoc, hH, Matrix.sum_mul, Matrix.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [Matrix.smul_mul, Matrix.mul_smul, nt]`. Establish `h2` using `congrArg (L * ·) h`. Simplify `h2` using `only [← Matrix.mul_assoc, hL, Matrix.one_mul]`.
+-/
 theorem corr_mat {R m m' c c' I : Type*} [CommRing R] [Fintype m] [Fintype m'] [Fintype c] [Fintype c'] [Fintype I]
     [DecidableEq m] (Φ : Matrix m c R) (Φ' : Matrix m' c' R) (Ep : Matrix m' m R) (Hp : Matrix c' c R)
     (E : I → Matrix m' m R) (H : I → Matrix c' c R) (a : I → ℤ) (np : Ep * Φ = Φ' * Hp) (nt : ∀ i, E i * Φ = Φ' * H i)
@@ -20,6 +23,13 @@ theorem corr_mat {R m m' c c' I : Type*} [CommRing R] [Fintype m] [Fintype m'] [
 
 variable {l : ℕ} [Fact l.Prime] {K : FinExt l} {X X' : Scheme.{0}} {q : X ⟶ Sp ↥K.1} {q' : X' ⟶ Sp ↥K.1} {n : ℕ}
 
+/- English proof (translation)
+Take `⟨g, hg⟩` from `LinearMap.exists_leftInverse_of_injective (etPull hp n) (LinearMap.ker_eq_bot.2 hinj)`. Use `corr_mat Φ Φ' _ _ (fun i => F.etMat F' (ht i)) (fun i => F.hodgeMat F' (ht i)) a np nt ((LinearMap.toMatrix F'.b F.b g).map (algebraMap ℚ_[l] ℂ_[l])) ?_ _ _ ?_ ?_` and prove the remaining obligations. Rewrite using `[Frame.etMat, ← Matrix.map_mul, ← LinearMap.toMatrix_comp, hg, LinearMap.toMatrix_id, Matrix.map_one _ (map_zero _) (map_one _)]`. Rewrite using `[Frame.etMat, ← Matrix.map_mul, ← LinearMap.toMatrix_comp, hV]`. Use extensionality with `i j`.
+
+Simplify using `[Frame.etMat, Matrix.sum_apply, map_sum]`. Rewrite using `[Frame.hodgeMat, ← Matrix.map_mul, ← Matrix.blockDiagonal'_mul]`. Simplify using `only [← LinearMap.toMatrix_comp, hH]`. Use extensionality with `⟨i, x⟩ ⟨j, y⟩`. Distinguish the cases in `hij : i = j`.
+
+Substitute `hij` using the available equality. Simplify using `[Frame.hodgeMat, Matrix.sum_apply, map_sum]`. Rewrite using `[Matrix.map_apply, Matrix.blockDiagonal'_apply_ne _ _ _ hij, map_zero, Matrix.sum_apply]`. Use `(Finset.sum_eq_zero fun k _ => ?_).symm` and prove the remaining obligations. Rewrite using `[Matrix.smul_apply, Frame.hodgeMat, Matrix.map_apply, Matrix.blockDiagonal'_apply_ne _ _ _ hij, map_zero, smul_zero]`.
+-/
 theorem corr_ht (F : Frame q n) (F' : Frame q' n) (Φ : Matrix (Fin F.d) F.Col ℂ_[l]) (Φ' : Matrix (Fin F'.d) F'.Col ℂ_[l])
     {p : X' ⟶ X} (hp : p ≫ q = q') {I : Type} [Fintype I] {t : I → (X' ⟶ X)} (ht : ∀ i, t i ≫ q = q') (a : I → ℤ)
     (np : F.etMat F' hp * Φ = Φ' * F.hodgeMat F' hp) (nt : ∀ i, F.etMat F' (ht i) * Φ = Φ' * F.hodgeMat F' (ht i))

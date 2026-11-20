@@ -5,6 +5,29 @@ set_option backward.isDefEq.respectTransparency false
 namespace GlobalTheory.CompanionTheory.TraceJac
 
 open MvPolynomial in
+/- English proof (translation)
+Establish `hT : π.totalDegree ≠ 0`. Introduce `h`. Establish `hC` using `totalDegree_eq_zero_iff_eq_C.1 h`. Distinguish the cases in `ha : coeff 0 π = 0`. Rewrite `hC` using `[ha, map_zero]`.
+
+Conclude with `hπ.ne_zero hC`. Apply `hπ.not_unit` to reduce the goal to its premises. Rewrite using `[hC]`. Conclude with `(IsUnit.mk0 _ ha).map C`. Establish `h1 : ¬ ∀ m ∈ π.support, ∀ x, m x = 0`.
+
+Rewrite using `[← totalDegree_eq_zero_iff]` and apply the resulting hypothesis. Use `push Not at h1`. Take `⟨m, hm, j, hj⟩` from `h1`. Use `⟨j, fun hd => ?_⟩` and prove the remaining obligations. Establish `hm' : (m - Finsupp.single j 1) + Finsupp.single j 1 = m`.
+
+Use extensionality with `i`. Distinguish the cases in `hi : i = j`. Substitute `hi` using the available equality. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
+
+Simplify using `[Finsupp.single_apply, Ne.symm hi]`. Establish `hne : pderiv j π ≠ 0`. Introduce `h0`. Establish `h2` using `coeff_pderiv (i := j) π (m - Finsupp.single j 1)`. Rewrite `h2` using `[h0, hm', coeff_zero]`.
+
+Establish `h3 : (((m - Finsupp.single j 1 : σ →₀ ℕ) j : ℕ) + 1 : K) ≠ 0`. Conclude with `Nat.cast_add_one_ne_zero _`. Conclude with `mul_ne_zero (mem_support_iff.1 hm) h3 h2.symm`. Take `⟨q, hq⟩` from `hd`. Establish `hq0 : q ≠ 0` using `fun h => hne (by rw [hq, h, mul_zero])`.
+
+Establish `hdeg : (pderiv j π).totalDegree = π.totalDegree + q.totalDegree`. Rewrite using `[hq]`. Conclude with `totalDegree_mul_of_isDomain hπ.ne_zero hq0`. Establish `hlt : (pderiv j π).totalDegree < π.totalDegree`. Establish `: (pderiv j π).totalDegree + 1 ≤ π.totalDegree`.
+
+Establish `h4 : ∀ s ∈ (pderiv j π).support, s.sum (fun _ e => e) + 1 ≤ π.totalDegree`. Introduce `s hs`. Establish `h5 : s + Finsupp.single j 1 ∈ π.support`. Rewrite `hs`, the goal using `[mem_support_iff]`. Introduce `h6`.
+
+Apply `hs` to reduce the goal to its premises. Rewrite using `[coeff_pderiv, h6, zero_mul]`. Use `le_totalDegree h5` as an intermediate fact. Rewrite `this` using `[Finsupp.sum_add_index' (by simp) (by simp), Finsupp.sum_single_index rfl]`. Then use the resulting hypothesis. Choose the witnesses or unpack the hypotheses as in `⟨s, hs, hs'⟩ : ∃ s ∈ (pderiv j π).support, (pderiv j π).totalDegree = s.sum (fun _ e => e) := by`.
+
+Rewrite using `[totalDegree]`. Take `⟨s, hs, hs'⟩` from `Finset.exists_mem_eq_sup _ (support_nonempty.2 hne) (fun s : σ →₀ ℕ => s.sum fun _ e => e)`. Conclude with `⟨s, hs, hs'⟩`. Rewrite using `[hs']`. Conclude with `h4 s hs`.
+
+Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers.
+-/
 theorem exists_pderiv_not_dvd {K σ : Type*} [Field K] [CharZero K] (π : MvPolynomial σ K)
     (hπ : Prime π) : ∃ j, ¬ π ∣ pderiv j π := by
   classical
@@ -59,6 +82,21 @@ theorem exists_pderiv_not_dvd {K σ : Type*} [Field K] [CharZero K] (π : MvPoly
     omega
   omega
 
+/- English proof (translation)
+Take `⟨T, hT⟩` from `(Module.Finite.fg_top : (⊤ : Submodule A B).FG)`. Set `W` to `IntermediateField.adjoin F ((T.image (algebraMap B L) : Finset L) : Set L)`. Establish `hint : ∀ x ∈ ((T.image (algebraMap B L) : Finset L) : Set L), IsIntegral F x`. Introduce `x hx`. Simplify using `only [Finset.coe_image, Set.mem_image] at hx`.
+
+Take `⟨t, -, rfl⟩` from `hx`. Establish `h1 : IsIntegral A t` using `IsIntegral.of_finite A t`. Conclude with `(h1.algebraMap (B := L)).tower_top`. Use `haveI : FiniteDimensional F W := IntermediateField.finiteDimensional_adjoin hint`. Establish `hB : ∀ x : B, algebraMap B L x ∈ W`.
+
+Introduce `x`. Establish `hx : x ∈ Submodule.span A (T : Set B)` using `hT ▸ Submodule.mem_top`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem s hs`. Use `IntermediateField.subset_adjoin _ _ ?_` and prove the remaining obligations.
+
+Simplify using `only [Finset.coe_image]`. Conclude with `⟨s, hs, rfl⟩`. Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb => rw [map_add]`. Conclude with `W.add_mem ha hb`.
+
+Consider the case `smul r a _ ha`. Establish `h1 : algebraMap B L (r • a) = algebraMap F L (algebraMap A F r) * algebraMap B L a`. Rewrite using `[Algebra.smul_def, map_mul, ← IsScalarTower.algebraMap_apply, ← IsScalarTower.algebraMap_apply]`. Rewrite using `[h1]`. Conclude with `W.mul_mem (W.algebraMap_mem _) ha`.
+
+Establish `hW : W = ⊤`. Rewrite using `[eq_top_iff]`. Introduce `x _`. Take `⟨a, s, -, rfl⟩` from `IsFractionRing.div_surjective (A := B) x`. Conclude with `W.div_mem (hB a) (hB s)`.
+
+Establish `key : ∀ W' : IntermediateField F L, FiniteDimensional F W' → W' = ⊤ → FiniteDimensional F L`. Introduce and unpack `_ h rfl`. Conclude with `(IntermediateField.topEquiv (F := F) (E := L)).toLinearEquiv.finiteDimensional`. Conclude with `key W inferInstance hW`.
+-/
 theorem finite_frac {A B F L : Type*} [CommRing A] [IsDomain A] [CommRing B] [IsDomain B]
     [Algebra A B] [Module.Finite A B] [Field F] [Field L] [Algebra A F] [IsFractionRing A F]
     [Algebra B L] [IsFractionRing B L] [Algebra F L] [Algebra A L] [IsScalarTower A F L]
@@ -102,6 +140,11 @@ theorem finite_frac {A B F L : Type*} [CommRing A] [IsDomain A] [CommRing B] [Is
   exact key W inferInstance hW
 
 open Polynomial in
+/- English proof (translation)
+Take `⟨p, hp, h0⟩` from `h`. Establish `hl : p.map (algebraMap A L) ∈ Polynomial.lifts (algebraMap R L)`. Rewrite using `[Polynomial.lifts_iff_coeff_lifts]`. Introduce `n`. Rewrite using `[coeff_map]`.
+
+Conclude with `hr _`. Take `⟨q, hq, -, hqm⟩` from `Polynomial.lifts_and_natDegree_eq_and_monic hl (hp.map _)`. Use `⟨q, hqm, ?_⟩` and prove the remaining obligations. Rewrite using `[← Polynomial.eval_map, hq, Polynomial.eval_map]`. Conclude with `h0`.
+-/
 theorem integral_of_range {A R L : Type*} [CommRing A] [CommRing R] [Field L] [Algebra A L]
     [Algebra R L] (hr : ∀ a : A, algebraMap A L a ∈ (algebraMap R L).range) (x : L)
     (h : IsIntegral A x) : IsIntegral R x := by
@@ -120,6 +163,25 @@ end GlobalTheory.CompanionTheory.TraceJac
 
 namespace GlobalTheory.CompanionTheory.TraceJac
 
+/- English proof (translation)
+Establish `hmem : ∀ s, s ∈ p ↔ π ∣ s` using `fun s => by rw [hp, Ideal.mem_span_singleton]`. Establish `hmemM : ∀ s, s ∈ p.primeCompl ↔ ¬ π ∣ s` using `fun s => by`. Rewrite using `[Ideal.mem_primeCompl_iff, hmem]`. Use `haveI : IsDomain R := IsLocalization.isDomain_of_le_nonZeroDivisors R p.primeCompl_le_nonZeroDivisors`. Use `haveI : IsNoetherianRing R := IsLocalization.isNoetherianRing p.primeCompl R inferInstance`.
+
+Use `haveI : IsLocalRing R := IsLocalization.AtPrime.isLocalRing R p`. Use `haveI : IsFractionRing R F := IsFractionRing.isFractionRing_of_isDomain_of_isLocalization p.primeCompl R F`. Establish `hmax : IsLocalRing.maximalIdeal R = Ideal.span {algebraMap P R π}`. Rewrite using `[← IsLocalization.AtPrime.map_eq_maximalIdeal p R, hp, Ideal.map_span, Set.image_singleton]`. Establish `hπR0 : algebraMap P R π ≠ 0`.
+
+Introduce `h`. Apply `hπ.ne_zero` to reduce the goal to its premises. Conclude with `IsLocalization.injective R (M := p.primeCompl) p.primeCompl_le_nonZeroDivisors (h.trans (map_zero _).symm)`. Establish `hnf : ¬ IsField R`. Rewrite using `[IsLocalRing.isField_iff_maximalIdeal_eq, hmax]`.
+
+Simplify using `using hπR0`. Establish `hprin : (IsLocalRing.maximalIdeal R).IsPrincipal` using `⟨⟨_, hmax⟩⟩`. Use `haveI : IsDiscreteValuationRing R := by`. Establish `h5` using `(IsDiscreteValuationRing.TFAE R hnf).out 0 4`. Conclude with `h5.2 hprin`.
+
+Establish `hirr : Irreducible (algebraMap P R π)` using `(IsDiscreteValuationRing.irreducible_iff_uniformizer _).2 hmax`. Establish `hρP : ∀ f, algebraMap R L (algebraMap P R f) = algebraMap P L f` using `fun f => (IsScalarTower.algebraMap_apply P R L f).symm`. Establish `hR : ∀ k (r : R), ∃ r' : R, E k (algebraMap R L r) = algebraMap R L r'`. Introduce `k r`. Take `⟨f, s, rfl⟩` from `IsLocalization.exists_mk'_eq p.primeCompl r`.
+
+Establish `h1` using `IsLocalization.mk'_spec R f s`. Take `⟨w, hw⟩` from `(IsLocalization.map_units R s).exists_right_inv`. Take `⟨f1, hf1⟩` from `hE k f`. Take `⟨s1, hs1⟩` from `hE k (s : P)`. Use `⟨(algebraMap P R f1 - IsLocalization.mk' R f s * algebraMap P R s1) * w, ?_⟩` and prove the remaining obligations.
+
+Use `set x := algebraMap R L (IsLocalization.mk' R f s) with hx`. Establish `h2 : x * algebraMap P L s = algebraMap P L f`. Rewrite using `[hx, ← hρP, ← hρP, ← map_mul, h1]`. Establish `h3 : algebraMap P L s * algebraMap R L w = 1`. Rewrite using `[← hρP, ← map_mul, hw, map_one]`.
+
+Establish `h4` using `congrArg (E k) h2`. Rewrite `h4` using `[Derivation.leibniz, hf1, hs1]`. Simplify using `only [smul_eq_mul] at h4`. Rewrite using `[map_mul, map_sub, map_mul, hρP, hρP, ← hx, ← h4]`. Take the linear combination `(-E k x) * h3`.
+
+Take `⟨u, hu⟩` from `IsLocalization.map_units R (⟨fj, (hmemM _).2 hj⟩ : p.primeCompl)`. Take `⟨r, hr⟩` from `trace_jac_dvr (F := F) hnat E hR (algebraMap P R π) hirr j u (by rw [hρP, hfj, hu, hρP]) c hc b hb`. Take `⟨f, s, rfl⟩` from `IsLocalization.exists_mk'_eq p.primeCompl r`. Use `⟨f, s, (hmemM _).1 s.2, ?_⟩` and prove the remaining obligations. Rewrite using `[← hr, IsScalarTower.algebraMap_apply P R F, IsScalarTower.algebraMap_apply P R F f, ← map_mul, mul_comm, IsLocalization.mk'_spec]`.
+-/
 theorem at_prime_abs {P L F R n : Type*} [CommRing P] [IsDomain P] [IsNoetherianRing P] [Field L]
     [Field F] [CommRing R] [Algebra P R] [Algebra P F] [Algebra P L] [Algebra R F]
     [IsScalarTower P R F] [Algebra F L] [Algebra R L] [IsScalarTower R F L] [IsScalarTower P R L]

@@ -22,15 +22,26 @@ variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAl
   {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w}
   {a : Weil h →* (w.adicCompletion E)ˣ} {ha : IsLocalArtin h a} {ε : EpsFamily A}
   {rc : IrrGL (w.adicCompletion E) → WD h}
+/- English proof (translation)
+Take `⟨s, hs, h1⟩` from `GlobalTheory.SphSupport.toral_of_isSpherical GlobalTheory.bernsteinZelevinskyFiniteness_holds _ x hx`. Use `⟨s, hs, fun y hy => Or.inl ?_⟩` and prove the remaining obligations. Take `⟨χ, -, hχ, rfl⟩` from `h1 y hy`. Both sides reduce to the same expression.
+-/
 private theorem good_of_sph (x : IrrGL (w.adicCompletion E)) (hx : IsSpherical x.rep) : Good x := by
   obtain ⟨s, hs, h1⟩ := GlobalTheory.SphSupport.toral_of_isSpherical GlobalTheory.bernsteinZelevinskyFiniteness_holds _ x hx
   refine ⟨s, hs, fun y hy => Or.inl ?_⟩
   obtain ⟨χ, -, hχ, rfl⟩ := h1 y hy
   rfl
+/- English proof (translation)
+The claim follows from `SphericalUnramified.isSpherical_of_equiv (IrrGL.equivOf σ hs hi) hσ`.
+-/
 private theorem sph_of {d : ℕ} {X : Type} [AddCommGroup X] [Module ℂ X]
     (σ : Representation ℂ (GL (Fin d) (w.adicCompletion E)) X) (hs : IsSmooth σ) (hi : σ.IsIrreducible)
     (hσ : IsSpherical σ) : IsSpherical (IrrGL.of σ hs hi).rep :=
   SphericalUnramified.isSpherical_of_equiv (IrrGL.equivOf σ hs hi) hσ
+/- English proof (translation)
+Substitute `hd` using the available equality. Take `⟨α, hα⟩` from `GlobalTheory.LocLanglands.unr_eq_diag_inv E Ω A w h v hv`. Take `⟨π, hπ⟩` from `GlobalTheory.CuspRep.ParLaws.exists_hasSatake (k := w.adicCompletion E) α`. Establish `φ` using `equivRep π`. Establish `hπ' : HasSatake (GlobalTheory.LocLanglands.cls π).rep α` using `⟨IrrRep.irr _, SphericalUnramified.isSpherical_of_equiv φ hπ.2.1, (IsSubquotient.of_surjective φ.toIntertwiningMap φ.toLinearEquiv.surjective).trans hπ.2.2⟩`.
+
+Use `⟨π.V, inferInstance, inferInstance, π.ρ, π.smooth, π.irr, hπ.2.1, ?_⟩` and prove the remaining obligations. Conclude with `(H.sat (GlobalTheory.LocLanglands.cls π) α hπ').trans hα.symm`.
+-/
 private theorem sphOfUnrV (H : UpperTheory.V.Z.Win.LawsV a ha ε rc) (d : ℕ) (v : WD h) (hv : v.unr) (hd : v.lpDim = d) :
     ∃ (X : Type) (_ : AddCommGroup X) (_ : Module ℂ X) (σ : Representation ℂ (GL (Fin d) (w.adicCompletion E)) X)
       (hs : IsSmooth σ) (hi : σ.IsIrreducible), IsSpherical σ ∧ rc (IrrGL.of σ hs hi) = v := by
@@ -42,6 +53,15 @@ private theorem sphOfUnrV (H : UpperTheory.V.Z.Win.LawsV a ha ε rc) (d : ℕ) (
     (IsSubquotient.of_surjective φ.toIntertwiningMap φ.toLinearEquiv.surjective).trans hπ.2.2⟩
   refine ⟨π.V, inferInstance, inferInstance, π.ρ, π.smooth, π.irr, hπ.2.1, ?_⟩
   exact (H.sat (GlobalTheory.LocLanglands.cls π) α hπ').trans hα.symm
+/- English proof (translation)
+Introduce `s`. Proceed by induction on `s with`. Consider the case `zero`. Introduce `N d hd X _ _ σ hs hi hI`. Establish `h0 : N = 0` using `by simpa using hd.symm`.
+
+Rewrite using `[List.ofFn_zero, sumList, List.foldr_nil]`. Conclude with `P_prodRc.wd_eq_lpZero ((L.dim (IrrGL.of (multiProd (stdBlocks d hd) σ) (isSmooth_parInd _ _) hI)).trans h0)`. Consider the case `succ s ih`. Introduce `N d hd X _ _ σ hs hi hI`. Take `rfl : N = d 0 + ∑ i : Fin s, d i.succ` from `hd.symm.trans (Fin.sum_univ_succ d)`.
+
+Take `⟨Φ⟩` from `GlobalTheory.SmGL.MultiIrr.nonempty_prod₂_equiv_multiProd_succ d hd σ`. Establish `hts : IsSmooth (multiProd (stdBlocks (fun i : Fin s => d i.succ) rfl) fun i : Fin s => σ i.succ)` using `isSmooth_parInd _ _`. Establish `hti` using `GlobalTheory.SmGL.ProdIrr.isIrreducible_of_prod₂ _ _ _ _ _ _ (σ 0) _ (multiProd (stdBlocks d hd) σ) (hs 0) (hi 0) hts hI ⟨Φ.symm⟩`. Establish `key` using `L.prod (d 0) (∑ i : Fin s, d i.succ) ⟨X 0, σ 0, hs 0, hi 0⟩ ⟨_, _, hts, hti⟩ ⟨_, multiProd (stdBlocks d hd) σ, isSmooth_parInd _ _, hI⟩ ⟨Φ.symm⟩`. Use `key.trans ?_` and prove the remaining obligations.
+
+Rewrite using `[List.ofFn_succ, sumList, List.foldr_cons]`. Use `congr 1`. Conclude with `ih _ (fun i => d i.succ) rfl (fun i => X i.succ) (fun i => σ i.succ) (fun i => hs i.succ) (fun i => hi i.succ) hti`.
+-/
 private theorem prodRcV (L : UpperTheory.V.Z.Win.LawsV a ha ε rc) :
     ∀ (s N : ℕ) (d : Fin s → ℕ) (hd : ∑ b, d b = N) (X : Fin s → Type) [∀ b, AddCommGroup (X b)]
       [∀ b, Module ℂ (X b)] (σ : ∀ b, Representation ℂ (GL (Fin (d b)) (w.adicCompletion E)) (X b))
@@ -71,6 +91,11 @@ private theorem prodRcV (L : UpperTheory.V.Z.Win.LawsV a ha ε rc) :
     congr 1
     exact ih _ (fun i => d i.succ) rfl (fun i => X i.succ) (fun i => σ i.succ) (fun i => hs i.succ)
       (fun i => hi i.succ) hti
+/- English proof (translation)
+Use `choose μ hμ hcs using fun b => _root_.UpperTheory.TNZ.step_cuspSupp_alt hL _ (d b) (X b) (τ b) (hs b) (hi b) (η b) (hη b) (hdet b)`. Establish `hS` using `GlobalTheory.LocGL.SupportRing.hasSupport_multiProd hL.zel hd τ hs hi (fun b => hasSupport_of_isCuspSupport (hcs b)) hI`. Use `⟨_, hS.of_equiv (IrrGL.equivOf _ _ _), fun y hy => Or.inl ?_⟩` and prove the remaining obligations. Take `⟨c, -, hc⟩` from `Multiset.mem_sum.1 hy`. Take `⟨j, -, rfl⟩` from `Multiset.mem_map.1 hc`.
+
+Both sides reduce to the same expression.
+-/
 private theorem good_prod (hL : _root_.GlobalTheory.Mem.LiteralAutomorphy.LitLocAlt) {s N : ℕ} (d : Fin s → ℕ) (hd : ∑ b, d b = N) (X : Fin s → Type)
     [∀ b, AddCommGroup (X b)] [∀ b, Module ℂ (X b)]
     (τ : ∀ b, Representation ℂ (GL (Fin (d b)) (w.adicCompletion E)) (X b)) (hs : ∀ b, IsSmooth (τ b))
@@ -84,6 +109,31 @@ private theorem good_prod (hL : _root_.GlobalTheory.Mem.LiteralAutomorphy.LitLoc
   obtain ⟨c, -, hc⟩ := Multiset.mem_sum.1 hy
   obtain ⟨j, -, rfl⟩ := Multiset.mem_map.1 hc
   rfl
+/- English proof (translation)
+Establish `hψ : ∀ b, IsSmooth ((η b).comp a)` using `fun b => ha.smooth (hη b)`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h0, hc⟩`. Take `⟨v, hv, hsum⟩` from `step_isotypic E Ω A w h (rc x) s d (fun b => (η b).comp a) hψ hdist h0 hc`. Establish `hv' : ∀ b, ∃ v' : WD h, v'.unr ∧ v'.lpDim = d b ∧ v b = v'.lpChar (WD.lpOfChar h ((η b).comp a) (hψ b))`.
+
+Introduce `b`. Take `⟨v', hu, hdim, he⟩` from `step_scalarInertia E Ω A w h (v b) ((η b).comp a) (hψ b) (hv b).1 (fun t => by rw [(hv b).2.1]; exact (hv b).2.2 t)`. Conclude with `⟨v', hu, hdim.trans (hv b).2.1, he⟩`. Use `choose v' hu hdim he using hv'`. Use `choose Xs instA instM σ hs hi hsph hrc using fun b => sphOfUnrV H (d b) (v' b) (hu b) (hdim b)`.
+
+Use `letI := instA`. Use `letI := instM`. Establish `hs' : ∀ b, IsSmooth (twist (σ b) (detChar (Fin (d b)) (η b)))` using `fun b => isSmooth_twist (hs b) (hη b).detChar`. Establish `hi' : ∀ b, (twist (σ b) (detChar (Fin (d b)) (η b))).IsIrreducible` using `fun b => isIrreducible_twist (hi b) _`. Establish `hrc' : ∀ b, rc (IrrGL.of (twist (σ b) (detChar (Fin (d b)) (η b))) (hs' b) (hi' b)) = (rc (IrrGL.of (σ b) (hs b) (hi b))).lpChar (WD.lpOfChar h ((η b).comp a) (hψ b))` using `fun b => by`.
+
+Rewrite using `[← IrrGL.tw_of (hχ := hη b), H.twist _ _ _ (good_of_sph _ (sph_of _ _ _ (hsph b))), H.one]`. Establish `hdet : ∀ b, HasDetVec (twist (σ b) (detChar (Fin (d b)) (η b))) (η b)` using `fun b => (step_detVec _ (d b) (Xs b) (σ b) (η b)).1 (hsph b)`. Establish `hdistU : ∀ b c, b ≠ c → ∃ u : (w.adicCompletion E)ˣ, valuation (w.adicCompletion E) (u : w.adicCompletion E) = 1 ∧ η b u ≠ η c u`. Introduce `b c hbc`. Take `⟨t, ht⟩` from `hdist b c hbc`.
+
+Conclude with `⟨a (ineIncl h t), (gi E Ω A w h a ha).1 t, ht⟩`. Establish `hI` using `_root_.UpperTheory.TNZ.step_prodIrr_alt _root_.UpperTheory.TNZ.step_cuspSupp_alt hLit _ s x.1 d hd Xs (fun b => twist (σ b) (detChar (Fin (d b)) (η b))) hs' hi' η hη hdet hdistU`. Establish `hrcP` using `prodRcV H s x.1 d hd Xs (fun b => twist (σ b) (detChar (Fin (d b)) (η b))) hs' hi' hI`. Establish `heq : rc (IrrGL.of (multiProd (stdBlocks d hd) fun b => twist (σ b) (detChar (Fin (d b)) (η b))) (isSmooth_parInd _ _) hI) = rc x`. Rewrite using `[hrcP, hsum]`.
+
+Use `congr 1`. Use `List.ofFn_inj.2 (funext fun b => ?_)` and prove the remaining obligations. Rewrite using `[hrc' b, hrc b, he b]`. Establish `e2` using `(H.inj x _ (good_prod hLit d hd Xs _ hs' hi' η hη hdet hI) heq.symm).symm.trans (IrrGL.of_rep x).symm`. Take `⟨e⟩` from `IrrGL.of_eq_of.1 e2`.
+
+Conclude with `⟨Xs, instA, instM, fun b => twist (σ b) (detChar (Fin (d b)) (η b)), hs', hi', hdet, ⟨e.symm⟩⟩`. Introduce and unpack `⟨Xs, instA, instM, σ, hs, hi, hdet, ⟨e⟩⟩`. Use `letI := instA`. Use `letI := instM`. Establish `hI : (multiProd (stdBlocks d hd) σ).IsIrreducible` using `GlobalTheory.Parabolic.isIrreducible_of_equiv e x.2.rep.irr`.
+
+Establish `hx : x = IrrGL.of (multiProd (stdBlocks d hd) σ) (isSmooth_parInd _ _) hI` using `(IrrGL.of_rep x).symm.trans (IrrGL.of_eq_of.2 ⟨e⟩)`. Establish `hfac : ∀ b, ∃ u : WD h, u.unr ∧ u.lpDim = d b ∧ rc (IrrGL.of (σ b) (hs b) (hi b)) = u.lpChar (WD.lpOfChar h ((η b).comp a) (hψ b))`. Introduce `b`. Establish `hs' : IsSmooth (twist (σ b) (detChar (Fin (d b)) (η b)⁻¹))` using `isSmooth_twist (hs b) (hη b).inv.detChar`. Establish `hi' : (twist (σ b) (detChar (Fin (d b)) (η b)⁻¹)).IsIrreducible` using `isIrreducible_twist (hi b) _`.
+
+Establish `hsp` using `sph_of _ hs' hi' ((step_detVec _ (d b) (Xs b) (σ b) (η b)).2 (hdet b))`. Use `⟨_, (H.sph _).1 hsp, H.dim _, ?_⟩` and prove the remaining obligations. Rewrite using `[P_untwistRc.of_eq_tw (σ b) (hs b) (hi b) (η b) (hη b), H.twist _ _ _ (good_of_sph _ hsp), H.one]`. Use `choose u hu hud hur using hfac`. Establish `hl` using `step_sumList E Ω A w h (List.ofFn fun b => rc (IrrGL.of (σ b) (hs b) (hi b)))`.
+
+Establish `hP` using `prodRcV H s x.1 d hd Xs σ hs hi hI`. Rewrite `hP` using `[← hx]`. Rewrite using `[hP]`. Use `⟨hl.1.2 fun y hy => ?_, fun t => ?_⟩` and prove the remaining obligations. Simplify using `only [List.mem_ofFn, Set.mem_range] at hy`.
+
+Take `⟨b, rfl⟩` from `hy`. Rewrite using `[hur b]`. Conclude with `(step_unrTwist E Ω A w h (u b) _ (hψ b) (hu b)).1`. Rewrite using `[hl.2, List.map_ofFn, List.prod_ofFn]`. Use `Finset.prod_congr rfl fun b _ => ?_` and prove the remaining obligations.
+
+Simplify using `only [Function.comp_apply]`. Rewrite using `[hur b, (step_unrTwist E Ω A w h (u b) _ (hψ b) (hu b)).2 t, hud b]`. Both sides reduce to the same expression.
+-/
 private theorem gMainV (hLit : _root_.GlobalTheory.Mem.LiteralAutomorphy.LitLocAlt) (gi : ArtinInertiaProp) (H : UpperTheory.V.Z.Win.LawsV a ha ε rc)
     {s : ℕ} (d : Fin s → ℕ) (η : Fin s → (w.adicCompletion E)ˣ →* ℂˣ) (hη : ∀ b, IsSmoothChar (η b))
     (hdist : ∀ b c, b ≠ c → ∃ t : Ine (F := E) A, η b (a (ineIncl h t)) ≠ η c (a (ineIncl h t)))
@@ -160,6 +210,23 @@ private theorem gMainV (hLit : _root_.GlobalTheory.Mem.LiteralAutomorphy.LitLocA
       rw [hur b, (step_unrTwist E Ω A w h (u b) _ (hψ b) (hu b)).2 t, hud b]
       rfl
 end UpperTheory.V.Z.Win.T2
+/- English proof (translation)
+Introduce `P a1 a3 a4 a5 a6 a7 gm ge gi cm cp gr E Ω _ _ _ _ _ A w h rc hrc n χ ho`. Take `⟨a, ha, ε, H⟩` from `_root_.UpperTheory.V.Z.Win.toV' hrc`. Take `⟨μ, hμs, hμ⟩` from `a1 E Ω A w h a ha n χ ho`. Take `⟨G, σ, hG⟩` from `gr (w.adicCompletion E) n μ hμs`. Establish `hcond : ∀ π : SmIrr (GL (Fin n) (w.adicCompletion E)), Cond h rc χ ho π ↔ IsTwSphProd π.ρ G.d G.hd G.μ`.
+
+Introduce `π`. Establish `e` using `gMainV P.loc gi H G.d G.μ G.smooth (a6 gi E Ω A w h a ha n G) (IrrGL.of π.ρ π.smooth π.irred) G.hd`. Rewrite using `[← a5 _ n π.V π.ρ π.smooth π.irred G.s G.d G.hd G.μ, ← e]`. Unfold `Cond`. Use `and_congr_right fun _ => forall_congr' fun s => ?_` and prove the remaining obligations.
+
+Rewrite using `[a3 E Ω A w h a ha n χ ho μ hμ G σ hG s]`. Take `⟨hJK, h1J, hmul, hinv, hne, hKCo, h1KC, hKCJ, hlam1, hst, hfin, hv0m, hv00, hv0e⟩` from `cp (w.adicCompletion E) n G`. Establish `hK : KO (w.adicCompletion E) (Fin n) = GlobalTheory.LFun.KGL w n` using `SphCompletion.KO_completion w n`. Rewrite using `[← hK]`. Set `J : Subgroup ↥(KO (w.adicCompletion E) (Fin n))` to `{ carrier := {j | (j : GL (Fin n) (w.adicCompletion E)) ∈ G.JSet} mul_mem' := fun {x y} hx hy => (hmul _ hx _ hy).1 one_mem' := h1J inv_mem' := fun {x} hx => hinv _ hx }`.
+
+Set `lam : ↥J →* ℂˣ` to `{ toFun := fun j => Units.mk0 (G.lam ((j : ↥(KO (w.adicCompletion E) (Fin n))) : GL (Fin n) (w.adicCompletion E))) (hne _ j.2) map_one' := Units.ext (by simpa using hlam1 1 h1KC) map_mul' := fun x y => Units.ext (by simpa using (hmul _ x.2 _ y.2).2) }`. Establish `hlamv : ∀ j : ↥J, ((lam j : ℂˣ) : ℂ) = G.lam ((j : ↥(KO (w.adicCompletion E) (Fin n))) : GL (Fin n) (w.adicCompletion E))` using `fun _ => rfl`. Take `⟨m, V0, e, he, hre, heq, hsm⟩` from `a4 _ G.V0sp hfin (fun φ hφ k' => hst φ hφ k') (a7 _ n G hKCo h1KC)`. Take `⟨v0, hv0⟩ : G.v0 ∈ LinearMap.range e` from `hre ▸ hv0m`. Establish `hU : IsOpen {j : ↥(KO (w.adicCompletion E) (Fin n)) | (j : GL (Fin n) (w.adicCompletion E)) ∈ KC _ n G.lev}` using `hKCo.preimage continuous_subtype_val`.
+
+Use `⟨J, lam, m, V0, v0, ?_, ?_, hsm, fun h0 => hv00 (by rw [← hv0, h0, map_zero]), fun j => he ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `Subgroup.isOpen_of_mem_nhds J (Filter.mem_of_superset (hU.mem_nhds (show (1 : ↥(KO (w.adicCompletion E) (Fin n))) ∈ _ from h1KC)) fun j hj => hKCJ hj)`. Conclude with `Subgroup.isOpen_of_mem_nhds lam.ker (Filter.mem_of_superset ((hU.preimage continuous_subtype_val).mem_nhds (show (1 : ↥J) ∈ _ from h1KC)) fun j hj => MonoidHom.mem_ker.2 (Units.ext (by`. Rewrite using `[hlamv]`. Conclude with `hlam1 _ hj)))`.
+
+Rewrite using `[heq, hv0, hv0e _ j.2, map_smul, hv0, hlamv]`. Introduce and unpack `π ⟨x, hx, hxj⟩`. Rewrite using `[hcond]`. Use `cm P _ n G π.V π.ρ π.smooth π.irred ⟨x, hx, fun g hg => ?_⟩` and prove the remaining obligations. Use `hxj ⟨⟨g, hJK hg⟩, hg⟩` as an intermediate fact.
+
+Rewrite `this` using `[hlamv]`. Then use the resulting hypothesis. Introduce `π hc`. Rewrite `hc` using `[hcond]`. Take `⟨f, hf, hfeq⟩` from `ge _ n G π.V π.ρ hc`. Set `e' : (Fin m → ℂ) →ₗ[ℂ] ↥G.V0sp` to `LinearMap.codRestrict G.V0sp e fun v => hre ▸ LinearMap.mem_range_self e v`.
+
+Use `⟨f ∘ₗ e', hf.comp fun v v' hvv => he (congrArg Subtype.val hvv), fun κ v => ?_⟩` and prove the remaining obligations. Conclude with `hfeq κ (e' v) (e' (V0 κ v)) (heq κ v)`.
+-/
 theorem UpperTheory.V.Z.Win.T2.typeData_alt :
     _root_.UpperTheory.NonzeroTypeTheory.typeData_of_s_ty := by
   intro P a1 a3 a4 a5 a6 a7 gm ge gi cm cp gr E Ω _ _ _ _ _ A w h rc hrc n χ ho

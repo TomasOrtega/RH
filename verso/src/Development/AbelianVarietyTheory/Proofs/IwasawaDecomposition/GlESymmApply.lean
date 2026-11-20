@@ -41,9 +41,15 @@ structure Red (res : R →+* k) (t : R) (Λ : Submodule R V) {W : Type} [AddComm
   surj : ∀ w, ∃ x ∈ Λ, π x = w
   ker : ∀ x ∈ Λ, π x = 0 ↔ ∃ y ∈ Λ, ∃ s, res s ≠ 0 ∧ s • x = t • y
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ _ _ _ => trivial, fun _ _ _ _ => rfl, fun _ _ _ => rfl, fun _ h => (h trivial).elim, ⟨1, one_ne_zero⟩⟩`.
+-/
 example : Pr.Ok (RingHom.id k) (⟨⊤, id⟩ : Pr k k k) :=
   ⟨fun _ _ _ _ => trivial, fun _ _ _ _ => rfl, fun _ _ _ => rfl, fun _ h => (h trivial).elim, ⟨1, one_ne_zero⟩⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ _ _ _ => rfl, fun _ _ _ => rfl, fun w => ⟨w, trivial, rfl⟩, fun x _ => ⟨fun h => ⟨0, trivial, 1, one_ne_zero, by simpa using h⟩, fun ⟨_, _, s, hs, h⟩ => by have h' : s * x = 0 := by simpa using h exact (mul_eq_zero.1 h').resolve_left hs⟩⟩`.
+-/
 example : Red (RingHom.id k) 0 (⊤ : Submodule k k) (id : k → k) :=
   ⟨fun _ _ _ _ => rfl, fun _ _ _ => rfl, fun w => ⟨w, trivial, rfl⟩, fun x _ =>
     ⟨fun h => ⟨0, trivial, 1, one_ne_zero, by simpa using h⟩, fun ⟨_, _, s, hs, h⟩ => by
@@ -55,12 +61,21 @@ def Unram (res : R →+* k) (t : R) : Prop := res t = 0 ∧ ∀ a, res a = 0 →
 abbrev loc (res : R →+* k) (M : Submodule R V) : Submodule R V :=
   @Formalism.HermitianLatticesTheory.localization₂ R _ V _ _ (RingHom.ker res) (RingHom.ker_isPrime res) M
 
+/- English proof (translation)
+The claim follows from `@rlv_mem_locP R V _ _ _ (RingHom.ker res) (RingHom.ker_isPrime res) M x`.
+-/
 theorem mem_loc (res : R →+* k) (M : Submodule R V) (x : V) : x ∈ loc res M ↔ ∃ s, res s ≠ 0 ∧ s • x ∈ M :=
   @rlv_mem_locP R V _ _ _ (RingHom.ker res) (RingHom.ker_isPrime res) M x
 
+/- English proof (translation)
+Introduce `x hx` and use `(mem_loc res M x).2 ⟨1, by simp, by simpa using hx⟩`.
+-/
 theorem le_loc (res : R →+* k) (M : Submodule R V) : M ≤ loc res M := fun x hx =>
   (mem_loc res M x).2 ⟨1, by simp, by simpa using hx⟩
 
+/- English proof (translation)
+Take `⟨s', hs', h'⟩` from `(mem_loc res M _).1 h`. Conclude with `(mem_loc res M x).2 ⟨s' * s, by rw [map_mul]; exact mul_ne_zero hs' hs, by rwa [mul_smul]⟩`.
+-/
 theorem loc_sat (res : R →+* k) (M : Submodule R V) (s : R) (x : V) (hs : res s ≠ 0) (h : s • x ∈ loc res M) :
     x ∈ loc res M := by
   obtain ⟨s', hs', h'⟩ := (mem_loc res M _).1 h
@@ -71,9 +86,17 @@ variable {W : Type} [AddCommGroup W] [Module k W]
 def locExt (res : R →+* k) (M : Submodule R V) (pr : M →+ W) (x : V) : W :=
   if h : ∃ s, res s ≠ 0 ∧ s • x ∈ M then (res h.choose)⁻¹ • pr ⟨_, h.choose_spec.2⟩ else 0
 
+/- English proof (translation)
+The claim follows from `dif_neg (fun h => hx ((mem_loc res M x).2 h))`.
+-/
 theorem locExt_off (res : R →+* k) (M : Submodule R V) (pr : M →+ W) (x : V) (hx : x ∉ loc res M) :
     locExt res M pr x = 0 := dif_neg (fun h => hx ((mem_loc res M x).2 h))
 
+/- English proof (translation)
+Establish `h0` using `(mem_loc res M x).1 hx`. Unfold `locExt`. Rewrite using `[dif_pos h0]`. Establish `h1` using `h0.choose_spec`. Establish `e : h0.choose • (⟨a • x, h⟩ : M) = a • ⟨_, h1.2⟩` using `Subtype.ext (smul_comm _ _ _)`.
+
+Use `congrArg pr e` as an intermediate fact. Rewrite `this` using `[hs, hs]`. Rewrite using `[smul_comm, ← this, smul_smul, inv_mul_cancel₀ h1.1, one_smul]`.
+-/
 theorem locExt_spec (res : R →+* k) (M : Submodule R V) (pr : M →+ W) (hs : ∀ (a : R) z, pr (a • z) = res a • pr z)
     (x : V) (hx : x ∈ loc res M) (a : R) (h : a • x ∈ M) : pr ⟨a • x, h⟩ = res a • locExt res M pr x := by
   have h0 := (mem_loc res M x).1 hx
@@ -85,12 +108,22 @@ theorem locExt_spec (res : R →+* k) (M : Submodule R V) (pr : M →+ W) (hs : 
   rw [hs, hs] at this
   rw [smul_comm, ← this, smul_smul, inv_mul_cancel₀ h1.1, one_smul]
 
+/- English proof (translation)
+Use `locExt_spec res M pr hs z (le_loc res M z.2) 1 (by simp)` as an intermediate fact. Rewrite `this` using `[map_one, one_smul k]`. Rewrite using `[← this]`. Use `congr 1`. Conclude with `Subtype.ext (one_smul _ _)`.
+-/
 theorem locExt_coe (res : R →+* k) (M : Submodule R V) (pr : M →+ W) (hs : ∀ (a : R) z, pr (a • z) = res a • pr z)
     (z : M) : locExt res M pr z = pr z := by
   have := locExt_spec res M pr hs z (le_loc res M z.2) 1 (by simp)
   rw [map_one, one_smul k] at this
   rw [← this]; congr 1; exact Subtype.ext (one_smul _ _)
 
+/- English proof (translation)
+Take `⟨s, hs0, h1⟩` from `(mem_loc res M x).1 hx`. Take `⟨s', hs0', h2⟩` from `(mem_loc res M y).1 hy`. Establish `h1' : (s' * s) • x ∈ M` using `by rw [mul_smul]; exact M.smul_mem _ h1`. Establish `h2' : (s' * s) • y ∈ M` using `by rw [mul_comm, mul_smul]; exact M.smul_mem _ h2`. Establish `h3 : (s' * s) • (x + y) ∈ M` using `by rw [smul_add]; exact M.add_mem h1' h2'`.
+
+Establish `hne : res (s' * s) ≠ 0` using `by rw [map_mul]; exact mul_ne_zero hs0' hs0`. Apply `smul_right_injective W hne` to reduce the goal to its premises. Simplify using `only [smul_add]`. Rewrite using `[← locExt_spec res M pr hs _ hx _ h1', ← locExt_spec res M pr hs _ hy _ h2', ← locExt_spec res M pr hs _ (add_mem hx hy) _ h3, ← map_add]`. Use `congr 1`.
+
+Conclude with `Subtype.ext (smul_add _ _ _)`.
+-/
 theorem locExt_add (res : R →+* k) (M : Submodule R V) (pr : M →+ W) (hs : ∀ (a : R) z, pr (a • z) = res a • pr z)
     (x : V) (hx : x ∈ loc res M) (y : V) (hy : y ∈ loc res M) :
     locExt res M pr (x + y) = locExt res M pr x + locExt res M pr y := by
@@ -106,6 +139,11 @@ theorem locExt_add (res : R →+* k) (M : Submodule R V) (pr : M →+ W) (hs : �
     ← locExt_spec res M pr hs _ (add_mem hx hy) _ h3, ← map_add]
   congr 1; exact Subtype.ext (smul_add _ _ _)
 
+/- English proof (translation)
+Take `⟨s, hs0, h1⟩` from `(mem_loc res M x).1 hx`. Establish `h2 : s • a • x ∈ M` using `by rw [smul_comm]; exact M.smul_mem _ h1`. Apply `smul_right_injective W hs0` to reduce the goal to its premises. Simplify using `only`. Rewrite using `[← locExt_spec res M pr hs _ (Submodule.smul_mem _ a hx) _ h2, smul_comm (res s) (res a), ← locExt_spec res M pr hs _ hx _ h1, ← hs]`.
+
+Use `congr 1`. Conclude with `Subtype.ext (smul_comm _ _ _)`.
+-/
 theorem locExt_smul (res : R →+* k) (M : Submodule R V) (pr : M →+ W) (hs : ∀ (a : R) z, pr (a • z) = res a • pr z)
     (a : R) (x : V) (hx : x ∈ loc res M) : locExt res M pr (a • x) = res a • locExt res M pr x := by
   obtain ⟨s, hs0, h1⟩ := (mem_loc res M x).1 hx
@@ -116,6 +154,15 @@ theorem locExt_smul (res : R →+* k) (M : Submodule R V) (pr : M →+ W) (hs : 
     ← locExt_spec res M pr hs _ hx _ h1, ← hs]
   congr 1; exact Subtype.ext (smul_comm _ _ _)
 
+/- English proof (translation)
+Use `⟨locExt_add res M pr hs, locExt_smul res M pr hs, fun w => ?_, fun x hx => ⟨fun h => ?_, ?_⟩⟩` and prove the remaining obligations. Take `⟨z, rfl⟩` from `hsurj w`. Conclude with `⟨z, le_loc res M z.2, locExt_coe res M pr hs z⟩`. Take `⟨s, hs0, h1⟩` from `(mem_loc res M x).1 hx`. Establish `h2` using `locExt_spec res M pr hs x hx s h1`.
+
+Rewrite `h2` using `[h, smul_zero, hker]`. Establish `key : ∀ z ∈ RingHom.ker res • M, ∃ y ∈ M, ∃ s, res s ≠ 0 ∧ s • z = t • y`. Introduce `z hz`. Use `Submodule.smul_induction_on hz (fun a ha m hm => ?_) ?_` and prove the remaining obligations. Take `⟨s, b, h3, h4⟩` from `hu.2 a ha`.
+
+Conclude with `⟨b • m, M.smul_mem _ hm, s, h3, by rw [smul_smul, smul_smul, h4]⟩`. Introduce and unpack `a b ⟨y, hy, s, h3, h4⟩ ⟨y', hy', s', h3', h4'⟩`. Use `⟨s' • y + s • y', M.add_mem (M.smul_mem _ hy) (M.smul_mem _ hy'), s' * s, by rw [map_mul]; exact mul_ne_zero h3' h3, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add, smul_add, mul_smul, h4, mul_comm, mul_smul, h4', smul_comm t s', smul_comm t s]`. Take `⟨y, hy, s', h3, h4⟩` from `key _ h2`.
+
+Conclude with `⟨y, le_loc res M hy, s' * s, by rw [map_mul]; exact mul_ne_zero h3 hs0, by rw [mul_smul]; exact h4⟩`. Introduce and unpack `⟨y, hy, s, hs0, h⟩`. Establish `h1` using `locExt_smul res M pr hs s x hx`. Rewrite `h1` using `[h, locExt_smul res M pr hs t y hy, hu.1, zero_smul]`. Conclude with `(smul_eq_zero.1 h1.symm).resolve_left hs0`.
+-/
 theorem locExt_red (res : R →+* k) (t : R) (hu : Unram res t) (M : Submodule R V) (pr : M →+ W)
     (hs : ∀ (a : R) z, pr (a • z) = res a • pr z) (hsurj : Function.Surjective pr)
     (hker : ∀ z, pr z = 0 ↔ z.1 ∈ RingHom.ker res • M) : Red res t (loc res M) (locExt res M pr) := by
@@ -144,6 +191,13 @@ theorem locExt_red (res : R →+* k) (t : R) (hu : Unram res t) (M : Submodule R
 def pairOf (res : R →+* k) (M : Submodule R V) (pr : M →+ W) (φ : Module.Dual k W) : Pr R V k :=
   ⟨loc res M, fun x => φ (locExt res M pr x)⟩
 
+/- English proof (translation)
+Use `⟨loc_sat res M, fun x hx y hy => ?_, fun a x hx => ?_, fun x hx => ?_, ?_⟩` and prove the remaining obligations. Use `show φ _ = φ _ + φ _`. Rewrite using `[locExt_add res M pr hs x hx y hy, map_add]`. Use `show φ _ = _ * φ _`. Rewrite using `[locExt_smul res M pr hs a x hx, map_smul, smul_eq_mul]`.
+
+Use `show φ _ = 0`. Rewrite using `[locExt_off res M pr x hx, map_zero]`. Assume the negation of the conclusion as `h push Not at h`. Apply `hφ` to reduce the goal to its premises. Use extensionality with `w`.
+
+Take `⟨z, rfl⟩` from `hsurj w`. Use `h z` as an intermediate fact. Express the relevant statement in the definitionally equal form `φ _ = 0 at this`. Rewrite `this` using `[locExt_coe res M pr hs]`. Then use the resulting hypothesis.
+-/
 theorem pairOf_ok (res : R →+* k) (M : Submodule R V) (pr : M →+ W) (φ : Module.Dual k W)
     (hs : ∀ (a : R) z, pr (a • z) = res a • pr z) (hsurj : Function.Surjective pr) (hφ : φ ≠ 0) :
     (pairOf res M pr φ).Ok res := by
@@ -163,36 +217,64 @@ theorem pairOf_ok (res : R →+* k) (M : Submodule R V) (pr : M →+ W) (φ : Mo
     change φ _ = 0 at this
     rwa [locExt_coe res M pr hs] at this
 
+/- English proof (translation)
+The claim follows from `Submodule.mem_map_equiv _`.
+-/
 theorem Pr.mem_act (g : V ≃ₗ[R] V) (p : Pr R V k) (x : V) : x ∈ (p.act g).L ↔ g.symm x ∈ p.L :=
   Submodule.mem_map_equiv _
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `only [Pr.mem_act]`. Both sides reduce to the same expression. Both sides reduce to the same expression.
+-/
 theorem Pr.act_act (g g' : V ≃ₗ[R] V) (p : Pr R V k) : (p.act g).act g' = p.act (g.trans g') := by
   ext x
   · simp only [Pr.mem_act]; rfl
   · rfl
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `only [Pr.mem_act]`. Both sides reduce to the same expression. Both sides reduce to the same expression.
+-/
 theorem Pr.act_refl (p : Pr R V k) : p.act (LinearEquiv.refl R V) = p := by
   ext x
   · simp only [Pr.mem_act]; rfl
   · rfl
 
+/- English proof (translation)
+Introduce `p q h`. Use `congrArg (Pr.act g.symm) h` as an intermediate fact. Rewrite `this` using `[Pr.act_act, Pr.act_act, LinearEquiv.self_trans_symm, Pr.act_refl, Pr.act_refl]`. Then use the resulting hypothesis.
+-/
 theorem Pr.act_injective (g : V ≃ₗ[R] V) : Function.Injective (Pr.act g : Pr R V k → Pr R V k) := by
   intro p q h
   have := congrArg (Pr.act g.symm) h
   rwa [Pr.act_act, Pr.act_act, LinearEquiv.self_trans_symm, Pr.act_refl, Pr.act_refl] at this
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem Pr.act_dil (g : V ≃ₗ[R] V) (a : k) (p : Pr R V k) : (p.dil a).act g = (p.act g).dil a := rfl
 
+/- English proof (translation)
+Use extensionality with `x`. Both sides reduce to the same expression. Conclude with `(mul_assoc _ _ _).symm`.
+-/
 theorem Pr.dil_dil (a b : k) (p : Pr R V k) : (p.dil a).dil b = p.dil (b * a) := by
   ext x
   · rfl
   · exact (mul_assoc _ _ _).symm
 
+/- English proof (translation)
+Use extensionality with `x`. Both sides reduce to the same expression. Conclude with `one_mul _`.
+-/
 theorem Pr.dil_one (p : Pr R V k) : p.dil 1 = p := by
   ext x
   · rfl
   · exact one_mul _
 
+/- English proof (translation)
+Use `⟨fun s x hs hx => ?_, fun x hx y hy => ?_, fun a x hx => ?_, fun x hx => ?_, ?_⟩` and prove the remaining obligations. Rewrite `hx`, the goal using `[Pr.mem_act]`. Rewrite `hx` using `[map_smul]`. Conclude with `h.sat s _ hs hx`. Rewrite using `[Pr.mem_act] at hx hy show p.f _ = p.f _ + p.f _`.
+
+Rewrite using `[map_add, h.add _ hx _ hy]`. Rewrite using `[Pr.mem_act] at hx show p.f _ = _ * p.f _`. Rewrite using `[map_smul, h.smul _ _ hx]`. Rewrite `hx` using `[Pr.mem_act]`. Conclude with `h.off _ hx`.
+
+Take `⟨x, hx⟩` from `h.ne`. Conclude with `⟨g x, by show p.f _ ≠ 0; rwa [g.symm_apply_apply]⟩`.
+-/
 theorem Pr.Ok.act {res : R →+* k} {p : Pr R V k} (h : p.Ok res) (g : V ≃ₗ[R] V) : (p.act g).Ok res := by
   refine ⟨fun s x hs hx => ?_, fun x hx y hy => ?_, fun a x hx => ?_, fun x hx => ?_, ?_⟩
   · rw [Pr.mem_act] at hx ⊢
@@ -208,6 +290,11 @@ theorem Pr.Ok.act {res : R →+* k} {p : Pr R V k} (h : p.Ok res) (g : V ≃ₗ[
   · obtain ⟨x, hx⟩ := h.ne
     exact ⟨g x, by show p.f _ ≠ 0; rwa [g.symm_apply_apply]⟩
 
+/- English proof (translation)
+Use `⟨h.sat, fun x hx y hy => ?_, fun b x hx => ?_, fun x hx => ?_, ?_⟩` and prove the remaining obligations. Use `show a * _ = a * _ + a * _`. Rewrite using `[h.add _ hx _ hy, mul_add]`. Use `show a * _ = _ * (a * _)`. Rewrite using `[h.smul _ _ hx]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `show a * _ = 0`. Rewrite using `[h.off _ hx, mul_zero]`. Take `⟨x, hx⟩` from `h.ne`. Conclude with `⟨x, mul_ne_zero ha hx⟩`.
+-/
 theorem Pr.Ok.dil {res : R →+* k} {p : Pr R V k} (h : p.Ok res) {a : k} (ha : a ≠ 0) : (p.dil a).Ok res := by
   refine ⟨h.sat, fun x hx y hy => ?_, fun b x hx => ?_, fun x hx => ?_, ?_⟩
   · show a * _ = a * _ + a * _
@@ -219,6 +306,11 @@ theorem Pr.Ok.dil {res : R →+* k} {p : Pr R V k} (h : p.Ok res) {a : k} (ha : 
   · obtain ⟨x, hx⟩ := h.ne
     exact ⟨x, mul_ne_zero ha hx⟩
 
+/- English proof (translation)
+Take `⟨h1, h2, e, h3, h4⟩` from `h`. Use `⟨h1.act g, fun y => ?_, g e, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Pr.mem_act, Pr.mem_act]`. Conclude with `h2 _`. Use `show q.f _ = 1`.
+
+Rewrite using `[g.symm_apply_apply]` and apply the resulting hypothesis. Use `show p.f _ = 1`. Rewrite using `[← map_smul, g.symm_apply_apply]` and apply the resulting hypothesis.
+-/
 theorem Pr.Inc.act {res : R →+* k} {t : R} {p q : Pr R V k} (h : Pr.Inc res t p q) (g : V ≃ₗ[R] V) :
     Pr.Inc res t (p.act g) (q.act g) := by
   obtain ⟨h1, h2, e, h3, h4⟩ := h
@@ -229,6 +321,9 @@ theorem Pr.Inc.act {res : R →+* k} {t : R} {p q : Pr R V k} (h : Pr.Inc res t 
   · show p.f _ = 1
     rwa [← map_smul, g.symm_apply_apply]
 
+/- English proof (translation)
+Use `⟨fun h => ?_, fun h => h.act g⟩` and prove the remaining obligations. Use `h.act g.symm` as an intermediate fact. Rewrite `this` using `[Pr.act_act, Pr.act_act, LinearEquiv.self_trans_symm, Pr.act_refl, Pr.act_refl]`. Then use the resulting hypothesis.
+-/
 theorem Pr.inc_act_iff {res : R →+* k} {t : R} (p q : Pr R V k) (g : V ≃ₗ[R] V) :
     Pr.Inc res t (p.act g) (q.act g) ↔ Pr.Inc res t p q := by
   refine ⟨fun h => ?_, fun h => h.act g⟩
@@ -251,12 +346,27 @@ def glE (γ : GL (Fin n) E) : (Fin n → E) ≃ₗ[𝓞 E] (Fin n → E) :=
       show (γ⁻¹).1 *ᵥ (γ.1 *ᵥ x) = x
       rw [Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec])
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem glE_apply (γ : GL (Fin n) E) (x : Fin n → E) : glE γ x = γ.1 *ᵥ x := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem glE_symm_apply (γ : GL (Fin n) E) (x : Fin n → E) : (glE γ).symm x = (γ⁻¹).1 *ᵥ x := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem map_glE (γ : GL (Fin n) E) (L : Submodule (𝓞 E) (Fin n → E)) :
     L.map (glE γ : (Fin n → E) →ₗ[𝓞 E] (Fin n → E)) = mulLat γ.1 L := rfl
+/- English proof (translation)
+Use `ext1 x`. Simplify using `[glE_apply, Matrix.mulVec_mulVec]`.
+-/
 theorem glE_mul (γ γ' : GL (Fin n) E) : glE (γ * γ') = (glE γ').trans (glE γ) := by
   ext1 x; simp [glE_apply, Matrix.mulVec_mulVec]
+/- English proof (translation)
+Use `ext1 x`. Simplify using `[glE_apply]`.
+-/
 theorem glE_one : glE (1 : GL (Fin n) E) = LinearEquiv.refl _ _ := by
   ext1 x; simp [glE_apply]
 
@@ -296,6 +406,9 @@ def pc (P : LvTied u A i hi) (v : (D.mem u).A.vT) (c : (D.mem u).C.cls i) :
     Pr (𝓞 D.host.E) (Fin (D.R.N i) → D.host.E) ((D.mem u).A.Fv v) :=
   pairOf (A.res v) (Ld D u i hi c) (P.pr v c) ((D.fm u).fv i v c)
 
+/- English proof (translation)
+The claim follows from `pairOf_ok _ _ _ _ (P.pr_smul v c) (P.pr_surj v c) ((D.fm u).fv_ne i v c)`.
+-/
 theorem pc_ok (P : LvTied u A i hi) (v : (D.mem u).A.vT) (c : (D.mem u).C.cls i) : (pc P v c).Ok (A.res v) :=
   pairOf_ok _ _ _ _ (P.pr_smul v c) (P.pr_surj v c) ((D.fm u).fv_ne i v c)
 
@@ -311,6 +424,13 @@ abbrev dualV (K : ClsTied u i hi) (v : HeightOneSpectrum (𝓞 D.host.F)) :=
 set_option maxHeartbeats 1000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+Introduce `x hx`. Apply `Submodule.subset_span` to reduce the goal to its premises. Introduce `x' hx'`. Establish `hglob : ∀ z ∈ clsCrd D u i hi c, z ∈ Formalism.UG.CS.globLat (K.y c).1 K.lev.Lb`. Introduce `z hz`.
+
+Conclude with `(K.y_lat c _).1 (Submodule.subset_span ⟨z, hz, rfl⟩)`. Establish `hm : ∀ a ∈ K.lev.Lb, ∀ b ∈ K.lev.Lb, IsIntegral ℤ (((1 : ℤ) : D.host.E) * Formalism.UG.hform (sigD D : D.host.E →+* D.host.E) (gramN D i hi) a b)`. Introduce `a ha b hb`. Take `⟨r, hr⟩` from `K.lev.Lb_int b hb a ha`. Rewrite using `[Int.cast_one, one_mul, ← hr]`.
+
+Conclude with `RingOfIntegers.isIntegral_coe r`. Establish `h` using `Formalism.UG.P.csScale_glob (sigD D) (gramN D i hi) K.lev.Lb 1 hm (K.y c).1 (K.y c).2 (hglob x' hx') (hglob x hx)`. Rewrite `h` using `[Int.cast_one, one_mul]`. Conclude with `bwL_descent _ _ _ h`.
+-/
 theorem cls_le_dual (K : ClsTied u i hi) (c : (D.mem u).C.cls i) : clsCrd D u i hi c ≤ Ld D u i hi c := by
   intro x hx
   apply Submodule.subset_span
@@ -329,6 +449,15 @@ theorem cls_le_dual (K : ClsTied u i hi) (c : (D.mem u).C.cls i) : clsCrd D u i 
   rw [Int.cast_one, one_mul] at h
   exact bwL_descent _ _ _ h
 
+/- English proof (translation)
+Establish `hle : Lk A i hi v c ≤ Ld D u i hi c` using `sup_le (cls_le_dual K c) Submodule.smul_le_right`. Introduce `y`. Prove the components needed by the constructor for the conclusion. Introduce `hy`. Take `⟨s, hs, h⟩` from `(mem_loc _ _ _).1 hy`.
+
+Establish `hy' : y ∈ loc (A.res v) (Ld D u i hi c)` using `(mem_loc _ _ _).2 ⟨s, hs, hle h⟩`. Use `⟨hy', ?_⟩` and prove the remaining obligations. Establish `h1` using `(P.fv_ker v c ⟨_, hle h⟩).2 h`. Rewrite `h1` using `[locExt_spec _ _ _ (P.pr_smul v c) y hy' s (hle h), map_smul, smul_eq_zero]`. Conclude with `h1.resolve_left hs`.
+
+Introduce and unpack `⟨hy, h0⟩`. Take `⟨s, hs, h⟩` from `(mem_loc _ _ _).1 hy`. Use `(mem_loc _ _ _).2 ⟨s, hs, (P.fv_ker v c ⟨_, h⟩).1 ?_⟩` and prove the remaining obligations. Rewrite using `[locExt_spec _ _ _ (P.pr_smul v c) y hy s h, map_smul]`. Express the relevant statement in the definitionally equal form `(D.fm u).fv i v c _ = 0 at h0`.
+
+Rewrite using `[h0, smul_zero]`.
+-/
 theorem pc_isKer (P : LvTied u A i hi) (K : ClsTied u i hi) (v : (D.mem u).A.vT) (c : (D.mem u).C.cls i) :
     (pc P v c).IsKer (loc (A.res v) (Lk A i hi v c)) := by
   have hle : Lk A i hi v c ≤ Ld D u i hi c := sup_le (cls_le_dual K c) Submodule.smul_le_right

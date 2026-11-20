@@ -15,6 +15,13 @@ section General
 
 variable {R V W : Type*} [CommRing R] [AddCommGroup V] [Module R V] [AddCommGroup W] [Module R W]
 
+/- English proof (translation)
+Take `⟨emb⟩ : Nonempty (t ↪ Fin e)` from `Function.Embedding.nonempty_of_card_le (by simpa using hc)`. Use `⟨Function.extend emb (fun x => (x : V)) 0, le_antisymm (Submodule.span_le.2 ?_) (Submodule.span_mono ?_)⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩`. Distinguish the cases in `hi : ∃ x, emb x = i`. Take `⟨x, rfl⟩` from `hi`.
+
+Simplify using `only [emb.injective.extend_apply]`. Conclude with `Submodule.subset_span x.2`. Simplify using `only [Function.extend_apply' _ _ _ hi]`. Simplify using the standard rewrite rules. Introduce `x hx`.
+
+Conclude with `⟨emb ⟨x, hx⟩, by simp only [emb.injective.extend_apply]⟩`.
+-/
 theorem exists_fun_span (t : Finset V) {e : ℕ} (hc : t.card ≤ e) :
     ∃ g : Fin e → V, Submodule.span R (Set.range g) = Submodule.span R (t : Set V) := by
   obtain ⟨emb⟩ : Nonempty (t ↪ Fin e) :=
@@ -30,6 +37,19 @@ theorem exists_fun_span (t : Finset V) {e : ℕ} (hc : t.card ≤ e) :
   · intro x hx
     exact ⟨emb ⟨x, hx⟩, by simp only [emb.injective.extend_apply]⟩
 
+/- English proof (translation)
+Take `⟨t', hc, ht'⟩` from `GlobalTheory.Mass.LatticeGens.exists_gens_of_between A m hm T hT (A ⊔ B.map f) le_sup_left (sup_le le_sup_left hB)`. Establish `h1 : ∀ w ∈ t', ∃ v ∈ B, w - f v ∈ A`. Introduce `w hw`. Establish `: w ∈ A ⊔ B.map f`. Rewrite using `[ht']`.
+
+Conclude with `Submodule.mem_sup_right (Submodule.subset_span hw)`. Take `⟨a, ha, _, ⟨v, hv, rfl⟩, rfl⟩` from `Submodule.mem_sup.1 this`. Conclude with `⟨v, hv, by simpa using ha⟩`. Use `choose! φ hφB hφA using h1`. Establish `hsp : Submodule.span R ((t'.image φ : Finset V) : Set V) ≤ B`.
+
+Rewrite using `[Submodule.span_le]`. Introduce `v hv`. Take `⟨w, hw, rfl⟩` from `Finset.mem_image.1 hv`. Conclude with `hφB w hw`. Use `⟨t'.image φ, Finset.card_image_le.trans hc, le_antisymm (fun v hv => ?_) (sup_le inf_le_left hsp)⟩` and prove the remaining obligations.
+
+Establish `h2 : A ⊔ B.map f ≤ A ⊔ (Submodule.span R ((t'.image φ : Finset V) : Set V)).map f`. Rewrite using `[ht']`. Use `sup_le le_sup_left (Submodule.span_le.2 fun w hw => ?_)` and prove the remaining obligations. Establish `e : w = (w - f (φ w)) + f (φ w)` using `by abel`. Rewrite using `[e]`.
+
+Conclude with `Submodule.add_mem_sup (hφA w hw) (Submodule.mem_map_of_mem (Submodule.subset_span (Finset.mem_coe.2 (Finset.mem_image_of_mem φ hw))))`. Take `⟨a, ha, _, ⟨s, hs, rfl⟩, e⟩` from `Submodule.mem_sup.1 (h2 (Submodule.mem_sup_right (Submodule.mem_map_of_mem hv)))`. Establish `e' : v = (v - s) + s` using `by abel`. Rewrite using `[e']`. Use `Submodule.add_mem_sup ⟨B.sub_mem hv (hsp hs), ?_⟩ hs` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `f (v - s) ∈ A`. Rewrite using `[map_sub, ← e]`. Simplify using `using ha`.
+-/
 theorem exists_gens_of_map [IsDedekindDomain R] (f : V →ₗ[R] W) (B : Submodule R V) (A : Submodule R W)
     (m : R) (hm : m ≠ 0) (T : Finset W) (hT : ∀ x ∈ T, m • x ∈ A)
     (hB : B.map f ≤ A ⊔ Submodule.span R (T : Set W)) :
@@ -71,6 +91,9 @@ variable {K V : Type} [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [M
   [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V]
 
 omit [NumberField K] [StarRing K] [Module K V] [IsScalarTower (𝓞 K) K V] in
+/- English proof (translation)
+Take `⟨t, hc, rfl⟩` from `h1`. Take `⟨t', hc', rfl⟩` from `h2`. Use `⟨t ∪ t', (Finset.card_union_le _ _).trans (by omega), ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.coe_union, Submodule.span_union, sup_assoc, sup_comm (Submodule.span _ (t' : Set V))]`.
+-/
 theorem GenBy.trans {A B C : Submodule (𝓞 K) V} {e e' : ℕ} (h1 : GenBy A B e) (h2 : GenBy B C e') :
     GenBy A C (e + e') := by
   obtain ⟨t, hc, rfl⟩ := h1
@@ -78,6 +101,33 @@ theorem GenBy.trans {A B C : Submodule (𝓞 K) V} {e e' : ℕ} (h1 : GenBy A B 
   refine ⟨t ∪ t', (Finset.card_union_le _ _).trans (by omega), ?_⟩
   rw [Finset.coe_union, Submodule.span_union, sup_assoc, sup_comm (Submodule.span _ (t' : Set V))]
 
+/- English proof (translation)
+Take `⟨t, hc, hY⟩` from `hg`. Establish `hmK : (m : K) ≠ 0` using `Nat.cast_ne_zero.2 hm`. Establish `htY : ∀ s : t, (s : V) ∈ Y` using `fun s => by`. Rewrite using `[hY]`. Conclude with `Submodule.mem_sup_right (Submodule.subset_span s.2)`.
+
+Set `f : V →ₗ[𝓞 K] (t → K)` to `LinearMap.pi fun s => (h (s : V)).restrictScalars (𝓞 K)`. Set `A : Submodule (𝓞 K) (t → K)` to `Submodule.pi Set.univ fun _ => 1`. Set `T : Finset (t → K)` to `Finset.univ.image fun s : t => Pi.single s (m : K)⁻¹`. Establish `hsm : ∀ (c : 𝓞 K) (a : K), c • a = (c : K) * a` using `fun c a => Algebra.smul_def c a`. Take `⟨t', hc', ht'⟩` from `exists_gens_of_map f (Formalism.HermitianLatticesTheory.dual h X) A (m : 𝓞 K) (Nat.cast_ne_zero.2 hm) T (by`.
+
+Introduce `x hx`. Take `⟨s, -, rfl⟩` from `Finset.mem_image.1 hx`. Introduce `i _`. Distinguish the cases in `hi : i = s`. Substitute `hi` using the available equality.
+
+Use `Submodule.mem_one.2 ⟨1, ?_⟩` and prove the remaining obligations. Simplify using `[hsm, hmK]`. Simplify using `[hi])`. Use the proof step `(by`. Introduce and unpack `_ ⟨v, hv, rfl⟩`.
+
+Use `Submodule.mem_sup_right ?_` and prove the remaining obligations. Rewrite using `[← Finset.univ_sum_single (f v)]`. Use `Submodule.sum_mem _ fun s _ => ?_` and prove the remaining obligations. Take `⟨c, hc⟩` from `Submodule.mem_one.1 ((Formalism.HermitianLatticesTheory.dualBasic_mem_dual h X v).1 hv _ (hmY _ (htY s)))`. Establish `e1 : (Pi.single s (f v s) : t → K) = c • (Pi.single s (m : K)⁻¹ : t → K)`.
+
+Rewrite using `[← Pi.single_smul, hsm]`. Use `congr 1`. Establish `e2 : h ((m : 𝓞 K) • (s : V)) v = (m : K) * h s v`. Rewrite using `[Nat.cast_smul_eq_nsmul, map_nsmul]`. Simplify using the standard rewrite rules.
+
+Express the relevant statement in the definitionally equal form `h s v = algebraMap (𝓞 K) K c * _`. Rewrite using `[hc, e2]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e1]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span (Finset.mem_coe.2 (Finset.mem_image_of_mem _ (Finset.mem_univ s)))))`.
+
+Use `⟨t', hc'.trans (Finset.card_image_le.trans (by simpa using hc)), ?_⟩` and prove the remaining obligations. Establish `: Formalism.HermitianLatticesTheory.dual h X ⊓ A.comap f = Formalism.HermitianLatticesTheory.dual h Y`. Use extensionality with `v`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hv, hv'⟩`.
+
+Rewrite using `[Formalism.HermitianLatticesTheory.dualBasic_mem_dual]`. Introduce `y hy`. Rewrite `hy` using `[hY]`. Take `⟨a, ha, s, hs, rfl⟩` from `Submodule.mem_sup.1 hy`. Rewrite using `[map_add, LinearMap.add_apply]`.
+
+Use `add_mem ((Formalism.HermitianLatticesTheory.dualBasic_mem_dual h X v).1 hv a ha) ?_` and prove the remaining obligations. Use `clear hy`. Proceed by induction on `hs using Submodule.span_induction with`. Consider the case `mem s hs => exact hv' ⟨s, hs⟩ trivial`. Consider the case `zero => simp`.
+
+Consider the case `add a b _ _ ha hb => rw [map_add, LinearMap.add_apply]`. Conclude with `add_mem ha hb`. Consider the case `smul c a _ ha`. Rewrite using `[Formalism.HermitianLatticesTheory.genusBasic_hsmul_left Formalism.HermitianLatticesTheory.genusCovol_hinj Formalism.HermitianLatticesTheory.star_algebraMap_ringOfIntegers_mem_range]`. Rewrite using `[← Algebra.smul_def]`.
+
+Conclude with `Submodule.smul_mem _ _ ha`. Introduce `hv`. Rewrite `hv` using `[Formalism.HermitianLatticesTheory.dualBasic_mem_dual]`. Use `⟨(Formalism.HermitianLatticesTheory.dualBasic_mem_dual h X v).2 fun y hy => hv y ?_, fun s _ => hv _ (htY s)⟩` and prove the remaining obligations. Rewrite using `[hY]`.
+
+Conclude with `Submodule.mem_sup_left hy`. Rewrite using `[← this]`. Conclude with `ht'`.
+-/
 theorem genBy_dual (h : V →ₗ⋆[K] V →ₗ[K] K) {X Y : Submodule (𝓞 K) V} {e : ℕ} (hg : GenBy Y X e)
     {m : ℕ} (hm : m ≠ 0) (hmY : ∀ y ∈ Y, (m : 𝓞 K) • y ∈ X) :
     GenBy (Formalism.HermitianLatticesTheory.dual h X) (Formalism.HermitianLatticesTheory.dual h Y) e := by
@@ -142,16 +192,29 @@ theorem genBy_dual (h : V →ₗ⋆[K] V →ₗ[K] K) {X Y : Submodule (𝓞 K) 
   exact ht'
 
 omit [NumberField K] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] in
+/- English proof (translation)
+Use `⟨fun x hx => H.nondeg x fun y => ?_, fun x hx => H.nondeg x fun y => hx y⟩` and prove the remaining obligations. Establish `: H.B y x = 0` using `hx y`. Rewrite using `[← H.herm, this, star_zero]`.
+-/
 theorem flip_nondeg (H : HermSpace K V) : H.B.flip.Nondegenerate := by
   refine ⟨fun x hx => H.nondeg x fun y => ?_, fun x hx => H.nondeg x fun y => hx y⟩
   have : H.B y x = 0 := hx y
   rw [← H.herm, this, star_zero]
 
 omit [NumberField K] [IsScalarTower (𝓞 K) K V] in
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ hx => (hΓ.1 hx).1, fun _ hx => (hΓ.1 hx).2⟩`.
+-/
 theorem fixLat_le {H : HermSpace K V} {g : 𝓞 K} {L' L : Submodule (𝓞 K) V} {Γ : Submodule (𝓞 K) (V × V)}
     (hΓ : IsModIso H g L' L Γ) : fixLat Γ ≤ L' ∧ fixLat Γ ≤ L :=
   ⟨fun _ hx => (hΓ.1 hx).1, fun _ hx => (hΓ.1 hx).2⟩
 
+/- English proof (translation)
+Use `⟨hL.fg.of_le (fixLat_le hΓ).2, ?_⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff, ← hL.span_eq_top, Submodule.span_le]`. Introduce `y hy`. Establish `hn` using `GlobalTheory.Mass.DiscOrder.idxN_ne_zero hL' hL.fg`. Use `set n : 𝓞 K := ((GlobalTheory.Mass.idxN L L' : ℕ) : 𝓞 K) with hn'`.
+
+Establish `hn0 : n ≠ 0` using `Nat.cast_ne_zero.2 hn`. Establish `h1 : n • y ∈ L'` using `GlobalTheory.Mass.LatticeGens.idxN_smul_mem L' L hy`. Establish `h2 : (g * n) • y ∈ fixLat Γ`. Rewrite using `[mul_smul]`. Conclude with `hΓ.2.1 ⟨⟨_, h1, rfl⟩, ⟨_, L.smul_mem n hy, rfl⟩⟩`.
+
+Establish `h3 : algebraMap (𝓞 K) K (g * n) ≠ 0` using `by simpa using ⟨hg, hn0⟩`. Establish `h4 : y = (algebraMap (𝓞 K) K (g * n))⁻¹ • ((g * n) • y)`. Rewrite using `[← algebraMap_smul K (g * n) y, smul_smul, inv_mul_cancel₀ h3, one_smul]`. Rewrite using `[h4]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span h2)`.
+-/
 theorem fixLat_isLattice {H : HermSpace K V} {g : 𝓞 K} (hg : g ≠ 0) {L' L : Submodule (𝓞 K) V}
     {Γ : Submodule (𝓞 K) (V × V)} (hL' : Submodule.IsLattice K L') (hL : Submodule.IsLattice K L)
     (hΓ : IsModIso H g L' L Γ) : Submodule.IsLattice K (fixLat Γ) := by
@@ -173,6 +236,11 @@ theorem fixLat_isLattice {H : HermSpace K V} {g : 𝓞 K} (hg : g ≠ 0) {L' L :
 
 omit [NumberField K] in
 
+/- English proof (translation)
+Rewrite using `[Formalism.HermitianLatticesTheory.dualBasic_mem_dual]`. Introduce `a ha`. Take `⟨t, ht⟩` from `hΓ.2.2.2.2.2.2 (s, y) h (a, a) ha`. Establish `h3 : algebraMap (𝓞 K) K g ≠ 0` using `by simpa using hg`. Use `Submodule.mem_one.2 ⟨t, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_smul, map_sub, smul_eq_mul]`. Express the relevant statement in the definitionally equal form `_ = _ * (H.B s a - H.B y a)`. Rewrite using `[ht, map_mul, ← mul_assoc, inv_mul_cancel₀ h3, one_mul]`.
+-/
 theorem div_mem_dual {H : HermSpace K V} {g : 𝓞 K} (hg : g ≠ 0) {L' L : Submodule (𝓞 K) V}
     {Γ : Submodule (𝓞 K) (V × V)} (hΓ : IsModIso H g L' L Γ) {s y : V} (h : (s, y) ∈ Γ) :
     (algebraMap (𝓞 K) K g)⁻¹ • (s - y) ∈ Formalism.HermitianLatticesTheory.dual H.B.flip (fixLat Γ) := by
@@ -187,6 +255,13 @@ theorem div_mem_dual {H : HermSpace K V} {g : 𝓞 K} (hg : g ≠ 0) {L' L : Sub
 
 omit [NumberField K] [IsScalarTower (𝓞 K) K V] in
 
+/- English proof (translation)
+Establish `key : L' ≤ (Γ₁ ⊓ Γ₂).map (LinearMap.fst (𝓞 K) V V)`. Rewrite using `[hS]`. Use `sup_le (fun a ha => ⟨(a, a), ⟨ha, ?_⟩, rfl⟩) (Submodule.span_le.2 fun s h => ?_)` and prove the remaining obligations. Establish `: a ∈ fixLat Γ₂` using `hf ▸ ha`. Conclude with `this`.
+
+Take `⟨y, hy⟩` from `hs s h`. Conclude with `⟨(s, y), hy, rfl⟩`. Introduce and unpack `⟨y', y⟩ hp`. Take `⟨⟨a, z⟩, ⟨hz1, hz2⟩, rfl⟩` from `key (h1.1 hp).1`. Establish `e1 : ((0 : V), y - z) ∈ Γ₁` using `by simpa using Γ₁.sub_mem hp hz1`.
+
+Establish `e2 : ((0 : V), y - z) ∈ Γ₂` using `h2.2.1 ⟨Submodule.zero_mem _, h1.2.2.2.2.1 _ e1⟩`. Simplify using `using Γ₂.add_mem e2 hz2`.
+-/
 theorem graph_le {H : HermSpace K V} {g : 𝓞 K} {L' L : Submodule (𝓞 K) V}
     {Γ₁ Γ₂ : Submodule (𝓞 K) (V × V)} (h1 : IsModIso H g L' L Γ₁) (h2 : IsModIso H g L' L Γ₂)
     (hf : fixLat Γ₁ = fixLat Γ₂) {S : Set V} (hS : L' = fixLat Γ₁ ⊔ Submodule.span (𝓞 K) S)
@@ -204,6 +279,41 @@ theorem graph_le {H : HermSpace K V} {g : 𝓞 K} {L' L : Submodule (𝓞 K) V}
   have e2 : ((0 : V), y - z) ∈ Γ₂ := h2.2.1 ⟨Submodule.zero_mem _, h1.2.2.2.2.1 _ e1⟩
   simpa using Γ₂.add_mem e2 hz2
 
+/- English proof (translation)
+Introduce `K V _ _ _ _ _ _ _ _ H hK _ L₀ g j D₀ hL₀ hD hcyc hg La x`. Use `set S := {d | IsDat H g L₀ j x d ∧ fixLat d.2 = La} with hSdef`. Break down `S.eq_empty_or_nonempty with hS | ⟨d₀, hd₀, hd₀'⟩` into its components or cases. Rewrite using `[hS]`. Simplify using the standard rewrite rules.
+
+Establish `hs` using `flip_isSymm H`. Establish `hn` using `flip_nondeg H`. Establish `hg0 : (g : 𝓞 K) ≠ 0` using `Nat.cast_ne_zero.2 (by omega)`. Establish `hgK : algebraMap (𝓞 K) K g ≠ 0` using `by simpa using (by omega : g ≠ 0)`. Take `⟨an, -, -, hint, -⟩` from `Formalism.HermitianLatticesTheory.dualBasic (𝓞 K) K V H.B.flip hs Formalism.HermitianLatticesTheory.star_algebraMap_ringOfIntegers_mem_range`.
+
+Establish `hLa : Submodule.IsLattice K La` using `hd₀' ▸ fixLat_isLattice hg0 hd₀.1.1 hL₀.1 hd₀.2.2.1`. Establish `hle : La ≤ L₀` using `hd₀' ▸ (fixLat_le hd₀.2.2.1).2`. Establish `hx : GlobalTheory.Mass.idxN L₀ La = x` using `hd₀' ▸ hd₀.2.2.2.1`. Establish `hgen : GenBy L₀ La j` using `hd₀' ▸ hd₀.2.2.2.2`. Establish `hx0 : x ≠ 0` using `hx ▸ GlobalTheory.Mass.DiscOrder.idxN_ne_zero hLa hL₀.1.fg`.
+
+Establish `hD0 : D₀ ≠ 0` using `hD ▸ (GlobalTheory.Mass.DiscOrder.main K V H.B.flip hK hs hn L₀ hL₀).1`. Establish `h0d` using `(hint L₀).1 hL₀.2`. Establish `hdd` using `an _ _ hle`. Use `set Ld := Formalism.HermitianLatticesTheory.dual H.B.flip La with hLd`. Establish `i1 : GlobalTheory.Mass.idxN Ld L₀ = D₀ * x`.
+
+Rewrite using `[← GlobalTheory.Mass.DiscOrder.idxN_mul h0d hdd, GlobalTheory.Mass.DiscOrder.idxN_dual _ hs hn hLa x L₀ hL₀.1 hle hx, ← hD]`. Both sides reduce to the same expression. Establish `i2 : GlobalTheory.Mass.idxN Ld La = x * (D₀ * x)`. Rewrite using `[← GlobalTheory.Mass.DiscOrder.idxN_mul hle (h0d.trans hdd), hx, i1]`. Establish `g1 : GenBy Ld (Formalism.HermitianLatticesTheory.dual H.B.flip L₀) j` using `genBy_dual _ hgen hx0 fun y hy => hx ▸ GlobalTheory.Mass.LatticeGens.idxN_smul_mem La L₀ hy`.
+
+Take `⟨t, htc, ht⟩` from `GenBy.trans (GenBy.trans g1 hcyc) hgen`. Take `⟨c1, c2⟩` from `(GlobalTheory.Mass.LatticeGens.gens_and_count K V La Ld (hle.trans (h0d.trans hdd)) (by rw [i2]; positivity)).2 (2 * j + 1) t (by omega) ht`. Establish `c3 : ∀ L : Submodule (𝓞 K) V, La ≤ L ∧ L ≤ Ld → ∃ u : Fin (2 * j + 1) → V, L = La ⊔ Submodule.span (𝓞 K) (Set.range u)`. Introduce `L hL`. Take `⟨t', h1, h2⟩` from `c2 L hL.1 hL.2`.
+
+Take `⟨u, hu⟩` from `exists_fun_span (R := 𝓞 K) t' h1`. Conclude with `⟨u, by rw [hu]; exact h2⟩`. Use `choose! gen hgen' using c3`. Establish `c4 : ∀ d ∈ S, La ≤ d.1 ∧ d.1 ≤ Ld`. Introduce and unpack `d ⟨hd, hd'⟩`.
+
+Establish `h1 : La ≤ d.1` using `hd' ▸ (fixLat_le hd.2.2.1).1`. Conclude with `⟨h1, ((hint _).1 hd.1.2).trans (an _ _ h1)⟩`. Establish `c5 : ∀ d ∈ S, ∀ i, ∃ y, (gen d.1 i, y) ∈ d.2`. Introduce `d hd i`. Use `hd.1.2.2.1.2.2.1 _ ?_` and prove the remaining obligations.
+
+Rewrite using `[hgen' d.1 (c4 d hd)]`. Rewrite using `[← hgen' d.1 (c4 d hd)]`. Conclude with `(hgen' d.1 (c4 d hd)).ge (Submodule.mem_sup_right (Submodule.subset_span ⟨i, rfl⟩))`. Use `choose! ι hι using c5`. Set `Q : Set (V ⧸ L₀)` to `Ld.map L₀.mkQ`.
+
+Establish `hQ : Q.encard = ((D₀ * x : ℕ) : ℕ∞)`. Establish `h1 : Nat.card Q = D₀ * x` using `(GlobalTheory.Mass.LatticeGens.card_map_mkQ L₀ Ld).trans i1`. Establish `: Finite Q` using `Nat.finite_of_card_ne_zero (by rw [h1]; positivity)`. Rewrite using `[← h1, Nat.card_coe_set_eq, (Set.toFinite Q).cast_ncard_eq]`. Set `F : Submodule (𝓞 K) V × Submodule (𝓞 K) (V × V) → Submodule (𝓞 K) V × (Fin (2 * j + 1) → V ⧸ L₀)` to `fun d => (d.1, fun i => L₀.mkQ ((algebraMap (𝓞 K) K g)⁻¹ • (gen d.1 i - ι d i)))`.
+
+Establish `hmaps : Set.MapsTo F S ({L | La ≤ L ∧ L ≤ Ld} ×ˢ Set.univ.pi fun _ => Q)`. Introduce `d hd`. Use `⟨c4 d hd, fun i _ => Submodule.mem_map_of_mem ?_⟩` and prove the remaining obligations. Use `div_mem_dual hg0 hd.1.2.2.1 (hι d hd i)` as an intermediate fact. Rewrite `this` using `[hd.2]`. Then use the resulting hypothesis.
+
+Establish `hle' : ∀ d ∈ S, ∀ d' ∈ S, F d = F d' → d.2 ≤ d'.2`. Introduce and unpack `⟨L', Γ₁⟩ hd ⟨L'', Γ₂⟩ hd' e`. Take `rfl : L' = L''` from `congrArg Prod.fst e`. Establish `m1 : IsModIso H (g : 𝓞 K) L' L₀ Γ₁` using `hd.1.2.2.1`. Establish `m2 : IsModIso H (g : 𝓞 K) L' L₀ Γ₂` using `hd'.1.2.2.1`.
+
+Establish `f1 : fixLat Γ₁ = La` using `hd.2`. Establish `f2 : fixLat Γ₂ = La` using `hd'.2`. Use `graph_le m1 m2 (f1.trans f2.symm) (S := Set.range (gen L')) (by rw [f1]; exact hgen' L' (c4 _ hd)) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩`. Use `⟨ι (L', Γ₁) i, hι _ hd i, ?_⟩` and prove the remaining obligations.
+
+Establish `e1` using `(Submodule.Quotient.eq L₀).1 (congrFun (congrArg Prod.snd e) i)`. Establish `e2 : ((0 : V), ι (L', Γ₂) i - ι (L', Γ₁) i) ∈ Γ₂`. Use `m2.2.1 ⟨Submodule.zero_mem _, _, e1, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(g : 𝓞 K) • (_ : V) = _`. Rewrite using `[← algebraMap_smul K (g : 𝓞 K), ← smul_sub, LinearMap.id_apply, smul_smul, mul_inv_cancel₀ hgK, one_smul]`.
+
+Simplify using the standard rewrite rules. Simplify using `using Γ₂.sub_mem (hι _ hd' i) e2`. Establish `hinj : Set.InjOn F S` using `fun d hd d' hd' e => Prod.ext (congrArg Prod.fst e :) (le_antisymm (hle' d hd d' hd' e) (hle' d' hd' d hd e.symm))`. Establish `hb` using `Set.encard_le_encard_of_injOn hmaps hinj`. Rewrite `hb` using `[Set.encard_prod, Set.encard_pi_eq_prod_encard, hQ, Finset.prod_const, Finset.card_univ, Fintype.card_fin]`.
+
+Rewrite `c1` using `[i2]`. Establish `hnat : (x * (D₀ * x)) ^ (2 * j + 1) * (D₀ * x) ^ (2 * j + 1) ≤ (x * D₀) ^ (3 * (2 * j + 1))`. Rewrite using `[pow_mul, ← mul_pow]`. Use `Nat.pow_le_pow_left ?_ _` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hfin : S.encard ≤ (((x * D₀) ^ (3 * (2 * j + 1)) : ℕ) : ℕ∞)`. Use `(hb.trans (mul_le_mul_left c1 _)).trans ?_` and prove the remaining obligations. Conclude with `hnat` after adjusting the coercions. Use `ENat.toENNReal_le.2 hfin` as an intermediate fact. Simplify using `using this`.
+-/
 theorem main : ∀ (K V : Type) [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [Module K V] [FiniteDimensional K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] (H : HermSpace K V), Formalism.HermitianLatticesTheory.IsCMUnram K → GlobalTheory.Mass.PD H.B.flip → ∀ (L₀ : Submodule (𝓞 K) V) (g j D₀ : ℕ), GlobalTheory.Mass.IsIntLat H.B.flip L₀ → GlobalTheory.Mass.discN H.B.flip L₀ = D₀ → GenBy (Formalism.HermitianLatticesTheory.dual H.B.flip L₀) L₀ 1 → 2 ≤ g → ∀ (La : Submodule (𝓞 K) V) (x : ℕ), ((({d | IsDat H g L₀ j x d ∧ fixLat d.2 = La}).encard : ℕ∞) : ℝ≥0∞) ≤ ((x : ℝ≥0∞) * D₀) ^ (3 * (2 * j + 1)) := by
   intro K V _ _ _ _ _ _ _ _ H hK _ L₀ g j D₀ hL₀ hD hcyc hg La x
   set S := {d | IsDat H g L₀ j x d ∧ fixLat d.2 = La} with hSdef

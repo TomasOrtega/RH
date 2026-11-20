@@ -13,6 +13,27 @@ namespace GlobalTheory.CongConjugate
 
 open ReciprocityTheory.Aut Formalism.AUTREP
 
+/- English proof (translation)
+Introduce `L _ _ _ n h N hN`. Take `⟨d, hd, hdh⟩` from `GlobalTheory.FinTypCount.exists_denom_matrix (((h.1 : GL (Fin n) (AL L)) : Matrix (Fin n) (Fin n) (AL L)))`. Take `⟨e, he, heh⟩` from `GlobalTheory.FinTypCount.exists_denom_matrix ((((h⁻¹).1 : GL (Fin n) (AL L)) : Matrix (Fin n) (Fin n) (AL L)))`. Use `⟨N * d * e, Nat.mul_pos (Nat.mul_pos hN hd) he, fun κ hκ => ?_⟩` and prove the remaining obligations. Use `choose Y hY eY using hκ.2`.
+
+Use `set H : Matrix (Fin n) (Fin n) (AL L) := ((h.1 : GL (Fin n) (AL L)) : Matrix (Fin n) (Fin n) (AL L)) with hH`. Use `set Hi : Matrix (Fin n) (Fin n) (AL L) := (((h⁻¹).1 : GL (Fin n) (AL L)) : Matrix (Fin n) (Fin n) (AL L)) with hHi`. Establish `hHH : Hi * H = 1`. Rewrite using `[hHi, hH, ← Units.val_mul, ← Subgroup.coe_mul, inv_mul_cancel]`. Both sides reduce to the same expression.
+
+Establish `hK : ((κ.1 : GL (Fin n) (AL L)) : Matrix (Fin n) (Fin n) (AL L)) = 1 + ((N * d * e : ℕ) : AL L) • Matrix.of Y`. Use extensionality with `a b`. Use `eY a b` as an intermediate fact. Simplify using `only [Matrix.add_apply, Matrix.smul_apply, Matrix.of_apply, smul_eq_mul]`. Rewrite using `[← this]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hprod : (((h⁻¹ * κ * h).1 : GL (Fin n) (AL L)) : Matrix (Fin n) (Fin n) (AL L)) = Hi * (1 + ((N * d * e : ℕ) : AL L) • Matrix.of Y) * H`. Rewrite using `[← hK]`. Simplify using `[hHi, hH, Subgroup.coe_mul, Units.val_mul]`. Use `set Z : Matrix (Fin n) (Fin n) (AL L) := ((e : AL L) • Hi) * Matrix.of Y * ((d : AL L) • H) with hZ`.
+
+Establish `hZint : ∀ i j, Z i j ∈ ALint L`. Introduce `i j`. Rewrite using `[hZ, Matrix.mul_apply]`. Use `Subring.sum_mem _ fun b _ => Subring.mul_mem _ ?_ ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply]`.
+
+Use `Subring.sum_mem _ fun a _ => Subring.mul_mem _ ?_ (hY a b)` and prove the remaining obligations. Simplify `heh i a` using `[Matrix.smul_apply, smul_eq_mul]`. Simplify `hdh b j` using `[Matrix.smul_apply, smul_eq_mul]`. Establish `hdiff : Hi * (1 + ((N * d * e : ℕ) : AL L) • Matrix.of Y) * H - 1 = (N : AL L) • Z`. Rewrite using `[Matrix.mul_add, Matrix.add_mul, Matrix.mul_one, hHH, add_sub_cancel_left, hZ]`.
+
+Rewrite using `[Matrix.mul_smul, Matrix.smul_mul, Matrix.smul_mul, Matrix.mul_smul, Matrix.smul_mul, smul_smul, smul_smul]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Apply the tactic sequence `have hentry : ∀ i j, (((h⁻¹ * κ * h).1 : GL (Fin n) (AL L)) : Matrix (Fin n) (Fin n) (AL L)) i j - (1 : Matrix (Fin n) (Fin n) (AL L)) i j = (N : AL L) * Z i j := by`.
+
+Introduce `i j`. Rewrite using `[hprod]`. Establish `h2` using `congrFun (congrFun hdiff i) j`. Simplify `h2` using `[Matrix.sub_apply, Matrix.smul_apply]`. Apply the tactic sequence `refine ⟨fun i j => ?_, fun i j => ⟨Z i j, hZint i j, hentry i j⟩⟩`.
+
+Establish `h3 : (((h⁻¹ * κ * h).1 : GL (Fin n) (AL L)) : Matrix (Fin n) (Fin n) (AL L)) i j = (1 : Matrix (Fin n) (Fin n) (AL L)) i j + (N : AL L) * Z i j`. Rewrite using `[← hentry]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h3]`. Use `add_mem ?_ (Subring.mul_mem _ (natCast_mem _ _) (hZint i j))` and prove the remaining obligations.
+
+Rewrite using `[Matrix.one_apply]`. Use `split_ifs`. Conclude with `one_mem _`. Conclude with `zero_mem _`.
+-/
 theorem congConj : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ), principalLevelFrame.CongConj L n := by
   intro L _ _ _ n h N hN
   obtain ⟨d, hd, hdh⟩ := GlobalTheory.FinTypCount.exists_denom_matrix

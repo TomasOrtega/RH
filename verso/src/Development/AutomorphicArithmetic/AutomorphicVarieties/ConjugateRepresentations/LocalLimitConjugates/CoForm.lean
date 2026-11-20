@@ -22,11 +22,23 @@ private noncomputable def ipL {E : Type} [Field E] [NumberField E] [IsTotallyCom
     (fun c ω η => by
       simp only [ip, AlternatingMap.smul_apply, map_smul, Finset.smul_sum, RingHom.id_apply])
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem ipL_apply {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ} {Ξ : AlgRep E a} {q n : ℕ}
     (e : Fin n → Herm E a)
     (H : Sm E a ⊗[ℂ] (Fin Ξ.d → ℂ) →ₗ⋆[ℂ] Sm E a ⊗[ℂ] (Fin Ξ.d → ℂ) →ₗ[ℂ] ℂ) (ω η : Co Ξ q) :
     ipL e H ω η = ip e H ω η := rfl
 
+/- English proof (translation)
+Introduce `E _ _ _ a ha Ξ r q`. Take `⟨-, H, hH, hx⟩` from `petInv E a ha r`. Take `⟨n, e, he⟩` from `frameEx E a`. Establish `hT` using `tformPos (Sm E a) Ξ.d H (sqSub E a r) 1 hH Matrix.PosDef.one`. Take `⟨h1, h2⟩` from `ipDef E a n e he _ (tform H 1) _ hT q`.
+
+Use `⟨transRep Ξ q, ipL e (tform H 1), fun _ _ => rfl, fun M hM => ⟨fun ω η => h1 ω η, fun ω hω => ?_, fun ω hω => ?_⟩, fun x => ?_⟩` and prove the remaining obligations. Conclude with `(h2 ω fun X => mem_tens.2 (hM ω hω X)).1`. Conclude with `(h2 ω fun X => mem_tens.2 (hM ω hω X)).2`. Take `⟨c, hc⟩` from `hx x`. Use `⟨c, fun ω η hω hη => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[ipL_apply, ipL_apply]`. Simplify using `only [ip, tform_apply, cmp_trans, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun I _ => Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `hc _ (hω (fun k => e (I k)) i) _ (hη (fun k => e (I k)) j)` as an intermediate fact. Rewrite using `[mul_left_comm, ← this]`.
+
+Both sides reduce to the same expression.
+-/
 theorem UpperTheory.V.Cj.H.coForm :
     UpperTheory.V.Cj.H.CoForm := by
   intro E _ _ _ a ha Ξ r q

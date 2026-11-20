@@ -18,6 +18,15 @@ namespace GlobalTheory.HTLie
 
 open GlobalTheory.EigenSplit GlobalTheory.TanMod GlobalTheory.DetCompare GlobalTheory.IndefiniteRowSideFullHecke.LieCharpolyRootPairs
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => intro m y _ _ h`. Simplify using `using h`. Consider the case `insert j s hj ih`. Introduce `m y hm hy h`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨c, hc⟩ : ∃ c, χ j c ≠ σ c := by`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Conclude with `hχ j (RingHom.ext hcon)`. Set `f : Module.End k N` to `ρ c - χ j c • LinearMap.id`.
+
+Establish `hfm : f m = (σ c - χ j c) • m`. Simplify using `[f, mem_eigenSub.1 hm c, sub_smul]`. Establish `hfy : ∀ i, f (y i) = (χ i c - χ j c) • y i` using `fun i => by`. Simplify using `[f, mem_eigenSub.1 (hy i) c, sub_smul]`. Establish `h1 : (σ c - χ j c) • m = ∑ i ∈ s, (χ i c - χ j c) • y i`.
+
+Rewrite using `[← hfm, h, Finset.sum_insert hj, map_add, map_sum, hfy j, sub_self, zero_smul, zero_add]`. Conclude with `Finset.sum_congr rfl fun i _ => hfy i`. Establish `h2` using `ih ((σ c - χ j c) • m) (fun i => (χ i c - χ j c) • y i) (Submodule.smul_mem _ _ hm) (fun i => Submodule.smul_mem _ _ (hy i)) h1`. Establish `hne : σ c - χ j c ≠ 0` using `sub_ne_zero.2 (Ne.symm hc)`. Conclude with `(smul_eq_zero.1 h2).resolve_left hne`.
+-/
 theorem eq_zero_of_mem_eigenSub_of_sum {O k N : Type} [CommRing O] [Field k] [AddCommGroup N] [Module k N]
     (ρ : O →+* Module.End k N) (σ : O →+* k) {κ : Type} (χ : κ → O →+* k) (hχ : ∀ i, χ i ≠ σ)
     (s : Finset κ) : ∀ (m : N) (y : κ → N), m ∈ eigenSub ρ σ → (∀ i, y i ∈ eigenSub ρ (χ i)) →
@@ -44,6 +53,37 @@ theorem eq_zero_of_mem_eigenSub_of_sum {O k N : Type} [CommRing O] [Field k] [Ad
     have hne : σ c - χ j c ≠ 0 := sub_ne_zero.2 (Ne.symm hc)
     exact (smul_eq_zero.1 h2).resolve_left hne
 
+/- English proof (translation)
+Set `cj : F →+* F` to `((IsCMField.complexConj F : F ≃ₐ[maximalRealSubfield F] F) : F →+* F)`. Establish `e1 : (ω : F) + ((bar ω : 𝓞 F) : F) = (tr : F)`. Use `congrArg (fun z : 𝓞 F => (z : F)) tr_eq` as an intermediate fact. Simplify using `using this`. Establish `e2 : (ω : F) * ((bar ω : 𝓞 F) : F) = (nm : F)`.
+
+Use `congrArg (fun z : 𝓞 F => (z : F)) nm_eq` as an intermediate fact. Simplify using `using this`. Establish `hcω : cj (ω : F) = (tr : F) - (ω : F)`. Establish `: cj (ω : F) = ((bar ω : 𝓞 F) : F)` using `(bar_eq ω).symm`. Rewrite using `[this]`.
+
+Take the linear combination `e1`. Establish `hcc : ∀ z, cj (cj z) = z` using `fun z => IsCMField.complexConj_apply_apply F z`. Establish `hroot : ∀ τ : F →+* k, τ ω ^ 2 - tr * τ ω + nm = 0`. Introduce `τ`. Establish `h1 : (ω : F) ^ 2 - tr * (ω : F) + nm = 0`.
+
+Take the linear combination `(ω : F) * e1 - e2`. Use `congrArg τ h1` as an intermediate fact. Simplify using `using this`. Establish `hne : ρ ≠ (tr : k) - ρ`. Introduce `h`.
+
+Establish `h3 : ((tr ^ 2 - 4 * nm : ℤ) : k) = 0`. Use `push_cast`. Take the linear combination `(2 * ρ - tr) * h - 4 * hρ`. Establish `h4 : tr ^ 2 - 4 * nm = 0` using `by exact_mod_cast h3`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hside : ∀ τ : F →+* k, τ ω ≠ ρ → τ ω = (tr : k) - ρ`. Introduce `τ h`. Establish `: (τ ω - ρ) * (τ ω - ((tr : k) - ρ)) = 0`. Take the linear combination `hroot τ - hρ`. Break down `mul_eq_zero.1 this with h' | h'` into its components or cases.
+
+Conclude with `absurd (sub_eq_zero.1 h') h`. Conclude with `sub_eq_zero.1 h'`. Establish `hconj : ∀ τ : F →+* k, (τ.comp cj) ω = (tr : k) - τ ω`. Introduce `τ`. Simplify using `[hcω]`.
+
+Set `T` to `(Finset.univ : Finset (F →+* k)).filter (fun τ => τ ω = ρ)`. Set `Tc` to `(Finset.univ : Finset (F →+* k)).filter (fun τ => ¬ τ ω = ρ)`. Establish `hcard : T.card = Tc.card`. Use `Finset.card_nbij' (fun τ => τ.comp cj) (fun τ => τ.comp cj) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `τ hτ`.
+
+Simplify using `only [T, Tc, Finset.coe_filter, Finset.mem_univ, true_and, Set.mem_setOf_eq] at hτ ⊢`. Rewrite using `[hconj, hτ]`. Conclude with `fun h => hne h.symm`. Introduce `τ hτ`. Simplify using `only [T, Tc, Finset.coe_filter, Finset.mem_univ, true_and, Set.mem_setOf_eq] at hτ ⊢`.
+
+Rewrite using `[hconj, hside τ hτ]`. Expand and normalize the polynomial expressions, which then agree. Introduce `τ _`. Use extensionality with `z`. Simplify using `[hcc]`.
+
+Introduce `τ _`. Use extensionality with `z`. Simplify using `[hcc]`. Establish `htot : T.card + Tc.card = Module.finrank ℚ F`. Rewrite using `[Finset.card_filter_add_card_filter_not, Finset.card_univ, NumberField.Embeddings.card]`.
+
+Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Establish `hsub : T.image (fun τ => τ.comp (algebraMap (𝓞 F) F)) ⊆ Finset.univ.image χ`. Introduce `σ hσ`. Take `⟨τ, hτ, rfl⟩` from `Finset.mem_image.1 hσ`.
+
+Simplify using `only [T, Finset.mem_filter, Finset.mem_univ, true_and] at hτ`. Take `⟨i, hi⟩` from `hcon (τ.comp (algebraMap (𝓞 F) F)) (by simpa using hτ)`. Conclude with `Finset.mem_image.2 ⟨i, Finset.mem_univ _, hi⟩`. Establish `hinj : Set.InjOn (fun τ : F →+* k => τ.comp (algebraMap (𝓞 F) F)) T`. Introduce `τ _ τ' _ h`.
+
+Conclude with `IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 F)) h`. Establish `hle` using `Finset.card_le_card hsub`. Rewrite `hle` using `[Finset.card_image_of_injOn hinj]`. Establish `hle2` using `(Finset.card_image_le (s := (Finset.univ : Finset (Fin a))) (f := χ))`. Rewrite `hle2` using `[Finset.card_univ, Fintype.card_fin]`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem exists_ringHom_avoid {F : Type} [Field F] [NumberField F] [IsCMField F] (bar : 𝓞 F ≃+* 𝓞 F)
     (bar_eq : ∀ a : 𝓞 F, ((bar a : 𝓞 F) : F) = IsCMField.complexConj F (a : F))
     (ω : 𝓞 F) (tr nm : ℤ) (tr_eq : ω + bar ω = (tr : 𝓞 F)) (nm_eq : ω * bar ω = (nm : 𝓞 F))
@@ -124,6 +164,17 @@ namespace GlobalTheory.HTLie
 
 open GlobalTheory.EigenSplit GlobalTheory.TanMod GlobalTheory.DetCompare GlobalTheory.IndefiniteRowSideFullHecke.LieCharpolyRootPairs
 
+/- English proof (translation)
+Introduce `p _ D R _ b N S s o ha k _ _ _ x β hx`. Establish `hρ : β b.ρ ^ 2 - D.tr * β b.ρ + D.nm = 0`. Use `congrArg β b.ρ_root` as an intermediate fact. Simplify using `using this`. Take `⟨σ, hσω, hσ⟩` from `exists_ringHom_avoid D.bar D.bar_eq D.ω D.tr D.nm D.tr_eq D.nm_eq D.disc_neg k (β b.ρ) hρ D.a ha (fun i => β.comp (b.t i))`.
+
+Use `⟨σ, fun i => Fin.elim0 i, fun i => Fin.elim0 i, fun w hw => ⟨Fin.elim0, ⟨Fin.elim0, fun i => Fin.elim0 i, ?_⟩, fun c _ => funext fun i => Fin.elim0 i⟩⟩` and prove the remaining obligations. Rewrite using `[List.ofFn_zero, List.prod_nil]`. Take `⟨w', hw', hwprod⟩` from `o.lie k β x hx w ⟨hw.1, by`. Use `hw.2 D.ω` as an intermediate fact. Rewrite `this` using `[hσω]`.
+
+Conclude with `this⟩`. Establish `hlie : ∀ i, IsLieEigen (o.act.toF D) x (β.comp (b.t i)) (w' i)` using `fun i => ⟨(hw' i 0).1, fun c => (hw' i c).2⟩`. Take `⟨h1, h2⟩` from `(isLieEigen_iff _ x σ w).1 hw`. Use `choose g1 g2 using fun i => (isLieEigen_iff _ x _ (w' i)).1 (hlie i)`. Establish `hm` using `(mem_eigenspace_iff _ x σ _).1 h2`.
+
+Establish `hy` using `fun i => (mem_eigenspace_iff _ x _ _).1 (g2 i)`. Establish `hsum : lieEquiv x ⟨w, h1⟩ = ∑ i ∈ Finset.univ, lieEquiv x ⟨w' i, g1 i⟩`. Apply `TanSp.ext` to reduce the goal to its premises. Rewrite using `[TanSp.pt_sum]`. Use `show w = ∏ i, w' i`.
+
+Rewrite using `[hwprod, List.prod_ofFn]`. Establish `h0` using `eq_zero_of_mem_eigenSub_of_sum _ σ (fun i => β.comp (b.t i)) hσ Finset.univ _ _ hm hy hsum`. Conclude with `congrArg TanSp.pt h0`.
+-/
 theorem exists_lieMult_zero : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [CommRing R] (b : Base D R) (N : ℕ) (S : Scheme.{0}) (s : S ⟶ Sp R) (o : Obj b N s), 2 * D.a < Module.finrank ℚ D.F → ∀ (k : Type) [Field k] [IsAlgClosed k] [CharZero k] (x : Sp k ⟶ S) (β : R →+* k), x ≫ s = spMap β → ∃ σ : 𝓞 D.F →+* k, LieMult (o.act.toF D) x σ 0 := by
   intro p _ D R _ b N S s o ha k _ _ _ x β hx
   have hρ : β b.ρ ^ 2 - D.tr * β b.ρ + D.nm = 0 := by

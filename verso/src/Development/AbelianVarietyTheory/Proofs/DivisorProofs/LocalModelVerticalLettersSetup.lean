@@ -17,6 +17,9 @@ namespace GlobalTheory.ChainPts.PullHT
 
 open GlobalTheory.VB (IsFrame IsVB)
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.transition_coefficients_pullback g d hU hU' he hs l i`.
+-/
 theorem coef_pullS {X X' : Scheme.{0}} (g : X' ⟶ X) {F : X.Modules} [F.IsQuasicoherent] {r : ℕ} (d : Bool)
     {V V' : X.Opens} {U U' : X'.Opens} (hU : U ≤ g ⁻¹ᵁ V) (hU' : U' ≤ g ⁻¹ᵁ V')
     {e : Fin r → Γ(F, V)} {s : Fin r → Γ(F, V')} (he : IsFrame e) (hs : IsFrame s) (l i : Fin r) :
@@ -24,6 +27,9 @@ theorem coef_pullS {X X' : Scheme.{0}} (g : X' ⟶ X) {F : X.Modules} [F.IsQuasi
       (g.appLE (V ⊓ V') (U ⊓ U') (inf_le_inf hU hU')).hom (coef d he hs l i) :=
   GlobalTheory.T.transition_coefficients_pullback g d hU hU' he hs l i
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.ultrametric_coefficient_bound d he he₁ hs C w hV hV₁ cf`.
+-/
 theorem norm_coef_iff {X : Scheme.{0}} {F : X.Modules} {r : ℕ} (d : Bool) {V V₁ V' : X.Opens} {e : Fin r → Γ(F, V)}
     {e₁ : Fin r → Γ(F, V₁)} {s : Fin r → Γ(F, V')} (he : IsFrame e) (he₁ : IsFrame e₁) (hs : IsFrame s)
     (C : Type) [NontriviallyNormedField C] [IsUltrametricDist C] (w : Sp ↥(intO C) ⟶ X) (hV : ⊤ ≤ w ⁻¹ᵁ V)
@@ -43,6 +49,15 @@ section Lat
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
   {Xo : ∀ l : Level H, Moduli Dw l} {p : ℕ} {W : ValuationSubring ℂ} {Y : LocalSystem Xo p W} {i₀ : Idx H p}
 
+/- English proof (translation)
+Use `haveI := hF.isQuasicoherent`. Use `⟨fun a => isFrame_pullS g _ (hL.frame a), ?_, ?_⟩` and prove the remaining obligations. Introduce `k _ w a a' φ φ' h1 h2 j`. Use `hL.glue k (w ≫ g) a a' φ φ' (by rw [h1, Category.assoc]) (by rw [h2, Category.assoc]) j` as an intermediate fact. Simplify using `only [Category.assoc] at this ⊢`.
+
+Use `this using 2 with i` and compare the differences between its conclusion and the goal. Rewrite using `[coef_pullS]`. Conclude with `valF_appLE w g _ (by rw [Scheme.Hom.comp_preimage, Scheme.Hom.comp_preimage]; exact le_rfl) _`. Introduce `y w hw a φ hφ V e he hV cf v hv`. Take `⟨V₁, e₁, hx, he₁⟩` from `hF (g (w (IsLocalRing.closedPoint _)))`.
+
+Establish `hV₁ : ⊤ ≤ (w ≫ g) ⁻¹ᵁ V₁` using `top_le_of_closedPoint _ _ hx`. Rewrite using `[hL.norm y (w ≫ g) (by rw [Category.assoc]; exact hw) a φ hφ V₁ e₁ he₁ hV₁ cf v hv]`. Establish `hc : ∀ l i, valF (spMap (intO ↥y.C.S).subtype ≫ w ≫ g) _ (coef d he₁ (hL.frame a) l i) = valF (spMap (intO ↥y.C.S).subtype ≫ w) _ (coef d (isFrame_pullS g le_rfl he₁) (isFrame_pullS g (Scheme.Hom.comp_preimage g h _).le (hL.frame a)) l i)`. Introduce `l i`. Rewrite using `[coef_pullS g d le_rfl (Scheme.Hom.comp_preimage g h _).le he₁ (hL.frame a) l i, ← Category.assoc]`.
+
+Conclude with `(valF_appLE (spMap (intO ↥y.C.S).subtype ≫ w) g (U := V₁ ⊓ h ⁻¹ᵁ ↑(Z.U a)) (U' := g ⁻¹ᵁ V₁ ⊓ (g ≫ h) ⁻¹ᵁ ↑(Z.U a)) _ (by rw [Scheme.Hom.comp_preimage]; exact le_rfl) _).symm`. Simplify using `only [← Category.assoc] at hc ⊢`. Simplify using `only [hc]`. Conclude with `(norm_coef_iff d he (isFrame_pullS g le_rfl he₁) _ _ w hV hV₁ cf).symm`.
+-/
 theorem isLat_pull {Z : LocM.Mdl Y i₀} {X X' : Scheme.{0}} (g : X' ⟶ X) (h : X ⟶ Z.X) {r : ℕ}
     {x : Fin r → Letter Dw} {d b : Bool} {F : X.Modules} (hF : IsVB F r)
     {s : ∀ a : Fin Z.m, Fin r → Γ(F, h ⁻¹ᵁ (Z.U a).1)} (hL : IsLat Z h x d b F s) :
@@ -86,6 +101,15 @@ section Lat
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
   {Xo : ∀ l : Level H, Moduli Dw l} {p : ℕ} {W : ValuationSubring ℂ} {Y : LocalSystem Xo p W} {i₀ : Idx H p}
 
+/- English proof (translation)
+Take `⟨hr, s, h1, h2, h3⟩` from `hP`. Establish `vb' : IsVB P.E'.V r` using `hr ▸ P.vb'`. Establish `vb : IsVB P.E.V r` using `hr ▸ P.vb`. Use `haveI := vb'.isQuasicoherent`. Use `⟨hr, fun a i => pullbackSections g.f P.E'.V (Scheme.Hom.comp_preimage g.f h _).le (s a i), isLat_pull g.f h vb' h1, ?_, ?_⟩` and prove the remaining obligations.
+
+Establish `e : ∀ a i, ((EPres.pull g P).ψ.hom.app _ (pullbackSections g.f P.E'.V (Scheme.Hom.comp_preimage g.f h _).le (s a i))) = pullbackSections g.f P.E.V (Scheme.Hom.comp_preimage g.f h _).le (P.ψ.hom.app _ (s a i))` using `fun a i => pullback_map_app_pullbackSections g.f P.ψ.hom _ _`. Simplify using `only [e]`. Conclude with `isLat_pull g.f h vb h2`. Introduce `a i c`. Express the relevant statement in the definitionally equal form `((Scheme.Modules.pullback g.f).map (P.E'.ρ c : P.E'.V ⟶ P.E'.V)).app _ _ = _`.
+
+Rewrite using `[pullback_map_app_pullbackSections, h3, pullbackSections_smul]`. Use `congr 1`. Rewrite using `[Scheme.Hom.comp_app]`. Use `first`. Consider the case `(erw [Scheme.Hom.appLE_eq_app]; rfl)`.
+
+Consider the case `(simp only [Scheme.Hom.appLE] erw [show (homOfLE (le_refl (g.f ⁻¹ᵁ h ⁻¹ᵁ ↑(Z.U a)))).op = 𝟙 _ from rfl, CategoryTheory.Functor.map_id, Category.comp_id] rfl)`.
+-/
 theorem isEqLatPres_pull {Z : LocM.Mdl Y i₀} (g : Vert.Model.Hom B B₁) (h : B₁.X ⟶ Z.X) {r : ℕ}
     {x : Fin r → Letter Dw} {d : Bool} {P : EPres B₁ (𝓞 E)} (hP : IsEqLatPres Z h x d P) :
     IsEqLatPres Z (g.f ≫ h) x d (EPres.pull g P) := by
@@ -118,6 +142,11 @@ namespace GlobalTheory.ChainPts.PullHT
 
 open GlobalTheory.VB (IsFrame IsVB)
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw Xo p W Y i₀ Z O _ _ _ B₁ B g h₁ r x lw oo hP`. Take `⟨⟨π, wl, ⟨u, hu⟩, hw⟩, h1, h2⟩` from `hP`. Use `⟨EPres.pull g lw, EPres.pull g oo, ⟨g.f.appTop π, (pullA g.f).map wl, ⟨Units.map g.f.appTop.hom.toMonoidHom u, ?_⟩, ?_⟩, isEqLatPres_pull g h₁ h1, isEqLatPres_pull g h₁ h2⟩` and prove the remaining obligations. Rewrite using `[Units.coe_map, ← map_pow, hu, map_mul, map_natCast]`. Both sides reduce to the same expression.
+
+Express the relevant statement in the definitionally equal form `(pullA g.f).map lw.ψ ≫ (pullA g.f).map wl = _`. Rewrite using `[← Functor.map_comp, hw]`. Apply `Action.Hom.ext` to reduce the goal to its premises. Conclude with `VB.pullback_map_smulHom g.f π`.
+-/
 theorem isHTPair_pull : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H} {Xo : ∀ l : Level H, Moduli Dw l} {p : ℕ} {W : ValuationSubring ℂ} {Y : LocalSystem Xo p W} {i₀ : Idx H p} (Z : GlobalTheory.LocM.Mdl Y i₀) {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (B₁ B : GlobalTheory.Vert.Model O) (g : GlobalTheory.Vert.Model.Hom B B₁) (h₁ : B₁.X ⟶ Z.X) {r : ℕ} (x : Fin r → Letter Dw) (lw oo : EPres B₁ (𝓞 E)), IsHTPair Z h₁ x lw oo → ∃ lw' oo' : EPres B (𝓞 E), IsHTPair Z (g.f ≫ h₁) x lw' oo' := by
   intro E _ _ _ H Dw Xo p W Y i₀ Z O _ _ _ B₁ B g h₁ r x lw oo hP
   obtain ⟨⟨π, wl, ⟨u, hu⟩, hw⟩, h1, h2⟩ := hP

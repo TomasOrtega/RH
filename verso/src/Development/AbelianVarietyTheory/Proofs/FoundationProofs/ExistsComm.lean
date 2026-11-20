@@ -9,12 +9,30 @@ namespace GlobalTheory.CommutingExistence
 
 variable {k : Type} [Field k]
 
+/- English proof (translation)
+Rewrite `h1`, `h2` using `[Matrix.det_fin_two]`. Simplify using `at h2`. Take the linear combination `h1 - h2`.
+-/
 theorem trace_two (A : Matrix (Fin 2) (Fin 2) k) (h1 : A.det = 1) (h2 : (A - 1).det = 0) :
     A 0 0 + A 1 1 = 2 := by
   rw [Matrix.det_fin_two] at h1 h2
   simp at h2
   linear_combination h1 - h2
 
+/- English proof (translation)
+Establish `tA` using `trace_two A hA hA'`. Establish `tB` using `trace_two B hB hB'`. Establish `tAB` using `trace_two (A * B) (by rw [Matrix.det_mul, hA, hB, mul_one]) hAB`. Rewrite `hA`, `hB` using `[Matrix.det_fin_two]`. Simplify using `only [Matrix.mul_apply, Fin.sum_univ_two] at tAB`.
+
+Take `⟨x, hx⟩ : ∃ x, A 0 0 = 1 + x` from `⟨A 0 0 - 1, by ring⟩`. Take `⟨a, ha⟩ : ∃ a, B 0 0 = 1 + a` from `⟨B 0 0 - 1, by ring⟩`. Establish `hx' : A 1 1 = 1 - x` using `by linear_combination tA - hx`. Establish `ha' : B 1 1 = 1 - a` using `by linear_combination tB - ha`. Rewrite `hA`, `tAB` using `[hx, hx']`.
+
+Rewrite `hB`, `tAB` using `[ha, ha']`. Establish `e1 : x ^ 2 + A 0 1 * A 1 0 = 0` using `by linear_combination -hA`. Establish `e2 : a ^ 2 + B 0 1 * B 1 0 = 0` using `by linear_combination -hB`. Establish `e3 : 2 * x * a + A 0 1 * B 1 0 + A 1 0 * B 0 1 = 0` using `by linear_combination tAB`. Establish `f00 : x * a + A 0 1 * B 1 0 = 0`.
+
+Apply `pow_eq_zero_iff (two_ne_zero) |>.mp` to reduce the goal to its premises. Take the linear combination `a ^ 2 * e1 - A 0 1 * A 1 0 * e2 + A 0 1 * B 1 0 * e3`. Establish `f01 : x * B 0 1 - A 0 1 * a = 0`. Apply `pow_eq_zero_iff (two_ne_zero) |>.mp` to reduce the goal to its premises. Take the linear combination `B 0 1 ^ 2 * e1 + A 0 1 ^ 2 * e2 - A 0 1 * B 0 1 * e3`.
+
+Establish `f10 : A 1 0 * a - x * B 1 0 = 0`. Apply `pow_eq_zero_iff (two_ne_zero) |>.mp` to reduce the goal to its premises. Take the linear combination `B 1 0 ^ 2 * e1 + A 1 0 ^ 2 * e2 - A 1 0 * B 1 0 * e3`. Establish `f11 : A 1 0 * B 0 1 + x * a = 0`. Take the linear combination `e3 - f00`.
+
+Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_two, hx, hx', ha, ha']`. Take the linear combination `f00`. Take the linear combination `f01`.
+
+Take the linear combination `f10`. Take the linear combination `f11`.
+-/
 theorem mul_nil (A B : Matrix (Fin 2) (Fin 2) k) (hA : A.det = 1) (hB : B.det = 1)
     (hA' : (A - 1).det = 0) (hB' : (B - 1).det = 0) (hAB : (A * B - 1).det = 0) :
     (A - 1) * (B - 1) = 0 := by
@@ -51,6 +69,41 @@ theorem mul_nil (A B : Matrix (Fin 2) (Fin 2) k) (hA : A.det = 1) (hB : B.det = 
   · linear_combination f10
   · linear_combination f11
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Establish `hle : ⁅H, H⁆ ≤ H`. Rewrite using `[Subgroup.commutator_le]`. Introduce `a ha b hb`.
+
+Rewrite using `[commutatorElement_def]`. Conclude with `H.mul_mem (H.mul_mem (H.mul_mem ha hb) (H.inv_mem ha)) (H.inv_mem hb)`. Establish `hconj : ∀ g ∈ H, ∀ φ ∈ ⁅H, H⁆, g⁻¹ * φ * g ∈ ⁅H, H⁆`. Introduce `g hg φ hφ`. Use `Subgroup.commutator_mem_commutator (H.inv_mem hg) (hle hφ)` as an intermediate fact.
+
+Establish `h2` using `Subgroup.mul_mem _ this hφ`. Use `h2 using 1` and compare the differences between its conclusion and the goal. Rewrite using `[commutatorElement_def]`. Use `group`. Set `F : Submodule k (Fin 2 → k)` to `{ carrier := {v | ∀ φ ∈ ⁅H, H⁆, (ρ φ : Matrix (Fin 2) (Fin 2) k) *ᵥ v = v} add_mem' := by`.
+
+Introduce `a b ha hb φ hφ`. Rewrite using `[Matrix.mulVec_add, ha φ hφ, hb φ hφ]`. Use the proof step `zero_mem' := by`. Introduce `φ _`. Simplify using the standard rewrite rules.
+
+Use the proof step `smul_mem' := by`. Introduce `c a ha φ hφ`. Rewrite using `[Matrix.mulVec_smul, ha φ hφ] }`. Establish `hF : ∀ v, v ∈ F ↔ ∀ φ ∈ ⁅H, H⁆, (ρ φ : Matrix (Fin 2) (Fin 2) k) *ᵥ v = v` using `fun _ => Iff.rfl`. Establish `hFinv : ∀ g ∈ H, ∀ v ∈ F, (ρ g : Matrix (Fin 2) (Fin 2) k) *ᵥ v ∈ F`.
+
+Introduce `g hg v hv`. Rewrite `hv`, the goal using `[hF]`. Introduce `φ hφ`. Establish `h1` using `hv _ (hconj g hg φ hφ)`. Establish `h2 : φ * g = g * (g⁻¹ * φ * g)` using `by group`.
+
+Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, ← map_mul, h2, map_mul, Units.val_mul, ← Matrix.mulVec_mulVec, h1]`. Establish `hFtop : ∀ v, v ∈ F`. Break down `hirr F hFinv with h | h` into its components or cases. Introduce `w`. Rewrite using `[hF]`.
+
+Introduce `ψ hψ`. Establish `: ((ρ ψ : Matrix (Fin 2) (Fin 2) k) - 1) *ᵥ w ∈ F`. Rewrite using `[hF]`. Introduce `φ hφ`. Establish `h0` using `mul_nil (ρ φ : Matrix (Fin 2) (Fin 2) k) (ρ ψ : Matrix (Fin 2) (Fin 2) k) (hdet _ (hle hφ)) (hdet _ (hle hψ)) (hcon _ hφ) (hcon _ hψ) (by rw [← Units.val_mul, ← map_mul]; exact hcon _ (Subgroup.mul_mem _ hφ hψ))`.
+
+Rewrite using `[Matrix.mulVec_mulVec]`. Use `congr 1`. Rewrite `h0` using `[sub_mul, one_mul, sub_eq_zero]`. Conclude with `h0`. Rewrite `this` using `[h, Submodule.mem_bot, Matrix.sub_mulVec, Matrix.one_mulVec, sub_eq_zero]`.
+
+Conclude with `this`. Introduce `w`. Rewrite using `[h]`. Discharge the goal by the elementary cases of `trivial`. Establish `hcomm : ∀ g ∈ H, ∀ g' ∈ H, ∀ v, (ρ g : Matrix (Fin 2) (Fin 2) k) *ᵥ ((ρ g' : Matrix (Fin 2) (Fin 2) k) *ᵥ v) = (ρ g' : Matrix (Fin 2) (Fin 2) k) *ᵥ ((ρ g : Matrix (Fin 2) (Fin 2) k) *ᵥ v)`.
+
+Introduce `g hg g' hg' v`. Establish `h1` using `(hF _).1 (hFtop ((ρ g' : Matrix (Fin 2) (Fin 2) k) *ᵥ ((ρ g : Matrix (Fin 2) (Fin 2) k) *ᵥ v))) _ (Subgroup.commutator_mem_commutator hg hg')`. Rewrite using `[← h1]`. Simplify using `only [Matrix.mulVec_mulVec, ← Units.val_mul, ← map_mul]`. Use `congr 3`.
+
+Rewrite using `[commutatorElement_def]`. Use `group`. Establish `hscal : ∀ g ∈ H, ∃ c : k, ∀ v, (ρ g : Matrix (Fin 2) (Fin 2) k) *ᵥ v = c • v`. Introduce `g hg`. Take `⟨c, hc⟩` from `Module.End.exists_eigenvalue (Matrix.toLin' (ρ g : Matrix (Fin 2) (Fin 2) k))`.
+
+Use `⟨c, ?_⟩` and prove the remaining obligations. Break down `hirr (Module.End.eigenspace (Matrix.toLin' (ρ g : Matrix (Fin 2) (Fin 2) k)) c) (by` into its components or cases. Introduce `g' hg' v hv`. Rewrite `hv`, the goal using `[Module.End.mem_eigenspace_iff, Matrix.toLin'_apply]`. Rewrite using `[hcomm g hg g' hg', hv, Matrix.mulVec_smul]) with h | h`.
+
+Conclude with `absurd h (Module.End.hasEigenvalue_iff.1 hc)`. Introduce `v`. Establish `: v ∈ Module.End.eigenspace (Matrix.toLin' (ρ g : Matrix (Fin 2) (Fin 2) k)) c`. Rewrite using `[h]`. Discharge the goal by the elementary cases of `trivial`.
+
+Rewrite `this` using `[Module.End.mem_eigenspace_iff, Matrix.toLin'_apply]`. Then use the resulting hypothesis. Break down `hirr (Submodule.span k {(![1, 0] : Fin 2 → k)}) (by` into its components or cases. Introduce `g hg v hv`. Take `⟨c, hc⟩` from `hscal g hg`. Rewrite using `[hc]`.
+
+Conclude with `Submodule.smul_mem _ _ hv) with h | h`. Rewrite `h` using `[Submodule.span_singleton_eq_bot]`. Use `congrFun h 0` as an intermediate fact. Simplify using `at this`. Establish `: (![0, 1] : Fin 2 → k) ∈ Submodule.span k {(![1, 0] : Fin 2 → k)}`.
+
+Rewrite using `[h]`. Discharge the goal by the elementary cases of `trivial`. Take `⟨c, hc⟩` from `Submodule.mem_span_singleton.1 this`. Use `congrFun hc 1` as an intermediate fact. Simplify using `at this`.
+-/
 theorem exists_comm [IsAlgClosed k] {Γ : Type} [Group Γ] (ρ : Γ →* GL (Fin 2) k) (H : Subgroup Γ)
     (hdet : ∀ s ∈ H, (ρ s : Matrix (Fin 2) (Fin 2) k).det = 1)
     (hirr : ∀ V : Submodule k (Fin 2 → k),
@@ -147,6 +200,11 @@ theorem exists_comm [IsAlgClosed k] {Γ : Type} [Group Γ] (ρ : Γ →* GL (Fin
     have := congrFun hc 1
     simp at this
 
+/- English proof (translation)
+Use `exists_comm W (GlobalTheory.Ord2.H0g W) ?_ ?_` and prove the remaining obligations. Introduce `s hs`. Establish `h1 : GlobalTheory.Ord2.dt W s = 1` using `hs.2`. Establish `h2` using `congrArg Units.val h1`. Conclude with `h2`.
+
+Introduce `V hV`. Conclude with `h.irr.2.2 V le_top (fun g v hv => hV g g.2 v hv)`.
+-/
 theorem main (l : ℕ) [Fact (Nat.Prime l)] (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (e : ℕ)
     (S : Finset GlobalTheory.Ord2.Pl) (A : ValuationSubring Ω) (W : GlobalTheory.Ord2.R2 Ω l) (h : GlobalTheory.Ord2.Nf e S A W) :
     ∃ φ ∈ ⁅GlobalTheory.Ord2.H0g W, GlobalTheory.Ord2.H0g W⁆,

@@ -16,20 +16,65 @@ import Formalism.BranchSandwichDivisors.BranchIsometryProofs.TransferMean
 
 namespace Formalism.BranchingDeterminantCap
 
+/- English proof (translation)
+The claim follows from `map_slope_mu`.
+-/
 theorem mapMu : MapMu := map_slope_mu
+/- English proof (translation)
+The claim follows from `scale_sandwich_bound`.
+-/
 theorem scaleSandwich : ScaleSandwich := scale_sandwich_bound
+/- English proof (translation)
+The claim follows from `orthogonal_sum_slope`.
+-/
 theorem orthSum : OrthSum := orthogonal_sum_slope
+/- English proof (translation)
+The claim follows from `power_slope_mu`.
+-/
 theorem powMu : PowMu := power_slope_mu
+/- English proof (translation)
+The claim follows from `divisor_bounds_first`.
+-/
 theorem boundsI : BoundsI := divisor_bounds_first
+/- English proof (translation)
+The claim follows from `boundsIVal_of boundsI`.
+-/
 theorem boundsIVal : BoundsIVal := boundsIVal_of boundsI
+/- English proof (translation)
+The claim follows from `orthogonal_sandwich_bound`.
+-/
 theorem orthSandwich : OrthSandwich := orthogonal_sandwich_bound
+/- English proof (translation)
+The claim follows from `transferPart_of mapMu powMu`.
+-/
 theorem transferPart : TransferPart := transferPart_of mapMu powMu
+/- English proof (translation)
+The claim follows from `transferMuMax_of scaleSandwich orthSum powMu`.
+-/
 theorem transferMuMax : TransferMuMax := transferMuMax_of scaleSandwich orthSum powMu
+/- English proof (translation)
+The claim follows from `degreeTransferBound`.
+-/
 theorem transferDeg : TransferDeg := degreeTransferBound
+/- English proof (translation)
+The claim follows from `interlaceIdentities`.
+-/
 theorem interlaceIdent : InterlaceIdent := interlaceIdentities
+/- English proof (translation)
+The claim follows from `capacity_constant_bound`.
+-/
 theorem capConst : CapConst := capacity_constant_bound
+/- English proof (translation)
+The claim follows from `weyl_dimension_bound`.
+-/
 theorem weylDimBound : WeylDimBound := weyl_dimension_bound
+/- English proof (translation)
+The claim follows from `branch_map_formula`.
+-/
 theorem branchMap : BranchMap := branch_map_formula
+/- English proof (translation)
+The claim follows from `xi_norm_bound`.
+-/
 theorem xiNorm : XiNorm := xi_norm_bound
 
 end Formalism.BranchingDeterminantCap

@@ -18,6 +18,15 @@ section Alg
 variable {A U : Type} [CommGroup A] [CommGroup U] {θ : A → A → A → U} (h : IsCub θ)
 include h
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => simp [cubN, h.face]`. Consider the case `succ k ih`. Establish `c₁` using `h.coc (b ^ k * m ^ k) m b x`. Establish `c₂` using `h.coc (b ^ k) (m ^ k) m x`.
+
+Establish `c₃` using `h.coc (m ^ k * m) (b ^ k) b x`. Rewrite `c₁` using `[mul_comm m b]`. Rewrite `c₂` using `[h.s01 (b ^ k) (m ^ k), h.s01 (b ^ k) (m ^ k * m)]`. Rewrite `c₃` using `[mul_comm (m ^ k * m) (b ^ k), ← _root_.mul_assoc]`. Simplify using `only [cubN, Finset.prod_range_succ, _root_.one_mul] at ih ⊢`.
+
+Rewrite using `[mul_pow b m k, pow_succ m, pow_succ b, pow_succ (θ m b x)]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Establish `E` using `fun {p q : U} (e : p = q) => congrArg Additive.ofMul e`. Establish `a₀` using `E ih`. Establish `a₁` using `E c₁`.
+
+Establish `a₂` using `E c₂`. Establish `a₃` using `E c₃`. Simplify using `only [ofMul_mul] at a₀ a₁ a₂ a₃ ⊢`. Take the linear combination `(norm := abel) a₀ - a₁ + a₂ + a₃`.
+-/
 theorem cubN_one_mul (k : ℕ) (b m x : A) :
     cubN θ k 1 (b * m) x * θ m b x ^ k = θ (m ^ k) (b ^ k) x * cubN θ k 1 b x * cubN θ k 1 m x := by
   induction k with
@@ -37,6 +46,17 @@ theorem cubN_one_mul (k : ℕ) (b m x : A) :
     simp only [ofMul_mul] at a₀ a₁ a₂ a₃ ⊢
     linear_combination (norm := abel) a₀ - a₁ + a₂ + a₃
 
+/- English proof (translation)
+Establish `e₁` using `h.N_add k a m x b`. Establish `e₂` using `cubN_one_mul h k b m x`. Establish `e₃` using `h.N_split k (a * m ^ k) b x`. Establish `e₄` using `h.N_split k a (b * m) x`. Establish `e₅` using `h.N_split k a m x`.
+
+Establish `e₆` using `h.coc a (m ^ k) (b ^ k) x`. Establish `e₇` using `h.coc x b m a`. Rewrite `e₁` using `[h.s12 m x b]`. Rewrite `e₆` using `[← mul_pow, mul_comm m b]`. Rewrite `e₇` using `[h.s12 (x * b), h.s01 (x * b), h.s12 x b a, h.s01 x a b, h.s12 x (b * m), h.s01 x a, h.s12 b m a, h.s01 b a m]`.
+
+Apply `Additive.ofMul.injective` to reduce the goal to its premises. Establish `E` using `fun {p q : U} (e : p = q) => congrArg Additive.ofMul e`. Establish `a₁` using `E e₁`. Establish `a₂` using `E e₂`. Establish `a₃` using `E e₃`.
+
+Establish `a₄` using `E e₄`. Establish `a₅` using `E e₅`. Establish `a₆` using `E e₆`. Establish `a₇` using `E e₇`. Establish `c₁` using `E h₁`.
+
+Establish `c₂` using `E h₂`. Simplify using `only [ofMul_mul, ofMul_inv] at *`. Take the linear combination `(norm := abel) a₁ - a₂ + a₃ - a₄ + a₅ + a₆ - a₇ + c₁ - c₂`.
+-/
 theorem cub_shift (k : ℕ) (a m b x : A) (Sa Sm Sam Sq τ P w : U) (h₁ : Sam * cubN θ k a m b = Sa * Sm ^ k)
     (h₂ : Sq * θ a b m = Sa * τ) :
     cubN θ k a m (x * b) * (θ a (x * b) m)⁻¹ * (τ * P) *
@@ -64,6 +84,9 @@ end Alg
 
 variable {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {F : Type} [Field F] [Algebra (FractionRing R) F]
 
+/- English proof (translation)
+Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, tr_fst, tr_fst, tr_fst]`. Use `Eq.trans ?_ (tr_pr D F (m * m')).symm` and prove the remaining obligations. Use `(Category.assoc _ _ _).trans ((congrArg (_ ≫ ·) (tr_pr D F m')).trans ?_)` and prove the remaining obligations. Rewrite using `[MonObj.comp_mul, tr_pr, ← Category.assoc, tr_fst, MonObj.comp_mul, _root_.mul_assoc]`.
+-/
 theorem trPt_comp (m m' : TF (R := R) F ⟶ D.P.A) :
     DegPre.trPt D F m ≫ DegPre.trPt D F m' = DegPre.trPt D F (m * m') := by
   apply CartesianMonoidalCategory.hom_ext
@@ -72,6 +95,13 @@ theorem trPt_comp (m m' : TF (R := R) F ⟶ D.P.A) :
     refine (Category.assoc _ _ _).trans ((congrArg (_ ≫ ·) (tr_pr D F m')).trans ?_)
     rw [MonObj.comp_mul, tr_pr, ← Category.assoc, tr_fst, MonObj.comp_mul, _root_.mul_assoc]
 
+/- English proof (translation)
+Substitute `hb` using the available equality. Take `⟨w₂, h₂, v₂⟩` from `exists_gen D.P.isLB (φ' := DegPre.lineφ D F (g.b * cP D _ z)) (ε' := DegPre.lineε n) (fun U _ h => by`. Establish `a₁ : ∀ χ, jFK (R` using `R) F ≫ D.xK χ = (cP D (TF (R := R) F) χ).left := fun χ => (Category.assoc _ _ _).symm`. Establish `a₂ : jFK (R` using `R) F ≫ (toUnit (TK R)).left ≫ eSec D.P.A = (1 : TF (R := R) F ⟶ D.P.A).left := (Category.assoc _ _ _).symm`. Simplify using `only [Fintype.prod_sum_type, Sum.elim_inl, Sum.elim_inr, Fintype.prod_unique, a₁, a₂]`.
+
+Rewrite using `[Fin.prod_univ_four, Fin.prod_univ_two, Fin.prod_univ_two]`. Use `show h (1 : TF (R := R) F ⟶ D.P.A).left ^ (n : ℤ) * h g.b.left ^ (-(n : ℤ)) * _ * (h (cP D _ z * g.b).left ^ ((n : ℤ) * -1) * h (cP D _ z).left ^ ((n : ℤ) * 1) * h g.b.left ^ ((n : ℤ) * 1) * h (1 : TF (R := R) F ⟶ D.P.A).left ^ ((n : ℤ) * -1)) = h (1 : TF (R := R) F ⟶ D.P.A).left …`. Rewrite using `[mul_comm g.b]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv, ofMul_zpow, ofMul_pow]`.
+
+Use the proof step `module)`. Use the proof step `(LB.mulGen D.P.L _ _ _ _ (LB.mulGen D.P.L _ _ _ _ w (LB.pullGen D.P.L _ _ (LB.mulGen D.P.L _ _ _ _ (GeneratorPullback.powGen D.P.L _ _ (D.psi z) n) (GeneratorPullback.powGen D.P.L _ _ D.rigK n)) (jFK (R := R) F))) (GeneratorPullback.powGen D.P.L _ _ (g.s z) n))`. Use the proof step `(mulGen_isGen _ _ _ _ _ _ _ (mulGen_isGen _ _ _ _ _ _ _ hw (pullGen_isGen _ _ _ _ (mulGen_isGen _ _ _ _ _ _ _ (powGen_isGen _ _ _ _ (D.psi_gen z) n) (powGen_isGen _ _ _ _ (pullGen_isGen _ _ _ _ D.rig_gen _) n)) _)) (powGen_isGen _ _ _ _ (g.isGen z) n))`. Use `⟨w₂, h₂, fun Z r y J hJ => (v₂ Z r y J hJ).trans ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) rfl ((val_pull hJ _ _ _).trans (val_mul hJ _ _ _)))) ?_))⟩` and prove the remaining obligations. Conclude with `map_pow _ _ _`.
+-/
 theorem exists_shift_gen (n : ℕ) (g : GtPtF D F) (z : D.X) (b' : TF (R := R) F ⟶ D.P.A)
     (hb : b' = g.b * cP D _ z)
     (w : LB.Gen (LB.LinComb D.P.L (DegPre.lineφ D F g.b) (DegPre.lineε n))) (hw : w.IsGen) :
@@ -106,6 +136,19 @@ theorem exists_shift_gen (n : ℕ) (g : GtPtF D F) (z : D.X) (b' : TF (R := R) F
     ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) rfl ((val_pull hJ _ _ _).trans (val_mul hJ _ _ _)))) ?_))⟩
   exact map_pow _ _ _
 
+/- English proof (translation)
+Introduce `hG R _ _ D _ F _ _ n _ p q z h hy hι hadd w hw`. Establish `hh : h.b = cP D _ z` using `hι.1`. Establish `hb : q.g.b = p.g.b * cP D _ z` using `hadd.1.trans (congrArg (p.g.b * ·) hh)`. Take `⟨w₂, h₂, v₂⟩` from `exists_shift_gen n p.g z q.g.b hb w hw`. Use `⟨w₂, h₂, fun s t H => ?_⟩` and prove the remaining obligations.
+
+Rewrite `H` using `[phiRel_iff hG p w hw]`. Rewrite using `[phiRel_iff hG q w₂ h₂]`. Introduce `α β hβ T ρ y J hJ`. Establish `C : IsCub (th D (T` using `T) y J) := isCub_cubV D.cub hJ`. Establish `e₁` using `H (α + n • z) β (by rw [← hβ, hy]; abel) T ρ y J hJ`.
+
+Take `⟨⟨u', hu', hc'⟩, hv'⟩` from `gen_fe (D := D) (F := F) hG n z α`. Establish `e₄` using `(secRel_iff D.P.isLB _ _ _ _ _ _ _ _ _ u').1 (s.fe z α u' hu' hc') _ (ρ ≫ DegPre.trPt D F p.g.b).left y J hJ`. Rewrite `e₄` using `[hv' u' hu' hc' _ (ρ ≫ DegPre.trPt D F p.g.b) y J hJ, trF_eq, ← Over.comp_left, Category.assoc, trPt_comp, ← hb, Category.assoc, tr_fst]`. Rewrite using `[e₁, e₄, _root_.mul_assoc, ← Units.val_mul]`. Use `congr 2`.
+
+Establish `t₁` using `gt_nsmul (ρ ≫ fst (TF (R := R) F) D.P.A) hJ p.g α z n`. Establish `t₂` using `((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) rfl (val_cub D.cub (ρ ≫ fst (TF (R := R) F) D.P.A) hJ _ _ _))).symm.trans ((val_corr hJ (hadd.2 α) (ρ ≫ fst (TF (R := R) F) D.P.A).left).trans ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) rfl ((val_corr hJ (hι.2 α) _).trans (val_pull h …`. Establish `c₁ : (ρ ≫ fst (TF (R` using `R) F) D.P.A) ≫ DegPre.cF D F α = cP D T α := comp_cP D _ α`. Establish `c₂ : (ρ ≫ fst (TF (R` using `R) F) D.P.A) ≫ cP D _ z = cP D T z := comp_cP D _ z`. Rewrite `t₂` using `[hh, c₁, c₂]`.
+
+Establish `key` using `cub_shift C n _ _ _ (ρ ≫ DegPre.prB D F) _ _ _ _ _ (val (GeneratorPullback.powGen D.P.L _ _ (D.psi z) n) ((ρ ≫ fst (TF (R := R) F) D.P.A).left ≫ jFK (R := R) F) y J * val (GeneratorPullback.powGen D.P.L _ _ D.rigK n) ((ρ ≫ fst (TF (R := R) F) D.P.A).left ≫ jFK (R := R) F) y J) (v …`. Establish `d₁ : (ρ ≫ DegPre.trPt D F p.g.b) ≫ fst _ _ ≫ cP D _ z = cP D T z`. Rewrite using `[← Category.assoc]`. Conclude with `comp_cP D _ z`. Establish `d₂ : (ρ ≫ DegPre.trPt D F p.g.b) ≫ DegPre.prB D F = (ρ ≫ DegPre.prB D F) * ((ρ ≫ fst (TF (R` using `R) F) D.P.A) ≫ p.g.b) := by`.
+
+Rewrite using `[Category.assoc, tr_pr, MonObj.comp_mul, Category.assoc]`. Establish `d₃ : ρ ≫ fst _ _ ≫ q.g.b = ((ρ ≫ fst (TF (R` using `R) F) D.P.A) ≫ p.g.b) * cP D T z := by`. Rewrite using `[← Category.assoc, hb, MonObj.comp_mul, c₂]`. Rewrite using `[val_famMult _ hJ, val_mul hJ, val_mul hJ, v₂ _ _ y J hJ, uVal, uVal, uVal, d₁, d₂, d₃, cPoint_add, cPoint_nsmul, ← Category.assoc ρ]`. Conclude with `key`.
+-/
 theorem qk_shift : GlobalFnsSt → ∀ (R : Type) [CommRing R] [IsDomain R] (D : DegPre R), D.TauBimult → ∀ (F : Type) [Field F] [Algebra (FractionRing R) F] (n : ℕ), 1 ≤ n → ∀ (p q : QkPt D F n) (z : D.X) (h : GtPtF D F), q.y = p.y + n • z → GtPtF.IsIota z h → GtPtF.IsAdd p.g h q.g → ∀ w : LB.Gen (LB.LinComb D.P.L (DegPre.lineφ D F p.g.b) (DegPre.lineε n)), w.IsGen → ∃ w₂ : LB.Gen (LB.LinComb D.P.L (DegPre.lineφ D F q.g.b) (DegPre.lineε n)), w₂.IsGen ∧ ∀ s s' : Fam D F n, PhiRel D F n p w s s' → PhiRel D F n q w₂ s s' := by
   intro hG R _ _ D _ F _ _ n _ p q z h hy hι hadd w hw
   have hh : h.b = cP D _ z := hι.1

@@ -8,6 +8,43 @@ open MvPolynomial ReciprocityTheory.MultiplicativeHeights.DerivationAlgebraicInd
 
 open MvPolynomial ReciprocityTheory.MultiplicativeHeights.DerivationAlgebraicIndependence
 
+/- English proof (translation)
+Use `algebraicIndependent_of_derivations _ (Sum.elim (fun o => (pderiv o : Derivation Ω (MvPolynomial (Option (Fin (D + 2) × Fin (N + 1))) Ω) (MvPolynomial (Option (Fin (D + 2) × Fin (N + 1))) Ω)).restrictScalars K) (fun a => coeffDer (σ := Option (Fin (D + 2) × Fin (N + 1))) (δ a))) …` and prove the remaining obligations. Introduce `c H`. Establish `hZ : ∀ o, pderiv (none : Option (Fin (D + 2) × Fin (N + 1))) (∑ j, X (some (ρ o, j)) * C (y j) : MvPolynomial (Option (Fin (D + 2) × Fin (N + 1))) Ω) = 0`. Introduce `o`. Simplify using `[pderiv_X]`.
+
+Establish `hpn : ∀ o, pderiv (none : Option (Fin (D + 2) × Fin (N + 1))) (X none * ∑ j, X (some (ρ o, j)) * C (y j) : MvPolynomial (Option (Fin (D + 2) × Fin (N + 1))) Ω) = ∑ j, X (some (ρ o, j)) * C (y j)`. Introduce `o`. Rewrite using `[Derivation.leibniz, hZ, smul_zero, zero_add, pderiv_X]`. Simplify using the standard rewrite rules. Establish `hcd : ∀ a o, coeffDer (σ` using `Option (Fin (D + 2) × Fin (N + 1))) (δ a) (X none * ∑ j, X (some (ρ o, j)) * C (y j)) = X none * ∑ j, X (some (ρ o, j)) * C (δ a (y j)) := by`.
+
+Introduce `a o`. Simplify using `[Derivation.leibniz, coeffDer_X, coeffDer_C, map_sum]`. Set `M : Matrix (Option (Fin D)) (Option (Fin D)) (MvPolynomial (Option (Fin (D + 2) × Fin (N + 1))) Ω)` to `fun r o => match r with`. Consider the case `none => ∑ j, X (some (ρ o, j)) * C (y j)`. Consider the case `some a => X none * ∑ j, X (some (ρ o, j)) * C (δ a (y j))`.
+
+Establish `e1 : ∑ o, c (Sum.inr o) * ∑ j, (X (some (ρ o, j)) * C (y j) : MvPolynomial (Option (Fin (D + 2) × Fin (N + 1))) Ω) = 0`. Use `H (Sum.inl none)` as an intermediate fact. Rewrite `this` using `[Fintype.sum_sum_type]`. Simplify using `only [Sum.elim_inl, Sum.elim_inr, Derivation.coe_restrictScalars, hpn] at this`. Rewrite `this` using `[Finset.sum_eq_zero (fun p _ => by simp [pderiv_X]), zero_add]`. Then use the resulting hypothesis.
+
+Establish `e2 : ∀ a, ∑ o, c (Sum.inr o) * (X none * ∑ j, (X (some (ρ o, j)) * C (δ a (y j)) : MvPolynomial (Option (Fin (D + 2) × Fin (N + 1))) Ω)) = 0`. Introduce `a`. Use `H (Sum.inr a)` as an intermediate fact. Rewrite `this` using `[Fintype.sum_sum_type]`. Simplify using `only [Sum.elim_inl, Sum.elim_inr, hcd] at this`.
+
+Rewrite `this` using `[Finset.sum_eq_zero (fun p _ => by simp [coeffDer_X]), zero_add]`. Then use the resulting hypothesis. Establish `hv : M.mulVec (fun o => c (Sum.inr o)) = 0`. Use function extensionality and compare the values at `r`. Consider the cases of `r with`. Consider the case `none`.
+
+Simplify using `only [Matrix.mulVec, dotProduct, Pi.zero_apply]`. Rewrite using `[← e1]`. Conclude with `Finset.sum_congr rfl fun o _ => mul_comm _ _`. Consider the case `some a`. Simplify using `only [Matrix.mulVec, dotProduct, Pi.zero_apply]`.
+
+Rewrite using `[← e2 a]`. Conclude with `Finset.sum_congr rfl fun o _ => mul_comm _ _`. Set `pt : Option (Fin (D + 2) × Fin (N + 1)) → Ω` to `fun v => match v with`. Consider the case `none => 1`. Consider the case `some q => ∑ o : Option (Fin D), if ρ o = q.1 then (match o with`.
+
+Consider the case `none => if q.2 = jc then 1 else 0`. Consider the case `some b => (if q.2 = jc then -y (jc.succAbove (J b)) else 0) + (if q.2 = jc.succAbove (J b) then 1 else 0))`. Use `else 0`. Establish `hpt0 : ∀ j, pt (some (ρ none, j)) = if j = jc then 1 else 0`. Introduce `j`.
+
+Use `show (∑ o : Option (Fin D), _) = _`. Rewrite using `[Finset.sum_eq_single none]`. Simplify using the standard rewrite rules. Introduce `o _ ho`. Rewrite using `[if_neg]`.
+
+Conclude with `fun h => ho (hρ h)`. Simplify using the standard rewrite rules. Establish `hpt1 : ∀ b j, pt (some (ρ (some b), j)) = (if j = jc then -y (jc.succAbove (J b)) else 0) + (if j = jc.succAbove (J b) then 1 else 0)`. Introduce `b j`. Use `show (∑ o : Option (Fin D), _) = _`.
+
+Rewrite using `[Finset.sum_eq_single (some b)]`. Simplify using the standard rewrite rules. Introduce `o _ ho`. Rewrite using `[if_neg]`. Conclude with `fun h => ho (hρ h)`.
+
+Simplify using the standard rewrite rules. Establish `hptn : pt none = 1` using `rfl`. Establish `hne : ∀ b, jc.succAbove (J b) ≠ jc` using `fun b => Fin.succAbove_ne jc (J b)`. Establish `hev : (MvPolynomial.eval pt).mapMatrix M = 1`. Use extensionality with `r o`.
+
+Rewrite using `[RingHom.mapMatrix_apply, Matrix.map_apply]`. Consider the cases of `r with`. Consider the case `none`. Consider the cases of `o with`. Consider the case `none => simp [M, hpt0, hy]`.
+
+Consider the case `some b`. Simplify using `[M, hpt1, add_mul, Finset.sum_add_distrib, hy, Matrix.one_apply]`. Consider the case `some a`. Consider the cases of `o with`. Consider the case `none`.
+
+Simplify using `[M, hpt0, hy, hptn, Matrix.one_apply]`. Consider the case `some b`. Simplify using `[M, hpt1, add_mul, Finset.sum_add_distrib, hy, hδ, Matrix.one_apply, hptn]`. Establish `hdet : M.det ≠ 0`. Introduce `h0`.
+
+Use `RingHom.map_det (MvPolynomial.eval pt) M` as an intermediate fact. Rewrite `this` using `[h0, map_zero, hev, Matrix.det_one]`. Conclude with `zero_ne_one this`. Establish `hc2 : ∀ o, c (Sum.inr o) = 0` using `fun o => congrFun (Matrix.eq_zero_of_mulVec_eq_zero hdet hv) o`. Introduce `i`.
+
+Break down `i with p | o` into its components or cases. Use `H (Sum.inl (some p))` as an intermediate fact. Simplify `this` using `[Fintype.sum_sum_type, hc2, pderiv_X, Pi.single_apply]`. Conclude with `hc2 o`.
+-/
 theorem algebraicIndependent_scaledForms {K Ω : Type} [Field K] [CharZero K] [Field Ω] [Algebra K Ω] {D N : ℕ}
     (y : Fin (N + 1) → Ω) (jc : Fin (N + 1)) (hy : y jc = 1)
     (J : Fin D → Fin N) (δ : Fin D → Derivation K Ω Ω)
@@ -119,6 +156,11 @@ theorem algebraicIndependent_scaledForms {K Ω : Type} [Field K] [CharZero K] [F
     simpa [Fintype.sum_sum_type, hc2, pderiv_X, Pi.single_apply] using this
   · exact hc2 o
 
+/- English proof (translation)
+Unfold `ratio`. Use `split_ifs with h`. Establish `hc : f = h.choose • f` using `h.choose_spec`. Establish `h0 : (h.choose - 1) • f = 0`. Rewrite using `[sub_smul, one_smul, ← hc, sub_self]`.
+
+Break down `smul_eq_zero.mp h0 with h1 | h1` into its components or cases. Conclude with `sub_eq_zero.mp h1`. Conclude with `absurd h1 hf`. Conclude with `absurd ⟨1, (one_smul Ω f).symm⟩ h`.
+-/
 theorem scalarRatio_self {Ω V : Type*} [Field Ω] [AddCommGroup V] [Module Ω V] {f : V}
     (hf : f ≠ 0) : ratio (Ω := Ω) f f = 1 := by
   unfold ratio
@@ -159,6 +201,9 @@ def hupa1Eqv (D N : ℕ) :
       · have : i = finSuccEquivLast.symm (some t) := (Equiv.eq_symm_apply _).2 h
         simp [this, hupa1Row]
 
+/- English proof (translation)
+Proceed by induction on `a using MvPolynomial.induction_on`. Use `next r => simp [MvPolynomial.optionEquivLeft_C]`. Use `next p q hp hq => simp [hp, hq]`. Use `next p s hp => simp [hp, MvPolynomial.optionEquivLeft_X_some]`.
+-/
 theorem optionEquivLeft_rename_some' {R S : Type*} [CommRing R] (a : MvPolynomial S R) :
     MvPolynomial.optionEquivLeft R S (MvPolynomial.rename some a) = Polynomial.C a := by
   induction a using MvPolynomial.induction_on

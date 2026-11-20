@@ -6,6 +6,9 @@ namespace GlobalTheory.TripleIntertwiner
 
 open Classical
 
+/- English proof (translation)
+Simplify using `only [map_add, map_sub, map_zsmul, AddMonoidHom.add_apply, AddMonoidHom.sub_apply, AddMonoidHom.zsmul_apply]`. Use `module`.
+-/
 theorem quad_four {M G : Type*} [AddCommGroup M] [AddCommGroup G] (β : M →+ M →+ G) (a b c d : ℤ)
     (x y z w : M) :
     β (a • x - b • y - c • z - d • w) (a • x - b • y - c • z - d • w) +
@@ -17,6 +20,25 @@ theorem quad_four {M G : Type*} [AddCommGroup M] [AddCommGroup G] (β : M →+ M
       AddMonoidHom.sub_apply, AddMonoidHom.zsmul_apply]
   module
 
+/- English proof (translation)
+Take `⟨a, b, c, d, h⟩` from `Nat.sum_four_squares (Fintype.card M - 1)`. Establish `hc : 1 ≤ Fintype.card M` using `Fintype.card_pos`. Establish `hz : (a : ℤ) ^ 2 + (b : ℤ) ^ 2 + (c : ℤ) ^ 2 + (d : ℤ) ^ 2 = (Fintype.card M : ℤ) - 1`. Use `congrArg (Nat.cast : ℕ → ℤ) h` as an intermediate fact. Move the coercions through the operations in `[Nat.cast_sub hc] at this`.
+
+Conclude with `this`. Establish `hneg : ∀ m : M, ((a : ℤ) ^ 2 + (b : ℤ) ^ 2 + (c : ℤ) ^ 2 + (d : ℤ) ^ 2) • m = -m`. Introduce `m`. Rewrite using `[hz, sub_smul, natCast_zsmul, card_nsmul_eq_zero]`. Simplify using the standard rewrite rules.
+
+Set `T : M × M × M × M → M × M × M × M` to `fun p => ((a : ℤ) • p.1 - (b : ℤ) • p.2.1 - (c : ℤ) • p.2.2.1 - (d : ℤ) • p.2.2.2, (b : ℤ) • p.1 + (a : ℤ) • p.2.1 - (d : ℤ) • p.2.2.1 + (c : ℤ) • p.2.2.2, (c : ℤ) • p.1 + (d : ℤ) • p.2.1 + (a : ℤ) • p.2.2.1 - (b : ℤ) • p.2.2.2, (d : ℤ) • p.1 - (c : ℤ) • p.2.1 + (b : ℤ) • p.2.2.1 …`. Set `T' : M × M × M × M → M × M × M × M` to `fun p => (-((a : ℤ) • p.1 + (b : ℤ) • p.2.1 + (c : ℤ) • p.2.2.1 + (d : ℤ) • p.2.2.2), -(-((b : ℤ) • p.1) + (a : ℤ) • p.2.1 + (d : ℤ) • p.2.2.1 - (c : ℤ) • p.2.2.2), -(-((c : ℤ) • p.1) - (d : ℤ) • p.2.1 + (a : ℤ) • p.2.2.1 + (b : ℤ) • p.2.2.2), -(-((d : ℤ) • p.1) + (c : ℤ) • p.2.1 …`. Establish `hT : Function.LeftInverse T' T`. Introduce and unpack `⟨x, y, z, w⟩`. Simplify using `only [T, T', Prod.mk.injEq, neg_eq_iff_eq_neg]`.
+
+Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hneg x]`. Use `module`. Rewrite using `[← hneg y]`. Use `module`.
+
+Rewrite using `[← hneg z]`. Use `module`. Rewrite using `[← hneg w]`. Use `module`. Establish `hbij : Function.Bijective T` using `Finite.injective_iff_bijective.mp hT.injective`.
+
+Set `Q : M × M × M × M → Additive ℂˣ` to `fun p => β p.1 p.1 + β p.2.1 p.2.1 + β p.2.2.1 p.2.2.1 + β p.2.2.2 p.2.2.2`. Establish `hQ : ∀ p, Q (T p) = -Q p`. Introduce and unpack `⟨x, y, z, w⟩`. Establish `e : ∀ m : M, -β m m = ((a : ℤ) ^ 2 + (b : ℤ) ^ 2 + (c : ℤ) ^ 2 + (d : ℤ) ^ 2) • β m m`. Introduce `m`.
+
+Rewrite using `[← map_zsmul, hneg, map_neg]`. Use `(quad_four β a b c d x y z w).trans ?_` and prove the remaining obligations. Simplify using `only [Q, neg_add, e, smul_add]`. Establish `key : ∀ g : M → ℂ, (∑ m, g m) ^ 4 = ∑ p : M × M × M × M, g p.1 * g p.2.1 * g p.2.2.1 * g p.2.2.2`. Introduce `g`.
+
+Simplify using `only [Fintype.sum_prod_type, ← Finset.mul_sum, ← Finset.sum_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key, key, ← hbij.sum_comp]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Establish `h1` using `congrArg (fun t : Additive ℂˣ => ((Additive.toMul t : ℂˣ) : ℂ)) (hQ p)`.
+
+Simplify using `only [Q, toMul_add, toMul_neg, Units.val_mul, Units.val_inv_eq_inv_val, mul_inv] at h1`. Conclude with `h1`.
+-/
 theorem gauss_pow_four_hom {M : Type*} [AddCommGroup M] [Fintype M] (β : M →+ M →+ Additive ℂˣ) :
     (∑ m, ((Additive.toMul (β m m) : ℂˣ) : ℂ)) ^ 4 = (∑ m, ((Additive.toMul (β m m) : ℂˣ) : ℂ)⁻¹) ^ 4 := by
   obtain ⟨a, b, c, d, h⟩ := Nat.sum_four_squares (Fintype.card M - 1)
@@ -67,6 +89,13 @@ theorem gauss_pow_four_hom {M : Type*} [AddCommGroup M] [Fintype M] (β : M →+
   simp only [Q, toMul_add, toMul_neg, Units.val_mul, Units.val_inv_eq_inv_val, mul_inv] at h1
   exact h1
 
+/- English proof (translation)
+Set `γ : M →+ M →+ Additive ℂˣ` to `AddMonoidHom.mk' (fun x => AddMonoidHom.mk' (fun y => Additive.ofMul (Units.mk0 (β x y) (hne x y))) (by`. Introduce `y y'`. Rewrite using `[← ofMul_mul]`. Use `congr 1`. Use `ext`.
+
+Simplify using `[hr]))`. Use the proof step `(by`. Introduce `x x'`. Use extensionality with `y`. Simplify using `[hl])`.
+
+Simplify `gauss_pow_four_hom γ` using `[γ]`.
+-/
 theorem gauss_pow_four {M : Type*} [AddCommGroup M] [Fintype M] (β : M → M → ℂ)
     (hl : ∀ x x' y, β (x + x') y = β x y * β x' y) (hr : ∀ x y y', β x (y + y') = β x y * β x y')
     (hne : ∀ x y, β x y ≠ 0) :
@@ -86,20 +115,40 @@ variable {V : Type*} [AddCommGroup V]
 
 abbrev rep {B A : AddSubgroup V} (q : A ⧸ B.addSubgroupOf A) : V := ((Quotient.out q : A) : V)
 
+/- English proof (translation)
+The claim follows from `(Quotient.out q : A).2`.
+-/
 theorem rep_mem {B A : AddSubgroup V} (q : A ⧸ B.addSubgroupOf A) : rep q ∈ A := (Quotient.out q : A).2
 
+/- English proof (translation)
+Take `⟨h, hh⟩` from `QuotientAddGroup.mk_out_eq_mul (B.addSubgroupOf A) a`. Use `⟨((h : A) : V), (h : A).2, h.2, ?_⟩` and prove the remaining obligations. Unfold `rep`. Rewrite using `[hh]`. Both sides reduce to the same expression.
+-/
 theorem rep_mk {B A : AddSubgroup V} (a : A) :
     ∃ l, l ∈ A ∧ l ∈ B ∧ rep (QuotientAddGroup.mk a : A ⧸ B.addSubgroupOf A) = a + l := by
   obtain ⟨h, hh⟩ := QuotientAddGroup.mk_out_eq_mul (B.addSubgroupOf A) a
   refine ⟨((h : A) : V), (h : A).2, h.2, ?_⟩
   unfold rep; rw [hh]; rfl
 
+/- English proof (translation)
+Use `rep_mk (B := B) ((Quotient.out q : A) + Quotient.out q')` as an intermediate fact. Rewrite `this` using `[QuotientAddGroup.mk_add, QuotientAddGroup.out_eq', QuotientAddGroup.out_eq']`. Conclude with `this`.
+-/
 theorem rep_add {B A : AddSubgroup V} (q q' : A ⧸ B.addSubgroupOf A) :
     ∃ l, l ∈ A ∧ l ∈ B ∧ rep (q + q') = rep q + rep q' + l := by
   have := rep_mk (B := B) ((Quotient.out q : A) + Quotient.out q')
   rw [QuotientAddGroup.mk_add, QuotientAddGroup.out_eq', QuotientAddGroup.out_eq'] at this
   exact this
 
+/- English proof (translation)
+Establish `hle : A₀.addSubgroupOf A ≤ B.addSubgroupOf A` using `AddSubgroup.comap_mono hB`. Set `π : A ⧸ A₀.addSubgroupOf A →+ A ⧸ B.addSubgroupOf A` to `QuotientAddGroup.map _ _ (AddMonoidHom.id A) hle`. Establish `hπ : ∀ a : A, π (QuotientAddGroup.mk a) = QuotientAddGroup.mk a` using `fun a => rfl`. Establish `hsurj : Function.Surjective π`. Introduce `q`.
+
+Conclude with `⟨QuotientAddGroup.mk (Quotient.out q), by rw [hπ, QuotientAddGroup.out_eq']⟩`. Establish `hfib : ∀ q, (Finset.univ.filter fun x => π x = q).card = (Finset.univ.filter fun x => π x = 0).card` using `fun q => AddMonoidHom.card_fiber_eq_of_mem_range π (hsurj q) ⟨0, map_zero _⟩`. Establish `main : ∀ {G : Type} [AddCommMonoid G] (u : A ⧸ B.addSubgroupOf A → G), ∑ q, u (π q) = (Finset.univ.filter fun x => π x = 0).card • ∑ q, u q`. Introduce `G _ u`. Rewrite using `[← Finset.sum_fiberwise Finset.univ π, Finset.smul_sum]`.
+
+Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_congr rfl (g := fun _ => u q) (fun x hx => by rw [(Finset.mem_filter.mp hx).2]), Finset.sum_const, hfib]`. Use `⟨(Finset.univ.filter fun x => π x = 0).card, ?_, ?_⟩` and prove the remaining obligations. Use `main (G := ℕ) (fun _ => 1)` as an intermediate fact. Simplify using `only [Finset.sum_const, smul_eq_mul, mul_one, Finset.card_univ] at this`.
+
+Unfold `AddSubgroup.relIndex AddSubgroup.index`. Rewrite using `[Nat.card_eq_fintype_card, Nat.card_eq_fintype_card, this]`. Rewrite using `[← main (fun q => g (rep q))]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Take `⟨l, h1, h2, h3⟩` from `rep_mk (B := B) (Quotient.out q : A)`.
+
+Rewrite `h3` using `[← hπ, QuotientAddGroup.out_eq']`. Rewrite using `[h3, hg _ (rep_mem q) _ h1 h2]`.
+-/
 theorem sum_refine {F : Type} [AddCommMonoid F] {A₀ A B : AddSubgroup V} (hB : A₀ ≤ B)
     [Fintype (A ⧸ A₀.addSubgroupOf A)] [Fintype (A ⧸ B.addSubgroupOf A)] (g : V → F)
     (hg : ∀ x ∈ A, ∀ l ∈ A, l ∈ B → g (x + l) = g x) :
@@ -142,6 +191,19 @@ def itw (W : V → F →ₗ[ℂ] F) (A B : AddSubgroup V) (f : F) : F :=
 
 variable {W : V → F →ₗ[ℂ] F} {c : V → V → ℂ}
 
+/- English proof (translation)
+Establish `h0 : A₀.relIndex B ≠ 0` using `AddSubgroup.index_ne_zero_of_finite`. Establish `h1 : A.relIndex B ≠ 0` using `fun h => h0 (AddSubgroup.relIndex_eq_zero_of_le_left hA h)`. Use `haveI : Finite (B ⧸ A.addSubgroupOf B) := Nat.finite_of_card_ne_zero h1`. Use `letI : Fintype (B ⧸ A.addSubgroupOf B) := Fintype.ofFinite _`. Take `⟨k, hk, hs⟩` from `sum_refine (A := B) hA (fun x => W x f) (fun x hx l hl hl' => by`.
+
+Use `H.1 x l f` as an intermediate fact. Rewrite `this` using `[hf l hl', cB x hx l hl, one_smul]`. Conclude with `this.symm)`. Establish `hk' : k = A₀.relIndex (A ⊓ B)`. Use `AddSubgroup.relIndex_mul_relIndex A₀ (A ⊓ B) B (le_inf hA hB) inf_le_right` as an intermediate fact.
+
+Rewrite `this` using `[AddSubgroup.inf_relIndex_right, ← hk]`. Conclude with `(Nat.eq_of_mul_eq_mul_right (Nat.pos_of_ne_zero h1) this).symm`. Establish `hk0 : (k : ℂ) ≠ 0`. Introduce `h`. Establish `: k = 0` using `by exact_mod_cast h`.
+
+Rewrite `hk` using `[this, zero_mul]`. Conclude with `h0 hk.symm`. Establish `hn : (A.relIndex B : ℂ) ≠ 0` using `by exact_mod_cast h1`. Establish `hsq : ((Real.sqrt ((A.addSubgroupOf B).index : ℝ) : ℝ) : ℂ) ^ 2 = (A.relIndex B : ℂ)`. Rewrite using `[← Complex.ofReal_pow, Real.sq_sqrt (Nat.cast_nonneg _)]`.
+
+Both sides reduce to the same expression. Use `⟨((Real.sqrt ((A.addSubgroupOf B).index : ℝ))⁻¹ : ℂ) * (k : ℂ)⁻¹, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hk', ← hk, mul_pow, inv_pow, hsq]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+
+Rewrite using `[hs, itw, finsum_eq_sum_of_fintype, ← Nat.cast_smul_eq_nsmul ℂ, smul_smul, mul_assoc, inv_mul_cancel₀ hk0, mul_one]`.
+-/
 theorem itw_eq (H : (∀ x y f, W x (W y f) = c x y • W (x + y) f) ∧
       (∀ x x' y, c (x + x') y = c x y * c x' y) ∧ (∀ x y y', c x (y + y') = c x y * c x y') ∧
       ∀ x y, c x y ≠ 0)
@@ -176,6 +238,25 @@ theorem itw_eq (H : (∀ x y f, W x (W y f) = c x y • W (x + y) f) ∧
   · rw [hs, itw, finsum_eq_sum_of_fintype, ← Nat.cast_smul_eq_nsmul ℂ, smul_smul, mul_assoc,
       inv_mul_cancel₀ hk0, mul_one]
 
+/- English proof (translation)
+Use `split_ifs with h`. Rewrite using `[hf v h, Finset.sum_congr rfl (g := fun _ => f) (fun q _ => hf _ (rep_mem q)), Finset.sum_const, Finset.card_univ, Nat.cast_smul_eq_nsmul, ← Nat.card_eq_fintype_card]`. Both sides reduce to the same expression. Set `χ : V → ℂ` to `fun x => c x v / c v x`. Establish `hχ : ∀ x y, χ (x + y) = χ x * χ y`.
+
+Introduce `x y`. Simplify using `only [χ, H.2.1, H.2.2.1, mul_div_mul_comm]`. Establish `hW : ∀ x ∈ A, W x (W v f) = χ x • W v f`. Introduce `x hx`. Establish `h1` using `H.1 v x f`.
+
+Rewrite `h1` using `[hf x hx]`. Rewrite using `[H.1, h1, smul_smul, add_comm]`. Simplify using `only [χ]`. Rewrite using `[div_mul_cancel₀ _ (H.2.2.2 _ _)]`. Choose the witnesses or unpack the hypotheses as in `⟨x₀, hx₀, hne⟩ : ∃ x ∈ A, c x v ≠ c v x := by`.
+
+Assume the negation of the conclusion as `hh`. Use `push_neg at hh`. Conclude with `h (hsd v hh)`. Establish `hp : ∀ x l, l ∈ A₀ → χ (x + l) = χ x`. Introduce `x l hl`.
+
+Rewrite using `[hχ]`. Simplify using `only [χ]`. Rewrite using `[(hv l hl).1, (hv l hl).2]`. Simplify using the standard rewrite rules. Establish `hsum : ∑ q : A ⧸ A₀.addSubgroupOf A, χ (rep q) = 0`.
+
+Set `q₀ : A ⧸ A₀.addSubgroupOf A` to `QuotientAddGroup.mk ⟨x₀, hx₀⟩`. Establish `e` using `Equiv.sum_comp (Equiv.addLeft q₀) (fun q => χ (rep q))`. Establish `e2 : ∀ q, χ (rep (Equiv.addLeft q₀ q)) = χ x₀ * χ (rep q)`. Introduce `q`. Take `⟨l, -, hl, h3⟩` from `rep_add q₀ q`.
+
+Take `⟨l', -, hl', h4⟩` from `rep_mk (B := A₀) (⟨x₀, hx₀⟩ : A)`. Use `show χ (rep (q₀ + q)) = _`. Rewrite using `[h3, hp _ _ hl, hχ, h4, hp _ _ hl']`. Simplify using `only [e2, ← Finset.mul_sum] at e`. Establish `h1 : χ x₀ - 1 ≠ 0`.
+
+Simplify using `only [χ]`. Rewrite using `[sub_ne_zero, Ne, div_eq_one_iff_eq (H.2.2.2 _ _)]`. Conclude with `hne`. Establish `: (χ x₀ - 1) * ∑ q : A ⧸ A₀.addSubgroupOf A, χ (rep q) = 0`. Rewrite using `[sub_mul, e]`.
+
+Expand and normalize the polynomial expressions, which then agree. Conclude with `(mul_eq_zero.mp this).resolve_left h1`. Rewrite using `[Finset.sum_congr rfl (fun q _ => hW _ (rep_mem q)), ← Finset.sum_smul, hsum, zero_smul, zero_smul]`.
+-/
 theorem proj_translate (H : (∀ x y f, W x (W y f) = c x y • W (x + y) f) ∧
       (∀ x x' y, c (x + x') y = c x y * c x' y) ∧ (∀ x y y', c x (y + y') = c x y * c x y') ∧
       ∀ x y, c x y ≠ 0)
@@ -225,6 +306,11 @@ theorem proj_translate (H : (∀ x y f, W x (W y f) = c x y • W (x + y) f) ∧
       exact (mul_eq_zero.mp this).resolve_left h1
     rw [Finset.sum_congr rfl (fun q _ => hW _ (rep_mem q)), ← Finset.sum_smul, hsum, zero_smul, zero_smul]
 
+/- English proof (translation)
+Simplify using `only [map_sum, H.1 (rep _ : V) (rep _ : V) f, map_smul]`. Rewrite using `[Finset.sum_comm, Finset.mul_sum, Finset.sum_smul]`. Use `Finset.sum_congr rfl fun z _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm, Finset.mul_sum, Finset.sum_smul]`. Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[← Finset.smul_sum, proj_translate H cA hsd f hf, smul_smul]`. Apply the tactic sequence `congr 1 split_ifs <;> ring`. Introduce `l hl`. Rewrite using `[H.2.1, H.2.2.1, cB _ (hB hl) _ (rep_mem y), cB _ (rep_mem y) _ (hB hl), cC _ (hC hl) _ (rep_mem z), cC _ (rep_mem z) _ (hC hl)]`. Simplify using the standard rewrite rules.
+-/
 theorem proj_triple (H : (∀ x y f, W x (W y f) = c x y • W (x + y) f) ∧
       (∀ x x' y, c (x + x') y = c x y * c x' y) ∧ (∀ x y y', c x (y + y') = c x y * c x y') ∧
       ∀ x y, c x y ≠ 0)
@@ -252,6 +338,23 @@ theorem proj_triple (H : (∀ x y f, W x (W y f) = c x y • W (x + y) f) ∧
       cC _ (hC hl) _ (rep_mem z), cC _ (rep_mem z) _ (hC hl)]
     simp
 
+/- English proof (translation)
+Set `M : AddSubgroup ((C ⧸ A₀.addSubgroupOf C) × (B ⧸ A₀.addSubgroupOf B))` to `AddSubgroup.map ((QuotientAddGroup.mk' _).prodMap (QuotientAddGroup.mk' _)) (A.comap (C.subtype.coprod B.subtype))`. Establish `hM : ∀ p, p ∈ M ↔ rep p.1 + rep p.2 ∈ A`. Introduce and unpack `⟨z, y⟩`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨z', y'⟩, h1, h2⟩`.
+
+Take `⟨rfl, rfl⟩` from `Prod.mk.inj h2`. Take `⟨l, -, hl, h3⟩` from `rep_mk (B := A₀) z'`. Take `⟨l', -, hl', h4⟩` from `rep_mk (B := A₀) y'`. Establish `h1' : (z' : V) + y' ∈ A` using `h1`. Use `show rep (QuotientAddGroup.mk z') + rep (QuotientAddGroup.mk y') ∈ A`.
+
+Rewrite using `[h3, h4, add_add_add_comm]`. Conclude with `A.add_mem h1' (A.add_mem (hA hl) (hA hl'))`. Introduce `h`. Conclude with `⟨(Quotient.out z, Quotient.out y), h, Prod.ext (QuotientAddGroup.out_eq' z) (QuotientAddGroup.out_eq' y)⟩`. Establish `key` using `gauss_pow_four (M := M) (fun m m' => c (rep m.1.1) (rep m'.1.2)) (fun x x' y => by`.
+
+Take `⟨l, -, hl, h3⟩` from `rep_add x.1.1 x'.1.1`. Use `show c (rep (x.1.1 + x'.1.1)) _ = _`. Rewrite using `[h3, H.2.1, H.2.1, cB _ (hB hl) _ (rep_mem _), mul_one])`. Use the proof step `(fun x y y' => by`. Take `⟨l, -, hl, h3⟩` from `rep_add y.1.2 y'.1.2`.
+
+Use `show c _ (rep (y.1.2 + y'.1.2)) = _`. Rewrite using `[h3, H.2.2.1, H.2.2.1, cC _ (rep_mem _) _ (hC hl), mul_one])`. Use the proof step `(fun x y => H.2.2.2 _ _)`. Establish `conv : ∀ g : (C ⧸ A₀.addSubgroupOf C) × (B ⧸ A₀.addSubgroupOf B) → ℂ, ∑ m : M, g m = ∑ z, ∑ y, if rep z + rep y ∈ A then g (z, y) else 0`. Introduce `g`.
+
+Rewrite using `[← Finset.sum_subtype (Finset.univ.filter fun p => rep p.1 + rep p.2 ∈ A) (p := fun p => p ∈ M) (by intro p; simp [hM]), Finset.sum_filter, Fintype.sum_prod_type]`. Rewrite `key` using `[conv (fun p => c (rep p.1) (rep p.2)), conv (fun p => (c (rep p.1) (rep p.2))⁻¹)]`. Rewrite using `[key, Finset.sum_comm]`. Use `congr 1`. Use `Finset.sum_congr rfl fun y _ => Finset.sum_congr rfl fun z _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[add_comm (rep y)]`. Use `split_ifs with h`. Use `cA _ h _ h` as an intermediate fact. Rewrite `this` using `[H.2.1, H.2.2.1, H.2.2.1, cB _ (rep_mem y) _ (rep_mem y), cC _ (rep_mem z) _ (rep_mem z), one_mul, mul_one]`. Conclude with `(eq_inv_of_mul_eq_one_right this).symm`.
+
+Both sides reduce to the same expression.
+-/
 theorem gauss_triple (H : (∀ x y f, W x (W y f) = c x y • W (x + y) f) ∧
       (∀ x x' y, c (x + x') y = c x y * c x' y) ∧ (∀ x y y', c x (y + y') = c x y * c x y') ∧
       ∀ x y, c x y ≠ 0)
@@ -307,6 +410,25 @@ theorem gauss_triple (H : (∀ x y f, W x (W y f) = c x y • W (x + y) f) ∧
     exact (eq_inv_of_mul_eq_one_right this).symm
   · rfl
 
+/- English proof (translation)
+Use `set A₀ := A ⊓ B ⊓ C with hA₀`. Establish `hA : A₀ ≤ A` using `inf_le_left.trans inf_le_left`. Establish `hB : A₀ ≤ B` using `inf_le_left.trans inf_le_right`. Establish `hC : A₀ ≤ C` using `inf_le_right`. Use `haveI : Finite (A ⧸ A₀.addSubgroupOf A) := Nat.finite_of_card_ne_zero fA`.
+
+Use `haveI : Finite (B ⧸ A₀.addSubgroupOf B) := Nat.finite_of_card_ne_zero fB`. Use `haveI : Finite (C ⧸ A₀.addSubgroupOf C) := Nat.finite_of_card_ne_zero fC`. Use `letI : Fintype (A ⧸ A₀.addSubgroupOf A) := Fintype.ofFinite _`. Use `letI : Fintype (B ⧸ A₀.addSubgroupOf B) := Fintype.ofFinite _`. Use `letI : Fintype (C ⧸ A₀.addSubgroupOf C) := Fintype.ofFinite _`.
+
+Take `⟨r1, s1, e1⟩` from `itw_eq H hA hB cB f hf`. Take `⟨r2, s2, e2⟩` from `itw_eq H hB hC cC _ h1`. Take `⟨r3, s3, e3⟩` from `itw_eq H hC hA cA _ h2`. Take `⟨r4, s4, e4⟩` from `itw_eq H hA hC cC f hf`. Take `⟨r5, s5, e5⟩` from `itw_eq H hC hB cB _ h3`.
+
+Take `⟨r6, s6, e6⟩` from `itw_eq H hB hA cA _ h4`. Establish `t1` using `proj_triple H hB hC cA cB cC hsd f hf`. Establish `t2` using `proj_triple H hC hB cA cC cB hsd f hf`. Establish `g` using `gauss_triple H hA hB hC cA cB cC`. Generalize the expression as in `(∑ z : C ⧸ A₀.addSubgroupOf C, ∑ y : B ⧸ A₀.addSubgroupOf B, if rep z + rep y ∈ A then c (rep z) (rep y) else 0) = S at t1 g`.
+
+Generalize the expression as in `(∑ y : B ⧸ A₀.addSubgroupOf B, ∑ z : C ⧸ A₀.addSubgroupOf C, if rep y + rep z ∈ A then c (rep y) (rep z) else 0) = S' at t2 g`. Use `⟨r3 * r2 * r1 * ((A₀.relIndex A : ℂ) * S), r6 * r5 * r4 * ((A₀.relIndex A : ℂ) * S'), ?_, ?_, ?_⟩` and prove the remaining obligations. Use `rotate_left`. Rewrite using `[e3, e2, e1]`. Simplify using `only [map_smul, ← Finset.smul_sum]`.
+
+Rewrite using `[t1, smul_smul, smul_smul, smul_smul]`. Rewrite using `[e6, e5, e4]`. Simplify using `only [map_smul, ← Finset.smul_sum]`. Rewrite using `[t2, smul_smul, smul_smul, smul_smul]`. Rewrite `s3` using `[inf_comm C A]`.
+
+Rewrite `s5` using `[inf_comm C B]`. Rewrite `s6` using `[inf_comm B A]`. Establish `hr : (r3 * r2 * r1) ^ 2 = (r6 * r5 * r4) ^ 2` using `by set a := (A₀.relIndex A : ℂ) set b := (A₀.relIndex B : ℂ) set d := (A₀.relIndex C : ℂ) set ab := (A₀.relIndex (A ⊓ B) : ℂ) set ac := (A₀.relIndex (A ⊓ C) : ℂ) set bc := (A₀.relIndex (B ⊓ C) : ℂ)`. Establish `p1 : (r3 * r2 * r1) ^ 2 * (a * b * d * ab * ac * bc) = 1`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `p2 : (r6 * r5 * r4) ^ 2 * (a * b * d * ab * ac * bc) = 1`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[eq_inv_of_mul_eq_one_left p1, eq_inv_of_mul_eq_one_left p2]`. Establish `hr4 : (r3 * r2 * r1) ^ 4 = (r6 * r5 * r4) ^ 4`. Rewrite using `[show 4 = 2 * 2 from rfl, pow_mul, pow_mul, hr]`.
+
+Rewrite using `[mul_pow, mul_pow (r6 * r5 * r4), hr4, mul_pow (A₀.relIndex A : ℂ), mul_pow (A₀.relIndex A : ℂ), g]`.
+-/
 theorem itw_triple (H : (∀ x y f, W x (W y f) = c x y • W (x + y) f) ∧
       (∀ x x' y, c (x + x') y = c x y * c x' y) ∧ (∀ x y y', c x (y + y') = c x y * c x y') ∧
       ∀ x y, c x y ≠ 0)

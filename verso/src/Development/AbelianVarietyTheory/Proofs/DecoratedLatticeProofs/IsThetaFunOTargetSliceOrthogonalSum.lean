@@ -7,6 +7,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.FinPl.ExtZero
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ _ o _ y hf` and use `GlobalTheory.SliceModelT.isThetaFunO_sliceT_left o hf y`.
+-/
 theorem isThetaFunO_sliceT :
     ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S A L T : HSp D) (o : OrthDec S A L) (f : WO T S → ℂ) (y : WO T L),
       IsThetaFunO ψ T S f → IsThetaFunO ψ T A (fun w => f ((o.resT T).symm (w, y))) :=

@@ -6,12 +6,18 @@ open MvPolynomial AlgebraicGeometry CategoryTheory
 
 noncomputable section
 
+/- English proof (translation)
+Conclude with `congrArg (fun φ => φ.hom ((Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv.hom c)) (Scheme.Hom.appLE_comp_appLE g t ⊤ U V le_top h)`.
+-/
 theorem appLE_constSec_eq {S T : Scheme.{0}} (t : T ⟶ Spec (.of ℂ)) (g : S ⟶ T) {U : T.Opens}
     {V : S.Opens} (h : V ≤ g ⁻¹ᵁ U) (c : ℂ) :
     g.appLE U V h (constSec t U c) = constSec (g ≫ t) V c := by
   exact congrArg (fun φ => φ.hom ((Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv.hom c))
     (Scheme.Hom.appLE_comp_appLE g t ⊤ U V le_top h)
 
+/- English proof (translation)
+Conclude with `congrArg (fun φ => φ.hom ((Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv.hom c)) (Scheme.Hom.appLE_map s (le_top : U ≤ s ⁻¹ᵁ ⊤) (homOfLE h).op)`.
+-/
 theorem constSec_map_res {S : Scheme.{0}} (s : S ⟶ Spec (.of ℂ)) {U V : S.Opens} (h : V ≤ U) (c : ℂ) :
     S.presheaf.map (homOfLE h).op (constSec s U c) = constSec s V c := by
   exact congrArg (fun φ => φ.hom ((Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv.hom c))
@@ -20,6 +26,9 @@ theorem constSec_map_res {S : Scheme.{0}} (s : S ⟶ Spec (.of ℂ)) {U V : S.Op
 variable {K : Type} [Fintype K] [Nonempty K] {ι : K → Type} [∀ k, Fintype (ι k)]
 variable {P D : Ideal (MvPolynomial (Σ k, ι k) ℂ)} {hP : IsMultiHomogIdeal P}
 
+/- English proof (translation)
+Establish `e` using `MvPolynomial.eval₂_comp_left (S.presheaf.map (homOfLE h).op).hom (constSec s U) u f`. Use `e.trans ?_` and prove the remaining obligations. Use `congr 1`. Conclude with `RingHom.ext fun c => constSec_map_res s h c`.
+-/
 theorem map_eval₂_constSec {S : Scheme.{0}} (s : S ⟶ Spec (.of ℂ)) {U V : S.Opens} (h : V ≤ U)
     {σ : Type} (u : σ → Γ(S, U)) (f : MvPolynomial σ ℂ) :
     S.presheaf.map (homOfLE h).op (eval₂ (constSec s U) u f) =
@@ -29,6 +38,15 @@ theorem map_eval₂_constSec {S : Scheme.{0}} (s : S ⟶ Spec (.of ℂ)) {U V : 
   congr 1
   exact RingHom.ext fun c => constSec_map_res s h c
 
+/- English proof (translation)
+Establish `hinv : ∀ k, (projX P hP).presheaf.map (homOfLE (inf_le_right : (chartOpen hP p).1 ⊓ (chartOpen hP p').1 ≤ _)).op (chartCoord hP p' ⟨k, p k⟩) * (projX P hP).presheaf.map (homOfLE (inf_le_left : (chartOpen hP p).1 ⊓ (chartOpen hP p').1 ≤ _)).op (chartCoord hP p ⟨k, p' k⟩) = 1`. Introduce `k`. Establish `h` using `chartCoord_overlap hP p p' ⟨k, p' k⟩`. Simplify using `only at h`. Rewrite using `[mul_comm, h, chartCoord_self, map_one]`.
+
+Use `⟨∏ k, ((projX P hP).presheaf.map (homOfLE (inf_le_right : (chartOpen hP p).1 ⊓ (chartOpen hP p').1 ≤ _)).op (chartCoord hP p' ⟨k, p k⟩)) ^ a k, ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : (∏ k, ((projX P hP).presheaf.map (homOfLE (inf_le_right : (chartOpen hP p).1 ⊓ (chartOpen hP p').1 ≤ _)).op (chartCoord hP p' ⟨k, p k⟩)) ^ a k) * (∏ k, ((projX P hP).presheaf.map (homOfLE (inf_le_left : (chartOpen hP p).1 ⊓ (chartOpen hP p').1 ≤ _)).op (chartCoord hP p ⟨k, p …`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_eq_one fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_pow, hinv k, one_pow]`.
+
+Conclude with `⟨⟨_, _, h1, by rw [mul_comm]; exact h1⟩, rfl⟩`. Rewrite using `[map_eval₂_constSec, map_eval₂_constSec]`. Establish `hco : (fun q => (projX P hP).presheaf.map (homOfLE (inf_le_right : (chartOpen hP p).1 ⊓ (chartOpen hP p').1 ≤ _)).op (chartCoord hP p' q)) = fun q => (projX P hP).presheaf.map (homOfLE (inf_le_right : (chartOpen hP p).1 ⊓ (chartOpen hP p').1 ≤ _)).op (chartCoord hP p' ⟨q.1, p q.1 …`. Use function extensionality and compare the values at `q`. Rewrite using `[← chartCoord_overlap hP p p' q, mul_comm]`.
+
+Establish `key` using `eval₂_smul_of_isMultiHomog' (R := Γ(projX P hP, (chartOpen hP p).1 ⊓ (chartOpen hP p').1)) (constSec (toSpecC hP) ((chartOpen hP p).1 ⊓ (chartOpen hP p').1)) hf (fun k => (projX P hP).presheaf.map (homOfLE (inf_le_right : (chartOpen hP p).1 ⊓ (chartOpen hP p').1 ≤ _)).op (chartCo …`. Rewrite using `[hco]`. Conclude with `key`.
+-/
 theorem chart_eval₂_overlap (p p' : (k : K) → ι k) (f : MvPolynomial (Σ k, ι k) ℂ) (a : K → ℕ)
     (hf : IsMultiHomog f a) :
     ∃ u : Γ(projX P hP, (chartOpen hP p).1 ⊓ (chartOpen hP p').1), IsUnit u ∧
@@ -84,6 +102,15 @@ namespace WData
 
 variable (w : WData P D hP)
 
+/- English proof (translation)
+Establish `h : ((w.pres c.1 c.2).secHom).comp (bind₁ (w.lift c)).toRingHom = (w.π.appLE _ (w.pres c.1 c.2).V (w.le_pres c.1 c.2)).hom.comp (eval₂Hom (constSec (toSpecC hP) (chartOpen hP c.1).1) (chartCoord hP c.1))`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `r`. Simplify using `only [RingHom.comp_apply, AlgHom.toRingHom_eq_coe, AlgHom.coe_toRingHom, bind₁_C_right, coe_eval₂Hom, eval₂_C]`. Rewrite using `[AffPres.secHom_C, appLE_constSec_eq]`.
+
+Introduce `q`. Simplify using `only [RingHom.comp_apply, AlgHom.toRingHom_eq_coe, AlgHom.coe_toRingHom, bind₁_X_right, coe_eval₂Hom, eval₂_X]`. Distinguish the cases in `hq : q.2 = c.1 q.1`. Establish `e : w.lift c q = 1` using `by simp [lift, hq]`. Rewrite using `[e, map_one]`.
+
+Take `⟨k, i⟩` from `q`. Simplify using `only at hq`. Substitute `hq` using the available equality. Rewrite using `[chartCoord_self, map_one]`. Establish `e : w.lift c q = X (w.yq c.1 c.2 q)` using `by simp [lift, hq]`.
+
+Rewrite using `[e, w.sec_yq]`. Conclude with `RingHom.congr_fun h f`.
+-/
 theorem secHom_bind_lift (c : w.Idx) (f : MvPolynomial (Σ k, ι k) ℂ) :
     (w.pres c.1 c.2).secHom (bind₁ (w.lift c) f) =
       w.π.appLE _ (w.pres c.1 c.2).V (w.le_pres c.1 c.2)
@@ -110,6 +137,13 @@ theorem secHom_bind_lift (c : w.Idx) (f : MvPolynomial (Σ k, ι k) ℂ) :
         rw [e, w.sec_yq]
   exact RingHom.congr_fun h f
 
+/- English proof (translation)
+Take `⟨u, hu, he⟩` from `chart_eval₂_overlap (hP := hP) c.1 c'.1 f a hf`. Establish `hVO : (w.pres c.1 c.2).V ⊓ (w.pres c'.1 c'.2).V ≤ w.π ⁻¹ᵁ ((chartOpen hP c.1).1 ⊓ (chartOpen hP c'.1).1)` using `fun y hy => ⟨w.le_pres c.1 c.2 hy.1, w.le_pres c'.1 c'.2 hy.2⟩`. Establish `hxx : x ∈ (w.pres c.1 c.2).V ⊓ (w.pres c'.1 c'.2).V` using `⟨hx, hx'⟩`. Establish `hU : IsUnit (w.W.presheaf.germ _ x hxx (w.π.appLE _ _ hVO u))` using `(hu.map (w.π.appLE _ _ hVO).hom).map _`. Use `⟨hU.unit⁻¹, ?_⟩` and prove the remaining obligations.
+
+Establish `e1 : ∀ (d : w.Idx) (hd : (w.pres c.1 c.2).V ⊓ (w.pres c'.1 c'.2).V ≤ (w.pres d.1 d.2).V) (hO : (chartOpen hP c.1).1 ⊓ (chartOpen hP c'.1).1 ≤ (chartOpen hP d.1).1) (hxd : x ∈ (w.pres d.1 d.2).V), w.W.presheaf.germ _ x hxd ((w.pres d.1 d.2).secHom (bind₁ (w.lift d) f)) = w.W.presh …`. Introduce `d hd hO hxd`. Rewrite using `[w.secHom_bind_lift d f, ← TopCat.Presheaf.germ_res_apply w.W.presheaf (homOfLE hd) x hxx]`. Use `congr 1`. Use `show (w.π.appLE _ _ _ ≫ w.W.presheaf.map (homOfLE hd).op).hom _ = ((projX P hP).presheaf.map (homOfLE hO).op ≫ w.π.appLE _ _ hVO).hom _`.
+
+Rewrite using `[Scheme.Hom.appLE_map, Scheme.Hom.map_appLE]`. Rewrite using `[e1 c inf_le_left inf_le_left hx, e1 c' inf_le_right inf_le_right hx', he, map_mul, map_mul, ← mul_assoc]`. Rewrite using `[hU.val_inv_mul, one_mul]`.
+-/
 theorem germ_lift_ratio (f : MvPolynomial (Σ k, ι k) ℂ) (a : K → ℕ) (hf : IsMultiHomog f a)
     (c c' : w.Idx) (x : w.W) (hx : x ∈ (w.pres c.1 c.2).V) (hx' : x ∈ (w.pres c'.1 c'.2).V) :
     ∃ u : (w.W.presheaf.stalk x)ˣ,

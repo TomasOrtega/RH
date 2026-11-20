@@ -7,6 +7,9 @@ noncomputable def UpperTheory.Reformulated.B.Qk6.heckePol :
         (Polynomial.C : A → Polynomial A) ((-1 : A) ^ j * (↑q : A) ^ (j * (j - (1 : ℕ)) / (2 : ℕ)) * a j) *
           Polynomial.X ^ (n - j)
 
+/- English proof (translation)
+Introduce `A B _ _ f n q a`. Unfold `UpperTheory.Reformulated.B.Qk6.heckePol`. Rewrite using `[Polynomial.map_sum]`. Use `Finset.sum_congr rfl fun j _ ↦ ?_` and prove the remaining obligations. Rewrite using `[Polynomial.map_mul, Polynomial.map_C, Polynomial.map_pow, Polynomial.map_X, map_mul f, map_mul f, map_pow f, map_pow f, map_neg f, map_one f, map_natCast f]`.
+-/
 theorem UpperTheory.Reformulated.B.Qk6.heckePol_map :
     ∀ {A B : Type} [inst : CommRing A] [inst_1 : CommRing B] (f : A →+* B) (n q : ℕ) (a : ℕ → A),
       Polynomial.map f (UpperTheory.Reformulated.B.Qk6.heckePol n q a) = UpperTheory.Reformulated.B.Qk6.heckePol n q fun (j : ℕ) ↦ (f : A → B) (a j) := by

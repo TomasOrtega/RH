@@ -18,6 +18,11 @@ variable {D : D7}
 
 open Classical in
 
+/- English proof (translation)
+Set `O : Finset (Pl D) → Set (Af D.host.F)` to `fun T => {z | ∀ v, v ∉ T → z v ∈ (v.adicCompletionIntegers D.host.F : Set (v.adicCompletion D.host.F))}`. Establish `hO : ∀ T, IsOpen (O T)` using `fun T => RestrictedProduct.isOpen_forall_imp_mem (R := fun v : Pl D => v.adicCompletion D.host.F) (A := fun v => (v.adicCompletionIntegers D.host.F : Set (v.adicCompletion D.host.F))) (fun v => Valued.isOpen_valuationSubring _)`. Establish `hcov : K ⊆ ⋃ T, O T` using `fun z _ => Set.mem_iUnion.2 ⟨(Filter.eventually_cofinite.1 z.2).toFinset, fun v hv => by`. Assume the negation of the conclusion as `h`. Conclude with `hv ((Filter.eventually_cofinite.1 z.2).mem_toFinset.2 h)⟩`.
+
+Take `⟨T, hT⟩` from `hK.elim_directed_cover O hO hcov fun T T' => ⟨T ∪ T', fun z hz v hv => hz v fun h => hv (Finset.mem_union_left _ h), fun z hz v hv => hz v fun h => hv (Finset.mem_union_right _ h)⟩`. Conclude with `⟨T, fun z hz v hv => hT hz v hv⟩`.
+-/
 theorem exists_int_off {K : Set (Af D.host.F)} (hK : IsCompact K) :
     ∃ T : Finset (Pl D), ∀ z ∈ K, ∀ v ∉ T, z v ∈ v.adicCompletionIntegers D.host.F := by
   classical
@@ -43,6 +48,31 @@ def sPart {a b : ℕ} (S : Finset (Pl D)) (y : Fin a → Fin b → Af D.host.F �
 open Classical in
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Take `⟨hlc, hcs⟩` from `hg`. Set `B` to `Module.finBasis D.host.F D.host.E`. Establish `hT1 : ∀ (i : Fin a) (j : Fin b) (k : Fin (Module.finrank D.host.F D.host.E)), ∃ T : Finset (Pl D), ∀ y ∈ tsupport g, ∀ v ∉ T, crd B (Af D.host.F) (y i j) k v ∈ v.adicCompletionIntegers D.host.F`. Introduce `i j k`. Establish `hc : Continuous fun y : Fin a → Fin b → Af D.host.F ⊗[D.host.F] D.host.E => y i j` using `(continuous_apply j).comp (continuous_apply i)`.
+
+Take `⟨T, hT⟩` from `exists_int_off (D := D) (hcs.isCompact.image ((continuous_crd B (Af D.host.F) k).comp hc))`. Conclude with `⟨T, fun y hy v hv => hT _ ⟨y, hy, rfl⟩ v hv⟩`. Use `choose T1 hT1 using hT1`. Establish `hU` using `invariant_mem_nhds hlc hcs`. Set `Lc : (Fin a → Fin b → Fin (Module.finrank D.host.F D.host.E) → Af D.host.F) → (Fin a → Fin b → Af D.host.F ⊗[D.host.F] D.host.E)` to `fun c x i => ∑ k, c x i k • ((1 : Af D.host.F) ⊗ₜ[D.host.F] B k)`.
+
+Establish `hL : Continuous Lc`. Use `continuous_pi fun x => continuous_pi fun i => continuous_finsetSum _ fun k _ => ?_` and prove the remaining obligations. Conclude with `continuous_smul.comp (((continuous_apply k).comp ((continuous_apply i).comp (continuous_apply x))).prodMk continuous_const)`. Establish `hL0 : Lc (fun _ _ _ => 0) = 0`. Use function extensionality and compare the values at `x i`.
+
+Simplify using `[Lc]`. Establish `hp : Lc ⁻¹' {u | ∀ x, g (x + u) = g x} ∈ 𝓝 (fun _ => fun _ => fun _ => (0 : Af D.host.F))` using `hL.continuousAt.preimage_mem_nhds (by rw [hL0]; exact hU)`. Take `⟨W1, hW1, h1⟩` from `exists_nhds_of_pi hp`. Take `⟨W2, hW2, h2⟩` from `exists_nhds_of_pi hW1`. Take `⟨W, hW, h3⟩` from `exists_nhds_of_pi hW2`.
+
+Take `⟨T2, P, hPO, hPT, hsub⟩` from `exists_box_subset hW`. Establish `hinv : ∀ x u, (∀ i j k v, crd B (Af D.host.F) (u i j) k v ∈ P v) → g (x + u) = g x`. Introduce `x u hu`. Establish `hu' : u = Lc fun i j k => crd B (Af D.host.F) (u i j) k`. Use function extensionality and compare the values at `i j`.
+
+Conclude with `eq_sum_crd B (Af D.host.F) (u i j)`. Rewrite using `[hu']`. Conclude with `h1 _ (fun i => h2 _ fun j => h3 _ fun k => hsub (hu i j k)) x`. Establish `hbad` using `Filter.eventually_cofinite.1 (GlobalTheory.AdelicU.Cofinite.eventually_mem_intLoc_iff_repr B)`. Use `⟨(Finset.univ.biUnion fun i => Finset.univ.biUnion fun j => Finset.univ.biUnion fun k => T1 i j k) ∪ T2 ∪ hbad.toFinset, fun S hS y => ?_⟩` and prove the remaining obligations.
+
+Establish `hS1 : ∀ i j k, T1 i j k ⊆ S` using `fun i j k v hv => hS (Finset.mem_union_left _ (Finset.mem_union_left _ (Finset.mem_biUnion.2 ⟨i, Finset.mem_univ _, Finset.mem_biUnion.2 ⟨j, Finset.mem_univ _, Finset.mem_biUnion.2 ⟨k, Finset.mem_univ _, hv⟩⟩⟩)))`. Establish `hS2 : T2 ⊆ S` using `fun v hv => hS (Finset.mem_union_left _ (Finset.mem_union_right _ hv))`. Establish `hS3 : ∀ v ∉ S, ∀ z : Fv D.host.F v ⊗[D.host.F] D.host.E, z ∈ intLoc D.host.F D.host.E v ↔ ∀ k, crd B (Fv D.host.F v) z k ∈ v.adicCompletionIntegers D.host.F`. Introduce `v hv`. Establish `h' : v ∉ hbad.toFinset` using `fun h => hv (hS (Finset.mem_union_right _ h))`.
+
+Rewrite `h'` using `[Set.Finite.mem_toFinset, Set.mem_ofPred_eq, not_not]`. Conclude with `h'`. Establish `hcrd : ∀ z k, crd B (Af D.host.F) (z - algebraMap (Af D.host.F) _ (indS S) * z) k = crd B (Af D.host.F) z k - indS S * crd B (Af D.host.F) z k`. Introduce `z k`. Simplify using `only [crd, ← Algebra.smul_def, map_sub, map_smul, Finsupp.sub_apply, Finsupp.smul_apply, smul_eq_mul]`.
+
+Use `split_ifs with h`. Combine the equalities or inequalities in the displayed calculation. Establish `e1 : crd B (Af D.host.F) ((y - sPart S y) i j) k v = crd B (Af D.host.F) (y i j) k v - indS S v * crd B (Af D.host.F) (y i j) k v`. Rewrite using `[Pi.sub_apply, Pi.sub_apply, sPart, hcrd]`. Both sides reduce to the same expression.
+
+Rewrite using `[e1, indS_apply]`. Distinguish the cases in `hv : v ∈ S`. Rewrite using `[if_pos hv, one_mul, sub_self]`. Conclude with `zero_mem _`. Rewrite using `[if_neg hv, zero_mul, sub_zero, hPT v fun h' => hv (hS2 h'), mem_intSub, ← crd_projV]`.
+
+Conclude with `(hS3 v hv _).1 (h v hv i j) k`. Use `push Not at h`. Take `⟨v, hv, i, j, hij⟩` from `h`. Choose the witnesses or unpack the hypotheses as in `⟨k, hk⟩ : ∃ k, crd B (Fv D.host.F v) (projV v y i j) k ∉ v.adicCompletionIntegers D.host.F := by`. Assume the negation of the conclusion as `hc`.
+
+Use `push Not at hc`. Conclude with `hij ((hS3 v hv _).2 hc)`. Rewrite `hk` using `[crd_projV]`. Use `image_eq_zero_of_notMem_tsupport fun hy => hk ?_` and prove the remaining obligations. Conclude with `hT1 i j k y hy v fun h' => hv (hS1 i j k h')`.
+-/
 theorem fin_good {a b : ℕ} (g : (Fin a → Fin b → Af D.host.F ⊗[D.host.F] D.host.E) → ℂ)
     (hg : g ∈ GlobalTheory.WeilM.SB (Fin a → Fin b → Af D.host.F ⊗[D.host.F] D.host.E)) :
     ∃ S₀ : Finset (Pl D), ∀ S, S₀ ⊆ S → ∀ y, g y =

@@ -6,5 +6,8 @@ open GlobalTheory.CuspRep GlobalTheory.WeilDeligne GlobalTheory.Pst GlobalTheory
 open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil GlobalTheory.GalCut GlobalTheory.RoadU GlobalTheory.AboveL
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | (exact @GlobalTheory.RoadU.holdsS_good_unr) | (exact GlobalTheory.RoadU.holdsS_good_unr) | (intros; apply GlobalTheory.RoadU.holdsS_good_unr <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.unramified_good_of_self_dual : Inputs → SphericalLevelCondition .csd .unr → SphericalLevelCondition .good .unr := by
   first | (exact @GlobalTheory.RoadU.holdsS_good_unr) | (exact GlobalTheory.RoadU.holdsS_good_unr) | (intros; apply GlobalTheory.RoadU.holdsS_good_unr  <;> assumption)

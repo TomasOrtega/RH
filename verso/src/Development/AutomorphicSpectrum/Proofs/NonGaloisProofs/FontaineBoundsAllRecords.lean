@@ -9,6 +9,9 @@ open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainN
 
 namespace GlobalTheory.CompanionTheory.Fontaine
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.Per.FontaineAll.fontaine_bounds`.
+-/
 theorem adm7_all : ∀ D : D7, LocalSituation.adm7 D :=
   GlobalTheory.Per.FontaineAll.fontaine_bounds
 

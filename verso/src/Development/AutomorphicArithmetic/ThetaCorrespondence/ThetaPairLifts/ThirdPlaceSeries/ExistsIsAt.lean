@@ -29,6 +29,19 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.MiTop GlobalTheory.SeeSaw GlobalTheory.Fam ValuativeRel IsLocalRing GlobalTheory.FinPl
 namespace GlobalTheory.MiTop
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Introduce `D L hT Gi Gl Kc Yd cX ex W hW u f B hP hF`. Take `⟨a₀, ha₀⟩` from `GlobalTheory.Core.Mi.PinModel.exists_transport_adelic_correction (W.S.tr u)`. Take `⟨a, haf, hac, hSt⟩` from `_root_.GlobalTheory.T.exists_central_stab_of_transport_correction W hW u f B hP hF a₀ ha₀`. Establish `hM` using `_root_.GlobalTheory.T.central_adapted_element_property_alt W hW u f B hP a₀ ha₀ a haf hac hSt`. Establish `hC` using `_root_.GlobalTheory.T.central_adapted_element_value_alt W hW u f B hP a₀ ha₀ a haf hac hSt`.
+
+Establish `hb : (show GA D (D.sp.Y 0) from f.g.b 0) ∈ GfC (D.sp.Y 0)`. Take `⟨k, _, _, _, _, ι, v, o, n, G, pl, -, hv, ht, -⟩` from `hP`. Establish `h1` using `hv.b 0`. Rewrite `h1` using `[ht.b 0]`. Conclude with `h1`.
+
+Establish `hx : (iotaX W.S.X W.Q.instEq).symm (1, W.S.X.xu u) ∈ GfC (D.sp.Y 0)` using `(GlobalTheory.SeeConjRead.iotaX_fst_eq_one_iff W.S.X W.Q.instEq _).1 (by simp)`. Establish `htf : _root_.GlobalTheory.MiTop.translationElement f B a₀ a ∈ GfC (D.sp.Y 0)` using `mul_mem (mul_mem (inv_mem hx) (GlobalTheory.Core.Mi.CenAct.embA_mem_GfC B.d B.o (mul_mem ha₀.1 haf))) hb`. Establish `hn : (D.sp.Y 0).rank ≤ D.R.r`. Rewrite using `[rank_eq W.S.X W.Q.instEq, W.S.X.n_eq]`. Use `⟨a₀, a, ha₀, haf, hac, htf, fun κ => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[inv_inv]`. Establish `h1` using `GlobalTheory.FrameConj.levS_conj_frame (D.sp.Y 0) (show GL (Fin (D.sp.Y 0).rank) (Lev.EAf D) from (_root_.GlobalTheory.Fam.pk_z W).βY 0) (show LevDat D.host.E ℂ (D.sp.Y 0).rank from _root_.GlobalTheory.LevZero.datZero_alt W) (_root_.GlobalTheory.MiTop.translationElement f B a₀ a) …`. Generalize the expression as in `_root_.GlobalTheory.MiTop.translationElement f B a₀ a * κ * (_root_.GlobalTheory.MiTop.translationElement f B a₀ a)⁻¹ = y at h1 ⊢`. Take `⟨h2, h3⟩` from `oneBlock_lev (D.sp.Y 0) (_root_.GlobalTheory.LevZero.frameAtTranslate f B a₀ a) (show LevDat D.host.E ℂ (D.sp.Y 0).rank from _root_.GlobalTheory.LevZero.datZero_alt W) hn rfl rfl y`. Establish `h4 : κ ∈ _root_.GlobalTheory.MiTop.rJ_z W ↔ y ∈ levS (D.sp.Y 0) (_root_.GlobalTheory.LevZero.frameAtTranslate f B a₀ a) (show LevDat D.host.E ℂ (D.sp.Y 0).rank from _root_.GlobalTheory.LevZero.datZero_alt W)` using `h1.1`.
+
+Establish `h5 : Lev.levChi (D.sp.Y 0) (_root_.GlobalTheory.LevZero.frameAtTranslate f B a₀ a) (show LevDat D.host.E ℂ (D.sp.Y 0).rank from _root_.GlobalTheory.LevZero.datZero_alt W) y = _root_.GlobalTheory.MiTop.realCharacter W κ` using `h1.2`. Rewrite `h4` using `[h2]`. Use `⟨h4.trans ⟨fun h => (hM y h.1 h.2.1).2 h.2.2, fun h => ?_⟩, fun hk => ?_⟩` and prove the remaining obligations. Take `⟨hf, hs⟩` from `(hSt y).2 ⟨h.1, h.2.1⟩`. Conclude with `⟨hf, hs, (hM y hf hs).1 h⟩`.
+
+Take `⟨hf, hs, hp⟩` from `h4.1 hk`. Conclude with `(hC y hf hs hp ((hM y hf hs).2 hp)).trans (h3.symm.trans h5)`.
+-/
 theorem exists_isAt_alt : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} (W : _root_.GlobalTheory.MiS.RealPackAlt ex), _root_.GlobalTheory.Fam.PackageHypotheses W → ∀ u (f : _root_.GlobalTheory.Fam.FamilyCharacter W u) (B : SBes W.S.X W.Q.instEq u W.Q.Rl.ψ (D.sp.X 0)), _root_.GlobalTheory.MiTop.PlacedAlt f B → GlobalTheory.MiTop.Framed B → ∃ a₀ a, _root_.GlobalTheory.MiTop.IsTranslate' f B a₀ a := by
   intro D L hT Gi Gl Kc Yd cX ex W hW u f B hP hF
   obtain ⟨a₀, ha₀⟩ := GlobalTheory.Core.Mi.PinModel.exists_transport_adelic_correction (W.S.tr u)

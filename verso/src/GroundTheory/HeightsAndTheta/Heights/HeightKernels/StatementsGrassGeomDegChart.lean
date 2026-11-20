@@ -14,9 +14,15 @@ def GrassGeomDegChart.Statement : Prop :=
   ∀ n : ℕ, ∃ B : Matrix (PlIdx 1 n) (Fin (n + 1)) ℂ, Function.Bijective B.mulVec ∧
     geomDeg (grassIdeal 1 1 n) (fsMulti (plBlocks 1 1 n)) n = chartMass (Bᴴ * B)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨grassIdeal 1 1 2, fsMulti (plBlocks 1 1 2)⟩`.
+-/
 example : Ideal (MRing (plBlocks 1 1 2)) × HermLine (plBlocks 1 1 2) :=
   ⟨grassIdeal 1 1 2, fsMulti (plBlocks 1 1 2)⟩
 
+/- English proof (translation)
+Simplify using `[PlIdx, Fintype.card_subtype, Finset.card_powersetCard, add_comm]`.
+-/
 example (n : ℕ) : Fintype.card (PlIdx 1 n) = n + 1 := by
   simp [PlIdx, Fintype.card_subtype, Finset.card_powersetCard, add_comm]
 

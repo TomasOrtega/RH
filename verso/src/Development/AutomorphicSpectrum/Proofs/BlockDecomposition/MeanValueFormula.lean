@@ -17,6 +17,13 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.Mass.MeanV
 
+/- English proof (translation)
+Rewrite using `[tendsto_order]`. Prove the components needed by the constructor for the conclusion. Introduce `c hc`. Take `⟨a, b, A, B, ha, -, hab, hA, -⟩` from `h ((L - c) / 2) (by linarith)`. Establish `hcA : c < A` using `by linarith`.
+
+Use `filter_upwards [(tendsto_order.1 ha).1 c hcA, hab] with x h1 h2`. Conclude with `lt_of_lt_of_le h1 h2.1`. Introduce `c hc`. Take `⟨a, b, A, B, -, hb, hab, -, hB⟩` from `h ((c - L) / 2) (by linarith)`. Establish `hcB : B < c` using `by linarith`.
+
+Use `filter_upwards [(tendsto_order.1 hb).2 c hcB, hab] with x h1 h2`. Conclude with `lt_of_le_of_lt h2.2 h1`.
+-/
 theorem tendsto_of_sandwich {α : Type*} {l : Filter α} {f : α → ℝ} {L : ℝ}
     (h : ∀ η : ℝ, 0 < η → ∃ (a b : α → ℝ) (A B : ℝ), Tendsto a l (𝓝 A) ∧ Tendsto b l (𝓝 B) ∧
       (∀ᶠ x in l, a x ≤ f x ∧ f x ≤ b x) ∧ L - η ≤ A ∧ B ≤ L + η) : Tendsto f l (𝓝 L) := by
@@ -33,6 +40,13 @@ theorem tendsto_of_sandwich {α : Type*} {l : Filter α} {f : α → ℝ} {L : �
     filter_upwards [(tendsto_order.1 hb).2 c hcB, hab] with x h1 h2
     exact lt_of_le_of_lt h2.2 h1
 
+/- English proof (translation)
+Establish `c1 : Tendsto (fun t : ℝ => a * (1 + t) ^ n) (𝓝 0) (𝓝 a)`. Establish `: Continuous fun t : ℝ => a * (1 + t) ^ n` using `by fun_prop`. Simplify using `using this.tendsto 0`. Establish `c2 : Tendsto (fun t : ℝ => a * (1 - t) ^ n) (𝓝 0) (𝓝 a)`. Establish `: Continuous fun t : ℝ => a * (1 - t) ^ n` using `by fun_prop`.
+
+Simplify using `using this.tendsto 0`. Establish `e1` using `c1.eventually_lt_const (show a < a + η by linarith)`. Establish `e2` using `c2.eventually_const_lt (show a - η < a by linarith)`. Take `⟨r, hr, hh⟩` from `Metric.eventually_nhds_iff.1 (e1.and e2)`. Use `⟨min (r / 2) 1, lt_min (by linarith) one_pos, min_le_right _ _, ?_⟩` and prove the remaining obligations.
+
+Establish `hd : dist (min (r / 2) 1) (0 : ℝ) < r`. Rewrite using `[Real.dist_eq, sub_zero, abs_of_pos (lt_min (by linarith) one_pos)]`. Conclude with `lt_of_le_of_lt (min_le_left _ _) (by linarith)`. Conclude with `⟨(hh hd).1.le, (hh hd).2.le⟩`.
+-/
 theorem exists_small (a : ℝ) (n : ℕ) {η : ℝ} (hη : 0 < η) :
     ∃ e : ℝ, 0 < e ∧ e ≤ 1 ∧ a * (1 + e) ^ n ≤ a + η ∧ a - η ≤ a * (1 - e) ^ n := by
   have c1 : Tendsto (fun t : ℝ => a * (1 + t) ^ n) (𝓝 0) (𝓝 a) := by
@@ -50,6 +64,41 @@ theorem exists_small (a : ℝ) (n : ℕ) {η : ℝ} (hη : 0 < η) :
     exact lt_of_le_of_lt (min_le_left _ _) (by linarith)
   exact ⟨(hh hd).1.le, (hh hd).2.le⟩
 
+/- English proof (translation)
+Establish `hI : 0 ≤ ∫ y, G y ∂li` using `integral_nonneg hG0`. Establish `hP : 0 ≤ ∏ v ∈ S, ∫ s, g v s ∂(lam v)` using `Finset.prod_nonneg fun v _ => integral_nonneg (hg0 v)`. Use `tendsto_of_sandwich fun η hη => ?_` and prove the remaining obligations. Take `⟨e, he, he1, hup, hlo⟩` from `exists_small ((∫ y, G y ∂li) * ∏ v ∈ S, ∫ s, g v s ∂(lam v)) (T \ S).card hη`. Establish `hex : ∀ v, ∃ lo up : Fv F v → ℝ, (v ∈ S → lo = g v ∧ up = g v) ∧ (v ∉ S → Continuous lo ∧ HasCompactSupport lo ∧ Continuous up ∧ HasCompactSupport up ∧ (∀ s, 0 ≤ lo s) ∧ (∀ s, s ≠ 0 → lo s ≤ g v s ∧ g v s ≤ up s) ∧ 1 - e ≤ ∫ s, lo s ∂(lam v) ∧ ∫ s, up s ∂(lam v) ≤ 1 + e)`.
+
+Introduce `v`. Distinguish the cases in `hv : v ∈ S`. Conclude with `⟨g v, g v, fun _ => ⟨rfl, rfl⟩, fun h => absurd hv h⟩`. Take `⟨a, b, h⟩` from `GlobalTheory.T.local_factor_sandwich_approx F v (lam v) C (g v) (hlam v) (hg0 v) (hgo v hv) e he`. Conclude with `⟨a, b, fun h' => absurd h' hv, fun _ => h⟩`.
+
+Use `choose lo up hS hO using hex`. Establish `hcl : ∀ v ∈ T, Continuous (lo v) ∧ HasCompactSupport (lo v)`. Introduce `v _`. Distinguish the cases in `hv : v ∈ S`. Rewrite using `[(hS v hv).1]`.
+
+Conclude with `hgS v hv`. Conclude with `⟨(hO v hv).1, (hO v hv).2.1⟩`. Establish `hcu : ∀ v ∈ T, Continuous (up v) ∧ HasCompactSupport (up v)`. Introduce `v _`. Distinguish the cases in `hv : v ∈ S`.
+
+Rewrite using `[(hS v hv).2]`. Conclude with `hgS v hv`. Conclude with `⟨(hO v hv).2.2.1, (hO v hv).2.2.2.1⟩`. Establish `hpt : ∀ v (s : Fv F v), s ≠ 0 → 0 ≤ lo v s ∧ lo v s ≤ g v s ∧ g v s ≤ up v s`. Introduce `v s hs`.
+
+Distinguish the cases in `hv : v ∈ S`. Rewrite using `[(hS v hv).1, (hS v hv).2]`. Conclude with `⟨hg0 v s, le_rfl, le_rfl⟩`. Establish `h` using `hO v hv`. Conclude with `⟨h.2.2.2.2.1 s, (h.2.2.2.2.2.1 s hs).1, (h.2.2.2.2.2.1 s hs).2⟩`.
+
+Establish `hemb : ∀ (v : HeightOneSpectrum (𝓞 F)) (x : F), x ≠ 0 → algebraMap F (Fv F v) x ≠ 0`. Introduce `v x hx`. Simplify using `using hx`. Establish `hup0 : ∀ v, 0 ≤ ∫ s, up v s ∂(lam v)`. Introduce `v`.
+
+Use `integral_nonneg_of_ae ?_` and prove the remaining obligations. Establish `h0 : ∀ᵐ s ∂(lam v), s ≠ (0 : Fv F v)`. Rewrite using `[ae_iff]`. Simplify using `using GlobalTheory.T.local_haar_measure_singleton F v (lam v) (hlam v)`. Use `filter_upwards [h0] with s hs`.
+
+Conclude with `(hg0 v s).trans (hpt v s hs).2.2`. Establish `hsplit : ∀ ψ : ∀ v : HeightOneSpectrum (𝓞 F), Fv F v → ℝ, ∏ v ∈ T, ∫ s, ψ v s ∂(lam v) = (∏ v ∈ T \ S, ∫ s, ψ v s ∂(lam v)) * ∏ v ∈ S, ∫ s, ψ v s ∂(lam v)` using `fun ψ => (Finset.prod_sdiff hT).symm`. Establish `hSlo : ∏ v ∈ S, ∫ s, lo v s ∂(lam v) = ∏ v ∈ S, ∫ s, g v s ∂(lam v)` using `Finset.prod_congr rfl fun v hv => by rw [(hS v hv).1]`. Establish `hSup : ∏ v ∈ S, ∫ s, up v s ∂(lam v) = ∏ v ∈ S, ∫ s, g v s ∂(lam v)` using `Finset.prod_congr rfl fun v hv => by rw [(hS v hv).2]`. Establish `hlop : (1 - e) ^ (T \ S).card ≤ ∏ v ∈ T \ S, ∫ s, lo v s ∂(lam v)`.
+
+Rewrite using `[← Finset.prod_const]`. Conclude with `Finset.prod_le_prod (fun _ _ => by linarith) fun v hv => (hO v (Finset.mem_sdiff.1 hv).2).2.2.2.2.2.2.1`. Establish `hupp : ∏ v ∈ T \ S, ∫ s, up v s ∂(lam v) ≤ (1 + e) ^ (T \ S).card`. Rewrite using `[← Finset.prod_const]`. Conclude with `Finset.prod_le_prod (fun v _ => hup0 v) fun v hv => (hO v (Finset.mem_sdiff.1 hv).2).2.2.2.2.2.2.2`.
+
+Use `⟨truncSum θ G T lo, truncSum θ G T up, _, _, GlobalTheory.T.adelic_sandwich_approximation hE hC F hF θ hθ li lam hli hlam T G lo hG hGc hcl, GlobalTheory.T.adelic_sandwich_approximation hE hC F hF θ hθ li lam hli hlam T G up hG hGc hcu, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `filter_upwards [self_mem_nhdsWithin] with δ hδ`. Establish `hδ0 : (0 : ℝ) < δ` using `hδ`. Establish `hsl` using `truncTerm_summable hC F hF θ hθ T G lo hGc (fun v hv => (hcl v hv).2) δ hδ0`. Establish `hsu` using `truncTerm_summable hC F hF θ hθ T G up hGc (fun v hv => (hcu v hv).2) δ hδ0`.
+
+Establish `hterm : ∀ β : {β : F // β ≠ 0}, 0 ≤ (IntOut T).indicator (fun x => G (θ δ * algebraMap F (Ainf F) x) * ∏ v ∈ T, g v (algebraMap F (Fv F v) x)) β.1`. Introduce `β`. Use `Set.indicator_nonneg (fun x _ => mul_nonneg (hG0 _) (Finset.prod_nonneg fun v _ => hg0 v _)) _` and prove the remaining obligations. Establish `hl : ∀ β : {β : F // β ≠ 0}, (IntOut T).indicator (fun x => G (θ δ * algebraMap F (Ainf F) x) * ∏ v ∈ T, lo v (algebraMap F (Fv F v) x)) β.1 ≤ (IntOut T).indicator (fun x => G (θ δ * algebraMap F (Ainf F) x) * ∏ v ∈ T, g v (algebraMap F (Fv F v) x)) β.1`. Introduce `β`.
+
+Distinguish the cases in `hb : β.1 ∈ IntOut T`. Rewrite using `[Set.indicator_of_mem hb, Set.indicator_of_mem hb]`. Conclude with `mul_le_mul_of_nonneg_left (Finset.prod_le_prod (fun v _ => (hpt v _ (hemb v _ β.2)).1) fun v _ => (hpt v _ (hemb v _ β.2)).2.1) (hG0 _)`. Rewrite using `[Set.indicator_of_notMem hb, Set.indicator_of_notMem hb]`. Establish `hu : ∀ β : {β : F // β ≠ 0}, (IntOut T).indicator (fun x => G (θ δ * algebraMap F (Ainf F) x) * ∏ v ∈ T, g v (algebraMap F (Fv F v) x)) β.1 ≤ (IntOut T).indicator (fun x => G (θ δ * algebraMap F (Ainf F) x) * ∏ v ∈ T, up v (algebraMap F (Fv F v) x)) β.1`.
+
+Introduce `β`. Distinguish the cases in `hb : β.1 ∈ IntOut T`. Rewrite using `[Set.indicator_of_mem hb, Set.indicator_of_mem hb]`. Conclude with `mul_le_mul_of_nonneg_left (Finset.prod_le_prod (fun v _ => hg0 v _) fun v _ => (hpt v _ (hemb v _ β.2)).2.2) (hG0 _)`. Rewrite using `[Set.indicator_of_notMem hb, Set.indicator_of_notMem hb]`.
+
+Establish `hsg` using `Summable.of_nonneg_of_le hterm hu hsu`. Establish `hpow : 0 ≤ δ ^ Module.finrank ℚ F` using `pow_nonneg hδ0.le _`. Conclude with `⟨mul_le_mul_of_nonneg_left (hsl.tsum_le_tsum hl hsg) hpow, mul_le_mul_of_nonneg_left (hsg.tsum_le_tsum hu hsu) hpow⟩`. Rewrite using `[hsplit lo, hSlo]`. Use `hlo.trans ?_` and prove the remaining obligations.
+
+Establish `h2` using `mul_le_mul_of_nonneg_left hlop (mul_nonneg hI hP)`. Use polynomial arithmetic with `[h2]`. Rewrite using `[hsplit up, hSup]`. Use `le_trans ?_ hup` and prove the remaining obligations. Establish `h2` using `mul_le_mul_of_nonneg_left hupp (mul_nonneg hI hP)`.
+
+Use polynomial arithmetic with `[h2]`.
+-/
 theorem truncSum_tendsto (hE : Equi) (hC : CountBd) (F : Type) [Field F] [NumberField F] (hF : IsTotallyReal F)
     (θ : ℝ →+* Ainf F) (hθ : Continuous θ) (li : Measure (Ainf F))
     (lam : ∀ v : HeightOneSpectrum (𝓞 F), Measure (Fv F v)) (hli : IsStdInf li) (hlam : ∀ v, IsStdV v (lam v))
@@ -155,6 +204,13 @@ theorem truncSum_tendsto (hE : Equi) (hC : CountBd) (F : Type) [Field F] [Number
     have h2 := mul_le_mul_of_nonneg_left hupp (mul_nonneg hI hP)
     nlinarith [h2]
 
+/- English proof (translation)
+Distinguish the cases in `h1 : x ∈ IntOut S`. Establish `h2 : ∃ v ∈ S, algebraMap F (Fv F v) x ∉ tsupport (g v)`. Assume the negation of the conclusion as `hcon`. Conclude with `h ⟨h1, fun v hv => by_contra fun hn => hcon ⟨v, hv, hn⟩⟩`. Take `⟨v, hv, hvx⟩` from `h2`.
+
+Conclude with `⟨v, image_eq_zero_of_notMem_tsupport hvx, fun T hT _ => hT hv⟩`. Establish `h2 : ∃ v, v ∉ S ∧ algebraMap F (Fv F v) x ∉ v.adicCompletionIntegers F`. Assume the negation of the conclusion as `hcon`. Conclude with `h1 fun v hv => by_contra fun hn => hcon ⟨v, hv, hn⟩`. Take `⟨v, hv, hvx⟩` from `h2`.
+
+Use `⟨v, hz v hv _ hvx, fun T _ hxT => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hvT`. Conclude with `hvx (hxT v hvT)`.
+-/
 theorem exists_zero_place {F : Type} [Field F] [NumberField F] (S : Finset (HeightOneSpectrum (𝓞 F)))
     (g : ∀ v : HeightOneSpectrum (𝓞 F), Fv F v → ℝ)
     (hz : ∀ v, v ∉ S → ∀ s, s ∉ v.adicCompletionIntegers F → g v s = 0) {x : F}
@@ -174,6 +230,9 @@ theorem exists_zero_place {F : Type} [Field F] [NumberField F] (S : Finset (Heig
     by_contra hvT
     exact hvx (hxT v hvT)
 
+/- English proof (translation)
+The claim follows from `|fullSum θ G g δ - truncSum θ G T g δ| ≤ η := by obtain ⟨N, hN, hNx⟩ := GlobalTheory.T.exists_integral_multiple_bounded_places F S (fun v => tsupport (g v)) (fun v hv => (hgS v hv).2) obtain ⟨C', hC'0, hcount⟩ := GlobalTheory.T.euler_product_convergence_bound hC F hF θ hθ (tsuppo …`.
+-/
 theorem err_bound (hC : CountBd) (F : Type) [Field F] [NumberField F] (hF : IsTotallyReal F)
     (θ : ℝ →+* Ainf F) (hθ : Continuous θ) (S : Finset (HeightOneSpectrum (𝓞 F))) (G : Ainf F → ℝ)
     (g : ∀ v : HeightOneSpectrum (𝓞 F), Fv F v → ℝ) (C : ℝ) (hC0 : 0 ≤ C) (hG : Continuous G)
@@ -327,6 +386,15 @@ theorem err_bound (hC : CountBd) (F : Type) [Field F] [NumberField F] (hF : IsTo
   refine Finset.sum_congr rfl fun x _ => ?_
   rw [mul_sub]
 
+/- English proof (translation)
+Establish `hfin` using `support_finite hC F hF θ hθ S (tsupport G) hGc (fun v => tsupport (g v)) (fun v hv => (hgS v hv).2) δ hδ`. Establish `hnn : ∀ β : {β : F // β ≠ 0}, 0 ≤ G (θ δ * algebraMap F (Ainf F) β.1) * ∏' v, g v (algebraMap F (Fv F v) β.1)`. Introduce `β`. Use `mul_nonneg (hG0 _) ?_` and prove the remaining obligations. Use `ge_of_tendsto' (GlobalTheory.T.multipliable_local_factors F S C g hb2 β.1 β.2).hasProd fun U => ?_` and prove the remaining obligations.
+
+Conclude with `Finset.prod_nonneg fun v _ => hg0 v _`. Establish `hsum : Summable fun β : {β : F // β ≠ 0} => G (θ δ * algebraMap F (Ainf F) β.1) * ∏' v, g v (algebraMap F (Fv F v) β.1)`. Use `summable_of_ne_finset_zero (s := hfin.toFinset.subtype (fun x => x ≠ 0)) ?_` and prove the remaining obligations. Introduce `b hb`. Establish `hb' : b.1 ∉ hfin.toFinset` using `by simpa [Finset.mem_subtype] using hb`.
+
+Distinguish the cases in `h1 : θ δ * algebraMap F (Ainf F) b.1 ∈ tsupport G`. Take `⟨v, hv, -⟩` from `exists_zero_place (x := b.1) S g hz fun h2 => hb' ((hfin.mem_toFinset).2 ⟨b.2, h2.1, h1, h2.2⟩)`. Rewrite using `[tprod_of_exists_eq_zero (f := fun v => g v (algebraMap F (Fv F v) b.1)) ⟨v, hv⟩, mul_zero]`. Rewrite using `[image_eq_zero_of_notMem_tsupport h1, zero_mul]`. Unfold `fullSum`.
+
+Rewrite using `[ENNReal.ofReal_mul (pow_nonneg hδ.le _), ENNReal.ofReal_tsum_of_nonneg hnn hsum]`.
+-/
 theorem ofReal_fullSum (hC : CountBd) (F : Type) [Field F] [NumberField F] (hF : IsTotallyReal F)
     (θ : ℝ →+* Ainf F) (hθ : Continuous θ) (S : Finset (HeightOneSpectrum (𝓞 F))) (G : Ainf F → ℝ)
     (g : ∀ v : HeightOneSpectrum (𝓞 F), Fv F v → ℝ) (C : ℝ)
@@ -359,6 +427,15 @@ theorem ofReal_fullSum (hC : CountBd) (F : Type) [Field F] [NumberField F] (hF :
   unfold fullSum
   rw [ENNReal.ofReal_mul (pow_nonneg hδ.le _), ENNReal.ofReal_tsum_of_nonneg hnn hsum]
 
+/- English proof (translation)
+Introduce `hE hC F _ _ hF θ hθ li lam hli hlam S G g C hG hGc hG0 hg0 hgS hgo`. Establish `hq : ∀ v : HeightOneSpectrum (𝓞 F), (0 : ℝ) ≤ (Ideal.absNorm v.asIdeal : ℝ)` using `fun v => Nat.cast_nonneg _`. Establish `hb1 : ∀ v, v ∉ S → ∀ s ∈ v.adicCompletionIntegers F, s ≠ 0 → |g v s - 1| ≤ |C| / (Ideal.absNorm v.asIdeal : ℝ)` using `fun v hv s hs h0 => ((hgo v hv).2.2.1 s hs h0).trans (div_le_div_of_nonneg_right (le_abs_self C) (hq v))`. Establish `hb2 : ∀ v, v ∉ S → ∀ s : Fv F v, Valued.v s = 1 → |g v s - 1| ≤ |C| / (Ideal.absNorm v.asIdeal : ℝ) ^ 2` using `fun v hv s hs => ((hgo v hv).2.2.2.1 s hs).trans (div_le_div_of_nonneg_right (le_abs_self C) (pow_nonneg (hq v) 2))`. Establish `hz : ∀ v, v ∉ S → ∀ s, s ∉ v.adicCompletionIntegers F → g v s = 0` using `fun v hv => (hgo v hv).2.1`.
+
+Establish `hgood : ∀ v, v ∉ S → GoodFac v (lam v) C (g v)` using `fun v hv => hgo v hv`. Establish `hR : Tendsto (fullSum θ G g) (𝓝[>] 0) (𝓝 ((∫ y, G y ∂li) * ∏ v ∈ S, ∫ s, g v s ∂(lam v)))`. Rewrite using `[Metric.tendsto_nhds]`. Introduce `ε hε`. Take `⟨T, hST, hT⟩` from `err_bound hC F hF θ hθ S G g |C| (abs_nonneg C) hG hGc hG0 hg0 hgS hz hb1 hb2 (half_pos hε)`.
+
+Establish `htr` using `truncSum_tendsto hE hC F hF θ hθ li lam hli hlam S G g C hG hGc hG0 hg0 hgS hgood T hST`. Use `filter_upwards [Metric.tendsto_nhds.1 htr (ε / 2) (half_pos hε), self_mem_nhdsWithin] with δ h1 h2`. Establish `h3` using `hT T subset_rfl δ h2`. Rewrite `h1`, the goal using `[Real.dist_eq]`. Establish `h4` using `abs_sub_le (fullSum θ G g δ) (truncSum θ G T g δ) ((∫ y, G y ∂li) * ∏ v ∈ S, ∫ s, g v s ∂(lam v))`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hL` using `(ENNReal.continuous_ofReal.tendsto _).comp hR`. Use `hL.congr' ?_` and prove the remaining obligations. Use `filter_upwards [self_mem_nhdsWithin] with δ hδ`. Conclude with `(ofReal_fullSum hC F hF θ hθ S G g |C| hGc hG0 hg0 hgS hz hb2 δ hδ).symm`.
+-/
 theorem meanVal_of_equi_countBd : Equi → CountBd → MeanVal := by
   intro hE hC F _ _ hF θ hθ li lam hli hlam S G g C hG hGc hG0 hg0 hgS hgo
   have hq : ∀ v : HeightOneSpectrum (𝓞 F), (0 : ℝ) ≤ (Ideal.absNorm v.asIdeal : ℝ) := fun v => Nat.cast_nonneg _

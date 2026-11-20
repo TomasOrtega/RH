@@ -10,6 +10,9 @@ open scoped TensorProduct Matrix
 
 namespace GlobalTheory.DblVac
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.inertPlace_bigCell_stabiliser_of_localRingBigCell_lemma GlobalTheory.T.exists_admissible_isUnit_det_local_involution`.
+-/
 theorem exists_diag_mul_bigCell : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     {d : ℕ} (W : Spc F E d) (r s : ℕ), B.IsGood σ → W.IsSkew σ B r s →
     ∀ (v : Pl F) (w : HeightOneSpectrum (𝓞 E)), Formalism.UG.IsInertAt F E v w → ∀ g ∈ GlobalTheory.DblVac.KD σ W v,

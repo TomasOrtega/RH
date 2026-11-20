@@ -11,6 +11,9 @@ noncomputable section
 
 namespace MCChartImagDeriv
 
+/- English proof (translation)
+Simplify using `[PeriodChartData.Y, chartImag, Matrix.add_apply, Matrix.map_apply, Matrix.sum_apply, Matrix.smul_apply, smul_eq_mul]`.
+-/
 theorem Y_apply (D : PeriodChartData) (z : Fin D.n → ℂ) (j l : Fin D.g) :
     D.Y z j l = (D.τ0 z j l).im + ∑ i, cuspTime D.a_le z i * D.B i j l := by
   simp [PeriodChartData.Y, chartImag, Matrix.add_apply, Matrix.map_apply, Matrix.sum_apply,
@@ -20,6 +23,29 @@ end MCChartImagDeriv
 
 open MCChartImagDeriv in
 
+/- English proof (translation)
+Introduce `D`. Establish `hKc : IsCompact (Prod.fst '' D.K)` using `D.isCompact_K.image continuous_fst`. Establish `hKs : Prod.fst '' D.K ⊆ D.U`. Introduce and unpack `_ ⟨p, hp, rfl⟩`. Conclude with `(D.K_subset hp).1`.
+
+Establish `hA` using `fun j l => h₁ (fun z => D.τ0 z j l) D.U (Prod.fst '' D.K) D.isOpen_U (D.τ0_analytic j l) hKc hKs`. Use `choose A hApos hA using hA`. Use `set A₁ : ℝ := ∑ j, ∑ l, A j l with hA₁def`. Use `set S : ℝ := ∑ i, ∑ j, ∑ l, |D.B i j l| with hSdef`. Establish `hA_le : ∀ j l, A j l ≤ A₁`.
+
+Introduce `j l`. Combine the equalities or inequalities in the displayed calculation. Establish `hB_le : ∀ j l, ∑ i, |D.B i j l| ≤ S`. Introduce `j l`. Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hA₁ : 0 ≤ A₁` using `Finset.sum_nonneg fun j _ => Finset.sum_nonneg fun l _ => (hApos j l).le`. Establish `hS0 : 0 ≤ S` using `Finset.sum_nonneg fun i _ => Finset.sum_nonneg fun j _ => Finset.sum_nonneg fun l _ => abs_nonneg _`. Use `⟨A₁ + S + 1, by linarith, ?_⟩` and prove the remaining obligations. Introduce `p hp hpU j l`.
+
+Establish `hx : p.1 ∈ Prod.fst '' D.K` using `⟨p, hp, rfl⟩`. Take `⟨hd, -, hb⟩` from `hA j l p.1 hx`. Use `set L₁ := (Complex.imCLM.comp (fderiv ℝ (fun z => D.τ0 z j l) p.1)).comp (ContinuousLinearMap.fst ℝ (Fin D.n → ℂ) (Fin D.m → ℂ)) with hL₁`. Establish `h1 : HasFDerivAt (fun q : (Fin D.n → ℂ) × (Fin D.m → ℂ) => (D.τ0 q.1 j l).im) L₁ p` using `Complex.imCLM.hasFDerivAt.comp p (hd.hasFDerivAt.comp p hasFDerivAt_fst)`. Establish `hT` using `fun i => h₂ D p.1 hpU i`.
+
+Use `set L₂ := fun i => (fderiv ℝ (fun w => cuspTime D.a_le w i) p.1).comp (ContinuousLinearMap.fst ℝ (Fin D.n → ℂ) (Fin D.m → ℂ)) with hL₂`. Establish `h2 : ∀ i ∈ (Finset.univ : Finset (Fin D.a)), HasFDerivAt (fun q : (Fin D.n → ℂ) × (Fin D.m → ℂ) => cuspTime D.a_le q.1 i * D.B i j l) (D.B i j l • L₂ i) p` using `fun i _ => ((hT i).1.hasFDerivAt.comp p hasFDerivAt_fst).mul_const (D.B i j l)`. Establish `hfun : (fun q : (Fin D.n → ℂ) × (Fin D.m → ℂ) => D.Y q.1 j l) = fun q => (D.τ0 q.1 j l).im + ∑ i, cuspTime D.a_le q.1 i * D.B i j l`. Use function extensionality and compare the values at `q`. Conclude with `Y_apply D q.1 j l`.
+
+Establish `hall : HasFDerivAt (fun q : (Fin D.n → ℂ) × (Fin D.m → ℂ) => (D.τ0 q.1 j l).im + ∑ i, cuspTime D.a_le q.1 i * D.B i j l) (L₁ + ∑ i, D.B i j l • L₂ i) p` using `h1.add (HasFDerivAt.fun_sum h2)`. Rewrite using `[hfun]`. Use `⟨hall.differentiableAt, ?_⟩` and prove the remaining obligations. Rewrite using `[hall.fderiv]`. Establish `hfst : ‖ContinuousLinearMap.fst ℝ (Fin D.n → ℂ) (Fin D.m → ℂ)‖ ≤ 1` using `ContinuousLinearMap.norm_fst_le _ _ _`.
+
+Establish `hE1 : 1 ≤ Real.exp (D.radius p.1 / 2)` using `Real.one_le_exp (by linarith [MCBounds.one_le_radius D hpU.1])`. Establish `hn1 : ‖L₁‖ ≤ A₁`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_one]`. Conclude with `ContinuousLinearMap.opNorm_comp_le _ _`.
+
+Use `_ ≤ A₁ := by rw [Complex.imCLM_norm, one_mul]; exact hb.trans (hA_le j l)`. Establish `hn2 : ∀ i, ‖D.B i j l • L₂ i‖ ≤ |D.B i j l| * Real.exp (D.radius p.1 / 2)`. Introduce `i`. Rewrite using `[norm_smul, Real.norm_eq_abs]`. Use `mul_le_mul_of_nonneg_left ?_ (abs_nonneg _)` and prove the remaining obligations.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hsum : ‖∑ i, D.B i j l • L₂ i‖ ≤ S * Real.exp (D.radius p.1 / 2)`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+
+Use `_ ≤ (A₁ + S + 1) * Real.exp (D.radius p.1 / 2) := by nlinarith [Real.exp_pos (D.radius p.1 / 2)]`.
+-/
 theorem ChartImagDeriv.proof (h₁ : AnalyticDerivBound.Statement) (h₂ : CuspTimeDeriv.Statement) :
     ChartImagDeriv.Statement := by
   intro D

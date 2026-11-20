@@ -80,6 +80,9 @@ structure UnitaryGroupThirdPlaceHypotheses : Prop where
   localFiniteness : ReciprocityTheory.Gal.LocalFiniteness
   localTateDuality : ReciprocityTheory.Gal.LocalTateDuality
   localEulerChar : ReciprocityTheory.Gal.LocalEulerChar
+/- English proof (translation)
+The claim follows from `GlobalTheory.geometricLemma_of_filtration P.bernsteinZelevinskyFiniteness P.geometricLemmaFiltration`.
+-/
 theorem UnitaryGroupThirdPlaceHypotheses.geometricLemma (P : _root_.GlobalTheory.Fc.S0.UnitaryGroupThirdPlaceHypotheses) : GlobalTheory.Published.GeometricLemma :=
   GlobalTheory.geometricLemma_of_filtration P.bernsteinZelevinskyFiniteness P.geometricLemmaFiltration
 end GlobalTheory.Fc.S0

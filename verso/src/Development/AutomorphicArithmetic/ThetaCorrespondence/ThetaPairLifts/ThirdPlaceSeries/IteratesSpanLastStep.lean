@@ -13,6 +13,9 @@ open GlobalTheory.MixModel GlobalTheory.MixPer GlobalTheory.Unf GlobalTheory.See
 open scoped TensorProduct Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.Core.Mi.SpanX.itSpans_pk_alt | exact _root_.GlobalTheory.Core.Mi.SpanX.itSpans_pk_alt | (intros; apply _root_.GlobalTheory.Core.Mi.SpanX.itSpans_pk_alt <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.itSpans_MY_last_MX : GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.HarishChandraModules → ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} (W : _root_.GlobalTheory.MiS.RealPackAlt ex), _root_.GlobalTheory.Fam.PackageHypotheses W → GlobalTheory.Core.Mi.ItSpans ((_root_.GlobalTheory.Fam.pk_z W).MY (D.R.m - 1)) (_root_.GlobalTheory.Fam.pk_z W).MX (_root_.GlobalTheory.Fam.pk_z W).ItX := by
   first | exact @_root_.GlobalTheory.Core.Mi.SpanX.itSpans_pk_alt | exact _root_.GlobalTheory.Core.Mi.SpanX.itSpans_pk_alt | (intros; apply _root_.GlobalTheory.Core.Mi.SpanX.itSpans_pk_alt <;> assumption)
 end

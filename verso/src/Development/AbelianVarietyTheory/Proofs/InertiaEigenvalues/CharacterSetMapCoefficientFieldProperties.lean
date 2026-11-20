@@ -11,6 +11,9 @@ open GlobalTheory.BaseCoef
 
 namespace GlobalTheory.BaseCoef
 
+/- English proof (translation)
+Unfold `mapSig`. Conclude with `Finset.mem_image`.
+-/
 theorem mem_mapSig {I LL LL' : Type} [Group I] [Field LL] [Field LL'] (f : LL →+* LL')
     (Sig : Finset (I →* LLˣ)) (x : I →* LL'ˣ) :
     x ∈ mapSig f Sig ↔ ∃ a ∈ Sig, (Units.map (f : LL →* LL')).comp a = x := by
@@ -18,6 +21,15 @@ theorem mem_mapSig {I LL LL' : Type} [Group I] [Field LL] [Field LL'] (f : LL �
   unfold mapSig
   exact Finset.mem_image
 
+/- English proof (translation)
+Use `set φ : LLˣ →* LL'ˣ := Units.map (f : LL →* LL') with hφ`. Establish `hinj : Function.Injective φ`. Introduce `u v huv`. Apply `Units.ext` to reduce the goal to its premises. Use `congrArg Units.val huv` as an intermediate fact.
+
+Simplify `f.injective this` using `[hφ]`. Establish `hcomp : φ.comp a * (φ.comp b)⁻¹ = φ.comp (a * b⁻¹)`. Use extensionality with `x`. Simplify using the standard rewrite rules. Rewrite using `[hcomp]`.
+
+Unfold `Formalism.MainNotions.ElementDenominator.orbLen`. Use `congr 1`. Use extensionality with `k`. Simplify using `only [Set.mem_setOf_eq, MonoidHom.comp_apply]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨hk, h⟩`. Conclude with `⟨hk, fun g g' hg => hinj (h g g' hg)⟩`. Introduce and unpack `⟨hk, h⟩`. Conclude with `⟨hk, fun g g' hg => congrArg φ (h g g' hg)⟩`.
+-/
 theorem orbLen_map {G LL LL' : Type} [Group G] [Field LL] [Field LL'] (f : LL →+* LL')
     (I : Subgroup G) (Fr : G) (a b : I →* LLˣ) :
     Formalism.MainNotions.ElementDenominator.orbLen I Fr ((Units.map (f : LL →* LL')).comp a * ((Units.map (f : LL →* LL')).comp b)⁻¹) =
@@ -42,6 +54,19 @@ theorem orbLen_map {G LL LL' : Type} [Group G] [Field LL] [Field LL'] (f : LL �
   · rintro ⟨hk, h⟩
     exact ⟨hk, fun g g' hg => congrArg φ (h g g' hg)⟩
 
+/- English proof (translation)
+Introduce `G LL LL' _ _ _ f I Fr Sig`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `hS a' ha'`. Take `⟨a, ha, rfl⟩` from `(mem_mapSig f Sig a').1 ha'`. Take `⟨b, hb, hab⟩` from `hS a ha`.
+
+Use `⟨(Units.map (f : LL →* LL')).comp b, (mem_mapSig f Sig _).2 ⟨b, hb, rfl⟩, ?_⟩` and prove the remaining obligations. Introduce `g h hgh`. Simplify using `[hab g h hgh]`. Unfold `Formalism.MainNotions.ElementDenominator.rPrime`. Apply `le_antisymm` to reduce the goal to its premises.
+
+Apply `Finset.sup_le` to reduce the goal to its premises. Introduce and unpack `⟨p, q⟩ hpq`. Rewrite `hpq` using `[Finset.mem_product]`. Take `⟨a, ha, rfl⟩` from `(mem_mapSig f Sig p).1 hpq.1`. Take `⟨b, hb, rfl⟩` from `(mem_mapSig f Sig q).1 hpq.2`.
+
+Rewrite using `[orbLen_map f I Fr a b]`. Conclude with `Finset.le_sup (s := Sig ×ˢ Sig) (f := fun p : (↥I →* LLˣ) × (↥I →* LLˣ) => Formalism.MainNotions.ElementDenominator.orbLen I Fr (p.1 * p.2⁻¹)) (b := (a, b)) (Finset.mem_product.2 ⟨ha, hb⟩)`. Apply `Finset.sup_le` to reduce the goal to its premises. Introduce and unpack `⟨a, b⟩ hab`. Rewrite `hab` using `[Finset.mem_product]`.
+
+Use `Finset.le_sup (s := mapSig f Sig ×ˢ mapSig f Sig) (f := fun p : (↥I →* LL'ˣ) × (↥I →* LL'ˣ) => Formalism.MainNotions.ElementDenominator.orbLen I Fr (p.1 * p.2⁻¹)) (b := ((Units.map (f : LL →* LL')).comp a, (Units.map (f : LL →* LL')).comp b)) (Finset.mem_product.2 ⟨(mem_mapSig f …` as an intermediate fact. Simplify `this` using `only [orbLen_map f I Fr a b]`. Unfold `mapSig`. Conclude with `Finset.card_image_le`. Introduce `h1`.
+
+Conclude with `(mem_mapSig f Sig 1).2 ⟨1, h1, MonoidHom.comp_one _⟩`.
+-/
 theorem mapSig_props : ∀ {G LL LL' : Type} [Group G] [Field LL] [Field LL'] (f : LL →+* LL') (I : Subgroup G) (Fr : G) (Sig : Finset (I →* LLˣ)), (FrobStable I Fr Sig → FrobStable I Fr (mapSig f Sig)) ∧ Formalism.MainNotions.ElementDenominator.rPrime I Fr (mapSig f Sig) = Formalism.MainNotions.ElementDenominator.rPrime I Fr Sig ∧ (mapSig f Sig).card ≤ Sig.card ∧ (1 ∈ Sig → 1 ∈ mapSig f Sig) := by
   intro G LL LL' _ _ _ f I Fr Sig
   refine ⟨?_, ?_, ?_, ?_⟩

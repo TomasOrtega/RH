@@ -23,6 +23,9 @@ namespace GlobalTheory.UT
 section
 variable {F : Type} [Field F] {v : AddValuation F (WithTop ℚ)}
 
+/- English proof (translation)
+Use `haveI : UniqueSums X := (AddEquiv.uniqueSums_iff (Module.Free.chooseBasis ℤ X).repr.toAddEquiv).mpr inferInstance`. Conclude with `⟨AddValuation.ofValuation (GlobalTheory.gaussValAlg (G := X) (AddValuation.toValuation v)), fun f g => GlobalTheory.gaussValAlg_le_iff (G := X) (AddValuation.toValuation v) (f := f)⟩`.
+-/
 theorem exists_addGauss (v : AddValuation F (WithTop ℚ)) (X : Type) [AddCommGroup X] [Module.Free ℤ X] :
     ∃ w : AddValuation (AddMonoidAlgebra F X) (WithTop ℚ),
       ∀ (f : AddMonoidAlgebra F X) (g : WithTop ℚ), g ≤ w f ↔ ∀ m, g ≤ v (f.coeff m) := by
@@ -31,6 +34,11 @@ theorem exists_addGauss (v : AddValuation F (WithTop ℚ)) (X : Type) [AddCommGr
   exact ⟨AddValuation.ofValuation (GlobalTheory.gaussValAlg (G := X) (AddValuation.toValuation v)),
     fun f g => GlobalTheory.gaussValAlg_le_iff (G := X) (AddValuation.toValuation v) (f := f)⟩
 
+/- English proof (translation)
+Take `⟨M, hM⟩` from `((hA 0).image (fun χ => (v (A χ)).untopD 0)).bddBelow`. Use `⟨min M 0, fun M' hM' χ => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hχ : v (A χ) < ((0 : ℚ) : WithTop ℚ)`. Establish `h1 : M ≤ (v (A χ)).untopD 0` using `hM ⟨χ, hχ, rfl⟩`. Take `⟨r, hr⟩` from `WithTop.ne_top_iff_exists.mp hχ.ne_top`.
+
+Rewrite `h1`, the goal using `[← hr]`. Rewrite `h1` using `[WithTop.untopD_coe]`. Conclude with `WithTop.coe_le_coe.mpr (hM'.trans ((min_le_left _ _).trans h1))`. Conclude with `(WithTop.coe_le_coe.mpr (hM'.trans (min_le_right _ _))).trans (not_lt.mp hχ)`.
+-/
 theorem NullV.exists_lower {X : Type} {A : X → F} (hA : NullV v A) :
     ∃ M : ℚ, ∀ M' : ℚ, M' ≤ M → ∀ χ, (M' : WithTop ℚ) ≤ v (A χ) := by
   obtain ⟨M, hM⟩ := ((hA 0).image (fun χ => (v (A χ)).untopD 0)).bddBelow
@@ -43,6 +51,13 @@ theorem NullV.exists_lower {X : Type} {A : X → F} (hA : NullV v A) :
     exact WithTop.coe_le_coe.mpr (hM'.trans ((min_le_left _ _).trans h1))
   · exact (WithTop.coe_le_coe.mpr (hM'.trans (min_le_right _ _))).trans (not_lt.mp hχ)
 
+/- English proof (translation)
+Use `⟨AddMonoidAlgebra.ofCoeff (Finsupp.onFinset (hA N).toFinset (fun χ => if v (A χ) < (N : WithTop ℚ) then A χ else 0) (fun χ hχ => ?_)), fun χ => ?_, fun χ => ?_, fun χ hχ => ?_⟩` and prove the remaining obligations. Rewrite using `[Set.Finite.mem_toFinset]`. Assume the negation of the conclusion as `hn`. Conclude with `hχ (if_neg hn)`. Simplify using `only [Finsupp.onFinset_apply] split_ifs with hχ`.
+
+Simplify using the standard rewrite rules. Simplify using `using hχ`. Simplify using `only [Finsupp.onFinset_apply] split_ifs with hχ`. Conclude with `le_rfl`. Simplify using the standard rewrite rules.
+
+Simplify using `only [Finsupp.onFinset_apply, if_pos hχ]`.
+-/
 theorem NullV.exists_trunc {X : Type} {A : X → F} (hA : NullV v A) (N : ℚ) :
     ∃ a : AddMonoidAlgebra F X, (∀ χ, (N : WithTop ℚ) ≤ v (A χ - a.coeff χ)) ∧
       (∀ χ, v (A χ) ≤ v (a.coeff χ)) ∧ ∀ χ, v (A χ) < (N : WithTop ℚ) → a.coeff χ = A χ := by
@@ -63,6 +78,9 @@ theorem NullV.exists_trunc {X : Type} {A : X → F} (hA : NullV v A) (N : ℚ) :
     · simp
   · simp only [Finsupp.onFinset_apply, if_pos hχ]
 
+/- English proof (translation)
+Rewrite using `[AddMonoidAlgebra.coeff_mul_apply_left, AddMonoidAlgebra.mapDomainRingHom_apply, AddMonoidAlgebra.coeff_mapDomain, Finsupp.sum_mapDomain_index (by simp) (by intros; rw [add_mul]), Finsupp.sum_of_support_subset _ hT _ (by simp)]`. Use `Finset.sum_congr rfl fun χ _ => ?_` and prove the remaining obligations. Rewrite using `[neg_add_eq_sub]`.
+-/
 theorem coeff_mapDomain_mul {X : Type} [AddCommGroup X] (h : X →+ X) (a c : AddMonoidAlgebra F X)
     (T : Finset X) (hT : a.coeff.support ⊆ T) (α : X) :
     (AddMonoidAlgebra.mapDomainRingHom F h a * c).coeff α = ∑ χ ∈ T, a.coeff χ * c.coeff (α - h χ) := by
@@ -72,6 +90,9 @@ theorem coeff_mapDomain_mul {X : Type} [AddCommGroup X] (h : X →+ X) (a c : Ad
   refine Finset.sum_congr rfl fun χ _ => ?_
   rw [neg_add_eq_sub]
 
+/- English proof (translation)
+Establish `e : x * y - x' * y' = (x - x') * y + (y - y') * x'` using `by ring`. Rewrite using `[e, WithTop.coe_add]`. Apply the tactic sequence `refine v.map_le_add ?_ ?_ <;> rw [v.map_mul]`. Conclude with `add_le_add hx hy0`. Conclude with `add_le_add hy hx0`.
+-/
 theorem val_mul_sub_mul {x y x' y' : F} {M N : ℚ} (hx : (N : WithTop ℚ) ≤ v (x - x'))
     (hy : (N : WithTop ℚ) ≤ v (y - y')) (hy0 : (M : WithTop ℚ) ≤ v y) (hx0 : (M : WithTop ℚ) ≤ v x') :
     ((N + M : ℚ) : WithTop ℚ) ≤ v (x * y - x' * y') := by
@@ -81,6 +102,11 @@ theorem val_mul_sub_mul {x y x' y' : F} {M N : ℚ} (hx : (N : WithTop ℚ) ≤ 
   · exact add_le_add hx hy0
   · exact add_le_add hy hx0
 
+/- English proof (translation)
+Set `e : X ≃ {p : X × X // h p.1 + p.2 = α}` to `{ toFun := fun χ => ⟨(χ, α - h χ), by simp⟩ invFun := fun p => p.1.1 left_inv := fun χ => rfl right_inv := fun p => Subtype.ext (Prod.ext rfl (sub_eq_of_eq_add' p.2.symm)) }`. Introduce `q`. Take `⟨S, hS⟩` from `H q`. Use `⟨S.map e.symm.toEmbedding, fun T hT => ?_⟩` and prove the remaining obligations. Use `hS (T.map e.toEmbedding) (fun p hp => by` as an intermediate fact.
+
+Rewrite using `[Finset.mem_map_equiv]`. Conclude with `hT (Finset.mem_map_of_mem _ hp))`. Rewrite `this` using `[Finset.sum_map]`. Conclude with `this`.
+-/
 theorem SumV.fibre {X : Type} [AddCommGroup X] (h : X →+ X) (α : X) (f : X → X → F) {s : F}
     (H : SumV v (fun p : {p : X × X // h p.1 + p.2 = α} => f p.1.1 p.1.2) s) :
     SumV v (fun χ => f χ (α - h χ)) s := by
@@ -99,6 +125,9 @@ theorem SumV.fibre {X : Type} [AddCommGroup X] (h : X →+ X) (α : X) (f : X �
   rw [Finset.sum_map] at this
   exact this
 
+/- English proof (translation)
+Rewrite using `[coeff_mapDomain_mul h a c T hT, ← Finset.sum_sub_distrib]`. Conclude with `v.map_le_sum fun χ _ => val_mul_sub_mul (ha _) (hc _) (hC _) ((hA _).trans (ha' _))`.
+-/
 theorem val_sum_sub_coeff {X : Type} [AddCommGroup X] (h : X →+ X) {A C : X → F}
     {a c : AddMonoidAlgebra F X} {M N : ℚ}
     (hA : ∀ χ, (M : WithTop ℚ) ≤ v (A χ)) (hC : ∀ χ, (M : WithTop ℚ) ≤ v (C χ))
@@ -110,6 +139,11 @@ theorem val_sum_sub_coeff {X : Type} [AddCommGroup X] (h : X →+ X) {A C : X �
   rw [coeff_mapDomain_mul h a c T hT, ← Finset.sum_sub_distrib]
   exact v.map_le_sum fun χ _ => val_mul_sub_mul (ha _) (hc _) (hC _) ((hA _).trans (ha' _))
 
+/- English proof (translation)
+Take `⟨S, hS⟩` from `SumV.fibre h α (fun x y => A₁ x * C₂ y - A₂ x * C₁ y) H (N + M)`. Establish `h0` using `hS (S ∪ (a₁.coeff.support ∪ a₂.coeff.support)) Finset.subset_union_left`. Establish `h1` using `val_sum_sub_coeff h hA₁ hC₂ ha₁ ha₁' hc₂ (S ∪ (a₁.coeff.support ∪ a₂.coeff.support)) (Finset.subset_union_left.trans Finset.subset_union_right) α`. Establish `h2` using `val_sum_sub_coeff h hA₂ hC₁ ha₂ ha₂' hc₁ (S ∪ (a₁.coeff.support ∪ a₂.coeff.support)) (Finset.subset_union_right.trans Finset.subset_union_right) α`. Establish `h3` using `v.map_le_sub (v.map_le_sub h2 h1) h0`.
+
+Use `h3 using 2` and compare the differences between its conclusion and the goal. Rewrite using `[AddMonoidAlgebra.coeff_sub, Finsupp.sub_apply, Finset.sum_sub_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem val_coeff_of_sumV {X : Type} [AddCommGroup X] (h : X →+ X) {A₁ A₂ C₁ C₂ : X → F}
     {a₁ a₂ c₁ c₂ : AddMonoidAlgebra F X} {M N : ℚ}
     (hA₁ : ∀ χ, (M : WithTop ℚ) ≤ v (A₁ χ)) (hA₂ : ∀ χ, (M : WithTop ℚ) ≤ v (A₂ χ))
@@ -134,6 +168,37 @@ theorem val_coeff_of_sumV {X : Type} [AddCommGroup X] (h : X →+ X) {A₁ A₂ 
   ring
 end
 
+/- English proof (translation)
+Introduce `F _ v X _ _ _ h hinj A₁ A₂ B₁ B₂ C₁ C₂ nA₁ nA₂ nB₁ nB₂ nC₁ nC₂ HA HB hC α q`. Take `⟨w, hw⟩` from `exists_addGauss v X`. Take `⟨χ₀, hχ₀⟩` from `Function.ne_iff.mp hC`. Take `⟨m, hm⟩` from `WithTop.ne_top_iff_exists.mp (fun e => hχ₀ (v.top_iff.mp e) : v (C₂ χ₀) ≠ ⊤)`. Take `⟨M₁, hM₁⟩` from `nA₁.exists_lower`.
+
+Take `⟨M₂, hM₂⟩` from `nA₂.exists_lower`. Take `⟨M₃, hM₃⟩` from `nB₁.exists_lower`. Take `⟨M₄, hM₄⟩` from `nB₂.exists_lower`. Take `⟨M₅, hM₅⟩` from `nC₁.exists_lower`. Take `⟨M₆, hM₆⟩` from `nC₂.exists_lower`.
+
+Take `⟨M, l1, l2, l3, l4, l5, l6⟩ : ∃ M : ℚ, M ≤ M₁ ∧ M ≤ M₂ ∧ M ≤ M₃ ∧ M ≤ M₄ ∧ M ≤ M₅ ∧ M ≤ M₆` from `⟨min M₁ (min M₂ (min M₃ (min M₄ (min M₅ M₆)))), by simp, by simp, by simp, by simp, by simp, by simp⟩`. Use `replace hM₁ := hM₁ M l1`. Use `replace hM₂ := hM₂ M l2`. Use `replace hM₃ := hM₃ M l3`. Use `replace hM₄ := hM₄ M l4`.
+
+Use `replace hM₅ := hM₅ M l5`. Use `replace hM₆ := hM₆ M l6`. Choose the witnesses or unpack the hypotheses as in `⟨N, n1, n2, n3⟩ : ∃ N : ℚ, m < N ∧ q + m ≤ M + (N + M) ∧ q ≤ N + M := by`. Use `⟨max (m + 1) (max (q + m - M - M) (q - M)), ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `lt_of_lt_of_le (by linarith) (le_max_left _ _)`.
+
+Use `(le_max_left (q + m - M - M) (q - M)).trans (le_max_right (m + 1) _)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Use `(le_max_right (q + m - M - M) (q - M)).trans (le_max_right (m + 1) _)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨a₁, ha₁, ha₁', -⟩` from `nA₁.exists_trunc N`.
+
+Take `⟨a₂, ha₂, ha₂', -⟩` from `nA₂.exists_trunc N`. Take `⟨b₁, hb₁, hb₁', -⟩` from `nB₁.exists_trunc N`. Take `⟨b₂, hb₂, hb₂', -⟩` from `nB₂.exists_trunc N`. Take `⟨c₁, hc₁, -, -⟩` from `nC₁.exists_trunc N`. Take `⟨c₂, hc₂, -, hc₂'⟩` from `nC₂.exists_trunc N`.
+
+Establish `EA` using `(hw _ _).mpr fun β => val_coeff_of_sumV h hM₁ hM₂ hM₅ hM₆ ha₁ ha₁' ha₂ ha₂' hc₁ hc₂ β (HA β)`. Establish `EB` using `(hw _ _).mpr fun β => val_coeff_of_sumV h hM₃ hM₄ hM₅ hM₆ hb₁ hb₁' hb₂ hb₂' hc₁ hc₂ β (HB β)`. Establish `push : ∀ (d : AddMonoidAlgebra F X) (g : WithTop ℚ), g ≤ w (AddMonoidAlgebra.mapDomainRingHom F h d) ↔ ∀ χ, g ≤ v (d.coeff χ)`. Introduce `d g`. Rewrite using `[hw, AddMonoidAlgebra.mapDomainRingHom_apply, AddMonoidAlgebra.coeff_mapDomain]`.
+
+Use `⟨fun H χ => ?_, fun H β => ?_⟩` and prove the remaining obligations. Use `H (h χ)` as an intermediate fact. Rewrite `this` using `[Finsupp.mapDomain_apply hinj]`. Then use the resulting hypothesis. Distinguish the cases in `hβ : β ∈ Set.range h`. Take `⟨χ, rfl⟩` from `hβ`.
+
+Rewrite using `[Finsupp.mapDomain_apply hinj]`. Conclude with `H χ`. Rewrite using `[Finsupp.mapDomain_of_notMem_range _ _ hβ, v.map_zero]`. Conclude with `le_top`. Use `set P := AddMonoidAlgebra.mapDomainRingHom F h with hP`.
+
+Establish `key : ((q + m : ℚ) : WithTop ℚ) ≤ w (P (b₁ * a₂ - b₂ * a₁)) + w c₂`. Establish `e : P (b₁ * a₂ - b₂ * a₁) * c₂ = P a₂ * (P b₁ * c₂ - P b₂ * c₁) - P b₂ * (P a₁ * c₂ - P a₂ * c₁)`. Rewrite using `[map_sub, map_mul, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← w.map_mul, e]`.
+
+Use `(WithTop.coe_le_coe.mpr n2).trans ?_` and prove the remaining obligations. Rewrite using `[WithTop.coe_add]`. Apply the tactic sequence `refine w.map_le_sub ?_ ?_ <;> rw [w.map_mul]`. Conclude with `add_le_add ((push _ _).mpr fun χ => (hM₂ χ).trans (ha₂' χ)) EB`. Conclude with `add_le_add ((push _ _).mpr fun χ => (hM₄ χ).trans (hb₂' χ)) EA`.
+
+Establish `hc : w c₂ ≤ (m : WithTop ℚ)`. Use `(hw c₂ _).mp le_rfl χ₀` as an intermediate fact. Rewrite `this` using `[hc₂' χ₀ (by rw [← hm]; exact WithTop.coe_lt_coe.mpr n1), ← hm]`. Then use the resulting hypothesis. Establish `key2 : (q : WithTop ℚ) ≤ w (P (b₁ * a₂ - b₂ * a₁))`. Use `key.trans (add_le_add le_rfl hc)` as an intermediate fact.
+
+Rewrite `this` using `[WithTop.coe_add]`. Conclude with `(WithTop.add_le_add_iff_right WithTop.coe_ne_top).mp this`. Establish `key3` using `(push _ _).mp key2 α`. Use `⟨b₁.coeff.support ∪ b₂.coeff.support, fun T hT => ?_⟩` and prove the remaining obligations. Establish `h1` using `val_sum_sub_coeff (AddMonoidHom.id X) hM₃ hM₂ hb₁ hb₁' ha₂ T (Finset.subset_union_left.trans hT) α`.
+
+Establish `h2` using `val_sum_sub_coeff (AddMonoidHom.id X) hM₄ hM₁ hb₂ hb₂' ha₁ T (Finset.subset_union_right.trans hT) α`. Rewrite `h1`, `h2` using `[AddMonoidAlgebra.mapDomainRingHom_id]`. Simplify using `only [RingHom.id_apply, AddMonoidHom.id_apply] at h1 h2`. Establish `h3` using `v.map_le_sub (v.map_le_sub ((WithTop.coe_le_coe.mpr n3).trans h2) ((WithTop.coe_le_coe.mpr n3).trans h1)) key3`. Use `h3 using 2` and compare the differences between its conclusion and the goal.
+
+Rewrite using `[AddMonoidAlgebra.coeff_sub, Finsupp.sub_apply, Finset.sum_sub_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sumV_cancel : ∀ (F : Type) [Field F] (v : AddValuation F (WithTop ℚ)) (X : Type) [AddCommGroup X] [Module.Free ℤ X] [Module.Finite ℤ X] (h : X →+ X), Function.Injective h → ∀ A₁ A₂ B₁ B₂ C₁ C₂ : X → F, NullV v A₁ → NullV v A₂ → NullV v B₁ → NullV v B₂ → NullV v C₁ → NullV v C₂ → (∀ α, SumV v (fun p : {p : X × X // h p.1 + p.2 = α} => A₁ p.1.1 * C₂ p.1.2 - A₂ p.1.1 * C₁ p.1.2) 0) → (∀ α, SumV v (fun p : {p : X × X // h p.1 + p.2 = α} => B₁ p.1.1 * C₂ p.1.2 - B₂ p.1.1 * C₁ p.1.2) 0) → C₂ ≠ 0 → ∀ α, SumV v (fun χ : X => B₁ χ * A₂ (α - χ) - B₂ χ * A₁ (α - χ)) 0 := by
   classical
   intro F _ v X _ _ _ h hinj A₁ A₂ B₁ B₂ C₁ C₂ nA₁ nA₂ nB₁ nB₂ nC₁ nC₂ HA HB hC α q

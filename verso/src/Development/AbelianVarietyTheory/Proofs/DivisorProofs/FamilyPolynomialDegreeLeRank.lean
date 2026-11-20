@@ -15,27 +15,45 @@ section Poly
 
 variable {K : Type} [Field K]
 
+/- English proof (translation)
+Unfold `Formalism.L2.Col.heckePolyOf`. Use `natDegree_sum_le_of_forall_le _ _ fun i hi => ?_` and prove the remaining obligations. Conclude with `(natDegree_C_mul_X_pow_le _ _).trans (Nat.lt_succ_iff.1 (Finset.mem_range.1 hi))`.
+-/
 theorem natDegree_heckePolyOf_le (n q : ℕ) (a : ℕ → K) : (Formalism.L2.Col.heckePolyOf n q a).natDegree ≤ n := by
   unfold Formalism.L2.Col.heckePolyOf
   refine natDegree_sum_le_of_forall_le _ _ fun i hi => ?_
   exact (natDegree_C_mul_X_pow_le _ _).trans (Nat.lt_succ_iff.1 (Finset.mem_range.1 hi))
 
+/- English proof (translation)
+Rewrite using `[C_neg, C_1]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem linear_eq (a : K) : (1 - C a * X : K[X]) = C (-a) * X + C 1 := by
   rw [C_neg, C_1]; ring
 
+/- English proof (translation)
+Rewrite using `[linear_eq]`. Conclude with `natDegree_linear (neg_ne_zero.2 ha)`.
+-/
 theorem linear_natDegree {a : K} (ha : a ≠ 0) : (1 - C a * X : K[X]).natDegree = 1 := by
   rw [linear_eq]; exact natDegree_linear (neg_ne_zero.2 ha)
 
+/- English proof (translation)
+Introduce `h`. Use `linear_natDegree ha` as an intermediate fact. Rewrite `this` using `[h]`. Simplify using `at this`.
+-/
 theorem linear_ne_zero {a : K} (ha : a ≠ 0) : (1 - C a * X : K[X]) ≠ 0 := by
   intro h
   have := linear_natDegree ha
   rw [h] at this
   simp at this
 
+/- English proof (translation)
+Unfold `Formalism.L2.Col.blockPoly`. Conclude with `Finset.prod_ne_zero_iff.2 fun c _ => linear_ne_zero (mul_ne_zero hν (pow_ne_zero _ hq))`.
+-/
 theorem blockPoly_ne_zero {ν : K} {q : ℕ} (t : ℕ) (hν : ν ≠ 0) (hq : (q : K) ≠ 0) : Formalism.L2.Col.blockPoly ν q t ≠ 0 := by
   unfold Formalism.L2.Col.blockPoly
   exact Finset.prod_ne_zero_iff.2 fun c _ => linear_ne_zero (mul_ne_zero hν (pow_ne_zero _ hq))
 
+/- English proof (translation)
+Unfold `Formalism.L2.Col.blockPoly`. Rewrite using `[natDegree_prod _ _ fun c _ => linear_ne_zero (mul_ne_zero hν (pow_ne_zero _ hq))]`. Rewrite using `[Finset.sum_congr rfl fun c _ => linear_natDegree (mul_ne_zero hν (pow_ne_zero c hq))]`. Simplify using the standard rewrite rules.
+-/
 theorem blockPoly_natDegree {ν : K} {q : ℕ} (t : ℕ) (hν : ν ≠ 0) (hq : (q : K) ≠ 0) :
     (Formalism.L2.Col.blockPoly ν q t).natDegree = t := by
   unfold Formalism.L2.Col.blockPoly
@@ -43,6 +61,11 @@ theorem blockPoly_natDegree {ν : K} {q : ℕ} (t : ℕ) (hν : ν ≠ 0) (hq : 
   rw [Finset.sum_congr rfl fun c _ => linear_natDegree (mul_ne_zero hν (pow_ne_zero c hq))]
   simp
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => simp`. Consider the case `cons a l ih`. Take `⟨h1, h2⟩` from `ih fun ν hν => hl ν (by simp [hν])`. Establish `ha : a ≠ 0` using `hl a (by simp)`.
+
+Simplify using `only [List.map_cons, List.prod_cons, List.length_cons]`. Use `⟨mul_ne_zero (blockPoly_ne_zero t ha hq) h1, ?_⟩` and prove the remaining obligations. Rewrite using `[natDegree_mul (blockPoly_ne_zero t ha hq) h1, h2, blockPoly_natDegree t ha hq]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem blocks_prod {q : ℕ} (t : ℕ) (hq : (q : K) ≠ 0) (l : List K) (hl : ∀ ν ∈ l, ν ≠ 0) :
     (l.map fun ν => Formalism.L2.Col.blockPoly ν q t).prod ≠ 0 ∧
       (l.map fun ν => Formalism.L2.Col.blockPoly ν q t).prod.natDegree = l.length * t := by
@@ -58,6 +81,13 @@ theorem blocks_prod {q : ℕ} (t : ℕ) (hq : (q : K) ≠ 0) (l : List K) (hl : 
 
 end Poly
 
+/- English proof (translation)
+Take `⟨x, hx, -⟩` from `B.lf_exists_occurs_of_mem_resSet h`. Distinguish the cases in `h0 : Sg (B.pl P) = 0`. Simplify using `[h0]`. Establish `hq : ((B.q P : ℕ) : K) ≠ 0` using `Nat.cast_ne_zero.2 (hB.q_pos P).ne'`. Establish `hb` using `blocks_prod B.t hq (B.bl.map fun ν => ν P) (by`.
+
+Introduce `a ha`. Take `⟨ν, hν, rfl⟩` from `List.mem_map.1 ha`. Conclude with `hB.blocks.ne_zero ν hν P)`. Rewrite `hb` using `[List.map_map, List.length_map]`. Establish `hd : (Formalism.L2.Col.heckePoly B.n B.q x P).natDegree ≤ B.n` using `natDegree_heckePolyOf_le _ _ _`.
+
+Establish `hb1 : B.blockProd P ≠ 0` using `hb.1`. Establish `hb2 : (B.blockProd P).natDegree = B.bl.length * B.t` using `hb.2`. Rewrite `hd` using `[hx P, natDegree_mul h0 hb1, hb2]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem natDegree_res_le {K : Type} [Field K] [NumberField K] [StarRing K] {G : Type} [Group G] [Fintype G] {Pl0 : Type}
     (B : BlockDat K G Pl0) {s : ℕ} (hB : B.Ok s) {Xs : Finset (G → K)} {Sg : Pl0 → K[X]} (h : Sg ∈ B.resSet Xs) (P : B.Pl) :
     (Sg (B.pl P)).natDegree ≤ B.n - B.bl.length * B.t := by
@@ -76,6 +106,13 @@ theorem natDegree_res_le {K : Type} [Field K] [NumberField K] [StarRing K] {G : 
   rw [hx P, natDegree_mul h0 hb1, hb2] at hd
   omega
 
+/- English proof (translation)
+Take `⟨_, _, _, ht⟩` from `hR.fam.tie`. Establish `hr : A.r = D.R.r` using `ht.ranks.2.1`. Establish `h1` using `natDegree_res_le (A.fam.R A.fam.μ0) (hA.what₂ _) ((A.fam.R A.fam.μ0).lf_mem_resSet_of_mem_ixFin p.2) ⟨P, hP⟩`. Establish `e1 : (A.fam.R A.fam.μ0).n = A.r + D.R.m * A.t` using `rfl`. Establish `e2 : (A.fam.R A.fam.μ0).bl.length = D.R.m` using `List.length_ofFn`.
+
+Establish `e3 : (A.fam.R A.fam.μ0).t = A.t` using `rfl`. Rewrite `h1` using `[e1, e2, e3, Nat.add_sub_cancel, hr]`. Establish `h2 : (p.1 P).natDegree ≤ D.R.r` using `h1`. Unfold `RealDat.polE`. Use `natDegree_comp_le.trans ?_` and prove the remaining obligations.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem natDegree_polE_le {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m}
     {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A) {s : ℕ}
     (hA : A.fam.Ok s) (hR : R.Char F) (p : A.fam.base.Ix) (P : Pl0) (hP : P ∈ A.ok A.μ0) :

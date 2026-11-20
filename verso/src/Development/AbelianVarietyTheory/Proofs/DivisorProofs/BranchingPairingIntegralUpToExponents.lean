@@ -26,6 +26,21 @@ noncomputable section
 
 namespace GlobalTheory.BrPairLocal
 
+/- English proof (translation)
+Introduce `E K ι _ _ _ _ _ _ emb n N hN Λ σ hI hS M L hM hL w u v hu hv`. Establish `hLlat : Submodule.IsLattice E L` using `GlobalTheory.T.isLattice_of_lastCoordinate_extension hN M L hM hL`. Establish `h1` using `GlobalTheory.OntoExponentsLat.exZ_sum_smul_mem_locP_delAtr E K ι N emb Λ L hLlat w u hu`. Take `⟨s, hs, hsu⟩` from `(Formalism.L2.DIV.lc_mem_locP w _ _).1 h1`. Establish `hdel : delAtr emb Λ L = delK Λ (fun τ => Formalism.L2.Col.Br.sumLat hN (dualFr (tauLat emb τ M)) (1 : K))`.
+
+Unfold `delAtr`. Use `congr 1`. Use function extensionality and compare the values at `τ`. Conclude with `GlobalTheory.T.dualLattice_embedded_lastCoordinate_sum emb hN M L hL τ`. Rewrite `hsu` using `[hdel]`.
+
+Establish `h2` using `GlobalTheory.BranchFormula.integrality Formalism.L2.DIV.BrJ.branching_interlacing_pairs K ι N n hN Λ σ hI hS (fun τ => dualFr (tauLat emb τ M)) (fun _ => 1) (fun _ => one_ne_zero) _ hsu`. Establish `hbr : Formalism.L2.Col.Br.brAt hN Λ σ (fun _ => (1 : K)) = Formalism.L2.Col.Br.brStd hN Λ σ`. Simplify using `[Formalism.L2.Col.Br.brAt]`. Rewrite `h2` using `[hbr]`. Establish `hy` using `GlobalTheory.T.adjugateSubstLinearEquiv_symm_mem_nabla emb σ M hM v hv`.
+
+Establish `h3` using `((Formalism.L2.DIV.pairBDual E K ι n emb σ M hM _).1.1 h2) _ hy`. Take `⟨r, hr⟩` from `Submodule.mem_one.1 h3`. Establish `key : (s : K) * (((Formalism.EigenvalueLevelCeiling.plc w : ℕ) : K) ^ (∑ τ, Formalism.CohomologicalDescent.LA.exZ N N le_rfl (Λ τ).natW (Formalism.EigenvalueLevelCeiling.plc w))) * GlobalTheory.BrPairF.brPairF σ hN Λ u v = (r : K)`. Establish `e1 : (r : K) = algebraMap (𝓞 K) K r` using `rfl`. Rewrite using `[e1, hr, GlobalTheory.BrPairF.brPairF_apply, LinearMap.map_smul_of_tower, LinearMap.map_smul_of_tower, LinearMap.map_smul_of_tower, LinearMap.map_smul_of_tower, LinearMap.smul_apply, LinearMap.smul_apply, Algebra.smul_def, Algebra.smul_def, map_pow, map_natCast, mul_assoc]`.
+
+Distinguish the cases in `hP : GlobalTheory.BrPairF.brPairF σ hN Λ u v = 0`. Conclude with `Or.inl hP`. Use `right`. Establish `hs0 : (s : K) ≠ 0`. Introduce `h0`.
+
+Apply `hs` to reduce the goal to its premises. Establish `: s = 0` using `by exact_mod_cast h0`. Rewrite using `[this]`. Conclude with `w.asIdeal.zero_mem`. Establish `hp0 : (((Formalism.EigenvalueLevelCeiling.plc w : ℕ) : K) ^ (∑ τ, Formalism.CohomologicalDescent.LA.exZ N N le_rfl (Λ τ).natW (Formalism.EigenvalueLevelCeiling.plc w))) ≠ 0` using `pow_ne_zero _ (Nat.cast_ne_zero.2 (Formalism.EigenvalueLevelCeiling.plc_prime w).ne_zero)`.
+
+Establish `h4` using `Formalism.DivisionValues.ReductionFirst.vw_int_nonneg w r`. Rewrite `h4` using `[← key, Formalism.DivisionValues.ReductionFirst.vw_mul w (mul_ne_zero hs0 hp0) hP, Formalism.DivisionValues.ReductionFirst.vw_mul w hs0 hp0, Formalism.DivisionValues.ReductionFirst.vw_unit w s hs]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem finLocal : ∀ {E K ι : Type} [Field E] [NumberField E] [Field K] [NumberField K] [StarRing K] [Fintype ι] (emb : ι → E →+* K) {n N : ℕ}
     (hN : N = n + 1) (Λ : ι → DomWeight N) (σ : ι → DomWeight n),
     (∀ τ, Formalism.L2.Col.Br.Interlace hN (Λ τ) (σ τ)) → (∀ τ, Formalism.L2.Col.Br.SameShift (Λ τ) (σ τ)) →

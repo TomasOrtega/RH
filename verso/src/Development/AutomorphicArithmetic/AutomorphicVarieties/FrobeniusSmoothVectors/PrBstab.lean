@@ -2,6 +2,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVec
 
 open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.U3 UpperTheory.V.Fr
 
+/- English proof (translation)
+Introduce `i j h`. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun a _ => ?_` and prove the remaining obligations. Distinguish the cases in `ha : a < i`. Rewrite using `[hM i a ha, zero_mul]`.
+
+Rewrite using `[hN a j (lt_of_lt_of_le h (not_lt.mp ha)), mul_zero]`.
+-/
 private theorem upT_mul {C : Type} [CommRing C] {n : ℕ} {M N : Matrix (Fin n) (Fin n) C}
     (hM : UpT M) (hN : UpT N) : UpT (M * N) := by
   intro i j h
@@ -11,6 +16,13 @@ private theorem upT_mul {C : Type} [CommRing C] {n : ℕ} {M N : Matrix (Fin n) 
   · rw [hM i a ha, zero_mul]
   · rw [hN a j (lt_of_lt_of_le h (not_lt.mp ha)), mul_zero]
 
+/- English proof (translation)
+Introduce `l _ k _ F n C _ B v s X hX`. Establish `h1 : (B.r (F.loc v s)).right = 1` using `(B.nu _).trans (F.loc0 v s).2`. Establish `h2 : (B.r (F.loc v s⁻¹)).left = (B.r (F.loc v s)).left⁻¹`. Rewrite using `[map_inv, map_inv, SemidirectProduct.inv_left, h1, inv_one, sgnAct_one]`. Establish `t1` using `B.tri v s`.
+
+Establish `t2` using `B.tri v s⁻¹`. Establish `t3` using `upT_mul (upT_mul t1 hX) t2`. Simplify using `only [GG.mat, h2] at t3`. Use `show UpT ((B.g v : Matrix (Fin n) (Fin n) C) * (B.r (F.loc v s)).adFun X * (((B.g v)⁻¹ : GL (Fin n) C) : Matrix (Fin n) (Fin n) C))`. Establish `hg : ∀ Y : Matrix (Fin n) (Fin n) C, (((B.g v)⁻¹ : GL (Fin n) C) : Matrix (Fin n) (Fin n) C) * ((B.g v : Matrix (Fin n) (Fin n) C) * Y) = Y` using `fun Y => Units.inv_mul_cancel_left _ Y`.
+
+Simplify using `only [Matrix.mul_assoc, hg] at t3`. Simplify using `only [GG.adFun, GG.mat, h1, if_true, Matrix.mul_assoc]`. Conclude with `t3`.
+-/
 theorem UpperTheory.V.Fr.pr_bstab :
     ∀ {l : ℕ} [Fact l.Prime] {k : Type} [Field k] {F : Frame l k} {n : ℕ}, ∀ (C : Type) [CommRing C] (B : Box F n C) (v : F.V) (s : F.Gv v), ∀ X ∈ B.b v, B.ad (F.loc v s) X ∈ B.b v := by
   intro l _ k _ F n C _ B v s X hX

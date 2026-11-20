@@ -15,6 +15,9 @@ section Finite
 variable (E : WeierstrassCurve F)
 
 omit [Field F] in
+/- English proof (translation)
+Establish `hfin : FiniteDimensional F⟮genX E⟯ E.toAffine.FunctionField` using `Module.finite_of_finrank_eq_succ (finrank_adjoin_genX E)`. Use `open IntermediateField.algebraAdjoinAdjoin in`. Establish `: Algebra.IsAlgebraic (Algebra.adjoin F {genX E}) E.toAffine.FunctionField` using `Algebra.IsAlgebraic.trans (Algebra.adjoin F {genX E}) F⟮genX E⟯ E.toAffine.FunctionField`. Use `Algebra.IsAlgebraic.trdeg_le_cardinalMk F ({genX E} : Set E.toAffine.FunctionField)` as an intermediate fact. Simplify using `using this`.
+-/
 theorem trdeg_functionField_le_one [Field F] : Algebra.trdeg F E.toAffine.FunctionField ≤ 1 := by
   have hfin : FiniteDimensional F⟮genX E⟯ E.toAffine.FunctionField :=
     Module.finite_of_finrank_eq_succ (finrank_adjoin_genX E)
@@ -24,6 +27,13 @@ theorem trdeg_functionField_le_one [Field F] : Algebra.trdeg F E.toAffine.Functi
   have := Algebra.IsAlgebraic.trdeg_le_cardinalMk F ({genX E} : Set E.toAffine.FunctionField)
   simpa using this
 
+/- English proof (translation)
+Set `x : PUnit.{u + 1} → E.toAffine.FunctionField` to `fun _ => z`. Establish `hind : AlgebraicIndependent F x` using `(algebraicIndependent_singleton_iff PUnit.unit).mpr hz`. Establish `hb : IsTranscendenceBasis F x` using `hind.isTranscendenceBasis_of_trdeg_le ((trdeg_functionField_le_one E).trans_lt Cardinal.one_lt_aleph0) (by rw [Cardinal.mk_punit]; exact trdeg_functionField_le_one E)`. Establish `halg` using `hb.isAlgebraic`. Establish `hrange : Set.range x = {z}` using `Set.range_const`.
+
+Establish `hle : Algebra.adjoin F (Set.range x) ≤ (F⟮z⟯).toSubalgebra`. Rewrite using `[hrange]`. Conclude with `algebra_adjoin_le_adjoin F _`. Establish `hint : ∀ w : E.toAffine.FunctionField, IsIntegral F⟮z⟯ w` using `fun w => (IsAlgebraic.tower_top_of_subalgebra_le hle (halg.isAlgebraic w)).isIntegral`. Establish `htop : F⟮z⟯⟮genX E, genY E⟯ = ⊤`.
+
+Rewrite using `[← IntermediateField.restrictScalars_eq_top_iff (K := F), restrictScalars_adjoin, eq_top_iff, ← adjoin_genX_genY E]`. Conclude with `adjoin.mono _ _ _ Set.subset_union_right`. Establish `: FiniteDimensional F⟮z⟯ F⟮z⟯⟮genX E, genY E⟯` using `IntermediateField.finiteDimensional_adjoin (fun w _ => hint w)`. Rewrite `this` using `[htop]`. Conclude with `(IntermediateField.topEquiv (F := F⟮z⟯) (E := E.toAffine.FunctionField)).toLinearEquiv.finiteDimensional`.
+-/
 theorem finiteDimensional_adjoin_of_transcendental {z : E.toAffine.FunctionField}
     (hz : Transcendental F z) : FiniteDimensional F⟮z⟯ E.toAffine.FunctionField := by
   let x : PUnit.{u + 1} → E.toAffine.FunctionField := fun _ => z
@@ -58,6 +68,13 @@ namespace Isogeny
 
 omit [IsAlgClosed F] [DecidableEq F] in
 
+/- English proof (translation)
+Establish `hfin` using `finiteDimensional_adjoin_of_transcendental E φ.transcendental_alt`. Establish `hle : F⟮φ.x⟯ ≤ φ.comap.fieldRange` using `adjoin_simple_le_iff.mpr ⟨genX E', φ.comap_genX⟩`. Establish `t` using `relfinrank_mul_relfinrank hle (le_top : φ.comap.fieldRange ≤ ⊤)`. Establish `hpos : 0 < relfinrank F⟮φ.x⟯ ⊤`. Rewrite using `[relfinrank_top_right]`.
+
+Conclude with `Module.finrank_pos`. Rewrite using `[degree, ← relfinrank_top_right]`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Rewrite `t` using `[Nat.le_zero.mp h, mul_zero]`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem degree_pos (φ : Isogeny E E') : 0 < φ.degree := by
   have hfin := finiteDimensional_adjoin_of_transcendental E φ.transcendental_alt
   have hle : F⟮φ.x⟯ ≤ φ.comap.fieldRange := adjoin_simple_le_iff.mpr ⟨genX E', φ.comap_genX⟩
@@ -71,12 +88,22 @@ theorem degree_pos (φ : Isogeny E E') : 0 < φ.degree := by
   omega
 
 omit [IsAlgClosed F] [DecidableEq F] in
+/- English proof (translation)
+The claim follows from `Module.finite_of_finrank_pos φ.degree_pos`.
+-/
 theorem finiteDimensional (φ : Isogeny E E') :
     FiniteDimensional φ.comap.fieldRange E.toAffine.FunctionField :=
   Module.finite_of_finrank_pos φ.degree_pos
 
 omit [IsAlgClosed F] [DecidableEq F] in
 
+/- English proof (translation)
+Establish `hfin` using `finiteDimensional_adjoin_of_transcendental E hz`. Establish `hle : F⟮z⟯ ≤ ψ.comap.fieldRange` using `adjoin_simple_le_iff.mpr ⟨z, h⟩`. Establish `t` using `relfinrank_mul_relfinrank hle (le_top : ψ.comap.fieldRange ≤ ⊤)`. Establish `e : relfinrank F⟮z⟯ ψ.comap.fieldRange = relfinrank F⟮z⟯ ⊤`. Establish `h1 : F⟮z⟯ = (F⟮z⟯).map ψ.comap` using `by rw [adjoin_map, Set.image_singleton, h]`.
+
+Establish `h2 : ψ.comap.fieldRange = (⊤ : IntermediateField F E.toAffine.FunctionField).map ψ.comap` using `(map_top_eq_fieldRange _).symm`. Use `conv_lhs => rw [h2, h1]`. Rewrite using `[relfinrank_map_map]`. Establish `hpos : 0 < relfinrank F⟮z⟯ ⊤`. Rewrite using `[relfinrank_top_right]`.
+
+Conclude with `Module.finrank_pos`. Rewrite `t` using `[e]`. Establish `h1 : relfinrank ψ.comap.fieldRange ⊤ = 1` using `Nat.eq_of_mul_eq_mul_left hpos (by rw [t, mul_one])`. Rewrite using `[degree, ← relfinrank_top_right]`. Conclude with `h1`.
+-/
 theorem degree_eq_one_of_comap_eq (ψ : Isogeny E E) {z : E.toAffine.FunctionField}
     (hz : Transcendental F z) (h : ψ.comap z = z) : ψ.degree = 1 := by
   have hfin := finiteDimensional_adjoin_of_transcendental E hz
@@ -96,18 +123,48 @@ theorem degree_eq_one_of_comap_eq (ψ : Isogeny E E) {z : E.toAffine.FunctionFie
   rw [degree, ← relfinrank_top_right]
   exact h1
 
+/- English proof (translation)
+Rewrite using `[app, ← eq_genEval E σ rfl]`.
+-/
 theorem map_eq_app (φ : Isogeny E E') (σ : E.toAffine.FunctionField →ₐ[F] E.toAffine.FunctionField) :
     Point.map σ φ.1 = φ.app (Point.map σ (genericPoint E)) (isGenPt_map_genericPoint E σ) := by
   rw [app, ← eq_genEval E σ rfl]
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 theorem app_congr (φ : Isogeny E E') {L : Type*} [Field L] [Algebra F L] [DecidableEq L]
     {P P' : (E.baseChange L).toAffine.Point} (h : P = P') (hP : IsGenPt E P)
     (hP' : IsGenPt E P') : φ.app P hP = φ.app P' hP' := by
   subst h; rfl
 
+/- English proof (translation)
+The claim follows from `φ.app_genericPoint _`.
+-/
 theorem app_genericPoint' (φ : Isogeny E E') : φ.app (genericPoint E) isGenPt_genericPoint = φ.1 :=
   φ.app_genericPoint _
 
+/- English proof (translation)
+Use `set G := genericPoint E`. Use `set K := E.toAffine.FunctionField`. Use `set α := (mulIsogeny E 2 two_ne_zero).comap`. Use `set τ := translate E R`. Use `set cR := constMap E K R`.
+
+Establish `hτ : Point.map τ G = G + cR` using `map_translate_genericPoint E R`. Establish `hα : Point.map α G = G + G`. Rewrite using `[map_comap_genericPoint, ← two_zsmul]`. Both sides reduce to the same expression. Establish `hG : IsGenPt E G` using `isGenPt_genericPoint`.
+
+Establish `h1 : IsGenPt E (G + cR)` using `hτ ▸ isGenPt_map_genericPoint E τ`. Establish `h2 : IsGenPt E (G + G)` using `isGenPt_add_self hG`. Establish `h3 : IsGenPt E (G + cR + G)`. Establish `: Point.map α (G + cR) = G + cR + G`. Rewrite using `[map_add, hα, map_constMap]`.
+
+Normalize the expressions using the abelian group laws. Rewrite using `[← this]`. Conclude with `isGenPt_map E α h1`. Use `set Z := Point.map τ φ.1 - φ.1 with hZ`. Establish `hτφ : Point.map τ φ.1 = φ.app (G + cR) h1`.
+
+Rewrite using `[map_eq_app]`. Conclude with `φ.app_congr hτ _ _`. Establish `hαZ : Point.map α Z = Z`. Establish `eα : Point.map α φ.1 = φ.app (G + G) h2`. Rewrite using `[map_eq_app]`.
+
+Conclude with `φ.app_congr hα _ _`. Establish `eατ : Point.map α (Point.map τ φ.1) = φ.app (G + cR + G) h3`. Rewrite using `[Point.map_map, map_eq_app]`. Use `φ.app_congr ?_ _ _` and prove the remaining obligations. Rewrite using `[← Point.map_map, hτ, map_add, hα, map_constMap]`.
+
+Normalize the expressions using the abelian group laws. Rewrite using `[hZ, map_sub, eα, eατ, φ.app_add h1 hG h3, φ.app_add hG hG h2, φ.app_genericPoint', hτφ]`. Normalize the expressions using the abelian group laws. Distinguish the cases in `hZg : IsGenPt E' Z`. It suffices to derive a contradiction.
+
+Consider the cases of `hZ' : Z with`. Consider the case `zero => rw [hZ'] at hZg`. Conclude with `hZg`. Consider the case `some z w hzw`. Rewrite `hZg`, `hαZ` using `[hZ']`.
+
+Establish `hz : α z = z`. Use `hαZ` as an intermediate fact. Simplify using `only [Point.map_some, Point.some.injEq] at this`. Conclude with `this.1`. Use `(mulIsogeny E 2 two_ne_zero).degree_eq_one_of_comap_eq hZg hz` as an intermediate fact.
+
+Rewrite `this` using `[degree_mulIsogeny]`. Evaluate the numerical expressions using `at this`. Take `⟨c, hc⟩` from `exists_map_eq_of_not_isGenPt E' Z hZg`. Conclude with `⟨c, by rw [hc, hZ, add_sub_cancel]⟩`.
+-/
 theorem exists_map_translate (φ : Isogeny E E') (R : E.toAffine.Point) :
     ∃ c : E'.toAffine.Point,
       Point.map (translate E R) φ.1 = φ.1 + constMap E' E.toAffine.FunctionField c := by
@@ -157,16 +214,25 @@ theorem exists_map_translate (φ : Isogeny E E') (R : E.toAffine.Point) :
 noncomputable def pointMap (φ : Isogeny E E') (R : E.toAffine.Point) : E'.toAffine.Point :=
   (φ.exists_map_translate R).choose
 
+/- English proof (translation)
+The claim follows from `(φ.exists_map_translate R).choose_spec`.
+-/
 theorem map_translate (φ : Isogeny E E') (R : E.toAffine.Point) :
     Point.map (translate E R) φ.1 = φ.1 + constMap E' E.toAffine.FunctionField (φ.pointMap R) :=
   (φ.exists_map_translate R).choose_spec
 
+/- English proof (translation)
+Rewrite `h` using `[map_translate, add_right_inj]`. Conclude with `constMap_injective E' _ h`.
+-/
 theorem pointMap_eq_of_map_translate (φ : Isogeny E E') {R : E.toAffine.Point} {c : E'.toAffine.Point}
     (h : Point.map (translate E R) φ.1 = φ.1 + constMap E' E.toAffine.FunctionField c) :
     φ.pointMap R = c := by
   rw [map_translate, add_right_inj] at h
   exact constMap_injective E' _ h
 
+/- English proof (translation)
+Apply `pointMap_eq_of_map_translate` to reduce the goal to its premises. Rewrite using `[translate_add, ← Point.map_map, map_translate, map_add, map_translate, map_constMap, map_add]`. Normalize the expressions using the abelian group laws.
+-/
 theorem pointMap_add (φ : Isogeny E E') (R S : E.toAffine.Point) :
     φ.pointMap (R + S) = φ.pointMap R + φ.pointMap S := by
   apply pointMap_eq_of_map_translate
@@ -176,9 +242,15 @@ theorem pointMap_add (φ : Isogeny E E') (R S : E.toAffine.Point) :
 noncomputable def pointHom (φ : Isogeny E E') : E.toAffine.Point →+ E'.toAffine.Point :=
   AddMonoidHom.mk' φ.pointMap φ.pointMap_add
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pointHom_apply (φ : Isogeny E E') (R : E.toAffine.Point) : φ.pointHom R = φ.pointMap R :=
   rfl
 
+/- English proof (translation)
+Apply `algHom_eq_of_map_genericPoint' E'` to reduce the goal to its premises. Rewrite using `[← Point.map_map, map_translate_genericPoint, map_add, map_comap_genericPoint, ← Point.map_map, map_comap_genericPoint, map_translate]`. Conclude with `congrArg (φ.1 + ·) (map_constMap E' φ.comap (φ.pointMap R))`.
+-/
 theorem comap_comp_translate (φ : Isogeny E E') (R : E.toAffine.Point) :
     φ.comap.comp (translate E' (φ.pointMap R)) = (translate E R).comp φ.comap := by
   apply algHom_eq_of_map_genericPoint' E'
@@ -186,6 +258,11 @@ theorem comap_comp_translate (φ : Isogeny E E') (R : E.toAffine.Point) :
     map_comap_genericPoint, map_translate]
   exact congrArg (φ.1 + ·) (map_constMap E' φ.comap (φ.pointMap R))
 
+/- English proof (translation)
+Establish `e : genEval E (P + constMap E L R) h = (genEval E P hP).comp (translate E R)`. Use `(eq_genEval E _ ?_ h).symm` and prove the remaining obligations. Rewrite using `[← Point.map_map, map_translate_genericPoint, map_add, map_genEval_genericPoint]`. Conclude with `congrArg _ (map_constMap E _ R)`. Rewrite using `[app, e, ← Point.map_map, map_translate, map_add, map_constMap]`.
+
+Both sides reduce to the same expression.
+-/
 theorem app_add_constMap (φ : Isogeny E E') {L : Type*} [Field L] [Algebra F L] [DecidableEq L]
     {P : (E.baseChange L).toAffine.Point} (hP : IsGenPt E P) (R : E.toAffine.Point)
     (h : IsGenPt E (P + constMap E L R)) :
@@ -197,6 +274,9 @@ theorem app_add_constMap (φ : Isogeny E E') {L : Type*} [Field L] [Algebra F L]
   rw [app, e, ← Point.map_map, map_translate, map_add, map_constMap]
   rfl
 
+/- English proof (translation)
+Use `DFunLike.congr_fun (φ.comap_comp_translate T) f` as an intermediate fact. Rewrite `hT` using `[AddMonoidHom.mem_ker, pointHom_apply]`. Rewrite `this` using `[hT, translate_zero]`. Conclude with `this.symm`.
+-/
 theorem translate_comap_of_mem_ker (φ : Isogeny E E') {T : E.toAffine.Point}
     (hT : T ∈ φ.pointHom.ker) (f : E'.toAffine.FunctionField) :
     translate E T (φ.comap f) = φ.comap f := by
@@ -212,10 +292,16 @@ noncomputable def kerTranslate (φ : Isogeny E E') (T : φ.pointHom.ker) :
       rintro ⟨m, f, rfl⟩
       exact φ.translate_comap_of_mem_ker T.2 f }
 
+/- English proof (translation)
+Introduce `S T h`. Conclude with `Subtype.ext (translate_inj E (AlgHom.ext fun f => DFunLike.congr_fun h f))`.
+-/
 theorem kerTranslate_injective (φ : Isogeny E E') : Function.Injective φ.kerTranslate := by
   intro S T h
   exact Subtype.ext (translate_inj E (AlgHom.ext fun f => DFunLike.congr_fun h f))
 
+/- English proof (translation)
+Use `φ.finiteDimensional` as an intermediate fact. Establish `hc` using `Nat.card_le_card_of_injective _ φ.kerTranslate_injective`. Rewrite `hc` using `[Nat.card_eq_fintype_card (α := E.toAffine.FunctionField →ₐ[φ.comap.fieldRange] _)]`. Conclude with `hc.trans AlgHom.card_le`.
+-/
 theorem card_ker_le_degree (φ : Isogeny E E') : Nat.card φ.pointHom.ker ≤ φ.degree := by
   have := φ.finiteDimensional
   have hc := Nat.card_le_card_of_injective _ φ.kerTranslate_injective
@@ -226,6 +312,9 @@ instance finite_ker (φ : Isogeny E E') : Finite φ.pointHom.ker := by
   have := φ.finiteDimensional
   exact Finite.of_injective _ φ.kerTranslate_injective
 
+/- English proof (translation)
+Apply `pointMap_eq_of_map_translate` to reduce the goal to its premises. Rewrite using `[comp_val, Point.map_map, ← comap_comp_translate, ← Point.map_map, map_translate, map_add, map_constMap]`.
+-/
 theorem pointMap_comp (ψ : Isogeny E' E'') (φ : Isogeny E E') (R : E.toAffine.Point) :
     (ψ.comp φ).pointMap R = ψ.pointMap (φ.pointMap R) := by
   apply pointMap_eq_of_map_translate
@@ -233,8 +322,14 @@ theorem pointMap_comp (ψ : Isogeny E' E'') (φ : Isogeny E E') (R : E.toAffine.
     map_constMap]
 
 omit [IsAlgClosed F] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mulIsogeny_val (n : ℤ) (hn : n ≠ 0) : (mulIsogeny E n hn).1 = n • genericPoint E := rfl
 
+/- English proof (translation)
+Apply `pointMap_eq_of_map_translate` to reduce the goal to its premises. Rewrite using `[mulIsogeny_val, map_zsmul, map_translate_genericPoint, zsmul_add, map_zsmul]`. Both sides reduce to the same expression.
+-/
 theorem pointMap_mulIsogeny (n : ℤ) (hn : n ≠ 0) (R : E.toAffine.Point) :
     (mulIsogeny E n hn).pointMap R = n • R := by
   apply pointMap_eq_of_map_translate
@@ -243,11 +338,20 @@ theorem pointMap_mulIsogeny (n : ℤ) (hn : n ≠ 0) (R : E.toAffine.Point) :
 
 def toHom (φ : Isogeny E E') : isogHom E E' := ⟨φ.1, φ.respectsAdd⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toHom_val (φ : Isogeny E E') : φ.toHom.1 = φ.1 := rfl
 
+/- English proof (translation)
+Introduce `h` and use `isGenPt_ne_zero E' φ.isGenPt (congrArg Subtype.val h)`.
+-/
 theorem toHom_ne_zero (φ : Isogeny E E') : φ.toHom ≠ 0 :=
   fun h => isGenPt_ne_zero E' φ.isGenPt (congrArg Subtype.val h)
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (by rw [homComp_of_isGenPt _ _ φ.isGenPt]; rfl)`.
+-/
 theorem homComp_toHom (ψ : Isogeny E' E'') (φ : Isogeny E E') :
     homComp ψ.toHom φ.toHom = (ψ.comp φ).toHom :=
   Subtype.ext (by rw [homComp_of_isGenPt _ _ φ.isGenPt]; rfl)
@@ -257,8 +361,14 @@ end Isogeny
 noncomputable def isogOfHom (Q : isogHom E E') (hQ : Q ≠ 0) : Isogeny E E' :=
   ⟨Q.1, (mem_isogHom_iff.mp Q.2).resolve_left (fun h => hQ (Subtype.ext h))⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem isogOfHom_toHom (Q : isogHom E E') (hQ : Q ≠ 0) : (isogOfHom Q hQ).toHom = Q := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem isogOfHom_val (Q : isogHom E E') (hQ : Q ≠ 0) : (isogOfHom Q hQ).1 = Q.1 := rfl
 
 end Points

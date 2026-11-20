@@ -45,6 +45,9 @@ def HasNG {N : ℕ} {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W
 def KerNG (W W' : List (IrrGL k)) : Prop :=
   ∀ (N : ℕ) (h : ∑ a, (W.get a).1 = N) (h' : ∑ a, (W'.get a).1 = N), HasNG (prodIrr W.get h) (prodIrr W'.get h')
 
+/- English proof (translation)
+Substitute `hpq` using the available equality. Take `rfl : x = y` from `funext hxy`. Conclude with `⟨.refl _⟩`.
+-/
 theorem prodIrr_congr {p q N : ℕ} (hpq : p = q) (x : Fin p → IrrGL k) (y : Fin q → IrrGL k)
     (hxy : ∀ i, x i = y (Fin.cast hpq i)) (hx : ∑ a, (x a).1 = N) (hy : ∑ a, (y a).1 = N) :
     Nonempty ((prodIrr x hx).Equiv (prodIrr y hy)) := by
@@ -52,6 +55,9 @@ theorem prodIrr_congr {p q N : ℕ} (hpq : p = q) (x : Fin p → IrrGL k) (y : F
   obtain rfl : x = y := funext hxy
   exact ⟨.refl _⟩
 
+/- English proof (translation)
+Use `Fin.addCases (fun i => ?_) (fun i => ?_) i` and prove the remaining obligations. Rewrite using `[Fin.append_left]`. Simplify using `[List.getElem_append]`. Rewrite using `[Fin.append_right]`. Simplify using `[List.getElem_append]`.
+-/
 theorem append_get {α : Type*} (A B : List α) (i : Fin (A.length + B.length)) :
     Fin.append A.get B.get i = (A ++ B).get (Fin.cast (List.length_append (as := A) (bs := B)).symm i) := by
   refine Fin.addCases (fun i => ?_) (fun i => ?_) i
@@ -60,11 +66,17 @@ theorem append_get {α : Type*} (A B : List α) (i : Fin (A.length + B.length)) 
   · rw [Fin.append_right]
     simp [List.getElem_append]
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.product_irreducible_append_equiv k _ _ r t A.get B.get hA hB h'`.
+-/
 theorem word_append_aux₁ (A B : List (IrrGL k)) {r t : ℕ} (hA : ∑ a, (A.get a).1 = r) (hB : ∑ a, (B.get a).1 = t)
     (h' : ∑ a, (Fin.append A.get B.get a).1 = r + t) :
     Nonempty ((prod₂ (prodIrr A.get hA) (prodIrr B.get hB)).Equiv (prodIrr (Fin.append A.get B.get) h')) :=
   GlobalTheory.T.product_irreducible_append_equiv k _ _ r t A.get B.get hA hB h'
 
+/- English proof (translation)
+The claim follows from `prodIrr_congr (List.length_append (as := A) (bs := B)).symm (Fin.append A.get B.get) (A ++ B).get (append_get A B) h' h`.
+-/
 theorem word_append_aux₂ (A B : List (IrrGL k)) {N : ℕ} (h : ∑ a, ((A ++ B).get a).1 = N)
     (h' : ∑ a, (Fin.append A.get B.get a).1 = N) :
     Nonempty ((prodIrr (Fin.append A.get B.get) h').Equiv (prodIrr (A ++ B).get h)) :=

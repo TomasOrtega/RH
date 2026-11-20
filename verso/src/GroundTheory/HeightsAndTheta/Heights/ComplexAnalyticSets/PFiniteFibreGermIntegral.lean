@@ -8,6 +8,21 @@ namespace GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets
 
 open Topology Filter
 
+/- English proof (translation)
+Introduce `σ _ X x d A hX hiso g hg`. Take `⟨N, k, f, hNo, hxN, hf, hXN⟩` from `hX`. Take `⟨W, hW, hWiso⟩` from `hiso`. Establish `hfx : ∀ i, AnalyticAt ℂ (f i) x` using `fun i => hf i x hxN`. Establish `hAj : ∀ j : Fin d, AnalyticAt ℂ (fun z => A z j - A x j) x` using `fun j => (((ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin d => ℂ) j).comp A).analyticAt x).sub analyticAt_const`.
+
+Set `F : Fin (k + d) → (σ → ℂ) → ℂ` to `Fin.append f (fun j z => A z j - A x j)`. Establish `hFx : ∀ i, AnalyticAt ℂ (F i) x`. Introduce `i`. Use `Fin.addCases (fun i => ?_) (fun j => ?_) i` and prove the remaining obligations. Simplify `hfx i` using `only [F, Fin.append_left]`.
+
+Simplify `hAj j` using `only [F, Fin.append_right]`. Establish `hcoord : ∀ l : σ, ∃ (r : ℕ) (h : Fin k → (σ → ℂ) → ℂ) (h' : Fin d → (σ → ℂ) → ℂ), (∀ i, AnalyticAt ℂ (h i) x) ∧ (∀ j, AnalyticAt ℂ (h' j) x) ∧ ∀ᶠ z in 𝓝 x, (z l - x l) ^ r = ∑ i, h i z * f i z + ∑ j, h' j z * (A z j - A x j)`. Introduce `l`. Establish `hl : AnalyticAt ℂ (fun z : σ → ℂ => z l - x l) x` using `((ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : σ => ℂ) l).analyticAt x).sub analyticAt_const`. Establish `hvan : ∀ᶠ z in 𝓝 x, (∀ i, F i z = 0) → z l - x l = 0` using `by filter_upwards [hNo.mem_nhds hxN, hW] with z hzN hzW h0`.
+
+Establish `hf0 : ∀ i, f i z = 0` using `fun i => by simpa only [F, Fin.append_left] using h0 (Fin.castAdd d i)`. Establish `hA0 : A z = A x` using `funext fun j => sub_eq_zero.1 (by simpa only [F, Fin.append_right] using h0 (Fin.natAdd k j))`. Establish `hzX : z ∈ X`. Establish `: z ∈ X ∩ N` using `by rw [hXN]; exact ⟨hzN, hf0⟩`. Conclude with `this.1`.
+
+Rewrite using `[hWiso z ⟨hzX, hzW⟩ hA0, sub_self]`. Take `⟨m, h, -, hh, hsum⟩` from `hR σ x (k + d) F (fun z => z l - x l) hFx hl hvan`. Use `⟨m, fun i => h (Fin.castAdd d i), fun j => h (Fin.natAdd k j), fun i => hh _, fun j => hh _, ?_⟩` and prove the remaining obligations. Use `filter_upwards [hsum] with z hz`. Rewrite using `[hz, Fin.sum_univ_add]`.
+
+Simplify using `only [F, Fin.append_left, Fin.append_right]`. Take `⟨n, a, h, ha, -, hrel⟩` from `hWF σ x k f d A hfx hcoord g hg`. Use `⟨n, a, ha, ?_⟩` and prove the remaining obligations. Use `filter_upwards [hrel, hNo.mem_nhds hxN] with z hz hzN hzX`. Establish `hz0 : z ∈ X ∩ N` using `⟨hzX, hzN⟩`.
+
+Rewrite `hz0` using `[hXN]`. Rewrite using `[hz]`. Simplify using `[hz0.2]`.
+-/
 theorem FiniteFibreGermIntegral.proof (hWF : WeierstrassFiniteness.Statement)
     (hR : RueckertNullstellensatz.Statement) : FiniteFibreGermIntegral.Statement := by
   intro σ _ X x d A hX hiso g hg

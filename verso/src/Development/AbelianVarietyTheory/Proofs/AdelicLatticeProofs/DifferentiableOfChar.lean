@@ -14,6 +14,11 @@ namespace GlobalTheory.FockTranslate
 
 open GlobalTheory.SplitScalar GlobalTheory.LatVac
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.ContinuousHomDifferentiable.continuous_hom_differentiable`. Consider the case `exact _root_.GlobalTheory.ContinuousHomDifferentiable.continuous_hom_differentiable`. Consider the case `(apply _root_.GlobalTheory.ContinuousHomDifferentiable.continuous_hom_differentiable <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.ContinuousHomDifferentiable.continuous_hom_differentiable <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.ContinuousHomDifferentiable.continuous_hom_differentiable <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.ContinuousHomDifferentiable.continuous_hom_differentiable ..)`.
+-/
 theorem differentiable_of_char (χ : ℝ → ℂ) (hc : Continuous χ) (h0 : χ 0 = 1)
     (hm : ∀ s t, χ (s + t) = χ s * χ t) : Differentiable ℝ χ := by
   first
@@ -26,6 +31,11 @@ theorem differentiable_of_char (χ : ℝ → ℂ) (hc : Continuous χ) (h0 : χ 
 
 variable {D : D7}
 
+/- English proof (translation)
+Establish `h1 : Differentiable ℝ fun t : ℝ => ψ (symplOH S T w (L t))`. Use `differentiable_of_char _ (hψ.comp (continuous_const.mul (continuous_symplO S T continuous_const hL))) ?_ ?_` and prove the remaining obligations. Rewrite using `[map_zero, symplOH, symplO_zero_right, mul_zero, AddChar.map_zero_eq_one]`. Introduce `s t`. Rewrite using `[map_add, symplOH_add_right, AddChar.map_add_eq_mul]`.
+
+Establish `h2` using `hf.smooth 1 (L.comp (Pi.evalAddMonoidHom (fun _ : Fin 1 => ℝ) 0)) (hL.comp (continuous_apply 0)) (fun t => hfin _) w`. Establish `h3 : Differentiable ℝ fun t : ℝ => f (w + L t)` using `(h2.differentiable (by simp)).comp (differentiable_pi.2 fun _ : Fin 1 => differentiable_id)`. Conclude with `h1.mul h3`.
+-/
 theorem differentiable_heisO {ψ : AddChar (AF D.host.F) ℂ} (hψ : Continuous ψ) {S T : HSp D} {f : WO S T → ℂ}
     (hf : IsThetaFunO ψ S T f) (L : ℝ →+ WO S T) (hL : Continuous L) (hfin : ∀ t, (L t).map (finPart D) = 0)
     (w : WO S T) : Differentiable ℝ fun t : ℝ => heisO ψ S T (L t) f w := by
@@ -40,6 +50,13 @@ theorem differentiable_heisO {ψ : AddChar (AF D.host.F) ℂ} (hψ : Continuous 
     (h2.differentiable (by simp)).comp (differentiable_pi.2 fun _ : Fin 1 => differentiable_id)
   exact h1.mul h3
 
+/- English proof (translation)
+Establish `hL : IsLineAt θ τ z (lineAt θ τ z)` using `Classical.epsilon_spec (GlobalTheory.RealLineAt.lineAt_exists D θ hθ _ _ τ z)`. Use function extensionality and compare the values at `x`. Establish `e : (fun t : ℝ => heisO ψ S T (lineAt θ τ z t) (∑ i ∈ s, c i • heisO ψ S T (a i) f) x) = fun t : ℝ => ∑ i ∈ s, (c i * ψ (symplOH S T x (a i))) * heisO ψ S T (lineAt θ τ z t) f (x + a i)`. Use function extensionality and compare the values at `t`. Rewrite using `[heisO_sum, Finset.sum_apply]`.
+
+Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Rewrite using `[heisO_smul, heisO_comm, symplO_real_fin S T (hL.2.1 t) (ha i hi), AddChar.map_zero_eq_one, one_smul, mul_assoc]`. Both sides reduce to the same expression. Use `show deriv (fun t : ℝ => heisO ψ S T (lineAt θ τ z t) (∑ i ∈ s, c i • heisO ψ S T (a i) f) x) 0 = _`. Rewrite using `[e, deriv_fun_sum fun i _ => ((differentiable_heisO hψ hf _ hL.1 hL.2.1 (x + a i)).const_mul _) 0, Finset.sum_apply]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[deriv_const_mul_field, mul_assoc]`. Both sides reduce to the same expression.
+-/
 theorem dRho_sum {ψ : AddChar (AF D.host.F) ℂ} (hψ : Continuous ψ) {θ : InfFam D} (hθ : IsInfFam θ) {S T : HSp D}
     {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) (τ : D.what₂.Tau) (z : Matrix (Fin T.rank) (Fin S.rank) ℂ)
     {ι : Type} (s : Finset ι) (a : ι → WO S T) (c : ι → ℂ) (ha : ∀ i ∈ s, (a i).map (infPart D) = 0) :
@@ -63,6 +80,11 @@ theorem dRho_sum {ψ : AddChar (AF D.host.F) ℂ} (hψ : Continuous ψ) {θ : In
   rw [deriv_const_mul_field, mul_assoc]
   rfl
 
+/- English proof (translation)
+Introduce `D ψ θ S T hψ hθ f hf τ J hv ι s a c ha z`. Establish `hc : Continuous ψ` using `hψ.1`. Establish `h0 : dRho (heisO ψ S T) θ τ z f + Complex.I • dRho (heisO ψ S T) θ τ (J z) f = 0` using `hv z`. Rewrite using `[annih, dRho_sum hc hθ hf τ z s a c ha, dRho_sum hc hθ hf τ (J z) s a c ha, Finset.smul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[smul_comm, ← smul_add, ← heisO_smul, ← heisL_apply, ← heisL_apply, ← map_add, h0, map_zero, smul_zero]`.
+-/
 theorem isFockVacAt_sum : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D), IsCharAF D.host.F ψ → IsInfFam θ → ∀ f : WO S T → ℂ, IsThetaFunO ψ S T f → ∀ (τ : D.what₂.Tau) (J : Matrix (Fin T.rank) (Fin S.rank) ℂ → Matrix (Fin T.rank) (Fin S.rank) ℂ), IsFockVacAt (heisO ψ S T) θ τ J f → ∀ (ι : Type) (s : Finset ι) (a : ι → WO S T) (c : ι → ℂ), (∀ i ∈ s, (a i).map (infPart D) = 0) → IsFockVacAt (heisO ψ S T) θ τ J (∑ i ∈ s, c i • heisO ψ S T (a i) f) := by
   intro D ψ θ S T hψ hθ f hf τ J hv ι s a c ha z
   have hc : Continuous ψ := hψ.1

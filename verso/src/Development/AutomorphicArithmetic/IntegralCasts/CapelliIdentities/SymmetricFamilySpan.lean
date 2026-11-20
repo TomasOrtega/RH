@@ -5,6 +5,11 @@ import Formalism.SharpRestriction.GrowthBounds.ObjSeg
 import Formalism.SharpRestriction.GrowthBounds.ObjPol
 import Formalism.SharpRestriction.GrowthBounds.BinomialRatio.FinalTheorems
 
+/- English proof (translation)
+Establish `h1 : ∏ j, L j (s j) ∈ ∏ j, Submodule.span R (L j '' G j)` using `Finset.prod_hom_rel (r := fun (a : A) (N : Submodule R A) => a ∈ N) (Submodule.one_le.1 le_rfl) (fun j a N ha => Submodule.mul_mem_mul (Submodule.apply_mem_span_image_of_mem_span _ (hs j)) ha)`. Rewrite `h1` using `[Submodule.prod_span]`. Use `Submodule.span_le.2 (fun x hx => ?_) h1` and prove the remaining obligations. Take `⟨f, hf, rfl⟩` from `(Set.mem_fintype_prod _ _).1 hx`. Use `choose t ht e using hf`.
+
+Simplify `h t ht` using `only [e, SetLike.mem_coe]`.
+-/
 private theorem UpperTheory.Reformulated.B.SymmetricFamilySpan.prod_span_mem {R A ι : Type*} [CommSemiring R] [CommSemiring A] [Algebra R A]
     [Fintype ι] {V : ι → Type*} [∀ j, AddCommMonoid (V j)] [∀ j, Module R (V j)] (L : ∀ j, V j →ₗ[R] A)
     (G : ∀ j, Set (V j)) (M : Submodule R A) (h : ∀ s : ∀ j, V j, (∀ j, s j ∈ G j) → ∏ j, L j (s j) ∈ M)
@@ -18,6 +23,9 @@ private theorem UpperTheory.Reformulated.B.SymmetricFamilySpan.prod_span_mem {R 
   choose t ht e using hf
   simpa only [e, SetLike.mem_coe] using h t ht
 
+/- English proof (translation)
+Introduce `O _ _ C0 CE1 CE2 X β G M h s hs`. Use `open Formalism.MainNotions.ColumnSystems.Pf Formalism.MainNotions.G in exact UpperTheory.Reformulated.B.SymmetricFamilySpan.prod_span_mem (fun j => (LinearMap.mulLeft O (digitMon (KK O) C0 CE1 CE2 X j (β j) * sTopMon (KK O) X.p C0 CE1 CE2 X j (β j))).comp ((MvPolynomial.aeval (R …`.
+-/
 theorem UpperTheory.Reformulated.B.SymmetricFamilySpan.symFam_span :
     ∀ {O : Type} [inst : CommRing O] [inst_1 : IsDomain O] {C0 CE1 CE2 : ℝ}
     {X : Formalism.MainNotions.ColumnSystems.Loc} (β : Formalism.MainNotions.ColumnSystems.Pf.GlobalTheory X)

@@ -2,6 +2,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws
 
+/- English proof (translation)
+Use `haveI : Algebra.IsAlgebraic ℚ Ω := IsAlgClosure.isAlgebraic`. Use `haveI : Algebra.IsAlgebraic F Ω := Algebra.IsAlgebraic.tower_top (K := ℚ) F`. Use `haveI : Module.IsTorsionFree F Ω := DivisionSemiring.to_moduleIsTorsionFree`. Use `haveI : IsGalois ℚ Ω := {}`. Choose the witnesses or unpack the hypotheses as in `⟨j, hj⟩ : ∃ j : Ω →+* ℂ, ∀ x : F, j x = φ x := by`.
+
+Use `letI : Algebra F ℂ := φ.toAlgebra`. Set `j : Ω →ₐ[F] ℂ` to `IsAlgClosed.lift`. Conclude with `⟨j.toRingHom, fun x => j.commutes x⟩`. Use `letI : Algebra Ω ℂ := j.toAlgebra`. Use `haveI : IsScalarTower ℚ Ω ℂ := IsScalarTower.of_algebraMap_eq fun x => (j.toRatAlgHom.commutes x).symm`.
+
+Set `cj : Ω →ₐ[ℚ] ℂ` to `((starRingEnd ℂ).comp j).toRatAlgHom`. Conclude with `⟨cj.restrictNormal' Ω, j, fun x => AlgHom.restrictNormal_commutes cj Ω x, hj⟩`.
+-/
 private theorem ext_cc {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (F : IntermediateField ℚ Ω)
     (φ : F →+* ℂ) :
     ∃ (σ : G ℚ Ω) (j : Ω →+* ℂ), (∀ x, j (σ x) = starRingEnd ℂ (j x)) ∧ ∀ x : F, j x = φ x := by
@@ -18,6 +25,15 @@ private theorem ext_cc {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω
   let cj : Ω →ₐ[ℚ] ℂ := ((starRingEnd ℂ).comp j).toRatAlgHom
   exact ⟨cj.restrictNormal' Ω, j, fun x => AlgHom.restrictNormal_commutes cj Ω x, hj⟩
 
+/- English proof (translation)
+Introduce `Ω _ _ _ F _`. Use `⟨fun h => ⟨fun w => ?_⟩, fun h h2 => ?_⟩` and prove the remaining obligations. Take `⟨σ, j, hσ, hj⟩` from `ext_cc F w.embedding`. Establish `hm` using `(F.mem_fixingSubgroup_iff σ).1 (h σ ⟨j, hσ⟩)`. Use `InfinitePlace.isReal_iff.2 (RingHom.ext fun x => ?_)` and prove the remaining obligations.
+
+Use `show starRingEnd ℂ (w.embedding x) = w.embedding x`. Rewrite using `[← hj, ← hσ, hm x.1 x.2]`. Use `haveI : IsTotallyComplex F := ⟨fun w => by`. Rewrite using `[← InfinitePlace.not_isReal_iff_isComplex]`. Introduce `hw`.
+
+Take `⟨σ, j, hσ, hj⟩` from `ext_cc F w.embedding`. Use `h σ ⟨j, hσ⟩ ((F.mem_fixingSubgroup_iff σ).2 fun x hx => j.injective ?_)` and prove the remaining obligations. Establish `e : starRingEnd ℂ (w.embedding ⟨x, hx⟩) = w.embedding ⟨x, hx⟩` using `RingHom.congr_fun (InfinitePlace.isReal_iff.1 hw) ⟨x, hx⟩`. Rewrite `e` using `[← hj]`. Rewrite using `[hσ]`.
+
+Conclude with `e⟩`. Use `haveI : Algebra.IsQuadraticExtension ℚ F := ⟨h2⟩`. Conclude with `IsCMField.ofCMExtension ℚ F`.
+-/
 theorem UpperTheory.V.Ws.fixInf :
     ∀ (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (F : IntermediateField ℚ Ω) [NumberField F], ((∀ σ : G ℚ Ω, IsCC σ → σ ∈ F.fixingSubgroup) → IsTotallyReal F) ∧ ((∀ σ : G ℚ Ω, IsCC σ → σ ∉ F.fixingSubgroup) → Module.finrank ℚ F = 2 → IsCMField F) := by
   intro Ω _ _ _ F _

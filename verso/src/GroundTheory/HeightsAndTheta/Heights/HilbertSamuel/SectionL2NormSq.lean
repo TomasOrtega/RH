@@ -36,11 +36,20 @@ def IsSection (L : HolLineBundle A) (n : ℕ) (f : Fin A.n → X → ℂ) : Prop
   (∀ j, ∀ x ∉ (A.chart j).source, f j x = 0) ∧
   ∀ j k, ∀ x ∈ (A.chart j).source ∩ (A.chart k).source, f j x = L.g j k x ^ n * f k x
 
+/- English proof (translation)
+Introduce `_` and use `analyticOnNhd_const`.
+-/
 theorem holoOn_zero' (U : Set X) : A.HoloOn U (fun _ => (0 : ℂ)) := fun _ => analyticOnNhd_const
 
+/- English proof (translation)
+Introduce `j` and use `(hf j).add (hg j)`.
+-/
 theorem holoOn_add' {U : Set X} {f g : X → ℂ} (hf : A.HoloOn U f) (hg : A.HoloOn U g) :
     A.HoloOn U (f + g) := fun j => (hf j).add (hg j)
 
+/- English proof (translation)
+Introduce `j` and use `(analyticOnNhd_const (v := c)).mul (hf j)`.
+-/
 theorem holoOn_smul' {U : Set X} (c : ℂ) {f : X → ℂ} (hf : A.HoloOn U f) :
     A.HoloOn U (c • f) := fun j => (analyticOnNhd_const (v := c)).mul (hf j)
 

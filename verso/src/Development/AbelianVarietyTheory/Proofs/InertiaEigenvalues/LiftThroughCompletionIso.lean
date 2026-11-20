@@ -13,6 +13,11 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace GlobalTheory.LiftOther
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b`. Rewrite using `[GlobalTheory.SplitLift.proj_tmul, GlobalTheory.InertUmax.compAt_tmul, Algebra.TensorProduct.lift_tmul]`. Both sides reduce to the same expression.
+
+Consider the case `add a b ha hb => rw [map_add, map_add, map_add, ha, hb]`.
+-/
 theorem proj_eq_comp {L : Type} [Field L] [NumberField L] [IsCMField L] (s : SplitPlace L) (z : AL L) :
     s.proj z = (Algebra.TensorProduct.lift s.i (AlgHom.id (maximalRealSubfield L) (s.v.adicCompletion (maximalRealSubfield L)))
       (fun _ _ => Commute.all _ _)) (compAt L s.v z) := by
@@ -23,6 +28,11 @@ theorem proj_eq_comp {L : Type} [Field L] [NumberField L] [IsCMField L] (s : Spl
     rfl
   | add a b ha hb => rw [map_add, map_add, map_add, ha, hb]
 
+/- English proof (translation)
+Use `Units.ext (Matrix.ext fun a b => ?_)` and prove the remaining obligations. Establish `e` using `congrFun (congrFun h a) b`. Simplify using `only [Matrix.map_apply] at e`. Express the relevant statement in the definitionally equal form `s.proj ((x.1 : Matrix (Fin n) (Fin n) (AL L)) a b) = (1 : Matrix (Fin n) (Fin n) _) a b`. Rewrite using `[proj_eq_comp, e, Matrix.one_apply, Matrix.one_apply]`.
+
+Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem loc_eq_one_of_compAt' {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ} (s : SplitPlace L)
     (x : GAf L n) (h : (x.1 : Matrix (Fin n) (Fin n) (AL L)).map (compAt L s.v) = 1) : s.loc n x = 1 := by
   refine Units.ext (Matrix.ext fun a b => ?_)
@@ -32,6 +42,13 @@ theorem loc_eq_one_of_compAt' {L : Type} [Field L] [NumberField L] [IsCMField L]
   rw [proj_eq_comp, e, Matrix.one_apply, Matrix.one_apply]
   split_ifs <;> simp
 
+/- English proof (translation)
+Establish `hv` using `GlobalTheory.SplitConjVal.valuation_eq s c hc hcs`. Introduce `a b`. Establish `h` using `hM a b`. Use `split_ifs at h ⊢ with hab`. Rewrite using `[GlobalTheory.BlockConj.valued_lt_one_iff_w]`.
+
+Establish `e : (Matrix.GeneralLinearGroup.map c.toRingHom M).val a b - (((g : Matrix (Fin r) (Fin r) (ZMod q)) ⟨a.val, hab.1⟩ ⟨b.val, hab.2⟩).val : s.w.adicCompletion L) = c (M.val a b - (((g : Matrix (Fin r) (Fin r) (ZMod q)) ⟨a.val, hab.1⟩ ⟨b.val, hab.2⟩).val : s.v.adicCompletion (maximal …`. Rewrite using `[map_sub, map_natCast]`. Both sides reduce to the same expression. Rewrite using `[e, hv]`. Conclude with `h`.
+
+Express the relevant statement in the definitionally equal form `c (M.val a b) = 1`. Rewrite using `[h, map_one]`. Express the relevant statement in the definitionally equal form `c (M.val a b) = 0`. Rewrite using `[h, map_zero]`.
+-/
 theorem isLiftN_map' {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ} (s : SplitPlace L)
     (c : s.v.adicCompletion (maximalRealSubfield L) ≃+* s.w.adicCompletion L) (hc : Continuous c)
     (hcs : ∀ x : L, c (s.i x) = algebraMap L (s.w.adicCompletion L) x) (r q : ℕ) (g : GL (Fin r) (ZMod q))
@@ -57,6 +74,11 @@ end GlobalTheory.LiftOther
 
 namespace GlobalTheory.LiftOther
 
+/- English proof (translation)
+Use `choose S hS using GlobalTheory.SplitPlaceOfFixed.exists_splitPlace_plGw D`. Use `(Set.finite_range fun kv => (S kv).v).subset ?_` and prove the remaining obligations. Introduce and unpack `w ⟨kv, hkv⟩`. Use `⟨kv, HeightOneSpectrum.ext ?_⟩` and prove the remaining obligations. Rewrite using `[← (S kv).w_under, hS kv]`.
+
+Conclude with `hkv`.
+-/
 theorem gPl_finite (D : D7) : (PendOf.gPl D).Finite := by
   classical
   choose S hS using GlobalTheory.SplitPlaceOfFixed.exists_splitPlace_plGw D
@@ -66,20 +88,62 @@ theorem gPl_finite (D : D7) : (PendOf.gPl D).Finite := by
   rw [← (S kv).w_under, hS kv]
   exact hkv
 
+/- English proof (translation)
+The claim follows from `HeightOneSpectrum.ext (s.w_under.symm.trans h)`.
+-/
 theorem over_eq {L : Type} [Field L] [NumberField L] [IsCMField L] (s : SplitPlace L)
     {w : HeightOneSpectrum (𝓞 (maximalRealSubfield L))} (h : NG.OverPl s.w w) : s.v = w :=
   HeightOneSpectrum.ext (s.w_under.symm.trans h)
 
+/- English proof (translation)
+Rewrite using `[← Matrix.map_mul]`. Both sides reduce to the same expression.
+-/
 theorem map_inv_mul {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ} (v : HeightOneSpectrum (𝓞 (maximalRealSubfield L)))
     (x y : GAf L n) : ((x⁻¹ * y).1 : Matrix (Fin n) (Fin n) (AL L)).map (compAt L v) =
       ((x⁻¹).1 : Matrix (Fin n) (Fin n) (AL L)).map (compAt L v) * (y.1 : Matrix (Fin n) (Fin n) (AL L)).map (compAt L v) := by
   rw [← Matrix.map_mul]; rfl
 
+/- English proof (translation)
+Rewrite using `[← map_inv_mul, inv_mul_cancel]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`.
+-/
 theorem map_inv_mul_self {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ} (v : HeightOneSpectrum (𝓞 (maximalRealSubfield L)))
     (x : GAf L n) : ((x⁻¹).1 : Matrix (Fin n) (Fin n) (AL L)).map (compAt L v) * (x.1 : Matrix (Fin n) (Fin n) (AL L)).map (compAt L v) = 1 := by
   rw [← map_inv_mul, inv_mul_cancel]
   exact Matrix.map_one _ (map_zero _) (map_one _)
 
+/- English proof (translation)
+Introduce `hL D P i PI k v s hs c hc hcs L hLift F hF h g hg1 hg2`. Take `⟨x, hxT, hxe⟩` from `GlobalTheory.SplitLift.exists_trivOutside_loc_eq D.R.nV s (s.loc D.R.nV (L g))`. Use `⟨x, hxT, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hxe]`. Use `((hLift g).2 ⟨k, v⟩ s hs)` as an intermediate fact.
+
+Rewrite `this` using `[hg1]`. Conclude with `isLiftN_map' s c hc hcs _ _ h _ this`. Take `⟨hj1, hj2⟩` from `D.nd.j_range i`. Set `j : Fin D.R.m` to `⟨D.nd.j i - 1, by omega⟩`. Establish `hj : j.1 + 1 = D.nd.j i` using `by simp only [j]; omega`.
+
+Set `K : Subgroup (GAf D.host.E D.R.nV)` to `(P.M.loc i).χ.ker.map (P.M.loc i).J.subtype`. Use `set y := x⁻¹ * L g with hy`. Establish `hsv : s.v ∈ PendOf.gPl D` using `⟨⟨k, v⟩, by rw [← hs]; exact s.w_under⟩`. Establish `hfin` using `gPl_finite D`. Set `T` to `hfin.toFinset.erase s.v`.
+
+Establish `hyT : TrivOutside (T : Set _) y`. Introduce `w hw`. Rewrite using `[map_inv_mul]`. Distinguish the cases in `hws : w = s.v`. Substitute `hws` using the available equality.
+
+Rewrite using `[GlobalTheory.T.splitPlace_component_unitaryAdelic_determined s (L g) x hxe.symm]`. Conclude with `map_inv_mul_self _ x`. Establish `hwg : w ∉ PendOf.gPl D`. Introduce `hwg`. Apply `hw` to reduce the goal to its premises.
+
+Simplify using `[T, hws, hwg]`. Rewrite using `[(hLift g).1 w hwg]`. Establish `hx1` using `hxT w (by simpa using hws)`. Establish `e` using `map_inv_mul_self w x`. Rewrite `e` using `[hx1, mul_one]`.
+
+Rewrite using `[e, mul_one]`. Establish `hyK : y ∈ K`. Use `GlobalTheory.T.mem_subgroup_of_trivOutside_of_local_points K T y hyT fun w hw => ?_` and prove the remaining obligations. Establish `hwne : w ≠ s.v` using `(Finset.mem_erase.1 hw).1`. Establish `hwg : w ∈ PendOf.gPl D` using `hfin.mem_toFinset.1 (Finset.mem_erase.1 hw).2`.
+
+Take `⟨kv, hkv⟩` from `hwg`. Take `⟨s', hs'⟩` from `GlobalTheory.SplitPlaceOfFixed.exists_splitPlace_plGw D kv`. Establish `hs'v : s'.v = w` using `over_eq s' (by rw [hs']; exact hkv)`. Establish `hkvne : kv ≠ ⟨k, v⟩`. Introduce and unpack `rfl`.
+
+Apply `hwne` to reduce the goal to its premises. Rewrite using `[← hs'v]`. Conclude with `over_eq s' (by rw [hs', ← hs]; exact s.w_under)`. Take `⟨p, hpT, hpe⟩` from `GlobalTheory.SplitLift.exists_trivOutside_loc_eq D.R.nV s' (s'.loc D.R.nV y)`. Establish `hloc : s'.loc D.R.nV y = s'.loc D.R.nV (L g)`.
+
+Rewrite using `[hy, map_mul]`. Establish `: s'.loc D.R.nV x⁻¹ = 1`. Rewrite using `[map_inv]`. Rewrite using `[loc_eq_one_of_compAt' s' x (hxT _ (by rw [hs'v]; simpa using hwne)), inv_one]`. Rewrite using `[this, one_mul]`.
+
+Establish `hlift` using `(hLift g).2 kv s' hs'`. Rewrite `hlift` using `[hg2 kv hkvne, ← hloc, ← hpe]`. Take `⟨ψ₀, ξ, hψ, -, hU⟩` from `P.H.level.uni i j hj kv.1 kv.2 s' hs'`. Take `⟨hpJ, hpχ⟩` from `GlobalTheory.T.blockLiftIdentity_mem_unipotentLevel_character_one (P.M.loc i).J (P.M.loc i).χ s' D.R.r (D.host.g kv.1) (D.host.g_prime kv.1).one_lt ψ₀ ξ hψ hU p hpT hlift`. Use `⟨p, ⟨⟨p, hpJ⟩, hpχ, rfl⟩, hs'v ▸ hpT, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← hs'v]`. Conclude with `GlobalTheory.T.splitPlace_component_unitaryAdelic_determined s' p y hpe`. Take `⟨⟨y', hy'J⟩, hy'χ, hy'e⟩` from `hyK`. Establish `hTS : (P.M.loc i).real F ∈ NG.TypeSp (P.M.loc i).wt.ρ (P.M.loc i).J (P.M.loc i).χ`. Rewrite using `[← (P.M.loc i).real_range]`.
+
+Conclude with `LinearMap.mem_range_self _ _`. Establish `hfix : NG.rt D.host.E D.R.nV y ((P.M.loc i).real F) = (P.M.loc i).real F`. Establish `e` using `hTS.2 ⟨y', hy'J⟩`. Establish `h1 : (((P.M.loc i).χ ⟨y', hy'J⟩ : ℂˣ) : ℂ) = 1`. Rewrite using `[show (P.M.loc i).χ ⟨y', hy'J⟩ = 1 from hy'χ]`.
+
+Both sides reduce to the same expression. Rewrite `e` using `[h1, one_smul]`. Establish `hy'y : y' = y` using `hy'e`. Rewrite using `[← hy'y]`. Conclude with `e`.
+
+Establish `hLg : L g = x * y` using `by rw [hy, mul_inv_cancel_left]`. Rewrite using `[hLg]`. Use function extensionality and compare the values at `z`. Establish `e` using `congrFun hfix (z * x)`. Simplify using `only [NG.rt, LinearMap.coe_mk, AddHom.coe_mk] at e ⊢`.
+
+Rewrite using `[← mul_assoc, e]`.
+-/
 theorem main : ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (D : D7) (P : Pin hL D) (i : D.nd.Loc) (PI : D.naut.AV i) (k : Fin 2) (v : D.nd.PlG k) (s : SplitPlace D.host.E), s.w = D.naut.plGw k v → ∀ c : s.v.adicCompletion (maximalRealSubfield D.host.E) ≃+* s.w.adicCompletion D.host.E, Continuous c → (∀ x : D.host.E, c (s.i x) = algebraMap D.host.E (s.w.adicCompletion D.host.E) x) → ∀ L : G0g D.nd → GAf D.host.E D.R.nV, IsTypeGroupBlockLift D D.R.nV L → ∀ F ∈ D.naut.typeV i PI, ∀ (h : GL (Fin D.R.r) (ZMod (D.host.g k))) (g : G0g D.nd), g ⟨k, v⟩ = h → (∀ kv, kv ≠ ⟨k, v⟩ → g kv = 1) → ∃ x : GAf D.host.E D.R.nV, TrivOutside {s.v} x ∧ IsLiftN h (Matrix.GeneralLinearGroup.map c.toRingHom (s.loc D.R.nV x)) ∧ NG.rt D.host.E D.R.nV (L g) ((P.M.loc i).real F) = NG.rt D.host.E D.R.nV x ((P.M.loc i).real F) := by
   intro hL D P i PI k v s hs c hc hcs L hLift F hF h g hg1 hg2
   classical

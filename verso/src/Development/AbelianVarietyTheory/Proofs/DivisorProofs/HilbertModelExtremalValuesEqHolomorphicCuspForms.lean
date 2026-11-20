@@ -11,6 +11,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.HolDict
 
+/- English proof (translation)
+Introduce `hc hf D G _ _ Pl0 T0 A T _ R κ v₀ hL hM hT hp i σ hσ hV`. Take `⟨hs, -, w, hw⟩` from `GlobalTheory.T.holomorphicShape_integralWeight_goodEmbedding D G Pl0 T0 A T R κ v₀ hT i σ hσ`. Establish `hg` using `GlobalTheory.T.coreDictionary_good_at_good_embedding D G Pl0 T0 A T R κ v₀ hL hM hT hp i σ hσ hV w hw`. Establish `hχ` using `(GlobalTheory.T.realisation_principalLevel_eq_coreLevel_open D G Pl0 T0 A T R κ v₀ hL hM hT hp i σ hσ hV).2.1`. Take `⟨h1, h2⟩` from `GlobalTheory.T.extremalVector_eval_multiplicitySpace_onto_holomorphic hc hf D R.θ _ _ (R.MW i σ) w _ _ _ _ _ _ _ _ _ hs hg hw (v₀ i σ) (hT.hv₀ i σ).1 _ hχ`.
+
+Establish `hW` using `hM.HW i σ`. Establish `hr : LinearMap.range (R.HW i σ).e = R.Wall i σ` using `hW.2.1`. Use extensionality with `f`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, rfl⟩`.
+
+Establish `hm : (R.HW i σ).e h ∈ R.Wall i σ` using `hr ▸ LinearMap.mem_range_self _ h`. Take `⟨P, hP, e⟩` from `h2 _ hm`. Conclude with `⟨P, hP, e⟩`. Introduce and unpack `⟨P, hP, rfl⟩`. Take `⟨S, hS, e⟩` from `h1 P hP`.
+
+Establish `hm : S ∈ LinearMap.range (R.HW i σ).e` using `by rw [hr]; exact hS`. Take `⟨h, rfl⟩` from `hm`. Conclude with `⟨h, e⟩`.
+-/
 theorem range_evAt_eq_adel_image : GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Mem.Vol.FiniteVolume₂ → ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : FamIn D.what₂.LL G Pl0 T0 D.R.m) (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F) (κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)) (v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec), R.toLevCh.Is A.μ0 → R.IsModels → TieIn T R κ v₀ → T.pb = R.C.P.pb → ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), GoodEmb T.Q.c (res T σ) → ∀ hV : T.V ((i : ℕ) + 1) (res T σ) = Wc D i, Set.range (evAt R i σ (v₀ i σ)) = adel (Wc D i) (castDict hV (T.dict ((i : ℕ) + 1) (res T σ))) (muPin (Wc D i) (castDict hV (T.dict ((i : ℕ) + 1) (res T σ))) (castDict hV (T.mu ((i : ℕ) + 1) (res T σ))) (T.cE ((i : ℕ) + 1) (res T σ))) '' (Formalism.L2.Pj.holSub0 (T.U ((i : ℕ) + 1) (res T σ)).X (laU (T.U ((i : ℕ) + 1) (res T σ)) (wtA (κ i)) (κ i).n) : Set _) := by
   intro hc hf D G _ _ Pl0 T0 A T _ R κ v₀ hL hM hT hp i σ hσ hV
   obtain ⟨hs, -, w, hw⟩ := GlobalTheory.T.holomorphicShape_integralWeight_goodEmbedding D G Pl0 T0 A T R κ v₀ hT i σ hσ

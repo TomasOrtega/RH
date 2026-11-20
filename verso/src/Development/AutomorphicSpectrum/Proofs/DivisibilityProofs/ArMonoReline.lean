@@ -19,6 +19,11 @@ def reline (M : RootModel Ψ N) (xdeg : Ψ × Fin N → M.K → ℤ) (x : ℝ �
   { M with xdeg := xdeg, x := x, x_deg := x_deg, x_smooth := x_smooth, x_conj := x_conj, A := A,
            A_smooth := A_smooth, A_conj := A_conj }
 
+/- English proof (translation)
+Substitute `hA` using the available equality. Establish `hl : (reline M d₁ x₁ h₁ s₁ c₁ A₁ a₁ b₁).line t = (reline M d₂ x₂ h₂ s₂ c₂ A₁ a₂ b₂).line t`. Use function extensionality and compare the values at `o`. Consider the cases of `o with`. Consider the case `none => rfl`.
+
+Consider the case `some r => exact hx r`. Unfold `RootModel.arMono`. Rewrite using `[hl]`. Both sides reduce to the same expression.
+-/
 theorem arMono_reline (M : RootModel Ψ N) {d₁ x₁ h₁ s₁ c₁ A₁ a₁ b₁ d₂ x₂ h₂ s₂ c₂ A₂ a₂ b₂}
     (II : IntersectionSystem) (t : ℝ) (m : Option (Ψ × Fin N) →₀ ℕ) (hx : ∀ r, x₁ t r = x₂ t r) (hA : A₁ = A₂) :
     (reline M d₁ x₁ h₁ s₁ c₁ A₁ a₁ b₁).arMono II t m = (reline M d₂ x₂ h₂ s₂ c₂ A₂ a₂ b₂).arMono II t m := by

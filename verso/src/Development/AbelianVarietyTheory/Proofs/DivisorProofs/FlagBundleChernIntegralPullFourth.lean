@@ -15,18 +15,33 @@ open scoped Classical
 
 namespace GlobalTheory.FibLog
 
+/- English proof (translation)
+Establish `h1 : IntervalIntegrable (fun t : ℝ => Real.log (1 - t)) volume 0 1`. Use `(intervalIntegral.intervalIntegrable_log' (a := 0) (b := 1)).comp_sub_left 1` as an intermediate fact. Simplify using `using this.symm`. Conclude with `((intervalIntegrable_iff_integrableOn_Icc_of_le zero_le_one).1 h1).div_const 2`.
+-/
 theorem integrableOn_log_one_sub : IntegrableOn (fun t : ℝ => Real.log (1 - t) / 2) (Set.Icc 0 1) := by
   have h1 : IntervalIntegrable (fun t : ℝ => Real.log (1 - t)) volume 0 1 := by
     have := (intervalIntegral.intervalIntegrable_log' (a := 0) (b := 1)).comp_sub_left 1
     simpa using this.symm
   exact ((intervalIntegrable_iff_integrableOn_Icc_of_le zero_le_one).1 h1).div_const 2
 
+/- English proof (translation)
+Rewrite using `[integral_Icc_eq_integral_Ioc, ← intervalIntegral.integral_of_le zero_le_one, intervalIntegral.integral_div]`. Establish `: ∫ t in (0 : ℝ)..1, Real.log (1 - t) = ∫ t in (0 : ℝ)..1, Real.log t`. Rewrite using `[intervalIntegral.integral_comp_sub_left (fun t => Real.log t) 1]`. Simplify using the standard rewrite rules. Rewrite using `[this, integral_log]`.
+
+Evaluate the numerical expressions.
+-/
 theorem integral_log_one_sub : ∫ t in Set.Icc (0 : ℝ) 1, Real.log (1 - t) / 2 = -1 / 2 := by
   rw [integral_Icc_eq_integral_Ioc, ← intervalIntegral.integral_of_le zero_le_one, intervalIntegral.integral_div]
   have : ∫ t in (0 : ℝ)..1, Real.log (1 - t) = ∫ t in (0 : ℝ)..1, Real.log t := by
     rw [intervalIntegral.integral_comp_sub_left (fun t => Real.log t) 1]; simp
   rw [this, integral_log]; norm_num
 
+/- English proof (translation)
+Introduce `k _ B Y _ _ q p d hB hY π w E h H flB fl hfl A σ v hv`. Establish `hm : Measurable v` using `GlobalTheory.T.flag_bundle_hermitian_line_pullback_form k B Y q p d hB hY π w E h H flB fl hfl A σ v hv`. Establish `hG : Measurable (fun t : ℝ => Real.log (1 - t) / 2)` using `((Real.measurable_log.comp (measurable_const.sub measurable_id))).div_const 2`. Establish `key : ∀ (μ : Measure (CxPts p σ)) (C : ENNReal), Measure.map v μ = C • volume.restrict (Set.Icc (0 : ℝ) 1) → ∫ y, Real.log (1 - v y) / 2 ∂μ = C.toReal * (-1 / 2)`. Introduce `μ C hμ`.
+
+Use `integral_map (μ := μ) hm.aemeasurable (f := fun t : ℝ => Real.log (1 - t) / 2) hG.aestronglyMeasurable` as an intermediate fact. Rewrite using `[← this, hμ, integral_smul_measure, GlobalTheory.FibLog.integral_log_one_sub, smul_eq_mul]`. Use `⟨fun α hα ε => ?_, fun φ hφ => ?_⟩` and prove the remaining obligations. Take `⟨C, hC, hle⟩` from `GlobalTheory.T.flag_bundle_hermitian_line_degree_identity k B Y q p d hB hY π w E h H flB fl hfl A σ v hv α hα ε`. Establish `hi : Integrable (fun t : ℝ => Real.log (1 - t) / 2) (Measure.map v ((hY.atlas σ).part α ε))` using `(GlobalTheory.FibLog.integrableOn_log_one_sub.smul_measure hC).mono_measure hle`.
+
+Conclude with `(integrable_map_measure hG.aestronglyMeasurable hm.aemeasurable).1 hi`. Establish `h1` using `key _ _ (GlobalTheory.T.flag_bundle_hermitian_line_integral_formula k B Y q p d hB hY π w E h H flB fl hfl A σ v hv φ hφ 1)`. Establish `h2` using `key _ _ (GlobalTheory.T.flag_bundle_hermitian_line_integral_formula k B Y q p d hB hY π w E h H flB fl hfl A σ v hv φ hφ (-1))`. Rewrite using `[wInt, h1, h2, HolAtlas.integral, neg_neg, Measure.real, Measure.real]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem wInt_log_one_sub : ∀ (k : Type) [CommRing k] (B Y : Scheme.{0}) [IsIntegral B] [IsIntegral Y] (q : B ⟶ Sp k) (p : Y ⟶ Sp k) (d : ℕ)
     (hB : IsRegVar q d) (hY : IsRegVar p (d + 1)) (π : Y ⟶ B) (w : π ≫ q = p) (E : B.Modules) (h : VMetric q E 2) (H : h.IsCInf)
     (flB : Vert.Flag E 2) (fl : Vert.Flag ((Scheme.Modules.pullback π).obj E) 2),

@@ -17,6 +17,13 @@ section General
 
 variable {G V W : Type} [Group G] [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
 
+/- English proof (translation)
+Take `⟨S, f, hf⟩` from `h`. Take `⟨y, hy⟩` from `exists_ne (0 : W)`. Take `⟨v, rfl⟩` from `hf y`. Break down `eq_bot_or_eq_top S with rfl | rfl` into its components or cases. Conclude with `absurd (by rw [show v = 0 from Subtype.ext v.2, map_zero]) hy`.
+
+Set `F : ρ.IntertwiningMap σ` to `f.comp (topEquiv ρ).symm.toIntertwiningMap`. Establish `hs : Function.Surjective F` using `hf.comp (topEquiv ρ).symm.toLinearEquiv.surjective`. Use `⟨equivOfBijective F ⟨(injective_iff_map_eq_zero _).2 fun x hx => ?_, hs⟩⟩` and prove the remaining obligations. Break down `eq_bot_or_eq_top F.ker with h | h` into its components or cases. Establish `: x ∈ F.ker` using `hx`.
+
+Rewrite `this` using `[h]`. Conclude with `this`. Establish `: v.1 ∈ F.ker` using `by rw [h]; trivial`. Conclude with `absurd this hy`.
+-/
 private theorem equiv_of_sub {σ : Representation ℂ G W} {ρ : Representation ℂ G V} (h : IsSubquotient σ ρ)
     [Nontrivial W] (hρ : ρ.IsIrreducible) : Nonempty (ρ.Equiv σ) := by
   obtain ⟨S, f, hf⟩ := h
@@ -34,6 +41,11 @@ private theorem equiv_of_sub {σ : Representation ℂ G W} {ρ : Representation 
   · have : v.1 ∈ F.ker := by rw [h]; trivial
     exact absurd this hy
 
+/- English proof (translation)
+Take `⟨t⟩` from `(h.trans h').nonempty_equiv hτ hρ`. Establish `hn` using `nontrivial_of_irreducible hτ`. Use `haveI : Nontrivial W := by`. Take `⟨S, f, hf⟩` from `h`. Use `hf.nontrivial` as an intermediate fact.
+
+Conclude with `Subtype.val_injective.nontrivial (α := S.toSubmodule)`. Take `⟨r⟩` from `equiv_of_sub h' hρ`. Conclude with `⟨t.symm.trans r⟩`.
+-/
 private theorem equiv_of_between {U : Type} [AddCommGroup U] [Module ℂ U] {τ : Representation ℂ G U}
     {σ : Representation ℂ G W} {ρ : Representation ℂ G V} (h : IsSubquotient τ σ) (h' : IsSubquotient σ ρ)
     (hτ : τ.IsIrreducible) (hρ : ρ.IsIrreducible) : Nonempty (τ.Equiv σ) := by
@@ -48,6 +60,23 @@ private theorem equiv_of_between {U : Type} [AddCommGroup U] [Module ℂ U] {τ 
 
 variable [TopologicalSpace G] [IsTopologicalGroup G]
 
+/- English proof (translation)
+Establish `φ` using `Subrepresentation.subrepresentationSubmoduleOrderIso (ρ := π)`. Take `⟨_, _⟩` from `isFiniteLength_iff_isNoetherian_isArtinian.1 hf`. Establish `: WellFoundedGT (Subrepresentation π)` using `φ.toOrderEmbedding.wellFoundedGT`. Establish `: WellFoundedLT (Subrepresentation π)` using `φ.toOrderEmbedding.wellFoundedLT`. Establish `h1 : jhMult σ.ρ π = 1`.
+
+Take `⟨r, e1, e2⟩` from `cls_apply_cl π hf σ`. Rewrite `e2` using `[h, Finsupp.single_eq_same]`. Rewrite using `[e1]`. Conclude with `e2.symm` after adjusting the coercions. Establish `hq : ∀ S T : Subrepresentation π, T ⋖ S → jhMult σ.ρ (subQuot S T) = 1` using `fun S T hT => by`.
+
+Establish `hi` using `isIrreducible_subQuot hT`. Establish `h2 : jhMult (subQuot S T) π ≠ 0`. Rewrite using `[← jhMult_congr_right _ (topEquiv π), jhMult_of_le hi (le_top : S ≤ ⊤), jhMult_of_le hi hT.le, jhMult_self hi]`. Simplify using the standard rewrite rules. Set `τ : IrrRep G` to `⟨_, subQuot S T, (jhMult_ne_zero_iff.1 h2).isSmooth hs, hi⟩`.
+
+Take `⟨r, e1, e2⟩` from `cls_apply_cl π hf τ`. Establish `h3 : τ.cl = σ.cl`. Assume the negation of the conclusion as `hne`. Rewrite `e2` using `[h, Finsupp.single_eq_of_ne hne]`. Establish `h4 : r = 0` using `by exact_mod_cast e2.symm`.
+
+Conclude with `h2 (e1.trans (by rw [h4]; rfl))`. Take `⟨e⟩` from `IrrRep.cl_eq_iff.1 h3`. Conclude with `(jhMult_congr_right _ e).trans (jhMult_self σ.irr)`. Establish `hnt : (⊥ : Subrepresentation π) ≠ ⊤` using `fun e => by`. Establish `: Subsingleton (⊥ : Subrepresentation π).toSubmodule` using `inferInstanceAs (Subsingleton (⊥ : Submodule ℂ V))`.
+
+Rewrite `h1` using `[← jhMult_congr_right _ (topEquiv π), ← e, jhMult_of_subsingleton σ.irr]`. Conclude with `zero_ne_one h1`. Establish `: Nontrivial (Subrepresentation π)` using `⟨_, _, hnt⟩`. Use `⟨fun S => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hS`.
+
+Rewrite `hS` using `[not_or]`. Take `⟨T, hT, hTS⟩` from `exists_covBy_le_of_lt (bot_lt_iff_ne_bot.2 hS.1)`. Take `⟨U, hSU, hU⟩` from `exists_le_covBy_of_lt (lt_top_iff_ne_top.2 hS.2)`. Rewrite `h1` using `[← jhMult_congr_right _ (topEquiv π), jhMult_of_le σ.irr hU.le, jhMult_of_le σ.irr (hTS.trans hSU), jhMult_of_le σ.irr hT.le, hq _ _ hT, hq _ _ hU]`. Establish `h5 : (2 : ℕ∞) ≤ 1`.
+
+Rewrite using `[← h1, ← one_add_one_eq_two]`. Use `gcongr`. Conclude with `le_add_right le_add_self`. Conclude with `absurd h5 (by decide)`.
+-/
 private theorem irr_of_cls {π : Representation ℂ G V} (hs : IsSmooth π) (hf : HasFiniteLength π) (σ : IrrRep G)
     (h : GlobalTheory.SmGL.cls π hf = Finsupp.single σ.cl 1) : π.IsIrreducible := by
   have φ := Subrepresentation.subrepresentationSubmoduleOrderIso (ρ := π)
@@ -97,6 +126,11 @@ end General
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Establish `e : Segment.single Δ.first Δ.isCusp_first = Δ` using `Segment.ext_first rfl hl.symm`. Establish `h1` using `(single_spec Δ.isCusp_first).2.1`. Rewrite `h1` using `[e]`. Take `⟨N, c⟩` from `y`. Choose the witnesses or unpack the hypotheses as in `rfl : N = Δ.d := by`.
+
+Establish `h2 : Δ.deg = N` using `h.deg_eq`. Rewrite using `[← h2, Segment.deg, hl, one_mul]`. Take `⟨φ⟩` from `h1.unique h`. Conclude with `⟨Δ.d_pos, isCuspidal_of_equiv φ.symm Δ.isCusp_first.2⟩`.
+-/
 private theorem isCusp_of_len {Δ : Segment k} (hl : Δ.len = 1) {y : IrrGL k} (h : IsLSeg Δ y.rep) : y.IsCusp := by
   have e : Segment.single Δ.first Δ.isCusp_first = Δ := Segment.ext_first rfl hl.symm
   have h1 := (single_spec Δ.isCusp_first).2.1
@@ -108,6 +142,9 @@ private theorem isCusp_of_len {Δ : Segment k} (hl : Δ.len = 1) {y : IrrGL k} (
   obtain ⟨φ⟩ := h1.unique h
   exact ⟨Δ.d_pos, isCuspidal_of_equiv φ.symm Δ.isCusp_first.2⟩
 
+/- English proof (translation)
+Take `⟨p⟩` from `(GlobalTheory.SmGL.Placing.parInd_jac_placing k _ _ _ (Equiv.sigmaUnique (Fin n) fun _ => Fin 1) (stdBlocks (fun _ : Fin n => 1) hd) _).1 (piTensor fun i => detRep (Fin 1) (μ i))`. Set `q` to `multiProdEquiv (stdBlocks (fun a => (IrrGL.ofChar (μ a) (hμ a)).1) hd) fun a => equivRep (IrrRep.det (Fin 1) (μ a) (hμ a))`. Conclude with `((GlobalTheory.PrinProd.isSubquotient_prinSeries_multiProd k n μ).trans (.of_injective p.toIntertwiningMap p.toLinearEquiv.injective)).trans (.of_injective q.toIntertwiningMap q.toLinearEquiv.injective)`.
+-/
 private theorem prin_sub {n : ℕ} (μ : Fin n → kˣ →* ℂˣ) (hμ : ∀ i, IsSmoothChar (μ i))
     (hd : ∑ i, (IrrGL.ofChar (μ i) (hμ i)).1 = n) :
     IsSubquotient (prinSeries μ) (prodIrr (fun i => IrrGL.ofChar (μ i) (hμ i)) hd) := by
@@ -119,6 +156,11 @@ private theorem prin_sub {n : ℕ} (μ : Fin n → kˣ →* ℂˣ) (hμ : ∀ i,
     (.of_injective p.toIntertwiningMap p.toLinearEquiv.injective)).trans
       (.of_injective q.toIntertwiningMap q.toLinearEquiv.injective)
 
+/- English proof (translation)
+Take `⟨Z, Ψ, -, hΨ, -⟩` from `hZ k`. Take `⟨hp, ep⟩` from `SupportRing.prodIrr_cls hΨ x hd`. Take `⟨hp', ep'⟩` from `SupportRing.prodIrr_cls hΨ y hd'`. Establish `e0 : ∏ a, SupportRing.bas Ψ (x a) = ∏ a, SupportRing.bas Ψ (y a)` using `(SupportRing.pc_map x).symm.trans ((congrArg (SupportRing.pc Ψ) e).trans (SupportRing.pc_map y))`. Establish `e1 : clsGL (prodIrr y hd') hp' = clsGL σ.ρ σ.hasFiniteLength` using `(Ψ.injective (ep'.trans (e0.symm.trans ep.symm))).trans (clsGL_congr φ σ.hasFiniteLength hp).symm`.
+
+Use `irr_of_cls (isSmooth_prodIrr y hd') hp' σ (Eq.trans ?_ (cls_irr σ σ.hasFiniteLength))` and prove the remaining obligations. Conclude with `Finsupp.ext fun z => (clsGL_apply _ hp' z).symm.trans ((DFunLike.congr_fun e1 _).trans (clsGL_apply _ σ.hasFiniteLength z))`.
+-/
 private theorem irr_perm (hZ : GlobalTheory.Published.ZelevinskyPolynomialRing) {n c c' : ℕ} (σ : IrrRep (GL (Fin n) k))
     (x : Fin c → IrrGL k) (y : Fin c' → IrrGL k) (hd : ∑ a, (x a).1 = n) (hd' : ∑ a, (y a).1 = n)
     (φ : σ.ρ.Equiv (prodIrr x hd)) (e : Finset.univ.val.map x = Finset.univ.val.map y) :
@@ -134,6 +176,11 @@ private theorem irr_perm (hZ : GlobalTheory.Published.ZelevinskyPolynomialRing) 
   exact Finsupp.ext fun z => (clsGL_apply _ hp' z).symm.trans
     ((DFunLike.congr_fun e1 _).trans (clsGL_apply _ σ.hasFiniteLength z))
 
+/- English proof (translation)
+Set `y : Fin n → IrrGL k` to `fun i => IrrGL.ofChar (μ i) (hμ i)`. Establish `hd' : ∑ i, (y i).1 = n` using `by simp [y, IrrGL.ofChar]`. Establish `ψ` using `IrrGL.equivOf σ.ρ σ.smooth σ.irr`. Establish `s1 : HasSupport σ.ρ (Finset.univ.val.map x)` using `hasSupport_of_isSubquotient σ.irr hx (.of_injective φ.toIntertwiningMap φ.toLinearEquiv.injective)`. Establish `s2 : HasSupport σ.ρ (Finset.univ.val.map y)` using `hasSupport_of_isSubquotient_prinSeries k n μ hμ σ hs`.
+
+Establish `e` using `SupportUnique.hasSupport_unique H.geo H.bz H.zel k _ _ _ (s1.of_equiv ψ) (s2.of_equiv ψ)`. Establish `hi` using `irr_perm H.zel σ x y hd hd' φ e`. Establish `h1 : IsSubquotient (prinSeries μ) (prodIrr y hd')` using `prin_sub μ hμ hd'`. Conclude with `equiv_of_between hs h1 σ.irr hi`.
+-/
 private theorem equiv_prin [CharZero k] (H : GlobalTheory.Mem.LiteralAutomorphy.LitLoc) {n c : ℕ} (σ : IrrRep (GL (Fin n) k))
     (x : Fin c → IrrGL k) (hx : ∀ a, (x a).IsCusp) (hd : ∑ a, (x a).1 = n) (φ : σ.ρ.Equiv (prodIrr x hd))
     (μ : Fin n → kˣ →* ℂˣ) (hμ : ∀ i, IsSmoothChar (μ i)) (hs : IsSubquotient σ.ρ (prinSeries μ)) :
@@ -154,6 +201,11 @@ section WD
 variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
   {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w}
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => cases hz`. Consider the case `cons a l ih`. Take `⟨h1, h2⟩` from `(WD.monomial_sum_iff a (sumList l)).1 hl`. Break down `List.mem_cons.1 hz with rfl | hz` into its components or cases.
+
+Conclude with `h1`. Conclude with `ih h2 hz`.
+-/
 private theorem mono_of_mem_sum_list {l : List (WD h)} (hl : (sumList l).mono0) {z : WD h} (hz : z ∈ l) : z.mono0 := by
   induction l with
   | nil => cases hz
@@ -163,6 +215,11 @@ private theorem mono_of_mem_sum_list {l : List (WD h)} (hl : (sumList l).mono0) 
     · exact h1
     · exact ih h2 hz
 
+/- English proof (translation)
+Take `⟨m, b, rfl, hb⟩` from `hz`. Assume the negation of the conclusion as `hl`. Rewrite `h0` using `[WD.lpTw_mk, WD.lpSp, WD.lpChar_mk, WD.monodromyZero_ofWeilDeligneRepClass_iff, WDRep.tensor_N, WDRep.sp_N]`. Use `haveI : Nontrivial (Fin m → ℂ) := nontrivial_of_irreducible hb`. Take `⟨v, hv⟩` from `exists_ne (0 : Fin m → ℂ)`.
+
+Establish `h1` using `congrArg (fun t => TensorProduct.rid ℂ _ (LinearMap.lTensor (Fin m → ℂ) (LinearMap.proj (⟨1, by omega⟩ : Fin l) : (Fin l → ℂ) →ₗ[ℂ] ℂ) t)) (LinearMap.congr_fun h0 (v ⊗ₜ Pi.single ⟨0, by omega⟩ 1))`. Apply `hv` to reduce the goal to its premises. Simplify `h1` using `[shiftEnd_apply]`.
+-/
 private theorem le_one_of_mono0 {z : WD h} (hz : IsIrrWD z) (s : ℝ) {l : ℕ}
     (h0 : ((z.lpTw s).lpChar (WD.lpSp h l)).mono0) : l ≤ 1 := by
   obtain ⟨m, b, rfl, hb⟩ := hz
@@ -180,6 +237,11 @@ end WD
 
 end UpperTheory.V.Hi.PsGen
 
+/- English proof (translation)
+Introduce and unpack `P L Ω _ _ _ _ _ n w A h a - rc ⟨a', ha', ε, -, H⟩ σ ω hω hs ⟨b, hb, hN⟩ ⟨ψ, hc, h1, hg⟩`. Use `haveI : CharZero (w.adicCompletion L) := algebraRat.charZero _`. Take `⟨c, Δ, x, hd, hun, hL, ⟨φ⟩⟩` from `P.loc.gen _ n _ σ.ρ σ.smooth σ.irred ⟨ψ, hc, h1, (GlobalTheory.Whittaker.isGeneric_iff_isGenericFor ψ σ.ρ).1 hg⟩`. Establish `hm : (rc (IrrGL.of σ.ρ σ.smooth σ.irred)).mono0`. Establish `h2` using `(WD.monodromyZero_ofWeilDeligneRepClass_iff b).2 hN`.
+
+Rewrite `h2` using `[hb, algNorm, H.nu_eq, WD.monomial_twist_iff]`. Then use the resulting hypothesis. Establish `hIsL : IsL ((List.ofFn Δ : List _) : Multiset _) σ.ρ` using `⟨c, x, hd, ⟨Δ, ⟨Fin.univ_val_map _, fun i j hij hp => hun i j hij.ne hp.1⟩, hL⟩, (isCosocle_self σ.irred).of_equiv (.refl _) φ⟩`. Rewrite `hm` using `[H.langlands _ _ (hIsL.of_equiv (IrrGL.equivOf σ.ρ σ.smooth σ.irred))]`. Establish `hlen : ∀ i, (Δ i).len = 1` using `fun i => le_antisymm (PsGen.le_one_of_mono0 ((H.cusp _).1 (Δ i).isCusp_first) _ (PsGen.mono_of_mem_sum_list hm (List.mem_map_of_mem (List.mem_ofFn.2 ⟨i, rfl⟩)))) (Δ i).len_pos`. Conclude with `PsGen.equiv_prin P.loc ⟨_, σ.ρ, σ.smooth, σ.irred⟩ x (fun i => PsGen.isCusp_of_len (hlen i) (hL i)) hd φ _ (fun i => (hω i).mul (isSmoothChar_absPow _)) hs`.
+-/
 theorem UpperTheory.V.Hi.psGen :
     GlobalTheory.Mem.LiteralAutomorphy.LitN → ∀ (L Ω : Type) [Field L] [NumberField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] (n : ℕ) (w : HeightOneSpectrum (𝓞 L)) (A : ValuationSubring Ω) (h : IsPlaceOver A w) (a : Weil h →* (w.adicCompletion L)ˣ), IsLocalArtin h a → ∀ rc, IsRec h rc → ∀ (σ : SmIrr (GL (Fin n) (w.adicCompletion L))) (ω : Fin n → (w.adicCompletion L)ˣ →* ℂˣ), (∀ i, IsSmoothChar (ω i)) → IsSubquotient σ.ρ (PS ω) → (∃ b : WDRep h (Fin n → ℂ), WD.mk b = rc (algNorm σ) ∧ b.N = 0) → (∃ ψ : AddChar (w.adicCompletion L) Circle, Continuous ψ ∧ ψ ≠ 1 ∧ GlobalTheory.Whittaker.IsGeneric ψ σ.ρ) → Nonempty (σ.ρ.Equiv (PS ω)) := by
   rintro P L Ω _ _ _ _ _ n w A h a - rc ⟨a', ha', ε, -, H⟩ σ ω hω hs ⟨b, hb, hN⟩ ⟨ψ, hc, h1, hg⟩

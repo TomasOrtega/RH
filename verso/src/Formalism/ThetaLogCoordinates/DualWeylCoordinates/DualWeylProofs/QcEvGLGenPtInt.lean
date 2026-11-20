@@ -6,9 +6,15 @@ open MvPolynomial Finset
 
 namespace Formalism.InvariantFactorPaths.ColumnFamilies
 
+/- English proof (translation)
+The claim follows from `Matrix.det_mvPolynomialX_ne_zero (Fin n) R`.
+-/
 lemma qc_genMat_det_ne (R : Type) [CommRing R] [Nontrivial R] (n : ℕ) : (genMat R n).det ≠ 0 :=
   Matrix.det_mvPolynomialX_ne_zero (Fin n) R
 
+/- English proof (translation)
+The claim follows from `IsLocalization.isDomain_of_le_nonZeroDivisors (R := MvPolynomial (Fin n × Fin n) R) (S := GLCoord R n) (M := Submonoid.powers (genMat R n).det) (powers_le_nonZeroDivisors_of_noZeroDivisors (qc_genMat_det_ne R n))`.
+-/
 lemma qc_isDomain (R : Type) [CommRing R] [IsDomain R] (n : ℕ) : IsDomain (GLCoord R n) :=
   IsLocalization.isDomain_of_le_nonZeroDivisors (R := MvPolynomial (Fin n × Fin n) R) (S := GLCoord R n)
     (M := Submonoid.powers (genMat R n).det)
@@ -18,14 +24,25 @@ def qc_genPt (F : Type) [CommRing F] (n : ℕ) : GL (Fin n) (GLCoord F n) :=
   Matrix.nonsingInvUnit ((algebraMap _ (GLCoord F n)).mapMatrix (genMat F n))
     (by rw [← RingHom.map_det]; exact IsLocalization.Away.algebraMap_isUnit _)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma qc_genPt_val (F : Type) [CommRing F] (n : ℕ) (a b : Fin n) :
     (qc_genPt F n).val a b = algebraMap (MvPolynomial (Fin n × Fin n) F) (GLCoord F n) (X (a, b)) := rfl
 
+/- English proof (translation)
+The claim follows from `IsLocalization.Away.lift_eq _ _ _`.
+-/
 lemma qc_mapCoord_alg {n : ℕ} (F : Type) [CommRing F] (P : MvPolynomial (Fin n × Fin n) ℤ) :
     mapCoord (n := n) F (algebraMap _ (GLCoord ℤ n) P) =
       algebraMap _ (GLCoord F n) (MvPolynomial.map (Int.castRingHom F) P) :=
   IsLocalization.Away.lift_eq _ _ _
 
+/- English proof (translation)
+Use `IsLocalization.ringHom_ext (Submonoid.powers (genMat ℤ n).det) ?_` and prove the remaining obligations. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `r`. Simplify using the standard rewrite rules. Introduce and unpack `⟨a, b⟩`.
+
+Conclude with `h a b`.
+-/
 lemma qc_hom_ext {n : ℕ} {R : Type} [CommRing R] (f g : GLCoord ℤ n →+* R)
     (h : ∀ a b, f (algebraMap (MvPolynomial (Fin n × Fin n) ℤ) _ (X (a, b))) =
       g (algebraMap (MvPolynomial (Fin n × Fin n) ℤ) _ (X (a, b)))) : f = g := by
@@ -34,18 +51,27 @@ lemma qc_hom_ext {n : ℕ} {R : Type} [CommRing R] (f g : GLCoord ℤ n →+* R)
   · intro r; simp
   · rintro ⟨a, b⟩; exact h a b
 
+/- English proof (translation)
+Apply `qc_hom_ext` to reduce the goal to its premises. Introduce `a b`. Rewrite using `[qc_evGL_alg, qc_mapCoord_alg]`. Simplify using `[qc_genPt_val]`.
+-/
 lemma qc_evGL_genPt (F : Type) [CommRing F] (n : ℕ) : evGL (qc_genPt F n) = mapCoord F := by
   apply qc_hom_ext
   intro a b
   rw [qc_evGL_alg, qc_mapCoord_alg]
   simp [qc_genPt_val]
 
+/- English proof (translation)
+Apply `qc_hom_ext` to reduce the goal to its premises. Introduce `a b`. Rewrite using `[qc_evGL_alg]`. Simplify using `[qc_genPt_val]`.
+-/
 lemma qc_evGL_genPt_int (n : ℕ) : evGL (qc_genPt ℤ n) = RingHom.id _ := by
   apply qc_hom_ext
   intro a b
   rw [qc_evGL_alg]
   simp [qc_genPt_val]
 
+/- English proof (translation)
+Apply `qc_hom_ext` to reduce the goal to its premises. Introduce `a b`. Rewrite using `[RingHom.comp_apply, qc_evGL_alg, qc_evGL_alg]`. Simplify using `only [coe_eval₂Hom, eval₂_X]`. Both sides reduce to the same expression.
+-/
 lemma qc_evGL_map {n : ℕ} {R R' : Type} [CommRing R] [CommRing R'] (φ : R →+* R') (g : GL (Fin n) R) :
     evGL (Matrix.GeneralLinearGroup.map φ g) = φ.comp (evGL g) := by
   apply qc_hom_ext
@@ -54,6 +80,11 @@ lemma qc_evGL_map {n : ℕ} {R R' : Type} [CommRing R] [CommRing R'] (φ : R →
   simp only [coe_eval₂Hom, eval₂_X]
   rfl
 
+/- English proof (translation)
+Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx => exact Submodule.subset_span ⟨x, hx, rfl⟩`. Consider the case `zero => rw [map_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy => rw [map_add]`.
+
+Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul m x _ hx => rw [map_zsmul]`. Conclude with `zsmul_mem hx m`.
+-/
 lemma qc_map_span_mem {A B F : Type} [CommRing A] [CommRing B] [Field F] [Module F B] (φ : A →+* B) (S : Set A)
     (y : A) (hy : y ∈ Submodule.span ℤ S) : φ y ∈ Submodule.span F (φ '' S) := by
   induction hy using Submodule.span_induction with
@@ -62,6 +93,11 @@ lemma qc_map_span_mem {A B F : Type} [CommRing A] [CommRing B] [Field F] [Module
   | add x y _ _ hx hy => rw [map_add]; exact Submodule.add_mem _ hx hy
   | smul m x _ hx => rw [map_zsmul]; exact zsmul_mem hx m
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `qc_map_span_mem φ T x (h ▸ Submodule.subset_span hx)`. Rewrite using `[Submodule.span_le]`.
+
+Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `qc_map_span_mem φ S x (h.symm ▸ Submodule.subset_span hx)`.
+-/
 lemma qc_span_eq {A B F : Type} [CommRing A] [CommRing B] [Field F] [Module F B] (φ : A →+* B) (S T : Set A)
     (h : Submodule.span ℤ S = Submodule.span ℤ T) : Submodule.span F (φ '' S) = Submodule.span F (φ '' T) := by
   apply le_antisymm
@@ -76,6 +112,11 @@ section SMu
 
 variable {n : ℕ} [NeZero n] {M : GLMod n} {mu : Fin n → ℤ} {β : M.ι → GLCoord ℤ n}
 
+/- English proof (translation)
+Establish `: Fintype {I : TIdx mu // StdT I}` using `Fintype.ofFinite _`. Establish `h1` using `finrank_span_eq_card hβ.1`. Establish `h2` using `finrank_span_eq_card (hS n mu hmu).1`. Rewrite `h1` using `[hβ.2.1]`. Rewrite `h2` using `[(hS n mu hmu).2]`.
+
+Rewrite using `[dMu, Nat.card_eq_fintype_card, ← h1, ← h2]`.
+-/
 lemma qc_card_eq (hS : SBasis) (hmu : Dominant mu) (hβ : IsSMu M mu β) : Fintype.card M.ι = dMu mu := by
   classical
   have : Fintype {I : TIdx mu // StdT I} := Fintype.ofFinite _
@@ -85,6 +126,13 @@ lemma qc_card_eq (hS : SBasis) (hmu : Dominant mu) (hβ : IsSMu M mu β) : Finty
   rw [(hS n mu hmu).2] at h2
   rw [dMu, Nat.card_eq_fintype_card, ← h1, ← h2]
 
+/- English proof (translation)
+Establish `: Fintype {I : TIdx mu // StdT I}` using `Fintype.ofFinite _`. Rewrite using `[linearIndependent_iff_card_eq_finrank_span]`. Establish `h1` using `linearIndependent_iff_card_eq_finrank_span.1 (hA n mu hmu F)`. Establish `h2 : Set.range (fun i => mapCoord (n` using `n) F (β i)) = mapCoord (n := n) F '' Set.range β := by`. Rewrite using `[← Set.range_comp]`.
+
+Both sides reduce to the same expression. Establish `h3 : Set.range (fun I : {I : TIdx mu // StdT I} => mapCoord (n` using `n) F (brk mu I.1)) = mapCoord (n := n) F '' Set.range (fun I : {I : TIdx mu // StdT I} => brk mu I.1) := by`. Rewrite using `[← Set.range_comp]`. Both sides reduce to the same expression. Establish `h4` using `qc_span_eq (F := F) (mapCoord (n := n) F) _ _ (hβ.2.1.trans (hS n mu hmu).2.symm)`.
+
+Rewrite using `[Set.finrank, h2, h4, ← h3, ← Set.finrank, ← h1, qc_card_eq hS hmu hβ, dMu, Nat.card_eq_fintype_card]`.
+-/
 lemma qc_li_field (hA : LemmaA) (hS : SBasis) (hmu : Dominant mu) (hβ : IsSMu M mu β) (F : Type) [Field F] :
     LinearIndependent F (fun i => mapCoord (n := n) F (β i)) := by
   classical
@@ -99,6 +147,15 @@ lemma qc_li_field (hA : LemmaA) (hS : SBasis) (hmu : Dominant mu) (hβ : IsSMu M
   have h4 := qc_span_eq (F := F) (mapCoord (n := n) F) _ _ (hβ.2.1.trans (hS n mu hmu).2.symm)
   rw [Set.finrank, h2, h4, ← h3, ← Set.finrank, ← h1, qc_card_eq hS hmu hβ, dMu, Nat.card_eq_fintype_card]
 
+/- English proof (translation)
+Establish `e1 : evGL (x * g) (brk mu I) = ∑ j, evGL g ((M.A * ph.map (Int.castRingHom (GLCoord ℤ n)) : Matrix _ _ _) j I) * evGL x (β j)`. Rewrite using `[← hph I]`. Simplify using `only [map_sum, map_zsmul, hβ.2.2, Matrix.mul_apply, Matrix.map_apply, Finset.sum_mul, map_mul, eq_intCast, map_intCast, zsmul_eq_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `e2 : evGL (x * g) (brk mu I) = ∑ j, evGL g ((ph.map (Int.castRingHom (GLCoord ℤ n)) * TMat mu : Matrix _ _ _) j I) * evGL x (β j)`. Rewrite using `[brk, qc_TMat_mul]`. Establish `: ∀ K, evGL x (TMat mu (canT mu) K) = ∑ j, (ph j K : R) * evGL x (β j)`. Introduce `K`.
+
+Use `show evGL x (brk mu K) = _`. Rewrite using `[← hph K]`. Simplify using `only [map_sum, zsmul_eq_mul, map_mul, map_intCast]`. Simplify using `only [this, map_sum, Matrix.mul_apply, Matrix.map_apply, Finset.sum_mul, map_mul, eq_intCast, map_intCast]`. Rewrite using `[Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← e1, e2]`.
+-/
 lemma qc_two (hβ : IsSMu M mu β) (ph : Matrix M.ι (TIdx mu) ℤ) (hph : ∀ I, ∑ i, ph i I • β i = brk mu I)
     {R : Type} [CommRing R] (x g : GL (Fin n) R) (I : TIdx mu) :
     ∑ j, evGL g ((M.A * ph.map (Int.castRingHom (GLCoord ℤ n)) : Matrix _ _ _) j I) * evGL x (β j) =
@@ -124,6 +181,13 @@ lemma qc_two (hβ : IsSMu M mu β) (ph : Matrix M.ι (TIdx mu) ℤ) (hph : ∀ I
     ring
   rw [← e1, e2]
 
+/- English proof (translation)
+Use `qc_isDomain ℤ n` as an intermediate fact. Set `F` to `FractionRing (GLCoord ℤ n)`. Set `ψ : GLCoord ℤ n →+* GLCoord F n` to `(algebraMap F (GLCoord F n)).comp (algebraMap (GLCoord ℤ n) F)`. Establish `hli` using `qc_li_field hA hS hmu hβ F`. Use extensionality with `i I`.
+
+Establish `h` using `qc_two hβ ph hph (qc_genPt F n) (Matrix.GeneralLinearGroup.map ψ (qc_genPt ℤ n)) I`. Rewrite `h` using `[qc_evGL_genPt, qc_evGL_map, qc_evGL_genPt_int, RingHom.comp_id]`. Establish `h' : ∑ j, (algebraMap (GLCoord ℤ n) F ((M.A * ph.map (Int.castRingHom (GLCoord ℤ n)) : Matrix _ _ _) j I) - algebraMap (GLCoord ℤ n) F ((ph.map (Int.castRingHom (GLCoord ℤ n)) * TMat mu : Matrix _ _ _) j I)) • mapCoord (n` using `n) F (β j) = 0 := by`. Simplify using `only [Algebra.smul_def, map_sub, sub_mul, Finset.sum_sub_distrib]`. Rewrite using `[sub_eq_zero]`.
+
+Conclude with `h`. Establish `h''` using `Fintype.linearIndependent_iff.1 hli _ h' i`. Conclude with `IsFractionRing.injective (GLCoord ℤ n) F (sub_eq_zero.1 h'')`.
+-/
 theorem qc_equiv (hA : LemmaA) (hS : SBasis) (hmu : Dominant mu) (hβ : IsSMu M mu β)
     (ph : Matrix M.ι (TIdx mu) ℤ) (hph : ∀ I, ∑ i, ph i I • β i = brk mu I) :
     M.A * ph.map (Int.castRingHom _) = ph.map (Int.castRingHom _) * TMat mu := by

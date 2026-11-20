@@ -13,6 +13,13 @@ open GlobalTheory.UPel.Sm GlobalTheory.Cris GlobalTheory.DeRham
 open scoped TensorProduct
 open IsLocalRing
 
+/- English proof (translation)
+Use extensionality with `a c`. Rewrite using `[Matrix.sum_apply, Matrix.one_apply]`. Use `split_ifs with h`. Substitute `h` using the available equality. Rewrite using `[Finset.sum_eq_single a (fun b _ hb => by simp [Matrix.single_apply, hb]) (by simp)]`.
+
+Simplify using `[Matrix.single_apply]`. Conclude with `Finset.sum_eq_zero fun x _ => by`. Simplify using `only [Matrix.single_apply]`. Rewrite using `[if_neg]`. Introduce and unpack `⟨rfl, rfl⟩`.
+
+Conclude with `h rfl`.
+-/
 theorem GlobalTheory.HTSummand.Corep.mat_sum (n : ℕ) (α : Type) [CommRing α] : ∑ i : Fin n, Matrix.single i i (1:α) = 1 := by
   ext a c
   rw [Matrix.sum_apply, Matrix.one_apply]
@@ -23,11 +30,45 @@ theorem GlobalTheory.HTSummand.Corep.mat_sum (n : ℕ) (α : Type) [CommRing α]
   · exact Finset.sum_eq_zero fun x _ => by
       simp only [Matrix.single_apply]; rw [if_neg]; rintro ⟨rfl, rfl⟩; exact h rfl
 
+/- English proof (translation)
+Rewrite using `[Matrix.single_mul_mul_single, Matrix.scalar_apply, ← Matrix.smul_eq_diagonal_mul, Matrix.smul_single, smul_eq_mul, _root_.mul_one, _root_.mul_one, _root_.one_mul]`.
+-/
 theorem GlobalTheory.HTSummand.Corep.mat_sand (n : ℕ) (α : Type) [CommRing α] (i j z : Fin n) (M : Matrix (Fin n) (Fin n) α) :
     Matrix.single z i 1 * M * Matrix.single j z 1 = Matrix.scalar _ (M i j) * Matrix.single z z 1 := by
   rw [Matrix.single_mul_mul_single, Matrix.scalar_apply, ← Matrix.smul_eq_diagonal_mul, Matrix.smul_single,
     smul_eq_mul, _root_.mul_one, _root_.mul_one, _root_.one_mul]
 
+/- English proof (translation)
+Introduce `p _ D R _ b C _ _ _ I hI hp tR H _ _ _ _ ρ hP e he heρ _heω F hIF hFρ hFe hcompl hLie`. Choose the witnesses or unpack the hypotheses as in `⟨k, hk⟩ : ∃ k : ℕ, (p : C) ^ k = 0 := by`. Establish `h` using `IsArtinianRing.isNilpotent_jacobson_bot (R := C)`. Rewrite `h` using `[IsLocalRing.jacobson_eq_maximalIdeal ⊥ bot_ne_top]`. Take `⟨k, hk⟩` from `h`.
+
+Use `⟨k, ?_⟩` and prove the remaining obligations. Establish `: (p : C) ^ k ∈ (maximalIdeal C) ^ k` using `Ideal.pow_mem_pow hp k`. Rewrite `this` using `[hk]`. Simplify using `using this`. Take `⟨Ψ, hΨρ, hΨc, hΨN, hΨs⟩` from `GlobalTheory.T.exists_matrixAction_of_padicOrderSplitting p D C k hk H ρ D.splitP.some`.
+
+Use `haveI : NeZero D.m := ⟨D.m_pos.ne'⟩`. Set `σ : 𝓞 D.F →+* Module.End C H` to `ρ.comp (algebraMap (𝓞 D.F) D.O)`. Set `χ : Fin D.a → 𝓞 D.F →+* C` to `fun i => tR.comp (b.t i)`. Set `E : Fin D.m → Fin D.m → Module.End C H` to `fun i j => Ψ (Matrix.single i j 1)`. Establish `hE : ∀ i j k l, E i j * E k l = if j = k then E i l else 0`.
+
+Introduce `i j k l`. Simplify using `only [E, ← map_mul]`. Use `split_ifs with h`. Substitute `h` using the available equality. Rewrite using `[Matrix.single_mul_single_same, _root_.mul_one]`.
+
+Rewrite using `[Matrix.single_mul_single_of_ne (h := h), map_zero]`. Establish `hsum : ∑ i, E i i = 1`. Simplify using `only [E, ← map_sum, GlobalTheory.HTSummand.Corep.mat_sum, map_one]`. Establish `hρσ : ∀ c c', ρ c' * σ c = σ c * ρ c'`. Introduce `c c'`.
+
+Use `show ρ c' * ρ (algebraMap _ _ c) = ρ (algebraMap _ _ c) * ρ c'`. Rewrite using `[← map_mul, ← map_mul, Algebra.commutes]`. Establish `hEσ : ∀ i j c, E i j * σ c = σ c * E i j` using `fun i j c => hΨc (σ c) (hρσ c) _`. Establish `hEe : ∀ i j, E i j * e = e * E i j` using `fun i j => hΨc e heρ _`. Establish `hFE : ∀ i j, ∀ x ∈ F, E i j x ∈ F` using `fun i j => hΨN F hFρ _`.
+
+Establish `hθ : ∀ (c : D.O) i j (N : Submodule C H), (∀ c', ∀ x ∈ N, σ c' x ∈ N) → ∀ x ∈ N, E 0 0 x = x → E 0 i (ρ c (E j 0 x)) ∈ N`. Introduce `c i j N hN x hx h0`. Establish `: E 0 i (ρ c (E j 0 x)) = Ψ (Matrix.scalar _ (D.splitP.some (c ⊗ₜ 1) i j)) (E 0 0 x)`. Rewrite using `[← hΨρ c]`. Use `show (Ψ (Matrix.single 0 i 1) * Ψ _ * Ψ (Matrix.single j 0 1)) x = _`.
+
+Rewrite using `[← map_mul, ← map_mul, GlobalTheory.HTSummand.Corep.mat_sand, map_mul]`. Both sides reduce to the same expression. Rewrite using `[this, h0]`. Conclude with `hΨs _ N (fun a x hx => hN a x hx) x hx`. Set `π : Module.End C H` to `E 0 0 * e`.
+
+Establish `hππ : π * π = π` using `by show E 0 0 * e * (E 0 0 * e) = E 0 0 * e`. Rewrite using `[_root_.mul_assoc, ← _root_.mul_assoc e, ← hEe, _root_.mul_assoc, he, ← _root_.mul_assoc, hE]`. Simplify using the standard rewrite rules. Establish `hπσ : ∀ c, σ c * π = π * σ c`. Introduce `c`.
+
+Use `show σ c * (E 0 0 * e) = E 0 0 * e * σ c`. Establish `h1 : e * σ c = σ c * e` using `(heρ _).symm`. Rewrite using `[_root_.mul_assoc, h1, ← _root_.mul_assoc, ← _root_.mul_assoc, hEσ]`. Establish `hFπ : ∀ x ∈ F, π x ∈ F` using `fun x hx => hFE 0 0 _ (hFe x hx)`. Establish `hFσ : ∀ c, ∀ x ∈ F, σ c x ∈ F` using `fun c x hx => hFρ _ x hx`.
+
+Establish `hπapp : ∀ c x, σ c (π x) = π (σ c x)` using `fun c x => LinearMap.congr_fun (hπσ c) x`. Establish `hLieπ : ∀ d ∈ LinearMap.range π, ∃ w : Fin D.a → H, (∀ i c, σ c (w i) - χ i c • w i ∈ F) ∧ d - ∑ i, w i ∈ F`. Introduce and unpack `d ⟨x, rfl⟩`. Establish `hde : π x ∈ LinearMap.range e`. Use `⟨π x, ?_⟩` and prove the remaining obligations.
+
+Use `show e (E 0 0 (e x)) = E 0 0 (e x)`. Rewrite using `[← Module.End.mul_apply, ← hEe, Module.End.mul_apply, ← Module.End.mul_apply e e, he]`. Take `⟨w, hw1, hw2⟩` from `hLie _ hde`. Use `⟨fun i => π (w i), fun i c => ?_, ?_⟩` and prove the remaining obligations. Use `hFπ _ (hw1 i c)` as an intermediate fact.
+
+Rewrite `this` using `[map_sub, map_smul]`. Rewrite using `[hπapp]`. Conclude with `this`. Use `hFπ _ hw2` as an intermediate fact. Rewrite `this` using `[map_sub, map_sum, ← Module.End.mul_apply π π, hππ]`.
+
+Conclude with `this`. Establish `hcomax : ∀ i j, i ≠ j → Ideal.span (Set.range fun x => χ i x - χ j x) = ⊤`. Introduce `i j hij`. Establish `h2 : Ideal.map tR (Ideal.span (Set.range fun x => b.t i x - b.t j x)) = ⊤`. Rewrite using `[b.comax i j hij, Ideal.map_top]`.
+
+Rewrite `h2` using `[Ideal.map_span, ← Set.range_comp]`. Simplify `h2` using `[Function.comp_def, χ]`. Take `⟨n, κ, ℓ, y, h1, h2, h3, h4⟩` from `GlobalTheory.T.exists_eigenCoordinates_idempotentRange_quotient I hI σ D.a χ hcomax π hππ hπσ F hIF hFσ hFπ hcompl hLieπ`. Take `⟨G₀, M₀, g1, g2, g3, g4, g5⟩` from `GlobalTheory.T.exists_sigmaStable_summand_from_lifted_eigenCoords I hI σ hP D.a χ π hππ hπσ F hIF n κ ℓ y h1 h2 h3 h4`. Conclude with `GlobalTheory.T.moritaSpread_stableSummand_lieDecomposition I D.m E hE hsum σ hEσ ρ hθ e he hEe F hIF hFE hFe D.a χ G₀ M₀ g1 g2 g3 g4 g5`.
+-/
 theorem GlobalTheory.HTSummand.Corep.exists_summand_lie_p : ∀ (p : ℕ) [Fact p.Prime] (D : GlobalTheory.UPel.HT.Datum p) (R : Type) [CommRing R] (b : GlobalTheory.UPel.HT.Base D R) (C : Type) [CommRing C] [IsLocalRing C] [IsArtinianRing C] (I : Ideal C), I ^ 2 = ⊥ → (p : C) ∈ IsLocalRing.maximalIdeal C → ∀ (tR : R →+* C) (H : Type 1) [AddCommGroup H] [Module C H] [Module.Finite C H] [Module.Projective C H] (ρ : D.O →+* Module.End C H), (letI := GlobalTheory.HTSummand.tensorModOf (ρ.comp (algebraMap (𝓞 D.F) D.O)); Module.Projective (C ⊗[ℤ] 𝓞 D.F) H) → ∀ (e : Module.End C H), e * e = e → (∀ c, ρ c * e = e * ρ c) → (∀ x, ρ (algebraMap (𝓞 D.F) D.O D.ω) (e x) = tR b.ρ • e x) → ∀ (F : Submodule C H), I • ⊤ ≤ F → (∀ (c : D.O), ∀ x ∈ F, ρ c x ∈ F) → (∀ x ∈ F, e x ∈ F) → (∃ E' M : Submodule C H, IsCompl E' M ∧ E' ⊔ I • ⊤ = F) → (∀ d ∈ LinearMap.range e, ∃ w : Fin D.a → H, (∀ i (c : 𝓞 D.F), ρ (algebraMap (𝓞 D.F) D.O c) (w i) - tR (b.t i c) • w i ∈ F) ∧ d - ∑ i, w i ∈ F) → ∃ G M : Submodule C H, G ⊓ M = ⊥ ∧ G ⊔ M = LinearMap.range e ∧ (∀ (c : D.O), ∀ x ∈ G, ρ c x ∈ G) ∧ G ⊔ (I • ⊤ ⊓ LinearMap.range e) = F ⊓ LinearMap.range e ∧ ∀ d ∈ LinearMap.range e, ∃ w : Fin D.a → H, (∀ i (c : 𝓞 D.F), ρ (algebraMap (𝓞 D.F) D.O c) (w i) - tR (b.t i c) • w i ∈ G) ∧ d - ∑ i, w i ∈ G := by
   intro p _ D R _ b C _ _ _ I hI hp tR H _ _ _ _ ρ hP e he heρ _heω F hIF hFρ hFe hcompl hLie
   obtain ⟨k, hk⟩ : ∃ k : ℕ, (p : C) ^ k = 0 := by

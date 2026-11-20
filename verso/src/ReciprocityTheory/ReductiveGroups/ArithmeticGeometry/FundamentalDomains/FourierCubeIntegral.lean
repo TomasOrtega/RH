@@ -7,6 +7,19 @@ open NumberField Complex ReciprocityTheory.ChartRestriction.G.FD ReciprocityTheo
 
 noncomputable section
 
+/- English proof (translation)
+Establish `hcube : cube N = Set.univ.pi fun _ : Fin N => Set.Icc (0 : ℝ) 1` using `rfl`. Set `b` to `Pi.basisFun ℝ (Fin N)`. Set `L` to `(Submodule.span ℤ (Set.range b)).toAddSubgroup`. Establish `hF : IsAddFundamentalDomain L (ZSpan.fundamentalDomain b) volume` using `ZSpan.isAddFundamentalDomain b volume`. Establish `key : ∀ g : L, ∃ n : Fin N → ℤ, (g : Fin N → ℝ) = fun i => (n i : ℝ)` using `fun g => by`.
+
+Establish `hg` using `(b.mem_span_iff_repr_mem ℤ (g : Fin N → ℝ)).1 g.2`. Use `choose n hn using hg`. Conclude with `⟨n, funext fun i => by simpa [b] using (hn i).symm⟩`. Use `haveI : Countable L := by choose f hf using key`. Conclude with `Function.Injective.countable (f := f) fun g₁ g₂ h => Subtype.ext (by rw [hf g₁, hf g₂, h])`.
+
+Establish `hinv : ∀ g : L, ∀ x, φ (g +ᵥ x) = φ x`. Introduce `g x`. Take `⟨n, hgn⟩` from `key g`. Use `show φ ((g : Fin N → ℝ) + x) = φ x`. Rewrite using `[hgn, add_comm]`.
+
+Conclude with `hp n x`. Establish `hFs : IsAddFundamentalDomain L ((fun t => t - s) ⁻¹' ZSpan.fundamentalDomain b) volume` using `hF.preimage_of_equiv (measurePreserving_sub_right volume s).quasiMeasurePreserving (e := id) Function.bijective_id fun g x => by show ((g : Fin N → ℝ) + x) - s = (g : Fin N → ℝ) + (x - s)`. Conclude with `add_sub_assoc _ _ _`. Establish `hae : ZSpan.fundamentalDomain b =ᵐ[volume] cube N`. Rewrite using `[ZSpan.fundamentalDomain_pi_basisFun, hcube, volume_pi]`.
+
+Conclude with `Measure.ae_eq_set_pi fun _ _ => Ico_ae_eq_Icc`. Establish `hpre : (fun t => t + s) ⁻¹' ((fun t => t - s) ⁻¹' ZSpan.fundamentalDomain b) = ZSpan.fundamentalDomain b`. Use extensionality with `t`. Simplify using the standard rewrite rules. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[hpre]`. Use `_ = ∫ u in (fun t => t - s) ⁻¹' ZSpan.fundamentalDomain b, φ u := (measurePreserving_add_right volume s).setIntegral_preimage_emb (MeasurableEquiv.addRight s).measurableEmbedding _ _`. Use `_ = ∫ u in ZSpan.fundamentalDomain b, φ u := hFs.setIntegral_eq hF hinv`. Use `_ = ∫ t in cube N, φ t := setIntegral_congr_set hae`.
+-/
 lemma cube_int_shift {N : ℕ} (φ : (Fin N → ℝ) → ℂ) (hφ : Continuous φ)
     (hp : ∀ (n : Fin N → ℤ) t, φ (t + fun i => (n i : ℝ)) = φ t) (s : Fin N → ℝ) :
     ∫ t in cube N, φ (t + s) = ∫ t in cube N, φ t := by
@@ -55,6 +68,55 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} {X : Data 
   {u : Fin 2 → Fin r → E} {g : ℕ} {ω : Fin (4 * Fintype.card X.Ψ) → X.Ψ → Fin 2 → Fin 2 → ℂ}
   {G : Frame X.Ψ r → ℂ}
 
+/- English proof (translation)
+Establish `hωh : ∀ j, IsHermFam (ω j)`. Introduce `j τ i k`. Take `⟨β, hβ, -, hb⟩` from `hω.1 j`. Rewrite using `[hb]`. Simplify using `only [Data.embH]`.
+
+Rewrite using `[← hβ i k, cc, NumberField.IsCMField.complexEmbedding_complexConj]`. Choose the witnesses or unpack the hypotheses as in `⟨s, hs⟩ : ∃ s : Fin (4 * Fintype.card X.Ψ) → ℝ, Bv ω s = b := by`. Set `H : Submodule ℝ (X.Ψ → Fin 2 → Fin 2 → ℂ)` to `{ carrier := {b | IsHermFam b} add_mem' := fun {a c} ha hc τ i k => by`. Simplify using `only [Pi.add_apply, map_add]`. Rewrite using `[ha τ i k, hc τ i k]`.
+
+Use the proof step `zero_mem' := fun τ i k => by simp`. Use the proof step `smul_mem' := fun r a ha τ i k => by`. Simplify using `only [Pi.smul_apply, Complex.real_smul, map_mul, Complex.conj_ofReal]`. Rewrite using `[ha τ i k] }`. Establish `hωH : ∀ j, ω j ∈ H` using `hωh`.
+
+Set `f : (X.Ψ → Fin 2 → Fin 2 → ℂ) →ₗ[ℝ] (X.Ψ → Fin 4 → ℝ)` to `{ toFun := fun b τ => ![(b τ 0 0).re, (b τ 1 1).re, (b τ 0 1).re, (b τ 0 1).im] map_add' := fun a c => by`. Use function extensionality and compare the values at `τ m`. Apply the tactic sequence `fin_cases m <;> simp`. Use the proof step `map_smul' := fun r a => by`. Use function extensionality and compare the values at `τ m`.
+
+Apply the tactic sequence `fin_cases m <;> simp }`. Establish `hinj : Function.Injective (f.comp H.subtype)`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `a ha`. Establish `hh : IsHermFam (a : X.Ψ → Fin 2 → Fin 2 → ℂ)` using `a.2`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `τ i k`. Use `show (a : X.Ψ → Fin 2 → Fin 2 → ℂ) τ i k = 0`. Establish `e` using `fun m => congrFun (congrFun ha τ) m`. Establish `e0 : (a.1 τ 0 0).re = 0` using `by simpa [f] using e 0`.
+
+Establish `e1 : (a.1 τ 1 1).re = 0` using `by simpa [f] using e 1`. Establish `e2 : (a.1 τ 0 1).re = 0` using `by simpa [f] using e 2`. Establish `e3 : (a.1 τ 0 1).im = 0` using `by simpa [f] using e 3`. Establish `i00 : (a.1 τ 0 0).im = 0`. Establish `h` using `congrArg Complex.im (hh τ 0 0)`.
+
+Rewrite `h` using `[Complex.conj_im]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `i11 : (a.1 τ 1 1).im = 0`. Establish `h` using `congrArg Complex.im (hh τ 1 1)`. Rewrite `h` using `[Complex.conj_im]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `z00 : a.1 τ 0 0 = 0` using `Complex.ext (by simpa using e0) (by simpa using i00)`. Establish `z11 : a.1 τ 1 1 = 0` using `Complex.ext (by simpa using e1) (by simpa using i11)`. Establish `z01 : a.1 τ 0 1 = 0` using `Complex.ext (by simpa using e2) (by simpa using e3)`. Establish `z10 : a.1 τ 1 0 = 0` using `by rw [hh τ 0 1, z01, map_zero]`.
+
+Apply the tactic sequence `fin_cases i <;> fin_cases k`. Conclude with `z00`. Conclude with `z01`. Conclude with `z10`. Conclude with `z11`.
+
+Establish `hH : Module.finrank ℝ H ≤ 4 * Fintype.card X.Ψ`. Establish `h` using `LinearMap.finrank_le_finrank_of_injective hinj`. Simplify `h` using `[Module.finrank_pi_fintype, Module.finrank_fin_fun, Finset.sum_const, mul_comm]`. Establish `hspan : Submodule.span ℝ (Set.range ω) = H`. Apply `Submodule.eq_of_le_of_finrank_le` to reduce the goal to its premises.
+
+Conclude with `Submodule.span_le.2 (Set.range_subset_iff.2 hωH)`. Rewrite using `[finrank_span_eq_card hω.2.2, Fintype.card_fin]`. Conclude with `hH`. Establish `hbH : b ∈ H` using `hb`. Rewrite `hbH` using `[← hspan, Submodule.mem_span_range_iff_exists_fun]`.
+
+Take `⟨c, hc⟩` from `hbH`. Use `⟨c, ?_⟩` and prove the remaining obligations. Rewrite using `[← hc]`. Use function extensionality and compare the values at `τ i k`. Simplify using `[Bv, Finset.sum_apply, Complex.real_smul]`.
+
+Substitute `hs` using the available equality. Use `choose k hk using hfreq`. Establish `hLZ : ∀ n : Fin (4 * Fintype.card X.Ψ) → ℤ, Bv ω (fun i => (n i : ℝ)) ∈ X.LZ g`. Introduce `n`. Establish `hsum : ∀ S : Finset (Fin (4 * Fintype.card X.Ψ)), ∑ j ∈ S, ((n j : ℝ) : ℂ) • ω j ∈ X.LZ g`.
+
+Introduce `S`. Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty`. Use `⟨0, fun i k => by simp [cc], fun i k => ⟨0, isIntegral_zero, by simp⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `τ i k`.
+
+Simplify using `[Data.embH]`. Consider the case `insert j S hj ih`. Rewrite using `[Finset.sum_insert hj]`. Take `⟨β, hβ, hint, hb⟩` from `hω.1 j`. Take `⟨β', hβ', hint', hb'⟩` from `ih`.
+
+Simplify using `only [cc] at hβ hβ'`. Use `⟨(n j : E) • β + β', fun i k => ?_, fun i k => ?_, ?_⟩` and prove the remaining obligations. Simplify using `[cc, hβ, hβ', map_add, map_mul, map_intCast]`. Take `⟨γ, hγ, hγe⟩` from `hint i k`. Take `⟨γ', hγ', hγe'⟩` from `hint' i k`.
+
+Establish `hn : IsIntegral ℤ (n j : E)`. Simplify using `using isIntegral_algebraMap (R := ℤ) (A := E) (x := n j)`. Use `⟨(n j : E) * γ + γ', (hn.mul hγ).add hγ', ?_⟩` and prove the remaining obligations. Simplify using `only [Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, hγe, hγe']`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[hb, hb']`. Use function extensionality and compare the values at `τ i k`. Simplify using `[Data.embH, map_add, map_mul, map_intCast]`. Conclude with `hsum Finset.univ`. Establish `hZc : Continuous fun t : Fin (4 * Fintype.card X.Ψ) → ℝ => X.Zb u (Bv ω t) x`.
+
+Use `continuous_pi fun τ => ?_` and prove the remaining obligations. Use `show Continuous fun t => X.zmat u (Bv ω t) τ * mat x τ`. Use `Continuous.matrix_mul ?_ continuous_const` and prove the remaining obligations. Use `continuous_pi fun a => continuous_pi fun j => ?_` and prove the remaining obligations. Simplify using `only [Data.zmat, Matrix.of_apply, Bv, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`.
+
+Use `fun_prop`. Establish `hec : Continuous fun t : Fin (4 * Fintype.card X.Ψ) → ℝ => ech ω χ t`. Simplify using `only [ech, pr, Bv, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Use `fun_prop`. Establish `hcont : Continuous fun t : Fin (4 * Fintype.card X.Ψ) → ℝ => G (X.Zb u (Bv ω t) x) * ech ω χ t` using `(hG.continuousOn.comp_continuous hZc fun t => hdomH _ (Bv_herm ω hωh t) x hx).mul hec`.
+
+Establish `hF : ∀ (n : Fin (4 * Fintype.card X.Ψ) → ℤ) (t : Fin (4 * Fintype.card X.Ψ) → ℝ), (fun t => G (X.Zb u (Bv ω t) x) * ech ω χ t) (t + fun i => (n i : ℝ)) = (fun t => G (X.Zb u (Bv ω t) x) * ech ω χ t) t`. Introduce `n t`. Use `show G (X.Zb u (Bv ω (t + fun i => (n i : ℝ))) x) * ech ω χ (t + fun i => (n i : ℝ)) = G (X.Zb u (Bv ω t) x) * ech ω χ t`. Rewrite using `[Bv_add, add_comm (Bv ω t), ← hadd, hper _ (hLZ n) _ (hdomH _ (Bv_herm ω hωh t) x hx), ech_add, ech_int (ω := ω) χ hk n, mul_one]`. Establish `hshift` using `cube_int_shift _ hcont hF s`.
+
+Establish `hinv : ech ω χ s * cexp (4 * Real.pi * I * X.pairR χ (Bv ω s)) = 1` using `by show cexp (-(4 * Real.pi * I) * (X.pairR χ (Bv ω s) : ℂ)) * cexp (4 * Real.pi * I * X.pairR χ (Bv ω s)) = 1`. Rewrite using `[← Complex.exp_add]`. Put the polynomial expressions in normal form. Conclude with `Complex.exp_zero`. Establish `hpt : ∀ t, G (X.Zb u (Bv ω t) (X.Zb u (Bv ω s) x)) * ech ω χ t = (G (X.Zb u (Bv ω (t + s)) x) * ech ω χ (t + s)) * cexp (4 * Real.pi * I * X.pairR χ (Bv ω s))`.
+
+Introduce `t`. Rewrite using `[hadd, ← Bv_add, ech_add, mul_assoc, mul_assoc, hinv, mul_one]`. Use `show ∫ t in cube (4 * Fintype.card X.Ψ), G (X.Zb u (Bv ω t) (X.Zb u (Bv ω s) x)) * ech ω χ t = cexp (4 * Real.pi * I * X.pairR χ (Bv ω s)) * ∫ t in cube (4 * Fintype.card X.Ψ), G (X.Zb u (Bv ω t) x) * ech ω χ t`. Repeatedly rewrite using `[hpt]`. Rewrite using `[integral_mul_const, hshift, mul_comm]`.
+-/
 theorem Ich_Zb (hω : X.IsLZBasis g ω)
     (hadd : ∀ b b' x, X.Zb u b (X.Zb u b' x) = X.Zb u (b + b') x)
     (hdomH : ∀ b, IsHermFam b → ∀ x ∈ X.dom, X.Zb u b x ∈ X.dom)
@@ -199,6 +261,27 @@ theorem Ich_Zb (hω : X.IsLZBasis g ω)
   simp_rw [hpt]
   rw [integral_mul_const, hshift, mul_comm]
 
+/- English proof (translation)
+Establish `hωh : ∀ j, IsHermFam (ω j)`. Introduce `j τ i k`. Take `⟨β, hβ, -, hb⟩` from `hω.1 j`. Rewrite using `[hb]`. Simplify using `only [Data.embH]`.
+
+Rewrite using `[← hβ i k, cc, NumberField.IsCMField.complexEmbedding_complexConj]`. Establish `hBv : ∀ t : Fin (4 * Fintype.card X.Ψ) → ℝ, IsHermFam (Bv ω t)`. Introduce `t τ i k`. Simplify using `only [Bv, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, map_sum, map_mul, Complex.conj_ofReal]`. Conclude with `Finset.sum_congr rfl fun j _ => by rw [hωh j τ i k]`.
+
+Establish `hfac : ∀ b, IsHermFam b → fac X la (X.Zb u b x) = fac X la x`. Introduce `b hb`. Establish `hd : ∀ τ i, dmin X.Gm (X.Zb u b x) τ i = dmin X.Gm x τ i`. Introduce `τ i`. Unfold `dmin`.
+
+Use `congr 1`. Use extensionality with `a c`. Establish `hcol : ∀ a, col (mat (X.Zb u b x) τ) a = Matrix.mulVec (X.zmat u b τ) (col (mat x τ) a)`. Introduce `a`. Use extensionality with `k`.
+
+Use `show (X.zmat u b τ * mat x τ) k a = ∑ j, X.zmat u b τ k j * col (mat x τ) a j`. Rewrite using `[Matrix.mul_apply]`. Both sides reduce to the same expression. Simplify using `only [gram, Matrix.of_apply]`. Rewrite using `[hcol, hcol, hunit b hb τ]`.
+
+Simplify using `only [fac, hd]`. Establish `hnn : ∀ y, 0 ≤ fac X la y` using `fun y => Finset.prod_nonneg fun τ _ => Finset.prod_nonneg fun i _ => Real.rpow_nonneg (norm_nonneg _) _`. Establish `hpn : ∀ y, X.pnorm la G y = ‖G y‖ * fac X la y` using `fun y => rfl`. Establish `hech : ∀ t, ‖ech ω χ t‖ = 1` using `fun t => by`. Unfold `ech`.
+
+Rewrite using `[Complex.norm_exp]`. Simplify using the standard rewrite rules. Establish `hcube1 : ∀ n, volume (cube n) = 1` using `fun n => by`. Rewrite using `[show cube n = Set.univ.pi (fun _ : Fin n => Set.Icc (0 : ℝ) 1) from rfl, volume_pi, Measure.pi_pi]`. Simplify using the standard rewrite rules.
+
+Break down `(hnn x).eq_or_lt with h0 | hpos` into its components or cases. Rewrite using `[← h0, mul_zero]`. Establish `h1` using `hM _ (hBv 0)`. Rewrite `h1` using `[hpn]`. Conclude with `le_trans (mul_nonneg (norm_nonneg _) (hnn _)) h1`.
+
+Establish `hb : ∀ t ∈ cube (4 * Fintype.card X.Ψ), ‖G (X.Zb u (Bv ω t) x) * ech ω χ t‖ ≤ M / fac X la x`. Introduce `t _`. Rewrite using `[norm_mul, hech, mul_one, le_div_iff₀ hpos, ← hfac _ (hBv t), ← hpn]`. Conclude with `hM _ (hBv t)`. Establish `hI : ‖Ich X u ω G χ x‖ ≤ M / fac X la x * (volume (cube (4 * Fintype.card X.Ψ))).toReal` using `norm_setIntegral_le_of_norm_le_const (by rw [hcube1]; simp) hb`.
+
+Rewrite `hI` using `[hcube1, ENNReal.toReal_one, mul_one]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem Ich_bound (hω : X.IsLZBasis g ω)
     (hunit : ∀ b, IsHermFam b → X.IsUnitaryC (X.zmat u b)) (la : Wt X.Ψ r)
     (χ : X.Ψ → Fin 2 → Fin 2 → ℂ) (x : Frame X.Ψ r) {M : ℝ}
@@ -258,6 +341,15 @@ theorem Ich_bound (hω : X.IsLZBasis g ω)
     calc _ ≤ M / fac X la x * fac X la x := mul_le_mul_of_nonneg_right hI (hnn x)
       _ = M := div_mul_cancel₀ M hpos.ne'
 
+/- English proof (translation)
+Establish `hp : ∀ j, pr χ (ω j) = (m j : ℝ) / 2` using `fun j => by`. Use `hm j` as an intermediate fact. Express the relevant statement in the definitionally equal form `2 * pr χ (ω j) = _ at this`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[UnitAddTorus.mFourierCoeff_eq_integral _ m 0]`.
+
+Unfold `Ich`. Rewrite using `[← setIntegral_congr_set (ubox_ae _)]`. Establish `e : ∀ t : Fin (4 * Fintype.card X.Ψ) → ℝ, G (X.Zb u (Bv ω t) x) * ech ω χ t = UnitAddTorus.mFourier (-m) (fun i => (t i : UnitAddCircle)) • D (fun i => (t i : UnitAddCircle))`. Introduce `t`. Rewrite using `[show (fun i => (t i : UnitAddCircle)) = I2.DimB.tproj t from rfl, hD, I2.DimB.mF_tproj, smul_eq_mul, mul_comm]`.
+
+Use `congr 1`. Simplify using `only [ech, pair_Bv, hp]`. Use `congr 1`. Use `push_cast`. Simplify using `only [Pi.neg_apply, Int.cast_neg]`.
+
+Rewrite using `[Finset.mul_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Repeatedly rewrite using `[e]`. Both sides reduce to the same expression.
+-/
 theorem Ich_coeff {χ : X.Ψ → Fin 2 → Fin 2 → ℂ} {m : Fin (4 * Fintype.card X.Ψ) → ℤ}
     (hm : ∀ j, 2 * X.pairR χ (ω j) = m j) {x : Frame X.Ψ r}
     (D : C(UnitAddTorus (Fin (4 * Fintype.card X.Ψ)), ℂ))

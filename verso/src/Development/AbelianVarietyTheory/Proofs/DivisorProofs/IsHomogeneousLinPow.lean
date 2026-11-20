@@ -11,6 +11,9 @@ namespace GlobalTheory.SwapTrue
 
 variable {ι : Type} {N j : ℕ}
 
+/- English proof (translation)
+Take `⟨⟨τ, b⟩, i⟩` from `z`. Establish `hi` using `i.2`. Apply the tactic sequence `cases b <;> simp only [rkB, cond_true, cond_false] at hi ⊢ <;> omega`.
+-/
 theorem block_lt (hj : j ≤ N) (z : Σ a : ι × Bool, Fin (rkB ι N j a)) : cond z.1.2 0 j + (z.2 : ℕ) < N := by
   obtain ⟨⟨τ, b⟩, i⟩ := z
   have hi := i.2
@@ -41,17 +44,29 @@ def blockEquiv (ι : Type) (N j : ℕ) (hj : j ≤ N) : (Σ a : ι × Bool, Fin 
     · rw [dif_neg h]
       exact Prod.ext rfl (Fin.ext (by simp; omega))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem blockEquiv_fst (hj : j ≤ N) (z : Σ a : ι × Bool, Fin (rkB ι N j a)) :
     (blockEquiv ι N j hj z).1 = z.1.1 := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem blockEquiv_snd (hj : j ≤ N) (z : Σ a : ι × Bool, Fin (rkB ι N j a)) :
     ((blockEquiv ι N j hj z).2 : ℕ) = cond z.1.2 0 j + z.2 := rfl
 
+/- English proof (translation)
+Simplify using `only [lin, map_sum, map_mul, rename_C, rename_X]`. Conclude with `Fintype.sum_equiv e _ _ fun _ => rfl`.
+-/
 theorem rename_lin_comp {κ ι : Type} [Fintype κ] [Fintype ι] (e : κ ≃ ι) (f : ι → ℝ) :
     rename e (lin fun z => f (e z)) = lin f := by
   simp only [lin, map_sum, map_mul, rename_C, rename_X]
   exact Fintype.sum_equiv e _ _ fun _ => rfl
 
+/- English proof (translation)
+Establish `h : (lin f).IsHomogeneous 1` using `IsHomogeneous.sum _ _ _ fun i _ => isHomogeneous_C_mul_X (f i) i`. Simplify using `using h.pow d`.
+-/
 theorem isHomogeneous_lin_pow {κ : Type} [Fintype κ] (f : κ → ℝ) (d : ℕ) : ((lin f) ^ d).IsHomogeneous d := by
   have h : (lin f).IsHomogeneous 1 :=
     IsHomogeneous.sum _ _ _ fun i _ => isHomogeneous_C_mul_X (f i) i
@@ -59,6 +74,13 @@ theorem isHomogeneous_lin_pow {κ : Type} [Fintype κ] (f : κ → ℝ) (d : ℕ
 
 open Classical in
 
+/- English proof (translation)
+Unfold `swapPol`. Rewrite using `[← AlgHom.comp_apply, comp_aeval]`. Use `congr 2`. Use function extensionality and compare the values at `i`. Use `fin_cases i`.
+
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Use `show rename e (lin fun z => if z = x ∨ z = y then 0 else ((n (e z) : ℤ) : ℝ)) = lin fun z => if z = e x ∨ z = e y then 0 else (n z : ℝ)`. Rewrite using `[← rename_lin_comp e]`. Use `congr 2`.
+
+Use function extensionality and compare the values at `z`. Simplify using `only [e.injective.eq_iff]`.
+-/
 theorem rename_swapPol {κ ι : Type} [Fintype κ] [Fintype ι] (e : κ ≃ ι) (G : ℕ → ℤ → ℤ → MvPolynomial (Fin 3) ℝ)
     (D : ℕ) (x y : κ) (n : ι → ℤ) :
     rename e (swapPol G D x y fun z => n (e z)) = swapPol G D (e x) (e y) n := by
@@ -78,6 +100,11 @@ theorem rename_swapPol {κ ι : Type} [Fintype κ] [Fintype ι] (e : κ ≃ ι) 
 
 open GlobalTheory.FlagPoly in
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Take `⟨τ', k⟩` from `x`. Distinguish the cases in `h : τ' = τ`. Substitute `h` using the available equality. Simplify using `only [swapAt, if_true, Equiv.swap_apply_def, Prod.mk.injEq, true_and]`.
+
+Apply the tactic sequence `split_ifs <;> rfl`. Simplify using `[swapAt, h, Equiv.swap_apply_def]`.
+-/
 theorem swapAt_eq_swap [DecidableEq ι] (τ : ι) (a b : Fin N) : swapAt τ a b = ⇑(Equiv.swap (τ, a) (τ, b)) := by
   funext x
   obtain ⟨τ', k⟩ := x
@@ -87,6 +114,11 @@ theorem swapAt_eq_swap [DecidableEq ι] (τ : ι) (a b : Fin N) : swapAt τ a b 
     split_ifs <;> rfl
   · simp [swapAt, h, Equiv.swap_apply_def]
 
+/- English proof (translation)
+Establish `ha` using `a.2`. Establish `hb'` using `b.2`. Distinguish the cases in `h : (a : ℕ) < j`. Establish `h' : (b : ℕ) < j` using `by omega`. Apply the tactic sequence `refine ⟨(τ, true), ⟨a, by simpa [rkB] using h⟩, ⟨b, by simpa [rkB] using h'⟩, hab, ?_, ?_⟩ <;>`.
+
+Conclude with `Prod.ext rfl (Fin.ext (by simp))`. Apply the tactic sequence `refine ⟨(τ, false), ⟨a - j, by simp only [rkB, cond_false]; omega⟩, ⟨b - j, by simp only [rkB, cond_false]; omega⟩, by simp; omega, ?_, ?_⟩ <;> exact Prod.ext rfl (Fin.ext (by simp; omega))`.
+-/
 theorem exists_adj (hj : j ≤ N) (τ : ι) (a b : Fin N) (hab : (b : ℕ) = a + 1) (hb : (b : ℕ) ≠ j) :
     ∃ (A : ι × Bool) (i i' : Fin (rkB ι N j A)), (i' : ℕ) = i + 1 ∧
       blockEquiv ι N j hj ⟨A, i⟩ = (τ, a) ∧ blockEquiv ι N j hj ⟨A, i'⟩ = (τ, b) := by
@@ -101,6 +133,9 @@ theorem exists_adj (hj : j ≤ N) (τ : ι) (a b : Fin N) (hab : (b : ℕ) = a +
 
 open GlobalTheory.FlagPoly in
 
+/- English proof (translation)
+Rewrite using `[swapAt_eq_swap, ← hp, ← hq, Equiv.swap_apply_def, Equiv.swap_apply_def]`. Simplify using `only [e.injective.eq_iff]`. Apply the tactic sequence `split_ifs <;> rfl`.
+-/
 theorem swapAt_comp_equiv {κ : Type} {inst : DecidableEq κ} [DecidableEq ι] (e : κ ≃ ι × Fin N) (p q : κ) (τ : ι)
     (a b : Fin N) (hp : e p = (τ, a)) (hq : e q = (τ, b)) (z : κ) : swapAt τ a b (e z) = e (Equiv.swap p q z) := by
   rw [swapAt_eq_swap, ← hp, ← hq, Equiv.swap_apply_def, Equiv.swap_apply_def]

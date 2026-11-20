@@ -22,6 +22,9 @@ open MonoidalCategory CartesianMonoidalCategory MonObj
 
 namespace GlobalTheory.KSFrameChange
 
+/- English proof (translation)
+Combine the equalities or inequalities in the calculation `calc ∑ a, ∑ b, ∑ x, ∑ y, F a b x y = ∑ a, ∑ b, ∑ y, ∑ x, F a b x y := Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => Finset.sum_comm _ = ∑ a, ∑ y, ∑ b, ∑ x, F a b x y := Finset.sum_congr rfl fun _ _ => Finset.sum_comm _ = ∑ y, ∑ a, ∑ b, ∑ x, F a b x y := Finset.s …`.
+-/
 theorem sum_four_comm {R : Type} [AddCommMonoid R] {ι₁ ι₂ ι₃ ι₄ : Type} [Fintype ι₁] [Fintype ι₂] [Fintype ι₃]
     [Fintype ι₄] (F : ι₁ → ι₂ → ι₃ → ι₄ → R) :
     ∑ a, ∑ b, ∑ x, ∑ y, F a b x y = ∑ y, ∑ x, ∑ b, ∑ a, F a b x y :=
@@ -35,11 +38,25 @@ theorem sum_four_comm {R : Type} [AddCommMonoid R] {ι₁ ι₂ ι₃ ι₄ : Ty
     _ = ∑ y, ∑ x, ∑ b, ∑ a, F a b x y :=
         Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => Finset.sum_comm
 
+/- English proof (translation)
+The claim follows from `(sum_four_comm F).trans Finset.sum_comm`.
+-/
 theorem sum_four_comm' {R : Type} [AddCommMonoid R] {ι₁ ι₂ ι₃ ι₄ : Type} [Fintype ι₁] [Fintype ι₂] [Fintype ι₃]
     [Fintype ι₄] (F : ι₁ → ι₂ → ι₃ → ι₄ → R) :
     ∑ a, ∑ b, ∑ x, ∑ y, F a b x y = ∑ x, ∑ y, ∑ b, ∑ a, F a b x y :=
   (sum_four_comm F).trans Finset.sum_comm
 
+/- English proof (translation)
+Introduce `E _ _ _ H X t V U n n' v v' B D Θ hv hv' hB hKS`. Take `⟨J, W, j, d, hcov, hWL, hF, hD, hc⟩` from `hKS`. Use `⟨J, W, j, d, hcov, hWL, hF, hD, ?_⟩` and prove the remaining obligations. Introduce `i i' O hO f S _ φ g₀ w' hg hgO htr'`. Use `choose w hw using fun a => (GlobalTheory.LogKS.existsUnique_isTranslate t φ hg (hv a)).exists`.
+
+Rewrite using `[hc i i' O hO f S φ g₀ w hg hgO hw]`. Set `g' : overAt (g₀ ≫ t.G.hom) (DualNumber S) ⟶ t.G` to `Over.homMk (spMap (algebraMap S (DualNumber S)) ≫ g₀) (Category.assoc _ _ _)`. Use `choose gc yc hgc hyc hwc using htr'`. Establish `hgc' : ∀ c, gc c = g'` using `fun c => Over.OverMorphism.ext (hgc c)`. Establish `key : ∀ a (O' : t.G.left.Opens) (f' : Γ(t.G.left, O')), ⊤ ≤ g₀ ⁻¹ᵁ O' → (valR (w a) O' f').snd = ∑ c, φ (B a c) * (valR (w' c) O' f').snd`.
+
+Introduce `a O' f' hO'`. Take `⟨h0, hw'⟩` from `GlobalTheory.T.translate_tangent_combination_eq_prod t U v' (B a) (v a) φ g₀ hg g' yc hv' (hB a) rfl hyc`. Rewrite using `[hw' (w a) (hw a), GlobalTheory.T.snd_sectionValue_translate_prod_first_order_linear (g₀ ≫ t.G.hom) t.G g₀ g' rfl yc (fun c => φ (B a c)) h0 O' f' hO']`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[← hwc c, hgc' c]`.
+
+Repeatedly rewrite using `[key _ O f hgO]`. Establish `hO2 : ⊤ ≤ g₀ ⁻¹ᵁ (t.PP.L.U (j i) ⊓ t.PP.L.U (j i'))` using `hgO.trans (fun x hx => (hO.trans (inf_le_inf (hWL i) (hWL i'))) hx)`. Repeatedly rewrite using `[key _ _ _ hO2]`. Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, map_sum, map_mul, Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[sum_four_comm']`.
+
+Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`.
+-/
 theorem isKS_frame_change : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (X : Scheme.{0}) (t : SAB H X)
     (V : X.Opens) (U : X.affineOpens) (n n' : ℕ) (v : Fin n → (Sp (DualNumber Γ(X, U.1)) ⟶ t.G.left))
     (v' : Fin n' → (Sp (DualNumber Γ(X, U.1)) ⟶ t.G.left)) (B : Matrix (Fin n) (Fin n') Γ(X, U.1))

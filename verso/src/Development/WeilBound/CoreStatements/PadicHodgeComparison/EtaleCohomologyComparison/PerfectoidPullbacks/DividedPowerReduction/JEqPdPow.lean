@@ -30,8 +30,18 @@ variable (T : Thick (nlFun γ 0 X q (κA O I)))
 
 abbrev lnT (l n : ℕ) : Ideal T.B := Ideal.span {(l : T.B) ^ n}
 
+/- English proof (translation)
+The claim follows from `((GlobalTheory.CompanionTheory.DPFil.isFil_sFil (⊤ : ObjectProperty _)).one ⟨T, trivial⟩).symm`.
+-/
 theorem J_eq_pdPow : T.J = T.pdPow 1 := ((GlobalTheory.CompanionTheory.DPFil.isFil_sFil (⊤ : ObjectProperty _)).one ⟨T, trivial⟩).symm
 
+/- English proof (translation)
+Use `⟨inf_le_right, fun k hk x ⟨hxl, hx⟩ => ⟨?_, T.δ.dpow_mem hk hx⟩⟩` and prove the remaining obligations. Take `⟨y, rfl⟩` from `Ideal.mem_span_singleton'.1 hxl`. Establish `hy : ∀ (m : ℕ) (y : T.B), y * (l : T.B) ^ m ∈ T.J → y ∈ T.J`. Introduce `m`. Proceed by induction on `m with`.
+
+Consider the case `zero => simp`. Consider the case `succ m ih`. Introduce `y hy`. Use `ih y ?_` and prove the remaining obligations. Rewrite `hy`, the goal using `[J_eq_pdPow]`.
+
+Conclude with `h.2 1 _ (by rwa [pow_succ, ← mul_assoc, mul_comm] at hy)`. Rewrite using `[mul_comm, T.δ.dpow_mul (hy n y hx)]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.pow_mem_of_mem _ (Ideal.mem_span_singleton_self _) _ (Nat.pos_of_ne_zero hk))`.
+-/
 theorem subDP (h : TF l s T) (n : ℕ) : IsSubDPIdeal T.δ (lnT T l n ⊓ T.J) := by
   refine ⟨inf_le_right, fun k hk x ⟨hxl, hx⟩ => ⟨?_, T.δ.dpow_mem hk hx⟩⟩
   obtain ⟨y, rfl⟩ := Ideal.mem_span_singleton'.1 hxl
@@ -50,6 +60,9 @@ theorem subDP (h : TF l s T) (n : ℕ) : IsSubDPIdeal T.δ (lnT T l n ⊓ T.J) :
 def redδ (h : TF l s T) (n : ℕ) : DividedPowers (T.J.map (Ideal.Quotient.mk (lnT T l n))) :=
   DividedPowers.Quotient.dividedPowers T.δ (subDP T h n)
 
+/- English proof (translation)
+The claim follows from `DividedPowers.Quotient.isDPMorphism T.δ (subDP T h n)`.
+-/
 theorem redδ_dp (h : TF l s T) (n : ℕ) : IsDPMorphism T.δ (redδ T h n) (Ideal.Quotient.mk (lnT T l n)) :=
   DividedPowers.Quotient.isDPMorphism T.δ (subDP T h n)
 
@@ -63,6 +76,11 @@ def qBar (l n : ℕ) : T.B ⧸ T.J →+* (T.B ⧸ lnT T l n) ⧸ T.J.map (Ideal.
 
 variable (d : RedIn γ' κ' γ l n)
 
+/- English proof (translation)
+Use `⟨Ideal.map_le_iff_le_comap.2 fun x hx => ?_, fun {k} x hx => ?_⟩` and prove the remaining obligations. Take `⟨y, hy, e⟩` from `d.mem x hx`. Express the relevant statement in the definitionally equal form `iBar T l n (d.ρ x) ∈ T.J.map (Ideal.Quotient.mk (lnT T l n))`. Rewrite using `[e]`. Conclude with `Ideal.mem_map_of_mem _ (T.i_mem hy)`.
+
+Take `⟨y, hy, e⟩` from `d.mem x hx`. Express the relevant statement in the definitionally equal form `(redδ T h n).dpow k (iBar T l n (d.ρ x)) = iBar T l n (d.ρ _)`. Rewrite using `[d.dp k x hx y hy e, e]`. Conclude with `((redδ_dp T h n).2 _ (T.i_mem hy)).trans (congrArg _ (T.dpow_i k hy))`.
+-/
 theorem red_compat (h : TF l s T) : IsDPMorphism γ' (redδ T h n) ((iBar T l n).comp d.ρ) := by
   refine ⟨Ideal.map_le_iff_le_comap.2 fun x hx => ?_, fun {k} x hx => ?_⟩
   · obtain ⟨y, hy, e⟩ := d.mem x hx
@@ -77,6 +95,13 @@ theorem red_compat (h : TF l s T) : IsDPMorphism γ' (redδ T h n) ((iBar T l n)
 def ψBar (h : TF l s T) : R ⧸ I' →+* (T.B ⧸ lnT T l n) ⧸ T.J.map (Ideal.Quotient.mk (lnT T l n)) :=
   Ideal.quotientMap _ ((iBar T l n).comp d.ρ) (Ideal.map_le_iff_le_comap.1 (red_compat T d h).1)
 
+/- English proof (translation)
+Use extensionality with `a`. Take `⟨r, hr⟩` from `Ideal.Quotient.mk_surjective (κ' a)`. Take `⟨y, hy, e⟩` from `d.hκ a r hr.symm`. Establish `h1 : (show PtOver X q _ _ from T.y).1.1 (κA O I a) = Ideal.Quotient.mk T.J (T.i (algebraMap O A a))` using `T.w _`. Rewrite using `[RingHom.comp_apply, ← hr, RingHom.comp_apply, RingHom.comp_apply, h1]`.
+
+Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk _ (iBar T l n (d.ρ r)) = Ideal.Quotient.mk _ (Ideal.Quotient.mk _ _)`. Rewrite using `[e]`. Use `Ideal.Quotient.eq.2 ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk _ (T.i _) - _ ∈ _`. Rewrite using `[← map_sub, map_add, add_sub_cancel_left]`.
+
+Conclude with `Ideal.mem_map_of_mem _ (T.i_mem hy)`.
+-/
 theorem ψBar_κ (h : TF l s T) : (ψBar T d h).comp κ' = (qBar T l n).comp ((show PtOver X q _ _ from T.y).1.1.comp (κA O I)) := by
   ext a
   obtain ⟨r, hr⟩ := Ideal.Quotient.mk_surjective (κ' a)
@@ -111,6 +136,9 @@ def lnMap {B B' : Type} [CommRing B] [CommRing B'] (φ : B →+* B') (l : ℕ) {
 
 variable (d : RedIn γ' κ' γ l n)
 
+/- English proof (translation)
+Use `⟨Ideal.map_le_iff_le_comap.2 (Ideal.map_le_iff_le_comap.2 fun x hx => Ideal.mem_map_of_mem (Ideal.Quotient.mk _) (f.hle hx)), fun {k} x hx => ?_⟩` and prove the remaining obligations. Take `⟨y, hy, rfl⟩` from `(Ideal.mem_map_iff_of_surjective _ Ideal.Quotient.mk_surjective).1 hx`. Rewrite using `[(redδ_dp T h n).2 y hy]`. Conclude with `((redδ_dp T' h' n).2 _ (f.hle hy)).trans (congrArg _ (f.dp.2 y hy))`.
+-/
 theorem red_dp {T T' : Thick (nlFun γ 0 X q (κA O I))} (h : TF l s T) (h' : TF l s T') (f : T ⟶ T') :
     IsDPMorphism (redδ T h n) (redδ T' h' n) (lnMap f.φ l le_rfl) := by
   refine ⟨Ideal.map_le_iff_le_comap.2 (Ideal.map_le_iff_le_comap.2 fun x hx => Ideal.mem_map_of_mem (Ideal.Quotient.mk _) (f.hle hx)),
@@ -147,6 +175,9 @@ def redG : (TS γ q l s 𝒱).FullSubcategory ⥤ Thick (nlFun γ' l X q κ') wh
   map_id T := hom_ext (Ideal.Quotient.ringHom_ext (RingHom.ext fun _ => rfl))
   map_comp f g := hom_ext (Ideal.Quotient.ringHom_ext (RingHom.ext fun _ => rfl))
 
+/- English proof (translation)
+The claim follows from `le_trans (Ideal.span_singleton_le_span_singleton.2 (dvd_of_eq (show T.obj.i ((l : A) ^ n) = _ by rw [map_pow, map_natCast]))) le_sup_right`.
+-/
 theorem ln_le (r : Option ℤ) (T : (TS γ q l s 𝒱).FullSubcategory) : lnT T.obj l n ≤ (stdI (TS γ q l s 𝒱) r ((l : A) ^ n)).S T :=
   le_trans (Ideal.span_singleton_le_span_singleton.2 (dvd_of_eq (show T.obj.i ((l : A) ^ n) = _ by rw [map_pow, map_natCast])))
     le_sup_right

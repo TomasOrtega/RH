@@ -22,9 +22,15 @@ variable {K} in
 def Link.pt {X : Space (T.fr ∅) (inc h)} {B : W.UniversalOrdinaryDeterminantRing K.r} (φ : B.B →ₐ[c'.O] X.B) (y : X.A →ₐ[c'.O] PadicAlgCl l) : B.Pt :=
   (y.comp (IsScalarTower.toAlgHom c'.O X.B X.A)).comp φ
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem Link.pt_apply {X : Space (T.fr ∅) (inc h)} {B : W.UniversalOrdinaryDeterminantRing K.r} (φ : B.B →ₐ[c'.O] X.B) (y : X.A →ₐ[c'.O] PadicAlgCl l)
     (b : B.B) : Link.pt φ y b = y (algebraMap X.B X.A (φ b)) := rfl
 
+/- English proof (translation)
+Introduce `b hb`. Rewrite using `[RingHom.mem_ker]`. Express the relevant statement in the definitionally equal form `Link.pt φ y b = 0`. Rewrite using `[Link.pt_apply]`. Conclude with `hy (φ b) (Ideal.mem_map_of_mem _ hb)`.
+-/
 theorem Link.le_ker_pt {X : Space (T.fr ∅) (inc h)} {B : W.UniversalOrdinaryDeterminantRing K.r} (φ : B.B →ₐ[c'.O] X.B) (y : X.A →ₐ[c'.O] PadicAlgCl l)
     (J₀ : Ideal B.B) (hy : ∀ b ∈ J₀.map φ, y (algebraMap X.B X.A b) = 0) : J₀ ≤ RingHom.ker (Link.pt φ y) := by
   intro b hb

@@ -9,6 +9,9 @@ section Ring
 
 variable {R n : Type} [CommRing R] [Fintype n] [DecidableEq n] [LinearOrder n]
 
+/- English proof (translation)
+Rewrite using `[Units.val_mul, Matrix.mul_apply]`. Use `Finset.sum_eq_single i (fun k _ hk => ?_) (fun h => absurd (Finset.mem_univ _) h)` and prove the remaining obligations. Break down `lt_or_gt_of_ne hk with h | h` into its components or cases. Rewrite using `[(mem_borel R).mp ha i k h, zero_mul]`. Rewrite using `[(mem_borel R).mp hb k i h, mul_zero]`.
+-/
 private theorem diag_mul {a b : GL n R} (ha : a ∈ borel R n) (hb : b ∈ borel R n) (i : n) :
     ((a * b : GL n R) : Matrix n n R) i i = (a : Matrix n n R) i i * (b : Matrix n n R) i i := by
   rw [Units.val_mul, Matrix.mul_apply]
@@ -17,6 +20,9 @@ private theorem diag_mul {a b : GL n R} (ha : a ∈ borel R n) (hb : b ∈ borel
   · rw [(mem_borel R).mp ha i k h, zero_mul]
   · rw [(mem_borel R).mp hb k i h, mul_zero]
 
+/- English proof (translation)
+Rewrite using `[← diag_mul ha (inv_mem ha), mul_inv_cancel, Units.val_one, one_apply_eq]`.
+-/
 private theorem diag_inv {a : GL n R} (ha : a ∈ borel R n) (i : n) :
     (a : Matrix n n R) i i * ((a⁻¹ : GL n R) : Matrix n n R) i i = 1 := by
   rw [← diag_mul ha (inv_mem ha), mul_inv_cancel, Units.val_one, one_apply_eq]
@@ -36,6 +42,9 @@ private def BC (C : Subgroup Rˣ) : Subgroup (GL n R) where
     rw [← e] at this
     exact Units.inv_eq_of_mul_eq_one_right this⟩
 
+/- English proof (translation)
+Use `⟨mul_mem (mul_mem ha hb.1) (inv_mem ha), fun i => ?_⟩` and prove the remaining obligations. Take `⟨c, hc, e⟩` from `hb.2 i`. Use `⟨c, hc, ?_⟩` and prove the remaining obligations. Rewrite using `[diag_mul (mul_mem ha hb.1) (inv_mem ha), diag_mul ha hb.1, ← e, mul_right_comm, diag_inv ha i, one_mul]`.
+-/
 private theorem BC_conj {C : Subgroup Rˣ} {a b : GL n R} (ha : a ∈ borel R n) (hb : b ∈ BC n C) :
     a * b * a⁻¹ ∈ BC n C := by
   refine ⟨mul_mem (mul_mem ha hb.1) (inv_mem ha), fun i => ?_⟩
@@ -44,11 +53,19 @@ private theorem BC_conj {C : Subgroup Rˣ} {a b : GL n R} (ha : a ∈ borel R n)
   rw [diag_mul (mul_mem ha hb.1) (inv_mem ha), diag_mul ha hb.1, ← e, mul_right_comm,
     diag_inv ha i, one_mul]
 
+/- English proof (translation)
+Use extensionality with `g`. Use `⟨fun h => h.1, fun h => ⟨h, fun i => ?_⟩⟩` and prove the remaining obligations. Conclude with `⟨Units.mkOfMulEqOne _ _ (diag_inv h i), trivial, rfl⟩`.
+-/
 private theorem BC_top : BC n (⊤ : Subgroup Rˣ) = borel R n := by
   ext g
   refine ⟨fun h => h.1, fun h => ⟨h, fun i => ?_⟩⟩
   exact ⟨Units.mkOfMulEqOne _ _ (diag_inv h i), trivial, rfl⟩
 
+/- English proof (translation)
+Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `f (((diagT R n d : GL n R) : Matrix n n R) i j) = _`. Rewrite using `[val_diagT, val_diagT]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality.
+
+Simplify using `[Matrix.diagonal_apply_eq]`. Simplify using `[Matrix.diagonal_apply_ne _ hij]`.
+-/
 private theorem map_diagT {S : Type} [CommRing S] (f : R →+* S) (d : n → Rˣ) :
     GeneralLinearGroup.map (n := n) f (diagT R n d) = diagT S n fun i => Units.map f.toMonoidHom (d i) := by
   ext i j
@@ -59,12 +76,20 @@ private theorem map_diagT {S : Type} [CommRing S] (f : R →+* S) (d : n → Rˣ
     simp [Matrix.diagonal_apply_eq]
   · simp [Matrix.diagonal_apply_ne _ hij]
 
+/- English proof (translation)
+Use `(mem_borel S).2 fun i j hij => ?_` and prove the remaining obligations. Use `show f ((g : Matrix n n R) i j) = 0`. Rewrite using `[(mem_borel R).1 hg i j hij, map_zero]`.
+-/
 private theorem map_borel {S : Type} [CommRing S] (f : R →+* S) {g : GL n R} (hg : g ∈ borel R n) :
     GeneralLinearGroup.map (n := n) f g ∈ borel S n := by
   refine (mem_borel S).2 fun i j hij => ?_
   show f ((g : Matrix n n R) i j) = 0
   rw [(mem_borel R).1 hg i j hij, map_zero]
 
+/- English proof (translation)
+Establish `h` using `(mem_unipB R).1 hg`. Use `(mem_unipB S).2 ⟨fun i j hij => ?_, fun i => ?_⟩` and prove the remaining obligations. Use `show f ((g : Matrix n n R) i j) = 0`. Rewrite using `[h.1 i j hij, map_zero]`. Use `show f ((g : Matrix n n R) i i) = 1`.
+
+Rewrite using `[h.2 i, map_one]`.
+-/
 private theorem map_unipB {S : Type} [CommRing S] (f : R →+* S) {g : GL n R} (hg : g ∈ unipB R n) :
     GeneralLinearGroup.map (n := n) f g ∈ unipB S n := by
   have h := (mem_unipB R).1 hg
@@ -74,6 +99,23 @@ private theorem map_unipB {S : Type} [CommRing S] (f : R →+* S) {g : GL n R} (
   · show f ((g : Matrix n n R) i i) = 1
     rw [h.2 i, map_one]
 
+/- English proof (translation)
+Take `⟨L, hL1, hL2, hL3⟩` from `IwahoriOnto.exists_mul_mem_borel h hh.1`. Take `⟨u, hu, hp⟩` from `exists_levi_mul_unip R (points n) ⟨h * L, hL3⟩`. Use `set d : n → Rˣ := (leviTorus R n).symm (leviProj R (points n) ⟨h * L, hL3⟩) with hd_def`. Establish `hd : diagT R n d = leviEmb R (points n) (leviProj R (points n) ⟨h * L, hL3⟩)`. Express the relevant statement in the definitionally equal form `leviEmb R (points n) ((leviTorus R n) ((leviTorus R n).symm _)) = _`.
+
+Rewrite using `[MulEquiv.apply_symm_apply]`. Establish `hp' : h * L = diagT R n d * u` using `by rw [hd]; exact hp`. Establish `heq : h = diagT R n d * u * L⁻¹` using `by rw [← hp', mul_inv_cancel_right]`. Establish `hLb : GeneralLinearGroup.map (n` using `n) (IsLocalRing.residue R) L ∈ borel (IsLocalRing.ResidueField R) n := by`. Establish `e : GeneralLinearGroup.map (n` using `n) (IsLocalRing.residue R) L = (GeneralLinearGroup.map (n := n) (IsLocalRing.residue R) h)⁻¹ * GeneralLinearGroup.map (n := n) (IsLocalRing.residue R) (h * L) := by`.
+
+Rewrite using `[map_mul, inv_mul_cancel_left]`. Rewrite using `[e]`. Conclude with `mul_mem (inv_mem hh.1) (map_borel _ hL3)`. Establish `hred : GeneralLinearGroup.map (n` using `n) (IsLocalRing.residue R) L = 1 := by`. Use extensionality with `i j`.
+
+Rewrite using `[Units.val_one]`. Break down `lt_trichotomy i j with hij | hij | hij` into its components or cases. Express the relevant statement in the definitionally equal form `IsLocalRing.residue R ((L : Matrix n n R) i j) = _`. Rewrite using `[hL1 i j hij, map_zero, Matrix.one_apply_ne (ne_of_lt hij)]`. Substitute `hij` using the available equality.
+
+Express the relevant statement in the definitionally equal form `IsLocalRing.residue R ((L : Matrix n n R) i i) = _`. Rewrite using `[hL2 i, map_one, Matrix.one_apply_eq]`. Rewrite using `[(mem_borel _).mp hLb i j hij, Matrix.one_apply_ne (ne_of_gt hij)]`. Establish `hdb : diagT R n d ∈ borel R n` using `(mem_borel R).mpr fun i j hij => by`. Rewrite using `[val_diagT, Matrix.diagonal_apply_ne _ (ne_of_gt hij)]`.
+
+Establish `hub : u ∈ borel R n` using `(mem_borel R).mpr ((mem_unipB R).mp hu).1`. Establish `hrh : GeneralLinearGroup.map (n` using `n) (IsLocalRing.residue R) h = GeneralLinearGroup.map (n := n) (IsLocalRing.residue R) (diagT R n d) * GeneralLinearGroup.map (n := n) (IsLocalRing.residue R) u := by`. Rewrite using `[heq, map_mul, map_mul, map_inv, hred, inv_one, mul_one]`. Use `⟨d, fun i => ?_, u, hu, L⁻¹, inv_mem hred, heq⟩` and prove the remaining obligations. Take `⟨c, hc, e⟩` from `hh.2 i`.
+
+Rewrite `e` using `[hrh, diag_mul (map_borel _ hdb) (map_borel _ hub)]`. Establish `h1` using `((mem_unipB _).mp (map_unipB (IsLocalRing.residue R) hu)).2 i`. Rewrite `e` using `[h1, mul_one, map_diagT, val_diagT, Matrix.diagonal_apply_eq]`. Establish `hc' : c = Units.map (IsLocalRing.residue R).toMonoidHom (d i)` using `Units.ext e`. Rewrite using `[← hc']`.
+
+Conclude with `hc`.
+-/
 private theorem factor [IsLocalRing R] (C : Subgroup (IsLocalRing.ResidueField R)ˣ) (h : GL n R)
     (hh : GeneralLinearGroup.map (n := n) (IsLocalRing.residue R) h ∈ BC n C) :
     ∃ d : n → Rˣ, (∀ i, Units.map (IsLocalRing.residue R).toMonoidHom (d i) ∈ C) ∧ ∃ u ∈ unipB R n,
@@ -126,6 +168,19 @@ section Loc
 
 variable (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : ℕ)
 
+/- English proof (translation)
+Establish `hinj : Function.Injective (algebraMap 𝒪[k] k)` using `Subtype.val_injective`. Apply `le_antisymm` to reduce the goal to its premises. Use `sup_le (sup_le ?_ ?_) ?_` and prove the remaining obligations. Use `Subgroup.map_mono fun g hg => ?_` and prove the remaining obligations. Rewrite using `[Subgroup.mem_comap, MonoidHom.mem_ker.1 hg]`.
+
+Conclude with `one_mem _`. Introduce and unpack `_ ⟨hu, h, rfl⟩`. Establish `h1` using `(mem_unipB k).1 hu`. Establish `h2 : h ∈ unipB 𝒪[k] (Fin n)` using `(mem_unipB _).2 ⟨fun i j hij => hinj ((h1.1 i j hij).trans (map_zero _).symm), fun i => hinj ((h1.2 i).trans (map_one _).symm)⟩`. Establish `h3` using `(mem_unipB _).1 (map_unipB (IsLocalRing.residue 𝒪[k]) h2)`.
+
+Conclude with `⟨h, ⟨(mem_borel _).2 h3.1, fun i => ⟨1, one_mem _, (h3.2 i).symm⟩⟩, rfl⟩`. Introduce and unpack `_ ⟨t, ht, rfl⟩`. Establish `h1 : ∀ i, ∃ d : 𝒪[k]ˣ, Units.map (IsLocalRing.residue 𝒪[k]).toMonoidHom d ∈ C ∧ Units.map (algebraMap 𝒪[k] k).toMonoidHom d = t i` using `fun i => ht i trivial`. Use `choose d hd e using h1`. Use `⟨diagT _ _ d, ?_, by rw [map_diagT, funext e]⟩` and prove the remaining obligations.
+
+Use `show GeneralLinearGroup.map (n := Fin n) (IsLocalRing.residue 𝒪[k]) _ ∈ BC (Fin n) C`. Rewrite using `[map_diagT]`. Use `⟨(mem_borel _).2 fun i j hij => ?_, fun i => ⟨_, hd i, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[val_diagT, diagonal_apply_ne _ hij.ne']`. Rewrite using `[val_diagT, diagonal_apply_eq]`.
+
+Introduce and unpack `_ ⟨h, hh, rfl⟩`. Take `⟨d, hd, u, hu, L, hL, rfl⟩` from `factor C h hh`. Rewrite using `[map_mul, map_mul]`. Use `mul_mem (mul_mem (Subgroup.mem_sup_right ?_) (Subgroup.mem_sup_left (Subgroup.mem_sup_right ?_))) (Subgroup.mem_sup_left (Subgroup.mem_sup_left ⟨L, hL, rfl⟩))` and prove the remaining obligations. Rewrite using `[map_diagT]`.
+
+Conclude with `⟨_, fun i _ => ⟨d i, hd i, rfl⟩, rfl⟩`. Conclude with `⟨map_unipB _ hu, u, rfl⟩`.
+-/
 private theorem iwC_eq (C : Subgroup 𝓀[k]ˣ) :
     iwC k n C = ((BC (Fin n) C).comap (GeneralLinearGroup.map (n := Fin n) (IsLocalRing.residue 𝒪[k]))).map
       (GeneralLinearGroup.map (n := Fin n) (algebraMap 𝒪[k] k)) := by
@@ -165,6 +220,25 @@ end Loc
 
 end UpperTheory.V.AlgebraTools
 
+/- English proof (translation)
+Introduce `k _ _ _ _ n C`. Use `⟨fun g => ?_, ?_, ?_, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[iwC_eq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, hh, rfl⟩`.
+
+Use `⟨⟨h, hh.1, rfl⟩, fun i => ?_⟩` and prove the remaining obligations. Take `⟨c, hc, e⟩` from `hh.2 i`. Establish `hu : IsUnit ((h : Matrix (Fin n) (Fin n) 𝒪[k]) i i)`. Apply `(IsLocalRing.residue_ne_zero_iff_isUnit _).mp` to reduce the goal to its premises. Introduce `h0`.
+
+Apply `c.ne_zero` to reduce the goal to its premises. Rewrite using `[e]`. Conclude with `h0`. Establish `hcu : Units.map (IsLocalRing.residue 𝒪[k]).toMonoidHom hu.unit = c`. Apply `Units.ext` to reduce the goal to its premises.
+
+Rewrite using `[e]`. Both sides reduce to the same expression. Use `⟨Units.map (algebraMap 𝒪[k] k).toMonoidHom hu.unit, ⟨hu.unit, ?_, rfl⟩, rfl⟩` and prove the remaining obligations. Use `show Units.map (IsLocalRing.residue 𝒪[k]).toMonoidHom hu.unit ∈ C`. Rewrite using `[hcu]`.
+
+Conclude with `hc`. Introduce and unpack `⟨⟨h, hh, rfl⟩, hd⟩`. Use `⟨h, ⟨hh, fun i => ?_⟩, rfl⟩` and prove the remaining obligations. Take `⟨c, ⟨c', hc', rfl⟩, e⟩` from `hd i`. Establish `hce : (c' : 𝒪[k]) = (h : Matrix (Fin n) (Fin n) 𝒪[k]) i i` using `Subtype.ext e`.
+
+Use `⟨Units.map (IsLocalRing.residue 𝒪[k]).toMonoidHom c', hc', ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `IsLocalRing.residue 𝒪[k] (c' : 𝒪[k]) = IsLocalRing.residue 𝒪[k] ((h : Matrix (Fin n) (Fin n) 𝒪[k]) i i)`. Rewrite using `[hce]`. Rewrite using `[iwC_eq, BC_top]`. Both sides reduce to the same expression.
+
+Introduce `a ha b hb`. Rewrite `hb`, the goal using `[iwC_eq]`. Take `⟨a', ha', rfl⟩` from `ha`. Take `⟨b', hb', rfl⟩` from `hb`. Use `⟨a' * b' * a'⁻¹, ?_, by rw [map_mul, map_mul, map_inv]⟩` and prove the remaining obligations.
+
+Rewrite using `[SetLike.mem_coe, Subgroup.mem_comap, map_mul, map_mul, map_inv]`. Conclude with `BC_conj ha' hb'`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, -, rfl⟩`. Conclude with `(Valuation.Integers.isUnit_iff_valuation_eq_one (Valuation.integer.integers _)).mp u.isUnit`.
+
+Introduce `hx`. Set `xo : 𝒪[k]` to `⟨x, (Valuation.mem_integer_iff _ _).mpr hx.le⟩`. Establish `hu : IsUnit xo` using `(Valuation.Integers.isUnit_iff_valuation_eq_one (Valuation.integer.integers _)).mpr hx`. Conclude with `⟨hu.unit, Subgroup.mem_top _, Units.ext rfl⟩`.
+-/
 theorem UpperTheory.V.AlgebraTools.memIwC :
     ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : ℕ) (C : Subgroup 𝓀[k]ˣ), (∀ g : GL (Fin n) k, g ∈ iwC k n C ↔ g ∈ iwahori k (Fin n) ∧ ∀ i, ∃ c ∈ unitsC k C, (c : k) = (g : Matrix (Fin n) (Fin n) k) i i) ∧ iwC k n ⊤ = iwahori k (Fin n) ∧ (∀ a ∈ iwahori k (Fin n), ∀ b ∈ iwC k n C, a * b * a⁻¹ ∈ iwC k n C) ∧ ∀ x : kˣ, x ∈ unitsC k ⊤ ↔ valuation k (x : k) = 1 := by
   intro k _ _ _ _ n C

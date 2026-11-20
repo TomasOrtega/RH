@@ -14,6 +14,9 @@ open GlobalTheory GlobalTheory.RunIn
 
 namespace GlobalTheory.LatticeData
 
+/- English proof (translation)
+Introduce `D T hG j h hj σ hσ k`. Take `⟨Xx, h1, h2, h3, -⟩` from `exists_dataX_of_hasPrinc D T h j hj σ hσ (fun k γ => hG j hj σ hσ k γ) k`. Conclude with `⟨Xx, h1, h2, h3⟩`.
+-/
 theorem dataXOfModel_of_gamAt : ∀ (D : D7) (T : Core D), GamAt T → ∀ j, ∀ (_h : LawsCore T), InR D j → ∀ (σ₀ : T.Q.c.F →+* ℂ), GoodEmb T.Q.c σ₀ → ∀ (k : (T.U j σ₀).Comp), ∃ Xx : DataX D.host.E D.R.r, Xx.toData = (T.U j σ₀).X k ∧ Xx.g = T.Q.l.M ∧ Xx.Λ = Submodule.span (𝓞 D.host.E) {v | ∃ a ∈ D.host.AA, ∃ u ∈ Xx.L', v = a • u} := by
   intro D T hG j h hj σ hσ k
   obtain ⟨Xx, h1, h2, h3, -⟩ :=

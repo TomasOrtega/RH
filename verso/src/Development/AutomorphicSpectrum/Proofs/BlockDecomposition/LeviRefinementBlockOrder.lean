@@ -10,6 +10,15 @@ open DoubleCoset (doubleCoset)
 
 namespace GlobalTheory.CompanionTheory.CellCompare
 
+/- English proof (translation)
+Introduce `k _ _ _ _ α β' _ _ _ _ N m _ _ c _ _ e f δ hδ x`. Unfold `relParab`. Rewrite using `[Subgroup.mem_pi]`. Express the relevant statement in the definitionally equal form `_ ↔ (leviEmb k e x : Matrix (Fin N) (Fin N) k).BlockTriangular δ`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hx p q hpq`. Take `⟨⟨a, u⟩, rfl⟩` from `e.surjective p`. Take `⟨⟨b, v⟩, rfl⟩` from `e.surjective q`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality.
+
+Take `⟨⟨j, t⟩, rfl⟩` from `(f a).surjective u`. Take `⟨⟨j', t'⟩, rfl⟩` from `(f a).surjective v`. Rewrite using `[leviEmb_apply_same]`. Conclude with `mem_parab_iff.1 (hx a trivial) j j' t t' ((hδ a j' j t' t).1 hpq)`. Conclude with `leviEmb_apply_ne k e x hab u v`.
+
+Introduce `hx i _`. Rewrite using `[mem_parab_iff]`. Introduce `j j' t t' hjj`. Establish `h` using `hx ((hδ i j' j t' t).2 hjj)`. Rewrite `h` using `[leviEmb_apply_same]`. Then use the resulting hypothesis.
+-/
 theorem mem_relParab_iff_leviEmb_mem_blockUpper :
     ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
       {α β' : Type} [Fintype α] [LinearOrder α] [Fintype β'] [LinearOrder β'] {N : ℕ}

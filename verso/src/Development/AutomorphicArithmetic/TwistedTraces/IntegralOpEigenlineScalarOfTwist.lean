@@ -4,6 +4,33 @@ open MeasureTheory NumberField IsDedekindDomain Filter GroundTheory.Automorphic 
 open GroundTheory.Automorphic.CuspidalSpectrum GlobalTheory.IndefiniteRowSideFullHecke.IwahoriDoubleCosets GlobalTheory.PRep Formalism.BasicNotions GlobalTheory.CuspRep GlobalTheory.SmGL PositivityTheory.Rg.Tf.Core PositivityTheory.Rg.Tf.Geo GroundTheory.Global GroundTheory.Global.SemiLocal UpperTheory.ConvolutionTheory UpperTheory.ConvolutionTheory.L1 UpperTheory.ConvolutionTheory.C
 open scoped ComplexConjugate Classical InnerProductSpace
 
+/- English proof (translation)
+Introduce `G _ _ _ _ _ m _ τ I s J χ A e hCO hχ hm hA he hty hone hs hI`. Establish `hJo : IsOpen (J : Set G)` using `hCO.2`. Establish `hcc : ∀ g ∈ J, conj (χ g) * χ g = 1`. Introduce `g hg`. Rewrite using `[Complex.conj_mul', hχ.2.1 g hg]`.
+
+Simplify using the standard rewrite rules. Establish `hAe : A e = e`. Rewrite using `[← sub_eq_zero, ← Module.forall_dual_apply_eq_zero_iff ℂ]`. Introduce `l`. Rewrite using `[map_sub, sub_eq_zero, (hA e l).2]`.
+
+Establish `h1 : (fun g => ((J : Set G).indicator (fun x => conj (χ x)) g) * l (τ.ρ g e)) = (J : Set G).indicator fun _ => l e`. Use function extensionality and compare the values at `g`. Distinguish the cases in `hg : g ∈ (J : Set G)`. Rewrite using `[Set.indicator_of_mem hg, Set.indicator_of_mem hg, hty g hg, map_smul, smul_eq_mul, ← mul_assoc, hcc g hg, one_mul]`. Rewrite using `[Set.indicator_of_notMem hg, Set.indicator_of_notMem hg, zero_mul]`.
+
+Rewrite using `[h1, integral_indicator_const _ hJo.measurableSet]`. Simplify using `[Measure.real, hm]`. Establish `hAty : ∀ x, ∀ u ∈ J, τ.ρ u (A x) = χ u • A x`. Introduce `x u hu`. Rewrite using `[← sub_eq_zero, ← Module.forall_dual_apply_eq_zero_iff ℂ]`.
+
+Introduce `l`. Establish `h1` using `(hA x (l ∘ₗ τ.ρ u)).2`. Establish `h2` using `(hA x l).2`. Rewrite using `[map_sub, map_smul, sub_eq_zero, h2, smul_eq_mul, ← integral_const_mul, ← integral_mul_left_eq_self (fun g => χ u * (((J : Set G).indicator (fun x => conj (χ x)) g) * l (τ.ρ g x))) u]`. Use `h1.trans (integral_congr_ae (Filter.Eventually.of_forall fun g => ?_))` and prove the remaining obligations.
+
+Establish `h3 : χ u * (J : Set G).indicator (fun x => conj (χ x)) (u * g) = (J : Set G).indicator (fun x => conj (χ x)) g`. Distinguish the cases in `hg : g ∈ J`. Establish `hug : u * g ∈ (J : Set G)` using `J.mul_mem hu hg`. Establish `hg' : g ∈ (J : Set G)` using `hg`. Rewrite using `[Set.indicator_of_mem hug, Set.indicator_of_mem hg', hχ.2.2 u hu g hg, map_mul, ← mul_assoc, mul_comm (χ u), hcc u hu, one_mul]`.
+
+Establish `hug : u * g ∉ (J : Set G)` using `fun h => hg ((J.mul_mem_cancel_left hu).1 h)`. Establish `hg' : g ∉ (J : Set G)` using `hg`. Rewrite using `[Set.indicator_of_notMem hug, Set.indicator_of_notMem hg', mul_zero]`. Simplify using `only [← mul_assoc, h3, map_mul, LinearMap.comp_apply, Module.End.mul_apply]`. Take `⟨a, ha⟩` from `hone (I.symm e) (by`.
+
+Introduce `g hg`. Apply `I.injective` to reduce the goal to its premises. Rewrite using `[hI, map_smul, LinearEquiv.apply_symm_apply, hty _ (hs g hg).1, (hs g hg).2])`. Establish `ha0 : a ≠ 0`. Introduce and unpack `rfl`.
+
+Rewrite `ha` using `[zero_smul]`. Conclude with `he (by simpa using ha)`. Establish `hIe : I e = a⁻¹ • e`. Establish `h1 : e = a • I e`. Use `congrArg I ha` as an intermediate fact.
+
+Rewrite `this` using `[LinearEquiv.apply_symm_apply, map_smul]`. Then use the resulting hypothesis. Rewrite using `[eq_inv_smul_iff₀ ha0]`. Conclude with `h1.symm`. Take `⟨t, ht, htr⟩` from `UpperTheory.V.Z.Tf.L4.traceLine τ.V (Submodule.span ℂ {e}) (finrank_span_singleton he) A 1 one_ne_zero (fun v => by`. Take `⟨c, hc⟩` from `hone (A v) (hAty v)`.
+
+Rewrite using `[hc]`. Conclude with `Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self e))`. Use the proof step `(fun v hv => by`. Take `⟨c, rfl⟩` from `Submodule.mem_span_singleton.1 hv`. Rewrite using `[map_smul, hAe, one_smul])`.
+
+Use `I`. Use the proof step `(fun v hv => by`. Take `⟨c, rfl⟩` from `Submodule.mem_span_singleton.1 hv`. Rewrite using `[map_smul, hIe]`. Conclude with `Submodule.smul_mem _ _ (Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self e)))`.
+
+Conclude with `⟨t, ht, A, hA, htr⟩`.
+-/
 theorem UpperTheory.integralOp_eigenline_scalar_of_twist :
     ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [MeasurableSpace G] [BorelSpace G] (m : Measure G)
         [m.IsHaarMeasure] (τ : SmIrr G) (I : τ.V ≃ₗ[ℂ] τ.V) (s : G →* G) (J : Subgroup G) (χ : G → ℂ) (A : τ.V →ₗ[ℂ] τ.V) (e : τ.V),

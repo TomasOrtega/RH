@@ -99,10 +99,16 @@ section Basic₂
 
 variable {Xo : Moduli Dw l} {c : Coeff l}
 
+/- English proof (translation)
+Take `⟨L, _, _, hL, ⟨y⟩⟩` from `h`. Conclude with `⟨L, inferInstance, inferInstance, hL, y.x, y.x_over⟩`.
+-/
 theorem pointNumberField_of_framed (h : FramedPointNumberField Xo c) : PointNumberField Xo c := by
   obtain ⟨L, _, _, hL, ⟨y⟩⟩ := h
   exact ⟨L, inferInstance, inferInstance, hL, y.x, y.x_over⟩
 
+/- English proof (translation)
+Take `⟨a, ha, hu⟩` from `y.gen (h ▸ y'.s)`. Conclude with `⟨a, ⟨h, ha⟩, fun b ⟨_, hb⟩ => hu b hb⟩`.
+-/
 theorem genScal_existsUnique {S : Type} [CommRing S] [Algebra c.F S] (y y' : FrPt Xo c S) (h : y'.x = y.x) :
     ∃! a : S, GenScal a y y' := by
   obtain ⟨a, ha, hu⟩ := y.gen (h ▸ y'.s)

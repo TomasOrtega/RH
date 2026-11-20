@@ -17,6 +17,9 @@ namespace PointsBilinear
 
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
+/- English proof (translation)
+Take `⟨U, hU, hUo, hyU⟩` from `eventually_nhds_iff.mp hγ`. Establish `hdU : DifferentiableOn ℂ γ U` using `fun y' h => (hU y' h).differentiableWithinAt`. Establish `hc : ContDiffAt ℝ ∞ γ y` using `((ReciprocityTheory.ChartRestriction.DS.S7.cca_contDiffOn hUo hdU).contDiffAt (hUo.mem_nhds hyU)).restrict_scalars ℝ`. Establish `hρ : ContDiffAt ℝ ∞ u (γ y)` using `hu.1.contDiffAt (isOpen_blockNonzero.mem_nhds hy)`. Conclude with `(contDiffAt_infty.mp (hρ.comp y hc)) 2` after adjusting the coercions.
+-/
 theorem contDiffAt_comp {D : ℕ} {u : ((Σ k, ι k) → ℂ) → ℝ} (hu : IsDegZeroSmooth u)
     {γ : (Fin D → ℂ) → (Σ k, ι k) → ℂ} {y : Fin D → ℂ}
     (hγ : ∀ᶠ y' in 𝓝 y, DifferentiableAt ℂ γ y') (hy : ∀ k, ∃ i, γ y ⟨k, i⟩ ≠ 0) :
@@ -28,6 +31,13 @@ theorem contDiffAt_comp {D : ℕ} {u : ((Σ k, ι k) → ℂ) → ℝ} (hu : IsD
   have hρ : ContDiffAt ℝ ∞ u (γ y) := hu.1.contDiffAt (isOpen_blockNonzero.mem_nhds hy)
   exact_mod_cast (contDiffAt_infty.mp (hρ.comp y hc)) 2
 
+/- English proof (translation)
+Establish `h1 : fderiv ℝ (fun y' => ∑ t, f t y') =ᶠ[𝓝 y] fun y' => ∑ t, fderiv ℝ (f t) y'` using `by filter_upwards [eventually_all.mpr hf] with y' hy'`. Conclude with `fderiv_fun_sum fun t _ => (hy' t).differentiableAt (by norm_num)`. Establish `h2 : fderiv ℝ (fderiv ℝ (fun y' => ∑ t, f t y')) y = ∑ t, fderiv ℝ (fderiv ℝ (f t)) y`. Rewrite using `[h1.fderiv_eq]`. Conclude with `fderiv_fun_sum fun t _ => ((hf t).self_of_nhds.fderiv_right (m := 1) (by norm_num)).differentiableAt (by norm_num)`.
+
+Use extensionality with `i j`. Simplify using `only [cxHessian, h2, FunLike.coe_sum, Finset.sum_apply, Matrix.sum_apply]`. Use `push_cast`. Rewrite using `[← Finset.sum_div]`. Use `congr 1`.
+
+Simplify using `only [Finset.sum_add_distrib]`. Rewrite using `[← Finset.sum_sub_distrib, Finset.mul_sum]`.
+-/
 theorem cxHessian_sum {D : ℕ} {T : Type} [Fintype T] (f : T → (Fin D → ℂ) → ℝ) {y : Fin D → ℂ}
     (hf : ∀ t, ∀ᶠ y' in 𝓝 y, ContDiffAt ℝ 2 (f t) y') :
     cxHessian (fun y' => ∑ t, f t y') y = ∑ t, cxHessian (f t) y := by
@@ -46,6 +56,9 @@ theorem cxHessian_sum {D : ℕ} {T : Type} [Fintype T] (f : T → (Fin D → ℂ
   simp only [Finset.sum_add_distrib]
   rw [← Finset.sum_sub_distrib, Finset.mul_sum]
 
+/- English proof (translation)
+Take `⟨M, hM⟩` from `ReciprocityTheory.AnForm.A.exists_multilinearMap_eq_mdisc (D := D)`. Establish `e : ∀ C, mixedDisc (Function.update A k C) = M.toLinearMap A k C` using `fun C => by`. Rewrite using `[MultilinearMap.toLinearMap_apply, hM]`. Both sides reduce to the same expression. Simplify using `only [e, map_sum]`.
+-/
 theorem mixedDisc_update_sum {D : ℕ} {T : Type} [Fintype T] (A : Fin D → Matrix (Fin D) (Fin D) ℂ)
     (k : Fin D) (B : T → Matrix (Fin D) (Fin D) ℂ) :
     mixedDisc (Function.update A k (∑ t, B t)) = ∑ t, mixedDisc (Function.update A k (B t)) := by
@@ -55,6 +68,11 @@ theorem mixedDisc_update_sum {D : ℕ} {T : Type} [Fintype T] (A : Fin D → Mat
     rfl
   simp only [e, map_sum]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Use `Fin.cases ?_ (fun j => ?_) k` and prove the remaining obligations. Rewrite using `[Function.update_self]`. Simplify using `only [Fin.cons_zero]`. Rewrite using `[Function.update_of_ne (Fin.succ_ne_zero j)]`.
+
+Simplify using `only [Fin.cons_succ]`.
+-/
 theorem cxHessian_cons {n : ℕ} (L : Fin n → HermLine ι) (f v : ((Σ k, ι k) → ℂ) → ℝ)
     (γ : (Fin (n + 1) → ℂ) → (Σ k, ι k) → ℂ) (y : Fin (n + 1) → ℂ) :
     (fun k => cxHessian
@@ -69,6 +87,11 @@ theorem cxHessian_cons {n : ℕ} (L : Fin n → HermLine ι) (f v : ((Σ k, ι k
   · rw [Function.update_of_ne (Fin.succ_ne_zero j)]
     simp only [Fin.cons_succ]
 
+/- English proof (translation)
+Establish `hev` using `hγ.eventually_nhds`. Establish `hc : ∀ t, ∀ᶠ y' in 𝓝 y, ContDiffAt ℝ 2 (fun y'' => u t (γ y'')) y'` using `fun t => by filter_upwards [hev] with y' hy'`. Conclude with `contDiffAt_comp (hu t) (hy'.mono fun _ h => h.1) hy'.self_of_nhds.2`. Establish `hH` using `cxHessian_sum (fun t y' => u t (γ y')) hc`. Simplify using `only [maDensity]`.
+
+Rewrite using `[cxHessian_cons L _ (fun _ => 0) γ y]`. Simplify using `only [hH, mixedDisc_update_sum, Complex.re_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[cxHessian_cons L (u t) (fun _ => 0) γ y]`.
+-/
 theorem maDensity_cons_sum {n : ℕ} (L : Fin n → HermLine ι) {T : Type} [Fintype T]
     {u : T → ((Σ k, ι k) → ℂ) → ℝ} (hu : ∀ t, IsDegZeroSmooth (u t))
     {γ : (Fin (n + 1) → ℂ) → (Σ k, ι k) → ℂ} {y : Fin (n + 1) → ℂ}
@@ -90,6 +113,9 @@ theorem maDensity_cons_sum {n : ℕ} (L : Fin n → HermLine ι) {T : Type} [Fin
 
 omit [∀ k, Fintype (ι k)] in
 
+/- English proof (translation)
+Unfold `sheetDensity`. Distinguish the cases in `h : ∃ γ, IsSheet P Ψ y w γ`. Simplify using `only [dif_pos h, Finset.sum_mul]`. Simplify using `only [dif_neg h, Finset.sum_const_zero]`.
+-/
 theorem sheetDensity_sum_left {n : ℕ} (P : Ideal (MRing ι))
     (Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (n + 1) → ℂ)) (φ : Fin n → ((Σ k, ι k) → ℂ) → ℝ)
     {T : Type} [Fintype T] (u : T → ((Σ k, ι k) → ℂ) → ℝ) (y : Fin n → ℂ)
@@ -100,6 +126,11 @@ theorem sheetDensity_sum_left {n : ℕ} (P : Ideal (MRing ι))
   · simp only [dif_pos h, Finset.sum_mul]
   · simp only [dif_neg h, Finset.sum_const_zero]
 
+/- English proof (translation)
+Unfold `sheetDensity`. Distinguish the cases in `h : ∃ γ, IsSheet P Ψ y w γ`. Simplify using `only [dif_pos h]`. Establish `hγ : ∀ᶠ y' in 𝓝 y, DifferentiableAt ℂ h.choose y' ∧ ∀ k, ∃ i, h.choose y' ⟨k, i⟩ ≠ 0` using `by filter_upwards [h.choose_spec.2] with y' hy'`. Conclude with `⟨hy'.1, hy'.2.1.1⟩`.
+
+Rewrite using `[maDensity_cons_sum L hu hγ, Finset.mul_sum]`. Simplify using `only [dif_neg h, Finset.sum_const_zero]`.
+-/
 theorem sheetDensity_sum_right {n : ℕ} (P : Ideal (MRing ι))
     (Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (n + 1 + 1) → ℂ)) (L : Fin n → HermLine ι)
     {T : Type} [Fintype T] {u : T → ((Σ k, ι k) → ℂ) → ℝ} (hu : ∀ t, IsDegZeroSmooth (u t))
@@ -115,11 +146,17 @@ theorem sheetDensity_sum_right {n : ℕ} (P : Ideal (MRing ι))
     rw [maDensity_cons_sum L hu hγ, Finset.mul_sum]
   · simp only [dif_neg h, Finset.sum_const_zero]
 
+/- English proof (translation)
+Rewrite using `[finsum_mem_eq_finite_toFinset_sum _ hS, Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun t _ => (finsum_mem_eq_finite_toFinset_sum _ hS).symm`.
+-/
 theorem finsum_mem_sum_comm {α T : Type*} [Fintype T] {S : Set α} (hS : S.Finite) (F : T → α → ℝ) :
     ∑ᶠ w ∈ S, ∑ t, F t w = ∑ t, ∑ᶠ w ∈ S, F t w := by
   rw [finsum_mem_eq_finite_toFinset_sum _ hS, Finset.sum_comm]
   exact Finset.sum_congr rfl fun t _ => (finsum_mem_eq_finite_toFinset_sum _ hS).symm
 
+/- English proof (translation)
+Establish `e : (HermLine.ofWeight w hw).h = fun z => Real.exp (-w z)` using `rfl`. Unfold `IsSmoothHerm`. Rewrite using `[e]`. Conclude with `Real.contDiff_exp.comp_contDiffOn hs.neg`.
+-/
 theorem isSmoothHerm_ofWeight {w : ((Σ k, ι k) → ℂ) → ℝ}
     (hw : ∀ (c : K → ℂ) z, (∀ k, c k ≠ 0) → w (fun p => c p.1 * z p) = w z)
     (hs : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) w {z | ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0}) :
@@ -129,6 +166,19 @@ theorem isSmoothHerm_ofWeight {w : ((Σ k, ι k) → ℂ) → ℝ}
   rw [e]
   exact Real.contDiff_exp.comp_contDiffOn hs.neg
 
+/- English proof (translation)
+Establish `hf' : ∀ (c : K → ℂ) z, (∀ k, c k ≠ 0) → -f (fun p => c p.1 * z p) = -f z` using `fun c z hc => by simp only [hf.2 c z hc]`. Establish `hF` using `isSmoothHerm_ofWeight (w := fun z => -f z) hf' hf.1.neg`. Establish `hG` using `isSmoothHerm_ofWeight hg.2 hg.1`. Establish `hLF : ∀ j, IsSmoothHerm ((Fin.cons (HermLine.ofWeight (fun z => -f z) hf') L : Fin (n + 1) → HermLine ι) j)`. Introduce `j`.
+
+Use `Fin.cases ?_ (fun j => ?_) j` and prove the remaining obligations. Simplify `hF` using `only [Fin.cons_zero]`. Simplify `hL j` using `only [Fin.cons_succ]`. Establish `hpot : pot (Fin.cons (HermLine.ofWeight (fun z => -f z) hf') L : Fin (n + 1) → HermLine ι) = Fin.cons f (pot L)`. Use function extensionality and compare the values at `j z`.
+
+Use `Fin.cases ?_ (fun j => ?_) j` and prove the remaining obligations. Simplify using `[pot, HermLine.ofWeight, Real.log_exp]`. Simplify using `[pot]`. Establish `hlog : logNorm (HermLine.ofWeight g hg.2) 1 = g`. Use function extensionality and compare the values at `z`.
+
+Simplify using `[logNorm, HermLine.ofWeight, Real.log_exp]`. Establish `h1 : (1 : MRing ι) ∉ P` using `fun h => hP.2.1.1.ne_top ((Ideal.eq_top_iff_one P).mpr h)`. Establish `hm : IsMultiHomog (1 : MRing ι) (fun _ => 0)`. Introduce `m hm k`. Rewrite `hm` using `[MvPolynomial.support_one]`.
+
+Simplify using `only [Finset.mem_singleton] at hm`. Substitute `hm` using the available equality. Simplify using the standard rewrite rules. Establish `hsec : IsSectionOn P (HermLine.ofWeight g hg.2) 1` using `⟨fun _ => 0, fun k => by simp [HermLine.ofWeight], hm, h1⟩`. Use `hInt K ι P (n + 1) Ψ _ _ 1 hP hΨ hLF hG hsec` as an intermediate fact.
+
+Rewrite `this` using `[hpot, hlog]`. Then use the resulting hypothesis.
+-/
 theorem integrable_fibreSum (hInt : PtsIntegrableStatement) {P : Ideal (MRing ι)} {n : ℕ}
     (Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (n + 1 + 1) → ℂ)) (L : Fin n → HermLine ι)
     {f g : ((Σ k, ι k) → ℂ) → ℝ} (hP : IsArithVar P (n + 2)) (hΨ : IsGoodProj P Ψ)
@@ -167,6 +217,15 @@ end PointsBilinear
 
 open PointsBilinear in
 
+/- English proof (translation)
+Establish `hInt` using `PtsIntegrable.of_found hAbs hMeas`. Introduce `K _ ι _ P n L T _ u v hP hL hu hv`. Unfold `ptsIntegral`. Distinguish the cases in `hΨ : ∃ Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (n + 1 + 1) → ℂ), IsGoodProj P Ψ`. Simplify using `only [dif_pos hΨ]`.
+
+Establish `hfin` using `fibreFinite K ι P (n + 1) hΨ.choose hP hΨ.choose_spec`. Unfold `ptsIntegralAt`. Prove the components needed by the constructor for the conclusion. Rewrite using `[← integral_finsetSum _ fun t _ => integrable_fibreSum hInt hΨ.choose L hP hΨ.choose_spec hL hv (hu t)]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `y`. Rewrite using `[finsum_mem_congr rfl fun w _ => sheetDensity_sum_left P hΨ.choose _ u y w, finsum_mem_sum_comm (hfin y)]`. Rewrite using `[← integral_finsetSum _ fun t _ => integrable_fibreSum hInt hΨ.choose L hP hΨ.choose_spec hL (hu t) hv]`. Use `congr 1`. Use function extensionality and compare the values at `y`.
+
+Rewrite using `[finsum_mem_congr rfl fun w _ => sheetDensity_sum_right P hΨ.choose L hu v y w, finsum_mem_sum_comm (hfin y)]`. Simplify using `only [dif_neg hΨ, Finset.sum_const_zero, and_self]`.
+-/
 theorem PtsBilinear.proof (hAbs : Inter.PtsAbsIntegrable.Statement) (hMeas : PtsSumMeasurable.Statement) :
     PtsBilinear.Statement := by
   have hInt := PtsIntegrable.of_found hAbs hMeas

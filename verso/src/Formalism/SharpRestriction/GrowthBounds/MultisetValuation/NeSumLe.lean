@@ -10,6 +10,19 @@ section Fl
 
 variable {p : ℕ} {G : Formalism.MainNotions.G.GAtP p} (Fl : Formalism.MainNotions.G.Fills G) (v : Fin G.P.nV)
 
+/- English proof (translation)
+Establish `h1 : ∑ a ∈ Icc (G.P.m + 2 - r) (G.P.m + 1), (lamI (G.P.lam0 v) s a : ℝ) ≤ ∑ a ∈ Icc (G.P.m + 2 - r) (G.P.m + 1), ((Fl.c : ℝ) + (if s ∈ Fl.TT v ∧ a = 1 then (Fl.a v s : ℝ) else 0))`. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `a _`. Use `ne_lamI_le Fl v s a hm hb` as an intermediate fact. Distinguish the cases in `hc : s ∈ Fl.TT v ∧ a = 1`.
+
+Rewrite `this`, the goal using `[if_pos hc]`. Conclude with `this` after adjusting the coercions. Rewrite `this`, the goal using `[if_neg hc]`. Conclude with `this` after adjusting the coercions. Rewrite `h1` using `[Finset.sum_add_distrib, Finset.sum_const, nsmul_eq_mul]`.
+
+Establish `h2 : ((Icc (G.P.m + 2 - r) (G.P.m + 1)).card : ℝ) ≤ r`. Rewrite using `[Nat.card_Icc]`. Establish `: G.P.m + 1 + 1 - (G.P.m + 2 - r) ≤ r` using `by omega`. Conclude with `this` after adjusting the coercions. Establish `h3` using `mul_le_mul_of_nonneg_right h2 (Nat.cast_nonneg Fl.c : (0 : ℝ) ≤ Fl.c)`.
+
+Establish `h4 : ∑ a ∈ Icc (G.P.m + 2 - r) (G.P.m + 1), (if s ∈ Fl.TT v ∧ a = 1 then (Fl.a v s : ℝ) else 0) = (if s ∈ Fl.TT v ∧ G.P.m + 1 ≤ r then (Fl.a v s : ℝ) else 0)`. Distinguish the cases in `hs : s ∈ Fl.TT v`. Simplify using `only [hs, true_and]`. Rewrite using `[Finset.sum_ite_eq' (Icc (G.P.m + 2 - r) (G.P.m + 1)) 1 (fun _ => (Fl.a v s : ℝ))]`. Establish `: (1 ∈ Icc (G.P.m + 2 - r) (G.P.m + 1)) ↔ G.P.m + 1 ≤ r`.
+
+Rewrite using `[Finset.mem_Icc]`. Use linear arithmetic over natural numbers and integers. Simplify using `only [this]`. Simplify using `[hs]`. Rewrite `h1` using `[h4]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem ne_sum_le (s : Fin (G.P.n' v)) (r : ℕ) (hm : 2 ≤ G.P.m) (hb : s ∈ Fl.TT v → 0 ≤ Fl.b v s) :
     ∑ a ∈ Icc (G.P.m + 2 - r) (G.P.m + 1), (lamI (G.P.lam0 v) s a : ℝ) ≤
       r * Fl.c + (if s ∈ Fl.TT v ∧ G.P.m + 1 ≤ r then (Fl.a v s : ℝ) else 0) := by
@@ -47,11 +60,27 @@ variable {D : Formalism.BasicNotions.D7} {L : SizeData₂ D}
 
 def ne_CX : ℝ := Real.exp (Real.exp (34 / 3))
 
+/- English proof (translation)
+Establish `h2` using `D.R.m_add_three_le_k`. Establish `: 1 ≤ D.R.k` using `by omega`. Conclude with `this` after adjusting the coercions.
+-/
 theorem ne_k_pos : (1 : ℝ) ≤ D.R.k := by
   have h2 := D.R.m_add_three_le_k
   have : 1 ≤ D.R.k := by omega
   exact_mod_cast this
 
+/- English proof (translation)
+Establish `hx` using `L.sc.one_lt_alt`. Establish `he` using `L.sc.eps_pos`. Establish `he2` using `L.sc.eps_lt`. Establish `hK` using `hS.2.2.1.1`. Establish `h1 : L.sc.x ≤ L.sc.x ^ (9 / 2 + 10 * L.sc.eps - Formalism.MainNotions.szTh L)` using `Real.self_le_rpow_of_one_le hx.le (by unfold Formalism.MainNotions.szTh; linarith)`.
+
+Establish `h2 : (D.R.k : ℝ) ≤ (Formalism.MainNotions.G.rG L.sc : ℝ)` using `by exact_mod_cast hk`. Establish `h3 : (Formalism.MainNotions.G.rG L.sc : ℝ) ≤ 8 * (Formalism.MainNotions.G.hG L.sc + 2) / L.sc.eps + 2`. Unfold `Formalism.MainNotions.G.rG Formalism.MainNotions.G.KG`. Use `Nat.ceil_lt_add_one (a := 8 * (Formalism.MainNotions.G.hG L.sc + 2) / L.sc.eps) (div_nonneg (by unfold Formalism.MainNotions.G.hG; linarith) he.le)` as an intermediate fact. Use `push_cast`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `h4 : L.sc.x * L.sc.eps ≤ 34`. Establish `h5 : L.sc.x ≤ 8 * (Formalism.MainNotions.G.hG L.sc + 2) / L.sc.eps + 2` using `by linarith`. Establish `h6` using `mul_le_mul_of_nonneg_right h5 he.le`. Establish `h7 : (8 * (Formalism.MainNotions.G.hG L.sc + 2) / L.sc.eps + 2) * L.sc.eps = 8 * (Formalism.MainNotions.G.hG L.sc + 2) + 2 * L.sc.eps`.
+
+Clear the denominators using the available nonvanishing facts. Rewrite `h6` using `[h7]`. Unfold `Formalism.MainNotions.G.hG at h6`. Combine the linear equalities and inequalities to obtain the conclusion. Unfold `Scale.X' ne_CX`.
+
+Apply `Real.exp_le_exp.2` to reduce the goal to its premises. Rewrite using `[Real.rpow_def_of_pos L.sc.x_pos]`. Apply `Real.exp_le_exp.2` to reduce the goal to its premises. Establish `h8 : Real.log L.sc.x ≤ L.sc.x`. Use `Real.log_le_sub_one_of_pos L.sc.x_pos` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `h9` using `mul_le_mul_of_nonneg_right h8 (by linarith : (0 : ℝ) ≤ L.sc.eps / 3)`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem ne_X' (hS : Formalism.MainNotions.SizesAt L) (hk : D.R.k ≤ Formalism.MainNotions.G.rG L.sc) : L.sc.X' ≤ ne_CX := by
   have hx := L.sc.one_lt_alt
   have he := L.sc.eps_pos
@@ -84,6 +113,13 @@ theorem ne_X' (hS : Formalism.MainNotions.SizesAt L) (hk : D.R.k ≤ Formalism.M
   have h9 := mul_le_mul_of_nonneg_right h8 (by linarith : (0 : ℝ) ≤ L.sc.eps / 3)
   linarith
 
+/- English proof (translation)
+Establish `hx` using `L.sc.one_lt_alt`. Establish `hLa` using `hS.2.2.2.2.2.2.2.2.1`. Establish `hRho` using `hS.2.2.2.2.2.2.2.2.2.1`. Establish `hBot` using `hS.2.2.2.2.2.2.2.2.2.2.1 t`. Unfold `Formalism.MainNotions.SizeRho at hRho`.
+
+Establish `hk` using `ne_k_pos (D := D)`. Establish `hLa0 : 0 ≤ L.LaG` using `le_trans (Real.rpow_nonneg L.sc.x_pos.le _) hLa.1`. Establish `h1 : 0 ≤ L.sc.x ^ Formalism.MainNotions.szTh L * Real.log L.sc.x * L.LaG / D.R.k` using `div_nonneg (mul_nonneg (mul_nonneg (Real.rpow_nonneg L.sc.x_pos.le _) (Real.log_nonneg hx.le)) hLa0) (by linarith)`. Establish `h2 : L.sc.x ^ (-2 : ℝ) ≤ 1` using `Real.rpow_le_one_of_one_le_of_nonpos hx.le (by norm_num)`. Establish `h3 : Formalism.MainNotions.szNst L * L.sc.x ^ L.sc.eps * L.LaG / D.R.k ≤ 1 / 4`.
+
+Establish `: 4 * Formalism.MainNotions.szNst L * L.sc.x ^ L.sc.eps * L.LaG / D.R.k = 4 * (Formalism.MainNotions.szNst L * L.sc.x ^ L.sc.eps * L.LaG / D.R.k)` using `by ring`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h4 : Formalism.MainNotions.szNst L * L.sc.x ^ L.sc.eps * L.LaG * L.sc.b' / D.R.k = (Formalism.MainNotions.szNst L * L.sc.x ^ L.sc.eps * L.LaG / D.R.k) * L.sc.b'` using `by ring`. Establish `h5` using `mul_le_mul_of_nonneg_right h3 L.sc.b'_pos.le`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem ne_bT_le (hS : Formalism.MainNotions.SizesAt L) (t) : (L.bT t : ℝ) ≤ 5 / 4 * L.sc.b' := by
   have hx := L.sc.one_lt_alt
   have hLa := hS.2.2.2.2.2.2.2.2.1
@@ -104,6 +140,9 @@ theorem ne_bT_le (hS : Formalism.MainNotions.SizesAt L) (t) : (L.bT t : ℝ) ≤
   have h5 := mul_le_mul_of_nonneg_right h3 L.sc.b'_pos.le
   linarith
 
+/- English proof (translation)
+Establish `h1` using `(L.aT_win t).2`. Establish `hk` using `ne_k_pos (D := D)`. Establish `hx : (1 : ℝ) ≤ L.sc.x ^ (Scale.A / 2)` using `Real.one_le_rpow L.sc.one_lt_alt.le (by unfold Scale.A; norm_num)`. Establish `h2 : L.sc.a / ((D.R.k : ℝ) * L.sc.x ^ (Scale.A / 2)) ≤ L.sc.a` using `div_le_self L.sc.a_pos.le (by nlinarith)`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem ne_aT_le (t) : (L.aT t : ℝ) ≤ 2 * L.sc.a := by
   have h1 := (L.aT_win t).2
   have hk := ne_k_pos (D := D)
@@ -113,6 +152,9 @@ theorem ne_aT_le (t) : (L.aT t : ℝ) ≤ 2 * L.sc.a := by
     div_le_self L.sc.a_pos.le (by nlinarith)
   linarith
 
+/- English proof (translation)
+Unfold `Scale.b'`. Establish `: L.sc.X' ≠ 0` using `(lt_of_lt_of_le one_pos L.sc.one_le_X').ne'`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem ne_a_eq : L.sc.a = L.sc.X' * L.sc.b' := by
   unfold Scale.b'
   have : L.sc.X' ≠ 0 := (lt_of_lt_of_le one_pos L.sc.one_le_X').ne'

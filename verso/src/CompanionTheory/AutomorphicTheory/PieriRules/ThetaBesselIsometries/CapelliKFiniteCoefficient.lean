@@ -16,6 +16,11 @@ open scoped InnerProductSpace ENNReal
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `only [ContinuousLinearMap.adjoint_inner_left, ContinuousLinearMap.comp_apply, ContinuousLinearMap.sum_apply, ContinuousLinearMap.smul_apply, ContinuousLinearMap.smulRight_apply, innerSL_apply_apply, Fintype.sum_prod_type, smul_smul]`. Use `conv_lhs => rw [← c.sum_repr' x]`. Simplify using `only [map_sum, map_smul]`. Rewrite using `[Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `conv_lhs => rw [← b.sum_repr' (P (A (Q (c j))))]`. Simplify using `only [Finset.smul_sum, smul_smul, mul_comm]`.
+-/
 theorem comp_eq_sum_inner_smul_rankOne {H Wp Wq : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     [CompleteSpace H] [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [CompleteSpace Wp]
     [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] {ι κ : Type} [Fintype ι] [Fintype κ]
@@ -34,6 +39,21 @@ theorem comp_eq_sum_inner_smul_rankOne {H Wp Wq : Type} [NormedAddCommGroup H] [
   conv_lhs => rw [← b.sum_repr' (P (A (Q (c j))))]
   simp only [Finset.smul_sum, smul_smul, mul_comm]
 
+/- English proof (translation)
+Introduce `hK k r ε mu R Wp _ _ _ _ Wq _ _ _ _ l l' hR`. Take `⟨hmul, hone, hinner, -, -, hTK, hKF, -, -⟩` from `rep_basic_of_isDS hK k r ε mu R hR`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `f ⟨a, ha, b, hb, P, Q, hQ, hP, h⟩`. Take `⟨hai, ha1, -⟩` from `Formalism.FourierDecayAlt.P.MatrixMultiplicationContinuity.uh_inv ha`.
+
+Take `⟨hbi, -, hb2⟩` from `Formalism.FourierDecayAlt.P.MatrixMultiplicationContinuity.uh_inv hb`. Set `e` to `stdOrthonormalBasis ℂ Wp`. Set `c` to `stdOrthonormalBasis ℂ Wq`. Set `φ` to `(finProdFinEquiv (m := Module.finrank ℂ Wp) (n := Module.finrank ℂ Wq)).symm`. Use `⟨_, _, fun i => R.σ a (ContinuousLinearMap.adjoint P (e (φ i).1)), fun i => R.σ b⁻¹ (Q (c (φ i).2)), fun i => (innerSL ℂ (c (φ i).2)).smulRight (e (φ i).1), fun i => ⟨hTK a ha _ (hKF _ (hP _)), hTK _ hbi _ (hKF _ (hQ _))⟩, fun g hg => ?_, rfl⟩` and prove the remaining obligations.
+
+Establish `hc : a * (a⁻¹ * g * b⁻¹) * b = g`. Combine the equalities or inequalities in the displayed calculation. Establish `h1 : f g = P.comp ((R.σ (a⁻¹ * g * b⁻¹)).comp Q)`. Use `h (a⁻¹ * g * b⁻¹)` as an intermediate fact. Simplify `this` using `only [hc]`.
+
+Establish `hm : a⁻¹ * g * b⁻¹ ∈ GG k r` using `Formalism.FourierDecayAlt.P.TranslationBesselVanishing.uh_mul (Formalism.FourierDecayAlt.P.TranslationBesselVanishing.uh_mul hai hg) hbi`. Establish `h2 : ∀ u v, ⟪u, R.σ (a⁻¹ * g * b⁻¹) v⟫_ℂ = ⟪R.σ a u, R.σ g (R.σ b⁻¹ v)⟫_ℂ`. Introduce `u v`. Rewrite using `[← hinner a ha, ← hmul a ha _ hm, ← hmul g hg _ hbi, ← Matrix.mul_assoc, ← Matrix.mul_assoc, ha1, Matrix.one_mul]`. Rewrite using `[h1, comp_eq_sum_inner_smul_rankOne e c]`.
+
+Simplify using `only [h2]`. Conclude with `(φ.sum_comp (fun p => ⟪R.σ a (ContinuousLinearMap.adjoint P (e p.1)), R.σ g (R.σ b⁻¹ (Q (c p.2)))⟫_ℂ • (innerSL ℂ (c p.2)).smulRight (e p.1))).symm`. Introduce and unpack `F s t ⟨m, x, y, X, hxy, hF, hs⟩`. Use `⟨m, x, y, fun i => t • X i, hxy, fun g hg => ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [hF g hg, Finset.smul_sum, smul_smul, mul_comm]`.
+
+Simplify using `only [hs, Finset.mul_sum, ContinuousLinearMap.smul_apply, inner_smul_right]`. Introduce and unpack `⟨x, hx, hx0⟩ ⟨y, hy, hy0⟩ s`. Establish `h1 : ⟪l x, l x⟫_ℂ ≠ 0` using `fun h => hx0 (inner_self_eq_zero.mp h)`. Establish `h2 : ⟪l' y, l' y⟫_ℂ ≠ 0` using `fun h => hy0 (inner_self_eq_zero.mp h)`. Use `⟨fun g => ∑ _i : Fin 1, ⟪x, R.σ g y⟫_ℂ • ((s / (⟪l' y, l' y⟫_ℂ * ⟪l x, l x⟫_ℂ)) • (innerSL ℂ (l' y)).smulRight (l x)), 1, fun _ => x, fun _ => y, fun _ => (s / (⟪l' y, l' y⟫_ℂ * ⟪l x, l x⟫_ℂ)) • (innerSL ℂ (l' y)).smulRight (l x), fun _ => ⟨hx, hy⟩, fun g _ => rfl, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Fin.sum_univ_one, ContinuousLinearMap.smul_apply, ContinuousLinearMap.smulRight_apply, innerSL_apply_apply, inner_smul_right, inner_smul_right, div_mul_cancel₀ _ (mul_ne_zero h2 h1)]`.
+-/
 theorem isCoef_of_translate_smul_exists : PI.KFinSmooth → ∀ (k r : ℕ) (ε : Fin (2 * r + k + 1) → Bool) (mu : Fin (2 * r + k + 1) → ℝ) (R : Rep k r) (Wp : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [CompleteSpace Wp] [FiniteDimensional ℂ Wp] (Wq : Type) [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [CompleteSpace Wq] [FiniteDimensional ℂ Wq] (l : R.H → Wp) (l' : R.H → Wq), R.IsDG ε mu → (∀ f : Mx k r → (Wq →L[ℂ] Wp), PI.CapelliEig.IsKFinCoefT (k := k) (r := r) R.σ f → ∃ s, IsCoef R l l' f s) ∧ (∀ F s (t : ℂ), IsCoef R l l' F s → IsCoef R l l' (fun g => t • F g) (t * s)) ∧ ((∃ x ∈ R.TK, l x ≠ 0) → (∃ y ∈ R.TK, l' y ≠ 0) → ∀ s : ℂ, ∃ F, IsCoef R l l' F s) := by
   intro hK k r ε mu R Wp _ _ _ _ Wq _ _ _ _ l l' hR
   obtain ⟨hmul, hone, hinner, -, -, hTK, hKF, -, -⟩ := rep_basic_of_isDS hK k r ε mu R hR

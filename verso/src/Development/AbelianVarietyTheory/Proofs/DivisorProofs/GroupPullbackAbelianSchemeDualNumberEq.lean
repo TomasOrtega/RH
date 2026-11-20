@@ -17,6 +17,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.DualRigidityField
 
+/- English proof (translation)
+Establish `h : ∀ p : PrimeSpectrum (DualNumber K), p.asIdeal = IsLocalRing.maximalIdeal (DualNumber K)`. Introduce `p`. Use `le_antisymm (IsLocalRing.le_maximalIdeal p.isPrime.ne_top) fun x hx => ?_` and prove the remaining obligations. Establish `hn : IsNilpotent x`. Rewrite using `[TrivSqZeroExt.isNilpotent_iff_isNilpotent_fst]`.
+
+Establish `: ¬ IsUnit x.fst` using `fun hu => hx (TrivSqZeroExt.isUnit_iff_isUnit_fst.2 hu)`. Establish `h0 : x.fst = 0` using `by simpa using this`. Rewrite using `[h0]`. Conclude with `IsNilpotent.zero`. Take `⟨n, hn⟩` from `hn`.
+
+Conclude with `p.isPrime.mem_of_pow_mem n (hn ▸ p.asIdeal.zero_mem)`. Conclude with `⟨fun p q => PrimeSpectrum.ext ((h p).trans (h q).symm)⟩`.
+-/
 theorem subsingleton_sp_dualNumber (K : Type) [Field K] : Subsingleton (Sp (DualNumber K)) := by
   have h : ∀ p : PrimeSpectrum (DualNumber K),
       p.asIdeal = IsLocalRing.maximalIdeal (DualNumber K) := by
@@ -31,6 +38,17 @@ theorem subsingleton_sp_dualNumber (K : Type) [Field K] : Subsingleton (Sp (Dual
     exact p.isPrime.mem_of_pow_mem n (hn ▸ p.asIdeal.zero_mem)
   exact ⟨fun p q => PrimeSpectrum.ext ((h p).trans (h q).symm)⟩
 
+/- English proof (translation)
+Use `haveI := subsingleton_sp_dualNumber K`. Set `j` to `pullback.fst A'.hom (spMap (TrivSqZeroExt.fstHom K K K).toRingHom)`. Establish `hj : IsPullback j (pullback.snd A'.hom (spMap (TrivSqZeroExt.fstHom K K K).toRingHom)) A'.hom (spMap (TrivSqZeroExt.fstHom K K K).toRingHom)` using `IsPullback.of_hasPullback _ _`. Set `c : A' ⟶ G'` to `a * b⁻¹`. Set `j' : Over.mk (j ≫ A'.hom) ⟶ A'` to `Over.homMk j rfl`.
+
+Establish `h1 : j' ≫ a = j' ≫ b` using `Over.OverMorphism.ext hab`. Establish `h2 : j' ≫ c = 1`. Simplify using `only [c, MonObj.comp_mul, GrpObj.comp_inv, h1, mul_inv_cancel]`. Establish `h3 : η[A'] ≫ c = 1`. Simplify using `only [c, MonObj.comp_mul, GrpObj.comp_inv, hη, mul_inv_cancel]`.
+
+Take `⟨t₀⟩ : Nonempty (Sp K)` from `inferInstance`. Set `t : Sp (DualNumber K)` to `spMap (TrivSqZeroExt.fstHom K K K).toRingHom t₀`. Establish `hc : ∀ x : A'.left, c.left x = (η[G'] : 𝟙_ (Over (Sp (DualNumber K))) ⟶ G').left t`. Introduce `x`. Take `⟨z, rfl, -⟩` from `Scheme.exists_preimage_of_isPullback hj x t₀ (Subsingleton.elim _ _)`.
+
+Establish `e : j ≫ c.left = (j' ≫ c).left` using `rfl`. Rewrite using `[← Scheme.Hom.comp_apply, e, h2, Hom.one_def, Over.comp_left]`. Use `(Scheme.Hom.comp_apply _ _ _).trans ?_` and prove the remaining obligations. Use `congr 1`. Conclude with `Subsingleton.elim (α := Sp (DualNumber K)) _ _`.
+
+Establish `hη' : (η[A'] : 𝟙_ (Over (Sp (DualNumber K))) ⟶ A').left ≫ A'.hom = 𝟙 _` using `Over.w η[A']`. Establish `key` using `GlobalTheory.DualRigidity.eq_comp_section_of_const A'.hom _ c.left hη' (GlobalTheory.globalFns_holds _ A' hA).2 _ hc`. Establish `key' : c = toUnit A' ≫ η[A'] ≫ c` using `Over.OverMorphism.ext key`. Rewrite `key'` using `[h3, MonObj.comp_one]`. Conclude with `mul_inv_eq_one.1 key'`.
+-/
 theorem eq_of_eq_closedFibre {K : Type} [Field K] (A' G' : Over (Sp (DualNumber K))) [GrpObj A'] [GrpObj G']
     (a b : A' ⟶ G') (hA : IsAbelianScheme A')
     (hab : pullback.fst A'.hom (spMap (TrivSqZeroExt.fstHom K K K).toRingHom) ≫ a.left =
@@ -63,6 +81,13 @@ theorem eq_of_eq_closedFibre {K : Type} [Field K] (A' G' : Over (Sp (DualNumber 
   rw [h3, MonObj.comp_one] at key'
   exact mul_inv_eq_one.1 key'
 
+/- English proof (translation)
+Introduce `R _ k _ A _ g B' _ f π₁ π₂ hA hg h1 h2 hx`. Establish `hB` using `(GlobalTheory.AbBaseChange.isAbelianScheme_and_relDim_of_isGrpPullback f A B' π₂ g h2 hA hg).1`. Set `α : B' ⟶ B'` to `Over.homMk (h2.1.lift π₁ B'.hom h1.1.w) (h2.1.lift_snd _ _ _)`. Establish `hα : α.left ≫ π₂ = π₁` using `h2.1.lift_fst _ _ _`. Use `haveI : IsMonHom α := GlobalTheory.UU.isMonHom_of_over_isMonHom h1 h2 (𝟙 A) α (by rw [hα]; rfl)`.
+
+Establish `hα1 : α = 𝟙 B'`. Use `eq_of_eq_closedFibre B' B' α (𝟙 B') hB ?_ (by rw [IsMonHom.one_hom, Category.comp_id])` and prove the remaining obligations. Apply `h2.1.hom_ext` to reduce the goal to its premises. Simplify using `only [Category.assoc, Over.id_left, Category.comp_id]`. Rewrite using `[hα]`.
+
+Conclude with `hx _ _ _ pullback.condition`. Simplify using `only [Category.assoc, Over.id_left, Category.comp_id]`. Rewrite using `[Over.w α]`. Rewrite using `[← hα, hα1, Over.id_left, Category.id_comp]`.
+-/
 theorem pullback_eq : ∀ {R : Type} [CommRing R] (k : Type) [Field k] (A : Over (Sp R)) [GrpObj A] (g : ℕ) (B' : Over (Sp (DualNumber k))) [GrpObj B'] (f : R →+* DualNumber k) (π₁ π₂ : B'.left ⟶ A.left), IsAbelianScheme A → SmoothOfRelativeDimension g A.hom → IsGrpPullback B' A (spMap f) π₁ → IsGrpPullback B' A (spMap f) π₂ → (∀ (Z : Scheme.{0}) (x : Z ⟶ B'.left) (y : Z ⟶ Sp k), x ≫ B'.hom = y ≫ spMap (TrivSqZeroExt.fstHom k k k).toRingHom → x ≫ π₁ = x ≫ π₂) → π₁ = π₂ := by
   intro R _ k _ A _ g B' _ f π₁ π₂ hA hg h1 h2 hx
   have hB := (GlobalTheory.AbBaseChange.isAbelianScheme_and_relDim_of_isGrpPullback f A B' π₂ g h2 hA hg).1

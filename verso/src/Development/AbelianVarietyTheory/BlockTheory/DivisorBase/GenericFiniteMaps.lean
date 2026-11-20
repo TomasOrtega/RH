@@ -54,6 +54,9 @@ def StatementPrimeField : Prop :=
     IsProjSurface (ZMod p) T →
       AdditiveLaw (ZMod p) T ∧ DualLaw (ZMod p) T ∧ FrobeniusLaw (ZMod p) T p
 
+/- English proof (translation)
+Introduce `p _ T _ _ hT` and use `⟨(h _ T hT).1, (h _ T hT).2.1, (h _ T hT).2.2 p⟩`.
+-/
 theorem Statement.primeField (h : Statement) : StatementPrimeField := fun p _ T _ _ hT =>
   ⟨(h _ T hT).1, (h _ T hT).2.1, (h _ T hT).2.2 p⟩
 
@@ -104,6 +107,9 @@ section Checks
 
 variable {k : Type} [Field k] {T : Scheme.{0}} [Algebra k Γ(T, ⊤)] {E F : T.Modules} {r : ℕ}
 
+/- English proof (translation)
+The claim follows from `have := h.isFiniteQC have := h.dual.isFiniteQC have := (isVB_structureModule T).isFiniteQC ⟨finiteCoh_of_isProjOver (algebraMap_eq_strHom k T) _ hT.isProjOver, finiteCoh_of_isProjOver (algebraMap_eq_strHom k T) _ hT.isProjOver, finiteCoh_of_isProjOver (algebraMap_eq_strHom k T) _ …`.
+-/
 theorem IsProjSurface.finiteCoh (hT : IsProjSurface k T) (h : IsVB E r) :
     FiniteCoh k E ∧ FiniteCoh k (dual E) ∧ FiniteCoh k (structureModule T) :=
   have := h.isFiniteQC
@@ -115,20 +121,40 @@ theorem IsProjSurface.finiteCoh (hT : IsProjSurface k T) (h : IsVB E r) :
 
 variable [IsIntegral T]
 
+/- English proof (translation)
+Rewrite using `[degCh2, h.genRank_eq]`.
+-/
 theorem degCh2_eq (h : IsVB E r) : degCh2 k E =
     ((chi k E : ℚ) + chi k (dual E)) / 2 - r * (chi k (structureModule T) : ℚ) := by
   rw [degCh2, h.genRank_eq]
 
+/- English proof (translation)
+Establish `ψ : dual F ≅ dual E` using `(dualFunctor T).mapIso φ.op`. Rewrite using `[degCh2, degCh2, chi_congr k φ, chi_congr k ψ, genRank_congr φ]`.
+-/
 theorem degCh2_congr (φ : E ≅ F) : degCh2 k E = degCh2 k F := by
   have ψ : dual F ≅ dual E := (dualFunctor T).mapIso φ.op
   rw [degCh2, degCh2, chi_congr k φ, chi_congr k ψ, genRank_congr φ]
 
 variable (k T) in
 
+/- English proof (translation)
+Introduce `E r h` and use `by have := h.isIso_toBidual_of_local_frames rw [degCh2_eq h, degCh2_eq h.dual, ← chi_congr k (asIso (cartierDualToBidual E)), add_comm]`.
+-/
 theorem dualLaw : DualLaw k T := fun E r h => by
   have := h.isIso_toBidual_of_local_frames
   rw [degCh2_eq h, degCh2_eq h.dual, ← chi_congr k (asIso (cartierDualToBidual E)), add_comm]
 
+/- English proof (translation)
+Use `(isVB_structureModule T).isFiniteQC` as an intermediate fact. Establish `h` using `isVB_toMod hL`. Establish `hv : DiffVanish (2 + 1) (chiPic k (structureModule T))` using `diffVanish_chiPic_of_isProjOver (algebraMap_eq_strHom k T) _ hT.isProjOver (by rw [QCoh.suppDim_structureModule, hT.dim_eq]; rfl)`. Use `set f := chiPic k (structureModule T) with hf`. Use `set c := CechPic.cls L hL with hc`.
+
+Establish `e₁ : chi k (toMod L) = f c` using `(chi_congr k (Twist.unitTwistIso L)).symm`. Establish `e₂ : chi k (dual (toMod L)) = f (-c)`. Establish `: CechPic.cls _ h.dual.isLB_det = -c`. Rewrite using `[← (CechPic.cls_eq_iff (CechPic.isLB_dual h.isLB_det) _).2 h.lbIso_det_dual, CechPic.cls_dual h.isLB_det, hc, (CechPic.cls_eq_iff hL h.isLB_det).2 (lbIso_det_toMod hL)]`. Rewrite using `[← this, chi_congr k h.dual.isoDet]`.
+
+Conclude with `(chi_congr k (Twist.unitTwistIso _)).symm`. Establish `e₃ : chi k (structureModule T) = f 0` using `(chiPic_zero k _).symm`. Apply the tactic sequence `have hLL : ∀ i, ((![L, L] : Fin 2 → LB T) i).IsLB := fun i => by fin_cases i <;> exact hL`. Establish `e₄ : interNum k (structureModule T) ![L, L] = f 0 - f (-c) - (f (-c) - f (-c - c))`. Rewrite using `[interNum_eq_multiDiff k _ hLL, show (fun i => CechPic.cls _ (hLL i)) = fun _ : Fin 2 => c from`.
+
+Apply the tactic sequence `funext fun i => by fin_cases i <;> rfl, multiDiff_const]`. Simplify using `[bwdDiff_apply, hf]`. Establish `e₅` using `congrFun (hv.multiDiff_eq_zero (g := fun _ : Fin 3 => c) (by simp)) c`. Rewrite `e₅` using `[multiDiff_const]`. Simplify using `only [Function.iterate_succ, Function.iterate_zero, Function.comp, id, bwdDiff_apply, sub_self, zero_sub, Pi.zero_apply] at e₅`.
+
+Rewrite using `[degCh2_eq h, e₁, e₂, e₃, e₄]`. Establish `e₆ : f c + f (-c) - 2 * f 0 = f 0 - f (-c) - (f (-c) - f (-c - c))` using `by linarith`. Rewrite using `[← e₆]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem IsProjSurface.degCh2_toMod (hT : IsProjSurface k T) {L : LB T} (hL : L.IsLB) :
     degCh2 k (toMod L) = (interNum k (structureModule T) ![L, L] : ℚ) / 2 := by
   have := (isVB_structureModule T).isFiniteQC
@@ -161,6 +187,9 @@ theorem IsProjSurface.degCh2_toMod (hT : IsProjSurface k T) {L : LB T} (hL : L.I
   push_cast
   ring
 
+/- English proof (translation)
+Use `⟨inferInstance, one_pos, ?_⟩` and prove the remaining obligations. Use `letI := ((𝟙 T : T ⟶ T).stalkMap (genericPoint T)).hom.toAlgebra`. Conclude with `Module.finrank_of_bijective_algebraMap (ConcreteCategory.bijective_of_isIso ((𝟙 T : T ⟶ T).stalkMap (genericPoint T)))`.
+-/
 theorem isGenFinite_id : IsGenFinite (𝟙 T) 1 := by
   refine ⟨inferInstance, one_pos, ?_⟩
   letI := ((𝟙 T : T ⟶ T).stalkMap (genericPoint T)).hom.toAlgebra
@@ -169,12 +198,22 @@ theorem isGenFinite_id : IsGenFinite (𝟙 T) 1 := by
 
 open ProjSpace ProjCoh in
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨inferInstance, topologicalKrullDim_eq k 2, strHom_eq (algebraMap_top_eq k 2) ▸ isProjOver_str k 2⟩`.
+-/
 theorem isProjSurface_plane (k : Type) [Field k] : IsProjSurface k (PSpace k 2) :=
   ⟨inferInstance, topologicalKrullDim_eq k 2,
     strHom_eq (algebraMap_top_eq k 2) ▸ isProjOver_str k 2⟩
 
 open ProjSpace ProjCoh in
 
+/- English proof (translation)
+Establish `hL` using `On_isLB k 2 1`. Establish `h` using `isVB_toMod hL`. Establish `e₀ : chi k (structureModule (PSpace k 2)) = 1`. Rewrite using `[chi_congr k (Twist.twistZZeroIso (structureModule _) (O1_isLB k 2))]`. Conclude with `(chi_sheafO k 2 0).trans (by decide)`.
+
+Establish `e₁ : chi k (toMod (On k 2 1)) = 3` using `(chi_congr k (sheafOIso k 2 1)).symm.trans ((chi_sheafO k 2 1).trans (by decide))`. Establish `e₂ : chi k (dual (toMod (On k 2 1))) = 0`. Establish `: CechPic.cls _ h.dual.isLB_det = CechPic.cls _ (On_isLB k 2 (-1))`. Rewrite using `[← (CechPic.cls_eq_iff (CechPic.isLB_dual h.isLB_det) _).2 h.lbIso_det_dual, CechPic.cls_dual h.isLB_det, ← (CechPic.cls_eq_iff hL h.isLB_det).2 (lbIso_det_toMod hL)]`. Conclude with `((congrArg Neg.neg (cls_lbZPow (O1_isLB k 2) 1 hL)).trans (neg_smul _ _).symm).trans (cls_lbZPow (O1_isLB k 2) (-1) _).symm`.
+
+Take `⟨φ⟩` from `LB.nonempty_iso_of_lbIso h.dual.isLB_det (On_isLB k 2 (-1)) ((CechPic.cls_eq_iff _ _).1 this)`. Rewrite using `[chi_congr k (h.dual.isoDet ≪≫ φ ≪≫ (sheafOIso k 2 (-1)).symm)]`. Conclude with `(chi_sheafO k 2 (-1)).trans (by decide)`. Rewrite using `[degCh2_eq h, e₀, e₁, e₂]`. Evaluate the numerical expressions.
+-/
 theorem degree_ch2_projective_plane_O1 (k : Type) [Field k] : degCh2 k (toMod (On k 2 1)) = 1 / 2 := by
   have hL := On_isLB k 2 1
   have h := isVB_toMod hL
@@ -199,6 +238,9 @@ theorem degree_ch2_projective_plane_O1 (k : Type) [Field k] : degCh2 k (toMod (O
 omit [IsIntegral T] in
 open ZeroObject in
 
+/- English proof (translation)
+Establish `h₁ : HasFlag (toMod L) [L]` using `HasFlag.cons (ShortComplex.mk (0 : (0 : T.Modules) ⟶ toMod L) (𝟙 _) (by simp)) { exact := (ShortComplex.exact_iff_mono _ rfl).2 inferInstance mono_f := (isZero_zero _).mono _ epi_g := inferInstance } hL (Iso.refl _) (.nil (isZero_zero _))`. Conclude with `HasFlag.cons _ (ShortComplex.Splitting.ofHasBinaryBiproduct (toMod L) (toMod M)).shortExact hM (Iso.refl _) h₁`.
+-/
 theorem hasFlag_biprod {L M : LB T} (hL : L.IsLB) (hM : M.IsLB) :
     HasFlag (toMod L ⊞ toMod M) [M, L] := by
   have h₁ : HasFlag (toMod L) [L] :=

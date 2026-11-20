@@ -9,6 +9,13 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 
+/- English proof (translation)
+Introduce `R _ _ _ _ M G hsm hqc hgi L hL Y α t hpb k s x ζ hζ hgen hint`. Establish `hx : x ∈ (⨆ i, L.U i)` using `by rw [hL.cover]; trivial`. Take `⟨j, hj⟩` from `TopologicalSpace.Opens.mem_iSup.1 hx`. Take `⟨U, hU, hxU, -⟩` from `exists_isAffineOpen_mem_and_subset (x := G.hom x) (U := ⊤) trivial`. Take `⟨W, hW, hxW, hWle⟩` from `exists_isAffineOpen_mem_and_subset (x := x) (U := L.U j ⊓ G.hom ⁻¹ᵁ U) ⟨hj, hxU⟩`.
+
+Establish `hζW : ζ ∈ W` using `(hgen x rfl).mem_open W.isOpen hxW`. Establish `hWj : W ≤ L.U j` using `fun z hz => (hWle hz).1`. Establish `hWU : W ≤ G.hom ⁻¹ᵁ U` using `fun z hz => (hWle hz).2`. Take `⟨c', hxc', hc'⟩` from `GlobalTheory.T.isIntegralElem_near_fibre_of_generic_point R M G hsm hqc hgi Y α t hpb W hW U hU hWU (chartVal L α s j W hWj) x ζ hxW hζ hgen (GlobalTheory.T.exists_basicOpen_integral_of_integral_at_point L α k s ζ hint j W hWj hW hζW)`. Use `⟨j, G.left.basicOpen c', (G.left.basicOpen_le c').trans hWj, hxc', hW.basicOpen c', ?_⟩` and prove the remaining obligations.
+
+Use `hc' using 1` and compare the differences between its conclusion and the goal. Simplify using `only [chartVal]`. Use `erw [← CommRingCat.comp_apply, ← Functor.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem GlobalTheory.Mum.intAt_of_intAt_fibreGeneric : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [IsNoetherianRing R] (M : Modif R) (G : Over M.S), Smooth G.hom → QuasiCompact G.hom → GeometricallyIrreducible G.hom → ∀ (L : LB G.left), L.IsLB → ∀ (Y : Scheme.{0}) (α : Y ⟶ G.left) (t : Y ⟶ Sp (FractionRing R)), IsPullback α t G.hom M.gp → ∀ (k : ℕ) (s : SecK L α k) (x ζ : G.left), G.hom ζ = G.hom x → (∀ z, G.hom z = G.hom x → ζ ⤳ z) → IntAt L α s ζ → IntAt L α s x := by
   intro R _ _ _ _ M G hsm hqc hgi L hL Y α t hpb k s x ζ hζ hgen hint
   have hx : x ∈ (⨆ i, L.U i) := by rw [hL.cover]; trivial

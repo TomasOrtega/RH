@@ -5,6 +5,9 @@ import Formalism.PeriodIntegrals.ZerosWindowIn
 import Formalism.PeriodIntegrals.DiscIn
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.ExplicitFormula.LocalLemmaOfHelpers
 
+/- English proof (translation)
+The claim follows from `PI.EF.explicitFormula_main`.
+-/
 theorem explicitFormula_of : PI.ZerosWindow → PI.DiscFactor → PI.DiscLog → PI.LBoundRight →
     PI.ZetaBoundRight → PI.LInvRight → PI.ExplicitFormula :=
   PI.EF.explicitFormula_main

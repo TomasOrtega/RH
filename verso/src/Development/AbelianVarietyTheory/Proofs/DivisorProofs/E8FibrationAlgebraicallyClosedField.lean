@@ -21,6 +21,25 @@ attribute [local instance] Over.cartesianMonoidalCategory
 noncomputable section
 namespace GlobalTheory.Poinc.Sep.E8Fibration.Lab
 
+/- English proof (translation)
+Introduce `W hW gQ`. Use `⟨E8Fibration.Lab.labMat W hW.2 gQ, ?_⟩` and prove the remaining obligations. Introduce `l hl hlo j hj K _ _ k₀ hk₀ hlK P' hg B _ _ M pr hPP hP hE act hact hacts`. Take `⟨L1, -⟩` from `GlobalTheory.abelianSchemeLaws_all`. Establish `hNK : (((l ^ j) ^ 2 : ℕ) : K) ≠ 0` using `by push_cast; exact pow_ne_zero _ (pow_ne_zero _ hlK)`.
+
+Establish `hNodd : Odd ((l ^ j) ^ 2)` using `(hlo.pow).pow`. Establish `hNpos : 0 < (l ^ j) ^ 2` using `hNodd.pos`. Establish `hN0 : (((l ^ j) ^ 2 : ℕ) : k₀) ≠ 0` using `fun h => hNK (by simpa using congrArg k₀.subtype h)`. Use `haveI : NeZero (((l ^ j) ^ 2 : ℕ) : k₀) := ⟨hN0⟩`. Take `⟨ζ, hζ⟩` from `IsAlgClosed.exists_root (Polynomial.cyclotomic ((l ^ j) ^ 2) k₀) (Polynomial.degree_cyclotomic_pos _ k₀ hNpos).ne'`.
+
+Establish `hp : IsPrimitiveRoot ζ ((l ^ j) ^ 2)` using `(Polynomial.isRoot_cyclotomic_iff).1 hζ`. Set `bT : TBase k₀ ((l ^ j) ^ 2)` to `⟨(hp.isUnit hNpos.ne').unit, hN0.isUnit, fun K' _ β => hp.map_of_injective β.injective⟩`. Set `z : Kˣ` to `Units.map k₀.subtype.toMonoidHom bT.ζ`. Establish `hz : IsPrimitiveRoot z ((l ^ j) ^ 2)` using `IsPrimitiveRoot.coe_units_iff.1 (bT.prim K k₀.subtype)`. Establish `hu : unitS (spMap k₀.subtype) bT.ζ = unitOn z`.
+
+Use `ext`. Simplify using `only [unitS, unitOn, Units.coe_map, MonoidHom.coe_coe, RingHom.toMonoidHom_eq_coe, z]`. Use `Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom k₀.subtype)` as an intermediate fact. Conclude with `(congrArg (fun f => f.hom (bT.ζ : k₀)) this).symm`. Take `⟨b, hb, hpair⟩` from `GlobalTheory.T.exists_symplecticBasis_e8Factor_torsion W hW gQ _ hNodd K hNK z hz P' hg B pr hP (GlobalTheory.T.weilPairing_e8Power_depends_on_form W hW gQ K P' B M pr hPP hP hE _ hNpos)`.
+
+Use `P'.isAb.comm` as an intermediate fact. Take `⟨htor, hactc⟩` from `GlobalTheory.T.e8_prod_torsion_section_bound W hW gQ P'.A B pr hP ((l ^ j) ^ 2) b hb`. Establish `hpt : ∀ i i', Out.WeilIs P'.A P'.L ((l ^ j) ^ 2 : ℕ) (E8Fibration.Lab.ptOf hP b (E8Fibration.Lab.sharpBasis W hW.2 gQ (Pi.single i 1))) (E8Fibration.Lab.ptOf hP b (E8Fibration.Lab.sharpBasis W hW.2 gQ (Pi.single i' 1))) (unitOn z ^ Out.stdSymp (8 * gQ) i i')`. Introduce `i i'`. Establish `h1` using `hpair (E8Fibration.Lab.sharpBasis W hW.2 gQ (Pi.single i 1)) (E8Fibration.Lab.sharpBasis W hW.2 gQ (Pi.single i' 1)) _ _ (E8Fibration.Lab.ptOf_pr hP b _) (E8Fibration.Lab.ptOf_pr hP b _)`.
+
+Establish `h2` using `E8Fibration.Lab.isSharpBasis_sharpBasis W hW.2 gQ i i'`. Simplify using `only [E8Fibration.e8] at h1`. Rewrite `h1` using `[h2]`. Conclude with `h1` after adjusting the coercions. Use `⟨bT, fun i => E8Fibration.Lab.ptOf hP b (E8Fibration.Lab.sharpBasis W hW.2 gQ (Pi.single i 1)), htor, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `K' _ _ x y hy`. Establish `key` using `GlobalTheory.symplectic_system_torsion_basis L1 K P' ((l ^ j) ^ 2) z`. Use `revert key`. Generalize the expression as in `P'.g = g' at hg ⊢`. Substitute `hg` using the available equality.
+
+Introduce `key`. Conclude with `key _ hNK hz htor hpt K' x y hy`. Introduce `i i'`. Rewrite using `[hu]`. Conclude with `hpt i i'`.
+
+Introduce `a i`. Conclude with `hactc act hacts a i`.
+-/
 theorem exists_symplectic_labels : ∀ (W : Matrix (Fin 8) (Fin 8) ℤ), IsE8 W → ∀ (gQ : ℕ),
   ∃ Mat : Fin 2 → Matrix (Fin (2 * (8 * gQ))) (Fin (2 * (8 * gQ))) ℤ,
   ∀ (l : ℕ), l.Prime → Odd l → ∀ j : ℕ, 1 ≤ j →

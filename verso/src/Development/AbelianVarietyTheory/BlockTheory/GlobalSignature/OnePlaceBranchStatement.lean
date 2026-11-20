@@ -64,6 +64,9 @@ def MemberWeights : Prop :=
 def Statement : Prop :=
   OnePlaceIsBr ∧ OnePlaceTranspose ∧ IsTensor ∧ EquivNe ∧ Integral ∧ Homogeneous ∧ MemberWeights
 
+/- English proof (translation)
+Use `forall_congr' fun i => ?_` and prove the remaining obligations. Simplify using `only [Br.aBr, Br.bBr, Br.iS, Br.iC, sub_nonneg]`. Conclude with `and_comm`.
+-/
 theorem interlace_iff {N n : ℕ} (hN : N = n + 1) (lam : DomWeight N) (sg : DomWeight n) :
     Br.Interlace hN lam sg ↔ Formalism.MainNotions.PrimeDegreeVariant.Interlace hN.symm lam sg := by
   refine forall_congr' fun i => ?_
@@ -74,6 +77,9 @@ def lamEx : DomWeight 3 := ⟨![3, 1, 1], by decide⟩
 
 def sgEx : DomWeight 2 := ⟨![2, 1], by decide⟩
 
+/- English proof (translation)
+Use `⟨?_, rfl, ?_, rfl⟩` and prove the remaining obligations. Apply the tactic sequence `intro i fin_cases i <;> simp [Br.aBr, Br.bBr, Br.iS, Br.iC, lamEx, sgEx]`. Simplify using `[Br.d0, Br.aBr, Br.iS, lamEx, sgEx, Fin.sum_univ_two]`.
+-/
 example : Br.Interlace (N := 3) (n := 2) rfl lamEx sgEx ∧ Br.SameShift lamEx sgEx ∧
     Br.d0 (N := 3) (n := 2) rfl lamEx sgEx = 1 ∧ lamEx.detShift = 1 := by
   refine ⟨?_, rfl, ?_, rfl⟩

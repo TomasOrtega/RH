@@ -8,6 +8,13 @@ namespace Formalism.L2.SG.LocalCountModules.LocCnt0LAlg
 
 variable {E : Type} [CommRing E] (O : Subring E) (cj : E →+* E) {r : ℕ}
 
+/- English proof (translation)
+Establish `hc : Matrix.vecMul (fun j => (Y j : E)) (gramC cj Z T T')⁻¹ = c`. Establish `hYv : (fun j => (Y j : E)) = Matrix.vecMul c (gramC cj Z T T')`. Use function extensionality and compare the values at `j`. Rewrite using `[hY j]`. Both sides reduce to the same expression.
+
+Rewrite using `[hYv, Matrix.vecMul_vecMul, Matrix.mul_nonsing_inv _ hG, Matrix.vecMul_one]`. Unfold `formC`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl (fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[← Finset.sum_mul, ← congrFun hc j]`.
+
+Both sides reduce to the same expression.
+-/
 theorem formC_of_rel (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) E) (T T' : E)
     (hG : IsUnit (gramC cj Z T T').det) (Y W : Ix r → O) (c : Ix r → E)
     (hY : ∀ j, (Y j : E) = ∑ i, c i * gramC cj Z T T' i j) :
@@ -31,6 +38,27 @@ def cvec (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) E) (T T' : E) (Y : Ix r → O) 
     (fun b => (Z⁻¹.mulVec (fun j => (Y (Sum.inl j) : E))) b +
       T * lamStarC cj Z (fun j => (Y (Sum.inr j) : E)) * Z⁻¹ b (Fin.last r))
 
+/- English proof (translation)
+Establish `hZ : Z * Z⁻¹ = 1` using `Matrix.mul_nonsing_inv Z hu`. Establish `hZ' : Z⁻¹ * Z = 1` using `Matrix.nonsing_inv_mul Z hu`. Establish `cl : cvec O cj Z T T' Y (Sum.inl (Fin.last r)) = lamStarC cj Z (fun j => (Y (Sum.inr j) : E))`. Simplify using `only [cvec, Sum.elim_inl, hκ, map_zero, mul_zero, add_zero, lamStarC]`. Establish `cr : cvec O cj Z T T' Y (Sum.inr (Fin.last r)) = lamC Z (fun j => (Y (Sum.inl j) : E))`.
+
+Simplify using `only [cvec, Sum.elim_inr, hκ, mul_zero, add_zero, lamC]`. Introduce `j`. Break down `j with j | j` into its components or cases. Rewrite using `[sum_gram_inl, cl]`. Establish `a1 : ∑ b, Z j b * Z⁻¹.mulVec (fun k => (Y (Sum.inl k) : E)) b = (Y (Sum.inl j) : E)`.
+
+Use `congrFun (show Z.mulVec (Z⁻¹.mulVec (fun k => (Y (Sum.inl k) : E))) = (fun k => (Y (Sum.inl k) : E)) by rw [Matrix.mulVec_mulVec, hZ, Matrix.one_mulVec]) j` as an intermediate fact. Simplify `this` using `only [Matrix.mulVec, dotProduct]`. Establish `a2 : ∑ b, Z j b * Z⁻¹ b (Fin.last r) = if j = Fin.last r then 1 else 0`. Use `congrFun (congrFun hZ j) (Fin.last r)` as an intermediate fact. Rewrite `this` using `[Matrix.mul_apply, Matrix.one_apply]`.
+
+Conclude with `this`. Establish `e1 : ∑ b, Z j b * cvec O cj Z T T' Y (Sum.inr b) = (Y (Sum.inl j) : E) + T * lamStarC cj Z (fun k => (Y (Sum.inr k) : E)) * (if j = Fin.last r then 1 else 0)`. Simplify using `only [cvec, Sum.elim_inr]`. Rewrite using `[← a1, ← a2, Finset.mul_sum, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl (fun b _ => by ring)`.
+
+Rewrite using `[e1]`. Apply the tactic sequence `split_ifs <;> ring`. Rewrite using `[sum_gram_inr, cr]`. Establish `a1 : ∀ k, ∑ a, cj (Z a j) * cj (Z⁻¹ k a) = if k = j then 1 else 0`. Introduce `k`.
+
+Use `congrFun (congrFun hZ' k) j` as an intermediate fact. Rewrite `this` using `[Matrix.mul_apply, Matrix.one_apply]`. Rewrite using `[← map_one cj, ← map_zero cj, ← apply_ite cj, ← this, map_sum]`. Conclude with `Finset.sum_congr rfl (fun a _ => by rw [map_mul, mul_comm])`. Establish `e1 : ∑ a, cj (Z a j) * cvec O cj Z T T' Y (Sum.inl a) = (Y (Sum.inr j) : E) + T' * lamC Z (fun k => (Y (Sum.inl k) : E)) * (if Fin.last r = j then 1 else 0)`.
+
+Simplify using `only [cvec, Sum.elim_inl]`. Rewrite using `[← a1 (Fin.last r)]`. Establish `a3 : ∑ a, cj (Z a j) * ∑ k, cj (Z⁻¹ k a) * (Y (Sum.inr k) : E) = (Y (Sum.inr j) : E)`. Repeatedly rewrite using `[Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`.
+
+Establish `: ∀ k, ∑ a, cj (Z a j) * (cj (Z⁻¹ k a) * (Y (Sum.inr k) : E)) = (if k = j then 1 else 0) * (Y (Sum.inr k) : E)`. Introduce `k`. Rewrite using `[← a1 k, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl (fun a _ => by ring)`. Repeatedly rewrite using `[this, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
+
+Rewrite using `[← a3, Finset.mul_sum, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl (fun a _ => by ring)`. Rewrite using `[e1]`. Distinguish the cases in `hj : j = Fin.last r`. Substitute `hj` using the available equality.
+
+Simplify using `only [if_true]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg hj, if_neg (Ne.symm hj)]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem cvec_gram (hcj : ∀ x, cj (cj x) = x) (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) E)
     (hu : IsUnit Z.det) (hκ : Z⁻¹ (Fin.last r) (Fin.last r) = 0) (T T' : E) (Y : Ix r → O) :
     ∀ j, (Y j : E) = ∑ i, cvec O cj Z T T' Y i * gramC cj Z T T' i j := by
@@ -88,6 +116,15 @@ theorem cvec_gram (hcj : ∀ x, cj (cj x) = x) (Z : Matrix (Fin (r + 1)) (Fin (r
     · subst hj; simp only [if_true]; ring
     · rw [if_neg hj, if_neg (Ne.symm hj)]; ring
 
+/- English proof (translation)
+Rewrite using `[formC_of_rel O cj _ T T' hG Y W _ (cvec_gram O cj hcj _ hu hκ T T' Y), Fintype.sum_sum_type]`. Simplify using `only [cvec, Sum.elim_inl, Sum.elim_inr, add_mul, Finset.sum_add_distrib]`. Establish `s1 : ∑ a, (∑ k, cj ((Z.map O.subtype)⁻¹ k a) * (Y (Sum.inr k) : E)) * cj (W (Sum.inl a) : E) = cj (bRaw O cj Z (fun j => W (Sum.inl j)) (fun j => Y (Sum.inr j)))`. Simplify using `only [bRaw, map_sum, map_mul, hcj, Matrix.mulVec, dotProduct, Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`.
+
+Conclude with `Finset.sum_congr rfl (fun k _ => Finset.sum_congr rfl (fun a _ => by ring))`. Establish `s3 : ∑ b, (Z.map O.subtype)⁻¹.mulVec (fun j => (Y (Sum.inl j) : E)) b * cj (W (Sum.inr b) : E) = bRaw O cj Z (fun j => Y (Sum.inl j)) (fun j => W (Sum.inr j))`. Simplify using `only [bRaw]`. Conclude with `Finset.sum_congr rfl (fun b _ => mul_comm _ _)`. Establish `s2 : ∑ a, T' * lamC (Z.map O.subtype) (fun j => (Y (Sum.inl j) : E)) * cj ((Z.map O.subtype)⁻¹ (Fin.last r) a) * cj (W (Sum.inl a) : E) = T' * lamC (Z.map O.subtype) (fun j => (Y (Sum.inl j) : E)) * cj (lamC (Z.map O.subtype) (fun j => (W (Sum.inl j) : E)))`.
+
+Establish `e : cj (lamC (Z.map O.subtype) (fun j => (W (Sum.inl j) : E))) = ∑ a, cj ((Z.map O.subtype)⁻¹ (Fin.last r) a) * cj (W (Sum.inl a) : E)`. Simplify using `only [lamC, Matrix.mulVec, dotProduct, map_sum, map_mul]`. Rewrite using `[e, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl (fun a _ => by ring)`. Establish `s4 : ∑ b, T * lamStarC cj (Z.map O.subtype) (fun j => (Y (Sum.inr j) : E)) * (Z.map O.subtype)⁻¹ b (Fin.last r) * cj (W (Sum.inr b) : E) = T * lamStarC cj (Z.map O.subtype) (fun j => (Y (Sum.inr j) : E)) * cj (lamStarC cj (Z.map O.subtype) (fun j => (W (Sum.inr j) : E)))`.
+
+Establish `e : cj (lamStarC cj (Z.map O.subtype) (fun j => (W (Sum.inr j) : E))) = ∑ b, (Z.map O.subtype)⁻¹ b (Fin.last r) * cj (W (Sum.inr b) : E)`. Simplify using `only [lamStarC, map_sum, map_mul, hcj]`. Rewrite using `[e, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl (fun b _ => by ring)`. Take the linear combination `s1 + s2 + s3 + s4`.
+-/
 theorem formC_eq (hcj : ∀ x, cj (cj x) = x) (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) O)
     (hu : IsUnit (Z.map O.subtype).det) (hκ : (Z.map O.subtype)⁻¹ (Fin.last r) (Fin.last r) = 0)
     (T T' : E) (hG : IsUnit (gramC cj (Z.map O.subtype) T T').det) (Y W : Ix r → O) :

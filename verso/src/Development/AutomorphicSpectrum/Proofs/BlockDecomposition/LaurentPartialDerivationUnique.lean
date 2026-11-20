@@ -28,10 +28,22 @@ noncomputable def logDer (D : Derivation K (AddMonoidAlgebra K (Fin d →₀ ℤ
     linear_combination (single (-n) (1 : K) * D (single n 1)) * hm +
       (single (-m) (1 : K) * D (single m 1)) * hn
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem logDer_apply (D : Derivation K (AddMonoidAlgebra K (Fin d →₀ ℤ))
     (AddMonoidAlgebra K (Fin d →₀ ℤ))) (m : Fin d →₀ ℤ) :
     logDer D m = single (-m) 1 * D (single m 1) := rfl
 
+/- English proof (translation)
+Establish `key : logDer D = (zmultiplesHom (AddMonoidAlgebra K (Fin d →₀ ℤ)) (single (-Finsupp.single k 1) (1 : K))).comp (Finsupp.applyAddHom k)`. Use `Finsupp.addHom_ext' fun j => AddMonoidHom.ext_int ?_` and prove the remaining obligations. Simplify using `only [AddMonoidHom.comp_apply, Finsupp.singleAddHom_apply, logDer_apply, hD, Finsupp.applyAddHom_apply, zmultiplesHom_apply]`. Distinguish the cases in `hj : j = k`. Substitute `hj` using the available equality.
+
+Simplify using the standard rewrite rules. Simplify using `[hj]`. Establish `hm : (single m (1 : K)) * single (-m) 1 = 1`. Rewrite using `[single_mul_single, one_mul, add_neg_cancel, one_def]`. Establish `h1 : logDer D m = (m k) • single (-Finsupp.single k 1) (1 : K)`.
+
+Rewrite using `[key]`. Simplify using the standard rewrite rules. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[logDer_apply, ← mul_assoc, hm, one_mul]`. Use `_ = _ := by`.
+
+Rewrite using `[h1, mul_smul_comm, single_mul_single, one_mul, sub_eq_add_neg]`.
+-/
 theorem derivation_single (k : Fin d)
     (D : Derivation K (AddMonoidAlgebra K (Fin d →₀ ℤ)) (AddMonoidAlgebra K (Fin d →₀ ℤ)))
     (hD : ∀ j : Fin d, D (single (Finsupp.single j 1) 1) = if j = k then 1 else 0)
@@ -61,10 +73,22 @@ noncomputable def res (K : Type) [Field K] (d : ℕ) :
   (Finsupp.lapply (-(∑ j : Fin d, Finsupp.single j (1 : ℤ)))) ∘ₗ
     (coeffLinearEquiv K).toLinearMap
 
+/- English proof (translation)
+Simplify using `[res, Finsupp.single_apply]`.
+-/
 theorem res_single (m : Fin d →₀ ℤ) (c : K) :
     res K d (single m c) = if m = -(∑ j : Fin d, Finsupp.single j 1) then c else 0 := by
   simp [res, Finsupp.single_apply]
 
+/- English proof (translation)
+Proceed by induction on `a using AddMonoidAlgebra.induction_linear with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp [hx, hy]`. Consider the case `single m c`. Establish `hc : (single m c : AddMonoidAlgebra K (Fin d →₀ ℤ)) = c • single m (1 : K)`.
+
+Rewrite using `[smul_single, smul_eq_mul, mul_one]`. Establish `hres : res K d (single (m - Finsupp.single k 1) (1 : K)) * ((m k : ℤ) : K) = 0`. Rewrite using `[res_single]`. Use `split_ifs with h`. Establish `hmk : m k = 0`.
+
+Establish `h'` using `DFunLike.congr_fun h k`. Simplify using `[Finsupp.finset_sum_apply, Finsupp.single_apply] at h'`. Use linear arithmetic over natural numbers and integers. Simplify using `[hmk]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[hc, D.map_smul, derivation_single k D hD m, map_smul, ← Int.cast_smul_eq_zsmul K, map_smul, smul_eq_mul, smul_eq_mul, mul_comm ((m k : ℤ) : K), hres, mul_zero]`.
+-/
 theorem res_derivation_eq_zero (k : Fin d)
     (D : Derivation K (AddMonoidAlgebra K (Fin d →₀ ℤ)) (AddMonoidAlgebra K (Fin d →₀ ℤ)))
     (hD : ∀ j : Fin d, D (single (Finsupp.single j 1) 1) = if j = k then 1 else 0)
@@ -87,6 +111,9 @@ theorem res_derivation_eq_zero (k : Fin d)
     rw [hc, D.map_smul, derivation_single k D hD m, map_smul, ← Int.cast_smul_eq_zsmul K, map_smul,
       smul_eq_mul, smul_eq_mul, mul_comm ((m k : ℤ) : K), hres, mul_zero]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨res K d, res_single, fun k D hD a => res_derivation_eq_zero k D hD a⟩`.
+-/
 theorem exists_res (K : Type) [Field K] (d : ℕ) :
     ∃ res : AddMonoidAlgebra K (Fin d →₀ ℤ) →ₗ[K] K,
       (∀ (m : Fin d →₀ ℤ) (c : K), res (AddMonoidAlgebra.single m c) =

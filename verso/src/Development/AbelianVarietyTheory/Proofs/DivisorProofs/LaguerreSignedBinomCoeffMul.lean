@@ -8,6 +8,17 @@ open scoped Classical MatrixGroups nonZeroDivisors
 
 namespace GlobalTheory.HilbFam
 
+/- English proof (translation)
+Introduce `k n m j hjm hmn`. Establish `h1 : n.choose m * m.choose j = n.choose j * (n - j).choose (m - j)` using `by first`. Consider the case `exact Nat.choose_mul hjm`. Consider the case `exact Nat.choose_mul hmn hjm`. Take `⟨p, rfl⟩` from `Nat.exists_eq_add_of_le hjm`.
+
+Take `⟨q, rfl⟩` from `Nat.exists_eq_add_of_le hmn`. Establish `e1 : j + p + q - (j + p) = q` using `by omega`. Establish `e2 : j + p - j = p` using `by omega`. Establish `e3 : j + p + q - j = p + q` using `by omega`. Establish `h2 : ∀ a p q : ℕ, a.ascFactorial p * (a + p).ascFactorial q = a.ascFactorial (p + q)`.
+
+Introduce `a p q`. Proceed by induction on `q with`. Consider the case `zero => simp`. Consider the case `succ q ih`. Rewrite using `[← add_assoc, Nat.ascFactorial_succ, Nat.ascFactorial_succ, ← ih, add_assoc a p q]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `h3` using `h2 (k + j) p q`. Rewrite `h1` using `[e2, e3]`. Establish `h1' : ((j + p + q).choose (j + p) : ℤ) * ((j + p).choose j : ℤ) = ((j + p + q).choose j : ℤ) * ((p + q).choose p : ℤ)` using `by exact_mod_cast h1`. Establish `h3' : ((k + j).ascFactorial p : ℤ) * ((k + (j + p)).ascFactorial q : ℤ) = ((k + j).ascFactorial (p + q) : ℤ)`.
+
+Rewrite using `[← add_assoc]`. Conclude with `h3` after adjusting the coercions. Unfold `rco`. Rewrite using `[e1, e2, e3, pow_add, ← h3']`. Take the linear combination `((-1 : ℤ) ^ p * (-1) ^ q * ((k + j).ascFactorial p : ℤ) * ((k + (j + p)).ascFactorial q : ℤ)) * h1'`.
+-/
 theorem rco_mul_rco : ∀ k n m j : ℕ, j ≤ m → m ≤ n →
     rco k n m * rco k m j = rco k n j * ((n - j).choose (m - j) : ℤ) := by
   intro k n m j hjm hmn

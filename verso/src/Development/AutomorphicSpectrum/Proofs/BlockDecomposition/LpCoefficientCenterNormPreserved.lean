@@ -5,6 +5,11 @@ open GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.SmGL GlobalTheory.Loc
 
 namespace GlobalTheory.CompanionTheory.CoeffCentral
 
+/- English proof (translation)
+Introduce `k _ _ _ _ N V _ _ π p h z hz v l hl`. Use `borelize (AdGL k N)`. Take `⟨F, hF, -⟩` from `h MeasureTheory.Measure.haar inferInstance v l hl`. Establish `h1 : (QuotientGroup.mk z : AdGL k N) = QuotientGroup.mk 1`. Rewrite using `[QuotientGroup.mk_one]`.
+
+Conclude with `(QuotientGroup.eq_one_iff z).2 hz`. Establish `h2` using `hF z`. Rewrite `h2` using `[h1, hF 1]`. Simplify using `using h2.symm`.
+-/
 theorem norm_coeff_central : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k], ∀ (N : ℕ) {V : Type} [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL (Fin N) k) V) (p : ℝ), CoeffLp p π → ∀ z ∈ Subgroup.center (GL (Fin N) k), ∀ (v : V) (l : Module.Dual ℂ V), IsOpen {g : GL (Fin N) k | l ∘ₗ π g = l} → ‖l (π z v)‖ = ‖l v‖ := by
   intro k _ _ _ _ N V _ _ π p h z hz v l hl
   borelize (AdGL k N)

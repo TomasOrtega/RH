@@ -12,6 +12,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `o Ω _ _ _ h M`. Use `haveI := h.ded`. Use `haveI := M.lft`. Use `haveI := M.qc`. Use `haveI : IsNoetherianRing (CommRingCat.of o) := inferInstanceAs (IsNoetherianRing o)`.
+
+Use `haveI : IsLocallyNoetherian M.Z := LocallyOfFiniteType.isLocallyNoetherian M.s`. Use `haveI : CompactSpace M.Z := QuasiCompact.compactSpace_of_compactSpace M.s`. Conclude with `{}`.
+-/
 theorem ratModel_isNoetherian_of_arithBase : ∀ {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω] (M : RatModel o Ω), AlgebraicGeometry.IsNoetherian M.Z := by
   intro o Ω _ _ _ h M
   haveI := h.ded

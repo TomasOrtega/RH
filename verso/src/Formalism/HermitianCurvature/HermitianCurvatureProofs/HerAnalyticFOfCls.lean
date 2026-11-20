@@ -16,6 +16,11 @@ section Gen
 variable {A S : Type} [Ring A] [StarRing A] [Algebra ℂ A] [StarModule ℂ A] [Fintype S] [DecidableEq S]
 variable {𝒜 : StarSubalgebra ℂ A}
 
+/- English proof (translation)
+Unfold `Ts Formalism.YangianSpanCharacter.T.Tm`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Simplify using `only [Fin.zero_eta, Fin.mk_one, Matrix.of_apply, Matrix.cons_val', Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Matrix.empty_val', Matrix.cons_val_fin_one, Matrix.head_fin_const]`. Conclude with `add_mem (algebraMap_mem 𝒜 Y) hp`. Conclude with `neg_mem hc`.
+
+Conclude with `hci`. Conclude with `zero_mem 𝒜`.
+-/
 theorem Ts_mem (σ : Site A) (hp : σ.p ∈ 𝒜) (hc : σ.c ∈ 𝒜) (hci : σ.ci ∈ 𝒜) (Y : ℂ) (i j : Fin 2) :
     Ts σ Y i j ∈ 𝒜 := by
   unfold Ts Formalism.YangianSpanCharacter.T.Tm
@@ -27,6 +32,11 @@ theorem Ts_mem (σ : Site A) (hp : σ.p ∈ 𝒜) (hc : σ.c ∈ 𝒜) (hci : σ
   · exact hci
   · exact zero_mem 𝒜
 
+/- English proof (translation)
+Proceed by induction on `w with`. Consider the case `nil => exact (entSub 𝒜).one_mem`. Consider the case `cons l w ih`. Rewrite using `[bT]`. Use `(entSub 𝒜).mul_mem (ins_mem _ fun i j => ?_) ih` and prove the remaining obligations.
+
+Use `show io ((if l.plus then Ts σ l.pt else (Ts σ l.pt).map star) i j) ∈ entSub 𝒜`. Apply `io_mem` to reduce the goal to its premises. Use `split_ifs`. Conclude with `Ts_mem σ hp hc hci l.pt i j`. Conclude with `(star_mem (Ts_mem σ hp hc hci l.pt i j) : star _ ∈ 𝒜)`.
+-/
 theorem bT_mem (σ : Site A) (hp : σ.p ∈ 𝒜) (hc : σ.c ∈ 𝒜) (hci : σ.ci ∈ 𝒜) (w : List (Letter ℂ S)) :
     bT σ w ∈ entSub 𝒜 := by
   induction w with
@@ -48,6 +58,9 @@ variable {k r : ℕ} {z z' : Fin (2 * r + k + 1) → ℂ} {Wp Wq : Type} [Normed
   [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq]
   {π : Mx k r → (Wp →L[ℂ] Wp)} {π' : Mx k r → (Wq →L[ℂ] Wq)}
 
+/- English proof (translation)
+Introduce `c hc Φ hΦ Ψ hΨ`. Take `⟨h1, -⟩` from `hI c hc Φ hΦ Ψ hΨ`. Establish `h2` using `h1 (Classical.arbitrary _)`. Rewrite `h2` using `[glue_last_level]`. Then use the resulting hypothesis.
+-/
 theorem intOn_of_last {μ : Measure (Mt k r)} {U : Submodule ℂ (RadSp k r z z' π π')}
     (hI : IntLevOn μ (Fin.last r) U) : IntOn μ U := by
   intro c hc Φ hΦ Ψ hΨ
@@ -62,6 +75,13 @@ section Top
 variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] {S : Type} [Fintype S] [DecidableEq S]
 
+/- English proof (translation)
+Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `adjTop_of_tAdj P z z' π π' X μ L st K l0 hD (U (Fin.last P.r)) (intOn_of_last (hI _)) (hKU _) hfn hT`. Use `stepDens_of P z z' π π' μ L st K l0 (fun l => U l.castSucc) (fun l => hKU _) (fun l => hI _) (fun w hw l => siteStep_actual P z z' π π' X μ L st l0 w hD hw l) ?_ ?_ hPh` and prove the remaining obligations. Introduce `w _ l c hc a b`. Take `⟨hp, hcc, hci⟩` from `hSA l c hc`.
+
+Conclude with `bT_mem (site L l) hp hcc hci w a b`. Introduce `w hw l a b`. Use `rrw_mem (QQi L st l.succ) (QQi_mem L st (presAlg (U l.castSucc)) l.succ (hQ _) ?_) w hw.1.2.1 a b` and prove the remaining obligations. Introduce `l' hl'`. Conclude with `hS l.castSucc l' (by simp only [Fin.val_succ] at hl'; simp only [Fin.val_castSucc]; omega)`.
+
+Conclude with `formInt_of_cls P z z' π π' μ L st K l0 U hKU hI hQ hS`.
+-/
 theorem herAnalyticF_of_cls (P : M.Par) (z z' : Fin (2 * P.r + P.k + 1) → ℂ) (π : Mx P.k P.r → (Wp →L[ℂ] Wp))
     (π' : Mx P.k P.r → (Wq →L[ℂ] Wq)) (X : ActualOps P.k P.r z z' π π') (μ : Measure (Mt P.k P.r))
     (L : R.LevelData (Pr (RadSp P.k P.r z z' π π')) P.r) (st : Fr.Start (Pr (RadSp P.k P.r z z' π π')))

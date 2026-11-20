@@ -12,6 +12,9 @@ open GlobalTheory.CompanionTheory.LTPer.Tilt
 
 namespace GlobalTheory.CompanionTheory.LTPer.Tilt
 
+/- English proof (translation)
+Introduce `l _ K μ`. Take `⟨φ, hφ⟩` from `IntermediateField.exists_algHom_of_splits (F := ℚ_[l]) (E := Om l) (K := Om l) (fun s => ⟨Algebra.IsIntegral.isIntegral s, IsAlgClosed.splits _⟩) (L := K.1) μ`. Use `⟨AlgEquiv.ofBijective φ (Algebra.IsAlgebraic.algHom_bijective φ), fun x => ?_⟩` and prove the remaining obligations. Conclude with `DFunLike.congr_fun hφ x`.
+-/
 theorem exists_gal_extending_embedding : ∀ {l : ℕ} [Fact l.Prime] (K : FinExt l) (μ : ↥K.1 →ₐ[ℚ_[l]] Om l),
     ∃ g : GQ l, ∀ x : ↥K.1, g (x : Om l) = μ x := by
   intro l _ K μ

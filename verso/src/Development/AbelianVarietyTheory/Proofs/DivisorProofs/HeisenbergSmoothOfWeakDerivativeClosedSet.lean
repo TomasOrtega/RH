@@ -6,6 +6,13 @@ open scoped RealInnerProductSpace ContDiff Real ComplexOrder
 
 namespace GlobalTheory.RealWeil
 
+/- English proof (translation)
+Rewrite using `[hasFDerivAt_iff_isLittleO, Asymptotics.isLittleO_iff]`. Introduce `c hc`. Take `⟨δ, hδ, hb⟩` from `Metric.continuousAt_iff.1 (hA.continuousAt (x := v)) c hc`. Use `filter_upwards [Metric.ball_mem_nhds v hδ] with w hw`. Use `h2 _ _ (by positivity) fun x => ?_` and prove the remaining obligations.
+
+Use `(convex_ball v δ).norm_image_sub_le_of_norm_hasFDerivWithin_le' (𝕜 := ℝ) (C := c) (φ := ((l x).restrictScalars ℝ).comp (A v)) (fun u _ => (hF x u).hasFDerivWithinAt) (fun u hu => ?_) (Metric.mem_ball_self hδ) hw` as an intermediate fact. Simplify `this` using `only [map_sub, ContinuousLinearMap.comp_apply, ContinuousLinearMap.coe_restrictScalars']`. Use `ContinuousLinearMap.opNorm_le_bound _ hc.le fun z => ?_` and prove the remaining obligations. Establish `e : (((l x).restrictScalars ℝ).comp (A u) - ((l x).restrictScalars ℝ).comp (A v)) z = l x ((A u - A v) z)`. Simplify using the standard rewrite rules.
+
+Rewrite using `[e]`. Use `(h1 _ _).trans (((A u - A v).le_opNorm z).trans ?_)` and prove the remaining obligations. Use `hb hu` as an intermediate fact. Rewrite `this` using `[dist_eq_norm]`. Use `gcongr`.
+-/
 theorem hasFDerivAt_of_norming {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] {B : Type} [NormedAddCommGroup B]
     [NormedSpace ℂ B] {X : Type} (l : X → B →L[ℂ] ℂ) (h1 : ∀ x b, ‖l x b‖ ≤ ‖b‖)
     (h2 : ∀ b (C : ℝ), 0 ≤ C → (∀ x, ‖l x b‖ ≤ C) → ‖b‖ ≤ C) (F : V → B) (A : V → V →L[ℝ] B) (hA : Continuous A)
@@ -29,6 +36,31 @@ theorem hasFDerivAt_of_norming {V : Type} [NormedAddCommGroup V] [NormedSpace �
     rw [dist_eq_norm] at this
     gcongr
 
+/- English proof (translation)
+Introduce `V _ _ _ B _ _ _ om ρ h X l h1 h2 h3 Θ hd hc`. Establish `sep : ∀ b b' : B, (∀ x, l x b = l x b') → b = b'` using `fun b b' hb => by`. Rewrite using `[← sub_eq_zero, ← norm_le_zero_iff]`. Conclude with `h2 _ 0 le_rfl fun x => by rw [map_sub, hb, sub_self, norm_zero]`. Establish `lsm : ∀ x (r : ℝ) (b : B), l x (r • b) = r • l x b` using `fun x r b => ((l x).restrictScalars ℝ).map_smul r b`.
+
+Establish `key : ∀ f ∈ Θ, ∃ D : V →L[ℝ] B, (∀ z, D z ∈ Θ) ∧ ∀ v, HasFDerivAt (fun w => ρ w f) (((ρ v).restrictScalars ℝ).comp D - (om v).smulRight (((π : ℂ) * I) • ρ v f)) v`. Introduce `f hf`. Use `choose g hg hg' using hc f hf`. Establish `hgd : ∀ x z, l x (g z) = fderiv ℝ (fun v => l x (ρ v f)) 0 z`. Introduce `x z`.
+
+Use `(hg' z x).unique ?_` and prove the remaining obligations. Establish `a1 : HasDerivAt (fun t : ℝ => t • z) z 0` using `by simpa using (hasDerivAt_id (0 : ℝ)).smul_const z`. Establish `a2 : HasFDerivAt (fun v => l x (ρ v f)) (fderiv ℝ (fun v => l x (ρ v f)) 0) ((0 : ℝ) • z)`. Rewrite using `[zero_smul]`. Conclude with `(hd f hf x 0).hasFDerivAt`.
+
+Conclude with `a2.comp_hasDerivAt (0 : ℝ) a1`. Set `D0 : V →ₗ[ℝ] B` to `{ toFun := g map_add' := fun z z' => sep _ _ fun x => by rw [map_add, hgd, hgd, hgd, map_add] map_smul' := fun r z => sep _ _ fun x => by rw [RingHom.id_apply, lsm, hgd, hgd, map_smul] }`. Set `D : V →L[ℝ] B` to `LinearMap.toContinuousLinearMap D0`. Establish `hD : ∀ z, D z = g z` using `fun z => rfl`. Use `⟨D, fun z => hg z, hasFDerivAt_of_norming l h1 h2 _ _ ?_ ?_⟩` and prove the remaining obligations.
+
+Use `continuous_clm_apply.2 fun z => ?_` and prove the remaining obligations. Simplify using `only [ContinuousLinearMap.sub_apply, ContinuousLinearMap.comp_apply, ContinuousLinearMap.coe_restrictScalars', ContinuousLinearMap.smulRight_apply]`. Establish `a1` using `h.2.2.2 (D z)`. Establish `a2` using `h.2.2.2 f`. Conclude with `a1.sub ((om.continuous.clm_apply continuous_const).smul (a2.const_smul _))`.
+
+Introduce `x v`. Take `⟨a, x', hx⟩` from `h3 x v`. Establish `e : (fun w => l x (ρ w f)) = fun w => cexp (-(π * I) * (om v (w - v) : ℝ)) * (a * l x' (ρ (w - v) f))`. Use function extensionality and compare the values at `w`. Rewrite using `[← hx, h.2.1, add_sub_cancel, map_smul, smul_eq_mul, ← mul_assoc, ← Complex.exp_add]`.
+
+Simplify using the standard rewrite rules. Establish `b0 : HasFDerivAt (fun w : V => w - v) (ContinuousLinearMap.id ℝ V) v` using `(hasFDerivAt_id v).sub_const v`. Establish `b1 : HasFDerivAt (fun w => l x' (ρ (w - v) f)) (fderiv ℝ (fun v => l x' (ρ v f)) 0) v`. Establish `a2 : HasFDerivAt (fun v => l x' (ρ v f)) (fderiv ℝ (fun v => l x' (ρ v f)) 0) (v - v)`. Rewrite using `[sub_self]`.
+
+Conclude with `(hd f hf x' 0).hasFDerivAt`. Simplify `HasFDerivAt.comp (f := fun w : V => w - v) v a2 b0` using `[Function.comp_def]`. Establish `b2 : HasFDerivAt (fun w : V => ((om v (w - v) : ℝ) : ℂ)) (Complex.ofRealCLM.comp (om v)) v`. Simplify `(Complex.ofRealCLM.comp (om v)).hasFDerivAt.comp v b0` using `[Function.comp_def]`. Establish `b3` using `((b2.const_mul (-(π * I) : ℂ)).cexp).mul (b1.const_mul a)`.
+
+Rewrite using `[e]`. Use `b3.congr_fderiv ?_` and prove the remaining obligations. Use extensionality with `z`. Simplify using `[← hgd, h.1, hD, lsm, hx]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `ind : ∀ n : ℕ, ∀ f ∈ Θ, ContDiff ℝ n fun v => ρ v f`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro f _`. Conclude with `contDiff_zero.2 (h.2.2.2 f)`.
+
+Consider the case `succ n ih`. Introduce `f hf`. Take `⟨D, hD, hF⟩` from `key f hf`. Rewrite using `[Nat.cast_succ, contDiff_succ_iff_fderiv_apply]`. Use `⟨fun v => (hF v).differentiableAt, by simp, fun z => ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [(hF _).fderiv, ContinuousLinearMap.sub_apply, ContinuousLinearMap.comp_apply, ContinuousLinearMap.coe_restrictScalars', ContinuousLinearMap.smulRight_apply]`. Conclude with `(ih _ (hD z)).sub ((om.contDiff.clm_apply contDiff_const).smul ((ih f hf).const_smul _))`. Introduce `f hf`. Conclude with `contDiff_infty.2 fun n => ind n f hf`.
+-/
 theorem sm_of_weak_deriv_closed : ∀ (V : Type) [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V]
     (B : Type) [NormedAddCommGroup B] [NormedSpace ℂ B] [CompleteSpace B] (om : V →L[ℝ] V →L[ℝ] ℝ)
     (ρ : V → B →L[ℂ] B), IsHeis (fun x y => om x y) ρ → ∀ (X : Type) (l : X → B →L[ℂ] ℂ), (∀ x b, ‖l x b‖ ≤ ‖b‖) →

@@ -18,12 +18,18 @@ namespace Formalism.L2.KerInert
 def FactsB : Prop :=
   WeakApprox ∧ UnitSubst ∧ UnitSubstLoc ∧ GlobONB ∧ OneCopyLoc ∧ ThMMTransAlgPrime
 
+/- English proof (translation)
+The claim follows from `intInert_of combination_fact pairing_fact h.1 pullback_torsion pullback_fact (AlgGrP.algFact_of_transPrime h.2.2.2.2.2) power_series_linearity pairs_standard_at_p (basisInv_of_unitSubst h.2.1) tensor_matrix_units_fact (thFourInt_of h.2.2.2.2.1 (locInv_of h.2.2.1) four_products_fr …`.
+-/
 theorem intInert_ofB (h : FactsB) : IntInert :=
   intInert_of combination_fact pairing_fact h.1 pullback_torsion pullback_fact (AlgGrP.algFact_of_transPrime h.2.2.2.2.2)
     power_series_linearity pairs_standard_at_p (basisInv_of_unitSubst h.2.1) tensor_matrix_units_fact
     (thFourInt_of h.2.2.2.2.1 (locInv_of h.2.2.1) four_products_from_one h.2.2.2.1 (AlgGrP.algZero_of_transPrime h.2.2.2.2.2))
 
 variable [Fact _root_.Formalism.L2.Th1.CM.CM2] in
+/- English proof (translation)
+The claim follows from `jetsInert_of_int (intInert_ofB h) (orthBasisExists_of h.2.2.2.1 h.1) hJ`.
+-/
 theorem jetsInert_ofB (h : FactsB) (hJ : PhiJetInt) : JetsInert :=
   jetsInert_of_int (intInert_ofB h) (orthBasisExists_of h.2.2.2.1 h.1) hJ
 

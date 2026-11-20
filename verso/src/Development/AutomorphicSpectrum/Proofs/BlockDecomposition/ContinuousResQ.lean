@@ -14,6 +14,11 @@ variable {E : Type} [Field E] [NumberField E] {a : ℕ}
 def resQ (φ : GA E a → ℂ) : RightCosetSpace (rationalGLOne E a) → ℂ :=
   fun q => φ ((Quotient.out q : normOneGL E a) : GA E a)
 
+/- English proof (translation)
+Establish `e : RightCosetSpace.mk (rationalGLOne E a) (Quotient.out (RightCosetSpace.mk (rationalGLOne E a) x)) = RightCosetSpace.mk _ x` using `Quotient.out_eq _`. Take `⟨γ, hγ⟩` from `RightCosetSpace.mk_eq_mk_iff.1 e`. Take `⟨δ, hδ⟩ : ((γ : normOneGL E a) : GA E a) ∈ AdelicGLn.rationalGL E a` from `γ.2`. Unfold `resQ`. Rewrite using `[← hγ]`.
+
+Express the relevant statement in the definitionally equal form `φ (((γ : normOneGL E a) : GA E a) * (x : GA E a)) = _`. Rewrite using `[← hδ]`. Conclude with `h δ x.1`.
+-/
 theorem resQ_mk {φ : GA E a → ℂ} (h : ∀ γ g, φ (ratGL E a γ * g) = φ g) (x : normOneGL E a) :
     resQ φ (RightCosetSpace.mk _ x) = φ x := by
   have e : RightCosetSpace.mk (rationalGLOne E a)
@@ -27,6 +32,9 @@ theorem resQ_mk {φ : GA E a → ℂ} (h : ∀ γ g, φ (ratGL E a γ * g) = φ 
   rw [← hδ]
   exact h δ x.1
 
+/- English proof (translation)
+Use `(RightCosetSpace.isOpenQuotientMap_mk (rationalGLOne E a)).isQuotientMap.continuous_iff.2 ?_` and prove the remaining obligations. Establish `: resQ φ ∘ RightCosetSpace.mk (rationalGLOne E a) = fun x : normOneGL E a => φ x`. Use function extensionality and compare the values at `fun x => resQ_mk h x`. Rewrite using `[this]`. Conclude with `hc.comp continuous_subtype_val`.
+-/
 theorem continuous_resQ {φ : GA E a → ℂ} (hc : Continuous φ) (h : ∀ γ g, φ (ratGL E a γ * g) = φ g) :
     Continuous (resQ φ) := by
   refine (RightCosetSpace.isOpenQuotientMap_mk (rationalGLOne E a)).isQuotientMap.continuous_iff.2 ?_

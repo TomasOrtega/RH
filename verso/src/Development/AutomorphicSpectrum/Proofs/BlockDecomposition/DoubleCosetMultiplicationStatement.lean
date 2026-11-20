@@ -3,5 +3,8 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DoubleCosetMult
 import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.SatakeExponents.UniformizerValuations.MatchT
 open GlobalTheory.BCT GlobalTheory.UnitaryBC PositivityTheory.Rg.Bc.ArchbcB.B PositivityTheory.Rg.BcB.F.MT
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.DcosProduct.dcosMul | exact GlobalTheory.CompanionTheory.DcosProduct.dcosMul | (intros; apply GlobalTheory.CompanionTheory.DcosProduct.dcosMul <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.double_coset_multiplication : DcosMul := by
   first | exact @GlobalTheory.CompanionTheory.DcosProduct.dcosMul | exact GlobalTheory.CompanionTheory.DcosProduct.dcosMul | (intros; apply GlobalTheory.CompanionTheory.DcosProduct.dcosMul <;> assumption)

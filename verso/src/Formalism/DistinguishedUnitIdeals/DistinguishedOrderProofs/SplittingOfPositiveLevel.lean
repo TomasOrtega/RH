@@ -12,15 +12,27 @@ namespace S1
 section base
 variable {O : Type} [CommRing O] (B : Base O)
 
+/- English proof (translation)
+Simplify using `[Base.lc]`.
+-/
 theorem lc_eq : B.lc = ((B.ℓ : ℕ) : PowerSeries O) := by
   simp [Base.lc]
 
+/- English proof (translation)
+Rewrite using `[lc_eq]`. Simplify using the standard rewrite rules.
+-/
 theorem phi_lc (k : ℕ) : B.φ (B.lc ^ k) = B.lc ^ k := by
   rw [lc_eq]; simp
 
+/- English proof (translation)
+Rewrite using `[lc_eq]`. Simplify using the standard rewrite rules.
+-/
 theorem gam_lc (k : ℕ) : B.γ (B.lc ^ k) = B.lc ^ k := by
   rw [lc_eq]; simp
 
+/- English proof (translation)
+The claim follows from `Function.iterate_fixed (phi_lc B k) s`.
+-/
 theorem phiIter_lc (s k : ℕ) : (⇑B.φ)^[s] (B.lc ^ k) = B.lc ^ k :=
   Function.iterate_fixed (phi_lc B k) s
 
@@ -30,15 +42,24 @@ section lat
 variable {O : Type} [CommRing O] {B : Base O} {n : ℕ} {V : Type} [AddCommGroup V]
   [Module (PowerSeries O) V]
 
+/- English proof (translation)
+Simplify using `[sm, Submodule.mem_map]`.
+-/
 theorem mem_sm {a : PowerSeries O} {S : Submodule (PowerSeries O) V} {v : V} :
     v ∈ sm a S ↔ ∃ u ∈ S, a • u = v := by
   simp [sm, Submodule.mem_map]
 
+/- English proof (translation)
+Introduce `v hv`. Take `⟨u, hu, rfl⟩` from `mem_sm.1 hv`. Conclude with `S.smul_mem a hu`.
+-/
 theorem sm_le (a : PowerSeries O) (S : Submodule (PowerSeries O) V) : sm a S ≤ S := by
   intro v hv
   obtain ⟨u, hu, rfl⟩ := mem_sm.1 hv
   exact S.smul_mem a hu
 
+/- English proof (translation)
+Introduce `v hv`. Take `⟨u, hu, rfl⟩` from `mem_sm.1 hv`. Use `mem_sm.2 ⟨X ^ (M - 1) • u, S.smul_mem _ hu, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_smul, ← pow_succ', Nat.sub_add_cancel hM]`.
+-/
 theorem sm_pow_le_X {M : ℕ} (hM : 1 ≤ M) (S : Submodule (PowerSeries O) V) :
     sm (X ^ M) S ≤ sm X S := by
   intro v hv
@@ -48,15 +69,24 @@ theorem sm_pow_le_X {M : ℕ} (hM : 1 ≤ M) (S : Submodule (PowerSeries O) V) :
 
 variable (L : Lat B n V)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem phiIt_succ (i : ZMod n) (k : ℕ) (v : V) :
     L.phiIt i (k + 1) v = L.φ (i + ((k + 1 : ℕ) : ZMod n)) (L.phiIt i k v) := rfl
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => rfl`. Consider the case `succ k ih => rw [phiIt_succ, ih, map_add]`. Both sides reduce to the same expression.
+-/
 theorem phiIt_add (i : ZMod n) (k : ℕ) (u v : V) :
     L.phiIt i k (u + v) = L.phiIt i k u + L.phiIt i k v := by
   induction k with
   | zero => rfl
   | succ k ih => rw [phiIt_succ, ih, map_add]; rfl
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => rfl`. Consider the case `succ k ih => rw [phiIt_succ, ih, map_zero]`.
+-/
 theorem phiIt_map_zero (i : ZMod n) (k : ℕ) : L.phiIt i k (0 : V) = 0 := by
   induction k with
   | zero => rfl
@@ -67,30 +97,53 @@ def phiHom (i : ZMod n) (k : ℕ) : V →+ V where
   map_zero' := phiIt_map_zero L i k
   map_add' := phiIt_add L i k
 
+/- English proof (translation)
+The claim follows from `map_sub (phiHom L i k) u v`.
+-/
 theorem phiIt_sub (i : ZMod n) (k : ℕ) (u v : V) :
     L.phiIt i k (u - v) = L.phiIt i k u - L.phiIt i k v := map_sub (phiHom L i k) u v
 
+/- English proof (translation)
+The claim follows from `map_neg (phiHom L i k) u`.
+-/
 theorem phiIt_neg (i : ZMod n) (k : ℕ) (u : V) :
     L.phiIt i k (-u) = -L.phiIt i k u := map_neg (phiHom L i k) u
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => rfl`. Consider the case `succ k ih => rw [phiIt_succ, ih, L.φ_semi, Function.iterate_succ_apply']`. Both sides reduce to the same expression.
+-/
 theorem phiIt_smul (i : ZMod n) (k : ℕ) (a : PowerSeries O) (v : V) :
     L.phiIt i k (a • v) = ((⇑B.φ)^[k] a) • L.phiIt i k v := by
   induction k with
   | zero => rfl
   | succ k ih => rw [phiIt_succ, ih, L.φ_semi, Function.iterate_succ_apply']; rfl
 
+/- English proof (translation)
+Rewrite using `[phiIt_smul, phiIter_lc]`.
+-/
 theorem phiIt_lc (i : ZMod n) (k s : ℕ) (v : V) :
     L.phiIt i k (B.lc ^ s • v) = B.lc ^ s • L.phiIt i k v := by
   rw [phiIt_smul, phiIter_lc]
 
+/- English proof (translation)
+Rewrite using `[L.φ_semi, phi_lc]`.
+-/
 theorem phi_lc_smul (i : ZMod n) (s : ℕ) (v : V) :
     L.φ i (B.lc ^ s • v) = B.lc ^ s • L.φ i v := by
   rw [L.φ_semi, phi_lc]
 
+/- English proof (translation)
+Rewrite using `[L.γ_semi, gam_lc]`.
+-/
 theorem gam_lc_smul (i : ZMod n) (s : ℕ) (v : V) :
     L.γ i (B.lc ^ s • v) = B.lc ^ s • L.γ i v := by
   rw [L.γ_semi, gam_lc]
 
+/- English proof (translation)
+Proceed by induction on `b with`. Consider the case `zero => rfl`. Consider the case `succ b ih`. Establish `e : i' + ((b + 1 : ℕ) : ZMod n) = i + ((a + b + 1 : ℕ) : ZMod n)`. Substitute `h` using the available equality.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[phiIt_succ, ih, ← add_assoc, phiIt_succ, e]`.
+-/
 theorem phiIt_comp (i i' : ZMod n) (a b : ℕ) (h : i' = i + (a : ZMod n)) (v : V) :
     L.phiIt i' b (L.phiIt i a v) = L.phiIt i (a + b) v := by
   induction b with
@@ -100,6 +153,11 @@ theorem phiIt_comp (i i' : ZMod n) (a b : ℕ) (h : i' = i + (a : ZMod n)) (v : 
       subst h; push_cast; ring
     rw [phiIt_succ, ih, ← add_assoc, phiIt_succ, e]
 
+/- English proof (translation)
+Proceed by induction on `k generalizing i' with`. Consider the case `zero => subst h`. Simplify using `[Lat.phiIt]`. Consider the case `succ k ih`. Substitute `h` using the available equality.
+
+Establish `e : i + ((k + 1 : ℕ) : ZMod n) - 1 = i + (k : ZMod n)` using `by push_cast; ring`. Rewrite using `[phiIt_succ, phiIt_succ, ← ih (i + (k : ZMod n)) rfl, ← e, L.comm]`.
+-/
 theorem gam_phiIt (i i' : ZMod n) (k : ℕ) (h : i' = i + (k : ZMod n)) (v : V) :
     L.γ i' (L.phiIt i k v) = L.phiIt i k (L.γ i v) := by
   induction k generalizing i' with
@@ -109,6 +167,13 @@ theorem gam_phiIt (i i' : ZMod n) (k : ℕ) (h : i' = i + (k : ZMod n)) (v : V) 
     have e : i + ((k + 1 : ℕ) : ZMod n) - 1 = i + (k : ZMod n) := by push_cast; ring
     rw [phiIt_succ, phiIt_succ, ← ih (i + (k : ZMod n)) rfl, ← e, L.comm]
 
+/- English proof (translation)
+Unfold `Lat.pull at hv`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨u, hu, rfl⟩` from `hx`. Rewrite using `[phiIt_comp L c i' a b h]`.
+
+Conclude with `Submodule.subset_span ⟨u, hu, rfl⟩`. Consider the case `zero => rw [phiIt_map_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy => rw [phiIt_add]`. Conclude with `Submodule.add_mem _ hx hy`.
+
+Consider the case `smul a x _ hx => rw [phiIt_smul]`. Conclude with `Submodule.smul_mem _ _ hx`.
+-/
 theorem phiIt_pull (c i' : ZMod n) (a b : ℕ) (h : i' = c + (a : ZMod n)) {v : V}
     (hv : v ∈ L.pull c a) : L.phiIt i' b v ∈ L.pull c (a + b) := by
   unfold Lat.pull at hv
@@ -121,14 +186,27 @@ theorem phiIt_pull (c i' : ZMod n) (a b : ℕ) (h : i' = c + (a : ZMod n)) {v : 
   | add x y _ _ hx hy => rw [phiIt_add]; exact Submodule.add_mem _ hx hy
   | smul a x _ hx => rw [phiIt_smul]; exact Submodule.smul_mem _ _ hx
 
+/- English proof (translation)
+The claim follows from `Submodule.subset_span ⟨u, hu, rfl⟩`.
+-/
 theorem mem_pull (c : ZMod n) (k : ℕ) {u : V} (hu : u ∈ L.N c) : L.phiIt c k u ∈ L.pull c k :=
   Submodule.subset_span ⟨u, hu, rfl⟩
 
+/- English proof (translation)
+Use `(L.N i).add_mem (sm_le _ _ (h1 i v hv)) hv` as an intermediate fact. Simplify using `using this`.
+-/
 theorem gam_N (h1 : ∀ i, ∀ v ∈ L.N i, L.γ i v - v ∈ sm X (L.N i)) (i : ZMod n) {v : V}
     (hv : v ∈ L.N i) : L.γ i v ∈ L.N i := by
   have := (L.N i).add_mem (sm_le _ _ (h1 i v hv)) hv
   simpa using this
 
+/- English proof (translation)
+Unfold `Lat.pull at hv`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨u, hu, rfl⟩` from `hx`. Rewrite using `[gam_phiIt L c _ k rfl]`.
+
+Conclude with `mem_pull L c k (gam_N L h1 c hu)`. Consider the case `zero => rw [map_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `Submodule.add_mem _ hx hy`.
+
+Consider the case `smul a x _ hx => rw [L.γ_semi]`. Conclude with `Submodule.smul_mem _ _ hx`.
+-/
 theorem gam_pull (h1 : ∀ i, ∀ v ∈ L.N i, L.γ i v - v ∈ sm X (L.N i)) (c : ZMod n) (k : ℕ) {v : V}
     (hv : v ∈ L.pull c k) : L.γ (c + (k : ZMod n)) v ∈ L.pull c k := by
   unfold Lat.pull at hv
@@ -141,6 +219,9 @@ theorem gam_pull (h1 : ∀ i, ∀ v ∈ L.N i, L.γ i v - v ∈ sm X (L.N i)) (c
   | add x y _ _ hx hy => rw [map_add]; exact Submodule.add_mem _ hx hy
   | smul a x _ hx => rw [L.γ_semi]; exact Submodule.smul_mem _ _ hx
 
+/- English proof (translation)
+Take `⟨u, hu, rfl⟩` from `mem_sm.1 hv`. Take `⟨a, ha⟩` from `Ideal.mem_span_singleton'.1 hf`. Use `mem_sm.2 ⟨a • L.γ (c + (k : ZMod n)) u, Submodule.smul_mem _ _ (gam_pull L h1 c k hu), ?_⟩` and prove the remaining obligations. Rewrite using `[L.γ_semi, ← ha, smul_smul, mul_comm]`.
+-/
 theorem gam_sm_pull (h1 : ∀ i, ∀ v ∈ L.N i, L.γ i v - v ∈ sm X (L.N i)) (c : ZMod n) (k : ℕ)
     {f : PowerSeries O} (hf : B.γ f ∈ Ideal.span {f}) {v : V} (hv : v ∈ sm f (L.pull c k)) :
     L.γ (c + (k : ZMod n)) v ∈ sm f (L.pull c k) := by
@@ -149,6 +230,9 @@ theorem gam_sm_pull (h1 : ∀ i, ∀ v ∈ L.N i, L.γ i v - v ∈ sm X (L.N i))
   refine mem_sm.2 ⟨a • L.γ (c + (k : ZMod n)) u, Submodule.smul_mem _ _ (gam_pull L h1 c k hu), ?_⟩
   rw [L.γ_semi, ← ha, smul_smul, mul_comm]
 
+/- English proof (translation)
+Take `⟨u, hu, rfl⟩` from `mem_sm.1 hv`. Take `⟨a, ha⟩` from `Ideal.mem_span_singleton'.1 hf`. Use `mem_sm.2 ⟨a • L.phiIt c j u, Submodule.smul_mem _ _ (mem_pull L c j hu), ?_⟩` and prove the remaining obligations. Rewrite using `[phiIt_smul, iterate_map_pow, ← ha, smul_smul, mul_comm]`.
+-/
 theorem phiIt_XM (c : ZMod n) (j M : ℕ) {f : PowerSeries O}
     (hf : ((⇑B.φ)^[j] X) ^ M ∈ Ideal.span {f}) {v : V} (hv : v ∈ sm (X ^ M) (L.N c)) :
     L.phiIt c j v ∈ sm f (L.pull c j) := by
@@ -157,6 +241,11 @@ theorem phiIt_XM (c : ZMod n) (j M : ℕ) {f : PowerSeries O}
   refine mem_sm.2 ⟨a • L.phiIt c j u, Submodule.smul_mem _ _ (mem_pull L c j hu), ?_⟩
   rw [phiIt_smul, iterate_map_pow, ← ha, smul_smul, mul_comm]
 
+/- English proof (translation)
+Proceed by induction on `k generalizing i' with`. Consider the case `zero => subst h`. Simplify `hv` using `[Lat.phiIt]`. Consider the case `succ k ih`. Substitute `h` using the available equality.
+
+Rewrite using `[phiIt_succ]`. Apply `h2` to reduce the goal to its premises. Apply `ih` to reduce the goal to its premises. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem phiIt_stable {M : ℕ}
     (h2 : ∀ i, ∀ v ∈ sm (X ^ M) (L.N (i - 1)), L.φ i v ∈ sm (X ^ M) (L.N i))
     (i i' : ZMod n) (k : ℕ) (h : i' = i + (k : ZMod n)) {v : V} (hv : v ∈ sm (X ^ M) (L.N i)) :
@@ -170,6 +259,13 @@ theorem phiIt_stable {M : ℕ}
     apply ih
     push_cast; ring
 
+/- English proof (translation)
+Take `⟨h1, -, -, h4, -, -, h7, -⟩` from `hL`. Take `⟨-, hB2, hB3⟩` from `hB`. Take `⟨hτP, K, v, hv, e1, e2⟩` from `hτ`. Apply `h4 c hc` to reduce the goal to its premises. Apply `h7 c hc K` to reduce the goal to its premises.
+
+Conclude with `Submodule.sub_mem _ (Submodule.smul_mem _ _ (mem_pull L c j (sm_le _ _ hz))) (Submodule.sub_mem _ (gam_pull L h1 c j hτP) hτP)`. Establish `key : B.lc ^ K • (B.lc ^ sig • L.phiIt c j z - (L.γ (c + (j : ZMod n)) τ - τ)) = -(B.lc ^ sig • L.phiIt c j ((L.γ c v - v) - B.lc ^ K • z)) - (L.γ (c + (j : ZMod n)) (B.lc ^ K • τ - B.lc ^ sig • L.phiIt c j v) - (B.lc ^ K • τ - B.lc ^ sig • L.phiIt c j v))`. Rewrite using `[phiIt_sub, phiIt_sub, phiIt_lc, map_sub, gam_lc_smul, gam_lc_smul, gam_phiIt L c _ j rfl]`. Simplify using `only [smul_sub, smul_smul, mul_comm (B.lc ^ K) (B.lc ^ sig)]`. Normalize the expressions using the abelian group laws.
+
+Rewrite using `[key]`. Conclude with `Submodule.sub_mem _ (Submodule.neg_mem _ (Submodule.smul_mem _ _ (phiIt_XM L c j M hB3 e1))) (Submodule.sub_mem _ (gam_sm_pull L h1 c j hB2 e2) e2)`.
+-/
 theorem gamR_mem {Cu : Cuts n} {j M g sig : ℕ} (hB : B.Good j M g) (hL : L.Good Cu j M g sig)
     {c : ZMod n} (hc : c ∈ Cu.cuts) {z τ : V} (hz : z ∈ sm X (L.N c))
     (hτ : L.IsTr c j M g sig z τ) :
@@ -202,11 +298,19 @@ variable {O : Type} [CommRing O] {B : Base O} {n : ℕ} {V V' : Type} [AddCommGr
   [Module (PowerSeries O) V] [AddCommGroup V'] [Module (PowerSeries O) V']
   {L : Lat B n V} {L' : Lat B n V'} (h : LatHom L L')
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => rfl`. Consider the case `succ k ih => rw [phiIt_succ, h.φ_comm, ih]`. Both sides reduce to the same expression.
+-/
 theorem hom_phiIt (i : ZMod n) (k : ℕ) (v : V) : h.f (L.phiIt i k v) = L'.phiIt i k (h.f v) := by
   induction k with
   | zero => rfl
   | succ k ih => rw [phiIt_succ, h.φ_comm, ih]; rfl
 
+/- English proof (translation)
+Establish `: L.pull c k ≤ (L'.pull c k).comap h.f`. Apply `Submodule.span_le.2` to reduce the goal to its premises. Introduce and unpack `_ ⟨u, hu, rfl⟩`. Rewrite using `[SetLike.mem_coe, Submodule.mem_comap, hom_phiIt]`. Conclude with `mem_pull L' c k (h.map_N _ _ hu)`.
+
+Conclude with `this hv`.
+-/
 theorem hom_pull (c : ZMod n) (k : ℕ) {v : V} (hv : v ∈ L.pull c k) : h.f v ∈ L'.pull c k := by
   have : L.pull c k ≤ (L'.pull c k).comap h.f := by
     apply Submodule.span_le.2
@@ -220,6 +324,9 @@ end hom
 section cuts
 variable {n : ℕ} [NeZero n] (Cu : Cuts n)
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `Cu.nonempty`. Use `⟨(i - c).val, ?_⟩` and prove the remaining obligations. Rewrite using `[ZMod.natCast_zmod_val]`. Simplify using `using hc`.
+-/
 theorem ex_back (i : ZMod n) : ∃ k : ℕ, i - (k : ZMod n) ∈ Cu.cuts := by
   obtain ⟨c, hc⟩ := Cu.nonempty
   refine ⟨(i - c).val, ?_⟩
@@ -228,18 +335,35 @@ theorem ex_back (i : ZMod n) : ∃ k : ℕ, i - (k : ZMod n) ∈ Cu.cuts := by
 
 def back (i : ZMod n) : ℕ := Nat.find (ex_back Cu i)
 
+/- English proof (translation)
+The claim follows from `Nat.find_spec (ex_back Cu i)`.
+-/
 theorem back_spec (i : ZMod n) : i - (back Cu i : ZMod n) ∈ Cu.cuts := Nat.find_spec (ex_back Cu i)
 
+/- English proof (translation)
+The claim follows from `Nat.find_min (ex_back Cu i) hk`.
+-/
 theorem back_min (i : ZMod n) {k : ℕ} (hk : k < back Cu i) : i - (k : ZMod n) ∉ Cu.cuts :=
   Nat.find_min (ex_back Cu i) hk
 
+/- English proof (translation)
+The claim follows from `(Nat.find_eq_iff (ex_back Cu i)).2 ⟨h, hm⟩`.
+-/
 theorem back_eq (i : ZMod n) (k : ℕ) (h : i - (k : ZMod n) ∈ Cu.cuts)
     (hm : ∀ m < k, i - (m : ZMod n) ∉ Cu.cuts) : back Cu i = k :=
   (Nat.find_eq_iff (ex_back Cu i)).2 ⟨h, hm⟩
 
+/- English proof (translation)
+The claim follows from `back_eq Cu c 0 (by simpa using hc) (by simp)`.
+-/
 theorem back_cut {c : ZMod n} (hc : c ∈ Cu.cuts) : back Cu c = 0 :=
   back_eq Cu c 0 (by simpa using hc) (by simp)
 
+/- English proof (translation)
+Apply `back_eq` to reduce the goal to its premises. Use `back_spec Cu (i - 1)` as an intermediate fact. Establish `e : i - ((back Cu (i - 1) + 1 : ℕ) : ZMod n) = i - 1 - (back Cu (i - 1) : ZMod n)` using `by push_cast; ring`. Rewrite using `[e]` and apply the resulting hypothesis. Introduce `m hm`.
+
+Break down `m with _ | m` into its components or cases. Simplify using `using hi`. Use `back_min Cu (i - 1) (k := m) (by omega)` as an intermediate fact. Establish `e : i - ((m + 1 : ℕ) : ZMod n) = i - 1 - (m : ZMod n)` using `by push_cast; ring`. Rewrite using `[e]` and apply the resulting hypothesis.
+-/
 theorem back_succ {i : ZMod n} (hi : i ∉ Cu.cuts) : back Cu i = back Cu (i - 1) + 1 := by
   apply back_eq
   · have := back_spec Cu (i - 1)
@@ -253,6 +377,13 @@ theorem back_succ {i : ZMod n} (hi : i ∉ Cu.cuts) : back Cu i = back Cu (i - 1
       have e : i - ((m + 1 : ℕ) : ZMod n) = i - 1 - (m : ZMod n) := by push_cast; ring
       rwa [e]
 
+/- English proof (translation)
+Establish `h1` using `Cu.ell_pos c hc`. Take `⟨b, hb⟩ : ∃ b, Cu.ell c = b + 1` from `⟨Cu.ell c - 1, by omega⟩`. Establish `: back Cu (c - 1) = b`. Apply `back_eq` to reduce the goal to its premises. Use `Cu.prev_mem c hc` as an intermediate fact.
+
+Rewrite `this` using `[hb]`. Establish `e : c - ((b + 1 : ℕ) : ZMod n) = c - 1 - (b : ZMod n)` using `by push_cast; ring`. Rewrite `this` using `[e]`. Then use the resulting hypothesis. Introduce `m hm`. Use `Cu.no_inner c hc (m + 1) (by omega) (by omega)` as an intermediate fact.
+
+Establish `e : c - ((m + 1 : ℕ) : ZMod n) = c - 1 - (m : ZMod n)` using `by push_cast; ring`. Rewrite `this` using `[e]`. Then use the resulting hypothesis. Use linear arithmetic over natural numbers and integers.
+-/
 theorem back_prev {c : ZMod n} (hc : c ∈ Cu.cuts) : back Cu (c - 1) + 1 = Cu.ell c := by
   have h1 := Cu.ell_pos c hc
   obtain ⟨b, hb⟩ : ∃ b, Cu.ell c = b + 1 := ⟨Cu.ell c - 1, by omega⟩
@@ -274,12 +405,20 @@ variable {O : Type} [CommRing O] {B : Base O} {V : Type} [AddCommGroup V]
 def Efun (i : ZMod n) : V :=
   L.phiIt (i - j - back Cu (i - j) + j) (back Cu (i - j)) (R (i - j - back Cu (i - j)))
 
+/- English proof (translation)
+Unfold `Efun`. Establish `e : c + (j : ZMod n) - j = c` using `by ring`. Rewrite using `[e, back_cut Cu hc]`. Simplify using `[Lat.phiIt]`.
+-/
 theorem Efun_cut {c : ZMod n} (hc : c ∈ Cu.cuts) : Efun Cu L j R (c + j) = R c := by
   unfold Efun
   have e : c + (j : ZMod n) - j = c := by ring
   rw [e, back_cut Cu hc]
   simp [Lat.phiIt]
 
+/- English proof (translation)
+Unfold `Efun`. Establish `e : i - 1 - (j : ZMod n) = i - j - 1` using `by ring`. Rewrite using `[e, back_succ Cu hi]`. Generalize the expression as in `back Cu (i - j - 1) = b`. Establish `a : i - (j : ZMod n) - ((b + 1 : ℕ) : ZMod n) = i - j - 1 - b` using `by push_cast; ring`.
+
+Rewrite using `[a, phiIt_succ]`. Establish `a' : i - (j : ZMod n) - 1 - b + j + ((b + 1 : ℕ) : ZMod n) = i` using `by push_cast; ring`. Rewrite using `[a']`.
+-/
 theorem Efun_step {i : ZMod n} (hi : i - (j : ZMod n) ∉ Cu.cuts) :
     Efun Cu L j R i = L.φ i (Efun Cu L j R (i - 1)) := by
   unfold Efun
@@ -291,6 +430,11 @@ theorem Efun_step {i : ZMod n} (hi : i - (j : ZMod n) ∉ Cu.cuts) :
   have a' : i - (j : ZMod n) - 1 - b + j + ((b + 1 : ℕ) : ZMod n) = i := by push_cast; ring
   rw [a']
 
+/- English proof (translation)
+Unfold `Efun`. Establish `e : c + (j : ZMod n) - 1 - j = c - 1` using `by ring`. Rewrite using `[e, ← back_prev Cu hc]`. Generalize the expression as in `back Cu (c - 1) = b`. Establish `a : c - ((b + 1 : ℕ) : ZMod n) = c - 1 - b` using `by push_cast; ring`.
+
+Rewrite using `[a, phiIt_succ]`. Establish `a' : c - 1 - (b : ZMod n) + j + ((b + 1 : ℕ) : ZMod n) = c + j` using `by push_cast; ring`. Rewrite using `[a']`.
+-/
 theorem Efun_prev {c : ZMod n} (hc : c ∈ Cu.cuts) :
     L.φ (c + j) (Efun Cu L j R (c + j - 1))
       = L.phiIt (c - (Cu.ell c : ZMod n) + j) (Cu.ell c) (R (c - (Cu.ell c : ZMod n))) := by
@@ -303,22 +447,41 @@ theorem Efun_prev {c : ZMod n} (hc : c ∈ Cu.cuts) :
   have a' : c - 1 - (b : ZMod n) + j + ((b + 1 : ℕ) : ZMod n) = c + j := by push_cast; ring
   rw [a']
 
+/- English proof (translation)
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem Efun_idx (i : ZMod n) :
     i = i - j - back Cu (i - j) + j + (back Cu (i - j) : ZMod n) := by ring
 
+/- English proof (translation)
+The claim follows from `gam_phiIt L _ i _ (Efun_idx Cu j i) _`.
+-/
 theorem Efun_gam (i : ZMod n) :
     L.γ i (Efun Cu L j R i) = Efun Cu L j (fun c => L.γ (c + j) (R c)) i :=
   gam_phiIt L _ i _ (Efun_idx Cu j i) _
 
+/- English proof (translation)
+The claim follows from `phiIt_sub L _ _ _ _`.
+-/
 theorem Efun_sub (R' : ZMod n → V) (i : ZMod n) :
     Efun Cu L j (fun c => R c - R' c) i = Efun Cu L j R i - Efun Cu L j R' i :=
   phiIt_sub L _ _ _ _
 
+/- English proof (translation)
+The claim follows from `hom_phiIt h _ _ _`.
+-/
 theorem Efun_hom {V' : Type} [AddCommGroup V'] [Module (PowerSeries O) V'] {L' : Lat B n V'}
     (h : LatHom L L') (i : ZMod n) :
     h.f (Efun Cu L j R i) = Efun Cu L' j (fun c => h.f (R c)) i :=
   hom_phiIt h _ _ _
 
+/- English proof (translation)
+Establish `gen : ∀ (k : ℕ) (a a' : ZMod n) (v : V), a' = a + (k : ZMod n) → P a v → P a' (L.phiIt a k v)`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro a a' v h hv`. Substitute `h` using the available equality.
+
+Simplify `hv` using `[Lat.phiIt]`. Consider the case `succ k ih`. Introduce `a a' v h hv`. Substitute `h` using the available equality. Rewrite using `[phiIt_succ]`.
+
+Apply `hs` to reduce the goal to its premises. Apply `ih a _ v _ hv` to reduce the goal to its premises. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Conclude with `gen _ _ _ _ (Efun_idx Cu j i) (h0 _ (back_spec Cu _))`.
+-/
 theorem Efun_ind (P : ZMod n → V → Prop) (h0 : ∀ c ∈ Cu.cuts, P (c + j) (R c))
     (hs : ∀ i v, P (i - 1) v → P i (L.φ i v)) (i : ZMod n) : P i (Efun Cu L j R i) := by
   have gen : ∀ (k : ℕ) (a a' : ZMod n) (v : V), a' = a + (k : ZMod n) → P a v →
@@ -335,6 +498,11 @@ theorem Efun_ind (P : ZMod n → V → Prop) (h0 : ∀ c ∈ Cu.cuts, P (c + j) 
       push_cast; ring
   exact gen _ _ _ _ (Efun_idx Cu j i) (h0 _ (back_spec Cu _))
 
+/- English proof (translation)
+Rewrite using `[Finset.sum_apply]`. Establish `: ∀ c, (Pi.single (c + (j : ZMod n)) (r c) : ZMod n → V) i = if i - (j : ZMod n) = c then r c else 0`. Introduce `c`. Rewrite using `[Pi.single_apply]`. Distinguish the cases in `h : i = c + j`.
+
+Rewrite using `[if_pos h, if_pos (by rw [h]; ring)]`. Rewrite using `[if_neg h, if_neg (fun h' => h (by rw [← h']; ring))]`. Simplify using `only [this]`. Conclude with `Finset.sum_ite_eq _ _ _`.
+-/
 theorem sum_single (r : ZMod n → V) (i : ZMod n) :
     (∑ c ∈ Cu.cuts, (Pi.single (c + (j : ZMod n)) (r c) : ZMod n → V)) i
       = if i - (j : ZMod n) ∈ Cu.cuts then r (i - j) else 0 := by
@@ -355,19 +523,31 @@ section more
 variable {O : Type} [CommRing O] {B : Base O} {n : ℕ} {V : Type} [AddCommGroup V]
   [Module (PowerSeries O) V] (L : Lat B n V)
 
+/- English proof (translation)
+Introduce `_ hv` and use `S.smul_mem a hv`.
+-/
 theorem le_dv (a : PowerSeries O) (S : Submodule (PowerSeries O) V) : S ≤ dv a S :=
   fun _ hv => S.smul_mem a hv
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `only [Lat.dφ, Finset.sum_apply, map_sum, Finset.sum_sub_distrib]`.
+-/
 theorem dφ_sum {ι : Type} (s : Finset ι) (f : ι → ZMod n → V) :
     L.dφ (∑ c ∈ s, f c) = ∑ c ∈ s, L.dφ (f c) := by
   funext i
   simp only [Lat.dφ, Finset.sum_apply, map_sum, Finset.sum_sub_distrib]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `only [Lat.dγ, Finset.sum_apply, map_sum, Finset.sum_sub_distrib]`.
+-/
 theorem dγ_sum {ι : Type} (s : Finset ι) (f : ι → ZMod n → V) :
     L.dγ (∑ c ∈ s, f c) = ∑ c ∈ s, L.dγ (f c) := by
   funext i
   simp only [Lat.dγ, Finset.sum_apply, map_sum, Finset.sum_sub_distrib]
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => rfl`. Consider the case `succ k ih => rw [phiIt_succ, ih, he]`.
+-/
 theorem phiIt_fixed {e : V} (he : ∀ i, L.φ i e = e) (i : ZMod n) (k : ℕ) : L.phiIt i k e = e := by
   induction k with
   | zero => rfl
@@ -375,6 +555,75 @@ theorem phiIt_fixed {e : V} (he : ∀ i, L.φ i e = e) (i : ZMod n) (k : ℕ) : 
 
 end more
 
+/- English proof (translation)
+Introduce `O _ B n _ Cu abelian₂ j M g sig rr V₂ V₀ _ _ _ _ L₂ L₀ e₀ Y y₀ z₀ hM hB hL hj hφ0 hγ0 hRep hY`. Take `⟨E₀, hE₀π, hE₀y, hE₀z⟩` from `hRep`. Take `⟨Ya, Yb, Yc, -, -, Yf, Yg⟩` from `hY`. Take `⟨-, h2, h3, -, h5, -, -, -⟩` from `id hL`. Establish `πι : ∀ u, Y.π.f (Y.ι.f u) = 0` using `fun u => (Y.exact _).2 ⟨u, rfl⟩`.
+
+Establish `choice : ∀ c, ∃ (x : Y.VY) (z τ : V₂), Y.ι.f z = Y.LY.γ c x - x ∧ (c ∈ Cu.cuts → x ∈ Y.LY.N c ∧ Y.π.f x = B.lc ^ rr • e₀ ∧ z ∈ sm X (L₂.N c) ∧ L₂.IsTr c j M g sig z τ)`. Introduce `c`. Distinguish the cases in `hc : c ∈ Cu.cuts`. Take `⟨x, hx, hxπ⟩` from `Ya c hc`. Establish `h0 : Y.π.f (Y.LY.γ c x - x) = 0`.
+
+Rewrite using `[map_sub, Y.π.γ_comm, hxπ, gam_lc_smul, hγ0, sub_self]`. Take `⟨z, hz⟩` from `(Y.exact _).1 h0`. Establish `hzN : z ∈ sm X (L₂.N c)`. Use `Yc c 1 z (by rw [hz, pow_one]; exact Yb c x hx)` as an intermediate fact. Rewrite `this` using `[pow_one]`. Then use the resulting hypothesis.
+
+Take `⟨τ, hτ⟩` from `h5 c hc z hzN`. Conclude with `⟨x, z, τ, hz, fun _ => ⟨hx, hxπ, hzN, hτ⟩⟩`. Conclude with `⟨0, 0, 0, by simp, fun h => absurd h hc⟩`. Use `choose x z τ hzx hdat using choice`. Take `⟨R, hR⟩ : ∃ R : ZMod n → Y.VY, ∀ c, R c = B.lc ^ sig • Y.LY.phiIt c j (x c) - Y.ι.f (τ c)` from `⟨_, fun _ => rfl⟩`.
+
+Take `⟨ξ, hξ⟩ : ∃ ξ : ZMod n → V₂, ∀ c, ξ c = B.lc ^ sig • L₂.phiIt c j (z c) - (L₂.γ (c + j) (τ c) - τ c)` from `⟨_, fun _ => rfl⟩`. Establish `hιξ : ∀ c, Y.ι.f (ξ c) = Y.LY.γ (c + j) (R c) - R c`. Introduce `c`. Rewrite using `[hR, hξ]`. Simplify using `only [map_sub, map_smul, hom_phiIt, hzx, Y.ι.γ_comm, phiIt_sub, gam_lc_smul]`.
+
+Rewrite using `[gam_phiIt Y.LY c _ j rfl]`. Simplify using `only [smul_sub]`. Normalize the expressions using the abelian group laws. Establish `hξM : ∀ c ∈ Cu.cuts, ξ c ∈ sm (X ^ M) (L₂.N (c + j))`. Introduce `c hc`.
+
+Rewrite using `[hξ]`. Conclude with `gamR_mem L₂ hB hL hc (hdat c hc).2.2.1 (hdat c hc).2.2.2`. Establish `hRπ : ∀ c ∈ Cu.cuts, Y.π.f (R c) = B.lc ^ (rr + sig) • e₀`. Introduce `c hc`. Rewrite using `[hR, map_sub, map_smul, hom_phiIt, (hdat c hc).2.1, πι, sub_zero, phiIt_lc, phiIt_fixed L₀ hφ0, smul_smul, ← pow_add, add_comm]`.
+
+Establish `hEπ : ∀ i, Y.π.f (Efun Cu Y.LY j R i) = B.lc ^ (rr + sig) • e₀` using `Efun_ind Cu Y.LY j R (fun _ v => Y.π.f v = B.lc ^ (rr + sig) • e₀) hRπ (fun i v hv => by rw [Y.π.φ_comm, hv, phi_lc_smul, hφ0])`. Establish `hZM : ∀ i, Efun Cu L₂ j ξ i ∈ sm (X ^ M) (L₂.N i)` using `Efun_ind Cu L₂ j ξ (fun i v => v ∈ sm (X ^ M) (L₂.N i)) hξM (fun i v hv => h2 i v hv)`. Establish `hιZ : ∀ i, Y.ι.f (Efun Cu L₂ j ξ i) = Y.LY.γ i (Efun Cu Y.LY j R i) - Efun Cu Y.LY j R i`. Introduce `i`. Rewrite using `[Efun_hom, Efun_gam, ← Efun_sub]`.
+
+Simplify using `only [hιξ]`. Establish `hm : ∀ i, ∃ m, Y.ι.f m = B.lc ^ (rr + sig) • E₀ i - Efun Cu Y.LY j R i` using `fun i => (Y.exact _).1 (by rw [map_sub, map_smul, hE₀π, hEπ, sub_self])`. Use `choose m hm using hm`. Establish `hw : ∀ c, ∃ w, c ∈ Cu.cuts → Y.ι.f w = Y.LY.phiIt (c - (Cu.ell c : ZMod n) + j) (Cu.ell c - j) (R (c - (Cu.ell c : ZMod n))) - B.lc ^ sig • x c`. Introduce `c`.
+
+Distinguish the cases in `hc : c ∈ Cu.cuts`. Establish `h0 : Y.π.f (Y.LY.phiIt (c - (Cu.ell c : ZMod n) + j) (Cu.ell c - j) (R (c - (Cu.ell c : ZMod n))) - B.lc ^ sig • x c) = 0`. Rewrite using `[map_sub, hom_phiIt, hRπ _ (Cu.prev_mem c hc), phiIt_lc, phiIt_fixed L₀ hφ0, map_smul, (hdat c hc).2.1, smul_smul, ← pow_add, add_comm sig rr, sub_self]`. Take `⟨w, hw⟩` from `(Y.exact _).1 h0`. Conclude with `⟨w, fun _ => hw⟩`.
+
+Conclude with `⟨0, fun h => absurd h hc⟩`. Use `choose w hw using hw`. Establish `idx : ∀ c ∈ Cu.cuts, c = c - (Cu.ell c : ZMod n) + j + ((Cu.ell c - j : ℕ) : ZMod n)`. Introduce `c hc`. Rewrite using `[Nat.cast_sub (hj c hc)]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hγw : ∀ c ∈ Cu.cuts, L₂.γ c (w c) - w c = L₂.phiIt (c - (Cu.ell c : ZMod n) + j) (Cu.ell c - j) (ξ (c - (Cu.ell c : ZMod n))) - B.lc ^ sig • z c`. Introduce `c hc`. Apply `Y.ι_inj` to reduce the goal to its premises. Simplify using `only [map_sub, map_smul, Y.ι.γ_comm, hw c hc, hom_phiIt, hιξ, phiIt_sub, hzx, gam_lc_smul]`.
+
+Rewrite using `[gam_phiIt Y.LY _ c _ (idx c hc)]`. Simplify using `only [smul_sub]`. Normalize the expressions using the abelian group laws. Establish `hφξ : ∀ c ∈ Cu.cuts, L₂.phiIt (c - (Cu.ell c : ZMod n) + j) (Cu.ell c - j) (ξ (c - (Cu.ell c : ZMod n))) ∈ sm (X ^ M) (L₂.N c)` using `fun c hc => phiIt_stable L₂ h2 _ c _ (idx c hc) (hξM _ (Cu.prev_mem c hc))`. Take `⟨r, hr⟩ : ∃ r : ZMod n → V₂, ∀ c, r c = B.lc ^ sig • L₂.phiIt c j (w c) - (-(B.lc ^ sig • τ c))` from `⟨_, fun _ => rfl⟩`.
+
+Establish `hYid : ∀ i, Y.ι.f ((∑ c ∈ Cu.cuts, (Pi.single (c + (j : ZMod n)) (r c) : ZMod n → V₂)) i) = B.lc ^ sig • Y.LY.dφ (Efun Cu Y.LY j R) i`. Introduce `i`. Rewrite using `[sum_single]`. Distinguish the cases in `hi : i - (j : ZMod n) ∈ Cu.cuts`. Rewrite using `[if_pos hi]`.
+
+Take `⟨c, rfl⟩ : ∃ c, i = c + (j : ZMod n)` from `⟨i - j, by ring⟩`. Establish `e : c + (j : ZMod n) - j = c` using `by ring`. Rewrite `hi`, the goal using `[e]`. Establish `comp : Y.LY.phiIt c j (Y.LY.phiIt (c - (Cu.ell c : ZMod n) + j) (Cu.ell c - j) (R (c - (Cu.ell c : ZMod n)))) = Y.LY.phiIt (c - (Cu.ell c : ZMod n) + j) (Cu.ell c) (R (c - (Cu.ell c : ZMod n)))`. Rewrite using `[phiIt_comp Y.LY _ c _ _ (idx c hi), Nat.sub_add_cancel (hj c hi)]`.
+
+Unfold `Lat.dφ`. Rewrite using `[Efun_prev Cu Y.LY j R hi, Efun_cut Cu Y.LY j R hi, hr, hR c]`. Simplify using `only [map_sub, map_neg, map_smul, hom_phiIt, hw c hi, phiIt_sub, phiIt_lc, comp]`. Simplify using `only [smul_sub]`. Normalize the expressions using the abelian group laws.
+
+Rewrite using `[if_neg hi, map_zero]`. Unfold `Lat.dφ`. Rewrite using `[← Efun_step Cu Y.LY j R hi, sub_self, smul_zero]`. Establish `hcoc : ∀ i, L₂.dγ (∑ c ∈ Cu.cuts, (Pi.single (c + (j : ZMod n)) (r c) : ZMod n → V₂)) i = B.lc ^ sig • L₂.dφ (Efun Cu L₂ j ξ) i`. Introduce `i`.
+
+Apply `Y.ι_inj` to reduce the goal to its premises. Unfold `Lat.dγ Lat.dφ`. Rewrite using `[map_sub, Y.ι.γ_comm, hYid, gam_lc_smul, LinearMap.map_smul, map_sub, Y.ι.φ_comm, hιZ, hιZ]`. Unfold `Lat.dφ`. Rewrite using `[map_sub, map_sub, Y.LY.comm]`.
+
+Simplify using `only [smul_sub]`. Normalize the expressions using the abelian group laws. Establish `htM : ∀ i, B.lc ^ sig • L₂.dφ (Efun Cu L₂ j ξ) i ∈ sm (X ^ M) (L₂.N i)` using `fun i => Submodule.smul_mem _ _ (Submodule.sub_mem _ (h2 i _ (hZM (i - 1))) (hZM i))`. Establish `hzc : ∀ c, ∃ zc : ZMod n → V₂, c ∈ Cu.cuts → (∀ i, zc i ∈ sm (X ^ M) (L₂.N i)) ∧ L₂.dφ zc = L₂.dγ (Pi.single (c + (j : ZMod n)) (r c))`. Introduce `c`.
+
+Distinguish the cases in `hc : c ∈ Cu.cuts`. Take `⟨zc, hzc, -⟩` from `h3 (L₂.dγ (Pi.single (c + (j : ZMod n)) (r c))) (by`. Introduce `i`. Distinguish the cases in `hi : i = c + (j : ZMod n)`. Use `htM i` as an intermediate fact.
+
+Rewrite `this` using `[← hcoc]`. Unfold `Lat.dγ at this ⊢`. Rewrite `this` using `[sum_single]`. Substitute `hi` using the available equality. Establish `e : c + (j : ZMod n) - j = c` using `by ring`.
+
+Rewrite `this` using `[e, if_pos hc]`. Rewrite using `[Pi.single_eq_same]` and apply the resulting hypothesis. Unfold `Lat.dγ`. Rewrite using `[Pi.single_eq_of_ne hi, map_zero, sub_zero]`. Conclude with `Submodule.zero_mem _)`.
+
+Conclude with `⟨zc, fun _ => hzc⟩`. Conclude with `⟨0, fun h => absurd h hc⟩`. Use `choose zc hzc using hzc`. Establish `hsum : ∑ c ∈ Cu.cuts, zc c = B.lc ^ sig • Efun Cu L₂ j ξ`. Apply `(h3 _ htM).unique` to reduce the goal to its premises.
+
+Use `⟨fun i => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.sum_apply]`. Conclude with `Submodule.sum_mem _ (fun c hc => (hzc c hc).1 i)`. Rewrite using `[dφ_sum, Finset.sum_congr rfl (fun c hc => (hzc c hc).2), ← dγ_sum]`. Use function extensionality and compare the values at `i`.
+
+Conclude with `hcoc i`. Use `⟨fun i => Submodule.smul_mem _ _ (hZM i), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Simplify using `only [Lat.dφ, Pi.smul_apply, phi_lc_smul, smul_sub]`. Establish `hpow : B.lc ^ (rr + 2 * sig) = B.lc ^ sig * B.lc ^ (rr + sig)`.
+
+Rewrite using `[← pow_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Use `⟨w, fun c => Pi.single (c + (j : ZMod n)) (r c), zc, ?_, B.lc ^ sig • m, ?_, ?_⟩` and prove the remaining obligations. Introduce `c hc`.
+
+Take `⟨hx, -, hz, hτP, K, v, hv, e1, e2⟩` from `hdat c hc`. Establish `hc'` using `Cu.prev_mem c hc`. Use `⟨⟨?_, ?_⟩, -(B.lc ^ sig • τ c), ⟨?_, K, -(B.lc ^ sig • v), ?_, ?_, ?_⟩, ?_, ((hzc c hc).2).symm, (hzc c hc).1⟩` and prove the remaining obligations. Unfold `Lat.Ic`. Rewrite using `[hγw c hc]`.
+
+Conclude with `Submodule.sub_mem _ (sm_pow_le_X hM _ (hφξ c hc)) (Submodule.smul_mem _ _ hz)`. Apply `Yg c hc` to reduce the goal to its premises. Rewrite using `[hw c hc]`. Use `Submodule.sub_mem _ (le_dv _ _ ?_) (Submodule.smul_mem _ _ (Yf c hc hx))` and prove the remaining obligations. Rewrite using `[hR, phiIt_sub, phiIt_lc, phiIt_comp Y.LY _ _ j _ rfl, Nat.add_sub_cancel' (hj c hc)]`.
+
+Use `Submodule.sub_mem _ (Submodule.smul_mem _ _ (mem_pull Y.LY _ _ (hdat _ hc').1)) ?_` and prove the remaining obligations. Use `phiIt_pull Y.LY (c - (Cu.ell c : ZMod n)) _ j (Cu.ell c - j) rfl (hom_pull Y.ι _ j (hdat _ hc').2.2.2.1)` as an intermediate fact. Rewrite `this` using `[Nat.add_sub_cancel' (hj c hc)]`. Then use the resulting hypothesis. Conclude with `Submodule.neg_mem _ (Submodule.smul_mem _ _ hτP)`. Conclude with `Submodule.neg_mem _ (Submodule.smul_mem _ _ hv)`.
+
+Rewrite using `[hγw c hc]`. Establish `e : L₂.γ c (-(B.lc ^ sig • v)) - -(B.lc ^ sig • v) - B.lc ^ K • (L₂.phiIt (c - (Cu.ell c : ZMod n) + j) (Cu.ell c - j) (ξ (c - (Cu.ell c : ZMod n))) - B.lc ^ sig • z c) = -(B.lc ^ sig • ((L₂.γ c v - v) - B.lc ^ K • z c)) - B.lc ^ K • L₂.phiIt (c - (Cu.ell c : ZMod n) + j) (Cu.ell …`. Rewrite using `[map_neg, gam_lc_smul]`. Simplify using `only [smul_sub, smul_smul, mul_comm (B.lc ^ K) (B.lc ^ sig)]`. Normalize the expressions using the abelian group laws.
+
+Rewrite using `[e]`. Conclude with `Submodule.sub_mem _ (Submodule.neg_mem _ (Submodule.smul_mem _ _ e1)) (Submodule.smul_mem _ _ (hφξ c hc))`. Establish `e : B.lc ^ K • -(B.lc ^ sig • τ c) - B.lc ^ sig • L₂.phiIt c j (-(B.lc ^ sig • v)) = -(B.lc ^ sig • (B.lc ^ K • τ c - B.lc ^ sig • L₂.phiIt c j v))`. Rewrite using `[phiIt_neg, phiIt_lc]`. Simplify using `only [smul_sub, smul_neg, smul_smul, mul_comm (B.lc ^ K) (B.lc ^ sig)]`.
+
+Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Conclude with `Submodule.neg_mem _ (Submodule.smul_mem _ _ e2)`. Simplify using `only [hr]`. Use function extensionality and compare the values at `i`.
+
+Apply `Y.ι_inj` to reduce the goal to its premises. Rewrite using `[Pi.sub_apply, map_sub, hYid, Pi.smul_apply, map_smul, hE₀y]`. Simplify using `only [Lat.dφ, Pi.smul_apply, map_sub, map_smul, Y.ι.φ_comm, hm, phi_lc_smul, hpow, smul_sub, smul_smul]`. Normalize the expressions using the abelian group laws. Use function extensionality and compare the values at `i`.
+
+Apply `Y.ι_inj` to reduce the goal to its premises. Rewrite using `[hsum, Pi.sub_apply, map_sub, Pi.smul_apply, Pi.smul_apply, map_smul, map_smul, hE₀z, hιZ]`. Simplify using `only [Lat.dγ, Pi.smul_apply, map_sub, map_smul, Y.ι.γ_comm, hm, gam_lc_smul, hpow, smul_sub, smul_smul]`. Normalize the expressions using the abelian group laws.
+-/
 theorem splitting_of_positive_level :
     ∀ (O : Type) [CommRing O] (B : Base O) (n : ℕ) [NeZero n] (Cu : Cuts n)
     (abelian₂ : ZMod n → PowerSeries O) (j M g sig rr : ℕ)
@@ -599,6 +848,9 @@ theorem splitting_of_positive_level :
 
 end S1
 
+/- English proof (translation)
+The claim follows from `S1.splitting_of_positive_level`.
+-/
 theorem splitting_of_extension : Step1 := S1.splitting_of_positive_level
 
 end Formalism.ExponentWindows.E

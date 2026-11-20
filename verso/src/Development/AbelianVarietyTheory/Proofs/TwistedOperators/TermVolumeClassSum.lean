@@ -15,6 +15,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
 section
 open GlobalTheory.DefStep GlobalTheory.JetsOne GlobalTheory.ExpansionInvariance
 
+/- English proof (translation)
+Establish `hT` using `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D (G.V (.grid D.R.m D.R.m))`. Establish `hSC` using `hT.2.1`. Establish `hB` using `hT.2.2.2.1`. Establish `hG` using `hT.2.2.2.2.1`. Establish `hdef` using `GlobalTheory.TopIntegral.isDefinite_last G`.
+
+Use `haveI : CompactSpace (GinfC (G.V (.grid D.R.m D.R.m))) := isCompact_iff_compactSpace.1 (Eqv.isCompact_GinfC hdef.1 hdef.2)`. Take `⟨κ₀, k1, k2⟩` from `exists_haar _ hdef`. Take `⟨c, hc⟩` from `GlobalTheory.TopIntegral.real_average W.θ_is S.N Λ Λ' κ₀`. Take `⟨s, h1, h2, h3⟩` from `GlobalTheory.TopIntegral.exists_orthogonal_summand_embedding_hom G.sp.topDec`. Use `⟨c, s, h2, hdef, posDef_grid hL le_rfl, fun g hg => realAct_fin _ _ _ hg, fun g hg => realAct_fin _ _ _ hg, h1, h3, fun z => (h2 _).symm.trans (GlobalTheory.RealType.Emb_fin _ z), fun k hk => h2 k ▸ GlobalTheory.RealType.Emb_mem_inf _ hk, fun u u' => ?_, fun κ a1 a2 u u' => ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [← h2]`. Conclude with `(GlobalTheory.TopIntegral.continuous_integrand W.θ_is S.N Λ Λ' u u').comp continuous_subtype_val`. Take `rfl : κ = κ₀` from `Measure.isHaarMeasure_eq_of_isProbabilityMeasure κ κ₀`. Simplify using `only [← h2]`. Conclude with `hc u u'`.
+-/
 private theorem last_ok {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {W : G.Weil} {U : Set T}
     (S : GridChoice W U) {μ0 : T} (hL : L.Is μ0) (Λ : Module.Dual ℂ (VV ℂ (wt G (.top D.R.m))))
     (Λ' : Module.Dual ℂ (VV ℂ (wt G (.grid D.R.m D.R.m)))) :
@@ -39,6 +46,9 @@ private theorem last_ok {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : G
     simp only [← h2]
     exact hc u u'
 
+/- English proof (translation)
+Rewrite using `[pairPts, Finsupp.sum, Finsupp.sum, LinearMap.sum_apply, LinearMap.sum_apply, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Use `(mul_left_comm c (τ d) _).trans (congrArg (τ d * ·) ?_)` and prove the remaining obligations. Conclude with `(congrArg₂ (fun a b => (c • brPair (listedWt G (.grid D.R.m D.R.m)) G.sp.topDec.rank.symm (wt G (.top D.R.m))) a b) (ptV_eq_chainTo (V := fun j => G.V (.top j)) (Mo := fun j => VV ℂ (wt G (.top j))) (colComp S d) (fun x => rhoVr (tauE D) _ (S.N.fr (.top 0))⁻¹ (Ψ x)) X D.R.m) (ptV …`.
+-/
 private theorem pair_eq {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {W : G.Weil} {U : Set T}
     (S : GridChoice W U) {t : T} (τ : PureDat G t →₀ ℂ) (c : ℂ) (Ψ : FinPt G (.top 0) → VV ℂ (wt G (.top 0)))
     (F : FinPt G (.grid 0 D.R.m) → VV ℂ (listedWt G (.grid 0 D.R.m))) (X : ∀ j, FinPt G (.top j))
@@ -61,6 +71,21 @@ private theorem pair_eq {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : G
 
 end
 
+/- English proof (translation)
+Introduce `hP hS`. Take `⟨C0, H⟩` from `Big.and hS (GlobalTheory.FirstRowLaw.first_level_invariance hP hS)`. Use `⟨C0, fun ε CF hC => ?_⟩` and prove the remaining obligations. Take `⟨x₀, H⟩` from `H ε CF hC`. Use `⟨x₀, fun D large₂ e hx Γ _ _ Pl0 T A Ks _ _ _ R F s ch hi hsc P => ?_⟩` and prove the remaining obligations.
+
+Take `⟨hOK, h0⟩` from `H D large₂ e hx Γ Pl0 T A Ks R F s ch hi hsc`. Establish `hL : R.toLevCh.Is A.μ0` using `s.core.lev`. Establish `hm : 0 < D.R.m` using `by have := D.R.two_le_m; omega`. Take `⟨Λ0, hΛ0⟩` from `GlobalTheory.JetsOne.col_real ch`. Take `⟨Λ0', hΛ0'⟩` from `GlobalTheory.JetsOne.form_real ch s.core.models.cX`.
+
+Take `⟨Λ, rfl, hΛ⟩` from `GlobalTheory.JetsOne.col_chain ch.S.toGridChoice hL P Λ0`. Take `⟨Λ', rfl, hΛ'⟩` from `GlobalTheory.JetsOne.row_chain ch.S.toGridChoice hL P Λ0'`. Take `⟨c, σ, hσ, hlast⟩` from `last_ok ch.S.toGridChoice hL (Λ D.R.m) (Λ' D.R.m)`. Use `⟨c, fun t a β hβ M τ hM hτ y => ?_⟩` and prove the remaining obligations. Establish `hv` using `(hOK t a).vec β τ hτ`.
+
+Take `⟨v1, v2⟩` from `TermVolDef.isMeasDef_of_isTermVol ch.S.toGridChoice hL t _ β M hM`. Take `⟨i1, i2, i3, i4⟩` from `GlobalTheory.T.normalisedKernelExpansionSum_levelInvariant ch.S.toGridChoice hL (GlobalTheory.FlipIntegrand.pde_ne_q_of_setting s) (hi.guard t) (Set.mem_univ t) hβ hτ hv (psiC (ch.Psi a)) (ch.S.formC t y)`. Establish `hK0 : ∀ h : 0 < D.R.m, ch.S.levTop t (ch.Phi a) β 0 h = ch.G.Kplus` using `fun _ => rfl`. Establish `key` using `GlobalTheory.JetsOne.glue (V := fun j => ch.G.V (.top j)) (V' := fun j => ch.G.V (.grid j D.R.m)) τ (fun d hd => hΛ t (Set.mem_univ t) d (hv d hd).1) (hΛ0 a) (GlobalTheory.JetsOne.col_left ch a) (fun d hd => GlobalTheory.JetsOne.col_near _ P d (hv d hd).1 (GlobalTheory.JetsOne.co …`. Break down `j with _ | j` into its components or cases.
+
+Use `i2 (GlobalTheory.JetsOne.psiC_right ch a) X Y k hk beta_reduce` as an intermediate fact. Rewrite using `[Function.update_self, this]`. Conclude with `congrArg _ (i1 X Y _ j.succ_pos hj k hk))`. Use the proof step `(fun X Y j hj k hk => by`. Break down `j with _ | j` into its components or cases.
+
+Use `h0 t a β hβ τ hτ y (psiC (ch.Psi a) (X 0)) X Y k hk beta_reduce` as an intermediate fact. Rewrite using `[Function.update_self, this]`. Conclude with `congrArg _ (i3 X Y _ j.succ_pos hj k hk))`. Use the proof step `(fun X Y k h1 hk => congrArg _ (i4 X Y k h1 hk))`. Rewrite using `[defTot, Finsupp.sum_single_index (by simp)]`.
+
+Simplify using `only [one_mul, GlobalTheory.JetsOne.defPer_eq, hσ]`. Use `key.trans ?_` and prove the remaining obligations. Rewrite using `[GridChoice.classSum, mul_finsum]`. Conclude with `finsum_congr fun c' => mul_left_comm _ _ _`.
+-/
 theorem _root_.GlobalTheory.T.term_volume_class_sum : GlobalTheory.FunPr.Hypotheses₂ → SumOKK → Big fun ch => ∀ P : PolCol ch.G × PolRow ch.G, ∃ κ : ℂ, ∀ t a, ∀ β ∈ ch.S.supp t (ch.Phi a), ∀ M τ, IsTermVol t ch.S.toGridChoice (ch.Phi a) β M → ch.S.IsExpansion t (ch.Phi a) β τ → ∀ y, defTot t ch.S.toGridChoice M (Finsupp.single P 1) τ (colFn ch a) (formTop ch t y) = κ * ch.S.classSum (ch.Phi a) β τ (psiC (ch.Psi a)) (ch.S.formC t y) := by
   intro hP hS
   obtain ⟨C0, H⟩ := Big.and hS (GlobalTheory.FirstRowLaw.first_level_invariance hP hS)

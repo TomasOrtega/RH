@@ -4,6 +4,13 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty => exact ⟨j, 𝟙 j, by simp⟩`. Consider the case `@insert p T hp ih`. Take `⟨k1, f1, h1⟩` from `ih (fun q hq => hT q (Finset.mem_insert_of_mem hq))`. Take `⟨k2, f2, h2⟩` from `hinj j p.1 p.2 (hT p (Finset.mem_insert_self p T))`.
+
+Establish `e : f1 ≫ IsFiltered.leftToMax k1 k2 ≫ IsFiltered.coeqHom (f1 ≫ IsFiltered.leftToMax k1 k2) (f2 ≫ IsFiltered.rightToMax k1 k2) = f2 ≫ IsFiltered.rightToMax k1 k2 ≫ IsFiltered.coeqHom (f1 ≫ IsFiltered.leftToMax k1 k2) (f2 ≫ IsFiltered.rightToMax k1 k2)`. Simplify `IsFiltered.coeq_condition (f1 ≫ IsFiltered.leftToMax k1 k2) (f2 ≫ IsFiltered.rightToMax k1 k2)` using `only [Category.assoc]`. Use `⟨_, f1 ≫ IsFiltered.leftToMax k1 k2 ≫ IsFiltered.coeqHom (f1 ≫ IsFiltered.leftToMax k1 k2) (f2 ≫ IsFiltered.rightToMax k1 k2), ?_⟩` and prove the remaining obligations. Introduce `q hq`. Break down `Finset.mem_insert.mp hq with rfl | hq` into its components or cases.
+
+Rewrite using `[e]`. Simplify using `only [FunctorToTypes.map_comp_apply, h2]`. Simplify using `only [FunctorToTypes.map_comp_apply, h1 q hq]`.
+-/
 theorem filtered_identify_pairs {J : Type} [SmallCategory J] [IsFiltered J] (P : J ⥤ Type)
     (Q : Type) (ι : ∀ j, P.obj j → Q)
     (hinj : ∀ j (x y : P.obj j), ι j x = ι j y → ∃ (k : J) (f : j ⟶ k), P.map f x = P.map f y)
@@ -29,6 +36,15 @@ theorem filtered_identify_pairs {J : Type} [SmallCategory J] [IsFiltered J] (P :
       simp only [FunctorToTypes.map_comp_apply, h2]
     · simp only [FunctorToTypes.map_comp_apply, h1 q hq]
 
+/- English proof (translation)
+Take `⟨k, f, hf⟩` from `filtered_identify_pairs P Q ι hinj j ((x.support ×ˢ x.support).filter (fun p => ι j p.1 = ι j p.2)) (fun p hp => (Finset.mem_filter.mp hp).2)`. Use `⟨k, f, ?_⟩` and prove the remaining obligations. Establish `hcomp : Finsupp.mapDomain (ι k) (Finsupp.mapDomain (P.map f) x) = Finsupp.mapDomain (ι j) x`. Rewrite using `[← Finsupp.mapDomain_comp]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `a`. Conclude with `hcompat j k f a`. Establish `hInj : Set.InjOn (ι k) (P.map f '' (x.support : Set (P.obj j)))`. Introduce and unpack `_ ⟨a, ha, rfl⟩ _ ⟨b, hb, rfl⟩ hab`. Rewrite `hab` using `[hcompat, hcompat]`.
+
+Conclude with `hf (a, b) (Finset.mem_filter.mpr ⟨Finset.mem_product.mpr ⟨ha, hb⟩, hab⟩)`. Apply `Finsupp.mapDomain_injOn _ hInj` to reduce the goal to its premises. Introduce `b hb`. Use `Finsupp.mapDomain_support (f := P.map f) (s := x) hb` as an intermediate fact. Simplify using `using this`.
+
+Simplify using the standard rewrite rules. Rewrite using `[hcomp, hx, Finsupp.mapDomain_zero]`.
+-/
 theorem finsupp_mapDomain_eq_zero_at_stage (Λ : Type 1) [AddCommGroup Λ] (J : Type)
     [SmallCategory J] [IsFiltered J] (P : J ⥤ Type) (Q : Type) (ι : ∀ j, P.obj j → Q)
     (hcompat : ∀ (j k : J) (f : j ⟶ k) (x : P.obj j), ι k (P.map f x) = ι j x)

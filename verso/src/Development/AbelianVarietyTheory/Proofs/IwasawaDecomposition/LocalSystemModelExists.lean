@@ -23,30 +23,53 @@ open Formalism.MainNotions.DIV.Cons (intO)
 
 namespace GlobalTheory.FlagEmb.DR
 
+/- English proof (translation)
+The claim follows from `(Spec.map_comp _ _).symm`.
+-/
 theorem sp_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap g ≫ spMap f = spMap (g.comp f) := (Spec.map_comp _ _).symm
 
+/- English proof (translation)
+Rewrite using `[← Category.assoc, sp_comp]`.
+-/
 theorem sp_comp_assoc {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C)
     {Z : Scheme.{0}} (h : Sp A ⟶ Z) : spMap g ≫ spMap f ≫ h = spMap (g.comp f) ≫ h := by
   rw [← Category.assoc, sp_comp]
 
+/- English proof (translation)
+The claim follows from `(congrArg (· ≫ h) (Spec.map_id _)).trans (Category.id_comp _)`.
+-/
 theorem sp_id {A : Type} [CommRing A] {Z : Scheme.{0}} (h : Sp A ⟶ Z) : spMap (RingHom.id A) ≫ h = h :=
   (congrArg (· ≫ h) (Spec.map_id _)).trans (Category.id_comp _)
 
+/- English proof (translation)
+Use `RingHom.ext fun z => ?_` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp [dualMap]`.
+-/
 theorem dual_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     (dualMap g).comp (dualMap f) = dualMap (g.comp f) := by
   refine RingHom.ext fun z => ?_
   ext <;> simp [dualMap]
 
+/- English proof (translation)
+Use `RingHom.ext fun z => ?_` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp [dualMap]`.
+-/
 theorem dual_id {A : Type} [CommRing A] : dualMap (RingHom.id A) = RingHom.id _ := by
   refine RingHom.ext fun z => ?_
   ext <;> simp [dualMap]
 
+/- English proof (translation)
+Substitute `e e'` using the available equality. Both sides reduce to the same expression.
+-/
 theorem pt_congr {R A : Type} [CommRing R] [CommRing A] {N : ℕ} {c c' : R →+* A} {v v' : Fin (N + 1) → A} {h h'}
     (e : c = c') (e' : v = v') : pt c v h = pt c' v' h' := by
   subst e e'
   rfl
 
+/- English proof (translation)
+Set `e` to `IsOpenImmersion.isoOfRangeEq (isAffineOpen_opensRange κ).fromSpec κ (isAffineOpen_opensRange κ).range_fromSpec`. Set `e' : CommRingCat.of A ≅ Γ(Z, κ.opensRange)` to `(Scheme.Spec.preimageIso (X := .op _) (Y := .op _) e).unop`. Use `⟨e'.commRingCatIsoToRingEquiv, ?_⟩` and prove the remaining obligations. Establish `: spMap e'.commRingCatIsoToRingEquiv.toRingHom = e.hom` using `Scheme.Spec.map_preimage e.hom`. Rewrite using `[this]`.
+
+Conclude with `IsOpenImmersion.isoOfRangeEq_hom_fac _ _ _`.
+-/
 theorem exists_ringEquiv {A : Type} [CommRing A] {Z : Scheme.{0}} (κ : Sp A ⟶ Z) [IsOpenImmersion κ] :
     ∃ θ : A ≃+* Γ(Z, κ.opensRange), spMap θ.toRingHom ≫ κ = (isAffineOpen_opensRange κ).fromSpec := by
   let e := IsOpenImmersion.isoOfRangeEq (isAffineOpen_opensRange κ).fromSpec κ
@@ -57,6 +80,11 @@ theorem exists_ringEquiv {A : Type} [CommRing A] {Z : Scheme.{0}} (κ : Sp A ⟶
   rw [this]
   exact IsOpenImmersion.isoOfRangeEq_hom_fac _ _ _
 
+/- English proof (translation)
+Establish `: IsOpenImmersion U.2.fromSpec` using `IsAffineOpen.isOpenImmersion_fromSpec U.2`. Establish `hr : Set.range x ⊆ Set.range U.2.fromSpec`. Rewrite using `[U.2.range_fromSpec]`. Introduce and unpack `_ ⟨q, rfl⟩`. Rewrite using `[Subsingleton.elim q (IsLocalRing.closedPoint k)]` and apply the resulting hypothesis.
+
+Use `⟨(Spec.preimage (IsOpenImmersion.lift U.2.fromSpec x hr)).hom, ?_⟩` and prove the remaining obligations. Conclude with `(congrArg (· ≫ _) (Spec.map_preimage _)).trans (IsOpenImmersion.lift_fac U.2.fromSpec x hr)`.
+-/
 theorem exists_factor {k : Type} [Field k] {X : Scheme.{0}} (x : Sp k ⟶ X) (U : X.affineOpens)
     (h : x (IsLocalRing.closedPoint k) ∈ U.1) : ∃ ψ : Γ(X, U.1) →+* k, spMap ψ ≫ U.2.fromSpec = x := by
   have : IsOpenImmersion U.2.fromSpec := IsAffineOpen.isOpenImmersion_fromSpec U.2
@@ -69,17 +97,26 @@ theorem exists_factor {k : Type} [Field k] {X : Scheme.{0}} (x : Sp k ⟶ X) (U 
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ i`. Simplify using `only [Vecs.bc]`. Rewrite using `[sp_comp_assoc, dual_comp]`.
+-/
 theorem bc_bc {X : Scheme.{0}} {t : SAB H X} {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B)
     (g : B →+* C) (u : Vecs Dw t A) : (u.bc f).bc g = u.bc (g.comp f) := by
   funext τ i
   simp only [Vecs.bc]
   rw [sp_comp_assoc, dual_comp]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ i`. Simplify using `only [Vecs.bc]`. Rewrite using `[dual_id, sp_id]`.
+-/
 theorem bc_id {X : Scheme.{0}} {t : SAB H X} {A : Type} [CommRing A] (u : Vecs Dw t A) : u.bc (RingHom.id A) = u := by
   funext τ i
   simp only [Vecs.bc]
   rw [dual_id, sp_id]
 
+/- English proof (translation)
+Unfold `cell`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem map_cell {T : Type} {m : T → ℕ} {S S' : Type} [CommRing S] [CommRing S'] (φ : S →+* S') (x : CellVar m → S)
     (τ : T) (i j : Fin (m τ)) : φ (cell x τ i j) = cell (φ ∘ x) τ i j := by
   unfold cell
@@ -93,6 +130,9 @@ variable {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] 
   {α : ∀ b, c.F →+* Γ(Y.X, (V b).1)} {e : ∀ b, Vecs Dw Y.t Γ(Y.X, (V b).1)}
   {D : ∀ b, Let Dw.mult → Fin (M + 1) → Γ(Y.X, (V b).1)}
 
+/- English proof (translation)
+Use `hE.nat _ _ _ _ _ _ ?_` and prove the remaining obligations. Use `((hF.frame b _ (RingHom.id _)).1 z.1 z.2).1` as an intermediate fact. Rewrite `this` using `[bc_id, sp_id, ← hF.res b]`. Then use the resulting hypothesis.
+-/
 theorem crd_bc (hE : IsLieEmb Y.t L aff crd) (hF : IsFrameCover Y L aff crd V ι ρ α e D) (b : B) {R : Type} [CommRing R]
     (φ : Γ(Y.X, (V b).1) →+* R) (z : Let Dw.mult) :
     crd (ι b) R (φ.comp (ρ b)) ((e b).bc φ z.1 z.2) = φ ∘ crd (ι b) _ (ρ b) (e b z.1 z.2) := by
@@ -100,6 +140,15 @@ theorem crd_bc (hE : IsLieEmb Y.t L aff crd) (hF : IsFrameCover Y L aff crd V ι
   have := ((hF.frame b _ (RingHom.id _)).1 z.1 z.2).1
   rwa [bc_id, sp_id, ← hF.res b] at this
 
+/- English proof (translation)
+Use `choose u hu hu' using fun τ j => exists_comb Y.t (fun i => ((hF.frame b R₀ φ₀).1 τ (w τ i)).1) fun i => cell x τ i j`. Use `⟨u, fun R _ φ => ?_⟩` and prove the remaining obligations. Establish `hc : ∀ τ j, IsCombAtG Y.t (spMap (φ.comp φ₀) ≫ (V b).2.fromSpec) (fun i => (e b).bc (φ.comp φ₀) τ (w τ i)) (fun i => cell (φ ∘ x) τ i j) (Vecs.bc φ u τ j)` using `fun τ j => by`. Use `GlobalTheory.LatDRFree.comb_map Y.t φ (hu' τ j)` as an intermediate fact. Rewrite `this` using `[sp_comp_assoc]`.
+
+Simplify using `only [map_cell] at this`. Rewrite using `[← bc_bc]`. Conclude with `this`. Establish `hf` using `hF.frame b R (φ.comp φ₀)`. Use `⟨?_, fun z => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[sp_comp_assoc]`. Conclude with `(GlobalTheory.T.tangent_combination_eigen_action E H Dw l c Y.X Y.t R _).2 _ _ _ w _ hf hc`. Establish `hx : spMap ((φ.comp φ₀).comp (ρ b)) ≫ (aff (ι b)).fromSpec = spMap (φ.comp φ₀) ≫ (V b).2.fromSpec`. Rewrite using `[← sp_comp_assoc, hF.res]`. Establish `ht` using `fun i => (hf.1 z.1 (w z.1 i)).1`.
+
+Use `((hE.comb_iff _ _ hx ht (comb_tan Y.t ht (hc z.1 z.2)) _).1 (hc z.1 z.2)).trans ?_` and prove the remaining obligations. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Conclude with `congrArg _ (crd_bc hE hF b (φ.comp φ₀) ⟨z.1, w z.1 i⟩)`.
+-/
 theorem exists_cellFrame (hE : IsLieEmb Y.t L aff crd) (hF : IsFrameCover Y L aff crd V ι ρ α e D) (b : B)
     (w : Pm Dw.mult) {R₀ : Type} [CommRing R₀] (φ₀ : Γ(Y.X, (V b).1) →+* R₀) (x : CellVar Dw.mult → R₀) :
     ∃ u : Vecs Dw Y.t R₀, ∀ (R : Type) [CommRing R] (φ : R₀ →+* R),
@@ -126,6 +175,17 @@ theorem exists_cellFrame (hE : IsLieEmb Y.t L aff crd) (hF : IsFrameCover Y L af
     refine Finset.sum_congr rfl fun i _ => ?_
     exact congrArg _ (crd_bc hE hF b (φ.comp φ₀) ⟨z.1, w z.1 i⟩)
 
+/- English proof (translation)
+Establish `h1 : (y ≫ Y.j) (IsLocalRing.closedPoint k) ∈ ⋃ b, ((V b).1 : Set Y.X)`. Rewrite using `[hF.cover]`. Conclude with `⟨_, (Scheme.Hom.comp_apply _ _ _).symm⟩`. Take `⟨b, hb⟩` from `Set.mem_iUnion.1 h1`. Take `⟨ψ, hψ⟩` from `exists_factor (y ≫ Y.j) (V b) hb`.
+
+Establish `h2 : ψ.comp (α b) = f`. Establish `e1 : spMap ((ψ.comp (α b)).comp β) = spMap (f.comp β)`. Rewrite using `[RingHom.comp_assoc, ← sp_comp, ← hF.isCover.ovr b, ← Category.assoc, hψ, ← sp_comp, ← hy, Model.j]`. Simplify using `only [Category.assoc]`. Rewrite using `[pullback.condition, ← Y.jQ_over]`.
+
+Simplify using `only [Category.assoc]`. Establish `e2 : (ψ.comp (α b)).comp β = f.comp β` using `congrArg CommRingCat.Hom.hom (Spec.map_injective e1)`. Use `IsLocalization.ringHom_ext (nonZeroDivisors O) ?_` and prove the remaining obligations. Rewrite using `[← hβ]`. Conclude with `e2`.
+
+Establish `hx : spMap (ψ.comp (ρ b)) ≫ (aff (ι b)).fromSpec = y ≫ Y.j` using `by rw [← sp_comp_assoc, hF.res, hψ]`. Establish `hf` using `hF.frame b k ψ`. Rewrite `hf` using `[hψ]`. Establish `t1` using `(GlobalTheory.T.frames_agree_on_lie_embedding_chart E H Dw l c Y.X Y.t L aff M crd hE (ι b) k _ _ _ _ _ _ hx hf hu).2.2 h2`. Establish `t2` using `(GlobalTheory.T.frames_agree_on_lie_embedding_chart E H Dw l c Y.X Y.t L aff M crd hE (ι b) k _ _ _ _ _ _ hx hu hu).2.1`.
+
+Simplify using `only [crd_bc hE hF b ψ] at t1`. Take `⟨w, x, d, -, -, h⟩` from `GlobalTheory.T.exists_integral_flagCell_of_valuedField _ _ k ⊤ M _ _ t1 t2`. Conclude with `⟨b, w, ψ, x, d, hψ, h2, h⟩`.
+-/
 theorem exists_cell [IsDomain O] [Algebra O c.F] [IsFractionRing O c.F] (hβ : β = algebraMap O c.F)
     (hE : IsLieEmb Y.t L aff crd) (hF : IsFrameCover Y L aff crd V ι ρ α e D)
     {k : Type} [Field k] (f : c.F →+* k) (y : Sp k ⟶ Xo.XF c) (hy : y ≫ pullback.snd _ _ = spMap f)
@@ -162,6 +222,11 @@ end Cover
 
 variable {Xo : ∀ l : Level H, Moduli Dw l} {p : ℕ} {W : ValuationSubring ℂ} {Y : LocalSystem Xo p W} {i₀ : Idx H p}
 
+/- English proof (translation)
+Use `haveI := c.fin`. Use `haveI : NumberField c.F := {}`. Use `(isDiscreteValuationRing_and_finite_residueField_of_numberField (c.V W) hp ?_).1` and prove the remaining obligations. Rewrite `hW`, the goal using `[ValuationSubring.mem_nonunits_iff_or]`. Break down `hW with h | h` into its components or cases.
+
+Conclude with `absurd (by exact_mod_cast h) hp`. Conclude with `Or.inr fun h' => h (by simpa [Coeff.V] using h')`.
+-/
 theorem dvr_place {l : Level H} (c : Coeff l) (hp : p ≠ 0) (hW : (p : ℂ) ∈ W.nonunits) :
     IsDiscreteValuationRing (c.V W) := by
   haveI := c.fin
@@ -174,6 +239,47 @@ theorem dvr_place {l : Level H} (c : Coeff l) (hp : p ≠ 0) (hW : (p : ℂ) ∈
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Use `dvr_place i.c hp.ne_zero hW` as an intermediate fact. Establish `: IsProper (Y i).s` using `projProper _ _ _ (Y i).proj`. Establish `: IsLocallyNoetherian (Y i).X` using `LocallyOfFiniteType.isLocallyNoetherian (Y i).s`. Establish `: IsReduced (Y i).X`. Establish `: ∀ x : (Y i).X, _root_.IsReduced ((Y i).X.presheaf.stalk x)` using `fun x => by`.
+
+Use `((Y i).normal x).1` as an intermediate fact. Use `infer_instance`. Conclude with `isReduced_of_isReduced_stalk _`. Take `⟨L, aff, M, crd, hE⟩` from `GlobalTheory.T.exists_lie_embedding_projective E H _ _ (Y i).s (Y i).t (Y i).proj`. Take `⟨n, V, ι, ρ, α, e, D, hF⟩` from `GlobalTheory.T.exists_affine_refinement_lie_embedding E H Dw _ _ _ p W (Y i) hp hW L aff M crd hE`.
+
+Take `⟨N, I, π, g, κ, hπ, hM⟩` from `GlobalTheory.T.isCover_normal_projective_charts (i.c.V W) i.c.F _ (Y i).s _ Dw.mult M _ V α _ D (Y i).proj (Y i).normal hF.isCover`. Establish `hop` using `hM.opn`. Set `eqv` to `(Fintype.equivFin (Fin n × Pm Dw.mult)).symm`. Use `choose θ hθ using fun a => exists_ringEquiv (κ (eqv a).1 (eqv a).2)`. Set `φ₀ : ∀ a, Γ((Y i).X, (V (eqv a).1).1) →+* Γ(I.subscheme, (κ (eqv a).1 (eqv a).2).opensRange)` to `fun a => (θ a).toRingHom.comp MvPolynomial.C`.
+
+Use `choose fr hfr using fun a => exists_cellFrame hE hF (eqv a).1 (eqv a).2 (φ₀ a) fun v => θ a (MvPolynomial.X v)`. Set `Z : Pre Y i₀` to `⟨i, hd, hle, N, I, π, fun τ => Finset.range (Dw.mult τ + 1), _, fun a => ⟨(κ (eqv a).1 (eqv a).2).opensRange, isAffineOpen_opensRange _⟩, fun a => (φ₀ a).comp (α _), fr⟩`. Establish `hch : ∀ a, Z.chart a = spMap (θ a).toRingHom ≫ κ (eqv a).1 (eqv a).2` using `fun a => (hθ a).symm`. Establish `hb : ∀ a, Z.chart a ≫ Z.π = spMap (φ₀ a) ≫ (V (eqv a).1).2.fromSpec` using `fun a => by`. Rewrite using `[hch, Category.assoc]`.
+
+Use `erw [hM.base]`. Conclude with `sp_comp_assoc _ _ _`. Establish `hopn : Z.opn = π ⁻¹' ⋃ b, ((V b).1 : Set (Y i).X)` using `by rw [hF.cover]; rfl`. Establish `hcov : ⋃ a, ((Z.U a).1 : Set Z.X) = Z.opn`. Rewrite using `[hopn, ← hM.cover]`.
+
+Use extensionality with `z`. Simplify using `only [Set.mem_iUnion]`. Use `⟨fun ⟨a, h⟩ => ⟨_, _, h⟩, fun ⟨b, w, h⟩ => ?_⟩` and prove the remaining obligations. Take `⟨a, ha⟩` from `eqv.surjective (b, w)`. Take `rfl : b = (eqv a).1` from `by rw [ha]`.
+
+Take `rfl : w = (eqv a).2` from `by rw [ha]`. Conclude with `⟨a, h⟩`. Establish `halg : ∀ a, Z.chart a ≫ Z.π ≫ (Y Z.i).s = spMap ((Z.alg a).comp (Z.i.c.V W).subtype)` using `fun a => by`. Rewrite using `[← Category.assoc, hb, Category.assoc]`. Use `erw [hF.isCover.ovr]`.
+
+Conclude with `sp_comp _ _`. Establish `hfr' : ∀ a (R : Type) [CommRing R] (φ : Γ(Z.X, (Z.U a).1) →+* R), IsFrame (Y Z.i).t (φ.comp (Z.alg a)) (spMap φ ≫ Z.chart a ≫ Z.π) ((Z.fr a).bc φ)` using `fun a R _ φ => by`. Rewrite using `[hb]`. Conclude with `(hfr a R φ).1`. Establish `hres : ∀ a, spMap ((φ₀ a).comp (ρ (eqv a).1)) ≫ (aff (ι (eqv a).1)).fromSpec = Z.chart a ≫ Z.π` using `fun a => by`.
+
+Rewrite using `[hb, ← sp_comp_assoc, hF.res]`. Establish `hT : Comparison₂ Z L aff crd (fun a => ι (eqv a).1) (fun a => (φ₀ a).comp (ρ _)) g`. Use `⟨hE, rfl, hres, hcov, halg, hfr', fun a en => ?_, fun k _ z z' hz => hM.inj k z z' ?_⟩` and prove the remaining obligations. Take `⟨hu, h⟩` from `hM.plk (eqv a).1 (eqv a).2 en`. Establish `e1 : (θ a).toRingHom ∘ plk (uvec (fun z => crd (ι (eqv a).1) _ (ρ _) (e (eqv a).1 z.1 z.2)) (eqv a).2) en.2.1 = plk (fun z : Let Dw.mult => crd (ι (eqv a).1) _ ((φ₀ a).comp (ρ _)) (fr a z.1 z.2)) en.2.1`.
+
+Rewrite using `[map_plk]`. Use `congr 1`. Use function extensionality and compare the values at `z`. Use `(hfr a _ (RingHom.id _)).2 z` as an intermediate fact. Rewrite `this` using `[bc_id]`.
+
+Conclude with `(map_cellVec _ _ _ _ _).trans this.symm`. Use `⟨e1 ▸ span_range_comp_eq_top _ hu _, ?_⟩` and prove the remaining obligations. Rewrite using `[hch, Category.assoc]`. Conclude with `(congrArg (spMap (θ a).toRingHom ≫ ·) h).trans ((spMap_pt _ _ _ _).trans (pt_congr rfl e1))`. Introduce and unpack `_ ⟨q, rfl⟩`.
+
+Use `hz ⟨q, rfl⟩` as an intermediate fact. Rewrite `this` using `[hopn]`. Rewrite using `[Scheme.Hom.comp_apply]`. Conclude with `this`. Use `⟨⟨Z, hπ, GlobalTheory.IsNormalScheme.of_pred hM.normal, (congrArg (fun f => Flat f) hπ).mp hM.flat, hopn ▸ hM.dense, hcov, fun a => ?_, fun a => ?_, fun a => ?_, GlobalTheory.T.pre_model_chart_compatible E H Dw Xo p W Y i₀ Z L aff M crd _ _ g hT, fun k _ f y hy u hu => ?_⟩, L, af …` and prove the remaining obligations.
+
+Conclude with `(congrArg (Z.chart a ≫ ·) hπ.symm).trans (halg a)`. Use `(GlobalTheory.T.smooth_base_and_normal_coordinate_ring (Y i).X _ Dw.mult (V (eqv a).1) (Y i).normal).1` as an intermediate fact. Establish `: IsIso (spMap (θ a).toRingHom)` using `inferInstanceAs (IsIso (Spec.map (θ a).toCommRingCatIso.hom))`. Establish `e1 : Z.chart a ≫ π = spMap (θ a).toRingHom ≫ cbase Dw.mult (V (eqv a).1)`. Rewrite using `[hch, Category.assoc]`.
+
+Use `erw [hM.base]`. Rewrite using `[e1]`. Use `infer_instance`. Use `hfr' a _ (RingHom.id _)` as an intermediate fact. Rewrite `this` using `[bc_id, sp_id]`. Then use the resulting hypothesis.
+
+Use `existsUnique_of_exists_of_unique ?_ fun w w' h h' => GlobalTheory.T.pre_model_chart_transition E H Dw Xo p W Y i₀ Z L aff M crd _ _ g hT k w w' u (h.1.trans h'.1.symm) h.2 h'.2` and prove the remaining obligations. Take `⟨b, w, ψ, x, d, hψ, hf, htri⟩` from `exists_cell rfl hE hF f y hy u hu`. Take `⟨a, ha⟩` from `eqv.surjective (b, w)`. Take `rfl : b = (eqv a).1` from `by rw [ha]`. Take `rfl : w = (eqv a).2` from `by rw [ha]`.
+
+Set `φ : Γ(Z.X, (Z.U a).1) →+* k` to `(MvPolynomial.eval₂Hom ψ x).comp (θ a).symm.toRingHom`. Establish `h0 : φ.comp (φ₀ a) = ψ` using `RingHom.ext fun r => (congrArg (MvPolynomial.eval₂Hom ψ x) ((θ a).symm_apply_apply _)).trans (MvPolynomial.eval₂Hom_C _ _ _)`. Establish `h1 : (φ ∘ fun v => θ a (MvPolynomial.X v)) = x` using `funext fun v => (congrArg (MvPolynomial.eval₂Hom ψ x) ((θ a).symm_apply_apply _)).trans (MvPolynomial.eval₂Hom_X' _ _ _)`. Establish `h2 : (spMap φ ≫ Z.chart a) ≫ Z.π = y ≫ (Y i).j`. Rewrite using `[Category.assoc, hb]`.
+
+Conclude with `(sp_comp_assoc _ _ _).trans ((congrArg (spMap · ≫ _) h0).trans hψ)`. Establish `h3 : φ.comp (Z.alg a) = f` using `by rw [← hf, ← h0]; rfl`. Establish `h4` using `hfr' a k φ`. Rewrite `h4` using `[← Category.assoc, h2]`. Use `⟨spMap φ ≫ Z.chart a, h2, a, φ, rfl, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[h2, h3]`. Conclude with `hu`. Rewrite using `[h2]`. Establish `hx : spMap (ψ.comp (ρ _)) ≫ (aff (ι (eqv a).1)).fromSpec = y ≫ (Y i).j`. Rewrite using `[← sp_comp_assoc, hF.res]`.
+
+Conclude with `hψ`. Use `(GlobalTheory.T.frames_agree_on_lie_embedding_chart E H Dw _ _ _ _ L aff M crd hE _ k _ _ _ _ _ _ hx h4 hu).1.2 ⟨d, ?_⟩` and prove the remaining obligations. Establish `h5` using `funext (hfr a k φ).2`. Rewrite `h5` using `[h1, ← RingHom.comp_assoc, h0]`. Rewrite `htri` using `[← h5]`.
+
+Conclude with `htri`.
+-/
 theorem exists_tied (hp : p.Prime) (hW : (p : ℂ) ∈ W.nonunits) (i : Idx H p) (hd : i₀.l.Dvd i.l)
     (hle : i₀.c.F ≤ i.c.F) :
     ∃ (Z : Mdl Y i₀) (L : FinLB (Y Z.i).X) (aff : ∀ i, IsAffineOpen (L.U i)) (M : ℕ) (crd : Crd (Y Z.i).t L M)
@@ -290,6 +396,11 @@ end GlobalTheory.FlagEmb.DR
 
 open IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Geo GlobalTheory.Toroidal GlobalTheory.ShFam GlobalTheory.TrueGeo GlobalTheory.Cartier in
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw Xo p W Y i₀ hp hW _ i hd hle st x hx`. Take `⟨Z, L, aff, M, crd, ι, ρ, g, hi, hT⟩` from `GlobalTheory.FlagEmb.DR.exists_tied (Y := Y) hp hW i hd hle`. Take `⟨n, u, k, hu, h₀, h₁, rfl, hln⟩` from `GlobalTheory.T.exists_descending_letter_chain E H Dw st x hx`. Take `⟨L', ix, q₀, q₁, r, hL⟩` from `GlobalTheory.T.pre_model_chart_frame E H Dw Xo p W Y i₀ Z.toPre L aff M crd ι ρ g hT ⟨k, _, h₀⟩ ⟨k + 1, _, h₁⟩ rfl`. Use `⟨Z, hi, hT.ty, ⟨L', r, hL.trans, GlobalTheory.T.pre_model_chart_section E H Dw Xo p W Y i₀ Z.toPre L aff M crd ι ρ g hT n u k h₀ h₁ L' ix q₀ q₁ r hL, fun y a j φ h h' => ?_⟩⟩` and prove the remaining obligations.
+
+Rewrite using `[hln]`. Conclude with `GlobalTheory.T.pre_model_chart_values E H Dw Xo p W Y i₀ Z.toPre L aff M crd ι ρ g hT n u k h₀ h₁ L' ix q₀ q₁ r hL hu _ y.z a j φ h h'`.
+-/
 theorem GlobalTheory.FlagEmb.DR.exists_lineModel : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (Xo : ∀ l : Level H, Moduli Dw l) (p : ℕ) (W : ValuationSubring ℂ) (Y : LocalSystem Xo p W) (i₀ : Idx H p), p.Prime → (p : ℂ) ∈ W.nonunits → (N2 Y ∧ ∀ i, (Y i).SplitFibres ∧ (Y i).N3 ∧ (Y i).N4) → ∀ i : Idx H p, i₀.l.Dvd i.l → i₀.c.F ≤ i.c.F → ∀ st x, letterOf Dw st = some x → ∃ Z : Mdl Y i₀, Z.i = i ∧ (Z.ty = fun τ => Finset.range (Dw.mult τ + 1)) ∧ Nonempty (LineModel Z false st x) := by
   intro E _ _ _ H Dw Xo p W Y i₀ hp hW _ i hd hle st x hx
   obtain ⟨Z, L, aff, M, crd, ι, ρ, g, hi, hT⟩ := GlobalTheory.FlagEmb.DR.exists_tied (Y := Y) hp hW i hd hle

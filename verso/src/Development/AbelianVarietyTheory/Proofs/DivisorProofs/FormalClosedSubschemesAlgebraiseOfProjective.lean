@@ -10,6 +10,25 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsClosedImmersionOf
 open CategoryTheory CategoryTheory.Limits AlgebraicGeometry
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.AbLaw GlobalTheory.FormalAlg GlobalTheory.Degen.FormalEmb
 
+/- English proof (translation)
+Introduce `R _ _ I hc W f hP t ht hp`. Take `⟨q, β, hq, hβ, hpb⟩` from `GlobalTheory.T.compatibleReductionSystem_gives_thickening_tower R I W f t ht`. Set `Y : ∀ e : ℕ, Over (Spec (CommRingCat.of (R ⧸ I ^ (e + 1))))` to `fun e => Over.mk (q e)`. Set `j : ∀ e, (Y e).left ⟶ W` to `fun e => (t e).subschemeι`. Take `⟨H, hH, n, s, hs⟩` from `hP`.
+
+Establish `hL : ∀ e, (H.pull (j e)).IsLB` using `fun e => LB.isLB_pull hH _`. Use `choose t' ht' using fun e => GlobalTheory.MorAlg.exists_isPull (j e) hH s`. Establish `hv : ∀ e, GlobalTheory.MorAlg.IsPull (β e) (t' (e + 1)) (t' e)` using `fun e => GlobalTheory.MorAlg.IsPull.cancel hH (hL _) (hL _) (ht' (e + 1)) (by`. Establish `h1 : β e ≫ j (e + 1) = j e` using `hβ e`. Rewrite using `[h1]`.
+
+Conclude with `ht' e)`. Use `choose v hv cv using hv`. Establish `hjR : ∀ e, j e ≫ f = (Y e).hom ≫ thick R I e` using `hq`. Establish `hva : VeryAmpleBy (Y 0).hom (H.pull (j 0)) (t' 0)`. Take `⟨w, hw, c⟩` from `ht' 0`.
+
+Use `GlobalTheory.AbLaw.VeryAmplePull.veryAmpleBy_pull R W f H n s hH hs _ (Ideal.Quotient.mk (I ^ (0 + 1))) _ _ (j 0) (hjR 0) ?_ _ w _ (hL 0) hw c` and prove the remaining obligations. Establish `h₃ : IsClosedImmersion (pullback.lift (j 0) (Y 0).hom (hjR 0) ≫ pullback.fst f (thick R I 0))`. Rewrite using `[pullback.lift_fst]`. Conclude with `inferInstanceAs (IsClosedImmersion (t 0).subschemeι)`. Conclude with `IsClosedImmersion.of_comp _ (pullback.fst f (thick R I 0))`.
+
+Take `⟨B, H', s', b, w, hH', hs', hb, -, hw, heq⟩` from `GlobalTheory.T.exists_projective_algebraisation_formalEmbedding_complete R I hc Y β hpb (fun e => H.pull (j e)) v (fun e => ⟨hL e, hv e⟩) n t' cv hva`. Take `⟨φ, u, hφ, hu, cu⟩` from `GlobalTheory.exists_hom_of_veryAmpleBy R W f H n s hH hs B.left B.hom H' s' hH' hs'.1 fun d F hF h0 => (mem_vanIdeal _ _ _).1 (heq d F hF fun e => (mem_vanIdeal _ _ _).2 fun k => by`. Rewrite using `[← hjR]`. Conclude with `(ht' e).eqn f hH hF h0 k)`. Establish `hbφ : ∀ e, b e ≫ φ = j e` using `fun e => by`.
+
+Take `⟨w₁, hw₁, c₁⟩` from `GlobalTheory.MorAlg.IsPull.comp hH hH' (hL e) ⟨u, hu, cu⟩ ⟨w e, (hw e).1, (hw e).2⟩`. Take `⟨w₂, hw₂, c₂⟩` from `ht' e`. Use `GlobalTheory.MapUniq.hom_eq_of_pull_sections R W f H n s hH hs _ _ (t' e) _ _ w₁ w₂ (hL e) ?_ hw₁ hw₂ c₁ c₂` and prove the remaining obligations. Rewrite using `[Category.assoc, hφ, hjR]`. Conclude with `(hb e).w`.
+
+Use `haveI hci : IsClosedImmersion φ := GlobalTheory.T.isClosedImmersion_of_veryAmpleSections_compatible R W f H n s hH hs B.left B.hom H' s' φ u hH' hs' hφ hu cu`. Use `haveI hBp : IsProper (φ ≫ f) := by`. Rewrite using `[hφ]`. Conclude with `GlobalTheory.AbLaw.isProper_of_isProjBy R _ _ ⟨H', hH', n, s', hs'⟩`. Use `⟨φ.ker, ?_, fun e => ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `IsProper (φ.imageι ≫ f)`. Establish `hg : φ.imageι = inv φ.toImage ≫ φ` using `(IsIso.eq_inv_comp _).2 φ.toImage_imageι`. Rewrite using `[hg, Category.assoc]`. Use `infer_instance`. Establish `key` using `(GlobalTheory.T.isReduction_closedSubscheme_iff_ideal_eq R (I ^ (e + 1)) W B.left (Y e).left f φ (j e) (q e) hci (inferInstanceAs (IsClosedImmersion (t e).subschemeι)) (hq e)).1 ⟨b e, hbφ e, by rw [hφ]; exact hb e⟩`.
+
+Rewrite using `[key]`. Conclude with `Scheme.IdealSheafData.ker_subschemeι (t e)`.
+-/
 theorem GlobalTheory.FormalAlg.alg_of_isProjBy : ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (I : Ideal R), IsAdicComplete I R → ∀ (W : Scheme.{0}) (f : W ⟶ Spec (CommRingCat.of R)), IsProjBy f → Alg f I := by
   intro R _ _ I hc W f hP t ht hp
   obtain ⟨q, β, hq, hβ, hpb⟩ := GlobalTheory.T.compatibleReductionSystem_gives_thickening_tower R I W f t ht

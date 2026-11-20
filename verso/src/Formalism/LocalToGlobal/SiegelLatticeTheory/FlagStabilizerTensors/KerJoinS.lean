@@ -24,6 +24,9 @@ variable {D : D7} {X : HidaSetting D} {Y : Formalism.L2.SG.Full.Full X} (hF : Fi
 def colS (u : D.what₂.Word) (φ : D.what₂.Mu u) : ColT (hF.shInj u) :=
   I.eCu u ((D.s_Cu u).symm ⟨(D.eMu u φ).1, (D.eMu u φ).2.1⟩)
 
+/- English proof (translation)
+Use `show inner ℂ (D.sEE F) (D.s.Pu u ((D.s_Cu u).symm ⟨(D.eMu u φ).1, (D.eMu u φ).2.1⟩)) = _`. Rewrite using `[← LinearIsometryEquiv.inner_map_map I.eHH, I.Pu_eq]`. Both sides reduce to the same expression.
+-/
 theorem besS_conc (u : D.what₂.Word) (φ : D.what₂.Mu u) (F : D.what₂.EE) :
     D.besS u φ F = ⟪I.eHH (D.sEE F), puC hF u (colS hF I u φ)⟫_ℂ := by
   show inner ℂ (D.sEE F) (D.s.Pu u ((D.s_Cu u).symm ⟨(D.eMu u φ).1, (D.eMu u φ).2.1⟩)) = _
@@ -75,6 +78,11 @@ def KerJoinS (Dt : D.what₂.Word → Set X.B.I.GA) : Prop :=
       D.what₂.perCol u D.what₂.mu0 φ F =
         a * ⟪((conjHH X G (j (V (D.what₂.iota D.what₂.mu0 F))) : HHX X) : L2X X), PuFun X u hK (Dt u) T⟫_ℂ
 
+/- English proof (translation)
+Take `⟨V, hV⟩` from `hS`. Use `⟨V, fun u => ?_⟩` and prove the remaining obligations. Take `⟨a, ha, U, hU'⟩` from `hV u`. Use `⟨a, ha, U, fun φ F hF T hT => ?_⟩` and prove the remaining obligations. Rewrite using `[hU' φ F hF T hT]`.
+
+Take `⟨h1, h2, h3, h4, h5, h6, h7⟩` from `hH u`. Establish `e` using `(hU u h1 h2 h3 h4 h5 h6 h7 (rowL X G j (V (D.what₂.iota D.what₂.mu0 F))) T).2`. Rewrite using `[← e, conjHH_apply]`. Both sides reduce to the same expression.
+-/
 theorem kerJoinS_of_parts (Dt Fs : D.what₂.Word → Set X.B.I.GA) (hH : ∀ u, PoincareSeriesHypotheses X u hK (Dt u) (Fs u))
     (hU : ∀ u, BesselUnfold X u hK (Dt u) (Fs u)) (hS : KerSide X G j Tr hK Fs) : KerJoinS X G j Tr hK Dt := by
   obtain ⟨V, hV⟩ := hS
@@ -89,6 +97,13 @@ theorem kerJoinS_of_parts (Dt Fs : D.what₂.Word → Set X.B.I.GA) (hH : ∀ u,
 
 end Ker
 
+/- English proof (translation)
+Establish `hx : x ∈ (D.what₂.V0 D.what₂.mu0).map (D.what₂.iota D.what₂.mu0)`. Rewrite using `[hon]`. Conclude with `Submodule.mem_top`. Take `⟨p, hp, rfl⟩` from `hx`. Establish `hU : (D.what₂.Usp D.what₂.mu0).starProjection p ∈ D.what₂.Usp D.what₂.mu0` using `(D.what₂.Usp D.what₂.mu0).starProjection_apply_mem p`.
+
+Establish `hU1 : (D.what₂.Usp D.what₂.mu0).starProjection p ∈ D.what₂.V0 D.what₂.mu0` using `(Submodule.mem_inf.mp hU).1`. Establish `hU2 : D.what₂.iota D.what₂.mu0 ((D.what₂.Usp D.what₂.mu0).starProjection p) = 0` using `LinearMap.mem_ker.mp (Submodule.mem_inf.mp hU).2`. Use `⟨p - (D.what₂.Usp D.what₂.mu0).starProjection p, ?_, ?_⟩` and prove the remaining obligations. Use `show _ ∈ D.what₂.V0 D.what₂.mu0 ⊓ (D.what₂.Usp D.what₂.mu0)ᗮ`. Conclude with `Submodule.mem_inf.mpr ⟨Submodule.sub_mem _ hp hU1, (D.what₂.Usp D.what₂.mu0).sub_starProjection_mem_orthogonal p⟩`.
+
+Rewrite using `[map_sub, hU2, sub_zero]`.
+-/
 theorem exists_Q_iota {D : D7} (hon : (D.what₂.V0 D.what₂.mu0).map (D.what₂.iota D.what₂.mu0) = ⊤) (x : D.what₂.EE) :
     ∃ q ∈ D.what₂.Qsp D.what₂.mu0, D.what₂.iota D.what₂.mu0 q = x := by
   have hx : x ∈ (D.what₂.V0 D.what₂.mu0).map (D.what₂.iota D.what₂.mu0) := by
@@ -115,6 +130,11 @@ def ColJoinS : Prop :=
     colDictL X (Tr u) Y.hK (colS hF I u (W ψ) : Cu X u Y.hK) =
       ((D.eMu u ψ : (D.mem u).A.Mram) : (D.mem u).C.cls 0 → (D.mem u).C.Y 0 → ℂ)
 
+/- English proof (translation)
+Introduce `u`. Use `⟨LinearIsometryEquiv.refl ℂ _, fun ψ => ?_⟩` and prove the remaining obligations. Establish `e1` using `(colDict X (Tr u) Y.hK (hIn u) (hBi u)).apply_symm_apply ((D.s_Cu u) ((D.s_Cu u).symm ⟨(D.eMu u ψ).1, (D.eMu u ψ).2.1⟩))`. Rewrite `e1` using `[(D.s_Cu u).apply_symm_apply]`. Establish `e2` using `congrArg Subtype.val e1`.
+
+Express the relevant statement in the definitionally equal form `colDictL X (Tr u) Y.hK ((I.eCu u ((D.s_Cu u).symm ⟨(D.eMu u ψ).1, (D.eMu u ψ).2.1⟩) : Cu X u Y.hK)) = _`. Rewrite using `[hpin, (D.s_Cu u).apply_symm_apply]`. Conclude with `e2`.
+-/
 theorem colJoinS_of_pin (hIn : ∀ u, ColDictInto X (Tr u) Y.hK) (hBi : ∀ u, ColDictBij X (Tr u) Y.hK)
     (hpin : ∀ u (x : D.s.Cu u),
       (I.eCu u x : Cu X u Y.hK) = (colDict X (Tr u) Y.hK (hIn u) (hBi u)).symm (D.s_Cu u x)) :
@@ -130,6 +150,11 @@ theorem colJoinS_of_pin (hIn : ∀ u, ColDictInto X (Tr u) Y.hK) (hBi : ∀ u, C
   rw [hpin, (D.s_Cu u).apply_symm_apply]
   exact e2
 
+/- English proof (translation)
+Take `⟨V, hK⟩` from `hK`. Use `⟨V, fun u => ?_⟩` and prove the remaining obligations. Take `⟨a, ha, U, hk⟩` from `hK u`. Take `⟨W, hW⟩` from `hCol u`. Use `⟨a, ha, U.trans W, fun φ x => ?_⟩` and prove the remaining obligations.
+
+Take `⟨q, hq, rfl⟩` from `exists_Q_iota hon x`. Rewrite using `[hB u φ, D.what₂.sec_iota _ q hq, hk φ q hq.1 (colS hF I u (W (U φ))) (hW (U φ)), LinearIsometryEquiv.trans_apply, besS_conc hF I, hRow]`. Both sides reduce to the same expression.
+-/
 theorem besselId_of_joins (G : GoodOp X) (j : D.what₂.EE ≃ₗᵢ[ℂ] EEC X G)
     (hRow : ∀ F, I.eHH (D.sEE F) = conjHH X G (j F)) (hCol : ColJoinS hF I Tr)
     (hK : KerJoinS X G j Tr Y.hK Y.Dt) (hB : Formalism.BasicNotions.Rows.BuDefQ D.what₂)

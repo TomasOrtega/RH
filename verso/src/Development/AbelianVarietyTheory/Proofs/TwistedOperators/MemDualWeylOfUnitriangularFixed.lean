@@ -9,6 +9,11 @@ open scoped DirectSum TensorProduct Kronecker Matrix
 
 namespace GlobalTheory.GLDuality
 
+/- English proof (translation)
+Establish `h : sub (((1 : GL (Fin n') ℂ) : Matrix (Fin n') (Fin n') ℂ) ⊗ₖ ((diagGL ℂ n t : GL (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ))ᵀ = aeval (fun x : Fin n' × Fin n => C (t x.2 : ℂ) * (X x : MvPolynomial (Fin n' × Fin n) ℂ))`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce and unpack `⟨a, s⟩`. Simplify using `[sub, diagGL, Fintype.sum_prod_type, Matrix.one_apply, Matrix.diagonal_apply, apply_ite C]`. Rewrite using `[matRep_apply, h, aeval_monomial, monomial_eq]`.
+
+Simplify using `only [mul_pow, Finsupp.prod, Finset.prod_mul_distrib, map_mul, map_prod, map_pow, algebraMap_eq]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem matRep_diagGL_monomial_colChar {n n' : ℕ} (t : Fin n → ℂˣ) (d : Fin n' × Fin n →₀ ℕ) (c : ℂ) :
     matRep n n' (diagGL ℂ n t, 1) (monomial d c) =
       monomial d ((d.prod fun x e => (t x.2 : ℂ) ^ e) * c) := by
@@ -22,6 +27,11 @@ theorem matRep_diagGL_monomial_colChar {n n' : ℕ} (t : Fin n → ℂˣ) (d : F
   simp only [mul_pow, Finsupp.prod, Finset.prod_mul_distrib, map_mul, map_prod, map_pow, algebraMap_eq]
   ring
 
+/- English proof (translation)
+Proceed by induction on `v using MvPolynomial.induction_on' with`. Consider the case `monomial u a`. Rewrite using `[matRep_diagGL_monomial_colChar, coeff_monomial, coeff_monomial]`. Use `split_ifs with h`. Rewrite using `[h]`.
+
+Simplify using the standard rewrite rules. Consider the case `add p q hp hq => rw [map_add, coeff_add, coeff_add, hp, hq, mul_add]`.
+-/
 theorem coeff_matRep_diagGL_colChar {n n' : ℕ} (t : Fin n → ℂˣ) (v : MvPolynomial (Fin n' × Fin n) ℂ)
     (d : Fin n' × Fin n →₀ ℕ) :
     coeff d (matRep n n' (diagGL ℂ n t, 1) v) = (d.prod fun x e => (t x.2 : ℂ) ^ e) * coeff d v := by
@@ -34,6 +44,11 @@ theorem coeff_matRep_diagGL_colChar {n n' : ℕ} (t : Fin n → ℂˣ) (v : MvPo
     · simp
   | add p q hp hq => rw [map_add, coeff_add, coeff_add, hp, hq, mul_add]
 
+/- English proof (translation)
+Establish `h : sub (((1 : GL (Fin n') ℂ) : Matrix (Fin n') (Fin n') ℂ) ⊗ₖ (g : Matrix (Fin n) (Fin n) ℂ))ᵀ = colAdd ℂ (r` using `n') l j c := by`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce and unpack `⟨a, s⟩`. Rewrite using `[hg]`. Distinguish the cases in `hs : s = j`.
+
+Substitute `hs` using the available equality. Simplify using `[sub, colAdd, Fintype.sum_prod_type, Matrix.one_apply, Matrix.transvection, Matrix.single_apply, apply_ite C, add_mul, Finset.sum_add_distrib]`. Establish `hs' : ¬ j = s` using `fun e => hs e.symm`. Simplify using `[sub, colAdd, Fintype.sum_prod_type, Matrix.one_apply, Matrix.transvection, Matrix.single_apply, apply_ite C, hs, hs']`. Rewrite using `[matRep_apply, h]`.
+-/
 theorem colAdd_eq_matRep_of_transvection {n n' : ℕ} (l j : Fin n) (c : ℂ) (g : GL (Fin n) ℂ)
     (hg : (g : Matrix (Fin n) (Fin n) ℂ) = Matrix.transvection l j c)
     (v : MvPolynomial (Fin n' × Fin n) ℂ) : colAdd ℂ l j c v = matRep n n' (g, 1) v := by
@@ -51,6 +66,25 @@ theorem colAdd_eq_matRep_of_transvection {n n' : ℕ} (l j : Fin n) (c : ℂ) (g
         apply_ite C, hs, hs']
   rw [matRep_apply, h]
 
+/- English proof (translation)
+Introduce `n n' ν v hU hT`. Rewrite using `[Formalism.GradedWeylDivisibility.dualWeylPoint ℂ n' n ν v]`. Use `⟨fun d hd => ?_, fun l j hlj c => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Set `t : Fin n → ℂˣ` to `fun s => if s = i then Units.mk0 2 two_ne_zero else 1`.
+
+Establish `h1` using `congrArg (coeff d) (hT t)`. Rewrite `h1` using `[coeff_matRep_diagGL_colChar, coeff_smul, smul_eq_mul]`. Establish `h2` using `mul_right_cancel₀ hd h1`. Establish `h3 : (∏ a, (t a : ℂ) ^ ν a) = 2 ^ ν i`. Rewrite using `[Finset.prod_eq_single i]`.
+
+Simplify using `[t]`. Introduce `b _ hb`. Simplify using `[t, hb]`. Simplify using the standard rewrite rules. Establish `h4 : (d.prod fun x e => (t x.2 : ℂ) ^ e) = 2 ^ (Finsupp.weight (colW n' n) d i)`.
+
+Rewrite using `[Finsupp.weight_apply, Finsupp.sum, Finset.sum_apply, ← Finset.prod_pow_eq_pow_sum, Finsupp.prod]`. Use `Finset.prod_congr rfl fun x _ => ?_` and prove the remaining obligations. Distinguish the cases in `hx : x.2 = i`. Simplify using `[t, colW, hx]`. Simplify using `[t, colW, hx]`.
+
+Rewrite `h2` using `[h3, h4]`. Establish `h5 : (2 : ℕ) ^ (Finsupp.weight (colW n' n) d i) = 2 ^ ν i` using `by exact_mod_cast h2`. Conclude with `Nat.pow_right_injective le_rfl h5`. Establish `hne : l ≠ j` using `hlj.ne`. Set `g : GL (Fin n) ℂ` to `Matrix.GeneralLinearGroup.mkOfDetNeZero (Matrix.transvection l j c) (by rw [Matrix.det_transvection_of_ne l j hne]; exact one_ne_zero)`.
+
+Establish `hg : (g : Matrix (Fin n) (Fin n) ℂ) = Matrix.transvection l j c` using `rfl`. Rewrite using `[colAdd_eq_matRep_of_transvection l j c g hg]`. Use `hU g ?_ ?_` and prove the remaining obligations. Introduce `a b hab`. Establish `hab' : b < a` using `hab`.
+
+Establish `h1 : ¬ (l = a ∧ j = b)`. Introduce and unpack `⟨rfl, rfl⟩`. Conclude with `lt_asymm hlj hab'`. Rewrite using `[hg]`. Simplify using `[Matrix.transvection, h1, Matrix.one_apply_ne hab'.ne']`.
+
+Introduce `a`. Establish `h1 : ¬ (l = a ∧ j = a)`. Introduce and unpack `⟨rfl, rfl⟩`. Conclude with `hne rfl`. Rewrite using `[hg]`.
+
+Simplify using `[Matrix.transvection, h1]`.
+-/
 theorem mem_dualWeyl_of_unitriangular_fixed :
     ∀ (n n' : ℕ) (ν : Fin n → ℕ) (v : MvPolynomial (Fin n' × Fin n) ℂ), (∀ g : GL (Fin n) ℂ, (g : Matrix (Fin n) (Fin n) ℂ).BlockTriangular id → (∀ a, (g : Matrix (Fin n) (Fin n) ℂ) a a = 1) → matRep n n' (g, 1) v = v) → (∀ t : Fin n → ℂˣ, matRep n n' (diagGL ℂ n t, 1) v = (∏ a, (t a : ℂ) ^ ν a) • v) → v ∈ dualWeyl ℂ n' n ν := by
   intro n n' ν v hU hT

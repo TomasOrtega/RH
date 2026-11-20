@@ -12,6 +12,13 @@ open Formalism.HermitianLattices.Ext.L3 Formalism.L2.SG.Pf.Cnt Formalism.Hermiti
 
 variable {K F : Type} [Field K] [NumberField K] [StarRing K] [Field F] [NumberField F] [Algebra F K]
 
+/- English proof (translation)
+Use `haveI := h𝔭.isPrime`. Rewrite using `[← idealPowerSpanBounds.mem_pow_iff (K := K)]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨t, ht, z, hz, hzeq⟩`. Establish `hz' : z = algebraMap (𝓞 F) (𝓞 K) t * algebraMap (𝓞 F) (𝓞 K) a`.
+
+Apply `IsFractionRing.injective (𝓞 K) K` to reduce the goal to its premises. Rewrite using `[hzeq, map_mul]`. Both sides reduce to the same expression. Use `idealPowerSpanBounds.mem_of_mul_mem h𝔭 (v := 0) (d := t) (by simpa using ht) ?_` and prove the remaining obligations. Rewrite using `[zero_add, ← hz']`.
+
+Conclude with `hz`. Introduce `ha`. Conclude with `inP_jK ha`.
+-/
 theorem inP_alg_iff {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) (k : ℕ) (a : 𝓞 F) :
     InP 𝔭 k (algebraMap F K (a : F)) ↔ a ∈ 𝔭 ^ k := by
   haveI := h𝔭.isPrime
@@ -28,6 +35,15 @@ theorem inP_alg_iff {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) (k : ℕ) (
   · intro ha
     exact inP_jK ha
 
+/- English proof (translation)
+Establish `hex : ∃ j, a ∉ 𝔭 ^ j`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Establish `hi : a ∈ ⨅ i : ℕ, 𝔭 ^ i` using `(Submodule.mem_iInf _).mpr h`. Rewrite `hi` using `[Ideal.iInf_pow_eq_bot_of_isDomain 𝔭 h𝔭.ne_top]`.
+
+Conclude with `ha ((Submodule.mem_bot _).mp hi)`. Take `⟨j, hj⟩` from `hex`. Establish `hbdd : BddAbove {e : ℕ | a ∈ 𝔭 ^ e}`. Use `⟨j, fun e he => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hlt`.
+
+Use `push_neg at hlt`. Conclude with `hj (Ideal.pow_le_pow_right hlt.le he)`. Use `⟨Nat.sSup_mem ⟨0, by simp⟩ hbdd, fun h => ?_⟩` and prove the remaining obligations. Establish `hc` using `le_csSup hbdd (show vF 𝔭 a + 1 ∈ {e : ℕ | a ∈ 𝔭 ^ e} from h)`. Express the relevant statement in the definitionally equal form `vF 𝔭 a + 1 ≤ vF 𝔭 a at hc`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 private theorem mem_pow_vF_of_ne_zero {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) {a : 𝓞 F} (ha : a ≠ 0) :
     a ∈ 𝔭 ^ vF 𝔭 a ∧ a ∉ 𝔭 ^ (vF 𝔭 a + 1) := by
   have hex : ∃ j, a ∉ 𝔭 ^ j := by
@@ -47,6 +63,17 @@ private theorem mem_pow_vF_of_ne_zero {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMa
   change vF 𝔭 a + 1 ≤ vF 𝔭 a at hc
   omega
 
+/- English proof (translation)
+Use `haveI := h𝔭.isPrime`. Take `⟨hmem, hnot⟩` from `mem_pow_vF_of_ne_zero h𝔭 ha`. Establish `hle : Ideal.span {s₀ ^ vF 𝔭 a} * 𝔭 ^ vF 𝔭 a ≤ Ideal.span {π ^ vF 𝔭 a}`. Rewrite using `[← Ideal.span_singleton_pow, ← Ideal.span_singleton_pow, ← mul_pow]`. Conclude with `Ideal.pow_right_mono hu.le _`.
+
+Establish `hsa : s₀ ^ vF 𝔭 a * a ∈ Ideal.span {π ^ vF 𝔭 a}` using `hle (Ideal.mul_mem_mul (Ideal.mem_span_singleton_self _) hmem)`. Take `⟨b, hb⟩` from `Ideal.mem_span_singleton'.mp hsa`. Establish `hne : 𝔭 ≠ ⊥` using `(Submodule.ne_bot_iff _).mpr ⟨π, hu.mem, hu.ne_zero⟩`. Establish `hbnot : b ∉ 𝔭`. Introduce `hb𝔭`.
+
+Establish `h1 : s₀ ^ vF 𝔭 a * a ∈ 𝔭 ^ (0 + vF 𝔭 a + 1)`. Rewrite using `[← hb, zero_add, pow_succ, mul_comm b]`. Conclude with `Ideal.mul_mem_mul (Ideal.pow_mem_pow hu.mem _) hb𝔭`. Use `idealPowerSpanBounds.mul_notMem h𝔭.isPrime hne ?_ hnot h1` and prove the remaining obligations. Rewrite using `[zero_add, pow_one]`.
+
+Conclude with `fun h => hu.s_notMem (h𝔭.isPrime.mem_of_pow_mem _ h)`. Establish `hbK : algebraMap F K (b : F) * algebraMap F K (π : F) ^ vF 𝔭 a = algebraMap F K (s₀ : F) ^ vF 𝔭 a * algebraMap F K (a : F)`. Use `congrArg (fun x : 𝓞 F => algebraMap F K (x : F)) hb` as an intermediate fact. Simplify `this` using `[map_mul, map_pow]`. Establish `haK : algebraMap F K (a : F) ≠ 0` using `by simpa using ha`.
+
+Use `mem_SP.mpr ⟨b, hbnot, algebraMap (𝓞 F) (𝓞 K) (s₀ ^ vF 𝔭 a), ?_⟩` and prove the remaining obligations. Use `show algebraMap F K ((s₀ ^ vF 𝔭 a : 𝓞 F) : F) = algebraMap F K (b : F) * ((algebraMap F K (a : F))⁻¹ * algebraMap F K (π : F) ^ vF 𝔭 a)`. Establish `hc : ((s₀ ^ vF 𝔭 a : 𝓞 F) : F) = (s₀ : F) ^ vF 𝔭 a` using `by simp`. Rewrite using `[hc, map_pow, ← mul_assoc, mul_comm (algebraMap F K (b : F)), mul_assoc, hbK]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem unit_part (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F) {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal)
     {π s₀ : 𝓞 F} (hu : IsUnif0 𝔭 π s₀) {a : 𝓞 F} (ha : a ≠ 0) :
     (algebraMap F K (a : F))⁻¹ * algebraMap F K (π : F) ^ vF 𝔭 a ∈ SP K 𝔭 := by
@@ -79,6 +106,13 @@ theorem unit_part (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsF
   rw [hc, map_pow, ← mul_assoc, mul_comm (algebraMap F K (b : F)), mul_assoc, hbK]
   field_simp
 
+/- English proof (translation)
+Establish `hle : Ideal.span {s₀ ^ n} * 𝔭 ^ n ≤ Ideal.span {π ^ n}`. Rewrite using `[← Ideal.span_singleton_pow, ← Ideal.span_singleton_pow, ← mul_pow]`. Conclude with `Ideal.pow_right_mono hu.le _`. Take `⟨b, hb⟩` from `Ideal.mem_span_singleton'.mp (hle (Ideal.mul_mem_mul (Ideal.mem_span_singleton_self _) hC))`. Use `⟨b, fun hb𝔭 => ?_, hb⟩` and prove the remaining obligations.
+
+Establish `hne : 𝔭 ≠ ⊥` using `(Submodule.ne_bot_iff _).mpr ⟨π, hu.mem, hu.ne_zero⟩`. Establish `h1 : s₀ ^ n * C ∈ 𝔭 ^ (0 + n + 1)`. Rewrite using `[← hb, zero_add, pow_succ, mul_comm b]`. Conclude with `Ideal.mul_mem_mul (Ideal.pow_mem_pow hu.mem _) hb𝔭`. Use `idealPowerSpanBounds.mul_notMem h𝔭.isPrime hne ?_ hC' h1` and prove the remaining obligations.
+
+Rewrite using `[zero_add, pow_one]`. Conclude with `fun h => hu.s_notMem (h𝔭.isPrime.mem_of_pow_mem _ h)`.
+-/
 private theorem exists_unit_mul_pow_eq_pow_mul_of_isUnif0 {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) {π s₀ : 𝓞 F}
     (hu : IsUnif0 𝔭 π s₀) {n : ℕ} {C : 𝓞 F} (hC : C ∈ 𝔭 ^ n) (hC' : C ∉ 𝔭 ^ (n + 1)) :
     ∃ b ∉ 𝔭, b * π ^ n = s₀ ^ n * C := by
@@ -96,6 +130,31 @@ private theorem exists_unit_mul_pow_eq_pow_mul_of_isUnif0 {𝔭 : Ideal (𝓞 F)
   rw [zero_add, pow_one]
   exact fun h => hu.s_notMem (h𝔭.isPrime.mem_of_pow_mem _ h)
 
+/- English proof (translation)
+Use `haveI := h𝔭.isPrime`. Take `⟨hmem, hnot⟩` from `mem_pow_vF_of_ne_zero h𝔭 ha`. Establish `hne : 𝔭 ≠ ⊥` using `(Submodule.ne_bot_iff _).mpr ⟨π, hu.mem, hu.ne_zero⟩`. Take `⟨t, ht, z, hz, hzeq⟩` from `hac`. Establish `hint : IsIntegral ℤ ((t : F) * ((a : F) + c))`.
+
+Rewrite using `[← isIntegral_algHom_iff (IsScalarTower.toAlgHom ℤ F K) (algebraMap F K).injective]`. Establish `hzK : IsScalarTower.toAlgHom ℤ F K ((t : F) * ((a : F) + c)) = algebraMap (𝓞 K) K z`. Rewrite using `[IsScalarTower.coe_toAlgHom', hzeq, map_mul]`. Both sides reduce to the same expression. Rewrite using `[hzK]`.
+
+Conclude with `RingOfIntegers.isIntegral_coe z`. Take `⟨y, hyF⟩ : ∃ y : 𝓞 F, (y : F) = (t : F) * ((a : F) + c)` from `⟨⟨_, hint⟩, rfl⟩`. Establish `hyz : algebraMap (𝓞 F) (𝓞 K) y = z`. Apply `IsFractionRing.injective (𝓞 K) K` to reduce the goal to its premises. Rewrite using `[hzeq]`.
+
+Use `show algebraMap F K (y : F) = _`. Rewrite using `[hyF, map_mul]`. Both sides reduce to the same expression. Establish `hy2 : y ∈ 𝔭 ^ (2 * vF 𝔭 a)` using `(idealPowerSpanBounds.mem_pow_iff (K := K) _ _ _).mp (hyz ▸ hz)`. Establish `hy1 : y ∈ 𝔭 ^ (vF 𝔭 a + 1)` using `Ideal.pow_le_pow_right (by omega) hy2`.
+
+Take `⟨C, hCdef⟩ : ∃ C : 𝓞 F, C = y - t * a` from `⟨_, rfl⟩`. Establish `hCF : (C : F) = (t : F) * c`. Rewrite using `[hCdef]`. Use `push_cast`. Take the linear combination `hyF`.
+
+Establish `hC1 : C ∈ 𝔭 ^ vF 𝔭 a`. Rewrite using `[hCdef]`. Conclude with `Ideal.sub_mem _ (Ideal.pow_le_pow_right (by omega) hy2) (Ideal.mul_mem_left _ _ hmem)`. Establish `hta : t * a ∉ 𝔭 ^ (0 + vF 𝔭 a + 1)` using `idealPowerSpanBounds.mul_notMem h𝔭.isPrime hne (by rw [zero_add, pow_one]; exact ht) hnot`. Establish `hC2 : C ∉ 𝔭 ^ (vF 𝔭 a + 1)`.
+
+Introduce `h`. Apply `hta` to reduce the goal to its premises. Rewrite using `[zero_add]`. Establish `hta' : t * a = y - C` using `by rw [hCdef]; ring`. Rewrite using `[hta']`.
+
+Conclude with `Ideal.sub_mem _ hy1 h`. Take `⟨b, hb, hbC⟩` from `exists_unit_mul_pow_eq_pow_mul_of_isUnif0 h𝔭 hu hC1 hC2`. Establish `hC0 : C ≠ 0` using `fun h => hC2 (h ▸ Submodule.zero_mem _)`. Establish `hc0 : c ≠ 0`. Introduce and unpack `rfl`.
+
+Establish `h0 : (C : F) = 0` using `by rw [hCF, mul_zero]`. Conclude with `hC0 (by exact_mod_cast h0)`. Establish `hcK : algebraMap F K c ≠ 0` using `(map_ne_zero _).mpr hc0`. Use `⟨hcK, mem_SP.mpr ⟨b, hb, algebraMap (𝓞 F) (𝓞 K) (t * s₀ ^ vF 𝔭 a), ?_⟩⟩` and prove the remaining obligations. Use `show algebraMap F K ((t * s₀ ^ vF 𝔭 a : 𝓞 F) : F) = algebraMap F K (b : F) * ((algebraMap F K c)⁻¹ * algebraMap F K (π : F) ^ vF 𝔭 a)`.
+
+Establish `h2` using `congrArg (fun x : 𝓞 F => (x : F)) hbC`. Move the coercions through the operations in `at h2`. Establish `h3 : (b : F) * (π : F) ^ vF 𝔭 a = (s₀ : F) ^ vF 𝔭 a * ((t : F) * c)`. Rewrite using `[← hCF]`. Conclude with `h2` after adjusting the coercions.
+
+Establish `hbK : algebraMap F K (b : F) * algebraMap F K (π : F) ^ vF 𝔭 a = algebraMap F K (s₀ : F) ^ vF 𝔭 a * (algebraMap F K (t : F) * algebraMap F K c)`. Establish `h4` using `congrArg (algebraMap F K) h3`. Simplify `h4` using `[map_mul, map_pow]`. Establish `hc : ((t * s₀ ^ vF 𝔭 a : 𝓞 F) : F) = (t : F) * (s₀ : F) ^ vF 𝔭 a` using `by simp`. Rewrite using `[hc, map_mul, map_pow, ← mul_assoc, mul_comm (algebraMap F K (b : F)), mul_assoc, hbK]`.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem unit_part_c (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F) {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal)
     {π s₀ : 𝓞 F} (hu : IsUnif0 𝔭 π s₀) {a : 𝓞 F} (ha : a ≠ 0) (he : vF 𝔭 a ≠ 0) {c : F}
     (hac : InP 𝔭 (2 * vF 𝔭 a) (algebraMap F K ((a : F) + c))) :
@@ -160,6 +219,11 @@ theorem unit_part_c (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : I
   rw [hc, map_mul, map_pow, ← mul_assoc, mul_comm (algebraMap F K (b : F)), mul_assoc, hbK]
   field_simp
 
+/- English proof (translation)
+Take `rfl : c = q ^ 2 * r - a` from `by rw [← hr]; ring`. Prove the components needed by the constructor for the conclusion. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Clear the denominators using the available nonvanishing facts.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem pair_solve {q a c r X Y : K} (hq : q ≠ 0) (ha : a ≠ 0) (hc : c ≠ 0)
     (hr : a + c = q ^ 2 * r) :
     (X * q * (a⁻¹ * q) - Y * (a⁻¹ * q)) * (q⁻¹ ^ 2 * (a + c)) +
@@ -173,6 +237,9 @@ theorem pair_solve {q a c r X Y : K} (hq : q ≠ 0) (ha : a ≠ 0) (hc : c ≠ 0
   · field_simp
     ring
 
+/- English proof (translation)
+Conclude with `⟨(SP K 𝔭).sub_mem ((SP K 𝔭).mul_mem ((SP K 𝔭).mul_mem hX hp) hua) ((SP K 𝔭).mul_mem hY hua), (SP K 𝔭).sub_mem ((SP K 𝔭).mul_mem ((SP K 𝔭).mul_mem ((SP K 𝔭).mul_mem hY hr) hua) huc) ((SP K 𝔭).mul_mem hX hua)⟩`.
+-/
 theorem pair_coeffs_mem {𝔭 : Ideal (𝓞 F)} [𝔭.IsPrime] {q a c r X Y : K}
     (hp : q ∈ SP K 𝔭) (hua : a⁻¹ * q ∈ SP K 𝔭) (huc : c⁻¹ * q ∈ SP K 𝔭) (hr : r ∈ SP K 𝔭)
     (hX : X ∈ SP K 𝔭) (hY : Y ∈ SP K 𝔭) :
@@ -186,6 +253,11 @@ section Vec
 
 variable {V : Type} [AddCommGroup V] [Module K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V]
 
+/- English proof (translation)
+Take `⟨t, ht, z, hz⟩` from `mem_SP.mp hr`. Use `⟨algebraMap (𝓞 F) (𝓞 K) t, Submonoid.subset_closure ⟨t, ht, rfl⟩, ?_⟩` and prove the remaining obligations. Establish `he : algebraMap (𝓞 F) (𝓞 K) t • r • v = z • v`. Rewrite using `[← algebraMap_smul K (algebraMap (𝓞 F) (𝓞 K) t) (r • v), smul_smul, ← hz, algebraMap_smul]`. Rewrite using `[he]`.
+
+Conclude with `L.smul_mem z hv`.
+-/
 theorem smul_mem_locF_of_SP {𝔭 : Ideal (𝓞 F)} [hp : 𝔭.IsPrime] {L : Submodule (𝓞 K) V} {r : K}
     (hr : r ∈ SP K 𝔭) {v : V} (hv : v ∈ L) : r • v ∈ locF 𝔭 L := by
   obtain ⟨t, ht, z, hz⟩ := mem_SP.mp hr
@@ -195,6 +267,11 @@ theorem smul_mem_locF_of_SP {𝔭 : Ideal (𝓞 F)} [hp : 𝔭.IsPrime] {L : Sub
   rw [he]
   exact L.smul_mem z hv
 
+/- English proof (translation)
+Apply `hnd` to reduce the goal to its premises. Introduce `y`. Establish `hy : y ∈ Submodule.span K (Set.range G)` using `hG ▸ Submodule.mem_top`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx`.
+
+Take `⟨s, rfl⟩` from `hx`. Rewrite using `[← hs.eq, hz s, map_zero]`. Consider the case `zero => simp`. Consider the case `add x w _ _ hx hw => rw [map_add, hx, hw, add_zero]`. Consider the case `smul c x _ hx => rw [map_smul, hx, smul_zero]`.
+-/
 theorem eq_zero_of_orth {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) (hnd : Nondeg h) {ι' : Type}
     (G : ι' → V) (hG : Submodule.span K (Set.range G) = ⊤) {z : V} (hz : ∀ s, h (G s) z = 0) :
     z = 0 := by

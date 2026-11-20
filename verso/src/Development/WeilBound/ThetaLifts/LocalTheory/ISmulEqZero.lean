@@ -19,6 +19,11 @@ variable {n d n₁ d₁ : ℕ} {X : Spc F E n} {W : Spc F E d} {X₁ : Spc F E n
 def admitted (M : Model σ X W) (S : ∀ v : Pl F, Submodule ℂ (Fl F v n d)) (φ : ∀ v : Pl F, Fl F v n d) : Prop :=
   (∀ v, φ v ∈ S v) ∧ ∀ᶠ v in cofinite, φ v = M.vac v
 
+/- English proof (translation)
+Use `⟨fun u => ?_, (h.2.and (Filter.eventually_cofinite_ne v)).mono fun u hu => (Function.update_of_ne hu.2 ..).trans hu.1⟩` and prove the remaining obligations. Distinguish the cases in `e : u = v`. Substitute `e` using the available equality. Rewrite using `[Function.update_self]` and apply the resulting hypothesis. Rewrite using `[Function.update_of_ne e]`.
+
+Conclude with `h.1 u`.
+-/
 theorem admitted.upd {M : Model σ X W} {S φ} (h : admitted M S φ) {v x} (hx : x ∈ S v) : admitted M S (Function.update φ v x) := by
   refine ⟨fun u => ?_, (h.2.and (Filter.eventually_cofinite_ne v)).mono fun u hu => (Function.update_of_ne hu.2 ..).trans hu.1⟩
   by_cases e : u = v
@@ -66,10 +71,16 @@ structure Br (B : Base F E) (M : Model σ X W) (om : Rep σ X W) (M₁ : Model �
   rule : ∀ f ∈ M.Pol B.ψ B.emb, ∀ φ, admitted M S φ → ∀ t h₁ m, IsLevi H' t h₁ m → ∀ u ∈ unip σ W H', ∀ h',
     M₁.I om₁ (Ev (om (1, u * m) (pure f φ))) h' = sc χ r t * M₁.I om₁ (Ev (pure f φ)) (h' * h₁)
 
+/- English proof (translation)
+Simplify using `only [Model.I, theta, ← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, mul_one]`.
+-/
 theorem I_right' (M : Model σ X W) (om : Rep σ X W) (Φ : Fn F n d) (h₀ h : UA σ W.J) :
     M.I om (om (1, h₀) Φ) h = M.I om Φ (h * h₀) := by
   simp only [Model.I, theta, ← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, mul_one]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure, add_mul, mul_assoc]`.
+-/
 theorem pure_add_smul {κ : Type} [Fintype κ] (f g : SInf F κ) (a : ℂ) (φ) : pure (f + a • g) φ = pure f φ + a • pure g φ := by
   funext x
   simp [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure, add_mul, mul_assoc]
@@ -80,16 +91,25 @@ variable {B : Base F E} {M : Model σ X W} {om : Rep σ X W} {P : Type} [AddComm
   [∀ v, AddCommGroup (Q v)] [∀ v, Module ℂ (Q v)] {pi : SInf F (Fin n × Fin d) →ₗ[ℂ] P} {p : ∀ v, Fl F v n d →ₗ[ℂ] Q v}
   {S : ∀ v : Pl F, Submodule ℂ (Fl F v n d)}
 
+/- English proof (translation)
+The claim follows from `(h.2.and s.good.std).mono fun _ h => h.1.trans h.2`.
+-/
 theorem Side.std (s : Side B M om pi p S) {φ} (h : admitted M S φ) :
     ∀ᶠ u in cofinite, φ u = Set.indicator {x | ∀ i, x i ∈ u.adicCompletionIntegers F} 1 :=
   (h.2.and s.good.std).mono fun _ h => h.1.trans h.2
 
+/- English proof (translation)
+Establish `h'` using `h.upd hx`. Use `(pureAct F _ v T f _ (fun u => s.le u (h'.1 u)) (s.std h')).2.2 y (by rwa [Function.update_self])` as an intermediate fact. Rewrite `this` using `[Function.update_idem]`. Then use the resulting hypothesis.
+-/
 theorem Side.act (s : Side B M om pi p S) {φ} (h : admitted M S φ) (f : SInf F _) {v x y} (hx : x ∈ S v) {T}
     (a : Acts (evFin F v) T x y) : T (pure f (Function.update φ v x)) = pure f (Function.update φ v y) := by
   have h' := h.upd hx
   have := (pureAct F _ v T f _ (fun u => s.le u (h'.1 u)) (s.std h')).2.2 y (by rwa [Function.update_self])
   rwa [Function.update_idem] at this
 
+/- English proof (translation)
+Take `⟨𝓒, h1, h2⟩` from `s.cls`. Rewrite using `[(pureAct F _ v id f φ (fun u => s.le u (h.1 u)) (s.std h)).2.1 x y a, h2 _ (h1 _ _ (h.upd hx)) _ (𝓒.smul_mem _ (h1 _ _ (h.upd hy))), I_smul]`.
+-/
 theorem Side.linF (s : Side B M om pi p S) {φ} (h : admitted M S φ) (f : SInf F _) {v x y} (hx : x ∈ S v) (hy : y ∈ S v) (a : ℂ) (g) :
     M.I om (pure f (Function.update φ v (x + a • y))) g =
       M.I om (pure f (Function.update φ v x)) g + a * M.I om (pure f (Function.update φ v y)) g := by
@@ -97,6 +117,11 @@ theorem Side.linF (s : Side B M om pi p S) {φ} (h : admitted M S φ) (f : SInf 
   rw [(pureAct F _ v id f φ (fun u => s.le u (h.1 u)) (s.std h)).2.1 x y a,
     h2 _ (h1 _ _ (h.upd hx)) _ (𝓒.smul_mem _ (h1 _ _ (h.upd hy))), I_smul]
 
+/- English proof (translation)
+Take `⟨𝓒, h1, h2⟩` from `s.cls`. Use `⟨⟨⟨⟨fun f => M.I om (pure f φ) g, fun a b => ?_⟩, fun c a => ?_⟩, s.cont φ h g⟩, fun _ => rfl⟩` and prove the remaining obligations. Use `pure_add_smul a b 1 φ` as an intermediate fact. Rewrite `this` using `[one_smul, one_smul]`. Rewrite using `[this, h2 _ (h1 _ _ h) _ (h1 _ _ h)]`.
+
+Establish `: pure (c • a) φ = c • pure a φ` using `by funext x; simp [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure, mul_assoc]`. Simplify using `only [this, I_smul, RingHom.id_apply, smul_eq_mul]`.
+-/
 theorem Side.clm (s : Side B M om pi p S) {φ} (h : admitted M S φ) (g) :
     ∃ l : SInf F (Fin n × Fin d) →L[ℂ] ℂ, ∀ f, l f = M.I om (pure f φ) g := by
   obtain ⟨𝓒, h1, h2⟩ := s.cls
@@ -107,6 +132,9 @@ theorem Side.clm (s : Side B M om pi p S) {φ} (h : admitted M S φ) (g) :
   · have : pure (c • a) φ = c • pure a φ := by funext x; simp [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure, mul_assoc]
     simp only [this, I_smul, RingHom.id_apply, smul_eq_mul]
 
+/- English proof (translation)
+Take `⟨g, hg, e⟩` from `pure_eq_pureA s.good φ (fun u => s.le u (h.1 u)) h.2`. Rewrite using `[e, e, a.1 f g hg]`.
+-/
 theorem Side.arch (s : Side B M om pi p S) {φ} (h : admitted M S φ) {x T} (a : IsArchOp om x T) (f : SInf F _) :
     om x (pure f φ) = pure (T f) φ := by
   obtain ⟨g, hg, e⟩ := pure_eq_pureA s.good φ (fun u => s.le u (h.1 u)) h.2
@@ -125,6 +153,11 @@ variable (B M S L Λ pi₁ p₁) in
 
 def Pt : Prop := ∃ f ∈ M.Pol B.ψ B.emb, ∃ φ, admitted M S φ ∧ pi₁ (L f) ≠ 0 ∧ ∀ v, p₁ v (Λ v (φ v)) ≠ 0
 
+/- English proof (translation)
+Take `⟨f, hf, φ, hφ, h1, h2⟩` from `pt`. Take `⟨c, ψ, hc, hψ, h3, h4⟩` from `b.fac φ hφ v`. Use `⟨f, hf, φ, ψ, c, hc, hφ, hψ, h4 f, fun y hy h0 => by_contra fun hn => j _ (b.pol f hf) _ (hψ.upd hy) h1 (fun u => ?_) h0⟩` and prove the remaining obligations. Distinguish the cases in `e : u = v`. Substitute `e` using the available equality.
+
+Rewrite using `[Function.update_self]` and apply the resulting hypothesis. Rewrite using `[Function.update_of_ne e]`. Take `⟨a, ha⟩` from `h3 u`. Introduce `z`. Conclude with `h2 u (by rw [ha, map_smul, z, smul_zero])`.
+-/
 theorem exists_test_vectors_at_place (b : Br B M om M₁ om₁ H' χ r S S₁ Ev L Λ) (j : Inj B M₁ om₁ pi₁ p₁ S₁) (pt : Pt B M S pi₁ p₁ L Λ) (v : Pl F) :
     ∃ f ∈ M.Pol B.ψ B.emb, ∃ φ ψ, ∃ c : ℂ, c ≠ 0 ∧ admitted M S φ ∧ admitted M₁ S₁ ψ ∧
       (∀ x ∈ S v, Ev (pure f (Function.update φ v x)) = c • pure (L f) (Function.update ψ v (Λ v x))) ∧
@@ -139,6 +172,13 @@ theorem exists_test_vectors_at_place (b : Br B M om M₁ om₁ H' χ r S S₁ Ev
     intro z
     exact h2 u (by rw [ha, map_smul, z, smul_zero])
 
+/- English proof (translation)
+Take `⟨-, -, φ, hφ, -, h2⟩` from `pt`. Take `⟨c, ψ, hc, hψ, h3, h4⟩` from `b.fac φ hφ B.v₁`. Establish `a` using `hψ.upd (b.mapS _ _ (hφ.1 B.v₁))`. Use `⟨φ, _, c, hc, hφ, a, fun f => ?_, fun g hg h0 => by_contra fun hn => j _ hg _ a hn (fun u => ?_) h0⟩` and prove the remaining obligations. Use `h4 f _ (hφ.1 B.v₁)` as an intermediate fact.
+
+Rewrite `this` using `[Function.update_eq_self]`. Then use the resulting hypothesis. Distinguish the cases in `e : u = B.v₁`. Substitute `e` using the available equality. Rewrite using `[Function.update_self]`. Conclude with `h2 _`.
+
+Rewrite using `[Function.update_of_ne e]`. Take `⟨a, ha⟩` from `h3 u`. Introduce `z`. Conclude with `h2 u (by rw [ha, map_smul, z, smul_zero])`.
+-/
 theorem exists_test_vectors (b : Br B M om M₁ om₁ H' χ r S S₁ Ev L Λ) (j : Inj B M₁ om₁ pi₁ p₁ S₁) (pt : Pt B M S pi₁ p₁ L Λ) :
     ∃ φ ψ, ∃ c : ℂ, c ≠ 0 ∧ admitted M S φ ∧ admitted M₁ S₁ ψ ∧ (∀ f : SInf F _, Ev (pure f φ) = c • pure (L f) ψ) ∧
       ∀ g ∈ M₁.Pol B.ψ B.emb, M₁.I om₁ (pure g ψ) = 0 → pi₁ g = 0 := by
@@ -155,12 +195,18 @@ theorem exists_test_vectors (b : Br B M om M₁ om₁ H' χ r S S₁ Ev L Λ) (j
     intro z
     exact h2 u (by rw [ha, map_smul, z, smul_zero])
 
+/- English proof (translation)
+Use function extensionality and compare the values at `g`. Use `congrFun h g` as an intermediate fact. Rewrite `this` using `[I_smul]`. Conclude with `(mul_eq_zero.1 this).resolve_left hc`.
+-/
 theorem I_smul_eq_zero {c : ℂ} (hc : c ≠ 0) {Ψ} (h : M₁.I om₁ (c • Ψ) = 0) : M₁.I om₁ Ψ = 0 := by
   funext g
   have := congrFun h g
   rw [I_smul] at this
   exact (mul_eq_zero.1 this).resolve_left hc
 
+/- English proof (translation)
+Introduce `x hx h0`. Take `⟨f, hf, φ, ψ, c, hc, hφ, hψ, h1, h2⟩` from `exists_test_vectors_at_place b j pt v`. Use `b.kil f hf _ (hφ.upd hx) (s.kill f hf _ (hφ.upd hx) (Or.inr ⟨v, by rwa [Function.update_self]⟩))` as an intermediate fact. Rewrite `this` using `[h1 x hx]`. Conclude with `h2 _ (b.mapS v x hx) (I_smul_eq_zero hc this)`.
+-/
 theorem kerF (s : Side B M om pi p S) (b : Br B M om M₁ om₁ H' χ r S S₁ Ev L Λ) (j : Inj B M₁ om₁ pi₁ p₁ S₁)
     (pt : Pt B M S pi₁ p₁ L Λ) (v : Pl F) : ∀ x ∈ S v, p v x = 0 → p₁ v (Λ v x) = 0 := by
   intro x hx h0
@@ -169,6 +215,9 @@ theorem kerF (s : Side B M om pi p S) (b : Br B M om M₁ om₁ H' χ r S S₁ E
   rw [h1 x hx] at this
   exact h2 _ (b.mapS v x hx) (I_smul_eq_zero hc this)
 
+/- English proof (translation)
+Introduce `f hf h0`. Take `⟨φ, ψ, c, hc, hφ, hψ, h1, h2⟩` from `exists_test_vectors b j pt`. Use `b.kil f hf _ hφ (s.kill f hf _ hφ (Or.inl h0))` as an intermediate fact. Rewrite `this` using `[h1]`. Conclude with `h2 _ (b.pol f hf) (I_smul_eq_zero hc this)`.
+-/
 theorem kerI (s : Side B M om pi p S) (b : Br B M om M₁ om₁ H' χ r S S₁ Ev L Λ) (j : Inj B M₁ om₁ pi₁ p₁ S₁)
     (pt : Pt B M S pi₁ p₁ L Λ) : ∀ f ∈ M.Pol B.ψ B.emb, pi f = 0 → pi₁ (L f) = 0 := by
   intro f hf h0
@@ -177,6 +226,13 @@ theorem kerI (s : Side B M om pi p S) (b : Br B M om M₁ om₁ H' χ r S S₁ E
   rw [h1] at this
   exact h2 _ (b.pol f hf) (I_smul_eq_zero hc this)
 
+/- English proof (translation)
+Take `⟨f, hf, φ, ψ, c, hc, hφ, hψ, h1, h2⟩` from `exists_test_vectors_at_place b j pt v`. Take `⟨z, hz, az⟩` from `s₁.stab v h₁ h₁v _ (b.mapS v x hx)`. Use `h2 (Λ v x' + (-sc χ r t) • z) (add_mem (b.mapS v _ hx') (Submodule.smul_mem _ _ hz)) (funext fun g => by` as an intermediate fact. Establish `k` using `b.rule f hf _ (hφ.upd hx) t h₁ m hl u hu g`. Rewrite `k` using `[s.act hφ f hx a, h1 _ hx', h1 _ hx, I_smul, I_smul, ← I_right', s₁.act hψ _ (b.mapS v x hx) az]`.
+
+Rewrite using `[s₁.linF hψ _ (b.mapS v _ hx') hz, Pi.zero_apply]`. Apply `mul_left_cancel₀ hc` to reduce the goal to its premises. Rewrite using `[mul_add, k]`. Use the proof step `ring)`. Rewrite `this` using `[map_add, map_smul, neg_smul, add_neg_eq_zero]`.
+
+Rewrite using `[this, s₁.wdF v h₁ h₁v _ (s₁.le v (b.mapS v x hx)) _ hy _ (s₁.le v hz) _ hy' az a₁ e]`.
+-/
 theorem eqF (s : Side B M om pi p S) (s₁ : Side B M₁ om₁ pi₁ p₁ S₁) (b : Br B M om M₁ om₁ H' χ r S S₁ Ev L Λ)
     (j : Inj B M₁ om₁ pi₁ p₁ S₁) (pt : Pt B M S pi₁ p₁ L Λ) (v : Pl F) {t h₁ m u} (hl : IsLevi H' t h₁ m) (hu : u ∈ unip σ W H')
     (h₁v : h₁ ∈ UAt σ W₁ (evFin F v)) {x x' y y'} (hx : x ∈ S v) (hx' : x' ∈ S v) (hy : y ∈ SB _) (hy' : y' ∈ SB _)
@@ -193,6 +249,13 @@ theorem eqF (s : Side B M om pi p S) (s₁ : Side B M₁ om₁ pi₁ p₁ S₁) 
   rw [map_add, map_smul, neg_smul, add_neg_eq_zero] at this
   rw [this, s₁.wdF v h₁ h₁v _ (s₁.le v (b.mapS v x hx)) _ hy _ (s₁.le v hz) _ hy' az a₁ e]
 
+/- English proof (translation)
+Take `⟨φ, ψ, c, hc, hφ, hψ, h1, h2⟩` from `exists_test_vectors b j pt`. Take `⟨T, hT, hT'⟩` from `s.op k hk.1`. Take `⟨T₁, hT₁, hT₁'⟩` from `s₁.op k₁ hk₁.1`. Take `rfl` from `(s.uniq f f' (T f)).1 _ a (hT.2 f)`. Use `h2 (L (T f) + (-sc χ r t) • T₁ (L f)) (add_mem (b.pol _ (hT' hk f hf)) (Submodule.smul_mem _ _ (hT₁' hk₁ _ (b.pol f hf)))) (funext fun g => by` as an intermediate fact.
+
+Establish `k` using `b.rule f hf _ hφ t k₁ k hl 1 (one_mem _) g`. Rewrite `k` using `[one_mul, s.arch hφ hT, h1, h1, I_smul, I_smul, ← I_right', s₁.arch hψ hT₁]`. Take `⟨l, hl⟩` from `s₁.clm hψ g`. Rewrite `k` using `[← hl, ← hl]`. Rewrite using `[← hl, map_add, map_smul, Pi.zero_apply, smul_eq_mul]`.
+
+Apply `mul_left_cancel₀ hc` to reduce the goal to its premises. Rewrite using `[mul_add, k]`. Use the proof step `ring)`. Rewrite `this` using `[map_add, map_smul, neg_smul, add_neg_eq_zero]`. Rewrite using `[this, s₁.wdK k₁ hk₁ _ (b.pol f hf) _ hf₁ _ _ (hT₁.2 _) a₁ e]`.
+-/
 theorem eqK (s : Side B M om pi p S) (s₁ : Side B M₁ om₁ pi₁ p₁ S₁) (b : Br B M om M₁ om₁ H' χ r S S₁ Ev L Λ)
     (j : Inj B M₁ om₁ pi₁ p₁ S₁) (pt : Pt B M S pi₁ p₁ L Λ) {k k₁ t} (hk : k ∈ KInf σ W B.emb) (hk₁ : k₁ ∈ KInf σ W₁ B.emb)
     (hl : IsLevi H' t k₁ k) {f f₁ f' f₁' : SInf F _} (hf : f ∈ M.Pol B.ψ B.emb) (hf₁ : f₁ ∈ M₁.Pol B.ψ B.emb)
@@ -214,6 +277,13 @@ theorem eqK (s : Side B M om pi p S) (s₁ : Side B M₁ om₁ pi₁ p₁ S₁) 
   rw [map_add, map_smul, neg_smul, add_neg_eq_zero] at this
   rw [this, s₁.wdK k₁ hk₁ _ (b.pol f hf) _ hf₁ _ _ (hT₁.2 _) a₁ e]
 
+/- English proof (translation)
+Take `⟨φ, ψ, c, hc, hφ, hψ, h1, h2⟩` from `exists_test_vectors b j pt`. Use `choose T hT _ using fun t : ℝ => s.op _ (hγ.2 (Multiplicative.ofAdd t))`. Take `⟨g, hg, ag, dg⟩` from `s.lie γ hγ T hT f hf`. Take `rfl` from `(s.uniq f f' g).2 _ a ag`. Use `h2 _ (b.pol _ hg) (funext fun h => ?_)` and prove the remaining obligations.
+
+Take `⟨l, hl⟩` from `s₁.clm hψ h`. Establish `k : (fun t => (l.comp L) (T t f)) = fun _ => l (L f)` using `funext fun t => by`. Establish `k` using `b.rule f hf _ hφ 1 1 1 (isLevi_one H') _ (hu (Multiplicative.ofAdd t)) h`. Rewrite `k` using `[mul_one, mul_one, s.arch hφ (hT t), h1, h1, I_smul, I_smul, ← hl, ← hl]`. Simplify using `only [sc, map_one, Circle.coe_one, NNReal.coe_one, Real.one_rpow, Complex.ofReal_one, one_mul] at k`.
+
+Conclude with `mul_left_cancel₀ hc k`. Establish `d` using `dg (l.comp L)`. Rewrite `d` using `[k]`. Rewrite using `[← hl]`. Conclude with `d.unique (hasDerivAt_const _ _)`.
+-/
 theorem eqN (s : Side B M om pi p S) (s₁ : Side B M₁ om₁ pi₁ p₁ S₁) (b : Br B M om M₁ om₁ H' χ r S S₁ Ev L Λ)
     (j : Inj B M₁ om₁ pi₁ p₁ S₁) (pt : Pt B M S pi₁ p₁ L Λ) {γ} (hγ : γ ∈ Lines σ W) (hu : ∀ s, γ s ∈ unip σ W H')
     {f f' : SInf F _} (hf : f ∈ M.Pol B.ψ B.emb) (a : ActsD (evI F) (fun t => om (1, γ (Multiplicative.ofAdd t))) f f') :
@@ -234,6 +304,17 @@ theorem eqN (s : Side B M om pi p S) (s₁ : Side B M₁ om₁ pi₁ p₁ S₁) 
   rw [← hl]
   exact d.unique (hasDerivAt_const _ _)
 
+/- English proof (translation)
+Take `⟨φ, ψ, c, hc, hφ, hψ, h1, h2⟩` from `exists_test_vectors b j pt`. Use `choose T hT _ using fun t : ℝ => s.op _ (hγ.2 (Multiplicative.ofAdd t))`. Use `choose T₁ hT₁ _ using fun t : ℝ => s₁.op _ (hγ₁.2 (Multiplicative.ofAdd t))`. Take `⟨g, hg, ag, dg⟩` from `s.lie γ hγ T hT f hf`. Take `rfl` from `(s.uniq f f' g).2 _ a ag`.
+
+Take `⟨g₁, hg₁, ag₁, dg₁⟩` from `s₁.lie γ₁ hγ₁ T₁ hT₁ _ (b.pol f hf)`. Use `h2 (L f' - (c' • L f + g₁)) (sub_mem (b.pol _ hg) (add_mem (Submodule.smul_mem _ _ (b.pol f hf)) hg₁)) (funext fun h => by` as an intermediate fact. Take `⟨l, hl'⟩` from `s₁.clm hψ h`. Establish `k : (fun t => (l.comp L) (T t f)) = fun t => sc χ r (τ t) * l (T₁ t (L f))` using `funext fun t => by`. Establish `k` using `b.rule f hf _ hφ _ _ _ (hl t) 1 (one_mem _) h`.
+
+Rewrite `k` using `[one_mul, s.arch hφ (hT t), h1, h1, I_smul, I_smul, ← I_right', s₁.arch hψ (hT₁ t), ← hl', ← hl']`. Apply `mul_left_cancel₀ hc` to reduce the goal to its premises. Conclude with `k.trans (by ring)`. Establish `d` using `dg (l.comp L)`. Rewrite `d` using `[k]`.
+
+Establish `z : l (T₁ 0 (L f)) = l (L f)`. Rewrite using `[hl', hl', ← s₁.arch hψ (hT₁ 0), I_right']`. Simplify using the standard rewrite rules. Establish `d2` using `d.unique (hd.mul (dg₁ l))`. Rewrite `d2` using `[z, h0]`.
+
+Simplify using `only [sc, map_one, Circle.coe_one, NNReal.coe_one, Real.one_rpow, Complex.ofReal_one, one_mul, ContinuousLinearMap.comp_apply] at d2`. Rewrite using `[← hl', map_sub, map_add, map_smul, d2, Pi.zero_apply, smul_eq_mul, sub_self])`. Rewrite `this` using `[map_sub, sub_eq_zero, map_add, map_smul]`. Rewrite using `[this, e, s₁.wdL γ₁ hγ₁ _ (b.pol f hf) _ hf₁ _ _ ag₁ a₁ e]`.
+-/
 theorem eqL (s : Side B M om pi p S) (s₁ : Side B M₁ om₁ pi₁ p₁ S₁) (b : Br B M om M₁ om₁ H' χ r S S₁ Ev L Λ)
     (j : Inj B M₁ om₁ pi₁ p₁ S₁) (pt : Pt B M S pi₁ p₁ L Λ) {γ γ₁} (hγ : γ ∈ Lines σ W) (hγ₁ : γ₁ ∈ Lines σ W₁)
     {τ : ℝ → (AE F E)ˣ} (hl : ∀ s, IsLevi H' (τ s) (γ₁ (Multiplicative.ofAdd s)) (γ (Multiplicative.ofAdd s))) (h0 : τ 0 = 1) {c' : ℂ}

@@ -32,6 +32,21 @@ def powPullback {S S' : Scheme.{0}} (f : S' ⟶ S) {G' G : Over S} [GrpObj G'] [
   ⟨fun u => (Over.pullback f).map (p.pr u), fun u => by have := p.hom u; infer_instance,
     isLimitFanMkObjOfIsLimit (Over.pullback f) _ _ p.lim⟩
 
+/- English proof (translation)
+Introduce `V _ _ _ hV A G _ _ hG ψ hψ`. Take `⟨hd, hc, hch⟩` from `hV`. Take `⟨gen, hgen, -⟩` from `grpPullback_iso (isGrpPullback_pullback G (jK V)) hψ`. Take `⟨G8, _, prG, hG8, hprG, huG⟩` from `GlobalTheory.MBLow.exists_eighthPower_semiAbelianScheme V G hG`. Establish `: IsCommMonObj G8` using `hG8.comm`.
+
+Set `p8 : IsPowGrp G8 G 8` to `isPowGrpOfUnique prG hprG huG`. Set `F` to `AlgebraicClosure (FractionRing V)`. Establish `: FaithfulSMul V F` using `(faithfulSMul_iff_algebraMap_injective V F).2 (by`. Rewrite using `[IsScalarTower.algebraMap_eq V (FractionRing V) F]`. Conclude with `(algebraMap (FractionRing V) F).injective.comp (IsFractionRing.injective V _))`.
+
+Establish `: Algebra.IsAlgebraic V F` using `(IsFractionRing.comap_isAlgebraic_iff (A := V) (K := FractionRing V) (C := F)).2 inferInstance`. Take `⟨W, hWd, hWc, hWf, hsplit⟩` from `GlobalTheory.Ex.UnifModel.exists_split V F G8 hG8`. Establish `: CharZero F` using `charZero_of_injective_algebraMap (FaithfulSMul.algebraMap_injective V F)`. Establish `: CharZero W` using `RingHom.charZero (algebraMap W F)`. Establish `hio : Function.Injective (algebraMap V W)` using `fun a b h => FaithfulSMul.algebraMap_injective V F (congrArg Subtype.val h)`.
+
+Set `io : V →+* W` to `algebraMap V W`. Set `H` to `(Over.pullback (spMap io)).obj G8`. Set `pH : IsPowGrp H ((Over.pullback (spMap io)).obj G) 8` to `powPullback (spMap io) p8`. Establish `hH : IsSemiAbelian H` using `IsSemiAbelian.pullback _ G8 hG8`. Take `⟨A', ψ', hψ'⟩` from `GlobalTheory.UnifProperOpen.exists_polGeneric_pullback V A G gen hgen W io hio`.
+
+Take `⟨d, -, hQ⟩` from `GlobalTheory.MBLow.PowEightField.exists_eighthPower_evenUnimodular_charZero`. Take `⟨Q, pr, inc, -, hS, hP⟩` from `hQ (FractionRing W) A'`. Set `pQ : IsPowGrp Q.A A'.A 8` to `isPowGrpOfUnique pr hP.1 hP.2.2.1`. Take `⟨φ₀, hφ₀, -⟩` from `GlobalTheory.PowFibre.exists_pow_pullback pH pQ hψ'`. Take `⟨genH, hgenH, -⟩` from `grpPullback_iso (isGrpPullback_pullback H (jK W)) hφ₀`.
+
+Take `⟨L₁, -⟩` from `GlobalTheory.abelianSchemeLaws_all`. Establish `hE : ∃ E : SplitExt (Sp (ResidueField W)), E.IsGt ((Over.pullback (spMap (residue W))).obj H)` using `hsplit`. Take `⟨s, -⟩` from `GlobalTheory.ZH.exists_setting_of_hypS L₁ GlobalTheory.homExtension_semiAbelian_dvr_unconditional W hWc Q H hH hE hS genH hgenH`. Take `⟨D, U, -, -, hU⟩` from `GlobalTheory.uniformisation_dvr_unconditional W Q H s`. Take `⟨i₀, hi₀, -⟩` from `huG G (fun _ => 𝟙 G)`.
+
+Use `⟨W, inferInstance, inferInstance, inferInstance, io, algebraMap W F, D, Q, H, inferInstance, inferInstance, U, (Over.pullback (spMap io)).map i₀, pH.pr, ⟨hWd, hWc, inferInstance⟩, RingHom.finite_algebraMap.2 hWf, hio, Subtype.val_injective, fun v => ?_, hH, hU, pH.hom, ?_, fun T …` and prove the remaining obligations. Conclude with `IsScalarTower.algebraMap_apply V (FractionRing V) F v`. Use `show (Over.pullback (spMap io)).map i₀ ≫ (Over.pullback (spMap io)).map (prG 0) = _`. Rewrite using `[← CategoryTheory.Functor.map_comp, hi₀ 0, CategoryTheory.Functor.map_id]`.
+-/
 theorem exists_unif_pow8 : ∀ (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V], GlobalTheory.LN.CDvr V → ∀ (A : PolAV (Sp (FractionRing V))) (G : Over (Sp V)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ ψ : A.A.left ⟶ G.left, IsGrpPullback A.A G (jK V) ψ → ∃ (W : Type) (_ : CommRing W) (_ : IsDomain W) (_ : IsLocalRing W) (io : V →+* W) (em : W →+* AlgebraicClosure (FractionRing V)) (D : DegData W (maximalIdeal W)) (Q : PolAV (Sp (FractionRing W))) (H : Over (Sp W)) (_ : GrpObj H) (_ : IsCommMonObj H) (U : Unif (maximalIdeal W) D Q H) (i : (Over.pullback (spMap io)).obj G ⟶ H) (r : Fin 8 → (H ⟶ (Over.pullback (spMap io)).obj G)), GlobalTheory.LN.CDvr W ∧ io.Finite ∧ Function.Injective io ∧ Function.Injective em ∧ (∀ v, em (io v) = algebraMap (FractionRing V) _ (algebraMap V _ v)) ∧ IsSemiAbelian H ∧ GlobalTheory.LN.ToATotal U.toUnifPre ∧ (∀ k, IsMonHom (r k)) ∧ i ≫ r 0 = 𝟙 _ ∧ ∀ (T : Over (Sp W)) (x y : T ⟶ H), (∀ k, x ≫ r k = y ≫ r k) → x = y := by
   intro V _ _ _ hV A G _ _ hG ψ hψ
   obtain ⟨hd, hc, hch⟩ := hV

@@ -10,11 +10,23 @@ set_option backward.isDefEq.respectTransparency false
 noncomputable section
 namespace GlobalTheory.Pinch
 
+/- English proof (translation)
+Simplify using `only [Scheme.Hom.appLE, Scheme.Opens.topIso, Scheme.Hom.comp_appTop, Scheme.Opens.ι_app]`. Simplify using `[← Functor.map_comp]`.
+-/
 theorem appTop_ι_comp_eq {C Z : Scheme.{0}} (e : C ⟶ Z) (U : C.Opens) :
     (U.ι ≫ e).appTop = e.appLE ⊤ U le_top ≫ U.topIso.inv := by
   simp only [Scheme.Hom.appLE, Scheme.Opens.topIso, Scheme.Hom.comp_appTop, Scheme.Opens.ι_app]
   simp [← Functor.map_comp]
 
+/- English proof (translation)
+Introduce `g C Z _ e he x`. Take `⟨_, ⟨W, hW, rfl⟩, hxW, -⟩` from `C.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ x) isOpen_univ`. Establish `hW : IsAffineOpen W` using `hW`. Establish `h0` using `HasRingHomProperty.appLE (@SmoothOfRelativeDimension g) e he ⟨⊤, isAffineOpen_top Z⟩ ⟨W, hW⟩ le_top`. Take `⟨s, hs, h'⟩` from `(RingHom.locally_iff_isLocalization RingHom.isStandardSmoothOfRelativeDimension_respectsIso _).1 h0`.
+
+Establish `hcov` using `hW.self_le_iSup_basicOpen_iff.2 hs hxW`. Take `⟨⟨t, ht⟩, hxt⟩` from `TopologicalSpace.Opens.mem_iSup.1 hcov`. Establish `hl` using `hW.isLocalization_basicOpen t`. Establish `h1` using `h' t ht Γ(C, C.basicOpen t)`. Use `⟨C.basicOpen t, hW.basicOpen t, hxt, fun r => ?_⟩` and prove the remaining obligations.
+
+Establish `hl2` using `(hW.basicOpen t).isLocalization_basicOpen r`. Establish `h2` using `(RingHom.isStandardSmoothOfRelativeDimension_stableUnderCompositionWithLocalizationAway g).right Γ(C, C.basicOpen r) r _ h1`. Establish `h3 : (e.appLE ⊤ (C.basicOpen r) le_top).hom.IsStandardSmoothOfRelativeDimension g`. Use `h2 using 1` and compare the differences between its conclusion and the goal. Use extensionality with `a`.
+
+Express the relevant statement in the definitionally equal form `_ = (C.presheaf.map (homOfLE (C.basicOpen_le r)).op) ((C.presheaf.map (homOfLE (C.basicOpen_le t)).op) _)`. Rewrite using `[← CommRingCat.comp_apply, ← CommRingCat.comp_apply, Scheme.Hom.appLE_map_assoc, Scheme.Hom.appLE_map]`. Rewrite using `[appTop_ι_comp_eq, CommRingCat.hom_comp]`. Conclude with `RingHom.isStandardSmoothOfRelativeDimension_respectsIso.1 _ (C.basicOpen r).topIso.symm.commRingCatIsoToRingEquiv h3`.
+-/
 theorem exists_affine_basicOpen_standardSmooth : ∀ (g : ℕ) (C Z : Scheme.{0}) [IsAffine Z] (e : C ⟶ Z),
     SmoothOfRelativeDimension g e → ∀ x : C, ∃ O : C.Opens, IsAffineOpen O ∧ x ∈ O ∧
       ∀ r : Γ(C, O), (((C.basicOpen r).ι ≫ e).appTop).hom.IsStandardSmoothOfRelativeDimension g := by

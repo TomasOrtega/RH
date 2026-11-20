@@ -19,6 +19,11 @@ abbrev Cls (D : D7) (N : ℕ) (J : Subgroup (GA D N)) : Type :=
 def gam (D : D7) {N : ℕ} (J : Subgroup (GA D N)) (g : GA D N) : ℕ :=
   Nat.card {γ : GA D N // γ ∈ ratG D N ∧ g⁻¹ * γ * g ∈ J}
 
+/- English proof (translation)
+Use `haveI : Nontrivial (IsDedekindDomain.FiniteAdeleRing (𝓞 ℚ) ℚ) := by`. Take `⟨P, hP⟩` from `Ideal.exists_maximal (𝓞 ℚ)`. Set `v : IsDedekindDomain.HeightOneSpectrum (𝓞 ℚ)` to `⟨P, hP.isPrime, Ring.ne_bot_of_isMaximal_of_not_isField hP (RingOfIntegers.not_isField ℚ)⟩`. Use `⟨0, 1, fun h => ?_⟩` and prove the remaining obligations. Establish `h2 : (0 : v.adicCompletion ℚ) = 1` using `congrArg (fun x : IsDedekindDomain.FiniteAdeleRing (𝓞 ℚ) ℚ => x v) h`.
+
+Conclude with `zero_ne_one h2`. Use `haveI : Nontrivial (AE D) := (Algebra.TensorProduct.includeRight_injective (algebraMap ℚ D.host.E).injective : Function.Injective (Algebra.TensorProduct.includeRight : IsDedekindDomain.FiniteAdeleRing (𝓞 ℚ) ℚ →ₐ[ℚ] AE D)).nontrivial`. Conclude with `(inc D).injective`.
+-/
 theorem inc_inj (D : D7) : Function.Injective (inc D) := by
   haveI : Nontrivial (IsDedekindDomain.FiniteAdeleRing (𝓞 ℚ) ℚ) := by
     obtain ⟨P, hP⟩ := Ideal.exists_maximal (𝓞 ℚ)
@@ -33,6 +38,15 @@ theorem inc_inj (D : D7) : Function.Injective (inc D) := by
         IsDedekindDomain.FiniteAdeleRing (𝓞 ℚ) ℚ →ₐ[ℚ] AE D)).nontrivial
   exact (inc D).injective
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[ratG, Subgroup.closure_le]`. Introduce and unpack `g ⟨γ, hγ⟩`. Establish `h1 : (1 : Matrix (Fin N) (Fin N) D.host.E).map (inc D) = 1` using `Matrix.map_one _ (map_zero _) (map_one _)`. Establish `hg : ((g.1 : Matrix (Fin N) (Fin N) (AE D)).map (sgA D)).transpose * (1 : Matrix (Fin N) (Fin N) D.host.E).map (inc D) * (g.1 : Matrix (Fin N) (Fin N) (AE D)) = (1 : Matrix (Fin N) (Fin N) D.host.E).map (inc D)` using `g.2`.
+
+Establish `hc : ((γ.map D.host.conj).transpose).map (inc D) = ((γ.map (inc D)).map (sgA D)).transpose`. Use extensionality with `i j`. Simplify using `[sgA, inc, Formalism.UG.sigR, Formalism.UG.inclE]`. Establish `hu : (γ.map D.host.conj).transpose * γ = 1`. Apply `Matrix.map_injective (inc_inj D)` to reduce the goal to its premises.
+
+Unfold `IsRat at hγ`. Rewrite `hg` using `[hγ, h1, Matrix.mul_one, ← hc, ← Matrix.map_mul]`. Conclude with `hg.trans h1.symm`. Use `⟨⟨γ, _, mul_eq_one_comm.1 hu, hu⟩, ?_, Units.ext hγ.symm⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(γ.map D.host.conj).transpose * 1 * γ = 1`.
+
+Rewrite using `[Matrix.mul_one, hu]`. Introduce and unpack `g ⟨u, -, hu⟩`. Conclude with `Subgroup.subset_closure ⟨(u : Matrix (Fin N) (Fin N) D.host.E), (congrArg Units.val hu).symm⟩`.
+-/
 theorem ratG_eq_ratPts (D : D7) (N : ℕ) :
     ratG D N = (Formalism.UG.ratPts (F := ℚ) (D.host.conj : D.host.E →ₐ[ℚ] D.host.E) (1 : Matrix (Fin N) (Fin N) D.host.E)
       (IsDedekindDomain.FiniteAdeleRing (𝓞 ℚ) ℚ)).subgroupOf (GA D N) := by
@@ -57,12 +71,26 @@ theorem ratG_eq_ratPts (D : D7) (N : ℕ) :
   · rintro g ⟨u, -, hu⟩
     exact Subgroup.subset_closure ⟨(u : Matrix (Fin N) (Fin N) D.host.E), (congrArg Units.val hu).symm⟩
 
+/- English proof (translation)
+Use `⟨fun h => ?_, fun h => Subgroup.subset_closure h⟩` and prove the remaining obligations. Rewrite `h` using `[ratG_eq_ratPts]`. Take `⟨u, -, hu⟩` from `h`. Conclude with `⟨(u : Matrix (Fin N) (Fin N) D.host.E), (congrArg Units.val hu).symm⟩`.
+-/
 theorem mem_ratG {D : D7} {N : ℕ} (g : GA D N) : g ∈ ratG D N ↔ ∃ γ, IsRat D (g : GL (Fin N) (AE D)) γ := by
   refine ⟨fun h => ?_, fun h => Subgroup.subset_closure h⟩
   rw [ratG_eq_ratPts] at h
   obtain ⟨u, -, hu⟩ := h
   exact ⟨(u : Matrix (Fin N) (Fin N) D.host.E), (congrArg Units.val hu).symm⟩
 
+/- English proof (translation)
+Use `⟨fun h => ?_, fun h => Subgroup.subset_closure h⟩` and prove the remaining obligations. Proceed by induction on `h using Subgroup.closure_induction with`. Consider the case `mem x hx => exact hx`. Consider the case `one`. Introduce `i j`.
+
+Establish `: ((1 : Matrix (Fin N) (Fin N) (AE D)) i j) ∈ OhE D`. Rewrite using `[Matrix.one_apply]`. Use `split_ifs`. Conclude with `one_mem _`. Conclude with `zero_mem _`.
+
+Simplify using `using this`. Consider the case `mul x y _ _ hx hy`. Introduce `i j`. Prove the components needed by the constructor for the conclusion. Simplify using `only [Subgroup.coe_mul, Units.val_mul, Matrix.mul_apply]`.
+
+Conclude with `sum_mem fun l _ => mul_mem (hx i l).1 (hy l j).1`. Simplify using `only [Subgroup.coe_mul, mul_inv_rev, Units.val_mul, Matrix.mul_apply]`. Conclude with `sum_mem fun l _ => mul_mem (hy i l).2 (hx l j).2`. Consider the case `inv x _ hx`. Introduce `i j`.
+
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `(hx i j).2`. Rewrite using `[Subgroup.coe_inv, inv_inv]`. Conclude with `(hx i j).1`.
+-/
 theorem mem_intG {D : D7} {N : ℕ} (k : GA D N) : k ∈ intG D N ↔ IntG D (k : GL (Fin N) (AE D)) := by
   refine ⟨fun h => ?_, fun h => Subgroup.subset_closure h⟩
   induction h using Subgroup.closure_induction with
@@ -87,8 +115,14 @@ theorem mem_intG {D : D7} {N : ℕ} (k : GA D N) : k ∈ intG D N ↔ IntG D (k 
     · exact (hx i j).2
     · rw [Subgroup.coe_inv, inv_inv]; exact (hx i j).1
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cls_eq_classSet (D : D7) (N : ℕ) (J : Subgroup (GA D N)) : Cls D N J = Formalism.UG.ClassSet (ratG D N) J := rfl
 
+/- English proof (translation)
+The claim follows from `Nat.card_congr { toFun := fun γ => ⟨⟨γ.1, γ.2.1⟩, γ.2.2⟩ invFun := fun γ => ⟨γ.1.1, γ.1.2, γ.2⟩ left_inv := fun _ => rfl right_inv := fun _ => rfl }`.
+-/
 theorem gam_eq_card_stabAt (D : D7) {N : ℕ} (J : Subgroup (GA D N)) (g : GA D N) :
     gam D J g = Nat.card (Formalism.UG.stabAt (ratG D N) J g) :=
   Nat.card_congr
@@ -97,6 +131,9 @@ theorem gam_eq_card_stabAt (D : D7) {N : ℕ} (J : Subgroup (GA D N)) (g : GA D 
       left_inv := fun _ => rfl
       right_inv := fun _ => rfl }
 
+/- English proof (translation)
+Rewrite using `[gam_eq_card_stabAt, Nat.card_ne_zero]`. Conclude with `⟨fun h => h.2, fun h => ⟨⟨⟨1, by simp [Formalism.UG.stabAt]⟩⟩, h⟩⟩`.
+-/
 theorem gam_ne_zero_iff (D : D7) {N : ℕ} (J : Subgroup (GA D N)) (g : GA D N) :
     gam D J g ≠ 0 ↔ Finite (Formalism.UG.stabAt (ratG D N) J g) := by
   rw [gam_eq_card_stabAt, Nat.card_ne_zero]
@@ -198,6 +235,9 @@ structure Inp (D : D7) : Prop where
   eqv : ∀ (cc : Ideal (𝓞 D.host.K)) (δ t0 : ℂ) (N N' : ℕ) (e0 : VC D N N' → ℂ), Crv D cc δ →
     GL3Theta.IsTwoTorsionPointUnkilled D (lamOf D cc δ) t0 → Even (N * N') → oddE0 D cc δ t0 N N' e0 → oddEq D cc δ N N' e0
 
+/- English proof (translation)
+Take `⟨⟨-, hg1, hperm, huni, hmu, hC, hPo⟩, htr, htwo, hjets, -, hsplit⟩` from `hA`. Take `⟨⟨hcurve, -, -, -, -, -, -, hgal, hgalEx, ht0, huse1, halg, hconj, hnrm, -, -, -, hbar⟩, -, h3, h4, hrep, -⟩` from `hP`. Conclude with `⟨hg1, hperm, huni, hmu, hcurve, hgal, hgalEx, ht0, huse1, halg, hconj, hnrm, hbar, h3, h4, hrep, hM, htr, htwo, hjets, hsplit, fun cc δ t0 N N' e0 h1 h2 he hv => hE cc δ t0 N N' e0 h1 h2 he hv hPo hg1 huni hmu hC h3 h4⟩`.
+-/
 theorem Inp.of_conditions (hA : AdmD D) (hP : aux₃ D) (hM : GL3Theta.modelEx D)
     (hE : ∀ cc δ t0 N N' e0, StatementOddExactness D cc δ t0 N N' e0) : Inp D := by
   obtain ⟨⟨-, hg1, hperm, huni, hmu, hC, hPo⟩, htr, htwo, hjets, -, hsplit⟩ := hA
@@ -205,11 +245,20 @@ theorem Inp.of_conditions (hA : AdmD D) (hP : aux₃ D) (hM : GL3Theta.modelEx D
   exact ⟨hg1, hperm, huni, hmu, hcurve, hgal, hgalEx, ht0, huse1, halg, hconj, hnrm, hbar, h3, h4, hrep, hM, htr, htwo,
     hjets, hsplit, fun cc δ t0 N N' e0 h1 h2 he hv => hE cc δ t0 N N' e0 h1 h2 he hv hPo hg1 huni hmu hC h3 h4⟩
 
+/- English proof (translation)
+The claim follows from `P.d_even.mul_left P.a`.
+-/
 theorem Pair.even_mul (P : Pair D cc δ t0 Q) : Even (P.a * P.d) := P.d_even.mul_left P.a
 
+/- English proof (translation)
+The claim follows from `h.eqv cc δ t0 P.a P.d P.e0 P.crv P.pt0 P.even_mul P.vac`.
+-/
 theorem Pair.eqv (P : Pair D cc δ t0 Q) (h : Inp D) : oddEq D cc δ P.a P.d P.e0 :=
   h.eqv cc δ t0 P.a P.d P.e0 P.crv P.pt0 P.even_mul P.vac
 
+/- English proof (translation)
+Break down `Nat.eq_zero_or_pos Q with rfl | h` into its components or cases. Establish `h` using `P.idx_le`. Rewrite `h` using `[zero_pow (by omega)]`. Conclude with `absurd (Nat.le_zero.mp h) P.idx_ne`. Conclude with `h`.
+-/
 theorem Pair.level_pos (P : Pair D cc δ t0 Q) : 0 < Q := by
   rcases Nat.eq_zero_or_pos Q with rfl | h
   · have h := P.idx_le
@@ -217,22 +266,41 @@ theorem Pair.level_pos (P : Pair D cc δ t0 Q) : 0 < Q := by
     exact absurd (Nat.le_zero.mp h) P.idx_ne
   · exact h
 
+/- English proof (translation)
+The claim follows from `Finset.sum_nonneg fun _ _ => by positivity`.
+-/
 theorem Pair.sq_nonneg (P : Pair D cc δ t0 Q) (h : GA D P.d) : 0 ≤ P.sq h :=
   Finset.sum_nonneg fun _ _ => by positivity
 
+/- English proof (translation)
+The claim follows from `finsum_nonneg fun _ => mul_nonneg (by positivity) (P.sq_nonneg _)`.
+-/
 theorem Pair.norm_nonneg (P : Pair D cc δ t0 Q) : 0 ≤ P.norm :=
   finsum_nonneg fun _ => mul_nonneg (by positivity) (P.sq_nonneg _)
 
+/- English proof (translation)
+Use `P.W.mul x k h 1 P.F hF` as an intermediate fact. Rewrite `this` using `[mul_one, P.fix k hk]`. Rewrite using `[Pair.term, Pair.term, this]`.
+-/
 theorem Pair.term_mul_intG (P : Pair D cc δ t0 Q) (hF : P.F ∈ TT D (tor0 D cc δ) P.a P.d) (x : GA D P.a) {k : GA D P.a}
     (hk : k ∈ intG D P.a) (h : GA D P.d) (T : Tup D P.a P.d P.n) : P.term (x * k) h T = P.term x h T := by
   have := P.W.mul x k h 1 P.F hF
   rw [mul_one, P.fix k hk] at this
   rw [Pair.term, Pair.term, this]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `z`. Simplify using `[Wd, wdPh, ee, qH, U, Hf]`.
+-/
 theorem wd_zero (D : D7) (T : Tor D) {a d : ℕ} (G : VC D a d → ℂ) : Wd D T 0 G = G := by
   funext z
   simp [Wd, wdPh, ee, qH, U, Hf]
 
+/- English proof (translation)
+Establish `h0 : pt D (tor0 D cc δ) δ (0 : Matrix (Fin d) (Fin a) D.host.E) = 0`. Use function extensionality and compare the values at `τ i j`. Simplify using `[pt, embV, tor0]`. Use `⟨1, fun _ => 1, fun _ => 0, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i`.
+
+Rewrite using `[h0]`. Simplify using the standard rewrite rules. Introduce `i`. Simplify using `using isIntegral_one`. Introduce `ρ`.
+
+Simplify using the standard rewrite rules. Use function extensionality and compare the values at `y`. Simplify using `[h0, wd_zero]`.
+-/
 theorem pres_self (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) {a d : ℕ} (e0 : VC D a d → ℂ) :
     Pres D cc δ 1 e0 e0 := by
   have h0 : pt D (tor0 D cc δ) δ (0 : Matrix (Fin d) (Fin a) D.host.E) = 0 := by
@@ -269,10 +337,16 @@ def Pair.ofVacuum (crv : Crv D cc δ) (pt0 : GL3Theta.IsTwoTorsionPointUnkilled 
   idx_le := by simp
   eig := heig
 
+/- English proof (translation)
+The claim follows from `W.nz`.
+-/
 theorem Pair.ofVacuum_F_ne_zero (crv : Crv D cc δ) (pt0 : GL3Theta.IsTwoTorsionPointUnkilled D (lamOf D cc δ) t0) {a d : ℕ} (had : a ≤ d)
     (hd : Even d) {e0 : VC D a d → ℂ} (vac : oddE0 D cc δ t0 a d e0) (W : WeilO D cc δ a d e0) (n : D.what₂.Tau → ℕ)
     (wt) (hfix) (heig) : (Pair.ofVacuum crv pt0 had hd vac W n wt hfix heig).F ≠ 0 := W.nz
 
+/- English proof (translation)
+Take `⟨δ, hδ⟩` from `IsAlgClosed.exists_pow_nat_eq (discr (lamOf D ⊤ 1)) (n := 12) (by norm_num)`. Conclude with `⟨δ, ⟨top_ne_bot, by simp⟩, hδ⟩`.
+-/
 theorem exists_crv_top (D : D7) : ∃ δ : ℂ, Crv D ⊤ δ := by
   obtain ⟨δ, hδ⟩ := IsAlgClosed.exists_pow_nat_eq (discr (lamOf D ⊤ 1)) (n := 12) (by norm_num)
   exact ⟨δ, ⟨top_ne_bot, by simp⟩, hδ⟩
@@ -284,8 +358,20 @@ instance spaceUnique (D : D7) : Unique (VC D 0 0) := ⟨⟨0⟩, fun _ => Subsin
 instance groupSubsingleton (D : D7) : Subsingleton (GA D 0) :=
   ⟨fun x y => Subtype.ext (Units.ext (Subsingleton.elim _ _))⟩
 
+/- English proof (translation)
+Simplify using `[Hf]`.
+-/
 theorem hf0 (D : D7) (T : Tor D) (z w : VC D 0 0) : Hf D T z w = 0 := by simp [Hf]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `z`. Establish `hi : (A.addSubgroupOf B).index = 1`. Rewrite using `[AddSubgroup.index_eq_one]`. Conclude with `Subsingleton.elim _ _`. Use `haveI : Subsingleton (B ⧸ A.addSubgroupOf B) := by`.
+
+Use `⟨fun x y => ?_⟩` and prove the remaining obligations. Proceed by induction on `x using QuotientAddGroup.induction_on`. Proceed by induction on `y using QuotientAddGroup.induction_on`. Use `congr 1`. Conclude with `Subsingleton.elim _ _`.
+
+Use `haveI : Unique (B ⧸ A.addSubgroupOf B) := ⟨⟨((0 : B) : B ⧸ A.addSubgroupOf B)⟩, fun _ => Subsingleton.elim _ _⟩`. Unfold `Iop`. Rewrite using `[hi, finsum_unique]`. Simplify using `only [al, U, hf0]`. Simplify using the standard rewrite rules.
+
+Use `congr 1`. Conclude with `Subsingleton.elim _ _`.
+-/
 theorem iop0 (D : D7) (T : Tor D) (A B : AddSubgroup (VC D 0 0)) (G : VC D 0 0 → ℂ) : Iop D T A B G = G := by
   funext z
   have hi : (A.addSubgroupOf B).index = 1 := by
@@ -333,6 +419,11 @@ def weil0 (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) : WeilO D cc δ 0 0 (
     intros
     rw [iop0]; simp [triv]
 
+/- English proof (translation)
+Establish `: α = 0` using `by ext k; exact k.2.1.elim0`. Substitute `this` using the available equality. Establish `h : ∀ (k : ℕ) (v : Fin k → VC D 0 0), k = 0 → iteratedFDeriv ℂ k (fun _ : VC D 0 0 => c) 0 v = c`. Introduce `k v hk`. Substitute `hk` using the available equality.
+
+Simplify using the standard rewrite rules. Unfold `taylor`. Rewrite using `[h _ _ (by simp)]`. Simplify using the standard rewrite rules.
+-/
 theorem taylor0 (D : D7) (α : Mono D 0 0) (c : ℂ) : taylor D (fun _ => c) α = c := by
   have : α = 0 := by ext k; exact k.2.1.elim0
   subst this
@@ -342,6 +433,17 @@ theorem taylor0 (D : D7) (α : Mono D 0 0) (c : ℂ) : taylor D (fun _ => c) α 
   rw [h _ _ (by simp)]
   simp
 
+/- English proof (translation)
+Establish `hex : ∃ Fd : Set (VC D 0 0), MeasureTheory.IsAddFundamentalDomain A Fd MeasureTheory.volume`. Use `⟨Set.univ, MeasureTheory.IsAddFundamentalDomain.mk' (by simp) fun x => ⟨0, by simp, fun y _ => Subsingleton.elim _ _⟩⟩` and prove the remaining obligations. Establish `hs` using `Classical.epsilon_spec hex`. Unfold `normSq`. Simplify using `only [hf0]`.
+
+Use `set Fd := Classical.epsilon (fun Fd : Set (VC D 0 0) => MeasureTheory.IsAddFundamentalDomain A Fd MeasureTheory.volume)`. Establish `hv : (MeasureTheory.volume : MeasureTheory.Measure (VC D 0 0)) Set.univ = 1`. Simplify using `[MeasureTheory.volume_pi, MeasureTheory.Measure.pi_univ]`. Establish `hF : Fd = Set.univ`. Establish `hc` using `hs.ae_covers`.
+
+Assume the negation of the conclusion as `hne`. Establish `he : Fd = ∅`. Break down `Set.eq_empty_or_nonempty Fd with h | ⟨x, hx⟩` into its components or cases. Conclude with `h`. Conclude with `absurd (Set.eq_univ_of_forall fun y => by rw [Subsingleton.elim y x]; exact hx) hne`.
+
+Rewrite `hc` using `[he]`. Simplify using `only [Set.mem_empty_iff_false, exists_false, Filter.eventually_false_iff_eq_bot, MeasureTheory.ae_eq_bot] at hc`. Rewrite `hv` using `[hc]`. Simplify using `at hv`. Rewrite using `[hF]`.
+
+Simplify using `[MeasureTheory.average_eq, MeasureTheory.Measure.real, hv]`.
+-/
 theorem normSq0 (D : D7) (T : Tor D) (A : AddSubgroup (VC D 0 0)) : normSq D T A (fun _ => 1) = 1 := by
   have hex : ∃ Fd : Set (VC D 0 0), MeasureTheory.IsAddFundamentalDomain A Fd MeasureTheory.volume := by
     refine ⟨Set.univ, MeasureTheory.IsAddFundamentalDomain.mk' (by simp) fun x => ⟨0, by simp, fun y _ => Subsingleton.elim _ _⟩⟩
@@ -365,6 +467,19 @@ theorem normSq0 (D : D7) (T : Tor D) (A : AddSubgroup (VC D 0 0)) : normSq D T A
   rw [hF]
   simp [MeasureTheory.average_eq, MeasureTheory.Measure.real, hv]
 
+/- English proof (translation)
+Use `haveI : IsEmpty (Fin (fF D * 0 * 0)) := by simp only [mul_zero]; infer_instance`. Establish `hon : OnB D (fun _ : Fin (fF D * 0 * 0) => (0 : Matrix (Fin 0) (Fin 0) D.host.E))` using `⟨fun i => isEmptyElim i, Subsingleton.elim _ _⟩`. Use `⟨⟨differentiable_const _, fun x _ z => ?_⟩, fun α => ?_, ?_, ⟨fun _ => 0, 1, hon, ⟨one_mem _, fun σ => ?_⟩, ?_⟩, ?_⟩` and prove the remaining obligations. Simplify using `[al, U, hf0]`. Rewrite using `[taylor0]`.
+
+Conclude with `one_mem _`. Rewrite using `[La0, normSq0]`. Simplify using the standard rewrite rules. Establish `: (⟨1, one_mem _⟩ : Qbar) = 1` using `rfl`. Rewrite using `[this]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[iop0]`. Use function extensionality and compare the values at `z`. Simplify using `[pullB]`. Introduce `p _ lam _`.
+
+Use `⟨fun _ => 0, 1, hon, ⟨linearIndependent_empty_type, fun i => isEmptyElim i, fun y _ => ⟨1, by simp, fun i => isEmptyElim i, Subsingleton.elim _ _⟩⟩, one_mem _, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `: (⟨1, one_mem _⟩ : Qbar) = 1` using `rfl`. Simplify using `[lamC, this]`. Establish `hi : ((LaB D (tor0 D cc δ) (fun _ : Fin (fF D * 0 * 0) => (0 : Matrix (Fin 0) (Fin 0) D.host.E))).addSubgroupOf (La0 D (tor0 D cc δ) 0 0)).index = 1`. Rewrite using `[AddSubgroup.index_eq_one]`.
+
+Conclude with `Subsingleton.elim _ _`. Rewrite using `[hi]`. Simplify using the standard rewrite rules. Rewrite using `[iop0]`. Use function extensionality and compare the values at `z`.
+
+Simplify using `[pullB]`.
+-/
 theorem vac0 (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ t0 : ℂ) : oddE0 D cc δ t0 0 0 (fun _ => 1) := by
   haveI : IsEmpty (Fin (fF D * 0 * 0)) := by simp only [mul_zero]; infer_instance
   have hon : OnB D (fun _ : Fin (fF D * 0 * 0) => (0 : Matrix (Fin 0) (Fin 0) D.host.E)) :=
@@ -391,6 +506,9 @@ def pair0 (crv : Crv D cc δ) (pt0 : GL3Theta.IsTwoTorsionPointUnkilled D (lamOf
   Pair.ofVacuum crv pt0 le_rfl (by simp) (vac0 D cc δ t0) (weil0 D cc δ) 0
     (by simp [weil0, triv]) (fun _ _ => rfl) (fun _ _ => ⟨1, by simp, by simp [weil0]⟩)
 
+/- English proof (translation)
+Unfold `gam`. Rewrite using `[Nat.card_eq_one_iff_unique]`. Conclude with `⟨inferInstance, ⟨⟨1, one_mem _, by rw [Subsingleton.elim (_ * _ * _) 1]; exact one_mem _⟩⟩⟩`.
+-/
 theorem gam0 (D : D7) (J : Subgroup (GA D 0)) (g : GA D 0) : gam D J g = 1 := by
   unfold gam
   rw [Nat.card_eq_one_iff_unique]
@@ -402,6 +520,19 @@ instance classUnique (D : D7) (J : Subgroup (GA D 0)) : Unique (Cls D 0 J) :=
     congr 1
     exact Subsingleton.elim _ _⟩
 
+/- English proof (translation)
+Establish `ht : ∀ x h T, (pair0 crv pt0).term x h T = 1`. Introduce `x h T`. Establish `hm : minorPol D T = 1`. Unfold `minorPol`. Use `Finset.prod_eq_one fun τ _ => Finset.prod_eq_one fun j _ => j.elim0` and prove the remaining obligations.
+
+Use `show GL3Theta.applyAt0 D (minorPol D T) (fun _ => 1) = 1`. Rewrite using `[hm]`. Use `taylor0 D 0 1` as an intermediate fact. Simplify using `[GL3Theta.applyAt0, MvPolynomial.support_one]`. Conclude with `this`.
+
+Establish `hc : ∀ h T, (pair0 crv pt0).coord h T = 1`. Introduce `h T`. Unfold `Pair.coord`. Simplify using `only [ht]`. Use `show ∑ᶠ x : Cls D 0 (intG D 0), ((gam D (intG D 0) x.out : ℂ))⁻¹ * 1 = 1`.
+
+Rewrite using `[finsum_unique, gam0]`. Simplify using the standard rewrite rules. Establish `hq : ∀ h, (pair0 crv pt0).sq h = 1`. Introduce `h`. Unfold `Pair.sq`.
+
+Simplify using `only [hc]`. Use `haveI : Unique (Tup D (pair0 crv pt0).a (pair0 crv pt0).d (pair0 crv pt0).n) := ⟨⟨fun τ j => j.elim0⟩, fun T => funext fun τ => funext fun j => j.elim0⟩`. Simplify using the standard rewrite rules. Use `⟨hc, ?_⟩` and prove the remaining obligations. Unfold `Pair.norm`.
+
+Simplify using `only [hq]`. Use `show ∑ᶠ h : Cls D 0 (intG D 0), ((gam D (intG D 0) h.out : ℝ))⁻¹ * 1 = 1`. Rewrite using `[finsum_unique, gam0]`. Simplify using the standard rewrite rules.
+-/
 theorem normSumPairRankZeroOfCurve_coord_norm (crv : Crv D cc δ) (pt0 : GL3Theta.IsTwoTorsionPointUnkilled D (lamOf D cc δ) t0) :
     (∀ h T, (pair0 crv pt0).coord h T = 1) ∧ (pair0 crv pt0).norm = 1 := by
   have ht : ∀ x h T, (pair0 crv pt0).term x h T = 1 := by
@@ -435,14 +566,23 @@ theorem normSumPairRankZeroOfCurve_coord_norm (crv : Crv D cc δ) (pt0 : GL3Thet
 
 end RankZero
 
+/- English proof (translation)
+Take `⟨δ, hδ⟩` from `exists_crv_top D`. Take `⟨t0, ht⟩` from `(h ⊤ δ hδ).1`. Conclude with `⟨δ, t0, RankZero.pair0 hδ ht, (RankZero.normSumPairRankZeroOfCurve_coord_norm hδ ht).2, one_pos, fun p hp h1 => absurd (Nat.dvd_one.mp h1) hp.one_lt.ne'⟩`.
+-/
 example (h : t0Ex D) : ∃ (δ t0 : ℂ) (P : Pair D ⊤ δ t0 1), P.norm = 1 ∧ GoodLevel D 1 := by
   obtain ⟨δ, hδ⟩ := exists_crv_top D
   obtain ⟨t0, ht⟩ := (h ⊤ δ hδ).1
   exact ⟨δ, t0, RankZero.pair0 hδ ht, (RankZero.normSumPairRankZeroOfCurve_coord_norm hδ ht).2, one_pos,
     fun p hp h1 => absurd (Nat.dvd_one.mp h1) hp.one_lt.ne'⟩
 
+/- English proof (translation)
+The claim follows from `P.crv.1.1 rfl`.
+-/
 example (P : Pair D ⊥ δ t0 Q) : False := P.crv.1.1 rfl
 
+/- English proof (translation)
+Simplify using `[minorPol]`.
+-/
 example {d : ℕ} {n : D.what₂.Tau → ℕ} (T : Tup D 1 d n) :
     minorPol D T = ∏ τ, ∏ j, MvPolynomial.X (τ, (T τ j).1 0, 0) := by
   simp [minorPol]

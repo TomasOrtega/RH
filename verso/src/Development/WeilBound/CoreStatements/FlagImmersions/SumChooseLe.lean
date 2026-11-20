@@ -8,6 +8,11 @@ namespace RootFieldNumerics.M5
 
 variable {N : ℕ}
 
+/- English proof (translation)
+Use `⟨(∏ c : Fin N, (((N - 1 - (c : ℕ)).factorial : ℕ) : ℝ)⁻¹) * (((Equiv.Perm.sign (Fin.revPerm : Equiv.Perm (Fin N)) : ℤ) : ℝ)), fun v => ?_⟩` and prove the remaining obligations. Establish `hM : (Matrix.of fun (c b : Fin N) => C ((((N - 1 - (c : ℕ)).factorial : ℕ) : ℝ))⁻¹ * v b ^ (N - 1 - (c : ℕ))) = Matrix.of fun (c b : Fin N) => C ((((N - 1 - (c : ℕ)).factorial : ℕ) : ℝ))⁻¹ * ((Matrix.vandermonde v).transpose.submatrix Fin.revPerm id) c b`. Use extensionality with `c b`. Simplify using `only [Matrix.of_apply, Matrix.submatrix_apply, Matrix.transpose_apply, Matrix.vandermonde_apply, Fin.revPerm_apply, Fin.val_rev, id]`. Rewrite using `[show N - ((c : ℕ) + 1) = N - 1 - (c : ℕ) by omega]`.
+
+Unfold `gdet`. Rewrite using `[hM, Matrix.det_mul_column, Matrix.det_permute, Matrix.det_transpose, Matrix.det_vandermonde]`. Simplify using `only [map_mul, map_prod, map_intCast]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem gdet_rho (N : ℕ) : ∃ c : ℝ, ∀ v : Fin N → Polynomial ℝ,
     gdet (fun c' : Fin N => N - 1 - (c' : ℕ)) v = Polynomial.C c * ∏ a, ∏ b ∈ Finset.Ioi a, (v b - v a) := by
   refine ⟨(∏ c : Fin N, (((N - 1 - (c : ℕ)).factorial : ℕ) : ℝ)⁻¹) *
@@ -24,6 +29,11 @@ theorem gdet_rho (N : ℕ) : ∃ c : ℝ, ∀ v : Fin N → Polynomial ℝ,
   simp only [map_mul, map_prod, map_intCast]
   ring
 
+/- English proof (translation)
+Rewrite using `[← Nat.sum_range_choose]`. Apply `Finset.sum_le_sum_of_ne_zero` to reduce the goal to its premises. Introduce `i _ hi`. Rewrite using `[Finset.mem_range]`. Assume the negation of the conclusion as `h`.
+
+Conclude with `hi (Nat.choose_eq_zero_of_lt (by omega))`.
+-/
 theorem sum_choose_le (M n : ℕ) : ∑ i ∈ Finset.range M, n.choose i ≤ 2 ^ n := by
   rw [← Nat.sum_range_choose]
   apply Finset.sum_le_sum_of_ne_zero
@@ -32,6 +42,9 @@ theorem sum_choose_le (M n : ℕ) : ∑ i ∈ Finset.range M, n.choose i ≤ 2 ^
   by_contra h
   exact hi (Nat.choose_eq_zero_of_lt (by omega))
 
+/- English proof (translation)
+Establish `hd : (rr w m N).natDegree < N`. Establish `: (rr w m N).natDegree ≤ N - 1` using `natDegree_le_iff_coeff_eq_zero.mpr fun n hn => rr_coeff_big w m N n (by omega)`. Use linear arithmetic over natural numbers and integers. Rewrite using `[← rr_eval w m N a ha, eval_eq_sum_range' hd, ← Finset.sum_range_reflect, ← Fin.sum_univ_eq_sum_range (fun i => (rr w m N).coeff (N - 1 - i) * w a ^ (N - 1 - i))]`.
+-/
 theorem pow_eq_sum_rr (w : ℕ → Polynomial ℝ) (m a : ℕ) (ha : a < N) :
     w a ^ m = ∑ c : Fin N, (rr w m N).coeff (N - 1 - (c : ℕ)) * w a ^ (N - 1 - (c : ℕ)) := by
   have hd : (rr w m N).natDegree < N := by
@@ -41,6 +54,29 @@ theorem pow_eq_sum_rr (w : ℕ → Polynomial ℝ) (m a : ℕ) (ha : a < N) :
   rw [← rr_eval w m N a ha, eval_eq_sum_range' hd, ← Finset.sum_range_reflect,
     ← Fin.sum_univ_eq_sum_range (fun i => (rr w m N).coeff (N - 1 - i) * w a ^ (N - 1 - i))]
 
+/- English proof (translation)
+Use `set w : ℕ → Polynomial ℝ := fun a => if h : a < N then v ⟨a, h⟩ else 0 with hw`. Establish `hwv : ∀ b : Fin N, w b = v b` using `fun b => by simp [hw, b.isLt]`. Establish `hwM : ∀ a, Maj (w a) U (1 / U)`. Introduce `a`. Distinguish the cases in `h : a < N`.
+
+Simplify using `only [hw, dif_pos h]`. Conclude with `hv _`. Simplify using `only [hw, dif_neg h]`. Conclude with `Maj.zero hU.le (by positivity)`. Use `⟨∑ c : Fin N, C ((((N - 1 - (c : ℕ) + k).factorial : ℕ) : ℝ)⁻¹ * (((N - 1 - (c : ℕ)).factorial : ℕ) : ℝ)) * (rr w (N - 1 - (c : ℕ) + k) N).coeff (N - 1 - (c : ℕ)), ?_, ?_⟩` and prove the remaining obligations.
+
+Establish `hk0 : (0 : ℝ) ≤ k / U` using `by positivity`. Establish `h1` using `Maj.sum Finset.univ (fun c : Fin N => C ((((N - 1 - (c : ℕ) + k).factorial : ℕ) : ℝ)⁻¹ * (((N - 1 - (c : ℕ)).factorial : ℕ) : ℝ)) * (rr w (N - 1 - (c : ℕ) + k) N).coeff (N - 1 - (c : ℕ))) (fun c : Fin N => ((((N - 1 - (c : ℕ) + k).factorial : ℕ) : ℝ)⁻¹ * (((N - 1 - (c : ℕ)).facto …`. Apply `h1.mono hk0 _ le_rfl` to reduce the goal to its premises. Establish `hterm : ∀ c : Fin N, ((((N - 1 - (c : ℕ) + k).factorial : ℕ) : ℝ)⁻¹ * (((N - 1 - (c : ℕ)).factorial : ℕ) : ℝ)) * ((cnt (N - 1 - (c : ℕ)) k N : ℝ) * U ^ k) = ((k - 1).choose (c : ℕ) : ℝ) / (k.factorial : ℝ) * U ^ k`. Introduce `c`.
+
+Establish `hc : N - 1 - (c : ℕ) < N` using `by omega`. Establish `hk1 : k ≠ 0` using `by omega`. Simplify using `only [cnt, if_pos hc, if_neg hk1]`. Rewrite using `[show N - 1 - (N - 1 - (c : ℕ)) = (c : ℕ) by omega]`. Establish `hf` using `Nat.add_choose_mul_factorial_mul_factorial k (N - 1 - (c : ℕ))`.
+
+Rewrite `hf` using `[add_comm k]`. Establish `hf' : (((N - 1 - (c : ℕ) + k).choose (N - 1 - (c : ℕ)) : ℕ) : ℝ) * (k.factorial : ℝ) * ((N - 1 - (c : ℕ)).factorial : ℝ) = ((N - 1 - (c : ℕ) + k).factorial : ℝ)`. Conclude with `hf` after adjusting the coercions. Use `push_cast`. Rewrite using `[← hf']`.
+
+Establish `h2 : (k.factorial : ℝ) ≠ 0` using `by positivity`. Establish `h3 : ((N - 1 - (c : ℕ)).factorial : ℝ) ≠ 0` using `by positivity`. Establish `h4 : (((N - 1 - (c : ℕ) + k).choose (N - 1 - (c : ℕ)) : ℕ) : ℝ) ≠ 0`. Use `Nat.choose_pos (show N - 1 - (c : ℕ) ≤ N - 1 - (c : ℕ) + k by omega)` as an intermediate fact. Check the signs of the components of the expression.
+
+Clear the denominators using the available nonvanishing facts. Rewrite using `[Finset.sum_congr rfl (fun c _ => hterm c), ← Finset.sum_mul, ← Finset.sum_div]`. Establish `hs : (∑ c : Fin N, ((k - 1).choose (c : ℕ) : ℝ)) ≤ 2 ^ (k - 1)`. Use `sum_choose_le N (k - 1)` as an intermediate fact. Rewrite `this` using `[← Fin.sum_univ_eq_sum_range (fun i => (k - 1).choose i) N]`.
+
+Conclude with `this` after adjusting the coercions. Use `gcongr`. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl (fun c _ => ?_)` and prove the remaining obligations. Simplify using `only [gdet]`.
+
+Use `set A : Matrix (Fin N) (Fin N) (Polynomial ℝ) := Matrix.of fun (c' b : Fin N) => C ((((N - 1 - (c' : ℕ)).factorial : ℕ) : ℝ))⁻¹ * v b ^ (N - 1 - (c' : ℕ)) with hA`. Establish `hrow : (Matrix.of fun (c' b : Fin N) => C ((((N - 1 - (c' : ℕ) + if c' = c then k else 0).factorial : ℕ) : ℝ))⁻¹ * v b ^ (N - 1 - (c' : ℕ) + if c' = c then k else 0)) = A.updateRow c (∑ c' : Fin N, (C ((((N - 1 - (c : ℕ) + k).factorial : ℕ) : ℝ)⁻¹ * (((N - 1 - (c' : ℕ)).factorial …`. Use `Matrix.ext fun i b => ?_` and prove the remaining obligations. Rewrite using `[Matrix.updateRow_apply]`. Distinguish the cases in `hi : i = c`.
+
+Substitute `hi` using the available equality. Simplify using `only [if_pos rfl, if_true, Matrix.of_apply, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, hA]`. Rewrite using `[← hwv b, pow_eq_sum_rr w _ b b.isLt, Finset.mul_sum]`. Use `Finset.sum_congr rfl (fun c' _ => ?_)` and prove the remaining obligations. Establish `hP : C ((((N - 1 - (c' : ℕ)).factorial : ℕ) : ℝ)) * C ((((N - 1 - (c' : ℕ)).factorial : ℕ) : ℝ))⁻¹ = (1 : Polynomial ℝ)`.
+
+Rewrite using `[← map_mul, mul_inv_cancel₀ (by positivity), map_one]`. Rewrite using `[map_mul]`. Take the linear combination `(-(C ((((N - 1 - (i : ℕ) + k).factorial : ℕ) : ℝ))⁻¹ * (rr w (N - 1 - (i : ℕ) + k) N).coeff (N - 1 - (c' : ℕ)) * w b ^ (N - 1 - (c' : ℕ)))) * hP`. Simplify using `only [if_neg hi, Matrix.of_apply, hA, add_zero]`. Rewrite using `[hrow, Matrix.det_updateRow_sum, smul_eq_mul]`.
+-/
 theorem gdet_bump (k : ℕ) (hk : 1 ≤ k) (U : ℝ) (hU : 0 < U) (v : Fin N → Polynomial ℝ)
     (hv : ∀ b, Maj (v b) U (1 / U)) :
     ∃ r : Polynomial ℝ, Maj r (2 ^ (k - 1) / (k.factorial : ℝ) * U ^ k) (k / U) ∧

@@ -4,6 +4,9 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 
 namespace GlobalTheory.SepCech
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨isLimitOfPreserves (Scheme.Spec ⋙ yoneda) hc.op⟩`.
+-/
 theorem isLimit_leftFunc_arrCone (K Ω : Type) [Field K] [Field Ω] [Algebra K Ω]
     (hc : IsColimit (ringCocone K Ω)) :
     Nonempty (IsLimit (Arrow.leftFunc.mapCone (arrCone K Ω))) :=

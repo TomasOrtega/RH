@@ -19,6 +19,9 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 def dM {R : Type} [CommRing R] {n : ℕ} (i₀ : Fin n) (x y : R) : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) R :=
   1 + (x - 1) • Matrix.single (Sum.inl i₀) (Sum.inl i₀) 1 + (y - 1) • Matrix.single (Sum.inr i₀) (Sum.inr i₀) 1
 
+/- English proof (translation)
+Simplify using `only [dM, Matrix.add_apply, Matrix.smul_apply, Matrix.single_apply, Matrix.one_apply, smul_eq_mul]`. Apply the tactic sequence `rcases u with u | u <;> rcases v with v | v <;> simp only [Sum.inl.injEq, Sum.inr.injEq, reduceCtorEq, and_false, false_and, if_false, mul_zero, add_zero, and_self] <;> by_cases h : u = v <;> by_cases h' : u = i₀ <;> subst_vars <;>`. Simplify using `[eq_comm]`.
+-/
 theorem dM_apply {R : Type} [CommRing R] {n : ℕ} (i₀ : Fin n) (x y : R) (u v : Fin n ⊕ Fin n) :
     dM i₀ x y u v = if u = v then (if u = Sum.inl i₀ then x else if u = Sum.inr i₀ then y else 1) else 0 := by
   simp only [dM, Matrix.add_apply, Matrix.smul_apply, Matrix.single_apply, Matrix.one_apply, smul_eq_mul]
@@ -26,12 +29,26 @@ theorem dM_apply {R : Type} [CommRing R] {n : ℕ} (i₀ : Fin n) (x y : R) (u v
     false_and, if_false, mul_zero, add_zero, and_self] <;> by_cases h : u = v <;> by_cases h' : u = i₀ <;> subst_vars <;>
     simp_all [eq_comm]
 
+/- English proof (translation)
+Use extensionality with `u v`. Rewrite using `[Matrix.map_apply, dM_apply, dM_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem dM_map {R S : Type} [CommRing R] [CommRing S] {n : ℕ} (i₀ : Fin n) (f : R →+* S) (x y : R) :
     (dM i₀ x y).map f = dM i₀ (f x) (f y) := by
   ext u v
   rw [Matrix.map_apply, dM_apply, dM_apply]
   split_ifs <;> simp
 
+/- English proof (translation)
+Use `d.cm.1` as an intermediate fact. Establish `hw : w.IsReal` using `IsTotallyReal.isReal w`. Set `e` to `InfinitePlace.Completion.ringEquivRealOfIsReal hw`. Set `u : ℝ → ℝˣ` to `fun τ => ⟨Real.exp τ, Real.exp (-τ), by rw [← Real.exp_add, add_neg_cancel, Real.exp_zero], by rw [← Real.exp_add, neg_add_cancel, Real.exp_zero]⟩`. Set `r : ℝ → GroundTheory.Global.IdeleGroup F` to `fun τ => GroundTheory.Global.IdeleGroup.infiniteEmbedding w (Units.map e.symm.toMonoidHom (u τ))`.
+
+Establish `hu : ∀ τ τ', u (τ + τ') = u τ * u τ'` using `fun τ τ' => Units.ext (Real.exp_add τ τ')`. Establish `hu0 : u 0 = 1` using `Units.ext Real.exp_zero`. Establish `hr1 : ∀ τ, ((r τ : AF F)).1 = GroundTheory.Global.IdeleGroup.infiniteAdeleSingle w (e.symm (Real.exp τ))` using `fun τ => rfl`. Establish `hr2 : ∀ τ, ((r τ : AF F)).2 = 1` using `fun τ => rfl`. Establish `hee : ∀ x : ℝ, InfinitePlace.Completion.extensionEmbeddingOfIsReal hw (e.symm x) = x` using `fun x => e.apply_symm_apply x`.
+
+Establish `hext : ∀ τ, InfinitePlace.Completion.extensionEmbedding w (e.symm (Real.exp τ)) = (Real.exp τ : ℂ)`. Introduce `τ`. Rewrite using `[← InfinitePlace.Completion.extensionEmbeddingOfIsReal_apply hw, hee]`. Use `⟨r, fun τ τ' => by simp only [r, hu, map_mul], by simp only [r, hu0, map_one], fun τ => ?_, fun τ => ?_, fun τ w' hw' => ?_, fun τ => ?_⟩` and prove the remaining obligations. Rewrite using `[GroundTheory.Global.IdeleGroup.ideleModule_infiniteEmbedding, hw.mult_eq_one, pow_one] show ‖e.symm (Real.exp τ)‖ = _`.
+
+Rewrite using `[← (InfinitePlace.Completion.isometry_extensionEmbeddingOfIsReal hw).norm_map_of_map_zero (map_zero _), hee, Real.norm_of_nonneg (Real.exp_pos τ).le]`. Rewrite using `[St.piInf_smul, map_one, mul_one, hr1, GroundTheory.Global.IdeleGroup.infiniteAdeleSingle_apply, Pi.mulSingle_eq_same]`. Conclude with `hext τ`. Rewrite using `[St.piInf_smul, map_one, mul_one, hr1, GroundTheory.Global.IdeleGroup.infiniteAdeleSingle_apply, Pi.mulSingle_eq_of_ne hw', map_one]`. Use `Prod.ext ?_ ?_` and prove the remaining obligations.
+
+Use `show (0 : Ainf F) * _ = 0`. Rewrite using `[zero_mul]`. Use `show (1 : Af F) * (r τ : AF F).2 = 1`. Rewrite using `[hr2, mul_one]`.
+-/
 theorem rEx (d : SD σ) (w : InfinitePlace F) : ∃ r : ℝ → GroundTheory.Global.IdeleGroup F,
     (∀ τ τ', r (τ + τ') = r τ * r τ') ∧ r 0 = 1 ∧
     (∀ τ, (GroundTheory.Global.IdeleGroup.ideleModule F (r τ) : ℝ) = Real.exp τ) ∧
@@ -67,6 +84,13 @@ theorem rEx (d : SD σ) (w : InfinitePlace F) : ∃ r : ℝ → GroundTheory.Glo
     · show (1 : Af F) * (r τ : AF F).2 = 1
       rw [hr2, mul_one]
 
+/- English proof (translation)
+Unfold `IsDil at *`. Use `set M' : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) ℂ := Matrix.fromBlocks (Matrix.diagonal fun j => (Real.exp (-τ * X j) : ℂ)) 0 0 (Matrix.diagonal fun j => (Real.exp (-(-τ * X j)) : ℂ)) with hM'`. Establish `h1 : mR y⁻¹ * mR y = 1` using `by show ((y⁻¹ : GR n) : GL (Fin n ⊕ Fin n) ℂ).1 * (y : GL (Fin n ⊕ Fin n) ℂ).1 = 1`. Rewrite using `[Subgroup.coe_inv, Units.inv_mul]`. Establish `h2 : mR y * M' = 1`.
+
+Rewrite using `[h, hM', Matrix.fromBlocks_multiply]`. Simplify using `only [Matrix.diagonal_mul_diagonal, Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add]`. Rewrite using `[← Matrix.fromBlocks_one]`. Apply the tactic sequence `congr 1 <;> (ext i j; simp only [Matrix.diagonal_apply, Matrix.one_apply]; split_ifs <;>`. Simplify using `[← Complex.exp_add])`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem isDil_inv {n : ℕ} {X : Fin n → ℝ} {τ : ℝ} {y : GR n} (h : IsDil X τ y) : IsDil X (-τ) y⁻¹ := by
   unfold IsDil at *
   set M' : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) ℂ := Matrix.fromBlocks (Matrix.diagonal fun j => (Real.exp (-τ * X j) : ℂ)) 0 0
@@ -83,6 +107,17 @@ theorem isDil_inv {n : ℕ} {X : Fin n → ℝ} {τ : ℝ} {y : GR n} (h : IsDil
   calc mR y⁻¹ = mR y⁻¹ * (mR y * M') := by rw [h2, Matrix.mul_one]
     _ = M' := by rw [← Matrix.mul_assoc, h1, Matrix.one_mul]
 
+/- English proof (translation)
+Establish `hζ0 : R.ζ ≠ 0` using `Krd.zeta_ne R.hζ`. Establish `hC : Matrix.fromBlocks (Matrix.diagonal fun j => (Real.exp (τ * (Pi.single i₀ 1 : Fin d.n → ℝ) j) : ℂ)) 0 0 (Matrix.diagonal fun j => (Real.exp (-(τ * (Pi.single i₀ 1 : Fin d.n → ℝ) j)) : ℂ)) = dM i₀ (Real.exp τ : ℂ) (Real.exp (-τ) : ℂ)`. Use extensionality with `u v`. Rewrite using `[dM_apply]`. Apply the tactic sequence `rcases u with u | u <;> rcases v with v | v <;>`.
+
+Apply the tactic sequence `simp only [Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₁₂, Matrix.fromBlocks_apply₂₁, Matrix.fromBlocks_apply₂₂, Matrix.diagonal_apply, Sum.inl.injEq, Sum.inr.injEq, reduceCtorEq, if_false, Matrix.zero_apply] <;>`. Apply the tactic sequence `by_cases h : u = v <;> by_cases h' : u = i₀ <;> subst_vars <;> simp_all [Pi.single_apply]`. Use `Place.cw_ext d (fun w' => ?_) ?_` and prove the remaining obligations. Distinguish the cases in `hw' : w' = w`. Substitute `hw'` using the available equality.
+
+Rewrite using `[R.cw_iota_pf w' y, hy, dZ_conj_diag hζ0, hC, SD.cw, dM_map, hw, hw]`. Rewrite using `[R.off_w w w' y hw', SD.cw, dM_map, ho τ w' hw', ho (-τ) w' hw']`. Use extensionality with `u v`. Rewrite using `[dM_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> rfl`.
+
+Rewrite using `[R.off_f w y]`. Use extensionality with `u v`. Rewrite using `[Matrix.smul_apply, Matrix.smul_apply, dM_apply, Matrix.one_apply]`. Establish `e : ∀ t, finOne F • ((r t : AF F) • (1 : AE F E)) = finOne F • (1 : AE F E)` using `fun t => by`. Rewrite using `[smul_smul, hf]`.
+
+Apply the tactic sequence `split_ifs <;> simp [e]`.
+-/
 theorem frame_dil (d : SD σ) (R : RD d) (w : InfinitePlace F) (r : ℝ → GroundTheory.Global.IdeleGroup F)
     (hw : ∀ τ, piInf (d.B.emb w) ((r τ : AF F) • (1 : AE F E)) = (Real.exp τ : ℂ))
     (ho : ∀ τ w', w' ≠ w → piInf (d.B.emb w') ((r τ : AF F) • (1 : AE F E)) = 1)
@@ -113,6 +148,21 @@ theorem frame_dil (d : SD σ) (R : RD d) (w : InfinitePlace F) (r : ℝ → Grou
       rw [smul_smul, hf]
     split_ifs <;> simp [e]
 
+/- English proof (translation)
+Take `⟨t0, ht0⟩` from `d.ok.frame.2`. Use `set A : Matrix (Fin d.n) (Fin d.n) ℂ := Matrix.diagonal fun j => (Real.exp (τ * (Pi.single i₀ 1 : Fin d.n → ℝ) j) : ℂ) with hAdef`. Use `set D : Matrix (Fin d.n) (Fin d.n) ℂ := Matrix.diagonal fun j => (Real.exp (-(τ * (Pi.single i₀ 1 : Fin d.n → ℝ) j)) : ℂ)`. Establish `hy' : mR y = Matrix.fromBlocks A 0 0 D` using `hy`. Take `⟨-, hA, -, hoA, hfA, -⟩` from `R.frame_diag w y A D hy'`.
+
+Establish `h21 : (mR y).toBlocks₂₁ = 0` using `by rw [hy', Matrix.toBlocks_fromBlocks₂₁]`. Take `⟨t, ht, habs⟩` from `KSplitP.iota_isPar d R w y h21`. Establish `hdetA : A.det = (Real.exp τ : ℂ)`. Rewrite using `[hAdef, Matrix.det_diagonal, Finset.prod_eq_single i₀ (fun j _ hj => by simp [Pi.single_eq_of_ne hj]) (fun h => absurd (Finset.mem_univ _) h)]`. Simplify using the standard rewrite rules.
+
+Use `⟨t, ht, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[habs, hy', Matrix.toBlocks_fromBlocks₁₁, hdetA, Complex.norm_real, Real.norm_of_nonneg (Real.exp_pos τ).le, ← Real.exp_nat_mul]`. Evaluate the numerical expressions. Establish `ht1` using `((kunf.isPar_frame ht0 (R.ι w y) t).1 ht).2 set P := (inFrame d.b (R.ι w y)).toBlocks₁₁ with hP`. Establish `hcw : ∀ w', d.cw w' t.1 = d.cw w' (incM F t0.1) * d.cw w' P * d.cw w' (incM F (t0⁻¹).1)`.
+
+Introduce `w'`. Rewrite using `[ht1]`. Simplify using `only [SD.cw, Matrix.map_mul]`. Establish `hI : incM F t0.1 * incM F (t0⁻¹).1 = 1`. Rewrite using `[← kunf.incM_mul', Units.mul_inv]`.
+
+Use extensionality with `i j`. Simplify using `[incM, Matrix.one_apply]`. Establish `hT : ∀ w', d.cw w' (incM F t0.1) * d.cw w' (incM F (t0⁻¹).1) = 1`. Introduce `w'`. Rewrite using `[SD.cw, SD.cw, ← Matrix.map_mul, hI, Matrix.map_one _ (map_zero _) (map_one _)]`.
+
+Establish `ho : ∀ w', w' ≠ w → d.cw w' t.1 = 1` using `fun w' h => by rw [hcw, (hoA w' h).1, Matrix.mul_one, hT]`. Establish `hf : finOne F • t.1 = finOne F • (1 : Matrix (Fin d.n) (Fin d.n) (AE F E))`. Rewrite using `[ht1, ← Matrix.smul_mul, ← Matrix.mul_smul, hfA, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_one, hI]`. Establish `hdet : (d.cw w t.1).det = (Real.exp τ : ℂ)`. Establish `hXY` using `congrArg Matrix.det (hT w)`.
+
+Rewrite `hXY` using `[Matrix.det_mul, Matrix.det_one]`. Rewrite using `[hcw, Matrix.det_mul, Matrix.det_mul, hA, hdetA]`. Take the linear combination `((Real.exp τ : ℝ) : ℂ) * hXY`. Rewrite using `[RD.chi_det (d := d) w t _ rfl ho hf, hdet]`. Conclude with `d.chiW_pos w _ (Real.exp_pos τ)`.
+-/
 theorem par_dil (d : SD σ) (R : RD d) (w : InfinitePlace F) (i₀ : Fin d.n) {τ : ℝ} {y : GR d.n}
     (hy : IsDil (Pi.single i₀ 1) τ y) :
     ∃ t, IsPar (R.ι w y) t ∧ (absE F E (Matrix.GeneralLinearGroup.det t) : ℝ) = Real.exp (2 * τ) ∧

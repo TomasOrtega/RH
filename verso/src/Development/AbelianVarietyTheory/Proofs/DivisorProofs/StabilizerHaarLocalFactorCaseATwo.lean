@@ -20,6 +20,19 @@ open GlobalTheory.ConeMeasV GlobalTheory.ConeMeasSmall
 
 variable {F : Type} [Field F] [NumberField F]
 
+/- English proof (translation)
+Use `choose s hs using fun Φ : schA F κ => GlobalTheory.ConeSlice.exists_schwartz_slice Φ.2 x`. Set `S₀ : schA F κ →ₗ[ℂ] SchwartzMap (κ → mixedEmbedding.mixedSpace F) ℂ` to `{ toFun := s map_add' := fun Φ Ψ => by ext t; simp [hs] map_smul' := fun c Φ => by ext t; simp [hs] }`. Take `⟨S, hS⟩` from `S₀.exists_extend`. Establish `h : ∀ Φ ∈ schA F κ, ∀ t, S Φ t = Φ (x + GlobalTheory.ThetaTransform.embR t)` using `fun Φ hΦ t => by`. Use `LinearMap.congr_fun hS ⟨Φ, hΦ⟩` as an intermediate fact.
+
+Simplify using `only [LinearMap.comp_apply, Submodule.subtype_apply] at this`. Rewrite using `[this]`. Conclude with `hs ⟨Φ, hΦ⟩ t`. Use `⟨S, h, fun T g hg => ?_⟩` and prove the remaining obligations. Set `a : κ → mixedEmbedding.mixedSpace F` to `fun i => InfiniteAdeleRing.ringEquiv_mixedSpace F (x i).1`.
+
+Use `⟨g (fun i => (x i).2) • T.comp (SchwartzMap.compSubConstCLM ℂ (-a)), fun f => ?_⟩` and prove the remaining obligations. Establish `e : S (pureA F f g) = g (fun i => (x i).2) • SchwartzMap.compSubConstCLM ℂ (-a) f`. Use extensionality with `t`. Rewrite using `[h _ (Submodule.subset_span ⟨f, g, hg, rfl⟩)]`. Simplify using `only [SchwartzMap.smul_apply, SchwartzMap.compSubConstCLM_apply, smul_eq_mul, pureA]`.
+
+Establish `h1 : (fun i => InfiniteAdeleRing.ringEquiv_mixedSpace F ((x + GlobalTheory.ThetaTransform.embR t) i).1) = t - -a`. Use function extensionality and compare the values at `i`. Use `show InfiniteAdeleRing.ringEquiv_mixedSpace F ((x i).1 + (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (t i)) = t i - -a i`. Rewrite using `[map_add, RingEquiv.apply_symm_apply, sub_neg_eq_add, add_comm]`. Establish `h2 : (fun i => ((x + GlobalTheory.ThetaTransform.embR t) i).2) = fun i => (x i).2`.
+
+Use function extensionality and compare the values at `i`. Use `show (x i).2 + 0 = (x i).2`. Conclude with `add_zero _`. Rewrite using `[h1, h2, mul_comm]`. Use `show T (S (pureA F f g)) = _`.
+
+Rewrite using `[e, map_smul]`. Both sides reduce to the same expression.
+-/
 theorem exists_slice_map {κ : Type} [Fintype κ] (x : κ → AF F) :
     ∃ S : ((κ → AF F) → ℂ) →ₗ[ℂ] SchwartzMap (κ → mixedEmbedding.mixedSpace F) ℂ,
       (∀ Φ ∈ schA F κ, ∀ t, S Φ t = Φ (x + GlobalTheory.ThetaTransform.embR t)) ∧
@@ -56,6 +69,9 @@ theorem exists_slice_map {κ : Type} [Fintype κ] (x : κ → AF F) :
   rw [e, map_smul]
   rfl
 
+/- English proof (translation)
+The claim follows from `stronglyMeasurable_uncurry_of_continuous_of_stronglyMeasurable (fun l => GlobalTheory.WeakDeriv.continuous_iteratedFDeriv_of_weak (fun k => f k l) (fun T => hA T l) m t) (fun k => (GlobalTheory.WeakDeriv.continuous_iteratedFDeriv_of_weak (f k) (fun T => hL T k) m t).stronglyMeasu …`.
+-/
 theorem stronglyMeasurable_deriv {D A L : Type} [NormedAddCommGroup D] [NormedSpace ℝ D] [FiniteDimensional ℝ D]
     [TopologicalSpace A] [MeasurableSpace A] [BorelSpace A] (_ : SecondCountableTopology A)
     (_ : TopologicalSpace.MetrizableSpace A) [TopologicalSpace L] [MeasurableSpace L] [BorelSpace L]
@@ -67,6 +83,13 @@ theorem stronglyMeasurable_deriv {D A L : Type} [NormedAddCommGroup D] [NormedSp
     (fun l => GlobalTheory.WeakDeriv.continuous_iteratedFDeriv_of_weak (fun k => f k l) (fun T => hA T l) m t)
     (fun k => (GlobalTheory.WeakDeriv.continuous_iteratedFDeriv_of_weak (f k) (fun T => hL T k) m t).stronglyMeasurable)
 
+/- English proof (translation)
+Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `haveI : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) _`. Use `haveI := GlobalTheory.AdelicUnitaryTop.t2Space_adeleRing_numberField F`. Take `⟨e⟩` from `GlobalTheory.AdelicUnitaryTop.nonempty_homeomorph (F := F) (E := E) (AF F)`. Use `haveI : T2Space (AE F E) := e.isEmbedding.t2Space`.
+
+Use `haveI : LocallyCompactSpace (AE F E) := e.isClosedEmbedding.locallyCompactSpace`. Use `haveI : LocallyCompactSpace (AE F E)ᵐᵒᵖ := MulOpposite.opHomeomorph.symm.isClosedEmbedding.locallyCompactSpace`. Use `haveI : LocallyCompactSpace (AE F E)ˣ := Units.isClosedEmbedding_embedProduct.locallyCompactSpace`. Use `haveI := (idele_top (F := F) (E := E)).1`. Use `haveI : SigmaCompactSpace (AE F E)ˣ := sigmaCompactSpace_of_locallyCompact_secondCountable`.
+
+Use `haveI : SigmaFinite μ := Measure.IsHaarMeasure.sigmaFinite _`. Use `infer_instance`.
+-/
 theorem sfinite_idele {E : Type} [Field E] [NumberField E] [Algebra F E] (μ : Measure (AE F E)ˣ)
     (hμ : μ.IsHaarMeasure) : SFinite μ := by
   haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E
@@ -82,6 +105,13 @@ theorem sfinite_idele {E : Type} [Field E] [NumberField E] [Algebra F E] (μ : M
   haveI : SigmaFinite μ := Measure.IsHaarMeasure.sigmaFinite _
   infer_instance
 
+/- English proof (translation)
+Establish `hψ` using `hT.base.std`. Establish `hS` using `IsUWeilPair.isUSplitting hT.weil`. Take `⟨S, hSe, hSa⟩` from `exists_slice_map x`. Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `haveI : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) _`.
+
+Use `haveI : IsModuleTopology (AF F) (Matrix (Fin (b + 2)) (Fin (b + 2 + a')) (AE F E)) := inferInstanceAs (IsModuleTopology (AF F) (Fin (b + 2) → Fin (b + 2 + a') → AE F E))`. Establish `hco : Continuous G.M.co.e` using `IsModuleTopology.continuous_of_linearMap G.M.co.e.toLinearMap`. Establish `hsh : Continuous (shiftA (F` using `F) H H') := by`. Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Conclude with `Units.continuous_val.mul continuous_const`.
+
+Establish `hadm : ∀ T : SInf F (Fin b × Fin (b + a')) →L[ℂ] ℂ, (T.toLinearMap ∘ₗ S) ∘ₗ e ∈ (adeleClass F).adm _` using `fun T => comp_ev_mem_adm hT.geo.hM hT₁.geo.hM hE (hSa T)`. Use `⟨fun k l => S (e (schr B.ψ (G.M.co.e (shiftA H H' l)) (om (k, 1) Ψ))), fun T l => ?_, fun T k => ?_, fun k l s => ?_⟩` and prove the remaining obligations. Conclude with `(hS.cont _ (comp_schr_mem_adm hψ (G.M.co.e (shiftA H H' l)) (hadm T)) _ hΨ).comp (continuous_id.prodMk continuous_const)`. Conclude with `(continuous_schr hψ (hadm T) (hS.pres (k, 1) _ hΨ)).comp (hco.comp hsh)`. Conclude with `hSe _ (hE.maps _ (GlobalTheory.ConeMeasV.schr_mem_schA hψ _ (hS.pres _ _ hΨ))) s`.
+-/
 theorem exists_weak_family {E : Type} [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {B : Base F E} {b a' : ℕ}
     {G : Geo σ (b + 2) a'} {G₁ : Geo σ b a'} {H : Plane E (b + 2) b} {H' : Plane E (b + 2 + a') (b + a')}
     {e : Fn F (b + 2) (b + 2 + a') →ₗ[ℂ] Fn F b (b + a')} (hE : IsEv B G.M G₁.M H.ι H'.ι (isoA H H') e)
@@ -112,6 +142,13 @@ theorem exists_weak_family {E : Type} [Field E] [NumberField E] [Algebra F E] {�
   · exact (continuous_schr hψ (hadm T) (hS.pres (k, 1) _ hΨ)).comp (hco.comp hsh)
   · exact hSe _ (hE.maps _ (GlobalTheory.ConeMeasV.schr_mem_schA hψ _ (hS.pres _ _ hΨ))) s
 
+/- English proof (translation)
+Establish `hf : ∀ k l, (fun s => u k l s * c l * c' l) = ⇑((c l * c' l) • f k l)` using `fun k l => funext fun s => by`. Rewrite using `[← hu, SchwartzMap.smul_apply, smul_eq_mul, mul_assoc, mul_comm]`. Simplify using `only [hf]`. Take `⟨g, hg⟩ : ∃ g : A → L → SchwartzMap D ℂ, ∀ k l, (c l * c' l) • f k l = g k l` from `⟨_, fun _ _ => rfl⟩`. Establish `gA : ∀ (T : SchwartzMap D ℂ →L[ℂ] ℂ) l, Continuous fun k => T (g k l)` using `fun T l => by`.
+
+Simplify using `only [← hg, map_smul, smul_eq_mul]`. Conclude with `continuous_const.mul (hA T l)`. Establish `gL : ∀ (T : SchwartzMap D ℂ →L[ℂ] ℂ) k, Continuous fun l => T (g k l)` using `fun T k => by`. Simplify using `only [← hg, map_smul, smul_eq_mul]`. Conclude with `(hc.mul hc').mul (hL T k)`.
+
+Simplify using `only [hg]`. Establish `hp : Measurable fun p : K × L => (p.1.1, p.2)` using `(measurable_subtype_coe.comp measurable_fst).prodMk measurable_snd`. Establish `hm : ∀ m t, StronglyMeasurable (Function.uncurry fun (k : K) l => iteratedFDeriv ℝ m (g k.1 l) t)` using `fun m t => (stronglyMeasurable_deriv hA₁ hA₂ hL₁ g gA gL m t).comp_measurable hp`. Conclude with `⟨fun m t k => (hm m t).of_uncurry_left.aestronglyMeasurable, fun m t => (hm m t).integral_prod_right.aestronglyMeasurable⟩`.
+-/
 theorem meas_of_weak {D A L : Type} [NormedAddCommGroup D] [NormedSpace ℝ D] [FiniteDimensional ℝ D] [Group A]
     [TopologicalSpace A] [MeasurableSpace A] (_ : BorelSpace A) (hA₁ : SecondCountableTopology A)
     (hA₂ : TopologicalSpace.MetrizableSpace A) [TopologicalSpace L] [MeasurableSpace L] (_ : BorelSpace L)
@@ -139,6 +176,11 @@ theorem meas_of_weak {D A L : Type} [NormedAddCommGroup D] [NormedSpace ℝ D] [
   exact ⟨fun m t k => (hm m t).of_uncurry_left.aestronglyMeasurable,
     fun m t => (hm m t).integral_prod_right.aestronglyMeasurable⟩
 
+/- English proof (translation)
+Introduce `_ F E _ _ _ _ _ σ B b a' G G₁ H H' _ e hE K μK μ _ _ hμ X om om' om₁ om₁' hT hT₁ Ψ hΨ x`. Take `⟨f, ck, cl, hf⟩` from `exists_weak_family hE hT hT₁ hΨ x`. Take `⟨t1, -, t3, t4⟩` from `GlobalTheory.UnitaryAdelicTop.lcsc_UA F E σ _ G.V.J`. Establish `cν : Continuous fun l : (AE F E)ˣ => (X.ν l : ℂ)` using `continuous_subtype_val.comp (hT.chars.heckeα.1.div' hT.chars.heckeβ.1)`. Establish `cN : Continuous fun l : (AE F E)ˣ => ((absE F E l : ℝ) : ℂ) ^ ((b + 2 - a') / 2)` using `(Complex.continuous_ofReal.comp (NNReal.continuous_coe.comp GlobalTheory.Doubling.continuous_absE)).pow _`.
+
+Conclude with `meas_of_weak ⟨rfl⟩ t3 (metrizable_group _ t1 t4 t3) ⟨rfl⟩ (idele_top (F := F) (E := E)).1 K μK μ (sfinite_idele μ hμ) f ck cl cν cN (u := fun k l s => e (G.M.co.rho B.ψ (shiftA H H' l) (om (k, 1) Ψ)) (x + GlobalTheory.ThetaTransform.embR s)) hf`.
+-/
 theorem slice_deriv_aestronglyMeasurable : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (b a' : ℕ) (G : Geo σ (b + 2) a') (G₁ : Geo σ b a')
     (H : Plane E (b + 2) b) (H' : Plane E (b + 2 + a') (b + a')), CfgA B G G₁ H H' →
     ∀ e, IsEv B G.M G₁.M H.ι H'.ι (isoA H H') e → ∀ (K : Subgroup (UA σ G.V.J)) (μK : Measure K) (μ : Measure (AE F E)ˣ), IsStab B K → μK.IsHaarMeasure → μ.IsHaarMeasure →

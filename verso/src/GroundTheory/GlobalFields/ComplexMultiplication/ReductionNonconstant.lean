@@ -21,6 +21,9 @@ abbrev liftField₂ : Type _ :=
 abbrev liftJ₂ : 𝒪 →+* gaussRing (gaussCurve W W') :=
   (algebraMap (gaussRing W) (gaussRing (gaussCurve W W'))).comp (algebraMap 𝒪 (gaussRing W))
 
+/- English proof (translation)
+Rewrite using `[RingHom.comp_apply, ← IsScalarTower.algebraMap_apply (gaussRing W) (gaussRing (gaussCurve W W')) (liftField₂ K W W'), IsScalarTower.algebraMap_apply (gaussRing W) (W.baseChange K).toAffine.FunctionField (liftField₂ K W W'), ← IsScalarTower.algebraMap_apply 𝒪 (gaussRing W) (W.bas …`.
+-/
 theorem liftJ₂_algebraMap (c : 𝒪) :
     algebraMap K (liftField₂ K W W') (algebraMap 𝒪 K c) =
       algebraMap (gaussRing (gaussCurve W W')) (liftField₂ K W W') (liftJ₂ W W' c) := by
@@ -32,6 +35,9 @@ theorem liftJ₂_algebraMap (c : 𝒪) :
     IsScalarTower.algebraMap_apply 𝒪 K (W.baseChange K).toAffine.FunctionField,
     ← IsScalarTower.algebraMap_apply K _ (liftField₂ K W W')]
 
+/- English proof (translation)
+Rewrite using `[baseChange_baseChange]`. Use `show W'.map (((algebraMap (W.baseChange K).toAffine.FunctionField (liftField₂ K W W')).comp (algebraMap (gaussRing W) _)).comp (algebraMap 𝒪 (gaussRing W))) = W'.map ((algebraMap K (liftField₂ K W W')).comp (algebraMap 𝒪 K))`. Use `congrArg W'.map (RingHom.ext fun c => ?_)` and prove the remaining obligations. Simplify using `only [RingHom.comp_apply]`. Rewrite using `[← IsScalarTower.algebraMap_apply 𝒪 (gaussRing W) (W.baseChange K).toAffine.FunctionField, IsScalarTower.algebraMap_apply 𝒪 K (W.baseChange K).toAffine.FunctionField, ← IsScalarTower.algebraMap_apply K _ (liftField₂ K W W')]`.
+-/
 theorem baseChange_liftField₂_eq :
     ((gaussCurve W W').baseChange (W.baseChange K).toAffine.FunctionField).baseChange
       (liftField₂ K W W') = (W'.baseChange K).baseChange (liftField₂ K W W') := by
@@ -52,6 +58,9 @@ def genPt₂ : ((W'.baseChange K).baseChange (liftField₂ K W W')).toAffine.Poi
     (GroundTheory.Arith.Abelian.genericPoint
       ((gaussCurve W W').baseChange (W.baseChange K).toAffine.FunctionField))
 
+/- English proof (translation)
+Rewrite using `[genPt₂, GroundTheory.Arith.Abelian.genericPoint, pointCongr_some]`. Conclude with `exists_some_eq _ (algebraMap_gaussX (gaussCurve W W') (W.baseChange K).toAffine.FunctionField).symm (algebraMap_gaussY (gaussCurve W W') (W.baseChange K).toAffine.FunctionField).symm`.
+-/
 theorem genPt₂_eq : ∃ h, genPt₂ K W W' = Point.some
     (algebraMap (gaussRing (gaussCurve W W')) (liftField₂ K W W') (gaussX (gaussCurve W W')))
     (algebraMap (gaussRing (gaussCurve W W')) (liftField₂ K W W') (gaussY (gaussCurve W W'))) h := by
@@ -60,6 +69,9 @@ theorem genPt₂_eq : ∃ h, genPt₂ K W W' = Point.some
     (algebraMap_gaussX (gaussCurve W W') (W.baseChange K).toAffine.FunctionField).symm
     (algebraMap_gaussY (gaussCurve W W') (W.baseChange K).toAffine.FunctionField).symm
 
+/- English proof (translation)
+Rewrite using `[genPt₂, GroundTheory.Arith.Abelian.genericPoint, pointCongr_some]`. Conclude with `transcendental_genX _`.
+-/
 theorem transOver_genPt₂ :
     TransOver (W'.baseChange K) (W.baseChange K).toAffine.FunctionField (genPt₂ K W W') := by
   rw [genPt₂, GroundTheory.Arith.Abelian.genericPoint, pointCongr_some]
@@ -78,16 +90,33 @@ def red₂ (V : WeierstrassCurve 𝒪)
     (pointCongr (map_baseChange_eq_map_of K V (liftJ₂ W W') (liftField₂ K W W')
       (liftJ₂_algebraMap K W W')) P)
 
+/- English proof (translation)
+Rewrite using `[red₂, red₂, red₂, map_add, reducePoint_add]`.
+-/
 theorem red₂_add (V : WeierstrassCurve 𝒪) [V.IsElliptic]
     (P Q : ((V.baseChange K).baseChange (liftField₂ K W W')).toAffine.Point) :
     red₂ K W W' V (P + Q) = red₂ K W W' V P + red₂ K W W' V Q := by
   rw [red₂, red₂, red₂, map_add, reducePoint_add]
 
+/- English proof (translation)
+Rewrite using `[red₂, map_zero, reducePoint_zero]`.
+-/
 theorem red₂_zero (V : WeierstrassCurve 𝒪) : red₂ K W W' V 0 = 0 := by
   rw [red₂, map_zero, reducePoint_zero]
 
 variable [W.IsElliptic] [W'.IsElliptic]
 
+/- English proof (translation)
+Use `letI : DecidableEq (ResidueField (gaussRing W)) := Classical.decEq _`. Establish `e` using `gaussCurve_map_functionField K W W'`. Establish `h0 : reducePoint (W.baseChange K).toAffine.FunctionField (gaussCurve W W') (pointCongr e.symm R) = 0`. Use `hR` as an intermediate fact. Simplify using `only [reduceFF, AddMonoidHom.comp_apply, AddEquiv.coe_toAddMonoidHom, reductionHom_apply] at this`.
+
+Rewrite `this` using `[pointCongr_eq_zero_iff, pointMapRing_eq_zero_iff]`. Then use the resulting hypothesis. Break down `point_cases (W.baseChange K).toAffine.FunctionField (gaussCurve W W') (pointCongr e.symm R) with hz | ⟨X₀, Y₀, h, hP, hX⟩ | ⟨x, y, h, hP⟩` into its components or cases. Rewrite `hz` using `[pointCongr_eq_zero_iff]`. Rewrite using `[hz, map_zero, red₂_zero]`. Establish `hRe : R = pointCongr e (Point.some _ _ h)`.
+
+Rewrite using `[← hP, pointCongr_pointCongr]`. Both sides reduce to the same expression. Rewrite `hRe` using `[pointCongr_some]`. Substitute `hRe` using the available equality. Establish `hσ : (algebraMap (W.baseChange K).toAffine.FunctionField (liftField₂ K W W')).comp (algebraMap (gaussRing W) _) = (algebraMap (gaussRing (gaussCurve W W')) (liftField₂ K W W')).comp (algebraMap (gaussRing W) _)`.
+
+Rewrite using `[← IsScalarTower.algebraMap_eq, ← IsScalarTower.algebraMap_eq]`. Establish `hX'` using `map_notMem_range (W.baseChange K).toAffine.FunctionField (liftField₂ K W W') hσ hX`. Rewrite using `[red₂, Point.map_some, pointCongr_some]`. Conclude with `reducePoint_some_notMem _ _ _ hX'`. It suffices to derive a contradiction.
+
+Establish `n` using `nonsingular_residue_of_isElliptic _ _ h.1`. Rewrite `h0` using `[hP, reducePoint_some_integral _ _ h n]`. Conclude with `Point.some_ne_zero n h0`.
+-/
 theorem red₂_map_of_reduceFF_eq_zero
     {R : ((W'.baseChange K).baseChange (W.baseChange K).toAffine.FunctionField).toAffine.Point}
     (hR : reduceFF K W W' R = 0) :

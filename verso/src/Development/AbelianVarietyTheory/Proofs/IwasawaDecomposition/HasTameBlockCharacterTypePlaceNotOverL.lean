@@ -6,6 +6,11 @@ open scoped TensorProduct
 
 namespace GlobalTheory.TameTau
 
+/- English proof (translation)
+Introduce `_ D cf b0 b1 Sx T Sp i j b kv _ _ hl`. Establish `hg` using `D.host.g_prime kv.1`. Establish `hover` using `D.naut.plGw_over kv.1 kv.2`. Take `⟨τ, hτ⟩` from `GlobalTheory.T.exists_residue_char_of_tame_char_prime_residue_field (E := D.host.E) (Ω := D.nd.Om) (NX.pG D kv) (D.host.g kv.1) hg (GlobalTheory.Proof.EigenvalueCoprimeConjugation.normV_plGw D kv.1 kv.2) (by simpa [placesOver] using hover) (T.twistBaseCoefficientRing_isAdic i) (T …`. Use `⟨(Units.map (baseCoeffToFractionRing D T i).toMonoidHom).comp τ, fun x u hu => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[MonoidHom.comp_apply, Units.coe_map, hτ x u hu]`. Both sides reduce to the same expression.
+-/
 theorem tauTame : GlobalTheory.Published.GlobalArtinReciprocity → ∀ (D : D7) (cf : CharFrame D) (b0 b1 : Big D)
     (Sx : Finset (PlE D.host)) (T : TwR D.LL0 D.nd) (Sp : RingSpec D cf b0 b1 Sx T) (i : T.Tw) (j : ℕ) (b : Bool)
     (kv : Σ kk : Fin 2, D.nd.PlG kk), 1 ≤ j → j ≤ D.R.m → NX.pG D kv ∉ placesOver D.host.E (T.l i) →

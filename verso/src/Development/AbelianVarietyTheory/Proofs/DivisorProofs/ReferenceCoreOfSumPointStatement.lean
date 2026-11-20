@@ -9,5 +9,8 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory.AllWt GlobalTheory.FlatLine GlobalTheory.SlopeRec GlobalTheory.CovTop GlobalTheory.BigTop GlobalTheory.RefSum GlobalTheory.FactorDepth GlobalTheory.CharDepth GlobalTheory.FGDepth GlobalTheory.PtTie GlobalTheory.PlaceInt
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.RefSum.refCore_of_sumPt | exact GlobalTheory.RefSum.refCore_of_sumPt | (intros; apply GlobalTheory.RefSum.refCore_of_sumPt <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.reference_core_of_sum_point : Size → SumPt → RefCore := by
   first | exact @GlobalTheory.RefSum.refCore_of_sumPt | exact GlobalTheory.RefSum.refCore_of_sumPt | (intros; apply GlobalTheory.RefSum.refCore_of_sumPt <;> assumption)

@@ -10,6 +10,17 @@ namespace GlobalTheory.IwDelta
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Take `⟨U, hVU⟩` from `Submodule.exists_isCompl V`. Set `p` to `Submodule.projectionOnto V U hVU`. Set `b` to `Module.finBasis ℂ V`. Use `⟨fun X => ‖(Matrix.of fun i k => b.repr (p (X *ᵥ (b k : Fin n → ℂ))) i).det‖, ?_, ?_⟩` and prove the remaining obligations. Apply `Continuous.norm` to reduce the goal to its premises.
+
+Apply `Continuous.matrix_det` to reduce the goal to its premises. Apply `continuous_matrix` to reduce the goal to its premises. Introduce `i k`. Establish `hlin : Continuous fun y : Fin n → ℂ => b.repr (p y) i` using `((b.coord i).comp p).continuous_of_finiteDimensional`. Conclude with `hlin.comp (continuous_id.matrix_mulVec continuous_const)`.
+
+Introduce `X hX`. Establish `h' : ∀ y ∈ V, Matrix.toLin' X y ∈ V` using `fun y hy => by`. Simplify `hX y hy` using `[Matrix.toLin'_apply]`. Establish `e : ∀ k, p (X *ᵥ (b k : Fin n → ℂ)) = (Matrix.toLin' X).restrict h' (b k)`. Introduce `k`.
+
+Establish `hp : p (X *ᵥ (b k : Fin n → ℂ)) = ⟨X *ᵥ (b k : Fin n → ℂ), hX _ (b k).2⟩` using `Submodule.projectionOnto_apply_left hVU ⟨X *ᵥ (b k : Fin n → ℂ), hX _ (b k).2⟩`. Rewrite using `[hp]`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[LinearMap.restrict_apply, Matrix.toLin'_apply]`. Rewrite using `[detOn, dif_pos h', ← LinearMap.det_toMatrix b]`.
+
+Use `congr 2`. Use extensionality with `i k`. Rewrite using `[LinearMap.toMatrix_apply, Matrix.of_apply, e k]`.
+-/
 theorem exists_cont_detOn (V : Submodule ℂ (Fin n → ℂ)) :
     ∃ D : Matrix (Fin n) (Fin n) ℂ → ℝ, Continuous D ∧
       ∀ X, (∀ y ∈ V, X *ᵥ y ∈ V) → detOn X V = D X := by
@@ -39,6 +50,9 @@ theorem exists_cont_detOn (V : Submodule ℂ (Fin n → ℂ)) :
     ext i k
     rw [LinearMap.toMatrix_apply, Matrix.of_apply, e k]
 
+/- English proof (translation)
+Establish `h' : ∀ y ∈ V, Matrix.toLin' (1 : Matrix (Fin n) (Fin n) ℂ) y ∈ V` using `fun y hy => by simpa using hy`. Rewrite using `[detOn, dif_pos h']`. Establish `hid : (Matrix.toLin' (1 : Matrix (Fin n) (Fin n) ℂ)).restrict h' = LinearMap.id` using `LinearMap.ext fun y => Subtype.ext (by simp [LinearMap.restrict_apply])`. Rewrite using `[hid, LinearMap.det_id, norm_one]`.
+-/
 theorem detOn_one (V : Submodule ℂ (Fin n → ℂ)) : detOn (1 : Matrix (Fin n) (Fin n) ℂ) V = 1 := by
   have h' : ∀ y ∈ V, Matrix.toLin' (1 : Matrix (Fin n) (Fin n) ℂ) y ∈ V := fun y hy => by simpa using hy
   rw [detOn, dif_pos h']
@@ -46,6 +60,19 @@ theorem detOn_one (V : Submodule ℂ (Fin n → ℂ)) : detOn (1 : Matrix (Fin n
     LinearMap.ext fun y => Subtype.ext (by simp [LinearMap.restrict_apply])
   rw [hid, LinearMap.det_id, norm_one]
 
+/- English proof (translation)
+Take `⟨D, hDc, hD⟩` from `exists_cont_detOn V`. Establish `hKc : IsCompact {X : Matrix (Fin n) (Fin n) ℂ | Xᴴ * X = 1}`. Establish `hcl : IsClosed {X : Matrix (Fin n) (Fin n) ℂ | Xᴴ * X = 1}` using `isClosed_eq (continuous_id.matrix_conjTranspose.matrix_mul continuous_id) continuous_const`. Establish `hbox : IsCompact (Set.pi Set.univ fun _ : Fin n => Set.pi Set.univ fun _ : Fin n => Metric.closedBall (0 : ℂ) 1 : Set (Matrix (Fin n) (Fin n) ℂ))` using `isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => isCompact_closedBall 0 1`. Use `hbox.of_isClosed_subset hcl ?_` and prove the remaining obligations.
+
+Introduce `X hX`. Simplify using `only [Set.mem_pi, Set.mem_univ, true_implies, Metric.mem_closedBall, dist_zero_right]`. Introduce `i k`. Conclude with `entry_norm_bound_of_unitary (Matrix.mem_unitaryGroup_iff'.2 hX) i k`. Establish `hUg : U ∈ Matrix.unitaryGroup (Fin n) ℂ` using `Matrix.mem_unitaryGroup_iff'.2 hU`.
+
+Establish `hpow : ∀ k : ℕ, (∀ y ∈ V, U ^ k *ᵥ y ∈ V) ∧ detOn (U ^ k) V = detOn U V ^ k`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => exact ⟨fun y hy => by simpa using hy, by simpa using detOn_one V⟩`. Consider the case `succ k ih`.
+
+Establish `hs : ∀ y ∈ V, U ^ (k + 1) *ᵥ y ∈ V` using `fun y hy => by`. Rewrite using `[pow_succ, ← Matrix.mulVec_mulVec]`. Conclude with `ih.1 _ (hV y hy)`. Use `⟨hs, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_succ, GlobalTheory.FlagMeas.SizeMove.detOn_mul _ _ V ih.1 hV, ih.2, pow_succ]`.
+
+Take `⟨C, hC⟩` from `hKc.exists_bound_of_continuousOn hDc.continuousOn`. Assume the negation of the conclusion as `hlt`. Take `⟨k, hk⟩` from `pow_unbounded_of_one_lt C (not_le.mp hlt)`. Establish `hmem : (U ^ k)ᴴ * U ^ k = 1` using `Matrix.mem_unitaryGroup_iff'.1 (pow_mem hUg k)`. Establish `hb` using `hC (U ^ k) hmem`.
+
+Rewrite `hb` using `[← hD _ (hpow k).1, (hpow k).2, Real.norm_eq_abs, abs_of_nonneg (pow_nonneg (GlobalTheory.FlagMeas.SizeMove.detOn_nonneg U V) k)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 private theorem detOn_le_one_of_unitary_of_invariant (U : Matrix (Fin n) (Fin n) ℂ) (V : Submodule ℂ (Fin n → ℂ))
     (hU : Uᴴ * U = 1) (hV : ∀ y ∈ V, U *ᵥ y ∈ V) : detOn U V ≤ 1 := by
   obtain ⟨D, hDc, hD⟩ := exists_cont_detOn V
@@ -80,11 +107,21 @@ private theorem detOn_le_one_of_unitary_of_invariant (U : Matrix (Fin n) (Fin n)
     abs_of_nonneg (pow_nonneg (GlobalTheory.FlagMeas.SizeMove.detOn_nonneg U V) k)] at hb
   linarith
 
+/- English proof (translation)
+Establish `hl2 : ∀ i, ∀ y ∈ W i, uMat l *ᵥ y ∈ W i ∧ (uMat l)ᴴ *ᵥ y ∈ W i` using `hl.2`. Conclude with `detOn_le_one_of_unitary_of_invariant _ _ hl.1 (fun y hy => (hl2 i y hy).1)`.
+-/
 theorem detOn_le_one {ε : Fin n → Bool} {a : ℕ} {W : Fin (a + 1) → Submodule ℂ (Fin n → ℂ)}
     {l : Formalism.REAL.UJ ε} (hl : l ∈ maxK ε ∩ flagM ε W) (i : Fin (a + 1)) : detOn (uMat l) (W i) ≤ 1 := by
   have hl2 : ∀ i, ∀ y ∈ W i, uMat l *ᵥ y ∈ W i ∧ (uMat l)ᴴ *ᵥ y ∈ W i := hl.2
   exact detOn_le_one_of_unitary_of_invariant _ _ hl.1 (fun y hy => (hl2 i y hy).1)
 
+/- English proof (translation)
+Establish `hl2 : ∀ i, ∀ y ∈ W i, uMat l *ᵥ y ∈ W i ∧ (uMat l)ᴴ *ᵥ y ∈ W i` using `hl.2`. Establish `hU : (uMat l)ᴴ * uMat l = 1` using `hl.1`. Establish `hU' : (uMat l)ᴴᴴ * (uMat l)ᴴ = 1`. Rewrite using `[conjTranspose_conjTranspose]`. Conclude with `mul_eq_one_comm.mp hU`.
+
+Establish `h1` using `detOn_le_one hl i`. Establish `h2` using `detOn_le_one_of_unitary_of_invariant _ (W i) hU' (fun y hy => (hl2 i y hy).2)`. Establish `hprod : detOn ((uMat l)ᴴ) (W i) * detOn (uMat l) (W i) = 1`. Rewrite using `[← GlobalTheory.FlagMeas.SizeMove.detOn_mul _ _ _ (fun y hy => (hl2 i y hy).2) (fun y hy => (hl2 i y hy).1), hU, detOn_one]`. Establish `h3` using `GlobalTheory.FlagMeas.SizeMove.detOn_nonneg (uMat l) (W i)`.
+
+Establish `h4` using `GlobalTheory.FlagMeas.SizeMove.detOn_nonneg ((uMat l)ᴴ) (W i)`. Conclude with `le_antisymm h1 (by nlinarith)`.
+-/
 theorem detOn_eq_one {ε : Fin n → Bool} {a : ℕ} {W : Fin (a + 1) → Submodule ℂ (Fin n → ℂ)}
     {l : Formalism.REAL.UJ ε} (hl : l ∈ maxK ε ∩ flagM ε W) (i : Fin (a + 1)) : detOn (uMat l) (W i) = 1 := by
   have hl2 : ∀ i, ∀ y ∈ W i, uMat l *ᵥ y ∈ W i ∧ (uMat l)ᴴ *ᵥ y ∈ W i := hl.2
@@ -101,11 +138,17 @@ theorem detOn_eq_one {ε : Fin n → Bool} {a : ℕ} {W : Fin (a + 1) → Submod
   have h4 := GlobalTheory.FlagMeas.SizeMove.detOn_nonneg ((uMat l)ᴴ) (W i)
   exact le_antisymm h1 (by nlinarith)
 
+/- English proof (translation)
+Unfold `layerProd`. Use `fun_prop`.
+-/
 theorem measurable_layerProd {a : ℕ} (j : Fin a → ℕ) :
     Measurable fun τ : Fin a → ℝ => layerProd n 1 j τ id := by
   unfold layerProd
   fun_prop
 
+/- English proof (translation)
+Establish `hc : ContinuousAt (fun τ : Fin a → ℝ => layerProd n 1 j τ id) 1`. Unfold `layerProd`. Use `fun_prop (disch := simp)`. Establish `h1 : layerProd n 1 j (1 : Fin a → ℝ) id = 1` using `by simp [layerProd]`. Simplify `hc.tendsto` using `[h1]`.
+-/
 theorem continuousAt_layerProd {a : ℕ} (j : Fin a → ℕ) :
     Filter.Tendsto (fun τ : Fin a → ℝ => layerProd n 1 j τ id) (nhds 1) (nhds 1) := by
   have hc : ContinuousAt (fun τ : Fin a → ℝ => layerProd n 1 j τ id) 1 := by
@@ -115,6 +158,9 @@ theorem continuousAt_layerProd {a : ℕ} (j : Fin a → ℕ) :
   simpa [h1] using hc.tendsto
 
 open scoped Matrix.Norms.Frobenius in
+/- English proof (translation)
+Take `⟨t, ht, hsub⟩` from `Metric.mem_nhds_iff.mp hs`. Use `⟨t, ht, fun X hX => hsub ?_⟩` and prove the remaining obligations. Rewrite using `[Metric.mem_ball, dist_eq_norm, ← nrm_eq]`. Conclude with `hX`.
+-/
 theorem exists_ball {s : Set (Matrix (Fin n) (Fin n) ℂ)} (hs : s ∈ nhds 1) :
     ∃ t : ℝ, 0 < t ∧ ∀ X, nrm (X - 1) < t → X ∈ s := by
   obtain ⟨t, ht, hsub⟩ := Metric.mem_nhds_iff.mp hs
@@ -122,6 +168,25 @@ theorem exists_ball {s : Set (Matrix (Fin n) (Fin n) ℂ)} (hs : s ∈ nhds 1) :
   rw [Metric.mem_ball, dist_eq_norm, ← nrm_eq]
   exact hX
 
+/- English proof (translation)
+Introduce `n ε a j W`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Unfold `dlt`. Conclude with `ENNReal.measurable_ofReal.comp ((measurable_layerProd j).comp (measurable_pi_lambda _ fun i => measurable_locSize_uMat n ε a j W i))`. Introduce `l hl m hm`.
+
+Establish `hl2 : ∀ i, ∀ y ∈ W i, uMat l *ᵥ y ∈ W i ∧ (uMat l)ᴴ *ᵥ y ∈ W i` using `hl.2`. Establish `hm2 : ∀ i, ∀ y ∈ W i, uMat m *ᵥ y ∈ W i ∧ (uMat m)ᴴ *ᵥ y ∈ W i` using `hm`. Establish `hmul : uMat (m * l) = uMat m * uMat l` using `rfl`. Establish `hloc : locSize j W (uMat (m * l)) = locSize j W (uMat m)`. Use function extensionality and compare the values at `i`.
+
+Simplify using `only [locSize]`. Rewrite using `[hmul, GlobalTheory.FlagMeas.SizeMove.detOn_mul (uMat m) (uMat l) (W i.succ) (fun y hy => (hm2 i.succ y hy).1) (fun y hy => (hl2 i.succ y hy).1), GlobalTheory.FlagMeas.SizeMove.detOn_mul (uMat m) (uMat l) (W i.castSucc) (fun y hy => (hm2 i.castSucc y hy).1) (fun y hy => (hl2 i.ca …`. Unfold `dlt`. Rewrite using `[hloc]`. Introduce `η hη choose D hDc hD using fun i : Fin (a + 1) => exists_cont_detOn (W i)`.
+
+Establish `hD1 : ∀ i, D i 1 = 1` using `fun i => by`. Rewrite using `[← hD i 1 (fun y hy => by simpa using hy), detOn_one]`. Use `set G : Matrix (Fin n) (Fin n) ℂ → Fin a → ℝ := fun X i => (D i.succ X / D i.castSucc X) ^ (-(1 : ℝ) / j i) with hGdef`. Establish `hG : Filter.Tendsto G (nhds 1) (nhds 1)`. Rewrite using `[tendsto_pi_nhds]`.
+
+Introduce `i`. Establish `hc : ContinuousAt (fun X => (D i.succ X / D i.castSucc X) ^ (-(1 : ℝ) / j i)) 1` using `((hDc _).continuousAt.div (hDc _).continuousAt (by simp [hD1])).rpow_const (Or.inl (by simp [hD1]))`. Establish `ht` using `hc.tendsto`. Simplify using `only [hD1, div_one, Real.one_rpow] at ht`. Conclude with `ht`.
+
+Establish `hF` using `(continuousAt_layerProd (n := n) j).comp hG`. Establish `hpos : 0 < 1 + η` using `by linarith`. Establish `hU : Set.Ioo (1 / (1 + η)) (1 + η) ∈ nhds (1 : ℝ)` using `Ioo_mem_nhds ((div_lt_one hpos).2 (by linarith)) (by linarith)`. Take `⟨t, ht, hball⟩` from `exists_ball (Filter.tendsto_def.1 hF _ hU)`. Use `⟨t, ht, fun m hm hmt => ?_⟩` and prove the remaining obligations.
+
+Establish `hm2 : ∀ i, ∀ y ∈ W i, uMat m *ᵥ y ∈ W i ∧ (uMat m)ᴴ *ᵥ y ∈ W i` using `hm`. Establish `hin` using `hball _ hmt`. Establish `hGm : G (uMat m) = locSize j W (uMat m)`. Use function extensionality and compare the values at `i`. Simplify using `only [hGdef, locSize]`.
+
+Rewrite using `[hD i.succ _ (fun y hy => (hm2 i.succ y hy).1), hD i.castSucc _ (fun y hy => (hm2 i.castSucc y hy).1)]`. Simplify using `only [Set.mem_preimage, Function.comp_apply, hGm, Set.mem_Ioo] at hin`. Take `⟨hlo, hhi⟩` from `hin`. Unfold `dlt`. Use `⟨ENNReal.ofReal_le_ofReal hhi.le, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← ENNReal.ofReal_mul hpos.le, ENNReal.one_le_ofReal]`. Rewrite `hlo` using `[div_lt_iff₀ hpos]`. Combine the linear relations using `[mul_comm (layerProd n 1 j (locSize j W (uMat m)) id) (1 + η)]`.
+-/
 theorem dlt_props : ∀ (n : ℕ) (ε : Fin n → Bool) (a : ℕ) (j : Fin a → ℕ) (W : Fin (a + 1) → Submodule ℂ (Fin n → ℂ)), Measurable (dlt (ε := ε) j W) ∧ (∀ l ∈ maxK ε ∩ flagM ε W, ∀ m ∈ flagM ε W, dlt j W (m * l) = dlt j W m) ∧ ∀ η : ℝ, 0 < η → ∃ t : ℝ, 0 < t ∧ ∀ m ∈ flagM ε W, nrm (uMat m - 1) < t → dlt j W m ≤ ENNReal.ofReal (1 + η) ∧ 1 ≤ ENNReal.ofReal (1 + η) * dlt j W m := by
   intro n ε a j W
   refine ⟨?_, ?_, ?_⟩

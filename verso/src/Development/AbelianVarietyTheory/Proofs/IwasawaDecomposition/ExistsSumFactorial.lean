@@ -14,6 +14,11 @@ open scoped Formalism.Per
 
 namespace GlobalTheory.MemLoc.LogKer
 
+/- English proof (translation)
+Take `⟨Y, hY⟩` from `LogEx.exists_sum (l : A) (fun k => f ((-1) ^ k * ((k.factorial : ℕ) : R) * γ k)) (fun r => l ^ r) (fun a b hab => Nat.pow_le_pow_right hl hab) (fun r k hk => by`. Take `⟨m, hm⟩` from `Nat.dvd_factorial (pow_pos hl r) hk`. Use `⟨f ((-1) ^ k * (m : R) * γ k), ?_⟩` and prove the remaining obligations. Simplify using `only [hm, map_mul, map_natCast, Nat.cast_mul, Nat.cast_pow, map_pow]`. Use the proof step `ring)`.
+
+Use `⟨Y, fun r n hn => ?_⟩` and prove the remaining obligations. Take `⟨w, hw⟩` from `hY r n hn`. Conclude with `⟨w, by rw [map_sum, ← hw]; ring⟩`.
+-/
 theorem exists_sum_factorial {R A : Type} [CommRing R] [CommRing A] (f : R →+* A) (l : ℕ) (hl : 0 < l)
     (hA : IsAdicComplete (Ideal.span {(l : A)}) A) (γ : ℕ → R) :
     ∃ Y : A, ∀ r n : ℕ, l ^ r ≤ n → ∃ w : A,
@@ -28,6 +33,9 @@ theorem exists_sum_factorial {R A : Type} [CommRing R] [CommRing A] (f : R →+*
   obtain ⟨w, hw⟩ := hY r n hn
   exact ⟨w, by rw [map_sum, ← hw]; ring⟩
 
+/- English proof (translation)
+Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← hγ k, Nat.factorial_succ, Nat.cast_mul]`. Take the linear combination `(-((-1) ^ k * ((k.factorial : ℕ) : P) * γ k)) * hu k`.
+-/
 theorem sum_eq {P : Type} [CommRing P] (u γ : ℕ → P) (x : P) (hu : ∀ k : ℕ, ((k + 1 : ℕ) : P) * u k = 1)
     (hγ : ∀ k : ℕ, (((k + 1).factorial : ℕ) : P) * γ k = x ^ (k + 1)) (n : ℕ) :
     ∑ k ∈ Finset.range n, (-1) ^ k * ((k.factorial : ℕ) : P) * γ k =
@@ -39,6 +47,19 @@ theorem sum_eq {P : Type} [CommRing P] (u γ : ℕ → P) (x : P) (hu : ∀ k : 
 set_option allowUnsafeReducibility true in
 attribute [local irreducible] Per.Acris
 
+/- English proof (translation)
+Introduce `l _ j hj z hz`. Establish `hu : ∀ k : ℕ, ∃ u : Per.AinfP l, ((k + 1 : ℕ) : Per.AinfP l) * u = 1` using `fun k => (GlobalTheory.RingBasics.isUnit_nat l _ k.succ_ne_zero).exists_right_inv`. Use `choose u hu using hu`. Establish `hf : ∀ k : ℕ, IsUnit ((k.factorial : ℕ) : Per.AinfP l)` using `fun k => GlobalTheory.RingBasics.isUnit_nat l _ k.factorial_ne_zero`. Establish `hγ : ∀ k : ℕ, ∃ γ : Per.Acris0 l, (((k + 1).factorial : ℕ) : Per.AinfP l) * (γ : Per.AinfP l) = (algebraMap (Per.Ainf l) (Per.AinfP l) z) ^ (k + 1)` using `fun k => by`.
+
+Take `⟨d, hd⟩` from `(hf (k + 1)).exists_right_inv`. Establish `h : (((k + 1).factorial : ℕ) : Per.AinfP l) * (d * (algebraMap (Per.Ainf l) (Per.AinfP l) z) ^ (k + 1)) = (algebraMap (Per.Ainf l) (Per.AinfP l) z) ^ (k + 1)` using `by rw [← mul_assoc, hd, one_mul]`. Conclude with `⟨⟨_, GlobalTheory.RingIface.dividedPower_mem_Acris0 l z (k + 1) _ hz h⟩, h⟩`. Use `choose γ hγ using hγ`. Establish `hmem : algebraMap (Per.Ainf l) (Per.AinfP l) z ∈ Per.kerP l` using `GlobalTheory.RingIface.alg_mem_kerP l hz`.
+
+Take `⟨Y, hY⟩` from `exists_sum_factorial (algebraMap (Per.Acris0 l) (Per.Acris l)) l (Fact.out : l.Prime).pos (acris_basic l).1 γ`. Use `⟨Y, fun n => ?_⟩` and prove the remaining obligations. Establish `hs : ∀ m : ℕ, ((∑ k ∈ Finset.range m, (-1) ^ k * ((k.factorial : ℕ) : Per.Acris0 l) * γ k : Per.Acris0 l) : Per.AinfP l) = ∑ k ∈ Finset.range m, (-1) ^ k * u k * (algebraMap (Per.Ainf l) (Per.AinfP l) z) ^ (k + 1)`. Introduce `m`. Rewrite using `[← sum_eq u (fun k => (γ k : Per.AinfP l)) _ hu hγ m]`.
+
+Express the relevant statement in the definitionally equal form `(Per.Acris0 l).val _ = _`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, map_pow, map_natCast, map_neg, map_one]`. Both sides reduce to the same expression.
+
+Take `⟨d, hd⟩` from `(hf n).exists_right_inv`. Take `⟨c, hc⟩ : ∃ c : Per.AinfP l, ((n.factorial : ℕ) : Per.AinfP l) * c = ∑ k ∈ Finset.range n, (-1) ^ k * ((n.factorial / (k + 1) : ℕ) : Per.AinfP l) * (algebraMap (Per.Ainf l) (Per.AinfP l) z) ^ (k + 1)` from `⟨d * _, by rw [← mul_assoc, hd, one_mul]⟩`. Establish `key` using `(GlobalTheory.T.canonicalAcrisToBdRPlus_unique_equivariant_approx l j hj).2.2 n Y (algebraMap (Per.AinfP l) (Per.BdRp l) c) (by`. Introduce `r`. Take `⟨w, hw⟩` from `hY r (max (l ^ r) n) (le_max_left _ _)`.
+
+Use `⟨_, w, 0, hw, ?_⟩` and prove the remaining obligations. Rewrite using `[map_zero, mul_zero, map_zero, ← map_sub, LogFun.ev_alg, Ideal.Quotient.eq_zero_iff_mem, hs, LogFun.partial_eq u hu _ _ _ (hf _) hc, ← neg_sub]`. Conclude with `neg_mem (LogFun.partial_sub_mem _ u _ hmem (le_max_right _ _)))`. Rewrite using `[key, LogFun.ev_alg, ← map_natCast (Ideal.Quotient.mk (Per.kerP l ^ n)), ← map_mul, hc]`.
+-/
 theorem exists_log : ∀ (l : ℕ) [Fact l.Prime] (j : Per.Acris l →+* Per.BdRp l), IsCrisP j → ∀ z : Per.Ainf l, Per.θ l z = 0 → ∃ Y : Per.Acris l, ∀ n : ℕ, ((n.factorial : ℕ) : Per.AinfP l ⧸ Per.kerP l ^ n) * Per.ev l n (j Y) = Ideal.Quotient.mk _ (∑ k ∈ Finset.range n, (-1) ^ k * ((n.factorial / (k + 1) : ℕ) : Per.AinfP l) * (algebraMap (Per.Ainf l) (Per.AinfP l) z) ^ (k + 1)) := by
   intro l _ j hj z hz
   have hu : ∀ k : ℕ, ∃ u : Per.AinfP l, ((k + 1 : ℕ) : Per.AinfP l) * u = 1 := fun k =>

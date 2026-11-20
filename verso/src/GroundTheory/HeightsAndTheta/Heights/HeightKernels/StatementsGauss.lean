@@ -94,11 +94,20 @@ def GaussShellSum.Statement : Prop :=
 def GaussConstant.Statement : Prop :=
   ∀ (n : ℕ), 1 ≤ n → √2 ^ n * (2 * gaussShellConst n) ≤ (72 * Real.exp 4 * n) ^ ((n : ℝ) / 2)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Matrix.PosDef.one, by simp⟩`.
+-/
 example : (1 : Matrix (Fin 1) (Fin 1) ℝ).PosDef ∧ (1 : Matrix (Fin 1) (Fin 1) ℝ).det ≠ 0 :=
   ⟨Matrix.PosDef.one, by simp⟩
 
+/- English proof (translation)
+Simplify using the standard rewrite rules.
+-/
 example : ((2 : ℝ) • (1 : Matrix (Fin 2) (Fin 2) ℝ)).det ≠ 0 := by simp
 
+/- English proof (translation)
+Use `⟨Matrix.PosDef.one, ?_⟩` and prove the remaining obligations. Rewrite using `[transpose_smul, transpose_one, smul_mul_smul_comm, mul_one]`. Use `congr 1`. Rewrite using `[← mul_inv, Real.mul_self_sqrt (by norm_num)]`. Evaluate the numerical expressions.
+-/
 example : (1 : Matrix (Fin 1) (Fin 1) ℝ).PosDef ∧
     ((√2)⁻¹ • (1 : Matrix (Fin 1) (Fin 1) ℝ))ᵀ * ((√2)⁻¹ • (1 : Matrix (Fin 1) (Fin 1) ℝ)) =
       (1 / 2 : ℝ) • (1 : Matrix (Fin 1) (Fin 1) ℝ) := by
@@ -110,9 +119,15 @@ example : (1 : Matrix (Fin 1) (Fin 1) ℝ).PosDef ∧
 
 abbrev gaussUnit : EuclideanSpace ℝ (Fin 1) := WithLp.toLp 2 (Pi.single 0 1)
 
+/- English proof (translation)
+Simplify using `[gaussUnit]`.
+-/
 theorem gaussUnit_norm : ‖gaussUnit‖ = 1 := by
   simp [gaussUnit]
 
+/- English proof (translation)
+Establish `h : (Set.range fun i : Fin 1 => WithLp.toLp 2 ((1 : Matrix (Fin 1) (Fin 1) ℝ) *ᵥ Pi.single i 1)) = {gaussUnit}`. Rewrite using `[Set.range_unique, Matrix.one_mulVec]`. Both sides reduce to the same expression. Rewrite using `[gaussLattice, h, Submodule.mem_span_singleton]`.
+-/
 theorem mem_gaussLattice_one {x : EuclideanSpace ℝ (Fin 1)} :
     x ∈ gaussLattice (1 : Matrix (Fin 1) (Fin 1) ℝ) ↔ ∃ a : ℤ, a • gaussUnit = x := by
   have h : (Set.range fun i : Fin 1 => WithLp.toLp 2 ((1 : Matrix (Fin 1) (Fin 1) ℝ) *ᵥ
@@ -121,6 +136,9 @@ theorem mem_gaussLattice_one {x : EuclideanSpace ℝ (Fin 1)} :
     rfl
   rw [gaussLattice, h, Submodule.mem_span_singleton]
 
+/- English proof (translation)
+Introduce `v hv hv0`. Take `⟨a, rfl⟩` from `mem_gaussLattice_one.1 hv`. Establish `ha : a ≠ 0` using `by rintro rfl; exact hv0 (zero_smul _ _)`. Rewrite using `[← Int.cast_smul_eq_zsmul ℝ, norm_smul, gaussUnit_norm, mul_one, Real.norm_eq_abs]`. Conclude with `Int.one_le_abs ha` after adjusting the coercions.
+-/
 theorem gaussLattice_one_min : ∀ v ∈ gaussLattice (1 : Matrix (Fin 1) (Fin 1) ℝ), v ≠ 0 →
     (1 : ℝ) ≤ ‖v‖ := by
   intro v hv hv0
@@ -129,10 +147,20 @@ theorem gaussLattice_one_min : ∀ v ∈ gaussLattice (1 : Matrix (Fin 1) (Fin 1
   rw [← Int.cast_smul_eq_zsmul ℝ, norm_smul, gaussUnit_norm, mul_one, Real.norm_eq_abs]
   exact_mod_cast Int.one_le_abs ha
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨le_rfl, one_pos, gaussLattice_one_min⟩`.
+-/
 example : 1 ≤ 1 ∧ (0 : ℝ) < 1 ∧
     ∀ v ∈ gaussLattice (1 : Matrix (Fin 1) (Fin 1) ℝ), v ≠ 0 → (1 : ℝ) ≤ ‖v‖ :=
   ⟨le_rfl, one_pos, gaussLattice_one_min⟩
 
+/- English proof (translation)
+Use `⟨by simp, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[GroundTheory.Global.mem_dualLattice]`. Introduce `x hx`. Take `⟨a, rfl⟩` from `mem_gaussLattice_one.1 hx`. Use `⟨a, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← Int.cast_smul_eq_zsmul ℝ, inner_smul_right, real_inner_self_eq_norm_sq, gaussUnit_norm]`. Simplify using the standard rewrite rules. Introduce `h`. Use `gaussUnit_norm` as an intermediate fact. Rewrite `this` using `[h, norm_zero]`.
+
+Conclude with `zero_ne_one this`.
+-/
 example : (1 : Matrix (Fin 1) (Fin 1) ℝ).det ≠ 0 ∧
     gaussUnit ∈ GroundTheory.Global.dualLattice (gaussLattice (1 : Matrix (Fin 1) (Fin 1) ℝ)) ∧
     gaussUnit ≠ 0 := by
@@ -148,6 +176,11 @@ example : (1 : Matrix (Fin 1) (Fin 1) ℝ).det ≠ 0 ∧
     rw [h, norm_zero] at this
     exact zero_ne_one this
 
+/- English proof (translation)
+Introduce `x hx y hy hxy`. Simplify using `only [Finset.mem_insert, Finset.mem_singleton] at hx hy`. Apply the tactic sequence `rcases hx with rfl | rfl <;> rcases hy with rfl | rfl`. Conclude with `absurd rfl hxy`. Simplify using the standard rewrite rules.
+
+Simplify using the standard rewrite rules. Conclude with `absurd rfl hxy`.
+-/
 example : ∀ x ∈ ({0, gaussUnit} : Finset (EuclideanSpace ℝ (Fin 1))),
     ∀ y ∈ ({0, gaussUnit} : Finset (EuclideanSpace ℝ (Fin 1))), x ≠ y → (1 : ℝ) ≤ ‖x - y‖ := by
   intro x hx y hy hxy
@@ -158,6 +191,9 @@ example : ∀ x ∈ ({0, gaussUnit} : Finset (EuclideanSpace ℝ (Fin 1))),
   · simp
   · exact absurd rfl hxy
 
+/- English proof (translation)
+Introduce `x hx`. Simplify using `only [Finset.mem_insert, Finset.mem_singleton] at hx`. Break down `hx with rfl | rfl` into its components or cases. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+-/
 example : ∀ x ∈ ({0, gaussUnit} : Finset (EuclideanSpace ℝ (Fin 1))), ‖x‖ ≤ (1 : ℝ) := by
   intro x hx
   simp only [Finset.mem_insert, Finset.mem_singleton] at hx
@@ -165,6 +201,9 @@ example : ∀ x ∈ ({0, gaussUnit} : Finset (EuclideanSpace ℝ (Fin 1))), ‖x
   · simp
   · simp
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Matrix.PosDef.one, one_pos, isReducedImaginaryPart_one.min⟩`.
+-/
 example : (1 : Matrix (Fin 1) (Fin 1) ℝ).PosDef ∧ (0 : ℝ) < 1 ∧
     ∀ l : Fin 1 → ℤ, l ≠ 0 → (1 : ℝ) ^ 2 ≤ qf (1 : Matrix (Fin 1) (Fin 1) ℝ)⁻¹ (intVec l) :=
   ⟨Matrix.PosDef.one, one_pos, isReducedImaginaryPart_one.min⟩

@@ -16,6 +16,27 @@ namespace GlobalTheory.MBLow.PowEightField
 
 open GlobalTheory.EighthPowerFactor GlobalTheory.CechPic
 
+/- English proof (translation)
+Take `⟨W, hW, hbas⟩` from `ZM.exists_isE8_isSharpBasis`. Establish `hW0 : 0 < W 0 0`. Establish `h` using `hW.1.diag_pos (i := 0)`. Simplify using `only [Matrix.map_apply, Matrix.add_apply, Matrix.transpose_apply, Int.cast_add] at h`. Establish `: (0 : ℝ) < (W 0 0 : ℝ)` using `by linarith`.
+
+Conclude with `this` after adjusting the coercions. Use `⟨(2 * W 0 0).toNat, by omega, ?_⟩` and prove the remaining obligations. Introduce `K _ _ P`. Use `P.isAb.comm` as an intermediate fact. Take `⟨L₁, L₂⟩` from `abelianSchemeLaws_all`.
+
+Take `⟨bas, hb⟩` from `hbas P.g`. Take `⟨a, w, w', hw, hw', hs⟩` from `exists_matrices hW.2`. Set `b : ZM.TBase K 1` to `⟨1, by simp, fun K _ β => by simp⟩`. Establish `hc : (siegOne L₁.globalFns P.isAb P.isLB P.g).Principal` using `⟨relAmple_diag_lam P.isAb P.isLB (Moduli.cube_of_isLB _ P P.L P.isLB) P.ample, fun T x hx => SiegelOfPolarised.eq_one_of_lam P.isLB P.ktriv x hx⟩`. Take `⟨t, ⟨pr, hpr, hu, hL, -⟩, h₁, h₂, h₃⟩` from `exists_isSharp_and_prim L₁ L₂ Moduli.cube_of_isLB P.g _ W _ a w w' bas hW hb hw hw' hs 1 K b _ (𝟙 _) (siegOne L₁.globalFns P.isAb P.isLB P.g) (one_pow _) odd_one hc P.smoothDim`.
+
+Take `⟨inc, hinc, -⟩` from `hu P.A fun u => if u = 0 then 𝟙 P.A else 1`. Use `⟨t.pol, pr, inc, rfl, ⟨t.act w, t.act w', t.hom w, t.hom w', h₁, h₃, h₂⟩, hpr, ?_, hu, hinc, ?_⟩` and prove the remaining obligations. Use `isMonHom_of_coord hpr hu fun u => ?_` and prove the remaining obligations. Rewrite using `[hinc u]`. Distinguish the cases in `h : u = 0`.
+
+Substitute `h` using the available equality. Simplify using `only [↓reduceIte]`. Conclude with `inferInstanceAs (IsMonHom (𝟙 P.A))`. Simplify using `only [h, ↓reduceIte]`. Conclude with `inferInstanceAs (IsMonHom (toUnit P.A ≫ η[P.A]))`.
+
+Establish `hP : (abelian₂ P.A P.L).IsLB` using `LB.isLB_linComb P.isLB _ _`. Establish `hQ : t.pol.L.IsLB` using `t.pol.isLB`. Establish `hlam : cls _ hP = lam (cls P.L P.isLB) (fst P.A P.A) (snd P.A P.A)` using `cls_cube_two P.isLB _ _ hP`. Establish `hdiag` using `(cls_eq_iff (LB.isLB_linComb P.isLB _ _) (pull_isLB hP _)).2 (SiegelOfPolarised.lbIso_diag L₁ P)`. Rewrite `hdiag` using `[cls_lbPow P.isLB, cls_pull hP, hlam, pull_lam, lift_fst, lift_snd]`.
+
+Establish `e1` using `((cls_eq_iff hQ (LB.isLB_linComb hP _ _)).2 hL).trans (cls_linComb hP _ _ _)`. Use `(cls_eq_iff (pull_isLB hQ _) (LB.isLB_linComb P.isLB _ _)).1 ?_` and prove the remaining obligations. Use `((congrArg (pull inc.left) e1).trans ?_).trans (cls_lbPow P.isLB _ _).symm` and prove the remaining obligations. Rewrite using `[hlam]`. Use `erw [map_sum]`.
+
+Rewrite using `[Fintype.sum_eq_single ((0 : Fin 8), (0 : Fin 8))]`. Use `erw [map_zsmul] erw [CechPic.pull_lam, CechPic.pull_lam] erw [lift_fst, lift_snd] dsimp only erw [hinc]`. Simplify using `only [↓reduceIte]`. Rewrite using `[← hdiag, ← natCast_zsmul, ← natCast_zsmul, smul_smul, Int.toNat_of_nonneg (by omega)]`. Use `congr 1`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Introduce and unpack `⟨u, v⟩ huv erw [map_zsmul] erw [CechPic.pull_lam, CechPic.pull_lam] erw [lift_fst, lift_snd] dsimp only`. Establish `hi1 : ∀ u : Fin 8, u ≠ 0 → inc ≫ pr u = 1` using `fun u h => (hinc u).trans (if_neg h)`. Distinguish the cases in `hu0 : u = 0`.
+
+Substitute `hu0` using the available equality. Establish `hv0 : v ≠ 0` using `fun h => huv (by rw [h])`. Use `erw [hi1 v hv0, lam_one_right, smul_zero]`. Use `erw [hi1 u hu0, lam_one_left, smul_zero]`.
+-/
 theorem exists_eighthPower_evenUnimodular_charZero : ∃ d : ℕ, 1 ≤ d ∧ ∀ (K : Type) [Field K] [CharZero K] (P : PolAV (Sp K)), ∃ (Q : PolAV (Sp K)) (pr : Fin 8 → (Q.A ⟶ P.A)) (inc : P.A ⟶ Q.A), Q.g = 8 * P.g ∧ (letI := Q.isAb.comm; GlobalTheory.ZH.HypS Q.A Q.L) ∧ IsPow8 P Q d pr inc := by
   obtain ⟨W, hW, hbas⟩ := ZM.exists_isE8_isSharpBasis
   have hW0 : 0 < W 0 0 := by

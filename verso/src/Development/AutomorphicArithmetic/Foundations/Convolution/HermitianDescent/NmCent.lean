@@ -12,10 +12,18 @@ section
 
 variable {k R : Type} [CommRing k] [CommRing R] [Algebra k R] {n : ℕ}
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `[sg, up, Matrix.GeneralLinearGroup.map_apply]`.
+-/
 private theorem cent_sg_up (σ : R ≃ₐ[k] R) (γ : GL (Fin n) k) : sg σ (up R γ) = up R γ := by
   ext a b
   simp [sg, up, Matrix.GeneralLinearGroup.map_apply]
 
+/- English proof (translation)
+Unfold `nm`. Rewrite using `[map_list_prod, List.map_map]`. Use `congr 1`. Use `List.map_congr_left fun m _ => ?_` and prove the remaining obligations. Use extensionality with `a b`.
+
+Express the relevant statement in the definitionally equal form `(σ ^ m) (σ _) = σ ((σ ^ m) _)`. Rewrite using `[← AlgEquiv.mul_apply, ← AlgEquiv.mul_apply, ← pow_succ, ← pow_succ']`.
+-/
 private theorem cent_nm_sg (σ : R ≃ₐ[k] R) (q : ℕ) (d : GL (Fin n) R) :
     nm σ q (sg σ d) = sg σ (nm σ q d) := by
   unfold nm
@@ -26,12 +34,22 @@ private theorem cent_nm_sg (σ : R ≃ₐ[k] R) (q : ℕ) (d : GL (Fin n) R) :
   change (σ ^ m) (σ _) = σ ((σ ^ m) _)
   rw [← AlgEquiv.mul_apply, ← AlgEquiv.mul_apply, ← pow_succ, ← pow_succ']
 
+/- English proof (translation)
+Introduce `s t hst`. Use extensionality with `a b`. Conclude with `h (congrArg (fun g : GL (Fin n) R => (g : Matrix (Fin n) (Fin n) R) a b) hst)`.
+-/
 private theorem cent_up_inj (h : Function.Injective (algebraMap k R)) :
     Function.Injective (up R : GL (Fin n) k → GL (Fin n) R) := by
   intro s t hst
   ext a b
   exact h (congrArg (fun g : GL (Fin n) R => (g : Matrix (Fin n) (Fin n) R) a b) hst)
 
+/- English proof (translation)
+Establish `key : ∀ y : GL (Fin n) R, sg σ y = y → ∃ M : Matrix (Fin n) (Fin n) k, M.map (algebraMap k R) = (y : Matrix (Fin n) (Fin n) R)`. Introduce `y hy`. Establish `h : ∀ a b, ∃ c, algebraMap k R c = (y : Matrix (Fin n) (Fin n) R) a b` using `fun a b => hσ.fix _ (congrArg (fun g : GL (Fin n) R => (g : Matrix (Fin n) (Fin n) R) a b) hy)`. Use `choose M hM using h`. Conclude with `⟨Matrix.of M, by ext a b; exact hM a b⟩`.
+
+Take `⟨M, hM⟩` from `key x hx`. Take `⟨N, hN⟩` from `key x⁻¹ (by rw [map_inv, hx])`. Establish `inj` using `Matrix.map_injective (m := Fin n) (n := Fin n) hσ.inj`. Use `⟨⟨M, N, inj ?_, inj ?_⟩, Units.ext hM.symm⟩` and prove the remaining obligations. Simplify using `only`.
+
+Rewrite using `[Matrix.map_mul, hM, hN, Matrix.map_one _ (map_zero _) (map_one _), Units.mul_inv]`. Simplify using `only`. Rewrite using `[Matrix.map_mul, hM, hN, Matrix.map_one _ (map_zero _) (map_one _), Units.inv_mul]`.
+-/
 private theorem cent_descend {σ : R ≃ₐ[k] R} {q : ℕ} (hσ : IsGal σ q) (x : GL (Fin n) R) (hx : sg σ x = x) :
     ∃ t : GL (Fin n) k, x = up R t := by
   have key : ∀ y : GL (Fin n) R, sg σ y = y → ∃ M : Matrix (Fin n) (Fin n) k,
@@ -54,6 +72,21 @@ end
 
 end UpperTheory.ConvolutionTheory.D
 
+/- English proof (translation)
+Introduce `k R _ _ _ _ σ q hσ n a γ hsep ha x`. Use `haveI : Module.Finite k R := (galBase k R k σ q hσ).1`. Establish `hs : ((up R γ : GL (Fin n) R) : Matrix (Fin n) (Fin n) R).charpoly.Separable`. Establish `h` using `hsep.map (f := algebraMap k R)`. Rewrite `h` using `[cp, ← Matrix.charpoly_map]`.
+
+Conclude with `h`. Establish `hc` using `(conjSep k R n _ hs).2.1`. Establish `hfix : ∀ y, nm σ q (sgConj σ y a) = up R γ → y * up R γ = up R γ * y`. Introduce `y hy`. Rewrite `hy` using `[(nmPoly k R σ q hσ n a).2 y, ha, mul_assoc, inv_mul_eq_iff_eq_mul]`.
+
+Conclude with `hy.symm`. Establish `hag : a * up R γ = up R γ * a`. Apply `hfix` to reduce the goal to its premises. Rewrite using `[sgConj, inv_mul_cancel, one_mul, cent_nm_sg, ha, cent_sg_up]`. Establish `hcomm : ∀ y : GL (Fin n) R, y * up R γ = up R γ * y → a * y = y * a`.
+
+Introduce `y hy`. Take `⟨p, hp⟩` from `hc a.val (by simpa using congrArg Units.val hag)`. Take `⟨p', hp'⟩` from `hc y.val (by simpa using congrArg Units.val hy)`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_mul, Units.val_mul, hp, hp', ← map_mul, ← map_mul, mul_comm]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hx`. Establish `h1` using `hfix x (by rw [hx, ha])`. Establish `h2` using `hcomm x h1`. Establish `h3 : sg σ x = x`.
+
+Rewrite `hx` using `[sgConj, mul_assoc, inv_mul_eq_iff_eq_mul, ← h2]`. Conclude with `mul_left_cancel hx`. Take `⟨t, rfl⟩` from `cent_descend hσ x h3`. Use `⟨t, cent_up_inj hσ.inj ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, h1]`.
+
+Introduce and unpack `⟨t, ht, rfl⟩`. Establish `h2` using `hcomm (up R t) (by rw [← map_mul, ← map_mul, ht.eq])`. Rewrite using `[sgConj, cent_sg_up, mul_assoc, h2, inv_mul_cancel_left]`.
+-/
 theorem UpperTheory.ConvolutionTheory.D.nmCent :
     UpperTheory.ConvolutionTheory.D.NmCent := by
   intro k R _ _ _ _ σ q hσ n a γ hsep ha x

@@ -13,14 +13,29 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.SmoothForms.RealPts
 
+/- English proof (translation)
+Apply the tactic sequence `apply _root_.UpperTheory.Reformulated.B.Qh26.isInfEmb_unique <;> assumption`.
+-/
 theorem infEmb_unique {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (τ : E →+* ℂ) (θ θ' : Ainf F ⊗[F] E →+* ℂ) (h : IsInfEmb τ θ) (h' : IsInfEmb τ θ') :
     θ = θ' :=
   by apply _root_.UpperTheory.Reformulated.B.Qh26.isInfEmb_unique <;> assumption
 
+/- English proof (translation)
+Introduce `_ _ h` and use `D.eTau.injective (Subtype.ext ((factEmb D.R D.host).1.1 h))`.
+-/
 theorem tauE_injective (D : D7) : Function.Injective (tauE D) := fun _ _ h =>
   D.eTau.injective (Subtype.ext ((factEmb D.R D.host).1.1 h))
 
+/- English proof (translation)
+Take `⟨g, rfl⟩` from `(factEmb D.R D.host).1.2 σ`. Establish `hc : ComplexEmbedding.conjugate (D.host.emb g) = D.host.emb (g * D.R.cc)`. Rewrite using `[Formalism.L2.Geo.emb_mul_cc_comp]`. Use `RingHom.ext fun x => ?_` and prove the remaining obligations. Establish `hcm` using `D.host.isCMField_hostE`.
+
+Establish `h : IsCMField.complexConj D.host.E x = D.host.conj x`. Apply `D.host.φ₀.injective` to reduce the goal to its premises. Rewrite using `[IsCMField.complexEmbedding_complexConj]`. Conclude with `(D.host.toHostAx.conjE_apply _ x).symm`. Use `show starRingEnd ℂ (D.host.emb g x) = D.host.emb g (D.host.conj x)`.
+
+Rewrite using `[← h, IsCMField.complexEmbedding_complexConj]`. Establish `h : ∀ g, (∃ τ, tauE D τ = D.host.emb g) ↔ g ∈ D.R.Psi` using `fun g => by`. Rewrite using `[← Formalism.L2.Geo.exists_tauEmb_iff D g]`. Conclude with `exists_congr fun τ => eq_comm`. Rewrite using `[hc, h, h]`.
+
+Conclude with `Formalism.L2.Geo.mem_Psi_iff_mul_cc_notMem g`.
+-/
 theorem tauE_cm (D : D7) (σ : D.host.E →+* ℂ) :
     (∃ τ, tauE D τ = σ) ↔ ¬ ∃ τ, tauE D τ = ComplexEmbedding.conjugate σ := by
   obtain ⟨g, rfl⟩ := (factEmb D.R D.host).1.2 σ
@@ -40,6 +55,11 @@ theorem tauE_cm (D : D7) (σ : D.host.E →+* ℂ) :
   rw [hc, h, h]
   exact Formalism.L2.Geo.mem_Psi_iff_mul_cc_notMem g
 
+/- English proof (translation)
+Use extensionality with `i j`. Establish `hcm` using `D.host.isCMField_hostE`. Establish `h1 : star (V.hT (V.frame j) (V.frame i)) = V.hT (V.frame i) (V.frame j)` using `V.herm.eq _ _`. Simplify using `only [conjTranspose_apply, gramAt, map_apply, HSpace.gram]`. Rewrite using `[← h1]`.
+
+Conclude with `(IsCMField.complexEmbedding_complexConj _ (tauE D τ) _).symm`.
+-/
 theorem gramAt_herm {D : D7} (V : HSp D) (τ : D.what₂.Tau) : (gramAt D V τ)ᴴ = gramAt D V τ := by
   ext i j
   have hcm := D.host.isCMField_hostE
@@ -48,17 +68,33 @@ theorem gramAt_herm {D : D7} (V : HSp D) (τ : D.what₂.Tau) : (gramAt D V τ)�
   rw [← h1]
   exact (IsCMField.complexEmbedding_complexConj _ (tauE D τ) _).symm
 
+/- English proof (translation)
+Establish `: (gramAt D V τ).det = tauE D τ V.gram.det` using `(RingHom.map_det _ _).symm`. Rewrite using `[this, isUnit_iff_ne_zero]`. Conclude with `(map_ne_zero _).2 (GlobalTheory.UnitaryGlue.gram_det_ne_zero V)`.
+-/
 theorem gramAt_unit {D : D7} (V : HSp D) (τ : D.what₂.Tau) : IsUnit (gramAt D V τ).det := by
   have : (gramAt D V τ).det = tauE D τ V.gram.det := (RingHom.map_det _ _).symm
   rw [this, isUnit_iff_ne_zero]
   exact (map_ne_zero _).2 (GlobalTheory.UnitaryGlue.gram_det_ne_zero V)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem infMat_eq {D : D7} (V : HSp D) (θ : Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ) (g : GA D V) :
     infMat D.sp.cm.sig V.gram θ g = (infHom V g).1.map θ := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem finMat_eq {D : D7} (V : HSp D) (g : GA D V) :
     finMat D.sp.cm.sig V.gram g = (finHom V g).1 := rfl
 
+/- English proof (translation)
+Set `Ψ : Finset (D.host.E →+* ℂ)` to `Finset.univ.image (tauE D)`. Establish `hm : ∀ σ, σ ∈ Ψ ↔ ∃ τ, tauE D τ = σ` using `fun σ => by simp [Ψ]`. Use `choose s hs using fun σ : Ψ => (hm σ.1).1 σ.2`. Establish `hst : ∀ τ, s ⟨tauE D τ, (hm _).2 ⟨τ, rfl⟩⟩ = τ` using `fun τ => tauE_injective D (hs _)`. Take `⟨h1, -, -, h4⟩` from `(GlobalTheory.UnitaryGlue.adelic_glue D V).2 Ψ (fun σ => θ (s σ)) (fun σ => by rw [hm, hm]; exact tauE_cm D σ) (fun σ => by rw [← hs σ]; exact hθ (s σ))`.
+
+Use `⟨fun g hg => h1 g fun σ => hg (s σ), fun u hu => ?_⟩` and prove the remaining obligations. Take `⟨h, hh, hhu⟩` from `h4 (fun σ => u (s σ)) (fun σ => by rw [← hs σ]; exact hu (s σ))`. Use `⟨h, hh, fun τ => ?_⟩` and prove the remaining obligations. Use `hhu ⟨tauE D τ, (hm _).2 ⟨τ, rfl⟩⟩` as an intermediate fact. Simplify using `only [hst] at this`.
+
+Conclude with `this`.
+-/
 theorem glue {D : D7} (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)) (hθ : IsInfFam θ) (V : HSp D) :
     (∀ g : GA D V, (∀ τ, infMat D.sp.cm.sig V.gram (θ τ) g = 1) → g ∈ GfC V) ∧
     ∀ u : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ, (∀ τ, u τ ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ)) →
@@ -77,6 +113,15 @@ theorem glue {D : D7} (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.hos
   simp only [hst] at this
   exact this
 
+/- English proof (translation)
+Introduce `D`. Use `⟨fun θ θ' h h' => funext fun ρ => infEmb_unique _ _ _ (h ρ) (h' ρ), fun θ hθ V => ?_⟩` and prove the remaining obligations. Take `⟨g1, g2⟩` from `glue θ hθ V`. Take `⟨s1, s2, s3, -⟩` from `GlobalTheory.UnitarySplit.real_finite_split D V`. Establish `hmul : ∀ g g' τ, infMat D.sp.cm.sig V.gram (θ τ) (g * g') = infMat D.sp.cm.sig V.gram (θ τ) g * infMat D.sp.cm.sig V.gram (θ τ) g'` using `fun g g' τ => by`.
+
+Rewrite using `[infMat_eq V, infMat_eq V, infMat_eq V, map_mul, Units.val_mul, Matrix.map_mul]`. Establish `hfin : ∀ k ∈ GfC V, ∀ τ, infMat D.sp.cm.sig V.gram (θ τ) k = 1` using `fun k hk τ => by`. Establish `hk' : infHom V k = 1` using `hk`. Rewrite using `[infMat_eq V, hk', Units.val_one, Matrix.map_one _ (map_zero _) (map_one _)]`. Use `⟨fun τ => ⟨gramAt_herm V τ, gramAt_unit V τ⟩, g2, fun g hg g' hg' h => ?_, hmul, hfin, s2, fun g => ?_, fun g a ha => ?_⟩` and prove the remaining obligations.
+
+Use `mul_inv_eq_one.1 (s3 _ (mul_mem hg (inv_mem hg')) (g1 _ fun τ => ?_))` and prove the remaining obligations. Rewrite using `[hmul, h, ← hmul, mul_inv_cancel, hfin 1 (one_mem _)]`. Take `⟨a, ha, k, hk, e⟩` from `s1 g`. Conclude with `⟨k, hk, a, ha, e.trans (s2 a ha k hk)⟩`. Establish `ha' : finHom V a = 1` using `ha`.
+
+Rewrite using `[finMat_eq V, finMat_eq V, map_mul, ha', mul_one]`.
+-/
 theorem realPoints : ∀ D : D7, (∀ θ θ' : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ), IsInfFam θ → IsInfFam θ' → θ = θ') ∧ ∀ θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ), IsInfFam θ → ∀ V : HSp D, RealPoints θ V := by
   intro D
   refine ⟨fun θ θ' h h' => funext fun ρ => infEmb_unique _ _ _ (h ρ) (h' ρ), fun θ hθ V => ?_⟩

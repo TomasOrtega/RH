@@ -5,6 +5,25 @@ open NumberField IsDedekindDomain
 
 namespace GlobalTheory.RayDescent
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `h`. Establish `ha : a = 1 + n * c` using `by rw [← hc]; ring`. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Simplify using `[ha]`. Set `F` to `AlgebraicClosure E`.
+
+Set `r : (E →ₐ[K] F) → (𝓞 E →+* 𝓞 F)` to `fun σ => RingOfIntegers.mapRingHom (σ : E →+* F)`. Establish `hd : (n : 𝓞 F) ∣ (∏ σ : E →ₐ[K] F, r σ a) - 1`. Establish `: ∀ s : Finset (E →ₐ[K] F), (n : 𝓞 F) ∣ (∏ σ ∈ s, r σ a) - 1`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`.
+
+Consider the case `empty => simp`. Consider the case `insert σ s hσ ih`. Rewrite using `[Finset.prod_insert hσ]`. Take `⟨d, hd⟩` from `ih`. Use `⟨r σ a * d + r σ c, ?_⟩` and prove the remaining obligations.
+
+Establish `h1 : r σ a = 1 + n * r σ c` using `by rw [ha]; simp`. Establish `h2 : ∏ σ ∈ s, r σ a = 1 + n * d` using `by rw [← hd]; ring`. Rewrite using `[h2, h1]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `this _`.
+
+Take `⟨d, hd⟩` from `hd`. Use `set N := Algebra.intNorm (𝓞 K) (𝓞 E) a with hN`. Establish `hNK : (N : K) = Algebra.norm K (a : E)` using `Algebra.algebraMap_intNorm (L := E) a`. Establish `hprod : algebraMap K F (N : K) = 1 + n * (d : F)`. Rewrite using `[hNK, Algebra.norm_eq_prod_embeddings K F]`.
+
+Use `congrArg (algebraMap (𝓞 F) F) hd` as an intermediate fact. Rewrite `this` using `[map_sub, map_prod, map_one, map_mul, map_natCast]`. Rewrite using `[← this]`. Simplify using `[r]`. Establish `hnK : (n : K) ≠ 0` using `by exact_mod_cast hn.ne'`.
+
+Establish `hnF : (n : F) ≠ 0` using `by exact_mod_cast hn.ne'`. Establish `hy : algebraMap K F (((N : K) - 1) / n) = d`. Rewrite using `[map_div₀, map_sub, hprod, map_one, map_natCast]`. Rewrite using `[add_sub_cancel_left, mul_div_cancel_left₀ _ hnF]`. Establish `hint : IsIntegral ℤ (((N : K) - 1) / n)`.
+
+Rewrite using `[← isIntegral_algebraMap_iff (algebraMap K F).injective, hy]`. Conclude with `d.isIntegral_coe`. Take `⟨y, hy'⟩ : ∃ y : 𝓞 K, (y : K) = ((N : K) - 1) / n` from `⟨⟨_, hint⟩, rfl⟩`. Use `⟨y, ?_⟩` and prove the remaining obligations. Apply `RingOfIntegers.ext` to reduce the goal to its premises.
+
+Express the relevant statement in the definitionally equal form `algebraMap (𝓞 K) K (N - 1) = algebraMap (𝓞 K) K (n * y)`. Rewrite using `[map_sub, map_mul, map_one, map_natCast]`. Express the relevant statement in the definitionally equal form `(N : K) - 1 = n * (y : K)`. Rewrite using `[hy', mul_div_cancel₀ _ hnK]`.
+-/
 theorem dvd_intNorm_sub_one (K E : Type) [Field K] [NumberField K] [Field E] [NumberField E] [Algebra K E] (n : ℕ)
     (a : 𝓞 E) (h : (n : 𝓞 E) ∣ a - 1) : (n : 𝓞 K) ∣ Algebra.intNorm (𝓞 K) (𝓞 E) a - 1 := by
   classical
@@ -52,6 +71,15 @@ theorem dvd_intNorm_sub_one (K E : Type) [Field K] [NumberField K] [Field E] [Nu
   change (N : K) - 1 = n * (y : K)
   rw [hy', mul_div_cancel₀ _ hnK]
 
+/- English proof (translation)
+Introduce `P hP`. Take `⟨f, α, h1, h2, h3⟩` from `h P hP`. Use `letI : Algebra K E := φ.toAlgebra`. Use `letI : Algebra E L := ψ.toAlgebra`. Establish `hq : P.asIdeal.comap (RingOfIntegers.mapRingHom ψ) = P.asIdeal.under (𝓞 E)` using `rfl`.
+
+Establish `hp : P.asIdeal.comap (RingOfIntegers.mapRingHom (ψ.comp φ)) = (P.asIdeal.under (𝓞 E)).under (𝓞 K)`. Use extensionality with `x`. Both sides reduce to the same expression. Rewrite `h1`, `h2` using `[hq]`. Rewrite using `[hp]`.
+
+Use `haveI := P.isMaximal`. Use `set q := P.asIdeal.under (𝓞 E)`. Use `set p := q.under (𝓞 K)`. Use `haveI : q.IsMaximal := inferInstance`. Use `haveI : p.IsMaximal := inferInstance`.
+
+Establish `hrel : Ideal.relNorm (𝓞 K) q = p ^ q.inertiaDeg (𝓞 K)` using `Ideal.relNorm_eq_pow_of_isMaximal q p`. Use `⟨q.inertiaDeg (𝓞 K) * f, Algebra.intNorm (𝓞 K) (𝓞 E) α, ?_, ?_, dvd_intNorm_sub_one K E n α h3⟩` and prove the remaining obligations. Rewrite using `[h1, pow_mul, ← map_pow Ideal.absNorm p, ← hrel, Ideal.absNorm_relNorm]`. Rewrite using `[pow_mul, ← hrel, ← map_pow, h2, Ideal.relNorm_singleton]`.
+-/
 theorem containsRayField_comp (K E L : Type) [Field K] [NumberField K] [Field E] [NumberField E] [Field L] [NumberField L]
     (φ : K →+* E) (ψ : E →+* L) (n : ℕ) (h : GlobalTheory.IndefiniteRowSideFullHecke.RayFieldTheta.ContainsRayField ψ n) :
     GlobalTheory.IndefiniteRowSideFullHecke.RayFieldTheta.ContainsRayField (ψ.comp φ) n := by

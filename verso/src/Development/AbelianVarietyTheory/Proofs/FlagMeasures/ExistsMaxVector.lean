@@ -26,8 +26,20 @@ def biInt : Subring K where
     rintro a ⟨a1, a2⟩
     exact ⟨by simpa using a1, by simpa using a2⟩
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_biInt {k : K} : k ∈ biInt v ↔ v k ≤ 1 ∧ v (star k) ≤ 1 := Iff.rfl
 
+/- English proof (translation)
+Establish `h1 : ∀ x ∈ T, ∀ y ∈ Submodule.span (biInt v) T, v (h x y) ≤ m`. Introduce `x hx y hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy => exact hT x hx y hy`. Consider the case `zero => simp`.
+
+Consider the case `add a b _ _ ha hb => rw [map_add]`. Conclude with `v.map_add_le ha hb`. Consider the case `smul r a _ ha`. Rewrite using `[Subring.smul_def, map_smul, smul_eq_mul, map_mul]`. Conclude with `(mul_le_mul' r.2.1 ha).trans (by simp)`.
+
+Introduce `x hx y hy`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx => exact h1 x hx y hy`. Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb => rw [map_add, LinearMap.add_apply]`.
+
+Conclude with `v.map_add_le ha hb`. Consider the case `smul r a _ ha`. Rewrite using `[Subring.smul_def, map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, map_mul]`. Conclude with `(mul_le_mul' r.2.2 ha).trans (by simp)`.
+-/
 theorem bound_of_span (h : V →ₗ⋆[K] V →ₗ[K] K) (T : Set V) (m : Γ)
     (hT : ∀ x ∈ T, ∀ y ∈ T, v (h x y) ≤ m) :
     ∀ x ∈ Submodule.span (biInt v) T, ∀ y ∈ Submodule.span (biInt v) T, v (h x y) ≤ m := by
@@ -49,6 +61,21 @@ theorem bound_of_span (h : V →ₗ⋆[K] V →ₗ[K] K) (T : Set V) (m : Γ)
     rw [Subring.smul_def, map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, map_mul]
     exact (mul_le_mul' r.2.2 ha).trans (by simp)
 
+/- English proof (translation)
+Take `⟨T, rfl⟩` from `hΛ`. Break down `T.eq_empty_or_nonempty with rfl | hT` into its components or cases. Use `⟨0, Submodule.zero_mem _, fun y hy z hz => ?_⟩` and prove the remaining obligations. Establish `: y = 0` using `by simpa using hy`. Simplify using `[this]`.
+
+Take `⟨⟨x, y⟩, hxy, hmax⟩` from `(T ×ˢ T).exists_max_image (fun p => v (h p.1 p.2)) (hT.product hT)`. Take `⟨hx, hy⟩` from `Finset.mem_product.1 hxy`. Establish `hb` using `bound_of_span v h (T : Set V) (v (h x y)) (fun a ha b hb => hmax (a, b) (Finset.mem_product.2 ⟨ha, hb⟩))`. Assume the negation of the conclusion as `hcon`. Establish `hlt : ∀ w ∈ Submodule.span (biInt v) (T : Set V), v (h w w) < v (h x y)`.
+
+Introduce `w hw`. Assume the negation of the conclusion as `hn`. Conclude with `hcon ⟨w, hw, fun a ha b hb' => (hb a ha b hb').trans (not_lt.1 hn)⟩`. Establish `hx' : x ∈ Submodule.span (biInt v) (T : Set V)` using `Submodule.subset_span hx`. Establish `hy' : y ∈ Submodule.span (biInt v) (T : Set V)` using `Submodule.subset_span hy`.
+
+Establish `hyx : h y x = star (h x y)` using `(hs.eq x y).symm`. Establish `key : ∀ c ∈ biInt v, v (c * h x y + star c * star (h x y)) < v (h x y)`. Introduce `c hc`. Establish `hcy : c • y ∈ Submodule.span (biInt v) (T : Set V)` using `Submodule.smul_mem _ (⟨c, hc⟩ : biInt v) hy'`. Establish `e : c * h x y + star c * star (h x y) = h (x + c • y) (x + c • y) - h x x - h (c • y) (c • y)`.
+
+Simplify using `only [map_add, LinearMap.add_apply, map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, RingHom.id_apply, hyx, starRingEnd_apply]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `v.map_sub_lt (v.map_sub_lt (hlt _ (Submodule.add_mem _ hx' hcy)) (hlt _ hx')) (hlt _ hcy)`. Establish `k1` using `key 1 (biInt v).one_mem`.
+
+Establish `k2` using `key θ hθ`. Establish `k3 : v (star θ * (1 * h x y + star 1 * star (h x y))) < v (h x y)`. Rewrite using `[map_mul]`. Conclude with `lt_of_le_of_lt ((mul_le_mul' hθ.2 le_rfl).trans (by simp)) k1`. Establish `k4` using `v.map_sub_lt k2 k3`.
+
+Establish `e : θ * h x y + star θ * star (h x y) - star θ * (1 * h x y + star 1 * star (h x y)) = (θ - star θ) * h x y`. Rewrite using `[star_one]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `k4` using `[e, map_mul, hθ', one_mul]`. Conclude with `lt_irrefl _ k4`.
+-/
 theorem exists_max_vector (h : V →ₗ⋆[K] V →ₗ[K] K) (hs : h.IsSymm) (θ : K) (hθ : θ ∈ biInt v)
     (hθ' : v (θ - star θ) = 1) (Λ : Submodule (biInt v) V) (hΛ : Λ.FG) :
     ∃ x ∈ Λ, ∀ y ∈ Λ, ∀ z ∈ Λ, v (h y z) ≤ v (h x x) := by
@@ -92,6 +119,39 @@ theorem exists_max_vector (h : V →ₗ⋆[K] V →ₗ[K] K) (hs : h.IsSymm) (θ
   rw [e, map_mul, hθ', one_mul] at k4
   exact lt_irrefl _ k4
 
+/- English proof (translation)
+Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Introduce `Λ hfg hn hnd`. Take `⟨x, hx, hmax⟩` from `exists_max_vector v h hs θ hθ hθ' Λ hfg`. Distinguish the cases in `h0 : h x x = 0`.
+
+Use `⟨0, Fin.elim0, fun i => i.elim0, fun i => i.elim0, ?_⟩` and prove the remaining obligations. Use `symm`. Rewrite using `[Set.range_eq_empty, Submodule.span_empty, eq_bot_iff]`. Introduce `y hy`. Use `hnd y hy fun z hz => ?_` and prove the remaining obligations.
+
+Use `hmax y hy z hz` as an intermediate fact. Rewrite `this` using `[h0, map_zero]`. Conclude with `v.zero_iff.1 (le_antisymm this zero_le)`. Establish `hv0 : 0 < v (h x x)` using `zero_lt_iff.2 (v.ne_zero_iff.2 h0)`. Establish `hxx : star (h x x) = h x x` using `hs.eq x x`.
+
+Establish `hc : ∀ y ∈ Λ, h x y / h x x ∈ biInt v`. Introduce `y hy`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_div₀, div_le_one₀ hv0]`. Conclude with `hmax x hx y hy`.
+
+Establish `: star (h x y) = h y x` using `hs.eq x y`. Rewrite using `[star_div₀, hxx, this, map_div₀, div_le_one₀ hv0]`. Conclude with `hmax y hy x hx`. Set `p : V →ₗ[K] V` to `LinearMap.id - (LinearMap.toSpanSingleton K V x).comp ((h x x)⁻¹ • h x)`. Establish `hp : ∀ y, p y = y - (h x y / h x x) • x`.
+
+Introduce `y`. Simplify using `[p, div_eq_inv_mul]`. Establish `hxp : ∀ y, h x (p y) = 0`. Introduce `y`. Rewrite using `[hp, map_sub, map_smul, smul_eq_mul]`.
+
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `hcx : ∀ y ∈ Λ, (h x y / h x x) • x ∈ Λ` using `fun y hy => Λ.smul_mem (⟨_, hc y hy⟩ : biInt v) hx`. Set `Λ' : Submodule (biInt v) V` to `Λ.map (p.restrictScalars (biInt v))`. Establish `hle : Λ' ≤ Λ`.
+
+Introduce and unpack `_ ⟨y, hy, rfl⟩`. Express the relevant statement in the definitionally equal form `p y ∈ Λ`. Rewrite using `[hp]`. Conclude with `Λ.sub_mem hy (hcx y hy)`. Establish `horth : ∀ y ∈ Λ', h x y = 0`.
+
+Introduce and unpack `_ ⟨y, hy, rfl⟩`. Conclude with `hxp y`. Establish `horth' : ∀ y ∈ Λ', h y x = 0`. Introduce `y hy`. Establish `: star (h x y) = h y x` using `hs.eq x y`.
+
+Rewrite using `[← this, horth y hy, star_zero]`. Establish `hlt : Submodule.span K (Λ' : Set V) < Submodule.span K (Λ : Set V)`. Use `lt_of_le_of_ne (Submodule.span_mono hle) fun heq => h0 ?_` and prove the remaining obligations. Establish `h1 : Submodule.span K (Λ' : Set V) ≤ LinearMap.ker (h x)` using `Submodule.span_le.2 fun y hy => horth y hy`. Conclude with `h1 (heq ▸ Submodule.subset_span hx)`.
+
+Take `⟨m, e, he1, he2, he3⟩` from `ih _ (hn ▸ Submodule.finrank_lt_finrank_of_lt hlt) Λ' (hfg.map _) rfl (by`. Introduce `y hy hyz`. Use `hnd y (hle hy) fun z hz => ?_` and prove the remaining obligations. Establish `h1` using `hyz (p z) ⟨z, hz, rfl⟩`. Rewrite `h1` using `[hp, map_sub, map_smul, horth' y hy]`.
+
+Simplify using `using h1)`. Establish `hem : ∀ i, e i ∈ Λ'` using `fun i => he3 ▸ Submodule.subset_span ⟨i, rfl⟩`. Use `⟨m + 1, Fin.cons x e, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i l hil`. Proceed by induction on `i using Fin.cases with`.
+
+Consider the case `zero`. Proceed by induction on `l using Fin.cases with`. Consider the case `zero => exact absurd rfl hil`. Consider the case `succ l => simpa using horth _ (hem l)`. Consider the case `succ i`.
+
+Proceed by induction on `l using Fin.cases with`. Consider the case `zero => simpa using horth' _ (hem i)`. Consider the case `succ l => simpa using he1 i l fun hh => hil (by rw [hh])`. Introduce `i`. Proceed by induction on `i using Fin.cases with`.
+
+Consider the case `zero => simpa using h0`. Consider the case `succ i => simpa using he2 i`. Rewrite using `[Fin.range_cons, Submodule.span_insert, he3]`. Use `le_antisymm (sup_le ((Submodule.span_singleton_le_iff_mem _ _).2 hx) hle) fun y hy => ?_` and prove the remaining obligations. Establish `e1 : y = (h x y / h x x) • x + p y` using `by rw [hp]; abel`.
+
+Rewrite using `[e1]`. Use `Submodule.add_mem_sup ?_ ⟨y, hy, rfl⟩` and prove the remaining obligations. Conclude with `Submodule.smul_mem _ (⟨_, hc y hy⟩ : biInt v) (Submodule.mem_span_singleton_self x)`.
+-/
 theorem exists_orth_gens [FiniteDimensional K V] (h : V →ₗ⋆[K] V →ₗ[K] K) (hs : h.IsSymm) (θ : K)
     (hθ : θ ∈ biInt v) (hθ' : v (θ - star θ) = 1) (n : ℕ) :
     ∀ (Λ : Submodule (biInt v) V), Λ.FG → Module.finrank K (Submodule.span K (Λ : Set V)) = n →
@@ -184,9 +244,19 @@ variable {K : Type} [Field K] [NumberField K] [StarRing K]
 noncomputable def starInt : 𝓞 K →+* 𝓞 K := RingOfIntegers.mapRingHom (starRingEnd K)
 
 omit [NumberField K] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_starInt (s : 𝓞 K) : algebraMap (𝓞 K) K (starInt s) = star (algebraMap (𝓞 K) K s) := rfl
 
 omit [NumberField K] in
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hs`. Proceed by induction on `hs using Submonoid.closure_induction with`. Consider the case `mem x hx => exact ⟨hx.1, hx.2 _ (coe_starInt x)⟩`. Consider the case `one`.
+
+Rewrite using `[map_one, and_self]`. Conclude with `fun h => hP.ne_top ((Ideal.eq_top_iff_one P).2 h)`. Consider the case `mul a b _ _ ha hb`. Rewrite using `[map_mul]`. Conclude with `⟨fun h => (hP.mem_or_mem h).elim ha.1 hb.1, fun h => (hP.mem_or_mem h).elim ha.2 hb.2⟩`.
+
+Introduce and unpack `⟨h1, h2⟩`. Use `Submonoid.subset_closure ⟨h1, fun t ht => ?_⟩` and prove the remaining obligations. Establish `: t = starInt s` using `RingOfIntegers.coe_injective (ht.trans (coe_starInt s).symm)`. Rewrite using `[this]` and apply the resulting hypothesis.
+-/
 theorem mem_hcompl_iff (P : Ideal (𝓞 K)) (hP : P.IsPrime) (s : 𝓞 K) :
     s ∈ hcompl (K := K) P ↔ s ∉ P ∧ starInt s ∉ P := by
   constructor
@@ -204,10 +274,18 @@ theorem mem_hcompl_iff (P : Ideal (𝓞 K)) (hP : P.IsPrime) (s : 𝓞 K) :
     have : t = starInt s := RingOfIntegers.coe_injective (ht.trans (coe_starInt s).symm)
     rwa [this]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨w.valuation_le_one a, by rw [← coe_starInt]; exact w.valuation_le_one _⟩`.
+-/
 theorem int_mem_biInt (w : HeightOneSpectrum (𝓞 K)) (a : 𝓞 K) :
     algebraMap (𝓞 K) K a ∈ biInt (w.valuation K) :=
   ⟨w.valuation_le_one a, by rw [← coe_starInt]; exact w.valuation_le_one _⟩
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `(mem_hcompl_iff _ w.isPrime s).1 hs`. Establish `v1 : w.valuation K (algebraMap (𝓞 K) K s) = 1` using `w.valuation_eq_one_iff_notMem.2 h1`. Establish `v2 : w.valuation K (algebraMap (𝓞 K) K (starInt s)) = 1` using `w.valuation_eq_one_iff_notMem.2 h2`. Use `⟨fun h => ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite `v1` using `[h, map_zero]`.
+
+Conclude with `zero_ne_one v1`. Rewrite using `[map_inv₀, v1, inv_one]`. Rewrite using `[star_inv₀, map_inv₀, ← coe_starInt, v2, inv_one]`.
+-/
 theorem inv_mem_biInt (w : HeightOneSpectrum (𝓞 K)) {s : 𝓞 K}
     (hs : s ∈ hcompl (K := K) w.asIdeal) :
     algebraMap (𝓞 K) K s ≠ 0 ∧ (algebraMap (𝓞 K) K s)⁻¹ ∈ biInt (w.valuation K) := by
@@ -219,6 +297,15 @@ theorem inv_mem_biInt (w : HeightOneSpectrum (𝓞 K)) {s : 𝓞 K}
   · rw [map_inv₀, v1, inv_one]
   · rw [star_inv₀, map_inv₀, ← coe_starInt, v2, inv_one]
 
+/- English proof (translation)
+Set `D : Ideal (𝓞 K)` to `(1 : Submodule (𝓞 K) K).comap (LinearMap.toSpanSingleton (𝓞 K) K k)`. Establish `hD : ∀ s, s ∈ D ↔ ∃ a : 𝓞 K, algebraMap (𝓞 K) K s * k = algebraMap (𝓞 K) K a`. Introduce `s`. Simplify using `only [D, Submodule.mem_comap, LinearMap.toSpanSingleton_apply, Submodule.mem_one, Algebra.smul_def, eq_comm]`. Take `⟨n, d, hnd⟩` from `w.exists_primeCompl_mul_eq_of_integer k hk.1`.
+
+Take `⟨n', d', hnd'⟩` from `w.exists_primeCompl_mul_eq_of_integer (star k) hk.2`. Establish `h1 : ¬ D ≤ w.asIdeal` using `fun h => d.2 (h ((hD d).2 ⟨n, by rw [mul_comm]; exact hnd⟩))`. Establish `hss : ∀ s : 𝓞 K, starInt (starInt s) = s` using `fun s => RingOfIntegers.coe_injective (by rw [coe_starInt, coe_starInt, star_star])`. Establish `h2 : ¬ D ≤ w.asIdeal.comap starInt` using `fun h => d'.2 (by`. Use `h ((hD (starInt (d' : 𝓞 K))).2 ⟨starInt n', by` as an intermediate fact.
+
+Rewrite using `[coe_starInt, coe_starInt, ← hnd', star_mul, star_star]⟩)`. Rewrite using `[Ideal.mem_comap, hss] at this)` and apply the resulting hypothesis. Establish `h3 : ¬ ((D : Set (𝓞 K)) ⊆ w.asIdeal ∪ (w.asIdeal.comap starInt : Ideal (𝓞 K)))`. Rewrite using `[Ideal.subset_union]`. The claim follows by propositional logic.
+
+Take `⟨s, hs, hs'⟩` from `Set.not_subset.1 h3`. Use `⟨s, (mem_hcompl_iff _ w.isPrime s).2 ⟨fun h => hs' (Or.inl h), fun h => hs' (Or.inr h)⟩, (hD s).1 hs⟩` and prove the remaining obligations.
+-/
 theorem exists_denom (w : HeightOneSpectrum (𝓞 K)) {k : K} (hk : k ∈ biInt (w.valuation K)) :
     ∃ s ∈ hcompl (K := K) w.asIdeal, ∃ a : 𝓞 K, algebraMap (𝓞 K) K s * k = algebraMap (𝓞 K) K a := by
   let D : Ideal (𝓞 K) := (1 : Submodule (𝓞 K) K).comap (LinearMap.toSpanSingleton (𝓞 K) K k)
@@ -241,6 +328,19 @@ theorem exists_denom (w : HeightOneSpectrum (𝓞 K)) {k : K} (hk : k ∈ biInt 
   refine ⟨s, (mem_hcompl_iff _ w.isPrime s).2 ⟨fun h => hs' (Or.inl h), fun h => hs' (Or.inr h)⟩,
     (hD s).1 hs⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, hs, hx⟩`. Establish `h1 : ∀ y ∈ Submodule.span (𝓞 K) S, y ∈ Submodule.span (biInt (w.valuation K)) S`. Introduce `y hy`. Proceed by induction on `hy using Submodule.span_induction with`.
+
+Consider the case `mem y hy => exact Submodule.subset_span hy`. Consider the case `zero => exact Submodule.zero_mem _`. Consider the case `add a b _ _ ha hb => exact Submodule.add_mem _ ha hb`. Consider the case `smul r a _ ha`. Rewrite using `[← algebraMap_smul K r a]`.
+
+Conclude with `Submodule.smul_mem _ (⟨_, int_mem_biInt w r⟩ : biInt (w.valuation K)) ha`. Take `⟨s0, s1⟩` from `inv_mem_biInt w hs`. Establish `h2 : (algebraMap (𝓞 K) K s)⁻¹ • (s • x) ∈ Submodule.span (biInt (w.valuation K)) S` using `Submodule.smul_mem _ (⟨_, s1⟩ : biInt (w.valuation K)) (h1 _ hx)`. Rewrite `h2` using `[← algebraMap_smul K s x, inv_smul_smul₀ s0]`. Then use the resulting hypothesis. Introduce `hx`.
+
+Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy => exact ⟨1, Submonoid.one_mem _, by simpa using Submodule.subset_span hy⟩`. Consider the case `zero => exact Submodule.zero_mem _`. Consider the case `add a b _ _ ha hb => exact Submodule.add_mem _ ha hb`. Consider the case `smul r y _ hy`.
+
+Take `⟨t, ht, a, hta⟩` from `exists_denom w r.2`. Take `⟨s, hs, hsy⟩` from `hy`. Use `⟨s * t, Submonoid.mul_mem _ hs ht, ?_⟩` and prove the remaining obligations. Establish `e : (s * t) • r • y = a • s • y`. Rewrite using `[Subring.smul_def, mul_smul, ← algebraMap_smul K t, smul_smul (algebraMap (𝓞 K) K t), hta, algebraMap_smul, smul_comm]`.
+
+Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ a hsy`.
+-/
 theorem mem_loc_span_iff {V : Type} [AddCommGroup V] [Module K V] [Module (𝓞 K) V]
     [IsScalarTower (𝓞 K) K V] (w : HeightOneSpectrum (𝓞 K)) (S : Set V) (x : V) :
     x ∈ loc (K := K) w.asIdeal (Submodule.span (𝓞 K) S) ↔
@@ -275,6 +375,11 @@ theorem mem_loc_span_iff {V : Type} [AddCommGroup V] [Module K V] [Module (𝓞 
       rw [e]
       exact Submodule.smul_mem _ a hsy
 
+/- English proof (translation)
+Rewrite using `[locR, Submodule.one_eq_span, mem_loc_span_iff, Submodule.mem_span_singleton]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, rfl⟩`. Rewrite using `[Subring.smul_def, smul_eq_mul, mul_one]`. Conclude with `a.2`.
+
+Introduce `hk`. Conclude with `⟨⟨k, hk⟩, by rw [Subring.smul_def, smul_eq_mul, mul_one]⟩`.
+-/
 theorem mem_locR_iff (w : HeightOneSpectrum (𝓞 K)) (k : K) :
     k ∈ locR (K := K) w.asIdeal ↔ k ∈ biInt (w.valuation K) := by
   rw [locR, Submodule.one_eq_span, mem_loc_span_iff, Submodule.mem_span_singleton]
@@ -286,6 +391,23 @@ theorem mem_locR_iff (w : HeightOneSpectrum (𝓞 K)) (k : K) :
 
 end NumberField
 
+/- English proof (translation)
+Introduce `K V _ _ _ _ _ _ _ _ h hK hs hnd M hM P hP`. Set `w : IsDedekindDomain.HeightOneSpectrum (𝓞 K)` to `⟨P, hP.isPrime, Ring.ne_bot_of_isMaximal_of_not_isField hP (RingOfIntegers.not_isField K)⟩`. Take `⟨θ, t, ht, hθ⟩` from `hK.2.2 P hP`. Take `⟨S, hS⟩` from `hM.fg`. Establish `hsp` using `hM.span_eq_top`.
+
+Set `Λ : Submodule (biInt (w.valuation K)) V` to `Submodule.span _ (S : Set V)`. Establish `hΛ : ∀ x, x ∈ loc (K` using `K) P M ↔ x ∈ Λ := fun x => by`. Rewrite using `[← hS]`. Conclude with `mem_loc_span_iff w _ x`. Establish `htop : Submodule.span K (Λ : Set V) = ⊤`.
+
+Rewrite using `[eq_top_iff, ← hsp]`. Use `Submodule.span_mono fun x hx => (hΛ x).1 ⟨1, Submonoid.one_mem _, by simpa using hx⟩` and prove the remaining obligations. Take `⟨m, e, he1, he2, he3⟩` from `exists_orth_gens (w.valuation K) h hs (algebraMap (𝓞 K) K θ) (int_mem_biInt w θ) (by`. Rewrite using `[← ht, ← map_sub]`. Conclude with `w.valuation_eq_one_iff_notMem.2 hθ) _ Λ`.
+
+Use the proof step `(Submodule.fg_span S.finite_toSet) rfl (by`. Introduce `x _ hx`. Use `hnd.1 x fun y => ?_` and prove the remaining obligations. Establish `h1 : Submodule.span K (Λ : Set V) ≤ LinearMap.ker (h x)` using `Submodule.span_le.2 fun y hy => hx y hy`. Conclude with `h1 (htop ▸ Submodule.mem_top))`.
+
+Establish `hli : LinearIndependent K e` using `LinearMap.linearIndependent_of_isOrthoᵢ (B := h) (fun i l hil => he1 i l hil) he2`. Establish `hspan : ⊤ ≤ Submodule.span K (Set.range e)`. Rewrite using `[← htop, ← he3, Submodule.span_span_of_tower]`. Set `b0` to `Module.Basis.mk hli hspan`. Establish `hm : m = Module.finrank K V`.
+
+Rewrite using `[Module.finrank_eq_card_basis b0, Fintype.card_fin]`. Substitute `hm` using the available equality. Establish `hb : ⇑b0 = e` using `Module.Basis.coe_mk hli hspan`. Use `⟨b0, by rw [hb]; exact he1, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[hΛ, ← he3, ← hb, Module.Basis.mem_span_iff_repr_mem]`.
+
+Use `forall_congr' fun i => ?_` and prove the remaining obligations. Rewrite using `[show locR (K := K) P = locR (K := K) w.asIdeal from rfl, mem_locR_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha⟩`. Rewrite using `[← ha]`.
+
+Conclude with `a.2`. Introduce `hk`. Conclude with `⟨⟨_, hk⟩, rfl⟩`.
+-/
 theorem main : ∀ (K V : Type) [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [Module K V] [FiniteDimensional K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] (h : V →ₗ⋆[K] V →ₗ[K] K), IsCMUnram K → h.IsSymm → h.Nondegenerate → ∀ (M : Submodule (𝓞 K) V), Submodule.IsLattice K M → ∀ P : Ideal (𝓞 K), P.IsMaximal → ∃ b : Module.Basis (Fin (Module.finrank K V)) K V, (∀ i l, i ≠ l → h (b i) (b l) = 0) ∧ ∀ x, x ∈ loc (K := K) P M ↔ ∀ i, b.repr x i ∈ locR (K := K) P := by
   intro K V _ _ _ _ _ _ _ _ h hK hs hnd M hM P hP
   let w : IsDedekindDomain.HeightOneSpectrum (𝓞 K) :=

@@ -12,6 +12,23 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 
 namespace GlobalTheory.FlatCM.HomLat
 
+/- English proof (translation)
+Introduce `E _ _ _ H hH K _ _ ρ σ₁ p X gP gQ hG barE hbar d hd`. Take `⟨y, hy0, hyi⟩` from `exists_integral_multiples ℤ ℚ (L := E) (Finset.univ.image d)`. Establish `hsq : ((y.natAbs ^ 2 : ℕ) : ℤ) = y * y` using `by rw [Nat.cast_pow, Int.natCast_natAbs, sq_abs, sq]`. Establish `hint : ∀ a, IsIntegral ℤ (((y.natAbs ^ 2 : ℕ) : E) * d a)` using `fun a => by`. Establish `h1` using `hyi (d a) (Finset.mem_image_of_mem d (Finset.mem_univ a))`.
+
+Establish `e : ((y.natAbs ^ 2 : ℕ) : E) * d a = (algebraMap ℤ E y) * (y • d a)`. Rewrite using `[zsmul_eq_mul, algebraMap_int_eq, eq_intCast, ← _root_.mul_assoc]`. Use `congr 1`. Rewrite using `[← Int.cast_natCast (R := E), hsq]`. Apply the tactic sequence `try push_cast`.
+
+Apply the tactic sequence `try ring`. Rewrite using `[e]`. Conclude with `isIntegral_algebraMap.mul h1`. Use `set n : ℕ := y.natAbs ^ 2 with hn_def`. Establish `hn : 0 < n` using `pow_pos (Int.natAbs_pos.2 hy0) 2`.
+
+Set `x : Fin p → 𝓞 E` to `fun a => ⟨(n : E) * d a, hint a⟩`. Establish `hx : ∀ a, (x a : E) = n * d a` using `fun a => rfl`. Establish `hψ` using `GlobalTheory.FlatCM.HomLat.isLinearHom_prod X x`. Establish `hk` using `GlobalTheory.T.linearHom_kills_torsion_of_weilPairing_divisible E H hH K ρ σ₁ p X _ hψ n hn (fun f hf ⟨m, hm, z, hfz⟩ => by`. Establish `hm' : (m : E) ≠ 0` using `by exact_mod_cast hm.ne'`.
+
+Establish `hc : (fun a => (z a : E) / m) ∈ GlobalTheory.FlatCM.HomLat.lat X` using `Submodule.subset_span ⟨m, hm, z, fun a => by field_simp, f, hf, hfz⟩`. Take `⟨w, hw⟩` from `hd _ hc`. Use `⟨w, GlobalTheory.T.weilPairing_linearHom_span_gramForm E H hH K ρ σ₁ p X gP gQ hG m hm z f hf hfz x _ ?_⟩` and prove the remaining obligations. Establish `hb : ∀ b, ((H.bar (x b) : 𝓞 E) : E) = n * barE (d b)` using `fun b => by`. Rewrite using `[← hbar, hx, map_mul, map_natCast]`.
+
+Establish `key : (m : E) * ((n : E) * (w : E)) = ∑ a, ∑ b, (z a : E) * (gP a b : E) * ((H.bar (x b) : 𝓞 E) : E)`. Repeatedly rewrite using `[hb]`. Rewrite using `[hw]`. Simplify using `only [Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations.
+
+Clear the denominators using the available nonvanishing facts. Apply `RingOfIntegers.coe_injective` to reduce the goal to its premises. Use `push_cast`. Conclude with `key)`. Take `⟨χ, hχ, hχn⟩` from `GlobalTheory.T.exists_linearHom_pow_eq_of_kills_complex_torsion E H K σ₁ (X.A true) X.B _ hψ n hn hk`.
+
+Conclude with `Submodule.subset_span ⟨n, hn, x, hx, χ, hχ, hχn⟩`.
+-/
 theorem mem_lat_of_dual : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E),
     GlobalTheory.IndefiniteRowSideFullHecke.EigenvectorLieDegree.IsHostField H → ∀ (K : Type) [Field K] [NumberField K] (ρ : 𝓞 K) (σ₁ : K →+* ℂ) (p : ℕ)
     (X : GlobalTheory.CM.CMObj H K ρ σ₁ p 0) (gP : Matrix (Fin p) (Fin p) (𝓞 E)) (gQ : Matrix (Fin 0) (Fin 0) (𝓞 E)),

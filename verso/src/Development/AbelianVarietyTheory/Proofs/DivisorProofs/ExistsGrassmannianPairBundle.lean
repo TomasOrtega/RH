@@ -10,6 +10,9 @@ open NumberField MvPolynomial Filter Topology Formalism.BasicNotions Formalism.M
 open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory GlobalTheory.ArInt
 open scoped Classical
 open GlobalTheory.VB
+/- English proof (translation)
+The claim follows from `UpperTheory.vector_bundle_subbundle_universal UpperTheory.Grass.exists_grass`.
+-/
 theorem _root_.GlobalTheory.T.exists_grassmannian_pair_bundle : ∀ (B : Scheme.{0}) (E : B.Modules) (n m₁ m₂ : ℕ), GlobalTheory.VB.IsVB E n → m₁ ≤ m₂ → m₂ ≤ n →
     ∃ (G : Scheme.{0}) (γ : G ⟶ B) (S P : G.Modules) (s : S ⟶ P) (j : P ⟶ (Scheme.Modules.pullback γ).obj E),
       GlobalTheory.VB.IsVB S m₁ ∧ GlobalTheory.VB.IsVB P m₂ ∧ GlobalTheory.VB.IsSubbundle s ∧ GlobalTheory.VB.IsSubbundle j ∧

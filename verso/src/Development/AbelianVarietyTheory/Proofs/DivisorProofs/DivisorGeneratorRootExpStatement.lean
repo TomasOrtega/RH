@@ -7,6 +7,9 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 open scoped ENNReal Classical
 open CategoryTheory AlgebraicGeometry ReciprocityTheory.AnForm.M GlobalTheory.Toroidal GlobalTheory.Cartier GlobalTheory.ProjVar GlobalTheory.TrueGeo GlobalTheory.CxPts GlobalTheory.ShFam
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.LeviRed.levi_th_add_ph | exact GlobalTheory.LeviRed.levi_th_add_ph | (intros; apply GlobalTheory.LeviRed.levi_th_add_ph <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.divisor_generator_root_exp : Hypotheses2 → HypothesesH → OnObj fun D O _ T _ h => ∀ (c : O.Y.Comp) (a : Fin ((T.M c).n + 1)) (j : Fin ((T.M c).A a).n),
   ∀ y ∈ (((T.M c).A a).chart j).target, (((T.M c).A a).chart j).symm y ∉ (T.M c).Z a →
   ∀ u : D.what₂.Tau → Fin O.Y.N → ℝ, ∃ f : DV.Rt D.what₂.Tau O.N → (O.var c).Fn,

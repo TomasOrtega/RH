@@ -7,6 +7,19 @@ set_option autoImplicit false
 
 namespace GlobalTheory.WholeFlag.Glue
 
+/- English proof (translation)
+Establish `hmat : (Matrix.of fun r l : Fin k => (R * T) (σ r) (Fin.castLE hk l)) = (Matrix.of fun r l : Fin k => R (σ r) (Fin.castLE hk l)) * (Matrix.of fun j l : Fin k => T (Fin.castLE hk j) (Fin.castLE hk l))`. Use extensionality with `r l`. Simplify using `only [Matrix.mul_apply, Matrix.of_apply]`. Use `symm`. Establish `hm` using `Finset.sum_map Finset.univ (Fin.castLEEmb hk) (fun j : Fin g => R (σ r) j * T j (Fin.castLE hk l))`.
+
+Use `Eq.trans (Eq.trans ?_ hm.symm) ?_` and prove the remaining obligations. Both sides reduce to the same expression. Apply `Finset.sum_subset (Finset.subset_univ _)` to reduce the goal to its premises. Introduce `j _ hj`. Establish `hjk : k ≤ (j : ℕ)`.
+
+Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hj (Finset.mem_map.2 ⟨⟨j, h⟩, Finset.mem_univ _, Fin.ext (by simp)⟩)`. Establish `hlt : Fin.castLE hk l < j`. Rewrite using `[Fin.lt_iff_val_lt_val]`.
+
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish `h0 : T j (Fin.castLE hk l) = 0` using `hT hlt`. Simplify using `only [h0, mul_zero]`. Establish `htri : (Matrix.of fun j l : Fin k => T (Fin.castLE hk j) (Fin.castLE hk l)).BlockTriangular id`.
+
+Introduce `i j hij`. Simplify using `only [Matrix.of_apply]`. Apply `hT` to reduce the goal to its premises. Rewrite `hij`, the goal using `[Fin.lt_iff_val_lt_val]`. Simplify using `using hij`.
+
+Unfold `minorAt`. Rewrite using `[hmat, Matrix.det_mul, Matrix.det_of_upperTriangular htri]`. Simplify using the standard rewrite rules.
+-/
 theorem minorAt_mul_upperTriangular {K : Type} [Field K] {n g : ℕ} (R : Matrix (Fin n) (Fin g) K)
     (T : Matrix (Fin g) (Fin g) K) (hT : T.BlockTriangular id) (k : ℕ) (hk : k ≤ g) (σ : Fin k → Fin n) :
     minorAt (R * T) k hk σ = minorAt R k hk σ * ∏ i : Fin k, T (Fin.castLE hk i) (Fin.castLE hk i) := by

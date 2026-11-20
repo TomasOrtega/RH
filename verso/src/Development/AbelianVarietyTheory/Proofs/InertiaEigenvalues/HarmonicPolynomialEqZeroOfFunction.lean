@@ -14,6 +14,13 @@ open GlobalTheory.JointHarm GlobalTheory.JointHarm.DeltaEig
 
 def sgnOf {D : D7} (m : ℕ) (p : D.what₂.Tau → ℕ) : D.what₂.Tau → Fin m → Bool := fun τ a => decide ((a : ℕ) < p τ)
 
+/- English proof (translation)
+Use `MvPolynomial.algHom_ext fun v => ?_` and prove the remaining obligations. Rewrite using `[fockSubst, fsub, MvPolynomial.aeval_X, MvPolynomial.aeval_X]`. Distinguish the cases in `h : v.2.1.val < p v.1`. Rewrite using `[if_pos h, Finset.sum_eq_single v.2.1]`. Simplify using `[sgnOf, h, Matrix.coe_units_inv]`.
+
+Introduce `a _ ha`. Simplify using `[sgnOf, h, Matrix.one_apply_ne ha]`. Simplify using the standard rewrite rules. Rewrite using `[if_neg h, Finset.sum_eq_single v.2.1]`. Simplify using `[sgnOf, h]`.
+
+Introduce `a _ ha`. Simplify using `[sgnOf, h, Matrix.one_apply_ne (Ne.symm ha)]`. Simplify using the standard rewrite rules.
+-/
 theorem fockSubst_eq_fsub {D : D7} {m n : ℕ} (p : D.what₂.Tau → ℕ) (u : GLR D n) :
     (fockSubst p u : PolF D m n →ₐ[ℂ] PolF D m n) = fsub (sgnOf m p) 1 (fun τ => (u τ).val) := by
   refine MvPolynomial.algHom_ext fun v => ?_
@@ -30,10 +37,18 @@ theorem fockSubst_eq_fsub {D : D7} {m n : ℕ} (p : D.what₂.Tau → ℕ) (u : 
       simp [sgnOf, h, Matrix.one_apply_ne (Ne.symm ha)]
     · simp
 
+/- English proof (translation)
+Use `⟨?_, by simp⟩` and prove the remaining obligations. Simplify using `[Matrix.mem_unitaryGroup_iff]`.
+-/
 theorem one_mem_KC {m : ℕ} (ε : Fin m → Bool) : (1 : Matrix (Fin m) (Fin m) ℂ) ∈ GlobalTheory.Dec.KC ε := by
   refine ⟨?_, by simp⟩
   simp [Matrix.mem_unitaryGroup_iff]
 
+/- English proof (translation)
+Introduce `D m n p u u' h F G`. Establish `e : FMul.fmat (sgnOf m p) (1 : D.what₂.Tau → Matrix (Fin m) (Fin m) ℂ) (fun τ => (u' τ).val) = (FMul.fmat (sgnOf m p) (1 : D.what₂.Tau → Matrix (Fin m) (Fin m) ℂ) (fun τ => (u τ).val))ᴴ`. Rewrite using `[← FMul.fmat_conj (sgnOf m p) (1 : D.what₂.Tau → Matrix (Fin m) (Fin m) ℂ) (fun τ => (u τ).val) (fun τ => one_mem_KC _)]`. Use `congr 1`. Use function extensionality and compare the values at `τ`.
+
+Simplify using the standard rewrite rules. Use function extensionality and compare the values at `τ`. Conclude with `h τ`. Rewrite using `[fockSubst_eq_fsub, fockSubst_eq_fsub, fsub_eq_lsub, fsub_eq_lsub, e]`. Conclude with `FMul.fockL_lsub_adj _ _ _`.
+-/
 theorem fockL_fockSubst_adj : ∀ (D : D7) (m n : ℕ) (p : D.what₂.Tau → ℕ) (u u' : GLR D n), (∀ τ, (u' τ).val = (u τ).valᴴ) → ∀ F G : PolF D m n, fockL (fockSubst p u F) G = fockL F (fockSubst p u' G) := by
   intro D m n p u u' h F G
   classical
@@ -48,6 +63,19 @@ theorem fockL_fockSubst_adj : ∀ (D : D7) (m n : ℕ) (p : D.what₂.Tau → �
   rw [fockSubst_eq_fsub, fockSubst_eq_fsub, fsub_eq_lsub, fsub_eq_lsub, e]
   exact FMul.fockL_lsub_adj _ _ _
 
+/- English proof (translation)
+Establish `hsm : s ≤ m` using `by omega`. Establish `hv : ∀ α β : Fin s, (varF τ β α : PolF D m n) = MvPolynomial.X (τ, Fin.castLE hsm β, Fin.castLE hsn α)` using `fun α β => by`. Rewrite using `[varF, dif_pos ⟨by omega, by omega⟩]; rfl`. Establish `hui` using `inv_tri (u τ) hu.1 _ (lo_tri hu.2)`. Establish `key` using `det_subst (R := PolF D m n) (fun a b => MvPolynomial.X (τ, a, b)) (k τ) (u τ)⁻¹ (Fin.castLE hsm) (Fin.castLE hsn) (Fin.castLE_injective _) (Fin.castLE_injective _) (fun a β h => by`.
+
+Use `(hk _ _ h).1 (by simp; omega)` as an intermediate fact. Rewrite `this` using `[Fin.le_def]`. Conclude with `⟨⟨a, by simp at this; omega⟩, rfl⟩)`. Use the proof step `(fun α b h => by`. Use `hui _ _ h` as an intermediate fact.
+
+Conclude with `⟨⟨b, by simp at this; omega⟩, rfl⟩)`. Rewrite using `[Matrix.det_of_upperTriangular (M := (k τ).submatrix _ _) (fun i j hij => by`. Assume the negation of the conclusion as `h`. Use `(hk _ _ h).1 (by simp; omega)` as an intermediate fact. Conclude with `absurd hij (by simpa using this)),`.
+
+Use the proof step `Matrix.det_of_lowerTriangular (((u τ)⁻¹).submatrix _ _) (fun i j hij => by`. Assume the negation of the conclusion as `h`. Use `hui _ _ h` as an intermediate fact. Conclude with `absurd hij (by simpa using this)), ← Finset.prod_mul_distrib] at key`. Simplify using `only [minorPlus, hv]`.
+
+Rewrite using `[AlgHom.map_det, Finset.prod_range]`. Use `key using 2` and compare the differences between its conclusion and the goal. Use `ext1 α β`. Establish `: ε τ (Fin.castLE hsm β) = true` using `by rw [hε]; simp; omega`. Simplify using `[fsub, this]`.
+
+Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[show dg (k τ) a = _ from dg_fin _ (Fin.castLE hsm a), show dg (u τ) a = _ from dg_fin _ (Fin.castLE hsn a), Matrix.submatrix_apply, Matrix.submatrix_apply, eq_inv_of_mul_eq_one_left (lo_diag hu _)]`.
+-/
 theorem sub_minorPlus {D : D7} {m n : ℕ} (ε : D.what₂.Tau → Fin m → Bool) (k : D.what₂.Tau → Matrix (Fin m) (Fin m) ℂ)
     (u : D.what₂.Tau → Matrix (Fin n) (Fin n) ℂ) (τ : D.what₂.Tau) (p s : ℕ) (hsn : s ≤ n) (hp : p ≤ m) (hs : s ≤ p)
     (hε : ∀ a, ε τ a = decide ((a : ℕ) < p))
@@ -87,6 +115,25 @@ theorem sub_minorPlus {D : D7} {m n : ℕ} (ε : D.what₂.Tau → Fin m → Boo
     rw [show dg (k τ) a = _ from dg_fin _ (Fin.castLE hsm a), show dg (u τ) a = _ from dg_fin _ (Fin.castLE hsn a),
       Matrix.submatrix_apply, Matrix.submatrix_apply, eq_inv_of_mul_eq_one_left (lo_diag hu _)]
 
+/- English proof (translation)
+Set `e : Fin s → Fin m` to `fun β => ⟨p + β, by omega⟩`. Set `f : Fin s → Fin n` to `fun α => ⟨n - s + α, by omega⟩`. Establish `hv : ∀ α β : Fin s, (varF τ (p + β) (n - s + α) : PolF D m n) = MvPolynomial.X (τ, e β, f α)` using `fun α β => by`. Rewrite using `[varF, dif_pos ⟨by omega, by omega⟩]`. Set `w : Fin m → ℤ` to `fun a => if (a : ℕ) < p then ((a : ℕ) : ℤ) else 2 * m - ((a : ℕ) : ℤ)`.
+
+Establish `hw : Function.Injective w` using `fun a b h => by`. Simplify using `only [w] at h`. Apply `Fin.ext` to reduce the goal to its premises. Apply the tactic sequence `split_ifs at h <;> omega`. Establish `hkw : ∀ a b, k τ a b ≠ 0 → w a ≤ w b` using `fun a b h => by`.
+
+Use `hk a b h` as an intermediate fact. Simplify using `only [w, Fin.le_def] at this ⊢`. Apply the tactic sequence `split_ifs <;> omega`. Establish `hki : ∀ β a, (k τ)⁻¹ (e β) a ≠ 0 → p ≤ a ∧ (a : ℕ) ≤ p + β` using `fun β a h => by`. Use `inv_tri (k τ) hk0 _ hkw _ _ h` as an intermediate fact.
+
+Simplify using `only [w, e] at this`. Apply the tactic sequence `split_ifs at this <;> omega`. Establish `key` using `det_subst (R := PolF D m n) (fun a b => MvPolynomial.X (τ, a, b)) ((k τ)⁻¹)ᵀ (u τ)ᵀ e f (fun a b h => Fin.ext (by simpa [e] using h)) (fun a b h => Fin.ext (by simpa [f] using h)) (fun a β h => by`. Use `hki _ _ h` as an intermediate fact. Conclude with `⟨⟨a - p, by omega⟩, Fin.ext (by simp only [e]; omega)⟩)`.
+
+Use the proof step `(fun α b h => by`. Use `lo_tri hu.2 _ _ h` as an intermediate fact. Simplify using `only [f] at this`. Conclude with `⟨⟨b - (n - s), by omega⟩, Fin.ext (by simp only [f]; omega)⟩)`. Rewrite using `[Matrix.det_of_upperTriangular (M := ((k τ)⁻¹)ᵀ.submatrix _ _) (fun i j hij => by`.
+
+Assume the negation of the conclusion as `h`. Use `(hki _ _ h).2` as an intermediate fact. Conclude with `absurd hij (by simpa [e] using this)),`. Use the proof step `Matrix.det_of_upperTriangular (M := (u τ)ᵀ.submatrix _ _) (fun i j hij => by`. Assume the negation of the conclusion as `h`.
+
+Use `lo_tri hu.2 _ _ h` as an intermediate fact. Conclude with `absurd hij (by simpa [f] using this))] at key`. Simplify using `only [minorMinus, hv]`. Rewrite using `[AlgHom.map_det, Finset.prod_mul_distrib, ← Finset.prod_range_reflect (fun a => dg (u τ) (n - 1 - a)), Finset.prod_range, Finset.prod_range]`. Use `key using 2` and compare the differences between its conclusion and the goal.
+
+Use `ext1 α β`. Establish `: ε τ (e β) = false` using `by rw [hε]; simp [e]`. Simplify using `[fsub, this]`. Use `congr 1`. Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[show dg (k τ) (p + a) = _ from dg_fin _ (e a), Matrix.submatrix_apply, Matrix.transpose_apply, eq_inv_of_mul_eq_one_left (inv_diag _ hk0 w hw hkw _)]`. Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[show n - 1 - (s - 1 - a) = n - s + a by omega]`. Conclude with `dg_fin _ (f a)`.
+-/
 theorem sub_minorMinus {D : D7} {m n : ℕ} (ε : D.what₂.Tau → Fin m → Bool) (k : D.what₂.Tau → Matrix (Fin m) (Fin m) ℂ)
     (u : D.what₂.Tau → Matrix (Fin n) (Fin n) ℂ) (τ : D.what₂.Tau) (p s : ℕ) (hsn : s ≤ n) (hs : p + s ≤ m)
     (hε : ∀ a, ε τ a = decide ((a : ℕ) < p)) (hk0 : IsUnit (k τ))
@@ -152,18 +199,30 @@ def Eig (x : R) : Prop := ∃ c : ℂ, φ x = c • x ∧ (h → c = 1)
 
 variable {φ h}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨1, by simp, fun _ => rfl⟩`.
+-/
 theorem Eig.one : Eig φ h (1 : R) := ⟨1, by simp, fun _ => rfl⟩
 
+/- English proof (translation)
+Take `⟨c, h1, h2⟩` from `hx`. Take `⟨d, h3, h4⟩` from `hy`. Conclude with `⟨c * d, by rw [map_mul, h1, h3, smul_mul_smul_comm], fun hh => by rw [h2 hh, h4 hh, one_mul]⟩`.
+-/
 theorem Eig.mul {x y : R} (hx : Eig φ h x) (hy : Eig φ h y) : Eig φ h (x * y) := by
   obtain ⟨c, h1, h2⟩ := hx
   obtain ⟨d, h3, h4⟩ := hy
   exact ⟨c * d, by rw [map_mul, h1, h3, smul_mul_smul_comm], fun hh => by rw [h2 hh, h4 hh, one_mul]⟩
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => simpa using Eig.one`. Consider the case `succ k ih => rw [pow_succ]`. Conclude with `ih.mul hx`.
+-/
 theorem Eig.pow {x : R} (hx : Eig φ h x) (k : ℕ) : Eig φ h (x ^ k) := by
   induction k with
   | zero => simpa using Eig.one
   | succ k ih => rw [pow_succ]; exact ih.mul hx
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using Eig.one`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.prod_insert ha]`. Conclude with `(hx a (Finset.mem_insert_self _ _)).mul (ih fun i hi => hx i (Finset.mem_insert_of_mem hi))`.
+-/
 theorem Eig.prod {ι : Type} (s : Finset ι) (x : ι → R) (hx : ∀ i ∈ s, Eig φ h (x i)) : Eig φ h (∏ i ∈ s, x i) := by
   classical
   induction s using Finset.induction_on with
@@ -174,6 +233,19 @@ theorem Eig.prod {ι : Type} (s : Finset ι) (x : ι → R) (hx : ∀ i ∈ s, E
 
 end Eig
 
+/- English proof (translation)
+Introduce `D m n w l hG hm hl`. Rewrite using `[fockSubst_eq_fsub]`. Establish `hu : ∀ τ, IsUnit (l τ).val ∧ GlobalTheory.Dec.IsLo (l τ).val` using `fun τ => ⟨(l τ).isUnit, fun i j hij => hl τ i j hij⟩`. Establish `h1k : ∀ (τ : D.what₂.Tau) (pp : ℕ) (a b : Fin m), (1 : D.what₂.Tau → Matrix (Fin m) (Fin m) ℂ) τ a b ≠ 0 → ((b : ℕ) < pp → a ≤ b) ∧ (pp ≤ (b : ℕ) → b ≤ a)` using `fun τ pp a b h => by`. Establish `: a = b`.
+
+Assume the negation of the conclusion as `hab`. Conclude with `h (by simp [Matrix.one_apply_ne hab])`. Substitute `this` using the available equality. Conclude with `⟨fun _ => le_rfl, fun _ => le_rfl⟩`. Establish `hdg1 : ∀ (a : ℕ), dg (1 : Matrix (Fin m) (Fin m) ℂ) a = 1` using `fun a => by`.
+
+Unfold `dg`. Apply the tactic sequence `split_ifs <;> simp`. Establish `hdgl : (∀ τ a, (l τ).val a a = 1) → ∀ τ (a : ℕ), dg (l τ).val a = 1` using `fun h τ a => by`. Unfold `dg`. Use `split_ifs`.
+
+Conclude with `h _ _`. Both sides reduce to the same expression. Use `Eig.prod (h := ∀ τ a, (l τ).val a a = 1) Finset.univ _ fun τ _ => ?_` and prove the remaining obligations. Establish `hle` using `hG.le τ`. Establish `hmτ` using `hm τ`.
+
+Use `Eig.mul (Eig.prod _ _ fun i hi => Eig.pow ?_ _) (Eig.prod _ _ fun i hi => Eig.pow ?_ _)` and prove the remaining obligations. Establish `hi` using `Finset.mem_range.1 hi`. Use `⟨_, sub_minorPlus (sgnOf m w.p) 1 (fun τ => (l τ).val) τ (w.p τ) (i + 1) (by omega) (by omega) (by omega) (fun a => rfl) (h1k τ _) (hu τ), fun h => ?_⟩` and prove the remaining obligations. Use `Finset.prod_eq_one fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.one_apply, hdg1, hdgl h, inv_one, mul_one]`.
+
+Establish `hi` using `Finset.mem_range.1 hi`. Use `⟨_, sub_minorMinus (sgnOf m w.p) 1 (fun τ => (l τ).val) τ (w.p τ) (i + 1) (by omega) (by omega) (fun a => rfl) isUnit_one (h1k τ _) (hu τ), fun h => ?_⟩` and prove the remaining obligations. Use `Finset.prod_eq_one fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.one_apply, hdg1, hdgl h, inv_one, mul_one]`.
+-/
 theorem fockSubst_delta_eig : ∀ (D : D7) (m n : ℕ) (w : Weight D n) (l : GLR D n), w.Good → (∀ τ, w.p τ + w.q τ ≤ m) → (∀ τ (a b : Fin n), a < b → (l τ).val a b = 0) → ∃ c : ℂ, fockSubst w.p l (w.delta m) = c • w.delta m ∧ ((∀ τ a, (l τ).val a a = 1) → c = 1) := by
   intro D m n w l hG hm hl
   rw [fockSubst_eq_fsub]
@@ -208,6 +280,13 @@ theorem fockSubst_delta_eig : ∀ (D : D7) (m n : ℕ) (w : Weight D n) (l : GLR
     refine Finset.prod_eq_one fun a _ => ?_
     rw [Pi.one_apply, hdg1, hdgl h, inv_one, mul_one]
 
+/- English proof (translation)
+Establish `hw : ∀ a b : Fin n, M.val a b ≠ 0 → ((a : ℕ) : ℤ) ≤ ((b : ℕ) : ℤ)` using `fun a b h => by`. Assume the negation of the conclusion as `hc`. Conclude with `h (h0 a b (by rw [Fin.lt_def]; omega))`. Rewrite using `[Matrix.coe_units_inv]`. Use `⟨fun a b hab => ?_, fun a => ?_⟩` and prove the remaining obligations.
+
+Assume the negation of the conclusion as `hc`. Use `inv_tri M.val M.isUnit (fun a => ((a : ℕ) : ℤ)) hw a b hc` as an intermediate fact. Rewrite `hab` using `[Fin.lt_def]`. Use linear arithmetic over natural numbers and integers. Use `inv_diag M.val M.isUnit (fun a => ((a : ℕ) : ℤ)) (fun a b h => Fin.ext (by simpa using h)) hw a` as an intermediate fact.
+
+Rewrite `this` using `[h1, mul_one]`. Then use the resulting hypothesis.
+-/
 theorem up_inv {n : ℕ} (M : GL (Fin n) ℂ) (h0 : ∀ (a b : Fin n), b < a → M.val a b = 0) (h1 : ∀ a, M.val a a = 1) :
     (∀ (a b : Fin n), b < a → (M⁻¹).val a b = 0) ∧ ∀ a, (M⁻¹).val a a = 1 := by
   have hw : ∀ a b : Fin n, M.val a b ≠ 0 → ((a : ℕ) : ℤ) ≤ ((b : ℕ) : ℤ) := fun a b h => by
@@ -222,12 +301,18 @@ theorem up_inv {n : ℕ} (M : GL (Fin n) ℂ) (h0 : ∀ (a b : Fin n), b < a →
   · have := inv_diag M.val M.isUnit (fun a => ((a : ℕ) : ℤ)) (fun a b h => Fin.ext (by simpa using h)) hw a
     rwa [h1, mul_one] at this
 
+/- English proof (translation)
+Rewrite using `[varF, dif_pos ⟨him, hc⟩, MvPolynomial.aeval_X]`. Simplify using `[fockPt, hi, hin]`.
+-/
 theorem aeval_varF_plus {D : D7} {m n : ℕ} (p : D.what₂.Tau → ℕ) (y : GLR D n) (τ : D.what₂.Tau) (i c : ℕ) (hi : i < p τ)
     (him : i < m) (hin : i < n) (hc : c < n) :
     MvPolynomial.aeval (fockPt p y) (varF τ i c : PolF D m n) = (y τ).val ⟨c, hc⟩ ⟨i, hin⟩ := by
   rw [varF, dif_pos ⟨him, hc⟩, MvPolynomial.aeval_X]
   simp [fockPt, hi, hin]
 
+/- English proof (translation)
+Rewrite using `[varF, dif_pos ⟨him, hc⟩, MvPolynomial.aeval_X]`. Simplify using `[fockPt, hjn]`.
+-/
 theorem aeval_varF_minus {D : D7} {m n : ℕ} (p : D.what₂.Tau → ℕ) (y : GLR D n) (τ : D.what₂.Tau) (j c : ℕ)
     (him : p τ + j < m) (hjn : j < n) (hc : c < n) :
     MvPolynomial.aeval (fockPt p y) (varF τ (p τ + j) c : PolF D m n) =
@@ -235,6 +320,11 @@ theorem aeval_varF_minus {D : D7} {m n : ℕ} (p : D.what₂.Tau → ℕ) (y : G
   rw [varF, dif_pos ⟨him, hc⟩, MvPolynomial.aeval_X]
   simp [fockPt, hjn]
 
+/- English proof (translation)
+Establish `e : (MvPolynomial.aeval (fockPt p y) : PolF D m n →ₐ[ℂ] ℂ).mapMatrix (Matrix.of fun α β : Fin k => (varF τ β α : PolF D m n)) = ((y τ).val).submatrix (Fin.castLE hkn) (Fin.castLE hkn)`. Use extensionality with `α β`. Simplify using `only [AlgHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply, Matrix.submatrix_apply]`. Conclude with `aeval_varF_plus p y τ β α (by omega) (by omega) (by omega) (by omega)`. Rewrite using `[minorPlus, AlgHom.map_det, e, Matrix.det_of_upperTriangular (M := ((y τ).val).submatrix (Fin.castLE hkn) (Fin.castLE hkn)) (fun i j hij => h0 _ _ (by simpa using hij))]`.
+
+Conclude with `Finset.prod_eq_one fun a _ => h1 _`.
+-/
 theorem val_plus {D : D7} {m n : ℕ} (p : D.what₂.Tau → ℕ) (y : GLR D n) (τ : D.what₂.Tau) (k : ℕ) (hk : k ≤ p τ) (hkm : k ≤ m)
     (hkn : k ≤ n) (h0 : ∀ (a b : Fin n), b < a → (y τ).val a b = 0) (h1 : ∀ a, (y τ).val a a = 1) :
     MvPolynomial.aeval (fockPt p y) (minorPlus τ k : PolF D m n) = 1 := by
@@ -250,10 +340,22 @@ theorem val_plus {D : D7} {m n : ℕ} (p : D.what₂.Tau → ℕ) (y : GLR D n) 
 
 def revSign (k : ℕ) : ℂ := ((Equiv.Perm.sign (Fin.revPerm : Equiv.Perm (Fin k)) : ℤ) : ℂ)
 
+/- English proof (translation)
+Unfold `revSign`. Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign (Fin.revPerm : Equiv.Perm (Fin k))) with h | h <;> simp [h]`.
+-/
 theorem revSign_ne (k : ℕ) : revSign k ≠ 0 := by
   unfold revSign
   rcases Int.units_eq_one_or (Equiv.Perm.sign (Fin.revPerm : Equiv.Perm (Fin k))) with h | h <;> simp [h]
 
+/- English proof (translation)
+Set `f : Fin k → Fin n` to `fun α => ⟨n - k + α, by omega⟩`. Set `N : Matrix (Fin k) (Fin k) ℂ` to `Matrix.of fun α β => ((y τ)⁻¹).val (f β) (f α)`. Establish `e : (MvPolynomial.aeval (fockPt p y) : PolF D m n →ₐ[ℂ] ℂ).mapMatrix (Matrix.of fun α β : Fin k => (varF τ (p τ + β) (n - k + α) : PolF D m n)) = N.submatrix id (Fin.revPerm : Equiv.Perm (Fin k))`. Use extensionality with `α β`. Simplify using `only [AlgHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply, Matrix.submatrix_apply, N, id]`.
+
+Rewrite using `[aeval_varF_minus p y τ β (n - k + α) (by omega) (by omega) (by omega)]`. Rewrite using `[show (Fin.rev ⟨(β : ℕ), by omega⟩ : Fin n) = f (Fin.revPerm β) from Fin.ext (by`. Simplify using `only [f, Fin.revPerm_apply, Fin.val_rev]`. Use the proof step `omega)]`. Establish `hN : N.det = 1`.
+
+Rewrite using `[Matrix.det_of_lowerTriangular N (fun i j hij => h0 _ _ (by`. Establish `: i < j` using `by simpa using hij`. Simplify using `only [f, Fin.lt_def] at this ⊢`. Use the proof step `omega))]`. Conclude with `Finset.prod_eq_one fun a _ => h1 _`.
+
+Rewrite using `[minorMinus, AlgHom.map_det, e, Matrix.det_permute', hN, mul_one]`. Both sides reduce to the same expression.
+-/
 theorem val_minus {D : D7} {m n : ℕ} (p : D.what₂.Tau → ℕ) (y : GLR D n) (τ : D.what₂.Tau) (k : ℕ) (hkm : p τ + k ≤ m)
     (hkn : k ≤ n) (h0 : ∀ (a b : Fin n), b < a → ((y τ)⁻¹).val a b = 0) (h1 : ∀ a, ((y τ)⁻¹).val a a = 1) :
     MvPolynomial.aeval (fockPt p y) (minorMinus τ (p τ) k : PolF D m n) = revSign k := by
@@ -277,6 +379,13 @@ theorem val_minus {D : D7} {m n : ℕ} (p : D.what₂.Tau → ℕ) (y : GLR D n)
   rw [minorMinus, AlgHom.map_det, e, Matrix.det_permute', hN, mul_one]
   rfl
 
+/- English proof (translation)
+Rewrite using `[Weight.delta, delta, map_prod]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Establish `hle` using `hG.le τ`. Establish `hmτ` using `hm τ`. Rewrite using `[deltaAt, map_mul, map_prod, map_prod, Finset.prod_eq_one, one_mul]`.
+
+Use `Finset.prod_congr rfl fun i hi => ?_` and prove the remaining obligations. Establish `hi` using `Finset.mem_range.1 hi`. Rewrite using `[map_pow, val_minus w.p y τ (i + 1) (by omega) (by omega) (h0' τ) (h1' τ)]`. Introduce `i hi`. Establish `hi` using `Finset.mem_range.1 hi`.
+
+Rewrite using `[map_pow, val_plus w.p y τ (i + 1) (by omega) (by omega) (by omega) (h0 τ) (h1 τ), one_pow]`.
+-/
 theorem val_delta {D : D7} {m n : ℕ} (w : Weight D n) (hG : w.Good) (hm : ∀ τ, w.p τ + w.q τ ≤ m) (y : GLR D n)
     (h0 : ∀ τ (a b : Fin n), b < a → (y τ).val a b = 0) (h1 : ∀ τ a, (y τ).val a a = 1)
     (h0' : ∀ τ (a b : Fin n), b < a → ((y τ)⁻¹).val a b = 0) (h1' : ∀ τ a, ((y τ)⁻¹).val a a = 1) :
@@ -294,6 +403,11 @@ theorem val_delta {D : D7} {m n : ℕ} (w : Weight D n) (hG : w.Good) (hm : ∀ 
     have hi := Finset.mem_range.1 hi
     rw [map_pow, val_plus w.p y τ (i + 1) (by omega) (by omega) (by omega) (h0 τ) (h1 τ), one_pow]
 
+/- English proof (translation)
+Introduce `D m n w u hG hm hu hu1`. Establish `hi` using `fun τ => up_inv (u τ) (hu τ) (hu1 τ)`. Establish `h1` using `val_delta (m := m) w hG hm (1 : GLR D n) (fun τ a b hab => by simp [Matrix.one_apply_ne (ne_of_gt hab)]) (fun τ a => by simp) (fun τ a b hab => by simp [Matrix.one_apply_ne (ne_of_gt hab)]) (fun τ a => by simp)`. Establish `h2` using `val_delta (m := m) w hG hm u⁻¹ (fun τ => (hi τ).1) (fun τ => (hi τ).2) (fun τ a b hab => by simpa using hu τ a b hab) (fun τ a => by simpa using hu1 τ a)`. Use `⟨h2.trans h1.symm, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[h1]`. Conclude with `Finset.prod_ne_zero_iff.2 fun τ _ => Finset.prod_ne_zero_iff.2 fun i _ => pow_ne_zero _ (revSign_ne _)`.
+-/
 theorem aeval_delta_unitri : ∀ (D : D7) (m n : ℕ) (w : Weight D n) (u : GLR D n), w.Good → (∀ τ, w.p τ + w.q τ ≤ m) → (∀ τ (a b : Fin n), b < a → (u τ).val a b = 0) → (∀ τ a, (u τ).val a a = 1) → MvPolynomial.aeval (fockPt w.p u⁻¹) (w.delta m) = MvPolynomial.aeval (fockPt w.p (1 : GLR D n)) (w.delta m) ∧ MvPolynomial.aeval (fockPt w.p (1 : GLR D n)) (w.delta m) ≠ 0 := by
   intro D m n w u hG hm hu hu1
   have hi := fun τ => up_inv (u τ) (hu τ) (hu1 τ)
@@ -305,6 +419,21 @@ theorem aeval_delta_unitri : ∀ (D : D7) (m n : ℕ) (w : Weight D n) (u : GLR 
   rw [h1]
   exact Finset.prod_ne_zero_iff.2 fun τ _ => Finset.prod_ne_zero_iff.2 fun i _ => pow_ne_zero _ (revSign_ne _)
 
+/- English proof (translation)
+Set `T : ∀ i : Fin n, Matrix {j : Fin n // i < j} {j : Fin n // i < j} ℂ` to `fun i => A.submatrix Subtype.val Subtype.val`. Set `r : ∀ i : Fin n, {j : Fin n // i < j} → ℂ` to `fun i => -((fun c : {j : Fin n // i < j} => A i c.1) ᵥ* (T i)⁻¹)`. Establish `hr : ∀ i, r i ᵥ* T i = -(fun c : {j : Fin n // i < j} => A i c.1)` using `fun i => by`. Establish `hu : IsUnit (T i).det` using `isUnit_iff_ne_zero.2 (hT i)`. Simplify using `only [r]`.
+
+Rewrite using `[Matrix.neg_vecMul, Matrix.vecMul_vecMul, Matrix.nonsing_inv_mul _ hu, Matrix.vecMul_one]`. Set `v : Matrix (Fin n) (Fin n) ℂ` to `Matrix.of fun i j => if h : i < j then r i ⟨j, h⟩ else if i = j then 1 else 0`. Establish `h0 : ∀ a b : Fin n, b < a → v a b = 0` using `fun a b hab => by`. Simplify using `[v, not_lt.2 hab.le, hab.ne']`. Establish `h1 : ∀ a, v a a = 1` using `fun a => by simp [v]`.
+
+Establish `hdet : v.det ≠ 0`. Rewrite using `[Matrix.det_of_upperTriangular (M := v) (fun i j hij => h0 _ _ (by simpa using hij))]`. Simplify using `[h1]`. Establish `hL : ∀ i c : Fin n, i < c → (v * A) i c = 0` using `fun i c hic => by`. Establish `hv : ∀ j, v i j * A j c = (if h : i < j then r i ⟨j, h⟩ * A j c else 0) + (if i = j then A j c else 0)` using `fun j => by`.
+
+Simplify using `only [v, Matrix.of_apply]`. Distinguish the cases in `h : i < j`. Simplify using `[h, h.ne]`. Apply the tactic sequence `by_cases h' : i = j <;> simp [h, h']`. Establish `e` using `congrFun (hr i) ⟨c, hic⟩`.
+
+Simplify using `only [Matrix.vecMul, dotProduct, T, Matrix.submatrix_apply, Pi.neg_apply] at e`. Establish `e2 : (∑ x, if h : i < x then r i ⟨x, h⟩ * A x c else 0) = ∑ j : {j : Fin n // i < j}, r i j * A j c`. Rewrite using `[← Finset.sum_subset (Finset.filter_subset (fun x => i < x) Finset.univ) (fun x _ hx => by`. Rewrite using `[dif_neg (by simpa using hx)]), Finset.sum_subtype (p := fun x => i < x) _ (fun x => by simp)]`. Conclude with `Finset.sum_congr rfl fun j _ => dif_pos j.2`.
+
+Rewrite using `[Matrix.mul_apply, Finset.sum_congr rfl fun j _ => hv j, Finset.sum_add_distrib, Finset.sum_ite_eq, e2, e]`. Simplify using the standard rewrite rules. Set `V : GL (Fin n) ℂ` to `Matrix.GeneralLinearGroup.mkOfDetNeZero v hdet`. Set `G : GL (Fin n) ℂ` to `Matrix.GeneralLinearGroup.mkOfDetNeZero A hA`. Establish `hi` using `up_inv V h0 h1`.
+
+Use `⟨V⁻¹, V * G, hi.1, hi.2, hL, ?_⟩` and prove the remaining obligations. Rewrite using `[inv_mul_cancel_left]`. Both sides reduce to the same expression.
+-/
 theorem exists_ul {n : ℕ} (A : Matrix (Fin n) (Fin n) ℂ) (hA : A.det ≠ 0)
     (hT : ∀ i : Fin n, (A.submatrix (Subtype.val : {j : Fin n // i < j} → Fin n) Subtype.val).det ≠ 0) :
     ∃ u l : GL (Fin n) ℂ, (∀ a b : Fin n, b < a → u.val a b = 0) ∧ (∀ a, u.val a a = 1) ∧
@@ -344,6 +473,15 @@ theorem exists_ul {n : ℕ} (A : Matrix (Fin n) (Fin n) ℂ) (hA : A.det ≠ 0)
   rw [inv_mul_cancel_left]
   rfl
 
+/- English proof (translation)
+Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C a`. Introduce `ξ`. Simplify using `only [AlgHom.commutes, MvPolynomial.algebraMap_eq, MvPolynomial.algHom_C]`. Conclude with `continuousAt_const`.
+
+Consider the case `add p q hp hq`. Introduce `ξ`. Simplify using `only [map_add]`. Conclude with `(hp ξ).add (hq ξ)`. Consider the case `mul_X p v hp`.
+
+Introduce `ξ`. Establish `e : ∀ t, ξ (FMul.lsub (M t) (p * MvPolynomial.X v)) = ∑ w, M t w v * (ξ ∘ₗ LinearMap.mulRight ℂ (MvPolynomial.X w)) (FMul.lsub (M t) p)` using `fun t => by`. Rewrite using `[map_mul, FMul.lsub_X, Finset.mul_sum, map_sum]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[mul_left_comm, ← MvPolynomial.smul_eq_C_mul, map_smul, smul_eq_mul]`.
+
+Both sides reduce to the same expression. Simplify using `only [e]`. Conclude with `tendsto_finset_sum _ fun w _ => (hM w v).mul (hp _)`.
+-/
 theorem continuousAt_lsub {σ : Type} [Fintype σ] (M : ℂ → Matrix σ σ ℂ) (hM : ∀ v w, ContinuousAt (fun t => M t v w) 0)
     (P : MvPolynomial σ ℂ) : ∀ ξ : MvPolynomial σ ℂ →ₗ[ℂ] ℂ, ContinuousAt (fun t => ξ (FMul.lsub (M t) P)) 0 := by
   classical
@@ -367,6 +505,15 @@ theorem continuousAt_lsub {σ : Type} [Fintype σ] (M : ℂ → Matrix σ σ ℂ
     simp only [e]
     exact tendsto_finset_sum _ fun w _ => (hM w v).mul (hp _)
 
+/- English proof (translation)
+Set `Q : Polynomial ℂ` to `((1 - Polynomial.X : Polynomial ℂ) • X.map Polynomial.C + (Polynomial.X : Polynomial ℂ) • Y.map Polynomial.C).det`. Establish `hQ : ∀ t, Q.eval t = ((1 - t) • X + t • Y).det` using `fun t => by`. Use `RingHom.map_det (Polynomial.evalRingHom t) ((1 - Polynomial.X : Polynomial ℂ) • X.map Polynomial.C + (Polynomial.X : Polynomial ℂ) • Y.map Polynomial.C)` as an intermediate fact. Rewrite `this` using `[Polynomial.coe_evalRingHom]`. Use `this.trans (congrArg _ ?_)` and prove the remaining obligations.
+
+Use extensionality with `a b`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish `hQ0 : Q ≠ 0` using `fun h => hY (by`. Use `hQ 1` as an intermediate fact.
+
+Rewrite `this` using `[h]`. Simplify using `using this.symm)`. Establish `hfin : ({t | Q.IsRoot t} \ {0}).Finite` using `(Polynomial.finite_setOf_isRoot hQ0).subset Set.diff_subset`. Use `filter_upwards [nhdsWithin_le_nhds (hfin.isClosed.isOpen_compl.mem_nhds (by simp)), self_mem_nhdsWithin] with t h1 h2`. Rewrite using `[← hQ]`.
+
+Introduce `h3`. Conclude with `h1 ⟨h3, h2⟩`.
+-/
 theorem ev_det {ι : Type} [Fintype ι] [DecidableEq ι] (X Y : Matrix ι ι ℂ) (hY : Y.det ≠ 0) :
     ∀ᶠ t in nhdsWithin (0 : ℂ) {0}ᶜ, ((1 - t) • X + t • Y).det ≠ 0 := by
   let Q : Polynomial ℂ := ((1 - Polynomial.X : Polynomial ℂ) • X.map Polynomial.C +
@@ -389,6 +536,25 @@ theorem ev_det {ι : Type} [Fintype ι] [DecidableEq ι] (X Y : Matrix ι ι ℂ
   intro h3
   exact h1 ⟨h3, h2⟩
 
+/- English proof (translation)
+Introduce `D m n p ξ P H g`. Set `A : D.what₂.Tau → ℂ → Matrix (Fin n) (Fin n) ℂ` to `fun τ t => (1 - t) • (g τ).val + t • 1`. Establish `hgood : ∀ᶠ t in nhdsWithin (0 : ℂ) {0}ᶜ, ∀ τ, (A τ t).det ≠ 0 ∧ ∀ i : Fin n, ((A τ t).submatrix (Subtype.val : {j : Fin n // i < j} → Fin n) Subtype.val).det ≠ 0`. Rewrite using `[Filter.eventually_all]`. Introduce `τ`.
+
+Use `(ev_det _ 1 (by simp)).and ?_` and prove the remaining obligations. Rewrite using `[Filter.eventually_all]`. Introduce `i`. Establish `e : ∀ t, (A τ t).submatrix (Subtype.val : {j : Fin n // i < j} → Fin n) Subtype.val = (1 - t) • ((g τ).val).submatrix Subtype.val Subtype.val + t • (1 : Matrix {j : Fin n // i < j} {j : Fin n // i < j} ℂ)` using `fun t => by`. Use extensionality with `a b`.
+
+Simplify using `[A, Matrix.one_apply, Subtype.ext_iff]`. Simplify using `only [e]`. Conclude with `ev_det _ 1 (by simp)`. Establish `hAc : ∀ τ, Continuous fun t => A τ t` using `fun τ => ((continuous_const.sub continuous_id).smul continuous_const).add (continuous_id.smul continuous_const)`. Establish `hA0 : ∀ τ, A τ 0 = (g τ).val` using `fun τ => by simp [A]`.
+
+Establish `hInv : ∀ τ a b, ContinuousAt (fun t => (A τ t)⁻¹ a b) 0` using `fun τ a b => by`. Simplify using `only [Matrix.inv_def, Ring.inverse_eq_inv', Matrix.smul_apply, smul_eq_mul]`. Use `ContinuousAt.mul (ContinuousAt.inv₀ (hAc τ).matrix_det.continuousAt ?_) ((hAc τ).matrix_adjugate.matrix_elem a b).continuousAt` and prove the remaining obligations. Rewrite using `[hA0]`. Conclude with `((Matrix.isUnit_iff_isUnit_det _).1 (g τ).isUnit).ne_zero`.
+
+Set `f : ℂ → ℂ` to `fun t => ξ (FMul.lsub (FMul.fmat (sgnOf m p) 1 fun τ => A τ t) P)`. Establish `hcont : ContinuousAt f 0`. Use `continuousAt_lsub _ (fun w v => ?_) P ξ` and prove the remaining obligations. Simplify using `only [FMul.fmat, Matrix.of_apply]`. Use `split_ifs`.
+
+Conclude with `continuousAt_const.mul (hInv _ _ _)`. Conclude with `continuousAt_const.mul ((hAc _).matrix_elem _ _).continuousAt`. Conclude with `continuousAt_const`. Establish `hf0 : f 0 = ξ (fockSubst p g P)`. Simplify using `only [f, hA0]`.
+
+Rewrite using `[fockSubst_eq_fsub, fsub_eq_lsub]`. Establish `hz : ∀ᶠ t in nhdsWithin (0 : ℂ) {0}ᶜ, f t = 0` using `by filter_upwards [hgood] with t ht choose u l hu hu1 hl hA using fun τ => exists_ul (A τ t) (ht τ).1 (ht τ).2`. Use `H u l hu hu1 hl` as an intermediate fact. Rewrite `this` using `[fockSubst_eq_fsub, fsub_eq_lsub]`. Establish `e : (fun τ => ((u * l) τ).val) = fun τ => A τ t` using `funext fun τ => (hA τ).symm`.
+
+Rewrite `this` using `[e]`. Conclude with `this`. Establish `h1 : Filter.Tendsto f (nhdsWithin (0 : ℂ) {0}ᶜ) (nhds (f 0))` using `hcont.tendsto.mono_left nhdsWithin_le_nhds`. Establish `h2 : Filter.Tendsto f (nhdsWithin (0 : ℂ) {0}ᶜ) (nhds 0)` using `tendsto_const_nhds.congr' (hz.mono fun _ h => h.symm)`. Rewrite using `[← hf0]`.
+
+Conclude with `tendsto_nhds_unique h1 h2`.
+-/
 theorem eq_zero_of_triangular : ∀ (D : D7) (m n : ℕ) (p : D.what₂.Tau → ℕ) (ξ : PolF D m n →ₗ[ℂ] ℂ) (P : PolF D m n), (∀ u l : GLR D n, (∀ τ (a b : Fin n), b < a → (u τ).val a b = 0) → (∀ τ a, (u τ).val a a = 1) → (∀ τ (a b : Fin n), a < b → (l τ).val a b = 0) → ξ (fockSubst p (u * l) P) = 0) → ∀ g : GLR D n, ξ (fockSubst p g P) = 0 := by
   intro D m n p ξ P H g
   classical
@@ -439,17 +605,35 @@ theorem eq_zero_of_triangular : ∀ (D : D7) (m n : ℕ) (p : D.what₂.Tau → 
   rw [← hf0]
   exact tendsto_nhds_unique h1 h2
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hf`. Establish `h1` using `Formalism.L2.Col.fockN_pos f hf`. Rewrite `h` using `[Formalism.L2.Col.fockL_self]`. Conclude with `absurd (Complex.ofReal_eq_zero.1 h) h1.ne'`.
+-/
 theorem fock_pos {σ : Type} (f : MvPolynomial σ ℂ) (h : fockL f f = 0) : f = 0 := by
   by_contra hf
   have h1 := Formalism.L2.Col.fockN_pos f hf
   rw [Formalism.L2.Col.fockL_self] at h
   exact absurd (Complex.ofReal_eq_zero.1 h) h1.ne'
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem star_val {D : D7} {n : ℕ} (g : GLR D n) (τ) : ((star g) τ).val = (g τ).valᴴ := rfl
 
+/- English proof (translation)
+Rewrite using `[star_val, Matrix.conjTranspose_conjTranspose]`.
+-/
 theorem val_star {D : D7} {n : ℕ} (g : GLR D n) (τ) : (g τ).val = ((star g) τ).valᴴ := by
   rw [star_val, Matrix.conjTranspose_conjTranspose]
 
+/- English proof (translation)
+Use `eq_zero_of_triangular D m n w.p ((MvPolynomial.aeval (fockPt w.p (1 : GLR D n)) (w.delta m) : ℂ) • (fockL (w.delta m)) - (fockL (w.delta m) (w.delta m)) • (MvPolynomial.aeval (fockPt w.p (1 : GLR D n)) : PolF D m n →ₐ[ℂ] ℂ).toLinearMap) (w.delta m) (fun u l hu hu1 hl => ?_) g` and prove the remaining obligations. Take `⟨c, hc, -⟩` from `fockSubst_delta_eig D m n w l hG hm hl`. Establish `e1 : fockSubst w.p (u * l) (w.delta m) = c • fockSubst w.p u (w.delta m)`. Rewrite using `[fockSubst_mul, AlgHom.comp_apply, hc, map_smul]`. Establish `hsl : ∀ τ (a b : Fin n), a < b → ((star u) τ).val a b = 0` using `fun τ a b hab => by`.
+
+Rewrite using `[star_val, Matrix.conjTranspose_apply, hu τ b a hab, star_zero]`. Establish `hs1 : ∀ τ a, ((star u) τ).val a a = 1` using `fun τ a => by`. Rewrite using `[star_val, Matrix.conjTranspose_apply, hu1, star_one]`. Take `⟨c', hc', hc1⟩` from `fockSubst_delta_eig D m n w (star u) hG hm hsl`. Establish `e2 : fockL (w.delta m) (fockSubst w.p u (w.delta m)) = fockL (w.delta m) (w.delta m)`.
+
+Rewrite using `[← fockL_fockSubst_adj D m n w.p (star u) u (val_star u), hc', hc1 hs1, one_smul]`. Establish `e3 : MvPolynomial.aeval (fockPt w.p (1 : GLR D n)) (fockSubst w.p u (w.delta m)) = MvPolynomial.aeval (fockPt w.p (1 : GLR D n)) (w.delta m)`. Rewrite using `[aeval_fockPt_fockSubst, mul_one]`. Conclude with `(aeval_delta_unitri D m n w u hG hm hu hu1).1`. Rewrite using `[e1, map_smul, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.smul_apply, AlgHom.toLinearMap_apply, e2, e3]`.
+
+Simplify using `only [smul_eq_mul]`. Rewrite using `[mul_comm (MvPolynomial.aeval (fockPt w.p (1 : GLR D n)) (w.delta m) : ℂ), sub_self, mul_zero]`.
+-/
 theorem compare (D : D7) (m n : ℕ) (w : Weight D n) (hG : w.Good) (hm : ∀ τ, w.p τ + w.q τ ≤ m) (g : GLR D n) :
     MvPolynomial.aeval (fockPt w.p (1 : GLR D n)) (w.delta m) * fockL (w.delta m) (fockSubst w.p g (w.delta m)) -
       fockL (w.delta m) (w.delta m) * MvPolynomial.aeval (fockPt w.p (1 : GLR D n)) (fockSubst w.p g (w.delta m)) = 0 := by
@@ -474,6 +658,21 @@ theorem compare (D : D7) (m n : ℕ) (w : Weight D n) (hG : w.Good) (hm : ∀ τ
   simp only [smul_eq_mul]
   rw [mul_comm (MvPolynomial.aeval (fockPt w.p (1 : GLR D n)) (w.delta m) : ℂ), sub_self, mul_zero]
 
+/- English proof (translation)
+Establish `hcmpH : ∀ Q ∈ Submodule.span ℂ (Set.range fun g => T g Δ), e * L Δ Q - A * ev Q = 0` using `fun Q hQ => by`. Proceed by induction on `hQ using Submodule.span_induction with`. Consider the case `mem _ h => obtain ⟨g, rfl⟩ := h`. Conclude with `hcmp g`. Consider the case `zero => simp`.
+
+Consider the case `add x y _ _ h1 h2`. Rewrite using `[map_add, map_add, mul_add, mul_add, add_sub_add_comm, h1, h2, add_zero]`. Consider the case `smul c x _ h1`. Rewrite using `[map_smul, map_smul, smul_eq_mul, smul_eq_mul, mul_left_comm, mul_left_comm A, ← mul_sub, h1, mul_zero]`. Establish `hstab : ∀ g, ∀ Q ∈ Submodule.span ℂ (Set.range fun g => T g Δ), T g Q ∈ Submodule.span ℂ (Set.range fun g => T g Δ)` using `fun g Q hQ => by`.
+
+Proceed by induction on `hQ using Submodule.span_induction with`. Consider the case `mem _ h`. Take `⟨g', rfl⟩` from `h`. Conclude with `Submodule.subset_span ⟨g * g', by simp [map_mul]⟩`. Consider the case `zero => rw [map_zero]`.
+
+Conclude with `zero_mem _`. Consider the case `add x y _ _ h1 h2 => rw [map_add]`. Conclude with `add_mem h1 h2`. Consider the case `smul c x _ h1 => rw [map_smul]`. Conclude with `Submodule.smul_mem _ _ h1`.
+
+Establish `hz : ∀ g, L Δ (T g P) = 0` using `fun g => by`. Establish `h1` using `hcmpH _ (hstab g P hP)`. Rewrite `h1` using `[hv g, mul_zero, sub_zero]`. Conclude with `(mul_eq_zero.1 h1).resolve_left he`. Establish `hall : ∀ Q ∈ Submodule.span ℂ (Set.range fun g => T g Δ), L Q P = 0` using `fun Q hQ => by`.
+
+Proceed by induction on `hQ using Submodule.span_induction with`. Consider the case `mem _ h => obtain ⟨g, rfl⟩ := h`. Use `beta_reduce`. Rewrite using `[hadj]`. Conclude with `hz _`.
+
+Consider the case `zero => simp`. Consider the case `add x y _ _ h1 h2 => rw [map_add, LinearMap.add_apply, h1, h2, add_zero]`. Consider the case `smul c x _ h1 => rw [LinearMap.map_smulₛₗ, LinearMap.smul_apply, h1, smul_zero]`. Conclude with `hpos _ (hall P hP)`.
+-/
 theorem orth_end {V G : Type} [AddCommGroup V] [Module ℂ V] [Group G] [Star G]
     (L : V →ₗ⋆[ℂ] V →ₗ[ℂ] ℂ) (ev : V →ₗ[ℂ] ℂ) (T : G →* Module.End ℂ V) (Δ P : V) (e A : ℂ) (he : e ≠ 0)
     (hpos : ∀ f, L f f = 0 → f = 0) (hadj : ∀ g F F', L (T g F) F' = L F (T (star g) F'))
@@ -513,6 +712,13 @@ noncomputable def substRep (D : D7) (m n : ℕ) (p : D.what₂.Tau → ℕ) : GL
   map_one' := by rw [fockSubst_one]; rfl
   map_mul' g g' := by rw [fockSubst_mul]; rfl
 
+/- English proof (translation)
+Introduce `D m n w B hG hm P hP h0`. Establish `hv : ∀ y : GLR D n, MvPolynomial.aeval (fockPt w.p y) P = 0` using `fun y => by`. Establish `h1` using `congrFun h0 (B * y)`. Rewrite `h1` using `[harmFn_apply, inv_mul_cancel_left]`. Conclude with `(mul_eq_zero.1 h1).resolve_left (Units.ne_zero _)`.
+
+Establish `he : MvPolynomial.aeval (fockPt w.p (1 : GLR D n)) (w.delta m) ≠ 0` using `(aeval_delta_unitri D m n w 1 hG hm (fun τ a b hab => by simp [Matrix.one_apply_ne (ne_of_gt hab)]) (fun τ a => by simp)).2`. Use `orth_end fockL (MvPolynomial.aeval (fockPt w.p (1 : GLR D n)) : PolF D m n →ₐ[ℂ] ℂ).toLinearMap (substRep D m n w.p) (w.delta m) P _ (fockL (w.delta m) (w.delta m)) he fock_pos (fun g F F' => fockL_fockSubst_adj D m n w.p g (star g) (star_val g) F F') (fun g => compare D m n w hG …` and prove the remaining obligations. Use `(Submodule.span_le.2 ?_ : harm m w B ≤ _) hP` and prove the remaining obligations. Introduce and unpack `_ ⟨u, rfl⟩`. Use `beta_reduce`.
+
+Rewrite using `[fockGL_apply]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, rfl⟩)`. Express the relevant statement in the definitionally equal form `MvPolynomial.aeval (fockPt w.p (1 : GLR D n)) (fockSubst w.p g P) = 0`. Rewrite using `[aeval_fockPt_fockSubst]`. Conclude with `hv _`.
+-/
 theorem harm_inj : ∀ (D : D7) (m n : ℕ) (w : Weight D n) (B : GLR D n), w.Good → (∀ τ, w.p τ + w.q τ ≤ m) →
     ∀ P ∈ harm m w B, harmFn m w B P = 0 → P = 0 := by
   intro D m n w B hG hm P hP h0

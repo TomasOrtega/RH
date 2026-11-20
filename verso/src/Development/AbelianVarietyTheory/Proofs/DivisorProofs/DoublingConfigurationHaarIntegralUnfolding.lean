@@ -13,6 +13,21 @@ open GlobalTheory.Doubling (absE)
 noncomputable section
 namespace GlobalTheory.IwasawaUnfold
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B b a' G G₁ H H' hC hB hG hG₁ K μK μ hK hμK hμ m hm`. Take `⟨μN, c, hμN, hc0, hctop, hI⟩` from `GlobalTheory.T.doubling_configuration_haar_unfolding_second F E σ B b a' G G₁ H H' hC hB hG hG₁ K μK μ hK hμK hμ m hm`. Take `⟨C, hC0, hCtop, hU⟩` from `GlobalTheory.T.config_a_haar_unfolding F E σ B b a' G G₁ H H' hC hB hG hG₁ K μK μ hK hμK hμ m hm μN c hμN hc0 hctop hI`. Use `⟨(C.toReal : ℂ), ?_, ?_⟩` and prove the remaining obligations. Conclude with `(ENNReal.toReal_pos hC0 hCtop).ne'` after adjusting the coercions.
+
+Introduce `𝓓 h𝓓 f hf hQ hN hfin`. Use `haveI : BorelSpace (UA σ G.V.J) := ⟨rfl⟩`. Establish `key : ∀ p : ℂ → ENNReal, Continuous p → ∫⁻ g in 𝓓, p (f g) ∂G.M.μ = C * ∫⁻ k, ∫⁻ l, ∫⁻ g₀ in G₁.M.dom, p (f (m l g₀ * k.1)) * ENNReal.ofReal ((absE F E l : ℝ) ^ (1 - ((b + 2 : ℕ) : ℝ))) ∂G₁.M.μ ∂μ ∂μK` using `fun p hp => hU 𝓓 h𝓓 (fun g => p (f g)) (hp.comp hf) (fun q hq g => by simp only [hQ q hq g]) (fun n hn g => by simp only [hN n hn g])`. Establish `hint : IntegrableOn f 𝓓 G.M.μ`. Use `⟨hf.aestronglyMeasurable, ?_⟩` and prove the remaining obligations.
+
+Use `show ∫⁻ a, ‖f a‖ₑ ∂(G.M.μ.restrict 𝓓) < ⊤`. Rewrite using `[key (fun z => ‖z‖ₑ) continuous_enorm]`. Conclude with `ENNReal.mul_lt_top hCtop.lt_top hfin`. Establish `hre` using `integral_eq_lintegral_pos_part_sub_lintegral_neg_part (μ := G.M.μ.restrict 𝓓) (f := fun g => (f g).re) hint.re`. Establish `him` using `integral_eq_lintegral_pos_part_sub_lintegral_neg_part (μ := G.M.μ.restrict 𝓓) (f := fun g => (f g).im) hint.im`.
+
+Rewrite `hre` using `[key (fun z => ENNReal.ofReal z.re) (ENNReal.continuous_ofReal.comp Complex.continuous_re), key (fun z => ENNReal.ofReal (-z.re)) (ENNReal.continuous_ofReal.comp Complex.continuous_re.neg)]`. Rewrite `him` using `[key (fun z => ENNReal.ofReal z.im) (ENNReal.continuous_ofReal.comp Complex.continuous_im), key (fun z => ENNReal.ofReal (-z.im)) (ENNReal.continuous_ofReal.comp Complex.continuous_im.neg)]`. Rewrite using `[GlobalTheory.T.config_a_haar_unfolding_measure F E σ B b a' G G₁ H H' hC hB hG hG₁ K μK μ hK hμK hμ m hm f hf hfin]`. Apply `Complex.ext` to reduce the goal to its premises. Establish `e1 : (∫ g in 𝓓, f g ∂G.M.μ).re = ∫ g in 𝓓, (f g).re ∂G.M.μ` using `(integral_re hint).symm`.
+
+Rewrite using `[e1]`. Simplify using `only [ENNReal.toReal_mul] at hre`. Simplify using `only [Complex.mul_re, Complex.add_re, Complex.ofReal_re, Complex.ofReal_im, Complex.mul_im, Complex.add_im, Complex.I_re, Complex.I_im]`. Rewrite using `[hre]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `e1 : (∫ g in 𝓓, f g ∂G.M.μ).im = ∫ g in 𝓓, (f g).im ∂G.M.μ` using `(integral_im hint).symm`. Rewrite using `[e1]`. Simplify using `only [ENNReal.toReal_mul] at him`. Simplify using `only [Complex.mul_re, Complex.add_re, Complex.ofReal_re, Complex.ofReal_im, Complex.mul_im, Complex.add_im, Complex.I_re, Complex.I_im]`. Rewrite using `[him]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem iwasawa_unfold : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (b a' : ℕ) (G : Geo σ (b + 2) a') (G₁ : Geo σ b a')
     (H : Plane E (b + 2) b) (H' : Plane E (b + 2 + a') (b + a')), CfgA B G G₁ H H' → B.IsGood σ → G.IsGood B → G₁.IsGood B →
     ∀ (K : Subgroup (UA σ G.V.J)) (μK : Measure K) (μ : Measure (AE F E)ˣ), IsStab B K → μK.IsHaarMeasure → μ.IsHaarMeasure →

@@ -19,6 +19,13 @@ open GlobalTheory.ChainDesc
 
 namespace GlobalTheory.ChainDesc.DownRes
 
+/- English proof (translation)
+Use `letI := appLEAlgebra f e`. Use `letI := appLEModule f ((Scheme.Modules.pullback f).obj G) e`. Use `haveI := appLE_isScalarTower f ((Scheme.Modules.pullback f).obj G) e`. Establish `key : ∀ s : Γ(G, V), pullbackSections f G e s ∈ Submodule.span Γ(X, U) ((fun s => pullbackSections f G e s) '' T)` using `fun s => by`. Establish `hs : s ∈ Submodule.span Γ(Y, V) T` using `hT ▸ trivial`.
+
+Proceed by induction on `hs using Submodule.span_induction with`. Consider the case `mem w hw => exact Submodule.subset_span ⟨w, hw, rfl⟩`. Consider the case `zero => rw [map_zero]`. Conclude with `zero_mem _`. Consider the case `add a b _ _ ha hb => rw [map_add]`.
+
+Conclude with `add_mem ha hb`. Consider the case `smul a b _ hb => rw [pullbackSections_smul]`. Conclude with `Submodule.smul_mem _ _ hb`. Use `eq_top_iff.2 fun y _ => ?_` and prove the remaining obligations. Use `(isBaseChange_pullbackSections f G hU hV e).inductionOn y (fun y => y ∈ Submodule.span Γ(X, U) ((fun s => pullbackSections f G e s) '' T)) (zero_mem _) key (fun a n hn => Submodule.smul_mem _ _ hn) (fun a b ha hb => add_mem ha hb)` and prove the remaining obligations.
+-/
 theorem span_pullbackSections {X Y : Scheme.{0}} (f : X ⟶ Y) (G : Y.Modules) [G.IsQuasicoherent] {U : X.Opens} {V : Y.Opens}
     (hU : IsAffineOpen U) (hV : IsAffineOpen V) (e : U ≤ f ⁻¹ᵁ V) (T : Set Γ(G, V))
     (hT : Submodule.span Γ(Y, V) T = ⊤) :
@@ -43,10 +50,18 @@ noncomputable def resSl {X : Scheme.{0}} (F : X.Modules) {U V : X.Opens} (h : V 
   map_add' := map_add _
   map_smul' := GlobalTheory.Twist.resM_smul h
 
+/- English proof (translation)
+The claim follows from `(res_pullbackSections f G le_rfl _ s).trans (pullbackSections_res f G le_rfl h s).symm`.
+-/
 theorem resM_pull {X Y : Scheme.{0}} (f : X ⟶ Y) (G : Y.Modules) {V V' : Y.Opens} (h : V' ≤ V) (s : Γ(G, V)) :
     resM _ (f.preimage_mono h) (pullbackSections f G le_rfl s) = pullbackSections f G le_rfl (resM G h s) :=
   (res_pullbackSections f G le_rfl _ s).trans (pullbackSections_res f G le_rfl h s).symm
 
+/- English proof (translation)
+Establish `hy : y ∈ Submodule.span A₁ T` using `hT ▸ trivial`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem w hw => exact k w hw`. Consider the case `zero => simp only [map_zero]`. Consider the case `add a b _ _ ha hb => simp only [map_add, ha, hb]`.
+
+Consider the case `smul a b _ hb => simp only [map_smulₛₗ, hb, hc]`.
+-/
 theorem sq_of_span {A₁ A₂ B₁ B₂ L₁ L₂ N₁ N₂ : Type} [CommRing A₁] [CommRing A₂] [CommRing B₁] [CommRing B₂]
     [AddCommGroup L₁] [Module A₁ L₁] [AddCommGroup L₂] [Module A₂ L₂] [AddCommGroup N₁] [Module B₁ N₁] [AddCommGroup N₂]
     [Module B₂ N₂] {g₁ : A₁ →+* B₁} {g₂ : A₂ →+* B₂} {φ' : A₁ →+* A₂} {φ : B₁ →+* B₂} (hc : ∀ a, φ (g₁ a) = g₂ (φ' a))
@@ -61,6 +76,19 @@ theorem sq_of_span {A₁ A₂ B₁ B₂ L₁ L₂ N₁ N₂ : Type} [CommRing A�
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Introduce `O _ _ _ p B B' Λ _ h o Lie Om π γ M C f g hL hO hS hC U U' hle S S' D D' k k' hsp`. Take `⟨l₁, m₁, hl₁, -, H₁, -, hb, hρ₁, -, -⟩` from `k`. Take `⟨l₂, m₂, hl₂, -, H₂, hm, -, hρ₂, hd, hp⟩` from `k'`. Take `⟨-, l, m, hl, -, H⟩` from `hS.1 U U' hle`. Establish `hc : ∀ a, AffOp.res hle (g U a) = g U' (resG B'.X (f.f.preimage_mono hle) a)` using `fun a => (hC.2.2.2.2 U U' hle a).symm`.
+
+Unfold `ResMap`. Use `GlobalTheory.RingChain.MapDown.map_down p h o _ _ _ _ (g U) (g U') (resG B'.X (f.f.preimage_mono hle)) (AffOp.res hle) _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ D D' (C U) (C U') 1 l₁ m₁ l₂.toAddMonoidHom m₂ l m (resM ((pullA f.f).obj Lie).V (f.f.preimage_mono hle)) (resSl _ (f.f.preimage_ …` and prove the remaining obligations. Conclude with `res_res_ring _ _ _`. Use `sq_of_span hc l₁ l₂ (resSl _ (f.f.preimage_mono hle)) l (span_pullbackSections f.f Lie.V (hC.isAffineOpen U) U.2.1 le_rfl _ Submodule.span_univ) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨s, -, rfl⟩`.
+
+Conclude with `(congrArg l (hl₁ s)).trans ((hl s).trans ((hl₂ _).symm.trans (congrArg l₂ (resM_pull f.f Lie.V hle s).symm)))`. Introduce `w hw`. Take `⟨w₀, ⟨s, hs, e₀, s', hs', e₁, e₂⟩, ew⟩` from `hw`. Substitute `e₀` using the available equality. Substitute `ew` using the available equality.
+
+Take `⟨x, hx, kx⟩` from `hρ₁ s hs`. Take `⟨x', hx', kx'⟩` from `hρ₂ s' hs'`. Use `⟨x, x', ?_, kx, ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.RingChain.MapDown.mv_one]`. Use function extensionality and compare the values at `i`.
+
+Use `hC.2.2.1 U' ?_` and prove the remaining obligations. Rewrite using `[← hc]`. Establish `a` using `congrFun (hx'.trans e₂) i`. Rewrite `a` using `[← hx]`. Conclude with `a`.
+
+Rewrite `kx'` using `[e₁]`. Conclude with `(congrArg D'.ρ (resM_pull f.f Om.V hle s.1)).trans kx'`.
+-/
 theorem down_res : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (p : ℕ) (B B' : GlobalTheory.Vert.Model O) (Λ : Type) [CommRing Λ] (h o : ℕ) (Lie Om : AM B Λ) (π : Γ(B.X, ⊤)) (γ : ℕ → Γ(B.X, ⊤)) (M : Λ →+* Matrix (Fin h) (Fin h) ℤ) (C : ChainsBp p h o Lie Om π γ) (f : GlobalTheory.Vert.Model.Hom B' B) (g : ∀ U : AffOp B.X, Γ(B'.X, f.f ⁻¹ᵁ U.1) →+* U.Bp), Lie.V.IsQuasicoherent → Om.V.IsQuasicoherent → IsSys C M → IsCov f g → ∀ (U U' : AffOp B.X) (hle : U'.1 ≤ U.1) (S : Set (Γ(Om.V, U.1) × (C U).L 0)) (S' : Set (Γ(Om.V, U'.1) × (C U').L 0)) (D : ChainUp p h o Lie Om π γ f (f.f ⁻¹ᵁ U.1)) (D' : ChainUp p h o Lie Om π γ f (f.f ⁻¹ᵁ U'.1)), IsDown C f g U S D → IsDown C f g U' S' D' → Submodule.span Γ(B.X, U.1) {w | ∃ s ∈ S, s.1 = w ∧ ∃ s' ∈ S', s'.1 = resM Om.V hle w ∧ s'.2.1 = piMap (AffOp.res hle) (Fin h) s.2.1} = ⊤ → ResMap (f.f.preimage_mono hle) D D' := by
   intro O _ _ _ p B B' Λ _ h o Lie Om π γ M C f g hL hO hS hC U U' hle S S' D D' k k' hsp
   obtain ⟨l₁, m₁, hl₁, -, H₁, -, hb, hρ₁, -, -⟩ := k

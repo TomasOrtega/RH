@@ -35,6 +35,15 @@ def swapR : (E ⊗[F] InfiniteAdeleRing F) →ₗ[InfiniteAdeleRing F] (Infinite
     rw [Algebra.smul_def, Algebra.smul_def, map_mul]
     congr 1
 
+/- English proof (translation)
+Use `letI tB : TopologicalSpace (E ⊗[F] InfiniteAdeleRing F) := moduleTopology (InfiniteAdeleRing F) _`. Use `haveI : IsModuleTopology (InfiniteAdeleRing F) (E ⊗[F] InfiniteAdeleRing F) := ⟨rfl⟩`. Use `haveI : IsModuleTopology (InfiniteAdeleRing F) (InfiniteAdeleRing F ⊗[F] E) := ⟨rfl⟩`. Use `haveI := IsModuleTopology.toContinuousAdd (InfiniteAdeleRing F) (E ⊗[F] InfiniteAdeleRing F)`. Use `haveI := IsModuleTopology.toContinuousSMul (InfiniteAdeleRing F) (E ⊗[F] InfiniteAdeleRing F)`.
+
+Use `haveI := IsModuleTopology.toContinuousAdd (InfiniteAdeleRing F) (InfiniteAdeleRing F ⊗[F] E)`. Use `haveI := IsModuleTopology.toContinuousSMul (InfiniteAdeleRing F) (InfiniteAdeleRing F ⊗[F] E)`. Establish `hL : Continuous (swapL (F` using `F) (E := E)) := IsModuleTopology.continuous_of_linearMap _`. Establish `hR : Continuous (swapR (F` using `F) (E := E)) := IsModuleTopology.continuous_of_linearMap _`. Set `h` to `GroundTheory.Global.InfinitePlace.tensorInfiniteAdeleRingHomeomorph (K := F) (L := E)`.
+
+Use `⟨(Algebra.TensorProduct.comm F (InfiniteAdeleRing F) E).toRingEquiv.trans (GroundTheory.Global.InfinitePlace.tensorInfiniteAdeleRingEquiv (K := F) (L := E)).toRingEquiv, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `h.continuous.comp hL`. Conclude with `hR.comp h.symm.continuous`. Introduce `x`. Express the relevant statement in the definitionally equal form `GroundTheory.Global.InfinitePlace.tensorInfiniteAdeleRingEquiv (Algebra.TensorProduct.comm F (InfiniteAdeleRing F) E ((1 : InfiniteAdeleRing F) ⊗ₜ[F] x)) = _`.
+
+Rewrite using `[Algebra.TensorProduct.comm_tmul, GroundTheory.Global.InfinitePlace.tensorInfiniteAdeleRingEquiv_tmul', map_one, mul_one]`.
+-/
 theorem exists_infinite_equiv :
     ∃ j : (Ainf F ⊗[F] E) ≃+* InfiniteAdeleRing E, Continuous j ∧ Continuous j.symm ∧
       ∀ x : E, j ((1 : Ainf F) ⊗ₜ[F] x) = algebraMap E (InfiniteAdeleRing E) x := by
@@ -62,6 +71,9 @@ end Inf
 
 open GlobalTheory.LFun in
 
+/- English proof (translation)
+Take `⟨j, hjc, hjc', hj⟩` from `exists_infinite_equiv (F := F) (E := E)`. Take `⟨s, hs, hsc, hsc'⟩` from `GlobalTheory.AdSplit.exists_adele_equiv F E`. Use `⟨s.trans (j.prodCongr (finAdEquiv F E)), j, (hjc.prodMap GlobalTheory.DefU.ClassFin.continuous_finAdEquiv).comp hsc, hsc'.comp (hjc'.prodMap continuous_finAdEquiv_symm), hj, fun z => Prod.ext (congrArg j (hs z).1) (congrArg (finAdEquiv F E) (hs z).2)⟩` and prove the remaining obligations.
+-/
 theorem exists_tensor_adele_equiv :
     ∃ (Φ : AF F ⊗[F] E ≃+* AdeleRing (𝓞 E) E) (j : Ainf F ⊗[F] E ≃+* InfiniteAdeleRing E),
       Continuous Φ ∧ Continuous Φ.symm ∧ (∀ x : E, j ((1 : Ainf F) ⊗ₜ[F] x) = algebraMap E (InfiniteAdeleRing E) x) ∧
@@ -74,6 +86,17 @@ theorem exists_tensor_adele_equiv :
 
 open GlobalTheory.LFun in
 
+/- English proof (translation)
+Take `⟨Φ, j, -, hΦc, hj, hΦ⟩` from `exists_tensor_adele_equiv (F := F) (E := E)`. Establish `hfin : ∀ x : E, finAdEquiv F E ((1 : Af F) ⊗ₜ[F] x) = algebraMap E (FiniteAdeleRing (𝓞 E) E) x` using `fun x => by`. Rewrite using `[show finAdEquiv F E ((1 : Af F) ⊗ₜ[F] x) = _ from toFinAd_tmul 1 x, map_one, one_mul]`. Set `u : Neutral.B1.Ideles E →* (AF F ⊗[F] E)ˣ` to `Units.map Φ.symm.toRingHom.toMonoidHom`. Establish `hu : Continuous u` using `Continuous.units_map _ hΦc`.
+
+Establish `ht : Continuous (Circle.toUnits : Circle →* ℂˣ)` using `Units.continuous_iff.2 ⟨continuous_subtype_val, by`. Establish `h : Continuous fun z : Circle => ((z⁻¹ : Circle) : ℂ)` using `continuous_subtype_val.comp continuous_inv`. Use `h.congr fun z => ?_` and prove the remaining obligations. Use the proof step `simp⟩`. Establish `hdiag : ∀ k : Eˣ, u (Neutral.B1.diagUnits E k) = Units.map (inclR (F` using `F) (AF F)).toMonoidHom k := fun k => Units.ext (Φ.symm_apply_eq.2 (by`.
+
+Rewrite using `[hΦ]`. Express the relevant statement in the definitionally equal form `(algebraMap E (InfiniteAdeleRing E) k, algebraMap E (FiniteAdeleRing (𝓞 E) E) k) = _`. Use `Prod.ext (hj k).symm (hfin k).symm))` and prove the remaining obligations. Establish `hloc : ∀ (W : HeightOneSpectrum (𝓞 E)) (x : (W.adicCompletion E)ˣ), u (Neutral.B1.localIdele E W x) = locIdele F W x` using `fun W x => Units.ext (Φ.symm_apply_eq.2 (by`. Rewrite using `[hΦ, infTens_locIdele, map_one, finTens_locIdele]`.
+
+Use the proof step `rfl))`. Set `H : Formalism.L2.Host.HChar E` to `⟨Circle.toUnits.comp (χ.comp u), ht.comp (hχ.1.comp hu), fun k => by`. Express the relevant statement in the definitionally equal form `Circle.toUnits (χ (u _)) = 1`. Rewrite using `[hdiag, hχ.2, map_one]⟩`. Use `⟨H, u, fun y => rfl, fun g => ⟨Units.map Φ.toRingHom.toMonoidHom g, Units.ext (Φ.symm_apply_apply _)⟩, fun W x => ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `Circle.toUnits (χ (u _)) = Circle.toUnits (χ (locIdele F W x))`. Rewrite using `[hloc]`.
+-/
 theorem exists_hchar (χ : (AF F ⊗[F] E)ˣ →* Circle) (hχ : IsHecke F E χ) :
     ∃ (H : Formalism.L2.Host.HChar E) (u : Neutral.B1.Ideles E →* (AF F ⊗[F] E)ˣ),
       (∀ y, H.1 y = Circle.toUnits (χ (u y))) ∧ Function.Surjective u ∧
@@ -106,6 +129,15 @@ theorem exists_hchar (χ : (AF F ⊗[F] E)ˣ →* Circle) (hχ : IsHecke F E χ)
   change Circle.toUnits (χ (u _)) = Circle.toUnits (χ (locIdele F W x))
   rw [hloc]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ χ hχ hev`. Take `⟨H, u, hH, hsurj, hloc⟩` from `exists_hchar χ hχ`. Establish `hfin : {w : HeightOneSpectrum (𝓞 E) | ¬ ∀ ϖ, Formalism.L2.Host.IsUnifAt w ϖ → χ (GlobalTheory.LFun.locIdele F w ϖ) = 1}.Finite` using `Filter.eventually_cofinite.1 hev`. Establish `h1 : H.1 = 1`. Use `GlobalTheory.FrobDense.eq_one_of_away H.1 H.2.1 H.2.2 hfin.toFinset fun v hv x => ?_` and prove the remaining obligations.
+
+Establish `hv' : ∀ ϖ, Formalism.L2.Host.IsUnifAt v ϖ → χ (GlobalTheory.LFun.locIdele F v ϖ) = 1`. Simplify using `using hv`. Use `GlobalTheory.FrobDense.eq_one_of_unif (H.1.comp (Neutral.B1.localIdele E v)) (fun y hy => ?_) x` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `H.loc v y = 1`. Rewrite using `[hloc, GlobalTheory.LFun.locChar, MonoidHom.comp_apply, MonoidHom.comp_apply, hv' y hy, map_one]`.
+
+Use extensionality with `g`. Take `⟨y, rfl⟩` from `hsurj g`. Establish `h2 : Circle.toUnits (χ (u y)) = 1` using `(hH y).symm.trans (congrFun (congrArg DFunLike.coe h1) y)`. Establish `h3 : ((χ (u y) : Circle) : ℂ) = 1`. Use `congrArg (fun z : ℂˣ => (z : ℂ)) h2` as an intermediate fact.
+
+Simplify using `using this`. Simplify using `using h3`.
+-/
 theorem eq_one_of_unif_cofinite : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (χ : (AF F ⊗[F] E)ˣ →* Circle), GlobalTheory.LFun.IsHecke F E χ →
     (∀ᶠ w : HeightOneSpectrum (𝓞 E) in cofinite, ∀ ϖ, Formalism.L2.Host.IsUnifAt w ϖ → χ (GlobalTheory.LFun.locIdele F w ϖ) = 1) → χ = 1 := by
   intro F E _ _ _ _ _ χ hχ hev

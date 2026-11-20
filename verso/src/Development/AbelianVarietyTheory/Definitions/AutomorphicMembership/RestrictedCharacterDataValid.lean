@@ -42,17 +42,26 @@ variable {f μ} {R : RealDat3 D (A3.comap id (f μ)) Ks} (mu : HeightOneSpectrum
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Conclude with `⟨⟨h.tie.plI_inj, fun t Q => h.tie.okI (f t) Q⟩, h.onto, fun t => h.hR (f t), fun i t => h.hL i (f t), h.SF⟩`.
+-/
 theorem isInert (h : R.IsInert) : (dat3 f μ R mu tw).IsInert := by
   exact ⟨⟨h.tie.plI_inj, fun t Q => h.tie.okI (f t) Q⟩, h.onto, fun t => h.hR (f t), fun i t => h.hL i (f t), h.SF⟩
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Introduce `t p x hx`. Conclude with `h (f t) p x hx`.
+-/
 theorem pThmB (h : R.PThmB) : (dat3 f μ R mu tw).PThmB := by
   intro t p x hx
   exact h (f t) p x hx
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+The claim follows from `h.lam0 i (f t) kap κ hκ hne := by obtain ⟨t, p, hp, hl⟩ := hne exact Lift.IsKap.unique (pThmB mu tw hB) hκ t p hp hl off := h.off abs0 i t := h.abs0 i (f t) abs := h.abs tup i t := h.tup i (f t)`.
+-/
 theorem isScal (h : R.IsScal (bare3 _ P0 ψ0 P1 ψ1)) (hB : R.PThmB) : (dat3 f μ R mu tw).IsScal (bare3 _ P0 ψ0 P1 ψ1) where
   lam0 i t := h.lam0 i (f t)
   kap κ hκ hne := by
@@ -78,6 +87,9 @@ structure NewTup (R : RealDat3 D (A3.comap id (f μ)) Ks) (mu : HeightOneSpectru
 
 variable {mu tw} in
 
+/- English proof (translation)
+The claim follows from `n.off mu_used := n.used mu_ne w hw heq := by change mu w = μ at heq apply h.mu_ne w (n.sub hw) rw [← n.on w hw, heq] rfl mu_conj w := by change mu (Formalism.DivisionValues.conjPl w) = mu w by_cases hw : w ∈ tw · apply hf have hc : Formalism.DivisionValues.conjPl w ∈ tw := (n.con …`.
+-/
 theorem isTup (hf : Function.Injective f) (h : R.IsTup) (n : NewTup R mu tw) : (dat3 f μ R mu tw).IsTup where
   mu_off := n.off
   mu_used := n.used
@@ -105,6 +117,9 @@ theorem isTup (hf : Function.Injective f) (h : R.IsTup) (n : NewTup R mu tw) : (
 variable {mu tw} in
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+The claim follows from `baseW mu tw hf h.base e inert := isInert mu tw h.inert fullY t := h.fullY (f t) fullX t := h.fullX (f t) fullP i t := h.fullP i (f t) scal := isScal mu tw h.scal hB tup := isTup hf h.tup n phase := h.phase allPl := h.allPl`.
+-/
 theorem restricted_character_data_valid (hf : Function.Injective f) (h : R.WeakCharacterisation (bare3 _ P0 ψ0 P1 ψ1)) (e : R.toRealDat.ExAt) (hB : R.PThmB)
     (n : NewTup R mu tw) : (dat3 f μ R mu tw).WeakCharacterisation (bare3 _ P0 ψ0 P1 ψ1) where
   base := baseW mu tw hf h.base e
@@ -119,6 +134,9 @@ theorem restricted_character_data_valid (hf : Function.Injective f) (h : R.WeakC
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+The claim follows from `h.std signs := h.signs frames := h.frames beta := h.beta prX := h.prX grp := h.grp psi := h.psi guard := ⟨fun t => h.guard.1 (f t), fun t => h.guard.2 (f t)⟩ valKs := h.valKs frameKs := h.frameKs levKs := h.levKs`.
+-/
 theorem keep {cG : G0 R.Pg D.R.r ≃* G0g D.nd} (h : Keep (A3 := A3.comap id (f μ)) R.toRealDat (bare3 _ P0 ψ0 P1 ψ1).lv2 cG) :
     Keep (A3 := A3.comap f μ) (dat3 f μ R mu tw).toRealDat (bare3 _ P0 ψ0 P1 ψ1).lv2 cG where
   std := h.std
@@ -136,6 +154,9 @@ theorem keep {cG : G0 R.Pg D.R.r ≃* G0g D.nd} (h : Keep (A3 := A3.comap id (f 
 variable {mu tw} in
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+The claim follows from `restricted_character_data_valid hf h.char e hB n keep := keep mu tw h.keep phs := h.phs trSem := h.trSem`.
+-/
 theorem pins (hf : Function.Injective f) {cG : G0 R.Pg D.R.r ≃* G0g D.nd} (h : Pins R (bare3 _ P0 ψ0 P1 ψ1) cG)
     (e : R.toRealDat.ExAt) (hB : R.PThmB) (n : NewTup R mu tw) : Pins (dat3 f μ R mu tw) (bare3 _ P0 ψ0 P1 ψ1) cG where
   char := restricted_character_data_valid hf h.char e hB n

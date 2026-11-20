@@ -7,6 +7,11 @@ namespace RootFieldNumerics.A1
 
 open ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M ReciprocityTheory.AnForm.P Filter Topology GlobalTheory.CompanionTheory.Ar.PB
 
+/- English proof (translation)
+Establish `h` using `Real.one_sub_inv_le_log_of_pos hs`. Establish `hu : 0 < s⁻¹` using `inv_pos.2 hs`. Establish `e : (s ^ 2)⁻¹ = s⁻¹ ^ 2` using `by rw [inv_pow]`. Establish `hl : -(s ^ 2)⁻¹ ≤ Real.log s`. Rewrite using `[e]`.
+
+Use polynomial arithmetic with `[sq_nonneg (s⁻¹ - 1 / 2)]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem scale_le {s : ℝ} (hs : 0 < s) (h1 : s ≤ 1) : Real.exp (-(s ^ 2)⁻¹) ≤ s := by
   have h := Real.one_sub_inv_le_log_of_pos hs
   have hu : 0 < s⁻¹ := inv_pos.2 hs
@@ -17,6 +22,11 @@ theorem scale_le {s : ℝ} (hs : 0 < s) (h1 : s ≤ 1) : Real.exp (-(s ^ 2)⁻¹
   calc Real.exp (-(s ^ 2)⁻¹) ≤ Real.exp (Real.log s) := Real.exp_le_exp.2 hl
     _ = s := Real.exp_log hs
 
+/- English proof (translation)
+Establish `h1 : Real.log (1 / Real.exp (-(s ^ 2)⁻¹)) = (s ^ 2)⁻¹`. Rewrite using `[one_div, ← Real.exp_neg, neg_neg, Real.log_exp]`. Establish `h2 : Real.log ((s ^ 2)⁻¹) = -(2 * Real.log s)`. Rewrite using `[Real.log_inv, Real.log_pow]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Unfold `epsT`. Rewrite using `[h1, h2]`. Establish `hs2 : s ^ 2 ≠ 0` using `by positivity`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem epsT_scale (C : ℝ) {s : ℝ} (hs : 0 < s) :
     epsT C (Real.exp (-(s ^ 2)⁻¹)) = -(2 * C) * (s * Real.log s) * s := by
   have h1 : Real.log (1 / Real.exp (-(s ^ 2)⁻¹)) = (s ^ 2)⁻¹ := by
@@ -30,6 +40,11 @@ theorem epsT_scale (C : ℝ) {s : ℝ} (hs : 0 < s) :
   have hs2 : s ^ 2 ≠ 0 := by positivity
   field_simp
 
+/- English proof (translation)
+Establish `hc : ContinuousAt (fun x : ℝ => -(2 * C) * (x * Real.log x)) 0` using `(continuous_const.mul Real.continuous_mul_log).continuousAt`. Take `⟨δ, hδ, h⟩` from `Metric.continuousAt_iff.1 hc ε hε`. Use `⟨δ / 2, by positivity, fun s hs hsδ => ?_⟩` and prove the remaining obligations. Use `h (x := s) (by rw [Real.dist_eq, sub_zero, abs_of_pos hs]; linarith)` as an intermediate fact. Simplify using `only [Real.dist_eq, zero_mul, mul_zero, sub_zero] at this`.
+
+Rewrite using `[epsT_scale C hs, abs_mul, abs_of_pos hs]`. Conclude with `mul_le_mul_of_nonneg_right this.le hs.le`.
+-/
 theorem epsT_small (C ε : ℝ) (hε : 0 < ε) :
     ∃ s₀ > (0 : ℝ), ∀ s, 0 < s → s ≤ s₀ → |epsT C (Real.exp (-(s ^ 2)⁻¹))| ≤ ε * s := by
   have hc : ContinuousAt (fun x : ℝ => -(2 * C) * (x * Real.log x)) 0 :=
@@ -41,10 +56,44 @@ theorem epsT_small (C ε : ℝ) (hε : 0 < ε) :
   rw [epsT_scale C hs, abs_mul, abs_of_pos hs]
   exact mul_le_mul_of_nonneg_right this.le hs.le
 
+/- English proof (translation)
+The claim follows from `isPotentialAdd _ _ _ (S.sing a).1 (isPotential_ofFun _ _ ((S.reg a).2.2 t h0 h1).1)`.
+-/
 theorem potT_potential {e : ℕ} {σ : Type} (S : AnSys e σ) (a : σ) {t : ℝ} (h0 : 0 < t) (h1 : t ≤ S.t₀) :
     IsPotential S.A (S.potT a t) :=
   isPotentialAdd _ _ _ (S.sing a).1 (isPotential_ofFun _ _ ((S.reg a).2.2 t h0 h1).1)
 
+/- English proof (translation)
+Introduce `e σ _ S Fl a' c₀ abelian₂ hc₀ hFl ha' hna'`. Establish `ht0 : 0 < S.t₀` using `(S.reg a').1`. Establish `hεp : 0 < c₀ / (2 * (|abelian₂| + 1))` using `by positivity`. Take `⟨s₁, hs₁, heps⟩` from `epsT_small S.C (c₀ / (2 * (|abelian₂| + 1))) hεp`. Use `⟨min s₁ (min 1 S.t₀), lt_min hs₁ (lt_min one_pos ht0), fun s hs hss => ?_⟩` and prove the remaining obligations.
+
+Establish `hs1 : s ≤ 1` using `le_trans hss (le_trans (min_le_right _ _) (min_le_left _ _))`. Establish `hst : s ≤ S.t₀` using `le_trans hss (le_trans (min_le_right _ _) (min_le_right _ _))`. Establish `hss₁ : s ≤ s₁` using `le_trans hss (min_le_left _ _)`. Establish `htt : Real.exp (-(s ^ 2)⁻¹) ≤ S.t₀` using `(scale_le hs hs1).trans hst`. Use `⟨htt, fun c hca' hsum hpos => ?_⟩` and prove the remaining obligations.
+
+Use `set t := Real.exp (-(s ^ 2)⁻¹) with ht`. Establish `htp : 0 < t` using `Real.exp_pos _`. Establish `hpot : ∀ a, IsPotential S.A (S.potT a t)` using `fun a => potT_potential S a htp htt`. Establish `hE : |epsT S.C t| ≤ c₀ / (2 * (|abelian₂| + 1)) * s` using `heps s hs hss₁`. Rewrite using `[isPsh_iff (isPotentialAdd S.A _ _ (isPotential_sumPot c hpot) (isPotentialRsmul S.A _ S.Θ S.potΘ))]`.
+
+Introduce `j y hy w`. Rewrite using `[dl_add_rsmul (isPotential_sumPot c hpot) S.potΘ _ j hy w, dl_sumPot c hpot j hy w]`. Establish `hθ : 0 ≤ dl S.A S.Θ j y w` using `dl_nonneg_of_pos S.posΘ j hy w`. Use `set θ := dl S.A S.Θ j y w with hθdef`. Use `set E := |epsT S.C t| with hEdef`.
+
+Establish `hE0 : 0 ≤ E` using `abs_nonneg _`. Establish `hterm : ∀ a, -(|c a| * E * θ) ≤ c a * dl S.A (S.potT a t) j y w`. Introduce `a`. Distinguish the cases in `hF : a ∈ Fl`. Establish `hp` using `hFl a hF t`.
+
+Establish `n1` using `dl_nonneg hp.1 j hy w`. Rewrite `n1` using `[dl_rsmul (hpot a) (-1) j hy w]`. Establish `n2` using `dl_nonneg hp.2 j hy w`. Establish `hz : dl S.A (S.potT a t) j y w = 0` using `by linarith`. Rewrite using `[hz, mul_zero]`.
+
+Use `mul_nonneg (mul_nonneg (abs_nonneg (c a)) hE0) hθ` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hca : 0 ≤ c a` using `hpos a hF`. Establish `hr : IsPsh S.A (S.potT a t + LocPot.rsmul (epsT S.C t) S.Θ)` using `((S.reg a).2.2 t htp htt).2.2.2.2.1`. Establish `n1` using `dl_nonneg hr j hy w`.
+
+Rewrite `n1` using `[dl_add_rsmul (hpot a) S.potΘ _ j hy w]`. Establish `n3 : epsT S.C t * θ ≤ E * θ` using `mul_le_mul_of_nonneg_right (le_abs_self _) hθ`. Establish `n4 : -(E * θ) ≤ dl S.A (S.potT a t) j y w` using `by linarith`. Rewrite using `[abs_of_nonneg hca]`. Use `mul_le_mul_of_nonneg_left n4 hca` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `ha'l : c₀ * θ ≤ dl S.A (S.potT a' t) j y w`. Establish `n1` using `dl_nonneg (ha' t) j hy w`. Rewrite `n1` using `[dl_add_rsmul (hpot a') S.potΘ _ j hy w]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Rewrite using `[← Finset.add_sum_erase _ _ (Finset.mem_univ a')]`. Establish `hrest : -(∑ a, |c a|) * E * θ ≤ ∑ a ∈ Finset.univ.erase a', c a * dl S.A (S.potT a t) j y w`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[neg_mul, neg_mul, Finset.sum_mul, Finset.sum_mul]`. Use `_ ≤ -(∑ a ∈ Finset.univ.erase a', |c a| * E * θ) := by`.
+
+Use `neg_le_neg (Finset.sum_le_sum_of_subset_of_nonneg (Finset.erase_subset _ _) ?_)` and prove the remaining obligations. Introduce `a _ _`. Conclude with `mul_nonneg (mul_nonneg (abs_nonneg _) hE0) hθ`. Use `_ = ∑ a ∈ Finset.univ.erase a', -(|c a| * E * θ) := by rw [Finset.sum_neg_distrib]`. Use `_ ≤ _ := Finset.sum_le_sum fun a _ => hterm a`.
+
+Establish `hA : c a' * dl S.A (S.potT a' t) j y w ≥ s * (c₀ * θ)`. Rewrite using `[hca']`. Conclude with `mul_le_mul_of_nonneg_left ha'l hs.le`. Establish `hLE : (∑ a, |c a|) * E ≤ s * c₀ / 2`. Establish `hL0 : 0 ≤ ∑ a, |c a|` using `Finset.sum_nonneg fun a _ => abs_nonneg _`.
+
+Establish `h1 : (∑ a, |c a|) * E ≤ |abelian₂| * (c₀ / (2 * (|abelian₂| + 1)) * s)` using `mul_le_mul (hsum.trans (le_abs_self _)) hE hE0 (abs_nonneg _)`. Establish `h2 : |abelian₂| * (c₀ / (2 * (|abelian₂| + 1)) * s) ≤ s * c₀ / 2`. Establish `hL1 : 0 < |abelian₂| + 1` using `by positivity`. Rewrite using `[show |abelian₂| * (c₀ / (2 * (|abelian₂| + 1)) * s) = (s * c₀ / 2) * (|abelian₂| / (|abelian₂| + 1)) by field_simp]`. Establish `hq : |abelian₂| / (|abelian₂| + 1) ≤ 1`.
+
+Rewrite using `[div_le_one hL1]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `: 0 ≤ s * c₀ / 2` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hfin : 0 ≤ ((s * c₀ / 2) - (∑ a, |c a|) * E) * θ` using `mul_nonneg (by linarith) hθ`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem psh_sum_potentials_small_parameter : ∀ (e : ℕ) (σ : Type) [Fintype σ] (S : AnSys e σ) (Fl : Set σ) (a' : σ) (c₀ abelian₂ : ℝ), 0 < c₀ → (∀ a ∈ Fl, ∀ t, IsPsh S.A ((S.potT a t).rsmul (-1)) ∧ IsPsh S.A (S.potT a t)) → (∀ t, IsPsh S.A (S.potT a' t + S.Θ.rsmul (-c₀))) → a' ∉ Fl → ∃ s₀ > (0 : ℝ), ∀ s, 0 < s → s ≤ s₀ → Real.exp (-(s ^ 2)⁻¹) ≤ S.t₀ ∧ ∀ c : σ → ℝ, c a' = s → ∑ a, |c a| ≤ abelian₂ → (∀ a ∉ Fl, 0 ≤ c a) → IsPsh S.A (sumPot c (fun a => S.potT a (Real.exp (-(s ^ 2)⁻¹))) + S.Θ.rsmul (-(s * c₀ / 2))) := by
   classical
   intro e σ _ S Fl a' c₀ abelian₂ hc₀ hFl ha' hna'

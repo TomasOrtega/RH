@@ -16,6 +16,19 @@ section Manifold
 variable {k : Type} [CommRing k] {Y : Scheme.{0}} {p : Y ⟶ Sp k} {σ : k →+* ℂ} {d : ℕ} {R : AnRead p σ d}
   {C C' : Closeds Y} {n n' : CxPts p σ → ℝ}
 
+/- English proof (translation)
+Take `⟨V, t, f, hy, ht, hf, e⟩` from `h.2 y₀`. Take `⟨V', t', f', hy', ht', hf', e'⟩` from `h'.2 y₀`. Take `⟨g, g', hg, hxg⟩` from `exists_basicOpen_le_affine_inter V.2 V'.2 _ ⟨mem_ptsIn.1 hy, mem_ptsIn.1 hy'⟩`. Set `W : Y.affineOpens` to `Y.affineBasicOpen g`. Establish `hWV : W ≤ V` using `Y.basicOpen_le g`.
+
+Establish `hWV' : W ≤ V'` using `by show Y.basicOpen g ≤ V'.1`. Rewrite using `[hg]`. Conclude with `Y.basicOpen_le g'`. Establish `hyW : y₀ ∈ ptsIn p σ W.1` using `mem_ptsIn.2 hxg`. Establish `m1 : (Y.presheaf.map (homOfLE hWV).op).hom t ∈ (Scheme.IdealSheafData.vanishingIdeal C').ideal W`.
+
+Use `Scheme.IdealSheafData.vanishingIdeal_antimono hC W ?_` and prove the remaining obligations. Rewrite using `[← (Scheme.IdealSheafData.vanishingIdeal C).map_ideal hWV, ht]`. Conclude with `Ideal.mem_map_of_mem _ (Ideal.mem_span_singleton_self t)`. Rewrite `m1` using `[← (Scheme.IdealSheafData.vanishingIdeal C').map_ideal hWV', ht', Ideal.map_span, Set.image_singleton, Ideal.mem_span_singleton']`. Take `⟨a, ha⟩` from `m1`.
+
+Establish `hev : ∀ z ∈ ptsIn p σ W.1, ev p σ V.1 t z = ev p σ W.1 a z * ev p σ V'.1 t' z` using `fun z hz => by`. Rewrite using `[← ev_res hWV hz t, ← ev_res hWV' hz t', ← ev_mul]`. Conclude with `congrArg (fun u => ev p σ W.1 u z) ha.symm`. Establish `c1 : ContinuousAt (fun z => ‖ev p σ W.1 a z‖ ^ 2 * Real.exp (f' z - f z)) y₀` using `((((continuousOn_ev a).continuousAt ((isOpen_ptsIn _).mem_nhds hyW)).norm.pow 2).mul (Real.continuous_exp.continuousAt.comp (((hf'.continuousOn (isOpen_ptsIn _)).continuousAt ((isOpen_ptsIn _).mem_nhds hy')).sub ((hf.continuousOn (isOpen_ptsIn _)).continuousAt ((isOpen_ptsIn _).m …`. Use `⟨‖ev p σ W.1 a y₀‖ ^ 2 * Real.exp (f' y₀ - f y₀) + 1, ?_⟩` and prove the remaining obligations.
+
+Use `filter_upwards [c1.eventually (gt_mem_nhds (lt_add_one _)), (isOpen_ptsIn W.1).mem_nhds hyW] with z h1 hz`. Establish `e1 : n z ^ 2 = ‖ev p σ W.1 a z‖ ^ 2 * Real.exp (f' z - f z) * n' z ^ 2`. Rewrite using `[e z (ptsIn_mono hWV hz), e' z (ptsIn_mono hWV' hz), hev z hz, norm_mul, mul_pow, show -f z = (f' z - f z) + -f' z by ring, Real.exp_add]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1]`.
+
+Conclude with `mul_le_mul_of_nonneg_right h1.le (sq_nonneg _)`.
+-/
 theorem exists_sq_le_nhds (hC : C' ≤ C) (h : IsDivNorm R C n) (h' : IsDivNorm R C' n') (y₀ : CxPts p σ) :
     ∃ K : ℝ, ∀ᶠ z in 𝓝 y₀, n z ^ 2 ≤ K * n' z ^ 2 := by
   obtain ⟨V, t, f, hy, ht, hf, e⟩ := h.2 y₀
@@ -52,6 +65,11 @@ theorem exists_sq_le_nhds (hC : C' ≤ C) (h : IsDivNorm R C n) (h' : IsDivNorm 
   rw [e1]
   exact mul_le_mul_of_nonneg_right h1.le (sq_nonneg _)
 
+/- English proof (translation)
+Use `choose K hK using exists_sq_le_nhds hC h h'`. Take `⟨t, -, ht⟩` from `isCompact_univ.elim_nhds_subcover (fun y => {z | n z ^ 2 ≤ K y * n' z ^ 2}) fun y _ => hK y`. Establish `h0 : 0 ≤ ∑ y ∈ t, |K y|` using `Finset.sum_nonneg fun _ _ => abs_nonneg _`. Use `⟨1 + ∑ y ∈ t, |K y|, by linarith, fun z => ?_⟩` and prove the remaining obligations. Take `⟨y, hy, hz⟩` from `Set.mem_iUnion₂.1 (ht (Set.mem_univ z))`.
+
+Establish `h1` using `Finset.single_le_sum (f := fun y => |K y|) (fun _ _ => abs_nonneg _) hy`. Conclude with `le_trans hz (mul_le_mul_of_nonneg_right (by linarith [le_abs_self (K y)]) (sq_nonneg _))`.
+-/
 theorem exists_sq_le [CompactSpace (CxPts p σ)] (hC : C' ≤ C) (h : IsDivNorm R C n) (h' : IsDivNorm R C' n') :
     ∃ K : ℝ, 1 ≤ K ∧ ∀ z, n z ^ 2 ≤ K * n' z ^ 2 := by
   choose K hK using exists_sq_le_nhds hC h h'
@@ -64,6 +82,11 @@ theorem exists_sq_le [CompactSpace (CxPts p σ)] (hC : C' ≤ C) (h : IsDivNorm 
 
 end Manifold
 
+/- English proof (translation)
+Take `⟨z, hz, hDz⟩` from `(isIrreducible_iff_sUnion_isClosed.1 (hC'.1 j)) (Finset.univ.image fun i => (C i : Set X)) (fun z hz => by`. Take `⟨i, -, rfl⟩` from `Finset.mem_image.1 hz`. Conclude with `(C i).isClosed)`. Use the proof step `(by`. Establish `h1 : (C' j : Set X) ⊆ B` using `hC'.2.1 ▸ Set.subset_iUnion (fun j => (C' j : Set X)) j`.
+
+Use `h1.trans (hC.2.1 ▸ Set.iUnion_subset fun i => ?_)` and prove the remaining obligations. Conclude with `Set.subset_sUnion_of_mem (Finset.mem_coe.2 (Finset.mem_image_of_mem _ (Finset.mem_univ i))))`. Take `⟨i, -, rfl⟩` from `Finset.mem_image.1 hz`. Conclude with `⟨i, hDz⟩`.
+-/
 theorem exists_le_of_compList {X : Scheme.{0}} {B : Set X} {m m' : ℕ} {C : Fin m → Closeds X} {C' : Fin m' → Closeds X}
     (hC : ReciprocityTheory.AnForm.R.FinalTheorems.CompList B C) (hC' : ReciprocityTheory.AnForm.R.FinalTheorems.CompList B C') (j : Fin m') :
     ∃ i, C' j ≤ C i := by
@@ -82,6 +105,17 @@ theorem exists_le_of_compList {X : Scheme.{0}} {B : Set X} {m m' : ℕ} {C : Fin
 
 variable {D : D7} {A : Amb D} {N j : ℕ} {S : Sig A N j} {κ : Lv A} {s : FinalTheorems S κ}
 
+/- English proof (translation)
+Establish `: CompactSpace (CxPts (genStr s.T.Z) σ)` using `CxPts.compactSpace σ (ProjSpace.isProjOver_pullback_snd _ s.T.Z.proj)`. Use `choose ι hι using exists_le_of_compList x.cpt_list x'.cpt_list`. Use `choose K hK1 hK using fun i => exists_sq_le (hι i) (x.nrm_div σ (ι i)) (x'.nrm_div σ i)`. Use `⟨1 + ∑ i, (1 + Real.log (K i)), fun y hy => ?_⟩` and prove the remaining obligations. Establish `hr` using `x.exp_le_r σ y`.
+
+Establish `he : 1 ≤ Real.exp 1` using `by linarith [Real.add_one_le_exp (1 : ℝ)]`. Establish `hP : 0 < ∏ i, x.nrm σ i y` using `Finset.prod_pos fun i _ => x.nrm_pos hy i`. Establish `key : ∀ i, -Real.log (x'.nrm σ i y ^ 2) ≤ (1 + Real.log (K i)) * x.r σ y` using `fun i => by`. Establish `h1 : ∏ i, x.nrm σ i y ≤ x.nrm σ (ι i) y` using `by classical`. Rewrite using `[← Finset.mul_prod_erase _ _ (Finset.mem_univ (ι i))]`.
+
+Conclude with `mul_le_of_le_one_right ((x.nrm_div σ _).1 y).1 (Finset.prod_le_one (fun i _ => ((x.nrm_div σ i).1 y).1) fun i _ => ((x.nrm_div σ i).1 y).2)`. Establish `h2 : (∏ i, x.nrm σ i y) ^ 2 ≤ K i * x'.nrm σ i y ^ 2` using `(pow_le_pow_left₀ hP.le h1 2).trans (hK i y)`. Establish `h3` using `Real.log_le_log (pow_pos hP 2) h2`. Rewrite `h3` using `[Real.log_mul (by linarith [hK1 i]) (pow_pos (x'.nrm_pos hy i) 2).ne']`. Establish `h4 : x.r σ y = Real.exp 1 - Real.log ((∏ i, x.nrm σ i y) ^ 2)` using `rfl`.
+
+Establish `h5 : Real.log (K i) ≤ Real.log (K i) * x.r σ y` using `le_mul_of_one_le_right (Real.log_nonneg (hK1 i)) (he.trans hr)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `e : x'.r σ y = Real.exp 1 + ∑ i, -Real.log (x'.nrm σ i y ^ 2)`. Rewrite using `[OddPrimesWithRootsOfUnity.r, ← Finset.prod_pow, Real.log_prod (fun i _ => (pow_pos (x'.nrm_pos hy i) 2).ne'), Finset.sum_neg_distrib, sub_eq_add_neg]`. Rewrite using `[e, add_mul, one_mul, Finset.sum_mul]`.
+
+Conclude with `add_le_add hr (Finset.sum_le_sum fun i _ => key i)`.
+-/
 theorem exists_r_le_at (x x' : ToroidalCompactificationData s) (σ : κ.c.F →+* ℂ) :
     ∃ K : ℝ, ∀ y : CxPts (genStr s.T.Z) σ, ¬ LiesIn y (genBd s.T.Z) → x'.r σ y ≤ K * x.r σ y := by
   have : CompactSpace (CxPts (genStr s.T.Z) σ) :=
@@ -111,6 +145,9 @@ theorem exists_r_le_at (x x' : ToroidalCompactificationData s) (σ : κ.c.F →+
   rw [e, add_mul, one_mul, Finset.sum_mul]
   exact add_le_add hr (Finset.sum_le_sum fun i _ => key i)
 
+/- English proof (translation)
+Use `choose K hK using exists_r_le_at x x'`. Establish `h0 : 0 ≤ ∑ σ, |K σ|` using `Finset.sum_nonneg fun _ _ => abs_nonneg _`. Use `⟨1 + ∑ σ, |K σ|, by linarith, fun σ y hy => (hK σ y hy).trans ?_⟩` and prove the remaining obligations. Establish `h1` using `Finset.single_le_sum (f := fun σ => |K σ|) (fun _ _ => abs_nonneg _) (Finset.mem_univ σ)`. Conclude with `mul_le_mul_of_nonneg_right (by linarith [le_abs_self (K σ)]) ((Real.exp_pos 1).le.trans (x.exp_le_r σ y))`.
+-/
 theorem exists_r_le (x x' : ToroidalCompactificationData s) : ∃ K : ℝ, 1 ≤ K ∧ ∀ (σ : κ.c.F →+* ℂ) (y : CxPts (genStr s.T.Z) σ),
     ¬ LiesIn y (genBd s.T.Z) → x'.r σ y ≤ K * x.r σ y := by
   choose K hK using exists_r_le_at x x'
@@ -119,6 +156,13 @@ theorem exists_r_le (x x' : ToroidalCompactificationData s) : ∃ K : ℝ, 1 ≤
   have h1 := Finset.single_le_sum (f := fun σ => |K σ|) (fun _ _ => abs_nonneg _) (Finset.mem_univ σ)
   exact mul_le_mul_of_nonneg_right (by linarith [le_abs_self (K σ)]) ((Real.exp_pos 1).le.trans (x.exp_le_r σ y))
 
+/- English proof (translation)
+Take `⟨K, hK1, hK⟩` from `exists_r_le x x'`. Establish `hl` using `Real.log_nonneg hK1`. Use `⟨1 + Real.log K, by linarith, fun σ y hy => ?_⟩` and prove the remaining obligations. Establish `hr0 : 0 < x.r σ y` using `(Real.exp_pos 1).trans_le (x.exp_le_r σ y)`. Establish `h1` using `Real.log_le_log ((Real.exp_pos 1).trans_le (x'.exp_le_r σ y)) (hK σ y hy)`.
+
+Rewrite `h1` using `[Real.log_mul (by linarith) hr0.ne']`. Establish `h2 : 1 ≤ Real.log (x.r σ y)`. Rewrite using `[← Real.log_exp 1]`. Conclude with `Real.log_le_log (Real.exp_pos 1) (x.exp_le_r σ y)`. Establish `h3 : Real.log K ≤ Real.log K * Real.log (x.r σ y)` using `le_mul_of_one_le_right hl h2`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem exists_log_r_le (x x' : ToroidalCompactificationData s) : ∃ L : ℝ, 1 ≤ L ∧ ∀ (σ : κ.c.F →+* ℂ) (y : CxPts (genStr s.T.Z) σ),
     ¬ LiesIn y (genBd s.T.Z) → Real.log (x'.r σ y) ≤ L * Real.log (x.r σ y) := by
   obtain ⟨K, hK1, hK⟩ := exists_r_le x x'

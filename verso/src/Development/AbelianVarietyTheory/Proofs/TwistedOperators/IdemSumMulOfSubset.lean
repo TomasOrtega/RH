@@ -17,6 +17,13 @@ open GlobalTheory.Tow
 
 namespace GlobalTheory.Tow
 
+/- English proof (translation)
+Take `⟨Φ, hΦ⟩` from `GlobalTheory.IdemSupport.exists_comp D`. Establish `ha0` using `GlobalTheory.PlaceModelSum.infPart_split ha.1`. Establish `hda` using `(GlobalTheory.IdemSupport.tie_iff hΦ ha.1.1 ha0 P).mp ha.2`. Establish `hdb` using `(GlobalTheory.IdemSupport.tie_iff hΦ hb.1.1 (GlobalTheory.PlaceModelSum.infPart_split hb.1) Q).mp hb.2`. Apply `hΦ.ext'` to reduce the goal to its premises.
+
+Rewrite using `[map_mul, ha0, zero_mul, map_zero]`. Introduce `R`. Rewrite using `[GlobalTheory.IdemSupport.ev_mul, GlobalTheory.IdemSupport.ev_zero]`. Distinguish the cases in `hR : R = P`. Rewrite using `[hR, hdb.2.2 P h, mul_zero]`.
+
+Rewrite using `[hda.2.2 R hR, zero_mul]`.
+-/
 theorem idemAt_orth {D : D7} {P Q : Formalism.L2.DIV.Pl D.host.E} {a b : AE D} (ha : Formalism.L2.NTheta.IsIdemAt a P)
     (hb : Formalism.L2.NTheta.IsIdemAt b Q) (h : P ≠ Q) : a * b = 0 := by
 
@@ -32,6 +39,9 @@ theorem idemAt_orth {D : D7} {P Q : Formalism.L2.DIV.Pl D.host.E} {a b : AE D} (
     · rw [hR, hdb.2.2 P h, mul_zero]
     · rw [hda.2.2 R hR, zero_mul]
 
+/- English proof (translation)
+Take `⟨Φ, hΦ⟩` from `GlobalTheory.IdemSupport.exists_comp D`. Conclude with `GlobalTheory.IdemSupport.delta_unique hΦ ((GlobalTheory.IdemSupport.tie_iff hΦ ha.1.1 (GlobalTheory.PlaceModelSum.infPart_split ha.1) P).mp ha.2) ((GlobalTheory.IdemSupport.tie_iff hΦ hb.1.1 (GlobalTheory.PlaceModelSum.infPart_split hb.1) P).mp hb.2)`.
+-/
 theorem idemAt_unique {D : D7} {P : Formalism.L2.DIV.Pl D.host.E} {a b : AE D} (ha : Formalism.L2.NTheta.IsIdemAt a P)
     (hb : Formalism.L2.NTheta.IsIdemAt b P) : a = b := by
   obtain ⟨Φ, hΦ⟩ := GlobalTheory.IdemSupport.exists_comp D
@@ -39,6 +49,11 @@ theorem idemAt_unique {D : D7} {P : Formalism.L2.DIV.Pl D.host.E} {a b : AE D} (
     ((GlobalTheory.IdemSupport.tie_iff hΦ ha.1.1 (GlobalTheory.PlaceModelSum.infPart_split ha.1) P).mp ha.2)
     ((GlobalTheory.IdemSupport.tie_iff hΦ hb.1.1 (GlobalTheory.PlaceModelSum.infPart_split hb.1) P).mp hb.2)
 
+/- English proof (translation)
+Take `⟨⟨es, hes, rfl⟩, -⟩` from `h`. Take `⟨⟨fs, hfs, rfl⟩, -⟩` from `h₂`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun R hR => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_mul, Finset.sum_eq_single_of_mem R (hP hR)]`.
+
+Rewrite using `[idemAt_unique (hfs R (hP hR)) (hes R hR)]`. Conclude with `(hes R hR).1.1`. Introduce `Q hQ hQR`. Conclude with `idemAt_orth (hfs Q hQ) (hes R hR) hQR`.
+-/
 theorem idemSum_mul_of_subset {D : D7} {e e₂ : AE D} {P P₂ : Finset (Formalism.L2.DIV.Pl D.host.E)}
     (h : IsIdemSum e P) (h₂ : IsIdemSum e₂ P₂) (hP : P ⊆ P₂) : e₂ * e = e := by
   obtain ⟨⟨es, hes, rfl⟩, -⟩ := h

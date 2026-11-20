@@ -168,6 +168,9 @@ variable {S₁ : Sys R n r₁} {S : Sys R n r} {F : Hom S₁ S}
 
 omit [IsDomain O] in
 
+/- English proof (translation)
+Take `⟨c, rfl⟩` from `hfg`. Introduce `y hy`. Take `⟨x, hx, e⟩` from `h (c • y) (Submodule.smul_mem _ _ hy)`. Conclude with `⟨x, hx, by rw [e, smul_smul]⟩`.
+-/
 theorem Hom.Kills.of_dvd {i : ZMod n} {f g : O⟦X⟧} (h : F.Kills i f) (hfg : f ∣ g) :
     F.Kills i g := by
   obtain ⟨c, rfl⟩ := hfg
@@ -177,15 +180,24 @@ theorem Hom.Kills.of_dvd {i : ZMod n} {f g : O⟦X⟧} (h : F.Kills i f) (hfg : 
 
 omit [IsDomain O] in
 
+/- English proof (translation)
+The claim follows from `h.of_dvd (pow_dvd_pow f ha)`.
+-/
 theorem Hom.Kills.pow_le {i : ZMod n} {f : O⟦X⟧} {a a' : ℕ} (h : F.Kills i (f ^ a)) (ha : a ≤ a') :
     F.Kills i (f ^ a') := h.of_dvd (pow_dvd_pow f ha)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun H => ⟨⟨H.good.1, H.jumps, H.size, H.le_h, H.low⟩, H.good.2⟩, fun H => ⟨⟨H.1.onto, H.2⟩, H.1.jumps, H.1.size, H.1.le_h, H.1.low⟩⟩`.
+-/
 theorem typed_iff {up : ZMod n → Fin R.e → Bool} {b : ZMod n → Fin R.e → ℕ} {Sn η m h : ℕ} :
     Typed F up b Sn η m h ↔
       TypedOnto F up b Sn η m h ∧ ∀ i, ∃ a : ℕ, F.Kills i ((l : O⟦X⟧) ^ a) :=
   ⟨fun H => ⟨⟨H.good.1, H.jumps, H.size, H.le_h, H.low⟩, H.good.2⟩,
     fun H => ⟨⟨H.1.onto, H.2⟩, H.1.jumps, H.1.size, H.1.le_h, H.1.low⟩⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun H => ⟨⟨H.isA, H.l_ge, Nat.pos_of_ne_zero (NeZero.ne n), H.even, (typed_iff.1 H.typed).1, H.big, H.half⟩, H.typed.good.2, H.kills⟩, fun H => ⟨H.1.isA, H.1.l_ge, H.1.even, typed_iff.2 ⟨H.1.typed, H.2.1⟩, H.1.big, H.1.half, H.2.2⟩⟩`.
+-/
 theorem cHyp_iff [NeZero n] {b : ZMod n → ℕ} {Sn η m h : ℕ} :
     CHyp F b Sn η m h ↔ CSet F b Sn η m h ∧ (∀ i, ∃ a : ℕ, F.Kills i ((l : O⟦X⟧) ^ a)) ∧
       ∀ i, F.Kills i (R.E ^ aC l (h + η)) :=
@@ -194,6 +206,9 @@ theorem cHyp_iff [NeZero n] {b : ZMod n → ℕ} {Sn η m h : ℕ} :
     fun H => ⟨H.1.isA, H.1.l_ge, H.1.even, typed_iff.2 ⟨H.1.typed, H.2.1⟩, H.1.big, H.1.half,
       H.2.2⟩⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun H => ⟨⟨H.isA, H.l_ge, Nat.pos_of_ne_zero (NeZero.ne n), (typed_iff.1 H.typed).1, H.w_pos, H.small, H.thick_or, H.some_thin, H.h_def⟩, H.killX, H.killL, H.killCut, H.A_le, H.a_le, H.A_next, H.A_cut⟩, fun ⟨H, h1, h2, h3, h4, h5, h6, h7⟩ => ⟨H.isA, H.l_ge, typed_iff.2 ⟨H.typed, …`.
+-/
 theorem bHyp_iff [NeZero n] {up : ZMod n → Bool} {sz : ZMod n → ℕ} {b w Sn η m h : ℕ}
     {A ρ : ZMod n → ℕ} :
     BHyp F up sz b w Sn η m h A ρ ↔ BSet F up sz b w Sn η m h ∧ CutBounds F sz w Sn η h A ρ :=
@@ -203,6 +218,9 @@ theorem bHyp_iff [NeZero n] {up : ZMod n → Bool} {sz : ZMod n → ℕ} {b w Sn
     fun ⟨H, h1, h2, h3, h4, h5, h6, h7⟩ => ⟨H.isA, H.l_ge, typed_iff.2 ⟨H.typed, fun i => ⟨_, h2 i⟩⟩,
       H.w_pos, H.small, H.thick_or, H.some_thin, H.h_def, h1, h2, h3, h4, h5, h6, h7⟩⟩
 
+/- English proof (translation)
+Introduce `a ha`. Establish `h1` using `H.jumps i τ a ha`. Establish `h2` using `H.size i τ`. Unfold `win winU winD at h1`. Apply the tactic sequence `cases hu : up i τ <;> simp [hu] at h1 ⊢ <;> omega`.
+-/
 theorem TypedOnto.jumps_width {up : ZMod n → Fin R.e → Bool} {b : ZMod n → Fin R.e → ℕ}
     {Sn η m h : ℕ} (H : TypedOnto F up b Sn η m h) (i : ZMod n) (τ : Fin R.e) :
     S₁.JumpsIn i τ (Set.Icc (-((if up i τ then η else b i τ + Sn : ℕ) : ℤ))
@@ -213,6 +231,9 @@ theorem TypedOnto.jumps_width {up : ZMod n → Fin R.e → Bool} {b : ZMod n →
   unfold win winU winD at h1
   cases hu : up i τ <;> simp [hu] at h1 ⊢ <;> omega
 
+/- English proof (translation)
+Establish `h1` using `H.thick_or i`. Establish `h2` using `H.small.1`. Establish `h3` using `H.w_pos`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem BSet.lt_iff {up : ZMod n → Bool} {sz : ZMod n → ℕ} {b w Sn η m h : ℕ}
     (H : BSet F up sz b w Sn η m h) (i : ZMod n) : sz i < b ↔ sz i ≤ w := by
   have h1 := H.thick_or i
@@ -222,6 +243,9 @@ theorem BSet.lt_iff {up : ZMod n → Bool} {sz : ZMod n → ℕ} {b w Sn η m h 
 
 omit [IsDomain O] in
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ => 0, fun _ => Nat.zero_le _, fun _ => by simp only [Nat.cast_zero, zero_div]; positivity, fun i => (h i).of_dvd (one_dvd _), fun i => (h i).of_dvd (one_dvd _)⟩`.
+-/
 theorem CokBound.of_kills_one (h : ∀ i, F.Kills i 1) (Hw : ZMod n → ℕ) (H : ℕ) :
     CokBound F Hw H :=
   ⟨fun _ => 0, fun _ => Nat.zero_le _, fun _ => by simp only [Nat.cast_zero, zero_div]; positivity,
@@ -229,13 +253,24 @@ theorem CokBound.of_kills_one (h : ∀ i, F.Kills i 1) (Hw : ZMod n → ℕ) (H 
 
 end Rel
 
+/- English proof (translation)
+Unfold `AltWord`. Evaluate the decidable proposition.
+-/
 example : AltWord (n := 2) (fun i => decide (i = 1)) (fun i => if i = 1 then 20 else 1) 20 := by
   unfold AltWord; decide
 
+/- English proof (translation)
+Unfold `OneWord`. Evaluate the decidable proposition.
+-/
 example : OneWord (n := 3) (fun _ => true) (fun i => if i = 0 then 1 else 20) 20 3 ∧
     ¬ OneWord (n := 3) (fun _ => true) (fun i => if i = 0 then 1 else 20) 20 2 := by
   unfold OneWord; decide
 
+/- English proof (translation)
+Introduce and unpack `⟨h, -⟩`. Establish `h0 : up 1 = !up 0` using `h 0`. Establish `h1 : up 2 = !up 1` using `h 1`. Establish `h2 : up 0 = !up 2` using `h 2`. Use `revert h0 h1 h2`.
+
+Apply the tactic sequence `cases up 0 <;> cases up 1 <;> cases up 2 <;> simp`.
+-/
 example (up : ZMod 3 → Bool) (sz : ZMod 3 → ℕ) (b : ℕ) : ¬ AltWord up sz b := by
   rintro ⟨h, -⟩
   have h0 : up 1 = !up 0 := h 0
@@ -244,12 +279,18 @@ example (up : ZMod 3 → Bool) (sz : ZMod 3 → ℕ) (b : ℕ) : ¬ AltWord up s
   revert h0 h1 h2
   cases up 0 <;> cases up 1 <;> cases up 2 <;> simp
 
+/- English proof (translation)
+Unfold `cW`. Establish `: Real.logb ((11 : ℕ) : ℝ) (((10 : ℕ) : ℝ) + 1) = 1`. Evaluate the numerical expressions. Rewrite using `[this]`. Evaluate the numerical expressions.
+-/
 example : cW 11 10 = 2 := by
   unfold cW
   have : Real.logb ((11 : ℕ) : ℝ) (((10 : ℕ) : ℝ) + 1) = 1 := by
     norm_num
   rw [this]; norm_num
 
+/- English proof (translation)
+Evaluate the decidable proposition.
+-/
 example : secondSignatureConstant 11 100 = 3 ∧ cDC 11 100 = 11 ∧ MC 11 100 = 11 ∧ sigC 11 100 0 = 2 ∧
     MB 11 100 = 21 := by decide
 

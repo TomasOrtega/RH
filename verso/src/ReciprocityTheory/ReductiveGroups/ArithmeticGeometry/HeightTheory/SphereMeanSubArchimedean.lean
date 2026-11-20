@@ -19,6 +19,13 @@ namespace Data
 
 variable (d : Data K ι Ω WT A)
 
+/- English proof (translation)
+Unfold `evT`. Rewrite using `[MvPolynomial.eval₂_eq', MvPolynomial.eval₂_eq']`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `s hs`. Use `congr 1`.
+
+Apply `Finset.prod_congr rfl` to reduce the goal to its premises. Introduce and unpack `⟨b, j⟩ _`. Establish `hsum : ∑ j : Fin (d.N + 1), s (0, j) = 0`. Rewrite using `[hq s hs 0, hm0]`. Consider the cases of `b using Fin.cases with`.
+
+Consider the case `zero`. Establish `h0 : s (0, j) = 0` using `(Finset.sum_eq_zero_iff.mp hsum) j (Finset.mem_univ _)`. Simplify using `[h0]`. Consider the case `succ i => rfl`.
+-/
 theorem eval_indep_of_first_block (q : KTp K d.D d.N) (m : Fin (d.D + 1) → ℕ) (hm0 : m 0 = 0)
     (hq : IsMultiHomogeneous m q) (sg : K →+* ℂ) (t0 : Fin (d.N + 1) → ℂ)
     (t : Fin d.D → Fin (d.N + 1) → ℂ) : d.evT sg t0 t q = d.evT sg 0 t q := by
@@ -37,6 +44,23 @@ theorem eval_indep_of_first_block (q : KTp K d.D d.N) (m : Fin (d.D + 1) → ℕ
     simp [h0]
   | succ i => rfl
 
+/- English proof (translation)
+Establish `hn : 0 < d.N + 1` using `Nat.succ_pos _`. Establish `hmp` using `hint_mpTail d.D (d.N + 1) hn`. Establish `key : ∀ q : KTp K d.D d.N, q ≠ 0 → IsMultiHomogeneous m q → blockSphereMean (d.D + 1) (d.N + 1) (MvPolynomial.map sg q) = ∫ w, Real.log ‖d.evT sg 0 (d.tOf w) q‖ ∂(ReciprocityTheory.MultiplicativeHeights.blockSphereProb d.D (d.N + 1)) ∧ Integrable (fun w => Real.log ‖d.evT sg 0 (d …`. Introduce `q hq0 hq`. Establish `hq0' : MvPolynomial.map sg q ≠ 0` using `fun h => hq0 (MvPolynomial.map_injective _ sg.injective (by rw [h, map_zero]))`.
+
+Establish `hq' : IsMultiHomogeneous m (MvPolynomial.map sg q)` using `fun s hs => hq s (MvPolynomial.support_map_subset _ _ hs)`. Establish `hI` using `hint_logInt_tail hn hq0' hq' hm0 0`. Establish `heq : ∀ w, d.evT sg 0 (d.tOf w) q = MvPolynomial.eval (hintPt 0 w) (MvPolynomial.map sg q)`. Introduce `w`. Rewrite using `[MvPolynomial.eval_map]`.
+
+Both sides reduce to the same expression. Establish `hI' : Integrable (fun w => Real.log ‖d.evT sg 0 (d.tOf w) q‖) (ReciprocityTheory.MultiplicativeHeights.blockSphereProb d.D (d.N + 1))`. Simplify using `only [heq]`. Conclude with `hI`. Use `⟨?_, hI'⟩` and prove the remaining obligations.
+
+Establish `hpt : ∀ z : ReciprocityTheory.MultiplicativeHeights.BlockSphere (d.D + 1) (d.N + 1), Real.log ‖MvPolynomial.eval (ReciprocityTheory.MultiplicativeHeights.blockPoint z) (MvPolynomial.map sg q)‖ = Real.log ‖d.evT sg 0 (d.tOf (fun i : Fin d.D => z i.succ)) q‖`. Introduce `z`. Establish `h1 : MvPolynomial.eval (ReciprocityTheory.MultiplicativeHeights.blockPoint z) (MvPolynomial.map sg q) = d.evT sg (fun j => ReciprocityTheory.MultiplicativeHeights.spherePoint (z 0) j) (d.tOf (fun i : Fin d.D => z i.succ)) q`. Rewrite using `[MvPolynomial.eval_map]`. Unfold `evT`.
+
+Use `congr 1`. Use function extensionality and compare the values at `v`. Break down `v with ⟨b, j⟩` into its components or cases. Consider the cases of `b using Fin.cases with`. Consider the case `zero => rfl`.
+
+Consider the case `succ i => rfl`. Rewrite using `[h1, d.eval_indep_of_first_block q m hm0 hq sg]`. Unfold `ReciprocityTheory.MultiplicativeHeights.blockSphereMean`. Simplify using `only [hpt]`. Establish `h2` using `MeasureTheory.integral_map (μ := ReciprocityTheory.MultiplicativeHeights.blockSphereProb (d.D + 1) (d.N + 1)) hmp.measurable.aemeasurable (f := fun w => Real.log ‖d.evT sg 0 (d.tOf w) q‖) (by rw [hmp.map_eq]; exact hI'.aestronglyMeasurable)`.
+
+Rewrite `h2` using `[hmp.map_eq]`. Conclude with `h2.symm`. Take `⟨ha1, ha2⟩` from `key a ha hma`. Take `⟨hb1, hb2⟩` from `key b hb hmb`. Rewrite using `[ha1, hb1, ← integral_sub ha2 hb2]`.
+
+Both sides reduce to the same expression.
+-/
 theorem sphereMean_sub_archimedean (a b : KTp K d.D d.N) (m : Fin (d.D + 1) → ℕ) (hm0 : m 0 = 0)
     (ha : a ≠ 0) (hb : b ≠ 0) (hma : IsMultiHomogeneous m a) (hmb : IsMultiHomogeneous m b)
     (sg : K →+* ℂ) :

@@ -30,18 +30,49 @@ def rho {R : Type} [CommRing R] (φ : R →+* ℂ) :
       spMap (algebraMap ℂ (DualNumber ℂ)) ≫ spMap φ
     rw [Category.comp_id, hsq])
 
+/- English proof (translation)
+Use `RingHom.ext fun r => ?_` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp [GlobalTheory.CompanionTheory.Ar.dualMap, GlobalTheory.CompanionTheory.Ar.epsMul, ReciprocityTheory.ChartRestriction.G.Geo.Tor.epsMul, mul_comm]`.
+-/
 theorem dualMap_comp_epsMul {R : Type} [CommRing R] (φ : R →+* ℂ) (c : R) :
     (GlobalTheory.CompanionTheory.Ar.dualMap φ).comp (GlobalTheory.CompanionTheory.Ar.epsMul c) =
       (ReciprocityTheory.ChartRestriction.G.Geo.Tor.epsMul (φ c)).comp (GlobalTheory.CompanionTheory.Ar.dualMap φ) := by
   refine RingHom.ext fun r => ?_
   ext <;> simp [GlobalTheory.CompanionTheory.Ar.dualMap, GlobalTheory.CompanionTheory.Ar.epsMul, ReciprocityTheory.ChartRestriction.G.Geo.Tor.epsMul, mul_comm]
 
+/- English proof (translation)
+Establish `h` using `M.add 0 0`. Rewrite `h` using `[add_zero]`. Conclude with `left_eq_mul.mp h`.
+-/
 theorem lieModel_pt_zero {R : Type} [CommRing R] {G : Over (Sp R)} [GrpObj G] {g : ℕ}
     (M : LieModel G (𝟙 (Sp R)) (Fin g → R)) : M.pt 0 = 1 := by
   have h := M.add 0 0
   rw [add_zero] at h
   exact left_eq_mul.mp h
 
+/- English proof (translation)
+Establish `hF0 : (fun z => (e.ex b z).left) 0 = (1 : Over.mk (spMap (ψ b)) ⟶ G).left` using `congrArg (·.left) (ExpLift.ex_zero e hb)`. Set `T : (Fin g → R) → (epsPt (spMap (ψ b)) ⟶ G)` to `fun u => rho (ψ b) ≫ M.pt u`. Establish `hTl : ∀ u, (T u).left = spMap (GlobalTheory.CompanionTheory.Ar.dualMap (ψ b)) ≫ (M.pt u).left` using `fun _ => rfl`. Establish `hadd : ∀ u u', T (u + u') = T u * T u'` using `fun u u' => by`. Simplify using `only [T, M.add, MonObj.comp_mul]`.
+
+Establish `hone : (T 0).left = spMap (algebraMap ℂ (DualNumber ℂ)) ≫ (fun z => (e.ex b z).left) 0`. Set `i₀ : epsPt (spMap (ψ b)) ⟶ Over.mk (spMap (ψ b))` to `Over.homMk (spMap (algebraMap ℂ (DualNumber ℂ))) rfl`. Establish `h1 : T 0 = i₀ ≫ (1 : Over.mk (spMap (ψ b)) ⟶ G)`. Simplify using `only [T, lieModel_pt_zero, MonObj.comp_one]`. Rewrite using `[h1, hF0]`.
+
+Both sides reduce to the same expression. Establish `h0 : IsDerivAt0 (fun z => (e.ex b z).left) (fun c => ψ b ((0 : Fin g → R) c)) (T 0).left`. Rewrite using `[hone]`. Establish `: (fun c => ψ b ((0 : Fin g → R) c)) = (0 : Fin g → ℂ)`. Use function extensionality and compare the values at `c`.
+
+Simplify using the standard rewrite rules. Rewrite using `[this]`. Conclude with `GlobalTheory.LocalLift.isDerivAt0_const _ 0 fun _ _ _ => map_zero _`. Establish `hsm : ∀ (c : R) (w : Fin g → R), IsDerivAt0 (fun z => (e.ex b z).left) (fun c => ψ b (w c)) (T w).left → IsDerivAt0 (fun z => (e.ex b z).left) (fun d => ψ b ((c • w) d)) (T (c • w)).left`. Introduce `c w h`.
+
+Establish `h1` using `ReciprocityTheory.ChartRestriction.G.PullbackSections.ExpRows.isDerivAt0_smul h (ψ b c)`. Establish `h2 : (T (c • w)).left = spMap (ReciprocityTheory.ChartRestriction.G.Geo.Tor.epsMul (ψ b c)) ≫ (T w).left`. Rewrite using `[hTl, hTl, M.smul, ← Category.assoc, ← Category.assoc]`. Use `congr 1`. Simplify using `only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`.
+
+Rewrite using `[dualMap_comp_epsMul]`. Establish `h3 : (fun d => ψ b ((c • w) d)) = ψ b c • (fun d => ψ b (w d))`. Use function extensionality and compare the values at `d`. Simplify using the standard rewrite rules. Rewrite using `[h2, h3]`.
+
+Conclude with `h1`. Establish `hsingle : ∀ a : Fin g, IsDerivAt0 (fun z => (e.ex b z).left) (fun c => ψ b ((Pi.single a 1 : Fin g → R) c)) (T (Pi.single a 1)).left`. Introduce `a`. Establish `h3 : (fun c => ψ b ((Pi.single a 1 : Fin g → R) c)) = (Pi.single a 1 : Fin g → ℂ)`. Use function extensionality and compare the values at `c`.
+
+Distinguish the cases in `h : c = a`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, h]`. Rewrite using `[h3]`.
+
+Conclude with `e.diff b hb a`. Establish `hs : ∀ s : Finset (Fin g), IsDerivAt0 (fun z => (e.ex b z).left) (fun c => ψ b ((∑ a ∈ s, u a • (Pi.single a 1 : Fin g → R)) c)) (T (∑ a ∈ s, u a • (Pi.single a 1 : Fin g → R))).left`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using h0`.
+
+Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, hadd]`. Establish `h1` using `GlobalTheory.UnifCompare.isDerivAt0_mul (y := spMap (ψ b)) (G := G) hF0 (hsm (u a) _ (hsingle a)) ih`. Establish `h3 : (fun c => ψ b ((u a • (Pi.single a 1 : Fin g → R) + ∑ a ∈ s, u a • (Pi.single a 1 : Fin g → R)) c)) = (fun d => ψ b ((u a • (Pi.single a 1 : Fin g → R)) d)) + (fun c => ψ b ((∑ a ∈ s, u a • (Pi.single a 1 : Fin g → R)) c))`. Use function extensionality and compare the values at `c`.
+
+Simplify using `only [Pi.add_apply, map_add]`. Rewrite using `[h3]`. Conclude with `h1`. Establish `hu : ∑ a, u a • (Pi.single a 1 : Fin g → R) = u`. Use function extensionality and compare the values at `c`.
+
+Simplify using `[Finset.sum_apply, Pi.single_apply]`. Use `hs Finset.univ` as an intermediate fact. Rewrite `this` using `[hu]`. Conclude with `this`.
+-/
 theorem isDerivAt0_pt {R : Type} [CommRing R] {G : Over (Sp R)} [GrpObj G] [IsCommMonObj G] {g n : ℕ}
     {M : LieModel G (𝟙 (Sp R)) (Fin g → R)} {B : Set (Fin n → ℂ)} {ψ : (Fin n → ℂ) → (R →+* ℂ)}
     (e : FamExp G M B ψ) {b : Fin n → ℂ} (hb : b ∈ B) (u : Fin g → R) :
@@ -115,6 +146,9 @@ theorem isDerivAt0_pt {R : Type} [CommRing R] {G : Over (Sp R)} [GrpObj G] [IsCo
   rw [hu] at this
   exact this
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ _ _ _ _ _ e _ hb u` and use `isDerivAt0_pt e hb u`.
+-/
 theorem isDerivAt0_frame_section : ∀ (R : Type) [CommRing R] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G] (g n : ℕ) (M : LieModel G (𝟙 (Sp R)) (Fin g → R)) (B : Set (Fin n → ℂ)) (ψ : (Fin n → ℂ) → (R →+* ℂ)) (e : FamExp G M B ψ) (b : Fin n → ℂ), b ∈ B → ∀ u : Fin g → R, IsDerivAt0 (fun z => (e.ex b z).left) (fun c => ψ b (u c)) (spMap (dualMap (ψ b)) ≫ (M.pt u).left) :=
   fun _ _ _ _ _ _ _ _ _ _ e _ hb u => isDerivAt0_pt e hb u
 

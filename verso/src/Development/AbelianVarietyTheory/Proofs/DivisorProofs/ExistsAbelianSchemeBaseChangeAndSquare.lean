@@ -15,6 +15,19 @@ noncomputable section
 
 namespace GlobalTheory.AbBaseChangeSq
 
+/- English proof (translation)
+Introduce `R₀ R₁ _ _ _ A _ g hA hg`. Set `f : Sp R₁ ⟶ Sp R₀` to `spMap (algebraMap R₀ R₁)`. Set `F` to `Over.pullback f`. Set `B : Over (Sp R₁)` to `F.obj A`. Use `letI : GrpObj B := Functor.grpObjObj`.
+
+Establish `hB : IsGrpPullback B A f (pullback.fst A.hom f)` using `isGrpPullback_pullback A f`. Take `⟨hAB, hgB⟩` from `GlobalTheory.AbBaseChange.isAbelianScheme_and_relDim_of_isGrpPullback _ A B _ g hB hA hg`. Establish `mapL : ∀ {X Y : Over (Sp R₀)} (a : X ⟶ Y), (F.map a).left ≫ pullback.fst Y.hom f = pullback.fst X.hom f ≫ a.left` using `fun a => pullback.lift_fst _ _ _`. Set `m` to `Functor.LaxMonoidal.μ F A A`. Use `⟨B, inferInstance, pullback.fst A.hom f, m.left ≫ pullback.fst (A ⊗ A).hom f, hAB, hgB, hB.1, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Use `haveI : IsIso m := inferInstanceAs (IsIso (Functor.Monoidal.μIso F A A).hom) haveI : IsIso m.left := (Over.forget _).map_isIso m`. Establish `h1 : IsPullback m.left (B ⊗ B).hom (F.obj (A ⊗ A)).hom (𝟙 _)` using `IsPullback.of_horiz_isIso ⟨by rw [Category.comp_id]; exact Over.w m⟩`. Establish `h2` using `h1.paste_horiz (IsPullback.of_hasPullback (A ⊗ A).hom f)`. Rewrite `h2` using `[Category.id_comp]`. Then use the resulting hypothesis. Establish `e : μ[B] = m ≫ F.map μ[A]` using `Functor.obj.μ_def (F := F) A`.
+
+Rewrite using `[e, Over.comp_left, Category.assoc, mapL, Category.assoc]`. Rewrite using `[Category.assoc, ← mapL, ← Category.assoc, ← Over.comp_left]`. Simplify using `[m]`. Both sides reduce to the same expression. Rewrite using `[Category.assoc, ← mapL, ← Category.assoc, ← Over.comp_left]`.
+
+Simplify using `[m]`. Both sides reduce to the same expression. Establish `e : lift (𝟙 B) (1 : B ⟶ B) ≫ m = F.map (lift (𝟙 A) (1 : A ⟶ A))`. Rewrite using `[← Functor.Monoidal.lift_μ, F.map_id, Functor.map_one]`. Rewrite using `[← Category.assoc, ← Over.comp_left, e, mapL]`.
+
+Establish `e : lift (1 : B ⟶ B) (𝟙 B) ≫ m = F.map (lift (1 : A ⟶ A) (𝟙 A))`. Rewrite using `[← Functor.Monoidal.lift_μ, F.map_id, Functor.map_one]`. Rewrite using `[← Category.assoc, ← Over.comp_left, e, mapL]`.
+-/
 theorem exists_baseChange_and_sq : ∀ (R₀ R₁ : Type) [CommRing R₀] [CommRing R₁] [Algebra R₀ R₁] (A : Over (Sp R₀)) [GrpObj A] (g : ℕ), IsAbelianScheme A → SmoothOfRelativeDimension g A.hom → ∃ (B : Over (Sp R₁)) (_ : GrpObj B) (pr : B.left ⟶ A.left) (pr' : (B ⊗ B).left ⟶ (A ⊗ A).left), IsAbelianScheme B ∧ SmoothOfRelativeDimension g B.hom ∧ IsPullback pr B.hom A.hom (spMap (algebraMap R₀ R₁)) ∧ IsPullback pr' (B ⊗ B).hom (A ⊗ A).hom (spMap (algebraMap R₀ R₁)) ∧ (μ[B]).left ≫ pr = pr' ≫ (μ[A]).left ∧ (fst B B).left ≫ pr = pr' ≫ (fst A A).left ∧ (snd B B).left ≫ pr = pr' ≫ (snd A A).left ∧ (CartesianMonoidalCategory.lift (𝟙 B) (1 : B ⟶ B)).left ≫ pr' = pr ≫ (CartesianMonoidalCategory.lift (𝟙 A) (1 : A ⟶ A)).left ∧ (CartesianMonoidalCategory.lift (1 : B ⟶ B) (𝟙 B)).left ≫ pr' = pr ≫ (CartesianMonoidalCategory.lift (1 : A ⟶ A) (𝟙 A)).left := by
   intro R₀ R₁ _ _ _ A _ g hA hg
   let f : Sp R₁ ⟶ Sp R₀ := spMap (algebraMap R₀ R₁)

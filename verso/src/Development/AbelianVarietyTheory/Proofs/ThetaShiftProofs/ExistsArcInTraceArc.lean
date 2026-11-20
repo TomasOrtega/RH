@@ -18,6 +18,15 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open TorusExt ArcExt
 open scoped CategoryTheory.Obj
 
+/- English proof (translation)
+Establish `hGt` using `Ex.GtValues.points_correspond`. Establish `hWp` using `WeilValues.weil_eq_values hGt (Ex.brFam hL hL₂)`. Take `⟨N, ν, -⟩` from `ValuesExist.exists_integral_values hL R D he hB F ⊤ fun _ => trivial`. Take `⟨J', hg, hJ₀⟩` from `exists_gauge f D.P.isLB ν.good`. Take `⟨N', ν', e₁, hth⟩` from `GaugeValues.exists_numOf hL R D he hB F' J' hg ν.th ν.th_gen`.
+
+Establish `hJ : ∀ ψ, ν'.J (spMap f ≫ ψ) = ν.J ψ` using `e₁ ▸ hJ₀`. Establish `G` using `(hGt R D he hB F N ν).2.2.2.2`. Establish `G'` using `(hGt R D he hB F' N' ν').2.2.2.2`. Take `⟨q, hq, -⟩` from `(G k).1 p`. Take `⟨q', hq', -⟩` from `(G k).1 p'`.
+
+Take `⟨r, hr, -⟩` from `(G' k).1 (qkExt hB f hf p)`. Take `⟨r', hr', -⟩` from `(G' k).1 (qkExt hB f hf p')`. Establish `a` using `numHom_qPt f hf hB ν ν' hJ hth hq hr`. Establish `a'` using `numHom_qPt f hf hB ν ν' hJ hth hq' hr'`. Rewrite using `[hWp R D he hB F' N' ν' k hk _ _ _ _ _ hr hr', (Ex.NumD.hom_transport F F' f N N' (numHom f hf ν ν' hJ hth)).2.2.2.1 k q q' r r' a.1 a.2 a'.1 a'.2, (hWp R D he hB F N ν k hk _ _ _ _ _ hq hq').1 h]`.
+
+Both sides reduce to the same expression.
+-/
 theorem weilQkIs_qkExt (hL : Laws) (hL₂ : Laws2) {R : Type} [CommRing R] [IsDomain R] [IsLocalRing R]
     [IsNoetherianRing R] {D : DegPre R} (he : D.PsiEven) (hB : D.TauBimult) {F F' : Type} [Field F] [IsAlgClosed F]
     [Algebra (FractionRing R) F] [Field F'] [IsAlgClosed F'] [Algebra (FractionRing R) F'] (f : F →+* F')
@@ -45,6 +54,11 @@ theorem weilQkIs_qkExt (hL : Laws) (hL₂ : Laws2) {R : Type} [CommRing R] [IsDo
 
 def root (n : ℕ) (x : ℤ) : ℂˣ := Units.mk0 (Complex.exp (-(2 * Real.pi * Complex.I) * (x : ℂ) / n)) (Complex.exp_ne_zero _)
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `h`. Establish `: (n : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hn.ne'`. Use `Units.ext (Complex.exp_eq_exp_iff_exists_int.2 ⟨-c, ?_⟩)` and prove the remaining obligations. Rewrite using `[sub_eq_iff_eq_add.1 hc]`. Use `push_cast`.
+
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem root_congr {n : ℕ} (hn : 0 < n) {x y : ℤ} (h : (n : ℤ) ∣ x - y) : root n x = root n y := by
   obtain ⟨c, hc⟩ := h
   have : (n : ℂ) ≠ 0 := Nat.cast_ne_zero.2 hn.ne'
@@ -54,12 +68,18 @@ theorem root_congr {n : ℕ} (hn : 0 < n) {x y : ℤ} (h : (n : ℤ) ∣ x - y) 
   field_simp
   ring
 
+/- English proof (translation)
+The claim follows from `Units.ext (by rw [Units.val_zpow_eq_zpow_val, root, root, Units.val_mk0, Units.val_mk0, ← Complex.exp_int_mul] congr 1 push_cast ring)`.
+-/
 theorem root_zpow (n : ℕ) (x y : ℤ) : root n x ^ y = root n (x * y) := Units.ext (by
   rw [Units.val_zpow_eq_zpow_val, root, root, Units.val_mk0, Units.val_mk0, ← Complex.exp_int_mul]
   congr 1
   push_cast
   ring)
 
+/- English proof (translation)
+The claim follows from `Units.ext (by have : (m : ℂ) ≠ 0 := Nat.cast_ne_zero.2 hm.ne' rw [Units.val_pow_eq_pow_val, root, root, Units.val_mk0, Units.val_mk0, ← Complex.exp_nat_mul] congr 1 push_cast rw [← div_div, mul_div_assoc', mul_div_cancel_left₀ _ this])`.
+-/
 theorem root_pow {n m : ℕ} (hm : 0 < m) (x : ℤ) : root (n * m) x ^ m = root n x := Units.ext (by
   have : (m : ℂ) ≠ 0 := Nat.cast_ne_zero.2 hm.ne'
   rw [Units.val_pow_eq_pow_val, root, root, Units.val_mk0, Units.val_mk0, ← Complex.exp_nat_mul]
@@ -67,6 +87,11 @@ theorem root_pow {n m : ℕ} (hm : 0 < m) (x : ℤ) : root (n * m) x ^ m = root 
   push_cast
   rw [← div_div, mul_div_assoc', mul_div_cancel_left₀ _ this])
 
+/- English proof (translation)
+Establish `h₁ : IsPrimitiveRoot (root n (-1)) n` using `IsPrimitiveRoot.coe_units_iff.1 (by`. Use `Complex.isPrimitiveRoot_exp n hn.ne' using 1` and compare the differences between its conclusion and the goal. Simplify using `[root])`. Take `⟨c, hc⟩` from `h`. Use `h₁.zpow_of_gcd_eq_one (-x) (Int.isCoprime_iff_gcd_eq_one.1 ⟨-y, c, by linear_combination -hc⟩)` as an intermediate fact.
+
+Rewrite `this` using `[root_zpow, neg_mul_neg, _root_.one_mul]`. Then use the resulting hypothesis.
+-/
 theorem isPrimitiveRoot_root {n : ℕ} (hn : 0 < n) {x y : ℤ} (h : (n : ℤ) ∣ 1 - x * y) :
     IsPrimitiveRoot (root n x) n := by
   have h₁ : IsPrimitiveRoot (root n (-1)) n := IsPrimitiveRoot.coe_units_iff.1 (by
@@ -82,14 +107,23 @@ section Torsion
 
 variable {O : Type} [CommRing O] [StarRing O] {D₀ : DegPre ℂ} [Module O D₀.X] {oa : D₀.OAct O} (d : GtDict D₀ oa)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨_, map_add d.eX _ _, by rw [d.qk_g, d.qk_g, d.qk_g, map_add, smul_add]; exact d.add _ _, qk_equiv_refl (AnPairing.tauBimult d) _⟩`.
+-/
 theorem qkAdd_qk (k : ℕ) [NeZero k] (a b : d.A.La) : QkAdd (d.qk k a) (d.qk k b) (d.qk k (a + b)) :=
   ⟨_, map_add d.eX _ _, by rw [d.qk_g, d.qk_g, d.qk_g, map_add, smul_add]; exact d.add _ _,
     qk_equiv_refl (AnPairing.tauBimult d) _⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨_, map_smul d.eX _ _, by rw [d.qk_g, d.qk_g, d.A.degeneratingTori_basePeriodMap_smul, ← map_smul (d.A.actV x)]; exact d.lin _ _, qk_equiv_refl (AnPairing.tauBimult d) _⟩`.
+-/
 theorem qkAct_qk (k : ℕ) [NeZero k] (x : O) (a : d.A.La) : QkAct oa x (d.qk k a) (d.qk k (x • a)) :=
   ⟨_, map_smul d.eX _ _, by rw [d.qk_g, d.qk_g, d.A.degeneratingTori_basePeriodMap_smul, ← map_smul (d.A.actV x)]; exact d.lin _ _,
     qk_equiv_refl (AnPairing.tauBimult d) _⟩
 
+/- English proof (translation)
+Establish `hm : (m : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 (NeZero.ne m)`. Use `d.isNsmul_ex₀ m (((n * m : ℕ) : ℂ)⁻¹ • d.A.P0 a)` as an intermediate fact. Rewrite `this` using `[← Nat.cast_smul_eq_nsmul ℂ m, smul_smul, Nat.cast_mul, mul_inv, mul_left_comm, mul_inv_cancel₀ hm, _root_.mul_one, ← mul_inv, ← Nat.cast_mul]`. Then use the resulting hypothesis.
+-/
 theorem isNsmul_qk (n m : ℕ) [NeZero n] [NeZero m] (a : d.A.La) :
     GtPtF.IsNsmul m (d.qk (n * m) a).g (d.qk n a).g := by
   have hm : (m : ℂ) ≠ 0 := Nat.cast_ne_zero.2 (NeZero.ne m)
@@ -101,6 +135,9 @@ def evPt : ∀ n : ℕ, d.A.La → QkPt D₀ ℂ n
   | 0, _ => qkZero (AnPairing.tauBimult d) ℂ 0
   | n + 1, a => d.qk (n + 1) a
 
+/- English proof (translation)
+Consider the cases of `n with`. Consider the case `zero => exact absurd rfl (NeZero.ne 0)`. Consider the case `succ n => rfl`.
+-/
 theorem evPt_eq (n : ℕ) [NeZero n] (a : d.A.La) : evPt d n a = d.qk n a := by
   cases n with
   | zero => exact absurd rfl (NeZero.ne 0)
@@ -108,11 +145,17 @@ theorem evPt_eq (n : ℕ) [NeZero n] (a : d.A.La) : evPt d n a = d.qk n a := by
 
 omit [Algebra (FractionRing ℂ) ℂ] [IsScalarTower ℂ (FractionRing ℂ) ℂ] in
 
+/- English proof (translation)
+Set `e` to `Module.Free.chooseBasis ℤ A.X`. Take `⟨i⟩` from `e.index_nonempty`. Conclude with `⟨.mk (e i) 0 0, .mk 0 (e.coord i).toAddMonoidHom 0, by simp [AnArc.EF_apply]⟩`.
+-/
 theorem exists_EF_eq_one (A : AnArc O) [Nontrivial A.X] : ∃ a b : A.La, A.EF a b = 1 := by
   let e := Module.Free.chooseBasis ℤ A.X
   obtain ⟨i⟩ := e.index_nonempty
   exact ⟨.mk (e i) 0 0, .mk 0 (e.coord i).toAddMonoidHom 0, by simp [AnArc.EF_apply]⟩
 
+/- English proof (translation)
+The claim follows from `IsLocalization.ringHom_ext (nonZeroDivisors ℂ) (RingHom.ext fun x => congrArg (algebraMap ℂ (FractionRing ℂ)) (IsScalarTower.algebraMap_apply ℂ (FractionRing ℂ) ℂ x).symm)`.
+-/
 theorem algebraMap_comp : (algebraMap ℂ (FractionRing ℂ)).comp (algebraMap (FractionRing ℂ) ℂ) =
     algebraMap (FractionRing ℂ) (FractionRing ℂ) :=
   IsLocalization.ringHom_ext (nonZeroDivisors ℂ) (RingHom.ext fun x =>
@@ -121,11 +164,19 @@ theorem algebraMap_comp : (algebraMap ℂ (FractionRing ℂ)).comp (algebraMap (
 def fracPt (k : ℕ) [NeZero k] (a : d.A.La) : QkPt D₀ (FractionRing ℂ) k :=
   qkExt (AnPairing.tauBimult d) (algebraMap ℂ (FractionRing ℂ)) algebraMap_comp (d.qk k a)
 
+/- English proof (translation)
+The claim follows from `LiftExt.qkExt_trans ((qkExt_iff _ _ _ _ _).2 rfl) h`.
+-/
 theorem qkExt_of_fracPt (k : ℕ) [NeZero k] (a : d.A.La) {F : Type} [Field F] [Algebra (FractionRing ℂ) F]
     {q : QkPt D₀ F k} (h : QkExt (algebraMap _ F) (fracPt d k a) q) :
     QkExt ((algebraMap (FractionRing ℂ) F).comp (algebraMap ℂ _)) (d.qk k a) q :=
   LiftExt.qkExt_trans ((qkExt_iff _ _ _ _ _).2 rfl) h
 
+/- English proof (translation)
+Establish `hB` using `AnPairing.tauBimult d`. Take `⟨q, hq, -⟩` from `existsUnique_qkExt hB (algebraMap (FractionRing ℂ) ℂ) (RingHom.comp_id _) (fracPt d k a)`. Establish `h₁` using `qkExt_of_fracPt d k a hq`. Rewrite `h₁` using `[← IsScalarTower.algebraMap_eq]`. Establish `e : spMap (algebraMap ℂ ℂ) = 𝟙 _` using `Spec.map_id _`.
+
+Establish `h₂ : QkExt (algebraMap ℂ ℂ) (d.qk k a) (d.qk k a)` using `⟨rfl, by rw [e, Category.id_comp], fun χ => corr_of_val D₀.P.isLB fun y J hJ => by`. Rewrite using `[val_pull hJ, e, Category.id_comp]`. Use the proof step `rfl⟩`. Rewrite using `[(existsUnique_qkExt hB (algebraMap ℂ ℂ) (RingHom.id_comp _) _).unique h₂ h₁]` and apply the resulting hypothesis.
+-/
 theorem qkExt_fracPt (k : ℕ) [NeZero k] (a : d.A.La) : QkExt (algebraMap _ ℂ) (fracPt d k a) (d.qk k a) := by
   have hB := AnPairing.tauBimult d
   obtain ⟨q, hq, -⟩ := existsUnique_qkExt hB (algebraMap (FractionRing ℂ) ℂ) (RingHom.comp_id _) (fracPt d k a)
@@ -144,6 +195,25 @@ section Tate
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {D₀ : DegPre ℂ}
   [Module (𝓞 E) D₀.X] {oa : letI := H.starRing; D₀.OAct (𝓞 E)} (d : letI := H.starRing; GtDict D₀ oa)
 
+/- English proof (translation)
+Set `_` to `H.starRing`. Introduce `_ f ν tow inj sur mul`. Establish `hB` using `AnPairing.tauBimult d`. Take `⟨x, y, hxy⟩` from `exists_EF_eq_one d.A`. Establish `cong : ∀ (n : ℕ) (a b e e' : d.A.La), (n : ℤ) ∣ d.A.EF (a + n • e) (b + n • e') - d.A.EF a b` using `fun n a b e e' => ⟨d.A.EF e b + d.A.EF a e' + n * d.A.EF e e', by`.
+
+Simplify using `only [map_add, map_nsmul, LinearMap.add_apply, LinearMap.smul_apply, nsmul_eq_mul]`. Use the proof step `ring⟩`. Establish `unit : ∀ n : ℕ, 0 < n → ∃ a b, (n : ℤ) ∣ 1 - d.A.EF (f n a) (f n b)` using `fun n hn => by`. Take `⟨a, e, ha⟩` from `sur n hn x`. Take `⟨b, e', hb⟩` from `sur n hn y`.
+
+Conclude with `⟨a, b, by rw [← hxy, ha, hb]; exact cong _ _ _ _ _⟩`. Use `⟨{ ζ := fun n => root n (ν n), ζ_prim := fun n hn => ?_, ζ_pow := fun n m hn hm => ?_, ev := fun n a => evPt d n (f n a), add := fun n hn a b => ?_, lin := fun n hn x a => ?_, ker := fun n hn a b => ?_, onto := fun n hn p => ?_, tower := fun n m hn hm a => ?_, isom := fun n hn a …` and prove the remaining obligations. Take `⟨a, b, h⟩` from `unit n hn`. Conclude with `isPrimitiveRoot_root hn (y := D.EF a b) (by simpa using h.add (mul n hn a b))`. Rewrite using `[root_pow hm]`.
+
+Take `⟨a, b, h⟩` from `unit _ (Nat.mul_pos hn hm)`. Establish `hd : (n : ℤ) ∣ ((n * m : ℕ) : ℤ)` using `Int.natCast_dvd_natCast.2 (dvd_mul_right n m)`. Establish `h₁` using `hd.trans (h.add (mul _ (Nat.mul_pos hn hm) a b))`. Take `⟨e, he⟩` from `tow n m hn hm a`. Take `⟨e', he'⟩` from `tow n m hn hm b`.
+
+Establish `h₃ : (n : ℤ) ∣ d.A.EF (f (n * m) a) (f (n * m) b) - d.A.EF (f n a) (f n b)`. Rewrite using `[he, he']`. Conclude with `cong _ _ _ _ _`. Take `⟨x₁, h₁⟩` from `h₁`. Take `⟨x₂, h₂⟩` from `((hd.trans h).add h₃).add (mul n hn a b)`.
+
+Conclude with `root_congr hn ⟨ν (n * m) * x₂ - ν n * x₁, by linear_combination ν (n * m) * h₂ - ν n * h₁⟩`. Apply the tactic sequence `all_goals have : NeZero n := ⟨hn.ne'⟩`. Simplify using `only [evPt_eq, map_add]`. Conclude with `qkAdd_qk d n _ _`. Simplify using `only [evPt_eq, map_smul]`.
+
+Conclude with `qkAct_qk d n _ _`. Simplify using `only [evPt_eq, d.qk_equiv_iff]`. Use `⟨fun ⟨e, he⟩ => ?_, fun ⟨e, he⟩ => ⟨-f n e, by simp [he]⟩⟩` and prove the remaining obligations. Take `⟨e', he'⟩` from `inj n hn (a - b) ⟨-e, by simp [he]⟩`. Conclude with `⟨e', by rw [← he', add_sub_cancel]⟩`.
+
+Take `⟨a', rfl⟩` from `d.qk_surjective n p`. Take `⟨a, e, h⟩` from `sur n hn a'`. Conclude with `⟨a, by rw [evPt_eq, d.qk_equiv_iff]; exact ⟨e, h⟩⟩`. Establish `: NeZero m` using `⟨hm.ne'⟩`. Take `⟨e, he⟩` from `tow n m hn hm a`.
+
+Simplify using `only [evPt_eq]`. Conclude with `⟨d.qk n (f (n * m) a), rfl, isNsmul_qk d n m _, (d.qk_equiv_iff _ _ _).2 ⟨-e, by simp [he]⟩⟩`. Simplify using `only [evPt_eq]`. Rewrite using `[root_zpow, ← root_congr hn (mul n hn a b)]`. Conclude with `d.weilQkIs_qk n _ _`.
+-/
 theorem exists_tateIsoQ : letI := H.starRing
     ∀ (_ : Nontrivial d.A.X) (f : ℕ → D.La →ₗ[𝓞 E] d.A.La) (ν : ℕ → ℤ),
       (∀ n m : ℕ, 0 < n → 0 < m → ∀ a, ∃ e, f (n * m) a = f n a + n • e) →
@@ -199,6 +269,11 @@ theorem exists_tateIsoQ : letI := H.starRing
     rw [root_zpow, ← root_congr hn (mul n hn a b)]
     exact d.weilQkIs_qk n _ _
 
+/- English proof (translation)
+Set `_` to `H.starRing`. Establish `hB` using `AnPairing.tauBimult d`. Establish `hf : ((algebraMap (FractionRing ℂ) F).comp (algebraMap ℂ _)).comp (algebraMap (FractionRing ℂ) ℂ) = algebraMap (FractionRing ℂ) F`. Rewrite using `[RingHom.comp_assoc, algebraMap_comp]`. Both sides reduce to the same expression.
+
+Use `⟨tateExt _ hf hB hL I (weilQkIs_qkExt hL hL₂ he hB _ hf), fun _ => rfl, fun k _ v a h q hq => ?_⟩` and prove the remaining obligations. Rewrite using `[(qkExt_iff hB _ hf _ _).1 (qkExt_of_fracPt d k a hq)]`. Conclude with `qkExt_congr hB _ hf h`.
+-/
 theorem exists_tateIsoQ_ext (hL : Laws) (hL₂ : Laws2) (he : D₀.PsiEven) (I : TateIsoQ D D₀ oa ℂ) (F : Type) [Field F]
     [IsAlgClosed F] [Algebra (FractionRing ℂ) F] : letI := H.starRing
     ∃ I' : TateIsoQ D D₀ oa F,
@@ -216,6 +291,19 @@ theorem exists_tateIsoQ_ext (hL : Laws) (hL₂ : Laws2) (he : D₀.PsiEven) (I :
 
 end Tate
 
+/- English proof (translation)
+Set `_` to `H.starRing`. Introduce `oa ⟨w, hw, hw₀⟩ A u lam ah hrig hθ hact hT hX hbe D' gam hgam t f ν tow inj sur mul levM levA hζ hLie`. Set `D₀` to `degPre A P rig rig_gen cub sym sym_gen sym_rig u`. Set `d` to `dict A P rig rig_gen cub sym sym_gen sym_rig u lam ah hrig oa hact`. Establish `hψ` using `degPre_psi A P rig rig_gen cub sym sym_gen sym_rig u`.
+
+Establish `he : D₀.PsiEven` using `psiEven (D := D₀) (ε := LinearEquiv.refl _ A.X) lam ah (fun _ => rfl) hψ`. Take `⟨I, hIζ, hI⟩` from `exists_tateIsoQ (D := D) d hX (fun n => gam.toLinearMap ∘ₗ f n) ν (fun n m hn hm v => (tow n m hn hm v).elim fun e h => ⟨gam e, (congrArg gam h).trans (by rw [map_add, map_nsmul]; rfl)⟩) (fun n hn v ⟨e, h⟩ => inj n hn v ⟨gam.symm e, gam.injective (h.trans ((map_nsmul gam _ _).tra …`. Take `⟨v, e, h⟩` from `sur n hn (gam.symm v')`. Conclude with `⟨v, gam e, (gam.apply_symm_apply v').symm.trans ((congrArg gam h).trans (by rw [map_add, map_nsmul]; rfl))⟩)`. Use the proof step `(fun n hn v v' => hgam _ _ ▸ mul n hn v v')`.
+
+Establish `lev : ∀ (k : ℕ) [NeZero k] (v : D.La), (∃ e, f k v = t v + k • e) → QkPt.Equiv D₀ ℂ (d.qk k (gam (t v))) (I.ev k v)` using `fun k _ v ⟨e, h⟩ => by`. Rewrite using `[hI, evPt_eq]`. Conclude with `(d.qk_equiv_iff _ _ _).2 ⟨gam e, (congrArg gam h).trans (by rw [map_add, map_nsmul]; rfl)⟩`. Set `a : ArcIn D l β ℂ b` to `{ D₀ := D₀ oa := oAct A P rig rig_gen cub sym sym_gen sym_rig u lam ah hrig oa hact nontriv := hX even := he bimult := AnPairing.tauBimult d gen := psiUnitOn (D := D₀) (ε := LinearEquiv.refl _ A.X) (fun _ => rfl) hψ w0 := psi_weight_zero_linear_combination (D := D₀) (ε := LinearE …`. Take `⟨I', hζ', hI'⟩` from `exists_tateIsoQ_ext d hL hL₂ he I F`.
+
+Use `⟨fun σ => ?_, I', ?_, fun v => hI' _ v _ (lev _ v (levA v)), fun v hv => hI' _ v _ (lev _ v (levM v hv))⟩` and prove the remaining obligations. Take `⟨τ, rfl⟩` from `DetExtend.exists_factor g σ`. Take `⟨n, h₁, h₂⟩` from `hLie r hr τ`. Use `P.isAb.smooth` as an intermediate fact. Use `⟨n, ?_, h₂.trans ?_⟩` and prove the remaining obligations.
+
+Use `(DetExtend.lieMult_extend g _ _ τ n).2 h₁` as an intermediate fact. Rewrite `this` using `[Category.comp_id]`. Then use the resulting hypothesis. Simplify using `only [RingHom.comp_apply, g.injective.eq_iff]`. Rewrite using `[hζ', hIζ, hζ z hz, hg]`. Use `rfl }`.
+
+Take `⟨σ⟩` from `nonempty_secFn d hθ`. Conclude with `⟨a, ⟨⟨d, fun _ _ => rfl⟩, σ⟩, rfl, rfl, HEq.rfl, HEq.rfl, HEq.rfl, HEq.rfl, HEq.rfl, fun v => qkExt_fracPt d _ _, fun v => qkExt_fracPt d _ _⟩`.
+-/
 theorem exists_arcIn (hL : Laws) (hL₂ : Laws2) {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
     (D : Datum H) (l : Geo.Tor.Level H) {c : Coeff l} {O : Type} [CommRing O] (β : O →+* c.F) (b : O →+* ℂ)
     (P : PolAV (Sp ℂ)) (rig : LB.Gen (P.L.pull (eSec P.A))) (rig_gen : rig.IsGen)

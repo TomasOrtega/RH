@@ -63,6 +63,11 @@ def TrivFix (ξ : (AdE F E)ˣ →* Circle) : Prop := ∀ x : (AdE F E)ˣ, conjA 
 
 def TrivRat (ξ : (AdE F E)ˣ →* Circle) : Prop := ∀ (x : (AdE F E)ˣ) (z : E), (x : AdE F E) = diagE F z → ξ x = 1
 
+/- English proof (translation)
+Use `letI : DivisibleBy (Additive ℂˣ) ℕ := divisibleByOfSMulRightSurj _ _ fun {n} hn u => by`. Take `⟨z, hz⟩` from `IsAlgClosed.exists_pow_nat_eq (u.toMul : ℂ) (Nat.pos_of_ne_zero hn)`. Establish `hz0 : z ≠ 0`. Introduce and unpack `rfl`. Rewrite `hz` using `[zero_pow hn]`.
+
+Conclude with `Units.ne_zero _ hz.symm`. Conclude with `⟨Additive.ofMul (Units.mk0 z hz0), Units.ext hz⟩`. Use `letI : DivisibleBy (Additive ℂˣ) ℤ := AddGroup.divisibleByIntOfDivisibleByNat _`. Take `⟨ρ, hρ⟩` from `(Module.Baer.of_divisible (Additive ℂˣ)).extension_property_addMonoidHom (MonoidHom.toAdditive Φ) hΦ (MonoidHom.toAdditive χ)`. Conclude with `⟨MonoidHom.toAdditive.symm ρ, fun x => DFunLike.congr_fun hρ (Additive.ofMul x)⟩`.
+-/
 theorem exists_extend {A M : Type} [CommGroup A] [CommGroup M] (Φ : A →* M) (hΦ : Function.Injective Φ) (χ : A →* ℂˣ) :
     ∃ κ : M →* ℂˣ, ∀ x, κ (Φ x) = χ x := by
   letI : DivisibleBy (Additive ℂˣ) ℕ := divisibleByOfSMulRightSurj _ _ fun {n} hn u => by

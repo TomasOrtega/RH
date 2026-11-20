@@ -11,11 +11,17 @@ namespace UpperTheory.V.Tower
 def GenLE (R M : Type) [CommRing R] [AddCommGroup M] [Module R M] (n : ℕ) : Prop :=
   ∃ π : (Fin n → R) →ₗ[R] M, Function.Surjective π
 
+/- English proof (translation)
+Take `⟨π, hπ⟩` from `h`. Conclude with `Module.Finite.of_surjective π hπ`.
+-/
 theorem GenLE.finite {R M : Type} [CommRing R] [AddCommGroup M] [Module R M] {n : ℕ} (h : GenLE R M n) :
     Module.Finite R M := by
   obtain ⟨π, hπ⟩ := h
   exact Module.Finite.of_surjective π hπ
 
+/- English proof (translation)
+Take `⟨π, hπ⟩` from `h`. Conclude with `⟨f ∘ₗ π, hf.comp hπ⟩`.
+-/
 theorem GenLE.of_surjective {R M M' : Type} [CommRing R] [AddCommGroup M] [Module R M] [AddCommGroup M'] [Module R M']
     {n : ℕ} (h : GenLE R M n) (f : M →ₗ[R] M') (hf : Function.Surjective f) : GenLE R M' n := by
   obtain ⟨π, hπ⟩ := h
@@ -45,6 +51,9 @@ def dRep : Representation ℤ_[l] (G k Ω) (Dinf l N U) :=
 def xRep : Representation ℤ_[l] (G k Ω) (Xinf l N U) :=
   Representation.linHom (dRep l N U) (Representation.trivial ℤ_[l] (G k Ω) (QZ l))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem xRep_apply (g : G k Ω) (x : Xinf l N U) (φ : Dinf l N U) : xRep l N U g x φ = x (dRep l N U g⁻¹ φ) := rfl
 
 def twist {R Q M : Type} [CommRing R] [Group Q] [AddCommGroup M] [Module R M] (π : Representation R Q M) (ψ : Q →* Rˣ) :
@@ -57,12 +66,21 @@ def dTw (e : ℤ) : Representation ℤ_[l] (G k Ω) (Dinf l N U) := twist (dRep 
 
 def xTw (e : ℤ) : Representation ℤ_[l] (G k Ω) (Xinf l N U) := twist (xRep l N U) (cycZ k Ω l ^ e)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem dTw_apply (e : ℤ) (g : G k Ω) :
     dTw l N U e g = ((cycZ k Ω l g ^ (-e) : ℤ_[l]ˣ) : ℤ_[l]) • dRep l N U g := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem xTw_apply (e : ℤ) (g : G k Ω) :
     xTw l N U e g = ((cycZ k Ω l g ^ e : ℤ_[l]ˣ) : ℤ_[l]) • xRep l N U g := rfl
 
+/- English proof (translation)
+Rewrite using `[xTw_apply, dTw_apply, LinearMap.smul_apply, LinearMap.smul_apply, LinearMap.smul_apply, map_smul, xRep_apply, map_inv (cycZ k Ω l), inv_zpow', neg_neg]`.
+-/
 theorem xTw_apply_apply (e : ℤ) (g : G k Ω) (x : Xinf l N U) (φ : Dinf l N U) :
     xTw l N U e g x φ = x (dTw l N U e g⁻¹ φ) := by
   rw [xTw_apply, dTw_apply, LinearMap.smul_apply, LinearMap.smul_apply, LinearMap.smul_apply, map_smul, xRep_apply,
@@ -125,6 +143,9 @@ structure IsTower (R : ℕ) : Prop where
 
 end Layers
 
+/- English proof (translation)
+The claim follows from `HasEnoughRootsOfUnity.exists_primitiveRoot _ 3`.
+-/
 example : HasMuQ 3 (AlgebraicClosure ℚ) := HasEnoughRootsOfUnity.exists_primitiveRoot _ 3
 
 end UpperTheory.V.Tower

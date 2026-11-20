@@ -18,6 +18,9 @@ instance mulActPP {q : ℕ} {F : Type} [Field F] (Lc : LocF q F) (n : ℕ) : Mul
     have h2 := LevModel.isAct_actPP h p x
     exact ⟨h1.1.trans h2.1, h1.2.trans h2.2⟩)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem smul_PP {q : ℕ} {F : Type} [Field F] {Lc : LocF q F} {n : ℕ} (g : GL (Fin n) Lc.K) (p : LocF.PP Lc n) :
     g • p = LevModel.actPP g p := rfl
 
@@ -43,6 +46,9 @@ def intGL {K : Type} [Field K] (ι : Type) [Fintype ι] [DecidableEq ι] (O : Su
 def valO {K : Type} [Field K] [NumberField K] (Q : HeightOneSpectrum (𝓞 K)) : Subring K :=
   (Q.valuation K).valuationSubring.toSubring
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_valO {K : Type} [Field K] [NumberField K] (Q : HeightOneSpectrum (𝓞 K)) (x : K) :
     x ∈ valO Q ↔ Q.valuation K x ≤ 1 :=
   Iff.rfl
@@ -65,6 +71,9 @@ def unitOff {K : Type} [Field K] [NumberField K] [StarRing K] (P : HeightOneSpec
     Subgroup (GL (Fin n) K) :=
   unitGL K n ⊓ ⨅ Q : {Q : HeightOneSpectrum (𝓞 K) // Q ≠ P ∧ Q ≠ Formalism.L2.Col.conjPrime₂ P}, intGL (Fin n) (valO Q.1)
 
+/- English proof (translation)
+Rewrite using `[unitOff, Subgroup.mem_inf, Subgroup.mem_iInf]`. Conclude with `and_congr Iff.rfl ⟨fun h Q h₁ h₂ => h ⟨Q, h₁, h₂⟩, fun h Q => h Q.1 Q.2.1 Q.2.2⟩`.
+-/
 theorem mem_unitOff {K : Type} [Field K] [NumberField K] [StarRing K] (P : HeightOneSpectrum (𝓞 K)) (n : ℕ)
     (g : GL (Fin n) K) : g ∈ unitOff P n ↔ (g : Matrix (Fin n) (Fin n) K)ᴴ * (g : Matrix (Fin n) (Fin n) K) = 1 ∧
       ∀ Q : HeightOneSpectrum (𝓞 K), Q ≠ P → Q ≠ Formalism.L2.Col.conjPrime₂ P → IntGL (valO Q) g := by
@@ -82,6 +91,9 @@ def latB {K ι : Type} [Field K] [NumberField K] [Fintype ι] [DecidableEq ι]
     rw [← algebraMap_smul K r x, Matrix.mulVec_smul, Pi.smul_apply, smul_eq_mul]
     exact (valO Q).mul_mem (Q.valuation_le_one r) (hx Q a)
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_latB {K ι : Type} [Field K] [NumberField K] [Fintype ι] [DecidableEq ι]
     (B : HeightOneSpectrum (𝓞 K) → GL ι K) (x : ι → K) :
     x ∈ latB B ↔ ∀ Q a, ((((B Q)⁻¹ : GL ι K) : Matrix ι ι K) *ᵥ x) a ∈ valO Q :=
@@ -93,6 +105,9 @@ def spanO {K ι : Type} [Field K] [Fintype ι] (σ : K →+* ℂ) (O : Subring K
     r ∈ O ∧ (∀ τ, f τ ∈ delSq ℤ n (lam τ)) ∧
     p = σ r • ten (fun τ => MvPolynomial.map (Int.castRingHom ℂ) (f τ))}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem intSpan_eq (D : D7) (w : D.what₂.places.Pl) {n : ℕ} (lam : D.what₂.Tau → DomWeight n) :
     IntSpan D w lam = spanO D.what₂.embLL (Ow D w) lam := rfl
 

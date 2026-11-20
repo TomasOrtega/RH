@@ -15,6 +15,53 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
 variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E]
 
 set_option maxHeartbeats 800000 in
+/- English proof (translation)
+Introduce `V _ _ H hn t₁ f₂ f₂' φ φ' hT Λ₂ hG₂ hTh`. Use `set t₂ : Term V M r := { abelian₂ := Λ₂, f := f₂, f' := f₂', T := t₁.T, T' := t₁.T' } with ht₂`. Establish `memS : ∀ (t : Term V M r) (N : Submodule M.L.O V) (w : V), w ∈ ThSharp H t N ↔ (w ∈ H.W0 t.f t.f' ∧ ∀ n ∈ N, H.h w n ∈ M.L.O)` using `fun _ _ _ => Iff.rfl`. Establish `memL : ∀ (t : Term V M r) (w : V), w ∈ ThL H t ↔ (w ∈ t.abelian₂ ∧ w ∈ H.W0 t.f t.f')` using `fun _ _ => Iff.rfl`. Establish `hDl : IsUnit (H.Dl f₂ f₂' (r + 1))`.
+
+Take `⟨⟨_, _, _, hD, _⟩, _⟩` from `hG₂`. Conclude with `hD`. Establish `hG₁ : H.IsGeneric t₁`. Take `⟨h, -⟩` from `id hT`. Conclude with `h`.
+
+Take `⟨ψ, hψh, hψC⟩` from `hC V H hn t₁ f₂ f₂' φ φ' hT hDl`. Establish `key : ∀ (x : V) (hx : x ∈ H.W0 t₁.f t₁.f'), x ∈ t₁.abelian₂ ↔ (ψ ⟨x, hx⟩ : V) ∈ Λ₂` using `fun x hx => hTh x _ ((hψC x _).2 ⟨hx, rfl⟩)`. Take `⟨η₁, hη₁a, hη₁b⟩` from `hE hM V H t₁ hG₁`. Take `⟨η₂, hη₂a, hη₂b⟩` from `hE hM V H t₂ hG₂`. Establish `fwd : ∀ (w : V) (hw : w ∈ ThSharp H t₁ (ThL H t₁)), (ψ ⟨w, ((memS _ _ _).1 hw).1⟩ : V) ∈ ThSharp H t₂ (ThL H t₂)`.
+
+Introduce `w hw`. Use `(memS _ _ _).2 ⟨(ψ _).2, ?_⟩` and prove the remaining obligations. Introduce `n hn'`. Take `⟨hnΛ, hnW⟩` from `(memL _ _).1 hn'`. Establish `h1 : (ψ (ψ.symm ⟨n, hnW⟩) : V) = n` using `by simp`.
+
+Rewrite using `[← h1, hψh]`. Use `((memS _ _ _).1 hw).2 _ ((memL _ _).2 ⟨?_, (ψ.symm ⟨n, hnW⟩).2⟩)` and prove the remaining obligations. Conclude with `(key _ (ψ.symm ⟨n, hnW⟩).2).2 (by simpa [ht₂] using hnΛ)`. Establish `bwd : ∀ (w : V) (hw : w ∈ ThSharp H t₂ (ThL H t₂)), (ψ.symm ⟨w, ((memS _ _ _).1 hw).1⟩ : V) ∈ ThSharp H t₁ (ThL H t₁)`. Introduce `w hw`.
+
+Use `(memS _ _ _).2 ⟨(ψ.symm _).2, ?_⟩` and prove the remaining obligations. Introduce `n hn'`. Take `⟨hnΛ, hnW⟩` from `(memL _ _).1 hn'`. Establish `h2` using `hψh (ψ.symm ⟨w, ((memS _ _ _).1 hw).1⟩) ⟨n, hnW⟩`. Simplify using `only [LinearEquiv.apply_symm_apply] at h2`.
+
+Rewrite using `[← h2]`. Conclude with `((memS _ _ _).1 hw).2 _ ((memL _ _).2 ⟨(key n hnW).1 hnΛ, (ψ ⟨n, hnW⟩).2⟩)`. Set `e : ThSharp H t₁ (ThL H t₁) ≃ₗ[M.L.O] ThSharp H t₂ (ThL H t₂)` to `{ toFun := fun w => ⟨_, fwd w.1 w.2⟩ invFun := fun w => ⟨_, bwd w.1 w.2⟩ map_add' := by`. Introduce `a b`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Establish `h` using `congrArg Subtype.val (map_add ψ ⟨(a : V), ((memS _ _ _).1 a.2).1⟩ ⟨(b : V), ((memS _ _ _).1 b.2).1⟩)`. Conclude with `h`. Use the proof step `map_smul' := by`. Introduce `c a`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Establish `h` using `congrArg Subtype.val (map_smul ψ (c : E) ⟨(a : V), ((memS _ _ _).1 a.2).1⟩)`. Conclude with `h`. Use `left_inv := by`. Introduce `a`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Simplify using the standard rewrite rules. Use `right_inv := by`. Introduce `a`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `}`.
+
+Establish `hPQ : Submodule.map (e : ThSharp H t₁ (ThL H t₁) →ₗ[M.L.O] ThSharp H t₂ (ThL H t₂)) (Submodule.comap (ThSharp H t₁ (ThL H t₁)).subtype (ThL H t₁)) = Submodule.comap (ThSharp H t₂ (ThL H t₂)).subtype (ThL H t₂)`. Use extensionality with `x`. Simplify using `only [Submodule.mem_map, Submodule.mem_comap, Submodule.subtype_apply]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`.
+
+Take `⟨h1, -⟩` from `(memL _ _).1 hy`. Conclude with `(memL _ _).2 ⟨(key _ _).1 h1, (ψ _).2⟩`. Introduce `hx`. Use `⟨e.symm x, ?_, e.apply_symm_apply x⟩` and prove the remaining obligations. Take `⟨h1, -⟩` from `(memL _ _).1 hx`.
+
+Use `(memL _ _).2 ⟨?_, (ψ.symm ⟨(x : V), ((memS _ _ _).1 x.2).1⟩).2⟩` and prove the remaining obligations. Conclude with `(key _ (ψ.symm ⟨(x : V), ((memS _ _ _).1 x.2).1⟩).2).2 (by simpa [ht₂] using h1)`. Set `κ : DDW H t₁ (ThL H t₁) ≃ₗ[M.L.O] DDW H t₂ (ThL H t₂)` to `Submodule.Quotient.equiv _ _ e hPQ`. Establish `hκ : ∀ w, κ (dwMk H t₁ (ThL H t₁) w) = dwMk H t₂ (ThL H t₂) (e w)` using `fun w => rfl`. Establish `surj : ∀ m : MMsharp H t₁, ∃ w, η₁ (ddMk H t₁ m) = dwMk H t₁ (ThL H t₁) w`.
+
+Introduce `m`. Take `⟨w, hw⟩` from `Submodule.Quotient.mk_surjective _ (η₁ (ddMk H t₁ m))`. Conclude with `⟨w, hw.symm⟩`. Establish `hh : ∀ a b : ThSharp H t₁ (ThL H t₁), H.h (e a : V) (e b : V) = H.h a b` using `fun a b => hψh ⟨a, ((memS _ _ _).1 a.2).1⟩ ⟨b, ((memS _ _ _).1 b.2).1⟩`. Use `⟨(η₁.trans κ).trans η₂.symm, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `x y x₂ y₂ hx hy`. Take `⟨w, hw⟩` from `surj x`. Take `⟨w', hw'⟩` from `surj y`. Express the relevant statement in the definitionally equal form `η₂.symm (κ (η₁ (ddMk H t₁ x))) = _ at hx`. Express the relevant statement in the definitionally equal form `η₂.symm (κ (η₁ (ddMk H t₁ y))) = _ at hy`.
+
+Establish `hx'` using `(LinearEquiv.symm_apply_eq η₂).1 hx`. Establish `hy'` using `(LinearEquiv.symm_apply_eq η₂).1 hy`. Rewrite `hx'` using `[hw, hκ]`. Rewrite `hy'` using `[hw', hκ]`. Establish `a1` using `hη₁b x y w w' hw hw'`.
+
+Establish `a2` using `hη₂b x₂ y₂ (e w) (e w') hx'.symm hy'.symm`. Rewrite `a2` using `[hh]`. Establish `a3` using `sub_mem a2 a1`. Use `a3 using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+
+Introduce `m₁ m₂`. Take `⟨w, hw⟩` from `surj m₁`. Establish `hmw : (m₁ : V) + w ∈ t₁.abelian₂` using `(hη₁a m₁ w).1 hw`. Express the relevant statement in the definitionally equal form `η₂.symm (κ (η₁ (ddMk H t₁ m₁))) = _ ↔ _`. Rewrite using `[hw, hκ]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h'` using `(LinearEquiv.symm_apply_eq η₂).1 h`. Conclude with `⟨w, e w, (hψC _ _).2 ⟨((memS _ _ _).1 w.2).1, rfl⟩, hmw, (hη₂a m₂ (e w)).1 h'.symm⟩`. Introduce and unpack `⟨n₁, n₂, hc, h1, h2⟩`.
+
+Take `⟨hn₁, hψn⟩` from `(hψC n₁ n₂).1 hc`. Establish `hd : n₁ - w ∈ H.W0 t₁.f t₁.f'` using `Submodule.sub_mem _ hn₁ ((memS _ _ _).1 w.2).1`. Establish `hdL : n₁ - w ∈ t₁.abelian₂`. Establish `h4` using `t₁.abelian₂.sub_mem h1 hmw`. Simplify using `using h4`.
+
+Establish `hψd : (ψ ⟨n₁ - w, hd⟩ : V) = n₂ - (e w : V)`. Rewrite using `[← hψn]`. Conclude with `congrArg Subtype.val (map_sub ψ ⟨n₁, hn₁⟩ ⟨(w : V), ((memS _ _ _).1 w.2).1⟩)`. Establish `h3` using `(key _ hd).1 hdL`. Rewrite `h3` using `[hψd]`.
+
+Establish `h5` using `Λ₂.sub_mem h2 h3`. Establish `h6 : (m₂ : V) + (e w : V) ∈ t₂.abelian₂`. Use `h5 using 1` and compare the differences between its conclusion and the goal. Normalize the expressions using the abelian group laws. Apply `(LinearEquiv.symm_apply_eq η₂).2` to reduce the goal to its premises.
+
+Conclude with `((hη₂a m₂ (e w)).2 h6).symm`.
+-/
 theorem glueFwd_of (M : Model F E) (r n : ℕ) (hM : M.OK) (hC : CorrIso M r n) (hE : GlueEta M r) :
     GlueFwd M r n := by
   intro V _ _ H hn t₁ f₂ f₂' φ φ' hT Λ₂ hG₂ hTh

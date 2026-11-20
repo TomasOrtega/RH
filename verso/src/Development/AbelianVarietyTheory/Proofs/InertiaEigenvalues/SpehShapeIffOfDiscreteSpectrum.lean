@@ -30,10 +30,16 @@ variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ} {w 
 
 omit [IsTotallyComplex E] in
 
+/- English proof (translation)
+The claim follows from `IntPtsUnitary.isCompact_GLint _ (isCompact_iff_compactSpace.2 (GlobalTheory.AdelicUnitaryTop.compactSpace_adicCompletionIntegers E w))`.
+-/
 theorem isCompact_KGL : IsCompact (KGL w a : Set (GL (Fin a) (w.adicCompletion E))) :=
   IntPtsUnitary.isCompact_GLint _
     (isCompact_iff_compactSpace.2 (GlobalTheory.AdelicUnitaryTop.compactSpace_adicCompletionIntegers E w))
 
+/- English proof (translation)
+Break down `((GlobalTheory.CuspRep.isIrreducible_iff _).1 hσ).2 (LinearMap.ker f) (fun g v hv => by` into its components or cases. Rewrite `hv`, the goal using `[LinearMap.mem_ker]`. Rewrite using `[hf, hv, h0]) with h | h`. Conclude with `LinearMap.ker_eq_bot.1 h`. Conclude with `absurd (LinearMap.ker_eq_top.1 h) hf0`.
+-/
 theorem injective_of_irred {G V W : Type} [Group G] [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
     {σ : Representation ℂ G V} (hσ : σ.IsIrreducible) {τ : G → W → W} (h0 : ∀ g, τ g 0 = 0) {f : V →ₗ[ℂ] W} (hf0 : f ≠ 0)
     (hf : ∀ g v, f (σ g v) = τ g (f v)) : Function.Injective f := by
@@ -43,6 +49,25 @@ theorem injective_of_irred {G V W : Type} [Group G] [AddCommGroup V] [Module ℂ
   · exact LinearMap.ker_eq_bot.1 h
   · exact absurd (LinearMap.ker_eq_top.1 h) hf0
 
+/- English proof (translation)
+Rewrite using `[CG.hasSat_mk]`. Take `⟨f, h0, hf⟩` from `h`. Establish `hi` using `injective_of_irred σ.irred (τ := fun g => P.locRep w g) (fun _ => map_zero _) h0 hf`. Establish `hfix : ∀ v ∈ fixed σ.ρ (KGL w a), f v ∈ fixed (P.locRep w) (KGL w a)` using `fun v hv => GlobalTheory.LGrp.mem_fixed.2 fun k hk => by rw [← hf, GlobalTheory.LGrp.mem_fixed.1 hv k hk]`. Establish `hne : ∀ v, v ≠ 0 → f v ≠ 0` using `fun v => (map_ne_zero_iff f hi).2`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hB`. Use `⟨?_, fun v hv hv0 => (hB.2 _ (hfix v hv) (hne v hv0)).of_map f hf hi⟩` and prove the remaining obligations. Take `⟨φ, hφ, hφ0⟩` from `(Submodule.ne_bot_iff _).1 hB.1`. Establish `h1 : LinearMap.range f ⊓ fixed (P.locRep w) (KGL w a) ≠ ⊥` using `fun e => h0 (LinearMap.range_eq_bot.1 (LocEx.eq_bot_of_fixed P w isCompact_KGL hφ0 hφ _ (by rintro g _ ⟨v, rfl⟩; exact ⟨_, hf g v⟩) e))`.
+
+Take `⟨_, ⟨⟨v, rfl⟩, hv⟩, hv0⟩` from `(Submodule.ne_bot_iff _).1 h1`. Conclude with `(Submodule.ne_bot_iff _).2 ⟨v, GlobalTheory.LGrp.mem_fixed.2 fun k hk => hi (by`. Rewrite using `[hf, GlobalTheory.LGrp.mem_fixed.1 hv k hk]), fun e => hv0 (by rw [e, map_zero])⟩`. Introduce `hB`. Take `⟨v, hv, hv0⟩` from `(Submodule.ne_bot_iff _).1 hB.1`.
+
+Use `⟨(Submodule.ne_bot_iff _).2 ⟨f v, hfix v hv, hne v hv0⟩, fun x hx hx0 => ⟨hx0, hx, hB.card, fun ϖ hϖ j hj => ?_⟩⟩` and prove the remaining obligations. Establish `htop : LocUniq.isoPart σ.ρ (P.locRep w) = ⊤`. Establish `hm` using `Submodule.map_injective_of_injective P.V.injective_subtype`. Break down `P.irred ((LocUniq.isoPart σ.ρ (P.locRep w)).map P.V.subtype) (Submodule.map_subtype_le _ _) (by` into its components or cases. Introduce and unpack `o _ ⟨x, hx, rfl⟩`.
+
+Conclude with `⟨_, LocUniq.isoPart_op P w σ.ρ o hx, rfl⟩) with h1 | h1`. Establish `h3 : f v ∈ LocUniq.isoPart σ.ρ (P.locRep w)` using `Submodule.mem_iSup_of_mem (⟨f, fun g => LinearMap.ext (hf g)⟩ : σ.ρ.IntertwiningMap (P.locRep w)) ⟨v, rfl⟩`. Rewrite `h3` using `[hm (h1.trans (Submodule.map_bot _).symm)]`. Conclude with `absurd h3 (hne v hv0)`. Conclude with `hm (h1.trans (Submodule.map_subtype_top _).symm)`.
+
+Establish `hc` using `Final.GLintComm E w a`. Establish `hT` using `Tj_mem_hecke (n := a) hϖ j`. Set `e` to `LocGL.idem (P.isSmooth_locRep w) (isCompact_KGL (w := w) (a := a))`. Establish `key : ∀ y ∈ LocUniq.isoPart σ.ρ (P.locRep w), heckeVec (P.locRep w) (KGL w a) (Tj ℂ a (Ov E w) ϖ j) (e y) = satEig (qV E w) a B j • e y` using `fun y hy => by`. Use `Submodule.iSup_induction _ (motive := fun y => heckeVec (P.locRep w) (KGL w a) (Tj ℂ a (Ov E w) ϖ j) (e y) = satEig (qV E w) a B j • e y) hy ?_ ?_ ?_` and prove the remaining obligations.
+
+Introduce and unpack `g _ ⟨u, rfl⟩`. Establish `h1 : e (g.toLinearMap u) = g.toLinearMap (LocGL.idem σ.smooth isCompact_KGL u)` using `(LocGL.map_idem σ.smooth _ _ g u).symm`. Rewrite using `[h1, ← map_heckeVec hc hT g.toLinearMap fun k y => LinearMap.congr_fun (g.isIntertwining' k) y, ← map_smul]`. Use `congr 1`. Distinguish the cases in `hu : LocGL.idem σ.smooth (isCompact_KGL (w := w) (a := a)) u = 0`.
+
+Simplify using `[hu, heckeVec]`. Conclude with `(hB.2 _ (LocGL.idem_mem _ _ u) hu).2.2.2 ϖ hϖ j hj`. Simplify using `[heckeVec]`. Introduce `y z hy hz`. Rewrite using `[map_add, smul_add, ← hy, ← hz]`.
+
+Use `Eq.trans (finsum_congr fun _ => ?_) (finsum_add_distrib (finite_heckeVec hc hT _ (e y)) (finite_heckeVec hc hT _ (e z)))` and prove the remaining obligations. Simplify using `only [map_add, smul_add]`. Establish `h2` using `key x (htop ▸ Submodule.mem_top)`. Rewrite `h2` using `[show e x = x from LocGL.idem_of_mem _ _ hx]`. Then use the resulting hypothesis.
+-/
 theorem hasSat_iff {P : CuspSub E a} {σ : LocIrr w a} (h : P.IsLocComp w σ) (B : Multiset ℂˣ) :
     (CG.mk P).HasSat w B ↔ HasSatGL w σ.ρ B := by
   rw [CG.hasSat_mk]
@@ -104,6 +129,11 @@ section CM
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n c a : ℕ} {w : HeightOneSpectrum (𝓞 E)}
 
+/- English proof (translation)
+Introduce and unpack `⟨u, hu, e⟩`. Establish `hw : ∀ k : E, w.valuation E (IsCMField.complexConj E k) = w.valuation E k` using `fun k => by`. Establish `h1 : Valued.v (algebraMap E (w.adicCompletion E) k) = w.valuation E k` using `w.valuedAdicCompletion_eq_valuation' k`. Establish `h2 : Valued.v (algebraMap E (w.adicCompletion E) (IsCMField.complexConj E k)) = w.valuation E (IsCMField.complexConj E k)` using `w.valuedAdicCompletion_eq_valuation' _`. Rewrite using `[← h1, ← h2, ← hs, hv]`.
+
+Use `w.isPrime` as an intermediate fact. Use `hu (HeightOneSpectrum.ext (u.isMaximal.eq_of_le w.isPrime.ne_top (GlobalTheory.FixedPrime.le_of_under_le w.asIdeal (fun x hx => ?_) _ (congrArg HeightOneSpectrum.asIdeal e).le)))` and prove the remaining obligations. Rewrite `hx`, the goal using `[← w.valuation_lt_one_iff_mem (K := E)]`. Conclude with `(hw x).symm.trans_lt hx`.
+-/
 theorem not_isSplitAt {s : w.adicCompletion E →+* w.adicCompletion E}
     (hs : ∀ x : E, s (algebraMap E _ x) = algebraMap E _ (IsCMField.complexConj E x))
     (hv : ∀ x, Valued.v (s x) = Valued.v x) : ¬ IsSplitAt w := by
@@ -120,6 +150,17 @@ theorem not_isSplitAt {s : w.adicCompletion E →+* w.adicCompletion E}
   rw [← w.valuation_lt_one_iff_mem (K := E)] at hx ⊢
   exact (hw x).symm.trans_lt hx
 
+/- English proof (translation)
+Take `⟨b, hb, hJ, p, hp, σ, ⟨hσ, f, h0, h1, h2⟩, hS⟩` from `h`. Take `⟨v, hv, hv0⟩` from `(Submodule.ne_bot_iff _).1 hS.1`. Take `⟨ι, -, hι, -⟩` from `GlobalTheory.T.exists_localUnitary_embedding_definiteUnitary_nonsplit E n w s hs hval (not_isSplitAt hs hval)`. Establish `hsurj : Function.Surjective p` using `fun g => by`. Establish `hg : cT s g.1.val * antiJ _ n * g.1.val = antiJ _ n` using `g.2`.
+
+Establish `hm : b * g.1 * b⁻¹ ∈ UJ s (1 : Matrix (Fin n) (Fin n) (w.adicCompletion E))`. Express the relevant statement in the definitionally equal form `cT s (b.val * g.1.val * (b⁻¹).val) * 1 * (b.val * g.1.val * (b⁻¹).val) = 1`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [cT_mul, Matrix.mul_assoc, Matrix.mul_one]`. Use `_ = cT s (b.val * (b⁻¹).val) * (b.val * (b⁻¹).val) := by`.
+
+Rewrite using `[hJ, hg, ← hJ]`. Simplify using `only [cT_mul, Matrix.mul_assoc]`. Use `_ = 1 := by rw [Units.mul_inv, cT_one, Matrix.mul_one]`. Use `⟨⟨_, (hι ⟨_, hm⟩).1⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[hp, (hι _).2]`.
+
+Use `group`. Establish `hi : Function.Injective f` using `by choose t ht using hsurj`. Conclude with `injective_of_irred hσ (τ := fun g => RU E n (t g)) (fun _ => map_zero _) h0 fun g u => by`. Rewrite using `[← h2, ht]`. Use `⟨f v, h1 v, (map_ne_zero_iff f hi).2 hv0, fun x hx hk => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← h2 ⟨x, hx⟩ v, GlobalTheory.LGrp.mem_fixed.1 hv _ ⟨(p _).2, ?_⟩]`. Express the relevant statement in the definitionally equal form `(p ⟨x, hx⟩).val ∈ KGL w n`. Rewrite using `[hp]`. Conclude with `mul_mem (mul_mem (inv_mem hb) hk) hb`.
+-/
 theorem isUnramU_of_hasSatAt {π : Submodule ℂ (UA E n → ℂ)} {s : w.adicCompletion E →+* w.adicCompletion E}
     (hs : ∀ x : E, s (algebraMap E _ x) = algebraMap E _ (IsCMField.complexConj E x))
     (hval : ∀ x, Valued.v (s x) = Valued.v x)
@@ -149,6 +190,9 @@ theorem isUnramU_of_hasSatAt {π : Submodule ℂ (UA E n → ℂ)} {s : w.adicCo
   rw [hp]
   exact mul_mem (mul_mem (inv_mem hb) hk) hb
 
+/- English proof (translation)
+Take `⟨s, ϖ, q, h1, h2⟩` from `GlobalTheory.InertPlaceConj.exists_conj_isUnramInv E w (hE w) hw`. Take `⟨α, h3⟩` from `GlobalTheory.T.exists_satakeParameter_definiteUnitary_inertPlace E n w s ϖ q h1 h2 (GlobalTheory.T.finiteDimensional_definiteUnitary_levelForms E n (GlobalTheory.T.exists_finset_definiteUnitary_doubleCosets E n)) (GlobalTheory.T.exists_localUnitary_embedding_definiteUnitary_nonsp …`. Conclude with `⟨s, ϖ, q, α, h1, h2, h3⟩`.
+-/
 theorem exists_hasSatAt
     (hE : ∀ w : HeightOneSpectrum (𝓞 E), Algebra.IsUnramifiedAt (𝓞 (maximalRealSubfield E)) w.asIdeal)
     {π : Submodule ℂ (UA E n → ℂ)} (hπ : IsAutRepU π) (hw : ¬ IsSplitAt w) (hu : IsUnramU π w) :
@@ -160,6 +204,13 @@ theorem exists_hasSatAt
     (GlobalTheory.T.exists_localUnitary_embedding_definiteUnitary_nonsplit E n w s h1 h2.2.1 hw) π hπ hu
   exact ⟨s, ϖ, q, α, h1, h2, h3⟩
 
+/- English proof (translation)
+Introduce `φ hφ t g`. Take `⟨ω, hω⟩` from `Central.exists_hasCentral E a P`. Establish `h1` using `CsdUnitary.dchi_theta hω h fun _ => (t : ℂ)`. Establish `h2 : dchi ω (fun _ => (t : ℂ)) = 0`. Rewrite `h1` using `[show star (fun _ => (t : ℂ) : Cinf E) = fun _ => (t : ℂ) from funext fun _ => Complex.conj_ofReal t, map_neg]`.
+
+Take the linear combination `-h1 / 2`. Establish `h3` using `chiInf_expU ω fun _ => (t : ℂ)`. Rewrite `h3` using `[h2, Complex.exp_zero]`. Establish `h4` using `hω.apply hφ (infId E (expU fun _ => (t : ℂ))) g`. Rewrite `h4` using `[show ((ω.1 (infId E (expU fun _ => (t : ℂ))) : ℂˣ) : ℂ) = 1 from h3, one_mul]`.
+
+Rewrite using `[← h4]`. Conclude with `congrArg (fun x => φ.1 (x * g)) (cornerGL_scalar (sInf E) _)`.
+-/
 theorem isNormalised_of_isCsd {P : CuspSub E a} (h : P.IsCsd) : GlobalTheory.DiscSpec.IsNormalised P := by
   intro φ hφ t g
   obtain ⟨ω, hω⟩ := Central.exists_hasCentral E a P
@@ -179,6 +230,9 @@ def HasUnitarySpeh (P : CG E a) (d : ℕ) : Prop :=
   ∀ w : HeightOneSpectrum (𝓞 E), ∃ (ρ : LocIrr w a) (σ : LocIrr w (d * a)), P.IsLoc w (Quotient.mk _ ρ) ∧
     IsUnitarisable ρ.ρ ∧ IsUnitarisable σ.ρ ∧ GlobalTheory.LocGL.IsSpeh (GlobalTheory.LocGL.IrrGL.of ρ.ρ ρ.smooth ρ.irred) d σ.ρ
 
+/- English proof (translation)
+Substitute `e` using the available equality. Conclude with `⟨S, hQ, hS⟩`.
+-/
 theorem transport {π : Submodule ℂ (UA E n → ℂ)} {N N' : Fin c → ℕ} (e : N = N') (h : ∑ i, N i = n) (h' : ∑ i, N' i = n)
     (Q : Fin c → ∀ b, LocIrr w b → Prop) (S : ∀ i, LocIrr w (N i)) (hQ : ∀ i, Q i _ (S i))
     (hS : IsCompAlong π (locU n w) ((cLoc w).comp (locU n w).subtype) (locProd h w S)) :

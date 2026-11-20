@@ -15,6 +15,19 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.Ar.Flat.CPoint
 
+/- English proof (translation)
+Introduce `S R _ G _ _ x Em _ _ M n b cf e`. Establish `hu : ∀ u : Fin n → (epsAt x ⟶ G), (∀ i, (u i).left = spMap (epsMul (cf i)) ≫ (M.pt (b i)).left) ↔ u = fun i => M.pt (cf i • b i)`. Introduce `u`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+
+Use function extensionality and compare the values at `i`. Conclude with `Over.OverMorphism.ext ((h i).trans (M.smul _ _).symm)`. Introduce and unpack `rfl i`. Conclude with `M.smul _ _`. Establish `h0 : M.pt 0 = 1`.
+
+Establish `h` using `M.add 0 0`. Rewrite `h` using `[add_zero]`. Conclude with `mul_left_cancel (h.symm.trans (_root_.mul_one _).symm)`. Establish `hsum : ∀ (m : ℕ) (f : Fin m → Em), M.pt (∑ i, f i) = (List.ofFn fun i => M.pt (f i)).prod`. Introduce `m f`.
+
+Proceed by induction on `m with`. Consider the case `zero => rw [Finset.univ_eq_empty, Finset.sum_empty, List.ofFn_zero, List.prod_nil, h0]`. Consider the case `succ m ih => rw [Fin.sum_univ_succ, List.ofFn_succ, List.prod_cons, M.add, ih]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu1, hu2⟩`.
+
+Rewrite `hu2` using `[(hu u).1 hu1]`. Apply `M.inj` to reduce the goal to its premises. Rewrite using `[hu2]`. Conclude with `(hsum n (fun i => cf i • b i)).symm`. Introduce `he`.
+
+Use `⟨fun i => M.pt (cf i • b i), (hu _).2 rfl, ?_⟩` and prove the remaining obligations. Rewrite using `[he]`. Conclude with `hsum n (fun i => cf i • b i)`.
+-/
 theorem isComb_lieModel_pt_iff : ∀ (S : Scheme.{0}) (R : Type) [CommRing R] (G : Over S) [GrpObj G] [IsCommMonObj G] (x : Sp R ⟶ S) (Em : Type)
     [AddCommGroup Em] [Module R Em] (M : LieModel G x Em) (n : ℕ) (b : Fin n → Em) (cf : Fin n → R) (e : Em),
     IsComb cf (fun i => M.pt (b i)) (M.pt e) ↔ e = ∑ i, cf i • b i := by

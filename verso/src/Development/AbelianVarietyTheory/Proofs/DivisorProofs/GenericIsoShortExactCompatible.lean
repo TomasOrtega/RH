@@ -18,6 +18,9 @@ noncomputable section
 
 namespace GlobalTheory.Concat
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨PreservesCokernel.iso Z.genRes ι ≪≫ cokernel.mapIso _ _ γ φ h.symm ≪≫ (PreservesCokernel.iso Z.genRes ι').symm, by simp⟩`.
+-/
 theorem gen_coker {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     {Z : GlobalTheory.Vert.Model O} {F E F' E' : Z.X.Modules} (ι : F ⟶ E) (ι' : F' ⟶ E')
     (γ : Z.GenIso F F') (φ : Z.GenIso E E')
@@ -29,6 +32,33 @@ theorem gen_coker {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing 
 
 open GlobalTheory.Vert.Model in
 
+/- English proof (translation)
+Introduce `O _ _ _ p _ _ _ Z E₁ E₂ E₃ E₁' E₂' E₃' a b a' b' h h' hS hS' ψ₁ ψ₂ ψ₃ h₁₂ h₂₃ φ₁ φ₂ φ₃ hφ₁ hφ₂ hφ₃ r₁ r₂ r₃ hr F₁ F₃`. Substitute `hr` using the available equality. Establish `ca : Z.genRes.map a ≫ φ₂.hom = φ₁.hom ≫ Z.genRes.map a'`. Rewrite using `[← Iso.inv_comp_eq, ← Category.assoc, ← Iso.eq_comp_inv, hφ₁, hφ₂, ← Functor.map_comp, ← Functor.map_comp, h₁₂]`. Establish `cb : Z.genRes.map b ≫ φ₃.hom = φ₂.hom ≫ Z.genRes.map b'`.
+
+Rewrite using `[← Iso.inv_comp_eq, ← Category.assoc, ← Iso.eq_comp_inv, hφ₂, hφ₃, ← Functor.map_comp, ← Functor.map_comp, h₂₃]`. Establish `key : ∀ i, (F₁.gen i).hom ≫ Z.genRes.map (F₁.fl'.ι i ≫ a') = Z.genRes.map (F₁.fl.ι i ≫ a) ≫ φ₂.hom`. Introduce `i`. Rewrite using `[Functor.map_comp, Functor.map_comp, reassoc_of% (F₁.gen_ι i), Category.assoc, ca]`. Take `⟨fl₂, P1, P2, P3, P4⟩` from `GlobalTheory.T.flag_concatenation_extension Z.X E₁ E₂ E₃ a b h hS r₁ r₃ F₁.fl F₃.fl`.
+
+Take `⟨fl₂', Q1, Q2, Q3, Q4⟩` from `GlobalTheory.T.flag_concatenation_extension Z.X E₁' E₂' E₃' a' b' h' hS' r₁ r₃ F₁.fl' F₃.fl'`. Establish `hgen : ∀ k, ∃ γ : Z.GenIso (fl₂.F k) (fl₂'.F k), γ.hom ≫ Z.genRes.map (fl₂'.ι k) = Z.genRes.map (fl₂.ι k) ≫ φ₂.hom`. Introduce `k`. Distinguish the cases in `hk : (k : ℕ) ≤ r₁`. Take `⟨e, he⟩` from `P1 k ⟨k, by omega⟩ rfl`.
+
+Take `⟨e', he'⟩` from `Q1 k ⟨k, by omega⟩ rfl`. Use `⟨Z.genRes.mapIso e ≪≫ F₁.gen _ ≪≫ Z.genRes.mapIso e'.symm, ?_⟩` and prove the remaining obligations. Rewrite using `[he, he']`. Simplify using `only [Iso.trans_hom, Functor.mapIso_hom, Iso.symm_hom, Category.assoc]`. Rewrite using `[← Functor.map_comp, Iso.inv_hom_id_assoc, key, ← Category.assoc, ← Functor.map_comp]`.
+
+Establish `hj : (k : ℕ) - r₁ < r₃ + 1` using `by omega`. Take `⟨hz, hSk⟩` from `P2 k ⟨(k : ℕ) - r₁, hj⟩ (by simp; omega)`. Take `⟨hz', hSk'⟩` from `Q2 k ⟨(k : ℕ) - r₁, hj⟩ (by simp; omega)`. Take `⟨χ, hχ⟩` from `gen_coker _ _ (F₃.gen ⟨(k : ℕ) - r₁, hj⟩) φ₃ (F₃.gen_ι _)`. Use `haveI := (fl₂.isVB k).isQuasicoherent`.
+
+Use `haveI := (fl₂'.isVB k).isQuasicoherent`. Use `haveI := fl₂.isVB_self.isQuasicoherent`. Use `haveI := fl₂'.isVB_self.isQuasicoherent`. Conclude with `GlobalTheory.T.short_exact_pair_chern_relation O Z _ _ _ _ _ _ _ _ hz _ _ hz' hSk hSk' _ _ (F₃.fl.isVB_cokernel _) (F₃.fl'.isVB_cokernel _) φ₂ χ (by`. Rewrite using `[Functor.map_comp, Functor.map_comp, Category.assoc, hχ, ← Category.assoc, cb, Category.assoc])`.
+
+Use `choose gen hgen using hgen`. Set `F₂ : FlagPair φ₂ (r₁ + r₃)` to `⟨fl₂, fl₂', gen, hgen⟩`. Use `⟨F₂, fun k Q => ?_⟩` and prove the remaining obligations. Establish `A1 : ∀ i : Fin r₁, (F₂.toFPair p).x (Fin.castAdd r₃ i) = (F₁.toFPair p).x i ∧ (F₂.toFPair p).x' (Fin.castAdd r₃ i) = (F₁.toFPair p).x' i ∧ (F₂.toFPair p).Dv (Fin.castAdd r₃ i) = (F₁.toFPair p).Dv i`. Introduce `i`.
+
+Take `⟨e, u, he, hu⟩` from `P3 (Fin.castAdd r₃ i) i rfl`. Take `⟨e', u', he', hu'⟩` from `Q3 (Fin.castAdd r₃ i) i rfl`. Use `GlobalTheory.T.flag_pair_morphism_compatibility O p Z _ _ _ _ φ₂ φ₁ _ _ F₂ F₁ _ i e.hom e'.hom u u' ?_ hu hu'` and prove the remaining obligations. Establish `hm : Mono (Z.genRes.map (F₁.fl'.ι i.succ ≫ a'))`. Rewrite using `[show F₁.fl'.ι i.succ ≫ a' = e'.inv ≫ fl₂'.ι _ by rw [he', Iso.inv_hom_id_assoc], Functor.map_comp]`.
+
+Use `infer_instance`. Rewrite using `[← cancel_mono (Z.genRes.map (F₁.fl'.ι i.succ ≫ a'))]`. Establish `L : (Z.genRes.map e.hom ≫ (F₁.gen i.succ).hom) ≫ Z.genRes.map (F₁.fl'.ι i.succ ≫ a') = Z.genRes.map (fl₂.ι (Fin.castAdd r₃ i).succ) ≫ φ₂.hom`. Rewrite using `[Category.assoc, key, he, ← Category.assoc, ← Functor.map_comp]`. Establish `R : (gen (Fin.castAdd r₃ i).succ).hom ≫ Z.genRes.map e'.hom ≫ Z.genRes.map (F₁.fl'.ι i.succ ≫ a') = Z.genRes.map (fl₂.ι (Fin.castAdd r₃ i).succ) ≫ φ₂.hom`.
+
+Rewrite using `[← Functor.map_comp, ← he']`. Conclude with `hgen _`. Conclude with `L.trans (R.symm.trans (Category.assoc _ _ _).symm)`. Establish `A3 : ∀ j : Fin r₃, (F₂.toFPair p).x (Fin.natAdd r₁ j) = (F₃.toFPair p).x j ∧ (F₂.toFPair p).x' (Fin.natAdd r₁ j) = (F₃.toFPair p).x' j ∧ (F₂.toFPair p).Dv (Fin.natAdd r₁ j) = (F₃.toFPair p).Dv j`. Introduce `j`.
+
+Take `⟨m, u, hm, hu⟩` from `P4 (Fin.natAdd r₁ j) j rfl`. Take `⟨m', u', hm', hu'⟩` from `Q4 (Fin.natAdd r₁ j) j rfl`. Use `GlobalTheory.T.flag_pair_morphism_compatibility O p Z _ _ _ _ φ₂ φ₃ _ _ F₂ F₃ _ j m m' u u' ?_ hu hu'` and prove the remaining obligations. Rewrite using `[← cancel_mono (Z.genRes.map (F₃.fl'.ι j.succ))]`. Establish `L : (Z.genRes.map m ≫ (F₃.gen j.succ).hom) ≫ Z.genRes.map (F₃.fl'.ι j.succ) = (Z.genRes.map (fl₂.ι (Fin.natAdd r₁ j).succ) ≫ φ₂.hom) ≫ Z.genRes.map b'`.
+
+Rewrite using `[Category.assoc, F₃.gen_ι, ← Category.assoc, ← Functor.map_comp, hm, Functor.map_comp, Category.assoc, cb, Category.assoc]`. Establish `R : (gen (Fin.natAdd r₁ j).succ).hom ≫ Z.genRes.map m' ≫ Z.genRes.map (F₃.fl'.ι j.succ) = (Z.genRes.map (fl₂.ι (Fin.natAdd r₁ j).succ) ≫ φ₂.hom) ≫ Z.genRes.map b'`. Rewrite using `[← Functor.map_comp, hm', Functor.map_comp, ← Category.assoc]`. Conclude with `congrArg (· ≫ Z.genRes.map b') (hgen _)`. Conclude with `L.trans (R.symm.trans (Category.assoc _ _ _).symm)`.
+
+Simplify using `only [ck, Fin.sum_univ_add, fun i => (A1 i).1, fun i => (A1 i).2.1, fun i => (A1 i).2.2, fun j => (A3 j).1, fun j => (A3 j).2.1, fun j => (A3 j).2.2]`.
+-/
 theorem exists_flagPair_ck_add : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (p : ℕ) [Fact p.Prime] [CharZero O] [CharP (ResidueField O) p] (Z : GlobalTheory.Vert.Model O) (E₁ E₂ E₃ E₁' E₂' E₃' : Z.X.Modules) (a : E₁ ⟶ E₂) (b : E₂ ⟶ E₃) (a' : E₁' ⟶ E₂') (b' : E₂' ⟶ E₃') (h : a ≫ b = 0) (h' : a' ≫ b' = 0), (ShortComplex.mk a b h).ShortExact → (ShortComplex.mk a' b' h').ShortExact → ∀ (ψ₁ : E₁' ⟶ E₁) (ψ₂ : E₂' ⟶ E₂) (ψ₃ : E₃' ⟶ E₃), ψ₁ ≫ a = a' ≫ ψ₂ → ψ₂ ≫ b = b' ≫ ψ₃ → ∀ (φ₁ : Z.GenIso E₁ E₁') (φ₂ : Z.GenIso E₂ E₂') (φ₃ : Z.GenIso E₃ E₃'), φ₁.inv = Z.genRes.map ψ₁ → φ₂.inv = Z.genRes.map ψ₂ → φ₃.inv = Z.genRes.map ψ₃ → ∀ (r₁ r₂ r₃ : ℕ), r₂ = r₁ + r₃ → ∀ (F₁ : GlobalTheory.Vert.Model.FlagPair φ₁ r₁) (F₃ : GlobalTheory.Vert.Model.FlagPair φ₃ r₃), ∃ F₂ : GlobalTheory.Vert.Model.FlagPair φ₂ r₂, ∀ (k : ℕ) (Q : PicSym Z.X), ck (F₂.toFPair p) k Q = ck (F₁.toFPair p) k Q + ck (F₃.toFPair p) k Q := by
   intro O _ _ _ p _ _ _ Z E₁ E₂ E₃ E₁' E₂' E₃' a b a' b' h h' hS hS' ψ₁ ψ₂ ψ₃ h₁₂ h₂₃ φ₁ φ₂ φ₃
     hφ₁ hφ₂ hφ₃ r₁ r₂ r₃ hr F₁ F₃

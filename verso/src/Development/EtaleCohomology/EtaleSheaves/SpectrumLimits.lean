@@ -11,6 +11,9 @@ def IsCop {A A' B : Type} [CommRing A] [CommRing A'] [CommRing B] (φ : A →+* 
   ∀ (R : Type) [CommRing R] (g : ι → (A' →+* R)) (c : A →+* R), (∀ i, (g i).comp φ = c) →
     ∃! h : B →+* R, (∀ i, h.comp (l i) = g i) ∧ h.comp χ = c
 
+/- English proof (translation)
+Rewrite using `[← Ideal.map_le_iff_le_comap, Ideal.map_map, hf]`.
+-/
 theorem le_l {A A' B : Type} [CommRing A] [CommRing A'] [CommRing B] (φ : A →+* A') (χ : A →+* B)
     (f : A' →+* B) (hf : f.comp φ = χ) (I : Ideal A) : I.map φ ≤ (I.map χ).comap f := by
   rw [← Ideal.map_le_iff_le_comap, Ideal.map_map, hf]
@@ -39,6 +42,9 @@ def QuotCop : Prop := ∀ (A A' B : Type) [CommRing A] [CommRing A'] [CommRing B
   (l : ι → (A' →+* B)) (hl : ∀ i, (l i).comp φ = χ) (I : Ideal A), IsCop φ χ l →
     IsCop (qm φ I) (qm χ I) (fun i => lq φ χ (l i) (hl i) I)
 
+/- English proof (translation)
+Apply `Ideal.Quotient.ringHom_ext` to reduce the goal to its premises. Use extensionality with `x`. Simplify using `[qm, lq, ← hl i]`.
+-/
 theorem lq_hl {A A' B : Type} [CommRing A] [CommRing A'] [CommRing B] (φ : A →+* A') (χ : A →+* B) {ι : Type}
   (l : ι → (A' →+* B)) (hl : ∀ i, (l i).comp φ = χ) (I : Ideal A) (i : ι) :
     (lq φ χ (l i) (hl i) I).comp (qm φ I) = qm χ I := by
@@ -46,6 +52,9 @@ theorem lq_hl {A A' B : Type} [CommRing A] [CommRing A'] [CommRing B] (φ : A �
   ext x
   simp [qm, lq, ← hl i]
 
+/- English proof (translation)
+Rewrite using `[← yoneda.map_comp, ← yoneda.map_comp, ← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp, h]`.
+-/
 theorem ysq {R S S' T : Type} [CommRing R] [CommRing S] [CommRing S'] [CommRing T] (f : R →+* S) (g : S →+* T)
     (f' : R →+* S') (g' : S' →+* T) (h : g.comp f = g'.comp f') :
     yoneda.map (Spec.map (CommRingCat.ofHom g)) ≫ yoneda.map (Spec.map (CommRingCat.ofHom f)) =
@@ -53,6 +62,17 @@ theorem ysq {R S S' T : Type} [CommRing R] [CommRing S] [CommRing S'] [CommRing 
   rw [← yoneda.map_comp, ← yoneda.map_comp, ← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp,
     ← CommRingCat.ofHom_comp, h]
 
+/- English proof (translation)
+Introduce `A A' _ _ φ I p`. Take `⟨B, _, χ, l, hl, hc, hcop⟩` from `hT A A' φ (p.unop.len)`. Use `⟨B, inferInstance, χ, _, l, hl, hc, ?_⟩` and prove the remaining obligations. Take `⟨L⟩` from `hS A A' B φ χ _ l hl hcop`. Take `⟨Lr⟩` from `hS _ _ _ (qm φ I) (qm χ I) _ _ (lq_hl φ χ l hl I) (hQ A A' B φ χ l hl I hcop)`.
+
+Set `e : (cech (Spec.map (CommRingCat.ofHom φ))).obj p ≅ yoneda.obj (Spec (CommRingCat.of B))` to `(limit.isLimit _).conePointUniqueUpToIso L`. Set `er : (cech (Spec.map (CommRingCat.ofHom (qm φ I)))).obj p ≅ yoneda.obj (Spec (CommRingCat.of (B ⧸ I.map χ)))` to `(limit.isLimit _).conePointUniqueUpToIso Lr`. Use `⟨Arrow.isoMk er e ?_⟩` and prove the remaining obligations. Simplify using `only [Arrow.mk_hom]`. Apply `L.hom_ext` to reduce the goal to its premises.
+
+Introduce and unpack `(_|i)`. Establish `h1 : er.hom ≫ yoneda.map (Spec.map (CommRingCat.ofHom (qm χ I))) = (WidePullback.base _ : (cech _).obj p ⟶ _)` using `(limit.isLimit _).conePointUniqueUpToIso_hom_comp Lr none`. Establish `h2 : e.hom ≫ yoneda.map (Spec.map (CommRingCat.ofHom χ)) = (WidePullback.base _ : (cech _).obj p ⟶ _)` using `(limit.isLimit _).conePointUniqueUpToIso_hom_comp L none`. Express the relevant statement in the definitionally equal form `(er.hom ≫ _) ≫ yoneda.map (Spec.map (CommRingCat.ofHom χ)) = ((psi φ I).app p ≫ e.hom) ≫ yoneda.map (Spec.map (CommRingCat.ofHom χ))`. Rewrite using `[Category.assoc, Category.assoc, h2, ysq χ (Ideal.Quotient.mk (I.map χ)) (Ideal.Quotient.mk I) (qm χ I) (qm_comp χ I).symm, ← Category.assoc, h1]`.
+
+Simplify using `only [psi, Arrow.mapCechNerve_app, sqA, Arrow.homMk_right]`. Use `erw [WidePullback.lift_base]`. Apply the tactic sequence `all_goals rfl`. Establish `h1 : er.hom ≫ yoneda.map (Spec.map (CommRingCat.ofHom (lq φ χ (l i) (hl i) I))) = (WidePullback.π _ i : (cech _).obj p ⟶ _)` using `(limit.isLimit _).conePointUniqueUpToIso_hom_comp Lr (some i)`. Establish `h2 : e.hom ≫ yoneda.map (Spec.map (CommRingCat.ofHom (l i))) = (WidePullback.π _ i : (cech _).obj p ⟶ _)` using `(limit.isLimit _).conePointUniqueUpToIso_hom_comp L (some i)`.
+
+Express the relevant statement in the definitionally equal form `(er.hom ≫ _) ≫ yoneda.map (Spec.map (CommRingCat.ofHom (l i))) = ((psi φ I).app p ≫ e.hom) ≫ yoneda.map (Spec.map (CommRingCat.ofHom (l i)))`. Rewrite using `[Category.assoc, Category.assoc, h2, ysq (l i) (Ideal.Quotient.mk (I.map χ)) (Ideal.Quotient.mk (I.map φ)) (lq φ χ (l i) (hl i) I) (Ideal.quotientMap_comp_mk _).symm, ← Category.assoc, h1]`. Simplify using `only [psi, Arrow.mapCechNerve_app, sqA, Arrow.homMk_left]`. Use `erw [WidePullback.lift_π]`. Apply the tactic sequence `all_goals rfl`.
+-/
 theorem LevelsGen_of (hT : TensCop) (hQ : QuotCop) (hS : SpecLim) : LevelsGen := by
   intro A A' _ _ φ I p
   obtain ⟨B, _, χ, l, hl, hc, hcop⟩ := hT A A' φ (p.unop.len)

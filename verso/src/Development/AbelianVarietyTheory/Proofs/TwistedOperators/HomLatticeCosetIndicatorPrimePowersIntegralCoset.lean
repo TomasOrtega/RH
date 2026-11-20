@@ -21,6 +21,11 @@ namespace GlobalTheory.CosetIndCompare
 
 variable {D : D7}
 
+/- English proof (translation)
+Establish `: (a • Y).map (toEAf D) = toEAf D a • Y.map (toEAf D)`. Use extensionality with `i j`. Simplify using `[Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, map_mul]`. Rewrite using `[this]`. Use extensionality with `i j`.
+
+Simplify using `only [Matrix.mul_apply, Matrix.smul_apply, smul_eq_mul, Finset.mul_sum, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => by ring`.
+-/
 theorem frame_smul {m n : ℕ} (β : GL (Fin n) (EAf D)) (β' : GL (Fin m) (EAf D)) (a : AE D) (Y : Mx D m n) :
     HMul.hMul (HMul.hMul (β'⁻¹).val ((a • Y).map (toEAf D))) β.val =
       toEAf D a • HMul.hMul (HMul.hMul (β'⁻¹).val (Y.map (toEAf D))) β.val := by
@@ -31,16 +36,25 @@ theorem frame_smul {m n : ℕ} (β : GL (Fin n) (EAf D)) (β' : GL (Fin m) (EAf 
   simp only [Matrix.mul_apply, Matrix.smul_apply, smul_eq_mul, Finset.mul_sum, Finset.sum_mul]
   exact Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => by ring
 
+/- English proof (translation)
+Rewrite using `[Matrix.map_sub _ (map_sub (toEAf D)), Matrix.mul_sub, Matrix.sub_mul]`.
+-/
 theorem frame_sub {m n : ℕ} (β : GL (Fin n) (EAf D)) (β' : GL (Fin m) (EAf D)) (Y Z : Mx D m n) :
     HMul.hMul (HMul.hMul (β'⁻¹).val ((Y - Z).map (toEAf D))) β.val =
       HMul.hMul (HMul.hMul (β'⁻¹).val (Y.map (toEAf D))) β.val -
         HMul.hMul (HMul.hMul (β'⁻¹).val (Z.map (toEAf D))) β.val := by
   rw [Matrix.map_sub _ (map_sub (toEAf D)), Matrix.mul_sub, Matrix.sub_mul]
 
+/- English proof (translation)
+Use extensionality with `i j`. Both sides reduce to the same expression.
+-/
 theorem frame_incA {m n : ℕ} (y : Matrix (Fin m) (Fin n) D.host.E) :
     (y.map (incA D)).map (toEAf D) = y.map (eToEAf D) := by
   ext i j; rfl
 
+/- English proof (translation)
+Establish `h1 : (y : Matrix (Fin m) (Fin n) D.host.E) ∈ I • GlobalTheory.ChiGrid.homLat Λ Λ'`. Use `Submodule.mem_map_of_mem (f := (GlobalTheory.ChiGrid.homLat Λ Λ').subtype) hy` as an intermediate fact. Rewrite `this` using `[Submodule.map_smul'', Submodule.map_subtype_top]`. Then use the resulting hypothesis. Establish `h2 : (y : Matrix (Fin m) (Fin n) D.host.E).map (eToEAf D) ∈ GlobalTheory.FunObj.HatFrame.genGrp D.host.F (I • GlobalTheory.ChiGrid.homLat Λ Λ')` using `AddSubgroup.subset_closure ⟨1, one_mem _, _, h1, by ext a b; rfl⟩`. Conclude with `GlobalTheory.FunObj.HatFrame.genGrp_le_frGrp hβ hβ' (H := GlobalTheory.ChiGrid.homLat Λ Λ') (fun _ hx => hx) I h2 i j`.
+-/
 theorem frame_mem_idS {m n : ℕ} {Λ : Submodule (𝓞 D.host.E) (Fin n → D.host.E)}
     {Λ' : Submodule (𝓞 D.host.E) (Fin m → D.host.E)} {β : GL (Fin n) (EAf D)} {β' : GL (Fin m) (EAf D)}
     (hβ : Formalism.L2.DIV.IsFrame β Λ) (hβ' : Formalism.L2.DIV.IsFrame β' Λ') (I : Ideal (𝓞 D.host.E))
@@ -55,6 +69,9 @@ theorem frame_mem_idS {m n : ℕ} {Λ : Submodule (𝓞 D.host.E) (Fin n → D.h
     AddSubgroup.subset_closure ⟨1, one_mem _, _, h1, by ext a b; rfl⟩
   exact GlobalTheory.FunObj.HatFrame.genGrp_le_frGrp hβ hβ' (H := GlobalTheory.ChiGrid.homLat Λ Λ') (fun _ hx => hx) I h2 i j
 
+/- English proof (translation)
+Rewrite using `[frame_smul, frame_incA]`.
+-/
 theorem frame_smul_incA {m n : ℕ} (β : GL (Fin n) (EAf D)) (β' : GL (Fin m) (EAf D)) (a : AE D)
     (y : Matrix (Fin m) (Fin n) D.host.E) :
     HMul.hMul (HMul.hMul (β'⁻¹).val ((a • y.map (incA D)).map (toEAf D))) β.val =
@@ -65,6 +82,11 @@ section Gen
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, hq⟩`. Conclude with `⟨h, _, Ideal.Quotient.eq.1 hq, rfl⟩`. Introduce and unpack `⟨h, t, ht, et⟩`. Use `⟨h, Ideal.Quotient.eq.2 ?_⟩` and prove the remaining obligations.
+
+Establish `: (⟨y, h⟩ : Formalism.L2.Herm.intAf F E) - Formalism.L2.DIV.oToS F E r = t` using `Subtype.ext et.symm`. Rewrite using `[this]`. Conclude with `ht`.
+-/
 theorem quot_iff (I : Ideal (𝓞 E)) (y : E ⊗[F] Formalism.L2.Herm.Af F) (r : 𝓞 E) :
     (∃ h : y ∈ Formalism.L2.Herm.intAf F E, Ideal.Quotient.mk (Formalism.L2.DIV.idS F I) ⟨y, h⟩ =
       Ideal.Quotient.mk (Formalism.L2.DIV.idS F I) (Formalism.L2.DIV.oToS F E r)) ↔
@@ -77,6 +99,11 @@ theorem quot_iff (I : Ideal (𝓞 E)) (y : E ⊗[F] Formalism.L2.Herm.Af F) (r :
     have : (⟨y, h⟩ : Formalism.L2.Herm.intAf F E) - Formalism.L2.DIV.oToS F E r = t := Subtype.ext et.symm
     rw [this]; exact ht
 
+/- English proof (translation)
+Take `⟨t1, h1, e1⟩` from `hq`. Take `⟨t2, h2, e2⟩` from `hv`. Take `⟨t3, h3, e3⟩` from `hs`. Use `⟨t1 - t2 + t3 * ⟨a, ha⟩, add_mem (sub_mem h1 h2) (Ideal.mul_mem_right _ _ h3), ?_⟩` and prove the remaining obligations. Simplify using `only [Subring.coe_add, Subring.coe_mul, AddSubgroupClass.coe_sub, e1, e2, e3]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem step_fwd {I : Ideal (𝓞 E)} {y N a s : E ⊗[F] Formalism.L2.Herm.Af F} (ha : a ∈ Formalism.L2.Herm.intAf F E)
     (hq : ∃ t ∈ Formalism.L2.DIV.idS F I, (t : E ⊗[F] Formalism.L2.Herm.Af F) = y - N)
     (hv : ∃ t ∈ Formalism.L2.DIV.idS F I, (t : E ⊗[F] Formalism.L2.Herm.Af F) = a - N)
@@ -89,6 +116,11 @@ theorem step_fwd {I : Ideal (𝓞 E)} {y N a s : E ⊗[F] Formalism.L2.Herm.Af F
   simp only [Subring.coe_add, Subring.coe_mul, AddSubgroupClass.coe_sub, e1, e2, e3]
   ring
 
+/- English proof (translation)
+Take `⟨t1, h1, e1⟩` from `ht`. Take `⟨t2, h2, e2⟩` from `hu`. Take `⟨t3, h3, e3⟩` from `hv`. Take `⟨t4, h4, e4⟩` from `hs`. Establish `hy : y = ((t1 + ⟨s, hsi⟩ * t2 + ⟨s, hsi⟩ * ⟨a, ha⟩ : Formalism.L2.Herm.intAf F E) : E ⊗[F] Formalism.L2.Herm.Af F)`.
+
+Simplify using `only [Subring.coe_add, Subring.coe_mul, e1, e2]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨hy ▸ Subtype.property _, t1 + ⟨s, hsi⟩ * t2 - t4 * ⟨a, ha⟩ + t3, add_mem (sub_mem (add_mem h1 (Ideal.mul_mem_left _ _ h2)) (Ideal.mul_mem_right _ _ h4)) h3, ?_⟩` and prove the remaining obligations. Simplify using `only [Subring.coe_add, Subring.coe_mul, AddSubgroupClass.coe_sub, e1, e2, e3, e4]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem step_bwd {I : Ideal (𝓞 E)} {y N a a' s : E ⊗[F] Formalism.L2.Herm.Af F} (ha : a ∈ Formalism.L2.Herm.intAf F E)
     (hN : N ∈ Formalism.L2.Herm.intAf F E) (hsi : s ∈ Formalism.L2.Herm.intAf F E)
     (ht : ∃ t ∈ Formalism.L2.DIV.idS F I, (t : E ⊗[F] Formalism.L2.Herm.Af F) = y - s * a')
@@ -110,6 +142,9 @@ theorem step_bwd {I : Ideal (𝓞 E)} {y N a a' s : E ⊗[F] Formalism.L2.Herm.A
 
 end Gen
 
+/- English proof (translation)
+Unfold `Formalism.L2.DIV.cmpS`. Conclude with `Ideal.quotientMap_mk`.
+-/
 theorem cmpS_mk (I : Ideal (𝓞 D.host.E)) (r : 𝓞 D.host.E) :
     Formalism.L2.DIV.cmpS D.host.F I (Ideal.Quotient.mk I r) =
       Ideal.Quotient.mk (Formalism.L2.DIV.idS D.host.F I) (Formalism.L2.DIV.oToS D.host.F D.host.E r) := by
@@ -118,6 +153,21 @@ theorem cmpS_mk (I : Ideal (𝓞 D.host.E)) (r : 𝓞 D.host.E) :
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Establish `hAint : ∀ i j, (HMul.hMul (HMul.hMul (T.β⁻¹).val (x₀.map (eToEAf D))) S.β.val : Matrix (Fin T.V.rank) (Fin S.V.rank) (EAf D)) i j ∈ Formalism.L2.Herm.intAf D.host.F D.host.E` using `GlobalTheory.FunObj.HatFrame.frame_int hS hT hx₀`. Establish `hfr : ∀ y : Matrix (Fin T.V.rank) (Fin S.V.rank) D.host.E, HMul.hMul (HMul.hMul (T.β⁻¹).val ((x - e • y.map (incA D)).map (toEAf D))) S.β.val = frMapO S.V T.V S.β T.β x - toEAf D e • HMul.hMul (HMul.hMul (T.β⁻¹).val (y.map (eToEAf D))) S.β.val`. Introduce `y`. Rewrite using `[frame_sub, frame_smul_incA]`. Both sides reduce to the same expression.
+
+Express the relevant statement in the definitionally equal form `_ ↔ IsHalf e x ∧ ∃ x₀' : GlobalTheory.ChiGrid.homLat S.Λ T.Λ, GlobalTheory.ChiGrid.Cos.mk I x₀' = GlobalTheory.ChiGrid.Cos.mk I ⟨x₀, hx₀⟩ ∧ x - e • (x₀' : Matrix (Fin T.V.rank) (Fin S.V.rank) D.host.E).map (incA D) ∈ GlobalTheory.ChiGrid.hatMx (I • GlobalTheory.ChiGrid.homLat S.Λ …`. Use `and_congr_right fun hx => ?_` and prove the remaining obligations. Establish `hx' : ∀ i j, e * x i j = x i j` using `hx`. Establish `hinf : ∀ (y : Matrix (Fin T.V.rank) (Fin S.V.rank) D.host.E) i j, infPart D ((x - e • y.map (incA D)) i j) = 0`. Introduce `y i j`.
+
+Establish `h1 : (x - e • y.map (incA D)) i j = e * (x i j - y.map (incA D) i j)`. Rewrite using `[Matrix.sub_apply, Matrix.smul_apply, smul_eq_mul, mul_sub, hx' i j]`. Rewrite using `[h1, map_mul, he0, zero_mul]`. Prove the components needed by the constructor for the conclusion. Introduce `hc`.
+
+Unfold `InCosetOf at hc`. Use `⟨⟨x₀, hx₀⟩, rfl, ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.FunObj.HatFrame.mem_hatMx_homLat_iff D S.Λ T.Λ S.β T.β hS hT I]`. Use `⟨hinf x₀, fun i j => ?_⟩` and prove the remaining obligations. Rewrite using `[hfr, Matrix.sub_apply, Matrix.smul_apply, smul_eq_mul]`.
+
+Establish `hq` using `((quot_iff I _ (r i j)).1 ((hc i j).imp fun _ h => h.trans (hcos i j))).2`. Conclude with `step_fwd (hAint i j) hq (hN i j) h1s`. Introduce and unpack `⟨y, hyc, hmem⟩`. Rewrite `hmem` using `[GlobalTheory.FunObj.HatFrame.mem_hatMx_homLat_iff D S.Λ T.Λ S.β T.β hS hT I]`. Establish `hdiff` using `(Submodule.Quotient.eq _).1 hyc`.
+
+Unfold `InCosetOf`. Introduce `i j`. Establish `et` using `hmem.2 i j`. Rewrite `et` using `[hfr, Matrix.sub_apply, Matrix.smul_apply, smul_eq_mul]`. Establish `hu` using `frame_mem_idS hS hT I hdiff i j`.
+
+Rewrite `hu` using `[Submodule.coe_sub, Matrix.map_sub _ (map_sub (eToEAf D)), Matrix.mul_sub, Matrix.sub_mul, Matrix.sub_apply]`. Establish `h` using `step_bwd (hAint i j) (Formalism.L2.DIV.oToS D.host.F D.host.E (r i j)).2 he_int et hu (hN i j) h1s`. Conclude with `((quot_iff I _ (r i j)).2 h).imp fun _ h => h.trans (hcos i j).symm`.
+-/
 theorem mem_cosSet_iff {S T : GlobalTheory.Grid.Node D} {e : AE D} (hS : Formalism.L2.DIV.IsFrame S.β S.Λ)
     (hT : Formalism.L2.DIV.IsFrame T.β T.Λ) (he0 : infPart D e = 0) {I : Ideal (𝓞 D.host.E)}
     (he_int : toEAf D e ∈ Formalism.L2.Herm.intAf D.host.F D.host.E)
@@ -171,6 +221,13 @@ theorem mem_cosSet_iff {S T : GlobalTheory.Grid.Node D} {e : AE D} (hS : Formali
     have h := step_bwd (hAint i j) (Formalism.L2.DIV.oToS D.host.F D.host.E (r i j)).2 he_int et hu (hN i j) h1s
     exact ((quot_iff I _ (r i j)).2 h).imp fun _ h => h.trans (hcos i j).symm
 
+/- English proof (translation)
+Use `choose r hr using fun i j => Ideal.Quotient.mk_surjective (I := I) (c i j)`. Take `⟨x₀, hx₀, hN⟩` from `GlobalTheory.T.exists_latticeHom_approx_integralMatrix_mod S.Λ T.Λ S.β T.β hS hT I hI (fun i j => Formalism.L2.DIV.oToS D.host.F D.host.E (r i j))`. Establish `hcos : ∀ i j, Formalism.L2.DIV.cmpS D.host.F I (c i j) = Ideal.Quotient.mk (Formalism.L2.DIV.idS D.host.F I) (Formalism.L2.DIV.oToS D.host.F D.host.E (r i j))` using `fun i j => (congrArg (Formalism.L2.DIV.cmpS D.host.F I) (hr i j)).symm.trans (cmpS_mk I (r i j))`. Use `⟨GlobalTheory.ChiGrid.Cos.mk I ⟨x₀, hx₀⟩, funext fun x => ?_⟩` and prove the remaining obligations. Establish `key` using `mem_cosSet_iff hS hT he0 he_int h1s c r hcos x₀ hx₀ hN x`.
+
+Unfold `GlobalTheory.Grid.cosetInd GlobalTheory.ChiGrid.cosInd`. Rewrite using `[Set.indicator_apply]`. Distinguish the cases in `h : IsHalf e x ∧ InCosetOf S T I c x`. Rewrite using `[if_pos h, if_pos (key.1 h)]`. Both sides reduce to the same expression.
+
+Rewrite using `[if_neg h, if_neg fun h' => h (key.2 h')]`.
+-/
 theorem cosetInd_eq_cosInd {S T : GlobalTheory.Grid.Node D} {e : AE D} (hS : Formalism.L2.DIV.IsFrame S.β S.Λ)
     (hT : Formalism.L2.DIV.IsFrame T.β T.Λ) (he0 : infPart D e = 0) {I : Ideal (𝓞 D.host.E)} (hI : I ≠ ⊥)
     (he_int : toEAf D e ∈ Formalism.L2.Herm.intAf D.host.F D.host.E)
@@ -191,6 +248,9 @@ theorem cosetInd_eq_cosInd {S T : GlobalTheory.Grid.Node D} {e : AE D} (hS : For
   · rw [if_pos h, if_pos (key.1 h)]; rfl
   · rw [if_neg h, if_neg fun h' => h (key.2 h')]
 
+/- English proof (translation)
+Introduce `D S T e P d hS hT he c`. Take `⟨he0, he_int, h1s⟩` from `GlobalTheory.T.idempotentSum_infPart_integral_one_sub_mem e P d he`. Use `cosetInd_eq_cosInd hS hT he0 ?_ he_int h1s c` and prove the remaining obligations. Rewrite using `[← Ideal.zero_eq_bot]`. Conclude with `Finset.prod_ne_zero_iff.2 fun w _ => pow_ne_zero _ (by rw [Ideal.zero_eq_bot]; exact w.ne_bot)`.
+-/
 theorem coset_eq_cos : ∀ {D : D7} (S T : GlobalTheory.Grid.Node D) (e : AE D) (P : Finset (Formalism.L2.DIV.Pl D.host.E)) (d : Formalism.L2.DIV.Pl D.host.E → ℕ), Formalism.L2.DIV.IsFrame S.β S.Λ → Formalism.L2.DIV.IsFrame T.β T.Λ → IsIdemSum e P → ∀ c : GlobalTheory.Grid.Coset S T (∏ w ∈ P, w.asIdeal ^ d w), ∃ κ : GlobalTheory.ChiGrid.Cos S.Λ T.Λ (∏ w ∈ P, w.asIdeal ^ d w), GlobalTheory.Grid.cosetInd S T e (∏ w ∈ P, w.asIdeal ^ d w) c = GlobalTheory.ChiGrid.cosInd e κ := by
   intro D S T e P d hS hT he c
   obtain ⟨he0, he_int, h1s⟩ := GlobalTheory.T.idempotentSum_infPart_integral_one_sub_mem e P d he

@@ -17,6 +17,15 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {T f : ℕ} {bad : Set (HeightOneSpectrum (𝓞 F))}
   {ι : Type} [Fintype ι]
 
+/- English proof (translation)
+Establish `hU : ∀ κ : S.U, κ.1 ∈ UPts σ J (FiniteAdeleRing (𝓞 F) F)` using `fun κ => ((S.U_eq κ.1).1 κ.2).1`. Use `set k : UPts σ J (FiniteAdeleRing (𝓞 F) F) := ⟨κ1.1 * κ2.1⁻¹, (UPts _ _ _).mul_mem (hU κ1) ((UPts _ _ _).inv_mem (hU κ2))⟩`. Use `set h : UPts σ J (FiniteAdeleRing (𝓞 F) F) := yc c2 * k⁻¹ * (yc c1)⁻¹`. Establish `hh : h.1 = bc (inclE (F` using `F) (FiniteAdeleRing (𝓞 F) F)) (γ2⁻¹ * γ1) := by`. Simplify using `only [h, k, Subgroup.coe_mul, Subgroup.coe_inv, map_mul, map_inv]`.
+
+Establish `e' : (yc c2).1 = (bc (inclE (F` using `F) (FiniteAdeleRing (𝓞 F) F)) γ2)⁻¹ * (bc (inclE (F := F) (FiniteAdeleRing (𝓞 F) F)) γ1 * (yc c1).1 * κ1.1) * κ2.1⁻¹ := by`. Rewrite using `[e]`. Use `group`. Rewrite using `[e']`. Use `group`.
+
+Apply `hinj` to reduce the goal to its premises. Use `show (Quotient.mk'' (yc c1) : Cls S) = Quotient.mk'' (yc c2)`. Use `(DoubleCoset.eq _ _ (yc c1) (yc c2)).2 ⟨h, ?_, k, ?_, ?_⟩` and prove the remaining obligations. Conclude with `Subgroup.mem_subgroupOf.2 (Subgroup.mem_map.2 ⟨γ2⁻¹ * γ1, (UJ _ _).mul_mem ((UJ _ _).inv_mem h2) h1, hh.symm⟩)`. Conclude with `Subgroup.mem_subgroupOf.2 (S.U.mul_mem κ1.2 (S.U.inv_mem κ2.2))`.
+
+Simplify using `only [h]`. Use `group`.
+-/
 theorem cls_eq_of_dec (S : StepLevel F E σ J T f bad) {C : Type} (yc : C → UPts σ J (FiniteAdeleRing (𝓞 F) F))
     (hinj : Function.Injective (fun c => (Quotient.mk'' (yc c) : Cls S)))
     (c1 c2 : C) (γ1 γ2 : GL (Fin n) E) (h1 : γ1 ∈ UJ (σ : E →+* E) J) (h2 : γ2 ∈ UJ (σ : E →+* E) J)
@@ -39,6 +48,33 @@ theorem cls_eq_of_dec (S : StepLevel F E σ J T f bad) {C : Type} (yc : C → UP
   · exact Subgroup.mem_subgroupOf.2 (S.U.mul_mem κ1.2 (S.U.inv_mem κ2.2))
   · simp only [h]; group
 
+/- English proof (translation)
+Establish `hdec : ∀ x : UPts σ J (FiniteAdeleRing (𝓞 F) F), ∃ c, ∃ γ : GL (Fin n) E, ∃ _ : γ ∈ UJ (σ : E →+* E) J, ∃ κ : S.U, x.1 = bc (inclE (F` using `F) (FiniteAdeleRing (𝓞 F) F)) γ * (yc c).1 * κ.1 := by`. Introduce `x`. Take `⟨c, hcx⟩` from `hbij.2 (Quotient.mk'' x)`. Take `⟨hh, hhH, κ, hκK, e⟩` from `(DoubleCoset.eq _ _ (yc c) x).1 hcx`. Take `⟨g, hgU, hge⟩` from `Subgroup.mem_map.1 (Subgroup.mem_subgroupOf.1 hhH)`.
+
+Use `⟨c, g, hgU, ⟨κ.1, hκK⟩, ?_⟩` and prove the remaining obligations. Use `congrArg Subtype.val e` as an intermediate fact. Simplify using `only [Subgroup.coe_mul] at this`. Rewrite using `[this, hge]`. Use `choose cx γx hγx κx hx using hdec`.
+
+Establish `hcl` using `cls_eq_of_dec S yc hbij.1`. Establish `hmulTr : ∀ (a b : GL (Fin n) E) (y : Frames (gramC J emb)) τ, atInf emb ((a * b : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) τ * y.1 τ = atInf emb (a : Matrix (Fin n) (Fin n) E) τ * (atInf emb (b : Matrix (Fin n) (Fin n) E) τ * y.1 τ)`. Introduce `a b y τ`. Simplify using `only [atInf, Units.val_mul, Matrix.map_mul, Matrix.mul_assoc]`. Use `Submodule.mem_map.2 ⟨fun x y => (S.chi (κx x) : ℂ) * φ (cx x) (frameTranslate emb hc (γx x)⁻¹ ((UJ _ _).inv_mem (hγx x)) y), Submodule.mem_inf.2 ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations.
+
+Introduce `γ' hγ' x x' κ' hx' y y' hy`. Establish `e1 : bc (inclE (F` using `F) (FiniteAdeleRing (𝓞 F) F)) (γx x') * (yc (cx x')).1 * (κx x').1 = bc (inclE (F := F) (FiniteAdeleRing (𝓞 F) F)) (γ' * γx x) * (yc (cx x)).1 * (κx x * κ').1 := by`. Rewrite using `[← hx x', hx', hx x, map_mul, Subgroup.coe_mul]`. Use `group`. Establish `hc2 : cx x' = cx x` using `hcl _ _ _ _ (hγx x') ((UJ _ _).mul_mem hγ' (hγx x)) _ _ e1`.
+
+Use `set c := cx x with hcdef`. Use `set δ : GL (Fin n) E := (γx x')⁻¹ * γ' * γx x with hδ`. Establish `hδU : δ ∈ UJ (σ : E →+* E) J` using `(UJ _ _).mul_mem ((UJ _ _).mul_mem ((UJ _ _).inv_mem (hγx x')) hγ') (hγx x)`. Use `set κ0 : S.U := κx x * κ' * (κx x')⁻¹ with hκ0`. Establish `hst : bc (inclE (F` using `F) (FiniteAdeleRing (𝓞 F) F)) δ * (yc c).1 * κ0.1 = (yc c).1 := by`.
+
+Establish `e2 : (yc c).1 = (bc (inclE (F` using `F) (FiniteAdeleRing (𝓞 F) F)) (γx x'))⁻¹ * (bc (inclE (F := F) (FiniteAdeleRing (𝓞 F) F)) (γ' * γx x) * (yc c).1 * (κx x * κ').1) * (κx x').1⁻¹ := by`. Rewrite using `[← e1, hc2]`. Use `group`. Use `conv_rhs => rw [e2]`. Simplify using `only [hδ, hκ0, map_mul, map_inv, Subgroup.coe_mul, Subgroup.coe_inv]`.
+
+Use `group`. Establish `hT : IsTr (atInf emb (δ : Matrix (Fin n) (Fin n) E)) (frameTranslate emb hc (γx x)⁻¹ ((UJ _ _).inv_mem (hγx x)) y') (frameTranslate emb hc (γx x')⁻¹ ((UJ _ _).inv_mem (hγx x')) y)`. Introduce `τ`. Use `show atInf emb (((γx x')⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) τ * y.1 τ = atInf emb (δ : Matrix (Fin n) (Fin n) E) τ * (atInf emb (((γx x)⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) τ * y'.1 τ)`. Rewrite using `[hy τ]`.
+
+Simplify using `only [hδ, atInf, Units.val_mul, Matrix.map_mul, Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc ((γx x : Matrix (Fin n) (Fin n) E).map (emb τ)), ← Matrix.map_mul, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.map_one _ (map_zero _) (map_one _), Matrix.one_mul]`. Establish `key` using `hstab c δ hδU κ0 hst _ _ hT`. Use `show (S.chi (κx x') : ℂ) * φ (cx x') (frameTranslate emb hc (γx x')⁻¹ ((UJ _ _).inv_mem (hγx x')) y) = (S.chi κ' : ℂ) * ((S.chi (κx x) : ℂ) * φ (cx x) (frameTranslate emb hc (γx x)⁻¹ ((UJ _ _).inv_mem (hγx x)) y'))`. Rewrite using `[hc2, key]`.
+
+Establish `hk : κ0 * κx x' = κx x * κ'` using `by simp only [hκ0, inv_mul_cancel_right]`. Establish `hch : (S.chi (κx x') : ℂ) * (S.chi κ0 : ℂ) = (S.chi κ' : ℂ) * (S.chi (κx x) : ℂ)`. Rewrite using `[mul_comm (S.chi (κx x') : ℂ), ← Units.val_mul, ← Units.val_mul, ← map_mul, ← map_mul, hk, map_mul, map_mul, mul_comm]`. Rewrite using `[← mul_assoc, hch, mul_assoc]`. Use `Submodule.mem_pi.2 fun x _ => ?_` and prove the remaining obligations.
+
+Conclude with `Submodule.smul_mem _ _ (Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.valuation_class_translate_mem emb hc lam _ _ (hφ (cx x)))`. Use function extensionality and compare the values at `c y`. Establish `e1 : bc (inclE (F` using `F) (FiniteAdeleRing (𝓞 F) F)) (γx (yc c)) * (yc (cx (yc c))).1 * (κx (yc c)).1 = bc (inclE (F := F) (FiniteAdeleRing (𝓞 F) F)) 1 * (yc c).1 * (1 : S.U).1 := by`. Rewrite using `[← hx (yc c), map_one]`. Simplify using the standard rewrite rules.
+
+Establish `hc1 : cx (yc c) = c` using `hcl _ _ _ _ (hγx (yc c)) (UJ _ _).one_mem _ _ e1`. Establish `hst : bc (inclE (F` using `F) (FiniteAdeleRing (𝓞 F) F)) (γx (yc c)) * (yc c).1 * (κx (yc c)).1 = (yc c).1 := by`. Use `e1` as an intermediate fact. Rewrite `this` using `[hc1]`. Rewrite using `[this]`.
+
+Simplify using the standard rewrite rules. Establish `hT : IsTr (atInf emb ((γx (yc c) : GL (Fin n) E) : Matrix (Fin n) (Fin n) E)) (frameTranslate emb hc (γx (yc c))⁻¹ ((UJ _ _).inv_mem (hγx (yc c))) y) y`. Introduce `τ`. Use `show y.1 τ = atInf emb ((γx (yc c) : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) τ * (atInf emb (((γx (yc c))⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) τ * y.1 τ)`. Simplify using `only [atInf]`.
+
+Rewrite using `[← Matrix.mul_assoc, ← Matrix.map_mul, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.map_one _ (map_zero _) (map_one _), Matrix.one_mul]`. Use `show (S.chi (κx (yc c)) : ℂ) * φ (cx (yc c)) (frameTranslate emb hc (γx (yc c))⁻¹ ((UJ _ _).inv_mem (hγx (yc c))) y) = φ c y`. Rewrite using `[hc1, hstab c _ (hγx (yc c)) _ hst _ _ hT]`.
+-/
 theorem fic_of_stab (S : StepLevel F E σ J T f bad) (emb : ι → E →+* ℂ)
     (hc : ∀ τ x, emb τ (σ x) = starRingEnd ℂ (emb τ x)) (lam : ι → DomWeight n) {C : Type}
     (yc : C → UPts σ J (FiniteAdeleRing (𝓞 F) F))
@@ -132,6 +168,13 @@ open Formalism.MainNotions.product_first_zeroth_parts
 
 variable {D : D7} {u : D.what₂.Word} {Ch : ℕ → Type} {chOf : ∀ i, (D.mem u).C.cls i → Ch i}
 
+/- English proof (translation)
+Proceed by induction on `hP using Submodule.span_induction with`. Consider the case `mem p hp`. Take `⟨f, hf, rfl⟩` from `hp`. Establish `e : Formalism.L2.Ker.brTen D u (Formalism.L2.Forms.ten f) = Formalism.MainNotions.product_first_zeroth_parts.ten (fun τ => Formalism.L2.Ker.brOne ℂ (Nm_succ D.R).symm (lamTr D u τ) (sgTr D u τ) (f τ))`. Unfold `Formalism.L2.Ker.brTen`.
+
+Conclude with `Formalism.MainNotions.product_first_zeroth_parts.blk_ten (fun τ => Formalism.L2.Ker.brOne ℂ (Nm_succ D.R).symm (lamTr D u τ) (sgTr D u τ)) f`. Rewrite using `[e]`. Use `Submodule.subset_span ⟨_, fun τ => ?_, rfl⟩` and prove the remaining obligations. Use `(Formalism.L2.Ker.brOne_member D u τ (interlaceTr D u (sg_interlace Tf.valP) τ)).1 (f τ)` as an intermediate fact. Rewrite `this` using `[sgTr, delSq_wSh]`. Then use the resulting hypothesis.
+
+Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`. Consider the case `smul a x _ hx => rw [map_smul]`. Conclude with `Submodule.smul_mem _ a hx`.
+-/
 theorem brTen_memS (Tf : FormsTiedSym D u Ch chOf) {P : MvPolynomial (D.what₂.Tau × Fin (D.R.N D.R.m) × Fin (D.R.N D.R.m)) ℂ}
     (hP : P ∈ Formalism.L2.Forms.CSpan ((D.fm u).lam D.R.m)) : Formalism.L2.Ker.brTen D u P ∈ Formalism.L2.Forms.CSpan (D.fm u).sg := by
   induction hP using Submodule.span_induction with
@@ -149,6 +192,11 @@ theorem brTen_memS (Tf : FormsTiedSym D u Ch chOf) {P : MvPolynomial (D.what₂.
   | add x y _ _ hx hy => rw [map_add]; exact add_mem hx hy
   | smul a x _ hx => rw [map_smul]; exact Submodule.smul_mem _ a hx
 
+/- English proof (translation)
+Take `⟨P, hP, hv⟩` from `val_repS Tf φ hφ c`. Rewrite using `[LowerMapTieSym.pt_eq (lowerMapTieSym_of Tf hL) (bZ_isUnitS Tf) φ c P hP hv]`. Use `⟨_, ?_, rfl⟩` and prove the remaining obligations. Establish `h` using `brTen_memS Tf hP`. Unfold `sgT`.
+
+Rewrite using `[CSpan_shW]`. Conclude with `h`.
+-/
 theorem pt_val (Tf : FormsTiedSym D u Ch chOf) (hL : Formalism.L2.Rows.LowerMapTieS Tf) (φ : Fn D u D.R.m)
     (hφ : φ ∈ (D.fm u).Fi D.R.m) (c : (D.fm u).clsP) :
     ∃ Q ∈ Formalism.L2.Forms.CSpan (sgT u), Tf.valP.eW (Pt D u φ) c = fnOf (gramC (gramP D) (embT D)) (shiftOf (sgT u)) 1 Q := by
@@ -167,6 +215,9 @@ def StabCompS (Tf : FormsTiedSym D u Ch chOf) : Prop :=
       ∀ y y' : FrP D, IsTr (atInf (embT D) (γ : Matrix (Fin (D.R.N D.R.m - 1)) (Fin (D.R.N D.R.m - 1)) D.host.E)) y' y →
         Tf.valP.eW (Pt D u φ) c y = (Tf.clsP.lev.chi κ : ℂ) * Tf.valP.eW (Pt D u φ) c y'
 
+/- English proof (translation)
+Introduce `φ hφ`. Rewrite using `[Tf.valP.ptC]`. Conclude with `fic_of_stab Tf.clsP.lev (embT D) (embT_sig (D := D)) (sgT u) Tf.clsP.y Tf.clsP.y_bij _ (fun c γ hγ κ h y y' hy => hS φ hφ c γ hγ κ h y y' hy) (fun c => by obtain ⟨Q, hQ, e⟩ := pt_val Tf hL φ hφ c; exact Submodule.mem_map.2 ⟨Q, hQ, e.symm⟩)`.
+-/
 theorem forms_of_stab (Tf : FormsTiedSym D u Ch chOf) (hL : Formalism.L2.Rows.LowerMapTieS Tf) (hS : StabCompS Tf) :
     ∀ φ ∈ (D.fm u).Fi D.R.m, Pt D u φ ∈ (D.fm u).ptC := by
   intro φ hφ
@@ -192,6 +243,15 @@ def ExtLevS (Tf : FormsTiedSym D u Ch chOf) : Prop :=
     IsExt D Tf.til.z0 (inclE (F := D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) κ.1.1 G.1.1 ∧
     (((Tf.cls D.R.m le_rfl (Or.inr rfl)).lev.chi G : ℂˣ) : ℂ) = ((Tf.clsP.lev.chi κ : ℂˣ) : ℂ))
 
+/- English proof (translation)
+Rewrite using `[← bZg_eq_mul]`. Take `⟨h1, h2⟩` from `h`. Establish `hm : (iXm D).map (RingHom.id D.host.E) = iXm D` using `by ext i j; rfl`. Rewrite `h1` using `[hm]`. Establish `h2' : Γ *ᵥ Tf.til.z0 = Tf.til.z0` using `h2`.
+
+Use extensionality with `a b`. Simplify using `only [Matrix.mul_apply, bZ, bZg]`. Distinguish the cases in `hb : (b : ℕ) < D.R.N D.R.m - 1`. Simplify using `only [dif_pos hb]`. Use `congrFun (congrFun h1 a) ⟨b, hb⟩` as an intermediate fact.
+
+Simplify using `only [Matrix.mul_apply] at this`. Conclude with `this` after adjusting the coercions. Simplify using `only [dif_neg hb]`. Use `congrFun h2' a` as an intermediate fact. Simplify using `only [Matrix.mulVec, dotProduct] at this`.
+
+Rewrite using `[← this, Finset.sum_div]`. Conclude with `Finset.sum_congr rfl fun k _ => (mul_div_assoc _ _ _).symm`.
+-/
 theorem ext_mul_bZ (Tf : FormsTiedSym D u Ch chOf) (γ : Matrix (Fin (D.R.N D.R.m - 1)) (Fin (D.R.N D.R.m - 1)) D.host.E)
     (Γ : Matrix (Fin (D.R.N D.R.m)) (Fin (D.R.N D.R.m)) D.host.E) (h : IsExt D Tf.til.z0 (RingHom.id D.host.E) γ Γ) :
     Γ * bZ u Tf.til.z0 = bZ u Tf.til.z0 * dgE γ := by
@@ -223,6 +283,21 @@ variable {D : D7} {u : D.what₂.Word} {Ch : ℕ → Type} {chOf : ∀ i, (D.mem
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Take `⟨g, hg, hu⟩` from `til_ext Tf (RingHom.id D.host.E) (γ : Matrix (Fin (D.R.N D.R.m - 1)) (Fin (D.R.N D.R.m - 1)) D.host.E)`. Establish `hγd : IsUnit (γ : Matrix (Fin (D.R.N D.R.m - 1)) (Fin (D.R.N D.R.m - 1)) D.host.E).det` using `(Matrix.isUnit_iff_isUnit_det _).mp γ.isUnit`. Use `⟨((Matrix.isUnit_iff_isUnit_det g).mpr (hu hγd)).unit, ?_, hg⟩` and prove the remaining obligations. Use `show cT (sigD D : D.host.E →+* D.host.E) g * gramN D D.R.m le_rfl * g = gramN D D.R.m le_rfl`. Take `⟨h1, h2⟩` from `hg`.
+
+Establish `hm : (iXm D).map (RingHom.id D.host.E) = iXm D` using `by ext i j; rfl`. Rewrite `h1` using `[hm]`. Establish `hz : g *ᵥ Tf.til.z0 = Tf.til.z0` using `h2`. Take `⟨a, ha⟩` from `Tf.til.lastCoordinateUniformizerVector_spans_orthogonal_line`. Establish `ha0 : a ≠ 0`.
+
+Introduce and unpack `rfl`. Establish `hT : ((D.mem u).A.T : D.host.E) ≠ 0` using `Nat.cast_ne_zero.mpr (D.mem u).A.T_prime.ne_zero`. Establish `h` using `Tf.til.hermitianForm_lastCoordinateUniformizerVector_self`. Rewrite `h` using `[ha, zero_smul]`. Simplify using `[Formalism.UG.hform] at h`.
+
+Conclude with `hT h.symm`. Establish `hzc : g *ᵥ zc D = zc D`. Rewrite `hz` using `[ha, Matrix.mulVec_smul]`. Conclude with `smul_right_injective _ ha0 hz`. Establish `hiX : ∀ x, iXc D x = iXm D *ᵥ x` using `fun x => by simp only [iXm, LinearMap.toMatrix'_mulVec]`.
+
+Establish `hX : ∀ x, g *ᵥ iXc D x = iXc D ((γ : Matrix _ _ D.host.E) *ᵥ x)`. Introduce `x`. Rewrite using `[hiX, hiX, Matrix.mulVec_mulVec, h1, ← Matrix.mulVec_mulVec]`. Establish `hγ' : cT (sigD D : D.host.E →+* D.host.E) (γ : Matrix (Fin (D.R.N D.R.m - 1)) (Fin (D.R.N D.R.m - 1)) D.host.E) * gramP D * (γ : Matrix (Fin (D.R.N D.R.m - 1)) (Fin (D.R.N D.R.m - 1)) D.host.E) = gramP D` using `hγ`. Establish `hγf : ∀ x y, hform (sigD D : D.host.E →+* D.host.E) (gramP D) ((γ : Matrix _ _ D.host.E) *ᵥ x) ((γ : Matrix _ _ D.host.E) *ᵥ y) = hform (sigD D : D.host.E →+* D.host.E) (gramP D) x y`.
+
+Introduce `x y`. Rewrite using `[Formalism.UG.P.hform_mulVec, hγ']`. Establish `hpres : ∀ v w, hform (sigD D : D.host.E →+* D.host.E) (gramN D D.R.m le_rfl) (g *ᵥ v) (g *ᵥ w) = hform (sigD D : D.host.E →+* D.host.E) (gramN D D.R.m le_rfl) v w`. Introduce `v w`. Take `⟨x, s, rfl⟩` from `span_iXc_zc D v`.
+
+Take `⟨x', s', rfl⟩` from `span_iXc_zc D w`. Simplify using `only [Matrix.mulVec_add, Matrix.mulVec_smul, hX, hzc, hform_add_left, hform_add_right, hform_smul_left, hform_smul_right, hform_iXc, hform_iXc_zc, hform_zc_iXc, hγf]`. Use extensionality with `i j`. Rewrite using `[← Formalism.UG.P.hform_single (sigD D : D.host.E →+* D.host.E) (cT (sigD D : D.host.E →+* D.host.E) g * gramN D D.R.m le_rfl * g) i j, ← Formalism.UG.P.hform_mulVec, hpres, Formalism.UG.P.hform_single]`.
+-/
 theorem extU (Tf : FormsTiedSym D u Ch chOf) (γ : GL (Fin (D.R.N D.R.m - 1)) D.host.E)
     (hγ : γ ∈ UJ (sigD D : D.host.E →+* D.host.E) (gramP D)) :
     ∃ Γ : GL (Fin (D.R.N D.R.m)) D.host.E, Γ ∈ UJ (sigD D : D.host.E →+* D.host.E) (gramN D D.R.m le_rfl) ∧
@@ -279,6 +354,15 @@ variable {D : D7} {u : D.what₂.Word} {Ch : ℕ → Type} {chOf : ∀ i, (D.mem
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Take `⟨G, hGE, hGchi⟩` from `hE.2 κ`. Establish `hdet : IsUnit ((Tf.clsP.y c).1.1).det` using `(Matrix.isUnit_iff_isUnit_det _).mp (Tf.clsP.y c).1.isUnit`. Take `⟨g1m, hg1E, hg1u⟩` from `til_ext Tf (inclE (F := D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) (Tf.clsP.y c).1.1`. Take `⟨g1, hg1⟩ : ∃ g1 : GL (Fin (D.R.N D.R.m)) (D.host.E ⊗[D.host.F] FiniteAdeleRing (𝓞 D.host.F) D.host.F), g1.1 = g1m` from `⟨((Matrix.isUnit_iff_isUnit_det g1m).mpr (hg1u hdet)).unit, rfl⟩`. Rewrite `hg1E` using `[← hg1]`.
+
+Establish `e1` using `Tf.tilAd.til_ad c g1 hg1E`. Establish `hE2 : IsExt D Tf.til.z0 (inclE (F` using `D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) (Tf.clsP.y c).1.1 (bc (inclE (F := D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) Γ0 * g1 * G.1).1 := by`. Establish `h` using `isExt_mul (isExt_mul (isExt_map (φ := (inclE (F := D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F))) hΓ0E) hg1E) hGE`. Establish `e : (γ : Matrix _ _ D.host.E).map (inclE (F` using `D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) * (Tf.clsP.y c).1.1 * κ.1.1 = (Tf.clsP.y c).1.1 := congrArg (fun x : GL (Fin (D.R.N D.R.m - 1)) (D.host.E ⊗[D.host.F] FiniteAdeleRing (𝓞 D.host.F) D.host.F) => x.1) hst`. Rewrite `h` using `[e]`.
+
+Conclude with `h`. Establish `e2` using `Tf.tilAd.til_ad c _ hE2`. Use `⟨(Tf.tilAd.ka c)⁻¹ * G * Tf.tilAd.ka c, ?_, ?_⟩` and prove the remaining obligations. Establish `hg1' : g1 = bc (inclE (F` using `D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) (Tf.til.ga c).1 * ((Tf.cls D.R.m le_rfl (Or.inr rfl)).y ((D.fm u).til c)).1 * ((Tf.tilAd.ka c).1)⁻¹ := eq_mul_inv_of_mul_eq e1.symm`. Rewrite `e2` using `[hg1']`.
+
+Simplify using `only [map_mul, map_inv, Subgroup.coe_mul, Subgroup.coe_inv]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← hGchi, map_mul, map_mul, map_inv, mul_comm ((Tf.cls D.R.m le_rfl (Or.inr rfl)).lev.chi (Tf.tilAd.ka c))⁻¹, mul_assoc, inv_mul_cancel, mul_one]`.
+-/
 theorem stab_m (Tf : FormsTiedSym D u Ch chOf) (hE : ExtLevS Tf)
     (c : (D.fm u).clsP) (γ : GL (Fin (D.R.N D.R.m - 1)) D.host.E) (κ : Tf.clsP.lev.U)
     (hst : bc (inclE (F := D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) γ * (Tf.clsP.y c).1 * κ.1 = (Tf.clsP.y c).1)
@@ -315,6 +399,15 @@ theorem stab_m (Tf : FormsTiedSym D u Ch chOf) (hE : ExtLevS Tf)
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Take `⟨κm, hstm, hchi⟩` from `stab_m Tf hE c γ κ hst Γ0 hΓ0E`. Establish `hΓmU : (Tf.til.ga c).1⁻¹ * Γ0 * (Tf.til.ga c).1 ∈ UJ (sigD D : D.host.E →+* D.host.E) (gramN D D.R.m le_rfl)` using `(UJ _ _).mul_mem ((UJ _ _).mul_mem ((UJ _ _).inv_mem (Tf.til.ga c).2) hΓ0U) (Tf.til.ga c).2`. Establish `hF` using `((Tf.val D.R.m le_rfl (Or.inr rfl)).Fi φ).1 hφ`. Take `⟨gA, hgA, hres⟩` from `Submodule.mem_map.1 hF`. Establish `hA` using `(Submodule.mem_inf.1 hgA).1`.
+
+Establish `hval : ∀ Y, gA ((Tf.cls D.R.m le_rfl (Or.inr rfl)).y ((D.fm u).til c)) Y = φ ((D.fm u).til c) ((Tf.val D.R.m le_rfl (Or.inr rfl)).eY.symm Y)` using `fun Y => congrFun (congrFun hres ((D.fm u).til c)) Y`. Establish `hPZ : ∀ Y : Fr D D.R.m le_rfl, fnOf _ (shiftOf (lamT u D.R.m)) (mZ u Tf.til.z0) P Y = ((((Tf.cls D.R.m le_rfl (Or.inr rfl)).lev.chi (Tf.tilAd.ka c))⁻¹ : ℂˣ) : ℂ) * φ ((D.fm u).til c) ((Tf.val D.R.m le_rfl (Or.inr rfl)).eY.symm (Y.tr (atInf (Formalism.L2.Forms.embT D) (((Tf.til.ga …`. Introduce `Y`. Establish `h1` using `hv ((Tf.val D.R.m le_rfl (Or.inr rfl)).eY.symm Y)`. Rewrite `h1` using `[Equiv.apply_symm_apply]`.
+
+Rewrite using `[← h1]`. Use `Tf.evz φ c _ _ (fun τ => ?_)` and prove the remaining obligations. Simplify using `only [Equiv.apply_symm_apply]`. Use `show Y.1 τ = atInf (Formalism.L2.Forms.embT D) ((Tf.til.ga c).1 : Matrix _ _ D.host.E) τ * (atInf (Formalism.L2.Forms.embT D) (((Tf.til.ga c).1⁻¹ : GL (Fin (D.R.N D.R.m)) D.host.E) : Matrix _ _ D.host.E) τ * Y.1 τ)`. Rewrite using `[← Matrix.mul_assoc, atInf_mul_inv, Matrix.one_mul]`.
+
+Rewrite using `[hPZ, hPZ, ← hval, ← hval, hA _ hΓmU ((Tf.cls D.R.m le_rfl (Or.inr rfl)).y ((D.fm u).til c)) ((Tf.cls D.R.m le_rfl (Or.inr rfl)).y ((D.fm u).til c)) κm hstm, hchi]`. Expand and normalize the polynomial expressions, which then agree. Introduce `τ show atInf (Formalism.L2.Forms.embT D) (((Tf.til.ga c).1⁻¹ : GL (Fin (D.R.N D.R.m)) D.host.E) : Matrix _ _ D.host.E) τ * (atInf (Formalism.L2.Forms.embT D) (Γ0 : Matrix _ _ D.host.E) τ * Z.1 τ) = atInf (Formalism.L2.Forms.embT D) (((Tf.til.ga c).1⁻¹ * Γ0 * (Tf.til.ga c).1 : GL …`. Simplify using `only [atInf, Units.val_mul, Matrix.map_mul, Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (((Tf.til.ga c).1 : Matrix (Fin (D.R.N D.R.m)) (Fin (D.R.N D.R.m)) D.host.E).map (Formalism.L2.Forms.embT D τ)), ← Matrix.map_mul, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.map_one _ (map_zero _) (map_one _), Matrix.one_mul]`.
+-/
 theorem val_inv (Tf : FormsTiedSym D u Ch chOf) (hE : ExtLevS Tf) (φ : Fn D u D.R.m) (hφ : φ ∈ (D.fm u).Fi D.R.m)
     (c : (D.fm u).clsP) (γ : GL (Fin (D.R.N D.R.m - 1)) D.host.E) (κ : Tf.clsP.lev.U)
     (hst : bc (inclE (F := D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) γ * (Tf.clsP.y c).1 * κ.1 = (Tf.clsP.y c).1)
@@ -370,6 +463,27 @@ variable {D : D7} {u : D.what₂.Word} {Ch : ℕ → Type} {chOf : ∀ i, (D.mem
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Introduce `φ hφ c γ hγ κ hst y y' hy`. Take `⟨Γ0, hΓ0U, hΓ0E⟩` from `hE.1 γ hγ`. Take `⟨P, hP, hv⟩` from `val_repS Tf φ hφ c`. Rewrite using `[LowerMapTieSym.pt_eq (lowerMapTieSym_of Tf hL) (bZ_isUnitS Tf) φ c P hP hv]`. Establish `hbZ` using `bZ_isUnitS Tf`.
+
+Establish `hγu : IsUnit (γ : Matrix (Fin (D.R.N D.R.m - 1)) (Fin (D.R.N D.R.m - 1)) D.host.E).det` using `(Matrix.isUnit_iff_isUnit_det _).mp γ.isUnit`. Establish `hdg : dgE (γ : Matrix _ _ D.host.E) * (bZ u Tf.til.z0)⁻¹ = (bZ u Tf.til.z0)⁻¹ * (Γ0 : Matrix _ _ D.host.E)`. Establish `hx` using `ext_mul_bZ Tf _ _ hΓ0E`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hbZ, Matrix.one_mul]`.
+
+Use `_ = (bZ u Tf.til.z0)⁻¹ * ((Γ0 : Matrix _ _ D.host.E) * bZ u Tf.til.z0) * (bZ u Tf.til.z0)⁻¹ := by rw [hx]`. Use `_ = (bZ u Tf.til.z0)⁻¹ * (Γ0 : Matrix _ _ D.host.E) := by`. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hbZ, Matrix.mul_one]`. Establish `hM : ∀ τ, atInf (Formalism.L2.Forms.embT D) (dgE (γ : Matrix _ _ D.host.E)) τ * mZ u Tf.til.z0 τ = mZ u Tf.til.z0 τ * atInf (Formalism.L2.Forms.embT D) (Γ0 : Matrix _ _ D.host.E) τ`. Introduce `τ`.
+
+Simplify using `only [mZ, atInf]`. Rewrite using `[← Matrix.map_mul, ← Matrix.map_mul, hdg]`. Establish `hF : fnOf (gramC (gramN D D.R.m le_rfl) (Formalism.L2.Forms.embT D)) (shiftOf (lamT u D.R.m)) (fun τ => atInf (Formalism.L2.Forms.embT D) (dgE (γ : Matrix _ _ D.host.E)) τ * mZ u Tf.til.z0 τ) P = ((Tf.clsP.lev.chi κ : ℂˣ) : ℂ) • fnOf (gramC (gramN D D.R.m le_rfl) (Formalism.L2.Fo …`. Use function extensionality and compare the values at `Z`. Rewrite using `[Pi.smul_apply, smul_eq_mul, ← val_inv Tf hE φ hφ c γ κ hst Γ0 hΓ0U hΓ0E P hv Z]`.
+
+Simplify using `only [fnOf, LinearMap.coe_mk, AddHom.coe_mk, Frames.tr, hM, Matrix.mul_assoc]`. Establish `hc2` using `fnOf_change (gramC (gramN D D.R.m le_rfl) (Formalism.L2.Forms.embT D)) (shiftOf (lamT u D.R.m)) (mZ u Tf.til.z0) (fun τ => atInf (Formalism.L2.Forms.embT D) (dgE (γ : Matrix _ _ D.host.E)) τ * mZ u Tf.til.z0 τ) (mZ_isUnit hbZ) P`. Simplify using `only [Matrix.mul_nonsing_inv_cancel_right _ _ (mZ_isUnit hbZ _)] at hc2`. Rewrite `hF` using `[hc2]`. Establish `hPe` using `fnOf_injective _ _ _ (mZ_isUnit hbZ) (hF.trans (map_smul _ _ _).symm)`.
+
+Establish `hK : (fun τ => atInf (Formalism.L2.Forms.embT D) (dgE (γ : Matrix _ _ D.host.E)) τ) = fun τ => ((Formalism.MainNotions.PrimeDegreeVariant.embGL ℂ _ _ (Nm_succ D.R) (glT (γ : Matrix _ _ D.host.E) hγu τ) : GL (Fin (D.R.N D.R.m)) ℂ) : Matrix (Fin (D.R.N D.R.m)) (Fin (D.R.N D.R.m)) ℂ …`. Use function extensionality and compare the values at `fun τ => (embGL_glT _ hγu τ).symm`. Establish `hB` using `congrArg (Formalism.L2.Ker.brTen D u) hPe`. Rewrite `hB` using `[map_smul, map_smul, hK, brTen_blkRowS Tf]`. Establish `hK2 : (fun τ => ((glT (γ : Matrix _ _ D.host.E) hγu τ : GL (Fin (D.R.N D.R.m - 1)) ℂ) : Matrix (Fin (D.R.N D.R.m - 1)) (Fin (D.R.N D.R.m - 1)) ℂ).transpose) = fun τ => atInf (Formalism.L2.Forms.embT D) (γ : Matrix _ _ D.host.E) τ`.
+
+Use function extensionality and compare the values at `τ`. Rewrite using `[glT_val, Matrix.transpose_transpose]`. Both sides reduce to the same expression. Rewrite `hB` using `[hK2]`. Establish `hy1 : fnOf (gramC (gramP D) (Formalism.L2.Forms.embT D)) (shiftOf (sgT u)) 1 (Formalism.L2.Ker.brTen D u P) y = fnOf (gramC (gramP D) (Formalism.L2.Forms.embT D)) (shiftOf (sgT u)) (atInf (Formalism.L2.Forms.embT D) (γ : Matrix _ _ D.host.E)) (Formalism.L2.Ker.brTen D u P) y'`.
+
+Simplify using `only [fnOf, LinearMap.coe_mk, AddHom.coe_mk, Pi.one_apply, Matrix.one_mul, show ∀ τ, y.1 τ = _ from hy]`. Both sides reduce to the same expression. Establish `hc3` using `fnOf_change (gramC (gramP D) (Formalism.L2.Forms.embT D)) (shiftOf (sgT u)) 1 (atInf (Formalism.L2.Forms.embT D) (γ : Matrix (Fin (D.R.N D.R.m - 1)) (Fin (D.R.N D.R.m - 1)) D.host.E)) (fun τ => by simp) (Formalism.L2.Ker.brTen D u P)`. Simplify using `only [Pi.one_apply, inv_one, Matrix.mul_one] at hc3`. Establish `hdet : (∏ τ, (atInf (Formalism.L2.Forms.embT D) (dgE (γ : Matrix (Fin (D.R.N D.R.m - 1)) (Fin (D.R.N D.R.m - 1)) D.host.E)) τ).det ^ shiftOf (lamT u D.R.m) τ) = ∏ τ, (atInf (Formalism.L2.Forms.embT D) (γ : Matrix (Fin (D.R.N D.R.m - 1)) (Fin (D.R.N D.R.m - 1)) D.host.E) τ).det ^ …`.
+
+Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[shift_lamT_sgTS Tf τ]`. Use `congr 1`. Simplify using `only [atInf]`. Unfold `dgE`.
+
+Rewrite using `[Matrix.reindex_apply, ← Matrix.submatrix_map, Matrix.det_submatrix_equiv_self, Matrix.fromBlocks_map, Matrix.map_zero _ (map_zero _), Matrix.map_zero _ (map_zero _), Matrix.map_one _ (map_zero _) (map_one _), Matrix.det_fromBlocks_zero₂₁, Matrix.det_one, mul_one]`. Rewrite `hB` using `[hdet]`. Rewrite using `[hy1, hc3, hB, map_smul]`. Both sides reduce to the same expression.
+-/
 theorem stab_of_ext (Tf : FormsTiedSym D u Ch chOf) (hL : Formalism.L2.Rows.LowerMapTieS Tf) (hE : ExtLevS Tf) : StabCompS Tf := by
   intro φ hφ c γ hγ κ hst y y' hy
   obtain ⟨Γ0, hΓ0U, hΓ0E⟩ := hE.1 γ hγ
@@ -442,10 +556,16 @@ theorem stab_of_ext (Tf : FormsTiedSym D u Ch chOf) (hL : Formalism.L2.Rows.Lowe
   rw [hy1, hc3, hB, map_smul]
   rfl
 
+/- English proof (translation)
+The claim follows from `forms_of_stab Tf hL (stab_of_ext Tf hL hE)`.
+-/
 theorem forms_of_ext (Tf : FormsTiedSym D u Ch chOf) (hL : Formalism.L2.Rows.LowerMapTieS Tf) (hE : ExtLevS Tf) :
     ∀ φ ∈ (D.fm u).Fi D.R.m, Pt D u φ ∈ (D.fm u).ptC :=
   forms_of_stab Tf hL (stab_of_ext Tf hL hE)
 
+/- English proof (translation)
+Introduce `D u Ch chOf Tf hL` and use `forms_of_ext Tf hL (hE D u Ch chOf Tf)`.
+-/
 theorem forms_of_extension (hE : ∀ (D : D7) (u : D.what₂.Word) (Ch : ℕ → Type) (chOf : ∀ i, (D.mem u).C.cls i → Ch i)
     (Tf : FormsTiedSym D u Ch chOf), ExtLevS Tf) : FormsCarriedToComplement :=
   fun D u Ch chOf Tf hL => forms_of_ext Tf hL (hE D u Ch chOf Tf)
@@ -460,6 +580,29 @@ variable {D : D7} {u : D.what₂.Word} {Ch : ℕ → Type} {chOf : ∀ i, (D.mem
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Establish `hT : ((D.mem u).A.T : D.host.E) ≠ 0` using `Nat.cast_ne_zero.mpr (D.mem u).A.T_prime.ne_zero`. Establish `hc : (inclE (F` using `D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)).comp (sigD D : D.host.E →+* D.host.E) = (sigR (sigD D) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)).comp (inclE (F := D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) := by`. Use extensionality with `e`. Simplify using `[sigR, inclE, Algebra.TensorProduct.includeLeftRingHom_apply]`. Use `set B' := (bZ u Tf.til.z0).map (inclE (F := D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) with hB'`.
+
+Use `set d : Matrix (Fin (D.R.N D.R.m)) (Fin (D.R.N D.R.m)) (D.host.E ⊗[D.host.F] FiniteAdeleRing (𝓞 D.host.F) D.host.F) := Matrix.reindex (finSumFinEquiv.trans (finCongr (Nm_succ D.R))) (finSumFinEquiv.trans (finCongr (Nm_succ D.R))) (Matrix.fromBlocks k 0 0 (1 : Matrix (Fin 1) (Fin …`. Take `⟨h1, h2⟩` from `hE`. Establish `hGB : G * B' = B' * d`. Use extensionality with `a b`. Take `⟨y, rfl⟩` from `(finSumFinEquiv.trans (finCongr (Nm_succ D.R))).surjective b`.
+
+Rewrite using `[Matrix.mul_apply, Matrix.mul_apply, ← (finSumFinEquiv.trans (finCongr (Nm_succ D.R))).sum_comp, ← (finSumFinEquiv.trans (finCongr (Nm_succ D.R))).sum_comp, Fintype.sum_sum_type, Fintype.sum_sum_type]`. Break down `y with i | i` into its components or cases. Use `congrFun (congrFun h1 a) i` as an intermediate fact. Simplify using `only [Matrix.mul_apply] at this`. Simplify using `[hB', hd, bZ, Matrix.reindex_apply, Matrix.submatrix_apply, Matrix.map_apply]`.
+
+Simplify `this` using `[Fintype.sum_sum_type, ← (finSumFinEquiv.trans (finCongr (Nm_succ D.R))).sum_comp]`. Establish `hi : i = 0` using `Subsingleton.elim _ _`. Substitute `hi` using the available equality. Use `congrFun h2 a` as an intermediate fact. Simplify using `only [Matrix.mulVec, dotProduct] at this`.
+
+Simplify using `[hB', hd, bZ, Matrix.reindex_apply, Matrix.submatrix_apply, Matrix.map_apply]`. Establish `key : ∑ x : Fin (D.R.N D.R.m), G a x * (inclE (F` using `D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) (Tf.til.z0 x / ((D.mem u).A.T : D.host.E)) = (inclE (F := D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) (Tf.til.z0 a / ((D.mem u).A.T : D.host.E)) := by`. Simplify using `only [div_eq_mul_inv, map_mul, ← mul_assoc, ← Finset.sum_mul, this]`. Rewrite `key` using `[← (finSumFinEquiv.trans (finCongr (Nm_succ D.R))).sum_comp, Fintype.sum_sum_type]`. Simplify using `using key`.
+
+Establish `hH : cT (sigR (sigD D) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) B' * (gramN D D.R.m le_rfl).map (inclE (F` using `D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) * B' = Matrix.reindex (finSumFinEquiv.trans (finCongr (Nm_succ D.R))) (finSumFinEquiv.trans (finCongr (Nm_succ D.R))) (Matrix.fromBlocks ((gramP D).map (inclE (F := D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F))) 0 0 ((Matrix …`. Establish `hg` using `gram_bZ (u := u) Tf.til.z0 Tf.til.lastCoordinateUniformizerVector_spans_orthogonal_line Tf.til.hermitianForm_lastCoordinateUniformizerVector_self`. Rewrite using `[hB', Formalism.UG.P.cT_map _ _ _ hc, ← Matrix.map_mul, ← Matrix.map_mul]`. Rewrite using `[show cT (sigD D : D.host.E →+* D.host.E) (bZ u Tf.til.z0) = ((bZ u Tf.til.z0).map (sigD D : D.host.E →+* D.host.E))ᵀ from rfl, hg]`. Rewrite using `[Matrix.reindex_apply, Matrix.reindex_apply, ← Matrix.submatrix_map, Matrix.fromBlocks_map, Matrix.map_zero _ (map_zero _), Matrix.map_zero _ (map_zero _)]`.
+
+Establish `hdu : cT (sigR (sigD D) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) d * Matrix.reindex (finSumFinEquiv.trans (finCongr (Nm_succ D.R))) (finSumFinEquiv.trans (finCongr (Nm_succ D.R))) (Matrix.fromBlocks ((gramP D).map (inclE (F` using `D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F))) 0 0 ((Matrix.of fun _ _ => ((D.mem u).A.T : D.host.E)⁻¹ : Matrix (Fin 1) (Fin 1) D.host.E).map (inclE (F := D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)))) * d = Matrix.reindex (finSumFinEquiv.trans (finCongr (Nm_succ D.R)) …`. Establish `hcd : cT (sigR (sigD D) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) d = Matrix.reindex (finSumFinEquiv.trans (finCongr (Nm_succ D.R))) (finSumFinEquiv.trans (finCongr (Nm_succ D.R))) (Matrix.fromBlocks (cT (sigR (sigD D) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) k) 0 0 (1 : Matrix (F …`. Unfold `cT`. Rewrite using `[hd, Matrix.reindex_apply, Matrix.reindex_apply, ← Matrix.submatrix_map, Matrix.transpose_submatrix, Matrix.fromBlocks_map, Matrix.fromBlocks_transpose, Matrix.map_zero _ (map_zero _), Matrix.map_zero _ (map_zero _), Matrix.map_one _ (map_zero _) (map_one _), Matrix.transpose_zer …`. Rewrite using `[hcd, hd, Matrix.reindex_apply, Matrix.reindex_apply, Matrix.reindex_apply, Matrix.submatrix_mul_equiv, Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply, Matrix.fromBlocks_multiply]`.
+
+Simplify using `only [Matrix.zero_mul, Matrix.mul_zero, add_zero, zero_add, Matrix.one_mul, Matrix.mul_one, hk]`. Establish `hBu : IsUnit B'.det`. Rewrite using `[hB']`. Establish `h` using `(bZ_isUnitS Tf).map (inclE (F := D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F))`. Rewrite `h` using `[RingHom.map_det]`. Then use the resulting hypothesis.
+
+Establish `hcBu : IsUnit (cT (sigR (sigD D) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) B').det`. Unfold `cT`. Rewrite using `[Matrix.det_transpose]`. Establish `h` using `hBu.map (sigR (sigD D) (FiniteAdeleRing (𝓞 D.host.F) D.host.F))`. Rewrite `h` using `[RingHom.map_det]`. Then use the resulting hypothesis.
+
+Establish `key : cT (sigR (sigD D) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) B' * (cT (sigR (sigD D) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) G * (gramN D D.R.m le_rfl).map (inclE (F` using `D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) * G) * B' = cT (sigR (sigD D) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) B' * (gramN D D.R.m le_rfl).map (inclE (F := D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) * B' := by`. Combine the equalities or inequalities in the displayed calculation. Establish `e2 : cT (sigR (sigD D) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) B' * (cT (sigR (sigD D) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) G * (gramN D D.R.m le_rfl).map (inclE (F` using `D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) * G) = cT (sigR (sigD D) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) B' * (gramN D D.R.m le_rfl).map (inclE (F := D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) := by`. Use `congrArg (· * B'⁻¹) key` as an intermediate fact. Simplify `this` using `only [Matrix.mul_nonsing_inv_cancel_right _ _ hBu]`.
+
+Use `congrArg ((cT (sigR (sigD D) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) B')⁻¹ * ·) e2` as an intermediate fact. Simplify `this` using `only [Matrix.nonsing_inv_mul_cancel_left _ _ hcBu]`.
+-/
 theorem extUA (Tf : FormsTiedSym D u Ch chOf) (k : Matrix (Fin (D.R.N D.R.m - 1)) (Fin (D.R.N D.R.m - 1)) (D.host.E ⊗[D.host.F] FiniteAdeleRing (𝓞 D.host.F) D.host.F))
     (hk : cT (sigR (sigD D) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) k * (gramP D).map (inclE (F := D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) * k = (gramP D).map (inclE (F := D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)))
     (G : Matrix (Fin (D.R.N D.R.m)) (Fin (D.R.N D.R.m)) (D.host.E ⊗[D.host.F] FiniteAdeleRing (𝓞 D.host.F) D.host.F)) (hE : IsExt D Tf.til.z0 (inclE (F := D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) k G) :
@@ -544,6 +687,29 @@ variable {D : D7} {u : D.what₂.Word} {Ch : ℕ → Type} {chOf : ∀ i, (D.mem
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Establish `hT : ((D.mem u).A.T : D.host.E) ≠ 0` using `Nat.cast_ne_zero.mpr (D.mem u).A.T_prime.ne_zero`. Establish `hc : (inclE (F` using `D.host.F) R).comp (sigD D : D.host.E →+* D.host.E) = (sigR (sigD D) R).comp (inclE (F := D.host.F) R) := by`. Use extensionality with `e`. Simplify using `[sigR, inclE, Algebra.TensorProduct.includeLeftRingHom_apply]`. Use `set B' := (bZ u Tf.til.z0).map (inclE (F := D.host.F) R) with hB'`.
+
+Use `set d : Matrix (Fin (D.R.N D.R.m)) (Fin (D.R.N D.R.m)) (D.host.E ⊗[D.host.F] R) := Matrix.reindex (finSumFinEquiv.trans (finCongr (Nm_succ D.R))) (finSumFinEquiv.trans (finCongr (Nm_succ D.R))) (Matrix.fromBlocks k 0 0 (1 : Matrix (Fin 1) (Fin 1) (D.host.E ⊗[D.host.F] R))) with h …`. Take `⟨h1, h2⟩` from `hE`. Establish `hGB : G * B' = B' * d`. Use extensionality with `a b`. Take `⟨y, rfl⟩` from `(finSumFinEquiv.trans (finCongr (Nm_succ D.R))).surjective b`.
+
+Rewrite using `[Matrix.mul_apply, Matrix.mul_apply, ← (finSumFinEquiv.trans (finCongr (Nm_succ D.R))).sum_comp, ← (finSumFinEquiv.trans (finCongr (Nm_succ D.R))).sum_comp, Fintype.sum_sum_type, Fintype.sum_sum_type]`. Break down `y with i | i` into its components or cases. Use `congrFun (congrFun h1 a) i` as an intermediate fact. Simplify using `only [Matrix.mul_apply] at this`. Simplify using `[hB', hd, bZ, Matrix.reindex_apply, Matrix.submatrix_apply, Matrix.map_apply]`.
+
+Simplify `this` using `[Fintype.sum_sum_type, ← (finSumFinEquiv.trans (finCongr (Nm_succ D.R))).sum_comp]`. Establish `hi : i = 0` using `Subsingleton.elim _ _`. Substitute `hi` using the available equality. Use `congrFun h2 a` as an intermediate fact. Simplify using `only [Matrix.mulVec, dotProduct] at this`.
+
+Simplify using `[hB', hd, bZ, Matrix.reindex_apply, Matrix.submatrix_apply, Matrix.map_apply]`. Establish `key : ∑ x : Fin (D.R.N D.R.m), G a x * (inclE (F` using `D.host.F) R) (Tf.til.z0 x / ((D.mem u).A.T : D.host.E)) = (inclE (F := D.host.F) R) (Tf.til.z0 a / ((D.mem u).A.T : D.host.E)) := by`. Simplify using `only [div_eq_mul_inv, map_mul, ← mul_assoc, ← Finset.sum_mul, this]`. Rewrite `key` using `[← (finSumFinEquiv.trans (finCongr (Nm_succ D.R))).sum_comp, Fintype.sum_sum_type]`. Simplify using `using key`.
+
+Establish `hH : cT (sigR (sigD D) R) B' * (gramN D D.R.m le_rfl).map (inclE (F` using `D.host.F) R) * B' = Matrix.reindex (finSumFinEquiv.trans (finCongr (Nm_succ D.R))) (finSumFinEquiv.trans (finCongr (Nm_succ D.R))) (Matrix.fromBlocks ((gramP D).map (inclE (F := D.host.F) R)) 0 0 ((Matrix.of fun _ _ => ((D.mem u).A.T : D.host.E)⁻¹ : Matrix (Fin 1) (Fin 1) D.host. …`. Establish `hg` using `gram_bZ (u := u) Tf.til.z0 Tf.til.lastCoordinateUniformizerVector_spans_orthogonal_line Tf.til.hermitianForm_lastCoordinateUniformizerVector_self`. Rewrite using `[hB', Formalism.UG.P.cT_map _ _ _ hc, ← Matrix.map_mul, ← Matrix.map_mul]`. Rewrite using `[show cT (sigD D : D.host.E →+* D.host.E) (bZ u Tf.til.z0) = ((bZ u Tf.til.z0).map (sigD D : D.host.E →+* D.host.E))ᵀ from rfl, hg]`. Rewrite using `[Matrix.reindex_apply, Matrix.reindex_apply, ← Matrix.submatrix_map, Matrix.fromBlocks_map, Matrix.map_zero _ (map_zero _), Matrix.map_zero _ (map_zero _)]`.
+
+Establish `hdu : cT (sigR (sigD D) R) d * Matrix.reindex (finSumFinEquiv.trans (finCongr (Nm_succ D.R))) (finSumFinEquiv.trans (finCongr (Nm_succ D.R))) (Matrix.fromBlocks ((gramP D).map (inclE (F` using `D.host.F) R)) 0 0 ((Matrix.of fun _ _ => ((D.mem u).A.T : D.host.E)⁻¹ : Matrix (Fin 1) (Fin 1) D.host.E).map (inclE (F := D.host.F) R))) * d = Matrix.reindex (finSumFinEquiv.trans (finCongr (Nm_succ D.R))) (finSumFinEquiv.trans (finCongr (Nm_succ D.R))) (Matrix.fromBlocks ((gramP …`. Establish `hcd : cT (sigR (sigD D) R) d = Matrix.reindex (finSumFinEquiv.trans (finCongr (Nm_succ D.R))) (finSumFinEquiv.trans (finCongr (Nm_succ D.R))) (Matrix.fromBlocks (cT (sigR (sigD D) R) k) 0 0 (1 : Matrix (Fin 1) (Fin 1) (D.host.E ⊗[D.host.F] R)))`. Unfold `cT`. Rewrite using `[hd, Matrix.reindex_apply, Matrix.reindex_apply, ← Matrix.submatrix_map, Matrix.transpose_submatrix, Matrix.fromBlocks_map, Matrix.fromBlocks_transpose, Matrix.map_zero _ (map_zero _), Matrix.map_zero _ (map_zero _), Matrix.map_one _ (map_zero _) (map_one _), Matrix.transpose_zer …`. Rewrite using `[hcd, hd, Matrix.reindex_apply, Matrix.reindex_apply, Matrix.reindex_apply, Matrix.submatrix_mul_equiv, Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply, Matrix.fromBlocks_multiply]`.
+
+Simplify using `only [Matrix.zero_mul, Matrix.mul_zero, add_zero, zero_add, Matrix.one_mul, Matrix.mul_one, hk]`. Establish `hBu : IsUnit B'.det`. Rewrite using `[hB']`. Establish `h` using `(bZ_isUnitS Tf).map (inclE (F := D.host.F) R)`. Rewrite `h` using `[RingHom.map_det]`. Then use the resulting hypothesis.
+
+Establish `hcBu : IsUnit (cT (sigR (sigD D) R) B').det`. Unfold `cT`. Rewrite using `[Matrix.det_transpose]`. Establish `h` using `hBu.map (sigR (sigD D) R)`. Rewrite `h` using `[RingHom.map_det]`. Then use the resulting hypothesis.
+
+Establish `key : cT (sigR (sigD D) R) B' * (cT (sigR (sigD D) R) G * (gramN D D.R.m le_rfl).map (inclE (F` using `D.host.F) R) * G) * B' = cT (sigR (sigD D) R) B' * (gramN D D.R.m le_rfl).map (inclE (F := D.host.F) R) * B' := by`. Combine the equalities or inequalities in the displayed calculation. Establish `e2 : cT (sigR (sigD D) R) B' * (cT (sigR (sigD D) R) G * (gramN D D.R.m le_rfl).map (inclE (F` using `D.host.F) R) * G) = cT (sigR (sigD D) R) B' * (gramN D D.R.m le_rfl).map (inclE (F := D.host.F) R) := by`. Use `congrArg (· * B'⁻¹) key` as an intermediate fact. Simplify `this` using `only [Matrix.mul_nonsing_inv_cancel_right _ _ hBu]`.
+
+Use `congrArg ((cT (sigR (sigD D) R) B')⁻¹ * ·) e2` as an intermediate fact. Simplify `this` using `only [Matrix.nonsing_inv_mul_cancel_left _ _ hcBu]`.
+-/
 theorem extUR {R : Type} [CommRing R] [Algebra D.host.F R] (Tf : FormsTiedSym D u Ch chOf) (k : Matrix (Fin (D.R.N D.R.m - 1)) (Fin (D.R.N D.R.m - 1)) (D.host.E ⊗[D.host.F] R))
     (hk : cT (sigR (sigD D) R) k * (gramP D).map (inclE (F := D.host.F) R) * k = (gramP D).map (inclE (F := D.host.F) R))
     (G : Matrix (Fin (D.R.N D.R.m)) (Fin (D.R.N D.R.m)) (D.host.E ⊗[D.host.F] R)) (hE : IsExt D Tf.til.z0 (inclE (F := D.host.F) R) k G) :
@@ -618,6 +784,17 @@ theorem extUR {R : Type} [CommRing R] [Algebra D.host.F R] (Tf : FormsTiedSym D 
   have := congrArg ((cT (sigR (sigD D) R) B')⁻¹ * ·) e2
   simpa only [Matrix.nonsing_inv_mul_cancel_left _ _ hcBu] using this
 
+/- English proof (translation)
+Take `⟨a0, ha0⟩` from `Tf.til.lastCoordinateUniformizerVector_spans_orthogonal_line`. Establish `ha : a0 ≠ 0`. Introduce and unpack `rfl`. Establish `hT : ((D.mem u).A.T : D.host.E) ≠ 0` using `Nat.cast_ne_zero.mpr (D.mem u).A.T_prime.ne_zero`. Establish `h` using `Tf.til.hermitianForm_lastCoordinateUniformizerVector_self`.
+
+Rewrite `h` using `[ha0, zero_smul]`. Simplify using `[Formalism.UG.hform] at h`. Conclude with `hT h.symm`. Establish `hPzc : P *ᵥ zc D = 0`. Rewrite `hPz` using `[ha0, Matrix.mulVec_smul]`.
+
+Conclude with `(smul_eq_zero.mp hPz).resolve_left ha`. Establish `hiX : ∀ x, iXc D x = iXm D *ᵥ x` using `fun x => by simp only [iXm, LinearMap.toMatrix'_mulVec]`. Introduce `b`. Take `⟨x, s, hxs⟩` from `span_iXc_zc D (Pi.single b 1)`. Use `⟨s, fun c => ?_⟩` and prove the remaining obligations.
+
+Establish `e1 : P *ᵥ (iXm D *ᵥ x) = x` using `by rw [Matrix.mulVec_mulVec, hP1, Matrix.one_mulVec]`. Establish `hcol : ((1 : Matrix (Fin (D.R.N D.R.m)) (Fin (D.R.N D.R.m)) D.host.E) - iXm D * P) *ᵥ Pi.single b 1 = s • zc D`. Rewrite using `[hxs, Matrix.mulVec_add, Matrix.mulVec_smul, hiX, Matrix.sub_mulVec, Matrix.sub_mulVec, Matrix.one_mulVec, Matrix.one_mulVec, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, e1, hPzc, Matrix.mulVec_zero, sub_zero, sub_self, zero_add]`. Use `congrFun hcol c` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec_single_one]`.
+
+Simplify `this` using `[Matrix.transpose_apply]`.
+-/
 theorem col_M (Tf : FormsTiedSym D u Ch chOf) (P : Matrix (Fin (D.R.N D.R.m - 1)) (Fin (D.R.N D.R.m)) D.host.E)
     (hP1 : P * iXm D = 1) (hPz : P *ᵥ Tf.til.z0 = 0) :
     ∀ b, ∃ s : D.host.E, ∀ c, ((1 : Matrix (Fin (D.R.N D.R.m)) (Fin (D.R.N D.R.m)) D.host.E) - iXm D * P) c b = s * zc D c := by
@@ -644,6 +821,23 @@ theorem col_M (Tf : FormsTiedSym D u Ch chOf) (P : Matrix (Fin (D.R.N D.R.m - 1)
   rw [Matrix.mulVec_single_one] at this
   simpa [Matrix.transpose_apply] using this
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `hE`. Take `⟨a0, ha0⟩` from `Tf.til.lastCoordinateUniformizerVector_spans_orthogonal_line`. Establish `ha : a0 ≠ 0`. Introduce and unpack `rfl`. Establish `hT : ((D.mem u).A.T : D.host.E) ≠ 0` using `Nat.cast_ne_zero.mpr (D.mem u).A.T_prime.ne_zero`.
+
+Establish `h` using `Tf.til.hermitianForm_lastCoordinateUniformizerVector_self`. Rewrite `h` using `[ha0, zero_smul]`. Simplify using `[Formalism.UG.hform] at h`. Conclude with `hT h.symm`. Establish `hzc : G *ᵥ (fun c => φ (zc D c)) = fun c => φ (zc D c)`.
+
+Establish `h2' : G *ᵥ (φ a0 • fun c => φ (zc D c)) = φ a0 • fun c => φ (zc D c)`. Establish `e : (fun a => φ (Tf.til.z0 a)) = φ a0 • fun c => φ (zc D c)`. Use function extensionality and compare the values at `c`. Rewrite using `[ha0]`. Simplify using `[Pi.smul_apply, smul_eq_mul, map_mul]`.
+
+Rewrite using `[← e]`. Conclude with `h2`. Rewrite `h2'` using `[Matrix.mulVec_smul]`. Establish `hu : IsUnit (φ a0)` using `(Ne.isUnit ha).map φ`. Conclude with `hu.smul_left_cancel.mp h2'`.
+
+Establish `hGM : G * (1 - (iXm D * P).map φ) = 1 - (iXm D * P).map φ`. Use extensionality with `a b`. Take `⟨s, hs⟩` from `col_M Tf P hP1 hPz b`. Establish `hM : ∀ c, (1 - (iXm D * P).map φ) c b = φ s * φ (zc D c)`. Introduce `c`.
+
+Establish `e : (1 - (iXm D * P).map φ) c b = φ (((1 : Matrix (Fin (D.R.N D.R.m)) (Fin (D.R.N D.R.m)) D.host.E) - iXm D * P) c b)`. Simplify using `[Matrix.sub_apply, Matrix.one_apply]`. Rewrite using `[← Matrix.map_mul]`. Both sides reduce to the same expression. Rewrite using `[e, hs c, map_mul]`.
+
+Rewrite using `[Matrix.mul_apply, hM a]`. Repeatedly rewrite using `[hM]`. Use `congrFun hzc a` as an intermediate fact. Simplify using `only [Matrix.mulVec, dotProduct] at this`. Rewrite using `[← this, Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun c _ => by ring` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Matrix.map_mul, add_sub_cancel, Matrix.mul_one]`. Use `_ = (iXm D).map φ * k * P.map φ + (1 - (iXm D * P).map φ) := by`. Rewrite using `[Matrix.mul_add, ← Matrix.mul_assoc, h1, hGM]`.
+-/
 theorem ext_form (Tf : FormsTiedSym D u Ch chOf) {R : Type} [CommRing R] (φ : D.host.E →+* R)
     (P : Matrix (Fin (D.R.N D.R.m - 1)) (Fin (D.R.N D.R.m)) D.host.E) (hP1 : P * iXm D = 1) (hPz : P *ᵥ Tf.til.z0 = 0)
     (k : Matrix (Fin (D.R.N D.R.m - 1)) (Fin (D.R.N D.R.m - 1)) R) (G : Matrix (Fin (D.R.N D.R.m)) (Fin (D.R.N D.R.m)) R)
@@ -697,9 +891,15 @@ def ExtLevK (Tf : FormsTiedSym D u Ch chOf) : Prop :=
     IsExt D Tf.til.z0 (inclE (F := D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) κ.1.1 G.1.1 ∧
     (((Tf.cls D.R.m le_rfl (Or.inr rfl)).lev.chi G : ℂˣ) : ℂ) = ((Tf.clsP.lev.chi κ : ℂˣ) : ℂ)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun γ hγ => extU Tf γ hγ, hK⟩`.
+-/
 theorem extLevS_of (Tf : FormsTiedSym D u Ch chOf) (hK : ExtLevK Tf) : ExtLevS Tf :=
   ⟨fun γ hγ => extU Tf γ hγ, hK⟩
 
+/- English proof (translation)
+The claim follows from `forms_of_extension fun D u Ch chOf Tf => extLevS_of Tf (hK D u Ch chOf Tf)`.
+-/
 theorem forms_of_kernel_extension (hK : ∀ (D : D7) (u : D.what₂.Word) (Ch : ℕ → Type) (chOf : ∀ i, (D.mem u).C.cls i → Ch i)
     (Tf : FormsTiedSym D u Ch chOf), ExtLevK Tf) : FormsCarriedToComplement :=
   forms_of_extension fun D u Ch chOf Tf => extLevS_of Tf (hK D u Ch chOf Tf)
@@ -715,6 +915,11 @@ def ExtLevL (Tf : FormsTiedSym D u Ch chOf) : Prop :=
       (((Tf.cls D.R.m le_rfl (Or.inr rfl)).lev.chi ⟨G, hG⟩ : ℂˣ) : ℂ) = ((Tf.clsP.lev.chi κ : ℂˣ) : ℂ)
 
 set_option maxHeartbeats 4000000 in
+/- English proof (translation)
+Introduce `κ`. Take `⟨g, hg, hu⟩` from `til_ext Tf (inclE (F := D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) κ.1.1`. Establish `hdet : IsUnit (κ.1.1).det` using `(Matrix.isUnit_iff_isUnit_det _).mp κ.1.isUnit`. Take `⟨G, hGg⟩ : ∃ G : GL (Fin (D.R.N D.R.m)) (D.host.E ⊗[D.host.F] FiniteAdeleRing (𝓞 D.host.F) D.host.F), G.1 = g` from `⟨((Matrix.isUnit_iff_isUnit_det g).mpr (hu hdet)).unit, rfl⟩`. Rewrite `hg` using `[← hGg]`.
+
+Establish `hκU` using `((Tf.clsP.lev.U_eq κ.1).1 κ.2).1`. Establish `hUP : G ∈ UPts (sigD D) (gramN D D.R.m le_rfl) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)` using `extUA Tf κ.1.1 hκU G.1 hg`. Take `⟨hloc, hchi⟩` from `hL κ G hg hUP`. Establish `hGU : G ∈ (Tf.cls D.R.m le_rfl (Or.inr rfl)).lev.U` using `((Tf.cls D.R.m le_rfl (Or.inr rfl)).lev.U_eq G).2 ⟨hUP, hloc⟩`. Conclude with `⟨⟨G, hGU⟩, hg, hchi hGU⟩`.
+-/
 theorem extLevK_of (Tf : FormsTiedSym D u Ch chOf) (hL : ExtLevL Tf) : ExtLevK Tf := by
   intro κ
   obtain ⟨g, hg, hu⟩ := til_ext Tf (inclE (F := D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) κ.1.1
@@ -729,6 +934,9 @@ theorem extLevK_of (Tf : FormsTiedSym D u Ch chOf) (hL : ExtLevL Tf) : ExtLevK T
   have hGU : G ∈ (Tf.cls D.R.m le_rfl (Or.inr rfl)).lev.U := ((Tf.cls D.R.m le_rfl (Or.inr rfl)).lev.U_eq G).2 ⟨hUP, hloc⟩
   exact ⟨⟨G, hGU⟩, hg, hchi hGU⟩
 
+/- English proof (translation)
+The claim follows from `forms_of_kernel_extension fun D u Ch chOf Tf => extLevK_of Tf (hL D u Ch chOf Tf)`.
+-/
 theorem forms_of_lattice_extension (hL : ∀ (D : D7) (u : D.what₂.Word) (Ch : ℕ → Type) (chOf : ∀ i, (D.mem u).C.cls i → Ch i)
     (Tf : FormsTiedSym D u Ch chOf), ExtLevL Tf) : FormsCarriedToComplement :=
   forms_of_kernel_extension fun D u Ch chOf Tf => extLevK_of Tf (hL D u Ch chOf Tf)

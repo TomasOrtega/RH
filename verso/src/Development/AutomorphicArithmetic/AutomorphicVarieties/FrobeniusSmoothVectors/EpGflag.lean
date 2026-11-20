@@ -3,16 +3,30 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVec
 
 open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.U3 UpperTheory.V.Fr
 
+/- English proof (translation)
+Rewrite using `[sg, ← mul_pow, neg_one_mul, neg_neg, one_pow]`.
+-/
 private theorem sg_mul_self (R : Type) [CommRing R] (j : ZMod 2) : sg R j * sg R j = 1 := by
   rw [sg, ← mul_pow, neg_one_mul, neg_neg, one_pow]
 
+/- English proof (translation)
+Establish `key : ∀ a b : ZMod 2, (a - b).val % 2 = (a.val + b.val) % 2` using `by decide`. Rewrite using `[sg, sg, sg, ← pow_add, neg_one_pow_eq_pow_mod_two, key, ← neg_one_pow_eq_pow_mod_two]`.
+-/
 private theorem sg_sub (R : Type) [CommRing R] (i j : ZMod 2) : sg R (i - j) = sg R i * sg R j := by
   have key : ∀ a b : ZMod 2, (a - b).val % 2 = (a.val + b.val) % 2 := by decide
   rw [sg, sg, sg, ← pow_add, neg_one_pow_eq_pow_mod_two, key, ← neg_one_pow_eq_pow_mod_two]
 
+/- English proof (translation)
+Simplify using `[sg]`.
+-/
 private theorem map_sg {O R : Type} [CommRing O] [CommRing R] [Algebra O R] (σ : R →ₐ[O] R) (j : ZMod 2) :
     σ (sg R j) = sg R j := by simp [sg]
 
+/- English proof (translation)
+Unfold `GrM`. Rewrite using `[← Matrix.ext_iff]`. Use `forall_congr' fun a => forall_congr' fun b => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `σ (M a b) = sg R (α a - β b) * M a b ↔ _`. Rewrite using `[AlgHom.mapMatrix_apply, Matrix.map_apply, Matrix.mul_diagonal, Matrix.diagonal_mul, sg_sub]`.
+
+Apply the tactic sequence `constructor <;> intro h <;> rw [h] <;> ring`.
+-/
 private theorem grM_iff {O R : Type} [CommRing O] [CommRing R] [Algebra O R] (σ : R →ₐ[O] R)
     (α β : Fin 3 → ZMod 2) (M : Matrix (Fin 3) (Fin 3) R) :
     GrM σ α β M ↔ σ.mapMatrix M = diagonal (fun a => sg R (α a)) * M * diagonal (fun b => sg R (β b)) := by
@@ -23,18 +37,29 @@ private theorem grM_iff {O R : Type} [CommRing O] [CommRing R] [Algebra O R] (σ
   rw [AlgHom.mapMatrix_apply, Matrix.map_apply, Matrix.mul_diagonal, Matrix.diagonal_mul, sg_sub]
   constructor <;> intro h <;> rw [h] <;> ring
 
+/- English proof (translation)
+Rewrite using `[diagonal_mul_diagonal]`. Simplify using `only [sg_mul_self]`. Conclude with `diagonal_one`.
+-/
 private theorem diag_sq (R : Type) [CommRing R] (α : Fin 3 → ZMod 2) :
     diagonal (fun a => sg R (α a)) * diagonal (fun a => sg R (α a)) = 1 := by
   rw [diagonal_mul_diagonal]
   simp only [sg_mul_self]
   exact diagonal_one
 
+/- English proof (translation)
+Rewrite using `[AlgHom.mapMatrix_apply, Matrix.diagonal_map (map_zero σ)]`. Simplify using `only [map_sg]`.
+-/
 private theorem map_diag {O R : Type} [CommRing O] [CommRing R] [Algebra O R] (σ : R →ₐ[O] R)
     (α : Fin 3 → ZMod 2) :
     σ.mapMatrix (diagonal (fun a => sg R (α a))) = diagonal (fun a => sg R (α a)) := by
   rw [AlgHom.mapMatrix_apply, Matrix.diagonal_map (map_zero σ)]
   simp only [map_sg]
 
+/- English proof (translation)
+Break down `IsLocalRing.isUnit_or_isUnit_of_isUnit_add (a := 1 + x) (b := 1 - x) (by convert h2 using 1; ring) with h | h` into its components or cases. Use `⟨0, ?_⟩` and prove the remaining obligations. Simplify `h` using `[sg]`. Use `⟨1, ?_⟩` and prove the remaining obligations. Rewrite using `[show sg R 1 = -1 from by rw [sg, show (1 : ZMod 2).val = 1 from rfl, pow_one]]`.
+
+Simplify `h` using `[sub_eq_add_neg]`.
+-/
 private theorem exists_sign {R : Type} [CommRing R] [IsLocalRing R] (h2 : IsUnit (2 : R)) (x : R) :
     ∃ j : ZMod 2, IsUnit (1 + sg R j * x) := by
   rcases IsLocalRing.isUnit_or_isUnit_of_isUnit_add (a := 1 + x) (b := 1 - x)
@@ -45,6 +70,39 @@ private theorem exists_sign {R : Type} [CommRing R] [IsLocalRing R] (h2 : IsUnit
     rw [show sg R 1 = -1 from by rw [sg, show (1 : ZMod 2).val = 1 from rfl, pow_one]]
     simpa [sub_eq_add_neg] using h
 
+/- English proof (translation)
+Introduce `O _ _ _ _ h2 R _ _ _ σ hσ H r g hr hT hd hs`. Establish `h2R : IsUnit (2 : R)`. Use `h2.map (algebraMap O R)` as an intermediate fact. Rewrite `this` using `[map_ofNat]`. Then use the resulting hypothesis. Take `⟨s0, hs0⟩` from `hs`.
+
+Establish `hT0` using `hT s0`. Establish `hd0` using `hd s0`. Use `set G : Matrix (Fin 3) (Fin 3) R := (g : Matrix (Fin 3) (Fin 3) R) with hGdef`. Use `set Gi : Matrix (Fin 3) (Fin 3) R := ((g⁻¹ : GL (Fin 3) R) : Matrix (Fin 3) (Fin 3) R) with hGidef`. Establish `hGGi : G * Gi = 1` using `g.mul_inv`.
+
+Establish `hGiG : Gi * G = 1` using `g.inv_mul`. Use `set P : Matrix (Fin 3) (Fin 3) R := diagonal (fun a => sg R (pq a)) with hPdef`. Establish `hPP : P * P = 1` using `diag_sq R pq`. Establish `hσP : σ.mapMatrix P = P` using `map_diag σ pq`. Establish `hSS : ∀ M : Matrix (Fin 3) (Fin 3) R, σ.mapMatrix (σ.mapMatrix M) = M`.
+
+Introduce `M`. Use extensionality with `i j`. Simplify using `[AlgHom.mapMatrix_apply, hσ]`. Establish `hσr : σ.mapMatrix (r s0) = P * r s0 * P` using `(grM_iff σ pq pq (r s0)).1 (hr s0)`. Establish `hσGiG : σ.mapMatrix Gi * σ.mapMatrix G = 1` using `by rw [← map_mul, hGiG, map_one]`.
+
+Take `⟨h, hh⟩ : ∃ h, h = G * P * σ.mapMatrix Gi` from `⟨_, rfl⟩`. Establish `hσh : σ.mapMatrix h = σ.mapMatrix G * P * Gi`. Rewrite using `[hh, map_mul, map_mul, hσP, hSS]`. Establish `hhσh : h * σ.mapMatrix h = 1`. Rewrite using `[hσh, hh]`.
+
+Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (σ.mapMatrix Gi), hσGiG, Matrix.one_mul, ← Matrix.mul_assoc P P, hPP, Matrix.one_mul, hGGi]`. Establish `hUh : UpT h` using `by set T := G * r s0 * Gi with hTdef`. Use `ep_upt h (σ.mapMatrix T) T ?_ hT0 ?_ ?_` and prove the remaining obligations. Introduce `i j hij`.
+
+Rewrite using `[AlgHom.mapMatrix_apply, Matrix.map_apply, hT0 i j hij, map_zero]`. Introduce `i j hij`. Establish `hfix : σ (T j j) = T j j`. Use `hd0 j` as an intermediate fact. Express the relevant statement in the definitionally equal form `σ (T j j) = sg R 0 * T j j at this`.
+
+Rewrite using `[this, sg, ZMod.val_zero, pow_zero, one_mul]`. Rewrite using `[AlgHom.mapMatrix_apply, Matrix.map_apply, hfix]`. Conclude with `hs0 j i hij.ne`. Rewrite using `[hh, hTdef, map_mul, map_mul, hσr]`. Simplify using `only [Matrix.mul_assoc]`.
+
+Rewrite using `[← Matrix.mul_assoc (σ.mapMatrix Gi) (σ.mapMatrix G), hσGiG, Matrix.one_mul, ← Matrix.mul_assoc P P, hPP, Matrix.one_mul, ← Matrix.mul_assoc Gi G, hGiG, Matrix.one_mul]`. Establish `hex : ∀ i, ∃ j : ZMod 2, IsUnit (1 + sg R j * h i i)` using `fun i => exists_sign h2R (h i i)`. Use `choose α hα using hex`. Use `set D : Matrix (Fin 3) (Fin 3) R := diagonal (fun a => sg R (α a)) with hDdef`. Establish `hDD : D * D = 1` using `diag_sq R α`.
+
+Establish `hσD : σ.mapMatrix D = D` using `map_diag σ α`. Take `⟨Y, hY⟩ : ∃ Y, Y = 1 + h * D` from `⟨_, rfl⟩`. Establish `hYU : Y.BlockTriangular id`. Introduce `i j hij`. Establish `hij' : j < i` using `hij`.
+
+Rewrite using `[hY, Matrix.add_apply, Matrix.one_apply_ne (ne_of_gt hij'), hDdef, Matrix.mul_diagonal, hUh i j hij', zero_mul, add_zero]`. Establish `hYdet : IsUnit Y.det`. Rewrite using `[Matrix.det_of_upperTriangular hYU, Fin.prod_univ_three]`. Establish `hu : ∀ i, IsUnit (Y i i)`. Introduce `i`.
+
+Rewrite using `[hY, Matrix.add_apply, Matrix.one_apply_eq, hDdef, Matrix.mul_diagonal, mul_comm]`. Conclude with `hα i`. Conclude with `((hu 0).mul (hu 1)).mul (hu 2)`. Establish `hYu : IsUnit Y` using `(Matrix.isUnit_iff_isUnit_det Y).2 hYdet`. Use `set Yi : Matrix (Fin 3) (Fin 3) R := ((hYu.unit⁻¹ : GL (Fin 3) R) : Matrix (Fin 3) (Fin 3) R) with hYidef`.
+
+Establish `hYYi : Y * Yi = 1` using `hYu.mul_val_inv`. Establish `hYiY : Yi * Y = 1` using `hYu.val_inv_mul`. Establish `hUYi : UpT Yi` using `by haveI : Invertible Y := ⟨Yi, hYiY, hYYi⟩`. Use `Matrix.blockTriangular_inv_of_blockTriangular hYU` as an intermediate fact. Rewrite `this` using `[Matrix.inv_eq_left_inv hYiY]`.
+
+Conclude with `fun i j hij => this hij`. Establish `hσYσYi : σ.mapMatrix Y * σ.mapMatrix Yi = 1` using `by rw [← map_mul, hYYi, map_one]`. Establish `hYeq : h * σ.mapMatrix Y = Y * D`. Rewrite using `[hY, map_add, map_one, map_mul, hσD, Matrix.mul_add, Matrix.mul_one, Matrix.add_mul, Matrix.one_mul, ← Matrix.mul_assoc, hhσh, Matrix.one_mul, Matrix.mul_assoc, hDD, Matrix.mul_one, add_comm]`. Establish `hGP : h * σ.mapMatrix G = G * P`.
+
+Rewrite using `[hh, Matrix.mul_assoc, hσGiG, Matrix.mul_one]`. Establish `hYih : Yi * h = D * σ.mapMatrix Yi`. Combine the equalities or inequalities in the displayed calculation. Use `⟨hYu.unit⁻¹, α, hUYi, ?_⟩` and prove the remaining obligations. Rewrite using `[grM_iff, Units.val_mul]`.
+
+Express the relevant statement in the definitionally equal form `σ.mapMatrix (Yi * G) = D * (Yi * G) * P`. Rewrite using `[map_mul, Matrix.mul_assoc D, Matrix.mul_assoc Yi, ← hGP, ← Matrix.mul_assoc Yi, hYih, Matrix.mul_assoc D, ← Matrix.mul_assoc D D, hDD, Matrix.one_mul]`.
+-/
 theorem UpperTheory.V.Fr.ep_gflag :
     ∀ (O : Type) [CommRing O] [IsLocalRing O] [IsNoetherianRing O] [IsAdicComplete (maximalIdeal O) O], IsUnit (2 : O) → ∀ (R : Type) [CommRing R] [Algebra O R] [IsCO O R] (σ : R →ₐ[O] R), (∀ y, σ (σ y) = y) → ∀ {H : Type} (r : H → Matrix (Fin 3) (Fin 3) R) (g : GL (Fin 3) R), (∀ s, GrM σ pq pq (r s)) → (∀ s, UpT ((g : Matrix (Fin 3) (Fin 3) R) * r s * ((g⁻¹ : GL (Fin 3) R) : Matrix (Fin 3) (Fin 3) R))) → (∀ s i, ((g : Matrix (Fin 3) (Fin 3) R) * r s * ((g⁻¹ : GL (Fin 3) R) : Matrix (Fin 3) (Fin 3) R)) i i ∈ evp σ 0) → (∃ s, ∀ i j, i ≠ j → IsUnit (((g : Matrix (Fin 3) (Fin 3) R) * r s * ((g⁻¹ : GL (Fin 3) R) : Matrix (Fin 3) (Fin 3) R)) i i - ((g : Matrix (Fin 3) (Fin 3) R) * r s * ((g⁻¹ : GL (Fin 3) R) : Matrix (Fin 3) (Fin 3) R)) j j)) → ∃ (u : GL (Fin 3) R) (α : Fin 3 → ZMod 2), UpT (u : Matrix (Fin 3) (Fin 3) R) ∧ GrM σ α pq ((u * g : GL (Fin 3) R) : Matrix (Fin 3) (Fin 3) R) := by
   intro O _ _ _ _ h2 R _ _ _ σ hσ H r g hr hT hd hs

@@ -9,6 +9,11 @@ namespace PositivityTheory.Rg.BcB.SpectralAccumulation.Lim5
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
+/- English proof (translation)
+Take `⟨k₁, hk₁⟩` from `eventually_atTop.1 (hsmall 1 one_pos)`. Use `concl_subseq (ψ := fun k => k + k₁) (fun a b h => by simpa using h) ?_` and prove the remaining obligations. Use `caseB' hTB hNE hG hTS hTr hΩb hΘb hBTK hIH hRep (fun k => hVd _) (fun k => hVt _) (fun k => hVb _) (fun k => ?_) (fun ε hε => (tendsto_add_atTop_nat k₁).eventually (hsmall ε hε))` and prove the remaining obligations. Assume the negation of the conclusion as `hcon`. Apply `hk₁ (k + k₁) (Nat.le_add_left _ _)` to reduce the goal to its premises.
+
+Introduce `r hr hrN c hc`. Conclude with `(hcon ⟨r, hr, hrN, c, hc⟩).elim`.
+-/
 theorem caseB (hTB : TwBound) (hNE : NodeEmb) (hG : Graft) (hTS : TwShift) (hTr : TrStable) {N : ℕ}
     {K : Subgroup (GL (Fin N) (Af E))} {W : Submodule ℂ (Kinf E N → ℂ)}
     {Ω Ωb : ∀ M : ℕ, Set (Submodule ℂ (Kinf E M → ℂ))} {Θ Θb : ∀ M : ℕ, Set (Subgroup (GL (Fin M) (Af E)))}
@@ -38,6 +43,29 @@ def Q (N : ℕ) : Prop :=
   ∀ K : Subgroup (GL (Fin N) (Af E)), IsOpen (K : Set (GL (Fin N) (Af E))) →
   ∃ Θ : ∀ M : ℕ, Set (Subgroup (GL (Fin M) (Af E))), Levels E Θ ∧ Seq N W K Ω Θ
 
+/- English proof (translation)
+Proceed by induction on `N using Nat.strong_induction_on with`. Consider the case `_ N IH`. Introduce `W hW`. Take `⟨Ωb, hΩb, hBT'⟩` from `hBT E N W hW`. Establish `hI1 : ∀ (M' : ℕ) (W' : Submodule ℂ (Kinf E M' → ℂ)), ∃ Ω' : ∀ M : ℕ, Set (Submodule ℂ (Kinf E M → ℂ)), M' < N → FiniteDimensional ℂ W' → KTypes E Ω' ∧ ∀ K' : Subgroup (GL (Fin M') (Af E)), IsOpen (K' : Set (GL (Fin M') (Af E))) → ∃ Θ' : ∀ M : ℕ, Set (Subgroup (GL (Fin M) (Af E))) …`.
+
+Introduce `M' W'`. Distinguish the cases in `h : M' < N ∧ FiniteDimensional ℂ W'`. Take `⟨Ω', h1, h2⟩` from `IH M' h.1 W' h.2`. Conclude with `⟨Ω', fun _ _ => ⟨h1, h2⟩⟩`. Conclude with `⟨fun _ => ∅, fun h1 h2 => absurd ⟨h1, h2⟩ h⟩`.
+
+Use `choose ΩI hΩI using hI1`. Use `⟨fun M => {W' | ∃ h : N = M, W' = h ▸ W} ∪ ⋃ M' ∈ Set.Iio N, ⋃ W' ∈ Ωb M', ΩI M' W' M, fun M => ⟨?_, ?_⟩, fun K hK => ?_⟩` and prove the remaining obligations. Use `Set.Finite.union ?_ ((Set.finite_Iio N).biUnion fun M' hM' => (hΩb M').1.biUnion fun W' hW' => ((hΩI M' W' hM' ((hΩb M').2 W' hW')).1 M).1)` and prove the remaining obligations. Use `Set.Subsingleton.finite ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨h₁, rfl⟩ _ ⟨h₂, rfl⟩`.
+
+Both sides reduce to the same expression. Introduce and unpack `W' (⟨h, rfl⟩ | hW')`. Substitute `h` using the available equality. Conclude with `hW`. Simplify using `only [Set.mem_iUnion] at hW'`.
+
+Take `⟨M', hM', W'', hW'', hmem⟩` from `hW'`. Conclude with `((hΩI M' W'' hM' ((hΩb M').2 W'' hW'')).1 M).2 W' hmem`. Take `⟨Θb, hΘb, hBTK⟩` from `hBT' K hK`. Establish `hI2 : ∀ (M' : ℕ) (W' : Submodule ℂ (Kinf E M' → ℂ)) (K' : Subgroup (GL (Fin M') (Af E))), ∃ Θ' : ∀ M : ℕ, Set (Subgroup (GL (Fin M) (Af E))), M' < N → FiniteDimensional ℂ W' → IsOpen (K' : Set (GL (Fin M') (Af E))) → Levels E Θ' ∧ Seq M' W' K' (ΩI M' W') Θ'`. Introduce `M' W' K'`.
+
+Distinguish the cases in `h : M' < N ∧ FiniteDimensional ℂ W' ∧ IsOpen (K' : Set (GL (Fin M') (Af E)))`. Take `⟨Θ', h1, h2⟩` from `(hΩI M' W' h.1 h.2.1).2 K' h.2.2`. Conclude with `⟨Θ', fun _ _ _ => ⟨h1, h2⟩⟩`. Conclude with `⟨fun _ => ∅, fun h1 h2 h3 => absurd ⟨h1, h2, h3⟩ h⟩`. Use `choose ΘI hΘI using hI2`.
+
+Use `⟨fun M => {K' | ∃ h : N = M, K' = h ▸ K} ∪ ⋃ M' ∈ Set.Iio N, ⋃ W' ∈ Ωb M', ⋃ K' ∈ Θb M', ΘI M' W' K' M, fun M => ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Use `Set.Finite.union ?_ ((Set.finite_Iio N).biUnion fun M' hM' => (hΩb M').1.biUnion fun W' hW' => (hΘb M').1.biUnion fun K' hK' => ((hΘI M' W' K' hM' ((hΩb M').2 W' hW') ((hΘb M').2 K' hK')).1 M).1)` and prove the remaining obligations. Use `Set.Subsingleton.finite ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨h₁, rfl⟩ _ ⟨h₂, rfl⟩`. Both sides reduce to the same expression.
+
+Introduce and unpack `K' (⟨h, rfl⟩ | hK')`. Substitute `h` using the available equality. Conclude with `hK`. Simplify using `only [Set.mem_iUnion] at hK'`. Take `⟨M', hM', W'', hW'', K'', hK'', hmem⟩` from `hK'`.
+
+Conclude with `((hΘI M' W'' K'' hM' ((hΩb M').2 W'' hW'') ((hΘb M').2 K'' hK'')).1 M).2 K' hmem`. Introduce `R hN hRep V hVd hVt hVb`. Distinguish the cases in `hA : ∃ ε > 0, ∃ᶠ k in atTop, Gap ε (V k)`. Take `⟨ε, hε, hfr⟩` from `hA`. Conclude with `caseA hFD hN hK hW (Or.inl ⟨rfl, rfl⟩) (Or.inl ⟨rfl, rfl⟩) hRep hVd hVt hVb hε hfr`.
+
+Establish `hB : ∀ ε > 0, ∀ᶠ k in atTop, ¬ Gap ε (V k)` using `fun ε hε => Filter.not_frequently.1 fun h => hA ⟨ε, hε, h⟩`. Use `caseB hTB hNE hG hTS hTr hΩb hΘb hBTK ?_ hRep hVd hVt hVb hB` and prove the remaining obligations. Introduce `M' hM' W' hW' K' hK'`. Use `seq_mono (hΘI M' W' K' hM' ((hΩb M').2 W' hW') ((hΘb M').2 K' hK')).2 (fun M x hx => ?_) (fun M x hx => ?_)` and prove the remaining obligations. Use `Or.inr ?_` and prove the remaining obligations.
+
+Simplify using `only [Set.mem_iUnion]`. Conclude with `⟨M', hM', W', hW', hx⟩`. Use `Or.inr ?_` and prove the remaining obligations. Simplify using `only [Set.mem_iUnion]`. Conclude with `⟨M', hM', W', hW', K', hK', hx⟩`.
+-/
 theorem q_all (hFD : FinDisc) (hBT : BlockTypes) (hTB : TwBound) (hNE : NodeEmb) (hG : Graft) (hTS : TwShift)
     (hTr : TrStable) (N : ℕ) : Q E N := by
   induction N using Nat.strong_induction_on with
@@ -107,6 +135,11 @@ theorem q_all (hFD : FinDisc) (hBT : BlockTypes) (hTB : TwBound) (hNE : NodeEmb)
       simp only [Set.mem_iUnion]
       exact ⟨M', hM', W', hW', K', hK', hx⟩
 
+/- English proof (translation)
+Introduce `E _ _ _ N W hW`. Take `⟨Ω, hΩ, h⟩` from `q_all hFD hBT hTB hNE hG hTS hTr N W hW`. Use `⟨Ω, hΩ, fun K hK => ?_⟩` and prove the remaining obligations. Take `⟨Θ, hΘ, hS⟩` from `h K hK`. Use `⟨Θ, hΘ, ?_⟩` and prove the remaining obligations.
+
+Introduce `_ _ μ _ R hN hRep V hVd hVt hVb`. Take `⟨φ, t, t₀, hφ, hp₀, hz₀, hp, hs, hl, htw, he⟩` from `hS R hN hRep V hVd hVt hVb`. Conclude with `⟨φ, t, t₀, hφ, good_of_pos hp₀ hz₀, fun k => disc_of_pos (hp k), hs, allLeaves_and (allLeaves_pos hp₀) hl, htw, he⟩`.
+-/
 theorem limit_of_finite_discrete (hFD : FinDisc) (hBT : BlockTypes) (hTB : TwBound) (hNE : NodeEmb) (hG : Graft) (hTS : TwShift)
     (hTr : TrStable) : Lim5 := by
   intro E _ _ _ N W hW

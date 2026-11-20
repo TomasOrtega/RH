@@ -9,6 +9,11 @@ namespace MassDataLevelSSteps
 open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.SG.Measures Formalism.L2.SG.AdBridge
 open Formalism.MainNotions.S (AutInst)
 
+/- English proof (translation)
+Introduce `I`. Take `⟨e, he⟩` from `MassDataMassesW.splitIso_holds I.cm.sig I.J`. Establish `h : (fun h : HAd I => (splitA I.cm.sig I.J h).2) = Prod.snd ∘ e`. Use function extensionality and compare the values at `h`. Simplify using `only [Function.comp, he]`.
+
+Rewrite using `[h]`. Conclude with `isOpenMap_snd.comp e.toHomeomorph.isOpenMap`.
+-/
 theorem finProjOpen_holds : FinProjOpen := by
   intro I
   obtain ⟨e, he⟩ := MassDataMassesW.splitIso_holds I.cm.sig I.J

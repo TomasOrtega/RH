@@ -49,6 +49,17 @@ section
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws
 
+/- English proof (translation)
+Establish `key : ∀ x ∈ Submodule.span K' (Set.range f'), x.map e.symm ∈ Submodule.span K (Set.range f)`. Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem a ha`. Take `⟨g, rfl⟩` from `ha`.
+
+Use `Submodule.subset_span ⟨g, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Simplify using `[hf]`. Consider the case `zero`. Establish `: (0 : Matrix n n K').map e.symm = 0` using `by ext i j; simp`.
+
+Rewrite using `[this]`. Conclude with `zero_mem _`. Consider the case `add a b _ _ ha hb`. Establish `: (a + b).map e.symm = a.map e.symm + b.map e.symm` using `by ext i j; simp`. Rewrite using `[this]`.
+
+Conclude with `add_mem ha hb`. Consider the case `smul s a _ ha`. Establish `: (s • a).map e.symm = e.symm s • a.map e.symm` using `by ext i j; simp`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ ha`.
+
+Rewrite using `[eq_top_iff]`. Introduce `y _`. Establish `h1` using `key (y.map e) (by rw [h]; trivial)`. Establish `h2 : (y.map e).map e.symm = y` using `by ext i j; simp`. Rewrite `h1` using `[h2]`. Then use the resulting hypothesis.
+-/
 private theorem span_of_equiv {K K' H n : Type} [CommRing K] [CommRing K'] [Fintype n] [DecidableEq n] (e : K ≃+* K')
     (f : H → Matrix n n K) (f' : H → Matrix n n K') (hf : ∀ g i j, f' g i j = e (f g i j))
     (h : Submodule.span K' (Set.range f') = ⊤) : Submodule.span K (Set.range f) = ⊤ := by
@@ -75,6 +86,9 @@ private theorem span_of_equiv {K K' H n : Type} [CommRing K] [CommRing K'] [Fint
   have h2 : (y.map e).map e.symm = y := by ext i j; simp
   rwa [h2] at h1
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `((r g).map f).charpoly = ((r' g).map f).charpoly`. Rewrite using `[Matrix.charpoly_map, Matrix.charpoly_map, h]`.
+-/
 private theorem charpoly_mapRep {R R' H : Type} [CommRing R] [CommRing R'] [Group H] (f : R →+* R') (r r' : H →* M4 R)
     (h : ∀ g, (r g).charpoly = (r' g).charpoly) (g : H) : (mapRep f r g).charpoly = (mapRep f r' g).charpoly := by
   change ((r g).map f).charpoly = ((r' g).map f).charpoly

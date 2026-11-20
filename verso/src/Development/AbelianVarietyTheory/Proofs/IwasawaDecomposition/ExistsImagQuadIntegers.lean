@@ -7,6 +7,17 @@ namespace GlobalTheory.Mem.ImagQuad
 
 open QuadraticZeta
 
+/- English proof (translation)
+Establish `hd' : (0 : ℚ) < d` using `by exact_mod_cast hd`. Use `set p : Polynomial ℚ := Polynomial.X ^ 2 + Polynomial.C (d : ℚ) with hp`. Establish `hpdeg : p.natDegree = 2`. Rewrite using `[hp]`. Use `compute_degree!`.
+
+Establish `hpmon : p.Monic`. Rewrite using `[hp]`. Use `monicity!`. Establish `hroot : ∀ x : ℚ, ¬ p.IsRoot x`. Introduce `x hx`.
+
+Simplify using `only [hp, Polynomial.IsRoot, Polynomial.eval_add, Polynomial.eval_pow, Polynomial.eval_X, Polynomial.eval_C] at hx`. Use polynomial arithmetic with `[sq_nonneg x]`. Establish `hirr : Irreducible p` using `Polynomial.irreducible_of_degree_le_three_of_not_isRoot (by rw [hpdeg]; decide) hroot`. Establish `: Fact (Irreducible p)` using `⟨hirr⟩`. Set `pb` to `AdjoinRoot.powerBasis hirr.ne_zero`.
+
+Establish `: FiniteDimensional ℚ (AdjoinRoot p)` using `pb.finite`. Establish `: NumberField (AdjoinRoot p)` using `⟨⟩`. Use `⟨AdjoinRoot p, inferInstance, inferInstance, AdjoinRoot.root p, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[pb.finrank, AdjoinRoot.powerBasis_dim, hpdeg]`. Establish `h` using `AdjoinRoot.eval₂_root p`.
+
+Simplify using `only [hp, Polynomial.eval₂_add, Polynomial.eval₂_pow, Polynomial.eval₂_X, Polynomial.eval₂_C] at h`. Rewrite using `[eq_neg_iff_add_eq_zero, ← h]`. Simplify using the standard rewrite rules.
+-/
 theorem exists_field_sq_eq_neg (d : ℕ) (hd : 0 < d) :
     ∃ (K : Type) (_ : Field K) (_ : NumberField K) (r : K),
       finrank ℚ K = 2 ∧ r ^ 2 = -(d : K) := by
@@ -35,6 +46,43 @@ theorem exists_field_sq_eq_neg (d : ℕ) (hd : 0 < d) :
     rw [eq_neg_iff_add_eq_zero, ← h]
     simp
 
+/- English proof (translation)
+Introduce `d hdp hd4`. Take `⟨K, _, _, r, h2, hr⟩` from `exists_field_sq_eq_neg d hdp.pos`. Establish `hsq : Squarefree d` using `hdp.squarefree`. Take `⟨w, bar, hw, -, hspan, hemb, -⟩` from `GlobalTheory.ringOfIntegers_sqrt_neg_three_mod_four d hsq hd4 K h2 r hr`. Establish `hwr : 2 * (w : K) - 1 = r` using `by rw [hw]; ring`.
+
+Establish `hcoe : algebraMap (𝓞 K) K (2 * w - 1) = r`. Rewrite using `[← hwr]`. Simplify using `only [map_sub, map_mul, map_one, map_ofNat]`. Establish `hw2 : (2 * w - 1) ^ 2 = -(d : 𝓞 K)`. Apply `RingOfIntegers.coe_injective` to reduce the goal to its premises.
+
+Rewrite using `[map_pow, hcoe, hr, map_neg, map_natCast]`. Take `⟨k, hk⟩ : ∃ k : ℕ, d + 1 = 4 * k` from `⟨(d + 1) / 4, by omega⟩`. Establish `hwsq : w * w = w - (k : 𝓞 K)`. Establish `h4 : (4 : 𝓞 K) * (w * w - w + k) = 0`. Establish `: ((d : ℕ) : 𝓞 K) + 1 = 4 * (k : 𝓞 K)` using `by exact_mod_cast hk`.
+
+Take the linear combination `hw2 - this`. Establish `h4ne : (4 : 𝓞 K) ≠ 0`. Introduce `h`. Establish `: ((4 : 𝓞 K) : K) = 0` using `by rw [h]; simp`. Evaluate the numerical expressions using `at this`.
+
+Use `(mul_eq_zero.mp h4).resolve_left h4ne` as an intermediate fact. Take the linear combination `this`. Establish `hli : LinearIndependent ℤ ![(1 : 𝓞 K), w]`. Rewrite using `[LinearIndependent.pair_iff]`. Introduce `s t hst`.
+
+Establish `hK : (s : K) + t * (w : K) = 0`. Use `congrArg (fun z : 𝓞 K => (z : K)) hst` as an intermediate fact. Simplify `this` using `[zsmul_eq_mul]`. Establish `ht : t = 0`. Assume the negation of the conclusion as `ht`.
+
+Establish `htK : (t : K) ≠ 0` using `by exact_mod_cast ht`. Use `set q : ℚ := -(2 * s + t) / t with hqdef`. Establish `hrq : r = algebraMap ℚ K q`. Simplify using `only [hqdef, map_div₀, map_neg, map_add, map_mul, map_ofNat, map_intCast]`. Clear the denominators using the available nonvanishing facts.
+
+Take the linear combination `(2 : K) * hK + (-(t : K)) * hwr`. Establish `hq : q ^ 2 = -(d : ℚ)`. Apply `(algebraMap ℚ K).injective` to reduce the goal to its premises. Rewrite using `[map_pow, ← hrq, hr]`. Simplify using the standard rewrite rules.
+
+Establish `hdpos : (0 : ℚ) < d` using `by exact_mod_cast hdp.pos`. Use polynomial arithmetic with `[sq_nonneg q]`. Substitute `ht` using the available equality. Use `⟨?_, rfl⟩` and prove the remaining obligations. Establish `: (s : K) = 0` using `by simpa using hK`.
+
+Conclude with `this` after adjusting the coercions. Establish `hsp : ⊤ ≤ Submodule.span ℤ (Set.range ![(1 : 𝓞 K), w])`. Introduce `z _`. Take `⟨a, b, rfl⟩` from `hspan z`. Establish `hr' : Set.range ![(1 : 𝓞 K), w] = {1, w}`.
+
+Rewrite using `[Matrix.range_cons, Matrix.range_cons, Matrix.range_empty, Set.union_empty]`. Both sides reduce to the same expression. Rewrite using `[hr', Submodule.mem_span_pair]`. Conclude with `⟨a, b, by simp [zsmul_eq_mul]⟩`. Set `B` to `Basis.mk hli hsp`.
+
+Establish `hB0 : B 0 = 1` using `by simp [B]`. Establish `hB1 : B 1 = w` using `by simp [B]`. Establish `hrepr : ∀ s t : ℤ, B.repr ((s : 𝓞 K) + t * w) = Finsupp.single 0 s + Finsupp.single 1 t`. Introduce `s t`. Establish `: (s : 𝓞 K) + t * w = s • B 0 + t • B 1`.
+
+Rewrite using `[hB0, hB1]`. Simplify using `[zsmul_eq_mul]`. Rewrite using `[this, map_add, map_zsmul, map_zsmul, B.repr_self, B.repr_self]`. Simplify using the standard rewrite rules. Use `⟨K, inferInstance, inferInstance, w, ?_, h2, ?_, hw2, hspan, ?_⟩` and prove the remaining obligations.
+
+Use `⟨fun v => ?_⟩` and prove the remaining obligations. Rewrite using `[InfinitePlace.isComplex_iff]`. Conclude with `(hemb v.embedding).1`. Conclude with `GlobalTheory.discr_eq_neg_of_sq_eq h2 hsq hd4 hr`. Introduce `a b`.
+
+Rewrite using `[Algebra.norm_eq_matrix_det B, Matrix.det_fin_two]`. Establish `e00 : Algebra.leftMulMatrix B ((a : 𝓞 K) + b * w) 0 0 = a`. Rewrite using `[Algebra.leftMulMatrix_eq_repr_mul, hB0, mul_one, hrepr]`. Simplify using the standard rewrite rules. Establish `e10 : Algebra.leftMulMatrix B ((a : 𝓞 K) + b * w) 1 0 = b`.
+
+Rewrite using `[Algebra.leftMulMatrix_eq_repr_mul, hB0, mul_one, hrepr]`. Simplify using the standard rewrite rules. Establish `hx1 : ((a : 𝓞 K) + b * w) * w = ((-(b * k) : ℤ) : 𝓞 K) + ((a + b : ℤ) : 𝓞 K) * w`. Use `push_cast`. Take the linear combination `(b : 𝓞 K) * hwsq`.
+
+Establish `e01 : Algebra.leftMulMatrix B ((a : 𝓞 K) + b * w) 0 1 = -(b * k)`. Rewrite using `[Algebra.leftMulMatrix_eq_repr_mul, hB1, hx1, hrepr]`. Simplify using the standard rewrite rules. Establish `e11 : Algebra.leftMulMatrix B ((a : 𝓞 K) + b * w) 1 1 = a + b`. Rewrite using `[Algebra.leftMulMatrix_eq_repr_mul, hB1, hx1, hrepr]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[e00, e10, e01, e11]`. Establish `hk' : (d : ℤ) + 1 = 4 * k` using `by exact_mod_cast hk`. Take the linear combination `(-(b ^ 2) : ℤ) * hk'`.
+-/
 theorem exists_imagQuad_integers : ∀ d : ℕ, d.Prime → d % 4 = 3 →
     ∃ (K : Type) (_ : Field K) (_ : NumberField K) (ω : 𝓞 K), IsTotallyComplex K ∧
       Module.finrank ℚ K = 2 ∧ discr K = -(d : ℤ) ∧ (2 * ω - 1) ^ 2 = -(d : 𝓞 K) ∧

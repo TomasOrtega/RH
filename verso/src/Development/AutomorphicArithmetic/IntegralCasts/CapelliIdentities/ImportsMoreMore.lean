@@ -5,6 +5,11 @@ import Formalism.SharpRestriction.RamificationFrobenius.TotientGaloisClasses.Con
 import Formalism.LocalRingCardinality.Params
 import Formalism.LocalRingCardinality.DataHost
 
+/- English proof (translation)
+Introduce `D p h0 h1`. Establish `hc : Nat.Coprime (D.host.g 0) (D.host.g 1)` using `(Nat.coprime_primes (D.host.g_prime 0) (D.host.g_prime 1)).2 D.host.g_ne`. Take `⟨a, b, hab⟩ : IsCoprime (D.host.g 0 : NumberField.RingOfIntegers ↥D.host.F) (D.host.g 1)` from `hc.cast`. Apply `p.isPrime.ne_top` to reduce the goal to its premises. Rewrite using `[Ideal.eq_top_iff_one, ← hab]`.
+
+Conclude with `p.asIdeal.add_mem (p.asIdeal.mul_mem_left a h0) (p.asIdeal.mul_mem_left b h1)`.
+-/
 theorem UpperTheory.Reformulated.B.Qf52.not_both :
     ∀ (D : Formalism.BasicNotions.D7) (p : Formalism.MainNotions.S.LocalSplitGroups.PlF D),
     (↑(D.host.g (0 : Fin (2 : ℕ))) : NumberField.RingOfIntegers ↥D.host.F) ∈ p.asIdeal →

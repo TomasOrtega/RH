@@ -3,6 +3,17 @@ import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.IsReducedAlgebr
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `hfin : (minimalPrimes R).Finite` using `minimalPrimes.finite_of_isNoetherianRing R`. Establish `hsub : (p : Set R) ⊆ ⋃ q ∈ hfin.toFinset, (q : Set R)`. Introduce `x hx`. Establish `hx' : x ∉ nonZeroDivisors R` using `Set.disjoint_left.mp hp hx`. Rewrite `hx'` using `[mem_nonZeroDivisors_iff_right]`.
+
+Use `push_neg at hx'`. Take `⟨y, hxy, hy⟩` from `hx'`. Establish `hrad : (⊥ : Ideal R).radical = ⊥`. Conclude with `nilradical_eq_zero R`. Establish `: x ∈ ⋃ q ∈ (⊥ : Ideal R).minimalPrimes, (q : Set R)`.
+
+Rewrite using `[Ideal.iUnion_minimalPrimes]`. Use `⟨y, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hrad]`. Simplify using `using hy`. Rewrite using `[hrad]`.
+
+Simplify `hxy` using `[mul_comm]`. Simplify `this` using `[Set.Finite.mem_toFinset]`. Establish `hprime : ∀ q ∈ hfin.toFinset, q.IsPrime` using `fun q hq => ((Set.Finite.mem_toFinset hfin).1 hq).isPrime`. Take `⟨q, hq, hpq⟩` from `(Ideal.subset_union_prime (⊥ : Ideal R) ⊥ fun q hq _ _ => hprime q hq).1 hsub`. Establish `hqm : q ∈ minimalPrimes R` using `(Set.Finite.mem_toFinset hfin).1 hq`.
+
+Establish `: q ≤ p` using `hqm.2 ⟨inferInstance, bot_le⟩ hpq`. Conclude with `(le_antisymm hpq this) ▸ hqm`.
+-/
 theorem mem_minimalPrimes_of_disjoint_nonZeroDivisors {R : Type} [CommRing R] [IsReduced R]
     [IsNoetherianRing R] (p : Ideal R) [p.IsPrime] (hp : Disjoint (p : Set R) (nonZeroDivisors R)) :
     p ∈ minimalPrimes R := by
@@ -29,6 +40,15 @@ theorem mem_minimalPrimes_of_disjoint_nonZeroDivisors {R : Type} [CommRing R] [I
   have : q ≤ p := hqm.2 ⟨inferInstance, bot_le⟩ hpq
   exact (le_antisymm hpq this) ▸ hqm
 
+/- English proof (translation)
+Establish `hN : IsNoetherianRing (FractionRing R)` using `IsLocalization.isNoetherianRing (nonZeroDivisors R) _ inferInstance`. Establish `hRed : IsReduced (FractionRing R)` using `inferInstance`. Use `⟨?_, hRed⟩` and prove the remaining obligations. Rewrite using `[isArtinianRing_iff_isNoetherianRing_krullDimLE_zero]`. Use `⟨hN, Ring.krullDimLE_zero_iff.mpr fun P hP => ?_⟩` and prove the remaining obligations.
+
+Take `⟨M, hM, hPM⟩` from `Ideal.exists_le_maximal P hP.ne_top`. Establish `key : ∀ (Q : Ideal (FractionRing R)), Q.IsPrime → Q.comap (algebraMap R (FractionRing R)) ∈ minimalPrimes R`. Introduce `Q hQ`. Establish `h` using `(IsLocalization.isPrime_iff_isPrime_disjoint (nonZeroDivisors R) (FractionRing R) Q).1 hQ`. Use `haveI := h.1`.
+
+Conclude with `mem_minimalPrimes_of_disjoint_nonZeroDivisors _ h.2.symm`. Establish `h1` using `key P hP`. Establish `h2` using `key M hM.isPrime`. Establish `hle : M.comap (algebraMap R (FractionRing R)) ≤ P.comap (algebraMap R (FractionRing R))` using `h2.2 ⟨h1.1.1, bot_le⟩ (Ideal.comap_mono hPM)`. Establish `: P = M`.
+
+Rewrite using `[← IsLocalization.map_comap (nonZeroDivisors R) (FractionRing R) P, ← IsLocalization.map_comap (nonZeroDivisors R) (FractionRing R) M]`. Conclude with `congrArg _ (le_antisymm (Ideal.comap_mono hPM) hle)`. Conclude with `this ▸ hM`.
+-/
 theorem total_fractions_isArtinian_isReduced (R : Type) [CommRing R] [IsReduced R]
     [IsNoetherianRing R] : IsArtinianRing (FractionRing R) ∧ IsReduced (FractionRing R) := by
   have hN : IsNoetherianRing (FractionRing R) :=
@@ -54,6 +74,11 @@ theorem total_fractions_isArtinian_isReduced (R : Type) [CommRing R] [IsReduced 
     exact congrArg _ (le_antisymm (Ideal.comap_mono hPM) hle)
   exact this ▸ hM
 
+/- English proof (translation)
+Introduce `B _ _ f A' _ _ _`. Establish `: IsNoetherianRing A'` using `Algebra.FiniteType.isNoetherianRing B A'`. Establish `: IsReduced A'` using `GlobalTheory.isReduced_algebra_of_smooth_of_isNoetherianRing B A'`. Establish `: IsNoetherianRing (Localization.Away (algebraMap B A' f))` using `IsLocalization.isNoetherianRing (Submonoid.powers (algebraMap B A' f)) _ inferInstance`. Establish `: IsReduced (Localization.Away (algebraMap B A' f))` using `inferInstance`.
+
+Conclude with `total_fractions_isArtinian_isReduced _`.
+-/
 theorem fractionRing_away_etale_isArtinian_isReduced : ∀ (B : Type) [CommRing B] [IsDedekindDomain B] (f : B) (A' : Type) [CommRing A'] [Algebra B A'] [Algebra.Etale B A'], IsArtinianRing (FractionRing (Localization.Away (algebraMap B A' f))) ∧ IsReduced (FractionRing (Localization.Away (algebraMap B A' f))) := by
   intro B _ _ f A' _ _ _
   have : IsNoetherianRing A' := Algebra.FiniteType.isNoetherianRing B A'

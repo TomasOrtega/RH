@@ -10,6 +10,11 @@ namespace GlobalTheory.Chamber.LanglandsFourier
 
 variable {k : ℕ}
 
+/- English proof (translation)
+Unfold `tau`. Use `congr 1`. Apply `propext` to reduce the goal to its premises. Use `forall₂_congr fun u _ => ?_` and prove the remaining obligations. Rewrite using `[inner_smul_right]`.
+
+Conclude with `mul_pos_iff_of_pos_left hc`.
+-/
 theorem tau_smul (P R : Finset (SV k)) (H : A0 k) {c : ℝ} (hc : 0 < c) : tau P R (c • H) = tau P R H := by
   unfold tau
   congr 1
@@ -18,6 +23,11 @@ theorem tau_smul (P R : Finset (SV k)) (H : A0 k) {c : ℝ} (hc : 0 < c) : tau P
   rw [inner_smul_right]
   exact mul_pos_iff_of_pos_left hc
 
+/- English proof (translation)
+Unfold `tauHat`. Use `congr 1`. Apply `propext` to reduce the goal to its premises. Use `forall₂_congr fun u _ => ?_` and prove the remaining obligations. Rewrite using `[inner_smul_right]`.
+
+Conclude with `mul_pos_iff_of_pos_left hc`.
+-/
 theorem tauHat_smul (P R : Finset (SV k)) (H : A0 k) {c : ℝ} (hc : 0 < c) : tauHat P R (c • H) = tauHat P R H := by
   unfold tauHat
   congr 1
@@ -26,9 +36,17 @@ theorem tauHat_smul (P R : Finset (SV k)) (H : A0 k) {c : ℝ} (hc : 0 < c) : ta
   rw [inner_smul_right]
   exact mul_pos_iff_of_pos_left hc
 
+/- English proof (translation)
+Simplify using `only [gamP, sub_zero, tau_smul _ _ _ hc, tauHat_smul _ _ _ hc]`.
+-/
 theorem gamP_smul (P R : Finset (SV k)) (H : A0 k) {c : ℝ} (hc : 0 < c) : gamP P R 0 (c • H) = gamP P R 0 H := by
   simp only [gamP, sub_zero, tau_smul _ _ _ hc, tauHat_smul _ _ _ hc]
 
+/- English proof (translation)
+Take `⟨C, hC⟩` from `GlobalTheory.T.gamma_function_bounded_support k P R 0 hP hR`. Assume the negation of the conclusion as `hne`. Establish `hn : 0 < ‖H‖` using `norm_pos_iff.2 h0`. Use `set c : ℝ := (|C| + 1) / ‖H‖ with hc`. Establish `cpos : 0 < c` using `div_pos (by positivity) hn`.
+
+Use `hC (c • H) (Submodule.smul_mem _ _ hH) (by rwa [gamP_smul _ _ _ cpos])` as an intermediate fact. Rewrite `this` using `[norm_smul, Real.norm_of_nonneg cpos.le, hc, div_mul_cancel₀ _ hn.ne']`. Combine the linear relations using `[le_abs_self C]`.
+-/
 theorem gamP_eq_zero (P R : Finset (SV k)) (hP : IsPar P) (hR : R ⊆ P) (H : A0 k) (hH : H ∈ aMQ (aP P) R)
     (h0 : H ≠ 0) : gamP P R 0 H = 0 := by
   obtain ⟨C, hC⟩ := GlobalTheory.T.gamma_function_bounded_support k P R 0 hP hR
@@ -40,6 +58,9 @@ theorem gamP_eq_zero (P R : Finset (SV k)) (hP : IsPar P) (hR : R ⊆ P) (H : A0
   rw [norm_smul, Real.norm_of_nonneg cpos.le, hc, div_mul_cancel₀ _ hn.ne'] at this
   linarith [le_abs_self C]
 
+/- English proof (translation)
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `sub_mem (Submodule.subset_span ⟨u, hu, rfl⟩) (vecSpan_mono hS (Submodule.starProjection_apply_mem _ _))`. Conclude with `Submodule.sub_starProjection_mem_orthogonal _`.
+-/
 theorem wt_mem_aMQ (P S : Finset (SV k)) (hS : S ⊆ P) {u : SV k} (hu : u ∈ P) : wt S u ∈ aMQ (aP P) S := by
   refine ⟨?_, ?_⟩
   · exact sub_mem (Submodule.subset_span ⟨u, hu, rfl⟩) (vecSpan_mono hS (Submodule.starProjection_apply_mem _ _))
@@ -48,6 +69,13 @@ theorem wt_mem_aMQ (P S : Finset (SV k)) (hS : S ⊆ P) {u : SV k} (hu : u ∈ P
 end GlobalTheory.Chamber.LanglandsFourier
 
 open GlobalTheory.Chamber.LanglandsFourier in
+/- English proof (translation)
+Introduce `k P S hP hS hne l hl`. Take `⟨-, hF⟩` from `GlobalTheory.T.gamma_integral_alternating_sum k P S 0 hP hS`. Establish `hF` using `hF l hl`. Simplify using `only [map_zero, sub_zero, eL, inner_zero_right, Complex.ofReal_zero, mul_zero, Complex.exp_zero, mul_one] at hF`. Rewrite using `[← hF]`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨u, hu⟩ : ∃ u, u ∈ P \ S := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hne (Subset.antisymm hS fun u hu => by by_contra h'; exact h u (mem_sdiff.2 ⟨hu, h'⟩))`. Use `haveI : Nontrivial (aMQ (aP P) S) := ⟨⟨⟨_, wt_mem_aMQ P S hS (mem_sdiff.1 hu).1⟩, 0, fun e => hP.wt_ne_zero hS hu (congrArg Subtype.val e)⟩⟩`.
+
+Apply `integral_eq_zero_of_ae` to reduce the goal to its premises. Establish `hae : ∀ᵐ H : aMQ (aP P) S, H ≠ 0` using `compl_mem_ae_iff.2 (measure_singleton 0)`. Use `filter_upwards [hae] with H hH`. Rewrite using `[gamP_eq_zero P S hP hS H H.2 (fun e => hH (Subtype.ext e))]`. Simplify using the standard rewrite rules.
+-/
 theorem GlobalTheory.Chamber.langlands_fourier_sum : ∀ (k : ℕ) (P S : Finset (SV k)), IsPar P → S ⊆ P → S ≠ P → ∀ l ∈ generic k,
     ∑ R ∈ between P S, (-1 : ℂ) ^ (P \ R).card * epsHat P R l * eps R S l = 0 := by
   intro k P S hP hS hne l hl

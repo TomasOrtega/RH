@@ -18,6 +18,11 @@ variable {V : Type} [CommRing V] [IsDomain V]
 def HasVal (ϖ : V) (c : FractionRing V) (n : ℤ) : Prop :=
   ∃ u : Vˣ, c = algebraMap V (FractionRing V) ϖ ^ n * algebraMap V (FractionRing V) (u : V)
 
+/- English proof (translation)
+Introduce `x hx`. Establish `hx' : x ∈ ⋂ k, (φ' k).base ⁻¹' (L.U (j k) : Set X)` using `hx`. Use `show f.base x ∈ ⋂ k, (φ k).base ⁻¹' (L.U (j k) : Set X)`. Simplify using `only [Set.mem_iInter, Set.mem_preimage] at hx' ⊢`. Introduce `k`.
+
+Establish `h` using `hx' k`. Rewrite `h` using `[hφ k]`. Simplify using `using h`.
+-/
 lemma wchart_le_preimage {X Y Z : Scheme.{0}} (L : LB X) {Ix : Type} [Fintype Ix] (f : Z ⟶ Y)
     (φ : Ix → (Y ⟶ X)) (φ' : Ix → (Z ⟶ X)) (hφ : ∀ k, φ' k = f ≫ φ k) (j : Ix → L.ι) :
     LB.wchart L φ' j ≤ f ⁻¹ᵁ LB.wchart L φ j := by
@@ -41,6 +46,9 @@ namespace QForm
 
 variable (D : DegPre V)
 
+/- English proof (translation)
+Simplify using `only [ptK, Over.comp_left]`. Use `congr 1`.
+-/
 lemma ptK_eq (χ : D.X) : ptK (D.c χ) = jK V ≫ (D.c χ).left := by
   simp only [ptK, Over.comp_left]
   congr 1

@@ -6,10 +6,20 @@ open NumberField GlobalTheory.CuspRep MeasureTheory PositivityTheory.Affgl Globa
 
 namespace GlobalTheory.CompanionTheory.CTFin.ProdTrick
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.Qp2.exists_finset_separating V`.
+-/
 theorem exists_finset_separating {X : Type} (V : Submodule ℂ (X → ℂ)) [FiniteDimensional ℂ V] :
     ∃ T : Finset X, ∀ v ∈ V, (∀ x ∈ T, v x = 0) → v = 0 :=
   _root_.UpperTheory.Reformulated.B.Qp2.exists_finset_separating V
 
+/- English proof (translation)
+Introduce `X Y V₁ V₂ h₁ h₂`. Take `⟨T, hT⟩` from `exists_finset_separating V₁`. Set `S : Submodule ℂ (X × Y → ℂ)` to `{ carrier := {f | (∀ y, (fun x => f (x, y)) ∈ V₁) ∧ (∀ x, (fun y => f (x, y)) ∈ V₂)} add_mem' := fun {a b} ha hb => ⟨fun y => V₁.add_mem (ha.1 y) (hb.1 y), fun x => V₂.add_mem (ha.2 x) (hb.2 x)⟩ zero_mem' := ⟨fun _ => V₁.zero_mem, fun _ => V₂.zero_mem⟩ smul_mem' := fun c a ha => …`. Set `L : S →ₗ[ℂ] (T → V₂)` to `{ toFun := fun f t => ⟨fun y => (f : X × Y → ℂ) ((t : X), y), f.2.2 t⟩ map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl }`. Establish `hL : Function.Injective L`.
+
+Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `f hf`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `⟨x, y⟩`. Establish `hy` using `hT _ (f.2.1 y) (fun t ht => by`.
+
+Use `congrArg Subtype.val (congrFun hf ⟨t, ht⟩)` as an intermediate fact. Conclude with `congrFun this y)`. Conclude with `congrFun hy x`. Establish `: FiniteDimensional ℂ S` using `FiniteDimensional.of_injective L hL`. Conclude with `⟨S, this, fun f h1 h2 => ⟨h1, h2⟩⟩`.
+-/
 theorem exists_finiteDimensional_of_slices :
     ∀ (X Y : Type) (V₁ : Submodule ℂ (X → ℂ)) (V₂ : Submodule ℂ (Y → ℂ)),
       FiniteDimensional ℂ V₁ → FiniteDimensional ℂ V₂ →

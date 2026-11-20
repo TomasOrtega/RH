@@ -17,6 +17,13 @@ open GlobalTheory
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
+/- English proof (translation)
+Use `⟨Y.Λ_fg, fun x => (h x).trans (forall₂_congr fun y _ => ?_)⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.ThFr.EF_def]`. Break down `Y.κ0_xi with hk | hk` into its components or cases. Rewrite using `[hk, show (2 * Y.ξ0) / 2 = Y.ξ0 by ring]`. Establish `e : -(-(2 * Y.ξ0) / 2) * herm Y.Gm x y = -(-Y.ξ0 * herm Y.Gm x y)` using `by ring`.
+
+Rewrite using `[hk, e, map_neg]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨n, hn⟩`. Conclude with `⟨-n, by rw [hn, Int.cast_neg]⟩`. Introduce and unpack `⟨n, hn⟩`.
+
+Conclude with `⟨-n, by rw [Int.cast_neg, ← hn, neg_neg]⟩`.
+-/
 theorem selfD_of_isSelfDualTr {r : ℕ} (Y : Data E r) (h : IsSelfDualTr Y) : GlobalTheory.SW.SelfD Y Y.Λ := by
   refine ⟨Y.Λ_fg, fun x => (h x).trans (forall₂_congr fun y _ => ?_)⟩
   rw [GlobalTheory.ThFr.EF_def]
@@ -32,12 +39,21 @@ theorem selfD_of_isSelfDualTr {r : ℕ} (Y : Data E r) (h : IsSelfDualTr Y) : Gl
 
 def hypG : Matrix (Fin 2) (Fin 2) E := !![0, 1; 1, 0]
 
+/- English proof (translation)
+Apply the tactic sequence `fin_cases a <;> fin_cases b <;> simp [hypG, cc]`.
+-/
 theorem hypG_herm (a b : Fin 2) : cc (hypG (E := E) a b) = hypG b a := by
   fin_cases a <;> fin_cases b <;> simp [hypG, cc]
 
+/- English proof (translation)
+Simplify using `[hypG, Matrix.det_fin_two_of]`.
+-/
 theorem hypG_det : (hypG (E := E)).det ≠ 0 := by
   simp [hypG, Matrix.det_fin_two_of]
 
+/- English proof (translation)
+Simplify using `[herm, hypG, Fin.sum_univ_two]`.
+-/
 theorem herm_hypG (x y : Fin 2 → E) : herm hypG x y = x 0 * cc (y 1) + x 1 * cc (y 0) := by
   simp [herm, hypG, Fin.sum_univ_two]
 
@@ -45,9 +61,23 @@ def hypLat (J : FractionalIdeal (𝓞 E)⁰ E) : Submodule (𝓞 E) (Fin 2 → E
   ((1 : FractionalIdeal (𝓞 E)⁰ E) : Submodule (𝓞 E) E).comap (LinearMap.proj 0) ⊓
     (J : Submodule (𝓞 E) E).comap (LinearMap.proj 1)
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_hypLat {J : FractionalIdeal (𝓞 E)⁰ E} {x : Fin 2 → E} :
     x ∈ hypLat J ↔ x 0 ∈ (1 : FractionalIdeal (𝓞 E)⁰ E) ∧ x 1 ∈ J := Iff.rfl
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Use `Submodule.FG.of_le ((Submodule.fg_span_singleton (Pi.single 0 1 : Fin 2 → E)).sup ((FractionalIdeal.fg_of_isNoetherianRing le_rfl J).map (LinearMap.single (𝓞 E) (fun _ : Fin 2 => E) 1))) fun x hx => ?_` and prove the remaining obligations. Take `⟨h0, h1⟩` from `mem_hypLat.1 hx`. Set `z : 𝓞 E` to `⟨x 0, mem_one_fractionalIdeal_iff.1 h0⟩`. Use `Submodule.mem_sup.2 ⟨z • Pi.single 0 1, Submodule.smul_mem _ z (Submodule.mem_span_singleton_self _), Pi.single 1 (x 1), ⟨x 1, h1, rfl⟩, ?_⟩` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `i`. Use `fin_cases i`. Simplify using `[Algebra.smul_def]`. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
+
+Take `⟨j, hj, hj0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot (mt FractionalIdeal.coeToSubmodule_eq_bot.1 hJ0)`. Establish `e0 : (Pi.single 0 1 : Fin 2 → E) ∈ Submodule.span E (hypLat J : Set (Fin 2 → E))` using `Submodule.subset_span (mem_hypLat.2 ⟨by simp, by rw [Pi.single_eq_of_ne (by decide)]; exact (J : Submodule (𝓞 E) E).zero_mem⟩)`. Establish `e1' : (Pi.single 1 j : Fin 2 → E) ∈ Submodule.span E (hypLat J : Set (Fin 2 → E))` using `Submodule.subset_span (mem_hypLat.2 ⟨by simp, by simpa using hj⟩)`. Establish `e1 : (Pi.single 1 1 : Fin 2 → E) ∈ Submodule.span E (hypLat J : Set (Fin 2 → E))`. Use `Submodule.smul_mem _ j⁻¹ e1'` as an intermediate fact.
+
+Rewrite `this` using `[← Pi.single_smul, smul_eq_mul, inv_mul_cancel₀ hj0]`. Then use the resulting hypothesis. Use `Submodule.eq_top_iff'.2 fun v => ?_` and prove the remaining obligations. Establish `hv : v = v 0 • (Pi.single 0 1 : Fin 2 → E) + v 1 • Pi.single 1 1`. Apply the tactic sequence `funext i; fin_cases i <;> simp`. Rewrite using `[hv]`.
+
+Conclude with `add_mem (Submodule.smul_mem _ _ e0) (Submodule.smul_mem _ _ e1)`.
+-/
 theorem isLattice_hypLat {J : FractionalIdeal (𝓞 E)⁰ E} (hJ0 : J ≠ 0) :
     ReciprocityTheory.MultiplicativeHeights.IsLattice (hypLat J) := by
   classical
@@ -78,6 +108,19 @@ theorem isLattice_hypLat {J : FractionalIdeal (𝓞 E)⁰ E} (hJ0 : J ≠ 0) :
     rw [hv]
     exact add_mem (Submodule.smul_mem _ _ e0) (Submodule.smul_mem _ _ e1)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hx y hy`. Take `⟨hx0, hx1⟩` from `mem_hypLat.1 hx`. Take `⟨hy0, hy1⟩` from `mem_hypLat.1 hy`. Rewrite using `[herm_hypG]`.
+
+Use `(J : Submodule (𝓞 E) E).add_mem ?_ ?_` and prove the remaining obligations. Simplify using `using FractionalIdeal.mul_mem_mul hx0 (hJc _ hy1)`. Establish `: cc (y 0) ∈ (1 : FractionalIdeal (𝓞 E)⁰ E)` using `mem_one_fractionalIdeal_iff.2 (isIntegral_cc (mem_one_fractionalIdeal_iff.1 hy0))`. Simplify using `using FractionalIdeal.mul_mem_mul hx1 this`. Introduce `h`.
+
+Establish `h1 : x 1 ∈ J`. Use `h (Pi.single 0 1) (mem_hypLat.2 ⟨by simp, by rw [Pi.single_eq_of_ne (by decide)]; exact (J : Submodule (𝓞 E) E).zero_mem⟩)` as an intermediate fact. Simplify `this` using `[herm_hypG, cc]`. Establish `h0 : ∀ j ∈ J, x 0 * j ∈ J` using `fun j hj => by`. Use `h (Pi.single 1 (cc j)) (mem_hypLat.2 ⟨by simp, by simpa using hJc j hj⟩)` as an intermediate fact.
+
+Simplify `this` using `[herm_hypG, cc]`. Establish `hle : FractionalIdeal.spanSingleton (𝓞 E)⁰ (x 0) * J ≤ J`. Use `FractionalIdeal.mul_le.2 fun i hi j hj => ?_` and prove the remaining obligations. Take `⟨a, rfl⟩` from `(FractionalIdeal.mem_spanSingleton _).1 hi`. Rewrite using `[smul_mul_assoc]`.
+
+Conclude with `(J : Submodule (𝓞 E) E).smul_mem a (h0 j hj)`. Establish `hle1 : FractionalIdeal.spanSingleton (𝓞 E)⁰ (x 0) ≤ 1`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_left_comm, inv_mul_cancel₀ hJ0, mul_one]`. Use `_ ≤ J⁻¹ * J := mul_le_mul_right hle _`.
+
+Use `_ = 1 := inv_mul_cancel₀ hJ0`. Conclude with `⟨hle1 (FractionalIdeal.mem_spanSingleton_self _ _), h1⟩`.
+-/
 theorem modular_hypLat {J : FractionalIdeal (𝓞 E)⁰ E} (hJ0 : J ≠ 0) (hJc : ∀ z ∈ J, cc z ∈ J)
     (x : Fin 2 → E) : x ∈ hypLat J ↔ ∀ y ∈ hypLat J, herm hypG x y ∈ J := by
   constructor
@@ -110,12 +153,24 @@ theorem modular_hypLat {J : FractionalIdeal (𝓞 E)⁰ E} (hJ0 : J ≠ 0) (hJc 
         _ = 1 := inv_mul_cancel₀ hJ0
     exact ⟨hle1 (FractionalIdeal.mem_spanSingleton_self _ _), h1⟩
 
+/- English proof (translation)
+Use `⟨!![1, 1; 1 / 2, -1 / 2], by simp [Matrix.det_fin_two_of]; norm_num, ?_⟩` and prove the remaining obligations. Use extensionality with `a b`. Apply the tactic sequence `fin_cases a <;> fin_cases b <;> simp [gram, hermC, col, hypG, sgn, Fin.sum_univ_two, map_ofNat] <;> norm_num`.
+-/
 theorem hypG_signature (τ : E →+* ℂ) : ∃ Q : Matrix (Fin 2) (Fin 2) ℂ, Q.det ≠ 0 ∧
     gram τ hypG Q = Matrix.diagonal fun a : Fin 2 => ((sgn 1 (a : ℕ) : ℝ) : ℂ) := by
   refine ⟨!![1, 1; 1 / 2, -1 / 2], by simp [Matrix.det_fin_two_of]; norm_num, ?_⟩
   ext a b
   fin_cases a <;> fin_cases b <;> simp [gram, hermC, col, hypG, sgn, Fin.sum_univ_two, map_ofNat] <;> norm_num
 
+/- English proof (translation)
+Use `haveI := H.unram`. Take `⟨J, hJ0, hJc, hJ⟩` from `GlobalTheory.Ker.OntoLat.exists_valueIdeal Y`. Establish `HN` using `GlobalTheory.QNorm.hasseNormSt`. Establish `hΨ : ∀ τ : E →+* ℂ, τ ∈ (Y.Ψ : Set (E →+* ℂ)) ∨ ComplexEmbedding.conjugate τ ∈ (Y.Ψ : Set (E →+* ℂ))`. Introduce `τ`.
+
+Distinguish the cases in `h : ComplexEmbedding.conjugate τ ∈ Y.Ψ`. Conclude with `Or.inr h`. Conclude with `Or.inl ((Y.cmType τ).mpr h)`. Establish `hs : ∀ τ ∈ (Y.Ψ : Set (E →+* ℂ)), ∃ p : ℕ, (∃ Q : Matrix (Fin 2) (Fin 2) ℂ, Q.det ≠ 0 ∧ gram τ Y.Gm Q = Matrix.diagonal fun a : Fin 2 => ((sgn p (a : ℕ) : ℝ) : ℂ)) ∧ ∃ Q : Matrix (Fin 2) (Fin 2) ℂ, Q.det ≠ 0 ∧ gram τ hypG Q = Matrix.diagonal fun a : Fin 2 => ((sgn p (a : ℕ) : ℝ) …`. Introduce `τ hτ`.
+
+Take `⟨Q, hQ, hg⟩` from `Y.signature ⟨τ, hτ⟩`. Rewrite `hg` using `[hp]`. Conclude with `⟨1, ⟨Q, hQ, hg⟩, hypG_signature τ⟩`. Take `⟨P, hP, hPG⟩` from `GlobalTheory.SelfDualGenus.congr_of_modular (G := Y.Gm) (G' := hypG) (L := Y.Λ) (L' := hypLat J) (GlobalTheory.LocalQuad.landherr_of_hasseNormSt HN) HN hJ0 hJc Y.Gm_herm hypG_herm Y.Gm_det hypG_det ⟨Y.Λ_fg, Y.Λ_span⟩ (isLattice_hypLat hJ0) (hJ Y.Λ (selfD_of_isSelfDualTr Y hY)) (m …`. Use `⟨P *ᵥ Pi.single 0 1, fun h => ?_, ?_⟩` and prove the remaining obligations.
+
+Use `congrFun (Matrix.eq_zero_of_mulVec_eq_zero hP h) 0` as an intermediate fact. Simplify using `at this`. Rewrite using `[GlobalTheory.SelfDualGenus.herm_mulVec, ← hPG, herm_hypG]`. Simplify using the standard rewrite rules.
+-/
 theorem iso_rank_two (H : Host E) (Y : Data E 2) (hp : Y.p0 = 1) (hY : IsSelfDualTr Y) :
     ∃ z : Fin 2 → E, z ≠ 0 ∧ herm Y.Gm z z = 0 := by
   haveI := H.unram
@@ -149,6 +204,11 @@ end GlobalTheory.EqCovol.IsoPlane
 
 namespace GlobalTheory.EqCovol
 
+/- English proof (translation)
+Introduce `E _ _ _ H r Y h1 h2 hY`. Distinguish the cases in `hr : 3 ≤ r`. Take `⟨cu⟩` from `GlobalTheory.CuspExist.nonempty_cuspFD GlobalTheory.QNorm.hasseNormSt E r 1 Y h1 (by omega) (by omega)`. Conclude with `⟨cu.e 0, cu.ind.ne_zero 0, cu.iso 0 0⟩`. Take `rfl : r = 2` from `by omega`.
+
+Conclude with `IsoPlane.iso_rank_two H Y (by omega) hY`.
+-/
 theorem exists_isotropic_of_isSelfDualTr : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (r : ℕ)
     (Y : Data E r), 1 ≤ Y.p0 → Y.p0 < r → GlobalTheory.EqCovol.IsSelfDualTr Y →
     ∃ z : Fin r → E, z ≠ 0 ∧ herm Y.Gm z z = 0 := by

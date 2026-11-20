@@ -12,11 +12,17 @@ open scoped Real
 def SepHol {n : ℕ} (f : (Fin n → ℂ) → ℂ) (S : Set (Fin n → ℂ)) : Prop :=
   ContinuousOn f S ∧ ∀ ζ ∈ S, ∀ i, DifferentiableAt ℂ (fun t => f (Function.update ζ i t)) (ζ i)
 
+/- English proof (translation)
+The claim follows from `hf.comp_continuous (continuous_torusMap c r) (torusMap_mem_closedBall c hr)`.
+-/
 theorem continuous_comp_torusMap' {n : ℕ} {f : (Fin n → ℂ) → ℂ} {c : Fin n → ℂ} {r : ℝ} (hr : 0 ≤ r)
     (hf : ContinuousOn f (closedBall c r)) :
     Continuous fun θ => f (torusMap c (fun _ => r) θ) :=
   hf.comp_continuous (continuous_torusMap c r) (torusMap_mem_closedBall c hr)
 
+/- English proof (translation)
+Use `ContinuousOn.integrableOn_compact isCompact_Icc (Continuous.continuousOn ?_)` and prove the remaining obligations. Use `Continuous.mul ?_ (continuous_comp_torusMap' hr.le hf)` and prove the remaining obligations. Use `continuous_finsetProd _ fun i _ => Continuous.inv₀ ?_ fun θ => torusMap_sub_ne hr hz θ i` and prove the remaining obligations. Conclude with `((continuous_apply i).comp (continuous_torusMap c r)).sub continuous_const`.
+-/
 theorem torusIntegrable_kernel' {n : ℕ} {f : (Fin n → ℂ) → ℂ} {c z : Fin n → ℂ} {r : ℝ} (hr : 0 < r)
     (hf : ContinuousOn f (closedBall c r)) (hz : z ∈ ball c r) :
     TorusIntegrable (fun ζ => (∏ i, (ζ i - z i)⁻¹) * f ζ) c (fun _ => r) := by
@@ -25,6 +31,9 @@ theorem torusIntegrable_kernel' {n : ℕ} {f : (Fin n → ℂ) → ℂ} {c z : F
   refine continuous_finsetProd _ fun i _ => Continuous.inv₀ ?_ fun θ => torusMap_sub_ne hr hz θ i
   exact ((continuous_apply i).comp (continuous_torusMap c r)).sub continuous_const
 
+/- English proof (translation)
+The claim follows from `| 0, f, c, r, _, _, z, _ => by rw [torusIntegral_dim0] simp [Subsingleton.elim z c] | n + 1, f, c, r, hr, hf, z, hz => by rw [torusIntegral_succ (torusIntegrable_kernel' hr hf.1 hz)] have hz0 : z 0 ∈ ball (c 0) r := (mem_ball_pi_iff hr).mp hz 0 have hz' : Fin.tail z ∈ ball (fun i …`.
+-/
 theorem cauchy' : ∀ (n : ℕ) (f : (Fin n → ℂ) → ℂ) (c : Fin n → ℂ) (r : ℝ), 0 < r →
     SepHol f (closedBall c r) → ∀ z ∈ ball c r,
     (∯ ζ in T(c, fun _ => r), (∏ i, (ζ i - z i)⁻¹) * f ζ) = (2 * π * I) ^ n * f z
@@ -79,6 +88,9 @@ theorem cauchy' : ∀ (n : ℕ) (f : (Fin n → ℂ) → ℂ) (c : Fin n → ℂ
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Use `ContinuousOn.integrableOn_compact isCompact_Icc (Continuous.continuousOn ?_)` and prove the remaining obligations. Conclude with `((continuous_jac r).mul (g.continuous.comp continuous_cubeProj)).mul hc`.
+-/
 theorem integrableOn_fctl' {c : Fin n → ℂ} {r : ℝ} {f : (Fin n → ℂ) → ℂ}
     (hc : Continuous fun θ => f (torusMap c (fun _ => r) θ)) (g : C(Cube n, ℂ)) :
     IntegrableOn (fun θ => jac r θ * g (cubeProj θ) * f (torusMap c (fun _ => r) θ))
@@ -112,6 +124,11 @@ def fctlCLM' (c : Fin n → ℂ) (r : ℝ) (f : (Fin n → ℂ) → ℂ)
             mul_le_mul_of_nonneg_right (g.norm_coe_le_norm _) (norm_nonneg _)
         _ ≤ ‖g‖ * M := mul_le_mul_of_nonneg_left h1 (norm_nonneg _))
 
+/- English proof (translation)
+Rewrite using `[← cauchy' n f c r hr hf z hz]`. Use `show fctl c r f (kern c r z) = _`. Unfold `fctl torusIntegral`. Use `setIntegral_congr_fun measurableSet_Icc fun θ hθ => ?_` and prove the remaining obligations. Simplify using `only [jac, kern_apply hr hz, cubeProj_of_mem hθ, smul_eq_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem fctlCLM'_kern {c z : Fin n → ℂ} {r : ℝ} (hr : 0 < r) {f : (Fin n → ℂ) → ℂ}
     (hf : SepHol f (closedBall c r)) (hz : z ∈ ball c r) :
     fctlCLM' c r f (continuous_comp_torusMap' hr.le hf.1) (kern c r z) = (2 * π * I) ^ n * f z := by
@@ -122,6 +139,11 @@ theorem fctlCLM'_kern {c z : Fin n → ℂ} {r : ℝ} (hr : 0 < r) {f : (Fin n �
   simp only [jac, kern_apply hr hz, cubeProj_of_mem hθ, smul_eq_mul]
   ring
 
+/- English proof (translation)
+Introduce `z0 hz0`. Take `⟨ε, hε, hball⟩` from `Metric.isOpen_iff.mp hU z0 hz0`. Establish `hr : 0 < ε / 2` using `half_pos hε`. Establish `hsub : closedBall z0 (ε / 2) ⊆ U` using `(closedBall_subset_ball (half_lt_self hε)).trans hball`. Establish `hS : SepHol f (closedBall z0 (ε / 2))` using `⟨hf.1.mono hsub, fun ζ hζ i => hf.2 ζ (hsub hζ) i⟩`.
+
+Establish `hne : (2 * π * I : ℂ) ^ n ≠ 0` using `pow_ne_zero _ (by simp [Real.pi_ne_zero, I_ne_zero])`. Establish `han : AnalyticAt ℂ (fun z => ((2 * π * I : ℂ) ^ n)⁻¹ * fctlCLM' z0 (ε / 2) f (continuous_comp_torusMap' hr.le hS.1) (kern z0 (ε / 2) z)) z0` using `analyticAt_const.mul (((fctlCLM' z0 (ε / 2) f _).analyticAt _).comp (kern_analyticAt z0 hr))`. Use `han.congr ?_` and prove the remaining obligations. Use `filter_upwards [isOpen_ball.mem_nhds (mem_ball_self hr)] with z hz`. Rewrite using `[fctlCLM'_kern hr hS hz, ← mul_assoc, inv_mul_cancel₀ hne, one_mul]`.
+-/
 theorem osgFin (U : Set (Fin n → ℂ)) (hU : IsOpen U) (f : (Fin n → ℂ) → ℂ) (hf : SepHol f U) :
     AnalyticOnNhd ℂ f U := by
   intro z0 hz0
@@ -141,6 +163,23 @@ theorem osgFin (U : Set (Fin n → ℂ)) (hU : IsOpen U) (f : (Fin n → ℂ) �
 end UpperTheory.Esk.OrbitalSingularIntegrals
 
 open UpperTheory.Esk.OrbitalSingularIntegrals in
+/- English proof (translation)
+Introduce `I _ _ U hU f hf hsep`. Use `set n := Fintype.card I`. Set `e : I ≃ Fin n` to `Fintype.equivFin I`. Set `Φ : (Fin n → ℂ) → (I → ℂ)` to `fun w i => w (e i)`. Establish `hΦ : Continuous Φ` using `continuous_pi fun i => continuous_apply (e i)`.
+
+Set `g : (Fin n → ℂ) → ℂ` to `fun w => f (Φ w)`. Set `V : Set (Fin n → ℂ)` to `Φ ⁻¹' U`. Establish `hV : IsOpen V` using `hU.preimage hΦ`. Establish `hupd : ∀ (w : Fin n → ℂ) (j : Fin n) (t : ℂ), Φ (Function.update w j t) = Function.update (Φ w) (e.symm j) t`. Introduce `w j t`.
+
+Use function extensionality and compare the values at `i`. Distinguish the cases in `h : i = e.symm j`. Substitute `h` using the available equality. Simplify using `[Φ]`. Establish `h' : e i ≠ j` using `fun h' => h (by rw [← h']; simp)`.
+
+Simplify using `[Φ, h, h']`. Establish `hg : SepHol g V`. Use `⟨hf.comp hΦ.continuousOn (fun w hw => hw), fun w hw j => ?_⟩` and prove the remaining obligations. Establish `h1` using `hsep (Φ w) hw (e.symm j)`. Establish `e1 : (fun t => g (Function.update w j t)) = fun t => f (Function.update (Φ w) (e.symm j) t)`.
+
+Use function extensionality and compare the values at `t`. Simplify using `only [g, hupd]`. Rewrite using `[e1]`. Simplify `h1` using `[Φ]`. Establish `hA` using `osgFin V hV g hg`.
+
+Set `Ψ : (I → ℂ) →L[ℂ] (Fin n → ℂ)` to `ContinuousLinearMap.pi fun j => ContinuousLinearMap.proj (e.symm j)`. Establish `hΨ : ∀ z, Φ (Ψ z) = z`. Introduce `z`. Use function extensionality and compare the values at `i`. Simplify using `[Φ, Ψ]`.
+
+Introduce `z hz`. Establish `hmem : Ψ z ∈ V` using `by show Φ (Ψ z) ∈ U`. Rewrite using `[hΨ]`. Conclude with `hz`. Establish `h2` using `(hA (Ψ z) hmem).comp (Ψ.analyticAt z)`.
+
+Establish `hfe : g ∘ Ψ = f`. Use function extensionality and compare the values at `w`. Simplify using `only [Function.comp, g, hΨ]`. Rewrite `h2` using `[hfe]`. Then use the resulting hypothesis.
+-/
 theorem UpperTheory.Esk.pf_Osg : UpperTheory.Esk.Osg := by
   intro I _ _ U hU f hf hsep
   set n := Fintype.card I

@@ -41,29 +41,56 @@ section Entries
 
 variable {ι κ ι' κ' : Type} [Fintype ι] [DecidableEq ι] [Fintype κ] [DecidableEq κ]
 
+/- English proof (translation)
+Introduce `i j` and use `add_mem (hM i j) (hN i j)`.
+-/
 theorem EIn.add {M N : Matrix ι κ ℂ} (hM : EIn M) (hN : EIn N) : EIn (M + N) := fun i j => add_mem (hM i j) (hN i j)
 
+/- English proof (translation)
+Introduce `i j` and use `sub_mem (hM i j) (hN i j)`.
+-/
 theorem EIn.sub {M N : Matrix ι κ ℂ} (hM : EIn M) (hN : EIn N) : EIn (M - N) := fun i j => sub_mem (hM i j) (hN i j)
 
+/- English proof (translation)
+Introduce `i j` and use `neg_mem (hM i j)`.
+-/
 theorem EIn.neg {M : Matrix ι κ ℂ} (hM : EIn M) : EIn (-M) := fun i j => neg_mem (hM i j)
 
+/- English proof (translation)
+Introduce `i j` and use `mul_mem hc (hM i j)`.
+-/
 theorem EIn.smul {c : ℂ} (hc : c ∈ algebraicClosure ℚ ℂ) {M : Matrix ι κ ℂ} (hM : EIn M) : EIn (c • M) :=
   fun i j => mul_mem hc (hM i j)
 
+/- English proof (translation)
+Introduce `i j` and use `by rw [Matrix.one_apply]; split_ifs · exact one_mem _ · exact zero_mem _`.
+-/
 theorem EIn.one : EIn (1 : Matrix ι ι ℂ) := fun i j => by
   rw [Matrix.one_apply]; split_ifs
   · exact one_mem _
   · exact zero_mem _
 
+/- English proof (translation)
+Introduce `i j` and use `by rw [Matrix.mul_apply]; exact sum_mem fun k _ => mul_mem (hM i k) (hN k j)`.
+-/
 theorem EIn.mul {M : Matrix ι κ ℂ} {N : Matrix κ ι' ℂ} (hM : EIn M) (hN : EIn N) : EIn (M * N) := fun i j => by
   rw [Matrix.mul_apply]; exact sum_mem fun k _ => mul_mem (hM i k) (hN k j)
 
+/- English proof (translation)
+Introduce `i j` and use `hM j i`.
+-/
 theorem EIn.transpose {M : Matrix ι κ ℂ} (hM : EIn M) : EIn Mᵀ := fun i j => hM j i
 
+/- English proof (translation)
+Introduce `i j` and use `by rw [Matrix.kroneckerMap_apply]; exact mul_mem (hM _ _) (hN _ _)`.
+-/
 theorem EIn.kron {M : Matrix ι κ ℂ} {N : Matrix ι' κ' ℂ} (hM : EIn M) (hN : EIn N) :
     EIn (Matrix.kroneckerMap (· * ·) M N) := fun i j => by
   rw [Matrix.kroneckerMap_apply]; exact mul_mem (hM _ _) (hN _ _)
 
+/- English proof (translation)
+Set `M' : Matrix ι ι (algebraicClosure ℚ ℂ)` to `fun i j => ⟨M i j, hM i j⟩`. Establish `e : M = (algebraicClosure ℚ ℂ).val.toRingHom.mapMatrix M'` using `by ext i j; rfl`. Rewrite using `[e, ← RingHom.map_det]`. Conclude with `(M'.det).2`.
+-/
 theorem EIn.det {M : Matrix ι ι ℂ} (hM : EIn M) : M.det ∈ algebraicClosure ℚ ℂ := by
   let M' : Matrix ι ι (algebraicClosure ℚ ℂ) := fun i j => ⟨M i j, hM i j⟩
   have e : M = (algebraicClosure ℚ ℂ).val.toRingHom.mapMatrix M' := by ext i j; rfl
@@ -72,8 +99,16 @@ theorem EIn.det {M : Matrix ι ι ℂ} (hM : EIn M) : M.det ∈ algebraicClosure
 
 end Entries
 
+/- English proof (translation)
+The claim follows from `div_mem (one_mem _) (ofNat_mem _ 2)`.
+-/
 theorem half_mem : (1 / 2 : ℂ) ∈ algebraicClosure ℚ ℂ := div_mem (one_mem _) (ofNat_mem _ 2)
 
+/- English proof (translation)
+Unfold `GlobalTheory.WeilParts.detPlus`. Establish `k1 : EIn (sT ⊗ₖ sSᵀ)` using `hT.kron hS.transpose`. Establish `k2 : EIn (b ⊗ₖ a'ᵀ)` using `hb.kron ha.transpose`. Establish `k3 : EIn ((1 + sT ⊗ₖ sSᵀ) * (b ⊗ₖ a'ᵀ))` using `(EIn.one.add k1).mul k2`. Establish `k4 : EIn ((1 / 2 : ℂ) • ((1 + sT ⊗ₖ sSᵀ) * (b ⊗ₖ a'ᵀ)))` using `k3.smul half_mem`.
+
+Establish `k5 : EIn ((1 / 2 : ℂ) • (1 - sT ⊗ₖ sSᵀ))` using `(EIn.one.sub k1).smul half_mem`. Conclude with `(k4.add k5).det`.
+-/
 theorem detPlus_mem {m n : ℕ} {sS : Matrix (Fin n) (Fin n) ℂ} {sT : Matrix (Fin m) (Fin m) ℂ}
     {a' : Matrix (Fin n) (Fin n) ℂ} {b : Matrix (Fin m) (Fin m) ℂ} (hS : EIn sS) (hT : EIn sT) (ha : EIn a') (hb : EIn b) :
     GlobalTheory.WeilParts.detPlus sS sT a' b ∈ algebraicClosure ℚ ℂ := by
@@ -85,6 +120,9 @@ theorem detPlus_mem {m n : ℕ} {sS : Matrix (Fin n) (Fin n) ℂ} {sT : Matrix (
   have k5 : EIn ((1 / 2 : ℂ) • (1 - sT ⊗ₖ sSᵀ)) := (EIn.one.sub k1).smul half_mem
   exact (k4.add k5).det
 
+/- English proof (translation)
+Establish `e : Formalism.L2.Theta.mt V (g * h) = Formalism.L2.Theta.mt V g * Formalism.L2.Theta.mt V h`. Unfold `Formalism.L2.Theta.mt`. Rewrite using `[map_mul, Units.val_mul]`. Rewrite using `[e]`. Conclude with `Matrix.map_mul (f := (θ τ).comp (infPart D))`.
+-/
 theorem compAt_mt_mul (θ : InfFam D) (τ : D.what₂.Tau) (V : HSp D) (g h : GA D V) :
     compAt θ τ (Formalism.L2.Theta.mt V (g * h)) = compAt θ τ (Formalism.L2.Theta.mt V g) * compAt θ τ (Formalism.L2.Theta.mt V h) := by
   have e : Formalism.L2.Theta.mt V (g * h) = Formalism.L2.Theta.mt V g * Formalism.L2.Theta.mt V h := by
@@ -92,6 +130,9 @@ theorem compAt_mt_mul (θ : InfFam D) (τ : D.what₂.Tau) (V : HSp D) (g h : GA
   rw [e]
   exact Matrix.map_mul (f := (θ τ).comp (infPart D))
 
+/- English proof (translation)
+Establish `h1 : infHom V g = 1` using `hg`. Establish `e : compAt θ τ (Formalism.L2.Theta.mt V g) = (Units.val (infHom V g)).map (θ τ)` using `rfl`. Rewrite using `[e, h1, Units.val_one]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`.
+-/
 theorem compAt_mt_fin (θ : InfFam D) (τ : D.what₂.Tau) (V : HSp D) (g : GA D V) (hg : g ∈ GfC V) :
     compAt θ τ (Formalism.L2.Theta.mt V g) = 1 := by
   have h1 : infHom V g = 1 := hg
@@ -99,6 +140,11 @@ theorem compAt_mt_fin (θ : InfFam D) (τ : D.what₂.Tau) (V : HSp D) (g : GA D
   rw [e, h1, Units.val_one]
   exact Matrix.map_one _ (map_zero _) (map_one _)
 
+/- English proof (translation)
+Take `⟨x, -, e⟩` from `hγ`. Establish `hm : Formalism.L2.Theta.mt V γ = (x : Matrix (Fin V.rank) (Fin V.rank) D.host.E).map (incA D)`. Conclude with `(congrArg Units.val e).symm`. Introduce `i j`. Rewrite using `[hm]`.
+
+Use `show θ τ (infPart D (incA D (x i j))) ∈ _`. Establish `e2 : infPart D (incA D (x i j)) = (1 : Ainf D.host.F) ⊗ₜ[D.host.F] (x i j : D.host.E)`. Simplify using `[infPart, incA, inclR, Algebra.TensorProduct.map_tmul]`. Rewrite using `[e2, (hθ τ).1, mem_algebraicClosure_iff]`. Conclude with `((Algebra.IsAlgebraic.isAlgebraic (R := ℚ) (x i j : D.host.E))).algHom (tauE D τ).toRatAlgHom`.
+-/
 theorem eIn_rat {θ : InfFam D} (hθ : IsInfFam θ) (τ : D.what₂.Tau) (V : HSp D) (γ : GA D V) (hγ : γ ∈ GQ V) :
     EIn (compAt θ τ (Formalism.L2.Theta.mt V γ)) := by
   obtain ⟨x, -, e⟩ := hγ
@@ -112,6 +158,11 @@ theorem eIn_rat {θ : InfFam D} (hθ : IsInfFam θ) (τ : D.what₂.Tau) (V : HS
   rw [e2, (hθ τ).1, mem_algebraicClosure_iff]
   exact ((Algebra.IsAlgebraic.isAlgebraic (R := ℚ) (x i j : D.host.E))).algHom (tauE D τ).toRatAlgHom
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Establish `e : a = γ⁻¹ * (γ * a)` using `by group`. Rewrite using `[e, compAt_mt_mul, compAt_mt_fin θ τ V _ h, Matrix.mul_one]`. Conclude with `eIn_rat hθ τ V _ (inv_mem hγ)`. Establish `e : a⁻¹ = (γ * a)⁻¹ * γ` using `by group`.
+
+Rewrite using `[e, compAt_mt_mul, compAt_mt_fin θ τ V _ (inv_mem h), Matrix.one_mul]`. Conclude with `eIn_rat hθ τ V _ hγ`.
+-/
 theorem eIn_real {θ : InfFam D} (hθ : IsInfFam θ) (τ : D.what₂.Tau) (V : HSp D) (γ : GA D V) (hγ : γ ∈ GQ V) (a : GA D V)
     (h : γ * a ∈ GfC V) : EIn (compAt θ τ (Formalism.L2.Theta.mt V a)) ∧ EIn (compAt θ τ (Formalism.L2.Theta.mt V a⁻¹)) := by
   constructor
@@ -122,6 +173,27 @@ theorem eIn_real {θ : InfFam D} (hθ : IsInfFam θ) (τ : D.what₂.Tau) (V : H
     rw [e, compAt_mt_mul, compAt_mt_fin θ τ V _ (inv_mem h), Matrix.one_mul]
     exact eIn_rat hθ τ V _ hγ
 
+/- English proof (translation)
+Establish `hu : ∀ τ, ‖(compAt θ τ (Formalism.L2.Theta.mt V g)).det‖ = 1` using `fun τ => by`. Establish `h : (compAt θ τ (Formalism.L2.Theta.mt V g))ᴴ * gramAt D V τ * compAt θ τ (Formalism.L2.Theta.mt V g) = gramAt D V τ` using `GlobalTheory.FockCompare.RealAction.infMat_mem_UH hθ V g τ`. Establish `h2` using `congrArg (fun M => ‖Matrix.det M‖) h`. Simplify using `only [Matrix.det_mul, Matrix.det_conjTranspose, norm_mul, norm_star] at h2`. Establish `h3 : ‖(gramAt D V τ).det‖ ≠ 0` using `norm_ne_zero_iff.2 (hV τ)`.
+
+Establish `h4 : ‖(compAt θ τ (Formalism.L2.Theta.mt V g)).det‖ ^ 2 = 1`. Apply `mul_left_cancel₀ h3` to reduce the goal to its premises. Take the linear combination `h2`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) two_ne_zero).1 h4`. Establish `hw : ∀ τ, ∃ w : ℂ, w ^ 2 = (compAt θ τ (Formalism.L2.Theta.mt V g)).det ∧ ‖w‖ = 1` using `fun τ => by`.
+
+Take `⟨w, hw⟩` from `IsAlgClosed.exists_pow_nat_eq (compAt θ τ (Formalism.L2.Theta.mt V g)).det two_pos`. Use `⟨w, hw, (pow_eq_one_iff_of_nonneg (norm_nonneg _) two_ne_zero).1 ?_⟩` and prove the remaining obligations. Rewrite using `[← norm_pow, hw, hu]`. Use `choose w hw1 hw2 using hw`. Establish `hw0 : ∀ τ, w τ ≠ 0` using `fun τ h => by simpa [h] using hw2 τ`.
+
+Establish `hwA : ∀ τ, w τ ∈ algebraicClosure ℚ ℂ` using `fun τ => by`. Use `hA τ` as an intermediate fact. Rewrite `this` using `[← hw1, mem_algebraicClosure_iff]`. Conclude with `mem_algebraicClosure_iff.2 (IsAlgebraic.of_pow two_pos this)`. Use `choose x hx1 hx2 using fun τ => GlobalTheory.VacuumCharacter.exists_idele_at hθ τ (w τ) (hw0 τ)`.
+
+Establish `hf : finPart D ((∏ τ, x τ : (AE D)ˣ) : AE D) = 1`. Rewrite using `[Units.coe_prod, map_prod]`. Conclude with `Finset.prod_eq_one fun τ _ => hx1 τ`. Establish `hi : ∀ τ, θ τ (infPart D ((∏ τ, x τ : (AE D)ˣ) : AE D)) = w τ` using `fun τ => by`. Rewrite using `[Units.coe_prod, map_prod, map_prod]`.
+
+Simplify using `[hx2]`. Use `⟨∏ τ, x τ, ?_, fun ν hc => ?_⟩` and prove the remaining obligations. Use `GlobalTheory.VacuumCharacter.adele_ext hθ ?_ fun τ => ?_` and prove the remaining obligations. Establish `hd : finPart D (Formalism.L2.Theta.mt V g).det = 1`. Establish `hg' : finHom V g = 1` using `hg`.
+
+Establish `: (Formalism.L2.Theta.mt V g).map (finPart D) = 1` using `congrArg Units.val hg'`. Rewrite using `[RingHom.map_det]`. Conclude with `(congrArg Matrix.det this).trans Matrix.det_one`. Rewrite using `[map_mul, hf]`. Conclude with `((congrArg₂ (· * ·) hd (GlobalTheory.VacuumCharacter.finPart_cA _ hf)).trans (one_mul 1)).symm`.
+
+Rewrite using `[map_mul, map_mul, hi]`. Establish `e1` using `GlobalTheory.FockCompare.comp_cA hθ τ ((∏ τ, x τ : (AE D)ˣ) : AE D)`. Establish `e2` using `GlobalTheory.VacuumCharacter.det_compAt θ τ (Formalism.L2.Theta.mt V g)`. Rewrite `e1` using `[hi]`. Use `Eq.trans ?_ (congrArg₂ (· * ·) e2 e1.symm)` and prove the remaining obligations.
+
+Establish `: w τ * starRingEnd ℂ (w τ) = 1` using `by rw [Complex.mul_conj', hw2]; simp`. Rewrite using `[← hw1]`. Take the linear combination `(-w τ) * this`. Rewrite using `[map_prod]`. Rewrite using `[show ((∏ τ, ν (x τ) : Circle) : ℂ) = ∏ τ, (ν (x τ) : ℂ) from map_prod Circle.coeHom _ _]`.
+
+Use `prod_mem fun τ _ => ?_` and prove the remaining obligations. Take `⟨a, n, -, -, h⟩` from `hc τ`. Rewrite using `[h θ hθ (x τ) (hx1 τ) (fun τ' h' => by rw [hx2, if_neg h']), hx2, if_pos rfl, hw2]`. Simplify using `only [Complex.ofReal_one, div_one]`. Conclude with `zpow_mem (hwA τ) n`.
+-/
 theorem exists_root_alg {θ : InfFam D} (hθ : IsInfFam θ) (V : HSp D) (hV : ∀ τ, (gramAt D V τ).det ≠ 0)
     (g : GA D V) (hg : g ∈ GinfC V) (hA : ∀ τ, (compAt θ τ (Formalism.L2.Theta.mt V g)).det ∈ algebraicClosure ℚ ℂ) :
     ∃ x, IsDetRoot V g x ∧ ∀ ν : (AE D)ˣ →* Circle, (∀ τ, ∃ a, HasInfExp D ν τ a) →
@@ -176,6 +248,27 @@ theorem exists_root_alg {θ : InfFam D} (hθ : IsInfFam θ) (V : HSp D) (hV : �
     simp only [Complex.ofReal_one, div_one]
     exact zpow_mem (hwA τ) n
 
+/- English proof (translation)
+Introduce `D T L sc G W i j A A' WW X hX t γ hγ a ha γ' hγ' a' ha' hγa hγa'`. Establish `hI` using `hX.is`. Establish `hθ : IsInfFam W.θ` using `hI.isVac.2.inf`. Establish `hψ : IsStdChar D W.ψ (-1)` using `hI.isVac.1`. Use `set om' := (X.ω t).toSgn true with hom'`.
+
+Establish `hom` using `hI.weil t`. Establish `hsA : ∀ τ, X.rA.s τ = 1` using `fun τ => (hX.std.2.2 τ).1`. Establish `hsW : ∀ τ, X.rW.s τ = 1` using `fun τ => (hX.stdW.2.2 τ).1`. Use `set g : GA D (neg A) := (ofSgn true A).symm a with hgdef`. Establish `hga : ofSgn true A g = a` using `MulEquiv.apply_symm_apply _ _`.
+
+Establish `hg : g ∈ GinfC (neg A)` using `(GlobalTheory.SgnIdent.mem_GinfC_sgn true A g).2 (by rw [hga]; exact ha)`. Establish `cS : ∀ τ, IsCartanInv (gramAt D (neg A) τ) (-X.rA.s τ)` using `fun τ => GlobalTheory.Grid.isCartanInv_sgn true A τ (hI.rigA.2.2 τ).1`. Establish `cT : ∀ τ, IsCartanInv (gramAt D WW τ) (X.rW.s τ)` using `fun τ => (hI.rigW.2.2 τ).1`. Establish `hdet : ∀ τ, (gramAt D (neg A) τ).det ≠ 0` using `fun τ h0 => by`. Use `(cS τ).2.2.det_pos.ne'` as an intermediate fact.
+
+Rewrite `this` using `[Matrix.det_mul, h0, zero_mul]`. Conclude with `this rfl`. Establish `hdetW : ∀ τ, (gramAt D WW τ).det ≠ 0` using `fun τ h0 => by`. Use `(cT τ).2.2.det_pos.ne'` as an intermediate fact. Rewrite `this` using `[Matrix.det_mul, h0, zero_mul]`.
+
+Conclude with `this rfl`. Establish `mg : ∀ τ, compAt W.θ τ (Formalism.L2.Theta.mt (neg A) g) = compAt W.θ τ (Formalism.L2.Theta.mt A a)` using `fun τ => by`. Establish `e` using `GlobalTheory.Grid.mt_ofSgn true A g`. Rewrite `e` using `[hga]`. Rewrite using `[e]`.
+
+Establish `mgi : ∀ τ, compAt W.θ τ (Formalism.L2.Theta.mt (neg A) g⁻¹) = compAt W.θ τ (Formalism.L2.Theta.mt A a⁻¹)` using `fun τ => by`. Establish `e` using `GlobalTheory.Grid.mt_ofSgn true A g⁻¹`. Rewrite `e` using `[map_inv, hga]`. Rewrite using `[e]`. Establish `eA` using `fun τ => eIn_real hθ τ A γ hγ a hγa`.
+
+Establish `eW` using `fun τ => eIn_real hθ τ WW γ' hγ' a' hγa'`. Take `⟨x, hx, hxν⟩` from `exists_root_alg hθ (neg A) hdet g hg fun τ => by rw [mg]; exact (eA τ).1.det`. Take `⟨y, hy, hyν⟩` from `exists_root_alg hθ WW hdetW a' ha' fun τ => (eW τ).1.det`. Take `⟨η, hη⟩` from `GlobalTheory.WeilParts.exists_isEtaTilde_unramified D`. Establish `hC` using `GlobalTheory.WeilVacChar.vacuum_character D W.ψ hψ (neg A) WW W.θ hθ _ _ om' η hη hom (fun τ => -X.rA.s τ) X.rW.s cS cT g hg a' ha' (fun τ => by rw [hsA]; simp) (fun τ => by rw [hsW]; simp) x y hx hy X.vac hI.isVac.2.theta hI.isVac.2.fock`.
+
+Establish `hexp : ∀ (χ : (AE D)ˣ →* Circle) (n : ℕ), IsHeckeChar D χ → ResEta D χ n → ∀ k : ℕ, ∀ τ, ∃ b, HasInfExp D (χ * (η ^ k)⁻¹) τ b` using `fun χ n h1 h2 k τ => by`. Take `⟨b, hb⟩` from `GlobalTheory.SplitCharExp.exists_hasInfExp D W.θ χ n τ hθ h1 h2`. Conclude with `⟨_, GlobalTheory.VacuumCharacter.hasInfExp_twist hb (hη.2.2.2 τ) k⟩`. Establish `key : X.ω t (a, a') X.vac = om' (g, a') X.vac` using `by show _ = X.ω t (ofSgn true A g, a') X.vac`. Rewrite using `[hga]`.
+
+Rewrite using `[key, hC]`. Use `⟨_, ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[← mem_algebraicClosure_iff, Circle.coe_mul, Circle.coe_inv]`. Use `mul_mem (mul_mem (inv_mem (hxν _ (hexp _ _ hom.hecT hom.resT _))) (hyν _ (hexp _ _ hom.hecS hom.resS _))) (prod_mem fun τ _ => ?_)` and prove the remaining obligations. Rewrite using `[mgi]`.
+
+Establish `hs1 : EIn (-X.rA.s τ)` using `by rw [hsA]; exact EIn.one.neg`. Establish `hs2 : EIn (X.rW.s τ)` using `by rw [hsW]; exact EIn.one`. Conclude with `detPlus_mem hs1 hs2 (eA τ).2 (eW τ).1`.
+-/
 theorem realScalar : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {W : G.Weil}
     {i j : Fin D.R.m} {A A' WW : HSp D} {X : Tri T A A' WW},
     IsBottomTri W i j X → ∀ (t : T), ∀ γ ∈ Formalism.L2.Theta.GQ A, ∀ a ∈ GinfC A, ∀ γ' ∈ Formalism.L2.Theta.GQ WW, ∀ a' ∈ GinfC WW,

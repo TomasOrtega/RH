@@ -13,6 +13,9 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace GlobalTheory.SplitUniqSer
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.SplitUniq.splitPlace_eq_of_w_eq`.
+-/
 theorem splitPlace_unique : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (s s' : SplitPlace L),
     s.w = s'.w → s = s' :=
   GlobalTheory.SplitUniq.splitPlace_eq_of_w_eq

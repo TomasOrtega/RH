@@ -10,6 +10,9 @@ set_option autoImplicit false
 
 namespace GlobalTheory.Adelic.GenericRel
 
+/- English proof (translation)
+Rewrite using `[eval₂_eq, eval₂_eq, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a ha => ?_` and prove the remaining obligations. Establish `: a.degree = d` using `by rw [Finsupp.degree_eq_weight_one]; exact hp (mem_support_iff.1 ha)`. Simplify using `only [mul_pow, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum]`. Rewrite using `[← this, Finsupp.degree_apply, mul_left_comm]`.
+-/
 theorem eval₂_mul_of_isHomogeneous {σ R A : Type} [CommSemiring R] [CommSemiring A] (φ : R →+* A)
     {p : MvPolynomial σ R} {d : ℕ} (hp : p.IsHomogeneous d) (c : A) (v : σ → A) :
     eval₂ φ (fun i => c * v i) p = c ^ d * eval₂ φ v p := by
@@ -26,6 +29,11 @@ noncomputable def relFn (c : S.L.ι) {r e : ℕ} (u : Fin r → Fin S.N → F) (
   zfun th c ^ m + ∑ k, eval₂ ((resG S.Y le_top).comp (algebraMap F Γ(S.Y, ⊤)))
     (fun i => (S.comb (u i)).f c) (a k) * zfun th c ^ (k : ℕ)
 
+/- English proof (translation)
+Establish `h` using `(le_iff_ptOf_mem x _).2 hx`. Establish `hc : (valMap x _ h).hom.comp ((resG S.Y le_top).comp (algebraMap F Γ(S.Y, ⊤))) = S.baseHom x`. Use extensionality with `b`. Conclude with `((valR_eq x _ h _).symm.trans (valR_res x le_top h _)).trans (S.valR_algebraMap x b)`. Simplify using `only [relFn, valR_eq x _ h, map_add, map_sum, map_mul, map_pow, eval₂_comp_left, hc]`.
+
+Both sides reduce to the same expression.
+-/
 theorem valR_relFn {K : Type} [Field K] (x : Sp K ⟶ S.Y) (c : S.L.ι) (hx : ptOf x ∈ S.L.U c) {r e : ℕ}
     (u : Fin r → Fin S.N → F) (th : (lbPow S.L e).Sec) (m : ℕ) (a : Fin m → MvPolynomial (Fin r) F) :
     valR x (S.L.U c) (relFn S c u th m a) = valR x (S.L.U c) (zfun th c) ^ m + ∑ k, eval₂ (S.baseHom x)
@@ -37,6 +45,19 @@ theorem valR_relFn {K : Type} [Field K] (x : Sp K ⟶ S.Y) (c : S.L.ι) (hx : pt
   simp only [relFn, valR_eq x _ h, map_add, map_sum, map_mul, map_pow, eval₂_comp_left, hc]
   rfl
 
+/- English proof (translation)
+Establish `hxU : ptOf x.1 ∈ S.L.U (S.chartAt (ptOf x.1))` using `S.mem_chartAt _`. Establish `hηU : ptOf (resPt η) ∈ S.L.U (S.chartAt (ptOf x.1))`. Rewrite using `[ptOf_resPt]`. Conclude with `(hη.mem_open_set_iff (S.L.U _).isOpen).2 ⟨_, trivial, hxU⟩`. Take `⟨c0, hc0, hv, hp⟩` from `S.exists_frame_change (resPt η) _ hηU`.
+
+Establish `hzero : valR (resPt η) _ (relFn S (S.chartAt (ptOf x.1)) u th m a) = 0`. Rewrite using `[valR_relFn S _ _ hηU, hp (e : ℤ) th]`. Simplify using `only [hv, zpow_natCast, eval₂_mul_of_isHomogeneous _ (ha _)]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_add, Finset.mul_sum, mul_pow, ← pow_mul]`.
+
+Use `congr 1`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[mul_pow, ← pow_mul, show e * m = e * (m - k) + e * k by`. Rewrite using `[← mul_add, Nat.sub_add_cancel k.2.le], pow_add]`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `_ = 0 := by rw [h0, mul_zero]`. Establish `hb : S.Y.basicOpen (relFn S (S.chartAt (ptOf x.1)) u th m a) = ⊥`. Rewrite using `[eq_bot_iff]`. Introduce `y hy`. Establish `hm : η ∈ S.Y.basicOpen (relFn S (S.chartAt (ptOf x.1)) u th m a)` using `(hη.mem_open_set_iff (S.Y.basicOpen _).isOpen).2 ⟨y, trivial, hy⟩`.
+
+Rewrite `hm` using `[← ptOf_resPt η]`. Conclude with `((valR_ne_zero_iff (resPt η) hηU _).2 hm hzero).elim`. Establish `hf : relFn S (S.chartAt (ptOf x.1)) u th m a = 0` using `by haveI := hY`. Conclude with `(basicOpen_eq_bot_iff _).1 hb`. Establish `key` using `valR_relFn S x.1 _ hxU u th m a`.
+
+Rewrite `key` using `[hf, valR_zero x.1 _ ((le_iff_ptOf_mem _ _).2 hxU)]`. Establish `e2 : ∀ i, valR x.1 _ ((S.comb (u i)).f (S.chartAt (ptOf x.1))) = ∑ j, algebraMap F K (u i j) * S.coords x.1 j` using `fun i => (S.val_comb x.1 (u i)).trans (by rw [LinSys.baseHom_ptOver])`. Simplify using `only [e2, LinSys.baseHom_ptOver] at key`. Simplify using `only [aeval_def]`. Conclude with `key.symm`.
+-/
 theorem relation_of_generic (F : Type) [Field F] (S : LinSys F) (hY : AlgebraicGeometry.IsIntegral S.Y)
     (r e : ℕ) (u : Fin r → Fin S.N → F) (th : (lbPow S.L e).Sec) (η : S.Y) (hη : IsGenericPoint η Set.univ)
     (m : ℕ) (a : Fin m → MvPolynomial (Fin r) F) (ha : ∀ k, (a k).IsHomogeneous (e * (m - k)))

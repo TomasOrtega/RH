@@ -11,6 +11,11 @@ open Formalism.HermitianLattices.Ext.L3
 
 variable {K V : Type} [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [Module K V]
 
+/- English proof (translation)
+Establish `h21 : h e₂ e₁ = 0` using `hz _ _ h12`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [map_add, map_smulₛₗ, LinearMap.add_apply, LinearMap.smul_apply, smul_eq_mul, starRingEnd_apply, RingHom.id_apply, h12, h21, h11, h22]`. Take the linear combination `hxy`. Simplify using `only [map_add, map_sub, map_smulₛₗ, LinearMap.add_apply, LinearMap.smul_apply, smul_eq_mul, starRingEnd_apply, RingHom.id_apply, h12, h21, h11, h22]`.
+
+Expand and normalize the polynomial expressions, which then agree. Simplify using `only [map_sub, map_smulₛₗ, LinearMap.sub_apply, LinearMap.smul_apply, smul_eq_mul, starRingEnd_apply, RingHom.id_apply, h12, h21, h11, h22, star_mul', star_star, ha, hb]`. Take the linear combination `(a * b) * hxy`.
+-/
 theorem bin_step_gen (h : V →ₗ⋆[K] V →ₗ[K] K) (hz : ∀ x y, h x y = 0 → h y x = 0) (e₁ e₂ : V)
     (a b x y n : K) (h12 : h e₁ e₂ = 0) (h11 : h e₁ e₁ = a) (h22 : h e₂ e₂ = b) (ha : star a = a)
     (hb : star b = b) (hxy : a * (x * star x) + b * (y * star y) = n) :
@@ -30,6 +35,9 @@ theorem bin_step_gen (h : V →ₗ⋆[K] V →ₗ[K] K) (hz : ∀ x y, h x y = 0
       starRingEnd_apply, RingHom.id_apply, h12, h21, h11, h22, star_mul', star_star, ha, hb]
     linear_combination (a * b) * hxy
 
+/- English proof (translation)
+Introduce `h0`. Take `⟨φ⟩ : Nonempty (K →+* ℂ)` from `inferInstance`. Use `hx φ` as an intermediate fact. Rewrite `this` using `[h0, map_zero]`. Simplify using `at this`.
+-/
 theorem TotPos.ne_zero' {x : K} (hx : TotPos x) : x ≠ 0 := by
   intro h0
   obtain ⟨φ⟩ : Nonempty (K →+* ℂ) := inferInstance
@@ -38,6 +46,39 @@ theorem TotPos.ne_zero' {x : K} (hx : TotPos x) : x ≠ 0 := by
   simp at this
 
 variable [Fact Formalism.HermitianLattices.Ext.L3.HermRepUnram] in
+/- English proof (translation)
+Establish `hz : ∀ x y, h x y = 0 → h y x = 0` using `fun x y e => by rw [← hsym, e, star_zero]`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `hk t _ _`.
+
+Establish `: Nontrivial V` using `Module.nontrivial_of_finrank_pos (R := K) (by omega)`. Take `⟨x, hx⟩` from `exists_ne (0 : V)`. Establish `hsub : ∀ i j : Fin (0 + 1), i = j` using `fun i j => Fin.ext (by omega)`. Conclude with `⟨fun _ => x, fun i j hij => absurd (hsub i j) hij, fun i hi => absurd (hsub i _) hi, hx⟩`. Consider the case `succ k ih`.
+
+Introduce `hk t hts htp`. Take `⟨v, ho, h1, hl⟩` from `ih (by omega) (fun i => t (Fin.castSucc i)) (fun i => hts _) (fun i => htp _)`. Take `⟨z, hz0, hzv⟩` from `GramDeterminantPositive.exists_ortho_ne_zero h v (by omega)`. Take `⟨x, y, hxy⟩` from `hermRepUnram K hK (h (v (Fin.last k)) (v (Fin.last k))) (h z z) (t (Fin.castSucc (Fin.last k))) (hsym _ _) (hsym _ _) (hts _) (hpos _ hl) (hpos _ hz0) (htp _)`. Take `⟨b1, b2, b3⟩` from `bin_step_gen h hz (v (Fin.last k)) z _ _ x y _ (hzv _) rfl rfl (hsym _ _) (hsym _ _) hxy`.
+
+Use `set a := h (v (Fin.last k)) (v (Fin.last k)) with ha`. Use `set b := h z z with hb`. Use `set f₁ := x • v (Fin.last k) + y • z with hf₁`. Use `set f₂ := (star y * b) • v (Fin.last k) - (star x * a) • z with hf₂`. Establish `hf₂0 : f₂ ≠ 0`.
+
+Introduce `h0`. Rewrite `b3` using `[h0, map_zero]`. Conclude with `mul_ne_zero (mul_ne_zero (TotPos.ne_zero' (hpos _ hl)) (TotPos.ne_zero' (hpos _ hz0))) (TotPos.ne_zero' (htp _)) b3.symm`. Establish `c1 : ∀ i, i ≠ Fin.last k → h (v i) f₁ = 0`. Introduce `i hi`.
+
+Rewrite using `[hf₁, map_add, map_smul, map_smul, ho i _ hi, hzv i, smul_zero, smul_zero, add_zero]`. Establish `c2 : ∀ i, i ≠ Fin.last k → h (v i) f₂ = 0`. Introduce `i hi`. Rewrite using `[hf₂, map_sub, map_smul, map_smul, ho i _ hi, hzv i, smul_zero, smul_zero, sub_zero]`. Set `u : Fin (k + 1) → V` to `Function.update v (Fin.last k) f₁`.
+
+Establish `ul : u (Fin.last k) = f₁` using `Function.update_self _ _ _`. Establish `un : ∀ i, i ≠ Fin.last k → u i = v i` using `fun i hi => Function.update_of_ne hi _ _`. Establish `uo : ∀ i j, i ≠ j → h (u i) (u j) = 0`. Introduce `i j hij`. Distinguish the cases in `hi : i = Fin.last k`.
+
+Establish `hj : j ≠ Fin.last k` using `fun e => hij (hi.trans e.symm)`. Rewrite using `[hi, ul, un j hj]`. Conclude with `hz _ _ (c1 j hj)`. Distinguish the cases in `hj : j = Fin.last k`. Rewrite using `[hj, ul, un i hi]`.
+
+Conclude with `c1 i hi`. Rewrite using `[un i hi, un j hj]`. Conclude with `ho i j hij`. Establish `u1 : ∀ i, h (u i) (u i) = t (Fin.castSucc i)`. Introduce `i`.
+
+Distinguish the cases in `hi : i = Fin.last k`. Rewrite using `[hi, ul]`. Conclude with `b1`. Rewrite using `[un i hi]`. Conclude with `h1 i hi`.
+
+Establish `u2 : ∀ i, h (u i) f₂ = 0`. Introduce `i`. Distinguish the cases in `hi : i = Fin.last k`. Rewrite using `[hi, ul]`. Conclude with `b2`.
+
+Rewrite using `[un i hi]`. Conclude with `c2 i hi`. Use `⟨Fin.snoc u f₂, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i j`. Apply the tactic sequence `refine Fin.lastCases ?_ (fun i => ?_) i <;> refine Fin.lastCases ?_ (fun j => ?_) j`.
+
+Introduce `hij`. Conclude with `absurd rfl hij`. Introduce `_`. Rewrite using `[Fin.snoc_last, Fin.snoc_castSucc]`. Conclude with `hz _ _ (u2 j)`.
+
+Introduce `_`. Rewrite using `[Fin.snoc_last, Fin.snoc_castSucc]`. Conclude with `u2 i`. Introduce `hij`. Rewrite using `[Fin.snoc_castSucc, Fin.snoc_castSucc]`.
+
+Conclude with `uo i j (fun e => hij (by rw [e]))`. Introduce `i`. Use `Fin.lastCases ?_ (fun i => ?_) i` and prove the remaining obligations. Introduce `hi`. Conclude with `absurd rfl hi`.
+
+Introduce `_`. Rewrite using `[Fin.snoc_castSucc]`. Conclude with `u1 i`. Rewrite using `[Fin.snoc_last]`. Conclude with `hf₂0`.
+-/
 theorem exists_presc_family (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) [FiniteDimensional K V]
     (h : V →ₗ⋆[K] V →ₗ[K] K) (hsym : ∀ x y, star (h x y) = h y x)
     (hpos : ∀ x, x ≠ 0 → TotPos (h x x)) :

@@ -5,6 +5,15 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace GlobalTheory.CompanionEll
 
+/- English proof (translation)
+Introduce `E _ _ n P hP`. Take `⟨hm, hn, -, hr⟩` from `hP`. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Establish `h0 : P.coeff 0 ≠ 0`. Introduce `h`.
+
+Establish `hroot : (0 : ℂ) ∈ (P.map τ).roots`. Rewrite using `[mem_roots (hm.map τ).ne_zero, IsRoot.def, ← coeff_zero_eq_eval_zero, coeff_map, h, map_zero]`. Use `hr τ 0 hroot` as an intermediate fact. Simplify using `at this`. Choose the witnesses or unpack the hypotheses as in `⟨N, hN⟩ : ∃ N : Matrix (Fin n) (Fin n) E, N.charpoly = P := by`.
+
+Substitute `hn` using the available equality. Conclude with `⟨_, (charpoly_leftMulMatrix (AdjoinRoot.powerBasis hm.ne_zero)).trans (AdjoinRoot.minpoly_powerBasis_gen_of_monic hm)⟩`. Establish `hd : IsUnit N.det`. Rewrite using `[Matrix.det_eq_sign_charpoly_coeff, hN]`. Conclude with `isUnit_iff_ne_zero.mpr (mul_ne_zero (pow_ne_zero _ (neg_ne_zero.mpr one_ne_zero)) h0)`.
+
+Conclude with `⟨((Matrix.isUnit_iff_isUnit_det N).mpr hd).unit, hN⟩`.
+-/
 theorem exists_GL_charpoly_eq : ∀ (E : Type) [Field E] [NumberField E] (n : ℕ), ∀ P ∈ Ell E n, ∃ a : GL (Fin n) E, a.val.charpoly = P := by
   intro E _ _ n P hP
   obtain ⟨hm, hn, -, hr⟩ := hP

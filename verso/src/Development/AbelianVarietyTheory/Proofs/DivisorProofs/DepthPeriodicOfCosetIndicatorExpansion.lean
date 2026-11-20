@@ -11,6 +11,9 @@ namespace GlobalTheory.DepthUnf
 
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {W : G.Weil} {U : Set T}
 
+/- English proof (translation)
+Take `⟨x₀, -, h1, hfn⟩` from `h`. Rewrite `hx` using `[hfn]`. Take `⟨u, hu, -, rfl⟩` from `Set.mem_of_indicator_ne_zero hx`. Rewrite using `[nsmul_add]`. Conclude with `add_mem h1 (nsmul_mem (nsmul_mem hu k) k)`.
+-/
 theorem nsmul_mem_of_isCosetDatum {t : T} {p : Pair T} {k : ℕ} {d : FinDatum G t p} (h : IsCosetDatum k d)
     {x : WO (G.pS p) (G.pT p)} (hx : d.fn x ≠ 0) : k • x ∈ pairLat G p := by
   obtain ⟨x₀, -, h1, hfn⟩ := h
@@ -19,6 +22,11 @@ theorem nsmul_mem_of_isCosetDatum {t : T} {p : Pair T} {k : ℕ} {d : FinDatum G
   rw [nsmul_add]
   exact add_mem h1 (nsmul_mem (nsmul_mem hu k) k)
 
+/- English proof (translation)
+Take `⟨x₀, -, -, hfn⟩` from `h`. Rewrite using `[hfn]`. Distinguish the cases in `hx : x ∈ halfCoset d.e (pairLat G p) k x₀`. Rewrite using `[Set.indicator_of_mem hx, Set.indicator_of_mem ((add_nsmul_mem_halfCoset_iff hu hu').2 hx)]`. Both sides reduce to the same expression.
+
+Rewrite using `[Set.indicator_of_notMem hx, Set.indicator_of_notMem (mt (add_nsmul_mem_halfCoset_iff hu hu').1 hx)]`.
+-/
 theorem fn_add_nsmul_of_isCosetDatum {t : T} {p : Pair T} {k : ℕ} {d : FinDatum G t p} (h : IsCosetDatum k d)
     {u : WO (G.pS p) (G.pT p)} (hu : u ∈ pairLat G p) (hu' : IsHalf d.e u) (x : WO (G.pS p) (G.pT p)) :
     d.fn (x + k • u) = d.fn x := by
@@ -28,6 +36,17 @@ theorem fn_add_nsmul_of_isCosetDatum {t : T} {p : Pair T} {k : ℕ} {d : FinDatu
   · rw [Set.indicator_of_mem hx, Set.indicator_of_mem ((add_nsmul_mem_halfCoset_iff hu hu').2 hx)]; rfl
   · rw [Set.indicator_of_notMem hx, Set.indicator_of_notMem (mt (add_nsmul_mem_halfCoset_iff hu hu').1 hx)]
 
+/- English proof (translation)
+Introduce `D T L sc G W U S t Φ β k τ h`. Take `⟨-, ⟨e, he, hP, hsum⟩, hcos⟩` from `h`. Use `⟨e, he, ⟨hP, hsum⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce `x y hx hy hne`. Unfold `flatProd at hne`.
+
+Rewrite `hne` using `[← hsum x y hx hy]`. Take `⟨d, hd, hne⟩` from `Finset.exists_ne_zero_of_sum_ne_zero hne`. Use `beta_reduce at hne`. Establish `h1 : ∏ j, (d.1 j).fn (x j) ≠ 0` using `fun h0 => hne (by rw [h0, mul_zero, zero_mul])`. Establish `h2 : ∏ i, (d.2 i).fn (y i) ≠ 0` using `fun h0 => hne (by rw [h0, mul_zero])`.
+
+Rewrite `h1`, `h2` using `[Finset.prod_ne_zero_iff]`. Conclude with `⟨fun j => nsmul_mem_of_isCosetDatum ((hcos d hd).1 j) (h1 j (Finset.mem_univ _)), fun i => nsmul_mem_of_isCosetDatum ((hcos d hd).2 i) (h2 i (Finset.mem_univ _))⟩`. Introduce `x u y v hx hy hu hv`. Establish `hx' : ∀ j, IsHalf e ((x + k • u) j)` using `fun j a b => by show e * (x j + k • u j) a b = (x j + k • u j) a b`. Rewrite using `[Matrix.add_apply, mul_add, hx j a b, isHalf_nsmul_of k (hu j).1 a b]`.
+
+Establish `hy' : ∀ i, IsHalf e ((y + k • v) i)` using `fun i a b => by show e * (y i + k • v i) a b = (y i + k • v i) a b`. Rewrite using `[Matrix.add_apply, mul_add, hy i a b, isHalf_nsmul_of k (hv i).1 a b]`. Unfold `flatProd`. Rewrite using `[← hsum _ _ hx' hy', ← hsum x y hx hy]`. Use `Finset.sum_congr rfl fun d hd => ?_` and prove the remaining obligations.
+
+Establish `hx1 : ∀ j, (d.1 j).fn ((x + k • u) j) = (d.1 j).fn (x j)` using `fun j => fn_add_nsmul_of_isCosetDatum ((hcos d hd).1 j) (hu j).2 (((hP d hd).1 j).2.1 ▸ (hu j).1) (x j)`. Establish `hy1 : ∀ i, (d.2 i).fn ((y + k • v) i) = (d.2 i).fn (y i)` using `fun i => fn_add_nsmul_of_isCosetDatum ((hcos d hd).2 i) (hv i).2 (((hP d hd).2 i).2.1 ▸ (hv i).1) (y i)`. Simplify using `only [hx1, hy1]`.
+-/
 theorem depthOK_of_isCosetExpansion : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {W : G.Weil} {U : Set T} (S : GridChoice W U) (t : T) (Φ : G.Datum) (β : CosFam G t) (k : ℕ) (τ : PureDat G t →₀ ℂ), IsCosetExpansion S t Φ β k τ → ∃ e, IsIdemSum e (locPl G t) ∧ ExpWith S t Φ β e τ ∧ DepthOK S t Φ β e k := by
   intro D T L sc G W U S t Φ β k τ h
   obtain ⟨-, ⟨e, he, hP, hsum⟩, hcos⟩ := h

@@ -80,11 +80,19 @@ section Lemmas
 
 variable {E : Type} [Field E] [NumberField E] [StarRing E]
 
+/- English proof (translation)
+Take `⟨T, hT, hp⟩` from `h`. Conclude with `⟨T, hT, fun p hp' => hp p (hs hp')⟩`.
+-/
 theorem FinCl.mono {m : ℕ} {S S' : Set (Matrix (Fin m) (Fin m) E × Submodule (𝓞 E) (Fin m → E))}
     (h : FinCl S') (hs : S ⊆ S') : FinCl S := by
   obtain ⟨T, hT, hp⟩ := h
   exact ⟨T, hT, fun p hp' => hp p (hs hp')⟩
 
+/- English proof (translation)
+Take `⟨T, hT, hp⟩` from `h`. Take `⟨T', hT', hp'⟩` from `h'`. Use `⟨T ∪ T', hT.union hT', fun p hp0 => ?_⟩` and prove the remaining obligations. Break down `hp0 with h1 | h1` into its components or cases. Take `⟨q, hq, hi⟩` from `hp p h1`.
+
+Conclude with `⟨q, Or.inl hq, hi⟩`. Take `⟨q, hq, hi⟩` from `hp' p h1`. Conclude with `⟨q, Or.inr hq, hi⟩`.
+-/
 theorem FinCl.union {m : ℕ} {S S' : Set (Matrix (Fin m) (Fin m) E × Submodule (𝓞 E) (Fin m → E))}
     (h : FinCl S) (h' : FinCl S') : FinCl (S ∪ S') := by
   obtain ⟨T, hT, hp⟩ := h
@@ -96,12 +104,20 @@ theorem FinCl.union {m : ℕ} {S S' : Set (Matrix (Fin m) (Fin m) E × Submodule
   · obtain ⟨q, hq, hi⟩ := hp' p h1
     exact ⟨q, Or.inr hq, hi⟩
 
+/- English proof (translation)
+Simplify using `only [hform, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum, starRingEnd_apply]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hform_smul {m : ℕ} (J : Matrix (Fin m) (Fin m) E) (c c' : E) (x y : Fin m → E) :
     hform (starRingEnd E) J (c • x) (c' • y) = star c * c' * hform (starRingEnd E) J x y := by
   simp only [hform, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum, starRingEnd_apply]
   refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_
   ring
 
+/- English proof (translation)
+Establish `hij : ∀ i j, star (J j i) = J i j` using `fun i j => by`. Establish `h1` using `congrFun (congrFun hJ i) j`. Simplify `h1` using `[cT, starRingEnd_apply]`. Simplify using `only [hform, starRingEnd_apply, star_sum, star_mul', star_star, hij]`. Rewrite using `[Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hform_self_star {m : ℕ} (J : Matrix (Fin m) (Fin m) E) (hJ : IsHerm (starRingEnd E) J)
     (x : Fin m → E) : star (hform (starRingEnd E) J x x) = hform (starRingEnd E) J x x := by
   have hij : ∀ i j, star (J j i) = J i j := fun i j => by
@@ -112,6 +128,11 @@ theorem hform_self_star {m : ℕ} (J : Matrix (Fin m) (Fin m) E) (hJ : IsHerm (s
   refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_
   ring
 
+/- English proof (translation)
+Introduce `d _`. Use `⟨{((0 : Matrix (Fin 0) (Fin 0) E), (⊥ : Submodule (𝓞 E) (Fin 0 → E)))}, Set.finite_singleton _, fun p _ => ⟨_, rfl, 1, Matrix.ext fun i _ => Fin.elim0 i, fun v => ?_⟩⟩` and prove the remaining obligations. Establish `hv : v = 0` using `funext fun i => Fin.elim0 i`. Substitute `hv` using the available equality. Prove the components needed by the constructor for the conclusion.
+
+Introduce `_`. Conclude with `⟨0, Submodule.zero_mem _, funext fun i => Fin.elim0 i⟩`. Introduce `_`. Conclude with `Submodule.zero_mem _`.
+-/
 theorem hl_zero : HL E 0 := by
   intro d _
   refine ⟨{((0 : Matrix (Fin 0) (Fin 0) E), (⊥ : Submodule (𝓞 E) (Fin 0 → E)))},
@@ -126,6 +147,21 @@ theorem hl_zero : HL E 0 := by
 
 end Lemmas
 
+/- English proof (translation)
+Introduce `d hd`. Take `⟨C, hC⟩` from `hS F E hc m d hm hd`. Take `⟨R, hR, hR0, hRu⟩` from `hU F E hc C`. Take `⟨G2, hG2, hG2det, hiso⟩` from `hI F E hc m d hd`. Establish `hG1 : ((fun r : E => Matrix.of fun (_ _ : Fin 1) => r) '' R).Finite` using `hR.image _`.
+
+Establish `hG1det : ∀ Γ ∈ (fun r : E => Matrix.of fun (_ _ : Fin 1) => r) '' R, Γ.det ≠ 0`. Introduce and unpack `_ ⟨r, hr, rfl⟩`. Rewrite using `[Matrix.det_unique]`. Use `show r ≠ 0`. Introduce and unpack `rfl`.
+
+Conclude with `hR0 hr`. Use `FinCl.mono (FinCl.union (hP F E hc m 1 le_rfl ih d hd _ hG1 hG1det) (hP F E hc m 2 (by norm_num) ih d hd G2 hG2 hG2det)) ?_` and prove the remaining obligations. Introduce `p hp`. Take `⟨x, hx, hx0, hxC⟩` from `hC p hp`. Distinguish the cases in `hiso0 : hform (starRingEnd E) p.1 x x = 0`.
+
+Use `Or.inr ?_` and prove the remaining obligations. Simplify using `only [SplitSet, Set.mem_setOf_eq]`. Conclude with `⟨hp, hiso p hp x hx hx0 hiso0⟩`. Use `Or.inl ?_` and prove the remaining obligations. Establish `hint : hform (starRingEnd E) p.1 x x ∈ (algebraMap (𝓞 E) E).range` using `hp.2.2.2.2.1 x hx x hx`.
+
+Take `⟨u, r, hr, hur⟩` from `hRu _ hint (hform_self_star p.1 hp.1 x) hiso0 hxC`. Use `set c : E := algebraMap (𝓞 E) E ((u⁻¹ : (𝓞 E)ˣ) : 𝓞 E) with hcdef`. Establish `hca : c * algebraMap (𝓞 E) E ((u : (𝓞 E)ˣ) : 𝓞 E) = 1`. Rewrite using `[hcdef, ← map_mul, Units.inv_mul, map_one]`. Establish `hsca : star c * star (algebraMap (𝓞 E) E ((u : (𝓞 E)ˣ) : 𝓞 E)) = 1`.
+
+Rewrite using `[← star_mul', hca, star_one]`. Simplify using `only [SplitSet, Set.mem_setOf_eq]`. Use `⟨hp, fun _ => c • x, fun _ => ?_, ⟨r, hr, ?_⟩⟩` and prove the remaining obligations. Use `show c • x ∈ p.2`. Rewrite using `[hcdef, algebraMap_smul]`.
+
+Conclude with `p.2.smul_mem _ hx`. Use extensionality with `i j`. Simplify using `only [gram, Matrix.of_apply]`. Rewrite using `[hform_smul, hur]`. Rewrite using `[show star c * c * (star (algebraMap (𝓞 E) E ((u : (𝓞 E)ˣ) : 𝓞 E)) * algebraMap (𝓞 E) E ((u : (𝓞 E)ˣ) : 𝓞 E) * r) = (star c * star (algebraMap (𝓞 E) E ((u : (𝓞 E)ˣ) : 𝓞 E))) * (c * algebraMap (𝓞 E) E ((u : (𝓞 E)ˣ) : 𝓞 E)) * r by ring, hsca, hca, one_mul, one_mul]`.
+-/
 theorem hl_step (hS : PartShort) (hU : PartUnits) (hI : PartIso) (hP : PartSplit)
     (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E]
     (hc : Formalism.BasicNotions.CMData F E) (m : ℕ) (hm : 1 ≤ m) (ih : ∀ k < m, HL E k) : HL E m := by
@@ -169,6 +205,11 @@ theorem hl_step (hS : PartShort) (hU : PartUnits) (hI : PartIso) (hP : PartSplit
           (star c * star (algebraMap (𝓞 E) E ((u : (𝓞 E)ˣ) : 𝓞 E))) *
           (c * algebraMap (𝓞 E) E ((u : (𝓞 E)ˣ) : 𝓞 E)) * r by ring, hsca, hca, one_mul, one_mul]
 
+/- English proof (translation)
+Proceed by induction on `m using Nat.strong_induction_on with`. Consider the case `_ m ih`. Break down `Nat.eq_zero_or_pos m with h0 | hm` into its components or cases. Substitute `h0` using the available equality. Conclude with `hl_zero`.
+
+Conclude with `hl_step hS hU hI hP F E hc m hm ih`.
+-/
 theorem hl_all (hS : PartShort) (hU : PartUnits) (hI : PartIso) (hP : PartSplit)
     (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E]
     (hc : Formalism.BasicNotions.CMData F E) (m : ℕ) : HL E m := by
@@ -179,6 +220,23 @@ theorem hl_all (hS : PartShort) (hU : PartUnits) (hI : PartIso) (hP : PartSplit)
       exact hl_zero
     · exact hl_step hS hU hI hP F E hc m hm ih
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ hc n J hJ hdet`. Take `⟨T0, hT0, hcl⟩` from `hHL F E hc n 1 le_rfl`. Set `pick : Matrix (Fin n) (Fin n) E × Submodule (𝓞 E) (Fin n → E) → Submodule (𝓞 E) (Fin n → E) × GL (Fin n) E` to `fun q => if h : ∃ M : Submodule (𝓞 E) (Fin n → E), ∃ A : GL (Fin n) E, cT (starRingEnd E) (A : Matrix (Fin n) (Fin n) E) * J * (A : Matrix (Fin n) (Fin n) E) = q.1 ∧ IsImg A q.2 M then (Classical.choose h, Classical.choose (Classical.choose_spec h)) else (⊥, 1)`. Establish `hpick : ∀ q : Matrix (Fin n) (Fin n) E × Submodule (𝓞 E) (Fin n → E), (∃ M : Submodule (𝓞 E) (Fin n → E), ∃ A : GL (Fin n) E, cT (starRingEnd E) (A : Matrix (Fin n) (Fin n) E) * J * (A : Matrix (Fin n) (Fin n) E) = q.1 ∧ IsImg A q.2 M) → cT (starRingEnd E) ((pick q).2 : Matrix (F …`. Introduce `q h`.
+
+Use `show cT (starRingEnd E) ((dite _ _ _ : Submodule (𝓞 E) (Fin n → E) × GL (Fin n) E).2 : Matrix (Fin n) (Fin n) E) * J * ((dite _ _ _ : Submodule (𝓞 E) (Fin n → E) × GL (Fin n) E).2 : Matrix (Fin n) (Fin n) E) = q.1 ∧ IsImg (dite _ _ _ : Submodule (𝓞 E) (Fin n → E) × GL (Fin n) E). …`. Rewrite using `[dif_pos h]`. Conclude with `Classical.choose_spec (Classical.choose_spec h)`. Use `⟨(hT0.image (fun q => (pick q).1)).toFinset, fun M hfg hspan hsd => ?_⟩` and prove the remaining obligations. Establish `hLat : (J, M) ∈ Lat E n 1`.
+
+Simplify using `only [Lat, Set.mem_setOf_eq]`. Use `⟨hJ, hdet, hfg, hspan, fun x hx y hy => (hsd y).1 hy x hx, fun w hw => ?_⟩` and prove the remaining obligations. Rewrite using `[Nat.cast_one, one_smul]`. Conclude with `(hsd w).2 hw`. Take `⟨q, hq, A, hA1, hA2⟩` from `hcl (J, M) hLat`.
+
+Simplify using `only at hA1 hA2`. Take `⟨hq1, hq2⟩` from `hpick q ⟨M, A, hA1, hA2⟩`. Establish `key : cT (starRingEnd E) (A : Matrix (Fin n) (Fin n) E) * J * (A : Matrix (Fin n) (Fin n) E) = cT (starRingEnd E) ((pick q).2 : Matrix (Fin n) (Fin n) E) * J * ((pick q).2 : Matrix (Fin n) (Fin n) E)` using `hA1.trans hq1.symm`. Use `⟨A * (pick q).2⁻¹, ?_, (pick q).1, ?_, ?_⟩` and prove the remaining obligations. Use `show cT (starRingEnd E) ((A * (pick q).2⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) * J * ((A * (pick q).2⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) = J`.
+
+Rewrite using `[Units.val_mul, cT_mul]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = cT (starRingEnd E) (((pick q).2⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) * (cT (starRingEnd E) ((pick q).2 : Matrix (Fin n) (Fin n) E) * J * ((pick q).2 : Matrix (Fin n) (Fin n) E)) * (((pick q).2⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) := by rw [key]`. Use `_ = cT (starRingEnd E) (((pick q).2 : Matrix (Fin n) (Fin n) E) * (((pick q).2⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E)) * J * (((pick q).2 : Matrix (Fin n) (Fin n) E) * (((pick q).2⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E)) := by`.
+
+Rewrite using `[cT_mul]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = J := by`. Rewrite using `[← Units.val_mul, mul_inv_cancel, Units.val_one, cT_one, Matrix.one_mul, Matrix.mul_one]`. Conclude with `(Set.Finite.mem_toFinset _).mpr ⟨q, hq, rfl⟩`.
+
+Introduce `v`. Prove the components needed by the constructor for the conclusion. Introduce `hv`. Take `⟨w0, hw0, rfl⟩` from `(hA2 v).1 hv`. Use `⟨((pick q).2 : Matrix (Fin n) (Fin n) E) *ᵥ w0, (hq2 _).2 ⟨w0, hw0, rfl⟩, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Units.val_mul, Matrix.mulVec_mulVec, Matrix.mul_assoc, ← Units.val_mul (pick q).2⁻¹, inv_mul_cancel, Units.val_one, Matrix.mul_one]`. Introduce and unpack `⟨w, hw, rfl⟩`. Take `⟨w0, hw0, rfl⟩` from `(hq2 w).1 hw`. Use `(hA2 _).2 ⟨w0, hw0, ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_mul, Matrix.mulVec_mulVec, Matrix.mul_assoc, ← Units.val_mul (pick q).2⁻¹, inv_mul_cancel, Units.val_one, Matrix.mul_one]`.
+-/
 theorem stH_of_hl (hHL : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E]
     [Algebra F E], Formalism.BasicNotions.CMData F E → ∀ m, HL E m) : StH := by
   intro F E _ _ _ _ _ _ hc n J hJ hdet
@@ -241,6 +299,9 @@ theorem stH_of_hl (hHL : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [N
       rw [Units.val_mul, Matrix.mulVec_mulVec, Matrix.mul_assoc, ← Units.val_mul (pick q).2⁻¹,
         inv_mul_cancel, Units.val_one, Matrix.mul_one]
 
+/- English proof (translation)
+The claim follows from `stH_of_hl fun F E _ _ _ _ _ _ hc m => hl_all hS hU hI hP F E hc m`.
+-/
 theorem stH_of_parts (hS : PartShort) (hU : PartUnits) (hI : PartIso) (hP : PartSplit) : StH :=
   stH_of_hl fun F E _ _ _ _ _ _ hc m => hl_all hS hU hI hP F E hc m
 

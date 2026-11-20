@@ -11,6 +11,15 @@ section Lin
 variable {k A W L O S : Type} [Field k] [AddCommGroup A] [Module k A] [AddCommGroup W] [Module k W]
   [AddCommGroup L] [Module k L] [AddCommGroup O] [Module k O] [AddCommGroup S] [Module k S]
 
+/- English proof (translation)
+Establish `e1 : LinearMap.ker ((LinearMap.range f).mkQ ∘ₗ π) = LinearMap.ker g`. Rewrite using `[LinearMap.ker_comp, Submodule.ker_mkQ, h1]`. Establish `hs : Function.Surjective ((LinearMap.range f).mkQ ∘ₗ π)` using `(Submodule.mkQ_surjective _).comp hπ`. Set `e : LinearMap.range g ≃ₗ[k] L ⧸ LinearMap.range f` to `g.quotKerEquivRange.symm.trans ((Submodule.quotEquivOfEq _ _ e1.symm).trans (LinearMap.quotKerEquivOfSurjective _ hs))`. Use `haveI : Module.Finite k (LinearMap.range g) := Module.Finite.equiv e.symm`.
+
+Establish `a5 : finrank k (LinearMap.ker h) = finrank k (LinearMap.range g)` using `by rw [h2]`. Use `haveI : Module.Finite k (LinearMap.ker h) := by rw [h2]; infer_instance`. Use `haveI : Module.Finite k O := by`. Apply `Module.rank_lt_aleph0_iff.mp` to reduce the goal to its premises. Rewrite using `[← LinearMap.rank_range_add_rank_ker h]`.
+
+Conclude with `Cardinal.add_lt_aleph0 (Module.rank_lt_aleph0 k _) (Module.rank_lt_aleph0 k _)`. Use `⟨inferInstance, ?_⟩` and prove the remaining obligations. Establish `a1` using `LinearMap.finrank_range_add_finrank_ker f`. Establish `a2` using `LinearMap.finrank_range_add_finrank_ker h`. Establish `a3` using `Submodule.finrank_quotient_add_finrank (LinearMap.range f)`.
+
+Establish `a4` using `e.finrank_eq`. Use linear arithmetic over natural numbers and integers.
+-/
 private theorem count [Module.Finite k A] [Module.Finite k L] [Module.Finite k S]
     (f : A →ₗ[k] L) (π : W →ₗ[k] L) (hπ : Function.Surjective π) (g : W →ₗ[k] O) (h : O →ₗ[k] S)
     (h1 : LinearMap.ker g = (LinearMap.range f).comap π) (h2 : LinearMap.ker h = LinearMap.range g) :
@@ -47,6 +56,9 @@ variable {k Γ M V : Type} [Field k] [Group Γ] [TopologicalSpace Γ] [AddCommGr
   (hq : ∀ v s m, q v (ρ (loc v s) m) = σ v s (q v m))
   (r : ∀ v, Q v →ₗ[k] M) (hr : ∀ v y, q v (r v y) = y)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `p`. Use `show τ p.1 (c p.2) - c (p.1 * p.2) + c p.1 = c p.1 + τ p.1 (c p.2) - c (p.1 * p.2)`. Normalize the expressions using the abelian group laws.
+-/
 private theorem first_differential_eq {G N : Type} [Group G] [AddCommGroup N] [Module k N] (τ : Representation k G N) (c : G → N) :
     d1 τ c = Alg.dOne τ c := by
   funext p
@@ -81,6 +93,17 @@ private def h1 : H1C loc ρ (fun v => LinearMap.ker (q v)) →ₗ[k] H1 ρ :=
     obtain ⟨X, a1, -⟩ := hx
     exact (mem_coboundaries1 _ _).2 ⟨X, a1⟩
 
+/- English proof (translation)
+Rewrite using `[Submodule.comap_id]`. Use extensionality with `y`. Rewrite using `[LinearMap.mem_ker, LinearMap.mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce `hy`.
+
+Establish `hy' : g1Z loc ρ σ q hq r hr y ∈ Submodule.comap (Z1C loc ρ fun v => LinearMap.ker (q v)).subtype (continuousCoboundaries1 ρ fun v => LinearMap.ker (q v))` using `(Submodule.Quotient.mk_eq_zero _).1 hy`. Take `⟨X, h1, h2⟩` from `hy'`. Use `⟨⟨X, fun g => ?_⟩, ?_⟩` and prove the remaining obligations. Establish `: ρ g X - X = 0` using `(h1 g).symm`. Conclude with `sub_eq_zero.1 this`.
+
+Use function extensionality and compare the values at `v`. Apply `Subtype.ext` to reduce the goal to its premises. Use `h2 v` as an intermediate fact. Express the relevant statement in the definitionally equal form `r v (y v).1 - X ∈ LinearMap.ker (q v) at this`. Rewrite `this` using `[LinearMap.mem_ker, map_sub, hr]`.
+
+Conclude with `(sub_eq_zero.1 this).symm`. Introduce and unpack `⟨x, rfl⟩`. Apply `(Submodule.Quotient.mk_eq_zero _).2` to reduce the goal to its premises. Use `⟨x.1, fun s => ?_, fun v => ?_⟩` and prove the remaining obligations. Conclude with `(sub_eq_zero.2 (x.2 s)).symm`.
+
+Use `show r v (q v x.1) - x.1 ∈ LinearMap.ker (q v)`. Rewrite using `[LinearMap.mem_ker, map_sub, hr, sub_self]`.
+-/
 private theorem ker_g1_eq_range_f0 : LinearMap.ker (g1 loc ρ σ q hq r hr) =
     (LinearMap.range (f0 loc ρ σ q hq)).comap LinearMap.id := by
   rw [Submodule.comap_id]
@@ -108,6 +131,19 @@ private theorem ker_g1_eq_range_f0 : LinearMap.ker (g1 loc ρ σ q hq r hr) =
     · show r v (q v x.1) - x.1 ∈ LinearMap.ker (q v)
       rw [LinearMap.mem_ker, map_sub, hr, sub_self]
 
+/- English proof (translation)
+Use extensionality with `c`. Rewrite using `[LinearMap.mem_ker, LinearMap.mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce `hc`. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ c`.
+
+Establish `hx : h1Z loc ρ q x ∈ Submodule.comap (Z1 ρ).subtype (B1 ρ)` using `(Submodule.Quotient.mk_eq_zero _).1 hc`. Take `⟨m, hm⟩` from `(mem_coboundaries1 _ _).1 hx`. Establish `hm' : ∀ s, x.1.1 s = ρ s m - m` using `hm`. Establish `key : ∀ v (s : Gv v), σ v s (q v (x.1.2 v - m)) = q v (x.1.2 v - m)`. Introduce `v s`.
+
+Establish `h3` using `x.2.2.2 v s`. Rewrite `h3` using `[LinearMap.mem_ker]`. Rewrite using `[← hq, ← sub_eq_zero, ← map_sub]`. Establish `e : ρ (loc v s) (x.1.2 v - m) - (x.1.2 v - m) = -(x.1.1 (loc v s) - (ρ (loc v s) (x.1.2 v) - x.1.2 v))`. Rewrite using `[hm', map_sub]`.
+
+Normalize the expressions using the abelian group laws. Rewrite using `[e, map_neg, h3, neg_zero]`. Use `⟨fun v => ⟨q v (x.1.2 v - m), key v⟩, ?_⟩` and prove the remaining obligations. Use `show Submodule.Quotient.mk (g1Z loc ρ σ q hq r hr _) = Submodule.Quotient.mk x`. Rewrite using `[Submodule.Quotient.eq]`.
+
+Use `⟨-m, fun s => ?_, fun v => ?_⟩` and prove the remaining obligations. Use `show (0 : M) - x.1.1 s = ρ s (-m) - -m`. Rewrite using `[hm' s, map_neg]`. Normalize the expressions using the abelian group laws. Use `show r v (q v (x.1.2 v - m)) - x.1.2 v - -m ∈ LinearMap.ker (q v)`.
+
+Rewrite using `[LinearMap.mem_ker, map_sub, map_sub, hr, map_neg, map_sub]`. Normalize the expressions using the abelian group laws. Introduce and unpack `⟨y, rfl⟩ show Submodule.Quotient.mk (h1Z loc ρ q (g1Z loc ρ σ q hq r hr y)) = 0`. Conclude with `(Submodule.Quotient.mk_eq_zero _).2 ((mem_coboundaries1 _ _).2 ⟨0, fun g => by show (0 : M) = ρ g 0 - 0 simp⟩)`.
+-/
 private theorem ker_h1_eq_range_g1 : LinearMap.ker (h1 loc ρ q) = LinearMap.range (g1 loc ρ σ q hq r hr) := by
   ext c
   rw [LinearMap.mem_ker, LinearMap.mem_range]
@@ -142,6 +178,17 @@ private theorem ker_h1_eq_range_g1 : LinearMap.ker (h1 loc ρ q) = LinearMap.ran
       simp⟩)
 
 include hr in
+/- English proof (translation)
+Use extensionality with `c`. Rewrite using `[LinearMap.mem_range, LinearMap.mem_ker]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c', rfl⟩`. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ c'`.
+
+Use function extensionality and compare the values at `v`. Use `show (Submodule.Quotient.mk (compatiblePairCocycles1 ρ (σ v) (loc v) (hloc v) (q v) continuous_of_discreteTopology (hq v) (h1Z loc ρ q x)) : H1 (σ v)) = 0`. Apply `(Submodule.Quotient.mk_eq_zero _).2` to reduce the goal to its premises. Use `(mem_coboundaries1 _ _).2 ⟨q v (x.1.2 v), fun s => ?_⟩` and prove the remaining obligations. Establish `h3` using `x.2.2.2 v s`.
+
+Rewrite `h3` using `[LinearMap.mem_ker, map_sub, map_sub, hq]`. Use `show q v (x.1.1 (loc v s)) = σ v s (q v (x.1.2 v)) - q v (x.1.2 v)`. Conclude with `sub_eq_zero.1 h3`. Introduce `hc`. Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ c`.
+
+Establish `hv : ∀ v, ∃ m, ∀ s : Gv v, q v (z.1 (loc v s)) = σ v s m - m`. Introduce `v`. Establish `h0 : (Submodule.Quotient.mk (compatiblePairCocycles1 ρ (σ v) (loc v) (hloc v) (q v) continuous_of_discreteTopology (hq v) z) : H1 (σ v)) = 0` using `congrFun hc v`. Establish `h' : compatiblePairCocycles1 ρ (σ v) (loc v) (hloc v) (q v) continuous_of_discreteTopology (hq v) z ∈ Submodule.comap (Z1 (σ v)).subtype (B1 (σ v))` using `(Submodule.Quotient.mk_eq_zero _).1 h0`. Conclude with `(mem_coboundaries1 _ _).1 h'`.
+
+Use `choose m hm using hv`. Use `⟨Submodule.Quotient.mk ⟨(z.1, fun v => r v (m v)), (IsLocallyConstant.iff_continuous _).2 z.2.1, z.2.2, fun v s => ?_⟩, rfl⟩` and prove the remaining obligations. Use `show z.1 (loc v s) - (ρ (loc v s) (r v (m v)) - r v (m v)) ∈ LinearMap.ker (q v)`. Rewrite using `[LinearMap.mem_ker, map_sub, map_sub, hq, hr, hm, sub_self]`.
+-/
 private theorem range_h1_eq_ker_f1 : LinearMap.range (h1 loc ρ q) = LinearMap.ker (f1 loc hloc ρ σ q hq) := by
   ext c
   rw [LinearMap.mem_range, LinearMap.mem_ker]
@@ -210,12 +257,30 @@ private def pL : (∀ v, Z1 (σ v)) →ₗ[k] (∀ v, H1 (σ v)) where
   map_add' _ _ := rfl
   map_smul' _ _ := rfl
 
+/- English proof (translation)
+Introduce `a`. Use `choose a' ha using fun v => Submodule.Quotient.mk_surjective _ (a v)`. Conclude with `⟨a', funext ha⟩`.
+-/
 private theorem pL_surj : Function.Surjective (pL σ) := by
   intro a
   choose a' ha using fun v => Submodule.Quotient.mk_surjective _ (a v)
   exact ⟨a', funext ha⟩
 
 include hr in
+/- English proof (translation)
+Use extensionality with `c`. Rewrite using `[LinearMap.mem_range, Submodule.mem_iInf]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c', rfl⟩ v`. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ c'`.
+
+Rewrite using `[LinearMap.mem_ker]`. Use `show (Submodule.Quotient.mk (compatiblePairCocycles2 ρ (σ v) (loc v) (hloc v) (q v) continuous_of_discreteTopology (hq v) (h2Z loc ρ q x)) : H2 (σ v)) = 0`. Apply `(Submodule.Quotient.mk_eq_zero _).2` to reduce the goal to its premises. Use `(separated_dvr_second_cohomology_mem _ _).2 ⟨fun s => q v (x.1.2 v s), ((x.2.2.1 v).comp (q v)).continuous, ?_⟩` and prove the remaining obligations. Rewrite using `[first_differential_eq]`.
+
+Use function extensionality and compare the values at `p`. Establish `h4` using `x.2.2.2.2 v p.1 p.2`. Rewrite `h4` using `[LinearMap.mem_ker, map_sub, sub_eq_zero]`. Use `show _ = q v (x.1.1 (loc v p.1, loc v p.2))`. Rewrite using `[h4]`.
+
+Simplify using `only [Alg.dOne, map_sub, map_add, MonoidHom.comp_apply, hq]`. Introduce `hc`. Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ c`. Establish `hv : ∀ v, ∃ cv : Gv v → Q v, Continuous cv ∧ d1 (σ v) cv = fun p => q v (z.1 (loc v p.1, loc v p.2))`. Introduce `v`.
+
+Establish `h0 : (Submodule.Quotient.mk (compatiblePairCocycles2 ρ (σ v) (loc v) (hloc v) (q v) continuous_of_discreteTopology (hq v) z) : H2 (σ v)) = 0` using `LinearMap.mem_ker.1 (hc v)`. Establish `h' : compatiblePairCocycles2 ρ (σ v) (loc v) (hloc v) (q v) continuous_of_discreteTopology (hq v) z ∈ Submodule.comap (Z2 (σ v)).subtype (B2 (σ v))` using `(Submodule.Quotient.mk_eq_zero _).1 h0`. Conclude with `(separated_dvr_second_cohomology_mem _ _).1 h'`. Use `choose cv hcv hd using hv`. Use `⟨Submodule.Quotient.mk ⟨(z.1, fun v s => r v (cv v s)), (IsLocallyConstant.iff_continuous _).2 z.2.1, fun v => ((IsLocallyConstant.iff_continuous _).2 (hcv v)).comp (r v), fun s t u => ?_, fun v s t => ?_⟩, rfl⟩` and prove the remaining obligations.
+
+Use `z.2.2 s t u show ρ s (z.1 (t, u)) + z.1 (s, t * u) = z.1 (s * t, u) + z.1 (s, t)` as an intermediate fact. Rewrite using `[← sub_eq_zero, ← this]`. Normalize the expressions using the abelian group laws. Use `show z.1 (loc v s, loc v t) - Alg.dOne (ρ.comp (loc v)) (fun s => r v (cv v s)) (s, t) ∈ LinearMap.ker (q v)`. Establish `e` using `congrFun (hd v) (s, t)`.
+
+Rewrite `e` using `[first_differential_eq]`. Rewrite using `[LinearMap.mem_ker, map_sub, ← e]`. Simplify using `only [Alg.dOne, map_sub, map_add, MonoidHom.comp_apply, hq, hr, sub_self]`.
+-/
 private theorem range_h2_eq_inf_ker_pairing : LinearMap.range (h2 loc ρ q) =
     ⨅ v, LinearMap.ker (compatiblePairH2 ρ (σ v) (loc v) (hloc v) (q v) continuous_of_discreteTopology (hq v)) := by
   ext c
@@ -258,6 +323,21 @@ private theorem range_h2_eq_inf_ker_pairing : LinearMap.range (h2 loc ρ q) =
       simp only [Alg.dOne, map_sub, map_add, MonoidHom.comp_apply, hq, hr, sub_self]
 
 include hloc in
+/- English proof (translation)
+Use extensionality with `c`. Rewrite using `[LinearMap.mem_ker, LinearMap.mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce `hc`. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ c`.
+
+Establish `hx : h2Z loc ρ q x ∈ Submodule.comap (Z2 ρ).subtype (B2 ρ)` using `(Submodule.Quotient.mk_eq_zero _).1 hc`. Take `⟨β, hβ, hd⟩` from `(separated_dvr_second_cohomology_mem _ _).1 hx`. Rewrite `hd` using `[first_differential_eq]`. Establish `hd' : x.1.1 = Alg.dOne ρ β` using `hd.symm`. Establish `hcoc : ∀ v (s t : Gv v), q v (x.1.2 v (s * t) - β (loc v (s * t))) = q v (x.1.2 v s - β (loc v s)) + σ v s (q v (x.1.2 v t - β (loc v t)))`.
+
+Introduce `v s t`. Establish `h4` using `x.2.2.2.2 v s t`. Rewrite `h4` using `[hd', LinearMap.mem_ker]`. Simplify using `only [Alg.dOne, MonoidHom.comp_apply, map_mul, map_sub, map_add, hq] at h4 ⊢`. Rewrite using `[← sub_eq_zero, ← h4]`.
+
+Normalize the expressions using the abelian group laws. Use `⟨fun v => ⟨fun s => q v (x.1.2 v s - β (loc v s)), ?_, hcoc v⟩, ?_⟩` and prove the remaining obligations. Conclude with `(continuous_of_discreteTopology (f := q v)).comp ((x.2.2.1 v).continuous.sub (hβ.comp (hloc v)))`. Use `show Submodule.Quotient.mk (g2Z loc ρ σ q hq r hr _) = Submodule.Quotient.mk x`. Rewrite using `[Submodule.Quotient.eq]`.
+
+Use `⟨-β, fun _ => 0, (IsLocallyConstant.iff_continuous _).2 hβ.neg, ?_, fun v s => ?_⟩` and prove the remaining obligations. Use `show (0 : Γ × Γ → M) - x.1.1 = Alg.dOne ρ (-β)`. Rewrite using `[hd']`. Use function extensionality and compare the values at `p`. Simplify using `only [Alg.dOne, Pi.sub_apply, Pi.zero_apply, Pi.neg_apply, map_neg]`.
+
+Normalize the expressions using the abelian group laws. Use `show r v (q v (x.1.2 v s - β (loc v s))) - x.1.2 v s - ((-β) (loc v s) - (ρ (loc v s) 0 - 0)) ∈ LinearMap.ker (q v)`. Rewrite using `[LinearMap.mem_ker]`. Simplify using `only [map_sub, hr, Pi.neg_apply, map_neg, map_zero, sub_zero]`. Normalize the expressions using the abelian group laws.
+
+Introduce and unpack `⟨a, rfl⟩ show Submodule.Quotient.mk (h2Z loc ρ q (g2Z loc ρ σ q hq r hr a)) = 0`. Apply `(Submodule.Quotient.mk_eq_zero _).2` to reduce the goal to its premises. Conclude with `(separated_dvr_second_cohomology_mem _ _).2 ⟨0, continuous_const, by rw [map_zero]; rfl⟩`.
+-/
 private theorem ker_h2_eq_range_g2 : LinearMap.ker (h2 loc ρ q) = LinearMap.range (g2 loc ρ σ q hq r hr) := by
   ext c
   rw [LinearMap.mem_ker, LinearMap.mem_range]
@@ -297,6 +377,23 @@ private theorem ker_h2_eq_range_g2 : LinearMap.ker (h2 loc ρ q) = LinearMap.ran
     apply (Submodule.Quotient.mk_eq_zero _).2
     exact (separated_dvr_second_cohomology_mem _ _).2 ⟨0, continuous_const, by rw [map_zero]; rfl⟩
 
+/- English proof (translation)
+Use extensionality with `a`. Rewrite using `[LinearMap.mem_ker, Submodule.mem_comap, LinearMap.mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce `ha`. Establish `ha' : g2Z loc ρ σ q hq r hr a ∈ Submodule.comap (continuousCocycles2 loc ρ fun v => LinearMap.ker (q v)).subtype (continuousCoboundaries2 loc ρ fun v => LinearMap.ker (q v))` using `(Submodule.Quotient.mk_eq_zero _).1 ha`.
+
+Take `⟨β, Y, hβ, h0, hY⟩` from `ha'`. Establish `hz : β ∈ Z1 ρ`. Use `⟨hβ.continuous, fun s t => ?_⟩` and prove the remaining obligations. Establish `e : (0 : M) = β s + ρ s (β t) - β (s * t)` using `congrFun h0 (s, t)`. Rewrite `e` using `[eq_sub_iff_add_eq, zero_add]`.
+
+Conclude with `e`. Use `⟨Submodule.Quotient.mk ⟨β, hz⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `v`. Use `show (Submodule.Quotient.mk (compatiblePairCocycles1 ρ (σ v) (loc v) (hloc v) (q v) continuous_of_discreteTopology (hq v) ⟨β, hz⟩) : H1 (σ v)) = Submodule.Quotient.mk (a v)`. Rewrite using `[Submodule.Quotient.eq]`.
+
+Use `(mem_coboundaries1 _ _).2 ⟨q v (Y v), fun s => ?_⟩` and prove the remaining obligations. Establish `h3 : r v ((a v).1 s) - (β (loc v s) - (ρ (loc v s) (Y v) - Y v)) ∈ LinearMap.ker (q v)` using `hY v s`. Rewrite `h3` using `[LinearMap.mem_ker, map_sub, map_sub, map_sub, hr, hq, sub_eq_zero]`. Use `show q v (β (loc v s)) - (a v).1 s = σ v s (q v (Y v)) - q v (Y v)`. Rewrite using `[h3]`.
+
+Normalize the expressions using the abelian group laws. Introduce and unpack `⟨c, hc⟩`. Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ c`. Establish `hv : ∀ v, ∃ m, ∀ s, q v (z.1 (loc v s)) - (a v).1 s = σ v s m - m`. Introduce `v`.
+
+Establish `h1' : (Submodule.Quotient.mk (compatiblePairCocycles1 ρ (σ v) (loc v) (hloc v) (q v) continuous_of_discreteTopology (hq v) z) : H1 (σ v)) = Submodule.Quotient.mk (a v)` using `congrFun hc v`. Rewrite `h1'` using `[Submodule.Quotient.eq]`. Conclude with `(mem_coboundaries1 _ _).1 h1'`. Use `choose m hm using hv`. Use `show Submodule.Quotient.mk (g2Z loc ρ σ q hq r hr a) = 0`.
+
+Apply `(Submodule.Quotient.mk_eq_zero _).2` to reduce the goal to its premises. Use `⟨z.1, fun v => r v (m v), (IsLocallyConstant.iff_continuous _).2 z.2.1, ?_, fun v s => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `p show (0 : M) = z.1 p.1 + ρ p.1 (z.1 p.2) - z.1 (p.1 * p.2)`. Rewrite using `[z.2.2, sub_self]`. Use `show r v ((a v).1 s) - (z.1 (loc v s) - (ρ (loc v s) (r v (m v)) - r v (m v))) ∈ LinearMap.ker (q v)`.
+
+Rewrite using `[LinearMap.mem_ker]`. Simplify using `only [map_sub, hq, hr]`. Rewrite using `[← hm v s]`. Normalize the expressions using the abelian group laws.
+-/
 private theorem ker_g2_eq_comap_range_f1 : LinearMap.ker (g2 loc ρ σ q hq r hr) =
     (LinearMap.range (f1 loc hloc ρ σ q hq)).comap (pL σ) := by
   ext a
@@ -346,6 +443,13 @@ end UpperTheory.V.GC.ConeCnt
 end
 
 open UpperTheory.V.GC.ConeCnt in
+/- English proof (translation)
+Introduce `l _ Γ _ _ _ _ _ _ V _ Gv _ _ _ _ _ _ loc hloc k _ _ _ M _ _ _ _ _ ρ _ Q _ _ _ _ σ q hq hqs hH1 hH2 hH1v`. Take `⟨r, hr⟩ : ∃ r : ∀ v, Q v →ₗ[k] M, ∀ v y, q v (r v y) = y` from `by choose r hr using fun v => (q v).exists_rightInverse_of_surjective (LinearMap.range_eq_top.2 (hqs v))`. Conclude with `⟨r, fun v y => LinearMap.congr_fun (hr v) y⟩`. Use `haveI : ∀ v, Module.Finite k (Q v) := fun v => Module.Finite.of_surjective (q v) (hqs v)`. Take `⟨fin1, e1⟩` from `count (f0 loc ρ σ q hq) LinearMap.id Function.surjective_id (g1 loc ρ σ q hq r hr) (h1 loc ρ q) (ker_g1_eq_range_f0 loc ρ σ q hq r hr) (ker_h1_eq_range_g1 loc ρ σ q hq r hr)`.
+
+Take `⟨fin2, e2⟩` from `count (f1 loc hloc ρ σ q hq) (pL σ) (pL_surj σ) (g2 loc ρ σ q hq r hr) (h2 loc ρ q) (ker_g2_eq_comap_range_f1 loc hloc ρ σ q hq r hr) (ker_h2_eq_range_g2 loc hloc ρ σ q hq r hr)`. Use `⟨fin1, fin2, ?_⟩` and prove the remaining obligations. Rewrite `e1` using `[range_h1_eq_ker_f1 loc hloc ρ σ q hq r hr]`. Rewrite `e2` using `[range_h2_eq_inf_ker_pairing loc hloc ρ σ q hq r hr]`. Rewrite `e1` using `[(kerF0EquivInvariants loc ρ σ q hq).finrank_eq, Module.finrank_pi_fintype]`.
+
+Rewrite `e2` using `[Module.finrank_pi_fintype]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem UpperTheory.V.GC.coneCount :
     ∀ (l : ℕ) [Fact l.Prime] (Γ : Type) [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] [CompactSpace Γ] [T2Space Γ] [TotallyDisconnectedSpace Γ] (V : Type) [Fintype V] (Gv : V → Type) [∀ v, Group (Gv v)] [∀ v, TopologicalSpace (Gv v)] [∀ v, IsTopologicalGroup (Gv v)] [∀ v, CompactSpace (Gv v)] [∀ v, T2Space (Gv v)] [∀ v, TotallyDisconnectedSpace (Gv v)] (loc : ∀ v, Gv v →* Γ) (hloc : ∀ v, Continuous (loc v)) (k : Type) [Field k] [Finite k] [CharP k l] (M : Type) [AddCommGroup M] [Module k M] [Module.Finite k M] [TopologicalSpace M] [DiscreteTopology M] (ρ : Representation k Γ M), ContAction ρ →
     ∀ (Q : V → Type) [∀ v, AddCommGroup (Q v)] [∀ v, Module k (Q v)] [∀ v, TopologicalSpace (Q v)] [∀ v, DiscreteTopology (Q v)] (σ : ∀ v, Representation k (Gv v) (Q v)) (q : ∀ v, M →ₗ[k] Q v)

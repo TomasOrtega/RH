@@ -5,6 +5,13 @@ open AlgebraicGeometry CategoryTheory Limits NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.ModuliIntegralCharts GlobalTheory.ShFam GlobalTheory.LocM GlobalTheory.LocM.FJ
 open GlobalTheory.Toroidal
 
+/- English proof (translation)
+Introduce `X A _ _ z U hU hz`. Establish `hr : Set.range z.base ⊆ Set.range hU.fromSpec.base`. Rewrite using `[hU.range_fromSpec]`. Introduce and unpack `_ ⟨a, rfl⟩`. Establish `hs : a ⤳ IsLocalRing.closedPoint A` using `IsLocalRing.specializes_closedPoint a`.
+
+Conclude with `(hs.map z.continuous).mem_open U.2 hz`. Set `g : Sp A ⟶ Spec Γ(X, U)` to `IsOpenImmersion.lift hU.fromSpec z hr`. Use `⟨(Spec.preimage g).hom, ?_⟩` and prove the remaining obligations. Establish `h1 : spMap (Spec.preimage g).hom = g` using `by show Spec.map (CommRingCat.ofHom (Spec.preimage g).hom) = g`. Rewrite using `[CommRingCat.ofHom_hom]`.
+
+Conclude with `Spec.map_preimage g`. Rewrite using `[h1]`. Conclude with `IsOpenImmersion.lift_fac _ _ _`.
+-/
 theorem GlobalTheory.LocM.FJ.factor_affineOpen_of_closedPoint_mem : ∀ (X : Scheme.{0}) (A : Type) [CommRing A] [IsLocalRing A] (z : Sp A ⟶ X) (U : X.Opens) (hU : IsAffineOpen U), z (IsLocalRing.closedPoint A) ∈ U → ∃ φ : Γ(X, U) →+* A, spMap φ ≫ hU.fromSpec = z := by
   intro X A _ _ z U hU hz
   have hr : Set.range z.base ⊆ Set.range hU.fromSpec.base := by

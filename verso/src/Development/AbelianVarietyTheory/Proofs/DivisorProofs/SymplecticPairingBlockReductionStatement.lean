@@ -9,6 +9,9 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK
 open scoped Classical
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.WeilM.symp_fromBlocks_hyperbolic | exact GlobalTheory.WeilM.symp_fromBlocks_hyperbolic | (intros; apply GlobalTheory.WeilM.symp_fromBlocks_hyperbolic <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.symplectic_pairing_block_reduction : ∀ {R S : Type} [CommRing R] [CommRing S] [Algebra R S] (c : S →ₐ[R] S) (ξ : S) {α β : Type} [Fintype α]
     [DecidableEq α] [Fintype β] [DecidableEq β] (r₀ : ℕ) (J₀ : Matrix α α S) (K : Matrix β β S)
     (z z' : Matrix (α ⊕ (Fin r₀ ⊕ Fin r₀)) β S),

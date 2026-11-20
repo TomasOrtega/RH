@@ -6,6 +6,19 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.LiteratureResults.
 import Development.AutomorphicArithmetic.AutomorphicVarieties.LiteratureResults.DifferentialTranslates.DEquiv
 open UpperTheory.V.Lit.Geo UpperTheory.V.Lit.Dr
 
+/- English proof (translation)
+Introduce `Γ V S _ _ _ _ d G W hW q`. Establish `hsub : ∀ (q : ℕ) (w w' : G.Om q), (∀ s, RadBasic G.Y (w.1 s)) → (∀ s, RadBasic G.Y (w'.1 s)) → ∀ s, RadBasic G.Y ((w - w').1 s)`. Introduce `q w w' h h' s p hp v i hi`. Establish `e : (w - w').1 s p v = w.1 s p v - w'.1 s p v` using `rfl`. Rewrite using `[e, h s p hp v i hi, h' s p hp v i hi, sub_self]`.
+
+Establish `hpb : ∀ (q : ℕ) (w : G.Om q), (∀ s, RadBasic G.Y (w.1 s)) → ∀ s, RadBasic G.Y ((pbOm G W w).1 s)`. Introduce `q w h s p hp v i hi`. Rewrite using `[(omApply Γ V S d G W hW q).1 w s p hp]`. Conclude with `(pbBasic V _ G.Y G.isOpen (W s) (hW.field s) (hW.homog s) q).1 _ (h s) p hp v i hi`. Establish `hhom : ∀ (q : ℕ) (w : G.Om (q + 1)), (∀ s, RadBasic G.Y (w.1 s)) → ∀ s, RadBasic G.Y ((homOm G W w).1 s)`.
+
+Introduce `q w h s p hp v i hi`. Rewrite using `[(omApply Γ V S d G W hW q).2 w s p hp]`. Conclude with `(pbBasic V _ G.Y G.isOpen (W s) (hW.field s) (hW.homog s) q).2 _ (w.2 s).1 (h s) p hp v i hi`. Take `⟨h1, h2, -, h4⟩` from `omHom Γ V S d G W hW`. Use `⟨fun w hw => ⟨⟨fun γ => ?_, hpb q w hw.basic, ?_⟩, ⟨fun γ => ?_, hw.dbasic, ?_⟩⟩, fun w w' hw hw' => ⟨fun γ => ?_, hsub q w w' hw.basic hw'.basic, ?_⟩, fun w hw => ⟨fun γ => ?_, hhom q w hw.basic, ?_⟩⟩` and prove the remaining obligations.
+
+Rewrite using `[(omEquiv Γ V S d G W hW q γ).1 w, hw.inv γ]`. Rewrite using `[h1]`. Conclude with `hpb _ _ hw.dbasic`. Rewrite using `[← dEquiv Γ V S d G q γ w, hw.inv γ]`. Rewrite using `[h2]`.
+
+Introduce `s p _ v i _`. Both sides reduce to the same expression. Rewrite using `[map_sub, hw.inv γ, hw'.inv γ]`. Rewrite using `[map_sub]`. Conclude with `hsub _ _ _ hw.dbasic hw'.dbasic`.
+
+Rewrite using `[(omEquiv Γ V S d G W hW q γ).2 w, hw.inv γ]`. Rewrite using `[eq_sub_of_add_eq (h4 q w).symm]`. Conclude with `hsub _ _ _ (hsub _ _ _ (hpb _ _ hw.basic) hw.basic) (hhom _ _ hw.dbasic)`.
+-/
 theorem UpperTheory.V.Lit.Geo.omGood :
     OmGood := by
   intro Γ V S _ _ _ _ d G W hW q

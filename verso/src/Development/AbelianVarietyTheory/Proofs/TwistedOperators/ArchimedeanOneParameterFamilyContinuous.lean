@@ -13,6 +13,45 @@ noncomputable section
 
 namespace GlobalTheory.ArchFamilyCont
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ n d X W M ψ χX χW om hW γ hγ T hT`. Take `⟨R, hR0, hR⟩` from `GlobalTheory.ArchRest.exists_rest_arch (F := F) (Fin n × Fin d)`. Establish `hc : IsContOn (adeleClass F) om` using `hW.2.2`. Establish `hline : Continuous fun t : ℝ => ((1 : UA σ X.J), γ (Multiplicative.ofAdd t))` using `continuous_const.prodMk (hγ.1.comp continuous_ofAdd)`. Establish `key : ∀ t (f : SInf F (Fin n × Fin d)), om (1, γ (Multiplicative.ofAdd t)) (tens (evI F) ⇑f R) = tens (evI F) ⇑(T t f) R` using `fun t f => hT t f R (hR f)`.
+
+Establish `hRl : ∀ y : Fin n × Fin d → mixedEmbedding.mixedSpace F, R (liftV y) = R 0`. Introduce `y`. Establish `hat : At (evI F) (liftV y)`. Introduce `u hu`. Establish `hu1 : u.1 = 0` using `(InfiniteAdeleRing.ringEquiv_mixedSpace F).injective (by rw [map_zero]; exact hu)`.
+
+Use function extensionality and compare the values at `i`. Use `show u * liftV y i = 0`. Conclude with `Prod.ext (show u.1 * _ = 0 by rw [hu1, zero_mul]) (show u.2 * 0 = 0 from mul_zero _)`. Use `(hR 0).1 0 (liftV y) hat` as an intermediate fact. Simplify using `using this`.
+
+Establish `hev : ∀ y : Fin n × Fin d → mixedEmbedding.mixedSpace F, (fun i => evI F (liftV y i)) = y`. Introduce `y`. Use function extensionality and compare the values at `i`. Use `show InfiniteAdeleRing.ringEquiv_mixedSpace F ((InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (y i)) = y i`. Conclude with `RingEquiv.apply_symm_apply _ _`.
+
+Establish `hfin : ∀ y : Fin n × Fin d → mixedEmbedding.mixedSpace F, (fun i => (liftV y i).2) = 0`. Introduce `y`. Use function extensionality and compare the values at `i`. Both sides reduce to the same expression. Establish `htl : ∀ (f : SInf F (Fin n × Fin d)) y, tens (evI F) ⇑f R (liftV y) = f y * R 0`.
+
+Introduce `f y`. Use `show f (fun i => evI F (liftV y i)) * R (liftV y) = _`. Rewrite using `[hev, hRl]`. Use `⟨fun f y => ?_, fun μ hμ f φ => ?_⟩` and prove the remaining obligations. Set `l : ((Fin n × Fin d → AF F) → ℂ) →ₗ[ℂ] ℂ` to `LinearMap.proj (R := ℂ) (φ := fun _ => ℂ) (liftV y)`.
+
+Establish `hl : l ∈ (adeleClass F).adm (Fin n × Fin d)`. Introduce `g _`. Use `⟨g 0 • ((BoundedContinuousFunction.evalCLM ℂ y).comp (SchwartzMap.toBoundedContinuousFunctionCLM ℂ _ ℂ)), fun f' => ?_⟩` and prove the remaining obligations. Use `show pureA F (⇑f') g (liftV y) = _`. Simplify using `only [pureA, ContinuousLinearMap.smul_apply, ContinuousLinearMap.comp_apply, BoundedContinuousFunction.evalCLM_apply, SchwartzMap.toBoundedContinuousFunctionCLM_apply, smul_eq_mul]`.
+
+Establish `e1` using `hev y`. Establish `e2` using `hfin y`. Simplify using `only [evI] at e1`. Rewrite using `[e1, e2, mul_comm]`. Establish `h1` using `hc l hl _ (hR f).2`.
+
+Establish `h2 : Continuous fun t : ℝ => l (om (1, γ (Multiplicative.ofAdd t)) (tens (evI F) ⇑f R))` using `h1.comp hline`. Establish `h3 : (fun t : ℝ => T t f y) = fun t => l (om (1, γ (Multiplicative.ofAdd t)) (tens (evI F) ⇑f R)) / R 0`. Use function extensionality and compare the values at `t`. Rewrite using `[key]`. Use `show _ = tens (evI F) ⇑(T t f) R (liftV y) / R 0`.
+
+Rewrite using `[htl, mul_div_cancel_right₀ _ hR0]`. Rewrite using `[h3]`. Conclude with `h2.div_const _`. Use `haveI : BorelSpace (Fin n × Fin d → mixedEmbedding.mixedSpace F) := inferInstance`. Use `haveI : μ.HasTemperateGrowth := MeasureTheory.Measure.IsAddHaarMeasure.instHasTemperateGrowth`.
+
+Set `Tφ : SInf F (Fin n × Fin d) →L[ℂ] ℂ` to `(innerSL ℂ (φ.toLp 2 μ)).comp (SchwartzMap.toLpCLM ℂ ℂ 2 μ)`. Establish `hTφ : ∀ g : SInf F (Fin n × Fin d), Tφ g = ∫ x, g x * starRingEnd ℂ (φ x) ∂μ`. Introduce `g`. Use `show inner ℂ (φ.toLp 2 μ) (g.toLp 2 μ) = _`. Rewrite using `[MeasureTheory.L2.inner_def]`.
+
+Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [SchwartzMap.coeFn_toLp φ 2 μ, SchwartzMap.coeFn_toLp g 2 μ] with x hx1 hx2`. Rewrite using `[hx1, hx2, RCLike.inner_apply, mul_comm]`. Set `cL : SInf F (Fin n × Fin d) →ₗ[ℂ] ((Fin n × Fin d → mixedEmbedding.mixedSpace F) → ℂ)` to `{ toFun := fun g => ⇑g, map_add' := fun _ _ => rfl, map_smul' := fun _ _ => rfl }`. Establish `hinj : Function.Injective cL` using `fun a b h => DFunLike.coe_injective h`.
+
+Set `eq` to `LinearEquiv.ofInjective cL hinj`. Take `⟨L, hL⟩` from `LinearMap.exists_extend (Tφ.toLinearMap ∘ₗ eq.symm.toLinearMap)`. Establish `hLc : ∀ g : SInf F (Fin n × Fin d), L ⇑g = Tφ g`. Introduce `g`. Use `LinearMap.congr_fun hL (eq g)` as an intermediate fact.
+
+Simplify using `at this`. Conclude with `this`. Set `l : ((Fin n × Fin d → AF F) → ℂ) →ₗ[ℂ] ℂ` to `L ∘ₗ LinearMap.funLeft ℂ ℂ liftV`. Establish `hl : l ∈ (adeleClass F).adm (Fin n × Fin d)`. Introduce `g _`.
+
+Use `⟨g 0 • Tφ, fun f' => ?_⟩` and prove the remaining obligations. Establish `e : (LinearMap.funLeft ℂ ℂ liftV (pureA F (⇑f') g) : (Fin n × Fin d → mixedEmbedding.mixedSpace F) → ℂ) = ⇑(g 0 • f')`. Use function extensionality and compare the values at `x`. Establish `e1` using `hev x`. Establish `e2` using `hfin x`.
+
+Simplify using `only [evI] at e1`. Simplify using `only [LinearMap.funLeft_apply, Function.comp_apply, pureA, SchwartzMap.smul_apply, smul_eq_mul]`. Rewrite using `[e1, e2, mul_comm]`. Use `show L (LinearMap.funLeft ℂ ℂ liftV (pureA F (⇑f') g)) = _`. Rewrite using `[e, hLc, map_smul]`.
+
+Both sides reduce to the same expression. Establish `h1` using `hc l hl _ (hR f).2`. Establish `h2 : Continuous fun t : ℝ => l (om (1, γ (Multiplicative.ofAdd t)) (tens (evI F) ⇑f R))` using `h1.comp hline`. Establish `h3 : (fun t : ℝ => ∫ x, T t f x * starRingEnd ℂ (φ x) ∂μ) = fun t => l (om (1, γ (Multiplicative.ofAdd t)) (tens (evI F) ⇑f R)) / R 0`. Use function extensionality and compare the values at `t`.
+
+Rewrite using `[key]`. Establish `e : (LinearMap.funLeft ℂ ℂ liftV (tens (evI F) ⇑(T t f) R) : (Fin n × Fin d → mixedEmbedding.mixedSpace F) → ℂ) = ⇑(R 0 • T t f)`. Use function extensionality and compare the values at `x`. Simplify using `only [LinearMap.funLeft_apply, Function.comp_apply, SchwartzMap.smul_apply, smul_eq_mul]`. Rewrite using `[htl, mul_comm]`.
+
+Use `show _ = L (LinearMap.funLeft ℂ ℂ liftV (tens (evI F) ⇑(T t f) R)) / R 0`. Rewrite using `[e, hLc, map_smul, smul_eq_mul, hTφ, mul_div_cancel_left₀ _ hR0]`. Rewrite using `[h3]`. Conclude with `h2.div_const _`.
+-/
 theorem continuous_family : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     {n d : ℕ} {X : Spc F E n} {W : Spc F E d} (M : Model σ X W) (ψ : AddChar (AF F) ℂ) (χX χW : Chr F E) (om : Rep σ X W),
     M.IsWeil ψ χX χW om → ∀ γ ∈ Lines σ W, ∀ T : ℝ → SInf F (Fin n × Fin d) →ₗ[ℂ] SInf F (Fin n × Fin d),

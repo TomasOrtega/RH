@@ -18,6 +18,11 @@ namespace GlobalTheory.RecOne.TrCyc
 
 variable {Ω : Type} [Field Ω] [Algebra ℚ Ω]
 
+/- English proof (translation)
+Take `⟨P, hP0, hPs⟩` from `(Algebra.IsAlgebraic.isAlgebraic (R := ℚ) s)`. Establish `hQ : P.map (algebraMap ℚ Ω) ≠ 0` using `(Polynomial.map_ne_zero_iff (algebraMap ℚ Ω).injective).2 hP0`. Use `(P.map (algebraMap ℚ Ω)).roots.toFinset.finite_toSet.subset ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨g, rfl⟩`. Simplify using `only [Finset.mem_coe, Multiset.mem_toFinset]`.
+
+Rewrite using `[Polynomial.mem_roots hQ, Polynomial.IsRoot, Polynomial.eval_map_algebraMap]`. Use `show Polynomial.aeval ((g : G ℚ Ω) s) P = 0`. Rewrite using `[Polynomial.aeval_algEquiv, AlgHom.comp_apply]`. Simplify using `[hPs]`.
+-/
 theorem orbit_finite [Algebra.IsAlgebraic ℚ Ω] (H : Subgroup (G ℚ Ω)) (s : Ω) :
     (MulAction.orbit H s).Finite := by
   classical
@@ -32,6 +37,11 @@ theorem orbit_finite [Algebra.IsAlgebraic ℚ Ω] (H : Subgroup (G ℚ Ω)) (s :
   rw [Polynomial.aeval_algEquiv, AlgHom.comp_apply]
   simp [hPs]
 
+/- English proof (translation)
+Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx g`. Conclude with `hx ⟨g, Subgroup.mem_top g⟩`. Introduce `hx g`.
+
+Conclude with `hx g.1`.
+-/
 theorem fix_top (H : Subgroup (G ℚ Ω)) : Fix Ω (⊤ : Subgroup H) = Fix Ω H := by
   ext x
   constructor
@@ -51,6 +61,37 @@ def fixSub {l : ℕ} [Fact l.Prime] {A : ValuationSubring Ω} (V : Subgroup (ine
     rw [smul_add, hx g, hy g]
   algebraMap_mem' r g := r.2 ((g : ineCyc l A) : G ℚ Ω) (g : ineCyc l A).2.1
 
+/- English proof (translation)
+Introduce `l _ hl2 Ω _ _ _ A hA F`. Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ`. Use `haveI : Algebra.IsAlgebraic ℚ Ω := IsAlgClosure.isAlgebraic`. Establish `hpcoe : ((l : A) : Ω) = l` using `map_natCast A.subtype l`. Take `⟨v, hvint, hvinv, hp0, hp1⟩` from `GlobalTheory.T.exists_decomposition_invariant_real_valuation l Ω A hA`.
+
+Establish `hint` using `GlobalTheory.T.mem_inertiaInvariantsCyclotomicAlgebra_iff l Ω A hA`. Establish `hR` using `GlobalTheory.T.approxRoot_fixedField_inertiaCyclotomicKernel l hl2 Ω A hA v hvint hp0 hp1`. Establish `hvinv' : ∀ (g : ineCyc l A) (x : Ω), v (g • x) = v x` using `fun g x => hvinv g (Ine_le_Dec A g.2.1) x`. Establish `hfixB : ∀ s ∈ cycAlg l A, ∀ g : ineCyc l A, g • (s : Ω) = s` using `fun s hs g => (hint s).1 hs g g.2`. Take `⟨U, hUn, hUfin, hUfix, hUfaith⟩` from `exists_normal_finiteIndex_fixing Ω (ineCyc l A) (F.image Subtype.val) (fun s _ => orbit_finite _ s)`.
+
+Establish `hl0 : (l : Ω) ≠ 0`. Introduce `h`. Rewrite `hp0` using `[h, map_zero]`. Conclude with `lt_irrefl _ hp0`. Use `haveI : NeZero (l : Ω) := ⟨hl0⟩`.
+
+Use `haveI : NeZero l := ⟨(Fact.out : l.Prime).ne_zero⟩`. Take `⟨ζ, hζ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot Ω l`. Establish `hζA : ζ ∈ A` using `mem_of_pow_mem A (Fact.out : l.Prime).ne_zero (by rw [hζ.pow_eq_one]; exact A.one_mem)`. Establish `hζB : (⟨ζ, hζA⟩ : A) ∈ cycAlg l A` using `mem_cycAlg_of_pow (n := 1) (Subtype.ext (by simpa using hζ.pow_eq_one))`. Establish `hUsep : AlmostSep v U` using `almostSep_of_normal_finiteIndex Ω v l Fact.out hp0 hp1 (ineCyc l A) hvinv' ζ hζ (hfixB _ hζB) (by rw [fix_top]; exact hR) U hUn hUfin hUfaith`.
+
+Take `⟨n, a, b, c, hsep, hc⟩` from `hUsep (v l) hp1`. Use `haveI := hUfin`. Use `haveI : Fintype (ineCyc l A ⧸ U) := Fintype.ofFinite _`. Establish `hc0 : c ≠ 0`. Introduce and unpack `rfl`.
+
+Rewrite `hc` using `[map_zero]`. Conclude with `(not_lt_zero' hc)`. Establish `hpfix : ∀ (g : ineCyc l A), g • (l : Ω) = l` using `fun g => by`. Express the relevant statement in the definitionally equal form `((g : G ℚ Ω)) (l : Ω) = l`. Conclude with `map_natCast _ l`.
+
+Establish `hd : (l : Ω) / c ∈ Fix Ω U` using `div_mem (fun g => hpfix g) hsep.c_mem`. Establish `hdv : v ((l : Ω) / c) ≤ 1`. Rewrite using `[map_div₀]; exact div_le_one_of_le₀ hc.le (by positivity)`. Establish `hsep' : IsSep v U (fun i => a i * ((l : Ω) / c)) b (l : Ω)`. Use `TrTower.isSep_mul_right hsep hd hdv (by rw [mul_div_cancel₀ _ hc0]; exact hp1.le)` as an intermediate fact.
+
+Rewrite `this` using `[mul_div_cancel₀ _ hc0]`. Then use the resulting hypothesis. Establish `hsw` using `TrTower.isSep_swap hsep'`. Set `a' : Fin n → A` to `fun i => ⟨_, (hvint _).1 (hsep'.a_le i)⟩`. Set `b' : Fin n → A` to `fun i => ⟨_, (hvint _).1 (hsep'.b_le i)⟩`. Establish `htrint : ∀ s : A, cosetTrace U (s : Ω) ∈ A` using `fun s => sum_mem fun q _ => (hvint _).1 (by rw [hvinv']; exact (hvint _).2 s.2)`.
+
+Set `tr : A → A` to `fun s => ⟨_, htrint s⟩`. Establish `htr : ∀ s, (tr s : Ω) = cosetTrace U (s : Ω)` using `fun s => rfl`. Establish `hle : cycAlg l A ≤ fixSub U` using `fun s hs g => hfixB s hs (g : ineCyc l A)`. Establish `cadd : ∀ x y : A, ((x + y : A) : Ω) = x + y` using `fun _ _ => rfl`. Establish `cmul : ∀ x y : A, ((x * y : A) : Ω) = x * y` using `fun _ _ => rfl`.
+
+Use `⟨fixSub U, tr, n, a', b', ?_, ?_⟩` and prove the remaining obligations. Introduce `s hs`. Conclude with `hUfix _ (Finset.mem_image_of_mem _ hs)`. Use `{ le := hle e_mem := Subalgebra.natCast_mem _ l a_mem := fun i => hsep'.a_mem i b_mem := fun i => hsep'.b_mem i tr_mem := ?_ tr_add := ?_ tr_mul := ?_ left := ?_ right := ?_ sum := ?_ }` and prove the remaining obligations. Introduce `x hx`.
+
+Use `(hint _).2 ?_` and prove the remaining obligations. Introduce `g hg`. Conclude with `(cosetTrace_fixed_props Ω v _ hvinv' U _ hx).1 ⟨g, hg⟩`. Introduce `x _ y _`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Simplify using `only [htr, cadd, cosetTrace, smul_add, Finset.sum_add_distrib]`. Introduce `β hβ x hx`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [htr, cmul]`. Conclude with `(cosetTrace_fixed_props Ω v _ hvinv' U _ hx).2.2 _ (hfixB β hβ)`.
+
+Introduce `x hx`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [cmul, hpcoe, AddSubmonoidClass.coe_finsetSum, htr]`. Conclude with `sum_mul_cosetTrace_eq Ω v _ U n _ _ _ hsep' _ hx`. Introduce `x hx`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [cmul, hpcoe, AddSubmonoidClass.coe_finsetSum, htr]`. Conclude with `sum_mul_cosetTrace_eq Ω v _ U n _ _ _ hsw _ hx`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [cmul, hpcoe, AddSubmonoidClass.coe_finsetSum]`.
+
+Simplify using `using hsep'.sum_in 1 (one_mem _)`.
+-/
 theorem exists_trData_cycAlg : ∀ (l : ℕ) [Fact l.Prime], l ≠ 2 → ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (A : ValuationSubring Ω), OverL l A → ∀ F : Finset A, ∃ (C : Subalgebra (fixA A) A) (tr : A → A) (n : ℕ) (a b : Fin n → A), (↑F : Set A) ⊆ C ∧ IsTrData (cycAlg l A) C tr a b (l : A) := by
   intro l _ hl2 Ω _ _ _ A hA F
   classical

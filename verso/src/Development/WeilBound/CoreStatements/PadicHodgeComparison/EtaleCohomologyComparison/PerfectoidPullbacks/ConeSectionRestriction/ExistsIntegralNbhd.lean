@@ -11,6 +11,15 @@ namespace CrystallineSemistableComparison.Pb.EtaleIntegralityFacts
 set_option backward.defeqAttrib.useBackward true in
 set_option backward.isDefEq.respectTransparency false in
 
+/- English proof (translation)
+Take `⟨_, ⟨V, hV, rfl⟩, hxV, -⟩` from `X.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ x) isOpen_univ`. Establish `hVU : V ≤ q ⁻¹ᵁ ⊤` using `fun _ _ => trivial`. Establish `hsm` using `q.smooth_appLE (isAffineOpen_top (Spec (CommRingCat.of K))) hV hVU`. Set `φ : K →+* Γ(X, V)` to `(q.appLE ⊤ V hVU).hom.comp (Scheme.ΓSpecIso (CommRingCat.of K)).inv.hom`. Establish `hφ : φ.Smooth` using `RingHom.Smooth.comp (RingHom.Smooth.of_bijective (Scheme.ΓSpecIso (CommRingCat.of K)).symm.commRingCatIsoToRingEquiv.bijective) hsm`.
+
+Set `` to `φ.toAlgebra`. Establish `: Algebra.Smooth K Γ(X, V)` using `hφ`. Take `⟨r, hr, hdom⟩` from `hE Γ(X, V) (hV.primeIdealOf ⟨x, hxV⟩).asIdeal`. Establish `hxW : x ∈ X.basicOpen r`. Rewrite `hr` using `[← PrimeSpectrum.mem_basicOpen, IsAffineOpen.primeIdealOf, ← hV.fromSpec_preimage_basicOpen, Scheme.Hom.mem_preimage, ← Scheme.Hom.comp_apply, IsAffineOpen.isoSpec_hom, IsAffineOpen.toSpecΓ_fromSpec]`. Then use the resulting hypothesis.
+
+Use `⟨X.basicOpen r, hxW, ?_⟩` and prove the remaining obligations. Establish `hW : IsAffineOpen (X.basicOpen r)` using `hV.basicOpen r`. Establish `: IsAffine (X.basicOpen r)` using `hW`. Establish `: Nonempty (X.basicOpen r)` using `⟨⟨x, hxW⟩⟩`. Set `` to `(X.presheaf.map (homOfLE <| X.basicOpen_le r).op).hom.toAlgebra`.
+
+Use `hV.isLocalization_basicOpen r` as an intermediate fact. Establish `: IsDomain Γ(X, X.basicOpen r)` using `hdom _`. Establish `: IsDomain Γ(X.basicOpen r, ⊤)` using `(X.basicOpen r).topIso.commRingCatIsoToRingEquiv.injective.isDomain (X.basicOpen r).topIso.commRingCatIsoToRingEquiv`. Conclude with `isIntegral_of_isAffine_of_isDomain _`.
+-/
 theorem exists_integral_nbhd {K : Type} [Field K] {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of K))
     [Smooth q]
     (hE : ∀ (A : Type) [CommRing A] [Algebra K A] [Algebra.Smooth K A] (p : Ideal A) [p.IsPrime],

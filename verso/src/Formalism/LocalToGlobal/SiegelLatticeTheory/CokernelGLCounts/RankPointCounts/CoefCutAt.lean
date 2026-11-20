@@ -21,6 +21,9 @@ open Classical ValuativeRel
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Establish `hNR` using `normRepElig_of hN`. Establish `hU` using `Formalism.L2.SG.Pf.locUnram_holds hA u u'`. Establish `hR` using `Formalism.L2.SG.Pf.thRestricted_holds_of hA hrows hN PCount.eligRel_holds`. Establish `hTS` using `Formalism.L2.SG.Pf.thSome_holds hA hc hrows hNR`. Use `⟨LocOrbSumPf.localOrbitSum_holds M δ u u' hA, Formalism.L2.SG.Pf.scalKind_of hrows, coefficient_product_of_local hA hc hrows hN hM (phaseLoc_of hA hPG) (psi_product_e D) hVP, Formalism.L2.SG.Pf.partnerCount_holds hA hc hrows hP hU hR hE hS hG hI hτ hT, FCount.fiberCount_of_rest h …` and prove the remaining obligations.
+-/
 theorem cutAt_of_leaves {D : Formalism.BasicNotions.D7} {M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep}
     {δ : ∀ p : PlF D, (D.s.atP p).Fp} {L : CntLocal.LocSp D M} {u u' : D.what₂.Word}
     {F0 : FlagG (VS D) D.R.rS (CntLocal.Tn u)} {what₂ : Finset (Submodule (𝓞 D.host.E) (VS D).V)}
@@ -56,12 +59,18 @@ def CutLeaves (D : Formalism.BasicNotions.D7) : Prop :=
       PCount.FrGlobP ⟨δ, M, hA⟩ u u' F0 what₂ ∧ PCount.IntGenP ⟨δ, M, hA⟩ ∧ PCount.TauOneReduction ⟨δ, M, hA⟩ u u' F0 what₂ ∧
       PCount.PartnerIsomorphismCount ⟨δ, M, hA⟩ ∧ FCount.FibSum M δ u u' F0 what₂ ∧ FCount.DensTh M δ L u u'
 
+/- English proof (translation)
+The claim follows from `rowsDatumP_of fun hsig δ M hA L u u' hc hP F0 what₂ hrows => have hl := h hsig δ M hA L u u' hc hP F0 what₂ hrows cutAt_of_leaves hA hc hP hrows hl.1 hl.2.1 hl.2.2.1 hl.2.2.2.1 hl.2.2.2.2.1 hl.2.2.2.2.2.1 hl.2.2.2.2.2.2.1 hl.2.2.2.2.2.2.2.1 hl.2.2.2.2.2.2.2.2.1 hl.2.2.2.2.2.2.2.2 …`.
+-/
 theorem rowsDatumP_of_leaves {D : Formalism.BasicNotions.D7} (h : CutLeaves D) : RowsDatumP D :=
   rowsDatumP_of fun hsig δ M hA L u u' hc hP F0 what₂ hrows =>
     have hl := h hsig δ M hA L u u' hc hP F0 what₂ hrows
     cutAt_of_leaves hA hc hP hrows hl.1 hl.2.1 hl.2.2.1 hl.2.2.2.1 hl.2.2.2.2.1 hl.2.2.2.2.2.1 hl.2.2.2.2.2.2.1
       hl.2.2.2.2.2.2.2.1 hl.2.2.2.2.2.2.2.2.1 hl.2.2.2.2.2.2.2.2.2.1 hl.2.2.2.2.2.2.2.2.2.2.1 hl.2.2.2.2.2.2.2.2.2.2.2
 
+/- English proof (translation)
+The claim follows from `rowsInputP_of_normProd hN (rowsDatumP_of_leaves h)`.
+-/
 theorem rowsInputP_of_leaves {D : Formalism.BasicNotions.D7} (hN : Formalism.L2.SG.SupportG.NormProd D) (h : CutLeaves D) :
     RowsInputP D :=
   rowsInputP_of_normProd hN (rowsDatumP_of_leaves h)

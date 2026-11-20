@@ -15,6 +15,13 @@ def atoms (S : Set σ) : Set (Module.End k (MvPolynomial σ k)) :=
 noncomputable def Ops (S : Set σ) : Subalgebra k (Module.End k (MvPolynomial σ k)) :=
   Algebra.adjoin k (atoms S)
 
+/- English proof (translation)
+Take `⟨u, hu, hTu⟩` from `hT`. Take `⟨v, hv, hTv⟩` from `hT'`. Establish `huv : u ≠ v` using `fun h => Set.disjoint_left.mp hS hu (h ▸ hv)`. Rewrite using `[commute_iff_eq]`. Use `LinearMap.ext fun f => ?_` and prove the remaining obligations.
+
+Apply the tactic sequence `rcases hTu with rfl | rfl <;> rcases hTv with rfl | rfl <;>`. Simplify using `only [Module.End.mul_apply, LinearMap.mulLeft_apply, Derivation.coeFn_coe]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[pderiv_mul, pderiv_X_of_ne huv]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[pderiv_mul, pderiv_X_of_ne (Ne.symm huv)]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `ProjS.pderiv_comm _ _ _`.
+-/
 theorem atoms_commute {S S' : Set σ} (hS : Disjoint S S') {T T' : Module.End k (MvPolynomial σ k)}
     (hT : T ∈ atoms S) (hT' : T' ∈ atoms S') : Commute T T' := by
   obtain ⟨u, hu, hTu⟩ := hT
@@ -29,29 +36,51 @@ theorem atoms_commute {S S' : Set σ} (hS : Disjoint S S') {T T' : Module.End k 
   · rw [pderiv_mul, pderiv_X_of_ne (Ne.symm huv)]; ring
   · exact ProjS.pderiv_comm _ _ _
 
+/- English proof (translation)
+Use `Algebra.commute_of_mem_adjoin_of_forall_mem_commute hT' (fun b hb => ?_)` and prove the remaining obligations. Conclude with `(Algebra.commute_of_mem_adjoin_of_forall_mem_commute hT (fun a ha => (atoms_commute hS ha hb).symm)).symm`.
+-/
 theorem ops_commute {S S' : Set σ} (hS : Disjoint S S') {T T' : Module.End k (MvPolynomial σ k)}
     (hT : T ∈ Ops S) (hT' : T' ∈ Ops S') : Commute T T' := by
   refine Algebra.commute_of_mem_adjoin_of_forall_mem_commute hT' (fun b hb => ?_)
   exact (Algebra.commute_of_mem_adjoin_of_forall_mem_commute hT
     (fun a ha => (atoms_commute hS ha hb).symm)).symm
 
+/- English proof (translation)
+Use `(ops_commute hS hT hT').eq` as an intermediate fact. Conclude with `LinearMap.congr_fun this y`.
+-/
 theorem ops_apply_comm {S S' : Set σ} (hS : Disjoint S S') {T T' : Module.End k (MvPolynomial σ k)}
     (hT : T ∈ Ops S) (hT' : T' ∈ Ops S') (y : MvPolynomial σ k) : T (T' y) = T' (T y) := by
   have := (ops_commute hS hT hT').eq
   exact LinearMap.congr_fun this y
 
+/- English proof (translation)
+Apply `Algebra.adjoin_mono` to reduce the goal to its premises. Introduce and unpack `T ⟨u, hu, hT⟩`. Conclude with `⟨u, h hu, hT⟩`.
+-/
 theorem ops_mono {S S' : Set σ} (h : S ⊆ S') : Ops (k := k) S ≤ Ops S' := by
   apply Algebra.adjoin_mono
   rintro T ⟨u, hu, hT⟩
   exact ⟨u, h hu, hT⟩
 
+/- English proof (translation)
+The claim follows from `Algebra.subset_adjoin ⟨u, hu, Or.inl rfl⟩`.
+-/
 theorem mulLeftX_mem {S : Set σ} {u : σ} (hu : u ∈ S) : LinearMap.mulLeft k (X u : MvPolynomial σ k) ∈ Ops S :=
   Algebra.subset_adjoin ⟨u, hu, Or.inl rfl⟩
 
+/- English proof (translation)
+The claim follows from `Algebra.subset_adjoin ⟨u, hu, Or.inr rfl⟩`.
+-/
 theorem pderiv_mem {S : Set σ} {u : σ} (hu : u ∈ S) :
     ((pderiv u : Derivation k (MvPolynomial σ k) (MvPolynomial σ k)).toLinearMap) ∈ Ops S :=
   Algebra.subset_adjoin ⟨u, hu, Or.inr rfl⟩
 
+/- English proof (translation)
+Establish `e1 : LinearMap.mulLeft k f = Algebra.lmul k (MvPolynomial σ k) f`. Use `LinearMap.ext fun g => ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Rewrite using `[e1]`. Establish `h2 : Algebra.lmul k (MvPolynomial σ k) f ∈ (Algebra.adjoin k (X '' S)).map (Algebra.lmul k _)` using `Subalgebra.mem_map.mpr ⟨f, hf, rfl⟩`.
+
+Rewrite `h2` using `[AlgHom.map_adjoin]`. Use `Algebra.adjoin_mono ?_ h2` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨u, hu, rfl⟩, rfl⟩`. Use `⟨u, hu, Or.inl ?_⟩` and prove the remaining obligations. Use `LinearMap.ext fun g => ?_` and prove the remaining obligations.
+
+Simplify using the standard rewrite rules.
+-/
 theorem mulLeft_mem {S : Set σ} {f : MvPolynomial σ k} (hf : f ∈ Algebra.adjoin k (X '' S)) :
     LinearMap.mulLeft k f ∈ Ops S := by
   have e1 : LinearMap.mulLeft k f = Algebra.lmul k (MvPolynomial σ k) f := by
@@ -92,32 +121,65 @@ def Good (w e : Fin r → σ) (zv sv : σ) (o n : ℕ) (y : MvPolynomial σ k) :
 
 variable {w e : Fin r → σ} {zv sv : σ}
 
+/- English proof (translation)
+The claim follows from `Set.mem_union_left _ (Set.mem_union_left _ ⟨c, rfl⟩)`.
+-/
 theorem w_mem (c : Fin r) : w c ∈ V w e zv sv := Set.mem_union_left _ (Set.mem_union_left _ ⟨c, rfl⟩)
+/- English proof (translation)
+The claim follows from `Set.mem_union_left _ (Set.mem_union_right _ ⟨c, rfl⟩)`.
+-/
 theorem e_mem (c : Fin r) : e c ∈ V w e zv sv := Set.mem_union_left _ (Set.mem_union_right _ ⟨c, rfl⟩)
+/- English proof (translation)
+The claim follows from `Set.mem_union_right _ (Set.mem_insert _ _)`.
+-/
 theorem zv_mem : zv ∈ V w e zv sv := Set.mem_union_right _ (Set.mem_insert _ _)
+/- English proof (translation)
+The claim follows from `Set.mem_union_right _ (Set.mem_insert_of_mem _ rfl)`.
+-/
 theorem sv_mem : sv ∈ V w e zv sv := Set.mem_union_right _ (Set.mem_insert_of_mem _ rfl)
 
+/- English proof (translation)
+The claim follows from `Algebra.subset_adjoin ⟨u, hu, rfl⟩`.
+-/
 theorem X_mem {S : Set σ} {u : σ} (hu : u ∈ S) : (X u : MvPolynomial σ k) ∈ Algebra.adjoin k (X '' S) :=
   Algebra.subset_adjoin ⟨u, hu, rfl⟩
 
+/- English proof (translation)
+The claim follows from `add_mem (mul_mem (X_mem zv_mem) (X_mem sv_mem)) (sum_mem fun c _ => mul_mem (X_mem (w_mem c)) (X_mem (e_mem c)))`.
+-/
 theorem Ehp_mem : (Ehp w e zv sv : MvPolynomial σ k) ∈ Algebra.adjoin k (X '' V w e zv sv) :=
   add_mem (mul_mem (X_mem zv_mem) (X_mem sv_mem)) (sum_mem fun c _ => mul_mem (X_mem (w_mem c)) (X_mem (e_mem c)))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem tieEh_eq_mulLeft : (M.tieEh w e zv sv : Module.End k (MvPolynomial σ k)) =
     LinearMap.mulLeft k (Ehp w e zv sv) := rfl
 
+/- English proof (translation)
+Rewrite using `[tieEh_eq_mulLeft]`. Conclude with `mulLeft_mem Ehp_mem`.
+-/
 theorem tieEh_mem : (M.tieEh w e zv sv : Module.End k (MvPolynomial σ k)) ∈ Ops (V w e zv sv) := by
   rw [tieEh_eq_mulLeft]; exact mulLeft_mem Ehp_mem
 
+/- English proof (translation)
+The claim follows from `mulLeft_mem (sum_mem fun c _ => mul_mem (X_mem (w_mem c)) (X_mem (e_mem c)))`.
+-/
 theorem tieE_mem : (Formalism.GM.tieE w e : Module.End k (MvPolynomial σ k)) ∈ Ops (V w e zv sv) :=
   mulLeft_mem (sum_mem fun c _ => mul_mem (X_mem (w_mem c)) (X_mem (e_mem c)))
 
+/- English proof (translation)
+Unfold `Formalism.GM.tieF`. Use `sum_mem fun c _ => ?_` and prove the remaining obligations. Rewrite using `[← Module.End.mul_eq_comp]`. Conclude with `mul_mem (pderiv_mem (w_mem c)) (pderiv_mem (e_mem c))`.
+-/
 theorem tieF_mem : (Formalism.GM.tieF w e : Module.End k (MvPolynomial σ k)) ∈ Ops (V w e zv sv) := by
   unfold Formalism.GM.tieF
   refine sum_mem fun c _ => ?_
   rw [← Module.End.mul_eq_comp]
   exact mul_mem (pderiv_mem (w_mem c)) (pderiv_mem (e_mem c))
 
+/- English proof (translation)
+Unfold `Formalism.GM.tiePhi`. Use `sum_mem fun j _ => Subalgebra.smul_mem _ ?_ _` and prove the remaining obligations. Rewrite using `[← Module.End.mul_eq_comp]`. Conclude with `mul_mem (pow_mem tieE_mem _) (pow_mem tieF_mem _)`.
+-/
 theorem tiePhi_mem (o n z : ℕ) :
     (Formalism.GM.tiePhi w e o n z : Module.End k (MvPolynomial σ k)) ∈ Ops (V w e zv sv) := by
   unfold Formalism.GM.tiePhi
@@ -125,6 +187,9 @@ theorem tiePhi_mem (o n z : ℕ) :
   rw [← Module.End.mul_eq_comp]
   exact mul_mem (pow_mem tieE_mem _) (pow_mem tieF_mem _)
 
+/- English proof (translation)
+Unfold `ProjS.eulL`. Use `sum_mem fun c _ => ?_` and prove the remaining obligations. Rewrite using `[← Module.End.mul_eq_comp]`. Conclude with `mul_mem (mulLeftX_mem (ht c)) (pderiv_mem (ht c))`.
+-/
 theorem eulL_mem {s : ℕ} {S : Set σ} (t : Fin s → σ) (ht : ∀ c, t c ∈ S) :
     (ProjS.eulL t : Module.End k (MvPolynomial σ k)) ∈ Ops S := by
   unfold ProjS.eulL
@@ -132,16 +197,27 @@ theorem eulL_mem {s : ℕ} {S : Set σ} (t : Fin s → σ) (ht : ∀ c, t c ∈ 
   rw [← Module.End.mul_eq_comp]
   exact mul_mem (mulLeftX_mem (ht c)) (pderiv_mem (ht c))
 
+/- English proof (translation)
+Unfold `Pop`. Use `sum_mem fun l _ => Subalgebra.smul_mem _ ?_ _` and prove the remaining obligations. Conclude with `mul_mem (mul_mem (pow_mem tieEh_mem _) (pow_mem tieF_mem _)) (mulLeft_mem (pow_mem (X_mem zv_mem) _))`.
+-/
 theorem Pop_mem (o n z : ℕ) : (Pop w e zv sv o n z : Module.End k (MvPolynomial σ k)) ∈ Ops (V w e zv sv) := by
   unfold Pop
   refine sum_mem fun l _ => Subalgebra.smul_mem _ ?_ _
   exact mul_mem (mul_mem (pow_mem tieEh_mem _) (pow_mem tieF_mem _))
     (mulLeft_mem (pow_mem (X_mem zv_mem) _))
 
+/- English proof (translation)
+Simplify using `[M.tieP, Pop, LinearMap.sum_apply, Module.End.mul_apply]`.
+-/
 theorem tieP_eq_Pop (o n z : ℕ) (y : MvPolynomial σ k) :
     M.tieP w e zv sv o n z y = Pop w e zv sv o n z y := by
   simp [M.tieP, Pop, LinearMap.sum_apply, Module.End.mul_apply]
 
+/- English proof (translation)
+Take `⟨h1, h2, h3, h4⟩` from `hy`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[ops_apply_comm hS (eulL_mem w (fun c => w_mem c)) hT, h1, map_smul]`. Rewrite using `[ops_apply_comm hS (eulL_mem e (fun c => e_mem c)) hT, h2, map_smul]`. Use `ops_apply_comm hS (pderiv_mem (k := k) (zv_mem (w := w) (e := e) (sv := sv))) hT y` as an intermediate fact.
+
+Simplify using `only [Derivation.coeFn_coe] at this`. Rewrite using `[this, h3, map_zero]`. Use `ops_apply_comm hS (pderiv_mem (k := k) (sv_mem (w := w) (e := e) (zv := zv))) hT y` as an intermediate fact. Simplify using `only [Derivation.coeFn_coe] at this`. Rewrite using `[this, h4, map_zero]`.
+-/
 theorem good_of_ops {S : Set σ} (hS : Disjoint (V w e zv sv) S) {T : Module.End k (MvPolynomial σ k)}
     (hT : T ∈ Ops S) {o n : ℕ} {y : MvPolynomial σ k} (hy : Good w e zv sv o n y) :
     Good w e zv sv o n (T y) := by
@@ -156,10 +232,18 @@ theorem good_of_ops {S : Set σ} (hS : Disjoint (V w e zv sv) S) {T : Module.End
     simp only [Derivation.coeFn_coe] at this
     rw [this, h4, map_zero]
 
+/- English proof (translation)
+The claim follows from `Formalism.GM.ld_biHom_of_euler (by rw [← ProjS.eulL_apply]; exact h.1) (by rw [← ProjS.eulL_apply]; exact h.2.1)`.
+-/
 theorem biHom_of_good [CharZero k] {o n : ℕ} {y : MvPolynomial σ k} (h : Good w e zv sv o n y) :
     BiHom w e o n y :=
   Formalism.GM.ld_biHom_of_euler (by rw [← ProjS.eulL_apply]; exact h.1) (by rw [← ProjS.eulL_apply]; exact h.2.1)
 
+/- English proof (translation)
+Introduce `m hm`. Assume the negation of the conclusion as `hne`. Establish `hle : Finsupp.single v 1 ≤ m` using `Finsupp.single_le_iff.mpr (Nat.one_le_iff_ne_zero.mpr hne)`. Establish `hc` using `congrArg (coeff (m - Finsupp.single v 1)) h`. Rewrite `hc` using `[coeff_pderiv, tsub_add_cancel_of_le hle, coeff_zero]`.
+
+Establish `h1 : ((((m - Finsupp.single v 1 : σ →₀ ℕ)) v : ℕ) : k) + 1 ≠ 0` using `Nat.cast_add_one_ne_zero _`. Conclude with `(mem_support_iff.mp hm) ((mul_eq_zero.mp hc).resolve_right h1)`.
+-/
 theorem free_of_pderiv [CharZero k] {v : σ} {y : MvPolynomial σ k} (h : pderiv v y = 0) :
     ∀ m ∈ y.support, m v = 0 := by
   classical
@@ -171,14 +255,25 @@ theorem free_of_pderiv [CharZero k] {v : σ} {y : MvPolynomial σ k} (h : pderiv
   have h1 : ((((m - Finsupp.single v 1 : σ →₀ ℕ)) v : ℕ) : k) + 1 ≠ 0 := Nat.cast_add_one_ne_zero _
   exact (mem_support_iff.mp hm) ((mul_eq_zero.mp hc).resolve_right h1)
 
+/- English proof (translation)
+Introduce `m hm` and use `⟨free_of_pderiv h.2.2.1 m hm, free_of_pderiv h.2.2.2 m hm⟩`.
+-/
 theorem zsfree_of_good [CharZero k] {o n : ℕ} {y : MvPolynomial σ k} (h : Good w e zv sv o n y) :
     M.ZSFree zv sv y :=
   fun m hm => ⟨free_of_pderiv h.2.2.1 m hm, free_of_pderiv h.2.2.2 m hm⟩
 
+/- English proof (translation)
+Rewrite using `[tieEh_eq_mulLeft, LinearMap.pow_mulLeft, LinearMap.mulLeft_apply]`.
+-/
 theorem tieEh_pow_apply (j : ℕ) (u : MvPolynomial σ k) :
     (M.tieEh w e zv sv ^ j) u = Ehp w e zv sv ^ j * u := by
   rw [tieEh_eq_mulLeft, LinearMap.pow_mulLeft, LinearMap.mulLeft_apply]
 
+/- English proof (translation)
+Establish `h` using `ProjS.fockForm_raiseAug_pow_augLift (z := z) hv hr hy hy' hz hz' j j`. Rewrite `h` using `[if_pos rfl, ProjS.fockK_smul_left, ProjS.fockK_smul_right, tieEh_pow_apply, tieEh_pow_apply]`. Establish `hf : (j.factorial : k) ≠ 0` using `Nat.cast_ne_zero.mpr (Nat.factorial_ne_zero j)`. Establish `h2 : M.fockK (Ehp w e zv sv ^ j * M.tieP w e zv sv o n z y) (Ehp w e zv sv ^ j * M.tieP w e zv sv o n z y') = (j.factorial : k) * ((j.factorial : k) * (((j.factorial : k))⁻¹ * (((j.factorial : k))⁻¹ * M.fockK (Ehp w e zv sv ^ j * M.tieP w e zv sv o n z y) (Ehp w e zv sv ^ j * M.t …`. Clear the denominators using the available nonvanishing facts.
+
+Rewrite using `[h2, h]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem step_same [CharZero k] (hv : M.TieVars w e zv sv) (hr : 1 ≤ r) {o n z : ℕ} {y y' : MvPolynomial σ k}
     (hy : BiHom w e o n y) (hy' : BiHom w e o n y') (hz : M.ZSFree zv sv y) (hz' : M.ZSFree zv sv y')
     (j : ℕ) :
@@ -195,6 +290,13 @@ theorem step_same [CharZero k] (hv : M.TieVars w e zv sv) (hr : 1 ≤ r) {o n z 
   rw [h2, h]
   ring
 
+/- English proof (translation)
+Establish `hFP` using `ProjS.fh_P (z := z) hv hr hy hz`. Establish `hFP'` using `ProjS.fh_P (z := z) hv hr hy' hz'`. Establish `hE` using `ProjS.eig_P (z := z) hv hy' hz' (fun l => ((-1 : k) ^ l) / (((l.factorial : k) ^ 2) * ((o' + n' + r + z - 1).choose l : k)))`. Rewrite `hE` using `[← ProjS.tieP_eq, ProjS.eulL_apply, ProjS.eulL_apply]`. Establish `key` using `Formalism.GM.F_pow_E_pow (ProjS.tv_w hv) (ProjS.tv_e hv) (ProjS.tv_we hv) (M.tieP w e zv sv o' n' z y') (o' + z) n' (o' + z + n' + r) hE.1 hE.2 hFP' (by omega) j j'`.
+
+Rewrite using `[← tieEh_pow_apply, ← tieEh_pow_apply, ProjS.tieEh_eq, ProjS.fockK_tieE_pow, key, ProjS.fockK_smul_right]`. Break down `Nat.lt_or_gt_of_ne hjj with hlt | hgt` into its components or cases. Establish `hd : j' - j = (j' - j - 1) + 1` using `by omega`. Rewrite using `[ProjS.fockK_tieE_pow_right, hd, pow_succ, Module.End.mul_apply, hFP, map_zero, ProjS.fockK_zero_left]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[Nat.descFactorial_eq_zero_iff_lt.mpr hgt]`. Simplify using the standard rewrite rules.
+-/
 theorem step_orth [CharZero k] (hv : M.TieVars w e zv sv) (hr : 1 ≤ r) {o n o' n' z : ℕ}
     {y y' : MvPolynomial σ k}
     (hy : BiHom w e o n y) (hy' : BiHom w e o' n' y') (hz : M.ZSFree zv sv y) (hz' : M.ZSFree zv sv y')
@@ -245,15 +347,29 @@ noncomputable def cst (o n j : α → ℕ) (L : List α) : k :=
 
 variable {w e zv sv z}
 
+/- English proof (translation)
+Introduce `_ hv` and use `⟨a, h, hv⟩`.
+-/
 theorem Va_sub {a : α} {L : List α} (h : a ∈ L) : Va w e zv sv a ⊆ VL w e zv sv L := fun _ hv => ⟨a, h, hv⟩
 
+/- English proof (translation)
+Introduce `_ ⟨b, hb, hv⟩` and use `⟨b, List.mem_cons_of_mem _ hb, hv⟩`.
+-/
 theorem VL_cons_sub {a : α} {L : List α} : VL w e zv sv L ⊆ VL w e zv sv (a :: L) :=
   fun _ ⟨b, hb, hv⟩ => ⟨b, List.mem_cons_of_mem _ hb, hv⟩
 
+/- English proof (translation)
+The claim follows from `Set.disjoint_left.mpr fun _ hv ⟨b, hb, hvb⟩ => Set.disjoint_left.mp (h b hb) hv hvb`.
+-/
 theorem disj_VL {a : α} {L : List α} (h : ∀ b ∈ L, Disjoint (Va w e zv sv a) (Va w e zv sv b)) :
     Disjoint (Va w e zv sv a) (VL w e zv sv L) :=
   Set.disjoint_left.mpr fun _ hv ⟨b, hb, hvb⟩ => Set.disjoint_left.mp (h b hb) hv hvb
 
+/- English proof (translation)
+Proceed by induction on `L with`. Consider the case `nil => exact ⟨1, one_mem _, fun y => rfl⟩`. Consider the case `cons a L ih`. Take `⟨T, hT, hTe⟩` from `ih`. Use `⟨Pop (w a) (e a) (zv a) (sv a) (o a) (n a) (z a) * T, mul_mem (ops_mono (Va_sub (List.mem_cons_self ..)) (Pop_mem _ _ _)) (ops_mono VL_cons_sub hT), fun y => ?_⟩` and prove the remaining obligations.
+
+Use `show M.tieP _ _ _ _ _ _ _ (chainP w e zv sv z o n L y) = _`. Rewrite using `[hTe, tieP_eq_Pop, Module.End.mul_apply]`.
+-/
 theorem exists_op_eq_chainP (o n : α → ℕ) (L : List α) :
     ∃ T ∈ Ops (k := k) (VL w e zv sv L), ∀ y, chainP w e zv sv z o n L y = T y := by
   induction L with
@@ -265,6 +381,11 @@ theorem exists_op_eq_chainP (o n : α → ℕ) (L : List α) :
     show M.tieP _ _ _ _ _ _ _ (chainP w e zv sv z o n L y) = _
     rw [hTe, tieP_eq_Pop, Module.End.mul_apply]
 
+/- English proof (translation)
+Proceed by induction on `L with`. Consider the case `nil => simp only [chainE, List.map_nil, List.prod_nil]`. Conclude with `one_mem _`. Consider the case `cons a L ih`. Simplify using `only [chainE, List.map_cons, List.prod_cons]`.
+
+Conclude with `mul_mem (pow_mem (Algebra.adjoin_mono (Set.image_mono (Va_sub (List.mem_cons_self ..))) Ehp_mem) _) (Algebra.adjoin_mono (Set.image_mono VL_cons_sub) ih)`.
+-/
 theorem chainE_mem (j : α → ℕ) (L : List α) :
     (chainE w e zv sv j L : MvPolynomial σ k) ∈ Algebra.adjoin k (X '' VL w e zv sv L) := by
   induction L with
@@ -274,6 +395,9 @@ theorem chainE_mem (j : α → ℕ) (L : List α) :
     exact mul_mem (pow_mem (Algebra.adjoin_mono (Set.image_mono (Va_sub (List.mem_cons_self ..))) Ehp_mem) _)
       (Algebra.adjoin_mono (Set.image_mono VL_cons_sub) ih)
 
+/- English proof (translation)
+Proceed by induction on `L with`. Consider the case `nil => exact one_mem _`. Consider the case `cons a L ih => show Formalism.GM.tiePhi (w a) (e a) (o a) (n a) (z a) * chainPhi w e z o n L ∈ _`. Conclude with `mul_mem (ops_mono (Va_sub (List.mem_cons_self ..)) (tiePhi_mem (zv := zv a) (sv := sv a) _ _ _)) (ops_mono VL_cons_sub ih)`.
+-/
 theorem chainPhi_mem (o n : α → ℕ) (L : List α) :
     (chainPhi w e z o n L : Module.End k (MvPolynomial σ k)) ∈ Ops (VL w e zv sv L) := by
   induction L with
@@ -283,6 +407,11 @@ theorem chainPhi_mem (o n : α → ℕ) (L : List α) :
     exact mul_mem (ops_mono (Va_sub (List.mem_cons_self ..)) (tiePhi_mem (zv := zv a) (sv := sv a) _ _ _))
       (ops_mono VL_cons_sub ih)
 
+/- English proof (translation)
+Establish `hHm` using `mulLeft_mem (chainE_mem (w := w) (e := e) (zv := zv) (sv := sv) (k := k) j L)`. Establish `hPa` using `Pop_mem (k := k) (w := w a) (e := e a) (zv := zv a) (sv := sv a) (o a) (n a) (z a)`. Use `show (Ehp (w a) (e a) (zv a) (sv a) ^ j a * chainE w e zv sv j L) * M.tieP _ _ _ _ _ _ _ (chainP w e zv sv z o n L Y0) = _`. Rewrite using `[mul_assoc, tieP_eq_Pop, tieP_eq_Pop]`. Use `congr 1`.
+
+Conclude with `(ops_apply_comm hdisj hPa hHm _).symm`.
+-/
 theorem chain_rw (o n j : α → ℕ) (a : α) (L : List α) (hdisj : Disjoint (Va w e zv sv a) (VL w e zv sv L))
     (Y0 : MvPolynomial σ k) :
     chainE w e zv sv j (a :: L) * chainP w e zv sv z o n (a :: L) Y0 =
@@ -296,6 +425,9 @@ theorem chain_rw (o n j : α → ℕ) (a : α) (L : List α) (hdisj : Disjoint (
   congr 1
   exact (ops_apply_comm hdisj hPa hHm _).symm
 
+/- English proof (translation)
+Take `⟨T, hT, hTe⟩` from `exists_op_eq_chainP (k := k) (w := w) (e := e) (zv := zv) (sv := sv) (z := z) o n L`. Establish `hHm` using `mulLeft_mem (chainE_mem (w := w) (e := e) (zv := zv) (sv := sv) (k := k) j L)`. Rewrite using `[hTe]`. Conclude with `good_of_ops hdisj hHm (good_of_ops hdisj hT h)`.
+-/
 theorem good_chain (o n j : α → ℕ) (a : α) (L : List α) (hdisj : Disjoint (Va w e zv sv a) (VL w e zv sv L))
     {o0 n0 : ℕ} (Y0 : MvPolynomial σ k) (h : Good (w a) (e a) (zv a) (sv a) o0 n0 Y0) :
     Good (w a) (e a) (zv a) (sv a) o0 n0 (chainE w e zv sv j L * chainP w e zv sv z o n L Y0) := by
@@ -304,6 +436,11 @@ theorem good_chain (o n j : α → ℕ) (a : α) (L : List α) (hdisj : Disjoint
   rw [hTe]
   exact good_of_ops hdisj hHm (good_of_ops hdisj hT h)
 
+/- English proof (translation)
+Take `⟨T, hT, hTe⟩` from `exists_op_eq_chainP (k := k) (w := w) (e := e) (zv := zv) (sv := sv) (z := z) o n L`. Establish `hHm` using `mulLeft_mem (chainE_mem (w := w) (e := e) (zv := zv) (sv := sv) (k := k) j L)`. Establish `hPhi` using `tiePhi_mem (k := k) (w := w a) (e := e a) (zv := zv a) (sv := sv a) o0 n0 z0`. Rewrite using `[hTe, hTe]`. Establish `h1` using `ops_apply_comm hdisj hPhi hHm (T Y0)`.
+
+Establish `h2` using `ops_apply_comm hdisj hPhi hT Y0`. Simplify using `only [LinearMap.mulLeft_apply] at h1`. Rewrite using `[h1, h2]`.
+-/
 theorem phi_chain (o n j : α → ℕ) (a : α) (L : List α) (hdisj : Disjoint (Va w e zv sv a) (VL w e zv sv L))
     (o0 n0 z0 : ℕ) (Y0 : MvPolynomial σ k) :
     Formalism.GM.tiePhi (w a) (e a) o0 n0 z0 (chainE w e zv sv j L * chainP w e zv sv z o n L Y0) =
@@ -317,6 +454,15 @@ theorem phi_chain (o n j : α → ℕ) (a : α) (L : List α) (hdisj : Disjoint 
   simp only [LinearMap.mulLeft_apply] at h1
   rw [h1, h2]
 
+/- English proof (translation)
+Proceed by induction on `L with`. Consider the case `nil`. Introduce `Y' _`. Simplify using `[chainE, chainP, chainPhi, cst]`. Consider the case `cons a L ih`.
+
+Introduce `Y' hY'`. Take `⟨hda, hdL⟩` from `List.pairwise_cons.mp hd`. Establish `hvA` using `hv a (List.mem_cons_self ..)`. Establish `hdisj` using `disj_VL hda`. Rewrite using `[chain_rw o n j a L hdisj, chain_rw o n j a L hdisj]`.
+
+Establish `gY` using `good_chain (z := z) o n j a L hdisj Y (hY a (List.mem_cons_self ..))`. Establish `gY'` using `good_chain (z := z) o n j a L hdisj Y' (hY' a (List.mem_cons_self ..))`. Rewrite using `[step_same hvA hr (biHom_of_good gY) (biHom_of_good gY') (zsfree_of_good gY) (zsfree_of_good gY'), phi_chain o n j a L hdisj]`. Establish `hPhi` using `tiePhi_mem (k := k) (w := w a) (e := e a) (zv := zv a) (sv := sv a) (o a) (n a) (z a)`. Rewrite using `[ih (fun b hb => hv b (List.mem_cons_of_mem _ hb)) hdL (fun b hb => hY b (List.mem_cons_of_mem _ hb)) _ (fun b hb => good_of_ops (hda b hb).symm hPhi (hY' b (List.mem_cons_of_mem _ hb)))]`.
+
+Establish `e2 : chainPhi w e z o n (a :: L) Y' = chainPhi w e z o n L (Formalism.GM.tiePhi (w a) (e a) (o a) (n a) (z a) Y')` using `by show Formalism.GM.tiePhi (w a) (e a) (o a) (n a) (z a) (chainPhi w e z o n L Y') = _`. Conclude with `ops_apply_comm hdisj hPhi (chainPhi_mem (zv := zv) (sv := sv) o n L) _`. Rewrite using `[e2]`. Simplify using `only [cst, List.map_cons, List.prod_cons]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem chain_main [CharZero k] (hr : 1 ≤ r) (o n j : α → ℕ) (L : List α)
     (hv : ∀ a ∈ L, M.TieVars (w a) (e a) (zv a) (sv a))
     (hd : L.Pairwise fun a b => Disjoint (Va w e zv sv a) (Va w e zv sv b))
@@ -350,6 +496,17 @@ theorem chain_main [CharZero k] (hr : 1 ≤ r) (o n j : α → ℕ) (L : List α
     simp only [cst, List.map_cons, List.prod_cons]
     ring
 
+/- English proof (translation)
+Proceed by induction on `L with`. Consider the case `nil`. Take `⟨a, ha, _⟩` from `hne`. Simplify using `at ha`. Consider the case `cons a L ih`.
+
+Introduce `Y' hY'`. Take `⟨hda, hdL⟩` from `List.pairwise_cons.mp hd`. Establish `hvA` using `hv a (List.mem_cons_self ..)`. Establish `hdisj` using `disj_VL hda`. Rewrite using `[chain_rw o n j a L hdisj, chain_rw o' n' j' a L hdisj]`.
+
+Establish `gY` using `good_chain (z := z) o n j a L hdisj Y (hY a (List.mem_cons_self ..))`. Establish `gY'` using `good_chain (z := z) o' n' j' a L hdisj Y' (hY' a (List.mem_cons_self ..))`. Distinguish the cases in `hja : j a = j' a`. Take `⟨ho, hn⟩` from `hon a (List.mem_cons_self ..) hja`. Rewrite `gY'` using `[← ho, ← hn]`.
+
+Rewrite using `[← hja, ← ho, ← hn]`. Rewrite using `[step_same hvA hr (biHom_of_good gY) (biHom_of_good gY') (zsfree_of_good gY) (zsfree_of_good gY'), phi_chain o' n' j' a L hdisj]`. Establish `hPhi` using `tiePhi_mem (k := k) (w := w a) (e := e a) (zv := zv a) (sv := sv a) (o a) (n a) (z a)`. Establish `hneL : ∃ b ∈ L, j b ≠ j' b`. Take `⟨b, hb, hjb⟩` from `hne`.
+
+Break down `List.mem_cons.mp hb with rfl | hb` into its components or cases. Conclude with `absurd hja hjb`. Conclude with `⟨b, hb, hjb⟩`. Rewrite using `[ih (fun b hb => hv b (List.mem_cons_of_mem _ hb)) hdL (fun b hb => hon b (List.mem_cons_of_mem _ hb)) hneL (fun b hb => hY b (List.mem_cons_of_mem _ hb)) _ (fun b hb => good_of_ops (hda b hb).symm hPhi (hY' b (List.mem_cons_of_mem _ hb))), mul_zero]`. Conclude with `step_orth hvA hr (biHom_of_good gY) (biHom_of_good gY') (zsfree_of_good gY) (zsfree_of_good gY') hja`.
+-/
 theorem chain_orth [CharZero k] (hr : 1 ≤ r) (o n j o' n' j' : α → ℕ) (L : List α)
     (hv : ∀ a ∈ L, M.TieVars (w a) (e a) (zv a) (sv a))
     (hd : L.Pairwise fun a b => Disjoint (Va w e zv sv a) (Va w e zv sv b))
@@ -417,16 +574,25 @@ def LA : List (Option (Fin D.T.t)) := none :: (List.finRange D.T.t).map some
 
 variable (p : ℕ) [Fact p.Prime]
 
+/- English proof (translation)
+Simplify using `only [chainP, LA, List.foldr_cons, List.foldr_map]`. Both sides reduce to the same expression.
+-/
 theorem pall_eq (j : Fin D.T.t → ℕ) (jp : ℕ) (Y : MvPolynomial (BVar N r D.T.t) ℚ_[p]) :
     D.Pall p j jp Y = chainP (wA D) (eA D) (zA D) (sA D) (zzA D) (oA D j jp) (nA D j jp) (LA D) Y := by
   simp only [chainP, LA, List.foldr_cons, List.foldr_map]
   rfl
 
+/- English proof (translation)
+Simplify using `only [chainPhi, LA, List.foldr_cons, List.foldr_map]`. Both sides reduce to the same expression.
+-/
 theorem phi_eq (j : Fin D.T.t → ℕ) (jp : ℕ) :
     D.phiAll p (r := r) j jp = chainPhi (wA D) (eA D) (zzA D) (oA D j jp) (nA D j jp) (LA D) := by
   simp only [chainPhi, LA, List.foldr_cons, List.foldr_map]
   rfl
 
+/- English proof (translation)
+Simplify using `only [chainE, LA, List.map_cons, List.prod_cons, List.map_map]`. Rewrite using `[mul_comm, Fin.prod_univ_def]`. Both sides reduce to the same expression.
+-/
 theorem ehat_eq (j : Fin D.T.t → ℕ) (jp : ℕ) :
     (∏ i, D.Ehat p (r := r) i ^ j i) * D.Eplus p (r := r) ^ jp =
       chainE (wA D) (eA D) (zA D) (sA D) (jA D j jp) (LA D) := by
@@ -436,9 +602,17 @@ theorem ehat_eq (j : Fin D.T.t → ℕ) (jp : ℕ) :
 
 variable {D}
 
+/- English proof (translation)
+Introduce `h'` and use `h (hB.1.1.injective h')`.
+-/
 theorem pos_ne (hB : D.BlockOK) {i i' : Fin D.T.t} (h : i ≠ i') : D.T.pos i ≠ D.T.pos i' :=
   fun h' => h (hB.1.1.injective h')
 
+/- English proof (translation)
+Introduce `h`. Take `⟨h1, hv1, -⟩` from `hB.1.2.1 i`. Take `⟨h2, -, hv2⟩` from `hB.1.2.1 i'`. Establish `e : (⟨D.T.pos i, by omega⟩ : Fin N) = ⟨D.T.pos i' + 1, h2⟩` using `Fin.ext h`. Rewrite `hv1` using `[e]`.
+
+Rewrite `hv2` using `[hv1]`. Conclude with `Bool.noConfusion hv2`.
+-/
 theorem pos_ne_succ (hB : D.BlockOK) (i i' : Fin D.T.t) : D.T.pos i ≠ D.T.pos i' + 1 := by
   intro h
   obtain ⟨h1, hv1, -⟩ := hB.1.2.1 i
@@ -448,15 +622,26 @@ theorem pos_ne_succ (hB : D.BlockOK) (i i' : Fin D.T.t) : D.T.pos i ≠ D.T.pos 
   rw [hv1] at hv2
   exact Bool.noConfusion hv2
 
+/- English proof (translation)
+Simplify using `[BlockData.letterAt, h]`.
+-/
 theorem letterAt_val {k : ℕ} (h : k ≤ N - 1) : (D.letterAt k : ℕ) = k := by
   simp [BlockData.letterAt, h]
 
+/- English proof (translation)
+Simplify using `only [BlockData.lettersAt]`. Rewrite using `[Finset.sum_eq_zero (fun i _ => if_neg (by have := hB.2.1 i; omega))]`. Simplify using the standard rewrite rules.
+-/
 theorem degU (hB : D.BlockOK) (j : Fin D.T.t → ℕ) (jp : ℕ) :
     (D.lettersAt j jp).deg D.uPos = D.LL.deg D.uPos - jp := by
   simp only [BlockData.lettersAt]
   rw [Finset.sum_eq_zero (fun i _ => if_neg (by have := hB.2.1 i; omega))]
   simp
 
+/- English proof (translation)
+Establish `h1` using `hB.2.1 i`. Establish `h2` using `hB.2.2.2`. Establish `hv : (D.letterAt (D.T.pos i) : ℕ) = D.T.pos i` using `letterAt_val (by omega)`. Simplify using `only [BlockData.lettersAt]`. Rewrite using `[Finset.sum_eq_single i (fun i' _ hi' => if_neg (by`.
+
+Rewrite using `[hv]; have := pos_ne hB (Ne.symm hi'); have := pos_ne_succ hB i i'; omega)) (by simp),`. Use `if_pos (Or.inl hv), if_neg (by intro h; rw [h] at hv; omega)]`. Simplify using the standard rewrite rules.
+-/
 theorem deg_fst (hB : D.BlockOK) (j : Fin D.T.t → ℕ) (jp : ℕ) (i : Fin D.T.t) :
     (D.lettersAt j jp).deg (D.letterAt (D.T.pos i)) = D.LL.deg (D.letterAt (D.T.pos i)) - j i := by
   have h1 := hB.2.1 i
@@ -468,6 +653,11 @@ theorem deg_fst (hB : D.BlockOK) (j : Fin D.T.t → ℕ) (jp : ℕ) (i : Fin D.T
     if_pos (Or.inl hv), if_neg (by intro h; rw [h] at hv; omega)]
   simp
 
+/- English proof (translation)
+Establish `h1` using `hB.2.1 i`. Establish `h2` using `hB.2.2.2`. Establish `hv : (D.letterAt (D.T.pos i + 1) : ℕ) = D.T.pos i + 1` using `letterAt_val (by omega)`. Simplify using `only [BlockData.lettersAt]`. Rewrite using `[Finset.sum_eq_single i (fun i' _ hi' => if_neg (by`.
+
+Rewrite using `[hv]; have := pos_ne hB (Ne.symm hi'); have := pos_ne_succ hB i' i; omega)) (by simp),`. Use `if_pos (Or.inr hv), if_neg (by intro h; rw [h] at hv; omega)]`. Simplify using the standard rewrite rules.
+-/
 theorem deg_snd (hB : D.BlockOK) (j : Fin D.T.t → ℕ) (jp : ℕ) (i : Fin D.T.t) :
     (D.lettersAt j jp).deg (D.letterAt (D.T.pos i + 1)) = D.LL.deg (D.letterAt (D.T.pos i + 1)) - j i := by
   have h1 := hB.2.1 i
@@ -490,9 +680,25 @@ open MvPolynomial Finset Formalism.GM.M
 section Block2
 variable {N r : ℕ} {D : BlockData N}
 
+/- English proof (translation)
+Simplify using `[finPos, h]`.
+-/
 theorem finPos_val {k : ℕ} (h : k ≤ N) : (finPos N k : ℕ) = k := by
   simp [finPos, h]
 
+/- English proof (translation)
+Establish `h2` using `hB.2.2.2`. Break down `a with _ | i` into its components or cases. Use `⟨?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `c d h`. Simplify `h` using `[wA]`.
+
+Introduce `c d h`. Simplify `h` using `[eA, xiVar]`. Introduce `c d h`. Simplify using `only [wA, eA, xiVar, Option.elim, Sum.inl.injEq, Prod.mk.injEq, Fin.ext_iff, Fin.val_castSucc, Fin.val_last] at h`. Use linear arithmetic over natural numbers and integers.
+
+Introduce `c`. Simplify using `[wA, eA, zA, sA, xiVar, scalZ, scalS]`. Simplify using `[zA, sA, scalZ, scalS]`. Establish `h1` using `hB.2.1 i`. Establish `hv0 : (finPos N (D.T.pos i) : ℕ) = D.T.pos i` using `finPos_val (by omega)`.
+
+Establish `hv1 : (finPos N (D.T.pos i + 1) : ℕ) = D.T.pos i + 1` using `finPos_val (by omega)`. Use `⟨?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `c d h`. Simplify `h` using `[wA]`. Introduce `c d h`.
+
+Simplify `h` using `[eA]`. Introduce `c d h`. Simplify using `only [wA, eA, Option.elim, Sum.inl.injEq, Prod.mk.injEq, Fin.ext_iff] at h`. Use linear arithmetic over natural numbers and integers. Introduce `c`.
+
+Simplify using `[wA, eA, zA, sA, scalZ, scalS]`. Simplify using `[zA, sA, scalZ, scalS]`.
+-/
 theorem tvA (hB : D.BlockOK) (a : Option (Fin D.T.t)) :
     M.TieVars (wA (r := r) D a) (eA D a) (zA D a) (sA D a) := by
   have h2 := hB.2.2.2
@@ -518,6 +724,21 @@ theorem tvA (hB : D.BlockOK) (a : Option (Fin D.T.t)) :
     · intro c; simp [wA, eA, zA, sA, scalZ, scalS]
     · simp [zA, sA, scalZ, scalS]
 
+/- English proof (translation)
+Establish `h2` using `hB.2.2.2`. Rewrite using `[Set.disjoint_left]`. Introduce `v hva hvb`. Simplify using `only [Va, V, Set.mem_union, Set.mem_range, Set.mem_insert_iff, Set.mem_singleton_iff] at hva hvb`. Apply the tactic sequence `rcases a with _ | i <;> rcases b with _ | i'`.
+
+Conclude with `hab rfl`. Establish `h1` using `hB.2.1 i'`. Establish `hv0 : (finPos N (D.T.pos i') : ℕ) = D.T.pos i'` using `finPos_val (by omega)`. Establish `hv1 : (finPos N (D.T.pos i' + 1) : ℕ) = D.T.pos i' + 1` using `finPos_val (by omega)`. Establish `hi` using `i'.isLt`.
+
+Apply the tactic sequence `rcases hva with ((⟨c, rfl⟩ | ⟨c, rfl⟩) | rfl | rfl) <;> rcases hvb with ((⟨c', h⟩ | ⟨c', h⟩) | h | h) <;>`. Apply the tactic sequence `simp only [wA, eA, zA, sA, xiVar, scalZ, scalS, Option.elim, Sum.inl.injEq, Sum.inr.injEq, reduceCtorEq, Prod.mk.injEq, Fin.ext_iff, Fin.val_castSucc, Fin.val_last] at h <;> omega`. Establish `h1` using `hB.2.1 i`. Establish `hv0 : (finPos N (D.T.pos i) : ℕ) = D.T.pos i` using `finPos_val (by omega)`. Establish `hv1 : (finPos N (D.T.pos i + 1) : ℕ) = D.T.pos i + 1` using `finPos_val (by omega)`.
+
+Establish `hi` using `i.isLt`. Apply the tactic sequence `rcases hva with ((⟨c, rfl⟩ | ⟨c, rfl⟩) | rfl | rfl) <;> rcases hvb with ((⟨c', h⟩ | ⟨c', h⟩) | h | h) <;>`. Apply the tactic sequence `simp only [wA, eA, zA, sA, xiVar, scalZ, scalS, Option.elim, Sum.inl.injEq, Sum.inr.injEq, reduceCtorEq, Prod.mk.injEq, Fin.ext_iff, Fin.val_castSucc, Fin.val_last] at h <;> omega`. Establish `hii : i ≠ i'` using `fun h => hab (by rw [h])`. Establish `hii' : (i : ℕ) ≠ i'` using `fun h => hii (Fin.ext h)`.
+
+Establish `h1` using `hB.2.1 i`. Establish `h1'` using `hB.2.1 i'`. Establish `q1` using `pos_ne hB hii`. Establish `q2` using `pos_ne_succ hB i i'`. Establish `q3` using `pos_ne_succ hB i' i`.
+
+Establish `hv0 : (finPos N (D.T.pos i) : ℕ) = D.T.pos i` using `finPos_val (by omega)`. Establish `hv1 : (finPos N (D.T.pos i + 1) : ℕ) = D.T.pos i + 1` using `finPos_val (by omega)`. Establish `hv0' : (finPos N (D.T.pos i') : ℕ) = D.T.pos i'` using `finPos_val (by omega)`. Establish `hv1' : (finPos N (D.T.pos i' + 1) : ℕ) = D.T.pos i' + 1` using `finPos_val (by omega)`. Apply the tactic sequence `rcases hva with ((⟨c, rfl⟩ | ⟨c, rfl⟩) | rfl | rfl) <;> rcases hvb with ((⟨c', h⟩ | ⟨c', h⟩) | h | h) <;>`.
+
+Apply the tactic sequence `simp only [wA, eA, zA, sA, xiVar, scalZ, scalS, Option.elim, Sum.inl.injEq, Sum.inr.injEq, reduceCtorEq, Prod.mk.injEq, Fin.ext_iff, Fin.val_castSucc, Fin.val_last] at h <;> omega`.
+-/
 theorem disjA (hB : D.BlockOK) {a b : Option (Fin D.T.t)} (hab : a ≠ b) :
     Disjoint (Va (wA (r := r) D) (eA D) (zA D) (sA D) a) (Va (wA D) (eA D) (zA D) (sA D) b) := by
   have h2 := hB.2.2.2
@@ -555,11 +776,17 @@ theorem disjA (hB : D.BlockOK) {a b : Option (Fin D.T.t)} (hab : a ≠ b) :
       simp only [wA, eA, zA, sA, xiVar, scalZ, scalS, Option.elim, Sum.inl.injEq, Sum.inr.injEq, reduceCtorEq,
         Prod.mk.injEq, Fin.ext_iff, Fin.val_castSucc, Fin.val_last] at h <;> omega
 
+/- English proof (translation)
+Simplify using `only [LA, List.nodup_cons, List.mem_map, reduceCtorEq, and_false, exists_false, not_false_eq_true, true_and]`. Conclude with `(List.nodup_finRange _).map (Option.some_injective _)`.
+-/
 theorem nodupLA : (LA D).Nodup := by
   simp only [LA, List.nodup_cons, List.mem_map, reduceCtorEq, and_false, exists_false, not_false_eq_true,
     true_and]
   exact (List.nodup_finRange _).map (Option.some_injective _)
 
+/- English proof (translation)
+The claim follows from `List.Pairwise.imp (fun hab => disjA hB hab) nodupLA`.
+-/
 theorem pairwiseA (hB : D.BlockOK) :
     (LA D).Pairwise fun a b => Disjoint (Va (wA (r := r) D) (eA D) (zA D) (sA D) a) (Va (wA D) (eA D) (zA D) (sA D) b) :=
   List.Pairwise.imp (fun hab => disjA hB hab) nodupLA
@@ -575,11 +802,17 @@ open MvPolynomial Finset Formalism.GM.M
 section Block3
 variable {p : ℕ} [Fact p.Prime] {N r : ℕ}
 
+/- English proof (translation)
+Introduce and unpack `⟨a, c⟩ ⟨a', c'⟩ h`. Simplify using `only [chainEmb, Sum.inl.injEq, Prod.mk.injEq, Fin.castSucc_inj] at h`. Rewrite using `[h.1, h.2]`.
+-/
 theorem chainEmb_inj (t : ℕ) : Function.Injective (chainEmb N r t) := by
   rintro ⟨a, c⟩ ⟨a', c'⟩ h
   simp only [chainEmb, Sum.inl.injEq, Prod.mk.injEq, Fin.castSucc_inj] at h
   rw [h.1, h.2]
 
+/- English proof (translation)
+Establish `h` using `support_mul (rename (chainEmb N r t) y) g hm`. Take `⟨a, ha, b, hb, rfl⟩` from `Finset.mem_add.mp h`. Rewrite `ha` using `[support_rename_of_injective (chainEmb_inj t)]`. Take `⟨m1, hm1, rfl⟩` from `Finset.mem_image.mp ha`. Conclude with `⟨m1, hm1, b, hb, rfl⟩`.
+-/
 theorem supp_Y {t : ℕ} (y : MvPolynomial (Fin N × Fin r) ℚ_[p]) (g : MvPolynomial (BVar N r t) ℚ_[p])
     (m : BVar N r t →₀ ℕ) (hm : m ∈ (rename (chainEmb N r t) y * g).support) :
     ∃ m1 ∈ y.support, ∃ m2 ∈ g.support, m = Finsupp.mapDomain (chainEmb N r t) m1 + m2 := by
@@ -592,6 +825,37 @@ theorem supp_Y {t : ℕ} (y : MvPolynomial (Fin N × Fin r) ℚ_[p]) (g : MvPoly
 
 variable {D : BlockData N}
 
+/- English proof (translation)
+Establish `hyP : ∀ m ∈ y.support, ∀ b, ∑ c, m (b, c) = (D.lettersAt j jp).deg b`. Establish `h` using `(Submodule.mem_inf.mp hy).1`. Rewrite `h` using `[Pol, mem_restrictSupport_iff]`. Conclude with `fun m hm => h hm`. Establish `hgP : ∀ m ∈ g.support, (∀ v ∈ m.support, ∃ c, v = xiVar N r D.T.t c) ∧ ∑ c, m (xiVar N r D.T.t c) = D.B - jp`.
+
+Establish `h` using `(Submodule.mem_inf.mp hg).1`. Rewrite `h` using `[Submodule.restrictScalars_mem, mem_restrictSupport_iff]`. Conclude with `fun m hm => h hm`. Establish `key : ∀ m ∈ (rename (chainEmb N r D.T.t) y * g).support, ∃ m1 ∈ y.support, ∃ m2 ∈ g.support, (∀ b c, m (chainEmb N r D.T.t (b, c)) = m1 (b, c)) ∧ (∀ c, m (xiVar N r D.T.t c) = m2 (xiVar N r D.T.t c)) ∧ (∀ q, m (Sum.inr q) = 0)`. Introduce `m hm`.
+
+Take `⟨m1, hm1, m2, hm2, rfl⟩` from `supp_Y y g m hm`. Establish `hm2z : ∀ v, (∀ c, v ≠ xiVar N r D.T.t c) → m2 v = 0` using `fun v hv => by`. Assume the negation of the conclusion as `h`. Take `⟨c, hc⟩` from `(hgP m2 hm2).1 v (Finsupp.mem_support_iff.mpr h)`. Conclude with `hv c hc`.
+
+Use `⟨m1, hm1, m2, hm2, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `b c`. Rewrite using `[Finsupp.add_apply, Finsupp.mapDomain_apply (chainEmb_inj _), hm2z (chainEmb N r D.T.t (b, c)) (fun c' h => (Fin.castSucc_lt_last b).ne (congrArg Prod.fst (Sum.inl_injective h : (Fin.castSucc b, c) = (Fin.last N, c')))), add_zero]`. Introduce `c`. Rewrite using `[Finsupp.add_apply, Finsupp.mapDomain_notin_range, zero_add]`.
+
+Introduce and unpack `⟨⟨b, c'⟩, h⟩`. Conclude with `(Fin.castSucc_lt_last b).ne (congrArg Prod.fst (Sum.inl_injective h : (Fin.castSucc b, c') = (Fin.last N, c)))`. Introduce `q`. Rewrite using `[Finsupp.add_apply, Finsupp.mapDomain_notin_range, hm2z (Sum.inr q) (fun c h => by simp [xiVar] at h), add_zero]`. Introduce and unpack `⟨x, h⟩`.
+
+Simplify using `[chainEmb] at h`. Establish `hZS : ∀ q, pderiv (Sum.inr q) (rename (chainEmb N r D.T.t) y * g) = 0` using `fun q => ProjS.pderiv_of_free _ _ (fun m hm => by`. Take `⟨_, _, _, _, _, _, h3⟩` from `key m hm`. Conclude with `h3 q)`. Establish `h2` using `hB.2.2.2`.
+
+Break down `a with _ | i` into its components or cases. Use `⟨?_, ?_, hZS _, hZS _⟩` and prove the remaining obligations. Apply `ProjS.eulL_of_support` to reduce the goal to its premises. Introduce `m hm`. Take `⟨m1, hm1, m2, hm2, h1, -, -⟩` from `key m hm`.
+
+Use `show ∑ c, m (chainEmb N r D.T.t (D.uPos, c)) = _`. Simplify using `only [h1]`. Rewrite using `[hyP m1 hm1, degU hB]`. Both sides reduce to the same expression. Apply `ProjS.eulL_of_support` to reduce the goal to its premises.
+
+Introduce `m hm`. Take `⟨m1, hm1, m2, hm2, -, h1, -⟩` from `key m hm`. Use `show ∑ c, m (xiVar N r D.T.t c) = _`. Simplify using `only [h1]`. Rewrite using `[(hgP m2 hm2).2]`.
+
+Both sides reduce to the same expression. Establish `hi` using `hB.2.1 i`. Establish `e0 : finPos N (D.T.pos i) = Fin.castSucc (D.letterAt (D.T.pos i))`. Apply `Fin.ext` to reduce the goal to its premises. Rewrite using `[Fin.val_castSucc, letterAt_val (by omega), finPos_val (by omega)]`.
+
+Establish `e1 : finPos N (D.T.pos i + 1) = Fin.castSucc (D.letterAt (D.T.pos i + 1))`. Apply `Fin.ext` to reduce the goal to its premises. Rewrite using `[Fin.val_castSucc, letterAt_val (by omega), finPos_val (by omega)]`. Use `⟨?_, ?_, hZS _, hZS _⟩` and prove the remaining obligations. Apply `ProjS.eulL_of_support` to reduce the goal to its premises.
+
+Introduce `m hm`. Take `⟨m1, hm1, m2, hm2, h1, -, -⟩` from `key m hm`. Use `show ∑ c, m (Sum.inl (finPos N (D.T.pos i), c)) = _`. Rewrite using `[e0]`. Use `show ∑ c, m (chainEmb N r D.T.t (D.letterAt (D.T.pos i), c)) = _`.
+
+Simplify using `only [h1]`. Rewrite using `[hyP m1 hm1]`. Both sides reduce to the same expression. Apply `ProjS.eulL_of_support` to reduce the goal to its premises. Introduce `m hm`.
+
+Take `⟨m1, hm1, m2, hm2, h1, -, -⟩` from `key m hm`. Use `show ∑ c, m (Sum.inl (finPos N (D.T.pos i + 1), c)) = _`. Rewrite using `[e1]`. Use `show ∑ c, m (chainEmb N r D.T.t (D.letterAt (D.T.pos i + 1), c)) = _`. Simplify using `only [h1]`.
+
+Rewrite using `[hyP m1 hm1]`. Both sides reduce to the same expression.
+-/
 theorem goodA [NeZero r] (hB : D.BlockOK) (j : Fin D.T.t → ℕ) (jp : ℕ) (y : MvPolynomial (Fin N × Fin r) ℚ_[p])
     (hy : y ∈ Y p (r := r) (D.lettersAt j jp) D.T.J D.T.thr) (g : MvPolynomial (BVar N r D.T.t) ℚ_[p])
     (hg : g ∈ XiPolZ p N r D.T.t (D.B - jp)) (a : Option (Fin D.T.t)) :
@@ -686,6 +950,21 @@ namespace Formalism.GM.FockB
 
 open MvPolynomial Finset Formalism.GM.M
 
+/- English proof (translation)
+Introduce `p _ N r _ D hB hr`. Prove the components needed by the constructor for the conclusion. Introduce `j j' jp jp' _ _ hne y hy y' hy' g hg g' hg'`. Rewrite using `[ehat_eq D p j jp, ehat_eq D p j' jp', pall_eq, pall_eq]`. Establish `hon : ∀ a ∈ LA D, jA D j jp a = jA D j' jp' a → oA D j jp a = oA D j' jp' a ∧ nA D j jp a = nA D j' jp' a`.
+
+Introduce `a _ h`. Break down `a with _ | i` into its components or cases. Simplify using `only [jA, oA, nA, Option.elim] at h ⊢`. Rewrite using `[h]`. Conclude with `⟨rfl, rfl⟩`.
+
+Simplify using `only [jA, oA, nA, Option.elim] at h ⊢`. Rewrite using `[deg_fst hB, deg_fst hB, deg_snd hB, deg_snd hB, h]`. Conclude with `⟨rfl, rfl⟩`. Establish `hne' : ∃ a ∈ LA D, jA D j jp a ≠ jA D j' jp' a`. Assume the negation of the conclusion as `hc`.
+
+Simplify using `only [not_exists, not_and, not_not] at hc`. Apply `hne` to reduce the goal to its premises. Establish `h0 : jp = jp'` using `hc none (List.mem_cons_self ..)`. Establish `h1 : j = j'` using `funext fun i => hc (some i) (List.mem_cons_of_mem _ (List.mem_map.mpr ⟨i, List.mem_finRange i, rfl⟩))`. Rewrite using `[h0, h1]`.
+
+Conclude with `chain_orth hr (oA D j jp) (nA D j jp) (jA D j jp) (oA D j' jp') (nA D j' jp') (jA D j' jp') (LA D) (fun a _ => tvA hB a) (pairwiseA hB) hon hne' _ (fun a _ => goodA hB j jp y hy g hg a) _ (fun a _ => goodA hB j' jp' y' hy' g' hg' a)`. Introduce `j jp _ y hy y' hy' g hg g' hg'`. Rewrite using `[ProjS.fockK_smul_left, ProjS.fockK_smul_right, ehat_eq D p j jp, pall_eq, pall_eq, chain_main hr (oA D j jp) (nA D j jp) (jA D j jp) (LA D) (fun a _ => tvA hB a) (pairwiseA hB) _ (fun a _ => goodA hB j jp y hy g hg a) _ (fun a _ => goodA hB j jp y' hy' g' hg' a), phi_eq]`. Establish `hcst : cst (r` using `r) (zzA D) (oA D j jp) (nA D j jp) (jA D j jp) (LA D) = ((jp.factorial : ℚ_[p]) ^ 2 * (∏ i, ((j i).factorial : ℚ_[p])) ^ 2) * ((∏ i, ((((D.lettersAt j jp).deg (D.letterAt (D.T.pos i)) + (D.lettersAt j jp).deg (D.letterAt (D.T.pos i + 1)) + r + D.T.z i + 1 + j i - 1).choose (j i) …`. Simplify using `only [cst, LA, List.map_cons, List.prod_cons, List.map_map]`.
+
+Rewrite using `[← Fin.prod_univ_def]`. Simplify using `only [Function.comp_def, jA, oA, nA, zzA, Option.elim]`. Use `push_cast`. Simplify using `only [Finset.prod_mul_distrib, Finset.prod_pow]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[hcst]`. Establish `hf1 : (∏ i, ((j i).factorial : ℚ_[p])) ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun i _ => Nat.cast_ne_zero.mpr (Nat.factorial_ne_zero _)`. Establish `hf2 : (jp.factorial : ℚ_[p]) ≠ 0` using `Nat.cast_ne_zero.mpr (Nat.factorial_ne_zero _)`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem fock_blocks_of_weights : M.FockBlocks := by
   intro p _ N r _ D hB hr
   constructor
@@ -737,6 +1016,9 @@ end Formalism.GM.FockB
 
 namespace Formalism.GM
 
+/- English proof (translation)
+The claim follows from `FockB.fock_blocks_of_weights`.
+-/
 theorem fock_block_decomposition : M.FockBlocks := FockB.fock_blocks_of_weights
 
 end Formalism.GM

@@ -64,6 +64,9 @@ def ratReal (I : AutInst) (γ : GL (Fin I.n) I.E) (hγ : γ ∈ Formalism.UG.UJ 
     simp only [← Matrix.mul_assoc]
     rw [hu]⟩
 
+/- English proof (translation)
+Introduce `g hg`. Establish `hf : Formalism.UG.bc (Formalism.UG.inclE (F` using `I.F) (Af I.F)) g ∈ Formalism.UG.UPts I.cm.sig I.J (Af I.F) := Formalism.UG.Final.RatPtsLe I.F I.E (Fin I.n) I.cm.sig I.J (Af I.F) (Subgroup.mem_map_of_mem _ hg)`. Set `x : I.GA` to `(fun v => ratReal I g hg v, ⟨_, hf⟩)`. Establish `hx : x ∈ I.GFset` using `⟨g, hg, fun v => rfl, rfl⟩`. Conclude with `⟨x, hx, ratM_eq I hx g rfl⟩`.
+-/
 theorem ratPoint_holds (I : AutInst) : RatPoint I := by
   intro g hg
   have hf : Formalism.UG.bc (Formalism.UG.inclE (F := I.F) (Af I.F)) g ∈ Formalism.UG.UPts I.cm.sig I.J (Af I.F) :=

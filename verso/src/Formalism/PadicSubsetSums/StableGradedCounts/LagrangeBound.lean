@@ -3,6 +3,13 @@ import Formalism.PadicSubsetSums.StableGradedCounts.PadicDigits
 
 namespace Formalism.IrreducibleCountingLemmas.WindowSums
 
+/- English proof (translation)
+Distinguish the cases in `h : ∃ i ∈ s, g i ≠ 0`. Take `⟨i, hi, hgi⟩` from `h`. Rewrite using `[← Finset.add_sum_erase s g hi]`. Establish `h0 : ∑ j ∈ s.erase i, g j = 0` using `Finset.sum_eq_zero fun j hj => by`. Assume the negation of the conclusion as `hne`.
+
+Conclude with `(Finset.ne_of_mem_erase hj) (huniq j (Finset.mem_of_mem_erase hj) i hi hne hgi)`. Rewrite using `[h0, add_zero]`. Conclude with `hle i hi`. Use `push Not at h`. Rewrite using `[Finset.sum_eq_zero h]`.
+
+Conclude with `Nat.zero_le _`.
+-/
 private theorem sum_le_of_unique {ι : Type} (s : Finset ι) (g : ι → ℕ) (r : ℕ)
     (hle : ∀ i ∈ s, g i ≤ r) (huniq : ∀ i ∈ s, ∀ j ∈ s, g i ≠ 0 → g j ≠ 0 → i = j) :
     ∑ i ∈ s, g i ≤ r := by
@@ -19,6 +26,41 @@ private theorem sum_le_of_unique {ι : Type} (s : Finset ι) (g : ι → ℕ) (r
     rw [Finset.sum_eq_zero h]
     exact Nat.zero_le _
 
+/- English proof (translation)
+Introduce `l a A' r' Cc hl ha hA hlt hdiv c hc n hn`. Establish `hfact : Fact l.Prime` using `⟨hl⟩`. Establish `hlZ : Prime (l : ℤ)` using `Nat.prime_iff_prime_int.mp hl`. Establish `hnotL : ¬ (l : ℤ) ∣ (l : ℤ) ^ a - 1`. Introduce `h`.
+
+Establish `h1 : (l : ℤ) ∣ (l : ℤ) ^ a` using `dvd_pow_self _ (by omega)`. Establish `h2 : (l : ℤ) ∣ 1`. Establish `h3` using `dvd_sub h1 h`. Rewrite `h3` using `[sub_sub_cancel]`. Then use the resulting hypothesis. Conclude with `hlZ.not_isUnit (isUnit_of_dvd_one h2)`.
+
+Establish `hsep : ∀ x m1 m2 : ℤ, |m1 - m2| < l → (l : ℤ) ∣ x + m1 * ((l : ℤ) ^ a - 1) → (l : ℤ) ∣ x + m2 * ((l : ℤ) ^ a - 1) → m1 = m2`. Introduce `x m1 m2 hm h1 h2`. Establish `h3 : (l : ℤ) ∣ (m1 - m2) * ((l : ℤ) ^ a - 1)`. Establish `e : (m1 - m2) * ((l : ℤ) ^ a - 1) = (x + m1 * ((l : ℤ) ^ a - 1)) - (x + m2 * ((l : ℤ) ^ a - 1))` using `by ring`. Rewrite using `[e]`.
+
+Conclude with `dvd_sub h1 h2`. Break down `hlZ.dvd_or_dvd h3 with h | h` into its components or cases. Use `Int.eq_zero_of_abs_lt_dvd h hm` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `absurd h hnotL`.
+
+Establish `hdv : ∀ z : ℤ, padicValInt l z ≠ 0 → (l : ℤ) ∣ z`. Introduce `z hz`. Establish `h` using `(padicValInt_dvd_iff (p := l) 1 z).mpr (Or.inr (Nat.one_le_iff_ne_zero.mpr hz))`. Simplify using `using h`. Establish `hneg : ∀ z : ℤ, padicValInt l (-z) = padicValInt l z` using `fun z => by simp [padicValInt]`.
+
+Establish `hpow : ∀ k : ℕ, ((l ^ k - 1 : ℕ) : ℤ) = (l : ℤ) ^ k - 1` using `fun k => by`. Rewrite using `[Nat.cast_sub (Nat.one_le_pow _ _ hl.pos)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hper : ∀ c' ∈ Cc, (∑ n' ∈ Finset.range (2 * A'), if c' = c ∧ n' = n then 0 else padicValInt l (((c : ℤ) + n * ((l : ℤ) ^ a - 1)) - ((c' : ℤ) + n' * ((l : ℤ) ^ a - 1)))) ≤ if c' = c then 0 else r'`.
+
+Introduce `c' hc'`. Distinguish the cases in `hcc : c' = c`. Substitute `hcc` using the available equality. Rewrite using `[if_pos rfl]`. Apply `le_of_eq` to reduce the goal to its premises.
+
+Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `n' hn'`. Rewrite `hn'` using `[Finset.mem_range]`. Use `split_ifs with h`. Both sides reduce to the same expression.
+
+Assume the negation of the conclusion as `hne`. Establish `h1` using `hdv _ hne`. Establish `hz : ((c' : ℤ) + n * ((l : ℤ) ^ a - 1)) - ((c' : ℤ) + n' * ((l : ℤ) ^ a - 1)) = 0 + ((n : ℤ) - n') * ((l : ℤ) ^ a - 1)` using `by ring`. Rewrite `h1` using `[hz]`. Apply the tactic sequence `have h2 := hsep 0 ((n : ℤ) - n') 0 (by rw [sub_zero, abs_lt]; constructor <;> omega) h1 (by simp)`.
+
+Conclude with `h ⟨rfl, by omega⟩`. Rewrite using `[if_neg hcc]`. Take `⟨ρ, hρ1, hρr, hρd⟩` from `hdiv c hc c' hc' (Ne.symm hcc)`. Apply `sum_le_of_unique` to reduce the goal to its premises. Introduce `n' hn'`.
+
+Rewrite `hn'` using `[Finset.mem_range]`. Rewrite using `[if_neg (fun h => hcc h.1)]`. Use `le_trans ?_ hρr` and prove the remaining obligations. Break down `lt_or_gt_of_ne hcc with hlt' | hgt` into its components or cases. Establish `hdN : (l ^ a - 1) ∣ (c - c') * (l ^ ρ - 1)`.
+
+Rewrite using `[← Int.natCast_dvd_natCast, Nat.cast_mul, hpow, hpow, Nat.cast_sub hlt'.le]`. Conclude with `hρd`. Apply the tactic sequence `have hD := padicValIntShiftLe l a (c - c') ρ ((n : ℤ) - n') hl ha (by omega) (lt_of_le_of_lt (Nat.sub_le _ _) (hlt c hc)) hρ1 hdN (by rw [abs_lt]; constructor <;> omega)`. Establish `hz : ((c : ℤ) + n * ((l : ℤ) ^ a - 1)) - ((c' : ℤ) + n' * ((l : ℤ) ^ a - 1)) = ((c - c' : ℕ) : ℤ) + ((n : ℤ) - n') * ((l : ℤ) ^ a - 1)`. Rewrite using `[Nat.cast_sub hlt'.le]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hz]`. Conclude with `hD`. Establish `hdN : (l ^ a - 1) ∣ (c' - c) * (l ^ ρ - 1)`. Rewrite using `[← Int.natCast_dvd_natCast, Nat.cast_mul, hpow, hpow, Nat.cast_sub hgt.le]`.
+
+Establish `e : ((c' : ℤ) - c) * ((l : ℤ) ^ ρ - 1) = -(((c : ℤ) - c') * ((l : ℤ) ^ ρ - 1))` using `by ring`. Rewrite using `[e]`. Conclude with `dvd_neg.mpr hρd`. Apply the tactic sequence `have hD := padicValIntShiftLe l a (c' - c) ρ ((n' : ℤ) - n) hl ha (by omega) (lt_of_le_of_lt (Nat.sub_le _ _) (hlt c' hc')) hρ1 hdN (by rw [abs_lt]; constructor <;> omega)`. Establish `hz : ((c : ℤ) + n * ((l : ℤ) ^ a - 1)) - ((c' : ℤ) + n' * ((l : ℤ) ^ a - 1)) = -(((c' - c : ℕ) : ℤ) + ((n' : ℤ) - n) * ((l : ℤ) ^ a - 1))`.
+
+Rewrite using `[Nat.cast_sub hgt.le]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hz, hneg]`. Conclude with `hD`. Introduce `i hi j hj hgi hgj`.
+
+Rewrite `hi`, `hj` using `[Finset.mem_range]`. Rewrite `hgi`, `hgj` using `[if_neg (fun h => hcc h.1)]`. Establish `h1` using `hdv _ hgi`. Establish `h2` using `hdv _ hgj`. Establish `ez : ∀ k : ℕ, ((c : ℤ) + n * ((l : ℤ) ^ a - 1)) - ((c' : ℤ) + k * ((l : ℤ) ^ a - 1)) = ((c : ℤ) - c') + ((n : ℤ) - k) * ((l : ℤ) ^ a - 1)` using `fun k => by ring`.
+
+Rewrite `h1`, `h2` using `[ez]`. Apply the tactic sequence `have := hsep _ _ _ (by rw [abs_lt]; constructor <;> omega) h1 h2`. Use linear arithmetic over natural numbers and integers. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Finset.add_sum_erase Cc _ hc, if_pos rfl, zero_add, Finset.sum_congr rfl (fun x hx => if_neg (Finset.ne_of_mem_erase hx)), Finset.sum_const, smul_eq_mul, Finset.card_erase_of_mem hc]`.
+-/
 theorem sumPadicValDifferencesLe : LagrangeBoundT := by
   intro l a A' r' Cc hl ha hA hlt hdiv c hc n hn
   have hfact : Fact l.Prime := ⟨hl⟩

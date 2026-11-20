@@ -6,6 +6,9 @@ open scoped ENNReal NNReal Classical
 
 namespace GlobalTheory.CompanionTheory.Mass.MeanV
 
+/- English proof (translation)
+The claim follows from `|∏ v ∈ U, a v - ∏ v ∈ A, a v| ≤ ∑ D ∈ U.powerset with ¬ D ⊆ A, ∏ v ∈ D, |a v - 1| := by have hexp : ∀ S : Finset V, ∏ v ∈ S, a v = ∑ D ∈ S.powerset, ∏ v ∈ D, (a v - 1) := by intro S rw [← Finset.prod_one_add] exact Finset.prod_congr rfl fun v _ => by ring have hfilt : U.powerset. …`.
+-/
 theorem abs_prod_sub_prod_le_sum_powerset (V : Type) (a : V → ℝ) (A U : Finset V) (hAU : A ⊆ U) :
     |∏ v ∈ U, a v - ∏ v ∈ A, a v| ≤ ∑ D ∈ U.powerset with ¬ D ⊆ A, ∏ v ∈ D, |a v - 1| := by
   have hexp : ∀ S : Finset V, ∏ v ∈ S, a v = ∑ D ∈ S.powerset, ∏ v ∈ D, (a v - 1) := by

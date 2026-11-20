@@ -6,6 +6,13 @@ namespace Formalism.LatticeBaseChangeAlt
 
 open Module
 
+/- English proof (translation)
+Establish `hs : LinearIndepOn K id (Set.range v)` using `by first`. Consider the case `exact hv.linearIndepOn_id_range`. Consider the case `exact (linearIndepOn_id_range_iff hv.injective).mpr hv`. Set `B` to `Basis.extend hs`. Establish `hsub : Set.range v ⊆ hs.extend (Set.subset_univ _)` using `hs.subset_extend (Set.subset_univ _)`.
+
+Set `g : ι → hs.extend (Set.subset_univ _)` to `fun i => ⟨v i, hsub (Set.mem_range_self i)⟩`. Establish `hg : Function.Injective g` using `fun a c h => hv.injective (congrArg Subtype.val h)`. Establish `hB' : (fun i => j (v i)) = (hj.basis B) ∘ g`. Use function extensionality and compare the values at `i`. Use `first`.
+
+Consider the case `simp [B, g, IsBaseChange.basis_apply, Basis.coe_extend]`. Consider the case `simp [B, g, Basis.coe_extend]`. Rewrite using `[hB']`. Conclude with `(hj.basis B).linearIndependent.comp g hg`.
+-/
 theorem linearIndependent_of_isBaseChange_alt {K K' V V₁ ι : Type} [Field K] [Field K'] [Algebra K K']
     [AddCommGroup V] [Module K V] [AddCommGroup V₁] [Module K' V₁] [Module K V₁]
     [IsScalarTower K K' V₁] (j : V →ₗ[K] V₁) (hj : IsBaseChange K' j) (v : ι → V)
@@ -27,6 +34,11 @@ theorem linearIndependent_of_isBaseChange_alt {K K' V V₁ ι : Type} [Field K] 
   rw [hB']
   exact (hj.basis B).linearIndependent.comp g hg
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Establish `h1 : j x ∈ Submodule.span K (j '' s)`. Rewrite using `[← Submodule.map_span]`.
+
+Conclude with `Submodule.mem_map_of_mem hx`. Conclude with `Submodule.span_le_restrictScalars K K' _ h1`. Use `first`. Consider the case `exact Submodule.span_mono (Set.image_mono Submodule.subset_span)`. Consider the case `exact Submodule.span_mono (Set.image_subset _ Submodule.subset_span)`.
+-/
 theorem span_image_span_alt {K K' V V₁ : Type} [Field K] [Field K'] [Algebra K K']
     [AddCommGroup V] [Module K V] [AddCommGroup V₁] [Module K' V₁] [Module K V₁]
     [IsScalarTower K K' V₁] (j : V →ₗ[K] V₁) (s : Set V) :
@@ -42,6 +54,13 @@ theorem span_image_span_alt {K K' V V₁ : Type} [Field K] [Field K'] [Algebra K
     | exact Submodule.span_mono (Set.image_mono Submodule.subset_span)
     | exact Submodule.span_mono (Set.image_subset _ Submodule.subset_span)
 
+/- English proof (translation)
+Introduce `O O' K K' V V₁ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ j hj V'`. Set `b` to `Module.finBasis K V'`. Set `w : Fin (finrank K V') → V` to `V'.subtype ∘ b`. Establish `hw : LinearIndependent K w` using `b.linearIndependent.map' V'.subtype V'.ker_subtype`. Establish `hspan : Submodule.span K (Set.range w) = V'`.
+
+Rewrite using `[Set.range_comp, ← Submodule.map_span, b.span_eq, Submodule.map_subtype_top]`. Establish `h1 : Submodule.span K' (j '' (V' : Set V)) = Submodule.span K' (Set.range (fun i => j (w i)))`. Establish `h2` using `span_image_span_alt (K' := K') j (Set.range w)`. Rewrite `h2` using `[hspan]`. Rewrite using `[h2, ← Set.range_comp]`.
+
+Both sides reduce to the same expression. Rewrite using `[h1, finrank_span_eq_card (linearIndependent_of_isBaseChange_alt j hj w hw), Fintype.card_fin]`.
+-/
 theorem finrank_span_image_alt : FinrankSpanImage := by
   intro O O' K K' V V₁ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ j hj V'
   let b := Module.finBasis K V'
@@ -57,6 +76,23 @@ theorem finrank_span_image_alt : FinrankSpanImage := by
     rfl
   rw [h1, finrank_span_eq_card (linearIndependent_of_isBaseChange_alt j hj w hw), Fintype.card_fin]
 
+/- English proof (translation)
+Introduce `O O' K K' V V₁ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ j hj M hM`. Unfold `Formalism.LatticeIndexTer.IsLat at hM ⊢`. Establish `hsm : ∀ (o : O) (x : V), j (o • x) = (algebraMap O O' o) • j x`. Introduce `o x`. Rewrite using `[← algebraMap_smul K o x, map_smul, ← algebraMap_smul K' (algebraMap O K o) (j x), ← algebraMap_smul K' (algebraMap O O' o) (j x), ← IsScalarTower.algebraMap_apply, ← IsScalarTower.algebraMap_apply]`.
+
+Take `⟨⟨S, hS⟩, hM2⟩` from `hM`. Set `P : Submodule O' V₁` to `Submodule.span O' (j '' (S : Set V))`. Set `Q : Submodule O V` to `{ carrier := {x | j x ∈ P} add_mem' := fun {a b} ha hb => by show j (a + b) ∈ P`. Rewrite using `[map_add]`. Conclude with `P.add_mem ha hb`.
+
+Use the proof step `zero_mem' := by show j 0 ∈ P`. Rewrite using `[map_zero]`. Conclude with `P.zero_mem`. Use the proof step `smul_mem' := fun c x hx => by show j (c • x) ∈ P`. Rewrite using `[hsm]`.
+
+Conclude with `P.smul_mem _ hx }`. Establish `hQ : Submodule.span O (S : Set V) ≤ Q` using `Submodule.span_le.mpr (fun x hx => Submodule.subset_span ⟨x, hx, rfl⟩)`. Establish `hNP : Submodule.span O' (j '' (M : Set V)) = P`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`.
+
+Introduce and unpack `_ ⟨m, hm, rfl⟩`. Rewrite `hm` using `[← hS]`. Conclude with `hQ hm`. Apply `Submodule.span_mono` to reduce the goal to its premises. Introduce and unpack `_ ⟨x, hx, rfl⟩`.
+
+Conclude with `⟨x, by rw [← hS]; exact Submodule.subset_span hx, rfl⟩`. Use `⟨⟨S.image j, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.coe_image, hNP]`. Rewrite using `[Submodule.span_span_of_tower, ← span_image_span_alt (K' := K') j (M : Set V), hM2]`. Rewrite using `[eq_top_iff, ← (hj.basis (Module.finBasis K V)).span_eq, Submodule.span_le]`.
+
+Introduce and unpack `_ ⟨i, rfl⟩`. Apply `Submodule.subset_span` to reduce the goal to its premises. Use `⟨Module.finBasis K V i, Submodule.mem_top, ?_⟩` and prove the remaining obligations. Use `first`. Consider the case `simp [IsBaseChange.basis_apply]`.
+
+Consider the case `simp`.
+-/
 theorem isLattice_span_image_alt : IsLatticeSpanImage := by
   intro O O' K K' V V₁ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ j hj M hM
   classical

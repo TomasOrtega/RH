@@ -17,6 +17,21 @@ open GlobalTheory.UU
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `R _ _ D F _ _ s₀ H hs z J hJ`. Establish `hc : cT D (DegPre.BF D F) 0 = 1`. Establish `h` using `DVR.cPoint_add D (DegPre.BF D F) 0 0`. Rewrite `h` using `[add_zero]`. Conclude with `mul_eq_left.1 h.symm`.
+
+Use `D.P.isAb.smooth` as an intermediate fact. Use `D.P.isAb.geomConnected` as an intermediate fact. Establish `: IsIntegral (TF (R` using `R) F).left := inferInstanceAs (IsIntegral (Spec (CommRingCat.of F)))`. Establish `: IsIntegral (DegPre.BF D F).left` using `isIntegral_tensor_left_of_smooth_grpObj _ D.P.A (TF (R := R) F)`. Set `ζ : (TF (R` to `R) F).left ⟶ (DegPre.BF D F).left := (DegPre.zF D F).left`.
+
+Set `p : DegPre.BF D F ⟶ TF (R` to `R) F := fst _ _`. Establish `hζ : ζ ≫ p.left = 𝟙 _` using `by show (DegPre.zF D F ≫ p).left = _`. Rewrite using `[show DegPre.zF D F ≫ p = 𝟙 _ from lift_fst _ _]`. Both sides reduce to the same expression. Set `κ₀ : TF (R` to `R) F ⟶ TK R := Over.homMk (jFK (R := R) F) rfl`.
+
+Set `J' : ((DegPre.BF D F).left ⟶ D.P.A.left) → D.P.L.ι` to `fun ψ => J (ζ ≫ ψ)`. Establish `hJ' : Good D.P.L (ζ z) J'` using `fun ψ => hJ (ζ ≫ ψ)`. Establish `e` using `H 0 (DegPre.BF D F) p (p ≫ κ₀) (snd _ _) (ζ z) J' hJ'`. Rewrite `e` using `[hc, _root_.mul_one, show lift p (snd _ _) = 𝟙 (DegPre.BF D F) from lift_fst_snd]`. Establish `hne : sval (s₀ 0) (𝟙 (DegPre.BF D F).left) (ζ z) J' ≠ 0` using `sval_ne_zero_of_isIso _ _ D.P.L D.P.isLB _ _ _ (s₀ 0) hs _ (𝟙 _) (ζ z) J' hJ'`.
+
+Establish `e1 : (val (D.psi 0) (p ≫ κ₀).left (ζ z) J' * rigV D (ζ z) J').val = 1` using `(mul_eq_right₀ hne).1 e.symm`. Establish `n1` using `(values_natural _ _ _ _ D.P.L _ _ _ (p ≫ κ₀).left ζ z J hJ).2.2.1 (D.psi 0)`. Establish `n2` using `(values_natural _ _ _ _ D.P.L PUnit (fun _ => eSec D.P.A) (fun _ => 1) (DegPre.BF D F).hom ζ z J hJ).2.2.1 D.rig`. Establish `a1 : ζ ≫ (p ≫ κ₀).left = jFK (R` using `R) F := by show ζ ≫ p.left ≫ jFK (R := R) F = _`. Rewrite using `[← Category.assoc, hζ, Category.id_comp]`.
+
+Establish `a2 : ζ ≫ (DegPre.BF D F).hom = (TF (R` using `R) F).hom := Over.w (DegPre.zF D F)`. Rewrite `n1` using `[a1]`. Rewrite `n2` using `[a2]`. Apply `Units.ext` to reduce the goal to its premises. Establish `e2` using `congrArg (ζ.stalkMap z).hom e1`.
+
+Rewrite `e2` using `[map_one, Units.val_mul, map_mul]`. Rewrite using `[Units.val_mul, Units.val_one]`. Conclude with `(congrArg₂ (· * ·) n1 n2).trans e2`.
+-/
 theorem psi_zero_mul_rigV : ∀ (R : Type) [CommRing R] [IsDomain R] (D : DegPre R) (F : Type) [Field F] [Algebra (FractionRing R) F] (s₀ : Raw D F 1), PsiRel D (TF (R := R) F) s₀ → (∃ j, (s₀ 0).f j ≠ 0) → ∀ (z : (TF (R := R) F).left) J, Good D.P.L z J → val (Z := (TF (R := R) F).left) (D.psi (0)) (jFK (R := R) F) z J * rigV D z J = 1 := by
   intro R _ _ D F _ _ s₀ H hs z J hJ
   have hc : cT D (DegPre.BF D F) 0 = 1 := by

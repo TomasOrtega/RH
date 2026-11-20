@@ -258,6 +258,9 @@ def applyD {σ τ Kc : Type} [Field Kc] (P : MvPolynomial σ (MvPolynomial τ �
   ∑ n ∈ P.support, ((∏ x ∈ n.support, ((n x).factorial : Kc)) * MvPowerSeries.coeff n f) •
     MvPolynomial.map (Int.castRingHom Kc) (MvPolynomial.coeff n P)
 
+/- English proof (translation)
+Apply the tactic sequence `cases j <;> rfl`.
+-/
 theorem Pj_nV {p : ℕ} {G : GAtP p} (Fl : Fills G) (j : ℕ) : (Fl.Pj j).nV = G.P.nV := by
   cases j <;> rfl
 
@@ -532,10 +535,16 @@ def LowAt (j : ℕ) (v : X.Pl) (g : ℝ) : Prop :=
       Y.geC (MvPolynomial.coeff n (applyD (X.PIv j I v)
         (X.ThZA Y.Kc j (MvPowerSeries.map (algebraMap (K0 p) Y.Kc) (expS p (-Y.PhAt j v)) * U)))) g
 
+/- English proof (translation)
+Introduce `a b hb hab`. Conclude with `hx a b hb (hab.trans (mul_le_mul_of_nonneg_right h (by exact_mod_cast hb.le)))`.
+-/
 theorem geC_mono {x : Y.Kc} {g g' : ℝ} (h : g' ≤ g) (hx : Y.geC x g) : Y.geC x g' := by
   intro a b hb hab
   exact hx a b hb (hab.trans (mul_le_mul_of_nonneg_right h (by exact_mod_cast hb.le)))
 
+/- English proof (translation)
+Introduce `U hU I n` and use `Y.geC_mono h (hg U hU I n)`.
+-/
 theorem LowAt.mono {j : ℕ} {v : X.Pl} {g g' : ℝ} (h : g' ≤ g) (hg : Y.LowAt j v g) : Y.LowAt j v g' := fun U hU I n => Y.geC_mono h (hg U hU I n)
 
 def volE (v : X.Pl) (j : ℕ) (L : (X.Pj j).Tup) (L' : (X.Pj (j + 1)).Tup) : ℤ :=
@@ -715,6 +724,9 @@ def LowTermBound (_D : Formalism.BasicNotions.D7) {p : ℕ} [Fact p.Prime] (X : 
       (∑ j ∈ Icc 1 X.mm, (∑ v ∈ VV, max (Gn v j - PRn v j) (G0n v j) + ∑ v ∈ univ \ VV, G0n v j) -
         ∑ j ∈ range X.mm, (X.dG j : ℝ))
 
+/- English proof (translation)
+Break down `le_total (X.g0v v (j + 1)) 0 with h0 | h0` into its components or cases. Rewrite `hg` using `[max_eq_right h0]`. Conclude with `Pend.LowAt.mono Y hg (hZ v j hj)`. Rewrite `hg` using `[max_eq_left h0]`. Conclude with `Pend.LowAt.mono Y hg (hU v j hj)`.
+-/
 theorem lowAt_max (D : Formalism.BasicNotions.D7) {p : ℕ} [Fact p.Prime] (X : Sys p) (Y : Pend X) (hU : VolumeRatio₂ D X Y)
     (hZ : adm11 D X Y) (v : X.Pl) (j : ℕ) (hj : j < X.mm) (g : ℝ) (hg : g ≤ max (X.g0v v (j + 1)) 0) :
     Y.LowAt j v g := by
@@ -753,6 +765,9 @@ def SmallResidueCharComparison (D : Formalism.BasicNotions.D7) (L : SizeData₂ 
                 ((Y.Fl u w hg).w (Y.vOf u w hg t0)) j ≤
         Formalism.MainNotions.G.Pr X K (bL L) (D.what₂.places.resChar w) j t0
 
+/- English proof (translation)
+Introduce `hT hL u w hg _` and use `h hT hL u w hg`.
+-/
 theorem NumCmp.k5 {D : Formalism.BasicNotions.D7} {L : SizeData₂ D} {X : Inst D L} {Y : LatInst D} {K : Consts}
     (h : NumCmp D L X Y K) : SmallResidueCharComparison D L X Y K := fun hT hL u w hg _ => h hT hL u w hg
 

@@ -20,6 +20,9 @@ variable {D : D7} (i : D.nd.Loc) (dc : TruncatedSeriesCountingIdentities.Decl D 
   (Dd : Formalism.RepresentationBoundsCohomology.ringDataObjects.RingData (D.nd.O i) (D.nd.X i) (Fin D.R.nV) (GE D.nd) D.R.t (RepresentationBoundsCohomology.blk D.R))
   [∀ k, SMulCommClass Dd.R' (D.nd.O i) (blockRestrictedRepresentationType (RepresentationBoundsCohomology.blk D.R) Dd.ρk k)]
 
+/- English proof (translation)
+Introduce `y`. Use `⟨fun b => (H0.kogEq _ y) (H0.e0.symm b), ?_⟩` and prove the remaining obligations. Use `show (H0.kogEq _).symm (fun a => (H0.kogEq _ y) (H0.e0.symm (H0.e0 a))) = y`. Simplify using `only [Equiv.symm_apply_apply]`. Conclude with `(H0.kogEq _).symm_apply_apply y`.
+-/
 theorem toKOG_surjective : Function.Surjective (H0.toKOG (D := D) i Dd) := by
   intro y
   refine ⟨fun b => (H0.kogEq _ y) (H0.e0.symm b), ?_⟩
@@ -32,6 +35,9 @@ def phi0 : blockRestrictedRepresentationType (RepresentationBoundsCohomology.blk
 
 variable {i r ρ π g0 eB e₁ s Dd} in
 
+/- English proof (translation)
+Conclude with `H0.toKOG_equiv hD hN g m`.
+-/
 theorem invariants_map_equivariant
     (hD : Formalism.RepresentationBoundsCohomology.ringDataObjects.RingDef (D.nd.O i) (D.nd.T i) (RepresentationBoundsCohomology.repX D.nd r) π (chiU D.nd i 1) (epsU D.nd i) g0 eB e₁ s Dd)
     (hN : RepresentationBoundsCohomology.NormAt D.nd r ρ π) (g : GE D.nd) (m : blockRestrictedRepresentationType (RepresentationBoundsCohomology.blk D.R) Dd.ρk 0) :
@@ -40,6 +46,9 @@ theorem invariants_map_equivariant
 
 variable {i r ρ π g0 eB e₁ s Dd} in
 
+/- English proof (translation)
+Conclude with `tieSel1_of (hBk := hBk)`.
+-/
 theorem tieSel1_rec
     (hD : Formalism.RepresentationBoundsCohomology.ringDataObjects.RingDef (D.nd.O i) (D.nd.T i) (RepresentationBoundsCohomology.repX D.nd r) π (chiU D.nd i 1) (epsU D.nd i) g0 eB e₁ s Dd)
     (hN : RepresentationBoundsCohomology.NormAt D.nd r ρ π)
@@ -52,6 +61,9 @@ theorem tieSel1_rec
 
 variable {i r ρ π g0 eB e₁ s Dd} in
 
+/- English proof (translation)
+Conclude with `tieSel1_rec (hD := hD) (hN := hN) (F := F) (hBk := bkAt_of_loc (h := hBk))`.
+-/
 theorem tieSel1_rec_loc
     (hD : Formalism.RepresentationBoundsCohomology.ringDataObjects.RingDef (D.nd.O i) (D.nd.T i) (RepresentationBoundsCohomology.repX D.nd r) π (chiU D.nd i 1) (epsU D.nd i) g0 eB e₁ s Dd)
     (hN : RepresentationBoundsCohomology.NormAt D.nd r ρ π)

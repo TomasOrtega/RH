@@ -19,6 +19,9 @@ namespace GlobalTheory.BaseChangeClosing
 
 attribute [local instance] GlobalTheory.CuspRep.host_isCMField
 
+/- English proof (translation)
+Introduce `hNT hB hMW hGU hSC hL D T A hCG hAU`. Take `⟨hP, hS, hSat⟩` from `GlobalTheory.T.rec_product_speh_satake hGU hSC hL D.nd D.naut T`. Conclude with `GlobalTheory.DefiniteBCFrozen.baseChangeDefinite_of_cmDatum_recLaws D (recT T hL) hNT hB (GlobalTheory.DiscreteSpectrumCM.discreteSpectrum_of_discreteSpectrumGL hMW D.host.E) hP hS hSat (GlobalTheory.T.cuspidal_of_local_langlands hL D T hCG) (GlobalTheory.T.unitary_of_local_langl …`.
+-/
 theorem conclusion1_of_baseChange : GlobalTheory.Published.BaseChangeDefiniteUnitary → GlobalTheory.Published.BernsteinUnitaryProductIrreducible →
     GlobalTheory.Published.DiscreteSpectrumGL → GlobalTheory.Published.GenericUnitaryDualGL → GlobalTheory.Published.StandardCosocleGL →
     ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (D : D7) (T : GlobalTheory.RowTie.WDTie D.nd D.naut) (A : AUSide D),

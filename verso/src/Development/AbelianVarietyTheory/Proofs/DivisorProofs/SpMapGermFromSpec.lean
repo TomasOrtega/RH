@@ -24,12 +24,18 @@ instance fieldFF (S : Scheme.{0}) [IsIntegral S] : Field (FF S) := inferInstance
 
 def genPt (S : Scheme.{0}) [IsIntegral S] : Sp (FF S) ⟶ S := S.fromSpecStalk (genericPoint S)
 
+/- English proof (translation)
+Introduce `p _`. Establish `hp : (genPt S).base p ∈ Set.range (S.fromSpecStalk (genericPoint S)).base` using `⟨p, rfl⟩`. Rewrite `hp` using `[Scheme.range_fromSpecStalk]`. Conclude with `hp.mem_open U.isOpen h`.
+-/
 theorem genPt_le [IsIntegral S] (U : S.Opens) (h : genericPoint S ∈ U) : ⊤ ≤ genPt S ⁻¹ᵁ U := by
   intro p _
   have hp : (genPt S).base p ∈ Set.range (S.fromSpecStalk (genericPoint S)).base := ⟨p, rfl⟩
   rw [Scheme.range_fromSpecStalk] at hp
   exact hp.mem_open U.isOpen h
 
+/- English proof (translation)
+The claim follows from `hW.fromSpecStalk_eq_fromSpecStalk h`.
+-/
 theorem spMap_germ_fromSpec [IsIntegral S] (W : S.Opens) (hW : IsAffineOpen W) (h : genericPoint S ∈ W) :
     spMap (S.presheaf.germ W (genericPoint S) h).hom ≫ hW.fromSpec = genPt S :=
   hW.fromSpecStalk_eq_fromSpecStalk h
@@ -41,6 +47,9 @@ instance isCommMonObj_bG {R : Type} [CommRing R] (G : Over S) [GrpObj G] [IsComm
 
 def eb {R : Type} [CommRing R] (ξ : Sp R ⟶ S) : (𝟙_ (Over (Sp R))).left ⟶ (𝟙_ (Over S)).left := ξ
 
+/- English proof (translation)
+The claim follows from `LieVB.unitSec_comp (isGrpPullback_pullback G ξ)`.
+-/
 theorem eSec_bG {R : Type} [CommRing R] (G : Over S) [GrpObj G] (ξ : Sp R ⟶ S) :
     eSec (bG G ξ) ≫ pullback.fst G.hom ξ = eb ξ ≫ eSec G :=
   LieVB.unitSec_comp (isGrpPullback_pullback G ξ)

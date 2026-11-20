@@ -10,6 +10,11 @@ namespace PositivityTheory.Lit1.PTN
 
 attribute [local instance 2000] Rep.hV2
 
+/- English proof (translation)
+Use `⟨HomologicalComplex.cyclesMap (cochainsMap μ) 2 (cupCocycles (rfl : 1 + 1 = 2) x x'), fun s => ?_, (cupPairing_cohomologyπ μ rfl x x').symm⟩` and prove the remaining obligations. Rewrite using `[cochainOf_cocycleι_cyclesMap_cupCocycles, hx, hx', cupCocycleZ1Z1_apply, hbμ, heB]`. Establish `h1 : Fin.partialProd s ⟨1, by omega⟩ = s 0` using `by show Fin.partialProd s (Fin.succ 0) = s 0`. Rewrite using `[Fin.partialProd_succ]`. Use `show Fin.partialProd s 0 * s 0 = s 0`.
+
+Rewrite using `[Fin.partialProd_zero, one_mul]`. Rewrite using `[h1]`. Both sides reduce to the same expression.
+-/
 theorem cup_compare_degree_one_one {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] {R : Type}
     [CommRing R] {M M' P : Type} [AddCommGroup M] [Module R M] [TopologicalSpace M]
     [IsTopologicalAddGroup M] [ContinuousConstSMul R M] [AddCommGroup M'] [Module R M']

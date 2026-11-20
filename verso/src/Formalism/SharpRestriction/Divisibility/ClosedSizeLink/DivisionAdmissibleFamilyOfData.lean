@@ -13,22 +13,37 @@ section One
 
 variable {D : D7} (L : SizeData₂ D)
 
+/- English proof (translation)
+Unfold `SizeData₂.gTypes`. Rewrite using `[Finset.prod_pair D.host.g_ne]`.
+-/
 theorem prod_gTypes : (∏ g ∈ L.gTypes, (g : ℝ)) = (D.host.g 0 : ℝ) * (D.host.g 1 : ℝ) := by
   unfold SizeData₂.gTypes
   rw [Finset.prod_pair D.host.g_ne]
 
+/- English proof (translation)
+The claim follows from `lt_trans zero_lt_one L.sc.one_lt_alt`.
+-/
 theorem x_pos : 0 < L.sc.x := lt_trans zero_lt_one L.sc.one_lt_alt
 
+/- English proof (translation)
+Unfold `Scale.b`. Conclude with `Real.one_le_exp (by unfold Scale.L; exact Real.rpow_nonneg (x_pos L).le _)`.
+-/
 theorem one_le_b : 1 ≤ L.sc.b := by
   unfold Scale.b
   exact Real.one_le_exp (by unfold Scale.L; exact Real.rpow_nonneg (x_pos L).le _)
 
+/- English proof (translation)
+Unfold `Scale.a`. Establish `h1 : 1 ≤ L.sc.x` using `L.sc.one_lt_alt.le`. Establish `h2` using `one_le_b L`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem one_le_a : 1 ≤ L.sc.a := by
   unfold Scale.a
   have h1 : 1 ≤ L.sc.x := L.sc.one_lt_alt.le
   have h2 := one_le_b L
   nlinarith
 
+/- English proof (translation)
+Unfold `SizeData₂.La`. Establish `h1` using `one_le_a L`. Establish `h2 : 1 ≤ D.host.rdE` using `hS.2.2.2.2.2.2.1`. Conclude with `Real.log_nonneg (by nlinarith)`.
+-/
 theorem La_nonneg (hS : SizeQD L) : 0 ≤ L.La := by
   unfold SizeData₂.La
   have h1 := one_le_a L
@@ -41,6 +56,9 @@ section Mono
 
 variable {D : D7} (L : SizeData₂ D)
 
+/- English proof (translation)
+Establish `hB` using `mul_le_mul_of_nonneg_right hC (Formalism.MainNotions.loss_bound_nonneg L)`. Conclude with `fun u j hj => ⟨(h u j hj).1.trans hB, (h u j hj).2.trans hB⟩`.
+-/
 theorem degree_weight_bound_mono {C C' : ℝ} (hC : C ≤ C') (h : LocalQuadraticParts.adm11 D L C) : LocalQuadraticParts.adm11 D L C' := by
   have hB := mul_le_mul_of_nonneg_right hC (Formalism.MainNotions.loss_bound_nonneg L)
   exact fun u j hj => ⟨(h u j hj).1.trans hB, (h u j hj).2.trans hB⟩

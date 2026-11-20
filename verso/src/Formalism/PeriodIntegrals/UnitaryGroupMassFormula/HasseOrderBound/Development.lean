@@ -36,6 +36,11 @@ def S4 : Prop :=
   ∀ (e : ℕ) (vf vg : EReal) (d : ℝ) (T n : ℕ), vf ≠ ⊥ → vf + (((n : ℝ) * d : ℝ) : EReal) ≤ vg →
     (e : EReal) * (vf - (T : EReal) * (d : EReal)) ≤ (e : EReal) * (vg - ((T + n : ℕ) : EReal) * (d : EReal))
 
+/- English proof (translation)
+Proceed by induction on `b using WithTop.recTopCoe with`. Consider the case `top => simp [toE]`. Consider the case `coe b`. Proceed by induction on `a using WithTop.recTopCoe with`. Consider the case `top => simp at h`.
+
+Consider the case `coe a`. Simplify using `only [toE]`. Conclude with `WithTop.coe_le_coe.mp h` after adjusting the coercions.
+-/
 theorem toE_mono {a b : WithTop ℤ} (h : a ≤ b) : toE a ≤ toE b := by
   induction b using WithTop.recTopCoe with
   | top => simp [toE]
@@ -46,6 +51,25 @@ theorem toE_mono {a b : WithTop ℤ} (h : a ≤ b) : toE a ≤ toE b := by
       simp only [toE]
       exact_mod_cast WithTop.coe_le_coe.mp h
 
+/- English proof (translation)
+Introduce `D B P j X ka wL wF G la Q S T hPIC hC hTie hW f β hβ hx ζ`. Take `⟨hdT, hdB, -, -, -, -, hT⟩` from `hTie ζ`. Take `⟨h30, h3m⟩` from `h3 G la Q hPIC hC ζ`. Use `set d := (X.depth S.sW wL la (Q.y ζ)).toReal with hd_def`. Establish `hd : X.depth S.sW wL la (Q.y ζ) = (d : EReal)` using `(EReal.coe_toReal hdT hdB).symm`.
+
+Take `⟨m, hmn, hform⟩` from `h1 X la G.w T β`. Establish `e1 : (frac X la G.w T (emb X la G.N (X.inc _ f)) : Lc X la G.w) = algebraMap (Rp X la G.N) (Lc X la G.w) (bcV X la G.N (X.bc la (X.inc _ f))) * wi X la G.w ^ T` using `rfl`. Establish `key : hasse X la G.w β (frac X la G.w T (emb X la G.N (X.inc _ f))) = (m : Lc X la G.w) * (algebraMap (Rp X la G.N) (Lc X la G.w) (emb X la G.N (X.inc _ f) * ∏ k, emb X la G.N (X.inc wL (G.w k)) ^ β (0, k)) * wi X la G.w ^ (T + β.sum fun _ n => n))`. Rewrite using `[e1, hasse_bcV_mul, hform, map_mul, emb_eq_bcV]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `main : ∀ z : ↥(HK X la G.w wF), (z : Lw X la G.w) = hasse X la G.w β (frac X la G.w T (emb X la G.N (X.inc _ f))) → (ep (unifO X la G.N) ζ : EReal) * (X.vAt la (Q.y ζ) (X.inc _ f) - (T : EReal) * X.depth S.sW wL la (Q.y ζ)) ≤ toE (Q.ordA ζ (toA0K X la G.w wF z))`. Introduce `z hz`. Distinguish the cases in `hm : m = 0`. Establish `hz0 : z = 0`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Use `hz.trans key` as an intermediate fact. Rewrite `this` using `[hm]`. Simplify using `only [Int.cast_zero, zero_mul] at this`. Conclude with `this`. Rewrite using `[hz0, map_zero, h30]`.
+
+Simplify using `[toE]`. Establish `hn` using `hmn hm`. Take `⟨g', hg', hv⟩` from `h2 X la (Q.y ζ) G.w d (fun k => by rw [← hd]; exact iInf₂_le (G.w k) (hW k)) T f (fun k => β (0, k)) _ hn`. Establish `hz' : z = m • toHK X la G.w wF (T + β.sum fun _ n => n) ⟨emb X la G.N (X.inc _ g'), emb_mem_Vw X la G.N _ g'⟩`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Establish `h5 : ((m • toHK X la G.w wF (T + β.sum fun _ n => n) ⟨emb X la G.N (X.inc _ g'), emb_mem_Vw X la G.N _ g'⟩ : ↥(HK X la G.w wF)) : Lw X la G.w) = m • frac X la G.w (T + β.sum fun _ n => n) (emb X la G.N (X.inc _ g'))`. Rewrite using `[AddSubgroupClass.coe_zsmul, coe_toHK]`. Establish `h6 : algebraMap (Rp X la G.N) (Lc X la G.w) (emb X la G.N (X.inc _ f) * ∏ k, emb X la G.N (X.inc wL (G.w k)) ^ β (0, k)) = algebraMap (Rp X la G.N) (Lc X la G.w) (emb X la G.N (X.inc _ g'))`. Rewrite using `[← hg']`. Use `congr 1`.
+
+Simplify using `only [map_mul, map_prod, map_pow]`. Establish `h7 : ((m : Lc X la G.w) * (algebraMap (Rp X la G.N) (Lc X la G.w) (emb X la G.N (X.inc _ g')) * wi X la G.w ^ (T + β.sum fun _ n => n)) : Lc X la G.w) = (m • frac X la G.w (T + β.sum fun _ n => n) (emb X la G.N (X.inc _ g')) : Lw X la G.w)`. Rewrite using `[zsmul_eq_mul]`. Both sides reduce to the same expression. Rewrite using `[h5]`.
+
+Conclude with `hz.trans (key.trans ((congrArg (fun t => (m : Lc X la G.w) * (t * wi X la G.w ^ (T + β.sum fun _ n => n))) h6).trans h7))`. Establish `htie` using `hT (T + β.sum fun _ n => n) g'`. Rewrite `htie`, the goal using `[hd]`. Rewrite using `[hz', map_zsmul]`. Combine the equalities or inequalities in the displayed calculation.
+
+Conclude with `main _ rfl`.
+-/
 theorem hasseOrdBd_of (h1 : S1) (h2 : S2) (h3 : S3) (h4 : S4) : PI.HasseOrdBd := by
   intro D B P j X ka wL wF G la Q S T hPIC hC hTie hW f β hβ hx ζ
   obtain ⟨hdT, hdB, -, -, -, -, hT⟩ := hTie ζ

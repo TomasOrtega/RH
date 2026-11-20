@@ -25,9 +25,15 @@ def congrPairs (J : Ideal A) : Subalgebra R (A × A) :=
 
 variable {R}
 
+/- English proof (translation)
+The claim follows from `Ideal.Quotient.eq`.
+-/
 theorem mem_congrPairs {J : Ideal A} {b : A × A} : b ∈ congrPairs R J ↔ b.2 - b.1 ∈ J :=
   Ideal.Quotient.eq
 
+/- English proof (translation)
+Establish `: δ * (a - algebraMap R A (aug a)) ∈ J * RingHom.ker aug` using `Ideal.mul_mem_mul hδ (by simp [RingHom.mem_ker])`. Rewrite `this` using `[hJ]`. Then use the resulting hypothesis.
+-/
 theorem mul_eq_aug_mul (aug : A →ₐ[R] R) {J : Ideal A} (hJ : J * RingHom.ker aug = ⊥) {δ : A}
     (hδ : δ ∈ J) (a : A) : δ * (a - algebraMap R A (aug a)) = 0 := by
   have : δ * (a - algebraMap R A (aug a)) ∈ J * RingHom.ker aug :=
@@ -53,6 +59,13 @@ def pairDiff (aug : A →ₐ[R] R) {J : Ideal A} (hJ : J * RingHom.ker aug = ⊥
 
 end Pairs
 
+/- English proof (translation)
+Establish `key : ∀ (k : ℕ) (φ : JetR R (Fin d) (k + 1) →ₐ[R] A), (∀ j, φ (zR (k + 1) j) = δ j) → spMap φ ≫ x (k + 1) = lieExp v δ hδ'`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `φ hφ`.
+
+Conclude with `firstJet_eq_prod_tangent R G hG d v hv x hx0 hx1 A φ _ fun j => (epsTo_eps _ _).trans (hφ j).symm`. Consider the case `succ k ih`. Introduce `φ hφ`. Establish `hk : J ^ (k + 1 + 1) = ⊥` using `le_bot_iff.1 ((Ideal.pow_le_pow_right (by omega)).trans hJ.le)`. Establish `e : φ = (jetLift R J hk δ hδ).comp (jetTruncR R (Fin d) (k + 1))` using `jet_ext fun j => (hφ j).trans (jetLift_zR J hk δ hδ j).symm`.
+
+Rewrite using `[e, ← spMap_comp, Category.assoc, hxt]`. Conclude with `ih _ (jetLift_zR J hk δ hδ)`. Rewrite using `[← hxt m, ← Category.assoc, spMap_comp]`. Conclude with `key m _ hφ`.
+-/
 theorem jet_sqZero_eq_lieExp {R : Type} [CommRing R] {G : Over (Spec (CommRingCat.of R))}
     [GrpObj G] [IsCommMonObj G] (hG : Smooth G.hom) {d : ℕ} {v : Fin d → (epsR R ⟶ G)}
     (hv : IsLieBasis v) (x : ∀ m : ℕ, sp (R₀ := R) (JetR R (Fin d) m) ⟶ G)
@@ -81,6 +94,31 @@ theorem jet_sqZero_eq_lieExp {R : Type} [CommRing R] {G : Over (Spec (CommRingCa
   rw [← hxt m, ← Category.assoc, spMap_comp]
   exact key m _ hφ
 
+/- English proof (translation)
+Introduce `R _ G _ _ hG d v hv x hxt hx0 hx1 A _ _ aug J hJ hle m ψ ψ' hψ _ e he hz`. Establish `hJJ : ∀ a ∈ J, ∀ b ∈ J, a * b = 0` using `fun a ha b hb => by`. Establish `: a * b ∈ J * RingHom.ker aug` using `Ideal.mul_mem_mul ha (hle hb)`. Rewrite `this` using `[hJ]`. Then use the resulting hypothesis. Establish `hJ2 : J ^ 2 = ⊥`.
+
+Rewrite using `[pow_two]`. Conclude with `le_bot_iff.1 ((Ideal.mul_mono_right hle).trans hJ.le)`. Set `p₁ : congrPairs R J →ₐ[R] A` to `(AlgHom.fst R A A).comp (congrPairs R J).val`. Set `p₂ : congrPairs R J →ₐ[R] A` to `(AlgHom.snd R A A).comp (congrPairs R J).val`. Set `s : A →ₐ[R] congrPairs R J` to `((AlgHom.id R A).prod (AlgHom.id R A)).codRestrict _ fun a => mem_congrPairs.2 (by simp)`.
+
+Establish `hq : (Ideal.Quotient.mkₐ R J).comp ψ' = (Ideal.Quotient.mkₐ R J).comp ψ` using `jet_ext fun j => Ideal.Quotient.eq.2 (by`. Express the relevant statement in the definitionally equal form `ψ' (zR m j) - ψ (zR m j) ∈ J`. Rewrite using `[hz, add_sub_cancel_left]`. Conclude with `he j)`. Set `Ψ : JetR R (Fin d) m →ₐ[R] congrPairs R J` to `(ψ.prod ψ').codRestrict _ fun a => AlgHom.congr_fun hq a`.
+
+Set `c : Fin d → congrPairs R J` to `fun j => ⟨(0, e j (TrivSqZeroExt.inr 1)), mem_congrPairs.2 (by simpa using he j)⟩`. Establish `hc : ∀ j, c j * c j = 0` using `fun j => Subtype.ext (Prod.ext (mul_zero _) (hJJ _ (he j) _ (he j)))`. Establish `hK : RingHom.ker p₁ ^ 2 = ⊥`. Rewrite using `[pow_two, ← le_bot_iff, Ideal.mul_le]`. Introduce `a ha b hb`.
+
+Establish `ha1 : a.1.1 = 0` using `ha`. Establish `hb1 : b.1.1 = 0` using `hb`. Establish `ha2` using `mem_congrPairs.1 a.2`. Establish `hb2` using `mem_congrPairs.1 b.2`. Rewrite `ha2` using `[ha1, sub_zero]`.
+
+Rewrite `hb2` using `[hb1, sub_zero]`. Conclude with `Subtype.ext (Prod.ext (show a.1.1 * b.1.1 = 0 by rw [ha1, zero_mul]) (hJJ _ ha2 _ hb2))`. Establish `m₁ : (spMap Ψ ≫ x m) * (spMap (s.comp ψ) ≫ x m)⁻¹ ∈ redKer G (RingHom.ker p₁)`. Use `mem_redKer_of_section p₁ s (fun _ => rfl) ?_` and prove the remaining obligations. Rewrite using `[MonObj.comp_mul, GrpObj.comp_inv, ← Category.assoc, ← Category.assoc, spMap_comp, spMap_comp]`.
+
+Conclude with `mul_inv_cancel _`. Establish `m₂ : lieExp v c hc ∈ redKer G (RingHom.ker p₁)` using `lieExp_mem_redKer hv.1 c (fun _ => rfl) hc`. Establish `main` using `redKer_ext hK m₁ m₂ p₁ (pairDiff aug hJ) (fun a h₁ h₂ => by`. Establish `h₁' : a.1.1 = 0` using `h₁`. Establish `h₂' : algebraMap R A (aug a.1.1) + (a.1.2 - a.1.1) = 0` using `h₂`.
+
+Rewrite `h₂'` using `[h₁', map_zero, map_zero, zero_add, sub_zero]`. Conclude with `Subtype.ext (Prod.ext h₁' h₂'))`. Use the proof step `(by rw [comp_eq_one_of_mem_redKer m₁ p₁ fun _ h => h, comp_eq_one_of_mem_redKer m₂ p₁ fun _ h => h])`. Use the proof step `(by`. Establish `hψz : ∀ j, aug (ψ (zR m j)) = 0` using `fun j => (AlgHom.congr_fun hψ _).trans (jetAug_zR m j)`.
+
+Rewrite using `[MonObj.comp_mul, GrpObj.comp_inv, ← Category.assoc, ← Category.assoc, spMap_comp, spMap_comp, comp_lieExp, jet_sqZero_eq_lieExp hG hv x hxt hx0 hx1 hJ2 (fun j => e j (TrivSqZeroExt.inr 1)) he (fun j => hJJ _ (he j) _ (he j)) m _ (fun j => by`. Express the relevant statement in the definitionally equal form `algebraMap R A (aug (ψ (zR m j))) + (ψ' (zR m j) - ψ (zR m j)) = _`. Rewrite using `[hψz, hz, map_zero, zero_add, add_sub_cancel_left]),`. Use `jet_sqZero_eq_lieExp hG hv x hxt hx0 hx1 hJ2 (fun _ => 0) (fun _ => J.zero_mem) (fun _ => mul_zero _) m _ (fun j => by`. Express the relevant statement in the definitionally equal form `algebraMap R A (aug (ψ (zR m j))) + (ψ (zR m j) - ψ (zR m j)) = _`.
+
+Rewrite using `[hψz, map_zero, zero_add, sub_self])]`. Establish `h1 : lieExp v (fun _ => (0 : A)) (fun _ => mul_zero _) = 1` using `Finset.prod_eq_one fun i _ => epsTo_zero_comp ((isTan_iff _).2 (hv.1 i)) _ rfl _`. Rewrite using `[h1, inv_one, _root_.mul_one]`. Use `lieExp_congr _ (fun j => ?_) _ _` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = algebraMap R A (aug 0) + (e j (TrivSqZeroExt.inr 1) - 0)`.
+
+Rewrite using `[map_zero, map_zero, zero_add, sub_zero])`. Establish `fin` using `congrArg (spMap p₂ ≫ ·) (mul_inv_eq_iff_eq_mul.1 main)`. Simplify using `only [MonObj.comp_mul, ← Category.assoc, spMap_comp, comp_lieExp] at fin`. Use `fin.trans ?_` and prove the remaining obligations. Use `congr 1`.
+
+Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `congr 2`. Conclude with `DualNumber.algHom_ext (epsTo_eps _ _)`.
+-/
 theorem jet_add_sqZero_eq_prod_mul : ∀ (R : Type) [CommRing R]
     (G : Over (Spec (CommRingCat.of R))) [GrpObj G] [IsCommMonObj G], Smooth G.hom →
     ∀ (d : ℕ) (v : Fin d → (epsR R ⟶ G)), IsLieBasis v →

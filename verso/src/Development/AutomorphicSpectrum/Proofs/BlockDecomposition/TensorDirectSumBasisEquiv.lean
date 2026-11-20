@@ -8,6 +8,15 @@ open CategoryTheory AlgebraicGeometry TensorProduct DirectSum GlobalTheory.LogCr
 
 namespace GlobalTheory.CompanionTheory.KunGlue
 
+/- English proof (translation)
+Introduce `K _ J _ V W _ _ _ _ B _ b`. Set `et : ∀ t, (V t ⊗[K] W t) ≃ₗ[K] (Π₀ _ : B t, W t)` to `fun t => (TensorProduct.congr (b t).repr (LinearEquiv.refl K (W t))) ≪≫ₗ (TensorProduct.finsuppScalarLeft K (W t) (B t)) ≪≫ₗ (finsuppLequivDFinsupp K)`. Establish `het : ∀ t (β : B t) (x : W t), et t (b t β ⊗ₜ x) = DFinsupp.single β x`. Introduce `t β x`. Simplify using `[et, TensorProduct.finsuppScalarLeft_apply_tmul, Module.Basis.repr_self]`.
+
+Set `C : (⨁ u : (Σ t, B t), W u.1) ≃ₗ[K] (Π₀ t, Π₀ _ : B t, W t)` to `DFinsupp.sigmaCurryLEquiv (R := K) (M := fun t (_ : B t) => W t)`. Use `⟨(DFinsupp.mapRange.linearEquiv et) ≪≫ₗ C.symm, ?_⟩` and prove the remaining obligations. Introduce `t β x`. Rewrite using `[LinearEquiv.trans_apply, LinearEquiv.symm_apply_eq]`. Establish `h1 : C (DirectSum.lof K (Σ t, B t) (fun u => W u.1) ⟨t, β⟩ x) = DFinsupp.single t (DFinsupp.single β x)`.
+
+Establish `: DirectSum.lof K (Σ t, B t) (fun u => W u.1) ⟨t, β⟩ x = DFinsupp.single (⟨t, β⟩ : Σ t, B t) x` using `rfl`. Rewrite using `[this]`. Express the relevant statement in the definitionally equal form `DFinsupp.sigmaCurry (δ := fun t (_ : B t) => W t) (DFinsupp.single (⟨t, β⟩ : Σ t, B t) x) = _`. Use `DFinsupp.sigmaCurry_single (δ := fun t (_ : B t) => W t) (⟨t, β⟩ : Σ t, B t) x` and compare the differences between its conclusion and the goal. Rewrite using `[h1, ← het]`.
+
+Conclude with `DFinsupp.mapRange_single (hf := fun i => map_zero (et i))`.
+-/
 theorem tensBasis : ∀ {K : Type} [Field K] {J : Type} [DecidableEq J] (V W : J → Type 1) [∀ t, AddCommGroup (V t)] [∀ t, Module K (V t)] [∀ t, AddCommGroup (W t)] [∀ t, Module K (W t)] (B : J → Type 1) [DecidableEq (Σ t, B t)] (b : ∀ t, Module.Basis (B t) K (V t)), ∃ e : (⨁ t, V t ⊗[K] W t) ≃ₗ[K] ⨁ u : (Σ t, B t), W u.1, ∀ (t : J) (β : B t) (x : W t), e (DirectSum.lof K J (fun t => V t ⊗[K] W t) t (b t β ⊗ₜ x)) = DirectSum.lof K (Σ t, B t) (fun u => W u.1) ⟨t, β⟩ x := by
   classical
   intro K _ J _ V W _ _ _ _ B _ b

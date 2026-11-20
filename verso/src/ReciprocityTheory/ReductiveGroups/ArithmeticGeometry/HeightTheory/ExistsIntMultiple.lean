@@ -9,6 +9,9 @@ variable {K : Type} [Field K] [NumberField K]
 noncomputable def mS {κ : Type} (S : Finset (κ →₀ ℕ)) (j : Fin S.card) : κ →₀ ℕ :=
   (S.equivFin.symm j : κ →₀ ℕ)
 
+/- English proof (translation)
+Introduce `i j h`. Conclude with `S.equivFin.symm.injective (Subtype.ext h)`.
+-/
 theorem mS_injective {κ : Type} (S : Finset (κ →₀ ℕ)) : Function.Injective (mS S) := by
   intro i j h
   exact S.equivFin.symm.injective (Subtype.ext h)
@@ -16,6 +19,13 @@ theorem mS_injective {κ : Type} (S : Finset (κ →₀ ℕ)) : Function.Injecti
 noncomputable def polyOf {κ : Type} (S : Finset (κ →₀ ℕ)) (p : Fin S.card → K) : MvPolynomial κ K :=
   ∑ j, MvPolynomial.monomial (mS S j) (p j)
 
+/- English proof (translation)
+Unfold `polyOf`. Rewrite using `[MvPolynomial.coeff_sum]`. Simplify using `only [MvPolynomial.coeff_monomial]`. Rewrite using `[Finset.sum_eq_single j]`. Simplify using the standard rewrite rules.
+
+Introduce `b _ hb`. Rewrite using `[if_neg]`. Introduce `h`. Conclude with `hb (mS_injective S h)`. Introduce `h`.
+
+Conclude with `absurd (Finset.mem_univ j) h`.
+-/
 theorem polyOf_coeff {κ : Type} (S : Finset (κ →₀ ℕ)) (p : Fin S.card → K) (j : Fin S.card) :
     (polyOf S p).coeff (mS S j) = p j := by
   classical
@@ -39,6 +49,11 @@ noncomputable def bG {κ : Type} (G : MvPolynomial κ K) (S : Finset (κ →₀ 
     {r : ℕ} (e : T ≃ Fin r) (j : Fin S.card) : Fin r → K :=
   coordVec e (G * MvPolynomial.monomial (mS S j) 1)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `only [bG, coordVec, polyOf, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.mul_sum, MvPolynomial.coeff_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[show MvPolynomial.monomial (mS S j) (p j) = MvPolynomial.C (p j) * MvPolynomial.monomial (mS S j) 1 by`. Rewrite using `[MvPolynomial.C_mul_monomial, mul_one]]`.
+
+Rewrite using `[mul_left_comm G, MvPolynomial.coeff_C_mul]`.
+-/
 theorem sum_smul_bG {κ : Type} (G : MvPolynomial κ K) (S : Finset (κ →₀ ℕ)) {T : Finset (κ →₀ ℕ)}
     {r : ℕ} (e : T ≃ Fin r) (p : Fin S.card → K) :
     ∑ j, p j • bG G S e j = coordVec e (G * polyOf S p) := by
@@ -51,6 +66,11 @@ theorem sum_smul_bG {κ : Type} (G : MvPolynomial κ K) (S : Finset (κ →₀ �
     rw [MvPolynomial.C_mul_monomial, mul_one]]
   rw [mul_left_comm G, MvPolynomial.coeff_C_mul]
 
+/- English proof (translation)
+Introduce `s hs`. Rewrite `hs` using `[polyOf, Finset.mul_sum]`. Take `⟨j, -, hj⟩` from `Finset.mem_biUnion.mp (MvPolynomial.support_sum hs)`. Establish `hm : mS S j ∈ S` using `(S.equivFin.symm j).2`. Apply `hST _ hm` to reduce the goal to its premises.
+
+Rewrite `hj`, the goal using `[MvPolynomial.mem_support_iff]`. Rewrite using `[show MvPolynomial.monomial (mS S j) (p j) = MvPolynomial.C (p j) * MvPolynomial.monomial (mS S j) 1 by`. Rewrite `hj` using `[MvPolynomial.C_mul_monomial, mul_one], mul_left_comm G, MvPolynomial.coeff_C_mul]`. Conclude with `right_ne_zero_of_mul hj`.
+-/
 theorem support_polyOf {κ : Type} [DecidableEq κ] (G : MvPolynomial κ K) (S T : Finset (κ →₀ ℕ))
     (hST : ∀ m ∈ S, (G * MvPolynomial.monomial m 1).support ⊆ T) (p : Fin S.card → K) :
     (G * polyOf S p).support ⊆ T := by
@@ -65,6 +85,11 @@ theorem support_polyOf {κ : Type} [DecidableEq κ] (G : MvPolynomial κ K) (S T
     rw [MvPolynomial.C_mul_monomial, mul_one], mul_left_comm G, MvPolynomial.coeff_C_mul] at hj
   exact right_ne_zero_of_mul hj
 
+/- English proof (translation)
+Use extensionality with `s`. Rewrite using `[MvPolynomial.coeff_zero]`. Assume the negation of the conclusion as `hs`. Establish `hsT : s ∈ T` using `hP (MvPolynomial.mem_support_iff.mpr hs)`. Establish `h1` using `congrFun h (e ⟨s, hsT⟩)`.
+
+Simplify using `only [coordVec, Equiv.symm_apply_apply, Pi.zero_apply] at h1`. Conclude with `hs h1`.
+-/
 theorem eq_zero_of_coord {κ : Type} {T : Finset (κ →₀ ℕ)} {r : ℕ} (e : T ≃ Fin r)
     (P : MvPolynomial κ K) (hP : P.support ⊆ T) (h : coordVec e P = 0) : P = 0 := by
   ext s
@@ -75,6 +100,9 @@ theorem eq_zero_of_coord {κ : Type} {T : Finset (κ →₀ ℕ)} {r : ℕ} (e :
   simp only [coordVec, Equiv.symm_apply_apply, Pi.zero_apply] at h1
   exact hs h1
 
+/- English proof (translation)
+Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `p hp j`. Establish `h1 : G * polyOf S p = 0` using `eq_zero_of_coord e _ (support_polyOf G S T hST p) (by rw [← sum_smul_bG]; exact hp)`. Establish `h2 : polyOf S p = 0` using `(mul_eq_zero.mp h1).resolve_left hG`. Rewrite using `[← polyOf_coeff S p j, h2, MvPolynomial.coeff_zero]`.
+-/
 theorem linInd_bG {κ : Type} [DecidableEq κ] (G : MvPolynomial κ K) (hG : G ≠ 0)
     (S T : Finset (κ →₀ ℕ)) {r : ℕ} (e : T ≃ Fin r)
     (hST : ∀ m ∈ S, (G * MvPolynomial.monomial m 1).support ⊆ T) :
@@ -86,10 +114,26 @@ theorem linInd_bG {κ : Type} [DecidableEq κ] (G : MvPolynomial κ K) (hG : G �
   have h2 : polyOf S p = 0 := (mul_eq_zero.mp h1).resolve_left hG
   rw [← polyOf_coeff S p j, h2, MvPolynomial.coeff_zero]
 
+/- English proof (translation)
+Rewrite using `[← NumberField.FinitePlace.mk_maximalIdeal w]`. Conclude with `NumberField.FinitePlace.norm_le_one K _ y`.
+-/
 theorem w_int_le_one (w : FinitePlace K) (y : 𝓞 K) : w (y : K) ≤ 1 := by
   rw [← NumberField.FinitePlace.mk_maximalIdeal w]
   exact NumberField.FinitePlace.norm_le_one K _ y
 
+/- English proof (translation)
+Use `set G := MvPolynomial.map (algebraMap (𝓞 K) K) G₀ with hGdef`. Establish `hG' : G ≠ 0`. Introduce `h0`. Apply `hG` to reduce the goal to its premises. Conclude with `MvPolynomial.map_injective _ (FaithfulSMul.algebraMap_injective (𝓞 K) K) (by rw [← hGdef, h0, map_zero])`.
+
+Distinguish the cases in `hP : polyOf S p = 0`. Use `⟨0, ?_⟩` and prove the remaining obligations. Rewrite using `[← polyOf_coeff S p j, hP, MvPolynomial.coeff_zero]`. Simplify using the standard rewrite rules. Apply `int_of_le_one` to reduce the goal to its premises.
+
+Introduce `w`. Establish `hGP : ReciprocityTheory.MultiplicativeHeights.gaussAbs w (G * polyOf S p) ≤ 1`. Use `ReciprocityTheory.MultiplicativeHeights.gauss_abs_le_of_coeff_le w _ zero_le_one fun t => ?_` and prove the remaining obligations. Distinguish the cases in `ht : t ∈ T`. Take `⟨y, hy⟩` from `hint (e ⟨t, ht⟩)`.
+
+Establish `: (G * polyOf S p).coeff t = (y : K)` using `by rw [hy]; simp [coordVec]`. Rewrite using `[this]`. Conclude with `w_int_le_one w y`. Rewrite using `[MvPolynomial.notMem_support_iff.mp (fun h => ht (support_polyOf G S T hST p h)), map_zero]`. Conclude with `zero_le_one`.
+
+Rewrite `hGP` using `[ReciprocityTheory.MultiplicativeHeights.gauss_abs_mul w _ _ hG' hP]`. Establish `h1` using `ReciprocityTheory.MultiplicativeHeights.coeff_le_gauss_abs w (polyOf S p) (mS S j)`. Establish `h2` using `ReciprocityTheory.MultiplicativeHeights.coeff_le_gauss_abs w G s`. Rewrite `h1` using `[polyOf_coeff]`. Rewrite `h2` using `[hGdef, MvPolynomial.coeff_map]`.
+
+Rewrite using `[map_mul]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem gauss_int {κ : Type} [Fintype κ] [DecidableEq κ] (G₀ : MvPolynomial κ (𝓞 K))
     (hG : G₀ ≠ 0) (S T : Finset (κ →₀ ℕ)) {r : ℕ} (e : T ≃ Fin r)
     (hST : ∀ m ∈ S, (MvPolynomial.map (algebraMap (𝓞 K) K) G₀ * MvPolynomial.monomial m 1).support ⊆ T)
@@ -136,6 +180,13 @@ open scoped nonZeroDivisors
 
 variable {K : Type} [Field K] [NumberField K]
 
+/- English proof (translation)
+Set `f : (Fin k → L) →+ (AddSubgroup.pi Set.univ fun _ : Fin k => L)` to `{ toFun := fun g => ⟨fun i => (g i : M), fun i _ => (g i).2⟩ map_zero' := Subtype.ext (funext fun _ => rfl) map_add' := fun _ _ => Subtype.ext (funext fun _ => rfl) }`. Establish `hsurj : Function.Surjective f`. Introduce `x`. Use `⟨fun i => ⟨(x : Fin k → M) i, ?_⟩, Subtype.ext rfl⟩` and prove the remaining obligations. Use `first`.
+
+Consider the case `exact x.2 i (Set.mem_univ i)`. Consider the case `exact AddSubgroup.mem_pi.mp x.2 i (Set.mem_univ i)`. Establish `hcomap : AddSubgroup.comap f ((AddSubgroup.pi Set.univ fun _ : Fin k => H).addSubgroupOf (AddSubgroup.pi Set.univ fun _ : Fin k => L)) = AddSubgroup.pi Set.univ fun _ : Fin k => H.addSubgroupOf L`. Use extensionality with `g`. Simplify using `only [AddSubgroup.mem_comap, AddSubgroup.mem_addSubgroupOf, AddSubgroup.mem_pi]`.
+
+Apply the tactic sequence `all_goals rfl`. Unfold `AddSubgroup.relIndex`. Rewrite using `[← AddSubgroup.index_comap_of_surjective ((AddSubgroup.pi Set.univ fun _ : Fin k => H).addSubgroupOf (AddSubgroup.pi Set.univ fun _ : Fin k => L)) hsurj, hcomap, AddSubgroup.index_pi, Finset.prod_const, Finset.card_univ, Fintype.card_fin]`.
+-/
 theorem relIndex_pi_const {M : Type*} [AddCommGroup M] (H L : AddSubgroup M) (k : ℕ) :
     (AddSubgroup.pi Set.univ fun _ : Fin k => H).relIndex (AddSubgroup.pi Set.univ fun _ : Fin k => L)
       = H.relIndex L ^ k := by
@@ -165,6 +216,39 @@ noncomputable def phiB {k r : ℕ} (b : Fin k → Fin r → K) : (Fin k → K) �
     intro p q
     simp only [Pi.add_apply, add_smul, Finset.sum_add_distrib])
 
+/- English proof (translation)
+Use `set G := MvPolynomial.map (algebraMap (𝓞 K) K) G₀ with hGdef`. Establish `hG' : G ≠ 0`. Introduce `h0`. Apply `hG` to reduce the goal to its premises. Conclude with `MvPolynomial.map_injective _ (FaithfulSMul.algebraMap_injective (𝓞 K) K) (by rw [← hGdef, h0, map_zero])`.
+
+Use `set b := bG G S e with hbdef`. Use `set Φ := phiB b with hΦdef`. Establish `hΦ : Function.Injective Φ`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `p hp`.
+
+Establish `hli` using `linInd_bG G hG' S T e hST`. Rewrite `hli` using `[Fintype.linearIndependent_iff]`. Conclude with `funext (hli p hp)`. Use `set O1 := (1 : Submodule (𝓞 K) K).toAddSubgroup with hO1`. Use `set I1 := ((((contId G₀ : Ideal (𝓞 K)) : FractionalIdeal (𝓞 K)⁰ K)⁻¹ : FractionalIdeal (𝓞 K)⁰ K) : Submodule (𝓞 K) K).toAddSubgroup with hI1`.
+
+Establish `hspan : (Submodule.span (𝓞 K) (Set.range b)).toAddSubgroup = (AddSubgroup.pi Set.univ fun _ : Fin S.card => O1).map Φ`. Use extensionality with `x`. Simplify using `only [Submodule.mem_toAddSubgroup, AddSubgroup.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce `hx`.
+
+Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun (𝓞 K)).mp hx`. Use `⟨fun j => (c j : K), fun j _ => ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(c j : K) ∈ O1`. Rewrite using `[hO1, Submodule.mem_toAddSubgroup, Submodule.mem_one]`. Conclude with `⟨c j, rfl⟩`.
+
+Rewrite using `[← hc]`. Simplify using `only [hΦdef, phiB, AddMonoidHom.mk'_apply]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Conclude with `algebraMap_smul K (c j) (b j)`. Introduce and unpack `⟨p, hp, rfl⟩`.
+
+Establish `hc : ∀ j, ∃ c : 𝓞 K, algebraMap (𝓞 K) K c = p j` using `fun j => by`. Establish `: p j ∈ O1` using `hp j (Set.mem_univ j)`. Rewrite `this` using `[hO1, Submodule.mem_toAddSubgroup, Submodule.mem_one]`. Then use the resulting hypothesis. Use `choose c hc using hc`. Use `(Submodule.mem_span_range_iff_exists_fun (𝓞 K)).mpr ⟨c, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [hΦdef, phiB, AddMonoidHom.mk'_apply]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← hc j]`. Conclude with `(algebraMap_smul K (c j) (b j)).symm`. Establish `hB : (ReciprocityTheory.MultiplicativeHeights.satSub (stdLat K r) b).toAddSubgroup ≤ (AddSubgroup.pi Set.univ fun _ : Fin S.card => I1).map Φ`.
+
+Introduce `x hx`. Rewrite `hx` using `[Submodule.mem_toAddSubgroup]`. Take `⟨hxL, hxK⟩` from `hx`. Take `⟨p, hp⟩` from `(Submodule.mem_span_range_iff_exists_fun K).mp hxK`. Use `AddSubgroup.mem_map.mpr ⟨p, fun j _ => ?_, ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `p j ∈ I1`. Rewrite using `[hI1, Submodule.mem_toAddSubgroup]`. Use `mem_inv_of G₀ hG (p j) fun s => ?_` and prove the remaining obligations. Use `gauss_int G₀ hG S T e hST p ?_ j s` and prove the remaining obligations. Introduce `i`.
+
+Establish `h1` using `(Submodule.mem_pi.mp hxL) i (Set.mem_univ i)`. Rewrite `h1` using `[Submodule.mem_one]`. Take `⟨y, hy⟩` from `h1`. Use `⟨y, ?_⟩` and prove the remaining obligations. Rewrite using `[← sum_smul_bG, hp]`.
+
+Conclude with `hy`. Simplify using `only [hΦdef, phiB, AddMonoidHom.mk'_apply]`. Conclude with `hp`. Establish `hidx : O1.relIndex I1 = Ideal.absNorm (contId G₀)`. Use `relIndex_inv G₀ hG` as an intermediate fact.
+
+Conclude with `this` after adjusting the coercions. Establish `hN0 : Ideal.absNorm (contId G₀) ≠ 0`. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff]`. Conclude with `contId_ne_bot G₀ hG`. Establish `hpi` using `relIndex_pi_const O1 I1 S.card`.
+
+Rewrite `hpi` using `[hidx]`. Establish `hmm : ((AddSubgroup.pi Set.univ fun _ : Fin S.card => O1).map Φ).relIndex ((AddSubgroup.pi Set.univ fun _ : Fin S.card => I1).map Φ) = Ideal.absNorm (contId G₀) ^ S.card`. Rewrite using `[AddSubgroup.relIndex_map_map_of_injective _ _ hΦ, hpi]`. Establish `hle` using `AddSubgroup.relIndex_le_of_le_right hB (by rw [hmm]; exact pow_ne_zero _ hN0)`. Rewrite `hle` using `[hmm, ← hspan]`.
+
+Establish `hN1 : (1 : ℝ) ≤ (Ideal.absNorm (contId G₀) : ℝ)`. Conclude with `Nat.one_le_iff_ne_zero.mpr hN0` after adjusting the coercions. Break down `Nat.eq_zero_or_pos ((Submodule.span (𝓞 K) (Set.range b)).toAddSubgroup.relIndex (ReciprocityTheory.MultiplicativeHeights.satSub (stdLat K r) b).toAddSubgroup) with h0 | hpos` into its components or cases. Rewrite using `[h0, Nat.cast_zero, Real.log_zero]`. Conclude with `mul_nonneg (Nat.cast_nonneg _) (Real.log_nonneg hN1)`.
+
+Rewrite using `[← Real.log_pow]`. Use `Real.log_le_log (by exact_mod_cast hpos) ?_` and prove the remaining obligations. Conclude with `hle` after adjusting the coercions.
+-/
 theorem log_relIndex_le {κ : Type} [Fintype κ] [DecidableEq κ] (G₀ : MvPolynomial κ (𝓞 K))
     (hG : G₀ ≠ 0) (S T : Finset (κ →₀ ℕ)) {r : ℕ} (e : T ≃ Fin r)
     (hST : ∀ m ∈ S,
@@ -265,6 +349,11 @@ open NumberField
 
 variable {K : Type} [Field K] [NumberField K]
 
+/- English proof (translation)
+Rewrite using `[Finset.sum_subset hP (fun s _ hs => by`. Establish `h0 : P.coeff s = 0`. Assume the negation of the conclusion as `h`. Conclude with `hs (MvPolynomial.mem_support_iff.mpr h)`. Rewrite using `[h0, zero_mul])]`.
+
+Rewrite using `[← Finset.sum_coe_sort T]`. Conclude with `Fintype.sum_equiv e _ _ (fun t => by simp)`.
+-/
 theorem sum_support_eq {κ : Type} {T : Finset (κ →₀ ℕ)} {r : ℕ} (e : T ≃ Fin r)
     (P Q : MvPolynomial κ ℂ) (hP : P.support ⊆ T) :
     ∑ s ∈ P.support, P.coeff s * star (Q.coeff s) =
@@ -277,6 +366,17 @@ theorem sum_support_eq {κ : Type} {T : Finset (κ →₀ ℕ)} {r : ℕ} (e : T
   rw [← Finset.sum_coe_sort T]
   exact Fintype.sum_equiv e _ _ (fun t => by simp)
 
+/- English proof (translation)
+Establish `hσG : MvPolynomial.map σ G ≠ 0`. Introduce `h0`. Apply `hG` to reduce the goal to its premises. Conclude with `MvPolynomial.map_injective σ σ.injective (by rw [h0, map_zero])`. Establish `hgram` using `ReciprocityTheory.MultiplicativeHeights.Closed.gram κ (MvPolynomial.map σ G) S hσG`.
+
+Establish `hmap : ∀ m : κ →₀ ℕ, MvPolynomial.map σ G * MvPolynomial.monomial m 1 = MvPolynomial.map σ (G * MvPolynomial.monomial m 1)`. Introduce `m`. Rewrite using `[map_mul, MvPolynomial.map_monomial, σ.map_one]`. Establish `heq : (ReciprocityTheory.MultiplicativeHeights.gramC (1 : Matrix (Fin r) (Fin r) ℂ) σ (bG G S e)).det = (Matrix.of fun m m' : S => ReciprocityTheory.MultiplicativeHeights.polyInner (MvPolynomial.map σ G * MvPolynomial.monomial (m : κ →₀ ℕ) 1) (MvPolynomial.map σ G * MvPolynomial. …`. Rewrite using `[← Matrix.det_submatrix_equiv_self S.equivFin.symm, ← Matrix.det_transpose]`.
+
+Use `congr 1`. Use extensionality with `i j`. Simplify using `only [Matrix.transpose_apply, Matrix.submatrix_apply, Matrix.of_apply, ReciprocityTheory.MultiplicativeHeights.gramC, Matrix.one_mulVec, ReciprocityTheory.MultiplicativeHeights.polyInner]`. Rewrite using `[sum_support_eq e]`. Simplify using `only [dotProduct, hmap, MvPolynomial.coeff_map, ReciprocityTheory.MultiplicativeHeights.embVec, bG, coordVec, mS, Pi.star_apply]`.
+
+Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`. Rewrite using `[hmap]`. Conclude with `(MvPolynomial.support_map_subset _ _).trans (hST _ (S.equivFin.symm i).2)`. Establish `h1` using `Real.log_le_log (Real.exp_pos _) hgram`.
+
+Rewrite `h1` using `[Real.log_exp, ← heq]`. Conclude with `h1`.
+-/
 theorem gram_le {κ : Type} [Fintype κ] [DecidableEq κ] (G : MvPolynomial κ K) (hG : G ≠ 0)
     (S T : Finset (κ →₀ ℕ)) {r : ℕ} (e : T ≃ Fin r)
     (hST : ∀ m ∈ S, (G * MvPolynomial.monomial m 1).support ⊆ T) (σ : K →+* ℂ) :
@@ -319,6 +419,15 @@ open scoped nonZeroDivisors
 
 variable {K : Type} [Field K] [NumberField K]
 
+/- English proof (translation)
+Take `⟨b, hb⟩` from `IsLocalization.exist_integer_multiples_of_finset (nonZeroDivisors (𝓞 K)) (F.support.image fun s => F.coeff s)`. Establish `hy : ∀ s, ∃ y : 𝓞 K, algebraMap (𝓞 K) K y = (b : 𝓞 K) • F.coeff s`. Introduce `s`. Distinguish the cases in `hs : s ∈ F.support`. Conclude with `RingHom.mem_rangeS.mp (hb _ (Finset.mem_image_of_mem _ hs))`.
+
+Establish `h0 : F.coeff s = 0`. Assume the negation of the conclusion as `h`. Conclude with `hs (MvPolynomial.mem_support_iff.mpr h)`. Conclude with `⟨0, by rw [map_zero, h0, smul_zero]⟩`. Use `choose y hy using hy`.
+
+Use `⟨algebraMap (𝓞 K) K b, ∑ s ∈ F.support, MvPolynomial.monomial s (y s), ?_, ?_⟩` and prove the remaining obligations. Conclude with `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors b.2`. Rewrite using `[map_sum]`. Simplify using `only [MvPolynomial.map_monomial, hy]`. Use `conv_rhs => rw [MvPolynomial.as_sum F]`.
+
+Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.C_mul_monomial, Algebra.smul_def]`.
+-/
 theorem exists_int_multiple {κ : Type} (F : MvPolynomial κ K) :
     ∃ (c : K) (G₀ : MvPolynomial κ (𝓞 K)), c ≠ 0 ∧
       MvPolynomial.map (algebraMap (𝓞 K) K) G₀ = MvPolynomial.C c * F := by

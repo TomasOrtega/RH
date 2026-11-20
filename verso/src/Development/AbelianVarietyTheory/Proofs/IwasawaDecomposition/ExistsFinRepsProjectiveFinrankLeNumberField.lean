@@ -9,9 +9,15 @@ variable {R : Type} [CommRing R] [IsDomain R] [IsDedekindDomain R]
 noncomputable def rep (c : ClassGroup R) : Ideal R :=
   ((ClassGroup.mk0_surjective (R := R) c).choose : Ideal R)
 
+/- English proof (translation)
+The claim follows from `(ClassGroup.mk0_surjective (R := R) c).choose.2`.
+-/
 theorem rep_mem (c : ClassGroup R) : rep c ∈ nonZeroDivisors (Ideal R) :=
   (ClassGroup.mk0_surjective (R := R) c).choose.2
 
+/- English proof (translation)
+The claim follows from `(ClassGroup.mk0_surjective (R := R) c).choose_spec`.
+-/
 theorem mk0_rep (c : ClassGroup R) : ClassGroup.mk0 ⟨rep c, rep_mem c⟩ = c :=
   (ClassGroup.mk0_surjective (R := R) c).choose_spec
 
@@ -19,6 +25,9 @@ instance ideal_projective (I : Ideal R) : Module.Projective R I := by
   have : Module.FinitePresentation R I := Module.finitePresentation_of_finite _ _
   exact Module.Flat.projective_of_finitePresentation
 
+/- English proof (translation)
+Use extensionality with `z`. Rewrite using `[Ideal.mem_span_singleton_mul, Submodule.mem_map]`. Simplify using `[LinearMap.mulLeft_apply]`.
+-/
 theorem map_mulLeft_eq (x : R) (I : Ideal R) :
     Submodule.map (LinearMap.mulLeft R x) I = Ideal.span {x} * I := by
   ext z
@@ -30,6 +39,9 @@ noncomputable def mulEquiv {x : R} (hx : x ≠ 0) (I : Ideal R) :
   (Submodule.equivMapOfInjective (LinearMap.mulLeft R x) (mul_right_injective₀ hx) I).trans
     (LinearEquiv.ofEq _ _ (map_mulLeft_eq x I))
 
+/- English proof (translation)
+Take `⟨x, y, hx, hy, hxy⟩` from `ClassGroup.mk0_eq_mk0_iff.1 h`. Conclude with `⟨(mulEquiv hx I).trans ((LinearEquiv.ofEq _ _ hxy).trans (mulEquiv hy J).symm)⟩`.
+-/
 theorem nonempty_equiv_of_mk0_eq {I J : nonZeroDivisors (Ideal R)}
     (h : ClassGroup.mk0 I = ClassGroup.mk0 J) : Nonempty ((I : Ideal R) ≃ₗ[R] (J : Ideal R)) := by
   obtain ⟨x, y, hx, hy, hxy⟩ := ClassGroup.mk0_eq_mk0_iff.1 h
@@ -47,6 +59,9 @@ noncomputable def consLin {r : ℕ} (d : ClassGroup R) (c : Fin r → ClassGroup
       funext j
       refine Fin.cases ?_ (fun i => ?_) j <;> rfl }
 
+/- English proof (translation)
+The claim follows from `| 0, X, _, _, _, _, h => by have : Subsingleton X := by by_contra hX rw [not_subsingleton_iff_nontrivial] at hX have := (Module.finrank_pos_iff (R := R) (M := X)).2 hX omega exact ⟨Fin.elim0, ⟨LinearEquiv.ofSubsingleton _ _⟩⟩ | r + 1, X, _, _, _, _, h => by have hX : Nontrivial X …`.
+-/
 theorem exists_equiv_model : ∀ (r : ℕ) (X : Type) [AddCommGroup X] [Module R X] [Module.Finite R X]
     [Module.Projective R X], Module.finrank R X = r →
     ∃ c : Fin r → ClassGroup R, Nonempty (X ≃ₗ[R] Model c)
@@ -104,6 +119,15 @@ theorem exists_equiv_model : ∀ (r : ℕ) (X : Type) [AddCommGroup X] [Module R
 end ProjModClasses
 open ProjModClasses in
 
+/- English proof (translation)
+Introduce `E _ _ q`. Set `T` to `Σ r : Fin (q + 1), (Fin r → ClassGroup (𝓞 E))`. Set `g : T → ModuleCat.{0} (𝓞 E)` to `fun t => ModuleCat.of (𝓞 E) (Model t.2)`. Set `P : T → Prop` to `fun t => Module.Finite (𝓞 E) (g t) ∧ Module.Projective (𝓞 E) (g t) ∧ Module.finrank (𝓞 E) (g t) ≤ q`. Set `S` to `{t : T // P t}`.
+
+Use `haveI : Finite S := inferInstance`. Set `eS` to `Finite.equivFin S`. Use `⟨Nat.card S, fun k => g (eS.symm k).1, fun k => (eS.symm k).2, ?_⟩` and prove the remaining obligations. Introduce `X _ _ _ _ hq`. Take `⟨c, ⟨eX⟩⟩` from `exists_equiv_model (R := 𝓞 E) (Module.finrank (𝓞 E) X) X rfl`.
+
+Set `t : T` to `⟨⟨Module.finrank (𝓞 E) X, Nat.lt_succ_of_le hq⟩, c⟩`. Establish `ht : P t`. Use `⟨Module.Finite.equiv eX, Module.Projective.of_equiv eX, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Module.finrank (𝓞 E) (Model c) ≤ q`. Rewrite using `[← eX.finrank_eq]`.
+
+Conclude with `hq`. Use `⟨eS ⟨t, ht⟩, ?_⟩` and prove the remaining obligations. Use `show Nonempty (X ≃ₗ[𝓞 E] (g (eS.symm (eS ⟨t, ht⟩)).1))`. Rewrite using `[Equiv.symm_apply_apply]`. Conclude with `⟨eX⟩`.
+-/
 theorem exists_fin_reps_projective_finrank_le :
     ∀ (E : Type) [Field E] [NumberField E] (q : ℕ), ∃ (n : ℕ) (R : Fin n → ModuleCat.{0} (𝓞 E)),
     (∀ k, Module.Finite (𝓞 E) (R k) ∧ Module.Projective (𝓞 E) (R k) ∧ Module.finrank (𝓞 E) (R k) ≤ q) ∧

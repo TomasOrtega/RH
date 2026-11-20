@@ -7,14 +7,25 @@ namespace UpperTheory.V.Ws
 section
 variable {R : Type} [CommRing R]
 
+/- English proof (translation)
+Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [adj_apply, sgn, Fin.rev, Matrix.mul_apply, Fin.sum_univ_four] <;> ring`.
+-/
 private theorem rd_adj_mul (X Y : M4 R) : adj (X * Y) = adj Y * adj X := by
   ext i j
   fin_cases i <;> fin_cases j <;> simp [adj_apply, sgn, Fin.rev, Matrix.mul_apply, Fin.sum_univ_four] <;> ring
 
+/- English proof (translation)
+Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [adj_apply, sgn, Fin.rev, Matrix.one_apply]`.
+-/
 private theorem rd_adj_one : adj (1 : M4 R) = 1 := by
   ext i j
   fin_cases i <;> fin_cases j <;> simp [adj_apply, sgn, Fin.rev, Matrix.one_apply]
 
+/- English proof (translation)
+Use `show adj _ = -_`. Establish `e : adj n' = -(adj n * (n' * m))`. Use `congrArg (· * m) h` as an intermediate fact. Simplify using `only [add_mul, mul_assoc, h1, mul_one, zero_mul] at this`. Conclude with `eq_neg_of_add_eq_zero_left this`.
+
+Rewrite using `[rd_adj_mul, e, mul_neg, ← mul_assoc, ← rd_adj_mul, h1, rd_adj_one, one_mul]`.
+-/
 private theorem rd_sp {n n' m : M4 R} (h1 : n * m = 1) (h : adj n' * n + adj n * n' = 0) : n' * m ∈ sp4 R := by
   show adj _ = -_
   have e : adj n' = -(adj n * (n' * m)) := by
@@ -23,6 +34,11 @@ private theorem rd_sp {n n' m : M4 R} (h1 : n * m = 1) (h : adj n' * n + adj n *
     exact eq_neg_of_add_eq_zero_left this
   rw [rd_adj_mul, e, mul_neg, ← mul_assoc, ← rd_adj_mul, h1, rd_adj_one, one_mul]
 
+/- English proof (translation)
+Introduce `i j hij`. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun l _ => ?_` and prove the remaining obligations. Distinguish the cases in `hl : l < i`. Rewrite using `[hX i l hl, zero_mul]`.
+
+Rewrite using `[hY l j (lt_of_lt_of_le hij (not_lt.1 hl)), mul_zero]`.
+-/
 private theorem rd_up_mul {X Y : M4 R} (hX : IsUp X) (hY : IsUp Y) : IsUp (X * Y) := by
   intro i j hij
   rw [Matrix.mul_apply]
@@ -36,6 +52,9 @@ end
 section
 variable {k : Type} [Field k]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, Matrix.mul_apply, Matrix.add_apply, Fin.sum_univ_four, TrivSqZeroExt.snd_add, DualNumber.snd_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem rd_snd_mul (X Y : M4 (DualNumber k)) :
     (X * Y).map TrivSqZeroExt.snd = X.map TrivSqZeroExt.snd * Y.map TrivSqZeroExt.fst
       + X.map TrivSqZeroExt.fst * Y.map TrivSqZeroExt.snd := by
@@ -44,25 +63,40 @@ private theorem rd_snd_mul (X Y : M4 (DualNumber k)) :
     DualNumber.snd_mul]
   ring
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, Matrix.mul_apply, Fin.sum_univ_four, TrivSqZeroExt.fst_add, TrivSqZeroExt.fst_mul]`.
+-/
 private theorem rd_fst_mul (X Y : M4 (DualNumber k)) :
     (X * Y).map TrivSqZeroExt.fst = X.map TrivSqZeroExt.fst * Y.map TrivSqZeroExt.fst := by
   ext i j
   simp only [Matrix.map_apply, Matrix.mul_apply, Fin.sum_univ_four, TrivSqZeroExt.fst_add, TrivSqZeroExt.fst_mul]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [adj_apply, Matrix.map_apply, TrivSqZeroExt.snd_smul]`.
+-/
 private theorem rd_snd_adj (X : M4 (DualNumber k)) : (adj X).map TrivSqZeroExt.snd = adj (X.map TrivSqZeroExt.snd) := by
   ext i j
   simp only [adj_apply, Matrix.map_apply, TrivSqZeroExt.snd_smul]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [adj_apply, Matrix.map_apply, TrivSqZeroExt.fst_smul]`.
+-/
 private theorem rd_fst_adj (X : M4 (DualNumber k)) : (adj X).map TrivSqZeroExt.fst = adj (X.map TrivSqZeroExt.fst) := by
   ext i j
   simp only [adj_apply, Matrix.map_apply, TrivSqZeroExt.fst_smul]
 
+/- English proof (translation)
+Rewrite using `[← rd_snd_adj, ← rd_fst_adj, ← rd_snd_mul, h]`. Use extensionality with `i j`. Apply the tactic sequence `by_cases hij : i = j <;> simp [Matrix.one_apply, hij, hν]`.
+-/
 private theorem rd_gsp {ν : DualNumber k} (hν : ν.snd = 0) {X : M4 (DualNumber k)} (h : IsGSp ν X) :
     adj (X.map TrivSqZeroExt.snd) * X.map TrivSqZeroExt.fst + adj (X.map TrivSqZeroExt.fst) * X.map TrivSqZeroExt.snd = 0 := by
   rw [← rd_snd_adj, ← rd_fst_adj, ← rd_snd_mul, h]
   ext i j
   by_cases hij : i = j <;> simp [Matrix.one_apply, hij, hν]
 
+/- English proof (translation)
+Rewrite using `[← rd_fst_adj, ← rd_fst_mul, h]`. Use extensionality with `i j`. Apply the tactic sequence `by_cases hij : i = j <;> simp [Matrix.one_apply, hij]`.
+-/
 private theorem rd_gsp_one {X : M4 (DualNumber k)} (h : IsGSp 1 X) :
     adj (X.map TrivSqZeroExt.fst) * X.map TrivSqZeroExt.fst = 1 := by
   rw [← rd_fst_adj, ← rd_fst_mul, h]
@@ -73,6 +107,35 @@ end
 
 end UpperTheory.V.Ws
 
+/- English proof (translation)
+Introduce `O Γ _ _ _ _ Φ k _ a S c Q ha hP hlc hr hn hS`. Establish `er : ∀ g, (Q.r g).map TrivSqZeroExt.fst = c.r g` using `fun g => Matrix.ext (hr g)`. Establish `en : ∀ v, (Q.n v).map TrivSqZeroExt.fst = c.n v` using `fun v => Matrix.ext (hn v)`. Establish `i1 : ∀ g, c.r g * c.r g⁻¹ = 1` using `fun g => by rw [← map_mul, mul_inv_cancel, map_one]`. Establish `i2 : ∀ g, c.r g⁻¹ * c.r g = 1` using `fun g => by rw [← map_mul, inv_mul_cancel, map_one]`.
+
+Establish `n1 : ∀ v, adj (c.n v) * c.n v = 1` using `fun v => en v ▸ rd_gsp_one (hP.low v).1`. Establish `n2 : ∀ v, c.n v * adj (c.n v) = 1` using `fun v => mul_eq_one_comm.1 (n1 v)`. Establish `n3 : ∀ v, adj ((Q.n v).map TrivSqZeroExt.snd) * c.n v + adj (c.n v) * (Q.n v).map TrivSqZeroExt.snd = 0` using `fun v => en v ▸ rd_gsp rfl (hP.low v).1`. Establish `hl : IsLocallyConstant fun g => Q.r g`. Rewrite using `[IsLocallyConstant.iff_eventually_eq]`.
+
+Introduce `x`. Establish `: ∀ᶠ y in nhds x, ∀ i j, Q.r y i j = Q.r x i j` using `Filter.eventually_all.2 fun i => Filter.eventually_all.2 fun j => (hlc i j).eventually_eq x`. Conclude with `this.mono fun y hy => Matrix.ext hy`. Use `⟨?_, fun g => ?_, fun g h => ?_, fun g hg => ?_, ?_, fun g i j hij hw => ?_, fun v => ⟨rd_sp (n2 v) (n3 v), fun i j hij => ?_⟩, fun v s hs => ?_⟩` and prove the remaining obligations. Establish `h1` using `hl.comp fun X : M4 (DualNumber k) => X.map TrivSqZeroExt.snd`.
+
+Establish `h2` using `(hl.comp fun X : M4 (DualNumber k) => X.map TrivSqZeroExt.fst).comp_continuous continuous_inv`. Establish `h3` using `h1.mul h2`. Use `h3 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `g`. Simplify using `only [Pi.mul_apply, Function.comp_apply, er]`.
+
+Conclude with `rd_sp (i1 g) (er g ▸ rd_gsp (ha _) (hP.mult g))`. Use `show _ * _ = _ * _ + _ * (_ * _) * _`. Rewrite using `[map_mul, rd_snd_mul, er, er, mul_inv_rev, map_mul, add_mul, mul_assoc, ← mul_assoc (c.r h), i1, one_mul]`. Simplify using `only [mul_assoc]`. Use `show _ * _ = _`.
+
+Rewrite using `[hP.kill g hg]`. Establish `: (1 : M4 (DualNumber k)).map TrivSqZeroExt.snd = 0`. Use extensionality with `i j`. Apply the tactic sequence `by_cases hij : i = j <;> simp [Matrix.one_apply, hij]`. Rewrite using `[this, zero_mul]`.
+
+Establish `d1 : ((Q.r Φ.g0).map TrivSqZeroExt.snd).IsDiag` using `hP.nrm.map rfl`. Establish `d2 : (c.r Φ.g0).IsDiag` using `er _ ▸ hP.nrm.map rfl`. Introduce `i j hij`. Establish `e` using `i1 Φ.g0`. Rewrite `e` using `[← d2.diagonal_diag]`.
+
+Establish `e1` using `congrFun (congrFun e i) i`. Establish `e2` using `congrFun (congrFun e i) j`. Rewrite `e1` using `[Matrix.diagonal_mul, Matrix.one_apply_eq]`. Rewrite `e2` using `[Matrix.diagonal_mul, Matrix.one_apply_ne hij]`. Establish `e3` using `(mul_eq_zero.1 e2).resolve_left (left_ne_zero_of_mul_eq_one e1)`.
+
+Use `show (_ * _ : M4 k) i j = 0`. Rewrite using `[← d1.diagonal_diag, Matrix.diagonal_mul, e3, mul_zero]`. Use `show (_ * _ * _ : M4 k) i j = 0`. Rewrite using `[mul_assoc, i2, mul_one, Matrix.map_apply, hS g i j hij hw]`. Both sides reduce to the same expression.
+
+Use `show (_ * (_ * _) * _ : M4 k) i j = 0`. Rewrite using `[mul_assoc, mul_assoc, n1, mul_one, Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun l _ => ?_` and prove the remaining obligations. Distinguish the cases in `hl : i < l`. Rewrite using `[adj_apply, ← hn, (hP.low v).2.2 _ _ (Fin.rev_lt_rev.2 hl)]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[Matrix.map_apply]`. Break down `((not_lt.1 hl).trans hij).lt_or_eq with h | h` into its components or cases. Rewrite using `[(hP.low v).2.2 _ _ h]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[h, (hP.low v).2.1]`. Simplify using the standard rewrite rules. Establish `u1 : IsUp ((adj (Q.n v) * Q.r s * Q.n v).map TrivSqZeroExt.snd)` using `fun i j hij => by`. Rewrite using `[Matrix.map_apply, hP.flag v s hs i j hij]`. Both sides reduce to the same expression.
+
+Establish `u2 : IsUp ((adj (Q.n v) * Q.r s⁻¹ * Q.n v).map TrivSqZeroExt.fst)` using `fun i j hij => by`. Rewrite using `[Matrix.map_apply, hP.flag v _ (inv_mem hs) i j hij]`. Both sides reduce to the same expression. Establish `u` using `rd_up_mul u1 u2`. Simplify using `only [rd_snd_mul, rd_fst_mul, rd_snd_adj, rd_fst_adj, er, en] at u`.
+
+Use `u using 1` and compare the differences between its conclusion and the goal. Establish `k1 : ∀ X : M4 k, c.n v * (adj (c.n v) * X) = X` using `fun X => by rw [← mul_assoc, n2, one_mul]`. Establish `k2 : ∀ X : M4 k, c.r s * (c.r s⁻¹ * X) = X` using `fun X => by rw [← mul_assoc, i1, one_mul]`. Simplify using `only [mul_add, add_mul, mul_sub, sub_mul, mul_assoc, k1, k2, n1, mul_one, eq_neg_of_add_eq_zero_left (n3 v)]`. Normalize the expressions using the abelian group laws.
+-/
 theorem UpperTheory.V.Ws.redDual :
     ∀ {O Γ : Type} [CommRing O] [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] (Φ : Fr O Γ) {k : Type} [Field k] (a : O →+* DualNumber k) (S : Finset (ℤ × ℤ)) (c : PD Φ.ι Γ k) (Q : PD Φ.ι Γ (DualNumber k)),
           (∀ x, (a x).snd = 0) → Φ.IsPair a Q → (∀ i j, IsLocallyConstant fun g => Q.r g i j) → (∀ g i j, (Q.r g i j).fst = c.r g i j) → (∀ v i j, (Q.n v i j).fst = c.n v i j) → Supp S Q.r →

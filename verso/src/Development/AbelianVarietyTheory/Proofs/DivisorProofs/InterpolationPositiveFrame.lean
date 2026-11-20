@@ -4,6 +4,15 @@ open scoped ComplexOrder ContDiff
 
 namespace GlobalTheory.InterpPos
 
+/- English proof (translation)
+Introduce `ι n _ _ _ U H₀ H s h₀ h hs hs01`. Use `⟨h₀.isOpen, fun a b => ?_, fun z hz => ?_⟩` and prove the remaining obligations. Establish `e : (fun x => interp H₀ H s x a b) = fun x => ((1 - s x : ℝ) : ℂ) * H₀ x a b + ((s x : ℝ) : ℂ) * H x a b`. Use function extensionality and compare the values at `x`. Simplify using `[interp]`.
+
+Rewrite using `[e]`. Establish `h1 : ContDiffOn ℝ ∞ (fun x => ((1 - s x : ℝ) : ℂ)) U` using `Complex.ofRealCLM.contDiff.comp_contDiffOn (contDiffOn_const.sub hs)`. Establish `h2 : ContDiffOn ℝ ∞ (fun x => ((s x : ℝ) : ℂ)) U` using `Complex.ofRealCLM.contDiff.comp_contDiffOn hs`. Conclude with `(h1.mul (h₀.smooth a b)).add (h2.mul (h.smooth a b))`. Take `⟨hs0, hs1⟩` from `hs01 z hz`.
+
+Break down `hs1.lt_or_eq with hlt | heq` into its components or cases. Establish `hA : (((1 - s z : ℝ) : ℂ) • H₀ z).PosDef` using `(h₀.posDef z hz).smul (by exact_mod_cast (sub_pos.2 hlt))`. Establish `hB : (((s z : ℝ) : ℂ) • H z).PosSemidef` using `(h.posDef z hz).posSemidef.smul (by exact_mod_cast hs0)`. Conclude with `hA.add_posSemidef hB`. Establish `hA : (((1 - s z : ℝ) : ℂ) • H₀ z).PosSemidef` using `(h₀.posDef z hz).posSemidef.smul (by rw [heq]; simp)`.
+
+Establish `hB : (((s z : ℝ) : ℂ) • H z).PosDef` using `(h.posDef z hz).smul (by rw [heq]; simp)`. Use `show (((1 - s z : ℝ) : ℂ) • H₀ z + ((s z : ℝ) : ℂ) • H z).PosDef`. Rewrite using `[add_comm]`. Conclude with `hB.add_posSemidef hA`.
+-/
 theorem interp_isPosFrame : ∀ {ι n : Type} [Fintype ι] [Fintype n] [DecidableEq n] {U : Set (ι → ℂ)} {H₀ H : (ι → ℂ) → Matrix n n ℂ} {s : (ι → ℂ) → ℝ}, IsPosFrame U H₀ → IsPosFrame U H → ContDiffOn ℝ ∞ s U → (∀ z ∈ U, s z ∈ Icc (0 : ℝ) 1) → IsPosFrame U (interp H₀ H s) := by
   intro ι n _ _ _ U H₀ H s h₀ h hs hs01
   refine ⟨h₀.isOpen, fun a b => ?_, fun z hz => ?_⟩

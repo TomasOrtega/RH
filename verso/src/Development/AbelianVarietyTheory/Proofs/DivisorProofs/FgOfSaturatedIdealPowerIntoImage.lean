@@ -4,6 +4,29 @@ open IsLocalRing TensorProduct Pointwise
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `S _ _ _ I hsat M _ _ _ N hN`. Use `set K := FractionRing S`. Set `V` to `K ⊗[S] M`. Set `b` to `Module.Free.chooseBasis K V`. Set `ι` to `Module.Free.ChooseBasisIndex K V`.
+
+Set `T : V →ₗ[S] (ι → K)` to `(b.equivFun.toLinearMap).restrictScalars S`. Set `L : Submodule S (ι → K)` to `LinearMap.range ((Algebra.linearMap S K).compLeft ι)`. Establish `memL : ∀ v : ι → K, (∀ i, IsLocalization.IsInteger S (v i)) → v ∈ L`. Introduce `v hv`. Use `choose w hw using hv`.
+
+Conclude with `⟨w, funext fun i => hw i⟩`. Establish `memL' : ∀ v ∈ L, ∀ i, IsLocalization.IsInteger S (v i)`. Introduce and unpack `v ⟨w, rfl⟩ i`. Conclude with `⟨w i, rfl⟩`. Take `⟨n, g, hg⟩` from `Module.Finite.exists_fin (R := S) (M := M)`.
+
+Take `⟨d, hd⟩` from `IsLocalization.exist_integer_multiples (nonZeroDivisors S) (Finset.univ : Finset (Fin n × ι)) (fun p => T (1 ⊗ₜ g p.1) p.2)`. Set `F : V →ₗ[S] (ι → K)` to `(d : S) • T`. Establish `hFM : ∀ m : M, F (1 ⊗ₜ m) ∈ L`. Introduce `m`. Establish `hle : Submodule.span S (Set.range g) ≤ L.comap (F ∘ₗ TensorProduct.mk S K M 1)`.
+
+Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩`. Use `show F (1 ⊗ₜ g j) ∈ L`. Apply `memL` to reduce the goal to its premises. Introduce `i`.
+
+Conclude with `hd (j, i) (Finset.mem_univ _)`. Establish `: m ∈ Submodule.span S (Set.range g)` using `by rw [hg]; trivial`. Conclude with `hle this`. Establish `hFN : ∀ z ∈ N, F z ∈ L`. Introduce `z hz`.
+
+Take `⟨k, hk⟩` from `hN z hz`. Apply `memL` to reduce the goal to its premises. Introduce `i`. Apply `hsat k` to reduce the goal to its premises. Introduce `a ha`.
+
+Take `⟨m, hm⟩` from `hk a ha`. Establish `h1` using `hFM m`. Simplify using `only [TensorProduct.mk_apply] at hm`. Rewrite `h1` using `[hm, map_smul]`. Simplify using `using memL' _ h1 i`.
+
+Establish `hFinj : Function.Injective F`. Introduce `x y hxy`. Establish `hd0 : algebraMap S K (d : S) ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors d.2`. Establish `: algebraMap S K (d : S) • b.equivFun x = algebraMap S K (d : S) • b.equivFun y`. Simplify `hxy` using `[F, T, algebraMap_smul]`.
+
+Conclude with `b.equivFun.injective (smul_right_injective _ hd0 this)`. Establish `hLfg : L.FG` using `by show (LinearMap.range ((Algebra.linearMap S K).compLeft ι)).FG`. Rewrite using `[LinearMap.range_eq_map]`. Conclude with `(Module.Finite.fg_top).map _`. Use `haveI : IsNoetherian S L := isNoetherian_of_fg_of_noetherian L hLfg`.
+
+Apply `Submodule.fg_of_fg_map_injective F hFinj` to reduce the goal to its premises. Conclude with `Submodule.FG.of_le_of_isNoetherian (T := L) (by`. Introduce and unpack `_ ⟨z, hz, rfl⟩`. Conclude with `hFN z hz)`.
+-/
 theorem fg_of_saturated_ideal_power_into_image :
     ∀ (S : Type) [CommRing S] [IsDomain S] [IsNoetherianRing S] (I : Ideal S),
       (∀ (k : ℕ) (c : FractionRing S), (∀ a ∈ I ^ k, IsLocalization.IsInteger S (a • c)) →

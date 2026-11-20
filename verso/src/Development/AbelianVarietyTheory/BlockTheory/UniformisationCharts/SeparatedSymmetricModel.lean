@@ -28,9 +28,15 @@ def dn {G : Over S} {T : Over S'} (y : T ⟶ (Over.pullback p).obj G) :
     dsimp at h ⊢
     rw [Category.assoc, pullback.condition, ← Category.assoc, h])
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] lemma dn_left {G : Over S} {T : Over S'} (y : T ⟶ (Over.pullback p).obj G) :
     (dn p y).left = y.left ≫ pullback.fst G.hom p := rfl
 
+/- English proof (translation)
+Use `ext`. Establish `h : ((Over.pullback p).map f).left ≫ pullback.fst G'.hom p = pullback.fst G.hom p ≫ f.left` using `pullback.lift_fst _ _ _`. Express the relevant statement in the definitionally equal form `(y.left ≫ ((Over.pullback p).map f).left) ≫ pullback.fst G'.hom p = (y.left ≫ pullback.fst G.hom p) ≫ f.left`. Rewrite using `[Category.assoc, Category.assoc, h]`.
+-/
 lemma dn_map {G G' : Over S} {T : Over S'} (y : T ⟶ (Over.pullback p).obj G) (f : G ⟶ G') :
     dn p (y ≫ (Over.pullback p).map f) = dn p y ≫ f := by
   ext
@@ -45,6 +51,9 @@ variable {G : Over S} [GrpObj G] [IsCommMonObj G]
 instance isComm_baseChange : IsCommMonObj ((Over.pullback p).obj G) :=
   Functor.isCommMonObj_obj
 
+/- English proof (translation)
+Rewrite using `[padd, padd, Functor.obj.μ_def, ← Category.assoc, dn_map]`. Use `congr 1`. Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises. Rewrite using `[← dn_map, Category.assoc, Functor.Monoidal.μ_fst, lift_fst, lift_fst]`. Rewrite using `[← dn_map, Category.assoc, Functor.Monoidal.μ_snd, lift_snd, lift_snd]`.
+-/
 lemma dn_padd {T : Over S'} (a b : T ⟶ (Over.pullback p).obj G) :
     dn p (padd _ a b) = padd G (dn p a) (dn p b) := by
   rw [padd, padd, Functor.obj.μ_def, ← Category.assoc, dn_map]
@@ -53,11 +62,17 @@ lemma dn_padd {T : Over S'} (a b : T ⟶ (Over.pullback p).obj G) :
   · rw [← dn_map, Category.assoc, Functor.Monoidal.μ_fst, lift_fst, lift_fst]
   · rw [← dn_map, Category.assoc, Functor.Monoidal.μ_snd, lift_snd, lift_snd]
 
+/- English proof (translation)
+Rewrite using `[pzero, pzero, Functor.obj.η_def, ← Category.assoc, dn_map]`. Use `congr 1`. Conclude with `toUnit_unique _ _`.
+-/
 lemma dn_pzero (T : Over S') : dn p (pzero ((Over.pullback p).obj G) T) = pzero G _ := by
   rw [pzero, pzero, Functor.obj.η_def, ← Category.assoc, dn_map]
   congr 1
   exact toUnit_unique _ _
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => exact dn_pzero p T`. Consider the case `cons a l ih => simp only [List.foldr_cons]`. Rewrite using `[dn_padd, ih]`.
+-/
 lemma dn_foldr {T : Over S'} {n : ℕ} (x : Fin n → (T ⟶ (Over.pullback p).obj G))
     (l : List (Fin n)) :
     dn p (l.foldr (fun k acc => padd _ (x k) acc) (pzero _ T)) =
@@ -72,6 +87,9 @@ def dn3 (f : H ⟶ (Over.pullback p).obj G) : Over.mk ((G3 H).hom ≫ p) ⟶ G3 
   lift (dn p (x3 H 0 ≫ f)) (lift (dn p (x3 H 1 ≫ f)) (dn p (x3 H 2 ≫ f)))
 
 omit [GrpObj G] [IsCommMonObj G] [GrpObj H] [IsCommMonObj H] in
+/- English proof (translation)
+Apply the tactic sequence `fin_cases k <;> simp [x3, dn3]`.
+-/
 lemma downThree_comp_proj (f : H ⟶ (Over.pullback p).obj G) (k : Fin 3) :
     dn3 p f ≫ x3 G k = dn p (x3 H k ≫ f) := by
   fin_cases k <;> simp [x3, dn3]
@@ -98,6 +116,9 @@ def bcMap (f : H ⟶ (Over.pullback p).obj G) [IsMonHom f] : CubeMap H G where
     simp only [downThree_comp_proj]
 
 omit [IsCommMonObj G] [IsCommMonObj H] in
+/- English proof (translation)
+Establish `h1 : (ι[H]).left ≫ (dn p f).left = (dn p (ι[H] ≫ f)).left` using `(Category.assoc _ _ _).symm`. Rewrite using `[h1, GrpObj.inv_hom, Functor.obj.ι_def, dn_map]`. Both sides reduce to the same expression.
+-/
 lemma inv_dn (f : H ⟶ (Over.pullback p).obj G) [IsMonHom f] :
     (ι[H]).left ≫ (dn p f).left = (dn p f).left ≫ (ι[G]).left := by
   have h1 : (ι[H]).left ≫ (dn p f).left = (dn p (ι[H] ≫ f)).left :=
@@ -116,6 +137,11 @@ abbrev SymGen (L : LB G.left) :=
 
 variable {G} {S' : Scheme.{0}} {H : Over S'} [GrpObj H]
 
+/- English proof (translation)
+Introduce `y hy`. Use `Set.mem_iInter.2 fun k => ?_` and prove the remaining obligations. Establish `h1` using `Set.mem_iInter.1 (Set.mem_iInter.1 hy k) ⟨⟩`. Use `fin_cases k`. Express the relevant statement in the definitionally equal form `(F ≫ (ι[G]).left).base y ∈ (L.U (j 0 ⟨⟩) : Set _)`.
+
+Rewrite using `[← hF]`. Conclude with `h1`. Conclude with `h1`.
+-/
 lemma symPull_le (F : H.left ⟶ G.left) (hF : (ι[H]).left ≫ F = F ≫ (ι[G]).left) (L : LB G.left)
     (j : Fin 2 → PUnit → L.ι) :
     LB.wchart (L.pull F) ![(ι[H]).left, 𝟙 H.left] j ≤
@@ -139,6 +165,9 @@ section IsoPull
 
 variable {X X' Y Y' : Scheme.{0}} (L : LB X) (M : LB X')
 
+/- English proof (translation)
+Substitute `ha hb` using the available equality. Introduce `y hy`. Conclude with `⟨Set.mem_iInter.2 fun k => Set.mem_iInter.1 hy.1 k, Set.mem_iInter.2 fun k => Set.mem_iInter.1 hy.2 k⟩`.
+-/
 lemma isoPull_le (h : Y' ⟶ Y) {a : Y ⟶ X} {b : Y ⟶ X'} {a' : Y' ⟶ X} {b' : Y' ⟶ X'}
     (ha : h ≫ a = a') (hb : h ≫ b = b') (j : (PUnit → M.ι) × (PUnit → L.ι)) :
     (LB.div (M.pull b') (L.pull a')).U j ≤ h ⁻¹ᵁ (LB.div (M.pull b) (L.pull a)).U j := by
@@ -198,26 +227,41 @@ def toB {e : ℕ} (j : CanonicalRigidImages.GtIso D I e G) : CubeMap (thickObj R
   bcMap (thick R I e) j.q
 
 omit [IsDomain R] in
+/- English proof (translation)
+The claim follows from `inv_dn (thick R I e) (𝟙 (thickObj R I e G))`.
+-/
 lemma toG_inv (I : Ideal R) (e : ℕ) :
     (ι[thickObj R I e G]).left ≫ (toG I e G).F = (toG I e G).F ≫ (ι[G]).left :=
   inv_dn (thick R I e) (𝟙 (thickObj R I e G))
 
+/- English proof (translation)
+The claim follows from `haveI := j.q_hom inv_dn (thick R I e) j.q`.
+-/
 lemma toB_inv {e : ℕ} (j : CanonicalRigidImages.GtIso D I e G) :
     (ι[thickObj R I e G]).left ≫ (toB j).F = (toB j).F ≫ (ι[D.P.A]).left :=
   haveI := j.q_hom
   inv_dn (thick R I e) j.q
 
 omit [IsDomain R] in
+/- English proof (translation)
+The claim follows from `(pullback.lift_fst _ _ _).trans (Category.comp_id _)`.
+-/
 lemma thickMap_fst (I : Ideal R) (e : ℕ) (Z : Over (Spec (CommRingCat.of R))) :
     thickMap R I e Z ≫ pullback.fst Z.hom (thick R I (e + 1)) =
       pullback.fst Z.hom (thick R I e) :=
   (pullback.lift_fst _ _ _).trans (Category.comp_id _)
 
 omit [IsDomain R] in
+/- English proof (translation)
+Simplify using `[toG, bcMap, thickMap_fst]`.
+-/
 lemma thickMap_toG (I : Ideal R) (e : ℕ) :
     thickMap R I e G ≫ (toG I (e + 1) G).F = (toG I e G).F := by
   simp [toG, bcMap, thickMap_fst]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `thickMap R I e G ≫ j'.q.left ≫ pullback.fst D.P.A.hom _ = j.q.left ≫ pullback.fst D.P.A.hom _`. Rewrite using `[← Category.assoc, h, Category.assoc, thickMap_fst]`.
+-/
 lemma thickMap_toB {e : ℕ} (j : CanonicalRigidImages.GtIso D I e G) (j' : CanonicalRigidImages.GtIso D I (e + 1) G)
     (h : thickMap R I e G ≫ j'.q.left = j.q.left ≫ thickMap R I e D.P.A) :
     thickMap R I e G ≫ (toB j').F = (toB j).F := by
@@ -260,10 +304,16 @@ structure UnifPre (R : Type) [CommRing R] [IsDomain R] (I : Ideal R) (D : DegDat
   ph_compat : ∀ e, isoPull LG.L D.toPre.P.L (thickMap R I e G) (thickMap_toG I e)
     (thickMap_toB (j e) (j (e + 1)) (j_q e)) (ph (e + 1)) = ph e
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D : DegPre R}
     {G : Over (Spec (CommRingCat.of R))} [GrpObj G] [IsCommMonObj G] {e : ℕ}
     (j : CanonicalRigidImages.GtIso D I e G) : (toB j).F = (CanonicalRigidImages.down D I e j.q).left := rfl
 
+/- English proof (translation)
+Introduce and unpack `rfl`. Take `⟨_, hd, _, hc⟩` from `h`. Establish `: (1 : R) = 0` using `hc.toIsHausdorff.haus 1 fun n => by simp [SModEq.zero, Ideal.top_pow]`. Conclude with `one_ne_zero this`.
+-/
 example {R : Type} [CommRing R] {I : Ideal R} (h : AdmBase R I) : I ≠ ⊤ := by
   rintro rfl
   obtain ⟨_, hd, _, hc⟩ := h

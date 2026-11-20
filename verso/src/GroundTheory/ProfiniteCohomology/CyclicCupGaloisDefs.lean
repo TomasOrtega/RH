@@ -21,6 +21,9 @@ noncomputable def cupRightProf (h : p + q = n) (b : cohomology B q) :
     cohomology A p ⟶ cohomology (A ⊗ B) n :=
   ModuleCat.ofHom ((cup h).flip b)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cupRightProf_apply (h : p + q = n) (b : cohomology B q) (a : cohomology A p) :
     (cupRightProf h b).hom a = cup h a b :=
   rfl
@@ -55,6 +58,9 @@ def unitsInvariant (a : Kˣ) : (galUnitsZ K L).ρ.invariants :=
     simp⟩
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_unitsInvariant (a : Kˣ) :
     ((Additive.toMul (unitsInvariant K L a : Additive Lˣ) : Lˣ) : L) = algebraMap K L a :=
   rfl

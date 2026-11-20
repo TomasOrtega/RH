@@ -2,6 +2,23 @@ import Mathlib
 
 namespace GlobalTheory.GaloisEmbeddingExistence
 
+/- English proof (translation)
+Use `set K := FractionRing R`. Use `set Ω := AlgebraicClosure K`. Use `haveI : FaithfulSMul R R' := (faithfulSMul_iff_algebraMap_injective R R').2 hinj`. Establish `hΩ : Function.Injective (algebraMap R Ω)`. Rewrite using `[IsScalarTower.algebraMap_eq R K Ω]`.
+
+Conclude with `(algebraMap K Ω).injective.comp (IsFractionRing.injective R K)`. Use `haveI : FaithfulSMul R Ω := (faithfulSMul_iff_algebraMap_injective R Ω).2 hΩ`. Use `haveI : CharZero K := charZero_of_injective_algebraMap (IsFractionRing.injective R K)`. Set `φ : R' →ₐ[R] Ω` to `IsAlgClosed.lift`. Establish `hφ : Function.Injective φ`.
+
+Establish `h1 : (RingHom.ker φ).comap (algebraMap R R') = ⊥`. Rewrite using `[eq_bot_iff]`. Introduce `x hx`. Rewrite `hx` using `[Ideal.mem_comap, RingHom.mem_ker, AlgHom.commutes]`. Conclude with `hΩ (by simpa using hx)`.
+
+Establish `h2 : RingHom.ker φ = ⊥` using `Ideal.eq_bot_of_comap_eq_bot h1`. Conclude with `(RingHom.injective_iff_ker_eq_bot φ).2 h2`. Take `⟨s, hs⟩` from `(Module.finite_def.1 (inferInstance : Module.Finite R R'))`. Set `M : IntermediateField K Ω` to `IntermediateField.adjoin K (φ '' (s : Set R'))`. Use `haveI : Finite (φ '' (s : Set R')) := (s.finite_toSet.image φ).to_subtype`.
+
+Use `haveI : FiniteDimensional K M := IntermediateField.finiteDimensional_adjoin (fun x _ => Algebra.IsIntegral.isIntegral x)`. Set `L : IntermediateField K Ω` to `IntermediateField.normalClosure K M Ω`. Establish `hML : M ≤ L` using `IntermediateField.le_normalClosure M`. Establish `hmem : ∀ x : R', φ x ∈ L`. Introduce `x`.
+
+Establish `hx : x ∈ Submodule.span R (s : Set R')` using `by rw [hs]; trivial`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx => exact hML (IntermediateField.subset_adjoin K _ ⟨x, hx, rfl⟩)`. Consider the case `zero => simpa using L.zero_mem`. Consider the case `add x y _ _ hx hy => simpa using L.add_mem hx hy`.
+
+Consider the case `smul r x _ hx`. Rewrite using `[Algebra.smul_def, map_mul, AlgHom.commutes, IsScalarTower.algebraMap_apply R K Ω]`. Conclude with `L.mul_mem (L.algebraMap_mem _) hx`. Use `⟨L, inferInstance, inferInstance, ?_⟩` and prove the remaining obligations. Set `j : R' →ₐ[R] L` to `{ toFun := fun x => ⟨φ x, hmem x⟩ map_one' := Subtype.ext (map_one φ) map_mul' := fun x y => Subtype.ext (map_mul φ x y) map_zero' := Subtype.ext (map_zero φ) map_add' := fun x y => Subtype.ext (map_add φ x y) commutes' := fun r => Subtype.ext (φ.commutes r) }`.
+
+Conclude with `⟨j, fun x y h => hφ (congrArg Subtype.val h)⟩`.
+-/
 theorem exists_galois_embedding (R R' : Type) [CommRing R] [IsDomain R] [CharZero R]
     [CommRing R'] [IsDomain R'] [Algebra R R'] [Module.Finite R R']
     (hinj : Function.Injective (algebraMap R R')) :

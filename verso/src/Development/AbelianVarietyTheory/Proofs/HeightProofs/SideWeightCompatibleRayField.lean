@@ -7,6 +7,13 @@ import Development.AbelianVarietyTheory.Proofs.HeightProofs.SideWeightExportLeve
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Pj Formalism.L2.DIV Formalism.IndefR Formalism.IndefR.Links GlobalTheory.FinalJoin2 GlobalTheory.AtMember GlobalTheory.EX GlobalTheory.EX.OB GlobalTheory.Mem GlobalTheory.Mem.Top GlobalTheory.Mem.Top.Bl GlobalTheory.Fc GlobalTheory.BigTop GlobalTheory.BigOn GlobalTheory.Plug GlobalTheory.PlugPt
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Introduce `hR hL 𝒮 ν hC K p`. Take `⟨hRC, hTC, -⟩` from `GlobalTheory.Plug.wPt_frame 𝒮 K p`. Establish `ht` using `GlobalTheory.T.coreFrameCompatible_constructed_point hR 𝒮 hC K p`. Take `⟨hpsi, hval, htame⟩` from `GlobalTheory.T.side_weight_psi_choice_tame hL 𝒮 ν K p`. Take `⟨hser, hlev, hdat, hsmall⟩` from `GlobalTheory.T.side_weight_export_level hR hL 𝒮 ν K p`.
+
+Use `⟨?_, ?_, hser, hlev, hdat, hpsi, hval, hsmall, htame⟩` and prove the remaining obligations. Use `show p.x.what₂.r.z.R.C = GlobalTheory.Mem.Col2.TC.cf p.w.I p.w.l p.Z`. Rewrite using `[hRC, hTC]`. Use `show Tied p.O.ex.errX p.x.what₂.r.z.core (GlobalTheory.Mem.Col2.TC.cf p.w.I p.w.l p.Z)`. Rewrite using `[hTC]`.
+
+Conclude with `ht`.
+-/
 theorem GlobalTheory.PlugPt.sideW_ties : GlobalTheory.NT.RayField → ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (𝒮 : Slots) (ν : NRead hL 𝒮), CoreSlot 𝒮 → ∀ (K : Ctx) (p : WPt 𝒮 K), (sideW ν p).Ties p.O.ex.errX p.O.ex.xd := by
   intro hR hL 𝒮 ν hC K p
   obtain ⟨hRC, hTC, -⟩ := GlobalTheory.Plug.wPt_frame 𝒮 K p

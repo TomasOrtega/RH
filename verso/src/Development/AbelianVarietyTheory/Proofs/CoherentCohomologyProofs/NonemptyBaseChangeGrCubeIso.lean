@@ -7,6 +7,11 @@ open CategoryTheory CategoryTheory.Limits DirectSum MvPolynomial TensorProduct G
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `h1 : ∀ y, ψ (xProd R₀ s • y) = xProd R s • ψ y`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => intro y`. Simplify using the standard rewrite rules. Consider the case `insert a s ha ih`.
+
+Introduce `y`. Rewrite using `[xProd, xProd, Finset.prod_insert ha, Finset.prod_insert ha, mul_smul, mul_smul, hX, ih]`. Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih => rw [pow_succ', pow_succ', mul_smul, mul_smul, h1, ih]`.
+-/
 theorem map_xProd_pow_smul_of_X {ι R₀ R : Type} [CommRing R₀] [CommRing R] {N₀ N : Type}
     [AddCommGroup N₀] [Module (MvPolynomial ι R₀) N₀] [AddCommGroup N]
     [Module (MvPolynomial ι R) N] (ψ : N₀ → N)
@@ -23,6 +28,17 @@ theorem map_xProd_pow_smul_of_X {ι R₀ R : Type} [CommRing R₀] [CommRing R] 
   | zero => simp
   | succ k ih => rw [pow_succ', pow_succ', mul_smul, mul_smul, h1, ih]
 
+/- English proof (translation)
+Introduce `ι _ _ R₀ R _ _ _ N₀ _ _ _ _ 𝒩₀ _ _ N _ _ _ _ 𝒩 _ _ _ _ _ ψ n hψ hX hgr`. Use `choose θ hθ hθe using fun s : Finset ι => GlobalTheory.exists_isBaseChange_away_xProd ι R₀ R N₀ N ψ s hψ hX`. Establish `hg : ∀ s j, ∀ y ∈ homLoc 𝒩₀ s j, θ s y ∈ homLoc 𝒩 s j`. Introduce and unpack `s j _ ⟨k, m, hm, rfl⟩`. Rewrite using `[hθe]`.
+
+Conclude with `awayFrac_mem_homLoc (hgr _ _ hm) rfl`. Set `η : ∀ s, homLoc 𝒩₀ s n →ₗ[R₀] homLoc 𝒩 s n` to `fun s => { toFun := fun y => ⟨θ s y, hg s n _ y.2⟩ map_add' := fun a b => Subtype.ext (map_add (θ s) a.1 b.1) map_smul' := fun r a => Subtype.ext (map_smul (θ s) r a.1) }`. Establish `hη : ∀ s, IsBaseChange R (η s)` using `fun s => GlobalTheory.isBaseChange_gradedPiece R₀ R _ _ (homLoc 𝒩₀ s) (homLoc 𝒩 s) (θ s) n (η s) (hθ s) (hg s) fun _ => rfl`. Establish `hres : ∀ {s t : Finset ι} (h : s ⊆ t) (z : homLoc 𝒩₀ s n), η t (homLocRes 𝒩₀ h n z) = homLocRes 𝒩 h n (η s z)`. Introduce and unpack `s t h ⟨_, k, m, hm, rfl⟩`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `θ t (locRes X N₀ h (awayFrac N₀ _ k m)) = locRes X N h (θ s (awayFrac N₀ _ k m))`. Rewrite using `[hθe, locRes_awayFrac X h (Finset.prod_sdiff h).symm, locRes_awayFrac X h (Finset.prod_sdiff h).symm, hθe]`. Conclude with `congrArg _ (map_xProd_pow_smul_of_X ψ hX (t \ s) k m)`. Establish `key : ∀ {s t : Finset ι} (h : s ⊆ t) (x : R ⊗[R₀] homLoc 𝒩₀ s n), (hη t).equiv ((homLocRes 𝒩₀ h n).baseChange R x) = homLocRes 𝒩 h n ((hη s).equiv x)`.
+
+Introduce `s t h x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Consider the case `tmul r z`.
+
+Rewrite using `[LinearMap.baseChange_tmul, IsBaseChange.equiv_tmul, IsBaseChange.equiv_tmul, map_smul, hres]`. Conclude with `⟨Cube.isoMk (fun s => (hη s).equiv) fun h x => key h x⟩`.
+-/
 theorem nonempty_baseChange_grCube_iso : ∀ (ι : Type) [LinearOrder ι] [Fintype ι] (R₀ R : Type) [CommRing R₀] [CommRing R] [Algebra R₀ R] (N₀ : Type) [AddCommGroup N₀] [Module R₀ N₀] [Module (MvPolynomial ι R₀) N₀] [IsScalarTower R₀ (MvPolynomial ι R₀) N₀] (𝒩₀ : ℤ → Submodule R₀ N₀) [PolyGradedSMul ι 𝒩₀] [Decomposition 𝒩₀] (N : Type) [AddCommGroup N] [Module R N] [Module (MvPolynomial ι R) N] [IsScalarTower R (MvPolynomial ι R) N] (𝒩 : ℤ → Submodule R N) [PolyGradedSMul ι 𝒩] [Decomposition 𝒩] [Module R₀ N] [IsScalarTower R₀ R N] [IsScalarTower R₀ (MvPolynomial ι R) N] (ψ : N₀ →ₗ[R₀] N) (n : ℤ), IsBaseChange R ψ → (∀ (i : ι) y, ψ ((X i : MvPolynomial ι R₀) • y) = (X i : MvPolynomial ι R) • ψ y) → (∀ j, ∀ y ∈ 𝒩₀ j, ψ y ∈ 𝒩 j) → Nonempty (Cube.baseChange R (grCube ι 𝒩₀ n) ≅ grCube ι 𝒩 n) := by
   intro ι _ _ R₀ R _ _ _ N₀ _ _ _ _ 𝒩₀ _ _ N _ _ _ _ 𝒩 _ _ _ _ _ ψ n hψ hX hgr
   choose θ hθ hθe using fun s : Finset ι => GlobalTheory.exists_isBaseChange_away_xProd ι R₀ R N₀ N ψ s hψ hX

@@ -24,6 +24,9 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open GlobalTheory.Doubling (absE)
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.RealLift.even_mα_add | exact GlobalTheory.RealLift.even_mα_add | (intros; apply GlobalTheory.RealLift.even_mα_add <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.good_characters_parity : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (X : Chars F E) (a a' : ℕ), B.IsGood σ → X.IsGood B a a' → ∀ w, Even (B.mα w + (a' : ℤ)) := by
   first | exact @GlobalTheory.RealLift.even_mα_add | exact GlobalTheory.RealLift.even_mα_add | (intros; apply GlobalTheory.RealLift.even_mα_add <;> assumption)

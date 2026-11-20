@@ -33,10 +33,18 @@ abbrev leviPar : Subgroup (GL (Fin n) F) := levi F n γ ⊓ blockUpper F n δ
 
 variable {F n γ δ}
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_lieLeviPar {A : Matrix (Fin n) (Fin n) F} :
     A ∈ lieLeviPar F n γ δ ↔ ∀ i j, ¬ (γ i = γ j ∧ ¬ δ j < δ i) → A i j = 0 :=
   Iff.rfl
 
+/- English proof (translation)
+Rewrite using `[Subgroup.mem_inf, mem_levi, mem_blockUpper]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩ i j h`. Distinguish the cases in `hγ : γ i = γ j`. Conclude with `h2 (by by_contra h'; exact h ⟨hγ, h'⟩)`.
+
+Conclude with `h1 i j hγ`. Introduce `h`. Conclude with `⟨fun i j hij => h i j fun h' => hij h'.1, fun i j hij => h i j fun h' => h'.2 hij⟩`.
+-/
 theorem mem_leviPar_iff {g : GL (Fin n) F} :
     g ∈ leviPar F n γ δ ↔ (g : Matrix (Fin n) (Fin n) F) ∈ lieLeviPar F n γ δ := by
   rw [Subgroup.mem_inf, mem_levi, mem_blockUpper]
@@ -48,6 +56,11 @@ theorem mem_leviPar_iff {g : GL (Fin n) F} :
   · intro h
     exact ⟨fun i j hij => h i j fun h' => hij h'.1, fun i j hij => h i j fun h' => h'.2 hij⟩
 
+/- English proof (translation)
+Introduce `i j h`. Rewrite using `[mul_apply]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Distinguish the cases in `hik : γ i = γ k ∧ ¬ δ k < δ i`. Distinguish the cases in `hkj : γ k = γ j ∧ ¬ δ j < δ k`.
+
+Conclude with `absurd ⟨hik.1.trans hkj.1, fun h' => hkj.2 (lt_of_lt_of_le h' (not_lt.1 hik.2))⟩ h`. Rewrite using `[hB k j hkj, mul_zero]`. Rewrite using `[hA i k hik, zero_mul]`.
+-/
 theorem mul_mem_lieLeviPar {A B : Matrix (Fin n) (Fin n) F} (hA : A ∈ lieLeviPar F n γ δ)
     (hB : B ∈ lieLeviPar F n γ δ) : A * B ∈ lieLeviPar F n γ δ := by
   intro i j h
@@ -94,11 +107,21 @@ noncomputable def leviParCoordHomeomorph : lieLeviPar F n γ δ ≃ₜ (LeviParI
 def toLieLeviPar (l : leviPar F n γ δ) : lieLeviPar F n γ δ :=
   ⟨((l : GL (Fin n) F) : Matrix (Fin n) (Fin n) F), mem_leviPar_iff.1 l.2⟩
 
+/- English proof (translation)
+The claim follows from `isClosed_levi.inter (Measures.isClosed_blockUpper F n δ)`.
+-/
 theorem isClosed_leviPar : IsClosed (leviPar F n γ δ : Set (GL (Fin n) F)) := isClosed_levi.inter (Measures.isClosed_blockUpper F n δ)
 
 instance locallyCompactSpace_leviPar : LocallyCompactSpace (leviPar F n γ δ) :=
   (isClosed_leviPar F n γ δ).locallyCompactSpace
 
+/- English proof (translation)
+Establish `hemb : IsEmbedding (toLieLeviPar F n γ δ)` using `((isOpenEmbedding_val F n).isEmbedding.comp IsEmbedding.subtypeVal).codRestrict (lieLeviPar F n γ δ : Set (Matrix (Fin n) (Fin n) F)) fun l : leviPar F n γ δ => mem_leviPar_iff.1 l.2`. Use `⟨hemb, ?_⟩` and prove the remaining obligations. Establish `: Set.range (toLieLeviPar F n γ δ) = Subtype.val ⁻¹' Set.range (Units.val : GL (Fin n) F → Matrix (Fin n) (Fin n) F)`. Use extensionality with `A`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨l, rfl⟩`. Conclude with `⟨l, rfl⟩`. Introduce and unpack `⟨u, hu⟩`. Use `⟨⟨u, mem_leviPar_iff.2 ?_⟩, Subtype.ext hu⟩` and prove the remaining obligations. Rewrite using `[hu]`.
+
+Conclude with `A.2`. Rewrite using `[this]`. Conclude with `(isOpenEmbedding_val F n).isOpen_range.preimage continuous_subtype_val`.
+-/
 theorem isOpenEmbedding_toLieLeviPar : IsOpenEmbedding (toLieLeviPar F n γ δ) := by
   have hemb : IsEmbedding (toLieLeviPar F n γ δ) :=
     ((isOpenEmbedding_val F n).isEmbedding.comp IsEmbedding.subtypeVal).codRestrict
@@ -138,11 +161,17 @@ noncomputable def mulRightLeviPar (l : leviPar F n γ δ) :
         mul_mem_lieLeviPar hA (mem_leviPar_iff.1 (l⁻¹).2), ?_⟩
       simp [mul_assoc])
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coe_mulLeftLeviPar (l : leviPar F n γ δ) (A : lieLeviPar F n γ δ) :
     ((mulLeftLeviPar F n γ δ l A : lieLeviPar F n γ δ) : Matrix (Fin n) (Fin n) F) =
       ((l : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) * A :=
   rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coe_mulRightLeviPar (l : leviPar F n γ δ) (A : lieLeviPar F n γ δ) :
     ((mulRightLeviPar F n γ δ l A : lieLeviPar F n γ δ) : Matrix (Fin n) (Fin n) F) =
       A * ((l : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) :=
@@ -152,6 +181,9 @@ noncomputable def adLeviPar (l : leviPar F n γ δ) :
     lieLeviPar F n γ δ ≃ₗ[F] lieLeviPar F n γ δ :=
   (mulLeftLeviPar F n γ δ l).trans (mulRightLeviPar F n γ δ l⁻¹)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coe_adLeviPar (l : leviPar F n γ δ) (A : lieLeviPar F n γ δ) :
     ((adLeviPar F n γ δ l A : lieLeviPar F n γ δ) : Matrix (Fin n) (Fin n) F) =
       ((l : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) * A *
@@ -175,6 +207,9 @@ noncomputable def leviParChart :
 
 variable {F n γ δ}
 
+/- English proof (translation)
+Rewrite using `[LinearChart.leftModulus, distribHaarChar_pi_eq]`. Use `congr 1`. Conclude with `LinearEquiv.det_conj (mulLeftLeviPar F n γ δ l) (leviParCoord F n γ δ)`.
+-/
 theorem leviParChart_leftModulus (l : leviPar F n γ δ) :
     (leviParChart F n γ δ).leftModulus l =
       distribHaarChar F (LinearEquiv.det (mulLeftLeviPar F n γ δ l)) := by
@@ -182,6 +217,9 @@ theorem leviParChart_leftModulus (l : leviPar F n γ δ) :
   congr 1
   exact LinearEquiv.det_conj (mulLeftLeviPar F n γ δ l) (leviParCoord F n γ δ)
 
+/- English proof (translation)
+Rewrite using `[LinearChart.rightModulus, distribHaarChar_pi_eq]`. Use `congr 1`. Conclude with `LinearEquiv.det_conj (mulRightLeviPar F n γ δ l) (leviParCoord F n γ δ)`.
+-/
 theorem leviParChart_rightModulus (l : leviPar F n γ δ) :
     (leviParChart F n γ δ).rightModulus l =
       distribHaarChar F (LinearEquiv.det (mulRightLeviPar F n γ δ l)) := by
@@ -189,6 +227,9 @@ theorem leviParChart_rightModulus (l : leviPar F n γ δ) :
   congr 1
   exact LinearEquiv.det_conj (mulRightLeviPar F n γ δ l) (leviParCoord F n γ δ)
 
+/- English proof (translation)
+Use `eq_inv_of_mul_eq_one_left ?_` and prove the remaining obligations. Use extensionality with `A : 2`. Use `show (A : Matrix (Fin n) (Fin n) F) * ((l : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) * (((l⁻¹ : leviPar F n γ δ) : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) = A`. Simplify using `[mul_assoc]`.
+-/
 theorem mulRightLeviPar_inv (l : leviPar F n γ δ) :
     mulRightLeviPar F n γ δ l⁻¹ = (mulRightLeviPar F n γ δ l)⁻¹ := by
   refine eq_inv_of_mul_eq_one_left ?_
@@ -197,6 +238,9 @@ theorem mulRightLeviPar_inv (l : leviPar F n γ δ) :
       (((l⁻¹ : leviPar F n γ δ) : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) = A
   simp [mul_assoc]
 
+/- English proof (translation)
+Use `borelize F ↥(leviPar F n γ δ)`. Rewrite using `[(leviParChart F n γ δ).modularCharacter_eq l, leviParChart_leftModulus, leviParChart_rightModulus]`. Establish `: adLeviPar F n γ δ l = mulRightLeviPar F n γ δ l⁻¹ * mulLeftLeviPar F n γ δ l` using `rfl`. Rewrite using `[this, mulRightLeviPar_inv, map_mul, map_inv, map_mul, map_inv, div_eq_mul_inv, mul_comm]`.
+-/
 theorem modularCharacter_leviPar (l : leviPar F n γ δ) :
     modularCharacter l = distribHaarChar F (LinearEquiv.det (adLeviPar F n γ δ l)) := by
   borelize F ↥(leviPar F n γ δ)
@@ -205,6 +249,9 @@ theorem modularCharacter_leviPar (l : leviPar F n γ δ) :
   have : adLeviPar F n γ δ l = mulRightLeviPar F n γ δ l⁻¹ * mulLeftLeviPar F n γ δ l := rfl
   rw [this, mulRightLeviPar_inv, map_mul, map_inv, map_mul, map_inv, div_eq_mul_inv, mul_comm]
 
+/- English proof (translation)
+Use `borelize F ↥(leviPar F n γ δ)`. Set `V : OpenSubgroup (leviPar F n γ δ)` to `⟨(GLnLocal.integralGL F n).subgroupOf (leviPar F n γ δ), (GLnLocal.isOpen_integralGL F n).preimage continuous_subtype_val⟩`. Establish `hV : IsCompact (V : Set (leviPar F n γ δ))` using `(isClosed_leviPar F n γ δ).isClosedEmbedding_subtypeVal.isCompact_preimage (GLnLocal.isCompact_integralGL F n)`. Take `⟨h1, h2⟩` from `(leviParChart F n γ δ).modulus_eq_one_of_mem hV (v := l) hl`. Rewrite using `[(leviParChart F n γ δ).modularCharacter_eq, h1, h2, div_one]`.
+-/
 theorem modularCharacter_leviPar_eq_one_of_mem_integralGL (l : leviPar F n γ δ)
     (hl : (l : GL (Fin n) F) ∈ GLnLocal.integralGL F n) : modularCharacter l = 1 := by
   borelize F ↥(leviPar F n γ δ)
@@ -224,6 +271,13 @@ section Diagonal
 variable {F : Type*} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
   {n : ℕ} {α α' : Type*} [LinearOrder α] [LinearOrder α'] {γ : Fin n → α} {δ : Fin n → α'}
 
+/- English proof (translation)
+Use extensionality with `i j`. Use `show (if h : γ i = γ j ∧ ¬ δ j < δ i then (Pi.single t (1 : F) : LeviParIndex n γ δ → F) ⟨(i, j), h⟩ else 0) = _`. Rewrite using `[Matrix.single_apply]`. Distinguish the cases in `hij : t.1.1 = i ∧ t.1.2 = j`. Take `⟨h1, h2⟩` from `hij`.
+
+Establish `ht : (⟨(i, j), h1 ▸ h2 ▸ t.2⟩ : LeviParIndex n γ δ) = t`. Apply the tactic sequence `ext <;> simp [← h1, ← h2]`. Rewrite using `[dif_pos (h1 ▸ h2 ▸ t.2), if_pos ⟨h1, h2⟩, ht, Pi.single_eq_same]`. Rewrite using `[if_neg hij] split_ifs with h`. Rewrite using `[Pi.single_apply, if_neg]`.
+
+Introduce and unpack `rfl`. Conclude with `hij ⟨rfl, rfl⟩`. Both sides reduce to the same expression.
+-/
 theorem coe_leviParCoord_symm_single (t : LeviParIndex n γ δ) :
     (((leviParCoord F n γ δ).symm (Pi.single t 1) : lieLeviPar F n γ δ) :
       Matrix (Fin n) (Fin n) F) = Matrix.single t.1.1 t.1.2 1 := by
@@ -243,6 +297,9 @@ theorem coe_leviParCoord_symm_single (t : LeviParIndex n γ δ) :
       exact hij ⟨rfl, rfl⟩
     · rfl
 
+/- English proof (translation)
+Establish `h1 : ((g : Matrix (Fin n) (Fin n) F) * ((g⁻¹ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F)) i j = (1 : Matrix (Fin n) (Fin n) F) i j`. Rewrite using `[← Units.val_mul, mul_inv_cancel, Units.val_one]`. Rewrite `h1` using `[mul_apply, Finset.sum_eq_single i (fun k _ hk => by rw [hg i k (Ne.symm hk), zero_mul]) (by simp)]`. Conclude with `h1`.
+-/
 theorem mul_inv_apply_of_diagonal {g : GL (Fin n) F}
     (hg : ∀ i j, i ≠ j → (g : Matrix (Fin n) (Fin n) F) i j = 0) (i j : Fin n) :
     (g : Matrix (Fin n) (Fin n) F) i i * ((g⁻¹ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) i j =
@@ -254,6 +311,9 @@ theorem mul_inv_apply_of_diagonal {g : GL (Fin n) F}
     (by simp)] at h1
   exact h1
 
+/- English proof (translation)
+Establish `h` using `mul_inv_apply_of_diagonal hg i i`. Rewrite `h` using `[one_apply_eq]`. Conclude with `left_ne_zero_of_mul_eq_one h`.
+-/
 theorem apply_self_ne_zero_of_diagonal {g : GL (Fin n) F}
     (hg : ∀ i j, i ≠ j → (g : Matrix (Fin n) (Fin n) F) i j = 0) (i : Fin n) :
     (g : Matrix (Fin n) (Fin n) F) i i ≠ 0 := by
@@ -261,6 +321,11 @@ theorem apply_self_ne_zero_of_diagonal {g : GL (Fin n) F}
   rw [one_apply_eq] at h
   exact left_ne_zero_of_mul_eq_one h
 
+/- English proof (translation)
+Establish `h` using `mul_inv_apply_of_diagonal hg i j`. Establish `h0` using `apply_self_ne_zero_of_diagonal hg i`. Establish `: ((g⁻¹ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) i j = ((g : Matrix (Fin n) (Fin n) F) i i)⁻¹ * (1 : Matrix (Fin n) (Fin n) F) i j`. Rewrite using `[← h, ← mul_assoc, inv_mul_cancel₀ h0, one_mul]`. Rewrite using `[this, one_apply]`.
+
+Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem inv_apply_of_diagonal {g : GL (Fin n) F}
     (hg : ∀ i j, i ≠ j → (g : Matrix (Fin n) (Fin n) F) i j = 0) (i j : Fin n) :
     ((g⁻¹ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) i j =
@@ -273,6 +338,17 @@ theorem inv_apply_of_diagonal {g : GL (Fin n) F}
   rw [this, one_apply]
   split_ifs <;> simp
 
+/- English proof (translation)
+Establish `hQ : ∀ i j, i ≠ j → (((l : GL (Fin n) F)⁻¹ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) i j = 0` using `fun i j hij => by rw [inv_apply_of_diagonal hl, if_neg hij]`. Use `set P : Matrix (Fin n) (Fin n) F := ((l : GL (Fin n) F) : Matrix (Fin n) (Fin n) F)`. Use `set Q : Matrix (Fin n) (Fin n) F := (((l : GL (Fin n) F)⁻¹ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F)`. Set `A : (LeviParIndex n γ δ → F) →ₗ[F] (LeviParIndex n γ δ → F)` to `(((leviParCoord F n γ δ).symm.trans ((adLeviPar F n γ δ l).trans (leviParCoord F n γ δ))) : (LeviParIndex n γ δ → F) →ₗ[F] (LeviParIndex n γ δ → F))`. Establish `hdet : (LinearEquiv.det (adLeviPar F n γ δ l) : F) = LinearMap.det A`.
+
+Rewrite using `[← LinearEquiv.det_conj (adLeviPar F n γ δ l) (leviParCoord F n γ δ), LinearEquiv.coe_det]`. Both sides reduce to the same expression. Establish `hM : ∀ s t, LinearMap.toMatrix' A s t = P s.1.1 t.1.1 * Q t.1.2 s.1.2`. Introduce `s t`. Rewrite using `[LinearMap.toMatrix'_apply]`.
+
+Use `show ((adLeviPar F n γ δ l ((leviParCoord F n γ δ).symm (Pi.single t 1)) : lieLeviPar F n γ δ) : Matrix (Fin n) (Fin n) F) s.1.1 s.1.2 = _`. Rewrite using `[coe_adLeviPar, coe_leviParCoord_symm_single, mul_single_mul_apply]`. Establish `hD : LinearMap.toMatrix' A = diagonal fun s : LeviParIndex n γ δ => P s.1.1 s.1.1 * Q s.1.2 s.1.2`. Use extensionality with `s t`. Rewrite using `[hM]`.
+
+Distinguish the cases in `hst : s = t`. Substitute `hst` using the available equality. Rewrite using `[diagonal_apply_eq]`. Rewrite using `[diagonal_apply_ne _ hst]`. Distinguish the cases in `h1 : s.1.1 = t.1.1`.
+
+Establish `h2 : t.1.2 ≠ s.1.2` using `fun h2 => hst (Subtype.ext (Prod.ext h1 h2.symm))`. Rewrite using `[hQ _ _ h2, mul_zero]`. Rewrite using `[hl _ _ h1, zero_mul]`. Rewrite using `[hdet, ← LinearMap.det_toMatrix', hD, det_diagonal]`.
+-/
 theorem det_adLeviPar_of_diagonal (l : leviPar F n γ δ)
     (hl : ∀ i j, i ≠ j → ((l : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) i j = 0) :
     (LinearEquiv.det (adLeviPar F n γ δ l) : F) = ∏ s : LeviParIndex n γ δ,
@@ -310,6 +386,23 @@ theorem det_adLeviPar_of_diagonal (l : leviPar F n γ δ)
       · rw [hl _ _ h1, zero_mul]
   rw [hdet, ← LinearMap.det_toMatrix', hD, det_diagonal]
 
+/- English proof (translation)
+Rewrite using `[modularCharacter_leviPar, ← modulus_units, det_adLeviPar_of_diagonal l hl, map_prod]`. Use `set f : Fin n → ℝ≥0 := fun i => modulus (((l : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) i i)`. Establish `hf : ∀ i, f i ≠ 0` using `fun i => modulus_ne_zero (apply_self_ne_zero_of_diagonal hl i)`. Establish `hfac : ∀ s : LeviParIndex n γ δ, modulus (((l : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) s.1.1 s.1.1 * (((l : GL (Fin n) F)⁻¹ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) s.1.2 s.1.2) = f s.1.1 / f s.1.2`. Introduce `s`.
+
+Rewrite using `[map_mul, inv_apply_of_diagonal hl, if_pos rfl, map_inv₀, div_eq_mul_inv]`. Rewrite using `[Finset.prod_congr rfl fun s _ => hfac s]`. Express the relevant statement in the definitionally equal form `∏ s : LeviParIndex n γ δ, f s.1.1 / f s.1.2 = ∏ s : {ij : Fin n × Fin n // γ ij.1 = γ ij.2 ∧ δ ij.1 < δ ij.2}, f s.1.1 / f s.1.2`. Set `g : Fin n × Fin n → ℝ≥0` to `fun ij => f ij.1 / f ij.2`. Rewrite using `[← Finset.prod_subtype (Finset.univ.filter fun ij : Fin n × Fin n => γ ij.1 = γ ij.2 ∧ ¬ δ ij.2 < δ ij.1) (by simp) g, ← Finset.prod_subtype (Finset.univ.filter fun ij : Fin n × Fin n => γ ij.1 = γ ij.2 ∧ δ ij.1 < δ ij.2) (by simp) g]`.
+
+Establish `hsplit : (Finset.univ.filter fun ij : Fin n × Fin n => γ ij.1 = γ ij.2 ∧ ¬ δ ij.2 < δ ij.1) = (Finset.univ.filter fun ij : Fin n × Fin n => γ ij.1 = γ ij.2 ∧ δ ij.1 < δ ij.2) ∪ (Finset.univ.filter fun ij : Fin n × Fin n => γ ij.1 = γ ij.2 ∧ δ ij.1 = δ ij.2)`. Use extensionality with `ij`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_union, not_lt]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`.
+
+Break down `h2.lt_or_eq with h | h` into its components or cases. Conclude with `Or.inl ⟨h1, h⟩`. Conclude with `Or.inr ⟨h1, h⟩`. Introduce and unpack `(⟨h1, h2⟩ | ⟨h1, h2⟩)`. Conclude with `⟨h1, h2.le⟩`.
+
+Conclude with `⟨h1, h2.le⟩`. Establish `hdisj : Disjoint (Finset.univ.filter fun ij : Fin n × Fin n => γ ij.1 = γ ij.2 ∧ δ ij.1 < δ ij.2) (Finset.univ.filter fun ij : Fin n × Fin n => γ ij.1 = γ ij.2 ∧ δ ij.1 = δ ij.2)`. Rewrite using `[Finset.disjoint_filter]`. Introduce `ij _ h1 h2`. Conclude with `h1.2.ne h2.2`.
+
+Rewrite using `[hsplit, Finset.prod_union hdisj]`. Use `set S := Finset.univ.filter fun ij : Fin n × Fin n => γ ij.1 = γ ij.2 ∧ δ ij.1 = δ ij.2`. Establish `hswap : ∏ ij ∈ S, f ij.2 = ∏ ij ∈ S, f ij.1`. Use `Finset.prod_nbij' Prod.swap Prod.swap (fun ij hij => ?_) (fun ij hij => ?_) (fun _ _ => rfl) (fun _ _ => rfl) (fun _ _ => rfl)` and prove the remaining obligations. Simplify using `only [S, Finset.mem_filter, Finset.mem_univ, true_and, Prod.fst_swap, Prod.snd_swap] at hij ⊢`.
+
+Conclude with `⟨hij.1.symm, hij.2.symm⟩`. Simplify using `only [S, Finset.mem_filter, Finset.mem_univ, true_and, Prod.fst_swap, Prod.snd_swap] at hij ⊢`. Conclude with `⟨hij.1.symm, hij.2.symm⟩`. Establish `hone : ∏ ij ∈ S, g ij = 1`. Rewrite using `[Finset.prod_div_distrib, hswap, div_self]`.
+
+Conclude with `Finset.prod_ne_zero_iff.2 fun i _ => hf _`. Rewrite using `[hone, mul_one]`.
+-/
 theorem modularCharacter_leviPar_of_diagonal (l : leviPar F n γ δ)
     (hl : ∀ i j, i ≠ j → ((l : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) i j = 0) :
     modularCharacter l = ∏ s : {ij : Fin n × Fin n // γ ij.1 = γ ij.2 ∧ δ ij.1 < δ ij.2},
@@ -368,12 +461,18 @@ theorem modularCharacter_leviPar_of_diagonal (l : leviPar F n γ δ)
     exact Finset.prod_ne_zero_iff.2 fun i _ => hf _
   rw [hone, mul_one]
 
+/- English proof (translation)
+Use `⟨diagPow_mem_levi μ, fun i j hij => ?_⟩` and prove the remaining obligations. Establish `hne : i ≠ j` using `fun h => by rw [h] at hij; exact lt_irrefl _ hij`. Use `show (Cartan.diagPow F n μ : Matrix (Fin n) (Fin n) F) i j = 0`. Rewrite using `[Cartan.coe_diagPow, diagonal_apply_ne _ hne]`.
+-/
 theorem diagPow_mem_leviPar (μ : Fin n → ℤ) : Cartan.diagPow F n μ ∈ leviPar F n γ δ := by
   refine ⟨diagPow_mem_levi μ, fun i j hij => ?_⟩
   have hne : i ≠ j := fun h => by rw [h] at hij; exact lt_irrefl _ hij
   show (Cartan.diagPow F n μ : Matrix (Fin n) (Fin n) F) i j = 0
   rw [Cartan.coe_diagPow, diagonal_apply_ne _ hne]
 
+/- English proof (translation)
+Rewrite using `[modularCharacter_leviPar_of_diagonal _ fun i j hij => by show (Cartan.diagPow F n μ : Matrix (Fin n) (Fin n) F) i j = 0`. Rewrite using `[Cartan.coe_diagPow, diagonal_apply_ne _ hij]]`. Simplify using `only [Cartan.coe_diagPow, diagonal_apply_eq]`.
+-/
 theorem modularCharacter_leviPar_diagPow (μ : Fin n → ℤ) :
     modularCharacter (⟨Cartan.diagPow F n μ, diagPow_mem_leviPar μ⟩ : leviPar F n γ δ) =
       ∏ s : {ij : Fin n × Fin n // γ ij.1 = γ ij.2 ∧ δ ij.1 < δ ij.2},

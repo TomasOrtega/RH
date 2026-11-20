@@ -16,5 +16,8 @@ open GlobalTheory.MixModel GlobalTheory.MixPer GlobalTheory.Unf GlobalTheory.Spl
 open scoped TensorProduct nonZeroDivisors
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.IdealQuot.mul_subset_iff | exact GlobalTheory.IdealQuot.mul_subset_iff | (intros; apply GlobalTheory.IdealQuot.mul_subset_iff <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.mul_fractionalIdealCompletion_subset_iff_mem_quotient : ∀ (D : D7) (v : Pl D) (𝔞 𝔟 : FI D), 𝔞 ≠ 0 → 𝔟 ≠ 0 → ∀ s ∈ idAt D (· = v), (∀ a ∈ idV 𝔞 v, s * a ∈ idV 𝔟 v) ↔ s ∈ idV (𝔟 * 𝔞⁻¹) v := by
   first | exact @GlobalTheory.IdealQuot.mul_subset_iff | exact GlobalTheory.IdealQuot.mul_subset_iff | (intros; apply GlobalTheory.IdealQuot.mul_subset_iff <;> assumption)

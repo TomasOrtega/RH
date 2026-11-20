@@ -22,6 +22,9 @@ abbrev ChartIdx : Type u := ∀ k : Module.Free.ChooseBasisIndex ℤ E.X, (E.O (
 
 def chart (j : E.ChartIdx) : E.B.left.Opens := ⨅ k, (E.O (E.basis k)).L.U (j k)
 
+/- English proof (translation)
+The claim follows from `iInf_le (fun k => (E.O (E.basis k)).L.U (j k)) k`.
+-/
 lemma chart_le (j : E.ChartIdx) (k : Module.Free.ChooseBasisIndex ℤ E.X) :
     E.chart j ≤ (E.O (E.basis k)).L.U (j k) :=
   iInf_le (fun k => (E.O (E.basis k)).L.U (j k)) k

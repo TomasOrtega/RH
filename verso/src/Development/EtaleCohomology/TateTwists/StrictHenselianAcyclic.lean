@@ -18,6 +18,11 @@ def genHom (T K A : Type) [CommRing T] [CommRing K] [CommRing A] [Algebra T K] [
   Polynomial.eval₂RingHom (Algebra.TensorProduct.includeLeftRingHom (R := T) (A := K) (B := A))
     ((1 : K) ⊗ₜ[T] algebraMap (Polynomial T) A Polynomial.X)
 
+/- English proof (translation)
+Take `⟨J, _, _, D, t, s, hs, hj⟩` from `h`. Use `⟨J, inferInstance, inferInstance, D, (Functor.const J).map (CommRingCat.ofHom (algebraMap R B)) ≫ t, s, hs, fun j => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Establish `h1 : RingHom.Etale (t.app j).hom` using `(hj j).1`. Establish `h0 : RingHom.Etale (algebraMap R B)` using `RingHom.etale_algebraMap.2 inferInstance`. Conclude with `RingHom.Etale.stableUnderComposition (algebraMap R B) (t.app j).hom h0 h1`.
+
+Rewrite using `[NatTrans.comp_app, Category.assoc, (hj j).2, IsScalarTower.algebraMap_eq R B A]`. Both sides reduce to the same expression.
+-/
 theorem indEt_trans (R B A : Type) [CommRing R] [CommRing B] [CommRing A] [Algebra R B] [Algebra B A] [Algebra R A]
     [IsScalarTower R B A] [Algebra.Etale R B] (h : IndEt B A) : IndEt R A := by
   obtain ⟨J, _, _, D, t, s, hs, hj⟩ := h
@@ -71,10 +76,26 @@ def Deg1 : Prop := ∀ (q : ℕ) [NeZero q] (T : Type) [CommRing T] [IsDomain T]
   ∀ (A : Type) [CommRing A] [Algebra (Polynomial T) A] [Algebra T A] [IsScalarTower T (Polynomial T) A],
   SH A → IndEt (Polynomial T) A → ∀ i : ℤ, Subsingleton (Ht q (sp (FractionRing T ⊗[T] A)) 1 i)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ _ _ => Subsingleton.elim _ _, fun _ => ⟨0, Subsingleton.elim _ _⟩⟩`.
+-/
 theorem bij_of_subsingleton {α β : Type*} [Zero α] (f : α → β) (ha : Subsingleton α) (hb : Subsingleton β) :
     Function.Bijective f :=
   ⟨fun _ _ _ => Subsingleton.elim _ _, fun _ => ⟨0, Subsingleton.elim _ _⟩⟩
 
+/- English proof (translation)
+Introduce `q _ T _ _ _ hT hq B _ _ _ _ _ i`. Use `hB3 q T (FractionRing T) B i ?_` and prove the remaining obligations. Introduce `A _ _ _ _ hA hBA`. Use `letI : Algebra (Polynomial T) A := ((algebraMap B A).comp (algebraMap (Polynomial T) B)).toAlgebra`. Use `haveI : IsScalarTower (Polynomial T) B A := IsScalarTower.of_algebraMap_eq fun _ => rfl`.
+
+Use `haveI : IsScalarTower T (Polynomial T) A := IsScalarTower.of_algebraMap_eq fun x => by`. Rewrite using `[IsScalarTower.algebraMap_apply T B A, IsScalarTower.algebraMap_apply T (Polynomial T) B]`. Both sides reduce to the same expression. Establish `hI : IndEt (Polynomial T) A` using `indEt_trans (Polynomial T) B A hBA`. Take `⟨hn, hK, hP⟩` from `hAic T hT`.
+
+Take `⟨hH, hs⟩` from `hA`. Take `⟨hd, -, hinj⟩` from `hInd (Polynomial T) A hI`. Establish `hinjT : Function.Injective (algebraMap T A)`. Rewrite using `[IsScalarTower.algebraMap_eq T (Polynomial T) A, RingHom.coe_comp]`. Conclude with `hinj.comp Polynomial.C_injective`.
+
+Use `haveI := hLoc T A hinjT`. Establish `hqK : IsUnit (q : FractionRing T)` using `by simpa using hq.map (algebraMap T (FractionRing T))`. Introduce `n`. Break down `lt_trichotomy n 0 with h | h | h` into its components or cases. Conclude with `bij_of_subsingleton _ ((hA9 _ _).1 _ n h) ((hA9 _ _).1 _ n h)`.
+
+Substitute `h` using the available equality. Conclude with `hH0 q A _ _ ⟨(hP q hq).some.map (algebraMap T A)⟩ i`. Use `bij_of_subsingleton _ (hB2 _ A ⟨hH, hs⟩ _ n h) ?_` and prove the remaining obligations. Break down `(show n = 1 ∨ 2 ≤ n by omega) with h1 | h2` into its components or cases. Substitute `h1` using the available equality.
+
+Conclude with `hD1 q T hT hq A ⟨hH, hs⟩ hI i`. Conclude with `hD2 q (FractionRing T) _ (genHom T (FractionRing T) A) hqK (hBc T _ A hI) n i h2`.
+-/
 theorem goal_of (hA9 : EtaleChapterANine) (hB2 : StrictHenselianAcyclic) (hH0 : H0) (hB3 : B3ind) (hAic : AicBasic) (hInd : IndDom) (hLoc : LocDom)
     (hBc : BcInd) (hD2 : Deg2) (hD1 : Deg1) : LateralTheory.EtaleFoundations.EtaleChapterCThree := by
   intro q _ T _ _ _ hT hq B _ _ _ _ _ i

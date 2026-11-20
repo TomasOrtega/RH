@@ -21,6 +21,11 @@ open Classical in
 noncomputable def coeff (n : ℕ) (ok : List ℕ → Prop) (lab : ℕ → List ℕ → List ℤ) (b : List ℕ → ℂ) (d : List ℤ) : ℂ :=
   if h : ∃ s, ok s ∧ lab n s = d then b h.choose else 0
 
+/- English proof (translation)
+Distinguish the cases in `h : ∃ s, ok s ∧ lab n s = d`. Use `right`. Establish `hf : coeff n ok lab b d = b h.choose` using `dif_pos h`. Establish `h1` using `hx _ h.choose_spec.1`. Rewrite `h1` using `[h.choose_spec.2]`.
+
+Rewrite using `[hf]`. Conclude with `h1`. Use `left`. Conclude with `⟨fun hl => h (hL d hl), dif_neg h⟩`.
+-/
 theorem coeff_cases {H : Type} [AddCommGroup H] [Module ℂ H] (n : ℕ) (ok : List ℕ → Prop) (lab : ℕ → List ℕ → List ℤ)
     (isLab : List ℤ → Prop) (hL : ∀ d, isLab d → ∃ s, ok s ∧ lab n s = d) (b : List ℕ → ℂ)
     (ops : List ℤ → Module.End ℂ H) (x : H) (hx : ∀ s, ok s → ops (lab n s) x = b s • x) (d : List ℤ) :
@@ -36,6 +41,13 @@ theorem coeff_cases {H : Type} [AddCommGroup H] [Module ℂ H] (n : ℕ) (ok : L
   · left
     exact ⟨fun hl => h (hL d hl), dif_neg h⟩
 
+/- English proof (translation)
+Establish `hd : ∀ d g, ∑ γ ∈ rep d, e x (act g γ) = f d • e x g`. Introduce `d g`. Break down `hx d with ⟨h0, hf⟩ | h1` into its components or cases. Rewrite using `[h0, hf, Finset.sum_empty, zero_smul]`. Establish `h2` using `congrFun (hops (Finsupp.single d 1) x) g`.
+
+Rewrite `h2` using `[h1, map_smul, Finsupp.sum_single_index (by simp), one_smul]`. Conclude with `h2.symm`. Apply `he` to reduce the goal to its premises. Rewrite using `[hops c x, map_smul]`. Use function extensionality and compare the values at `g`.
+
+Simplify using `only [Pi.smul_apply, Finsupp.sum, hd, smul_smul, Finset.sum_smul]`.
+-/
 theorem eig_of_single {H Γ ι W : Type} [AddCommGroup H] [Module ℂ H] [AddCommGroup W] [Module ℂ W]
     (e : H →ₗ[ℂ] (Γ → W)) (he : Function.Injective e) (rep : List ℤ → Finset ι) (act : Γ → ι → Γ)
     (ops : (List ℤ →₀ ℂ) → Module.End ℂ H)
@@ -54,10 +66,22 @@ theorem eig_of_single {H Γ ι W : Type} [AddCommGroup H] [Module ℂ H] [AddCom
   funext g
   simp only [Pi.smul_apply, Finsupp.sum, hd, smul_smul, Finset.sum_smul]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem labIn_eq (n : ℕ) (s : List ℕ) : GlobalTheory.Hk3.labIn n s = labIn n s := rfl
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T A Ks _ _ _ R hM j t hV hOps P hP hc b y y' hb cV`. Establish `hL : ∀ d, IsLab (Vc D j) P d → ∃ s, Formalism.L2.Col.InertTypeOk (Vc D j).rank s ∧ labIn (Vc D j).rank s = d`. Introduce `d hl`. Take `⟨h1, h2, h3⟩` from `(GlobalTheory.T.isSphericalDoubleCosetLabel_iff_decreasing (Vc D j) P d).1 hl`. Take `⟨s, hs1, hs2, hs3, hs4⟩` from `(GlobalTheory.T.selfDual_antitone_list_iff_inertPrimeHeckeExponents (Vc D j).rank d).1 ⟨h1, h2, h3 hc⟩`.
+
+Conclude with `⟨s, ⟨hs2, hs3, hs1⟩, (labIn_eq _ _).symm.trans hs4.symm⟩`. Establish `hrep : ∀ d, ¬ IsLab (Vc D j) P d → GlobalTheory.Hk3.rep (Vc D j) P d = ∅`. Introduce `d hd`. Conclude with `dif_neg hd`. Establish `key : ∀ x : (R.HV j t).H, (∀ s, Formalism.L2.Col.InertTypeOk (Vc D j).rank s → hV P (Finsupp.single (labIn (Vc D j).rank s) 1) x = b s • x) → hV P cV x = (cV.sum fun d z => z * coeff (Vc D j).rank (Formalism.L2.Col.InertTypeOk (Vc D j).rank) labIn b d) • x`.
+
+Introduce `x hx`. Use `eig_of_single (R.HV j t).e (hM.HV j t).1 (GlobalTheory.Hk3.rep (Vc D j) P) (fun g γ => g * (finHom (Vc D j)).rangeRestrict γ) (hV P) (fun c x => hOps P hP c x) _ x ?_ cV` and prove the remaining obligations. Introduce `d`. Break down `coeff_cases (Vc D j).rank (Formalism.L2.Col.InertTypeOk (Vc D j).rank) labIn (IsLab (Vc D j) P) hL b (fun d => hV P (Finsupp.single d 1)) x hx d with ⟨h0, hf⟩ | h1` into its components or cases. Conclude with `Or.inl ⟨hrep d h0, hf⟩`.
+
+Conclude with `Or.inr h1`. Conclude with `⟨_, key y (fun s hs => (hb s hs).1), key y' (fun s hs => (hb s hs).2)⟩`.
+-/
 theorem veig : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks), R.IsModels → ∀ (j : Fin D.R.m) (t : T) (hV : Pl D.host.E → (List ℤ →₀ ℂ) → Module.End ℂ (R.HV j t).H), GlobalTheory.Hk3.IsOpsV R j t hV → ∀ P, Good R t P → conjPl P = P → ∀ (b : List ℕ → ℂ) (y y' : (R.HV j t).H), (∀ s, Formalism.L2.Col.InertTypeOk (Vc D j).rank s → hV P (Finsupp.single (labIn (Vc D j).rank s) 1) y = b s • y ∧ hV P (Finsupp.single (labIn (Vc D j).rank s) 1) y' = b s • y') → ∀ cV : List ℤ →₀ ℂ, ∃ σ : ℂ, hV P cV y = σ • y ∧ hV P cV y' = σ • y' := by
   intro D G _ _ Pl0 T A Ks _ _ _ R hM j t hV hOps P hP hc b y y' hb cV
   have hL : ∀ d, IsLab (Vc D j) P d → ∃ s, Formalism.L2.Col.InertTypeOk (Vc D j).rank s ∧ labIn (Vc D j).rank s = d := by

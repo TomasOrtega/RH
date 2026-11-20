@@ -69,6 +69,31 @@ open scoped BigOperators Real
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `f0` using `@GlobalTheory.siegelSubDomain_and_domainOpen`. Establish `f1` using `@GlobalTheory.thetaMTest_and_thetaSummable`. Establish `f2` using `@GlobalTheory.thetaHolo_of_domainOpen_of_mTest f0.2 f1.1`. Establish `f3` using `@GlobalTheory.classicalTheta_level_and_linearIndependent f0.1 f2 f1.1`. Establish `f4` using `@GlobalTheory.fourierCoeff_unitCube_translate_of_entire_periodic`.
+
+Establish `f5` using `@GlobalTheory.entire_periodic_eq_zero_of_fourierCoeff_eq_zero f4`. Establish `f6` using `@GlobalTheory.ClassicalTheta.card_le_pow_of_linearIndependent f4 f5`. Establish `f7` using `@GlobalTheory.ThetaSpan.mem_span_theta_of_level f6 f3`. Establish `f8` using `@GlobalTheory.riemannTheta_level_one_ne_zero f3`. Establish `f9` using `@GlobalTheory.exists_level_apply_ne_zero_of_two_le f8`.
+
+Establish `f10` using `@GlobalTheory.periodLattice_isLattice_of_mem_siegelH`. Establish `f11` using `@GlobalTheory.mem_periodLattice_of_theta_translate_eq_unit_mul f8 f10`. Establish `f12` using `@GlobalTheory.ThetaSeparation.level_three_separates_points f8 f11`. Establish `f13` using `@GlobalTheory.ThetaTangent.level_three_separates_tangent_vectors f8 f11 f10`. Establish `f14` using `@GlobalTheory.thetaConeIdeal_isPrime_and_ringKrullDim_le f3 f6`.
+
+Establish `f15` using `@GlobalTheory.noetherNormalization_primitive`. Establish `f16` using `@GlobalTheory.isConnected_and_dense_compl_hypersurface`. Establish `f17` using `@GlobalTheory.exists_mvPolynomial_of_poly_bound_off_hypersurface`. Establish `f18` using `@GlobalTheory.isConnected_unramified_cover_of_irreducible f16 f17`. Establish `f19` using `@GlobalTheory.exists_isConnected_principalOpen f15 f18`.
+
+Establish `f20` using `@GlobalTheory.principalOpen_dense_complexPoints f15 f16`. Establish `f21` using `@GlobalTheory.isConnected_basicOpen_complexPoints_of_dense f19 f20`. Establish `f22` using `@GlobalTheory.thetaCone_eq_zeroLocus f3 f7 f9 f13 f10 f14 f15 f21 f20`. Establish `f23` using `@GlobalTheory.FiniteCoverGrowth.integral_and_rational_of_polynomial_growth f16 f17`. Establish `f24` using `@GlobalTheory.ThetaRational.isIntegral_and_rational_theta f3 f7 f9 f12 f13 f10 f14 f22 f15 f23`.
+
+Establish `f25` using `@GlobalTheory.finite_of_isIntegral_of_birational_of_presentation f15`. Establish `f26` using `@GlobalTheory.theta_ring_generated_in_degree_one f3 f7 f24 f25`. Establish `f27` using `@GlobalTheory.theta_projectiveNormality_even f3 f7 f26`. Establish `f28` using `@GlobalTheory.existsUnique_point_of_ringHom`. Establish `f29` using `@GlobalTheory.T.exists_projectiveModel_polarisedTorus_theta f28 f3 f7 f9 f12 f14 f22`.
+
+Establish `f30` using `@GlobalTheory.valAt'_rules`. Establish `f31` using `@GlobalTheory.eq_of_valAt'_eq f30 f28`. Establish `f32` using `@GlobalTheory.theta_quotient_regular f31`. Establish `f33` using `@GlobalTheory.holFamily_lift f30`. Establish `f34` using `@GlobalTheory.existsUnique_hom_of_locally_regular f28 f31`.
+
+Establish `f35` using `@GlobalTheory.isReduced_tensorObj_complex`. Establish `f36` using `@GlobalTheory.ThetaAddition.addition_level_two_mul f3 f7`. Establish `f37` using `@GlobalTheory.thetaModel_groupLaw f33 f31 f34 f35 f36 f3 f7 f9 f10`. Establish `f38` using `@GlobalTheory.SmoothDim.ringKrullDim_affineOpen`. Establish `f39` using `@GlobalTheory.exists_holomorphic_section_of_etale`.
+
+Establish `f40` using `@GlobalTheory.HolChart.exists_holomorphic_chart f30 f28 f39`. Establish `f41` using `@GlobalTheory.ProjModelDim.isAbelianScheme_and_dim f38 f40 f3 f7 f13`. Establish `f42` using `@GlobalTheory.exists_thetaBundle_holUnif f31 f0.1 f2 f8 f10`. Establish `f43` using `@GlobalTheory.ThetaBundleSym.rigidified_sym_section f31 f0.1 f2`. Establish `f44` using `@GlobalTheory.T.relAmple_thetaBundle_projectiveModel f31 f3`.
+
+Establish `f45` using `@GlobalTheory.exists_coord_adapted f40`. Establish `f46` using `@GlobalTheory.kTriv_of_global`. Establish `f47` using `@GlobalTheory.T.translate_trivial_eq_one_of_finiteType_points`. Establish `f48` using `@GlobalTheory.translDiff_triv_of_artin_local`. Establish `f49` using `@GlobalTheory.TangentOrigin.tangent_bijection_of_values f30`.
+
+Establish `f50` using `@GlobalTheory.T.translation_fixing_bundle_artin_point_eq_one f33 f49`. Establish `f51` using `@GlobalTheory.thetaBundle_kTriv f10 f13 f3 f7 f45 f46 f47 f48 f50`. Establish `f52` using `@GlobalTheory.appellHumbert_normal_form_of_linear_exponent`. Establish `f53` using `@GlobalTheory.ThetaPositivity.re_form_pos_of_theta_ne_zero`. Establish `f54` using `@GlobalTheory.T.exists_thetaSeries_apply_ne_zero_of_large_form`.
+
+Establish `f55` using `@GlobalTheory.exists_complementary_theta_of_linear_map f10 f8 f52 f53 f54`. Establish `f56` using `@GlobalTheory.exists_isMonHom_of_map_periodLattice f31 f34 f35 f55 f3`. Conclude with `@GlobalTheory.polarisedTorus_algebraic_of_parts f27 f29 f32 f37 f41 f42 f43 f44 f51 f56`.
+-/
 theorem polarisedTorus_algebraic :
     (∀ (g : ℕ) (τ : Matrix (Fin g) (Fin g) ℂ) (a b : Fin g → ℂ), τ.IsSymm → (τ.map Complex.im).PosDef → (∀ i, a i = 0 ∨ a i = 1 / 2) → (∀ i, b i = 0 ∨ b i = 1 / 2) → ∃ (P : Out.PolAV (Sp ℂ)) (u : HolUnif P.A P.L g) (th : P.L.Sec), P.g = g ∧ (∀ z, z ∈ u.Λ ↔ ∃ m n : Fin g → ℤ, z = (fun i => (m i : ℂ)) + τ.mulVec (fun i => (n i : ℂ))) ∧ u.IsFn th (thetaChar τ a b) ∧ ∀ F : (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ), (∀ l ∈ u.Λ, F l ∈ u.Λ) → ∃ f : P.A ⟶ P.A, IsMonHom f ∧ ∀ z, u.ex (F z) = u.ex z ≫ f) := by
   have f0 := @GlobalTheory.siegelSubDomain_and_domainOpen
@@ -130,6 +155,45 @@ theorem polarisedTorus_algebraic :
   have f56 := @GlobalTheory.exists_isMonHom_of_map_periodLattice f31 f34 f35 f55 f3
   exact @GlobalTheory.polarisedTorus_algebraic_of_parts f27 f29 f32 f37 f41 f42 f43 f44 f51 f56
 
+/- English proof (translation)
+Introduce `hsec hva g τ a₀ b₀ hs hp ha₀ hb₀`. Establish `f0` using `@GlobalTheory.siegelSubDomain_and_domainOpen`. Establish `f1` using `@GlobalTheory.thetaMTest_and_thetaSummable`. Establish `f2` using `@GlobalTheory.thetaHolo_of_domainOpen_of_mTest f0.2 f1.1`. Establish `f3` using `@GlobalTheory.classicalTheta_level_and_linearIndependent f0.1 f2 f1.1`.
+
+Establish `f4` using `@GlobalTheory.fourierCoeff_unitCube_translate_of_entire_periodic`. Establish `f5` using `@GlobalTheory.entire_periodic_eq_zero_of_fourierCoeff_eq_zero f4`. Establish `f6` using `@GlobalTheory.ClassicalTheta.card_le_pow_of_linearIndependent f4 f5`. Establish `f7` using `@GlobalTheory.ThetaSpan.mem_span_theta_of_level f6 f3`. Establish `f8` using `@GlobalTheory.riemannTheta_level_one_ne_zero f3`.
+
+Establish `f9` using `@GlobalTheory.exists_level_apply_ne_zero_of_two_le f8`. Establish `f10` using `@GlobalTheory.periodLattice_isLattice_of_mem_siegelH`. Establish `f11` using `@GlobalTheory.mem_periodLattice_of_theta_translate_eq_unit_mul f8 f10`. Establish `f12` using `@GlobalTheory.ThetaSeparation.level_three_separates_points f8 f11`. Establish `f13` using `@GlobalTheory.ThetaTangent.level_three_separates_tangent_vectors f8 f11 f10`.
+
+Establish `f14` using `@GlobalTheory.thetaConeIdeal_isPrime_and_ringKrullDim_le f3 f6`. Establish `f15` using `@GlobalTheory.noetherNormalization_primitive`. Establish `f16` using `@GlobalTheory.isConnected_and_dense_compl_hypersurface`. Establish `f17` using `@GlobalTheory.exists_mvPolynomial_of_poly_bound_off_hypersurface`. Establish `f18` using `@GlobalTheory.isConnected_unramified_cover_of_irreducible f16 f17`.
+
+Establish `f19` using `@GlobalTheory.exists_isConnected_principalOpen f15 f18`. Establish `f20` using `@GlobalTheory.principalOpen_dense_complexPoints f15 f16`. Establish `f21` using `@GlobalTheory.isConnected_basicOpen_complexPoints_of_dense f19 f20`. Establish `f22` using `@GlobalTheory.thetaCone_eq_zeroLocus f3 f7 f9 f13 f10 f14 f15 f21 f20`. Establish `f23` using `@GlobalTheory.FiniteCoverGrowth.integral_and_rational_of_polynomial_growth f16 f17`.
+
+Establish `f24` using `@GlobalTheory.ThetaRational.isIntegral_and_rational_theta f3 f7 f9 f12 f13 f10 f14 f22 f15 f23`. Establish `f25` using `@GlobalTheory.finite_of_isIntegral_of_birational_of_presentation f15`. Establish `f26` using `@GlobalTheory.theta_ring_generated_in_degree_one f3 f7 f24 f25`. Establish `f27` using `@GlobalTheory.theta_projectiveNormality_even f3 f7 f26`. Establish `f28` using `@GlobalTheory.existsUnique_point_of_ringHom`.
+
+Establish `f29` using `@GlobalTheory.T.exists_projectiveModel_polarisedTorus_theta f28 f3 f7 f9 f12 f14 f22`. Establish `f30` using `@GlobalTheory.valAt'_rules`. Establish `f31` using `@GlobalTheory.eq_of_valAt'_eq f30 f28`. Establish `f32` using `@GlobalTheory.theta_quotient_regular f31`. Establish `f33` using `@GlobalTheory.holFamily_lift f30`.
+
+Establish `f34` using `@GlobalTheory.existsUnique_hom_of_locally_regular f28 f31`. Establish `f35` using `@GlobalTheory.isReduced_tensorObj_complex`. Establish `f36` using `@GlobalTheory.ThetaAddition.addition_level_two_mul f3 f7`. Establish `f37` using `@GlobalTheory.thetaModel_groupLaw f33 f31 f34 f35 f36 f3 f7 f9 f10`. Establish `f38` using `@GlobalTheory.SmoothDim.ringKrullDim_affineOpen`.
+
+Establish `f39` using `@GlobalTheory.exists_holomorphic_section_of_etale`. Establish `f40` using `@GlobalTheory.HolChart.exists_holomorphic_chart f30 f28 f39`. Establish `f41` using `@GlobalTheory.ProjModelDim.isAbelianScheme_and_dim f38 f40 f3 f7 f13`. Establish `f42` using `@GlobalTheory.exists_thetaBundle_holUnif f31 f0.1 f2 f8 f10`. Establish `f43` using `@GlobalTheory.ThetaBundleSym.rigidified_sym_section f31 f0.1 f2`.
+
+Establish `f44` using `@GlobalTheory.T.relAmple_thetaBundle_projectiveModel f31 f3`. Establish `f45` using `@GlobalTheory.exists_coord_adapted f40`. Establish `f46` using `@GlobalTheory.kTriv_of_global`. Establish `f47` using `@GlobalTheory.T.translate_trivial_eq_one_of_finiteType_points`. Establish `f48` using `@GlobalTheory.translDiff_triv_of_artin_local`.
+
+Establish `f49` using `@GlobalTheory.TangentOrigin.tangent_bijection_of_values f30`. Establish `f50` using `@GlobalTheory.T.translation_fixing_bundle_artin_point_eq_one f33 f49`. Establish `f51` using `@GlobalTheory.thetaBundle_kTriv f10 f13 f3 f7 f45 f46 f47 f48 f50`. Establish `f52` using `@GlobalTheory.appellHumbert_normal_form_of_linear_exponent`. Establish `f53` using `@GlobalTheory.ThetaPositivity.re_form_pos_of_theta_ne_zero`.
+
+Establish `f54` using `@GlobalTheory.T.exists_thetaSeries_apply_ne_zero_of_large_form`. Establish `f55` using `@GlobalTheory.exists_complementary_theta_of_linear_map f10 f8 f52 f53 f54`. Establish `f56` using `@GlobalTheory.exists_isMonHom_of_map_periodLattice f31 f34 f35 f55 f3`. Establish `hτ : τ ∈ SiegelH (Fin g)` using `⟨hs, hp⟩`. Take `⟨a, ha, rfl⟩` from `exists_ofRealVec_of_half a₀ ha₀`.
+
+Take `⟨b, hb, rfl⟩` from `exists_ofRealVec_of_half b₀ hb₀`. Establish `ea : (fun i => (ofRealVec a i).re) = a` using `funext fun i => Complex.ofReal_re _`. Establish `eb : (fun i => (ofRealVec b i).re) = b` using `funext fun i => Complex.ofReal_re _`. Rewrite using `[ea, eb]`. Take `⟨N, hN, hE, hgen⟩` from `f27 g τ hτ`.
+
+Take `⟨X, ex, D, hX⟩` from `f29 g τ hτ N hN`. Establish `hq` using `f32 g τ hτ N hN hgen X ex D hX`. Take `⟨inst, hc, hadd⟩` from `f37 g τ hτ N hN X ex D hX hq`. Take `⟨hab, hsm⟩` from `f41 g τ hτ N hN X ex D hX hq hc`. Take `⟨L, u, hL, hu⟩` from `f42 g τ hτ N hN X ex D hX hq hE hadd a b ha hb`.
+
+Take `⟨hr, hsy, th, hth⟩` from `f43 g τ hτ N hN X ex D hX hq hE hadd a b ha hb L u hL hu`. Establish `ham` using `f44 g τ hτ N hN X ex D hX hq hE hadd a b ha hb L u hL hu`. Establish `hk` using `f51 g τ hτ N hN X ex D hX hq hE hadd a b ha hb L u hL hu hab hsm`. Establish `hend` using `f56 g τ hτ N hN X ex D hX hq hadd`. Establish `hs'` using `hsec g τ hτ N hN X ex D hX hq hE hadd a b ha hb L u hL hu hab hsm`.
+
+Establish `hv'` using `hva g τ hτ N hN X ex D hX hq hE hadd a b ha hb L u hL hu hab hsm hs'`. Take `⟨hex, hΛ, -⟩` from `hu`. Substitute `hex` using the available equality. Establish `htan : (∀ v, IsTangent v → ∃! w, u.IsDiff w v) ∧ ∀ w, ∃! v, IsTangent v ∧ u.IsDiff w v`. Use `f49 X L g u (f45 X L g u hsm fun w hw => ?_)` and prove the remaining obligations.
+
+Take `⟨-, -, -, -, -, hD, hcov⟩` from `hX`. Establish `hN1 : 1 ≤ N` using `by omega`. Establish `hmem : (u.ex 0).left (default : PrimeSpectrum ℂ) ∈ ⨆ c, D c` using `by rw [hcov]; trivial`. Take `⟨c, hc⟩` from `TopologicalSpace.Opens.mem_iSup.1 hmem`. Establish `hc'` using `(top_le_preimage_iff_mem _ _).2 hc`.
+
+Take `⟨-, -, hDc, r, hr, -⟩` from `hD c`. Conclude with `f13 g τ hτ N hN 0 w _ fun f hf => fderiv_eq_mul_of_ratio _ (fun c => ((f3 g τ hτ N hN1).1 c).1) c 0 w ((hDc 0).1 hc') (fun c' z => valAt' (u.ex z).left (D c) (r c')) hr (fun c' => hw _ _ hc') f (f7 g τ hτ N hN1 f hf)`. Use `⟨{ A := X, isAb := hab, g := g, smoothDim := hsm, L := L, isLB := hL, rigid := hr, sym := hsy, ample := ham, ktriv := hk }, u, th, rfl, fun z => (hΛ z).trans (TorusAlg.mem_periodLattice_iff z), htan, ?_, hs', hv', fun F hF => ?_⟩` and prove the remaining obligations. Rewrite using `[thetaChar_ofRealVec_eq_theta]`. Conclude with `hth`.
+
+Conclude with `hend F fun l hl => (hΛ _).1 (hF l ((hΛ _).2 hl))`.
+-/
 theorem torusAlgebraic_of_sections_of_veryAmple :
     (∀ (g : ℕ) (τ : Matrix (Fin g) (Fin g) ℂ), τ ∈ SiegelH (Fin g) → ∀ N : ℕ, 3 ≤ N → ∀ (X
         : Over (Sp ℂ)) (ex : (Fin g → ℂ) → (𝟙_ (Over (Sp ℂ)) ⟶ X)) (D : (Fin g → Fin

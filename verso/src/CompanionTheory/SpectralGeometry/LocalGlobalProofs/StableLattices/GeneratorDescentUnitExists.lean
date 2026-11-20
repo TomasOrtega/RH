@@ -10,6 +10,17 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.CompanionTheory.RigDesc
 
+/- English proof (translation)
+Introduce `Z P Q g f M hM c hc τ hτ`. Establish `hm : (pullback.fst (g ≫ f) (g ≫ f) ≫ g) ≫ f = (pullback.snd (g ≫ f) (g ≫ f) ≫ g) ≫ f`. Simplify using `using pullback.condition (f := g ≫ f) (g := g ≫ f)`. Set `m : pullback (g ≫ f) (g ≫ f) ⟶ pullback f f` to `pullback.lift _ _ hm`. Establish `m₁ : m ≫ pullback.fst f f = pullback.fst (g ≫ f) (g ≫ f) ≫ g` using `pullback.lift_fst _ _ hm`.
+
+Establish `m₂ : m ≫ pullback.snd f f = pullback.snd (g ≫ f) (g ≫ f) ≫ g` using `pullback.lift_snd _ _ hm`. Take `⟨t, -, hv⟩` from `exists_gen hM (K' := PEmpty) (φ' := PEmpty.elim) (ε' := PEmpty.elim) (fun U _ h => by`. Simplify using `only [Fintype.prod_sum_type, Fintype.prod_unique, Fin.prod_univ_two, Sum.elim_inl, Sum.elim_inr, Matrix.cons_val_zero, Matrix.cons_val_one, m₁, m₂]`. Use the proof step `simp)`. Use the proof step `(LB.mulGen M _ _ _ _ (LB.mulGen M _ _ _ _ (LB.pullGen M _ _ τ (pullback.fst (g ≫ f) (g ≫ f))) (LB.pullGen M _ _ c m)) (LB.invGen M _ _ (LB.pullGen M _ _ τ (pullback.snd (g ≫ f) (g ≫ f)))))`.
+
+Use the proof step `(DVR.mulGen_isGen _ _ _ _ _ _ _ (DVR.mulGen_isGen _ _ _ _ _ _ _ (DVR.pullGen_isGen _ _ _ _ hτ _) (DVR.pullGen_isGen _ _ _ _ hc _)) (DVR.invGen_isGen _ _ _ _ (DVR.pullGen_isGen _ _ _ _ hτ _)))`. Establish `le : (⊤ : (pullback (g ≫ f) (g ≫ f)).Opens) ≤ LB.wchart M (PEmpty.elim : PEmpty → (pullback (g ≫ f) (g ≫ f) ⟶ P)) PEmpty.elim` using `fun _ _ => Set.mem_iInter.2 fun k => k.elim`. Use `⟨(res le (t.s PEmpty.elim)).val, Units.isUnit _, fun W a b hab w J hJ => ?_⟩` and prove the remaining obligations. Establish `e₁ : pullback.lift a b hab ≫ pullback.fst (g ≫ f) (g ≫ f) = a` using `pullback.lift_fst _ _ _`. Establish `e₂ : pullback.lift a b hab ≫ pullback.snd (g ≫ f) (g ≫ f) = b` using `pullback.lift_snd _ _ _`.
+
+Establish `e₃ : pullback.lift a b hab ≫ m = pullback.lift (a ≫ g) (b ≫ g) (by simpa using hab)`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, m₁, ← Category.assoc, e₁, pullback.lift_fst]`. Rewrite using `[Category.assoc, m₂, ← Category.assoc, e₂, pullback.lift_snd]`. Rewrite using `[IsUnit.unit_of_val_units]`.
+
+Use `((gm_res _ w le trivial _).trans (val_of t _ w J PEmpty.elim (fun k => k.elim)).symm).trans ?_` and prove the remaining obligations. Rewrite using `[hv W _ w J hJ, val_mul hJ, val_mul hJ, val_inv, val_pull hJ, val_pull hJ, val_pull hJ, e₁, e₂, e₃]`.
+-/
 theorem exists_unit_of_gen : ∀ {Z P Q : Scheme.{0}} (g : Z ⟶ P) (f : P ⟶ Q) (M : LB P), M.IsLB →
     ∀ (c : LB.Gen (LB.LinComb M (K := Fin 2) ![pullback.fst f f, pullback.snd f f] ![-1, 1])), c.IsGen →
     ∀ (τ : LB.Gen (M.pull g)), τ.IsGen →

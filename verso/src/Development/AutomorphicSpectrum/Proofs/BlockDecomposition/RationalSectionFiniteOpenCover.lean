@@ -13,6 +13,13 @@ open ReciprocityTheory.ChartRestriction.G.Geo (mcPts IsMultiHomog SameOrbit)
 
 namespace GlobalTheory.CompanionTheory.MixZ.ArchRep
 
+/- English proof (translation)
+Establish `hb` using `mem_pick ψ.isLB y`. Take `⟨W, hW, hyW, hWb⟩` from `exists_isAffineOpen_mem_and_subset (mem_ptsIn.1 hb)`. Establish `hg : genericPoint X ∈ W` using `gen_mem hyW`. Use `haveI : Nonempty W := ⟨⟨_, hg⟩⟩`. Use `functionField_isFractionRing_of_isAffineOpen X W hW` as an intermediate fact.
+
+Take `⟨a, d, hd, e⟩` from `IsFractionRing.div_surjective (A := Γ(X, W)) (r (pick ψ.isLB y) : X.functionField)`. Establish `hd0 : fnOf W hg d ≠ 0`. Establish `: algebraMap Γ(X, W) X.functionField d ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors hd`. Conclude with `this`. Use `⟨W, pick ψ.isLB y, a, d, hg, mem_ptsIn.2 hyW, hWb, hd0, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← e]`. Express the relevant statement in the definitionally equal form `algebraMap Γ(X, W) X.functionField a / algebraMap Γ(X, W) X.functionField d * fnOf W hg d = _`. Establish `e' : algebraMap Γ(X, W) X.functionField d = fnOf W hg d` using `rfl`. Establish `e'' : algebraMap Γ(X, W) X.functionField a = fnOf W hg a` using `rfl`. Rewrite using `[e', e'', div_mul_cancel₀ _ hd0]`.
+-/
 theorem exists_local_quot {k : Type} [CommRing k] {X : Scheme.{0}} [IsIntegral X] {q : X ⟶ Sp k} {σ : k →+* ℂ}
     {L : LB X} (ψ : GlobalTheory.Weight q σ L) (r : L.ι → X.functionFieldˣ) (y : GlobalTheory.CxPts q σ) :
     ∃ (W : X.Opens) (b : L.ι) (a d : Γ(X, W)) (h : genericPoint X ∈ W),
@@ -35,6 +42,11 @@ theorem exists_local_quot {k : Type} [CommRing k] {X : Scheme.{0}} [IsIntegral X
   have e'' : algebraMap Γ(X, W) X.functionField a = fnOf W hg a := rfl
   rw [e', e'', div_mul_cancel₀ _ hd0]
 
+/- English proof (translation)
+Establish `hb : y ∈ ptsIn q σ (L.U b)` using `mem_ptsIn.2 (hWb (mem_ptsIn.1 hy))`. Establish `hu` using `IsRatSec.unitAt ψ.isLB hr ho hb`. Establish `hv : ratVal (r b : X.functionField) y ≠ 0` using `ratVal_ne_zero hu`. Establish `ev' : ratVal (r b : X.functionField) y * ev q σ W d y = ev q σ W a y`. Rewrite using `[← ratVal_fnOf hy h d, ← ratVal_mul hu.regAt (regAt_fnOf (mem_ptsIn.1 hy) h d), e, ratVal_fnOf hy]`.
+
+Rewrite using `[logNorm_eq ψ hr ho hb, ← ev', norm_mul, Real.log_mul (norm_ne_zero_iff.2 hv) (norm_ne_zero_iff.2 hd)]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem logNorm_of_quot {k : Type} [CommRing k] {X : Scheme.{0}} [IsIntegral X] {q : X ⟶ Sp k} {σ : k →+* ℂ}
     {L : LB X} (ψ : GlobalTheory.Weight q σ L) {r : L.ι → X.functionFieldˣ} (hr : IsRatSec L r)
     {W : X.Opens} {b : L.ι} {a d : Γ(X, W)} {h : genericPoint X ∈ W} (hWb : W ≤ L.U b)
@@ -50,6 +62,11 @@ theorem logNorm_of_quot {k : Type} [CommRing k] {X : Scheme.{0}} [IsIntegral X] 
     Real.log_mul (norm_ne_zero_iff.2 hv) (norm_ne_zero_iff.2 hd)]
   ring
 
+/- English proof (translation)
+Use `choose W₀ b₀ a₀ d₀ h₀ hy₀ hWb₀ hd₀ e₀ using exists_local_quot ψ r`. Take `⟨t, ht⟩` from `isCompact_univ.elim_finite_subcover (fun y => ptsIn q σ (W₀ y)) (fun y => isOpen_ptsIn _) fun y _ => Set.mem_iUnion.2 ⟨y, hy₀ y⟩`. Set `c : Fin t.card → GlobalTheory.CxPts q σ` to `fun l => (t.equivFin.symm l).1`. Use `⟨t.card, fun l => W₀ (c l), fun l => b₀ (c l), fun l => a₀ (c l), fun l => d₀ (c l), fun y => ?_, fun l => hWb₀ _, fun l => ⟨h₀ _, hd₀ _⟩, fun l y hy ho hd => logNorm_of_quot ψ hr (hWb₀ _) (e₀ _) hy ho hd⟩` and prove the remaining obligations. Take `⟨z, hz, hyz⟩` from `Set.mem_iUnion₂.1 (ht (Set.mem_univ y))`.
+
+Use `⟨t.equivFin ⟨z, hz⟩, ?_⟩` and prove the remaining obligations. Simplify `hyz` using `[c]`.
+-/
 theorem logNorm_finite_rep {k : Type} [CommRing k] {X : Scheme.{0}} [IsIntegral X] {q : X ⟶ Sp k} {σ : k →+* ℂ}
     [CompactSpace (GlobalTheory.CxPts q σ)] {L : LB X} (ψ : GlobalTheory.Weight q σ L) {r : L.ι → X.functionFieldˣ} (hr : IsRatSec L r) :
     ∃ (N : ℕ) (W : Fin N → X.Opens) (b : Fin N → L.ι) (a d : ∀ l, Γ(X, W l)),

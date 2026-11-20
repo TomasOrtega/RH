@@ -23,9 +23,17 @@ variable {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V]
 
 def cyc (ρ : Representation ℂ G V) (x : V) : Submodule ℂ V := Submodule.span ℂ (Set.range fun g => ρ g x)
 
+/- English proof (translation)
+The claim follows from `Submodule.subset_span ⟨1, by simp⟩`.
+-/
 theorem self_mem_cyc (ρ : Representation ℂ G V) (x : V) : x ∈ cyc ρ x :=
   Submodule.subset_span ⟨1, by simp⟩
 
+/- English proof (translation)
+Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨h, rfl⟩` from `hy`. Conclude with `Submodule.subset_span ⟨g * h, by simp⟩`. Consider the case `zero => simp`.
+
+Consider the case `add a b _ _ ha hb => rw [map_add]`. Conclude with `add_mem ha hb`. Consider the case `smul c a _ ha => rw [map_smul]`. Conclude with `Submodule.smul_mem _ _ ha`.
+-/
 theorem cyc_stable (ρ : Representation ℂ G V) (x : V) (g : G) (v : V) (hv : v ∈ cyc ρ x) : ρ g v ∈ cyc ρ x := by
   induction hv using Submodule.span_induction with
   | mem y hy =>
@@ -41,9 +49,19 @@ def quoRep (σ : Representation ℂ G V) (M : Submodule ℂ V) (hM : ∀ g, ∀ 
   map_one' := by ext v; simp
   map_mul' a b := by ext v; simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem quoRep_mk (σ : Representation ℂ G V) (M : Submodule ℂ V) (hM : ∀ g, ∀ v ∈ M, σ g v ∈ M) (g : G) (v : V) :
     quoRep σ M hM g (M.mkQ v) = M.mkQ (σ g v) := rfl
 
+/- English proof (translation)
+Set `s : Set (Submodule ℂ V)` to `{U | (∀ g, ∀ v ∈ U, σ g v ∈ U) ∧ y ∉ U}`. Establish `h0 : (⊥ : Submodule ℂ V) ∈ s` using `⟨fun g v hv => by`. Rewrite `hv`, the goal using `[Submodule.mem_bot]`. Rewrite using `[hv, map_zero], by rwa [Submodule.mem_bot]⟩`. Establish `ih : ∀ c ⊆ s, IsChain (· ≤ ·) c → ∀ z ∈ c, ∃ ub ∈ s, ∀ u ∈ c, u ≤ ub`.
+
+Introduce `c hcs hc z hz`. Use `⟨sSup c, ⟨fun g v hv => ?_, fun hmem => ?_⟩, fun u hu => le_sSup hu⟩` and prove the remaining obligations. Rewrite `hv`, the goal using `[Submodule.mem_sSup_of_directed ⟨z, hz⟩ hc.directedOn]`. Take `⟨u, hu, hvu⟩` from `hv`. Conclude with `⟨u, hu, (hcs hu).1 g v hvu⟩`.
+
+Rewrite `hmem` using `[Submodule.mem_sSup_of_directed ⟨z, hz⟩ hc.directedOn]`. Take `⟨u, hu, hyu⟩` from `hmem`. Conclude with `(hcs hu).2 hyu`. Take `⟨U, -, hU⟩` from `zorn_le_nonempty₀ s ih ⊥ h0`. Conclude with `⟨U, hU.prop.1, hU.prop.2, fun U' hle h1 h2 => (hU.eq_of_le ⟨h1, h2⟩ hle).symm⟩`.
+-/
 theorem exists_coMax (σ : Representation ℂ G V) {y : V} (hy : y ≠ 0) :
     ∃ M : Submodule ℂ V, (∀ g, ∀ v ∈ M, σ g v ∈ M) ∧ y ∉ M ∧
       ∀ M' : Submodule ℂ V, M ≤ M' → (∀ g, ∀ v ∈ M', σ g v ∈ M') → y ∉ M' → M' = M := by
@@ -63,6 +81,17 @@ theorem exists_coMax (σ : Representation ℂ G V) {y : V} (hy : y ≠ 0) :
   obtain ⟨U, -, hU⟩ := zorn_le_nonempty₀ s ih ⊥ h0
   exact ⟨U, hU.prop.1, hU.prop.2, fun U' hle h1 h2 => (hU.eq_of_le ⟨h1, h2⟩ hle).symm⟩
 
+/- English proof (translation)
+Establish `hy0 : M.mkQ y ≠ 0` using `by rwa [Ne, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Use `{ exists_pair_ne := ⟨⊥, ⊤, fun e => hy0 ?_⟩, eq_bot_or_eq_top := fun T => ?_ }` and prove the remaining obligations. Establish `h1 : M.mkQ y ∈ (⊤ : Subrepresentation (quoRep σ M hM)).toSubmodule` using `Submodule.mem_top`. Rewrite `h1` using `[← e]`. Conclude with `h1`.
+
+Establish `hst : ∀ g, ∀ v ∈ T.toSubmodule.comap M.mkQ, σ g v ∈ T.toSubmodule.comap M.mkQ` using `fun g v hv => T.apply_mem_toSubmodule g hv`. Distinguish the cases in `hyT : y ∈ T.toSubmodule.comap M.mkQ`. Use `right`. Establish `e` using `hgen _ hst hyT`. Use `Subrepresentation.toSubmodule_injective (eq_top_iff.2 fun v _ => ?_)` and prove the remaining obligations.
+
+Take `⟨u, rfl⟩` from `M.mkQ_surjective v`. Establish `: u ∈ T.toSubmodule.comap M.mkQ` using `e ▸ Submodule.mem_top`. Conclude with `this`. Use `left`. Establish `hle : M ≤ T.toSubmodule.comap M.mkQ` using `fun v hv => by show M.mkQ v ∈ T.toSubmodule`.
+
+Rewrite using `[Submodule.mkQ_apply, (Submodule.Quotient.mk_eq_zero M).2 hv]`. Conclude with `zero_mem _`. Establish `e` using `hmax _ hle hst hyT`. Use `Subrepresentation.toSubmodule_injective (eq_bot_iff.2 fun v hv => ?_)` and prove the remaining obligations. Take `⟨u, rfl⟩` from `M.mkQ_surjective v`.
+
+Establish `: u ∈ M` using `e ▸ (show u ∈ T.toSubmodule.comap M.mkQ from hv)`. Use `show M.mkQ u ∈ (⊥ : Submodule ℂ (V ⧸ M))`. Rewrite using `[Submodule.mem_bot, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Conclude with `this`.
+-/
 theorem isIrreducible_quoRep (σ : Representation ℂ G V) {M : Submodule ℂ V} (hM : ∀ g, ∀ v ∈ M, σ g v ∈ M) {y : V}
     (hy : y ∉ M) (hmax : ∀ M' : Submodule ℂ V, M ≤ M' → (∀ g, ∀ v ∈ M', σ g v ∈ M') → y ∉ M' → M' = M)
     (hgen : ∀ S : Submodule ℂ V, (∀ g, ∀ v ∈ S, σ g v ∈ S) → y ∈ S → S = ⊤) : (quoRep σ M hM).IsIrreducible := by
@@ -95,6 +124,19 @@ theorem isIrreducible_quoRep (σ : Representation ℂ G V) {M : Submodule ℂ V}
 
 variable [TopologicalSpace G] [IsTopologicalGroup G]
 
+/- English proof (translation)
+Use `set σ := sub ρ (cyc ρ x) (cyc_stable ρ x) with hσ`. Use `set y : cyc ρ x := ⟨x, self_mem_cyc ρ x⟩ with hy`. Establish `hy0 : y ≠ 0` using `fun e => hx (congrArg Subtype.val e)`. Take `⟨M, hM, hyM, hmax⟩` from `exists_coMax σ hy0`. Establish `hgen : ∀ S : Submodule ℂ (cyc ρ x), (∀ g, ∀ v ∈ S, σ g v ∈ S) → y ∈ S → S = ⊤`.
+
+Introduce `S hS hyS`. Establish `hle : cyc ρ x ≤ S.map (cyc ρ x).subtype` using `Submodule.span_le.2 (by`. Introduce and unpack `_ ⟨g, rfl⟩`. Conclude with `⟨σ g y, hS g y hyS, rfl⟩)`. Use `eq_top_iff.2 fun v _ => ?_` and prove the remaining obligations.
+
+Take `⟨u, hu, e⟩` from `hle v.2`. Establish `: u = v` using `Subtype.ext e`. Conclude with `this ▸ hu`. Establish `hxs : x ∈ smoothPart ρ` using `GlobalTheory.SmGL.mem_smoothPart_of_nhds (Filter.mem_of_superset (hK.mem_nhds (one_mem _)) fun g hg => mem_fixed.1 hxK g hg)`. Establish `hsm : cyc ρ x ≤ smoothPart ρ` using `Submodule.span_le.2 (by`.
+
+Introduce and unpack `_ ⟨g, rfl⟩`. Conclude with `smoothPart_stable ρ g x hxs)`. Use `⟨_, inferInstance, inferInstance, quoRep σ M hM, M.mkQ, ⟨fun v => ?_, isIrreducible_quoRep σ hM hyM hmax hgen⟩, fun g u => rfl, ?_⟩` and prove the remaining obligations. Take `⟨u, rfl⟩` from `M.mkQ_surjective v`. Establish `h1 : IsOpen {g | ρ g u = u}` using `hsm u.2`.
+
+Use `GlobalTheory.SmGL.mem_smoothPart_of_nhds (ρ := quoRep σ M hM) (Filter.mem_of_superset (h1.mem_nhds (by simp)) fun g hg => ?_)` and prove the remaining obligations. Use `show quoRep σ M hM g (M.mkQ u) = M.mkQ u`. Rewrite using `[quoRep_mk]`. Use `congr 1`. Conclude with `Subtype.ext hg`.
+
+Rewrite using `[Ne, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]` and apply the resulting hypothesis.
+-/
 theorem exists_irrSmooth_quot (ρ : Representation ℂ G V) {K : Subgroup G} (hK : IsOpen (K : Set G)) {x : V} (hx : x ≠ 0)
     (hxK : x ∈ fixed ρ K) :
     ∃ (W : Type) (_ : AddCommGroup W) (_ : Module ℂ W) (π : Representation ℂ G W) (f : cyc ρ x →ₗ[ℂ] W),
@@ -129,6 +171,15 @@ theorem exists_irrSmooth_quot (ρ : Representation ℂ G V) {K : Subgroup G} (hK
     exact Subtype.ext hg
   · rwa [Ne, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]
 
+/- English proof (translation)
+Choose the witnesses or unpack the hypotheses as in `⟨l₀, hl₀⟩ : ∃ l₀ : Module.Dual ℂ V, l₀ y ≠ 0 := by`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Conclude with `hy0 ((Module.forall_dual_apply_eq_zero_iff ℂ _).1 hcon)`. Set `l : Module.Dual ℂ V` to `((l₀ y)⁻¹ • l₀) ∘ₗ idem hπ hc`.
+
+Establish `hl1 : l y = 1`. Simplify using `[l, idem_of_mem hπ hc hy, hl₀]`. Use `⟨fun g => l (π g y), ⟨y, hy, l, mem_fixed.2 fun k hk => ?_, hl1, fun _ => rfl⟩, fun g a e => ?_⟩` and prove the remaining obligations. Use extensionality with `v`. Simplify using `only [Representation.dual_apply, Module.Dual.transpose_apply, LinearMap.comp_apply, l]`.
+
+Rewrite using `[idem_apply_mem hπ hc (inv_mem hk)]`. Rewrite `e` using `[GlobalTheory.LGrp.Zonal.heckeVec_dosetInd hπ hc hK hy]`. Establish `h1` using `congrArg l e`. Rewrite `h1` using `[map_smul, map_smul, hl1, smul_eq_mul, smul_eq_mul, mul_one]`. Establish `h2 : l (idem hπ hc (π g y)) = l (π g y)`.
+
+Simplify using `only [l, LinearMap.comp_apply]`. Rewrite using `[idem_of_mem hπ hc (idem_mem hπ hc _)]`. Rewrite `h1` using `[h2]`. Conclude with `h1.symm`.
+-/
 theorem exists_zonal {π : Representation ℂ G V} (hπ : IsSmooth π) {K : Subgroup G} (hc : IsCompact (K : Set G))
     (hK : IsCommensurated K) {y : V} (hy : y ∈ fixed π K) (hy0 : y ≠ 0) :
     ∃ ω : G → ℂ, GlobalTheory.SmGL.IsZonal π K ω ∧ ∀ (g : G) (a : ℂ), heckeVec π K (dosetInd ℂ K g) y = a • y →
@@ -153,6 +204,23 @@ theorem exists_zonal {π : Representation ℂ G V} (hπ : IsSmooth π) {K : Subg
     rw [h2] at h1
     exact h1.symm
 
+/- English proof (translation)
+Use `set T := (P.finite_cosets_in_doset hK g).toFinset with hT`. Establish `hmem : ∀ c : G ⧸ K, c ∈ T ↔ c.out ∈ DoubleCoset.doubleCoset g (K : Set G) (K : Set G)` using `fun c => by`. Rewrite using `[hT, Set.Finite.mem_toFinset, DoubleCoset.mem_doubleCoset]`. Conclude with `⟨fun ⟨a, b, e⟩ => ⟨a, a.2, b, b.2, e⟩, fun ⟨a, ha, b, hb, e⟩ => ⟨⟨a, ha⟩, ⟨b, hb⟩, e⟩⟩`. Establish `hmul : ∀ z ∈ DoubleCoset.doubleCoset g (K : Set G) (K : Set G), ∀ k ∈ K, z * k ∈ DoubleCoset.doubleCoset g (K : Set G) (K : Set G)` using `fun z hz k hk => by`.
+
+Take `⟨a, ha, b, hb, rfl⟩` from `DoubleCoset.mem_doubleCoset.1 hz`. Conclude with `DoubleCoset.mem_doubleCoset.2 ⟨a, ha, b * k, K.mul_mem hb hk, by group⟩`. Establish `hU : DoubleCoset.doubleCoset g (K : Set G) (K : Set G) = ⋃ c ∈ T, (c.out • (K : Set G))`. Use extensionality with `z`. Simplify using `only [Set.mem_iUnion, exists_prop]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hz`. Take `⟨u, hu⟩` from `QuotientGroup.mk_out_eq_mul K z`. Use `⟨(z : G ⧸ K), (hmem _).2 ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hu]`.
+
+Conclude with `hmul z hz u u.2`. Rewrite using `[hu]`. Conclude with `Set.mem_smul_set.2 ⟨(u : G)⁻¹, inv_mem u.2, by simp [smul_eq_mul]⟩`. Introduce and unpack `⟨c, hc, hz⟩`. Take `⟨k, hk, rfl⟩` from `Set.mem_smul_set.1 hz`.
+
+Conclude with `hmul _ ((hmem c).1 hc) k hk`. Establish `hd : (T : Set (G ⧸ K)).PairwiseDisjoint fun c => c.out • (K : Set G)`. Introduce `c _ c' _ hne`. Use `Set.disjoint_left.2 fun z hz hz' => hne ?_` and prove the remaining obligations. Take `⟨k, hk, rfl⟩` from `Set.mem_smul_set.1 hz`.
+
+Take `⟨k', hk', e⟩` from `Set.mem_smul_set.1 hz'`. Establish `h1 : (c.out : G ⧸ K) = c'.out`. Rewrite using `[QuotientGroup.eq]`. Establish `e' : c'.out * k' = c.out * k` using `e`. Establish `: c.out⁻¹ * c'.out = k * k'⁻¹`.
+
+Rewrite using `[eq_mul_inv_iff_mul_eq, mul_assoc, e']`. Use `group`. Rewrite using `[this]`. Conclude with `K.mul_mem hk (inv_mem hk')`. Simplify using `using h1`.
+
+Establish `hm : ∀ c ∈ T, MeasurableSet (c.out • (K : Set G))` using `fun c _ => (hKo.smul c.out).measurableSet`. Rewrite using `[Measure.real, hU, measure_biUnion_finset hd hm, Finset.sum_congr rfl fun c _ => by`. Rewrite using `[measure_smul, hμ]]`. Simplify using the standard rewrite rules.
+-/
 theorem real_doset_eq_card [MeasurableSpace G] [BorelSpace G] (μ : Measure G) [μ.IsMulLeftInvariant]
     {K : Subgroup G} (hKo : IsOpen (K : Set G)) (hμ : μ (K : Set G) = 1) (hK : IsCommensurated K) (g : G) :
     μ.real (DoubleCoset.doubleCoset g (K : Set G) (K : Set G)) = ((P.finite_cosets_in_doset hK g).toFinset.card : ℝ) := by
@@ -204,12 +272,32 @@ section Analysis
 
 open GlobalTheory.GLDoubling
 
+/- English proof (translation)
+Take `⟨n, rfl⟩` from `Int.eq_ofNat_of_zero_le hm`. Establish `e : ((n : ℤ) : ℂ) = (n : ℂ)` using `by simp`. Rewrite using `[e, mul_comm, Complex.cpow_nat_mul, h]`. Simplify using the standard rewrite rules.
+-/
 theorem cpow_term {q a X : ℂ} (h : q ^ a = X) (m : ℤ) (hm : 0 ≤ m) : q ^ (a * (m : ℂ)) = X ^ m.toNat := by
   obtain ⟨n, rfl⟩ := Int.eq_ofNat_of_zero_le hm
   have e : ((n : ℤ) : ℂ) = (n : ℂ) := by simp
   rw [e, mul_comm, Complex.cpow_nat_mul, h]
   simp
 
+/- English proof (translation)
+Establish `hq0 : (q : ℂ) ≠ 0` using `by exact_mod_cast (by omega : q ≠ 0)`. Establish `h1 : (q : ℂ) ^ (-(s + 1 / 2)) = (q : ℂ) ^ (((r : ℂ) - 1) / 2) * X`. Rewrite using `[← hX, ← Complex.cpow_add _ _ hq0]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `h2 : ∀ i ∈ Finset.Icc 1 r, (q : ℂ) ^ (-(2 * s + (i : ℂ))) = (q : ℂ) ^ (r - i) * X ^ 2`. Introduce `i hi`. Take `⟨-, hir⟩` from `Finset.mem_Icc.1 hi`. Rewrite using `[← hX, ← Complex.cpow_nat_mul, ← Complex.cpow_natCast, ← Complex.cpow_add _ _ hq0]`. Use `congr 1`.
+
+Move the coercions through the operations in `[Nat.cast_sub hir]`. Expand and normalize the polynomial expressions, which then agree. Establish `e1 : lFactor q α (s + 1 / 2) = eulerFac (Finset.univ.val.map α) ((q : ℂ) ^ (((r : ℂ) - 1) / 2) * X)`. Rewrite using `[GlobalTheory.GLDoubling.lFactor, h1, eulerFac_map]`. Establish `e2 : lFactor q α⁻¹ (s + 1 / 2) = eulerFac ((Finset.univ.val.map α).map (·⁻¹)) ((q : ℂ) ^ (((r : ℂ) - 1) / 2) * X)`.
+
+Rewrite using `[Multiset.map_map, GlobalTheory.GLDoubling.lFactor, h1]`. Conclude with `(eulerFac_map Finset.univ (fun i => (α i)⁻¹) _).symm`. Establish `e3 : invNormFactor q r s = ∏ i ∈ Finset.range r, (1 - (q : ℂ) ^ i * X ^ 2)`. Rewrite using `[invNormFactor, Finset.prod_congr rfl fun i hi => by rw [h2 i hi]]`. Use `Finset.prod_nbij' (fun i => r - i) (fun i => r - i) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations.
+
+Introduce `i hi`. Use `Finset.mem_Icc.1 hi` as an intermediate fact. Conclude with `Finset.mem_range.2 (by omega)`. Introduce `i hi`. Use `Finset.mem_range.1 hi` as an intermediate fact.
+
+Conclude with `Finset.mem_Icc.2 (by omega)`. Introduce `i hi`. Use `Finset.mem_Icc.1 hi` as an intermediate fact. Use `show r - (r - i) = i`. Use linear arithmetic over natural numbers and integers.
+
+Introduce `i hi`. Use `Finset.mem_range.1 hi` as an intermediate fact. Use `show r - (r - i) = i`. Use linear arithmetic over natural numbers and integers. Introduce `i _`.
+
+Both sides reduce to the same expression. Rewrite using `[e1, e2, e3]`.
+-/
 theorem rhs_eq {q r : ℕ} (hq : 1 < q) (α : Fin r → ℂˣ) (s X : ℂ) (hX : (q : ℂ) ^ (-((r : ℂ) / 2 + s)) = X) :
     lFactor q α (s + 1 / 2) * lFactor q α⁻¹ (s + 1 / 2) * invNormFactor q r s =
       eulerFac (Finset.univ.val.map α) ((q : ℂ) ^ (((r : ℂ) - 1) / 2) * X) *
@@ -269,6 +357,33 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 open GlobalTheory.GLDoubling GlobalTheory.SplitWeil ValuativeRel MeasureTheory
 
+/- English proof (translation)
+Introduce `H E _ _ w r V _ _ ρ x B hx ϖ hϖ t ht c hc`. Use `letI := GlobalTheory.LocalData.complRel w`. Use `haveI := GlobalTheory.LocalData.isLocalField w`. Use `haveI : CharZero (w.adicCompletion E) := charZero_of_injective_algebraMap (algebraMap E _).injective`. Take `⟨ho, hcp⟩` from `SatCompare.isOpen_isCompact_KGL w r`.
+
+Establish `hcomm : IsCommensurated (KGL w r)` using `Formalism.UG.Final.GLintComm E w r`. Establish `hKO : KO (w.adicCompletion E) (Fin r) = KGL w r` using `GlobalTheory.SmGL.SphCompletion.KO_completion w r`. Take `⟨W, _, _, π, f, hirr, hf, hf0⟩` from `exists_irrSmooth_quot ρ ho hx.1 hx.2.1`. Establish `hx' : IsSatVecGL w (sub ρ (cyc ρ x) (cyc_stable ρ x)) ⟨x, self_mem_cyc ρ x⟩ B` using `IsSatVecGL.of_map (cyc ρ x).subtype (fun _ _ => rfl) Subtype.val_injective hx`. Establish `hy` using `hx'.map f hf hf0`.
+
+Establish `hS` using `SatCompare.hasSatakeGL_of_isSatVecGL hirr hy`. Take `⟨α, rfl, hα⟩` from `(GlobalTheory.LGrp.SatakeCompare.hasSatakeGL_iff _ _ _ π _).1 hS`. Establish `hcy : ∀ d, heckeVec π (KGL w r) (dosetInd ℂ (KGL w r) (t d)) (f ⟨x, self_mem_cyc ρ x⟩) = c d • f ⟨x, self_mem_cyc ρ x⟩` using `fun d => by`. Establish `hm` using `Formalism.UG.Final.DosetIndMem _ (KGL w r) ℂ (t d)`. Establish `e1 : heckeVec (sub ρ (cyc ρ x) (cyc_stable ρ x)) (KGL w r) (dosetInd ℂ (KGL w r) (t d)) ⟨x, self_mem_cyc ρ x⟩ = c d • (⟨x, self_mem_cyc ρ x⟩ : cyc ρ x)`.
+
+Use `Subtype.val_injective ?_` and prove the remaining obligations. Use `map_heckeVec (ρ := sub ρ (cyc ρ x) (cyc_stable ρ x)) (ρ' := ρ) hcomm hm (cyc ρ x).subtype (fun _ _ => rfl) ⟨x, self_mem_cyc ρ x⟩` as an intermediate fact. Conclude with `this.trans (hc d)`. Rewrite using `[← map_heckeVec hcomm hm f hf, e1, map_smul]`. Take `⟨ω, hω, hval⟩` from `exists_zonal hirr.1 hcp hcomm hy.2.1 hy.1`.
+
+Use `letI : MeasurableSpace (GL (Fin r) (w.adicCompletion E)) := borel _`. Use `haveI : BorelSpace (GL (Fin r) (w.adicCompletion E)) := ⟨rfl⟩`. Choose the witnesses or unpack the hypotheses as in `⟨μ, hμH, hμ⟩ : ∃ μ : Measure (GL (Fin r) (w.adicCompletion E)), μ.IsHaarMeasure ∧ μ (KGL w r : Set _) = 1 := by`. Set `K₀ : TopologicalSpace.PositiveCompacts (GL (Fin r) (w.adicCompletion E))` to `⟨⟨KGL w r, hcp⟩, by rw [ho.interior_eq]; exact ⟨1, one_mem _⟩⟩`. Conclude with `⟨Measure.haarMeasure K₀, inferInstance, Measure.haarMeasure_self⟩`.
+
+Establish `hμ' : μ (KO (w.adicCompletion E) (Fin r) : Set _) = 1` using `by rw [hKO]; exact hμ`. Establish `hω' : GlobalTheory.SmGL.IsZonal π (KO (w.adicCompletion E) (Fin r)) ω` using `by rw [hKO]; exact hω`. Set `u : (w.adicCompletion E)ˣ` to `Units.mk0 ϖ (SatCompare.ne_zero_of_isUnifV hϖ)`. Establish `hu : valuation (w.adicCompletion E) (u : w.adicCompletion E) = uniformizer (w.adicCompletion E)` using `GlobalTheory.Orb.IsUnif.valuation_eq (ϖ := u) hϖ`. Establish `htt : ∀ d, t d = torusElt (w.adicCompletion E) (Fin r) u d` using `fun d => Units.ext ((ht d).trans (val_torusElt u d).symm)`.
+
+Establish `hc2 : ∀ d, c d = (μ.real (cell (w.adicCompletion E) (Fin r) u d) : ℂ) * ω (torusElt (w.adicCompletion E) (Fin r) u d)` using `fun d => by`. Establish `e1` using `real_doset_eq_card μ ho hμ hcomm (t d)`. Establish `e2 : cell (w.adicCompletion E) (Fin r) u d = DoubleCoset.doubleCoset (t d) (KGL w r : Set _) (KGL w r : Set _)`. Rewrite using `[htt d, cell, hKO]`. Rewrite using `[e2, e1, ← htt d, Complex.ofReal_natCast]`.
+
+Conclude with `hval (t d) (c d) (hcy d)`. Take `⟨s₀, hs⟩` from `GlobalTheory.Published.UnramifiedDoublingGL.hasSum H (w.adicCompletion E) r μ hμ' hu hα hω'`. Establish `hq1 : 1 < qV E w` using `one_lt_absNorm w`. Establish `hqr : resCard (w.adicCompletion E) = qV E w` using `GlobalTheory.LocLanglands.resCard_eq_normV w`. Establish `hq0 : (0 : ℝ) < qV E w` using `by exact_mod_cast (by omega : 0 < qV E w)`.
+
+Establish `hlq : 0 < Real.log (qV E w)` using `Real.log_pos (by exact_mod_cast hq1)`. Use `⟨Real.exp (-(s₀ + r / 2) * Real.log (qV E w)), Real.exp_pos _, fun X hX0 hXδ => ?_⟩` and prove the remaining obligations. Take `⟨s, hsd⟩ : ∃ s : ℝ, s = -Real.log X / Real.log (qV E w) - r / 2` from `⟨_, rfl⟩`. Establish `hss : s₀ < s`. Establish `h1` using `Real.log_lt_log hX0 hXδ`.
+
+Rewrite `h1` using `[Real.log_exp]`. Rewrite using `[hsd, lt_sub_iff_add_lt, lt_div_iff₀ hlq]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hXq : (qV E w : ℂ) ^ (-((r : ℂ) / 2 + (s : ℂ))) = (X : ℂ)`. Establish `e : -((r : ℂ) / 2 + (s : ℂ)) = ((Real.log X / Real.log (qV E w) : ℝ) : ℂ)`.
+
+Rewrite using `[hsd]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `e' : ((qV E w : ℝ)) ^ (Real.log X / Real.log (qV E w)) = X`. Rewrite using `[Real.rpow_def_of_pos hq0, mul_div_cancel₀ _ hlq.ne', Real.exp_log hX0]`.
+
+Rewrite using `[e, ← Complex.ofReal_natCast, ← Complex.ofReal_cpow hq0.le, e']`. Establish `hsum` using `hs (s : ℂ) (by simpa using hss)`. Rewrite `hsum` using `[hqr, rhs_eq hq1 α (s : ℂ) (X : ℂ) hXq]`. Establish `hfun : (fun d : {d : Fin r → ℤ // Antitone d} => c d.1 * (X : ℂ) ^ (∑ i, |d.1 i|).toNat) = fun e => (μ.real (cell (w.adicCompletion E) (Fin r) u e.1) : ℂ) * ((qV E w : ℂ) ^ (-((r : ℂ) / 2 + (s : ℂ)) * ((∑ i, |e.1 i| : ℤ) : ℂ)) * ω (torusElt (w.adicCompletion E) (Fin r) u e.1))`. Use function extensionality and compare the values at `e`.
+
+Rewrite using `[hc2 e.1, cpow_term hXq _ (Finset.sum_nonneg fun _ _ => abs_nonneg _)]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hfun]`. Conclude with `hsum`.
+-/
 theorem hasSum_hecke_eigenvalues : GlobalTheory.Published.UnramifiedDoublingGL → ∀ (E : Type) [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E)) (r : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ (GL (Fin r) (w.adicCompletion E)) V) (x : V) (B : Multiset ℂˣ), IsSatVecGL w ρ x B → ∀ ϖ, IsUnifV E w ϖ → ∀ t : (Fin r → ℤ) → GL (Fin r) (w.adicCompletion E), (∀ d, (t d).1 = Matrix.diagonal fun i => ϖ ^ d i) → ∀ c : (Fin r → ℤ) → ℂ, (∀ d, heckeVec ρ (KGL w r) (dosetInd ℂ (KGL w r) (t d)) x = c d • x) → ∃ δ : ℝ, 0 < δ ∧ ∀ X : ℝ, 0 < X → X < δ → HasSum (fun d : {d : Fin r → ℤ // Antitone d} => c d.1 * (X : ℂ) ^ (∑ i, |d.1 i|).toNat) (eulerFac B ((qV E w : ℂ) ^ (((r : ℂ) - 1) / 2) * X) * eulerFac (B.map (·⁻¹)) ((qV E w : ℂ) ^ (((r : ℂ) - 1) / 2) * X) * ∏ i ∈ Finset.range r, (1 - (qV E w : ℂ) ^ i * (X : ℂ) ^ 2)) := by
   intro H E _ _ w r V _ _ ρ x B hx ϖ hϖ t ht c hc
   letI := GlobalTheory.LocalData.complRel w

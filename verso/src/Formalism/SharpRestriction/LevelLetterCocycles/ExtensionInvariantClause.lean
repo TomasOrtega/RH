@@ -20,11 +20,19 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {RA RW : Type} [CommRing RA] [CommRing RW] [Algebra O RA] [Algebra O RW]
     {inclR : RA →ₐ[O] RW} {φR : RW →ₐ[O] RW} {gR : G → (RW →ₐ[O] RW)} {πA : RA}
 
+/- English proof (translation)
+Rewrite using `[← algebraMap_smul (LetA O n) c x]`. Conclude with `(W.N T).smul_mem _ hx`.
+-/
 theorem smulO_mem (W : LocWach PD LL O v n) (T : LocLat G Qp LL O) (c : O) {x : W.DD T}
     (hx : x ∈ W.N T) : c • x ∈ W.N T := by
   rw [← algebraMap_smul (LetA O n) c x]
   exact (W.N T).smul_mem _ hx
 
+/- English proof (translation)
+Use `first`. Consider the case `exact (W.map f).map_smul_of_tower c x`. Consider the case `exact LinearMap.map_smul_of_tower (W.map f) c x`. Consider the case `(rw [← algebraMap_smul (LetA O n) c x, ← algebraMap_smul (LetA O n) c (W.map f x)]`. Conclude with `(W.map f).map_smul _ x)`.
+
+Consider the case `simp`.
+-/
 theorem map_smulO (W : LocWach PD LL O v n) {T T' : LocLat G Qp LL O} (f : LatHom T.L T'.L)
     (c : O) (x : W.DD T) : W.map f (c • x) = c • W.map f x := by
   first
@@ -34,6 +42,9 @@ theorem map_smulO (W : LocWach PD LL O v n) {T T' : LocLat G Qp LL O} (f : LatHo
      exact (W.map f).map_smul _ x)
   | simp
 
+/- English proof (translation)
+Establish `hφ : ∀ w, W.map ι (W.φD T w) = W.φD Tp (W.map ι w)` using `fun w => W.map_φ ι w`. Establish `hγ : ∀ w, W.map ι (W.γD T g w) = W.γD Tp g (W.map ι w)` using `fun w => W.map_γ ι g w`. Apply `hinj` to reduce the goal to its premises. Simplify using `only [map_sub, map_zero, hφ, hγ, hy, hz, W.φγ_comm]`. Normalize the expressions using the abelian group laws.
+-/
 theorem pull_cocycle (W : LocWach PD LL O v n) {T Tp : LocLat G Qp LL O} (ι : LatHom T.L Tp.L)
     (hinj : Function.Injective (W.map ι)) (g : W.Gam) (x : W.DD Tp) (y z : W.DD T)
     (hy : W.map ι y = W.φD Tp x - x) (hz : W.map ι z = W.γD Tp g x - x) :
@@ -44,6 +55,43 @@ theorem pull_cocycle (W : LocWach PD LL O v n) {T Tp : LocLat G Qp LL O} (ι : L
   simp only [map_sub, map_zero, hφ, hγ, hy, hz, W.φγ_comm]
   abel
 
+/- English proof (translation)
+Unfold `Formalism.MainNotions.LiftingTheory.coreExt`. Introduce `T Tp ι π Mi hi hT hTp hJ c hc hext k hk`. Unfold `Formalism.MainNotions.LiftingTheory.InImgA at hk`. Take `⟨e, he, hspan, hφe, hγe, x, hx, hxe⟩` from `hk`. Unfold `Formalism.MainNotions.ElementDenominator.coreHerrExt at hH`.
+
+Take `⟨u, hu⟩` from `hH T Tp ι π hT hTp c hc hext e ⟨hspan, hφe, hγe⟩`. Establish `hext'` using `hext`. Unfold `Formalism.MainNotions.LiftingTheory.IsExtOf at hext'`. Take `⟨hses, -⟩` from `hext'`. Establish `hinj : Function.Injective (W.map ι)`.
+
+Establish `hs'` using `hses`. Unfold `Formalism.WeaklyAdmissibleFiltrations.IsSESLat at hs'`. Take `⟨hιinj, -, honto, hex, hsat⟩` from `hs'`. Unfold `Formalism.WeaklyAdmissibleFiltrations.LatHom.Onto at honto`. Set `ι' : ↥T.L.T →ₗ[O] ↥Tp.L.T` to `(ι.f.restrictScalars O).restrict ι.T_le`.
+
+Set `π' : ↥Tp.L.T →ₗ[O] ↥W.one.L.T` to `(π.f.restrictScalars O).restrict π.T_le`. Establish `hπs : Function.Surjective π'`. Introduce and unpack `⟨w, hw⟩`. Take `⟨x0, hx0, hxw⟩` from `honto w hw`. Conclude with `⟨⟨x0, hx0⟩, Subtype.ext hxw⟩`.
+
+Use `haveI : Module.Free O ↥W.one.L.T := W.one.L.free`. Take `⟨s, hs⟩` from `Module.projective_lifting_property π' LinearMap.id hπs`. Set `p0 : ↥Tp.L.T →ₗ[O] ↥Tp.L.T` to `LinearMap.id - s ∘ₗ π'`. Establish `hrange : ∀ b : ↥Tp.L.T, p0 b ∈ LinearMap.range ι'`. Introduce `b`.
+
+Establish `h0 : π' (p0 b) = 0`. Rewrite using `[show p0 b = b - s (π' b) from rfl, map_sub, ← LinearMap.comp_apply π' s, hs, LinearMap.id_apply, sub_self]`. Take `⟨y0, hy0⟩` from `(hex _).1 (congrArg Subtype.val h0)`. Establish `hyT : y0 ∈ T.L.T` using `hsat y0 (by rw [hy0]; exact (p0 b).2)`. Conclude with `⟨⟨y0, hyT⟩, Subtype.ext hy0⟩`.
+
+Establish `hι'inj : Function.Injective ι'`. Introduce `a b hab`. Conclude with `Subtype.ext (hιinj (congrArg Subtype.val hab))`. Set `e` to `LinearEquiv.ofInjective ι' hι'inj`. Set `cr` to `p0.codRestrict (LinearMap.range ι') hrange`.
+
+Set `r : ↥Tp.L.T →ₗ[O] ↥T.L.T` to `e.symm.toLinearMap ∘ₗ cr`. Establish `hr : ∀ a, r (ι' a) = a`. Introduce `a`. Establish `hπι : π' (ι' a) = 0`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Use `show π.f (ι.f (a : T.V)) = 0`. Conclude with `(hex _).2 ⟨a, rfl⟩`. Establish `hcr : cr (ι' a) = e a`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [cr, p0, LinearMap.codRestrict_apply, LinearMap.sub_apply, LinearMap.id_apply, LinearMap.comp_apply, hπι, map_zero, sub_zero, e, LinearEquiv.ofInjective_apply]`.
+
+Express the relevant statement in the definitionally equal form `e.symm (cr (ι' a)) = a`. Rewrite using `[hcr, e.symm_apply_apply]`. Establish `hL : Function.LeftInverse (LinearMap.lTensor RW r) (LinearMap.lTensor RW ι')`. Introduce `t0`. Establish `h3 : r ∘ₗ ι' = LinearMap.id` using `LinearMap.ext hr`.
+
+Establish `h4` using `congrArg (fun f => f t0) (congrArg (LinearMap.lTensor RW) h3)`. Simplify `h4` using `only [LinearMap.lTensor_comp, LinearMap.comp_apply, LinearMap.lTensor_id, LinearMap.id_apply]`. Introduce `x1 x2 h12`. Apply `E.jD_inj T` to reduce the goal to its premises. Apply `hL.injective` to reduce the goal to its premises.
+
+Establish `h1` using `E.jD_map ι x1`. Establish `h2` using `E.jD_map ι x2`. Rewrite `h1` using `[h12]`. Conclude with `h1.symm.trans h2`. Establish `hx' : ((u⁻¹ : Oˣ) : O) • x ∈ W.N Tp` using `smulO_mem W Tp _ hx`.
+
+Establish `hx'e : W.map π (((u⁻¹ : Oˣ) : O) • x) = (((u⁻¹ : Oˣ) : O) * ((PD.p : ℕ) : O) ^ k) • e`. Rewrite using `[map_smulO, hxe, smul_smul]`. Establish `hJ' : Formalism.MainNotions.DeltaInvariantLattices.JumpsLet W T Mi hi` using `fun τ i hτ => hJ i τ hτ`. Unfold `Formalism.MainNotions.DeltaInvariantLattices.WachMaxJumpBound at h8`. Establish `h8'` using `h8 T Mi hi hT hJ'`.
+
+Unfold `Formalism.MainNotions.DeltaInvariantLattices.p8 at h8'`. Take `⟨⟨y, hy, hy'⟩, ⟨z, hz, hz'⟩⟩` from `h8' Tp ι π hses hTp e he hφe hγe _ hx' _ hx'e`. Establish `hcoc : (y, z) ∈ W.divisibleCocycles T`. Establish `h0` using `pull_cocycle W ι hinj W.gam _ y z hy' hz'`. Simplify using `only [LocWach.divisibleCocycles, herrCocycles, LinearMap.mem_ker, LinearMap.coprod_apply, LinearMap.sub_apply, LinearMap.neg_apply, LinearMap.id_apply]`.
+
+Rewrite using `[← sub_eq_add_neg]`. Conclude with `h0`. Use `⟨y, z, hcoc, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `hy2 : W.Q ^ Formalism.MainNotions.DeltaInvariantLattices.mx Mi • y ∈ W.N T` using `hy`. Establish `hn : n ≠ 0` using `by haveI := PD.finK₀`.
+
+Rewrite using `[W.n_eq]`. Conclude with `Module.finrank_pos.ne'`. Use `haveI : NeZero n := ⟨hn⟩`. Establish `hle : Formalism.MainNotions.DeltaInvariantLattices.mx Mi ≤ Mmax n Mi`. Unfold `Formalism.MainNotions.DeltaInvariantLattices.mx Mmax`.
+
+Apply `ciSup_le` to reduce the goal to its premises. Introduce `i`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Nat.sub_add_cancel hle, pow_add, mul_smul]`. Conclude with `(W.N T).smul_mem _ hy2`.
+
+Take `⟨z', hz'N, hzz⟩` from `hz`. Conclude with `⟨z', hz'N, hzz.symm⟩`. Rewrite using `[hu _ _ hx'e y z hcoc hy' hz', ← mul_assoc, Units.mul_inv, one_mul]`.
+-/
 theorem coreExt_of (W : LocWach PD LL O v n) (E : EtTie W RA RW inclR φR gR πA)
     (h8 : Formalism.MainNotions.DeltaInvariantLattices.WachMaxJumpBound W) (hH : Formalism.MainNotions.ElementDenominator.coreHerrExt W) : coreExt W := by
   unfold Formalism.MainNotions.LiftingTheory.coreExt
@@ -141,6 +189,27 @@ theorem coreExt_of (W : LocWach PD LL O v n) (E : EtTie W RA RW inclR φR gR πA
     exact ⟨z', hz'N, hzz.symm⟩
   · rw [hu _ _ hx'e y z hcoc hy' hz', ← mul_assoc, Units.mul_inv, one_mul]
 
+/- English proof (translation)
+Use `liftb_neZero W` as an intermediate fact. Introduce `hA T Tp ι π Mi hi cT cTp hJ c hc hExt k hImg`. Establish `hs : W.s = 1` using `hA.2.1`. Establish `hp2 : PD.p ≠ 2` using `hA.2.2`. Establish `hK : W.gamK = W.gam` using `W.gamK_eq_one hs hp2`.
+
+Establish `hcard : W.DelF.card = PD.p - 1`. Rewrite using `[(h9 T cT hs hp2).1, finrank_eq_one_case_A W hA, Nat.div_one]`. Take `⟨d, hd⟩` from `hdex hcard`. Take `⟨e, he, hspan, hφe, hγe, x, hx, hxe⟩` from `hImg`. Establish `hses` using `hExt.1`.
+
+Establish `hinj` using `linj_map_inj W E ι π hses`. Take `⟨u, hu⟩` from `hH hs hp2 T Tp ι π cT cTp c hc hExt e ⟨hspan, hφe, hγe⟩`. Establish `hxb` using `lifta_avg_N W Tp d x hx`. Establish `hmb : W.map π (lifta_avg W Tp d x) = ((PD.p : ℕ) : O) ^ k • e`. Rewrite using `[lifta_avg_map, hxe]`.
+
+Conclude with `lifta_avg_fix W W.one d hd _ (fun δ _ => by rw [LinearMap.map_smul, hγe])`. Establish `hx'N : ((u⁻¹ : Oˣ) : O) • lifta_avg W Tp d x ∈ W.NΔ Tp` using `(W.NΔ Tp).smul_mem _ hxb`. Establish `hmap : W.map π (((u⁻¹ : Oˣ) : O) • lifta_avg W Tp d x) = (((u⁻¹ : Oˣ) : O) * ((PD.p : ℕ) : O) ^ k) • e`. Rewrite using `[map_smulO, hmb, smul_smul]`. Generalize the expression as in `((u⁻¹ : Oˣ) : O) • lifta_avg W Tp d x = x' at hx'N hmap`.
+
+Establish `h8T` using `h8 T Mi hi cT (liftb_jl W T Mi hi hJ)`. Rewrite `h8T` using `[liftb_mx_eq]`. Take `⟨⟨y, hy, hyι⟩, ⟨z, hz, hzι⟩⟩` from `h8T Tp ι π hses cTp e he hφe hγe x' hx'N.1 _ hmap`. Establish `hzι' : W.map ι z = W.γD Tp W.gamK x' - x'` using `by rw [hK]; exact hzι`. Establish `hyΔ : ∀ δ ∈ W.DelF, W.γD T δ y = y` using `fun δ hδ => by`.
+
+Apply `hinj` to reduce the goal to its premises. Rewrite using `[W.map_γ, hyι, map_sub, ← W.φγ_comm, hx'N.2 δ hδ]`. Establish `hzΔ : ∀ δ ∈ W.DelF, W.γD T δ z = z` using `fun δ hδ => by`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[W.map_γ, hzι', map_sub, ← W.γD_mul, mul_comm, W.γD_mul, hx'N.2 δ hδ]`.
+
+Establish `hZ : (y, z) ∈ W.wachCocyclesDelta T`. Rewrite using `[lifta_mem_Z1DΔ]`. Use `⟨?_, fun δ hδ => ⟨hyΔ δ hδ, hzΔ δ hδ⟩⟩` and prove the remaining obligations. Rewrite using `[hK]`. Conclude with `(liftb_mem_Z1D W T y z).2 (pull_cocycle W ι hinj W.gam x' y z hyι hzι)`.
+
+Take `⟨h9r, h9m⟩` from `uniformizer_ring_and_module_clauses W h9 hA T cT`. Use `⟨y, z, hZ, ?_, ?_, ?_⟩` and prove the remaining obligations. Take `⟨w, hw⟩` from `h9r.2.2.2.2.1`. Rewrite `hw` using `[eisenstein_at_uniformizer]`. Establish `hyN : W.Q ^ Mmax n Mi • y ∈ W.N T` using `hy`.
+
+Rewrite `hyN` using `[lifta_Q_eq W hs, hw, mul_pow, mul_smul]`. Establish `h2` using `(W.N T).smul_mem (((w⁻¹ : (LetA O n)ˣ) : LetA O n) ^ Mmax n Mi) hyN`. Rewrite `h2` using `[smul_smul, ← mul_pow, Units.inv_mul, one_pow, one_smul]`. Then use the resulting hypothesis. Take `⟨z₁, hz₁, hzz⟩` from `hz`. Establish `hzN : z ∈ W.N T`.
+
+Rewrite using `[← hzz]`. Conclude with `(W.N T).smul_mem _ hz₁`. Conclude with `lifta_interN W T h9r h9m z ⟨hzN, hzΔ⟩ ⟨z₁, hz₁, by rw [← hzz, ← lifta_X_eq W hs]; rfl⟩`. Rewrite using `[hu x' _ hx'N.2 hmap y z hZ hyι hzι', ← mul_assoc, Units.mul_inv, one_mul]`.
+-/
 theorem coreExtΔ_of (W : LocWach PD LL O v n)
     (E : EtTie W RA RW inclR φR gR πA)
     (hdex : W.DelF.card = PD.p - 1 → ∃ d : O, d * (W.DelF.card : O) = 1)
@@ -206,6 +275,9 @@ namespace Formalism.MainNotions.UnusedSlot35
 
 open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.BasicNotions.Loc
 
+/- English proof (translation)
+Introduce `hadm`. Take `⟨-, h8, hU⟩` from `hadm`. Introduce `l _ K s LL h`. Conclude with `ExtCPf.coreExt_of _ ((F l).E K s LL h).tie (h8 l K s LL h) (hU l K s LL h).1`.
+-/
 theorem extension_clause (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) :
     Formalism.MainNotions.UnusedSlot35.ExtensionClassTheorem D HW F := by
   intro hadm
@@ -213,6 +285,17 @@ theorem extension_clause (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) 
   intro l _ K s LL h
   exact ExtCPf.coreExt_of _ ((F l).E K s LL h).tie (h8 l K s LL h) (hU l K s LL h).1
 
+/- English proof (translation)
+Introduce `hadm`. Take `⟨-, h8, h9, -, hU⟩` from `hadm`. Introduce `l _ K s LL h`. Use `ExtCPf.coreExtΔ_of _ ((F l).E K s LL h).tie ?_ (h8 l K s LL h) (h9 l K s LL h) (hU l K s LL h).2` and prove the remaining obligations. Introduce `hc`.
+
+Rewrite using `[hc, (D.loc l).PD_p K]`. Establish `hl : 1 ≤ l` using `(Fact.out : l.Prime).one_le`. Establish `hv : (D.loc l).v LL ((l : ↥LL.1) - 1) = 0`. Rewrite using `[sub_eq_add_neg, AddValuation.map_add_of_distinct_val, (D.loc l).v_l LL, AddValuation.map_neg, AddValuation.map_one]`. Conclude with `min_eq_right zero_le_one`.
+
+Rewrite using `[(D.loc l).v_l LL, AddValuation.map_neg, AddValuation.map_one]`. Conclude with `one_ne_zero`. Establish `hne : (l : ↥LL.1) - 1 ≠ 0`. Introduce `h0`. Rewrite `hv` using `[h0, AddValuation.map_zero]`.
+
+Simplify using `at hv`. Establish `hvx : 0 ≤ (D.loc l).v LL ((l : ↥LL.1) - 1)⁻¹`. Simplify using `only [AddValuation.map_inv, hv, neg_zero, le_refl]`. Use `⟨⟨((l : ↥LL.1) - 1)⁻¹, ((D.loc l).v_O LL _).1 hvx⟩, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Simplify using `[Nat.cast_sub hl, hne]`.
+-/
 theorem extension_invariant_clause (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) :
     Formalism.MainNotions.UnusedSlot35.InvariantCocycleClassTheorem D HW F := by
   intro hadm

@@ -5,6 +5,9 @@ import GroundTheory.HeightsAndTheta.Heights.Antisymmetric.PNefOnFibresRelabel
 namespace CoverDenseAlt
 open GroundTheory.Heights₂.Heights
 
+/- English proof (translation)
+The claim follows from `have hM : OrbitChartMax.Statement := OrbitChartMax.proof have hQ : OrbitChartQuot.Statement := OrbitChartQuot.proof have hIff : OrbitCenterMemIff.Statement := OrbitCenterMemIff.proof HeightRecR.proof OrbitDivVertical.proof (OrbitFiniteSum.proof OrbitDegreeRatio.proof (OrbitLocalS …`.
+-/
 theorem heightRecR_full : HeightRecR.Statement :=
   have hM : OrbitChartMax.Statement := OrbitChartMax.proof
   have hQ : OrbitChartQuot.Statement := OrbitChartQuot.proof
@@ -21,6 +24,9 @@ theorem heightRecR_full : HeightRecR.Statement :=
         (OrbitCenterDivSupp.proof hIff (OrbitCenterPrime.proof hIff) SubringPrimeMaximal.proof)))
     (OrbitArchSum.of_conjSum OrbitConjSum.proof)
 
+/- English proof (translation)
+The claim follows from `OrbitChartDehom.proof OrbitChartMax.proof OrbitChartQuot.proof`.
+-/
 theorem chartDehom_full : OrbitChartDehom.Statement :=
   OrbitChartDehom.proof OrbitChartMax.proof OrbitChartQuot.proof
 

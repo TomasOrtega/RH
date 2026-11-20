@@ -22,6 +22,9 @@ def weilPair (μ η : Fˣ →* ℂˣ) (nrm : AbsoluteValue F ℝ) (g : GL (Fin r
       Φ (((h⁻¹ : GL (Fin r ⊕ Fin t) F) : Matrix (Fin r ⊕ Fin t) (Fin r ⊕ Fin t) F) * x *
         (g : Matrix (Fin r) (Fin r) F))
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `[weilPair, omegaS]`.
+-/
 theorem weilPair_one_right (μ η : Fˣ →* ℂˣ) (nrm : AbsoluteValue F ℝ) (g : GL (Fin r) F)
     (Φ : Matrix (Fin r ⊕ Fin t) (Fin r) F → ℂ) :
     weilPair μ η nrm g 1 Φ = omegaS (μ * η) nrm g Φ := by
@@ -31,6 +34,9 @@ theorem weilPair_one_right (μ η : Fˣ →* ℂˣ) (nrm : AbsoluteValue F ℝ) 
 def blockChar (μ : Fˣ →* ℂˣ) (P : Subgroup (GL (Fin r) F)) (lam : P →* ℂˣ) : P →* ℂˣ :=
   lam * (μ.comp (GeneralLinearGroup.det.comp P.subtype))⁻¹
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem blockChar_apply (μ : Fˣ →* ℂˣ) (P : Subgroup (GL (Fin r) F)) (lam : P →* ℂˣ) (k : P) :
     blockChar μ P lam k = lam k * (μ (GeneralLinearGroup.det (k : GL (Fin r) F)))⁻¹ := rfl
 

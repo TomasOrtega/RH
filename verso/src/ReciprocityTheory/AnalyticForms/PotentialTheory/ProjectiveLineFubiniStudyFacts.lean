@@ -22,6 +22,9 @@ import ReciprocityTheory.AnalyticForms.PotentialTheory.ProjectiveLinePartitionCo
 
 namespace ReciprocityTheory.AnForm.M
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨isPotentialAdd, isPotentialZsmul, isPotentialRsmul, isPotentialPullback, isPshAdd, isPshRsmul, pshShift, regularAtlas, sncInducedAtlas, existsPartition, locDensBase, locDensCont, locDensChart, integralWithIndep, mIntEq, mIntAtlasIndep, mIntegrableCont, mIntSymm, mIntAdd, mIntZsm …`.
+-/
 theorem layerM :
     IsPotentialAddStatement ∧
     IsPotentialZsmulStatement ∧
@@ -106,6 +109,9 @@ theorem layerM :
    degreeFormula,
    degreeFormulaInt⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨projLine_isSmoothPotential, projLine_isPlurisubharmonic, projLine_partition, projLine_isHolomorphicSection, projLine_isSimpleNormalCrossing⟩`.
+-/
 theorem projectiveLine_fubiniStudy_facts :
     IsPotential p1 fsPot ∧ IsPsh p1 fsPot ∧ Nonempty (ChartPartition p1) ∧
       IsSection p1 fsPot projectiveLinePairSection ∧ IsSNC p1 fsPot projectiveLinePairSection ![1] ![{OnePoint.infty}] :=

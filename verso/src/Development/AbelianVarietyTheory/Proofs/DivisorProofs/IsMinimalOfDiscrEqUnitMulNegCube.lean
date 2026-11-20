@@ -9,6 +9,27 @@ open scoped IntermediateField BigOperators Topology
 
 namespace GlobalTheory.CMModel
 
+/- English proof (translation)
+Introduce `p F _ _ w W u hp hI hΔ`. Establish `hmem : ∀ y : F, y ∈ w.valuationSubringAtPrime F ↔ w.valuation F y ≤ 1`. Introduce `y`. Rewrite using `[HeightOneSpectrum.valuationSubringAtPrime_eq_valuationSubring]`. Both sides reduce to the same expression.
+
+Use `GlobalTheory.isMinimal_of_forall_div_pow_twelve _ F W hI ?_` and prove the remaining obligations. Introduce `x hx0 hx`. Assume the negation of the conclusion as `hnu`. Establish `hxF : (x : F) ≠ 0` using `fun h => hx0 (Subtype.ext h)`. Establish `hx1 : w.valuation F (x : F) < 1`.
+
+Use `lt_of_le_of_ne ((hmem _).1 x.2) (fun h => hnu ?_)` and prove the remaining obligations. Establish `hi : (x : F)⁻¹ ∈ w.valuationSubringAtPrime F`. Rewrite using `[hmem, map_inv₀, h, inv_one]`. Conclude with `IsUnit.of_mul_eq_one ⟨_, hi⟩ (Subtype.ext (mul_inv_cancel₀ hxF))`. Establish `hu : w.valuation F ((u : w.valuationSubringAtPrime F) : F) = 1`.
+
+Establish `h1` using `(hmem _).1 (u : w.valuationSubringAtPrime F).2`. Establish `h2` using `(hmem _).1 ((u⁻¹ : (w.valuationSubringAtPrime F)ˣ) : w.valuationSubringAtPrime F).2`. Establish `h3 : w.valuation F ((u : w.valuationSubringAtPrime F) : F) * w.valuation F (((u⁻¹ : (w.valuationSubringAtPrime F)ˣ) : w.valuationSubringAtPrime F) : F) = 1`. Rewrite using `[← map_mul, ← MulMemClass.coe_mul, Units.mul_inv]`. Simplify using the standard rewrite rules.
+
+Use `le_antisymm h1 ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Take `⟨y, hy⟩` from `hx`. Establish `hy1` using `(hmem _).1 y.2`. Establish `hyx : (y : F) * (x : F) ^ 12 = W.Δ`.
+
+Establish `: (y : F) = W.Δ / (x : F) ^ 12` using `hy`. Rewrite using `[this]`. Clear the denominators using the available nonvanishing facts. Establish `hv` using `congrArg (w.valuation F) (hyx.trans hΔ)`. Rewrite `hv` using `[map_mul, map_mul, hu, Valuation.map_neg, map_pow, map_pow, one_mul]`.
+
+Establish `hpv : w.valuation F (p : F) = w.intValuation (p : 𝓞 F)`. Rewrite using `[← w.valuation_of_algebraMap (K := F)]`. Simplify using the standard rewrite rules. Establish `hp' : WithZero.exp (-(3 : ℤ)) < w.valuation F (p : F)`. Rewrite using `[hpv]`.
+
+Assume the negation of the conclusion as `h`. Conclude with `hp ((w.intValuation_le_pow_iff_mem _ 3).1 (by simpa using h))`. Establish `hle : w.valuation F (p : F) ^ 3 ≤ w.valuation F (x : F) ^ 12`. Rewrite using `[← hv]`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hvx0 : w.valuation F (x : F) ≠ 0` using `by simpa using hxF`. Establish `hvp0 : w.valuation F (p : F) ≠ 0` using `(lt_of_le_of_lt zero_le' hp').ne'`. Rewrite `hle`, `hx1` using `[← WithZero.exp_log hvx0]`. Rewrite `hle`, `hp'` using `[← WithZero.exp_log hvp0]`. Rewrite `hle` using `[← WithZero.exp_nsmul, ← WithZero.exp_nsmul, WithZero.exp_le_exp]`.
+
+Rewrite `hp'` using `[WithZero.exp_lt_exp]`. Rewrite `hx1` using `[← WithZero.exp_zero, WithZero.exp_lt_exp]`. Simplify using `only [nsmul_eq_mul] at hle`. Move the coercions through the operations in `at hle`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem isMinimal_of_discr_eq_unit_mul_neg_cube : ∀ (p : ℕ) (F : Type) [Field F] [NumberField F] (w : HeightOneSpectrum (𝓞 F)) (W : WeierstrassCurve F) (u : (w.valuationSubringAtPrime F)ˣ), (p : 𝓞 F) ∉ w.asIdeal ^ 3 → W.IsIntegral (w.valuationSubringAtPrime F) → W.Δ = ((u : w.valuationSubringAtPrime F) : F) * -(p : F) ^ 3 → W.IsMinimal (w.valuationSubringAtPrime F) := by
   intro p F _ _ w W u hp hI hΔ
   have hmem : ∀ y : F, y ∈ w.valuationSubringAtPrime F ↔ w.valuation F y ≤ 1 := by

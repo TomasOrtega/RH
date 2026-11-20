@@ -25,6 +25,9 @@ def measPoly (X σ : Type) [MeasurableSpace X] : Subalgebra ℝ (X → MvPolynom
     intro c d
     exact measurable_const (a := coeff d (algebraMap ℝ (MvPolynomial σ ℂ) c))
 
+/- English proof (translation)
+Introduce `d`. Simplify using `only [coeff_C]`. Use `split_ifs`. Conclude with `hf`. Conclude with `measurable_const`.
+-/
 theorem C_mem {X σ : Type} [MeasurableSpace X] {f : X → ℂ} (hf : Measurable f) :
     (fun x => (C (f x) : MvPolynomial σ ℂ)) ∈ measPoly X σ := by
   classical
@@ -34,12 +37,18 @@ theorem C_mem {X σ : Type} [MeasurableSpace X] {f : X → ℂ} (hf : Measurable
   · exact hf
   · exact measurable_const
 
+/- English proof (translation)
+Introduce `_` and use `measurable_const`.
+-/
 theorem const_mem {X σ : Type} [MeasurableSpace X] (p : MvPolynomial σ ℂ) :
     (fun _ : X => p) ∈ measPoly X σ := fun _ => measurable_const
 
 def evalAt {X σ : Type} [MeasurableSpace X] (x : X) : measPoly X σ →ₐ[ℝ] MvPolynomial σ ℂ :=
   (Pi.evalAlgHom ℝ (fun _ : X => MvPolynomial σ ℂ) x).comp (measPoly X σ).val
 
+/- English proof (translation)
+Unfold `Matrix.charpolyRev`. Rewrite using `[← Polynomial.coe_mapRingHom, RingHom.map_det]`. Use `congr 1`. Use extensionality with `i j : 2`. Apply the tactic sequence `by_cases h : i = j <;> simp [Matrix.one_apply, h]`.
+-/
 theorem charpolyRev_map {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) {r : Type} [Fintype r] [DecidableEq r]
     (M : Matrix r r A) : (M.map f).charpolyRev = M.charpolyRev.map f := by
   unfold Matrix.charpolyRev
@@ -48,6 +57,9 @@ theorem charpolyRev_map {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) {
   ext i j : 2
   by_cases h : i = j <;> simp [Matrix.one_apply, h]
 
+/- English proof (translation)
+Set `f : V n → ℂ` to `fun x => conn G x ξ i j`. Express the relevant statement in the definitionally equal form `Measurable fun v => -((1 / 2 : ℂ) * (fderiv ℝ f v η + Complex.I * fderiv ℝ f v (Complex.I • η)))`. Conclude with `(((measurable_fderiv_apply_const ℝ f η).add ((measurable_fderiv_apply_const ℝ f (Complex.I • η)).const_mul _)).const_mul _).neg`.
+-/
 theorem measurable_curv {n : ℕ} {r : Type} [Fintype r] [DecidableEq r] (G : V n → Matrix r r ℂ) (ξ η : V n) (i j : r) :
     Measurable fun v => curv G v ξ η i j := by
   let f : V n → ℂ := fun x => conn G x ξ i j
@@ -55,6 +67,9 @@ theorem measurable_curv {n : ℕ} {r : Type} [Fintype r] [DecidableEq r] (G : V 
   exact (((measurable_fderiv_apply_const ℝ f η).add
     ((measurable_fderiv_apply_const ℝ f (Complex.I • η)).const_mul _)).const_mul _).neg
 
+/- English proof (translation)
+Establish `e : (fun v => curvPoly G v i j) = ∑ a, ∑ b, (fun v => (C (curv G v (coordVec a) (coordVec b) i j) : MvPolynomial (Fin n × Fin n) ℂ)) * fun _ => X (a, b)`. Use function extensionality and compare the values at `v`. Simplify using `[curvPoly, Finset.sum_apply]`. Rewrite using `[e]`. Conclude with `Subalgebra.sum_mem _ fun a _ => Subalgebra.sum_mem _ fun b _ => Subalgebra.mul_mem _ (C_mem (measurable_curv G _ _ i j)) (const_mem _)`.
+-/
 theorem curvPoly_mem {n : ℕ} {r : Type} [Fintype r] [DecidableEq r] (G : V n → Matrix r r ℂ) (i j : r) :
     (fun v => curvPoly G v i j) ∈ measPoly (V n) (Fin n × Fin n) := by
   have e : (fun v => curvPoly G v i j) = ∑ a, ∑ b, (fun v => (C (curv G v (coordVec a) (coordVec b) i j) :
@@ -65,6 +80,11 @@ theorem curvPoly_mem {n : ℕ} {r : Type} [Fintype r] [DecidableEq r] (G : V n �
   exact Subalgebra.sum_mem _ fun a _ => Subalgebra.sum_mem _ fun b _ =>
     Subalgebra.mul_mem _ (C_mem (measurable_curv G _ _ i j)) (const_mem _)
 
+/- English proof (translation)
+Set `M : Matrix r r (measPoly (V n) (Fin n × Fin n))` to `Matrix.of fun i j => ⟨_, curvPoly_mem G i j⟩`. Establish `e : (fun v => chernPoly G v k) = ((Matrix.charpolyRev (-M)).coeff k).1`. Use function extensionality and compare the values at `v`. Establish `h : -curvPoly G v = (-M).map (evalAt v).toRingHom`. Use extensionality with `i j : 2`.
+
+Both sides reduce to the same expression. Rewrite using `[chernPoly, h, charpolyRev_map, Polynomial.coeff_map]`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `Subtype.property _`.
+-/
 theorem chernPoly_mem {n : ℕ} {r : Type} [Fintype r] [DecidableEq r] (G : V n → Matrix r r ℂ) (k : ℕ) :
     (fun v => chernPoly G v k) ∈ measPoly (V n) (Fin n × Fin n) := by
   let M : Matrix r r (measPoly (V n) (Fin n × Fin n)) := Matrix.of fun i j => ⟨_, curvPoly_mem G i j⟩
@@ -78,6 +98,11 @@ theorem chernPoly_mem {n : ℕ} {r : Type} [Fintype r] [DecidableEq r] (G : V n 
   rw [e]
   exact Subtype.property _
 
+/- English proof (translation)
+Set `P : measPoly (V n) (Fin n × Fin n)` to `aeval (fun x : ι × ℕ => (⟨_, chernPoly_mem (fun u => G u x.1) x.2⟩ : measPoly (V n) (Fin n × Fin n))) R`. Establish `e (v : V n) : aeval (fun x : ι × ℕ => chernPoly (fun u => G u x.1) v x.2) R = P.1 v`. Express the relevant statement in the definitionally equal form `_ = evalAt v P`. Rewrite using `[← AlgHom.comp_apply, comp_aeval]`. Both sides reduce to the same expression.
+
+Simplify using `only [chernTop, e, topCoeff]`. Use `Measurable.const_mul (Complex.measurable_re.comp ?_) _` and prove the remaining obligations. Conclude with `Finset.measurable_sum _ fun w _ => (P.2 _).const_mul _`.
+-/
 theorem measurable_chernTop {n : ℕ} {ι : Type} {m : ι → ℕ} (R : MvPolynomial (ι × ℕ) ℝ) (G : V n → Mat m ℂ) :
     Measurable (fun v => chernTop R G v) := by
   let P : measPoly (V n) (Fin n × Fin n) :=

@@ -5,6 +5,11 @@ open Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual GlobalTheory.CuspR
 open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.H UpperTheory.ConvolutionTheory.R2.I
 open scoped Classical
 
+/- English proof (translation)
+Rewrite using `[(Valued.hasBasis_nhds_zero (Kv v) _).tendsto_right_iff]`. Introduce `γ _`. Take `⟨n, hn⟩` from `exists_pow_lt₀ hy (Units.map (MonoidWithZeroHom.ValueGroup₀.embedding (f := .ofClass (Valued.v : Valuation (Kv v) _))) γ)`. Use `filter_upwards [eventually_ge_atTop n] with m hm`. Simplify using `only [Set.mem_setOf_eq, Valuation.restrict_lt_iff_lt_embedding]`.
+
+Rewrite using `[map_pow]`. Conclude with `lt_of_le_of_lt (pow_le_pow_right_of_le_one' hy.le hm) hn`.
+-/
 private theorem tendsto_pow_zero_of_valuation {K : Type} [Field K] [NumberField K] (v : P K) (y : Kv v)
     (hy : Valued.v y < 1) : Tendsto (fun n : ℕ => y ^ n) atTop (𝓝 0) := by
   rw [(Valued.hasBasis_nhds_zero (Kv v) _).tendsto_right_iff]
@@ -15,6 +20,11 @@ private theorem tendsto_pow_zero_of_valuation {K : Type} [Field K] [NumberField 
   rw [map_pow]
   exact lt_of_le_of_lt (pow_le_pow_right_of_le_one' hy.le hm) hn
 
+/- English proof (translation)
+Establish `h1` using `(Valued.hasBasis_nhds_zero (Kv v) _).mem_of_mem (i := 1) trivial`. Take `⟨n, hn⟩` from `(hy.eventually h1 |>.and (eventually_gt_atTop 0)).exists`. Take `⟨hn1, hn0⟩` from `hn`. Simplify using `only [Set.mem_setOf_eq, Units.val_one, Valuation.restrict_lt_one_iff] at hn1`. Rewrite `hn1` using `[map_pow]`.
+
+Assume the negation of the conclusion as `hc`. Conclude with `absurd hn1 (not_lt.mpr (one_le_pow₀ (not_lt.mp hc)))`.
+-/
 private theorem valuation_lt_one_of_tendsto {K : Type} [Field K] [NumberField K] (v : P K) (y : Kv v)
     (hy : Tendsto (fun n : ℕ => y ^ n) atTop (𝓝 0)) : Valued.v y < 1 := by
   have h1 := (Valued.hasBasis_nhds_zero (Kv v) _).mem_of_mem (i := 1) trivial
@@ -25,6 +35,15 @@ private theorem valuation_lt_one_of_tendsto {K : Type} [Field K] [NumberField K]
   by_contra hc
   exact absurd hn1 (not_lt.mpr (one_le_pow₀ (not_lt.mp hc)))
 
+/- English proof (translation)
+Introduce `K L _ _ _ _ _ v w i hi hx`. Establish `hle : v.asIdeal ≤ w.asIdeal.comap (algebraMap (𝓞 K) (𝓞 L))`. Introduce `x hxv`. Rewrite using `[Ideal.mem_comap]`. Establish `h1 : Valued.v (algebraMap K (Kv v) (x : K)) < 1`.
+
+Use `(v.valuation_lt_one_iff_mem (K := K) x).mpr hxv` as an intermediate fact. Rewrite `this` using `[← HeightOneSpectrum.valuedAdicCompletion_eq_valuation']`. Then use the resulting hypothesis. Establish `h2` using `tendsto_pow_zero_of_valuation v _ h1`. Establish `h3 : Tendsto (fun n : ℕ => (i (algebraMap K (Kv v) (x : K))) ^ n) atTop (𝓝 0)`. Use `(hi.tendsto 0).comp h2` as an intermediate fact.
+
+Simplify `this` using `[Function.comp_def, map_pow]`. Establish `h4` using `valuation_lt_one_of_tendsto w _ h3`. Rewrite `h4` using `[hx]`. Establish `h5 : algebraMap K L (x : K) = ((algebraMap (𝓞 K) (𝓞 L) x : 𝓞 L) : L)` using `rfl`. Rewrite `h4` using `[h5]`.
+
+Apply `(w.valuation_lt_one_iff_mem (K := L) _).mp` to reduce the goal to its premises. Rewrite using `[← HeightOneSpectrum.valuedAdicCompletion_eq_valuation']` and apply the resulting hypothesis. Conclude with `v.isMaximal.eq_of_le (Ideal.comap_ne_top _ w.isPrime.ne_top) hle`.
+-/
 theorem UpperTheory.ConvolutionTheory.R2.I.below :
     ∀ (K L : Type) [Field K] [NumberField K] [Field L] [NumberField L] [Algebra K L] (v : P K) (w : P L) (i : Kv v →+* Kv w),
       Continuous i → (∀ x : K, i (algebraMap K _ x) = algebraMap L _ (algebraMap K L x)) → Below v w := by

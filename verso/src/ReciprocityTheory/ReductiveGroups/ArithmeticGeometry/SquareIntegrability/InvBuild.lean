@@ -23,6 +23,23 @@ def Inv {dim : (E →+* ℂ) → ℕ} (L I : Submodule ℤ (Vsp dim)) (σ : E �
   (∀ s < k, μ s ^ 2 ≤ Bu)
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Take `⟨S, hS⟩ : ∃ S : Set (Vsp dim), S = {y | y ∈ Xg L I ∧ prj σ y ∉ W ∧ ‖y‖ ≤ ‖y0‖}` from `⟨_, rfl⟩`. Take `⟨t, -, ht, hcov⟩` from `(isCompact_closedBall (0 : Vsp dim) ‖y0‖).finite_cover_balls (by norm_num : (0 : ℝ) < 1 / 2)`. Establish `hex : ∀ y ∈ S, ∃ x ∈ t, y ∈ Metric.ball x (1 / 2)`. Introduce `y hy`. Rewrite `hy` using `[hS]`.
+
+Establish `hyb : y ∈ Metric.closedBall (0 : Vsp dim) ‖y0‖`. Rewrite using `[mem_closedBall_zero_iff]`. Conclude with `hy.2.2`. Take `⟨x, hx, hyx⟩` from `Set.mem_iUnion₂.mp (hcov hyb)`. Conclude with `⟨x, hx, hyx⟩`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨f, hf⟩ : ∃ f : Vsp dim → Vsp dim, ∀ y ∈ S, f y ∈ t ∧ y ∈ Metric.ball (f y) (1 / 2) := by`. Use `⟨fun y => if h : ∃ x ∈ t, y ∈ Metric.ball x (1 / 2) then h.choose else 0, fun y hy => ?_⟩` and prove the remaining obligations. Establish `h` using `hex y hy`. Simplify using `only [dif_pos h]`. Conclude with `h.choose_spec`.
+
+Establish `hinj : Set.InjOn f S`. Introduce `y hy y' hy' hyy`. Establish `h1` using `(hf y hy).2`. Establish `h2` using `(hf y' hy').2`. Rewrite `h1` using `[hyy]`.
+
+Rewrite `h1`, `h2` using `[Metric.mem_ball, dist_eq_norm]`. Establish `hd : ‖y - y'‖ < 1`. Combine the equalities or inequalities in the displayed calculation. Assume the negation of the conclusion as `hne`. Rewrite `hy`, `hy'` using `[hS]`.
+
+Establish `h3` using `hsep (y - y') (sub_mem hy.1 hy'.1) (sub_ne_zero.mpr hne)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hfin : S.Finite` using `Set.Finite.of_finite_image (ht.subset (by rintro _ ⟨y, hy, rfl⟩; exact (hf y hy).1)) hinj`. Establish `hne : S.Nonempty` using `⟨y0, by rw [hS]; exact ⟨hy0, hy0W, le_rfl⟩⟩`. Take `⟨v, hv, hvmin⟩` from `Set.exists_min_image S (fun y => ‖y‖) hfin hne`.
+
+Establish `hv'` using `hv`. Rewrite `hv'` using `[hS]`. Use `⟨v, hv'.1, hv'.2.1, hv'.2.2, fun y hy hyW => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hle : ‖y‖ ≤ ‖y0‖`. Conclude with `hvmin y (by rw [hS]; exact ⟨hy, hyW, hle⟩)`.
+
+Conclude with `le_trans hv'.2.2 (le_of_lt (not_le.mp hle))`.
+-/
 private lemma inv_step_lemma {dim : (E →+* ℂ) → ℕ} {L I : Submodule ℤ (Vsp dim)}
     (hsep : ∀ g ∈ Xg L I, g ≠ 0 → 1 ≤ ‖g‖) (σ : E →+* ℂ) (W : Submodule ℂ (Vsp dim)) (y0 : Vsp dim)
     (hy0 : y0 ∈ Xg L I) (hy0W : prj σ y0 ∉ W) :
@@ -69,6 +86,83 @@ private lemma inv_step_lemma {dim : (E →+* ℂ) → ℕ} {L I : Submodule ℤ 
   · exact hvmin y (by rw [hS]; exact ⟨hy, hyW, hle⟩)
   · exact le_trans hv'.2.2 (le_of_lt (not_le.mp hle))
 
+/- English proof (translation)
+Take `⟨h1, h2, h3, h4, h5, h6, h7, h8, h9, h10⟩` from `h`. Establish `hwW : ∀ i < k, w i ∈ Wk σ χ k` using `fun i hi => Wk_mono σ χ (by omega : i + 1 ≤ k) (h2 i hi)`. Take `⟨y0, hy0X, hy0W, hy0B⟩` from `hex (Wk σ χ k) (lt_of_le_of_lt (finrank_Wk σ χ k) hk)`. Take `⟨v, hvX, hvW, hvy0, hvmin⟩` from `inv_step_lemma hsep σ (Wk σ χ k) y0 hy0X hy0W`. Establish `hv0 : v ≠ 0`.
+
+Introduce and unpack `rfl`. Conclude with `hvW (by rw [map_zero]; exact (Wk σ χ k).zero_mem)`. Establish `hμ1 : 1 ≤ ‖v‖` using `hsep v hvX hv0`. Establish `hρ : (1 : ℝ) ≤ ρ` using `by exact_mod_cast (by omega : 1 ≤ ρ)`. Establish `hKμ : 0 < K0 * ‖v‖` using `mul_pos hK0 (by linarith)`.
+
+Establish `hTpos : 0 < (30 * (ρ : ℝ) ^ 2 + 1) * K0 * ‖v‖`. Establish `: 0 < 30 * (ρ : ℝ) ^ 2 + 1` using `by positivity`. Rewrite using `[mul_assoc]`. Conclude with `mul_pos this hKμ`. Take `⟨t, χn, hto, htn, htt, hχX, hχZ, hχt, hχu⟩` from `one_char hNP L I hLs hIs hiso hsep ω hω B hωB D hD σ (Wk σ χ k) k χ (fun j hj => h1 j hj) (fun j hj => prj_mem_Wk σ χ hj) (le_refl _) (fun j hj => ⟨μ j, (h9 j hj).1, fun y hy hyW => (h9 j hj).2 y hy (fun hm => hyW (Wk_mono σ χ (le_of_lt hj) hm))⟩) v hvX hvW hvmin ((30 * (ρ : ℝ) ^ …`.
+
+Establish `hK0μ : ‖χn - t‖ ≤ K0 * ‖v‖`. Establish `hsq : ‖χn - t‖ ^ 2 ≤ (K0 * ‖v‖) ^ 2`. Combine the equalities or inequalities in the displayed calculation. Use polynomial arithmetic with `[norm_nonneg (χn - t)]`. Take `⟨e, he⟩ : ∃ e, e = prj σ (χn - t)` from `⟨_, rfl⟩`.
+
+Establish `heK : ‖e‖ ≤ K0 * ‖v‖` using `by rw [he]; exact le_trans (norm_prj_le σ _) hK0μ`. Establish `hpe : prj σ χn = prj σ t + e` using `by rw [he, map_sub]; abel`. Establish `hproj : ∀ x : Vsp dim, ∀ j < k, inner ℂ (w j) (x - ∑ i ∈ Finset.range k, inner ℂ (w i) x • w i) = 0`. Introduce `x j hj`. Rewrite using `[inner_sub_right, inner_sum, Finset.sum_eq_single j]`.
+
+Rewrite using `[inner_smul_right, h3 j hj j hj, if_pos rfl, mul_one, sub_self]`. Introduce `i hi hij`. Rewrite using `[inner_smul_right, h3 j hj i (Finset.mem_range.mp hi), if_neg (Ne.symm hij), mul_zero]`. Introduce `hj'`. Conclude with `absurd (Finset.mem_range.mpr hj) hj'`.
+
+Take `⟨Wp, hWp⟩ : ∃ Wp, Wp = ∑ i ∈ Finset.range k, inner ℂ (w i) e • w i` from `⟨_, rfl⟩`. Establish `hWpW : Wp ∈ Wk σ χ k`. Rewrite using `[hWp]`. Conclude with `Submodule.sum_mem _ fun i hi => Submodule.smul_mem _ _ (hwW i (Finset.mem_range.mp hi))`. Establish `heW : ∀ j < k, inner ℂ (w j) (e - Wp) = 0` using `fun j hj => by rw [hWp]; exact hproj e j hj`.
+
+Establish `hwt : ∀ j < k, inner ℂ (w j) (prj σ t) = 0` using `fun j hj => hto (w j) (hwW j hj)`. Take `⟨q, hq⟩ : ∃ q, q = prj σ χn - Wp` from `⟨_, rfl⟩`. Establish `hqt : q = prj σ t + (e - Wp)` using `by rw [hq, hpe]; abel`. Establish `hqw : ∀ j < k, inner ℂ (w j) q = 0` using `fun j hj => by`. Rewrite using `[hqt, inner_add_right, hwt j hj, heW j hj, add_zero]`.
+
+Establish `hperp : inner ℂ (e - Wp) Wp = 0` using `by nth_rewrite 2 [hWp]`. Rewrite using `[inner_sum]`. Use `Finset.sum_eq_zero fun i hi => ?_` and prove the remaining obligations. Rewrite using `[inner_smul_right, inner_eq_zero_symm.mp (heW i (Finset.mem_range.mp hi)), mul_zero]`. Establish `heWp : ‖e - Wp‖ ≤ ‖e‖`.
+
+Establish `hpy` using `norm_add_sq_eq_norm_sq_add_norm_sq_of_inner_eq_zero (e - Wp) Wp hperp`. Rewrite `hpy` using `[sub_add_cancel]`. Use polynomial arithmetic with `[norm_nonneg (e - Wp), norm_nonneg e, norm_nonneg Wp]`. Take `⟨Rk, hRk⟩ : ∃ Rk : ℝ, Rk = ‖q‖` from `⟨_, rfl⟩`. Establish `hRlow : 30 * (ρ : ℝ) ^ 2 * K0 * ‖v‖ ≤ Rk`.
+
+Establish `h0 : ‖prj σ t‖ ≤ ‖q‖ + ‖e - Wp‖`. Combine the equalities or inequalities in the displayed calculation. Rewrite `h0` using `[htn]`. Rewrite using `[hRk]`. Use the polynomial consequences of the given equalities and inequalities.
+
+Establish `hRpos : 0 < Rk`. Establish `: 0 < 30 * (ρ : ℝ) ^ 2 * K0 * ‖v‖`. Establish `h30 : 0 < 30 * (ρ : ℝ) ^ 2` using `by positivity`. Rewrite using `[mul_assoc]`. Conclude with `mul_pos h30 hKμ`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hRne : (Rk : ℂ) ≠ 0` using `by exact_mod_cast hRpos.ne'`. Take `⟨wk, hwk⟩ : ∃ wk, wk = ((Rk : ℂ)⁻¹) • q` from `⟨_, rfl⟩`. Establish `hqR : q = (Rk : ℂ) • wk` using `by rw [hwk, smul_smul, mul_inv_cancel₀ hRne, one_smul]`. Establish `hwkn : ‖wk‖ = 1`.
+
+Rewrite using `[hwk, norm_smul, norm_inv, Complex.norm_real, Real.norm_of_nonneg hRpos.le, ← hRk, inv_mul_cancel₀ hRpos.ne']`. Establish `hwkw : ∀ j < k, inner ℂ (w j) wk = 0` using `fun j hj => by`. Rewrite using `[hwk, inner_smul_right, hqw j hj, mul_zero]`. Take `⟨εk, hεk⟩ : ∃ εk : ℕ → ℂ, εk = fun i => if i < k then (starRingEnd ℂ) (inner ℂ (w i) e) / (Rk : ℂ) else 0` from `⟨_, rfl⟩`. Establish `hterm : ∀ i ∈ Finset.range k, (Rk : ℂ) • ((starRingEnd ℂ) (εk i) • w i) = inner ℂ (w i) e • w i`.
+
+Introduce `i hi`. Rewrite using `[hεk]`. Simplify using `only [if_pos (Finset.mem_range.mp hi)]`. Rewrite using `[smul_smul, map_div₀, Complex.conj_conj, Complex.conj_ofReal]`. Use `congr 1`.
+
+Clear the denominators using the available nonvanishing facts. Establish `hrep : prj σ χn = (Rk : ℂ) • (wk + ∑ i ∈ Finset.range k, (starRingEnd ℂ) (εk i) • w i)`. Rewrite using `[smul_add, ← hqR, Finset.smul_sum, Finset.sum_congr rfl hterm, ← hWp, hq, sub_add_cancel]`. Establish `hεsum : ∑ i ∈ Finset.range k, ‖εk i‖ ^ 2 ≤ (1 / (30 * (ρ : ℝ) ^ 2)) ^ 2`. Establish `hON : Orthonormal ℂ (fun i : Fin k => w i)`.
+
+Rewrite using `[orthonormal_iff_ite]`. Introduce `i j`. Rewrite using `[h3 i i.2 j j.2]`. Simplify using `[Fin.ext_iff]`. Establish `hB` using `hON.sum_inner_products_le e (s := Finset.univ)`.
+
+Rewrite `hB` using `[Fin.sum_univ_eq_sum_range (fun i => ‖inner ℂ (w i) e‖ ^ 2) k]`. Establish `hs : ∑ i ∈ Finset.range k, ‖εk i‖ ^ 2 = (∑ i ∈ Finset.range k, ‖inner ℂ (w i) e‖ ^ 2) / Rk ^ 2`. Rewrite using `[Finset.sum_div]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Rewrite using `[hεk]`.
+
+Simplify using `only [if_pos (Finset.mem_range.mp hi)]`. Rewrite using `[norm_div, Complex.norm_real, Real.norm_of_nonneg hRpos.le, RCLike.norm_conj, div_pow]`. Rewrite using `[hs]`. Establish `hle1 : ∑ i ∈ Finset.range k, ‖inner ℂ (w i) e‖ ^ 2 ≤ (K0 * ‖v‖) ^ 2` using `le_trans hB (pow_le_pow_left₀ (norm_nonneg e) heK 2)`. Establish `hRd : K0 * ‖v‖ ≤ Rk / (30 * (ρ : ℝ) ^ 2)`.
+
+Rewrite using `[le_div_iff₀ (by positivity)]`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation. Establish `hρ0 : (ρ : ℝ) ≠ 0` using `by linarith`. Clear the denominators using the available nonvanishing facts.
+
+Establish `hTt : ‖t‖ = Real.sqrt 2 * ((30 * (ρ : ℝ) ^ 2 + 1) * K0 * ‖v‖)`. Rewrite using `[← Real.sqrt_sq (norm_nonneg t), htt, Real.sqrt_mul (by norm_num : (0 : ℝ) ≤ 2), Real.sqrt_sq hTpos.le]`. Establish `hχnorm : ‖χn‖ ≤ (Real.sqrt 2 * (30 * (ρ : ℝ) ^ 2 + 1) + 1) * K0 * ‖v‖`. Combine the equalities or inequalities in the displayed calculation. Establish `hsumw : ∀ s ≤ k, ∀ a : ℕ → ℂ, ∑ i ∈ Finset.range s, a i • Function.update w k wk i = ∑ i ∈ Finset.range s, a i • w i` using `fun s hs a => Finset.sum_congr rfl fun i hi => by`.
+
+Rewrite using `[Function.update_of_ne (show i ≠ k by have := Finset.mem_range.mp hi; omega)]`. Use `⟨Function.update χ k χn, Function.update w k wk, Function.update R k Rk, Function.update μ k ‖v‖, Function.update ε k εk, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `s hs`. Break down `Nat.lt_succ_iff_lt_or_eq.mp hs with hs | hs` into its components or cases. Rewrite using `[Function.update_of_ne (Nat.ne_of_lt hs)]`.
+
+Conclude with `h1 s hs`. Rewrite using `[hs, Function.update_self]`. Conclude with `hχX`. Introduce `s hs`. Break down `Nat.lt_succ_iff_lt_or_eq.mp hs with hs | hs` into its components or cases.
+
+Rewrite using `[Function.update_of_ne (Nat.ne_of_lt hs), Wk_update σ χ (by omega : s + 1 ≤ k)]`. Conclude with `h2 s hs`. Rewrite using `[hs, Function.update_self, hwk]`. Apply `Submodule.smul_mem` to reduce the goal to its premises. Rewrite using `[hq]`.
+
+Apply `Submodule.sub_mem` to reduce the goal to its premises. Establish `hm` using `prj_mem_Wk σ (Function.update χ k χn) (Nat.lt_succ_self k)`. Rewrite `hm` using `[Function.update_self]`. Then use the resulting hypothesis. Establish `h' : Wk σ (Function.update χ k χn) k = Wk σ χ k` using `Wk_update σ χ le_rfl χn`. Apply `Wk_mono σ _ (Nat.le_succ k)` to reduce the goal to its premises.
+
+Rewrite using `[h']`. Conclude with `hWpW`. Introduce `s hs s' hs'`. Apply the tactic sequence `rcases Nat.lt_succ_iff_lt_or_eq.mp hs with hs | hs <;>`. Break down `Nat.lt_succ_iff_lt_or_eq.mp hs' with hs' | hs'` into its components or cases.
+
+Rewrite using `[Function.update_of_ne (Nat.ne_of_lt hs), Function.update_of_ne (Nat.ne_of_lt hs')]`. Conclude with `h3 s hs s' hs'`. Rewrite using `[hs', Function.update_of_ne (Nat.ne_of_lt hs), Function.update_self, hwkw s hs, if_neg (Nat.ne_of_lt hs)]`. Rewrite using `[hs, Function.update_self, Function.update_of_ne (Nat.ne_of_lt hs'), inner_eq_zero_symm.mp (hwkw s' hs'), if_neg (Nat.ne_of_lt hs').symm]`. Rewrite using `[hs, hs', Function.update_self, if_pos rfl, inner_self_eq_norm_sq_to_K, hwkn]`.
+
+Evaluate the numerical expressions. Introduce `s hs`. Break down `Nat.lt_succ_iff_lt_or_eq.mp hs with hs | hs` into its components or cases. Establish `hne : s ≠ k` using `Nat.ne_of_lt hs`. Simplify using `only [Function.update_of_ne hne]`.
+
+Rewrite using `[hsumw s hs.le]`. Conclude with `h4 s hs`. Rewrite using `[hs]`. Simplify using `only [Function.update_self]`. Rewrite using `[hsumw k le_rfl]`.
+
+Conclude with `hrep`. Introduce `s hs i hi`. Break down `Nat.lt_succ_iff_lt_or_eq.mp hs with hs | hs` into its components or cases. Rewrite using `[Function.update_of_ne (Nat.ne_of_lt hs)]`. Conclude with `h5 s hs i hi`.
+
+Rewrite using `[hs, Function.update_self]`. Simplify using `only [hεk]`. Rewrite using `[if_neg (by omega)]`. Introduce `s hs`. Break down `Nat.lt_succ_iff_lt_or_eq.mp hs with hs | hs` into its components or cases.
+
+Rewrite using `[Function.update_of_ne (Nat.ne_of_lt hs)]`. Conclude with `h6 s hs`. Rewrite using `[hs, Function.update_self]`. Conclude with `hεsum`. Introduce `s hs`.
+
+Break down `Nat.lt_succ_iff_lt_or_eq.mp hs with hs | hs` into its components or cases. Simplify using `only [Function.update_of_ne (Nat.ne_of_lt hs)]`. Conclude with `h7 s hs`. Rewrite using `[hs]`. Simplify using `only [Function.update_self]`.
+
+Conclude with `⟨hRlow, hχnorm⟩`. Introduce `s hs`. Break down `Nat.lt_succ_iff_lt_or_eq.mp hs with hs | hs` into its components or cases. Simplify using `only [Function.update_of_ne (Nat.ne_of_lt hs)]`. Conclude with `h8 s hs`.
+
+Rewrite using `[hs]`. Simplify using `only [Function.update_self]`. Conclude with `⟨hμ1, hχu⟩`. Introduce `s hs`. Break down `Nat.lt_succ_iff_lt_or_eq.mp hs with hs | hs` into its components or cases.
+
+Simplify using `only [Function.update_of_ne (Nat.ne_of_lt hs)]`. Rewrite using `[Wk_update σ χ (le_of_lt hs)]`. Conclude with `h9 s hs`. Rewrite using `[hs]`. Simplify using `only [Function.update_self]`.
+
+Rewrite using `[Wk_update σ χ le_rfl]`. Conclude with `⟨hχZ, hvmin⟩`. Introduce `s hs`. Break down `Nat.lt_succ_iff_lt_or_eq.mp hs with hs | hs` into its components or cases. Rewrite using `[Function.update_of_ne (Nat.ne_of_lt hs)]`.
+
+Conclude with `h10 s hs`. Rewrite using `[hs, Function.update_self]`. Conclude with `le_trans (pow_le_pow_left₀ (norm_nonneg v) hvy0 2) hy0B`.
+-/
 lemma inv_step [IsCMField E] (hNP : Ext.NearestPlane) {dim : (E →+* ℂ) → ℕ}
     {L I : Submodule ℤ (Vsp dim)}
     (hLs : ∀ (α : 𝓞 E) x, x ∈ L → act α x ∈ L) (hIs : ∀ (α : 𝓞 E) x, x ∈ I → act α x ∈ I)
@@ -287,6 +381,13 @@ lemma inv_step [IsCMField E] (hNP : Ext.NearestPlane) {dim : (E →+* ℂ) → �
     · rw [hs, Function.update_self]
       exact le_trans (pow_le_pow_left₀ (norm_nonneg v) hvy0 2) hy0B
 
+/- English proof (translation)
+Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `_`. Use `⟨fun _ => 0, fun _ => 0, fun _ => 0, fun _ => 0, fun _ _ => 0, ?_⟩` and prove the remaining obligations.
+
+Unfold `Inv`. Apply the tactic sequence `refine ⟨?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩ <;> intro s hs <;> exact absurd hs (Nat.not_lt_zero _)`. Consider the case `succ k ih`. Introduce `hk`. Take `⟨χ, w, R, μ, ε, h⟩` from `ih (Nat.le_of_succ_le hk)`.
+
+Conclude with `inv_step hNP hLs hIs hiso hsep ω hω B hωB D hD σ ρ K0 Bu hK0 hK hex (Nat.lt_of_succ_le hk) h`.
+-/
 lemma inv_build [IsCMField E] (hNP : Ext.NearestPlane) {dim : (E →+* ℂ) → ℕ}
     {L I : Submodule ℤ (Vsp dim)}
     (hLs : ∀ (α : 𝓞 E) x, x ∈ L → act α x ∈ L) (hIs : ∀ (α : 𝓞 E) x, x ∈ I → act α x ∈ I)

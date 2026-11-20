@@ -8,6 +8,15 @@ namespace GlobalTheory.Proof.levelCharacter_stepZero_typePrime
 
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.HermitianLatticesTheory Formalism.L2.Col Formalism.L2.DIV GlobalTheory.QNormal GlobalTheory.Mem.Col2.IdxEx
 
+/- English proof (translation)
+Unfold `supSum`. Establish `h1 : ∀ i : Fin n, (∑ j : Fin n, if i.val + 1 = j.val ∧ j.val < a ∧ i.val ∈ Finset.range (k - 1) then M i j else 0) = if i.val ∈ Finset.range (k - 1) then f i.val else 0`. Introduce `i`. Distinguish the cases in `hi : i.val ∈ Finset.range (k - 1)`. Establish `hi'` using `Finset.mem_range.1 hi`.
+
+Rewrite using `[if_pos hi, Finset.sum_eq_single (⟨i.val + 1, by omega⟩ : Fin n), if_pos ⟨rfl, by dsimp only; omega, hi⟩, hf _ (by omega)]`. Introduce `j _ hj`. Conclude with `if_neg fun h => hj (Fin.ext h.1.symm)`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+
+Simplify using `[hi]`. Rewrite using `[Finset.sum_congr rfl fun i _ => h1 i, Fin.sum_univ_eq_sum_range (fun i => if i ∈ Finset.range (k - 1) then f i else 0) n, ← Finset.sum_filter]`. Use `congr 1`. Use extensionality with `i`. Simplify using `only [Finset.mem_filter, Finset.mem_range]`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem supSum_range {κ : Type} [CommRing κ] {n a k : ℕ} (hn : k ≤ n) (ha : k ≤ a) (M : Matrix (Fin n) (Fin n) κ) (f : ℕ → κ)
     (hf : ∀ (i : ℕ) (h : i + 1 < k), f i = M ⟨i, by omega⟩ ⟨i + 1, by omega⟩) :
     supSum a (Finset.range (k - 1)) M = ∑ i ∈ Finset.range (k - 1), f i := by
@@ -33,6 +42,11 @@ theorem supSum_range {κ : Type} [CommRing κ] {n a k : ℕ} (hn : k ≤ n) (ha 
 
 variable {E : Type} [Field E]
 
+/- English proof (translation)
+Establish `e1 : LocE.fIdx k c n i = i` using `if_pos (by omega)`. Establish `e2 : LocE.fIdx k c n (i + 1) = i + 1` using `if_pos hi`. Establish `e3 : LocE.scE n ex i = 0` using `if_pos (by omega)`. Establish `e4 : LocE.scE n ex (i + 1) = 0` using `if_pos (by omega)`. Unfold `LocE.entB`.
+
+Rewrite using `[e1, e2, e3, e4]`. Simplify using the standard rewrite rules.
+-/
 theorem entB_X (q : ℕ) {k n c i : ℕ} (hn : k ≤ n) (hi : i + 1 < k) (ex : ℕ → ℕ) (x : HomE E (n + c) (n + c)) :
     LocE.entB q k c n c n ex ex x i (i + 1) = Loc.atN (x (Loc.eN E (n + c) (i + 1))) i := by
   have e1 : LocE.fIdx k c n i = i := if_pos (by omega)
@@ -43,6 +57,13 @@ theorem entB_X (q : ℕ) {k n c i : ℕ} (hn : k ≤ n) (hi : i + 1 < k) (ex : �
   rw [e1, e2, e3, e4]
   simp
 
+/- English proof (translation)
+Establish `e1 : LocE.fIdx k c n (k + i) = n + i`. Unfold `LocE.fIdx`. Rewrite using `[if_neg (by omega), if_pos (by omega)]`. Use linear arithmetic over natural numbers and integers. Establish `e2 : LocE.fIdx k c n (k + i + 1) = n + i + 1`.
+
+Unfold `LocE.fIdx`. Rewrite using `[if_neg (by omega), if_pos (by omega)]`. Use linear arithmetic over natural numbers and integers. Establish `e3 : LocE.scE n (fun i => i + 1) (n + i + 1) - LocE.scE n (fun i => i + 1) (n + i) = 1`. Unfold `LocE.scE`.
+
+Rewrite using `[if_neg (by omega), if_neg (by omega)]`. Use `beta_reduce`. Use linear arithmetic over natural numbers and integers. Unfold `LocE.entB`. Rewrite using `[e1, e2, e3, zpow_one, mul_comm]`.
+-/
 theorem symLevelFrameEntry_superdiag_second_block (q : ℕ) {k n c i : ℕ} (hi : i + 1 < c) (x : HomE E (n + c) (n + c)) :
     LocE.entB q k c n c n (fun i => i + 1) (fun i => i + 1) x (k + i) (k + i + 1) =
       (q : E) * Loc.atN (x (Loc.eN E (n + c) (n + i + 1))) (n + i) := by
@@ -62,6 +83,27 @@ theorem symLevelFrameEntry_superdiag_second_block (q : ℕ) {k n c i : ℕ} (hi 
   unfold LocE.entB
   rw [e1, e2, e3, zpow_one, mul_comm]
 
+/- English proof (translation)
+Establish `hm` using `R.two_le_m`. Establish `hN : R.N 0 = R.k` using `by simp [Ranks.N]`. Establish `hc : R.r - R.k - 1 = cOf R 0 - 1` using `by unfold Ranks.r cOf; omega`. Establish `hl : colLev Ch 0 ⟨P.1, hP⟩ = ⟨HX (𝓞 X.E ⧸ P.1.asIdeal) (R.N 0) R.k R.t 0, lamX (Ch.psi0 ⟨P.1, hP⟩) (extChi fun s => Ch.chi s ⟨P.1, hP⟩) (R.N 0) R.k R.m R.t 0⟩` using `if_pos (by omega)`. Rewrite using `[hl]`.
+
+Introduce `hbar g r hr hrg hg`. Establish `hq : (qOf P.1 : X.E) ≠ 0` using `GlobalTheory.TopStep.qOf_ne_zero`. Establish `hp0 : psi0P Ch P.1 = Ch.psi0 ⟨P.1, hP⟩` using `dif_pos hP`. Establish `hJ` using `hr.2`. Simplify using `only [Jat, hP, hs, if_true] at hJ`.
+
+Establish `hst : r ∈ stabL X.E _ (LocE.lamY P.1 (qOf P.1) (R.N 0) (cOf R 0) fun i => i + 1)`. Establish `h1` using `hJ.1`. Simplify using `using h1`. Establish `hint` using `fun p p' => GlobalTheory.LastSteps.entB_int (P := P.1) R.k (x := r.toLinearMap) (fun y hy => (hst y).2 hy) p p'`. Establish `ha` using `GlobalTheory.Mem.LevFin.intAt_n1Arg_G hq r hst`.
+
+Establish `h2 : ∑ i ∈ Finset.range (R.r - R.k - 1), LocE.entB (qOf P.1) R.k (cOf R 0) (R.N 0) (cOf R 0) (R.N 0) (fun i => i + 1) (fun i => i + 1) r.toLinearMap (R.k + i) (R.k + i + 1) = (qOf P.1 : X.E) * Loc.n1Arg r`. Rewrite using `[hc, Loc.n1Arg, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Use `Finset.mem_range.1 hi` as an intermediate fact. Conclude with `symLevelFrameEntry_superdiag_second_block _ (by omega) _`.
+
+Establish `h3 : cst.psi P (Loc.n1Arg r) = psi0P Ch P.1 (redP P.1 ((qOf P.1 : X.E) * Loc.n1Arg r))`. Rewrite using `[← hψ _ ha, mul_div_cancel_left₀ _ hq]`. Establish `h4 : ((lamX (Ch.psi0 ⟨P.1, hP⟩) (extChi fun s => Ch.chi s ⟨P.1, hP⟩) (R.N 0) R.k R.m R.t 0 hbar : X.Kˣ) : X.K) = Ch.psi0 ⟨P.1, hP⟩ (supSum R.k (Finset.range (R.k - 1)) hbar.1.1)` using `by show ((lamGen _ _ _ R.k [] (SX R.k R.m 0) hbar : X.Kˣ) : X.K) = _`. Rewrite using `[lamGen_nil, SX_zero]`. Both sides reduce to the same expression.
+
+Use `h4.trans ?_` and prove the remaining obligations. Simplify using `only [chiInv, lamRow, hP, hs, if_true, LocE.lamGBS, LocE.lamGvS, inv_one, one_mul, mul_one, Finset.range_zero, Finset.prod_empty]`. Rewrite using `[h2, h3, hp0, reduction_add (GlobalTheory.TopStep.intAt_sum _ fun i _ => hint _ _) ha, AddChar.map_add_eq_mul, GlobalTheory.TopStep.reduction_sum₂ _ fun i _ => hint _ _, mul_comm, mul_inv_cancel_right₀ (AddChar.val_isUnit _ _).ne_zero]`. Use `congr 1`. Use `supSum_range hN.ge le_rfl _ _ fun i hi => ?_` and prove the remaining obligations.
+
+Establish `hi1 : i + 1 < R.N 0` using `by omega`. Establish `hi0 : i < R.N 0` using `by omega`. Establish `he : Loc.eN X.E (R.N 0 + cOf R 0) (i + 1) = Loc.inX X.E (R.N 0) (cOf R 0) (Loc.eN X.E (R.N 0) (i + 1))`. Use function extensionality and compare the values at `l`. Rewrite using `[GlobalTheory.QNormal.inX_apply]`.
+
+Unfold `Loc.eN`. Apply the tactic sequence `split_ifs <;> first | rfl | omega`. Establish `hv : redV P.1 (Loc.eN X.E (R.N 0) (i + 1)) = Pi.single ⟨i + 1, hi1⟩ 1`. Use function extensionality and compare the values at `l`. Simplify using `only [redV, Loc.eN, Pi.single_apply, Fin.ext_iff]`.
+
+Use `split_ifs`. Conclude with `GlobalTheory.TopStep.reduction_one₂`. Conclude with `GlobalTheory.TopStep.reduction_zero`. Establish `h5` using `congrFun (hg _ (GlobalTheory.GO.ChRoot.eN_mem (i := i + 1))) ⟨i, hi0⟩`. Rewrite `h5` using `[hv, Matrix.mulVec_single_one]`.
+
+Rewrite using `[entB_X _ hN.ge hi, he, LinearEquiv.coe_coe, hrg, Loc.atN, dif_pos (by omega), GlobalTheory.QNormal.inX_apply, dif_pos hi0]`. Conclude with `h5`.
+-/
 theorem chrG_zero {X : Fields} {Pr : Primes X} {R : Ranks} (Ch : Chars X Pr R.m)
     (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) {S : Set ℕ} (mu : Tup X.F X.E X.K S)
     (cst : LocCst X (rowSG Pr sel mu)) (P : rowSG Pr sel mu) (hP : P.1 ∈ Pr.vGs) (hs : cst.sharp = true)

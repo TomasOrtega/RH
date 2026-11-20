@@ -19,6 +19,9 @@ namespace GlobalTheory.ChiFibre
 
 open GlobalTheory.AbLaw GlobalTheory.Adelic GlobalTheory.FieldChangeInter
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ m ih`. Rewrite using `[Finset.sum_range_succ, Finset.sum_range_succ, ih, pow_succ]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem alternating_sum_range_telescoping_identity (a r : ℕ → ℤ) (m : ℕ) :
     ∑ n ∈ Finset.range m, (-1 : ℤ) ^ n * (a n + a (n + 1) - r (n + 1)) =
       ∑ n ∈ Finset.range m, (-1 : ℤ) ^ n * r n + (a 0 - r 0) + (-1) ^ m * (r m - a m) := by
@@ -28,15 +31,36 @@ theorem alternating_sum_range_telescoping_identity (a r : ℕ → ℤ) (m : ℕ)
     rw [Finset.sum_range_succ, Finset.sum_range_succ, ih, pow_succ]
     ring
 
+/- English proof (translation)
+The claim follows from `ModuleCat.subsingleton_of_isZero (ShortComplex.isZero_homology_of_isZero_X₂ (K.sc n) h)`.
+-/
 theorem homology_subsingleton {R : Type} [Ring R] (K : CochainComplex (ModuleCat.{0} R) ℕ) (n : ℕ)
     (h : IsZero (K.X n)) : Subsingleton (K.homology n) :=
   ModuleCat.subsingleton_of_isZero (ShortComplex.isZero_homology_of_isZero_X₂ (K.sc n) h)
 
+/- English proof (translation)
+Take `rfl : i₁ = i₂` from `Subsingleton.elim _ _`. Conclude with `h`.
+-/
 theorem finite_int_congr {M : Type*} [AddCommGroup M] {i₁ i₂ : Module ℤ M}
     (h : @Module.Finite ℤ M _ _ i₁) : @Module.Finite ℤ M _ _ i₂ := by
   obtain rfl : i₁ = i₂ := Subsingleton.elim _ _
   exact h
 
+/- English proof (translation)
+Use `set a : ℕ → ℤ := fun n => Module.finrank (ZMod p) (TensorProduct ℤ (ZMod p) (C.homology n))`. Use `set r : ℕ → ℤ := fun n => Module.finrank ℤ (C.homology n)`. Establish `hsub : ∀ n, m ≤ n → Subsingleton (C.homology n)` using `fun n hn => homology_subsingleton C n (hz n hn)`. Establish `hr0 : ∀ n, m ≤ n → r n = 0` using `fun n hn => by haveI := hsub n hn`. Simplify using `only [r]`.
+
+Rewrite using `[Module.finrank_zero_of_subsingleton]`. Both sides reduce to the same expression. Establish `ha0 : ∀ n, m ≤ n → a n = 0` using `fun n hn => by haveI := hsub n hn`. Establish `: Subsingleton (TensorProduct ℤ (ZMod p) (C.homology n))` using `inferInstance`. Simplify using `only [a]`.
+
+Rewrite using `[Module.finrank_zero_of_subsingleton]`. Both sides reduce to the same expression. Establish `hext : ∀ (F : Type) [Field F] (g : ℤ →+* F) (n : ℕ), m ≤ n → Module.finrank F ((((ModuleCat.extendScalars g).mapHomologicalComplex (ComplexShape.up ℕ)).obj C).homology n) = 0`. Introduce `F _ g n hn`. Establish `hZ : IsZero ((((ModuleCat.extendScalars g).mapHomologicalComplex (ComplexShape.up ℕ)).obj C).X n)` using `(ModuleCat.extendScalars g).map_isZero (hz n hn)`.
+
+Use `haveI := homology_subsingleton _ n hZ`. Conclude with `Module.finrank_zero_of_subsingleton`. Establish `hsupp : ∀ (F : Type) [Field F] (g : ℤ →+* F), (Function.support fun n => (-1 : ℤ) ^ n * (Module.finrank F ((((ModuleCat.extendScalars g).mapHomologicalComplex (ComplexShape.up ℕ)).obj C).homology n) : ℤ)) ⊆ ↑(Finset.range m)`. Introduce `F _ g n hn`. Assume the negation of the conclusion as `h`.
+
+Simplify using `only [Finset.coe_range, Set.mem_Iio, not_lt] at h`. Conclude with `hn (by simp [hext F g n h])`. Rewrite using `[finsum_eq_sum_of_support_subset _ (hsupp (ZMod p) _), finsum_eq_sum_of_support_subset _ (hsupp ℚ _)]`. Establish `h1 : ∀ n ∈ Finset.range m, (-1 : ℤ) ^ n * (Module.finrank (ZMod p) ((((ModuleCat.extendScalars (Int.castRingHom (ZMod p))).mapHomologicalComplex (ComplexShape.up ℕ)).obj C).homology n) : ℤ) = (-1 : ℤ) ^ n * (a n + a (n + 1) - r (n + 1))` using `fun n _ => by`. Rewrite using `[GlobalTheory.T.finrank_homology_mod_prime_universal_coefficients C p hinj hfin n]`.
+
+Establish `h2 : ∀ n ∈ Finset.range m, (-1 : ℤ) ^ n * (Module.finrank ℚ ((((ModuleCat.extendScalars (Int.castRingHom ℚ)).mapHomologicalComplex (ComplexShape.up ℕ)).obj C).homology n) : ℤ) = (-1 : ℤ) ^ n * r n` using `fun n _ => by`. Rewrite using `[GlobalTheory.T.finrank_rat_homology_eq_finrank_int C n (hfin n)]`. Rewrite using `[Finset.sum_congr rfl h1, Finset.sum_congr rfl h2, alternating_sum_range_telescoping_identity]`. Establish `h0 : a 0 = r 0`. Simplify using `only [a, r]`.
+
+Conclude with `GlobalTheory.T.finrank_zmod_tensor_homology_zero_of_noPTorsion C p (hinj 0) (hfin 0)` after adjusting the coercions. Rewrite using `[h0, hr0 m le_rfl, ha0 m le_rfl]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem altSum (C : CochainComplex (ModuleCat.{0} ℤ) ℕ) (p : ℕ) [Fact p.Prime]
     (hinj : ∀ (n : ℕ) (x : C.X n), (p : ℤ) • x = 0 → x = 0)
     (hfin : ∀ n, Module.Finite ℤ (C.homology n)) (m : ℕ) (hz : ∀ n, m ≤ n → IsZero (C.X n)) :
@@ -93,6 +117,11 @@ theorem altSum (C : CochainComplex (ModuleCat.{0} ℤ) ℕ) (p : ℕ) [Fact p.Pr
   rw [h0, hr0 m le_rfl, ha0 m le_rfl]
   ring
 
+/- English proof (translation)
+Use `letI := GlobalTheory.algebraΓOfHom f'`. Establish `hM'` using `LB.isLB_pull hM π`. Use `haveI := LB.isQuasicoherent_toMod hM'`. Establish `hc' : ⨆ i, π ⁻¹ᵁ D i = ⊤` using `by rw [← Scheme.Hom.preimage_iSup, hc]; rfl`. Establish `hD' : ∀ s : Finset κ, s.Nonempty → IsAffineOpen (⨅ i ∈ s, π ⁻¹ᵁ D i)` using `fun s hs => isAffineOpen_biInf_preimage H (hD s hs)`.
+
+Establish `e₁` using `((HomologicalComplex.homologyFunctor _ _ n).mapIso (cechIso f' (M.pull π) (fun i => π ⁻¹ᵁ D i))).toLinearEquiv ≪≫ₗ cechHEquivCoh F hc' hD' (toMod (M.pull π)) n`. Establish `e₄` using `((HomologicalComplex.homologyFunctor _ _ n).mapIso (cechLBBaseChangeIso hM H hD)).toLinearEquiv`. Rewrite using `[hdim_def, ← e₁.finrank_eq, ← e₄.finrank_eq]`. Both sides reduce to the same expression.
+-/
 theorem hdim_fibre {X X' : Scheme.{0}} {F : Type} [Field F] (g : ℤ →+* F) (f : X ⟶ Sp ℤ)
     (f' : X' ⟶ Sp F) (π : X' ⟶ X) (H : IsPullback π f' f (spMap g)) {κ : Type} [LinearOrder κ]
     [Finite κ] (D : κ → X.Opens) (hc : ⨆ i, D i = ⊤)
@@ -115,6 +144,15 @@ theorem hdim_fibre {X X' : Scheme.{0}} {F : Type} [Field F] (g : ℤ →+* F) (f
   rw [hdim_def, ← e₁.finrank_eq, ← e₄.finrank_eq]
   rfl
 
+/- English proof (translation)
+Take `⟨m, Dc, hD, hc⟩` from `exists_fin_affine_cover (X := X) (V := ⊤) isCompact_univ`. Establish `hD'` using `isAffineOpen_finset_biInf hD`. Establish `hinj : ∀ (n : ℕ) (x : (cechLB f M Dc).X n), (p : ℤ) • x = 0 → x = 0` using `fun n x => GlobalTheory.T.cechComplexLineBundle_term_torsionFree_charZero hX f M Dc n (p : ℤ) (by exact_mod_cast (Fact.out : p.Prime).ne_zero) x`. Establish `hz : ∀ n, m ≤ n → IsZero ((cechLB f M Dc).X n)` using `fun n hn => isZero_cechLB_X f M Dc (by simpa using hn)`. Establish `hfin' : ∀ n, Module.Finite ℤ ((cechLB f M Dc).homology n)`.
+
+Introduce `n`. Use `letI := GlobalTheory.algebraΓOfHom f`. Take `⟨e⟩` from `nonempty_coh_equiv f hM hc hD' n`. Use `letI : Module ℤ (coh (twist (structureModule X) M) n) := cohOn.instModule ℤ _ ⊤ n`. Use `haveI hf1 : Module.Finite ℤ (coh (twist (structureModule X) M) n) := finite_int_congr (hfin n)`.
+
+Conclude with `finite_int_congr (Module.Finite.equiv e.symm)`. Use `letI := GlobalTheory.algebraΓOfHom fp`. Use `letI := GlobalTheory.algebraΓOfHom fq`. Rewrite using `[chi_def, chi_def]`. Establish `hp` using `fun n => hdim_fibre (Int.castRingHom (ZMod p)) f fp πp Hp Dc hc hD' M hM n`.
+
+Establish `hq` using `fun n => hdim_fibre (Int.castRingHom ℚ) f fq πq Hq Dc hc hD' M hM n`. Simplify using `only [hp, hq]`. Conclude with `altSum (cechLB f M Dc) p hinj hfin' m hz`.
+-/
 theorem chi_fibres_LB {X Xp Xq : Scheme.{0}} [IsIntegral X] [CompactSpace X]
     [IsAffineHom (pullback.diagonal (terminal.from X))] (hX : CharZero Γ(X, ⊤))
     (f : X ⟶ Sp ℤ) (p : ℕ) [Fact p.Prime]
@@ -145,6 +183,9 @@ theorem chi_fibres_LB {X Xp Xq : Scheme.{0}} [IsIntegral X] [CompactSpace X]
   simp only [hp, hq]
   exact altSum (cechLB f M Dc) p hinj hfin' m hz
 
+/- English proof (translation)
+Establish `h₀` using `LB.isLB_triv X`. Establish `h₁` using `Semi.LB.isLB_pull h₀ π`. Take `⟨e'⟩` from `nonempty_twist_iso_of_cls_eq_zero (structureModule X') h₁ ((CechPic.cls_pull h₀ π h₁).trans (map_zero _))`. Rewrite using `[← chi_congr F e', chi_congr F (Twist.unitTwistIso _)]`.
+-/
 theorem chi_structureModule_eq {X X' : Scheme.{0}} (F : Type) [Field F] [Algebra F Γ(X', ⊤)]
     (π : X' ⟶ X) : chi F (structureModule X') = chi F (toMod ((LB.triv X).pull π)) := by
   have h₀ := LB.isLB_triv X
@@ -153,6 +194,17 @@ theorem chi_structureModule_eq {X X' : Scheme.{0}} (F : Type) [Field F] [Algebra
     ((CechPic.cls_pull h₀ π h₁).trans (map_zero _))
   rw [← chi_congr F e', chi_congr F (Twist.unitTwistIso _)]
 
+/- English proof (translation)
+Introduce `k _ W q D hq p _ N hN`. Use `haveI := hq.isDomain`. Use `haveI := hq.finite`. Use `haveI := hq.isIntegral`. Use `haveI : IsNoetherianRing k := isNoetherian_of_tower ℤ inferInstance`.
+
+Establish `hproj` using `hq.isProjOver`. Use `haveI : IsProper q := (isProper_and_exists_isAmpleLB_of_isProjOver hproj).1`. Use `haveI : CompactSpace W := QuasiCompact.compactSpace_of_compactSpace q`. Use `haveI := isAffineHom_diagonal_of_isSeparated q`. Establish `hX : CharZero Γ(W, ⊤)` using `(flat_int_iff_charZero _).1 hq.flat`.
+
+Establish `hfin : ∀ M : LB W, M.IsLB → ∀ n,`. Use `letI := GlobalTheory.algebraΓOfHom (q ≫ spMap (Int.castRingHom k))`. Use the proof step `Module.Finite ℤ (coh (twist (structureModule W) M) n) := by`. Introduce `M hM n`. Use `letI := GlobalTheory.algebraΓOfHom q`.
+
+Establish `h1 : Module.Finite k (coh (twist (structureModule W) M) n)` using `(((serre_finiteness_vanishing k W (structureModule W)).2 q (fun _ => rfl)).2 (Or.inl hproj)).2.1 M hM n`. Establish `h2 : Module.Finite ℤ (coh (twist (structureModule W) M) n)` using `Module.Finite.trans k _`. Conclude with `finite_int_congr h2`. Use `⟨chi_fibres_LB hX _ p _ _ (IsPullback.of_hasPullback _ _) _ _ (ratFibre.isPullback q) N hN (hfin N hN), ?_⟩` and prove the remaining obligations. Use `letI := GlobalTheory.algebraΓOfHom (pullback.snd (q ≫ spMap (Int.castRingHom k)) (spMap (Int.castRingHom (ZMod p))))`.
+
+Rewrite using `[chi_structureModule_eq (ZMod p) (pullback.fst _ _), chi_structureModule_eq ℚ (ratFibre.fst q)]`. Conclude with `chi_fibres_LB hX _ p _ _ (IsPullback.of_hasPullback _ _) _ _ (ratFibre.isPullback q) _ (LB.isLB_triv W) (hfin _ (LB.isLB_triv W))`.
+-/
 theorem chi_fibre_eq : ∀ (k : Type) [CommRing k] (W : Scheme.{0}) (q : W ⟶ Sp k) (D : ℕ), IsArithVar q D → ∀ (p : ℕ) [Fact p.Prime] (N : LB W), N.IsLB → (letI := GlobalTheory.algebraΓOfHom (pullback.snd (q ≫ spMap (Int.castRingHom k)) (spMap (Int.castRingHom (ZMod p)))); chi (ZMod p) (toMod (N.pull (pullback.fst (q ≫ spMap (Int.castRingHom k)) (spMap (Int.castRingHom (ZMod p)))))) = chi ℚ (toMod (N.pull (ratFibre.fst q))) ∧ chi (ZMod p) (structureModule (pullback (q ≫ spMap (Int.castRingHom k)) (spMap (Int.castRingHom (ZMod p))))) = chi ℚ (structureModule (ratFibre q))) := by
   intro k _ W q D hq p _ N hN
   haveI := hq.isDomain

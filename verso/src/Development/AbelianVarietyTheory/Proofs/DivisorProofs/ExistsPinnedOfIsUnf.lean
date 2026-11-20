@@ -68,6 +68,13 @@ def MoveMatch (U U' : Formalism.L2.PjFree.Unf Xo c σ r) (k : U.Comp) (k' : U'.C
   ∀ (x : (U.X k).dom) (y' : FrPt Xo c (CAt σ)), FrMove ρ ν (U.un k x) y' →
     y'.x = (U'.un k' ⟨_, h.mem_dom x.2⟩).x ∧ y'.u = (U'.un k' ⟨_, h.mem_dom x.2⟩).u
 
+/- English proof (translation)
+Take `⟨g, hg, hm⟩` from `h`. Take `⟨g', hg', hm'⟩` from `h'`. Use `⟨g.symm.trans g', fun a => ?_, fun a ha => ?_⟩` and prove the remaining obligations. Take `⟨b, rfl⟩` from `g.surjective a`. Rewrite using `[LinearEquiv.trans_apply, g.symm_apply_apply, hg', hg, Matrix.mulVec_mulVec, Units.val_mul, Matrix.mul_assoc, Units.inv_mul, Matrix.mul_one]`.
+
+Take `⟨v, hv⟩` from `hm a ha`. Take `⟨v', hv'⟩` from `hm' a ha`. Use `⟨v' - g' (g.symm v), ?_⟩` and prove the remaining obligations. Establish `: t' a = g (t (γ a)) - l.M • v` using `by rw [hv, add_sub_cancel_right]`. Rewrite using `[LinearMap.id_apply, LinearEquiv.trans_apply]`.
+
+Use `conv_lhs => rw [this]`. Rewrite using `[map_sub, map_sub, g.symm_apply_apply, hv', map_nsmul, map_nsmul, smul_sub, add_sub_assoc]`.
+-/
 theorem MarkRel.div {A A' : Datum H} {Λ Λ' : Submodule (𝓞 E) (Fin r → E)}
     {φ : A.La ≃ₗ[𝓞 E] Λ} {φ' : A'.La ≃ₗ[𝓞 E] Λ'} {t : Dw.La →ₗ[𝓞 E] A.La} {t' : Dw.La →ₗ[𝓞 E] A'.La}
     {γ : Dw.La →ₗ[𝓞 E] Dw.La} {δ δ' : GL (Fin r) E} (h : MarkRel l φ φ' t t' γ δ) (h' : MarkRel l φ φ' t t' γ δ') :
@@ -86,6 +93,9 @@ theorem MarkRel.div {A A' : Datum H} {Λ Λ' : Submodule (𝓞 E) (Fin r → E)}
     conv_lhs => rw [this]
     rw [map_sub, map_sub, g.symm_apply_apply, hv', map_nsmul, map_nsmul, smul_sub, add_sub_assoc]
 
+/- English proof (translation)
+Take `⟨gm, a, -, -, -, hbc⟩` from `(GlobalTheory.Frames.frChg_exists_unique E H Dw l Xo c (CAt σ) z y).1 hx`. Use `⟨a, (GlobalTheory.Frames.frBor_iff_frChg _ _ _).2 ⟨fun _ => 1, fun τ i j hij => Matrix.one_apply_ne hij.ne, fun τ i => Matrix.one_apply_eq i, hx, fun τ i => ?_, hbc⟩⟩` and prove the remaining obligations. Rewrite using `[hu]`. Conclude with `(GlobalTheory.T.frameChangeByMatrices_refl_and_comp E H Dw l Xo c (CAt σ) z z z).1.2.1 τ i`.
+-/
 theorem exists_frBor_gen (z y : FrPt Xo c (CAt σ)) (hx : y.x = z.x) (hu : y.u = z.u) :
     ∃ t₀ : (CAt σ)ˣ, FrBor (fun i => Option.elim i t₀ (fun _ => 1)) z y := by
   obtain ⟨gm, a, -, -, -, hbc⟩ := (GlobalTheory.Frames.frChg_exists_unique E H Dw l Xo c (CAt σ) z y).1 hx
@@ -94,6 +104,11 @@ theorem exists_frBor_gen (z y : FrPt Xo c (CAt σ)) (hx : y.x = z.x) (hu : y.u =
   rw [hu]
   exact (GlobalTheory.T.frameChangeByMatrices_refl_and_comp E H Dw l Xo c (CAt σ) z z z).1.2.1 τ i
 
+/- English proof (translation)
+Take `⟨-, -, -, -, -, g, e, F, ik, φ, h1, h2⟩` from `hU`. Use `⟨g, e, F, ik, φ, ⟨h1, fun k x => ?_⟩, fun k x Pm hPm hx => ?_⟩` and prove the remaining obligations. Take `⟨P, a, b, c, d, -⟩` from `h2 k x`. Conclude with `⟨P, a, b, c, d⟩`. Take `⟨P, a, -, -, -, d⟩` from `h2 k x`.
+
+Take `rfl : Pm = P` from `AddMonoidHom.ext fun v => funext fun j => (hPm v j).trans (a v j).symm`. Conclude with `d hx`.
+-/
 theorem exists_pinned_of_isUnf {U : Formalism.L2.PjFree.Unf Xo c σ r} (hU : Formalism.L2.PjFree.IsUnf U) :
     ∃ (g : ℕ) (e : Fin g ≃ Σ τ : E →+* ℂ, Fin (Dw.mult τ))
       (F : FamilyUnif Xo (σ.comp (IntermediateField.inclusion c.le).toRingHom) (fun j => Formalism.L2.PjFree.relab c σ (e j).1))

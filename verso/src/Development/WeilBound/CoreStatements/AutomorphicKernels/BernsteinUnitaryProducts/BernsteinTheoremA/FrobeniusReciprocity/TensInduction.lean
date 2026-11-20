@@ -14,6 +14,11 @@ section Tens
 
 variable {A B : Type*} [TopologicalSpace A] [TopologicalSpace B] [T2Space A] [T2Space B]
 
+/- English proof (translation)
+Establish `ha` using `mem_SB_iff.1 a.2`. Establish `hb` using `mem_SB_iff.1 b.2`. Use `mem_SB_iff.2 ⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `(ha.1.comp_continuous continuous_fst).mul (hb.1.comp_continuous continuous_snd)`. Use `HasCompactSupport.intro (IsCompact.prod ha.2 hb.2) ?_` and prove the remaining obligations.
+
+Introduce `q hq`. Rewrite `hq` using `[Set.mem_prod, not_and_or]`. Break down `hq with h | h` into its components or cases. Simplify using `[image_eq_zero_of_notMem_tsupport h]`. Simplify using `[image_eq_zero_of_notMem_tsupport h]`.
+-/
 theorem tens_mem (a : SB A) (b : SB B) :
     (fun q : A × B => (a : A → ℂ) q.1 * (b : B → ℂ) q.2) ∈ SB (A × B) := by
   have ha := mem_SB_iff.1 a.2
@@ -31,6 +36,9 @@ def tens (a : SB A) (b : SB B) : SB (A × B) :=
   ⟨_, tens_mem a b⟩
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem tens_apply (a : SB A) (b : SB B) (q : A × B) :
     ((tens a b : SB (A × B)) : A × B → ℂ) q = (a : A → ℂ) q.1 * (b : B → ℂ) q.2 :=
   rfl
@@ -45,6 +53,9 @@ def tensL (b : SB B) : SB A →ₗ[ℂ] SB (A × B) where
     rw [mul_assoc])
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem tensL_apply (a : SB A) (b : SB B) : tensL b a = tens a b :=
   rfl
 
@@ -58,11 +69,19 @@ def tensR (a : SB A) : SB B →ₗ[ℂ] SB (A × B) where
     ring)
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem tensR_apply (a : SB A) (b : SB B) : tensR a b = tens a b :=
   rfl
 
 end Tens
 
+/- English proof (translation)
+Establish `key : Submodule.span ℂ S ≤ (N.comap T).map (SB A).subtype`. Rewrite using `[Submodule.span_le]`. Introduce `F hF`. Conclude with `Submodule.mem_map.2 ⟨⟨F, hS hF⟩, hT F hF, rfl⟩`. Take `⟨f', hf', e⟩` from `Submodule.mem_map.1 (key hf)`.
+
+Establish `e' : f' = f` using `Subtype.ext e`. Substitute `e'` using the available equality. Conclude with `hf'`.
+-/
 theorem span_transfer {A : Type*} [TopologicalSpace A] {M : Type*} [AddCommGroup M] [Module ℂ M]
     (T : SB A →ₗ[ℂ] M) {S : Set (A → ℂ)} (hS : S ⊆ SB A) (N : Submodule ℂ M)
     (hT : ∀ F (hF : F ∈ S), T ⟨F, hS hF⟩ ∈ N) (f : SB A)
@@ -82,6 +101,9 @@ variable {A B : Type} [TopologicalSpace A] [T2Space A] [LocallyCompactSpace A]
   [TotallyDisconnectedSpace A] [TopologicalSpace B] [T2Space B] [LocallyCompactSpace B]
   [TotallyDisconnectedSpace B]
 
+/- English proof (translation)
+Use `span_transfer T ?_ N ?_ f (GlobalTheory.T.schwartzBruhat_prod_span_tensors A B f)` and prove the remaining obligations. Introduce and unpack `F ⟨a, b, -, rfl⟩`. Conclude with `tens_mem a b`. Introduce and unpack `F ⟨a, b, hab, rfl⟩`. Conclude with `h a b hab`.
+-/
 theorem tens_induction {M : Type*} [AddCommGroup M] [Module ℂ M] (T : SB (A × B) →ₗ[ℂ] M)
     (N : Submodule ℂ M) (f : SB (A × B))
     (h : ∀ (a : SB A) (b : SB B), (∀ q : A × B, (a : A → ℂ) q.1 ≠ 0 → (b : B → ℂ) q.2 ≠ 0 →
@@ -101,6 +123,11 @@ variable {A B : Type} [TopologicalSpace A] [T2Space A] [LocallyCompactSpace A]
   [TotallyDisconnectedSpace B] [MeasurableSpace B] [BorelSpace B]
   (μ : Measure B) [IsFiniteMeasureOnCompacts μ]
 
+/- English proof (translation)
+Establish `hF` using `mem_SB_iff.1 F.2`. Use `Continuous.integrable_of_hasCompactSupport ((hF.1.continuous.comp (Continuous.prodMk_right a)).mul hw) ?_` and prove the remaining obligations. Use `HasCompactSupport.mul_right (f' := w) ?_` and prove the remaining obligations. Use `HasCompactSupport.intro (IsCompact.image hF.2 continuous_snd) ?_` and prove the remaining obligations. Introduce `b hb`.
+
+Assume the negation of the conclusion as `h`. Conclude with `hb ⟨(a, b), subset_tsupport _ h, rfl⟩`.
+-/
 theorem fib_integrable (F : SB (A × B)) (a : A) {w : B → ℂ} (hw : Continuous w) :
     Integrable (fun b => (F : A × B → ℂ) (a, b) * w b) μ := by
   have hF := mem_SB_iff.1 F.2
@@ -125,10 +152,16 @@ def intB (w : B → ℂ) (hw : Continuous w) : SB (A × B) →ₗ[ℂ] SB A wher
     exact integral_const_mul c _)
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem intB_apply (w : B → ℂ) (hw : Continuous w) (F : SB (A × B)) (a : A) :
     ((intB μ w hw F : SB A) : A → ℂ) a = ∫ b, (F : A × B → ℂ) (a, b) * w b ∂μ :=
   rfl
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `x`. Use `show ∫ y, ((a : A → ℂ) x * (b : B → ℂ) y) * w y ∂μ = (∫ y, (b : B → ℂ) y * w y ∂μ) * (a : A → ℂ) x`. Simplify using `only [mul_assoc]`. Rewrite using `[integral_const_mul, mul_comm]`.
+-/
 theorem intB_tens (w : B → ℂ) (hw : Continuous w) (a : SB A) (b : SB B) :
     intB μ w hw (tens a b) = (∫ y, (b : B → ℂ) y * w y ∂μ) • a := by
   apply Subtype.ext
@@ -151,10 +184,22 @@ def rtr (k : K) : SB (A × K) →ₗ[ℂ] SB (A × K) :=
   pullHomeo ((Homeomorph.refl A).prodCongr (Homeomorph.mulRight k))
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem rtr_apply (k : K) (F : SB (A × K)) (q : A × K) :
     ((rtr k F : SB (A × K)) : A × K → ℂ) q = (F : A × K → ℂ) (q.1, q.2 * k) :=
   rfl
 
+/- English proof (translation)
+Establish `hc : ∀ a : SB A, ∃ c : ℂ, ∀ b : SB K, M (tens a b) = c * ∫ y, (b : K → ℂ) y ∂μ`. Introduce `a`. Use `GlobalTheory.T.invariant_functional_eq_haar_multiple K uK μ (M ∘ₗ tensR a) ?_` and prove the remaining obligations. Introduce `k b`. Establish `e : tens a (pullHomeo (Homeomorph.mulRight k) b) = rtr k (tens a b)` using `rfl`.
+
+Use `show M (tens a (pullHomeo (Homeomorph.mulRight k) b)) = M (tens a b)`. Rewrite using `[e, hM]`. Use `choose c hc using hc`. Set `T : SB (A × K) →ₗ[ℂ] ℂ` to `M - M ∘ₗ tensL b0 ∘ₗ intB μ (fun _ => (1 : ℂ)) continuous_const`. Establish `key : T F ∈ (⊥ : Submodule ℂ ℂ)`.
+
+Use `tens_induction T ⊥ F (fun a b _ => ?_)` and prove the remaining obligations. Rewrite using `[Submodule.mem_bot]`. Use `show M (tens a b) - M (tensL b0 (intB μ (fun _ => (1 : ℂ)) continuous_const (tens a b))) = 0`. Rewrite using `[intB_tens, LinearMap.map_smul, tensL_apply, LinearMap.map_smul, hc, hc, hb0]`. Simplify using `only [mul_one, smul_eq_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite `key` using `[Submodule.mem_bot]`. Conclude with `sub_eq_zero.1 key`.
+-/
 theorem factor_intB (uK : IsUnimod K) (b0 : SB K) (hb0 : ∫ y, (b0 : K → ℂ) y ∂μ = 1)
     (M : SB (A × K) →ₗ[ℂ] ℂ) (hM : ∀ (k : K) (F : SB (A × K)), M (rtr k F) = M F)
     (F : SB (A × K)) :

@@ -21,6 +21,9 @@ section Iwahori
 def residueReduction : GL (Fin n) 𝒪[F] →* GL (Fin n) (IsLocalRing.ResidueField 𝒪[F]) :=
   Matrix.GeneralLinearGroup.map (IsLocalRing.residue 𝒪[F])
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem residueReduction_apply (u : GL (Fin n) 𝒪[F]) (i j : Fin n) :
     (residueReduction F n u : Matrix (Fin n) (Fin n) (IsLocalRing.ResidueField 𝒪[F])) i j =
       IsLocalRing.residue 𝒪[F] (u i j) :=
@@ -29,18 +32,35 @@ theorem residueReduction_apply (u : GL (Fin n) 𝒪[F]) (i j : Fin n) :
 def iwahori : Subgroup (GL (Fin n) F) :=
   ((borel n (IsLocalRing.ResidueField 𝒪[F])).comap (residueReduction F n)).map (integralGLHom F n)
 
+/- English proof (translation)
+Rewrite using `[← not_iff_not, ← ne_eq, IsLocalRing.residue_ne_zero_iff_isUnit, (Valuation.integer.integers (valuation F)).isUnit_iff_valuation_eq_one, not_lt]`. Conclude with `⟨fun h => h.ge, fun h => le_antisymm ((Valuation.mem_integer_iff _ _).mp x.2) h⟩`.
+-/
 theorem residue_eq_zero_iff_valuation_lt_one (x : 𝒪[F]) :
     IsLocalRing.residue 𝒪[F] x = 0 ↔ valuation F (x : F) < 1 := by
   rw [← not_iff_not, ← ne_eq, IsLocalRing.residue_ne_zero_iff_isUnit,
     (Valuation.integer.integers (valuation F)).isUnit_iff_valuation_eq_one, not_lt]
   exact ⟨fun h => h.ge, fun h => le_antisymm ((Valuation.mem_integer_iff _ _).mp x.2) h⟩
 
+/- English proof (translation)
+Rewrite using `[IsLocalRing.residue_ne_zero_iff_isUnit, (Valuation.integer.integers (valuation F)).isUnit_iff_valuation_eq_one]`. Conclude with `Iff.rfl`.
+-/
 theorem residue_ne_zero_iff_valuation_eq_one (x : 𝒪[F]) :
     IsLocalRing.residue 𝒪[F] x ≠ 0 ↔ valuation F (x : F) = 1 := by
   rw [IsLocalRing.residue_ne_zero_iff_isUnit,
     (Valuation.integer.integers (valuation F)).isUnit_iff_valuation_eq_one]
   exact Iff.rfl
 
+/- English proof (translation)
+Set `A : Matrix (Fin n) (Fin n) 𝒪[F]` to `Matrix.of fun i j => ⟨M i j, (Valuation.mem_integer_iff _ _).mpr (h1 i j)⟩`. Set `Ā` to `(IsLocalRing.residue 𝒪[F]).mapMatrix A`. Establish `hup : Ā.IsUpperTriangular`. Introduce `i j hij`. Conclude with `(residue_eq_zero_iff_valuation_lt_one F (A i j)).mpr (h2 i j hij)`.
+
+Establish `hdiag : ∀ i, Ā i i ≠ 0` using `fun i => (residue_ne_zero_iff_valuation_eq_one F (A i i)).mpr (h3 i)`. Establish `hdetĀ : IsUnit Ā.det`. Rewrite using `[det_of_isUpperTriangular hup, isUnit_iff_ne_zero]`. Conclude with `Finset.prod_ne_zero_iff.mpr fun i _ => hdiag i`. Establish `hdetA : IsUnit A.det`.
+
+Rewrite using `[← IsLocalRing.residue_ne_zero_iff_isUnit, RingHom.map_det]`. Conclude with `hdetĀ.ne_zero`. Take `⟨u, hu⟩` from `(Matrix.isUnit_iff_isUnit_det A).mpr hdetA`. Use `⟨integralGLHom F n u, ⟨u, ?_, rfl⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `residueReduction F n u ∈ borel n _`.
+
+Rewrite using `[mem_borel_iff]`. Introduce `i j hij`. Rewrite using `[residueReduction_apply, hu]`. Conclude with `hup hij`. Use extensionality with `i j`.
+
+Rewrite using `[integralGLHom_apply, hu]`. Both sides reduce to the same expression.
+-/
 theorem exists_mem_iwahori (M : Matrix (Fin n) (Fin n) F)
     (h1 : ∀ i j, valuation F (M i j) ≤ 1) (h2 : ∀ i j, j < i → valuation F (M i j) < 1)
     (h3 : ∀ i, valuation F (M i i) = 1) :
@@ -70,6 +90,11 @@ theorem exists_mem_iwahori (M : Matrix (Fin n) (Fin n) F)
     rw [integralGLHom_apply, hu]
     rfl
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, rfl⟩`. Express the relevant statement in the definitionally equal form `residueReduction F n u ∈ borel n _ at hu`. Use `⟨fun i j => (Valuation.mem_integer_iff _ _).mp (u i j).2, fun i j hij => ?_, fun i => ?_⟩` and prove the remaining obligations. Conclude with `(residue_eq_zero_iff_valuation_lt_one F (u i j)).mp ((mem_borel_iff _).mp hu i j hij)`.
+
+Conclude with `(residue_ne_zero_iff_valuation_eq_one F (u i i)).mp (borel_diag_ne_zero hu i)`. Introduce and unpack `⟨h1, h2, h3⟩`. Take `⟨x, hx, hxg⟩` from `exists_mem_iwahori F n (g : Matrix (Fin n) (Fin n) F) h1 h2 h3`. Rewrite `hx` using `[show x = g from Units.ext hxg]`. Then use the resulting hypothesis.
+-/
 theorem mem_iwahori_iff {g : GL (Fin n) F} :
     g ∈ iwahori F n ↔ (∀ i j, valuation F (g i j) ≤ 1) ∧
       (∀ i j, j < i → valuation F (g i j) < 1) ∧ ∀ i, valuation F (g i i) = 1 := by
@@ -84,9 +109,19 @@ theorem mem_iwahori_iff {g : GL (Fin n) F} :
     obtain ⟨x, hx, hxg⟩ := exists_mem_iwahori F n (g : Matrix (Fin n) (Fin n) F) h1 h2 h3
     rwa [show x = g from Units.ext hxg] at hx
 
+/- English proof (translation)
+The claim follows from `Subgroup.map_le_range _ _`.
+-/
 theorem iwahori_le_integralGL : iwahori F n ≤ integralGL F n :=
   Subgroup.map_le_range _ _
 
+/- English proof (translation)
+Introduce `g hg`. Take `⟨hK, hg⟩` from `(mem_congruenceSubgroup_iff F n).mp hg`. Establish `hK'` using `((mem_integralGL_iff F n).mp hK).1`. Rewrite using `[mem_iwahori_iff]`. Use `⟨fun i j => (Valuation.mem_integer_iff _ _).mp (hK' i j), fun i j hij => ?_, fun i => ?_⟩` and prove the remaining obligations.
+
+Establish `h` using `hg i j`. Rewrite `h` using `[Matrix.one_apply_ne hij.ne', sub_zero, pow_one]`. Conclude with `h.trans_lt (valuation_uniformizer_lt_one F)`. Establish `h` using `hg i i`. Rewrite `h` using `[Matrix.one_apply_eq, pow_one]`.
+
+Establish `hlt : valuation F (g i i - 1) < valuation F 1`. Rewrite using `[map_one]`. Conclude with `h.trans_lt (valuation_uniformizer_lt_one F)`. Rewrite using `[Valuation.map_eq_of_sub_lt _ hlt, map_one]`.
+-/
 theorem congruenceSubgroup_one_le_iwahori : congruenceSubgroup F n 1 ≤ iwahori F n := by
   intro g hg
   obtain ⟨hK, hg⟩ := (mem_congruenceSubgroup_iff F n).mp hg
@@ -103,9 +138,15 @@ theorem congruenceSubgroup_one_le_iwahori : congruenceSubgroup F n 1 ≤ iwahori
       exact h.trans_lt (valuation_uniformizer_lt_one F)
     rw [Valuation.map_eq_of_sub_lt _ hlt, map_one]
 
+/- English proof (translation)
+The claim follows from `Subgroup.isOpen_mono (congruenceSubgroup_one_le_iwahori F n) (isOpen_congruenceSubgroup F n 1)`.
+-/
 theorem isOpen_iwahori : IsOpen (iwahori F n : Set (GL (Fin n) F)) :=
   Subgroup.isOpen_mono (congruenceSubgroup_one_le_iwahori F n) (isOpen_congruenceSubgroup F n 1)
 
+/- English proof (translation)
+The claim follows from `(isCompact_integralGL F n).of_isClosed_subset (Subgroup.isClosed_of_isOpen _ (isOpen_iwahori F n)) (iwahori_le_integralGL F n)`.
+-/
 theorem isCompact_iwahori : IsCompact (iwahori F n : Set (GL (Fin n) F)) :=
   (isCompact_integralGL F n).of_isClosed_subset
     (Subgroup.isClosed_of_isOpen _ (isOpen_iwahori F n)) (iwahori_le_integralGL F n)
@@ -114,9 +155,15 @@ end Iwahori
 
 section AffineWeyl
 
+/- English proof (translation)
+Introduce `h` and use `(irreducible_uniformizer F).ne_zero (Subtype.ext h)`.
+-/
 theorem uniformizer_ne_zero : ϖ ≠ 0 := fun h =>
   (irreducible_uniformizer F).ne_zero (Subtype.ext h)
 
+/- English proof (translation)
+The claim follows from `zero_lt_iff.mpr (valuation_uniformizer_ne_zero F)`.
+-/
 theorem valuation_uniformizer_pos : 0 < valuation F ϖ :=
   zero_lt_iff.mpr (valuation_uniformizer_ne_zero F)
 
@@ -150,6 +197,9 @@ def diagPow : (Fin n → Multiplicative ℤ) →* GL (Fin n) F where
     funext i
     rw [Pi.mul_apply, toAdd_mul, zpow_add₀ (uniformizer_ne_zero F)]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem diagPow_val (a : Fin n → Multiplicative ℤ) :
     (diagPow F n a : Matrix (Fin n) (Fin n) F) = diagonal fun i => ϖ ^ (a i).toAdd :=
   rfl
@@ -169,16 +219,27 @@ def permAct : Equiv.Perm (Fin n) →* MulAut (Fin n → Multiplicative ℤ) wher
     show a ((σ * τ)⁻¹ i) = a (τ⁻¹ (σ⁻¹ i))
     rw [_root_.mul_inv_rev, Equiv.Perm.mul_apply]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem permAct_apply (σ : Equiv.Perm (Fin n)) (a : Fin n → Multiplicative ℤ) (i : Fin n) :
     permAct n σ a i = a (σ⁻¹ i) :=
   rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem permAct_symm_apply (σ : Equiv.Perm (Fin n)) (a : Fin n → Multiplicative ℤ) (i : Fin n) :
     (permAct n σ).symm a i = a (σ i) :=
   rfl
 
 abbrev ExtendedAffineWeyl := (Fin n → Multiplicative ℤ) ⋊[permAct n] Equiv.Perm (Fin n)
 
+/- English proof (translation)
+Use `Units.ext ?_` and prove the remaining obligations. Use extensionality with `i j`. Rewrite using `[← map_inv, Units.val_mul, mul_permGL_apply, Units.val_mul, permGL_mul_apply, diagPow_val, diagPow_val, diagonal_apply, diagonal_apply]`. Simplify using `only [permAct_apply]`. Distinguish the cases in `hij : i = j`.
+
+Substitute `hij` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[if_neg hij, if_neg]`. Introduce `h`. Conclude with `hij (σ⁻¹.injective h)`.
+-/
 theorem permGL_mul_diagPow_mul_inv (σ : Equiv.Perm (Fin n)) (a : Fin n → Multiplicative ℤ) :
     permGL F σ * diagPow F n a * (permGL F σ)⁻¹ = diagPow F n (permAct n σ a) := by
   refine Units.ext ?_
@@ -199,6 +260,9 @@ def affineWeylGL : ExtendedAffineWeyl n →* GL (Fin n) F :=
     simp only [MonoidHom.comp_apply, MulEquiv.coe_toMonoidHom, MulAut.conj_apply]
     rw [permGL_mul_diagPow_mul_inv]
 
+/- English proof (translation)
+Use `show ((diagPow F n w.left * permGL F w.right : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) i j = _`. Rewrite using `[Units.val_mul, diagPow_val, diagonal_mul, permGL_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem affineWeylGL_apply (w : ExtendedAffineWeyl n) (i j : Fin n) :
     (affineWeylGL F n w : Matrix (Fin n) (Fin n) F) i j =
       if i = w.right j then ϖ ^ (w.left i).toAdd else 0 := by
@@ -206,6 +270,17 @@ theorem affineWeylGL_apply (w : ExtendedAffineWeyl n) (i j : Fin n) :
   rw [Units.val_mul, diagPow_val, diagonal_mul, permGL_apply]
   split_ifs <;> simp
 
+/- English proof (translation)
+Take `⟨x, hx, y, hy, hxy⟩` from `mem_doubleCoset.mp h`. Establish `hy' : y⁻¹ ∈ iwahori F n` using `(iwahori F n).inv_mem hy`. Establish `hmat : (x : Matrix (Fin n) (Fin n) F) * (affineWeylGL F n w : Matrix (Fin n) (Fin n) F) = (affineWeylGL F n w' : Matrix (Fin n) (Fin n) F) * ((y⁻¹ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F)`. Rewrite using `[← Units.val_mul, ← Units.val_mul, hxy]`. Use `congr 1`.
+
+Use `group`. Establish `hent` using `congrFun (congrFun hmat (w'.right c)) c`. Rewrite `hent` using `[mul_apply, Fintype.sum_eq_single (w.right c), mul_apply, Fintype.sum_eq_single c]`. Use `rotate_left`. Introduce `l hl`.
+
+Rewrite using `[affineWeylGL_apply, if_neg, zero_mul]`. Conclude with `fun e => hl (w'.right.injective e).symm`. Introduce `l hl`. Rewrite using `[affineWeylGL_apply, if_neg, mul_zero]`. Conclude with `hl`.
+
+Rewrite `hent` using `[affineWeylGL_apply, if_pos rfl, affineWeylGL_apply, if_pos rfl]`. Establish `hv` using `congrArg (valuation F) hent`. Rewrite `hv` using `[map_mul, map_mul, map_zpow₀, map_zpow₀, ((mem_iwahori_iff F n).mp hy').2.2 c, mul_one]`. Take `⟨hx1, hx2, -⟩` from `(mem_iwahori_iff F n).mp hx`. Establish `hpos : 0 < valuation F ϖ ^ (w.left (w.right c)).toAdd` using `zpow_pos (valuation_uniformizer_pos F) _`.
+
+Use `⟨?_, fun hlt => ?_⟩` and prove the remaining obligations. Rewrite using `[← hv]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← hv]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem valuation_le_of_mem_doubleCoset {w w' : ExtendedAffineWeyl n}
     (h : affineWeylGL F n w' ∈ doubleCoset (affineWeylGL F n w) (iwahori F n) (iwahori F n))
     (c : Fin n) :
@@ -250,6 +325,17 @@ theorem valuation_le_of_mem_doubleCoset {w w' : ExtendedAffineWeyl n}
           (hx2 _ _ hlt) hpos
       _ = _ := one_mul _
 
+/- English proof (translation)
+Establish `h' : affineWeylGL F n w ∈ doubleCoset (affineWeylGL F n w') (iwahori F n) (iwahori F n)`. Take `⟨x, hx, y, hy, hxy⟩` from `mem_doubleCoset.mp h`. Use `mem_doubleCoset.mpr ⟨x⁻¹, (iwahori F n).inv_mem hx, y⁻¹, (iwahori F n).inv_mem hy, ?_⟩` and prove the remaining obligations. Rewrite using `[hxy]`. Use `group`.
+
+Establish `heq : ∀ c, valuation F ϖ ^ (w'.left (w'.right c)).toAdd = valuation F ϖ ^ (w.left (w.right c)).toAdd` using `fun c => le_antisymm (valuation_le_of_mem_doubleCoset F n h c).1 (valuation_le_of_mem_doubleCoset F n h' c).1`. Establish `hle : ∀ c, w'.right c ≤ w.right c`. Introduce `c`. Assume the negation of the conclusion as `hlt`. Use `push Not at hlt`.
+
+Conclude with `((valuation_le_of_mem_doubleCoset F n h c).2 hlt).ne (heq c)`. Establish `hπ` using `perm_eq_one_of_forall_le (w'.right * w.right⁻¹) (fun x => by`. Simplify using `using hle (w.right⁻¹ x))`. Establish `hright : w.right = w'.right`. Use `congrArg (· * w.right) hπ` as an intermediate fact.
+
+Simplify using `using this.symm`. Establish `hinj` using `(zpow_right_strictAnti₀ (valuation_uniformizer_pos F) (valuation_uniformizer_lt_one F)).injective`. Use `SemidirectProduct.ext ?_ hright` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Use `heq (w.right⁻¹ i)` as an intermediate fact.
+
+Rewrite `this` using `[← hright, show w.right (w.right⁻¹ i) = i from w.right.apply_symm_apply i]`. Conclude with `Multiplicative.toAdd.injective (hinj this).symm`.
+-/
 theorem eq_of_affineWeylGL_mem_doubleCoset {w w' : ExtendedAffineWeyl n}
     (h : affineWeylGL F n w' ∈ doubleCoset (affineWeylGL F n w) (iwahori F n) (iwahori F n)) :
     w = w' := by
@@ -281,6 +367,9 @@ theorem eq_of_affineWeylGL_mem_doubleCoset {w w' : ExtendedAffineWeyl n}
   rw [← hright, show w.right (w.right⁻¹ i) = i from w.right.apply_symm_apply i] at this
   exact Multiplicative.toAdd.injective (hinj this).symm
 
+/- English proof (translation)
+Introduce `w w' h`. Apply `eq_of_affineWeylGL_mem_doubleCoset F n` to reduce the goal to its premises. Rewrite using `[← h]`. Conclude with `mem_doubleCoset_self _ _ _`.
+-/
 theorem affineWeylGL_injective : Function.Injective (affineWeylGL F n) := by
   intro w w' h
   apply eq_of_affineWeylGL_mem_doubleCoset F n
@@ -297,6 +386,77 @@ def RowsReducedOn (M : Matrix (Fin n) (Fin n) F) (R : Finset (Fin n)) : Prop :=
   ∃ p : Fin n → Fin n, ∀ i ∈ R,
     M i (p i) ≠ 0 ∧ (∀ c, c ≠ p i → M i c = 0) ∧ (∀ r, r ≠ i → M r (p i) = 0)
 
+/- English proof (translation)
+Take `⟨p, hp⟩` from `hred`. Choose the witnesses or unpack the hypotheses as in `⟨i₀, hi₀⟩ : ∃ i, i ∉ R := by`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Conclude with `hR (Finset.eq_univ_of_forall hcon)`.
+
+Establish `hrow : ∀ i, ∃ j, (h : Matrix (Fin n) (Fin n) F) i j ≠ 0`. Introduce `i`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Conclude with `((Matrix.isUnit_iff_isUnit_det _).mp h.isUnit).ne_zero (det_eq_zero_of_row_eq_zero i hcon)`.
+
+Set `M : Matrix (Fin n) (Fin n) F` to `h`. Set `S : Finset (Fin n × Fin n)` to `Finset.univ.filter fun e => e.1 ∉ R`. Establish `hS : S.Nonempty` using `⟨(i₀, i₀), Finset.mem_filter.mpr ⟨Finset.mem_univ _, hi₀⟩⟩`. Take `⟨e₀, he₀S, he₀⟩` from `S.exists_max_image (fun e => valuation F (M e.1 e.2)) hS`. Set `S₀` to `S.filter fun e => valuation F (M e.1 e.2) = valuation F (M e₀.1 e₀.2)`.
+
+Establish `hS₀ : S₀.Nonempty` using `⟨e₀, Finset.mem_filter.mpr ⟨he₀S, rfl⟩⟩`. Take `⟨⟨r₁, c⟩, he₁S₀, he₁⟩` from `S₀.exists_min_image (fun e => e.2) hS₀`. Set `S₁` to `S₀.filter fun e => e.2 = c`. Establish `hS₁ : S₁.Nonempty` using `⟨(r₁, c), Finset.mem_filter.mpr ⟨he₁S₀, rfl⟩⟩`. Take `⟨⟨r, c₂⟩, he₂S₁, he₂⟩` from `S₁.exists_max_image (fun e => e.1) hS₁`.
+
+Take `⟨he₂S₀, hc₂⟩` from `Finset.mem_filter.mp he₂S₁`. Take `⟨he₂S, hv⟩` from `Finset.mem_filter.mp he₂S₀`. Establish `hr : r ∉ R` using `(Finset.mem_filter.mp he₂S).2`. Simplify using `only at hc₂ hv`. Substitute `hc₂` using the available equality.
+
+Establish `F1 : ∀ i, i ∉ R → ∀ j, valuation F (M i j) ≤ valuation F (M r c₂)` using `fun i hi j => by`. Rewrite using `[hv]`. Conclude with `he₀ (i, j) (Finset.mem_filter.mpr ⟨Finset.mem_univ _, hi⟩)`. Establish `F2 : ∀ i, i ∉ R → ∀ j, valuation F (M i j) = valuation F (M r c₂) → c₂ ≤ j` using `fun i hi j hij => he₁ (i, j) (Finset.mem_filter.mpr ⟨Finset.mem_filter.mpr ⟨Finset.mem_univ _, hi⟩, hij.trans hv⟩)`. Establish `F3 : ∀ i, i ∉ R → valuation F (M i c₂) = valuation F (M r c₂) → i ≤ r` using `fun i hi hij => he₂ (i, c₂) (Finset.mem_filter.mpr ⟨Finset.mem_filter.mpr ⟨Finset.mem_filter.mpr ⟨Finset.mem_univ _, hi⟩, hij.trans hv⟩, rfl⟩)`.
+
+Establish `hP : M r c₂ ≠ 0`. Take `⟨j, hj⟩` from `hrow i₀`. Introduce `h0`. Use `F1 i₀ hi₀ j` as an intermediate fact. Rewrite `this` using `[h0, map_zero]`.
+
+Conclude with `hj ((Valuation.zero_iff _).mp (le_antisymm this zero_le))`. Establish `hvP : 0 < valuation F (M r c₂)` using `zero_lt_iff.mpr ((Valuation.ne_zero_iff _).mpr hP)`. Establish `hpc : ∀ i ∈ R, p i ≠ c₂`. Introduce `i hi e`. Conclude with `hP (e ▸ (hp i hi).2.2 r (fun e' => hr (e' ▸ hi)))`.
+
+Establish `hRc : ∀ i ∈ R, M i c₂ = 0` using `fun i hi => (hp i hi).2.1 c₂ (Ne.symm (hpc i hi))`. Establish `hrp : ∀ i ∈ R, M r (p i) = 0` using `fun i hi => (hp i hi).2.2 r (fun e => hr (e ▸ hi))`. Set `u : Fin n → F` to `fun i => if i = r then 0 else -(M i c₂ / M r c₂)`. Establish `hu_val : ∀ i, i ≠ r → valuation F (u i) = valuation F (M i c₂) / valuation F (M r c₂)`. Introduce `i hi`.
+
+Simplify using `only [u, if_neg hi, Valuation.map_neg, map_div₀]`. Establish `hu_le : ∀ i, valuation F (u i) ≤ 1`. Introduce `i`. Distinguish the cases in `hi : i = r`. Simplify using `[u, hi]`.
+
+Rewrite using `[hu_val i hi, div_le_one₀ hvP]`. Distinguish the cases in `hiR : i ∈ R`. Rewrite using `[hRc i hiR, map_zero]`. Conclude with `hvP.le`. Conclude with `F1 i hiR c₂`.
+
+Establish `hu_lt : ∀ i, r < i → valuation F (u i) < 1`. Introduce `i hri`. Establish `hi : i ≠ r` using `hri.ne'`. Rewrite using `[hu_val i hi, div_lt_one₀ hvP]`. Distinguish the cases in `hiR : i ∈ R`.
+
+Rewrite using `[hRc i hiR, map_zero]`. Conclude with `hvP`. Conclude with `lt_of_le_of_ne (F1 i hiR c₂) fun e => absurd (F3 i hiR e) (not_le.mpr hri)`. Establish `hur : u r = 0` using `by simp [u]`. Establish `huR : ∀ i ∈ R, u i = 0`.
+
+Introduce `i hi`. Establish `hir : i ≠ r` using `fun e => hr (e ▸ hi)`. Simplify using `[u, hir, hRc i hi]`. Set `X : Matrix (Fin n) (Fin n) F` to `1 + vecMulVec u (Pi.single r 1)`. Establish `hX : ∀ i j, X i j = (1 : Matrix (Fin n) (Fin n) F) i j + if j = r then u i else 0`.
+
+Introduce `i j`. Simplify using `only [X, Matrix.add_apply, vecMulVec_apply, Pi.single_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Take `⟨x, hx, hxX⟩` from `exists_mem_iwahori F n X (fun i j => by`. Rewrite using `[hX]`.
+
+Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Rewrite using `[one_apply_eq]`. Distinguish the cases in `hir : i = r`. Rewrite using `[if_pos hir, hir, hur, add_zero, map_one]`.
+
+Rewrite using `[if_neg hir, add_zero, map_one]`. Rewrite using `[one_apply_ne hij, zero_add] split_ifs`. Conclude with `hu_le i`. Rewrite using `[map_zero]`. Conclude with `zero_le)`.
+
+Use the proof step `(fun i j hji => by`. Rewrite using `[hX, one_apply_ne hji.ne', zero_add]`. Use `split_ifs with hjr`. Conclude with `hu_lt i (hjr ▸ hji)`. Rewrite using `[map_zero]`.
+
+Conclude with `zero_lt_one)`. Use the proof step `(fun i => by`. Rewrite using `[hX, one_apply_eq]`. Distinguish the cases in `hir : i = r`. Rewrite using `[if_pos hir, hir, hur, add_zero, map_one]`.
+
+Rewrite using `[if_neg hir, add_zero, map_one])`. Set `t : Fin n → F` to `fun j => if j = c₂ then 0 else -(M r j / M r c₂)`. Establish `ht_val : ∀ j, j ≠ c₂ → valuation F (t j) = valuation F (M r j) / valuation F (M r c₂)`. Introduce `j hj`. Simplify using `only [t, if_neg hj, Valuation.map_neg, map_div₀]`.
+
+Establish `htc : t c₂ = 0` using `by simp [t]`. Establish `ht_le : ∀ j, valuation F (t j) ≤ 1`. Introduce `j`. Distinguish the cases in `hj : j = c₂`. Simplify using `[t, hj]`.
+
+Rewrite using `[ht_val j hj, div_le_one₀ hvP]`. Conclude with `F1 r hr j`. Establish `ht_lt : ∀ j, j < c₂ → valuation F (t j) < 1`. Introduce `j hj`. Rewrite using `[ht_val j hj.ne, div_lt_one₀ hvP]`.
+
+Conclude with `lt_of_le_of_ne (F1 r hr j) fun e => absurd (F2 r hr j e) (not_le.mpr hj)`. Set `Y : Matrix (Fin n) (Fin n) F` to `1 + vecMulVec (Pi.single c₂ 1) t`. Establish `hY : ∀ i j, Y i j = (1 : Matrix (Fin n) (Fin n) F) i j + if i = c₂ then t j else 0`. Introduce `i j`. Simplify using `only [Y, Matrix.add_apply, vecMulVec_apply, Pi.single_apply]`.
+
+Apply the tactic sequence `split_ifs <;> simp`. Take `⟨y, hy, hyY⟩` from `exists_mem_iwahori F n Y (fun i j => by`. Rewrite using `[hY]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality.
+
+Rewrite using `[one_apply_eq]`. Distinguish the cases in `hic : i = c₂`. Rewrite using `[if_pos hic, hic, htc, add_zero, map_one]`. Rewrite using `[if_neg hic, add_zero, map_one]`. Rewrite using `[one_apply_ne hij, zero_add] split_ifs`.
+
+Conclude with `ht_le j`. Rewrite using `[map_zero]`. Conclude with `zero_le)`. Use the proof step `(fun i j hji => by`. Rewrite using `[hY, one_apply_ne hji.ne', zero_add]`.
+
+Use `split_ifs with hic`. Conclude with `ht_lt j (hic ▸ hji)`. Rewrite using `[map_zero]`. Conclude with `zero_lt_one)`. Use the proof step `(fun i => by`.
+
+Rewrite using `[hY, one_apply_eq]`. Distinguish the cases in `hic : i = c₂`. Rewrite using `[if_pos hic, hic, htc, add_zero, map_one]`. Rewrite using `[if_neg hic, add_zero, map_one])`. Set `M₁ : Matrix (Fin n) (Fin n) F` to `X * M`.
+
+Establish `hM₁ : ∀ a b, M₁ a b = M a b + u a * M r b` using `fun a b => one_add_vecMulVec_mul_apply M r u a b`. Establish `hM₁c : ∀ a, a ≠ r → M₁ a c₂ = 0`. Introduce `a ha`. Rewrite using `[hM₁]`. Simplify using `only [u, if_neg ha]`.
+
+Rewrite using `[neg_mul, div_mul_cancel₀ _ hP, add_neg_cancel]`. Establish `hN : ∀ a b, ((x * h * y : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) a b = M₁ a b + M₁ a c₂ * t b`. Introduce `a b`. Rewrite using `[Units.val_mul, Units.val_mul, hxX, hyY]`. Conclude with `mul_one_add_vecMulVec_apply M₁ c₂ t a b`.
+
+Use `⟨x, hx, y, hy, r, hr, Function.update p r c₂, fun i hi => ?_⟩` and prove the remaining obligations. Break down `Finset.mem_insert.mp hi with rfl | hiR` into its components or cases. Rewrite using `[Function.update_self]`. Use `⟨?_, fun b hb => ?_, fun a ha => ?_⟩` and prove the remaining obligations. Rewrite using `[hN, htc, mul_zero, add_zero, hM₁, hur, zero_mul, add_zero]`.
+
+Conclude with `hP`. Rewrite using `[hN, hM₁, hM₁, hur, zero_mul, zero_mul, add_zero, add_zero]`. Simplify using `only [t, if_neg hb]`. Rewrite using `[mul_neg, mul_div_cancel₀ _ hP, add_neg_cancel]`. Rewrite using `[hN, hM₁c a ha, zero_mul, add_zero]`.
+
+Establish `hir : i ≠ r` using `fun e => hr (e ▸ hiR)`. Rewrite using `[Function.update_of_ne hir]`. Take `⟨h1, h2, h3⟩` from `hp i hiR`. Establish `hrow_i : ∀ b, ((x * h * y : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) i b = M i b`. Introduce `b`.
+
+Rewrite using `[hN, hM₁c i hir, zero_mul, add_zero, hM₁, huR i hiR, zero_mul, add_zero]`. Use `⟨by rw [hrow_i]; exact h1, fun b hb => by rw [hrow_i]; exact h2 b hb, fun a ha => ?_⟩` and prove the remaining obligations. Rewrite using `[hN]`. Distinguish the cases in `har : a = r`. Substitute `har` using the available equality.
+
+Establish `htp : t (p i) = 0`. Simplify using `only [t, if_neg (hpc i hiR), hrp i hiR, zero_div, neg_zero]`. Rewrite using `[htp, mul_zero, add_zero, hM₁, hrp i hiR, mul_zero, add_zero]`. Establish `h3' : M a (p i) = 0` using `h3 a ha`. Rewrite using `[hM₁c a har, zero_mul, add_zero, hM₁, h3', hrp i hiR, mul_zero, add_zero]`.
+-/
 theorem rowsReducedOn_step (h : GL (Fin n) F) (R : Finset (Fin n)) (hR : R ≠ Finset.univ)
     (hred : RowsReducedOn (h : Matrix (Fin n) (Fin n) F) R) :
     ∃ x ∈ iwahori F n, ∃ y ∈ iwahori F n, ∃ r ∉ R,
@@ -493,6 +653,15 @@ theorem rowsReducedOn_step (h : GL (Fin n) F) (R : Finset (Fin n)) (hR : R ≠ F
     · have h3' : M a (p i) = 0 := h3 a ha
       rw [hM₁c a har, zero_mul, add_zero, hM₁, h3', hrp i hiR, mul_zero, add_zero]
 
+/- English proof (translation)
+Establish `key : ∀ d, d ≤ n → ∃ x ∈ iwahori F n, ∃ y ∈ iwahori F n, ∃ R : Finset (Fin n), R.card = d ∧ RowsReducedOn ((x * g * y : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) R`. Introduce `d`. Proceed by induction on `d with`. Consider the case `zero`. Introduce `_`.
+
+Conclude with `⟨1, (iwahori F n).one_mem, 1, (iwahori F n).one_mem, ∅, rfl, id, fun i hi => absurd hi (Finset.notMem_empty i)⟩`. Consider the case `succ d ih`. Introduce `hd`. Take `⟨x, hx, y, hy, R, hRc, hred⟩` from `ih (by omega)`. Establish `hRne : R ≠ Finset.univ`.
+
+Introduce `e`. Rewrite `hRc` using `[e, Finset.card_univ, Fintype.card_fin]`. Use linear arithmetic over natural numbers and integers. Take `⟨x', hx', y', hy', r, hr, hred'⟩` from `rowsReducedOn_step F n _ R hRne hred`. Use `⟨x' * x, (iwahori F n).mul_mem hx' hx, y * y', (iwahori F n).mul_mem hy hy', insert r R, by rw [Finset.card_insert_of_notMem hr, hRc], ?_⟩` and prove the remaining obligations.
+
+Simplify `hred'` using `only [mul_assoc]`. Take `⟨x, hx, y, hy, R, hRc, hred⟩` from `key n le_rfl`. Establish `hR : R = Finset.univ` using `Finset.eq_univ_of_card R (by rw [hRc, Fintype.card_fin])`. Conclude with `⟨x, hx, y, hy, hR ▸ hred⟩`.
+-/
 theorem exists_rowsReducedOn_univ (g : GL (Fin n) F) :
     ∃ x ∈ iwahori F n, ∃ y ∈ iwahori F n,
       RowsReducedOn ((x * g * y : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) Finset.univ := by
@@ -519,6 +688,13 @@ theorem exists_rowsReducedOn_univ (g : GL (Fin n) F) :
   have hR : R = Finset.univ := Finset.eq_univ_of_card R (by rw [hRc, Fintype.card_fin])
   exact ⟨x, hx, y, hy, hR ▸ hred⟩
 
+/- English proof (translation)
+Take `⟨N, hN⟩` from `(eventually_pow_mul_mem F x).exists`. Establish `hϖ` using `uniformizer_ne_zero F`. Establish `hy : (⟨ϖ ^ N * x, hN⟩ : 𝒪[F]) ≠ 0`. Introduce `h0`. Use `congrArg Subtype.val h0` as an intermediate fact.
+
+Conclude with `mul_ne_zero (pow_ne_zero N hϖ) hx this`. Take `⟨k, u, hu⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hy (irreducible_uniformizer F)`. Establish `hu' : ϖ ^ N * x = ((u : 𝒪[F]) : F) * ϖ ^ k`. Use `congrArg (fun z : 𝒪[F] => (z : F)) hu` as an intermediate fact. Simplify using `using this`.
+
+Use `⟨(k : ℤ) - N, ?_⟩` and prove the remaining obligations. Establish `hxu : x / ϖ ^ ((k : ℤ) - N) = ((u : 𝒪[F]) : F)`. Rewrite using `[zpow_sub₀ hϖ, zpow_natCast, zpow_natCast, div_div_eq_mul_div, mul_comm x, hu', mul_div_assoc, div_self (pow_ne_zero _ hϖ), mul_one]`. Rewrite using `[hxu]`. Conclude with `(Valuation.integer.integers (valuation F)).isUnit_iff_valuation_eq_one.mp u.isUnit`.
+-/
 theorem exists_valuation_div_zpow_eq_one {x : F} (hx : x ≠ 0) :
     ∃ m : ℤ, valuation F (x / ϖ ^ m) = 1 := by
   obtain ⟨N, hN⟩ := (eventually_pow_mul_mem F x).exists
@@ -539,6 +715,23 @@ theorem exists_valuation_div_zpow_eq_one {x : F} (hx : x ≠ 0) :
   rw [hxu]
   exact (Valuation.integer.integers (valuation F)).isUnit_iff_valuation_eq_one.mp u.isUnit
 
+/- English proof (translation)
+Take `⟨p, hp⟩` from `hred`. Establish `hp'` using `fun i => hp i (Finset.mem_univ i)`. Establish `hinj : Function.Injective p`. Introduce `i i' e`. Assume the negation of the conclusion as `hii`.
+
+Conclude with `(hp' i').1 (e ▸ (hp' i).2.2 i' (Ne.symm hii))`. Set `τ : Equiv.Perm (Fin n)` to `Equiv.ofBijective p (Finite.injective_iff_bijective.mp hinj)`. Establish `hτ : ∀ i, τ i = p i` using `fun i => rfl`. Use `choose m hm using fun i => exists_valuation_div_zpow_eq_one F (hp' i).1`. Set `w : ExtendedAffineWeyl n` to `⟨fun i => Multiplicative.ofAdd (m i), τ⁻¹⟩`.
+
+Set `d : Fin n → F` to `fun i => (g : Matrix (Fin n) (Fin n) F) i (p i) / ϖ ^ m i`. Take `⟨t, ht, htd⟩` from `exists_mem_iwahori F n (diagonal d) (fun i j => by`. Rewrite using `[diagonal_apply]`. Use `split_ifs with hij`. Conclude with `(hm i).le`.
+
+Rewrite using `[map_zero]`. Conclude with `zero_le)`. Use the proof step `(fun i j hji => by`. Rewrite using `[diagonal_apply, if_neg hji.ne', map_zero]`. Conclude with `zero_lt_one)`.
+
+Use the proof step `(fun i => by rw [diagonal_apply_eq]; exact hm i)`. Use `⟨w, t, ht, Units.ext ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Rewrite using `[Units.val_mul, htd, diagonal_mul, affineWeylGL_apply]`. Establish `hϖm : ϖ ^ m i ≠ 0` using `zpow_ne_zero _ (uniformizer_ne_zero F)`.
+
+Distinguish the cases in `hj : j = p i`. Substitute `hj` using the available equality. Rewrite using `[if_pos (by simp [w, ← hτ])]`. Simplify using `only [d, w, toAdd_ofAdd]`. Rewrite using `[div_mul_cancel₀ _ hϖm]`.
+
+Rewrite using `[(hp' i).2.1 j hj, if_neg, mul_zero]`. Introduce `e`. Apply `hj` to reduce the goal to its premises. Simplify using `only [w] at e`. Rewrite using `[← hτ, e]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem exists_eq_mul_affineWeylGL_of_rowsReducedOn (g : GL (Fin n) F)
     (hred : RowsReducedOn (g : Matrix (Fin n) (Fin n) F) Finset.univ) :
     ∃ w : ExtendedAffineWeyl n, ∃ t ∈ iwahori F n, g = t * affineWeylGL F n w := by
@@ -581,6 +774,9 @@ theorem exists_eq_mul_affineWeylGL_of_rowsReducedOn (g : GL (Fin n) F)
     rw [← hτ, e]
     simp
 
+/- English proof (translation)
+Take `⟨x, hx, y, hy, hred⟩` from `exists_rowsReducedOn_univ F n g`. Take `⟨w, t, ht, hgt⟩` from `exists_eq_mul_affineWeylGL_of_rowsReducedOn F n _ hred`. Use `⟨w, mem_doubleCoset.mpr ⟨x⁻¹ * t, (iwahori F n).mul_mem ((iwahori F n).inv_mem hx) ht, y⁻¹, (iwahori F n).inv_mem hy, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[mul_assoc x⁻¹ t, ← hgt]`. Use `group`.
+-/
 theorem exists_mem_doubleCoset_affineWeylGL (g : GL (Fin n) F) :
     ∃ w : ExtendedAffineWeyl n,
       g ∈ doubleCoset (affineWeylGL F n w) (iwahori F n) (iwahori F n) := by
@@ -595,6 +791,9 @@ end Existence
 
 section Decomposition
 
+/- English proof (translation)
+Establish `e : doubleCoset (affineWeylGL F n w) (iwahori F n) (iwahori F n) = doubleCoset (affineWeylGL F n w') (iwahori F n) (iwahori F n)` using `(doubleCoset_eq_of_mem hw).symm.trans (doubleCoset_eq_of_mem hw')`. Establish `hmem` using `mem_doubleCoset_self (iwahori F n) (iwahori F n) (affineWeylGL F n w')`. Rewrite `hmem` using `[← e]`. Conclude with `eq_of_affineWeylGL_mem_doubleCoset F n hmem`.
+-/
 theorem doubleCoset_affineWeylGL_injective {w w' : ExtendedAffineWeyl n} {g : GL (Fin n) F}
     (hw : g ∈ doubleCoset (affineWeylGL F n w) (iwahori F n) (iwahori F n))
     (hw' : g ∈ doubleCoset (affineWeylGL F n w') (iwahori F n) (iwahori F n)) : w = w' := by
@@ -605,18 +804,27 @@ theorem doubleCoset_affineWeylGL_injective {w w' : ExtendedAffineWeyl n} {g : GL
   rw [← e] at hmem
   exact eq_of_affineWeylGL_mem_doubleCoset F n hmem
 
+/- English proof (translation)
+Take `⟨w, hw⟩` from `exists_mem_doubleCoset_affineWeylGL F n g`. Conclude with `⟨w, hw, fun w' hw' => (doubleCoset_affineWeylGL_injective F n hw hw').symm⟩`.
+-/
 theorem affineBruhat_decomposition (g : GL (Fin n) F) :
     ∃! w : ExtendedAffineWeyl n,
       g ∈ doubleCoset (affineWeylGL F n w) (iwahori F n) (iwahori F n) := by
   obtain ⟨w, hw⟩ := exists_mem_doubleCoset_affineWeylGL F n g
   exact ⟨w, hw, fun w' hw' => (doubleCoset_affineWeylGL_injective F n hw hw').symm⟩
 
+/- English proof (translation)
+The claim follows from `Set.eq_univ_of_forall fun g => Set.mem_iUnion.mpr (exists_mem_doubleCoset_affineWeylGL F n g)`.
+-/
 theorem iUnion_doubleCoset_affineWeylGL :
     ⋃ w : ExtendedAffineWeyl n, doubleCoset (affineWeylGL F n w) (iwahori F n) (iwahori F n) =
       Set.univ :=
   Set.eq_univ_of_forall fun g =>
     Set.mem_iUnion.mpr (exists_mem_doubleCoset_affineWeylGL F n g)
 
+/- English proof (translation)
+Introduce `w w' hww'`. Rewrite using `[Function.onFun, Set.disjoint_left]`. Introduce `g hw hw'`. Conclude with `hww' (doubleCoset_affineWeylGL_injective F n hw hw')`.
+-/
 theorem pairwise_disjoint_doubleCoset_affineWeylGL :
     Pairwise (Function.onFun Disjoint fun w : ExtendedAffineWeyl n =>
       doubleCoset (affineWeylGL F n w) (iwahori F n) (iwahori F n)) := by
@@ -625,6 +833,11 @@ theorem pairwise_disjoint_doubleCoset_affineWeylGL :
   intro g hw hw'
   exact hww' (doubleCoset_affineWeylGL_injective F n hw hw')
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `w w' hww'`. Take `⟨x, hx, y, hy, hxy⟩` from `(DoubleCoset.eq _ _ _ _).mp hww'`. Conclude with `eq_of_affineWeylGL_mem_doubleCoset F n (mem_doubleCoset.mpr ⟨x, hx, y, hy, hxy⟩)`. Introduce `q`.
+
+Take `⟨w, hw⟩` from `exists_mem_doubleCoset_affineWeylGL F n q.out`. Use `⟨w, ?_⟩` and prove the remaining obligations. Simplify using `only`. Rewrite using `[← mk_eq_of_doubleCoset_eq (doubleCoset_eq_of_mem hw), out_eq']`.
+-/
 theorem bijective_mk_affineWeylGL :
     Function.Bijective fun w : ExtendedAffineWeyl n =>
       DoubleCoset.mk (iwahori F n) (iwahori F n) (affineWeylGL F n w) := by
@@ -642,12 +855,20 @@ end Decomposition
 
 section Integral
 
+/- English proof (translation)
+The claim follows from `SemidirectProduct.lift_inr _ _ _ _`.
+-/
 theorem affineWeylGL_inr (σ : Equiv.Perm (Fin n)) :
     affineWeylGL F n (SemidirectProduct.inr σ) = permGL F σ :=
   SemidirectProduct.lift_inr _ _ _ _
 
 omit [TopologicalSpace F] [IsNonarchimedeanLocalField F] in
 
+/- English proof (translation)
+Rewrite using `[mem_integralGL_iff]`. Use `⟨fun i j => ?_, fun i j => ?_⟩` and prove the remaining obligations. Rewrite using `[permGL_apply] split_ifs`. Conclude with `Subring.one_mem _`. Conclude with `Subring.zero_mem _`.
+
+Rewrite using `[← map_inv, permGL_apply] split_ifs`. Conclude with `Subring.one_mem _`. Conclude with `Subring.zero_mem _`.
+-/
 theorem permGL_mem_integralGL (σ : Equiv.Perm (Fin n)) : permGL F σ ∈ integralGL F n := by
   rw [mem_integralGL_iff]
   refine ⟨fun i j => ?_, fun i j => ?_⟩
@@ -660,6 +881,21 @@ theorem permGL_mem_integralGL (σ : Equiv.Perm (Fin n)) : permGL F σ ∈ integr
     · exact Subring.one_mem _
     · exact Subring.zero_mem _
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hw`. Take `⟨h1, h2⟩` from `(mem_integralGL_iff F n).mp hw`. Establish `hle : ∀ i, valuation F ϖ ^ (w.left i).toAdd ≤ 1`. Introduce `i`.
+
+Use `h1 i (w.right⁻¹ i)` as an intermediate fact. Rewrite `this` using `[affineWeylGL_apply, if_pos (by simp)]`. Rewrite `this` using `[Valuation.mem_integer_iff, map_zpow₀]`. Then use the resulting hypothesis. Establish `hle' : ∀ i, valuation F ϖ ^ (-(w.left i).toAdd) ≤ 1`. Introduce `i`.
+
+Use `h2 (w.right⁻¹ i) i` as an intermediate fact. Rewrite `this` using `[← map_inv, affineWeylGL_apply, if_pos (by simp)]`. Rewrite `this` using `[Valuation.mem_integer_iff, map_zpow₀]`. Simplify `this` using `[permAct_symm_apply]`. Use function extensionality and compare the values at `i`.
+
+Establish `hq` using `valuation_uniformizer_pos F`. Establish `h0 : valuation F ϖ ^ (w.left i).toAdd = valuation F ϖ ^ (0 : ℤ)`. Rewrite using `[zpow_zero]`. Use `le_antisymm (hle i) ?_` and prove the remaining obligations. Establish `hmul : valuation F ϖ ^ (w.left i).toAdd * valuation F ϖ ^ (-(w.left i).toAdd) = 1`.
+
+Rewrite using `[← zpow_add₀ hq.ne', add_neg_cancel, zpow_zero]`. Assume the negation of the conclusion as `hlt`. Use `push Not at hlt`. Establish `: valuation F ϖ ^ (w.left i).toAdd * valuation F ϖ ^ (-(w.left i).toAdd) < 1` using `mul_lt_one_of_lt_of_le hlt (hle' i)`. Rewrite `this` using `[hmul]`.
+
+Conclude with `lt_irrefl _ this`. Use `(zpow_right_strictAnti₀ hq (valuation_uniformizer_lt_one F)).injective h0` as an intermediate fact. Conclude with `Multiplicative.toAdd.injective this`. Introduce `hw`. Establish `: w = SemidirectProduct.inr w.right` using `SemidirectProduct.ext hw rfl`.
+
+Rewrite using `[this, affineWeylGL_inr]`. Conclude with `permGL_mem_integralGL F n _`.
+-/
 theorem affineWeylGL_mem_integralGL_iff (w : ExtendedAffineWeyl n) :
     affineWeylGL F n w ∈ integralGL F n ↔ w.left = 1 := by
   constructor
@@ -696,6 +932,15 @@ theorem affineWeylGL_mem_integralGL_iff (w : ExtendedAffineWeyl n) :
     rw [this, affineWeylGL_inr]
     exact permGL_mem_integralGL F n _
 
+/- English proof (translation)
+Use extensionality with `k`. Prove the components needed by the constructor for the conclusion. Introduce `hk`. Take `⟨w, hw⟩` from `exists_mem_doubleCoset_affineWeylGL F n k`. Take `⟨x, hx, y, hy, hxy⟩` from `mem_doubleCoset.mp hw`.
+
+Establish `hwK : affineWeylGL F n w ∈ integralGL F n`. Establish `: affineWeylGL F n w = x⁻¹ * k * y⁻¹`. Rewrite using `[hxy]`. Use `group`. Rewrite using `[this]`.
+
+Conclude with `(integralGL F n).mul_mem ((integralGL F n).mul_mem ((integralGL F n).inv_mem (iwahori_le_integralGL F n hx)) hk) ((integralGL F n).inv_mem (iwahori_le_integralGL F n hy))`. Establish `hleft` using `(affineWeylGL_mem_integralGL_iff F n w).mp hwK`. Establish `hw' : w = SemidirectProduct.inr w.right` using `SemidirectProduct.ext hleft rfl`. Use `Set.mem_iUnion.mpr ⟨w.right, ?_⟩` and prove the remaining obligations. Rewrite using `[← affineWeylGL_inr, ← hw']`.
+
+Conclude with `hw`. Introduce `hk`. Take `⟨σ, hσ⟩` from `Set.mem_iUnion.mp hk`. Take `⟨x, hx, y, hy, rfl⟩` from `mem_doubleCoset.mp hσ`. Conclude with `(integralGL F n).mul_mem ((integralGL F n).mul_mem (iwahori_le_integralGL F n hx) (permGL_mem_integralGL F n σ)) (iwahori_le_integralGL F n hy)`.
+-/
 theorem integralGL_eq_iUnion_doubleCoset_permGL :
     (integralGL F n : Set (GL (Fin n) F)) =
       ⋃ σ : Equiv.Perm (Fin n), doubleCoset (permGL F σ) (iwahori F n) (iwahori F n) := by

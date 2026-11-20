@@ -11,16 +11,31 @@ open CompanionTheory.RgExh CompanionTheory.RgExh.Dec ReciprocityTheory.ChartRest
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem klf_stepCoef_apply (X : GMod n) (z : ℂ) (c : X.V →ₗ[ℂ] (Matrix (Fin n) (Fin n) ℂ → ℂ)) (j : Fin n)
     (u : (step X z).V) (g : Matrix (Fin n) (Fin n) ℂ) :
     stepCoef X z c j u g = ∑ i, g j i * c ((Subtype.val u : Fin n → X.V) i) g := rfl
 
+/- English proof (translation)
+Introduce and unpack `⟨i, j⟩ v`. Simplify using `only [klf_stepCoef_apply]`. Conclude with `continuous_finsetSum _ fun a _ => ((S7.continuous_toM ε).matrix_elem j a).mul (h i _)`.
+-/
 theorem klf_contFam_step {ε : Fin n → Bool} {X : GMod n} {I : Type} {c : CoefFam X I} (h : ContFam ε c) (z : ℂ) :
     ContFam ε (X := step X z) (fun p : I × Fin n => stepCoef X z (c p.1) p.2) := by
   rintro ⟨i, j⟩ v
   simp only [klf_stepCoef_apply]
   exact continuous_finsetSum _ fun a _ => ((S7.continuous_toM ε).matrix_elem j a).mul (h i _)
 
+/- English proof (translation)
+Introduce and unpack `⟨i, j⟩`. Take `⟨r, is, β, B, hB, hc⟩` from `h i`. Use `⟨n * r, fun m => (is (finProdFinEquiv.symm m).2, (finProdFinEquiv.symm m).1), fun m k => S7.toMK k j (finProdFinEquiv.symm m).1 * β (finProdFinEquiv.symm m).2 k, |B|, ?_, ?_⟩` and prove the remaining obligations. Introduce `m k`. Rewrite using `[norm_mul]`.
+
+Establish `h1 : ‖S7.toMK k j (finProdFinEquiv.symm m).1‖ ≤ 1` using `entry_norm_bound_of_unitary (U := S7.toMK k) k.2.1 _ _`. Combine the equalities or inequalities in the displayed calculation. Introduce `v g k`. Rewrite using `[← finProdFinEquiv.sum_comp]`. Simplify using `only [Equiv.symm_apply_apply, Fintype.sum_prod_type, klf_stepCoef_apply, hc, Matrix.mul_apply, Finset.sum_mul, Finset.mul_sum]`.
+
+Rewrite using `[Finset.sum_comm]`. Use `conv_rhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem leftExp_step {ε : Fin n → Bool} {X : GMod n} {I : Type} {c : CoefFam X I} (h : LeftExp ε c) (z : ℂ) :
     LeftExp ε (X := step X z) (fun p : I × Fin n => stepCoef X z (c p.1) p.2) := by
   rintro ⟨i, j⟩
@@ -44,6 +59,11 @@ theorem leftExp_step {ε : Fin n → Bool} {X : GMod n} {I : Type} {c : CoefFam 
     refine Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_
     ring
 
+/- English proof (translation)
+Proceed by induction on `ss generalizing X I χ with`. Consider the case `nil`. Introduce and unpack `⟨i, js⟩`. Take `⟨r, is, β, B, hB, hc⟩` from `h i`. Conclude with `⟨r, fun l => (is l, js), β, B, hB, hc⟩`.
+
+Consider the case `cons s ss ih`. Introduce and unpack `⟨i, js⟩`. Take `⟨r, is, β, B, hB, hc⟩` from `ih (leftExp_step h (χ s)) (χ + Pi.single s 1) ((i, js.headD s), js.tail)`. Conclude with `⟨r, fun l => ((is l).1.1, (is l).1.2 :: (is l).2), β, B, hB, hc⟩`.
+-/
 theorem leftExp_path {ε : Fin n → Bool} {X : GMod n} {I : Type} {c : CoefFam X I} (h : LeftExp ε c)
     (χ : Fin n → ℂ) (ss : List (Fin n)) :
     LeftExp ε (X := path X χ ss) (fun p : I × List (Fin n) => pathCoef X (c p.1) χ ss p.2) := by
@@ -57,6 +77,9 @@ theorem leftExp_path {ε : Fin n → Bool} {X : GMod n} {I : Type} {c : CoefFam 
     obtain ⟨r, is, β, B, hB, hc⟩ := ih (leftExp_step h (χ s)) (χ + Pi.single s 1) ((i, js.headD s), js.tail)
     exact ⟨r, fun l => ((is l).1.1, (is l).1.2 :: (is l).2), β, B, hB, hc⟩
 
+/- English proof (translation)
+Proceed by induction on `ss generalizing X I χ with`. Consider the case `nil => exact fun p => h p.1`. Consider the case `cons s ss ih`. Introduce and unpack `⟨i, js⟩`. Conclude with `ih (klf_contFam_step h (χ s)) (χ + Pi.single s 1) ((i, js.headD s), js.tail)`.
+-/
 theorem contFam_path {ε : Fin n → Bool} {X : GMod n} {I : Type} {c : CoefFam X I} (h : ContFam ε c)
     (χ : Fin n → ℂ) (ss : List (Fin n)) :
     ContFam ε (X := path X χ ss) (fun p : I × List (Fin n) => pathCoef X (c p.1) χ ss p.2) := by
@@ -66,6 +89,21 @@ theorem contFam_path {ε : Fin n → Bool} {X : GMod n} {I : Type} {c : CoefFam 
     rintro ⟨i, js⟩
     exact ih (klf_contFam_step h (χ s)) (χ + Pi.single s 1) ((i, js.headD s), js.tail)
 
+/- English proof (translation)
+Introduce `ξ`. Take `⟨S, hfin, hξ, hS⟩` from `(hK.mem _).1 ξ.2`. Establish `hSD : ∀ x ∈ S, x ∈ D` using `fun x hx => (hK.mem _).2 ⟨S, hfin, hx, hS⟩`. Set `b` to `stdOrthonormalBasis ℂ S`. Establish `hmem : ∀ k : S7.KG ε, σ (S7.toMK k⁻¹) (ξ : H) ∈ S` using `fun k => hS _ (k⁻¹).2 _ hξ`.
+
+Establish `hUJ : ∀ g : S7.UJ ε, S7.toM g ∈ Formalism.MainNotions.S.UJset ε` using `fun g => g.2`. Use `⟨Module.finrank ℂ S, fun l => ⟨(b l : H), hSD _ (b l).2⟩, fun l k => ⟪σ (S7.toMK k⁻¹) (ξ : H), (b l : H)⟫_ℂ, ‖(ξ : H)‖, ?_, ?_⟩` and prove the remaining obligations. Introduce `l k`. Use `(norm_inner_le_norm _ _).trans ?_` and prove the remaining obligations. Establish `h1 : ‖(b l : H)‖ = 1` using `b.orthonormal.1 l`.
+
+Rewrite using `[h1, mul_one, hU.2.1 _ (hUJ _)]`. Introduce `v g k show ⟪(ξ : H), σ (S7.toMK k * S7.toM g) (v : H)⟫_ℂ = ∑ l, ⟪σ (S7.toMK k⁻¹) (ξ : H), (b l : H)⟫_ℂ * ⟪(b l : H), σ (S7.toM g) (v : H)⟫_ℂ`. Establish `hkg : S7.toMK k * S7.toM g = S7.toM ((k : S7.UJ ε) * g)` using `rfl`. Set `L : H →ₗᵢ[ℂ] H` to `⟨(σ (S7.toMK k⁻¹)).toLinearMap, hU.2.1 _ (hUJ _)⟩`. Establish `e1` using `L.inner_map_map (ξ : H) (σ (S7.toMK k * S7.toM g) (v : H))`.
+
+Establish `e2 : L (σ (S7.toMK k * S7.toM g) (v : H)) = σ (S7.toM g) (v : H)`. Establish `h3` using `hU.1.2 (S7.toMK k⁻¹) (hUJ _) (S7.toMK k * S7.toM g) (hkg ▸ hUJ _)`. Establish `h4 : S7.toMK k⁻¹ * (S7.toMK k * S7.toM g) = S7.toM g` using `by show S7.toM (((k : S7.UJ ε))⁻¹ * ((k : S7.UJ ε) * g)) = S7.toM g`. Rewrite using `[inv_mul_cancel_left]`. Rewrite `h3` using `[h4]`.
+
+Rewrite using `[h3]`. Both sides reduce to the same expression. Rewrite using `[← e1, e2]`. Establish `e3 : σ (S7.toMK k⁻¹) (ξ : H) = ∑ l, ⟪(b l : H), σ (S7.toMK k⁻¹) (ξ : H)⟫_ℂ • (b l : H)`. Use `congrArg (Subtype.val : S → H) (b.sum_repr' ⟨_, hmem k⟩)` as an intermediate fact.
+
+Simplify using `using this.symm`. Use `show ⟪σ (S7.toMK k⁻¹) (ξ : H), _⟫_ℂ = _`. Use `conv_lhs => rw [e3]`. Rewrite using `[sum_inner]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[inner_smul_left, inner_conj_symm]`.
+-/
 theorem leftExp_base {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {D : Submodule ℂ H} {E : Fin n → Fin n → Module.End ℂ D}
     (hK : CompanionTheory.D.LK.IsKMod ε σ D E) (hU : Formalism.MainNotions.S.IsURepOn (Formalism.MainNotions.S.UJset ε) σ) :
@@ -107,6 +145,9 @@ theorem leftExp_base {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H] [In
     refine Finset.sum_congr rfl fun l _ => ?_
     rw [inner_smul_left, inner_conj_symm]
 
+/- English proof (translation)
+Introduce `ξ v`. Establish `h : Continuous fun g : S7.UJ ε => σ (S7.toM g) (v : H)` using `(hU.2.2 (v : H)).comp_continuous (S7.continuous_toM ε) fun g => g.2`. Conclude with `continuous_const.inner h`.
+-/
 theorem contFam_base {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {D : Submodule ℂ H} {E : Fin n → Fin n → Module.End ℂ D}
     (hK : CompanionTheory.D.LK.IsKMod ε σ D E) (hU : Formalism.MainNotions.S.IsURepOn (Formalism.MainNotions.S.UJset ε) σ) :

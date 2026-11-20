@@ -51,6 +51,13 @@ namespace Bl.PlaneOverMembership
 
 open NumberField IsDedekindDomain
 
+/- English proof (translation)
+Establish `hc : ((g : 𝓞 K) : K) = (g : K)` using `by simp`. Establish `hg0 : (g : 𝓞 K) ≠ 0` using `by exact_mod_cast hg.ne'`. Establish `hJ : (Ideal.span {(g : 𝓞 K)} : Ideal (𝓞 K)) ≠ 0`. Rewrite using `[ne_eq, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]` and apply the resulting hypothesis. Establish `hm : Associates.mk (Ideal.span {(g : 𝓞 K)}) ≠ 0` using `by rwa [ne_eq, Associates.mk_eq_zero]`.
+
+Establish `h1 : 1 ≤ (Associates.mk w.asIdeal).count (Associates.mk (Ideal.span {(g : 𝓞 K)})).factors`. Rewrite using `[← Associates.prime_pow_dvd_iff_le hm w.associates_irreducible, pow_one, Associates.mk_le_mk_iff_dvd, Ideal.dvd_iff_le, Ideal.span_singleton_le_iff_mem]`. Conclude with `h`. Unfold `Formalism.DivisionValues.PlOver Formalism.DivisionValues.vw`. Rewrite using `[← hc, ← FractionalIdeal.coeIdeal_span_singleton, FractionalIdeal.count_coe K _ hJ]`.
+
+Conclude with `h1` after adjusting the coercions.
+-/
 private theorem plOver_of_mem {K : Type} [Field K] [NumberField K] {g : ℕ} (hg : 0 < g)
     (w : HeightOneSpectrum (𝓞 K)) (h : (g : 𝓞 K) ∈ w.asIdeal) : Formalism.DivisionValues.PlOver g w := by
   classical
@@ -67,6 +74,9 @@ private theorem plOver_of_mem {K : Type} [Field K] [NumberField K] {g : ℕ} (hg
   rw [← hc, ← FractionalIdeal.coeIdeal_span_singleton, FractionalIdeal.count_coe K _ hJ]
   exact_mod_cast h1
 
+/- English proof (translation)
+Introduce `K _ _`. Use `⟨fun w => Ideal.absNorm (Ideal.under ℤ w.asIdeal), fun w => ?_⟩` and prove the remaining obligations. Establish `: NeZero w.asIdeal` using `⟨w.ne_bot⟩`. Establish `hp : (Ideal.absNorm (Ideal.under ℤ w.asIdeal)).Prime` using `Nat.absNorm_under_prime w.asIdeal`. Conclude with `⟨hp, plOver_of_mem hp.pos w (Int.absNorm_under_mem w.asIdeal)⟩`.
+-/
 theorem goal1 :
   Formalism.AtG.FinitePlaceLiesOverPrime := by
   intro K _ _

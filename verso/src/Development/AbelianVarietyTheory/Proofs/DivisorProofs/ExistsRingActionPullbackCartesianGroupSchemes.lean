@@ -13,6 +13,13 @@ open scoped CategoryTheory.Obj
 
 namespace GlobalTheory.ActPull
 
+/- English proof (translation)
+Introduce `S S' f G _ G' _ φ hg O _ act hhom hone hmul hadd`. Establish `inj : ∀ {T : Over S'} {x y : T ⟶ G'}, pushPt hg.1.w x = pushPt hg.1.w y → x = y` using `fun {T x y} h => Over.OverMorphism.ext (hg.1.hom_ext (congrArg (fun q => q.left) h) (by rw [Over.w, Over.w]))`. Set `act' : O → (G' ⟶ G')` to `fun a => Over.homMk (hg.1.lift (φ ≫ (act a).left) G'.hom (by rw [Category.assoc, Over.w, hg.1.w])) (hg.1.lift_snd _ _ _)`. Establish `ha : ∀ a, (act' a).left ≫ φ = φ ≫ (act a).left` using `fun a => hg.1.lift_fst _ _ _`. Establish `pa : ∀ {T : Over S'} (x : T ⟶ G') a, pushPt hg.1.w (x ≫ act' a) = pushPt hg.1.w x ≫ act a` using `fun x a => Over.OverMorphism.ext (by show (x.left ≫ _) ≫ _ = (x.left ≫ _) ≫ _`.
+
+Rewrite using `[Category.assoc, ha, Category.assoc])`. Establish `pm : ∀ {T : Over S'} (x y : T ⟶ G'), pushPt hg.1.w (x * y) = pushPt hg.1.w x * pushPt hg.1.w y` using `fun x y => map_mul (pushHom hg _) x y`. Use `⟨act', ⟨fun a => isMonHom_of_mul _ fun T x y => inj ?_, inj ?_, fun a b => inj ?_, fun a b => inj ?_⟩, ha⟩` and prove the remaining obligations. Use `hhom a` as an intermediate fact. Rewrite using `[pa, pm, pm, pa, pa, MonObj.mul_comp]`.
+
+Rewrite using `[← Category.id_comp (act' 1), pa, hone, Category.comp_id]`. Rewrite using `[← Category.id_comp (act' (a * b)), pa, pa, hmul, ← Category.id_comp (act' a), pa, Category.assoc]`. Use `Eq.trans ?_ (pm (act' a) (act' b)).symm` and prove the remaining obligations. Rewrite using `[← Category.id_comp (act' (a + b)), ← Category.id_comp (act' a), ← Category.id_comp (act' b), pa, pa, pa, hadd]`. Conclude with `MonObj.comp_mul _ _ _`.
+-/
 theorem exists_act_pull : ∀ (S S' : Scheme.{0}) (f : S' ⟶ S) (G : Over S) [GrpObj G] (G' : Over S') [GrpObj G'] (φ : G'.left ⟶ G.left), IsGrpPullback G' G f φ → ∀ (O : Type) [Ring O] (act : O → (G ⟶ G)), (∀ a, IsMonHom (act a)) → act 1 = 𝟙 G → (∀ a b, act (a * b) = act a ≫ act b) → (∀ a b, act (a + b) = act a * act b) → ∃ act' : O → (G' ⟶ G'), ((∀ a, IsMonHom (act' a)) ∧ act' 1 = 𝟙 G' ∧ (∀ a b, act' (a * b) = act' a ≫ act' b) ∧ (∀ a b, act' (a + b) = act' a * act' b)) ∧ ∀ a, (act' a).left ≫ φ = φ ≫ (act a).left := by
   intro S S' f G _ G' _ φ hg O _ act hhom hone hmul hadd
   have inj : ∀ {T : Over S'} {x y : T ⟶ G'}, pushPt hg.1.w x = pushPt hg.1.w y → x = y := fun {T x y} h =>

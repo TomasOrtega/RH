@@ -25,6 +25,9 @@ def shift (G : Geo F) : (Fin G.N → F) →ₗ[F] Module.End F (Tot G) where
 
 def incl (X : Data F) (j : ℕ) : X.V j →ₗ[F] Tot X.toGeo := LinearMap.single F _ j ∘ₗ (X.V j).subtype
 
+/- English proof (translation)
+Introduce `a b h` and use `Subtype.ext (by simpa [incl] using congrFun h j)`.
+-/
 theorem incl_injective (X : Data F) (j : ℕ) : Function.Injective (incl X j) := fun a b h =>
   Subtype.ext (by simpa [incl] using congrFun h j)
 
@@ -69,6 +72,9 @@ def totSym (Co : Coord X.toGeo hs δ) (a : ℕ) : totFil X s a →ₗ[F] (MonoDe
 
 end Split
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example (G : Geo F) (u : Fin G.N → F) (x : Tot G) : shift G u x 0 = 0 := rfl
 
 end GlobalTheory.HSShort

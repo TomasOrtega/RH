@@ -9,17 +9,26 @@ noncomputable section
 
 variable {p q : ℕ}
 
+/- English proof (translation)
+Use extensionality with `i j`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j <;> simp [Jf, Matrix.diagonal_apply, Matrix.one_apply] <;> split_ifs <;> simp`.
+-/
 theorem sumBdJf_eq_diag : Jf p q = diagonal (Sum.elim (fun _ => (1 : ℂ)) (fun _ => -1)) := by
   ext i j
   rcases i with i | i <;> rcases j with j | j <;> simp [Jf, Matrix.diagonal_apply, Matrix.one_apply] <;>
     split_ifs <;> simp
 
+/- English proof (translation)
+Rewrite using `[sumBdJf_eq_diag, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `rcases i with i | i <;> simp`.
+-/
 private theorem Jf_mul_self_eq_one : Jf p q * Jf p q = 1 := by
   rw [sumBdJf_eq_diag, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]
   congr 1
   funext i
   rcases i with i | i <;> simp
 
+/- English proof (translation)
+Establish `hg : gᴴ * Jf p q * g = Jf p q` using `h`. Apply `Matrix.inv_eq_left_inv` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem inv_eq_lemma_2 {g : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ} (h : IsUpq g) :
     g⁻¹ = Jf p q * gᴴ * Jf p q := by
   have hg : gᴴ * Jf p q * g = Jf p q := h
@@ -27,6 +36,15 @@ private theorem inv_eq_lemma_2 {g : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) �
   calc Jf p q * gᴴ * Jf p q * g = Jf p q * (gᴴ * Jf p q * g) := by simp only [Matrix.mul_assoc]
     _ = 1 := by rw [hg, Jf_mul_self_eq_one]
 
+/- English proof (translation)
+Establish `hs : ∀ z : ℂ, ‖(starRingEnd ℂ) z - 1‖ = ‖z - 1‖` using `fun z => by`. Establish `h0` using `Complex.norm_conj (z - 1)`. Rewrite `h0` using `[map_sub, map_one]`. Then use the resulting hypothesis. Rewrite using `[inv_eq_lemma_2 h, sumBdJf_eq_diag]`. Simplify using `only [Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.conjTranspose_apply, Matrix.one_apply]`.
+
+Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using `[hs]`. Simplify using `[hij, Ne.symm hij]`.
+
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using `[hs]`.
+
+Simplify using `[hij, Ne.symm hij]`.
+-/
 theorem sumBd_inv_entry {g : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ} (h : IsUpq g)
     (i j : Fin p ⊕ Fin q) : ‖g⁻¹ i j - (1 : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) i j‖ =
       ‖g j i - (1 : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) j i‖ := by
@@ -45,6 +63,19 @@ theorem sumBd_inv_entry {g : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ} (h 
     · subst hij; simp [hs]
     · simp [hij, Ne.symm hij]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Establish `hc' : ∀ n : ℕ, ∃ γ ∈ Γ, γ ≠ 1 ∧ ∀ k i j, ‖((γ k : GL (Fin p ⊕ Fin q) ℂ) : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) i j - (1 : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) i j‖ < 1 / ((n : ℝ) + 1)` using `fun n => hcon _ (by positivity)`. Use `choose γ hγΓ hγ1 hγc using hc'`. Establish `hent : ∀ k i j, Filter.Tendsto (fun n => ((γ n k : GL (Fin p ⊕ Fin q) ℂ) : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) i j) Filter.atTop (𝓝 ((1 : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) i j))`.
+
+Introduce `k i j`. Rewrite using `[tendsto_iff_norm_sub_tendsto_zero]`. Conclude with `squeeze_zero (fun n => norm_nonneg _) (fun n => (hγc n k i j).le) tendsto_one_div_add_atTop_nhds_zero_nat`. Establish `hinv : ∀ k i j, Filter.Tendsto (fun n => (((γ n k)⁻¹ : GL (Fin p ⊕ Fin q) ℂ) : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) i j) Filter.atTop (𝓝 ((1 : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) i j))`. Introduce `k i j`.
+
+Rewrite using `[tendsto_iff_norm_sub_tendsto_zero]`. Use `squeeze_zero (fun n => norm_nonneg _) (fun n => ?_) tendsto_one_div_add_atTop_nhds_zero_nat` and prove the remaining obligations. Apply the tactic sequence `rw [Matrix.coe_units_inv, sumBd_inv_entry (hU _ (hγΓ n) k) i j]`. Conclude with `(hγc n k j i).le`. Establish `hT : Filter.Tendsto γ Filter.atTop (𝓝 1)`.
+
+Rewrite using `[tendsto_pi_nhds]`. Introduce `k`. Rewrite using `[(Units.isEmbedding_embedProduct (M := Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ)).tendsto_nhds_iff]`. Simplify using `only [Function.comp_def, Units.embedProduct_apply, Pi.one_apply, inv_one, Units.val_one]`. Use `Filter.Tendsto.prodMk_nhds ?_ ?_` and prove the remaining obligations.
+
+Conclude with `tendsto_pi_nhds.mpr fun i => tendsto_pi_nhds.mpr fun j => hent k i j`. Conclude with `(MulOpposite.continuous_op.tendsto _).comp (tendsto_pi_nhds.mpr fun i => tendsto_pi_nhds.mpr fun j => hinv k i j)`. Establish `hδ : Filter.Tendsto (fun n => (⟨γ n, hγΓ n⟩ : Γ)) Filter.atTop (𝓝 1)` using `tendsto_subtype_rng.mpr hT`. Establish `hev : ∀ᶠ n in Filter.atTop, (⟨γ n, hγΓ n⟩ : Γ) ∈ ({1} : Set Γ)` using `hδ ((isOpen_discrete ({1} : Set Γ)).mem_nhds rfl)`. Take `⟨n, hn⟩` from `hev.exists`.
+
+Conclude with `hγ1 n (congrArg Subtype.val hn)`.
+-/
 theorem sumBd_sep {f : ℕ} (Γ : Subgroup (Fin f → GL (Fin p ⊕ Fin q) ℂ)) (hd : DiscreteTopology Γ)
     (hU : ∀ γ ∈ Γ, ∀ k, IsUpq ((γ k : GL (Fin p ⊕ Fin q) ℂ) :
       Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ)) :
@@ -88,9 +119,15 @@ theorem sumBd_sep {f : ℕ} (Γ : Subgroup (Fin f → GL (Fin p ⊕ Fin q) ℂ))
   obtain ⟨n, hn⟩ := hev.exists
   exact hγ1 n (congrArg Subtype.val hn)
 
+/- English proof (translation)
+The claim follows from `inv_eq_lemma_2 h`.
+-/
 theorem sumBd_inv_eq {g : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ} (h : IsUpq g) :
     g⁻¹ = Jf p q * gᴴ * Jf p q := inv_eq_lemma_2 h
 
+/- English proof (translation)
+Establish `hg : gᴴ * Jf p q * g = Jf p q` using `h`. Establish `hl : g⁻¹ * g = 1`. Rewrite using `[sumBd_inv_eq h]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `Matrix.mul_nonsing_inv g (Matrix.isUnit_det_of_left_inverse hl)`.
+-/
 theorem sumBd_mul_inv {g : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ} (h : IsUpq g) : g * g⁻¹ = 1 := by
   have hg : gᴴ * Jf p q * g = Jf p q := h
   have hl : g⁻¹ * g = 1 := by
@@ -99,12 +136,24 @@ theorem sumBd_mul_inv {g : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ} (h : 
       _ = 1 := by rw [hg, Jf_mul_self_eq_one]
   exact Matrix.mul_nonsing_inv g (Matrix.isUnit_det_of_left_inverse hl)
 
+/- English proof (translation)
+Rewrite using `[sumBd_inv_eq h, sumBdJf_eq_diag]`. Simplify using `only [Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.conjTranspose_apply]`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j <;> simp`.
+-/
 theorem sumBd_inv_entry' {g : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ} (h : IsUpq g)
     (i j : Fin p ⊕ Fin q) : ‖g⁻¹ i j‖ = ‖g j i‖ := by
   rw [sumBd_inv_eq h, sumBdJf_eq_diag]
   simp only [Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.conjTranspose_apply]
   rcases i with i | i <;> rcases j with j | j <;> simp
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Establish `hN : (0 : ℝ) < ((p + q : ℕ) : ℝ) + 1` using `by positivity`. Establish `hgi : ∀ l, ‖g⁻¹ l j‖ ≤ R` using `fun l => by rw [sumBd_inv_entry' hg]; exact hgR j l`. Establish `e : (h * g⁻¹) i j - (1 : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) i j = ((h - g) * g⁻¹) i j`.
+
+Rewrite using `[Matrix.sub_mul, sumBd_mul_inv hg, Matrix.sub_apply]`. Rewrite `hc` using `[e, Matrix.mul_apply]`. Establish `hle : ‖∑ l, (h - g) i l * g⁻¹ l j‖ ≤ ∑ _l : Fin p ⊕ Fin q, c / (((p + q : ℕ) : ℝ) + 1) / R * R`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun l _ => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul, Matrix.sub_apply]`.
+
+Conclude with `mul_le_mul (hcon l).le (hgi l) (norm_nonneg _) (by positivity)`. Rewrite `hle` using `[Finset.sum_const, Finset.card_univ, Fintype.card_sum, Fintype.card_fin, Fintype.card_fin, nsmul_eq_mul, div_mul_cancel₀ _ hR.ne']`. Establish `h3 : ((p + q : ℕ) : ℝ) * (c / (((p + q : ℕ) : ℝ) + 1)) < c`. Rewrite using `[mul_div_assoc', div_lt_iff₀ hN]`. Use the polynomial consequences of the given equalities and inequalities.
+
+Move the coercions through the operations in `at hle h3`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem sumBd_sep_diff {g h : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ} (hg : IsUpq g) {R c : ℝ}
     (hR : 0 < R) (hc0 : 0 < c) (hgR : ∀ i j, ‖g i j‖ ≤ R) {i j : Fin p ⊕ Fin q}
     (hc : c ≤ ‖(h * g⁻¹) i j - (1 : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) i j‖) :
@@ -128,6 +177,23 @@ theorem sumBd_sep_diff {g h : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ} (h
   push_cast at hle h3
   linarith
 
+/- English proof (translation)
+Set `S : Set ι` to `{a | ∀ k i j, ‖x a k i j‖ ≤ R}`. Set `val : ι → Fin f × (Fin p ⊕ Fin q) × (Fin p ⊕ Fin q) × Bool → ℝ` to `fun a t => if t.2.2.2 then (x a t.1 t.2.1 t.2.2.1).re else (x a t.1 t.2.1 t.2.2.1).im`. Set `φ : ι → (Fin f × (Fin p ⊕ Fin q) × (Fin p ⊕ Fin q) × Bool → ℤ)` to `fun a t => ⌊val a t / η⌋`. Establish `hmaps : ∀ a ∈ S, φ a ∈ Fintype.piFinset (fun _ : Fin f × (Fin p ⊕ Fin q) × (Fin p ⊕ Fin q) × Bool => Finset.Icc (-⌈R / η⌉) ⌈R / η⌉)`. Introduce `a ha`.
+
+Rewrite using `[Fintype.mem_piFinset]`. Introduce `t`. Rewrite using `[Finset.mem_Icc]`. Establish `hb` using `ha t.1 t.2.1 t.2.2.1`. Establish `hv : |val a t| ≤ R`.
+
+Simplify using `only [val]`. Use `split_ifs`. Conclude with `(Complex.abs_re_le_norm _).trans hb`. Conclude with `(Complex.abs_im_le_norm _).trans hb`. Rewrite `hv` using `[abs_le]`.
+
+Establish `h1 : -(R / η) ≤ val a t / η` using `by rw [← neg_div]; exact div_le_div_of_nonneg_right hv.1 hη.le`. Establish `h2 : val a t / η ≤ R / η` using `div_le_div_of_nonneg_right hv.2 hη.le`. Prove the components needed by the constructor for the conclusion. Apply `Int.le_floor.2` to reduce the goal to its premises. Use `push_cast`.
+
+Combine the linear relations using `[Int.le_ceil (R / η)]`. Conclude with `Int.cast_le.1 ((Int.floor_le _).trans (h2.trans (Int.le_ceil _)))`. Establish `hinj : Set.InjOn φ S`. Introduce `a ha b hb hab`. Assume the negation of the conclusion as `hne`.
+
+Take `⟨k, i, j, hsep⟩` from `hsep2 a ha b hb hne`. Establish `hre` using `congrFun hab (k, i, j, true)`. Establish `him` using `congrFun hab (k, i, j, false)`. Simplify using `only [φ, val, if_true, Bool.false_eq_true, if_false] at hre him`. Establish `h1` using `Int.abs_sub_lt_one_of_floor_eq_floor hre`.
+
+Establish `h2` using `Int.abs_sub_lt_one_of_floor_eq_floor him`. Rewrite `h1`, `h2` using `[← sub_div, abs_div, abs_of_pos hη, div_lt_one hη]`. Establish `h3` using `Complex.norm_le_abs_re_add_abs_im (x b k i j - x a k i j)`. Simplify using `only [Complex.sub_re, Complex.sub_im] at h3`. Rewrite `h1`, `h2` using `[abs_sub_comm]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem sumBd_count {f : ℕ} {ι : Type*} (x : ι → Fin f → Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ)
     {R η : ℝ} (hη : 0 < η)
     (hsep2 : ∀ a, (∀ k i j, ‖x a k i j‖ ≤ R) → ∀ b, (∀ k i j, ‖x b k i j‖ ≤ R) → a ≠ b →

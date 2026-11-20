@@ -24,6 +24,21 @@ namespace GlobalTheory.MixSumBound
 
 variable {D : D7}
 
+/- English proof (translation)
+Set `K₁ : Set (Fin m → Fin n → AE D)` to `K₀`. Establish `h1 : K₁ ∈ Filter.pi (fun _ : Fin m => nhds (0 : Fin n → AE D))`. Establish `: K₁ ∈ nhds (0 : Fin m → Fin n → AE D)` using `hK₀`. Rewrite `this` using `[nhds_pi]`. Then use the resulting hypothesis. Take `⟨I, t, ht, hIt⟩` from `Filter.mem_pi'.1 h1`.
+
+Establish `h2 : ∀ i, ∃ J : Finset (Fin n), ∃ s : Fin n → Set (AE D), (∀ j, s j ∈ nhds (0 : AE D)) ∧ (J : Set (Fin n)).pi s ⊆ t i`. Introduce `i`. Establish `h5 : t i ∈ Filter.pi (fun _ : Fin n => nhds (0 : AE D))`. Establish `: t i ∈ nhds (0 : Fin n → AE D)` using `ht i`. Rewrite `this` using `[nhds_pi]`. Then use the resulting hypothesis.
+
+Conclude with `Filter.mem_pi'.1 h5`. Use `choose J s hs hJs using h2`. Use `set V : Set (AE D) := ⋂ i, ⋂ j, s i j with hVdef`. Establish `hV : V ∈ nhds (0 : AE D)` using `Filter.iInter_mem.2 fun i => Filter.iInter_mem.2 fun j => hs i j`. Take `⟨U, hUo, hU⟩` from `GlobalTheory.T.exists_openAddSubgroup_finite_points_alt D V hV`.
+
+Set `U' : AddSubgroup (Mx D m n)` to `{ carrier := {u | ∀ i j, u i j ∈ U} add_mem' := fun ha hb i j => U.add_mem (ha i j) (hb i j) zero_mem' := fun _ _ => U.zero_mem neg_mem' := fun ha i j => U.neg_mem (ha i j) }`. Use `⟨U', ?_, fun u hu hfin => ?_⟩` and prove the remaining obligations. Establish `: (U' : Set (Mx D m n)) = ⋂ i, ⋂ j, (fun u : Mx D m n => u i j) ⁻¹' (U : Set (AE D))`. Use extensionality with `u`. Simplify using `only [Set.mem_iInter, Set.mem_preimage, SetLike.mem_coe]`.
+
+Conclude with `Iff.rfl`. Rewrite using `[this]`. Conclude with `isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j => hUo.preimage ((continuous_apply j).comp (continuous_apply i))`. Use `show u ∈ K₁`. Apply `hIt` to reduce the goal to its premises.
+
+Introduce `i _`. Apply `hJs i` to reduce the goal to its premises. Introduce `j _`. Establish `h3 : infPart D (u i j) = 0`. Use `congrFun (congrFun hfin i) j` as an intermediate fact.
+
+Simplify using `using this`. Establish `h4` using `hU _ (hu i j) h3`. Simplify using `only [hVdef, Set.mem_iInter] at h4`. Conclude with `h4 i j`.
+-/
 theorem finite_points_in_nhds (D : D7) (m n : ℕ) (K₀ : Set (Mx D m n)) (hK₀ : K₀ ∈ nhds (0 : Mx D m n)) :
     ∃ U : AddSubgroup (Mx D m n), IsOpen (U : Set (Mx D m n)) ∧ ∀ u ∈ U, u.map (infPart D) = 0 → u ∈ K₀ := by
   let K₁ : Set (Fin m → Fin n → AE D) := K₀
@@ -65,6 +80,11 @@ theorem finite_points_in_nhds (D : D7) (m n : ℕ) (K₀ : Set (Mx D m n)) (hK�
     simp only [hVdef, Set.mem_iInter] at h4
     exact h4 i j
 
+/- English proof (translation)
+Unfold `realSize compAt`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [Matrix.map_apply, Matrix.smul_apply, nsmul_eq_mul, map_mul, map_natCast, norm_mul, Complex.norm_natCast]`.
+-/
 theorem realSize_nsmul (θ : InfFam D) {m n : ℕ} (N : ℕ) (x : Mx D m n) :
     realSize θ (N • x) = N * realSize θ x := by
   unfold realSize compAt
@@ -73,6 +93,9 @@ theorem realSize_nsmul (θ : InfFam D) {m n : ℕ} (N : ℕ) (x : Mx D m n) :
   rw [Finset.mul_sum]; refine Finset.sum_congr rfl fun j _ => ?_
   simp only [Matrix.map_apply, Matrix.smul_apply, nsmul_eq_mul, map_mul, map_natCast, norm_mul, Complex.norm_natCast]
 
+/- English proof (translation)
+Establish `hN1 : (1 : ℝ) ≤ N` using `by exact_mod_cast hN`. Establish `h1 : 0 < (1 + r) ^ k` using `by positivity`. Establish `h2 : 0 < (1 + N * r) ^ k` using `by positivity`. Rewrite using `[← div_eq_mul_inv, inv_le_comm₀ h1 (by positivity), inv_div, div_le_iff₀ (by positivity), ← mul_pow]`. Conclude with `pow_le_pow_left₀ (by positivity) (by nlinarith) k`.
+-/
 theorem inv_pow_le (k N : ℕ) (hN : 0 < N) {r : ℝ} (hr : 0 ≤ r) :
     ((1 + r) ^ k)⁻¹ ≤ (N : ℝ) ^ k * ((1 + N * r) ^ k)⁻¹ := by
   have hN1 : (1 : ℝ) ≤ N := by exact_mod_cast hN
@@ -85,6 +108,25 @@ end GlobalTheory.MixSumBound
 
 namespace GlobalTheory.MixSumBound
 
+/- English proof (translation)
+Introduce `D ψ hψ θ hθ S S₀ T ρ d v`. Take `⟨k, hk⟩` from `GlobalTheory.T.tsum_adelicMatrixSchwartzMajorant_rational_ne_top D θ hθ T.rank ρ`. Use `⟨k, fun K₀ hK₀ => ?_⟩` and prove the remaining obligations. Take `⟨U, hUo, hU⟩` from `finite_points_in_nhds D T.rank S.rank K₀ hK₀`. Take `⟨K, hKc, hK⟩` from `GlobalTheory.T.finiteAnnihilator_open_subgroup_in_box D ψ hψ S S₀ T ρ d U hUo`.
+
+Take `⟨C₁, hC₁⟩` from `GlobalTheory.T.mixedCoordinate_decay_realEntries D ψ hψ θ hθ S S₀ T ρ d v k`. Establish `hM` using `hk K hKc`. Use `⟨C₁ * (∑' y : ratMx D T.rank ρ, ENNReal.ofReal (maj θ K k y)).toNNReal, fun n hn f hf hfix w => ?_⟩` and prove the remaining obligations. Establish `hpt : ∀ x : Mx D T.rank ρ, ‖d.mixS T ψ v.μ v.𝓕 f x w‖ₑ ≤ ((C₁ : ℝ≥0∞) * supSob ψ θ k f * (n : ℝ≥0∞) ^ k) * ENNReal.ofReal (maj θ K k (n • x))`. Introduce `x`.
+
+Distinguish the cases in `h0 : d.mixS T ψ v.μ v.𝓕 f x w = 0`. Simplify using `[h0]`. Establish `hbox : InBox K (n • x)`. Apply `hK` to reduce the goal to its premises. Introduce `a ha haU`.
+
+Establish `hfin : (d.extY T a).map (infPart D) = 0`. Rewrite using `[HypDec.extY_apply, Matrix.map_mul, ha, Matrix.zero_mul]`. Establish `hfix'` using `hfix _ (hU _ haU hfin) hfin`. Establish `h2` using `congrFun ((GlobalTheory.T.heisenbergOperator_thetaFunctional_mixedSourceModel D ψ hψ S S₀ T ρ d v f hf).2.1 x (n • a)) w`. Rewrite `h2` using `[map_nsmul, hfix', Pi.smul_apply, smul_eq_mul]`.
+
+Establish `h3 : ψ (symplO S T (d.extX T x) (n • d.extY T a)) = 1` using `mul_right_cancel₀ h0 (h2.symm.trans (one_mul _).symm)`. Rewrite using `[map_nsmul, GlobalTheory.Mem.CoefInv.symplO_nsmul]`. Conclude with `h3`. Establish `hmaj : maj θ K k (n • x) = ((1 + realSize θ (n • x)) ^ k)⁻¹` using `by simp [maj, hbox]`. Establish `hr` using `realSize_nonneg θ x`.
+
+Establish `hdec` using `hC₁ f hf x w`. Establish `hA : 0 < (1 + realSize θ x) ^ k` using `by positivity`. Establish `hkey` using `inv_pow_le k n hn hr`. Rewrite `hkey` using `[← realSize_nsmul]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[mul_assoc, ← ENNReal.ofReal_mul hA.le, mul_inv_cancel₀ hA.ne', ENNReal.ofReal_one, mul_one]`. Use `_ ≤ (C₁ : ℝ≥0∞) * supSob ψ θ k f * ENNReal.ofReal ((n : ℝ) ^ k * ((1 + realSize θ (n • x)) ^ k)⁻¹) := mul_le_mul' hdec (ENNReal.ofReal_le_ofReal hkey)`. Use `_ = _ := by`. Rewrite using `[hmaj, ENNReal.ofReal_mul (by positivity), ENNReal.ofReal_pow (Nat.cast_nonneg _), ENNReal.ofReal_natCast]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hinj : Function.Injective fun x : ratMx D T.rank ρ => n • x`. Introduce `x y hxy`. Conclude with `Subtype.ext (GlobalTheory.Mem.CoefInv.nsmul_cancel hn (congrArg Subtype.val hxy))`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[ENNReal.coe_mul, ENNReal.coe_toNNReal hM]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem mixS_tsum_le : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ θ : InfFam D, IsInfFam θ → ∀ (S S₀ T : HSp D) (ρ : ℕ) (d : HypDec S S₀ ρ) (v : VolM D T.rank ρ), ∃ k : ℕ, ∀ K₀ ∈ nhds (0 : WO S T), ∃ C : ℝ≥0, ∀ n : ℕ, 0 < n → ∀ f : WO S T → ℂ, IsThetaFunO ψ S T f → (∀ u ∈ K₀, u.map (infPart D) = 0 → heisO ψ S T (n • u) f = f) → ∀ w, (∑' x : ratMx D T.rank ρ, ‖d.mixS T ψ v.μ v.𝓕 f x w‖ₑ) ≤ C * (n : ℝ≥0∞) ^ k * supSob ψ θ k f := by
   intro D ψ hψ θ hθ S S₀ T ρ d v
   obtain ⟨k, hk⟩ := GlobalTheory.T.tsum_adelicMatrixSchwartzMajorant_rational_ne_top D θ hθ T.rank ρ

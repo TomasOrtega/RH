@@ -6,14 +6,31 @@ noncomputable section
 
 namespace Formalism.REAL
 
+/- English proof (translation)
+Apply the tactic sequence `first | rfl | simp [epow]`.
+-/
 private theorem epow_zero_apply {A : Type*} [Ring A] {n : ℕ} (E : Fin n → Fin n → A)
     (a b : Fin n) : epow E 0 a b = if a = b then 1 else 0 := by
   first | rfl | simp [epow]
 
+/- English proof (translation)
+Apply the tactic sequence `first | rfl | simp [epow]`.
+-/
 private theorem epow_succ_apply {A : Type*} [Ring A] {n : ℕ} (E : Fin n → Fin n → A)
     (k : ℕ) (a b : Fin n) : epow E (k + 1) a b = ∑ c, epow E k a c * E c b := by
   first | rfl | simp [epow]
 
+/- English proof (translation)
+Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `a b c d`. Simplify using `only [epow]`.
+
+Apply the tactic sequence `have lhs : E c d * (if a = b then (1:A) else 0) - (if a = b then (1:A) else 0) * E c d = 0 := by split_ifs <;> simp`. Rewrite using `[lhs]`. Distinguish the cases in `h : d = a ∧ c = b`. Take `⟨rfl, rfl⟩` from `h`. Simplify using the standard rewrite rules.
+
+Apply the tactic sequence `have h1 : (if d = a then (if c = b then (1:A) else 0) else 0) = 0 := by split_ifs with h2 h3 <;> simp_all`. Apply the tactic sequence `have h2 : (if b = c then (if a = d then (1:A) else 0) else 0) = 0 := by split_ifs with h2 h3 <;> simp_all`. Rewrite using `[h1, h2, sub_zero]`. Consider the case `succ k ih`. Introduce `a b c d`.
+
+Establish `key : ∀ e, E c d * (epow E k a e * E e b) - (epow E k a e * E e b) * E c d = (E c d * epow E k a e - epow E k a e * E c d) * E e b + epow E k a e * (E c d * E e b - E e b * E c d)`. Introduce `e`. Use `noncomm_ring`. Simplify using `only [epow]`. Rewrite using `[Finset.mul_sum, Finset.sum_mul, ← Finset.sum_sub_distrib, Finset.sum_congr rfl (fun e _ => key e)]`.
+
+Simplify using `only [ih, hE c d]`. Apply the tactic sequence `by_cases hda : d = a <;> by_cases hbc : b = c <;>`. Apply the tactic sequence `simp [hda, hbc, sub_mul, mul_sub, Finset.sum_add_distrib, Finset.sum_sub_distrib, ite_mul, mul_ite] <;> abel`.
+-/
 theorem HWDiag_cov {A : Type*} [Ring A] {n : ℕ} (E : Fin n → Fin n → A) (hE : GlRel E) :
     ∀ (k : ℕ) (a b c d : Fin n),
       E c d * epow E k a b - epow E k a b * E c d =
@@ -47,13 +64,22 @@ theorem HWDiag_cov {A : Type*} [Ring A] {n : ℕ} (E : Fin n → Fin n → A) (h
       simp [hda, hbc, sub_mul, mul_sub, Finset.sum_add_distrib, Finset.sum_sub_distrib, ite_mul,
         mul_ite] <;> abel
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem module_end_mul_apply {V : Type*} [AddCommGroup V] [Module ℂ V]
     (f g : Module.End ℂ V) (v : V) : (f * g) v = f (g v) := rfl
 
+/- English proof (translation)
+Apply the tactic sequence `first | (split_ifs <;> rfl) | (split_ifs <;> simp)`.
+-/
 private theorem module_end_ite_apply {V : Type*} [AddCommGroup V] [Module ℂ V] (p : Prop) [Decidable p]
     (f : Module.End ℂ V) (v : V) : (if p then f else 0) v = if p then f v else 0 := by
   first | (split_ifs <;> rfl) | (split_ifs <;> simp)
 
+/- English proof (translation)
+Establish `h` using `congrArg (fun f : Module.End ℂ V => f v) (HWDiag_cov E hE k a b c d)`. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply] at h`. Establish `h' : epow E k a b (E c d v) = E c d (epow E k a b v) - (E c d (epow E k a b v) - epow E k a b (E c d v))` using `by abel`. Rewrite using `[h', h]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem HWDiag_covApply {V : Type*} [AddCommGroup V] [Module ℂ V] {n : ℕ}
     (E : Fin n → Fin n → Module.End ℂ V) (hE : GlRel E) (k : ℕ) (a b c d : Fin n) (v : V) :
     epow E k a b (E c d v) = E c d (epow E k a b v) -
@@ -65,6 +91,11 @@ theorem HWDiag_covApply {V : Type*} [AddCommGroup V] [Module ℂ V] {n : ℕ}
   rw [h', h]
   split_ifs <;> simp
 
+/- English proof (translation)
+Use `first`. Consider the case `exact LinearMap.sum_apply s f v`. Consider the case `simp`. Consider the case `(classical`. Proceed by induction on `s using Finset.induction_on with`.
+
+Consider the case `empty => simp`. Consider the case `insert x s hx ih => rw [Finset.sum_insert hx, Finset.sum_insert hx, LinearMap.add_apply, ih])`.
+-/
 private theorem module_end_finset_sum_apply {V : Type*} [AddCommGroup V] [Module ℂ V] {ι : Type*}
     (s : Finset ι) (f : ι → Module.End ℂ V) (v : V) : (∑ i ∈ s, f i) v = ∑ i ∈ s, f i v := by
   first
@@ -75,6 +106,15 @@ private theorem module_end_finset_sum_apply {V : Type*} [AddCommGroup V] [Module
      | empty => simp
      | insert x s hx ih => rw [Finset.sum_insert hx, Finset.sum_insert hx, LinearMap.add_apply, ih])
 
+/- English proof (translation)
+Establish `hv' : (∀ a, E a a v = ν a • v) ∧ ∀ a b, a < b → E a b v = 0` using `hv`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `a b hab`.
+
+Simplify using `[epow_zero_apply, hab.ne]`. Consider the case `succ k ih`. Introduce `a b hab`. Rewrite using `[epow_succ_apply, module_end_finset_sum_apply]`. Use `Finset.sum_eq_zero fun c _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[module_end_mul_apply]`. Break down `lt_trichotomy c b with hcb | hcb | hcb` into its components or cases. Rewrite using `[hv'.2 c b hcb, map_zero]`. Rewrite using `[hcb, hv'.1 b, map_smul, ih a b hab, smul_zero]`. Rewrite using `[HWDiag_covApply E hE k a c c b v, ih a c (hab.trans hcb), map_zero, ih a b hab]`.
+
+Simplify using `[hab.ne']`.
+-/
 theorem HWDiag_upper {V : Type*} [AddCommGroup V] [Module ℂ V] {n : ℕ}
     (E : Fin n → Fin n → Module.End ℂ V) (ν : Fin n → ℂ) (v : V) (hE : GlRel E)
     (hv : IsHW E ν v) : ∀ (k : ℕ) (a b : Fin n), a < b → epow E k a b v = 0 := by
@@ -96,6 +136,13 @@ theorem HWDiag_upper {V : Type*} [AddCommGroup V] [Module ℂ V] {n : ℕ}
         ih a b hab]
       simp [hab.ne']
 
+/- English proof (translation)
+Use `first`. Consider the case `(rw [show (univ.filter fun b : Fin n => a < b) = Finset.Ioi a by ext; simp]`. Conclude with `Fin.card_Ioi a)`. Consider the case `(have hmap : (univ.filter fun b : Fin n => a < b).map Fin.valEmbedding = Finset.Ico ((a : ℕ) + 1) n := by`. Use extensionality with `x`.
+
+Simplify using `only [Finset.mem_map, Finset.mem_filter, Finset.mem_univ, true_and, Fin.valEmbedding_apply, Finset.mem_Ico]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨b, hb, rfl⟩`. Conclude with `⟨Nat.succ_le_of_lt hb, b.isLt⟩`. Introduce and unpack `⟨h1, h2⟩`.
+
+Conclude with `⟨⟨x, h2⟩, Fin.lt_def.mpr (by simpa using h1), rfl⟩`. Rewrite using `[← Finset.card_map Fin.valEmbedding, hmap, Nat.card_Ico]`. Use the proof step `omega)`.
+-/
 private theorem card_filter_fin_lt_eq {n : ℕ} (a : Fin n) :
     (univ.filter fun b : Fin n => a < b).card = n - 1 - (a : ℕ) := by
   first
@@ -114,6 +161,11 @@ private theorem card_filter_fin_lt_eq {n : ℕ} (a : Fin n) :
      rw [← Finset.card_map Fin.valEmbedding, hmap, Nat.card_Ico]
      omega)
 
+/- English proof (translation)
+Establish `ha` using `a.isLt`. Establish `hN : n - 1 - (a : ℕ) + (a : ℕ) + 1 = n` using `by omega`. Establish `hc : ((n - 1 - (a : ℕ) : ℕ) : ℂ) + (a : ℂ) + 1 = (n : ℂ)` using `by first`. Consider the case `exact_mod_cast hN`. Consider the case `(have h' := congrArg (Nat.cast : ℕ → ℂ) hN`.
+
+Move the coercions through the operations in `at h'`. Conclude with `h')`. Take the linear combination `hc`.
+-/
 private theorem cast_nat_sub_one_sub_fin_eq_complex {n : ℕ} (a : Fin n) :
     ((n - 1 - (a : ℕ) : ℕ) : ℂ) = (n : ℂ) - 1 - (a : ℂ) := by
   have ha := a.isLt
@@ -126,6 +178,19 @@ private theorem cast_nat_sub_one_sub_fin_eq_complex {n : ℕ} (a : Fin n) :
        exact h')
   linear_combination hc
 
+/- English proof (translation)
+Unfold `HWDiag`. Introduce `V _i1 _i2 n E ν v hE hv k a`. Establish `hv' : (∀ a, E a a v = ν a • v) ∧ ∀ a b, a < b → E a b v = 0` using `hv`. Establish `hterm : ∀ c : Fin n, epow E k a c (E c a v) = (if c = a then ν a • epow E k a a v else 0) + (if a < c then epow E k a a v - epow E k c c v else 0)`. Introduce `c`.
+
+Break down `lt_trichotomy c a with hca | hca | hca` into its components or cases. Rewrite using `[hv'.2 c a hca, map_zero]`. Simplify using `[hca.ne, not_lt.mpr hca.le]`. Rewrite using `[hca, hv'.1 a, map_smul]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[HWDiag_covApply E hE k a c c a v, HWDiag_upper E ν v hE hv k a c hca, map_zero]`. Simplify using `[hca.ne', hca]`. Establish `h1 : (∑ c : Fin n, if c = a then ν a • epow E k a a v else 0) = ν a • epow E k a a v`. Simplify using the standard rewrite rules. Establish `h2 : (∑ c : Fin n, if a < c then epow E k a a v - epow E k c c v else 0) = ∑ c ∈ univ.filter (fun b => a < b), (epow E k a a v - epow E k c c v)`.
+
+Rewrite using `[Finset.sum_filter]`. Establish `hsmul : (n - 1 - (a : ℕ)) • epow E k a a v = ((n : ℂ) - 1 - (a : ℂ)) • epow E k a a v`. Rewrite using `[← cast_nat_sub_one_sub_fin_eq_complex a]`. Use `first`. Consider the case `exact (Nat.cast_smul_eq_nsmul ℂ _ _).symm`.
+
+Consider the case `exact nsmul_eq_smul_cast ℂ _ _`. Consider the case `simp`. Rewrite using `[epow_succ_apply, module_end_finset_sum_apply]`. Simplify using `only [module_end_mul_apply, hterm]`. Rewrite using `[Finset.sum_add_distrib, h1, h2, Finset.sum_sub_distrib, Finset.sum_const, card_filter_fin_lt_eq, hsmul]`.
+
+Simplify using `only [lsh, add_smul]`. Normalize the expressions using the abelian group laws.
+-/
 theorem generatorPowDiagRecursion_holds : HWDiag := by
   unfold HWDiag
   intro V _i1 _i2 n E ν v hE hv k a
@@ -162,11 +227,21 @@ theorem generatorPowDiagRecursion_holds : HWDiag := by
   simp only [lsh, add_smul]
   abel
 
+/- English proof (translation)
+Introduce `i j hij`. Establish `h : j < i` using `hij`. Simplify using `[Amat, h.ne', not_lt.mpr h.le]`.
+-/
 theorem HWDiag_Amat_upper {n : ℕ} (l : Fin n → ℂ) : (Amat l).IsUpperTriangular := by
   intro i j hij
   have h : j < i := hij
   simp [Amat, h.ne', not_lt.mpr h.le]
 
+/- English proof (translation)
+Establish `hU` using `HWDiag_Amat_upper l`. Use `first`. Consider the case `(rw [Matrix.charpoly_of_upperTriangular _ hU]`. Simplify using `[Amat])`. Consider the case `(rw [Matrix.charpoly, Matrix.det_of_upperTriangular]`.
+
+Use `Finset.prod_congr rfl fun s _ => ?_` and prove the remaining obligations. Simplify using `[Matrix.charmatrix_apply_eq, Amat]`. Introduce `i j hij`. Establish `h : j < i` using `hij`. Use `first`.
+
+Consider the case `simp [Matrix.charmatrix_apply_ne _ _ _ h.ne', Amat, h.ne', not_lt.mpr h.le]`. Consider the case `simp [Matrix.charmatrix_apply, Amat, h.ne', not_lt.mpr h.le])`.
+-/
 theorem HWDiag_charpoly {n : ℕ} (l : Fin n → ℂ) :
     (Amat l).charpoly = ∏ s : Fin n, (Polynomial.X - Polynomial.C (l s)) := by
   have hU := HWDiag_Amat_upper l
@@ -182,6 +257,11 @@ theorem HWDiag_charpoly {n : ℕ} (l : Fin n → ℂ) :
        | simp [Matrix.charmatrix_apply_ne _ _ _ h.ne', Amat, h.ne', not_lt.mpr h.le]
        | simp [Matrix.charmatrix_apply, Amat, h.ne', not_lt.mpr h.le])
 
+/- English proof (translation)
+Establish `hterm : ∀ c, Amat l a c • y c = (if c = a then l a • y c else 0) - (if a < c then y c else 0)`. Introduce `c`. Simplify using `only [Amat, Matrix.of_apply]`. Break down `lt_trichotomy c a with hca | hca | hca` into its components or cases. Simplify using `[hca.ne, hca.ne', not_lt.mpr hca.le]`.
+
+Substitute `hca` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hca.ne, hca.ne', hca]`. Rewrite using `[Finset.sum_congr rfl (fun c _ => hterm c), Finset.sum_sub_distrib, Finset.sum_filter]`. Simplify using the standard rewrite rules.
+-/
 private theorem sum_Amat_smul_eq_smul_sub_sum_gt {V : Type*} [AddCommGroup V] [Module ℂ V] {n : ℕ}
     (l : Fin n → ℂ) (y : Fin n → V) (a : Fin n) :
     ∑ c, Amat l a c • y c = l a • y a - ∑ c ∈ univ.filter (fun b => a < b), y c := by
@@ -197,6 +277,23 @@ private theorem sum_Amat_smul_eq_smul_sub_sum_gt {V : Type*} [AddCommGroup V] [M
   rw [Finset.sum_congr rfl (fun c _ => hterm c), Finset.sum_sub_distrib, Finset.sum_filter]
   simp
 
+/- English proof (translation)
+Unfold `HWDiag at h`. Unfold `DiagChar`. Introduce `V _i1 _i2 n E ν v hE hv a`. Take `⟨M, hM⟩ : ∃ M : Matrix (Fin n) (Fin n) ℂ, M = Amat (lsh ν)` from `⟨_, rfl⟩`. Establish `hrec : ∀ (k : ℕ) (b : Fin n), epow E (k + 1) b b v = ∑ c, M b c • epow E k c c v`.
+
+Introduce `k b`. Use `first`. Consider the case `rw [h V n E ν v hE hv k b, hM, sum_Amat_smul_eq_smul_sub_sum_gt]`. Consider the case `(rw [h V n E ν v hE hv k b, hM]; simp only [sum_Amat_smul_eq_smul_sub_sum_gt])`. Establish `hpow : ∀ (k : ℕ) (b : Fin n), epow E k b b v = ∑ c, (M ^ k) b c • v`.
+
+Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `b`. Simplify using `[epow_zero_apply, Matrix.one_apply]`.
+
+Consider the case `succ k ih`. Introduce `b`. Rewrite using `[hrec, pow_succ']`. Simplify using `only [ih, Matrix.mul_apply, Finset.sum_smul, Finset.smul_sum, mul_smul]`. Conclude with `Finset.sum_comm`.
+
+Establish `hchar : (∏ s : Fin n, (Polynomial.X - Polynomial.C (lsh ν s))) = M.charpoly`. Rewrite using `[hM, HWDiag_charpoly]`. Establish `hdeg : M.charpoly.natDegree < n + 1`. Establish `hd` using `Matrix.charpoly_natDegree_eq_dim M`. Rewrite `hd` using `[Fintype.card_fin]`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hzero : Polynomial.aeval M M.charpoly = 0` using `Matrix.aeval_self_charpoly M`. Rewrite `hzero` using `[Polynomial.aeval_eq_sum_range' hdeg]`. Apply the tactic sequence `have hentry : ∀ c : Fin n, ∑ i ∈ range (n + 1), M.charpoly.coeff i * (M ^ i) a c = 0 := by`. Introduce `c`.
+
+Establish `hac` using `congrArg (fun N : Matrix (Fin n) (Fin n) ℂ => N a c) hzero`. Simplify `hac` using `[Matrix.sum_apply, Matrix.smul_apply, smul_eq_mul]`. Rewrite using `[hchar]`. Simplify using `only [hpow, Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`.
+
+Simplify using `only [← Finset.sum_smul, hentry, zero_smul, Finset.sum_const_zero]`.
+-/
 theorem diagChar_of (h : HWDiag) : DiagChar := by
   unfold HWDiag at h
   unfold DiagChar

@@ -28,26 +28,68 @@ open GlobalTheory.Eis
 
 variable {D : D7} {n ρ p : ℕ}
 
+/- English proof (translation)
+Simplify using `only [chz, AddSubgroup.coe_add]`. Rewrite using `[Matrix.mul_add, Matrix.trace_add, GlobalTheory.CompanionTheory.HermPoisson.halfTr_add', AddChar.map_add_eq_mul]`.
+-/
 theorem chz_add (ψ : AddChar (AF D.host.F) ℂ) (b₀ : HermE D ρ) (a b : hermA D ρ) :
     chz ψ b₀ (a + b) = chz ψ b₀ a * chz ψ b₀ b := by
   simp only [chz, AddSubgroup.coe_add]
   rw [Matrix.mul_add, Matrix.trace_add, GlobalTheory.CompanionTheory.HermPoisson.halfTr_add', AddChar.map_add_eq_mul]
 
+/- English proof (translation)
+The claim follows from `hψ.2.1 _`.
+-/
 theorem chz_norm {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F ψ) (b₀ : HermE D ρ) (a : hermA D ρ) :
     ‖chz ψ b₀ a‖ = 1 := hψ.2.1 _
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.CompanionTheory.HermPoisson.continuous_chi hψ (b₀.1.map (incA D) : Mx D ρ ρ)`.
+-/
 theorem chz_cont {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F ψ) (b₀ : HermE D ρ) : Continuous (chz ψ b₀) :=
   GlobalTheory.CompanionTheory.HermPoisson.continuous_chi hψ (b₀.1.map (incA D) : Mx D ρ ρ)
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.CompanionTheory.HermPoisson.chi_rat hψ (m := (b₀.1.map (incA D) : Mx D ρ ρ)) ⟨b₀.1, rfl⟩ l`.
+-/
 theorem chz_rat {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F ψ) (b₀ : HermE D ρ) (l : ratHerm D ρ) :
     chz ψ b₀ l.1 = 1 :=
   GlobalTheory.CompanionTheory.HermPoisson.chi_rat hψ (m := (b₀.1.map (incA D) : Mx D ρ ρ)) ⟨b₀.1, rfl⟩ l
 
+/- English proof (translation)
+The claim follows from `M.nzx_cont.comp (continuous_id.prodMk continuous_const)`.
+-/
 theorem continuous_jacobi_map_zero {hn : ρ + p = n} (M : Maps D hn) : Continuous fun z : hermA D ρ => M.nzx z 0 :=
   M.nzx_cont.comp (continuous_id.prodMk continuous_const)
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Take `⟨hinv, hdet, hmaj⟩` from `GlobalTheory.T.eisenstein_terms_uniformly_summable hχ hf hl hs`. Take `⟨hHaar, hFD, hvol⟩` from `m.hz`. Take `⟨hadd, hcsh, hcem, hrat⟩` from `GlobalTheory.T.heisenberg_centre_rational_form M`. Establish `hcolat` using `GlobalTheory.CompanionTheory.HermVol.isCoLat_herm (D := D) (r := ρ)`. Use `haveI : Countable (ratHerm D ρ) := countable_ratHerm`.
+
+Use `haveI : Countable (Cosets (P D n) (GF D n)) := countable_cosets`. Use `haveI : Countable (Cosets (P D p) (GF D p)) := countable_cosets`. Use `haveI : Countable (Matrix (Fin ρ) (Fin p) D.host.E) := countable_mat ρ p`. Take `⟨e, he, hfib, hτe, hterm⟩` from `GlobalTheory.T.heisenberg_cosets_param_rational hn M`. Take `⟨K0, hK0, hKc⟩` from `hcolat.2`.
+
+Establish `hcn` using `continuous_jacobi_map_zero M`. Take `⟨Um, hUm, hub⟩` from `hmaj ((fun d : hermA D ρ × G D n => M.nzx d.1 0 * d.2) '' (K0 ×ˢ C)) ((hK0.prod hC).image ((hcn.comp continuous_fst).mul continuous_snd))`. Use `⟨Um, hUm, e, he, fun g hg => ?_⟩` and prove the remaining obligations. Set `F : Cosets (P D n) (GF D n) → hermA D ρ → ℂ` to `fun q b => term (P D n) (GF D n) f (M.nzx b 0 * g) q`. Set `F0 : Cosets (P D p) (GF D p) × Matrix (Fin ρ) (Fin p) D.host.E → hermA D ρ → ℂ` to `fun u z => f (M.w * M.nzx z 0 * (M.sh (u.2.map (incA D)) * M.emb (u.1.out : GF D p) * g))`.
+
+Set `ch : hermA D ρ → ℂ` to `fun b => conj (chz ψ b₀ b)`. Set `τ : ratHerm D ρ → Cosets (P D n) (GF D n) ≃ Cosets (P D n) (GF D n)` to `fun l => rmulEquiv _ _ ⟨M.nzx l.1 0, (hrat l).1⟩`. Establish `hτ : ∀ (l : ratHerm D ρ) q b, F q ((l : hermA D ρ) + b) = F (τ l q) b` using `fun l q b => by`. Simplify using `only [F]`. Rewrite using `[hadd, mul_assoc]`.
+
+Conclude with `term_mul_left hinv ⟨M.nzx l.1 0, (hrat l).1⟩ _ q`. Establish `hchc : Continuous ch` using `Complex.continuous_conj.comp (chz_cont hψ b₀)`. Establish `hF : ∀ q, Continuous (F q)` using `fun q => hf.comp (continuous_const.mul (hcn.mul continuous_const))`. Establish `hF0 : ∀ (l : ratHerm D ρ) u b, F (e (l, u)) b = F0 u ((l : hermA D ρ) + b)` using `fun l u b => by`. Simplify using `only [F, F0]`.
+
+Rewrite using `[hterm f hinv, hadd]`. Use `congr 1`. Establish `h1 : M.sh (u.2.map (incA D)) * M.emb (u.1.out : GF D p) * (M.nzx b 0 * g) = M.nzx b 0 * (M.sh (u.2.map (incA D)) * M.emb (u.1.out : GF D p) * g)`. Rewrite using `[← mul_assoc, mul_assoc (M.sh _), ← hcem, ← mul_assoc, ← hcsh]`. Simplify using `only [mul_assoc]`.
+
+Simplify using `only [mul_assoc] at h1 ⊢`. Rewrite using `[h1]`. Establish `key` using `GlobalTheory.T.fundamental_domain_unfolding_two_sums m.lz (ratHerm D ρ) m.𝓖 hFD hvol (fun q : Cosets (P D n) (GF D n) => zKer hn (ratOf q.out)) (⊥ : Submodule D.host.E (Fin ρ → D.host.E)) F F0 ch (fun q => (hF q).aestronglyMeasurable) hchc.aestronglyMeasurable (fun b => by simp o …`. Take `⟨ζ, -, hζ⟩` from `(hrat l).2`. Use `GlobalTheory.CompanionTheory.SwUnf.cosetCell_rmulEquiv (D := D) (n := n) q ⟨M.nzx l.1 0, (hrat l).1⟩ (bl hn ζ 0 0 0) hζ` as an intermediate fact.
+
+Express the relevant statement in the definitionally equal form `(cosetCell (τ l q)).comap (zinc hn) = (cosetCell q).comap (zinc hn)`. Rewrite using `[show cosetCell (τ l q) = cosetCell q from this])`. Use the proof step `(fun b => by`. Take `⟨γ, hγ, hb⟩` from `hKc b`. Use `⟨-⟨γ, hγ⟩, fun q => ?_⟩` and prove the remaining obligations.
+
+Establish `h1` using `hτ (-⟨γ, hγ⟩) q (γ + b)`. Establish `h2 : (((-⟨γ, hγ⟩ : ratHerm D ρ) : hermA D ρ) + (γ + b)) = b` using `by simp`. Rewrite `h1` using `[h2]`. Rewrite using `[h1]`. Conclude with `hub _ _ ⟨(γ + b, g), ⟨hb, hg⟩, rfl⟩)`.
+
+Use `e he hfib (fun l l' u => hτe l l' u (hrat l').1) hF0`. Use the proof step `(fun y hy => by`. Take `⟨ν, hν1, hν⟩` from `GlobalTheory.T.nondegenerate_centre_character_cell hn hψ b₀ hb₀ y hy`. Use `⟨ν, ?_, fun q hq b => ?_⟩` and prove the remaining obligations. Introduce `h`.
+
+Apply `hν1` to reduce the goal to its premises. Use `congrArg (starRingEnd ℂ) h` as an intermediate fact. Simplify `this` using `[ch]`. Choose the witnesses or unpack the hypotheses as in `⟨x, hxP, a, ha, hd, hpe⟩ : ∃ x ∈ P D n, ∃ a : GL (Fin n) (AE D), blkA (mat x) = a.1 ∧ Matrix.GeneralLinearGroup.det a = 1 ∧ (q.out : G D n) * M.nzx ν 0 = x * (q.out : G D n) := by`. Take `⟨x, hx, a, ha, hd, hpe⟩` from `hν (q.out : GF D n) (M.nzx ν 0) (q.out : GF D n).2 (ratOf q.out) (mat_ratOf _) hq (by rw [M.nzx_mat, adj_zero])`.
+
+Conclude with `⟨x, hx, a, ha, hd, hpe⟩`. Simplify using `only [F, term]`. Rewrite using `[hadd, mul_assoc (M.nzx ν 0), ← mul_assoc _ (M.nzx ν 0), hpe, mul_assoc, hdet x hxP a ha hd])`. Use `⟨fun u => ?_, ?_⟩` and prove the remaining obligations. Take `⟨hi, hle⟩` from `key.1 u`.
+
+Use `le_trans ?_ hle` and prove the remaining obligations. Use `(norm_integral_le_integral_norm _).trans (le_of_eq ?_)` and prove the remaining obligations. Use `integral_congr_ae (ae_of_all _ fun z => ?_)` and prove the remaining obligations. Simplify using `only [F0, norm_mul, RCLike.norm_conj, chz_norm hψ b₀, mul_one]`. Conclude with `key.2`.
+-/
 theorem unfold_on {hn : ρ + p = n} (M : Maps D hn) (m : Meas D ρ p) {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F ψ)
     {b₀ : HermE D ρ} (hb₀ : b₀.1.det ≠ 0) {χ : (AE D)ˣ →* Circle} (hχ : IsHeckeChar D χ) {s : ℂ} {f : G D n → ℂ}
     (hf : Continuous f) (hl : IsLaw χ s f) (hs : (n : ℝ) / 2 < s.re) (C : Set (G D n)) (hC : IsCompact C) :
@@ -137,6 +179,11 @@ theorem unfold_on {hn : ρ + p = n} (M : Maps D hn) (m : Meas D ρ p) {ψ : AddC
     simp only [F0, norm_mul, RCLike.norm_conj, chz_norm hψ b₀, mul_one]
   · exact key.2
 
+/- English proof (translation)
+Introduce `D n ρ p hn M m ψ hψ b₀ hb₀ χ hχ s f hf hl hs g`. Use `⟨?_, fun C hC => ?_⟩` and prove the remaining obligations. Take `⟨Um, -, e, -, h⟩` from `unfold_on M m hψ hb₀ hχ hf hl hs {g} isCompact_singleton`. Conclude with `(h g rfl).2`. Take `⟨Um, hUm, e, he, h⟩` from `unfold_on M m hψ hb₀ hχ hf hl hs C hC`.
+
+Use `⟨fun u => ∑' l : ratHerm D ρ, Um (e (l, u)), ?_, fun g hg u => (h g hg).1 u⟩` and prove the remaining obligations. Establish `h1 : Summable (fun x : (Cosets (P D p) (GF D p) × Matrix (Fin ρ) (Fin p) D.host.E) × ratHerm D ρ => Um (e (x.2, x.1)))` using `hUm.comp_injective (he.comp Prod.swap_injective)`. Conclude with `h1.prod`.
+-/
 theorem zUnfold : ZUnfold := by
   intro D n ρ p hn M m ψ hψ b₀ hb₀ χ hχ s f hf hl hs g
   refine ⟨?_, fun C hC => ?_⟩

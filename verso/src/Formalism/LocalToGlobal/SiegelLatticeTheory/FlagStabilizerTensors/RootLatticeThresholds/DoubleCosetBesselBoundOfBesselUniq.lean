@@ -14,6 +14,9 @@ open Formalism.QuantumDeterminants Formalism.MainNotions.S Formalism.MainNotions
 
 variable [Fact Formalism.FourierDecayAlt.ThreeDimData.DecLow] in
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Formalism.L2.SG.BesselDiscreteSeries.decLow, hDI, Formalism.L2.SG.LitS.kFinSmooth_pi Formalism.L2.SG.Pf.k_finite_smooth, hJ⟩`.
+-/
 theorem inputs_of (hDI : Formalism.FourierDecayAlt.ThreeDimData.DecInf) (hJ : PI.BesselMapUniq.BesselMapUniq) : Formalism.FourierDecayAlt.ThreeDimData.Inputs :=
   ⟨Formalism.L2.SG.BesselDiscreteSeries.decLow, hDI, Formalism.L2.SG.LitS.kFinSmooth_pi Formalism.L2.SG.Pf.k_finite_smooth, hJ⟩
 

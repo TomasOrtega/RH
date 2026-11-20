@@ -26,6 +26,13 @@ namespace GlobalTheory.QuotUnfBound
 
 variable {D : D7}
 
+/- English proof (translation)
+Take `⟨C, hC⟩` from `GlobalTheory.EmbHeight.exists_heightGL_le D.host.F d.j0 d.p0 (d.jX ⬝ d.pX + d.jY ⬝ d.pY)`. Use `⟨max (C : ℝ) 1, le_max_right _ _, fun g => ?_⟩` and prove the remaining obligations. Establish `h` using `hC (Formalism.L2.Theta.matHom V (d.emb0 g)) (Formalism.L2.Theta.matHom V₀ g) (by show Formalism.L2.Theta.mt V (d.emb0 g) = d.j0 ⬝ Formalism.L2.Theta.mt V₀ g ⬝ d.p0 + (d.jX ⬝ d.pX + d.jY ⬝ d.pY)`. Rewrite using `[GlobalTheory.FlatRInv.unitaryMatrix_wittCoreEmbedding]; abel) (by`. Rewrite using `[← map_inv, ← map_inv, ← map_inv]`.
+
+Use `show Formalism.L2.Theta.mt V (d.emb0 g⁻¹) = d.j0 ⬝ Formalism.L2.Theta.mt V₀ g⁻¹ ⬝ d.p0 + (d.jX ⬝ d.pX + d.jY ⬝ d.pY)`. Rewrite using `[GlobalTheory.FlatRInv.unitaryMatrix_wittCoreEmbedding]`. Use the proof step `abel)`. Establish `h' : height V (d.emb0 g) ≤ (C : ℝ) * height V₀ g`. Unfold `GlobalTheory.Grow.height`.
+
+Conclude with `h` after adjusting the coercions. Conclude with `h'.trans (mul_le_mul_of_nonneg_right (le_max_left _ _) (height_pos V₀ g).le)`.
+-/
 theorem unitaryAdelicHeight_wittEmbedding_le {V V₀ : HSp D} {ρ : ℕ} (d : HypDec V V₀ ρ) :
     ∃ C : ℝ, 1 ≤ C ∧ ∀ g : GA D V₀, height V (d.emb0 g) ≤ C * height V₀ g := by
   obtain ⟨C, hC⟩ := GlobalTheory.EmbHeight.exists_heightGL_le D.host.F d.j0 d.p0 (d.jX ⬝ d.pX + d.jY ⬝ d.pY)
@@ -40,6 +47,15 @@ theorem unitaryAdelicHeight_wittEmbedding_le {V V₀ : HSp D} {ρ : ℕ} (d : Hy
     unfold GlobalTheory.Grow.height; exact_mod_cast h
   exact h'.trans (mul_le_mul_of_nonneg_right (le_max_left _ _) (height_pos V₀ g).le)
 
+/- English proof (translation)
+Take `⟨i1, i2, i3, i4, i5, -⟩` from `GlobalTheory.MixModel.lattice_Mx D m n`. Use `haveI : BorelSpace (Mx D m n) := ⟨rfl⟩`. Use `haveI : Countable (ratMx D m n) := TopologicalSpace.separableSpace_iff_countable.1 inferInstance`. Set `e : Mx D m n ≃+ Mx D m n` to `{ toFun := fun a => a ⬝ M invFun := fun a => a ⬝ M' left_inv := fun a => by simp only [Matrix.mul_assoc, hMM', Matrix.mul_one] right_inv := fun a => by simp only [Matrix.mul_assoc, hM'M, Matrix.mul_one] map_add' := fun a b => Matrix.add_mul _ _ _ }`. Establish `he : Continuous e` using `continuous_id.matrix_mul continuous_const`.
+
+Establish `he' : Continuous e.symm` using `continuous_id.matrix_mul continuous_const`. Establish `hr : ∀ x, e x ∈ ratMx D m n ↔ x ∈ ratMx D m n` using `fun x => ⟨fun h => by`. Establish `h2` using `GlobalTheory.MixModel.ratMx_mul h hM'`. Establish `h3 : e x ⬝ M' = x` using `e.symm_apply_apply x`. Rewrite using `[h3] at h2,` and apply the resulting hypothesis.
+
+Use `fun h => GlobalTheory.MixModel.ratMx_mul h hM⟩`. Take `⟨h1, hemb⟩` from `GlobalTheory.Unf.ParCont.isCovolOne_map hμ e he he' hr`. Establish `hmeq : Measure.map e μ = μ` using `GlobalTheory.MixModel.covolOne_measure_eq hμ h1`. Use `haveI := hμ.1`. Establish `h1'` using `h1`.
+
+Rewrite `h1'` using `[hmeq]`. Establish `hfd : ∫⁻ a in e '' 𝓕, φ a ∂μ = ∫⁻ a in 𝓕, φ a ∂μ` using `h1'.2.1.setLIntegral_eq hμ.2.1 φ fun γ a => hφ γ γ.2 a`. Establish `hmap : ∫⁻ a in e '' 𝓕, φ a ∂(Measure.map e μ) = ∫⁻ a in 𝓕, φ (e a) ∂μ`. Rewrite using `[hemb.restrict_map, hemb.lintegral_map, Set.preimage_image_eq _ e.injective]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem covolOne_lintegral_mul_right {m n : ℕ} {μ : Measure (Mx D m n)} {𝓕 : Set (Mx D m n)}
     (hμ : IsCovolOne (ratMx D m n) μ 𝓕) (M M' : Mx D n n) (hM'M : M' ⬝ M = 1) (hMM' : M ⬝ M' = 1)
     (hM : M ∈ ratMx D n n) (hM' : M' ∈ ratMx D n n) (φ : Mx D m n → ℝ≥0∞)
@@ -76,6 +92,11 @@ theorem covolOne_lintegral_mul_right {m n : ℕ} {μ : Measure (Mx D m n)} {𝓕
     _ = ∫⁻ a in e '' 𝓕, φ a ∂μ := by rw [hmeq]
     _ = ∫⁻ a in 𝓕, φ a ∂μ := hfd
 
+/- English proof (translation)
+Introduce and unpack `_ ⟨β, rfl⟩ b`. Use `show ‖F (rat x₀ ⬝ (rat β + b))‖ₑ = ‖F (rat x₀ ⬝ b)‖ₑ`. Establish `e1 : rat x₀ ⬝ (rat β + b) = Formalism.L2.Theta.ratW W V₀ (x₀ ⬝ β) + rat x₀ ⬝ b`. Rewrite using `[Matrix.mul_add]`. Use `congr 1`.
+
+Use `show (x₀.map (incA D)) ⬝ (β.map (incA D)) = (x₀ ⬝ β).map (incA D)`. Rewrite using `[Matrix.map_mul]`. Rewrite using `[e1, hF.quasi, enorm_mul, GlobalTheory.Unf.FlatForm.enorm_psi hψ, one_mul]`.
+-/
 theorem enorm_periodic {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) {V₀ W : HSp D} {ρ : ℕ}
     {F : WO V₀ W → ℂ} (hF : IsThetaFunO ψ V₀ W F) (x₀ : Matrix (Fin W.rank) (Fin ρ) D.host.E) :
     ∀ β ∈ ratMx D ρ V₀.rank, ∀ b, ‖F (rat x₀ ⬝ (β + b))‖ₑ = ‖F (rat x₀ ⬝ b)‖ₑ := by
@@ -88,6 +109,17 @@ theorem enorm_periodic {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-
     rw [Matrix.map_mul]
   rw [e1, hF.quasi, enorm_mul, GlobalTheory.Unf.FlatForm.enorm_psi hψ, one_mul]
 
+/- English proof (translation)
+Use `set F := d.mixS W ψ vS.μ vS.𝓕 Ψ x with hFdef`. Establish `hF : IsThetaFunO ψ V₀ W F` using `GlobalTheory.MixValues.mixS_theta D ψ hW.std V V₀ W ρ d vS.μ vS.𝓕 vS.covol Ψ hΨ x`. Establish `hcore` using `(GlobalTheory.MixSourceFormulas.mixed_source D ψ V V₀ W ρ d χV χW om om' hW hW' vS.μ vS.𝓕 vS.covol Ψ hΨ).core γ x`. Establish `hsub : ∀ w, d.mixS W ψ vS.μ vS.𝓕 (om (d.emb0 γ, 1) Ψ) x w = F (w ⬝ Formalism.L2.Theta.mt V₀ γ)`. Introduce `w`.
+
+Rewrite using `[hcore]`. Establish `h` using `GlobalTheory.Unf.om_rat_mul D ψ V₀ W χV χW om' hW' F hF γ hγ 1 (one_mem _) 1 1 w`. Rewrite `h` using `[mul_one, mul_one, inv_one, show ((1 : GA D V₀), (1 : GA D W)) = 1 from rfl, map_one]`. Rewrite using `[h]`. Simplify using `[Formalism.L2.Theta.mt]`.
+
+Establish `hM` using `(GlobalTheory.MixModel.mem_GQ_iff V₀ γ).1 hγ`. Establish `hM'` using `(GlobalTheory.MixModel.mem_GQ_iff V₀ γ⁻¹).1 (inv_mem hγ)`. Establish `h1 : Formalism.L2.Theta.mt V₀ γ⁻¹ ⬝ Formalism.L2.Theta.mt V₀ γ = 1`. Simplify using `only [Formalism.L2.Theta.mt, map_inv]`. Conclude with `Units.inv_mul _`.
+
+Establish `h2 : Formalism.L2.Theta.mt V₀ γ ⬝ Formalism.L2.Theta.mt V₀ γ⁻¹ = 1`. Simplify using `only [Formalism.L2.Theta.mt, map_inv]`. Conclude with `Units.mul_inv _`. Establish `hmul : ∀ b : Mx D ρ V₀.rank, rat x₀ ⬝ b ⬝ Formalism.L2.Theta.mt V₀ γ = rat x₀ ⬝ (b ⬝ Formalism.L2.Theta.mt V₀ γ)` using `fun b => Matrix.mul_assoc _ _ _`. Repeatedly rewrite using `[hsub, hmul]`.
+
+Conclude with `covolOne_lintegral_mul_right vb.covol (Formalism.L2.Theta.mt V₀ γ) (Formalism.L2.Theta.mt V₀ γ⁻¹) h1 h2 hM hM' (fun b => ‖F (rat x₀ ⬝ b)‖ₑ) (enorm_periodic hW.std hF x₀)`.
+-/
 theorem inner_inv {ψ : AddChar (AF D.host.F) ℂ} {V V₀ W : HSp D} {ρ : ℕ} (d : HypDec V V₀ ρ)
     {χV χW : (AE D)ˣ →* Circle} {om : Om V W} {om' : Om V₀ W} (hW : IsWeilDatumO ψ V W χV χW om)
     (hW' : IsWeilDatumO ψ V₀ W χV χW om') (vS : VolM D W.rank ρ) (vb : VolM D ρ V₀.rank)
@@ -117,6 +149,11 @@ theorem inner_inv {ψ : AddChar (AF D.host.F) ℂ} {V V₀ W : HSp D} {ρ : ℕ}
   exact covolOne_lintegral_mul_right vb.covol (Formalism.L2.Theta.mt V₀ γ) (Formalism.L2.Theta.mt V₀ γ⁻¹) h1 h2 hM hM'
     (fun b => ‖F (rat x₀ ⬝ b)‖ₑ) (enorm_periodic hW.std hF x₀)
 
+/- English proof (translation)
+Use `lintegral_congr fun h => ?_` and prove the remaining obligations. Use `congr 1`. Use `lintegral_congr fun u => ?_` and prove the remaining obligations. Establish `e : om (d.emb0 (γ * g), h) Φ = om (d.emb0 γ, 1) (om (d.emb0 g, h) Φ)`. Rewrite using `[map_mul, show ((d.emb0 γ * d.emb0 g, h) : GA D V × GA D W) = (d.emb0 γ, 1) * (d.emb0 g, h) by`.
+
+Simplify using `[Prod.mk_mul_mk], map_mul]`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `inner_inv d hW hW' vS vb x₀ (hW.om_pres _ Φ hΦ) hγ _`.
+-/
 theorem unfolded_rat_inv {ψ : AddChar (AF D.host.F) ℂ} {V V₀ W : HSp D} {ρ : ℕ} (d : HypDec V V₀ ρ)
     {χV χW : (AE D)ˣ →* Circle} {om : Om V W} {om' : Om V₀ W} (hW : IsWeilDatumO ψ V W χV χW om)
     (hW' : IsWeilDatumO ψ V₀ W χV χW om') (vS : VolM D W.rank ρ) (vb : VolM D ρ V₀.rank) (vU : VolU D ρ)
@@ -140,6 +177,15 @@ end GlobalTheory.QuotUnfBound
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `D ψ V V₀ W ρ d χV χW om hW vS vb vU vW x₀ hx G Φ hG hΦ 𝓑 h𝓑`. Take `⟨om', hW'⟩` from `((GlobalTheory.Unf.descent_of_weilDatumExists D (GlobalTheory.WeilDatumExistence.weilDatumExists D)) ψ V W χV χW om hW).1 V₀ ρ d`. Take `⟨C, A, hC⟩` from `GlobalTheory.Unf.UnfoldBound.unfolded_integral_le D ψ V V₀ W ρ d χV χW om om' hW hW' vS vb vU vW x₀ hx G Φ hG hΦ 𝓑 h𝓑`. Take `⟨C₁, hC₁1, hC₁⟩` from `GlobalTheory.QuotUnfBound.unitaryAdelicHeight_wittEmbedding_le d`. Establish `hM : (0 : ℝ) < max C 1` using `lt_max_of_lt_right one_pos`.
+
+Establish `hKpos : (0 : ℝ) < max C 1 * C₁ ^ A` using `mul_pos hM (pow_pos (one_pos.trans_le hC₁1) A)`. Use `⟨max C 1 * C₁ ^ A, A, fun g => ?_⟩` and prove the remaining obligations. Establish `hb : ∀ k : GA D V₀, ∫⁻ h in 𝓑, ‖G h‖ₑ * ∫⁻ u, ∫⁻ b in vb.𝓕, ‖d.mixS W ψ vS.μ vS.𝓕 (om (d.emb0 k, h) Φ) (rat x₀ ⬝ u.1.1) (rat x₀ ⬝ b)‖ₑ ∂vb.μ ∂vU.ν ∂vW.μ ≤ ENNReal.ofReal (max C 1 * C₁ ^ A) * ENNReal.ofReal (height V₀ k ^ A)`. Introduce `k`. Rewrite using `[← ENNReal.ofReal_mul hKpos.le]`.
+
+Use `(hC (d.emb0 k)).trans (ENNReal.ofReal_le_ofReal ?_)` and prove the remaining obligations. Establish `h0 : 0 ≤ height V (d.emb0 k)` using `(height_pos V _).le`. Establish `h1 : height V (d.emb0 k) ^ A ≤ (C₁ * height V₀ k) ^ A` using `pow_le_pow_left₀ h0 (hC₁ k) A`. Combine the equalities or inequalities in the displayed calculation. Establish `hle : ∀ γ : GQ V₀, ∫⁻ h in 𝓑, ‖G h‖ₑ * ∫⁻ u, ∫⁻ b in vb.𝓕, ‖d.mixS W ψ vS.μ vS.𝓕 (om (d.emb0 g, h) Φ) (rat x₀ ⬝ u.1.1) (rat x₀ ⬝ b)‖ₑ ∂vb.μ ∂vU.ν ∂vW.μ ≤ ENNReal.ofReal (max C 1 * C₁ ^ A) * ENNReal.ofReal (height V₀ ((γ : GA D V₀) * g) ^ A)`.
+
+Introduce `γ`. Rewrite using `[← GlobalTheory.QuotUnfBound.unfolded_rat_inv d hW hW' vS vb vU vW x₀ G hΦ 𝓑 γ.2 g]`. Conclude with `hb _`. Rewrite using `[ENNReal.ofReal_mul hKpos.le, GlobalTheory.MixSumBound.ofReal_quotHeight_pow, ENNReal.mul_iInf_of_ne (by simpa using hKpos) ENNReal.ofReal_ne_top]`. Conclude with `le_iInf hle`.
+-/
 theorem GlobalTheory.QuotUnfBound.unfolded_integral_le_quotHeight : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (V V₀ W : HSp D) (ρ : ℕ) (d : HypDec V V₀ ρ) (χV χW : (AE D)ˣ →* Circle) (om : Om V W), IsWeilDatumO ψ V W χV χW om → ∀ (vS : VolM D W.rank ρ) (vb : VolM D ρ V₀.rank) (vU : VolU D ρ) (vW : GlobalTheory.Unf.Vol W) (x₀ : Matrix (Fin W.rank) (Fin ρ) D.host.E), IsBase W x₀ → ∀ (G : GA D W → ℂ) (Φ : WO V W → ℂ), RapidDec W G → IsThetaFunO ψ V W Φ → ∀ 𝓑 : Set (GA D W), IsFundamentalDomain (GQ W ⊓ Rgrp W (rat x₀) : Subgroup (GA D W)) 𝓑 vW.μ → ∃ (C : ℝ) (A : ℕ), ∀ g : GA D V₀, ∫⁻ h in 𝓑, ‖G h‖ₑ * ∫⁻ u, ∫⁻ b in vb.𝓕, ‖d.mixS W ψ vS.μ vS.𝓕 (om (d.emb0 g, h) Φ) (rat x₀ ⬝ u.1.1) (rat x₀ ⬝ b)‖ₑ ∂vb.μ ∂vU.ν ∂vW.μ ≤ ENNReal.ofReal (C * quotHeight V₀ g ^ A) := by
   intro D ψ V V₀ W ρ d χV χW om hW vS vb vU vW x₀ hx G Φ hG hΦ 𝓑 h𝓑
   obtain ⟨om', hW'⟩ :=

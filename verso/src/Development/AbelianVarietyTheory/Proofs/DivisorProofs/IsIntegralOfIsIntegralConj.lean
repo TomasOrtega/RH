@@ -8,6 +8,17 @@ noncomputable section
 
 namespace GlobalTheory.LocIntSpan
 
+/- English proof (translation)
+Set `d : ℤ` to `∏ q ∈ s, (q.den : ℤ)`. Establish `hd : d ≠ 0` using `Finset.prod_ne_zero_iff.2 fun q _ => by exact_mod_cast q.den_nz`. Establish `hfin : {v : HeightOneSpectrum ℤ | v.asIdeal ∣ Ideal.span {d}}.Finite` using `Ideal.finite_factors (by simpa [Ideal.span_singleton_eq_bot] using hd)`. Use `⟨hfin.toFinset, fun v hv q hq => ?_⟩` and prove the remaining obligations. Establish `hden : (q.den : ℤ) ∉ v.asIdeal`.
+
+Introduce `h`. Apply `hv` to reduce the goal to its premises. Rewrite using `[Set.Finite.mem_toFinset, Set.mem_setOf_eq, Ideal.dvd_iff_le, Ideal.span_singleton_le_iff_mem]`. Conclude with `Ideal.mem_of_dvd _ (Finset.dvd_prod_of_mem _ hq) h`. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers]`.
+
+Establish `e : Valued.v (algebraMap ℚ (v.adicCompletion ℚ) q) = v.valuation ℚ q` using `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v q`. Rewrite using `[e]`. Establish `hq' : q = ((q.num : ℤ) : ℚ) / ((q.den : ℤ) : ℚ)` using `by push_cast; exact (Rat.num_div_den q).symm`. Rewrite using `[hq', map_div₀]`. Establish `h1 : v.valuation ℚ ((q.num : ℤ) : ℚ) ≤ 1`.
+
+Rewrite using `[show ((q.num : ℤ) : ℚ) = algebraMap ℤ ℚ q.num from rfl, HeightOneSpectrum.valuation_of_algebraMap]`. Conclude with `v.intValuation_le_one _`. Establish `h2 : v.valuation ℚ ((q.den : ℤ) : ℚ) = 1`. Rewrite using `[show ((q.den : ℤ) : ℚ) = algebraMap ℤ ℚ q.den from rfl, HeightOneSpectrum.valuation_of_algebraMap]`. Conclude with `le_antisymm (v.intValuation_le_one _) (not_lt.1 fun h => hden ((v.intValuation_lt_one_iff_mem _).1 h))`.
+
+Rewrite using `[h2, div_one]`. Conclude with `h1`.
+-/
 theorem exists_finset_algebraMap_mem (s : Finset ℚ) :
     ∃ S : Finset (HeightOneSpectrum ℤ), ∀ v ∉ S, ∀ q ∈ s,
       algebraMap ℚ (v.adicCompletion ℚ) q ∈ v.adicCompletionIntegers ℚ := by
@@ -38,6 +49,9 @@ theorem exists_finset_algebraMap_mem (s : Finset ℚ) :
   rw [h2, div_one]
   exact h1
 
+/- English proof (translation)
+Set `f : A →ₐ[R] A` to `{ toFun := fun z => ↑X⁻¹ * z * ↑X map_one' := by simp map_mul' := fun a b => by simp [mul_assoc] map_zero' := by simp map_add' := fun a b => by simp [mul_add, add_mul] commutes' := fun r => by show _ * _ * _ = _`. Rewrite using `[mul_assoc, Algebra.commutes, Units.inv_mul_cancel_left] }`. Use `h.map f` as an intermediate fact. Simplify `this` using `[f, mul_assoc]`.
+-/
 theorem isIntegral_of_isIntegral_conj {R A : Type} [CommRing R] [Ring A] [Algebra R A] (X : Aˣ) (y : A)
     (h : IsIntegral R (↑X * y * ↑X⁻¹)) : IsIntegral R y := by
   let f : A →ₐ[R] A :=
@@ -52,16 +66,25 @@ theorem isIntegral_of_isIntegral_conj {R A : Type} [CommRing R] [Ring A] [Algebr
   have := h.map f
   simpa [f, mul_assoc] using this
 
+/- English proof (translation)
+The claim follows from `Module.Flat.lTensor_preserves_injective_linearMap (M := K) ι.toLinearMap hι`.
+-/
 theorem map_id_injective (K : Type) [CommRing K] [Algebra ℚ K] {L C : Type} [Ring L] [Algebra ℚ L] [Ring C]
     [Algebra ℚ C] (ι : L →ₐ[ℚ] C) (hι : Function.Injective ι) :
     Function.Injective (Algebra.TensorProduct.map (AlgHom.id ℚ K) ι) :=
   Module.Flat.lTensor_preserves_injective_linearMap (M := K) ι.toLinearMap hι
 
+/- English proof (translation)
+Take `⟨y, rfl⟩` from `IsIntegrallyClosed.isIntegral_iff.1 hx`. Conclude with `y.2`.
+-/
 theorem mem_of_isIntegral (v : HeightOneSpectrum ℤ) {x : v.adicCompletion ℚ}
     (hx : IsIntegral (v.adicCompletionIntegers ℚ) x) : x ∈ v.adicCompletionIntegers ℚ := by
   obtain ⟨y, rfl⟩ := IsIntegrallyClosed.isIntegral_iff.1 hx
   exact y.2
 
+/- English proof (translation)
+Rewrite using `[Algebra.trace_apply, Algebra.trace_apply, ← Algebra.baseChange_lmul, LinearMap.trace_baseChange]`.
+-/
 theorem trace_one_tmul' {F E : Type} [Field F] [Field E] [Algebra F E] [Module.Finite F E]
     (R : Type) [CommRing R] [Algebra F R] (e : E) :
     Algebra.trace R (R ⊗[F] E) ((1 : R) ⊗ₜ[F] e) = algebraMap F R (Algebra.trace F E e) := by

@@ -16,8 +16,14 @@ namespace RD
 
 variable {d : SD σ} (R : RD d) (w : InfinitePlace F)
 
+/- English proof (translation)
+The claim follows from `w_four_pf h`.
+-/
 theorem w_four {ε : ℤˣ} {w₀ : d.G} (h : d.IsW ε w₀) : w₀ * w₀ * w₀ * w₀ = 1 := w_four_pf h
 
+/- English proof (translation)
+The claim follows from `R.nbar_conj_pf w h`.
+-/
 theorem nbar_conj' {ε : ℤˣ} {w₀ : d.G} (h : d.IsW ε w₀) : ∀ (y : GR d.n) (c : Matrix (Fin d.n) (Fin d.n) ℂ), cᴴ = c →
     mR y = nbLoc c → ∃ (y' : GR d.n) (x : Matrix (Fin d.n) (Fin d.n) ℂ), xᴴ = x ∧ mR y' = nU x ∧
       R.ι w y = w₀ * w₀ * w₀ * R.ι w y' * w₀ :=

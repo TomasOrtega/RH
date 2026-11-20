@@ -8,8 +8,14 @@ import Development.WeilBound.CoreStatements.VolumeEquality.BallVolRed
 
 namespace SheetDecomposition
 
+/- English proof (translation)
+The claim follows from `famVol_of moebVol (stdModel_of stdZ) arithIdx levelDict`.
+-/
 theorem famVol : FamVol := famVol_of moebVol (stdModel_of stdZ) arithIdx levelDict
 
+/- English proof (translation)
+The claim follows from `ballVolEq_of famVol`.
+-/
 theorem ballVolEq : BallVolEq := ballVolEq_of famVol
 
 end SheetDecomposition

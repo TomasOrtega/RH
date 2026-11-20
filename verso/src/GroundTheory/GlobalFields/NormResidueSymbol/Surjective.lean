@@ -13,6 +13,13 @@ section Trivial
 variable {K : Type*} [Field K] [NumberField K] (L : Type*) [Field L] [NumberField L] [Algebra K L]
   [IsGalois K L] [IsMulCommutative (L ≃ₐ[K] L)]
 
+/- English proof (translation)
+Use `eq_top_iff.2 fun x _ ↦ (IdeleNorm.mem_range_ideleNorm_iff_forall L x).2 ⟨fun v ↦ ?_, fun v ↦ ?_⟩` and prove the remaining obligations. Take `⟨w⟩` from `nonempty_placesOver L v`. Establish `h1 : finiteProj v x ∈ (localSymbol L v).ker`. Rewrite using `[MonoidHom.mem_ker, ← ideleSymbol_finiteEmbedding]`. Conclude with `h _`.
+
+Rewrite `h1` using `[ker_localSymbol L v w]`. Take `⟨y, hy⟩` from `h1`. Conclude with `⟨Pi.mulSingle w y, by rw [IdeleNorm.finiteLocalNorm_mulSingle]; exact hy⟩`. Take `⟨w⟩` from `IdeleNorm.nonempty_infinitePlacesOver L v`. Establish `h1 : infiniteProj v x ∈ (infiniteLocalSymbol L v).ker`.
+
+Rewrite using `[MonoidHom.mem_ker, ← ideleSymbol_infiniteEmbedding]`. Conclude with `h _`. Rewrite `h1` using `[ker_infiniteLocalSymbol L v w]`. Take `⟨y, hy⟩` from `h1`. Conclude with `⟨Pi.mulSingle w y, by rw [IdeleNorm.infiniteLocalNorm_mulSingle]; exact hy⟩`.
+-/
 theorem range_ideleNorm_eq_top_of_ideleSymbol_eq_one (h : ∀ x, ideleSymbol K L x = 1) :
     (ideleNorm K L).range = ⊤ := by
   classical
@@ -42,6 +49,9 @@ section Cyclic
 variable {K L : Type u} [Field K] [NumberField K] [Field L] [NumberField L] [Algebra K L]
   [IsGalois K L] [IsCyclic (L ≃ₐ[K] L)]
 
+/- English proof (translation)
+The claim follows from `firstInequality.finrank_eq_one_of_sup_eq_top (top_le_iff.1 (range_ideleNorm_eq_top_of_ideleSymbol_eq_one L h ▸ le_sup_left))`.
+-/
 theorem finrank_eq_one_of_ideleSymbol_eq_one (h : ∀ x, ideleSymbol K L x = 1) :
     Module.finrank K L = 1 :=
   firstInequality.finrank_eq_one_of_sup_eq_top
@@ -58,6 +68,9 @@ attribute [local instance] galCommGroup
 
 omit [NumberField K] [NumberField L] [IsMulCommutative (L ≃ₐ[K] L)] in
 
+/- English proof (translation)
+Use extensionality with `y`. Express the relevant statement in the definitionally equal form `((σ.restrictNormal (fixedField N) y : fixedField N) : L) = y`. Conclude with `(AlgEquiv.restrictNormal_commutes σ (fixedField N) y).trans ((mem_fixedField_iff N y).1 y.2 σ hσ)`.
+-/
 theorem restrictNormal_fixedField_eq_one {N : Subgroup (L ≃ₐ[K] L)} [N.Normal] {σ : L ≃ₐ[K] L}
     (hσ : σ ∈ N) : σ.restrictNormal (fixedField N) = 1 := by
   ext y
@@ -65,6 +78,19 @@ theorem restrictNormal_fixedField_eq_one {N : Subgroup (L ≃ₐ[K] L)} [N.Norma
   exact (AlgEquiv.restrictNormal_commutes σ (fixedField N) y).trans
     ((mem_fixedField_iff N y).1 y.2 σ hσ)
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hs`. Take `⟨σ, hσ⟩` from `not_forall.1 hs`. Use `set H := (ideleSymbol K L).range with hH`. Establish `hσH : σ ∉ H` using `fun ⟨x, hx⟩ ↦ hσ ⟨x, hx⟩`. Take `⟨ι, _, n, _, ⟨e⟩⟩` from `CommGroup.equiv_prod_multiplicative_zmod_of_finite ((L ≃ₐ[K] L) ⧸ H)`.
+
+Establish `hne : (QuotientGroup.mk' H σ) ≠ 1`. Rewrite using `[ne_eq, QuotientGroup.mk'_apply, QuotientGroup.eq_one_iff]` and apply the resulting hypothesis. Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, e (QuotientGroup.mk' H σ) i ≠ 1 := by`. Assume the negation of the conclusion as `hall`. Use `push Not at hall`.
+
+Conclude with `hne ((MulEquiv.map_eq_one_iff e).1 (funext hall))`. Use `set χ : (L ≃ₐ[K] L) →* Multiplicative (ZMod (n i)) := (Pi.evalMonoidHom (fun j ↦ Multiplicative (ZMod (n j))) i).comp (e.toMonoidHom.comp (QuotientGroup.mk' H)) with hχ`. Use `set N := χ.ker with hN`. Establish `hHN : ∀ x, ideleSymbol K L x ∈ N` using `fun x ↦ by`. Establish `hq : QuotientGroup.mk' H (ideleSymbol K L x) = 1`.
+
+Rewrite using `[QuotientGroup.mk'_apply, QuotientGroup.eq_one_iff]`. Conclude with `⟨x, rfl⟩`. Rewrite using `[hN, MonoidHom.mem_ker, hχ, MonoidHom.comp_apply, MonoidHom.comp_apply, hq, map_one, map_one]`. Establish `hσN : σ ∉ N` using `hi`. Use `set F := fixedField N with hF`.
+
+Establish `: IsCyclic (F ≃ₐ[K] F)`. Establish `e1 : (F ≃ₐ[K] F) ≃* χ.range` using `(IsGalois.normalAutEquivQuotient N).symm.trans (QuotientGroup.quotientKerEquivRange χ)`. Conclude with `isCyclic_of_surjective e1.symm.toMonoidHom e1.symm.surjective`. Establish `hF1 : ∀ x, ideleSymbol K F x = 1` using `fun x ↦ by`. Rewrite using `[← restrictNormal_ideleSymbol F L x]`.
+
+Conclude with `restrictNormal_fixedField_eq_one (hHN x)`. Establish `hbot : F = ⊥` using `finrank_eq_one_iff.1 (finrank_eq_one_of_ideleSymbol_eq_one hF1)`. Establish `htop : N = ⊤`. Rewrite using `[← fixingSubgroup_fixedField N, ← hF, hbot, fixingSubgroup_bot]`. Conclude with `hσN (htop ▸ Subgroup.mem_top σ)`.
+-/
 theorem ideleSymbol_surjective : Function.Surjective (ideleSymbol K L) := by
   classical
   by_contra hs

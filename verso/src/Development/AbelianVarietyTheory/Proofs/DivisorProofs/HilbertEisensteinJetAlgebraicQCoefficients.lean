@@ -16,6 +16,11 @@ open GlobalTheory.LatJet (EisExp IsEis FR)
 
 namespace GlobalTheory.HilbFam
 
+/- English proof (translation)
+Introduce `hE F _ _ _ hf s N L hs hN hL z hz κ Ch hCh`. Take `⟨c, hc, halg⟩` from `hCh`. Take `⟨𝔞, 𝔟, x, rfl⟩` from `GlobalTheory.T.exists_split_of_hilbertLatticeHasLevel F N L hN hL`. Take `⟨Z, a, hZ, ha⟩` from `GlobalTheory.T.exists_hilbertEisenstein_fourierCoeffFamily hE F hf 𝔞 𝔟 s hs`. Establish `hconst` using `GlobalTheory.T.partialZeta_constTerm_eq_rational_value F (2 * s) z _ Z (by omega) hz hZ`.
+
+Establish `ha₀ : IsAlgebraic ℚ ((2 : ℂ)⁻¹ ^ Module.finrank ℚ F * Z (1 - ((2 * s : ℕ) : ℂ)))`. Rewrite using `[hconst]`. Conclude with `isAlgebraic_algebraMap (R := ℚ) (A := ℂ) _`. Conclude with `⟨_, GlobalTheory.T.hasQExpansionOfLevel_hilbertEisensteinQuasiPeriodJet F (2 * s) 𝔞 𝔟 _ a x N κ Ch c hN (even_two_mul s) ha hL hc, fun n ↦ GlobalTheory.T.hilbertDiagonalRestriction_coeff_isAlgebraic F (2 * s) 𝔞 𝔟 _ a x s N κ c n rfl ha ha₀ halg⟩`.
+-/
 theorem qAll_isAlgebraic_hfun : EisExp → ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F],
     2 ≤ Module.finrank ℚ F → ∀ (s N : ℕ) (L : Lat F), 1 ≤ s → 0 < N → HasLevel N L →
     ∀ (z : ClassGroup (𝓞 F) → ℚ), ZetaVals (2 * s) z → ∀ (κ : Emb F → ℕ) (Ch : ℍ → ℂ),

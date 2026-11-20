@@ -15,6 +15,15 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 
 include hZ h
 
+/- English proof (translation)
+Establish `h1 : (fun q => f (F1 hZ h q)) ∈ SB (TT Z × (Fin (d Z) → k))` using `(GlobalTheory.SplitDict.bijOn_comp (F1 hZ h)).1 hf.1`. Establish `e : ∀ q, phi0 ψ ν hZ h f (F1 hZ h q) = GlobalTheory.SplitDict.pf ψ (Measure.pi fun _ => ν) (fun q => f (F1 hZ h q)) (q.1, G Z *ᵥ q.2)`. Introduce `q`. Use `show GlobalTheory.SplitDict.pf _ _ _ (Hb hZ h (F1 hZ h q)) = _`. Rewrite using `[partial_fourier_first_coordinates]`.
+
+Use `show GlobalTheory.SplitDict.pf ψ _ (fun q => phi0 ψ ν hZ h f (F1 hZ h q)) (Hb hZ h p) = _`. Simplify using `only [e]`. Use `show ∫ u, GlobalTheory.SplitDict.pf ψ (Measure.pi fun _ => ν) (fun q => f (F1 hZ h q)) ((Hb hZ h p).1, G Z *ᵥ u) * (ψ (u ⬝ᵥ (Hb hZ h p).2) : ℂ) ∂(Measure.pi fun _ => ν) = _`. Rewrite using `[pf_G ψ ν hZ h, GlobalTheory.SplitDict.pf_pf ν hc h1]`. Simplify using `only [real_test_function_apply, Fintype.card_fin]`.
+
+Establish `e2 : ((Hb hZ h p).1.1 : Matrix (Fin n) (Fin n) k) + E Z (-((G Z)⁻¹ *ᵥ (Hb hZ h p).2)) = p.1 - (2 : k) • Pr Z p.1`. Rewrite using `[E_neg]`. Use `show p.1 - Pr Z p.1 + -(E Z ((G Z)⁻¹ *ᵥ D Z p.1)) = _`. Rewrite using `[← Pr, two_smul]`. Normalize the expressions using the abelian group laws.
+
+Establish `e3 : (Hb hZ h p).1.2 = p.2` using `rfl`. Rewrite using `[e2, e3]`. Simplify using `only [Refl]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem fourier_transform_involution {c : kˣ} (hc : HasConductor ψ c) {f : Sp k n → ℂ}
     (hf : f ∈ supportedIn (Set.univ : Set (Sp k n))) (p : Sp k n) :
     phi0 ψ ν hZ h (phi0 ψ ν hZ h f) p =
@@ -47,15 +56,34 @@ theorem fourier_transform_involution {c : kˣ} (hc : HasConductor ψ c) {f : Sp 
 def Tu (t : kˣ) : GL (Fin (d Z)) k := Units.map (Matrix.scalar (Fin (d Z)) : k →+* Matrix (Fin (d Z)) (Fin (d Z)) k) t
 
 omit hZ h [MeasurableSpace k] [BorelSpace k] [ν.IsAddHaarMeasure] in
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[Tu, Matrix.scalar_apply, mulVec_diagonal]`.
+-/
 theorem Tu_mulVec (t : kˣ) (u : Fin (d Z) → k) : (Tu (Z := Z) t).val *ᵥ u = (t : k) • u := by
   funext i
   simp [Tu, Matrix.scalar_apply, mulVec_diagonal]
 
 omit hZ h [MeasurableSpace k] [BorelSpace k] [ν.IsAddHaarMeasure] in
+/- English proof (translation)
+Use `ext`. Simplify using `[Tu, Matrix.scalar_apply, Matrix.GeneralLinearGroup.val_det_apply, det_diagonal]`.
+-/
 theorem Tu_det (t : kˣ) : Matrix.GeneralLinearGroup.det (Tu (Z := Z) t) = t ^ d Z := by
   ext
   simp [Tu, Matrix.scalar_apply, Matrix.GeneralLinearGroup.val_det_apply, det_diagonal]
 
+/- English proof (translation)
+Take `⟨x, v⟩` from `p`. Establish `hx : x ∈ Bz Z` using `hp.1`. Establish `hDy : D Z (x - Pr Z x) = 0` using `D_sub_Pr hZ h x`. Establish `hPy : Pr Z (x - Pr Z x) = 0` using `Pr_of_D hZ h hDy`. Establish `hpi : piZ Z x = x - Pr Z x` using `piZ_eq_sub hZ h hx`.
+
+Establish `hsig : (sig Z t (x, v)) = (x - Pr Z x + (t : k) • Pr Z x, v)`. Simplify using `only [sig, hpi, sub_sub_cancel]`. Rewrite using `[hsig, characteristic_function_integral_apply, characteristic_function_integral_apply]`. Establish `hP : Pr Z (x - Pr Z x + (t : k) • Pr Z x) = (t : k) • Pr Z x`. Rewrite using `[Pr_add, hPy, Pr_smul, show Pr Z (Pr Z x) = Pr Z x from Pr_E hZ h _, zero_add]`.
+
+Establish `hD : D Z (x - Pr Z x + (t : k) • Pr Z x) = (t : k) • D Z x`. Rewrite using `[D_add, hDy, D_smul, D_Pr hZ h, zero_add]`. Simplify using `only [hP, hD, add_sub_cancel_right]`. Establish `hyB : ∀ u, x - Pr Z x + E Z u ∈ Bz Z` using `fun u => (BzL Z).add_mem ((BzL Z).sub_mem hx (Pr_mem x).1) (E_mem Z u).1`. Establish `hpi2 : ∀ u, piZ Z (x - Pr Z x + E Z u) = x - Pr Z x` using `fun u => by`.
+
+Rewrite using `[piZ_eq_sub hZ h (hyB u), Pr_add, hPy, Pr_E hZ h, zero_add, add_sub_cancel_right]`. Establish `hs : ∀ u, sig Z t⁻¹ (x - Pr Z x + E Z u, v) = (x - Pr Z x + E Z ((t⁻¹ : k) • u), v)` using `fun u => by`. Simplify using `only [sig, hpi2, add_sub_cancel_left, E_smul, Units.val_inv_eq_inv_val]`. Simplify using `only [hs]`. Establish `key` using `GlobalTheory.WeilM.integral_comp_mulVec ν (Tu (Z := Z) t) (fun u => f (x - Pr Z x + E Z ((t⁻¹ : k) • u), v) * (ψ (u ⬝ᵥ D Z x) : ℂ))`.
+
+Establish `ht : (t : k) ≠ 0` using `t.ne_zero`. Simplify using `only [Tu_mulVec, Tu_det, map_pow, smul_smul, inv_mul_cancel₀ ht, one_smul, smul_dotProduct, ← dotProduct_smul] at key`. Rewrite using `[← key]`. Establish `hn : (nabs k t : ℝ) = ((distribHaarChar k t : NNReal) : ℝ)` using `rfl`. Establish `hpos : (nabs k t : ℝ) ≠ 0` using `by rw [hn]; exact_mod_cast (distribHaarChar_pos).ne'`.
+
+Rewrite using `[NNReal.coe_pow, ← hn]`. Use `push_cast`. Establish `hposC : ((nabs k t : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast hpos`. Rewrite using `[← mul_assoc, ← mul_pow, inv_mul_cancel₀ hposC, one_pow, one_mul]`.
+-/
 theorem fourier_transform_scaling (t : kˣ) (f : Sp k n → ℂ) {p : Sp k n} (hp : p ∈ Bz Z ×ˢ Set.univ) :
     phi0 ψ ν hZ h f (sig Z t p) =
       ((((nabs k t)⁻¹ ^ d Z : ℝ)) : ℂ) * phi0 ψ ν hZ h (fun q => f (sig Z t⁻¹ q)) p := by

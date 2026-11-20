@@ -8,6 +8,9 @@ open MvPolynomial MeasureTheory Filter Topology Matrix ReciprocityTheory.AnForm 
 open scoped ComplexOrder Classical
 open GlobalTheory.CompanionTheory.Ar.PB.WSq
 
+/- English proof (translation)
+Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a => rw [aeval_C, aeval_C, eq_intCast, eq_intCast, map_intCast]`. Consider the case `add p q hp hq => rw [map_add, map_add, hp, hq, map_add]`. Consider the case `mul_X p q hp => rw [map_mul, map_mul, hp, aeval_X, map_mul, aeval_X]`.
+-/
 theorem PositivityTheory.Xgp.c_algsq.LC.map_aeval_int {σ S T : Type} [CommRing S] [CommRing T] {_ : Algebra ℤ S} {_ : Algebra ℤ T}
     (θ : S →+* T) (w : σ → S) (f : MvPolynomial σ ℤ) : θ (aeval w f) = aeval (fun q => θ (w q)) f := by
   induction f using MvPolynomial.induction_on with
@@ -17,6 +20,93 @@ theorem PositivityTheory.Xgp.c_algsq.LC.map_aeval_int {σ S T : Type} [CommRing 
 
 open PositivityTheory.Xgp.c_algsq.LC GlobalTheory.CompanionTheory.Ar.PB.WSq.Pts GlobalTheory.CompanionTheory.Ar.PB.CPts GlobalTheory.CompanionTheory.Ar.PB.ValRing in
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Introduce `K _ ι _ Φ _ y Ψ _ _ N j M d τ a b k₀ ca cb hb hab hk hca hcb _ g h dg dh hg hh hdeg hq z hz F hF hG hm t hmb hmd hex hex'`. Establish `hS` using `same_summand hb hab hca hcb`. Establish `hsnd` using `basePart_snd M hk z`. Establish `hz0 : fstPt k₀ z ∈ mcPts (mCoordIdeal y)` using `comp_mem_mcPts (isBlockMap_v₀ k₀) (algebraMap Φ (RatFunc Φ)) rfl hz`. Establish `hzb` using `base_mem M hz0`.
+
+Take `⟨H0, hH0⟩` from `flag_fwd M hF hz0 hG (hex a).1`. Set `hh' : Ψ → Matrix (Fin N) (Fin N) ℂ` to `Function.update H0 τ hm`. Establish `hτ : hh' τ = hm` using `Function.update_self ..`. Establish `hblk : ∀ τ', IsBlockDiag j (hh' τ')` using `fun τ' => by`. Distinguish the cases in `e : τ' = τ`.
+
+Rewrite using `[e, hτ]`. Conclude with `hmb`. Simplify using `only [hh', Function.update_of_ne e]`. Conclude with `(hH0.2.1 τ').1`. Set `zb` to `basePart M.blk (fstPt k₀ z)`.
+
+Establish `hfl : ∀ p k, M.blk p = some k → ∃ α : ℂ, α ≠ 0 ∧ (p.1 = τ → α = 1) ∧ ∀ m : ι k, fstPt k₀ z ⟨k, m⟩ = α * ∑ I, valAt M.x (F.u ⟨k, m⟩ I) zb * minorIJ (hh' p.1) I (stepCols N j p.2)`. Introduce and unpack `⟨τ', i⟩ k hp`. Distinguish the cases in `e : τ' = τ`. Substitute `e` using the available equality. Conclude with `⟨1, one_ne_zero, fun _ => rfl, fun m => by rw [one_mul, hτ]; exact (hex i).2 k hp m⟩`.
+
+Take `⟨α, hα, h1⟩` from `hH0.2.2 _ k hp`. Conclude with `⟨α, hα, fun e' => absurd e' e, fun m => by simp only [hh', Function.update_of_ne e]; exact h1 m⟩`. Set `A` to `regRing M.x zb`. Set `val : A →+* ℂ` to `regVal hzb`. Take `⟨L, R, _, _, φ, θ, U, s, i, ρ, cA, B, sR, hi, hθ, hU, hU0, hθX, hic, hρc, hBb, hBi, hBρ, his, hρs⟩` from `GlobalTheory.T.generic_flag_elementary_twist M.Ω Φ Ψ N j M.g F.T A val hh' t τ ca cb hcb hS M.g_block M.g_indep hF.1 hblk`.
+
+Set `am` to `algebraMap M.Ω Φ`. Set `φΩ : M.Ω →+* L` to `φ.comp am`. Set `uA : (Σ k, ι k) → Finset (Fin N) → A` to `fun q I => ⟨F.u q I, exists_isValueAt hzb (hG.2.1 q I).1⟩`. Establish `hxp : ∀ p, φΩ (∏ k', M.x ⟨k', F.c k'⟩ ^ M.b p k') ≠ 0` using `fun p => (map_ne_zero _).2 (Finset.prod_ne_zero_iff.2 fun k' _ => zpow_ne_zero _ (M.x_chart_ne (mCoordIdeal_le hzb) hG k'))`. Establish `hdt : ∀ p : Ψ × Fin N, φΩ (detFac j p.2 (F.T p.1)) ≠ 0` using `fun p => (map_ne_zero _).2 (detFac_ne_zero M.j_le p.2 (hF.1 p.1).1 (hF.1 p.1).2)`.
+
+Establish `hTg : ∀ τ', (F.T τ').map φΩ * (B τ').map i = (M.g τ').map φ * U τ'` using `fun τ' => by`. Rewrite using `[hBi]`. Conclude with `map_mul_inv_map _ (hF.1 τ').2 _`. Establish `hstep : ∀ (i₀ : Fin N) (k : K) (D : Matrix (Fin N) (Fin N) R) (c₀ c₁ : L) (W : ι k → L) (α : ℂ) (zz : ι k → ℂ), c₀ ≠ 0 → α ≠ 0 → (∀ m, c₀ * W m = c₁ * ∑ I, φΩ (F.u ⟨k, m⟩ I) * minorIJ (D.map i) I (stepCols N j i₀)) → (∀ m, zz m = α * ∑ I, valAt M.x (F.u ⟨k, m⟩ I) zb * minorIJ (D. …`. Introduce `i₀ k D c₀ c₁ W α zz h0 hα hW hz`.
+
+Use `⟨fun m => ∑ I, cA (uA ⟨k, m⟩ I) * minorIJ D I (stepCols N j i₀), fun m => ?_, fun m => ?_⟩` and prove the remaining obligations. Establish `e1 : i (∑ I, cA (uA ⟨k, m⟩ I) * minorIJ D I (stepCols N j i₀)) = ∑ I, φΩ (F.u ⟨k, m⟩ I) * minorIJ (D.map i) I (stepCols N j i₀)`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun I _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, hic, minorIJ_map]`.
+
+Both sides reduce to the same expression. Rewrite using `[e1, div_mul_eq_mul_div, ← hW m]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[map_sum, hz m, inv_mul_cancel_left₀ hα]`. Use `Finset.sum_congr rfl fun I _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_mul, hρc, ← minorIJ_map]`. Both sides reduce to the same expression. Take `⟨V, hVb, hVt, hVd, hV⟩` from `GlobalTheory.T.elementary_factor_commutation L N j ca cb (U τ) (θ RatFunc.X) s hcb hS (hU τ).1 (hU τ).2.1 (hU τ).2.2 hU0 hθX`. Establish `hcbS : cb ∉ stepCols N j a`. Simplify using `only [stepCols, Finset.mem_filter, Finset.mem_univ, true_and]`.
+
+Unfold `lastCol at hca`. Apply the tactic sequence `split_ifs at hca ⊢ <;> omega`. Establish `hVp : (∏ c ∈ stepCols N j a, V c c) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun c hc => hVd c fun e => hcbS (e ▸ hc)`. Establish `hUp : ∀ p : Ψ × Fin N, (∏ c ∈ stepCols N j p.2, U p.1 c c) ≠ 0` using `fun p => Finset.prod_ne_zero_iff.2 fun c _ => (hU p.1).2.2 c`. Establish `key : ∀ o : Option K, ∃ (e : L) (t' : ℂ) (sv : ι (o.getD k₀) → R), e ≠ 0 ∧ t' ≠ 0 ∧ (∀ m, θ (M.wCo (τ, a) k₀ ca cb RatFunc.X ⟨o, m⟩) = e * i (sv m)) ∧ (∀ m, ρ (sv m) = t' * z ⟨o, m⟩) ∧ (o = none → e = φΩ (∏ k', M.x ⟨k', F.c k'⟩ ^ M.b (τ, a) k') / (φΩ (detFac j a (F.T τ)) * ∏ c ∈ …`.
+
+Introduce `o`. Consider the cases of `o with`. Consider the case `some k`. Establish `hw : ∀ m : ι k, θ (M.wCo (τ, a) k₀ ca cb RatFunc.X ⟨some k, m⟩) = φ (y ⟨k, m⟩)` using `fun m => hθ _`. Distinguish the cases in `hkb : ∀ p, M.blk p ≠ some k`.
+
+Set `kb : NonPluckerBlocks M.blk` to `⟨k, hkb⟩`. Establish `hxc : M.x ⟨kb, F.c kb⟩ ≠ 0` using `M.x_chart_ne (mCoordIdeal_le hzb) hG kb`. Establish `hzc : zb ⟨kb, F.c kb⟩ = 1` using `(hex a).1 kb`. Establish `hv : ∀ m : ι k, IsValueAt M.x (M.x ⟨kb, m⟩ / M.x ⟨kb, F.c kb⟩) zb (zb ⟨kb, m⟩ / zb ⟨kb, F.c kb⟩)` using `fun m => isValueAt_ratio hxc (by rw [hzc]; exact one_ne_zero)`. Use `⟨φΩ (M.x ⟨kb, F.c kb⟩), 1, fun m => cA ⟨_, _, hv m⟩, (map_ne_zero _).2 hxc, one_ne_zero, fun m => ?_, fun m => ?_, fun e => (by cases e), fun kb' e => ?_, fun p k' e hp => ?_⟩` and prove the remaining obligations.
+
+Use `(hw m).trans ?_` and prove the remaining obligations. Rewrite using `[hic, show y ⟨k, m⟩ = am (M.x ⟨kb, m⟩) from M.y_base ⟨kb, m⟩]`. Use `show φ (am _) = φ (am _) * φ (am _)`. Rewrite using `[← map_mul, ← map_mul]`. Use `congr 2`.
+
+Conclude with `(mul_div_cancel₀ _ hxc).symm`. Rewrite using `[hρc, show val ⟨_, _, hv m⟩ = _ from regVal_eq hzb _ (hv m), hzc, div_one, one_mul]`. Both sides reduce to the same expression. Take `rfl : kb = kb'` from `Subtype.ext (Option.some.inj e)`. Conclude with `⟨rfl, rfl⟩`.
+
+Conclude with `absurd (hp.trans e.symm) (hkb p)`. Use `push Not at hkb`. Take `⟨p, hp⟩` from `hkb`. Take `⟨α, hα, hα1, hz⟩` from `hfl p k hp`. Take `⟨sv, h1, h2⟩` from `hstep p.2 k (B p.1) (φΩ (detFac j p.2 (F.T p.1)) * ∏ c ∈ stepCols N j p.2, U p.1 c c) (φΩ (∏ k', M.x ⟨k', F.c k'⟩ ^ M.b p k')) (fun m => φ (y ⟨k, m⟩)) α (fun m => fstPt k₀ z ⟨k, m⟩) (mul_ne_zero (hdt p) (hUp p)) hα (fun m => frame_gen M hF φ hp m ((hBb p.1).map i) (hU p.1).1 (hU …`.
+
+Use `⟨_, α⁻¹, sv, div_ne_zero (hxp p) (mul_ne_zero (hdt p) (hUp p)), inv_ne_zero hα, fun m => (hw m).trans (h1 m), h2, fun e => (by cases e), fun kb e => ?_, fun p' k' e hp' => ?_⟩` and prove the remaining obligations. Conclude with `absurd (hp.trans e) (kb.2 p)`. Take `rfl` from `M.blk_inj _ _ _ hp (hp'.trans e.symm)`. Conclude with `⟨rfl, fun e' => by rw [hα1 e', _root_.inv_one]⟩`. Consider the case `none`.
+
+Establish `hz1` using `hex'.2 k₀ hk`. Rewrite `hz1` using `[hsnd]`. Establish `hEi : (1 + Matrix.single cb ca sR).map i = 1 + Matrix.single cb ca s`. Rewrite using `[transv_map, his]`. Establish `hEρ : (1 + Matrix.single cb ca sR).map ρ = 1 + Matrix.single cb ca t`.
+
+Rewrite using `[transv_map, hρs]`. Establish `hEθ : ((M.g τ).map (algebraMap Φ (RatFunc Φ)) * (1 + Matrix.single cb ca RatFunc.X)).map θ = (M.g τ).map φ * (1 + Matrix.single cb ca (θ RatFunc.X))`. Rewrite using `[Matrix.map_mul, transv_map]`. Use `congr 1`. Use extensionality with `r c`.
+
+Conclude with `hθ _`. Take `⟨sv, h1, h2⟩` from `hstep a k₀ (B τ * (1 + Matrix.single cb ca sR)) (φΩ (detFac j a (F.T τ)) * ∏ c ∈ stepCols N j a, V c c) (φΩ (∏ k', M.x ⟨k', F.c k'⟩ ^ M.b (τ, a) k')) (fun m => θ (M.wCo (τ, a) k₀ ca cb RatFunc.X ⟨none, m⟩)) 1 (fun m => z ⟨none, m⟩) (mul_ne_zero (hdt (τ, a)) hVp) one_ne_zero (fun …`. Establish `e1 : θ (M.wCo (τ, a) k₀ ca cb RatFunc.X ⟨none, m⟩) = ∑ I, φΩ (M.coef ⟨k₀, m⟩ I) * minorIJ ((M.g τ).map φ * (1 + Matrix.single cb ca (θ RatFunc.X))) I (stepCols N j a)` using `by show θ (∑ I, _) = _`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun I _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_mul, hθ, ← hEθ, minorIJ_map]`. Both sides reduce to the same expression. Rewrite using `[e1]`. Conclude with `frame_any M hF φΩ (p := (τ, a)) hk m (G := (B τ * (1 + Matrix.single cb ca sR)).map i) (bb := V) (gg := (M.g τ).map φ * (1 + Matrix.single cb ca (θ RatFunc.X))) ((hBb τ).mul (transv_block hS sR) |>.map i) hVb hVt (by`. Rewrite using `[Matrix.map_mul, hEi]`.
+
+Use `show (F.T τ).map φΩ * ((B τ).map i * _) = _`. Rewrite using `[← Matrix.mul_assoc, hTg, Matrix.mul_assoc, ← hV, Matrix.mul_assoc]))`. Use the proof step `(fun m => by`. Rewrite using `[Matrix.map_mul, hBρ, hEρ, ← snd_self z m, one_mul, hτ]`. Conclude with `hz1 m)`.
+
+Conclude with `⟨_, 1⁻¹, sv, div_ne_zero (hxp (τ, a)) (mul_ne_zero (hdt (τ, a)) hVp), by simp, h1, h2, fun _ => ⟨rfl, _root_.inv_one⟩, fun kb e => (by cases e), fun p k e => (by cases e)⟩`. Use `choose e t' sv he ht has hv k1 k2 k3 using key`. Establish `hprop : ∀ p, ¬ IsProperStep N j p.2 → M.blk p = none` using `fun p hp => (M.blk_none p).2 hp`. Set `υA : Fin N → A` to `fun i₀ => if hp : IsProperStep N j i₀ then 0 else ⟨F.υ (τ, i₀), exists_isValueAt hzb (hG.2.2 (τ, i₀) (hprop (τ, i₀) hp)).2.1⟩`. Set `FR : Fin N → R` to `fun i₀ => if IsProperStep N j i₀ then 1 else cA (υA i₀) * facM j a (B τ) i₀`.
+
+Establish `hFi : ∀ i₀, i (FR i₀) = if IsProperStep N j i₀ then 1 else φΩ (F.υ (τ, i₀)) * facM j a ((B τ).map i) i₀` using `fun i₀ => by`. Simplify using `only [FR, υA]`. Use `split_ifs with hp`. Conclude with `map_one i`. Rewrite using `[map_mul, hic, facM_map]`.
+
+Both sides reduce to the same expression. Establish `hFρ : ∀ i₀, ρ (FR i₀) = if IsProperStep N j i₀ then 1 else valAt M.x (F.υ (τ, i₀)) zb * facM j a hm i₀` using `fun i₀ => by`. Simplify using `only [FR, υA]`. Use `split_ifs with hp`. Conclude with `map_one ρ`.
+
+Rewrite using `[map_mul, hρc, ← facM_map, hBρ, hτ]`. Both sides reduce to the same expression. Set `Ft : R` to `(∏ i₀ : Fin N, if (i₀ : ℕ) + 1 = a then FR i₀ else 1) * FR b`. Establish `hmapF : ∀ {S : Type} [CommRing S] (f : R →+* S), f Ft = (∏ i₀ : Fin N, if (i₀ : ℕ) + 1 = a then f (FR i₀) else 1) * f (FR b)` using `fun f => by`. Simplify using `only [Ft, map_mul, map_prod, apply_ite f, map_one]`.
+
+Set `sq : (Σ o : Option K, ι (o.getD k₀)) → R` to `fun q => sv q.1 q.2`. Establish `ev1 : ∀ (f : MRing fun o : Option K => ι (o.getD k₀)) (df : Option K → ℕ), IsMultiHomog f df → θ (aeval (M.wCo (τ, a) k₀ ca cb RatFunc.X) f) = (∏ o, e o ^ df o) * i (aeval sq f)` using `fun f df hf => by`. Rewrite using `[map_aeval_int i, ← PositivityTheory.Xgp.W.aeval_scale' e _ hf, map_aeval_int θ]`. Use `congr 2`. Use function extensionality and compare the values at `q`.
+
+Conclude with `has q.1 q.2`. Establish `ev2 : ∀ (f : MRing fun o : Option K => ι (o.getD k₀)) (df : Option K → ℕ), IsMultiHomog f df → ρ (aeval sq f) = (∏ o, t' o ^ df o) * eval z (map (Int.castRingHom ℂ) f)` using `fun f df hf => by`. Rewrite using `[PositivityTheory.Xgp.W.eval_map_eq_aeval, ← PositivityTheory.Xgp.W.aeval_scale' t' _ hf, map_aeval_int ρ]`. Use `congr 2`. Use function extensionality and compare the values at `q`.
+
+Conclude with `hv q.1 q.2`. Establish `hd1` using `prod_deg M hk e he hdeg`. Establish `hd2` using `prod_deg M hk t' ht hdeg`. Establish `hbase : ∀ p, (∏ k : NonPluckerBlocks M.blk, e (some k.1) ^ M.b p k) = φΩ (∏ k', M.x ⟨k', F.c k'⟩ ^ M.b p k')` using `fun p => by`. Rewrite using `[map_prod]`.
+
+Conclude with `Finset.prod_congr rfl fun k _ => by rw [(k2 _ k rfl).1, map_zpow₀]`. Rewrite using `[(k1 _ rfl).2, (k3 _ (τ, a) k₀ rfl hk).2 rfl, prod_xi' τ, Finset.prod_eq_one (s := Finset.univ) (f := fun i₀ : Fin N => _ ^ xiCoef τ a (τ, i₀)) (fun i₀ _ => by`. Rewrite using `[Finset.prod_eq_one fun k _ => by rw [(k2 _ k rfl).2, _root_.one_zpow]]`. Consider the cases of `hp : M.blk (τ, i₀) with`. Consider the case `none => simp`.
+
+Consider the case `some k => simp [(k3 _ (τ, i₀) k rfl hp).2 rfl]), mul_one, mul_one, mul_one] at hd2`. Establish `hq'` using `congrArg θ hq`. Rewrite `hq'` using `[map_mul, map_mul, ev1 g dg hg, ev1 h dh hh, hθ, map_prod]`. Simplify using `only [map_zpow₀] at hq'`. Rewrite `hq'`, `hd1` using `[prod_xi' τ]`.
+
+Establish `hsc` using `scal_main τ M.j_le hb hab hca hcb ((hF.1 τ).1.map φΩ) (by`. Rewrite using `[← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Conclude with `(map_ne_zero _).2 (hF.1 τ).2) ((hBb τ).map i)`. Use the proof step `(hU τ).1 (hU τ).2.1 (hU τ).2.2 (hTg τ) hθX hV fun i₀ => φΩ (F.υ (τ, i₀))`. Simplify using `only [← hFi, ← hmapF i, detFac_map] at hsc`.
+
+Establish `hterm : ∀ i₀ : Fin N, (if IsProperStep N j i₀ then (φΩ (detFac j i₀ (F.T τ)) * ∏ c ∈ stepCols N j i₀, U τ c c)⁻¹ else φΩ (F.υ (τ, i₀)) / φΩ (detFac j i₀ (F.T τ)) * facM j a ((M.g τ).map φ) i₀) = φ (if IsProperStep N j i₀ then 1 else am (M.lam (τ, i₀)) * facM j a (M.g τ) i₀) * ((∏ …`. Introduce `i₀`. Establish `q1` using `hxp (τ, i₀)`. Establish `q2 : φΩ (detFac j i₀ (F.T τ)) ≠ 0` using `hdt (τ, i₀)`. Establish `q3 : (∏ c ∈ stepCols N j i₀, U τ c c) ≠ 0` using `hUp (τ, i₀)`.
+
+Rewrite using `[hbase]`. Use `split_ifs with hp`. Consider the cases of `hp' : M.blk (τ, i₀) with`. Consider the case `none => exact absurd hp ((M.blk_none _).1 hp')`. Consider the case `some k`.
+
+Rewrite using `[Option.elim, (k3 _ (τ, i₀) k rfl hp').1, map_one]`. Clear the denominators using the available nonvanishing facts. Establish `h1` using `congrArg φΩ (hF.2.2.2 (τ, i₀) (hprop _ hp))`. Rewrite `h1` using `[map_mul, map_mul]`. Rewrite using `[hprop (τ, i₀) hp, Option.elim, map_mul, facM_map]`.
+
+Express the relevant statement in the definitionally equal form `_ = φΩ _ * _ * _`. Establish `h2 : φΩ (F.υ (τ, i₀)) = φΩ (detFac j i₀ (F.T τ)) * φΩ (M.lam (τ, i₀)) / φΩ (∏ k', M.x ⟨k', F.c k'⟩ ^ M.b (τ, i₀) k')`. Rewrite using `[eq_div_iff q1, mul_comm]`. Conclude with `h1.symm`. Rewrite using `[h2]`.
+
+Clear the denominators using the available nonvanishing facts. Simplify using `only [hterm, mul_zpow, Finset.prod_mul_distrib] at hsc`. Simplify using `only [mul_zpow, Finset.prod_mul_distrib] at hd1`. Rewrite `hd1` using `[(k1 _ rfl).1, (k3 _ (τ, a) k₀ rfl hk).1]`. Simplify using `only at hd1`.
+
+Express the relevant statement in the definitionally equal form `_ = θ RatFunc.X * (∏ i₀ : Fin N, φ (if IsProperStep N j i₀ then 1 else am (M.lam (τ, i₀)) * facM j a (M.g τ) i₀) ^ xiCoef τ a (τ, i₀)) * _ at hq'`. Establish `hR : aeval sq g = sR * Ft * aeval sq h`. Apply `hi` to reduce the goal to its premises. Rewrite using `[map_mul, map_mul, his, ← hsc]`. Establish `q0 : (∏ o, e o ^ dg o) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun o _ => pow_ne_zero _ (he o)`.
+
+Establish `q1` using `hxp (τ, a)`. Establish `q2 : φΩ (detFac j a (F.T τ)) ≠ 0` using `hdt (τ, a)`. Establish `q3 : (∏ c ∈ stepCols N j a, U τ c c) ≠ 0` using `hUp (τ, a)`. Use `mul_left_cancel₀ q0 (hq'.trans ?_)` and prove the remaining obligations. Establish `hd3` using `eq_div_of_mul_eq (div_ne_zero q1 (mul_ne_zero q2 hVp)) hd1`.
+
+Rewrite using `[hd3]`. Generalize the expression as in `(∏ i₀ : Fin N, φ (if IsProperStep N j i₀ then 1 else am (M.lam (τ, i₀)) * facM j a (M.g τ) i₀) ^ xiCoef τ a (τ, i₀)) = P1`. Generalize the expression as in `φΩ (∏ k', M.x ⟨k', F.c k'⟩ ^ M.b (τ, a) k') = X1 at q1 ⊢`. Generalize the expression as in `φΩ (detFac j a (F.T τ)) = X2 at q2 ⊢`. Clear the denominators using the available nonvanishing facts.
+
+Establish `hfin` using `congrArg ρ hR`. Rewrite `hfin` using `[map_mul, map_mul, ev2 g dg hg, ev2 h dh hh, hd2, hρs, hmapF ρ]`. Simplify using `only [hFρ] at hfin`. Establish `q0 : (∏ o, t' o ^ dg o) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun o _ => pow_ne_zero _ (ht o)`. Establish `hpa : IsProperStep N j a`.
+
+Assume the negation of the conclusion as `hp`. Rewrite `hk` using `[hprop (τ, a) hp]`. Consider the cases of `hk`. Rewrite using `[prod_xi τ hb, if_pos hpa, _root_.inv_one, one_pow, mul_one]`. Use `mul_left_cancel₀ q0 (hfin.trans ?_)` and prove the remaining obligations.
+
+Unfold `facM`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem PositivityTheory.Xgp.c_algsq.lc : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Φ : Type) [Field Φ] (y : (Σ k, ι k) → Φ) (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N j : ℕ) (M : FlagModel y Ψ N j) (d : ℕ) (τ : Ψ) (a b : Fin N) (k₀ : K) (ca cb : Fin N), (b : ℕ) = a + 1 → ((b : ℕ) < j ∨ j ≤ (a : ℕ)) → M.blk (τ, a) = some k₀ → (ca : ℕ) = lastCol N j a → (cb : ℕ) = ca + 1 → IsArithVar (mCoordIdeal y) (d + 2) → ∀ (g h : MRing fun o : Option K => ι (o.getD k₀)) (dg dh : Option K → ℕ), IsMultiHomog g dg → IsMultiHomog h dh → (∀ o : Option K, (dg o : ℤ) - dh o = o.elim 1 fun k => -(fun k => ∑ p, xiCoef τ a p * M.dy p k) k - (if M.blk (τ, a) = some k then 1 else 0)) → aeval (M.wCo (τ, a) k₀ ca cb RatFunc.X) g = RatFunc.X * algebraMap Φ (RatFunc Φ) (∏ p, (if IsProperStep N j p.2 then 1 else algebraMap M.Ω Φ (M.lam p) * (if (p.2 : ℕ) + 1 = j then (if (a : ℕ) < j then minorIJ (M.g p.1) (wIdx N j) (wIdx N j) else 1) else minorIJ (M.g p.1) (omIdx N j) (omIdx N j))) ^ xiCoef τ a p) * aeval (M.wCo (τ, a) k₀ ca cb RatFunc.X) h → ∀ z ∈ mcPts (mCoordIdeal (M.wCo (τ, a) k₀ ca cb RatFunc.X)), ∀ F, M.IsFrame F → M.GoodAt F (mCoordIdeal (basePart M.blk (fstPt k₀ z))) → ∀ (hm : Matrix (Fin N) (Fin N) ℂ) (t : ℂ), IsBlockDiag j hm → hm.det ≠ 0 → (∀ i, M.ExactAt F (τ, i) (fstPt k₀ z) hm) → M.ExactAt F (τ, a) (sndPt k₀ z) (hm * (1 + Matrix.single cb ca t)) → eval z (map (Int.castRingHom ℂ) g) = t * (∏ i : Fin N, (if IsProperStep N j i then 1 else valAt M.x (F.υ (τ, i)) (basePart M.blk (fstPt k₀ z)) * (if (i : ℕ) + 1 = j then (if (a : ℕ) < j then minorIJ hm (wIdx N j) (wIdx N j) else 1) else minorIJ hm (omIdx N j) (omIdx N j))) ^ xiCoef τ a (τ, i)) * eval z (map (Int.castRingHom ℂ) h) := by
   intro K _ ι _ Φ _ y Ψ _ _ N j M d τ a b k₀ ca cb hb hab hk hca hcb _ g h dg dh hg hh hdeg hq z hz F hF hG hm t hmb hmd
     hex hex'

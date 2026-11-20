@@ -6,6 +6,21 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Use `set A : ℤ := Nat.gcdA q p`. Use `set B : ℤ := Nat.gcdB q p`. Establish `hb : (1 : ℤ) = (q : ℤ) * A + (p : ℤ) * B`. Establish `h` using `Nat.gcd_eq_gcd_ab q p`. Rewrite `h` using `[Nat.Coprime.gcd_eq_one hpq.symm]`.
+
+Simplify using `using h`. Establish `hA : ((q : ZMod p))⁻¹ = ((A : ℤ) : ZMod p)`. Apply `ZMod.inv_eq_of_mul_eq_one` to reduce the goal to its premises. Use `congrArg (fun z : ℤ => (z : ZMod p)) hb` as an intermediate fact. Simplify using `only [Int.cast_one, Int.cast_add, Int.cast_mul, Int.cast_natCast, ZMod.natCast_self, zero_mul, add_zero] at this`.
+
+Conclude with `this.symm`. Establish `hB : ((p : ZMod q))⁻¹ = ((B : ℤ) : ZMod q)`. Apply `ZMod.inv_eq_of_mul_eq_one` to reduce the goal to its premises. Use `congrArg (fun z : ℤ => (z : ZMod q)) hb` as an intermediate fact. Simplify using `only [Int.cast_one, Int.cast_add, Int.cast_mul, Int.cast_natCast, ZMod.natCast_self, zero_mul, zero_add] at this`.
+
+Conclude with `this.symm`. Establish `e1 : ((q : ZMod p))⁻¹ * (T : ZMod p) = ((A * T : ℤ) : ZMod p)`. Rewrite using `[hA]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `e2 : ((p : ZMod q))⁻¹ * (T : ZMod q) = ((B * T : ℤ) : ZMod q)`. Rewrite using `[hB]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, e2, ZMod.stdAddChar_coe, ZMod.stdAddChar_coe, ← Complex.exp_add]`.
+
+Use `congr 1`. Establish `hp : (p : ℂ) ≠ 0` using `Nat.cast_ne_zero.mpr (NeZero.ne p)`. Establish `hq : (q : ℂ) ≠ 0` using `Nat.cast_ne_zero.mpr (NeZero.ne q)`. Establish `hbC : (1 : ℂ) = (q : ℂ) * (A : ℂ) + (p : ℂ) * (B : ℂ)` using `by exact_mod_cast hb`. Use `push_cast`.
+
+Clear the denominators using the available nonvanishing facts. Take the linear combination `(T : ℂ) * hbC`.
+-/
 theorem exp_two_pi_I_div_mul_eq_stdAddChar_mul (p q : ℕ) [NeZero p] [NeZero q] (hpq : Nat.Coprime p q) (T : ℤ) :
     Complex.exp (2 * Real.pi * Complex.I * (T : ℂ) / ((p * q : ℕ) : ℂ)) =
       ZMod.stdAddChar (((q : ZMod p))⁻¹ * (T : ZMod p)) *

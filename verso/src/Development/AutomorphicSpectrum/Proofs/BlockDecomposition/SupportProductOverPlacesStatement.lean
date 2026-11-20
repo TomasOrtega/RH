@@ -6,6 +6,9 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HermitianPlaneS
 open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes IsDedekindDomain NumberField GlobalTheory.Published GlobalTheory.CompanionTheory.PlaneSA Topology
 open scoped TensorProduct Quaternion
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.PlaneSA.ProdSupp.suppAt_subset_of_places | exact GlobalTheory.CompanionTheory.PlaneSA.ProdSupp.suppAt_subset_of_places | (intros; apply GlobalTheory.CompanionTheory.PlaneSA.ProdSupp.suppAt_subset_of_places <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.support_product_over_places : ∀ {F : Type} [Field F] [NumberField F] (d β : F) (N : Set (Q d β (AF F))), (1 : Q d β (AF F)) ∈ N →
   (∀ x ∈ N, ∀ y ∈ N, x * y ∈ N) → (∀ u : Pl F, SuppAt d β {u} ⊆ N) →
   ∀ T : Finset (Pl F), SuppAt d β (T : Set (Pl F)) ⊆ N := by

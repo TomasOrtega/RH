@@ -36,10 +36,16 @@ def filtSub (a : ℕ) : Subgroup kˣ where
     rw [e, Valuation.map_neg, map_mul, h1, one_mul]
     exact hx.2
 
+/- English proof (translation)
+The claim follows from `(GroundTheory.LocalField.isOpen_setOf_valuation_eq_one.inter (GroundTheory.LocalField.isOpen_setOf_valuation_sub_le (a := (1 : k)) (pow_ne_zero a uniformizer_ne_zero))).preimage Units.continuous_val`.
+-/
 theorem isOpen_filtSub (a : ℕ) : IsOpen (filtSub k a : Set kˣ) :=
   (GroundTheory.LocalField.isOpen_setOf_valuation_eq_one.inter (GroundTheory.LocalField.isOpen_setOf_valuation_sub_le (a := (1 : k))
     (pow_ne_zero a uniformizer_ne_zero))).preimage Units.continuous_val
 
+/- English proof (translation)
+Set `f : kˣ →* Multiplicative ℤ` to `{ toFun := fun x => Multiplicative.ofAdd (ord k x) map_one' := by rw [ord_eq_zero (by simp)]; rfl map_mul' := fun x y => by rw [ord_mul]; rfl }`. Use `congrArg Multiplicative.toAdd (map_zpow f p n)` as an intermediate fact. Simplify `this` using `[f]`.
+-/
 theorem ord_zpow (p : kˣ) (n : ℤ) : ord k (p ^ n) = n * ord k p := by
   let f : kˣ →* Multiplicative ℤ :=
     { toFun := fun x => Multiplicative.ofAdd (ord k x)
@@ -64,21 +70,69 @@ def comp (w : HeightOneSpectrum (𝓞 k)) : Ideles k →* (w.adicCompletion k)ˣ
       map_one' := rfl
       map_mul' := fun _ _ => rfl }
 
+/- English proof (translation)
+The claim follows from `Continuous.units_map _ ((RestrictedProduct.continuous_eval w).comp continuous_snd)`.
+-/
 theorem continuous_comp (w : HeightOneSpectrum (𝓞 k)) : Continuous (comp w) :=
   Continuous.units_map _ ((RestrictedProduct.continuous_eval w).comp continuous_snd)
 
+/- English proof (translation)
+The claim follows from `Units.ext rfl`.
+-/
 theorem comp_diag (w : HeightOneSpectrum (𝓞 k)) (x : kˣ) : comp w (diagUnits k x) = atFin w x := Units.ext rfl
 
+/- English proof (translation)
+The claim follows from `Units.ext (localIdele_snd_self k w x)`.
+-/
 theorem comp_local_self (w : HeightOneSpectrum (𝓞 k)) (x : (w.adicCompletion k)ˣ) : comp w (localIdele k w x) = x :=
   Units.ext (localIdele_snd_self k w x)
 
+/- English proof (translation)
+The claim follows from `Units.ext ((localIdele_isSupportedAt k w x).2 w' h)`.
+-/
 theorem comp_local_ne {w w' : HeightOneSpectrum (𝓞 k)} (h : w' ≠ w) (x : (w.adicCompletion k)ˣ) :
     comp w' (localIdele k w x) = 1 :=
   Units.ext ((localIdele_isSupportedAt k w x).2 w' h)
 
+/- English proof (translation)
+The claim follows from `Units.ext rfl`.
+-/
 theorem comp_inf (w : HeightOneSpectrum (𝓞 k)) (u : InfinitePlace k) (x : (u.Completion)ˣ) : comp w (infIdele k u x) = 1 :=
   Units.ext rfl
 
+/- English proof (translation)
+Use `choose! N hN0 hN using hf`. Establish `hm0 : 0 < ∏ w ∈ S, N w` using `Finset.prod_pos hN0`. Establish `hm : ∀ w ∈ S, ∀ x, θ w x ^ (∏ w ∈ S, N w) = 1` using `fun w hw x => by`. Take `⟨d, hd⟩` from `Finset.dvd_prod_of_mem N hw`. Rewrite using `[hd, pow_mul, ← MonoidHom.pow_apply, hN w hw, MonoidHom.one_apply, one_pow]`.
+
+Use `set m := ∏ w ∈ S, N w`. Take `⟨T, hST, hT⟩` from `GlobalTheory.ChevalleySUnits.exists_places k S m hm0`. Set `U : Subgroup (Ideles k)` to `GlobalTheory.LevelChars.levSub k T 1 ⊓ ⨅ w : S, (θ w).ker.comap (comp w.1)`. Establish `hU : IsOpen (U : Set (Ideles k))`. Establish `h1 : IsOpen (GlobalTheory.LevelChars.levSub k T 1 : Set (Ideles k))`.
+
+Use `(GlobalTheory.Mem.UnitOpen.unit_open_and_congr_open k).2 T 1 using 1` and compare the differences between its conclusion and the goal. Use extensionality with `a`. Conclude with `⟨fun h => ⟨fun v => (h v).1, fun v hv => (h v).2 hv⟩, fun h v => ⟨h.1 v, h.2 v⟩⟩`. Rewrite using `[Subgroup.coe_inf, Subgroup.coe_iInf]`. Conclude with `h1.inter (isOpen_iInter_of_finite fun w => (hs w w.2).preimage (continuous_comp w.1))`.
+
+Set `β : (∀ w : S, (w.1.adicCompletion k)ˣ) →* Ideles k` to `∏ w : S, (localIdele k w.1).comp (Pi.evalMonoidHom (fun w : S => (w.1.adicCompletion k)ˣ) w)`. Set `γ : (∀ w : S, (w.1.adicCompletion k)ˣ) →* ℂˣ` to `∏ w : S, (θ w.1).comp (Pi.evalMonoidHom (fun w : S => (w.1.adicCompletion k)ˣ) w)`. Establish `hβ : ∀ y, β y = ∏ w : S, localIdele k w.1 (y w)` using `fun y => MonoidHom.finsetProd_apply _ _ _`. Establish `hγ : ∀ y, γ y = ∏ w : S, θ w.1 (y w)` using `fun y => MonoidHom.finsetProd_apply _ _ _`. Establish `hβS : ∀ y (w : S), comp w.1 (β y) = y w` using `fun y w => by`.
+
+Rewrite using `[hβ, map_prod, Finset.prod_eq_single w, comp_local_self]`. Conclude with `fun w' _ h => comp_local_ne (fun e => h (Subtype.ext e.symm)) _`. Simplify using the standard rewrite rules. Establish `hβn : ∀ y v, v ∉ S → comp v (β y) = 1` using `fun y v hv => by`. Rewrite using `[hβ, map_prod]`.
+
+Conclude with `Finset.prod_eq_one fun w _ => comp_local_ne (fun e : v = w.1 => hv (e ▸ w.2)) _`. Take `⟨χ, hχ, -, hχU, hχα⟩` from `GlobalTheory.exists_unitary_char_of_open_subgroup_and_hom (Ideles k) (kˣ × ∀ w : S, (w.1.adicCompletion k)ˣ) U hU ((diagUnits k).coprod β) ((1 : kˣ →* ℂˣ).coprod γ) 1 continuous_const (fun _ => by simp) (fun y => by`. Establish `h1 : γ y.2 ^ m = 1`. Rewrite using `[hγ, ← Finset.prod_pow]`. Conclude with `Finset.prod_eq_one fun w _ => hm w w.2 _`.
+
+Establish `h2 : ((γ y.2 : ℂˣ) : ℂ) ^ m = 1` using `by rw [← Units.val_pow_eq_pow_val, h1, Units.val_one]`. Simplify using `using Complex.norm_eq_one_of_pow_eq_one h2 hm0.ne')`. Use the proof step `(by`. Introduce and unpack `⟨x, y⟩ ⟨h1, h2⟩`. Establish `hval : ∀ (v : HeightOneSpectrum (𝓞 k)) (z : k), Valued.v (algebraMap k (v.adicCompletion k) z) = v.valuation k z` using `fun v z => HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v z`.
+
+Establish `hc : ∀ v, v ∉ S → GlobalTheory.LevelChars.compAt k v ((diagUnits k).coprod β (x, y)) = algebraMap k (v.adicCompletion k) (x : k)` using `fun v hv => by`. Establish `e : comp v ((diagUnits k).coprod β (x, y)) = atFin v x`. Rewrite using `[MonoidHom.coprod_apply, map_mul, comp_diag, hβn _ v hv, mul_one]`. Conclude with `congrArg Units.val e`. Take `⟨z, hz⟩` from `hT x (fun v hv => by rw [← hval, ← hc v hv]; exact (h1 v).1) (fun t ht => by`.
+
+Establish `h3` using `(h1 t).2 ht`. Rewrite `h3` using `[hc t (Finset.disjoint_right.1 hST ht), ← map_one (algebraMap k (t.adicCompletion k)), ← map_sub, hval]`. Use `h3.trans_lt ?_` and prove the remaining obligations. Rewrite using `[← WithZero.exp_zero, WithZero.exp_lt_exp]`. Use the proof step `simp)`.
+
+Establish `hz0 : z ≠ 0`. Introduce and unpack `rfl`. Conclude with `x.ne_zero (by rw [← hz, zero_pow hm0.ne'])`. Establish `hxz : x = Units.mk0 z hz0 ^ m` using `Units.ext (by simp [hz])`. Rewrite using `[MonoidHom.coprod_apply, MonoidHom.one_apply, MonoidHom.one_apply, one_mul, hγ]`.
+
+Use `Finset.prod_eq_one fun w _ => ?_` and prove the remaining obligations. Establish `h4 : θ w.1 (comp w.1 ((diagUnits k).coprod β (x, y))) = 1` using `Subgroup.mem_iInf.1 h2 w`. Rewrite using `[MonoidHom.coprod_apply, map_mul, comp_diag, hβS, map_mul, hxz, map_pow, map_pow, hm w w.2, one_mul] at h4)` and apply the resulting hypothesis. Set `η : HChar k` to `⟨χ, hχ, fun x => by simpa using hχα (x, 1)⟩`. Establish `hinf : ∀ u : InfinitePlace k, η.locInf u = 1` using `fun u => by`.
+
+Use extensionality with `x`. Use `congrArg Units.val (hχU (infIdele k u x) ⟨fun v => ⟨map_one _, fun _ => ?_⟩, Subgroup.mem_iInf.2 fun w => ?_⟩)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Valued.v ((1 : v.adicCompletion k) - 1) ≤ _`. Simplify using the standard rewrite rules. Rewrite using `[Subgroup.mem_comap, comp_inf]`.
+
+Conclude with `one_mem _`. Use `⟨η, GlobalTheory.Mem.FinOrder.finite_order_of_inf_eq_one k η fun x => ?_, hinf, fun w hw => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `χ (infDiag x) = 1`. Rewrite using `[infDiag, MonoidHom.finsetProd_apply, map_prod]`. Conclude with `Finset.prod_eq_one fun u _ => DFunLike.congr_fun (hinf u) (atInf u x)`.
+
+Use `MonoidHom.ext fun x => ?_` and prove the remaining obligations. Establish `h` using `hχα (1, Pi.mulSingle (⟨w, hw⟩ : S) x)`. Rewrite `h` using `[MonoidHom.coprod_apply, MonoidHom.coprod_apply, map_one, map_one, one_mul, one_mul]`. Simplify using `only at h`. Rewrite `h` using `[hβ, hγ, Finset.prod_eq_single (⟨w, hw⟩ : S), Finset.prod_eq_single (⟨w, hw⟩ : S), Pi.mulSingle_eq_same]`.
+
+Conclude with `h`. Introduce `w' _ h'`. Rewrite using `[Pi.mulSingle_eq_of_ne h', map_one]`. Simplify using the standard rewrite rules. Introduce `w' _ h'`.
+
+Rewrite using `[Pi.mulSingle_eq_of_ne h', map_one]`. Simplify using the standard rewrite rules.
+-/
 theorem exists_hchar_prescribed (k : Type) [Field k] [NumberField k] (S : Finset (HeightOneSpectrum (𝓞 k)))
     (θ : ∀ w : HeightOneSpectrum (𝓞 k), (w.adicCompletion k)ˣ →* ℂˣ) (hs : ∀ w ∈ S, IsSmoothChar (θ w))
     (hf : ∀ w ∈ S, ∃ N : ℕ, 0 < N ∧ θ w ^ N = 1) :

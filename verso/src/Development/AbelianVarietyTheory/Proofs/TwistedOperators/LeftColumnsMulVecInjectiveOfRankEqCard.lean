@@ -6,6 +6,19 @@ namespace GlobalTheory
 
 open Matrix Topology Module in
 
+/- English proof (translation)
+Introduce `k m a b n _ _ _ _ _ e x hx hz v hv`. Use `set x' := x.submatrix id (fun i => e (Sum.inl i))`. Set `Q : Matrix n a k` to `Matrix.of fun l i => if l = e (Sum.inl i) then 1 else 0`. Set `P : Matrix a n k` to `Matrix.of fun i l => if l = e (Sum.inl i) then 1 else 0`. Establish `hQ : x' = x * Q`.
+
+Use extensionality with `i j`. Rewrite using `[Matrix.mul_apply]`. Simplify using `only [x', Q, Matrix.of_apply, Matrix.submatrix_apply, id, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Establish `hP : x = x' * P`. Use extensionality with `i l`.
+
+Take `⟨t, rfl⟩` from `e.surjective l`. Break down `t with t | t` into its components or cases. Rewrite using `[Matrix.mul_apply]`. Simplify using `only [x', P, Matrix.of_apply, Matrix.submatrix_apply, id, mul_ite, mul_one, mul_zero, EmbeddingLike.apply_eq_iff_eq, Sum.inl.injEq, Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Rewrite using `[Matrix.mul_apply]`.
+
+Simplify using `[x', P, hz]`. Establish `hr : x'.rank = Fintype.card a`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[← hx, hQ]`. Conclude with `Matrix.rank_mul_le_left _ _`.
+
+Rewrite using `[← hx, hP]`. Conclude with `Matrix.rank_mul_le_left _ _`. Establish `hrn` using `LinearMap.finrank_range_add_finrank_ker x'.mulVecLin`. Establish `hxr : finrank k (LinearMap.range x'.mulVecLin) = Fintype.card a` using `hr`. Rewrite `hrn` using `[hxr, finrank_fintype_fun_eq_card]`.
+
+Establish `hker : LinearMap.ker x'.mulVecLin = ⊥` using `Submodule.finrank_eq_zero.1 (by omega)`. Establish `hvk : v ∈ LinearMap.ker x'.mulVecLin` using `hv`. Rewrite `hvk` using `[hker]`. Conclude with `(Submodule.mem_bot k).1 hvk`.
+-/
 theorem _root_.GlobalTheory.mulVec_firstCols_eq_zero_of_rank_eq_card :
     ∀ (k m a b n : Type) [Field k] [Fintype m] [Fintype a] [Fintype b] [Fintype n] (e : a ⊕ b ≃ n) (x : Matrix m n k), x.rank = Fintype.card a → (∀ i j, x i (e (Sum.inr j)) = 0) → ∀ v : a → k, (x.submatrix id (fun i => e (Sum.inl i))) *ᵥ v = 0 → v = 0 := by
   intro k m a b n _ _ _ _ _ e x hx hz v hv

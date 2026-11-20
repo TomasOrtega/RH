@@ -17,6 +17,11 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestric
 
 namespace GlobalTheory.CompanionTheory.WedgeOf
 
+/- English proof (translation)
+Rewrite using `[← LinearMap.range_eq_top, eq_top_iff, ← exteriorPower.ιMulti_span (R := R) (n := 2) (M := V), Submodule.span_le]`. Introduce and unpack `_ ⟨v, rfl⟩`. Use `⟨v 0 ⊗ₜ v 1, ?_⟩` and prove the remaining obligations. Rewrite using `[wedgeT_tmul]`. Use `congr 1`.
+
+Apply the tactic sequence `funext i; fin_cases i <;> rfl`.
+-/
 theorem wedgeT_surjective (R V : Type) [CommRing R] [AddCommGroup V] [Module R V] :
     Function.Surjective (wedgeT (R := R) V) := by
   rw [← LinearMap.range_eq_top, eq_top_iff, ← exteriorPower.ιMulti_span (R := R) (n := 2) (M := V),
@@ -27,6 +32,23 @@ theorem wedgeT_surjective (R V : Type) [CommRing R] [AddCommGroup V] [Module R V
   congr 1
   funext i; fin_cases i <;> rfl
 
+/- English proof (translation)
+Introduce `hL R _ P _ _ F g hH hV hBC hV2 hspan`. Establish `: Finite Pᵒᵖ` using `Finite.of_injective unop unop_injective`. Establish `hV'` using `hV`. Take `⟨hf, hp, -⟩` from `hV'`. Establish `hκ : Function.Surjective (TensorProduct.lift (cup F))`.
+
+Rewrite using `[← LinearMap.range_eq_top, eq_top_iff, ← hspan, Submodule.span_le]`. Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `⟨x.1 ⊗ₜ x.2, rfl⟩`. Establish `hinj : Function.Injective (TensorProduct.map (iotaQ F) (iotaQ F))`. Establish `e : TensorProduct.map (iotaQ F) (iotaQ F) = ((iotaQ F).lTensor (QC F)) ∘ₗ ((iotaQ F).rTensor (H1 F))`.
+
+Rewrite using `[LinearMap.lTensor_comp_rTensor]`. Rewrite using `[e, LinearMap.coe_comp]`. Conclude with `(GlobalTheory.T.first_cohomology_inclusion_tensor_injective R _ F hBC (QC F)).comp (Module.Flat.rTensor_preserves_injective_linearMap _ (iotaQ_injective F))`. Establish `hker : LinearMap.ker (TensorProduct.lift (cup F)) ≤ LinearMap.ker (wedgeT (R` using `R) (H1 F)) := by`. Introduce `t ht`.
+
+Establish `h1` using `GlobalTheory.T.cup_vanishing_antisymmetric_cross hL R _ F hH t ht`. Establish `h2` using `GlobalTheory.T.cross_product_kernel_quotient_vanishing R _ F _ h1`. Establish `h3` using `hinj (h2.trans (map_zero _).symm)`. Conclude with `GlobalTheory.T.wedge_of_symmetric_tensor_zero R _ t h3`. Set `s : H2 F →ₗ[R] ⋀[R]^2 (H1 F)` to `(LinearMap.ker (TensorProduct.lift (cup F))).liftQ (wedgeT (R := R) (H1 F)) hker ∘ₗ (LinearMap.quotKerEquivOfSurjective _ hκ).symm.toLinearMap`.
+
+Establish `hs : ∀ t, s (TensorProduct.lift (cup F) t) = wedgeT (R` using `R) (H1 F) t := by`. Introduce `t`. Establish `: (LinearMap.quotKerEquivOfSurjective _ hκ).symm (TensorProduct.lift (cup F) t) = Submodule.Quotient.mk t`. Rewrite using `[LinearEquiv.symm_apply_eq]`. Both sides reduce to the same expression.
+
+Simplify using `only [s, LinearMap.comp_apply, LinearEquiv.coe_coe, this]`. Both sides reduce to the same expression. Establish `hsurj : Function.Surjective s` using `fun y ↦ by`. Take `⟨t, rfl⟩` from `wedgeT_surjective R (H1 F) y`. Conclude with `⟨_, hs t⟩`.
+
+Establish `hb` using `GlobalTheory.T.bijective_of_surjective_same_rank R _ _ _ hV2 (GlobalTheory.T.exterior_square_vector_bundle_rank R _ g hV) s hsurj`. Use `⟨(LinearEquiv.ofBijective s hb).symm, fun a b ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[LinearEquiv.symm_apply_eq, LinearEquiv.ofBijective_apply]`. Use `hs (a ⊗ₜ b)` as an intermediate fact. Rewrite `this` using `[wedgeT_tmul]`.
+
+Conclude with `this.symm`.
+-/
 theorem wedgeOf_of_low : LowSt → WedgeOfSt := by
   intro hL R _ P _ _ F g hH hV hBC hV2 hspan
   have : Finite Pᵒᵖ := Finite.of_injective unop unop_injective

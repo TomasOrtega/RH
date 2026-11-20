@@ -150,6 +150,17 @@ def EllFormula2 : Prop := ∀ (E : Type) [Field E] [NumberField E] [IsCMField E]
     IsFundamentalDomain (ratGL E b).range F₂ μ₂ → IsTest2 φ r → 0 ≤ r → C * (1 + r) ≤ τ →
     cutTr2 μ₁ μ₂ F₁ F₂ τ φ = ellSum2 μ₁ μ₂ φ
 
+/- English proof (translation)
+Introduce `E _ _ _ _ n`. Take `⟨C₁, h₁⟩` from `hE E n`. Take `⟨C₂, h₂⟩` from `hV E n`. Use `⟨max 0 (max C₁ C₂), le_max_left _ _, fun μ _ F τ r φ hF hφ hr hr0 hreg hvc hτ => ?_⟩` and prove the remaining obligations. Establish `l₁ : C₁ ≤ max 0 (max C₁ C₂)` using `(le_max_left _ _).trans (le_max_right _ _)`.
+
+Establish `l₂ : C₂ ≤ max 0 (max C₁ C₂)` using `(le_max_right _ _).trans (le_max_right _ _)`. Rewrite using `[(hU E n μ F τ φ hF hφ).2, ellSum]`. Use `finsum_congr fun c => ?_` and prove the remaining obligations. Distinguish the cases in `he : IsRegEll (Quot.out c)`. Rewrite using `[finsum_eq_if, if_pos he, cutTerm, orbTerm]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `x`. Distinguish the cases in `h0 : φ (twConj (thetaA E n) x (ratGL E n (Quot.out c))) = 0`. Simplify using `[h0]`. Establish `hx : x ∈ cutSet E n τ`.
+
+Use `h₁ τ x _ he (le_trans ?_ hτ)` and prove the remaining obligations. Establish `a0` using `(hS E n).2.1 (twConj (thetaA E n) x (ratGL E n (Quot.out c)))`. Establish `a1` using `hr _ h0`. Conclude with `mul_le_mul l₁ (by linarith) (by linarith) (le_max_left _ _)`. Simplify using `[chiT, hx]`.
+
+Rewrite using `[finsum_eq_if, if_neg he]`. Distinguish the cases in `hd : IsRegD (Quot.out c)`. Conclude with `h₂ μ τ r φ _ hφ hr hvc (le_trans (mul_le_mul_of_nonneg_right l₂ (by linarith)) hτ) hd he`. Establish `: ∀ x, φ (twConj (thetaA E n) x (ratGL E n (Quot.out c))) = 0` using `fun x => by_contra fun h => hd (hreg _ x h)`. Simplify using `[cutTerm, this, quotIntegral]`.
+-/
 theorem ellFormula_of (hU : Unfold) (hE : EllTerm) (hV : ClassVanish) (hS : SizeBasic) : EllFormula := by
   classical
   intro E _ _ _ _ n

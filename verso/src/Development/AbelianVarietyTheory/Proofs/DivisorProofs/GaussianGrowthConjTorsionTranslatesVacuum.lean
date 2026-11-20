@@ -13,6 +13,13 @@ section SlopeTestRemainingChoices
 open NumberField Classical Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.TaylorLogMetric Formalism.MainNotions.StandardLatticesGL3 GlobalTheory.NormSum GlobalTheory.ConjJet
 open scoped BigOperators
 
+/- English proof (translation)
+Use function extensionality and compare the values at `z`. Establish `ht : ∀ α, TaylorLogMetric.taylor D (fun z => ∑ i, (c i : ℂ) * F i z) α = ((∑ i, c i * ⟨_, hM i α⟩ : M) : ℂ)`. Introduce `α`. Rewrite using `[GlobalTheory.ConjSeries.taylor_eq_coeff, taylorDir_sum _ _ fun i _ => GlobalTheory.ProdThetaConj.an0 ((hF i).const_mul (c i : ℂ)), map_sum]`. Use `push_cast`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← GlobalTheory.ConjSeries.taylor_eq_coeff, GlobalTheory.ProdThetaConj.taylor_const_mul (hF i)]`. Establish `hcj : ∀ x : M, cj M ρ x = ρ x` using `fun x => by simp [cj, TaylorLogMetric.liftM]`. Establish `hs : HasSum (fun α => ∑ i, ρ (c i) * (TaylorLogMetric.taylor D (fnConj D M ρ (F i)) α * mono D α z)) (∑ i, ρ (c i) * fnConj D M ρ (F i) z)` using `hasSum_sum fun i _ => (GlobalTheory.EntireTaylor.hasSum_taylor_mono D N N' _ (hd i) z).mul_left _`. Rewrite using `[← hs.tsum_eq]`.
+
+Use `tsum_congr fun α => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `cj M ρ _ * _ = _`. Rewrite using `[ht, hcj, map_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[(GlobalTheory.ConjSeries.taylor_fnConj D N N' M ρ (F i) (hd i) (h0 i)).1 α, map_mul, mul_assoc, ← hcj ⟨_, hM i α⟩]`.
+-/
 theorem fnConj_sum (D : D7) {N N' n : ℕ} (M : IntermediateField ℚ ℂ) (ρ : M →ₐ[ℚ] ℂ) (c : Fin n → M)
     (F : Fin n → VC D N N' → ℂ) (hF : ∀ i, Differentiable ℂ (F i)) (hM : ∀ i, CoefIn D (F i) M)
     (hd : ∀ i, Differentiable ℂ (fnConj D M ρ (F i))) (h0 : ∀ i, fnConj D M ρ (F i) ≠ 0) :
@@ -37,10 +44,16 @@ theorem fnConj_sum (D : D7) {N N' n : ℕ} (M : IntermediateField ℚ ℂ) (ρ :
   refine Finset.sum_congr rfl fun i _ => ?_
   rw [(GlobalTheory.ConjSeries.taylor_fnConj D N N' M ρ (F i) (hd i) (h0 i)).1 α, map_mul, mul_assoc, ← hcj ⟨_, hM i α⟩]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ i j`. Simplify using `[vBar]`.
+-/
 theorem vBar_vBar (D : D7) {N N' : ℕ} (z : VC D N N') : vBar D (vBar D z) = z := by
   funext τ i j
   simp [vBar]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `z`. Simplify using `[cBar, vBar_vBar]`.
+-/
 theorem cBar_cBar (D : D7) {N N' : ℕ} (G : VC D N N' → ℂ) : cBar D (cBar D G) = G := by
   funext z
   simp [cBar, vBar_vBar]
@@ -57,6 +70,17 @@ def Facts (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) {a d : ℕ}
           (fnConj D Qbar ρ G) *
         Real.exp (Real.pi * (∑ τ, ∑ i, ∑ j, ‖z τ i j‖ ^ 2) / area (lamConj Qbar ρ (lamOf D cc δ)))
 
+/- English proof (translation)
+Establish `hGT` using `vacuum_mem_thetaSpace_pair D hI cc δ t0 hc ht a d L L' h1 h2 G hG`. Take `⟨hdata, htors⟩` from `(GlobalTheory.CurveAlgebraic.integral_j_and_algebraic_data D hI.g1).2 cc δ hc`. Take `⟨hA, hAU, -⟩` from `hI.alg cc δ hc t0 ht a d L L' h1 h2 hev G hG`. Take `⟨hTh, -⟩` from `hI.conj cc δ hc t0 ht a d L L' h1 h2 hev G hG Qbar ρ hdata hA`. Take `⟨t', ht'⟩` from `(hI.t0Ex cc δ hc).2 Qbar ρ hdata.2.1 hdata.2.2`.
+
+Take `⟨hN, -⟩` from `hI.nrm cc δ hc t0 ht a d L L' h1 h2 hev G hG Qbar ρ hdata hA t' ht'`. Take `⟨cc', δ', hc', -, hΛ⟩` from `hI.curve cc δ hc Qbar ρ hρ hdata.2.1 hdata.2.2 1 one_pos`. Take `⟨π, hπ⟩` from `hI.perm Qbar ρ hρ hdata.1`. Use `⟨by rw [hΛ]; exact area_pos D hI.g1 cc' δ' hc', ?_, fun y hy => ?_, fun x z => ?_⟩` and prove the remaining obligations. Introduce `h`.
+
+Rewrite `hN` using `[h, hΛ]`. Rewrite `ht'` using `[hΛ]`. Use `pow_ne_zero _ (thetaZeroNormSq_ne_zero_cmLattice D hI.g1 cc' δ' t' hc' ht') (hN.symm.trans ?_)` and prove the remaining obligations. Simplify using `[normSq]`. Take `⟨m, hm, hmy⟩` from `id hy`.
+
+Take `⟨y', hy', -⟩` from `hI.galEx cc δ hc Qbar ρ hρ hdata htors a d L L' h1 h2 y (2 * m) hy (by omega)`. Establish `hgal` using `(hI.gal cc δ hc Qbar ρ hρ hdata a d L L' h1 h2 1 (fun _ => 1) (fun _ => 0) G y y' m hGT hm hmy (fun _ => by simp) hy' (by rw [comb_one]; exact hA) (by rw [comb_one]; exact hAU y hy)).1`. Rewrite `hgal` using `[comb_one]`. Conclude with `⟨y', hgal⟩`. Use `sup_perm D hI.g1 cc' δ' hc' (torConj D (tor0 D cc δ) Qbar ρ) π hΛ hπ a d L L' h1 h2 _ hTh x z` as an intermediate fact.
+
+Rewrite `this` using `[Hf_re, ← mul_div_assoc]`. Conclude with `this`.
+-/
 theorem facts_fix (D : D7) (hI : Inp D) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (t0 : ℂ)
     (hc : Crv D cc δ) (ht : GL3Theta.IsTwoTorsionPointUnkilled D (lamOf D cc δ) t0) (a d : ℕ) (L L')
     (h1 : SD D L) (h2 : SD D L') (hev : Even (a * d)) (G : VC D a d → ℂ)
@@ -89,6 +113,19 @@ theorem facts_fix (D : D7) (hI : Inp D) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) 
     rw [Hf_re, ← mul_div_assoc] at this
     exact this
 
+/- English proof (translation)
+Take `⟨hdata, -⟩` from `(GlobalTheory.CurveAlgebraic.integral_j_and_algebraic_data D hI.g1).2 cc δ hc`. Take `⟨hA, -⟩` from `hI.alg cc δ hc t0 ht a d L L' h1 h2 hev G hG`. Take `⟨hfix | hfix, htor, hbar⟩` from `hI.bar cc δ hc Qbar ρ hdata`. Conclude with `facts_fix D hI cc δ t0 hc ht a d L L' h1 h2 hev G hG ρ hfix`. Take `⟨k1, k2, k3, k4⟩` from `facts_fix D hI cc δ t0 hc ht a d L L' h1 h2 hev G hG _ hfix`.
+
+Take `⟨hTh, -⟩` from `hI.conj cc δ hc t0 ht a d L L' h1 h2 hev G hG Qbar ρ hdata hA`. Establish `hn2` using `((hbar a d L L' (fnConj D Qbar ρ G)).2.2 hTh).2 h1 h2 0`. Rewrite `hn2` using `[U_zero]`. Establish `hL : lamConj Qbar (rhoBar Qbar ρ) (lamOf D cc δ) = (lamConj Qbar ρ (lamOf D cc δ)).map (starRingEnd ℂ).toAddMonoidHom` using `congrArg Tor.abelian₂ htor`. Rewrite `k1`, `k4` using `[hL, area_conj]`.
+
+Rewrite `k2`, `k3`, `k4` using `[(hbar a d L L' G).1]`. Rewrite `k3`, `k4` using `[htor]`. Rewrite `k4` using `[hn2]`. Establish `hU` using `(hbar a d L L' (fnConj D Qbar ρ G)).2.1`. Use `⟨k1, fun h => k2 ?_, fun y hy => ?_, fun x z => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[h]`. Use function extensionality and compare the values at `z`. Simplify using `[cBar]`. Take `⟨y', hy'⟩` from `k3 y hy`. Use `⟨vBar D y', ?_⟩` and prove the remaining obligations.
+
+Rewrite `hy'` using `[(hbar a d L L' _).1, ← vBar_vBar D y', ← hU]`. Use `congrArg (cBar D) hy'` as an intermediate fact. Rewrite `this` using `[cBar_cBar, cBar_cBar]`. Then use the resulting hypothesis. Use `k4 (vBar D x) (vBar D z)` as an intermediate fact. Rewrite `this` using `[← hU]`.
+
+Simplify `this` using `only [cBar, vBar_vBar, vBar, RCLike.norm_conj, Complex.conj_conj]`.
+-/
 theorem facts_all (D : D7) (hI : Inp D) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (t0 : ℂ)
     (hc : Crv D cc δ) (ht : GL3Theta.IsTwoTorsionPointUnkilled D (lamOf D cc δ) t0) (a d : ℕ) (L L')
     (h1 : SD D L) (h2 : SD D L') (hev : Even (a * d)) (G : VC D a d → ℂ)
@@ -129,6 +166,25 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions Form
 open IsDedekindDomain NumberField Matrix GlobalTheory.ChiGrid GlobalTheory.FunObj GlobalTheory.RowTest GlobalTheory.RowClaim GlobalTheory.TestLat
 open Formalism.MainNotions.TaylorLogMetric Formalism.MainNotions.StandardLatticesGL3 GlobalTheory.SumSize GlobalTheory.KerConjMean
 
+/- English proof (translation)
+Introduce `D hI cc δ t0 hc ht a b e0 hev he Ls Lt h1 h2 κ hκ k n r s hk hs hr ρ t' ht'`. Establish `hsd : ∀ N, SD D (stdL D N)` using `fun N => by`. Take `⟨Lt, h, h1, -⟩` from `GlobalTheory.NormSum.exists_lattice_of_adelic_point D N`. Conclude with `h1 ▸ (h 1).2`. Establish `hG` using `GlobalTheory.VacuumMove.isVacuum_thetaIntertwiner_selfDual D hI cc δ t0 hc ht a b _ _ Ls Lt (hsd a) (hsd b) h1 h2 e0 he.2.2.2.1`.
+
+Express the relevant statement in the definitionally equal form `ThetaVectorUpToUnits D (tor0 D cc δ) t0 Ls Lt (Iop D (tor0 D cc δ) (La0 D (tor0 D cc δ) a b) (La D (tor0 D cc δ) Ls Lt) e0) at hG`. Generalize the expression as in `Iop D (tor0 D cc δ) (La0 D (tor0 D cc δ) a b) (La D (tor0 D cc δ) Ls Lt) e0 = G at hG ⊢`. Establish `hGT` using `GlobalTheory.ConjJet.vacuum_mem_thetaSpace_pair D hI cc δ t0 hc ht a b Ls Lt h1 h2 G hG`. Take `⟨hdata, -⟩` from `(GlobalTheory.CurveAlgebraic.integral_j_and_algebraic_data D hI.g1).2 cc δ hc`. Take `⟨hA, hAU, hAC, -⟩` from `hI.alg cc δ hc t0 ht a b Ls Lt h1 h2 hev G hG`.
+
+Take `⟨hTh, -⟩` from `hI.conj cc δ hc t0 ht a b Ls Lt h1 h2 hev G hG Qbar ρ hdata hA`. Take `⟨hN, -⟩` from `hI.nrm cc δ hc t0 ht a b Ls Lt h1 h2 hev G hG Qbar ρ hdata hA t' ht'`. Take `⟨k1, k2, k3, k4⟩` from `facts_all D hI cc δ t0 hc ht a b Ls Lt h1 h2 hev G hG ρ`. Rewrite `k4` using `[hN]`. Take `⟨hκ1, hκ2⟩` from `hκ`.
+
+Establish `hq : ∀ i, LaQ D (tor0 D cc δ) Ls Lt (s i)` using `fun i => ⟨k, hk, hs i⟩`. Use `choose y hy using fun i => k3 (s i) (hq i)`. Establish `he' : (fun z => κ * ∑ i, (r i : ℂ) * U D (tor0 D cc δ) (s i) G z) = fun z => ∑ i, ((⟨κ, hκ1⟩ * r i : Qbar) : ℂ) * U D (tor0 D cc δ) (s i) G z`. Use function extensionality and compare the values at `z`. Rewrite using `[Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_assoc]`. Both sides reduce to the same expression. Establish `hd : ∀ i, Differentiable ℂ (fnConj D Qbar ρ (U D (tor0 D cc δ) (s i) G))` using `fun i => by`. Rewrite using `[hy]`.
+
+Conclude with `GlobalTheory.ConjJet.U_diff D _ _ _ hTh.1`. Rewrite using `[he', fnConj_sum D Qbar ρ _ _ (fun i => GlobalTheory.ConjJet.U_diff D _ _ _ hGT.1) (fun i => hAU _ (hq i)) hd (fun i => by rw [hy]; exact GlobalTheory.ConjJet.U_ne_zero D _ _ _ k2)]`. Use `⟨k1, hAC n _ s (fun i => (⟨κ, hκ1⟩ * r i : Qbar).2) hq, Differentiable.fun_sum fun i _ => (hd i).const_mul _, fun z => ?_⟩` and prove the remaining obligations. Establish `hb` using `fun i => k4 (y i) z`. Establish `h0` using `(sq_nonneg _).trans (k4 0 z)`.
+
+Generalize the expression as in `(3 * (2 * ((fF D * a * b : ℕ) : ℝ) * D.host.rdE + 1) ^ (fF D * a * b) * _ * _ : ℝ) = B at hb h0 ⊢`. Establish `hb' : ∀ i, ‖fnConj D Qbar ρ (U D (tor0 D cc δ) (s i) G) z‖ ≤ √B` using `fun i => by`. Rewrite using `[hy]`. Conclude with `Real.le_sqrt_of_sq_le (hb i)`. Rewrite using `[← Real.le_sqrt (norm_nonneg _) h0]`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun i _ => ?_)` and prove the remaining obligations. Establish `h3 : ‖ρ ⟨κ, hκ1⟩‖ = 1` using `hκ2 ρ.toRingHom`. Rewrite using `[norm_mul, map_mul, norm_mul, h3, one_mul]`. Conclude with `mul_le_mul_of_nonneg_left (hb' i) (norm_nonneg _)`.
+
+Use `_ ≤ 1 * √B := by`. Rewrite using `[← Finset.sum_mul]`. Conclude with `mul_le_mul_of_nonneg_right (hr ρ.toRingHom) (Real.sqrt_nonneg _)`. Use `_ = √B := one_mul _`.
+-/
 theorem conj_growth : ∀ (D : D7), GlobalTheory.NormSum.Inp D → ∀ (cc : Ideal (𝓞 D.host.K)) (δ t0 : ℂ), Crv D cc δ → GL3Theta.IsTwoTorsionPointUnkilled D (lamOf D cc δ) t0 →
   ∀ (a b : ℕ) (e0 : VC D a b → ℂ), Even (a * b) → oddE0 D cc δ t0 a b e0 →
   ∀ (Ls : Submodule (𝓞 D.host.E) (Fin a → D.host.E)) (Lt : Submodule (𝓞 D.host.E) (Fin b → D.host.E)), SD D Ls → SD D Lt →

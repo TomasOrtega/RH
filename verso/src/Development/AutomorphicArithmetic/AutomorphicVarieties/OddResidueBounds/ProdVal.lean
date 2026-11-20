@@ -7,6 +7,15 @@ import Mathlib
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.LDataCardLeFinrank UpperTheory.V.Base UpperTheory.V.Kum UpperTheory.V.Bern UpperTheory.V.B4 UpperTheory.V.B5 UpperTheory.V.Odd
 
+/- English proof (translation)
+Introduce `N _ k P hk hP`. Take `⟨M, hM0, hlog, hprod⟩` from `b_prodint k P hk hP`. Use `⟨fun l => padicValInt l M, fun T hT => (b_sumval M hM0 T hT).trans hlog, ?_⟩` and prove the remaining obligations. Introduce `l _ T hTS`. Establish `hnorm : ‖(l : PadicAlgCl l)‖ = (l : ℝ)⁻¹`.
+
+Rewrite using `[← map_natCast (algebraMap ℚ_[l] (PadicAlgCl l)), PadicAlgCl.norm_extends, Padic.norm_p]`. Establish `hS : (charSet (PadicAlgCl l) P).Finite` using `Set.toFinite _`. Establish `hint : ∀ χ ∈ charSet (PadicAlgCl l) P, IsIntegral ℤ (((1 : ℕ) : PadicAlgCl l) * alN k χ)`. Introduce `χ _`. Rewrite using `[Nat.cast_one, one_mul]`.
+
+Conclude with `(b_primmem k χ).2.2.1`. Establish `hpr : ∏ᶠ (χ : DirichletCharacter (PadicAlgCl l) N) (_ : χ ∈ charSet (PadicAlgCl l) P), ((1 : ℕ) : PadicAlgCl l) * alN k χ = (M : PadicAlgCl l)`. Simplify using `only [Nat.cast_one, one_mul]`. Conclude with `hprod (PadicAlgCl l)`. Establish `hu` using `b_ultra l hnorm (charSet (PadicAlgCl l) P) (fun χ => alN k χ) 1 M hS hM0 hint hpr`.
+
+Rewrite `hu` using `[finsum_mem_eq_finite_toFinset_sum _ hS]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem UpperTheory.V.Odd.prodVal :
     ∀ (N : ℕ) [NeZero N] (k : ℕ) (P : Set (Subgroup (ZMod N)ˣ)), 1 ≤ k → P ⊆ parKer N k → ∃ w : ℕ → ℕ, (∀ T : Finset ℕ, (∀ l ∈ T, l.Prime) → ∑ l ∈ T, (w l : ℝ) * Real.log l ≤ (charSet ℂ P).ncard * Real.log (bnd N k)) ∧ ∀ (l : ℕ) [Fact l.Prime] (T : Finset (DirichletCharacter (PadicAlgCl l) N)), (T : Set _) ⊆ charSet (PadicAlgCl l) P → ∑ χ ∈ T, -Real.log ‖alN k χ‖ ≤ (w l : ℝ) * Real.log l := by
   intro N _ k P hk hP

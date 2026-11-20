@@ -84,12 +84,25 @@ def infFinEquiv {n : ℕ} : AdelicGLn.AdelicGL K n ≃ₜ*
       continuous_invFun :=
         ((AdelicGLn.infiniteEquiv K n).symm.continuous.comp continuous_fst).prodMk continuous_snd }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem infFinEquiv_apply_fst {n : ℕ} (g : AdelicGLn.AdelicGL K n) (w : InfinitePlace K) :
     (infFinEquiv g).1 w = infAt w g := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem infFinEquiv_apply_snd {n : ℕ} (g : AdelicGLn.AdelicGL K n) :
     (infFinEquiv g).2 = (AdelicGLn.prodEquiv K n g).2 := rfl
 
+/- English proof (translation)
+Use `set e := infFinEquiv (K := K) (n := n) with he`. Use `set ρ : Measure ((Π w : InfinitePlace K, GL (Fin n) w.Completion) × AdelicGLn.FiniteAdelicGL K n) := (Measure.pi fun w => (Measure.haar : Measure (GL (Fin n) w.Completion))).prod (Measure.haar : Measure (AdelicGLn.FiniteAdelicGL K n)) with hρ`. Establish `hν : (Measure.map e μ).IsHaarMeasure` using `MulEquiv.isHaarMeasure_map μ e.toMulEquiv e.continuous e.symm.continuous`. Establish `heq` using `Measure.isMulLeftInvariant_eq_smul (Measure.map e μ) ρ`. Use `set T := (Set.univ.pi S) ×ˢ F with hT`.
+
+Establish `hET : E ⊆ e ⁻¹' T` using `fun g hg => ⟨fun w _ => (hE g hg).1 w, (hE g hg).2⟩`. Establish `hmap : μ (e ⁻¹' T) = Measure.map e μ T` using `(e.toHomeomorph.toMeasurableEquiv.map_apply T).symm`. Establish `hρT : ρ T = (∏ w, (Measure.haar : Measure (GL (Fin n) w.Completion)) (S w)) * (Measure.haar : Measure (AdelicGLn.FiniteAdelicGL K n)) F`. Rewrite using `[hρ, hT, Measure.prod_prod, Measure.pi_pi]`. Use `set c := (Measure.map e μ).haarScalarFactor ρ with hc`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Measure.smul_apply, hρT, ENNReal.smul_def, smul_eq_mul]`. Conclude with `ENNReal.mul_lt_top ENNReal.coe_lt_top (ENNReal.mul_lt_top (ENNReal.prod_lt_top fun w _ => hS w) hF.measure_lt_top)`.
+-/
 theorem measure_lt_top_of_forall_mem {n : ℕ} (μ : Measure (AdelicGLn.AdelicGL K n))
     [μ.IsHaarMeasure] {E : Set (AdelicGLn.AdelicGL K n)}
     (S : ∀ w : InfinitePlace K, Set (GL (Fin n) w.Completion))

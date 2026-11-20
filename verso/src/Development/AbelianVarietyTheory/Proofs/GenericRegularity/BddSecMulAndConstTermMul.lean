@@ -10,6 +10,15 @@ namespace GlobalTheory
 
 open NumberField in
 
+/- English proof (translation)
+Introduce `E _ _ _ r X la la' P Q hP hQ`. Use `⟨_root_.ReciprocityTheory.ChartRestriction.G.FD.BoundedSectionAlgebra.bdd_mul X hP hQ, fun ξ hξ x hx => ?_⟩` and prove the remaining obligations. Establish `h3e : @_root_.ReciprocityTheory.ChartRestriction.G.FD.CoefficientConvolution E _ _ _` using `_root_.ReciprocityTheory.ChartRestriction.G.FD.coefficientConvolution_holds`. Establish `hm3d : @_root_.ReciprocityTheory.ChartRestriction.G.FD.ModerateCoefficientPositivity E _ _ _` using `_root_.ReciprocityTheory.ChartRestriction.G.FD.moderateCoefficientPositivity_holds`. Unfold `_root_.ReciprocityTheory.ChartRestriction.G.FD.CoefficientConvolution at h3e`.
+
+Establish `hsum` using `h3e r X la la' P Q hP.1 hQ.1 (_root_.ReciprocityTheory.ChartRestriction.G.FD.BoundedSectionAlgebra.mod_of_bdd X hP) (_root_.ReciprocityTheory.ChartRestriction.G.FD.BoundedSectionAlgebra.mod_of_bdd X hQ) ξ hξ x hx 0`. Establish `hzero : ∀ ν' ≠ (0 : ↥X.Ψ → ℝ), X.fj la ξ ν' P x * X.fj la' ξ (0 - ν') Q x = 0`. Introduce `ν' hν'`. Assume the negation of the conclusion as `hne`. Apply `hν'` to reduce the goal to its premises.
+
+Establish `h1` using `_root_.ReciprocityTheory.ChartRestriction.G.FD.BoundedSectionAlgebra.sign_of_bdd X hm3d hP hξ ν' hx (left_ne_zero_of_mul hne)`. Establish `h2` using `_root_.ReciprocityTheory.ChartRestriction.G.FD.BoundedSectionAlgebra.sign_of_bdd X hm3d hQ hξ (0 - ν') hx (right_ne_zero_of_mul hne)`. Use function extensionality and compare the values at `τ`. Establish `a` using `h1 τ`. Establish `b` using `h2 τ`.
+
+Simplify using `only [zero_sub, Pi.neg_apply] at b`. Simplify using `only [Pi.zero_apply]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hs` using `hasSum_single (f := fun ν' => X.fj la ξ ν' P x * X.fj la' ξ (0 - ν') Q x) 0 hzero`. Simplify using `using hsum.unique hs`.
+-/
 theorem _root_.GlobalTheory.bddSec_mul_and_constTerm_mul :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : _root_.ReciprocityTheory.ChartRestriction.G.FD.Data E r),
       ∀ (la la' : _root_.ReciprocityTheory.ChartRestriction.G.FD.Wt X.Ψ r) (P Q : _root_.ReciprocityTheory.ChartRestriction.G.FD.Frame X.Ψ r → ℂ), X.IsBddSec la P → X.IsBddSec la' Q →

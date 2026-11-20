@@ -12,6 +12,11 @@ namespace GlobalTheory.LatTransfer
 
 open GlobalTheory.UnitLemma
 
+/- English proof (translation)
+Establish `hs : rStab u = ⊤`. Rewrite using `[Subgroup.eq_top_iff']`. Introduce `k x`. Rewrite using `[hu, hu]`. Establish `hi : (rStab u).index = 1` using `by rw [hs, Subgroup.index_top]`.
+
+Establish `hc : Nat.card (H ⧸ rStab u) = 1` using `hi`. Take `⟨x0, hx0⟩` from `Nat.card_eq_one_iff_exists.1 hc`. Unfold `avg`. Rewrite using `[hi, finsum_eq_single _ x0 (fun y hy => absurd (hx0 y) hy), hu]`. Simplify using the standard rewrite rules.
+-/
 theorem avg_of_const {H : Type} [Group H] (u : H → ℂ) (c : ℂ) (hu : ∀ h, u h = c) : avg u = c := by
   have hs : rStab u = ⊤ := by
     rw [Subgroup.eq_top_iff']
@@ -24,6 +29,13 @@ theorem avg_of_const {H : Type} [Group H] (u : H → ℂ) (c : ℂ) (hu : ∀ h,
   rw [hi, finsum_eq_single _ x0 (fun y hy => absurd (hx0 y) hy), hu]
   simp
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h show ∀ y, y ∈ L ↔ (u : A) * y ∈ L`. Introduce `y`. Use `Orbit.mem_mulLat u L ((u : A) * y)` as an intermediate fact. Rewrite `this` using `[h, Units.inv_mul_cancel_left]`.
+
+Conclude with `this.symm`. Introduce `hu`. Use extensionality with `y`. Rewrite using `[Orbit.mem_mulLat]`. Use `hu (((u⁻¹ : Aˣ) : A) * y)` as an intermediate fact.
+
+Rewrite `this` using `[Units.mul_inv_cancel_left]`. Conclude with `this`.
+-/
 theorem mulLat_eq_self_iff {O A : Type} [CommRing O] [CommRing A] [Algebra O A] (u : Aˣ)
     (L : Submodule O A) : mulLat O (u : A) L = L ↔ u ∈ stabLat O L := by
   constructor
@@ -40,11 +52,17 @@ theorem mulLat_eq_self_iff {O A : Type} [CommRing O] [CommRing A] [Algebra O A] 
     rw [Units.mul_inv_cancel_left] at this
     exact this
 
+/- English proof (translation)
+Use extensionality with `y`. Rewrite using `[Orbit.mem_mulLat, Orbit.mem_mulLat, Orbit.mem_mulLat, _root_.mul_inv_rev, Units.val_mul, mul_assoc]`.
+-/
 theorem mulLat_mul {O A : Type} [CommRing O] [CommRing A] [Algebra O A] (s t : Aˣ)
     (L : Submodule O A) : mulLat O ((s * t : Aˣ) : A) L = mulLat O (s : A) (mulLat O (t : A) L) := by
   ext y
   rw [Orbit.mem_mulLat, Orbit.mem_mulLat, Orbit.mem_mulLat, _root_.mul_inv_rev, Units.val_mul, mul_assoc]
 
+/- English proof (translation)
+Distinguish the cases in `h : (Function.support u).Finite`. Conclude with `map_finsum (Rat.castHom ℂ) h`. Establish `e : Function.support (fun a => ((u a : ℚ) : ℂ)) = Function.support u` using `Function.support_comp_eq (fun r : ℚ => (r : ℂ)) (fun {x} => Rat.cast_eq_zero) u`. Establish `h' : ¬ (Function.support fun a => ((u a : ℚ) : ℂ)).Finite` using `by rw [e]; exact h`. Rewrite using `[finsum_of_infinite_support h, finsum_of_infinite_support h', Rat.cast_zero]`.
+-/
 theorem cast_finsum {α : Type*} (u : α → ℚ) : ((∑ᶠ a, u a : ℚ) : ℂ) = ∑ᶠ a, ((u a : ℚ) : ℂ) := by
   by_cases h : (Function.support u).Finite
   · exact map_finsum (Rat.castHom ℂ) h
@@ -53,6 +71,11 @@ theorem cast_finsum {α : Type*} (u : α → ℚ) : ((∑ᶠ a, u a : ℚ) : ℂ
     have h' : ¬ (Function.support fun a => ((u a : ℚ) : ℂ)).Finite := by rw [e]; exact h
     rw [finsum_of_infinite_support h, finsum_of_infinite_support h', Rat.cast_zero]
 
+/- English proof (translation)
+Establish `h : t * δ = δ * θ t` using `ht`. Establish `h2 : t⁻¹ * δ * θ t = δ` using `by rw [mul_assoc, ← h]; group`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [map_mul]`. Use `group`.
+
+Use `_ = _ := by rw [h2]`.
+-/
 theorem twCent_left {G : Type} [Group G] (θ : G →* G) (δ : G) {t : G} (ht : t ∈ twCent θ δ) (k y : G) :
     (t * y * k)⁻¹ * δ * θ (t * y * k) = k⁻¹ * (y⁻¹ * δ * θ y) * θ k := by
   have h : t * δ = δ * θ t := ht
@@ -61,6 +84,47 @@ theorem twCent_left {G : Type} [Group G] (θ : G →* G) (δ : G) {t : G} (ht : 
         simp only [map_mul]; group
     _ = _ := by rw [h2]
 
+/- English proof (translation)
+Introduce `K B x G _ _ θ Kg δ f φ Λ hf h01 hcpt hΛK hΛT hΛX hsurj`. Establish `havg : ∀ q : G, avg (fun k : Kg => f ((q * k)⁻¹ * δ * θ (q * k))) = f (q⁻¹ * δ * θ q)`. Introduce `q`. Use `avg_of_const _ _ fun k => ?_` and prove the remaining obligations. Rewrite using `[← hf k k.2 (q⁻¹ * δ * θ q)]`.
+
+Use `congr 1`. Simplify using `only [map_mul]`. Use `group`. Set `ψ : twCent θ δ →* B.Aˣ` to `B.T.subtype.comp φ.toMonoidHom`. Establish `hψ : ∀ t, ψ t = ((φ t : B.T) : B.Aˣ)` using `fun t => rfl`.
+
+Establish `hle : cptPart (twCent θ δ) ≤ twCent θ δ`. Unfold `cptPart`. Rewrite using `[Subgroup.closure_le]`. Conclude with `fun t ht => ht.1`. Establish `hidx : ∀ q : G, (twCent θ δ ⊓ Kg.map (MulAut.conj q).toMonoidHom).relIndex (cptPart (twCent θ δ)) = (stabLat K.O (Λ q) ⊓ B.T).relIndex (intUnits K.O B.A ⊓ B.T)`.
+
+Introduce `q`. Rewrite using `[← Subgroup.relIndex_subgroupOf hle]`. Establish `e1 : (twCent θ δ ⊓ Kg.map (MulAut.conj q).toMonoidHom).subgroupOf (twCent θ δ) = (stabLat K.O (Λ q) ⊓ B.T).comap ψ`. Use extensionality with `t`. Rewrite using `[Subgroup.mem_subgroupOf, Subgroup.mem_comap, Subgroup.mem_inf, Subgroup.mem_inf, hψ]`.
+
+Simplify using `only [t.2, (φ t).2, true_and, and_true]`. Rewrite using `[← mulLat_eq_self_iff, ← hΛT, eq_comm, hΛK, Subgroup.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨k, hk, hkt⟩`. Establish `: (t : G) = q * k * q⁻¹` using `by rw [← hkt]; rfl`.
+
+Rewrite using `[this]`. Simplify `hk` using `[mul_assoc]`. Introduce `h`. Use `⟨q⁻¹ * (t * q), h, ?_⟩` and prove the remaining obligations. Use `show q * (q⁻¹ * (t * q)) * q⁻¹ = t`.
+
+Use `group`. Establish `e2 : (cptPart (twCent θ δ)).subgroupOf (twCent θ δ) = (intUnits K.O B.A ⊓ B.T).comap ψ`. Use extensionality with `t`. Rewrite using `[Subgroup.mem_subgroupOf, Subgroup.mem_comap, Subgroup.mem_inf, hψ, hcpt t]`. Simplify using `only [(φ t).2, and_true]`.
+
+Rewrite using `[e1, e2, Subgroup.relIndex_comap, Subgroup.map_comap_eq_self]`. Introduce `y hy`. Conclude with `⟨φ.symm ⟨y, hy.2⟩, by rw [hψ]; simp⟩`. Establish `hdc : ∀ t ∈ twCent θ δ, ∀ k ∈ Kg, ∀ q : G, f ((t * q * k)⁻¹ * δ * θ (t * q * k)) = f (q⁻¹ * δ * θ q)`. Introduce `t ht k hk q`.
+
+Rewrite using `[twCent_left θ δ ht k q, hf k hk]`. Set `r : B.X x → B.X x → Prop` to `fun L M => ∃ t ∈ B.T, (M : Submodule K.O B.A) = mulLat K.O (t : B.A) L`. Establish `hr : Equivalence r`. Use `⟨fun L => ⟨1, B.T.one_mem, ((mulLat_eq_self_iff 1 L.1).2 (stabLat K.O L.1).one_mem).symm⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `L M ⟨t, ht, h⟩`.
+
+Use `⟨t⁻¹, B.T.inv_mem ht, ?_⟩` and prove the remaining obligations. Rewrite using `[h, ← mulLat_mul, inv_mul_cancel]`. Conclude with `((mulLat_eq_self_iff 1 L.1).2 (stabLat K.O L.1).one_mem).symm`. Introduce and unpack `L M N ⟨t, ht, h⟩ ⟨s, hs, h'⟩`. Conclude with `⟨s * t, B.T.mul_mem hs ht, by rw [h', h, mulLat_mul]⟩`.
+
+Set `S` to `{d : DoubleCoset.Quotient (twCent θ δ : Set G) (Kg : Set G) // f ((Quotient.out d)⁻¹ * δ * θ (Quotient.out d)) = 1}`. Set `g : S → Orb K.O B.T (B.X x)` to `fun d => Quot.mk r ⟨Λ (Quotient.out d.1), (hΛX _).2 d.2⟩`. Establish `hg_surj : Function.Surjective g`. Introduce `o`. Proceed by induction on `o using Quot.ind with`.
+
+Consider the case `mk L`. Take `⟨q, hq⟩` from `hsurj L.1 L.2`. Take `⟨t, k, ht, hk, hout⟩` from `DoubleCoset.mk_out_eq_mul (twCent θ δ) Kg q`. Establish `hf1 : f ((Quotient.out (DoubleCoset.mk (twCent θ δ) Kg q))⁻¹ * δ * θ (Quotient.out (DoubleCoset.mk (twCent θ δ) Kg q))) = 1`. Rewrite using `[hout, hdc t ht k hk q]`.
+
+Conclude with `(hΛX q).1 (hq ▸ L.2)`. Use `⟨⟨DoubleCoset.mk (twCent θ δ) Kg q, hf1⟩, ?_⟩` and prove the remaining obligations. Use `(Quot.sound ?_).symm` and prove the remaining obligations. Use `⟨((φ ⟨t, ht⟩ : B.T) : B.Aˣ), (φ ⟨t, ht⟩).2, ?_⟩` and prove the remaining obligations. Use `show Λ (Quotient.out (DoubleCoset.mk (twCent θ δ) Kg q)) = _`.
+
+Rewrite using `[hout, ← hq, ← hΛT ⟨t, ht⟩ q]`. Use `((hΛK _ _).2 ?_).symm` and prove the remaining obligations. Simplify `hk` using `[mul_assoc]`. Establish `hg_inj : Function.Injective g`. Introduce and unpack `⟨d1, h1⟩ ⟨d2, h2⟩ h`.
+
+Take `⟨s, hs, hs'⟩` from `hr.eqvGen_iff.1 (Quot.eqvGen_exact h)`. Apply `Subtype.ext` to reduce the goal to its premises. Set `t : twCent θ δ` to `φ.symm ⟨s, hs⟩`. Establish `hts : ((φ t : B.T) : B.Aˣ) = s` using `by simp [t]`. Establish `h3 : Λ ((t : G) * Quotient.out d1) = Λ (Quotient.out d2)`.
+
+Rewrite using `[hΛT, hts]`. Conclude with `hs'.symm`. Use `(DoubleCoset.eq (twCent θ δ) Kg (Quotient.out d1) (Quotient.out d2)).2 ⟨t, t.2, (t * Quotient.out d1)⁻¹ * Quotient.out d2, (hΛK _ _).1 h3, by group⟩` as an intermediate fact. Rewrite `this` using `[DoubleCoset.out_eq', DoubleCoset.out_eq']`. Then use the resulting hypothesis. Set `e` to `Equiv.ofBijective g ⟨hg_inj, hg_surj⟩`.
+
+Establish `hN : ((B.N x : ℚ) : ℂ) = ∑ᶠ o : Orb K.O B.T (B.X x), ((Orbit.orbWt B.T (B.X x) o : ℚ) : ℂ)`. Unfold `InvAlg.N`. Rewrite using `[Orbit.orbSum_eq, cast_finsum]`. Rewrite using `[hN, ← finsum_comp_equiv e]`. Establish `hw : ∀ s : S, ((Orbit.orbWt B.T (B.X x) (e s) : ℚ) : ℂ) = (((stabLat K.O (Λ (Quotient.out s.1)) ⊓ B.T).relIndex (intUnits K.O B.A ⊓ B.T) : ℕ) : ℂ)`.
+
+Introduce `s`. Conclude with `Rat.cast_natCast _`. Rewrite using `[finsum_congr hw]`. Unfold `twOrb`. Establish `hsub : (∑ᶠ s : S, (((stabLat K.O (Λ (Quotient.out s.1)) ⊓ B.T).relIndex (intUnits K.O B.A ⊓ B.T) : ℕ) : ℂ)) = ∑ᶠ (d : DoubleCoset.Quotient (twCent θ δ : Set G) (Kg : Set G)) (_ : f ((Quotient.out d)⁻¹ * δ * θ (Quotient.out d)) = 1), (((stabLat K.O (Λ (Quotient.out d)) ⊓ B.T).relI …` using `finsum_subtype_eq_finsum_cond (f := fun d : DoubleCoset.Quotient (twCent θ δ : Set G) (Kg : Set G) => (((stabLat K.O (Λ (Quotient.out d)) ⊓ B.T).relIndex (intUnits K.O B.A ⊓ B.T) : ℕ) : ℂ)) _`.
+
+Rewrite using `[hsub]`. Use `finsum_congr fun d => ?_` and prove the remaining obligations. Rewrite using `[havg, hidx, finsum_eq_if]`. Break down `h01 ((Quotient.out d)⁻¹ * δ * θ (Quotient.out d)) with h | h` into its components or cases. Rewrite using `[h, mul_zero, if_neg (by norm_num)]`.
+
+Rewrite using `[h, mul_one, if_pos rfl]`.
+-/
 theorem twOrb_eq_N : ∀ (K : GlobalTheory.UnitLemma.UQ) (B : GlobalTheory.UnitLemma.InvAlg K) (x : B.A) (G : Type) [Group G] [TopologicalSpace G] (θ : G →* G) (Kg : Subgroup G) (δ : G) (f : G → ℂ) (φ : twCent θ δ ≃* B.T) (Λ : G → Submodule K.O B.A), (∀ k ∈ Kg, ∀ y, f (k⁻¹ * y * θ k) = f y) → (∀ y, f y = 0 ∨ f y = 1) → (∀ t : twCent θ δ, ((t : G) ∈ cptPart (twCent θ δ) ↔ (((φ t : B.T) : B.Aˣ)) ∈ GlobalTheory.UnitLemma.intUnits K.O B.A)) → (∀ q q' : G, Λ q = Λ q' ↔ q⁻¹ * q' ∈ Kg) → (∀ (t : twCent θ δ) (q : G), Λ ((t : G) * q) = GlobalTheory.UnitLemma.mulLat K.O ((((φ t : B.T) : B.Aˣ)) : B.A) (Λ q)) → (∀ q, Λ q ∈ B.X x ↔ f (q⁻¹ * δ * θ q) = 1) → (∀ L ∈ B.X x, ∃ q, Λ q = L) → twOrb θ Kg δ f = ((B.N x : ℚ) : ℂ) := by
   intro K B x G _ _ θ Kg δ f φ Λ hf h01 hcpt hΛK hΛT hΛX hsurj
 

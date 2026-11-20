@@ -9,6 +9,9 @@ import Formalism.GL3MeanSquares.HookFormulaTorsion.SquareMomentArithmeticBound
 
 namespace Formalism.HermitianLattices.Final
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Formalism.HermitianLattices.TraceIntegrality.moduli_arithmetic_bound, Formalism.HermitianLattices.TraceIntegrality.moduli_index_formula, Formalism.HermitianLattices.TraceIntegrality.minkowski_divisor_bound, Formalism.HermitianLattices.TraceIntegrality.minkowski_log_bound, Formal …`.
+-/
 theorem trace_integrality_results :
     Formalism.HermitianLattices.TraceIntegrality.Ms_arith ∧
     Formalism.HermitianLattices.TraceIntegrality.Ms_index ∧

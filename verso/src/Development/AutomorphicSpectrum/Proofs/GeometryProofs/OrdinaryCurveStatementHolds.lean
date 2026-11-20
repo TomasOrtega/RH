@@ -18,6 +18,9 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 
 namespace GlobalTheory.CompanionTheory.Ar.Link
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.CompanionTheory.Ar.GR.ordinaryCurve_of_hodgeTate GlobalTheory.CompanionTheory.Ar.GR.Top.main`.
+-/
 theorem ordinaryCurveStatement : GlobalTheory.CompanionTheory.Ar.GR.OrdinaryCurveStatement :=
   GlobalTheory.CompanionTheory.Ar.GR.ordinaryCurve_of_hodgeTate GlobalTheory.CompanionTheory.Ar.GR.Top.main
 

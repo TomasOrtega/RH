@@ -13,6 +13,13 @@ variable {n : ℕ}
 
 set_option backward.isDefEq.respectTransparency false in
 
+/- English proof (translation)
+Establish `hp : ∀ m : ℕ, Y ^ m * H = H * Z ^ m`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ m ih => rw [pow_succ, Matrix.mul_assoc, h, ← Matrix.mul_assoc, ih, Matrix.mul_assoc, ← pow_succ]`.
+
+Establish `h1 : HasSum (fun m : ℕ => ((m ! : ℂ)⁻¹ • Y ^ m) * H) (NormedSpace.exp Y * H)` using `by open scoped Matrix.Norms.Operator in`. Conclude with `(NormedSpace.exp_series_hasSum_exp' (𝕂 := ℂ) Y).mul_right H`. Establish `h2 : HasSum (fun m : ℕ => H * ((m ! : ℂ)⁻¹ • Z ^ m)) (H * NormedSpace.exp Z)` using `by open scoped Matrix.Norms.Operator in`. Conclude with `(NormedSpace.exp_series_hasSum_exp' (𝕂 := ℂ) Z).mul_left H`. Establish `e : (fun m : ℕ => ((m ! : ℂ)⁻¹ • Y ^ m) * H) = fun m : ℕ => H * ((m ! : ℂ)⁻¹ • Z ^ m)`.
+
+Use function extensionality and compare the values at `m`. Rewrite using `[Matrix.smul_mul, hp, Matrix.mul_smul]`. Rewrite `h1` using `[e]`. Conclude with `h1.unique h2`.
+-/
 theorem exp_intertwine (Y Z H : Matrix (Fin n) (Fin n) ℂ) (h : Y * H = H * Z) :
     NormedSpace.exp Y * H = H * NormedSpace.exp Z := by
   have hp : ∀ m : ℕ, Y ^ m * H = H * Z ^ m := by
@@ -34,6 +41,11 @@ theorem exp_intertwine (Y Z H : Matrix (Fin n) (Fin n) ℂ) (h : Y * H = H * Z) 
 
 set_option backward.isDefEq.respectTransparency false in
 
+/- English proof (translation)
+Establish `hY : ((t : ℂ) • X)ᴴ * H + H * ((t : ℂ) • X) = 0`. Rewrite using `[Matrix.conjTranspose_smul, Complex.star_def, Complex.conj_ofReal, Matrix.smul_mul, Matrix.mul_smul, ← smul_add, hX, smul_zero]`. Generalize the expression as in `(t : ℂ) • X = Y at hY`. Use `show (NormedSpace.exp Y)ᴴ * H * NormedSpace.exp Y = H`. Establish `h1 : Yᴴ * H = H * (-Y)`.
+
+Rewrite using `[Matrix.mul_neg]`. Conclude with `eq_neg_of_add_eq_zero_left hY`. Rewrite using `[← Matrix.exp_conjTranspose, exp_intertwine _ _ _ h1, Matrix.mul_assoc, ← Matrix.exp_add_of_commute _ _ (Commute.neg_left (Commute.refl Y)), neg_add_cancel, NormedSpace.exp_zero, Matrix.mul_one]`.
+-/
 theorem inUH_exp {H X : Matrix (Fin n) (Fin n) ℂ} (hX : Xᴴ * H + H * X = 0) (t : ℝ) :
     inUH H (NormedSpace.exp ((t : ℂ) • X)) := by
   have hY : ((t : ℂ) • X)ᴴ * H + H * ((t : ℂ) • X) = 0 := by
@@ -47,6 +59,11 @@ theorem inUH_exp {H X : Matrix (Fin n) (Fin n) ℂ} (hX : Xᴴ * H + H * X = 0) 
     ← Matrix.exp_add_of_commute _ _ (Commute.neg_left (Commute.refl Y)), neg_add_cancel,
     NormedSpace.exp_zero, Matrix.mul_one]
 
+/- English proof (translation)
+Establish `ha' : aᴴ * H * a = H` using `ha`. Establish `hb' : bᴴ * H * b = H` using `hb`. Use `show (a * b)ᴴ * H * (a * b) = H`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`.
+
+Use `_ = H := by rw [ha', hb']`.
+-/
 theorem inUH_mul {H a b : Matrix (Fin n) (Fin n) ℂ} (ha : inUH H a) (hb : inUH H b) : inUH H (a * b) := by
   have ha' : aᴴ * H * a = H := ha
   have hb' : bᴴ * H * b = H := hb
@@ -57,6 +74,11 @@ theorem inUH_mul {H a b : Matrix (Fin n) (Fin n) ℂ} (ha : inUH H a) (hb : inUH
 
 set_option backward.isDefEq.respectTransparency false in
 
+/- English proof (translation)
+Use `open scoped Matrix.Norms.Operator in`. Establish `h : HasDerivAt (fun t : ℝ => NormedSpace.exp (t • X)) (NormedSpace.exp ((0 : ℝ) • X) * X) 0` using `hasDerivAt_exp_smul_const (𝕂 := ℝ) X 0`. Use `open scoped Matrix.Norms.Operator in`. Set `L : Matrix (Fin n) (Fin n) ℂ →L[ℝ] ℂ` to `LinearMap.toContinuousLinearMap (Matrix.entryLinearMap ℝ ℂ i j)`. Use `open scoped Matrix.Norms.Operator in`.
+
+Establish `h2` using `L.hasFDerivAt.comp_hasDerivAt (0 : ℝ) h`. Simplify using `only [zero_smul, NormedSpace.exp_zero, one_mul] at h2`. Conclude with `h2`.
+-/
 theorem hasDerivAt_exp_entry (X : Matrix (Fin n) (Fin n) ℂ) (i j : Fin n) :
     HasDerivAt (fun t : ℝ => NormedSpace.exp ((t : ℂ) • X) i j) (X i j) 0 := by
   open scoped Matrix.Norms.Operator in
@@ -71,6 +93,9 @@ theorem hasDerivAt_exp_entry (X : Matrix (Fin n) (Fin n) ℂ) (i j : Fin n) :
 
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
+/- English proof (translation)
+Use `hasDerivAt_pi.2 fun i => hasDerivAt_pi.2 fun j => ?_` and prove the remaining obligations. Simplify using `only [Matrix.mul_apply]`. Apply the tactic sequence `exact HasDerivAt.fun_sum fun k _ => (hasDerivAt_exp_entry X k j).const_mul _`.
+-/
 theorem hasDerivAt_mul_exp (g X : Matrix (Fin n) (Fin n) ℂ) :
     HasDerivAt (fun t : ℝ => g * NormedSpace.exp ((t : ℂ) • X)) (g * X) 0 := by
   refine hasDerivAt_pi.2 fun i => hasDerivAt_pi.2 fun j => ?_
@@ -79,6 +104,11 @@ theorem hasDerivAt_mul_exp (g X : Matrix (Fin n) (Fin n) ℂ) :
 
 variable {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E]
 
+/- English proof (translation)
+Establish `hc` using `hasDerivAt_mul_exp g X`. Establish `h0 : g * NormedSpace.exp (((0 : ℝ) : ℂ) • X) = g` using `by simp`. Establish `hd : HasFDerivAt F (fderiv ℝ F g) (g * NormedSpace.exp (((0 : ℝ) : ℂ) • X))`. Rewrite using `[h0]`. Conclude with `((hF.contDiffAt (hU.mem_nhds hgU)).differentiableAt (by simp)).hasFDerivAt`.
+
+Establish `h1` using `hd.comp_hasDerivAt (0 : ℝ) hc`. Use `h1.congr_of_eventuallyEq ?_` and prove the remaining obligations. Establish `h2 : ∀ᶠ t : ℝ in 𝓝 0, g * NormedSpace.exp ((t : ℂ) • X) ∈ U` using `hc.continuousAt.eventually (hU.mem_nhds (by simpa only [h0] using hgU))`. Use `filter_upwards [h2] with t ht`. Conclude with `e _ ht (inUH_mul hg (inUH_exp hX t))`.
+-/
 theorem hasDerivAt_local {H X g : Matrix (Fin n) (Fin n) ℂ} (hX : Xᴴ * H + H * X = 0) (hg : inUH H g)
     {f F : Matrix (Fin n) (Fin n) ℂ → E} {U : Set (Matrix (Fin n) (Fin n) ℂ)}
     (hU : IsOpen U) (hgU : g ∈ U) (hF : ContDiffOn ℝ ∞ F U) (e : ∀ h ∈ U, inUH H h → f h = F h) :
@@ -103,6 +133,17 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 set_option backward.isDefEq.respectTransparency false in
 
+/- English proof (translation)
+Introduce `n H X E _ _ f hX hf`. Establish `hder : ∀ g, inUH H g → ∃ U : Set (Matrix (Fin n) (Fin n) ℂ), ∃ F : Matrix (Fin n) (Fin n) ℂ → E, IsOpen U ∧ g ∈ U ∧ ContDiffOn ℝ ∞ F U ∧ (∀ h ∈ U, inUH H h → f h = F h) ∧ ∀ h ∈ U, inUH H h → rdM X f h = fderiv ℝ F h (h * X) ∧ HasDerivAt (fun t : ℝ => f (h * NormedSpace.exp ((t : …`. Introduce `g hg`. Take `⟨U, F, hU, hgU, hF, e⟩` from `hf g hg`. Use `⟨U, F, hU, hgU, hF, e, fun h hhU hh => ?_⟩` and prove the remaining obligations.
+
+Establish `hd` using `hasDerivAt_local hX hh hU hhU hF e`. Establish `hr : rdM X f h = fderiv ℝ F h (h * X)` using `hd.deriv`. Conclude with `⟨hr, hr ▸ hd⟩`. Use `⟨?_, ?_, fun g hg => ?_⟩` and prove the remaining obligations. Introduce `g hg`.
+
+Take `⟨U, F, hU, hgU, hF, e, -⟩` from `hder g hg`. Establish `hFc : ContinuousWithinAt F {g | inUH H g} g` using `((hF.continuousOn).continuousAt (hU.mem_nhds hgU)).continuousWithinAt`. Use `hFc.congr_of_eventuallyEq ?_ (e g hgU hg)` and prove the remaining obligations. Use `filter_upwards [inter_mem_nhdsWithin {g | inUH H g} (hU.mem_nhds hgU)] with h hh`. Conclude with `e h hh.2 hh.1`.
+
+Introduce `g hg`. Take `⟨U, F, hU, hgU, hF, -, hr⟩` from `hder g hg`. Use `⟨U, fun h => fderiv ℝ F h (h * X), hU, hgU, ?_, fun h hhU hh => (hr h hhU hh).1⟩` and prove the remaining obligations. Establish `h1 : ContDiffOn ℝ ∞ (fun h => fderiv ℝ F h) U` using `hF.fderiv_of_isOpen hU (le_of_eq rfl)`. Establish `h2 : ContDiff ℝ ∞ (fun h : Matrix (Fin n) (Fin n) ℂ => h * X)` using `(LinearMap.toContinuousLinearMap (LinearMap.mulRight ℝ X)).contDiff`.
+
+Conclude with `h1.clm_apply h2.contDiffOn`. Take `⟨U, F, hU, hgU, hF, -, hr⟩` from `hder g hg`. Conclude with `(hr g hgU hg).2`.
+-/
 theorem GlobalTheory.RightDerivSmooth.right_derivative_smooth_on_unitary_group : ∀ (n : ℕ) (H X : Matrix (Fin n) (Fin n) ℂ) (E : Type) [NormedAddCommGroup E] [NormedSpace ℂ E]
     (f : Matrix (Fin n) (Fin n) ℂ → E), Xᴴ * H + H * X = 0 → SmoothOnH H f →
     ContinuousOn f {g | inUH H g} ∧ SmoothOnH H (rdM X f) ∧
@@ -138,8 +179,14 @@ theorem GlobalTheory.RightDerivSmooth.right_derivative_smooth_on_unitary_group :
 
 end
 
+/- English proof (translation)
+The claim follows from `le_of_eq rfl`.
+-/
 example : ((⊤ : ℕ∞) : WithTop ℕ∞) + 1 ≤ ((⊤ : ℕ∞) : WithTop ℕ∞) := le_of_eq rfl
 
+/- English proof (translation)
+Introduce `n H X E _ _ f hX hf` and use `GlobalTheory.RightDerivSmooth.right_derivative_smooth_on_unitary_group n H X E f hX hf`.
+-/
 theorem GlobalTheory.rdM_smoothOnH : ∀ (n : ℕ) (H X : Matrix (Fin n) (Fin n) ℂ) (E : Type) [NormedAddCommGroup E] [NormedSpace ℂ E]
     (f : Matrix (Fin n) (Fin n) ℂ → E), Xᴴ * H + H * X = 0 → SmoothOnH H f →
     ContinuousOn f {g | inUH H g} ∧ SmoothOnH H (rdM X f) ∧

@@ -14,6 +14,9 @@ variable {D : D7}
 
 def OrZero {X : Type} [Zero X] (p : X → Prop) (x : X) : Prop := ((∃ y, p y) → p x) ∧ ((¬ ∃ y, p y) → x = 0)
 
+/- English proof (translation)
+Distinguish the cases in `h : ∃ y, p y`. Take `⟨y, hy⟩` from `h`. Conclude with `⟨y, fun _ => hy, fun hn => absurd ⟨y, hy⟩ hn⟩`. Conclude with `⟨0, fun h' => absurd h' h, fun _ => rfl⟩`.
+-/
 theorem orZero_exists {X : Type} [Zero X] (p : X → Prop) : ∃ x, OrZero p x := by
   by_cases h : ∃ y, p y
   · obtain ⟨y, hy⟩ := h
@@ -151,6 +154,9 @@ structure CharW (F : Face D A) : Prop extends R.BaseW F where
 
 variable {R}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.ωY, h.ωX, h.vY, h.vX, h.ptY, h.ptX, fun t k hk => (h.ItY k hk).1 (e.ItY k hk) t, fun t => h.ItX.1 e.ItX t, fun t k hk => (h.ioY t k (by omega)).1 (e.ioY t k (by omega)), fun t => (h.ioX t).1 (e.ioX t), fun t => (h.Th t).1 (e.Th t)⟩`.
+-/
 theorem chain_of_weak (h : R.IsChainW) (e : R.ExAt) : R.IsChain := ⟨h.ωY, h.ωX, h.vY, h.vX, h.ptY, h.ptX,
   fun t k hk => (h.ItY k hk).1 (e.ItY k hk) t,
   fun t => h.ItX.1 e.ItX t,
@@ -158,6 +164,9 @@ theorem chain_of_weak (h : R.IsChainW) (e : R.ExAt) : R.IsChain := ⟨h.ωY, h.�
   fun t => (h.ioX t).1 (e.ioX t),
   fun t => (h.Th t).1 (e.Th t)⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.ωP, h.vP, h.pt_theta, fun i t => (h.ioP i).1 (e.ioP i) t, fun i t x => ((h.thF i t).1 (e.thF i t)).1 x, fun i t => ((h.thF i t).1 (e.thF i t)).2, fun i t => (h.thG i t).1 (e.thG i t)⟩`.
+-/
 theorem thP_of_weak (h : R.IsThPW) (e : R.ExAt) : R.IsThP := ⟨h.ωP, h.vP, h.pt_theta,
   fun i t => (h.ioP i).1 (e.ioP i) t,
   fun i t x => ((h.thF i t).1 (e.thF i t)).1 x,

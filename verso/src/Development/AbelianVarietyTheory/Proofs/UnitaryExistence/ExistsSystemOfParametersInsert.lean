@@ -3,6 +3,25 @@ open IsLocalRing
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `hIle : Ideal.span {a} ≤ maximalIdeal S` using `(Ideal.span_singleton_le_iff_mem _).mpr ha`. Establish `hIne : Ideal.span {a} ≠ ⊤` using `fun h => (maximalIdeal.isMaximal S).ne_top (top_le_iff.mp (h ▸ hIle))`. Establish `: Nontrivial (S ⧸ Ideal.span {a})` using `Ideal.Quotient.nontrivial_iff.mpr hIne`. Establish `: IsLocalRing (S ⧸ Ideal.span {a})` using `IsLocalRing.of_surjective' (Ideal.Quotient.mk _) Ideal.Quotient.mk_surjective`. Establish `hdim : ringKrullDim (S ⧸ Ideal.span {a}) + 1 = ringKrullDim S` using `ringKrullDim_quotient_span_singleton_succ_eq_ringKrullDim_of_mem_nonZeroDivisors (mem_nonZeroDivisors_of_ne_zero ha0) ha`.
+
+Take `⟨s, hsmin, hcard⟩` from `Ideal.exists_finset_card_eq_height_of_isNoetherianRing (maximalIdeal (S ⧸ Ideal.span {a}))`. Establish `hht` using `IsLocalRing.maximalIdeal_height_eq_ringKrullDim (R := S ⧸ Ideal.span {a})`. Establish `hsle : Ideal.span (s : Set (S ⧸ Ideal.span {a})) ≤ maximalIdeal (S ⧸ Ideal.span {a})` using `hsmin.1.2`. Establish `hcomap : (maximalIdeal (S ⧸ Ideal.span {a})).comap (Ideal.Quotient.mk (Ideal.span {a})) = maximalIdeal S` using `IsLocalRing.eq_maximalIdeal (Ideal.comap_isMaximal_of_surjective _ Ideal.Quotient.mk_surjective)`. Establish `hmapeq : Ideal.map (Ideal.Quotient.mk (Ideal.span {a})) (maximalIdeal S) = maximalIdeal (S ⧸ Ideal.span {a})`.
+
+Rewrite using `[← hcomap, Ideal.map_comap_of_surjective _ Ideal.Quotient.mk_surjective]`. Set `e` to `s.equivFin`. Set `x : Fin s.card → S` to `fun i => (Ideal.Quotient.mk_surjective ((e.symm i : S ⧸ Ideal.span {a}))).choose`. Establish `hx : ∀ i, Ideal.Quotient.mk (Ideal.span {a}) (x i) = e.symm i` using `fun i => (Ideal.Quotient.mk_surjective _).choose_spec`. Establish `hrange : Ideal.Quotient.mk (Ideal.span {a}) '' Set.range x = (s : Set (S ⧸ Ideal.span {a}))`.
+
+Rewrite using `[← Set.range_comp]`. Use extensionality with `q`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨i, rfl⟩`. Simplify using `only [Function.comp_apply, hx]`.
+
+Conclude with `(e.symm i).2`. Introduce `hq`. Conclude with `⟨e ⟨q, hq⟩, by simp [hx]⟩`. Use `⟨s.card, x, fun i => ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hcomap, Ideal.mem_comap, hx]`.
+
+Conclude with `hsle (Ideal.subset_span (e.symm i).2)`. Rewrite using `[← hdim, ← hht, ← hcard]`. Use `norm_cast`. Establish `hrad : maximalIdeal (S ⧸ Ideal.span {a}) ≤ (Ideal.span (s : Set (S ⧸ Ideal.span {a}))).radical`. Rewrite using `[Ideal.radical_eq_sInf]`.
+
+Use `le_sInf ?_` and prove the remaining obligations. Introduce and unpack `p ⟨hsp, hp⟩`. Conclude with `hsmin.2 ⟨hp, hsp⟩ (IsLocalRing.le_maximalIdeal hp.ne_top)`. Take `⟨N, hN⟩` from `Ideal.exists_pow_le_of_le_radical_of_fg hrad (IsNoetherian.noetherian _)`. Use `⟨N, fun y hy => ?_⟩` and prove the remaining obligations.
+
+Establish `h1` using `Ideal.mem_map_of_mem (Ideal.Quotient.mk (Ideal.span {a})) hy`. Rewrite `h1` using `[Ideal.map_pow, hmapeq]`. Establish `h2` using `hN h1`. Rewrite `h2` using `[← hrange, ← Ideal.map_span]`. Take `⟨z, hz, hzy⟩` from `(Ideal.mem_map_iff_of_surjective _ Ideal.Quotient.mk_surjective).mp h2`.
+
+Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.mp (Ideal.Quotient.eq.mp hzy)`. Conclude with `Ideal.mem_span_insert.mpr ⟨-c, z, hz, by linear_combination hc⟩`.
+-/
 theorem exists_systemOfParameters_insert (S : Type) [CommRing S] [IsDomain S] [IsLocalRing S]
     [IsNoetherianRing S] (a : S) (ha0 : a ≠ 0) (ha : a ∈ maximalIdeal S) :
     ∃ (n : ℕ) (x : Fin n → S), (∀ i, x i ∈ maximalIdeal S) ∧

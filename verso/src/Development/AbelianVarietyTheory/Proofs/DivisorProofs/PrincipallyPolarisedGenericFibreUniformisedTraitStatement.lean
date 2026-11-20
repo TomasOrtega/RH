@@ -9,5 +9,8 @@ open GlobalTheory GlobalTheory.ZM GlobalTheory.ZH GlobalTheory.UMin GlobalTheory
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.UMin.UnifPolFib.polFib_of_unif | exact GlobalTheory.UMin.UnifPolFib.polFib_of_unif | (intros; apply GlobalTheory.UMin.UnifPolFib.polFib_of_unif <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.principallyPolarised_genericFibre_uniformised_trait : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (S : Scheme.{0}) (t : SAB H S) (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V], GlobalTheory.LN.CDvr V → ∀ (χ : Sp V ⟶ S) (t' : SAB H (Sp V)), Nonempty (SABMap t' t χ) → Nonempty (PELUnif (IsLocalRing.maximalIdeal V) t') → ∃ g : ℕ, ∀ (R : Type) [CommRing R] (e : FractionRing V →+* R), PolFib t.G t.PP.L g (spMap e ≫ jK V ≫ χ) := by
   first | exact @GlobalTheory.UMin.UnifPolFib.polFib_of_unif | exact GlobalTheory.UMin.UnifPolFib.polFib_of_unif | (intros; apply GlobalTheory.UMin.UnifPolFib.polFib_of_unif <;> assumption)

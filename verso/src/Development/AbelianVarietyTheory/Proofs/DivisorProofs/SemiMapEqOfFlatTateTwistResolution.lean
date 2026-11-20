@@ -15,15 +15,26 @@ noncomputable section
 
 namespace GlobalTheory.EtC.ScalarExt
 
+/- English proof (translation)
+The claim follows from `(congrArg (fun f => ModuleCat.Hom.hom f x) (φ.hom.naturality g.op)).symm`.
+-/
 theorem sec_map_res {R : Type} [CommRing R] {F G : Shv R} (φ : F ⟶ G) {V U : Scheme.{0}} (g : V ⟶ U) (x : Sec F U) :
     Sec.res g (Sec.map φ x) = Sec.map φ (Sec.res g x) :=
   (congrArg (fun f => ModuleCat.Hom.hom f x) (φ.hom.naturality g.op)).symm
 
+/- English proof (translation)
+Take `⟨S, hS, hP0⟩` from `h`. Conclude with `⟨S, hS, fun V g hg => hP V g (hP0 V g hg)⟩`.
+-/
 theorem loc_mono {U : Scheme.{0}} {P P' : ∀ V : Scheme.{0}, (V ⟶ U) → Prop} (h : Loc U P)
     (hP : ∀ V g, P V g → P' V g) : Loc U P' := by
   obtain ⟨S, hS, hP0⟩ := h
   exact ⟨S, hS, fun V g hg => hP V g (hP0 V g hg)⟩
 
+/- English proof (translation)
+Use `((GlobalTheory.T.etaleSheafSections_ext_and_glue (ZMod q) (J.X 0) U).1 _ _ (loc_mono ((GlobalTheory.T.tateTwist_sections_locally_generated Q k).1 U y) fun V g hg => ?_))` and prove the remaining obligations. Rewrite using `[σ.nat, σ'.nat, sec_map_res, sec_map_res]`. Break down `hg with h0 | ⟨ζ, c, hc⟩` into its components or cases. Rewrite using `[h0]`. Simplify using the standard rewrite rules.
+
+Establish `hm : ∀ {A B : Shv (ZMod Q)} (φ : A ⟶ B) (x : Sec A V), Sec.map φ (c • x) = c • Sec.map φ x` using `fun φ x => map_nsmul (φ.hom.app (op V)).hom c x`. Rewrite using `[hc, hm, hm, map_nsmul, map_nsmul, he]`.
+-/
 theorem agree_on_twist {Q q : ℕ} [NeZero Q] (k : ℤ) {T : Cx (ZMod Q)} {J : Cx (ZMod q)} (ε : sgl (tw Q k) ⟶ T)
     (σ σ' : SemiMap T J)
     (he : ∀ (U : Scheme.{0}) (ζ : Prim Q Γ(U, ⊤)), σ.app U 0 (Sec.map (ε.f 0) (Sec.map (sglι (tw Q k)) (twGen k ζ))) =
@@ -42,6 +53,23 @@ end GlobalTheory.EtC.ScalarExt
 
 namespace GlobalTheory.EtC.ScalarExt
 
+/- English proof (translation)
+Introduce `Q q _ h k T e hT hflat σ σ' hσ E n x`. Take `⟨hge, ε, hqi, hεe⟩` from `hT`. Use `haveI := hge`. Establish `hl` using `zmod_semilinear h σ`. Establish `hl'` using `zmod_semilinear h σ'`.
+
+Set `εb : sgl ((ext (ZMod.castHom h (ZMod q))).obj (tw Q k)) ⟶ (extCx (ZMod.castHom h (ZMod q))).obj T` to `((HomologicalComplex.singleMapHomologicalComplex (ext (ZMod.castHom h (ZMod q))) (ComplexShape.up ℤ) 0).app (tw Q k)).inv ≫ (extCx (ZMod.castHom h (ZMod q))).map ε`. Establish `hq2 : QuasiIso ((extCx (ZMod.castHom h (ZMod q))).map ε)` using `GlobalTheory.T.quasiIso_extendScalars_zmod_of_flat_resolution Q q h (tw Q k) T (GlobalTheory.T.tateTwistSheaf_isLocallyFlat Q k) hflat ε hqi`. Use `haveI : IsIso ((HomologicalComplex.singleMapHomologicalComplex (ext (ZMod.castHom h (ZMod q))) (ComplexShape.up ℤ) 0).app (tw Q k)).inv := Iso.isIso_inv _`. Establish `hq1 : QuasiIso ((HomologicalComplex.singleMapHomologicalComplex (ext (ZMod.castHom h (ZMod q))) (ComplexShape.up ℤ) 0).app (tw Q k)).inv` using `quasiIso_of_isIso _`. Use `haveI : QuasiIso εb := quasiIso_comp (hφ := hq1) (hφ' := hq2) _ _`.
+
+Use `haveI : (res (ZMod q) (tw q k)).IsKInjective := inferInstanceAs ((injectiveResolution (tw q k)).cochainComplex.IsKInjective)`. Use `haveI : (res (ZMod q) (tw q k)).IsStrictlyGE 0 := inferInstanceAs ((injectiveResolution (tw q k)).cochainComplex.IsStrictlyGE 0)`. Use `haveI : IsIso (sglι (tw Q k)) := by unfold sglι; exact Iso.isIso_inv _`. Establish `he : ∀ (U : Scheme.{0}) (ζ : Prim Q Γ(U, ⊤)), σ.app U 0 (Sec.map (ε.f 0) (Sec.map (sglι (tw Q k)) (twGen k ζ))) = σ'.app U 0 (Sec.map (ε.f 0) (Sec.map (sglι (tw Q k)) (twGen k ζ)))` using `fun U ζ => by`. Rewrite using `[hεe]`.
+
+Conclude with `hσ U ζ`. Establish `hcomp : εb ≫ semiBar σ hl = εb ≫ semiBar σ' hl'`. Apply `HomologicalComplex.hom_ext` to reduce the goal to its premises. Introduce `i`. Distinguish the cases in `hi : i = 0`.
+
+Substitute `hi` using the available equality. Establish `key : (ext (ZMod.castHom h (ZMod q))).map (ε.f 0) ≫ (semiBar σ hl).f 0 = (ext (ZMod.castHom h (ZMod q))).map (ε.f 0) ≫ (semiBar σ' hl').f 0`. Express the relevant statement in the definitionally equal form `(ext (ZMod.castHom h (ZMod q))).map (ε.f 0) ≫ ((adj _).homEquiv _ _).symm (semiHom σ hl 0) = (ext (ZMod.castHom h (ZMod q))).map (ε.f 0) ≫ ((adj _).homEquiv _ _).symm (semiHom σ' hl' 0)`. Rewrite using `[← Adjunction.homEquiv_naturality_left_symm, ← Adjunction.homEquiv_naturality_left_symm]`. Use `congr 1`.
+
+Rewrite using `[← cancel_epi (sglι (tw Q k))]`. Use extensionality with `U y`. Conclude with `agree_on_twist k ε σ σ' he U.unop y`. Rewrite using `[HomologicalComplex.comp_f, HomologicalComplex.comp_f]`. Simplify using `only [εb]`.
+
+Use `erw [HomologicalComplex.comp_f, Category.assoc, Category.assoc]`. Conclude with `congrArg (_ ≫ ·) key`. Conclude with `(HomologicalComplex.isZero_single_obj_X _ _ _ _ hi).eq_of_src _ _`. Take `⟨H⟩` from `(GlobalTheory.T.extend_chainMap_along_quasiIso_kInjective (ZMod q) _ _ _ εb).2 _ _ hcomp`. Establish `h1` using `(GlobalTheory.T.sheafComplexSemilinearMap_comp_bijective (ZMod Q) (ZMod q) (unitSemi T) σ (semiBar σ hl) (semi_factor σ hl)).1 E n x`.
+
+Establish `h2` using `(GlobalTheory.T.sheafComplexSemilinearMap_comp_bijective (ZMod Q) (ZMod q) (unitSemi T) σ' (semiBar σ' hl') (semi_factor σ' hl')).1 E n x`. Rewrite using `[h1, h2, ((GlobalTheory.T.hypercohomologyPullbackPushforward_functorial (ZMod q)).2.2.2.2 _ _ ⟨H⟩ _ n).2]`.
+-/
 theorem semiMap_op_eq_of_flat_res : ∀ (Q q : ℕ) [NeZero Q], q ∣ Q → ∀ (k : ℤ) {T : Cx (ZMod Q)} (e : ∀ U : Scheme.{0}, Prim Q Γ(U, ⊤) → Sec (T.X 0) U), IsTwRes Q k T e → (∀ t, FlatS (T.X t)) → ∀ σ σ' : SemiMap T (res _ (tw q k)), (∀ (U : Scheme.{0}) (ζ : Prim Q Γ(U, ⊤)), σ.app U 0 (e U ζ) = σ'.app U 0 (e U ζ)) → ∀ (E : Spc) (n : ℤ) (x : CohomologyClass ((chains (ZMod Q)).obj E) T n), σ.op.app E n x = σ'.op.app E n x := by
   intro Q q _ h k T e hT hflat σ σ' hσ E n x
   obtain ⟨hge, ε, hqi, hεe⟩ := hT

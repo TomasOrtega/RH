@@ -3,5 +3,8 @@ import CompanionTheory.SpectralGeometry.LocalGlobalProofs.GlobalTheory.Bernstein
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.IrreducibleAdmissibleGL
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ImportsSideMore
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.FourClauses.adm GlobalTheory.CompanionTheory.Published.bernsteinZelevinskyFiniteness`.
+-/
 theorem GlobalTheory.FourClauses.irreducibleAdmissibleGL : GlobalTheory.Published.IrreducibleAdmissibleGL :=
   GlobalTheory.FourClauses.adm GlobalTheory.CompanionTheory.Published.bernsteinZelevinskyFiniteness

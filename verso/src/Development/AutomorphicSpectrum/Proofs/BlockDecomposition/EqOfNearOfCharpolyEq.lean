@@ -5,6 +5,25 @@ open scoped ENNReal NNReal Topology
 
 namespace GlobalTheory.CompanionTheory.WeylNear
 
+/- English proof (translation)
+Establish `hnd : s.charpoly.roots.Nodup` using `Polynomial.nodup_roots hs`. Establish `hcard : s.charpoly.roots.card = n`. Establish `h1` using `(IsAlgClosed.splits s.charpoly).natDegree_eq_card_roots`. Rewrite `h1` using `[Matrix.charpoly_natDegree_eq_dim]`. Simplify using `using h1.symm`.
+
+Establish `hc2 : s.charpoly.roots.toFinset.card = n`. Rewrite using `[Multiset.toFinset_card_of_nodup hnd, hcard]`. Set `e` to `Finset.equivFinOfCardEq hc2`. Set `l : Fin n → ℂ` to `fun i => (e.symm i : ℂ)`. Establish `hl : Function.Injective l` using `fun i j h => e.symm.injective (Subtype.ext h)`.
+
+Establish `hroot : ∀ i, s.charpoly.IsRoot (l i)` using `fun i => by`. Use `(e.symm i).2` as an intermediate fact. Rewrite `this` using `[Multiset.mem_toFinset]`. Conclude with `Polynomial.isRoot_of_mem_roots this`. Establish `hev : ∀ i, ∃ v : Fin n → ℂ, v ≠ 0 ∧ s *ᵥ v = l i • v`.
+
+Introduce `i`. Establish `h0 : Module.End.HasEigenvalue (Matrix.toLin' s : Module.End ℂ (Fin n → ℂ)) (l i)`. Rewrite using `[Module.End.hasEigenvalue_iff_isRoot_charpoly, Matrix.charpoly_toLin']`. Conclude with `hroot i`. Take `⟨v, hv⟩` from `h0.exists_hasEigenvector`.
+
+Use `⟨v, hv.2, ?_⟩` and prove the remaining obligations. Use `hv.apply_eq_smul` as an intermediate fact. Simplify using `using this`. Use `choose v hv0 hv using hev`. Establish `hli : LinearIndependent ℂ v` using `Module.End.eigenvectors_linearIndependent' (Matrix.toLin' s : Module.End ℂ (Fin n → ℂ)) l hl v (fun i => ⟨by`.
+
+Rewrite using `[Module.End.mem_eigenspace_iff]`. Simplify using `using hv i, hv0 i⟩)`. Set `P : Matrix (Fin n) (Fin n) ℂ` to `Matrix.of fun i j => v j i`. Establish `hcol : P.col = v`. Use extensionality with `j i`.
+
+Both sides reduce to the same expression. Establish `hP : IsUnit P` using `Matrix.linearIndependent_cols_iff_isUnit.mp (by rw [hcol]; exact hli)`. Establish `hdet : IsUnit P.det` using `(Matrix.isUnit_iff_isUnit_det _).1 hP`. Establish `hsP : s * P = P * diagonal l`. Use extensionality with `i j`.
+
+Use `congrFun (hv j) i` as an intermediate fact. Simplify using `only [Matrix.mulVec, dotProduct, Pi.smul_apply, smul_eq_mul] at this`. Rewrite using `[Matrix.mul_diagonal]`. Simplify using `only [Matrix.mul_apply, P, Matrix.of_apply]`. Rewrite using `[this, mul_comm]`.
+
+Use `⟨P, P⁻¹, l, hl, Matrix.mul_nonsing_inv _ hdet, Matrix.nonsing_inv_mul _ hdet, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_assoc, hsP, ← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hdet, Matrix.one_mul]`.
+-/
 theorem exists_diag (n : ℕ) (s : Matrix (Fin n) (Fin n) ℂ) (hs : s.charpoly.Separable) :
     ∃ (P Q : Matrix (Fin n) (Fin n) ℂ) (l : Fin n → ℂ), Function.Injective l ∧
       P * Q = 1 ∧ Q * P = 1 ∧ Q * s * P = diagonal l := by

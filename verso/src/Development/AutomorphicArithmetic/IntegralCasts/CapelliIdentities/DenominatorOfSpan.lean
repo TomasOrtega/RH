@@ -1,5 +1,8 @@
 import Mathlib
 
+/- English proof (translation)
+Introduce `K _ _ i P _ M x hx`. Take `⟨t, ht⟩` from `multiple_mem_span_of_mem_localization_span P.primeCompl ↥(Localization.subalgebra.ofField K P.primeCompl (Ideal.primeCompl_le_nonZeroDivisors P)) (↑M : Set (Fin i → K)) x hx`. Rewrite `ht` using `[Submodule.span_eq]`. Conclude with `⟨t.1, t.2, ht⟩`.
+-/
 theorem UpperTheory.Reformulated.B.SpanDenominator.den_of_span :
     ∀ {K : Type} [inst : Field K] [inst_1 : NumberField K] {i : ℕ} (P : Ideal (NumberField.RingOfIntegers K))
       [inst_2 : P.IsPrime] (M : Submodule (NumberField.RingOfIntegers K) (Fin i → K)),

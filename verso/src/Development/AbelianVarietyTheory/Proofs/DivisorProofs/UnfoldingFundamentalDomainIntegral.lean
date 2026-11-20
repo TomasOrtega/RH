@@ -5,6 +5,11 @@ open scoped Pointwise
 
 namespace GlobalTheory.FoldLe
 
+/- English proof (translation)
+Rewrite using `[ENNReal.tsum_eq_iSup_sum]`. Use `iSup_le fun s => ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`.
+
+Consider the case `insert a s ha ih`. Repeatedly rewrite using `[Finset.sum_insert ha]`. Conclude with `(add_le_add le_rfl ih).trans (le_lintegral_add (f a) (fun x => ∑ i ∈ s, f i x))`. Use `_ ≤ ∫⁻ x, ∑' i, f i x ∂μ := lintegral_mono fun x => ENNReal.sum_le_tsum _`.
+-/
 theorem tsum_lintegral_le {α ι : Type} [MeasurableSpace α] (μ : Measure α) (f : ι → α → ℝ≥0∞) :
     ∑' i, ∫⁻ x, f i x ∂μ ≤ ∫⁻ x, ∑' i, f i x ∂μ := by
   classical
@@ -18,6 +23,13 @@ theorem tsum_lintegral_le {α ι : Type} [MeasurableSpace α] (μ : Measure α) 
           exact (add_le_add le_rfl ih).trans (le_lintegral_add (f a) (fun x => ∑ i ∈ s, f i x))
     _ ≤ ∫⁻ x, ∑' i, f i x ∂μ := lintegral_mono fun x => ENNReal.sum_le_tsum _
 
+/- English proof (translation)
+Establish `h1 : Measurable fun y : G₁ × L × Kt => ∫⁻ n, F (n, y) ∂μN` using `hF.lintegral_prod_left'`. Establish `h2 : Measurable fun y : L × Kt => ∫⁻ g₀, ∫⁻ n, F (n, g₀, y) ∂μN ∂ν` using `h1.lintegral_prod_left'`. Establish `h3 : Measurable fun k : Kt => ∫⁻ l, ∫⁻ g₀, ∫⁻ n, F (n, g₀, l, k) ∂μN ∂ν ∂μL` using `h2.lintegral_prod_left'`. Establish `e3` using `(lintegral_eq_zero_iff h3).1 h0`. Use `filter_upwards [e3] with k hk`.
+
+Establish `hk' : ∫⁻ l, ∫⁻ g₀, ∫⁻ n, F (n, g₀, l, k) ∂μN ∂ν ∂μL = 0` using `hk`. Establish `e2` using `(lintegral_eq_zero_iff (h2.comp measurable_prodMk_right)).1 hk'`. Use `filter_upwards [e2] with l hl`. Establish `hl' : ∫⁻ g₀, ∫⁻ n, F (n, g₀, l, k) ∂μN ∂ν = 0` using `hl`. Establish `e1` using `(lintegral_eq_zero_iff (h1.comp measurable_prodMk_right)).1 hl'`.
+
+Use `filter_upwards [e1] with g₀ hg`. Establish `hg' : ∫⁻ n, F (n, g₀, l, k) ∂μN = 0` using `hg`. Establish `e0` using `(lintegral_eq_zero_iff (hF.comp measurable_prodMk_right)).1 hg'`. Use `filter_upwards [e0] with n hn`. Conclude with `hn`.
+-/
 theorem ae_of_iter_lintegral_eq_zero {N G₁ L Kt : Type} [MeasurableSpace N] [MeasurableSpace G₁]
     [MeasurableSpace L] [MeasurableSpace Kt]
     (μN : Measure N) (ν : Measure G₁) (μL : Measure L) (μK : Measure Kt)
@@ -43,10 +55,16 @@ theorem ae_of_iter_lintegral_eq_zero {N G₁ L Kt : Type} [MeasurableSpace N] [M
   filter_upwards [e0] with n hn
   exact hn
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun γ => hmul (γ : X)⟩`.
+-/
 theorem measurableConstSMul_subgroup {X : Type} [Group X] [MeasurableSpace X] (H : Subgroup X)
     (hmul : ∀ g : X, Measurable (g * ·)) : MeasurableConstSMul H X :=
   ⟨fun γ => hmul (γ : X)⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun γ s hs => by show μ (((γ : X) * ·) ⁻¹' s) = μ s rw [← Measure.map_apply (hmul _) hs, map_mul_left_eq_self]⟩`.
+-/
 theorem smulInvariant_subgroup {X : Type} [Group X] [MeasurableSpace X] (H : Subgroup X)
     (μ : Measure X) [μ.IsMulLeftInvariant] (hmul : ∀ g : X, Measurable (g * ·)) :
     SMulInvariantMeasure H X μ :=
@@ -54,6 +72,13 @@ theorem smulInvariant_subgroup {X : Type} [Group X] [MeasurableSpace X] (H : Sub
     show μ (((γ : X) * ·) ⁻¹' s) = μ s
     rw [← Measure.map_apply (hmul _) hs, map_mul_left_eq_self]⟩
 
+/- English proof (translation)
+Use `haveI := measurableConstSMul_subgroup Γ hmul`. Use `haveI := smulInvariant_subgroup Γ ν hmul`. Combine the equalities or inequalities in the displayed calculation. Use `congr 1`. Use extensionality with `γ`.
+
+Use `congr 1`. Use extensionality with `g`. Rewrite using `[Subgroup.smul_def, smul_eq_mul, hH γ γ.2]`. Use `_ ≤ ∫⁻ g in dom, ∑' γ : Γ, P ((γ : G₁) * g) * H g ∂ν := tsum_lintegral_le _ _`. Use `_ = ∫⁻ g in dom, (∑' γ : Γ, P ((γ : G₁) * g)) * H g ∂ν := by`.
+
+Repeatedly rewrite using `[ENNReal.tsum_mul_right]`. Use `_ ≤ ∫⁻ g in dom, C * H g ∂ν := lintegral_mono_ae (hP.mono fun g hg => by gcongr)`. Use `_ = C * ∫⁻ g in dom, H g ∂ν := lintegral_const_mul' _ _ hC`.
+-/
 theorem unfold_le {G₁ : Type} [Group G₁] [MeasurableSpace G₁] (ν : Measure G₁) (Γ : Subgroup G₁)
     [Countable Γ] (hmul : ∀ g : G₁, Measurable (g * ·)) [ν.IsMulLeftInvariant] (dom : Set G₁)
     (hdom : IsFundamentalDomain Γ dom ν) (P H : G₁ → ℝ≥0∞) (hH : ∀ γ ∈ Γ, ∀ g, H (γ * g) = H g)
@@ -76,6 +101,25 @@ end GlobalTheory.FoldLe
 
 namespace GlobalTheory.FoldLe
 
+/- English proof (translation)
+Use `haveI : Countable (Q.subgroupOf N) := by`. Use `Function.Injective.countable (f := fun ν : Q.subgroupOf N => (⟨((ν : N) : G), Subgroup.mem_subgroupOf.1 ν.2⟩ : Q)) ?_` and prove the remaining obligations. Introduce `a b h`. Establish `h' : ((a : N) : G) = ((b : N) : G)` using `by simpa using congrArg Subtype.val h`. Conclude with `Subtype.ext (Subtype.ext h')`.
+
+Establish `hmulN : ∀ g : N, Measurable (g * ·)` using `fun g => ((hmulG (g : G)).comp measurable_subtype_coe).subtype_mk`. Use `haveI := measurableConstSMul_subgroup (Q.subgroupOf N) hmulN`. Use `haveI := smulInvariant_subgroup (Q.subgroupOf N) μN hmulN`. Establish `hmeas : Measurable fun y : G => D₀.indicator (1 : G → ℝ≥0∞) (y * x)` using `(measurable_const.indicator hD₀).comp (hmulrG x)`. Establish `hmemQ : ∀ p : Γ × Q.subgroupOf N, ι p.1 * ((p.2 : N) : G) ∈ Q` using `fun p => Q.mul_mem (hιQ _ p.1.2) (Subgroup.mem_subgroupOf.1 p.2.2)`.
+
+Set `e : Γ × Q.subgroupOf N → Q` to `fun p => ⟨ι p.1 * ((p.2 : N) : G), hmemQ p⟩`. Establish `he : Function.Injective e`. Introduce and unpack `⟨γ, ν⟩ ⟨γ', ν'⟩ h`. Establish `h' : ι γ * ((ν : N) : G) = ι γ' * ((ν' : N) : G)` using `congrArg Subtype.val h`. Take `⟨γ₀, -, hγ₀⟩` from `huniq _ (hmemQ (γ, ν))`.
+
+Establish `h1 : γ = γ₀` using `hγ₀ γ (by simp)`. Establish `h2 : γ' = γ₀` using `hγ₀ γ' (by show (ι γ')⁻¹ * (ι γ * ((ν : N) : G)) ∈ N`. Rewrite using `[h']`. Use the proof step `simp)`. Establish `hγ : γ = γ'` using `h1.trans h2.symm`.
+
+Substitute `hγ` using the available equality. Establish `: ((ν : N) : G) = ((ν' : N) : G)` using `mul_left_cancel h'`. Establish `: ν = ν'` using `Subtype.ext (Subtype.ext this)`. Rewrite using `[this]`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `congr 1`. Use extensionality with `γ`. Rewrite using `[hswap γ γ.2 _ hmeas, h𝓕.lintegral_eq_tsum'']`. Use `congr 1`. Use extensionality with `ν`.
+
+Use `congr 1`. Use extensionality with `n`. Simplify using `only [Subgroup.smul_def, smul_eq_mul, Subgroup.coe_mul, mul_assoc]`. Use `_ ≤ ∑' γ : Γ, ∫⁻ n in 𝓕, ∑' ν : Q.subgroupOf N, D₀.indicator 1 (ι γ * ((ν : N) : G) * (n.1 * x)) ∂μN := ENNReal.tsum_le_tsum fun γ => tsum_lintegral_le _ _`. Use `_ ≤ ∫⁻ n in 𝓕, ∑' γ : Γ, ∑' ν : Q.subgroupOf N, D₀.indicator 1 (ι γ * ((ν : N) : G) * (n.1 * x)) ∂μN := tsum_lintegral_le _ _`.
+
+Use `_ ≤ ∫⁻ n in 𝓕, ∑' q : Q, D₀.indicator 1 ((q : G) * (n.1 * x)) ∂μN := by`. Use `lintegral_mono fun n => ?_` and prove the remaining obligations. Rewrite using `[← ENNReal.tsum_prod]`. Conclude with `ENNReal.tsum_comp_le_tsum_of_injective he (fun q : Q => D₀.indicator (1 : G → ℝ≥0∞) ((q : G) * (n.1 * x)))`. Use `_ ≤ ∫⁻ n in 𝓕, 1 ∂μN := lintegral_mono_ae (ae_restrict_of_ae hx)`.
+
+Use `_ = μN 𝓕 := setLIntegral_one _`.
+-/
 theorem sum_translates_le {G G₁ : Type} [Group G] [MeasurableSpace G] [Group G₁]
     (N Q : Subgroup G) (Γ : Subgroup G₁) (μN : Measure N) (ι : G₁ → G) (𝓕 : Set N) (D₀ : Set G)
     [Countable Q] [Countable Γ] (hD₀ : MeasurableSet D₀)
@@ -140,6 +184,49 @@ namespace GlobalTheory
 
 open GlobalTheory.FoldLe in
 
+/- English proof (translation)
+Introduce `G G₁ L Kt _ _ _ _ _ _ μG ν μL μK N Q Γ μN kk m ι w c dom 𝓕 hQc hΓc hνs hLs hNs hmulG hmulG₁ hmulrG hΦ hw hw0 hwtop hμGinv hform hc0 hctop hmγ hιQ huniq hswap hμNinv h𝓕 h𝓕top hdom hνinv 𝓓 h𝓓 f hf hfQ hfN`. Use `haveI := hνs`. Use `haveI := hLs`. Use `haveI := hNs`. Use `haveI := hQc`.
+
+Use `haveI := hΓc`. Use `haveI := hμGinv`. Use `haveI := hμNinv`. Use `haveI := hνinv`. Use `haveI := measurableConstSMul_subgroup Q hmulG`.
+
+Use `haveI := smulInvariant_subgroup Q μG hmulG`. Take `⟨D₀, hD₀sub, hD₀m, hD₀ae⟩` from `h𝓓.nullMeasurableSet.exists_measurable_subset_ae_eq`. Use `set f' := hf.mk f with hf'def`. Establish `hf'm : Measurable f'` using `hf.measurable_mk`. Establish `hff' : f =ᵐ[μG] f'` using `hf.ae_eq_mk`.
+
+Use `set Z₀ := toMeasurable μG {g | f g ≠ f' g} with hZ₀def`. Establish `hZ₀m : MeasurableSet Z₀` using `measurableSet_toMeasurable _ _`. Establish `hZ₀0 : μG Z₀ = 0` using `by rw [hZ₀def, measure_toMeasurable]; exact ae_iff.1 hff'`. Set `E : Set G` to `⋃ q : Q, ⋃ q' : Q, ⋃ (_ : q ≠ q'), ((q : G) * ·) ⁻¹' D₀ ∩ ((q' : G) * ·) ⁻¹' D₀`. Establish `hEm : MeasurableSet E` using `MeasurableSet.iUnion fun q => MeasurableSet.iUnion fun q' => MeasurableSet.iUnion fun _ => (hD₀m.preimage (hmulG _)).inter (hD₀m.preimage (hmulG _))`.
+
+Establish `hE0 : μG E = 0`. Use `measure_iUnion_null fun q => measure_iUnion_null fun q' => measure_iUnion_null fun hqq => ?_` and prove the remaining obligations. Establish `hne : q⁻¹ ≠ q'⁻¹` using `fun h => hqq (inv_injective h)`. Establish `hdis : μG (q⁻¹ • 𝓓 ∩ q'⁻¹ • 𝓓) = 0` using `h𝓓.aedisjoint hne`. Use `measure_mono_null ?_ hdis` and prove the remaining obligations.
+
+Introduce and unpack `y ⟨h1, h2⟩`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Set.mem_smul_set_iff_inv_smul_mem, inv_inv]`. Conclude with `hD₀sub h1`. Rewrite using `[Set.mem_smul_set_iff_inv_smul_mem, inv_inv]`.
+
+Conclude with `hD₀sub h2`. Establish `hsum1 : ∀ y ∉ E, ∑' q : Q, D₀.indicator (1 : G → ℝ≥0∞) ((q : G) * y) ≤ 1`. Introduce `y hy`. Distinguish the cases in `h : ∃ q : Q, (q : G) * y ∈ D₀`. Take `⟨q₀, hq₀⟩` from `h`.
+
+Rewrite using `[tsum_eq_single q₀]`. Simplify using `[Set.indicator_of_mem hq₀]`. Introduce `q hq`. Use `Set.indicator_apply_eq_zero.2 fun hqD => ?_` and prove the remaining obligations. It suffices to derive a contradiction.
+
+Conclude with `hy (Set.mem_iUnion.2 ⟨q, Set.mem_iUnion.2 ⟨q₀, Set.mem_iUnion.2 ⟨hq, hqD, hq₀⟩⟩⟩)`. Use `push_neg at h`. Simplify using `[Set.indicator_apply, h]`. Establish `hpull : ∀ Z : Set G, MeasurableSet Z → μG Z = 0 → ∀ᵐ k ∂μK, ∀ᵐ l ∂μL, ∀ᵐ g₀ ∂ν, ∀ᵐ n ∂μN, n.1 * m l g₀ * kk k ∉ Z`. Introduce `Z hZ hZ0`.
+
+Establish `hF : Measurable fun p : N × G₁ × L × Kt => Z.indicator (1 : G → ℝ≥0∞) (p.1.1 * m p.2.2.1 p.2.1 * kk p.2.2.2) * w p.2.2.1` using `((measurable_one.indicator hZ).comp hΦ).mul (hw.comp (measurable_fst.comp (measurable_snd.comp measurable_snd)))`. Establish `h0` using `hform (Z.indicator (1 : G → ℝ≥0∞)) (measurable_one.indicator hZ)`. Rewrite `h0` using `[lintegral_indicator_one hZ, hZ0]`. Establish `h0'` using `(mul_eq_zero.1 h0.symm).resolve_left hc0`. Establish `h4` using `ae_of_iter_lintegral_eq_zero μN ν μL μK _ hF h0'`.
+
+Use `filter_upwards [h4] with k hk`. Use `filter_upwards [hk] with l hl`. Use `filter_upwards [hl] with g₀ hg`. Use `filter_upwards [hg] with n hn`. Introduce `hmem`.
+
+Simplify using `only [Set.indicator_of_mem hmem, Pi.one_apply, one_mul] at hn`. Conclude with `hw0 l hn`. Establish `hgood` using `hpull (Z₀ ∪ E) (hZ₀m.union hEm) (measure_union_null hZ₀0 hE0)`. Establish `hInd : ∀ l g₀ k, Measurable fun n : N => D₀.indicator (1 : G → ℝ≥0∞) (n.1 * m l g₀ * kk k)` using `fun l g₀ k => (measurable_const.indicator hD₀m).comp (hΦ.comp (measurable_prodMk_right (y := ((g₀, l, k) : G₁ × L × Kt))))`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[lintegral_indicator hD₀m]`. Conclude with `lintegral_congr_ae (ae_restrict_of_ae hff')`. Use `_ = c * ∫⁻ k, ∫⁻ l, ∫⁻ g₀, ∫⁻ n, D₀.indicator f' (n.1 * m l g₀ * kk k) * w l ∂μN ∂ν ∂μL ∂μK := hform _ (hf'm.indicator hD₀m)`. Use `_ = c * ∫⁻ k, ∫⁻ l, ∫⁻ g₀, (∫⁻ n, D₀.indicator (1 : G → ℝ≥0∞) (n.1 * m l g₀ * kk k) ∂μN) * (f (m l g₀ * kk k) * w l) ∂ν ∂μL ∂μK := by`. Use `congr 1`.
+
+Use `lintegral_congr_ae (hgood.mono fun k hk => ?_)` and prove the remaining obligations. Use `lintegral_congr_ae (hk.mono fun l hl => ?_)` and prove the remaining obligations. Use `lintegral_congr_ae (hl.mono fun g₀ hg => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[← lintegral_mul_const _ (hInd l g₀ k)]`.
+
+Use `lintegral_congr_ae (hg.mono fun n hn => ?_)` and prove the remaining obligations. Establish `hnZ : n.1 * m l g₀ * kk k ∉ Z₀` using `fun h => hn (Or.inl h)`. Establish `h1 : f' (n.1 * m l g₀ * kk k) = f (n.1 * m l g₀ * kk k)`. Assume the negation of the conclusion as `hne`. Conclude with `hnZ (subset_toMeasurable _ _ (fun h => hne h.symm))`.
+
+Establish `h2 : f (n.1 * m l g₀ * kk k) = f (m l g₀ * kk k)`. Rewrite using `[mul_assoc]`. Conclude with `hfN _ n.2 _`. Distinguish the cases in `hD : n.1 * m l g₀ * kk k ∈ D₀`. Simplify using `[Set.indicator_of_mem hD, h1, h2]`.
+
+Simplify using `[Set.indicator_apply, hD]`. Use `_ ≤ c * ∫⁻ k, ∫⁻ l, μN 𝓕 * ∫⁻ g₀ in dom, f (m l g₀ * kk k) * w l ∂ν ∂μL ∂μK := by gcongr c * ?_`. Use `lintegral_mono_ae (hgood.mono fun k hk => ?_)` and prove the remaining obligations. Use `lintegral_mono_ae (hk.mono fun l hl => ?_)` and prove the remaining obligations. Use `unfold_le ν Γ hmulG₁ dom hdom (fun g₀ => ∫⁻ n, D₀.indicator (1 : G → ℝ≥0∞) (n.1 * m l g₀ * kk k) ∂μN) (fun g₀ => f (m l g₀ * kk k) * w l) ?_ (μN 𝓕) h𝓕top ?_` and prove the remaining obligations.
+
+Introduce `γ hγ g₀`. Simplify using `only [hmγ l g₀ γ hγ, mul_assoc]`. Rewrite using `[hfQ _ (hιQ γ hγ)]`. Use `ae_restrict_of_ae (hl.mono fun g₀ hg => ?_)` and prove the remaining obligations. Establish `hx : ∀ᵐ n ∂μN, ∑' q : Q, D₀.indicator (1 : G → ℝ≥0∞) ((q : G) * (n.1 * (m l g₀ * kk k))) ≤ 1` using `hg.mono fun n hn => hsum1 _ (fun h => hn (Or.inr (by rwa [← mul_assoc] at h)))`.
+
+Establish `h5` using `sum_translates_le N Q Γ μN ι 𝓕 D₀ hD₀m hmulG hmulrG hιQ huniq hswap h𝓕 _ hx`. Use `(le_of_eq ?_).trans h5` and prove the remaining obligations. Use `congr 1`. Use extensionality with `γ`. Use `congr 1`.
+
+Use extensionality with `n`. Rewrite using `[hmγ l g₀ γ γ.2]`. Simplify using `only [mul_assoc]`. Use `_ = c * μN 𝓕 * ∫⁻ k, ∫⁻ l, ∫⁻ g₀ in dom, f (m l g₀ * kk k) * w l ∂ν ∂μL ∂μK := by`. Rewrite using `[mul_assoc]`.
+
+Use `congr 1`. Rewrite using `[← lintegral_const_mul' _ _ h𝓕top]`. Use `congr 1`. Use extensionality with `k`. Conclude with `lintegral_const_mul' _ _ h𝓕top`.
+-/
 theorem foldBound_le : ∀ {G G₁ L Kt : Type} [Group G] [MeasurableSpace G] [Group G₁] [MeasurableSpace G₁] [MeasurableSpace L] [MeasurableSpace Kt] (μG : Measure G) (ν : Measure G₁) (μL : Measure L) (μK : Measure Kt) (N Q : Subgroup G) (Γ : Subgroup G₁) (μN : Measure N) (kk : Kt → G) (m : L → G₁ → G) (ι : G₁ → G) (w : L → ℝ≥0∞) (c : ℝ≥0∞) (dom : Set G₁) (𝓕 : Set N), Countable Q → Countable Γ → SFinite ν → SFinite μL → SFinite μN → (∀ g : G, Measurable (g * ·)) → (∀ g : G₁, Measurable (g * ·)) → (∀ g : G, Measurable (· * g)) → Measurable (fun p : N × G₁ × L × Kt => p.1.1 * m p.2.2.1 p.2.1 * kk p.2.2.2) → Measurable w → (∀ l, w l ≠ 0) → (∀ l, w l ≠ ⊤) → μG.IsMulLeftInvariant → (∀ φ : G → ℝ≥0∞, Measurable φ → ∫⁻ g, φ g ∂μG = c * ∫⁻ k, ∫⁻ l, ∫⁻ g₀, ∫⁻ n, φ (n.1 * m l g₀ * kk k) * w l ∂μN ∂ν ∂μL ∂μK) → c ≠ 0 → c ≠ ⊤ → (∀ l g₀, ∀ γ ∈ Γ, m l (γ * g₀) = ι γ * m l g₀) → (∀ γ ∈ Γ, ι γ ∈ Q) → (∀ q ∈ Q, ∃! γ : Γ, (ι γ)⁻¹ * q ∈ N) → (∀ γ ∈ Γ, ∀ f : G → ℝ≥0∞, Measurable f → ∫⁻ n, f (n.1 * ι γ) ∂μN = ∫⁻ n, f (ι γ * n.1) ∂μN) → μN.IsMulLeftInvariant → IsFundamentalDomain (Q.subgroupOf N) 𝓕 μN → μN 𝓕 ≠ ⊤ → IsFundamentalDomain Γ dom ν → ν.IsMulLeftInvariant → ∀ 𝓓 : Set G, IsFundamentalDomain Q 𝓓 μG → ∀ f : G → ℝ≥0∞, AEMeasurable f μG → (∀ q ∈ Q, ∀ g, f (q * g) = f g) → (∀ n ∈ N, ∀ g, f (n * g) = f g) → ∫⁻ g in 𝓓, f g ∂μG ≤ c * μN 𝓕 * ∫⁻ k, ∫⁻ l, ∫⁻ g₀ in dom, f (m l g₀ * kk k) * w l ∂ν ∂μL ∂μK := by
   intro G G₁ L Kt _ _ _ _ _ _ μG ν μL μK N Q Γ μN kk m ι w c dom 𝓕 hQc hΓc hνs hLs hNs hmulG hmulG₁
     hmulrG hΦ hw hw0 hwtop hμGinv hform hc0 hctop hmγ hιQ huniq hswap hμNinv h𝓕 h𝓕top hdom hνinv

@@ -19,12 +19,18 @@ namespace GlobalTheory.ThetaDvr.Scale
 
 open GlobalTheory.UT ReciprocityTheory.ChartRestriction.G.DVR GlobalTheory.TorusExt GlobalTheory.ZH.TestVal
 
+/- English proof (translation)
+Take `⟨j, -, hj⟩` from `ρ.r_eq`. Rewrite using `[hj, ρ.N_eq]`. Conclude with `ρ.n_odd.pow.mul ρ.n_odd.pow.pow`.
+-/
 theorem odd_level' {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] {S : ThetaSys o Ω} (ρ : S.Real) :
     Odd (S.r * S.N) := by
   obtain ⟨j, -, hj⟩ := ρ.r_eq
   rw [hj, ρ.N_eq]
   exact ρ.n_odd.pow.mul ρ.n_odd.pow.pow
 
+/- English proof (translation)
+The claim follows from `congrArg LB.Gen.mk (funext fun j => zpow_one (τ.s j))`.
+-/
 theorem powFrame_one' {B : Scheme.{0}} {A T : Over B} {L : LB A.left} (x : T ⟶ A)
     (τ : LB.Gen (LB.LinComb L (Y := T.left) (K := Fin 1) (fun _ => x.left) (fun _ => 1))) :
     powFrame A L x τ 1 = τ :=
@@ -32,6 +38,45 @@ theorem powFrame_one' {B : Scheme.{0}} {A T : Over B} {L : LB A.left} (x : T ⟶
 
 attribute [local instance] gtGroup in
 
+/- English proof (translation)
+Introduce `hL hL₂ o Ω _ _ _ _ S ρ V _ _ _ _ hc yK A φ cart lb G _ _ D U semi hy yy _hyy_onto hyy ϖ hϖ v hv`. Take `⟨H, h₁, h₂, h₃, h₄⟩` from `hyps hL hL₂`. Establish `hm` using `odd_level' ρ`. Establish `hA : AdmBase V (IsLocalRing.maximalIdeal V)` using `⟨inferInstance, inferInstance, inferInstance, hc⟩`. Establish `hB` using `D.tau_bimult`.
+
+Use `choose Q hQ using QForm.exists_QVal hϖ D`. Establish `hu : IsUnit ((S.r * S.N : ℕ) : V)`. Take `⟨b, hb⟩` from `S.unit.exists_right_inv`. Take `⟨c, hc'⟩` from `hy b`. Use `IsUnit.of_mul_eq_one c (IsFractionRing.injective V (FractionRing V) ?_)` and prove the remaining obligations.
+
+Use `congrArg (fun a => yK (algebraMap o S.R a)) hb` as an intermediate fact. Simplify using `only [map_mul, map_natCast, map_one] at this ⊢`. Rewrite using `[hc']`. Simplify using `using this`. Take `⟨x, hx, xadd, xinj, xonto⟩` from `GlobalTheory.ThetaDvr.torsion_points yK cart`.
+
+Take `⟨rig, e, hrig, he, hsec⟩` from `GlobalTheory.ThetaDvr.frames yK cart lb x hx`. Take `⟨t, ht⟩` from `hsec 1 ρ.th₁`. Take `⟨w₀, hw₀⟩` from `EvalZero.exists_normW U.toUnifPre rig hrig`. Take `⟨th, ϑ, hE, hP, hgen⟩` from `exists_prim_generator H h₁ h₂ h₃ h₄ V hc ϖ hϖ D Q hQ _ v hv A G semi U w₀ hw₀.1`. Establish `key` using `val_theta H h₁ h₂ h₃ h₄ V hc ϖ hϖ D Q hQ _ v hv A G semi U w₀ rig hw₀ th ϑ hE hP _ hm hu`.
+
+Take `⟨f, f₁, f₂, f₃, -⟩` from `GlobalTheory.TorsionIso.torsion_eq H V _ hA D A G semi U (AlgebraicClosure (FractionRing V)) _ hm.pos`. Take `⟨r, hr⟩` from `hgen t`. Take `⟨sc, rfl⟩` from `(ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of (AlgebraicClosure (FractionRing V)))).inv).2 r`. Use `set F := AlgebraicClosure (FractionRing V) with hF`. Use `set y₀ : S.R →+* F := (algebraMap (FractionRing V) F).comp yK with hy₀`.
+
+Establish `tv : ∀ a z J, Good A.L z J → cst (R` using `V) F z sc * @id ((TF (R := V) F).left.presheaf.stalk z) (sA th (ptSecT A.A (x a)).left z J) = cst (R := V) F z (y₀ ⟨S.th a, S.th_mem a⟩) * @id ((TF (R := V) F).left.presheaf.stalk z) (val (powFrame A.A A.L (x a) (e a) ((1 : ℕ) : ℤ)) (𝟙 _) z J).val := fun a z J hJ => (ThetaCompare …`. Establish `b` using `ρ.th_val a`. Rewrite `b` using `[← powFrame_one' (ρ.pt a) (ρ.fr a)]`. Conclude with `b) z J hJ)`. Establish `ex : ∀ a, ∃ q, QkToAkU U.toUnifPre F (S.r * S.N) q (x a) ∧ yy a = QuotientAddGroup.mk q.y` using `fun a => by`.
+
+Take `⟨q, hq⟩` from `f₂ (x a) (he a).1`. Conclude with `⟨q, (f₁ _ _).2 hq.symm, hyy a q _ ((f₁ _ _).2 hq.symm) (hx a)⟩`. Distinguish the cases in `h0 : sc = 0`. Establish `z0 : ∀ a, y₀ ⟨S.th a, S.th_mem a⟩ = 0` using `fun a => by`. Take `⟨z⟩` from `CoefBasic.exists_pt (R := V) (F := F)`.
+
+Take `⟨J, hJ⟩` from `CoefBasic.exists_good' (Z := (TFK (R := V) F).left) A.isLB z`. Use `tv a z J hJ` as an intermediate fact. Rewrite `this` using `[h0, CoefBasic.cst_eq, CoefBasic.cst_eq, map_zero, zero_mul]`. Conclude with `CoefBasic.cstH_inj (R := V) z (((Units.mul_left_eq_zero _).1 this.symm).trans (map_zero _).symm)`. Establish `z1 : ∀ a, algebraMap (FractionRing V) F (yK ⟨S.th a, S.th_mem a⟩) = 0` using `fun a => z0 a`.
+
+Use `⟨⊤, fun b => ⟨by rw [z1 b, AddValuation.map_zero], fun _ hb => absurd ?_ hb⟩, fun n _ _ a ha => ⟨a, ha, by simp, by rw [z1 a, AddValuation.map_zero]⟩⟩` and prove the remaining obligations. Conclude with `(map_eq_zero_iff _ (algebraMap (FractionRing V) F).injective).1 (z1 b)`. Establish `tv' : ∀ a z J, Good A.L z J → sA th (ptSecT A.A (x a)).left z J = @id ((TFK (R` using `V) F).left.presheaf.stalk z) (cst (R := V) F z (sc⁻¹ * y₀ ⟨S.th a, S.th_mem a⟩)) * (val (powFrame A.A A.L (x a) (e a) ((1 : ℕ) : ℤ)) (𝟙 _) z J).val := fun a z J hJ => by`. Establish `b` using `congrArg (CoefBasic.cstH (R := V) z sc⁻¹ * ·) (tv a z J hJ)`. Simplify using `only [CoefBasic.cst_eq, ← _root_.mul_assoc, ← map_mul, inv_mul_cancel₀ h0, map_one, _root_.one_mul] at b`.
+
+Rewrite using `[CoefBasic.cst_eq]`. Conclude with `b`. Establish `hvs : v sc ≠ ⊤` using `v.ne_top_iff.2 h0`. Establish `split : ∀ a, v (y₀ ⟨S.th a, S.th_mem a⟩) = v sc + v (sc⁻¹ * y₀ ⟨S.th a, S.th_mem a⟩)` using `fun a => by`. Rewrite using `[← v.map_mul, ← _root_.mul_assoc, mul_inv_cancel₀ h0, _root_.one_mul]`.
+
+Establish `nz : ∀ a, v (sc⁻¹ * y₀ ⟨S.th a, S.th_mem a⟩) = 0 ↔ v (y₀ ⟨S.th a, S.th_mem a⟩) = v sc` using `fun a => by`. Rewrite using `[split a]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[h, add_zero]`.
+
+Introduce `h`. Take `⟨s, hs⟩` from `WithTop.ne_top_iff_exists.1 hvs`. Rewrite `h` using `[← hs]`. Establish `e1` using `congrArg (((-s : ℚ) : WithTop ℚ) + ·) h`. Simplify using `only [← add_assoc, ← WithTop.coe_add, neg_add_cancel, WithTop.coe_zero, zero_add] at e1`.
+
+Conclude with `e1`. Use `⟨v sc, fun b => ?_, fun n hn hnm a ha => ?_⟩` and prove the remaining obligations. Take `⟨q, hq₁, hq₂⟩` from `ex b`. Establish `hk` using `(key q _ hq₁).1 _ _ (he b) (tv' b)`. Establish `lo : (0 : WithTop ℚ) ≤ v (sc⁻¹ * y₀ ⟨S.th b, S.th_mem b⟩)`.
+
+Use `hk.1 0 fun χ => by` as an intermediate fact. Distinguish the cases in `c : (S.r * S.N) • χ + q.y = 0`. Rewrite using `[c, QForm.Q_zero hϖ D hQ]`. Simplify using the standard rewrite rules. Conclude with `div_nonneg (Int.cast_nonneg (zero_le_one.trans (QForm.Q_pos hϖ D hQ c))) (Nat.cast_nonneg _)`.
+
+Simplify using `using this`. Establish `le : v sc ≤ v (y₀ ⟨S.th b, S.th_mem b⟩)` using `by rw [split b]; exact le_add_of_nonneg_right lo`. Use `⟨le, fun hb _ => lt_of_le_of_ne le fun h => hb ?_⟩` and prove the remaining obligations. Take `⟨z, hz⟩` from `hk.2 ((nz b).2 h.symm)`. Conclude with `hq₂.trans ((QuotientAddGroup.eq_zero_iff _).2 ⟨z, hz.symm⟩)`.
+
+Take `⟨q, hq₁, hq₂⟩` from `ex a`. Take `⟨z, hz⟩` from `(QuotientAddGroup.eq_zero_iff _).1 (hq₂.symm.trans ha)`. Establish `hz' : (S.r * S.N) • z = q.y` using `hz`. Set `q₀ : QkPt D.toPre F (S.r * S.N)` to `qkMk hB 0 (q.g + iota hB _ (-z)) (by`. Rewrite using `[smul_add, qk_nsmul hB, ← map_nsmul, ← map_add, smul_neg, hz', add_neg_cancel])`.
+
+Establish `e₀ : f q = f q₀` using `(f₃ _ _).2 ((equiv_iff hB _ _).2 ⟨-z, by`. Rewrite using `[smul_neg, hz', add_neg_cancel]`. Use the proof step `rfl, rfl⟩)`. Take `⟨q', x', hy', hx', hpow, hval⟩` from `(key q₀ (x a) ((f₁ _ _).2 (((f₁ _ _).1 hq₁).trans e₀))).2 n hn hnm rfl`. Take `⟨a', rfl⟩` from `xonto x' (hx' w₀ hw₀.1).1`.
+
+Use `A.isAb.comm` as an intermediate fact. Set `X : Multiplicative S.Gam →* (TFK (R` to `V) F ⟶ A.A) := MonoidHom.mk' (fun a => x a.toAdd) fun a b => xadd _ _`. Use `⟨a', (hyy a' q' _ hx' (hx a')).trans (by rw [hy']; rfl), xinj ?_, (nz a').1 (hval _ _ (he a') (tv' a'))⟩` and prove the remaining obligations. Establish `b : X ((Multiplicative.ofAdd a' * (Multiplicative.ofAdd a)⁻¹) ^ n) = X 1`. Rewrite using `[map_pow, map_mul, map_inv, map_one]`.
+
+Conclude with `hpow`. Rewrite using `[sub_eq_add_neg]`. Conclude with `b`.
+-/
 theorem exists_scale : Laws → Laws2 → ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω] (S : ThetaSys o Ω) (ρ : S.Real) (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [CharZero V], IsAdicComplete (IsLocalRing.maximalIdeal V) V → ∀ (yK : S.R →+* FractionRing V) (A : PolAV (Sp (FractionRing V))) (φ : A.A.left ⟶ ρ.P.A.left), IsGrpPullback A.A ρ.P.A (spMap yK) φ → LBIso A.L (ρ.P.L.pull φ) → ∀ (G : Over (Sp V)) [GrpObj G] [IsCommMonObj G] (D : DegData V (IsLocalRing.maximalIdeal V)) (U : Unif (IsLocalRing.maximalIdeal V) D A G), IsSemiAbelian G → (∀ a : o, yK (algebraMap o S.R a) ∈ (algebraMap V (FractionRing V)).range) → ∀ yy : S.Gam →+ D.toPre.X ⧸ (nsmulAddMonoidHom (S.r * S.N) : D.toPre.X →+ D.toPre.X).range, Function.Surjective yy → (∀ (a : S.Gam) (pk : QkPt D.toPre (AlgebraicClosure (FractionRing V)) (S.r * S.N)) (x : TFK (R := V) (AlgebraicClosure (FractionRing V)) ⟶ A.A), QkToAkU U.toUnifPre (AlgebraicClosure (FractionRing V)) (S.r * S.N) pk x → x.left ≫ φ = spMap ((algebraMap (FractionRing V) (AlgebraicClosure (FractionRing V))).comp yK) ≫ (ρ.pt a).left → yy a = QuotientAddGroup.mk pk.y) → ∀ (ϖ : V), Irreducible ϖ → ∀ (v : AddValuation (AlgebraicClosure (FractionRing V)) (WithTop ℚ)), ReciprocityTheory.ChartRestriction.G.DVR.ValOver ϖ (AlgebraicClosure (FractionRing V)) v → ∃ s : WithTop ℚ, (∀ b : S.Gam, s ≤ v (algebraMap (FractionRing V) (AlgebraicClosure (FractionRing V)) (yK ⟨S.th b, S.th_mem b⟩)) ∧ (yy b ≠ 0 → yK ⟨S.th b, S.th_mem b⟩ ≠ 0 → s < v (algebraMap (FractionRing V) (AlgebraicClosure (FractionRing V)) (yK ⟨S.th b, S.th_mem b⟩)))) ∧ ∀ n : ℕ, 2 ≤ n → n ∣ S.r * S.N → ∀ a : S.Gam, yy a = 0 → ∃ a' : S.Gam, yy a' = 0 ∧ n • (a' - a) = 0 ∧ v (algebraMap (FractionRing V) (AlgebraicClosure (FractionRing V)) (yK ⟨S.th a', S.th_mem a'⟩)) = s := by
   intro hL hL₂ o Ω _ _ _ _ S ρ V _ _ _ _ hc yK A φ cart lb G _ _ D U semi hy yy _hyy_onto hyy ϖ hϖ v hv
   obtain ⟨H, h₁, h₂, h₃, h₄⟩ := hyps hL hL₂

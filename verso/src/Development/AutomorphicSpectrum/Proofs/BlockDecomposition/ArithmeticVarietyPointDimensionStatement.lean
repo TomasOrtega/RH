@@ -12,5 +12,8 @@ open GroundTheory.Arith.SchemeCoh GroundTheory.Arith.SchemeCoh.ProjSpace
 open GlobalTheory.ArithmeticHeightTower GlobalTheory.CompanionTheory.MPDict ReciprocityTheory.ChartRestriction.G.AI.I1 ReciprocityTheory.ChartRestriction.G.AI.I4
 open GlobalTheory
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.MPDict.DimVar.isArithVar_ptIdeal | exact GlobalTheory.CompanionTheory.MPDict.DimVar.isArithVar_ptIdeal | (intros; apply GlobalTheory.CompanionTheory.MPDict.DimVar.isArithVar_ptIdeal <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.arithmetic_variety_point_dimension : ∀ (m : ℕ) (n : Fin (m + 1) → ℕ) (x : MP ℤ m n) (d : ℕ), CharZero ((MP ℤ m n).residueField x) → topologicalKrullDim (closure ({x} : Set (MP ℤ m n))) = (d : ℕ) → Geo.IsArithVar (ptIdeal x) d := by
   first | exact @GlobalTheory.CompanionTheory.MPDict.DimVar.isArithVar_ptIdeal | exact GlobalTheory.CompanionTheory.MPDict.DimVar.isArithVar_ptIdeal | (intros; apply GlobalTheory.CompanionTheory.MPDict.DimVar.isArithVar_ptIdeal <;> assumption)

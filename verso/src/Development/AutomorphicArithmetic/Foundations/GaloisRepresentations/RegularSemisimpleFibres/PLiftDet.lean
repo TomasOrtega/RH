@@ -6,11 +6,17 @@ open GroundTheory.Global GroundTheory.Global.SemiLocal UpperTheory.V.Published U
 open scoped Classical
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
+/- English proof (translation)
+Rewrite using `[RingHom.map_det]`. Both sides reduce to the same expression.
+-/
 private theorem det_gal {A B : Type} [Field A] [Field B] (f : A →+* B) (n : ℕ) (x : GL (Fin n) A) :
     ((gal f n x : GL (Fin n) B) : Matrix (Fin n) (Fin n) B).det = f (x : Matrix (Fin n) (Fin n) A).det := by
   rw [RingHom.map_det]
   rfl
 
+/- English proof (translation)
+Proceed by induction on `i with`. Consider the case `zero => simp`. Consider the case `succ i ih`. Rewrite using `[pow_succ', AlgEquiv.mul_apply, ih, hs, ← pow_mul, pow_succ]`.
+-/
 private theorem pow_apply_eq {F F' : Type} [Field F] [Field F'] [Algebra F F'] (s : F' ≃ₐ[F] F') (q : ℕ)
     (hs : ∀ z, s z = z ^ q) (i : ℕ) (z : F') : (s ^ i) z = z ^ (q ^ i) := by
   induction i with
@@ -18,6 +24,11 @@ private theorem pow_apply_eq {F F' : Type} [Field F] [Field F'] [Algebra F F'] (
   | succ i ih =>
     rw [pow_succ', AlgEquiv.mul_apply, ih, hs, ← pow_mul, pow_succ]
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `zero => simp [nrmG]`. Consider the case `succ l ih`. Establish `h : nrmG (galAct F F' t) s (l + 1) δ = nrmG (galAct F F' t) s l δ * galAct F F' t (s ^ l) δ`. Simplify using `[nrmG, List.range_succ]`.
+
+Rewrite using `[h, Units.val_mul, Matrix.det_mul, ih, galAct_apply, det_gal, Finset.sum_range_succ, pow_add]`. Use `congr 1`. Conclude with `pow_apply_eq s q hs l _`.
+-/
 private theorem det_nrmG {F F' : Type} [Field F] [Field F'] [Algebra F F'] (s : F' ≃ₐ[F] F') (q : ℕ)
     (hs : ∀ z, s z = z ^ q) (t l : ℕ) (δ : GL (Fin t) F') :
     ((nrmG (galAct F F' t) s l δ : GL (Fin t) F') : Matrix (Fin t) (Fin t) F').det =
@@ -32,6 +43,15 @@ private theorem det_nrmG {F F' : Type} [Field F] [Field F'] [Algebra F F'] (s : 
     congr 1
     exact pow_apply_eq s q hs l _
 
+/- English proof (translation)
+Introduce `F F' _ _ _ _ s hs ι θ t k hN`. Use function extensionality and compare the values at `δ`. Unfold `shLift`. Rewrite using `[dif_pos (hN δ)]`. Establish `hγ : IsNorm s δ (hN δ).choose` using `(hN δ).choose_spec`.
+
+Generalize the expression as in `(hN δ).choose = γ at hγ`. Establish `h1 : ((incl F F' t γ : GL (Fin t) F') : Matrix (Fin t) (Fin t) F').det = ((nrm s δ : GL (Fin t) F') : Matrix (Fin t) (Fin t) F').det`. Establish `h` using `congrArg Units.val (isConj_iff_eq.1 ((Matrix.GeneralLinearGroup.det).map_isConj hγ))`. Simplify using `using h`. Establish `h2 : algebraMap F F' (γ : Matrix (Fin t) (Fin t) F).det = (δ : Matrix (Fin t) (Fin t) F').det ^ ∑ i ∈ Finset.range (Module.finrank F F'), Nat.card F ^ i`.
+
+Rewrite using `[← det_nrmG s (Nat.card F) hs t _ δ]`. Establish `h3` using `det_gal (algebraMap F F') t γ`. Rewrite using `[← h3]`. Conclude with `h1`. Establish `h4 : pullθ ι θ (algebraMap F (AlgebraicClosure F) (γ : Matrix (Fin t) (Fin t) F).det) = θ (algebraMap F' (AlgebraicClosure F') (algebraMap F F' (γ : Matrix (Fin t) (Fin t) F).det))`.
+
+Express the relevant statement in the definitionally equal form `θ (ι _) = _`. Rewrite using `[ι.commutes, IsScalarTower.algebraMap_apply F F' (AlgebraicClosure F')]`. Simplify using `only [detc]`. Rewrite using `[h4, h2, map_pow, map_pow, ← pow_mul, mul_comm]`.
+-/
 theorem UpperTheory.Gal.InertialTypesAlt.liftDet :
     LiftDet := by
   intro F F' _ _ _ _ s hs ι θ t k hN

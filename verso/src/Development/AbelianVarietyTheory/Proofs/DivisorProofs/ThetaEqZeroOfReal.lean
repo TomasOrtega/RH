@@ -23,6 +23,13 @@ open scoped TensorProduct
 
 variable {D : D7} {S T : HSp D} {ψ : AddChar (AF D.host.F) ℂ}
 
+/- English proof (translation)
+Proceed by induction on `a using TensorProduct.induction_on with`. Consider the case `zero => simp only [smul_zero, sub_zero, map_zero, and_self]`. Consider the case `add a b ha hb`. Use `⟨by rw [smul_add, RingHom.map_add, ha.1, hb.1, add_zero], ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add, add_sub_add_comm, RingHom.map_add, ha.2, hb.2, add_zero]`.
+
+Consider the case `tmul a x`. Rewrite using `[TensorProduct.smul_tmul', ← TensorProduct.sub_tmul]`. Prove the components needed by the constructor for the conclusion. Use `show (sndA D.host.F (FinTranslate.eInf D • a)) ⊗ₜ[D.host.F] x = 0`. Rewrite using `[show sndA D.host.F (FinTranslate.eInf D • a) = 0 from zero_mul _, TensorProduct.zero_tmul]`.
+
+Use `show (fstA D.host.F (a - FinTranslate.eInf D • a)) ⊗ₜ[D.host.F] x = 0`. Rewrite using `[show fstA D.host.F (a - FinTranslate.eInf D • a) = 0 from (show a.1 - 1 * a.1 = 0 by rw [one_mul, sub_self]), TensorProduct.zero_tmul]`.
+-/
 theorem parts_eInf_smul (a : AE D) :
     finPart D (FinTranslate.eInf D • a) = 0 ∧ infPart D (a - FinTranslate.eInf D • a) = 0 := by
   induction a using TensorProduct.induction_on with
@@ -39,10 +46,16 @@ theorem parts_eInf_smul (a : AE D) :
       rw [show fstA D.host.F (a - FinTranslate.eInf D • a) = 0 from
         (show a.1 - 1 * a.1 = 0 by rw [one_mul, sub_self]), TensorProduct.zero_tmul]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨w - FinTranslate.eInf D • w, FinTranslate.eInf D • w, Matrix.ext fun i j => (parts_eInf_smul (w i j)).2, Matrix.ext fun i j => (parts_eInf_smul (w i j)).1, (sub_add_cancel _ _).symm⟩`.
+-/
 theorem exists_fin_add_real (w : WO S T) : ∃ u v, IsFinPt u ∧ IsRealPt v ∧ w = u + v :=
   ⟨w - FinTranslate.eInf D • w, FinTranslate.eInf D • w, Matrix.ext fun i j => (parts_eInf_smul (w i j)).2,
     Matrix.ext fun i j => (parts_eInf_smul (w i j)).1, (sub_add_cancel _ _).symm⟩
 
+/- English proof (translation)
+Take `⟨u, v, hu, hv, rfl⟩` from `exists_fin_add_real w`. Establish `h` using `GlobalTheory.FinTranslate.isTheta_heisO_fin hψ.1 hu (WeilVacMove.isTheta_heisO_real hψ hv hf)`. Rewrite `h` using `[WeilVacMove.heisO_heisO, (WeilVacMove.symplOH_fin_real S T u v hu hv).1, AddChar.map_zero_eq_one, one_smul]`. Then use the resulting hypothesis.
+-/
 theorem isTheta_heisO (hψ : IsStdChar D ψ (-1)) {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) (w : WO S T) :
     IsThetaFunO ψ S T (heisO ψ S T w f) := by
   obtain ⟨u, v, hu, hv, rfl⟩ := exists_fin_add_real w
@@ -50,6 +63,17 @@ theorem isTheta_heisO (hψ : IsStdChar D ψ (-1)) {f : WO S T → ℂ} (hf : IsT
   rwa [WeilVacMove.heisO_heisO, (WeilVacMove.symplOH_fin_real S T u v hu hv).1, AddChar.map_zero_eq_one,
     one_smul] at h
 
+/- English proof (translation)
+Establish `hΛ` using `stdL_full D.host.E S.rank`. Establish `hL` using `stdL_full D.host.E T.rank`. Establish `hO : ∀ c : 𝓞 D.host.F, ∀ y ∈ GlobalTheory.SW.tens (GlobalTheory.SW.stdL D.host.E S.rank) (GlobalTheory.SW.stdL D.host.E T.rank), (c : D.host.F) • y ∈ GlobalTheory.SW.tens (GlobalTheory.SW.stdL D.host.E S.rank) (GlobalTheory.SW.stdL D.host.E T.rank)` using `fun c y hy => smul_mem_tens _ _ (algebraMap (𝓞 D.host.F) (𝓞 D.host.E) c) hy`. Take `⟨U, hU, hl⟩` from `hf.level`. Take `⟨N, hN, hNU⟩` from `exists_nsmul_mem_open (F := D.host.F) (tens_fg _ _ hΛ.1 hL.1) U hU`.
+
+Use function extensionality and compare the values at `w`. Take `⟨u, v, hu, hv, rfl⟩` from `exists_fin_add_real w`. Take `⟨y, hy⟩` from `exists_rat (F := D.host.F) (tens_den _ _ hΛ.2 hL.2) hu`. Take `⟨y', -, u', hu', e⟩` from `exists_mod hO hN hy`. Establish `hfin : IsFinPt (S` using `S) (T := T) (N • u') := isFinPt_nsmul (inf_eq_zero_of_mem (F := D.host.F) hu') N`.
+
+Establish `hr0 : IsRealPt (ratW T S (y + y')ᵀ - finW S T (y + y'))`. Use function extensionality and compare the values at `a k`. Use `show finPart D (incA D ((y + y') k a) - finW S T (y + y') a k) = 0`. Rewrite using `[RingHom.map_sub]`. Conclude with `sub_eq_zero.2 rfl`.
+
+Establish `hr` using `isRealPt_sub hv hr0`. Establish `e0 : finW S T (y + y') = fT D.host.F 1 y + fT D.host.F 1 y'` using `(fT D.host.F 1).map_add y y'`. Establish `e1 : u + v = ratW T S (y + y')ᵀ + ((v - (ratW T S (y + y')ᵀ - finW S T (y + y'))) + N • u')`. Rewrite using `[e0, sub_eq_iff_eq_add.1 e]`. Normalize the expressions using the abelian group laws.
+
+Establish `e2` using `congrFun (hl _ (hNU u' hu') hfin) (v - (ratW T S (y + y')ᵀ - finW S T (y + y')))`. Rewrite `e2` using `[h0 _ hr]`. Unfold `heisO at e2`. Rewrite `e2` using `[(WeilVacMove.symplOH_fin_real S T _ _ hfin hr).2, AddChar.map_zero_eq_one, one_mul]`. Rewrite using `[e1, hf.quasi, e2, mul_zero, Pi.zero_apply]`.
+-/
 theorem theta_eq_zero_of_real {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) (h0 : ∀ w, IsRealPt w → f w = 0) :
     f = 0 := by
   have hΛ := stdL_full D.host.E S.rank
@@ -80,6 +104,9 @@ theorem theta_eq_zero_of_real {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) (
   rw [(WeilVacMove.symplOH_fin_real S T _ _ hfin hr).2, AddChar.map_zero_eq_one, one_mul] at e2
   rw [e1, hf.quasi, e2, mul_zero, Pi.zero_apply]
 
+/- English proof (translation)
+Establish `h1` using `H.om_heis 1 γ (actO S T 1⁻¹ γ⁻¹ w) f hf`. Establish `h2` using `H.om_aut 1 (one_mem _) γ hγ _ (isTheta_heisO H.std hf (actO S T 1⁻¹ γ⁻¹ w))`. Rewrite `h1` using `[OmRat.actO_inv_cancel]`. Rewrite using `[← OmRat.heisO_at_zero ψ w (om (1, γ) f), ← h1]`. Conclude with `h2.trans (OmRat.heisO_at_zero _ _ _)`.
+-/
 theorem om_subst {χS χT : (AE D)ˣ →* Circle} {om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)}
     (H : IsWeilDatumO ψ S T χS χT om) {γ : GA D T} (hγ : γ ∈ GQ T) {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f)
     (w : WO S T) : om (1, γ) f w = f (actO S T 1⁻¹ γ⁻¹ w) := by
@@ -100,6 +127,29 @@ attribute [local instance] Over.cartesianMonoidalCategory
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {σ : c.F →+* ℂ}
 
+/- English proof (translation)
+Take `⟨hP, hy, -, -, him, χ, fr, f1, f2, f3, f4, f5, f6⟩` from `h`. Take `⟨-, -, -, -, him', χ', fr', g1, g2, g3, g4, g5, g6⟩` from `h'`. Take `rfl : Hm = Hm'` from `TorusFamilyTheta.matrix_eq_of_im hP.2.2.2.1 (by`. Introduce and unpack `_ ⟨a, rfl⟩ _ ⟨b, rfl⟩`. Rewrite using `[him, him'])`.
+
+Use `⟨rfl, ?_⟩` and prove the remaining obligations. Take `⟨R, hR⟩` from `FrameSign.exists_period_norm_le' Pm hP.2.2.1 hP.2.2.2.1`. Establish `hch : ∀ z, ∃ j, ⊤ ≤ (F.ex k Pm z).left ⁻¹ᵁ Xo.univ.t.PP.L.U j` using `fun z => PullHermitian.exists_chart _ Xo.univ.t.PP.isLB`. Establish `hex : ∀ b z, F.ex k Pm (z + Pm b) = F.ex k Pm z` using `fun b z => by`. Rewrite using `[F.ex_add k Pm hP, (F.ex_ker k Pm hP (Pm b)).2 ⟨b, rfl⟩, _root_.mul_one]`.
+
+Establish `ho : ∀ j, IsOpen {z | ⊤ ≤ (F.ex k Pm z).left ⁻¹ᵁ Xo.univ.t.PP.L.U j}` using `fun j => by`. Establish `h0` using `(EtaAn.isHolTo_ex_of_isPeriod F k Pm hP (Xo.univ.t.PP.L.U j) 0).1`. Simplify `h0` using `only [Set.mem_univ, true_and]`. Take `⟨q, hq, hG⟩` from `PullHermitian.exists_glue _ ho hch (fun j z => fr j z * (fr' j z)⁻¹) (fun j => (f1 j).mul ((g1 j).inv (g2 j))) (fun j j' z hz hz' => by`. Establish `hm` using `(CubeValues.le_preimage_inf _ _ _).2 ⟨hz, hz'⟩`.
+
+Rewrite using `[← div_eq_mul_inv, ← div_eq_mul_inv, div_eq_div_iff (g2 _ _ hz) (g2 _ _ hz'), f3 j j' z hm, g3 j j' z hm]`. Use the proof step `ring)`. Establish `hq0 : ∀ z, q z ≠ 0` using `fun z => by`. Take `⟨j, hj⟩` from `hch z`. Rewrite using `[hG j z hj]`.
+
+Conclude with `mul_ne_zero (f2 j z hj) (inv_ne_zero (g2 j z hj))`. Take `⟨-, hc⟩` from `FrameUnits.form_eq_zero_and_const hR q hq hq0 (fun _ _ => 0) continuous_const (by simp) (by simp) (by simp) (by`. Introduce and unpack `_ ⟨b, rfl⟩`. Take `⟨j0, -⟩` from `hch 0`. Establish `n1` using `(f5 b j0 0).1`.
+
+Establish `n2` using `(g5 b j0 0).1`. Use `⟨χ' (Pm b) / χ (Pm b), by rw [norm_div, n1, n2, div_one], fun z => ?_⟩` and prove the remaining obligations. Take `⟨j, hj⟩` from `hch z`. Establish `hj' : ⊤ ≤ (F.ex k Pm (z + Pm b)).left ⁻¹ᵁ Xo.univ.t.PP.L.U j` using `by rw [hex]; exact hj`. Establish `m1 : χ (Pm b) ≠ 0` using `norm_ne_zero_iff.1 (by rw [n1]; exact one_ne_zero)`.
+
+Establish `m2 : χ' (Pm b) ≠ 0` using `norm_ne_zero_iff.1 (by rw [n2]; exact one_ne_zero)`. Establish `m3` using `g2 j _ hj'`. Rewrite using `[hG j z hj, hG j _ hj', (f5 b j z).2 hj, (g5 b j z).2 hj]`. Simplify using `only [mul_zero, add_zero, Complex.exp_zero]`. Use the proof step `field_simp)`.
+
+Establish `h1 : q 0 = 1`. Take `⟨j, hj⟩` from `hch 0`. Rewrite using `[hG j 0 hj, f4 j hj, ← g4 j hj, mul_inv_cancel₀ (g2 j 0 hj)]`. Use function extensionality and compare the values at `z`. Take `⟨j, hj⟩` from `hch z`.
+
+Establish `hfr : fr j z = fr' j z`. Use `hG j z hj` as an intermediate fact. Rewrite `this` using `[hc, h1]`. Conclude with `(mul_inv_eq_one₀ (g2 j z hj)).1 this.symm`. Choose the witnesses or unpack the hypotheses as in `⟨pt, p1, p2⟩ : ∃ pt : Sp ℂ ⟶ Gx y.x, pt ≫ gxFst y.x = (F.ex k Pm z).left ∧ pt ≫ gxSnd y.x = 𝟙 (Sp ℂ) := by`.
+
+Establish `key : ∀ x : Sp ℂ ⟶ Xo.X, x = F.u k Pm → ∃ pt : Sp ℂ ⟶ Gx x, pt ≫ gxFst x = (F.ex k Pm z).left ∧ pt ≫ gxSnd x = 𝟙 (Sp ℂ)`. Introduce and unpack `_ rfl`. Conclude with `⟨(lift (𝟙 (Over.mk (F.u k Pm))) (F.ex k Pm z)).left, congrArg CommaMorphism.left (lift_snd (𝟙 (Over.mk (F.u k Pm))) (F.ex k Pm z)), congrArg CommaMorphism.left (lift_fst (𝟙 (Over.mk (F.u k Pm))) (F.ex k Pm z))⟩`. Conclude with `key _ hy`. Apply `mul_right_cancel₀ (g2 j z hj)` to reduce the goal to its premises.
+
+Rewrite using `[← g6 j z pt p1 p2 hj, f6 j z pt p1 p2 hj, hfr]`.
+-/
 theorem isCanTheta_unique {g : ℕ} {lab : Fin g → E →+* ℂ}
     {F : FamilyUnif Xo (σ.comp (IntermediateField.inclusion c.le).toRingHom) lab} {k : Fin F.n}
     {Pm : (F.Di k).La →+ (Fin g → ℂ)} {y : FrPt Xo c (CAt σ)} {Hm Hm' : Matrix (Fin g) (Fin g) ℂ}
@@ -172,11 +222,19 @@ open scoped TensorProduct
 
 variable {D : D7}
 
+/- English proof (translation)
+Unfold `archM`. Rewrite using `[map_mul, Units.val_mul, Matrix.map_mul]`.
+-/
 theorem archM_mul (W : HSp D) (th : Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ) (g g' : GA D W) :
     archM W th (g * g') = archM W th g * archM W th g' := by
   unfold archM
   rw [map_mul, Units.val_mul, Matrix.map_mul]
 
+/- English proof (translation)
+Establish `e1 : archM W th γ = archM W th γ'`. Rewrite using `[← mul_inv_cancel_right γ h, ← mul_inv_cancel_right γ' h, archM_mul W th (γ * h), archM_mul W th (γ' * h), e]`. Take `⟨m, hm⟩` from `ThetaSpace.exists_mt_eq W hγ`. Take `⟨m', hm'⟩` from `ThetaSpace.exists_mt_eq W hγ'`. Establish `key : ∀ (g : GA D W) (n : Matrix (Fin W.rank) (Fin W.rank) D.host.E), mt W g = n.map (incA D) → ∀ a b, archM W th g a b = τ (n a b)` using `fun g n hn a b => by`.
+
+Establish `: archM W th g a b = th (infPart D (mt W g a b))` using `rfl`. Rewrite using `[this, hn]`. Conclude with `hth.1 _`. Establish `e2 : m = m'` using `Matrix.ext fun a b => τ.injective (by rw [← key γ m hm, ← key γ' m' hm', e1])`. Conclude with `Subtype.ext (Units.ext (hm.trans (e2 ▸ hm'.symm)))`.
+-/
 theorem rat_eq_of_archM {W : HSp D} {τ : D.host.E →+* ℂ} {th : Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ}
     (hth : Formalism.MainNotions.StandardLattice.IsInfEmb τ th) {γ γ' h : GA D W} (hγ : γ ∈ GQ W) (hγ' : γ' ∈ GQ W)
     (e : archM W th (γ * h) = archM W th (γ' * h)) : γ = γ' := by
@@ -195,6 +253,23 @@ theorem rat_eq_of_archM {W : HSp D} {τ : D.host.E →+* ℂ} {th : Ainf D.host.
 variable {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E} {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l}
   {c : Coeff l} {σ : c.F →+* ℂ} {r : ℕ}
 
+/- English proof (translation)
+Take `⟨γ, ⟨hγ, -⟩, hm, hx, Pm, Hm, θ, hP, hθ, hw⟩` from `hc h`. Take `⟨γ', ⟨hγ', -⟩, hm', hx', Pm', Hm', θ', hP', hθ', hw'⟩` from `hc' h`. Choose the witnesses or unpack the hypotheses as in `rfl : γ = γ' := by`. Take `⟨τ, hτ⟩` from `hΨ (dict h).1`. Establish `hd : (mat (dict h).2 ⟨τ, hτ⟩).det ≠ 0` using `(hx ⟨τ, hτ⟩).1`.
+
+Rewrite `hd` using `[hm, Matrix.det_mul]`. Establish `hu : IsUnit (x₀ τ)` using `(Matrix.isUnit_iff_isUnit_det _).2 (isUnit_iff_ne_zero.2 (right_ne_zero_of_mul hd))`. Conclude with `rat_eq_of_archM (hth _ ⟨τ, hτ⟩) hγ hγ' ((Matrix.reindex _ _).injective (hu.mul_right_cancel ((hm ⟨τ, hτ⟩).symm.trans (hm' ⟨τ, hτ⟩))))`. Take `rfl : Pm = Pm'` from `AddMonoidHom.ext fun x => funext fun j => (hP x j).trans (hP' x j).symm`. Take `⟨rfl, rfl⟩` from `isCanTheta_unique hθ hθ'`.
+
+Establish `hs : ∀ {χ₁ χ₂ : (AE D)ˣ →* Circle} {o : GA D V × GA D W →* Module.End ℂ (WO V W → ℂ)}, IsWeilDatumO ψ V W χ₁ χ₂ o → ∀ w, o (1, γ * h) vac w = IndefiniteRowSideFullHecke.FrameConstantVectors.frameVec o vac h (actO V W 1⁻¹ γ⁻¹ w)` using `fun {_ _ o} H w => by`. Establish `: ((1, γ * h) : GA D V × GA D W) = (1, γ) * (1, h)` using `by rw [Prod.mk_mul_mk, one_mul]`. Rewrite using `[this, map_mul, Module.End.mul_apply]`. Conclude with `om_subst H hγ (H.om_pres _ _ hv) w`. Establish `h1 : a • IndefiniteRowSideFullHecke.FrameConstantVectors.frameVec om' vac h = b • IndefiniteRowSideFullHecke.FrameConstantVectors.frameVec om vac h ↔ ∀ w, a * om' (1, γ * h) vac w = b * om (1, γ * h) vac w`.
+
+Simplify using `only [hs ho, hs ho']`. Use `⟨fun H w => congrFun H _, fun H => funext fun w => ?_⟩` and prove the remaining obligations. Use `H (actO V W 1 γ w)` as an intermediate fact. Establish `e1` using `Ker.OmRat.actO_inv_cancel (1 : GA D V)⁻¹ γ⁻¹ w`. Rewrite `e1` using `[inv_inv, inv_inv]`.
+
+Rewrite `this` using `[e1]`. Then use the resulting hypothesis. Rewrite using `[h1]`. Prove the components needed by the constructor for the conclusion. Introduce `H`. Choose the witnesses or unpack the hypotheses as in `⟨w, hw0, hne⟩ : ∃ w, Ker.IsRealPt w ∧ om (1, γ * h) vac w ≠ 0 := by`.
+
+Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Conclude with `IndefiniteRowSideFullHecke.FrameConstantVectors.frameVec_ne_zero om hv0 (γ * h) (theta_eq_zero_of_real (ho.om_pres _ _ hv) hcon)`. Establish `e1` using `hw w hw0 _ fun _ _ => rfl`. Establish `e2` using `hw' w hw0 _ fun _ _ => rfl`.
+
+Use `mul_right_cancel₀ (right_ne_zero_of_mul (e1 ▸ mul_ne_zero (Complex.exp_ne_zero _) hne)) ?_` and prove the remaining obligations. Rewrite using `[mul_assoc, mul_assoc, ← e1, ← e2, mul_left_comm, H w, mul_left_comm]`. Introduce `H w`. Establish `hz` using `theta_eq_zero_of_real (WeilVacMove.isTheta_sub (WeilVacMove.isTheta_smul a (ho'.om_pres (1, γ * h) _ hv)) (WeilVacMove.isTheta_smul b (ho.om_pres (1, γ * h) _ hv))) fun u hu => by`. Establish `e1` using `hw u hu _ fun _ _ => rfl`.
+
+Establish `e2` using `hw' u hu _ fun _ _ => rfl`. Rewrite using `[Pi.sub_apply, Pi.smul_apply, Pi.smul_apply, smul_eq_mul, smul_eq_mul]`. Use `(mul_eq_zero.1 ?_).resolve_left (Complex.exp_ne_zero (Real.pi / 2 * ∑ b, hermForm Hm (fun j => IndefiniteRowSideFullHecke.WeilTwistColumns.perReal (U.X (dict h).1) (dict h).2 (IndefiniteRowSideFullHecke.WeilTwistColumns.colAt hr (th (dict h).1) u b) (relab c σ (e j).1) (e j).2) ( …` and prove the remaining obligations. Rewrite using `[mul_sub, mul_left_comm, e2, mul_left_comm _ b, e1, ← mul_assoc, ← mul_assoc, H, sub_self]`. Conclude with `sub_eq_zero.1 (congrFun hz w)`.
+-/
 theorem frame_iff_const {U : Unf Xo c σ r} {V W : HSp D} {hr : W.rank = r} {dict : GA D W → Σ k, Frame (U.X k).Ψ r}
     {ι : Dw.La →ₗ[𝓞 D.host.E] (Fin W.rank → D.host.E)} {g : ℕ} {e : Fin g ≃ Σ τ : D.host.E →+* ℂ, Fin (Dw.mult τ)}
     {F : FamilyUnif Xo (σ.comp (IntermediateField.inclusion c.le).toRingHom) (fun j => relab c σ (e j).1)}
@@ -259,6 +334,9 @@ theorem frame_iff_const {U : Unf Xo c σ r} {V W : HSp D} {hr : W.rank = r} {dic
         rw [mul_sub, mul_left_comm, e2, mul_left_comm _ b, e1, ← mul_assoc, ← mul_assoc, H, sub_self]
     exact sub_eq_zero.1 (congrFun hz w)
 
+/- English proof (translation)
+Take `⟨c0, hc, H⟩` from `h`. Use `⟨c0, hc, fun t g => ?_⟩` and prove the remaining obligations. Take `⟨-, -, _, _, _, _, _, _, -, hD, hval⟩` from `H t`. Take `⟨γ, hγ, h1, h2, -⟩` from `hD.2 g`. Conclude with `⟨γ, hγ, hval g γ ⟨hγ, h1, h2⟩⟩`.
+-/
 theorem cXi_value {n : ℕ} {W : HSp D} {hr : W.rank = r} {T0 : Type} {dδ : T0 → DeltaDat Xo c n}
     {U₂ : ∀ t, Unf (dδ t).Xo₂ (dδ t).c₂ (σ.comp ((dδ t).eF.symm : (dδ t).c₂.F →+* c.F)) r}
     {dict₂ : ∀ t, GA D W → Σ k, Frame ((U₂ t).X k).Ψ r} {ι : Dw.La →ₗ[𝓞 D.host.E] (Fin W.rank → D.host.E)}

@@ -4,6 +4,9 @@ open scoped MatrixGroups ModularForm Manifold
 
 namespace GlobalTheory.HeckeFamilyMatrices
 
+/- English proof (translation)
+Introduce `Γ _ k f`. Use `⟨f.holo', fun c hc => ?_⟩` and prove the remaining obligations. Rewrite `hc` using `[← Subgroup.IsArithmetic.isCusp_iff_isCusp_SL2Z (Γ : Subgroup (GL (Fin 2) ℝ))]`. Conclude with `f.zero_at_cusps' hc`.
+-/
 theorem cuspForm_cuspAll : ∀ (Γ : Subgroup SL(2, ℤ)) [Γ.FiniteIndex] (k : ℤ) (f : CuspForm Γ k), CuspAll k f := by
   intro Γ _ k f
   refine ⟨f.holo', fun c hc => ?_⟩

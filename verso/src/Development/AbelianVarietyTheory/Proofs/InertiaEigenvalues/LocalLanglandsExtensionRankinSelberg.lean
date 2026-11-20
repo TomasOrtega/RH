@@ -21,12 +21,20 @@ variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAl
   {a : Weil h →* (w.adicCompletion E)ˣ} {ha : IsLocalArtin h a}
   {e : AddChar (w.adicCompletion E) Circle → WD h → ℂˣ} {r : IrrGL (w.adicCompletion E) → WD h}
 
+/- English proof (translation)
+Rewrite using `[IrrGL.nu, H.twist x hx, WD.lpTw]`. Use `congr 1`. Conclude with `ha.absPow_comp s`.
+-/
 theorem nu_eq (H : CuspLaws a ha e r) {x : IrrGL (w.adicCompletion E)} (hx : x.IsCusp) (s : ℝ) :
     r (x.nu s) = (r x).lpTw s := by
   rw [IrrGL.nu, H.twist x hx, WD.lpTw]
   congr 1
   exact ha.absPow_comp s
 
+/- English proof (translation)
+Take `⟨hl, hD⟩` from `hd`. Establish `hc : (Δ.first.nu ((Δ.len : ℂ) - 1)).IsCusp` using `Δ.isCusp_first.nu _`. Establish `e1` using `H.dual _ _ hc Δ'.isCusp_first hD`. Establish `e2 : Δ.first.nu ((Δ.len : ℂ) - 1) = Δ.first.nu (((Δ.len : ℝ) - 1 : ℝ) : ℂ)` using `by push_cast; rfl`. Rewrite `e1` using `[e2, nu_eq H Δ.isCusp_first]`.
+
+Take `⟨hS, hT, hP⟩` from `GlobalTheory.T.weilDeligneParam_dual_listSum_absTwist_special E Ω A w h`. Rewrite using `[e1, hl, hP, hT, hT, WD.lpTw_add]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem summand_dual (H : CuspLaws a ha e r) {Δ Δ' : Segment (w.adicCompletion E)} (hd : SegDual Δ Δ') :
     ((r Δ'.first).lpTw (((Δ'.len : ℝ) - 1) / 2)).lpChar (WD.lpSp h Δ'.len) =
       (((r Δ.first).lpTw (((Δ.len : ℝ) - 1) / 2)).lpChar (WD.lpSp h Δ.len)).lpDual := by
@@ -40,6 +48,9 @@ theorem summand_dual (H : CuspLaws a ha e r) {Δ Δ' : Segment (w.adicCompletion
   congr 2
   ring
 
+/- English proof (translation)
+Proceed by induction on `hF with`. Consider the case `nil => rfl`. Consider the case `cons hd _ ih => rw [List.map_cons, List.map_cons, ih, summand_dual H hd]`.
+-/
 theorem map_summand_dual (H : CuspLaws a ha e r) {l l' : List (Segment (w.adicCompletion E))}
     (hF : List.Forall₂ SegDual l l') :
     l'.map (fun Δ => ((r Δ.first).lpTw (((Δ.len : ℝ) - 1) / 2)).lpChar (WD.lpSp h Δ.len)) =

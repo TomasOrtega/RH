@@ -4,6 +4,17 @@ open GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.SmGL Matrix Topology
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `G X _ _ _ _ r h1 hmul hc Φ`. Establish `hΦ : IsLocallyConstant Φ.1 ∧ HasCompactSupport Φ.1` using `Φ.2`. Take `⟨hlc, hcs⟩` from `hΦ`. Establish `hA : IsLocallyConstant (fun z : G × X => Φ.1 (r z.2 z.1))` using `hlc.comp_continuous (hc.comp continuous_swap)`. Establish `hB : IsLocallyConstant (fun z : G × X => Φ.1 z.2)` using `hlc.comp_continuous continuous_snd`.
+
+Establish `key : ∀ᶠ u in nhds (1 : G), ∀ x ∈ tsupport Φ.1, Φ.1 (r x u) = Φ.1 x`. Use `IsCompact.eventually_forall_of_forall_eventually (P := fun u x => Φ.1 (r x u) = Φ.1 x) hcs ?_` and prove the remaining obligations. Introduce `y _`. Use `filter_upwards [hA.eventually_eq ((1 : G), y), hB.eventually_eq ((1 : G), y)] with z hz hz'`. Rewrite using `[hz, hz']`.
+
+Simplify using `only [h1]`. Establish `key' : ∀ᶠ u in nhds (1 : G), ∀ x ∈ tsupport Φ.1, Φ.1 (r x u⁻¹) = Φ.1 x`. Establish `ht : Filter.Tendsto (fun u : G => u⁻¹) (nhds 1) (nhds 1)`. Simplify using `using (continuous_inv (G := G)).tendsto 1`. Conclude with `ht.eventually key`.
+
+Use `filter_upwards [key, key'] with u hu hu' x`. Distinguish the cases in `hx : x ∈ tsupport Φ.1`. Conclude with `hu x hx`. Distinguish the cases in `hy : r x u ∈ tsupport Φ.1`. Use `hu' _ hy` as an intermediate fact.
+
+Rewrite `this` using `[← hmul, mul_inv_cancel, h1]`. Conclude with `this.symm`. Rewrite using `[image_eq_zero_of_notMem_tsupport hx, image_eq_zero_of_notMem_tsupport hy]`.
+-/
 theorem schwartzBruhat_eventually_invariant_of_continuous_action :
     ∀ (G X : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [TopologicalSpace X]
       (r : X → G → X), (∀ x, r x 1 = x) → (∀ x g h, r x (g * h) = r (r x g) h) →

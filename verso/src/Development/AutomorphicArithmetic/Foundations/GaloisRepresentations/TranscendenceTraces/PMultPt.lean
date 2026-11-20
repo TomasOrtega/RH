@@ -3,6 +3,11 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Trans
 
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex GlobalTheory.EtC UpperTheory.Gal.TranscendenceTraces
 
+/- English proof (translation)
+Take `⟨⟨t, a⟩, rfl⟩` from `(Scheme.SpecToEquivOfField Ω S).symm.surjective x`. Establish `hx : (Scheme.SpecToEquivOfField Ω S).symm ⟨t, a⟩ = Spec.map a ≫ S.fromSpecResidueField t`. Simplify using `[Scheme.SpecToEquivOfField]`. Rewrite `h`, the goal using `[hx]`. Establish `hs : s ∈ Set.range (S.fromSpecResidueField t)` using `⟨pt (Spec.map a), by rw [← pt_comp, h]⟩`.
+
+Rewrite `hs` using `[Scheme.range_fromSpecResidueField, Set.mem_singleton_iff]`. Substitute `hs` using the available equality. Conclude with `⟨Spec.map a, rfl⟩`.
+-/
 private theorem exists_fac {Ω : Type} [Field Ω] {S : Scheme.{0}} (x : gp Ω ⟶ S) (s : S) (h : pt x = s) :
     ∃ a : gp Ω ⟶ Spec (S.residueField s), a ≫ S.fromSpecResidueField s = x := by
   obtain ⟨⟨t, a⟩, rfl⟩ := (Scheme.SpecToEquivOfField Ω S).symm.surjective x
@@ -14,6 +19,15 @@ private theorem exists_fac {Ω : Type} [Field Ω] {S : Scheme.{0}} (x : gp Ω �
   subst hs
   exact ⟨Spec.map a, rfl⟩
 
+/- English proof (translation)
+Introduce `hflat hpt hbc Z S p _ Ω Ω' _ _ _ _ z z' hzz`. Take `⟨s, hs⟩ : ∃ s, p (pt z) = s` from `⟨_, rfl⟩`. Establish `hpb` using `IsPullback.of_hasPullback p (S.fromSpecResidueField s)`. Establish `hw` using `hpt (pullback.snd p (S.fromSpecResidueField s)) (mult (pullback.snd p (S.fromSpecResidueField s))) (hflat _)`. Establish `hm` using `hbc _ _ _ _ hpb`.
+
+Take `⟨a, ha⟩` from `exists_fac (z ≫ p) s (by rw [pt_comp, hs])`. Take `⟨a', ha'⟩` from `exists_fac (z' ≫ p) s (by rw [pt_comp, ← hzz, hs])`. Take `⟨z1, e1⟩ : ∃ z1 : gp Ω ⟶ pullback p (S.fromSpecResidueField s), z1 ≫ pullback.fst _ _ = z` from `⟨pullback.lift z a ha.symm, pullback.lift_fst _ _ _⟩`. Take `⟨z1', e1'⟩ : ∃ z1' : gp Ω' ⟶ pullback p (S.fromSpecResidueField s), z1' ≫ pullback.fst _ _ = z'` from `⟨pullback.lift z' a' ha'.symm, pullback.lift_fst _ _ _⟩`. Establish `hp1 : pt z1 = pt z1'`.
+
+Apply `(IsPreimmersion.isEmbedding (pullback.fst p (S.fromSpecResidueField s))).injective` to reduce the goal to its premises. Rewrite using `[← pt_comp z1, ← pt_comp z1', e1, e1']`. Conclude with `hzz`. Establish `key` using `hw Ω Ω' z1 z1' hp1`. Rewrite `key` using `[hm]`.
+
+Simplify `key` using `[Wt.comap, e1, e1']`.
+-/
 theorem UpperTheory.Gal.TranscendenceTraces.multPt_of :
     WtFlat → WtPt → MultBC → MultPt := by
   intro hflat hpt hbc Z S p _ Ω Ω' _ _ _ _ z z' hzz

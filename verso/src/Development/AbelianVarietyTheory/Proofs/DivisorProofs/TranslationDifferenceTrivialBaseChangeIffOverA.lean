@@ -10,6 +10,13 @@ noncomputable section
 
 namespace GlobalTheory.TwistFlat
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `e`. Establish `e'` using `pull_eq_zero_of_mem (f₁ ⁻¹ᵁ U) ((f₂ ⁻¹ᵁ U).ι ≫ k) (fun z ↦ by show f₁ (k ((f₂ ⁻¹ᵁ U).ι z)) ∈ U`. Rewrite using `[← Scheme.Hom.comp_apply, hf']`. Conclude with `z.2) (c := CechPic.pull h c) e`.
+
+Rewrite `e'` using `[← pull_comp, Category.assoc, hk, Category.comp_id]`. Then use the resulting hypothesis. Introduce `e`. Rewrite using `[← pull_comp]`. Conclude with `pull_eq_zero_of_mem (f₂ ⁻¹ᵁ U) ((f₁ ⁻¹ᵁ U).ι ≫ h) (fun z ↦ by show f₂ (h ((f₁ ⁻¹ᵁ U).ι z)) ∈ U`. Rewrite using `[← Scheme.Hom.comp_apply, hf]`.
+
+Conclude with `z.2) e`.
+-/
 theorem pull_restrict_eq_zero_iff {X₁ X₂ Z : Scheme.{0}} (f₁ : X₁ ⟶ Z) (f₂ : X₂ ⟶ Z) (h : X₁ ⟶ X₂) (k : X₂ ⟶ X₁)
     (hk : k ≫ h = 𝟙 X₂) (hf : h ≫ f₂ = f₁) (hf' : k ≫ f₁ = f₂) (U : Z.Opens) (c : Pic X₂) :
     CechPic.pull (f₁ ⁻¹ᵁ U).ι (CechPic.pull h c) = 0 ↔ CechPic.pull (f₂ ⁻¹ᵁ U).ι c = 0 := by
@@ -40,17 +47,29 @@ def cmpInv : pullback (Y.hom ≫ φ ≫ T.hom) A.hom ⟶ pullback Y.hom (pullbac
     (pullback.lift (pullback.snd _ A.hom) (pullback.fst _ A.hom ≫ Y.hom) (by
       rw [Category.assoc]; exact pullback.condition.symm)) (pullback.lift_snd _ _ _).symm
 
+/- English proof (translation)
+Apply the tactic sequence `apply pullback.hom_ext <;>`. Simplify using `only [cmpHom, cmpInv, Category.assoc, pullback.lift_fst, pullback.lift_snd, pullback.lift_fst_assoc, pullback.lift_snd_assoc, Category.id_comp]`.
+-/
 theorem cmpInv_hom : cmpInv A φ Y ≫ cmpHom A φ Y = 𝟙 _ := by
   apply pullback.hom_ext <;>
     simp only [cmpHom, cmpInv, Category.assoc, pullback.lift_fst, pullback.lift_snd, pullback.lift_fst_assoc,
       pullback.lift_snd_assoc, Category.id_comp]
 
+/- English proof (translation)
+The claim follows from `pullback.lift_fst _ _ _`.
+-/
 theorem cmpHom_fst : cmpHom A φ Y ≫ pullback.fst _ A.hom = pullback.fst Y.hom (pullback.snd A.hom (φ ≫ T.hom)) :=
   pullback.lift_fst _ _ _
 
+/- English proof (translation)
+The claim follows from `pullback.lift_fst _ _ _`.
+-/
 theorem cmpInv_fst : cmpInv A φ Y ≫ pullback.fst Y.hom (pullback.snd A.hom (φ ≫ T.hom)) = pullback.fst _ A.hom :=
   pullback.lift_fst _ _ _
 
+/- English proof (translation)
+The claim follows from `pullback.lift_snd _ _ _`.
+-/
 theorem cmpHom_snd : cmpHom A φ Y ≫ pullback.snd (Y.hom ≫ φ ≫ T.hom) A.hom =
     pullback.snd Y.hom (pullback.snd A.hom (φ ≫ T.hom)) ≫ pullback.fst A.hom (φ ≫ T.hom) :=
   pullback.lift_snd _ _ _
@@ -69,6 +88,9 @@ def cmpOver (Y : Over (Sp V)) : Over.mk ((Y ⊗ bc A φ).hom ≫ φ ≫ T.hom) �
       (pullback.fst Y.hom (pullback.snd A.hom (φ ≫ T.hom)) ≫ Y.hom) ≫ φ ≫ T.hom
     rw [← Category.assoc, cmpHom_fst, Category.assoc])
 
+/- English proof (translation)
+Establish `hG` using `(ReciprocityTheory.ChartRestriction.G.Geo.Tor.isGrpPullback_pullback A (φ ≫ T.hom)).2 (Y ⊗ bc A φ) (fst Y (bc A φ) ≫ x) (snd Y (bc A φ)) (cmpOver A φ Y ≫ fst (up φ Y) A ≫ upa φ x) (cmpOver A φ Y ≫ snd (up φ Y) A) (by show cmpHom A φ Y ≫ pullback.fst _ A.hom ≫ x.left ≫ pullback.fs …`. Rewrite using `[← Category.assoc, cmpHom_fst, Category.assoc]) (cmpHom_snd A φ Y)`. Rewrite `hG` using `[← MonObj.comp_mul]`. Conclude with `hG.symm`.
+-/
 theorem mul_left_fst {Y : Over (Sp V)} (x : Y ⟶ bc A φ) :
     ((fst Y (bc A φ) ≫ x) * snd Y (bc A φ)).left ≫ pullback.fst A.hom (φ ≫ T.hom) =
       cmpHom A φ Y ≫ ((fst (up φ Y) A ≫ upa φ x) * snd (up φ Y) A).left := by
@@ -81,6 +103,11 @@ theorem mul_left_fst {Y : Over (Sp V)} (x : Y ⟶ bc A φ) :
   rw [← MonObj.comp_mul] at hG
   exact hG.symm
 
+/- English proof (translation)
+Apply `pullback.hom_ext` to reduce the goal to its premises. Use `show (snd Y (bc A φ)).left ≫ (lift (pa A φ) (pt A φ) ≫ fst A T).left = cmpHom A φ Y ≫ (lift (snd (up φ Y) A) (fst (up φ Y) A ≫ upt φ Y) ≫ fst A T).left`. Rewrite using `[lift_fst, lift_fst]`. Conclude with `(cmpHom_snd A φ Y).symm`. Use `show (snd Y (bc A φ)).left ≫ (lift (pa A φ) (pt A φ) ≫ snd A T).left = cmpHom A φ Y ≫ (lift (snd (up φ Y) A) (fst (up φ Y) A ≫ upt φ Y) ≫ snd A T).left`.
+
+Rewrite using `[lift_snd, lift_snd]`. Use `show pullback.snd Y.hom (pullback.snd A.hom (φ ≫ T.hom)) ≫ pullback.snd A.hom (φ ≫ T.hom) ≫ φ = cmpHom A φ Y ≫ pullback.fst _ A.hom ≫ Y.hom ≫ φ`. Rewrite using `[← Category.assoc (cmpHom A φ Y), cmpHom_fst, ← Category.assoc, ← pullback.condition, Category.assoc]`.
+-/
 theorem snd_lift_pa_pt (Y : Over (Sp V)) :
     (snd Y (bc A φ)).left ≫ (lift (pa A φ) (pt A φ)).left =
       cmpHom A φ Y ≫ (lift (snd (up φ Y) A) (fst (up φ Y) A ≫ upt φ Y)).left := by
@@ -96,11 +123,23 @@ theorem snd_lift_pa_pt (Y : Over (Sp V)) :
       cmpHom A φ Y ≫ pullback.fst _ A.hom ≫ Y.hom ≫ φ
     rw [← Category.assoc (cmpHom A φ Y), cmpHom_fst, ← Category.assoc, ← pullback.condition, Category.assoc]
 
+/- English proof (translation)
+Unfold `Triv`. Rewrite using `[← cls_eq_zero_iff (pull_isLB hD _), cls_pull hD]`.
+-/
 theorem triv_pull_iff {X : Scheme.{0}} {D : LB X} (hD : D.IsLB) (W : X.Opens) :
     Triv (D.pull W.ι) ↔ CechPic.pull W.ι (cls D hD) = 0 := by
   unfold Triv
   rw [← cls_eq_zero_iff (pull_isLB hD _), cls_pull hD]
 
+/- English proof (translation)
+Establish `hL' : (L.pull (pullback.fst A.hom (φ ≫ T.hom))).IsLB` using `pull_isLB hL _`. Establish `h₁ : (translDiff (bc A φ) (L.pull (pullback.fst A.hom (φ ≫ T.hom))) x).IsLB` using `LB.isLB_linComb hL' _ _`. Establish `hO : (twist A φ N).IsLB` using `pull_isLB hN _`. Establish `h₂ : ((twist A φ N).pull (snd Y (bc A φ)).left).IsLB` using `pull_isLB hO _`. Establish `h₃ : (translDiff A L (upa φ x)).IsLB` using `LB.isLB_linComb hL _ _`.
+
+Establish `h₄ : (ev N (snd (up φ Y) A) (fst (up φ Y) A ≫ upt φ Y)).IsLB` using `pull_isLB hN _`. Establish `hc : cls _ (LB.isLB_div h₁ h₂) = CechPic.pull (cmpHom A φ Y) (cls _ (LB.isLB_div h₃ h₄))`. Rewrite using `[cls_div h₁ h₂, cls_div h₃ h₄, map_sub]`. Establish `e₁` using `pull_translDiff hL' x h₁ (fst Y (bc A φ)) (snd Y (bc A φ))`. Rewrite `e₁` using `[lift_fst_snd, Over.id_left, pull_id]`.
+
+Establish `e₂` using `pull_translDiff hL (upa φ x) h₃ (fst (up φ Y) A) (snd (up φ Y) A)`. Rewrite `e₂` using `[lift_fst_snd, Over.id_left, pull_id]`. Rewrite using `[e₁, e₂, map_sub, cls_pull hL, ← pull_comp, ← pull_comp, ← pull_comp, ← pull_comp, mul_left_fst]`. Establish `e₅ : (snd Y (bc A φ)).left ≫ pullback.fst A.hom (φ ≫ T.hom) = cmpHom A φ Y ≫ (snd (up φ Y) A).left` using `(cmpHom_snd A φ Y).symm`. Rewrite using `[e₅, cls_pull hO _ h₂, show cls (twist A φ N) hO = CechPic.pull (lift (pa A φ) (pt A φ)).left (cls N hN) from cls_pull hN _ hO, cls_pull hN, ← pull_comp, ← pull_comp, snd_lift_pa_pt]`.
+
+Rewrite using `[triv_pull_iff (LB.isLB_div h₁ h₂), triv_pull_iff (LB.isLB_div h₃ h₄), hc]`. Conclude with `pull_restrict_eq_zero_iff _ _ (cmpHom A φ Y) (cmpInv A φ Y) (cmpInv_hom A φ Y) (cmpHom_fst A φ Y) (cmpInv_fst A φ Y) U _`.
+-/
 theorem triv_twist_iff (L : LB A.left) (hL : L.IsLB) (N : LB (A ⊗ T).left) (hN : N.IsLB) (Y : Over (Sp V))
     (x : Y ⟶ bc A φ) (U : Y.left.Opens) :
     Triv ((LB.div (translDiff (bc A φ) (L.pull (pullback.fst A.hom (φ ≫ T.hom))) x)

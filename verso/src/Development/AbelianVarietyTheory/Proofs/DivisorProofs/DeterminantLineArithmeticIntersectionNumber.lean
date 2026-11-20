@@ -18,6 +18,13 @@ open MvPolynomial GlobalTheory.ArInt
 
 namespace GlobalTheory.FlatDetModel
 
+/- English proof (translation)
+Rewrite using `[Fintype.sum_option]`. Simplify using `only [Option.elim, zero_smul, zero_add, Real0.gen]`. Repeatedly rewrite using `[← map_smul]`. Rewrite using `[← map_sum]`. Use `congr 1`.
+
+Use extensionality with `σ i`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[Fintype.sum_prod_type, Finset.sum_eq_single σ, Finset.sum_eq_single i]`. Simplify using the standard rewrite rules. Introduce `b _ hb`.
+
+Simplify using `[Pi.single_apply, hb.symm]`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Simplify using `[Pi.single_apply, Ne.symm hb]`. Simplify using the standard rewrite rules.
+-/
 theorem sum_gen {D : D7} {Y : Formalism.BasicNotions.DV.ShimX D.what₂.Tau} (T : Real0 Y) (B : ℝ) (c : Y.Comp) (m : ℕ) (w : Wt Y) :
     ∑ i : Option (D.what₂.Tau × Fin Y.N), (i.elim 0 fun x => w x.1 x.2) • T.gen B c m i = T.L B c w := by
   rw [Fintype.sum_option]
@@ -34,10 +41,26 @@ theorem sum_gen {D : D7} {Y : Formalism.BasicNotions.DV.ShimX D.what₂.Tau} (T 
     · intro b _ hb; simp [Pi.single_apply, Ne.symm hb]
     · simp
 
+/- English proof (translation)
+Simplify using `[lin, map_sum, Fintype.sum_option]`.
+-/
 theorem lin_elim {ι : Type} [Fintype ι] (b : ι → ℝ) :
     lin (fun o : Option ι => o.elim 0 b) = rename some (lin b) := by
   simp [lin, map_sum, Fintype.sum_option]
 
+/- English proof (translation)
+Introduce `hXH hP hH hS D O hO hf A T H h B hB τ c g hg hgph u`. Take `⟨ε, π, hd⟩` from `(h.mdl (GlobalTheory.FlagAr.setB O.Y B) c).V.exists_isDown (h.man c)`. Use `set t := O.Y.htDetT B c τ with ht`. Use `set f : (T.M c).Fun := g - (fun _ _ => t : (T.M c).Fun) with hfdef`. Establish `hfs : (T.M c).Smooth f` using `fun σ j => (hg σ j).sub contDiffOn_const`.
+
+Establish `hfs2 : (T.M c).Smooth ((2 : ℝ) • f)` using `fun σ j => (hfs σ j).const_smul (2 : ℝ)`. Establish `hu` using `GlobalTheory.Mean4O.OnModelCInf.cInfAt_pull _ _ _ _ _ (h.man c) ε π hd _ hfs2`. Establish `hc` using `GlobalTheory.HomChgConj.isConj_pull D O hO A T H h c _ g hg hgph _ ε π hd t`. Establish `hdim : (O.var c).dim = Formalism.MainNotions.WeightThresholdDefs.dimY O.Y` using `(O.dim_eq c).trans rfl`. Establish `hX : IsArithVar (h.mdl (GlobalTheory.FlagAr.setB O.Y B) c).V.p (Formalism.MainNotions.WeightThresholdDefs.dimY O.Y)` using `hdim ▸ (h.mdl (GlobalTheory.FlagAr.setB O.Y B) c).V.ar`.
+
+Take `⟨Φ, hΦ⟩` from `((hP.p4.arExists _ _ _ _ hX).2 _ (fun o : Option (Option (D.what₂.Tau × Fin O.N)) => o.elim (fnB ((T.M c).pull ε π ((2 : ℝ) • f)) hu hc) ((h.mdl (GlobalTheory.FlagAr.setB O.Y B) c).gens (GlobalTheory.FlagAr.setB O.Y B)))).1`. Establish `hN` using `h.num B hB c ε π hd f hfs hu hc Φ hΦ`. Establish `hpol` using `GlobalTheory.PolarNum.num_cons_eq (T.K B c) _ ((T.K B c).ar f) Φ _ (h.mdl (GlobalTheory.FlagAr.setB O.Y B) c).V.ν_pos.ne' hN (fun o => o.elim 1 fun o' => o'.elim 0 fun x => (fun σ' (_ : Fin O.N) => if σ' = τ then (-1 : ℝ) else 0) x.1 x.2) (fun o => o.elim 0 fun o' => o'.elim 0 fu …`. Simplify using `only [Option.elim_some, Option.elim_none] at hpol`. Use `erw [sum_gen T B c (h.mdl (GlobalTheory.FlagAr.setB O.Y B) c).mult (fun σ' (_ : Fin O.N) => if σ' = τ then (-1 : ℝ) else 0), sum_gen T B c (h.mdl (GlobalTheory.FlagAr.setB O.Y B) c).mult u] at hpol`.
+
+Rewrite `hpol` using `[one_smul, zero_smul, add_zero]`. Establish `h0 : Φ (lin (fun o => o.elim 1 fun o' => o'.elim 0 fun x => (fun σ' (_ : Fin O.N) => if σ' = τ then (-1 : ℝ) else 0) x.1 x.2) * lin (fun o : Option (Option (D.what₂.Tau × Fin O.N)) => o.elim 0 fun o' => o'.elim 0 fun x => u x.1 x.2) ^ Formalism.MainNotions.WeightThresholdDefs.dim …`. Rewrite using `[lin_elim]`. Conclude with `GlobalTheory.IntRealPow.vanish_real_of_vanish_int Φ _ _ (GlobalTheory.T.flat_model_numerator_bound hXH hP hH hS D O hO hf A T H h B hB τ c g hg hgph ε π hd hu hc Φ hΦ) _`. Rewrite `hpol` using `[h0, zero_div]`.
+
+Establish `har : (T.K B c).ar g = (T.K B c).ar f + (T.K B c).ar (fun _ _ => t : (T.M c).Fun)`. Rewrite using `[← map_add, hfdef, sub_add_cancel]`. Rewrite using `[har, ← add_assoc, MultilinearMap.cons_add]`. Use `erw [hpol]`. Rewrite using `[zero_add]`.
+
+Conclude with `(T.K B c).num_ar _ (fun σ => st_smooth_const _ t) _`.
+-/
 theorem num_eq_htDetT_mul_int : GlobalTheory.CovTop.HypothesesXH → Hypotheses2 → HypothesesH → GlobalTheory.Published.ScholzeWeinsteinB → OnObj fun D O _ T _ _ => ∀ B : ℝ, 2 ≤ B → ∀ (τ : D.what₂.Tau) c (g : (T.M c).Fun),
     (T.M c).Smooth g →
     (∀ σ x, x ∉ (T.M c).Z σ → g σ x = (T.F c).ph (fun σ' _ => if σ' = τ then (-1 : ℝ) else 0) σ x) →

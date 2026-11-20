@@ -12,6 +12,27 @@ noncomputable section
 
 namespace GlobalTheory.Core.Deg
 
+/- English proof (translation)
+Introduce `CT cH cV Ca C2 Ch c C k2 hCT k3 k4 hCh hcC hCsq1 hC2 hCa D large₂ u T Z C' Cl Cg cb Cu cT C0 h3C hH hC3 hHH hV hA hS hTP hG0 hE`. Establish `hc0 : 0 ≤ c` using `by linarith`. Establish `hC1 : 1 ≤ C` using `k2.trans hcC`. Establish `hCsq : 4 + (c ^ 2 + 2 * max (Ch - c) 0) * (6 * c + 2) ≤ C ^ 2` using `by nlinarith`. Establish `hHHc : UnitaryVolumeMass.stHH D large₂ u u C' Cl Cg cb Cu cT CT C0 1 c` using `BridgeLemma₂.rows_stHH_mono (by linarith [le_abs_self cH]) (by linarith [neg_abs_le cH]) hHH`.
+
+Establish `hK` using `BridgeLemma₂.rows_KBound_of Z hH hHHc k2 hCT`. Establish `hr0 : (0 : ℝ) ≤ D.R.rS` using `by positivity`. Establish `hm2 : (2 : ℝ) ≤ D.R.m` using `by rw [BridgeLemma₂.rows_m_cast]; linarith`. Establish `hf1 : (1 : ℝ) ≤ D.R.f` using `by exact_mod_cast BridgeLemma₂.rows_f_pos D`. Establish `hL1 : 1 ≤ large₂.sc.L` using `BridgeLemma.d_one_le_L D large₂`.
+
+Establish `hkm : (D.R.m : ℝ) + 3 ≤ D.R.k` using `by exact_mod_cast D.R.m_add_three_le_k`. Establish `hk5 : C' * (D.R.m : ℝ) ^ 5 * D.R.f * large₂.sc.L ≤ D.R.k` using `hH.1.1.2.1`. Establish `ha2 : |C2| * (D.R.m : ℝ) ^ 2 + |C2| * (D.R.m : ℝ) ^ 4 * 2 ≤ D.R.k`. Use `le_trans ?_ hk5` and prove the remaining obligations. Establish `e1 : (D.R.m : ℝ) ^ 2 ≤ (D.R.m : ℝ) ^ 5` using `pow_le_pow_right₀ (by linarith) (by norm_num)`.
+
+Establish `e4 : (D.R.m : ℝ) ^ 4 ≤ (D.R.m : ℝ) ^ 5` using `pow_le_pow_right₀ (by linarith) (by norm_num)`. Establish `h5 : 0 ≤ (D.R.m : ℝ) ^ 5` using `by positivity`. Establish `e2 : (D.R.m : ℝ) ^ 5 ≤ (D.R.m : ℝ) ^ 5 * D.R.f * large₂.sc.L`. Use polynomial arithmetic with `[mul_nonneg h5 (by linarith : 0 ≤ (D.R.f : ℝ) - 1), mul_nonneg (mul_nonneg h5 (by linarith : 0 ≤ (D.R.f : ℝ))) (by linarith : 0 ≤ large₂.sc.L - 1)]`. Establish `hab` using `abs_nonneg C2`.
+
+Establish `hP : 0 ≤ (D.R.m : ℝ) ^ 5 * D.R.f * large₂.sc.L` using `by linarith`. Combine the equalities or inequalities in the displayed calculation. Take `⟨a, hadef⟩ : ∃ a : ℝ, a = 4 * (c * D.R.k) + 4 * BridgeLemma₂.pairCountExponent D c D.R.k + 4 * (c * (D.R.rS : ℝ) ^ 2) + (|C2| * (D.R.m : ℝ) ^ 2 + |C2| * (D.R.m : ℝ) ^ 4 * 2) / 2 + 12 * ((D.R.rS : ℝ) + 1) ^ 2` from `⟨_, rfl⟩`. Establish `ha0 : 0 ≤ a`. Rewrite using `[hadef]`.
+
+Use `BridgeLemma₂.pairCountExponent_nonneg D hc0 D.R.k` as an intermediate fact. Check the signs of the components of the expression. Establish `hqb` using `BridgeLemma₂.rows_q_bound (m := D.R.m) (k := D.R.k) (r := D.R.rS) (c := c) (cf := Cnt.cF D.R.f) (a2 := |C2| * (D.R.m : ℝ) ^ 2 + |C2| * (D.R.m : ℝ) ^ 4 * 2) (BridgeLemma₂.rows_m_cast _) hr0 hkm hc0 (BridgeLemma₂.rows_cF_le hH) ha2`. Establish `hqb' : ((D.R.rS : ℝ) + 1) * a + 1 ≤ (9 * c + 3) * D.R.k * (D.R.m : ℝ) ^ 2`. Rewrite using `[hadef]`.
+
+Unfold `BridgeLemma₂.pairCountExponent`. Conclude with `hqb`. Establish `hra0 : 0 ≤ ((D.R.rS : ℝ) + 1) * a` using `by positivity`. Establish `hyp : BridgeLemma₂.rows_Hyps Z C' Cl Cg cb Cu cT CT C0 1 c (9 * c + 3) Ca C2 Ch 1 1 ⌈((D.R.rS : ℝ) + 1) * a⌉₊` using `{ hH := hH hC3 := hC3 hHH := hHHc hV := BridgeLemma₂.rows_stVol_mono _ (by linarith [le_abs_self cV]) (by linarith [neg_abs_le cV]) hV hDEC := hA.2.2 ha := hS.1 hb := hS.2.1 hp := hA.1 hpp := hA.2.1 h6 := hS.2.2.1 hδ := zero_le_one hThA := BridgeLemma.word_theorem_a_admissible D …`. Use `BridgeLemma₂.rows_RowsDeg_record _ hyp hK k2 hcC hC1 hCsq hC2 hCa ?_` and prove the remaining obligations.
+
+Rewrite using `[le_div_iff₀ (by positivity)]`. Establish `h1` using `Nat.le_ceil (((D.R.rS : ℝ) + 1) * a)`. Establish `h2 : (C2 * (D.R.m : ℝ) ^ 2 + C2 * (D.R.m : ℝ) ^ 4 * 2) / 2 ≤ (|C2| * (D.R.m : ℝ) ^ 2 + |C2| * (D.R.m : ℝ) ^ 4 * 2) / 2`. Use `le_abs_self C2` as an intermediate fact. Use `gcongr`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `mul_le_mul_of_nonneg_right ?_ (by positivity)` and prove the remaining obligations. Rewrite using `[hadef]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `_ = ((D.R.rS : ℝ) + 1) * a := by ring`.
+
+Use `_ ≤ _ := h1`.
+-/
 theorem rowsDeg_at_record : ∀ CT cH cV Ca C2 Ch c C : ℝ, 1 ≤ c → CT ≤ c → |cH| + 2 ≤ c → |cV| + 2 ≤ c → 0 ≤ Ch → c ≤ C → 4 + (c ^ 2 + 2 * max (Ch - c) 0) * (6 * c + 2) ≤ C → 2 * C2 ≤ C → |Ca| ≤ C → ∀ (D : D7) (large₂ : SizeData₂ D) (u : D.what₂.Word) (T : TermTie D) (Z : LoopTie D large₂ T u u 1) (C' Cl Cg cb Cu cT C0 : ℝ), 3 * |C2| ≤ C' → Cnt.Hyp D large₂ u u C' Cl Cg cb Cu cT CT C0 1 → UnitaryVolumeMass.MeanFlagPairCount D large₂ u u C' Cl Cg cb Cu cT CT C0 1 3 c → UnitaryVolumeMass.stHH D large₂ u u C' Cl Cg cb Cu cT CT C0 1 cH → UnitaryVolumeMass.stVol D large₂ T u u 1 Z C' Cl Cg cb Cu cT CT C0 1 cV → AmpAt D large₂ C' Cl Cg cb Cu cT CT C0 (9 * c + 3) Ca C2 Ch 1 → SmallAt D large₂ C' Cl Cg cb Cu cT CT C0 1 → BridgeLemma.TermPtsTie T Z → @BridgeLemma.LatticeDeterminantFactorization D T u u → BridgeLemma₂.wordPairEntriesInLattice T u u → BridgeLemma.RowsDeg T Z C := by
   intro CT cH cV Ca C2 Ch c C k2 hCT k3 k4 hCh hcC hCsq1 hC2 hCa D large₂ u T Z C' Cl Cg cb Cu cT C0 h3C hH hC3 hHH hV hA hS hTP hG0 hE
   have hc0 : 0 ≤ c := by linarith

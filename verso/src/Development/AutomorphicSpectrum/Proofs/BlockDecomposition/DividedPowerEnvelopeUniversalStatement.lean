@@ -10,5 +10,8 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.EtaleLiftingOfN
 set_option backward.isDefEq.respectTransparency false
 open CategoryTheory AlgebraicGeometry GlobalTheory.LogCris DividedPowers GlobalTheory.PDA CrystallineSemistableComparison CrystallineSemistableComparison.Pb CrystallineSemistableComparison.Pb.Site
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.PDUniv.pdPoly_universal | exact GlobalTheory.CompanionTheory.PDUniv.pdPoly_universal | (intros; apply GlobalTheory.CompanionTheory.PDUniv.pdPoly_universal <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.divided_power_envelope_universal : ∀ {B : Type} [CommRing B] {J : Ideal B} (δ : DividedPowers J) {C : Type} [CommRing C] {J'' : Ideal C} (δ'' : DividedPowers J'') (f : B →+* C), IsDPMorphism δ δ'' f → ∀ x ∈ J'', ∃! F : (pq B).P →+* C, F.comp (algebraMap B (pq B).P) = f ∧ F ((pq B).e 1) = x ∧ IsDPMorphism (eta δ) δ'' F := by
   first | exact @GlobalTheory.CompanionTheory.PDUniv.pdPoly_universal | exact GlobalTheory.CompanionTheory.PDUniv.pdPoly_universal | (intros; apply GlobalTheory.CompanionTheory.PDUniv.pdPoly_universal <;> assumption)

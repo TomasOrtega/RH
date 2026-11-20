@@ -13,6 +13,15 @@ open NumberField IsDedekindDomain GlobalTheory.HTW GlobalTheory.HTW.Rec Formalis
 
 namespace GlobalTheory.HTW.Rec
 
+/- English proof (translation)
+Introduce `D L C j ε n g ψ hR hO`. Take `⟨rfl, hg⟩` from `hO`. Generalize the expression as in `g 0 = τ at hg`. Take `rfl : g = letter τ ψ` from `funext hg`. Establish `hsm` using `pageWord_S_eta_m L j ε τ ψ`.
+
+Use `⟨?_, ?_, ?_, hsm.1, hsm.2.1, rfl⟩` and prove the remaining obligations. Introduce `a`. Take `⟨hsz, -, -, hth⟩` from `GlobalTheory.T.twistedDualSizeWord_letter_eq_pageWord L C j ε τ ψ hR a`. Break down `GlobalTheory.T.twistedDualOrbitPageWord_thickOr L C j ε τ ψ hR a with h | h` into its components or cases. Conclude with `Or.inl (hth.2 h)`.
+
+Use `Or.inr ?_` and prove the remaining obligations. Establish `h' : (((recWord L j ε (letter τ ψ)).sz a : ℕ) : ℤ) ≤ ((wHat D : ℕ) : ℤ)`. Rewrite using `[hsz]`. Conclude with `h`. Conclude with `h'` after adjusting the coercions.
+
+Establish `h` using `bHat_add_etaHat_add_sHat_le_hPage L C hR`. Conclude with `h`. Conclude with `(GlobalTheory.T.maxSizeAtNonThickPlace_le_windowEnds L).2`.
+-/
 theorem recWord_wordNum : ∀ {D : D7} (L : SizeData₂ D) (C : ℝ) (j : Fin D.R.m) (ε : ℤˣ) {n : ℕ}
     (g : ZMod n → D.R.GG) (ψ : D.R.GG), Roomy L C → IsOrbit g ψ → WordNum L (recWord L j ε g) := by
   intro D L C j ε n g ψ hR hO

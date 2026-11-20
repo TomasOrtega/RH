@@ -9,6 +9,35 @@ open GlobalTheory.ExpFrame Formalism.CohomologicalDescent.DepthNonnegative
 
 namespace GlobalTheory.BaseChangeIndep
 
+/- English proof (translation)
+Use `haveI : Fintype T := Fintype.ofFinite T`. Use `haveI : Module.IsTorsionFree O M := by`. Rewrite using `[Module.isTorsionFree_iff_smul_eq_zero]`. Introduce `r m h`. Establish `h1 : emb r • b m = 0` using `by rw [← LinearMap.map_smulₛₗ, h, map_zero]`.
+
+Break down `smul_eq_zero.1 h1 with h2 | h2` into its components or cases. Conclude with `Or.inl (hemb (by rw [h2, map_zero]))`. Conclude with `Or.inr (hbinj (by rw [h2, map_zero]))`. Set `P : Submodule O M` to `Submodule.span O (Set.range fun p : Fin n × T => y p.1 p.2)`. Use `haveI : Module.Finite O P := Module.Finite.iff_fg.2 (Submodule.fg_span (Set.finite_range _))`.
+
+Use `haveI : Module.Free O P := Module.free_of_finite_type_torsion_free'`. Set `e` to `Module.finBasis O P`. Set `k` to `Module.finrank O P`. Establish `hmem : ∀ a t, y a t ∈ P` using `fun a t => Submodule.subset_span ⟨(a, t), rfl⟩`. Establish `he : LinearIndependent O fun i => ((e i : P) : M)` using `e.linearIndependent.map' P.subtype (Submodule.ker_subtype P)`.
+
+Establish `hbe : LinearIndependent L fun i => b (e i : M)`. Use `hb k (fun i => (e i : M)) he` as an intermediate fact. Conclude with `this`. Set `Y : Fin n → T × Fin k → O` to `fun a p => e.repr ⟨y a p.1, hmem a p.1⟩ p.2`. Set `Φ : (T × Fin k → O) →ₗ[O] (T → M)` to `{ toFun := fun Z t => ∑ i, Z (t, i) • ((e i : P) : M) map_add' := by`.
+
+Introduce `Z Z'`. Use function extensionality and compare the values at `t`. Simplify using `[add_smul, Finset.sum_add_distrib]`. Use the proof step `map_smul' := by`. Introduce `c Z`.
+
+Use function extensionality and compare the values at `t`. Simplify using `[smul_smul, Finset.smul_sum] }`. Establish `hΦ : ∀ a, Φ (Y a) = y a`. Introduce `a`. Use function extensionality and compare the values at `t`.
+
+Establish `h2 : ((∑ i, e.repr ⟨y a t, hmem a t⟩ i • e i : P) : M) = y a t` using `by rw [e.sum_repr]`. Rewrite `h2` using `[Submodule.coe_sum]`. Simplify using `only [Submodule.coe_smul] at h2`. Express the relevant statement in the definitionally equal form `∑ i, Y a (t, i) • ((e i : P) : M) = y a t`. Conclude with `h2`.
+
+Establish `hY : LinearIndependent O Y`. Apply `LinearIndependent.of_comp Φ` to reduce the goal to its premises. Establish `: (Φ ∘ Y) = y` using `funext hΦ`. Rewrite using `[this]`. Conclude with `hy`.
+
+Use `letI : Algebra O L := emb.toAlgebra`. Use `haveI : FaithfulSMul O L := (faithfulSMul_iff_algebraMap_injective O L).2 hemb`. Establish `hY' : LinearIndependent L fun a => algebraMap O L ∘ Y a` using `linearIndependent_algebraMap_comp_iff.2 hY`. Set `Ψ : (T × Fin k → L) →ₗ[L] (T → V)` to `{ toFun := fun Z t => ∑ i, Z (t, i) • b (e i : M) map_add' := by`. Introduce `Z Z'`.
+
+Use function extensionality and compare the values at `t`. Simplify using `[add_smul, Finset.sum_add_distrib]`. Use the proof step `map_smul' := by`. Introduce `c Z`. Use function extensionality and compare the values at `t`.
+
+Simplify using `[smul_smul, Finset.smul_sum] }`. Establish `hΨ : LinearMap.ker Ψ = ⊥`. Rewrite using `[LinearMap.ker_eq_bot']`. Introduce `Z hZ`. Use function extensionality and compare the values at `p`.
+
+Establish `h1 : ∑ i, Z (p.1, i) • b (e i : M) = 0` using `congrFun hZ p.1`. Use `(Fintype.linearIndependent_iff.1 hbe) (fun i => Z (p.1, i)) h1 p.2` as an intermediate fact. Simplify using `using this`. Establish `key` using `hY'.map' Ψ hΨ`. Establish `hfam : (Ψ ∘ fun a => algebraMap O L ∘ Y a) = fun a t => b (y a t)`.
+
+Use function extensionality and compare the values at `a t`. Express the relevant statement in the definitionally equal form `∑ i, (algebraMap O L (Y a (t, i))) • b (e i : M) = b (y a t)`. Rewrite using `[← hΦ a]`. Simplify using `only [Φ, LinearMap.coe_mk, AddHom.coe_mk, map_sum, LinearMap.map_smulₛₗ]`. Both sides reduce to the same expression.
+
+Rewrite `key` using `[hfam]`. Conclude with `key`.
+-/
 theorem indep_pi {O : Type} [CommRing O] [IsDomain O] [IsPrincipalIdealRing O] {L : Type} [Field L] (emb : O →+* L)
     (hemb : Function.Injective emb) {M V : Type} [AddCommGroup M] [Module O M] [AddCommGroup V] [Module L V]
     (b : M →ₛₗ[emb] V) (hbinj : Function.Injective b)
@@ -87,6 +116,15 @@ end GlobalTheory.BaseChangeIndep
 
 namespace GlobalTheory.BaseChangeIndep
 
+/- English proof (translation)
+Introduce `l _ ι _ _ N F mu jK b hbinj hOk hb n x hx`. Take `⟨S, hS⟩` from `hOk.classes`. Set `R : Forms F.O (A` to `alg F.O N mu) F.Γ jK (NablaT F.O N mu) →ₗ[F.O] (S → NablaT F.O N mu) := { toFun := fun f s => (f : F.G → NablaT F.O N mu) s map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl }`. Establish `hR : LinearMap.ker R = ⊥`. Rewrite using `[LinearMap.ker_eq_bot']`.
+
+Introduce `f hf0`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g`. Take `⟨γ, hγ, s, hs, κ, hκ, rfl⟩` from `hS g`. Establish `hf : ∀ (γ : F.Γ) (g : F.G) (κ : F.K), (f : F.G → NablaT F.O N mu) ((γ : F.G) * g * κ) = repOf F.O (A` using `alg F.O N mu) jK (NablaT F.O N mu) κ⁻¹ ((f : F.G → NablaT F.O N mu) g) := f.2`.
+
+Establish `h0 : (f : F.G → NablaT F.O N mu) s = 0` using `congrFun hf0 ⟨s, hs⟩`. Establish `h1` using `hf ⟨γ, hγ⟩ s ⟨κ, hκ⟩`. Rewrite using `[h1, h0, map_zero]`. Both sides reduce to the same expression. Establish `hx' : LinearIndependent F.O (R ∘ x)` using `hx.map' R hR`.
+
+Establish `hOk1` using `hOk.ring.1`. Establish `key` using `indep_pi F.emb hOk1 b hbinj hb n (R ∘ x) hx'`. Set `R' : (F.G → NablaT (PadicAlgCl l) N mu) →ₗ[PadicAlgCl l] (S → NablaT (PadicAlgCl l) N mu)` to `{ toFun := fun f s => f s map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl }`. Apply `LinearIndependent.of_comp R'` to reduce the goal to its premises. Conclude with `key`.
+-/
 theorem forms_indep : ∀ (l : ℕ) [Fact l.Prime] (ι : Type) [Fintype ι] [DecidableEq ι] (N : ℕ) (F : Frame l ι N) (mu : ι → ℕ → ℕ)
     (jK : F.K →* alg F.O N mu) (b : NablaT F.O N mu →ₛₗ[F.emb] NablaT (PadicAlgCl l) N mu), Function.Injective b → F.Ok →
     (∀ (n : ℕ) (x : Fin n → NablaT F.O N mu), LinearIndependent F.O x → LinearIndependent (PadicAlgCl l) fun a => b (x a)) →

@@ -18,6 +18,13 @@ namespace GlobalTheory.ClassSumCompare
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
   {Xo : Moduli Dw l} {c : Coeff l} {n : ℕ} (d : DeltaDat Xo c n)
 
+/- English proof (translation)
+Establish `hc' : ∀ τ a, algebraMap d.c₂.F S (embK d.c₂ τ a) = algebraMap c.F S (embK c τ a)` using `fun τ a => by`. Rewrite using `[← embK_eF, hc]`. Establish `e : y₂.x ≫ d.r = y₂.x ≫ d.r` using `rfl`. Take `⟨w, hw, hw', -⟩` from `d.m.lin`. Take `⟨p, k, p₁, p₂, hk, hk'⟩` from `exists_pm_iso d.m e`.
+
+Establish `hL` using `Xo.univ.t.PP.isLB`. Establish `hL₂` using `d.Xo₂.univ.t.PP.isLB`. Take `⟨s, hs⟩` from `exists_up hL hL₂ hw p₁ hk hk' y₂.s`. Use `⟨⟨y₂.x ≫ d.r, hx, fun τ i => y₂.u τ i ≫ d.m.φ, fun τ i => (tan_iff d.m e (y₂.tan τ i).1).1 (y₂.tan τ i), fun τ i => (eig_iff d.m τ (hc' τ) (y₂.tan τ i).1).1 (y₂.eig τ i), fun τ v hv hv' => ?_, s, fun s' => ?_⟩, (frOver_iff d _ _).2 ⟨e, fun _ _ => rfl, w, p, ⟨hw, hw'⟩, p₁, p₂, hs⟩ …` and prove the remaining obligations. Take `⟨v₂, rfl, h₂⟩` from `exists_lift d.m e hv.1`.
+
+Use `(existsUnique_congr fun a => ?_).1 (y₂.basis τ v₂ ((tan_iff d.m e h₂).2 hv) ((eig_iff d.m τ (hc' τ) h₂).2 hv'))` and prove the remaining obligations. Conclude with `comb_iff d.m e (fun i => (y₂.tan τ i).1) a h₂`. Take `⟨s₂', hs'⟩` from `exists_down hL hL₂ hw p₁ s'`. Use `(existsUnique_congr fun a => ?_).1 (y₂.gen s₂')` and prove the remaining obligations. Conclude with `(scal_iff (fst (Over.mk y₂.x) d.Xo₂.univ.t.G).left (toΓ S a) y₂.s s₂').trans ((rel_scal_iff hL hL₂ p₁ hk p₂ (toΓ S a) hs hs').trans (scal_iff (fst (Over.mk (y₂.x ≫ d.r)) Xo.univ.t.G).left (toΓ S a) s s').symm)`.
+-/
 theorem exists_frUnder {S : Type} [CommRing S] [Algebra c.F S] [Algebra d.c₂.F S]
     (hc : ∀ a : c.F, algebraMap d.c₂.F S (d.eF a) = algebraMap c.F S a) (y₂ : FrPt d.Xo₂ d.c₂ S)
     (hx : (y₂.x ≫ d.r) ≫ Xo.s = sOf c S) : ∃ y : FrPt Xo c S, FrOver d y₂ y := by
@@ -42,6 +49,13 @@ theorem exists_frUnder {S : Type} [CommRing S] [Algebra c.F S] [Algebra d.c₂.F
       ((rel_scal_iff hL hL₂ p₁ hk p₂ (toΓ S a) hs hs').trans
         (scal_iff (fst (Over.mk (y₂.x ≫ d.r)) Xo.univ.t.G).left (toΓ S a) s s').symm)
 
+/- English proof (translation)
+Establish `: s.f = s'.f` using `funext fun i => by`. Take `⟨i, rfl⟩` from `exists_const i`. Use `fn_ext fun z hz => ?_` and prove the remaining obligations. Take `⟨j, hj⟩` from `exists_chart hL₂ (q₂ (k z))`. Establish `hi' : φ (q₂ (k z)) ∈ L.U i` using `(congrArg (· ∈ L.U i) (pt_eq hp (k z))).mp ((congrArg (fun t => q t ∈ L.U i) (pt_eq hk z)).mpr (mem_ch.1 hz))`.
+
+Establish `a` using `(H Y k z i j hi' hj).trans (H' Y k z i j hi' hj).symm`. Rewrite `a` using `[hk]`. Conclude with `a`. Consider the cases of `s`. Consider the cases of `s'`.
+
+Reduce the equality to equality of the corresponding arguments.
+-/
 theorem rel_unique {A A₂ Y Y₂ : Scheme.{0}} {L : LB A} {L₂ : LB A₂} {φ : A₂ ⟶ A} (hL₂ : L₂.IsLB)
     {w : LB.Iso L₂ (L.pull φ)} {q₂ : Y₂ ⟶ A₂} {q : Y ⟶ A} {p : Y₂ ⟶ Y} (hp : p ≫ q = q₂ ≫ φ) {k : Y ⟶ Y₂}
     (hk : k ≫ p = 𝟙 _) {s₂ : LB.Sec (LOne L₂ q₂)} {s s' : LB.Sec (LOne L q)} (H : Rel w p s₂ s)
@@ -58,6 +72,13 @@ theorem rel_unique {A A₂ Y Y₂ : Scheme.{0}} {L : LB A} {L₂ : LB A₂} {φ 
   cases s; cases s'
   congr
 
+/- English proof (translation)
+Take `⟨e, hu, w, p, hw, p₁, p₂, H⟩` from `(frOver_iff d _ _).1 h`. Take `⟨e', hu', w', p', hw', p₁', p₂', H'⟩` from `(frOver_iff d _ _).1 h'`. Take `rfl : w = w'` from `rigidified_iso_unique GlobalTheory.abelianSchemeLaws_all.1.globalFns (UnivPol.pol d.Xo₂) Xo.univ.t.PP.isLB d.m.φ w w' hw.1 hw'.1 _ _ hw.2 hw'.2`. Take `⟨x, xo, u, t, ei, b, s, g⟩` from `y`. Take `⟨x', xo', u', t', ei', b', s', g'⟩` from `z`.
+
+Simplify using `only at e e' hu hu' p p' p₁ p₂ p₁' p₂' H H'`. Take `rfl : x = x'` from `e.symm.trans e'`. Take `rfl : u = u'` from `funext fun τ => funext fun i => (hu τ i).symm.trans (hu' τ i)`. Take `rfl : p = p'` from `pm_ext (p₁.trans p₁'.symm) (p₂.trans p₂'.symm)`. Take `⟨q, k, q₁, q₂, hk, -⟩` from `exists_pm_iso d.m e`.
+
+Take `rfl : p = q` from `pm_ext (p₁.trans q₁.symm) (p₂.trans q₂.symm)`. Take `rfl : s = s'` from `rel_unique d.Xo₂.univ.t.PP.isLB p₁ hk H H'`. Both sides reduce to the same expression.
+-/
 theorem frUnder_unique {S : Type} [CommRing S] [Algebra c.F S] [Algebra d.c₂.F S] {y₂ : FrPt d.Xo₂ d.c₂ S}
     {y z : FrPt Xo c S} (h : FrOver d y₂ y) (h' : FrOver d y₂ z) : y = z := by
   obtain ⟨e, hu, w, p, hw, p₁, p₂, H⟩ := (frOver_iff d _ _).1 h

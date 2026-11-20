@@ -9,6 +9,9 @@ namespace UpperTheory.ConvolutionTheory.R.Ac2
 
 open PositivityTheory.RgJS UpperTheory.ConvolutionTheory.Rs
 
+/- English proof (translation)
+Use `congrArg (Multiset.sumAddMonoidHom.comp (Multiset.mapAddMonoidHom φ)) e` as an intermediate fact. Rewrite `this` using `[map_sum]`. Establish `e1 : ∀ {n : ℕ} (k : Fin n → ℂ), (Multiset.sumAddMonoidHom.comp (Multiset.mapAddMonoidHom φ)) (Finset.univ.val.map k) = ∑ a, φ (k a)` using `fun k => congrArg Multiset.sum (Multiset.map_map φ k Finset.univ.val)`. Simplify `this` using `only [e1]`.
+-/
 theorem ps {ι M : Type} [Fintype ι] [AddCommMonoid M] {d : ι → ℕ} {m : ℕ} {g : ∀ i, Fin (d i) → ℂ} {h : Fin m → ℂ}
     (e : ∑ i, Finset.univ.val.map (g i) = Finset.univ.val.map h) (φ : ℂ → M) : ∑ i, ∑ a, φ (g i a) = ∑ a, φ (h a) := by
   have := congrArg (Multiset.sumAddMonoidHom.comp (Multiset.mapAddMonoidHom φ)) e
@@ -17,6 +20,11 @@ theorem ps {ι M : Type} [Fintype ι] [AddCommMonoid M] {d : ι → ℕ} {m : �
       ∑ a, φ (k a) := fun k => congrArg Multiset.sum (Multiset.map_map φ k Finset.univ.val)
   simpa only [e1] using this
 
+/- English proof (translation)
+Establish `h0 : (0 : ℝ) < q` using `by exact_mod_cast (by omega : 0 < q)`. Establish `hne : ∀ i, ‖a i‖ ≠ 0` using `fun i hi => by`. Rewrite `h` using `[norm_prod, Finset.prod_eq_zero (Finset.mem_univ i) hi]`. Conclude with `zero_ne_one h`. Establish `hs : ∑ i, Real.log ‖a i‖ = 0`.
+
+Rewrite using `[← Real.log_prod fun i _ => hne i, ← norm_prod, h, Real.log_one]`. Establish `e : ∀ i, Real.log ‖(a i * (q : ℂ) ^ (-(t : ℂ))) ^ f‖ = f * (Real.log ‖a i‖ + -t * Real.log q)` using `fun i => by`. Rewrite using `[norm_pow, Real.log_pow, norm_mul, Common0Aux.cpow_real, Complex.norm_real, Real.norm_of_nonneg (Real.rpow_pos_of_pos h0 _).le, Real.log_mul (hne i) (Real.rpow_pos_of_pos h0 _).ne', Real.log_rpow h0]`. Simplify using `only [e, ← Finset.mul_sum, Finset.sum_add_distrib, hs, Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem logsum {m : ℕ} {a : Fin m → ℂ} (h : ‖∏ i, a i‖ = 1) (q f : ℕ) (hq : 2 ≤ q) (t : ℝ) :
     ∑ i, Real.log ‖(a i * (q : ℂ) ^ (-(t : ℂ))) ^ f‖ = f * m * (-t * Real.log q) := by
   have h0 : (0 : ℝ) < q := by exact_mod_cast (by omega : 0 < q)
@@ -33,6 +41,9 @@ theorem logsum {m : ℕ} {a : Fin m → ℂ} (h : ‖∏ i, a i‖ = 1) (q f : �
     nsmul_eq_mul]
   ring
 
+/- English proof (translation)
+Rewrite using `[← Complex.cpow_add _ _ (by exact_mod_cast (by omega : q ≠ 0))]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem shift (q : ℕ) (hq : 2 ≤ q) (s t : ℝ) :
     (q : ℂ) ^ (-(s : ℂ)) * (q : ℂ) ^ (-((-t : ℝ) : ℂ)) = (q : ℂ) ^ (-((s - t : ℝ) : ℂ)) := by
   rw [← Complex.cpow_add _ _ (by exact_mod_cast (by omega : q ≠ 0))]
@@ -40,6 +51,9 @@ theorem shift (q : ℕ) (hq : 2 ≤ q) (s t : ℝ) :
   push_cast
   ring
 
+/- English proof (translation)
+Establish `h0 : (0 : ℝ) < q` using `by exact_mod_cast (by omega : 0 < q)`. Rewrite using `[Common0Aux.cpow_real, Common0Aux.cpow_real, ← Complex.ofReal_pow, ← Complex.ofReal_mul, Nat.cast_pow, ← Real.rpow_natCast, ← Real.rpow_natCast, ← Real.rpow_mul h0.le, ← Real.rpow_mul h0.le, ← Real.rpow_add h0]`. Simplify using `[mul_comm]`.
+-/
 theorem cancel (q f : ℕ) (hq : 2 ≤ q) (t : ℝ) :
     ((q : ℂ) ^ (-(t : ℂ))) ^ f * ((q ^ f : ℕ) : ℂ) ^ (-((-t : ℝ) : ℂ)) = 1 := by
   have h0 : (0 : ℝ) < q := by exact_mod_cast (by omega : 0 < q)
@@ -47,6 +61,11 @@ theorem cancel (q f : ℕ) (hq : 2 ≤ q) (t : ℝ) :
     ← Real.rpow_natCast, ← Real.rpow_natCast, ← Real.rpow_mul h0.le, ← Real.rpow_mul h0.le, ← Real.rpow_add h0]
   simp [mul_comm]
 
+/- English proof (translation)
+Establish `hC : 0 ≤ C` using `(abs_nonneg _).trans (h 2 one_lt_two le_rfl)`. Establish `h1` using `h (1 + Real.exp (-(C + 1))) (by linarith [Real.exp_pos (-(C + 1))]) (by linarith [Real.exp_le_one_iff.2 (show -(C + 1) ≤ 0 by linarith)])`. Rewrite `h1` using `[add_sub_cancel_left, Real.log_exp, neg_neg, abs_mul, abs_of_nonneg (show 0 ≤ C + 1 by linarith)]`. Assume the negation of the conclusion as `hne`. Establish `h2 : (1 : ℤ) ≤ |(N : ℤ) - N'|` using `Int.one_le_abs (by omega)`.
+
+Establish `h3 : (1 : ℝ) ≤ |(N : ℝ) - N'|` using `by exact_mod_cast h2`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem eq_of_bdd (N N' : ℕ) (C : ℝ) (h : ∀ σ : ℝ, 1 < σ → σ ≤ 2 → |((N : ℝ) - N') * (-Real.log (σ - 1))| ≤ C) : N = N' := by
   have hC : 0 ≤ C := (abs_nonneg _).trans (h 2 one_lt_two le_rfl)
   have h1 := h (1 + Real.exp (-(C + 1))) (by linarith [Real.exp_pos (-(C + 1))])
@@ -57,6 +76,9 @@ theorem eq_of_bdd (N N' : ℕ) (C : ℝ) (h : ∀ σ : ℝ, 1 < σ → σ ≤ 2 
   have h3 : (1 : ℝ) ≤ |(N : ℝ) - N'| := by exact_mod_cast h2
   nlinarith
 
+/- English proof (translation)
+Establish `e : ((s.filter P).card : ℝ) * L = ∑ i ∈ s, if P i then L else 0`. Rewrite using `[← Finset.sum_filter, Finset.sum_const, nsmul_eq_mul]`. Rewrite using `[e, ← Finset.sum_sub_distrib]`. Conclude with `(Finset.abs_sum_le_sum_abs _ _).trans (Finset.sum_le_sum fun i _ => h i)`.
+-/
 theorem sum_bd {I : Type} (s : Finset I) (P : I → Prop) [DecidablePred P] (a M : I → ℝ) (L : ℝ)
     (h : ∀ i, |a i - (if P i then L else 0)| ≤ M i) : |∑ i ∈ s, a i - (s.filter P).card * L| ≤ ∑ i ∈ s, M i := by
   have e : ((s.filter P).card : ℝ) * L = ∑ i ∈ s, if P i then L else 0 := by
@@ -70,6 +92,33 @@ namespace UpperTheory.ConvolutionTheory.R
 
 open PositivityTheory.RgJS UpperTheory.ConvolutionTheory.Rs Ac2
 
+/- English proof (translation)
+Introduce `hB hZ hL l W W' q q' u f c hl hC X X' d d' A A' hS hS' ι _ x y z t t' hy h1 h2`. Establish `hq` using `hS.primes.two`. Establish `hq'` using `hS'.primes.two`. Establish `hq1 : ∀ v, 1 ≤ q v` using `fun v => le_trans one_le_two (hq v)`. Choose the witnesses or unpack the hypotheses as in `⟨w₀⟩ : Nonempty W' := by`.
+
+Assume the negation of the conclusion as `hn`. Use `not_nonempty_iff.1 hn` as an intermediate fact. Conclude with `hS'.primes.div Summable.of_finite`. Establish `key : ∀ (x : X) (t : ℝ), (∀ w, ∑ i, Finset.univ.val.map (fun a => A' (z i).1 w a * (q' w : ℂ) ^ (-((z i).2 : ℂ))) = Finset.univ.val.map fun a => (A x (u w) a * (q (u w) : ℂ) ^ (-(t : ℂ))) ^ f w) → ∑ i, (d' (z i).1 : ℝ) = d x ∧ ∑ i, (d' (z i).1 : ℝ) * (z i).2 = d x * t ∧ ∀ w (k : …` using `fun x t h => by`. Use `⟨by simpa using ps (h w₀) fun _ => (1 : ℝ), ?_, fun w k => ?_⟩` and prove the remaining obligations.
+
+Establish `e` using `ps (h w₀) fun ζ => Real.log ‖ζ‖`. Rewrite `e` using `[logsum (hS.det x _) _ _ (hq _)]`. Establish `e' : ∀ i, ∑ a, Real.log ‖A' (z i).1 w₀ a * (q' w₀ : ℂ) ^ (-((z i).2 : ℂ))‖ = -Real.log (q' w₀) * ((d' (z i).1 : ℝ) * (z i).2)` using `fun i => by`. Use `logsum (hS'.det (z i).1 w₀) _ 1 (hq' w₀) (z i).2` as an intermediate fact. Simplify using `only [pow_one] at this`.
+
+Rewrite using `[this]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hlog : Real.log (q' w₀) = f w₀ * Real.log (q (u w₀))` using `by rw [hC.norm, Nat.cast_pow, Real.log_pow]`. Establish `hpos : 0 < Real.log (q' w₀)` using `Real.log_pos (by exact_mod_cast hq' w₀)`.
+
+Simplify using `only [e', ← Finset.mul_sum] at e`. Use `mul_left_cancel₀ (neg_ne_zero.2 hpos.ne') (e.trans ?_)` and prove the remaining obligations. Rewrite using `[hlog]`. Expand and normalize the polynomial expressions, which then agree. Establish `e` using `ps (h w) fun ζ => (ζ * (q' w : ℂ) ^ (-((-t : ℝ) : ℂ))) ^ k`.
+
+Rewrite using `[Fintype.sum_sigma]`. Simplify using `only [mul_assoc, shift _ (hq' w)] at e`. Rewrite using `[e]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[mul_pow (A x (u w) a), mul_assoc, hC.norm w, cancel _ _ (hq _), mul_one, pow_mul]`.
+
+Take `⟨c1, s1, p1⟩` from `key x t h1`. Take `⟨c2, s2, p2⟩` from `key (y 0) t' h2`. Establish `htt : t = t'`. Establish `hd : (0 : ℝ) < d x` using `by exact_mod_cast hS.pos x`. Use `mul_left_cancel₀ hd.ne' ?_` and prove the remaining obligations.
+
+Rewrite using `[← s1, s2, ← c2, c1]`. Substitute `htt` using the available equality. Establish `hs : ∀ i, (z i).2 = t` using `fun i => sub_eq_zero.1 (hZ W' q' X' d' A' hS' ι (fun i => ((z i).1, (z i).2 - t)) (by simp only [mul_sub, Finset.sum_sub_distrib, ← Finset.sum_mul, c1, s1, sub_self]) (fun σ hσ => (hB l W W' q q' u f c hl hq1 hC _ _ _ _ (A x) (A x) _ _ σ p1 p1 ((conv1 W q X d A hS x x).1 σ hσ)).1 …`. Use `⟨rfl, hs, ?_⟩` and prove the remaining obligations. Simplify using `only [hs, sub_self, Complex.ofReal_zero, neg_zero, Complex.cpow_zero, mul_one] at p1 p2`.
+
+Use `choose M hM using fun j => hL W q X d A hS x (y j)`. Use `choose M' hM' using fun p : ι × ι => hL W' q' X' d' A' hS' (z p.1).1 (z p.2).1`. Use `eq_of_bdd _ _ (∑ j ∈ Finset.range l, M j + ∑ p, M' p) fun σ a b => ?_` and prove the remaining obligations. Establish `e` using `(hB l W W' q q' u f c hl hq1 hC _ _ _ _ (A x) (A (y 0)) _ _ σ p1 p2 ((conv1 W q X d A hS x (y 0)).1 σ a)).2`. Establish `eR : ∀ j p, lterm q (A x) (fun v b => A (y 0) v b * c v ^ j) σ p = lterm q (A x) (A (y j)) σ p` using `fun j p => by`.
+
+Use `congrArg (fun m : Multiset ℂ => (m.map (· ^ (p.2 + 1))).sum) (hy j p.1)` as an intermediate fact. Simplify using `only [Multiset.map_map, Function.comp_def, ← Finset.sum_eq_multiset_sum] at this`. Simplify using `only [lterm, this]`. Establish `eL : ∀ p, lterm q' (fun w (a : Σ i, Fin (d' (z i).1)) => A' (z a.1).1 w a.2) (fun w (a : Σ i, Fin (d' (z i).1)) => A' (z a.1).1 w a.2) σ p = ∑ r : ι × ι, lterm q' (A' (z r.1).1) (A' (z r.2).1) σ p` using `fun p => by`. Simplify using `only [lterm, Fintype.sum_sigma, Fintype.sum_prod_type]`.
+
+Rewrite using `[map_sum, Finset.sum_mul_sum]`. Simplify using `only [Finset.sum_mul, Finset.sum_div]`. Simplify using `only [eR, eL] at e`. Rewrite `e` using `[Summable.tsum_finsetSum fun r _ => ((conv1 W' q' X' d' A' hS' _ _).1 σ a).of_norm]`. Establish `e2 : ∑ r : ι × ι, dre q' (A' (z r.1).1) (A' (z r.2).1) σ = ∑ j ∈ Finset.range l, dre q (A x) (A (y j)) σ`.
+
+Simplify `congrArg Complex.re e` using `only [Complex.re_sum, dre]`. Establish `b1` using `abs_le.1 (sum_bd (Finset.range l) (fun j => x = y j) _ M _ fun j => by convert hM j σ a b)`. Establish `b2` using `abs_le.1 (sum_bd Finset.univ (fun p : ι × ι => (z p.1).1 = (z p.2).1) _ M' _ fun p => by convert hM' p σ a b)`. Rewrite `b2` using `[e2]`. Rewrite using `[sub_mul]`.
+
+Conclude with `abs_le.2 ⟨by linarith [b1.1, b1.2, b2.1, b2.2], by linarith [b1.1, b1.2, b2.1, b2.2]⟩`.
+-/
 theorem absCount2 : BCSum → ZeroExp → LogAsym → AbsCount := by
   intro hB hZ hL l W W' q q' u f c hl hC X X' d d' A A' hS hS' ι _ x y z t t' hy h1 h2
   classical

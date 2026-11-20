@@ -18,6 +18,13 @@ open NumberField GlobalTheory.CuspRep GlobalTheory.CuspRep.CuspidalL2GL MeasureT
 
 namespace GlobalTheory.CompanionTheory.Clozel
 
+/- English proof (translation)
+Take `⟨φ, hφ⟩` from `hB.2`. Use `GlobalTheory.T.multiset_conjugate_neg_of_prod a m m' hm.1 hm'.1 fun u => ?_` and prove the remaining obligations. Establish `val : ∀ (σ : E →+* ℂ) (l : Multiset ℂ), π.HasInfChar σ l → ∀ w : ℂ, Formalism.REAL.qdet (EopV π σ) (w + ((a : ℂ) - 1) / 2) φ = (l.map (w + ·)).prod • φ`. Introduce `σ l hl w`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Rewrite using `[GlobalTheory.T.quantum_det_capelli_operator E a π σ w φ, hl.2 w φ.1 φ.2]`. Both sides reduce to the same expression. Establish `key` using `GlobalTheory.T.quantum_det_adjoint_form π.V B a (EopV π τ) (EopV π (NumberField.ComplexEmbedding.conjugate τ)) (GlobalTheory.T.lie_operator_gl_relations E a π _) (GlobalTheory.T.lie_operator_hermitian_skew E a π B hB τ) (u + ((a : ℂ) - 1) / 2) φ φ`. Establish `arg : (a : ℂ) - 1 - (starRingEnd ℂ) (u + ((a : ℂ) - 1) / 2) = -(starRingEnd ℂ) u + ((a : ℂ) - 1) / 2`. Simplify using `only [map_add, map_div₀, map_sub, map_one, Complex.conj_natCast, map_ofNat]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite `key` using `[arg, val τ m hm u, LinearMap.smul_apply, val _ m' hm' (-(starRingEnd ℂ) u)]`. Simplify using `only [map_smul, LinearMap.smul_apply, smul_smul, map_smulₛₗ, smul_eq_mul] at key`. Conclude with `mul_right_cancel₀ hφ key`.
+-/
 theorem hasInfChar_conj_eq (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (π : CuspSub E a)
     (B : π.V →ₗ[ℂ] π.V →ₗ⋆[ℂ] ℂ) (hB : IsHerm π B) (τ : E →+* ℂ) (m m' : Multiset ℂ)
     (hm : π.HasInfChar τ m) (hm' : π.HasInfChar (NumberField.ComplexEmbedding.conjugate τ) m') :

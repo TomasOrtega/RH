@@ -12,19 +12,31 @@ private noncomputable def sec {A A' C J : Type} [CommRing A] [CommRing A'] [Comm
   Pi.algHom C (fun _ => C) fun j =>
     Algebra.TensorProduct.lift (AlgHom.id C C) (τ j) fun _ _ => Commute.all _ _
 
+/- English proof (translation)
+Simplify using `[sec]`.
+-/
 private lemma sec_tmul {A A' C J : Type} [CommRing A] [CommRing A'] [CommRing C] [Algebra A A'] [Algebra A C]
     (τ : J → (A' →ₐ[A] C)) (c : C) (b : A') (j : J) : sec τ (c ⊗ₜ b) j = c * τ j b := by
   simp [sec]
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.Qk54.tensor_hom_ext h₁ h₂`.
+-/
 private lemma tensor_hom_ext {A A' C Ω : Type} [CommRing A] [CommRing A'] [CommRing C] [Algebra A A'] [Algebra A C]
     [CommRing Ω] {u v : C ⊗[A] A' →+* Ω} (h₁ : ∀ c : C, u (c ⊗ₜ 1) = v (c ⊗ₜ 1))
     (h₂ : ∀ b : A', u (1 ⊗ₜ b) = v (1 ⊗ₜ b)) : u = v :=
   _root_.UpperTheory.Reformulated.B.Qk54.tensor_hom_ext h₁ h₂
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.ExistsEvaluation.exists_eval f`.
+-/
 private lemma exists_eval {C Ω J : Type} [CommRing C] [Field Ω] [Fintype J] (f : (J → C) →+* Ω) :
     ∃ j, ∀ v : J → C, f v = f (algebraMap C (J → C) (v j)) :=
   _root_.UpperTheory.Reformulated.B.ExistsEvaluation.exists_eval f
 
+/- English proof (translation)
+Use `letI : Algebra D E := (φ : D →+* E).toAlgebra`. Use `haveI : IsScalarTower C D E := IsScalarTower.of_algebraMap_eq' (φ.comp_algebraMap).symm`. Use `haveI : Algebra.Etale D E := Algebra.Etale.of_restrictScalars C D E`. Conclude with `hiso D E pts`.
+-/
 private lemma bij_of_pts (hiso : AlgIsoPts) {C D E : Type} [CommRing C] [CommRing D] [CommRing E] [Algebra C D]
     [Algebra C E] [Algebra.Etale C D] [Algebra.Etale C E] (φ : D →ₐ[C] E)
     (pts : ∀ (Ω : Type) [Field Ω] [IsAlgClosed Ω] (x : D →+* Ω), ∃! y : E →+* Ω, y.comp (φ : D →+* E) = x) :
@@ -37,6 +49,25 @@ private lemma bij_of_pts (hiso : AlgIsoPts) {C D E : Type} [CommRing C] [CommRin
 end UpperTheory.Gal.G3.AlgebraSplitting
 
 open UpperTheory.Gal.G3.AlgebraSplitting in
+/- English proof (translation)
+Introduce `hiso A A' C _ _ _ _ _ _ J _ τ h`. Use `⟨AlgEquiv.ofBijective (sec τ) (bij_of_pts hiso (sec τ) ?_), fun b j => ?_⟩` and prove the remaining obligations. Use `swap`. Simplify using `[sec_tmul]`. Introduce `Ω _ _ x`.
+
+Set `x₀ : C →+* Ω` to `x.comp (Algebra.TensorProduct.includeLeftRingHom)`. Set `y₀ : A' →+* Ω` to `x.comp (Algebra.TensorProduct.includeRight : A' →ₐ[A] C ⊗[A] A').toRingHom`. Establish `hx₀ : ∀ c, x₀ c = x (c ⊗ₜ 1)` using `fun _ => rfl`. Establish `hy₀ : ∀ b, y₀ b = x (1 ⊗ₜ b)` using `fun _ => rfl`. Establish `compat : y₀.comp (algebraMap A A') = x₀.comp (algebraMap A C)`.
+
+Use extensionality with `a`. Simplify using `only [RingHom.comp_apply, hx₀, hy₀]`. Rewrite using `[Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul]`. Take `⟨j, hj, huniq⟩` from `h Ω x₀ y₀ compat`. Establish `hτ : ∀ b, x₀ (τ j b) = y₀ b` using `fun b => congrArg (fun f : A' →+* Ω => f b) hj`.
+
+Use `⟨x₀.comp (Pi.evalRingHom (fun _ => C) j), ?_, ?_⟩` and prove the remaining obligations. Apply `tensor_hom_ext` to reduce the goal to its premises. Introduce `c`. Simplify using `[sec_tmul, hx₀]`. Introduce `b`.
+
+Use `hτ b` as an intermediate fact. Simplify using `only [RingHom.comp_apply, RingHom.coe_coe, Pi.evalRingHom_apply, sec_tmul, one_mul]`. Rewrite using `[this, hy₀]`. Introduce `y' hy'`. Establish `hy'd : ∀ d, y' (sec τ d) = x d` using `fun d => congrArg (fun f : C ⊗[A] A' →+* Ω => f d) hy'`.
+
+Take `⟨j', hj'⟩` from `exists_eval y'`. Establish `hal : ∀ c : C, y' (algebraMap C (J → C) c) = x₀ c`. Introduce `c`. Rewrite using `[hx₀, ← hy'd]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `i`. Simplify using `[sec_tmul]`. Establish `hy'e : ∀ v : J → C, y' v = x₀ (v j')` using `fun v => by rw [hj', hal]`. Establish `hjj : j' = j`. Apply `huniq` to reduce the goal to its premises.
+
+Use extensionality with `b`. Use `hy'e (sec τ (1 ⊗ₜ b))` as an intermediate fact. Rewrite `this` using `[hy'd, sec_tmul, one_mul]`. Simplify `this.symm` using `[hy₀]`. Substitute `hjj` using the available equality.
+
+Use extensionality with `v`. Simplify using `[hy'e]`.
+-/
 theorem UpperTheory.Gal.G3.pAlgSplit :
     AlgIsoPts → AlgSplit := by
   intro hiso A A' C _ _ _ _ _ _ J _ τ h

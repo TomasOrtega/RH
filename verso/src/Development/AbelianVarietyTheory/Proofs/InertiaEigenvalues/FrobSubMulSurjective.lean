@@ -7,6 +7,17 @@ namespace GlobalTheory.ArtinSchreierWitt
 
 open Polynomial
 
+/- English proof (translation)
+Establish `hc : IsAdicComplete (Ideal.span {(p : ℤ)}) (WittVector p k)`. Rewrite using `[← IsAdicComplete.map_algebraMap_iff (S := WittVector p k), Ideal.map_span, Set.image_singleton, map_natCast]`. Use `infer_instance`. Set `f : WittVector p k →ₗ[ℤ] WittVector p k` to `(WittVector.frobenius (p := p) (R := k)).toAddMonoidHom.toIntLinearMap - (AddMonoidHom.mulLeft c).toIntLinearMap`. Establish `hf : ∀ β, f β = WittVector.frobenius β - c * β` using `fun β => rfl`.
+
+Establish `hs : Function.Surjective f`. Use `surjective_of_mkQ_comp_surjective (I := Ideal.span {(p : ℤ)}) fun G => ?_` and prove the remaining obligations. Take `⟨g, rfl⟩` from `Submodule.mkQ_surjective _ G`. Take `⟨x, hx⟩` from `h (c.coeff 0) (g.coeff 0)`. Use `⟨WittVector.teichmuller p x, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[LinearMap.comp_apply, Submodule.mkQ_apply, Submodule.mkQ_apply, Submodule.Quotient.eq, hf]`. Establish `h0 : (WittVector.frobenius (WittVector.teichmuller p x) - c * WittVector.teichmuller p x - g) ∈ Ideal.span {(p : WittVector p k)}`. Rewrite using `[← WittVector.ker_constantCoeff, RingHom.mem_ker, map_sub, map_sub, map_mul]`. Simplify using `only [WittVector.constantCoeff_apply, WittVector.coeff_frobenius_charP, WittVector.teichmuller_coeff_zero]`. Rewrite using `[hx, sub_self]`.
+
+Take `⟨u, hu⟩` from `Ideal.mem_span_singleton.1 h0`. Rewrite using `[hu]`. Establish `: (p : WittVector p k) * u = (p : ℤ) • u` using `by simp`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem_smul (Ideal.mem_span_singleton_self _) Submodule.mem_top`.
+
+Take `⟨β, hβ⟩` from `hs y`. Conclude with `⟨β, (hf β).symm.trans hβ⟩`.
+-/
 theorem frob_sub_mul_surjective (p : ℕ) [Fact p.Prime] (k : Type) [CommRing k] [CharP k p]
     [PerfectRing k p] (h : ∀ c y : k, ∃ x : k, x ^ p - c * x = y) (c y : WittVector p k) :
     ∃ β : WittVector p k, WittVector.frobenius β - c * β = y := by
@@ -38,6 +49,9 @@ theorem frob_sub_mul_surjective (p : ℕ) [Fact p.Prime] (k : Type) [CommRing k]
   obtain ⟨β, hβ⟩ := hs y
   exact ⟨β, (hf β).symm.trans hβ⟩
 
+/- English proof (translation)
+Establish `h1 : (C c * X + C y : k[X]).degree < (p : WithBot ℕ)` using `lt_of_le_of_lt degree_linear_le (by exact_mod_cast hp.out.one_lt)`. Use `⟨monic_X_pow_sub h1, ?_⟩` and prove the remaining obligations. Rewrite using `[degree_sub_eq_left_of_degree_lt (by rwa [degree_X_pow]), degree_X_pow]`.
+-/
 theorem monic_as (p : ℕ) [hp : Fact p.Prime] {k : Type} [CommRing k] [Nontrivial k] (c y : k) :
     (X ^ p - (C c * X + C y) : k[X]).Monic ∧ (X ^ p - (C c * X + C y) : k[X]).degree = p := by
   have h1 : (C c * X + C y : k[X]).degree < (p : WithBot ℕ) :=
@@ -45,6 +59,11 @@ theorem monic_as (p : ℕ) [hp : Fact p.Prime] {k : Type} [CommRing k] [Nontrivi
   refine ⟨monic_X_pow_sub h1, ?_⟩
   rw [degree_sub_eq_left_of_degree_lt (by rwa [degree_X_pow]), degree_X_pow]
 
+/- English proof (translation)
+Take `⟨x, hx⟩` from `IsAlgClosed.exists_root (X ^ p - (C c * X + C y) : K[X]) (by`. Rewrite using `[(monic_as p c y).2]`. Conclude with `hp.out.ne_zero)` after adjusting the coercions. Use `⟨x, ?_⟩` and prove the remaining obligations. Simplify using `only [IsRoot.def, eval_sub, eval_pow, eval_X, eval_add, eval_mul, eval_C] at hx`.
+
+Take the linear combination `hx`.
+-/
 theorem exists_root_field (p : ℕ) [hp : Fact p.Prime] {K : Type} [Field K] [IsAlgClosed K]
     (c y : K) : ∃ x : K, x ^ p - c * x = y := by
   obtain ⟨x, hx⟩ := IsAlgClosed.exists_root (X ^ p - (C c * X + C y) : K[X]) (by
@@ -53,6 +72,11 @@ theorem exists_root_field (p : ℕ) [hp : Fact p.Prime] {K : Type} [Field K] [Is
   simp only [IsRoot.def, eval_sub, eval_pow, eval_X, eval_add, eval_mul, eval_C] at hx
   linear_combination hx
 
+/- English proof (translation)
+Take `⟨x, hx⟩` from `exists_root_field p (algebraMap O K c) (algebraMap O K y)`. Establish `hi : IsIntegral O x`. Use `⟨X ^ p - (C c * X + C y), (monic_as p c y).1, ?_⟩` and prove the remaining obligations. Simplify using `only [eval₂_sub, eval₂_X_pow, eval₂_add, eval₂_mul, eval₂_C, eval₂_X]`. Take the linear combination `hx`.
+
+Take `⟨z, rfl⟩` from `IsIntegrallyClosed.isIntegral_iff.1 hi`. Use `⟨z, IsFractionRing.injective O K ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub, map_pow, map_mul, hx]`.
+-/
 theorem exists_root_ring (p : ℕ) [hp : Fact p.Prime] {O K : Type} [CommRing O] [IsDomain O]
     [ValuationRing O] [Field K] [Algebra O K] [IsFractionRing O K] [IsAlgClosed K]
     (c y : O) : ∃ x : O, x ^ p - c * x = y := by
@@ -65,6 +89,13 @@ theorem exists_root_ring (p : ℕ) [hp : Fact p.Prime] {O K : Type} [CommRing O]
   refine ⟨z, IsFractionRing.injective O K ?_⟩
   rw [map_sub, map_pow, map_mul, hx]
 
+/- English proof (translation)
+Establish `h : ∀ n, ∃ a : ZMod p, ZMod.castHom (dvd_refl p) K a = b.coeff n`. Introduce `n`. Establish `h1 : (b.coeff n) ^ p = b.coeff n`. Use `congrArg (fun w => WittVector.coeff w n) hb` as an intermediate fact. Simplify `this` using `[WittVector.map_coeff, frobenius_def]`.
+
+Establish `h2` using `(Subfield.mem_bot_iff_pow_eq_self K p).2 h1`. Establish `h3 : (⊥ : Subfield K) ≤ (ZMod.castHom (dvd_refl p) K).fieldRange` using `bot_le`. Conclude with `h3 h2`. Use `choose a ha using h`. Use `⟨WittVector.equiv p (WittVector.mk p a), ?_⟩` and prove the remaining obligations.
+
+Use extensionality with `n`. Simplify using `[zlW, WittVector.map_coeff, ← ha]`.
+-/
 theorem fixed_frob (p : ℕ) [Fact p.Prime] (K : Type) [Field K] [CharP K p] (b : WittVector p K)
     (hb : WittVector.map (frobenius K p) b = b) : ∃ z : ℤ_[p], b = zlW p K z := by
   have h : ∀ n, ∃ a : ZMod p, ZMod.castHom (dvd_refl p) K a = b.coeff n := by
@@ -80,6 +111,11 @@ theorem fixed_frob (p : ℕ) [Fact p.Prime] (K : Type) [Field K] [CharP K p] (b 
   ext n
   simp [zlW, WittVector.map_coeff, ← ha]
 
+/- English proof (translation)
+Introduce `l _`. Take `⟨hK, hV⟩` from `GlobalTheory.T.isAlgClosed_tiltField_and_valuationRing l`. Use `⟨fun y => ?_, fun b hb => fixed_frob l (Cb l) b hb, fun c p => ?_⟩` and prove the remaining obligations. Take `⟨β, hβ⟩` from `frob_sub_mul_surjective l (Cb l) (exists_root_field l) 1 y`. Use `⟨β, ?_⟩` and prove the remaining obligations.
+
+Rewrite `hβ` using `[one_mul, WittVector.frobenius_eq_map_frobenius]`. Conclude with `hβ`. Conclude with `frob_sub_mul_surjective l (OCb l) (exists_root_ring l (K := Cb l)) c p`.
+-/
 theorem main : ∀ (l : ℕ) [Fact l.Prime], (∀ y : WCb l, ∃ b, frobW l b - b = y) ∧ (∀ b : WCb l, frobW l b = b → ∃ z : ℤ_[l], b = algebraMap ℤ_[l] (WCb l) z) ∧ ∀ (c p : Ainf l), ∃ β : Ainf l, WittVector.frobenius β - c * β = p := by
   intro l _
   obtain ⟨hK, hV⟩ := GlobalTheory.T.isAlgClosed_tiltField_and_valuationRing l

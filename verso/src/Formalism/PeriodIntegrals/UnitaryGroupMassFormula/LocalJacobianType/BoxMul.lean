@@ -20,9 +20,15 @@ def mulL {ι : Type} (z : ι → Fv F v ⊗[F] E) :
     (ι → Fv F v ⊗[F] E) →ₗ[Fv F v] (ι → Fv F v ⊗[F] E) :=
   LinearMap.pi fun i => (Algebra.lmul (Fv F v) (Fv F v ⊗[F] E) (z i)).comp (LinearMap.proj i)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mulL_apply {ι : Type} (z : ι → Fv F v ⊗[F] E) (c : ι → Fv F v ⊗[F] E) (i : ι) :
     mulL v z c i = z i * c i := rfl
 
+/- English proof (translation)
+The claim follows from `Module.Finite.of_restrictScalars_finite ℚ F E LinearMap.det (mulL v z) = ∏ i, Algebra.norm (Fv F v) (z i) := by haveI : FiniteDimensional F E := Module.Finite.of_restrictScalars_finite ℚ F E unfold mulL rw [LinearMap.det_pi] simp only [Algebra.norm_apply]`.
+-/
 theorem det_mulL {ι : Type} [Fintype ι] [DecidableEq ι] (z : ι → Fv F v ⊗[F] E) :
     haveI : FiniteDimensional F E := Module.Finite.of_restrictScalars_finite ℚ F E
     LinearMap.det (mulL v z) = ∏ i, Algebra.norm (Fv F v) (z i) := by
@@ -31,6 +37,13 @@ theorem det_mulL {ι : Type} [Fintype ι] [DecidableEq ι] (z : ι → Fv F v �
   rw [LinearMap.det_pi]
   simp only [Algebra.norm_apply]
 
+/- English proof (translation)
+Establish `hq : ((Ideal.absNorm v.asIdeal : ℕ) : ℝ) ≠ 0`. Conclude with `(Ideal.absNorm_eq_zero_iff.not.2 v.ne_bot)` after adjusting the coercions. Distinguish the cases in `hx : Valued.v x = 0`. Establish `hxy : Valued.v (x * y) = 0` using `by rw [map_mul, hx, zero_mul]`. Simplify using `[absV, hx, hxy]`.
+
+Distinguish the cases in `hy : Valued.v y = 0`. Establish `hxy : Valued.v (x * y) = 0` using `by rw [map_mul, hy, mul_zero]`. Simplify using `[absV, hy, hxy]`. Establish `hxy : Valued.v (x * y) ≠ 0`. Rewrite using `[map_mul]`.
+
+Conclude with `mul_ne_zero hx hy`. Unfold `absV`. Rewrite using `[dif_neg hx, dif_neg hy, dif_neg hxy, ← zpow_add₀ hq, ← toAdd_mul]`. Use `congr 2`. Rewrite using `[← WithZero.coe_inj, WithZero.coe_mul, WithZero.coe_unzero, WithZero.coe_unzero, WithZero.coe_unzero, map_mul]`.
+-/
 private theorem absV_mul_lemma (x y : Fv F v) : absV v (x * y) = absV v x * absV v y := by
   have hq : ((Ideal.absNorm v.asIdeal : ℕ) : ℝ) ≠ 0 := by
     exact_mod_cast (Ideal.absNorm_eq_zero_iff.not.2 v.ne_bot)
@@ -49,6 +62,11 @@ private theorem absV_mul_lemma (x y : Fv F v) : absV v (x * y) = absV v x * absV
   rw [← WithZero.coe_inj, WithZero.coe_mul, WithZero.coe_unzero, WithZero.coe_unzero,
     WithZero.coe_unzero, map_mul]
 
+/- English proof (translation)
+Establish `h1 : Valued.v (1 : Fv F v) ≠ 0`. Rewrite using `[map_one]`. Conclude with `one_ne_zero`. Unfold `absV`. Rewrite using `[dif_neg h1]`.
+
+Establish `h2 : WithZero.unzero h1 = 1`. Rewrite using `[← WithZero.coe_inj, WithZero.coe_unzero, map_one, WithZero.coe_one]`. Rewrite using `[h2, toAdd_one, zpow_zero]`.
+-/
 private theorem absV_one_lemma_2 : absV v (1 : Fv F v) = 1 := by
   have h1 : Valued.v (1 : Fv F v) ≠ 0 := by
     rw [map_one]
@@ -59,12 +77,38 @@ private theorem absV_one_lemma_2 : absV v (1 : Fv F v) = 1 := by
     rw [← WithZero.coe_inj, WithZero.coe_unzero, map_one, WithZero.coe_one]
   rw [h2, toAdd_one, zpow_zero]
 
+/- English proof (translation)
+Set `f : Fv F v →* ℝ` to `{ toFun := absV v, map_one' := absV_one_lemma_2 v, map_mul' := absV_mul_lemma v }`. Conclude with `map_prod f a Finset.univ`.
+-/
 theorem absV_prod {ι : Type} [Fintype ι] (a : ι → Fv F v) :
     absV v (∏ i, a i) = ∏ i, absV v (a i) := by
   let f : Fv F v →* ℝ :=
     { toFun := absV v, map_one' := absV_one_lemma_2 v, map_mul' := absV_mul_lemma v }
   exact map_prod f a Finset.univ
 
+/- English proof (translation)
+Introduce `ι _ μ _ y hy`. Use `haveI := locallyCompact_Fv v`. Use `haveI := secondCountable_Fv v`. Use `haveI : FiniteDimensional F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `haveI : IsModuleTopology (Fv F v) (Fv F v ⊗[F] E) := ⟨rfl⟩`.
+
+Use `haveI : ContinuousAdd (Fv F v ⊗[F] E) := IsModuleTopology.toContinuousAdd (Fv F v) _`. Use `haveI : IsTopologicalAddGroup (Fv F v ⊗[F] E) := IsModuleTopology.topologicalAddGroup (Fv F v) (Fv F v ⊗[F] E)`. Set `b` to `Module.finBasis (Fv F v) (Fv F v ⊗[F] E)`. Set `eR : (Fv F v ⊗[F] E) ≃L[Fv F v] (Fin (Module.finrank (Fv F v) (Fv F v ⊗[F] E)) → Fv F v)` to `{ b.equivFun with continuous_toFun := IsModuleTopology.continuous_of_linearMap b.equivFun.toLinearMap continuous_invFun := IsModuleTopology.continuous_of_linearMap b.equivFun.symm.toLinearMap }`. Use `haveI : SecondCountableTopology (Fv F v ⊗[F] E) := eR.toHomeomorph.secondCountableTopology`.
+
+Use `haveI : BorelSpace (Fv F v ⊗[F] E) := ⟨rfl⟩`. Use `haveI : BorelSpace (ι → Fv F v ⊗[F] E) := Pi.borelSpace`. Set `e0 : (ι → Fv F v ⊗[F] E) ≃ₗ[Fv F v] (ι × Fin (Module.finrank (Fv F v) (Fv F v ⊗[F] E)) → Fv F v)` to `(LinearEquiv.piCongrRight fun _ : ι => b.equivFun).trans (LinearEquiv.curry (Fv F v) (Fv F v) ι (Fin _)).symm`. Set `eV : (ι → Fv F v ⊗[F] E) ≃L[Fv F v] (ι × Fin (Module.finrank (Fv F v) (Fv F v ⊗[F] E)) → Fv F v)` to `{ e0 with continuous_toFun := IsModuleTopology.continuous_of_linearMap e0.toLinearMap continuous_invFun := IsModuleTopology.continuous_of_linearMap e0.symm.toLinearMap }`. Set `u : ι → (Fv F v ⊗[F] E)ˣ` to `fun i => (hy i).unit`.
+
+Set `z : ι → Fv F v ⊗[F] E` to `fun i => ((u i)⁻¹ : (Fv F v ⊗[F] E)ˣ)`. Set `h : (ι → Fv F v ⊗[F] E) ≃ₜ (ι → Fv F v ⊗[F] E)` to `{ toFun := mulL v y invFun := mulL v z left_inv := fun c => by`. Use function extensionality and compare the values at `i`. Simplify using `only [mulL_apply, z, ← mul_assoc]`. Rewrite using `[show ((u i)⁻¹ : (Fv F v ⊗[F] E)ˣ).1 * y i = 1 from (u i).inv_mul, one_mul]`.
+
+Use `right_inv := fun c => by`. Use function extensionality and compare the values at `i`. Simplify using `only [mulL_apply, z, ← mul_assoc]`. Rewrite using `[show y i * ((u i)⁻¹ : (Fv F v ⊗[F] E)ˣ).1 = 1 from (u i).mul_inv, one_mul]`. Use `continuous_toFun := IsModuleTopology.continuous_of_linearMap (mulL v y)`.
+
+Use `continuous_invFun := IsModuleTopology.continuous_of_linearMap (mulL v z) }`. Set `Em` to `h.toMeasurableEquiv`. Establish `hNz : ∀ i, Algebra.norm (Fv F v) (z i) * Algebra.norm (Fv F v) (y i) = 1` using `fun i => by`. Rewrite using `[← map_mul, show z i * y i = 1 from (u i).inv_mul, map_one]`. Establish `hdet0 : (∏ i, Algebra.norm (Fv F v) (z i)) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun i _ => left_ne_zero_of_mul_eq_one (hNz i)`.
+
+Establish `hLM` using `PI.NglqJacSplitW.linModulusV_of (PI.NglqJacSplitW.linModulus_of PI.NglqJacSplitW.diagonal_one_jacobian)`. Use `set c := PI.NglqJacSplitW.modF (Fv F v) (∏ i, Algebra.norm (Fv F v) (z i)) with hc`. Establish `hmap : μ.map Em = c • μ`. Use extensionality with `X hX`. Rewrite using `[MeasurableEquiv.map_apply, Measure.smul_apply, smul_eq_mul]`.
+
+Establish `hpre : Em ⁻¹' X = mulL v z '' X`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Conclude with `⟨h x, hx, h.left_inv x⟩`.
+
+Introduce and unpack `⟨w, hw, rfl⟩ show h (h.symm w) ∈ X`. Rewrite using `[h.apply_symm_apply]`. Conclude with `hw`. Rewrite using `[hpre, hLM (Fv F v) (ι → Fv F v ⊗[F] E) (ι × Fin _) ⟨eV⟩ (mulL v z) (by rw [det_mulL]; exact hdet0) μ inferInstance X hX, det_mulL]`. Establish `hS : (Set.univ.pi fun i => {c | y i * c ∈ OEv (E` using `E) v}) = Em ⁻¹' Obox (E := E) v ι := by`.
+
+Use extensionality with `x`. Simplify using `[Obox, Em, h, mulL_apply]`. Rewrite using `[hS, ← MeasurableEquiv.map_apply, hmap, Measure.smul_apply, smul_eq_mul, ENNReal.toReal_mul, hc, modF_Fv v _ hdet0, absV_prod, ENNReal.toReal_ofReal (Finset.prod_nonneg fun i _ => (absV_pos v (left_ne_zero_of_mul_eq_one (hNz i))).le), mul_comm]`. Use `congr 1`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[eq_inv_of_mul_eq_one_left (hNz i), absV_inv]`.
+-/
 theorem box_measure_mul : BoxMul (E := E) v := by
   classical
   intro ι _ μ _ y hy

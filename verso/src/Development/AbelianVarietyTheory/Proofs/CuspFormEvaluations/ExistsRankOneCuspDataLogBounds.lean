@@ -14,6 +14,17 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 
 namespace GlobalTheory.CuspDataBounds
 
+/- English proof (translation)
+Substitute `hX` using the available equality. Use `⟨⟨Xx.k0, Xx.minWeight_pos, Xx.k0_le, Xx.ξ0_abs, Xx.EF_int, Xx.EF_perf, Xx.L', Xx.L'_fg, Xx.L'_int, Xx.L'_dual, NA, NC, hA, hC, ?_, ?_, Xx.g, Xx.g_pos, Xx.cong⟩, rfl, rfl, rfl, rfl⟩` and prove the remaining obligations. Introduce `x hx`. Rewrite `hx` using `[hΛ]`. Proceed by induction on `hx using Submodule.span_induction with`.
+
+Consider the case `mem y hy`. Take `⟨a, ha, u, hu, rfl⟩` from `hy`. Rewrite using `[smul_smul]`. Establish `h1 : ((NA : E) * a) • u = (⟨(NA : E) * a, hAi a ha⟩ : 𝓞 E) • u`. Rewrite using `[← algebraMap_smul E (⟨(NA : E) * a, hAi a ha⟩ : 𝓞 E) u]`.
+
+Both sides reduce to the same expression. Rewrite using `[h1]`. Conclude with `Xx.L'.smul_mem _ hu`. Consider the case `zero => simp`. Consider the case `add y z _ _ hy hz => rw [smul_add]`.
+
+Conclude with `Xx.L'.add_mem hy hz`. Consider the case `smul c y _ hy`. Rewrite using `[smul_comm]`. Conclude with `Xx.L'.smul_mem c hy`. Introduce `x hx`.
+
+Rewrite using `[hΛ]`. Conclude with `Submodule.subset_span ⟨(NC : E), hCS, x, hx, rfl⟩`.
+-/
 theorem exists_ext {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (Xx : DataX E r) (X : Data E r)
     (hX : Xx.toData = X) (S : Set E)
     (hΛ : Xx.Λ = Submodule.span (𝓞 E) {v | ∃ a ∈ S, ∃ u ∈ Xx.L', v = a • u})
@@ -44,6 +55,19 @@ theorem exists_ext {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} 
     rw [hΛ]
     exact Submodule.subset_span ⟨(NC : E), hCS, x, hx, rfl⟩
 
+/- English proof (translation)
+Establish `hx3 : 3 ≤ Real.exp L` using `by linarith [Real.add_one_le_exp L]`. Establish `e2 : Real.exp (2 * L) = Real.exp L ^ 2` using `by rw [← Real.exp_nat_mul]; norm_num`. Establish `e3 : Real.exp (3 * L) = Real.exp L ^ 3` using `by rw [← Real.exp_nat_mul]; norm_num`. Establish `e5 : Real.exp (5 * L) = Real.exp L ^ 5` using `by rw [← Real.exp_nat_mul]; norm_num`. Use `set x := Real.exp L with hx`.
+
+Establish `hn0 : 0 < n` using `by linarith`. Establish `hnx : n ≤ x` using `(Real.log_le_iff_le_exp hn0).1 hn`. Establish `hdx : 1 + d ≤ x ^ 2` using `by rw [← e2]; exact (Real.log_le_iff_le_exp (by linarith)).1 hD`. Establish `hfx : f ≤ x` using `by linarith`. Establish `hrx : r ≤ x` using `by linarith`.
+
+Establish `hfn : f * n ≤ x ^ 2` using `by nlinarith`. Establish `hfn0 : 0 ≤ f * n` using `by nlinarith`. Establish `hx2 : 9 ≤ x ^ 2` using `by nlinarith`. Establish `hx23 : 3 * x ^ 2 ≤ x ^ 3` using `by nlinarith`. Establish `hx35 : 9 * x ^ 3 ≤ x ^ 5` using `by nlinarith`.
+
+Establish `hA : d + f * n + 1 ≤ 2 * x ^ 2` using `by linarith`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Real.log_le_iff_le_exp (by linarith), e3]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hB : f * (d + f * n + 1) ≤ x * (2 * x ^ 2)` using `mul_le_mul hfx hA (by linarith) (by linarith)`.
+
+Rewrite using `[Real.log_le_iff_le_exp (by nlinarith), e5]`. Use the polynomial consequences of the given equalities and inequalities. Introduce `s hs0 hs`. Establish `hfr0 : 0 ≤ f * r` using `by nlinarith`. Establish `hC : f * r * n ≤ x ^ 3`.
+
+Establish `h1 : f * r ≤ x * x` using `mul_le_mul hfx hrx (by linarith) (by linarith)`. Establish `h2 : f * r * n ≤ x * x * x` using `mul_le_mul h1 hnx hn0.le (by positivity)`. Use the polynomial consequences of the given equalities and inequalities. Rewrite using `[Real.log_le_iff_le_exp (by linarith), e3]`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem weight_bounds (L f r n d : ℝ) (hL : 2 ≤ L) (hf : 1 ≤ f) (hfr : f ≤ r) (hrn : r ≤ n) (hd : 0 ≤ d)
     (hn : Real.log n ≤ L) (hD : Real.log (1 + d) ≤ 2 * L) :
     Real.log (d + f * n + 1) ≤ 3 * L ∧ Real.log (f * (d + f * n + 1) + 2) ≤ 5 * L ∧
@@ -79,12 +103,40 @@ theorem weight_bounds (L f r n d : ℝ) (hL : 2 ≤ L) (hf : 1 ≤ f) (hfr : f �
     rw [Real.log_le_iff_le_exp (by linarith), e3]
     nlinarith
 
+/- English proof (translation)
+Establish `p` using `h.pins.2.1`. Unfold `Formalism.L2.Pj.Par.PinLevel at p`. Conclude with `p.1`.
+-/
 private theorem level_M_eq_g_zero_mul_g_one_of_lawsM {D : D7} (T : Core D) (h : Formalism.L2.Pj.LawsM T) :
     T.Q.l.M = D.host.g 0 * D.host.g 1 := by
   have p := h.pins.2.1
   unfold Formalism.L2.Pj.Par.PinLevel at p
   exact p.1
 
+/- English proof (translation)
+Introduce `D T h hGam large₂ j hj w hP hL hrn σ hσ`. Take `⟨hgi, hlrd, hdd, hcc, -, -, -, hDF, hn⟩` from `hP`. Take `⟨⟨NA, hNA0, hNAi, hNAL⟩, hccA, hcc0, ⟨m, hm0, hmi, hmL⟩, hk0L, hfdeg, -, -, hfr, hf1, hxicc, -, hxiabs⟩` from `GlobalTheory.T.exists_clearing_integers_principalDatum_host D large₂.sc.L hL hlrd hdd hcc`. Establish `h10` using `GlobalTheory.T.modelWeight_size_spread_bound D T h j hj w σ hσ`. Take `⟨hW1, hW2, hW3⟩` from `weight_bounds large₂.sc.L (D.R.f : ℝ) (D.R.r : ℝ) (w.n : ℝ) (WeightAlgebra.DF w : ℝ) hL (by exact_mod_cast hf1) (by exact_mod_cast hfr) (by exact_mod_cast hrn) (by positivity) hn hDF`.
+
+Establish `hwg0 : 0 < (WeightAlgebra.DF w : ℝ) + D.R.f * w.n + 1` using `by positivity`. Establish `hwgF : Real.log ((fdeg D.host.E : ℝ) * ((WeightAlgebra.DF w : ℝ) + D.R.f * w.n + 1) + 2) ≤ 5 * large₂.sc.L`. Rewrite using `[hfdeg]`. Conclude with `hW2`. Establish `hspread : ∀ k, (∑ τ, ((T.U j σ).X k).spread (laU (T.U j σ) (wtA w) w.n k) τ) ≤ (WeightAlgebra.DF w : ℝ) + D.R.f * w.n + 1` using `fun k => by linarith [(h10 k).1]`.
+
+Establish `hla : ∀ k, Real.log (1 + ∑ τ, ∑ i, |((laU (T.U j σ) (wtA w) w.n k τ i : ℤ) : ℝ)|) ≤ 3 * large₂.sc.L` using `fun k => hW3 _ (by positivity) (h10 k).2`. Break down `isEmpty_or_nonempty (T.U j σ).Comp with hE | ⟨⟨k₁⟩⟩` into its components or cases. Conclude with `⟨fun k => isEmptyElim k, 1, _, le_rfl, by simp; positivity, hwg0, hW1, hwgF, fun k => isEmptyElim k⟩`. Establish `hPr : GlobalTheory.FrameNorm.HasPrinc (Formalism.L2.PjFree.Unf.ofPj (T.U j σ)) T.Q.l.M` using `fun k γ h1 h2 => hGam j hj σ hσ k γ h1 h2`. Use `choose Xx hXx hXg hXΛ hXk0 hXNA hXNC using GlobalTheory.T.exists_rankOneCuspLatticeData_of_principal D T.toCore h.toLawsCore j hj σ hσ hPr`.
+
+Use `choose e heNA heNC heg hek0 using fun k => exists_ext (Xx k) _ (hXx k) _ (hXΛ k) NA (Ideal.absNorm D.host.ccK) hNA0 hcc0 hNAi hccA`. Establish `hMpos : 0 < T.Q.l.M` using `by rw [← hXg k₁]; exact (Xx k₁).g_pos`. Establish `hlev : T.Q.l.M = D.host.g 0 * D.host.g 1` using `level_M_eq_g_zero_mul_g_one_of_lawsM T.toCore h.toLawsCore.toLawsM`. Establish `hgL : Real.log (T.Q.l.M : ℝ) ≤ 19 * large₂.sc.L`. Establish `h0 : D.host.g 0 ≠ 0` using `fun h0 => by simp [hlev, h0] at hMpos`.
+
+Establish `h1 : D.host.g 1 ≠ 0` using `fun h1 => by simp [hlev, h1] at hMpos`. Rewrite using `[hlev, Nat.cast_mul, Real.log_mul (by exact_mod_cast h0) (by exact_mod_cast h1)]`. Combine the linear relations using `[hgi 0, hgi 1]`. Establish `hmX : ∀ k, IsIntegral ℤ ((m : D.host.E) * (2 * ((T.U j σ).X k).ξ0))`. Introduce `k`.
+
+Break down `GlobalTheory.eq_or_eq_neg_of_purelyImaginary_of_norm_eq D.host.E D.host.xi0 ((T.U j σ).X k).ξ0 D.host.φ₀ hxicc ((T.U j σ).X k).ξ0_im (by rw [hxiabs, h.xiAbs j hj σ hσ k]) with h1 | h1` into its components or cases. Rewrite using `[h1]`. Conclude with `hmi`. Rewrite using `[h1]`. Use `hmi.neg using 1` and compare the differences between its conclusion and the goal.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hMk : ∀ k, ((e k).toX.g * (e k).toX.NA * (e k).toX.NC * m : ℕ) = T.Q.l.M * NA * Ideal.absNorm D.host.ccK * m`. Introduce `k`. Use `show (e k).g * (e k).NA * (e k).NC * m = _`. Rewrite using `[heg, heNA, heNC, hXg]`.
+
+Establish `hM1 : 1 ≤ T.Q.l.M * NA * Ideal.absNorm D.host.ccK * m` using `Nat.mul_pos (Nat.mul_pos (Nat.mul_pos hMpos hNA0) hcc0) hm0`. Use `⟨e, ((T.Q.l.M * NA * Ideal.absNorm D.host.ccK * m : ℕ) : ℝ), _, by exact_mod_cast hM1, ?_, hwg0, hW1, hwgF, fun k => ⟨hspread k, ?_, hla k, ?_, ?_, ?_, ?_⟩⟩` and prove the remaining obligations. Use `push_cast`. Establish `hN : (0 : ℝ) < NA` using `by exact_mod_cast hNA0`. Establish `hC : (0 : ℝ) < Ideal.absNorm D.host.ccK` using `by exact_mod_cast hcc0`.
+
+Establish `hm : (0 : ℝ) < m` using `by exact_mod_cast hm0`. Establish `hg : (0 : ℝ) < T.Q.l.M` using `by exact_mod_cast hMpos`. Rewrite using `[Real.log_mul (by positivity) hm.ne', Real.log_mul (by positivity) hC.ne', Real.log_mul hg.ne' hN.ne']`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `v hv hv0 b hb hbi`.
+
+Take `⟨γ, hγ, hγf⟩` from `GlobalTheory.TransvLevel.transv_mem D.host.E D.R.r (e k).toX m (hmX k) v hv hv0 b hb hbi`. Use `⟨γ, hγ, h.chiTriv j hj σ hσ _ _ (Formalism.L2.Pj.dom_wtA w) k γ hγ, fun τ => ?_⟩` and prove the remaining obligations. Use `hγf τ` as an intermediate fact. Rewrite `this` using `[hMk k]`. Conclude with `this`.
+
+Rewrite using `[heNA]`. Conclude with `hNAL`. Rewrite using `[heNC]`. Conclude with `hcc`. Rewrite using `[heg, hXg]`.
+
+Conclude with `hgL`. Rewrite using `[hek0, hXk0]`. Conclude with `hk0L`.
+-/
 theorem cusp_data_bounds : ∀ (D : D7) (T : Top D) (_h : LawsP T), GamAt T.toCore → ∀ (large₂ : SizeData₂ D) (j : ℕ) (_hj : InR D j) (w : WeightFamilies.Wt D j), ReciprocityTheory.ChartRestriction.G.PullbackSections.SupBoundPageRows D large₂ w → 2 ≤ large₂.sc.L → D.R.r ≤ w.n → ∀ σ : T.Q.c.F →+* ℂ, GoodEmb T.Q.c σ → ∃ (e : ∀ k : (T.U j σ).Comp, XExt ((T.U j σ).X k)) (M wg : ℝ), 1 ≤ M ∧ Real.log M ≤ 30 * large₂.sc.L ∧ 0 < wg ∧ Real.log wg ≤ 3 * large₂.sc.L ∧ Real.log ((fdeg D.host.E : ℝ) * wg + 2) ≤ 5 * large₂.sc.L ∧ ∀ k, (∑ τ, ((T.U j σ).X k).spread (laU (T.U j σ) (wtA w) w.n k) τ) ≤ wg ∧ (∀ v ∈ (e k).L', herm ((T.U j σ).X k).Gm v v = 0 → ∀ b : D.host.E, ReciprocityTheory.ChartRestriction.G.FD.cc b = b → IsIntegral ℤ b → ∃ γ ∈ ((T.U j σ).X k).Γ, ((T.U j σ).X k).χ (laU (T.U j σ) (wtA w) w.n k) γ = 1 ∧ ∀ τ : ((T.U j σ).X k).Ψ, (γ : Matrix (Fin D.R.r) (Fin D.R.r) D.host.E).map τ.1 = ((T.U j σ).X k).flowMat v τ ((M : ℂ) * τ.1 b)) ∧ Real.log (1 + ∑ τ, ∑ i, |((laU (T.U j σ) (wtA w) w.n k τ i : ℤ) : ℝ)|) ≤ 3 * large₂.sc.L ∧ Real.log (e k).NA ≤ 4 * large₂.sc.L ∧ Real.log (e k).NC ≤ 2 * large₂.sc.L ∧ Real.log (e k).g ≤ 19 * large₂.sc.L ∧ Real.log (1 / (e k).k0) ≤ 3 * large₂.sc.L := by
   intro D T h hGam large₂ j hj w hP hL hrn σ hσ
   obtain ⟨hgi, hlrd, hdd, hcc, -, -, -, hDF, hn⟩ := hP

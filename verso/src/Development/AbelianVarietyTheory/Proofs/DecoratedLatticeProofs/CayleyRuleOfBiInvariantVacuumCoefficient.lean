@@ -21,6 +21,11 @@ noncomputable section
 
 namespace GlobalTheory.ChainOnto.CayleyVac
 
+/- English proof (translation)
+Take `⟨d, hd, a, ha, b, hb, e⟩` from `GlobalTheory.LFun.UnitaryDiv.exists_good_div L ϖ σ q n hU g`. Take `⟨t, ht⟩` from `GlobalTheory.InertThetaCompare.exists_diag (σ := σ) hU hd`. Use `⟨fun i => d.getD i.1 0, t, ht, ?_⟩` and prove the remaining obligations. Use `GlobalTheory.UnramDoubleCoset.doubleCoset_GU_of_GL L ϖ σ q n hU t g a b ha hb ?_` and prove the remaining obligations. Apply `Units.ext` to reduce the goal to its premises.
+
+Simplify using `only [Units.val_mul]`. Rewrite using `[e, ht]`.
+-/
 theorem exists_cartanU {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))] [CompleteSpace L]
     {ϖ : L} {σ : L →+* L} {q : ℕ} (hU : IsUnramInv ϖ σ q) {n : ℕ} (g : GU σ n) :
     ∃ (d : Fin n → ℤ) (t : GU σ n), t.1.1 = Matrix.diagonal (fun i => ϖ ^ d i) ∧
@@ -37,6 +42,13 @@ end GlobalTheory.ChainOnto.CayleyVac
 
 namespace GlobalTheory.ChainOnto.CayleyVac
 
+/- English proof (translation)
+Introduce `e he g hdet hint`. Establish `h1` using `hco e he (π g⁻¹ s)`. Rewrite `h1` using `[hl]`. Establish `h2 : e (π g⁻¹ s) = φ g⁻¹ * e s` using `mul_right_cancel₀ hls (by rw [h1]; ring)`. Rewrite using `[h2]`.
+
+Use `congr 1`. Take `⟨d, t, ht, k₁, hk₁, k₂, hk₂, hg⟩` from `exists_cartanU hU g⁻¹`. Establish `hord` using `GlobalTheory.T.order_det_one_add_of_integral_inverse_unitary L ϖ σ q hU r g t d ht k₁ hk₁ k₂ hk₂ hg hdet hint`. Rewrite using `[hg, hφ d t ht k₁ hk₁ k₂ hk₂, hord, _root_.zpow_neg, ← _root_.inv_zpow]`. Use `congr 1`.
+
+Use `push_cast`. Rewrite using `[_root_.mul_inv, ← _root_.inv_pow, ← _root_.inv_pow, _root_.inv_neg_one]`.
+-/
 theorem cayley_of_coeff {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))] [CompleteSpace L]
     {ϖ : L} {σ : L →+* L} {q : ℕ} (hU : IsUnramInv ϖ σ q) {M : Type} [AddCommGroup M] [Module ℂ M]
     {α β : Type} (ρ : Matrix α β L → Module.End ℂ M) {r N : ℕ} (π : GU σ r →* Module.End ℂ M) (s : M)
@@ -61,6 +73,11 @@ end GlobalTheory.ChainOnto.CayleyVac
 
 open GlobalTheory.ChainOnto.CayleyVac in
 
+/- English proof (translation)
+Introduce `L _ _ _ ϖ σ q δ ψ n n' M _ _ ρ ω s hs l hls hl`. Establish `hU : IsUnramInv ϖ σ q` using `hs.1.unr`. Establish `hco : ∀ e : M →ₗ[ℂ] ℂ, (∀ u ∈ intMat L (Fin n') (Fin n), ∀ m, e (ρ u m) = e m) → ∀ m, e m * l s = l m * e s` using `fun e he => GlobalTheory.T.integral_heisenberg_invariant_forms_proportional L ϖ σ q δ ψ n n' M ρ ω s hs l e hl he`. Use `⟨fun φ hφ hc => cayley_of_coeff hU ρ _ s l hls hco φ hφ ?_, fun φ hφ hc => cayley_of_coeff hU ρ _ s l hls hco φ hφ ?_⟩` and prove the remaining obligations. Introduce `g`.
+
+Simplify using `using hc g`. Introduce `g`. Simplify using `using hc g`.
+-/
 theorem GlobalTheory.ChainOnto.cayleyRule_of_vacCoeff : ∀ (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] [CompleteSpace L] (ϖ : L) (σ : L →+* L) (q : ℕ) (δ : L) (ψ : AddChar L ℂ) (n n' : ℕ) (M : Type) [AddCommGroup M] [Module ℂ M] (ρ : Matrix (Fin n') (Fin n) L → Module.End ℂ M) (ω : GU σ n × GU σ n' →* Module.End ℂ M) (s : M), IsStd ϖ σ q δ ψ ρ ω s → ∀ l : M →ₗ[ℂ] ℂ, l s ≠ 0 → (∀ u ∈ intMat L (Fin n') (Fin n), ∀ m, l (ρ u m) = l m) → (∀ φ : GU σ n → ℂ, KerU ϖ q n' ((-1) ^ n') φ → (∀ g, l (ω (g, 1) s) = φ g * l s) → CayleyRule q n' ρ (ω.comp (MonoidHom.inl _ _)) s) ∧ ∀ φ : GU σ n' → ℂ, KerU ϖ q n ((-1) ^ n) φ → (∀ g, l (ω (1, g) s) = φ g * l s) → CayleyRule q n ρ (ω.comp (MonoidHom.inr _ _)) s := by
   intro L _ _ _ ϖ σ q δ ψ n n' M _ _ ρ ω s hs l hls hl
   have hU : IsUnramInv ϖ σ q := hs.1.unr

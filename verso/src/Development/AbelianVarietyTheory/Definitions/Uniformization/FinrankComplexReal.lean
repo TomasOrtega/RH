@@ -8,27 +8,57 @@ namespace GlobalTheory.UU
 namespace SecMod
 variable {F : Type} [CommRing F] {Y : Scheme.{0}} {p : Y ⟶ Spec (CommRingCat.of F)} {N : LB Y}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem sec_mk (s : LB.Sec N) : (mk p s).sec = s := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem mk_sec (s : SecMod p N) : mk p s.sec = s := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem add_f (s t : SecMod p N) (j : N.ι) : (s + t).sec.f j = s.sec.f j + t.sec.f j := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem neg_f (s : SecMod p N) (j : N.ι) : (-s).sec.f j = - s.sec.f j := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem smul_f (c : F) (s : SecMod p N) (j : N.ι) :
     (c • s).sec.f j = resTop _ (scal p c) * s.sec.f j := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem zero_f (j : N.ι) : (0 : SecMod p N).sec.f j = 0 := rfl
 
+/- English proof (translation)
+The claim follows from `DVR.SecOps.sec_ext h`.
+-/
 @[ext] theorem ext {s t : SecMod p N} (h : ∀ j, s.sec.f j = t.sec.f j) : s = t :=
   DVR.SecOps.sec_ext h
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h _ => h ▸ rfl, fun h => ext h⟩`.
+-/
 theorem eq_zero_iff (s : SecMod p N) : s = 0 ↔ ∀ j, s.sec.f j = 0 :=
   ⟨fun h _ => h ▸ rfl, fun h => ext h⟩
 
+/- English proof (translation)
+Rewrite using `[sub_eq_add_neg, sub_eq_add_neg, add_f, neg_f]`.
+-/
 @[simp] theorem sub_f (s t : SecMod p N) (j : N.ι) : (s - t).sec.f j = s.sec.f j - t.sec.f j := by
   rw [sub_eq_add_neg, sub_eq_add_neg, add_f, neg_f]
 
+/- English proof (translation)
+Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => rw [Finset.sum_empty, Finset.sum_empty, zero_f]`. Consider the case `insert a S ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, add_f, ih]`.
+-/
 theorem sum_f {I : Type*} (S : Finset I) (s : I → SecMod p N) (j : N.ι) :
     (∑ i ∈ S, s i).sec.f j = ∑ i ∈ S, (s i).sec.f j := by
   classical
@@ -41,18 +71,30 @@ variable {X Z : Scheme.{0}} {L : LB X} {K : Type} [Fintype K] {φ : K → (Y ⟶
   {z : Z} {J : (Z ⟶ X) → L.ι} (hJ : Good L z J) (r : Z ⟶ Y)
 include hJ
 
+/- English proof (translation)
+The claim follows from `gs_add r z _ (hJ.mem φ r) _ _`.
+-/
 theorem sval_add (s t : SecMod p (LB.LinComb L φ ε)) :
     sval (s + t).sec r z J = sval s.sec r z J + sval t.sec r z J :=
   gs_add r z _ (hJ.mem φ r) _ _
 
+/- English proof (translation)
+The claim follows from `(gs_mul r z _ (hJ.mem φ r) _ _).trans (congrArg (· * sval s.sec r z J) (gs_res r z le_top (hJ.mem φ r) _))`.
+-/
 theorem sval_smul (c : F) (s : SecMod p (LB.LinComb L φ ε)) :
     sval (c • s).sec r z J = gs r z ⊤ (scal p c) * sval s.sec r z J :=
   (gs_mul r z _ (hJ.mem φ r) _ _).trans
     (congrArg (· * sval s.sec r z J) (gs_res r z le_top (hJ.mem φ r) _))
 
+/- English proof (translation)
+The claim follows from `(gs_eq r z _ (hJ.mem φ r) _).trans (by erw [map_zero, map_zero])`.
+-/
 theorem sval_zero : sval (0 : SecMod p (LB.LinComb L φ ε)).sec r z J = 0 :=
   (gs_eq r z _ (hJ.mem φ r) _).trans (by erw [map_zero, map_zero])
 
+/- English proof (translation)
+Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => rw [Finset.sum_empty, Finset.sum_empty, sval_zero hJ]`. Consider the case `insert a S ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, sval_add hJ, ih]`.
+-/
 theorem sval_sum {I : Type*} (S : Finset I) (s : I → SecMod p (LB.LinComb L φ ε)) :
     sval (∑ i ∈ S, s i).sec r z J = ∑ i ∈ S, sval (s i).sec r z J := by
   classical
@@ -61,6 +103,9 @@ theorem sval_sum {I : Type*} (S : Finset I) (s : I → SecMod p (LB.LinComb L φ
   | insert a S ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, sval_add hJ, ih]
 end Val
 
+/- English proof (translation)
+Use `show (Y.presheaf.map (𝟙 _)).hom c = c`. Rewrite using `[CategoryTheory.Functor.map_id]`. Both sides reduce to the same expression.
+-/
 theorem resTop_top (c : Γ(Y, ⊤)) : resTop ⊤ c = c := by
   show (Y.presheaf.map (𝟙 _)).hom c = c
   rw [CategoryTheory.Functor.map_id]; rfl
@@ -70,17 +115,32 @@ variable (p) in
 def ofFun (a : Γ(Y, ⊤)) : SecMod p (Inh.trivLB Y) :=
   mk p ⟨fun _ => a, fun _ _ => by erw [Units.val_one, _root_.one_mul]; rfl⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem ofFun_f (a : Γ(Y, ⊤)) (j) : (ofFun p a).sec.f j = a := rfl
 
+/- English proof (translation)
+The claim follows from `ext fun _ => congrArg (· * a) (resTop_top (scal p c))`.
+-/
 theorem smul_ofFun (c : F) (a : Γ(Y, ⊤)) : c • ofFun p a = ofFun p (scal p c * a) :=
   ext fun _ => congrArg (· * a) (resTop_top (scal p c))
 
+/- English proof (translation)
+Introduce `_ _ h` and use `congrArg (fun s : SecMod p (Inh.trivLB Y) => s.sec.f PUnit.unit) h`.
+-/
 theorem ofFun_injective : Function.Injective (ofFun p) :=
   fun _ _ h => congrArg (fun s : SecMod p (Inh.trivLB Y) => s.sec.f PUnit.unit) h
 
+/- English proof (translation)
+Introduce `s` and use `⟨s.sec.f PUnit.unit, ext fun _ => rfl⟩`.
+-/
 theorem ofFun_surjective : Function.Surjective (ofFun p) :=
   fun s => ⟨s.sec.f PUnit.unit, ext fun _ => rfl⟩
 
+/- English proof (translation)
+Use `congrArg (fun q => q.hom c) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom f))` as an intermediate fact. Conclude with `this.symm`.
+-/
 theorem scal_specMap {A : Type} [CommRing A] (f : F →+* A) (c : F) :
     scal (Spec.map (CommRingCat.ofHom f)) c = (Scheme.ΓSpecIso (CommRingCat.of A)).inv.hom (f c) := by
   have := congrArg (fun q => q.hom c) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom f))
@@ -97,6 +157,9 @@ def trivEquiv (F A : Type) [CommRing F] [CommRing A] [Algebra F A] :
       (f := (Scheme.ΓSpecIso (CommRingCat.of A)).inv.hom) ⟨ofFun_injective, ofFun_surjective⟩
       (Scheme.ΓSpecIso (CommRingCat.of A)).symm.commRingCatIsoToRingEquiv.bijective)
 
+/- English proof (translation)
+Introduce `h`. Establish `h1 : (1 : Γ(Spec (CommRingCat.of F), ⊤)) = 0` using `(eq_zero_iff _).1 h PUnit.unit`. Establish `h2` using `congrArg (Scheme.ΓSpecIso (CommRingCat.of F)).hom.hom h1`. Rewrite `h2` using `[map_one, map_zero]`. Conclude with `one_ne_zero h2`.
+-/
 theorem one_ne_zero_spec [Nontrivial F] :
     ofFun (𝟙 (Spec (CommRingCat.of F))) 1 ≠ 0 := by
   intro h
@@ -105,11 +168,17 @@ theorem one_ne_zero_spec [Nontrivial F] :
   rw [map_one, map_zero] at h2
   exact one_ne_zero h2
 
+/- English proof (translation)
+Rewrite using `[← (trivEquiv ℝ ℂ).finrank_eq, Complex.finrank_real_complex]`.
+-/
 theorem finrank_complex_real :
     Module.finrank ℝ (SecMod (Spec.map (CommRingCat.ofHom (algebraMap ℝ ℂ)))
       (Inh.trivLB (Spec (CommRingCat.of ℂ)))) = 2 := by
   rw [← (trivEquiv ℝ ℂ).finrank_eq, Complex.finrank_real_complex]
 
+/- English proof (translation)
+Rewrite using `[smul_ofFun, scal_specMap, _root_.mul_one, Complex.conj_I]`.
+-/
 theorem conj_smul :
     (Complex.I • ofFun (Spec.map (CommRingCat.ofHom (starRingEnd ℂ))) 1) =
       ofFun _ ((Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv.hom (-Complex.I)) := by

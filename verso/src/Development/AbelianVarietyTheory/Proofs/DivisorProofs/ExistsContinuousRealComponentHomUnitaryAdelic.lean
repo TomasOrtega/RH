@@ -8,6 +8,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.CovTop.VolUp
 
+/- English proof (translation)
+Introduce `D V θ A hV hθ hA`. Establish `hτ : GlobalTheory.Mem.Vol.IsCMFam (tauE D)` using `GlobalTheory.Mem.Vol.isCMFam_host _ D.host _ D.eTau`. Take `⟨hcm, -⟩` from `GlobalTheory.Mem.Vol.cmData_isCMExt_and_gram_isHermND D.host.F D.host.E D.sp.cm`. Take `⟨e1, he1⟩` from `GlobalTheory.Mem.InfGroup.real_points D.host.F D.host.E D.sp.cm.sig V.rank V.gram D.what₂.Tau (tauE D) θ (fun ρ => (V.sig (tauE D ρ)).1) (fun ρ => (V.sig (tauE D ρ)).2) A hcm hτ hθ (fun i => hV (tauE D i)) hA`. Take `⟨e0, he0⟩` from `GlobalTheory.Mem.VolSplit.exists_adelic_split D.host.F D.host.E D.sp.cm.sig V.rank V.gram`.
+
+Use `⟨e1.toMulEquiv.toMonoidHom.comp ((MonoidHom.fst _ _).comp e0.toMulEquiv.toMonoidHom), e1.continuous.comp (continuous_fst.comp e0.continuous), fun h i => ?_⟩` and prove the remaining obligations. Use `show UpqT.mat (e1 (e0 h).1 i) * A i = _`. Rewrite using `[he1, (he0 h).2]`. Both sides reduce to the same expression.
+-/
 theorem exists_realPart_hom : ∀ (D : D7) (V : HSp D) (θ : InfFam D) (A : Frames V), V.SigOK → IsInfFam θ → IsFrames V A → ∃ rp : GA D V →* (∀ ρ, Upq V ρ), Continuous rp ∧ IsRealPart V θ A rp := by
   intro D V θ A hV hθ hA
   have hτ : GlobalTheory.Mem.Vol.IsCMFam (tauE D) := GlobalTheory.Mem.Vol.isCMFam_host _ D.host _ D.eTau

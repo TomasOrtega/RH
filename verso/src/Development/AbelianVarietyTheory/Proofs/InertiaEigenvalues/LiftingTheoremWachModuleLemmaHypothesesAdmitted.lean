@@ -17,6 +17,13 @@ open Formalism Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotion
 
 namespace GlobalTheory.LiftAdmitted
 
+/- English proof (translation)
+Introduce `D HW F Cm`. Establish `hN : Formalism.MainNotions.DeltaInvariantLattices.DeltaInvariantNormBound D HW F Cm` using `GlobalTheory.T.wachLattice_laterClauses_hold D HW F Cm`. Take `⟨p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, c2, a, b, c, d, l3, -⟩` from `hN`. Establish `hU : HerrComplexNaturality.HerrExtensionUpToUnit D HW F` using `GlobalTheory.HerrExtUnit.main D HW F`. Establish `h17 : LiftingTheory.adm17 D HW F` using `Formalism.MainNotions.UnusedSlot35.extension_clause D HW F ⟨p1, p8, hU⟩`.
+
+Establish `h18 : LiftingTheory.adm18 D HW F` using `Formalism.MainNotions.UnusedSlot35.extension_invariant_clause D HW F ⟨p1, p8, p9, a, hU⟩`. Establish `h19 : LiftingTheory.adm19 D HW F` using `GlobalTheory.T.gamma_operator_semisimple_of_conclusions D HW F Cm (GlobalTheory.T.wachLattice_laterClauses_hold D HW F Cm)`. Establish `h20 : LiftingTheory.adm20 D HW F` using `GlobalTheory.T.restriction_corestriction_H1f D HW F`. Establish `h21 : LiftingTheory.adm21 D HW F` using `class_map_naturality_of_herr D HW F (GlobalTheory.HerrFull.herr_part_a_every_record D HW F)`. Establish `h22 : LiftingTheory.adm22 D HW F` using `fun l _ K LL => (GlobalTheory.Per.FontaineBound.fontaineLe_of_tied l (D.loc l) (D.locA l) (D.locT l) K LL).1`.
+
+Establish `h23` using `GlobalTheory.jumps_exact_adm D HW F`. Establish `hA : LiftingTheory.admitted D HW F Cm` using `⟨p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, c2, a, b, c, d, l3, h17, h18, h19, h20, h21, h22, h23.2⟩`. Use `⟨hA, ?_⟩` and prove the remaining obligations. Conclude with `⟨p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, c2, a, b, c, d, l3, h17, h18, h19, h20, h21, h22, h23.1⟩`.
+-/
 theorem all_admitted : ∀ (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.loc D.locA HW F),
     LiftingTheory.admitted D HW F Cm ∧ CrystallineLiftingBounds.admitted D HW F Cm := by
   intro D HW F Cm

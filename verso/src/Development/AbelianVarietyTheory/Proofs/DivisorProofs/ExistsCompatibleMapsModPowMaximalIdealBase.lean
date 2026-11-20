@@ -7,6 +7,13 @@ open GlobalTheory.Mum
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `hrad : maximalIdeal R' ≤ ((maximalIdeal R).map (algebraMap R R')).radical`. Rewrite using `[Ideal.radical_eq_sInf]`. Use `le_sInf ?_` and prove the remaining obligations. Introduce and unpack `P ⟨hIP, hP⟩`. Use `haveI := hP`.
+
+Establish `hc : P.comap (algebraMap R R') = maximalIdeal R`. Apply `le_antisymm` to reduce the goal to its premises. Conclude with `IsLocalRing.le_maximalIdeal (Ideal.IsPrime.comap (algebraMap R R')).ne_top`. Conclude with `Ideal.map_le_iff_le_comap.1 hIP`. Establish `hmax : P.IsMaximal` using `Ideal.isMaximal_of_isIntegral_of_isMaximal_comap P (by rw [hc]; infer_instance)`.
+
+Conclude with `(IsLocalRing.eq_maximalIdeal hmax).ge`. Take `⟨n, hn⟩` from `Ideal.exists_radical_pow_le_of_fg _ (IsNoetherian.noetherian ((maximalIdeal R).map (algebraMap R R')).radical)`. Conclude with `⟨n, (Ideal.pow_right_mono hrad n).trans hn⟩`.
+-/
 theorem exists_maximalIdeal_pow_le_map_maximalIdeal (R : Type) [CommRing R] [IsLocalRing R]
     (R' : Type) [CommRing R'] [IsLocalRing R'] [IsNoetherianRing R'] [Algebra R R']
     [Module.Finite R R'] :
@@ -27,6 +34,43 @@ theorem exists_maximalIdeal_pow_le_map_maximalIdeal (R : Type) [CommRing R] [IsL
     (IsNoetherian.noetherian ((maximalIdeal R).map (algebraMap R R')).radical)
   exact ⟨n, (Ideal.pow_right_mono hrad n).trans hn⟩
 
+/- English proof (translation)
+Introduce `R _ _ R' _ _ _ _ _ C' _ _ _ _ Γ actC O _ _ i' hcomp hinv hsk`. Take `⟨N, hN⟩` from `exists_maximalIdeal_pow_le_map_maximalIdeal R R'`. Establish `hR' : ∀ e : ℕ, maximalIdeal R' ^ (N * (e + 1) + 1) ≤ (maximalIdeal R ^ (e + 1)).map (algebraMap R R')`. Introduce `e`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hle : ∀ e : ℕ, (maximalIdeal R' ^ (N * (e + 1) + 1)).map (algebraMap R' C') ≤ (maximalIdeal R ^ (e + 1)).map (algebraMap R C')`. Introduce `e`. Rewrite using `[Ideal.map_le_iff_le_comap]`. Use `(hR' e).trans ?_` and prove the remaining obligations. Rewrite using `[Ideal.map_le_iff_le_comap]`.
+
+Introduce `r hr`. Simplify using `only [Ideal.mem_comap, ← IsScalarTower.algebraMap_apply]`. Conclude with `Ideal.mem_map_of_mem _ hr`. Establish `hJ : ∀ e : ℕ, (maximalIdeal R ^ (e + 1 + 1)).map (algebraMap R C') ≤ (maximalIdeal R ^ (e + 1)).map (algebraMap R C')` using `fun e => Ideal.map_mono (Ideal.pow_le_pow_right (Nat.le_succ _))`. Establish `hiter : ∀ a b : ℕ, a ≤ b → ∀ x y, Ideal.Quotient.mk ((maximalIdeal R' ^ (b + 1)).map (algebraMap R' C')) y = i' b x → Ideal.Quotient.mk ((maximalIdeal R' ^ (a + 1)).map (algebraMap R' C')) y = i' a x`.
+
+Introduce `a b hab`. Proceed by induction on `b, hab using Nat.le_induction with`. Consider the case `base => exact fun x y h => h`. Consider the case `succ b _ ih => exact fun x y h => ih x y (hcomp b x y h)`. Set `i : ∀ e : ℕ, O →ₐ[R] C' ⧸ (maximalIdeal R ^ (e + 1)).map (algebraMap R C')` to `fun e => (Ideal.Quotient.factorₐ R (hle e)).comp (i' (N * (e + 1)))`.
+
+Establish `hi : ∀ e x, i e x = Ideal.Quotient.factorₐ R (hle e) (i' (N * (e + 1)) x)` using `fun _ _ => rfl`. Establish `hlift : ∀ e x y, Ideal.Quotient.mk ((maximalIdeal R ^ (e + 1)).map (algebraMap R C')) y = i e x → ∃ y', Ideal.Quotient.mk ((maximalIdeal R' ^ (N * (e + 1) + 1)).map (algebraMap R' C')) y' = i' (N * (e + 1)) x ∧ y - y' ∈ (maximalIdeal R ^ (e + 1)).map (algebraMap R C')`. Introduce `e x y h`. Take `⟨y', hy'⟩` from `Ideal.Quotient.mk_surjective (i' (N * (e + 1)) x)`. Use `⟨y', hy', ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← Ideal.Quotient.eq, h, hi, ← hy', Ideal.Quotient.factorₐ_apply_mk]`. Use `⟨i, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `e x y h`. Take `⟨y', hy', hd⟩` from `hlift (e + 1) x y h`. Establish `h2` using `hiter (N * (e + 1)) (N * (e + 1 + 1)) (Nat.mul_le_mul_left _ (Nat.le_succ _)) x y' hy'`.
+
+Rewrite using `[Ideal.Quotient.eq.2 (hJ e hd), hi, ← h2, Ideal.Quotient.factorₐ_apply_mk]`. Introduce `e σ x y h`. Take `⟨y', hy', hd⟩` from `hlift e x y h`. Establish `hst : (maximalIdeal R ^ (e + 1)).map (algebraMap R C') ≤ ((maximalIdeal R ^ (e + 1)).map (algebraMap R C')).comap (actC σ)`. Rewrite using `[Ideal.map_le_iff_le_comap]`.
+
+Introduce `r hr`. Simplify using `only [Ideal.mem_comap, AlgEquiv.commutes]`. Conclude with `Ideal.mem_map_of_mem _ hr`. Establish `hσ : actC σ y - actC σ y' ∈ (maximalIdeal R ^ (e + 1)).map (algebraMap R C')`. Rewrite using `[← map_sub]`.
+
+Conclude with `hst hd`. Rewrite using `[Ideal.Quotient.eq.2 hσ, hi, ← hinv (N * (e + 1)) σ x y' hy', Ideal.Quotient.factorₐ_apply_mk]`. Introduce `e`. Take `⟨hsur, hker⟩` from `hsk (N * (e + 1))`. Use `set L' := Algebra.TensorProduct.lift (i' (N * (e + 1))) ((Ideal.Quotient.mkₐ R _).comp (IsScalarTower.toAlgHom R R' C')) fun _ _ => Commute.all _ _ with hL'`.
+
+Establish `hfac : Algebra.TensorProduct.lift (i e) ((Ideal.Quotient.mkₐ R _).comp (IsScalarTower.toAlgHom R R' C')) (fun _ _ => Commute.all _ _) = (Ideal.Quotient.factorₐ R (hle e)).comp L'`. Apply `Algebra.TensorProduct.ext'` to reduce the goal to its premises. Introduce `a b`. Rewrite using `[AlgHom.comp_apply, hL', Algebra.TensorProduct.lift_tmul, Algebra.TensorProduct.lift_tmul, map_mul, hi]`. Use `congr 1`.
+
+Rewrite using `[hfac]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `z`. Take `⟨c, rfl⟩` from `Ideal.Quotient.mk_surjective z`. Take `⟨t, ht⟩` from `hsur (Ideal.Quotient.mk _ c)`.
+
+Conclude with `⟨t, by simp [ht, Ideal.Quotient.factorₐ_apply_mk]⟩`. Apply `le_antisymm` to reduce the goal to its premises. Introduce `t ht`. Rewrite `ht` using `[RingHom.mem_ker, AlgHom.comp_apply]`. Take `⟨c, hc⟩` from `Ideal.Quotient.mk_surjective (L' t)`.
+
+Establish `hcJ : c ∈ (maximalIdeal R ^ (e + 1)).map (algebraMap R C')`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, ← Ideal.Quotient.factorₐ_apply_mk R (hle e), hc]`. Conclude with `ht`. Establish `hsub : (maximalIdeal R ^ (e + 1)).map (algebraMap R C') ≤ (((maximalIdeal R ^ (e + 1)).map (algebraMap R (TensorProduct R O R'))).map L').comap (Ideal.Quotient.mk ((maximalIdeal R' ^ (N * (e + 1) + 1)).map (algebraMap R' C')))`. Rewrite using `[Ideal.map_le_iff_le_comap]`.
+
+Introduce `r hr`. Simplify using `only [Ideal.mem_comap, Ideal.Quotient.mk_algebraMap]`. Rewrite using `[← AlgHom.commutes L' r]`. Conclude with `Ideal.mem_map_of_mem _ (Ideal.mem_map_of_mem _ hr)`. Establish `hmem` using `hsub hcJ`.
+
+Rewrite `hmem` using `[Ideal.mem_comap, hc]`. Take `⟨t', ht'K, ht'⟩` from `(Ideal.mem_map_iff_of_surjective L' hsur).1 hmem`. Establish `hdiff : t - t' ∈ RingHom.ker L'`. Rewrite using `[RingHom.mem_ker, map_sub, ht', sub_self]`. Rewrite `hdiff` using `[hker]`.
+
+Establish `hKK : (maximalIdeal R' ^ (N * (e + 1) + 1)).map (Algebra.TensorProduct.includeRight : R' →ₐ[R] TensorProduct R O R') ≤ (maximalIdeal R ^ (e + 1)).map (algebraMap R (TensorProduct R O R'))`. Rewrite using `[Ideal.map_le_iff_le_comap]`. Use `(hR' e).trans ?_` and prove the remaining obligations. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `r hr`.
+
+Simplify using `only [Ideal.mem_comap, AlgHom.commutes]`. Conclude with `Ideal.mem_map_of_mem _ hr`. Simplify using `using Ideal.add_mem _ (hKK hdiff) ht'K`. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `r hr`.
+
+Simplify using `only [Ideal.mem_comap, RingHom.mem_ker, AlgHom.commutes]`. Rewrite using `[← Ideal.Quotient.mk_algebraMap, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Ideal.mem_map_of_mem _ hr`.
+-/
 theorem exists_compatible_maps_mod_pow_maximalIdeal_base : ∀ (R : Type) [CommRing R] [IsLocalRing R] (R' : Type) [CommRing R'] [IsLocalRing R'] [IsNoetherianRing R'] [Algebra R R'] [Module.Finite R R'] (C' : Type) [CommRing C'] [Algebra R C'] [Algebra R' C'] [IsScalarTower R R' C'] (Γ : Type) (actC : Γ → (C' ≃ₐ[R] C')) (O : Type) [CommRing O] [Algebra R O] (i' : ∀ e : ℕ, O →ₐ[R] C' ⧸ (maximalIdeal R' ^ (e + 1)).map (algebraMap R' C')), (∀ e x y, Ideal.Quotient.mk _ y = i' (e + 1) x → Ideal.Quotient.mk _ y = i' e x) → (∀ e σ x y, Ideal.Quotient.mk _ y = i' e x → Ideal.Quotient.mk _ (actC σ y) = i' e x) → (∀ e, Function.Surjective (Algebra.TensorProduct.lift (i' e) ((Ideal.Quotient.mkₐ R _).comp (IsScalarTower.toAlgHom R R' C')) fun _ _ => Commute.all _ _) ∧ RingHom.ker (Algebra.TensorProduct.lift (i' e) ((Ideal.Quotient.mkₐ R _).comp (IsScalarTower.toAlgHom R R' C')) fun _ _ => Commute.all _ _) = (maximalIdeal R' ^ (e + 1)).map (Algebra.TensorProduct.includeRight : R' →ₐ[R] TensorProduct R O R')) → ∃ i : ∀ e : ℕ, O →ₐ[R] C' ⧸ (maximalIdeal R ^ (e + 1)).map (algebraMap R C'), (∀ e x y, Ideal.Quotient.mk _ y = i (e + 1) x → Ideal.Quotient.mk _ y = i e x) ∧ (∀ e σ x y, Ideal.Quotient.mk _ y = i e x → Ideal.Quotient.mk _ (actC σ y) = i e x) ∧ (∀ e, Function.Surjective (Algebra.TensorProduct.lift (i e) ((Ideal.Quotient.mkₐ R _).comp (IsScalarTower.toAlgHom R R' C')) fun _ _ => Commute.all _ _) ∧ RingHom.ker (Algebra.TensorProduct.lift (i e) ((Ideal.Quotient.mkₐ R _).comp (IsScalarTower.toAlgHom R R' C')) fun _ _ => Commute.all _ _) = (maximalIdeal R ^ (e + 1)).map (algebraMap R (TensorProduct R O R'))) := by
   intro R _ _ R' _ _ _ _ _ C' _ _ _ _ Γ actC O _ _ i' hcomp hinv hsk
   obtain ⟨N, hN⟩ := exists_maximalIdeal_pow_le_map_maximalIdeal R R'

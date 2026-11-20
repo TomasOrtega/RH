@@ -13,6 +13,11 @@ variable {L : Type} [Field L] [NumberField L] [IsCMField L]
 local notation3 "L⁺" => NumberField.maximalRealSubfield L
 local notation3 "cc" => IsCMField.complexConj L
 
+/- English proof (translation)
+Establish `hU : IsOpen {z : v.adicCompletion L⁺ | Valued.v (f z) < 1}`. Establish `h` using `(Valued.isOpen_ball (v.adicCompletion L⁺) 1).preimage hf`. Use `h using 2 with z` and compare the differences between its conclusion and the goal. Simplify using `[Valuation.restrict_lt_iff_lt_embedding]`. Take `⟨k, hk⟩` from `(HeightOneSpectrum.denseRange_algebraMap (R := 𝓞 L⁺) (K := L⁺) v).exists_mem_open hU ⟨y₀, hy₀⟩`.
+
+Conclude with `⟨k, hk⟩`.
+-/
 theorem exists_near (v : HeightOneSpectrum (𝓞 L⁺))
     (f : v.adicCompletion L⁺ → v.adicCompletion L⁺) (hf : Continuous f)
     (y₀ : v.adicCompletion L⁺) (hy₀ : Valued.v (f y₀) < 1) :
@@ -27,6 +32,41 @@ theorem exists_near (v : HeightOneSpectrum (𝓞 L⁺))
 
 variable (L) in
 
+/- English proof (translation)
+Choose the witnesses or unpack the hypotheses as in `⟨θ, hθ⟩ : ∃ θ : L, cc θ ≠ θ := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `IsCMField.complexConj_ne_one L (AlgEquiv.ext h)`. Take `⟨δ, hδ⟩ : ∃ δ : L, δ = θ - cc θ` from `⟨_, rfl⟩`.
+
+Establish `hcδ : cc δ = -δ` using `by rw [hδ, map_sub, IsCMField.complexConj_apply_apply, neg_sub]`. Establish `hδ0 : δ ≠ 0` using `by rw [hδ]; exact sub_ne_zero.mpr (Ne.symm hθ)`. Take `⟨t, ht_def⟩ : ∃ t : s.v.adicCompletion L⁺, t = s.i δ` from `⟨_, rfl⟩`. Establish `ht : t ≠ 0` using `by rw [ht_def]; exact (_root_.map_ne_zero s.i).mpr hδ0`. Establish `h2 : (2 : s.v.adicCompletion L⁺) ≠ 0`.
+
+Establish `e : (2 : s.v.adicCompletion L⁺) = algebraMap L⁺ _ 2` using `by rw [map_ofNat]`. Rewrite using `[e]`. Conclude with `(_root_.map_ne_zero _).mpr two_ne_zero`. Establish `h2half : (2 : s.v.adicCompletion L⁺)⁻¹ + 2⁻¹ = 1`. Rewrite using `[← two_mul, mul_inv_cancel₀ h2]`.
+
+Take `⟨a, ha⟩` from `exists_near s.v (fun z => z - 2⁻¹) (by fun_prop) (2⁻¹) (by simp)`. Establish `h0 : t⁻¹ * 2⁻¹ * t - 2⁻¹ = 0`. Rewrite using `[mul_comm t⁻¹, mul_assoc, inv_mul_cancel₀ ht, mul_one, sub_self]`. Take `⟨b, hb⟩` from `exists_near s.v (fun z => z * t - 2⁻¹) ((continuous_id.mul continuous_const).sub continuous_const) (t⁻¹ * 2⁻¹) (by simp only [h0, map_zero]; exact zero_lt_one)`. Take `⟨x, hx⟩ : ∃ x : L, x = algebraMap L⁺ L a + algebraMap L⁺ L b * δ` from `⟨_, rfl⟩`.
+
+Establish `hix : s.i x = algebraMap L⁺ (s.v.adicCompletion L⁺) a + algebraMap L⁺ (s.v.adicCompletion L⁺) b * t`. Rewrite using `[hx, map_add, map_mul, AlgHom.commutes, AlgHom.commutes, ht_def]`. Establish `hcx : cc x = algebraMap L⁺ L a - algebraMap L⁺ L b * δ`. Rewrite using `[hx, map_add, map_mul, AlgEquiv.commutes, AlgEquiv.commutes, hcδ]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hicx : s.i (cc x) = algebraMap L⁺ (s.v.adicCompletion L⁺) a - algebraMap L⁺ (s.v.adicCompletion L⁺) b * t`. Rewrite using `[hcx, map_sub, map_mul, AlgHom.commutes, AlgHom.commutes, ht_def]`. Establish `hx1 : Valued.v (s.i x) = 1`. Establish `e : s.i x - 1 = (algebraMap L⁺ (s.v.adicCompletion L⁺) a - 2⁻¹) + (algebraMap L⁺ (s.v.adicCompletion L⁺) b * t - 2⁻¹)`. Rewrite using `[hix]`.
+
+Take the linear combination `h2half`. Use `(Valued.v.map_eq_of_sub_lt ?_).trans (map_one _)` and prove the remaining obligations. Rewrite using `[map_one, e]`. Conclude with `lt_of_le_of_lt (Valuation.map_add _ _ _) (max_lt ha hb)`. Establish `hcx1 : Valued.v (s.i (cc x)) < 1`.
+
+Establish `e : s.i (cc x) = (algebraMap L⁺ (s.v.adicCompletion L⁺) a - 2⁻¹) - (algebraMap L⁺ (s.v.adicCompletion L⁺) b * t - 2⁻¹)`. Rewrite using `[hicx]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `lt_of_le_of_lt (Valuation.map_sub _ _ _) (max_lt ha hb)`.
+
+Establish `hT : cc (x + cc x) = x + cc x`. Rewrite using `[map_add, IsCMField.complexConj_apply_apply, add_comm]`. Establish `hN : cc (x * cc x) = x * cc x`. Rewrite using `[map_mul, IsCMField.complexConj_apply_apply, mul_comm]`. Set `T : L⁺` to `⟨x + cc x, (IsCMField.complexConj_eq_self_iff (K := L) _).mp hT⟩`.
+
+Set `N : L⁺` to `⟨x * cc x, (IsCMField.complexConj_eq_self_iff (K := L) _).mp hN⟩`. Establish `hTL : algebraMap L⁺ L T = x + cc x` using `rfl`. Establish `hNL : algebraMap L⁺ L N = x * cc x` using `rfl`. Establish `hvT : s.v.valuation L⁺ T ≤ 1`. Rewrite using `[← ReciprocityTheory.Aut.adic_valued_algebraMap s.v, ← s.i.commutes, hTL, map_add]`.
+
+Conclude with `(Valuation.map_add _ _ _).trans (max_le hx1.le hcx1.le)`. Establish `hvN : s.v.valuation L⁺ N ≤ 1`. Rewrite using `[← ReciprocityTheory.Aut.adic_valued_algebraMap s.v, ← s.i.commutes, hNL, map_mul, Valuation.map_mul, hx1, one_mul]`. Conclude with `hcx1.le`. Take `⟨n₁, d₁, hd₁⟩` from `HeightOneSpectrum.exists_primeCompl_mul_eq_of_integer s.v T hvT`.
+
+Take `⟨n₂, d₂, hd₂⟩` from `HeightOneSpectrum.exists_primeCompl_mul_eq_of_integer s.v N hvN`. Take `⟨m, hm_def⟩ : ∃ m : 𝓞 L⁺, m = (d₁ : 𝓞 L⁺) * d₂` from `⟨_, rfl⟩`. Establish `hm : m ∉ s.v.asIdeal` using `by rw [hm_def]; exact (d₁ * d₂).2`. Take `⟨mK, hmK⟩ : ∃ mK : L⁺, mK = algebraMap (𝓞 L⁺) L⁺ m` from `⟨_, rfl⟩`. Establish `hp' : algebraMap (𝓞 L⁺) L⁺ (n₁ * d₂) = mK * T`.
+
+Rewrite using `[map_mul, ← hd₁, hmK, hm_def, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hq' : algebraMap (𝓞 L⁺) L⁺ (n₂ * d₁ ^ 2 * d₂) = mK ^ 2 * N`. Rewrite using `[map_mul, map_mul, map_pow, ← hd₂, hmK, hm_def, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hp : algebraMap (𝓞 L⁺) L (n₁ * d₂) = algebraMap L⁺ L mK * (x + cc x)`. Rewrite using `[IsScalarTower.algebraMap_apply (𝓞 L⁺) L⁺ L, hp', map_mul, hTL]`. Establish `hq : algebraMap (𝓞 L⁺) L (n₂ * d₁ ^ 2 * d₂) = (algebraMap L⁺ L mK) ^ 2 * (x * cc x)`. Rewrite using `[IsScalarTower.algebraMap_apply (𝓞 L⁺) L⁺ L, hq', map_mul, map_pow, hNL]`. Take `⟨y, hy_def⟩ : ∃ y : L, y = algebraMap L⁺ L mK * x` from `⟨_, rfl⟩`.
+
+Establish `hyA : IsIntegral (𝓞 L⁺) y`. Use `⟨X ^ 2 - C (n₁ * (d₂ : 𝓞 L⁺)) * X + C (n₂ * (d₁ : 𝓞 L⁺) ^ 2 * d₂), by monicity!, ?_⟩` and prove the remaining obligations. Rewrite using `[eval₂_add, eval₂_sub, eval₂_mul, eval₂_C, eval₂_C, eval₂_X, eval₂_X_pow, hp, hq, hy_def]`. Expand and normalize the polynomial expressions, which then agree. Establish `hy : IsIntegral ℤ y` using `isIntegral_trans y hyA`.
+
+Establish `hvm : Valued.v (algebraMap L⁺ (s.v.adicCompletion L⁺) mK) = 1`. Rewrite using `[ReciprocityTheory.Aut.adic_valued_algebraMap s.v, hmK]`. Conclude with `(HeightOneSpectrum.valuation_eq_one_iff_notMem s.v).mpr hm`. Use `⟨⟨y, hy⟩, ?_, ?_⟩` and prove the remaining obligations. Use `show Valued.v (s.i y) = 1`.
+
+Rewrite using `[hy_def, map_mul, s.i.commutes, Valuation.map_mul, hvm, hx1, one_mul]`. Use `show Valued.v (s.i (cc y)) < 1`. Rewrite using `[hy_def, map_mul, AlgEquiv.commutes, map_mul, s.i.commutes, Valuation.map_mul, hvm, one_mul]`. Conclude with `hcx1`.
+-/
 theorem exists_sep (s : ReciprocityTheory.Aut.SplitPlace L) :
     ∃ e : 𝓞 L, Valued.v (s.i (e : L)) = 1 ∧
       Valued.v (s.i (IsCMField.complexConj L (e : L))) < 1 := by

@@ -6,6 +6,11 @@ open Formalism.BasicNotions.TH Formalism.MainNotions.SchurIrreducible GlobalTheo
 
 namespace GlobalTheory.SchurPol
 
+/- English proof (translation)
+Establish `e : F x y = fun g => (1 / 4 : ℂ) * ((F (x + y) (x + y) g - F (x - y) (x - y) g) + c * (F (x + Complex.I • y) (x + Complex.I • y) g - F (x - Complex.I • y) (x - Complex.I • y) g))` using `funext (hF x y)`. Establish `h1 : Integrable (fun g => F (x + y) (x + y) g - F (x - y) (x - y) g) μ` using `(hd _).1.sub (hd _).1`. Establish `h2 : Integrable (fun g => F (x + Complex.I • y) (x + Complex.I • y) g - F (x - Complex.I • y) (x - Complex.I • y) g) μ` using `(hd _).1.sub (hd _).1`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[e]`.
+
+Conclude with `(h1.add (h2.const_mul c)).const_mul _`. Rewrite using `[hR x y]`. Simplify using `only [hF x y]`. Rewrite using `[integral_const_mul, integral_add h1 (h2.const_mul c), integral_const_mul, integral_sub (hd _).1 (hd _).1, integral_sub (hd _).1 (hd _).1, (hd _).2, (hd _).2, (hd _).2, (hd _).2]`.
+-/
 theorem polarise_integral {G H : Type*} [MeasurableSpace G] [AddCommGroup H] [Module ℂ H]
     (μ : Measure G) (F : H → H → G → ℂ) (R : H → H → ℂ) (c : ℂ)
     (hF : ∀ x y g, F x y g = (1 / 4 : ℂ) * ((F (x + y) (x + y) g - F (x - y) (x - y) g) +
@@ -32,6 +37,15 @@ theorem polarise_integral {G H : Type*} [MeasurableSpace G] [AddCommGroup H] [Mo
       integral_sub (hd _).1 (hd _).1, integral_sub (hd _).1 (hd _).1,
       (hd _).2, (hd _).2, (hd _).2, (hd _).2]
 
+/- English proof (translation)
+Use `polarise_integral T.haar (fun x y g => inner ℂ w (D.U.π g x) * star (inner ℂ w (D.U.π g y))) (fun x y => ((D.fdeg : ℂ))⁻¹ * inner ℂ y x * star (inner ℂ w w)) Complex.I ?_ ?_ ?_ u₁ u₂` and prove the remaining obligations. Introduce `x y g`. Simplify using `only [map_add, map_sub, map_smul, inner_add_right, inner_sub_right, inner_smul_right, star_add, star_sub, star_mul', Complex.star_def, Complex.conj_I]`. Take the linear combination `(1 / 2 : ℂ) * (inner ℂ w (D.U.π g x) * (starRingEnd ℂ) (inner ℂ w (D.U.π g y)) - inner ℂ w (D.U.π g y) * (starRingEnd ℂ) (inner ℂ w (D.U.π g x))) * Complex.I_mul_I`. Introduce `x y`.
+
+Simplify using `only [inner_add_right, inner_sub_right, inner_smul_right, inner_add_left, inner_sub_left, inner_smul_left, Complex.conj_I]`. Take the linear combination `(1 / 2 : ℂ) * ((D.fdeg : ℂ))⁻¹ * star (inner ℂ w w) * (inner ℂ y x - inner ℂ x y) * Complex.I_mul_I`. Introduce `x`. Establish `e : ∀ g, inner ℂ w (D.U.π g x) * star (inner ℂ w (D.U.π g x)) = ((‖inner ℂ w (D.U.π g x)‖ ^ 2 : ℝ) : ℂ)`. Introduce `g`.
+
+Rewrite using `[Complex.star_def, Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Simplify using `only [e]`. Use `⟨(D.schur x w).1.ofReal, ?_⟩` and prove the remaining obligations. Rewrite using `[integral_complex_ofReal, (D.schur x w).2, inner_self_eq_norm_sq_to_K, inner_self_eq_norm_sq_to_K]`. Simplify using `only [Complex.star_def, map_pow, Complex.coe_algebraMap, Complex.conj_ofReal]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem schur_half {p q : ℕ} {T : GrpData p q} (D : DSRep T) (w u₁ u₂ : D.U.H) :
     Integrable (fun g => inner ℂ w (D.U.π g u₁) * star (inner ℂ w (D.U.π g u₂))) T.haar ∧
       ∫ g, inner ℂ w (D.U.π g u₁) * star (inner ℂ w (D.U.π g u₂)) ∂T.haar =
@@ -62,6 +76,11 @@ theorem schur_half {p q : ℕ} {T : GrpData p q} (D : DSRep T) (w u₁ u₂ : D.
     push_cast
     ring
 
+/- English proof (translation)
+Use `polarise_integral T.haar (fun x y g => inner ℂ x (D.U.π g u₁) * star (inner ℂ y (D.U.π g u₂))) (fun x y => ((D.fdeg : ℂ))⁻¹ * inner ℂ u₂ u₁ * star (inner ℂ y x)) (-Complex.I) ?_ ?_ (fun x => schur_half D x u₁ u₂) w₁ w₂` and prove the remaining obligations. Introduce `x y g`. Simplify using `only [inner_add_left, inner_sub_left, inner_smul_left, map_add, map_sub, map_mul, map_neg, star_add, star_sub, star_mul', Complex.star_def, Complex.conj_I, neg_neg]`. Take the linear combination `(1 / 2 : ℂ) * (inner ℂ x (D.U.π g u₁) * (starRingEnd ℂ) (inner ℂ y (D.U.π g u₂)) - inner ℂ y (D.U.π g u₁) * (starRingEnd ℂ) (inner ℂ x (D.U.π g u₂))) * Complex.I_mul_I`. Introduce `x y`.
+
+Simplify using `only [inner_add_right, inner_sub_right, inner_smul_right, inner_add_left, inner_sub_left, inner_smul_left, Complex.conj_I, Complex.star_def, map_add, map_sub, map_mul, map_neg, neg_neg]`. Take the linear combination `(1 / 2 : ℂ) * ((D.fdeg : ℂ))⁻¹ * inner ℂ u₂ u₁ * ((starRingEnd ℂ) (inner ℂ y x) - (starRingEnd ℂ) (inner ℂ x y)) * Complex.I_mul_I`.
+-/
 theorem schur_polarised (p q : ℕ) (T : GrpData p q) (D : DSRep T) (u₁ w₁ u₂ w₂ : D.U.H) :
     Integrable (fun g => inner ℂ w₁ (D.U.π g u₁) * star (inner ℂ w₂ (D.U.π g u₂))) T.haar ∧
       ∫ g, inner ℂ w₁ (D.U.π g u₁) * star (inner ℂ w₂ (D.U.π g u₂)) ∂T.haar =

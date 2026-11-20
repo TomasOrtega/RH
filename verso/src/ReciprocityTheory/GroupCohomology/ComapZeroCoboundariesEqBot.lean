@@ -17,6 +17,11 @@ section Dn
 variable {M : Type u} [AddCommGroup M] [Module R M] [TopologicalSpace M] [IsTopologicalAddGroup M]
   [ContinuousConstSMul R M] (rho : Representation R G M)
 
+/- English proof (translation)
+Establish `hs : (fun i : Fin 0 => v i.succ) = ![]` using `Subsingleton.elim _ _`. Establish `hc : (Fin.contractNth 0 (· * ·) v : Fin 0 → G) = ![]` using `Subsingleton.elim _ _`. Use `show rho (v 0) (f fun i => v i.succ) + ∑ j : Fin 1, (-1 : R) ^ ((j : ℕ) + 1) • f (Fin.contractNth j (· * ·) v) = _`. Rewrite using `[Fin.sum_univ_one, hs, hc]`. Simplify using `only [Fin.val_zero, zero_add, pow_one, neg_one_smul]`.
+
+Rewrite using `[sub_eq_add_neg]`.
+-/
 theorem dn_zero_apply (f : (Fin 0 → G) → M) (v : Fin 1 → G) :
     dn rho 0 f v = rho (v 0) (f ![]) - f ![] := by
   have hs : (fun i : Fin 0 => v i.succ) = ![] := Subsingleton.elim _ _
@@ -27,6 +32,13 @@ theorem dn_zero_apply (f : (Fin 0 → G) → M) (v : Fin 1 → G) :
   simp only [Fin.val_zero, zero_add, pow_one, neg_one_smul]
   rw [sub_eq_add_neg]
 
+/- English proof (translation)
+Establish `hs : (fun i : Fin 1 => v i.succ) = ![v 1]`. Use function extensionality and compare the values at `k`. Use `fin_cases k`. Both sides reduce to the same expression. Establish `h0 : (Fin.contractNth 0 (· * ·) v : Fin 1 → G) = ![v 0 * v 1]`.
+
+Use function extensionality and compare the values at `k`. Use `fin_cases k`. Apply the tactic sequence `first | rfl | simp [Fin.contractNth]`. Establish `h1 : (Fin.contractNth 1 (· * ·) v : Fin 1 → G) = ![v 0]`. Use function extensionality and compare the values at `k`.
+
+Use `fin_cases k`. Apply the tactic sequence `first | rfl | simp [Fin.contractNth]`. Use `show rho (v 0) (f fun i => v i.succ) + ∑ j : Fin 2, (-1 : R) ^ ((j : ℕ) + 1) • f (Fin.contractNth j (· * ·) v) = _`. Rewrite using `[Fin.sum_univ_two, hs, h0, h1]`. Apply the tactic sequence `norm_num <;> abel`.
+-/
 theorem dn_one_apply (f : (Fin 1 → G) → M) (v : Fin 2 → G) :
     dn rho 1 f v = rho (v 0) (f ![v 1]) - f ![v 0 * v 1] + f ![v 0] := by
   have hs : (fun i : Fin 1 => v i.succ) = ![v 1] := by
@@ -40,6 +52,13 @@ theorem dn_one_apply (f : (Fin 1 → G) → M) (v : Fin 2 → G) :
   rw [Fin.sum_univ_two, hs, h0, h1]
   norm_num <;> abel
 
+/- English proof (translation)
+Establish `hs : (fun i : Fin 2 => v i.succ) = ![v 1, v 2]`. Apply the tactic sequence `funext k; fin_cases k <;> rfl`. Establish `h0 : (Fin.contractNth 0 (· * ·) v : Fin 2 → G) = ![v 0 * v 1, v 2]`. Apply the tactic sequence `funext k; fin_cases k <;> first | rfl | simp [Fin.contractNth]`. Establish `h1 : (Fin.contractNth 1 (· * ·) v : Fin 2 → G) = ![v 0, v 1 * v 2]`.
+
+Apply the tactic sequence `funext k; fin_cases k <;> first | rfl | simp [Fin.contractNth]`. Establish `h2 : (Fin.contractNth 2 (· * ·) v : Fin 2 → G) = ![v 0, v 1]`. Apply the tactic sequence `funext k; fin_cases k <;> first | rfl | simp [Fin.contractNth]`. Use `show rho (v 0) (f fun i => v i.succ) + ∑ j : Fin 3, (-1 : R) ^ ((j : ℕ) + 1) • f (Fin.contractNth j (· * ·) v) = _`. Rewrite using `[Fin.sum_univ_three, hs, h0, h1, h2]`.
+
+Apply the tactic sequence `norm_num <;> abel`.
+-/
 theorem dn_two_apply (f : (Fin 2 → G) → M) (v : Fin 3 → G) :
     dn rho 2 f v = rho (v 0) (f ![v 1, v 2]) - f ![v 0 * v 1, v 2] + f ![v 0, v 1 * v 2] -
       f ![v 0, v 1] := by
@@ -60,12 +79,21 @@ end Dn
 
 variable (M : TRep R G)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coch_d_val (n : ℕ) (x : M.coch.X n) : (M.coch.d n x).1 = dn M.rho n x.1 := rfl
 
+/- English proof (translation)
+Rewrite using `[← coch_d_val]`. Conclude with `congrArg Subtype.val hx`.
+-/
 theorem dn_eq_zero {n : ℕ} {x : M.coch.X n} (hx : M.coch.d n x = 0) : dn M.rho n x.1 = 0 := by
   rw [← coch_d_val]
   exact congrArg Subtype.val hx
 
+/- English proof (translation)
+The claim follows from `Subtype.ext h`.
+-/
 theorem coch_d_eq_zero {n : ℕ} {x : M.coch.X n} (h : dn M.rho n x.1 = 0) : M.coch.d n x = 0 := Subtype.ext h
 
 def zEquiv (n : ℕ) : M.coch.Z n ≃ₗ[R] Zn M.rho n where
@@ -76,6 +104,21 @@ def zEquiv (n : ℕ) : M.coch.Z n ≃ₗ[R] Zn M.rho n where
   left_inv _ := rfl
   right_inv _ := rfl
 
+/- English proof (translation)
+Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce `hz`. Take `⟨y, hy, rfl⟩` from `Submodule.mem_map.1 hz`. Establish `hy' : ((y : M.coch.X n)) ∈ M.coch.B n` using `Submodule.mem_comap.1 hy`.
+
+Use `Submodule.mem_comap.2 ?_` and prove the remaining obligations. Use `show (y : M.coch.X n).1 ∈ Bn M.rho n`. Consider the cases of `n with`. Consider the case `zero`. Establish `h0 : (y : M.coch.X 0) = 0` using `(Submodule.mem_bot R).1 (show (y : M.coch.X 0) ∈ (⊥ : Submodule R (M.coch.X 0)) from hy')`.
+
+Use `show (y : M.coch.X 0).1 ∈ (⊥ : Submodule R ((Fin 0 → G) → M.V))`. Rewrite using `[h0]`. Apply the tactic sequence `first | exact Submodule.zero_mem _ | simp`. Consider the case `succ k`. Take `⟨w, hw⟩` from `LinearMap.mem_range.1 (show (y : M.coch.X (k + 1)) ∈ LinearMap.range (M.coch.d k) from hy')`.
+
+Use `show (y : M.coch.X (k + 1)).1 ∈ (Cn M.rho k).map (dn M.rho k)`. Use `Submodule.mem_map.2 ⟨w.1, w.2, ?_⟩` and prove the remaining obligations. Rewrite using `[← coch_d_val, hw]`. Introduce `hz`. Establish `hz' : ((z : (Fin n → G) → M.V)) ∈ Bn M.rho n` using `Submodule.mem_comap.1 hz`.
+
+Use `Submodule.mem_map.2 ⟨(zEquiv M n).symm z, Submodule.mem_comap.2 ?_, (zEquiv M n).apply_symm_apply z⟩` and prove the remaining obligations. Use `show (((zEquiv M n).symm z : M.coch.Z n) : M.coch.X n) ∈ M.coch.B n`. Consider the cases of `n with`. Consider the case `zero`. Establish `h0 : ((z : (Fin 0 → G) → M.V)) = 0` using `(Submodule.mem_bot R).1 (show ((z : (Fin 0 → G) → M.V)) ∈ (⊥ : Submodule R ((Fin 0 → G) → M.V)) from hz')`.
+
+Use `show (((zEquiv M 0).symm z : M.coch.Z 0) : M.coch.X 0) ∈ (⊥ : Submodule R (M.coch.X 0))`. Conclude with `(Submodule.mem_bot R).2 (Subtype.ext h0)`. Consider the case `succ k`. Take `⟨w, hw, e⟩` from `Submodule.mem_map.1 (show ((z : (Fin (k + 1) → G) → M.V)) ∈ (Cn M.rho k).map (dn M.rho k) from hz')`. Use `show (((zEquiv M (k + 1)).symm z : M.coch.Z (k + 1)) : M.coch.X (k + 1)) ∈ LinearMap.range (M.coch.d k)`.
+
+Conclude with `LinearMap.mem_range.2 ⟨⟨w, hw⟩, Subtype.ext ((coch_d_val M k ⟨w, hw⟩).trans e)⟩`.
+-/
 theorem map_zEquiv (n : ℕ) :
     ((M.coch.B n).comap (M.coch.Z n).subtype).map (zEquiv M n : M.coch.Z n →ₗ[R] Zn M.rho n) =
       (Bn M.rho n).comap (Zn M.rho n).subtype := by
@@ -120,6 +163,9 @@ theorem map_zEquiv (n : ℕ) :
 def hEquiv (n : ℕ) : M.H n ≃ₗ[R] Hn M.rho n :=
   Submodule.Quotient.equiv _ _ (zEquiv M n) (map_zEquiv M n)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem hEquiv_cls (n : ℕ) (x : M.coch.X n) (hx : M.coch.d n x = 0) :
     hEquiv M n (M.coch.cls n x hx) =
       Submodule.Quotient.mk ⟨x.1, x.2, LinearMap.mem_ker.2 (dn_eq_zero M hx)⟩ := rfl
@@ -139,6 +185,9 @@ def zeroCocyclesEquivInvariants : M.coch.Z 0 ≃ₗ[R] H0 M.rho where
     rw [Subsingleton.elim v ![]]))
   right_inv _ := rfl
 
+/- English proof (translation)
+Use `show (⊥ : Submodule R (M.coch.X 0)).comap (M.coch.Z 0).subtype = ⊥`. Rewrite using `[Submodule.comap_bot, Submodule.ker_subtype]`.
+-/
 theorem comap_zeroCoboundaries_eq_bot : (M.coch.B 0).comap (M.coch.Z 0).subtype = ⊥ := by
   show (⊥ : Submodule R (M.coch.X 0)).comap (M.coch.Z 0).subtype = ⊥
   rw [Submodule.comap_bot, Submodule.ker_subtype]
@@ -146,6 +195,9 @@ theorem comap_zeroCoboundaries_eq_bot : (M.coch.B 0).comap (M.coch.Z 0).subtype 
 def cohomZeroEquivContinuous : M.H 0 ≃ₗ[R] H0 M.rho :=
   (Submodule.quotEquivOfEqBot _ (comap_zeroCoboundaries_eq_bot M)).trans (zeroCocyclesEquivInvariants M)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cohomZeroEquivContinuous_cls_apply (x : M.coch.X 0) (hx : M.coch.d 0 x = 0) :
     (cohomZeroEquivContinuous M (M.coch.cls 0 x hx) : M.V) = x.1 ![] := rfl
 
@@ -171,6 +223,13 @@ def oneCocyclesEquivFunctions : M.coch.Z 1 ≃ₗ[R] Z1 M.rho where
     rw [show ![v 0] = v from by funext i; fin_cases i; rfl]))
   right_inv _ := rfl
 
+/- English proof (translation)
+Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce `hz`. Take `⟨y, hy, rfl⟩` from `Submodule.mem_map.1 hz`. Take `⟨w, hw⟩` from `LinearMap.mem_range.1 (show (y : M.coch.X 1) ∈ LinearMap.range (M.coch.d 0) from Submodule.mem_comap.1 hy)`.
+
+Use `Submodule.mem_comap.2 (LinearMap.mem_range.2 ⟨w.1 ![], funext fun g => ?_⟩)` and prove the remaining obligations. Use `show M.rho g (w.1 ![]) - w.1 ![] = (y : M.coch.X 1).1 ![g]`. Apply the tactic sequence `rw [← hw, coch_d_val, dn_zero_apply] <;> rfl`. Introduce `hz`. Take `⟨m, hm⟩` from `LinearMap.mem_range.1 (show (z : G → M.V) ∈ LinearMap.range (d0 M.rho) from Submodule.mem_comap.1 hz)`.
+
+Use `Submodule.mem_map.2 ⟨(oneCocyclesEquivFunctions M).symm z, Submodule.mem_comap.2 (LinearMap.mem_range.2 ⟨⟨fun _ => m, continuous_const⟩, Subtype.ext (funext fun v => ?_)⟩), (oneCocyclesEquivFunctions M).apply_symm_apply z⟩` and prove the remaining obligations. Use `show dn M.rho 0 (fun _ => m) v = (z : G → M.V) (v 0)`. Apply the tactic sequence `rw [dn_zero_apply, ← hm] <;> rfl`.
+-/
 theorem map_z1Equiv :
     ((M.coch.B 1).comap (M.coch.Z 1).subtype).map (oneCocyclesEquivFunctions M : M.coch.Z 1 →ₗ[R] Z1 M.rho) =
       (B1 M.rho).comap (Z1 M.rho).subtype := by
@@ -215,6 +274,13 @@ def twoCocyclesEquivFunctions : M.coch.Z 2 ≃ₗ[R] Z2 M.rho where
     rw [show ![v 0, v 1] = v from by funext i; fin_cases i <;> rfl]))
   right_inv _ := rfl
 
+/- English proof (translation)
+Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce `hz`. Take `⟨y, hy, rfl⟩` from `Submodule.mem_map.1 hz`. Take `⟨w, hw⟩` from `LinearMap.mem_range.1 (show (y : M.coch.X 2) ∈ LinearMap.range (M.coch.d 1) from Submodule.mem_comap.1 hy)`.
+
+Use `Submodule.mem_comap.2 (Submodule.mem_map.2 ⟨fun g => w.1 ![g], (show Continuous w.1 from w.2).comp (continuous_id.matrixVecCons continuous_const),` and prove the remaining obligations. Use function extensionality and compare the values at `fun p => ?_⟩)`. Use `show M.rho p.1 (w.1 ![p.2]) - w.1 ![p.1 * p.2] + w.1 ![p.1] = (y : M.coch.X 2).1 ![p.1, p.2]`. Apply the tactic sequence `rw [← hw, coch_d_val, dn_one_apply] <;> rfl`. Introduce `hz`.
+
+Take `⟨c, hc, hcz⟩` from `Submodule.mem_map.1 (show (z : G × G → M.V) ∈ (contMaps R M.V G).map (d1 M.rho) from Submodule.mem_comap.1 hz)`. Use `Submodule.mem_map.2 ⟨(twoCocyclesEquivFunctions M).symm z, Submodule.mem_comap.2 (LinearMap.mem_range.2 ⟨⟨fun v => c (v 0), (show Continuous c from hc).comp (continuous_apply 0)⟩, Subtype.ext (funext fun v => ?_)⟩), (twoCocyclesEquivFunctions M).apply_symm_apply z⟩` and prove the remaining obligations. Use `show dn M.rho 1 (fun v => c (v 0)) v = (z : G × G → M.V) (v 0, v 1)`. Apply the tactic sequence `rw [dn_one_apply, ← hcz] <;> rfl`.
+-/
 theorem map_z2Equiv :
     ((M.coch.B 2).comap (M.coch.Z 2).subtype).map (twoCocyclesEquivFunctions M : M.coch.Z 2 →ₗ[R] Z2 M.rho) =
       (B2 M.rho).comap (Z2 M.rho).subtype := by
@@ -244,6 +310,11 @@ def h2EquivOfOrderTwo : M.H 2 ≃ₗ[R] H2 M.rho :=
 
 variable {G' : Type u} [Group G'] [TopologicalSpace G'] [IsTopologicalGroup G'] {M' : TRep R G'}
 
+/- English proof (translation)
+Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Establish `key : (oneCocyclesEquivFunctions M' (P.hom.Z 1 z) : Z1 M'.rho) = compatiblePairCocycles1 M.rho M'.rho P.φ P.φ_cont P.u P.u_cont P.equiv (oneCocyclesEquivFunctions M z)`. Use `Subtype.ext (funext fun g => ?_)` and prove the remaining obligations. Establish `hv : (fun i : Fin 1 => P.φ (![g] i)) = ![P.φ g]` using `by funext i; fin_cases i; rfl`. Use `show P.u (z.1.1 fun i => P.φ (![g] i)) = P.u (z.1.1 ![P.φ g])`.
+
+Rewrite using `[hv]`. Conclude with `congrArg Submodule.Quotient.mk key`.
+-/
 theorem h1Equiv_pair (P : Pair M M') (x : M.H 1) :
     h1EquivOfOrderTwo M' (P.hom.H 1 x) =
       pairH1DecompositionMap M.rho M'.rho P.φ P.φ_cont P.u P.u_cont P.equiv (h1EquivOfOrderTwo M x) := by
@@ -256,6 +327,11 @@ theorem h1Equiv_pair (P : Pair M M') (x : M.H 1) :
     rw [hv]
   exact congrArg Submodule.Quotient.mk key
 
+/- English proof (translation)
+Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Establish `key : (twoCocyclesEquivFunctions M' (P.hom.Z 2 z) : Z2 M'.rho) = compatiblePairCocycles2 M.rho M'.rho P.φ P.φ_cont P.u P.u_cont P.equiv (twoCocyclesEquivFunctions M z)`. Use `Subtype.ext (funext fun p => ?_)` and prove the remaining obligations. Establish `hv : (fun i : Fin 2 => P.φ (![p.1, p.2] i)) = ![P.φ p.1, P.φ p.2]`. Apply the tactic sequence `funext i; fin_cases i <;> rfl`.
+
+Use `show P.u (z.1.1 fun i => P.φ (![p.1, p.2] i)) = P.u (z.1.1 ![P.φ p.1, P.φ p.2])`. Rewrite using `[hv]`. Conclude with `congrArg Submodule.Quotient.mk key`.
+-/
 theorem h2Equiv_pair (P : Pair M M') (x : M.H 2) :
     h2EquivOfOrderTwo M' (P.hom.H 2 x) =
       compatiblePairH2 M.rho M'.rho P.φ P.φ_cont P.u P.u_cont P.equiv (h2EquivOfOrderTwo M x) := by

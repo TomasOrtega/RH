@@ -7,6 +7,11 @@ namespace GlobalTheory.GenericFlat
 
 open AlgebraicGeometry CategoryTheory Limits in
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(Spec.map (CommRingCat.ofHom δ)) pt = genericPoint (Spec (CommRingCat.of O)) at h`. Rewrite `h` using `[genericPoint_eq_bot_of_affine]`. Establish `hpt : pt.asIdeal = ⊥` using `Ideal.eq_bot_of_prime (h := pt.isPrime) _`. Establish `h2` using `congrArg PrimeSpectrum.asIdeal h`. Express the relevant statement in the definitionally equal form `Ideal.comap δ pt.asIdeal = ⊥ at h2`.
+
+Rewrite `h2` using `[hpt, ← RingHom.ker_eq_comap_bot]`. Conclude with `(RingHom.injective_iff_ker_eq_bot δ).mpr h2`.
+-/
 theorem _root_.GlobalTheory.GenericFlat.injective_of_apply_eq_genericPoint {O K : Type} [CommRing O] [IsDomain O] [Field K]
     (δ : O →+* K) (pt : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp K) (h : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap δ pt = genericPoint (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp O)) :
     Function.Injective δ := by
@@ -18,6 +23,11 @@ theorem _root_.GlobalTheory.GenericFlat.injective_of_apply_eq_genericPoint {O K 
   rw [hpt, ← RingHom.ker_eq_comap_bot] at h2
   exact (RingHom.injective_iff_ker_eq_bot δ).mpr h2
 
+/- English proof (translation)
+Take `⟨ξ, hξ, e⟩` from `Flat.generalizingMap s (genericPoint_specializes (s x))`. Use `⟨ξ, hξ, ?_⟩` and prove the remaining obligations. Take `⟨δ, hδ⟩` from `Spec.map_surjective (T.fromSpecResidueField ξ ≫ s)`. Establish `hi : Function.Injective δ.hom`. Use `injective_of_apply_eq_genericPoint (K := T.residueField ξ) δ.hom (⊥ : PrimeSpectrum (T.residueField ξ)) ?_` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `Spec.map δ _ = _`. Rewrite using `[hδ]`. Conclude with `(Scheme.Hom.comp_apply _ _ _).trans ((congrArg s (Scheme.fromSpecResidueField_apply ξ _)).trans e)`. Conclude with `charZero_of_injective_ringHom hi`.
+-/
 theorem exists_charZero_specializes (O : Type) [CommRing O] [IsDomain O] [CharZero O] (T : Scheme.{0})
     (s : T ⟶ Sp O) [Flat s] (x : T) : ∃ ξ : T, ξ ⤳ x ∧ CharZero (T.residueField ξ) := by
   obtain ⟨ξ, hξ, e⟩ := Flat.generalizingMap s (genericPoint_specializes (s x))
@@ -34,6 +44,9 @@ theorem exists_charZero_specializes (O : Type) [CommRing O] [IsDomain O] [CharZe
 
 open AlgebraicGeometry CategoryTheory Limits in
 
+/- English proof (translation)
+Take `⟨t', hspec, heq⟩` from `Flat.generalizingMap s ((genericPoint_spec (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp O)).specializes (Set.mem_univ (s t)))`. Establish `hsub : closure {t} ⊆ closure {t'}` using `specializes_iff_closure_subset.mp hspec`. Establish `hcl : closure {t} = closure {t'}` using `(show closure {t} ∈ irreducibleComponents T from ht).eq_of_le isIrreducible_singleton.closure hsub`. Establish `hback : t ⤳ t'` using `specializes_iff_closure_subset.mpr hcl.ge`. Rewrite using `[← heq, (hspec.antisymm hback).eq]`.
+-/
 theorem _root_.GlobalTheory.GenericFlat.apply_eq_genericPoint {O : Type} [CommRing O] [IsDomain O]
     {T : Scheme.{0}} (s : T ⟶ _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp O) [Flat s]
     {t : T} (ht : t ∈ genericPoints T) : s t = genericPoint (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp O) := by
@@ -48,6 +61,23 @@ theorem _root_.GlobalTheory.GenericFlat.apply_eq_genericPoint {O : Type} [CommRi
 
 open AlgebraicGeometry CategoryTheory Limits in
 
+/- English proof (translation)
+Use `⟨fun O _ _ _ T s hs x => ?_, fun R O _ _ _ _ b T s V K _ _ _ _ _ x v hb hs hx hxs => ?_⟩` and prove the remaining obligations. Take `⟨ξ, hξ⟩` from `QuasiSober.sober (isIrreducible_irreducibleComponent (x := x)) (isClosed_of_mem_irreducibleComponents _ (irreducibleComponent_mem_irreducibleComponents x))`. Use `⟨ξ, hξ.specializes mem_irreducibleComponent, ?_⟩` and prove the remaining obligations. Establish `hgen : ξ ∈ genericPoints T`. Express the relevant statement in the definitionally equal form `closure {ξ} ∈ irreducibleComponents T`.
+
+Rewrite using `[hξ.def]`. Conclude with `irreducibleComponent_mem_irreducibleComponents x`. Set `δ : O →+* T.residueField ξ` to `(Spec.preimage (T.fromSpecResidueField ξ ≫ s)).hom`. Establish `hδ : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap δ = T.fromSpecResidueField ξ ≫ s` using `Spec.map_preimage _`. Establish `hinj : Function.Injective δ`.
+
+Use `_root_.GlobalTheory.GenericFlat.injective_of_apply_eq_genericPoint δ (IsLocalRing.closedPoint (T.residueField ξ)) ?_` and prove the remaining obligations. Rewrite using `[hδ]`. Conclude with `(congrArg s (Scheme.fromSpecResidueField_apply ξ _)).trans (_root_.GlobalTheory.GenericFlat.apply_eq_genericPoint s hgen)`. Conclude with `charZero_of_injective_ringHom hinj`. Set `φ : O →+* V` to `(Spec.preimage v).hom`.
+
+Establish `hv : v = _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap φ` using `(Spec.map_preimage v).symm`. Establish `hcomp : x ≫ s = _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap ((algebraMap V K).comp φ)`. Rewrite using `[hxs, hv]`. Conclude with `(Spec.map_comp _ _).symm`. Set `pt : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp K` to `IsLocalRing.closedPoint K`.
+
+Establish `hpt : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap ((algebraMap V K).comp φ) pt = genericPoint (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp O)`. Rewrite using `[← hcomp, Scheme.Hom.comp_apply]`. Conclude with `_root_.GlobalTheory.GenericFlat.apply_eq_genericPoint s (hx ⟨pt, rfl⟩)`. Establish `hφ : Function.Injective φ`. Establish `h` using `_root_.GlobalTheory.GenericFlat.injective_of_apply_eq_genericPoint _ pt hpt`.
+
+Rewrite `h` using `[RingHom.coe_comp]`. Conclude with `h.of_comp`. Establish `hψ : Function.Injective (φ.comp b)` using `hφ.comp hb`. Establish `hmap : v ≫ _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap b = Spec.map (CommRingCat.ofHom (φ.comp b))`. Rewrite using `[hv]`.
+
+Conclude with `(Spec.map_comp _ _).symm`. Rewrite using `[hmap, HasRingHomProperty.Spec_iff (P := @Flat)]`. Use `letI := (φ.comp b).toAlgebra`. Express the relevant statement in the definitionally equal form `Module.Flat R V`. Rewrite using `[IsDedekindDomain.flat_iff_torsion_eq_bot, Submodule.eq_bot_iff]`.
+
+Introduce `m hm`. Take `⟨a, ha⟩` from `(Submodule.mem_torsion_iff m).mp hm`. Rewrite `ha` using `[Submonoid.smul_def, Algebra.smul_def, RingHom.algebraMap_toAlgebra]`. Establish `h0 : (φ.comp b) a ≠ 0` using `fun h => nonZeroDivisors.coe_ne_zero a (hψ (h.trans (map_zero _).symm))`. Conclude with `(mul_eq_zero.mp ha).resolve_left h0`.
+-/
 theorem _root_.GlobalTheory.GenericFlat.generic_charZero_and_flat : (∀ (O : Type) [CommRing O] [IsDomain O] [CharZero O] (T : Scheme.{0}) (s : T ⟶ _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp O), Flat s → ∀ x : T, ∃ ξ : T, ξ ⤳ x ∧ CharZero (T.residueField ξ)) ∧ ∀ (R O : Type) [CommRing R] [IsDedekindDomain R] [CommRing O] [IsDomain O] (b : R →+* O) (T : Scheme.{0}) (s : T ⟶ _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp O) (V K : Type) [CommRing V] [IsDomain V] [Field K] [Algebra V K] [IsFractionRing V K] (x : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp K ⟶ T) (v : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp V ⟶ _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp O), Function.Injective b → Flat s → Set.range x ⊆ genericPoints T → x ≫ s = _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap (algebraMap V K) ≫ v → Flat (v ≫ _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap b) := by
   refine ⟨fun O _ _ _ T s hs x => ?_,
     fun R O _ _ _ _ b T s V K _ _ _ _ _ x v hb hs hx hxs => ?_⟩

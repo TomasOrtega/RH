@@ -10,6 +10,17 @@ open scoped ContDiff Matrix
 
 namespace GlobalTheory.GoodTop
 
+/- English proof (translation)
+Introduce `F _ σ X m E O H hM ρ hρ`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `c c' y hy hc hc'`. Establish `hA` using `(E.nonempty (under y)).choose_spec`. Simplify using `only [topDens]`.
+
+Rewrite using `[chernTop_frame_chart_trans E O H hM _ hy c c' hc hc' hA hA]`. Expand and normalize the polynomial expressions, which then agree. Introduce `c`. Use `GlobalTheory.T.aemeasurable_chart_of_locally_continuous_density c.e (d := fun z => ρ z * topDens E H c z) (isOpen_ptsIn O) ?_` and prove the remaining obligations. Introduce `y hy hc`.
+
+Establish `hA` using `(E.nonempty (under y)).choose_spec`. Use `⟨fun v => ρ (c.e.symm v) * chernTop (MvPolynomial.X ((), X.dim)) (fun w => H (E.nonempty (under y)).choose (c.e.symm w)) v, ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : ContinuousAt (fun v => ρ (c.e.symm v)) (c.e y)` using `hρ.continuousAt.comp (c.e.continuousAt_symm (c.e.map_source hc))`. Establish `hsm` using `hM.mContDiffAt_chart hy c hc hA ()`. Establish `hu` using `hM.isUnit_det_chart hy c hc hA ()`.
+
+Establish `h2 : ContinuousAt (fun v => chernTop (MvPolynomial.X ((), X.dim)) (fun w => H (E.nonempty (under y)).choose (c.e.symm w)) v) (c.e y)`. Simplify using `only [GlobalTheory.T.chernTopDensity_eq_polarisedTopChern]`. Use `continuousAt_const.mul (Complex.continuous_re.continuousAt.comp ?_)` and prove the remaining obligations. Use `GlobalTheory.T.continuousAt_polarisedTopChernCoeff (fun i a b p q => ?_)` and prove the remaining obligations. Conclude with `((MContDiffAt.curv (j := 0) hsm hu (by norm_num) (coordVec a) (coordVec b)) p q).continuousAt`.
+
+Conclude with `h1.mul h2`. Use `filter_upwards [(isOpen_ptsIn O).mem_nhds hy, c.e.open_source.mem_nhds hc, GlobalTheory.FrameLift.eventually_mem hA] with z hz hzc hzA`. Simplify using `only [topDens, c.e.left_inv hzc]`. Rewrite using `[hM.chernTop_frame _ hz c hzc (E.nonempty (under z)).choose_spec hzA]`.
+-/
 theorem isTopForm_mul_topDens : ∀ {F : Type} [Field F] {σ : F →+* ℂ} {X : Var F} {m : ℕ} (E : Fr (ratOf X) (fun _ : Unit => m) 0) (O : X.X.Opens) (H : Mat (fun _ : Unit => m) X.Fn → CxPts X.str σ → Mat (fun _ : Unit => m) ℂ), IsMetricOn E O H → ∀ {ρ : CxPts X.str σ → ℝ}, Continuous ρ → IsTopForm (fun c : AlgChart X.str σ X.dim => c.e) (fun c y => ρ y * topDens E H c y) (ptsIn X.str σ O) := by
   intro F _ σ X m E O H hM ρ hρ
   refine ⟨?_, ?_⟩

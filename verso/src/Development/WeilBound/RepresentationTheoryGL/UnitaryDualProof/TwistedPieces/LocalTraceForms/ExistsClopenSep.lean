@@ -14,6 +14,13 @@ section Sep
 
 variable {X : Type*} [TopologicalSpace X] [T2Space X] [LocallyCompactSpace X] [TotallyDisconnectedSpace X]
 
+/- English proof (translation)
+Establish `hK : IsCompact (A ∩ S)` using `hSc.inter_left hA`. Establish `key : ∀ x ∈ A ∩ S, ∃ V : Set X, IsClopen V ∧ x ∈ V ∧ V ⊆ S \ B`. Introduce `x hx`. Establish `hxo : x ∈ S \ B` using `⟨hx.2, fun hb => disjoint_left.1 hAB hx.1 hb⟩`. Conclude with `loc_compact_Haus_tot_disc_of_zero_dim.mem_nhds_iff.1 ((hSo.sdiff hB).mem_nhds hxo)`.
+
+Use `choose V hV using key`. Take `⟨t, ht⟩` from `hK.elim_finite_subcover (fun x : ↥(A ∩ S) => V x.1 x.2) (fun x => (hV x.1 x.2).1.isOpen) (fun x hx => mem_iUnion.2 ⟨⟨x, hx⟩, (hV x hx).2.1⟩)`. Use `⟨⋃ i ∈ t, V i.1 i.2, ?_, ?_, ht, ?_⟩` and prove the remaining obligations. Conclude with `t.finite_toSet.isClopen_biUnion (fun i _ => (hV i.1 i.2).1)`. Conclude with `iUnion₂_subset fun i _ => ((hV i.1 i.2).2.2).trans diff_subset`.
+
+Use `disjoint_left.2 fun y hy hyB => ?_` and prove the remaining obligations. Take `⟨i, -, hyi⟩` from `mem_iUnion₂.1 hy`. Conclude with `((hV i.1 i.2).2.2 hyi).2 hyB`.
+-/
 theorem exists_clopen_in {S A B : Set X} (hSc : IsCompact S) (hSo : IsOpen S) (hA : IsClosed A) (hB : IsClosed B)
     (hAB : Disjoint A B) : ∃ W : Set X, IsClopen W ∧ W ⊆ S ∧ A ∩ S ⊆ W ∧ Disjoint W B := by
   have hK : IsCompact (A ∩ S) := hSc.inter_left hA
@@ -33,6 +40,13 @@ theorem exists_clopen_in {S A B : Set X} (hSc : IsCompact S) (hSo : IsOpen S) (h
 
 variable [SigmaCompactSpace X]
 
+/- English proof (translation)
+Establish `hW : ∀ x : X, ∃ W : Set X, IsCompact W ∧ IsOpen W ∧ x ∈ W`. Introduce `x`. Take `⟨C, hC, hxC⟩` from `exists_compact_mem_nhds x`. Take `⟨V, hV, hxV, hVC⟩` from `loc_compact_Haus_tot_disc_of_zero_dim.mem_nhds_iff.1 (interior_mem_nhds.2 hxC)`. Conclude with `⟨V, hC.of_isClosed_subset hV.1 (hVC.trans interior_subset), hV.2, hxV⟩`.
+
+Use `choose W hWc hWo hxW using hW`. Establish `hU : ∀ m : ℕ, ∃ U : Set X, IsCompact U ∧ IsOpen U ∧ compactCovering X m ⊆ U`. Introduce `m`. Take `⟨t, ht⟩` from `(isCompact_compactCovering X m).elim_finite_subcover W hWo (fun x _ => mem_iUnion.2 ⟨x, hxW x⟩)`. Conclude with `⟨⋃ i ∈ t, W i, t.isCompact_biUnion (fun i _ => hWc i), isOpen_biUnion (fun i _ => hWo i), ht⟩`.
+
+Use `choose U hUc hUo hKU using hU`. Use `⟨U, fun m => ⟨hUc m, hUo m⟩, fun x => ?_⟩` and prove the remaining obligations. Take `⟨m, hm⟩` from `exists_mem_compactCovering x`. Conclude with `⟨m, hKU m hm⟩`.
+-/
 theorem exists_exhaust : ∃ U : ℕ → Set X, (∀ m, IsCompact (U m) ∧ IsOpen (U m)) ∧ ∀ x, ∃ m, x ∈ U m := by
   have hW : ∀ x : X, ∃ W : Set X, IsCompact W ∧ IsOpen W ∧ x ∈ W := by
     intro x
@@ -51,6 +65,25 @@ theorem exists_exhaust : ∃ U : ℕ → Set X, (∀ m, IsCompact (U m) ∧ IsOp
   obtain ⟨m, hm⟩ := exists_mem_compactCovering x
   exact ⟨m, hKU m hm⟩
 
+/- English proof (translation)
+Take `⟨U, hU, hcov⟩` from `exists_exhaust (X := X)`. Set `D : ℕ → Set X` to `fun m => U m \ ⋃ j ∈ Finset.range m, U j`. Establish `hD : ∀ m, D m = U m \ ⋃ j ∈ Finset.range m, U j` using `fun m => rfl`. Establish `hUcl : ∀ j, IsClosed (U j)` using `fun j => (hU j).1.isClosed`. Establish `hDc : ∀ m, IsCompact (D m)` using `fun m => by`.
+
+Rewrite using `[hD]`. Conclude with `(hU m).1.diff (isOpen_biUnion fun j _ => (hU j).2)`. Establish `hDo : ∀ m, IsOpen (D m)` using `fun m => by`. Rewrite using `[hD]`. Conclude with `(hU m).2.sdiff (isClosed_biUnion_finset fun j _ => hUcl j)`.
+
+Use `choose W hW using fun m => exists_clopen_in (hDc m) (hDo m) hA hB hAB`. Establish `hDdisj : ∀ m m', m ≠ m' → Disjoint (D m) (D m')`. Establish `key : ∀ m m', m < m' → Disjoint (D m) (D m')`. Introduce `m m' h`. Rewrite using `[hD, hD]`.
+
+Use `disjoint_left.2 fun x hx hx' => hx'.2 ?_` and prove the remaining obligations. Conclude with `mem_iUnion₂.2 ⟨m, Finset.mem_range.2 h, hx.1⟩`. Introduce `m m' h`. Break down `lt_or_gt_of_ne h with h | h` into its components or cases. Conclude with `key m m' h`.
+
+Conclude with `(key m' m h).symm`. Establish `hmemD : ∀ x, ∃ m, x ∈ D m`. Introduce `x`. Establish `hex : ∃ m, x ∈ U m` using `hcov x`. Use `⟨Nat.find hex, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hD]`. Use `⟨Nat.find_spec hex, fun hx => ?_⟩` and prove the remaining obligations. Take `⟨j, hj, hxj⟩` from `mem_iUnion₂.1 hx`. Conclude with `Nat.find_min hex (Finset.mem_range.1 hj) hxj`. Establish `hlf : LocallyFinite W`.
+
+Introduce `x`. Take `⟨m, hm⟩` from `hmemD x`. Use `⟨D m, (hDo m).mem_nhds hm, (Set.finite_singleton m).subset ?_⟩` and prove the remaining obligations. Introduce and unpack `j ⟨y, hyW, hyD⟩`. Assume the negation of the conclusion as `hj`.
+
+Conclude with `disjoint_left.1 (hDdisj j m hj) ((hW j).2.1 hyW) hyD`. Use `⟨⋃ m, W m, ⟨hlf.isClosed_iUnion (fun m => (hW m).1.1), isOpen_iUnion fun m => (hW m).1.2⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Take `⟨m, hm⟩` from `hmemD x`. Conclude with `mem_iUnion.2 ⟨m, (hW m).2.2.1 ⟨hx, hm⟩⟩`.
+
+Conclude with `disjoint_iUnion_left.2 fun m => (hW m).2.2.2`.
+-/
 theorem exists_clopen_sep {A B : Set X} (hA : IsClosed A) (hB : IsClosed B) (hAB : Disjoint A B) :
     ∃ W : Set X, IsClopen W ∧ A ⊆ W ∧ Disjoint W B := by
   obtain ⟨U, hU, hcov⟩ := exists_exhaust (X := X)
@@ -101,6 +134,19 @@ end Sep
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n : ℕ}
 
+/- English proof (translation)
+Establish `hna : NonarchimedeanRing k` using `by convert! (ValuativeRel.nonarchimedeanRing k)`. Conclude with `Valuation.toTopologicalSpace_eq _`. Use `haveI : TotallyDisconnectedSpace k := inferInstance`. Use `haveI : TotallyDisconnectedSpace (Matrix (Fin n) (Fin n) k) := inferInstanceAs (TotallyDisconnectedSpace (Fin n → Fin n → k))`. Use `haveI : SigmaCompactSpace (Matrix (Fin n) (Fin n) k) := inferInstanceAs (SigmaCompactSpace (Fin n → Fin n → k))`.
+
+Set `B : Fin m → Set (Matrix (Fin n) (Fin n) k)` to `fun i => ⋃ j ∈ Finset.univ.filter (· ≠ i), F j`. Establish `hBmem : ∀ i j, j ≠ i → ∀ x ∈ F j, x ∈ B i` using `fun i j h x hx => mem_iUnion₂.2 ⟨j, by simp [h], hx⟩`. Establish `hBcl : ∀ i, IsClosed (B i)` using `fun i => isClosed_biUnion_finset fun j _ => hF j`. Establish `hFB : ∀ i, Disjoint (F i) (B i)`. Introduce `i`.
+
+Use `disjoint_left.2 fun x hx hx' => ?_` and prove the remaining obligations. Take `⟨j, hj, hxj⟩` from `mem_iUnion₂.1 hx'`. Establish `hji : j ≠ i` using `by simpa using hj`. Conclude with `disjoint_left.1 (hd i j (Ne.symm hji)) hx hxj`. Use `choose V hV using fun i => Psplit.exists_clopen_sep (hF i) (hBcl i) (hFB i)`.
+
+Use `⟨fun i => V i ∩ ⋂ j ∈ Finset.univ.filter (· ≠ i), (V j)ᶜ, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i`. Use `⟨(hV i).1.inter (isClopen_biInter_finset fun j _ => (hV j).1.compl), ?_⟩` and prove the remaining obligations. Introduce `x hx`. Use `⟨(hV i).2.1 hx, mem_iInter₂.2 fun j hj => ?_⟩` and prove the remaining obligations.
+
+Establish `hji : j ≠ i` using `by simpa using hj`. Conclude with `fun hxV => disjoint_left.1 (hV j).2.2 hxV (hBmem j i (Ne.symm hji) x hx)`. Introduce `i j hij`. Use `disjoint_left.2 fun x hx hx' => ?_` and prove the remaining obligations. Conclude with `mem_iInter₂.1 hx'.2 i (by simp [hij]) hx.1`.
+
+Introduce `i j hij`. Use `disjoint_left.2 fun x hx hx' => ?_` and prove the remaining obligations. Conclude with `disjoint_left.1 (hV i).2.2 hx.1 (hBmem i j (Ne.symm hij) x hx')`.
+-/
 theorem exists_clopens {m : ℕ} (F : Fin m → Set (Matrix (Fin n) (Fin n) k)) (hF : ∀ i, IsClosed (F i))
     (hd : ∀ i j, i ≠ j → Disjoint (F i) (F j)) :
     ∃ W : Fin m → Set (Matrix (Fin n) (Fin n) k), (∀ i, IsClopen (W i) ∧ F i ⊆ W i) ∧
@@ -139,6 +185,11 @@ theorem exists_clopens {m : ℕ} (F : Fin m → Set (Matrix (Fin n) (Fin n) k)) 
     refine disjoint_left.2 fun x hx hx' => ?_
     exact disjoint_left.1 (hV i).2.2 hx.1 (hBmem i j (Ne.symm hij) x hx')
 
+/- English proof (translation)
+Establish `hc : ∀ h : GL (Fin n) k, Continuous (act h : Sp k n → Sp k n)`. Introduce `h`. Unfold `act`. Conclude with `((continuous_const.matrix_mul continuous_fst).matrix_mul continuous_const).prodMk (continuous_const.matrix_mulVec continuous_snd)`. Set `e : Sp k n ≃ₜ Sp k n` to `{ toFun := act g invFun := act g⁻¹ left_inv := fun p => by rw [← Nil.Orb.act_mul, inv_mul_cancel, Nil.Orb.act_one] right_inv := fun p => by rw [← Nil.Orb.act_mul, mul_inv_cancel, Nil.Orb.act_one] continuous_toFun := hc g continuous_invFun := hc g⁻¹ }`.
+
+Establish `h` using `(compHomeoL e ⟨f, hf.1⟩).property`. Rewrite `h` using `[coe_compHomeoL]`. Conclude with `⟨h, subset_univ _⟩`.
+-/
 private theorem comp_act_mem_supportedIn_univ (g : GL (Fin n) k) {f : Sp k n → ℂ}
     (hf : f ∈ supportedIn (univ : Set (Sp k n))) :
     (fun p => f (act g p)) ∈ supportedIn (univ : Set (Sp k n)) := by
@@ -158,6 +209,29 @@ private theorem comp_act_mem_supportedIn_univ (g : GL (Fin n) k) {f : Sp k n →
   rw [coe_compHomeoL] at h
   exact ⟨h, subset_univ _⟩
 
+/- English proof (translation)
+Introduce `n Z m F hF hd ξ hsupp hinv`. Take `⟨W, hW, hWd, hWF⟩` from `exists_clopens F (fun i => (hF i).1) hd`. Establish `hWp : ∀ i, IsClopen (W i ×ˢ (univ : Set (Fin n → k)))` using `fun i => (hW i).1.prod isClopen_univ`. Set `mul : Set (Sp k n) → (Sp k n → ℂ) →ₗ[ℂ] (Sp k n → ℂ)` to `fun A => { toFun := fun f p => A.indicator 1 p * f p map_add' := fun f g => by`. Use function extensionality and compare the values at `p`.
+
+Simplify using `only [Pi.add_apply, mul_add]`. Use the proof step `map_smul' := fun c f => by`. Use function extensionality and compare the values at `p`. Simplify using `only [Pi.smul_apply, smul_eq_mul, RingHom.id_apply]`. Use `ring }`.
+
+Establish `hmul : ∀ A f p, mul A f p = A.indicator 1 p * f p` using `fun _ _ _ => rfl`. Establish `hind : ∀ (A : Set (Sp k n)) p, p ∈ A → A.indicator (1 : Sp k n → ℂ) p = 1` using `fun A p h => by simp [h]`. Establish `hind0 : ∀ (A : Set (Sp k n)) p, p ∉ A → A.indicator (1 : Sp k n → ℂ) p = 0` using `fun A p h => by simp [h]`. Use `⟨fun i => ξ ∘ₗ mul (W i ×ˢ univ), fun i => ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `f hf hf0`.
+
+Simplify using `only [LinearMap.comp_apply]`. Apply `hsupp _ (indicator_mul_mem (hWp i) hf)` to reduce the goal to its premises. Introduce and unpack `⟨x, v⟩ ⟨hx, -⟩`. Take `⟨j, hj⟩` from `mem_iUnion.1 hx`. Distinguish the cases in `hij : i = j`.
+
+Substitute `hij show _ * f (x, v) = 0` using the available equality. Rewrite using `[hf0 (x, v) ⟨hj, mem_univ _⟩, mul_zero]`. Use `show _ * _ = 0`. Rewrite using `[hind0 (W i ×ˢ univ) (x, v) (fun h => disjoint_left.1 (hWF i j hij) h.1 hj), zero_mul]`. Introduce `g hg f hf`.
+
+Simplify using `only [LinearMap.comp_apply]`. Establish `hfg` using `comp_act_mem_supportedIn_univ g hf`. Establish `h1 : ξ (fun p => mul (W i ×ˢ univ) f (act g p)) = ξ (mul (W i ×ˢ univ) f)` using `hinv g hg _ (indicator_mul_mem (hWp i) hf)`. Rewrite using `[← h1, ← sub_eq_zero, ← map_sub]`. Apply `hsupp` to reduce the goal to its premises.
+
+Conclude with `sub_mem (indicator_mul_mem (hWp i) hfg) (comp_act_mem_supportedIn_univ g (indicator_mul_mem (hWp i) hf))`. Introduce and unpack `⟨x, v⟩ ⟨hx, -⟩`. Take `⟨j, hj⟩` from `mem_iUnion.1 hx`. Establish `hgx` using `(hF j).2 g hg x hj`. Simplify using `only [Pi.sub_apply, hmul]`.
+
+Establish `e : (W i ×ˢ (univ : Set (Fin n → k))).indicator (1 : Sp k n → ℂ) (x, v) = (W i ×ˢ (univ : Set (Fin n → k))).indicator 1 (act g (x, v))`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Rewrite using `[hind (W i ×ˢ univ) (x, v) ⟨(hW i).2 hj, mem_univ _⟩, hind (W i ×ˢ univ) (act g (x, v)) ⟨(hW i).2 hgx, mem_univ _⟩]`. Rewrite using `[hind0 (W i ×ˢ univ) (x, v) (fun h => disjoint_left.1 (hWF i j hij) h.1 hj), hind0 (W i ×ˢ univ) (act g (x, v)) (fun h => disjoint_left.1 (hWF i j hij) h.1 hgx)]`.
+
+Rewrite using `[e, sub_self]`. Introduce `f hf`. Simplify using `only [LinearMap.comp_apply]`. Rewrite using `[← sub_eq_zero, ← map_sum, ← map_sub]`. Apply `hsupp` to reduce the goal to its premises.
+
+Conclude with `sub_mem hf (sum_mem fun i _ => indicator_mul_mem (hWp i) hf)`. Introduce and unpack `⟨x, v⟩ ⟨hx, -⟩`. Take `⟨j, hj⟩` from `mem_iUnion.1 hx`. Rewrite using `[Pi.sub_apply, Finset.sum_apply, Finset.sum_eq_single j]`. Rewrite using `[hmul, hind (W j ×ˢ univ) (x, v) ⟨(hW j).2 hj, mem_univ _⟩, one_mul, sub_self]`.
+
+Introduce `i _ hij`. Rewrite using `[hmul, hind0 (W i ×ˢ univ) (x, v) (fun h => disjoint_left.1 (hWd i j hij) h.1 ((hW j).2 hj)), zero_mul]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ j) h`.
+-/
 theorem split_pf : PositivityTheory.RgUd.TP.Loc.Split k := by
   intro n Z m F hF hd ξ hsupp hinv
   obtain ⟨W, hW, hWd, hWF⟩ := exists_clopens F (fun i => (hF i).1) hd

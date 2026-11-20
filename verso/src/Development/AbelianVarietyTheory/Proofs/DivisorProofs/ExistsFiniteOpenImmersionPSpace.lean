@@ -9,6 +9,21 @@ namespace GlobalTheory.ZMain
 
 open CategoryTheory AlgebraicGeometry TopologicalSpace
 
+/- English proof (translation)
+Break down `CharP.char_is_prime_or_zero L (ringChar L) with hp | h0` into its components or cases. Set `p` to `ringChar L haveI : Fact p.Prime := ⟨hp⟩ haveI : CharP L p := ringChar.charP L`. Set `I` to `RingHom.ker (algebraMap R L)`. Set `R'` to `R ⧸ I`. Use `letI : Algebra R' L := (Ideal.Quotient.lift I (algebraMap R L) fun _ h => h).toAlgebra`.
+
+Use `haveI : IsScalarTower R R' L := .of_algebraMap_eq fun _ => rfl`. Establish `hinj : Function.Injective (algebraMap R' L)`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `a ha`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective a`.
+
+Conclude with `Ideal.Quotient.eq_zero_iff_mem.mpr ha`. Use `haveI : IsDomain R' := hinj.isDomain _`. Use `haveI : FaithfulSMul R' L := (faithfulSMul_iff_algebraMap_injective _ _).mpr hinj`. Use `haveI : CharP R' p := ⟨fun n => by`. Rewrite using `[← map_eq_zero_iff _ hinj, map_natCast, CharP.cast_eq_zero_iff L]⟩`.
+
+Use `letI : Algebra (ZMod p) R' := (ZMod.castHom dvd_rfl R').toAlgebra`. Use `haveI : Algebra.FiniteType ℤ R' := .trans (S := R) inferInstance inferInstance`. Use `haveI : Algebra.FiniteType (ZMod p) R' := .of_restrictScalars_finiteType ℤ (ZMod p) R'`. Use `haveI : IsNoetherianRing R' := Algebra.FiniteType.isNoetherianRing (ZMod p) R'`. Use `haveI : Module.Finite R R' := Module.Finite.of_surjective (Algebra.linearMap R R') Ideal.Quotient.mk_surjective`.
+
+Set `F` to `FractionRing R'`. Use `letI : Algebra F L := FractionRing.liftAlgebra R' L`. Use `haveI : Algebra.EssFiniteType R' L := .of_comp R R' L`. Use `haveI : Algebra.EssFiniteType F L := .of_comp R' F L`. Set `E` to `algebraicClosure F L`.
+
+Use `haveI : FiniteDimensional F E := finiteDimensional_algebraicClosure_of_essFiniteType F L`. Use `haveI : Module.Finite R' (integralClosure R' E) := NormFin.finite_integralClosure_of_perfectField (ZMod p) R' F E`. Use `haveI : IsScalarTower R' E L := .of_algebraMap_eq fun x => by`. Rewrite using `[IsScalarTower.algebraMap_apply R' F L x, IsScalarTower.algebraMap_apply R' F E x, ← IsScalarTower.algebraMap_apply F E L]`. Establish `hmem : ∀ z : integralClosure R' L, (z : L) ∈ E` using `fun z => mem_algebraicClosure_iff.mpr (z.2.tower_top (A := F)).isAlgebraic`.
+
+Set `ψ : integralClosure R' L →ₗ[R'] integralClosure R' E` to `{ toFun := fun z => ⟨⟨z, hmem z⟩, (isIntegral_algHom_iff (IsScalarTower.toAlgHom R' E L) (IsScalarTower.toAlgHom R' E L).toRingHom.injective).mp z.2⟩ map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl }`. Use `haveI : Module.Finite R' (integralClosure R' L) := Module.Finite.of_injective ψ fun a b h => Subtype.ext (congrArg (fun w : integralClosure R' E => ((w : E) : L)) h)`. Conclude with `finite_integralClosure_of_finite_tower R R' L`. Use `haveI : CharZero L := (CharP.ringChar_zero_iff_CharZero L).mp h0`. Conclude with `finite_integralClosure_of_essFiniteType_field ℤ R L`.
+-/
 theorem finite_integralClosure_field (R L : Type*) [CommRing R] [Algebra.FiniteType ℤ R] [Field L]
     [Algebra R L] [Algebra.EssFiniteType R L] : Module.Finite R (integralClosure R L) := by
   rcases CharP.char_is_prime_or_zero L (ringChar L) with hp | h0
@@ -60,6 +75,17 @@ theorem finite_integralClosure_field (R L : Type*) [CommRing R] [Algebra.FiniteT
 
 universe u
 
+/- English proof (translation)
+Use `⟨fun U hU => ?_⟩` and prove the remaining obligations. Use `letI := (f.app U).hom.toAlgebra`. Use `letI : Algebra o Γ(Y, U) := ((Scheme.ΓSpecIso o).inv ≫ g.appLE ⊤ U le_top).hom.toAlgebra`. Use `haveI : Algebra.FiniteType o Γ(Y, U) := (g.finiteType_appLE (isAffineOpen_top _) hU le_top).comp (.of_surjective _ (ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso o).inv).2)`. Use `haveI : Algebra.FiniteType ℤ Γ(Y, U) := .trans (S := o) inferInstance inferInstance`.
+
+Use `haveI : IsNoetherianRing Γ(Y, U) := Algebra.FiniteType.isNoetherianRing ℤ _`. Set `D : Set X` to `{genericPoint X}`. Establish `hD : Dense D` using `dense_iff_closure_eq.mpr (genericPoint_spec X)`. Set `ι` to `↥(D ∩ (f ⁻¹ᵁ U : X.Opens))`. Use `haveI : Finite ι := ((Set.finite_singleton _).inter_of_left _).to_subtype`.
+
+Use `letI (x : ι) : Algebra Γ(Y, U) (X.residueField x.1) := (f.app U ≫ X.evaluation (f ⁻¹ᵁ U) x.1 x.2.2).hom.toAlgebra`. Use `haveI (x : ι) : Algebra.EssFiniteType Γ(Y, U) (X.residueField x.1) := by`. Express the relevant statement in the definitionally equal form `(f.app U ≫ X.evaluation (f ⁻¹ᵁ U) x.1 x.2.2).hom.EssFiniteType`. Rewrite using `[← Scheme.evaluation_naturality f (V := U) x.1 x.2.2]`. Establish `hx : x.1 = genericPoint X` using `x.2.1`.
+
+Conclude with `.comp (.comp (essFiniteType_germ hU (f x.1) x.2.2) (RingHom.FiniteType.of_surjective _ (Y.residue_surjective _)).essFiniteType) (by rw [hx] at *; exact hess)`. Use `haveI (x : ι) := finite_integralClosure_field Γ(Y, U) (X.residueField x.1)`. Use `haveI : Module.Finite Γ(Y, U) (integralClosure Γ(Y, U) Γ(X, f ⁻¹ᵁ U)) := by`. Use `finite_integralClosure_of_family (L := fun x : ι => X.residueField x.1) (fun x => { (X.evaluation (f ⁻¹ᵁ U) x.1 x.2.2).hom with commutes' := fun _ => rfl }) fun b hb => ?_` and prove the remaining obligations. Rewrite using `[← basicOpen_eq_bot_iff, eq_bot_iff]`.
+
+Introduce `y hy`. Take `⟨x, hx, hxD⟩` from `hD.inter_open_nonempty _ (X.basicOpen b).isOpen ⟨y, hy⟩`. Conclude with `((X.evaluation_eq_zero_iff_notMem_basicOpen x (X.basicOpen_le b hx) b).mp (hb ⟨x, hxD, X.basicOpen_le b hx⟩) hx).elim`. Rewrite using `[f.fromNormalization_app hU]`. Conclude with `RingHom.Finite.comp (.of_surjective _ (ConcreteCategory.bijective_of_isIso (f.normalizationObjIso hU).inv).2) (RingHom.finite_algebraMap.mpr this)`.
+-/
 theorem isFinite_fromNormalization_int {X Y : Scheme.{u}} {o : CommRingCat.{u}}
     [Algebra.FiniteType ℤ o] (f : X ⟶ Y) [QuasiCompact f] [QuasiSeparated f] (g : Y ⟶ Spec o)
     [LocallyOfFiniteType g] [IsIntegral X]
@@ -103,6 +129,9 @@ theorem isFinite_fromNormalization_int {X Y : Scheme.{u}} {o : CommRingCat.{u}}
 
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo.Tor in
 
+/- English proof (translation)
+Introduce `o _ _ _ m X f hX hN _ _ _ _`. Use `haveI : Algebra.FiniteType ℤ (CommRingCat.of o) := ‹Algebra.FiniteType ℤ o›`. Use `haveI := isProper_str o m`. Use `haveI : GlobalTheory.IsNormalScheme X := GlobalTheory.IsNormalScheme.of_pred hN`. Use `⟨f.normalization, f.fromNormalization, f.toNormalization, isFinite_fromNormalization_int f (PSpace.str o m) (LocallyOfFiniteType.stalkMap f _).residueFieldMap, inferInstance, f.toNormalization_fromNormalization, (GlobalTheory.IsNormalScheme.normalization_of_isIntegral f).pred _, …` and prove the remaining obligations.
+-/
 theorem exists_finite_openImmersion_pSpace : ∀ (o : Type) [CommRing o] [IsNoetherianRing o]
     [Algebra.FiniteType ℤ o] (m : ℕ) (X : Scheme.{0}) (f : X ⟶ PSpace o m), IsIntegral X →
     Geo.Tor.IsNormalScheme X → LocallyOfFiniteType f → QuasiCompact f → IsSeparated f →

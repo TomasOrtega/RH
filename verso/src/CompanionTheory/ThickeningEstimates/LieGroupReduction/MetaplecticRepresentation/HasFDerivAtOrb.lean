@@ -14,6 +14,25 @@ def orb {k : ℕ} (γ : (Fin k → ℝ) → G l) (f : Sch l) (t : Fin k → ℝ)
 def dm {k : ℕ} (γ : (Fin k → ℝ) → G l) (t : Fin k → ℝ) (a b : l ⊕ l) : (Fin k → ℝ) →L[ℝ] ℝ :=
   ∑ c, ((pr (γ t))⁻¹ : Sp l).1 a c • fderiv ℝ (fun t => (pr (γ t) : Mat l) c b) t
 
+/- English proof (translation)
+Establish `: IsTopologicalGroup (G l)` using `hT`. Establish `hh : Continuous fun t => (γ t₀)⁻¹ * γ t` using `continuous_const.mul hγ`. Establish `hev : ∀ᶠ t in 𝓝 t₀, omS ((γ t₀)⁻¹ * γ t) = sec (pr ((γ t₀)⁻¹ * γ t)).1`. Establish `h1 : Tendsto (fun t => (γ t₀)⁻¹ * γ t) (𝓝 t₀) (𝓝 1)`. Use `hh.tendsto t₀` as an intermediate fact.
+
+Rewrite `this` using `[inv_mul_cancel]`. Then use the resulting hypothesis. Conclude with `h1.eventually hN`. Set `m : (Fin k → ℝ) → Mat l` to `fun t => (pr ((γ t₀)⁻¹ * γ t)).1`. Establish `hm : ∀ t, m t = ((pr (γ t₀))⁻¹ : Sp l).1 * (pr (γ t)).1` using `fun t => by show (pr ((γ t₀)⁻¹ * γ t)).1 = _`. Rewrite using `[map_mul, map_inv]`.
+
+Both sides reduce to the same expression. Establish `hm1 : m t₀ = 1` using `by show (pr ((γ t₀)⁻¹ * γ t₀)).1 = 1`. Rewrite using `[inv_mul_cancel, map_one]`. Both sides reduce to the same expression. Establish `hmd : ∀ a b, HasFDerivAt (fun t => m t a b) (dm γ t₀ a b) t₀`.
+
+Introduce `a b`. Establish `e : (fun t => m t a b) = fun t => ∑ c, ((pr (γ t₀))⁻¹ : Sp l).1 a c * (pr (γ t) : Mat l) c b`. Use function extensionality and compare the values at `t`. Rewrite using `[hm t, Matrix.mul_apply]`. Rewrite using `[e]`.
+
+Use `HasFDerivAt.sum (u := Finset.univ) (x := t₀) fun c _ => ((hs c b t₀).hasFDerivAt).const_mul (((pr (γ t₀))⁻¹ : Sp l).1 a c)` as an intermediate fact. Establish `e2 : (fun t => ∑ c, ((pr (γ t₀))⁻¹ : Sp l).1 a c * (pr (γ t) : Mat l) c b) = ∑ c, fun t => ((pr (γ t₀))⁻¹ : Sp l).1 a c * (pr (γ t) : Mat l) c b`. Use function extensionality and compare the values at `t`. Simplify using `[Finset.sum_apply]`. Rewrite using `[e2]`.
+
+Conclude with `this`. Establish `hsec` using `hD (Fin k → ℝ) m (dm γ t₀) t₀ hm1 hmd f`. Set `L : L2 l →L[ℝ] L2 l` to `((om (γ t₀)).toContinuousLinearEquiv.toContinuousLinearMap : L2 l →L[ℂ] L2 l).restrictScalars ℝ`. Establish `hL : ∀ v, L v = om (γ t₀) v` using `fun v => rfl`. Establish `h2` using `L.hasFDerivAt.comp t₀ hsec`.
+
+Establish `heq : orb γ f =ᶠ[𝓝 t₀] (⇑L ∘ fun x => schwartzToL2 l (sec (m x) f))` using `by filter_upwards [hev] with t ht`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_inv_cancel_left]`. Both sides reduce to the same expression. Use `_ = om (γ t₀) (om ((γ t₀)⁻¹ * γ t) (schwartzToL2 l f)) := by rw [map_mul]; rfl`.
+
+Use `_ = om (γ t₀) (schwartzToL2 l (omS ((γ t₀)⁻¹ * γ t) f)) := by rw [om_sch]`. Use `_ = _ := by rw [ht]; rfl`. Establish `h3` using `h2.congr_of_eventuallyEq heq`. Use `h3.congr_fderiv (ContinuousLinearMap.ext fun x => ?_)` and prove the remaining obligations. Simplify using `only [ContinuousLinearMap.comp_apply, FunLike.coe_sum, Finset.sum_apply, ContinuousLinearMap.smulRight_apply, map_sum, map_smul]`.
+
+Simplify using `only [hL, orb]`.
+-/
 theorem hasFDerivAt_orb (hT : TopG l) (hN : NearOne l) (hD : SecDer l) {k : ℕ} (γ : (Fin k → ℝ) → G l)
     (hγ : Continuous γ) (hs : ∀ a b, Differentiable ℝ fun t => (pr (γ t) : Mat l) a b) (f : Sch l)
     (t₀ : Fin k → ℝ) :
@@ -67,6 +86,13 @@ theorem hasFDerivAt_orb (hT : TopG l) (hN : NearOne l) (hD : SecDer l) {k : ℕ}
     ContinuousLinearMap.smulRight_apply, map_sum, map_smul]
   simp only [hL, orb]
 
+/- English proof (translation)
+Establish `hinv : ∀ a c, ContDiff ℝ ∞ fun t => ((pr (γ t))⁻¹ : Sp l).1 a c`. Introduce `a c`. Establish `e : (fun t => ((pr (γ t))⁻¹ : Sp l).1 a c) = fun t => ∑ e, (∑ d, (-J l ℝ) a d * (pr (γ t) : Mat l) e d) * J l ℝ e c`. Use function extensionality and compare the values at `t`. Use `show ((-J l ℝ) * (pr (γ t) : Mat l)ᵀ * J l ℝ) a c = _`.
+
+Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply]`. Rewrite using `[e]`. Conclude with `ContDiff.sum fun e _ => (ContDiff.sum fun d _ => contDiff_const.mul (hs e d)).mul contDiff_const`. Establish `hn : ((n : WithTop ℕ∞)) ≤ ∞` using `by exact_mod_cast le_top`. Establish `hn1 : ((n : WithTop ℕ∞)) + 1 ≤ ∞` using `by exact_mod_cast le_top`.
+
+Unfold `dm`. Conclude with `ContDiff.sum fun c _ => ((hinv a c).of_le hn).smul ((hs c b).fderiv_right hn1)`.
+-/
 theorem contDiff_dm {k : ℕ} (γ : (Fin k → ℝ) → G l)
     (hs : ∀ a b, ContDiff ℝ ∞ fun t => (pr (γ t) : Mat l) a b) (a b : l ⊕ l) (n : ℕ) :
     ContDiff ℝ n fun t => dm γ t a b := by
@@ -84,6 +110,13 @@ theorem contDiff_dm {k : ℕ} (γ : (Fin k → ℝ) → G l)
   unfold dm
   exact ContDiff.sum fun c _ => ((hinv a c).of_le hn).smul ((hs c b).fderiv_right hn1)
 
+/- English proof (translation)
+Introduce `k γ hγ hs f`. Establish `hd : ∀ a b, Differentiable ℝ fun t => (pr (γ t) : Mat l) a b` using `fun a b => (hs a b).differentiable (by simp)`. It suffices to establish `H : ∀ n : ℕ, ∀ g : Sch l, ContDiff ℝ n (orb γ g) from contDiff_infty.2 fun n => H n f`. Introduce `n`. Proceed by induction on `n with`.
+
+Consider the case `zero`. Introduce `g`. Use `(contDiff_zero (𝕜 := ℝ) (f := orb γ g)).2 ((continuous_om (schwartzToL2 l g)).comp hγ)` as an intermediate fact. Conclude with `this` after adjusting the coercions. Consider the case `succ n ih`.
+
+Introduce `g`. Establish `key` using `(contDiff_succ_iff_hasFDerivAt (𝕜 := ℝ) (f := orb γ g) (n := n)).2 ⟨fun t => ∑ a, ∑ b, (dm γ t a b).smulRight (orb γ (Qd (Matrix.single a b 1) g) t), ContDiff.sum fun a _ => ContDiff.sum fun b _ => (contDiff_dm γ hs a b n).smulRight (ih _), fun t => hasFDerivAt_orb hT hN hD γ hγ …`. Conclude with `key` after adjusting the coercions.
+-/
 theorem smooth_of (hT : TopG l) (hN : NearOne l) (hD : SecDer l) : Smooth l := by
   intro k γ hγ hs f
   have hd : ∀ a b, Differentiable ℝ fun t => (pr (γ t) : Mat l) a b := fun a b =>

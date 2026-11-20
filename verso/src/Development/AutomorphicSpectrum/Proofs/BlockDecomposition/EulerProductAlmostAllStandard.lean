@@ -12,6 +12,11 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.WhitFree.Euler
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `φ (HeckeCharacterZeroLocus.SiegelWeilU.projInf X) * (boxF A).indicator (fun _ => (1 : ℂ)) (HeckeCharacterZeroLocus.SiegelWeilU.projFin X) = _`. Distinguish the cases in `hX : ∀ v, HeckeCharacterZeroLocus.SiegelWeilU.projV v (HeckeCharacterZeroLocus.SiegelWeilU.projFin X) ∈ A v`. Establish `h1 : HeckeCharacterZeroLocus.SiegelWeilU.projFin X ∈ boxF A` using `hX`. Rewrite using `[Set.indicator_of_mem (show X ∈ {X : Fin n → Fin M → AF F ⊗[F] E | ∀ v, HeckeCharacterZeroLocus.SiegelWeilU.projV v (HeckeCharacterZeroLocus.SiegelWeilU.projFin X) ∈ A v} from hX), Set.indicator_of_mem h1, mul_one]`. Establish `h1 : HeckeCharacterZeroLocus.SiegelWeilU.projFin X ∉ boxF A` using `hX`.
+
+Rewrite using `[Set.indicator_of_notMem (show X ∉ {X : Fin n → Fin M → AF F ⊗[F] E | ∀ v, HeckeCharacterZeroLocus.SiegelWeilU.projV v (HeckeCharacterZeroLocus.SiegelWeilU.projFin X) ∈ A v} from hX), Set.indicator_of_notMem h1, mul_zero]`.
+-/
 theorem pureN_eq_indicator {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] {n M : ℕ}
     (φ : (Fin n → Fin M → Ainf F ⊗[F] E) → ℂ)
     (A : ∀ v : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers F),
@@ -32,6 +37,29 @@ theorem pureN_eq_indicator {F E : Type} [Field F] [NumberField F] [Field E] [Alg
       ∀ v, HeckeCharacterZeroLocus.SiegelWeilU.projV v (HeckeCharacterZeroLocus.SiegelWeilU.projFin X) ∈ A v} from hX),
       Set.indicator_of_notMem h1, mul_zero]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ M n d b I c minf m hE`. Take `⟨-, -, S₀, hS₀⟩` from `hE`. Use `⟨S₀, fun S hS φ hφ hφi A hA hfin hoff => ?_⟩` and prove the remaining obligations. Establish `: Module.Finite F E` using `Module.Finite.of_restrictScalars_finite ℚ F E`. Establish `: BorelSpace (Ainf F ⊗[F] E)` using `⟨rfl⟩`.
+
+Establish `hB` using `GlobalTheory.CompanionTheory.Hypotheses₂.OneV.Coef.Euler.measurableSet_box b n M S A hA hoff`. Establish `hp` using `GlobalTheory.CompanionTheory.Hypotheses₂.OneV.Coef.Euler.measurable_projInf (E := E) b n M`. Use `set B : Set (Fin n → Fin M → AF F ⊗[F] E) := {X | ∀ v, HeckeCharacterZeroLocus.SiegelWeilU.projV v (HeckeCharacterZeroLocus.SiegelWeilU.projFin X) ∈ A v} with hBdef`. Use `set P : ℝ := ∏' v : {v // v ∉ S}, (m v.1 (latV b v.1)).toReal with hP`. Establish `hP0 : 0 ≤ P` using `tprod_nonneg fun _ => ENNReal.toReal_nonneg`.
+
+Use `set K : ℝ≥0∞ := (c : ℝ≥0∞) * (∏ v ∈ S, m v (A v)) * ENNReal.ofReal P with hK`. Establish `hKtop : K ≠ ⊤` using `ENNReal.mul_ne_top (ENNReal.mul_ne_top ENNReal.coe_ne_top (ENNReal.prod_ne_top fun v _ => hfin v)) ENNReal.ofReal_ne_top`. Establish `hmap : (I.restrict B).map HeckeCharacterZeroLocus.SiegelWeilU.projInf = K • minf`. Use extensionality with `T hT`. Rewrite using `[Measure.map_apply hp hT, Measure.restrict_apply (hp hT), Measure.smul_apply, smul_eq_mul]`.
+
+Establish `hform` using `hS₀ S hS (T.indicator 1) (fun v => (A v).indicator 1) (measurable_one.indicator hT) (fun v => measurable_one.indicator (hA v))`. Rewrite `hform` using `[GlobalTheory.CompanionTheory.SW.EulerBox.pureL_indicator_eq b S _ A hoff]`. Rewrite `hform` using `[lintegral_indicator hB, lintegral_indicator_one hT]`. Establish `hl : ∫⁻ X in B, T.indicator 1 (HeckeCharacterZeroLocus.SiegelWeilU.projInf X) ∂I = I (HeckeCharacterZeroLocus.SiegelWeilU.projInf ⁻¹' T ∩ B)`. Establish `: (fun X => T.indicator (1 : (Fin n → Fin M → Ainf F ⊗[F] E) → ℝ≥0∞) (HeckeCharacterZeroLocus.SiegelWeilU.projInf X)) = (HeckeCharacterZeroLocus.SiegelWeilU.projInf ⁻¹' T).indicator 1`.
+
+Use function extensionality and compare the values at `X`. Distinguish the cases in `h : HeckeCharacterZeroLocus.SiegelWeilU.projInf X ∈ T`. Rewrite using `[Set.indicator_of_mem h, Set.indicator_of_mem (show X ∈ HeckeCharacterZeroLocus.SiegelWeilU.projInf ⁻¹' T from h)]`. Both sides reduce to the same expression. Rewrite using `[Set.indicator_of_notMem h, Set.indicator_of_notMem (show X ∉ HeckeCharacterZeroLocus.SiegelWeilU.projInf ⁻¹' T from h)]`.
+
+Rewrite using `[this, lintegral_indicator_one (hp hT), Measure.restrict_apply (hp hT)]`. Rewrite `hform` using `[hl]`. Express the relevant statement in the definitionally equal form `_ = _ * _ * ENNReal.ofReal P at hform`. Rewrite using `[hform]`. Repeatedly rewrite using `[lintegral_indicator_one (hA _)]`.
+
+Rewrite using `[hK]`. Expand and normalize the polynomial expressions, which then agree. Establish `hfun : pureN φ A = B.indicator (fun X => φ (HeckeCharacterZeroLocus.SiegelWeilU.projInf X))`. Use function extensionality and compare the values at `fun X => pureN_eq_indicator φ A X`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+
+Establish `h1 : Integrable φ ((I.restrict B).map HeckeCharacterZeroLocus.SiegelWeilU.projInf)`. Rewrite using `[hmap]`. Conclude with `hφi.smul_measure hKtop`. Establish `h2` using `(integrable_map_measure hφ.aestronglyMeasurable hp.aemeasurable).1 h1`. Rewrite using `[hfun]`.
+
+Conclude with `IntegrableOn.integrable_indicator h2 hB`. Establish `h1 : ∫ X, pureN φ A X ∂I = ∫ Y, φ Y ∂((I.restrict B).map HeckeCharacterZeroLocus.SiegelWeilU.projInf)`. Rewrite using `[integral_map hp.aemeasurable hφ.aestronglyMeasurable, hfun]`. Conclude with `integral_indicator hB`. Rewrite using `[h1, hmap, integral_smul_measure]`.
+
+Establish `hKr : K.toReal = (c : ℝ) * (∏ v ∈ S, (m v (A v)).toReal) * P`. Rewrite using `[hK, ENNReal.toReal_mul, ENNReal.toReal_mul, ENNReal.toReal_prod, ENNReal.toReal_ofReal hP0]`. Simplify using the standard rewrite rules. Rewrite using `[hKr, Complex.real_smul]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem integrable_integral_pureN : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (M n d : ℕ) (b : Module.Basis (Fin d) F E) (I : Measure (Fin n → Fin M → AF F ⊗[F] E)) (c : NNReal) (minf : Measure (Fin n → Fin M → Ainf F ⊗[F] E)) (m : ∀ v : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers F), Measure (Fin n → Fin M → Fv F v ⊗[F] E)), GlobalTheory.CompanionTheory.SW.IsEulerProd b I c minf m → ∃ S₀ : Finset (IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers F)), ∀ S, S₀ ⊆ S → ∀ φ : (Fin n → Fin M → Ainf F ⊗[F] E) → ℂ, Measurable φ → Integrable φ minf → ∀ A : (∀ v : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers F), Set (Fin n → Fin M → Fv F v ⊗[F] E)), (∀ v, MeasurableSet (A v)) → (∀ v, m v (A v) ≠ ⊤) → (∀ v, v ∉ S → A v = latV b v) → Integrable (pureN φ A) I ∧ ∫ X, pureN φ A X ∂I = (c : ℂ) * (∫ X, φ X ∂minf) * (∏ v ∈ S, ((m v (A v)).toReal : ℂ)) * ((∏' v : {v // v ∉ S}, (m v.1 (latV b v.1)).toReal : ℝ) : ℂ) := by
   intro F E _ _ _ _ _ M n d b I c minf m hE
   obtain ⟨-, -, S₀, hS₀⟩ := hE

@@ -22,6 +22,13 @@ open GlobalTheory.LevelSeries
 noncomputable section
 namespace GlobalTheory.VacTransNe
 
+/- English proof (translation)
+Introduce `D ψ θ V W χV χW om ΛV ΛW sW f₀ hP T m eT hT _ _ _ Y hY hYd hYc h0`. Take `⟨y₀, hy₀, -⟩` from `hYc 0 (fun i j => mul_zero _) (by rw [nsmul_zero]; exact zero_mem _)`. Take `⟨p, hp⟩` from `hP.2.2.2.2.2.2.2.2.2.norm.1`. Establish `h` using `GlobalTheory.VacTransOrth.vacuumTranslates_conjHalf_sq_norm_eq_card_alt D ψ θ V W χV χW om ΛV ΛW sW f₀ hP T eT hT Y (fun y hy => (hY y hy).1) hYd p.1 p.2 hp`. Rewrite `h` using `[h0]`.
+
+Establish `hz : nrm2 p.1 p.2 (0 : WO V W → ℂ) = 0`. Unfold `nrm2`. Simplify using the standard rewrite rules. Rewrite `h` using `[hz]`. Establish `hc : Y.card = 0` using `by exact_mod_cast h.symm`.
+
+Conclude with `Finset.card_ne_zero_of_mem hy₀ hc`.
+-/
 theorem sum_heisO_conjHalf_ne_zero : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (V W : HSp D) (χV χW : (AE D)ˣ →* Circle) (om : GA D V × GA D W →* Module.End ℂ (WO V W → ℂ)) (ΛV : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)) (ΛW : Submodule (𝓞 D.host.E) (Fin W.rank → D.host.E)) (sW : D.what₂.Tau → Matrix (Fin W.rank) (Fin W.rank) ℂ) (f₀ : WO V W → ℂ), VacPair ψ θ V W χV χW om ΛV ΛW sW f₀ → ∀ (T : Finset (Formalism.L2.DIV.Pl D.host.E)) (m : ℕ) (eT : AE D), IsIdemSum eT T → Odd m → Nat.Coprime m (GlobalTheory.Tow.badN D) → (∀ PP ∈ T, ((m : ℕ) : 𝓞 D.host.E) ∈ PP.asIdeal) → ∀ Y : Finset (WO V W), (∀ y ∈ Y, IsHalf (cA D eT) y ∧ m • y ∈ latO V W (ΛV : Set (Fin V.rank → D.host.E)) (ΛW : Set (Fin W.rank → D.host.E)) (fun _ => True)) → (∀ y ∈ Y, ∀ y' ∈ Y, y - y' ∈ latO V W (ΛV : Set (Fin V.rank → D.host.E)) (ΛW : Set (Fin W.rank → D.host.E)) (fun _ => True) → y = y') → (∀ y : WO V W, IsHalf (cA D eT) y → m • y ∈ latO V W (ΛV : Set (Fin V.rank → D.host.E)) (ΛW : Set (Fin W.rank → D.host.E)) (fun _ => True) → ∃ y' ∈ Y, y - y' ∈ latO V W (ΛV : Set (Fin V.rank → D.host.E)) (ΛW : Set (Fin W.rank → D.host.E)) (fun _ => True)) → ∑ y ∈ Y, heisO ψ V W y f₀ ≠ 0 := by
   intro D ψ θ V W χV χW om ΛV ΛW sW f₀ hP T m eT hT _ _ _ Y hY hYd hYc h0
   obtain ⟨y₀, hy₀, -⟩ := hYc 0 (fun i j => mul_zero _) (by rw [nsmul_zero]; exact zero_mem _)

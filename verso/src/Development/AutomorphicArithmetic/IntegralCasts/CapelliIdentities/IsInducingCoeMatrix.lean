@@ -9,6 +9,11 @@ noncomputable def UpperTheory.Reformulated.B.Qk27.inUJ :
     fun {n : ℕ} (ε : Fin n → Bool) (g : Matrix (Fin n) (Fin n) ℂ) ↦
       g.conjTranspose * UpperTheory.Reformulated.B.Qk27.Jm ε * g = UpperTheory.Reformulated.B.Qk27.Jm ε
 
+/- English proof (translation)
+Introduce `n ε g h hg hh`. Simplify using `only [Set.mem_setOf_eq, UpperTheory.Reformulated.B.Qk27.inUJ] at hg hh ⊢`. Rewrite using `[Units.val_mul, Matrix.conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`.
+
+Use `_ = _ := by rw [hg, hh]`.
+-/
 theorem UpperTheory.Reformulated.B.Qk27.aux3 :
     ∀ {n : ℕ} (ε : Fin n → Bool) {g h : (Matrix (Fin n) (Fin n) ℂ)ˣ},
       g ∈ {g : (Matrix (Fin n) (Fin n) ℂ)ˣ | UpperTheory.Reformulated.B.Qk27.inUJ ε (↑g : Matrix (Fin n) (Fin n) ℂ)} →
@@ -22,6 +27,9 @@ theorem UpperTheory.Reformulated.B.Qk27.aux3 :
         simp only [Matrix.mul_assoc]
     _ = _ := by rw [hg, hh]
 
+/- English proof (translation)
+Introduce `n ε`. Rewrite using `[Units.val_one, Matrix.conjTranspose_one, Matrix.one_mul, Matrix.mul_one]`.
+-/
 theorem UpperTheory.Reformulated.B.Qk27.aux4 :
     ∀ {n : ℕ} (ε : Fin n → Bool),
       (↑(1 : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ).conjTranspose * UpperTheory.Reformulated.B.Qk27.Jm ε *
@@ -30,6 +38,11 @@ theorem UpperTheory.Reformulated.B.Qk27.aux4 :
   intro n ε
   rw [Units.val_one, Matrix.conjTranspose_one, Matrix.one_mul, Matrix.mul_one]
 
+/- English proof (translation)
+Introduce `n ε g hg`. Simplify using `only [Set.mem_setOf_eq, UpperTheory.Reformulated.B.Qk27.inUJ] at hg ⊢`. Establish `h1 : (g : Matrix (Fin n) (Fin n) ℂ) * ((g⁻¹ : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ) = 1` using `Units.mul_inv g`. Generalize the expression as in `((g⁻¹ : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ) = b at h1 ⊢`. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = _ := by rw [h1, Matrix.conjTranspose_one, Matrix.one_mul, Matrix.mul_one]`.
+-/
 theorem UpperTheory.Reformulated.B.Qk27.aux5 :
     ∀ {n : ℕ} (ε : Fin n → Bool) {g : (Matrix (Fin n) (Fin n) ℂ)ˣ},
       g ∈ {g : (Matrix (Fin n) (Fin n) ℂ)ˣ | UpperTheory.Reformulated.B.Qk27.inUJ ε (↑g : Matrix (Fin n) (Fin n) ℂ)} →
@@ -58,6 +71,9 @@ noncomputable def UpperTheory.Reformulated.B.Qk27.coeMatrixAlt :
     fun {n : ℕ} (ε : Fin n → Bool) (g : ↥(UpperTheory.Reformulated.B.Qk27.UJ ε)) ↦
       (↑(↑g : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ)
 
+/- English proof (translation)
+Unfold `UpperTheory.Reformulated.B.Qk27.Jm`. Rewrite using `[Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Apply the tactic sequence `split_ifs <;> norm_num`.
+-/
 private theorem UpperTheory.Reformulated.B.Qk27.Jm_mul_self {n : ℕ} (ε : Fin n → Bool) :
     UpperTheory.Reformulated.B.Qk27.Jm ε * UpperTheory.Reformulated.B.Qk27.Jm ε = 1 := by
   unfold UpperTheory.Reformulated.B.Qk27.Jm
@@ -66,6 +82,13 @@ private theorem UpperTheory.Reformulated.B.Qk27.Jm_mul_self {n : ℕ} (ε : Fin 
   funext a
   split_ifs <;> norm_num
 
+/- English proof (translation)
+Introduce `n ε`. Set `k : Matrix (Fin n) (Fin n) ℂ → Matrix (Fin n) (Fin n) ℂ × (Matrix (Fin n) (Fin n) ℂ)ᵐᵒᵖ` to `fun x ↦ (x, MulOpposite.op (UpperTheory.Reformulated.B.Qk27.Jm ε * (x.conjTranspose * UpperTheory.Reformulated.B.Qk27.Jm ε)))`. Establish `hk : Continuous k` using `continuous_id.prodMk (MulOpposite.continuous_op.comp (continuous_const.matrix_mul (continuous_id.matrix_conjTranspose.matrix_mul continuous_const)))`. Establish `hc : Continuous (UpperTheory.Reformulated.B.Qk27.coeMatrixAlt ε)` using `Units.continuous_val.comp continuous_subtype_val`. Establish `he : k ∘ UpperTheory.Reformulated.B.Qk27.coeMatrixAlt ε = Units.embedProduct (Matrix (Fin n) (Fin n) ℂ) ∘ (Subtype.val : ↥(UpperTheory.Reformulated.B.Qk27.UJ ε) → (Matrix (Fin n) (Fin n) ℂ)ˣ)`.
+
+Use function extensionality and compare the values at `g`. Establish `hg : (g.1 : Matrix (Fin n) (Fin n) ℂ).conjTranspose * UpperTheory.Reformulated.B.Qk27.Jm ε * g.1 = UpperTheory.Reformulated.B.Qk27.Jm ε` using `g.2`. Establish `hi : ((g.1⁻¹ : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ) = UpperTheory.Reformulated.B.Qk27.Jm ε * ((g.1 : Matrix (Fin n) (Fin n) ℂ).conjTranspose * UpperTheory.Reformulated.B.Qk27.Jm ε)`. Apply `Units.inv_eq_of_mul_eq_one_left` to reduce the goal to its premises. Rewrite using `[Matrix.mul_assoc, hg, UpperTheory.Reformulated.B.Qk27.Jm_mul_self]`.
+
+Conclude with `Prod.ext rfl (congrArg MulOpposite.op hi.symm)`. Use `Topology.IsInducing.of_comp hc hk ?_` and prove the remaining obligations. Rewrite using `[he]`. Conclude with `Units.isInducing_embedProduct.comp Topology.IsInducing.subtypeVal`.
+-/
 theorem UpperTheory.Reformulated.B.Qk27.isInducing_coeMatrix :
     ∀ {n : ℕ} (ε : Fin n → Bool), Topology.IsInducing (UpperTheory.Reformulated.B.Qk27.coeMatrixAlt ε) := by
   intro n ε

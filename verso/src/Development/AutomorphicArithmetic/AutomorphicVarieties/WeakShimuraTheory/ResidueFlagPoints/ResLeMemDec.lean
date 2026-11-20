@@ -19,10 +19,16 @@ def twc (n : ℕ) : G T.L Ω →* (PadicAlgCl l)ˣ := W.pushCh (algebraMap c'.O 
 def rhoQ (n : ℕ) (r : G T.F Ω →* M4 (PadicAlgCl l)) : G T.L Ω →* GL (Fin 4) (PadicAlgCl l) :=
   Af.tw (r.comp (resLe T.F_le)).toHomUnits (K.twc n)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem twc_val (n : ℕ) (g : G T.L Ω) :
     (K.twc n g : PadicAlgCl l) = algebraMap c'.O (PadicAlgCl l) (K.κ g * K.β g ^ n) := by
   rfl
 
+/- English proof (translation)
+Simplify using `only [rhoQ, Af.tw_val]`. Both sides reduce to the same expression.
+-/
 theorem rho_val (n : ℕ) (r : G T.F Ω →* M4 (PadicAlgCl l)) (g : G T.L Ω) :
     (K.rhoQ n r g : M4 (PadicAlgCl l)) = (K.twc n g : PadicAlgCl l) • r (resLe T.F_le g) := by
   simp only [rhoQ, Af.tw_val]
@@ -30,6 +36,9 @@ theorem rho_val (n : ℕ) (r : G T.F Ω →* M4 (PadicAlgCl l)) (g : G T.L Ω) :
 
 variable {K} {X : Space (T.fr ∅) (inc h)} {B : W.UniversalOrdinaryDeterminantRing K.r}
 
+/- English proof (translation)
+Establish `ha : adj (M.map f) = (adj M).map f`. Use extensionality with `a b`. Simplify using `[adj_apply]`. Rewrite using `[ha, ← Matrix.map_mul, ← Matrix.map_mul]`. Both sides reduce to the same expression.
+-/
 private theorem map_adj_mul_mul_diag_eq_of_map {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) (M R : M4 A) (i : Fin 4) :
     f ((adj M * R * M) i i) = (adj (M.map f) * R.map f * M.map f) i i := by
   have ha : adj (M.map f) = (adj M).map f := by
@@ -38,6 +47,11 @@ private theorem map_adj_mul_mul_diag_eq_of_map {A B : Type} [CommRing A] [CommRi
   rw [ha, ← Matrix.map_mul, ← Matrix.map_mul]
   rfl
 
+/- English proof (translation)
+Establish `e1` using `hφ.2 v i g`. Establish `e2` using `X.ψ_map (K.e v) i (resLe T.F_le g) hg`. Use `show y (algebraMap X.B X.A (φ ((B.u.ψ v i) g))) = _`. Rewrite using `[e1, map_mul, e2, map_mul, Link.twc_val, ← IsScalarTower.algebraMap_apply c'.O X.B X.A, AlgHom.commutes]`. Use `congr 1`.
+
+Conclude with `map_adj_mul_mul_diag_eq_of_map (y : X.A →+* PadicAlgCl l) _ _ i`.
+-/
 theorem IsPhi.psi_val {n : ℕ} {φ : B.B →ₐ[c'.O] X.B} (hφ : K.IsPhi X n B φ) (y : X.A →ₐ[c'.O] PadicAlgCl l)
     (v : W.Vl l T.L) (i : Fin 4) (g : Dec (F := T.L) (K.s.A v)) (hg : resLe T.F_le g ∈ Dec (F := T.F) (T.pl (K.e v))) :
     ((pt φ y).psi v i g : PadicAlgCl l) =
@@ -51,12 +65,21 @@ theorem IsPhi.psi_val {n : ℕ} {φ : B.B →ₐ[c'.O] X.B} (hφ : K.IsPhi X n B
 
 end Link
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem resLe_mem_Dec {F L : IntermediateField ℚ Ω} (hFL : F ≤ L) {A : ValuationSubring Ω} {g : G L Ω} :
     resLe hFL g ∈ Dec (F := F) A ↔ g ∈ Dec (F := L) A := Iff.rfl
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem resLe_mem_Ine {F L : IntermediateField ℚ Ω} [NumberField F] [NumberField L] (hFL : F ≤ L) {A : ValuationSubring Ω} {g : G L Ω} :
     resLe hFL g ∈ Ine (F := F) A ↔ g ∈ Ine (F := L) A := Iff.rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cycBar_resLe {F L : IntermediateField ℚ Ω} (hFL : F ≤ L) (g : G L Ω) :
     cycBar F Ω l (resLe hFL g) = cycBar L Ω l g := rfl
 

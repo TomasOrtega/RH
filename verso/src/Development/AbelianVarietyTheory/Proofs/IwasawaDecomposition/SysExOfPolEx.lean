@@ -13,6 +13,9 @@ open GlobalTheory.ShFam GlobalTheory.TorRef
 
 namespace GlobalTheory.TorRef
 
+/- English proof (translation)
+The claim follows from `sysEx_of_pol (fun E _ _ _ H l c => (GlobalTheory.CoeffRings.coeff_isDedFrac E H l c).1) (GlobalTheory.T.polynomial_stable_of_map GlobalTheory.T.polynomial_map_holds) (GlobalTheory.T.polynomial_transition_of_map GlobalTheory.T.polynomial_map_holds) GlobalTheory.T.polynomial_suppor …`.
+-/
 theorem sysEx_of_polEx : PolExSt → SysExSt :=
   sysEx_of_pol (fun E _ _ _ H l c => (GlobalTheory.CoeffRings.coeff_isDedFrac E H l c).1) (GlobalTheory.T.polynomial_stable_of_map GlobalTheory.T.polynomial_map_holds)
     (GlobalTheory.T.polynomial_transition_of_map GlobalTheory.T.polynomial_map_holds) GlobalTheory.T.polynomial_support_holds GlobalTheory.T.polynomial_arc_holds GlobalTheory.T.horizontal_holds (GlobalTheory.T.polynomial_descent_of_map GlobalTheory.T.polynomial_map_holds)

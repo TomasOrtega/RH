@@ -24,6 +24,23 @@ open P_spCount
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 open scoped Classical in
 set_option maxHeartbeats 800000 in
+/- English proof (translation)
+Introduce `hL c hc hres`. Establish `hE : G.etaSp (jacU G.e (prinSeries c)) = eS (leviK k (fun a : Fin G.s => Fin (G.d a))) G.eta (jac G.e (parInd (points (Fin n)) (ρc c)))` using `eS_jacU_eq G.e (parInd (points (Fin n)) (ρc c)) G.eta`. Take `⟨N, b, hb⟩` from `(hL.loc.geo k).1 (Fin n) (Fin G.s) (Fin n) (fun _ => Unit) (fun a => Fin (G.d a)) (points (Fin n)) G.e`. Take `⟨S, hmono, h0, hN, hS⟩` from `hb ℂ (ρc c) (isSmooth_ρc c hc)`. Take `⟨fr⟩ : Nonempty (∀ t : Fin N, ∀ i, (Σ j, Fin ((b t).1 i j)) ≃ (fun _ : Fin n => Unit) i)` from `⟨fun t => (b t).nonempty_rows.some⟩`.
+
+Take `⟨gc⟩ : Nonempty (∀ t : Fin N, ∀ j, (Σ i, Fin ((b t).1 i j)) ≃ (fun a : Fin G.s => Fin (G.d a)) j)` from `⟨fun t => (b t).nonempty_cols.some⟩`. Establish `hr : ∀ t : Fin N, Module.rank ℂ ↥(eS (leviK k (fun a : Fin G.s => Fin (G.d a))) G.eta (subQuot (S t.succ) (S t.castSucc))) ≤ Module.rank ℂ ↥(eS (leviK k (fun a : Fin G.s => Fin (G.d a))) G.eta (smInd (relParab k (gc t)) (cellRep G c (b t) (fr t) (gc t))))`. Introduce `t`. Establish `e : Nonempty ((subQuot (S t.succ) (S t.castSucc)).Equiv (smInd (relParab k (gc t)) (cellRep G c (b t) (fr t) (gc t))))` using `hS t (fr t) (gc t)`. Conclude with `rank_eS_le_of_equiv _ _ e.some`.
+
+Establish `hr1 : ∀ t, Module.rank ℂ ↥(eS (leviK k (fun a : Fin G.s => Fin (G.d a))) G.eta (smInd (relParab k (gc t)) (cellRep G c (b t) (fr t) (gc t)))) ≤ ((if Good G (b t) then 1 else 0 : ℕ) : Cardinal)`. Introduce `t`. Use `split_ifs with hP`. Use `(rank_eS_le (gc t) (cellRep G c (b t) (fr t) (gc t)) G.eta).trans ((rank_quotient_le _).trans (le_of_eq ?_))` and prove the remaining obligations. Rewrite using `[Module.rank_self, Nat.cast_one]`.
+
+Use `(rank_eS_eq_zero _ _ _ ?_).trans_le zero_le` and prove the remaining obligations. Introduce `F hF`. Assume the negation of the conclusion as `hne`. Apply `hP` to reduce the goal to its premises. Introduce `i a h`.
+
+Assume the negation of the conclusion as `hab`. Apply `G.dist a (G.bl i) hab` to reduce the goal to its premises. Use `MonoidHom.ext fun w => ?_` and prove the remaining obligations. Establish `h1` using `cell_char G c (b t) (fr t) (gc t) F hF hne i a h w`. Establish `h2 : c i (unitIncl k w) = G.μ (G.bl i) (unitIncl k w)` using `DFunLike.congr_fun (hres i) w`.
+
+Conclude with `h1.symm.trans h2`. Establish `hsum : ∑ t : Fin N, (if Good G (b t) then 1 else 0 : ℕ) ≤ 1`. Rewrite using `[← Finset.card_filter]`. Use `Finset.card_le_one.2 fun t ht t' ht' => ?_` and prove the remaining obligations. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at ht ht'`.
+
+Conclude with `b.injective (good_unique G ht ht')`. Establish `hrank : Module.rank ℂ ↥(eS (leviK k (fun a : Fin G.s => Fin (G.d a))) G.eta (jac G.e (parInd (points (Fin n)) (ρc c)))) ≤ 1`. Combine the equalities or inequalities in the displayed calculation. Use `haveI : Module.Free ℂ ↥(eS (leviK k (fun a : Fin G.s => Fin (G.d a))) G.eta (jac G.e (parInd (points (Fin n)) (ρc c)))) := Module.Free.of_divisionRing ℂ _`. Establish `hfin : FiniteDimensional ℂ ↥(eS (leviK k (fun a : Fin G.s => Fin (G.d a))) G.eta (jac G.e (parInd (points (Fin n)) (ρc c))))` using `Module.rank_lt_aleph0_iff.1 (hrank.trans_lt Cardinal.one_lt_aleph0)`.
+
+Establish `hfr : Module.finrank ℂ ↥(eS (leviK k (fun a : Fin G.s => Fin (G.d a))) G.eta (jac G.e (parInd (points (Fin n)) (ρc c)))) ≤ 1` using `Module.finrank_le_of_rank_le (n := 1) (by rw [Nat.cast_one]; exact hrank)`. Rewrite using `[hE]`. Conclude with `⟨hfin, hfr⟩`.
+-/
 theorem step_spCount_alt {n : ℕ} (G : Grp k n) : G.Step_spCount_alt := by
   intro hL c hc hres
   have hE : G.etaSp (jacU G.e (prinSeries c)) =

@@ -12,6 +12,9 @@ namespace Formalism.L2.SG.Pf.KernelOfEmbedding
 
 variable {D : D7} {X : HidaSetting D} {Y : Formalism.L2.SG.Full.Full X}
 
+/- English proof (translation)
+The claim follows from `Formalism.L2.SG.Closed.OOIntAllC_outright D X Y w w' (Formalism.L2.SG.Closed.FoldOKC_outright D X Y w (Formalism.L2.SG.Closed.level_subgroup_properties X) hWD) (Formalism.L2.SG.Closed.FoldOKC_outright D X Y w' (Formalism.L2.SG.Closed.level_subgroup_properties X) hWD) (Formalism.L …`.
+-/
 theorem ooIntAll_of (hWD : Formalism.L2.SG.WuDecay.WuDecay X) (w w' : D.what₂.Word) :
     OOIntAll X w w' (X.Fu w) (X.Fu w') (Y.what₂ w) (Y.what₂ w') :=
   Formalism.L2.SG.Closed.OOIntAllC_outright D X Y w w'
@@ -21,6 +24,9 @@ theorem ooIntAll_of (hWD : Formalism.L2.SG.WuDecay.WuDecay X) (w w' : D.what₂.
 
 variable {hF : FinX Y} (W : WittDat X) (hI : SIso D.s (sOf hF))
 
+/- English proof (translation)
+The claim follows from `pvalForm_exists_oi W hI (ooIntAll_of hWD) (Formalism.L2.SG.Pf.FibreEq.FibreCountEq_holds hF)`.
+-/
 theorem pvalForm_holds (hWD : Formalism.L2.SG.WuDecay.WuDecay X) : ∃ A : AmpDat X, PvalForm W hI A :=
   pvalForm_exists_oi W hI (ooIntAll_of hWD) (Formalism.L2.SG.Pf.FibreEq.FibreCountEq_holds hF)
 

@@ -13,14 +13,29 @@ namespace GlobalTheory.KleinUnit
 
 def pt (L : PeriodPair) (m : ℕ) (c d : ℤ) : ℂ := ((c : ℂ) * L.ω₁ + (d : ℂ) * L.ω₂) / (m : ℂ)
 
+/- English proof (translation)
+Simplify using `only [pt]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma pt_add (L : PeriodPair) (m : ℕ) (c d c' d' : ℤ) :
     pt L m (c + c') (d + d') = pt L m c d + pt L m c' d' := by
   simp only [pt]; push_cast; ring
 
+/- English proof (translation)
+Simplify using `only [pt]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma pt_sub (L : PeriodPair) (m : ℕ) (c d c' d' : ℤ) :
     pt L m c d - pt L m c' d' = pt L m (c - c') (d - d') := by
   simp only [pt]; push_cast; ring
 
+/- English proof (translation)
+Establish `hm' : (m : ℂ) ≠ 0` using `by exact_mod_cast hm.ne'`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨a, b, e⟩` from `PeriodPair.mem_lattice.mp h`. Simplify using `only [pt] at e`.
+
+Rewrite `e` using `[eq_div_iff hm']`. Establish `e' : (((m * a - c : ℤ) : ℝ) : ℂ) * L.ω₁ + (((m * b - d : ℤ) : ℝ) : ℂ) * L.ω₂ = 0` using `by push_cast; linear_combination e`. Use `LinearIndependent.pair_iff.mp L.indep ((m * a - c : ℤ) : ℝ) ((m * b - d : ℤ) : ℝ) (by simpa only [Complex.real_smul] using e')` as an intermediate fact. Take `⟨h1, h2⟩` from `this`. Establish `h1' : (m : ℤ) * a - c = 0` using `by exact_mod_cast h1`.
+
+Establish `h2' : (m : ℤ) * b - d = 0` using `by exact_mod_cast h2`. Conclude with `⟨⟨a, by linarith⟩, ⟨b, by linarith⟩⟩`. Introduce and unpack `⟨⟨a, rfl⟩, ⟨b, rfl⟩⟩`. Use `PeriodPair.mem_lattice.mpr ⟨a, b, ?_⟩` and prove the remaining obligations. Simplify using `only [pt]`.
+
+Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+-/
 lemma pt_mem_iff (L : PeriodPair) {m : ℕ} (hm : 0 < m) (c d : ℤ) :
     pt L m c d ∈ L.lattice ↔ (m : ℤ) ∣ c ∧ (m : ℤ) ∣ d := by
   have hm' : (m : ℂ) ≠ 0 := by exact_mod_cast hm.ne'
@@ -43,6 +58,9 @@ lemma pt_mem_iff (L : PeriodPair) {m : ℕ} (hm : 0 < m) (c d : ℤ) :
 
 def rep (L : PeriodPair) (m : ℕ) (x : ZMod m × ZMod m) : ℂ := pt L m (x.1.val : ℤ) (x.2.val : ℤ)
 
+/- English proof (translation)
+Use `haveI : NeZero m := ⟨hm.ne'⟩`. Simplify using `only [rep, h1, h2, ZMod.val_intCast]`. Rewrite using `[pt_sub, pt_mem_iff L hm]`. Conclude with `⟨⟨-(c / m), by rw [Int.emod_def]; ring⟩, ⟨-(d / m), by rw [Int.emod_def]; ring⟩⟩`.
+-/
 lemma rep_sub_pt_mem (L : PeriodPair) {m : ℕ} (hm : 0 < m) (x : ZMod m × ZMod m) (c d : ℤ)
     (h1 : x.1 = (c : ZMod m)) (h2 : x.2 = (d : ZMod m)) : rep L m x - pt L m c d ∈ L.lattice := by
   haveI : NeZero m := ⟨hm.ne'⟩
@@ -50,6 +68,9 @@ lemma rep_sub_pt_mem (L : PeriodPair) {m : ℕ} (hm : 0 < m) (x : ZMod m × ZMod
   rw [pt_sub, pt_mem_iff L hm]
   exact ⟨⟨-(c / m), by rw [Int.emod_def]; ring⟩, ⟨-(d / m), by rw [Int.emod_def]; ring⟩⟩
 
+/- English proof (translation)
+Use `haveI : NeZero m := ⟨hm.ne'⟩`. Use `rep_sub_pt_mem L hm (x + y) ((x.1.val : ℤ) + (y.1.val : ℤ)) ((x.2.val : ℤ) + (y.2.val : ℤ)) (by simp) (by simp)` as an intermediate fact. Rewrite `this` using `[pt_add]`. Then use the resulting hypothesis.
+-/
 lemma rep_add (L : PeriodPair) {m : ℕ} (hm : 0 < m) (x y : ZMod m × ZMod m) :
     rep L m (x + y) - (rep L m x + rep L m y) ∈ L.lattice := by
   haveI : NeZero m := ⟨hm.ne'⟩
@@ -57,6 +78,9 @@ lemma rep_add (L : PeriodPair) {m : ℕ} (hm : 0 < m) (x y : ZMod m × ZMod m) :
     (by simp) (by simp)
   rwa [pt_add] at this
 
+/- English proof (translation)
+Use `haveI : NeZero m := ⟨hm.ne'⟩`. Use `rep_sub_pt_mem L hm (x - y) ((x.1.val : ℤ) - (y.1.val : ℤ)) ((x.2.val : ℤ) - (y.2.val : ℤ)) (by simp) (by simp)` as an intermediate fact. Rewrite `this` using `[← pt_sub]`. Then use the resulting hypothesis.
+-/
 lemma rep_sub (L : PeriodPair) {m : ℕ} (hm : 0 < m) (x y : ZMod m × ZMod m) :
     rep L m (x - y) - (rep L m x - rep L m y) ∈ L.lattice := by
   haveI : NeZero m := ⟨hm.ne'⟩
@@ -64,6 +88,9 @@ lemma rep_sub (L : PeriodPair) {m : ℕ} (hm : 0 < m) (x y : ZMod m × ZMod m) :
     (by simp) (by simp)
   rwa [← pt_sub] at this
 
+/- English proof (translation)
+Simplify using `[rep, pt]`.
+-/
 lemma rep_zero (L : PeriodPair) (m : ℕ) : rep L m 0 = 0 := by
   simp [rep, pt]
 

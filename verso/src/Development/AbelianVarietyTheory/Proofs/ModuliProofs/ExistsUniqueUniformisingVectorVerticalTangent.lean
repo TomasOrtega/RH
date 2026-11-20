@@ -17,16 +17,25 @@ namespace GlobalTheory.KS.VertFamily
 
 variable {g : ℕ} {A : Over (Sp ℂ)} [GrpObj A] {L : LB A.left} (u : HolUnif A L g)
 
+/- English proof (translation)
+Unfold `valAt' valAt`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 private theorem valAt'_add' {X : Scheme.{0}} (y : Sp ℂ ⟶ X) (W : X.Opens) (f f' : Γ(X, W)) :
     valAt' y W (f + f') = valAt' y W f + valAt' y W f' := by
   unfold valAt' valAt
   split_ifs <;> simp
 
+/- English proof (translation)
+Unfold `valAt' valAt`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 private theorem valAt'_mul_of_top_le_preimage_open {X : Scheme.{0}} (y : Sp ℂ ⟶ X) (W : X.Opens) (f f' : Γ(X, W)) :
     valAt' y W (f * f') = valAt' y W f * valAt' y W f' := by
   unfold valAt' valAt
   split_ifs <;> simp
 
+/- English proof (translation)
+Establish `hW : ⊤ ≤ y ⁻¹ᵁ W` using `fun x hx => hle (h hx)`. Unfold `valAt' valAt`. Rewrite using `[dif_pos h, dif_pos hW]`. Use `congr 1`. Rewrite using `[← CommRingCat.comp_apply, Scheme.Hom.map_appLE]`.
+-/
 private theorem valAt'_resG {X : Scheme.{0}} (y : Sp ℂ ⟶ X) {W W' : X.Opens} (hle : W' ≤ W)
     (h : ⊤ ≤ y ⁻¹ᵁ W') (f : Γ(X, W)) : valAt' y W' (resG X hle f) = valAt' y W f := by
   have hW : ⊤ ≤ y ⁻¹ᵁ W := fun x hx => hle (h hx)
@@ -35,6 +44,13 @@ private theorem valAt'_resG {X : Scheme.{0}} (y : Sp ℂ ⟶ X) {W W' : X.Opens}
   congr 1
   rw [← CommRingCat.comp_apply, Scheme.Hom.map_appLE]
 
+/- English proof (translation)
+Establish `hq : ∀ (q : Sp ℂ ⟶ Sp ℂ) (e : ⊤ ≤ q ⁻¹ᵁ ⊤), q = 𝟙 _ → (Scheme.ΓSpecIso (CommRingCat.of ℂ)).hom.hom ((q.appLE ⊤ ⊤ e).hom ((Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv.hom a)) = a`. Introduce and unpack `q e rfl`. Simplify using `only [Scheme.Hom.appLE, Scheme.Hom.id_app]`. Use `show (Scheme.ΓSpecIso (CommRingCat.of ℂ)).hom.hom (((Sp ℂ).presheaf.map (𝟙 (Opposite.op (⊤ : (Sp ℂ).Opens)))).hom ((Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv.hom a)) = a`. Simplify using the standard rewrite rules.
+
+Establish `e0 : ⊤ ≤ y ⁻¹ᵁ (⊤ : X.Opens)` using `fun _ _ => trivial`. Unfold `valAt' valAt constFn`. Rewrite using `[dif_pos e0]`. Use `Eq.trans ?_ (hq (y ≫ p) (fun _ _ => trivial) hp)` and prove the remaining obligations. Use `congr 1`.
+
+Rewrite using `[← CommRingCat.comp_apply]`. Conclude with `congrArg (fun φ => CommRingCat.Hom.hom φ ((Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv.hom a)) (Scheme.Hom.appLE_comp_appLE y p ⊤ ⊤ ⊤ _ e0)`.
+-/
 private theorem valAt'_constFn_top {X : Scheme.{0}} (y : Sp ℂ ⟶ X) (p : X ⟶ Sp ℂ) (hp : y ≫ p = 𝟙 _) (a : ℂ) :
     valAt' y ⊤ (constFn p ⊤ a) = a := by
   have hq : ∀ (q : Sp ℂ ⟶ Sp ℂ) (e : ⊤ ≤ q ⁻¹ᵁ ⊤), q = 𝟙 _ →
@@ -54,14 +70,27 @@ private theorem valAt'_constFn_top {X : Scheme.{0}} (y : Sp ℂ ⟶ X) (p : X �
   exact congrArg (fun φ => CommRingCat.Hom.hom φ ((Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv.hom a))
     (Scheme.Hom.appLE_comp_appLE y p ⊤ ⊤ ⊤ _ e0)
 
+/- English proof (translation)
+Conclude with `(Over.w (u.ex z)).trans (by simp)`.
+-/
 theorem ex_over (z : Fin g → ℂ) : (u.ex z).left ≫ A.hom = 𝟙 _ := by
   exact (Over.w (u.ex z)).trans (by simp)
 
+/- English proof (translation)
+Take `⟨hO, hD⟩` from `u.hol O f`. Conclude with `hD.differentiableAt (hO.mem_nhds h)`.
+-/
 theorem differentiableAt_val (z : Fin g → ℂ) (O : A.left.Opens) (f : Γ(A.left, O)) (h : ⊤ ≤ (u.ex z).left ⁻¹ᵁ O) :
     DifferentiableAt ℂ (fun z' => valAt' (u.ex z').left O f) z := by
   obtain ⟨hO, hD⟩ := u.hol O f
   exact hD.differentiableAt (hO.mem_nhds h)
 
+/- English proof (translation)
+Establish `e : (fun z' => valAt' (u.ex z').left O (f + f')) = (fun z' => valAt' (u.ex z').left O f) + fun z' => valAt' (u.ex z').left O f'`. Use function extensionality and compare the values at `z'`. Conclude with `valAt'_add' _ _ _ _`. Rewrite using `[e, fderiv_add (differentiableAt_val u z O f h) (differentiableAt_val u z O f' h)]`. Both sides reduce to the same expression.
+
+Use `mul O h f f' := by`. Establish `e : (fun z' => valAt' (u.ex z').left O (f * f')) = (fun z' => valAt' (u.ex z').left O f) * fun z' => valAt' (u.ex z').left O f'`. Use function extensionality and compare the values at `z'`. Conclude with `valAt'_mul_of_top_le_preimage_open _ _ _ _`. Rewrite using `[e, fderiv_mul (differentiableAt_val u z O f h) (differentiableAt_val u z O f' h)]`.
+
+Simplify using `only [add_apply, smul_apply, smul_eq_mul]`. Use `res O O' hle h f := by`. Establish `hev : (fun z' => valAt' (u.ex z').left O' (resG A.left hle f)) =ᶠ[nhds z] fun z' => valAt' (u.ex z').left O f` using `by filter_upwards [(u.hol O' (resG A.left hle f)).1.mem_nhds h] with z' hz'`. Conclude with `valAt'_resG _ hle hz' f`. Rewrite using `[hev.fderiv_eq]`.
+-/
 theorem ptDer_fderiv (z w : Fin g → ℂ) :
     PtDer (u.ex z).left (fun O f => fderiv ℂ (fun z' => valAt' (u.ex z').left O f) z w) where
   add O h f f' := by
@@ -85,6 +114,9 @@ theorem ptDer_fderiv (z w : Fin g → ℂ) :
       exact valAt'_resG _ hle hz' f
     rw [hev.fderiv_eq]
 
+/- English proof (translation)
+Establish `e : (fun z' => valAt' (u.ex z').left ⊤ (constFn A.hom ⊤ a)) = fun _ => a`. Use function extensionality and compare the values at `z'`. Conclude with `valAt'_constFn_top _ _ (ex_over u z') a`. Rewrite using `[e]`. Simplify using the standard rewrite rules.
+-/
 theorem fderiv_constFn (z w : Fin g → ℂ) (a : ℂ) :
     fderiv ℂ (fun z' => valAt' (u.ex z').left ⊤ (constFn A.hom ⊤ a)) z w = 0 := by
   have e : (fun z' => valAt' (u.ex z').left ⊤ (constFn A.hom ⊤ a)) = fun _ => a := by
@@ -93,6 +125,11 @@ theorem fderiv_constFn (z w : Fin g → ℂ) (a : ℂ) :
   rw [e]
   simp
 
+/- English proof (translation)
+Use function extensionality and compare the values at `z'`. Unfold `fn valAt' valAt`. Distinguish the cases in `h : ⊤ ≤ ((u.ex z').left ≫ m) ⁻¹ᵁ W`. Rewrite using `[dif_pos h, dif_pos (show ⊤ ≤ (u.ex z').left ⁻¹ᵁ (m ⁻¹ᵁ W) from h)]`. Use `congr 1`.
+
+Rewrite using `[dif_neg h, dif_neg (show ¬ ⊤ ≤ (u.ex z').left ⁻¹ᵁ (m ⁻¹ᵁ W) from h)]`.
+-/
 theorem fn_eq {X : Scheme.{0}} (m : A.left ⟶ X) (W : X.Opens) (f : Γ(X, W)) :
     fn u m W f = fun z' => valAt' (u.ex z').left (m ⁻¹ᵁ W) ((m.app W).hom f) := by
   funext z'
@@ -102,6 +139,19 @@ theorem fn_eq {X : Scheme.{0}} (m : A.left ⟶ X) (W : X.Opens) (f : Γ(X, W)) :
     congr 1
   · rw [dif_neg h, dif_neg (show ¬ ⊤ ≤ (u.ex z').left ⁻¹ᵁ (m ⁻¹ᵁ W) from h)]
 
+/- English proof (translation)
+Introduce `P₀ u Hm χ hG R _ x₀ X p m _ hpb z δ hδ hc`. Take `⟨hex, huniq⟩` from `GlobalTheory.T.germDerivation_of_fibre_of_kills_base P₀.A R x₀ X p m hpb (u.ex z).left (ex_over u z)`. Take `⟨δ₀, hδ₀, hc₀, hδδ₀⟩` from `hex δ hδ hc`. Take `⟨w, hw, hwu⟩` from `GlobalTheory.T.germDerivation_uniformised_abelianVariety_unique_vector P₀ u Hm χ hG z δ₀ hδ₀ hc₀`. Use `⟨w, fun W f hz => ?_, fun w' hw' => hwu w' fun O f hO => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hδδ₀ W f hz, hw (m ⁻¹ᵁ W) ((m.app W).hom f) hz, fn_eq]`. Establish `hD` using `ptDer_fderiv u z w'`. Establish `hpt : PtDer (u.ex z).left (fun O f => δ₀ O f - fderiv ℂ (fun z' => valAt' (u.ex z').left O f) z w')`. Use `⟨fun V hV f f' => ?_, fun V hV f f' => ?_, fun V V' hle hV f => ?_⟩` and prove the remaining obligations. Establish `h1` using `hδ₀.add V hV f f'`.
+
+Establish `h2` using `hD.add V hV f f'`. Take the linear combination `h1 - h2`. Establish `h1` using `hδ₀.mul V hV f f'`. Establish `h2` using `hD.mul V hV f f'`. Take the linear combination `h1 - h2`.
+
+Establish `h1` using `hδ₀.res V V' hle hV f`. Establish `h2` using `hD.res V V' hle hV f`. Take the linear combination `h1 - h2`. Establish `key` using `huniq _ hpt (fun a => by`. Establish `h1` using `hc₀ a`.
+
+Establish `h2` using `fderiv_constFn u z w' a`. Take the linear combination `h1 - h2)`. Use the proof step `(fun V f hV => by`. Establish `h1` using `hδδ₀ V f hV`. Establish `h2` using `hw' V f hV`.
+
+Rewrite `h2` using `[fn_eq]`. Take the linear combination `h2 - h1) O f hO`. Conclude with `sub_eq_zero.mp key`.
+-/
 theorem existsUnique_vector : ∀ (P₀ : Out.PolAV (Sp ℂ)) (u : HolUnif P₀.A P₀.L P₀.g) (Hm : Matrix (Fin P₀.g) (Fin P₀.g) ℂ) (χ : u.Λ → ℂ), GoodU u Hm χ → ∀ (R : Type) [CommRing R] (x₀ : R →+* ℂ) (X : Scheme.{0}) (p : X ⟶ Sp R) (m : P₀.A.left ⟶ X), Smooth p → IsPullback m P₀.A.hom p (spMap x₀) → ∀ z δ, PtDer ((u.ex z).left ≫ m) δ → (∀ r, δ ⊤ (constFn p ⊤ r) = 0) → ∃! w, ∀ W f, z ∈ dom u m W → δ W f = fderiv ℂ (fn u m W f) z w := by
   intro P₀ u Hm χ hG R _ x₀ X p m _ hpb z δ hδ hc
   obtain ⟨hex, huniq⟩ := GlobalTheory.T.germDerivation_of_fibre_of_kills_base P₀.A R x₀ X p m hpb (u.ex z).left (ex_over u z)

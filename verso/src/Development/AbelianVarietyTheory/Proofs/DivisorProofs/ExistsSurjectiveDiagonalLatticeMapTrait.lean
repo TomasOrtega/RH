@@ -27,6 +27,11 @@ noncomputable section
 
 namespace GlobalTheory.Poinc.Eq8.TraitOne
 
+/- English proof (translation)
+Use `⟨(Scheme.stalkClosedPointTo ξ).hom.comp (X.presheaf.stalkSpecializes hx).hom, ?_⟩` and prove the remaining obligations. Establish `e1` using `Scheme.Spec_stalkClosedPointTo_fromSpecStalk ξ`. Establish `e2` using `Scheme.SpecMap_stalkSpecializes_fromSpecStalk hx`. Use `conv_rhs => rw [← e1, ← e2]`. Use `show Spec.map (CommRingCat.ofHom _) ≫ _ = _`.
+
+Rewrite using `[← Category.assoc, ← Spec.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem factor_stalk (X : Scheme.{0}) (x : X) (V : Type) [CommRing V] [IsLocalRing V] (ξ : Sp V ⟶ X)
     (hx : ξ (IsLocalRing.closedPoint V) ⤳ x) :
     ∃ f : X.presheaf.stalk x →+* V, spMap f ≫ X.fromSpecStalk x = ξ := by
@@ -38,11 +43,19 @@ theorem factor_stalk (X : Scheme.{0}) (x : X) (V : Type) [CommRing V] [IsLocalRi
   rw [← Category.assoc, ← Spec.map_comp]
   rfl
 
+/- English proof (translation)
+Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem spMap_comp' {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (a : A →+* B) (b : B →+* C) :
     spMap (b.comp a) = spMap b ≫ spMap a := by
   rw [← Spec.map_comp]
   rfl
 
+/- English proof (translation)
+Introduce `z hz`. Take `⟨z', rfl⟩ : z ∈ Set.range U₀.ι` from `by rw [Scheme.Opens.range_ι]; exact hz`. Rewrite using `[abLocus_pullback (G' := (Over.pullback FinalForm.u₀).obj ρ.P.A) abLocusOne FinalForm.semi FinalForm.cart.1]`. Introduce `K _ _ t _`. Use `haveI := ρ.P.isAb.proper`.
+
+Use `show IsProper (pullback.snd (pullback.snd ρ.P.A.hom FinalForm.u₀) t)`. Use `infer_instance`.
+-/
 theorem subset_abLocus {o' Ω : Type} [CommRing o'] [Field Ω] [Algebra o' Ω] {S : ThetaSys o' Ω} {ρ : S.Real}
     {M : RatModel o' Ω} {U₀ : M.Z.Opens} {EE : M.Lat S.J} (FinalForm : ZHOut ρ M U₀ EE) :
     (U₀ : Set M.Z) ⊆ abLocus FinalForm.G := by
@@ -54,6 +67,43 @@ theorem subset_abLocus {o' Ω : Type} [CommRing o'] [Field Ω] [Algebra o' Ω] {
   show IsProper (pullback.snd (pullback.snd ρ.P.A.hom FinalForm.u₀) t)
   infer_instance
 
+/- English proof (translation)
+Introduce `g n hg hn hodd F W hW o' Ω _ _ _ hA S ρ hBig M U₀ EE FinalForm hAdm hEE x hx u c pr hS R _ _ _ j hR hj G _ _ gm hgm D A U hLB hPsi m hm T ξ hξU hsp`. Use `set ξR : Sp R ⟶ M.Z := spMap j ≫ M.Z.fromSpecStalk x with hξR`. Take `⟨hft, hpj⟩` from `GlobalTheory.UPoinc.ClosedPt.closedPoint_cpl_residueChar o' Ω M x hx`. Take `⟨-, p, hp, hpm⟩` from `hpj R j hj`. Take `⟨f, hf⟩` from `factor_stalk M.Z x T.V ξ hsp`.
+
+Take `⟨V', _, _, _, h, g', hc, hinj, hloc, hcomp, hirr⟩` from `GlobalTheory.TraitLift.exists_lift_of_isCpl (M.Z.presheaf.stalk x) R T.V j hj f`. Establish `heq : spMap g' ≫ ξR = spMap h ≫ ξ`. Rewrite using `[hξR, ← hf, ← Category.assoc, ← Category.assoc, ← spMap_comp', ← spMap_comp', hcomp]`. Use `haveI : CharZero V' := (RingHom.charZero_iff hinj).1 inferInstance`. Establish `hBV : GlobalTheory.Mum.Base V'` using `⟨⟨inferInstance, inferInstance, inferInstance, hc⟩, inferInstance⟩`.
+
+Establish `hle : nonZeroDivisors T.V ≤ (nonZeroDivisors V').comap h` using `nonZeroDivisors_le_comap_nonZeroDivisors_of_injective h hinj`. Set `hK : FractionRing T.V →+* FractionRing V'` to `IsLocalization.map (FractionRing V') h hle`. Establish `hKc : ∀ a, hK (algebraMap T.V _ a) = algebraMap V' _ (h a)` using `IsLocalization.map_eq hle`. Establish `hjK : spMap hK ≫ jK T.V = jK V' ≫ spMap h` using `by show spMap hK ≫ spMap (algebraMap T.V (FractionRing T.V)) = spMap (algebraMap V' (FractionRing V')) ≫ spMap h`. Rewrite using `[← spMap_comp', ← spMap_comp']`.
+
+Use `congr 1`. Use extensionality with `a`. Conclude with `hKc a`. Take `⟨ξ₀, hξ₀, hξ₀y⟩` from `hξU`. Use `set ξ' : Sp V' ⟶ M.Z := spMap g' ≫ ξR with hξ'`.
+
+Establish `hξ₀' : (spMap hK ≫ ξ₀) ≫ U₀.ι = jK V' ≫ ξ'`. Rewrite using `[Category.assoc, hξ₀, ← Category.assoc, hjK, Category.assoc, heq]`. Establish `hsub` using `subset_abLocus FinalForm`. Set `w' : Sp V'` to `(⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum V')`. Establish `hw'U : ξ' w' ∈ (U₀ : Set M.Z)`.
+
+Establish `e1 : w' = jK V' (IsLocalRing.closedPoint (FractionRing V'))`. Apply `PrimeSpectrum.ext` to reduce the goal to its premises. Use `show (⊥ : Ideal V') = Ideal.comap (algebraMap V' (FractionRing V')) (IsLocalRing.closedPoint (FractionRing V')).asIdeal`. Rewrite using `[Ideal.eq_bot_of_prime (IsLocalRing.closedPoint (FractionRing V')).asIdeal, ← RingHom.ker_eq_comap_bot]`. Conclude with `((RingHom.injective_iff_ker_eq_bot _).1 (IsFractionRing.injective V' (FractionRing V'))).symm`.
+
+Rewrite using `[e1]`. Use `show (jK V' ≫ ξ') (IsLocalRing.closedPoint (FractionRing V')) ∈ (U₀ : Set M.Z)`. Rewrite using `[← hξ₀']`. Use `show U₀.ι ((spMap hK ≫ ξ₀) (IsLocalRing.closedPoint (FractionRing V'))) ∈ (U₀ : Set M.Z)`. Rewrite using `[← Scheme.Opens.range_ι]`.
+
+Conclude with `⟨_, rfl⟩`. Take `⟨D', A', U', hLB', hPsi'⟩` from `FinalForm.unif V' inferInstance inferInstance hc ξ' ⟨w', hsub hw'U⟩`. Establish `hG'semi : IsSemiAbelian ((Over.pullback ξ').obj FinalForm.G)` using `IsSemiAbelian.pullback ξ' FinalForm.G FinalForm.semi`. Establish `hpb'` using `isGrpPullback_pullback FinalForm.G ξ'`. Establish `h'' : IsGrpPullback ((Over.pullback (spMap g')).obj G) FinalForm.G ξ' (pullback.fst G.hom (spMap g') ≫ gm)` using `(isGrpPullback_pullback G (spMap g')).comp hgm`.
+
+Take `⟨e, he1, he2⟩` from `grpPullback_iso hpb' h''`. Use `haveI := he1`. Use `set β : ((Over.pullback ξ').obj FinalForm.G).left ⟶ G.left := e.hom.left ≫ pullback.fst G.hom (spMap g') with hβdef`. Establish `hβ : IsGrpPullback ((Over.pullback ξ').obj FinalForm.G) G (spMap g') β` using `((isGrpPullback_of_iso e).comp (isGrpPullback_pullback G (spMap g'))).congr (Category.id_comp _) rfl`. Establish `hβgm : β ≫ gm = pullback.fst FinalForm.G.hom ξ'`.
+
+Rewrite using `[hβdef, Category.assoc, he2]`. Use `clear_value β`. Establish `hGsemi : IsSemiAbelian G`. Take `⟨e2, he21, -⟩` from `grpPullback_iso hgm (isGrpPullback_pullback FinalForm.G ξR)`. Use `haveI := he21`.
+
+Conclude with `GlobalTheory.isSemiAbelian_of_grpIso e2 (IsSemiAbelian.pullback ξR FinalForm.G FinalForm.semi)`. Establish `hLBβ : LBIso U'.LG.L (U.LG.L.pull β)`. Establish `h1 : LBIso (U.LG.L.pull β) (FinalForm.L.L.pull (pullback.fst FinalForm.G.hom ξ'))` using `GlobalTheory.Ex.GenericFibre.lbIso_pull hLB β hβgm.symm`. Conclude with `LBIso.trans U'.LG.isLB (pull_isLB FinalForm.L.isLB _) (pull_isLB U.LG.isLB _) hLB' (LBIso.symm h1)`. Establish `hWo : IsOpen (ξR ⁻¹' (U₀ : Set M.Z))` using `U₀.isOpen.preimage ξR.continuous`.
+
+Establish `hPsiWo : ∀ y, PsiUnitOn D.toPre y (ξR ⁻¹' (U₀ : Set M.Z))` using `fun y j' V hV hVW => hPsi y j' V hV (hVW.trans (Set.preimage_mono hsub))`. Establish `hker : (⟨RingHom.ker g', RingHom.ker_isPrime g'⟩ : PrimeSpectrum R) ∈ ξR ⁻¹' (U₀ : Set M.Z)`. Establish `e3 : (⟨RingHom.ker g', RingHom.ker_isPrime g'⟩ : PrimeSpectrum R) = spMap g' w'` using `PrimeSpectrum.ext (RingHom.ker_eq_comap_bot g')`. Use `show ξR _ ∈ (U₀ : Set M.Z)`. Rewrite using `[e3]`.
+
+Conclude with `hw'U`. Take `⟨ρ0, hsurj, hcoord, hequiv⟩` from `GlobalTheory.T.exists_surjective_lattice_coordMap_equivariant_dvr R hR G hGsemi D A U V' hBV inferInstance ((Over.pullback ξ').obj FinalForm.G) hG'semi D' A' U' g' β p hp hpm _ hWo hPsiWo hker hβ hLBβ`. Take `⟨c', pr', hS', hmat⟩` from `GlobalTheory.Poinc.Eq8.PullAlong.main g n _ _ F W o' Ω S ρ u c pr hS M U₀ EE FinalForm V' hBV ((Over.pullback ξ').obj FinalForm.G) hG'semi D' A' U' ξ' (pullback.fst FinalForm.G.hom ξ') hpb' hLB' (spMap hK ≫ ξ₀) hξ₀'`. Establish `hpt : (spMap hK ≫ ξ₀) ≫ FinalForm.u₀ ≫ u = spMap hK ≫ T.y`. Rewrite using `[Category.assoc, hξ₀y]`.
+
+Establish `key : ∀ (v : Sp (FractionRing V') ⟶ F.X), v = spMap hK ≫ T.y → ∀ c₁ pr₁, SharpBy F W A' v c₁ pr₁ → ∃ e : D'.toPre.X ≃+ (Fin 8 → T.D.toPre.X), (∀ y r, PsiCoord D'.toPre y r → 0 ≤ qW W T.β (e y) ∧ Associated r (h T.ϖ ^ (qW W T.β (e y)).toNat)) ∧ ∀ (a b : Fin 8) (f : (Over.pullback …`. Introduce and unpack `v rfl c₁ pr₁ hS₁`. Conclude with `GlobalTheory.T.exists_eighthPowerTrait_lattice_equiv_localExt g n _ _ F W hW T V' hBV inferInstance _ hG'semi D' A' U' h hK hloc hKc c₁ pr₁ hS₁`. Take `⟨e8, hord, hrel⟩` from `key _ hpt c' pr' hS'`. Use `⟨V', inferInstance, inferInstance, inferInstance, h, g', e8.toAddMonoidHom.comp ρ0, hinj, hirr _ T.irr, heq, e8.surjective.comp hsurj, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `y r hr`. Take `⟨⟨r', hr', -⟩, -⟩` from `GlobalTheory.PsiCoordLocal.main V' D' inferInstance (ρ0 y)`. Take `⟨h0, has⟩` from `hord (ρ0 y) r' hr'`. Conclude with `⟨h0, (hcoord y r r' hr hr').trans has⟩`. Introduce `a b y`.
+
+Take `⟨f, fR, hMO, hfR, hcomm, hEC⟩` from `hm a b`. Use `haveI : IsMonHom f := hMO.1`. Set `f' : (Over.pullback ξ').obj FinalForm.G ⟶ (Over.pullback ξ').obj FinalForm.G` to `(Over.pullback ξ').map f`. Establish `hf'fst : f'.left ≫ pullback.fst FinalForm.G.hom ξ' = pullback.fst FinalForm.G.hom ξ' ≫ f.left` using `pullback.lift_fst _ _ _`. Establish `hf' : IsMonHom f'` using `PullGtPf.isMonHom_of_grpPullback hpb' hpb' f f' hf'fst`.
+
+Establish `hf'β : f'.left ≫ β = β ≫ fR.left`. Apply `hgm.1.hom_ext` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Take `⟨m', hm'⟩` from `endChar_exists_of_isMonHom V' hBV _ hG'semi D' A' U' f' hf'`.
+
+Establish `hq` using `hequiv fR f' hfR hf' hf'β (m a b) m' hEC hm' y`. Take `⟨f₁, hf₁, hf₁c⟩` from `hmat a b f f' hMO hf'fst`. Establish `hr` using `hrel a b f' f₁ m' hf' hf₁ hf₁c hm' (ρ0 y)`. Simplify `hr` using `[hq]`.
+-/
 theorem main : ∀ (g n : ℕ), 1 ≤ g → 3 ≤ n → Odd n → ∀ (F : SFam g n (zetaAway n)) (W : Matrix (Fin 8) (Fin 8) ℤ), IsE8 W → ∀ (o' Ω : Type) [CommRing o'] [Field Ω] [Algebra o' Ω] [ArithBase o' Ω] (S : ThetaSys o' Ω) (ρ : S.Real), S.Big → ∀ (M : RatModel o' Ω) (U₀ : M.Z.Opens) (EE : M.Lat S.J) (FinalForm : ZHOut ρ M U₀ EE), S.admitted M U₀ → S.IsEE M U₀ EE → ∀ x : M.Z, IsClosed ({x} : Set M.Z) → ∀ (u : Sp S.R ⟶ F.X) c pr, SharpBy F W ρ.P u c pr → ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (j : M.Z.presheaf.stalk x →+* R), GlobalTheory.Mum.Base R → IsCpl j → ∀ (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G] (gm : G.left ⟶ FinalForm.G.left), IsGrpPullback G FinalForm.G (spMap j ≫ M.Z.fromSpecStalk x) gm → ∀ (D : DegData R (maximalIdeal R)) (A : PolAV (Sp (FractionRing R))) (U : Unif (maximalIdeal R) D A G), LBIso U.LG.L (FinalForm.L.L.pull gm) → (∀ y, PsiUnitOn D.toPre y ((spMap j ≫ M.Z.fromSpecStalk x) ⁻¹' abLocus FinalForm.G)) → ∀ m : Fin 8 → Fin 8 → (D.toPre.X →+ D.toPre.X), (∀ a b, ∃ (f : FinalForm.G ⟶ FinalForm.G) (fR : G ⟶ G), MatOn FinalForm pr a b f ∧ IsMonHom fR ∧ fR.left ≫ gm = gm ≫ f.left ∧ EndChar U fR (m a b)) → ∀ (T : Trait F) (ξ : Sp T.V ⟶ M.Z), ThroughU M U₀ FinalForm.u₀ u T ξ → ξ (IsLocalRing.closedPoint T.V) ⤳ x → ∃ (V' : Type) (_ : CommRing V') (_ : IsDomain V') (_ : IsDiscreteValuationRing V') (h : T.V →+* V') (g' : R →+* V') (ρT : D.toPre.X →+ (Fin 8 → T.D.toPre.X)), Function.Injective h ∧ Irreducible (h T.ϖ) ∧ spMap g' ≫ (spMap j ≫ M.Z.fromSpecStalk x) = spMap h ≫ ξ ∧ Function.Surjective ρT ∧ (∀ y r, PsiCoord D.toPre y r → 0 ≤ qW W T.β (ρT y) ∧ Associated (g' r) (h T.ϖ ^ (qW W T.β (ρT y)).toNat)) ∧ ∀ a b y, MatRel W a b (ρT y) (ρT (m a b y)) := by
   intro g n hg hn hodd F W hW o' Ω _ _ _ hA S ρ hBig M U₀ EE FinalForm hAdm hEE x hx u c pr hS R _ _ _ j hR hj G _ _ gm hgm
     D A U hLB hPsi m hm T ξ hξU hsp

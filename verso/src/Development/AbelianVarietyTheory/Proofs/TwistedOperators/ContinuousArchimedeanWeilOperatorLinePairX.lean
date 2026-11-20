@@ -15,6 +15,27 @@ open GlobalTheory.WeilM
 
 namespace GlobalTheory.ArchLineContPairLeft
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ _ n d X W M ψ χX χW om _ _ _ _ _ _ _ _ _ hW γ hγ T hAct f x`. Set `κ` to `Fin n × Fin d`. Set `g₀ : (κ → FiniteAdeleRing (𝓞 F) F) → ℂ` to `(GlobalTheory.SchANonzero.intPts F κ).indicator 1`. Establish `hg₀ : g₀ ∈ GlobalTheory.WeilM.SB (κ → FiniteAdeleRing (𝓞 F) F)` using `GlobalTheory.SchANonzero.indicator_intPts_mem_SB F κ`. Set `r₀ : (κ → AF F) → ℂ` to `fun y => g₀ (fun i => (y i).2)`.
+
+Establish `htens : ∀ h : SInf F κ, tens (evI F) (⇑h) r₀ = pureA F (⇑h) g₀` using `fun h => rfl`. Establish `hRest : ∀ h : SInf F κ, Rest (evI F) (⇑h) r₀`. Introduce `h`. Use `⟨fun y z hz => ?_, ?_⟩` and prove the remaining obligations. Establish `h2 : ∀ i, (z i).2 = 0`.
+
+Introduce `i`. Establish `hu` using `hz ((0 : InfiniteAdeleRing F), (1 : FiniteAdeleRing (𝓞 F) F)) (by show InfiniteAdeleRing.ringEquiv_mixedSpace F (0 : InfiniteAdeleRing F) = 0`. Conclude with `map_zero _)`. Establish `h1 : (1 : FiniteAdeleRing (𝓞 F) F) * (z i).2 = 0` using `congrArg Prod.snd (congrFun hu i)`. Rewrite `h1` using `[one_mul]`. Then use the resulting hypothesis.
+
+Use `show g₀ (fun i => (y i + z i).2) = g₀ (fun i => (y i).2)`. Use `congr 1`. Use function extensionality and compare the values at `i`. Use `show (y i).2 + (z i).2 = (y i).2`. Rewrite using `[h2 i, add_zero]`.
+
+Rewrite using `[htens]`. Conclude with `Submodule.subset_span ⟨h, g₀, hg₀, rfl⟩`. Set `xh : κ → AF F` to `fun i => ((InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (x i), (0 : FiniteAdeleRing (𝓞 F) F))`. Set `l : ((κ → AF F) → ℂ) →ₗ[ℂ] ℂ` to `LinearMap.proj xh`. Establish `hxh : (fun i => InfiniteAdeleRing.ringEquiv_mixedSpace F (xh i).1) = x`.
+
+Use function extensionality and compare the values at `i`. Conclude with `(InfiniteAdeleRing.ringEquiv_mixedSpace F).apply_symm_apply (x i)`. Establish `hg0 : g₀ (fun i => (xh i).2) = 1`. Establish `hm : (fun i => (xh i).2) ∈ GlobalTheory.SchANonzero.intPts F κ` using `fun i _ v => by show (0 : FiniteAdeleRing (𝓞 F) F) v ∈ v.adicCompletionIntegers F`. Conclude with `zero_mem (v.adicCompletionIntegers F)`.
+
+Simplify using `only [g₀, Set.indicator_of_mem hm, Pi.one_apply]`. Establish `hl : l ∈ (adeleClass F).adm κ`. Introduce `g _`. Use `⟨g (fun i => (xh i).2) • ((BoundedContinuousFunction.evalCLM ℂ x).comp (SchwartzMap.toBoundedContinuousFunctionCLM ℂ _ ℂ)), fun h => ?_⟩` and prove the remaining obligations. Use `show pureA F (⇑h) g xh = _`.
+
+Simplify using `only [pureA, hxh, ContinuousLinearMap.smul_apply, ContinuousLinearMap.comp_apply, BoundedContinuousFunction.evalCLM_apply, SchwartzMap.toBoundedContinuousFunctionCLM_apply, smul_eq_mul]`. Conclude with `mul_comm _ _`. Establish `hφ : pureA F (⇑f) g₀ ∈ (adeleClass F).sp κ` using `Submodule.subset_span ⟨f, g₀, hg₀, rfl⟩`. Establish `hc` using `hW.2.2 l hl _ hφ`. Establish `key : (fun t : ℝ => T t f x) = (fun p => l (om p (pureA F (⇑f) g₀))) ∘ (fun t : ℝ => (γ (Multiplicative.ofAdd t), (1 : UA σ W.J)))`.
+
+Use function extensionality and compare the values at `t`. Establish `e` using `hAct t f r₀ (hRest f)`. Rewrite `e` using `[htens, htens]`. Simplify using `only [Function.comp_apply]`. Rewrite using `[e]`.
+
+Use `show _ = pureA F _ g₀ xh`. Simplify using `only [pureA, hxh, hg0, mul_one]`. Rewrite using `[key]`. Conclude with `hc.comp ((hγ.1.comp continuous_ofAdd).prodMk continuous_const)`.
+-/
 theorem continuous_apply : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ →
     ∀ (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (ψ : AddChar (AF F) ℂ) (χX χW : Chr F E) (om : Rep σ X W),
       IsStd ψ → (∀ i j, σ (X.J j i) = X.J i j) → X.J.det ≠ 0 → (∀ i j, σ (W.J j i) = -W.J i j) → W.J.det ≠ 0 →

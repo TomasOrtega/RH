@@ -17,6 +17,35 @@ noncomputable section
 
 namespace GlobalTheory.ThLoc
 
+/- English proof (translation)
+Introduce `hIn D cc δ hcc hδ a₀ b₀ c₀ ha hd lam hlam hok hlat ι`. Use `set L := cmL a₀ b₀ D.host.d ha hd lam hlam with hLdef`. Take `⟨hsq, -, hcm⟩` from `LocJets.data ha hd lam hlam hok`. Establish `h8 : D.host.d % 8 = 7` using `by have := D.host.hyp.2.2.2.1; omega`. Take `⟨c, hc, W', ⟨e2, e3⟩, ⟨h1, h2, h3, h4, h6, hΔ⟩, ha1⟩` from `hIn.modelTwo D.host.d L hsq h8 hcm ι`.
+
+Establish `hL1 : L.g₂ ^ 3 - 27 * L.g₃ ^ 2 = 1`. Establish `hL' : (L.lattice : Set ℂ) = TaylorLogMetric.lamOf D cc δ` using `by rw [← hlat]; rfl`. Take `⟨f2, f3⟩` from `Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.B5.g2_g3_eq_periodPair _ L hL'`. Rewrite using `[← f2, ← f3]`. Conclude with `Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.B5.br_discr_lamOf D cc hcc δ hδ`.
+
+Establish `hh` using `Formalism.L2.Th1.F.homogeneity L c hc`. Establish `s2 : (Formalism.L2.Th1.F.scalePair L c hc).g₂ = (c ^ 4)⁻¹ * L.g₂` using `hh.2.2.2.2.2.2.2.2.2.1`. Establish `s3 : (Formalism.L2.Th1.F.scalePair L c hc).g₃ = (c ^ 6)⁻¹ * L.g₃` using `hh.2.2.2.2.2.2.2.2.2.2`. Establish `g2W : W'.c₄ / 12 = ι (Formalism.L2.Th1.F.scalePair L c hc).g₂` using `e2`. Establish `g3W : W'.c₆ / 216 = ι (Formalism.L2.Th1.F.scalePair L c hc).g₃` using `e3`.
+
+Use `set u : ℂ_[2] := ι c with hu`. Establish `hu0 : u ≠ 0` using `by simpa [hu] using hc`. Establish `hW'Δ : W'.Δ = (u ^ 12)⁻¹`. Establish `hrel` using `W'.c_relation`. Establish `hc4 : W'.c₄ = 12 * ((u ^ 4)⁻¹ * ι L.g₂)`.
+
+Rewrite using `[← map_pow, ← map_inv₀, ← map_mul, ← s2, ← g2W]`. Expand and normalize the polynomial expressions, which then agree. Establish `hc6 : W'.c₆ = 216 * ((u ^ 6)⁻¹ * ι L.g₃)`. Rewrite using `[← map_pow, ← map_inv₀, ← map_mul, ← s3, ← g3W]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hι1 : ι L.g₂ ^ 3 - 27 * ι L.g₃ ^ 2 = 1`. Rewrite using `[← map_pow, ← map_pow, ← map_ofNat ι 27, ← map_mul, ← map_sub, hL1, map_one]`. Rewrite `hrel` using `[hc4, hc6]`. Establish `h1728 : (1728 : ℂ_[2]) ≠ 0` using `by norm_num`. Apply `mul_left_cancel₀ h1728` to reduce the goal to its premises.
+
+Rewrite using `[hrel]`. Clear the denominators using the available nonvanishing facts. Take the linear combination `(1728 : ℂ_[2]) * hι1`. Establish `hun : ‖u‖ = 1`. Rewrite `hΔ` using `[hW'Δ, norm_inv, norm_pow]`.
+
+Establish `h12 : ‖u‖ ^ 12 = 1`. Establish `hpos : 0 < ‖u‖ ^ 12` using `pow_pos (norm_pos_iff.2 hu0) _`. Clear denominators, using `at hΔ` for the nonvanishing conditions. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) (by norm_num)).1 h12`.
+
+Set `C : WeierstrassCurve.VariableChange ℂ_[2]` to `⟨(Units.mk0 u hu0)⁻¹, 0, 0, 0⟩`. Establish `hCu : ((C.u⁻¹ : ℂ_[2]ˣ) : ℂ_[2]) = u` using `by simp [C]`. Use `⟨C • W', ⟨?_, ?_⟩, ⟨?_, ?_, ?_, ?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Use `show (C • W').c₄ / 12 = ι L.g₂`. Rewrite using `[WeierstrassCurve.variableChange_c₄, hCu, mul_div_assoc, g2W, s2, map_mul, map_inv₀, map_pow, ← hu]`.
+
+Clear the denominators using the available nonvanishing facts. Use `show (C • W').c₆ / 216 = ι L.g₃`. Rewrite using `[WeierstrassCurve.variableChange_c₆, hCu, mul_div_assoc, g3W, s3, map_mul, map_inv₀, map_pow, ← hu]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[WeierstrassCurve.variableChange_a₁, hCu]`.
+
+Simplify using `only [C, mul_zero, add_zero, norm_mul, hun, one_mul]`. Conclude with `h1`. Rewrite using `[WeierstrassCurve.variableChange_a₂, hCu]`. Simplify using `only [C, zero_mul, mul_zero, sub_zero, add_zero, zero_pow two_ne_zero, norm_mul, norm_pow, hun, one_pow, one_mul]`. Conclude with `h2`.
+
+Rewrite using `[WeierstrassCurve.variableChange_a₃, hCu]`. Simplify using `only [C, zero_mul, mul_zero, add_zero, norm_mul, norm_pow, hun, one_pow, one_mul]`. Conclude with `h3`. Rewrite using `[WeierstrassCurve.variableChange_a₄, hCu]`. Simplify using `only [C, zero_mul, mul_zero, sub_zero, add_zero, zero_add, zero_pow two_ne_zero, norm_mul, norm_pow, hun, one_pow, one_mul]`.
+
+Conclude with `h4`. Rewrite using `[WeierstrassCurve.variableChange_a₆, hCu]`. Simplify using `only [C, zero_mul, mul_zero, sub_zero, add_zero, zero_add, zero_pow two_ne_zero, zero_pow three_ne_zero, norm_mul, norm_pow, hun, one_pow, one_mul]`. Conclude with `h6`. Rewrite using `[WeierstrassCurve.variableChange_Δ, hCu, norm_mul, norm_pow, hun, one_pow, one_mul]`.
+
+Conclude with `hΔ`. Rewrite using `[WeierstrassCurve.variableChange_a₁, hCu]`. Simplify using `only [C, mul_zero, add_zero, norm_mul, hun, one_mul]`. Conclude with `ha1`.
+-/
 theorem goodModelTwo_scaleOne : GlobalTheory.ThLoc.Inputs → ∀ (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ), TaylorLogMetric.IsCurveIdeal D cc →
     TaylorLogMetric.IsDiscriminantTwelfthRootOfIdealLattice D cc δ → ∀ (a₀ : ℕ) (b₀ c₀ : ℤ) (ha : 0 < a₀) (hd : 0 < D.host.d) (lam : ℂ) (hlam : lam ≠ 0),
     CmOK a₀ b₀ c₀ D.host.d → (cmL a₀ b₀ D.host.d ha hd lam hlam).lattice.toAddSubgroup = TaylorLogMetric.lamOf D cc δ →

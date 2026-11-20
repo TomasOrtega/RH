@@ -10,16 +10,29 @@ open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC
 
 namespace GlobalTheory.EtC.HtpyLine
 
+/- English proof (translation)
+Simplify using `only [spMap]`. Rewrite using `[← Functor.map_comp, ← Spec.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem spMap_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap (g.comp f) = spMap g ≫ spMap f := by
   simp only [spMap]
   rw [← Functor.map_comp, ← Spec.map_comp]
   rfl
 
+/- English proof (translation)
+Simplify using `only [spMap]`. Rewrite using `[show CommRingCat.ofHom (RingHom.id A) = 𝟙 (CommRingCat.of A) from rfl, Spec.map_id, CategoryTheory.Functor.map_id]`.
+-/
 theorem spMap_id (A : Type) [CommRing A] : spMap (RingHom.id A) = 𝟙 _ := by
   simp only [spMap]
   rw [show CommRingCat.ofHom (RingHom.id A) = 𝟙 (CommRingCat.of A) from rfl, Spec.map_id, CategoryTheory.Functor.map_id]
 
+/- English proof (translation)
+Establish `h1 : spMap (e.symm : B →+* A) ≫ spMap (e : A →+* B) = 𝟙 _`. Rewrite using `[← spMap_comp, ← spMap_id]`. Use `congr 1`. Use extensionality with `x`. Simplify using the standard rewrite rules.
+
+Establish `h2 : spMap (e : A →+* B) ≫ spMap (e.symm : B →+* A) = 𝟙 _`. Rewrite using `[← spMap_comp, ← spMap_id]`. Use `congr 1`. Use extensionality with `x`. Simplify using the standard rewrite rules.
+
+Use `Function.bijective_iff_has_inverse.2 ⟨pull R (spMap (e.symm : B →+* A)) F n, fun x => ?_, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[← pull_comp, h1, pull_id]`. Rewrite using `[← pull_comp, h2, pull_id]`.
+-/
 theorem pull_bijective_of_ringEquiv {R : Type} [CommRing R] {A B : Type} [CommRing A] [CommRing B] (e : A ≃+* B)
     (F : Shv R) (n : ℤ) : Function.Bijective (pull R (spMap (e : A →+* B)) F n) := by
   have h1 : spMap (e.symm : B →+* A) ≫ spMap (e : A →+* B) = 𝟙 _ := by
@@ -36,6 +49,9 @@ theorem pull_bijective_of_ringEquiv {R : Type} [CommRing R] {A B : Type} [CommRi
   · rw [← pull_comp, h1, pull_id]
   · rw [← pull_comp, h2, pull_id]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun a b _ => Subsingleton.elim a b, fun y => ⟨0, Subsingleton.elim _ _⟩⟩`.
+-/
 theorem bijective_of_subsingleton {M N : Type*} [AddCommGroup M] [AddCommGroup N] [Subsingleton M] [Subsingleton N]
     (f : M →+ N) : Function.Bijective f :=
   ⟨fun a b _ => Subsingleton.elim a b, fun y => ⟨0, Subsingleton.elim _ _⟩⟩
@@ -46,6 +62,9 @@ namespace GlobalTheory.EtC.HtpyLine
 
 open Polynomial
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `hA (cyclotomic q T) (cyclotomic.monic q T) (by rw [natDegree_cyclotomic]; exact Nat.totient_pos.2 (NeZero.pos q))`. Use `⟨a, ?_⟩` and prove the remaining obligations. Rewrite using `[aeval_def, eval₂_eq_eval_map, map_cyclotomic]`. Conclude with `ha`.
+-/
 theorem exists_cyclotomic_root_of_AIC (q : ℕ) [NeZero q] (T : Type) [CommRing T] [Nontrivial T] (hA : AIC T) :
     ∃ ζ : T, Polynomial.aeval ζ (Polynomial.cyclotomic q ℤ) = 0 := by
   obtain ⟨a, ha⟩ := hA (cyclotomic q T) (cyclotomic.monic q T)
@@ -54,6 +73,13 @@ theorem exists_cyclotomic_root_of_AIC (q : ℕ) [NeZero q] (T : Type) [CommRing 
   rw [aeval_def, eval₂_eq_eval_map, map_cyclotomic]
   exact ha
 
+/- English proof (translation)
+Introduce `q _ T _ _ _ hA hq i n`. Break down `lt_trichotomy n 0 with hn | rfl | hn` into its components or cases. Use `haveI := (GlobalTheory.T.etaleCohomology_negative_vanishing_degree_zero (ZMod q) (tw q i)).1 (sp T) n hn haveI := (GlobalTheory.T.etaleCohomology_negative_vanishing_degree_zero (ZMod q) (tw q i)).1 (sp (Polynomial T)) n hn`. Conclude with `bijective_of_subsingleton _`. Conclude with `GlobalTheory.T.h_zero_pullback_twist_bijective q T (Polynomial T) Polynomial.C hq (exists_cyclotomic_root_of_AIC q T hA) inferInstance (fun e he => IsIdempotentElem.iff_eq_zero_or_one.mp he) (fun e he => IsIdempotentElem.iff_eq_zero_or_one.mp he) i`.
+
+Use `haveI hT : Subsingleton (Ht q (sp T) n i) := GlobalTheory.T.absolutelyIntegrallyClosed_domain_tateTwistAcyclic q T hA hq n i hn haveI : IsAlgClosed (FractionRing T) := GlobalTheory.isAlgClosed_fractionRing_of_AIC T hA`. Establish `hqK : IsUnit (q : FractionRing T)` using `by simpa using hq.map (algebraMap T (FractionRing T))`. Use `haveI hKt : Subsingleton (Ht q (sp (Polynomial (FractionRing T))) n i) := GlobalTheory.T.tateTwistAcyclic_spectrum_polynomial_of_isAlgClosed q (FractionRing T) hqK n i hn`. Set `e : TensorProduct T (FractionRing T) (Polynomial T) ≃+* Polynomial (FractionRing T)` to `(polyEquivTensor T (FractionRing T)).symm.toRingEquiv`. Use `haveI hTens : Subsingleton (Ht q (sp (TensorProduct T (FractionRing T) (Polynomial T))) n i) := (pull_bijective_of_ringEquiv e (tw q i) n).1.subsingleton`.
+
+Establish `hC3` using `GlobalTheory.T.etale_cohomology_ind_etale_base_change q T hA hq (Polynomial T) i n`. Use `haveI : Subsingleton (Ht q (sp (Polynomial T)) n i) := hC3.1.subsingleton`. Conclude with `bijective_of_subsingleton _`.
+-/
 theorem htpy_AIC : ∀ (q : ℕ) [NeZero q] (T : Type) [CommRing T] [IsDomain T] [IsLocalRing T], AIC T → IsUnit (q : T) →
     ∀ i : ℤ, Eqv _ (spMap (Polynomial.C : T →+* Polynomial T)) (tw q i) := by
   intro q _ T _ _ _ hA hq i n

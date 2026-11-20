@@ -11,6 +11,9 @@ section Counts
 
 variable {K : Type} [Field K] [NumberField K]
 
+/- English proof (translation)
+Establish `hy' : FractionalIdeal.spanSingleton (nonZeroDivisors (𝓞 K)) y ≠ 0`. Simplify `hy` using `[FractionalIdeal.spanSingleton_eq_zero_iff]`. Establish `hz' : FractionalIdeal.spanSingleton (nonZeroDivisors (𝓞 K)) z ≠ 0`. Simplify `hz` using `[FractionalIdeal.spanSingleton_eq_zero_iff]`. Rewrite using `[← FractionalIdeal.spanSingleton_mul_spanSingleton, FractionalIdeal.count_mul K P hy' hz']`.
+-/
 theorem count_span_mul (P : HeightOneSpectrum (𝓞 K)) {y z : K} (hy : y ≠ 0) (hz : z ≠ 0) :
     FractionalIdeal.count K P (FractionalIdeal.spanSingleton (nonZeroDivisors (𝓞 K)) (y * z)) =
       FractionalIdeal.count K P (FractionalIdeal.spanSingleton (nonZeroDivisors (𝓞 K)) y) +
@@ -21,6 +24,11 @@ theorem count_span_mul (P : HeightOneSpectrum (𝓞 K)) {y z : K} (hy : y ≠ 0)
     simpa [FractionalIdeal.spanSingleton_eq_zero_iff] using hz
   rw [← FractionalIdeal.spanSingleton_mul_spanSingleton, FractionalIdeal.count_mul K P hy' hz']
 
+/- English proof (translation)
+Distinguish the cases in `hy : y = 0`. Simplify using `[hy, FractionalIdeal.count_zero]`. Establish `hy' : FractionalIdeal.spanSingleton (nonZeroDivisors (𝓞 K)) y ≠ 0`. Simplify `hy` using `[FractionalIdeal.spanSingleton_eq_zero_iff]`. Establish `hyi : FractionalIdeal.spanSingleton (nonZeroDivisors (𝓞 K)) y⁻¹ ≠ 0`.
+
+Simplify `hy` using `[FractionalIdeal.spanSingleton_eq_zero_iff]`. Establish `h` using `FractionalIdeal.count_mul K P hyi hy'`. Rewrite `h` using `[FractionalIdeal.spanSingleton_mul_spanSingleton, inv_mul_cancel₀ hy, FractionalIdeal.spanSingleton_one, FractionalIdeal.count_one]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem count_span_inv (P : HeightOneSpectrum (𝓞 K)) (y : K) :
     FractionalIdeal.count K P (FractionalIdeal.spanSingleton (nonZeroDivisors (𝓞 K)) y⁻¹) =
       - FractionalIdeal.count K P (FractionalIdeal.spanSingleton (nonZeroDivisors (𝓞 K)) y) := by
@@ -35,6 +43,9 @@ theorem count_span_inv (P : HeightOneSpectrum (𝓞 K)) (y : K) :
     FractionalIdeal.spanSingleton_one, FractionalIdeal.count_one] at h
   omega
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [FractionalIdeal.count_one]`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.prod_insert ha, Finset.sum_insert ha, count_span_mul P (hz a) (Finset.prod_ne_zero_iff.mpr fun i _ => hz i), ih]`.
+-/
 theorem count_span_prod {ι : Type} (P : HeightOneSpectrum (𝓞 K)) (s : Finset ι) (z : ι → K)
     (hz : ∀ i, z i ≠ 0) :
     FractionalIdeal.count K P (FractionalIdeal.spanSingleton (nonZeroDivisors (𝓞 K)) (∏ i ∈ s, z i)) =
@@ -46,6 +57,13 @@ theorem count_span_prod {ι : Type} (P : HeightOneSpectrum (𝓞 K)) (s : Finset
     rw [Finset.prod_insert ha, Finset.sum_insert ha, count_span_mul P (hz a)
       (Finset.prod_ne_zero_iff.mpr fun i _ => hz i), ih]
 
+/- English proof (translation)
+Establish `hs0 : (s : K) ≠ 0`. Introduce `h`. Apply `hs` to reduce the goal to its premises. Establish `: s = 0` using `by exact_mod_cast h`. Rewrite using `[this]`.
+
+Conclude with `P.asIdeal.zero_mem`. Establish `hprod : ∏ i, z i ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun i _ => hz i`. Establish `hw0 : c⁻¹ * (s : K) * ∏ i, z i ≠ 0` using `mul_ne_zero (mul_ne_zero (inv_ne_zero hc) hs0) hprod`. Establish `h1` using `count_le_of_mem (K := K) P hw hw0`. Rewrite `h1` using `[FractionalIdeal.count_one, count_span_mul P (mul_ne_zero (inv_ne_zero hc) hs0) hprod, count_span_mul P (inv_ne_zero hc) hs0, count_span_inv, count_span_prod P _ _ hz]`.
+
+Establish `h2 : FractionalIdeal.count K P (FractionalIdeal.spanSingleton (nonZeroDivisors (𝓞 K)) (s : K)) = 0` using `count_span_unit (K := K) P s hs`. Rewrite `h1` using `[h2]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem count_le_of_integral {ι : Type} [Fintype ι] (P : HeightOneSpectrum (𝓞 K)) (c : K) (s : 𝓞 K)
     (z : ι → K) (hc : c ≠ 0) (hs : s ∉ P.asIdeal) (hz : ∀ i, z i ≠ 0)
     (hw : c⁻¹ * (s : K) * ∏ i, z i ∈ (1 : FractionalIdeal (nonZeroDivisors (𝓞 K)) K)) :

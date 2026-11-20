@@ -9,6 +9,11 @@ namespace GlobalTheory.JHypEquiv
 
 variable {F E : Type} [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E] [StarRing E]
 
+/- English proof (translation)
+Use `haveI : LocallyCompactSpace F := Unram.lcF E`. Use `haveI : ProperSpace F := ProperSpace.of_locallyCompactSpace F`. Set `e : A.K ≃ₗ[F] (Fin (Module.finrank F A.K) → F)` to `(Module.finBasis F A.K).equivFun`. Establish `h1 : Continuous e` using `IsModuleTopology.continuous_of_linearMap e.toLinearMap`. Establish `h2 : Continuous e.symm` using `IsModuleTopology.continuous_of_linearMap e.symm.toLinearMap`.
+
+Conclude with `(Homeomorph.mk e.toEquiv h1 h2).secondCountableTopology`.
+-/
 theorem secondCountable_K [Unram F E] (A : Et F E) : SecondCountableTopology A.K := by
   haveI : LocallyCompactSpace F := Unram.lcF E
   haveI : ProperSpace F := ProperSpace.of_locallyCompactSpace F
@@ -17,23 +22,37 @@ theorem secondCountable_K [Unram F E] (A : Et F E) : SecondCountableTopology A.K
   have h2 : Continuous e.symm := IsModuleTopology.continuous_of_linearMap e.symm.toLinearMap
   exact (Homeomorph.mk e.toEquiv h1 h2).secondCountableTopology
 
+/- English proof (translation)
+Set `e : A.K ≃ₗ[F] (Fin (Module.finrank F A.K) → F)` to `(Module.finBasis F A.K).equivFun`. Establish `h1 : Continuous e` using `IsModuleTopology.continuous_of_linearMap e.toLinearMap`. Establish `h2 : Continuous e.symm` using `IsModuleTopology.continuous_of_linearMap e.symm.toLinearMap`. Conclude with `(Homeomorph.mk e.toEquiv h1 h2).symm.t2Space`.
+-/
 theorem t2Space_K (A : Et F E) : T2Space A.K := by
   let e : A.K ≃ₗ[F] (Fin (Module.finrank F A.K) → F) := (Module.finBasis F A.K).equivFun
   have h1 : Continuous e := IsModuleTopology.continuous_of_linearMap e.toLinearMap
   have h2 : Continuous e.symm := IsModuleTopology.continuous_of_linearMap e.symm.toLinearMap
   exact (Homeomorph.mk e.toEquiv h1 h2).symm.t2Space
 
+/- English proof (translation)
+Use `show ((nS z).1 * (mS s).1 * g.1) 1 j = ((s⁻¹ : A.Kˣ) : A.K) * g.1 1 j`. Simplify using `[nS, mS, Matrix.mul_apply, Fin.sum_univ_two]`.
+-/
 theorem row_one (A : Et F E) (z : A.K) (s : A.Kˣ) (g : SpecialLinearGroup (Fin 2) A.K) (j : Fin 2) :
     (nS z * mS s * g) 1 j = ((s⁻¹ : A.Kˣ) : A.K) * g 1 j := by
   show ((nS z).1 * (mS s).1 * g.1) 1 j = ((s⁻¹ : A.Kˣ) : A.K) * g.1 1 j
   simp [nS, mS, Matrix.mul_apply, Fin.sum_univ_two]
 
+/- English proof (translation)
+Unfold `Et.absK`. Rewrite using `[dif_pos s.isUnit]`. Use `congr 2`. Conclude with `Units.ext (IsUnit.unit_spec _)`.
+-/
 theorem absK_unit (A : Et F E) (s : A.Kˣ) : A.absK (s : A.K) = (distribHaarChar A.K s : ℝ) := by
   unfold Et.absK
   rw [dif_pos s.isUnit]
   congr 2
   exact Units.ext (IsUnit.unit_spec _)
 
+/- English proof (translation)
+Use `haveI := secondCountable_K A`. Use `haveI := t2Space_K A`. Establish `hmap : μK.map (fun x => (s⁻¹ : A.Kˣ) • x) = (distribHaarChar A.K s : ENNReal) • μK`. Use extensionality with `S hS`. Rewrite using `[Measure.map_apply (measurable_const_smul _) hS, Set.preimage_smul, Measure.smul_apply, smul_eq_mul, distribHaarChar_mul, inv_inv]`.
+
+Establish `e` using `integral_map_equiv (MeasurableEquiv.smul (s⁻¹ : A.Kˣ) : A.K ≃ᵐ A.K) (μ := μK) H`. Rewrite `e` using `[show (⇑(MeasurableEquiv.smul (s⁻¹ : A.Kˣ) : A.K ≃ᵐ A.K)) = fun x => (s⁻¹ : A.Kˣ) • x from rfl, hmap, integral_smul_measure]`. Rewrite using `[show (fun t => H (((s⁻¹ : A.Kˣ) : A.K) * t)) = fun t => H ((s⁻¹ : A.Kˣ) • t) from rfl, ← e]`. Simplify using `[Complex.real_smul]`.
+-/
 theorem integral_inv_mul [Unram F E] (A : Et F E) (μK : Measure A.K) [μK.IsAddHaarMeasure] (s : A.Kˣ)
     (H : A.K → ℂ) :
     ∫ t, H (((s⁻¹ : A.Kˣ) : A.K) * t) ∂μK = (distribHaarChar A.K s : ℝ) * ∫ u, H u ∂μK := by
@@ -49,12 +68,26 @@ theorem integral_inv_mul [Unram F E] (A : Et F E) (μK : Measure A.K) [μK.IsAdd
   rw [show (fun t => H (((s⁻¹ : A.Kˣ) : A.K) * t)) = fun t => H ((s⁻¹ : A.Kˣ) • t) from rfl, ← e]
   simp [Complex.real_smul]
 
+/- English proof (translation)
+Unfold `Et.etaK`. Rewrite using `[map_mul]`. Conclude with `(GlobalTheory.T.unramifiedValuationParitySign_character_kernel_norms F E).1 _ _ (s.isUnit.map (Algebra.norm F)).ne_zero (hu.map (Algebra.norm F)).ne_zero`.
+-/
 theorem etaK_mul [Unram F E] (A : Et F E) (s : A.Kˣ) (u : A.K) (hu : IsUnit u) :
     A.etaK ((s : A.K) * u) = A.etaK s * A.etaK u := by
   unfold Et.etaK
   rw [map_mul]
   exact (GlobalTheory.T.unramifiedValuationParitySign_character_kernel_norms F E).1 _ _ (s.isUnit.map (Algebra.norm F)).ne_zero (hu.map (Algebra.norm F)).ne_zero
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ A μK hμ ψ φ' z s g`. Use `haveI := hμ`. Unfold `Et.jHyp`. Simplify using `only [row_one]`. Use `set H : A.K → ℂ := fun u => A.tilde μK ψ φ' (u * g 1 0) (u * g 1 1) * A.etaK ((s : A.K) * u) with hH`.
+
+Establish `h1 : (fun t => A.tilde μK ψ φ' (t * (((s⁻¹ : A.Kˣ) : A.K) * g 1 0)) (t * (((s⁻¹ : A.Kˣ) : A.K) * g 1 1)) * A.etaK t) = fun t => H (((s⁻¹ : A.Kˣ) : A.K) * t)`. Use function extensionality and compare the values at `t`. Simplify using `only [hH]`. Rewrite using `[Units.mul_inv_cancel_left]`. Apply the tactic sequence `congr 2 <;> ring`.
+
+Rewrite using `[h1, integral_inv_mul A μK s H]`. Establish `hnull : μK {t | ¬ IsUnit t} = 0` using `(GlobalTheory.T.etaleHermitianPair_structure_facts F E A).2.2.2.2.2.2.2.2.1 μK hμ`. Establish `hae : ∀ᵐ u ∂μK, IsUnit u` using `ae_iff.mpr hnull`. Establish `h2 : ∫ u, H u ∂μK = ∫ u, A.tilde μK ψ φ' (u * g 1 0) (u * g 1 1) * A.etaK u * A.etaK s ∂μK`. Use `integral_congr_ae ?_` and prove the remaining obligations.
+
+Use `filter_upwards [hae] with u hu`. Simplify using `only [hH]`. Rewrite using `[etaK_mul A s u hu]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h2, integral_mul_const, absK_unit]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem jHyp_nm : ∀ (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E]
     [StarRing E] [Unram F E] (A : Et F E) (μK : Measure A.K), μK.IsAddHaarMeasure → ∀ (ψ : AddChar F ℂ)
     (φ' : A.K × A.K → ℂ) (z : A.K) (s : A.Kˣ) (g : SpecialLinearGroup (Fin 2) A.K),

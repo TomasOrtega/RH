@@ -5,6 +5,17 @@ open scoped ComplexOrder
 
 namespace GlobalTheory.CompanionTheory.CommAlg
 
+/- English proof (translation)
+Introduce `V _ L _ _ n b u f N hN hf`. Set `U : Matrix (Fin n) (Fin n) V` to `Matrix.of fun i k => b.repr (u i) k`. Set `F : Matrix (Fin n) (Fin n) V` to `Matrix.of fun k j => f j (b k)`. Establish `hUF : U * F = N • (1 : Matrix (Fin n) (Fin n) V)`. Use extensionality with `i j`.
+
+Establish `h1 : f j (u i) = ∑ k, b.repr (u i) k * f j (b k)`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [map_sum, map_smul, smul_eq_mul]`. Simplify using `only [Matrix.mul_apply, U, F, Matrix.of_apply, Matrix.smul_apply, Matrix.one_apply, smul_eq_mul]`. Rewrite using `[← h1, hf]`.
+
+Apply the tactic sequence `split_ifs <;> simp`. Establish `hdet : IsUnit U.det`. Establish `h2 : U.det * F.det = N ^ n`. Rewrite using `[← Matrix.det_mul, hUF, Matrix.det_smul, Matrix.det_one, mul_one, Fintype.card_fin]`. Conclude with `isUnit_of_mul_isUnit_left (h2 ▸ hN.pow n)`.
+
+Establish `hb : b.toMatrix u = U.transpose`. Use extensionality with `k i`. Simplify using `[Module.Basis.toMatrix_apply, U]`. Establish `hdet' : IsUnit (b.toMatrix u).det`. Rewrite using `[hb, Matrix.det_transpose]`.
+
+Conclude with `hdet`. Establish `hdet2 : IsUnit (b.det u)`. Rewrite using `[Module.Basis.det_apply]`. Conclude with `hdet'`. Conclude with `(Module.Basis.is_basis_iff_det b).mpr hdet2`.
+-/
 theorem linearIndependent_span_of_dual_unit :
     ∀ (V : Type) [CommRing V] (L : Type) [AddCommGroup L] [Module V L] (n : ℕ)
       (b : Module.Basis (Fin n) V L) (u : Fin n → L) (f : Fin n → (L →ₗ[V] V)) (N : V),

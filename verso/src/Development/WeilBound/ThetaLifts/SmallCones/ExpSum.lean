@@ -9,6 +9,11 @@ open scoped TensorProduct Matrix Classical
 open NumberField IsDedekindDomain Filter Topology Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK PositivityTheory.ThKEst
 
+/- English proof (translation)
+Use `Summable.of_nonneg_of_le (fun z => by positivity) (fun z => ?_) ((ZLattice.summable_norm_pow_inv L k hk).add (hasSum_ite_eq (0 : L) (1 : ℝ)).summable)` and prove the remaining obligations. Distinguish the cases in `hz : z = 0`. Substitute `hz` using the available equality. Simplify using `only [if_pos rfl, norm_zero, add_zero, inv_one, one_pow]`. Conclude with `le_add_of_nonneg_left (by positivity)`.
+
+Establish `h0 : 0 < ‖z‖` using `norm_pos_iff.2 hz`. Simplify using `only [hz, if_false, add_zero]`. Use `gcongr`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem summable_lat_wt {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V]
     (L : Submodule ℤ V) [DiscreteTopology L] {k : ℕ} (hk : Module.finrank ℤ L < k) :
     Summable fun z : L => ((1 + ‖z‖)⁻¹) ^ k := by
@@ -27,6 +32,9 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 
 def sz {κ : Type} [Fintype κ] (y : κ → AF F) : ℝ := 1 + ∑ j, ∑ w : InfinitePlace F, mixedEmbedding.normAtPlace w (evI F (y j))
 
+/- English proof (translation)
+Establish `h0 : ∀ j, 0 ≤ ∑ w : InfinitePlace F, mixedEmbedding.normAtPlace w (evI F (y j))` using `fun j => Finset.sum_nonneg fun w _ => mixedEmbedding.normAtPlace_nonneg _ _`. Use `add_le_add_right ((pi_norm_le_iff_of_nonneg (Finset.sum_nonneg fun j _ => h0 j)).2 fun j => ?_) 1` and prove the remaining obligations. Use `le_trans ?_ (Finset.single_le_sum (fun j _ => h0 j) (Finset.mem_univ j))` and prove the remaining obligations. Rewrite using `[mixedEmbedding.norm_eq_sup'_normAtPlace]`. Conclude with `Finset.sup'_le _ _ fun w _ => Finset.single_le_sum (f := fun w => mixedEmbedding.normAtPlace w (evI F (y j))) (fun w _ => mixedEmbedding.normAtPlace_nonneg _ _) (Finset.mem_univ w)`.
+-/
 theorem norm_le_sz {κ : Type} [Fintype κ] (y : κ → AF F) : 1 + ‖fun j => evI F (y j)‖ ≤ sz y := by
   have h0 : ∀ j, 0 ≤ ∑ w : InfinitePlace F, mixedEmbedding.normAtPlace w (evI F (y j)) := fun j =>
     Finset.sum_nonneg fun w _ => mixedEmbedding.normAtPlace_nonneg _ _
@@ -36,8 +44,24 @@ theorem norm_le_sz {κ : Type} [Fintype κ] (y : κ → AF F) : 1 + ‖fun j => 
   exact Finset.sup'_le _ _ fun w _ => Finset.single_le_sum (f := fun w => mixedEmbedding.normAtPlace w (evI F (y j)))
     (fun w _ => mixedEmbedding.normAtPlace_nonneg _ _) (Finset.mem_univ w)
 
+/- English proof (translation)
+The claim follows from `lt_of_lt_of_le (by positivity) (norm_le_sz y)`.
+-/
 theorem sz_pos {κ : Type} [Fintype κ] (y : κ → AF F) : 0 < sz y := lt_of_lt_of_le (by positivity) (norm_le_sz y)
 
+/- English proof (translation)
+Take `⟨N, hN, hK⟩` from `exists_nat_mul_integral_of_isCompact F hC`. Use `haveI := discreteTopology_denomLattice F κ hN`. Use `⟨Module.finrank ℤ (denomLattice F κ N) + 1, ?_⟩` and prove the remaining obligations. Set `S : Set (κ → F)` to `{ξ | (fun i => mixedEmbedding F (ξ i)) ∈ denomLattice F κ N}`. Use `((Subtype.val_injective (p := fun ξ => ξ ∈ S)).summable_iff ?_).1 ?_` and prove the remaining obligations.
+
+Introduce `ξ hξ`. Use `if_neg fun h0 => hξ ⟨⟨ξ, fun i => ?_⟩, rfl⟩` and prove the remaining obligations. Take `⟨y, hy⟩` from `(GlobalTheory.IntegralFinAdele.integral_finiteAdele_properties F).2.2.2.1 ((N : F) * ξ i) fun v => by`. Rewrite using `[map_mul, map_natCast]`. Conclude with `hK _ h0 i v`.
+
+Use `⟨y, ?_⟩` and prove the remaining obligations. Establish `h2` using `congrArg (mixedEmbedding F) hy`. Rewrite `h2` using `[← nsmul_eq_mul, map_nsmul, ← Nat.cast_smul_eq_nsmul ℝ]`. Conclude with `h2.symm`. Set `j : S → denomLattice F κ N` to `fun ξ => ⟨_, ξ.2⟩`.
+
+Establish `hj : Function.Injective j` using `fun a b h => Subtype.ext (funext fun i => mixedEmbedding_injective F (congrFun (congrArg Subtype.val h) i))`. Use `Summable.of_nonneg_of_le (fun ξ => ?_) (fun ξ => ?_) ((summable_lat_wt (denomLattice F κ N) (Nat.lt_succ_self _)).comp_injective hj)` and prove the remaining obligations. Simplify using `only [Function.comp_apply] split_ifs`. Conclude with `inv_nonneg.2 (pow_pos (sz_pos _) _).le`. Conclude with `le_rfl`.
+
+Simplify using `only [Function.comp_apply] split_ifs`. Rewrite using `[inv_pow]`. Use `inv_anti₀ (by positivity) (pow_le_pow_left₀ (by positivity) ?_ _)` and prove the remaining obligations. Establish `h` using `norm_le_sz (fun i => algebraMap F (AF F) (ξ.1 i))`. Establish `e : (fun i => evI F (algebraMap F (AF F) (ξ.1 i))) = fun i => mixedEmbedding F (ξ.1 i)`.
+
+Use function extensionality and compare the values at `fun i => (InfiniteAdeleRing.mixedEmbedding_eq_algebraMap_comp F).symm`. Rewrite `h` using `[e]`. Conclude with `h`. Check the signs of the components of the expression.
+-/
 theorem summable_wt {κ : Type} [Fintype κ] {C : Set (κ → Af F)} (hC : IsCompact C) : ∃ N : ℕ, Summable fun ξ : κ → F =>
     if (fun j => (algebraMap F (AF F) (ξ j)).2) ∈ C then (sz (fun j => algebraMap F (AF F) (ξ j)) ^ N)⁻¹ else 0 := by
   obtain ⟨N, hN, hK⟩ := exists_nat_mul_integral_of_isCompact F hC
@@ -78,6 +102,13 @@ variable {n d n₁ d₁ m : ℕ} {B : Base F E} {X : Spc F E n} {W : Spc F E d} 
   {M : Model σ X W} {M₁ : Model σ X₁ W₁} {ι : Matrix (Fin n) (Fin n₁) E} {ι' : Matrix (Fin d) (Fin d₁) E}
   {I : Set (Ten F E n d)} {e : Fn F n d →ₗ[ℂ] Fn F n₁ d₁} {u z : Fin m → Matrix (Fin n) (Fin d) E}
 
+/- English proof (translation)
+Take `⟨r, φ₁, C, A, h1, hC, -, h2, h3, h4⟩` from `hS F E σ B n d n₁ d₁ X W X₁ W₁ M M₁ hB hM hM₁ ι ι' I e he m u z hD φ hφ`. Take `⟨N, hN⟩` from `summable_wt hC`. Use `choose T hT using fun i => hl (φ₁ i) (h1 i)`. Use `choose p hp hq using fun i => h4 ((normSeminorm ℂ ℂ).comp (T i).toLinearMap) N (T i).continuous.norm`. Use `⟨_, fun f => ∑ i, p i f, hN, continuous_finset_sum _ fun i _ => hp i, by simp, fun y f => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[h2, map_sum]`. Simplify using `only [hT]`. Use `split_ifs with hy`. Rewrite using `[Finset.sum_mul]`. Use `norm_sum_le_of_le _ fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[← div_eq_mul_inv, le_div_iff₀ (pow_pos (sz_pos _) _)]`. Conclude with `hq i i _ f`. Simplify using `[h3 _ _ hy]`.
+-/
 theorem slice_bound (hS : Slice) (hB : B.IsGood σ) (hM : M.IsGood B.ψ) (hM₁ : M₁.IsGood B.ψ) (he : IsEv B M M₁ ι ι' I e)
     (hD : Dual σ X W I u z) {l} (hl : l ∈ (adeleClass F).adm (Fin n₁ × Fin d₁)) {φ} (hφ : φ ∈ SB (Fin n × Fin d → Af F)) :
     ∃ (wt : (Fin m → F) → ℝ) (P : SInf F (Fin n × Fin d) → ℝ), Summable wt ∧ Continuous P ∧ P 0 = 0 ∧

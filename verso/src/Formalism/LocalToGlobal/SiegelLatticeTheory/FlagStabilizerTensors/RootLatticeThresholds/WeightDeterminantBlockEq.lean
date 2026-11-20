@@ -17,9 +17,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {D : D7}
 
+/- English proof (translation)
+Simplify using `[Formalism.FourierDecayAlt.S6.rd, Formalism.BasicNotions.Host.rdE, one_div]`.
+-/
 theorem rd_eq' : Formalism.FourierDecayAlt.S6.rd D.host.E = D.host.rdE := by
   simp [Formalism.FourierDecayAlt.S6.rd, Formalism.BasicNotions.Host.rdE, one_div]
 
+/- English proof (translation)
+Establish `hrd` using `Formalism.MainNotions.LocalModelPeriodLattices.rdE_pos D`. Rewrite using `[norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_pos (by unfold Formalism.MainNotions.S.rhoReal; positivity), map_mul, map_pow, map_neg, map_one, norm_mul, norm_pow, norm_neg, norm_one, one_pow, one_mul, ← hσ, rd_eq']`. Unfold `Formalism.MainNotions.S.rhoReal Formalism.FourierDecayAlt.S6.nuBlock`. Rewrite using `[show (-(((2 * (D.R.rS : ℤ) + 3 - 2 * (b : ℤ) - (s : ℤ)) : ℤ) : ℝ)) = ((-(((2 * D.R.rS + 3 : ℕ) : ℤ) - 2 * (b : ℤ) - (s : ℤ)) : ℤ) : ℝ) by push_cast; ring, Real.rpow_intCast]`.
+-/
 theorem blk_norm (τ : D.what₂.Tau) (σ : D.host.E →+* ℂ) (hσ : ∀ t, σ t = Formalism.MainNotions.S.plEmb D τ t) (b s m : ℕ)
     (t : D.host.E) :
     ‖((Formalism.MainNotions.S.rhoReal D b s : ℝ) : ℂ) * Formalism.MainNotions.S.plEmb D τ ((-1) ^ m * t)‖ =
@@ -31,6 +37,9 @@ theorem blk_norm (τ : D.what₂.Tau) (σ : D.host.E →+* ℂ) (hσ : ∀ t, σ
   rw [show (-(((2 * (D.R.rS : ℤ) + 3 - 2 * (b : ℤ) - (s : ℤ)) : ℤ) : ℝ)) =
       ((-(((2 * D.R.rS + 3 : ℕ) : ℤ) - 2 * (b : ℤ) - (s : ℤ)) : ℤ) : ℝ) by push_cast; ring, Real.rpow_intCast]
 
+/- English proof (translation)
+The claim follows from `| [], _, _ => by simp [Formalism.FourierDecayAlt.C.loc, Formalism.FourierDecayAlt.C.nAux, Formalism.L2.SG.DataInst.signAux, Formalism.MainNotions.S.locBlocksFrom, WtDet.FA] | (s, t) :: rest, b, hb => by have ih := weightDeterminant_block_eq τ σ hσ k GG rest (b + s) (by omega) sim …`.
+-/
 theorem weightDeterminant_block_eq (τ : D.what₂.Tau) (σ : D.host.E →+* ℂ) (hσ : ∀ t, σ t = Formalism.MainNotions.S.plEmb D τ t) (k : ℕ) (GG : ℝ) :
     ∀ (p : Formalism.FourierDecayAlt.TB.Pt D.host.E) (b : ℕ), 1 ≤ b →
     Formalism.FourierDecayAlt.C.nAux k D.R.rS GG
@@ -47,6 +56,9 @@ theorem weightDeterminant_block_eq (τ : D.what₂.Tau) (σ : D.host.E →+* ℂ
     simp only [Formalism.FourierDecayAlt.C.loc] at ih
     rw [ih, blk_norm τ σ hσ b s _ t]
 
+/- English proof (translation)
+The claim follows from `| [], _, _, _, _ => by simp [RealObj.nHead, Formalism.L2.SG.DataInst.signAux, Formalism.MainNotions.S.locBlocksFrom, WtDet.FH] | (s, t) :: rest, b, hb, hsz, hpos => by simp only [List.map_cons, List.sum_cons] at hsz have hs1 : 1 ≤ s := hpos (s, t) (by simp) have ih := nHead_eq X …`.
+-/
 theorem nHead_eq (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (v : InfinitePlace X.B.I.F) (τ : D.what₂.Tau) (hpl : X.pl v = τ) :
     ∀ (p : Formalism.FourierDecayAlt.TB.Pt D.host.E) (b : ℕ), 1 ≤ b → b + (p.map Prod.fst).sum ≤ D.R.rS + 2 → (∀ x ∈ p, 1 ≤ x.1) →
     RealObj.nHead X v b ((Formalism.L2.SG.DataInst.signAux D.R.rS b p).map Prod.swap) =
@@ -74,6 +86,9 @@ theorem nHead_eq (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (v : InfinitePl
     push_cast
     ring_nf
 
+/- English proof (translation)
+The claim follows from `| [], L2, b => by simp [Formalism.L2.SG.DataInst.signAux] | (s, t) :: L1, L2, b => by simp only [List.cons_append, Formalism.L2.SG.DataInst.signAux, signFlip_append r L1 L2 (b + s), List.map_cons, List.sum_cons, add_assoc]`.
+-/
 theorem signFlip_append {K : Type} [Ring K] (r : ℕ) : ∀ (L1 L2 : Formalism.FourierDecayAlt.TB.Pt K) (b : ℕ),
     Formalism.L2.SG.DataInst.signAux r b (L1 ++ L2) =
       Formalism.L2.SG.DataInst.signAux r b L1 ++ Formalism.L2.SG.DataInst.signAux r (b + (L1.map Prod.fst).sum) L2
@@ -82,6 +97,9 @@ theorem signFlip_append {K : Type} [Ring K] (r : ℕ) : ∀ (L1 L2 : Formalism.F
     simp only [List.cons_append, Formalism.L2.SG.DataInst.signAux, signFlip_append r L1 L2 (b + s), List.map_cons,
       List.sum_cons, add_assoc]
 
+/- English proof (translation)
+The claim follows from `| [], L2, a => by simp [Formalism.MainNotions.S.locBlocksFrom] | (t, s) :: L1, L2, a => by simp only [List.cons_append, Formalism.MainNotions.S.locBlocksFrom, locBlocksFrom_append ρ τ L1 L2 (a + s), List.map_cons, List.sum_cons, add_assoc]`.
+-/
 theorem locBlocksFrom_append (ρ : ℕ → ℕ → ℝ) (τ : D.what₂.Tau) : ∀ (L1 L2 : List (D.host.E × ℕ)) (a : ℕ),
     Formalism.MainNotions.S.locBlocksFrom D ρ τ a (L1 ++ L2) =
       Formalism.MainNotions.S.locBlocksFrom D ρ τ a L1 ++ Formalism.MainNotions.S.locBlocksFrom D ρ τ (a + (L1.map Prod.snd).sum) L2
@@ -90,6 +108,9 @@ theorem locBlocksFrom_append (ρ : ℕ → ℕ → ℝ) (τ : D.what₂.Tau) : �
     simp only [List.cons_append, Formalism.MainNotions.S.locBlocksFrom, locBlocksFrom_append ρ τ L1 L2 (a + s), List.map_cons,
       List.sum_cons, add_assoc]
 
+/- English proof (translation)
+The claim follows from `| _, [] => by simp [RealObj.nHead] | b, (t, s) :: rest => by simp only [RealObj.nHead] have hrd := Formalism.MainNotions.LocalModelPeriodLattices.rdE_pos D exact mul_nonneg (pow_nonneg (mul_nonneg (inv_nonneg.mpr (pow_nonneg hrd.le _)) (norm_nonneg _)) _) (nHead_nonneg X v (b + s …`.
+-/
 theorem nHead_nonneg (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (v : InfinitePlace X.B.I.F) :
     ∀ (b : ℕ) (L : List (D.host.E × ℕ)), 0 ≤ RealObj.nHead X v b L
   | _, [] => by simp [RealObj.nHead]
@@ -99,6 +120,9 @@ theorem nHead_nonneg (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (v : Infini
     exact mul_nonneg (pow_nonneg (mul_nonneg (inv_nonneg.mpr (pow_nonneg hrd.le _)) (norm_nonneg _)) _)
       (nHead_nonneg X v (b + s) rest)
 
+/- English proof (translation)
+Rewrite using `[Real.sqrt_eq_iff_mul_self_eq (Finset.prod_nonneg fun i _ => hx i) (Finset.prod_nonneg fun i _ => Real.sqrt_nonneg _), ← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_congr rfl fun i _ => (Real.mul_self_sqrt (hx i)).symm`.
+-/
 theorem sqrt_prod' {ι : Type*} [Fintype ι] (x : ι → ℝ) (hx : ∀ i, 0 ≤ x i) :
     Real.sqrt (∏ i, x i) = ∏ i, Real.sqrt (x i) := by
   rw [Real.sqrt_eq_iff_mul_self_eq (Finset.prod_nonneg fun i _ => hx i)
@@ -109,6 +133,39 @@ variable (X : Formalism.L2.SG.HidaSetting.HidaSetting D) {θ : ℝ} (C : Formali
 
 open Formalism.L2.SG.Pf.Carrier Formalism.L2.SG.Pf.BaseOf Formalism.L2.SG.Pf.Built Formalism.L2.SG.LocWSOf Formalism.L2.SG.Pf.CarrierT in
 
+/- English proof (translation)
+Introduce `p w hp hgood`. Take `⟨hrep, hG⟩` from `hgood`. Establish `hk` using `Formalism.MainNotions.BridgeLemma.five_le_k D`. Establish `hpt` using `hp`. Unfold `ptOfL Formalism.L2.SG.DataInst.ptOfList at hpt`.
+
+Use `split_ifs at hpt with hPtL`. Establish `hw1 : w.1 = (Formalism.L2.SG.DataInst.signAux D.R.rS 1 p).map Prod.swap`. Rewrite using `[← Option.some_inj.mp hpt]`. Both sides reduce to the same expression. Establish `hfst : (Formalism.L2.SG.DataInst.signPt D.R.rS p).map Prod.fst = p.map Prod.fst` using `Formalism.L2.SG.DataInst.sign_list_fst D.R.rS 1 p`.
+
+Establish `hblk : ∀ b ∈ p, 1 ≤ b.1`. Introduce `b hb`. Establish `: b.1 ∈ (Formalism.L2.SG.DataInst.signPt D.R.rS p).map Prod.fst`. Rewrite using `[hfst]`. Conclude with `List.mem_map_of_mem hb`.
+
+Take `⟨b', hb', hbb⟩` from `List.mem_map.mp this`. Rewrite using `[← hbb]`. Conclude with `(hPtL.2 b' hb').1`. Establish `hsum : (p.map Prod.fst).sum = D.R.rS + 1` using `by rw [← hfst, hPtL.1]`. Establish `hne : p ≠ []` using `by rintro rfl; simp at hsum`.
+
+Establish `hplace : ∀ j : Fin (nfE D), Formalism.FourierDecayAlt.C.nLoc (sOf (carrierInT X C u u' e he hv CA de de' l grid grid1 fc c ν' m₀ Θ TP A₀)).G.k (sOf (carrierInT X C u u' e he hv CA de de' l grid grid1 fc c ν' m₀ Θ TP A₀)).G.r (sOf (carrierInT X C u u' e he hv CA de de' l grid grid …`. Introduce `j`. Use `set τ := e (plE D j) with hτ`. Establish `hpl : X.pl (tauE X e j) = τ` using `by show X.pl (X.pl.symm (e (plE D j))) = _`. Conclude with `Equiv.apply_symm_apply _ _`.
+
+Establish `hσ : ∀ t, (sOf (carrierInT X C u u' e he hv CA de de' l grid grid1 fc c ν' m₀ Θ TP A₀)).σ j t = Formalism.MainNotions.S.plEmb D τ t`. Introduce `t`. Use `show X.B.I.φ (tauE X e j) (X.ιE.symm t) = _`. Rewrite using `[X.φ_eq, RingEquiv.apply_symm_apply, hpl]`. Both sides reduce to the same expression.
+
+Take `⟨p1, x, hpx⟩ : ∃ p1 x, p = p1 ++ [x]` from `⟨p.dropLast, p.getLast hne, (List.dropLast_append_getLast hne).symm⟩`. Take `⟨s, t⟩` from `x`. Establish `hq : (Formalism.MainNotions.S.ThB.ptLoc D τ w).1 = Formalism.MainNotions.S.locBlocksFrom D (Formalism.MainNotions.S.rhoReal D) τ 0 ((Formalism.L2.SG.DataInst.signAux D.R.rS 1 p).map Prod.swap)`. Rewrite using `[← hw1]`. Both sides reduce to the same expression.
+
+Use `set L1 := Formalism.MainNotions.S.locBlocksFrom D (Formalism.MainNotions.S.rhoReal D) τ 0 ((Formalism.L2.SG.DataInst.signAux D.R.rS 1 p1).map Prod.swap)`. Establish `hsz1 : (((Formalism.L2.SG.DataInst.signAux D.R.rS 1 p1).map Prod.swap).map Prod.snd).sum = (p1.map Prod.fst).sum`. Rewrite using `[List.map_map]`. Use `Formalism.L2.SG.DataInst.sign_list_fst D.R.rS 1 p1` as an intermediate fact. Rewrite using `[← this]`.
+
+Both sides reduce to the same expression. Establish `hq2 : (Formalism.MainNotions.S.ThB.ptLoc D τ w).1 = L1 ++ [(((Formalism.MainNotions.S.rhoReal D (1 + (p1.map Prod.fst).sum) s : ℝ) : ℂ) * Formalism.MainNotions.S.plEmb D τ ((-1) ^ (D.R.rS + 1 - (1 + (p1.map Prod.fst).sum + s - 1)) * t), s)]`. Rewrite using `[hq, hpx, signFlip_append, List.map_append, locBlocksFrom_append, hsz1]`. Simplify using `[Formalism.L2.SG.DataInst.signAux, Formalism.MainNotions.S.locBlocksFrom, add_comm]`. Both sides reduce to the same expression.
+
+Establish `hsum1 : (p1.map Prod.fst).sum + s = D.R.rS + 1`. Rewrite `hsum` using `[hpx]`. Simplify using `using hsum`. Establish `hGv : ((sOf (carrierInT X C u u' e he hv CA de de' l grid grid1 fc c ν' m₀ Θ TP A₀)).pd j).G (Formalism.FourierDecayAlt.C.loc ((sOf (carrierInT X C u u' e he hv CA de de' l grid grid1 fc c ν' m₀ Θ TP A₀)).σ j) p) = Complex.normSq (Formalism.MainNotions.S.plEmb D τ t) - Tw (D` using `D) u * Tw (D := D) u' := by`. Establish `hT` using `(carrierInT X C u u' e he hv CA de de' l grid grid1 fc c ν' m₀ Θ TP A₀).hT j`.
+
+Use `show Formalism.FourierDecayAlt.D.ptGG (Formalism.QuantumDeterminants.Tz _ _ _ * Formalism.QuantumDeterminants.Tz _ _ _) _ = _`. Rewrite using `[hT.1, hT.2]`. Unfold `Formalism.FourierDecayAlt.D.ptGG Formalism.FourierDecayAlt.D.ptLast`. Rewrite using `[hpx]`. Simplify using `[Formalism.FourierDecayAlt.C.loc, hσ]`.
+
+Both sides reduce to the same expression. Establish `hGG : s = 1 → Complex.normSq (Formalism.MainNotions.S.plEmb D τ t) - Tw (D` using `D) u * Tw (D := D) u' = ‖((Formalism.MainNotions.S.rhoReal D (1 + (p1.map Prod.fst).sum) s : ℝ) : ℂ) * Formalism.MainNotions.S.plEmb D τ ((-1) ^ (D.R.rS + 1 - (1 + (p1.map Prod.fst).sum + s - 1)) * t)‖ ^ 2 - Tw (D := D) u * Tw (D := D) u' := by`. Introduce `hs1`. Rewrite using `[blk_norm τ (Formalism.MainNotions.S.plEmb D τ) (fun _ => rfl), Complex.normSq_eq_norm_sq]`. Use `congr 2`.
+
+Establish `: (Formalism.FourierDecayAlt.S6.nuBlock (D.R.rS : ℤ) ((1 + (p1.map Prod.fst).sum : ℕ) : ℤ) (s : ℤ)) = 0`. Unfold `Formalism.FourierDecayAlt.S6.nuBlock`. Substitute `hs1` using the available equality. Rewrite using `[Nat.cast_add, Nat.cast_one]`. Use linear arithmetic over natural numbers and integers.
+
+Rewrite using `[this]`. Simplify using the standard rewrite rules. Establish `hcore` using `WtDet.core_wt D.R.k D.R.rS (by omega) (Tw (D := D) u) (Tw (D := D) u') (Formalism.MainNotions.S.ThB.ptLoc D τ w) L1 _ s hq2 _ hGG`. Establish `hA` using `weightDeterminant_block_eq τ ((sOf (carrierInT X C u u' e he hv CA de de' l grid grid1 fc c ν' m₀ Θ TP A₀)).σ j) hσ D.R.k (Complex.normSq (Formalism.MainNotions.S.plEmb D τ t) - Tw (D := D) u * Tw (D := D) u') p 1 le_rfl`. Establish `hH` using `nHead_eq X (tauE X e j) τ hpl p 1 le_rfl (by omega) hblk`.
+
+Establish `hgx` using `Formalism.L2.SG.Pf.OOCoreHilbertSchmidt.gx_eq u u' w hrep τ`. Unfold `Formalism.FourierDecayAlt.C.nLoc`. Rewrite using `[hGv]`. Express the relevant statement in the definitionally equal form `Formalism.FourierDecayAlt.C.nAux D.R.k D.R.rS _ (fun b s => Formalism.FourierDecayAlt.S6.rd D.host.E ^ (-(Formalism.FourierDecayAlt.S6.nuBlock (D.R.rS : ℤ) (b : ℤ) (s : ℤ) : ℝ))) 1 _ = _`. Rewrite using `[hA, show (1 : ℕ) - 1 = 0 from rfl, ← hq, ← hcore, hw1, hH, ← hq]`.
+
+Rewrite using `[show tauE X e j = vOf X τ from rfl, hgx]`. Unfold `nW`. Rewrite using `[sqrt_prod' _ (fun v => mul_nonneg (pow_nonneg (hG v).le _) (nHead_nonneg X v 1 w.1))]`. Use `symm`. Conclude with `Fintype.prod_equiv (tauE X e) _ _ (fun j => by rw [hplace j])`.
+-/
 theorem wtTie_carrierInT (u u' : D.what₂.Word) (e : InfinitePlace D.host.E ≃ D.what₂.Tau) (he : PlaceTie X e)
     (hv : D.host.v = Formalism.FourierDecayAlt.S6.rd D.host.E / 2) (CA : ℝ) (de de' : ℕ → ℝ) (l : ℕ)
     (grid : Fin (nfE D) → ℕ → Finset ℝ) (grid1 : Fin (nfE D) → Finset ℝ)

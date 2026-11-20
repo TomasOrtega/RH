@@ -11,12 +11,18 @@ open scoped SchwartzMap FourierTransform RealInnerProductSpace ContDiff Topology
 private def sc {R : Type} [CommRing R] (n : ℕ) : GL (Fin 1) R →* GL (Fin n) R :=
   (GeneralLinearGroup.scalar (Fin n)).comp GeneralLinearGroup.det
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `Matrix.scalar (Fin n) (Matrix.det x.val) i j = _`. Rewrite using `[Matrix.det_fin_one]`. Apply the tactic sequence `by_cases e : i = j <;> simp [e]`.
+-/
 private theorem sc_val {R : Type} [CommRing R] (n : ℕ) (x : GL (Fin 1) R) (i j : Fin n) :
     (sc n x).val i j = if i = j then x.val 0 0 else 0 := by
   change Matrix.scalar (Fin n) (Matrix.det x.val) i j = _
   rw [Matrix.det_fin_one]
   by_cases e : i = j <;> simp [e]
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[sc_val]`. Express the relevant statement in the definitionally equal form `(if i = j then Matrix.scalar (Fin 1) z.val 0 0 else 0) = Matrix.scalar (Fin n) z.val i j`. Apply the tactic sequence `by_cases e : i = j <;> simp [e]`.
+-/
 private theorem sc_scalar {R : Type} [CommRing R] (n : ℕ) (z : Rˣ) :
     sc n (GeneralLinearGroup.scalar (Fin 1) z) = GeneralLinearGroup.scalar (Fin n) z := by
   ext i j
@@ -24,10 +30,18 @@ private theorem sc_scalar {R : Type} [CommRing R] (n : ℕ) (z : Rˣ) :
   change (if i = j then Matrix.scalar (Fin 1) z.val 0 0 else 0) = Matrix.scalar (Fin n) z.val i j
   by_cases e : i = j <;> simp [e]
 
+/- English proof (translation)
+The claim follows from `Units.ext (Matrix.scalar_commute (Matrix.det x.val) (fun _ => Commute.all _ _) g.val).eq`.
+-/
 private theorem sc_comm {R : Type} [CommRing R] (n : ℕ) (x : GL (Fin 1) R) (g : GL (Fin n) R) :
     sc n x * g = g * sc n x :=
   Units.ext (Matrix.scalar_commute (Matrix.det x.val) (fun _ => Commute.all _ _) g.val).eq
 
+/- English proof (translation)
+Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `p ((sc n x).val i j) = _`. Rewrite using `[sc_val, sc_val]`. Use `split_ifs`. Both sides reduce to the same expression.
+
+Conclude with `map_zero p`.
+-/
 private theorem map_sc {R S : Type} [CommRing R] [CommRing S] (n : ℕ) (p : R →+* S) (x : GL (Fin 1) R) :
     GeneralLinearGroup.map p (sc n x) = sc n (GeneralLinearGroup.map p x) := by
   ext i j
@@ -37,6 +51,9 @@ private theorem map_sc {R S : Type} [CommRing R] [CommRing S] (n : ℕ) (p : R �
   · rfl
   · exact map_zero p
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[sc_val]`. Express the relevant statement in the definitionally equal form `(1 : Matrix (Fin n) (Fin n) S) i j - s ((1 : Matrix (Fin n) (Fin n) R) i j) + s ((sc n x).val i j) = if i = j then (1 : Matrix (Fin 1) (Fin 1) S) 0 0 - s ((1 : Matrix (Fin 1) (Fin 1) R) 0 0) + s (x.val 0 0) else 0`. Rewrite using `[sc_val]`. Apply the tactic sequence `by_cases e : i = j <;> simp [Matrix.one_apply, e]`.
+-/
 private theorem corner_sc {R S : Type} [CommRing R] [CommRing S] (n : ℕ) (s : R →ₙ+* S) (x : GL (Fin 1) R) :
     GlobalTheory.CuspRep.cornerGL n s (sc n x) = sc n (GlobalTheory.CuspRep.cornerGL 1 s x) := by
   ext i j
@@ -46,6 +63,13 @@ private theorem corner_sc {R S : Type} [CommRing R] [CommRing S] (n : ℕ) (s : 
   rw [sc_val]
   by_cases e : i = j <;> simp [Matrix.one_apply, e]
 
+/- English proof (translation)
+Establish `h : Continuous fun x : GL (Fin 1) R => (sc n x).val`. Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Simplify using `only [sc_val]`. Use `split_ifs`. Conclude with `Units.continuous_val.matrix_elem 0 0`.
+
+Conclude with `continuous_const`. Use `Units.continuous_iff.2 ⟨h, ?_⟩` and prove the remaining obligations. Simplify using `only [← map_inv]`. Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Simplify using `only [sc_val]`.
+
+Use `split_ifs`. Conclude with `Units.continuous_coe_inv.matrix_elem 0 0`. Conclude with `continuous_const`.
+-/
 private theorem continuous_sc {R : Type} [CommRing R] [TopologicalSpace R] (n : ℕ) :
     Continuous (sc n : GL (Fin 1) R → GL (Fin n) R) := by
   have h : Continuous fun x : GL (Fin 1) R => (sc n x).val := by
@@ -62,6 +86,11 @@ private theorem continuous_sc {R : Type} [CommRing R] [TopologicalSpace R] (n : 
   · exact Units.continuous_coe_inv.matrix_elem 0 0
   · exact continuous_const
 
+/- English proof (translation)
+Rewrite `h`, the goal using `[GlobalTheory.AdelicU.mem_GLint_iff]`. Rewrite using `[← map_inv]`. Apply the tactic sequence `constructor <;> intro i j <;> rw [sc_val] <;> split_ifs`. Conclude with `h.1 0 0`. Conclude with `zero_mem _`.
+
+Conclude with `h.2 0 0`. Conclude with `zero_mem _`.
+-/
 private theorem sc_mem {K : Type} [Field K] (n : ℕ) (O : Subring K) (x : GL (Fin 1) K)
     (h : x ∈ Formalism.UG.GLint (Fin 1) O) : sc n x ∈ Formalism.UG.GLint (Fin n) O := by
   rw [GlobalTheory.AdelicU.mem_GLint_iff] at h ⊢
@@ -72,6 +101,23 @@ private theorem sc_mem {K : Type} [Field K] (n : ℕ) (O : Subring K) (x : GL (F
   · exact h.2 0 0
   · exact zero_mem _
 
+/- English proof (translation)
+Introduce `hL hA hD E _ _ n S B f f' hc hc' hl hl' hE hK hK' z g g'`. Establish `h1 : ∀ k : GL (Fin 1) (Af E), Away S k → ∀ g g' : GA E n, f (g * finGL E n (sc n k)) * f' g' = f g * f' (g' * finGL E n (sc n k))`. Use `hA E 1 S _ (fun k hk g g' => ?_) (fun w hw k _ _ hP y g g' => ?_)` and prove the remaining obligations. Establish `hk' : InKS S (sc n k)`. Use `⟨fun w hw => ?_, fun w => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_sc, hk.1 w hw, map_one]`. Rewrite using `[map_sc]`. Conclude with `sc_mem n _ _ (hk.2 w)`. Rewrite using `[hK g _ hk', hK' g' _ hk']`. Take `⟨c, hcc⟩` from `hL E n w (B w) (GeneralLinearGroup.det y)`.
+
+Establish `e : sc n (locGL E 1 w y) = locGL E n w (1 * GeneralLinearGroup.scalar (Fin n) (GeneralLinearGroup.det y))`. Rewrite using `[one_mul]`. Conclude with `(corner_sc n (sLoc E w) y).symm`. Establish `a` using `hcc _ ((hE w hw).1 (g * finGL E n (sc n k))) 1`. Establish `b` using `hcc _ ((hE w hw).2 (g' * finGL E n (sc n k))) 1`.
+
+Simplify using `only [map_one, mul_one] at a b`. Rewrite using `[map_mul, map_mul, ← mul_assoc, ← mul_assoc, e, a, b, mul_assoc, hP]`. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : ∀ x : GA E 1, f (g * sc n x) * f' g' = f g * f' (g' * sc n x)`. Use `isClosed_property (hD E 1 S).denseRange_val (isClosed_eq ?_ ?_) ?_` and prove the remaining obligations.
+
+Conclude with `(hc.comp (continuous_const.mul (continuous_sc n))).mul continuous_const`. Conclude with `continuous_const.mul (hc'.comp (continuous_const.mul (continuous_sc n)))`. Introduce and unpack `⟨_, γ, k, hk, rfl⟩`. Establish `e : ∀ u : GA E n, u * sc n (ratGL E 1 γ * finGL E 1 k) = ratGL E n (sc n γ) * (u * finGL E n (sc n k))`. Introduce `u`.
+
+Rewrite using `[map_mul, ← mul_assoc, ← sc_comm n (ratGL E 1 γ) u, mul_assoc]`. Use `congr 1`. Conclude with `(map_sc n _ γ).symm`. Conclude with `congrArg _ (corner_sc n (sFin E) k).symm`. Express the relevant statement in the definitionally equal form `f (g * sc n (ratGL E 1 γ * finGL E 1 k)) * _ = _ * f' (g' * sc n (ratGL E 1 γ * finGL E 1 k))`.
+
+Rewrite using `[e, e]`. Establish `a : ∀ u, f (ratGL E n (sc n γ) * u) = f u` using `hl _`. Establish `b : ∀ u, f' (ratGL E n (sc n γ) * u) = f' u` using `hl' _`. Rewrite using `[a, b]`. Conclude with `h1 k hk g g'`.
+
+Rewrite using `[← sc_scalar]`. Conclude with `h2 _`.
+-/
 theorem UpperTheory.V.Af.Smo.centEq :
     UpperTheory.V.Af.Smo.CentLoc → UpperTheory.V.Af.Smo.AwayInd → UpperTheory.V.Af.Smo.DenseAway → UpperTheory.V.Af.Smo.CentEq := by
   intro hL hA hD E _ _ n S B f f' hc hc' hl hl' hE hK hK' z g g'

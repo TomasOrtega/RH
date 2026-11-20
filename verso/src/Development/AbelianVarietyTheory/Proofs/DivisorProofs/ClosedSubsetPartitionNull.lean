@@ -15,6 +15,11 @@ noncomputable section
 
 namespace GlobalTheory.MixDensNull
 
+/- English proof (translation)
+Introduce `k _ X p _ D h Z hZ hgen σ ρ`. Establish `hA : MeasurableSet {y : CxPts p σ | y.1 (IsLocalRing.closedPoint ℂ) ∈ Z}`. Establish `: {y : CxPts p σ | y.1 (IsLocalRing.closedPoint ℂ) ∈ Z} = (ptsIn p σ ⟨Zᶜ, hZ.isOpen_compl⟩)ᶜ`. Use extensionality with `y`. Simplify using `[mem_ptsIn]`.
+
+Rewrite using `[this]`. Conclude with `(isOpen_ptsIn _).measurableSet.compl`. Conclude with `GlueCoverNull.glueMeas_null _ _ hA fun c => GlobalTheory.ChernNull.chart_null h hZ hgen σ c`.
+-/
 theorem part_over_closed : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) [IsIntegral X] (D : ℕ), IsArithVar p D → ∀ (Z : Set X), IsClosed Z → genericPoint X ∉ Z → ∀ (σ : k →+* ℂ) (ρ : AlgChart p σ D → CxPts p σ → ℝ), part ρ {y : CxPts p σ | y.1 (IsLocalRing.closedPoint ℂ) ∈ Z} = 0 := by
   intro k _ X p _ D h Z hZ hgen σ ρ
   have hA : MeasurableSet {y : CxPts p σ | y.1 (IsLocalRing.closedPoint ℂ) ∈ Z} := by

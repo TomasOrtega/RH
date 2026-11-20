@@ -6,6 +6,13 @@ namespace Formalism.FourierDecayAlt.P.WordLiftInduction
 
 open Finset Polynomial Formalism.FourierDecayAlt.F7
 
+/- English proof (translation)
+Take `⟨P, hd, hc, hP⟩` from `h`. Establish `hinj : Function.Injective (fun j => ((y j : ℝ) : ℂ))` using `fun a b hab => hy (Complex.ofReal_injective hab)`. Establish `hlt : P.degree < (univ : Finset (Fin (d + 1))).card`. Rewrite using `[card_univ, Fintype.card_fin]`. Conclude with `lt_of_le_of_lt degree_le_natDegree (by exact_mod_cast Nat.lt_succ_of_le hd)`.
+
+Establish `h` using `Lagrange.coeff_eq_sum (s := univ) (v := fun j => ((y j : ℝ) : ℂ)) hinj.injOn hlt`. Simplify using `only [card_univ, Fintype.card_fin, Nat.add_sub_cancel] at h`. Rewrite using `[← hc, h]`. Use `sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hP]`.
+
+Unfold `lagCo`. Use `push_cast`. Rewrite using `[prod_inv_distrib, div_eq_mul_inv, mul_comm]`.
+-/
 theorem top_eq_sum {W : ℝ → ℂ} {d : ℕ} {c : ℂ} (h : IsTopCoeff W d c) (y : Fin (d + 1) → ℝ)
     (hy : Function.Injective y) : ∑ j, ((lagCo y j : ℝ) : ℂ) * W (y j) = c := by
   obtain ⟨P, hd, hc, hP⟩ := h
@@ -28,6 +35,11 @@ section
 variable {R M : Type} [Ring R] [Algebra ℂ R] [AddCommGroup M] [Module ℂ M] [Module R M]
   [IsScalarTower ℂ R M]
 
+/- English proof (translation)
+Introduce `w`. Proceed by induction on `w with`. Consider the case `nil => intro Q Q'`. Conclude with `hbase Q Q'`. Consider the case `cons l w ih`.
+
+Introduce `Q Q'`. Simplify using `only [Fw, mul_assoc]`. Conclude with `hsub _ _ (ih _ _) (ih _ _)`.
+-/
 theorem Fw_ind (Ξ : Sesq M) (X X' : M) (T : (R → R → ℂ) → Prop)
     (hsub : ∀ Φ Ψ, T Φ → T Ψ → T (fun P P' => Φ P P' - Ψ P P'))
     (hbase : ∀ Q Q' : R, T (fun P P' => Ξ ((P * Q) • X) ((P' * Q') • X'))) :
@@ -44,6 +56,11 @@ def one (Ξ : Sesq M) (D : Dat R) (y : ℝ) (x x' : M) : ℂ :=
   Ξ ((evR D.B y + algebraMap ℂ R D.s * evR D.A y) • x) (evR D.Av (y + 1) • x') -
     Ξ (evR D.A y • x) (evR D.Bv (y + 1) • x')
 
+/- English proof (translation)
+Establish `key` using `Fw_ind Ξ X X' (fun Φ => ∑ i, ((lagCo g i : ℝ) : ℂ) * (Φ (evR D.B (g i) + algebraMap ℂ R D.s * evR D.A (g i)) (evR D.Av (g i + 1)) - Φ (evR D.A (g i)) (evR D.Bv (g i + 1))) = c * Φ 1 1) ?_ ?_ w 1 1`. Simplify `key` using `[Fw]`. Introduce `Φ Ψ hΦ hΨ`. Simplify using `only`. Rewrite using `[mul_sub, ← hΦ, ← hΨ, ← sum_sub_distrib]`.
+
+Conclude with `sum_congr rfl fun i _ => by ring`. Introduce `Q Q'`. Simplify `h Q Q'` using `[one, mul_smul]`.
+-/
 theorem head_step (Ξ : Sesq M) (X X' : M) {d : ℕ} (D : Dat R) (g : Fin (d + 1) → ℝ) (c : ℂ)
     (h : ∀ Q Q' : R, ∑ i, ((lagCo g i : ℝ) : ℂ) * one Ξ D (g i) (Q • X) (Q' • X') =
       c * Ξ (Q • X) (Q' • X'))
@@ -60,6 +77,13 @@ theorem head_step (Ξ : Sesq M) (X X' : M) {d : ℕ} (D : Dat R) (g : Fin (d + 1
   · intro Q Q'
     simpa [one, mul_smul] using h Q Q'
 
+/- English proof (translation)
+Introduce `K`. Proceed by induction on `K with`. Consider the case `zero`. Introduce `dat c grid _`. Simplify using `[Fw]`.
+
+Consider the case `succ K ih`. Introduce `dat c grid h`. Establish `ih'` using `ih (fun a => dat a.succ) (fun a => c a.succ) (fun a => grid a.succ) (fun a => h a.succ)`. Rewrite using `[Fin.prod_univ_succ, mul_assoc, ih', mul_sum, ← (Fin.consEquiv (fun _ : Fin (K + 1) => Fin (d + 1))).sum_comp, Fintype.sum_prod_type, sum_comm]`. Use `sum_congr rfl fun j' _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[mul_left_comm, ← head_step Ξ X X' (dat 0) (grid 0) (c 0) (h 0), mul_sum]`. Use `sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [Fin.consEquiv, Equiv.coe_fn_mk, List.ofFn_succ, Fin.prod_univ_succ, Fin.cons_zero, Fin.cons_succ]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem word (Ξ : Sesq M) (d : ℕ) (X X' : M) : ∀ (K : ℕ) (dat : Fin K → Dat R) (c : Fin K → ℂ)
     (grid : Fin K → Fin (d + 1) → ℝ),
     (∀ a (Q Q' : R), ∑ i, ((lagCo (grid a) i : ℝ) : ℂ) *
@@ -87,6 +111,11 @@ theorem word (Ξ : Sesq M) (d : ℕ) (X X' : M) : ∀ (K : ℕ) (dat : Fin K →
     push_cast
     ring
 
+/- English proof (translation)
+Rewrite using `[← norm_prod, ← norm_mul, hw]`. Use `(norm_sum_le _ _).trans ?_` and prove the remaining obligations. Repeatedly rewrite using `[← hS]`. Rewrite using `[prod_univ_sum, sum_mul, Fintype.piFinset_univ]`. Use `sum_le_sum fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_prod]`. Conclude with `mul_le_mul_of_nonneg_left (hB j) (prod_nonneg fun _ _ => abs_nonneg _)`.
+-/
 theorem bound (Ξ : Sesq M) (d K : ℕ) (dat : Fin K → Dat R) (c : Fin K → ℂ)
     (grid : Fin K → Fin (d + 1) → ℝ) (X X' : M) (S : Fin K → ℝ) (B : ℝ)
     (hw : (∏ a, c a) * Ξ X X' =
@@ -104,6 +133,9 @@ theorem bound (Ξ : Sesq M) (d K : ℕ) (dat : Fin K → Dat R) (c : Fin K → �
   rw [norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_prod]
   exact mul_le_mul_of_nonneg_left (hB j) (prod_nonneg fun _ _ => abs_nonneg _)
 
+/- English proof (translation)
+Establish `h1` using `plane_wave_top_degree R M Ξ n D.A D.B D.Av D.Bv D.s x x' h hv`. Establish `hJ : ∀ Y : ℝ, pair2 Ξ (act2 (Formalism.YangianSpanCharacter.T.J R * Formalism.YangianSpanCharacter.T.Uinv (A` using `R) D.s) (vec D.A D.B Y x)) (vec D.Av D.Bv (Y + 1) x') = one Ξ D Y x x' := fun Y => j_pairing_formula R M Ξ D.A D.B D.Av D.Bv D.s Y (Y + 1) x x'`. Simplify `h1` using `only [hJ]`.
+-/
 theorem one_planeWave (Ξ : Sesq M) (n : ℕ) (D : Dat R) (x x' : M) (h : Shape n D.A D.B)
     (hv : Shape n D.Av D.Bv) : IsTopCoeff (fun Y => one Ξ D Y x x') (2 * n) (D.s * Ξ x x') := by
   have h1 := plane_wave_top_degree R M Ξ n D.A D.B D.Av D.Bv D.s x x' h hv
@@ -112,6 +144,19 @@ theorem one_planeWave (Ξ : Sesq M) (n : ℕ) (D : Dat R) (x x' : M) (h : Shape 
     fun Y => j_pairing_formula R M Ξ D.A D.B D.Av D.Bv D.s Y (Y + 1) x x'
   simpa only [hJ] using h1
 
+/- English proof (translation)
+Take `⟨hAm, hAd, hAvm, hAvd⟩` from `hA`. Take `⟨hA₀m, hA₀d, hA₀vm, hA₀vd⟩` from `hA₀`. Establish `p1` using `pairing_top_degree R M Ξ A₀ D.Av n (n + s) 1 (Q • X) (Q' • X') hA₀d.le hAvd.le`. Establish `p2` using `pairing_top_degree R M Ξ D.A A₀v (n + s) n 1 (Q • X) (Q' • X') hAd.le hA₀vd.le`. Establish `c1 : A₀.coeff n = 1` using `by rw [← hA₀d]; exact hA₀m.coeff_natDegree`.
+
+Establish `c2 : D.Av.coeff (n + s) = 1` using `by rw [← hAvd]; exact hAvm.coeff_natDegree`. Establish `c3 : D.A.coeff (n + s) = 1` using `by rw [← hAd]; exact hAm.coeff_natDegree`. Establish `c4 : A₀v.coeff n = 1` using `by rw [← hA₀vd]; exact hA₀vm.coeff_natDegree`. Rewrite `p1` using `[c1, c2, one_smul, one_smul, show n + (n + s) = 2 * n + s by ring]`. Rewrite `p2` using `[c3, c4, one_smul, one_smul, show n + s + n = 2 * n + s by ring]`.
+
+Establish `hce : starRingEnd ℂ e = e`. Apply the tactic sequence `rcases he with rfl | rfl <;> simp`. Establish `key` using `TopDegreePolynomials.isTop_sub (TopDegreePolynomials.isTop_const_mul (e * t⁻¹) p1) (TopDegreePolynomials.isTop_const_mul (e * t'⁻¹) p2)`. Establish `hfun : (fun Y : ℝ => one Ξ D Y (Q • X) (Q' • X')) = fun Y : ℝ => e * t⁻¹ * Ξ (evR A₀ Y • Q • X) (evR D.Av (Y + 1) • Q' • X') - e * t'⁻¹ * Ξ (evR D.A Y • Q • X) (evR A₀v (Y + 1) • Q' • X')`. Use function extensionality and compare the values at `Y`.
+
+Unfold `one`. Rewrite using `[hs, map_zero, zero_mul, add_zero]`. Use `congr 1`. Rewrite using `[← mul_smul (evR D.Av (Y + 1)) Q' X', h1, LinearMap.map_smul Ξ, LinearMap.smul_apply, smul_eq_mul]`. Rewrite using `[← mul_smul (evR D.A Y) Q X, h2, LinearMap.map_smulₛₗ, smul_eq_mul, map_mul, map_inv₀, Complex.conj_conj, hce]`.
+
+Rewrite using `[hfun]`. Establish `hc : e * (1 / t - 1 / t') * Ξ (Q • X) (Q' • X') = e * t⁻¹ * Ξ (Q • X) (Q' • X') - e * t'⁻¹ * Ξ (Q • X) (Q' • X')`. Rewrite using `[one_div, one_div]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hc]`.
+
+Conclude with `key`.
+-/
 theorem one_lift (Ξ : Sesq M) (n s : ℕ) (D : Dat R) (A₀ A₀v : R[X]) (e t t' : ℂ) (X X' : M)
     (hs : D.s = 0) (he : e = 1 ∨ e = -1)
     (hA : D.A.Monic ∧ D.A.natDegree = n + s ∧ D.Av.Monic ∧ D.Av.natDegree = n + s)
@@ -161,6 +206,9 @@ namespace Formalism.FourierDecayAlt.P
 
 open Finset Polynomial Formalism.FourierDecayAlt.F7
 
+/- English proof (translation)
+Introduce `R M _ _ _ _ _ _ Ξ n K dat α β X X' B hn hαβ hsh hB`. Establish `hch` using `fun a => chebyshev_bound_sharp (α a) (β a) (2 * n) (hαβ a) (by omega)`. Conclude with `WordLiftInduction.bound Ξ (2 * n) K dat (fun a => (dat a).s) (fun a => Formalism.SA.C.chebPt (α a) (β a) (2 * n)) X X' _ B (WordLiftInduction.word Ξ (2 * n) X X' K dat _ _ fun a Q Q' => WordLiftInduction.top_eq_sum (WordLiftInduction.one_planeWave Ξ n (dat a) (Q • X) (Q' • X') (h …`.
+-/
 theorem plane_wave_word_chebyshev_alt : Formalism.FourierDecayAlt.F7.PlaneWaveWordCheb := by
   intro R M _ _ _ _ _ _ Ξ n K dat α β X X' B hn hαβ hsh hB
   have hch := fun a => chebyshev_bound_sharp (α a) (β a) (2 * n) (hαβ a) (by omega)
@@ -171,6 +219,11 @@ theorem plane_wave_word_chebyshev_alt : Formalism.FourierDecayAlt.F7.PlaneWaveWo
         (hch a).1)
     (fun a => (hch a).2) hB
 
+/- English proof (translation)
+Introduce `R M _ _ _ _ _ _ Ξ n s K dat A₀ A₀v e t t' α β X X' B hs hs0 he _ hA hA₀ h1 h2 hαβ hB`. Establish `hch` using `fun a => chebyshev_bound_sharp (α a) (β a) (2 * n + s) (hαβ a) (by omega)`. Establish `hb` using `WordLiftInduction.bound Ξ (2 * n + s) K dat (fun a => e a * (1 / t a - 1 / t' a)) (fun a => Formalism.SA.C.chebPt (α a) (β a) (2 * n + s)) X X' _ B (WordLiftInduction.word Ξ (2 * n + s) X X' K dat _ _ fun a Q Q' => WordLiftInduction.top_eq_sum (WordLiftInduction.one_lift Ξ n s (d …`. Establish `hn : ∀ a, ‖e a * (1 / t a - 1 / t' a)‖ = ‖1 / t a - 1 / t' a‖`. Introduce `a`.
+
+Rewrite using `[norm_mul]`. Apply the tactic sequence `rcases he a with h | h <;> simp [h]`. Simplify `hb` using `only [hn]`.
+-/
 theorem lift_word_chebyshev : Formalism.FourierDecayAlt.F7.LiftWordCheb := by
   intro R M _ _ _ _ _ _ Ξ n s K dat A₀ A₀v e t t' α β X X' B hs hs0 he _ hA hA₀ h1 h2 hαβ hB
   have hch := fun a => chebyshev_bound_sharp (α a) (β a) (2 * n + s) (hαβ a) (by omega)

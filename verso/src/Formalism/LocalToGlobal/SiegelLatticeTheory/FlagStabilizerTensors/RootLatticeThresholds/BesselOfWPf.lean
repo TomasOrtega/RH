@@ -16,6 +16,33 @@ open Formalism.FourierDecayAlt.ThreeDimData Formalism.FourierDecayAlt.P Formalis
 variable {k r : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
   {Wp : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [CompleteSpace Wp]
 
+/- English proof (translation)
+Use `hWh.1` as an intermediate fact. Use `hNh.1` as an intermediate fact. Use `hGh.1` as an intermediate fact. Establish `hof : Continuous (fun y : Formalism.QuantumDeterminants.Mt k r => (Matrix.of y : Mx k r))` using `continuous_id`. Establish `hGae : ∀ᵐ y ∂μG, Matrix.of y ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r)` using `ae_iff.mpr hGh.2.2.1`.
+
+Establish `hWae : ∀ᵐ p1 ∂μW, Matrix.of p1 ∈ Formalism.QuantumDeterminants.UWset k r z` using `ae_iff.mpr hWh.2.2.1`. Establish `hNae : ∀ᵐ p2 ∂μN, Matrix.of p2 ∈ Formalism.QuantumDeterminants.Nset k r` using `ae_iff.mpr hNh.2.2.1`. Establish `hPae : ∀ᵐ p ∂(μW.prod μN), Matrix.of p.1 ∈ Formalism.QuantumDeterminants.UWset k r z ∧ Matrix.of p.2 ∈ Formalism.QuantumDeterminants.Nset k r` using `(Measure.quasiMeasurePreserving_fst.ae hWae).and (Measure.quasiMeasurePreserving_snd.ae hNae)`. Establish `hcs` using `Formalism.FourierDecayAlt.P.S3dx4.sigma_contOn hσ w0`. Take `⟨hxi, hxx, hxx'⟩` from `uh_inv hx0`.
+
+Use `set U : Set (Formalism.QuantumDeterminants.Mt k r) := {g | Matrix.of g ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r)} with hU`. Establish `hUm : MeasurableSet U` using `(isClosed_UH.preimage hof).measurableSet`. Set `Φ : Formalism.QuantumDeterminants.Mt k r → ℂ` to `fun g => ⟪η, PI.BesselPeriodGGP.eFun μG σ w0 (x0⁻¹ * Matrix.of g) • W (Matrix.of g)⟫_ℂ`. Set `Φ' : Formalism.QuantumDeterminants.Mt k r → ℂ` to `U.piecewise Φ (fun _ => 0)`. Establish `hΦc : ContinuousOn Φ U`.
+
+Establish `hm : ContinuousOn (fun g : Formalism.QuantumDeterminants.Mt k r => x0⁻¹ * (Matrix.of g : Mx k r)) U` using `(continuous_const.matrix_mul hof).continuousOn`. Establish `hmaps : Set.MapsTo (fun g : Formalism.QuantumDeterminants.Mt k r => x0⁻¹ * (Matrix.of g : Mx k r)) U (Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r))` using `fun g hg => DDSmoothness.uh_mul hxi hg`. Establish `he : ContinuousOn (fun g : Formalism.QuantumDeterminants.Mt k r => PI.BesselPeriodGGP.eFun μG σ w0 (x0⁻¹ * Matrix.of g)) U`. Unfold `PI.BesselPeriodGGP.eFun`. Conclude with `continuousOn_const.mul (continuous_star.comp_continuousOn (continuousOn_const.inner (hcs.comp hm hmaps)))`.
+
+Establish `hWc' : ContinuousOn (fun g : Formalism.QuantumDeterminants.Mt k r => W (Matrix.of g)) U` using `hWc.comp hof.continuousOn (fun g hg => hg)`. Conclude with `continuousOn_const.inner (he.smul hWc')`. Establish `hΦm : Measurable Φ'` using `hΦc.measurable_piecewise continuousOn_const hUm`. Establish `hlm : Measurable (Formalism.QuantumDeterminants.lmulM (k` using `k) (r := r) x0) := by`. Establish `: Continuous (Formalism.QuantumDeterminants.lmulM (k` using `k) (r := r) x0) := continuous_const.matrix_mul hof`.
+
+Conclude with `this.measurable`. Establish `htrans : (fun g : Formalism.QuantumDeterminants.Mt k r => ⟪η, PI.BesselPeriodGGP.eFun μG σ w0 (Matrix.of g) • W (x0 * Matrix.of g)⟫_ℂ) =ᵐ[μG] Φ' ∘ Formalism.QuantumDeterminants.lmulM x0` using `by filter_upwards [hGae] with g hg`. Establish `hxg : x0 * Matrix.of g ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r)` using `DDSmoothness.uh_mul hx0 hg`. Establish `hmem : Formalism.QuantumDeterminants.lmulM x0 g ∈ U` using `hxg`. Simplify using `only [Function.comp, Φ', Set.piecewise, hmem, if_true, Φ]`.
+
+Use `show _ = ⟪η, PI.BesselPeriodGGP.eFun μG σ w0 (x0⁻¹ * (x0 * Matrix.of g)) • W (x0 * Matrix.of g)⟫_ℂ`. Rewrite using `[← Matrix.mul_assoc, hxx', Matrix.one_mul]`. Establish `hmapEq : μG.map (Formalism.QuantumDeterminants.lmulM x0) = μG` using `hGh.2.2.2 x0 hx0`. Establish `h1 : Integrable (fun g : Formalism.QuantumDeterminants.Mt k r => ⟪η, PI.BesselPeriodGGP.eFun μG σ w0 (Matrix.of g) • W (x0 * Matrix.of g)⟫_ℂ) μG` using `(innerSL ℂ η).integrable_comp hI`. Establish `hΦint : Integrable Φ' μG`.
+
+Establish `h2 : Integrable (Φ' ∘ Formalism.QuantumDeterminants.lmulM x0) μG` using `h1.congr htrans`. Rewrite `h2` using `[← integrable_map_measure hΦm.aestronglyMeasurable hlm.aemeasurable, hmapEq]`. Conclude with `h2`. Use `⟨Φ', hΦm, hΦint, ?_, ?_⟩` and prove the remaining obligations. Establish `e1 : ⟪η, W x0⟫_ℂ = ∫ g, ⟪η, PI.BesselPeriodGGP.eFun μG σ w0 (Matrix.of g) • W (x0 * Matrix.of g)⟫_ℂ ∂μG` using `by conv_lhs => rw [← hR]`.
+
+Unfold `PI.BesselPeriodGGP.rconv`. Rewrite using `[integral_inner hI η]`. Rewrite using `[e1, integral_congr_ae htrans]`. Use `show ∫ g, Φ' g ∂μG = ∫ a, Φ' (Formalism.QuantumDeterminants.lmulM x0 a) ∂μG`. Rewrite using `[← integral_map hlm.aemeasurable hΦm.aestronglyMeasurable, hmapEq]`.
+
+Introduce `x hx filter_upwards [hPae] with p hp set u' := σ (Matrix.of x) w0 with hu' set v' := σ x0 w0 with hv'`. Establish `hs : Matrix.of p.1 * Matrix.of p.2 ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r)` using `DDSmoothness.uh_mul hp.1.1 hp.2.1`. Establish `hsx : Matrix.of p.1 * Matrix.of p.2 * Matrix.of x ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r)` using `DDSmoothness.uh_mul hs hx`. Establish `hmem : mulMt (fun i j => (Matrix.of p.1 * Matrix.of p.2) i j) x ∈ U` using `hsx`. Simplify using `only [Φ', Set.piecewise, hmem, if_true, Φ]`.
+
+Use `show ⟪η, PI.BesselPeriodGGP.eFun μG σ w0 (x0⁻¹ * (Matrix.of p.1 * Matrix.of p.2 * Matrix.of x)) • W (Matrix.of p.1 * Matrix.of p.2 * Matrix.of x)⟫_ℂ = _`. Rewrite using `[hWeq _ hp.1 _ hp.2 _ hx]`. Establish `hdet : IsUnit x0.det` using `Matrix.isUnit_det_of_right_inverse hxx`. Establish `eσ : σ (x0⁻¹ * (Matrix.of p.1 * Matrix.of p.2 * Matrix.of x)) w0 = σ x0⁻¹ (σ (Matrix.of p.1 * Matrix.of p.2) u')`. Rewrite using `[Formalism.FourierDecayAlt.P.TranslationBesselVanishing.sigma_mul hσ hxi hsx, Formalism.FourierDecayAlt.P.TranslationBesselVanishing.sigma_mul hσ hs hx]`.
+
+Both sides reduce to the same expression. Establish `eA : ⟪w0, σ (x0⁻¹ * (Matrix.of p.1 * Matrix.of p.2 * Matrix.of x)) w0⟫_ℂ = ⟪v', σ (Matrix.of p.1 * Matrix.of p.2) u'⟫_ℂ`. Rewrite using `[eσ, sigma_inner hσ hxi, Matrix.nonsing_inv_nonsing_inv x0 hdet]`. Unfold `PI.BesselPeriodGGP.eFun beInt`. Rewrite using `[eA, inner_smul_right, inner_smul_right, piW_inner hT hπ hp.1, ContinuousLinearMap.smul_apply, inner_smul_left]`.
+
+Simplify using `only [map_mul, Complex.star_def, Complex.conj_conj]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem orbit_data {ε : Fin (2 * r + k + 1) → Bool} {lam : Fin (2 * r + k + 1) → ℝ}
     {σ : Mx k r → (H →L[ℂ] H)} {w0 : H} {z : Fin (2 * r + k + 1) → ℂ} {c : ℂ} {u : Fin k → ℝ}
     {π : Mx k r → (Wp →L[ℂ] Wp)} {μW μN μG : Measure (Formalism.QuantumDeterminants.Mt k r)}
@@ -116,6 +143,9 @@ theorem orbit_data {ε : Fin (2 * r + k + 1) → Bool} {lam : Fin (2 * r + k + 1
     simp only [map_mul, Complex.star_def, Complex.conj_conj]
     ring
 
+/- English proof (translation)
+Establish `hf : Integrable (fun p => beInt z c π σ u' v' p η) (μW.prod μN)` using `(ContinuousLinearMap.apply ℂ Wp η).integrable_comp hI`. Use `⟨(innerSL ℂ w).integrable_comp hf, ?_⟩` and prove the remaining obligations. Rewrite using `[integral_inner hf w, ← ContinuousLinearMap.integral_apply hI η, hE, ContinuousLinearMap.smulRight_apply, inner_smul_right]`. Both sides reduce to the same expression.
+-/
 theorem g_int {σ : Mx k r → (H →L[ℂ] H)} {z : Fin (2 * r + k + 1) → ℂ} {c : ℂ} {π : Mx k r → (Wp →L[ℂ] Wp)}
     {μW μN : Measure (Formalism.QuantumDeterminants.Mt k r)} {l : H → Wp} {u' v' : H}
     (hI : Integrable (beInt z c π σ u' v') (μW.prod μN))
@@ -129,6 +159,31 @@ theorem g_int {σ : Mx k r → (H →L[ℂ] H)} {z : Fin (2 * r + k + 1) → ℂ
     inner_smul_right]
   rfl
 
+/- English proof (translation)
+Take `⟨hlam, hσ, hgap, hGapOK, hw0, hz, hT, hc, hπ, hWh, hNh, hGh, hq⟩` from `hS`. Use `hWh.1` as an intermediate fact. Use `hNh.1` as an intermediate fact. Use `hGh.1` as an intermediate fact. Take `⟨hS0, hSc⟩` from `DDSmoothness.muSof_facts hWh hNh`.
+
+Establish `hνae` using `DDSmoothness.ae_UH_of_quot hGh.2.2.1 hS0 hSc hq`. Establish `memDD : ∀ g ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r), σ g w0 ∈ DDsp σ w0` using `fun g hg => Submodule.subset_span ⟨g, hg, rfl⟩`. Establish `hsf : SFinite (muSof μW μN)` using `by unfold muSof; infer_instance`. Establish `hpm : Measurable (fun p : Formalism.QuantumDeterminants.Mt k r × Formalism.QuantumDeterminants.Mt k r => (fun i j => (Matrix.of p.1 * Matrix.of p.2) i j : Formalism.QuantumDeterminants.Mt k r))`. Establish `h1 : Continuous (fun p : Formalism.QuantumDeterminants.Mt k r × Formalism.QuantumDeterminants.Mt k r => (Matrix.of p.1 : Mx k r))` using `continuous_fst`.
+
+Establish `h2 : Continuous (fun p : Formalism.QuantumDeterminants.Mt k r × Formalism.QuantumDeterminants.Mt k r => (Matrix.of p.2 : Mx k r))` using `continuous_snd`. Establish `h3 : Continuous (fun p : Formalism.QuantumDeterminants.Mt k r × Formalism.QuantumDeterminants.Mt k r => (fun i j => (Matrix.of p.1 * Matrix.of p.2) i j : Formalism.QuantumDeterminants.Mt k r))` using `h1.matrix_mul h2`. Conclude with `h3.measurable`. Establish `comb : ∀ x0 ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r), ∀ x1 ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r), ∀ η0 η1 : Wp, ∀ b0 b1 : ℂ, (starRingEnd ℂ) b0 * ⟪l (σ x0 w0), η0⟫_ℂ = (starRingEnd ℂ) b1 * ⟪l (σ x1 w0), η1⟫_ℂ …`. Introduce `x0 hx0 x1 hx1 η0 η1 b0 b1 hb`.
+
+Take `⟨Φ0, hm0, hi0, he0, ho0⟩` from `orbit_data hσ hT hπ hWh hNh hGh hWc hWeq hx0 (hRe x0 hx0).1 (hRe x0 hx0).2 η0`. Take `⟨Φ1, hm1, hi1, he1, ho1⟩` from `orbit_data hσ hT hπ hWh hNh hGh hWc hWeq hx1 (hRe x1 hx1).1 (hRe x1 hx1).2 η1`. Set `F : Formalism.QuantumDeterminants.Mt k r → ℂ` to `fun g => b0 * Φ0 g - b1 * Φ1 g`. Establish `hFm : Measurable F` using `(measurable_const.mul hm0).sub (measurable_const.mul hm1)`. Establish `hFi : Integrable F μG` using `(hi0.const_mul b0).sub (hi1.const_mul b1)`.
+
+Establish `hF0 : ∫ g, F g ∂μG = 0`. Use `quot_zero hq F hFm hFi ?_` and prove the remaining obligations. Use `filter_upwards [hνae] with x hx`. Establish `hFm' : Measurable (fun s : Formalism.QuantumDeterminants.Mt k r => F (mulMt s x))` using `hFm.comp (measurable_mulMt.comp (measurable_id.prodMk measurable_const))`. Unfold `muSof`.
+
+Rewrite using `[integral_map hpm.aemeasurable hFm'.aestronglyMeasurable]`. Take `⟨hI0, hE0⟩` from `hl (σ (Matrix.of x) w0) (memDD _ hx) (σ x0 w0) (memDD _ hx0)`. Take `⟨hI1, hE1⟩` from `hl (σ (Matrix.of x) w0) (memDD _ hx) (σ x1 w0) (memDD _ hx1)`. Take `⟨hg0, e0⟩` from `g_int hI0 hE0 η0 (W (Matrix.of x))`. Take `⟨hg1, e1⟩` from `g_int hI1 hE1 η1 (W (Matrix.of x))`.
+
+Establish `hval : ∀ᵐ p ∂(μW.prod μN), F (mulMt (fun i j => (Matrix.of p.1 * Matrix.of p.2) i j) x) = ((PI.BesselPeriodGGP.fdegH μG σ w0 : ℝ) : ℂ) * (starRingEnd ℂ) ((starRingEnd ℂ) b0 * ⟪W (Matrix.of x), beInt z c π σ (σ (Matrix.of x) w0) (σ x0 w0) p η0⟫_ℂ - (starRingEnd ℂ) b1 * ⟪W (Matrix. …` using `by filter_upwards [ho0 x hx, ho1 x hx] with p h0p h1p show b0 * Φ0 _ - b1 * Φ1 _ = _`. Rewrite using `[h0p, h1p, ← inner_conj_symm (beInt z c π σ (σ (Matrix.of x) w0) (σ x0 w0) p η0) (W (Matrix.of x)), ← inner_conj_symm (beInt z c π σ (σ (Matrix.of x) w0) (σ x1 w0) p η1) (W (Matrix.of x))]`. Simplify using `only [map_sub, map_mul, Complex.conj_conj]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[integral_congr_ae hval, integral_const_mul, integral_conj, integral_sub (hg0.const_mul _) (hg1.const_mul _), integral_const_mul, integral_const_mul, e0, e1]`.
+
+Establish `hE : (starRingEnd ℂ) b0 * (⟪l (σ x0 w0), η0⟫_ℂ * ⟪W (Matrix.of x), l (σ (Matrix.of x) w0)⟫_ℂ) - (starRingEnd ℂ) b1 * (⟪l (σ x1 w0), η1⟫_ℂ * ⟪W (Matrix.of x), l (σ (Matrix.of x) w0)⟫_ℂ) = 0`. Take the linear combination `⟪W (Matrix.of x), l (σ (Matrix.of x) w0)⟫_ℂ * hb`. Rewrite using `[hE, map_zero, mul_zero]`. Establish `hsplit : ∫ g, F g ∂μG = b0 * ∫ g, Φ0 g ∂μG - b1 * ∫ g, Φ1 g ∂μG` using `by show ∫ g, (b0 * Φ0 g - b1 * Φ1 g) ∂μG = _`. Rewrite using `[integral_sub (hi0.const_mul b0) (hi1.const_mul b1), integral_const_mul, integral_const_mul]`.
+
+Rewrite `hF0` using `[hsplit, he0, he1]`. Conclude with `sub_eq_zero.mp hF0`. Distinguish the cases in `hzero : ∀ x ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r), l (σ x w0) = 0`. Use `⟨0, fun x0 hx0 => ?_⟩` and prove the remaining obligations. Rewrite using `[zero_smul]`.
+
+Apply `ext_inner_left ℂ` to reduce the goal to its premises. Introduce `η`. Rewrite using `[inner_zero_right]`. Use `comb x0 hx0 x0 hx0 η 0 1 0 (by rw [hzero x0 hx0]; simp)` as an intermediate fact. Simplify using `using this`.
+
+Use `push_neg at hzero`. Take `⟨x1, hx1, hl1⟩` from `hzero`. Establish `hy : ⟪l (σ x1 w0), l (σ x1 w0)⟫_ℂ ≠ 0` using `inner_self_ne_zero.mpr hl1`. Use `⟨⟪l (σ x1 w0), W x1⟫_ℂ / ⟪l (σ x1 w0), l (σ x1 w0)⟫_ℂ, fun x0 hx0 => ?_⟩` and prove the remaining obligations. Apply `ext_inner_left ℂ` to reduce the goal to its premises.
+
+Introduce `η`. Rewrite using `[inner_smul_right]`. Establish `hc` using `comb x0 hx0 x1 hx1 η (l (σ x1 w0)) ⟪l (σ x1 w0), l (σ x1 w0)⟫_ℂ ⟪η, l (σ x0 w0)⟫_ℂ (by rw [inner_conj_symm, inner_conj_symm]; ring)`. Rewrite using `[div_mul_eq_mul_div, eq_div_iff hy]`. Take the linear combination `hc`.
+-/
 theorem bow_core [FiniteDimensional ℂ Wp] {ε : Fin (2 * r + k + 1) → Bool} {lam : Fin (2 * r + k + 1) → ℝ} {h : ℝ}
     {σ : Mx k r → (H →L[ℂ] H)} {w0 : H} {z : Fin (2 * r + k + 1) → ℂ} {c : ℂ} {u : Fin k → ℝ}
     {π : Mx k r → (Wp →L[ℂ] Wp)} {μW μN μG νq : Measure (Formalism.QuantumDeterminants.Mt k r)}
@@ -222,6 +277,11 @@ theorem bow_core [FiniteDimensional ℂ Wp] {ε : Fin (2 * r + k + 1) → Bool} 
 
 variable [Fact Formalism.FourierDecayAlt.ThreeDimData.DecLow] in
 
+/- English proof (translation)
+Introduce `k r z c u lam ε h H _ _ _ σ hlam hσ hgap hok hz hT hc Vp _ _ _ π hπ w hw μG μW μN ν hG hW hN hq W hWc hWeq hRe hne hfin`. Establish `: CompleteSpace Vp` using `FiniteDimensional.complete ℂ Vp`. Establish `hS : Side k r ε lam h σ w z c u π μW μN μG ν` using `⟨hlam, hσ, hgap, hok, hw, hz, hT, hc, hπ, hW, hN, hG, hq⟩`. Take `⟨l, hlB, hla, -⟩` from `Formalism.FourierDecayAlt.P.discrete_series_form_one (Formalism.MainNotions.BridgeCS3dClosed.inputs_of hDI hJ) k r ε lam h H σ w Vp z c u π μW μN μG ν hS`. Take `⟨κ, hκ⟩` from `bow_core hS l hla hWc hWeq hRe`.
+
+Conclude with `⟨fun v => κ • l v, (Formalism.MainNotions.BridgeCS3d.isBesselMapSm_iff _ _ _ _ _).mpr (DDSmoothness.bessel_smul hlB κ), hκ⟩`.
+-/
 theorem besselOfW_of_local_decomposition (hDI : Formalism.FourierDecayAlt.ThreeDimData.DecInf) (hJ : PI.BesselMapUniq.BesselMapUniq) :
     Formalism.L2.SG.LocWSOf.BesselOfW := by
   intro k r z c u lam ε h H _ _ _ σ hlam hσ hgap hok hz hT hc Vp _ _ _ π hπ w hw μG μW μN ν hG hW hN hq W hWc hWeq
@@ -235,6 +295,9 @@ theorem besselOfW_of_local_decomposition (hDI : Formalism.FourierDecayAlt.ThreeD
 
 variable [Fact Formalism.FourierDecayAlt.ThreeDimData.DecLow] in
 
+/- English proof (translation)
+The claim follows from `besselOfW_of_local_decomposition Formalism.L2.SG.BesselDiscreteSeries.decInf hJ`.
+-/
 theorem besselOfW_of_jsz (hJ : PI.BesselMapUniq.BesselMapUniq) : Formalism.L2.SG.LocWSOf.BesselOfW :=
   besselOfW_of_local_decomposition Formalism.L2.SG.BesselDiscreteSeries.decInf hJ
 

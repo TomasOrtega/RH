@@ -35,11 +35,17 @@ def tr (e : FractionRing O ≃+* LL) (v : V) : TrV e V := v
 
 def untr (e : FractionRing O ≃+* LL) (v : TrV e V) : V := v
 
+/- English proof (translation)
+Use `show (e.symm (algebraMap Ow LL (eO a))) • v = a • v`. Rewrite using `[heO, RingEquiv.symm_apply_apply, algebraMap_smul]`.
+-/
 theorem smul_eO (heO : ∀ a : O, algebraMap Ow LL (eO a) = e (algebraMap O (FractionRing O) a))
     (a : O) (v : V) : (eO a • tr e v : TrV e V) = tr e (a • v) := by
   show (e.symm (algebraMap Ow LL (eO a))) • v = a • v
   rw [heO, RingEquiv.symm_apply_apply, algebraMap_smul]
 
+/- English proof (translation)
+Rewrite using `[← smul_eO heO, RingEquiv.apply_symm_apply]`.
+-/
 theorem smul_Ow (heO : ∀ a : O, algebraMap Ow LL (eO a) = e (algebraMap O (FractionRing O) a))
     (c : Ow) (v : V) : (c • tr e v : TrV e V) = tr e (eO.symm c • v) := by
   rw [← smul_eO heO, RingEquiv.apply_symm_apply]
@@ -61,6 +67,9 @@ def latT (heO : ∀ a : O, algebraMap Ow LL (eO a) = e (algebraMap O (FractionRi
     show tr e (j (eO.symm c • a)) = c • tr e (j a)
     rw [smul_Ow heO, map_smul]
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_latT (heO : ∀ a : O, algebraMap Ow LL (eO a) = e (algebraMap O (FractionRing O) a))
     (v : TrV e V) : v ∈ latT e eO j heO ↔ ∃ m, tr e (j m) = v := Iff.rfl
 
@@ -86,11 +95,17 @@ def latEquiv (heO : ∀ a : O, algebraMap Ow LL (eO a) = e (algebraMap O (Fracti
 
 def basMO [Module.Free O M] : Basis (Module.Free.ChooseBasisIndex O M) O (MO eO M) := Module.Free.chooseBasis O M
 
+/- English proof (translation)
+The claim follows from `Module.Free.of_basis ((basMO (eO := eO)).mapCoeffs eO (fun c (x : MO eO M) => by show eO.symm (eO c) • (show M from x) = c • (show M from x) rw [RingEquiv.symm_apply_apply]))`.
+-/
 theorem free_MO [Module.Free O M] : Module.Free Ow (MO eO M) :=
   Module.Free.of_basis ((basMO (eO := eO)).mapCoeffs eO (fun c (x : MO eO M) => by
     show eO.symm (eO c) • (show M from x) = c • (show M from x)
     rw [RingEquiv.symm_apply_apply]))
 
+/- English proof (translation)
+The claim follows from `Module.Finite.of_basis ((basMO (eO := eO)).mapCoeffs eO (fun c (x : MO eO M) => by show eO.symm (eO c) • (show M from x) = c • (show M from x) rw [RingEquiv.symm_apply_apply]))`.
+-/
 theorem finite_MO [Module.Finite O M] [Module.Free O M] : Module.Finite Ow (MO eO M) :=
   Module.Finite.of_basis ((basMO (eO := eO)).mapCoeffs eO (fun c (x : MO eO M) => by
     show eO.symm (eO c) • (show M from x) = c • (show M from x)
@@ -169,12 +184,38 @@ def latHom : LatHom (latOf e eO jP ι heO ρVP ρP hjP hjeqP hspP) (latOf e eO j
     rintro _ ⟨m, rfl⟩
     exact ⟨ev m, (hcomm m).symm⟩
 
+/- English proof (translation)
+Introduce and unpack `_ ⟨q, rfl⟩`. Take `⟨p, rfl⟩` from `hev q`. Conclude with `⟨tr e (jP p), ⟨p, rfl⟩, hcomm p⟩`.
+-/
 theorem latHom_onto (hev : Function.Surjective ev) :
     (latHom ι heO hjP hjQ hjeqP hjeqQ hspP hspQ hf0 hcomm).Onto := by
   rintro _ ⟨q, rfl⟩
   obtain ⟨p, rfl⟩ := hev q
   exact ⟨tr e (jP p), ⟨p, rfl⟩, hcomm p⟩
 
+/- English proof (translation)
+Introduce `κ hκ`. Take `⟨z, hz, rfl⟩` from `hκ`. Set `σ : Γ ≃ G` to `(Equiv.ofBijective ι hι).symm`. Establish `hισ : ∀ γ, ι (σ γ) = γ` using `fun γ => (Equiv.ofBijective ι hι).apply_symm_apply γ`. Establish `hσι : ∀ g, σ (ι g) = g` using `fun g => (Equiv.ofBijective ι hι).symm_apply_apply g`.
+
+Set `c2 : G → TrV e VQ` to `fun g => tr e (jQ ((z : Γ → Q) (ι g)))`. Establish `hz' : c2 ∈ finiteCocycles PD (repL e ρVQ ι)` using `hz`. Establish `hc2 : c2 ∈ latticeFiniteCocycles PD (latOf e eO jQ ι heO ρVQ ρQ hjQ hjeqQ hspQ)` using `⟨⟨hz'.1, fun g _ => ⟨_, rfl⟩⟩, hz'⟩`. Take `⟨a, ha, b, hb, hab⟩` from `Submodule.mem_sup.1 (hL c2 hc2)`. Take `⟨c1, hc1, rfl⟩` from `ha`.
+
+Take `⟨y, ⟨q, rfl⟩, rfl⟩` from `hb`. Establish `hval : ∀ g, ∃ m, tr e (jP m) = c1 g` using `fun g => hc1.1.2 g (Set.mem_univ g)`. Set `z1 : Γ → P` to `fun γ => Classical.choose (hval (σ γ))`. Establish `hz1 : ∀ γ, jP (z1 γ) = untr e (c1 (σ γ))` using `fun γ => Classical.choose_spec (hval (σ γ))`. Establish `hcoc : ∀ g h, c1 (g * h) = c1 g + repL e ρVP ι g (c1 h)` using `hc1.2.1.2`.
+
+Establish `hσmul : ∀ γ δ, σ (γ * δ) = σ γ * σ δ` using `fun γ δ => hι.1 (by rw [hισ, ι.map_mul, hισ, hισ])`. Establish `hz1c : z1 ∈ coZ1s ρP`. Introduce `γ δ`. Apply `hjP` to reduce the goal to its premises. Rewrite using `[map_add, hz1, hz1, hjeqP, hz1, hσmul, hcoc]`.
+
+Use `show untr e (c1 (σ γ)) + ρVP (ι (σ γ)) (untr e (c1 (σ δ))) = _`. Rewrite using `[hισ]`. Establish `hz1f : (fun g => tr e (jP (z1 (ι g)))) = c1`. Use function extensionality and compare the values at `g`. Use `show jP (z1 (ι g)) = untr e (c1 g)`.
+
+Rewrite using `[hz1, hσι]`. Use `⟨Submodule.mkQ _ ⟨z1, hz1c⟩, ⟨⟨z1, hz1c⟩, ?_, rfl⟩, ?_⟩` and prove the remaining obligations. Use `show (fun g => tr e (jP (z1 (ι g)))) ∈ finiteCocycles PD (repL e ρVP ι)`. Rewrite using `[hz1f]`. Conclude with `hc1.2`.
+
+Establish `heq : ∀ g, (((PD.p : ℕ) : Ow) ^ n • c2) g = trL e f0 (c1 g) + (repL e ρVQ ι g (tr e (jQ q)) - tr e (jQ q))` using `fun g => congrFun hab.symm g`. Establish `heqV : ∀ γ, jQ (((ℓ : O) ^ n) • (z : Γ → Q) γ) = jQ (ev (z1 γ)) + (jQ (ρQ γ q) - jQ q)`. Introduce `γ`. Establish `h` using `heq (σ γ)`. Rewrite `h` using `[Pi.smul_apply, hp]`.
+
+Establish `h1 : ((ℓ : Ow) ^ n) = eO ((ℓ : O) ^ n)` using `by rw [map_pow, map_natCast]`. Rewrite `h` using `[h1]`. Establish `h2` using `h`. Simplify using `only [c2] at h2`. Rewrite `h2` using `[smul_eO heO, hισ]`.
+
+Rewrite `h2` using `[repL_apply, hισ]`. Rewrite using `[map_smul, ← hcomm, hz1, hjeqQ]`. Conclude with `h2`. Use `show Submodule.mapQ _ _ _ _ (Submodule.Quotient.mk _) = _`. Rewrite using `[Submodule.mapQ_apply, ← map_smul, Submodule.mkQ_apply, Submodule.Quotient.eq]`.
+
+Use `⟨-q, funext fun γ => ?_⟩` and prove the remaining obligations. Apply `hjQ` to reduce the goal to its premises. Use `show jQ (ρQ γ (-q) - (-q)) = jQ (ev (z1 γ) - ((ℓ : O) ^ n) • (z : Γ → Q) γ)`. Rewrite using `[map_sub, map_sub, heqV]`. Simplify using `only [map_neg]`.
+
+Normalize the expressions using the abelian group laws.
+-/
 theorem liftO_of_liftF (ℓ : ℕ) (hp : PD.p = ℓ) (hι : Function.Bijective ι) (hev : IsEquivMap ρP ρQ ev) (n : ℕ)
     (hL : (latHom ι heO hjP hjQ hjeqP hjeqQ hspP hspQ hf0 hcomm).LiftF PD n) :
     Formalism.RepresentationBoundsCohomology.JL.LiftO ℓ (finiteClassesModel e PD ι ρVP ρP jP) (finiteClassesModel e PD ι ρVQ ρQ jQ)
@@ -240,6 +281,9 @@ end Lift
 
 section FromAt
 
+/- English proof (translation)
+Take `⟨s, hs⟩` from `L.fg`. Use `⟨⟨s, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff, ← L.span, Submodule.span_le, ← hs]`. Conclude with `Submodule.span_le_restrictScalars Ow LL (s : Set V)`.
+-/
 theorem finDim_of_lat {LL Ow : Type} [Field LL] [CommRing Ow] [Algebra Ow LL] {G : Type} [Group G]
     {Qp : Type} [Field Qp] [Algebra Qp LL]
     {V : Type} [AddCommGroup V] [Module LL V] [Module Qp V] [IsScalarTower Qp LL V] [Module Ow V]
@@ -249,6 +293,11 @@ theorem finDim_of_lat {LL Ow : Type} [Field LL] [CommRing Ow] [Algebra Ow LL] {G
   rw [eq_top_iff, ← L.span, Submodule.span_le, ← hs]
   exact Submodule.span_le_restrictScalars Ow LL (s : Set V)
 
+/- English proof (translation)
+Take `⟨m, xs, U, q, hU, hq, hqe⟩` from `h`. Use `⟨m, xs, U, f ∘ₗ q, hU, fun w => ?_, fun g u hu => ?_⟩` and prove the remaining obligations. Take `⟨v, rfl⟩` from `hf w`. Take `⟨u, hu, rfl⟩` from `hq v`. Conclude with `⟨u, hu, rfl⟩`.
+
+Rewrite using `[LinearMap.comp_apply, hqe g u hu, heq, LinearMap.comp_apply]`.
+-/
 theorem subq_of_onto {LL : Type} [Field LL] {G : Type} [Group G] {V W : Type} [AddCommGroup V] [Module LL V]
     [AddCommGroup W] [Module LL W] {ρ : Representation LL G V} {ρ' : Representation LL G W}
     {ιx : Type} {k : ℕ} {Ms : ιx → G → Matrix (Fin k) (Fin k) LL} (f : V →ₗ[LL] W)
@@ -289,6 +338,11 @@ variable {O : Type} [CommRing O] [IsDomain O] {LL : Type} [Field LL] [Topologica
 
 include hspQ hcomm in
 
+/- English proof (translation)
+Introduce `v`. Take `⟨c, hc, m, hm⟩` from `hspQ (untr e v)`. Take `⟨p, rfl⟩` from `hev m`. Establish `hk : algebraMap O (FractionRing O) c ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors (mem_nonZeroDivisors_of_ne_zero hc)`. Use `⟨tr e ((algebraMap O (FractionRing O) c)⁻¹ • jP p), ?_⟩` and prove the remaining obligations.
+
+Use `show f0 ((algebraMap O (FractionRing O) c)⁻¹ • jP p) = untr e v`. Rewrite using `[smulK, hcomm, hm, ← algebraMap_smul (FractionRing O) c (untr e v), smul_smul, inv_mul_cancel₀ hk, one_smul]`.
+-/
 theorem trL_onto (hev : Function.Surjective ev) : Function.Surjective (trL e f0) := by
   intro v
   obtain ⟨c, hc, m, hm⟩ := hspQ (untr e v)
@@ -301,6 +355,13 @@ theorem trL_onto (hev : Function.Surjective ev) : Function.Surjective (trL e f0)
 
 include heO hjP hjQ hjeqP hjeqQ hspP hspQ hf0 hcomm in
 
+/- English proof (translation)
+Set `L1` to `latOf e eO jP ι heO ρVP ρP hjP hjeqP hspP`. Set `L2` to `latOf e eO jQ ι heO ρVQ ρQ hjQ hjeqQ hspQ`. Use `haveI := finDim_of_lat (Ow := Ow) (Qp := Qp) L1`. Use `haveI := finDim_of_lat (Ow := Ow) (Qp := Qp) L2`. Establish `hons : Function.Surjective (trL e f0)` using `trL_onto (hspQ := hspQ) (hcomm := hcomm) hevs`.
+
+Establish `heq : ∀ g v, trL e f0 (repL e ρVP ι g v) = repL e ρVQ ι g (trL e f0 v)` using `fun g v => hf0 (ι g) v`. Establish `hcQ : ∀ y, Continuous fun g => repL e ρVQ ι g y`. Introduce `y`. Take `⟨x, rfl⟩` from `hons y`. Establish `h : (fun g => repL e ρVQ ι g (trL e f0 x)) = fun g => trL e f0 (repL e ρVP ι g x)`.
+
+Use function extensionality and compare the values at `fun g => (heq g x).symm`. Rewrite using `[h]`. Conclude with `(trL_cont e f0).comp (hcP x)`. Establish `hsQ` using `subq_of_onto (trL e f0) hons heq hsP`. Conclude with `liftO_of_liftF PD ι heO hjP hjQ hjeqP hjeqQ hspP hspQ hf0 hcomm ℓ hp hι hev n (hA (TrV e VP) (repL e ρVP ι) L1 hcP hsP (TrV e VQ) (repL e ρVQ ι) L2 hcQ hsQ (latHom ι heO hjP hjQ hjeqP hjeqQ hspP hspQ hf0 hcomm) (latHom_onto ι heO hjP hjQ hjeqP hjeqQ hspP hspQ hf0 hcomm hevs))`.
+-/
 theorem liftO_of_liftAt (ℓ : ℕ) (hp : PD.p = ℓ) (hι : Function.Bijective ι) (hev : IsEquivMap ρP ρQ ev)
     (hevs : Function.Surjective ev) {ιx : Type} {k : ℕ} (Ms : ιx → G → Matrix (Fin k) (Fin k) LL) (n : ℕ)
     (hA : Formalism.MainNotions.N.LiftAt PD (O := Ow) Ms n)
@@ -335,6 +396,9 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Number
 
 variable {D : D7} (i : D.nd.Loc) (dc : TruncatedSeriesCountingIdentities.Decl D i)
 
+/- English proof (translation)
+Unfold `finiteClassesCocyclesMap fPre finiteClassesModel finPre`. Rewrite using `[fZ_pos i dc ρ hn]`. Both sides reduce to the same expression.
+-/
 theorem finite_classes_local_eq {n : ℕ} (hn : K.plOf i dc n ∈ placesOver D.host.E (D.nd.l i)) {V M : Type} [AddCommGroup V]
     [Module (FractionRing (D.nd.O i)) V] [Module (D.nd.O i) V] [IsScalarTower (D.nd.O i) (FractionRing (D.nd.O i)) V]
     [AddCommGroup M] [Module (D.nd.O i) M]
@@ -345,6 +409,9 @@ theorem finite_classes_local_eq {n : ℕ} (hn : K.plOf i dc n ∈ placesOver D.h
   rw [fZ_pos i dc ρ hn]
   rfl
 
+/- English proof (translation)
+The claim follows from `(Br.toLLK_alg (D.nbr i _ hn) a).symm`.
+-/
 theorem heO_br {n : ℕ} (hn : K.plOf i dc n ∈ placesOver D.host.E (D.nd.l i)) (a : D.nd.O i) :
     algebraMap (Br.Ow (D.nbr i _ hn)) (Br.LLw (D.nbr i _ hn)) ((D.nbr i _ hn).eO a) =
       eK (D.nbr i _ hn) (algebraMap (D.nd.O i) (FractionRing (D.nd.O i)) a) :=
@@ -352,6 +419,9 @@ theorem heO_br {n : ℕ} (hn : K.plOf i dc n ∈ placesOver D.host.E (D.nd.l i))
 
 variable (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i)))
 
+/- English proof (translation)
+Rewrite using `[finite_classes_local_eq i dc hn, finite_classes_local_eq i dc hn]`. Establish `hbij : Function.Bijective (Br.iota D.nbr i _ hn)` using `(D.nbr i _ hn).e.symm.bijective`. Conclude with `liftO_of_liftAt (Br.PD D.loc D.nbr i _ hn) (Br.iota D.nbr i _ hn) (heO_br i dc hn) hjP hjQ hjeqP hjeqQ hspP hspQ hf0 hcomm (D.nd.l i) (Br.PD_p D.loc D.nbr i _ hn) hbij hev hevs _ _ (hA _ hn hc (TruncatedSeriesCountingIdentities.CoefExt.self i _ hn) (hG _ hn)) hcP hsP`.
+-/
 theorem liftO_col (eR : HeightOneSpectrum (𝓞 D.host.E) → ℕ) (hA : TruncatedSeriesCountingIdentities.LiftExponentAtPlaces i r dc eR) (hG : K.SelfGood i)
     {n : ℕ} (hn : K.plOf i dc n ∈ placesOver D.host.E (D.nd.l i)) (hc : K.plOf i dc n ∈ dc.col)
     {P Q VP VQ : Type} [AddCommGroup P] [Module (D.nd.O i) P] [AddCommGroup Q] [Module (D.nd.O i) Q]
@@ -385,6 +455,11 @@ end Rec
 
 section Emb
 
+/- English proof (translation)
+Take `⟨ψ, hψ⟩` from `LinearMap.exists_leftInverse_of_injective φ (LinearMap.ker_eq_bot.2 hφ)`. Establish `hψv : ∀ v, ψ (φ v) = v` using `fun v => by rw [← LinearMap.comp_apply, hψ, LinearMap.id_apply]`. Use `⟨m, xs, LinearMap.range φ, ψ, ?_, fun v => ⟨φ v, ⟨v, rfl⟩, hψv v⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `g _ ⟨v, rfl⟩`. Conclude with `⟨ρ g v, heq g v⟩`.
+
+Introduce and unpack `g _ ⟨v, rfl⟩`. Rewrite using `[← heq, hψv, hψv]`.
+-/
 theorem subq_of_inj {LL : Type} [Field LL] {G : Type} [Group G] {V : Type} [AddCommGroup V] [Module LL V]
     {ρ : Representation LL G V} {ιx : Type} {k : ℕ} {Ms : ιx → G → Matrix (Fin k) (Fin k) LL}
     {m : ℕ} (xs : Fin m → ιx) (φ : V →ₗ[LL] (Fin m → Fin k → LL)) (hφ : Function.Injective φ)
@@ -397,6 +472,11 @@ theorem subq_of_inj {LL : Type} [Field LL] {G : Type} [Group G] {V : Type} [AddC
   · rintro g _ ⟨v, rfl⟩
     rw [← heq, hψv, hψv]
 
+/- English proof (translation)
+Take `⟨ψ, hψ⟩` from `LinearMap.exists_leftInverse_of_injective φ (LinearMap.ker_eq_bot.2 hφ)`. Establish `hψv : ∀ v, ψ (φ v) = v` using `fun v => by rw [← LinearMap.comp_apply, hψ, LinearMap.id_apply]`. Establish `h : (fun g => ρ g v) = fun g => ψ (fun a => (Ms (xs a) g).mulVec (φ v a))`. Use function extensionality and compare the values at `fun g => by rw [← heq, hψv]`. Rewrite using `[h]`.
+
+Establish `hψc : Continuous ψ` using `IsModuleTopology.continuous_of_linearMap ψ`. Use `hψc.comp (continuous_pi fun a => continuous_pi fun i => ?_)` and prove the remaining obligations. Simplify using `only [Matrix.mulVec, dotProduct]`. Conclude with `continuous_finset_sum _ fun j _ => ((hMs (xs a)).matrix_elem i j).mul continuous_const`.
+-/
 theorem cont_of_inj {LL : Type} [Field LL] [TopologicalSpace LL] [IsTopologicalRing LL] {G : Type} [Group G]
     [TopologicalSpace G] {V : Type} [AddCommGroup V] [Module LL V] [TopologicalSpace V] [IsModuleTopology LL V]
     [ContinuousAdd V] [ContinuousSMul LL V]
@@ -420,12 +500,20 @@ section Loc
 
 variable {O : Type} [CommRing O] [IsDomain O] {M : Type} [AddCommGroup M] [Module O M]
 
+/- English proof (translation)
+Introduce `a b h`. Take `⟨c, hc⟩` from `IsLocalizedModule.exists_of_eq (S := nonZeroDivisors O) (f := mkK (O := O) (M := M)) h`. Rewrite `hc` using `[Submonoid.smul_def, Submonoid.smul_def]`. Conclude with `smul_right_injective M (nonZeroDivisors.coe_ne_zero c) hc`.
+-/
 theorem mkK_inj [Module.Free O M] : Function.Injective (mkK (O := O) (M := M)) := by
   intro a b h
   obtain ⟨c, hc⟩ := IsLocalizedModule.exists_of_eq (S := nonZeroDivisors O) (f := mkK (O := O) (M := M)) h
   rw [Submonoid.smul_def, Submonoid.smul_def] at hc
   exact smul_right_injective M (nonZeroDivisors.coe_ne_zero c) hc
 
+/- English proof (translation)
+Proceed by induction on `v using LocalizedModule.induction_on with`. Consider the case `h m s`. Use `⟨(s : O), nonZeroDivisors.coe_ne_zero s, m, ?_⟩` and prove the remaining obligations. Rewrite using `[LocalizedModule.smul'_mk]`. Use `show LocalizedModule.mk m 1 = _`.
+
+Rewrite using `[LocalizedModule.mk_eq]`. Conclude with `⟨1, by simp [Submonoid.smul_def]⟩`.
+-/
 theorem mkK_span (v : MK (O := O) M) : ∃ c : O, c ≠ 0 ∧ ∃ m, mkK m = c • v := by
   induction v using LocalizedModule.induction_on with
   | h m s =>
@@ -458,6 +546,9 @@ def EmbAt {n : ℕ} (hn : K.plOf i dc n ∈ placesOver D.host.E (D.nd.l i)) {VP 
 def MsCont {n : ℕ} (hn : K.plOf i dc n ∈ placesOver D.host.E (D.nd.l i)) : Prop :=
   ∀ x, Continuous (MsAt i dc r hn x)
 
+/- English proof (translation)
+Take `⟨m, xs, φ, hφ, heq⟩` from `hemb`. Conclude with `liftO_col i dc r eR hA hG hn hc hjP hjQ hjeqP hjeqQ hspP hspQ hf0 hcomm hev hevs (cont_of_inj xs φ hφ heq hMs) (subq_of_inj xs φ hφ heq)`.
+-/
 theorem lift_integral_column (eR : HeightOneSpectrum (𝓞 D.host.E) → ℕ) (hA : TruncatedSeriesCountingIdentities.LiftExponentAtPlaces i r dc eR) (hG : K.SelfGood i)
     {n : ℕ} (hn : K.plOf i dc n ∈ placesOver D.host.E (D.nd.l i)) (hc : K.plOf i dc n ∈ dc.col)
     {P Q VP VQ : Type} [AddCommGroup P] [Module (D.nd.O i) P] [AddCommGroup Q] [Module (D.nd.O i) Q]
@@ -491,13 +582,22 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Number
 
 variable {D : D7} (i : D.nd.Loc) (dc : TruncatedSeriesCountingIdentities.Decl D i)
 
+/- English proof (translation)
+The claim follows from `K.plOf_idx i dc (Finset.mem_union_left _ (Finset.mem_union_right _ l.2))`.
+-/
 theorem plOf_col (l : K.Col i dc) : K.plOf i dc (K.colIdx i dc l) = l.1 :=
   K.plOf_idx i dc (Finset.mem_union_left _ (Finset.mem_union_right _ l.2))
 
+/- English proof (translation)
+Rewrite using `[plOf_col]`. Conclude with `l.2`.
+-/
 theorem hcCol (l : K.Col i dc) : K.plOf i dc (K.colIdx i dc l) ∈ dc.col := by
   rw [plOf_col]
   exact l.2
 
+/- English proof (translation)
+The claim follows from `(dc.cover _).1 (Or.inr (hcCol i dc l))`.
+-/
 theorem hnCol (l : K.Col i dc) : K.plOf i dc (K.colIdx i dc l) ∈ placesOver D.host.E (D.nd.l i) :=
   (dc.cover _).1 (Or.inr (hcCol i dc l))
 
@@ -506,6 +606,9 @@ variable (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i)))
   {R' : Subalgebra (D.nd.O i) (X' → Matrix d d (FractionRing (D.nd.O i)))} {Tc : Type} [CommRing Tc] [Algebra Tc R']
   (r' : (D.nd.Om ≃ₐ[D.host.E] D.nd.Om) →* R') (χ : (D.nd.Om ≃ₐ[D.host.E] D.nd.Om) →* Tcˣ)
 
+/- English proof (translation)
+Use `haveI := smulComm_O i (A := R') (V := V)`. Introduce `l`. Establish `hQ : ∀ (γ : ↥(Γn i dc (K.colIdx i dc l))) m, iL (resRep (uRep (D.nd.O i) (M` using `L) r' χ) (Γn i dc (K.colIdx i dc l)) γ m) = resRep (uRep (D.nd.O i) (M := V) r' χ) (Γn i dc (K.colIdx i dc l)) γ (iL m) := fun γ m => hiLeq _ m`. Establish `hev` using `Formalism.RepresentationBoundsCohomology.JL.ev_equiv r' χ (Γn i dc (K.colIdx i dc l)) ince v₁ eve heve`. Conclude with `lift_integral_column i dc r eR hA hG (hnCol i dc l) (hcCol i dc l) (ρVP := locRep (resRep (uRep (D.nd.O i) (M := Pe) r' χ) (Γn i dc (K.colIdx i dc l)))) (ρVQ := resRep (uRep (D.nd.O i) (M := V) r' χ) (Γn i dc (K.colIdx i dc l))) (jP := mkK) (jQ := iL) mkK_inj hiL (fun γ m => (loc …`.
+-/
 theorem liftCol_eve (eR : HeightOneSpectrum (𝓞 D.host.E) → ℕ) (hA : TruncatedSeriesCountingIdentities.LiftExponentAtPlaces i r dc eR) (hG : K.SelfGood i)
     {Pe L V : Type} [AddCommGroup Pe] [Module R' Pe] [Module (D.nd.O i) Pe] [SMulCommClass R' (D.nd.O i) Pe]
     [Module.Finite (D.nd.O i) Pe] [Module.Free (D.nd.O i) Pe]
@@ -538,6 +641,9 @@ theorem liftCol_eve (eR : HeightOneSpectrum (𝓞 D.host.E) → ℕ) (hA : Trunc
     (liftK_equiv _ _ (iL ∘ₗ eve) (fun γ m => by rw [LinearMap.comp_apply, LinearMap.comp_apply, hev, hQ]))
     (fun m => liftK_mkK _ m) hev hevs (hemb l) (hMs l)
 
+/- English proof (translation)
+Introduce `l`. Establish `hev` using `Formalism.RepresentationBoundsCohomology.JL.ev_equiv_triv r' χ (Γn i dc (K.colIdx i dc l)) evE hevE`. Establish `hQ : ∀ (γ : ↥(Γn i dc (K.colIdx i dc l))) (m : ↥(Ideal.span {δO})), mkK (O` using `D.nd.O i) (Representation.trivial (D.nd.O i) ↥(Γn i dc (K.colIdx i dc l)) ↥(Ideal.span {δO}) γ m) = locRep (Representation.trivial (D.nd.O i) ↥(Γn i dc (K.colIdx i dc l)) ↥(Ideal.span {δO})) γ (mkK m) := fun γ m => (locRep_mkK _ γ m).symm`. Conclude with `lift_integral_column i dc r eR hA hG (hnCol i dc l) (hcCol i dc l) (ρVP := locRep (resRep (uRep (D.nd.O i) (M := PE) r' χ) (Γn i dc (K.colIdx i dc l)))) (ρVQ := locRep (Representation.trivial (D.nd.O i) ↥(Γn i dc (K.colIdx i dc l)) ↥(Ideal.span {δO}))) (jP := mkK) (jQ := mkK) mkK …`.
+-/
 theorem liftCol_evE (eR : HeightOneSpectrum (𝓞 D.host.E) → ℕ) (hA : TruncatedSeriesCountingIdentities.LiftExponentAtPlaces i r dc eR) (hG : K.SelfGood i)
     (δO : D.nd.O i) [Module.Finite (D.nd.O i) ↥(Ideal.span {δO})] [Module.Free (D.nd.O i) ↥(Ideal.span {δO})]
     {PE : Type} [AddCommGroup PE] [Module R' PE] [Module (D.nd.O i) PE] [SMulCommClass R' (D.nd.O i) PE]
@@ -572,6 +678,11 @@ open Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions For
 
 variable {D : D7} (i : D.nd.Loc) (dc : TruncatedSeriesCountingIdentities.Decl D i) (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i)))
 
+/- English proof (translation)
+Introduce `x`. Establish `hM` using `rTwO_cont D i r hr x`. Use `continuous_matrix fun a b => ?_` and prove the remaining obligations. Establish `h1 : Continuous fun g : Br.G D.nbr i _ hn => rTwO D.nd i r x ((Br.iota D.nbr i _ hn g : Gw D.nd (K.plOf i dc n)) : GE D.nd) a b` using `(hM.matrix_elem a b).comp (continuous_subtype_val.comp (Br.iota_cont D.nbr i _ hn))`. Establish `h2 : Continuous fun y : D.nd.O i => (((D.nbr i _ hn).eO y : ↥(OL (D.nbr i _ hn).LL)) : ↥(D.nbr i _ hn).LL.1)` using `continuous_subtype_val.comp (D.nbr i _ hn).eO_cont`.
+
+Establish `h3 : Continuous fun y : ↥(D.nbr i _ hn).LL.1 => (TruncatedSeriesCountingIdentities.CoefExt.self i _ hn).inc y` using `Continuous.subtype_mk continuous_subtype_val _`. Conclude with `h3.comp (h2.comp h1)`.
+-/
 theorem msCont_of (hr : TruncatedSeriesCountingIdentities.FamilyContinuous (D := D) i r) {n : ℕ} (hn : K.plOf i dc n ∈ placesOver D.host.E (D.nd.l i)) :
     MsCont i dc r hn := by
   intro x
@@ -590,6 +701,17 @@ end Cont
 
 section Sel
 
+/- English proof (translation)
+Set `f : I × Fin k → Module.Dual LL V` to `fun p => (LinearMap.proj p.2) ∘ₗ Ψ p.1`. Take `⟨b, hbs, hspan, hli⟩` from `exists_linearIndependent LL (Set.range f)`. Establish `hfin : b.Finite` using `hli.setFinite`. Establish `hpre : ∀ φ : b, ∃ p, f p = φ` using `fun φ => hbs φ.2`. Use `haveI : Fintype b := hfin.fintype`.
+
+Set `eb` to `Fintype.equivFin b`. Use `⟨Fintype.card b, fun a => (Classical.choose (hpre (eb.symm a))).1, fun v hv => h v fun i => ?_⟩` and prove the remaining obligations. Establish `hb : ∀ φ ∈ b, φ v = 0`. Introduce `φ hφ`. Establish `hc` using `Classical.choose_spec (hpre (eb.symm (eb ⟨φ, hφ⟩)))`.
+
+Establish `hψ : ((eb.symm (eb ⟨φ, hφ⟩) : b) : Module.Dual LL V) = φ` using `by rw [Equiv.symm_apply_apply]`. Rewrite using `[← hψ, ← hc]`. Use `show (Ψ _ v) _ = 0`. Rewrite using `[hv (eb ⟨φ, hφ⟩)]`. Both sides reduce to the same expression.
+
+Establish `hall : ∀ φ ∈ Submodule.span LL b, φ v = 0`. Introduce `φ hφ`. Proceed by induction on `hφ using Submodule.span_induction with`. Consider the case `mem x hx => exact hb x hx`. Consider the case `zero => rfl`.
+
+Consider the case `add x y _ _ hx hy => rw [LinearMap.add_apply, hx, hy, add_zero]`. Consider the case `smul c x _ hx => rw [LinearMap.smul_apply, hx, smul_zero]`. Use function extensionality and compare the values at `c`. Conclude with `hall (f (i, c)) (hspan ▸ Submodule.subset_span ⟨(i, c), rfl⟩)`.
+-/
 theorem fin_sel {LL V : Type} [Field LL] [AddCommGroup V] [Module LL V] [FiniteDimensional LL V] {I : Type} {k : ℕ}
     (Ψ : I → V →ₗ[LL] (Fin k → LL)) (h : ∀ v, (∀ i, Ψ i v = 0) → v = 0) :
     ∃ (m : ℕ) (xs : Fin m → I), ∀ v, (∀ a, Ψ (xs a) v = 0) → v = 0 := by
@@ -626,6 +748,11 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Number
 
 variable {D : D7} (i : D.nd.Loc) (dc : TruncatedSeriesCountingIdentities.Decl D i) (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i)))
 
+/- English proof (translation)
+Take `⟨m, xs, hxs⟩` from `fin_sel Ψ hinj`. Use `⟨m, xx ∘ xs, LinearMap.pi fun a => Ψ (xs a), fun v w hvw => ?_, fun g v => funext fun a => heq _ g v⟩` and prove the remaining obligations. Rewrite using `[← sub_eq_zero]`. Use `hxs _ fun a => ?_` and prove the remaining obligations. Rewrite using `[map_sub, sub_eq_zero]`.
+
+Conclude with `congrFun hvw a`.
+-/
 theorem embAt_of_fam {n : ℕ} (hn : K.plOf i dc n ∈ placesOver D.host.E (D.nd.l i)) {VP : Type} [AddCommGroup VP]
     [Module (FractionRing (D.nd.O i)) VP] [Module (D.nd.O i) VP] [IsScalarTower (D.nd.O i) (FractionRing (D.nd.O i)) VP]
     (ρVP : Representation (D.nd.O i) ↥(Γn i dc n) VP)
@@ -650,6 +777,11 @@ open Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions For
 variable {D : D7} (i : D.nd.Loc) (dc : TruncatedSeriesCountingIdentities.Decl D i) (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i)))
   (Dd : Formalism.RepresentationBoundsCohomology.ringDataObjects.RingData (D.nd.O i) (D.nd.X i) (Fin D.R.nV) (GE D.nd) D.R.t (RepresentationBoundsCohomology.blk D.R))
 
+/- English proof (translation)
+Establish `h1 : ((((Dd.χ g)⁻¹ : (Dd.T')ˣ) : Dd.T') : Dd.X' → D.nd.O i) x' * (chiU D.nd i 1 g : D.nd.O i) = 1`. Establish `h0 : (((Dd.χ g)⁻¹ : (Dd.T')ˣ) : Dd.T') * (Dd.χ g : Dd.T') = 1` using `Units.inv_mul _`. Use `congrArg (fun f : Dd.T' => (f : Dd.X' → D.nd.O i) x') h0` as an intermediate fact. Simplify using `only [MulMemClass.coe_mul, OneMemClass.coe_one, Pi.mul_apply, Pi.one_apply] at this`. Rewrite `this` using `[hχ g x']`. Then use the resulting hypothesis.
+
+Conclude with `Units.eq_inv_of_mul_eq_one_left (by rw [mul_comm]; exact h1)`.
+-/
 theorem chiInv_at (hχ : ∀ g x', (((Dd.χ g : (Dd.T')ˣ) : Dd.T') : Dd.X' → D.nd.O i) x' = (chiU D.nd i 1 g : D.nd.O i))
     (g : GE D.nd) (x' : Dd.X') :
     ((((Dd.χ g)⁻¹ : (Dd.T')ˣ) : Dd.T') : Dd.X' → D.nd.O i) x' = (((chiU D.nd i 1 g)⁻¹ : (D.nd.O i)ˣ) : D.nd.O i) := by
@@ -660,6 +792,9 @@ theorem chiInv_at (hχ : ∀ g x', (((Dd.χ g : (Dd.T')ˣ) : Dd.T') : Dd.X' → 
     rwa [hχ g x'] at this
   exact Units.eq_inv_of_mul_eq_one_left (by rw [mul_comm]; exact h1)
 
+/- English proof (translation)
+Use `show (((((Dd.χ g)⁻¹ : (Dd.T')ˣ) : Dd.T') • Dd.r g : Dd.R') : Dd.X' → Matrix (Fin D.R.nV) (Fin D.R.nV) (FractionRing (D.nd.O i))) x' = _`. Rewrite using `[hsm, hr', chiInv_at i Dd hχ]`. Use extensionality with `a b`. Simplify using `[rTwO, twistM, Matrix.map_apply, Matrix.smul_apply]`.
+-/
 theorem uElt_at
     (hr' : ∀ g x', ((Dd.r g : Dd.R') : Dd.X' → Matrix (Fin D.R.nV) (Fin D.R.nV) (FractionRing (D.nd.O i))) x' =
       (rO D.nd i r (Dd.p x') g).map (algebraMap (D.nd.O i) (FractionRing (D.nd.O i))))
@@ -685,6 +820,9 @@ open Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions For
 variable {D : D7} (i : D.nd.Loc) (dc : TruncatedSeriesCountingIdentities.Decl D i) (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i)))
   (Dd : Formalism.RepresentationBoundsCohomology.ringDataObjects.RingData (D.nd.O i) (D.nd.X i) (Fin D.R.nV) (GE D.nd) D.R.t (RepresentationBoundsCohomology.blk D.R))
 
+/- English proof (translation)
+Rewrite using `[LocalizedModule.smul'_mk]`. Use `show _ = LocalizedModule.mk m 1`. Rewrite using `[LocalizedModule.mk_eq]`. Conclude with `⟨1, by simp [Submonoid.smul_def]⟩`.
+-/
 theorem smul_mk {O M : Type} [CommRing O] [IsDomain O] [AddCommGroup M] [Module O M] (m : M) (s : nonZeroDivisors O) :
     ((s : O) • LocalizedModule.mk m s : MK (O := O) M) = mkK m := by
   rw [LocalizedModule.smul'_mk]
@@ -692,12 +830,18 @@ theorem smul_mk {O M : Type} [CommRing O] [IsDomain O] [AddCommGroup M] [Module 
   rw [LocalizedModule.mk_eq]
   exact ⟨1, by simp [Submonoid.smul_def]⟩
 
+/- English proof (translation)
+Establish `hu` using `(Module.End.isUnit_iff _).1 (isUnit_end (V := A) s)`. Apply `hu.1` to reduce the goal to its premises. Simplify `h` using `[Module.algebraMap_end_apply]`.
+-/
 theorem smul_cancel {O A : Type} [CommRing O] [IsDomain O] [AddCommGroup A] [Module (FractionRing O) A] [Module O A]
     [IsScalarTower O (FractionRing O) A] (s : nonZeroDivisors O) {y z : A} (h : (s : O) • y = (s : O) • z) : y = z := by
   have hu := (Module.End.isUnit_iff _).1 (isUnit_end (V := A) s)
   apply hu.1
   simpa [Module.algebraMap_end_apply] using h
 
+/- English proof (translation)
+Rewrite using `[← heO_br i dc hn]`. Both sides reduce to the same expression.
+-/
 theorem msAt_apply {n : ℕ} (hn : K.plOf i dc n ∈ placesOver D.host.E (D.nd.l i)) (x : D.nd.X i)
     (g : Br.G D.nbr i _ hn) (a b : Fin D.R.nV) :
     MsAt i dc r hn x g a b = eK (D.nbr i _ hn) (algebraMap (D.nd.O i) (FractionRing (D.nd.O i))
@@ -705,6 +849,25 @@ theorem msAt_apply {n : ℕ} (hn : K.plOf i dc n ∈ placesOver D.host.E (D.nd.l
   rw [← heO_br i dc hn]
   rfl
 
+/- English proof (translation)
+Use `set ρP := resRep (uRep (D.nd.O i) (M := Pe) Dd.r Dd.χ) (Γn i dc n) with hρP`. Use `set e := eK (D.nbr i _ hn)`. Set `Λ` to `liftK (V := Dd.X' → Matrix (Fin D.R.nV) (Fin D.R.nV) (FractionRing (D.nd.O i))) κ`. Establish `hΛs : ∀ m (s : nonZeroDivisors (D.nd.O i)), (s : D.nd.O i) • Λ (LocalizedModule.mk m s) = κ m`. Introduce `m s`.
+
+Rewrite using `[← map_smul, smul_mk, liftK_mkK]`. Establish `hΛi : ∀ v, Λ v = 0 → v = 0`. Introduce `v hv`. Proceed by induction on `v using LocalizedModule.induction_on with`. Consider the case `h m s`.
+
+Establish `h1` using `hΛs m s`. Rewrite `h1` using `[hv, smul_zero]`. Rewrite using `[hκ (h1.symm.trans (map_zero κ).symm), LocalizedModule.zero_mk]`. Establish `hΛe : ∀ (γ : ↥(Γn i dc n)) v, Λ (locRep ρP γ v) = ((Formalism.NG.uElt Dd.r Dd.χ (γ : GE D.nd) : Dd.R') : Dd.X' → Matrix (Fin D.R.nV) (Fin D.R.nV) (FractionRing (D.nd.O i))) * Λ v`. Introduce `γ v`.
+
+Proceed by induction on `v using LocalizedModule.induction_on with`. Consider the case `h m s`. Establish `h0 : locRep ρP γ (LocalizedModule.mk m s) = LocalizedModule.mk (ρP γ m) s` using `LocalizedModule.map_mk _ _ _ _`. Rewrite using `[h0]`. Apply `smul_cancel s` to reduce the goal to its premises.
+
+Rewrite using `[hΛs, ← mul_smul_comm, hΛs]`. Conclude with `hκa _ m`. Set `Ψ : Dd.X' × Fin D.R.nV → TrV e (MK (O` to `D.nd.O i) Pe) →ₗ[Br.LLw (D.nbr i _ hn)] (Fin D.R.nV → Br.LLw (D.nbr i _ hn)) := fun q => { toFun := fun v a => e ((Λ (untr e v)) q.1 a q.2) map_add' := fun v w => funext fun a => by show e ((Λ (untr e v + untr e w)) q.1 a q.2) = _`. Rewrite using `[map_add]`. Simplify using `[map_add]`.
+
+Use the proof step `map_smul' := fun c v => funext fun a => by show e ((Λ (e.symm c • untr e v)) q.1 a q.2) = c * e ((Λ (untr e v)) q.1 a q.2)`. Rewrite using `[smulK]`. Simplify using `[Pi.smul_apply, Matrix.smul_apply, smul_eq_mul, map_mul] }`. Use `haveI : FiniteDimensional (Br.LLw (D.nbr i _ hn)) (TrV e (MK (O := D.nd.O i) Pe)) := finDim_of_lat (Ow := Br.Ow (D.nbr i _ hn)) (Qp := ℚ_[D.nd.l i]) (latOf e (D.nbr i _ hn).eO mkK (Br.iota D.nbr i _ hn) (heO_br i dc hn) (locRep ρP) ρP mkK_inj (fun γ m => (locRep_mkK _ γ m).symm) …`. Use `embAt_of_fam i dc r hn _ (fun q => Dd.p q.1) Ψ (fun v hv => ?_) (fun q g v => ?_)` and prove the remaining obligations.
+
+Establish `h0 : Λ (untr e v) = 0`. Use function extensionality and compare the values at `x'`. Use extensionality with `a b`. Use `congrFun (hv (x', b)) a` as an intermediate fact. Simplify `this` using `[Ψ]`.
+
+Conclude with `hΛi _ h0`. Use function extensionality and compare the values at `a`. Establish `key : ∀ γ : ↥(Γn i dc n), (γ : GE D.nd) = ((Br.iota D.nbr i _ hn g : Gw D.nd (K.plOf i dc n)) : GE D.nd) → e ((Λ (locRep ρP γ (untr e v))) q.1 a q.2) = (MsAt i dc r hn (Dd.p q.1) g).mulVec (Ψ q v) a`. Introduce `γ hγ`. Rewrite using `[hΛe, Pi.mul_apply, hγ, uElt_at i r Dd hr' hsm hχ, Matrix.mul_apply, map_sum]`.
+
+Simplify using `only [Matrix.mulVec, dotProduct, msAt_apply]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Simplify using `[Ψ, Matrix.map_apply, map_mul]`. Conclude with `Or.inl rfl`. Conclude with `key (Br.iota D.nbr i _ hn g) rfl`.
+-/
 theorem embAt_Dd {n : ℕ} (hn : K.plOf i dc n ∈ placesOver D.host.E (D.nd.l i))
     (hr' : ∀ g x', ((Dd.r g : Dd.R') : Dd.X' → Matrix (Fin D.R.nV) (Fin D.R.nV) (FractionRing (D.nd.O i))) x' =
       (rO D.nd i r (Dd.p x') g).map (algebraMap (D.nd.O i) (FractionRing (D.nd.O i))))
@@ -784,6 +947,9 @@ open Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions For
 variable {D : D7} (i : D.nd.Loc) (dc : TruncatedSeriesCountingIdentities.Decl D i) (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i)))
   (Dd : Formalism.RepresentationBoundsCohomology.ringDataObjects.RingData (D.nd.O i) (D.nd.X i) (Fin D.R.nV) (GE D.nd) D.R.t (RepresentationBoundsCohomology.blk D.R))
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hD.2.2.2.2.2.2.1, hD.2.2.2.2.2.2.2.2.1, hD.2.2.2.2.2.2.2.2.2.2.2.1⟩`.
+-/
 theorem ringDef_lift {T : Subalgebra (D.nd.O i) (D.nd.X i → D.nd.O i)} {π : D.nd.X i} {ε : GE D.nd →* (D.nd.O i)ˣ}
     {g0 : GE D.nd} {eB e₁ s : D.nd.X i → Matrix (Fin D.R.nV) (Fin D.R.nV) (D.nd.O i)}
     (hD : Formalism.RepresentationBoundsCohomology.ringDataObjects.RingDef (D.nd.O i) T (RepresentationBoundsCohomology.repX D.nd r) π (chiU D.nd i 1) ε g0 eB e₁ s Dd) :
@@ -795,6 +961,9 @@ theorem ringDef_lift {T : Subalgebra (D.nd.O i) (D.nd.X i → D.nd.O i)} {π : D
     (∀ g x', (((Dd.χ g : (Dd.T')ˣ) : Dd.T') : Dd.X' → D.nd.O i) x' = (chiU D.nd i 1 g : D.nd.O i)) :=
   ⟨hD.2.2.2.2.2.2.1, hD.2.2.2.2.2.2.2.2.1, hD.2.2.2.2.2.2.2.2.2.2.2.1⟩
 
+/- English proof (translation)
+Take `⟨hr', hsm, hχ⟩` from `ringDef_lift i r Dd hD`. Conclude with `liftCol_eve i dc r Dd.r Dd.χ eR hA hG ince v₁ eve heve hevs iL hiL hiLeq hspL (fun l => embAt_Dd i dc r Dd (hnCol i dc l) hr' hsm hχ κ hκ hκa) (fun l => msCont_of i dc r hC (hnCol i dc l))`.
+-/
 theorem liftCol_eve_Dd (eR : HeightOneSpectrum (𝓞 D.host.E) → ℕ) (hA : TruncatedSeriesCountingIdentities.LiftExponentAtPlaces i r dc eR) (hG : K.SelfGood i)
     (hC : TruncatedSeriesCountingIdentities.FamilyContinuous (D := D) i r)
     {T : Subalgebra (D.nd.O i) (D.nd.X i → D.nd.O i)} {π : D.nd.X i} {ε : GE D.nd →* (D.nd.O i)ˣ}
@@ -820,6 +989,9 @@ theorem liftCol_eve_Dd (eR : HeightOneSpectrum (𝓞 D.host.E) → ℕ) (hA : Tr
   exact liftCol_eve i dc r Dd.r Dd.χ eR hA hG ince v₁ eve heve hevs iL hiL hiLeq hspL
     (fun l => embAt_Dd i dc r Dd (hnCol i dc l) hr' hsm hχ κ hκ hκa) (fun l => msCont_of i dc r hC (hnCol i dc l))
 
+/- English proof (translation)
+Take `⟨hr', hsm, hχ⟩` from `ringDef_lift i r Dd hD`. Conclude with `liftCol_evE i dc r Dd.r Dd.χ eR hA hG δO evE hevE hevs (fun l => embAt_Dd i dc r Dd (hnCol i dc l) hr' hsm hχ κ hκ hκa) (fun l => msCont_of i dc r hC (hnCol i dc l))`.
+-/
 theorem liftCol_evE_Dd (eR : HeightOneSpectrum (𝓞 D.host.E) → ℕ) (hA : TruncatedSeriesCountingIdentities.LiftExponentAtPlaces i r dc eR) (hG : K.SelfGood i)
     (hC : TruncatedSeriesCountingIdentities.FamilyContinuous (D := D) i r)
     {T : Subalgebra (D.nd.O i) (D.nd.X i → D.nd.O i)} {π : D.nd.X i} {ε : GE D.nd →* (D.nd.O i)ˣ}
@@ -855,17 +1027,29 @@ def kappaL (x : Dd.R') :
   map_add' p q := by rw [map_add]; rfl
   map_smul' c p := rfl
 
+/- English proof (translation)
+Introduce `p q h`. Conclude with `Subtype.ext (Subtype.ext h)`.
+-/
 theorem kappaL_inj (x : Dd.R') : Function.Injective (kappaL i Dd x) := by
   intro p q h
   exact Subtype.ext (Subtype.ext h)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem kappaL_mul (x : Dd.R') (a : Dd.R') (p : K.LeftId (D.nd.O i) x) :
     kappaL i Dd x (a • p) = (a : Dd.X' → Matrix (Fin D.R.nV) (Fin D.R.nV) (FractionRing (D.nd.O i))) * kappaL i Dd x p :=
   rfl
 
+/- English proof (translation)
+The claim follows from `Module.Finite.iff_fg.2 (Submodule.fg_span (Set.finite_singleton δO))`.
+-/
 theorem ideal_finite (δO : D.nd.O i) : Module.Finite (D.nd.O i) ↥(Ideal.span {δO}) :=
   Module.Finite.iff_fg.2 (Submodule.fg_span (Set.finite_singleton δO))
 
+/- English proof (translation)
+Use `haveI := ideal_finite i δO`. Conclude with `Module.free_of_finite_type_torsion_free'`.
+-/
 theorem ideal_free [IsDiscreteValuationRing (D.nd.O i)] (δO : D.nd.O i) : Module.Free (D.nd.O i) ↥(Ideal.span {δO}) := by
   haveI := ideal_finite i δO
   exact Module.free_of_finite_type_torsion_free'
@@ -879,6 +1063,9 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N
 variable {D : D7} (i : D.nd.Loc)
   (Dd : Formalism.RepresentationBoundsCohomology.ringDataObjects.RingData (D.nd.O i) (D.nd.X i) (Fin D.R.nV) (GE D.nd) D.R.t (RepresentationBoundsCohomology.blk D.R))
 
+/- English proof (translation)
+Set `S : Submodule (D.nd.O i) Dd.R'` to `(Submodule.span Dd.R' ({x} : Set Dd.R')).restrictScalars (D.nd.O i)`. Use `haveI : Module.Finite (D.nd.O i) S := Module.IsNoetherian.finite (D.nd.O i) S`. Set `f : S ≃ₗ[D.nd.O i] K.LeftId (D.nd.O i) x` to `{ toFun := fun a => K.lmk (D.nd.O i) x a.1 a.2 invFun := fun p => ⟨K.lv (D.nd.O i) x p, K.lv_mem (D.nd.O i) x p⟩ map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl left_inv := fun _ => rfl right_inv := fun _ => rfl }`. Conclude with `Module.Finite.equiv f`.
+-/
 theorem leftId_finite [Module.Finite (D.nd.O i) Dd.R'] (x : Dd.R') : Module.Finite (D.nd.O i) (K.LeftId (D.nd.O i) x) := by
   let S : Submodule (D.nd.O i) Dd.R' := (Submodule.span Dd.R' ({x} : Set Dd.R')).restrictScalars (D.nd.O i)
   haveI : Module.Finite (D.nd.O i) S := Module.IsNoetherian.finite (D.nd.O i) S
@@ -891,6 +1078,13 @@ theorem leftId_finite [Module.Finite (D.nd.O i) Dd.R'] (x : Dd.R') : Module.Fini
       right_inv := fun _ => rfl }
   exact Module.Finite.equiv f
 
+/- English proof (translation)
+Use `haveI := leftId_finite i Dd x`. Use `haveI : NoZeroSMulDivisors (D.nd.O i) (K.LeftId (D.nd.O i) x) := ⟨fun {c p} h => by`. Distinguish the cases in `hc : c = 0`. Conclude with `Or.inl hc`. Use `right`.
+
+Apply `kappaL_inj i Dd x` to reduce the goal to its premises. Rewrite using `[map_zero]`. Apply `smul_cancel (⟨c, mem_nonZeroDivisors_of_ne_zero hc⟩ : nonZeroDivisors (D.nd.O i))` to reduce the goal to its premises. Use `show c • kappaL i Dd x p = c • 0`. Rewrite using `[← map_smul, h, map_zero, smul_zero]⟩`.
+
+Conclude with `Module.free_of_finite_type_torsion_free'`.
+-/
 theorem leftId_free [Module.Finite (D.nd.O i) Dd.R'] (x : Dd.R') : Module.Free (D.nd.O i) (K.LeftId (D.nd.O i) x) := by
   haveI := leftId_finite i Dd x
   haveI : NoZeroSMulDivisors (D.nd.O i) (K.LeftId (D.nd.O i) x) :=
@@ -909,10 +1103,16 @@ end LeftFin
 
 section LatMInst
 
+/- English proof (translation)
+The claim follows from `inferInstanceAs (Module.Finite O (n → O))`.
+-/
 theorem latM_finite (O : Type) [CommRing O] {R : Type} [Ring R] (n : Type) [Fintype n] [DecidableEq n]
     (ρ : R →+* Matrix n n O) : Module.Finite O (Formalism.RepresentationBoundsCohomology.SF.LatM O O n ρ) :=
   inferInstanceAs (Module.Finite O (n → O))
 
+/- English proof (translation)
+The claim follows from `inferInstanceAs (Module.Free O (n → O))`.
+-/
 theorem latM_free (O : Type) [CommRing O] {R : Type} [Ring R] (n : Type) [Fintype n] [DecidableEq n]
     (ρ : R →+* Matrix n n O) : Module.Free O (Formalism.RepresentationBoundsCohomology.SF.LatM O O n ρ) :=
   inferInstanceAs (Module.Free O (n → O))

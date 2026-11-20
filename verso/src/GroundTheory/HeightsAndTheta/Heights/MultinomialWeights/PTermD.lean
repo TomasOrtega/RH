@@ -8,6 +8,11 @@ namespace GroundTheory.Heights₂.Heights.TheoremB
 
 open Finset Filter Topology
 
+/- English proof (translation)
+Establish `hp' : (2 : ℝ) ≤ p` using `by exact_mod_cast hp`. Establish `hlog : 0 ≤ Real.log p` using `Real.log_nonneg (by linarith)`. Establish `hden : 0 < (p : ℝ) ^ 2 - 1` using `by nlinarith`. Establish `hp0 : (0 : ℝ) < p` using `by linarith`. Rewrite using `[mul_div_assoc', div_le_div_iff₀ hden hp0]`.
+
+Use polynomial arithmetic with `[mul_nonneg hlog (by nlinarith : (0 : ℝ) ≤ (p : ℝ) ^ 2 - 2)]`.
+-/
 theorem termD_term_le {p : ℕ} (hp : 2 ≤ p) :
     (p : ℝ) * Real.log p / ((p : ℝ) ^ 2 - 1) ≤ 2 * (Real.log p / p) := by
   have hp' : (2 : ℝ) ≤ p := by exact_mod_cast hp
@@ -17,6 +22,15 @@ theorem termD_term_le {p : ℕ} (hp : 2 ≤ p) :
   rw [mul_div_assoc', div_le_div_iff₀ hden hp0]
   nlinarith [mul_nonneg hlog (by nlinarith : (0 : ℝ) ≤ (p : ℝ) ^ 2 - 2)]
 
+/- English proof (translation)
+Introduce `C7 hC7`. Use `⟨2 + C7 / Real.log 2, ?_⟩` and prove the remaining obligations. Introduce `d S B0 A0 hB0 h7 hA`. Take `⟨hlow, -⟩` from `h7 A0 hA`. Establish `hl2 : 0 < Real.log 2` using `Real.log_pos (by norm_num)`.
+
+Establish `hB0r : (2 : ℝ) ≤ B0` using `by exact_mod_cast hB0`. Establish `hlogB : Real.log 2 ≤ Real.log B0` using `Real.log_le_log (by norm_num) hB0r`. Establish `hC7le : C7 ≤ C7 / Real.log 2 * Real.log B0`. Rewrite using `[div_mul_eq_mul_div, le_div_iff₀ hl2]`. Conclude with `mul_le_mul_of_nonneg_left hlogB hC7`.
+
+Establish `hsum : ∑ p ∈ S.level.primeFactors.filter (fun p => B0 < p), (p : ℝ) * Real.log p / ((p : ℝ) ^ 2 - 1) ≤ 2 * ∑ p ∈ S.level.primeFactors, Real.log p / (p : ℝ)`. Rewrite using `[Finset.mul_sum]`. Combine the equalities or inequalities in the displayed calculation. Establish `hS0 : 0 ≤ ∑ p ∈ S.level.primeFactors, Real.log p / (p : ℝ)` using `Finset.sum_nonneg fun p _ => div_nonneg (Real.log_natCast_nonneg p) (Nat.cast_nonneg p)`. Establish `hlogB0 : 0 ≤ Real.log B0` using `le_trans hl2.le hlogB`.
+
+Establish `hCpos : 0 ≤ C7 / Real.log 2` using `div_nonneg hC7 hl2.le`. Use polynomial arithmetic with `[mul_nonneg hCpos hS0]`.
+-/
 theorem TermD.proof : TermD.Statement := by
   intro C7 hC7
   refine ⟨2 + C7 / Real.log 2, ?_⟩

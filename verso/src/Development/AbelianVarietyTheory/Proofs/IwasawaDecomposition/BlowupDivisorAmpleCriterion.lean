@@ -10,6 +10,9 @@ noncomputable section
 
 namespace GlobalTheory.TraitRank
 
+/- English proof (translation)
+Take `⟨n, r, hr⟩` from `Module.Finite.exists_fin' O X`. Unfold `InvFun.evalZ`. Rewrite using `[(comb a ψ b φ).eval_eq hr, ψ.eval_eq hr, φ.eval_eq hr]`. Both sides reduce to the same expression.
+-/
 theorem evalZ_comb' {O : Type} [CommRing O] {X : Type} [AddCommGroup X] [Module O X] [Module.Finite O X] (a : ℕ)
     (ψ : InvFun O) (b : ℕ) (φ : InvFun O) (β : LinearMap.BilinForm ℤ X) :
     (comb a ψ b φ).evalZ β = a * ψ.evalZ β + b * φ.evalZ β := by
@@ -18,6 +21,23 @@ theorem evalZ_comb' {O : Type} [CommRing O] {X : Type} [AddCommGroup X] [Module 
   rw [(comb a ψ b φ).eval_eq hr, ψ.eval_eq hr, φ.eval_eq hr]
   rfl
 
+/- English proof (translation)
+Use `haveI := c.fin`. Use `haveI : NumberField c.F := {}`. Use `haveI : CharZero (FractionRing W) := by`. Use `⟨fun a b h => Nat.cast_injective (R := W) (IsFractionRing.injective W (FractionRing W) ?_)⟩` and prove the remaining obligations. Simplify using `using h`.
+
+Take `⟨β₀, hβ₀⟩` from `Spec.map_surjective (jK W ≫ χ ≫ Z.s)`. Set `β' : 𝓞 c.F →+* FractionRing W` to `β₀.hom`. Establish `hinj : Function.Injective β'` using `GlobalTheory.LieUnif.injective_of_charZero (E := c.F) β'`. Set `g : c.F →+* FractionRing W` to `IsFractionRing.lift (K := c.F) hinj`. Establish `hsq : (jK W ≫ χ) ≫ Z.s = spMap g ≫ spMap (algebraMap (𝓞 c.F) c.F)`.
+
+Establish `hb : β₀ = CommRingCat.ofHom (g.comp (algebraMap (𝓞 c.F) c.F))`. Apply `CommRingCat.hom_ext` to reduce the goal to its premises. Apply `RingHom.ext` to reduce the goal to its premises. Introduce `a`. Use `IsFractionRing.lift_algebraMap (K := c.F) hinj a` as an intermediate fact.
+
+Conclude with `this.symm`. Rewrite using `[Category.assoc, ← hβ₀, hb]`. Use `show _ = Spec.map _ ≫ Spec.map _`. Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+
+Set `u : Sp (FractionRing W) ⟶ pullback Z.s (spMap (algebraMap (𝓞 c.F) c.F))` to `pullback.lift (jK W ≫ χ) (spMap g) hsq`. Establish `hu : Set.range u ⊆ Set.range Z.jQ`. Introduce and unpack `_ ⟨p, rfl⟩`. Rewrite using `[← Z.ab_gen]`. Take `⟨v, hv⟩` from `hχ ⟨p, rfl⟩`.
+
+Establish `e1 : (pullback.fst Z.s (spMap (algebraMap (𝓞 c.F) c.F))) (u p) = (jK W ≫ χ) p`. Rewrite using `[← Scheme.Hom.comp_apply, pullback.lift_fst]`. Use `show (pullback.fst Z.s (spMap (algebraMap (𝓞 c.F) c.F))) (u p) ∈ abLocus Z.t.G`. Rewrite using `[e1, ← hv]`. Establish `: Z.jQ v ∈ (pullback.fst Z.s (spMap (algebraMap (𝓞 c.F) c.F))) ⁻¹' abLocus Z.t.G`.
+
+Rewrite using `[Z.ab_gen]`. Conclude with `⟨v, rfl⟩`. Conclude with `this`. Use `haveI := Z.jQ_open`. Use `⟨IsOpenImmersion.lift Z.jQ u hu, ?_⟩` and prove the remaining obligations.
+
+Use `show _ ≫ Z.jQ ≫ pullback.fst _ _ = _`. Rewrite using `[← Category.assoc, IsOpenImmersion.lift_fac, pullback.lift_fst]`.
+-/
 theorem exists_generic_of_range {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H}
     {l : Level H} {Xo : Moduli D l} {c : Coeff l} (Z : GMod Xo c) (W : Type) [CommRing W] [IsDomain W] [CharZero W]
     (χ : Sp W ⟶ Z.X) (hχ : Set.range (jK W ≫ χ) ⊆ Set.range Z.j) :
@@ -59,6 +79,17 @@ theorem exists_generic_of_range {E : Type} [Field E] [NumberField E] [IsCMField 
   show _ ≫ Z.jQ ≫ pullback.fst _ _ = _
   rw [← Category.assoc, IsOpenImmersion.lift_fac, pullback.lift_fst]
 
+/- English proof (translation)
+Take `⟨y, hy⟩` from `exists_generic_of_range Z R ξ hξ`. Set `K` to `AlgebraicClosure (FractionRing R)`. Set `f : R →+* K` to `(algebraMap (FractionRing R) K).comp (algebraMap R (FractionRing R))`. Establish `hf : Function.Injective f` using `(algebraMap (FractionRing R) K).injective.comp (IsFractionRing.injective R (FractionRing R))`. Use `haveI : CharZero K := ⟨fun a b h => Nat.cast_injective (R := R) (hf (by simpa using h))⟩`.
+
+Set `x' : Sp K ⟶ Xo.XF c` to `spMap (algebraMap (FractionRing R) K) ≫ y`. Establish `hx : x' ≫ Z.jQ ≫ pullback.fst _ _ = spMap f ≫ ξ` using `by show (spMap (algebraMap (FractionRing R) K) ≫ y) ≫ Z.j = _`. Rewrite using `[Category.assoc, hy, ← Category.assoc]`. Use `show (Spec.map _ ≫ Spec.map _) ≫ ξ = _`. Rewrite using `[← Spec.map_comp]`.
+
+Both sides reduce to the same expression. Take `⟨β₀, hβ₀⟩` from `Spec.map_surjective (x' ≫ pullback.fst Xo.s (spMap (IntermediateField.inclusion c.le).toRingHom) ≫ Xo.s)`. Establish `hβ : x' ≫ pullback.fst Xo.s (spMap (IntermediateField.inclusion c.le).toRingHom) ≫ Xo.s = spMap β₀.hom` using `hβ₀.symm`. Establish `hdet` using `(Z.oF.geom K x' β₀.hom hβ).1`. Establish `hr : (β₀.hom (baseKA l).ρ) ^ 2 = -(H.d : K)`.
+
+Rewrite using `[← map_pow, (baseKA l).ρ_sq, map_neg, map_natCast]`. Establish `bound : ∀ (τ : 𝓞 E →+* K) (N : ℕ), LieMult Z.oF.t.act x' τ N → Module.finrank (𝓞 E) P.D.toPre.X ≤ N`. Introduce `τ N hN`. Establish `h₅` using `(GlobalTheory.lieMult_iff_of_isGrpPullback Z.m.cart Z.oF.t.act Z.t.act Z.m.act x' τ N).1 hN`. Rewrite `h₅` using `[hx]`.
+
+Establish `h₆` using `(GlobalTheory.lieMult_iff_of_isGrpPullback m.cart t.act Z.t.act m.act (spMap f) τ N).2 h₅`. Take `⟨n, -, hn⟩` from `GlobalTheory.CharRank.lieMult_unif_loc H R t P K f hf τ N h₆`. Use linear arithmetic over natural numbers and integers. Take `⟨τ₁, τ₂, h₁, h₂⟩` from `GlobalTheory.CharRank.exists_chars H K _ hr`. Conclude with `le_min (bound τ₁ _ ((hdet τ₁).1 h₁)) (bound τ₂ _ ((hdet τ₂).2 h₂))`.
+-/
 theorem finrank_le_min_of_range {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H}
     {l : Level H} {Xo : Moduli D l} {c : Coeff l} (Z : GMod Xo c) (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R]
     [IsNoetherianRing R] [CharZero R] (ξ : Sp R ⟶ Z.X) (t : SAB H (Sp R)) (m : SABMap t Z.t ξ)
@@ -95,6 +126,13 @@ theorem finrank_le_min_of_range {E : Type} [Field E] [NumberField E] [IsCMField 
   obtain ⟨τ₁, τ₂, h₁, h₂⟩ := GlobalTheory.CharRank.exists_chars H K _ hr
   exact le_min (bound τ₁ _ ((hdet τ₁).1 h₁)) (bound τ₂ _ ((hdet τ₂).2 h₂))
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo c X Z Y BY π e J EX n d d' k g φs 𝒩 φ DX _ _ href _ _ _ _ _ _ W _ _ _ hW _ ϖ _ χ t mt P hχ be hbe hmon`. Take `⟨hdvr, -, hch⟩` from `hW`. Use `haveI := hdvr`. Use `haveI := hch`. Establish `hrk` using `finrank_le_min_of_range Z W χ t mt P hχ`.
+
+Use `haveI : Module.Projective (𝓞 E) P.D.toPre.X := GlobalTheory.Forms.projective_of_int (𝓞 E) P.D.toPre.X`. Establish `hF` using `href.1 P.D.toPre.X hrk`. Establish `hbal : be ∈ balForms H.bar P.D.toPre.X` using `by rw [balForms_eq_levelForms]; exact hbe`. Take `⟨a, ha⟩` from `hF.exists_nat hbal (fun y => hmon.nonneg 0 y)`. Use `⟨n * d' * a, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[evalZ_comb', ha]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem order_nat : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (X Z : GMod Xo c) (Y : Model Xo c (RingHom.id c.F)) (BY : EffCartierData Y.X) (π : Z.X ⟶ X.X) (e : gen Y ≅ gen Z) (J : X.X.IdealSheafData) (EX : EffCartierData Z.X) (n d d' k g : ℕ) (φs : InvFun ℤ) (𝒩 : Finset ℕ) (φ : InvFun (𝓞 E)) (DX : EffCartierData X.X), Module.finrank ℚ E * min D.p D.q ≤ g → IsPolFan id g φs → Refines H (min D.p D.q) φs 𝒩 φ → HasCones (ConeZ E φs) X → X.N4 → IsPol (comb d (resInt _ φs) 0 φ) k X DX → 0 < d' → IsPhiDiv (comb 0 φ d' φ) Y BY → IsBlowOf X Z Y BY π e J EX n → ∀ (W : Type) [CommRing W] [IsDomain W] [IsLocalRing W], CDvr W → ¬ (∀ p : ℕ, p.Prime → IsUnit (p : W)) → ∀ ϖ : W, Irreducible ϖ → ∀ (χ : Sp W ⟶ Z.X) (t : SAB H (Sp W)) (_ : SABMap t Z.t χ) (P : PELUnif (maximalIdeal W) t), Set.range (jK W ≫ χ) ⊆ Set.range Z.j → ∀ be ∈ levelForms H 1 P.D.toPre.X, IsMonomial P.D.toPre ![ϖ] ![be] → ∃ m : ℕ, (m : ℝ) = (comb 0 φ (n * d') φ).evalZ be := by
   intro E _ _ _ H D l Xo c X Z Y BY π e J EX n d d' k g φs 𝒩 φ DX _ _ href _ _ _ _ _ _ W _ _ _ hW _ ϖ _ χ t mt P hχ be
     hbe hmon

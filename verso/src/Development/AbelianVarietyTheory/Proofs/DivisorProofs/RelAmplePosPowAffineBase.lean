@@ -14,11 +14,19 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.PowAmple
 
+/- English proof (translation)
+The claim follows from `congrArg (fun g => (⟨H.ι, H.U, g⟩ : LB X)) (funext fun i => funext fun j => (zpow_mul (H.g i j) a b).symm)`.
+-/
 theorem pw_pw_mul {X : Scheme.{0}} (H : LB X) (a b : ℤ) :
     GlobalTheory.AbLaw.pw (GlobalTheory.AbLaw.pw H a) b = GlobalTheory.AbLaw.pw H (a * b) :=
   congrArg (fun g => (⟨H.ι, H.U, g⟩ : LB X))
     (funext fun i => funext fun j => (zpow_mul (H.g i j) a b).symm)
 
+/- English proof (translation)
+Introduce `R _ B L hL hA a ha`. Take `⟨d, hd, n, s, hs⟩` from `(GlobalTheory.Unif.relAmple_iff_veryAmpleBy R B L hL).1 hA`. Take `⟨n', s', hs'⟩` from `GlobalTheory.AbLaw.veryAmpleBy_pw R B.left B.hom (GlobalTheory.AbLaw.pw L d) n s (GlobalTheory.AbLaw.isLB_pw hL d) hs a ha`. Establish `e : GlobalTheory.AbLaw.pw (GlobalTheory.AbLaw.pw L (d : ℤ)) (a : ℤ) = GlobalTheory.AbLaw.pw (GlobalTheory.AbLaw.pw L (a : ℤ)) (d : ℤ)`. Rewrite using `[pw_pw_mul, pw_pw_mul, mul_comm]`.
+
+Establish `h2 : ∃ t : Fin (n' + 1) → LB.Sec (GlobalTheory.AbLaw.pw (GlobalTheory.AbLaw.pw L (a : ℤ)) (d : ℤ)), GlobalTheory.AbLaw.VeryAmpleBy B.hom _ t`. Rewrite using `[← e]`. Conclude with `⟨s', hs'⟩`. Take `⟨t, ht⟩` from `h2`. Conclude with `GlobalTheory.Unif.relAmple_of_veryAmpleBy (GlobalTheory.AbLaw.isLB_pw hL a) hd t ht`.
+-/
 theorem relAmple_pw : ∀ (R : Type) [CommRing R] (B : Over (Spec (CommRingCat.of R))) (L : LB B.left),
     L.IsLB → RelAmple B L → ∀ a : ℕ, 1 ≤ a → RelAmple B (GlobalTheory.AbLaw.pw L (a : ℤ)) := by
   intro R _ B L hL hA a ha

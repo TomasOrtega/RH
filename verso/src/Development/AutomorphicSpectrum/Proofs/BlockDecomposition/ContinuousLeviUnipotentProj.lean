@@ -9,6 +9,11 @@ namespace GlobalTheory.CompanionTheory.BZPsiPG.Cont
 
 variable (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Unfold `colMat`. Use `split_ifs`. Proceed by induction on `a using Fin.lastCases with`. Consider the case `last => simp only [Fin.lastCases_last]`. Conclude with `continuous_const`.
+
+Consider the case `cast i => simp only [Fin.lastCases_castSucc]`. Conclude with `continuous_apply i`. Conclude with `continuous_const`.
+-/
 theorem continuous_colMat_entry (n : ℕ) (a b : Fin (n + 1)) :
     Continuous fun y : Fin n → k => colMat k n y a b := by
   unfold colMat
@@ -18,6 +23,11 @@ theorem continuous_colMat_entry (n : ℕ) (a b : Fin (n + 1)) :
     | cast i => simp only [Fin.lastCases_castSucc]; exact continuous_apply i
   · exact continuous_const
 
+/- English proof (translation)
+Establish `h : (fun y : Fin n → k => (((uM k n y : Mir k n) : GL (Fin (n + 1)) k) : Matrix (Fin (n + 1)) (Fin (n + 1)) k)) = fun y => 1 + colMat k n y`. Use function extensionality and compare the values at `y`. Both sides reduce to the same expression. Rewrite using `[h]`. Use `continuous_const.add (continuous_matrix fun a b => ?_)` and prove the remaining obligations.
+
+Apply the tactic sequence `exact continuous_colMat_entry k n a b`.
+-/
 theorem continuous_uM_val (n : ℕ) : Continuous fun y : Fin n → k =>
     (((uM k n y : Mir k n) : GL (Fin (n + 1)) k) : Matrix (Fin (n + 1)) (Fin (n + 1)) k) := by
   have h : (fun y : Fin n → k =>
@@ -29,11 +39,19 @@ theorem continuous_uM_val (n : ℕ) : Continuous fun y : Fin n → k =>
   refine continuous_const.add (continuous_matrix fun a b => ?_)
   exact continuous_colMat_entry k n a b
 
+/- English proof (translation)
+Establish `h : uM k n (-y) * uM k n y = 1`. Rewrite using `[← uM_add, neg_add_cancel, uM_zero]`. Conclude with `(eq_inv_of_mul_eq_one_left h).symm`.
+-/
 theorem uM_inv (n : ℕ) (y : Fin n → k) : (uM k n y)⁻¹ = uM k n (-y) := by
   have h : uM k n (-y) * uM k n y = 1 := by
     rw [← uM_add, neg_add_cancel, uM_zero]
   exact (eq_inv_of_mul_eq_one_left h).symm
 
+/- English proof (translation)
+Apply `continuous_induced_rng.2` to reduce the goal to its premises. Use `Units.continuous_iff.2 ⟨continuous_uM_val k n, ?_⟩` and prove the remaining obligations. Establish `h : ∀ y : Fin n → k, ((uM k n y : GL (Fin (n + 1)) k))⁻¹ = (uM k n (-y) : GL (Fin (n + 1)) k)`. Introduce `y`. Rewrite using `[← uM_inv k n y, Subgroup.coe_inv]`.
+
+Simplify using `only [Function.comp_apply, h]`. Conclude with `(continuous_uM_val k n).comp continuous_neg`.
+-/
 theorem continuous_uM (n : ℕ) : Continuous (uM k n) := by
   apply continuous_induced_rng.2
   refine Units.continuous_iff.2 ⟨continuous_uM_val k n, ?_⟩
@@ -48,6 +66,9 @@ end GlobalTheory.CompanionTheory.BZPsiPG.Cont
 
 namespace GlobalTheory.CompanionTheory.BZPsiPG
 
+/- English proof (translation)
+Introduce `k _ _ _ _ n`. Conclude with `⟨GlobalTheory.CompanionTheory.BZMirFun.continuous_levi k n, Cont.continuous_uM k n, GlobalTheory.CompanionTheory.BZMirFun.continuous_mirProj k n⟩`.
+-/
 theorem continuous_levi_uM_mirProj : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : ℕ), Continuous (levi k n) ∧ Continuous (uM k n) ∧ Continuous (mirabolicProjection k n) := by
   intro k _ _ _ _ n
   exact ⟨GlobalTheory.CompanionTheory.BZMirFun.continuous_levi k n, Cont.continuous_uM k n,

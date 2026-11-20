@@ -22,12 +22,18 @@ def kap (x : Fin N → ℂ) : Fin (r + 1) ⊕ Fin (r + 1) → ℂ :=
   ((Wfg F G)ᴴ * Formalism.REAL.Jm ε * Wfg F G)⁻¹ *ᵥ (((Wfg F G)ᴴ * Formalism.REAL.Jm ε) *ᵥ x)
 
 include hFF hGG hπ hZ hgap in
+/- English proof (translation)
+Rewrite using `[← gram_eq ε F G T T' π hFF hGG hπ hZ, kap, Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ (gram_unit ε F G T T' π hFF hGG hπ hZ hgap), Matrix.one_mulVec, wjx]`.
+-/
 theorem kap_eq (x : Fin N → ℂ) :
     Matrix.fromBlocks (lastDiag (-(T : ℂ))) (Zm ε F G) (Zm ε F G)ᴴ (lastDiag (-(T' : ℂ))) *ᵥ kap ε F G x =
       Sum.elim (fun a => hJ ε (F a) x) (fun b => hJ ε (G b) x) := by
   rw [← gram_eq ε F G T T' π hFF hGG hπ hZ, kap, Matrix.mulVec_mulVec,
     Matrix.mul_nonsing_inv _ (gram_unit ε F G T T' π hFF hGG hπ hZ hgap), Matrix.one_mulVec, wjx]
 
+/- English proof (translation)
+Unfold `Yc`. Rewrite using `[Ymat_sub, Wfg_mulVec]`. Unfold `Mm`. Rewrite using `[Matrix.fromBlocks_mulVec]`. Simplify using `[kap]`.
+-/
 theorem Yc_sub (C : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ) (x : Fin N → ℂ) :
     Yc ε F G C *ᵥ x - x = ∑ a, ((Am ε F G C - 1) *ᵥ (kap ε F G x ∘ Sum.inl)) a • F a +
       ∑ b, ((C - 1) *ᵥ (kap ε F G x ∘ Sum.inr)) b • G b := by
@@ -38,6 +44,9 @@ theorem Yc_sub (C : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ) (x : Fin N → ℂ) 
   simp [kap]
 
 include hπ hZ in
+/- English proof (translation)
+Rewrite using `[Matrix.mulVec, dotProduct, Finset.sum_eq_single (π a)]`. Introduce `j _ hj`. Establish `: Zm ε F G a j = 0` using `by by_contra h; exact hj (by rw [(hZ a j).1 h, hπ])`. Rewrite using `[this, zero_mul]`. Simplify using the standard rewrite rules.
+-/
 theorem monoZ_mulVec (v : Fin (r + 1) → ℂ) (a : Fin (r + 1)) : (Zm ε F G *ᵥ v) a = Zm ε F G a (π a) * v (π a) := by
   rw [Matrix.mulVec, dotProduct, Finset.sum_eq_single (π a)]
   · intro j _ hj
@@ -46,6 +55,11 @@ theorem monoZ_mulVec (v : Fin (r + 1) → ℂ) (a : Fin (r + 1)) : (Zm ε F G *�
   · simp
 
 include hπ hZ in
+/- English proof (translation)
+Rewrite using `[Matrix.mulVec, dotProduct, Finset.sum_eq_single (π b)]`. Simplify using `[Matrix.conjTranspose_apply]`. Introduce `j _ hj`. Establish `: Zm ε F G j b = 0` using `by by_contra h; exact hj ((hZ j b).1 h)`. Simplify using `[Matrix.conjTranspose_apply, this]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem monoZh_mulVec (v : Fin (r + 1) → ℂ) (b : Fin (r + 1)) :
     ((Zm ε F G)ᴴ *ᵥ v) b = starRingEnd ℂ (Zm ε F G (π b) b) * v (π b) := by
   rw [Matrix.mulVec, dotProduct, Finset.sum_eq_single (π b)]
@@ -56,6 +70,23 @@ theorem monoZh_mulVec (v : Fin (r + 1) → ℂ) (b : Fin (r + 1)) :
   · simp
 
 include hFF hGG hπ hblk hanti hZ hgap in
+/- English proof (translation)
+Establish `hk` using `kap_eq ε F G T T' π hFF hGG hπ hZ hgap x`. Rewrite `hk` using `[Matrix.fromBlocks_mulVec]`. Use `set κ := kap ε F G x`. Establish `hG0 : ∀ j, j ≠ π (Fin.last r) → κ (Sum.inr j) = 0`. Introduce `j hj`.
+
+Establish `ha : π j ≠ Fin.last r` using `fun h => hj (by rw [← h, hπ])`. Establish `h1` using `congrFun hk (Sum.inl (π j))`. Simplify using `only [Sum.elim_inl, Pi.add_apply] at h1`. Rewrite `h1` using `[hx _ ha, lastDiag_mulVec, Pi.single_apply, if_neg ha, zero_add, monoZ_mulVec ε F G π hπ hZ, hπ]`. Establish `hz : Zm ε F G (π j) j ≠ 0` using `(hZ _ _).2 rfl`.
+
+Conclude with `(mul_eq_zero.1 h1).resolve_left hz`. Rewrite using `[Yc_sub]`. Establish `h2 : ∑ b, ((C - 1) *ᵥ (κ ∘ Sum.inr)) b • G b = 0`. Use `Finset.sum_eq_zero fun b _ => ?_` and prove the remaining obligations. Establish `: ((C - 1) *ᵥ (κ ∘ Sum.inr)) b = 0`.
+
+Rewrite using `[Matrix.mulVec, dotProduct, Finset.sum_eq_single (π (Fin.last r))]`. Apply the tactic sequence `rw [Matrix.sub_apply, colMin π blk hπ hblk hanti hC, Matrix.one_apply] split_ifs <;> simp`. Introduce `j _ hj`. Simplify using `[hG0 j hj]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[this, zero_smul]`. Rewrite using `[h2, add_zero]`. Use `Submodule.sum_mem _ fun a _ => ?_` and prove the remaining obligations. Distinguish the cases in `ha : a = Fin.last r`. Substitute `ha` using the available equality.
+
+Establish `: ((Am ε F G C - 1) *ᵥ (κ ∘ Sum.inl)) (Fin.last r) = 0`. Rewrite using `[Matrix.mulVec, dotProduct]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Establish `hA : IsUB blk (Am ε F G C)` using `isUB_A π hπ hblk hanti _ hZ hC`. Rewrite using `[Matrix.sub_apply, rowLast blk hA, Matrix.one_apply]`.
+
+Distinguish the cases in `hk : k = Fin.last r`. Substitute `hk` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hk, Ne.symm hk]`. Rewrite using `[this, zero_smul]`.
+
+Conclude with `Submodule.zero_mem _`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, ha, rfl⟩)`.
+-/
 theorem Yc_perpF {C : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ} (hC : IsUB blk C) (x : Fin N → ℂ)
     (hx : ∀ a, a ≠ Fin.last r → hJ ε (F a) x = 0) :
     Yc ε F G C *ᵥ x - x ∈ Submodule.span ℂ (F '' {a | a ≠ Fin.last r}) := by
@@ -96,6 +127,23 @@ theorem Yc_perpF {C : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ} (hC : IsUB blk C) 
   · exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, ha, rfl⟩)
 
 include hFF hGG hπ hblk hanti hZ hgap in
+/- English proof (translation)
+Establish `hk` using `kap_eq ε F G T T' π hFF hGG hπ hZ hgap x`. Rewrite `hk` using `[Matrix.fromBlocks_mulVec]`. Use `set κ := kap ε F G x`. Establish `hF0 : ∀ i, i ≠ π (Fin.last r) → κ (Sum.inl i) = 0`. Introduce `i hi`.
+
+Establish `hb : π i ≠ Fin.last r` using `fun h => hi (by rw [← h, hπ])`. Establish `h1` using `congrFun hk (Sum.inr (π i))`. Simplify using `only [Sum.elim_inr, Pi.add_apply] at h1`. Rewrite `h1` using `[hx _ hb, lastDiag_mulVec, Pi.single_apply, if_neg hb, add_zero, monoZh_mulVec ε F G π hπ hZ, hπ]`. Establish `hz : starRingEnd ℂ (Zm ε F G i (π i)) ≠ 0`.
+
+Rewrite using `[map_ne_zero]`. Conclude with `(hZ _ _).2 (hπ i).symm`. Conclude with `(mul_eq_zero.1 h1).resolve_left hz`. Rewrite using `[Yc_sub]`. Establish `hA : IsUB blk (Am ε F G C)` using `isUB_A π hπ hblk hanti _ hZ hC`.
+
+Establish `h2 : ∑ a, ((Am ε F G C - 1) *ᵥ (κ ∘ Sum.inl)) a • F a = 0`. Use `Finset.sum_eq_zero fun a _ => ?_` and prove the remaining obligations. Establish `: ((Am ε F G C - 1) *ᵥ (κ ∘ Sum.inl)) a = 0`. Rewrite using `[Matrix.mulVec, dotProduct, Finset.sum_eq_single (π (Fin.last r))]`. Apply the tactic sequence `rw [Matrix.sub_apply, colMin π blk hπ hblk hanti hA, Matrix.one_apply] split_ifs <;> simp`.
+
+Introduce `j _ hj`. Simplify using `[hF0 j hj]`. Simplify using the standard rewrite rules. Rewrite using `[this, zero_smul]`. Rewrite using `[h2, zero_add]`.
+
+Use `Submodule.sum_mem _ fun b _ => ?_` and prove the remaining obligations. Distinguish the cases in `hb : b = Fin.last r`. Substitute `hb` using the available equality. Establish `: ((C - 1) *ᵥ (κ ∘ Sum.inr)) (Fin.last r) = 0`. Rewrite using `[Matrix.mulVec, dotProduct]`.
+
+Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.sub_apply, rowLast blk hC, Matrix.one_apply]`. Distinguish the cases in `hk : k = Fin.last r`. Substitute `hk` using the available equality. Simplify using the standard rewrite rules.
+
+Simplify using `[hk, Ne.symm hk]`. Rewrite using `[this, zero_smul]`. Conclude with `Submodule.zero_mem _`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨b, hb, rfl⟩)`.
+-/
 theorem Yc_perpG {C : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ} (hC : IsUB blk C) (x : Fin N → ℂ)
     (hx : ∀ b, b ≠ Fin.last r → hJ ε (G b) x = 0) :
     Yc ε F G C *ᵥ x - x ∈ Submodule.span ℂ (G '' {b | b ≠ Fin.last r}) := by

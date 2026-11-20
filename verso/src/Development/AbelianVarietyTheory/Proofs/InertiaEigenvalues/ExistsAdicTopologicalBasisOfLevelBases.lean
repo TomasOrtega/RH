@@ -14,32 +14,55 @@ variable {A L Q : Type} [CommRing A] [CommRing L] [CommRing Q] (s : A →+* L) (
 
 def lsum (c : ι →₀ A) : L := c.sum fun k a => s a * m k
 
+/- English proof (translation)
+The claim follows from `Finsupp.sum_add_index' (fun _ => by simp) (fun _ _ _ => by rw [map_add, add_mul])`.
+-/
 theorem lsum_add (c c' : ι →₀ A) : lsum s m (c + c') = lsum s m c + lsum s m c' :=
   Finsupp.sum_add_index' (fun _ => by simp) (fun _ _ _ => by rw [map_add, add_mul])
 
+/- English proof (translation)
+The claim follows from `Finsupp.sum_sub_index (fun _ _ _ => by rw [map_sub, sub_mul])`.
+-/
 theorem lsum_sub (c c' : ι →₀ A) : lsum s m (c - c') = lsum s m c - lsum s m c' :=
   Finsupp.sum_sub_index (fun _ _ _ => by rw [map_sub, sub_mul])
 
+/- English proof (translation)
+Unfold `lsum`. Rewrite using `[Finsupp.sum_smul_index (fun _ => by simp), Finsupp.mul_sum]`. Use `Finsupp.sum_congr fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, mul_assoc]`.
+-/
 theorem lsum_smul (a : A) (c : ι →₀ A) : lsum s m (a • c) = s a * lsum s m c := by
   unfold lsum
   rw [Finsupp.sum_smul_index (fun _ => by simp), Finsupp.mul_sum]
   refine Finsupp.sum_congr fun k _ => ?_
   rw [map_mul, mul_assoc]
 
+/- English proof (translation)
+Unfold `lsum; rw [Finsupp.sum_single_index (by simp), map_one, one_mul]`.
+-/
 theorem lsum_single (k : ι) : lsum s m (Finsupp.single k 1) = m k := by
   unfold lsum; rw [Finsupp.sum_single_index (by simp), map_one, one_mul]
 
 def IsApprox (n : ℕ) (x : Q) (c : ι →₀ A) : Prop := x - i (lsum s m c) ∈ (J ^ n).map (i.comp s)
 
+/- English proof (translation)
+Rewrite using `[← Ideal.map_map, Ideal.map_pow]`.
+-/
 theorem map_pow_eq (n : ℕ) : (J ^ n).map (i.comp s) = ((J.map s) ^ n).map i := by
   rw [← Ideal.map_map, Ideal.map_pow]
 
 variable {s i J m}
 
+/- English proof (translation)
+The claim follows from `Ideal.map_mono (Ideal.pow_le_pow_right h) hc`.
+-/
 theorem IsApprox.mono {n n' : ℕ} {x : Q} {c : ι →₀ A} (h : n' ≤ n) (hc : IsApprox s i J m n x c) :
     IsApprox s i J m n' x c :=
   Ideal.map_mono (Ideal.pow_le_pow_right h) hc
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `hc.surj x n`. Take `⟨c, hc'⟩` from `H1 n a`. Use `⟨c, ?_⟩` and prove the remaining obligations. Unfold `IsApprox`. Establish `e : x - i (lsum s m c) = (x - i a) + i (a - lsum s m c)` using `by rw [map_sub]; ring`.
+
+Rewrite using `[e, map_pow_eq]`. Use `add_mem ha (Ideal.mem_map_of_mem i ?_)` and prove the remaining obligations. Rewrite using `[← Ideal.map_pow]`. Conclude with `hc'`.
+-/
 theorem exists_approx (hc : IsCompl i (J.map s))
     (H1 : ∀ (n : ℕ) (x : L), ∃ c : ι →₀ A, x - c.sum (fun k a => s a * m k) ∈ (J ^ n).map s)
     (n : ℕ) (x : Q) : ∃ c, IsApprox s i J m n x c := by
@@ -52,6 +75,11 @@ theorem exists_approx (hc : IsCompl i (J.map s))
   refine add_mem ha (Ideal.mem_map_of_mem i ?_)
   rw [← Ideal.map_pow]; exact hc'
 
+/- English proof (translation)
+Establish `h3` using `sub_mem h' h`. Establish `e : x - i (lsum s m c') - (x - i (lsum s m c)) = i (lsum s m (c - c'))`. Rewrite using `[lsum_sub, map_sub]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h3` using `[e, map_pow_eq]`.
+
+Establish `h4` using `hc.ker _ n h3`. Rewrite `h4` using `[← Ideal.map_pow]`. Simplify using `using H2 n (c - c') h4 k`.
+-/
 theorem approx_unique (hc : IsCompl i (J.map s))
     (H2 : ∀ (n : ℕ) (c : ι →₀ A), c.sum (fun k a => s a * m k) ∈ (J ^ n).map s → ∀ k, c k ∈ J ^ n)
     {n : ℕ} {x : Q} {c c' : ι →₀ A} (h : IsApprox s i J m n x c) (h' : IsApprox s i J m n x c') (k : ι) :
@@ -68,6 +96,47 @@ end GlobalTheory.BSP.LevelBasis
 
 open GlobalTheory.BSP.LevelBasis in
 
+/- English proof (translation)
+Establish `mt : ∀ n : ℕ, (J ^ n • ⊤ : Submodule A A) = J ^ n` using `fun n => by`. Rewrite using `[smul_eq_mul, Ideal.mul_top]`. Establish `exA` using `exists_approx (m := m) hc H1`. Establish `lim : ∀ (x : Q) (k : ι), ∃ a : A, ∀ n c, IsApprox s i J m n x c → c k - a ∈ J ^ n`. Introduce `x k`.
+
+Use `choose f hf using exA`. Take `⟨a, ha⟩` from `hA.toIsPrecomplete.prec (f := fun n => f n x k) (fun {p q} hpq => by`. Rewrite using `[SModEq.sub_mem, mt]`. Conclude with `approx_unique hc H2 (hf p x) ((hf q x).mono hpq) k)`. Use `⟨a, fun n c hcn => ?_⟩` and prove the remaining obligations.
+
+Establish `h2` using `ha n`. Rewrite `h2` using `[SModEq.sub_mem, mt]`. Use `add_mem (approx_unique hc H2 hcn (hf n x) k) h2` as an intermediate fact. Simplify using `using this`. Use `choose C hC using lim`.
+
+Establish `uniq : ∀ x k a, (∀ n, ∃ c, IsApprox s i J m n x c ∧ c k - a ∈ J ^ n) → C x k = a`. Introduce `x k a h`. Use `sub_eq_zero.1 (hA.toIsHausdorff.haus _ fun n => ?_)` and prove the remaining obligations. Rewrite using `[SModEq.sub_mem, mt, sub_zero]`. Take `⟨c, hc1, hc2⟩` from `h n`.
+
+Use `sub_mem hc2 (hC x k n c hc1)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Establish `single_approx : ∀ n k, IsApprox s i J m n (i (m k)) (Finsupp.single k 1)`. Introduce `n k`.
+
+Unfold `IsApprox`. Rewrite using `[lsum_single, sub_self]`. Conclude with `zero_mem _`. Use `⟨{ b := fun k => i (m k) c := fun k => AddMonoidHom.mk' (fun x => C x k) (fun x y => uniq (x + y) k _ fun n => by` and prove the remaining obligations. Take `⟨c, hc⟩` from `exA n x`.
+
+Take `⟨c', hc'⟩` from `exA n y`. Use `⟨c + c', ?_, ?_⟩` and prove the remaining obligations. Unfold `IsApprox at hc hc' ⊢`. Establish `e : x + y - i (lsum s m (c + c')) = (x - i (lsum s m c)) + (y - i (lsum s m c'))`. Rewrite using `[lsum_add, map_add]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `add_mem hc hc'`. Use `add_mem (hC x k n c hc) (hC y k n c' hc')` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+
+Simplify using `only [Finsupp.add_apply]`. Use the proof step `ring)`. Use `c_mul := fun k a x => by`. Simplify using `only [AddMonoidHom.mk'_apply]`. Use `uniq _ k _ fun n => ?_` and prove the remaining obligations.
+
+Take `⟨c, hc⟩` from `exA n x`. Use `⟨a • c, ?_, ?_⟩` and prove the remaining obligations. Unfold `IsApprox at hc ⊢`. Establish `e : (i.comp s) a * x - i (lsum s m (a • c)) = (i.comp s) a * (x - i (lsum s m c))`. Rewrite using `[lsum_smul, map_mul, RingHom.comp_apply]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `Ideal.mul_mem_left _ _ hc`. Establish `e : (a • c) k - a * C x k = a * (c k - C x k)`. Rewrite using `[Finsupp.smul_apply, smul_eq_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `Ideal.mul_mem_left _ _ (hC x k n c hc)`. Use `c_self := fun k => by`. Simplify using `only [AddMonoidHom.mk'_apply]`.
+
+Conclude with `uniq _ k _ fun n => ⟨_, single_approx n k, by simp⟩`. Use `c_ne := fun j k hjk => by`. Simplify using `only [AddMonoidHom.mk'_apply]`. Conclude with `uniq _ j _ fun n => ⟨_, single_approx n k, by simp [Finsupp.single_apply, Ne.symm hjk]⟩`. Use `fin := fun x n => by`.
+
+Take `⟨c, hc⟩` from `exA n x`. Use `c.support.finite_toSet.subset fun k hk => ?_` and prove the remaining obligations. Simplify using `only [Set.mem_setOf_eq, AddMonoidHom.mk'_apply] at hk`. Assume the negation of the conclusion as `h`. Simplify using `only [Finset.mem_coe, Finsupp.mem_support_iff, not_not] at h`.
+
+Use `hC x k n c hc` as an intermediate fact. Rewrite `this` using `[h, zero_sub, neg_mem_iff]`. Conclude with `hk this`. Use `approx := fun x n F hF => by classical`. Simplify using `only [AddMonoidHom.mk'_apply] at hF ⊢`.
+
+Take `⟨c, hc⟩` from `exA n x`. Establish `e1 : i (lsum s m c) = ∑ k ∈ F ∪ c.support, (i.comp s) (c k) * i (m k)`. Unfold `lsum`. Rewrite using `[Finsupp.sum_of_support_subset c (Finset.subset_union_right (s₁ := F)) _ (fun _ _ => by simp), map_sum]`. Simplify using `[RingHom.comp_apply, map_mul]`.
+
+Establish `e2 : ∑ k ∈ F, (i.comp s) (C x k) * i (m k) = ∑ k ∈ F ∪ c.support, (i.comp s) (if k ∈ F then C x k else 0) * i (m k)`. Rewrite using `[← Finset.sum_subset Finset.subset_union_left (fun k _ hk => by rw [if_neg hk, map_zero, zero_mul])]`. Conclude with `Finset.sum_congr rfl fun k hk => by rw [if_pos hk]`. Establish `e3 : x - ∑ k ∈ F, (i.comp s) (C x k) * i (m k) = (x - i (lsum s m c)) + ∑ k ∈ F ∪ c.support, (i.comp s) (c k - if k ∈ F then C x k else 0) * i (m k)`. Rewrite using `[e2, e1]`.
+
+Simplify using `only [map_sub, sub_mul, Finset.sum_sub_distrib]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e3]`. Use `add_mem hc (Ideal.sum_mem _ fun k _ => Ideal.mul_mem_right _ _ (Ideal.mem_map_of_mem _ ?_))` and prove the remaining obligations. Distinguish the cases in `hk : k ∈ F`.
+
+Rewrite using `[if_pos hk]`. Conclude with `hC x k n c hc`. Rewrite using `[if_neg hk, sub_zero]`. Use `add_mem (hC x k n c hc) (hF k hk)` as an intermediate fact. Simplify using `using this`.
+
+Use `complete := by rw [← Ideal.map_map]; exact hc.complete`. Use `i₀ := k₀`. Use `b_i₀ := by simp only [h1, map_one] }, fun k => rfl⟩`.
+-/
 theorem GlobalTheory.BSP.exists_topBasis_of_levels (A : Type) [CommRing A] (L : Type) [CommRing L] (Q : Type) [CommRing Q]
     (s : A →+* L) (i : L →+* Q) (J : Ideal A) (ι : Type) (m : ι → L) (k₀ : ι) (h1 : m k₀ = 1)
     (hA : IsAdicComplete J A) (hc : IsCompl i (J.map s))

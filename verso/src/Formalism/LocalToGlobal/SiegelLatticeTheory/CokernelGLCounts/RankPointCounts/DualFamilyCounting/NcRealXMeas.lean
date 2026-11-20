@@ -15,15 +15,27 @@ open Formalism.QuantumDeterminants Formalism.MainNotions.S Formalism.L2.SG.HidaS
 variable {r k : ℕ} {ε : Fin (2 * r + k + 1) → Bool} {e f : Fin r → Fin (2 * r + k + 1) → ℂ}
   {wf : Fin k → Fin (2 * r + k + 1) → ℂ} {z0 : Fin (2 * r + k + 1) → ℂ}
 
+/- English proof (translation)
+The claim follows from `cM_measEmb (ε := ε) (A := Qi ε e f wf z0) (B := Qm e f wf z0) (A' := Qm e f wf z0) (B' := Qi ε e f wf z0) (Qm_mul_Qi hF) (Qm_mul_Qi hF)`.
+-/
 theorem embQ (hF : IsFrameJ ε e f wf z0) :
     MeasurableEmbedding (cM (ε := ε) (Qi ε e f wf z0) (Qm e f wf z0)) :=
   cM_measEmb (ε := ε) (A := Qi ε e f wf z0) (B := Qm e f wf z0) (A' := Qm e f wf z0) (B' := Qi ε e f wf z0)
     (Qm_mul_Qi hF) (Qm_mul_Qi hF)
 
+/- English proof (translation)
+Rewrite using `[Qm_mulVec_bvec, colQ_eI]`.
+-/
 theorem Qm_e (a : Fin r) : Qm e f wf z0 *ᵥ bvec (eI k r a) = e a := by rw [Qm_mulVec_bvec, colQ_eI]
 
+/- English proof (translation)
+Rewrite using `[Qm_mulVec_bvec, colQ_esI]`.
+-/
 theorem Qm_f (a : Fin r) : Qm e f wf z0 *ᵥ bvec (esI k r a) = f a := by rw [Qm_mulVec_bvec, colQ_esI]
 
+/- English proof (translation)
+Rewrite using `[Matrix.mulVec_mulVec]`. Establish `e1 : Qm e f wf z0 * s * Qi ε e f wf z0 * Qm e f wf z0 = Qm e f wf z0 * s`. Rewrite using `[Matrix.mul_assoc (Qm e f wf z0 * s), Qi_mul_Qm hF, Matrix.mul_one]`. Rewrite using `[e1, ← Matrix.mulVec_mulVec, hv]`.
+-/
 theorem conj_fix (hF : IsFrameJ ε e f wf z0) {s : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     {v : Fin (2 * r + k + 1) → ℂ} (hv : s *ᵥ v = v) :
     (Qm e f wf z0 * s * Qi ε e f wf z0) *ᵥ (Qm e f wf z0 *ᵥ v) = Qm e f wf z0 *ᵥ v := by
@@ -32,6 +44,19 @@ theorem conj_fix (hF : IsFrameJ ε e f wf z0) {s : Matrix (Fin (2 * r + k + 1)) 
     rw [Matrix.mul_assoc (Qm e f wf z0 * s), Qi_mul_Qm hF, Matrix.mul_one]
   rw [e1, ← Matrix.mulVec_mulVec, hv]
 
+/- English proof (translation)
+Establish `emb` using `embQ hF`. Take `⟨hsf, hne, hcon, hinv⟩` from `hH`. Use `haveI := hsf`. Use `⟨emb.sigmaFinite_map, (Measure.map_ne_zero_iff emb.measurable.aemeasurable).mpr hne, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[emb.map_apply]`.
+
+Use `measure_mono_null (fun g hg => ?_) hcon` and prove the remaining obligations. Introduce `hgH`. Apply `hg` to reduce the goal to its premises. Conclude with `conj_mem_UWset hF rfl (uMat_mem g) (fun a => (hgH.1 a).1) (fun a => (hgH.1 a).2) hgH.2`. Introduce `s hs`.
+
+Establish `ht` using `conjQ_UJ hF hs.1`. Use `set t := toUJ (Qm e f wf z0 * s * Qi ε e f wf z0) ht`. Establish `htH : t ∈ Formalism.L2.SG.Pf.NcReal.HLoc ε e f (Qm e f wf z0 *ᵥ zB)` using `by show (∀ a, uMat t *ᵥ e a = e a ∧ uMat t *ᵥ f a = f a) ∧ uMat t *ᵥ (Qm e f wf z0 *ᵥ zB) = Qm e f wf z0 *ᵥ zB`. Rewrite using `[uMat_toUJ]`. Use `⟨fun a => ⟨?_, ?_⟩, conj_fix hF hs.2.2⟩` and prove the remaining obligations.
+
+Rewrite using `[← Qm_e (e := e) (f := f) (wf := wf) (z0 := z0) a]`. Conclude with `conj_fix hF (hs.2.1 a).1`. Rewrite using `[← Qm_f (e := e) (f := f) (wf := wf) (z0 := z0) a]`. Conclude with `conj_fix hF (hs.2.1 a).2`. Rewrite using `[Measure.map_map (measurable_lmulM s) emb.measurable]`.
+
+Establish `hfun : lmulM s ∘ cM (ε` using `ε) (Qi ε e f wf z0) (Qm e f wf z0) = cM (ε := ε) (Qi ε e f wf z0) (Qm e f wf z0) ∘ (fun g : Formalism.REAL.UJ ε => t * g) := by`. Use function extensionality and compare the values at `g`. Simplify using `only [Function.comp, lmulM_cM]`. Unfold `cM`. Rewrite using `[uMat_mul, uMat_toUJ]`.
+
+Simplify using `only [← Matrix.mul_assoc, Qi_mul_Qm hF, Matrix.one_mul]`. Apply the tactic sequence `try rfl`. Rewrite using `[hfun, ← Measure.map_map emb.measurable (measurable_const_mul t), hinv t htH]`.
+-/
 theorem measW_of (hF : IsFrameJ ε e f wf z0) {zB : Fin (2 * r + k + 1) → ℂ} {μH : Measure (Formalism.REAL.UJ ε)}
     (hH : IsLocHaar (Formalism.L2.SG.Pf.NcReal.HLoc ε e f (Qm e f wf z0 *ᵥ zB)) μH) :
     Formalism.MainNotions.S.IsHaarOn (UWset k r zB) (μH.map (cM (ε := ε) (Qi ε e f wf z0) (Qm e f wf z0))) := by
@@ -64,6 +89,13 @@ theorem measW_of (hF : IsFrameJ ε e f wf z0) {zB : Fin (2 * r + k + 1) → ℂ}
       try rfl
     rw [hfun, ← Measure.map_map emb.measurable (measurable_const_mul t), hinv t htH]
 
+/- English proof (translation)
+Establish `emb` using `embQ hF`. Rewrite using `[Measure.map_smul, refN, emb.map_comap, Jac.haarLie_eq_smul (Nset k r) (ENNReal.ofReal κ)]`. Use `congr 1`. Use `Measure.restrict_eq_self_of_ae_mem ?_` and prove the remaining obligations. Establish `hc : (Formalism.MainNotions.S.haarLie (Nset k r) 1) {x | Matrix.of x ∉ Nset k r} = 0` using `Jac.nilradical_measure_is_haar.2.2.1`.
+
+Use `ae_iff.2 (measure_mono_null (fun x hx => ?_) hc)` and prove the remaining obligations. Simplify using `only [Set.mem_setOf_eq] at hx ⊢`. Introduce `hxN`. Apply `hx` to reduce the goal to its premises. Establish `hU` using `conjQ_UJ hF hxN.1`.
+
+Use `⟨toUJ _ hU, ?_⟩` and prove the remaining obligations. Use `show Qi ε e f wf z0 * uMat (toUJ _ hU) * Qm e f wf z0 = x`. Rewrite using `[uMat_toUJ, Qi_Qm_conj hF]`. Both sides reduce to the same expression.
+-/
 theorem measN_of (hF : IsFrameJ ε e f wf z0) (κ : ℝ) :
     (ENNReal.ofReal κ • refN ε e f wf z0).map (cM (ε := ε) (Qi ε e f wf z0) (Qm e f wf z0)) =
       Formalism.MainNotions.S.haarLie (Nset k r) (ENNReal.ofReal κ) := by
@@ -82,14 +114,39 @@ theorem measN_of (hF : IsFrameJ ε e f wf z0) (κ : ℝ) :
   rw [uMat_toUJ, Qi_Qm_conj hF]
   rfl
 
+/- English proof (translation)
+The claim follows from `Formalism.MainNotions.BridgeCSB.haarLieN k r _ (ENNReal.ofReal_pos.2 hκ).ne' ENNReal.ofReal_ne_top`.
+-/
 theorem haarN_of (κ : ℝ) (hκ : 0 < κ) : Formalism.MainNotions.S.IsHaarOn (Nset k r) (Formalism.MainNotions.S.haarLie (Nset k r) (ENNReal.ofReal κ)) :=
   Formalism.MainNotions.BridgeCSB.haarLieN k r _ (ENNReal.ofReal_pos.2 hκ).ne' ENNReal.ofReal_ne_top
 
+/- English proof (translation)
+The claim follows from `(cM_comp_mul hF (Qm e f wf z0) n h).symm`.
+-/
 theorem psi_mul (hF : IsFrameJ ε e f wf z0) (n h : Formalism.REAL.UJ ε) :
     cM (ε := ε) (Qi ε e f wf z0) (Qm e f wf z0) (n * h) =
       Jac.mm (cM (ε := ε) (Qi ε e f wf z0) (Qm e f wf z0) n) (cM (ε := ε) (Qi ε e f wf z0) (Qm e f wf z0) h) :=
   (cM_comp_mul hF (Qm e f wf z0) n h).symm
 
+/- English proof (translation)
+Establish `emb` using `embQ hF`. Establish `hW` using `measW_of hF hH`. Establish `hN` using `haarN_of (k := k) (r := r) κ hκ`. Use `set Ψ := cM (ε := ε) (Qi ε e f wf z0) (Qm e f wf z0) with hΨ`. Use `set μW := μH.map Ψ with hμW`.
+
+Use `set μN := Formalism.MainNotions.S.haarLie (Nset k r) (ENNReal.ofReal κ) with hμN`. Use `set μN' := ENNReal.ofReal κ • refN ε e f wf z0 with hμN'`. Use `haveI : SigmaFinite μH := hH.1`. Use `haveI : SigmaFinite μW := hW.1`. Use `haveI : SigmaFinite μN := hN.1`.
+
+Establish `hNmap : μN'.map Ψ = μN` using `measN_of hF κ`. Establish `hWB : Formalism.FourierDecayAlt.B.IsHaarOn (Nset k r) μN` using `Formalism.MainNotions.BridgeLemma₃.lbHaarUp_proved.2 k r _ hN`. Apply `Measure.ext_of_lintegral` to reduce the goal to its premises. Introduce `g hg`. Establish `hgm : Measurable fun p : Mt k r × Mt k r => g (Jac.mm p.1 p.2)` using `hg.comp Jac.measurable_mt_mul`.
+
+Rewrite using `[Jac.lintegral_muS μW μN hg, lintegral_map hg emb.measurable]`. Establish `hmul : Measurable fun p : Formalism.REAL.UJ ε × Formalism.REAL.UJ ε => p.1 * p.2` using `measurable_mul`. Establish `hgΨ : Measurable fun a : Formalism.REAL.UJ ε => g (Ψ a)` using `hg.comp emb.measurable`. Rewrite using `[show muSL μH μN' = (μN'.prod μH).map (fun p => p.1 * p.2) from rfl, lintegral_map hgΨ hmul, lintegral_prod (fun p : Formalism.REAL.UJ ε × Formalism.REAL.UJ ε => g (Ψ (p.1 * p.2))) (hgΨ.comp hmul).aemeasurable]`. Establish `hpm : ∀ n h : Formalism.REAL.UJ ε, Ψ (n * h) = Jac.mm (Ψ n) (Ψ h)` using `psi_mul hF`.
+
+Simplify using `only [hpm]`. Establish `step1 : ∀ n : Formalism.REAL.UJ ε, ∫⁻ h, g (Jac.mm (Ψ n) (Ψ h)) ∂μH = ∫⁻ y, g (Jac.mm (Ψ n) y) ∂μW`. Introduce `n`. Rewrite using `[hμW, emb.lintegral_map]`. Repeatedly rewrite using `[step1]`.
+
+Rewrite using `[← emb.lintegral_map (μ := μN') (f := fun x => ∫⁻ y, g (Jac.mm x y) ∂μW), hNmap]`. Rewrite using `[lintegral_lintegral_swap (f := fun x y => g (Jac.mm x y)) hgm.aemeasurable]`. Establish `hconc : ∀ᵐ h ∂μW, Matrix.of h ∈ UWset k r zB`. Establish `h0 : μW {x | Matrix.of x ∉ UWset k r zB} = 0` using `hW.2.2.1`. Conclude with `ae_iff.2 h0`.
+
+Use `lintegral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hconc] with h hh`. Establish `hd : IsUnit (Matrix.of h).det` using `JL.RI.det_unit_of_UH hh.1`. Establish `hhi : (Matrix.of h)⁻¹ ∈ UWset k r zB` using `JL.RI.inv_mem_UW hh`. Establish `hc : μN.map (conjM (k` using `k) (r := r) (Matrix.of h)⁻¹) = μN := Formalism.FourierDecayAlt.P.b2_conjInvRaw_proof k r zB μN hz hT hWB _ hhi`.
+
+Use `conv_rhs => rw [← hc]`. Establish `hmh : Measurable fun n : Mt k r => g (Jac.mm h n)` using `hgm.comp (measurable_const.prodMk measurable_id)`. Rewrite using `[lintegral_map hmh (Jac.meas_conjM _)]`. Use `lintegral_congr fun x => ?_` and prove the remaining obligations. Use `congr 1`.
+
+Use `show Jac.mm x h = Jac.mm h (conjM (Matrix.of h)⁻¹ x)`. Use function extensionality and compare the values at `i j`. Use `show (Matrix.of x * Matrix.of h) i j = (Matrix.of h * ((Matrix.of h)⁻¹ * Matrix.of x * ((Matrix.of h)⁻¹)⁻¹)) i j`. Rewrite using `[Matrix.nonsing_inv_nonsing_inv _ hd, ← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hd, Matrix.one_mul]`.
+-/
 theorem measS_of (hF : IsFrameJ ε e f wf z0) {zB : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r zB)
     (hT : 0 < Tz k r zB) {μH : Measure (Formalism.REAL.UJ ε)} (hH : IsLocHaar (Formalism.L2.SG.Pf.NcReal.HLoc ε e f (Qm e f wf z0 *ᵥ zB)) μH)
     (κ : ℝ) (hκ : 0 < κ) :
@@ -146,6 +203,11 @@ theorem measS_of (hF : IsFrameJ ε e f wf z0) {zB : Fin (2 * r + k + 1) → ℂ}
   rw [Matrix.nonsing_inv_nonsing_inv _ hd, ← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hd,
     Matrix.one_mul]
 
+/- English proof (translation)
+Establish `emb` using `embQ hF`. Establish `hW` using `measW_of hF hH`. Take `⟨μ0, h0⟩` from `Formalism.FourierDecayAlt.P.weyl_haar_exists k r zB hz hT`. Establish `hνfin : ∀ K, (μH.map (cM (ε` using `ε) (Qi ε e f wf z0) (Qm e f wf z0))) K < ⊤ := fun K => lt_of_le_of_lt (measure_mono (Set.subset_univ K)) (by rw [emb.map_apply, Set.preimage_univ]; exact hfin.lt_top)`. Take `⟨c, hc⟩` from `Formalism.FourierDecayAlt.P.haar_measure_unique_up_to_scalar k r (UWset k r zB) μ0 _ (Formalism.FourierDecayAlt.P.weyl_subgroup_closed k r zB) h0 hW.2.2.1 hW.2.2.2 (fun K _ => hνfin K)`.
+
+Conclude with `⟨hW.2.2.1, hW.2.2.2, fun a ha => by rw [hc, Measure.map_smul, h0.right a ha], fun K _ => hνfin K, hW.2.1⟩`.
+-/
 theorem haarW_B (hF : IsFrameJ ε e f wf z0) {zB : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r zB) (hT : 0 < Tz k r zB)
     {μH : Measure (Formalism.REAL.UJ ε)} (hH : IsLocHaar (Formalism.L2.SG.Pf.NcReal.HLoc ε e f (Qm e f wf z0 *ᵥ zB)) μH)
     (hfin : μH Set.univ ≠ ⊤) :
@@ -159,6 +221,17 @@ theorem haarW_B (hF : IsFrameJ ε e f wf z0) {zB : Fin (2 * r + k + 1) → ℂ} 
     hW.2.2.1 hW.2.2.2 (fun K _ => hνfin K)
   exact ⟨hW.2.2.1, hW.2.2.2, fun a ha => by rw [hc, Measure.map_smul, h0.right a ha], fun K _ => hνfin K, hW.2.1⟩
 
+/- English proof (translation)
+Establish `emb` using `embQ hF`. Use `set Ψ := cM (ε := ε) (Qi ε e f wf z0) (Qm e f wf z0) with hΨ`. Use `set μS := muSL μH (ENNReal.ofReal κ • refN ε e f wf z0) with hμS`. Establish `hN` using `haarN_of (k := k) (r := r) κ hκ`. Establish `hWB` using `haarW_B hF hz hT hH hfin`.
+
+Establish `hNB : Formalism.FourierDecayAlt.B.IsHaarOn (Nset k r) (Formalism.MainNotions.S.haarLie (Nset k r) (ENNReal.ofReal κ))` using `Formalism.MainNotions.BridgeLemma₃.lbHaarUp_proved.2 k r _ hN`. Establish `hQinv : (Qm e f wf z0)⁻¹ = Qi ε e f wf z0` using `Matrix.inv_eq_left_inv (Qi_mul_Qm hF)`. Establish `hdet : IsUnit (Qm e f wf z0).det` using `Matrix.isUnit_det_of_left_inverse (Qi_mul_Qm hF)`. Use `set sM : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ := Qi ε e f wf z0 * uMat s * Qm e f wf z0 with hsM`. Establish `hSs : sM ∈ Sset k r zB`.
+
+Use `(JL.setCorr_holds r k ε e (Qm e f wf z0 *ᵥ zB) zB (Qm e f wf z0) (gramQ hF) hdet (fun a => Qm_e (f := f) (wf := wf) (z0 := z0) a) hz rfl hT s).1 hs` as an intermediate fact. Rewrite `this` using `[hQinv]`. Conclude with `this`. Establish `hmeas : Measurable fun x : Formalism.REAL.UJ ε => x * s` using `measurable_mul_const s`. Establish `hfun : Ψ ∘ (fun x => x * s) = Formalism.FourierDecayAlt.B.rmulF sM ∘ Ψ`.
+
+Use function extensionality and compare the values at `x`. Use `show (Qi ε e f wf z0 * uMat (x * s) * Qm e f wf z0 : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) = (Qi ε e f wf z0 * uMat x * Qm e f wf z0) * (Qi ε e f wf z0 * uMat s * Qm e f wf z0)`. Rewrite using `[uMat_mul]`. Simplify using `only [← Matrix.mul_assoc]`. Rewrite using `[Matrix.mul_assoc (Qi ε e f wf z0 * uMat x) (Qm e f wf z0) (Qi ε e f wf z0), Qm_mul_Qi hF, Matrix.mul_one]`.
+
+Establish `key : (μS.map (fun x => x * s)).map Ψ = μS.map Ψ`. Rewrite using `[Measure.map_map emb.measurable hmeas, hfun, ← Measure.map_map (JL.RI.meas_rmul (k := k) (r := r) _) emb.measurable, hμS, measS_of hF hz hT hH κ hκ]`. Conclude with `JL.RI.muS_right hz hT hWB hNB _ hSs`. Rewrite using `[← emb.comap_map (μS.map (fun x => x * s)), key, emb.comap_map]`.
+-/
 theorem rightX_of (hF : IsFrameJ ε e f wf z0) {zB : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r zB)
     (hT : 0 < Tz k r zB) {μH : Measure (Formalism.REAL.UJ ε)}
     (hH : IsLocHaar (Formalism.L2.SG.Pf.NcReal.HLoc ε e f (Qm e f wf z0 *ᵥ zB)) μH) (hfin : μH Set.univ ≠ ⊤)

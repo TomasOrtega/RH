@@ -8,6 +8,11 @@ namespace PI.AlgValsFin.W
 
 variable {L : Type} [Field L] [NumberField L]
 
+/- English proof (translation)
+Rewrite `hs` using `[mem_nhds_subtype]`. Take `⟨u, hu, hsub⟩` from `hs`. Rewrite `hu` using `[Valued.mem_nhds]`. Take `⟨γ, hγ⟩` from `hu`. Take `⟨n, hn⟩` from `exists_exp_neg_natCast_lt (MonoidWithZeroHom.ValueGroup₀.embedding_unit_ne_zero γ)`.
+
+Use `⟨n, fun y hy => hsub (hγ ?_)⟩` and prove the remaining obligations. Use `show Valued.v.restrict ((y : v.adicCompletion L) - 1) < γ.1`. Rewrite using `[← MonoidWithZeroHom.ValueGroup₀.embedding_strictMono.lt_iff_lt, Valuation.embedding_restrict]`. Conclude with `lt_of_le_of_lt hy hn`.
+-/
 theorem locNb (v : HeightOneSpectrum (𝓞 L))
     (s : Set ((v.adicCompletionIntegers L : Set (v.adicCompletion L))))
     (hs : s ∈ 𝓝 (⟨1, (v.adicCompletionIntegers L).one_mem⟩ : (v.adicCompletionIntegers L : Set (v.adicCompletion L)))) :
@@ -27,6 +32,11 @@ def toInt (x : Ideles L) (hx : x ∈ UFin L) (v : HeightOneSpectrum (𝓞 L)) :
     (v.adicCompletionIntegers L : Set (v.adicCompletion L)) :=
   ⟨(x : AdeleRing (𝓞 L) L).2 v, (mem_adicCompletionIntegers _ _ _).2 (hx.2 v).le⟩
 
+/- English proof (translation)
+Establish `hmul : (x : AdeleRing (𝓞 L) L) * ((x⁻¹ : Ideles L) : AdeleRing (𝓞 L) L) = 1` using `x.mul_inv`. Use `⟨?_, fun v => ?_⟩` and prove the remaining obligations. Establish `h2 : (x : AdeleRing (𝓞 L) L).1 * ((x⁻¹ : Ideles L) : AdeleRing (𝓞 L) L).1 = 1` using `congrArg (fun y : AdeleRing (𝓞 L) L => y.1) hmul`. Rewrite `h2` using `[hx.1, one_mul]`. Conclude with `h2`.
+
+Establish `h2 : (x : AdeleRing (𝓞 L) L).2 v * ((x⁻¹ : Ideles L) : AdeleRing (𝓞 L) L).2 v = 1` using `congrArg (fun y : AdeleRing (𝓞 L) L => y.2 v) hmul`. Establish `h3` using `congrArg Valued.v h2`. Rewrite `h3` using `[map_mul, hx.2 v, one_mul, map_one]`. Conclude with `h3`.
+-/
 theorem inv_mem_UFin {x : Ideles L} (hx : x ∈ UFin L) : x⁻¹ ∈ UFin L := by
   have hmul : (x : AdeleRing (𝓞 L) L) * ((x⁻¹ : Ideles L) : AdeleRing (𝓞 L) L) = 1 := x.mul_inv
   refine ⟨?_, fun v => ?_⟩
@@ -40,6 +50,11 @@ theorem inv_mem_UFin {x : Ideles L} (hx : x ∈ UFin L) : x⁻¹ ∈ UFin L := b
     rw [map_mul, hx.2 v, one_mul, map_one] at h3
     exact h3
 
+/- English proof (translation)
+Establish `hmul : (x : AdeleRing (𝓞 L) L) * ((x⁻¹ : Ideles L) : AdeleRing (𝓞 L) L) = 1` using `x.mul_inv`. Establish `h2 : (x : AdeleRing (𝓞 L) L).2 v * ((x⁻¹ : Ideles L) : AdeleRing (𝓞 L) L).2 v = 1` using `congrArg (fun y : AdeleRing (𝓞 L) L => y.2 v) hmul`. Establish `hz : Valued.v (((x⁻¹ : Ideles L) : AdeleRing (𝓞 L) L).2 v) = 1` using `(inv_mem_UFin hx).2 v`. Establish `heq : (x⁻¹ : Ideles L).val.2 v - 1 = ((x⁻¹ : Ideles L) : AdeleRing (𝓞 L) L).2 v * (1 - (x : AdeleRing (𝓞 L) L).2 v)`. Rewrite using `[mul_sub, mul_one, mul_comm (((x⁻¹ : Ideles L) : AdeleRing (𝓞 L) L).2 v), h2]`.
+
+Rewrite using `[heq, map_mul, hz, one_mul, Valuation.map_sub_swap]`.
+-/
 theorem val_inv_sub {x : Ideles L} (hx : x ∈ UFin L) (v : HeightOneSpectrum (𝓞 L)) :
     Valued.v ((x⁻¹ : Ideles L).val.2 v - 1) = Valued.v ((x : AdeleRing (𝓞 L) L).2 v - 1) := by
   have hmul : (x : AdeleRing (𝓞 L) L) * ((x⁻¹ : Ideles L) : AdeleRing (𝓞 L) L) = 1 := x.mul_inv
@@ -51,6 +66,25 @@ theorem val_inv_sub {x : Ideles L} (hx : x ∈ UFin L) (v : HeightOneSpectrum (�
     rw [mul_sub, mul_one, mul_comm (((x⁻¹ : Ideles L) : AdeleRing (𝓞 L) L).2 v), h2]
   rw [heq, map_mul, hz, one_mul, Valuation.map_sub_swap]
 
+/- English proof (translation)
+Take `⟨t, ht, rfl⟩` from `(Units.isInducing_embedProduct).isOpen_iff.1 hW`. Set `one' : Π v : HeightOneSpectrum (𝓞 L), (v.adicCompletionIntegers L : Set (v.adicCompletion L))` to `fun v => ⟨1, (v.adicCompletionIntegers L).one_mem⟩`. Set `sm : (Π v : HeightOneSpectrum (𝓞 L), (v.adicCompletionIntegers L : Set (v.adicCompletion L))) → FiniteAdeleRing (𝓞 L) L` to `RestrictedProduct.structureMap _ _ Filter.cofinite`. Establish `hsm : Continuous sm` using `RestrictedProduct.isEmbedding_structureMap.continuous`. Set `g : (Π v : HeightOneSpectrum (𝓞 L), (v.adicCompletionIntegers L : Set (v.adicCompletion L))) × (Π v : HeightOneSpectrum (𝓞 L), (v.adicCompletionIntegers L : Set (v.adicCompletion L))) → AdeleRing (𝓞 L) L × (AdeleRing (𝓞 L) L)ᵐᵒᵖ` to `fun p => (((1 : InfiniteAdeleRing L), sm p.1), MulOpposite.op ((1 : InfiniteAdeleRing L), sm p.2))`.
+
+Establish `hg : Continuous g` using `Continuous.prodMk (Continuous.prodMk continuous_const (hsm.comp continuous_fst)) (MulOpposite.continuous_op.comp (Continuous.prodMk continuous_const (hsm.comp continuous_snd)))`. Establish `hsm1 : sm one' = 1` using `FiniteAdeleRing.ext _ fun v => rfl`. Establish `hg1 : g (one', one') = Units.embedProduct _ (1 : Ideles L)`. Simplify using `only [g, hsm1]`. Both sides reduce to the same expression.
+
+Establish `hmem : g ⁻¹' t ∈ 𝓝 (one', one')` using `hg.continuousAt.preimage_mem_nhds (ht.mem_nhds (by rw [hg1]; exact h1))`. Rewrite `hmem` using `[nhds_prod_eq]`. Take `⟨t1, ht1, t2, ht2, hsub⟩` from `Filter.mem_prod_iff.1 hmem`. Rewrite `ht1`, `ht2` using `[nhds_pi, Filter.mem_pi]`. Take `⟨I1, hI1, s1, hs1, hsub1⟩` from `ht1`.
+
+Take `⟨I2, hI2, s2, hs2, hsub2⟩` from `ht2`. Use `choose n1 hn1 using fun v => locNb v (s1 v) (hs1 v)`. Use `choose n2 hn2 using fun v => locNb v (s2 v) (hs2 v)`. Set `S : Finset (HeightOneSpectrum (𝓞 L))` to `hI1.toFinset ∪ hI2.toFinset`. Use `⟨S, ∑ v ∈ S, (n1 v + n2 v), fun x hx hS => ?_⟩` and prove the remaining obligations.
+
+Establish `hle : ∀ v ∈ S, ∀ k : ℕ, k ≤ n1 v + n2 v → exp (-((∑ v ∈ S, (n1 v + n2 v) : ℕ) : ℤ)) ≤ exp (-(k : ℤ))`. Introduce `v hv k hk`. Apply `exp_le_exp.2` to reduce the goal to its premises. Use `Finset.single_le_sum (f := fun v => n1 v + n2 v) (fun _ _ => Nat.zero_le _) hv` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+
+Establish `hy : (fun v => toInt x hx v, fun v => toInt x⁻¹ (inv_mem_UFin hx) v) ∈ t1 ×ˢ t2`. Use `⟨hsub1 fun v hv => hn1 v _ ?_, hsub2 fun v hv => hn2 v _ ?_⟩` and prove the remaining obligations. Establish `hvS : v ∈ S` using `Finset.mem_union_left _ (hI1.mem_toFinset.2 hv)`. Conclude with `(hS v hvS).trans (hle v hvS _ (Nat.le_add_right _ _))`. Establish `hvS : v ∈ S` using `Finset.mem_union_right _ (hI2.mem_toFinset.2 hv) show Valued.v ((x⁻¹ : Ideles L).val.2 v - 1) ≤ _`.
+
+Rewrite using `[val_inv_sub hx v]`. Conclude with `(hS v hvS).trans (hle v hvS _ (Nat.le_add_left _ _))`. Establish `hgx : g (fun v => toInt x hx v, fun v => toInt x⁻¹ (inv_mem_UFin hx) v) = Units.embedProduct _ x`. Establish `e1 : (((1 : InfiniteAdeleRing L), sm fun v => toInt x hx v) : AdeleRing (𝓞 L) L) = (x : AdeleRing (𝓞 L) L)` using `Prod.ext hx.1.symm (FiniteAdeleRing.ext _ fun v => rfl)`. Establish `e2 : (((1 : InfiniteAdeleRing L), sm fun v => toInt x⁻¹ (inv_mem_UFin hx) v) : AdeleRing (𝓞 L) L) = ((x⁻¹ : Ideles L) : AdeleRing (𝓞 L) L)` using `Prod.ext (inv_mem_UFin hx).1.symm (FiniteAdeleRing.ext _ fun v => rfl)`.
+
+Simplify using `only [g]`. Rewrite using `[e1, e2]`. Both sides reduce to the same expression. Use `hsub hy` as an intermediate fact. Rewrite `this` using `[Set.mem_preimage, hgx]`.
+
+Conclude with `this`.
+-/
 theorem exists_nbhd (W : Set (Ideles L)) (hW : IsOpen W) (h1 : (1 : Ideles L) ∈ W) :
     ∃ (S : Finset (HeightOneSpectrum (𝓞 L))) (n : ℕ), ∀ x ∈ UFin L,
       (∀ v ∈ S, Valued.v ((x : AdeleRing (𝓞 L) L).2 v - 1) ≤ exp (-(n : ℤ))) → x ∈ W := by

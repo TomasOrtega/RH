@@ -10,6 +10,9 @@ open MeasureTheory NumberField NumberField.mixedEmbedding
 
 namespace Formalism.L2.SG.NGCut.SplitEmbedding
 
+/- English proof (translation)
+Establish `hsf : SigmaFinite (ENNReal.ofReal x • (volume : Measure ℂ))` using `(inferInstance : SigmaFinite (x.toNNReal • (volume : Measure ℂ)))`. Use `Measure.pi_eq (fun t _ => ?_)` and prove the remaining obligations. Rewrite using `[Measure.smul_apply, volume_pi, Measure.pi_pi, smul_eq_mul]`. Simplify using `only [Measure.smul_apply, smul_eq_mul, Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ]`.
+-/
 theorem pi_const_smul {ι : Type} [Fintype ι] (x : ℝ) :
     Measure.pi (fun _ : ι => ENNReal.ofReal x • (volume : Measure ℂ)) =
       ENNReal.ofReal x ^ Fintype.card ι • (volume : Measure (ι → ℂ)) := by
@@ -25,6 +28,19 @@ def embS {K : Type} [Field K] {ι : Type} (φ : ι → (K →+* ℂ)) (s : ℂ) 
   map_zero' := by funext i; simp
   map_add' a b := by funext i; simp [mul_add]
 
+/- English proof (translation)
+Establish `hsf : SigmaFinite (ENNReal.ofReal c ^ Fintype.card ι • (volume : Measure (ι → ℂ)))`. Rewrite using `[show ENNReal.ofReal c ^ Fintype.card ι = ((c.toNNReal ^ Fintype.card ι : NNReal) : ENNReal) by`. Rewrite using `[ENNReal.coe_pow]`. Use the proof step `rfl]`. Conclude with `(inferInstance : SigmaFinite ((c.toNNReal ^ Fintype.card ι) • (volume : Measure (ι → ℂ))))`.
+
+Establish `hFex : ∀ p, ∃ F : Set (ι → ℂ), MeasurableSet F ∧ ∀ v, ∃! a : Λ p, (fun i => s p * φ i a) + v ∈ F` using `fun p => exists_fd K ι φ σ hφ (I p) (Λ p) (hΛ p) (by rw [hk p]; exact hk0 p) (s p) (hs p)`. Use `choose F hFm hFd using hFex`. Establish `hFd' : ∀ p (v : ι → ℂ), ∃! a : (Λ p).map (embS φ (s p)), (a : ι → ℂ) + v ∈ F p`. Introduce `p v`. Take `⟨a, ha, hu⟩` from `hFd p v`.
+
+Use `⟨⟨embS φ (s p) a, AddSubgroup.mem_map_of_mem _ a.2⟩, ha, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨b, hb⟩ hbF`. Take `⟨a', ha', rfl⟩` from `AddSubgroup.mem_map.mp hb`. Establish `hae` using `hu ⟨a', ha'⟩ hbF`. Substitute `hae` using the available equality.
+
+Both sides reduce to the same expression. Establish `hcK : Countable K` using `(Module.finBasis ℚ K).equivFun.injective.countable`. Establish `hcA : ∀ p, Countable ((Λ p).map (embS φ (s p)))` using `fun p => Function.Surjective.countable (f := fun a : Λ p => (⟨embS φ (s p) a, AddSubgroup.mem_map_of_mem _ a.2⟩ : (Λ p).map (embS φ (s p)))) (by`. Introduce and unpack `⟨b, hb⟩`. Take `⟨a, ha, rfl⟩` from `AddSubgroup.mem_map.mp hb`.
+
+Conclude with `⟨⟨a, ha⟩, rfl⟩)`. Rewrite using `[pi_const_smul c]`. Rewrite using `[triFundT P (fun _ => ι → ℂ) (fun _ => ENNReal.ofReal c ^ Fintype.card ι • volume) h B hBm hBd hB0 τ hτ (fun p => (Λ p).map (embS φ (s p))) hinv F hFm hFd' Kset hK hKd]`. Use `Finset.prod_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[Measure.smul_apply, smul_eq_mul, idealCovolC K ι φ σ hφ (I p) (Λ p) (hΛ p) (k p) (hk p) (hk0 p) (s p) (hs p) (F p) (hFm p) (hFd p), ← ENNReal.ofReal_pow hc, ← ENNReal.ofReal_mul (by positivity)]`.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem covol_oneT (K : Type) [Field K] [NumberField K] [IsEmpty {w : InfinitePlace K // w.IsReal}]
     (ι : Type) [Fintype ι] (φ : ι → (K →+* ℂ)) (σ : ι ≃ {w : InfinitePlace K // w.IsComplex})
     (hφ : ∀ i, φ i = (σ i).1.embedding ∨ φ i = ComplexEmbedding.conjugate (σ i).1.embedding)

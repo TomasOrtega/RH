@@ -9,6 +9,105 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.AnF
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Establish `hPh : ReciprocityTheory.AnForm.R.IsMultiHomogIdeal (pC (mCoordIdeal x))` using `isMultiHomogIdeal_pC hP.2.1.2.1`. Establish `hDh : ReciprocityTheory.AnForm.R.IsMultiHomogIdeal (pC J)` using `isMultiHomogIdeal_pC hJ`. Take `⟨hcpt, hsrc⟩` from `GlobalTheory.T.snc_resolution_compact_embedded K ι _ hPh`. Take `⟨himage, htrans⟩` from `GlobalTheory.T.snc_resolution_transition_polynomial K ι _ hPh`. Take `⟨hcover, hliftmem, hcompat, hsurj, hinj, hzero⟩` from `GlobalTheory.T.snc_resolution_cover_and_cone K ι _ _ hPh hDh`.
+
+Establish `hinv` using `GlobalTheory.T.snc_resolution_local_chart_polynomial K ι _ hPh`. Establish `hreg` using `GlobalTheory.T.snc_resolution_regular_local_ring K ι Ω x e J hP hsnc`. Establish `hsc` using `GlobalTheory.T.snc_resolution_boundary_normal_crossing K ι Ω x e J hP hJ hJP hsnc`. Set `E` to `Fintype.equivFin ((k : K) → ι k)`. Set `R : ReciprocityTheory.AnForm.R.AlgRes ι (pC (mCoordIdeal x)) (pC J) e` to `{ M := Pts (pC (mCoordIdeal x)) compact := hcpt n := Fintype.card ((k : K) → ι k) amb := fun _ => Fintype.card (Σ k, ι k) ideal := fun i => ideal _ (E.symm i) src := fun i => src _ (E.symm i) isOpen_alt_bis := fun i => (hsrc _).1 cover := fun y => by`.
+
+Take `⟨p, hp⟩` from `hcover y`. Take `⟨i, rfl⟩` from `E.symm.surjective p`. Conclude with `⟨i, hp⟩`. Use `coord := fun i => coord _ (E.symm i)`. Use `isEmbedding := fun i => (hsrc _).2`.
+
+Use `image := fun i => himage _`. Use `trans := fun i j => htrans _ _`. Use `regular := fun i y hy => (hreg _ y hy).1`. Use `dim := fun i y hy => (hreg _ y hy).2`. Use `lift := fun i => lift (E.symm i)`.
+
+Use `lift_one := fun i => ⟨E.symm i, fun k => by simp [lift]⟩`. Use `lift_mem := fun i => hliftmem _`. Use `compat := fun i j => hcompat _ _`. Use `surj := fun z hz _ => by`. Take `⟨p, y, hy, h⟩` from `hsurj z hz`.
+
+Take `⟨i, rfl⟩` from `E.symm.surjective p`. Conclude with `⟨i, y, hy, h⟩`. Use `inj := fun i j y hy y' hy' _ h => hinj _ _ y hy y' hy' h`. Use `inv := fun i y hy _ p' hp' => hinv _ y hy p' hp'`. Use `bd := fun i => bd _ (pC J) (E.symm i)`.
+
+Use `le_bd := fun i => le_trans (Ideal.map_mono (sup_le_sup_right le_sup_left _)) Ideal.le_radical`. Use `zero_bd := fun i => hzero _`. Use `rc := rc _ (pC J)`. Use `comp := comp _ (pC J)`. Use `sncAt := fun i y hy => (hsc _ y hy).choose`.
+
+Use `comp_eq := fun i y hy => (hsc _ y hy).choose_spec.1`. Use `mult := fun f a hf hfP hz => ⟨fun k => ordAlong (compIdeal _ (pC J) k) _ f, fun i y hy => (hsc _ y hy).choose_spec.2 f a hf hfP hz⟩ }`. Establish `hsurj' : ∀ z ∈ ReciprocityTheory.AnForm.R.conePts (pC (mCoordIdeal x)), ∃ i, ∃ y ∈ R.src i, ReciprocityTheory.AnForm.R.SameOrbit (fun q => eval (R.coord i y) (R.lift i q)) z`. Introduce `z hz`. Take `⟨p, y, hy, h⟩` from `hsurj z hz`.
+
+Take `⟨i, rfl⟩` from `E.symm.surjective p`. Conclude with `⟨i, y, hy, h⟩`. Establish `hinj' : ∀ i j, ∀ y ∈ R.src i, ∀ y' ∈ R.src j, ReciprocityTheory.AnForm.R.SameOrbit (fun q => eval (R.coord i y) (R.lift i q)) (fun q => eval (R.coord j y') (R.lift j q)) → y = y'` using `fun i j y hy y' hy' h => hinj _ _ y hy y' hy' h`. Set `R0 : ReciprocityTheory.AnForm.R.AlgRes ι (pC (mCoordIdeal x)) ⊤ e` to `{ M := R.M n := R.n amb := R.amb ideal := R.ideal src := R.src isOpen_alt_bis := R.isOpen_alt_bis cover := R.cover coord := R.coord isEmbedding := R.isEmbedding image := R.image trans := R.trans regular := R.regular dim := R.dim lift := R.lift lift_one := R.lift_one lift_mem := R …`. Rewrite using `[ReciprocityTheory.AnForm.R.eval_bind_one]`.
+
+Introduce `h`. Conclude with `not_mem_conePts_top _ (hz _ (R.lift_mem i y hy) h)), by simp⟩⟩ }`. Take `⟨A, hA⟩` from `R0.exists_atlas`. Establish `hA' : R.IsGoodAtlas A` using `hA`. Use `choose idx hidx using R.cover`.
+
+Establish `htop : IsMultiHomogIdeal (⊤ : Ideal (MRing ι))`. Use `⟨{1}, fun f hf => ⟨0, ?_⟩, (Ideal.span_singleton_one).symm⟩` and prove the remaining obligations. Rewrite using `[Set.mem_singleton_iff.1 hf]`. Introduce `m hm k`. Rewrite `hm` using `[MvPolynomial.support_one, Finset.mem_singleton]`.
+
+Simplify using `[hm]`. Set `Rb : AnLogRes (mCoordIdeal x) ⊤ e` to `{ homog := htop nondeg := fun h => hP.2.1.1.ne_top (top_le_iff.1 h) X := R.M A := A U := fun y => R.src (idx y) isOpen_U := fun y => R.isOpen_alt_bis (idx y) mem_U := hidx lift := fun y y' q => eval (R.coord (idx y) y') (R.lift (idx y) q) holo := fun y q => hA'.1 (idx y) (R.lift …`. Rewrite using `[mem_mcPts_iff_conePts_pC]`. Conclude with `R.lift_mem (idx y) y' hy'`. Use `compat := fun y y' t ht => R.compat (idx y) (idx y') t ht`.
+
+Use `surj := fun z hz _ => by`. Rewrite `hz` using `[mem_mcPts_iff_conePts_pC]`. Take `⟨i, y, hy, hyz⟩` from `hsurj' z hz`. Conclude with `⟨y, ReciprocityTheory.ChartRestriction.G.Geo.sameOrbit_trans (R.compat (idx y) i y ⟨hidx y, hy⟩) hyz⟩`. Use `inj := fun y y' _ hyy => hinj' (idx y) (idx y') y (hidx y) y' (hidx y') hyy`.
+
+Use `immersion := fun y _ p hp j hj => R0.fderiv_affCoord_ker_eq_bot A hA (idx y) y (hidx y) (not_mem_conePts_top _) p hp j hj`. Use `snc := fun f a hfP hf hz => by`. Establish `hf' : ReciprocityTheory.AnForm.R.IsMultiHomog (map (Int.castRingHom ℂ) f) a` using `fun m hm k => hf m (support_map_subset _ _ hm) k`. Establish `hfP' : map (Int.castRingHom ℂ) f ∉ pC (mCoordIdeal x)` using `fun h => hfP (pcContract K ι _ e hP f h)`. Establish `hz' : ∀ z ∈ ReciprocityTheory.AnForm.R.conePts (pC (mCoordIdeal x)), eval z (map (Int.castRingHom ℂ) f) = 0 → z ∈ ReciprocityTheory.AnForm.R.conePts (⊤ : Ideal (MvPolynomial (Σ k, ι k) ℂ))`.
+
+Introduce `z hz1 hz2`. Establish `h3 : z ∈ mcPts (⊤ : Ideal (MRing ι))` using `hz z ((mem_mcPts_iff_conePts_pC _ z).2 hz1) hz2`. Conclude with `absurd h3 (fun h => by simpa using h.2 1 trivial)`. Take `⟨m, hm⟩` from `R0.isSNC_pullback A hA idx hidx (fun _ _ => 0) _ a hf' hfP' hz'`. Conclude with `⟨R0.rc, m, R0.comp, hm⟩`.
+
+Use `null := fun j => by`. Use `MeasureTheory.measure_mono_null (fun t ht => ?_) MeasureTheory.measure_empty` and prove the remaining obligations. Establish `h3` using `ht.2`. Simplify using `only [Set.mem_preimage, Set.mem_setOf_eq] at h3`. Conclude with `absurd h3 (fun h => by simpa using h.2 1 trivial) }`.
+
+Use `⟨Rb, R.rc, R.comp, fun x₀ => ?_⟩` and prove the remaining obligations. Establish `hx : x₀ ∈ R.src (idx x₀)` using `hidx x₀`. Take `⟨O, hOo, hxO, -, hOc⟩` from `R.comp_eq (idx x₀) x₀ hx`. Establish `hO' : IsOpen (O ∩ {y | y ∈ R.src (idx x₀) ∧ eval (R.coord (idx x₀) y) (R.sncAt (idx x₀) x₀ hx).h ≠ 0})` using `hOo.inter (R.isOpen_nonvan _ _)`. Take `⟨ψ, hψc, hxψ, hψs, hψe⟩` from `hA'.2 (idx x₀) x₀ hx (R.sncAt (idx x₀) x₀ hx).r (R.sncAt (idx x₀) x₀ hx).span_eq _ hO' ⟨hxO, hx, (R.sncAt (idx x₀) x₀ hx).eval_h⟩`.
+
+Use `set d := R.sncAt (idx x₀) x₀ hx with hd`. Establish `hJ' : ∀ l k, d.σ l = some k → l ∈ d.J`. Introduce `l k hl`. Assume the negation of the conclusion as `hJ`. Rewrite `hl` using `[(d.σ_eq_none l).2 hJ]`.
+
+Consider the cases of `hl`. Set `σ' : Fin R.rc → Option (Fin e)` to `fun k => if h : ∃ l, d.σ l = some k then some (Classical.choose h) else none`. Establish `hσ' : ∀ k l, σ' k = some l ↔ d.σ l = some k`. Introduce `k l`. Distinguish the cases in `h : ∃ l, d.σ l = some k`.
+
+Establish `hc0` using `Classical.choose_spec h`. Simplify using `only [σ', dif_pos h, Option.some.injEq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl`. Conclude with `hc0`.
+
+Introduce `hl`. Conclude with `d.σ_injOn (hJ' _ _ hc0) (hJ' _ _ hl) (by rw [hc0, hl])`. Simplify using `only [σ', dif_neg h]`. Prove the components needed by the constructor for the conclusion. Introduce `h'`.
+
+Consider the cases of `h'`. Introduce `hl`. Conclude with `absurd ⟨l, hl⟩ h`. Establish `hmono : ∀ y ∈ ψ.source, locMono ψ σ' y = eval (R.coord (idx x₀) y) (∏ l ∈ d.J, d.r l)`. Introduce `y hy`.
+
+Rewrite using `[map_prod]`. Establish `h1` using `ReciprocityTheory.AnForm.R.prod_reindex_option d.J d.σ d.σ_eq_none σ' hσ' (fun _ => 1) (fun l => eval (R.coord (idx x₀) y) (d.r l))`. Establish `h2 : ∏ l ∈ d.J, eval (R.coord (idx x₀) y) (d.r l) ^ (d.σ l).elim 0 (fun _ => 1) = ∏ l ∈ d.J, eval (R.coord (idx x₀) y) (d.r l)` using `Finset.prod_congr rfl fun l hl => by`. Take `⟨k, hk⟩` from `Option.ne_none_iff_exists'.1 (fun h => (d.σ_eq_none l).1 h hl)`. Rewrite using `[hk]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[← h2, h1]`. Unfold `locMono`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Break down `σ' k with _ | l` into its components or cases.
+
+Both sides reduce to the same expression. Simplify using `[hψe y hy, ReciprocityTheory.AnForm.R.evalFam]`. Use `⟨ψ, σ', hψc, hxψ, fun y hy => (hψs hy).2, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `k k' l h1 h2`. Rewrite `h1`, `h2` using `[hσ']`.
+
+Rewrite `h2` using `[h1]`. Conclude with `Option.some.inj h2`. Introduce `k`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨hyk, hyψ⟩`. Establish `hyO : y ∈ R.comp k ∩ O` using `⟨hyk, (hψs hyψ).1.1⟩`. Rewrite `hyO` using `[hOc k]`. Take `⟨-, l, hl, h0⟩` from `hyO`. Use `⟨hyψ, l, (hσ' k l).2 hl, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hψe y hyψ]`. Conclude with `h0`. Introduce and unpack `⟨hyψ, l, hl, h0⟩`. Use `⟨?_, hyψ⟩` and prove the remaining obligations. Establish `hyO : y ∈ {y ∈ O | ∃ l, d.σ l = some k ∧ eval (R.coord (idx x₀) y) (d.r l) = 0}`.
+
+Use `⟨(hψs hyψ).1.1, l, (hσ' k l).1 hl, ?_⟩` and prove the remaining obligations. Rewrite `h0` using `[hψe y hyψ]`. Conclude with `h0`. Rewrite `hyO` using `[← hOc k]`. Conclude with `hyO.1`.
+
+Introduce `y hy`. Establish `hys : y ∈ R.src (idx x₀)` using `(hψs hy).2`. Establish `hh : eval (R.coord (idx x₀) y) d.h ≠ 0` using `(hψs hy).1.2.2`. Rewrite using `[hmono y hy]`. Use `show (fun q => eval (R.coord (idx x₀) y) (R.lift (idx x₀) q)) ∈ _ ↔ _`.
+
+Rewrite using `[Set.mem_inter_iff, mem_mcPts_iff_conePts_pC, mem_mcPts_iff_conePts_pC, ← R.zero_bd (idx x₀) y hys]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, h0⟩`. Use `h0 _ d.mem_bd` as an intermediate fact. Rewrite `this` using `[map_mul]`.
+
+Conclude with `(mul_eq_zero.1 this).resolve_left hh`. Introduce `h0`. Use `⟨R.lift_mem (idx x₀) y hys, fun g hg => ?_⟩` and prove the remaining obligations. Take `⟨a, ha, b, hb, hab⟩` from `Submodule.mem_sup.1 (d.le_span g hg)`. Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton'.1 ha`.
+
+Establish `hb0` using `R.coord_mem_zero (idx x₀) hys b hb`. Use `congrArg (eval (R.coord (idx x₀) y)) hab` as an intermediate fact. Rewrite `this` using `[map_add, map_mul, h0, mul_zero, zero_add, hb0, map_mul]`. Conclude with `(mul_eq_zero.1 this.symm).resolve_left hh`. Introduce `G a _ hG`.
+
+Establish `hmem : bind₁ (R.lift (idx x₀)) G ∈ R.bd (idx x₀)`. Establish `hrad : (R.bd (idx x₀)).radical = R.bd (idx x₀)` using `Ideal.radical_idem _`. Rewrite using `[← hrad, ← MvPolynomial.vanishingIdeal_zeroLocus_eq_radical (K := ℂ), MvPolynomial.mem_vanishingIdeal_iff]`. Introduce `t ht`. Rewrite `ht` using `[MvPolynomial.mem_zeroLocus_iff]`.
+
+Establish `ht2 : ∀ h ∈ R.bd (idx x₀), eval t h = 0` using `ht`. Express the relevant statement in the definitionally equal form `eval t _ = 0`. Establish `ht' : t ∈ R.coord (idx x₀) '' R.src (idx x₀)`. Rewrite using `[R.image (idx x₀)]`. Conclude with `fun h hh => ht2 h (R.le_bd (idx x₀) hh)`.
+
+Take `⟨y, hy, rfl⟩` from `ht'`. Rewrite using `[ReciprocityTheory.AnForm.R.eval_bind_one]`. Conclude with `hG _ ⟨(mem_mcPts_iff_conePts_pC _ _).2 (R.lift_mem (idx x₀) y hy), (mem_mcPts_iff_conePts_pC _ _).2 ((R.zero_bd (idx x₀) y hy).1 fun h hh => ht2 h hh)⟩`. Take `⟨a', ha', b, hb, hab⟩` from `Submodule.mem_sup.1 (d.le_span _ hmem)`. Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton'.1 ha'`.
+
+Use `⟨fun y => eval (R.coord (idx x₀) y) c / eval (R.coord (idx x₀) y) d.h, ?_, fun y hy => ?_⟩` and prove the remaining obligations. Introduce `j z hz`. Establish `hz' : z ∈ (A.chart j).target ∩ (A.chart j).symm ⁻¹' R.src (idx x₀)` using `⟨hz.1, (hψs hz.2).2⟩`. Conclude with `(hA'.1 (idx x₀) c j z hz').div (hA'.1 (idx x₀) d.h j z hz') (hψs hz.2).1.2.2`. Establish `hys : y ∈ R.src (idx x₀)` using `(hψs hy).2`.
+
+Establish `hh : eval (R.coord (idx x₀) y) d.h ≠ 0` using `(hψs hy).1.2.2`. Establish `hb0` using `R.coord_mem_zero (idx x₀) hys b hb`. Use `congrArg (eval (R.coord (idx x₀) y)) hab` as an intermediate fact. Rewrite `this` using `[map_add, map_mul, hb0, add_zero, map_mul]`. Use `show eval (fun q => eval (R.coord (idx x₀) y) (R.lift (idx x₀) q)) G = _`.
+
+Rewrite using `[← ReciprocityTheory.AnForm.R.eval_bind_one, hmono y hy, div_mul_eq_mul_div, eq_div_iff hh]`. Take the linear combination `(-1 : ℂ) * this`. Take `⟨G, T, hGh, hG1, hG0⟩` from `exists_homogenize (E.symm (idx x₀)) (d.h * ∏ l ∈ d.J, d.r l)`. Use `⟨G, fun _ => T, fun y => eval (R.coord (idx x₀) y) d.h, hGh, ?_, ?_, d.eval_h, fun y hy => ?_⟩` and prove the remaining obligations. Introduce `z hz`.
+
+Distinguish the cases in `h0 : ∃ k, z ⟨k, E.symm (idx x₀) k⟩ = 0`. Conclude with `hG0 z h0`. Use `push_neg at h0`. Rewrite using `[hG1 z h0]`. Use `mul_eq_zero_of_right _ ?_` and prove the remaining obligations.
+
+Take `⟨N, hN⟩` from `d.mem_bd`. Take `⟨f, hf, hfe⟩` from `(Ideal.mem_map_of_equiv _ _).1 hN`. Establish `hw : ReciprocityTheory.AnForm.R.affCoord (E.symm (idx x₀)) z = fun q => (z ⟨q.1, E.symm (idx x₀) q.1⟩)⁻¹ * z q` using `funext fun q => by`. Simplify using `[ReciprocityTheory.AnForm.R.affCoord, div_eq_inv_mul]`. Establish `hz1` using `(mem_mcPts_iff_conePts_pC _ z).1 hz.1`.
+
+Establish `hz2` using `(mem_mcPts_iff_conePts_pC _ z).1 hz.2`. Establish `hker : ReciprocityTheory.AnForm.R.chartIdeal (pC (mCoordIdeal x) ⊔ pC J) (E.symm (idx x₀)) ≤ RingHom.ker (eval (ReciprocityTheory.AnForm.R.affCoord (E.symm (idx x₀)) z))`. Unfold `ReciprocityTheory.AnForm.R.chartIdeal`. Apply `sup_le` to reduce the goal to its premises. Apply `sup_le` to reduce the goal to its premises.
+
+Introduce `g hg`. Rewrite using `[RingHom.mem_ker, hw]`. Conclude with `ReciprocityTheory.AnForm.R.eval_eq_zero_of_smul hPh (fun k => (z ⟨k, E.symm (idx x₀) k⟩)⁻¹) z hz1.2 g hg`. Introduce `g hg`. Rewrite using `[RingHom.mem_ker, hw]`.
+
+Conclude with `ReciprocityTheory.AnForm.R.eval_eq_zero_of_smul hDh (fun k => (z ⟨k, E.symm (idx x₀) k⟩)⁻¹) z hz2.2 g hg`. Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨k, rfl⟩`. Simplify using `[ReciprocityTheory.AnForm.R.affCoord, div_self (h0 k)]`. Establish `h4` using `hker hf`.
+
+Rewrite `h4` using `[RingHom.mem_ker]`. Establish `h5 : eval (ReciprocityTheory.AnForm.R.renPt (ReciprocityTheory.AnForm.R.affCoord (E.symm (idx x₀)) z)) ((d.h * ∏ l ∈ d.J, d.r l) ^ N) = 0`. Rewrite using `[← hfe]`. Conclude with `(ReciprocityTheory.AnForm.R.eval_renC _ f).trans h4`. Rewrite `h5` using `[map_pow]`.
+
+Assume the negation of the conclusion as `hne`. Conclude with `pow_ne_zero N hne h5`. Introduce `j z hz`. Conclude with `hA'.1 (idx x₀) d.h j z ⟨hz.1, (hψs hz.2).2⟩`. Establish `hys : y ∈ src _ (E.symm (idx x₀))` using `(hψs hy).2`.
+
+Establish `hl : (fun q => eval (R.coord (idx x₀) y) (R.lift (idx x₀) q)) = ReciprocityTheory.AnForm.R.affCoord (E.symm (idx x₀)) (rep y)`. Use function extensionality and compare the values at `fun q => eval_lift (E.symm (idx x₀)) y hys q`. Establish `h1 : ∀ k, ReciprocityTheory.AnForm.R.affCoord (E.symm (idx x₀)) (rep y) ⟨k, E.symm (idx x₀) k⟩ = 1` using `fun k => div_self (hys k)`. Use `show eval (fun q => eval (R.coord (idx x₀) y) (R.lift (idx x₀) q)) G = _`. Rewrite using `[hl, hG1 _ (fun k => by rw [h1]; exact one_ne_zero)]`.
+
+Simplify using `only [h1, one_pow, Finset.prod_const_one, one_mul]`. Establish `h2 : ReciprocityTheory.AnForm.R.affCoord (E.symm (idx x₀)) (ReciprocityTheory.AnForm.R.affCoord (E.symm (idx x₀)) (rep y)) = ReciprocityTheory.AnForm.R.affCoord (E.symm (idx x₀)) (rep y)`. Use function extensionality and compare the values at `fun q => by rw [ReciprocityTheory.AnForm.R.affCoord, h1, div_one]`. Rewrite using `[h2]`. Use `show eval (R.coord (idx x₀) y) (d.h * ∏ l ∈ d.J, d.r l) = _`.
+
+Rewrite using `[map_mul, hmono y hy]`.
+-/
 theorem exists_res {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Ω : Type} [Field Ω] [CharZero Ω]
     (x : (Σ k, ι k) → Ω) (e : ℕ) (J : Ideal (MRing ι)) (hP : IsArithVar (mCoordIdeal x) (e + 1))
     (hJ : IsMultiHomogIdeal J) (hJP : ¬ J ≤ mCoordIdeal x) (hsnc : IsSncModel x e J) :

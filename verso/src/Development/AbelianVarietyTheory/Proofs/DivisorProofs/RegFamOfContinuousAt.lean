@@ -15,20 +15,32 @@ open Classical in
 def regFam {Y : Type} (Ei : ℂ → Y → ℂ) (s : ℂ) (y : Y) : ℂ :=
   if h : ∀ y, ∃ c, Tendsto (fun t => Ei t y) (𝓝[≠] s) (𝓝 c) then (h y).choose else 0
 
+/- English proof (translation)
+Establish `h' : ∀ y, ∃ c, Tendsto (fun t => Ei t y) (𝓝[≠] s) (𝓝 c)` using `fun y => ⟨v y, h y⟩`. Rewrite using `[regFam, dif_pos h']`. Conclude with `tendsto_nhds_unique (h' y).choose_spec (h y)`.
+-/
 theorem regFam_eq_of_tendsto {Y : Type} {Ei : ℂ → Y → ℂ} {s : ℂ} {v : Y → ℂ}
     (h : ∀ y, Tendsto (fun t => Ei t y) (𝓝[≠] s) (𝓝 (v y))) (y : Y) : regFam Ei s y = v y := by
   have h' : ∀ y, ∃ c, Tendsto (fun t => Ei t y) (𝓝[≠] s) (𝓝 c) := fun y => ⟨v y, h y⟩
   rw [regFam, dif_pos h']
   exact tendsto_nhds_unique (h' y).choose_spec (h y)
 
+/- English proof (translation)
+The claim follows from `regFam_eq_of_tendsto (fun y => (h y).tendsto.mono_left nhdsWithin_le_nhds) y`.
+-/
 theorem regFam_of_continuousAt {Y : Type} {Ei : ℂ → Y → ℂ} {s : ℂ} (h : ∀ y, ContinuousAt (fun t => Ei t y) s)
     (y : Y) : regFam Ei s y = Ei s y :=
   regFam_eq_of_tendsto (fun y => (h y).tendsto.mono_left nhdsWithin_le_nhds) y
 
+/- English proof (translation)
+Rewrite using `[regFam, dif_neg h]`.
+-/
 theorem regFam_of_not {Y : Type} {Ei : ℂ → Y → ℂ} {s : ℂ}
     (h : ¬ ∀ y, ∃ c, Tendsto (fun t => Ei t y) (𝓝[≠] s) (𝓝 c)) (y : Y) : regFam Ei s y = 0 := by
   rw [regFam, dif_neg h]
 
+/- English proof (translation)
+The claim follows from `regFam_of_continuousAt (Ei := fun _ => f) (s := s) (fun y => continuousAt_const (y := f y)) y`.
+-/
 example {Y : Type} (f : Y → ℂ) (s : ℂ) (y : Y) : regFam (fun _ => f) s y = f y :=
   regFam_of_continuousAt (Ei := fun _ => f) (s := s) (fun y => continuousAt_const (y := f y)) y
 

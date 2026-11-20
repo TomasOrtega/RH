@@ -10,6 +10,9 @@ set_option synthInstance.maxHeartbeats 200000
 section
 noncomputable section
 namespace PositivityTheory.SiegelWeilFormula.Ald
+/- English proof (translation)
+The claim follows from `_root_.PositivityTheory.SiegelWeilFormula.Ald.modelExists_of_siegelSmall (_root_.PositivityTheory.SiegelWeilFormula.Ald.siegelSmall_of_slice_k sliceFacts)`.
+-/
 theorem modelEx_k : _root_.PositivityTheory.SiegelWeilFormula.Ald.ModelEx_k := _root_.PositivityTheory.SiegelWeilFormula.Ald.modelExists_of_siegelSmall (_root_.PositivityTheory.SiegelWeilFormula.Ald.siegelSmall_of_slice_k sliceFacts)
 end PositivityTheory.SiegelWeilFormula.Ald
 end

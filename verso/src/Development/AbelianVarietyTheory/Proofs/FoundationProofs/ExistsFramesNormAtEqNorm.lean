@@ -7,6 +7,23 @@ open Formalism.BasicNotions NumberField
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `K _ _ _ e W _ _ n c _`. Establish `: FiniteDimensional ℂ W` using `Module.Finite.of_basis c`. Establish `hn : Module.finrank ℂ W = n` using `by simpa using Module.finrank_eq_card_basis c`. Set `o : OrthonormalBasis (Fin n) ℂ W` to `(stdOrthonormalBasis ℂ W).reindex (finCongr hn)`. Use `set A : Matrix (Fin n) (Fin n) ℂ := o.toBasis.toMatrix c with hA`.
+
+Establish `hAu : IsUnit A.det` using `Matrix.isUnit_det_of_right_inverse (o.toBasis.toMatrix_mul_toMatrix_flip c)`. Establish `key : ∀ y : Fin n → ℂ, Formalism.HermitianLatticesTheory.cnorm (A.mulVec y) = ‖∑ i, y i • c i‖`. Introduce `y`. Rewrite using `[← o.repr.norm_map, EuclideanSpace.norm_eq]`. Unfold `Formalism.HermitianLatticesTheory.cnorm`.
+
+Use `congr 1`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `congr 2`. Simplify using `[hA, Matrix.mulVec, dotProduct, Module.Basis.toMatrix_apply, mul_comm]`. Break down `InfinitePlace.embedding_mk_eq e with h | h` into its components or cases.
+
+Use `⟨fun _ => A⁻¹, fun _ => Matrix.isUnit_nonsing_inv_det A hAu, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[← key]`. Unfold `Formalism.HermitianLatticesTheory.normAt Formalism.HermitianLatticesTheory.fcoord`. Rewrite using `[Matrix.nonsing_inv_nonsing_inv A hAu]`. Use `congr 2`.
+
+Use function extensionality and compare the values at `i`. Simplify using `[Formalism.HermitianLatticesTheory.vecAt, h]`. Establish `hBu : IsUnit (A.map (starRingEnd ℂ)).det`. Use `hAu.map (starRingEnd ℂ)` as an intermediate fact. Rewrite `this` using `[RingHom.map_det]`. Then use the resulting hypothesis.
+
+Use `⟨fun _ => (A.map (starRingEnd ℂ))⁻¹, fun _ => Matrix.isUnit_nonsing_inv_det _ hBu, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[← key]`. Unfold `Formalism.HermitianLatticesTheory.normAt Formalism.HermitianLatticesTheory.fcoord`. Rewrite using `[Matrix.nonsing_inv_nonsing_inv _ hBu]`. Unfold `Formalism.HermitianLatticesTheory.cnorm`.
+
+Use `congr 1`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `congr 1`. Rewrite using `[← RCLike.norm_conj (A.mulVec (fun i => e (x i)) j)]`. Use `congr 1`.
+
+Simplify using `[Formalism.HermitianLatticesTheory.vecAt, h, Matrix.mulVec, dotProduct]`.
+-/
 theorem exists_frames_normAt_eq_norm : ∀ (K : Type) [Field K] [NumberField K] [StarRing K] (e : K →+* ℂ) (W : Type) [NormedAddCommGroup W] [InnerProductSpace ℂ W] (n : ℕ) (c : Module.Basis (Fin n) ℂ W) (L : Submodule (𝓞 K) (Fin n → K)), ∃ X : InfinitePlace K → Matrix (Fin n) (Fin n) ℂ, (∀ v, IsUnit (X v).det) ∧ ∀ x : Fin n → K, Formalism.HermitianLatticesTheory.normAt (Pi.basisFun K (Fin n)) X (InfinitePlace.mk e) x = ‖∑ i, e (x i) • c i‖ := by
   intro K _ _ _ e W _ _ n c _
   have : FiniteDimensional ℂ W := Module.Finite.of_basis c

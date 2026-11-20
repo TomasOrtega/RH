@@ -6,6 +6,25 @@ open NumberField IsDedekindDomain Matrix GlobalTheory.UPel.HT GlobalTheory.LKTri
 open UpperTheory.Gal.CertificateRingHomMap (GUf Gam0 AfQ Plc sim mat comp rat lev ZU)
 open scoped TensorProduct Classical
 
+/- English proof (translation)
+Introduce `hMS hSD hTF hS X M M' _ _ _ T L' Kw hfT hap K KM htr hfK hK0 hKM hidx hnor t z h hz hh hc`. Establish `hKMK : KM ≤ K` using `hKM.trans hK0`. Establish `hcK : ∀ u ∈ KM, h * u * h⁻¹ ∈ K` using `fun u hu => hK0 (by simpa using hc 1 K.one_mem u hu)`. Take `⟨hmem, -, hsum⟩` from `hMS X K KM T.K₀ h hK0 hidx hnor hc`. Use `⟨hmem, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_mul, hap.1 t, hz.2, one_mul]`. Introduce `V _ _ Φ hΦ`. Establish `hΦK : ∀ k ∈ K, ∀ g, Φ (g * k) = Φ g`. Introduce `k hk g`. Rewrite using `[hΦ k (htr.1 hk) g, htr.2 k hk, Units.val_one, one_smul]`.
+
+Establish `hΦ0 : ∀ k ∈ T.K₀, ∀ g, Φ (g * k) = Φ g` using `fun k hk g => hΦK k (hK0 hk) g`. Use function extensionality and compare the values at `g`. Rewrite using `[Pi.smul_apply, hsum V Φ hΦ0 g, hSD X K KM h hKMK hidx hcK V Φ hΦK hnor g, hTF X M M' T L' Kw hfT hap t z hz V Φ hΦ g]`. Use `congr 1`. Use `Eq.trans ?_ (hS X M' L' K Kw hfK t V (fun y => Φ (g * z * y)) ?_)` and prove the remaining obligations.
+
+Use `show ∑ᶠ x : X ⧸ K, dosetInd ℂ K h⁻¹ x.out • Φ (g * x.out) = ∑ᶠ y : X ⧸ K, dosetInd ℂ K (L'.loc t) y.out • Φ (g * z * y.out)`. Rewrite using `[hh, ← finsum_comp_equiv (MulAction.toPerm z : Equiv.Perm (X ⧸ K))]`. Use `finsum_congr fun q => ?_` and prove the remaining obligations. Establish `hzq : (MulAction.toPerm z q : X ⧸ K) = ((z * q.out : X) : X ⧸ K)`. Rewrite using `[MulAction.toPerm_apply]`.
+
+Use `conv_lhs => rw [← QuotientGroup.out_eq' q]`. Rewrite using `[MulAction.Quotient.smul_mk, smul_eq_mul]`. Take `⟨k, hk⟩` from `QuotientGroup.mk_out_eq_mul K (z * q.out)`. Establish `e1 : Φ (g * (z * q.out * k)) = Φ (g * z * q.out)`. Rewrite using `[← mul_assoc, hΦK _ k.2, ← mul_assoc]`.
+
+Establish `hmem2 : z * q.out * k ∈ DoubleCoset.doubleCoset (L'.loc t * z) (K : Set X) K ↔ q.out ∈ DoubleCoset.doubleCoset (L'.loc t) (K : Set X) K`. Simplify using `only [DoubleCoset.mem_doubleCoset, SetLike.mem_coe]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, b, hb, e⟩`. Use `⟨a, ha, b * (k : X)⁻¹, K.mul_mem hb (K.inv_mem k.2), ?_⟩` and prove the remaining obligations.
+
+Establish `hw : a * (L'.loc t * z) * b = z * (a * L'.loc t * b)`. Rewrite using `[← mul_assoc a, ← hz.1, mul_assoc z]`. Combine the equalities or inequalities in the displayed calculation. Introduce and unpack `⟨a, ha, b, hb, e⟩`. Use `⟨a, ha, b * k, K.mul_mem hb k.2, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[e, ← mul_assoc a, ← hz.1]`. Use `group`. Establish `e2 : dosetInd ℂ K (L'.loc t * z) (z * q.out * k) = dosetInd ℂ K (L'.loc t) q.out`. Unfold `dosetInd`. Simplify using `only [Set.indicator_apply, hmem2, Pi.one_apply]`.
+
+Rewrite using `[hzq, hk, e1, e2]`. Introduce `k hk y show Φ (g * z * (y * k)) = Φ (g * z * y)`. Rewrite using `[← mul_assoc]`. Conclude with `hΦK k hk _`.
+-/
 theorem UpperTheory.Gal.W2.Seed.pMemAct :
     MemSum → SumDoset → TfAct → (∀ (X M' : Type) [Group X] [Group M'] (L' : Loc X M') (K : Subgroup X) (Kw : Subgroup M'), L'.Fact K Kw → ∀ (t : M') (V : Type) [AddCommGroup V] [Module ℂ V] (Ψ : X → V), (∀ k ∈ K, ∀ g, Ψ (g * k) = Ψ g) → ∑ᶠ y : X ⧸ K, dosetInd ℂ K (L'.loc t) y.out • Ψ y.out = ∑ᶠ x : M' ⧸ Kw, dosetInd ℂ Kw t x.out • Ψ (L'.loc x.out)) → MemAct := by
   intro hMS hSD hTF hS X M M' _ _ _ T L' Kw hfT hap K KM htr hfK hK0 hKM hidx hnor t z h hz hh hc

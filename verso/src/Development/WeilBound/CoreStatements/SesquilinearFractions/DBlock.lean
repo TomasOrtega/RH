@@ -14,6 +14,15 @@ namespace GlobalTheory.CompanionTheory.Ar.Fl
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
+/- English proof (translation)
+Use `haveI := D.fin`. Use `haveI := D.proj`. Take `⟨hli, n, hn, hspan⟩` from `h`. Establish `hn0 : (n : 𝓞 E) ≠ 0`. Establish `: n ≠ 0`.
+
+Introduce and unpack `rfl`. Conclude with `hn (dvd_zero ℓ)`. Conclude with `this` after adjusting the coercions. Rewrite using `[← D.rank]`. Apply `le_antisymm` to reduce the goal to its premises.
+
+Conclude with `hli.fintype_card_le_finrank`. Set `g : D.La →ₗ[𝓞 E] Submodule.span (𝓞 E) (Set.range x)` to `LinearMap.codRestrict _ ((n : 𝓞 E) • LinearMap.id) (fun y => by`. Simplify `hspan y)` using `[Nat.cast_smul_eq_nsmul]`. Establish `hg : Function.Injective g`. Introduce `y z hyz`.
+
+Establish `h1 : (n : 𝓞 E) • y = (n : 𝓞 E) • z` using `congrArg Subtype.val hyz`. Conclude with `smul_right_injective _ hn0 h1`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem card_local_basis_eq_rank (D : Datum H) {I : Type} [Fintype I] (x : I → D.La) (ℓ : ℕ) (h : IsLocBasis (𝓞 E) ℓ x) :
     Fintype.card I = D.p + D.q := by
   haveI := D.fin
@@ -38,6 +47,33 @@ theorem card_local_basis_eq_rank (D : Datum H) {I : Type} [Fintype I] (x : I →
           LinearMap.finrank_le_finrank_of_injective hg
       _ = Fintype.card I := finrank_span_eq_card hli
 
+/- English proof (translation)
+Establish `hcard` using `card_local_basis_eq_rank D x ℓ hx`. Take `⟨hdet, -⟩` from `PositivityTheory.Xgf.gram_det_ne_zero_local_basis_cofinite E H D _ x hcard hx.1`. Take `⟨-, -, -, -, -, hskew, hdiff⟩` from `sesq_sesquilinear_properties D`. Establish `h21 : ∀ a b, sesq D (x (.inr a)) (x (.inl b)) = 0`. Introduce `a b`.
+
+Rewrite using `[hskew (x (.inl b)) (x (.inr a)), horth]`. Simplify using the standard rewrite rules. Establish `hblock : gramE D x = Matrix.fromBlocks (gramE D (x ∘ Sum.inl)) 0 0 (gramE D (x ∘ Sum.inr))`. Apply the tactic sequence `ext (a | a) (b | b) <;> simp [gramE, horth, h21]`. Establish `hdetprod : (gramE D x).det = (gramE D (x ∘ Sum.inl)).det * (gramE D (x ∘ Sum.inr)).det`.
+
+Rewrite using `[hblock, Matrix.det_fromBlocks_zero₂₁]`. Establish `h1ne : (gramE D (x ∘ Sum.inl)).det ≠ 0` using `fun h0 => hdet (by rw [hdetprod, h0, zero_mul])`. Establish `h2ne : (gramE D (x ∘ Sum.inr)).det ≠ 0` using `fun h0 => hdet (by rw [hdetprod, h0, mul_zero])`. Use `⟨h2ne, fun j => ?_⟩` and prove the remaining obligations. Use `set emb : 𝓞 E →+* ℂ_[ℓ] := j.comp (algebraMap (𝓞 E) E) with hemb_def`.
+
+Establish `hemb : Function.Injective emb` using `j.injective.comp (FaithfulSMul.algebraMap_injective (𝓞 E) E)`. Establish `hne : differentIdeal ℤ (𝓞 E) ≠ ⊥` using `differentIdeal_ne_bot`. Take `⟨a, ha, ha0, -, hL⟩` from `GlobalTheory.T.padic_logIdeal_max_element E ℓ emb _ hemb hne`. Establish `hemba : emb a = j (a : E)` using `rfl`. Establish `hja : 0 < ‖j (a : E)‖`.
+
+Rewrite using `[← hemba]`. Conclude with `norm_pos_iff.mpr ((map_ne_zero_iff emb hemb).mpr ha0)`. Use `set R : ℝ := ‖j (a : E)‖⁻¹ with hR`. Establish `hR0 : 0 < R` using `inv_pos.mpr hja`. Establish `hent : ∀ y z : D.La, ‖j (sesq D y z)‖ ≤ R`.
+
+Introduce `y z`. Take `⟨b, hb⟩` from `hdiff a ha y z`. Establish `hb1 : ‖j (b : E)‖ ≤ 1` using `(GlobalTheory.T.padic_integral_iff_denominator E ℓ (b : E)).mpr ⟨1, b, Nat.Prime.not_dvd_one ℓ.prop, by simp⟩ j`. Establish `hm : ‖j (a : E)‖ * ‖j (sesq D y z)‖ ≤ 1`. Rewrite using `[← norm_mul, ← map_mul, hb]`.
+
+Conclude with `hb1`. Combine the equalities or inequalities in the displayed calculation. Clear the denominators using the available nonvanishing facts. Use `_ ≤ ‖j (a : E)‖⁻¹ * 1 := mul_le_mul_of_nonneg_left hm (inv_nonneg.mpr hja.le)`. Use `_ = R := mul_one _`.
+
+Establish `hbound : ∀ {I : Type} [Fintype I] [DecidableEq I] (y : I → D.La), ‖j (gramE D y).det‖ ≤ R ^ Fintype.card I`. Introduce `I _ _ y`. Rewrite using `[RingHom.map_det]`. Conclude with `GlobalTheory.T.ultrametric_det_norm_le ℂ_[ℓ] I _ R hR0.le (fun a b => by`. Simplify `hent (y a) (y b))` using `[RingHom.mapMatrix_apply, gramE]`.
+
+Establish `hu` using `hbound (x ∘ Sum.inl)`. Establish `hv` using `hbound (x ∘ Sum.inr)`. Simplify using `only [Fintype.card_fin] at hu hv`. Establish `hfull` using `GlobalTheory.T.gram_determinant_log_different E H D _ x ℓ hx j`. Rewrite `hfull` using `[← hemb_def, hL, hemba]`.
+
+Establish `hu0 : 0 < ‖j (gramE D (x ∘ Sum.inl)).det‖` using `norm_pos_iff.mpr ((map_ne_zero j).mpr h1ne)`. Establish `hv0 : 0 < ‖j (gramE D (x ∘ Sum.inr)).det‖` using `norm_pos_iff.mpr ((map_ne_zero j).mpr h2ne)`. Establish `huv : ‖j (gramE D (x ∘ Sum.inl)).det‖ * ‖j (gramE D (x ∘ Sum.inr)).det‖ = R ^ (p + q)`. Establish `hlog : Real.log (‖j (gramE D (x ∘ Sum.inl)).det‖ * ‖j (gramE D (x ∘ Sum.inr)).det‖) = Real.log (R ^ (p + q))`. Rewrite using `[← norm_mul, ← map_mul, ← hdetprod, hfull, Real.log_pow, hR, Real.log_inv]`.
+
+Simplify using `only [Fintype.card_sum, Fintype.card_fin]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Conclude with `Real.log_injOn_pos (Set.mem_Ioi.mpr (mul_pos hu0 hv0)) (Set.mem_Ioi.mpr (pow_pos hR0 _)) hlog`. Establish `hge : R ^ q ≤ ‖j (gramE D (x ∘ Sum.inr)).det‖`.
+
+Establish `hp0 : 0 < R ^ p` using `pow_pos hR0 _`. Establish `: R ^ p * R ^ q ≤ R ^ p * ‖j (gramE D (x ∘ Sum.inr)).det‖`. Rewrite using `[← pow_add, ← huv]`. Conclude with `mul_le_mul_of_nonneg_right hu hv0.le`. Conclude with `le_of_mul_le_mul_left this hp0`.
+
+Rewrite using `[hL, hemba, le_antisymm hv hge, Real.log_pow, hR, Real.log_inv]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem local_basis_gram_det_log (D : Datum H) (p q : ℕ) (x : Fin p ⊕ Fin q → D.La) (ℓ : Nat.Primes)
     (hx : IsLocBasis (𝓞 E) ℓ x) (horth : ∀ a b, sesq D (x (.inl a)) (x (.inr b)) = 0) :
     (gramE D (x ∘ Sum.inr)).det ≠ 0 ∧ ∀ j : E →+* ℂ_[ℓ], Real.log ‖j (gramE D (x ∘ Sum.inr)).det‖ =
@@ -115,6 +151,9 @@ end GlobalTheory.CompanionTheory.Ar.Fl
 
 namespace PositivityTheory.Xgf
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ D p q x ℓ hx horth` and use `GlobalTheory.CompanionTheory.Ar.Fl.local_basis_gram_det_log D p q x ℓ hx horth`.
+-/
 theorem local_basis_gram_det_log_norm : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (p q : ℕ) (x : Fin p ⊕ Fin q → D.La) (ℓ : Nat.Primes), IsLocBasis (𝓞 E) ℓ x → (∀ a b, sesq D (x (.inl a)) (x (.inr b)) = 0) → (gramE D (x ∘ Sum.inr)).det ≠ 0 ∧ ∀ j : E →+* ℂ_[ℓ], Real.log ‖j (gramE D (x ∘ Sum.inr)).det‖ = -(q : ℝ) * logIdeal (j.comp (algebraMap (𝓞 E) E)) (differentIdeal ℤ (𝓞 E)) :=
   fun _ _ _ _ _ D p q x ℓ hx horth => GlobalTheory.CompanionTheory.Ar.Fl.local_basis_gram_det_log D p q x ℓ hx horth
 

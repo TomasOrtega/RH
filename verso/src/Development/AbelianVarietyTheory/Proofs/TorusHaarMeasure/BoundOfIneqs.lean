@@ -8,6 +8,17 @@ open NumberField ReciprocityTheory.ChartRestriction.G.FD ReciprocityTheory.Chart
 
 namespace GlobalTheory.ProperFromMinimum
 
+/- English proof (translation)
+Establish `hK : 0 ≤ K`. Assume the negation of the conclusion as `hK`. Establish `: K * S ≤ 0` using `mul_nonpos_of_nonpos_of_nonneg (le_of_lt (not_le.1 hK)) hS`. Combine the linear relations using `[Real.exp_pos (-(2 * c * p))]`. Establish `hKa : 0 ≤ K ^ a` using `pow_nonneg hK a`.
+
+Establish `e1 : Real.exp (-(2 * c * p)) ^ a ≤ K ^ a * S ^ a`. Rewrite using `[← mul_pow]`. Conclude with `pow_le_pow_left₀ (Real.exp_pos _).le h1 a`. Establish `e2 : δ * Real.exp (-(2 * c * p)) ^ a ≤ K ^ a * K' * Real.exp (-(2 * i * p))`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `e3 : Real.exp (-(2 * c * p)) ^ a = Real.exp (2 * (i - a * c) * p) * Real.exp (-(2 * i * p))`. Rewrite using `[← Real.exp_nat_mul, ← Real.exp_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite `e2` using `[e3, ← mul_assoc]`.
+
+Establish `e4 : δ * Real.exp (2 * (i - a * c) * p) ≤ K ^ a * K'` using `le_of_mul_le_mul_right e2 (Real.exp_pos _)`. Establish `e5 : 2 * (i - a * c) * p ≤ Real.exp (2 * (i - a * c) * p)`. Combine the linear relations using `[Real.add_one_le_exp (2 * (i - a * c) * p)]`. Establish `hd : 0 < 2 * (i - a * c)` using `by linarith`. Rewrite using `[le_div_iff₀ hd, le_div_iff₀ hδ]`.
+
+Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left e5 hδ.le]`.
+-/
 theorem bound_of_ineqs {K K' c i δ S n p : ℝ} {a : ℕ} (hδ : 0 < δ) (hac : (a : ℝ) * c < i)
     (hS : 0 ≤ S) (h1 : Real.exp (-(2 * c * p)) ≤ K * S) (h2 : n ≤ K' * Real.exp (-(2 * i * p)))
     (h3 : δ * S ^ a ≤ n) : p ≤ K ^ a * K' / δ / (2 * (i - a * c)) := by
@@ -39,6 +50,19 @@ theorem bound_of_ineqs {K K' c i δ S n p : ℝ} {a : ℕ} (hδ : 0 < δ) (hac :
   rw [le_div_iff₀ hd, le_div_iff₀ hδ]
   nlinarith [mul_le_mul_of_nonneg_left e5 hδ.le]
 
+/- English proof (translation)
+Introduce `E _ _ _ r X L eW N a w et c i ph hph hI hac δ hδ`. Break down `Nat.eq_zero_or_pos r with rfl | hr` into its components or cases. Establish `hsub : Subsingleton (Frame X.Ψ 0)` using `inferInstance`. Use `⟨X.dom, (Set.subsingleton_of_subsingleton).finite.isCompact, subset_rfl, ?_⟩` and prove the remaining obligations. Introduce `x hx _`.
+
+Use `⟨1, X.Γ.one_mem, x, fun τ => ⟨(hx τ).1, fun a => a.elim0⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Subsingleton.elim (lact 1 (rmul x x)) x]` and apply the resulting hypothesis. Take `⟨ca, ε0, hca, hε0, hlow⟩` from `hph`. Take `⟨⟨K, hK⟩, K', hK'⟩` from `hI`. Take `⟨B, hB⟩ : ∃ B : ℝ, B = max (K ^ a * K' / δ / (2 * (i - a * c))) 1` from `⟨_, rfl⟩`.
+
+Establish `hB0 : 0 < B` using `by rw [hB]; exact lt_of_lt_of_le one_pos (le_max_right _ _)`. Establish `hε : 0 < min ε0 (Real.sqrt (ca / B))` using `lt_min hε0 (Real.sqrt_pos.2 (div_pos hca hB0))`. Take `⟨C, hC, hCd, hmeet⟩` from `reductionTheory_holds (E := E) r X _ hε`. Use `⟨C, hC, hCd, fun x hx h3 => hmeet x hx ?_⟩` and prove the remaining obligations. Distinguish the cases in `hsmall : X.la1 x < ε0`.
+
+Use `(min_le_right _ _).trans ?_` and prove the remaining obligations. Establish `hpos : 0 < X.la1 x` using `la1_pos_of_mem_dom X hr hx`. Establish `hp : ph x ≤ B`. Rewrite using `[hB]`. Conclude with `(bound_of_ineqs hδ hac (Finset.sum_nonneg fun _ _ => sq_nonneg _) (hK x hx) (hK' x hx) h3).trans (le_max_left _ _)`.
+
+Establish `h4 : ca / X.la1 x ^ 2 ≤ B` using `(hlow x hx hsmall).trans hp`. Rewrite `h4` using `[div_le_iff₀ (by positivity)]`. Apply `Real.sqrt_le_iff.2` to reduce the goal to its premises. Use `⟨hpos.le, ?_⟩` and prove the remaining obligations. Rewrite using `[div_le_iff₀ hB0]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `(min_le_left _ _).trans (not_lt.1 hsmall)`.
+-/
 theorem exists_compact : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r) (L eW : Wt X.Ψ r) (N a : ℕ) (w : Fin N → Frame X.Ψ r → ℂ) (et : Frame X.Ψ r → ℂ) (c i : ℝ) (ph : Frame X.Ψ r → ℝ), (∃ ca ε0 : ℝ, 0 < ca ∧ 0 < ε0 ∧ ∀ x ∈ X.dom, X.la1 x < ε0 → ca / X.la1 x ^ 2 ≤ ph x) → InterpolationModelInequalities X L eW w et c i ph → (a : ℝ) * c < i → ∀ δ : ℝ, 0 < δ → ∃ C : Set (Frame X.Ψ r), IsCompact C ∧ C ⊆ X.dom ∧ ∀ x ∈ X.dom, δ * (∑ k, X.pnorm L (w k) x ^ 2) ^ a ≤ X.pnorm eW et x ^ 2 → ∃ γ ∈ X.Γ, ∃ b ∈ Bor X.Ψ r, lact γ (rmul x b) ∈ C := by
   intro E _ _ _ r X L eW N a w et c i ph hph hI hac δ hδ
   rcases Nat.eq_zero_or_pos r with rfl | hr

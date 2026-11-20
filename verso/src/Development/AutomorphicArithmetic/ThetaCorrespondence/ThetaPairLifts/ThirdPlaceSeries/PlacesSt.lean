@@ -20,6 +20,25 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.BigOn.Exp.TupLe
 variable {D : D7}
 open Classical in
+/- English proof (translation)
+Introduce `D L hT Gi Gl Kc Y cX ex Csz p j hr hm w hw hok ρ hρ hpin _ _`. Establish `hPA` using `placesAt (j := j) hw hρ hpin`. Establish `hL` using `_root_.GlobalTheory.BigOn.links2_of_rows_alt _ _ _ _ _ _ _ _ _ _ p hr hm.1`. Establish `hC : GlobalTheory.Hk3.Core (R2 p) (F2 p)` using `⟨hL.1.lev, hL.1.grp, hL.1.fam, hL.1.models, hL.1.chain, hL.1.thP⟩`. Establish `hXs : SplitSet (p.R.Q (p.R.mu (D.plEq w)))`.
+
+Take `⟨-, e, he, -⟩` from `hC.thP.vP j (p.R.mu (D.plEq w))`. Conclude with `SplitSet.mono ⟨e, he⟩ Finset.subset_union_right`. Establish `hl : ∀ P ∈ p.R.Q (p.R.mu (D.plEq w)), ((D.ntw.l (ex.nch.twI w) : ℕ) : 𝓞 D.host.E) ∉ P.asIdeal`. Introduce `P hP`. Break down `(hPA.2 P).1 (Or.inl hP) with hD | hQ` into its components or cases.
+
+Establish `h1 : P ∈ (↑(D.ntw.pD (ex.nch.twI w)) : Set (Pl D.host.E))` using `hD`. Rewrite `h1` using `[D.ntw.pD_eq]`. Establish `hlp` using `(D.ntw.lPrime (ex.nch.twI w)).out`. Use `not_mem_of_coprime h1 ?_` and prove the remaining obligations. Use `split_ifs with h`.
+
+Conclude with `(Nat.coprime_primes hlp D.host.pde'_prime).2 (by rw [h]; exact D.host.pde_ne)`. Conclude with `(Nat.coprime_primes hlp D.host.pde_prime).2 h`. Conclude with `fun hlP => Finset.disjoint_left.1 hok.2.1 hQ (D.ntw.twistExcludedPlaces_contains_residueChar _ hlP)`. Use `⟨hXs, hl, ?_⟩` and prove the remaining obligations. Take `⟨-, hadm, -⟩` from `GlobalTheory.TwistGood.tw_good D _ D.ntw ρ hρ _ j (ex.nch.sd w) _ _ _ hok`.
+
+Take `⟨R, -, hR, hRs⟩` from `hadm.1.split`. Establish `hYs` using `hRs.mono hR`. Establish `hXC : ∀ P, P ∈ p.R.Q (p.R.mu (D.plEq w)) ∪ (p.R.Q (p.R.mu (D.plEq w))).image Formalism.L2.DIV.conjPl ↔ (P ∈ D.ntw.pD (ex.nch.twI w) ∨ P ∈ ex.nch.Q w)` using `fun P => by`. Rewrite using `[← hPA.2 P, Finset.mem_union, Finset.mem_image]`. Use `or_congr Iff.rfl (exists_congr fun P' => and_congr Iff.rfl ?_)` and prove the remaining obligations.
+
+Rewrite using `[lev_isConjPl_iff, eq_comm]`. Establish `hne : ∀ P, P ∈ D.ntw.pD (ex.nch.twI w) ∨ P ∈ ex.nch.Q w → Formalism.L2.DIV.conjPl P ≠ P` using `fun P hP e => by`. Break down `Finset.mem_union.1 ((hXC P).2 hP) with h | h` into its components or cases. Conclude with `Finset.disjoint_left.1 (disjoint_conj hXs) h (Finset.mem_image.2 ⟨P, h, e⟩)`. Take `⟨P', hP', rfl⟩` from `Finset.mem_image.1 h`.
+
+Rewrite `e` using `[Formalism.L2.DIV.conjPl_conjPl]`. Conclude with `Finset.disjoint_left.1 (disjoint_conj hXs) hP' (Finset.mem_image.2 ⟨P', hP', e.symm⟩)`. Establish `hcl : ∀ P, P ∈ D.ntw.pD (ex.nch.twI w) ∨ P ∈ ex.nch.Q w → Formalism.L2.DIV.conjPl P ∈ D.ntw.pD (ex.nch.twI w) ∨ Formalism.L2.DIV.conjPl P ∈ ex.nch.Q w` using `fun P hP => by`. Rewrite `hP`, the goal using `[← hXC]`. Break down `Finset.mem_union.1 hP with h | h` into its components or cases.
+
+Conclude with `Finset.mem_union_right _ (Finset.mem_image_of_mem _ h)`. Take `⟨P', hP', rfl⟩` from `Finset.mem_image.1 h`. Rewrite using `[Formalism.L2.DIV.conjPl_conjPl]`. Conclude with `Finset.mem_union_left _ hP'`. Establish `hY : (ρ.B (ex.nch.twI w) j (ex.nch.sd w)).de.Q ∪ (ρ.tw (ex.nch.twI w) (ex.nch.sd w) (ex.nch.k' w) (ex.nch.Q w) (GlobalTheory.TwistIndex.chosenChar ex.nch w)).Q = half (ρ.ch (ex.nch.twI w)) (D.ntw.pD (ex.nch.twI w)) ∪ half (ρ.ch (ex.nch.twI w)) (ex.nch.Q w)`.
+
+Rewrite using `[hρ.delta]`. Both sides reduce to the same expression. Rewrite `hYs`, the goal using `[hY]`. Conclude with `idem_add_cA_eq hXs hYs fun P => (hXC P).trans (mem_half_closure ((hρ.ch _).pair) hcl hne P).symm`.
+-/
 theorem placesSt_alt : _root_.GlobalTheory.BigOn.Exp.TupLe.PlacesCondition := by
   intro D L hT Gi Gl Kc Y cX ex Csz p j hr hm w hw hok ρ hρ hpin _ _
   have hPA := placesAt (j := j) hw hρ hpin

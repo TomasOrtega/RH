@@ -34,11 +34,17 @@ variable {D : R → Opens X} (A : LocalizingAction P D)
 
 namespace LocalizingAction
 
+/- English proof (translation)
+Establish `h` using `A.act_add 0 0 W x`. Rewrite `h` using `[add_zero, eq_comm, ← sub_eq_zero, add_sub_cancel_right]`. Conclude with `h`.
+-/
 lemma act_zero (W : Opens X) (x : P.obj (op W)) : A.act 0 W x = 0 := by
   have h := A.act_add 0 0 W x
   rw [add_zero, eq_comm, ← sub_eq_zero, add_sub_cancel_right] at h
   exact h
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [A.act_zero]`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, A.act_add, ih]`.
+-/
 lemma act_sum {α : Type*} (s : Finset α) (c : α → R) (W : Opens X) (x : P.obj (op W)) :
     A.act (∑ a ∈ s, c a) W x = ∑ a ∈ s, A.act (c a) W x := by
   classical
@@ -46,6 +52,11 @@ lemma act_sum {α : Type*} (s : Finset α) (c : α → R) (W : Opens X) (x : P.o
   | empty => simp [A.act_zero]
   | insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, A.act_add, ih]
 
+/- English proof (translation)
+Proceed by induction on `L with`. Consider the case `zero`. Establish `: ⇑(A.act (g ^ 0) W) = id` using `funext fun x => by rw [pow_zero, A.act_one]; rfl`. Rewrite using `[this]`. Conclude with `Function.bijective_id`.
+
+Consider the case `succ L ih`. Establish `: ⇑(A.act (g ^ (L + 1)) W) = ⇑(A.act (g ^ L) W) ∘ ⇑(A.act g W)`. Use function extensionality and compare the values at `fun x => by rw [pow_succ, A.act_mul]; rfl`. Rewrite using `[this]`. Conclude with `ih.comp (A.bijective g W hW)`.
+-/
 lemma bijective_pow (g : R) (W : Opens X) (hW : W ≤ D g) (L : ℕ) :
     Function.Bijective (A.act (g ^ L) W) := by
   induction L with
@@ -68,14 +79,23 @@ def actC (r : R) (n : ℕ) : Cochain P U n →+ Cochain P U n where
   map_zero' := by funext i; exact map_zero _
   map_add' σ τ := by funext i; exact map_add _ _ _
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma actC_apply (r : R) (n : ℕ) (σ : Cochain P U n) (i : Fin (n + 1) → ι) :
     actC A U r n σ i = A.act r _ (σ i) := rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `only [actC_apply, d_apply, map_sum, map_zsmul, A.res_act]`.
+-/
 lemma d_actC (r : R) (n : ℕ) (σ : Cochain P U n) :
     d P U n (actC A U r n σ) = actC A U r (n + 1) (d P U n σ) := by
   funext i
   simp only [actC_apply, d_apply, map_sum, map_zsmul, A.res_act]
 
+/- English proof (translation)
+Introduce `x hx`. Rewrite `hx`, the goal using `[mem_inter_iff]`. Introduce `a`. Simplify using `using hx a.succ`.
+-/
 lemma le_cons {n : ℕ} (j : ι) (I : Fin (n + 1) → ι) :
     inter U (Fin.cons j I : Fin (n + 2) → ι) ≤ inter U I := by
   intro x hx
@@ -83,6 +103,9 @@ lemma le_cons {n : ℕ} (j : ι) (I : Fin (n + 1) → ι) :
   intro a
   simpa using hx a.succ
 
+/- English proof (translation)
+Use `inter_le_comp U (Fin.cons j J : Fin (n + 3) → ι) k.succ.succAbove` as an intermediate fact. Rewrite `this` using `[cons_comp_succAbove_succ]`. Then use the resulting hypothesis.
+-/
 lemma le_cons_comp {n : ℕ} (j : ι) (J : Fin (n + 2) → ι) (k : Fin (n + 2)) :
     inter U (Fin.cons j J : Fin (n + 3) → ι) ≤
       inter U (Fin.cons j (J ∘ k.succAbove) : Fin (n + 2) → ι) := by
@@ -92,6 +115,9 @@ lemma le_cons_comp {n : ℕ} (j : ι) (J : Fin (n + 2) → ι) (k : Fin (n + 2))
 variable (h : ι → R)
 
 include A in
+/- English proof (translation)
+The claim follows from `| 0, I => by rw [Fin.prod_univ_one] apply le_antisymm (inter_le _ I 0) intro x hx rw [mem_inter_iff] intro a rwa [Fin.fin_one_eq_zero a] | m + 1, I => by rw [inter_succ, inter_eq_prod (I ∘ Fin.succ), Fin.prod_univ_succ (fun a => h (I a)), A.D_mul] rfl`.
+-/
 lemma inter_eq_prod : ∀ {m : ℕ} (I : Fin (m + 1) → ι), inter (D ∘ h) I = D (∏ a, h (I a))
   | 0, I => by
     rw [Fin.prod_univ_one]
@@ -105,11 +131,29 @@ lemma inter_eq_prod : ∀ {m : ℕ} (I : Fin (m + 1) → ι), inter (D ∘ h) I 
     rfl
 
 include A in
+/- English proof (translation)
+Rewrite using `[inter_eq_prod A h, Fin.prod_univ_succ, mul_comm]`. Simplify using the standard rewrite rules.
+-/
 lemma inter_cons_eq {m : ℕ} (j : ι) (I : Fin (m + 1) → ι) :
     inter (D ∘ h) (Fin.cons j I : Fin (m + 2) → ι) = D ((∏ a, h (I a)) * h j) := by
   rw [inter_eq_prod A h, Fin.prod_univ_succ, mul_comm]
   simp
 
+/- English proof (translation)
+Establish `hlift : ∀ I : Fin (n + 1) → ι, ∃ (N : ℕ) (x : P.obj (op (inter (D ∘ h) I))), res P (le_cons _ j I) x = A.act (h j ^ N) _ (σ (Fin.cons j I))` using `fun I => A.lift _ (h j) (inter_eq_prod A h I) (inter_cons_eq A h j I) _ _`. Use `choose N x hx using hlift`. Take `⟨N0, hN0⟩ : ∃ N0, ∀ I, N I ≤ N0` from `⟨Finset.univ.sup N, fun I => Finset.le_sup (Finset.mem_univ I)⟩`. Set `τ0 : Cochain P (D ∘ h) n` to `fun I => A.act (h j ^ (N0 - N I)) _ (x I)`. Establish `hτ0 : ∀ I, res P (le_cons _ j I) (τ0 I) = A.act (h j ^ N0) _ (σ (Fin.cons j I))`.
+
+Introduce `I`. Express the relevant statement in the definitionally equal form `res P _ (A.act (h j ^ (N0 - N I)) _ (x I)) = _`. Rewrite using `[A.res_act, hx, ← A.act_mul, ← pow_add, Nat.sub_add_cancel (hN0 I)]`. Establish `hdef : ∀ J : Fin (n + 2) → ι, res P (le_cons _ j J) (d P _ n τ0 J - A.act (h j ^ N0) _ (σ J)) = 0`. Introduce `J`.
+
+Establish `hcoc` using `congrFun hσ (Fin.cons j J)`. Rewrite `hcoc` using `[d_apply, Fin.sum_univ_succ, Pi.zero_apply]`. Establish `e1 : ∀ k : Fin (n + 2), res P (le_cons _ j J) (((-1 : ℤ) ^ (k : ℕ)) • res P (inter_le_comp _ J k.succAbove) (τ0 (J ∘ k.succAbove))) = ((-1 : ℤ) ^ (k : ℕ)) • A.act (h j ^ N0) _ (res P (le_cons_comp _ j J k) (σ (Fin.cons j (J ∘ k.succAbove))))`. Introduce `k`. Rewrite using `[map_zsmul, res_res, ← res_res P (le_cons_comp _ j J k) (le_cons _ j (J ∘ k.succAbove)), hτ0, A.res_act]`.
+
+Establish `e0 : res P (le_cons _ j J) (σ J) = ∑ k : Fin (n + 2), ((-1 : ℤ) ^ (k : ℕ)) • res P (le_cons_comp _ j J k) (σ (Fin.cons j (J ∘ k.succAbove)))`. Rewrite `hcoc` using `[Fin.val_zero, pow_zero, one_smul, res_congr P _ σ (cons_comp_succAbove_zero j J) _ (le_cons _ j J)]`. Rewrite using `[eq_neg_of_add_eq_zero_left hcoc, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Fin.val_succ, pow_succ, mul_neg_one, neg_smul, neg_neg, res_congr P _ σ (cons_comp_succAbove_succ j J k) _ (le_cons_comp _ j J k)]`.
+
+Rewrite using `[map_sub, d_apply, map_sum, A.res_act, sub_eq_zero, Finset.sum_congr rfl (fun k _ => e1 k), e0, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul]`. Establish `hkill : ∀ J : Fin (n + 2) → ι, ∃ M : ℕ, A.act (h j ^ M) _ (d P _ n τ0 J - A.act (h j ^ N0) _ (σ J)) = 0` using `fun J => A.kill _ (h j) (inter_eq_prod A h J) (inter_cons_eq A h j J) (le_cons _ j J) _ (hdef J)`. Use `choose M hM using hkill`.
+
+Take `⟨M0, hM0⟩ : ∃ M0, ∀ J, M J ≤ M0` from `⟨Finset.univ.sup M, fun J => Finset.le_sup (Finset.mem_univ J)⟩`. Use `⟨M0 + N0, actC A (D ∘ h) (h j ^ M0) n τ0, ?_⟩` and prove the remaining obligations. Rewrite using `[d_actC]`. Use function extensionality and compare the values at `J`. Establish `hMJ : A.act (h j ^ M0) _ (d P _ n τ0 J - A.act (h j ^ N0) _ (σ J)) = 0`.
+
+Rewrite using `[← Nat.sub_add_cancel (hM0 J), pow_add, A.act_mul, hM J, map_zero]`. Rewrite `hMJ` using `[map_sub, sub_eq_zero, ← A.act_mul, ← pow_add]`. Conclude with `hMJ`.
+-/
 theorem exists_d_eq_pow_smul [Fintype ι] {n : ℕ} (σ : Cochain P (D ∘ h) (n + 1))
     (hσ : d P (D ∘ h) (n + 1) σ = 0) (j : ι) :
     ∃ (N : ℕ) (τ : Cochain P (D ∘ h) n), d P (D ∘ h) n τ = actC A (D ∘ h) (h j ^ N) (n + 1) σ := by
@@ -165,6 +209,17 @@ theorem exists_d_eq_pow_smul [Fintype ι] {n : ℕ} (σ : Cochain P (D ∘ h) (n
 
 include A in
 
+/- English proof (translation)
+Use `Fintype.ofFinite ι` as an intermediate fact. Introduce `n σ hσ`. Use `choose N τ hτ using fun j => exists_d_eq_pow_smul A h σ hσ j`. Take `⟨N0, hN0⟩ : ∃ N0, ∀ j, N j ≤ N0` from `⟨Finset.univ.sup N, fun j => Finset.le_sup (Finset.mem_univ j)⟩`. Take `⟨L, c, hc⟩` from `A.cover g h N0 hcov.ge`.
+
+Set `T : Cochain P (D ∘ h) n` to `∑ j, actC A (D ∘ h) (c j * h j ^ (N0 - N j)) n (τ j)`. Establish `hT : d P _ n T = actC A (D ∘ h) (g ^ L) (n + 1) σ`. Use function extensionality and compare the values at `J`. Simplify using `only [T, map_sum, d_actC, hτ]`. Use `(Finset.sum_apply J _ _).trans ?_` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `∑ j, A.act _ _ (A.act _ _ (σ J)) = A.act (g ^ L) _ (σ J)`. Rewrite using `[hc, A.act_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← A.act_mul, mul_assoc, ← pow_add, Nat.sub_add_cancel (hN0 j)]`. Establish `hle : ∀ {m : ℕ} (I : Fin (m + 1) → ι), inter (D ∘ h) I ≤ D g` using `fun I => (inter_le _ I 0).trans (hcov ▸ le_iSup (fun i => D (h i)) (I 0))`.
+
+Use `choose y hy using fun I : Fin (n + 1) → ι => (A.bijective_pow g _ (hle I) L).2 (T I)`. Use `⟨y, funext fun J => (A.bijective_pow g _ (hle J) L).1 ?_⟩` and prove the remaining obligations. Establish `e1 : actC A (D ∘ h) (g ^ L) n y = T` using `funext hy`. Establish `e2` using `congrFun (d_actC A (D ∘ h) (g ^ L) n y) J`. Rewrite `e2` using `[e1, hT]`.
+
+Conclude with `e2.symm`.
+-/
 theorem cechAcyclic_of_localizingAction [Finite ι] (g : R) (hcov : ⨆ i, D (h i) = D g) :
     CechAcyclic P (D ∘ h) := by
   classical

@@ -42,10 +42,16 @@ def TowerR.Alg.RepWt {P : CP G} {X : Type} [AddCommGroup X] {t : TowerR I P X} (
 
 open GlobalTheory.SplitTorus
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨IsPullback.of_vert_isIso (fst := f) (snd := 𝟙 S') (f := 𝟙 S) (g := f) ⟨by simp⟩, fun T x y x₀ y₀ hx _ => by rw [toUnit_unique (x₀ * y₀) x₀, toUnit_unique (x * y) x, hx]⟩`.
+-/
 theorem isGrpPullback_unit' {S S' : Scheme.{0}} (f : S' ⟶ S) : IsGrpPullback (𝟙_ (Over S')) (𝟙_ (Over S)) f f :=
   ⟨IsPullback.of_vert_isIso (fst := f) (snd := 𝟙 S') (f := 𝟙 S) (g := f) ⟨by simp⟩, fun T x y x₀ y₀ hx _ => by
     rw [toUnit_unique (x₀ * y₀) x₀, toUnit_unique (x * y) x, hx]⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨isGrpPullback_unit' f, _, IsCPMap.triv fun _ _ _ => toUnit_unique _ _⟩`.
+-/
 theorem isCPPullback_unit {S S' : Scheme.{0}} (f : S' ⟶ S) :
     IsCPPullback (CP.triv (𝟙_ (Over S'))) (CP.triv (𝟙_ (Over S))) f f :=
   ⟨isGrpPullback_unit' f, _, IsCPMap.triv fun _ _ _ => toUnit_unique _ _⟩
@@ -113,6 +119,13 @@ def torusAlg (I : Ideal R) (X : Type) [AddCommGroup X] : (torusTower I X).Alg wh
   b_pb e := isCPPullback_unit _
   b_β e := thickTrans_comp R I e
 
+/- English proof (translation)
+Set `o : LB.Gen ((LB.LinComb (Inh.trivLB Y) φ ε).pull r)` to `⟨fun _ => 1⟩`. Establish `ho : o.IsGen` using `fun i j => by`. Establish `g1 : ((LB.LinComb (Inh.trivLB Y) φ ε).pull r).g i j = 1`. Establish `key : ∀ (N : LB Y), (∀ a b, N.g a b = 1) → ∀ a b, (N.pull r).g a b = 1` using `fun N hN a b => by dsimp only [LB.pull, LB.LinComb]`. Simplify using `only [hN]`.
+
+Rewrite using `[Fintype.prod_unique, zpow_one]`. Use `erw [map_one, map_one]`. Both sides reduce to the same expression. Conclude with `key _ (Inh.linComb_triv_g φ ε) i j`. Rewrite using `[g1, _root_.one_mul]`.
+
+Conclude with `(map_one _).trans (map_one _).symm`. Conclude with `⟨scaleGen u o, scaleGen_isGen u ho, fun j => _root_.mul_one _⟩`.
+-/
 theorem exists_gen_pull_triv {Y Z : Scheme.{0}} (φ : Fin 2 → (Y ⟶ Y)) (ε : Fin 2 → ℤ) (r : Z ⟶ Y) (u : Γ(Z, ⊤)ˣ) :
     ∃ t : LB.Gen ((LB.LinComb (Inh.trivLB Y) φ ε).pull r), t.IsGen ∧ ∀ j, t.s j = res le_top u := by
   let o : LB.Gen ((LB.LinComb (Inh.trivLB Y) φ ε).pull r) := ⟨fun _ => 1⟩
@@ -129,6 +142,9 @@ theorem exists_gen_pull_triv {Y Z : Scheme.{0}} (φ : Fin 2 → (Y ⟶ Y)) (ε :
 
 omit [IsLocalRing R] in
 
+/- English proof (translation)
+Establish `hu` using `isWt_of_retraction (i := (bcIso (thick R I e) X).hom) (bcIso (thick R I e) X).inv (bcIso (thick R I e) X).hom_inv_id χ`. Take `⟨t, ht, hs⟩` from `exists_gen_pull_triv ![((toUnit (torusAlg I X).B ≫ 1) * 𝟙 (torusAlg I X).B).left, 𝟙 (torusAlg I X).B.left] ![-1, 1] (((torusTower I X).l e).Q.q.left ≫ (torusAlg I X).b e) (chV (bcIso (thick R I e) X).inv χ)`. Conclude with `⟨t, ht, fun j => (congrArg (fun a => IsWt _ _ (Units.val a) χ) (hs j)).mpr (hu.res le_top)⟩`.
+-/
 theorem torusAlg_repWt (I : Ideal R) (X : Type) [AddCommGroup X] (χ : X) (e : ℕ) :
     (torusAlg I X).RepWt 1 χ e := by
   have hu := isWt_of_retraction (i := (bcIso (thick R I e) X).hom) (bcIso (thick R I e) X).inv
@@ -138,11 +154,20 @@ theorem torusAlg_repWt (I : Ideal R) (X : Type) [AddCommGroup X] (χ : X) (e : �
     (((torusTower I X).l e).Q.q.left ≫ (torusAlg I X).b e) (chV (bcIso (thick R I e) X).inv χ)
   exact ⟨t, ht, fun j => (congrArg (fun a => IsWt _ _ (Units.val a) χ) (hs j)).mpr (hu.res le_top)⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨torusAlg _ _⟩`.
+-/
 example : Nonempty (torusTower (Ideal.span {(PowerSeries.X : PowerSeries ℚ)}) ℤ).Alg := ⟨torusAlg _ _⟩
 
+/- English proof (translation)
+The claim follows from `torusAlg_repWt _ _ _ _`.
+-/
 example (e : ℕ) : (torusAlg (Ideal.span {(PowerSeries.X : PowerSeries ℚ)}) ℤ).RepWt 1 (1 : ℤ) e :=
   torusAlg_repWt _ _ _ _
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨t.l, t.tor, t.β, t.β_pb, t.β_q⟩ invFun t := ⟨t.l, t.tor, t.β, t.β_pb, t.β_q⟩ left_inv _ := rfl right_inv _ := rfl`.
+-/
 example {V : Type} [CommRing V] [IsDomain V] [IsLocalRing V] {A : PolAV (Spec (CommRingCat.of (FractionRing V)))}
     {H : Over (Spec (CommRingCat.of V))} [GrpObj H] [IsCommMonObj H] (s : HidaSetting V A H) :
     Tower s ≃ TowerR (IsLocalRing.maximalIdeal V) s.P s.X where

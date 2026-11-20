@@ -19,12 +19,18 @@ def fRatio {n : ℕ} (f g : MvPolynomial (Fin (N + 1)) R) (hf : f ∈ grading R 
     Γ(X, fOpen ι g) :=
   (ι.app (Proj.basicOpen (grading R N) g)).hom (GlobalTheory.ProjFrac.frac (grading R N) _ f g hf hg le_rfl)
 
+/- English proof (translation)
+Unfold `fRatio`. Rewrite using `[GlobalTheory.ProjFrac.frac_self]`. Conclude with `map_one _`.
+-/
 theorem fRatio_self {n : ℕ} (g : MvPolynomial (Fin (N + 1)) R) (hg : g ∈ grading R N n) :
     fRatio ι g g hg hg = 1 := by
   unfold fRatio
   rw [GlobalTheory.ProjFrac.frac_self]
   exact map_one _
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_fOpen (g : MvPolynomial (Fin (N + 1)) R) (z : X) :
     z ∈ fOpen ι g ↔ g ∉ (ι.base z).asHomogeneousIdeal := Iff.rfl
 

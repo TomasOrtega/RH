@@ -13,6 +13,35 @@ open GlobalTheory.PRep GlobalTheory.SmGL
 
 namespace GlobalTheory.SmGL.IrrQuot
 
+/- English proof (translation)
+Introduce `G V _ _ _ _ _ ρ hsm hfl hnt`. Use `haveI : WellFoundedGT (Subrepresentation ρ) := ((hasFiniteLength_iff_wellFounded ρ).1 hfl).1`. Establish `hbt : (⊥ : Subrepresentation ρ) ≠ ⊤`. Introduce `h`. Take `⟨x, hx⟩` from `exists_ne (0 : V)`.
+
+Establish `hmem : x ∈ (⊤ : Subrepresentation ρ).toSubmodule` using `Submodule.mem_top`. Rewrite `hmem` using `[← h]`. Conclude with `hx ((Submodule.mem_bot ℂ).1 hmem)`. Take `⟨M, hM, -⟩` from `(IsCoatomic.eq_top_or_exists_le_coatom (⊥ : Subrepresentation ρ)).resolve_left hbt`. Set `W : Submodule ℂ V` to `M.toSubmodule`.
+
+Establish `hW : ∀ g : G, W ≤ W.comap (ρ g)` using `fun g v hv => M.apply_mem_toSubmodule g hv`. Set `τ : Representation ℂ G (V ⧸ W)` to `ρ.quotient W hW`. Establish `hτ : ∀ (g : G) (v : V), τ g (W.mkQ v) = W.mkQ (ρ g v)` using `fun g v => rfl`. Set `q : ρ.IntertwiningMap τ` to `⟨W.mkQ, fun g => by ext v; rfl⟩`. Establish `hq : Function.Surjective q` using `Submodule.mkQ_surjective W`.
+
+Use `⟨V ⧸ W, inferInstance, inferInstance, τ, ?_, ?_, q, hq⟩` and prove the remaining obligations. Introduce `x`. Take `⟨v, rfl⟩` from `Submodule.mkQ_surjective W x`. Set `stab : (u : Type) → [AddCommGroup u] → [Module ℂ u] → (σ : Representation ℂ G u) → u → Subgroup G` to `fun u _ _ σ y => { carrier := {g | σ g y = y} mul_mem' := by`. Introduce `a b ha hb`.
+
+Simplify using `only [Set.mem_setOf_eq] at ha hb ⊢`. Rewrite using `[map_mul, Module.End.mul_apply, hb, ha]`. Use the proof step `one_mem' := by simp`. Use the proof step `inv_mem' := by`. Introduce `a ha`.
+
+Simplify using `only [Set.mem_setOf_eq] at ha ⊢`. Use `conv_lhs => rw [← ha]`. Rewrite using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply] }`. Establish `hle : stab V ρ v ≤ stab (V ⧸ W) τ (W.mkQ v)`. Introduce `g hg`.
+
+Express the relevant statement in the definitionally equal form `τ g (W.mkQ v) = W.mkQ v`. Rewrite using `[hτ]`. Conclude with `congrArg W.mkQ hg`. Conclude with `Subgroup.isOpen_mono hle (hsm v)`. Establish `hMtop : M ≠ ⊤` using `hM.1`.
+
+Use `{ exists_pair_ne := ⟨⊥, ⊤, ?_⟩, eq_bot_or_eq_top := ?_ }` and prove the remaining obligations. Introduce `h`. Apply `hMtop` to reduce the goal to its premises. Apply `Subrepresentation.toSubmodule_injective` to reduce the goal to its premises. Apply `eq_top_iff.2` to reduce the goal to its premises.
+
+Introduce `v _`. Establish `hmem : W.mkQ v ∈ (⊤ : Subrepresentation τ).toSubmodule` using `Submodule.mem_top`. Rewrite `hmem` using `[← h]`. Conclude with `(Submodule.Quotient.mk_eq_zero W).1 ((Submodule.mem_bot ℂ).1 hmem)`. Introduce `S`.
+
+Set `T : Subrepresentation ρ` to `⟨S.toSubmodule.comap W.mkQ, fun g v hv => by`. Express the relevant statement in the definitionally equal form `W.mkQ (ρ g v) ∈ S.toSubmodule`. Rewrite using `[← hτ]`. Conclude with `S.apply_mem_toSubmodule g hv⟩`. Establish `hMT : M ≤ T`.
+
+Introduce `v hv`. Express the relevant statement in the definitionally equal form `W.mkQ v ∈ S.toSubmodule`. Rewrite using `[Submodule.mkQ_apply, (Submodule.Quotient.mk_eq_zero W).2 hv]`. Conclude with `S.toSubmodule.zero_mem`. Break down `hM.le_iff.1 hMT with h | h` into its components or cases.
+
+Use `right`. Apply `Subrepresentation.toSubmodule_injective` to reduce the goal to its premises. Apply `eq_top_iff.2` to reduce the goal to its premises. Introduce `x _`. Take `⟨v, rfl⟩` from `Submodule.mkQ_surjective W x`.
+
+Establish `hvT : v ∈ T.toSubmodule` using `by rw [h]; exact Submodule.mem_top`. Conclude with `hvT`. Use `left`. Apply `Subrepresentation.toSubmodule_injective` to reduce the goal to its premises. Apply `eq_bot_iff.2` to reduce the goal to its premises.
+
+Introduce `x hx`. Take `⟨v, rfl⟩` from `Submodule.mkQ_surjective W x`. Establish `hvT : v ∈ T.toSubmodule` using `hx`. Rewrite `hvT` using `[h]`. Conclude with `(Submodule.mem_bot ℂ).2 (by rw [Submodule.mkQ_apply]; exact (Submodule.Quotient.mk_eq_zero W).2 hvT)`.
+-/
 theorem exists_irreducible_smooth_quotient : ∀ {G V : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [AddCommGroup V] [Module ℂ V]
     (ρ : Representation ℂ G V), IsSmooth ρ → HasFiniteLength ρ → Nontrivial V →
     ∃ (Y : Type) (_ : AddCommGroup Y) (_ : Module ℂ Y) (τ : Representation ℂ G Y),

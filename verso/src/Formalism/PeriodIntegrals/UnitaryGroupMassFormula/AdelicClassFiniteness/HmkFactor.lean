@@ -8,6 +8,11 @@ namespace PIW.AdelClassFin
 open MeasureTheory Matrix Module
 open scoped MatrixOrder
 
+/- English proof (translation)
+Use `⟨CFC.sqrt G, ?_⟩` and prove the remaining obligations. Establish `h0 : (0 : Matrix (Fin N) (Fin N) ℝ) ≤ G` using `hG.posSemidef.nonneg`. Establish `hsa : IsSelfAdjoint (CFC.sqrt G)` using `(CFC.sqrt_nonneg G).isSelfAdjoint`. Establish `ht : (CFC.sqrt G)ᵀ = CFC.sqrt G`. Use `hsa.star_eq` as an intermediate fact.
+
+Rewrite `this` using `[star_eq_conjTranspose, conjTranspose_eq_transpose_of_trivial]`. Then use the resulting hypothesis. Rewrite using `[ht, CFC.sqrt_mul_sqrt_self G h0]`.
+-/
 theorem hmk_factor {N : ℕ} (G : Matrix (Fin N) (Fin N) ℝ) (hG : G.PosDef) :
     ∃ B : Matrix (Fin N) (Fin N) ℝ, G = Bᵀ * B := by
   refine ⟨CFC.sqrt G, ?_⟩
@@ -18,6 +23,11 @@ theorem hmk_factor {N : ℕ} (G : Matrix (Fin N) (Fin N) ℝ) (hG : G.PosDef) :
     rwa [star_eq_conjTranspose, conjTranspose_eq_transpose_of_trivial] at this
   rw [ht, CFC.sqrt_mul_sqrt_self G h0]
 
+/- English proof (translation)
+Rewrite `hx` using `[(Pi.basisFun ℝ (Fin N)).mem_span_iff_repr_mem (R := ℤ) x]`. Use `choose c hc using hx`. Use `⟨c, funext fun i => ?_⟩` and prove the remaining obligations. Use `hc i` as an intermediate fact. Simplify using `only [Pi.basisFun_repr, algebraMap_int_eq, Int.coe_castRingHom] at this`.
+
+Conclude with `this`.
+-/
 theorem hmk_int {N : ℕ} (x : Fin N → ℝ)
     (hx : x ∈ Submodule.span ℤ (Set.range (Pi.basisFun ℝ (Fin N)))) :
     ∃ c : Fin N → ℤ, (fun i => (c i : ℝ)) = x := by
@@ -28,6 +38,31 @@ theorem hmk_int {N : ℕ} (x : Fin N → ℝ)
   simp only [Pi.basisFun_repr, algebraMap_int_eq, Int.coe_castRingHom] at this
   exact this
 
+/- English proof (translation)
+Use `set d := |B.det| with hd`. Establish `hd0 : 0 < d` using `abs_pos.mpr hB`. Use `set t := 2 * d ^ ((1 : ℝ) / N) with ht`. Establish `ht0 : 0 < t` using `by positivity`. Establish `hN0 : (N : ℝ) ≠ 0`.
+
+Establish `: (0:ℝ) < N` using `by exact_mod_cast hN`. Conclude with `this.ne'`. Establish `htN : t ^ N = 2 ^ N * d`. Rewrite using `[ht, mul_pow, ← Real.rpow_natCast (d ^ _), ← Real.rpow_mul hd0.le]`. Rewrite using `[one_div_mul_cancel hN0, Real.rpow_one]`.
+
+Set `f : (Fin N → ℝ) →ₗ[ℝ] (Fin N → ℝ)` to `Matrix.toLin' B`. Establish `hf : LinearMap.det f ≠ 0` using `by rw [LinearMap.det_toLin']; exact hB`. Set `box : Set (Fin N → ℝ)` to `Set.pi Set.univ fun _ => Set.Icc (-t) t`. Set `s : Set (Fin N → ℝ)` to `f ⁻¹' box`. Set `b` to `Pi.basisFun ℝ (Fin N)`.
+
+Establish `fund` using `ZSpan.isAddFundamentalDomain' b (volume : Measure (Fin N → ℝ))`. Establish `hvolF : volume (ZSpan.fundamentalDomain b) = 1`. Rewrite using `[ZSpan.fundamentalDomain_pi_basisFun, volume_pi, Measure.pi_pi]`. Simplify using the standard rewrite rules. Establish `hvolbox : volume box = ENNReal.ofReal (2 * t) ^ N`.
+
+Simplify using `only [box]`. Rewrite using `[volume_pi, Measure.pi_pi]`. Simplify using `only [Real.volume_Icc, Finset.prod_const, Finset.card_univ, Fintype.card_fin]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hvols : volume s = ENNReal.ofReal (4 ^ N)`. Simplify using `only [s]`. Rewrite using `[MeasureTheory.Measure.addHaar_preimage_linearMap _ hf, hvolbox, ← ENNReal.ofReal_pow (by positivity), ← ENNReal.ofReal_mul (abs_nonneg _)]`. Use `congr 1`. Rewrite using `[LinearMap.det_toLin', abs_inv, ← hd, mul_pow, htN]`.
+
+Rewrite using `[show (4 : ℝ) ^ N = 2 ^ N * 2 ^ N by rw [← mul_pow]; norm_num]`. Clear the denominators using the available nonvanishing facts. Establish `h_symm : ∀ x ∈ s, -x ∈ s`. Introduce `x hx`. Simplify using `only [s, box, Set.mem_preimage, Set.mem_pi, Set.mem_univ, true_implies, Set.mem_Icc, map_neg, Pi.neg_apply] at hx ⊢`.
+
+Introduce `i`. Take `⟨h1, h2⟩` from `hx i`. Apply the tactic sequence `constructor <;> linarith`. Establish `h_conv : Convex ℝ s` using `(convex_pi fun i _ => convex_Icc (-t) t).linear_preimage f`. Establish `h : volume (ZSpan.fundamentalDomain b) * 2 ^ finrank ℝ (Fin N → ℝ) < volume s`.
+
+Rewrite using `[hvolF, one_mul, hvols, Module.finrank_fin_fun]`. Rewrite using `[show (2 : ENNReal) ^ N = ENNReal.ofReal (2 ^ N) by`. Rewrite using `[ENNReal.ofReal_pow (by norm_num)]; simp]`. Rewrite using `[ENNReal.ofReal_lt_ofReal_iff (by positivity)]`. Conclude with `pow_lt_pow_left₀ (by norm_num) (by norm_num) (by omega)`.
+
+Use `haveI : Countable (Submodule.span ℤ (Set.range b)).toAddSubgroup := inferInstanceAs (Countable (Submodule.span ℤ (Set.range b)))`. Take `⟨x, hx0, hxs⟩` from `exists_ne_zero_mem_lattice_of_measure_mul_two_pow_lt_measure fund h_symm h_conv h`. Take `⟨c, hc⟩` from `hmk_int (x : Fin N → ℝ) x.2`. Use `⟨c, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `rfl`.
+
+Apply `hx0` to reduce the goal to its premises. Use extensionality with `i`. Use `congrFun hc i` as an intermediate fact. Simplify using `at this`. Simplify using `[← this]`.
+
+Introduce `i`. Use `hxs` as an intermediate fact. Simplify using `only [s, box, Set.mem_preimage, Set.mem_pi, Set.mem_univ, true_implies, Set.mem_Icc] at this`. Rewrite using `[hc]`. Conclude with `abs_le.mpr (this i)`.
+-/
 theorem hmk_box {N : ℕ} (hN : 1 ≤ N) (B : Matrix (Fin N) (Fin N) ℝ) (hB : B.det ≠ 0) :
     ∃ c : Fin N → ℤ, c ≠ 0 ∧
       ∀ i, |(B *ᵥ fun j => (c j : ℝ)) i| ≤ 2 * |B.det| ^ ((1 : ℝ) / N) := by
@@ -98,6 +133,19 @@ theorem hmk_box {N : ℕ} (hN : 1 ≤ N) (B : Matrix (Fin N) (Fin N) ℝ) (hB : 
     rw [hc]
     exact abs_le.mpr (this i)
 
+/- English proof (translation)
+Introduce `N hN`. Use `⟨4 * N, fun G hG => ?_⟩` and prove the remaining obligations. Take `⟨B, rfl⟩` from `hmk_factor G hG`. Establish `hdet : (Bᵀ * B).det = B.det ^ 2` using `by rw [det_mul, det_transpose, sq]`. Establish `hpos` using `hG.det_pos`.
+
+Establish `hB : B.det ≠ 0`. Introduce `h0`. Rewrite `hpos` using `[hdet, h0]`. Simplify using `at hpos`. Take `⟨c, hc0, hc⟩` from `hmk_box hN B hB`.
+
+Use `⟨c, hc0, ?_⟩` and prove the remaining obligations. Use `set v : Fin N → ℝ := fun i => (c i : ℝ)`. Use `set d := |B.det|`. Establish `hd0 : 0 < d` using `abs_pos.mpr hB`. Establish `hq : v ⬝ᵥ ((Bᵀ * B) *ᵥ v) = ∑ i, (B *ᵥ v) i ^ 2`.
+
+Rewrite using `[← mulVec_mulVec, dotProduct_mulVec, vecMul_transpose]`. Simplify using `[dotProduct, sq]`. Establish `hdetG : (Bᵀ * B).det = d ^ 2` using `by rw [hdet, sq_abs]`. Establish `hpow : (d ^ ((1 : ℝ) / N)) ^ 2 = (d ^ 2) ^ ((1 : ℝ) / N)`. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_natCast d, ← Real.rpow_mul hd0.le, ← Real.rpow_mul hd0.le, mul_comm]`.
+
+Rewrite using `[hq, hdetG, ← hpow]`. Combine the equalities or inequalities in the displayed calculation. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `i _`. Conclude with `sq_le_sq' (abs_le.mp (hc i)).1 (abs_le.mp (hc i)).2`.
+
+Use `_ = 4 * N * (d ^ ((1 : ℝ) / N)) ^ 2 := by`. Simplify using `[Finset.sum_const, Finset.card_univ]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem partMink : PartMink := by
   intro N hN
   refine ⟨4 * N, fun G hG => ?_⟩

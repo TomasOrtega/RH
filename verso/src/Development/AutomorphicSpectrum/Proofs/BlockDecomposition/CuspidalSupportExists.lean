@@ -9,6 +9,11 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.TyFinSupport
 
+/- English proof (translation)
+Take `⟨r, hr⟩` from `Φ.rangeRestrict.exists_rightInverse_of_surjective Φ.range_rangeRestrict`. Take `⟨π, hπ⟩` from `(LinearMap.range Φ).subtype.exists_leftInverse_of_injective (LinearMap.ker_eq_bot.mpr (Submodule.subtype_injective _))`. Use `⟨r ∘ₗ π, ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Establish `h1 : π (Φ x) = Φ.rangeRestrict x` using `LinearMap.congr_fun hπ (Φ.rangeRestrict x)`.
+
+Establish `h2 : Φ.rangeRestrict (r (Φ.rangeRestrict x)) = Φ.rangeRestrict x` using `LinearMap.congr_fun hr (Φ.rangeRestrict x)`. Establish `h3` using `congrArg Subtype.val h2`. Simplify using `only [LinearMap.comp_apply, h1]`. Conclude with `h3`.
+-/
 theorem exists_generalizedInverse {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
     (Φ : V →ₗ[ℂ] W) : ∃ g : W →ₗ[ℂ] V, Φ ∘ₗ g ∘ₗ Φ = Φ := by
   obtain ⟨r, hr⟩ := Φ.rangeRestrict.exists_rightInverse_of_surjective Φ.range_rangeRestrict
@@ -23,6 +28,21 @@ theorem exists_generalizedInverse {V W : Type} [AddCommGroup V] [Module ℂ V] [
   simp only [LinearMap.comp_apply, h1]
   exact h3
 
+/- English proof (translation)
+Use `Fintype.ofFinite G` as an intermediate fact. Take `⟨g, hg⟩` from `exists_generalizedInverse Φ`. Set `ψ : W →ₗ[ℂ] V` to `∑ p : G, ρ p ∘ₗ g ∘ₗ σ p⁻¹`. Establish `hinv : ∀ (p : G) (x : V), Φ (ρ p x) = σ p (Φ x)` using `fun p x => LinearMap.congr_fun (h p) x`. Establish `hσ : ∀ (p : G) (w : W), σ p (σ p⁻¹ w) = w` using `fun p w => by`.
+
+Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`. Establish `hρ : ∀ (p : G) (v : V), ρ p⁻¹ (ρ p v) = v` using `fun p v => by`. Rewrite using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]`. Establish `hgx : ∀ x, Φ (g (Φ x)) = Φ x` using `fun x => LinearMap.congr_fun hg x`. Establish `hterm : ∀ (p : G) (x : V), Φ (ρ p (g (σ p⁻¹ (Φ x)))) = Φ x`.
+
+Introduce `p x`. Establish `e : σ p⁻¹ (Φ x) = Φ (ρ p⁻¹ x)` using `(hinv p⁻¹ x).symm`. Rewrite using `[hinv, e, hgx, hinv, hσ]`. Establish `hψ : ∀ x, Φ (ψ (Φ x)) = (Fintype.card G : ℂ) • Φ x`. Introduce `x`.
+
+Simplify using `only [ψ, LinearMap.sum_apply, LinearMap.comp_apply, map_sum, hterm, Finset.sum_const, Finset.card_univ, Nat.cast_smul_eq_nsmul]`. Use `⟨ψ, ?_, ?_⟩` and prove the remaining obligations. Introduce `h0`. Apply `hΦ` to reduce the goal to its premises. Use extensionality with `x`.
+
+Establish `h1` using `hψ x`. Rewrite `h1` using `[h0]`. Simplify using `only [LinearMap.zero_apply, map_zero] at h1`. Establish `hc : (Fintype.card G : ℂ) ≠ 0` using `Nat.cast_ne_zero.mpr Fintype.card_ne_zero`. Simplify `h1.symm` using `[hc]`.
+
+Introduce `q`. Use extensionality with `w`. Simplify using `only [ψ, LinearMap.comp_apply, LinearMap.sum_apply, map_sum]`. Use `Fintype.sum_equiv (Equiv.mulLeft q⁻¹) _ _ fun p => ?_` and prove the remaining obligations. Simplify using `only [Equiv.coe_mulLeft, mul_inv_rev, inv_inv, map_mul, Module.End.mul_apply]`.
+
+Rewrite using `[← Module.End.mul_apply (ρ q), ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`.
+-/
 theorem exists_reverse_intertwiner {G V W : Type} [Group G] [Finite G] [AddCommGroup V] [Module ℂ V]
     [AddCommGroup W] [Module ℂ W] (ρ : Representation ℂ G V) (σ : Representation ℂ G W)
     (Φ : V →ₗ[ℂ] W) (hΦ : Φ ≠ 0) (h : ∀ p, Φ ∘ₗ ρ p = σ p ∘ₗ Φ) :
@@ -61,6 +81,9 @@ theorem exists_reverse_intertwiner {G V W : Type} [Group G] [Finite G] [AddCommG
     simp only [Equiv.coe_mulLeft, mul_inv_rev, inv_inv, map_mul, Module.End.mul_apply]
     rw [← Module.End.mul_apply (ρ q), ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]
 
+/- English proof (translation)
+Introduce `K _ _ _ ι _ _ _ τ hτ`. Take `⟨s, b, lam, Φ, hb, hlam, hΦ, heq⟩` from `GlobalTheory.CompanionTheory.TyFinJacquet.jacquetAll K ι τ hτ`. Take `⟨ψ, hψ, hψeq⟩` from `exists_reverse_intertwiner (PI.SerBridgeGLW.inflRep K b lam) (τ.ρ.comp (parab K b).subtype) Φ hΦ heq`. Conclude with `⟨s, b, lam, hb, hlam, (PI.SerBridgeGLW.isConstituent_hc_iff K b lam τ).mpr ⟨ψ, hψ, hψeq⟩⟩`.
+-/
 theorem supportExistsAll : ReciprocityTheory.Ty.Fin.St.SupportExistsAll := by
   intro K _ _ _ ι _ _ _ τ hτ
   obtain ⟨s, b, lam, Φ, hb, hlam, hΦ, heq⟩ := GlobalTheory.CompanionTheory.TyFinJacquet.jacquetAll K ι τ hτ

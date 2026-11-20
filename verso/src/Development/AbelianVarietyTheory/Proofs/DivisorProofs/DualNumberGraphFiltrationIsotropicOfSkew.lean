@@ -15,6 +15,11 @@ noncomputable section
 
 namespace GlobalTheory.HTRealise
 
+/- English proof (translation)
+Simplify using `only [map_add, map_smul, LinearMap.add_apply, LinearMap.smul_apply, h₁, h₂, h₃, h₄, smul_eq_mul]`. Substitute `ha` using the available equality. Use `ext`. Simplify using `[TrivSqZeroExt.algebraMap_eq_inl]`. Simplify using `[TrivSqZeroExt.algebraMap_eq_inl]`.
+
+Take the linear combination `hbc`.
+-/
 theorem pairing_eps_eq_zero {k : Type} [Field k] {M : Type*} [AddCommGroup M] [Module (DualNumber k) M]
     (χ : M →ₗ[DualNumber k] M →ₗ[DualNumber k] DualNumber k) {X Z X' Z' : M} {a b c e : k}
     (h₁ : χ X X' = algebraMap k (DualNumber k) a) (h₂ : χ X Z' = algebraMap k (DualNumber k) b)
@@ -30,6 +35,19 @@ theorem pairing_eps_eq_zero {k : Type} [Field k] {M : Type*} [AddCommGroup M] [M
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `k _ A₀ _ hA P hP φ hφ f hf φ' hφ' d hd d' hd'`. Use `hA.smooth` as an intermediate fact. Take `⟨g, hg⟩` from `GlobalTheory.SerreDim.exists_dim_of_grpObj A₀`. Establish `iso` using `GlobalTheory.PrincipalPolPairing.isotropic GlobalTheory.abelianDeRham hA hg hP hφ`. Establish `C` using `GlobalTheory.PolFormNabla.cupSquare_eps (AbelianSchemeGerms.isAbelianScheme_tensor A₀ A₀ hA hA) (GlobalTheory.AbDual.smooth_prod hg hg)`.
+
+Establish `e : LBIso (P.pull (𝟙 _)) P` using `(CechPic.cls_eq_iff (pull_isLB hP _) hP).1 (by rw [CechPic.cls_pull hP, CechPic.pull_id])`. Take `⟨χ, hχ, hk⟩` from `hφ.pull hP (constMor A₀) (constMor A₀) (h := 𝟙 _) (by simp) (by simp) hP e`. Take `rfl` from `hχ.unique C hP hφ'`. Establish `hm` using `isBC_constMor hA`. Take `⟨x, hx, y, hy, ed⟩` from `mem_graphFil.1 hd`.
+
+Take `⟨x', hx', y', hy', ed'⟩` from `mem_graphFil.1 hd'`. Take `⟨X, hX⟩` from `hm.exists x`. Take `⟨Z, hZ⟩` from `hm.exists (f x + y)`. Take `⟨X', hX'⟩` from `hm.exists x'`. Take `⟨Z', hZ'⟩` from `hm.exists (f x' + y')`.
+
+Establish `dE : d = X + (DualNumber.eps : DualNumber k) • Z` using `crys_ext hA fun c => by`. Rewrite using `[ed c, LinearMap.add_apply, LinearMap.smul_apply, hX c, hZ c]`. Apply the tactic sequence `ext <;> simp [TrivSqZeroExt.algebraMap_eq_inl]`. Establish `dE' : d' = X' + (DualNumber.eps : DualNumber k) • Z'` using `crys_ext hA fun c => by`. Rewrite using `[ed' c, LinearMap.add_apply, LinearMap.smul_apply, hX' c, hZ' c]`.
+
+Apply the tactic sequence `ext <;> simp [TrivSqZeroExt.algebraMap_eq_inl]`. Establish `h₁ : φ x x' = 0` using `iso x hx x' hx'`. Establish `h₂ : φ x (f x' + y') + φ (f x + y) x' = 0`. Rewrite using `[map_add, map_add, LinearMap.add_apply, iso x hx y' hy', iso y hy x' hx', add_zero, add_zero, add_comm]`. Conclude with `hf x hx x' hx'`.
+
+Rewrite using `[dE, dE']`. Conclude with `pairing_eps_eq_zero χ (hk _ _ _ _ hX hX') (hk _ _ _ _ hX hZ') (hk _ _ _ _ hZ hX') (hk _ _ _ _ hZ hZ') h₁ h₂`.
+-/
 theorem graphFil_isotropic : ∀ (k : Type) [Field k] (A₀ : Over (Sp k)) [GrpObj A₀], IsAbelianScheme A₀ →
     ∀ (P : LB (A₀ ⊗ A₀).left), P.IsLB → ∀ (φ : LinearMap.BilinForm k (HdR A₀)),
     GlobalTheory.AbDual.IsCorrForm (dp0 k) (𝟙 _) A₀ A₀ P φ → ∀ f : HdR A₀ →ₗ[k] HdR A₀,

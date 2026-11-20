@@ -48,8 +48,14 @@ section Basic₂
 
 variable (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+The claim follows from `Finite.one_lt_card`.
+-/
 theorem one_lt_resCard : 1 < resCard k := Finite.one_lt_card
 
+/- English proof (translation)
+Establish `h : IsUnram (1 : kˣ →* ℂˣ)` using `fun _ _ => rfl`. Use `⟨(isSmooth_ofChar_iff _).2 (isSmoothChar_of_isUnram h).detChar, isIrreducible_ofChar _, (isUnitarisable_ofChar_iff _).2 fun g => by simp, isSpherical_detRep h, hasSatake_detRep h hϖ⟩` and prove the remaining obligations.
+-/
 example (n : ℕ) {ϖ : kˣ} (hϖ : valuation k (ϖ : k) = uniformizer k) :
     IsSmooth (detRep (Fin n) (1 : kˣ →* ℂˣ)) ∧ (detRep (Fin n) (1 : kˣ →* ℂˣ)).IsIrreducible ∧
     IsUnitarisable (detRep (Fin n) (1 : kˣ →* ℂˣ)) ∧ IsSpherical (detRep (Fin n) (1 : kˣ →* ℂˣ)) ∧
@@ -59,6 +65,9 @@ example (n : ℕ) {ϖ : kˣ} (hϖ : valuation k (ϖ : k) = uniformizer k) :
   refine ⟨(isSmooth_ofChar_iff _).2 (isSmoothChar_of_isUnram h).detChar, isIrreducible_ofChar _,
     (isUnitarisable_ofChar_iff _).2 fun g => by simp, isSpherical_detRep h, hasSatake_detRep h hϖ⟩
 
+/- English proof (translation)
+Simplify using `only [InTrivialRange, Fin.forall_fin_one, Nat.cast_one, sub_self, zero_div, neg_zero, Real.rpow_zero]`. Conclude with `⟨fun h => le_antisymm h.2 h.1, fun h => ⟨h.ge, h.le⟩⟩`.
+-/
 example (q : ℕ) (α : Fin 1 → ℂˣ) : InTrivialRange q α ↔ ‖(α 0 : ℂ)‖ = 1 := by
   simp only [InTrivialRange, Fin.forall_fin_one, Nat.cast_one, sub_self, zero_div, neg_zero,
     Real.rpow_zero]

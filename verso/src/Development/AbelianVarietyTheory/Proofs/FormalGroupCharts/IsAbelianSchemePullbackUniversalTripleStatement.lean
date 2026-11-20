@@ -13,5 +13,8 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ (PS Pt ev pt comp1 FGLaw)
 open MvPolynomial (X)
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.isAbelianScheme_of_pullback_univ | exact GlobalTheory.isAbelianScheme_of_pullback_univ | (intros; apply GlobalTheory.isAbelianScheme_of_pullback_univ <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.isAbelianScheme_pullback_universalTriple : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (X1 : Scheme.{0}) (t' : SAB H X1) (f : X1 ⟶ Xo.X) (mp : SABMap t' Xo.univ.t f), IsAbelianScheme t'.G := by
   first | exact @GlobalTheory.isAbelianScheme_of_pullback_univ | exact GlobalTheory.isAbelianScheme_of_pullback_univ | (intros; apply GlobalTheory.isAbelianScheme_of_pullback_univ <;> assumption)

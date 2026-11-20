@@ -6,6 +6,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra
 open IsLocalRing Matrix Filter UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.AlgebraTools UpperTheory.V.Pa UpperTheory.V.Pa.Core
 open scoped TensorProduct
 
+/- English proof (translation)
+Use `show (-1) ^ i * Polynomial.coeff (D.D (Polynomial A) (MonoidAlgebra.mapDomainRingHom (Polynomial A) φ (MonoidAlgebra.single 1 Polynomial.X - MonoidAlgebra.mapRingHom H Polynomial.C (MonoidAlgebra.single g 1)))) (n - i) = _`. Rewrite using `[map_sub]`. Simplify using `[GDet.lam, GDet.chi, MonoidAlgebra.mapDomainRingHom_apply, MonoidAlgebra.mapDomain_single]`.
+-/
 private theorem tupN_lam {n : ℕ} {A G H : Type} [CommRing A] [Group G] [Group H] (D : GDet n A G) (φ : H →* G)
     (i : ℕ) (g : H) : (D.comap φ).lam i (MonoidAlgebra.single g 1) = D.lam i (MonoidAlgebra.single (φ g) 1) := by
   show (-1) ^ i * Polynomial.coeff (D.D (Polynomial A) (MonoidAlgebra.mapDomainRingHom (Polynomial A) φ
@@ -14,6 +17,11 @@ private theorem tupN_lam {n : ℕ} {A G H : Type} [CommRing A] [Group G] [Group 
   rw [map_sub]
   simp [GDet.lam, GDet.chi, MonoidAlgebra.mapDomainRingHom_apply, MonoidAlgebra.mapDomain_single]
 
+/- English proof (translation)
+Use `GDet.ext fun B _ _ x => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(GDet.repAlg ρ B (MonoidAlgebra.mapDomainRingHom B φ x)).det = (GDet.repAlg (ρ.comp φ) B x).det`. Use `congr 1`. Proceed by induction on `x using MonoidAlgebra.induction_linear with`. Consider the case `zero => simp`.
+
+Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Consider the case `single g r => simp [GDet.repAlg]`.
+-/
 private theorem tupN_ofRep {n : ℕ} {A G H : Type} [CommRing A] [Group G] [Group H]
     (ρ : G →* Matrix (Fin n) (Fin n) A) (φ : H →* G) : (GDet.ofRep ρ).comap φ = GDet.ofRep (ρ.comp φ) := by
   refine GDet.ext fun B _ _ x => ?_
@@ -24,12 +32,34 @@ private theorem tupN_ofRep {n : ℕ} {A G H : Type} [CommRing A] [Group G] [Grou
   | add a b ha hb => simp only [map_add, ha, hb]
   | single g r => simp [GDet.repAlg]
 
+/- English proof (translation)
+Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, MvPowerSeries.isUnit_iff_constantCoeff, MvPowerSeries.constantCoeff_X]`. Conclude with `not_isUnit_zero`.
+-/
 private theorem tupN_X {R σ : Type} [CommRing R] [IsLocalRing R] (a : σ) :
     (MvPowerSeries.X a : MvPowerSeries σ R) ∈ maximalIdeal (MvPowerSeries σ R) := by
   rw [IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, MvPowerSeries.isUnit_iff_constantCoeff,
     MvPowerSeries.constantCoeff_X]
   exact not_isUnit_zero
 
+/- English proof (translation)
+Introduce `l _ L G0 T Λ n O _ _ _ _ _ r B _ _ _ u J D A hAd N`. Use `haveI : IsAdicComplete (maximalIdeal O) O := IsCoef.complete (l := l)`. Use `haveI hO : IsCO O O := { complete := inferInstance isLocalHom := ⟨fun x hx => by simpa using hx⟩ res_surj := fun x => ⟨x, by simp⟩ }`. Use `haveI hL : IsCO O (abelian₂ O Unit D) := co_mvps O O (Unit ⊕ Fin D)`. Use `haveI hS : IsCO O (Sinf O Unit D T.q n) := co_mvps O (abelian₂ O Unit D) (Fin T.q × Fin n)`.
+
+Establish `hC : ∀ x : abelian₂ O Unit D, x ∈ maximalIdeal (abelian₂ O Unit D) → (MvPowerSeries.C x : Sinf O Unit D T.q n) ∈ maximalIdeal (Sinf O Unit D T.q n)`. Introduce `x hx`. Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, MvPowerSeries.isUnit_iff_constantCoeff, MvPowerSeries.constantCoeff_C]`. Conclude with `(IsLocalRing.mem_maximalIdeal x).mp hx`. Establish `hmap : ∀ z : Sinf O Unit D T.q n, z ∈ maximalIdeal (Sinf O Unit D T.q n) → (A.A N).s z ∈ maximalIdeal (A.A N).R`.
+
+Introduce `z hz`. Rewrite using `[← res_eq_zero_iff O, res_map, res_eq_zero_iff]`. Conclude with `hz`. Establish `hcomp` using `(A.A N).compat`. Establish `key : ∀ (g : Ph0 Λ) (i : Fin n), (r.chib i) ((T.h N).p₀ (πN0 Λ N g)) = (r.chib i) (Λ.h.p₀ (πo0 Λ g))`.
+
+Introduce `g i`. Establish `hH` using `hAd.1 ((T.h N).p₀ (πN0 Λ N g) * (Λ.h.p₀ (πo0 Λ g))⁻¹) (Λ.modH N g) i`. Rewrite `hH` using `[map_mul, map_inv, mul_inv_eq_one]`. Conclude with `hH`. Use `⟨⟨(A.A N).p.D.comap (πN0 Λ N), ?_, ?_, (A.A N).p.ψ, ?_, (A.A N).s (MvPowerSeries.C (MvPowerSeries.X (.inl ()))), ?_, (A.A N).U, (A.A N).U_res, fun j i => (A.A N).s (MvPowerSeries.X (j, i)), ?_⟩, rfl, rfl, rfl, rfl, rfl⟩` and prove the remaining obligations.
+
+Introduce `i M`. Establish `h2` using `((A.A N).p.cont i M).comp_continuous (Λ.π0_cont N)`. Use `h2 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `g`. Simplify using `only [Function.comp_apply, tupN_lam]`.
+
+Apply the tactic sequence `try rfl`. Use `show ((A.A N).p.D.map (res O (A.A N).R : (A.A N).R →+* ResidueField O)).comap (πN0 Λ N) = _`. Rewrite using `[(A.A N).p.red]`. Simplify using `only [Resid.Dbar, tupN_ofRep]`. Use `congr 1`.
+
+Use extensionality with `g i j`. Simplify using `only [MonoidHom.comp_apply, diagRep, MonoidHom.coe_mk, OneHom.coe_mk]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using `only [Matrix.diagonal_apply_eq]`.
+
+Rewrite using `[hcomp.1 i, MonoidHom.comp_apply, key]`. Simplify using `[Matrix.diagonal_apply_ne _ hij]`. Introduce `v i`. Establish `hp` using `(A.A N).p.psi v i`. Apply the tactic sequence `exact ⟨hp.cont, fun g => by rw [hp.red g, hcomp.2.1], fun g => by rw [hp.mu g, hcomp.2.2] <;> rfl⟩`.
+
+Conclude with `hmap _ (hC _ (tupN_X _))`. Introduce `j i`. Conclude with `hmap _ (tupN_X _)`.
+-/
 theorem UpperTheory.V.Pa.Core.tupN :
     ∀ (l : ℕ) [Fact l.Prime] (L : Loc) (G0 : Glob l L) (T : TWGrp G0) (Λ : Lim T) (n : ℕ) (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsCoef l O] [Algebra ℤ_[l] O] (r : Resid G0.frame O n) (B : Type) [CommRing B] [Algebra O B] [IsCO O B] (u : Pair r B) (J : Ideal B) (D : ℕ) (A : TWAut u J Unit D T), Adapted T (r := r) → ∀ N, ∃ t : Tup Λ A (A.A N).R, t.D = (A.A N).p.D.comap (πN0 Λ N) ∧ t.ψ = (A.A N).p.ψ ∧ t.s = (A.A N).s (MvPowerSeries.C (MvPowerSeries.X (.inl ()))) ∧ t.U = (A.A N).U ∧ t.y = fun j i => (A.A N).s (MvPowerSeries.X (j, i)) := by
   intro l _ L G0 T Λ n O _ _ _ _ _ r B _ _ _ u J D A hAd N

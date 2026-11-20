@@ -9,6 +9,11 @@ namespace PositivityTheory.Rg.BcB.F.Small
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
+/- English proof (translation)
+Establish `hinj : Function.Injective fun v : HeightOneSpectrum (𝓞 E) => v.asIdeal` using `fun v v' h => HeightOneSpectrum.ext h`. Use `haveI : Countable (𝓞 E) := (RingOfIntegers.basis E).equivFun.injective.countable`. Use `haveI : Countable (Ideal (𝓞 E)) := Function.Injective.countable (f := fun I : Ideal (𝓞 E) => (IsNoetherian.noetherian I).choose) (fun I J h => by`. Rewrite using `[← (IsNoetherian.noetherian I).choose_spec, ← (IsNoetherian.noetherian J).choose_spec]`. Simplify using `only at h`.
+
+Rewrite using `[h])`. Conclude with `hinj.countable`.
+-/
 theorem countable_pl (E : Type) [Field E] [NumberField E] : Countable (HeightOneSpectrum (𝓞 E)) := by
   classical
   have hinj : Function.Injective fun v : HeightOneSpectrum (𝓞 E) => v.asIdeal :=

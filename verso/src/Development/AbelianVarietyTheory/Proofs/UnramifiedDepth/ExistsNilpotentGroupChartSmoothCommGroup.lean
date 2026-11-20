@@ -20,35 +20,53 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.ChF
 
+/- English proof (translation)
+Unfold `nv nEval tEval`. Both sides reduce to the same expression.
+-/
 private lemma nv_eq_nEval {R S : Type} [CommRing R] [CommRing S] [Algebra R S] {n d : ℕ} (f : PS R n d)
     (a : Fin n → Fin d → S) :
     nv (algebraMap R S) f a = nEval f (fun q : Fin n × Fin d => a q.1 q.2) := by
   unfold nv nEval tEval
   rfl
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.powerSeries_eq_of_evalAtNilpotentPoints_eq R ⊥ inferInstance n d f f' (fun S _ _ _ _ _ a ha => h S a ha)`.
+-/
 private lemma sep_nil {R : Type} [CommRing R] {n d : ℕ} (f f' : PS R n d)
     (h : ∀ (S : Type) [CommRing S] [Algebra R S] (a : Fin n → Fin d → S), (∀ i j, IsNilpotent (a i j)) →
       nv (algebraMap R S) f a = nv (algebraMap R S) f' a) : f = f' :=
   GlobalTheory.T.powerSeries_eq_of_evalAtNilpotentPoints_eq R ⊥ inferInstance n d f f' (fun S _ _ _ _ _ a ha => h S a ha)
 
+/- English proof (translation)
+The claim follows from `(nv_calculus R S s n d a ha).2.2.1 m d b f hb`.
+-/
 private lemma nv_ev {R S : Type} [CommRing R] [CommRing S] (s : R →+* S) {n m d : ℕ}
     (a : Fin n → Fin d → S) (ha : ∀ i j, IsNilpotent (a i j)) (b : Fin m → Fin d → PS R n d) (f : PS R m d)
     (hb : ∀ i j, MvPowerSeries.constantCoeff (b i j) = 0) :
     nv s (ev b f) a = nv s f (fun i j => nv s (b i j) a) :=
   (nv_calculus R S s n d a ha).2.2.1 m d b f hb
 
+/- English proof (translation)
+Take `⟨ψ, h1, -, h3⟩` from `(nv_calculus R S s n d a ha).1`. Rewrite using `[← h1, h3]`.
+-/
 private lemma nv_X {R S : Type} [CommRing R] [CommRing S] (s : R →+* S) {n d : ℕ}
     (a : Fin n → Fin d → S) (ha : ∀ i j, IsNilpotent (a i j)) (i : Fin n) (j : Fin d) :
     nv s (MvPowerSeries.X (i, j)) a = a i j := by
   obtain ⟨ψ, h1, -, h3⟩ := (nv_calculus R S s n d a ha).1
   rw [← h1, h3]
 
+/- English proof (translation)
+Take `⟨ψ, h1, -, -⟩` from `(nv_calculus R S s n d a ha).1`. Rewrite using `[← h1, map_zero]`.
+-/
 private lemma nv_zero {R S : Type} [CommRing R] [CommRing S] (s : R →+* S) {n d : ℕ}
     (a : Fin n → Fin d → S) (ha : ∀ i j, IsNilpotent (a i j)) :
     nv s (0 : PS R n d) a = 0 := by
   obtain ⟨ψ, h1, -, -⟩ := (nv_calculus R S s n d a ha).1
   rw [← h1, map_zero]
 
+/- English proof (translation)
+Rewrite using `[nv_ev s a ha _ f (by intro i j; fin_cases i; exacts [hb j, hc j])]`. Use `congr 1`. Use function extensionality and compare the values at `i j`. Apply the tactic sequence `fin_cases i <;> rfl`.
+-/
 private lemma nilpotent_eval_subst_pair {R S : Type} [CommRing R] [CommRing S] (s : R →+* S) {n d : ℕ}
     (a : Fin n → Fin d → S) (ha : ∀ i j, IsNilpotent (a i j)) (b c : Fin d → PS R n d) (f : PS R 2 d)
     (hb : ∀ j, MvPowerSeries.constantCoeff (b j) = 0) (hc : ∀ j, MvPowerSeries.constantCoeff (c j) = 0) :
@@ -58,20 +76,34 @@ private lemma nilpotent_eval_subst_pair {R S : Type} [CommRing R] [CommRing S] (
   funext i j
   fin_cases i <;> rfl
 
+/- English proof (translation)
+Simplify using `[pt]`.
+-/
 private lemma const_pt {R : Type} [CommRing R] {n d : ℕ} (i : Fin n) (j : Fin d) :
     MvPowerSeries.constantCoeff (pt R d i j) = 0 := by
   simp [pt]
 
+/- English proof (translation)
+The claim follows from `funext fun j => nv_X s a ha i j`.
+-/
 private lemma nv_pt {R S : Type} [CommRing R] [CommRing S] (s : R →+* S) {n d : ℕ}
     (a : Fin n → Fin d → S) (ha : ∀ i j, IsNilpotent (a i j)) (i : Fin n) :
     (fun j => nv s (pt R d i j) a) = a i := funext fun j => nv_X s a ha i j
 
+/- English proof (translation)
+Use `(nv_calculus R R (algebraMap R R) n d 0 (fun _ _ => IsNilpotent.zero)).2.2.2.2.2 (fun _ _ _ _ => by simp) f` as an intermediate fact. Simplify using `using this`.
+-/
 private lemma nv_at_zero {R : Type} [CommRing R] {n d : ℕ} (f : PS R n d) :
     nv (algebraMap R R) f (0 : Fin n → Fin d → R) = MvPowerSeries.constantCoeff f := by
   have := (nv_calculus R R (algebraMap R R) n d 0 (fun _ _ => IsNilpotent.zero)).2.2.2.2.2
     (fun _ _ _ _ => by simp) f
   simpa using this
 
+/- English proof (translation)
+Rewrite using `[← nv_at_zero, nilpotent_eval_subst_pair _ _ (fun _ _ => IsNilpotent.zero) _ _ _ hb hc, ← hf, ← nv_at_zero]`. Use `congr 1`. Use function extensionality and compare the values at `i j`. Use `fin_cases i`. Conclude with `(nv_at_zero _).trans (hb j)`.
+
+Conclude with `(nv_at_zero _).trans (hc j)`.
+-/
 private lemma constantCoeff_germEvalTwo_eq_zero {R : Type} [CommRing R] {n d : ℕ} (b c : Fin d → PS R n d) (f : PS R 2 d)
     (hb : ∀ j, MvPowerSeries.constantCoeff (b j) = 0) (hc : ∀ j, MvPowerSeries.constantCoeff (c j) = 0)
     (hf : MvPowerSeries.constantCoeff f = 0) :
@@ -83,6 +115,37 @@ private lemma constantCoeff_germEvalTwo_eq_zero {R : Type} [CommRing R] {n d : �
   · exact (nv_at_zero _).trans (hb j)
   · exact (nv_at_zero _).trans (hc j)
 
+/- English proof (translation)
+Introduce `R _ _ G _ _ g hG`. Take `⟨x, h0, hnat, hinj, hsur⟩` from `GlobalTheory.NilCoord.nilpotent_coordinates G g hG`. Establish `hser` using `@GlobalTheory.exists_series_of_natural_on_nilpotent (@GlobalTheory.nEval_basic)`. Take `⟨F0, hF0⟩` from `GlobalTheory.ChLaw.groupLaw_powerSeries (@GlobalTheory.nEval_basic) (@hser) G g x ⟨h0, hnat, hinj, hsur⟩`. Establish `hF : ∀ k : Fin g, ∃ f : PS R 2 g, ∀ (S : Type) [CommRing S] [Algebra R S] (u : Fin 2 × Fin g → S), (∀ i, IsNilpotent (u i)) → fAdd F0 (fun j => u (0, j)) (fun j => u (1, j)) k = nEval f u`.
+
+Introduce `k`. Use `hser (fun S _ _ u => fAdd F0 (fun j => u (0, j)) (fun j => u (1, j)) k) ?_` and prove the remaining obligations. Introduce `S _ _ S' _ _ φ u hu`. Unfold `fAdd`. Apply the tactic sequence `rw [((GlobalTheory.nEval_basic (F0 k) S _).2 (by rintro (i | i) <;> exact hu _)).1 S' φ]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `rcases i with i | i <;> rfl`. Use `choose F hF using hF`. Establish `hFe : ∀ (S : Type) [CommRing S] [Algebra R S] (a b : Fin g → S), (∀ i, IsNilpotent (a i)) → (∀ i, IsNilpotent (b i)) → fAdd F0 a b = fun k => nv (algebraMap R S) (F k) ![a, b]`.
+
+Introduce `S _ _ a b ha hb`. Use function extensionality and compare the values at `k`. Rewrite using `[nv_eq_nEval, ← hF k S _ (by rintro ⟨i, j⟩; fin_cases i; exacts [ha j, hb j])]`. Both sides reduce to the same expression. Establish `law : ∀ (S : Type) [CommRing S] [Algebra R S] (a b : Fin g → S), (∀ i, IsNilpotent (a i)) → (∀ i, IsNilpotent (b i)) → x S a * x S b = x S (fun k => nv (algebraMap R S) (F k) ![a, b])`.
+
+Introduce `S _ _ a b ha hb`. Rewrite using `[← hFe S a b ha hb]`. Conclude with `(hF0 S a b ha hb).2`. Establish `nil : ∀ (S : Type) [CommRing S] [Algebra R S] (a b : Fin g → S), (∀ i, IsNilpotent (a i)) → (∀ i, IsNilpotent (b i)) → ∀ k, IsNilpotent (nv (algebraMap R S) (F k) ![a, b])`. Introduce `S _ _ a b ha hb k`.
+
+Establish `h1` using `(hF0 S a b ha hb).1 k`. Rewrite `h1` using `[hFe S a b ha hb]`. Establish `h : Ideal.span (Set.range a ∪ Set.range b) ≤ nilradical S` using `Ideal.span_le.2 (by`. Introduce and unpack `_ (⟨i, rfl⟩ | ⟨i, rfl⟩)`. Use `exacts [mem_nilradical.2 (ha i), mem_nilradical.2 (hb i)])`.
+
+Conclude with `mem_nilradical.1 (h h1)`. Establish `hz : ∀ (S : Type) [CommRing S] (i : Fin g), IsNilpotent ((0 : Fin g → S) i)` using `fun S _ i => IsNilpotent.zero`. Establish `unitL : ∀ (S : Type) [CommRing S] [Algebra R S] (a : Fin g → S), (∀ i, IsNilpotent (a i)) → (fun k => nv (algebraMap R S) (F k) ![0, a]) = a`. Introduce `S _ _ a ha`. Use `hinj S _ _ (nil S _ _ (hz S) ha) ha ?_` and prove the remaining obligations.
+
+Rewrite using `[← law S _ _ (hz S) ha, h0, _root_.one_mul]`. Establish `const : ∀ k, MvPowerSeries.constantCoeff (F k) = 0`. Introduce `k`. Establish `h` using `congrFun (unitL R 0 (hz R)) k`. Rewrite using `[← nv_at_zero]`.
+
+Use `Eq.trans ?_ h` and prove the remaining obligations. Use `congr 1`. Use function extensionality and compare the values at `i j`. Apply the tactic sequence `fin_cases i <;> rfl`. Use `⟨⟨F, const, ?_, ?_, ?_⟩, x, ⟨h0, hnat, hinj, ?_, law⟩⟩` and prove the remaining obligations.
+
+Introduce `k`. Use `sep_nil _ _ fun S _ _ a ha => ?_` and prove the remaining obligations. Rewrite using `[nilpotent_eval_subst_pair _ a ha (0 : Fin g → PS R 1 g) _ _ (fun _ => map_zero _) (const_pt _), nv_pt _ a ha, nv_X _ a ha]`. Establish `e : (fun j => nv (algebraMap R S) ((0 : Fin g → PS R 1 g) j) a) = 0`. Use function extensionality and compare the values at `fun j => nv_zero _ a ha`.
+
+Rewrite using `[e]`. Conclude with `congrFun (unitL S (a 0) (ha 0)) k`. Introduce `k`. Use `sep_nil _ _ fun S _ _ a ha => ?_` and prove the remaining obligations. Rewrite using `[nilpotent_eval_subst_pair _ a ha _ _ _ (const_pt _) (const_pt _), nv_pt _ a ha, nv_pt _ a ha]`.
+
+Establish `e : a = ![a 0, a 1]`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> rfl`. Use `conv_rhs => rw [e]`. Use `congrFun (hinj S _ _ (nil S _ _ (ha 1) (ha 0)) (nil S _ _ (ha 0) (ha 1)) ?_) k` and prove the remaining obligations.
+
+Rewrite using `[← law S _ _ (ha 1) (ha 0), ← law S _ _ (ha 0) (ha 1), _root_.mul_comm]`. Introduce `k`. Use `sep_nil _ _ fun S _ _ a ha => ?_` and prove the remaining obligations. Rewrite using `[nilpotent_eval_subst_pair _ a ha _ _ _ (fun l => constantCoeff_germEvalTwo_eq_zero _ _ _ (const_pt _) (const_pt _) (const l)) (const_pt _), nilpotent_eval_subst_pair _ a ha _ _ _ (const_pt _) (fun l => constantCoeff_germEvalTwo_eq_zero _ _ _ (const_pt _) (const_pt _) (const l))]`. Simplify using `only [nilpotent_eval_subst_pair _ a ha _ _ _ (const_pt _) (const_pt _), nv_pt _ a ha]`.
+
+Use `congrFun (hinj S _ _ (nil S _ _ (nil S _ _ (ha 0) (ha 1)) (ha 2)) (nil S _ _ (ha 0) (nil S _ _ (ha 1) (ha 2))) ?_) k` and prove the remaining obligations. Rewrite using `[← law S _ _ (nil S _ _ (ha 0) (ha 1)) (ha 2), ← law S _ _ (ha 0) (nil S _ _ (ha 1) (ha 2)), ← law S _ _ (ha 0) (ha 1), ← law S _ _ (ha 1) (ha 2), _root_.mul_assoc]`. Introduce `S _ _ S' _ _ ρ σ hρσ hn z hz'`. Use `hsur S S' ρ (fun y => ⟨σ y, AlgHom.congr_fun hρσ y⟩) ?_ z hz'` and prove the remaining obligations. Introduce `c hc`.
+
+Take `⟨N, hN⟩` from `hn`. Use `Ideal.pow_mem_pow hc N` as an intermediate fact. Rewrite `this` using `[hN]`. Conclude with `⟨N, by simpa using this⟩`.
+-/
 theorem exists_nilChart : ∀ (R : Type) [CommRing R] [IsLocalRing R] (G : Over (Spec (CommRingCat.of R))) [GrpObj G] [IsCommMonObj G] (g : ℕ), SmoothOfRelativeDimension g G.hom → ∃ (F : FGLaw R g) (X : Fam G g), NilChart G F.F X := by
   intro R _ _ G _ _ g hG
   classical

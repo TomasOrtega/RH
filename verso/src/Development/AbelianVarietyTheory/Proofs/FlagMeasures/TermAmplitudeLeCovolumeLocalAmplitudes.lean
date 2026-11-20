@@ -16,6 +16,29 @@ open MeasureTheory Matrix NumberField Formalism.BasicNotions Formalism.MainNotio
 namespace GlobalTheory.TypeAsm
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Introduce `D X Y u C hB hG hcov t hrel μ ν K hμν hK`. Take `⟨μR, νl, hνl, hH, hQ, hμR, hmap⟩` from `hP D X Y u C t μ ν hμν`. Establish `hFA` using `Formalism.L2.SG.Pf.formAllC_holds D X Y u u t μR (Measure.pi νl) K (Formalism.L2.SG.Pf.RelChar.relCharC_holds D X Y u u t hrel) hH hQ hK.1 hK.2`. Establish `hT` using `hTn D X u t.pt.1 νl hνl`. Take `⟨hc, hconst⟩` from `hC D X Y u C hB hG hcov`.
+
+Establish `hloc : ∀ τ, Real.sqrt (hsNormSq ((locS hB u u τ).J (ν τ) (gamT C t τ))) = (cOf hB u τ)⁻¹ * Real.sqrt (hsNormSq (haveI` using `FiniteDimensional.complete ℂ (X.Vloc u (vOf X τ)) Formalism.L2.SG.RealObj.Jv (νl (vOf X τ)) (X.Wloc u (vOf X τ)) (X.Wloc u (vOf X τ)) (t.pt.1 (vOf X τ)))) := by`. Introduce `τ`. Rewrite using `[← hmap τ]`. Unfold `gamT`. Rewrite using `[Formalism.L2.SG.Pf.LocJEq.locJ_map_eq' C hB u u τ]`.
+
+Use `(congrArg Real.sqrt (Formalism.L2.SG.Pf.LTL.hsNormSq_smul _ _)).trans ?_` and prove the remaining obligations. Rewrite using `[(hc τ).2, mul_one, map_inv₀, Complex.normSq_ofReal, Real.sqrt_mul', Real.sqrt_inv, Real.sqrt_mul_self (hc τ).1.le]`. Both sides reduce to the same expression. Conclude with `Formalism.L2.SG.Pf.LTL.hsNormSq_nonneg _`. Establish `hv : ‖(Y.tO u u).vec t‖ = wt t * ‖Formalism.L2.SG.PackageTie.hsEmb (ampN (Y.cs u) (Y.cs u) (Y.FN u) (Y.FN u) t)‖` using `by show ‖Formalism.L2.SG.TermOp.vec (Y.cs u) (Y.cs u) (Y.FN u) (Y.FN u) t‖ = _`.
+
+Unfold `Formalism.L2.SG.TermOp.vec`. Rewrite using `[← norm_smul_of_nonneg (show 0 ≤ wt t from Real.sqrt_nonneg _) (Formalism.L2.SG.PackageTie.hsEmb (ampN (Y.cs u) (Y.cs u) (Y.FN u) (Y.FN u) t)), ← Complex.coe_smul]`. Use `Eq.trans ?_ (PiLp.norm_toLp_single 2 (fun _ : {Λ // Λ ∈ Y.what₂ u} × {Λ' // Λ' ∈ Y.what₂ u} => Formalism.L2.SG.PackageTie.HS (X.Vpi u) (X.Vpi u)) ((⟨t.lam, t.mem⟩, ⟨t.lam', t.mem'⟩) : {Λ // Λ ∈ Y.what₂ u} × {Λ' // Λ' ∈ Y.what₂ u}) _)` and prove the remaining obligations. Use `congr 2`. Use function extensionality and compare the values at `q`.
+
+Simplify using `only [Pi.single_apply]`. Establish `hs0 : 0 ≤ scl (Y.FN u) (Y.FN u) (X` using `X) (u := u) (u' := u) * X.volK2 := by`. Unfold `scl HidaSetting.volK2`. Check the signs of the components of the expression. Establish `hamp : ‖Formalism.L2.SG.PackageTie.hsEmb (ampN (Y.cs u) (Y.cs u) (Y.FN u) (Y.FN u) t)‖ = (scl (Y.FN u) (Y.FN u) (X` using `X) (u := u) (u' := u) * X.volK2) * ((μR K).toReal * ‖Formalism.L2.SG.PackageTie.hsEmb (haveI := FiniteDimensional.complete ℂ (X.Vpi u) OO (Measure.pi νl) Set.univ (X.Wu u) (X.Wu u) t.pt.1)‖) := by`.
+
+Unfold `ampN`. Rewrite using `[map_smul, map_smul, norm_smul, norm_smul, Formalism.L2.SG.Pf.FibreCounting.norm_chiN, one_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg hs0, hFA, ← Complex.coe_smul, map_smul, norm_smul, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg ENNReal.toReal_nonneg]`. Establish `hprod : ∏ τ, Real.sqrt (hsNormSq ((locS hB u u τ).J (ν τ) (gamT C t τ))) = (∏ τ, cOf hB u τ)⁻¹ * ∏ v, Real.sqrt (hsNormSq (haveI` using `FiniteDimensional.complete ℂ (X.Vloc u v) Formalism.L2.SG.RealObj.Jv (νl v) (X.Wloc u v) (X.Wloc u v) (t.pt.1 v))) := by`. Rewrite using `[Finset.prod_congr rfl fun τ _ => hloc τ, Finset.prod_mul_distrib, Finset.prod_inv_distrib]`. Use `congr 1`.
+
+Conclude with `Fintype.prod_equiv X.pl.symm _ _ (fun τ => rfl)`. Establish `hPc : 0 < ∏ τ, cOf hB u τ` using `Finset.prod_pos fun τ _ => (hc τ).1`. Rewrite using `[hv, hamp, ← hμR K hK.1, hprod]`. Use `set N := ‖Formalism.L2.SG.PackageTie.hsEmb (haveI := FiniteDimensional.complete ℂ (X.Vpi u) OO (Measure.pi νl) Set.univ (X.Wu u) (X.Wu u) t.pt.1)‖ with hN`. Use `set Pv := ∏ v, Real.sqrt (hsNormSq (haveI := FiniteDimensional.complete ℂ (X.Vloc u v) Formalism.L2.SG.RealObj.Jv (νl v) (X.Wloc u v) (X.Wloc u v) (t.pt.1 v))) with hPv`.
+
+Use `set Pc := ∏ τ, cOf hB u τ with hPcd`. Use `set s := scl (Y.FN u) (Y.FN u) (X := X) (u := u) (u' := u) * X.volK2 with hsd`. Use `set a := wt t with had`. Use `set m := (μR K).toReal with hmd`. Use `set cv := (covN C Y u).toReal with hcv`.
+
+Establish `ha : 0 ≤ a` using `Real.sqrt_nonneg _`. Establish `hm : 0 ≤ m` using `ENNReal.toReal_nonneg`. Establish `hcv0 : 0 ≤ cv` using `ENNReal.toReal_nonneg`. Establish `hPv0 : 0 ≤ Pv` using `Finset.prod_nonneg fun v _ => Real.sqrt_nonneg _`. Establish `hNP : N ≤ Pv` using `hT`.
+
+Establish `hSJ : 0 ≤ Pc⁻¹ * Pv` using `mul_nonneg (inv_nonneg.2 hPc.le) hPv0`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_inv_cancel_left₀ hPc.ne']`. Conclude with `mul_le_mul_of_nonneg_left hNP (by positivity)`. Use `_ = (a * (m * (Pc⁻¹ * Pv))) * (s * Pc * cv) := by ring`.
+
+Use `_ ≤ (a * (m * (Pc⁻¹ * Pv))) * 1 := mul_le_mul_of_nonneg_left hconst (by positivity)`. Use `_ = a * (m * (Pc⁻¹ * Pv)) := mul_one _`.
+-/
 theorem factC_of (hP : PullC) (hTn : TensC) (hC : ConstC) : FactC := by
   intro D X Y u C hB hG hcov t hrel μ ν K hμν hK
   obtain ⟨μR, νl, hνl, hH, hQ, hμR, hmap⟩ := hP D X Y u C t μ ν hμν
@@ -89,6 +112,9 @@ theorem factC_of (hP : PullC) (hTn : TensC) (hC : ConstC) : FactC := by
     _ ≤ (a * (m * (Pc⁻¹ * Pv))) * 1 := mul_le_mul_of_nonneg_left hconst (by positivity)
     _ = a * (m * (Pc⁻¹ * Pv)) := mul_one _
 
+/- English proof (translation)
+The claim follows from `factC_of GlobalTheory.T.localHaarMeasures_pullback_realGroup GlobalTheory.T.orbitalIntegralTensorBoundHyp_proof GlobalTheory.T.normalisingConstantsProductHyp_proof`.
+-/
 theorem factC_holds : FactC := factC_of GlobalTheory.T.localHaarMeasures_pullback_realGroup GlobalTheory.T.orbitalIntegralTensorBoundHyp_proof GlobalTheory.T.normalisingConstantsProductHyp_proof
 
 end GlobalTheory.TypeAsm

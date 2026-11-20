@@ -10,6 +10,15 @@ open ReciprocityTheory.ChartRestriction.G.DVR Formalism.MainNotions.ModuliIntegr
 
 namespace GlobalTheory.IntegralPull
 
+/- English proof (translation)
+Establish `: Finite (ResidueField T.V)` using `hy`. Take `⟨G, t, m1, m2, -⟩` from `y.2.2`. Take `⟨W, _, _, _, hc, _, hf, hi, hr, hS⟩` from `GlobalTheory.UnifAfterExt.exists_split_baseChange T.V G.G G.semi`. Establish `hz : CharZero W` using `charZero_of_injective_ringHom hi`. Set `T' : Formalism.L2.Pj.CDVR` to `{ V := W }`.
+
+Establish `: FaithfulSMul T.V W` using `(faithfulSMul_iff_algebraMap_injective _ _).2 hi`. Establish `hl : IsLocalHom (algebraMap T.V W)` using `inferInstance`. Establish `hj : Function.Injective ((algebraMap W (FractionRing W)).comp (algebraMap T.V W))` using `(IsFractionRing.injective W _).comp hi`. Take `⟨φ, hφ⟩ : ∃ φ : T.Fr →+* T'.Fr, ∀ v, φ (algebraMap T.V T.Fr v) = algebraMap T'.V T'.Fr (algebraMap T.V W v)` from `⟨IsFractionRing.lift hj, IsFractionRing.lift_algebraMap hj⟩`. Take `⟨r, hr0, hv⟩` from `exists_index (V' := T'.V) (algebraMap T.V W) φ hφ`.
+
+Use `letI := io.toAlgebra`. Use `letI := (φ.comp io).toAlgebra`. Set `ψ : T.Fr →ₐ[c.F] T'.Fr` to `{ φ with commutes' := fun _ => rfl }`. Take `⟨z, hz⟩` from `GlobalTheory.FramedBaseChange.exists_frMap GlobalTheory.firstFiveLaws.1 E H Dw l Xo c _ _ ψ y.1`. Take `⟨p, χ, y₀, hy₀⟩` from `y.2.1`.
+
+Set `y' : IntFr Xo c T' (φ.comp io)` to `⟨z, ⟨p, ψ.comp χ, y₀, Formalism.L2.Pj.frMap_trans (Xo := Xo) (c := c) _ _ _ χ ψ y₀ y.1 z hy₀ hz⟩, integral_baseChange T T' io (φ.comp io) _ hi ψ hφ y.1 z hz y.2.2⟩`. Use `⟨T', algebraMap T.V W, φ, r, y', hi, hl, RingHom.finite_algebraMap.2 hf, RingHom.ext hφ, hr0, ?_, hr, hz, fun I => exists_unif_of_split T T' _ φ hφ m1 m2 hz.1 I.m1 I.m2 hS⟩` and prove the remaining obligations. Rewrite using `[Nat.mul_comm]`. Conclude with `ho.bc φ hr0 hv`.
+-/
 theorem exists_finite_ext_all_models_uniformised {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
     {Dw : Datum H} {l : Level H} (Xo : Moduli Dw l) (c : Coeff l) (T : CDVR) (io : c.F →+* T.Fr)
     (y : IntFr Xo c T io) (e : ℕ) (la : HeightOneSpectrum (𝓞 c.F)) (ho : OverLa la T.V io e) (hy : y.IsAlg) :

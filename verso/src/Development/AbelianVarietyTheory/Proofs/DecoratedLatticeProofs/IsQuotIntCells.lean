@@ -10,6 +10,67 @@ open GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum (IsCO rescale)
 
 namespace GlobalTheory.CellQuotInt
 
+/- English proof (translation)
+Introduce `k _ _ _ _ _ _ n _ _ c p hp hpc ν _ μX _ μG _ J hJ f hfJ hfR T hT`. Take `⟨bX, lX, sX, -, -, -, hXH, hXR⟩` from `GlobalTheory.SplitWeil.volGL_haar k n ν`. Take `⟨bG, lG, sG, -, -, -⟩` from `GlobalTheory.SplitWeil.volGL_haar k (n ⊕ Fin c) ν`. Take `⟨hN, -, hH, hRi, hconj⟩` from `GlobalTheory.RootEx.VolN.volN_haar_and_modulus k n c p hp hpc ν`. Use `haveI : LocallyCompactSpace (N k n c p) := hN.isClosedEmbedding_subtypeVal.locallyCompactSpace`.
+
+Use `haveI : SecondCountableTopology (N k n c p) := TopologicalSpace.Subtype.secondCountableTopology _`. Use `haveI : SigmaFinite (volN ν n c p) := Measure.IsHaarMeasure.sigmaFinite _`. Use `haveI : μX.IsMulRightInvariant := by`. Rewrite using `[Measure.isMulLeftInvariant_eq_smul μX (volGL ν n)]`. Use `infer_instance`.
+
+Establish `hRm : ∀ (g : GL n k) (u : N k n c p), embX c g * (u : GL (n ⊕ Fin c) k) ∈ R k n c p` using `fun g u => mul_mem (Subgroup.mem_sup_left ⟨g, rfl⟩) (Subgroup.mem_sup_right u.2)`. Establish `hm : Continuous (fun z : GL n k × N k n c p => embX c z.1 * (z.2 : GL (n ⊕ Fin c) k))` using `(GlobalTheory.QuotInt.continuous_embX.comp continuous_fst).mul (continuous_subtype_val.comp continuous_snd)`. Set `S : GL (n ⊕ Fin c) k → Set (GL n k × N k n c p)` to `fun h => {z | h⁻¹ * (embX c z.1 * (z.2 : GL (n ⊕ Fin c) k)) * h ∈ J}`. Establish `hSo : ∀ h, IsOpen (S h)` using `fun h => hJ.1.preimage ((continuous_const.mul hm).mul continuous_const)`. Establish `hScomp : ∀ h, ∃ D, IsCompact D ∧ S h ⊆ D`.
+
+Introduce `h`. Establish `hK : IsCompact ((fun x => h * x * h⁻¹) '' (J : Set (GL (n ⊕ Fin c) k)))` using `hJ.2.image (by fun_prop)`. Take `⟨D, hD, hDm⟩` from `GlobalTheory.QuotInt.compact_preimage hN hK`. Conclude with `⟨D, hD, fun z hz => hDm z ⟨_, hz, by group⟩⟩`. Establish `hvol : ∀ h, volCell ν μX p J h = (μX.prod (volN ν n c p)) (S h)`.
+
+Introduce `h`. Rewrite using `[Measure.prod_apply (hSo h).measurableSet]`. Both sides reduce to the same expression. Establish `hvol0 : ∀ h, volCell ν μX p J h ≠ 0 ∧ volCell ν μX p J h ≠ ⊤`. Introduce `h`.
+
+Take `⟨D, hD, hSD⟩` from `hScomp h`. Rewrite using `[hvol]`. Conclude with `⟨(hSo h).measure_ne_zero _ ⟨(1, 1), by simp [S, J.one_mem]⟩, ((measure_mono hSD).trans_lt hD.measure_lt_top).ne⟩`. Establish `hcell : ∀ h, ∫ g, (∫ u : N k n c p, (if h⁻¹ * (embX c g * (u : GL (n ⊕ Fin c) k)) * h ∈ J then (1 : ℂ) else 0) ∂(volN ν n c p)) ∂μX = (((volCell ν μX p J h).toReal : ℝ) : ℂ)`. Introduce `h`.
+
+Establish `e : (fun z : GL n k × N k n c p => if h⁻¹ * (embX c z.1 * (z.2 : GL (n ⊕ Fin c) k)) * h ∈ J then (1 : ℂ) else 0) = (S h).indicator (fun _ => (1 : ℂ))`. Use function extensionality and compare the values at `z`. Simplify using `[S, Set.indicator_apply]`. Establish `hint : Integrable ((S h).indicator (fun _ => (1 : ℂ))) (μX.prod (volN ν n c p))`. Rewrite using `[integrable_indicator_iff (hSo h).measurableSet]`.
+
+Conclude with `integrableOn_const (by rw [← hvol]; exact (hvol0 h).2)`. Rewrite `hint` using `[← e]`. Establish `h2` using `integral_prod _ hint`. Simplify using `only at h2`. Rewrite using `[← h2, e, integral_indicator_const _ (hSo h).measurableSet, Measure.real, ← hvol]`.
+
+Simplify using the standard rewrite rules. Establish `hmod : ∀ (φ : GL (n ⊕ Fin c) k → ℂ) (g₀ : GL n k) (u₁ : GL (n ⊕ Fin c) k), u₁ ∈ N k n c p → ∫ g, (∫ u : N k n c p, φ (embX c g * (u : GL (n ⊕ Fin c) k) * (embX c g₀ * u₁)) ∂(volN ν n c p)) ∂μX = ((nabs k (Matrix.GeneralLinearGroup.det g₀) ^ ((c : ℝ) + 1 - 2 * p) : ℝ) : ℂ) * ∫ g, …`. Introduce `φ g₀ u₁ hu₁`. Establish `hpos : ∀ y : kˣ, 0 < nabs k y` using `fun y => (nabs_properties k).2.1 y`. Establish `e3 : nabs k (Matrix.GeneralLinearGroup.det g₀⁻¹) ^ (-((c : ℝ) + 1 - 2 * p)) = nabs k (Matrix.GeneralLinearGroup.det g₀) ^ ((c : ℝ) + 1 - 2 * p)`.
+
+Establish `h3 : nabs k (Matrix.GeneralLinearGroup.det g₀⁻¹) = (nabs k (Matrix.GeneralLinearGroup.det g₀))⁻¹`. Simplify using `[nabs]`. Rewrite using `[h3, Real.inv_rpow (hpos _).le, ← Real.rpow_neg (hpos _).le, neg_neg]`. Establish `step : ∀ g : GL n k, ∫ u : N k n c p, φ (embX c g * (u : GL (n ⊕ Fin c) k) * (embX c g₀ * u₁)) ∂(volN ν n c p) = (nabs k (Matrix.GeneralLinearGroup.det g₀) ^ ((c : ℝ) + 1 - 2 * p)) • ∫ u : N k n c p, φ (embX c (g * g₀) * (u : GL (n ⊕ Fin c) k)) ∂(volN ν n c p)`. Introduce `g`.
+
+Establish `e1` using `hconj g₀⁻¹ (fun y => φ (embX c (g * g₀) * y * u₁))`. Establish `e2` using `integral_mul_right_eq_self (μ := volN ν n c p) (fun u : N k n c p => φ (embX c (g * g₀) * (u : GL (n ⊕ Fin c) k))) ⟨u₁, hu₁⟩`. Simplify using `only [Subgroup.coe_mul, ← mul_assoc] at e2`. Rewrite `e1` using `[e3, e2]`. Rewrite using `[← e1]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `u`. Use `congr 1`. Simplify using `only [map_mul, map_inv]`. Use `group`.
+
+Simplify using `only [step]`. Rewrite using `[integral_smul, Complex.real_smul]`. Use `congr 1`. Use `integral_mul_right_eq_self (μ := μX) (fun g => ∫ u : N k n c p, φ (embX c g * (u : GL (n ⊕ Fin c) k)) ∂(volN ν n c p)) g₀` as an intermediate fact. Simplify using `using this`.
+
+Establish `hv0 : ∀ h, (volCell ν μX p J h).toReal ≠ 0` using `fun h => ENNReal.toReal_ne_zero.2 (hvol0 h)`. Set `F : GL (n ⊕ Fin c) k → ℂ` to `fun x => ∑ t ∈ T, if t⁻¹ * x ∈ J then f t / (((volCell ν μX p J t).toReal : ℝ) : ℂ) else 0`. Establish `hFsb : F ∈ SB (GL (n ⊕ Fin c) k)`. Use `GlobalTheory.QuotInt.sb_of_quot J hJ.1 hJ.2 (T.image (QuotientGroup.mk : GL (n ⊕ Fin c) k → GL (n ⊕ Fin c) k ⧸ J)) (fun q => ∑ t ∈ T, if (t : GL (n ⊕ Fin c) k ⧸ J) = q then f t / (((volCell ν μX p J t).toReal : ℝ) : ℂ) else 0) (fun q hq => Finset.sum_eq_zero fun t ht => if_neg fu …` as an intermediate fact. Establish `hFeq : F = fun x : GL (n ⊕ Fin c) k => ∑ t ∈ T, if (t : GL (n ⊕ Fin c) k ⧸ J) = (x : GL (n ⊕ Fin c) k ⧸ J) then f t / (((volCell ν μX p J t).toReal : ℝ) : ℂ) else 0`.
+
+Use function extensionality and compare the values at `x`. Simplify using `only [F, QuotientGroup.eq]`. Rewrite using `[hFeq]`. Conclude with `this`. Establish `hFint : ∫ x, F x ∂μG = ∑ t ∈ T, ((((μG J).toReal / (volCell ν μX p J t).toReal : ℝ) : ℂ)) * f t`.
+
+Establish `hind : ∀ t : GL (n ⊕ Fin c) k, Integrable (fun x => if t⁻¹ * x ∈ J then f t / (((volCell ν μX p J t).toReal : ℝ) : ℂ) else 0) μG ∧ ∫ x, (if t⁻¹ * x ∈ J then f t / (((volCell ν μX p J t).toReal : ℝ) : ℂ) else 0) ∂μG = ((((μG J).toReal / (volCell ν μX p J t).toReal : ℝ) : ℂ)) * f t`. Introduce `t`. Establish `e : (fun x => if t⁻¹ * x ∈ J then f t / (((volCell ν μX p J t).toReal : ℝ) : ℂ) else 0) = fun x => (J : Set (GL (n ⊕ Fin c) k)).indicator (fun _ => f t / (((volCell ν μX p J t).toReal : ℝ) : ℂ)) (t⁻¹ * x)`. Use function extensionality and compare the values at `x`. Simplify using `[Set.indicator_apply]`.
+
+Establish `hi : Integrable ((J : Set (GL (n ⊕ Fin c) k)).indicator (fun _ => f t / (((volCell ν μX p J t).toReal : ℝ) : ℂ))) μG`. Rewrite using `[integrable_indicator_iff hJ.1.measurableSet]`. Conclude with `integrableOn_const hJ.2.measure_lt_top.ne`. Rewrite using `[e]`. Use `⟨hi.comp_mul_left t⁻¹, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[integral_mul_left_eq_self (fun x => (J : Set (GL (n ⊕ Fin c) k)).indicator (fun _ => f t / (((volCell ν μX p J t).toReal : ℝ) : ℂ)) x) t⁻¹, integral_indicator_const _ hJ.1.measurableSet]`. Simplify using `only [Measure.real, Complex.real_smul]`. Use `hv0 t` as an intermediate fact. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+
+Use `show ∫ x, (∑ t ∈ T, _) ∂μG = _`. Rewrite using `[integral_finset_sum _ (fun t _ => (hind t).1)]`. Conclude with `Finset.sum_congr rfl fun t _ => (hind t).2`. Establish `hRinv : ∀ (y t : GL (n ⊕ Fin c) k), t⁻¹ * y ∈ J → DoubleCoset.mk (R k n c p) J y = DoubleCoset.mk (R k n c p) J t`. Introduce `y t hy`.
+
+Rewrite using `[DoubleCoset.eq]`. Conclude with `⟨1, one_mem _, (t⁻¹ * y)⁻¹, J.inv_mem hy, by group⟩`. Establish `hmkR : ∀ r ∈ R k n c p, ∀ y, DoubleCoset.mk (R k n c p) J (r * y) = DoubleCoset.mk (R k n c p) J y`. Introduce `r hr y`. Rewrite using `[DoubleCoset.eq]`.
+
+Conclude with `⟨r⁻¹, inv_mem hr, 1, one_mem _, by group⟩`. Establish `hFcell : ∀ t₀ ∈ T, ∀ y, DoubleCoset.mk (R k n c p) J y = DoubleCoset.mk (R k n c p) J t₀ → F y = if t₀⁻¹ * y ∈ J then f t₀ / (((volCell ν μX p J t₀).toReal : ℝ) : ℂ) else 0`. Introduce `t₀ ht₀ y hy`. Use `show (∑ t ∈ T, _) = _`. Rewrite using `[Finset.sum_eq_single t₀]`.
+
+Introduce `t ht hne`. Rewrite using `[if_neg]`. Introduce `hmem`. Conclude with `hne (hT.1 (Finset.mem_coe.2 ht) (Finset.mem_coe.2 ht₀) ((hRinv y t hmem).symm.trans hy))`. Introduce `h`.
+
+Conclude with `absurd ht₀ h`. Establish `hFoff : ∀ y, (∀ t ∈ T, DoubleCoset.mk (R k n c p) J y ≠ DoubleCoset.mk (R k n c p) J t) → F y = 0`. Introduce `y hy`. Conclude with `Finset.sum_eq_zero fun t ht => if_neg fun hmem => hy t ht (hRinv y t hmem)`. Establish `havg : ∀ x, f x = ∫ g, (∫ u : N k n c p, F (embX c g * (u : GL (n ⊕ Fin c) k) * x) ∂(volN ν n c p)) ∂μX`.
+
+Introduce `x`. Distinguish the cases in `hx : ∃ t ∈ T, DoubleCoset.mk (R k n c p) J x = DoubleCoset.mk (R k n c p) J t`. Take `⟨t₀, ht₀, hxt⟩` from `hx`. Take `⟨r, hr, j, hj, rfl⟩` from `(DoubleCoset.eq _ _ _ _).1 hxt.symm`. Take `⟨g₀, u₁, hu₁, rfl⟩` from `Radical.exists_of_mem_R hr`.
+
+Use `set φ : GL (n ⊕ Fin c) k → ℂ := fun y => f t₀ / (((volCell ν μX p J t₀).toReal : ℝ) : ℂ) * (if t₀⁻¹ * y * t₀ ∈ J then (1 : ℂ) else 0) with hφ`. Establish `key : ∀ (g : GL n k) (u : N k n c p), F (embX c g * (u : GL (n ⊕ Fin c) k) * (embX c g₀ * u₁ * t₀ * j)) = φ (embX c g * (u : GL (n ⊕ Fin c) k) * (embX c g₀ * u₁))`. Introduce `g u`. Establish `hw : embX c g * (u : GL (n ⊕ Fin c) k) * (embX c g₀ * u₁) ∈ R k n c p` using `mul_mem (hRm g u) hr`. Establish `e : embX c g * (u : GL (n ⊕ Fin c) k) * (embX c g₀ * u₁ * t₀ * j) = (embX c g * (u : GL (n ⊕ Fin c) k) * (embX c g₀ * u₁)) * t₀ * j` using `by group`.
+
+Establish `hmk : DoubleCoset.mk (R k n c p) J ((embX c g * (u : GL (n ⊕ Fin c) k) * (embX c g₀ * u₁)) * t₀ * j) = DoubleCoset.mk (R k n c p) J t₀`. Rewrite using `[DoubleCoset.eq]`. Conclude with `⟨_, inv_mem hw, j⁻¹, J.inv_mem hj, by group⟩`. Rewrite using `[e, hFcell t₀ ht₀ _ hmk]`. Establish `e2 : t₀⁻¹ * ((embX c g * (u : GL (n ⊕ Fin c) k) * (embX c g₀ * u₁)) * t₀ * j) = t₀⁻¹ * (embX c g * (u : GL (n ⊕ Fin c) k) * (embX c g₀ * u₁)) * t₀ * j` using `by group`.
+
+Simplify using `only [hφ, e2, J.mul_mem_cancel_right hj]`. Apply the tactic sequence `split_ifs <;> simp`. Simplify using `only [key]`. Rewrite using `[hmod φ g₀ u₁ hu₁]`. Simplify using `only [hφ, integral_const_mul]`.
+
+Rewrite using `[hcell t₀, hfJ _ j hj, hfR g₀ u₁ hu₁ t₀]`. Rewrite using `[div_mul_cancel₀ _ (Complex.ofReal_ne_zero.2 (hv0 t₀))]`. Establish `hf0 : f x = 0`. Assume the negation of the conclusion as `h0`. Conclude with `hx (hT.2 x h0)`.
+
+Rewrite using `[hf0]`. Establish `: ∀ (g : GL n k) (u : N k n c p), F (embX c g * (u : GL (n ⊕ Fin c) k) * x) = 0`. Introduce `g u`. Apply `hFoff` to reduce the goal to its premises. Introduce `t ht e`.
+
+Conclude with `hx ⟨t, ht, (hmkR _ (hRm g u) x).symm.trans e⟩`. Simplify using `[this]`. Establish `hz₀ : IsQuotInt ν μX μG p f (∑ t ∈ T, ((((μG J).toReal / (volCell ν μX p J t).toReal : ℝ) : ℂ)) * f t)` using `⟨F, hFsb, havg, hFint.symm⟩`. Establish `huniq` using `(GlobalTheory.QuotInt.quotInt_unique_exists k n c p hp hpc ν μX μG f).1`. Conclude with `⟨hvol0, fun z => ⟨fun hz => huniq _ _ hz hz₀, fun e => by rw [e]; exact hz₀⟩⟩`.
+-/
 theorem isQuotInt_cells : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] (n : Type) [Fintype n] [DecidableEq n] (c p : ℕ) (_ : 1 ≤ p) (_ : p ≤ c) (ν : Measure k) [ν.IsAddHaarMeasure] (μX : Measure (GL n k)) [μX.IsHaarMeasure] (μG : Measure (GL (n ⊕ Fin c) k)) [μG.IsHaarMeasure] (J : Subgroup (GL (n ⊕ Fin c) k)) (_ : IsCO J) (f : GL (n ⊕ Fin c) k → ℂ) (_ : ∀ h, ∀ j ∈ J, f (h * j) = f h) (_ : ∀ (x : GL n k), ∀ u ∈ N k n c p, ∀ h, f (embX c x * u * h) = ((nabs k (Matrix.GeneralLinearGroup.det x) ^ ((c : ℝ) + 1 - 2 * p) : ℝ) : ℂ) * f h) (T : Finset (GL (n ⊕ Fin c) k)) (_ : Covers p J T f), (∀ h, volCell ν μX p J h ≠ 0 ∧ volCell ν μX p J h ≠ ⊤) ∧ ∀ z, IsQuotInt ν μX μG p f z ↔ z = ∑ h ∈ T, (((μG J).toReal / (volCell ν μX p J h).toReal : ℝ) : ℂ) * f h := by
   intro k _ _ _ _ _ _ n _ _ c p hp hpc ν _ μX _ μG _ J hJ f hfJ hfR T hT
   classical

@@ -34,6 +34,15 @@ open GlobalTheory.NormExact (Reads Setup IsFinIdl HasFinPart finPt)
 
 variable {D : D7}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `z`. Take `⟨σ, hσ⟩` from `GlobalTheory.RealLineAt.exists_inverse_chart hθ`. Establish `hsp : ∀ Z : D.what₂.Tau → Matrix (Fin T.rank) (Fin S.rank) ℂ, (GlobalTheory.AdForm.realPt θ Z).map (finPart D) = 0 ∧ ∀ τ, compAt θ τ (GlobalTheory.AdForm.realPt θ Z) = Z τ` using `fun Z => by`. Use `Classical.epsilon_spec (p := fun w : Mx D T.rank S.rank => w.map (finPart D) = 0 ∧ ∀ τ, compAt θ τ w = Z τ) ⟨Matrix.of fun i j => σ fun τ => Z τ i j, ?_, fun τ => ?_⟩` and prove the remaining obligations. Use extensionality with `i j`.
+
+Conclude with `hσ.fin _`. Use extensionality with `i j`. Conclude with `hσ.comp _ _`. Unfold `GlobalTheory.AdForm.xiN`. Take `⟨h1, h2⟩` from `hsp fun τ => Matrix.of fun i j => -((-δ)⁻¹ * z τ (Fin.cast hT i) (Fin.cast hS j))`.
+
+Establish `hY : GlobalTheory.NormExact.coordY θ hS hT δ 1 (GlobalTheory.AdForm.realPt θ fun τ => Matrix.of fun i j => -((-δ)⁻¹ * z τ (Fin.cast hT i) (Fin.cast hS j))) = z`. Use function extensionality and compare the values at `τ i j`. Unfold `GlobalTheory.NormExact.coordY`. Rewrite using `[h2, map_one, mul_one, Matrix.of_apply, inv_neg, neg_mul, neg_neg, ← mul_assoc, mul_inv_cancel₀ hs, one_mul]`. Both sides reduce to the same expression.
+
+Rewrite using `[h.2 _ h1, hY, ← mul_assoc, ← Complex.exp_add]`. Establish `hH : Formalism.L2.Ker.HV (area (lamOf D ⊤ δ))⁻¹ z z = Formalism.MainNotions.TaylorLogMetric.Hf D (tor0 D ⊤ δ) z z`. Express the relevant statement in the definitionally equal form `(((area (lamOf D ⊤ δ))⁻¹ : ℝ) : ℂ) * _ = _ / ((area (lamOf D ⊤ δ) : ℝ) : ℂ)`. Rewrite using `[div_eq_inv_mul, Complex.ofReal_inv]`. Rewrite using `[hH, neg_mul, add_neg_cancel, Complex.exp_zero, one_mul]`.
+-/
 theorem xiN_of_reads {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} (hθ : IsInfFam θ) {S T : HSp D} {a d : ℕ}
     (hS : S.rank = a) (hT : T.rank = d) {δ : ℂ} (hs : δ ≠ 0) {G : VC D a d → ℂ} {f : WO S T → ℂ}
     (h : Reads ψ θ hS hT ⊤ δ 1 G f) :
@@ -60,6 +69,11 @@ theorem xiN_of_reads {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} (hθ : IsI
     rw [div_eq_inv_mul, Complex.ofReal_inv]
   rw [hH, neg_mul, add_neg_cancel, Complex.exp_zero, one_mul]
 
+/- English proof (translation)
+Substitute `e` using the available equality. Use `⟨one_mem _, rfl, fun i j => ?_⟩` and prove the remaining obligations. Rewrite using `[map_one]`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality.
+
+Simplify using the standard rewrite rules. Simplify using `[Matrix.one_apply, h]`.
+-/
 theorem isFinPt_one (V : HSp D) {n : ℕ} (e : V.rank = n) :
     GlobalTheory.BotFormula.IsFinPt V 1 (1 : Formalism.MainNotions.StandardLatticesGL3.GA D n) := by
   subst e
@@ -69,6 +83,17 @@ theorem isFinPt_one (V : HSp D) {n : ℕ} (e : V.rank = n) :
   · subst h; simp
   · simp [Matrix.one_apply, h]
 
+/- English proof (translation)
+Take `⟨G, hG, hR⟩` from `GlobalTheory.VacLine.exists_reads hS hT hset hf hv`. Establish `hRt : ∀ z, Reads ψ θ hS hT cc δ r (Wd D (tor0 D cc δ) (pt D (tor0 D cc δ) δ z) G) (wdPh D (tor0 D cc δ) (pt D (tor0 D cc δ) δ z) • heisO ψ S T (finPt hS hT r z) f)` using `fun z => (GlobalTheory.NormExact.heisO_finPt_reads ψ θ S T hS hT cc δ r hset G f hR z).smul _`. Take `⟨n, hn, hL⟩` from `GlobalTheory.T.weilPair_moves_phasedHeisenbergTranslate ψ θ S T hS hT cc δ r hset χS χT om hom 1 1 1 1 (isFinPt_one S hS) (isFinPt_one T hT) f hf 0`. Use `⟨G, ⟨hG, n, hn, fun x hx => ?_⟩, hR⟩` and prove the remaining obligations. Take `⟨z, rfl, hz⟩` from `GlobalTheory.T.exists_rationalPoint_of_mem_movedThetaLattice D (GlobalTheory.InducedType.induced_type D).1 cc δ hset.crv.1.1 a d 1 1 _ _ (GlobalTheory.NormSum.VacMove.moves_one D a) (GlobalTheory.NormSum.VacMove.moves_one D d) x hx`.
+
+Simplify using `only [OneMemClass.coe_one, inv_one, Units.val_one, Matrix.one_mul, Matrix.mul_one] at hz`. Establish `hp : n • pt D (tor0 D cc δ) δ z = pt D (tor0 D cc δ) δ (n • z)`. Use function extensionality and compare the values at `τ i j`. Simplify using `[pt, embV, tor0]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `h2` using `hL (n • z) (fun i j => ⟨_, hz i j, by`. Establish `h0 : (0 : Matrix (Fin d) (Fin a) D.host.E).map (inc D) = 0` using `by ext; simp`. Rewrite using `[h0, Matrix.mul_zero, Matrix.zero_mul, sub_zero]`. Use the proof step `simp⟩)`. Establish `e1 : om (1, 1) = 1` using `map_one om`.
+
+Rewrite `h2` using `[e1, Module.End.one_apply, Module.End.one_apply]`. Establish `h3` using `hRt (n • z)`. Establish `h4` using `hRt 0`. Rewrite `h4` using `[GlobalTheory.NormSum.VacMove.pt_zero, GlobalTheory.NormSum.wd_zero]`. Rewrite `h2` using `[GlobalTheory.NormSum.VacMove.pt_zero]`.
+
+Rewrite `h3` using `[← h2]`. Rewrite using `[hp]`. Conclude with `GlobalTheory.VacLine.reads_inj hset h3 h4`.
+-/
 theorem reads_of_fock {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {S T : HSp D} {a d : ℕ}
     (hS : S.rank = a) (hT : T.rank = d) {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} {r : D.host.E} (hset : Setup ψ θ S T cc δ r)
     {χS χT : (Formalism.L2.Theta.AE D)ˣ →* Circle}
@@ -102,6 +127,11 @@ theorem reads_of_fock {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {S T : HS
   rw [hp]
   exact GlobalTheory.VacLine.reads_inj hset h3 h4
 
+/- English proof (translation)
+Establish `hI` using `hX.is`. Establish `hψ` using `W.ψ_std`. Establish `hθ` using `W.θ_is`. Establish `hf : IsThetaFunO W.ψ (GlobalTheory.Grid.neg A) WW (X.f s)` using `(GlobalTheory.ConstRatio.theta_f hI s).1`. Establish `ho` using `GlobalTheory.PlaceModelSum.isOrthSum_of_isIdemSum (hI.idem s)`.
+
+Establish `hv : ∀ τ, IsFockVacAt (heisO W.ψ (GlobalTheory.Grid.neg A) WW) W.θ τ (cplxO (-X.rA.s τ) (X.rW.s τ)) (X.f s)` using `fun τ => GlobalTheory.DatumFock.isFockVacAt_of_isThetaAt hψ.1.1 hθ ho.infPart_eq ho.conj.infPart_eq (hI.fst s) hI.isVac.2.theta hf (hI.isVac.2.fock τ)`. Use `⟨GlobalTheory.CjNeg.theta_negS' hψ (show IsThetaFunO W.ψ (GlobalTheory.ChiGrid.negSp A) WW (X.f s) from hf), fun τ => ?_⟩` and prove the remaining obligations. Establish `h` using `hv τ`. Rewrite `h` using `[(hX.std.2.2 τ).1, (hX.stdW.2.2 τ).1]`. Conclude with `GlobalTheory.BotFormula.ConjJet.isFockVacAt_conj hψ hθ A WW _ hf τ h`.
+-/
 theorem conj_datum {T : Type} {L : LevCh D T} {sc : GlobalTheory.ChiGrid.Consts} {G : GridData L sc} {W : G.Weil}
     {i j : Fin D.R.m} {A A' WW : HSp D} {X : Tri T A A' WW} (hX : IsBottomTri W i j X) (s : T) :
     IsThetaFunO W.ψ A WW (fun w => starRingEnd ℂ (X.f s w)) ∧
@@ -119,6 +149,13 @@ theorem conj_datum {T : Type} {L : LevCh D T} {sc : GlobalTheory.ChiGrid.Consts}
   rw [(hX.std.2.2 τ).1, (hX.stdW.2.2 τ).1] at h
   exact GlobalTheory.BotFormula.ConjJet.isFockVacAt_conj hψ hθ A WW _ hf τ h
 
+/- English proof (translation)
+Use `⟨fun x y hxy => ?_, fun x y hxy => ?_⟩` and prove the remaining obligations. Establish `h1` using `GlobalTheory.T.heckeCharacter_finiteIdele_value_eq _ _ (G.ch.chi_eq (D.R.m - i) (by omega) (by omega)) x y hxy`. Establish `h2` using `GlobalTheory.T.heckeCharacter_finiteIdele_value_eq _ _ hL.eta x y hxy`. Establish `e : (betaH G i j)⁻¹.1 (GlobalTheory.Mem.Col2.SplitChar.finIdl D y) = ((G.ch.chiH (D.R.m - i)).1 (GlobalTheory.Mem.Col2.SplitChar.finIdl D y) * L.C.eta.1 (GlobalTheory.Mem.Col2.SplitChar.finIdl D y) ^ (rankV D i j % 2))⁻¹` using `rfl`. Rewrite using `[hB.chars.1 y, e, MonoidHom.inv_apply, Circle.coe_inv, MonoidHom.mul_apply, MonoidHom.pow_apply, Circle.coe_mul, Circle.coe_pow, h1, h2]`.
+
+Simplify using the standard rewrite rules. Establish `eν : ((G.ch.chi (D.R.m - i) * L.eta ^ (rankV D i j % 2)) / (L.mu s (j + 1) * L.eta ^ (rankV D i j % 2)))⁻¹ = G.nu s i (j + 1)`. Rewrite using `[inv_div]`. Conclude with `mul_div_mul_right_eq_div _ _ _`. Establish `e : (nuH G s i j)⁻¹.1 (GlobalTheory.Mem.Col2.SplitChar.finIdl D y) = ((nuH G s i j).1 (GlobalTheory.Mem.Col2.SplitChar.finIdl D y))⁻¹` using `rfl`.
+
+Rewrite using `[eν, zpow_neg, hB.chars.2 y, e, inv_inv]`. Conclude with `GlobalTheory.T.heckeCharacter_finiteIdele_value_eq _ _ (chrEq_nu G s i j hL) x y hxy`.
+-/
 theorem bottom_finParts {T : Type} {L : LevCh D T} {sc : GlobalTheory.ChiGrid.Consts} (G : GridData L sc) {μ₀ : T} (hL : L.Is μ₀)
     {i j : Fin D.R.m} {s : T} {δ t0 : ℂ} {Q : ℕ} {P P' : Pair D ⊤ δ t0 Q} {𝔪 : Ideal (𝓞 D.host.E)}
     (hB : IsBottom G s i j 𝔪 P P') :
@@ -142,6 +179,21 @@ theorem bottom_finParts {T : Type} {L : LevCh D T} {sc : GlobalTheory.ChiGrid.Co
     rw [eν, zpow_neg, hB.chars.2 y, e, inv_inv]
     exact GlobalTheory.T.heckeCharacter_finiteIdele_value_eq _ _ (chrEq_nu G s i j hL) x y hxy
 
+/- English proof (translation)
+Introduce `_ _ _ hInp _`. Use `⟨0, fun _ _ _ => ⟨0, 0, fun _ _ D large₂ _ _ hR T Lc μ₀ hL G => ?_⟩⟩` and prove the remaining obligations. Introduce `W hstd i j A A' WW X δ t0 hX`. Distinguish the cases in `hC : Crv D ⊤ δ`. Use `swap`.
+
+Use `⟨1, 2 * Formalism.L2.Pj.xiR D, one_ne_zero, fun h => absurd h hC, fun τ => ?_, fun s Q P P' _ => absurd P.crv hC⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.FockPos.norm_embedding_xi0_eq]`. Simplify using the standard rewrite rules. Establish `hcc : D.host.ccK = ⊤` using `hR.size.2.2.2.2.2.2.2.2.2.2.2.2.2`. Establish `hsc : GlobalTheory.NormExact.IsScale D ⊤ 1` using `hcc ▸ GlobalTheory.NormExact.isScale_one D`.
+
+Establish `hδ` using `GlobalTheory.NormExact.delta_ne_zero hC`. Use `⟨-δ, (area (lamOf D ⊤ δ))⁻¹, neg_ne_zero.2 hδ, fun _ => rfl, fun τ => ?_, fun s Q P P' hB ea ed => ?_⟩` and prove the remaining obligations. Establish `h2` using `GlobalTheory.NormExact.normSq_scale top_ne_bot hsc δ τ`. Establish `hA` using `GlobalTheory.NormExact.area_pos hC`. Rewrite `h2` using `[map_one, mul_one]`.
+
+Rewrite using `[norm_neg, ← Complex.normSq_eq_norm_sq, h2, GlobalTheory.FockPos.norm_embedding_xi0_eq]`. Clear the denominators using the available nonvanishing facts. Establish `hSet : Setup W.ψ W.θ A WW ⊤ δ 1` using `⟨hstd, W.θ_is, hX.std.1, hX.stdW.1, hC, hsc⟩`. Establish `hw` using `GlobalTheory.ConjWeilBack.weil_conjRep_of_neg W.ψ A WW _ _ (X.ω s) (hX.is.weil s)`. Take `⟨hth, hfock⟩` from `conj_datum hX s`.
+
+Take `⟨G₀, hG₀, hR₀⟩` from `reads_of_fock ea.symm ed.symm hSet hw hth hfock`. Take `⟨hcS, hcT⟩` from `bottom_finParts G hL hB`. Establish `hTT0 : P.e0 ∈ TT D (tor0 D ⊤ δ) P.a P.d` using `GlobalTheory.NormSum.VacMove.vac_TT (hInp D).g1 P.crv P.vac.1`. Take `⟨f₀, hf₀⟩` from `GlobalTheory.T.exists_adelicTheta_reads_curveThetaFunction W.ψ W.θ A WW ea.symm ed.symm ⊤ δ 1 hSet _ hTT0`. Use `⟨?_, fun h g x y hg hy => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[xiN_of_reads W.θ_is _ _ hδ hR₀]`. Conclude with `hG₀`. Establish `hv` using `GlobalTheory.T.weil_datum_finite_part_moves_vacuum_as_theta_model W.ψ W.θ A WW ea.symm ed.symm ⊤ δ 1 hSet P.e0 P.W _ _ _ hw (hInp D) t0 P.pt0 P.even_mul P.vac hcS hcT x h y g hy hg f₀ hf₀`. Establish `hm` using `GlobalTheory.T.movedThetaFunctions_read_of_movedVacuum_reads W.ψ W.θ A WW ea.symm ed.symm ⊤ δ 1 hSet P.e0 P.W _ _ _ hw P.vac.1 x h y g hy hg 1 f₀ hf₀ (by rw [one_smul]; exact hv) G₀ hG₀ _ hR₀`. Rewrite `hm` using `[one_smul]`.
+
+Establish `e1 : (fun w => starRingEnd ℂ (X.ω s (y, g) (X.f s) w)) = GlobalTheory.AdjTr.conjRep (X.ω s) (y, g) (fun w => starRingEnd ℂ (X.f s w))`. Express the relevant statement in the definitionally equal form `_ = GlobalTheory.AdjTr.conjRep (X.ω s) (y, g) (GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cj id (X.f s))`. Rewrite using `[GlobalTheory.AdjTr.conjRep_apply, GlobalTheory.ConjWeil.cj_id_cj_id]`. Both sides reduce to the same expression. Rewrite using `[e1, xiN_of_reads W.θ_is _ _ hδ hm, xiN_of_reads W.θ_is _ _ hδ hR₀]`.
+-/
 theorem bottom_intertwining : GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching →
     (∀ D, GlobalTheory.NormSum.Inp D) → GlobalTheory.SqTop.BotSmall →
     GlobalTheory.SqTop.GBig fun {D} T _ _ G _ _ _ _ => ∀ (W : G.Weil), IsStdChar D W.ψ (-1) → ∀ (i j : Fin D.R.m) (A A' WW : HSp D)

@@ -15,30 +15,55 @@ namespace GlobalTheory.CompanionTheory.KunGlue.Transfer
 
 variable {K : Type} [Field K]
 
+/- English proof (translation)
+Take `⟨⟨x, hx⟩, rfl⟩` from `Submodule.Quotient.mk_surjective _ c`. Conclude with `⟨x, hx, rfl⟩`.
+-/
 theorem exCls (C : Cx.{1} K) {n : ℕ} (c : C.H n) : ∃ (x : C.X n) (hx : C.d n x = 0), C.cls x hx = c := by
   obtain ⟨⟨x, hx⟩, rfl⟩ := Submodule.Quotient.mk_surjective _ c
   exact ⟨x, hx, rfl⟩
 
+/- English proof (translation)
+The claim follows from `(Submodule.Quotient.eq ((C.B n).submoduleOf (C.Z n)) (x := ⟨x, hx⟩) (y := ⟨y, hy⟩)).1 h`.
+-/
 theorem sub_mem_of_cls_eq {C : Cx.{1} K} {n : ℕ} {x y : C.X n} {hx : C.d n x = 0} {hy : C.d n y = 0}
     (h : C.cls x hx = C.cls y hy) : x - y ∈ C.B n :=
   (Submodule.Quotient.eq ((C.B n).submoduleOf (C.Z n)) (x := ⟨x, hx⟩) (y := ⟨y, hy⟩)).1 h
 
+/- English proof (translation)
+The claim follows from `(Submodule.Quotient.eq ((C.B n).submoduleOf (C.Z n)) (x := ⟨x, hx⟩) (y := ⟨y, hy⟩)).2 h`.
+-/
 theorem cls_eq_of_sub_mem {C : Cx.{1} K} {n : ℕ} {x y : C.X n} {hx : C.d n x = 0} {hy : C.d n y = 0}
     (h : x - y ∈ C.B n) : C.cls x hx = C.cls y hy :=
   (Submodule.Quotient.eq ((C.B n).submoduleOf (C.Z n)) (x := ⟨x, hx⟩) (y := ⟨y, hy⟩)).2 h
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mapH_cls_eq {C D : Cx.{1} K} (φ : Cx.Hom C D (RingHom.id K)) {n : ℕ} (x : C.X n) (hx : C.d n x = 0)
     (h : D.d n (φ.f n x) = 0) : φ.mapH n (C.cls x hx) = D.cls (φ.f n x) h := rfl
 
+/- English proof (translation)
+Rewrite using `[φ.comm, hx, map_zero]`.
+-/
 theorem d_map_cocycle {C D : Cx.{1} K} (φ : Cx.Hom C D (RingHom.id K)) {n : ℕ} {x : C.X n} (hx : C.d n x = 0) :
     D.d n (φ.f n x) = 0 := by
   rw [φ.comm, hx, map_zero]
 
+/- English proof (translation)
+Rewrite using `[pr.leib, hx, hy]`. Simplify using the standard rewrite rules.
+-/
 theorem d_mu_cocycle {A B M : Cx.{1} K} (pr : CxPairing A B M) {p q n : ℕ} (h : p + q = n) {x : A.X p} {y : B.X q}
     (hx : A.d p x = 0) (hy : B.d q y = 0) : M.d n (pr.μ h x y) = 0 := by
   rw [pr.leib, hx, hy]
   simp
 
+/- English proof (translation)
+Apply `cls_eq_of_sub_mem` to reduce the goal to its premises. Establish `hb` using `sub_mem_of_cls_eq e`. Rewrite using `[← LinearMap.sub_apply, ← map_sub]`. Consider the cases of `p with`. Consider the case `zero`.
+
+Establish `h0 : x - x' = 0` using `hb`. Rewrite using `[h0, map_zero, LinearMap.zero_apply]`. Conclude with `zero_mem _`. Consider the case `succ p`. Take `⟨w, hw⟩` from `hb`.
+
+Take `rfl : n = (p + q) + 1` from `by omega`. Express the relevant statement in the definitionally equal form `_ ∈ LinearMap.range (M.d (p + q))`. Use `⟨pr.μ rfl w y, ?_⟩` and prove the remaining obligations. Rewrite using `[pr.leib, hw, hy]`. Simplify using the standard rewrite rules.
+-/
 theorem cls_mu_left {A B M : Cx.{1} K} (pr : CxPairing A B M) {p q n : ℕ} (h : p + q = n) {x x' : A.X p} {y : B.X q}
     {hx : A.d p x = 0} {hx' : A.d p x' = 0} (hy : B.d q y = 0) {hz : M.d n (pr.μ h x y) = 0}
     {hz' : M.d n (pr.μ h x' y) = 0} (e : A.cls x hx = A.cls x' hx') :
@@ -59,6 +84,13 @@ theorem cls_mu_left {A B M : Cx.{1} K} (pr : CxPairing A B M) {p q n : ℕ} (h :
     rw [pr.leib, hw, hy]
     simp
 
+/- English proof (translation)
+Apply `cls_eq_of_sub_mem` to reduce the goal to its premises. Establish `hb` using `sub_mem_of_cls_eq e`. Rewrite using `[← map_sub]`. Consider the cases of `q with`. Consider the case `zero`.
+
+Establish `h0 : y - y' = 0` using `hb`. Rewrite using `[h0, map_zero]`. Conclude with `zero_mem _`. Consider the case `succ q`. Take `⟨w, hw⟩` from `hb`.
+
+Take `rfl : n = (p + q) + 1` from `by omega`. Express the relevant statement in the definitionally equal form `_ ∈ LinearMap.range (M.d (p + q))`. Use `⟨(-1 : ℤ) ^ p • pr.μ rfl x w, ?_⟩` and prove the remaining obligations. Rewrite using `[map_zsmul, pr.leib, hw, hx]`. Simplify using `[smul_smul, ← mul_pow]`.
+-/
 theorem cls_mu_right {A B M : Cx.{1} K} (pr : CxPairing A B M) {p q n : ℕ} (h : p + q = n) {x : A.X p} {y y' : B.X q}
     (hx : A.d p x = 0) {hy : B.d q y = 0} {hy' : B.d q y' = 0} {hz : M.d n (pr.μ h x y) = 0}
     {hz' : M.d n (pr.μ h x y') = 0} (e : B.cls y hy = B.cls y' hy') :
@@ -83,11 +115,31 @@ def sumCongr {I : Type} [DecidableEq I] {A B : I → Type 1} [∀ i, AddCommGrou
     [∀ i, Module K (A i)] [∀ i, Module K (B i)] (e : ∀ i, A i ≃ₗ[K] B i) : (⨁ i, A i) ≃ₗ[K] ⨁ i, B i :=
   DFinsupp.mapRange.linearEquiv e
 
+/- English proof (translation)
+The claim follows from `DFinsupp.mapRange_single (hf := fun i => map_zero (e i))`.
+-/
 theorem sumCongr_lof {I : Type} [DecidableEq I] {A B : I → Type 1} [∀ i, AddCommGroup (A i)] [∀ i, AddCommGroup (B i)]
     [∀ i, Module K (A i)] [∀ i, Module K (B i)] (e : ∀ i, A i ≃ₗ[K] B i) (i : I) (x : A i) :
     sumCongr e (DirectSum.lof K I A i x) = DirectSum.lof K I B i (e i x) :=
   DFinsupp.mapRange_single (hf := fun i => map_zero (e i))
 
+/- English proof (translation)
+Introduce `K _ P P' Q Q' T T' pr pr' p f g hp hf hg hc`. Set `eP : ∀ a n, (P a).H n ≃ₗ[K] (P' a).H n` to `fun a n => LinearEquiv.ofBijective ((p a).mapH n) (hp a n)`. Set `eQ : ∀ a n, (Q a).H n ≃ₗ[K] (Q' a).H n` to `fun a n => LinearEquiv.ofBijective ((f a).mapH n) (hf a n)`. Set `eT : ∀ a n, (T a).H n ≃ₗ[K] (T' a).H n` to `fun a n => LinearEquiv.ofBijective ((g a).mapH n) (hg a n)`. Set `eS : ∀ c n : ℕ, (⨁ t : Idx c n, (P t.a).H t.i ⊗[K] (Q t.a').H t.j) ≃ₗ[K] ⨁ t : Idx c n, (P' t.a).H t.i ⊗[K] (Q' t.a').H t.j` to `fun c n => sumCongr fun t => TensorProduct.congr (eP t.a t.i) (eQ t.a' t.j)`.
+
+Establish `hS : ∀ (c n : ℕ) (t : Idx c n) (x : (P t.a).X t.i) (y : (Q t.a').X t.j) (hx : (P t.a).d t.i x = 0) (hy : (Q t.a').d t.j y = 0), eS c n (DirectSum.lof K _ (fun t : Idx c n => (P t.a).H t.i ⊗[K] (Q t.a').H t.j) t ((P t.a).cls x hx ⊗ₜ (Q t.a').cls y hy)) = DirectSum.lof K _ (fun t : …`. Introduce `c n t x y hx hy`. Conclude with `sumCongr_lof _ t _`. Establish `hG : ∀ {a a' c : ℕ} (ha : a + a' = c) {i j n : ℕ} (h : i + j = n) (x : (P a).X i) (y : (Q a').X j) (hz : (T c).d n ((pr ha).μ h x y) = 0) (hz' : (T' c).d n ((pr' ha).μ h ((p a).f i x) ((f a').f j y)) = 0), eT c n ((T c).cls ((pr ha).μ h x y) hz) = (T' c).cls ((pr' ha).μ h ((p a). …`. Introduce `a a' c ha i j n h x y hz hz'`.
+
+Establish `e0` using `hc ha h x y`. Express the relevant statement in the definitionally equal form `(T' c).cls ((g c).f n ((pr ha).μ h x y)) (d_map_cocycle _ hz) = _`. Conclude with `cls_eq_of_sub_mem (by rw [e0, sub_self]; exact zero_mem _)`. Prove the components needed by the constructor for the conclusion. Introduce `H c n`.
+
+Take `⟨e, he⟩` from `H c n`. Use `⟨(eS c n).symm ≪≫ₗ e ≪≫ₗ eT c n, ?_⟩` and prove the remaining obligations. Introduce `t x y hx hy hz`. Take `⟨x0, hx0, e1⟩` from `exCls (P t.a) ((eP t.a t.i).symm ((P' t.a).cls x hx))`. Take `⟨y0, hy0, e2⟩` from `exCls (Q t.a') ((eQ t.a' t.j).symm ((Q' t.a').cls y hy))`.
+
+Establish `e1' : (P' t.a).cls ((p t.a).f t.i x0) (d_map_cocycle _ hx0) = (P' t.a).cls x hx`. Use `congrArg (eP t.a t.i) e1` as an intermediate fact. Rewrite `this` using `[LinearEquiv.apply_symm_apply]`. Then use the resulting hypothesis. Establish `e2' : (Q' t.a').cls ((f t.a').f t.j y0) (d_map_cocycle _ hy0) = (Q' t.a').cls y hy`. Use `congrArg (eQ t.a' t.j) e2` as an intermediate fact.
+
+Rewrite `this` using `[LinearEquiv.apply_symm_apply]`. Then use the resulting hypothesis. Establish `hS'` using `hS c n t x0 y0 hx0 hy0`. Rewrite `hS'` using `[e1', e2']`. Establish `hz0` using `d_mu_cocycle (pr t.ha) t.h hx0 hy0`. Establish `hz1` using `d_mu_cocycle (pr' t.ha) t.h (d_map_cocycle (p t.a) hx0) (d_map_cocycle (f t.a') hy0)`.
+
+Establish `hz2` using `d_mu_cocycle (pr' t.ha) t.h hx (d_map_cocycle (f t.a') hy0)`. Simplify using `only [LinearEquiv.trans_apply]`. Rewrite using `[← hS', LinearEquiv.symm_apply_apply, he t x0 y0 hx0 hy0 hz0, hG t.ha t.h x0 y0 hz0 hz1, cls_mu_left (pr' t.ha) t.h (d_map_cocycle (f t.a') hy0) (hz' := hz2) e1', cls_mu_right (pr' t.ha) t.h hx (hz' := hz) e2']`. Introduce `H c n`. Take `⟨e, he⟩` from `H c n`.
+
+Use `⟨eS c n ≪≫ₗ e ≪≫ₗ (eT c n).symm, ?_⟩` and prove the remaining obligations. Introduce `t x y hx hy hz`. Establish `hz1` using `d_mu_cocycle (pr' t.ha) t.h (d_map_cocycle (p t.a) hx) (d_map_cocycle (f t.a') hy)`. Simplify using `only [LinearEquiv.trans_apply]`. Rewrite using `[hS c n t x y hx hy, he t _ _ _ _ hz1, ← hG t.ha t.h x y hz hz1, LinearEquiv.symm_apply_apply]`.
+-/
 theorem kunE_iff : ∀ {K : Type} [Field K] {P P' Q Q' T T' : ℕ → Cx.{1} K} (pr : ∀ {a a' c : ℕ}, a + a' = c → CxPairing (P a) (Q a') (T c)) (pr' : ∀ {a a' c : ℕ}, a + a' = c → CxPairing (P' a) (Q' a') (T' c)) (p : ∀ a, Cx.Hom (P a) (P' a) (RingHom.id K)) (f : ∀ a, Cx.Hom (Q a) (Q' a) (RingHom.id K)) (g : ∀ a, Cx.Hom (T a) (T' a) (RingHom.id K)), (∀ a n, Function.Bijective ((p a).mapH n)) → (∀ a n, Function.Bijective ((f a).mapH n)) → (∀ a n, Function.Bijective ((g a).mapH n)) → (∀ {a a' c : ℕ} (ha : a + a' = c) {i j n : ℕ} (h : i + j = n) (x : (P a).X i) (y : (Q a').X j), (g c).f n ((pr ha).μ h x y) = (pr' ha).μ h ((p a).f i x) ((f a').f j y)) → (KunE pr ↔ KunE pr') := by
   intro K _ P P' Q Q' T T' pr pr' p f g hp hf hg hc
   let eP : ∀ a n, (P a).H n ≃ₗ[K] (P' a).H n := fun a n => LinearEquiv.ofBijective ((p a).mapH n) (hp a n)

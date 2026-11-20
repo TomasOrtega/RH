@@ -19,6 +19,17 @@ variable (ψ : AddChar k Circle) (σ : k → V →ₗ[ℂ] V) {c : kˣ} (hc : Ha
 
 include hc in
 
+/- English proof (translation)
+Take `⟨ξ0, hξ0, hne⟩` from `hc.exists_ne_one (c * s⁻¹) (x := b) (by rw [show c * (c * s⁻¹)⁻¹ = s by rw [mul_inv_rev, inv_inv, mul_comm s, mul_inv_cancel_left]]; exact hbs)`. Set `φ : k → ℂ` to `fun ξ => ((ψ (-(ξ * b)) : Circle) : ℂ)`. Establish `hφ : ∀ ξ, ∀ h ∈ ball (c * t⁻¹), φ (ξ + h) = φ ξ`. Introduce `ξ h hh`. Use `show ((ψ (-((ξ + h) * b)) : Circle) : ℂ) = ψ (-(ξ * b))`.
+
+Rewrite using `[add_mul, neg_add, ch_add ψ, psi_neg_triv hc hh hbt, Circle.coe_one, mul_one]`. Set `ξ0' : ↥(ball (c * s⁻¹))` to `⟨ξ0, hξ0⟩`. Establish `shift : ∑ f : Q (c * t⁻¹) (c * s⁻¹), φ ((Quotient.out f : ↥(ball (c * s⁻¹))) : k) = φ ξ0 * ∑ f : Q (c * t⁻¹) (c * s⁻¹), φ ((Quotient.out f : ↥(ball (c * s⁻¹))) : k)`. Rewrite using `[Finset.mul_sum]`. Rewrite using `[← Equiv.sum_comp (Equiv.addRight (QuotientAddGroup.mk ξ0' : Q (c * t⁻¹) (c * s⁻¹)))]`.
+
+Use `Finset.sum_congr rfl fun f _ => ?_` and prove the remaining obligations. Rewrite using `[Equiv.coe_addRight, apply_out φ hφ (Quotient.out f + ξ0') _ (by rw [QuotientAddGroup.mk_add, QuotientAddGroup.out_eq'])]`. Simplify using `only [φ, AddSubgroup.coe_add, ξ0']`. Rewrite using `[add_mul, neg_add, ch_add ψ, mul_comm]`. Establish `hne' : φ ξ0 ≠ 1`.
+
+Introduce `h1`. Apply `hne` to reduce the goal to its premises. Use `ch_neg_mul ψ (ξ0 * b)` as an intermediate fact. Simplify using `only [φ] at h1`. Rewrite `this` using `[h1, one_mul]`.
+
+Conclude with `Circle.coe_eq_one.1 this`. Establish `h2 : (1 - φ ξ0) * ∑ f : Q (c * t⁻¹) (c * s⁻¹), φ ((Quotient.out f : ↥(ball (c * s⁻¹))) : k) = 0`. Rewrite using `[sub_mul, one_mul, ← shift, sub_self]`. Conclude with `(mul_eq_zero.1 h2).resolve_left (sub_ne_zero.2 hne'.symm)`.
+-/
 theorem dual_sum_eq_zero {s t : kˣ} {b : k} (hbt : b ∈ ball t) (hbs : b ∉ ball s) :
     ∑ f : Q (c * t⁻¹) (c * s⁻¹), ((ψ (-(((Quotient.out f : ↥(ball (c * s⁻¹))) : k) * b)) : Circle) : ℂ) = 0 := by
   obtain ⟨ξ0, hξ0, hne⟩ := hc.exists_ne_one (c * s⁻¹) (x := b)
@@ -51,6 +62,13 @@ theorem dual_sum_eq_zero {s t : kˣ} {b : k} (hbt : b ∈ ball t) (hbs : b ∉ b
 
 include hc in
 
+/- English proof (translation)
+Simplify using `only [avg, LinearMap.sum_apply, LinearMap.smul_apply]`. Rewrite using `[Finset.sum_comm]`. Repeatedly rewrite using `[← Finset.sum_smul]`. Rewrite using `[Finset.sum_eq_single (0 : Q s t)]`. Rewrite using `[hx _ out_zero_mem]`.
+
+Use `congr 1`. Establish `h1 : ∀ f : Q (c * t⁻¹) (c * s⁻¹), ((ψ (-(((Quotient.out f : ↥(ball (c * s⁻¹))) : k) * ((Quotient.out (0 : Q s t) : ↥(ball t)) : k))) : Circle) : ℂ) = 1` using `fun f => by`. Rewrite using `[psi_neg_triv hc (out_mem f) out_zero_mem, Circle.coe_one]`. Simplify using `only [h1, Finset.sum_const, Finset.card_univ, nsmul_eq_mul, mul_one]`. Introduce `q _ hq`.
+
+Rewrite using `[dual_sum_eq_zero ψ hc (out_mem q) (fun h => hq ((out_mem_iff q).1 h)), zero_smul]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+-/
 theorem sum_avg {s t : kˣ} {x : V} (hx : ∀ h ∈ ball s, σ h x = x) :
     ∑ f : Q (c * t⁻¹) (c * s⁻¹), avg ψ σ s t ((Quotient.out f : ↥(ball (c * s⁻¹))) : k) x =
       ((Fintype.card (Q (c * t⁻¹) (c * s⁻¹)) : ℕ) : ℂ) • x := by

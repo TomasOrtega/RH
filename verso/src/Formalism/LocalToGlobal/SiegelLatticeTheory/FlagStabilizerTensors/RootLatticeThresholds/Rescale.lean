@@ -16,6 +16,9 @@ section Gram
 
 variable {F E : Type} [Field F] [Field E] [Algebra F E] (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E)
 
+/- English proof (translation)
+Simplify using `only [hE, Formalism.UG.hform, AlgHom.coe_toRingHom, map_sum, map_mul, hσ]`. Use `conv_lhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [hJ.1]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hE_swap (hσ : ∀ x, σ (σ x) = x) (hJ : IsHermND σ J) (x y : Fin n → E) :
     hE σ J y x = σ (hE σ J x y) := by
   simp only [hE, Formalism.UG.hform, AlgHom.coe_toRingHom, map_sum, map_mul, hσ]
@@ -24,6 +27,29 @@ theorem hE_swap (hσ : ∀ x, σ (σ x) = x) (hJ : IsHermND σ J) (x y : Fin n �
   simp only [hJ.1]
   ring
 
+/- English proof (translation)
+Introduce `F E _ _ _ σ n J r P T hσ hJ hS`. Take `⟨hee, hff, hef, hez, hfz, hzz, hT⟩` from `hS`. Introduce `hdet`. Take `⟨v, hv0, hv⟩` from `(Matrix.exists_mulVec_eq_zero_iff).2 hdet`. Establish `tE : ∀ a : Fin r, tupH P (Fin.castAdd r (Fin.castSucc a)) = P.e a`.
+
+Introduce `a`. Simplify using `[tupH, F0, Fin.append_left, Fin.snoc_castSucc]`. Establish `tZ : tupH P (Fin.castAdd r (Fin.last r)) = P.z`. Simplify using `[tupH, F0, Fin.append_left, Fin.snoc_last]`. Establish `tF : ∀ a : Fin r, tupH P (Fin.natAdd (r + 1) a) = P.f a`.
+
+Introduce `a`. Simplify using `[tupH, Fin.append_right]`. Establish `hsum : ∀ i, (gramE σ J (tupH P) *ᵥ v) i = (∑ b : Fin r, hE σ J (tupH P i) (P.e b) * v (Fin.castAdd r (Fin.castSucc b))) + hE σ J (tupH P i) P.z * v (Fin.castAdd r (Fin.last r)) + ∑ b : Fin r, hE σ J (tupH P i) (P.f b) * v (Fin.natAdd (r + 1) b)`. Introduce `i`. Simplify using `only [Matrix.mulVec, dotProduct, gramE]`.
+
+Rewrite using `[Fin.sum_univ_add, Fin.sum_univ_castSucc]`. Simplify using `only [tE, tZ, tF]`. Establish `hrow : ∀ i, (gramE σ J (tupH P) *ᵥ v) i = 0` using `fun i => congrFun hv i`. Establish `vF : ∀ a : Fin r, v (Fin.natAdd (r + 1) a) = 0`. Introduce `a`.
+
+Establish `h` using `hrow (Fin.castAdd r (Fin.castSucc a))`. Rewrite `h` using `[hsum, tE]`. Simplify using `only [hee, zero_mul, Finset.sum_const_zero, zero_add, hez, hef, ite_mul, one_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true] at h`. Conclude with `h`. Establish `hze : ∀ b, hE σ J P.z (P.e b) = 0` using `fun b => by rw [hE_swap σ J hσ hJ, hez, map_zero]`.
+
+Establish `hzf : ∀ b, hE σ J P.z (P.f b) = 0` using `fun b => by rw [hE_swap σ J hσ hJ, hfz, map_zero]`. Establish `hfe : ∀ a b, hE σ J (P.f a) (P.e b) = if b = a then 1 else 0` using `fun a b => by`. Apply the tactic sequence `rw [hE_swap σ J hσ hJ, hef]; split_ifs <;> simp`. Establish `hfz' : ∀ a, hE σ J (P.f a) P.z = 0` using `hfz`. Establish `vZ : v (Fin.castAdd r (Fin.last r)) = 0`.
+
+Establish `h` using `hrow (Fin.castAdd r (Fin.last r))`. Rewrite `h` using `[hsum, tZ]`. Simplify using `only [hze, hzf, zero_mul, Finset.sum_const_zero, zero_add, add_zero] at h`. Establish `hne : hE σ J P.z P.z ≠ 0`. Rewrite using `[hzz]`.
+
+Introduce `h0`. Conclude with `hT (neg_eq_zero.1 ((algebraMap F E).injective (by rw [h0, map_zero])))`. Conclude with `(mul_eq_zero.1 h).resolve_left hne`. Establish `vE : ∀ a : Fin r, v (Fin.castAdd r (Fin.castSucc a)) = 0`. Introduce `a`.
+
+Establish `h` using `hrow (Fin.natAdd (r + 1) a)`. Rewrite `h` using `[hsum, tF]`. Simplify using `only [hfe, hfz', hff, zero_mul, Finset.sum_const_zero, add_zero, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true] at h`. Conclude with `h`. Apply `hv0` to reduce the goal to its premises.
+
+Use function extensionality and compare the values at `i`. Use `Fin.addCases (fun j => ?_) (fun a => ?_) i` and prove the remaining obligations. Use `Fin.lastCases ?_ (fun a => ?_) j` and prove the remaining obligations. Conclude with `vZ`. Conclude with `vE a`.
+
+Conclude with `vF a`.
+-/
 theorem standard_gram_nondegenerate : Formalism.L2.SG.Pf.RescaleCore.GramStdND := by
   intro F E _ _ _ σ n J r P T hσ hJ hS
   obtain ⟨hee, hff, hef, hez, hfz, hzz, hT⟩ := hS
@@ -93,6 +119,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {D : D7}
 
+/- English proof (translation)
+Use `conv_rhs => rw [← X.bas.sum_repr v, ← X.bas.sum_repr w]`. Simplify using `only [map_sum, LinearMap.map_smulₛₗ, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul, Formalism.UG.hform, map_mul, crdOf, starRingEnd_apply, X.ιE_conj, RingEquiv.apply_symm_apply, X.J_eq, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [← Formalism.BasicNotions.bridge_star_holds D.R D.host, RingHom.id_apply]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hform_crdX (X : HidaSetting D) (v w : (VS D).V) :
     X.ιE (Formalism.UG.hform (starRingEnd X.B.I.E) X.B.I.J (crdOf X.B.I X.ιE X.bas v) (crdOf X.B.I X.ιE X.bas w)) =
       (VS D).hT v w := by
@@ -105,11 +136,23 @@ theorem hform_crdX (X : HidaSetting D) (v w : (VS D).V) :
   simp only [← Formalism.BasicNotions.bridge_star_holds D.R D.host, RingHom.id_apply]
   ring
 
+/- English proof (translation)
+Use `show Formalism.UG.hform (starRingEnd X.B.I.E) X.B.I.J _ _ = _`. Rewrite using `[← hform_crdX X v w, RingEquiv.symm_apply_apply]`.
+-/
 theorem hE_crdX (X : HidaSetting D) (v w : (VS D).V) :
     hE X.B.I.cm.sig X.B.I.J (crdOf X.B.I X.ιE X.bas v) (crdOf X.B.I X.ιE X.bas w) = X.ιE.symm ((VS D).hT v w) := by
   show Formalism.UG.hform (starRingEnd X.B.I.E) X.B.I.J _ _ = _
   rw [← hform_crdX X v w, RingEquiv.symm_apply_apply]
 
+/- English proof (translation)
+Use `⟨fun a b => ?_, fun a b => ?_, fun a b => ?_, fun a => ?_, fun a => ?_, ?_, ?_⟩` and prove the remaining obligations. Use `show hE _ _ (crdOf X.B.I X.ιE X.bas (X.eX a)) (crdOf X.B.I X.ιE X.bas (X.eX b)) = 0`. Rewrite using `[hE_crdX, X.ee, map_zero]`. Use `show hE _ _ (crdOf X.B.I X.ιE X.bas (X.fY a)) (crdOf X.B.I X.ιE X.bas (X.fY b)) = 0`. Rewrite using `[hE_crdX, X.ff, map_zero]`.
+
+Use `show hE _ _ (crdOf X.B.I X.ιE X.bas (X.eX a)) (crdOf X.B.I X.ιE X.bas (X.fY b)) = _`. Rewrite using `[hE_crdX, X.ef]`. Apply the tactic sequence `split_ifs <;> simp`. Use `show hE _ _ (crdOf X.B.I X.ιE X.bas (X.eX a)) (crdOf X.B.I X.ιE X.bas (X.zu u)) = 0`. Rewrite using `[hE_crdX, (X.zu_orth u a).1, map_zero]`.
+
+Use `show hE _ _ (crdOf X.B.I X.ιE X.bas (X.fY a)) (crdOf X.B.I X.ιE X.bas (X.zu u)) = 0`. Rewrite using `[hE_crdX, (X.zu_orth u a).2, map_zero]`. Use `show hE _ _ (crdOf X.B.I X.ιE X.bas (X.zu u)) (crdOf X.B.I X.ιE X.bas (X.zu u)) = _`. Rewrite using `[hE_crdX, X.zu_norm]`. Simplify using the standard rewrite rules.
+
+Conclude with `Nat.cast_ne_zero.2 (D.mem u).A.T_prime.ne_zero`.
+-/
 theorem frame_stdX (X : HidaSetting D) (u : D.what₂.Word) :
     (Formalism.L2.SG.TypedSets.frameOf X u).IsStd X.B.I.cm.sig X.B.I.J (((D.mem u).A.T : ℕ) : X.B.I.F) := by
   refine ⟨fun a b => ?_, fun a b => ?_, fun a b => ?_, fun a => ?_, fun a => ?_, ?_, ?_⟩

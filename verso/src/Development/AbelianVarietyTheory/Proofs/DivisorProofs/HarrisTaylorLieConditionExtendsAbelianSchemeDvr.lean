@@ -18,6 +18,9 @@ open GlobalTheory.UPel.HT
 
 namespace GlobalTheory.LieExt
 
+/- English proof (translation)
+The claim follows from `| 0, w => by simp [h0] | a + 1, w => by rw [List.ofFn_succ, List.prod_cons, prod_ofFn_eq T h0 hadd (fun i => w i.succ), Fin.sum_univ_succ, hadd]`.
+-/
 theorem prod_ofFn_eq {X : Type*} [Monoid X] {V : Type*} [AddCommMonoid V] (T : V → X)
     (h0 : T 0 = 1) (hadd : ∀ c c', T (c + c') = T c * T c') :
     ∀ {a : ℕ} (w : Fin a → V), (List.ofFn (fun i => T (w i))).prod = T (∑ i, w i)
@@ -25,6 +28,39 @@ theorem prod_ofFn_eq {X : Type*} [Monoid X] {V : Type*} [AddCommMonoid V] (T : V
   | a + 1, w => by
     rw [List.ofFn_succ, List.prod_cons, prod_ofFn_eq T h0 hadd (fun i => w i.succ), Fin.sum_univ_succ, hadd]
 
+/- English proof (translation)
+Introduce `p _ D W L _ _ _ _ _ _ G _ _ hab act ρ t htω hρ hcomax hdisc hgen hrank`. Establish `hsm : Smooth G.hom` using `hab.smooth`. Take `⟨n, M, hM⟩` from `GlobalTheory.T.exists_tangent_coords_base_change_smooth_comm_group W G hsm`. Establish `hT0 : ∀ {X : Type} [Group X] {V : Type} [AddCommMonoid V] (T : V → X), (∀ c c', T (c + c') = T c * T c') → T 0 = 1` using `fun T h => by`. Use `h 0 0` as an intermediate fact.
+
+Rewrite `this` using `[add_zero]`. Conclude with `mul_eq_left.mp this.symm`. Take `⟨T₀, hinj₀, -, hadd₀, -, heq₀⟩` from `hM W (RingHom.id W)`. Establish `hmap : ∀ X : Matrix (Fin n) (Fin n) W, X.map (RingHom.id W) = X` using `fun X => by ext; simp`. Establish `hext : ∀ X Y : Matrix (Fin n) (Fin n) W, (∀ c, T₀ (X.mulVec c) = T₀ (Y.mulVec c)) → X = Y`.
+
+Introduce `X Y h`. Use extensionality with `i j`. Use `congrFun (hinj₀ (h (Pi.single j 1))) i` as an intermediate fact. Simplify `this` using `[Matrix.mulVec_single_one]`. Set `Am : 𝓞 D.F → Matrix (Fin n) (Fin n) W` to `fun c => M (act.act (algebraMap (𝓞 D.F) D.O c))`.
+
+Establish `hAm : ∀ c x, T₀ x ≫ act.act (algebraMap (𝓞 D.F) D.O c) = T₀ ((Am c).mulVec x)` using `fun c x => by`. Simplify `heq₀ _ (act.hom _) x` using `[hmap]`. Set `A : 𝓞 D.F →+* Matrix (Fin n) (Fin n) W` to `RingHom.mk' { toFun := Am map_one' := hext _ _ fun x => by`. Rewrite using `[Matrix.one_mulVec, ← hAm, map_one, act.one, Category.comp_id]`. Use the proof step `map_mul' := fun c d => hext _ _ fun x => by`.
+
+Rewrite using `[← hAm, map_mul, act.mul, ← Category.assoc, hAm, hAm, Matrix.mulVec_mulVec] }`. Use the proof step `(fun c d => hext _ _ fun x => by show T₀ ((Am (c + d)).mulVec x) = T₀ ((Am c + Am d).mulVec x)`. Rewrite using `[← hAm, map_add, act.add, MonObj.comp_mul, hAm, hAm, ← hadd₀, Matrix.add_mulVec])`. Establish `hA : ∀ c, A c = M (act.act (algebraMap (𝓞 D.F) D.O c))` using `fun c => rfl`. Establish `tanT : ∀ (R' : Type) [CommRing R'] (β : W →+* R') (T : (Fin n → R') → (epsPtR (spMap β) ⟶ G)), Function.Injective T → (∀ (s : R') c, (T (s • c)).left = spMap (ReciprocityTheory.ChartRestriction.G.Geo.Tor.epsScaleR s) ≫ (T c).left) → (∀ u : G ⟶ G, IsMonHom u → ∀ c, T c ≫ u = T ((( …`.
+
+Introduce `R' _ β T hinj hscale heq hrange c s x`. Establish `hact : T x ≫ act.act (algebraMap (𝓞 D.F) D.O c) = T (((A c).map β).mulVec x)` using `heq _ (act.hom _) x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, h2⟩`. Use `hinj (Over.OverMorphism.ext ?_)` and prove the remaining obligations.
+
+Rewrite using `[← hact, h2, hscale]`. Introduce `hx`. Use `⟨(hrange _).2 ⟨x, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hact, hx, hscale]`. Establish `hωroot : D.ω ^ 2 - (D.tr : 𝓞 D.F) * D.ω + (D.nm : 𝓞 D.F) = 0`.
+
+Rewrite using `[← D.tr_eq, ← D.nm_eq]`. Expand and normalize the polynomial expressions, which then agree. Establish `hβL : (RingHom.id L).comp (algebraMap W L) = algebraMap W L` using `RingHom.id_comp _`. Take `⟨Q, hQ1, hQ2, hQ3, hQ4⟩` from `GlobalTheory.T.eigenPart_splits_by_idempotent_matrices_domain W L (𝓞 D.F) n D.a A D.ω D.tr D.nm ρ t hωroot hρ htω hcomax hdisc (by`. Introduce `v hv`.
+
+Take `⟨T, hinj, hrange, hadd, hscale, heq⟩` from `hM L ((RingHom.id L).comp (algebraMap W L))`. Establish `tv` using `(tanT L _ T hinj hscale heq hrange D.ω ((RingHom.id L) (algebraMap W L ρ)) v).2 (by rw [hβL, RingHom.id_apply]; exact hv)`. Take `⟨w, hw, hvw⟩` from `hgen L (RingHom.id L) (T v) tv`. Establish `hy : ∀ i, ∃ y, w i = T y` using `fun i => by obtain ⟨y, h⟩ := (hrange _).1 (hw i 0).1; exact ⟨y, h.symm⟩`. Use `choose y hy using hy`.
+
+Use `⟨y, fun i c => ?_, ?_⟩` and prove the remaining obligations. Use `(tanT L _ T hinj hscale heq hrange c _ (y i)).1 (by rw [← hy]; exact hw i c)` as an intermediate fact. Rewrite `this` using `[hβL, RingHom.id_apply]`. Then use the resulting hypothesis. Apply `hinj` to reduce the goal to its premises. Rewrite using `[hvw, ← prod_ofFn_eq T (hT0 T hadd) hadd]`.
+
+Conclude with `congrArg List.prod (congrArg List.ofFn (funext hy)))`. Establish `hmapsmul : ∀ (R' : Type) [CommRing R'] (β : W →+* R') (s : W) (X : Matrix (Fin n) (Fin n) W), (s • X).map β = β s • X.map β` using `fun R' _ β s X => by ext; simp`. Establish `heig : ∀ (R' : Type) [CommRing R'] (β : W →+* R') i c (x : Fin n → R'), ((A c).map β).mulVec (((Q i).map β).mulVec x) = β (t i c) • (((Q i).map β).mulVec x)`. Introduce `R' _ β i c x`. Rewrite using `[Matrix.mulVec_mulVec, ← Matrix.map_mul, hQ2, hmapsmul, Matrix.smul_mulVec]`.
+
+Establish `rk : ∀ (k : Type) [Field k] (β : W →+* k) i, LieMult (act.toF D) (spMap β) (β.comp (t i)) D.m ↔ ((Q i).map β).rank = D.m`. Introduce `k _ β i`. Take `⟨T, hinj, hrange, hadd, hscale, heq⟩` from `hM k β`. Rewrite using `[GlobalTheory.T.lieMult_iff_finrank_common_eigenspace_coords W G (𝓞 D.F) (act.toF D) n k β T (fun c => (A c).map β) hinj hrange hadd hscale (fun c x => heq _ (act.hom _) x)]`. Establish `hsub : (⨅ c, LinearMap.ker (Matrix.mulVecLin ((A c).map β) - (β.comp (t i)) c • LinearMap.id) : Submodule k (Fin n → k)) = LinearMap.range ((Q i).map β).mulVecLin`.
+
+Use extensionality with `y`. Simplify using `only [Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, Matrix.mulVecLin_apply, LinearMap.smul_apply, LinearMap.id_apply, sub_eq_zero, LinearMap.mem_range, RingHom.comp_apply]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `⟨y, hQ4 k β i y h⟩`.
+
+Introduce and unpack `⟨z, rfl⟩ c`. Conclude with `heig k β i c z`. Rewrite using `[hsub]`. Both sides reduce to the same expression. Use `⟨fun R' _ β v hv => ?_, fun k _ _ β i => ?_⟩` and prove the remaining obligations.
+
+Take `⟨T, hinj, hrange, hadd, hscale, heq⟩` from `hM R' β`. Take `⟨x, rfl⟩` from `(hrange v).1 hv.1`. Establish `hx` using `(tanT R' β T hinj hscale heq hrange D.ω (β ρ) x).1 hv`. Use `⟨fun i => T (((Q i).map β).mulVec x), fun i c => (tanT R' β T hinj hscale heq hrange c _ _).2 (heig R' β i c x), ?_⟩` and prove the remaining obligations. Rewrite using `[prod_ofFn_eq T (hT0 T hadd) hadd, ← hQ3 R' β x hx]`.
+
+Take `⟨r, hr⟩` from `GlobalTheory.T.exists_rank_idempotent_matrix_local_ring_map_field W n (Q i) (hQ1 i)`. Use `(rk k β i).2 ?_` and prove the remaining obligations. Rewrite using `[hr, ← hr (AlgebraicClosure L) ((algebraMap L (AlgebraicClosure L)).comp (algebraMap W L))]`. Conclude with `(rk _ _ i).1 (hrank (AlgebraicClosure L) (algebraMap L (AlgebraicClosure L)) i)`.
+-/
 theorem lie_ext : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (W L : Type) [CommRing W] [IsDomain W] [IsDiscreteValuationRing W] [Field L] [Algebra W L] [IsFractionRing W L] (G : Over (Sp W)) [GrpObj G] [IsCommMonObj G], IsAbelianScheme G → ∀ (act : OActN D.O G) (ρ : W) (t : Fin D.a → (𝓞 D.F →+* W)), (∀ i, t i D.ω = ρ) → ρ ^ 2 - D.tr * ρ + D.nm = 0 → (∀ i j, i ≠ j → Ideal.span (Set.range fun x => t i x - t j x) = ⊤) → IsUnit ((D.tr ^ 2 - 4 * D.nm : ℤ) : W) → (∀ (R' : Type) [CommRing R'] (β : L →+* R'), ∀ v : epsPtR (spMap (β.comp (algebraMap W L))) ⟶ G, IsTanScal act (spMap (β.comp (algebraMap W L))) (algebraMap (𝓞 D.F) D.O D.ω) (β (algebraMap W L ρ)) v → ∃ w : Fin D.a → (epsPtR (spMap (β.comp (algebraMap W L))) ⟶ G), (∀ i, ∀ c : 𝓞 D.F, IsTanScal act (spMap (β.comp (algebraMap W L))) (algebraMap (𝓞 D.F) D.O c) (β (algebraMap W L (t i c))) (w i)) ∧ v = (List.ofFn w).prod) → (∀ (k : Type) [Field k] [IsAlgClosed k] (β : L →+* k) i, LieMult (act.toF D) (spMap (β.comp (algebraMap W L))) ((β.comp (algebraMap W L)).comp (t i)) D.m) → (∀ (R' : Type) [CommRing R'] (β : W →+* R'), ∀ v : epsPtR (spMap β) ⟶ G, IsTanScal act (spMap β) (algebraMap (𝓞 D.F) D.O D.ω) (β ρ) v → ∃ w : Fin D.a → (epsPtR (spMap β) ⟶ G), (∀ i, ∀ c : 𝓞 D.F, IsTanScal act (spMap β) (algebraMap (𝓞 D.F) D.O c) (β (t i c)) (w i)) ∧ v = (List.ofFn w).prod) ∧ ∀ (k : Type) [Field k] [IsAlgClosed k] (β : W →+* k) i, LieMult (act.toF D) (spMap β) (β.comp (t i)) D.m := by
   intro p _ D W L _ _ _ _ _ _ G _ _ hab act ρ t htω hρ hcomax hdisc hgen hrank
   have hsm : Smooth G.hom := hab.smooth

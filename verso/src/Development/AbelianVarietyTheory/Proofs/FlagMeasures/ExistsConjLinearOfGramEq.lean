@@ -18,12 +18,34 @@ noncomputable def conjLinearCombination {M : Type} [AddCommGroup M] [Module ℂ 
     refine Finsupp.sum_congr fun i _ => ?_
     rw [smul_smul, smul_eq_mul, star_mul', starRingEnd_apply]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(Finsupp.single i x).sum (fun i x => star x • b i) = _`. Rewrite using `[Finsupp.sum_single_index]`. Simplify using the standard rewrite rules.
+-/
 theorem conjLinearCombination_single {M : Type} [AddCommGroup M] [Module ℂ M] {I : Type}
     (b : I → M) (i : I) (x : ℂ) :
     conjLinearCombination b (Finsupp.single i x) = star x • b i := by
   change (Finsupp.single i x).sum (fun i x => star x • b i) = _
   rw [Finsupp.sum_single_index]; simp
 
+/- English proof (translation)
+Introduce `W _ _ M _ _ N I a b hadd hsmul hstar hdef hspan hgram`. Establish `hadd2 : ∀ p q q', N p (q + q') = N p q + N p q'`. Introduce `p q q'`. Rewrite using `[hstar (q + q') p, hadd, star_add, ← hstar, ← hstar]`. Establish `hsmul2 : ∀ (c : ℂ) p q, N p (c • q) = star c * N p q`.
+
+Introduce `c p q`. Rewrite using `[hstar (c • q) p, hsmul, star_mul', ← hstar]`. Establish `hz1 : ∀ q, N 0 q = 0`. Introduce `q`. Use `hsmul 0 0 q` as an intermediate fact.
+
+Simplify using `using this`. Establish `hz2 : ∀ p, N p 0 = 0`. Introduce `p`. Rewrite using `[hstar 0 p, hz1, star_zero]`. Use `set A := Finsupp.linearCombination ℂ a with hA`.
+
+Use `set B := conjLinearCombination b with hB`. Establish `key : ∀ c d, N (B c) (B d) = ⟪A c, A d⟫_ℂ`. Introduce `c d`. Proceed by induction on `c using Finsupp.induction_linear with`. Consider the case `zero => simp [hz1]`.
+
+Consider the case `add c c' h h' => rw [map_add, map_add, hadd, inner_add_left, h, h']`. Consider the case `single i x`. Proceed by induction on `d using Finsupp.induction_linear with`. Consider the case `zero => simp [hz2]`. Consider the case `add d d' h h' => rw [map_add, map_add, hadd2, inner_add_right, h, h']`.
+
+Consider the case `single j y`. Rewrite using `[hA, hB, conjLinearCombination_single, conjLinearCombination_single, Finsupp.linearCombination_single, Finsupp.linearCombination_single, hsmul, hsmul2, inner_smul_left, inner_smul_right, hgram, star_star, starRingEnd_apply]`. Establish `hr : LinearMap.range A = ⊤`. Rewrite using `[hA, Finsupp.range_linearCombination, hspan]`. Take `⟨s, hs⟩` from `LinearMap.exists_rightInverse_of_surjective A hr`.
+
+Establish `hs' : ∀ w, A (s w) = w` using `fun w => LinearMap.congr_fun hs w`. Use `⟨B.comp s, fun i => ?_, fun ξ η => ?_⟩` and prove the remaining obligations. Establish `h0 : B (s (a i) - Finsupp.single i 1) = 0`. Apply `hdef` to reduce the goal to its premises. Establish `: A (s (a i) - Finsupp.single i 1) = 0`.
+
+Rewrite using `[map_sub, hs', hA, Finsupp.linearCombination_single, one_smul, sub_self]`. Rewrite using `[key, this, inner_zero_left]`. Rewrite `h0` using `[map_sub, sub_eq_zero, hB, conjLinearCombination_single, star_one, one_smul]`. Conclude with `h0`. Express the relevant statement in the definitionally equal form `N (B (s η)) (B (s ξ)) = _`.
+
+Rewrite using `[key, hs', hs']`.
+-/
 theorem exists_conjLinear_of_gram_eq :
     ∀ (W : Type) [NormedAddCommGroup W] [InnerProductSpace ℂ W] (M : Type) [AddCommGroup M] [Module ℂ M] (N : M → M → ℂ) (I : Type) (a : I → W) (b : I → M), (∀ p p' q, N (p + p') q = N p q + N p' q) → (∀ (c : ℂ) p q, N (c • p) q = c * N p q) → (∀ p q, N q p = star (N p q)) → (∀ p, N p p = 0 → p = 0) → Submodule.span ℂ (Set.range a) = ⊤ → (∀ i j, N (b j) (b i) = ⟪a j, a i⟫_ℂ) → ∃ Jm : W →ₗ⋆[ℂ] M, (∀ i, Jm (a i) = b i) ∧ ∀ ξ η, N (Jm η) (Jm ξ) = ⟪η, ξ⟫_ℂ := by
   intro W _ _ M _ _ N I a b hadd hsmul hstar hdef hspan hgram

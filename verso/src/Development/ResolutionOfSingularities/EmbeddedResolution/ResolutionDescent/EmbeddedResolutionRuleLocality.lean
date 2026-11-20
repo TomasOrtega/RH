@@ -21,6 +21,9 @@ open CategoryTheory CategoryTheory.Limits AlgebraicGeometry
 
 namespace FunctorialResolution.EmbeddedResolution
 
+/- English proof (translation)
+Substitute `hIJ` using the available equality. Both sides reduce to the same expression.
+-/
 private theorem principalizationAlgorithm_toSequenceOfBlowups_congr_ideal (A : PrincipalizationAlgorithm.{u}) (k : Type u) [Field k] [CharZero k]
     (X : Scheme.{u}) (p : X ⟶ Spec (CommRingCat.of k))
     [AlgebraicGeometry.Smooth p] [AlgebraicGeometry.LocallyOfFiniteType p]
@@ -32,12 +35,22 @@ private theorem principalizationAlgorithm_toSequenceOfBlowups_congr_ideal (A : P
   subst hIJ
   rfl
 
+/- English proof (translation)
+Substitute `h` using the available equality. Conclude with `H`.
+-/
 private theorem isPullbackSequenceOfBlowups_congr_left {X X' : Scheme.{u}} {φ : X' ⟶ X}
     {s1 s2 : SequenceOfBlowups X'} {t : SequenceOfBlowups X} (h : s1 = s2) (H : IsPullbackBlowupSequence φ s1 t) :
     IsPullbackBlowupSequence φ s2 t := by
   subst h
   exact H
 
+/- English proof (translation)
+Establish `: AlgebraicGeometry.Flat φ` using `inferInstance`. Establish `: AlgebraicGeometry.QuasiCompact D.emb` using `inferInstance`. Establish `: AlgebraicGeometry.QuasiCompact D'.emb` using `inferInstance`. Establish `hker : D'.emb.ker = D.emb.ker.comap φ` using `ker_eq_comap_ker_of_isPullback_of_flat hsq.flip`. Establish `hI' : NonzeroOnComponents (D.emb.ker.comap φ)` using `hker ▸ D'.nonzeroOnComponents_ker`.
+
+Establish `hE' : InStrictNormalCrossingPosition D'.ambientStruct (List.map (fun Z => Z.comap φ) ([] : List D.ambient.IdealSheafData))` using `D'.sncEmpty`. Establish `h0` using `hA.smooth_pullback k D.ambient D.ambientStruct D.emb.ker D.nonzeroOnComponents_ker [] D.sncEmpty D'.ambient D'.ambientStruct φ hφ hI' hE'`. Establish `hpb : IsPullbackBlowupSequence φ (D'.toEmbeddedBlowupSequence A).ambientSeq (D.toEmbeddedBlowupSequence A).ambientSeq`. Rewrite using `[EmbeddingDatum.ambientBlowups_eq_toSequenceOfBlowups, EmbeddingDatum.ambientBlowups_eq_toSequenceOfBlowups]`. Conclude with `isPullbackSequenceOfBlowups_congr_left (principalizationAlgorithm_toSequenceOfBlowups_congr_ideal A k D'.ambient D'.ambientStruct (D.emb.ker.comap φ) D'.emb.ker hker.symm hI' _ [] hE' _) h0`.
+
+Establish `hflat2 : AlgebraicGeometry.Flat (show (D'.toEmbeddedBlowupSequence A).ambient ⟶ (D.toEmbeddedBlowupSequence A).ambient from φ)` using `(inferInstance : AlgebraicGeometry.Flat φ)`. Rewrite using `[embeddedResolutionRuleOfPrincipalization_apply, embeddedResolutionRuleOfPrincipalization_apply]`. Conclude with `(chartFlatBaseChangeOfIsPullbackSeq (D.toEmbeddedBlowupSequence A) (D'.toEmbeddedBlowupSequence A) φ ψ hsq.flip hpb).isPullbackBlowupSequence_inducedBlowupsWithoutIso _ _`.
+-/
 theorem embeddedResolutionRule_isPullbackBlowupSequence_of_smooth
     (A : PrincipalizationAlgorithm.{u}) (hA : IsFunctorialPrincipalization A) (hw : TransitionsAreBlowupsForEmbeddings A)
     (k : Type u) [Field k] [CharZero k] (Y Y' : Scheme.{u})
@@ -74,12 +87,18 @@ theorem embeddedResolutionRule_isPullbackBlowupSequence_of_smooth
   exact (chartFlatBaseChangeOfIsPullbackSeq (D.toEmbeddedBlowupSequence A) (D'.toEmbeddedBlowupSequence A) φ ψ
     hsq.flip hpb).isPullbackBlowupSequence_inducedBlowupsWithoutIso _ _
 
+/- English proof (translation)
+Introduce `k _ _ Y Y' p p' _ _ _ _ _ _ _ _ D D' φ _ ψ hφ hsq`. Conclude with `embeddedResolutionRule_isPullbackBlowupSequence_of_smooth A hA hw k Y Y' p p' D D' φ ψ hφ hsq`.
+-/
 theorem embeddedResolutionRule_isCompatibleWithSmoothAmbientMaps
     (A : PrincipalizationAlgorithm.{u}) (hA : IsFunctorialPrincipalization A) (hw : TransitionsAreBlowupsForEmbeddings A) :
     EmbeddedResolutionRule.IsCompatibleWithSmoothAmbientMaps (embeddedResolutionRuleOfPrincipalization A hw) := by
   intro k _ _ Y Y' p p' _ _ _ _ _ _ _ _ D D' φ _ ψ hφ hsq
   exact embeddedResolutionRule_isPullbackBlowupSequence_of_smooth A hA hw k Y Y' p p' D D' φ ψ hφ hsq
 
+/- English proof (translation)
+The claim follows from `isAffine_baseChange p K haveI : AlgebraicGeometry.LocallyOfFiniteType (baseChangeToSpec p K) := locallyOfFiniteType_baseChangeToSpec p K haveI : AlgebraicGeometry.QuasiCompact (baseChangeToSpec p K) := quasiCompact_baseChangeToSpec p K IsStrictPullbackBlowupSeq (baseChangeProject …`.
+-/
 theorem embeddedResolutionRule_isStrictPullbackBlowupSeq_baseChange
     (A : PrincipalizationAlgorithm.{u}) (hA : IsFunctorialPrincipalization A) (hw : TransitionsAreBlowupsForEmbeddings A)
     (k : Type u) [Field k] [CharZero k] (Y : Scheme.{u})
@@ -152,6 +171,9 @@ theorem embeddedResolutionRule_isStrictPullbackBlowupSeq_baseChange
   · intro i hi
     exact SequenceOfBlowups.withoutIsoBlowups_center_ne_top ((D.toEmbeddedBlowupSequence A).inducedBlowups _) hi
 
+/- English proof (translation)
+Introduce `k _ _ Y p _ _ _ _ D K _ _ _ _ hker hsnc`. Conclude with `embeddedResolutionRule_isStrictPullbackBlowupSeq_baseChange A hA hw k Y p D K hker hsnc`.
+-/
 theorem embeddedResolutionRule_isCompatibleWithFieldBaseChange
     (A : PrincipalizationAlgorithm.{u}) (hA : IsFunctorialPrincipalization A) (hw : TransitionsAreBlowupsForEmbeddings A) :
     EmbeddedResolutionRule.IsCompatibleWithFieldBaseChange (embeddedResolutionRuleOfPrincipalization A hw) := by

@@ -8,6 +8,25 @@ open scoped ENNReal NNReal MatrixGroups Kronecker
 
 namespace GlobalTheory.CompanionTheory.SW.ThW
 
+/- English proof (translation)
+Introduce `F _ _ _ _ ι _ _ χ μ h hopen φ hφ`. Take `⟨-, -, -, -, -, hdense, -, hU, -, hNopen⟩` from `GlobalTheory.T.mem_Oh_iff_and_nat_mul_properties F`. Take `⟨-, hlev⟩` from `GlobalTheory.CompanionTheory.SW.Core.compact_subgroup_and_level (ι → A F) χ μ h`. Take `⟨L, L', -, -, -, oL', -, -, hinv⟩` from `hlev φ hφ`. Establish `h0 : (L' : Set (ι → A F)) ∈ 𝓝 (0 : ι → A F)` using `oL'.mem_nhds L'.zero_mem`.
+
+Rewrite `h0` using `[nhds_pi, Filter.mem_pi]`. Take `⟨I, -, t, ht, hsub⟩` from `h0`. Establish `hU0 : (⋂ i, t i) ∈ 𝓝 (0 : A F)` using `Filter.iInter_mem.2 ht`. Take `⟨N, hN, hNU⟩` from `hU _ hU0`. Establish `hle : latN F ι N ≤ L'`.
+
+Introduce `x hx`. Apply `hsub` to reduce the goal to its premises. Introduce `i _`. Take `⟨y, hy, e⟩` from `hx i`. Rewrite using `[e]`.
+
+Conclude with `Set.mem_iInter.1 (hNU y hy) i`. Establish `happ : ∀ (a : ι → A F) (i : ι), ∃ b : F, ∃ y ∈ Oh F, a i - algebraMap F (A F) b = (N : A F) * y`. Introduce `a i`. Establish `ho : IsOpen {b : A F | ∃ y ∈ Oh F, a i - b = (N : A F) * y}` using `(hNopen N hN).preimage (continuous_const.sub continuous_id)`. Establish `hne : {b : A F | ∃ y ∈ Oh F, a i - b = (N : A F) * y}.Nonempty` using `⟨a i, 0, fun _ => zero_mem _, by simp⟩`.
+
+Take `⟨b, hb⟩` from `hdense.exists_mem_open ho hne`. Conclude with `⟨b, hb⟩`. Use `choose r hr using happ`. Establish `hrl : ∀ a : ι → A F, a - toA (r a) ∈ latN F ι N` using `fun a i => hr a i`. Take `⟨s, hs⟩` from `GlobalTheory.CompanionTheory.SW.Span.sb_eq_sum_coset_indicators (ι → A F) χ μ h φ hφ (latN F ι N) (hopen N hN) (fun x l hl => hinv x l (hle hl))`.
+
+Establish `hind : ∀ (a x : ι → A F), Set.indicator {y | y - a ∈ latN F ι N} (fun _ => (1 : ℂ)) x = indC N (r a) x`. Introduce `a x`. Establish `hset : {y | y - a ∈ latN F ι N} = {y | y - toA (r a) ∈ latN F ι N}`. Use extensionality with `y`. Establish `e : y - toA (r a) = (y - a) + (a - toA (r a))` using `by abel`.
+
+Simplify using `only [Set.mem_setOf_eq]`. Rewrite using `[e]`. Conclude with `(AddSubgroup.add_mem_cancel_right _ (hrl a)).symm`. Rewrite using `[hset]`. Both sides reduce to the same expression.
+
+Use `⟨N, hN, s.image r, fun b => ∑ a ∈ s with r a = b, φ a, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `x`. Rewrite using `[hs x, Finset.sum_apply]`. Simplify using `only [Pi.smul_apply, smul_eq_mul, hind, Finset.sum_mul]`. Rewrite using `[← Finset.sum_fiberwise_of_maps_to (s := s) (t := s.image r) (g := r) (fun a ha => Finset.mem_image_of_mem r ha)]`.
+
+Use `Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun a ha => ?_` and prove the remaining obligations. Rewrite using `[(Finset.mem_filter.1 ha).2]`.
+-/
 theorem sb_eq_sum_rational_coset_indicators :
     ∀ (F : Type) [Field F] [NumberField F] [MeasurableSpace (A F)] [BorelSpace (A F)] (ι : Type)
       [Fintype ι] [DecidableEq ι] (χ : (ι → A F) → (ι → A F) → ℂ) (μ : Measure (ι → A F)),

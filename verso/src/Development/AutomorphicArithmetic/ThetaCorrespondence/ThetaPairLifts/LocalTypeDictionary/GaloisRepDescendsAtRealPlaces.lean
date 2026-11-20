@@ -7,6 +7,9 @@ import Development.AbelianVarietyTheory.Proofs.SatakeParameters.TypeNonzeroOfHow
 section
 open Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Host
 namespace GlobalTheory.DownLift.AtReal
+/- English proof (translation)
+Introduce `hP hH hX D cf nch tp X j t`. Establish `hR : GlobalTheory.RawLift.RallisConv D` using `GlobalTheory.RawLift.Assembled.rallisConv_of_siegelWeil hP hX.sw D`. Establish `hN : ∀ i t, GlobalTheory.DownLift.NonVan X.R i t` using `fun i t => _root_.GlobalTheory.T.nonGalois_downLift_nonvanishing hP hX.dbl hX.udbl hX.hl hH D X.G X.Pl0 X.T X.A X.Ks X.R X.F X.given X.full i t`. Conclude with `((GlobalTheory.T.liftInj_and_properties_of_rallis_of_nonVan hP hH D X.G X.Pl0 X.T X.A X.Ks X.R X.F X.given X.full hR hN).2 j t).1`.
+-/
 theorem lift_splits_locally : GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Hk3.HoweUnram → _root_.GlobalTheory.NRows.GeometricGaloisRepCompatibility → ∀ (D : D7) (cf : CharFrame D)
     (nch : NChoice D) (tp : TupTied D cf nch) (X : GlobalTheory.NJoin.RealAt D cf nch tp) j t, GlobalTheory.DownLift.TypeNZ X.R j t := by
   intro hP hH hX D cf nch tp X j t
@@ -20,6 +23,9 @@ end
 section
 open Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Host
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.DownLift.AtReal.lift_splits_locally | exact _root_.GlobalTheory.DownLift.AtReal.lift_splits_locally | (intros; apply _root_.GlobalTheory.DownLift.AtReal.lift_splits_locally <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.galoisRep_descends_at_real_places : GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Hk3.HoweUnram → _root_.GlobalTheory.NRows.GeometricGaloisRepCompatibility → ∀ (D : D7) (cf : CharFrame D) (nch : NChoice D) (tp : TupTied D cf nch) (X : GlobalTheory.NJoin.RealAt D cf nch tp) j t, GlobalTheory.DownLift.TypeNZ X.R j t := by
   first | exact @_root_.GlobalTheory.DownLift.AtReal.lift_splits_locally | exact _root_.GlobalTheory.DownLift.AtReal.lift_splits_locally | (intros; apply _root_.GlobalTheory.DownLift.AtReal.lift_splits_locally <;> assumption)
 end

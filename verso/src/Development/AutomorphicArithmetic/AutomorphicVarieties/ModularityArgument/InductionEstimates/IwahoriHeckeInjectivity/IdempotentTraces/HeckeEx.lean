@@ -22,6 +22,9 @@ variable {G X : Type} [Group G] [Group X]
 private def dbl (U : Subgroup G) (h : G) : Set (G ⧸ U) :=
   {c | ∃ u ∈ U, c = QuotientGroup.mk (u * h)}
 
+/- English proof (translation)
+Use `haveI : DiscreteTopology (G ⧸ U) := QuotientGroup.discreteTopology hU.2`. Establish `hc : Continuous fun u : G => (QuotientGroup.mk (u * h) : G ⧸ U)` using `QuotientGroup.continuous_mk.comp (continuous_id.mul continuous_const)`. Use `((hU.1.image hc).finite_of_discrete).subset ?_` and prove the remaining obligations. Introduce and unpack `c ⟨u, hu, rfl⟩`. Conclude with `⟨u, hu, rfl⟩`.
+-/
 private theorem dbl_finite [TopologicalSpace G] [IsTopologicalGroup G] {U : Subgroup G} (hU : CO U) (h : G) :
     (dbl U h).Finite := by
   haveI : DiscreteTopology (G ⧸ U) := QuotientGroup.discreteTopology hU.2
@@ -38,6 +41,9 @@ private def Inv (j : G →* X) (U : Subgroup G) (Φ : X → ℂ) : Prop := ∀ u
 
 variable {j : G →* X} {U : Subgroup G} {h h' : G} {Φ Ψ : X → ℂ}
 
+/- English proof (translation)
+Establish `h1` using `hΦ _ (QuotientGroup.eq.1 hab) (x * j a)`. Establish `h2 : x * j a * j (a⁻¹ * b) = x * j b` using `by rw [mul_assoc, ← map_mul, mul_inv_cancel_left]`. Rewrite `h1` using `[h2]`. Conclude with `h1.symm`.
+-/
 private theorem val_congr (hΦ : Inv j U Φ) {a b : G} (hab : (QuotientGroup.mk a : G ⧸ U) = QuotientGroup.mk b) (x : X) :
     Φ (x * j a) = Φ (x * j b) := by
   have h1 := hΦ _ (QuotientGroup.eq.1 hab) (x * j a)
@@ -45,10 +51,16 @@ private theorem val_congr (hΦ : Inv j U Φ) {a b : G} (hab : (QuotientGroup.mk 
   rw [h2] at h1
   exact h1.symm
 
+/- English proof (translation)
+The claim follows from `finsum_mem_eq_finite_toFinset_sum _ hf`.
+-/
 private theorem ops_sum (hf : (dbl U h).Finite) (x : X) :
     ops j U h Φ x = ∑ c ∈ hf.toFinset, Φ (x * j c.out) :=
   finsum_mem_eq_finite_toFinset_sum _ hf
 
+/- English proof (translation)
+Rewrite using `[ops_sum hf]`. Use `Finset.sum_congr rfl fun c _ => val_congr hΦ ?_ x` and prove the remaining obligations. Rewrite using `[hr, QuotientGroup.out_eq']`.
+-/
 private theorem ops_rep (hf : (dbl U h).Finite) (hΦ : Inv j U Φ) (r : G ⧸ U → G)
     (hr : ∀ c, (QuotientGroup.mk (r c) : G ⧸ U) = c) (x : X) :
     ops j U h Φ x = ∑ c ∈ hf.toFinset, Φ (x * j (r c)) := by
@@ -56,19 +68,37 @@ private theorem ops_rep (hf : (dbl U h).Finite) (hΦ : Inv j U Φ) (r : G ⧸ U 
   refine Finset.sum_congr rfl fun c _ => val_congr hΦ ?_ x
   rw [hr, QuotientGroup.out_eq']
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `only [Pi.add_apply, ops_sum hf, Finset.sum_add_distrib]`.
+-/
 private theorem ops_add (hf : (dbl U h).Finite) : ops j U h (Φ + Ψ) = ops j U h Φ + ops j U h Ψ := by
   funext x
   simp only [Pi.add_apply, ops_sum hf, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `only [Pi.smul_apply, ops_sum hf, Finset.smul_sum]`.
+-/
 private theorem ops_smul (hf : (dbl U h).Finite) (a : ℂ) : ops j U h (a • Φ) = a • ops j U h Φ := by
   funext x
   simp only [Pi.smul_apply, ops_sum hf, Finset.smul_sum]
 
+/- English proof (translation)
+Rewrite `hab`, the goal using `[QuotientGroup.eq]`. Simplify `hab` using `[mul_assoc]`.
+-/
 private theorem mk_left {u a b : G} (hab : (QuotientGroup.mk a : G ⧸ U) = QuotientGroup.mk b) :
     (QuotientGroup.mk (u * a) : G ⧸ U) = QuotientGroup.mk (u * b) := by
   rw [QuotientGroup.eq] at hab ⊢
   simpa [mul_assoc] using hab
 
+/- English proof (translation)
+Introduce `u hu x`. Establish `hm : ∀ v ∈ U, Set.MapsTo (fun c : G ⧸ U => (QuotientGroup.mk (v * c.out) : G ⧸ U)) (dbl U h) (dbl U h)`. Introduce and unpack `v hv c ⟨t, ht, rfl⟩`. Use `⟨v * t, U.mul_mem hv ht, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(QuotientGroup.mk (v * (QuotientGroup.mk (t * h) : G ⧸ U).out) : G ⧸ U) = _`.
+
+Rewrite using `[mk_left (QuotientGroup.out_eq' _), mul_assoc]`. Establish `hi : ∀ v : G, Set.LeftInvOn (fun c : G ⧸ U => (QuotientGroup.mk (v⁻¹ * c.out) : G ⧸ U)) (fun c : G ⧸ U => (QuotientGroup.mk (v * c.out) : G ⧸ U)) (dbl U h)`. Introduce `v c _`. Express the relevant statement in the definitionally equal form `(QuotientGroup.mk (v⁻¹ * (QuotientGroup.mk (v * c.out) : G ⧸ U).out) : G ⧸ U) = c`. Rewrite using `[mk_left (QuotientGroup.out_eq' _), inv_mul_cancel_left, QuotientGroup.out_eq']`.
+
+Establish `hi' : Set.RightInvOn (fun c : G ⧸ U => (QuotientGroup.mk (u⁻¹ * c.out) : G ⧸ U)) (fun c : G ⧸ U => (QuotientGroup.mk (u * c.out) : G ⧸ U)) (dbl U h)`. Introduce `c _`. Express the relevant statement in the definitionally equal form `(QuotientGroup.mk (u * (QuotientGroup.mk (u⁻¹ * c.out) : G ⧸ U).out) : G ⧸ U) = c`. Rewrite using `[mk_left (QuotientGroup.out_eq' _), mul_inv_cancel_left, QuotientGroup.out_eq']`. Establish `hb : Set.BijOn (fun c : G ⧸ U => (QuotientGroup.mk (u * c.out) : G ⧸ U)) (dbl U h) (dbl U h)` using `Set.InvOn.bijOn ⟨hi u, hi'⟩ (hm u hu) (hm u⁻¹ (U.inv_mem hu))`.
+
+Use `finsum_mem_eq_of_bijOn _ hb fun c _ => ?_` and prove the remaining obligations. Establish `h1` using `val_congr (x := x) hΦ (QuotientGroup.out_eq' (QuotientGroup.mk (u * c.out) : G ⧸ U)).symm`. Rewrite `h1` using `[map_mul, ← mul_assoc]`. Conclude with `h1`.
+-/
 private theorem ops_inv (hΦ : Inv j U Φ) : Inv j U (ops j U h Φ) := by
   intro u hu x
   have hm : ∀ v ∈ U, Set.MapsTo (fun c : G ⧸ U => (QuotientGroup.mk (v * c.out) : G ⧸ U)) (dbl U h) (dbl U h) := by
@@ -93,6 +123,11 @@ private theorem ops_inv (hΦ : Inv j U Φ) : Inv j U (ops j U h Φ) := by
   rw [map_mul, ← mul_assoc] at h1
   exact h1
 
+/- English proof (translation)
+Rewrite using `[ops_rep hf (ops_inv hΦ) r hr, ops_rep hf' (ops_inv hΦ) r' hr']`. Simplify using `only [ops_rep hf' hΦ r' hr', ops_rep hf hΦ r hr]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun c' hc' => Finset.sum_congr rfl fun c hc₁ => ?_` and prove the remaining obligations. Use `(hc c (hf.mem_toFinset.1 hc₁) c' (hf'.mem_toFinset.1 hc')).eq` as an intermediate fact.
+
+Rewrite using `[mul_assoc, mul_assoc, ← map_mul, ← map_mul, this]`.
+-/
 private theorem ops_comm (hf : (dbl U h).Finite) (hf' : (dbl U h').Finite) (hΦ : Inv j U Φ) (r r' : G ⧸ U → G)
     (hr : ∀ c, (QuotientGroup.mk (r c) : G ⧸ U) = c) (hr' : ∀ c, (QuotientGroup.mk (r' c) : G ⧸ U) = c)
     (hc : ∀ c ∈ dbl U h, ∀ c' ∈ dbl U h', Commute (r c) (r' c')) (x : X) :
@@ -104,6 +139,13 @@ private theorem ops_comm (hf : (dbl U h).Finite) (hf' : (dbl U h').Finite) (hΦ 
   have := (hc c (hf.mem_toFinset.1 hc₁) c' (hf'.mem_toFinset.1 hc')).eq
   rw [mul_assoc, mul_assoc, ← map_mul, ← map_mul, this]
 
+/- English proof (translation)
+Establish `h1 : ∀ c : G ⧸ U, ∃ p : G, (QuotientGroup.mk p : G ⧸ U) = c ∧ (c ∈ dbl U h → p ∈ P)`. Introduce `c`. Distinguish the cases in `hc : c ∈ dbl U h`. Take `⟨u, hu, rfl⟩` from `hc`. Take `⟨a, ha, t, ht, rfl, hcm⟩` from `hs u hu`.
+
+Use `⟨a * h, ?_, fun _ => P.mul_mem ha hh⟩` and prove the remaining obligations. Rewrite using `[QuotientGroup.eq]`. Establish `: (a * h)⁻¹ * (a * t * h) = t`. Rewrite using `[mul_assoc a t h, hcm.eq]`. Use `group`.
+
+Rewrite using `[this]`. Conclude with `ht`. Conclude with `⟨c.out, QuotientGroup.out_eq' c, fun h' => absurd h' hc⟩`. Use `choose r h2 h3 using h1`. Conclude with `⟨r, h2, h3⟩`.
+-/
 private theorem rep_in (P : Subgroup G) (hh : h ∈ P)
     (hs : ∀ u ∈ U, ∃ a ∈ P, ∃ t ∈ U, u = a * t ∧ Commute t h) :
     ∃ r : G ⧸ U → G, (∀ c, (QuotientGroup.mk (r c) : G ⧸ U) = c) ∧ ∀ c ∈ dbl U h, r c ∈ P := by
@@ -129,6 +171,13 @@ section Con
 
 variable {K : Type} [Field K] [NumberField K] {n : ℕ}
 
+/- English proof (translation)
+Introduce `u hu`. Take `⟨-, h1, h2, -, h4⟩` from `UpperTheory.ConvolutionTheory.Tf.locEmb K n w`. Establish `ha : AdelicGLn.localEmbedding w (finAt w (finEmb K n u)) ∈ UpperTheory.ConvolutionTheory.GM.levF W`. Introduce `v`. Distinguish the cases in `hv : v = w`.
+
+Substitute `hv` using the available equality. Rewrite using `[h1]`. Conclude with `hu v`. Rewrite using `[h2 v hv]`. Conclude with `one_mem _`.
+
+Use `⟨_, ⟨finAt w (finEmb K n u), rfl⟩, _, mul_mem (inv_mem ha) hu, (mul_inv_cancel_left _ _).symm, ?_⟩` and prove the remaining obligations. Establish `h5 : finAt w (finEmb K n ((AdelicGLn.localEmbedding w (finAt w (finEmb K n u)))⁻¹ * u)) = 1`. Rewrite using `[map_mul, finAt_mul, map_inv, finAt_inv, h1, inv_mul_cancel]`. Conclude with `(h4 _ h5 g).symm`.
+-/
 private theorem lev_split (W : ∀ v : Pl K, Subgroup (Gw n v)) (w : Pl K) (g : Gw n w) :
     ∀ u ∈ UpperTheory.ConvolutionTheory.GM.levF W, ∃ a ∈ (AdelicGLn.localEmbedding (K := K) (n := n) w).range, ∃ t ∈ UpperTheory.ConvolutionTheory.GM.levF W, u = a * t ∧
       Commute t (AdelicGLn.localEmbedding w g) := by
@@ -147,6 +196,11 @@ private theorem lev_split (W : ∀ v : Pl K, Subgroup (Gw n v)) (w : Pl K) (g : 
     rw [map_mul, finAt_mul, map_inv, finAt_inv, h1, inv_mul_cancel]
   exact (h4 _ h5 g).symm
 
+/- English proof (translation)
+Establish `h1` using `detModule_finEmb hu`. Establish `hg` using `(mem_normOneGL_iff_detModule).1 g.2`. Establish `h2` using `infEmb_infPart_mul_finEmb_finPart (g : AdelicGLn.AdelicGL K n)`. Establish `h3 : detModule K n (infEmb K n (infPart K n (g : AdelicGLn.AdelicGL K n))) = 1`. Rewrite `hg` using `[← h2, map_mul, h1, mul_one]`.
+
+Conclude with `hg`. Use `ext1`. Rewrite using `[Subgroup.coe_mul, ← retract_infEmb, coe_retractOne, MultiplicityOne.coe_finProj, h1, h3, map_one, inv_one, mul_one, mul_one]`. Conclude with `h2.symm`.
+-/
 private theorem norm_one_adelic_split_arch_finite (g : G1 K n) (hu : finPart K n (g : AdelicGLn.AdelicGL K n) ∈ AdelicGLn.integralFiniteGL K n) :
     g = archP K n (infPart K n (g : AdelicGLn.AdelicGL K n)) * fin1 (finPart K n (g : AdelicGLn.AdelicGL K n)) := by
   have h1 := detModule_finEmb hu
@@ -164,6 +218,59 @@ end Con
 end UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.E.HeckeOperatorExistence
 
 open UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.E.HeckeOperatorExistence in
+/- English proof (translation)
+Introduce `K _ _ _ μ _ μ₂ _ τ₁ τ₂ _ κ e he S U hU D hD d A`. Take `⟨hL, hLle⟩` from `(levLaws (K := K) (2 + 2) S).1 U hU`. Take `⟨⟨h0, hadd⟩, hfix, hinj, htr⟩` from `secTr μ₂ τ₁ τ₂ κ e he`. Take `⟨-, -, -, hac, -⟩` from `levLaws (K := K) (2 + 2) S`. Use `haveI := he.haar.prob`.
+
+Establish `hHH : Continuous (HP (K` using `K) 2 2) := (hpSpec (K := K)).2.2.2.1`. Establish `hflc : ∀ f : G1 K (2 + 2) → ℂ, Continuous f → Continuous (flat 0 f)` using `fun f hf => (Complex.continuous_exp.comp (continuous_const.mul (Complex.continuous_ofReal.comp hHH))).mul hf`. Establish `hfadd : ∀ (f f' : G1 K (2 + 2) → ℂ) (c : ℂ), flat 0 (f + c • f') = flat 0 f + c • flat 0 f'`. Introduce `f f' c`. Use function extensionality and compare the values at `x`.
+
+Simplify using `only [flat, Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hA0 : FixA κ e 0` using `fun g => by simp`. Establish `hAadd : ∀ f f' : G1 K (2 + 2) → ℂ, Continuous f → Continuous f' → FixA κ e f → FixA κ e f' → ∀ c : ℂ, FixA κ e (f + c • f')`. Introduce `f f' hc hc' hf hf' c g`.
+
+Establish `hi : ∀ f₁ : G1 K (2 + 2) → ℂ, Continuous f₁ → Integrable (fun k => e k * f₁ (g * arc1 k)) κ` using `fun f₁ h₁ => (he.cont.mul (h₁.comp (continuous_const.mul hac))).integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace _)`. Establish `h1 : ∀ k, e k * (f + c • f') (g * arc1 k) = e k * f (g * arc1 k) + c * (e k * f' (g * arc1 k))`. Introduce `k`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Simplify using `only [h1]`. Rewrite using `[integral_add (hi f hc) ((hi f' hc').const_mul c), integral_const_mul, hf g, hf' g]`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Establish `hsum : ∀ f, IsSec τ₁ τ₂ f → FixA κ e f → ∀ C : Finset (FA K (2 + 2) ⧸ levOn S U), ∃ f', IsSec τ₁ τ₂ f' ∧ FixA κ e f' ∧ ∀ x, flat 0 f' x = ∑ c ∈ C, flat 0 f (x * fin1 c.out)`. Introduce `f hs hA C`.
+
+Proceed by induction on `C using Finset.induction_on with`. Consider the case `empty => exact ⟨0, h0, hA0, fun x => by simp [flat]⟩`. Consider the case `insert c C hc ih`. Take `⟨f₁, hs₁, hA₁, hx₁⟩` from `ih`. Take `⟨f₂, hs₂, hA₂, hx₂⟩` from `htr f c.out hs hA`.
+
+Use `⟨f₂ + (1 : ℂ) • f₁, hadd _ _ hs₂ hs₁ 1, hAadd _ _ hs₂.cont hs₁.cont hA₂ hA₁ 1, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[hfadd, Finset.sum_insert hc, Pi.add_apply, Pi.smul_apply, hx₁, hx₂, one_smul]`. Establish `hsec : ∀ v, IsSec τ₁ τ₂ (A.sec v) ∧ D.Fix (A.sec v)` using `fun v => (A.onto _).1 ⟨v, rfl⟩`. Establish `hFx : ∀ v, FixA κ e (A.sec v) ∧ FixF (levOn S U) (A.sec v)` using `fun v => (hD.fix _ (hsec v).1.cont).1 (hsec v).2`. Establish `hTc : ∀ v, Continuous (flat 0 (A.sec v))` using `fun v => hflc _ (hsec v).1.cont`.
+
+Establish `hTi : ∀ v, Inv (MultiplicityOne.finProj K (2 + 2)) (levOn S U) (flat 0 (A.sec v))` using `fun v => ((hfix _ (hsec v).1.cont).2 _ hLle).2 (hFx v).2`. Establish `hTj : ∀ a b, flat 0 (A.sec a) = flat 0 (A.sec b) → a = b` using `fun a b h => A.inj (hinj _ _ h)`. Establish `hTa : ∀ a b : Eu d, flat 0 (A.sec (a + b)) = flat 0 (A.sec a) + flat 0 (A.sec b)`. Introduce `a b`. Establish `h1` using `hfadd (A.sec a) (A.sec b) 1`.
+
+Rewrite `h1` using `[one_smul, one_smul]`. Rewrite using `[map_add, h1]`. Establish `hTs : ∀ (c : ℂ) (a : Eu d), flat 0 (A.sec (c • a)) = c • flat 0 (A.sec a)`. Introduce `c a`. Use function extensionality and compare the values at `x`.
+
+Simplify using `only [flat, map_smul, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hop_eq : ∀ h (Φ : G1 K (2 + 2) → ℂ), hop (levOn S U) h Φ = ops (MultiplicityOne.finProj K (2 + 2)) (levOn S U) h Φ` using `fun _ _ => rfl`. Establish `hex : ∀ h v, ∃ v', flat 0 (A.sec v') = hop (levOn S U) h (flat 0 (A.sec v))`. Introduce `h v`.
+
+Take `⟨f', hs', hA', hx'⟩` from `hsum _ (hsec v).1 (hFx v).1 (dbl_finite hL h).toFinset`. Establish `h1 : flat 0 f' = hop (levOn S U) h (flat 0 (A.sec v))`. Use function extensionality and compare the values at `x`. Rewrite using `[hx', hop_eq, ops_sum (dbl_finite hL h)]`. Establish `h2 : FixF (levOn S U) f'` using `((hfix _ hs'.cont).2 _ hLle).1 (by rw [h1, hop_eq]; exact ops_inv (hTi v))`.
+
+Take `⟨v', rfl⟩` from `(A.onto f').2 ⟨hs', (hD.fix _ hs'.cont).2 ⟨hA', h2⟩⟩`. Conclude with `⟨v', h1⟩`. Use `⟨fun h => ?_, fun w w' hne g g' M M' hM hM' => ?_, fun b φ β hφ hAct h M hM => ?_⟩` and prove the remaining obligations. Establish `hf` using `dbl_finite hL h choose m hm using hex h`. Use `⟨{ toFun := m, map_add' := fun a b => ?_, map_smul' := fun c a => ?_ }, fun v => hm v, fun M' hM' => ?_⟩` and prove the remaining obligations.
+
+Apply `hTj` to reduce the goal to its premises. Rewrite using `[hm (a + b), hTa a b, hTa (m a) (m b), hm a, hm b, hop_eq, hop_eq, hop_eq]`. Conclude with `ops_add hf`. Apply `hTj` to reduce the goal to its premises. Simplify using `only [RingHom.id_apply]`.
+
+Rewrite using `[hm (c • a), hTs c a, hTs c (m a), hm a, hop_eq, hop_eq]`. Conclude with `ops_smul hf c`. Conclude with `LinearMap.ext fun v => hTj _ _ ((hM' v).trans (hm v).symm)`. Establish `hf` using `dbl_finite hL (AdelicGLn.localEmbedding w g)`. Establish `hf'` using `dbl_finite hL (AdelicGLn.localEmbedding w' g')`.
+
+Take `⟨r, hr, hrP⟩` from `rep_in (AdelicGLn.localEmbedding w).range ⟨g, rfl⟩ (lev_split _ w g)`. Take `⟨r', hr', hrP'⟩` from `rep_in (AdelicGLn.localEmbedding w').range ⟨g', rfl⟩ (lev_split _ w' g')`. Use `LinearMap.ext fun v => hTj _ _ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `flat 0 (A.sec (M (M' v))) = flat 0 (A.sec (M' (M v)))`. Rewrite using `[hM (M' v), hM' v, hM' (M v), hM v]`.
+
+Use function extensionality and compare the values at `x`. Use `ops_comm hf hf' (hTi v) r r' hr hr' (fun c hc c' hc' => ?_) x` and prove the remaining obligations. Take `⟨y, hy⟩` from `hrP c hc`. Take `⟨y', hy'⟩` from `hrP' c' hc'`. Rewrite using `[← hy, ← hy']`.
+
+Conclude with `(UpperTheory.ConvolutionTheory.Tf.locEmb K (2 + 2) w).2.2.2.1 w' hne.symm y y'`. Establish `hf` using `dbl_finite hL h`. Establish `hsupp : ∀ g, tens b φ g ≠ 0 → finPart K (2 + 2) (g : AdelicGLn.AdelicGL K (2 + 2)) ∈ levOn S U`. Introduce `g hg`. Distinguish the cases in `hc : Continuous (tensFun b φ) ∧ HasCompactSupport (tensFun b φ)`.
+
+Establish `h1 : tens b φ g = tensFun b φ g`. Rewrite using `[tens, dif_pos hc]`. Both sides reduce to the same expression. Rewrite `hg` using `[h1, tensFun, hφ]`. Assume the negation of the conclusion as `hn`.
+
+Conclude with `hg (by rw [Set.indicator_of_notMem (show _ ∉ (levOn S U : Set (FA K (2 + 2))) from hn), mul_zero])`. Establish `h1 : tens b φ g = 0`. Rewrite using `[tens, dif_neg hc]`. Both sides reduce to the same expression. Conclude with `absurd h1 hg`.
+
+Establish `hAB` using `hAct.2.2 0`. Use `LinearMap.ext fun v => hTj _ _ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `flat 0 (A.sec (M (PositivityTheory.Rg.Tf.IntegralApplyAeEq.symb β 0 v))) = flat 0 (A.sec (PositivityTheory.Rg.Tf.IntegralApplyAeEq.symb β 0 (M v)))`. Use function extensionality and compare the values at `x`. Rewrite using `[hM (PositivityTheory.Rg.Tf.IntegralApplyAeEq.symb β 0 v), ← hAB (M v) x, hop_eq, ops_sum hf]`.
+
+Establish `h2 : ∀ c : FA K (2 + 2) ⧸ levOn S U, flat 0 (A.sec (PositivityTheory.Rg.Tf.IntegralApplyAeEq.symb β 0 v)) (x * fin1 c.out) = ∫ g, tens b φ g * flat 0 (A.sec v) (x * fin1 c.out * g) ∂μ` using `fun c => (hAB v _).symm`. Simplify using `only [h2]`. Establish `hint : ∀ c : FA K (2 + 2) ⧸ levOn S U, Integrable (fun g => tens b φ g * flat 0 (A.sec v) (x * fin1 c.out * g)) μ` using `fun c => ((tens b φ).continuous.mul ((hTc v).comp (continuous_const.mul continuous_id))).integrable_of_hasCompactSupport (tens b φ).hasCompactSupport.mul_right`. Rewrite using `[← integral_finset_sum _ fun c _ => hint c]`. Use `integral_congr_ae (Eventually.of_forall fun g => ?_)` and prove the remaining obligations.
+
+Distinguish the cases in `hg : tens b φ g = 0`. Simplify using `[hg]`. Establish `hu` using `hsupp g hg`. Establish `hd` using `norm_one_adelic_split_arch_finite g (hLle hu)`. Take `⟨p, hp⟩ : ∃ p, p = archP K (2 + 2) (infPart K (2 + 2) (g : AdelicGLn.AdelicGL K (2 + 2)))` from `⟨_, rfl⟩`.
+
+Establish `hpc : ∀ y : FA K (2 + 2), p * fin1 y = fin1 y * p` using `fun y => by`. Rewrite using `[hp]`. Conclude with `(MultiplicityOne.finProj_mul_archProj_comm y _).symm`. Rewrite `hd` using `[← hp]`. Simplify using `only []`.
+
+Rewrite using `[← Finset.mul_sum]`. Use `congr 1`. Rewrite using `[hM v, hop_eq]`. Establish `h3 : x * g = x * p * MultiplicityOne.finProj K (2 + 2) (finPart K (2 + 2) (g : AdelicGLn.AdelicGL K (2 + 2)))`. Rewrite using `[mul_assoc, ← hd]`.
+
+Rewrite using `[h3, ops_inv (hTi v) _ hu, ops_sum hf]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Establish `h4 : x * fin1 c.out * g = x * p * fin1 c.out * fin1 (finPart K (2 + 2) (g : AdelicGLn.AdelicGL K (2 + 2)))`. Establish `h5 : x * fin1 c.out * g = x * fin1 c.out * (p * fin1 (finPart K (2 + 2) (g : AdelicGLn.AdelicGL K (2 + 2))))` using `congrArg _ hd`. Rewrite using `[h5, ← mul_assoc (x * fin1 c.out), mul_assoc x (fin1 c.out) p, ← hpc, ← mul_assoc x p]`.
+
+Rewrite using `[h4]`. Conclude with `hTi v _ hu _`.
+-/
 theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.E.heckeEx :
     UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.E.HeckeEx := by
   intro K _ _ _ μ _ μ₂ _ τ₁ τ₂ _ κ e he S U hU D hD d A

@@ -181,11 +181,17 @@ section Inhabitants
 
 variable (O : Type*) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
 
+/- English proof (translation)
+Introduce `s hs` and use `⟨(h s hs).2, (h s hs).1⟩`.
+-/
 theorem sameGeneric_symm {Ω : Type*} [Field Ω] [Algebra O Ω] {K : Type} [Fintype K] {ι : K → Type}
     [∀ k, Fintype (ι k)] {x : (Σ k, ι k) → Ω} {N : ℕ} {V : Type*} [AddCommGroup V] [Module Ω V]
     {E E' : ChartBundle O (mseg x) N V} (h : SameGeneric O x E E') : SameGeneric O x E' E :=
   fun s hs => ⟨(h s hs).2, (h s hs).1⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨line_isModelOver O, line_vert O, isVertDiv_const O _ (mul_ne_zero (unif_ne_zero O) (unif_ne_zero O))⟩`.
+-/
 theorem NumbersCommuteVertical.hyp :
     IsModelOver O (⊥ : Ideal (MRingOver O fun _ : Unit => Fin 2)) (0 + 1) ∧
       IsVertDiv O (⊥ : Ideal (MRingOver O fun _ : Unit => Fin 2)) 0 (C (unif O)) 1 ∧
@@ -193,6 +199,9 @@ theorem NumbersCommuteVertical.hyp :
   ⟨line_isModelOver O, line_vert O,
     isVertDiv_const O _ (mul_ne_zero (unif_ne_zero O) (unif_ne_zero O))⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨pt_projVar F, ⟨stdFlag F ptCoord⟩, proj_isDualGen F ptCoord⟩`.
+-/
 theorem Segre.hyp (F : Type*) [Field F] :
     IsProjVarF (mcIdeal F (ptCoord (Ω := F))) 0 ∧
       Nonempty (FullFlag F (ptCoord (Ω := F)) (frameBundle F (mseg ptCoord) (Pi.basisFun F (Fin 2)))) ∧
@@ -200,6 +209,9 @@ theorem Segre.hyp (F : Type*) [Field F] :
         (fun j : Fin 2 => (LinearMap.proj j : (Fin 2 → F) →ₗ[F] F)) :=
   ⟨pt_projVar F, ⟨stdFlag F ptCoord⟩, proj_isDualGen F ptCoord⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨pt_model O, sameGeneric_cE O (ptCoord (Ω := FractionRing O)) (unif O) (unif_ne_zero O) (unif_frac_ne O), ⟨ptFlagModel O⟩, by rw [mcIdeal_of_one (frac_inj O) pt_sub ptCoord_eq, sub_self] exact isVertDiv_const O _ (unif_ne_zero O)⟩`.
+-/
 theorem B0.hyp :
     IsModelOver O (mcIdeal O (ptCoord (Ω := FractionRing O))) 0 ∧
       SameGeneric O (ptCoord (Ω := FractionRing O)) (stdE O (ptCoord (Ω := FractionRing O))) (cE O (ptCoord (Ω := FractionRing O)) (unif O) (unif_frac_ne O)) ∧
@@ -210,6 +222,9 @@ theorem B0.hyp :
       rw [mcIdeal_of_one (frac_inj O) pt_sub ptCoord_eq, sub_self]
       exact isVertDiv_const O _ (unif_ne_zero O)⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨pt_model O, sameGeneric_cE O (ptCoord (Ω := FractionRing O)) (unif O) (unif_ne_zero O) (unif_frac_ne O), ⟨stdFlagPair O (ptCoord (Ω := FractionRing O)) (unif O) (unif_ne_zero O) (unif_frac_ne O) (mcIdeal_of_one (frac_inj O) pt_sub ptCoord_eq)⟩⟩`.
+-/
 theorem TwoExpansionsAgree.hyp :
     IsModelOver O (mcIdeal O (ptCoord (Ω := FractionRing O))) 0 ∧
       SameGeneric O (ptCoord (Ω := FractionRing O)) (stdE O (ptCoord (Ω := FractionRing O))) (cE O (ptCoord (Ω := FractionRing O)) (unif O) (unif_frac_ne O)) ∧
@@ -218,6 +233,9 @@ theorem TwoExpansionsAgree.hyp :
     ⟨stdFlagPair O (ptCoord (Ω := FractionRing O)) (unif O) (unif_ne_zero O) (unif_frac_ne O)
       (mcIdeal_of_one (frac_inj O) pt_sub ptCoord_eq)⟩⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨pt_model O, sameGeneric_cE O (ptCoord (Ω := FractionRing O)) (unif O) (unif_ne_zero O) (unif_frac_ne O), sameGeneric_symm O (sameGeneric_cE O (ptCoord (Ω := FractionRing O)) (unif O) (unif_ne_zero O) (unif_frac_ne O))⟩`.
+-/
 theorem Ba.hyp :
     IsModelOver O (mcIdeal O (ptCoord (Ω := FractionRing O))) 0 ∧
       SameGeneric O (ptCoord (Ω := FractionRing O)) (stdE O (ptCoord (Ω := FractionRing O))) (cE O (ptCoord (Ω := FractionRing O)) (unif O) (unif_frac_ne O)) ∧
@@ -225,6 +243,9 @@ theorem Ba.hyp :
   ⟨pt_model O, sameGeneric_cE O (ptCoord (Ω := FractionRing O)) (unif O) (unif_ne_zero O) (unif_frac_ne O),
     sameGeneric_symm O (sameGeneric_cE O (ptCoord (Ω := FractionRing O)) (unif O) (unif_ne_zero O) (unif_frac_ne O))⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨pt_model O, sameGeneric_cE O (ptCoord (Ω := FractionRing O)) (unif O) (unif_ne_zero O) (unif_frac_ne O), subQuot_std O (ptCoord (Ω := FractionRing O)), subQuot_c O (ptCoord (Ω := FractionRing O)) (unif O) (unif_frac_ne O)⟩`.
+-/
 theorem Bb.hyp :
     IsModelOver O (mcIdeal O (ptCoord (Ω := FractionRing O))) 0 ∧
       SameGeneric O (ptCoord (Ω := FractionRing O)) (stdE O (ptCoord (Ω := FractionRing O))) (cE O (ptCoord (Ω := FractionRing O)) (unif O) (unif_frac_ne O)) ∧
@@ -234,9 +255,15 @@ theorem Bb.hyp :
   ⟨pt_model O, sameGeneric_cE O (ptCoord (Ω := FractionRing O)) (unif O) (unif_ne_zero O) (unif_frac_ne O),
     subQuot_std O (ptCoord (Ω := FractionRing O)), subQuot_c O (ptCoord (Ω := FractionRing O)) (unif O) (unif_frac_ne O)⟩
 
+/- English proof (translation)
+The claim follows from `(map_ne_zero_iff _ (frac_inj O)).mpr (mul_ne_zero (unif_ne_zero O) (unif_ne_zero O))`.
+-/
 theorem unif_sq_frac_ne : algebraMap O (FractionRing O) (unif O * unif O) ≠ 0 :=
   (map_ne_zero_iff _ (frac_inj O)).mpr (mul_ne_zero (unif_ne_zero O) (unif_ne_zero O))
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨pt_model O, sameGeneric_scaledRankOne O (ptCoord (Ω := FractionRing O)) (unif O) (unif_ne_zero O) (unif_frac_ne O), scaledRankOne_le_standardRankOne O (ptCoord (Ω := FractionRing O)) (unif O) (unif_frac_ne O), quotIso_c O (ptCoord (Ω := FractionRing O)) (unif O) (unif_frac_ne O …`.
+-/
 theorem Bc.hyp₁₂ :
     (IsModelOver O (mcIdeal O (ptCoord (Ω := FractionRing O))) 0 ∧
       SameGeneric O (ptCoord (Ω := FractionRing O)) (std1 O (ptCoord (Ω := FractionRing O))) (sc1 O (ptCoord (Ω := FractionRing O)) (unif O) (unif_frac_ne O)) ∧
@@ -254,6 +281,9 @@ theorem Bc.hyp₁₂ :
       cE_le_cE O (ptCoord (Ω := FractionRing O)) (unif O) (unif O) (unif_frac_ne O) (unif_sq_frac_ne O),
       cE_le_stdE O (ptCoord (Ω := FractionRing O)) (unif O) (unif_frac_ne O)⟩⟩
 
+/- English proof (translation)
+Use `⟨?_, IsBaseChange.ofEquiv _, isPullBC_frame_self O ptCoord_eq bc_pt_eq _, isPullBC_frame_self O ptCoord_eq bc_pt_eq _⟩` and prove the remaining obligations. Rewrite using `[mcIdeal_of_one (frac_inj O) join_sub bc_pt_eq]`. Conclude with `isModelOver_bot O join_ne 0 (by rw [card_sigma_of_point join_sub join_ne]; simp)`.
+-/
 theorem Bc.hyp₃ :
     IsModelOver O (mcIdeal O (bcCoord (Ω₁ := FractionRing O) (ptCoord (Ω := FractionRing O))
         (noCoord (Ω := FractionRing O)))) 0 ∧
@@ -270,6 +300,9 @@ theorem Bc.hyp₃ :
   rw [mcIdeal_of_one (frac_inj O) join_sub bc_pt_eq]
   exact isModelOver_bot O join_ne 0 (by rw [card_sigma_of_point join_sub join_ne]; simp)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨pt_model O, fun _ _ _ => mem_gE O⟩`.
+-/
 theorem Bd.hyp :
     IsModelOver O (mcIdeal O (ptCoord (Ω := FractionRing O))) 0 ∧
       ∀ s, mseg (ptCoord (Ω := FractionRing O)) s ≠ 0 → ∀ v,
@@ -277,6 +310,9 @@ theorem Bd.hyp :
           ∃ e ∈ (stdE O (ptCoord (Ω := FractionRing O))).lat s, v = algebraMap O (FractionRing O) (unif O) • e :=
   ⟨pt_model O, fun _ _ _ => mem_gE O⟩
 
+/- English proof (translation)
+Use `⟨Nat.prime_two, uG_isUnit, gG_sq, ?_, sameGeneric_scaledRankOne GO (ptCoord (Ω := FractionRing GaussianInt)) gG gG_ne_zero _, scaledRankOne_le_standardRankOne GO (ptCoord (Ω := FractionRing GaussianInt)) gG _, fun s _ v hv => smul_mem_scaledRankOne GO (ptCoord (Ω := FractionRing …` and prove the remaining obligations. Rewrite using `[mcIdeal_of_one (IsFractionRing.injective GO (FractionRing GaussianInt)) pt_sub ptCoord_eq]`. Conclude with `isModelOver_bot GO pt_ne 0 (by rw [card_sigma_of_point pt_sub pt_ne]; simp)`.
+-/
 theorem BlowUpLemma.hyp :
     Nat.Prime 2 ∧ IsUnit uG ∧ gG ^ 2 = uG * ((2 : ℕ) : GO) ∧
       IsModelOver GO (mcIdeal GO (ptCoord (Ω := FractionRing GaussianInt))) 0 ∧

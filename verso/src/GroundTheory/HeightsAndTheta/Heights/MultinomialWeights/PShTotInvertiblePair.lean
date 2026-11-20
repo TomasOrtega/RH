@@ -8,6 +8,19 @@ namespace GroundTheory.Heights₂.Heights.TheoremB
 
 open MvPolynomial Finset
 
+/- English proof (translation)
+Introduce `d hf`. Establish `hli` using `LinearIndependent.pair_iff.mp (h d hf).2`. Use `set S : topSpace d →ₗ[ℚ] ℚ := ∑ τ : Fin d.f, shOn d τ with hS`. Use `set T : topSpace d →ₗ[ℚ] ℚ := ∑ τ : Fin d.f, totOn d τ with hT`. Establish `hSapp : ∀ x : topSpace d, S x = shSum d x.1`.
+
+Introduce `x`. Simplify using `[hS, LinearMap.sum_apply, shOn, shLin, shSum]`. Establish `hTapp : ∀ x : topSpace d, T x = totSum d x.1`. Introduce `x`. Simplify using `[hT, LinearMap.sum_apply, totOn, totLin, totSum]`.
+
+Assume the negation of the conclusion as `hne`. Use `push Not at hne`. Establish `key : ∀ x y : topSpace d, S x * T y - T x * S y = 0`. Introduce `x y`. Rewrite using `[hSapp, hSapp, hTapp, hTapp]`.
+
+Conclude with `hne x.1 y.1 ((mem_homogeneousSubmodule _ _).mp x.2) ((mem_homogeneousSubmodule _ _).mp y.2)`. Choose the witnesses or unpack the hypotheses as in `⟨x, hx⟩ : ∃ x : topSpace d, S x ≠ 0 := by`. Assume the negation of the conclusion as `h0`. Use `push Not at h0`. Establish `h1` using `hli 1 0 (by`.
+
+Use extensionality with `y`. Simplify using `[h0 y])`. Conclude with `one_ne_zero h1.1`. Establish `h2` using `hli (T x) (-(S x)) (by`. Use extensionality with `y`.
+
+Simplify using `only [LinearMap.add_apply, LinearMap.smul_apply, smul_eq_mul, LinearMap.zero_apply]`. Take the linear combination `-(key x y))`. Conclude with `hx (neg_eq_zero.mp h2.2)`.
+-/
 theorem ShTotInvertiblePair.proof (h : ShTotIndependent.Statement) :
     ShTotInvertiblePair.Statement := by
   intro d hf

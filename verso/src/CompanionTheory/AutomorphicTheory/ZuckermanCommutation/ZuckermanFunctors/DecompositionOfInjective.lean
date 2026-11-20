@@ -11,6 +11,23 @@ namespace CompanionTheory.Zuck
 
 open BranchingSupport Formalism.FourierDecayAlt Formalism.FourierDecayAlt.ThreeDimData
 
+/- English proof (translation)
+Introduce `O N _ _ Hom C S _ X T hs hj hm hi`. Use `choose i hi hi0 using hi`. Establish `hp : ∀ s, ∃ p, Hom X (T s) p ∧ p ∘ₗ i s = LinearMap.id ∧ p ≠ 0`. Introduce `s`. Choose the witnesses or unpack the hypotheses as in `⟨y, hy⟩ : ∃ y, i s y ≠ 0 := by`.
+
+Assume the negation of the conclusion as `hn`. Conclude with `hi0 s (LinearMap.ext fun y => not_not.1 fun h => hn ⟨y, h⟩)`. Choose the witnesses or unpack the hypotheses as in `⟨t, p, hp, hpy⟩ : ∃ t p, Hom X (T t) p ∧ p (i s y) ≠ 0 := by`. Assume the negation of the conclusion as `hn`. Conclude with `hy (hj _ fun t p hp => not_not.1 fun h => hn ⟨t, p, hp, h⟩)`.
+
+Choose the witnesses or unpack the hypotheses as in `rfl : s = t := by`. Assume the negation of the conclusion as `hst`. Conclude with `hpy (LinearMap.congr_fun (hs.2.2 s t hst _ (C.comp _ _ _ _ _ (hi s) hp)) y)`. Take `⟨c, hc⟩` from `hs.2.1 s _ (C.comp _ _ _ _ _ (hi s) hp)`. Establish `hc0 : c ≠ 0`.
+
+Introduce and unpack `rfl`. Conclude with `hpy (by simpa using LinearMap.congr_fun hc y)`. Use `⟨c⁻¹ • p, C.smul _ _ _ _ hp, ?_, fun h0 => hpy ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.smul_comp, hc, smul_smul, inv_mul_cancel₀ hc0, one_smul]`. Rewrite using `[(smul_eq_zero.1 h0).resolve_left (inv_ne_zero hc0)]`.
+
+Both sides reduce to the same expression. Use `choose p hp hpi hp0 using hp`. Establish `hne : ∀ s t, s ≠ t → p s ∘ₗ i t = 0` using `fun s t hst => hs.2.2 t s (Ne.symm hst) _ (C.comp _ _ _ _ _ (hi t) (hp s))`. Use `⟨i, p, hi, hp, LinearMap.ext fun x => ?_, hpi, hne⟩` and prove the remaining obligations. Rewrite using `[LinearMap.id_apply, eq_comm, ← sub_eq_zero]`.
+
+Use `hj _ fun t q hq => ?_` and prove the remaining obligations. Establish `h0 : p t (x - (∑ s, i s ∘ₗ p s) x) = 0`. Rewrite using `[map_sub, LinearMap.sum_apply, map_sum, Finset.sum_eq_single t]`. Conclude with `sub_eq_zero.2 (LinearMap.congr_fun (hpi t) (p t x)).symm`. Introduce `s _ hst`.
+
+Conclude with `LinearMap.congr_fun (hne t s (Ne.symm hst)) (p s x)`. Simplify using the standard rewrite rules. Take `⟨α, β, hab, h1⟩` from `hm t q (p t) hq (hp t)`. Establish `hα : α ≠ 0`. Introduce and unpack `rfl`.
+
+Rewrite `h1` using `[zero_smul, zero_add]`. Conclude with `hp0 t ((smul_eq_zero.1 h1).resolve_left (hab.resolve_left (not_not.2 rfl)))`. Establish `h2` using `LinearMap.congr_fun h1 (x - (∑ s, i s ∘ₗ p s) x)`. Rewrite `h2` using `[LinearMap.add_apply, LinearMap.smul_apply, LinearMap.smul_apply, h0, smul_zero, add_zero]`. Conclude with `(smul_eq_zero.1 h2).resolve_left hα`.
+-/
 theorem decomposition_of_injective : DecOfInj := by
   intro O N _ _ Hom C S _ X T hs hj hm hi
   classical
@@ -56,11 +73,21 @@ theorem decomposition_of_injective : DecOfInj := by
 
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
+/- English proof (translation)
+Introduce `_ _` and use `⟨rfl, fun _ _ _ _ => (Matrix.one_mul _).symm, fun _ _ _ _ => ⟨Set.univ, _, isOpen_univ, trivial, contDiffOn_const, fun _ _ _ => rfl⟩, ⟨1, fun _ _ _ _ => by simp⟩⟩`.
+-/
 theorem trivial_rep_admissible : OKTriv := fun _ _ =>
   ⟨rfl, fun _ _ _ _ => (Matrix.one_mul _).symm,
     fun _ _ _ _ => ⟨Set.univ, _, isOpen_univ, trivial, contDiffOn_const, fun _ _ _ => rfl⟩,
     ⟨1, fun _ _ _ _ => by simp⟩⟩
 
+/- English proof (translation)
+Introduce `k r b`. Consider the cases of `b`. Use `⟨rfl, fun _ _ _ _ => rfl, fun c d _ _ => ?_, ⟨1, fun g _ c d => ?_⟩⟩` and prove the remaining obligations. Conclude with `⟨Set.univ, fun g => g c d, isOpen_univ, trivial, (LinearMap.toContinuousLinearMap (Matrix.entryLinearMap ℝ ℂ c d)).contDiff.contDiffOn, fun _ _ _ => rfl⟩`. Simplify using `using GlobalTheory.DualFRep.entry_le g c d`.
+
+Take `⟨-, -, h1, h2, -, -, h3, -⟩` from `GlobalTheory.isFRep_dualM k r`. Use `⟨h1, h2, fun c d _ _ => ?_, h3⟩` and prove the remaining obligations. Set `A : Mx k r →ₗ[ℝ] ℂ` to `{ toFun := fun x => (PI.UpqRep.Hpk k r * xᴴ * PI.UpqRep.Hpk k r) d c map_add' := fun a b => by rw [Matrix.conjTranspose_add, Matrix.mul_add, Matrix.add_mul]; rfl map_smul' := fun t a => by`. Rewrite using `[Matrix.conjTranspose_smul, Matrix.mul_smul, Matrix.smul_mul, star_trivial]`. Use `rfl }`.
+
+Use `⟨Set.univ, A, isOpen_univ, trivial, (LinearMap.toContinuousLinearMap A).contDiff.contDiffOn, fun g _ hg => ?_⟩` and prove the remaining obligations. Use `show g⁻¹ d c = _`. Rewrite using `[PI.HwUniqW.inv_eq_UH hg]`. Both sides reduce to the same expression.
+-/
 theorem vector_rep_admissible : OKVr := by
   intro k r b
   cases b

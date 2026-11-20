@@ -21,6 +21,9 @@ open GlobalTheory.CompanionTheory.Ar.GR
 
 namespace GlobalTheory.CompanionTheory.Ar.GR
 
+/- English proof (translation)
+The claim follows from `@PositivityTheory.HtPt.Ri.oact_int`.
+-/
 theorem polAV_oAct_int : ∀ (O : Type) [CommRing O] [IsDomain O] [IsLocalRing O] (P : Out.PolAV (Geo.Tor.Sp O)), Nonempty (P.OAct ℤ) :=
   @PositivityTheory.HtPt.Ri.oact_int
 

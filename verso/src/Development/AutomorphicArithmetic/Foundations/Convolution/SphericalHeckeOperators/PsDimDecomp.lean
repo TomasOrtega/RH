@@ -6,6 +6,15 @@ section
 
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] {n : ℕ}
 
+/- English proof (translation)
+Establish `hent : ∀ i j, (((permGL F σ)⁻¹ * z * permGL F σ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) i j = (z : Matrix (Fin n) (Fin n) F) (σ i) (σ j)`. Introduce `i j`. Rewrite using `[← map_inv, Units.val_mul, mul_permGL_apply, Units.val_mul, permGL_mul_apply, inv_inv]`. Take `⟨h1, h2, h3⟩` from `(mem_iwahori_iff F n).1 hz`. Establish `h4` using `(Parabolic.mem_oppositeUnipotentRadical.1 hz').1`.
+
+Rewrite using `[mem_iwahori_iff]`. Use `⟨fun i j => ?_, fun i j hij => ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[hent]`. Conclude with `h1 _ _`. Rewrite using `[hent]`.
+
+Break down `lt_trichotomy (σ i) (σ j) with h | h | h` into its components or cases. Rewrite using `[h4 _ _ h, map_zero]`. Conclude with `zero_lt_one`. Conclude with `absurd (σ.injective h) hij.ne'`. Conclude with `h2 _ _ h`.
+
+Rewrite using `[hent]`. Conclude with `h3 _`.
+-/
 private theorem psDim_conj (σ : Equiv.Perm (Fin n)) {z : GL (Fin n) F} (hz : z ∈ iwahori F n)
     (hz' : z ∈ Parabolic.oppositeUnipotentRadical F n (id : Fin n → Fin n)) :
     (permGL F σ)⁻¹ * z * permGL F σ ∈ iwahori F n := by
@@ -25,6 +34,11 @@ private theorem psDim_conj (σ : Equiv.Perm (Fin n)) {z : GL (Fin n) F} (hz : z 
     · exact h2 _ _ h
   · rw [hent]; exact h3 _
 
+/- English proof (translation)
+Take `⟨p, k, hk, rfl⟩` from `exists_borel_mul g`. Establish `hk' : k ∈ (integralGL F n : Set (GL (Fin n) F))` using `hk`. Rewrite `hk'` using `[integralGL_eq_iUnion_doubleCoset_permGL]`. Take `⟨σ, hσ⟩` from `Set.mem_iUnion.1 hk'`. Take `⟨x, hx, y, hy, rfl⟩` from `DoubleCoset.mem_doubleCoset.1 hσ`.
+
+Take `⟨u, hu, t, ht, z, hz, rfl⟩` from `Parabolic.iwahoriFactorization_symm (Parabolic.iwahori_iwahoriFactorization (F := F) (β := (id : Fin n → Fin n)) monotone_id) x hx`. Use `⟨p * ⟨u, Parabolic.unipotentRadical_le_blockUpper hu.2⟩ * ⟨t, Parabolic.levi_le_blockUpper ht.2⟩, σ, (permGL F σ)⁻¹ * z * permGL F σ * y, mul_mem (psDim_conj σ hz.1 hz.2) hy, ?_⟩` and prove the remaining obligations. Simplify using `only [Subgroup.coe_mul]`. Use `group`.
+-/
 private theorem psDim_decomp (g : GL (Fin n) F) :
     ∃ p : blockUpper F n (id : Fin n → Fin n), ∃ σ : Equiv.Perm (Fin n), ∃ y ∈ iwahori F n,
       g = (p : GL (Fin n) F) * (permGL F σ * y) := by
@@ -42,6 +56,13 @@ private theorem psDim_decomp (g : GL (Fin n) F) :
 
 end
 
+/- English proof (translation)
+Introduce `F _ _ _ _ n z`. Set `L : psI F z →ₗ[ℂ] (Equiv.Perm (Fin n) → ℂ)` to `{ toFun := fun f σ => (f : GL (Fin n) F → ℂ) (permGL F σ) map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl }`. Establish `hL : Function.Injective L`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `f hf`.
+
+Use `Subtype.ext (funext fun g => ?_)` and prove the remaining obligations. Take `⟨p, σ, y, hy, rfl⟩` from `psDim_decomp g`. Establish `h0 : (f : GL (Fin n) F → ℂ) (permGL F σ) = 0` using `congrFun hf σ`. Rewrite using `[(mem_principalSeriesSpace.1 f.2.1).1 p, f.2.2 _ y hy, h0, mul_zero]`. Both sides reduce to the same expression.
+
+Use `⟨FiniteDimensional.of_injective L hL, ?_⟩` and prove the remaining obligations. Use `LinearMap.finrank_le_finrank_of_injective hL` as an intermediate fact. Simplify `this` using `[Fintype.card_perm]`.
+-/
 theorem UpperTheory.ConvolutionTheory.H.psDim :
     ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] (n : ℕ) (z : Fin n → ℂˣ),
       FiniteDimensional ℂ (psI F z) ∧ Module.finrank ℂ (psI F z) ≤ n.factorial := by

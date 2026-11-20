@@ -6,6 +6,17 @@ import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.Ex
 open NumberField IsDedekindDomain Matrix GlobalTheory.UPel.HT GlobalTheory.LKTrip GlobalTheory.LKMid GlobalTheory.LKDef GlobalTheory.CuspRep GlobalTheory.UnitaryBC UpperTheory.Gal.W2.Seed UpperTheory.Gal.G1
 open scoped TensorProduct
 
+/- English proof (translation)
+Introduce `F _ _ v tr nm hΔ u hu`. Use `haveI : CharZero (HeightOneSpectrum.adicCompletion F v) := (RingHom.charZero_iff (algebraMap F (HeightOneSpectrum.adicCompletion F v)).injective).mp inferInstance`. Establish `h2 : (2 : HeightOneSpectrum.adicCompletion F v) ≠ 0` using `two_ne_zero`. Establish `hD : ((tr : HeightOneSpectrum.adicCompletion F v) ^ 2 - 4 * nm) ≠ 0`. Establish `h` using `(Int.cast_ne_zero (α := HeightOneSpectrum.adicCompletion F v)).mpr hΔ`.
+
+Move the coercions through the operations in `at h`. Conclude with `h`. Use `set D : HeightOneSpectrum.adicCompletion F v := (tr : HeightOneSpectrum.adicCompletion F v) ^ 2 - 4 * nm with hDdef`. Set `c : Fin 5 → HeightOneSpectrum.adicCompletion F v` to `![1, -(D / 4), 1, -(D / 4), -u]`. Establish `hc : ∀ i, c i ≠ 0`.
+
+Introduce `i`. Apply the tactic sequence `fin_cases i <;> simp [c, hD, hu]`. Take `⟨x, hx0, hx⟩` from `GlobalTheory.LocalQuad.isotropic_adicCompletion_of_five_le F v (ι := Fin 5) (by simp) c`. Take `⟨z, hz4, hz⟩` from `GlobalTheory.HermLocal.exists_zero_coord h2 hc hx0 hx 4`. Establish `hz' : z 0 ^ 2 + -(D / 4) * z 1 ^ 2 + z 2 ^ 2 + -(D / 4) * z 3 ^ 2 + -u * z 4 ^ 2 = 0`.
+
+Rewrite `hz` using `[Fin.sum_univ_five]`. Simplify `hz` using `[c]`. Take `⟨w, hw⟩ : ∃ w, z 4 * w = 1` from `⟨(z 4)⁻¹, mul_inv_cancel₀ hz4⟩`. Use `⟨z 0 * w - tr / 2 * (z 1 * w), z 1 * w, z 2 * w - tr / 2 * (z 3 * w), z 3 * w, ?_⟩` and prove the remaining obligations. Unfold `qf`.
+
+Rewrite `hz'` using `[hDdef]`. Take the linear combination `w ^ 2 * hz' + u * (z 4 * w + 1) * hw`.
+-/
 theorem UpperTheory.Gal.G1.pLocFour :
     LocFour := by
   intro F _ _ v tr nm hΔ u hu

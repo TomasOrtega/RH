@@ -27,6 +27,15 @@ section Ad
 
 variable {Γ k : Type} [Group Γ] [CommRing k]
 
+/- English proof (translation)
+Take `⟨hmul, -, -, -, -, -, hinv, -⟩` from `grp k`. Take `⟨ν, hν⟩` from `h g`. Take `⟨ν', hν'⟩` from `h g⁻¹`. Establish `e1 : r g * r g⁻¹ = 1` using `by rw [← map_mul, mul_inv_cancel, map_one]`. Establish `e2 : r g⁻¹ * r g = 1` using `by rw [← map_mul, inv_mul_cancel, map_one]`.
+
+Establish `a1` using `hinv ν _ _ hν e1`. Establish `a2` using `hinv ν' _ _ hν' e2`. Establish `a3 : adj (r g⁻¹) * adj (r g) = 1`. Take `⟨-, -, -, -, h1, -⟩` from `grp k`. Rewrite using `[← hmul, e1, h1]`.
+
+Establish `hX' : adj X = -X` using `hX`. Use `show adj _ = -_`. Establish `a4 : (ν' * ν) • (1 : M4 k) = 1`. Rewrite `a3` using `[a1, a2, smul_mul_assoc, mul_smul_comm, e1, smul_smul]`. Conclude with `a3`.
+
+Rewrite using `[hmul, hmul, hX', a1, a2]`. Simplify using `only [smul_mul_assoc, mul_smul_comm, smul_smul, neg_mul, mul_neg, smul_neg, mul_assoc]`. Rewrite using `[← one_mul (r g * (X * r g⁻¹)), ← smul_mul_assoc, mul_comm ν ν', a4]`.
+-/
 theorem adjoint_mem_sp4 {r : Γ →* M4 k} (h : ∀ g, ∃ ν, IsGSp ν (r g)) (g : Γ) {X : M4 k} (hX : X ∈ sp4 k) :
     r g * X * r g⁻¹ ∈ sp4 k := by
   obtain ⟨hmul, -, -, -, -, -, hinv, -⟩ := grp k
@@ -56,6 +65,9 @@ def adSp (r : Γ →* M4 k) (h : ∀ g, ∃ ν, IsGSp ν (r g)) : Representation
   map_one' := LinearMap.ext fun Y => Subtype.ext (by simp)
   map_mul' s t := LinearMap.ext fun Y => Subtype.ext (by simp [mul_assoc])
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem adSp_val (r : Γ →* M4 k) (h : ∀ g, ∃ ν, IsGSp ν (r g)) (s : Γ) (Y : sp4 k) :
     (adSp r h s Y).1 = r s * Y.1 * r s⁻¹ := rfl
 

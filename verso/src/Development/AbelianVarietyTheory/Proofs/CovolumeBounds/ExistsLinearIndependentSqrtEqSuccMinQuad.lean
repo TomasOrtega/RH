@@ -12,6 +12,19 @@ section General
 variable {K : Type*} [DivisionRing K] {V : Type*} [AddCommGroup V] [Module K V]
   {N : V → ℝ} {S : Set V} {n : ℕ}
 
+/- English proof (translation)
+Establish `hrank : (n : Cardinal) ≤ Module.rank K (span K S)` using `natCast_le_rank_span_iff.2 ⟨v, hv, hS⟩`. Establish `key : ∀ i ≤ n, succMinOf K N S i ≤ N x → N x < succMinOf K N S (i + 1) → x ∈ span K (v '' {j | (j : ℕ) < i})`. Introduce `i hi h1 h2`. Assume the negation of the conclusion as `hx'`. Establish `hw : LinearIndependent K (fun j : Fin i => v (Fin.castLE hi j))` using `hv.comp _ (Fin.castLE_injective hi)`.
+
+Establish `hr : Set.range (fun j : Fin i => v (Fin.castLE hi j)) = v '' {j | (j : ℕ) < i}`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨j, rfl⟩`. Conclude with `⟨_, j.2, rfl⟩`.
+
+Introduce and unpack `⟨j, hj, rfl⟩`. Conclude with `⟨⟨j, hj⟩, rfl⟩`. Establish `hli : LinearIndependent K (Fin.cons x (fun j : Fin i => v (Fin.castLE hi j)) : Fin (i + 1) → V)` using `linearIndependent_finCons.2 ⟨hw, by rwa [hr]⟩`. Use `absurd (succMinOf_le_of_linearIndependent (N := N) (S := S) (i := i + 1) hli (by simp) hx0 ?_ ?_) (not_le.2 h2)` and prove the remaining obligations. Introduce `k`.
+
+Use `Fin.cases hx (fun j => hS _) k` and prove the remaining obligations. Introduce `k`. Use `Fin.cases le_rfl (fun j => ?_) k` and prove the remaining obligations. Conclude with `(hN _).trans ((succMinOf_mono (show (j : ℕ) + 1 ≤ i from j.2) ((Nat.cast_le.2 hi).trans hrank)).trans h1)`. Proceed by induction on `i with`.
+
+Consider the case `zero => exact key 0 hi (succMinOf_zero.le.trans hx0) h`. Consider the case `succ m ih`. Break down `lt_or_ge (N x) (succMinOf K N S (m + 1)) with h1 | h1` into its components or cases. Establish `hsub : {j : Fin n | (j : ℕ) < m} ⊆ {j : Fin n | (j : ℕ) < m + 1}` using `fun j hj => Nat.lt_succ_of_lt hj`. Conclude with `span_mono (Set.image_mono hsub) (ih (Nat.le_of_succ_le hi) h1)`.
+
+Conclude with `key (m + 1) hi h1 h`.
+-/
 theorem mem_span_of_lt_succMinOf {v : Fin n → V} (hv : LinearIndependent K v) (hS : ∀ j, v j ∈ S)
     (hN : ∀ j : Fin n, N (v j) ≤ succMinOf K N S (j + 1)) {i : ℕ} (hi : i ≤ n) {x : V}
     (hx : x ∈ S) (hx0 : 0 ≤ N x) (h : N x < succMinOf K N S (i + 1)) :
@@ -49,6 +62,17 @@ theorem mem_span_of_lt_succMinOf {v : Fin n → V} (hv : LinearIndependent K v) 
       exact span_mono (Set.image_mono hsub) (ih (Nat.le_of_succ_le hi) h1)
     · exact key (m + 1) hi h1 h
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => exact ⟨Fin.elim0, linearIndependent_empty_type, fun j => j.elim0, fun j => j.elim0⟩`. Consider the case `succ m ih`. Take `⟨v, hv, hS, hvN⟩` from `ih ((Nat.cast_le.2 (Nat.le_succ m)).trans hn)`. Take `⟨-, w, hw, hwS⟩` from `mem_succMinRadii_iff.1 (succMinOf_mem hfin hn)`.
+
+Take `⟨k, hk⟩ : ∃ k, w k ∉ span K (Set.range v)` from `by by_contra! h`. Establish `h1 : span K (Set.range w) ≤ span K (Set.range v)` using `span_le.2 (Set.range_subset_iff.2 h)`. Establish `: Module.Finite K (span K (Set.range v))` using `Module.Finite.span_of_finite K (Set.finite_range v)`. Establish `h2` using `Submodule.finrank_mono h1`. Rewrite `h2` using `[finrank_span_eq_card hw, finrank_span_eq_card hv]`.
+
+Simplify using `at h2`. Establish `hk' : N (w k) = succMinOf K N S (m + 1)`. Use `le_antisymm (hwS k).2 (not_lt.1 fun h => hk ?_)` and prove the remaining obligations. Conclude with `span_mono (Set.image_subset_range _ _) (mem_span_of_lt_succMinOf hv hS (fun j => (hvN j).le) le_rfl (hwS k).1 (hN _ (hwS k).1) h)`. Use `⟨Fin.snoc v (w k), linearIndependent_finSnoc.2 ⟨hv, hk⟩, fun j => ?_, fun j => ?_⟩` and prove the remaining obligations.
+
+Use `Fin.lastCases ?_ (fun j => ?_) j` and prove the remaining obligations. Simplify using `using (hwS k).1`. Simplify using `using hS j`. Use `Fin.lastCases ?_ (fun j => ?_) j` and prove the remaining obligations. Simplify using `using hk'`.
+
+Simplify using `using hvN j`.
+-/
 theorem exists_linearIndependent_eq_succMinOf (hfin : ∀ R, {x | x ∈ S ∧ N x ≤ R}.Finite)
     (hN : ∀ x ∈ S, 0 ≤ N x) (hn : (n : Cardinal) ≤ Module.rank K (span K S)) :
     ∃ v : Fin n → V, LinearIndependent K v ∧ (∀ j, v j ∈ S) ∧
@@ -86,12 +110,18 @@ section Normed
 
 variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] {L : Submodule ℤ E} {n : ℕ}
 
+/- English proof (translation)
+The claim follows from `mem_span_of_lt_succMinOf (N := fun x : E => ‖x‖) (S := (L : Set E)) hv hL hN hi hx (norm_nonneg x) h`.
+-/
 theorem mem_span_of_norm_lt_succMin {v : Fin n → E} (hv : LinearIndependent ℝ v)
     (hL : ∀ j, v j ∈ L) (hN : ∀ j : Fin n, ‖v j‖ ≤ succMin L (j + 1)) {i : ℕ} (hi : i ≤ n) {x : E}
     (hx : x ∈ L) (h : ‖x‖ < succMin L (i + 1)) : x ∈ span ℝ (v '' {j | (j : ℕ) < i}) :=
   mem_span_of_lt_succMinOf (N := fun x : E => ‖x‖) (S := (L : Set E)) hv hL hN hi hx
     (norm_nonneg x) h
 
+/- English proof (translation)
+The claim follows from `not_lt.1 fun h' => h (mem_span_of_norm_lt_succMin hv hL hN hi hx h')`.
+-/
 theorem succMin_le_norm_of_notMem_span {v : Fin n → E} (hv : LinearIndependent ℝ v)
     (hL : ∀ j, v j ∈ L) (hN : ∀ j : Fin n, ‖v j‖ ≤ succMin L (j + 1)) {i : ℕ} (hi : i ≤ n) {x : E}
     (hx : x ∈ L) (h : x ∉ span ℝ (v '' {j | (j : ℕ) < i})) : succMin L (i + 1) ≤ ‖x‖ :=
@@ -99,6 +129,9 @@ theorem succMin_le_norm_of_notMem_span {v : Fin n → E} (hv : LinearIndependent
 
 variable [FiniteDimensional ℝ E] [DiscreteTopology L]
 
+/- English proof (translation)
+The claim follows from `exists_linearIndependent_eq_succMinOf (N := fun x : E => ‖x‖) (S := (L : Set E)) (finite_mem_and_norm_le L) (fun x _ => norm_nonneg x) (natCast_le_rank_of_le_finrank hn)`.
+-/
 theorem exists_linearIndependent_norm_eq_succMin (hn : n ≤ finrank ℝ (span ℝ (L : Set E))) :
     ∃ v : Fin n → E, LinearIndependent ℝ v ∧ (∀ j, v j ∈ L) ∧
       ∀ j : Fin n, ‖v j‖ = succMin L (j + 1) :=
@@ -107,6 +140,11 @@ theorem exists_linearIndependent_norm_eq_succMin (hn : n ≤ finrank ℝ (span �
 
 variable (L) [IsZLattice ℝ L]
 
+/- English proof (translation)
+Take `⟨v, hv, hL, hN⟩` from `exists_linearIndependent_norm_eq_succMin (L := L) (finrank_span_of_isZLattice L).ge`. Establish `htop : ⊤ ≤ span ℝ (Set.range v)`. Rewrite using `[top_le_iff]`. Apply `Submodule.eq_top_of_finrank_eq` to reduce the goal to its premises. Rewrite using `[finrank_span_eq_card hv, Fintype.card_fin]`.
+
+Conclude with `⟨Basis.mk hv htop, by simpa using hL, by simpa using hN⟩`.
+-/
 theorem exists_basis_norm_eq_succMin :
     ∃ b : Basis (Fin (finrank ℝ E)) ℝ E, (∀ j, b j ∈ L) ∧
       ∀ j : Fin (finrank ℝ E), ‖b j‖ = succMin L (j + 1) := by

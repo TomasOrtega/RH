@@ -83,6 +83,9 @@ def MEquiv : Prop :=
     ∃ c ∈ GFf I, I.fmat c = (γ : Matrix (Fin I.n) (Fin I.n) I.E).map (Formalism.UG.inclE (F := I.F) (Af I.F)) ∧
       ∀ x, IsImg γ (abelian₂ I x) (abelian₂ I (c * x))
 
+/- English proof (translation)
+Introduce `I` and use `⟨abelian₂ I, fun x => ⟨(h1 I x).1, (h1 I x).2, h2 I x⟩, h3 I, h4 I⟩`.
+-/
 theorem stDict_of (h1 : MLat) (h2 : MDual) (h3 : MInj) (h4 : MEquiv) : StDict :=
   fun I => ⟨abelian₂ I, fun x => ⟨(h1 I x).1, (h1 I x).2, h2 I x⟩, h3 I, h4 I⟩
 

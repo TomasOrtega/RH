@@ -15,6 +15,9 @@ noncomputable section
 
 namespace GlobalTheory.SqZeroPt
 
+/- English proof (translation)
+Use extensionality with `x`. Use `all_goals`. Rewrite using `[← TrivSqZeroExt.inl_fst_add_inr_snd_eq x, map_add, hβ.1, hβ.2]`. Simplify using the standard rewrite rules.
+-/
 theorem eq_map_of_isSum {O : Type} [CommRing O] {M M' : Type} [AddCommGroup M] [Module O M]
     [Module Oᵐᵒᵖ M] [IsCentralScalar O M] [AddCommGroup M'] [Module O M'] [Module Oᵐᵒᵖ M']
     [IsCentralScalar O M'] (f : M →ₗ[O] M') (β : TrivSqZeroExt O M →+* TrivSqZeroExt O M')
@@ -24,6 +27,11 @@ theorem eq_map_of_isSum {O : Type} [CommRing O] {M M' : Type} [AddCommGroup M] [
     rw [← TrivSqZeroExt.inl_fst_add_inr_snd_eq x, map_add, hβ.1, hβ.2]
     simp
 
+/- English proof (translation)
+Introduce `O _ A _ M _ _ _ _ v h`. Use `⟨fun r w => Phi_smul O M A v h r w, ?_⟩` and prove the remaining obligations. Introduce `M' _ _ _ _ f β hβ v' h' hv w`. Establish `e : v' = GlobalTheory.GrpTangent.sqZeroMap f ≫ v`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
+
+Rewrite using `[hv, eq_map_of_isSum f β hβ]`. Both sides reduce to the same expression. Substitute `e` using the available equality. Conclude with `Phi_sqZeroMap_comp O M M' A f v h h' w`.
+-/
 theorem Phi_linear_natural : ∀ (O : Type) [CommRing O] (A : Over (Sp O)) [GrpObj A] (M : Type) [AddCommGroup M] [Module O M] [Module Oᵐᵒᵖ M] [IsCentralScalar O M] (v : GlobalTheory.SqZeroPt.TM O M ⟶ A) (h : GlobalTheory.SqZeroPt.zeroSec O M ≫ v = η[A]), (∀ (r : O) w, GlobalTheory.SqZeroPt.Phi v h (r • w) = r • GlobalTheory.SqZeroPt.Phi v h w) ∧ ∀ (M' : Type) [AddCommGroup M'] [Module O M'] [Module Oᵐᵒᵖ M'] [IsCentralScalar O M'] (f : M →ₗ[O] M') (β : TrivSqZeroExt O M →+* TrivSqZeroExt O M'), IsSum β id f → ∀ (v' : GlobalTheory.SqZeroPt.TM O M' ⟶ A) (h' : GlobalTheory.SqZeroPt.zeroSec O M' ≫ v' = η[A]), v'.left = spMap β ≫ v.left → ∀ w, GlobalTheory.SqZeroPt.Phi v' h' w = f (GlobalTheory.SqZeroPt.Phi v h w) := by
   intro O _ A _ M _ _ _ _ v h
   refine ⟨fun r w => Phi_smul O M A v h r w, ?_⟩

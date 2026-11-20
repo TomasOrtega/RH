@@ -14,5 +14,8 @@ attribute [local instance] Over.cartesianMonoidalCategory
 attribute [local instance] algPadicInt algPadicField towerPadic factPadic GlobalTheory.PadicComplexHost.isAdicComplete
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CovHt.HTLatB.latBound | exact GlobalTheory.CovHt.HTLatB.latBound | (intros; apply GlobalTheory.CovHt.HTLatB.latBound <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.lattice_bound_of_height : Hypotheses2 → GlobalTheory.CovHt.HTDiag.LatBound := by
   first | exact @GlobalTheory.CovHt.HTLatB.latBound | exact GlobalTheory.CovHt.HTLatB.latBound | (intros; apply GlobalTheory.CovHt.HTLatB.latBound <;> assumption)

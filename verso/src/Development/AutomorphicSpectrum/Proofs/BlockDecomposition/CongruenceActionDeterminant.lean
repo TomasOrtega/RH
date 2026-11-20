@@ -19,19 +19,34 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Simplify using `only [hOf, Pi.add_apply, Complex.ofReal_add, add_smul, Finset.sum_add_distrib]`.
+-/
 theorem hOf_add (v w : Fin n × Fin n → ℝ) : hOf (v + w) = hOf v + hOf w := by
   simp only [hOf, Pi.add_apply, Complex.ofReal_add, add_smul, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Simplify using `only [hOf, Pi.smul_apply, smul_eq_mul, Complex.ofReal_mul, Finset.smul_sum, smul_smul]`.
+-/
 theorem hOf_smul (c : ℝ) (v : Fin n × Fin n → ℝ) : hOf (c • v) = (c : ℂ) • hOf v := by
   simp only [hOf, Pi.smul_apply, smul_eq_mul, Complex.ofReal_mul, Finset.smul_sum, smul_smul]
 
+/- English proof (translation)
+Simplify using `[hOf, Pi.single_apply, ite_smul]`.
+-/
 theorem hOf_single (q : Fin n × Fin n) : hOf (Pi.single q (1 : ℝ)) = hb q := by
   classical
   simp [hOf, Pi.single_apply, ite_smul]
 
+/- English proof (translation)
+Simplify using `[hOf, conjTranspose_sum, conjTranspose_smul, GlobalTheory.CompanionTheory.TwistHomotopy.hb_conjTranspose]`.
+-/
 theorem hOf_herm (v : Fin n × Fin n → ℝ) : (hOf v)ᴴ = hOf v := by
   simp [hOf, conjTranspose_sum, conjTranspose_smul, GlobalTheory.CompanionTheory.TwistHomotopy.hb_conjTranspose]
 
+/- English proof (translation)
+Apply `Complex.conj_eq_iff_re.1` to reduce the goal to its premises. Establish `h1 : star (P * hb p).trace = (P * hb p).trace`. Rewrite using `[← Matrix.trace_conjTranspose, conjTranspose_mul, hP, GlobalTheory.CompanionTheory.TwistHomotopy.hb_conjTranspose, Matrix.trace_mul_comm]`. Conclude with `h1`.
+-/
 theorem re_trace (P : Mat n) (hP : Pᴴ = P) (p : Fin n × Fin n) :
     (((P * hb p).trace).re : ℂ) = (P * hb p).trace := by
   apply Complex.conj_eq_iff_re.1
@@ -40,12 +55,18 @@ theorem re_trace (P : Mat n) (hP : Pᴴ = P) (p : Fin n × Fin n) :
       Matrix.trace_mul_comm]
   exact h1
 
+/- English proof (translation)
+Establish `h` using `(GlobalTheory.CompanionTheory.TopClass.hbB n).sum_repr P`. Simplify using `only [GlobalTheory.CompanionTheory.TopClass.hbB_repr, GlobalTheory.CompanionTheory.TopClass.hbB_apply] at h`. Use `conv_rhs => rw [← h]`. Simplify using `only [hOf, re_trace P hP]`.
+-/
 theorem hOf_re (P : Mat n) (hP : Pᴴ = P) : hOf (fun p => ((P * hb p).trace).re) = P := by
   have h := (GlobalTheory.CompanionTheory.TopClass.hbB n).sum_repr P
   simp only [GlobalTheory.CompanionTheory.TopClass.hbB_repr, GlobalTheory.CompanionTheory.TopClass.hbB_apply] at h
   conv_rhs => rw [← h]
   simp only [hOf, re_trace P hP]
 
+/- English proof (translation)
+Simplify using `only [conjTranspose_mul, conjTranspose_conjTranspose, hP, Matrix.mul_assoc]`.
+-/
 theorem conj_herm (g P : Mat n) (hP : Pᴴ = P) : (g * P * gᴴ)ᴴ = g * P * gᴴ := by
   simp only [conjTranspose_mul, conjTranspose_conjTranspose, hP, Matrix.mul_assoc]
 
@@ -63,11 +84,22 @@ def cplxMap (g : Mat n) : Mat n →ₗ[ℂ] Mat n where
   map_add' X Y := by simp [Matrix.mul_add, Matrix.add_mul]
   map_smul' c X := by simp [Matrix.mul_smul, Matrix.smul_mul]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cplxMap_apply (g X : Mat n) : cplxMap g X = g * X * gᴴ := rfl
 
+/- English proof (translation)
+The claim follows from `hOf_re _ (conj_herm g _ (hOf_herm v))`.
+-/
 theorem hOf_realMap (g : Mat n) (v : Fin n × Fin n → ℝ) : hOf (realMap g v) = g * hOf v * gᴴ :=
   hOf_re _ (conj_herm g _ (hOf_herm v))
 
+/- English proof (translation)
+Rewrite using `[← LinearMap.det_toMatrix' (realMap g), ← GlobalTheory.CompanionTheory.TopClass.det_of_trace (cplxMap g), ← Matrix.det_transpose (Matrix.of _)]`. Establish `h : ((LinearMap.toMatrix' (realMap g)).det : ℂ) = Complex.ofRealHom (LinearMap.toMatrix' (realMap g)).det` using `rfl`. Rewrite using `[h, RingHom.map_det]`. Use `congr 1`. Use extensionality with `p q`.
+
+Establish `hh : (g * hb q * gᴴ)ᴴ = g * hb q * gᴴ` using `conj_herm g _ (GlobalTheory.CompanionTheory.TwistHomotopy.hb_conjTranspose q)`. Use `re_trace _ hh p` as an intermediate fact. Simplify `this` using `[LinearMap.toMatrix'_apply, realMap, hOf_single, cplxMap_apply, Pi.single_apply]`.
+-/
 theorem det_realMap (g : Mat n) : ((LinearMap.det (realMap g) : ℝ) : ℂ) = LinearMap.det (cplxMap g) := by
   rw [← LinearMap.det_toMatrix' (realMap g), ← GlobalTheory.CompanionTheory.TopClass.det_of_trace (cplxMap g),
     ← Matrix.det_transpose (Matrix.of _)]
@@ -80,6 +112,13 @@ theorem det_realMap (g : Mat n) : ((LinearMap.det (realMap g) : ℝ) : ℂ) = Li
   have := re_trace _ hh p
   simpa [LinearMap.toMatrix'_apply, realMap, hOf_single, cplxMap_apply, Pi.single_apply] using this
 
+/- English proof (translation)
+Establish `h : LinearMap.toMatrix (Matrix.stdBasis ℂ (Fin n) (Fin n)) (Matrix.stdBasis ℂ (Fin n) (Fin n)) (cplxMap g) = g ⊗ₖ g.map star`. Use extensionality with `⟨i, j⟩ ⟨k, l⟩`. Establish `hr : ∀ X : Mat n, (Matrix.stdBasis ℂ (Fin n) (Fin n)).repr X (i, j) = X i j`. Introduce `X`. Simplify using `[Matrix.stdBasis]`.
+
+Rewrite using `[LinearMap.toMatrix_apply, hr]`. Simplify using `[cplxMap_apply, Matrix.stdBasis_eq_single, Matrix.mul_apply, Matrix.single_apply, ite_and]`. Rewrite using `[← LinearMap.det_toMatrix (Matrix.stdBasis ℂ (Fin n) (Fin n)), h, Matrix.det_kronecker]`. Establish `h2 : (g.map star).det = star g.det`. Rewrite using `[← Matrix.det_conjTranspose, ← Matrix.det_transpose]`.
+
+Both sides reduce to the same expression. Rewrite using `[h2, Fintype.card_fin, mul_pow]`.
+-/
 theorem det_cplxMap (g : Mat n) : LinearMap.det (cplxMap g) = (g.det * star g.det) ^ n := by
   have h : LinearMap.toMatrix (Matrix.stdBasis ℂ (Fin n) (Fin n)) (Matrix.stdBasis ℂ (Fin n) (Fin n)) (cplxMap g) =
       g ⊗ₖ g.map star := by
@@ -95,6 +134,11 @@ theorem det_cplxMap (g : Mat n) : LinearMap.det (cplxMap g) = (g.det * star g.de
     rfl
   rw [h2, Fintype.card_fin, mul_pow]
 
+/- English proof (translation)
+Use `⟨realMap g, hOf_realMap g, ?_⟩` and prove the remaining obligations. Apply `Complex.ofReal_injective` to reduce the goal to its premises. Rewrite using `[det_realMap, det_cplxMap]`. Establish `: g.det * star g.det = ((‖g.det‖ ^ 2 : ℝ) : ℂ)`. Simplify using `using Complex.mul_conj' g.det`.
+
+Rewrite using `[this, pow_mul]`. Simplify using the standard rewrite rules.
+-/
 theorem cone_lin (n : ℕ) (g : Mat n) (_hg : g.det ≠ 0) :
     ∃ T : (Fin n × Fin n → ℝ) →ₗ[ℝ] (Fin n × Fin n → ℝ),
       (∀ v, hOf (T v) = g * hOf v * gᴴ) ∧ LinearMap.det T = ‖g.det‖ ^ (2 * n) := by

@@ -10,11 +10,19 @@ variable {ι : Type*}
 
 def ebox (s : Finset ι) (J : ι → ℕ) : Finset (ι →₀ ℕ) := s.finsupp fun i => range (J i + 1)
 
+/- English proof (translation)
+Simplify using `[ebox, Finset.mem_finsupp_iff, Nat.lt_succ_iff]`.
+-/
 theorem mem_ebox {s : Finset ι} {J : ι → ℕ} {v : ι →₀ ℕ} :
     v ∈ ebox s J ↔ v.support ⊆ s ∧ ∀ i ∈ s, v i ≤ J i := by
   classical
   simp [ebox, Finset.mem_finsupp_iff, Nat.lt_succ_iff]
 
+/- English proof (translation)
+Rewrite using `[Finset.prod_sum, ebox, Finset.finsupp, Finset.sum_map]`. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Simplify using `only [Function.Embedding.coeFn_mk]`. Rewrite using `[Finsupp.prod_of_support_subset _ (Finsupp.support_indicator_subset s g) _ (fun i _ => hf i), ← Finset.prod_attach s]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Finsupp.indicator_apply, dif_pos i.2]`.
+-/
 theorem sum_ebox (f : ι → ℕ → ℝ) (hf : ∀ i, f i 0 = 1) (s : Finset ι) (J : ι → ℕ) :
     ∑ v ∈ ebox s J, v.prod f = ∏ i ∈ s, ∑ j ∈ range (J i + 1), f i j := by
   classical
@@ -26,6 +34,13 @@ theorem sum_ebox (f : ι → ℕ → ℝ) (hf : ∀ i, f i 0 = 1) (s : Finset ι
   refine Finset.prod_congr rfl fun i _ => ?_
   rw [Finsupp.indicator_apply, dif_pos i.2]
 
+/- English proof (translation)
+Rewrite using `[mem_ebox, Finsupp.le_def]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hs, hle⟩ i`. Distinguish the cases in `hi : i ∈ w.support`. Conclude with `hle i hi`.
+
+Establish `h0 : v i = 0`. Assume the negation of the conclusion as `h`. Conclude with `hi (hs (Finsupp.mem_support_iff.mpr h))`. Rewrite using `[h0]`. Conclude with `Nat.zero_le _`.
+
+Introduce `h`. Use `⟨fun i hi => ?_, fun i _ => h i⟩` and prove the remaining obligations. Rewrite `hi`, the goal using `[Finsupp.mem_support_iff]`. Use `h i` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem mem_ebox_support {v w : ι →₀ ℕ} : v ∈ ebox w.support w ↔ v ≤ w := by
   rw [mem_ebox, Finsupp.le_def]
   constructor
@@ -47,6 +62,9 @@ def dif (R : ι → ℕ → ℝ) (i : ι) : ℕ → ℝ
   | 0 => 1
   | j + 1 => R i (j + 1) - R i j
 
+/- English proof (translation)
+Proceed by induction on `J with`. Consider the case `zero => simp [dif, hR]`. Consider the case `succ J ih`. Rewrite using `[Finset.sum_range_succ, ih]`. Simplify using `[dif]`.
+-/
 theorem sum_dif (R : ι → ℕ → ℝ) (hR : ∀ i, R i 0 = 1) (i : ι) (J : ℕ) :
     ∑ j ∈ range (J + 1), dif R i j = R i J := by
   induction J with
@@ -55,11 +73,23 @@ theorem sum_dif (R : ι → ℕ → ℝ) (hR : ∀ i, R i 0 = 1) (i : ι) (J : �
     rw [Finset.sum_range_succ, ih]
     simp [dif]
 
+/- English proof (translation)
+Rewrite using `[sum_ebox (dif R) (fun i => rfl) w.support w, Finsupp.prod]`. Conclude with `Finset.prod_congr rfl fun i _ => (sum_dif R hR i (w i)).symm`.
+-/
 theorem prod_eq_sum_dif (R : ι → ℕ → ℝ) (hR : ∀ i, R i 0 = 1) (w : ι →₀ ℕ) :
     w.prod R = ∑ v ∈ ebox w.support w, v.prod (dif R) := by
   rw [sum_ebox (dif R) (fun i => rfl) w.support w, Finsupp.prod]
   exact Finset.prod_congr rfl fun i _ => (sum_dif R hR i (w i)).symm
 
+/- English proof (translation)
+Establish `ht0 : ∀ i, 0 ≤ t i`. Introduce `i`. Establish `h` using `hut i 0`. Simplify using `[hu0] at h`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Apply `summable_of_sum_le (c := Real.exp (∑' i, t i)) (fun v => by unfold Finsupp.prod; exact Finset.prod_nonneg fun i _ => hu i _)` to reduce the goal to its premises. Introduce `F`. Establish `hsub : F ⊆ ebox (F.biUnion fun v => v.support) (fun i => F.sup fun v => v i)`. Introduce `v hv`. Rewrite using `[mem_ebox]`.
+
+Conclude with `⟨fun i hi => Finset.mem_biUnion.mpr ⟨v, hv, hi⟩, fun i _ => Finset.le_sup (f := fun v : ι →₀ ℕ => v i) hv⟩`. Combine the equalities or inequalities in the displayed calculation. Apply `Finset.prod_le_prod (fun i _ => Finset.sum_nonneg fun j _ => hu i j)` to reduce the goal to its premises. Introduce `i _`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `_ = Real.exp (∑ i ∈ F.biUnion (fun v => v.support), t i) := (Real.exp_sum _ t).symm`. Use `_ ≤ Real.exp (∑' i, t i) := Real.exp_le_exp.mpr (ht.sum_le_tsum _ (fun i _ => ht0 i))`.
+-/
 theorem summable_prod {u : ι → ℕ → ℝ} (hu0 : ∀ i, u i 0 = 1) (hu : ∀ i j, 0 ≤ u i j) {t : ι → ℝ}
     (ht : Summable t) (hut : ∀ i J, ∑ j ∈ range (J + 1), u i j ≤ 1 + t i) :
     Summable fun v : ι →₀ ℕ => v.prod u := by
@@ -90,6 +120,11 @@ theorem summable_prod {u : ι → ℕ → ℝ} (hu0 : ∀ i, u i 0 = 1) (hu : �
     _ = Real.exp (∑ i ∈ F.biUnion (fun v => v.support), t i) := (Real.exp_sum _ t).symm
     _ ≤ Real.exp (∑' i, t i) := Real.exp_le_exp.mpr (ht.sum_le_tsum _ (fun i _ => ht0 i))
 
+/- English proof (translation)
+Establish `h0` using `summable_geometric_of_lt_one (by norm_num : (0 : ℝ) ≤ 1 / 2) (by norm_num)`. Establish `h1` using `summable_pow_mul_geometric_of_norm_lt_one 1 (by norm_num : ‖(1 / 2 : ℝ)‖ < 1)`. Establish `h2` using `summable_pow_mul_geometric_of_norm_lt_one 2 (by norm_num : ‖(1 / 2 : ℝ)‖ < 1)`. Use `(((h2.add (h1.mul_left 4)).add (h0.mul_left 4)).mul_left 8).congr fun j => ?_` and prove the remaining obligations. Use `first`.
+
+Consider the case `ring`. Consider the case `(simp only [Pi.add_apply]; ring)`. Consider the case `(simp; ring)`.
+-/
 theorem summable_sq_geom : Summable fun j : ℕ => 8 * ((j : ℝ) + 2) ^ 2 * (1 / 2 : ℝ) ^ j := by
   have h0 := summable_geometric_of_lt_one (by norm_num : (0 : ℝ) ≤ 1 / 2) (by norm_num)
   have h1 := summable_pow_mul_geometric_of_norm_lt_one 1 (by norm_num : ‖(1 / 2 : ℝ)‖ < 1)
@@ -106,15 +141,34 @@ variable {q : ι → ℝ}
 
 def nrm (q : ι → ℝ) (v : ι →₀ ℕ) : ℝ := v.prod fun i e => q i ^ e
 
+/- English proof (translation)
+Unfold `nrm Finsupp.prod`. Conclude with `Finset.prod_pos fun i _ => pow_pos (by linarith [hq i]) _`.
+-/
 theorem nrm_pos (hq : ∀ i, 2 ≤ q i) (v : ι →₀ ℕ) : 0 < nrm q v := by
   unfold nrm Finsupp.prod
   exact Finset.prod_pos fun i _ => pow_pos (by linarith [hq i]) _
 
+/- English proof (translation)
+The claim follows from `|v.prod f| / nrm q v = v.prod fun i e => |f i e| / q i ^ e := by unfold nrm Finsupp.prod rw [Finset.abs_prod, ← Finset.prod_div_distrib]`.
+-/
 theorem abs_div_nrm (f : ι → ℕ → ℝ) (v : ι →₀ ℕ) :
     |v.prod f| / nrm q v = v.prod fun i e => |f i e| / q i ^ e := by
   unfold nrm Finsupp.prod
   rw [Finset.abs_prod, ← Finset.prod_div_distrib]
 
+/- English proof (translation)
+Establish `hq0 : 0 < q i` using `by linarith [hq i]`. Rewrite using `[Finset.sum_range_succ']`. Simplify using `only [dif, pow_zero, div_one, abs_one]`. Rewrite using `[add_comm]`. Use `add_le_add le_rfl ?_` and prove the remaining obligations.
+
+Establish `hterm : ∀ j ∈ range J, |R i (j + 1) - R i j| / q i ^ (j + 1) ≤ (q i ^ 2)⁻¹ * (8 * ((j : ℝ) + 2) ^ 2 * (1 / 2 : ℝ) ^ j)`. Introduce `j _`. Establish `hqj : 0 < q i ^ (j + 1)` using `pow_pos hq0 _`. Establish `hqne : q i ≠ 0` using `hq0.ne'`. Rewrite using `[div_le_iff₀ hqj]`.
+
+Establish `hx : 1 ≤ (q i / 2) ^ j` using `one_le_pow₀ (by linarith [hq i])`. Establish `hc : 0 ≤ 8 * ((j : ℝ) + 2) ^ 2` using `by positivity`. Establish `e : (q i ^ 2)⁻¹ * (8 * ((j : ℝ) + 2) ^ 2 * (1 / 2 : ℝ) ^ j) * q i ^ (j + 1) = 8 * ((j : ℝ) + 2) ^ 2 * (q i / 2) ^ j / q i`. Establish `h2 : (q i ^ 2)⁻¹ * q i ^ (j + 1) = q i ^ j / q i`. Rewrite using `[pow_succ (q i) j, sq]`.
+
+Use `first`. Consider the case `(field_simp; ring)`. Consider the case `field_simp`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e]`.
+
+Combine the equalities or inequalities in the displayed calculation. Consider the case `exact div_le_div_of_nonneg_right (le_mul_of_one_le_right hc hx) hq0.le`. Consider the case `exact (div_le_div_iff_of_pos_right hq0).mpr (le_mul_of_one_le_right hc hx)`. Consider the case `exact (div_le_div_right hq0).mpr (le_mul_of_one_le_right hc hx)`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[Finset.mul_sum]`. Use `_ ≤ (q i ^ 2)⁻¹ * cGeom := by`. Apply `mul_le_mul_of_nonneg_left _ (by positivity)` to reduce the goal to its premises. Conclude with `summable_sq_geom.sum_le_tsum _ (fun j _ => by positivity)`. Use `_ = cGeom * (q i ^ 2)⁻¹ := mul_comm _ _`.
+-/
 theorem sum_dif_le (hq : ∀ i, 2 ≤ q i) {R : ι → ℕ → ℝ}
     (hRb : ∀ i j, |R i (j + 1) - R i j| ≤ 8 * ((j : ℝ) + 2) ^ 2 / q i) (i : ι) (J : ℕ) :
     ∑ j ∈ range (J + 1), |dif R i j| / q i ^ j ≤ 1 + cGeom * (q i ^ 2)⁻¹ := by
@@ -159,6 +213,9 @@ theorem sum_dif_le (hq : ∀ i, 2 ≤ q i) {R : ι → ℕ → ℝ}
         exact summable_sq_geom.sum_le_tsum _ (fun j _ => by positivity)
     _ = cGeom * (q i ^ 2)⁻¹ := mul_comm _ _
 
+/- English proof (translation)
+Establish `h` using `summable_prod (u := fun i e => |dif R i e| / q i ^ e) (fun i => by simp [dif]) (fun i j => div_nonneg (abs_nonneg _) (pow_nonneg (by linarith [hq i]) _)) (hsum.mul_left cGeom) (fun i J => sum_dif_le hq hRb i J)`. Conclude with `h.congr fun v => (abs_div_nrm (dif R) v).symm`.
+-/
 theorem summable_dif (hq : ∀ i, 2 ≤ q i) (hsum : Summable fun i => (q i ^ 2)⁻¹) {R : ι → ℕ → ℝ}
     (hRb : ∀ i j, |R i (j + 1) - R i j| ≤ 8 * ((j : ℝ) + 2) ^ 2 / q i) :
     Summable fun v : ι →₀ ℕ => |v.prod (dif R)| / nrm q v := by

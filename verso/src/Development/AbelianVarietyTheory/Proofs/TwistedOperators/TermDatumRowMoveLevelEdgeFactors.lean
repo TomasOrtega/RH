@@ -12,6 +12,19 @@ namespace GlobalTheory.FlatRowMove
 
 variable {k : Type*} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `b`. Consider the cases of `b with`. Consider the case `theta i l`. Distinguish the cases in `hi : i = G.m`. Substitute `hi` using the available equality.
+
+Establish `h1 : (Pi.mulSingle (j + 1, G.m) κ : G.VertexGroup) (G.m, l) = 1` using `Pi.mulSingle_eq_of_ne (by intro h; simp [Prod.ext_iff] at h; omega) _`. Establish `h2 : (Pi.mulSingle (j + 1, G.m) κ : G.VertexGroup) (G.m, l + 1) = 1` using `Pi.mulSingle_eq_of_ne (by intro h; simp [Prod.ext_iff] at h; omega) _`. Simplify using `only [Grid.moveArgs, Edge.src, Edge.tgt, h1, h2, map_one, inv_one, Units.val_one, Matrix.one_mul, Matrix.mul_one, fill_theta]`. Simplify using `[fill, Grid.moveArgs, hi]`. Consider the case `ex i l`.
+
+Distinguish the cases in `hl : l = G.m`. Substitute `hl` using the available equality. Simplify using `only [Grid.moveArgs, Edge.src, Edge.tgt, fill_ex]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality.
+
+Establish `h1 : (Pi.mulSingle (i + 1, G.m) κ : G.VertexGroup) (i, G.m) = 1` using `Pi.mulSingle_eq_of_ne (by intro h; simp [Prod.ext_iff] at h) _`. Rewrite using `[h1, Pi.mulSingle_eq_same, Function.update_of_ne (by omega), Function.update_self, map_one, Units.val_one, Matrix.mul_one, Assignment.read, invT_inv_val, Matrix.transpose_mul]`. Distinguish the cases in `hij' : i = j + 1`. Substitute `hij'` using the available equality. Establish `h1 : (Pi.mulSingle (j + 1, G.m) κ : G.VertexGroup) (j + 1 + 1, G.m) = 1` using `Pi.mulSingle_eq_of_ne (by intro h; simp [Prod.ext_iff] at h) _`.
+
+Rewrite using `[h1, Pi.mulSingle_eq_same, Function.update_self, map_one, inv_one, Units.val_one, Matrix.one_mul, Assignment.read, invT_val, Matrix.transpose_mul]`. Establish `h1 : (Pi.mulSingle (j + 1, G.m) κ : G.VertexGroup) (i, G.m) = 1` using `Pi.mulSingle_eq_of_ne (by intro h; simp [Prod.ext_iff] at h; omega) _`. Establish `h2 : (Pi.mulSingle (j + 1, G.m) κ : G.VertexGroup) (i + 1, G.m) = 1` using `Pi.mulSingle_eq_of_ne (by intro h; simp [Prod.ext_iff] at h; omega) _`. Rewrite using `[h1, h2, Function.update_of_ne hij', Function.update_of_ne hij]`. Simplify using `only [map_one, inv_one, Units.val_one, Matrix.one_mul, Matrix.mul_one]`.
+
+Simplify using `[fill, Grid.moveArgs, hl]`.
+-/
 theorem fill_move (G : Grid k) (hs : 1 ≤ G.s) {j : ℕ} (hj : j + 1 < G.m)
     (κ : GL (Fin (G.rank (j + 1, G.m))) k) (x : ColArgs G) (y : RowArgs G) (e : Vars G) :
     fill hs x (Function.update (Function.update y j (y j * κ.val)) (j + 1) (κ⁻¹.val * y (j + 1))) e =
@@ -52,6 +65,9 @@ theorem fill_move (G : Grid k) (hs : 1 ≤ G.s) {j : ℕ} (hj : j + 1 < G.m)
           simp only [map_one, inv_one, Units.val_one, Matrix.one_mul, Matrix.mul_one]
     · simp [fill, Grid.moveArgs, hl]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `Y`. Distinguish the cases in `hY : Y = X`. Substitute `hY` using the available equality. Simplify using `[hg]`. Simplify using `[Pi.mulSingle_eq_of_ne hY]`.
+-/
 theorem mulSingle_comm (G : Grid k) {X : ℕ × ℕ} (κ : GL (Fin (G.rank X)) k) (g : G.VertexGroup) (hg : g X = 1) :
     Pi.mulSingle X κ * g = g * Pi.mulSingle X κ := by
   funext Y
@@ -61,6 +77,13 @@ theorem mulSingle_comm (G : Grid k) {X : ℕ × ℕ} (κ : GL (Fin (G.rank X)) k
 
 variable [MeasurableSpace k] [BorelSpace k]
 
+/- English proof (translation)
+Establish `hF : ∀ z, ((oppositePath G.m).map (G.edgeFactor .one (Pi.mulSingle (j + 1, G.m) κ))).prod * GlobalTheory.FunObj.moved G keep g T (G.moveArgs .one (Pi.mulSingle (j + 1, G.m) κ) z) = GlobalTheory.FunObj.moved G keep g T z`. Introduce `z`. Establish `h` using `congrFun (congrArg (G.pathAct .one (oppositePath G.m) g) hT) z`. Rewrite `h` using `[← Grid.pathAct_mul, ← mulSingle_comm G κ g hg, Grid.pathAct_mul]`. Simplify using `only [GlobalTheory.FunObj.moved]`.
+
+Rewrite using `[← h]`. Simplify using `only [Grid.pathAct]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [flatTensor, flatIntegrand, ← integral_const_mul]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun e => ?_)` and prove the remaining obligations.
+
+Simplify using `only [fill_move G hs hj κ x y e, ← mul_assoc, hF]`.
+-/
 theorem flat_move (G : Grid k) (hs : 1 ≤ G.s) (ψ : AddChar k Circle) (ν : Measure k) (keep : Bool)
     (g : G.VertexGroup) (T : G.Args → ℂ) {j : ℕ} (hj : j + 1 < G.m) (κ : GL (Fin (G.rank (j + 1, G.m))) k)
     (hg : g (j + 1, G.m) = 1)
@@ -82,6 +105,11 @@ theorem flat_move (G : Grid k) (hs : 1 ≤ G.s) (ψ : AddChar k Circle) (ν : Me
   refine integral_congr_ae (Filter.Eventually.of_forall fun e => ?_)
   simp only [fill_move G hs hj κ x y e, ← mul_assoc, hF]
 
+/- English proof (translation)
+Introduce `D T L sc G W U S t Φ β μ₀ hL hde hc ht w j hj κ hκ x y`. Establish `hT` using `GlobalTheory.T.flippedLocalTotalTensor_fixed_by_innerVertex_level S Φ ht hL hde hc w.1 w.2 j hj κ hκ`. Establish `hg : ((repsAt G t w.1).elt (β w)) (j + 1, D.R.m) = 1`. Simplify using `only [Reps.elt, onColumn]`. Conclude with `dif_neg (by show j + 1 ≠ D.R.m; omega)`.
+
+Conclude with `flat_move (locGrid G t w.1) _ _ _ _ _ _ hj κ hg hT x y`.
+-/
 theorem term_datum_move : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {W : G.Weil} {U : Set T} (S : GridChoice W U) {t : T} {Φ : G.Datum} (β : CosFam G t) {μ₀ : T}, L.Is μ₀ → (Nat.Coprime D.host.pde (D.host.QS * D.host.q) ∧ Nat.Coprime D.host.pde' (D.host.QS * D.host.q)) → (∀ P ∈ L.Q t, ((Ideal.absNorm D.host.ccK : ℕ) : 𝓞 D.host.E) ∉ P.asIdeal) → t ∈ U → ∀ (w : locPl G t) (j : ℕ), j + 1 < D.R.m →
     ∀ (κ : GL (Fin ((locGrid G t w.1).rank (j + 1, (locGrid G t w.1).m))) (Kw w.1)), κ ∈ givenLevel G t w.1 (j + 1, D.R.m) →
     ∀ (x : ColArgs (locGrid G t w.1)) (y : RowArgs (locGrid G t w.1)),

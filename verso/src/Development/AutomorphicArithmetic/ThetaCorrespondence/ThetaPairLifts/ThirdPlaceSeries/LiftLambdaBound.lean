@@ -17,6 +17,9 @@ variable (Y : Cov p i)
 def RowsTAlt : Prop := p.PointConditions' ∧ RecTied D L
 def EventuallyAtAllPoints {eps : ℝ} (Fm : FamP eps) (Q : ∀ (x : ℝ) (hx : Fm.x1 < x) (ι : Fm.Ix x), Pt Fm x hx ι → Prop) : Prop :=
   ∃ x0 : ℝ, ∀ (x : ℝ) (hx : Fm.x1 < x), x0 ≤ x → ∀ (ι : Fm.Ix x) (p : Pt Fm x hx ι), _root_.GlobalTheory.CovTop.RowsTAlt p → Q x hx ι p
+/- English proof (translation)
+Take `⟨a, h⟩` from `h`. Take `⟨b, h'⟩` from `h'`. Conclude with `⟨max a b, fun x hx hle ι p hp => ⟨h x hx ((le_max_left _ _).trans hle) ι p hp, h' x hx ((le_max_right _ _).trans hle) ι p hp⟩⟩`.
+-/
 theorem EventuallyAtAllPoints.and {eps : ℝ} {Fm : FamP eps} {Q Q' : ∀ (x : ℝ) (hx : Fm.x1 < x) (ι : Fm.Ix x), Pt Fm x hx ι → Prop}
     (h : _root_.GlobalTheory.CovTop.EventuallyAtAllPoints Fm Q) (h' : _root_.GlobalTheory.CovTop.EventuallyAtAllPoints Fm Q') : _root_.GlobalTheory.CovTop.EventuallyAtAllPoints Fm fun x hx ι p => Q x hx ι p ∧ Q' x hx ι p := by
   obtain ⟨a, h⟩ := h

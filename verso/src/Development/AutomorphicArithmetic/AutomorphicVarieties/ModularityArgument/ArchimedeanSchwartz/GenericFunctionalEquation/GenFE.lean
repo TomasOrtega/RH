@@ -10,6 +10,25 @@ namespace UpperTheory.V.Z.Inf
 
 variable {K : Type} [Field K] [NumberField K] {n : ℕ}
 
+/- English proof (translation)
+Establish `hn0 : 0 < n` using `by omega`. Use `set μi : Measure (AdelicGLn.InfiniteAdelicGL K n) := Measure.haar with hμi`. Use `set ν : Measure (AdelicGLn.AdelicGL K n) := Measure.haar with hν`. Establish `hfc : Continuous (GJGlobal.matrixCoeff μ φ₁ φ₂)` using `continuous_globalMatrixCoeff hn0 μ h₁ h₂ hA`. Take `⟨σu, hu⟩` from `exists_unramified hn μ h₁ h₂ hA S π ξ ℓ hξ hℓs hsph hℓK (fun v _ ↦ hirr v) (fun v _ ↦ hadm v) z hz fi hf hf0`.
+
+Take `⟨g₀, hg₀⟩` from `hf0`. Establish `hfic : Continuous fi` using `(factor_nonvanishing hfc S π ξ ℓ hsph fi hf hg₀).1`. Establish `hfd` using `inv_factorization π ξ ℓ fi hf`. Establish `hsphd : ∀ v ∉ S, ℓ v ∈ fixedVectors (Representation.dual (π v)) (integralGL (v.adicCompletion K) n) ∧ Module.Dual.eval ℂ (V v) (ξ v) (ℓ v) = 1` using `fun v hv ↦ ⟨hℓK v hv, (hsph v hv).2⟩`. Establish `hfic' : Continuous fun x : AdelicGLn.InfiniteAdelicGL K n ↦ fi x⁻¹` using `hfic.comp continuous_inv`.
+
+Take `⟨C, hC, hFour⟩` from `exists_adelicMatrixFourier_matrixTensor (K := K) (n := n)`. Take `⟨hSB1, hS01⟩` from `tensor_hyps_fourier hRS hSB hS0`. Use `set cE : ℂ := (((prodConst ν μi : ℝ) * finConst K n : ℝ) : ℂ) with hcE`. Establish `hcE0 : cE ≠ 0`. Rewrite using `[hcE]`.
+
+Conclude with `(mul_pos (NNReal.coe_pos.2 (prodConst_pos ν μi)) finConst_pos).ne'` after adjusting the coercions. Use `⟨cE, C * cE, hcE0, mul_ne_zero hC hcE0, hSB1, fun φ ↦ ?_⟩` and prove the remaining obligations. Take `⟨σ₀, Λ, Λ', hΛ, -, hZ, hZ', hfe⟩` from `GJGlobal.globalZeta_entire_functionalEquation hn μ ν h₁ h₂ hA (matrixTensor_mem φ S Φ hSB hS0)`. Use `set s₀ : ℂ := ((max σ₀ σu + 1 : ℝ) : ℂ) with hs₀def`. Establish `hs₀re : s₀.re = max σ₀ σu + 1` using `by rw [hs₀def, Complex.ofReal_re]`.
+
+Take `⟨-, -, -, -, hbp0, -⟩` from `hu s₀ (by rw [hs₀re]; linarith [le_max_right σ₀ σu])`. Use `⟨max σ₀ σu + 3, Λ, hΛ, fun s hs ↦ ?_⟩` and prove the remaining obligations. Establish `hs₀ : σ₀ < s.re` using `by linarith [le_max_left σ₀ σu]`. Establish `hsu : σu < s.re` using `by linarith [le_max_right σ₀ σu]`. Establish `hre : s₀.re + 2 ≤ s.re` using `by rw [hs₀re]; linarith`.
+
+Take `⟨hZp, hLp, hZd, hLd, -, -⟩` from `hu s hsu`. Use `⟨ne_zero_of_hasProd_inv_prod hLp (fun v i ↦ (z v i : ℂ) * qs ((v : HeightOneSpectrum (𝓞 K)).adicCompletion K) s) (fun v ↦ ((hbp0 v v.2).2 s)) (summable_residueCard_inv_sq S) (fun v i ↦ norm_mul_qs_le _ ((hbp0 v v.2).1 i) hre) (fun v i ↦ lt_of_le_of_lt (norm_mul_qs_le _ ((hbp0 v v …` and prove the remaining obligations. Take `⟨hint, hΛs⟩` from `hZ s hs₀`. Take `⟨hE, -⟩` from `globalZeta_eq_euler ν μi φ hSB hS0 hξ hsph hfic hf hint`. Establish `hall` using `hasProd_of_hasProd_compl (f := fun v ↦ zetaIntegral (localHaar n v) (Φ v) (Parabolic.matrixCoeff (F := v.adicCompletion K) (π v) (ξ v) (ℓ v)) s) S (hLp.congr_fun fun v ↦ by rw [hS0 v v.2]; exact hZp v v.2)`.
+
+Rewrite using `[← hΛs, hE, hall.tprod_eq]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨hint, hΛs⟩` from `hZ' s hs₀`. Rewrite `hint`, `hΛs` using `[hFour φ S Φ hSB hS0]`. Rewrite `hint` using `[zetaIntegrand_smul]`.
+
+Establish `hint3` using `(integrable_const_mul_iff (isUnit_iff_ne_zero.2 hC) _).1 hint`. Establish `hΛ1 : Λ (1 - s) = Λ' s` using `by rw [hfe]; congr 1; ring`. Take `⟨hE, -⟩` from `globalZeta_eq_euler (f := fun g ↦ GJGlobal.matrixCoeff μ φ₁ φ₂ g⁻¹) ν μi _ hSB1 hS01 hℓs hsphd hfic' hfd hint3`. Establish `hall` using `hasProd_of_hasProd_compl (f := fun v ↦ zetaIntegral (localHaar n v) (GJMatrix.localMatrixFourier (GroundTheory.Global.localAdelicChar K v) (Φ v)) (Parabolic.matrixCoeff (F := v.adicCompletion K) (Representation.dual (π v)) (ℓ v) (Module.Dual.eval ℂ (V v) (ξ v))) s) S (hLd.congr_f …`. Establish `h3` using `hS01 v v.2`.
+
+Rewrite using `[h3]`. Conclude with `hZd v v.2)`. Rewrite using `[hΛ1, ← hΛs, GJGlobal.globalZeta, zetaIntegrand_smul, integral_const_mul, ← GJGlobal.globalZeta, hE, hall.tprod_eq]`. Express the relevant statement in the definitionally equal form `_ = C * cE * _ * (∏ v ∈ S, zetaIntegral (localHaar n v) (GJMatrix.localMatrixFourier (GroundTheory.Global.localAdelicChar K v) (Φ v)) (Parabolic.matrixCoeff (F := v.adicCompletion K) (Representation.dual (π v)) (ℓ v) (Module.Dual.eval ℂ (V v) (ξ v))) s) * _`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem genFE (hn : 2 ≤ n) (μ : Measure (Reduction.normOneGL K n))
     [μ.IsHaarMeasure] {φ₁ φ₂ : AdelicGLn.AdelicGL K n → ℂ} (h₁ : φ₁ ∈ AutomorphicForm.cuspForms K n)
     (h₂ : φ₂ ∈ AutomorphicForm.cuspForms K n)

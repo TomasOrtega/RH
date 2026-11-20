@@ -11,6 +11,9 @@ section Num
 
 variable {n' k1 : ℕ}
 
+/- English proof (translation)
+Establish `hi` using `i.isLt`. Unfold `lamI`. Rewrite using `[dif_pos ⟨by omega, by omega⟩]`. Conclude with `congrArg (lam0 s) (Fin.ext (by simp))`.
+-/
 theorem lamI_fin (lam0 : Fin n' → Fin (k1 + 1) → ℤ) (s : Fin n') (i : Fin (k1 + 1)) :
     lamI lam0 s (i.val + 1) = lam0 s i := by
   have hi := i.isLt
@@ -18,6 +21,15 @@ theorem lamI_fin (lam0 : Fin n' → Fin (k1 + 1) → ℤ) (s : Fin n') (i : Fin 
   rw [dif_pos ⟨by omega, by omega⟩]
   exact congrArg (lam0 s) (Fin.ext (by simp))
 
+/- English proof (translation)
+Use `Finset.sum_bij' (fun i _ => i.val + 1) (fun a ha => ⟨a - 1, by rw [Finset.mem_Icc] at ha; omega⟩) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `i hi`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_Icc] at hi ⊢`. Use linear arithmetic over natural numbers and integers. Introduce `a ha`.
+
+Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_Icc] at ha ⊢`. Use `show a - 1 < r`. Use linear arithmetic over natural numbers and integers. Introduce `i _`. Conclude with `Fin.ext (by simp)`.
+
+Introduce `a ha`. Rewrite `ha` using `[Finset.mem_Icc]`. Use `show a - 1 + 1 = a`. Use linear arithmetic over natural numbers and integers. Introduce `i _`.
+
+Conclude with `(lamI_fin lam0 s i).symm`.
+-/
 theorem sum_head (lam0 : Fin n' → Fin (k1 + 1) → ℤ) (s : Fin n') (r : ℕ) (hr : r ≤ k1 + 1) :
     ∑ i : Fin (k1 + 1) with i.val < r, lam0 s i = ∑ a ∈ Icc 1 r, lamI lam0 s a := by
   refine Finset.sum_bij' (fun i _ => i.val + 1)
@@ -38,6 +50,15 @@ theorem sum_head (lam0 : Fin n' → Fin (k1 + 1) → ℤ) (s : Fin n') (r : ℕ)
   · intro i _
     exact (lamI_fin lam0 s i).symm
 
+/- English proof (translation)
+Use `Finset.sum_bij' (fun i _ => i.rev.val + 1) (fun a ha => ⟨k1 + 1 - a, by rw [Finset.mem_Icc] at ha; omega⟩) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `i hi`. Use `i.isLt` as an intermediate fact. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_Icc, Fin.val_rev] at hi ⊢`. Use linear arithmetic over natural numbers and integers.
+
+Introduce `a ha`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_Icc] at ha ⊢`. Use `show k1 + 1 - a < r`. Use linear arithmetic over natural numbers and integers. Introduce `i _`.
+
+Use `i.isLt` as an intermediate fact. Apply `Fin.ext` to reduce the goal to its premises. Simplify using `only [Fin.val_rev]`. Use linear arithmetic over natural numbers and integers. Introduce `a ha`.
+
+Rewrite `ha` using `[Finset.mem_Icc]`. Simplify using `only [Fin.val_rev]`. Use linear arithmetic over natural numbers and integers. Introduce `i _`. Conclude with `(lamI_fin lam0 s i.rev).symm`.
+-/
 theorem sum_tail (lam0 : Fin n' → Fin (k1 + 1) → ℤ) (s : Fin n') (r : ℕ) (hr : r ≤ k1 + 1) :
     ∑ i : Fin (k1 + 1) with i.val < r, lam0 s i.rev = ∑ a ∈ Icc (k1 + 1 + 1 - r) (k1 + 1), lamI lam0 s a := by
   refine Finset.sum_bij' (fun i _ => i.rev.val + 1)
@@ -62,6 +83,15 @@ theorem sum_tail (lam0 : Fin n' → Fin (k1 + 1) → ℤ) (s : Fin n') (r : ℕ)
   · intro i _
     exact (lamI_fin lam0 s i.rev).symm
 
+/- English proof (translation)
+Simplify using `only [Formalism.MainNotions.G.Ar, Formalism.InvariantFactorPaths.G7.ArZ]`. Use `conv_rhs => rw [Finset.sum_filter, Finset.sum_filter]`. Rewrite using `[← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : IsOddPos s`.
+
+Establish `hod : ¬ Even s.val` using `fun he => by`. Use `Nat.even_iff.mp he` as an intermediate fact. Unfold `IsOddPos at h`. Use linear arithmetic over natural numbers and integers. Rewrite using `[if_neg (not_not_intro h), if_pos h, zero_sub, ← sum_tail lam0 s r hr, ← Finset.sum_neg_distrib]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [lamAt, if_neg hod]`. Establish `hev : Even s.val` using `Nat.even_iff.mpr (by unfold IsOddPos at h; omega)`. Rewrite using `[if_pos h, if_neg h, sub_zero, ← sum_head lam0 s r hr]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Simplify using `only [lamAt, if_pos hev]`.
+-/
 theorem Ar_eq (lam0 : Fin n' → Fin (k1 + 1) → ℤ) (r : ℕ) (hr : r ≤ k1 + 1) :
     Ar r lam0 = Formalism.InvariantFactorPaths.G7.ArZ (univ.filter fun s : Fin n' => ¬ IsOddPos s)
       (univ.filter fun s : Fin n' => IsOddPos s) (fun s a => lamI lam0 s a) (k1 + 1) r := by
@@ -93,6 +123,9 @@ def RestTmFQ : Prop := ∀ (v : X.Pl) (i j : ℕ), ∀ F ∈ X.FQ j, X.Tm v i j 
 def TmR (hT : RestTmFQ X) (v : X.Pl) (j i : ℕ) : Module.End X.G.Kf (X.FQ j) :=
   (TmLin X v i j).restrict fun F hF => hT v i j F hF
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem TmR_coe (hT : RestTmFQ X) (v : X.Pl) (j i : ℕ) (F : X.FQ j) :
     ((TmR X hT v j i F : X.FQ j) : X.Fm j) = X.Tm v i j F := rfl
 
@@ -100,11 +133,19 @@ def KkR (h3b : ∀ j < X.mm, ∀ F ∈ X.FQ j, X.Kz j F ∈ X.FQ (j + 1)) (j : �
     X.FQ j →ₗ[X.G.Kf] X.FQ (j + 1) :=
   if h : j < X.mm then (X.Kz j).restrict fun F hF => h3b j h F hF else 0
 
+/- English proof (translation)
+Rewrite using `[KkR, dif_pos hj]`. Both sides reduce to the same expression.
+-/
 theorem KkR_coe (h3b : ∀ j < X.mm, ∀ F ∈ X.FQ j, X.Kz j F ∈ X.FQ (j + 1)) {j : ℕ} (hj : j < X.mm)
     (F : X.FQ j) : ((KkR X h3b j F : X.FQ (j + 1)) : X.Fm (j + 1)) = X.Kz j F := by
   rw [KkR, dif_pos hj]
   rfl
 
+/- English proof (translation)
+Proceed by induction on `j with`. Consider the case `zero => rfl`. Consider the case `succ j ih`. Establish `h1 : Formalism.InvariantFactorPaths.G7.Kc (M` using `fun j => X.FQ j) (KkR X h3b) (j + 1) F = KkR X h3b j (Formalism.InvariantFactorPaths.G7.Kc (M := fun j => X.FQ j) (KkR X h3b) j F) := rfl`. Rewrite using `[h1, KkR_coe X h3b (by omega), ih (by omega)]`.
+
+Both sides reduce to the same expression.
+-/
 theorem Kc_coe (h3b : ∀ j < X.mm, ∀ F ∈ X.FQ j, X.Kz j F ∈ X.FQ (j + 1)) (j : ℕ) (hj : j ≤ X.mm)
     (F : X.FQ 0) :
     ((Formalism.InvariantFactorPaths.G7.Kc (M := fun j => X.FQ j) (KkR X h3b) j F : X.FQ j) : X.Fm j) = X.chainK j F := by
@@ -116,9 +157,15 @@ theorem Kc_coe (h3b : ∀ j < X.mm, ∀ F ∈ X.FQ j, X.Kz j F ∈ X.FQ (j + 1))
     rw [h1, KkR_coe X h3b (by omega), ih (by omega)]
     rfl
 
+/- English proof (translation)
+Rewrite using `[zpow_mul, zpow_natCast]`.
+-/
 theorem zpow_nu (x : X.G.Kf) (ν : ℕ) (z : ℤ) : (x ^ ν) ^ z = x ^ ((ν : ℤ) * z) := by
   rw [zpow_mul, zpow_natCast]
 
+/- English proof (translation)
+Simplify using `only [Formalism.InvariantFactorPaths.G7.beFam, Sys.qh]`. Rewrite using `[zpow_nu]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem beFam_eq (v : X.Pl) (x : Fin (X.t + 1)) :
     Formalism.InvariantFactorPaths.G7.beFam ((p : X.G.Kf) ^ (X.G.P.n' v / 2)) (X.t + 1) x = X.qh v x.val := by
   simp only [Formalism.InvariantFactorPaths.G7.beFam, Sys.qh]
@@ -127,6 +174,11 @@ theorem beFam_eq (v : X.Pl) (x : Fin (X.t + 1)) :
   push_cast
   ring
 
+/- English proof (translation)
+Unfold `Sys.Tt`. Use `split_ifs with hi`. Substitute `hi` using the available equality. Rewrite using `[Tm_zero X v hF]`. Simplify using `[Nprime]`.
+
+Both sides reduce to the same expression.
+-/
 theorem Tt_eq (v : X.Pl) (i j : ℕ) {F : X.Fm j} (hF : F ∈ X.FQ j) :
     X.Tt v i j F = ((p : X.G.Kf) ^ (Nprime (X.G.P.lam0 v) (X.w v) j i)) • X.Tm v i j F := by
   unfold Sys.Tt
@@ -144,14 +196,23 @@ variable {p : ℕ} [Fact p.Prime] (X : Sys p)
 
 def uExt (u : ℕ → X.G.Kf) : ℕ → X.G.Kf := fun a => if a ∈ Icc 1 X.mm then u a else 1
 
+/- English proof (translation)
+Unfold `uExt`. Rewrite using `[if_pos ha]`.
+-/
 theorem uExt_eq (u : ℕ → X.G.Kf) {a : ℕ} (ha : a ∈ Icc 1 X.mm) : uExt X u a = u a := by
   unfold uExt
   rw [if_pos ha]
 
+/- English proof (translation)
+The claim follows from `Finset.prod_congr rfl fun a ha => uExt_eq X u (by rw [Finset.mem_Icc] at ha ⊢; omega)`.
+-/
 theorem prod_uExt (u : ℕ → X.G.Kf) {j : ℕ} (hj : j ≤ X.mm) :
     ∏ a ∈ Icc 1 j, uExt X u a = ∏ a ∈ Icc 1 j, u a :=
   Finset.prod_congr rfl fun a ha => uExt_eq X u (by rw [Finset.mem_Icc] at ha ⊢; omega)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Establish `hx` using `x.1.isLt`. Simplify using `only [Formalism.InvariantFactorPaths.G7.FFam, Sys.FF, mHat, beFam_eq, Nat.add_sub_cancel]`. Rewrite using `[prod_uExt X u (j := (x.1 : ℕ)) (by omega)]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem FFam_eq (v : X.Pl) (u m : ℕ → X.G.Kf) {j : ℕ} (hj : j ≤ X.mm) :
     Formalism.InvariantFactorPaths.G7.FFam ((p : X.G.Kf) ^ (X.G.P.n' v / 2)) X.t
       (fun l => (∏ a ∈ Icc 1 (l - 1), uExt X u a)⁻¹ * m l) j = X.FF v (mHat u m) j := by
@@ -161,6 +222,9 @@ theorem FFam_eq (v : X.Pl) (u m : ℕ → X.G.Kf) {j : ℕ} (hj : j ≤ X.mm) :
   rw [prod_uExt X u (j := (x.1 : ℕ)) (by omega)]
   ring
 
+/- English proof (translation)
+Simplify using `only [Formalism.InvariantFactorPaths.G7.cCoef, Sys.cl, Formalism.InvariantFactorPaths.G7.hF, FFam_eq X v u m hj, zpow_nu]`. Use `congr 2`. Apply the tactic sequence `all_goals first`. Consider the case `rfl`. Consider the case `(congr 1; simp only [Formalism.InvariantFactorPaths.G7.NN, Formalism.MainNotions.FormalGroupSystem.NN]; push_cast; ring)`.
+-/
 theorem cCoef_eq (v : X.Pl) (u m : ℕ → X.G.Kf) {j : ℕ} (hj : j ≤ X.mm) (l : ℕ) :
     Formalism.InvariantFactorPaths.G7.cCoef (p : X.G.Kf) (X.G.P.n' v / 2) (univ.filter fun s : Fin (X.G.P.n' v) => ¬ IsOddPos s)
       (univ.filter fun s : Fin (X.G.P.n' v) => IsOddPos s) (fun s a => lamI (X.G.P.lam0 v) s a) (X.w v)
@@ -172,6 +236,9 @@ theorem cCoef_eq (v : X.Pl) (u m : ℕ → X.G.Kf) {j : ℕ} (hj : j ≤ X.mm) (
     | rfl
     | (congr 1; simp only [Formalism.InvariantFactorPaths.G7.NN, Formalism.MainNotions.FormalGroupSystem.NN]; push_cast; ring)
 
+/- English proof (translation)
+Simplify using `only [Formalism.InvariantFactorPaths.G7.Zop, Formalism.InvariantFactorPaths.G7.Ttil, Sys.Zop, Sys.Ttu, LinearMap.sum_apply, LinearMap.smul_apply, AddSubmonoidClass.coe_finset_sum, Submodule.coe_smul, TmR_coe]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[cCoef_eq X v u m hj l, Tt_eq X v _ j G.2, prod_uExt X u hj, zpow_neg, zpow_natCast]`. Use `congr 1`. Conclude with `smul_comm _ _ _`.
+-/
 theorem Zop_coe (hT : RestTmFQ X) (v : X.Pl) (u m : ℕ → X.G.Kf) {j : ℕ} (hj : j ≤ X.mm) (G : X.FQ j) :
     ((Formalism.InvariantFactorPaths.G7.Zop (p : X.G.Kf) (X.G.P.n' v / 2) (univ.filter fun s : Fin (X.G.P.n' v) => ¬ IsOddPos s)
       (univ.filter fun s : Fin (X.G.P.n' v) => IsOddPos s) (fun s a => lamI (X.G.P.lam0 v) s a) (X.w v)
@@ -185,6 +252,9 @@ theorem Zop_coe (hT : RestTmFQ X) (v : X.Pl) (u m : ℕ → X.G.Kf) {j : ℕ} (h
   congr 1
   exact smul_comm _ _ _
 
+/- English proof (translation)
+Simplify using `only [MvPolynomial.esymm, map_sum, map_prod, MvPolynomial.eval_X, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun t ht => ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_const, (Finset.mem_powersetCard.mp ht).2]`.
+-/
 private theorem eval_smul_esymm_eq_pow_mul {K σ : Type} [Field K] [Fintype σ] (c : K) (x : σ → K) (l : ℕ) :
     MvPolynomial.eval (fun s => c * x s) (MvPolynomial.esymm σ K l) =
       c ^ l * MvPolynomial.eval x (MvPolynomial.esymm σ K l) := by
@@ -192,6 +262,29 @@ private theorem eval_smul_esymm_eq_pow_mul {K σ : Type} [Field K] [Fintype σ] 
   refine Finset.sum_congr rfl fun t ht => ?_
   rw [Finset.prod_mul_distrib, Finset.prod_const, (Finset.mem_powersetCard.mp ht).2]
 
+/- English proof (translation)
+Introduce `j hj F hF`. Establish `hj1 : j + 1 ≤ X.mm` using `by omega`. Establish `hr : X.G.P.r ≤ X.G.P.m + 1`. Use `(X.std v).two_r` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+
+Establish `he : ∀ (a i : ℕ) (c : X.G.Kf) (F : X.Fm a), (((p : X.G.Kf) ^ (X.G.P.n' v / 2)) ^ (-((i : ℤ) * ((Formalism.InvariantFactorPaths.G7.NN (X.G.P.m + 1) X.t a : ℤ) - i)))) • (c • X.Tm v i a F) = c • X.ecal v i a F`. Introduce `a i c F`. Rewrite using `[smul_comm, Sys.ecal, zpow_nu]`. Use `congr 3`. Simplify using `only [Formalism.InvariantFactorPaths.G7.NN, Formalism.MainNotions.FormalGroupSystem.NN]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hp : (p : X.G.Kf) ≠ 0`. Establish `hs` using `X.G.P.setting v`. Use `haveI := hs.frac_alt`.
+
+Introduce `h0`. Apply `hs.p_unif.ne_zero` to reduce the goal to its premises. Apply `IsFractionRing.injective (X.G.P.W v) (X.G.P.Qq v)` to reduce the goal to its premises. Apply `(X.G.P.ι v).injective` to reduce the goal to its premises. Rewrite using `[map_natCast, map_natCast, map_zero, map_zero]`.
+
+Conclude with `h0`. Establish `key` using `Formalism.InvariantFactorPaths.G7.theorem_c_i X.G.Kf (Fin (X.G.P.n' v)) (fun j => X.FQ j) (KkR X h3b) (fun a i => ((∏ b ∈ Icc 1 a, uExt X u b) ^ i)⁻¹ • TmR X hT v a i) (p : X.G.Kf) (X.G.P.n' v / 2) (X.G.P.m + 1) X.t X.G.P.r (j + 1) (univ.filter fun s : Fin (X.G.P.n' v) => ¬ IsOdd …`. Use `case hI =>`. Unfold `Formalism.InvariantFactorPaths.G7.Intertwine`. Introduce `j' hj' i`.
+
+Establish `hj'm : j' < X.mm` using `by omega`. Establish `hF' : ∀ l, Formalism.InvariantFactorPaths.G7.eF (fun x : Fin (X.t + 1) => (∏ a ∈ Icc 1 (j' + 1 - 1), uExt X u a)⁻¹ * m (j' + 1) * Formalism.InvariantFactorPaths.G7.beFam ((p : X.G.Kf) ^ (X.G.P.n' v / 2)) (X.t + 1) x) l = ((∏ a ∈ Icc 1 j', uExt X u a)⁻¹) ^ l * MvPolynomial.eval (f …`. Introduce `l`. Simplify using `only [Formalism.InvariantFactorPaths.G7.eF, beFam_eq, Nat.add_sub_cancel, mul_assoc]`. Conclude with `eval_smul_esymm_eq_pow_mul _ _ l`.
+
+Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `G`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [LinearMap.comp_apply, LinearMap.smul_apply, LinearMap.sum_apply, Submodule.coe_smul, AddSubmonoidClass.coe_finset_sum, TmR_coe, KkR_coe X h3b hj'm]`. Simplify using `only [he]`.
+
+Rewrite using `[H j' hj'm i _ G.2, smul_smul, ← map_smul (X.Kz j'), Finset.smul_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun l hl => ?_` and prove the remaining obligations. Rewrite using `[smul_smul, smul_smul]`. Use `congr 1`.
+
+Rewrite using `[hF' l, Finset.prod_Icc_succ_top (by omega : 1 ≤ j' + 1), uExt_eq X u (by rw [Finset.mem_Icc]; omega)]`. Establish `hu' : u (j' + 1) ≠ 0` using `hu _ (by rw [Finset.mem_Icc]; omega)`. Establish `hl' : l ≤ i`. Rewrite `hl` using `[Finset.mem_range]`. Use linear arithmetic over natural numbers and integers.
+
+Take `⟨d, rfl⟩` from `Nat.exists_eq_add_of_le hl'`. Establish `hu'' : u (j' + 1) ^ (l + d) ≠ 0` using `pow_ne_zero _ hu'`. Rewrite using `[Nat.add_sub_cancel_left, mul_pow, mul_inv, mul_assoc ((∏ a ∈ Icc 1 j', uExt X u a) ^ (l + d))⁻¹, inv_mul_cancel₀ hu'', mul_one, pow_add, mul_inv, inv_pow]`. Expand and normalize the polynomial expressions, which then agree. Establish `k2` using `congrArg Subtype.val (LinearMap.congr_fun key ⟨F, hF⟩)`.
+
+Establish `h0 : (∏ b ∈ Icc 1 0, uExt X u b) = 1` using `by simp`. Simplify using `only [LinearMap.comp_apply, LinearMap.smul_apply, Submodule.coe_smul, Zop_coe X hT v u m hj1, Kc_coe X h3b (j + 1) hj1, TmR_coe, h0, one_pow, inv_one, one_smul, map_smul] at k2`. Rewrite `k2` using `[← Ar_eq (X.G.P.lam0 v) X.G.P.r hr]`. Rewrite using `[yv_eq X v F, map_smul]`. Conclude with `k2`.
+-/
 theorem Ci (hT : RestTmFQ X) (h3b : ∀ j < X.mm, ∀ F ∈ X.FQ j, X.Kz j F ∈ X.FQ (j + 1)) (v : X.Pl)
     (u m : ℕ → X.G.Kf) (hu : ∀ l ∈ Icc 1 X.mm, u l ≠ 0)
     (H : ∀ j < X.mm, ∀ i : ℕ, ∀ F ∈ X.FQ j, X.ecal v i (j + 1) (X.Kz j F) =
@@ -281,6 +374,11 @@ def RestHecke : Prop :=
         (MvPolynomial.eval (fun x : Fin (X.t + 1) => m (j + 1) * X.qh v x.val)
           (MvPolynomial.esymm (Fin (X.t + 1)) X.G.Kf l)) • X.ecal v (i - l) j F)
 
+/- English proof (translation)
+Introduce `v`. Take `⟨u, m, hu, hm, H⟩` from `hH v`. Establish `hmh` using `vEqK_mHat X v u m hu hm`. Establish `hCi` using `Ci X hT h3b v u m (fun l hl => vEqK.ne_zero X (hu l hl)) H`. Use `⟨u, m, hu, hm, fun j hj => ⟨H j hj, hCi j hj, ?_, ?_, ?_⟩⟩` and prove the remaining obligations.
+
+Conclude with `(Cii X v (mHat u m) hmh j hj).1`. Conclude with `(Cii X v (mHat u m) hmh j hj).2`. Conclude with `Ciii X D h3 h2b v u (mHat u m) hu hmh j hj`.
+-/
 theorem alternate_expansion_of_relations (D : Formalism.BasicNotions.D7) (hH : RestHecke X) (hT : RestTmFQ X) (h3b : adm3b D X) (h3 : PointsLemma D X)
     (h2b : MassRatio₂ D X) : KernelCommutationUpToUnits D X := by
   intro v

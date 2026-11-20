@@ -11,6 +11,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.SplitWeil.ValOne
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ _ _ _ _ _ _ μ g h Φ` and use `GlobalTheory.SplitWeil.om_mem_SB μ g h Φ.2`.
+-/
 theorem om_val_mem_SB : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (a b : Type) [Fintype a]
     [DecidableEq a] [Fintype b] [DecidableEq b] (μ : kˣ →* ℂˣ) (g : GL a k) (h : GL b k) (Φ : SB (Matrix b a k)),
     om μ g h Φ.1 ∈ SB (Matrix b a k) :=

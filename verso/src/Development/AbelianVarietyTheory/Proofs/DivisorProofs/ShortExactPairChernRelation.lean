@@ -14,6 +14,9 @@ namespace GlobalTheory.Vert.Model
 
 variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
 
+/- English proof (translation)
+Use `⟨?_, GlobalTheory.FlagPull.mono_pullback_map_f Z.gen.ι S hS h₃⟩` and prove the remaining obligations. Conclude with `ShortComplex.exact_of_g_is_cokernel _ (CokernelCofork.mapIsColimit _ hS.gIsCokernel Z.genRes)`.
+-/
 theorem genRes_exact_mono (Z : GlobalTheory.Vert.Model O) (S : ShortComplex Z.X.Modules) (hS : S.ShortExact)
     {s : ℕ} (h₃ : GlobalTheory.VB.IsVB S.X₃ s) [S.X₁.IsQuasicoherent] [S.X₂.IsQuasicoherent] :
     (S.map Z.genRes).Exact ∧ Mono (Z.genRes.map S.f) := by
@@ -21,6 +24,19 @@ theorem genRes_exact_mono (Z : GlobalTheory.Vert.Model O) (S : ShortComplex Z.X.
   exact ShortComplex.exact_of_g_is_cokernel _
     (CokernelCofork.mapIsColimit _ hS.gIsCokernel Z.genRes)
 
+/- English proof (translation)
+Introduce `O _ _ _ Z A B C A' B' C' f g hfg f' g' hfg' hS hS' s s' hC hC' _ _ _ _ φB φC hc`. Take `⟨hT, hm⟩` from `genRes_exact_mono Z _ hS (s := s) hC`. Take `⟨hT', hm'⟩` from `genRes_exact_mono Z _ hS' (s := s') hC'`. Establish `hc' : φB.inv ≫ Z.genRes.map g = Z.genRes.map g' ≫ φC.inv`. Rewrite using `[Iso.inv_comp_eq, ← Category.assoc, ← hc, Category.assoc, Iso.hom_inv_id, Category.comp_id]`.
+
+Establish `hk : (Z.genRes.map f ≫ φB.hom) ≫ Z.genRes.map g' = 0`. Rewrite using `[Category.assoc, ← hc, ← Category.assoc, ← Functor.map_comp, hfg, Functor.map_zero, zero_comp]`. Establish `hk' : (Z.genRes.map f' ≫ φB.inv) ≫ Z.genRes.map g = 0`. Rewrite using `[Category.assoc, hc', ← Category.assoc, ← Functor.map_comp, hfg', Functor.map_zero, zero_comp]`. Use `haveI : Mono (ShortComplex.map (ShortComplex.mk f g hfg) Z.genRes).f := hm`.
+
+Use `haveI : Mono (ShortComplex.map (ShortComplex.mk f' g' hfg') Z.genRes).f := hm'`. Set `α : Z.genRes.obj A ⟶ Z.genRes.obj A'` to `hT'.lift (Z.genRes.map f ≫ φB.hom) hk`. Set `β : Z.genRes.obj A' ⟶ Z.genRes.obj A` to `hT.lift (Z.genRes.map f' ≫ φB.inv) hk'`. Establish `hα : α ≫ Z.genRes.map f' = Z.genRes.map f ≫ φB.hom` using `hT'.lift_f _ _`. Establish `hβ : β ≫ Z.genRes.map f = Z.genRes.map f' ≫ φB.inv` using `hT.lift_f _ _`.
+
+Use `⟨⟨α, β, ?_, ?_⟩, hα⟩` and prove the remaining obligations. Rewrite using `[← cancel_mono (Z.genRes.map f)]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Category.assoc, hβ]`. Use `_ = 𝟙 _ ≫ Z.genRes.map f := by`.
+
+Rewrite using `[← Category.assoc, hα, Category.assoc, Iso.hom_inv_id, Category.comp_id, Category.id_comp]`. Rewrite using `[← cancel_mono (Z.genRes.map f')]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Category.assoc, hα]`. Use `_ = 𝟙 _ ≫ Z.genRes.map f' := by`.
+
+Rewrite using `[← Category.assoc, hβ, Category.assoc, Iso.inv_hom_id, Category.comp_id, Category.id_comp]`.
+-/
 theorem exists_genIso_ker : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     (Z : GlobalTheory.Vert.Model O) (A B C A' B' C' : Z.X.Modules) (f : A ⟶ B) (g : B ⟶ C)
     (hfg : f ≫ g = 0) (f' : A' ⟶ B') (g' : B' ⟶ C') (hfg' : f' ≫ g' = 0),

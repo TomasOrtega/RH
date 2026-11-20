@@ -100,11 +100,19 @@ def GeoLevelAction : Prop :=
       ∀ γ : Formalism.L2.DIV.G0 Pg D.R.r → (T.Q.Dw j).La →ₗ[𝓞 D.host.E] (T.Q.Dw j).La,
         (∀ g, Induces (T.Q.Dw j) T.Q.l (D.sp.W j) hr (T.iota j) β Pg g (γ g)) → LevelActionLaws T j β Pg χ γ
 
+/- English proof (translation)
+Simplify using `only [chiDetG0, MonoidHom.finset_prod_apply, MonoidHom.comp_apply, Pi.evalMonoidHom_apply]`.
+-/
 theorem chiDetG0_apply {E : Type} [Field E] [NumberField E] {K : Type} [Field K] (Pg : Finset (Formalism.L2.DIV.Pl E)) (r : ℕ)
     (χ : ∀ w : ↥Pg, (Formalism.L2.DIV.kP w.1)ˣ →* Kˣ) (g : Formalism.L2.DIV.G0 Pg r) :
     chiDetG0 Pg r χ g = ∏ w : ↥Pg, χ w (Matrix.GeneralLinearGroup.det (g w)) := by
   simp only [chiDetG0, MonoidHom.finset_prod_apply, MonoidHom.comp_apply, Pi.evalMonoidHom_apply]
 
+/- English proof (translation)
+Establish `h1 : finR V hr 1 ∈ Formalism.L2.DIV.St β`. Rewrite using `[map_one]`. Conclude with `Subgroup.one_mem _`. Use `⟨Subgroup.one_mem _, h1, fun w => ?_⟩` and prove the remaining obligations. Establish `e : (⟨finR V hr 1, h1⟩ : Formalism.L2.DIV.St β) = 1` using `Subtype.ext (map_one _)`.
+
+Rewrite using `[e, map_one]`. Both sides reduce to the same expression.
+-/
 theorem isLift_one (V : HSp D) {r : ℕ} (hr : V.rank = r) (β : GL (Fin r) (EAf D))
     (Pg : Finset (Formalism.L2.DIV.Pl D.host.E)) : IsLift V hr β Pg 1 1 := by
 

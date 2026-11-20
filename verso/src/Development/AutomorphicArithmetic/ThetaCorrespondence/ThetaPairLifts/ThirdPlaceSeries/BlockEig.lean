@@ -14,6 +14,33 @@ open Formalism.L2.Host
 namespace GlobalTheory.LocCompTy
 open GlobalTheory.HeightCounting GlobalTheory.RowTie GlobalTheory.SplitRead GlobalTheory.NPin GlobalTheory.PendOf
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Take `⟨ψ₀, ξ, hψ, hξ, hlev⟩` from `P.H.level.uni i j hj k v s hsw`. Establish `hcv` using `GlobalTheory.SplitConjVal.valuation_eq s c hcont hci`. Take `⟨h1, h2⟩` from `GlobalTheory.BlockConj.facts_of_mem s D.R.r D.R.t c hcv (s.loc D.R.nV x) hh`. Take `⟨i1, -⟩` from `GlobalTheory.BlockConj.facts_of_mem s D.R.r D.R.t c hcv (s.loc D.R.nV x)⁻¹ (by`. Use `(GlobalTheory.BlockType.blockGrp _ _ _).inv_mem hh` as an intermediate fact.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Conclude with `map_inv (Matrix.GeneralLinearGroup.map (n := Fin (D.R.r + D.R.t)) c.toRingHom) _)`. Establish `huni : NG.UniRT s D.R.r (s.loc D.R.nV x)`. Use `⟨⟨GlobalTheory.BlockConj.mem_GLint_of (fun a b => ?_) (fun a b => ?_), fun a b ha hb => ?_⟩, fun a b ha hb => ⟨fun hlt => ?_, fun he => ?_⟩⟩` and prove the remaining obligations. Conclude with `(HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).2 (h1 a b)`.
+
+Conclude with `(HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).2 (i1 a b)`. Use `h2 a b hb split_ifs at this with e` as an intermediate fact. Rewrite `ha` using `[e]`. Use linear arithmetic over natural numbers and integers. Rewrite `this` using `[sub_zero]`. Then use the resulting hypothesis.
+
+Use `h2 a b hb split_ifs at this with e` as an intermediate fact. Rewrite `hlt` using `[e]`. Use linear arithmetic over natural numbers and integers. Rewrite `this` using `[sub_zero]`. Then use the resulting hypothesis. Substitute `he` using the available equality.
+
+Use `h2 a a ha` as an intermediate fact. Use `split_ifs at this with e`. Conclude with `this`. Conclude with `absurd rfl e`. Establish `hxJ : x ∈ (P.M.loc i).J` using `(hlev.mem x hx).2 huni`.
+
+Establish `hTS : (P.M.loc i).real F ∈ NG.TypeSp (P.M.loc i).wt.ρ (P.M.loc i).J (P.M.loc i).χ`. Rewrite using `[← (P.M.loc i).real_range]`. Conclude with `LinearMap.mem_range_self _ _`. Establish `hrt` using `hTS.2 ⟨x, hxJ⟩`. Set `h : GL (Fin (D.R.r + D.R.t)) (s.w.adicCompletion D.host.E)` to `Matrix.GeneralLinearGroup.map c.toRingHom (s.loc D.R.nV x)`.
+
+Establish `hh' : h ∈ GlobalTheory.BlockType.blockGrp (s.w.adicCompletion D.host.E) D.R.r D.R.t` using `hh`. Establish `hdet` using `GlobalTheory.BlockConjDet.val_det_mul_sub_one_lt hh'`. Establish `hne2 : (h.val.submatrix (Fin.natAdd D.R.r) (Fin.natAdd D.R.r)).det ≠ 0`. Introduce `h0`. Rewrite `hdet` using `[h0, mul_zero, zero_sub, Valuation.map_neg, map_one]`.
+
+Conclude with `lt_irrefl _ hdet`. Establish `hc_det : c (NG.detDD s D.R.r (s.loc D.R.nV x)) = (h.val.submatrix (Fin.natAdd D.R.r) (Fin.natAdd D.R.r)).det`. Set `e : Fin D.R.t ≃ {y : Fin D.R.nV // D.R.r ≤ y.val}` to `{ toFun := fun a => ⟨Fin.natAdd D.R.r a, by simp⟩ invFun := fun y => ⟨y.1.val - D.R.r, by`. Establish `h1` using `y.1.2`. Establish `h2` using `y.2`.
+
+Express the relevant statement in the definitionally equal form `y.1.val < D.R.r + D.R.t at h1`. Use the proof step `omega⟩`. Use `left_inv := fun a => by ext; simp`. Use `right_inv := fun y => by ext; simp; have := y.2; omega }`. Rewrite using `[NG.detDD, ← Matrix.det_submatrix_equiv_self e]`.
+
+Rewrite using `[show c _ = c.toRingHom _ from rfl, RingHom.map_det]`. Use `congr 1`. Establish `hF0 : NG.detDD s D.R.r (s.loc D.R.nV x) ≠ 0` using `fun h0 => hne2 (by rw [← hc_det, h0, map_zero])`. Set `u` to `Units.mk0 _ hF0`. Establish `hchr` using `hlev.chr x hxJ hx u rfl`.
+
+Establish `hsup : ψ₀ (NG.supDiag s D.R.r (s.loc D.R.nV x)) = 1` using `hψ.1 _ (by`. Unfold `NG.supDiag`. Use `Valuation.map_sum_lt _ one_ne_zero fun p _ => Valuation.map_sum_lt _ one_ne_zero fun q _ => ?_` and prove the remaining obligations. Use `split_ifs with h`. Use `h2 p q h.2 split_ifs at this with e` as an intermediate fact.
+
+Rewrite `h` using `[e]`. Use linear arithmetic over natural numbers and integers. Rewrite `this` using `[sub_zero]`. Then use the resulting hypothesis. Rewrite using `[map_zero]`. Conclude with `zero_lt_one)`.
+
+Establish `hμ : GlobalTheory.NPin.IsComp (P.tp.tup (D.nd.mu i) j) s.w ((P.tp.tup (D.nd.mu i) j).loc s.w)` using `⟨GlobalTheory.HeckeComp.smooth_loc _ _, fun _ => rfl⟩`. Establish `hξμ` using `GlobalTheory.ConjDense.eq_of_agree s c hcont hci ((P.tp.tup (D.nd.mu i) j).loc s.w) ξ hμ.1 hξ.1 (fun k => by rw [hξ.2 k, hμ.2 k]) u`. Establish `hbc : GlobalTheory.BlockType.blockChar ((P.tp.tup (D.nd.mu i) j).loc s.w) h = ((((P.tp.tup (D.nd.mu i) j).loc s.w) (Units.map c.toMonoidHom u) : ℂˣ) : ℂ)` using `GlobalTheory.BlockType.blockChar_eq _ _ _ (by rw [← hc_det]; rfl)`. Express the relevant statement in the definitionally equal form `_ = GlobalTheory.BlockType.blockChar ((P.tp.tup (D.nd.mu i) j).loc s.w) h • _`. Rewrite using `[hbc, ← hξμ, hrt, hchr, hsup, one_mul]`.
+-/
 theorem blockEig_alt (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (D : D7) (P : _root_.GlobalTheory.NPin.CharacterChoiceData hL D) (i : D.nd.Loc) (PI : D.naut.AV i)
     (k : Fin 2) (v : D.nd.PlG k) (j : Fin D.R.m) (hj : j.1 + 1 = D.nd.j i) (s : SplitPlace D.host.E)
     (hsw : s.w = D.naut.plGw k v) (c : s.v.adicCompletion (maximalRealSubfield D.host.E) ≃+* s.w.adicCompletion D.host.E)

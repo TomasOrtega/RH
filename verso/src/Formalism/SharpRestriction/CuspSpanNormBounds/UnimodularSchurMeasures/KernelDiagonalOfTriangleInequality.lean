@@ -12,10 +12,20 @@ open Formalism.HermitianLatticeCounting.S7 (decExp)
 def DistTri : Prop :=
   ∀ (n : ℕ) (ε : Fin n → Bool) (g k : Formalism.REAL.UJ ε), cartanDistance ε (g * k) ≤ cartanDistance ε g + cartanDistance ε k
 
+/- English proof (translation)
+Unfold `decExp`. Check the signs of the components of the expression.
+-/
 theorem rrk_decExp_nonneg {h : ℝ} (hh : 0 ≤ h) (q : ℕ) {t : ℝ} (ht : 0 ≤ t) : 0 ≤ decExp h q t := by
   unfold decExp
   positivity
 
+/- English proof (translation)
+Unfold `decExp`. Establish `hc : 0 ≤ Real.sqrt (2 * (q : ℝ))` using `Real.sqrt_nonneg _`. Establish `hm : min (u ^ 2) (u / Real.sqrt (2 * (q : ℝ))) ≤ 4 * min ((u / 2) ^ 2) (u / 2 / Real.sqrt (2 * (q : ℝ)))`. Rewrite using `[mul_min_of_nonneg _ _ (by norm_num : (0 : ℝ) ≤ 4)]`. Apply `min_le_min` to reduce the goal to its premises.
+
+Conclude with `le_of_eq (by ring)`. Establish `h0 : 0 ≤ u / Real.sqrt (2 * (q : ℝ))` using `div_nonneg hu hc`. Rewrite using `[show 4 * (u / 2 / Real.sqrt (2 * (q : ℝ))) = 2 * (u / Real.sqrt (2 * (q : ℝ))) by ring]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hm1 : 0 ≤ min (u ^ 2) (u / Real.sqrt (2 * (q : ℝ)))` using `le_min (sq_nonneg u) (div_nonneg hu hc)`.
+
+Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left hm hh]`.
+-/
 theorem rrk_decExp_half {h : ℝ} (hh : 0 ≤ h) (q : ℕ) {u : ℝ} (hu : 0 ≤ u) :
     2 * decExp (h / 8) q u ≤ decExp h q (u / 2) := by
   unfold decExp
@@ -31,6 +41,13 @@ theorem rrk_decExp_half {h : ℝ} (hh : 0 ≤ h) (q : ℕ) {u : ℝ} (hu : 0 ≤
   have hm1 : 0 ≤ min (u ^ 2) (u / Real.sqrt (2 * (q : ℝ))) := le_min (sq_nonneg u) (div_nonneg hu hc)
   nlinarith [mul_le_mul_of_nonneg_left hm hh]
 
+/- English proof (translation)
+Establish `hmax : s ≤ max s t` using `le_max_left s t`. Establish `hM : u ≤ 2 * max s t`. Use `le_max_right s t` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h8 : 0 ≤ h / 8` using `div_nonneg hh (by norm_num)`.
+
+Establish `h1 : decExp (h / 8) q u ≤ decExp (h / 8) q (2 * max s t)` using `decay_exponent_monotone h8 q hu hM`. Establish `h2` using `rrk_decExp_half hh q (u := 2 * max s t) (by linarith)`. Rewrite `h2` using `[show 2 * max s t / 2 = max s t by ring]`. Establish `hs0` using `rrk_decExp_nonneg hh q hs`. Establish `ht0` using `rrk_decExp_nonneg hh q ht`.
+
+Break down `le_total s t with hst | hst` into its components or cases. Rewrite `h1`, `h2` using `[max_eq_right hst]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite `h1`, `h2` using `[max_eq_left hst]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem rrk_decExp_tri {h : ℝ} (hh : 0 ≤ h) (q : ℕ) {s t u : ℝ} (hs : 0 ≤ s) (ht : 0 ≤ t) (hu : 0 ≤ u) (hle : u ≤ s + t) :
     2 * decExp (h / 8) q u ≤ decExp h q s + decExp h q t := by
   have hmax : s ≤ max s t := le_max_left s t
@@ -50,6 +67,11 @@ theorem rrk_decExp_tri {h : ℝ} (hh : 0 ≤ h) (q : ℕ) {s t u : ℝ} (hs : 0 
   · rw [max_eq_left hst] at h1 h2
     linarith
 
+/- English proof (translation)
+Establish `hab : 0 ≤ a * b` using `mul_nonneg ha hb`. Establish `h1 : a * b ≤ (k * W) ^ 2`. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : Real.sqrt (a * b) ≤ k * W`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `h3 : Real.sqrt (a * b) ≤ (a + b) / 2`. Establish `h4 : a * b ≤ ((a + b) / 2) ^ 2` using `by nlinarith [sq_nonneg (a - b)]`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem rrk_amgm {a b k P Q W : ℝ} (ha : 0 ≤ a) (hb : 0 ≤ b) (hk : 0 ≤ k) (hW : 0 ≤ W) (hP : 0 ≤ P) (haP : a ≤ k * P)
     (hbQ : b ≤ k * Q) (hPQ : P * Q ≤ W ^ 2) : a * b ≤ k * W * ((a + b) / 2) := by
   have hab : 0 ≤ a * b := mul_nonneg ha hb
@@ -68,6 +90,25 @@ theorem rrk_amgm {a b k P Q W : ℝ} (ha : 0 ≤ a) (hb : 0 ≤ b) (hk : 0 ≤ k
   calc a * b = Real.sqrt (a * b) * Real.sqrt (a * b) := (Real.mul_self_sqrt hab).symm
     _ ≤ k * W * ((a + b) / 2) := mul_le_mul h2 h3 (Real.sqrt_nonneg _) (mul_nonneg hk hW)
 
+/- English proof (translation)
+Establish `hH : X.μf.IsHaarMeasure` using `hX.2.1.2.2.2.1`. Establish `: (X.I.muA X.μf).IsMulLeftInvariant` using `rr_muA_left X.I X.μf`. Establish `hp : X.I.IsPosType X.e` using `hX.1.2.2.2.2.2.2.1.2.2.2.1`. Use `set k0 : ℝ := fdegAll X.I X.σ X.w * (X.e 1).re with hk0`. Establish `hk0n : 0 ≤ k0` using `mul_nonneg X.fdegAll_nonneg (X.e_one_nonneg hp)`.
+
+Use `set L : ℝ := ∫ g, ‖X.φ g‖ ∂(X.I.muA X.μf) with hL`. Establish `hLn : 0 ≤ L` using `integral_nonneg fun _ => norm_nonneg _`. Establish `hLe : ∫⁻ g, ‖X.φ g‖ₑ ∂(X.I.muA X.μf) = ENNReal.ofReal L`. Rewrite using `[hL, ofReal_integral_norm_eq_lintegral_enorm hint]`. Use `⟨k0 * L, mul_nonneg hk0n hLn, fun z => ?_⟩` and prove the remaining obligations.
+
+Use `set W : ℝ := ∏ v, Real.exp (-(decExp (X.h / 8) X.qq (cartanDistance (X.I.ε v) (z.1 v)))) with hW`. Establish `hWn : 0 ≤ W` using `Finset.prod_nonneg fun v _ => (Real.exp_pos _).le`. Establish `hpt : ∀ g : X.I.GA, ‖X.φ g‖ₑ * ‖X.φ (g⁻¹ * z)‖ₑ ≤ ENNReal.ofReal (k0 * W / 2) * (‖X.φ g‖ₑ + ‖X.φ (g⁻¹ * z)‖ₑ)`. Introduce `g`. Establish `b1` using `X.norm_φ_le D hdec hX h1 hE (X.qq_spec hX).1 g`.
+
+Establish `b2` using `X.norm_φ_le D hdec hX h1 hE (X.qq_spec hX).1 (g⁻¹ * z)`. Establish `hPQ : (∏ v, Real.exp (-(decExp X.h X.qq (cartanDistance (X.I.ε v) (g.1 v))))) * (∏ v, Real.exp (-(decExp X.h X.qq (cartanDistance (X.I.ε v) ((g⁻¹ * z).1 v))))) ≤ W ^ 2`. Rewrite using `[← Finset.prod_mul_distrib, hW, ← Finset.prod_pow]`. Use `Finset.prod_le_prod (fun v _ => by positivity) fun v _ => ?_` and prove the remaining obligations. Rewrite using `[← Real.exp_add, ← Real.exp_nat_mul]`.
+
+Apply `Real.exp_le_exp.2` to reduce the goal to its premises. Establish `ht` using `htri X.I.n (X.I.ε v) (g.1 v) ((g⁻¹ * z).1 v)`. Establish `ez : g.1 v * (g⁻¹ * z).1 v = z.1 v` using `by show g.1 v * ((g.1 v)⁻¹ * z.1 v) = z.1 v group`. Rewrite `ht` using `[ez]`. Use `rrk_decExp_tri hh X.qq (cartan_distance_nonneg _ (g.1 v)) (cartan_distance_nonneg _ ((g⁻¹ * z).1 v)) (cartan_distance_nonneg _ (z.1 v)) ht` as an intermediate fact.
+
+Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hr` using `rrk_amgm (norm_nonneg (X.φ g)) (norm_nonneg (X.φ (g⁻¹ * z))) hk0n hWn (Finset.prod_nonneg fun v _ => (Real.exp_pos _).le) b1 b2 hPQ`. Rewrite using `[← ofReal_norm, ← ofReal_norm, ← ENNReal.ofReal_mul (norm_nonneg _), ← ENNReal.ofReal_add (norm_nonneg _) (norm_nonneg _), ← ENNReal.ofReal_mul (by positivity)]`. Use `ENNReal.ofReal_le_ofReal (le_trans hr (le_of_eq ?_))` and prove the remaining obligations.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hm1 : Measurable fun g : X.I.GA => ‖X.φ g‖ₑ` using `hφ.1.enorm`. Establish `hsh : ∫⁻ g, ‖X.φ (g⁻¹ * z)‖ₑ ∂(X.I.muA X.μf) = ENNReal.ofReal L`. Rewrite using `[← hLe, ← lintegral_mul_left_eq_self (fun g => ‖X.φ g‖ₑ) z⁻¹]`. Use `lintegral_congr fun g => ?_` and prove the remaining obligations.
+
+Establish `e : g⁻¹ * z = (z⁻¹ * g)⁻¹` using `by group`. Rewrite using `[e, hφ.2.1, enorm_eq_nnnorm, enorm_eq_nnnorm, nnnorm_star]`. Unfold `rrk_Psi`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[lintegral_const_mul' _ _ ENNReal.ofReal_ne_top, lintegral_add_left hm1, hLe, hsh]`.
+
+Use `_ = ENNReal.ofReal (k0 * L * W) := by`. Rewrite using `[← ENNReal.ofReal_add hLn hLn, ← ENNReal.ofReal_mul (by positivity)]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem ConvDecay_of (D : Formalism.BasicNotions.D7) (hdec : DiscreteSeriesDecayBound D) (X : CData) {n₀ : ℕ} {A : ℝ} (hX : X.HypB n₀ A) (h1 : X.GapAboveThreeHalvesPower)
     (hE : X.LowProj) (hh : 0 ≤ X.h) (htri : DistTri) (hφ : PhiIdem X) (hint : Integrable X.φ (X.I.muA X.μf)) :
     ConvDecay X X.qq (X.h / 8) := by
@@ -124,17 +165,26 @@ theorem ConvDecay_of (D : Formalism.BasicNotions.D7) (hdec : DiscreteSeriesDecay
         rw [← ENNReal.ofReal_add hLn hLn, ← ENNReal.ofReal_mul (by positivity)]
         congr 1; ring
 
+/- English proof (translation)
+Use `φ_integrable X hX (X.phOf_integrable fun v => ?_)` and prove the remaining obligations. Conclude with `(hloc X.I.n (X.I.ε v) (X.lam v) (hX.1.2.2.2.2.1 v) (X.H v) (X.σ v) (hX.2.1.1 v) (X.w v) (hX.2.1.2.1 v) X.h (hX.2.2 v) (h1 v)).1`.
+-/
 theorem rrk_phi_int (D : Formalism.BasicNotions.D7) (hloc : LocalProjectorRealPlace D) (X : CData) {n₀ : ℕ} {A : ℝ} (hX : X.HypB n₀ A) (h1 : X.GapAboveThreeHalvesPower) :
     Integrable X.φ (X.I.muA X.μf) := by
   refine φ_integrable X hX (X.phOf_integrable fun v => ?_)
   exact (hloc X.I.n (X.I.ε v) (X.lam v) (hX.1.2.2.2.2.1 v) (X.H v) (X.σ v) (hX.2.1.1 v) (X.w v) (hX.2.1.2.1 v) X.h
     (hX.2.2 v) (h1 v)).1
 
+/- English proof (translation)
+Unfold `CData.GapAboveThreeHalvesPower at h1`. Take `⟨v⟩ : Nonempty (InfinitePlace X.I.F)` from `inferInstance`. Conclude with `le_trans (by positivity) (h1 v)`.
+-/
 theorem rrk_h_nonneg (X : CData) (h1 : X.GapAboveThreeHalvesPower) : 0 ≤ X.h := by
   unfold CData.GapAboveThreeHalvesPower at h1
   obtain ⟨v⟩ : Nonempty (InfinitePlace X.I.F) := inferInstance
   exact le_trans (by positivity) (h1 v)
 
+/- English proof (translation)
+The claim follows from `kernel_diagonal_of_decay_threshold D hloc X hX hn1 h1 h363 hu (ConvDecay_of D hdec X hX h1 (lowest_K_type_projector_exists D h2 X hX) (rrk_h_nonneg X h1) htri (PhiIdem_of D hloc X hX h1) (rrk_phi_int D hloc X hX h1)) hn`.
+-/
 theorem kernel_diagonal_of_triangle_inequality (D : Formalism.BasicNotions.D7) (h2 : adm2 D) (hdec : DiscreteSeriesDecayBound D) (hloc : LocalProjectorRealPlace D) (X : CData) {n₀ : ℕ}
     {A : ℝ} (hX : X.HypB n₀ A) (hn1 : 1 ≤ X.I.n) (h1 : X.GapAboveThreeHalvesPower) (h363 : X.GapAboveSquareRootThreshold 363) (hu : UnimodA X) (htri : DistTri)
     (hn : AllCount X (2 * (X.I.n : ℝ) ^ 2)) : X.KernelDiag :=

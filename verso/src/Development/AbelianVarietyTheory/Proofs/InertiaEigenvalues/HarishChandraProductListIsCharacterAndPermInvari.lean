@@ -8,11 +8,17 @@ open scoped Classical
 
 namespace GlobalTheory.GLqPerm
 
+/- English proof (translation)
+Use `⟨FDRep.of (Representation.trivial ℂ G ℂ), fun x => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `LinearMap.trace ℂ ℂ ((Representation.trivial ℂ G ℂ) x) = 1`. Simplify using `[Representation.trivial, LinearMap.trace_id]`.
+-/
 theorem isChar_one {G : Type} [Group G] : IsChar (fun _ : G => (1 : ℂ)) := by
   refine ⟨FDRep.of (Representation.trivial ℂ G ℂ), fun x => ?_⟩
   change LinearMap.trace ℂ ℂ ((Representation.trivial ℂ G ℂ) x) = 1
   simp [Representation.trivial, LinearMap.trace_id]
 
+/- English proof (translation)
+Take `⟨V, hV⟩` from `h`. Introduce `x y`. Rewrite using `[← hV, ← hV, FDRep.char_conj]`.
+-/
 theorem isClass_of_isChar {G : Type} [Group G] {χ : G → ℂ} (h : IsChar χ) : IsClass χ := by
   obtain ⟨V, hV⟩ := h
   intro x y
@@ -20,6 +26,11 @@ theorem isClass_of_isChar {G : Type} [Group G] {χ : G → ℂ} (h : IsChar χ) 
 
 variable {g : ℕ} [Fact g.Prime]
 
+/- English proof (translation)
+Proceed by induction on `L with`. Consider the case `nil => exact isChar_one`. Consider the case `cons p L ih`. Establish `hdeg : degL (p :: L) = p.1 + degL L` using `by simp [degL]`. Rewrite using `[hcL_cons]`.
+
+Conclude with `((GlobalTheory.T.harishChandra_induction_character_restriction_decomp g p.1 (degL L) (degL (p :: L)) hdeg).1 p.2 (hcL L (degL L)) (hL p (by simp)) (ih fun q hq => hL q (by simp [hq])))`.
+-/
 theorem isChar_hcL (L : List (Pc g)) (hL : ∀ p ∈ L, IsChar p.2) : IsChar (hcL L (degL L)) := by
   induction L with
   | nil => exact isChar_one
@@ -29,16 +40,36 @@ theorem isChar_hcL (L : List (Pc g)) (hL : ∀ p ∈ L, IsChar p.2) : IsChar (hc
     exact ((GlobalTheory.T.harishChandra_induction_character_restriction_decomp g p.1 (degL L) (degL (p :: L)) hdeg).1 p.2 (hcL L (degL L))
       (hL p (by simp)) (ih fun q hq => hL q (by simp [hq])))
 
+/- English proof (translation)
+Unfold `degL`. Conclude with `(h.map _).sum_eq`.
+-/
 theorem degL_perm {L L' : List (Pc g)} (h : L.Perm L') : degL L = degL L' := by
   unfold degL
   exact (h.map _).sum_eq
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 theorem hc_congr_mid (a : ℕ) (α : Gn g a → ℂ) (F : (m : ℕ) → Gn g m → ℂ) (n m m' : ℕ) (h : m = m') :
     hc a m α (F m) n = hc a m' α (F m') n := by subst h; rfl
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 theorem hc_congr_left (c : ℕ) (γ : Gn g c → ℂ) (F : (m : ℕ) → Gn g m → ℂ) (n m m' : ℕ) (h : m = m') :
     hc m c (F m) γ n = hc m' c (F m') γ n := by subst h; rfl
 
+/- English proof (translation)
+Proceed by induction on `h with`. Consider the case `nil => intro _ n _`. Both sides reduce to the same expression. Consider the case `cons x h ih`. Name the introduced variables `L₁ L₂`.
+
+Introduce `hc1 n hn`. Rewrite using `[hcL_cons, hcL_cons, ih (fun q hq => hc1 q (by simp [hq])) _ rfl]`. Conclude with `hc_congr_mid x.1 x.2 (hcL L₂) n _ _ (degL_perm h)`. Consider the case `swap x y L₁`. Introduce `hc1 n hn`.
+
+Establish `hx : IsClass x.2` using `isClass_of_isChar (hc1 x (by simp))`. Establish `hy : IsClass y.2` using `isClass_of_isChar (hc1 y (by simp))`. Establish `hL : IsClass (hcL L₁ (degL L₁))` using `isClass_of_isChar (isChar_hcL L₁ fun q hq => hc1 q (by simp [hq]))`. Establish `hn' : n = y.1 + x.1 + degL L₁` using `by rw [hn]; simp [degL]; omega`. Establish `hn'' : n = x.1 + y.1 + degL L₁` using `by rw [hn']; omega`.
+
+Establish `e1 : degL (x :: L₁) = x.1 + degL L₁` using `by simp [degL]`. Establish `e2 : degL (y :: L₁) = y.1 + degL L₁` using `by simp [degL]`. Simplify using `only [hcL_cons]`. Rewrite using `[hc_congr_mid y.1 y.2 (fun m => hc x.1 (degL L₁) x.2 (hcL L₁ (degL L₁)) m) n _ _ e1, hc_congr_mid x.1 x.2 (fun m => hc y.1 (degL L₁) y.2 (hcL L₁ (degL L₁)) m) n _ _ e2]`. Rewrite using `[← (GlobalTheory.T.harishChandraInductionExteriorProduct_assoc_comm g y.1 x.1 (degL L₁) n y.2 x.2 _ hy hx hL).1 hn', ← (GlobalTheory.T.harishChandraInductionExteriorProduct_assoc_comm g x.1 y.1 (degL L₁) n x.2 y.2 _ hx hy hL).1 hn'', (GlobalTheory.T.harishChandraInductionExterior …`.
+
+Conclude with `hc_congr_left (degL L₁) (hcL L₁ (degL L₁)) (fun m => hc x.1 y.1 x.2 y.2 m) n _ _ (Nat.add_comm _ _)`. Consider the case `trans h₁ h₂ ih₁ ih₂`. Introduce `hc1 n hn`. Rewrite using `[ih₁ hc1 n hn, ih₂ (fun q hq => hc1 q (h₁.mem_iff.mpr hq)) n (hn.trans (degL_perm h₁))]`.
+-/
 theorem hcL_perm {L L' : List (Pc g)} (h : L.Perm L') :
     (∀ p ∈ L, IsChar p.2) → ∀ n, n = degL L → hcL L n = hcL L' n := by
   induction h with
@@ -71,6 +102,9 @@ theorem hcL_perm {L L' : List (Pc g)} (h : L.Perm L') :
 
 end GlobalTheory.GLqPerm
 
+/- English proof (translation)
+Introduce `g _ L L' n hn hL`. Substitute `hn` using the available equality. Conclude with `⟨GlobalTheory.GLqPerm.isChar_hcL L hL, fun h => GlobalTheory.GLqPerm.hcL_perm h hL _ rfl⟩`.
+-/
 theorem GlobalTheory.gl_list_product_perm_char : ∀ (g : ℕ) [Fact g.Prime] (L L' : List (Pc g)) (n : ℕ), n = degL L → (∀ p ∈ L, IsChar p.2) → IsChar (hcL L n) ∧ (L.Perm L' → hcL L n = hcL L' n) := by
   intro g _ L L' n hn hL
   subst hn

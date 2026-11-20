@@ -40,6 +40,15 @@ section Generic
 
 variable {F : Type} [Field F] [NumberField F] {Y : Var F}
 
+/- English proof (translation)
+Use `Fintype.ofFinite ι` as an intermediate fact. Use `choose M L m h using h₁`. Take `⟨P, -, -, -, hP⟩` from `LineNorm.Glue.exists_normal_dominating_finset (M i₀) M Finset.univ`. Use `choose ρ hρ using fun i => hP i (Finset.mem_univ i)`. Use `choose S hS using fun i => GlobalTheory.T.exists_line_bundle_finite_index F C Y (A i) P _ (m i) (m i).2 (LineNorm.Add.GivenBy.pull (m := m i) (h i) (ρ i) (hρ i))`.
+
+Set `q : Polynomial Y.Fn` to `∏ i, ∏ a ∈ S i, (Polynomial.X ^ (m i : ℕ) - Polynomial.C a)`. Establish `hq : q ≠ 0` using `Finset.prod_ne_zero_iff.2 fun i _ => Finset.prod_ne_zero_iff.2 fun a _ => Polynomial.X_pow_sub_C_ne_zero (m i).2 a`. Take `⟨V, τ, ψ, e₁, e₂⟩` from `GlobalTheory.T.exists_cover_function_field_embedding F Y P q.SplittingField`. Use `⟨V, fun i => ?_⟩` and prove the remaining obligations. Take `⟨B, hB, r, hr⟩` from `hS i V τ e₁ fun a ha => by`.
+
+Establish `hd : Polynomial.X ^ (m i : ℕ) - Polynomial.C a ∣ q` using `(Finset.dvd_prod_of_mem (fun a => Polynomial.X ^ (m i : ℕ) - Polynomial.C a) ha).trans (Finset.dvd_prod_of_mem (fun i => ∏ a ∈ S i, (Polynomial.X ^ (m i : ℕ) - Polynomial.C a)) (Finset.mem_univ i))`. Establish `hs` using `(Polynomial.SplittingField.splits q).of_dvd (Polynomial.map_ne_zero hq) (Polynomial.map_dvd (algebraMap Y.Fn q.SplittingField) hd)`. Take `⟨g, hg⟩` from `hs.exists_eval_eq_zero (by`. Rewrite using `[Polynomial.degree_map, Polynomial.degree_X_pow_sub_C (m i).pos]`. Conclude with `Nat.cast_ne_zero.2 (m i).ne_zero)`.
+
+Use `⟨ψ g, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_pow, ← e₂, RingHom.comp_apply]`. Use `congrArg ψ (sub_eq_zero.1 ?_)` and prove the remaining obligations. Simplify using `using hg`. Conclude with `GlobalTheory.T.exists_hermitian_line_bundle_induced F C Y V _ B r hB hr (h₂ i) (h₃ i)`.
+-/
 theorem exists_cover {C : CxSt F} {ι : Type} [Finite ι] (i₀ : ι) (A : ι → Adl C Y)
     (h₁ : ∀ i, LineNorm.FromModel Y (A i).D (eqn (A i).D) (A i).lg) (h₂ : ∀ i σ, C.mSmooth Y σ _ ((A i).m σ))
     (h₃ : ∀ i, ConjInv (A i)) : ∃ V : Cover Y, ∀ i, ∃ L, V.Induces (A i) L 1 := by
@@ -70,6 +79,9 @@ theorem exists_cover {C : CxSt F} {ι : Type} [Finite ι] (i₀ : ι) (A : ι �
     simpa using hg
   exact GlobalTheory.T.exists_hermitian_line_bundle_induced F C Y V _ B r hB hr (h₂ i) (h₃ i)
 
+/- English proof (translation)
+Establish `hp` using `presents_toLB Δ`. Use `⟨(Var.Met.toWeight m (Var.mSmooth.posSet_eq h) hp).locPot, fun x => ?_, (Var.mSmooth.isSmooth_toWeight h hp).isPotential (isAlgAtlas_atlasOf σ)⟩` and prove the remaining obligations. Take `⟨f, hf⟩` from `isPot_ofWeight (C := cxSt F) hp (Var.Met.toWeight m (Var.mSmooth.posSet_eq h) hp) x`. Establish `e : (cxSt F).pn Y σ Δ ((cxSt F).ofWeight Y σ Δ _ _ hp (Var.Met.toWeight m (Var.mSmooth.posSet_eq h) hp)) = (cxSt F).pn Y σ Δ m` using `Var.pn_ofWeight_toWeight _ hp`. Conclude with `⟨f, by simpa only [PosAt, lnN, e] using hf⟩`.
+-/
 theorem exists_pot {σ : F →+* ℂ} {Δ : Y.Dv} {m : (cxSt F).Met Y σ Δ} (h : (cxSt F).mSmooth Y σ Δ m) :
     ∃ Q : LocPot (Pts Y σ), IsPot id m Q ∧ M.IsPotential (atlasOf Y σ) Q := by
   have hp := presents_toLB Δ
@@ -80,6 +92,9 @@ theorem exists_pot {σ : F →+* ℂ} {Δ : Y.Dv} {m : (cxSt F).Met Y σ Δ} (h 
       (cxSt F).pn Y σ Δ m := Var.pn_ofWeight_toWeight _ hp
   exact ⟨f, by simpa only [PosAt, lnN, e] using hf⟩
 
+/- English proof (translation)
+Substitute `he` using the available equality. Use `⟨_, manIsOf Z r _ h, fun _ _ => Iff.rfl, fun _ _ => rfl, fun Δ m hm => ?_⟩` and prove the remaining obligations. Use `choose Q hQ using fun σ => exists_pot (hm σ)`. Conclude with `⟨fun a => Q _, fun a => hQ _⟩`.
+-/
 theorem exists_man {e : ℕ} (he : Y.dim = e) (Z : ∀ σ, Set (Pts Y σ)) (r : ∀ σ, Pts Y σ → ℝ)
     (h : ∀ σ, IsBd (atlasOf Y σ) (Z σ) (r σ) (fsPot Y σ)) :
     ∃ (M : Man e) (I : ManIs M Y), (∀ a z, z ∈ M.Z a ↔ I.pt a z ∈ Z _) ∧ (∀ a z, M.r a z = r _ (I.pt a z)) ∧
@@ -90,6 +105,11 @@ theorem exists_man {e : ℕ} (he : Y.dim = e) (Z : ∀ σ, Set (Pts Y σ)) (r : 
   choose Q hQ using fun σ => exists_pot (hm σ)
   exact ⟨fun a => Q _, fun a => hQ _⟩
 
+/- English proof (translation)
+Take `⟨N, hN, hc⟩` from `HtTwist.exists_card Y.str x hx`. Take `⟨d, rfl⟩` from `Nat.exists_eq_succ_of_ne_zero hN`. Establish `h (a) : Nonempty (Fin (d + 1) ≃ {w : Pts Y (I.ε a) // under w = x})` using `⟨(finCongr (hc ℂ (I.ε a)).symm).trans (Nat.equivFinOfCardPos ((hc ℂ (I.ε a)).trans_ne d.succ_ne_zero)).symm⟩`. Use `⟨d, fun a i => (I.pt a).symm ((h a).some i).1, fun a => ⟨(I.pt a).symm.injective.comp (Subtype.val_injective.comp (h a).some.injective), Set.ext fun w => ⟨?_, fun hw => ?_⟩⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨i, rfl⟩`.
+
+Simplify using `using ((h a).some i).2`. Conclude with `⟨(h a).some.symm ⟨I.pt a w, hw⟩, by simp⟩`.
+-/
 theorem exists_lists {e : ℕ} {M : Man e} (I : ManIs M Y) {x : Y.X} (hx : IsClosed ({x} : Set Y.X)) :
     ∃ (d : ℕ) (z : ∀ a, Fin (d + 1) → M.X a), I.Lists x z := by
   obtain ⟨N, hN, hc⟩ := HtTwist.exists_card Y.str x hx
@@ -102,6 +122,9 @@ theorem exists_lists {e : ℕ} {M : Man e} (I : ManIs M Y) {x : Y.X} (hx : IsClo
     simpa using ((h a).some i).2
   · exact ⟨(h a).some.symm ⟨I.pt a w, hw⟩, by simp⟩
 
+/- English proof (translation)
+Introduce `σ c y hy i hi` and use `by have key (g : ReciprocityTheory.L2DbarEstimates.V e → ℂ) (v) : ReciprocityTheory.L2DbarEstimates.cHess e (fun w => -g w) v = -ReciprocityTheory.L2DbarEstimates.cHess e g v := by have e₁ (b) : ReciprocityTheory.L2DbarEstimates.wdb e b (fun w => -g w) = fun w => -ReciprocityTheo …`.
+-/
 theorem hessRel_dual {e : ℕ} {M : Man e} {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k}
     {ε : (k →+* ℂ) → Fin (M.n + 1)} {π : ∀ σ, CxPts p σ → M.X (ε σ)} {L : HermLB p} {P : M.Pot} (h : HessRel ε π L P) :
     HessRel ε π L.dual fun a => (P a).rsmul (-1) := fun σ c y hy i hi => by
@@ -119,11 +142,23 @@ theorem hessRel_dual {e : ℕ} {M : Man e} {k : Type} [CommRing k] {X : Scheme.{
   funext v
   simp [LocPot.rsmul]
 
+/- English proof (translation)
+Take `rfl : ‹DecidableEq ι› = fun a b => Classical.propDecidable (a = b)` from `Subsingleton.elim _ _`. Both sides reduce to the same expression.
+-/
 theorem cls_eq {e : ℕ} {M : Man e} {ι : Type} [Fintype ι] [DecidableEq ι] (P : ι → M.Pot) (hP) (i : ι) :
     cls M P hP i = ((Pi.single i 1, 0) : (ι → ℝ) × smSub M) := by
   obtain rfl : ‹DecidableEq ι› = fun a b => Classical.propDecidable (a = b) := Subsingleton.elim _ _
   rfl
 
+/- English proof (translation)
+Establish `hX : IsArithVar V.p e` using `he ▸ V.ar`. Take `⟨Φ₀, hΦ₀⟩` from `((hA.arExists _ V.X V.p e hX).2 ι L).1`. Use `⟨V.ν⁻¹ • Φ₀, fun ε π hd => numOn_of hA.arChange hX _ _ (fun u hu hu' hc n f hf => ?_) fun n => ?_⟩` and prove the remaining obligations. Set `K` to `calcWith P hP (V.ν⁻¹ • Φ₀)`. Use `GlobalTheory.T.chInt_pullback_eq_monge_ampere F Y V e M I ε π he hd _ _ (K.firstChern_isPotential _) (GlobalTheory.T.hessian_relation_linear_combination F Y V e M I ε π hd _ _ (fun o : Option ι => o.elim (fun a => LocPot.ofFun (u a)) P) n _ ?_ (K.firstChern_isPotential _) ?_ fun …` and prove the remaining obligations.
+
+Introduce and unpack `(_ | i) a`. Conclude with `isPotential_ofFun _ _ (hu a)`. Conclude with `hP i a`. Introduce and unpack `(_ | i)`. Conclude with `hessRel_fnB ε π u hu' hc`.
+
+Conclude with `h ε π hd i`. Express the relevant statement in the definitionally equal form `leviL K a j y hy w _ = _`. Rewrite using `[Fintype.sum_option, map_add, map_sum, map_smul, add_comm]`. Use `congrArg₂ (· + ·) (congrArg (_ * ·) (K.c1_ar u hu a j y hy w)) (Finset.sum_congr rfl fun i _ => ?_)` and prove the remaining obligations. Use `((leviL K a j y hy w).map_smul _ _).trans ?_` and prove the remaining obligations.
+
+Conclude with `congrArg (_ * ·) (leviEq_of_φ _ (first_chern_class_potential M P hP i a) j y hy w)`. Use `calcWith_top P hP (V.ν⁻¹ • Φ₀) fun i => (n i : ℝ) erw [this]` as an intermediate fact. Rewrite using `[LinearMap.smul_apply, smul_eq_mul, mul_inv_cancel_left₀ V.ν_pos.ne']`. Conclude with `hΦ₀.1 n`.
+-/
 theorem exists_calc (hA : GlobalTheory.Published.ArCalc) (V : Cover Y) {e : ℕ} {M : Man e} (I : ManIs M Y) (he : Y.dim = e) {ι : Type}
     [Fintype ι] (L : ι → HermLB V.p) (P : ι → M.Pot) (hP : ∀ i a, ReciprocityTheory.AnForm.M.IsPotential (M.A a) (P i a))
     (h : ∀ ε π, V.IsDown I ε π → ∀ i, HessRel ε π (L i) (P i)) :
@@ -150,6 +185,9 @@ theorem exists_calc (hA : GlobalTheory.Published.ArCalc) (V : Cover Y) {e : ℕ}
     rw [LinearMap.smul_apply, smul_eq_mul, mul_inv_cancel_left₀ V.ν_pos.ne']
     exact hΦ₀.1 n
 
+/- English proof (translation)
+Use `⟨?_, fun σ σ' y y' e => ?_⟩` and prove the remaining obligations. Take `⟨-, r, hr, -, h₂⟩` from `h`. Conclude with `⟨M, L.B, q, r, L.isLB, hr, fun v e y yt i a b => by simpa using h₂ v e y yt i a b⟩`. Take `⟨N, π, -, hN, hπ, -, hj, -⟩` from `ModelDom.exists_normal_dominating F Y M M`. Conclude with `(pow_left_inj₀ (C.pn_nonneg _ _ _ _ _ _) (C.pn_nonneg _ _ _ _ _ _) q.ne_zero).1 (Cover.pn_pow_conj F C Y _ A _ _ (Cover.induces_ofModel hN (InducedPull.induced_pull F C Y A M N π hπ hj L q 0 h)) σ σ' y y' e)`.
+-/
 theorem conjInv_of_induced {C : CxSt F} {A : Adl C Y} {M : TrueGeo.Model Y} {L : HermLB M.p} {q : ℕ+}
     (h : A.Induced M L q 0) : LineNorm.FromModel Y A.D (eqn A.D) A.lg ∧ ConjInv A := by
   refine ⟨?_, fun σ σ' y y' e => ?_⟩
@@ -166,6 +204,11 @@ section Flag
 
 variable {D : D7} {O : Setup D}
 
+/- English proof (translation)
+Use `((Set.finite_range fun x : Letter O.S.Dw => (Sum.inl (x.1, x.2) : ((D.host.E →+* ℂ) × ℕ) ⊕ ℕ)).union (Set.finite_range fun k : Fin (letters O.S.Dw).length => Sum.inr (k : ℕ))).subset ?_` and prove the remaining obligations. Introduce and unpack `(⟨τ, k⟩ | k) h`. Use `.inl ⟨⟨τ, ⟨k, by_contra fun hk => ?_⟩⟩, rfl⟩ replace h : (letterOf O.S.Dw (.inl (τ, k))).isSome := h` and prove the remaining obligations. Simplify using `[letterOf, hk] at h`. Use `replace h : (letterOf O.S.Dw (.inr k)).isSome := h`.
+
+Conclude with `.inr ⟨⟨k, by simpa [letterOf] using h⟩, rfl⟩`.
+-/
 theorem finite_steps (O : Setup D) : Finite {st // (letterOf O.S.Dw st).isSome} := by
   refine ((Set.finite_range fun x : Letter O.S.Dw => (Sum.inl (x.1, x.2) : ((D.host.E →+* ℂ) × ℕ) ⊕ ℕ)).union
     (Set.finite_range fun k : Fin (letters O.S.Dw).length => Sum.inr (k : ℕ))).subset ?_
@@ -176,12 +219,22 @@ theorem finite_steps (O : Setup D) : Finite {st // (letterOf O.S.Dw st).isSome} 
   · replace h : (letterOf O.S.Dw (.inr k)).isSome := h
     exact .inr ⟨⟨k, by simpa [letterOf] using h⟩, rfl⟩
 
+/- English proof (translation)
+Take `⟨x, P, h⟩` from `h`. Rewrite using `[h.h0_eq, h.ab_eq]`. Conclude with `⟨fun n => (GlobalTheory.T.family_metrics_smooth D _ _ _ _ _ O.s x O.Φ c σ n).2.1, P.ab_smooth c σ⟩`.
+-/
 theorem smooth_core (h : O.Core) (c : O.s.Comp) (σ : D.what₂.LL →+* ℂ) :
     (∀ n, (cxSt _).mSmooth _ σ _ (O.met.h0 c σ n)) ∧ (cxSt _).mSmooth _ σ _ ((O.met.ab c).m σ) := by
   obtain ⟨x, P, h⟩ := h
   rw [h.h0_eq, h.ab_eq]
   exact ⟨fun n => (GlobalTheory.T.family_metrics_smooth D _ _ _ _ _ O.s x O.Φ c σ n).2.1, P.ab_smooth c σ⟩
 
+/- English proof (translation)
+Take `⟨x, P, h⟩` from `h`. Introduce `σ σ' y y' e`. Establish `hu : under y' = under y` using `by show below y'.1 = below y.1`. Rewrite using `[e]`. Conclude with `HtIndep.below_spMap_comp _ _`.
+
+Establish `h₁ : y ∈ Var.eqnSet σ (O.adl0 c w).D (eqn (O.adl0 c w).D (under y))` using `Base.isEqn_eqn _ _`. Establish `h₂ : y' ∈ Var.eqnSet σ' (O.adl0 c w).D (eqn (O.adl0 c w).D (under y'))` using `Base.isEqn_eqn _ _`. Use `(Var.pn_frame h₂).trans (Eq.trans ?_ (Var.pn_frame h₁).symm)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Var.Met.h (O.met.h0 c σ' _) _ _ = Var.Met.h (O.met.h0 c σ _) _ _`. Rewrite using `[hu, h.h0_eq]`.
+
+Apply the tactic sequence `exact (GlobalTheory.T.metric_conjugation_symmetry D _ _ _ _ _ O.s x O.Φ c σ σ' _ y y' _ e h₁).2.1`.
+-/
 theorem conjInv_graded_reference_lines (h : O.Core) (c : O.s.Comp) (w : Sym D.host.E →₀ ℤ) : ConjInv (O.adl0 c w) := by
   obtain ⟨x, P, h⟩ := h
   intro σ σ' y y' e
@@ -196,6 +249,19 @@ theorem conjInv_graded_reference_lines (h : O.Core) (c : O.s.Comp) (w : Sym D.ho
   rw [hu, h.h0_eq]
   exact (GlobalTheory.T.metric_conjugation_symmetry D _ _ _ _ _ O.s x O.Φ c σ σ' _ y y' _ e h₁).2.1
 
+/- English proof (translation)
+Use `finite_steps O` as an intermediate fact. Establish `: Finite {Q // Q ⊆ P}` using `(P.powerset.finite_toSet.subset fun _ hQ => Finset.mem_powerset.2 hQ).to_subtype`. Establish `hab : LineNorm.FromModel _ (O.met.ab c).D (eqn (O.met.ab c).D) (O.met.ab c).lg ∧ ConjInv (O.met.ab c)`. Take `⟨x, R, h⟩` from `h`. Take `⟨M, L, q, hq, -⟩` from `R.ab_model c`.
+
+Rewrite using `[h.ab_eq]`. Conclude with `conjInv_of_induced hq`. Take `⟨hX, hN, M₀, ρ, hM₀, hρ⟩` from `ModelOver.exists_normal_model D.what₂.LL (O.var c) (𝓞 O.κ.c.F) (RingOfIntegers.mapRingEquiv O.κ.e) O.s.T.Z.X O.s.T.Z.s ((O.Φ.C c).π ≫ genι O.s.T.Z) O.s.T.Z.proj (by`. Rewrite using `[← (O.Φ.C c).π_str]`. Simplify using `only [Category.assoc]`.
+
+Rewrite using `[pullback.condition_assoc, ← Spec.map_comp, ← Spec.map_comp]`. Use the proof step `rfl)`. Take `⟨V, hV⟩` from `exists_cover (ι := Option ({Q // Q ⊆ P} × {st // (letterOf O.S.Dw st).isSome})) none (fun o => o.elim (O.met.ab c) fun a => O.adl0 c (Finsupp.single (ArIn.ind a.1.1, none, a.2.1) 1)) (by`. Introduce and unpack `(_ | a)`. Conclude with `hab.1`.
+
+Use `LineNorm.fromModel_lgOf (O.Φ.C c) HTBound.htBound hX M₀ ρ hM₀ hρ _ fun b hb => ?_` and prove the remaining obligations. Take `rfl` from `Finset.mem_singleton.1 (Finsupp.support_single_subset hb)`. Conclude with `a.1.1.finite_toSet.subset fun q hq => of_decide_eq_true hq)`. Use the proof step `(by`. Introduce and unpack `(_ | a) σ`.
+
+Use `exacts [(smooth_core h c σ).2, (smooth_core h c σ).1 _])`. Use the proof step `(by`. Introduce and unpack `(_ | a)`. Use `exacts [hab.2, conjInv_graded_reference_lines h c _])`. Use `choose L hL using hV`.
+
+Use `⟨⟨V, fun Q st => if e : Q ⊆ P ∧ (letterOf O.S.Dw st).isSome then L (some (⟨Q, e.1⟩, ⟨st, e.2⟩)) else HermLB.triv _, fun Q hQ st hst => ?_, 1, one_pos, L none, hL none⟩⟩` and prove the remaining obligations. Rewrite using `[dif_pos ⟨hQ, hst⟩]`. Conclude with `hL (some (⟨Q, hQ⟩, ⟨st, hst⟩))`.
+-/
 theorem nonempty_latModel (h : O.Core) (P : Finset ℕ) (c : O.s.Comp) : Nonempty (O.LatModel P c) := by
   classical
   have := finite_steps O
@@ -231,6 +297,11 @@ theorem nonempty_latModel (h : O.Core) (P : Finset ℕ) (c : O.s.Comp) : Nonempt
   rw [dif_pos ⟨hQ, hst⟩]
   exact hL (some (⟨Q, hQ⟩, ⟨st, hst⟩))
 
+/- English proof (translation)
+Take `⟨x, P, h⟩` from `h`. Use `GlobalTheory.T.complex_points_connected _ (O.var c) σ` as an intermediate fact. Use `CxPts.t2Space_cxPts_of_isProjOver σ (O.var c).isProjOver` as an intermediate fact. Take `⟨L, t, h₁⟩` from `GlobalTheory.T.exists_bounded_section_log_norm _ (O.var c) σ x.m (fun i => (x.cpt i).preimage (O.Φ.C c).π.continuous) (fun i z => x.nrm _ i ((O.Φ.C c).down z)) (fun i => GlobalTheory.T.divisor_norm_pullback_component D _ _ _ _ _ O.s O.Φ c _ _ _ (GlobalTheory.T.flag_component_proj …`. Rewrite using `[h.r_eq, show {z : Pts (O.var c) σ | (O.Φ.C c).π (under z) ∈ genBd O.s.T.Z} = _ from Set.ext fun z => x.liesIn_genBd_iff ((O.Φ.C c).down z)]`.
+
+Conclude with `isBd_of_isBdSec _ _ _ _ _ _ L t (isBd_fsPot σ).2.2.1 (isBd_fsPot σ).2.2.2.1 h₁`.
+-/
 theorem isBd_core (h : O.Core) (c : O.s.Comp) (σ : D.what₂.LL →+* ℂ) :
     IsBd (atlasOf (O.var c) σ) {z | (O.Φ.C c).π (under z) ∈ genBd O.s.T.Z} (O.met.r c σ) (fsPot _ σ) := by
   obtain ⟨x, P, h⟩ := h
@@ -266,6 +337,11 @@ def wtL (T : Type) (N : ℕ) : (T → Fin N → ℝ) →ₗ[ℝ] (Option (T × F
     funext o
     cases o <;> simp
 
+/- English proof (translation)
+Use function extensionality and compare the values at `o`. Break down `o with _ | ⟨τ', i'⟩` into its components or cases. Simplify using `[wtL]`. Distinguish the cases in `hτ : τ' = τ`. Substitute `hτ` using the available equality.
+
+Simplify using `[wtL, Pi.single_apply]`. Simplify using `[wtL, hτ]`.
+-/
 theorem wtL_single {T : Type} {N : ℕ} {_ : DecidableEq T} {_ : DecidableEq (Fin N)} {_ : DecidableEq (Option (T × Fin N))}
     (τ : T) (i : Fin N) : wtL T N (Pi.single τ (Pi.single i 1)) = Pi.single (some (τ, i)) 1 := by
   funext o
@@ -276,6 +352,9 @@ theorem wtL_single {T : Type} {N : ℕ} {_ : DecidableEq T} {_ : DecidableEq (Fi
       simp [wtL, Pi.single_apply]
     · simp [wtL, hτ]
 
+/- English proof (translation)
+Take `rfl : d = d'` from `Subsingleton.elim _ _`. Rewrite using `[← Pi.single_smul', smul_eq_mul, mul_inv_cancel₀ h]`.
+-/
 theorem smul_single_inv {J : Type} {d d' : DecidableEq J} {t : ℝ} (h : t ≠ 0) (j : J) :
     t • (@Pi.single J (fun _ => ℝ) _ d j t⁻¹) = @Pi.single J (fun _ => ℝ) _ d' j 1 := by
   obtain rfl : d = d' := Subsingleton.elim _ _
@@ -288,11 +367,47 @@ def meanL {e : ℕ} (M : Man e) {d : ℕ} (z : ∀ a, Fin (d + 1) → M.X a) : M
     simp only [Pi.smul_apply, smul_eq_mul, RingHom.id_apply, ← Finset.mul_sum, mul_div_assoc]
     ring
 
+/- English proof (translation)
+Take `⟨p, -, -, hp⟩` from `liesUnder_basePt O.Φ y`. Rewrite using `[← hp]`. Conclude with `isClosed_below_algebraic _ _ p`.
+-/
 theorem isClosed_basePt (y : Pt O.s) : IsClosed ({basePt O.Φ y} : Set (O.var (compPt O.s y)).X) := by
   obtain ⟨p, -, -, hp⟩ := liesUnder_basePt O.Φ y
   rw [← hp]
   exact isClosed_below_algebraic _ _ p
 
+/- English proof (translation)
+Use `choose M I hZ hr hQ using fun c => exists_man (e := WeightThresholdDefs.dimY O.Y) (O.dim_eq c) _ _ (isBd_core h c)`. Use `choose Q hQ₁ using fun c (x : DV.Rt D.what₂.Tau O.N) => hQ c _ (fun σ => O.met.h0 c σ (O.ex x)) fun σ => (smooth_core h c σ).1 _`. Use `choose Qa hQ₂ using fun c => hQ c _ (O.met.ab c).m fun σ => (smooth_core h c σ).2`. Set `W (P : Finset ℕ) (c : O.s.Comp) : O.LatModel P c` to `(nonempty_latModel h P c).some`. Set `S (B : ℝ) : Finset ℕ` to `FlagAr.setB O.Y B`.
+
+Set `P (B : ℝ) (c : O.s.Comp) : Option (DV.Rt D.what₂.Tau O.N) → (M c).Pot` to `fun o a => o.elim ((Qa c a).rsmul (W (S B) c).k) fun x => ((Q c x a).rsmul (1 : ℕ)).rsmul (-1)`. Establish `hP (B c o a) : ReciprocityTheory.AnForm.M.IsPotential ((M c).A a) (P B c o a)`. Consider the cases of `o with`. Consider the case `none => exact isPotentialRsmul _ _ _ (hQ₂ c a).2`. Consider the case `some x => exact isPotentialRsmul _ _ _ (isPotentialRsmul _ _ _ (hQ₁ c x a).2)`.
+
+Establish `hD : O.DualRef` using `fun c σ x z f hf => h.referenceMetric_mul_dual_eq_one c σ _ hf`. Use `choose Φ hΦ using fun B c => exists_calc hA (W (S B) c).V (I c) (O.dim_eq c) ((W (S B) c).gens (S B)) (P B c) (hP B c) fun ε π hd o => by`. Consider the cases of `o with`. Consider the case `none => exact GlobalTheory.T.hessian_relation_induced_metric _ _ _ _ _ _ _ ε π hd _ _ _ _ (W (S B) c).amp_spec (hQ₂ c)`. Consider the case `some x`.
+
+Use `hessRel_dual (GlobalTheory.T.hessian_relation_induced_metric _ _ _ _ _ _ _ ε π hd _ _ _ _ (GlobalTheory.T.lattice_model_induces_root_metric D O hD _ c (W (S B) c) _ subset_rfl x) ?_)` and prove the remaining obligations. Establish `key (r) (hr : r = O.ex x) (a) : IsPot ((I c).pt a) (O.met.h0 c _ r) (Q c x a)` using `hr ▸ (hQ₁ c x a).1`. Conclude with `fun a => ⟨key _ (expo_rootSym _ _ _ _ _) a, (hQ₁ c x a).2⟩`. Establish `hm (B c) : (((W (S B) c).mult : ℕ) : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 (W (S B) c).mult_pos.ne'`. Set `F (c : O.s.Comp) : An (M c) D.what₂.Tau O.N` to `{ th := fun u a => combPot (fun x => Q c x a) (fun x => -u x.1 x.2) 0 a := fun a => (Qa c a).rsmul (((O.met.ab c).n : ℕ) : ℝ)⁻¹ ph := chgL O c none (I c) phR := fun R => chgL O c (some R) (I c) phS := fun u s a z => O.met.reg c _ u (Real.exp (-(s ^ 2)⁻¹)) ((I c).pt a z) / 2 }`.
+
+Set `T : Real0 O.Y` to `{ M := M, F := F K := fun B c => calcWith (P B c) (hP B c) (Φ B c) L := fun B c => (LinearMap.inl ℝ _ (smSub (M c))).comp (wtL _ _) a := fun B c => ((Pi.single none (((W (S B) c).mult : ℕ) : ℝ)⁻¹, 0) : _ × smSub (M c)) th_pot := fun c u a => isPotential_combPot _ _ (fun x => (hQ₁ …`. Use function extensionality and compare the values at `x y`. Express the relevant statement in the definitionally equal form `∑ o, wtL _ _ u o * (P B c o a).φ x y + 0 = ∑ z : DV.Rt D.what₂.Tau O.N, -u z.1 z.2 * (Q c z a).φ x y + 0`. Rewrite using `[Fintype.sum_option]`. Use `congrArg (· + 0) ((congrArg (· + _) (zero_mul _)).trans ((zero_add _).trans (Finset.sum_congr rfl fun z _ => ?_)))` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `u z.1 z.2 * (-1 * (((1 : ℕ) : ℝ) * (Q c z a).φ x y)) = _`. Use the proof step `simp)`. Use `firstChern_leviEq_constant := fun B c a => leviEq_of_φ _ (by`. Use function extensionality and compare the values at `x y`. Express the relevant statement in the definitionally equal form `∑ o, (Pi.single none (((W (S B) c).mult : ℕ) : ℝ)⁻¹ : Option (DV.Rt D.what₂.Tau O.N) → ℝ) o * (P B c o a).φ x y + 0 = (((O.met.ab c).n : ℕ) : ℝ)⁻¹ * (Qa c a).φ x y`.
+
+Establish `: (((W (S B) c).k : ℕ) : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 (W (S B) c).k_pos.ne'`. Simplify using `only [Fintype.sum_option, P, LocPot.rsmul, Option.elim, Setup.LatModel.mult, Pi.single_eq_same, Pi.single_eq_of_ne (Option.some_ne_none _), zero_mul, Finset.sum_const_zero, add_zero, Nat.cast_mul]`. Use the proof step `field_simp) }`. Use `choose d z hz using fun y : Pt O.s => exists_lists (I _) (isClosed_basePt y)`. Set `cj (c : O.s.Comp) (y : Pt O.s) : ∀ a, Fin (d y + 1) → (M c).X a` to `if e : compPt O.s y = c then e ▸ z y else fun _ _ => Classical.arbitrary _`.
+
+Establish `hcj (y : Pt O.s) : cj _ y = z y` using `dif_pos rfl`. Set `hg (B : ℝ) (c : O.s.Comp) (y : Pt O.s) : Option (DV.Rt D.what₂.Tau O.N) → ℝ` to `fun o => o.elim ((W (S B) c).mult * (O.met.ab c).ht (baseOn O.Φ c y)) fun x => -(O.root0 c (S B) x).ht (baseOn O.Φ c y)`. Set `Pp : T.Pts` to `{ d := d, conj := cj ht := fun B c y => (Fintype.linearCombination ℝ (hg B c y)).coprod ((meanL (M c) (cj c y)).comp (smSub (M c)).subtype) }`. Use `⟨O.aux fun _ _ => 0, T, O.hts, ⟨⟨O.heightData_satisfies _, O.htIs_hts, I, fun c => ⟨hZ c, fun a z _ => hr c a z, fun u a => ⟨fun x => Q c x a, fun x => hQ₁ c x a, fun j y hy w => ?_⟩, fun a => ⟨fun _ => Qa c a, fun _ => hQ₂ c a, fun j y hy w => ?_⟩, fun _ _ _ _ => rfl, fun _ _ _ …` and prove the remaining obligations. Set `K` to `calcOf (M c) (Q c) fun x a => (hQ₁ c x a).2`.
+
+Establish `e : (show K.V from (fun x : DV.Rt D.what₂.Tau O.N => -u x.1 x.2, 0)) = ∑ x, (-u x.1 x.2) • cls (M c) (Q c) (fun x a => (hQ₁ c x a).2) x`. Simplify using `only [cls_eq]`. Express the relevant statement in the definitionally equal form `(_ : (_ → ℝ) × smSub (M c)) = ∑ x : DV.Rt D.what₂.Tau O.N, (-u x.1 x.2) • ((Pi.single x 1, 0) : (_ → ℝ) × smSub (M c))`. Use `Prod.ext (funext fun x => ?_) ?_` and prove the remaining obligations. Simplify using `[Prod.fst_sum, Pi.single_apply]`.
+
+Simplify using `[Prod.snd_sum]`. Express the relevant statement in the definitionally equal form `leviL K a j y hy w (show K.V from (fun x : DV.Rt D.what₂.Tau O.N => -u x.1 x.2, 0)) = _`. Rewrite using `[e, map_sum]`. Use `Finset.sum_congr rfl fun x _ => ((leviL K a j y hy w).map_smul _ _).trans ?_` and prove the remaining obligations. Conclude with `congrArg (_ * ·) (leviEq_of_φ _ (first_chern_class_potential _ _ _ x a) j y hy w)`.
+
+Rewrite using `[Fintype.sum_unique]`. Establish `h₁` using `levi_add_smul (f := fun _ => (0 : ℝ)) (((O.met.ab c).n : ℕ) : ℝ)⁻¹ contDiffAt_const (LeviOnly.pot_two (hQ₂ c a).2 _ j hy ((Qa c a).mem_U _)) w`. Establish `h₂ : levi (fun _ : Fin (WeightThresholdDefs.dimY O.Y) → ℂ => (0 : ℝ)) y w = 0` using `by simp [levi]`. Simplify using `only [zero_add, h₂] at h₁`. Conclude with `h₁`.
+
+Express the relevant statement in the definitionally equal form `(I _).Lists _ (cj _ y)`. Rewrite using `[hcj]`. Conclude with `hz y`. Express the relevant statement in the definitionally equal form `Fintype.linearCombination ℝ _ 0 + meanL (M _) (cj _ y) (smProj (M (compPt O.s y)) g).1 = _`. Rewrite using `[map_zero, zero_add, smProj_of_smooth _ hg']`.
+
+Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `Fintype.linearCombination ℝ (hg B _ y) (wtL _ _ u) + meanL (M _) (cj _ y) 0 = _`. Rewrite using `[map_zero, add_zero, Fintype.linearCombination_apply, Fintype.sum_option]`. Simplify using `[wtL, hg, Setup.htWt, S]`. Express the relevant statement in the definitionally equal form `Fintype.linearCombination ℝ (hg B _ y) (Pi.single none _) + meanL (M _) (cj _ y) 0 = _`.
+
+Rewrite using `[map_zero, add_zero, Fintype.linearCombination_apply_single, smul_eq_mul]`. Conclude with `inv_mul_cancel_left₀ (hm B _) _`. Establish `e : T.gen B c (W (S B) c).mult = cls (M c) (P B c) (hP B c)`. Use function extensionality and compare the values at `o`. Use `Eq.trans ?_ (cls_eq _ _ o).symm` and prove the remaining obligations.
+
+Break down `o with _ | ⟨τ, i⟩` into its components or cases. Conclude with `Prod.ext (smul_single_inv (hm B c) none) (smul_zero _)`. Use `Prod.ext ?_ rfl` and prove the remaining obligations. Simplify using `only [Real0.gen, Option.elim]`. Conclude with `wtL_single τ i`.
+
+Rewrite using `[e]`. Conclude with `hΦ B c ε π hd`.
+-/
 theorem exists_reads (hA : GlobalTheory.Published.ArCalc) (h : O.Core) : ∃ A T H, Nonempty (O.Reads A T H) := by
   classical
   choose M I hZ hr hQ using fun c => exists_man (e := WeightThresholdDefs.dimY O.Y) (O.dim_eq c) _ _ (isBd_core h c)
@@ -404,6 +519,9 @@ theorem exists_reads (hA : GlobalTheory.Published.ArCalc) (h : O.Core) : ∃ A T
 
 end Flag
 
+/- English proof (translation)
+Introduce `hA _ O h` and use `have ⟨A, T, H, ⟨r⟩⟩ := exists_reads hA h ⟨A, T, H, ⟨r⟩, .mk O h r⟩`.
+-/
 theorem main : GlobalTheory.Published.ArCalc → ∀ (D : D7) (O : Setup D), O.Core →
     ∃ A T H, Nonempty (O.Reads A T H) ∧ ObjCore O.Y A T H := fun hA _ O h =>
   have ⟨A, T, H, ⟨r⟩⟩ := exists_reads hA h

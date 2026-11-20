@@ -12,6 +12,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Take `⟨d⟩` from `h`. Use `E.free` as an intermediate fact. Use `E.finite` as an intermediate fact. Use `d.q_affine` as an intermediate fact. Conclude with `⟨ { X := E.X B := E.B isAbelian := E.isAbelian q := d.q q_hom := d.q_hom q_flat := d.q_flat q_surjective := d.q_surjective q_quasiCompact := inferInstance i := d.i i_hom := d.i_hom isKernel := d.isKernel }⟩`.
+-/
 theorem nonempty_torusExtension_of_isGt {K : Type} [Field K] (E : SplitExt (Spec (.of K)))
     (G : Over (Spec (.of K))) [GrpObj G] (h : E.IsGt G) : Nonempty (TorusExtension G) := by
   obtain ⟨d⟩ := h
@@ -31,6 +34,11 @@ theorem nonempty_torusExtension_of_isGt {K : Type} [Field K] (E : SplitExt (Spec
       i_hom := d.i_hom
       isKernel := d.isKernel }⟩
 
+/- English proof (translation)
+Introduce `S E G _ hc h`. Take `⟨hs, hg⟩` from `UnitRigidity.smooth_geometricallyConnected_of_isGt E G h`. Take `⟨d⟩` from `h`. Use `d.q_affine` as an intermediate fact. Use `E.isAbelian.proper` as an intermediate fact.
+
+Use `⟨hc, hs, ?_, ?_, hg, fun Ω _ _ p => ?_⟩` and prove the remaining obligations. Rewrite using `[← Over.w d.q] infer_instance`. Rewrite using `[← Over.w d.q] infer_instance`. Conclude with `nonempty_torusExtension_of_isGt _ _ (GtBaseChange.isGt_extBC p E G d)`.
+-/
 theorem isSemiAbelian_of_isGt : ∀ (S : Scheme.{0}) (E : SplitExt S) (G : Over S) [GrpObj G] [IsCommMonObj G],
     E.IsGt G → IsSemiAbelian G := by
   intro S E G _ hc h

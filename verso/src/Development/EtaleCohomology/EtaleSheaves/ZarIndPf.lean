@@ -27,16 +27,29 @@ def Step : Prop := MV → Hyp → ∀ (q : ℕ) {Y X S : Scheme.{0}} (f : Y ⟶ 
   (∀ U : S.Opens, IsCompact (U : Set S) → Bij q i (n - 1) f p U) →
   ∀ U : S.Opens, IsCompact (U : Set S) → Bij q i n f p U
 
+/- English proof (translation)
+Introduce `hM hH q Y X S f p _ _ _ _ _ _ hq i n hg hb U hU`. Conclude with `⟨h1 hM hH q f p hq i n hg hb U hU, h2 hM hH q f p hq i n hg hb (h1 hM hH q f p hq i n hg hb) U hU⟩`.
+-/
 theorem Step_of (h1 : InjStep) (h2 : SurjStep) : Step := by
   intro hM hH q Y X S f p _ _ _ _ _ _ hq i n hg hb U hU
   exact ⟨h1 hM hH q f p hq i n hg hb U hU, h2 hM hH q f p hq i n hg hb (h1 hM hH q f p hq i n hg hb) U hU⟩
 
+/- English proof (translation)
+Use `Function.bijective_iff_has_inverse.2 ⟨pull _ (inv g) F n, fun x => ?_, fun x => ?_⟩` and prove the remaining obligations. Simplify using `[← pull_comp, pull_id]`. Simplify using `[← pull_comp, pull_id]`.
+-/
 theorem pull_bij_of_iso {E E' : Spc} (g : E ⟶ E') [IsIso g] {q' : ℕ} (F : Shv (ZMod q')) (n : ℤ) :
     Function.Bijective (pull _ g F n) := by
   refine Function.bijective_iff_has_inverse.2 ⟨pull _ (inv g) F n, fun x => ?_, fun x => ?_⟩
   · simp [← pull_comp, pull_id]
   · simp [← pull_comp, pull_id]
 
+/- English proof (translation)
+Establish `e : fO f p ⊤ ≫ pullback.fst p (⊤ : S.Opens).ι = pullback.fst (f ≫ p) (⊤ : S.Opens).ι ≫ f`. Conclude with `pullback.lift_fst _ _ _`. Establish `e2 : ∀ x, pull _ (sch.map (fO f p ⊤)) (tw q i) n (pull _ (sch.map (pullback.fst p (⊤ : S.Opens).ι)) _ n x) = pull _ (sch.map (pullback.fst (f ≫ p) (⊤ : S.Opens).ι)) _ n (pull _ (sch.map f) _ n x)`. Introduce `x`. Rewrite using `[← pull_comp, ← pull_comp, ← Functor.map_comp, ← Functor.map_comp, e]`.
+
+Establish `b1` using `pull_bij_of_iso (sch.map (pullback.fst p (⊤ : S.Opens).ι)) (tw q i) n`. Establish `b2` using `pull_bij_of_iso (sch.map (pullback.fst (f ≫ p) (⊤ : S.Opens).ι)) (tw q i) n`. Establish `hc : Function.Bijective ((pull (ZMod q) (sch.map (pullback.fst (f ≫ p) (⊤ : S.Opens).ι)) (tw q i) n) ∘ (pull (ZMod q) (sch.map f) (tw q i) n))`. Establish `: (pull (ZMod q) (sch.map (pullback.fst (f ≫ p) (⊤ : S.Opens).ι)) (tw q i) n) ∘ (pull (ZMod q) (sch.map f) (tw q i) n) = (pull (ZMod q) (sch.map (fO f p ⊤)) (tw q i) n) ∘ (pull (ZMod q) (sch.map (pullback.fst p (⊤ : S.Opens).ι)) (tw q i) n)`. Use function extensionality and compare the values at `fun x => (e2 x).symm`.
+
+Rewrite using `[this]`. Conclude with `h.comp b1`. Use `⟨hc.1.of_comp, fun y => ?_⟩` and prove the remaining obligations. Take `⟨x, hx⟩` from `hc.2 (pull (ZMod q) (sch.map (pullback.fst (f ≫ p) (⊤ : S.Opens).ι)) (tw q i) n y)`. Conclude with `⟨x, b2.1 hx⟩`.
+-/
 theorem bij_top {q : ℕ} {i n : ℤ} {Y X S : Scheme.{0}} (f : Y ⟶ X) (p : X ⟶ S) [IsIso (⊤ : S.Opens).ι] (h : Bij q i n f p ⊤) :
     Function.Bijective (pull _ (sch.map f) (tw q i) n) := by
   have e : fO f p ⊤ ≫ pullback.fst p (⊤ : S.Opens).ι = pullback.fst (f ≫ p) (⊤ : S.Opens).ι ≫ f := by
@@ -56,12 +69,22 @@ theorem bij_top {q : ℕ} {i n : ℤ} {Y X S : Scheme.{0}} (f : Y ⟶ X) (p : X 
   obtain ⟨x, hx⟩ := hc.2 (pull (ZMod q) (sch.map (pullback.fst (f ≫ p) (⊤ : S.Opens).ι)) (tw q i) n y)
   exact ⟨x, b2.1 hx⟩
 
+/- English proof (translation)
+Establish `h1` using `(hH.a9 (ZMod q) (tw q i)).1 (sch.obj (overO p U)) n hn`. Establish `h2` using `(hH.a9 (ZMod q) (tw q i)).1 (sch.obj (overO (f ≫ p) U)) n hn`. Conclude with `⟨fun a b _ => Subsingleton.elim a b, fun y => ⟨0, Subsingleton.elim _ _⟩⟩`.
+-/
 theorem bij_neg (hH : Hyp) {q : ℕ} {i n : ℤ} (hn : n < 0) {Y X S : Scheme.{0}} (f : Y ⟶ X) (p : X ⟶ S) (U : S.Opens) :
     Bij q i n f p U := by
   have h1 := (hH.a9 (ZMod q) (tw q i)).1 (sch.obj (overO p U)) n hn
   have h2 := (hH.a9 (ZMod q) (tw q i)).1 (sch.obj (overO (f ≫ p) U)) n hn
   exact ⟨fun a b _ => Subsingleton.elim a b, fun y => ⟨0, Subsingleton.elim _ _⟩⟩
 
+/- English proof (translation)
+Introduce `hM hH q Y X S f p _ _ _ _ _ _ hq i hg`. Establish `P : ∀ n : ℤ, ∀ U : S.Opens, IsCompact (U : Set S) → Bij q i n f p U`. Introduce `n`. Break down `lt_or_ge n 0 with hn | hn` into its components or cases. Conclude with `fun U _ => bij_neg hH hn f p U`.
+
+Proceed by induction on `n, hn using Int.le_induction with`. Consider the case `base => exact hS hM hH q f p hq i 0 (fun s => hg s 0) (fun U _ => bij_neg hH (by norm_num) f p U)`. Consider the case `succ m _ ih`. Conclude with `hS hM hH q f p hq i (m + 1) (fun s => hg s (m + 1)) (by simpa using ih)`. Introduce `n`.
+
+Establish `: IsIso (⊤ : S.Opens).ι` using `(Scheme.topIso S).isIso_hom`. Conclude with `bij_top f p (P n ⊤ (by simpa using isCompact_univ))`.
+-/
 theorem ZarInd_of_step (hS : Step) : ZarInd := by
   intro hM hH q Y X S f p _ _ _ _ _ _ hq i hg
   have P : ∀ n : ℤ, ∀ U : S.Opens, IsCompact (U : Set S) → Bij q i n f p U := by

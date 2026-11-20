@@ -16,6 +16,17 @@ noncomputable section
 namespace GlobalTheory.SharpGen
 open GlobalTheory.PowE8
 
+/- English proof (translation)
+Set `hl` to `isLimitOfPreserves (Over.pullback f) (powIsLimit G₀ 8)`. Set `ρ : Fin 8 → ((Over.pullback f).obj (powObj G₀ 8) ⟶ (Over.pullback f).obj G₀)` to `fun a => (Over.pullback f).map (powPr G₀ a)`. Use `choose x hx hxu using fun (T' : Over T) (y : Fin 8 → (T' ⟶ C)) => huniq T' y`. Set `inv : B ⟶ (Over.pullback f).obj (powObj G₀ 8)` to `hl.lift ⟨B, Discrete.natTrans fun a => pr a.as ≫ u.inv⟩`. Establish `hinv : ∀ a, inv ≫ ρ a = pr a ≫ u.inv` using `fun a => hl.fac ⟨B, Discrete.natTrans fun a => pr a.as ≫ u.inv⟩ ⟨a⟩`.
+
+Set `hom` to `x _ (fun a => ρ a ≫ u.hom)`. Establish `hhom : ∀ a, hom ≫ pr a = ρ a ≫ u.hom` using `hx _ _`. Use `⟨⟨hom, inv, ?_, ?_⟩, ?_, hhom⟩` and prove the remaining obligations. Use `hl.hom_ext fun ⟨a⟩ => ?_ show (hom ≫ inv) ≫ ρ a = 𝟙 _ ≫ ρ a` and prove the remaining obligations. Rewrite using `[Category.assoc, hinv, ← Category.assoc, hhom, Category.assoc, Iso.hom_inv_id, Category.comp_id, Category.id_comp]`.
+
+Establish `h1` using `hxu B (fun a => pr a) (inv ≫ hom) (fun a => by`. Rewrite using `[Category.assoc, hhom, ← Category.assoc, hinv, Category.assoc, Iso.inv_hom_id, Category.comp_id])`. Establish `h2` using `hxu B (fun a => pr a) (𝟙 B) (fun a => Category.id_comp _)`. Conclude with `h1.trans h2.symm`. Establish `hm : ∀ a, IsMonHom (hom ≫ pr a)` using `fun a => by rw [hhom]; infer_instance`.
+
+Prove the components needed by the constructor for the conclusion. Establish `h1` using `hxu _ (fun a => η[C]) (η ≫ hom) (fun a => by haveI := hm a; rw [Category.assoc]; exact IsMonHom.one_hom (hom ≫ pr a))`. Establish `h2` using `hxu _ (fun a => η[C]) η (fun a => by haveI := hpr a; exact IsMonHom.one_hom (pr a))`. Conclude with `h1.trans h2.symm`. Establish `h1` using `hxu _ (fun a => ((hom ≫ pr a) ⊗ₘ (hom ≫ pr a)) ≫ μ[C]) (μ ≫ hom) (fun a => by haveI := hm a; rw [Category.assoc]; exact IsMonHom.mul_hom (hom ≫ pr a))`.
+
+Establish `h2` using `hxu _ (fun a => ((hom ≫ pr a) ⊗ₘ (hom ≫ pr a)) ≫ μ[C]) ((hom ⊗ₘ hom) ≫ μ) (fun a => by haveI := hpr a; rw [Category.assoc, IsMonHom.mul_hom (pr a), ← Category.assoc, tensorHom_comp_tensorHom])`. Conclude with `h1.trans h2.symm`.
+-/
 theorem exists_gen {S T : Scheme.{0}} (f : T ⟶ S) (G₀ : Over S) [GrpObj G₀] [IsCommMonObj G₀] {B C : Over T}
     [GrpObj B] [GrpObj C] (pr : Fin 8 → (B ⟶ C)) (hpr : ∀ a, IsMonHom (pr a))
     (huniq : ∀ (T' : Over T) (y : Fin 8 → (T' ⟶ C)), ∃! x : T' ⟶ B, ∀ a, x ≫ pr a = y a)
@@ -52,24 +63,64 @@ theorem exists_gen {S T : Scheme.{0}} (f : T ⟶ S) (G₀ : Over S) [GrpObj G₀
         haveI := hpr a; rw [Category.assoc, IsMonHom.mul_hom (pr a), ← Category.assoc, tensorHom_comp_tensorHom])
       exact h1.trans h2.symm
 
+/- English proof (translation)
+The claim follows from `congrArg (fun q => q.left) ((psum_hom (preHom (lift x y)) (x2 B) I.down).trans (congrArg (fun q => psum B q I.down) (funext fun i => by fin_cases i <;> simp [preHom, x2])))`.
+-/
 theorem lift_lamφ {S : Scheme.{0}} {B T : Over S} [GrpObj B] [IsCommMonObj B] (x y : T ⟶ B)
     (I : ULift.{0} (Finset (Fin 2))) :
     (lift x y).left ≫ GlobalTheory.PrimCocycle.lamφ B I = (psum B ![x, y] I.down).left :=
   congrArg (fun q => q.left) ((psum_hom (preHom (lift x y)) (x2 B) I.down).trans
     (congrArg (fun q => psum B q I.down) (funext fun i => by fin_cases i <;> simp [preHom, x2])))
 
+/- English proof (translation)
+The claim follows from `((congrArg (fun q => psum C q I) (funext fun i => by fin_cases i <;> rfl)).trans (psum_hom (MonoidHom.mk' (fun z : T ⟶ B => z ≫ u) fun a b => MonObj.mul_comp a b u) ![x, y] I).symm)`.
+-/
 theorem psum_comp_hom {S : Scheme.{0}} {B C T : Over S} [GrpObj B] [IsCommMonObj B] [GrpObj C] [IsCommMonObj C]
     (u : B ⟶ C) [IsMonHom u] (x y : T ⟶ B) (I : Finset (Fin 2)) :
     psum C ![x ≫ u, y ≫ u] I = psum B ![x, y] I ≫ u :=
   ((congrArg (fun q => psum C q I) (funext fun i => by fin_cases i <;> rfl)).trans
     (psum_hom (MonoidHom.mk' (fun z : T ⟶ B => z ≫ u) fun a b => MonObj.mul_comp a b u) ![x, y] I).symm)
 
+/- English proof (translation)
+Simplify using `only [negε, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.cons_val_three, Matrix.head_cons, Matrix.tail_cons, mul_zpow, inv_zpow', mul_neg, mul_one, neg_neg]`. Evaluate the numerical expressions.
+-/
 theorem zpow_lam {U : Type} [CommGroup U] (a b c d : U) (w : ℤ) :
     (a * b⁻¹ * c⁻¹ * d) ^ w = a ^ (-(w * negε 0)) * b ^ (-(w * negε 1)) * c ^ (-(w * negε 2)) * d ^ (-(w * negε 3)) := by
   simp only [negε, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.cons_val_three,
     Matrix.head_cons, Matrix.tail_cons, mul_zpow, inv_zpow', mul_neg, mul_one, neg_neg]
   norm_num
 
+/- English proof (translation)
+Introduce `g n o _ ζ F W V₁ _ _ _ D₀ G₀ _ _ A₀ U₀ y α α₂ hcart hsq hlb P hP`. Take `⟨c, ⟨φ, φ₂, hφ, hφsq, hφlb, -⟩, pr, prh, prl, hPL⟩` from `hP`. Take `⟨e, he, heα⟩` from `grpPullback_iso hcart hφ`. Use `haveI := he`. Use `haveI := U₀.gen_hom`.
+
+Use `haveI : IsMonHom (U₀.gen ≪≫ e).hom := by rw [Iso.trans_hom]; infer_instance`. Take `⟨gen, hgen, hcoord⟩` from `exists_gen (jK V₁) G₀ pr prh prl (U₀.gen ≪≫ e)`. Use `⟨gen, hgen, ?_⟩` and prove the remaining obligations. Establish `hA0` using `A₀.isLB`. Establish `hc` using `c.isLB`.
+
+Establish `hLG` using `U₀.LG.isLB`. Establish `hPl` using `P.isLB`. Establish `hU` using `F.univ.isLB`. Set `ρ : Fin 8 → ((Over.pullback (jK V₁)).obj (powObj G₀ 8) ⟶ (Over.pullback (jK V₁)).obj G₀)` to `fun a => (Over.pullback (jK V₁)).map (powPr G₀ a)`. Set `e₂ : (G2 A₀.A).left ⟶ (G2 c.A).left` to `(lift (fst _ _ ≫ e.hom) (snd _ _ ≫ e.hom)).left`.
+
+Set `mAB : Fin 8 × Fin 8 → (((Over.pullback (jK V₁)).obj (powObj G₀ 8)).left ⟶ (G2 A₀.A).left)` to `fun ab => (lift (ρ ab.1 ≫ U₀.gen.hom) (ρ ab.2 ≫ U₀.gen.hom)).left`. Establish `hm : ∀ ab : Fin 8 × Fin 8, mAB ab ≫ e₂ = gen.hom.left ≫ (lift (pr ab.1) (pr ab.2)).left` using `fun ab => by`. Simplify using `only [mAB, e₂, ← Over.comp_left, comp_lift, lift_fst_assoc, lift_snd_assoc, hcoord, Iso.trans_hom, Category.assoc]`. Both sides reduce to the same expression. Establish `he₂ : e₂ ≫ φ₂ = α₂`.
+
+Apply `pullback.hom_ext` to reduce the goal to its premises. Establish `h1 : (fst F.univ.A F.univ.A).left = pullback.fst _ _` using `rfl`. Rewrite using `[← h1, Category.assoc, hφsq.1, hsq.1, ← heα]`. Simplify using `only [e₂, ← Category.assoc, ← Over.comp_left, lift_fst]`. Establish `h1 : (snd F.univ.A F.univ.A).left = pullback.snd _ _` using `rfl`.
+
+Rewrite using `[← h1, Category.assoc, hφsq.2, hsq.2, ← heα]`. Simplify using `only [e₂, ← Category.assoc, ← Over.comp_left, lift_snd]`. Establish `Q1 : LBIso (c.P.pull e₂) (abelian₂ A₀.A A₀.L)`. Apply the tactic sequence `refine LBIso.trans (by first | assumption | exact DVR.linComb_isLB _ (by first | assumption | exact DVR.linComb_isLB _ (by first | assumption | exact DVR.linComb_isLB _ (by assumption) _ _) _ _) _ _) (by first | assumption | exact DVR.linComb_isLB _ (by first | assumption | exact …`. Apply the tactic sequence `refine LBIso.trans (by first | assumption | exact DVR.linComb_isLB _ (by first | assumption | exact DVR.linComb_isLB _ (by first | assumption | exact DVR.linComb_isLB _ (by assumption) _ _) _ _) _ _) (by first | assumption | exact DVR.linComb_isLB _ (by first | assumption | exact …`.
+
+Conclude with `hlb.symm`. Set `q` to `pullback.fst (powObj G₀ 8).hom (jK V₁)`. Set `q0` to `pullback.fst G₀.hom (jK V₁)`. Set `n : (Fin 8 × Fin 8) × ULift.{0} (Finset (Fin 2)) → (((Over.pullback (jK V₁)).obj (powObj G₀ 8)).left ⟶ ((Over.pullback (jK V₁)).obj G₀).left)` to `fun p => (psum _ ![ρ p.1.1, ρ p.1.2] p.2.down).left`. Set `κ : (Fin 8 × Fin 8) × ULift.{0} (Finset (Fin 2)) → ℤ` to `fun p => GlobalTheory.PrimCocycle.lamε p.2 * W p.1.1 p.1.2`.
+
+Establish `hn : ∀ ab I, mAB ab ≫ GlobalTheory.PrimCocycle.lamφ A₀.A I = n (ab, I) ≫ U₀.gen.hom.left` using `fun ab I => by`. Rewrite using `[lift_lamφ, psum_comp_hom]`. Both sides reduce to the same expression. Set `Uq : Over.mk (((Over.pullback (jK V₁)).obj (powObj G₀ 8)).hom ≫ jK V₁) ⟶ powObj G₀ 8` to `Over.homMk q pullback.condition`. Establish `hq : ∀ ab I, n (ab, I) ≫ q0 = q ≫ (lift (powPr G₀ ab.1) (powPr G₀ ab.2)).left ≫ GlobalTheory.PrimCocycle.lamφ G₀ I` using `fun ab I => by`.
+
+Rewrite using `[lift_lamφ]`. Use `psum_push (isGrpPullback_pullback G₀ (jK V₁)) _ _ Uq (fun i => ?_) I.down` and prove the remaining obligations. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Use `fin_cases i`. Conclude with `pullback.lift_fst _ _ _`.
+
+Conclude with `pullback.lift_fst _ _ _`. Apply the tactic sequence `refine LBIso.trans (by first | assumption | exact DVR.linComb_isLB _ (by first | assumption | exact DVR.linComb_isLB _ (by first | assumption | exact DVR.linComb_isLB _ (by assumption) _ _) _ _) _ _) (by first | assumption | exact DVR.linComb_isLB _ (by first | assumption | exact …`. Apply the tactic sequence `refine LBIso.trans (by first | assumption | exact DVR.linComb_isLB _ (by first | assumption | exact DVR.linComb_isLB _ (by first | assumption | exact DVR.linComb_isLB _ (by assumption) _ _) _ _) _ _) (by first | assumption | exact DVR.linComb_isLB _ (by first | assumption | exact …`. Apply the tactic sequence `refine LBIso.trans (by first | assumption | exact DVR.linComb_isLB _ (by first | assumption | exact DVR.linComb_isLB _ (by first | assumption | exact DVR.linComb_isLB _ (by assumption) _ _) _ _) _ _) (by first | assumption | exact DVR.linComb_isLB _ (by first | assumption | exact …`. Apply the tactic sequence `refine LBIso.trans (by first | assumption | exact DVR.linComb_isLB _ (by first | assumption | exact DVR.linComb_isLB _ (by first | assumption | exact DVR.linComb_isLB _ (by assumption) _ _) _ _) _ _) (by first | assumption | exact DVR.linComb_isLB _ (by first | assumption | exact …`.
+
+Apply the tactic sequence `refine LBIso.trans (by first | assumption | exact DVR.linComb_isLB _ (by first | assumption | exact DVR.linComb_isLB _ (by first | assumption | exact DVR.linComb_isLB _ (by assumption) _ _) _ _) _ _) (by first | assumption | exact DVR.linComb_isLB _ (by first | assumption | exact …`. Use `Eq.trans ?_ (Fintype.prod_prod_type _).symm` and prove the remaining obligations. Use `Fintype.prod_congr _ _ fun ab => ?_` and prove the remaining obligations. Rewrite using `[← Finset.prod_zpow]`. Use `Fintype.prod_congr _ _ fun I => ?_` and prove the remaining obligations.
+
+Rewrite using `[← zpow_mul, hn]`. Apply the tactic sequence `refine LBIso.trans (by first | assumption | exact DVR.linComb_isLB _ (by first | assumption | exact DVR.linComb_isLB _ (by first | assumption | exact DVR.linComb_isLB _ (by assumption) _ _) _ _) _ _) (by first | assumption | exact DVR.linComb_isLB _ (by first | assumption | exact …`. Take `⟨w, hw⟩` from `U₀.ext`. Apply the tactic sequence `refine LBIso.trans (by first | assumption | exact DVR.linComb_isLB _ (by first | assumption | exact DVR.linComb_isLB _ (by first | assumption | exact DVR.linComb_isLB _ (by assumption) _ _) _ _) _ _) (by first | assumption | exact DVR.linComb_isLB _ (by first | assumption | exact …`. Apply the tactic sequence `refine LBIso.trans (by first | assumption | exact DVR.linComb_isLB _ (by first | assumption | exact DVR.linComb_isLB _ (by first | assumption | exact DVR.linComb_isLB _ (by assumption) _ _) _ _) _ _) (by first | assumption | exact DVR.linComb_isLB _ (by first | assumption | exact …`.
+
+Apply the tactic sequence `refine LBIso.trans (by first | assumption | exact DVR.linComb_isLB _ (by first | assumption | exact DVR.linComb_isLB _ (by first | assumption | exact DVR.linComb_isLB _ (by assumption) _ _) _ _) _ _) (by first | assumption | exact DVR.linComb_isLB _ (by first | assumption | exact …`. Use `((Fintype.prod_prod_type _).trans ?_).trans (Fintype.prod_prod_type _).symm` and prove the remaining obligations. Use `Fintype.prod_congr _ _ fun ab => ?_` and prove the remaining obligations. Establish `e1 : ∏ I, GlobalTheory.PrimNorm.cls U₀.LG.L (n (ab, I) ≫ q0) ^ κ (ab, I) = (∏ I, (fun m => GlobalTheory.PrimNorm.cls U₀.LG.L (q ≫ m)) ((lift (powPr G₀ ab.1) (powPr G₀ ab.2)).left ≫ GlobalTheory.PrimCocycle.lamφ G₀ I) ^ GlobalTheory.PrimCocycle.lamε I) ^ W ab.1 ab.2`. Rewrite using `[← Finset.prod_zpow]`.
+
+Use `Fintype.prod_congr _ _ fun I => ?_` and prove the remaining obligations. Rewrite using `[← zpow_mul, hq]`. Rewrite using `[e1]`. Use `(congrArg (· ^ W ab.1 ab.2) (GlobalTheory.PrimCocycle.prod_lam (powPr G₀ ab.1) (powPr G₀ ab.2) (fun m => GlobalTheory.PrimNorm.cls U₀.LG.L (q ≫ m)))).trans ?_` and prove the remaining obligations. Rewrite using `[Fin.prod_univ_four]`.
+
+Conclude with `zpow_lam _ _ _ _ _`. Conclude with `(GlobalTheory.PrimNorm.lbIso_nested hLG (fun k : (Fin 8 × Fin 8) × Fin 4 => lamPts (powPr G₀ k.1.1) (powPr G₀ k.1.2) k.2) (fun k => -(W k.1.1 k.1.2 * negε k.2)) (fun _ : PUnit => q) (fun _ => 1) _ _ (by simp)).symm`.
+-/
 theorem gen_eighthPower : ∀ (g n : ℕ) (o : Type) [CommRing o] (ζ : o) (F : SFam g n ζ) (W : Matrix (Fin 8) (Fin 8) ℤ) (V₁ : Type) [CommRing V₁] [IsDomain V₁] [IsLocalRing V₁] (D₀ : DegData V₁ (maximalIdeal V₁)) (G₀ : Over (Sp V₁)) [GrpObj G₀] [IsCommMonObj G₀] (A₀ : PolAV (Sp (FractionRing V₁))) (U₀ : Unif (maximalIdeal V₁) D₀ A₀ G₀) (y : Sp (FractionRing V₁) ⟶ F.X) (α : A₀.A.left ⟶ F.univ.A.left) (α₂ : (G2 A₀.A).left ⟶ (G2 F.univ.A).left), IsGrpPullback A₀.A F.univ.A y α → IsSquare α α₂ → LBIso (abelian₂ A₀.A A₀.L) (F.univ.P.pull α₂) → ∀ P : PolAV (Sp (FractionRing V₁)), SharpOver F W P y → ∃ gen : (Over.pullback (jK V₁)).obj (powObj G₀ 8) ≅ P.A, IsMonHom gen.hom ∧ LBIso (P.L.pull gen.hom.left) ((GlobalTheory.PowE8.e8LB G₀ U₀.LG.L W).pull (pullback.fst (powObj G₀ 8).hom (jK V₁))) := by
   intro g n o _ ζ F W V₁ _ _ _ D₀ G₀ _ _ A₀ U₀ y α α₂ hcart hsq hlb P hP
   obtain ⟨c, ⟨φ, φ₂, hφ, hφsq, hφlb, -⟩, pr, prh, prl, hPL⟩ := hP

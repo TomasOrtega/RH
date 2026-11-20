@@ -16,22 +16,36 @@ open PI.UpqRep (vNormSq rhoC nsq)
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Introduce `a b c d`. Establish `h` using `hE (s a) (s b) (s c) (s d)`. Simplify `h` using `only [Equiv.apply_eq_iff_eq]`.
+-/
 theorem glRel_renum {A : Type*} [Ring A] {E : Fin n → Fin n → A} (hE : GlRel E) (s : Equiv.Perm (Fin n)) :
     GlRel (fun a b => E (s a) (s b)) := by
   intro a b c d
   have h := hE (s a) (s b) (s c) (s d)
   simpa only [Equiv.apply_eq_iff_eq] using h
 
+/- English proof (translation)
+Simplify using `only [Formalism.REAL.Tm, Equiv.apply_eq_iff_eq]`.
+-/
 theorem tm_renum {A : Type*} [Ring A] [Algebra ℂ A] (E : Fin n → Fin n → A) (s : Equiv.Perm (Fin n)) (u : ℂ)
     (a b : Fin n) : Tm (fun a b => E (s a) (s b)) u a b = Tm E u (s a) (s b) := by
   simp only [Formalism.REAL.Tm, Equiv.apply_eq_iff_eq]
 
+/- English proof (translation)
+Unfold `Formalism.REAL.qminor`. Simplify using `only [tm_renum, Function.comp_apply]`.
+-/
 theorem qminor_renum {A : Type*} [Ring A] [Algebra ℂ A] {t : ℕ} (E : Fin n → Fin n → A) (s : Equiv.Perm (Fin n))
     (a b : Fin t → Fin n) (u : ℂ) :
     qminor (fun a b => E (s a) (s b)) a b u = qminor E (s ∘ a) (s ∘ b) u := by
   unfold Formalism.REAL.qminor
   simp only [tm_renum, Function.comp_apply]
 
+/- English proof (translation)
+Establish `h1 : qdet (fun a b => E (s a) (s b)) u = qminor E (id ∘ ⇑s) (id ∘ ⇑s) u`. Unfold `Formalism.REAL.qdet`. Rewrite using `[qminor_renum]`. Both sides reduce to the same expression. Establish `hsq : ((Equiv.Perm.sign s : ℤ) : A) * ((Equiv.Perm.sign s : ℤ) : A) = 1`.
+
+Rewrite using `[← Int.cast_mul, ← Units.val_mul, Int.units_mul_self, Units.val_one, Int.cast_one]`. Rewrite using `[h1, Formalism.REAL.quantumMinorRowSkew_holds, Formalism.REAL.quantumMinorColSkew_holds A n n E hE, ← mul_assoc, hsq, one_mul]`. Both sides reduce to the same expression.
+-/
 theorem qdet_renum {A : Type} [Ring A] [Algebra ℂ A] {E : Fin n → Fin n → A} (hE : GlRel E)
     (s : Equiv.Perm (Fin n)) (u : ℂ) : qdet (fun a b => E (s a) (s b)) u = qdet E u := by
   have h1 : qdet (fun a b => E (s a) (s b)) u = qminor E (id ∘ ⇑s) (id ∘ ⇑s) u := by
@@ -43,6 +57,11 @@ theorem qdet_renum {A : Type} [Ring A] [Algebra ℂ A] {E : Fin n → Fin n → 
   rw [h1, Formalism.REAL.quantumMinorRowSkew_holds, Formalism.REAL.quantumMinorColSkew_holds A n n E hE, ← mul_assoc, hsq, one_mul]
   rfl
 
+/- English proof (translation)
+Break down `lt_trichotomy (s.symm a) (s.symm b) with h | h | h` into its components or cases. Conclude with `h`. Conclude with `absurd (s.symm.injective h) (ne_of_lt hab)`. Establish `h'` using `hs (s.symm b) (s.symm a) h (by simp [he])`. Simplify using `only [Equiv.apply_symm_apply] at h'`.
+
+Conclude with `absurd h' (lt_asymm hab)`.
+-/
 theorem symm_lt {ε : Fin n → Bool} {s : Equiv.Perm (Fin n)}
     (hs : ∀ a b, a < b → ε (s a) = ε (s b) → s a < s b) {a b : Fin n} (hab : a < b) (he : ε a = ε b) :
     s.symm a < s.symm b := by
@@ -53,6 +72,11 @@ theorem symm_lt {ε : Fin n → Bool} {s : Equiv.Perm (Fin n)}
     simp only [Equiv.apply_symm_apply] at h'
     exact absurd h' (lt_asymm hab)
 
+/- English proof (translation)
+Unfold `Formalism.REAL.KHighest Formalism.REAL.IsWeight`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hw, hz⟩`. Conclude with `⟨fun a => hw (s a), fun a b hab he => hz (s a) (s b) (hs a b hab he) he⟩`. Introduce and unpack `⟨hw, hz⟩`.
+
+Use `⟨fun a => ?_, fun a b hab he => ?_⟩` and prove the remaining obligations. Simplify using `using hw (s.symm a)`. Establish `h` using `hz (s.symm a) (s.symm b) (symm_lt hs hab he) (by simpa using he)`. Simplify using `using h`.
+-/
 theorem kHighest_iff {V : Type} [AddCommGroup V] [Module ℂ V] {ε : Fin n → Bool}
     (E : Fin n → Fin n → Module.End ℂ V) {s : Equiv.Perm (Fin n)}
     (hs : ∀ a b, a < b → ε (s a) = ε (s b) → s a < s b) (γ : Fin n → ℝ) (u : V) :
@@ -67,6 +91,19 @@ theorem kHighest_iff {V : Type} [AddCommGroup V] [Module ℂ V] {ε : Fin n → 
     · have h := hz (s.symm a) (s.symm b) (symm_lt hs hab he) (by simpa using he)
       simpa using h
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a`. Establish `h1 : (Finset.univ.filter (fun b => a < b ∧ ε (s b) = ε (s a))).card = (Finset.univ.filter (fun b => s a < b ∧ ε b = ε (s a))).card`. Use `Finset.card_nbij' s s.symm ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `b hb`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_coe] at hb ⊢`.
+
+Conclude with `⟨hs a b hb.1 hb.2.symm, hb.2⟩`. Introduce `c hc`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_coe, Equiv.apply_symm_apply] at hc ⊢`. Use `⟨?_, hc.2⟩` and prove the remaining obligations. Establish `h'` using `symm_lt hs hc.1 hc.2.symm`.
+
+Simplify using `using h'`. Introduce `b _`. Simplify using the standard rewrite rules. Introduce `c _`. Simplify using the standard rewrite rules.
+
+Establish `h2 : (Finset.univ.filter (fun b => b < a ∧ ε (s b) = ε (s a))).card = (Finset.univ.filter (fun b => b < s a ∧ ε b = ε (s a))).card`. Use `Finset.card_nbij' s s.symm ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `b hb`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_coe] at hb ⊢`. Conclude with `⟨hs b a hb.1 hb.2, hb.2⟩`.
+
+Introduce `c hc`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_coe, Equiv.apply_symm_apply] at hc ⊢`. Use `⟨?_, hc.2⟩` and prove the remaining obligations. Establish `h'` using `symm_lt hs hc.1 hc.2`. Simplify using `using h'`.
+
+Introduce `b _`. Simplify using the standard rewrite rules. Introduce `c _`. Simplify using the standard rewrite rules. Simplify using `only [PI.UpqRep.rhoC, Function.comp_apply, h1, h2]`.
+-/
 theorem rhoC_renum {ε : Fin n → Bool} {s : Equiv.Perm (Fin n)}
     (hs : ∀ a b, a < b → ε (s a) = ε (s b) → s a < s b) : rhoC (ε ∘ s) = rhoC ε ∘ s := by
   funext a
@@ -102,6 +139,9 @@ theorem rhoC_renum {ε : Fin n → Bool} {s : Equiv.Perm (Fin n)}
       simp
   simp only [PI.UpqRep.rhoC, Function.comp_apply, h1, h2]
 
+/- English proof (translation)
+Unfold `PI.UpqRep.vNormSq PI.UpqRep.nsq PI.UpqRep.dot`. Rewrite using `[rhoC_renum hs]`. Conclude with `Fintype.sum_equiv s _ _ (fun a => by simp)`.
+-/
 theorem vNormSq_renum {ε : Fin n → Bool} {s : Equiv.Perm (Fin n)}
     (hs : ∀ a b, a < b → ε (s a) = ε (s b) → s a < s b) (γ : Fin n → ℝ) :
     vNormSq (ε ∘ s) (γ ∘ s) = vNormSq ε γ := by
@@ -109,6 +149,13 @@ theorem vNormSq_renum {ε : Fin n → Bool} {s : Equiv.Perm (Fin n)}
   rw [rhoC_renum hs]
   exact Fintype.sum_equiv s _ _ (fun a => by simp)
 
+/- English proof (translation)
+Unfold `CompanionTheory.RgExh.U.IsMinG`. Prove the components needed by the constructor for the conclusion. Introduce `h μ x hx hk`. Establish `hμ : μ = (μ ∘ s.symm) ∘ s`. Use function extensionality and compare the values at `a`.
+
+Simplify using the standard rewrite rules. Rewrite `hk`, the goal using `[hμ]`. Rewrite using `[vNormSq_renum hs, vNormSq_renum hs]`. Conclude with `h _ x hx ((kHighest_iff E hs _ x).mpr hk)`. Introduce `h μ x hx hk`.
+
+Establish `h'` using `h (μ ∘ s) x hx ((kHighest_iff E hs μ x).mp hk)`. Rewrite `h'` using `[vNormSq_renum hs, vNormSq_renum hs]`. Then use the resulting hypothesis.
+-/
 theorem isMinG_iff {V : Type} [AddCommGroup V] [Module ℂ V] {ε : Fin n → Bool}
     (E : Fin n → Fin n → Module.End ℂ V) {s : Equiv.Perm (Fin n)}
     (hs : ∀ a b, a < b → ε (s a) = ε (s b) → s a < s b) (γ : Fin n → ℝ) :
@@ -126,6 +173,11 @@ theorem isMinG_iff {V : Type} [AddCommGroup V] [Module ℂ V] {ε : Fin n → Bo
     have h' := h (μ ∘ s) x hx ((kHighest_iff E hs μ x).mp hk)
     rwa [vNormSq_renum hs, vNormSq_renum hs] at h'
 
+/- English proof (translation)
+Introduce `n ε V _ _ E hE s hs`. Use `⟨glRel_renum hE s, fun hU a b x y => hU (s a) (s b) x y, ?_, ?_, fun γ u => kHighest_iff E hs γ u, fun γ => isMinG_iff E hs γ, rhoC_renum hs⟩` and prove the remaining obligations. Introduce `hL x`. Take `⟨S, hS, hK, hx⟩` from `hL x`. Conclude with `⟨S, hS, fun a b hab v hv => hK (s a) (s b) hab v hv, hx⟩`.
+
+Introduce `χ hχ Y`. Conclude with `(qdet_renum hE s _).trans (hχ Y)`.
+-/
 theorem renumber : CompanionTheory.RgExh.U.Renumber := by
   intro n ε V _ _ E hE s hs
   refine ⟨glRel_renum hE s, fun hU a b x y => hU (s a) (s b) x y, ?_, ?_,

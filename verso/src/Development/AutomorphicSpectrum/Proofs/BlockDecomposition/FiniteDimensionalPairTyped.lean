@@ -11,6 +11,11 @@ namespace GlobalTheory.CompanionTheory.LimV.FdPair
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {a b : ℕ}
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Use `Submodule.span_mono ?_` and prove the remaining obligations. Introduce and unpack `F ⟨φ₁, h₁, φ₂, h₂, rfl⟩`. Conclude with `⟨φ₁.1, ⟨φ₁, h₁, rfl⟩, φ₂.1, ⟨φ₂, h₂, rfl⟩, rfl⟩`. Use `Submodule.span_mono ?_` and prove the remaining obligations.
+
+Introduce and unpack `F ⟨_, ⟨φ₁, h₁, rfl⟩, _, ⟨φ₂, h₂, rfl⟩, rfl⟩`. Conclude with `⟨φ₁, h₁, φ₂, h₂, rfl⟩`.
+-/
 theorem pairSpace_eq_prodSpan (U₁ : Submodule ℂ (Sm E a)) (U₂ : Submodule ℂ (Sm E b)) :
     pairSpace U₁ U₂ = prodSpan (U₁.map (Sm E a).subtype) (U₂.map (Sm E b).subtype) := by
   apply le_antisymm
@@ -21,6 +26,11 @@ theorem pairSpace_eq_prodSpan (U₁ : Submodule ℂ (Sm E a)) (U₂ : Submodule 
     rintro F ⟨_, ⟨φ₁, h₁, rfl⟩, _, ⟨φ₂, h₂, rfl⟩, rfl⟩
     exact ⟨φ₁, h₁, φ₂, h₂, rfl⟩
 
+/- English proof (translation)
+Use extensionality with `f`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨φ, hφ, rfl⟩, hS⟩`. Conclude with `⟨φ, ⟨hφ, hS⟩, rfl⟩`. Introduce and unpack `⟨φ, ⟨hφ, hS⟩, rfl⟩`.
+
+Conclude with `⟨⟨φ, hφ, rfl⟩, hS⟩`.
+-/
 theorem map_typed {N : ℕ} (U : Submodule ℂ (Sm E N)) (K : Subgroup (GL (Fin N) (Af E)))
     (W : Submodule ℂ (Kinf E N → ℂ)) :
     U.map (Sm E N).subtype ⊓ typeF K W = (typed U K W).map (Sm E N).subtype := by
@@ -31,6 +41,13 @@ theorem map_typed {N : ℕ} (U : Submodule ℂ (Sm E N)) (K : Subgroup (GL (Fin 
   · rintro ⟨φ, ⟨hφ, hS⟩, rfl⟩
     exact ⟨⟨φ, hφ, rfl⟩, hS⟩
 
+/- English proof (translation)
+Use `⟨fun u hu g => ?_, fun g => ?_⟩` and prove the remaining obligations. Use `hF.1 u hu 1 K₂.one_mem (g, y)` as an intermediate fact. Simplify using `using this`. Set `L : (Kinf E a × Kinf E b → ℂ) →ₗ[ℂ] (Kinf E a → ℂ)` to `{ toFun := fun f k => f (k, 1), map_add' := fun _ _ => rfl, map_smul' := fun _ _ => rfl }`. Establish `hL : Submodule.span ℂ {f : Kinf E a × Kinf E b → ℂ | ∃ w₁ ∈ W₁, ∃ w₂ ∈ W₂, f = fun k => w₁ k.1 * w₂ k.2} ≤ W₁.comap L`.
+
+Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `f ⟨w₁, h₁, w₂, h₂, rfl⟩`. Establish `: L (fun k => w₁ k.1 * w₂ k.2) = w₂ 1 • w₁`. Use function extensionality and compare the values at `k`. Simplify using `[L, mul_comm]`.
+
+Use `show L _ ∈ W₁`. Rewrite using `[this]`. Conclude with `W₁.smul_mem _ h₁`. Use `hL (hF.2 (g, y))` as an intermediate fact. Simplify `this` using `[L]`.
+-/
 theorem slice_left {K₁ : Subgroup (GL (Fin a) (Af E))} {K₂ : Subgroup (GL (Fin b) (Af E))}
     {W₁ : Submodule ℂ (Kinf E a → ℂ)} {W₂ : Submodule ℂ (Kinf E b → ℂ)} {F : H E a b → ℂ}
     (hF : TypeH K₁ K₂ W₁ W₂ F) (y : GA E b) : (fun x => F (x, y)) ∈ typeF K₁ W₁ := by
@@ -52,6 +69,13 @@ theorem slice_left {K₁ : Subgroup (GL (Fin a) (Af E))} {K₂ : Subgroup (GL (F
     have := hL (hF.2 (g, y))
     simpa [L] using this
 
+/- English proof (translation)
+Use `⟨fun u hu g => ?_, fun g => ?_⟩` and prove the remaining obligations. Use `hF.1 1 K₁.one_mem u hu (x, g)` as an intermediate fact. Simplify using `using this`. Set `L : (Kinf E a × Kinf E b → ℂ) →ₗ[ℂ] (Kinf E b → ℂ)` to `{ toFun := fun f k => f (1, k), map_add' := fun _ _ => rfl, map_smul' := fun _ _ => rfl }`. Establish `hL : Submodule.span ℂ {f : Kinf E a × Kinf E b → ℂ | ∃ w₁ ∈ W₁, ∃ w₂ ∈ W₂, f = fun k => w₁ k.1 * w₂ k.2} ≤ W₂.comap L`.
+
+Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `f ⟨w₁, h₁, w₂, h₂, rfl⟩`. Establish `: L (fun k => w₁ k.1 * w₂ k.2) = w₁ 1 • w₂`. Use function extensionality and compare the values at `k`. Simplify using `[L]`.
+
+Use `show L _ ∈ W₂`. Rewrite using `[this]`. Conclude with `W₂.smul_mem _ h₂`. Use `hL (hF.2 (x, g))` as an intermediate fact. Simplify `this` using `[L]`.
+-/
 theorem slice_right {K₁ : Subgroup (GL (Fin a) (Af E))} {K₂ : Subgroup (GL (Fin b) (Af E))}
     {W₁ : Submodule ℂ (Kinf E a → ℂ)} {W₂ : Submodule ℂ (Kinf E b → ℂ)} {F : H E a b → ℂ}
     (hF : TypeH K₁ K₂ W₁ W₂ F) (x : GA E a) : (fun y => F (x, y)) ∈ typeF K₂ W₂ := by
@@ -73,6 +97,13 @@ theorem slice_right {K₁ : Subgroup (GL (Fin a) (Af E))} {K₂ : Subgroup (GL (
     have := hL (hF.2 (x, g))
     simpa [L] using this
 
+/- English proof (translation)
+Introduce `E _ _ _ a b U₁ U₂ K₁ K₂ W₁ W₂ h₁ h₂`. Establish `f₁ : FiniteDimensional ℂ (U₁.map (Sm E a).subtype ⊓ typeF K₁ W₁ : Submodule ℂ (GA E a → ℂ))`. Rewrite using `[map_typed]`. Use `infer_instance`. Establish `f₂ : FiniteDimensional ℂ (U₂.map (Sm E b).subtype ⊓ typeF K₂ W₂ : Submodule ℂ (GA E b → ℂ))`.
+
+Rewrite using `[map_typed]`. Use `infer_instance`. Use `haveI hfd := GlobalTheory.T.finiteDimensional_prodSpan (U₁.map (Sm E a).subtype ⊓ typeF K₁ W₁) (U₂.map (Sm E b).subtype ⊓ typeF K₂ W₂) f₁ f₂`. Use `Submodule.finiteDimensional_of_le (S₂ := prodSpan (U₁.map (Sm E a).subtype ⊓ typeF K₁ W₁) (U₂.map (Sm E b).subtype ⊓ typeF K₂ W₂)) ?_` and prove the remaining obligations. Introduce and unpack `F ⟨hU, hT⟩`.
+
+Rewrite `hU` using `[SetLike.mem_coe, pairSpace_eq_prodSpan]`. Conclude with `GlobalTheory.T.mem_prodSpan_inf _ _ _ _ F hU (fun y => slice_left hT y) (fun x => slice_right hT x)`.
+-/
 theorem finiteDimensional_pairSpace_inf_typeHF : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {a b : ℕ}
     (U₁ : Submodule ℂ (Sm E a)) (U₂ : Submodule ℂ (Sm E b)) (K₁ : Subgroup (GL (Fin a) (Af E)))
     (K₂ : Subgroup (GL (Fin b) (Af E))) (W₁ : Submodule ℂ (Kinf E a → ℂ)) (W₂ : Submodule ℂ (Kinf E b → ℂ)),

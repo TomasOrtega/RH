@@ -12,6 +12,13 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 
 namespace GlobalTheory.DomFine
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo c Z R _ a b ω C _ _ _`. Establish `hprop : IsProper C.s`. Take `⟨N, i, hi, e⟩` from `C.proj`. Use `isProper_str R N` as an intermediate fact. Rewrite using `[← e]`.
+
+Use `infer_instance`. Use `Xo.smooth` as an intermediate fact. Establish `: Smooth Xo.s` using `SmoothOfRelativeDimension.smooth D.dim _`. Take `⟨h1, -, h3⟩` from `GlobalTheory.isReduced_isNormalScheme_isLocallyNoetherian_of_smooth_over_field c.F _ (pullback.snd Xo.s (spMap (IntermediateField.inclusion c.le).toRingHom)) inferInstance`. Use `⟨?_, h1, h3, inferInstance, inferInstance, inferInstance⟩` and prove the remaining obligations.
+
+Rewrite using `[Model.j, Category.assoc, pullback.condition, ← Category.assoc, C.jQ_over]`.
+-/
 theorem model_basics : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (Z : Model Xo c (algebraMap (𝓞 c.F) c.F)) (R : Type) [CommRing R] (a : 𝓞 c.F) (b : 𝓞 c.F →+* R) (ω : R →+* c.F) (C : Model Xo c ω), IsDedFrac ω → ω.comp b = algebraMap (𝓞 c.F) c.F → @IsLocalization.Away (𝓞 c.F) _ a R _ b.toAlgebra → C.j ≫ C.s = pullback.snd _ _ ≫ spMap ω ∧ IsReduced (Xo.XF c) ∧ IsLocallyNoetherian (Xo.XF c) ∧ LocallyOfFiniteType C.s ∧ IsSeparated C.s ∧ (Sp R).IsSeparated := by
   intro E _ _ _ H D l Xo c Z R _ a b ω C _ _ _
   have hprop : IsProper C.s := by
@@ -25,6 +32,21 @@ theorem model_basics : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H
   refine ⟨?_, h1, h3, inferInstance, inferInstance, inferInstance⟩
   rw [Model.j, Category.assoc, pullback.condition, ← Category.assoc, C.jQ_over]
 
+/- English proof (translation)
+Introduce `hFr hEx hAt _ E _ _ _ H D l Xo c Z R _ a b ω C m hω hb hloc hm hAmp hpts`. Establish `hZs : Z.j ≫ Z.s = pullback.snd _ _ ≫ spMap ω ≫ spMap b`. Rewrite using `[Model.j, Category.assoc, pullback.condition, ← Category.assoc, Z.jQ_over, ← Spec.map_comp, ← CommRingCat.ofHom_comp, hb]`. Set `jX : Xo.XF c ⟶ pullback Z.s (spMap b)` to `pullback.lift Z.j (pullback.snd _ _ ≫ spMap ω) (by rw [hZs, Category.assoc])`. Establish `hjX : jX ≫ pullback.fst _ _ = Z.j` using `pullback.lift_fst _ _ _`.
+
+Take `⟨hfo, hXn, hXnorm, hXZ, hpre, hfl, hdom, hqc, hjs, huniq⟩` from `GlobalTheory.T.generic_embedding_localized_model E H D l Xo c Z R a b ω C hω hb hloc jX hjX`. Take `⟨hCj, hred, hUn, hCft, hCsep, hRsep⟩` from `GlobalTheory.DomFine.model_basics E H D l Xo c Z R a b ω C hω hb hloc`. Establish `hgs : C.j ≫ C.s = jX ≫ pullback.snd _ _` using `by rw [hCj, hjs]`. Establish `key : ∀ x : ↥(pullback Z.s (spMap b)), ∃ (V : (pullback Z.s (spMap b)).Opens) (hx : x ∈ V) (h : V.toScheme ⟶ C.X) (p : ↥(pullback Z.s (spMap b))) (hp : p ∈ V) (v : Spec ((pullback Z.s (spMap b)).presheaf.stalk p) ⟶ Xo.XF c), p ⤳ x ∧ (∀ q, q ⤳ p → q = p) ∧ v ≫ jX = (pullback Z.s ( …`. Introduce `x`.
+
+Take `⟨R', _, _, _, ξ, y, χ, hξx, hξfl, hy, hχ, hχs, hgen⟩` from `GlobalTheory.T.ample_points_localized_model hFr hEx E H D l Xo c Z R a b ω C hω hb hloc m hm hAmp hpts jX hjX x`. Set `w₀ : Sp (FractionRing R')` to `closedPoint (FractionRing R')`. Establish `hpr : (jK R' ≫ ξ) w₀ ∈ Set.range jX` using `⟨y w₀, by rw [← Scheme.Hom.comp_apply, hy]⟩`. Take `⟨W, f, v, hpW, hv, hfs, hfc⟩` from `GlobalTheory.T.exists_local_section_flat_preimmersion (Sp R) _ (Xo.XF c) C.X (pullback.snd _ _) C.s jX C.j hCft hCsep hXn hXnorm hred hpre hfl hgs _ hpr (hgen w₀)`. Establish `hrange : Set.range (jK R' ≫ ξ) ⊆ Set.range W.ι`.
+
+Introduce and unpack `_ ⟨w, rfl⟩`. Rewrite using `[Subsingleton.elim w w₀, Scheme.Opens.range_ι]`. Conclude with `hpW`. Set `yW` to `IsOpenImmersion.lift W.ι (jK R' ≫ ξ) hrange`. Establish `hyW : yW ≫ W.ι = jK R' ≫ ξ` using `IsOpenImmersion.lift_fac _ _ _`.
+
+Establish `hext` using `hAt _ _ W.toScheme C.X (Sp R) (𝟙 _) W.ι f (pullback.snd _ _) C.s R' ξ yW χ inferInstance hCsep hCft hfs hξfl (by rw [hyW, Category.comp_id]) (by rw [hχ]; exact (hfc _ yW y (by rw [hyW, hy])).symm) (by rw [hχs, Category.id_comp])`. Rewrite `hext` using `[hξx]`. Take `⟨V, h, hxV, hV⟩` from `hext`. Establish `hpx : (jK R' ≫ ξ) w₀ ⤳ x`. Rewrite using `[← hξx, Scheme.Hom.comp_apply]`.
+
+Conclude with `(IsLocalRing.specializes_closedPoint _).map ξ.continuous`. Establish `hpV : (jK R' ≫ ξ) w₀ ∈ V` using `hpx.mem_open V.2 hxV`. Use `⟨V, hxV, h, _, hpV, v, hpx, hgen w₀, hv, ?_⟩` and prove the remaining obligations. Rewrite using `[hV _ (V.fromSpecStalkOfMem _ hpV) (W.fromSpecStalkOfMem _ hpW) (by rw [Category.comp_id, Scheme.Opens.fromSpecStalkOfMem_ι, Scheme.Opens.fromSpecStalkOfMem_ι])]`. Conclude with `hfc _ _ v (by rw [Scheme.Opens.fromSpecStalkOfMem_ι, hv])`.
+
+Take `⟨F, hFs, hFj⟩` from `GlobalTheory.T.exists_extension_of_local_maps_agree_at_generic_points (Sp R) _ (Xo.XF c) C.X (pullback.snd _ _) C.s jX C.j hCft hCsep hRsep hXn hXnorm hred hUn inferInstance hfl hgs key`. Conclude with `GlobalTheory.T.morphism_to_localized_model E H D l Xo c Z R a b ω C hω hb hloc F hFs (fun u hu => by rw [huniq u hu, hFj])`.
+-/
 theorem dominates_of_fineData : FreeSt → ExtendSt → ExtAtSt → GlueSt → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (Z : Model Xo c (algebraMap (𝓞 c.F) c.F)) (R : Type) [CommRing R] (a : 𝓞 c.F) (b : 𝓞 c.F →+* R) (ω : R →+* c.F) (C : Model Xo c ω) (m : ℕ), IsDedFrac ω → ω.comp b = algebraMap (𝓞 c.F) c.F → @IsLocalization.Away (𝓞 c.F) _ a R _ b.toAlgebra → 1 ≤ m → AmpAt C m → (∀ z : Z.X, ∃ (R' : Type) (_ : CommRing R') (_ : IsDomain R') (_ : IsLocalRing R') (ξ : Sp R' ⟶ Z.X) (t : SAB H (Sp R')) (_ : SABMap t Z.t ξ) (P : PELUnif (maximalIdeal R') t), IsCN R' ∧ ξ (closedPoint R') = z ∧ (Scheme.stalkClosedPointTo ξ).hom.Flat ∧ FineData P.D.toPre 1 ∧ FineData P.D.toPre (m ^ 2)) → Dominates Z C b := by
   intro hFr hEx hAt _ E _ _ _ H D l Xo c Z R _ a b ω C m hω hb hloc hm hAmp hpts
   have hZs : Z.j ≫ Z.s = pullback.snd _ _ ≫ spMap ω ≫ spMap b := by

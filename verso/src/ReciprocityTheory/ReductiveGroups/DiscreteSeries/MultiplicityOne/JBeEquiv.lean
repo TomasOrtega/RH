@@ -3,6 +3,9 @@ import ReciprocityTheory.ReductiveGroups.DiscreteSeries.MultiplicityOne.JBeEquiv
 
 namespace ReciprocityTheory.ChartRestriction.DS.Mult1
 
+/- English proof (translation)
+Introduce `k r Wp _ _ _ D X _ _ u u' hI h0 hh0 m hm`. Conclude with `⟨BeEquiv.beOp_left D X (BeEquiv.beFacts_of h D) u u' hI hh0 hm, BeEquiv.beOp_right D X (BeEquiv.beFacts_of h D) u u' hI hh0 hm⟩`.
+-/
 theorem stBeEquiv (h : UnitaryGroupStructuralFacts) : StBeEquiv := by
   intro k r Wp _ _ _ D X _ _ u u' hI h0 hh0 m hm
   exact ⟨BeEquiv.beOp_left D X (BeEquiv.beFacts_of h D) u u' hI hh0 hm,

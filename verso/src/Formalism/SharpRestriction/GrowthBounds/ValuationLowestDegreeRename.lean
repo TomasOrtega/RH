@@ -201,6 +201,11 @@ def TypeDecompositionsCommute (_D : Formalism.BasicNotions.D7) : Prop :=
     valS LL S (MvPolynomial.map (algebraMap O (KK O)) A) = valS LL S A ∧
       lam1S LL S (MvPolynomial.map (algebraMap O (KK O)) A) = lam1S LL S A)
 
+/- English proof (translation)
+Establish `h : (twistSub (R` using `R) LL S j).comp (rename (fun v : ι × Fin n => (f v.1, v.2))).toRingHom = (rename (fun v : ι × Fin n => (f v.1, v.2))).toRingHom.comp (twistSub (R := R) (⟨fun i => LL.vec (f i)⟩ : Letters ι) (f ⁻¹' S) j) := by`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `c`. Simplify using `[twistSub]`. Introduce `v`.
+
+Simplify using `only [RingHom.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, rename_X, twistSub, eval₂Hom_X', Set.mem_preimage]`. Apply the tactic sequence `split_ifs <;> simp_all [map_sum, rename_X]`. Conclude with `RingHom.congr_fun h A`.
+-/
 theorem twistSub_rename {R : Type} [CommRing R] {ι κ : Type} (f : ι → κ) {n : ℕ} (LL : Letters κ) (S : Set κ)
     (j : Fin n) (A : MvPolynomial (ι × Fin n) R) :
     twistSub LL S j (rename (fun v : ι × Fin n => (f v.1, v.2)) A) =
@@ -217,6 +222,11 @@ theorem twistSub_rename {R : Type} [CommRing R] {ι κ : Type} (f : ι → κ) {
       split_ifs <;> simp_all [map_sum, rename_X]
   exact RingHom.congr_fun h A
 
+/- English proof (translation)
+Unfold `sDegs`. Rewrite using `[twistSub_rename f LL S j A]`. Establish `hg : Function.Injective (fun v : ι × Fin n => (f v.1, v.2))`. Introduce `a b h`. Simplify using `only [Prod.mk.injEq] at h`.
+
+Conclude with `Prod.ext (hf h.1) h.2`. Rewrite using `[MvPolynomial.support_rename_of_injective hg, Finset.image_biUnion]`. Apply `Finset.biUnion_congr rfl` to reduce the goal to its premises. Introduce `m _`. Rewrite using `[MvPolynomial.coeff_rename_mapDomain _ hg]`.
+-/
 theorem sDegs_rename {R : Type} [CommRing R] {ι κ : Type} (f : ι → κ) (hf : Function.Injective f) {n : ℕ}
     (LL : Letters κ) (S : Set κ) (j : Fin n) (A : MvPolynomial (ι × Fin n) R) :
     sDegs LL S j (rename (fun v : ι × Fin n => (f v.1, v.2)) A) =
@@ -233,6 +243,9 @@ theorem sDegs_rename {R : Type} [CommRing R] {ι κ : Type} (f : ι → κ) (hf 
   intro m _
   rw [MvPolynomial.coeff_rename_mapDomain _ hg]
 
+/- English proof (translation)
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Unfold `valS`. Rewrite using `[sDegs_rename f hf]`. Unfold `lam1S`. Rewrite using `[sDegs_rename f hf]`.
+-/
 theorem valuation_lowest_degree_rename (R : Type) [CommRing R] (ι κ : Type) (f : ι → κ) (n : ℕ) [NeZero n] (LL : Letters κ) (S : Set κ)
       (A : MvPolynomial (ι × Fin n) R) (hf : Function.Injective f) :
     valS LL S (rename (fun v : ι × Fin n => (f v.1, v.2)) A) =
@@ -245,6 +258,11 @@ theorem valuation_lowest_degree_rename (R : Type) [CommRing R] (ι κ : Type) (f
   · unfold lam1S
     rw [sDegs_rename f hf]
 
+/- English proof (translation)
+Unfold `XX'`. Rewrite using `[Submodule.mem_inf]`. Use `⟨Submodule.subset_span ⟨A, G, M, hA, hG, hc, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[MvPolynomial.mem_restrictSupport_iff]`. Introduce `mm hmm`.
+
+Conclude with `ho mm hmm`.
+-/
 theorem space_criterion_clause (O : Type) [CommRing O] (n' r K : ℕ) [NeZero n'] [NeZero r] [NeZero K]
     (F : Frames n' r) (j : ℤ) (m : ℤ → ℤ) (th o : ℤ → ℝ)
     (A : MvPolynomial (ℤ × Fin r) O) (G : MvPolynomial (ℤ × Fin K) O) (M : ℤ → ℤ)

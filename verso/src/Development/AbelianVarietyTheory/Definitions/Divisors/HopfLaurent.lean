@@ -42,11 +42,19 @@ structure TanRep (A : Over (Sp R)) [GrpObj A] (W : Type) [AddCommGroup W] [Modul
     (β : TrivSqZeroExt B M →+* TrivSqZeroExt B' M'), IsSum β α f →
     ∀ z : Sp (TrivSqZeroExt B M) ⟶ A.left, Lifts A.hom (unitPt A B) z → Φ (spMap β ≫ z) = f ∘ₗ Φ z
 
+/- English proof (translation)
+Rewrite using `[Category.assoc, h, GlobalTheory.Cris.spMap_comp]`.
+-/
 example {X : Scheme.{0}} (s : X ⟶ Sp R) {B M : Type} [CommRing B] [Algebra R B] [AddCommGroup M] [Module B M]
     [Module Bᵐᵒᵖ M] [IsCentralScalar B M] (P : Sp B ⟶ X) (h : P ≫ s = spMap (algebraMap R B)) :
     (spMap (TrivSqZeroExt.inlHom B M) ≫ P) ≫ s = spMap ((TrivSqZeroExt.inlHom B M).comp (algebraMap R B)) := by
   rw [Category.assoc, h, GlobalTheory.Cris.spMap_comp]
 
+/- English proof (translation)
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, h]`. Simplify using `only [spMap, ← Spec.map_comp]`. Both sides reduce to the same expression. Rewrite using `[← Category.assoc]`.
+
+Simplify using `only [spMap, ← Spec.map_comp]`. Establish `: (CommRingCat.ofHom (TrivSqZeroExt.inlHom B M) ≫ CommRingCat.ofHom (TrivSqZeroExt.fstHom B B M).toRingHom : CommRingCat.of B ⟶ CommRingCat.of B) = 𝟙 _`. Use extensionality with `b`. Both sides reduce to the same expression. Rewrite using `[this, Spec.map_id, Category.id_comp]`.
+-/
 theorem lifts_const {X : Scheme.{0}} (s : X ⟶ Sp R) {B : Type} (M : Type) [CommRing B] [Algebra R B] [AddCommGroup M]
     [Module B M] [Module Bᵐᵒᵖ M] [IsCentralScalar B M] (P : Sp B ⟶ X) (h : P ≫ s = spMap (algebraMap R B)) :
     Lifts s P (spMap (TrivSqZeroExt.inlHom B M) ≫ P) := by
@@ -61,6 +69,9 @@ theorem lifts_const {X : Scheme.{0}} (s : X ⟶ Sp R) {B : Type} (M : Type) [Com
       ext b; rfl
     rw [this, Spec.map_id, Category.id_comp]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ => rfl, fun _ => rfl⟩`.
+-/
 example {B M : Type} [CommRing B] [AddCommGroup M] [Module B M] [Module Bᵐᵒᵖ M] [IsCentralScalar B M] :
     IsSum (RingHom.id (TrivSqZeroExt B M)) id id := ⟨fun _ => rfl, fun _ => rfl⟩
 
@@ -77,16 +88,28 @@ local instance hopfLaurent : HopfAlgebra (CommRingCat.of R) (CommRingCat.of R[T;
 
 abbrev G : Over (Sp R) := (Spec (CommRingCat.of R[T;T⁻¹])).asOver (Spec (CommRingCat.of R))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem G_hom : (G R).hom = spMap (algebraMap R R[T;T⁻¹]) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem unit_eq (B : Type) [CommRing B] [Algebra R B] :
     unitPt (G R) B = spMap (algebraMap R B) ≫ spMap (Bialgebra.counitAlgHom R R[T;T⁻¹]).toRingHom := rfl
 
+/- English proof (translation)
+Simplify using `only [spMap, ← Spec.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem comp' {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap g ≫ spMap f = spMap (g.comp f) := by
   simp only [spMap, ← Spec.map_comp]
   rfl
 
+/- English proof (translation)
+Establish `h'` using `Spec.map_injective h`. Conclude with `congrArg CommRingCat.Hom.hom h'`.
+-/
 theorem inj' {A B : Type} [CommRing A] [CommRing B] {p q : A →+* B} (h : spMap p = spMap q) : p = q := by
   have h' := Spec.map_injective h
   exact congrArg CommRingCat.Hom.hom h'
@@ -96,13 +119,28 @@ variable {R}
 def pre {C : Type} [CommRing C] (z : Sp C ⟶ (G R).left) : R[T;T⁻¹] →+* C :=
   (Spec.preimage (R := CommRingCat.of R[T;T⁻¹]) (S := CommRingCat.of C) z).hom
 
+/- English proof (translation)
+Simplify using `only [spMap, pre, CommRingCat.ofHom_hom]`. Conclude with `Spec.map_preimage z`.
+-/
 theorem spMap_pre {C : Type} [CommRing C] (z : Sp C ⟶ (G R).left) : spMap (pre z) = z := by
   simp only [spMap, pre, CommRingCat.ofHom_hom]
   exact Spec.map_preimage z
 
+/- English proof (translation)
+Simplify using `only [pre, spMap, Spec.preimage_map, CommRingCat.hom_ofHom]`.
+-/
 theorem pre_spMap {C : Type} [CommRing C] (φ : R[T;T⁻¹] →+* C) : pre (R := R) (spMap φ) = φ := by
   simp only [pre, spMap, Spec.preimage_map, CommRingCat.hom_ofHom]
 
+/- English proof (translation)
+Establish `hC : ∀ a : R, φ (LaurentPolynomial.C a) = ψ (LaurentPolynomial.C a)` using `fun a => by`. Rewrite using `[LaurentPolynomial.C_eq_algebraMap]`. Conclude with `congrArg (fun f : R →+* C => f a) h0`. Establish `hinv : φ (T (-1)) = ψ (T (-1))`. Establish `e : (T (-1) : R[T;T⁻¹]) * T 1 = 1` using `by rw [← T_add]; simp`.
+
+Establish `eφ : φ (T (-1)) * φ (T 1) = 1` using `by rw [← map_mul, e, map_one]`. Establish `eψ : ψ (T 1) * ψ (T (-1)) = 1` using `by rw [← map_mul, mul_comm, e, map_one]`. Combine the equalities or inequalities in the displayed calculation. Establish `hT : ∀ n : ℤ, φ (T n) = ψ (T n)`. Introduce `n`.
+
+Proceed by induction on `n using Int.induction_on with`. Consider the case `zero => simp`. Consider the case `succ k ih => rw [T_add, map_mul, map_mul, ih, h1]`. Consider the case `pred k ih => rw [sub_eq_add_neg, T_add, map_mul, map_mul, ih, hinv]`. Use `RingHom.ext fun p => ?_` and prove the remaining obligations.
+
+Proceed by induction on `p using LaurentPolynomial.induction_on' with`. Consider the case `add p q hp hq => rw [map_add, map_add, hp, hq]`. Consider the case `C_mul_T n a => rw [map_mul, map_mul, hC, hT]`.
+-/
 theorem hom_ext' {C : Type} [CommRing C] {φ ψ : R[T;T⁻¹] →+* C}
     (h0 : φ.comp (algebraMap R _) = ψ.comp (algebraMap R _)) (h1 : φ (T 1) = ψ (T 1)) : φ = ψ := by
   have hC : ∀ a : R, φ (LaurentPolynomial.C a) = ψ (LaurentPolynomial.C a) := fun a => by
@@ -126,6 +164,19 @@ theorem hom_ext' {C : Type} [CommRing C] {φ ψ : R[T;T⁻¹] →+* C}
   | add p q hp hq => rw [map_add, map_add, hp, hq]
   | C_mul_T n a => rw [map_mul, map_mul, hC, hT]
 
+/- English proof (translation)
+Establish `hε : Bialgebra.counitAlgHom R R[T;T⁻¹] (T 1) = 1`. Rewrite using `[Bialgebra.counitAlgHom_apply]`. Conclude with `AddMonoidAlgebra.counit_single (1 : ℤ) (1 : R)`. Establish `hεC : ∀ r : R, Bialgebra.counitAlgHom R R[T;T⁻¹] (algebraMap R _ r) = r` using `fun r => (Bialgebra.counitAlgHom R R[T;T⁻¹]).commutes r`. Establish `e1 : spMap φ ≫ (G R).hom = spMap (φ.comp (algebraMap R _))`.
+
+Rewrite using `[G_hom]`. Conclude with `comp' _ _`. Establish `e2 : spMap (TrivSqZeroExt.fstHom B B M).toRingHom ≫ spMap φ = spMap ((TrivSqZeroExt.fstHom B B M).toRingHom.comp φ)` using `comp' _ _`. Establish `e3 : unitPt (G R) B = spMap ((algebraMap R B).comp (Bialgebra.counitAlgHom R R[T;T⁻¹]).toRingHom)`. Rewrite using `[unit_eq]`.
+
+Conclude with `comp' _ _`. Unfold `Lifts`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Establish `h1'` using `inj' (e1.symm.trans h1)`.
+
+Establish `h2'` using `inj' (e2.symm.trans (h2.trans e3))`. Use `⟨h1', ?_⟩` and prove the remaining obligations. Use `congrArg (fun f : R[T;T⁻¹] →+* B => f (T 1)) h2'` as an intermediate fact. Simplify `this` using `[hε]`. Introduce and unpack `⟨h1, h2⟩`.
+
+Use `⟨e1.trans (congrArg spMap h1), e2.trans ((congrArg spMap ?_).trans e3.symm)⟩` and prove the remaining obligations. Apply `hom_ext'` to reduce the goal to its premises. Use extensionality with `r`. Use `congrArg (fun f : R →+* TrivSqZeroExt B M => (f r).fst) h1` as an intermediate fact. Simplify `this` using `[hεC]`.
+
+Simplify `h2` using `[hε]`.
+-/
 theorem lifts_iff {B M : Type} [CommRing B] [Algebra R B] [AddCommGroup M] [Module B M]
     [Module Bᵐᵒᵖ M] [IsCentralScalar B M] (φ : R[T;T⁻¹] →+* TrivSqZeroExt B M) :
     Lifts (G R).hom (unitPt (G R) B) (spMap φ) ↔
@@ -193,6 +244,9 @@ def tanRep : TanRep (G R) R where
     rw [← TrivSqZeroExt.inl_fst_add_inr_snd_eq (pre z (T 1)), map_add, hβ.1, hβ.2]
     simp
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `LinearMap.toSpanSingleton R _ (pre (R := R) (spMap φ) (T 1)).snd 1 = _`. Simplify using `[pre_spMap]`.
+-/
 example {B M : Type} [CommRing B] [Algebra R B] [AddCommGroup M] [Module B M] [Module Bᵐᵒᵖ M] [IsCentralScalar B M]
     [Module R M] [IsScalarTower R B M] (φ : R[T;T⁻¹] →+* TrivSqZeroExt B M) :
     (tanRep (R := R)).Φ (spMap φ) 1 = (φ (T 1)).snd := by

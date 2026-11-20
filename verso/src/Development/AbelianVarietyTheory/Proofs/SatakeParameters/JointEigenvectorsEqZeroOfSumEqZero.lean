@@ -11,6 +11,19 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on generalizing v with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih`. Establish `hsum' : v a + ∑ k ∈ s, v k = 0` using `by rwa [Finset.sum_insert ha] at hsum`. Establish `hs : ∀ k ∈ s, v k = 0`.
+
+Introduce `k hk`. Establish `hne : χ k ≠ χ a`. Introduce `h`. Establish `hka : k = a` using `hinj (by simp [hk]) (by simp) h`. Conclude with `ha (hka ▸ hk)`.
+
+Take `⟨i, hi⟩` from `Function.ne_iff.mp hne`. Establish `hw : (χ k i - χ a i) • v k = 0`. Use `ih (fun j => (χ j i - χ a i) • v j) ?_ ?_ ?_ k hk` and prove the remaining obligations. Introduce `j hj i'`. Establish `h1` using `heig j (Finset.mem_insert_of_mem hj) i'`.
+
+Simplify using `only [map_smul, h1]`. Rewrite using `[smul_comm]`. Conclude with `hinj.mono (by simp)`. Establish `h2 : A i (v a + ∑ k ∈ s, v k) - χ a i • (v a + ∑ k ∈ s, v k) = 0`. Rewrite using `[hsum']`.
+
+Simplify using the standard rewrite rules. Rewrite `h2` using `[map_add, map_sum, heig a (Finset.mem_insert_self a s) i, smul_add, Finset.smul_sum, add_sub_add_left_eq_sub, ← Finset.sum_sub_distrib]`. Rewrite using `[← h2]`. Use `Finset.sum_congr rfl fun j hj => ?_` and prove the remaining obligations. Rewrite using `[heig j (Finset.mem_insert_of_mem hj) i, sub_smul]`.
+
+Conclude with `(smul_eq_zero.mp hw).resolve_left (sub_ne_zero.mpr hi)`. Introduce `k hk`. Break down `Finset.mem_insert.mp hk with rfl | hk` into its components or cases. Simplify `hsum'` using `[Finset.sum_eq_zero hs]`. Conclude with `hs k hk`.
+-/
 theorem joint_eigenvectors_eq_zero_of_sum_eq_zero (ι κ M : Type) [AddCommGroup M] [Module ℂ M]
     (A : ι → Module.End ℂ M) (χ : κ → ι → ℂ) (v : κ → M) (s : Finset κ)
     (heig : ∀ k ∈ s, ∀ i, A i (v k) = χ k i • v k) (hinj : Set.InjOn χ s)

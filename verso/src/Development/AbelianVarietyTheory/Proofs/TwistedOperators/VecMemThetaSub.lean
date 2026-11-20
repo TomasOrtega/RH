@@ -8,6 +8,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
 
 namespace GlobalTheory.RowVertexInv
 
+/- English proof (translation)
+Introduce `D T L sc G W U S t p hp d hv`. Conclude with `(GlobalTheory.FockRealVec.vec_theta_fock W S.Z hp d hv).1`.
+-/
 theorem vec_mem_thetaSub : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {W : G.Weil} {U : Set T}
     (S : GridChoice W U) {t : T} {p : Pair T}, DefPair D.R.m p → ∀ d : FinDatum G t p, S.Z.HasVec d →
     S.Z.vec d ∈ thetaSub W.ψ (G.pS p) (G.pT p) := by

@@ -16,6 +16,23 @@ noncomputable section
 namespace GlobalTheory.RunDepthScale
 
 open Formalism.MainNotions.ModuliIntegralCharts.H1 in
+/- English proof (translation)
+Establish `hq : D.host.q.Prime` using `D.host.hyp.1`. Establish `hd : D.host.d.Prime` using `D.host.hyp.2.1`. Unfold `nusOf DepPage.nuN`. Rewrite using `[H1algLink.eWL_eq la, h1, h2]`. Distinguish the cases in `hc : ∃ i : Fin 2, ((D.host.g i : ℕ) : 𝓞 B.KO) ∈ la.asIdeal`.
+
+Rewrite using `[dif_pos hc]`. Establish `hch` using `(H1algLink.prime_mem_iff la (D.host.g_prime _)).1 (Classical.choose_spec hc)`. Rewrite using `[← hch, mul_div_assoc]`. Use `congr 1`. Distinguish the cases in `e0 : resCharOf la = D.host.g 0`.
+
+Rewrite using `[if_pos e0, e0]`. Rewrite using `[if_neg e0]`. Establish `e1 : resCharOf la = D.host.g 1`. Generalize the expression as in `Classical.choose hc = i at hch`. Use `fin_cases i`.
+
+Conclude with `absurd hch e0`. Conclude with `hch`. Rewrite using `[if_pos e1, e1]`. Rewrite using `[dif_neg hc]`. Establish `e0 : ¬ resCharOf la = D.host.g 0` using `fun e => hc ⟨0, (H1algLink.prime_mem_iff la (D.host.g_prime 0)).2 e⟩`.
+
+Establish `e1 : ¬ resCharOf la = D.host.g 1` using `fun e => hc ⟨1, (H1algLink.prime_mem_iff la (D.host.g_prime 1)).2 e⟩`. Rewrite using `[if_neg e0, if_neg e1]`. Use `congr 2`. Unfold `DepPage.cP DepPage.IsRam`. Rewrite using `[hq1, hdd, hvd, hsm, show ringChar (𝓞 B.KO ⧸ la.asIdeal) = resCharOf la from rfl]`.
+
+Establish `hS : ((D.host.QS : ℕ) : 𝓞 B.KO) ∈ la.asIdeal ↔ resCharOf la ∈ D.host.small` using `(UpperTheory.cmDatum_natCast_mem_heightOneSpectrum_iff D.host.toHostRaw B.KO la).1`. Simplify using `only [hS, H1algLink.prime_mem_iff la hq, H1algLink.prime_mem_iff la hd]`. Distinguish the cases in `a2 : resCharOf la ∈ D.host.small`. Rewrite using `[if_pos a2, if_pos (Or.inl a2)]`. Unfold `c2 vdOf`.
+
+Rewrite using `[if_pos a2, Int.ceil_toNat, ← Nat.cast_mul, Nat.ceil_natCast]`. Rewrite using `[if_neg a2]`. Distinguish the cases in `b : resCharOf la = D.host.q ∨ resCharOf la = D.host.d`. Rewrite using `[if_pos b, if_pos (Or.inr b)]`. Unfold `Formalism.MainNotions.DIV.Cons.cHalf vdOf`.
+
+Rewrite using `[if_neg a2, Int.ceil_toNat]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg b, if_neg (fun h => h.elim a2 b)]`. Simplify using the standard rewrite rules.
+-/
 theorem nusOf_eq_nuN {D : D7} (B : WeightFamilies.Prov D) {j : ℕ} (w : WeightFamilies.Wt D j)
     (nu : HeightOneSpectrum (𝓞 B.KO) → ℝ) (la : HeightOneSpectrum (𝓞 B.KO)) (Q : DepPage)
     (h1 : Q.g1 = D.host.g 0) (h2 : Q.g2 = D.host.g 1) (hq1 : Q.q1 = D.host.q) (hdd : Q.dd = D.host.d)
@@ -66,6 +83,9 @@ theorem nusOf_eq_nuN {D : D7} (B : WeightFamilies.Prov D) {j : ℕ} (w : WeightF
       · rw [if_neg b, if_neg (fun h => h.elim a2 b)]
         simp
 
+/- English proof (translation)
+Introduce `D L Pm Tp hK T h EX j hj la`. Use `letI := T.Q.H.starRing`. Use `(nusOf_eq_nuN (recB h.toLawsCore) (lR Tp hK j) _ la (depOf T.toCore EX Tp hK).Q rfl rfl rfl rfl rfl rfl).trans ?_` and prove the remaining obligations. Rewrite using `[← GlobalTheory.WeightExponents.DF_wtA h.pins hj (lR Tp hK j)]`. Both sides reduce to the same expression.
+-/
 theorem nusOf_eq_ram_mul_nuStarAt : ∀ (D : D7) (L : SizeData₂ D) (Pm : ParameterChoice' D L) (Tp : ParamsT D L Pm) (hK : DV.KapDef D) (T : Top D) (h : LawsP T) (EX : ErrX D) (j : ℕ), InR D j → letI := T.Q.H.starRing; ∀ la : HeightOneSpectrum (𝓞 T.Q.c.F), nusOf (recB h.toLawsCore) (lR Tp hK j) (fun la' => (nuW (T.Q.Xo j) T.Q.c la' T.Q.l.M (wtA (lR Tp hK j)) Tp.nWn).toReal / (ramOverZ la' : ℝ)) la = (ramOverZ la : ℝ) * nuStarAt (Xo := T.Q.Xo j) (c := T.Q.c) (depOf T.toCore EX Tp hK) la j := by
   intro D L Pm Tp hK T h EX j hj la
   letI := T.Q.H.starRing

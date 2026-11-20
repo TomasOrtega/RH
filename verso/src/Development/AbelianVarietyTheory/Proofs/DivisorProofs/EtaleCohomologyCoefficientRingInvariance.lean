@@ -13,6 +13,11 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 
 namespace GlobalTheory.EtC
 
+/- English proof (translation)
+Take `⟨α, rfl⟩` from `x.mk_surjective`. Take `⟨β, hβ⟩` from `(GlobalTheory.T.exists_image_cocycle_semilinearSheafComplexMap S R ρ).1 E n α`. Take `⟨β', hβ'⟩` from `(GlobalTheory.T.exists_image_cocycle_semilinearSheafComplexMap S R ρ').1 E n α`. Establish `hsub : (ρ.sub ρ').IsImage α.1 (β - β').1`. Introduce `p s h U x`.
+
+Rewrite using `[show (β - β').1 = β.1 - β'.1 from rfl, ((GlobalTheory.T.etaleCochainEvalOnSimplex_basic_properties R).1 β.1 β'.1 p s h U x).2.1, hβ p s h U x, hβ' p s h U x]`. Both sides reduce to the same expression. Rewrite using `[(GlobalTheory.T.exists_image_cocycle_semilinearSheafComplexMap S R _).2 E n α _ hsub, (GlobalTheory.T.exists_image_cocycle_semilinearSheafComplexMap S R ρ).2 E n α β hβ, (GlobalTheory.T.exists_image_cocycle_semilinearSheafComplexMap S R ρ').2 E n α β' hβ', CohomologyClass.mk_sub …`.
+-/
 theorem SemiMap.sub_op {S R : Type} [CommRing S] [CommRing R] {I : Cx S} {J : Cx R} (ρ ρ' : SemiMap I J)
     (E : Spc) (n : ℤ) (x : CohomologyClass ((chains S).obj E) I n) :
     (ρ.sub ρ').op.app E n x = ρ.op.app E n x - ρ'.op.app E n x := by
@@ -27,6 +32,13 @@ theorem SemiMap.sub_op {S R : Type} [CommRing S] [CommRing R] {I : Cx S} {J : Cx
   rw [(GlobalTheory.T.exists_image_cocycle_semilinearSheafComplexMap S R _).2 E n α _ hsub, (GlobalTheory.T.exists_image_cocycle_semilinearSheafComplexMap S R ρ).2 E n α β hβ,
     (GlobalTheory.T.exists_image_cocycle_semilinearSheafComplexMap S R ρ').2 E n α β' hβ', CohomologyClass.mk_sub]
 
+/- English proof (translation)
+Introduce `R S _ _ φ E F n`. Take `⟨ρ₀, h₀, hb⟩` from `GlobalTheory.T.restrictScalars_resolution_comparison R S φ F`. Establish `hz` using `GlobalTheory.T.semilinearResolutionMap_cohomology_eq_zero_of_kill S R F ((restr φ).obj F) ((restrMap φ F).sub ρ₀) (fun U a => by`. Express the relevant statement in the definitionally equal form `(restrMap φ F).app U 0 _ - ρ₀.app U 0 _ = 0`. Rewrite using `[GlobalTheory.T.restrictScalarsResolutionMap_augmentation_spec R S φ F U a, h₀ U a, sub_self])`.
+
+Establish `he : restrH φ E F n = ρ₀.op.app E n`. Use extensionality with `x`. Use `hz E n x` as an intermediate fact. Rewrite `this` using `[SemiMap.sub_op]`. Conclude with `sub_eq_zero.mp this`.
+
+Rewrite using `[he]`. Conclude with `hb E n`.
+-/
 theorem a8 : A8 := by
   intro R S _ _ φ E F n
   obtain ⟨ρ₀, h₀, hb⟩ := GlobalTheory.T.restrictScalars_resolution_comparison R S φ F

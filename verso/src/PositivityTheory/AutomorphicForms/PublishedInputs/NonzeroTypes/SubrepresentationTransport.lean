@@ -22,6 +22,9 @@ def transport (V : Representation ℂ K (Fin m → ℂ)) (S : Submodule ℂ (Fin
     apply Subtype.ext
     simp [LinearMap.restrict_apply]
 
+/- English proof (translation)
+Simplify using `[transport, LinearMap.restrict_apply]`.
+-/
 lemma transport_apply (V : Representation ℂ K (Fin m → ℂ)) (S : Submodule ℂ (Fin m → ℂ))
     (hS : ∀ k, ∀ s ∈ S, V k s ∈ S) {d : ℕ} (e : (Fin d → ℂ) ≃ₗ[ℂ] S) (k : K) (v : Fin d → ℂ) :
     ((e (transport V S hS e k v) : S) : Fin m → ℂ) = V k (e v) := by
@@ -30,6 +33,29 @@ lemma transport_apply (V : Representation ℂ K (Fin m → ℂ)) (S : Submodule 
 end SubrepresentationTransport
 
 open SubrepresentationTransport in
+/- English proof (translation)
+Introduce `K _ _ _ m V hV S hS0 hS hmin`. Use `set d := Module.finrank ℂ S`. Set `e : (Fin d → ℂ) ≃ₗ[ℂ] S` to `(Module.finBasis ℂ S).equivFun.symm`. Set `ξ` to `transport V S hS e`. Set `ι : (Fin d → ℂ) →ₗ[ℂ] (Fin m → ℂ)` to `S.subtype ∘ₗ e.toLinearMap`.
+
+Establish `hι : ∀ v, ι v = ((e v : S) : Fin m → ℂ)` using `fun v => rfl`. Establish `hinj : Function.Injective ι` using `Subtype.val_injective.comp e.injective`. Establish `hint : ∀ k v, V k (ι v) = ι (ξ k v)`. Introduce `k v`. Rewrite using `[hι, hι]`.
+
+Conclude with `(transport_apply V S hS e k v).symm`. Establish `hrange : LinearMap.range ι = S`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨v, rfl⟩`.
+
+Conclude with `(e v).2`. Introduce `hx`. Conclude with `⟨e.symm ⟨x, hx⟩, by rw [hι]; simp⟩`. Use `⟨d, ξ, ι, hinj, hrange, hint, ?_, ?_⟩` and prove the remaining obligations. Establish `: Nontrivial S` using `Submodule.nontrivial_iff_ne_bot.mpr hS0`.
+
+Establish `: Nontrivial (Fin d → ℂ)` using `e.toEquiv.nontrivial`. Establish `hne : (⊥ : Subrepresentation ξ) ≠ ⊤`. Introduce `h`. Establish `h'` using `congrArg Subrepresentation.toSubmodule h`. Conclude with `bot_ne_top h'`.
+
+Establish `: Nontrivial (Subrepresentation ξ)` using `⟨⟨⊥, ⊤, hne⟩⟩`. Use `{ eq_bot_or_eq_top := ?_ }` and prove the remaining obligations. Introduce `W`. Establish `hle : W.toSubmodule.map ι ≤ S`. Rewrite using `[← hrange]`.
+
+Conclude with `LinearMap.map_le_range`. Establish `hst : ∀ k, ∀ s ∈ W.toSubmodule.map ι, V k s ∈ W.toSubmodule.map ι`. Introduce and unpack `k s ⟨w, hw, rfl⟩`. Conclude with `⟨ξ k w, W.apply_mem_toSubmodule k hw, (hint k w).symm⟩`. Break down `hmin _ hle hst with h | h` into its components or cases.
+
+Use `left`. Apply `Subrepresentation.toSubmodule_injective` to reduce the goal to its premises. Apply `Submodule.map_injective_of_injective hinj` to reduce the goal to its premises. Rewrite using `[h]`. Conclude with `(Submodule.map_bot ι).symm`.
+
+Use `right`. Apply `Subrepresentation.toSubmodule_injective` to reduce the goal to its premises. Apply `Submodule.map_injective_of_injective hinj` to reduce the goal to its premises. Rewrite using `[h, ← hrange, LinearMap.range_eq_map]`. Both sides reduce to the same expression.
+
+Introduce `v`. Establish `hset : {k : K | ξ k v = v} = {k : K | V k (ι v) = ι v}`. Use extensionality with `k`. Express the relevant statement in the definitionally equal form `ξ k v = v ↔ V k (ι v) = ι v`. Rewrite using `[hint]`.
+
+Conclude with `hinj.eq_iff.symm`. Rewrite using `[hset]`. Conclude with `hV (ι v)`.
+-/
 theorem minimalSubrepresentation_holds : SmoothRepMinimalSubrepresentation := by
   intro K _ _ _ m V hV S hS0 hS hmin
   set d := Module.finrank ℂ S

@@ -21,6 +21,13 @@ namespace GlobalTheory.Mem.R3.Rw.OmExt
 
 section Alg
 
+/- English proof (translation)
+Establish `key : ∀ {L K : Type} [Field L] [Field K] (jL : L →+* K), Function.Surjective jL → ∀ v : VV K lam, ∃ u : VV L lam, (v : Pol K I n) = MvPolynomial.map jL (u : Pol L I n)`. Introduce `L K _ _ jL s v`. Set `q` to `(RingEquiv.ofBijective jL ⟨jL.injective, s⟩).symm`. Use `⟨⟨_, GlobalTheory.Proof.TensorMapDescent.map_mem_VV q.toRingHom lam _ v.2⟩, ?_⟩` and prove the remaining obligations. Establish `: jL.comp q.toRingHom = RingHom.id K` using `RingHom.ext fun x => (RingEquiv.ofBijective jL ⟨jL.injective, s⟩).apply_symm_apply x`.
+
+Rewrite using `[MvPolynomial.map_map, this, MvPolynomial.map_id]`. Take `⟨u, hu⟩` from `key jL s v`. Take `⟨u', hu'⟩` from `key jL' s' v'`. Take `⟨a, a1, a2⟩` from `hc u`. Take `⟨b, b1, b2⟩` from `hc' u'`.
+
+Take `rfl : a = v` from `Subtype.ext (a1.trans hu.symm)`. Take `rfl : b = v'` from `Subtype.ext (b1.trans hu'.symm)`. Rewrite using `[a2, b2]`. Use `ha u u' (heq_of_eq ?_)` and prove the remaining obligations. Rewrite using `[← h, ← h', ← MvPolynomial.map_map, ← MvPolynomial.map_map, ← hu, ← hu', e, MvPolynomial.map_map, hi]`.
+-/
 theorem coef_agree {L K L' K' I W W' : Type} [Field L] [Field K] [Field L'] [Field K'] [Fintype I] [AddCommGroup W] [Module ℂ W]
     [AddCommGroup W'] [Module ℂ W'] {n : ℕ} (lam : I → DomWeight n) {σL : L →+* ℂ} {σK : K →+* ℂ} {σL' : L' →+* ℂ} {σK' : K' →+* ℂ}
     (jL : L →+* K) (jL' : L' →+* K') (inc : K →+* K') (h : σK.comp jL = σL) (h' : σK'.comp jL' = σL') (hi : σK'.comp inc = σK)
@@ -47,6 +54,9 @@ theorem coef_agree {L K L' K' I W W' : Type} [Field L] [Field K] [Field L'] [Fie
   refine ha u u' (heq_of_eq ?_)
   rw [← h, ← h', ← MvPolynomial.map_map, ← MvPolynomial.map_map, ← hu, ← hu', e, MvPolynomial.map_map, hi]
 
+/- English proof (translation)
+Consider the cases of `hW`. Consider the cases of `hn`. Consider the cases of `hp`. Conclude with `⟨c', HEq.rfl, fun _ => HEq.rfl⟩`.
+-/
 theorem exists_cast_map {K V W W' : Type} [Field K] [AddCommGroup V] [Module K V] {σ : K →+* ℂ}
     (n : NormedAddCommGroup W) (p : InnerProductSpace ℂ W) (n' : NormedAddCommGroup W') (p' : InnerProductSpace ℂ W')
     (hW : HEq W' W) (hn : HEq n' n) (hp : HEq p' p) (c' : V →ₛₗ[σ] W') :
@@ -83,6 +93,13 @@ structure IsBC (κ : WeightFamilies.Wt D ((i : ℕ) + 1)) (ι : (C.Q.Dw ((i : �
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Take `⟨io₃, hw₃, hio, hover⟩` from `GlobalTheory.IoExtend.exists_ioLFRec_over _ _ _ _ O.c' c₃ hs _ _ (tauE D) (lamV D i) (wtA κ) O.io O.hw hO.io`. Take `⟨h, J', hr, hpl, hth, hplc⟩` from `(hO.tuple ()).reps`. Take `⟨a, ha, hca⟩` from `(cXiVal_iff _ _ _ _ _ _ _ _ _).1 hO.cxi`. Use `⟨io₃, hw₃, h, J', hc0, hover, hr, hpl, hth, hplc, ⟨?_, hO.lift.std, hO.lift.v0, ?_, hO.lift.lev⟩, fun j => ⟨?_, (hO.tuple ()).B, (hO.tuple ()).xi, (hO.tuple ()).phi, (hO.tuple ()).half⟩, ⟨hO.act.1, (GlobalTheory.FieldBC.actLev_and_actBC _ _ _ _ _ _ _ (O.hle.trans hs) _ _ hO.act.1 …` and prove the remaining obligations. Conclude with `(RingHom.ext fun _ => rfl : _ = (inC O.c').comp O.jL).trans hO.lift.field`.
+
+Take `⟨g, r, c0L, hT, hc⟩` from `hO.lift.c0`. Use `⟨g, r, c0L, hT, fun v => ?_⟩` and prove the remaining obligations. Take `⟨v', hv', e⟩` from `hc v`. Conclude with `⟨⟨_, GlobalTheory.Proof.TensorMapDescent.map_mem_VV (incF O.c' c₃ hs) _ _ v'.2⟩, (congrArg (MvPolynomial.map (incF O.c' c₃ hs)) hv').trans (MvPolynomial.map_map _ _ _), (hc0 v' _ rfl).trans e⟩`. Use `⟨h, J', repsR_map _ hr, fun x₀ => ?_, thAdIs_thAdOf R i A.μ0 h c0₃ hV hr.2.2.1 hr.2.2.2.2.2.1 v₀, fun _ => Iff.rfl⟩` and prove the remaining obligations.
+
+Take `⟨x, hx⟩` from `hpl x₀`. Conclude with `⟨fun k => ⟨_, GlobalTheory.Proof.TensorMapDescent.map_mem_VV (incF O.c' c₃ hs) _ _ (x k).2⟩, fun k => (hx k).trans (hc0 _ _ rfl).symm⟩`. Use `(cXiVal_iff _ _ _ _ _ _ _ _ _).2 ⟨a, ha, fun j => ?_⟩` and prove the remaining obligations. Establish `key` using `GlobalTheory.OneMapAll.cXiAt_covBC D _ _ _ _ _ _ _ _ hs _ _ _ 1 _ _ _ _ _ _ (hO.cov ()).1.2.2.2.2.2.2.2.1 (hca ())`. Conclude with `(congrArg (GlobalTheory.OneMapAll.CXiAt _ _ _ _ _ _ _ _ _) (one_mul a)).mp key`.
+-/
 theorem exists_isBC (hV : R.models_HV) {κ ι x₀} (hO : O.Pins κ v₀ ι x₀)
     (hc0 : ∀ (v : VsV D i O.c'.F) (v' : VsV D i c₃.F), (v' : Pol c₃.F D.what₂.Tau (Vc D i).rank) =
       MvPolynomial.map (incF O.c' c₃ hs) (v : Pol O.c'.F D.what₂.Tau (Vc D i).rank) → c0₃ v' = O.c0' v) :
@@ -152,10 +169,18 @@ variable {i : Fin D.R.m} {K' : Type} [Field K'] {σ' : K' →+* ℂ}
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem tupOver_iff {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (t : T0) :
     TupOver D i R.Pg (R.Q t) R.βV R.βW (R.C.mu0 i * R.xiH t * R.C.eta⁻¹) (R.xi t) (R.xiR t) σ' ι bad Mb I N h J' Lh gam vol B xi φ ↔
       RepsR R i t h bad J' Lh gam vol ∧ BIs R i σ' t bad B ∧ XiIs R i t xi ∧ PhiIs R i σ' t ι N φ ∧ HalfIs R t Mb I := Iff.rfl
 
+/- English proof (translation)
+Consider the cases of `hP`. Consider the cases of `hV`. Consider the cases of `hW`. Substitute `hQ₁ hQ₂ hχ hξ` using the available equality. Take `⟨h1, h2, h3, ⟨e, he, h4⟩, h5⟩` from `H`.
+
+Use `⟨h1, h2, h3, ⟨e, he, fun x => ⟨(h4 x).1, (h4 x).2.trans ?_⟩⟩, h5⟩` and prove the remaining obligations. Simplify using `[omegaQ]`.
+-/
 theorem tupOver_cast {Pg₁ Pg₂ Q₁ Q₂ : Finset (Formalism.L2.DIV.Pl D.host.E)} {βV₁ βV₂ βW₁ βW₂ χ₁ χ₂ ξ₁ ξ₂ ξR₁ ξR₂}
     (hP : HEq Pg₂ Pg₁) (hQ₁ : Q₁ = ∅) (hQ₂ : Q₂ = ∅) (hV : HEq βV₂ βV₁) (hW : HEq βW₂ βW₁) (hχ : χ₂ = χ₁) (hξ : ξ₂ = ξ₁)
     (H : TupOver D i Pg₁ Q₁ βV₁ βW₁ χ₁ ξ₁ ξR₁ σ' ι bad Mb I N h J' Lh gam vol B xi φ) :
@@ -206,6 +231,9 @@ def IsBCOf (O' : OMDat C' R' i' Unit (fun _ => A'.μ0)) (v₀' : (R'.MW i' (sg0 
       RepsR R' i' A'.μ0 h' (O'.bad ()) J'' (O'.Lh ()) (O'.gam ()) (O'.vol ()) ∧ PlaceEx R' i' A'.μ0 h' O'.c0' ∧
       ThAdIs R' i' A'.μ0 h' O'.c0' v₀' (O'.thAd ()) ∧ ∀ x, O'.Plc () x ↔ ∃ x₀, Place R' i' A'.μ0 h' O'.c0' (jVx R' i' A'.μ0 x₀) x
 
+/- English proof (translation)
+Take `⟨_, _, _, _, _, _, _, -, hs, -⟩` from `h`. Conclude with `hs.lev`.
+-/
 theorem IsBCOf.lev {O' : OMDat C' R' i' Unit (fun _ => A'.μ0)} {v₀'} {O : OMDat C R i Unit (fun _ => A.μ0)} {v₀ κ ι x₀ P}
     (h : IsBCOf O' v₀' O v₀ κ ι x₀ P) : HEq O'.lev O.lev := by
   obtain ⟨_, _, _, _, _, _, _, -, hs, -⟩ := h
@@ -213,6 +241,9 @@ theorem IsBCOf.lev {O' : OMDat C' R' i' Unit (fun _ => A'.μ0)} {v₀'} {O : OMD
 
 end Same
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `only [wtA, hP, hM]`.
+-/
 theorem wtA_eq {j : ℕ} (κ κ' : WeightFamilies.Wt D j) (hP : κ'.aP = κ.aP) (hM : κ'.aM = κ.aM) : wtA κ' = wtA κ := by
   funext x
   simp only [wtA, hP, hM]

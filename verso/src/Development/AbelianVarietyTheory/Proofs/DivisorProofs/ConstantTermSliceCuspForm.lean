@@ -19,6 +19,9 @@ variable {X P : Type} [TopologicalSpace X] [MeasurableSpace X] [OpensMeasurableS
 
 omit [FiniteDimensional ℝ P] in
 
+/- English proof (translation)
+Rewrite using `[iteratedFDeriv_succ_eq_comp_right]`. Simplify using the standard rewrite rules.
+-/
 theorem iteratedFDeriv_fderiv_eq' {F : Type} [NormedAddCommGroup F] [NormedSpace ℝ F] (f : P → F) (m : ℕ) (x : P) :
     iteratedFDeriv ℝ m (fderiv ℝ f) x =
       (continuousMultilinearCurryRightEquiv' ℝ m P F) (iteratedFDeriv ℝ (m + 1) f x) := by
@@ -27,6 +30,9 @@ theorem iteratedFDeriv_fderiv_eq' {F : Type} [NormedAddCommGroup F] [NormedSpace
 
 omit [MeasurableSpace X] [OpensMeasurableSpace X] [FiniteDimensional ℝ P] in
 
+/- English proof (translation)
+Establish `e : (fun p : X × P => H p.1 p.2) = fun p => continuousMultilinearCurryFin0 ℝ P F (iteratedFDeriv ℝ 0 (H p.1) p.2)`. Use function extensionality and compare the values at `p`. Simplify using `[continuousMultilinearCurryFin0_apply, iteratedFDeriv_zero_apply]`. Rewrite using `[e]`. Conclude with `(continuousMultilinearCurryFin0 ℝ P F).continuous.comp_continuousOn h`.
+-/
 theorem continuousOn_of_iteratedFDeriv_zero {F : Type} [NormedAddCommGroup F] [NormedSpace ℝ F] {H : X → P → F}
     {s : Set (X × P)} (h : ContinuousOn (fun p : X × P => iteratedFDeriv ℝ 0 (H p.1) p.2) s) :
     ContinuousOn (fun p : X × P => H p.1 p.2) s := by
@@ -36,6 +42,15 @@ theorem continuousOn_of_iteratedFDeriv_zero {F : Type} [NormedAddCommGroup F] [N
   rw [e]
   exact (continuousMultilinearCurryFin0 ℝ P F).continuous.comp_continuousOn h
 
+/- English proof (translation)
+Take `⟨ε, hε, hball⟩` from `Metric.isOpen_iff.1 hU x₀ hx₀`. Establish `hcb : Metric.closedBall x₀ (ε / 2) ⊆ U` using `(Metric.closedBall_subset_ball (by linarith)).trans hball`. Establish `hK : IsCompact (S ×ˢ Metric.closedBall x₀ (ε / 2))` using `hS.prod (isCompact_closedBall _ _)`. Establish `hsub : S ×ˢ Metric.closedBall x₀ (ε / 2) ⊆ Set.univ ×ˢ U` using `Set.prod_mono (Set.subset_univ _) hcb`. Take `⟨C, hC⟩` from `hK.exists_bound_of_continuousOn (h1.mono hsub)`.
+
+Take `⟨C0, hC0⟩` from `hK.exists_bound_of_continuousOn (h0.mono hsub)`. Establish `bd : ∀ u, ∀ x ∈ Metric.closedBall x₀ (ε / 2), ‖fderiv ℝ (H u) x‖ ≤ C` using `fun u x hx => by`. Take `⟨v, hv, e⟩` from `hrep u`. Rewrite using `[e]`. Conclude with `hC (v, x) ⟨hv, hx⟩`.
+
+Establish `bd0 : ∀ u, ‖H u x₀‖ ≤ C0` using `fun u => by`. Take `⟨v, hv, e⟩` from `hrep u`. Rewrite using `[e]; exact hC0 (v, x₀) ⟨hv, Metric.mem_closedBall_self (by linarith)⟩`. Establish `hcx : ∀ x ∈ U, Continuous fun u => H u x` using `fun x hx => h0.comp_continuous (continuous_id.prodMk continuous_const) fun u => ⟨trivial, hx⟩`. Establish `hcx' : Continuous fun u => fderiv ℝ (H u) x₀` using `h1.comp_continuous (continuous_id.prodMk continuous_const) fun u => ⟨trivial, hx₀⟩`.
+
+Establish `hball2 : Metric.ball x₀ (ε / 2) ∈ 𝓝 x₀` using `Metric.ball_mem_nhds x₀ (by linarith)`. Conclude with `hasFDerivAt_integral_of_dominated_of_fderiv_le (bound := fun _ => C) hball2 (Filter.eventually_of_mem (hU.mem_nhds hx₀) fun x hx => (hcx x hx).aestronglyMeasurable) (Integrable.of_bound (hcx x₀ hx₀).aestronglyMeasurable C0 (.of_forall bd0)) hcx'.aestronglyMeasurable (.of_forall f …`.
+-/
 theorem hasFDerivAt_integral_param (ν : Measure X) [IsFiniteMeasure ν] {U : Set P} (hU : IsOpen U) {S : Set X}
     (hS : IsCompact S) {F : Type} [NormedAddCommGroup F] [NormedSpace ℝ F] [FiniteDimensional ℝ F] (H : X → P → F)
     (hrep : ∀ u, ∃ v ∈ S, H u = H v) (hd : ∀ u, DifferentiableOn ℝ (H u) U)
@@ -67,6 +82,17 @@ theorem hasFDerivAt_integral_param (ν : Measure X) [IsFiniteMeasure ν] {U : Se
     (.of_forall fun u x hx =>
       ((hd u).differentiableAt (hU.mem_nhds (hcb (Metric.ball_subset_closedBall hx)))).hasFDerivAt)
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero`. Introduce `F _ _ _ H hrep hs hm`. Establish `h1 : ContinuousOn (fun p : X × P => fderiv ℝ (H p.1) p.2) (Set.univ ×ˢ U)`. Use `continuousOn_of_iteratedFDeriv_zero (H := fun x => fderiv ℝ (H x)) ?_` and prove the remaining obligations.
+
+Simplify using `only [iteratedFDeriv_fderiv_eq']`. Conclude with `(continuousMultilinearCurryRightEquiv' ℝ 0 P F).continuous.comp_continuousOn (hm 1)`. Use `contDiffOn_zero.2 fun x hx => ?_` and prove the remaining obligations. Conclude with `(hasFDerivAt_integral_param ν hU hS H hrep (fun u => (hs u).differentiableOn (by simp)) (continuousOn_of_iteratedFDeriv_zero (hm 0)) h1 hx).continuousAt.continuousWithinAt`. Consider the case `succ n ih`.
+
+Introduce `F _ _ _ H hrep hs hm`. Establish `hm' : ∀ m : ℕ, ContinuousOn (fun p : X × P => iteratedFDeriv ℝ m (fderiv ℝ (H p.1)) p.2) (Set.univ ×ˢ U)`. Introduce `m`. Simplify using `only [iteratedFDeriv_fderiv_eq']`. Conclude with `(continuousMultilinearCurryRightEquiv' ℝ m P F).continuous.comp_continuousOn (hm (m + 1))`.
+
+Establish `hrep' : ∀ u, ∃ v ∈ S, fderiv ℝ (H u) = fderiv ℝ (H v)` using `fun u => by`. Take `⟨v, hv, e⟩` from `hrep u`. Conclude with `⟨v, hv, by rw [e]⟩`. Establish `hD` using `ih (fun u => fderiv ℝ (H u)) hrep' (fun u => (hs u).fderiv_of_isOpen hU (by simp)) hm'`. Establish `hder : ∀ x ∈ U, HasFDerivAt (fun x => ∫ u, H u x ∂ν) (∫ u, fderiv ℝ (H u) x ∂ν) x` using `fun x hx => hasFDerivAt_integral_param ν hU hS H hrep (fun u => (hs u).differentiableOn (by simp)) (continuousOn_of_iteratedFDeriv_zero (hm 0)) (continuousOn_of_iteratedFDeriv_zero (H := fun x => fderiv ℝ (H x)) (hm' 0)) hx`.
+
+Use `(contDiffOn_succ_iff_fderiv_of_isOpen hU).2 ⟨fun x hx => (hder x hx).differentiableAt.differentiableWithinAt, by simp, hD.congr fun x hx => (hder x hx).fderiv⟩` and prove the remaining obligations.
+-/
 theorem contDiffOn_integral_param (ν : Measure X) [IsFiniteMeasure ν] {U : Set P} (hU : IsOpen U) {S : Set X}
     (hS : IsCompact S) (n : ℕ) :
     ∀ {F : Type} [NormedAddCommGroup F] [NormedSpace ℝ F] [FiniteDimensional ℝ F] (H : X → P → F),
@@ -104,6 +130,15 @@ theorem contDiffOn_integral_param (ν : Measure X) [IsFiniteMeasure ν] {U : Set
 
 omit [TopologicalSpace X] [MeasurableSpace X] [OpensMeasurableSpace X] [FiniteDimensional ℝ P] in
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero`. Introduce `q hq`. Establish `e : (fun q : M × P => iteratedFDeriv ℝ 0 (Φ q.1) q.2) = fun q => (continuousMultilinearCurryFin0 ℝ P F).symm (Function.uncurry Φ q)`. Use function extensionality and compare the values at `q`.
+
+Rewrite using `[iteratedFDeriv_zero_eq_comp]`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `(continuousMultilinearCurryFin0 ℝ P F).symm.contDiff.contDiffAt.comp q (hΦ q hq)`. Consider the case `succ m ih`.
+
+Introduce `q hq`. Establish `e : (fun q : M × P => iteratedFDeriv ℝ (m + 1) (Φ q.1) q.2) = fun q => (continuousMultilinearCurryLeftEquiv ℝ (fun _ : Fin (m + 1) => P) F).symm (fderiv ℝ (fun z => iteratedFDeriv ℝ m (Φ q.1) z) q.2)`. Use function extensionality and compare the values at `q`. Rewrite using `[iteratedFDeriv_succ_eq_comp_left]`. Both sides reduce to the same expression.
+
+Rewrite using `[e]`. Use `(continuousMultilinearCurryLeftEquiv ℝ (fun _ : Fin (m + 1) => P) F).symm.contDiff.contDiffAt.comp q ?_` and prove the remaining obligations. Use `ContDiffAt.fderiv (f := fun (q : M × P) (z : P) => iteratedFDeriv ℝ m (Φ q.1) z) (g := Prod.snd) ?_ contDiffAt_snd le_rfl` and prove the remaining obligations. Establish `hg : ContDiffAt ℝ ∞ (fun p : (M × P) × P => (p.1.1, p.2)) (q, q.2)` using `(contDiff_fst.fst.prodMk contDiff_snd).contDiffAt`. Conclude with `(ih (q.1, q.2) hq).comp (q, q.2) hg`.
+-/
 theorem contDiffAt_iteratedFDeriv_param {M F : Type} [NormedAddCommGroup M] [NormedSpace ℝ M]
     [NormedAddCommGroup F] [NormedSpace ℝ F] (Φ : M → P → F) {O : Set (M × P)}
     (hΦ : ∀ q ∈ O, ContDiffAt ℝ ∞ (Function.uncurry Φ) q) (m : ℕ) :
@@ -140,6 +175,9 @@ variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a r : ℕ}
 
 omit [IsTotallyComplex E] in
 
+/- English proof (translation)
+Use `contDiff_pi.2 fun i => contDiff_pi.2 fun j => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `ContDiff ℝ ∞ fun p : Lie E n × Lie E n => ∑ k, p.1 i k * p.2 k j`. Conclude with `ContDiff.sum fun k _ => ((contDiff_apply_apply ℝ (Cinf E) i k).comp contDiff_fst).mul ((contDiff_apply_apply ℝ (Cinf E) k j).comp contDiff_snd)`.
+-/
 theorem contDiff_mulL {n : ℕ} :
     ContDiff ℝ ∞ (fun p : Lie E n × Lie E n => toL (Matrix.of p.1 * Matrix.of p.2)) := by
   refine contDiff_pi.2 fun i => contDiff_pi.2 fun j => ?_
@@ -150,6 +188,11 @@ theorem contDiff_mulL {n : ℕ} :
 
 omit [IsTotallyComplex E] in
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `ContDiff ℝ ∞ (fun x : Lie E (a - r) => Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) (Cinf E)) 0 0 (Matrix.of x) ((blkEquiv hr).symm i) ((blkEquiv hr).symm k))`. Apply the tactic sequence `rcases (blkEquiv hr).symm i with i | i <;> rcases (blkEquiv hr).symm k with k | k`. Simplify using `only [Matrix.fromBlocks_apply₁₁]`. Conclude with `contDiff_const`. Simplify using `only [Matrix.fromBlocks_apply₁₂]`.
+
+Conclude with `contDiff_const`. Simplify using `only [Matrix.fromBlocks_apply₂₁]`. Conclude with `contDiff_const`. Simplify using `only [Matrix.fromBlocks_apply₂₂, Matrix.of_apply]`. Conclude with `contDiff_apply_apply ℝ (Cinf E) i k`.
+-/
 theorem contDiff_blkMat_entry (hr : r ≤ a) (i k : Fin a) :
     ContDiff ℝ ∞ (fun x : Lie E (a - r) => blkMat (Cinf E) hr (1, Matrix.of x) i k) := by
   change ContDiff ℝ ∞ (fun x : Lie E (a - r) => Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) (Cinf E)) 0 0
@@ -167,6 +210,9 @@ def blkA (hr : r ≤ a) (κ : Kinf E a) (x : Lie E (a - r)) : Lie E a :=
 
 omit [IsTotallyComplex E] in
 
+/- English proof (translation)
+Use `contDiff_pi.2 fun i => contDiff_pi.2 fun j => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `ContDiff ℝ ∞ fun x : Lie E (a - r) => ∑ k, blkMat (Cinf E) hr (1, Matrix.of x) i k * κ.1 k j`. Apply the tactic sequence `exact ContDiff.sum fun k _ => (contDiff_blkMat_entry hr i k).mul contDiff_const`.
+-/
 theorem contDiff_blkA (hr : r ≤ a) (κ : Kinf E a) : ContDiff ℝ ∞ (blkA hr κ) := by
   refine contDiff_pi.2 fun i => contDiff_pi.2 fun j => ?_
   change ContDiff ℝ ∞ fun x : Lie E (a - r) => ∑ k, blkMat (Cinf E) hr (1, Matrix.of x) i k * κ.1 k j
@@ -174,11 +220,21 @@ theorem contDiff_blkA (hr : r ≤ a) (κ : Kinf E a) : ContDiff ℝ ∞ (blkA hr
 
 omit [IsTotallyComplex E] in
 
+/- English proof (translation)
+Establish `h1 : IsUnit ((1 : Matrix (Fin r) (Fin r) (Cinf E)), Matrix.of x)` using `Prod.isUnit_iff.2 ⟨isUnit_one, hx⟩`. Conclude with `(h1.map (blkMat (Cinf E) hr)).mul (Unitary.toUnits κ).isUnit`.
+-/
 theorem blkA_mem (hr : r ≤ a) (κ : Kinf E a) {x : Lie E (a - r)} (hx : x ∈ invSet E (a - r)) :
     blkA hr κ x ∈ invSet E a := by
   have h1 : IsUnit ((1 : Matrix (Fin r) (Fin r) (Cinf E)), Matrix.of x) := Prod.isUnit_iff.2 ⟨isUnit_one, hx⟩
   exact (h1.map (blkMat (Cinf E) hr)).mul (Unitary.toUnits κ).isUnit
 
+/- English proof (translation)
+Take `⟨y, hy⟩` from `hx`. Establish `ex : x = toL y.val` using `by rw [hy]; rfl`. Substitute `ex` using the available equality. Rewrite using `[chart_val]`. Unfold `slice`.
+
+Use `congr 1`. Use function extensionality and compare the values at `u`. Establish `e : blkA hr κ (toL y.val) = toL (blkGL hr (1, y) * Unitary.toUnits κ).val` using `rfl`. Rewrite using `[e, chart_val, blkGL_mul_infGL]`. Use `congr 1`.
+
+Rewrite using `[map_mul]`. Simplify using `only [mul_assoc]`. Rewrite using `[← mul_assoc (infGL E a (blkGL hr (1, y))) (finGL E a t), infGL_comm]`. Simplify using `only [mul_assoc]`.
+-/
 theorem chart_slice [MeasurableSpace (BlockIx a r → Ad E)] (μ : Measure (BlockIx a r → Ad E))
     (𝓕 : Set (BlockIx a r → Ad E)) (hr : r ≤ a) (φ : GA E a → ℂ) (m₁ : GA E r) (t : GL (Fin a) (Af E))
     (κ : Kinf E a) (g : GA E (a - r)) {x : Lie E (a - r)} (hx : x ∈ invSet E (a - r)) :
@@ -199,6 +255,11 @@ theorem chart_slice [MeasurableSpace (BlockIx a r → Ad E)] (μ : Measure (Bloc
   rw [← mul_assoc (infGL E a (blkGL hr (1, y))) (finGL E a t), infGL_comm]
   simp only [mul_assoc]
 
+/- English proof (translation)
+Take `⟨y, rfl⟩` from `hγ`. Establish `e : unip ((AddMonoidHom.compLeft (algebraMap E (Ad E)).toAddMonoidHom (BlockIx a r)) y) = ratGL E a (unip y)` using `unip_algebraMap y`. Use function extensionality and compare the values at `x`. Unfold `chart`. Use `split_ifs`.
+
+Rewrite using `[unip_add, e, mul_assoc, mul_assoc, hl]`. Simplify using `only [mul_assoc]`. Both sides reduce to the same expression.
+-/
 theorem chart_unip_add {φ : GA E a → ℂ} (hl : ∀ γ g, φ (ratGL E a γ * g) = φ g) (G : GA E a)
     {γ : BlockIx a r → Ad E} (hγ : γ ∈ ratN E a r) (u : BlockIx a r → Ad E) :
     chart φ (unip (γ + u) * G) = chart φ (unip u * G) := by
@@ -219,6 +280,13 @@ open GlobalTheory.LeviGA GlobalTheory.SliceTwo
 
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a r : ℕ}
 
+/- English proof (translation)
+Establish `hc : Continuous fun u : BlockIx a r → Ad E => Matrix.GeneralLinearGroup.map (pFin E) ((unip u₀ * G)⁻¹ * (unip u * G))` using `(ContAut.continuous_map_pFin E a).comp (continuous_const.mul (CuspidalL2GL.continuous_unip.mul continuous_const))`. Establish `hmem : {u : BlockIx a r → Ad E | finRep E a (Matrix.GeneralLinearGroup.map (pFin E) ((unip u₀ * G)⁻¹ * (unip u * G))) φ = φ} ∈ 𝓝 u₀`. Use `(hlev.preimage hc).mem_nhds ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `finRep E a _ φ = φ`. Simplify using the standard rewrite rules.
+
+Use `filter_upwards [hmem] with u hu y`. Use `set h₀ := unip u₀ * G`. Use `set h := unip u * G`. Use `set c := Matrix.GeneralLinearGroup.map (pInf E) (h₀⁻¹ * h)`. Use `set k := Matrix.GeneralLinearGroup.map (pFin E) (h₀⁻¹ * h)`.
+
+Establish `key : h = h₀ * finGL E a k * infGL E a c`. Rewrite using `[mul_assoc, ← infGL_comm, infGL_mul_finGL, mul_inv_cancel_left]`. Establish `hk : (fun x => φ.1 (x * finGL E a k)) = φ.1` using `congrArg Subtype.val hu`. Rewrite using `[key, chart_mul, ← chart_rt_fin, hk]`. Both sides reduce to the same expression.
+-/
 theorem eventually_chart_eq (φ : Sm E a) (hlev : IsOpen {k | finRep E a k φ = φ}) (G : GA E a)
     (u₀ : BlockIx a r → Ad E) :
     ∀ᶠ u in 𝓝 u₀, ∀ y, chart φ.1 (unip u * G) y = chart φ.1 (unip u₀ * G)
@@ -243,6 +311,17 @@ theorem eventually_chart_eq (φ : Sm E a) (hlev : IsOpen {k | finRep E a k φ = 
   rw [key, chart_mul, ← chart_rt_fin, hk]
   rfl
 
+/- English proof (translation)
+Use `set h₀ := unip u₀ * G`. Set `Cm : (BlockIx a r → Ad E) → Lie E a` to `fun u => toL (Matrix.GeneralLinearGroup.map (pInf E) (h₀⁻¹ * (unip u * G))).val`. Establish `hCm : Continuous Cm` using `(Units.continuous_val (M := Matrix (Fin a) (Fin a) (Cinf E))).comp ((ContAut.continuous_map_pInf E a).comp (continuous_const.mul (CuspidalL2GL.continuous_unip.mul continuous_const)))`. Establish `hC0 : Cm u₀ = oneL E a`. Simplify using `only [Cm, h₀, inv_mul_cancel, map_one]`.
+
+Both sides reduce to the same expression. Set `Φ₂ : Lie E a → Lie E (a - r) → ℂ` to `fun c x => chart φ.1 h₀ (toL (Matrix.of c * Matrix.of (blkA hr κ x)))`. Establish `hq : ContDiff ℝ ∞ (fun q : Lie E a × Lie E (a - r) => toL (Matrix.of q.1 * Matrix.of (blkA hr κ q.2)))` using `contDiff_mulL.comp (contDiff_fst.prodMk ((contDiff_blkA hr κ).comp contDiff_snd))`. Set `O : Set (Lie E a × Lie E (a - r))` to `{q | toL (Matrix.of q.1 * Matrix.of (blkA hr κ q.2)) ∈ invSet E a}`. Establish `hΦ : ∀ q ∈ O, ContDiffAt ℝ ∞ (Function.uncurry Φ₂) q` using `fun q hq' => by`.
+
+Establish `e : Function.uncurry Φ₂ = chart φ.1 h₀ ∘ fun q : Lie E a × Lie E (a - r) => toL (Matrix.of q.1 * Matrix.of (blkA hr κ q.2))` using `rfl`. Rewrite using `[e]`. Conclude with `(contDiffAt_chart φ.2 h₀ hq').comp q hq.contDiffAt`. Establish `hO : (oneL E a, x₀) ∈ O`. Express the relevant statement in the definitionally equal form `toL (Matrix.of (toL 1) * Matrix.of (blkA hr κ x₀)) ∈ invSet E a`.
+
+Simplify using `using blkA_mem hr κ hx₀`. Establish `hΨ` using `(contDiffAt_iteratedFDeriv_param Φ₂ hΦ m (oneL E a, x₀) hO).continuousAt`. Establish `hcomp : ContinuousAt (fun p : (BlockIx a r → Ad E) × Lie E (a - r) => iteratedFDeriv ℝ m (Φ₂ (Cm p.1)) p.2) (u₀, x₀)` using `ContinuousAt.comp_of_eq (g := fun q : Lie E a × Lie E (a - r) => iteratedFDeriv ℝ m (Φ₂ q.1) q.2) (f := fun p : (BlockIx a r → Ad E) × Lie E (a - r) => (Cm p.1, p.2)) hΨ ((hCm.comp continuous_fst).prodMk continuous_snd).continuousAt (Prod.ext hC0 rfl)`. Use `hcomp.congr ?_` and prove the remaining obligations. Establish `hev` using `(continuous_fst.tendsto (u₀, x₀)).eventually (eventually_chart_eq φ hlev G u₀)`.
+
+Use `filter_upwards [hev] with p hp`. Establish `e : (fun x => chart φ.1 (unip p.1 * G) (blkA hr κ x)) = Φ₂ (Cm p.1)` using `funext fun x => hp _`. Rewrite using `[e]`.
+-/
 theorem continuousAt_iteratedFDeriv (φ : Sm E a) (hlev : IsOpen {k | finRep E a k φ = φ}) (hr : r ≤ a)
     (κ : Kinf E a) (G : GA E a) (m : ℕ) (u₀ : BlockIx a r → Ad E) {x₀ : Lie E (a - r)}
     (hx₀ : x₀ ∈ invSet E (a - r)) :
@@ -285,6 +364,13 @@ theorem continuousAt_iteratedFDeriv (φ : Sm E a) (hlev : IsOpen {k | finRep E a
 
 end Local
 
+/- English proof (translation)
+Introduce `E _ _ _ a r hr _ _ μ 𝓕 _ _ h1 φ hφ m₁ t κ g`. Use `haveI : IsFiniteMeasure (μ.restrict 𝓕) := isFiniteMeasure_restrict.2 (by rw [h1]; exact ENNReal.one_ne_top)`. Take `⟨K, hK, hcov⟩` from `GlobalTheory.ConstNotCusp.exists_compact_ratN E a r`. Use `set G := GlobalTheory.LeviGA.blkGL hr (m₁, g) * finGL E a t`. Set `H : (BlockIx a r → Ad E) → Lie E (a - r) → ℂ` to `fun u x => chart φ.1 (unip u * G) (blkA hr κ x)`.
+
+Establish `hrep : ∀ u, ∃ v ∈ K, H u = H v` using `fun u => by`. Take `⟨γ, hγ, hk⟩` from `hcov u`. Use `⟨γ + u, hk, funext fun x => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `chart φ.1 (unip u * G) _ = chart φ.1 (unip (γ + u) * G) _`. Rewrite using `[chart_unip_add hφ.left G hγ u]`.
+
+Establish `hs : ∀ u, ContDiffOn ℝ ∞ (H u) (invSet E (a - r))` using `fun u => (φ.2 (unip u * G)).comp (contDiff_blkA hr κ).contDiffOn fun x hx => blkA_mem hr κ hx`. Establish `hm : ∀ m : ℕ, ContinuousOn (fun p : (BlockIx a r → Ad E) × Lie E (a - r) => iteratedFDeriv ℝ m (H p.1) p.2) (Set.univ ×ˢ invSet E (a - r))` using `fun m p hp => (continuousAt_iteratedFDeriv φ hφ.level hr κ G m p.1 hp.2).continuousWithinAt`. Conclude with `(contDiffOn_infty.2 fun n => contDiffOn_integral_param (μ.restrict 𝓕) isOpen_invSet hK n H hrep hs hm).congr fun x hx => chart_slice μ 𝓕 hr φ.1 m₁ t κ g hx`.
+-/
 theorem slice_mem_Sm : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a r : ℕ) (hr : r ≤ a)
     [MeasurableSpace (BlockIx a r → Ad E)] [BorelSpace (BlockIx a r → Ad E)] (μ : Measure (BlockIx a r → Ad E))
     (𝓕 : Set (BlockIx a r → Ad E)), μ.IsAddHaarMeasure → IsAddFundamentalDomain (ratN E a r) 𝓕 μ → μ 𝓕 = 1 →

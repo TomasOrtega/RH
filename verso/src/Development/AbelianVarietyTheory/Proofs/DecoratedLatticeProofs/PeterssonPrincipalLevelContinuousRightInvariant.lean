@@ -17,6 +17,17 @@ namespace GlobalTheory.PrincPet
 
 variable {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar}
 
+/- English proof (translation)
+Unfold `Mult at hU`. Proceed by induction on `hU using Submodule.span_induction with`. Consider the case `mem T hT`. Introduce `v`. Use `⟨(hT.aut v).cont, GlobalTheory.CuspDecay.bounded_of_cuspForm hP hθ (hT.aut v) (hT.cusp v), fun k hk g => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hT.lev v k hk g, hχ k hk, one_mul]`. Consider the case `zero`. Introduce `v`. Conclude with `⟨continuous_const, ⟨0, fun g => by simp⟩, fun k _ g => by simp⟩`. Consider the case `add U U' _ _ h h'`.
+
+Introduce `v`. Take `⟨c1, ⟨C1, b1⟩, i1⟩` from `h v`. Take `⟨c2, ⟨C2, b2⟩, i2⟩` from `h' v`. Use `⟨by simpa using c1.add c2, ⟨C1 + C2, fun g => ?_⟩, fun k hk g => ?_⟩` and prove the remaining obligations. Simplify using `only [MultilinearMap.add_apply, Pi.add_apply]`.
+
+Conclude with `(norm_add_le _ _).trans (add_le_add (b1 g) (b2 g))`. Simplify using `only [MultilinearMap.add_apply, Pi.add_apply, i1 k hk g, i2 k hk g]`. Consider the case `smul a U _ h`. Introduce `v`. Take `⟨c1, ⟨C1, b1⟩, i1⟩` from `h v`.
+
+Use `⟨by simpa using c1.const_smul a, ⟨‖a‖ * C1, fun g => ?_⟩, fun k hk g => ?_⟩` and prove the remaining obligations. Simplify using `only [MultilinearMap.smul_apply, Pi.smul_apply, smul_eq_mul, norm_mul]`. Conclude with `mul_le_mul_of_nonneg_left (b1 g) (norm_nonneg _)`. Simplify using `only [MultilinearMap.smul_apply, Pi.smul_apply, i1 k hk g]`.
+-/
 theorem value_laws (hP : GlobalTheory.Published.CuspRapidDecay) {θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)}
     (hθ : IsInfFam θ) {M : DSModel V S} {J : Set (GA D V)} {χ : GA D V → ℂ} (hχ : ∀ k ∈ J, χ k = 1)
     {U : MMap M} (hU : U ∈ Mult θ M J χ) :
@@ -49,6 +60,13 @@ theorem value_laws (hP : GlobalTheory.Published.CuspRapidDecay) {θ : D.what₂.
 variable {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m}
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
 
+/- English proof (translation)
+Establish `hP : (R.datWp i R.triv).P = LevelP.triv R.Pg D.R.r ℂ` using `rfl`. Establish `hs : (R.datWp i R.triv).s = 0` using `rfl`. Establish `hQ : (R.datWp i R.triv).Q = ∅` using `rfl`. Establish `hchi : ∀ (Q : LevelP R.Pg D.R.r ℂ), Q = LevelP.triv R.Pg D.R.r ℂ → ∀ y : Q.H, Q.chi y = 1`. Introduce and unpack `_ rfl y`.
+
+Both sides reduce to the same expression. Establish `h1 : ∀ x, ext1 (R.datWp i R.triv).P.H (⇑(R.datWp i R.triv).P.chi) x = 1`. Introduce `x`. Unfold `ext1`. Use `split`.
+
+Conclude with `hchi _ hP _`. Both sides reduce to the same expression. Simplify using `only [levChi, levFn, h1, hs, hQ, Finset.range_zero, Finset.prod_empty, Finset.prod_const_one, mul_one, Units.val_one]`.
+-/
 theorem levChi_triv (R : RealDat D A Ks) (i : Fin D.R.m) (k : GA D (Wc D i)) :
     levChi (Wc D i) (R.βW i) (R.datWp i R.triv) k = 1 := by
   have hP : (R.datWp i R.triv).P = LevelP.triv R.Pg D.R.r ℂ := rfl
@@ -69,6 +87,19 @@ end GlobalTheory.PrincPet
 
 namespace GlobalTheory.PrincPet
 
+/- English proof (translation)
+Introduce `hP D G _ _ Pl0 T A Ks _ _ _ R F hC i σ`. Use `⟨GlobalTheory.AdelicScalar.isOpen_level (Wc D i) (R.βW i) (R.datWp i R.triv), ?_⟩` and prove the remaining obligations. Introduce `U₁ hU₁ U₂ hU₂ v₁ v₂`. Establish `hθ : IsInfFam R.θ` using `hC.models.inf`. Establish `hχ : ∀ k ∈ levS (Wc D i) (R.βW i) (R.datWp i R.triv), levChi (Wc D i) (R.βW i) (R.datWp i R.triv) k = 1` using `fun k _ => levChi_triv R i k`.
+
+Take `⟨c₁, ⟨C₁, b₁⟩, inv₁⟩` from `value_laws hP hθ hχ hU₁ v₁`. Take `⟨c₂, ⟨C₂, b₂⟩, -⟩` from `value_laws hP hθ hχ hU₂ v₂`. Use `⟨?_, fun g k hk => ?_⟩` and prove the remaining obligations. Establish `: BorelSpace (GA D (Wc D i))` using `⟨rfl⟩`. Establish `hμ` using `(hC.models.νW i).1.1`.
+
+Establish `hfin : R.νW i (R.fdW i) < ⊤` using `GlobalTheory.CuspDecay.measure_lt_top GlobalTheory.Mem.VolFin.finVol (Wc D i) (R.νW i) (R.fdW i) hμ (hC.models.νW i).2`. Use `haveI : IsFiniteMeasure ((R.νW i).restrict (R.fdW i)) := isFiniteMeasure_restrict.2 hfin.ne`. Establish `hC₁ : 0 ≤ C₁` using `(norm_nonneg _).trans (b₁ 1)`. Use `show Continuous fun g => ∫ x in R.fdW i, rTr (Wc D i) g (U₁ v₁) x * starRingEnd ℂ (U₂ v₂ x) ∂(R.νW i)`. Use `continuous_of_dominated (bound := fun _ => C₁ * C₂) (fun g => ?_) (fun g => ?_) (integrable_const _) ?_` and prove the remaining obligations.
+
+Conclude with `((c₁.comp (continuous_id.mul continuous_const)).mul (Complex.continuous_conj.comp c₂)).aestronglyMeasurable`. Use `.of_forall fun x => ?_` and prove the remaining obligations. Simplify using `only [rTr, norm_mul, Complex.norm_conj]`. Conclude with `mul_le_mul (b₁ _) (b₂ _) (norm_nonneg _) hC₁`. Conclude with `.of_forall fun x => (c₁.comp (continuous_const.mul continuous_id)).mul continuous_const`.
+
+Establish `e : rTr (Wc D i) (g * k) (U₁ v₁) = rTr (Wc D i) g (U₁ v₁)`. Use function extensionality and compare the values at `x`. Simplify using `only [rTr]`. Rewrite using `[← mul_assoc]`. Conclude with `inv₁ k hk (x * g)`.
+
+Rewrite using `[e]`.
+-/
 theorem petW_continuous_rightInv : GlobalTheory.Published.CuspRapidDecay → ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), GlobalTheory.Hk3.Core R F → ∀ i σ, IsOpen {h : GA D (Wc D i) | finE (Wc D i) h ∈ lev D.sp.cm (Wc D i).gram (R.βW i) (R.datWp i R.triv)} ∧ ∀ U₁ ∈ R.Wall i σ, ∀ U₂ ∈ R.Wall i σ, ∀ v₁ v₂ : (R.MW i σ).Vec, (Continuous fun g => petW R i (rTr (Wc D i) g (U₁ v₁)) (U₂ v₂)) ∧ ∀ g, ∀ k ∈ levW R i, petW R i (rTr (Wc D i) (g * k) (U₁ v₁)) (U₂ v₂) = petW R i (rTr (Wc D i) g (U₁ v₁)) (U₂ v₂) := by
   intro hP D G _ _ Pl0 T A Ks _ _ _ R F hC i σ
   refine ⟨GlobalTheory.AdelicScalar.isOpen_level (Wc D i) (R.βW i) (R.datWp i R.triv), ?_⟩

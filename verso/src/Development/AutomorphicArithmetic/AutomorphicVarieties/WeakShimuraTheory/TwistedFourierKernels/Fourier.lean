@@ -5,6 +5,15 @@ import Mathlib.LinearAlgebra.LinearIndependent.Basic
 
 open IsLocalRing Polynomial UpperTheory.V UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.Ws.H5
 
+/- English proof (translation)
+Introduce `K Q _ _ _ _ _ a h`. Establish `: Fintype Q` using `Fintype.ofFinite Q`. Establish `: NeZero (Monoid.exponent Q)` using `⟨Monoid.exponent_ne_zero_of_finite⟩`. Establish `: NeZero ((Monoid.exponent Q : ℕ) : K)` using `⟨by exact_mod_cast NeZero.ne (Monoid.exponent Q)⟩`. Set `ev : Q → ((Q →* Kˣ) →* K)` to `fun q => { toFun := fun χ => (χ q : K), map_one' := by simp, map_mul' := fun x y => by simp }`.
+
+Establish `hinj : Function.Injective ev`. Introduce `q q' hq`. Use `(CommGroup.forall_apply_eq_apply_iff Q (M := K)).1 fun φ => ?_` and prove the remaining obligations. Conclude with `Units.ext (DFunLike.congr_fun hq φ)`. Establish `hli` using `(linearIndependent_monoidHom (Q →* Kˣ) K).comp ev hinj`.
+
+Rewrite `hli` using `[Fintype.linearIndependent_iff]`. Establish `key` using `hli (fun q => a.coeff q) (by`. Use function extensionality and compare the values at `χ`. Use `h χ` as an intermediate fact. Rewrite `this` using `[MonoidAlgebra.lift_apply, Finsupp.sum_fintype _ _ (by simp)]`.
+
+Simplify `this)` using `[ev, Finset.sum_apply]`. Use extensionality with `q`. Simplify using `using key q`.
+-/
 theorem UpperTheory.V.Ws.H5.fourier :
     ∀ (K Q : Type) [Field K] [IsAlgClosed K] [CharZero K] [CommGroup Q] [Finite Q] (a : MonoidAlgebra K Q), (∀ χ : Q →* Kˣ, MonoidAlgebra.lift K K Q ((Units.coeHom K).comp χ) a = 0) → a = 0 := by
   intro K Q _ _ _ _ _ a h

@@ -10,6 +10,9 @@ open scoped ComplexConjugate
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : Data E r)
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation.
+-/
 private lemma sum4_lemma {n : ℕ} (f : Fin n → Fin n → Fin n → Fin n → ℂ) :
     ∑ a, ∑ b, ∑ i, ∑ j, f a b i j = ∑ i, ∑ j, ∑ a, ∑ b, f a b i j := by
   calc ∑ a, ∑ b, ∑ i, ∑ j, f a b i j = ∑ a, ∑ i, ∑ b, ∑ j, f a b i j :=
@@ -19,6 +22,13 @@ private lemma sum4_lemma {n : ℕ} (f : Fin n → Fin n → Fin n → Fin n → 
         Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun a _ => Finset.sum_comm
     _ = ∑ i, ∑ j, ∑ a, ∑ b, f a b i j := Finset.sum_congr rfl fun i _ => Finset.sum_comm
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation. Simplify using `only [hermC, Matrix.mulVec, dotProduct]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[map_sum, Finset.sum_mul, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Use `_ = ∑ i, ∑ j, ∑ a, ∑ b, Y a i * u i * τ (G a b) * (conj (Y b j) * conj (v j)) := sum4_lemma _`. Use `_ = ∑ i, ∑ j, u i * gram τ G Y i j * conj (v j) := by`.
+
+Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [gram, hermC, col, Matrix.of_apply, Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 private lemma hermC_mulVec_lemma_2 {n : ℕ} (τ : E →+* ℂ) (G : Matrix (Fin n) (Fin n) E)
     (Y : Matrix (Fin n) (Fin n) ℂ) (u v : Fin n → ℂ) :
     hermC τ G (Y *ᵥ u) (Y *ᵥ v) = ∑ i, ∑ j, u i * gram τ G Y i j * conj (v j) := by
@@ -38,6 +48,13 @@ private lemma hermC_mulVec_lemma_2 {n : ℕ} (τ : E →+* ℂ) (G : Matrix (Fin
         refine Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_
         ring
 
+/- English proof (translation)
+Establish `hu : IsUnit Y.det` using `isUnit_iff_ne_zero.mpr hY`. Establish `key` using `hermC_mulVec_lemma_2 τ X.Gm Y (Y⁻¹ *ᵥ p) (Y⁻¹ *ᵥ q)`. Rewrite `key` using `[Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ hu, Matrix.one_mulVec, Matrix.one_mulVec, hg]`. Rewrite using `[key]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Finset.sum_eq_single i]`. Rewrite using `[Matrix.diagonal_apply_eq]`. Expand and normalize the polynomial expressions, which then agree. Introduce `j _ hj`. Rewrite using `[Matrix.diagonal_apply_ne _ (Ne.symm hj), mul_zero, zero_mul]`.
+
+Introduce `h`. Conclude with `absurd (Finset.mem_univ i) h`.
+-/
 theorem hermC_normal {τ : E →+* ℂ} {Y : Matrix (Fin r) (Fin r) ℂ} (hY : Y.det ≠ 0) (s : Fin r → ℂ)
     (hg : gram τ X.Gm Y = diagonal s) (p q : Fin r → ℂ) :
     hermC τ X.Gm p q = ∑ a, s a * (Y⁻¹ *ᵥ p) a * conj ((Y⁻¹ *ᵥ q) a) := by
@@ -56,6 +73,13 @@ theorem hermC_normal {τ : E →+* ℂ} {Y : Matrix (Fin r) (Fin r) ℂ} (hY : Y
 def IsNormal (y : X.Ψ → Matrix (Fin r) (Fin r) ℂ) : Prop :=
   ∀ τ : X.Ψ, (y τ).det ≠ 0 ∧ gram τ.1 X.Gm (y τ) = diagonal fun a : Fin r => ((sgn X.p0 (a : ℕ) : ℝ) : ℂ)
 
+/- English proof (translation)
+Simplify using `only [ip, Sg, Ly, LinearMap.coe_mk, AddHom.coe_mk]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Take `⟨hdet, hg⟩` from `hy τ`. Establish `hτ : τ.1 (herm X.Gm p q) = hermC τ.1 X.Gm (X.embV p τ) (X.embV q τ)` using `by first`. Consider the case `simp [herm, hermC, Data.embV, Data.emb, cc, map_sum, map_mul, IsCMField.complexEmbedding_complexConj]`.
+
+Consider the case `simp [herm, hermC, Data.embV, Data.emb, cc, map_sum, map_mul, NumberField.IsCMField.complexEmbedding_complexConj]`. Rewrite using `[hτ, hermC_normal X hdet _ hg]`. Use `congr 2`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Simplify using `only [map_mul, Complex.conj_ofReal]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem ip_Sg {y : X.Ψ → Matrix (Fin r) (Fin r) ℂ} (hy : IsNormal X y) (p q : Fin r → E) :
     ip X (Ly X y (X.embV p)) (Sg X (Ly X y (X.embV q))) = ∑ τ, X.c τ * (τ.1 (herm X.Gm p q)).re := by
   simp only [ip, Sg, Ly, LinearMap.coe_mk, AddHom.coe_mk]
@@ -81,11 +105,19 @@ noncomputable def zbas {y : X.Ψ → Matrix (Fin r) (Fin r) ℂ} (hy : IsNormal 
     (LinearEquiv.ofBijective (Ly X y) ⟨Ly_injective X y fun τ => (hy τ).1,
       Ly_surjective X y fun τ => (hy τ).1⟩)
 
+/- English proof (translation)
+Simplify using `only [zbas, Basis.map_apply, Basis.mk_apply]`. Conclude with `LinearEquiv.ofBijective_apply _ _`.
+-/
 theorem zbas_apply {y : X.Ψ → Matrix (Fin r) (Fin r) ℂ} (hy : IsNormal X y) (g : Basis ι ℤ X.Λ)
     (i : ι) : zbas X hy g i = Ly X y (X.embV (g i : Fin r → E)) := by
   simp only [zbas, Basis.map_apply, Basis.mk_apply]
   exact LinearEquiv.ofBijective_apply _ _
 
+/- English proof (translation)
+Establish `h1 : ∀ τ b, u τ b * conj ((∑ k, a k • w k) τ b) = ∑ k, ((a k : ℂ) * (u τ b * conj (w k τ b)))`. Introduce `τ b`. Rewrite using `[Finset.sum_apply, Finset.sum_apply, map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, Pi.smul_apply, Complex.real_smul, map_mul, Complex.conj_ofReal]`.
+
+Expand and normalize the polynomial expressions, which then agree. Simplify using `only [ip, h1, Complex.re_sum, Complex.re_ofReal_mul, Finset.mul_sum]`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun τ _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 private lemma ip_sum_lemma_3 (u : X.Ψ → Fin r → ℂ) (a : ι → ℝ) (w : ι → X.Ψ → Fin r → ℂ) :
     ip X u (∑ k, a k • w k) = ∑ k, a k * ip X u (w k) := by
   have h1 : ∀ τ b, u τ b * conj ((∑ k, a k • w k) τ b) =
@@ -105,6 +137,13 @@ private lemma ip_sum_lemma_3 (u : X.Ψ → Fin r → ℂ) (a : ι → ℝ) (w : 
           Finset.sum_congr rfl fun b _ => ?_
         ring
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[Matrix.mul_apply]`. Establish `hS` using `(zbas X hy g).sum_repr (Sg X (zbas X hy g j))`. Simplify using `only [LinearMap.toMatrix_apply]`. Rewrite using `[show Bm X g i j = ip X (zbas X hy g i) (Sg X (zbas X hy g j)) by`.
+
+Simplify using `only [Bm, Matrix.of_apply, zbas_apply]`. Conclude with `(ip_Sg X hy _ _).symm]`. Use `conv_lhs => rw [← hS]`. Rewrite using `[ip_sum_lemma_3]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Simplify using `only [Am, Matrix.of_apply, zbas_apply]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem Bm_eq {y : X.Ψ → Matrix (Fin r) (Fin r) ℂ} (hy : IsNormal X y) (g : Basis ι ℤ X.Λ) :
     Bm X g = Am X y g * LinearMap.toMatrix (zbas X hy g) (zbas X hy g) (Sg X) := by
   ext i j
@@ -120,6 +159,15 @@ theorem Bm_eq {y : X.Ψ → Matrix (Fin r) (Fin r) ℂ} (hy : IsNormal X y) (g :
   simp only [Am, Matrix.of_apply, zbas_apply]
   ring
 
+/- English proof (translation)
+Establish `hSS : Sg X * Sg X = 1`. Use `LinearMap.ext fun u => funext fun τ => funext fun a => ?_` and prove the remaining obligations. Use `show ((sgn X.p0 (a : ℕ) : ℝ) : ℂ) * (((sgn X.p0 (a : ℕ) : ℝ) : ℂ) * u τ a) = u τ a`. Rewrite using `[← mul_assoc, ← Complex.ofReal_mul]`. Unfold `sgn`.
+
+Apply the tactic sequence `split_ifs <;> simp`. Establish `hM : LinearMap.toMatrix (zbas X hy g) (zbas X hy g) (Sg X) * LinearMap.toMatrix (zbas X hy g) (zbas X hy g) (Sg X) = 1`. Rewrite using `[← LinearMap.toMatrix_mul, hSS, LinearMap.toMatrix_one]`. Establish `h2 : |(LinearMap.toMatrix (zbas X hy g) (zbas X hy g) (Sg X)).det| * |(LinearMap.toMatrix (zbas X hy g) (zbas X hy g) (Sg X)).det| = 1`. Rewrite using `[← abs_mul, ← Matrix.det_mul, hM, Matrix.det_one, abs_one]`.
+
+Establish `hd : |(LinearMap.toMatrix (zbas X hy g) (zbas X hy g) (Sg X)).det| = 1`. Break down `mul_self_eq_one_iff.mp h2 with h | h` into its components or cases. Conclude with `h`. Combine the linear relations using `[abs_nonneg (LinearMap.toMatrix (zbas X hy g) (zbas X hy g) (Sg X)).det]`. Rewrite using `[Bm_eq X hy g, Matrix.det_mul, abs_mul, hd, mul_one]`.
+
+Conclude with `le_abs_self _`.
+-/
 theorem det_Am_le {y : X.Ψ → Matrix (Fin r) (Fin r) ℂ} (hy : IsNormal X y) (g : Basis ι ℤ X.Λ) :
     (Am X y g).det ≤ |(Bm X g).det| := by
   have hSS : Sg X * Sg X = 1 := by
@@ -141,6 +189,17 @@ theorem det_Am_le {y : X.Ψ → Matrix (Fin r) (Fin r) ℂ} (hy : IsNormal X y) 
   rw [Bm_eq X hy g, Matrix.det_mul, abs_mul, hd, mul_one]
   exact le_abs_self _
 
+/- English proof (translation)
+Use `set g := RealPlaceEmbeddings.zb X with hgdef`. Establish `hcoe : ∀ x : Fin (finrank ℤ X.Λ) → ℤ, ((∑ i, x i • g i : X.Λ) : Fin r → E) = ∑ i, x i • (g i : Fin r → E)`. Introduce `x`. Simplify using the standard rewrite rules. Establish `hint : ∀ x : Fin (finrank ℤ X.Λ) → ℤ, x ≠ 0 → m ≤ (fun i => (x i : ℝ)) ⬝ᵥ (Am X y g *ᵥ fun i => (x i : ℝ))`.
+
+Introduce `x hx`. Rewrite using `[quad_int]`. Use `hmin _ ?_ ?_` and prove the remaining obligations. Rewrite using `[← hcoe]`. Conclude with `(∑ i, x i • g i : X.Λ).2`.
+
+Introduce `h0`. Rewrite `h0` using `[← hcoe]`. Establish `h1 : (∑ i, x i • g i : X.Λ) = 0` using `Subtype.ext h0`. Conclude with `hx (funext (Fintype.linearIndependent_iff.mp g.linearIndependent x h1))`. Take `⟨eb, h1, h2⟩` from `ReciprocityTheory.ChartRestriction.G.AR.IntegralModuleBases.redGram_holds (finrank ℤ X.Λ) (Am X y g) m |(Bm X g).det| (Am_posDef X y (fun τ => (hy τ).1) g) hm hint (det_Am_le X hy g)`.
+
+Use `⟨eb.map g.equivFun.symm, fun i => ?_, fun v i => ?_⟩` and prove the remaining obligations. Establish `h3` using `h1 i`. Rewrite `h3` using `[quad_int, ← hcoe]`. Simplify `h3` using `[Basis.equivFun_symm_apply]`. Establish `h3` using `h2 (g.equivFun v) i`.
+
+Rewrite `h3` using `[quad_int, ← hcoe]`. Simplify `h3` using `[Basis.map_repr, Basis.equivFun_symm_apply, g.sum_repr]`.
+-/
 theorem reduce {y : X.Ψ → Matrix (Fin r) (Fin r) ℂ} (hy : IsNormal X y) {m : ℝ} (hm : 0 < m)
     (hmin : ∀ v ∈ X.Λ, v ≠ 0 → m ≤ Qy X y v) :
     ∃ f : Basis (Fin (finrank ℤ X.Λ)) ℤ X.Λ,

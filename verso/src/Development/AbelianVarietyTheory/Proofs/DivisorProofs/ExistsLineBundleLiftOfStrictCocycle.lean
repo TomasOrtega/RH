@@ -14,8 +14,14 @@ variable {R : Type} [CommRing R] {X X₀ : Scheme.{0}} {s : X ⟶ Sp R} {i : X�
 
 abbrev UU (t : (Small i L)ᵒᵖ) : X.Opens := t.unop.1.1.1
 
+/- English proof (translation)
+The claim follows from `leOfHom a.unop`.
+-/
 theorem le_of_hom {t t' : (Small i L)ᵒᵖ} (a : t ⟶ t') : UU t' ≤ UU t := leOfHom a.unop
 
+/- English proof (translation)
+The claim follows from `Quiver.Hom.unop_inj (Subsingleton.elim _ _)`.
+-/
 theorem hom_eq {t t' : (Small i L)ᵒᵖ} (a b : t ⟶ t') : a = b :=
   Quiver.Hom.unop_inj (Subsingleton.elim _ _)
 
@@ -28,18 +34,29 @@ def uu (t t' : (Small i L)ᵒᵖ) (a : t ⟶ t') : Γ(X, UU t')ˣ := (hu t t' a)
 
 variable {u hu}
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Use `congrFun (congrFun (congrFun (congrFun (congrFun hm t) t') t'') a) b` as an intermediate fact. Conclude with `sub_eq_zero.1 this`.
+-/
 theorem uu_comp (hm : mdef _ u = 0) {t t' t'' : (Small i L)ᵒᵖ} (a : t ⟶ t') (b : t' ⟶ t'') :
     res (le_of_hom b) (uu u hu t t' a) * uu u hu t' t'' b = uu u hu t t'' (a ≫ b) := by
   apply Units.ext
   have := congrFun (congrFun (congrFun (congrFun (congrFun hm t) t') t'') a) b
   exact sub_eq_zero.1 this
 
+/- English proof (translation)
+Rewrite using `[← uu_comp hm a b, map_mul, gm_res f y _ hy, mul_inv_cancel_right]`.
+-/
 theorem gm_uu (hm : mdef _ u = 0) {Y : Scheme.{0}} (f : Y ⟶ X) (y : Y) {t t' r : (Small i L)ᵒᵖ}
     (a : t ⟶ t') (b : t' ⟶ r) (hy : f y ∈ UU r) :
     gm f y (UU t') (uu u hu t t' a) =
       gm f y (UU r) (uu u hu t r (a ≫ b)) * (gm f y (UU r) (uu u hu t' r b))⁻¹ := by
   rw [← uu_comp hm a b, map_mul, gm_res f y _ hy, mul_inv_cancel_right]
 
+/- English proof (translation)
+Use `glue_unit _ (fun p : (r : (Small i L)ᵒᵖ) × (t ⟶ r) × (t' ⟶ r) ↦ UU p.1) (fun p ↦ le_inf (le_of_hom p.2.1) (le_of_hom p.2.2)) (fun x hx ↦ ?_) _ (fun p q x hx ↦ ?_)` and prove the remaining obligations. Take `⟨r, hr, hle⟩` from `hB.cover x _ hx`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨⟨r, homOf (hle.trans inf_le_left), homOf (hle.trans inf_le_right)⟩, hr⟩`. Take `⟨r, hr, hle⟩` from `hB.cover x _ hx`. Establish `c : p.1 ⟶ r` using `homOf (hle.trans inf_le_left)`.
+
+Establish `d : q.1 ⟶ r` using `homOf (hle.trans inf_le_right)`. Rewrite using `[map_mul, map_mul, map_inv, map_inv, gm_uu hm (𝟙 X) x p.2.1 c hr, gm_uu hm (𝟙 X) x p.2.2 c hr, gm_uu hm (𝟙 X) x q.2.1 d hr, gm_uu hm (𝟙 X) x q.2.2 d hr, hom_eq (q.2.1 ≫ d) (p.2.1 ≫ c), hom_eq (q.2.2 ≫ d) (p.2.2 ≫ c)]`. Use `group`.
+-/
 theorem exists_g (hm : mdef _ u = 0) (hB : IsBasis (smallG i L)) (t t' : (Small i L)ᵒᵖ) :
     ∃ g : Γ(X, UU t ⊓ UU t')ˣ, ∀ p : (r : (Small i L)ᵒᵖ) × (t ⟶ r) × (t' ⟶ r),
       res (le_inf (le_of_hom p.2.1) (le_of_hom p.2.2)) g = uu u hu t p.1 p.2.1 * (uu u hu t' p.1 p.2.2)⁻¹ := by
@@ -62,6 +79,9 @@ def glueLB (hm : mdef _ u = 0) (hB : IsBasis (smallG i L)) : LB X :=
 
 variable {u hu}
 
+/- English proof (translation)
+Use `Classical.choose_spec (exists_g (hu := hu) hm hB t t') ⟨r, a, b⟩` as an intermediate fact. Use `show gm f y _ (Classical.choose (exists_g (hu := hu) hm hB t t')) = _`. Rewrite using `[← gm_res f y (le_inf (le_of_hom a) (le_of_hom b)) hy, this, map_mul, map_inv]`.
+-/
 theorem gm_glue (hm : mdef _ u = 0) (hB : IsBasis (smallG i L)) {Y : Scheme.{0}} (f : Y ⟶ X) (y : Y)
     {t t' r : (Small i L)ᵒᵖ} (a : t ⟶ r) (b : t' ⟶ r) (hy : f y ∈ UU r) :
     gm f y (UU t ⊓ UU t') ((glueLB u hu hm hB).g t t') =
@@ -70,6 +90,15 @@ theorem gm_glue (hm : mdef _ u = 0) (hB : IsBasis (smallG i L)) {Y : Scheme.{0}}
   show gm f y _ (Classical.choose (exists_g (hu := hu) hm hB t t')) = _
   rw [← gm_res f y (le_inf (le_of_hom a) (le_of_hom b)) hy, this, map_mul, map_inv]
 
+/- English proof (translation)
+Use `eq_top_iff.2 fun x _ ↦ ?_` and prove the remaining obligations. Take `⟨r, hr, -⟩` from `hB.cover x ⊤ trivial`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨r, hr⟩`. Use `g_self := fun (t : (Small i L)ᵒᵖ) ↦ by`. Use `unit_ext fun x hx ↦ ?_` and prove the remaining obligations.
+
+Take `⟨r, hr, hle⟩` from `hB.cover x (UU t) hx`. Rewrite using `[gm_res _ x _ hx, map_one]`. Conclude with `(gm_glue hm hB (𝟙 X) x (homOf hle) (homOf hle) hr).trans (mul_inv_cancel _)`. Use `cocycle := fun (t t' t'' : (Small i L)ᵒᵖ) ↦ by`. Use `unit_ext fun x hx ↦ ?_` and prove the remaining obligations.
+
+Take `⟨r, hr, hle⟩` from `hB.cover x (UU t ⊓ UU t' ⊓ UU t'') hx`. Establish `a : t ⟶ r` using `homOf (hle.trans (inf_le_left.trans inf_le_left))`. Establish `b : t' ⟶ r` using `homOf (hle.trans (inf_le_left.trans inf_le_right))`. Establish `c : t'' ⟶ r` using `homOf (hle.trans inf_le_right)`. Rewrite using `[map_mul, gm_res _ x _ hx, gm_res _ x _ hx, gm_res _ x _ hx]`.
+
+Use `(congrArg₂ (· * ·) (gm_glue hm hB (𝟙 X) x a b hr) (gm_glue hm hB (𝟙 X) x b c hr)).trans ((?_ : _ = _).trans (gm_glue hm hB (𝟙 X) x a c hr).symm)` and prove the remaining obligations. Use `group`.
+-/
 theorem isLB_glue (hm : mdef _ u = 0) (hB : IsBasis (smallG i L)) : (glueLB u hu hm hB).IsLB where
   cover := by
     refine eq_top_iff.2 fun x _ ↦ ?_
@@ -91,6 +120,9 @@ theorem isLB_glue (hm : mdef _ u = 0) (hB : IsBasis (smallG i L)) : (glueLB u hu
       ((?_ : _ = _).trans (gm_glue hm hB (𝟙 X) x a c hr).symm)
     group
 
+/- English proof (translation)
+Establish `e` using `gm_pull (𝟙 X₀) i y (UU r) hy (uu u hu t r a)`. Rewrite `e` using `[Category.id_comp]`. Establish `e' : pullU i (UU r) (uu u hu t r a) = res (Small.le_inf a) (L.g t.unop.1.2 r.unop.1.2)` using `Units.ext (hl t r a)`. Rewrite using `[← e, e', gm_res (𝟙 X₀) y _ hy]`.
+-/
 theorem gm_lift (hl : IsLift s i L u) {t r : (Small i L)ᵒᵖ} (a : t ⟶ r) (y : X₀) (hy : i y ∈ UU r) :
     gm i y (UU r) (uu u hu t r a) = gm (𝟙 X₀) y _ (L.g t.unop.1.2 r.unop.1.2) := by
   have e := gm_pull (𝟙 X₀) i y (UU r) hy (uu u hu t r a)
@@ -124,6 +156,9 @@ end GlobalTheory.LBGlue
 
 open GlobalTheory.LBGlue in
 
+/- English proof (translation)
+Introduce `R _ X X₀ s i L hL u hB hl hu hm`. Use `⟨cls _ (isLB_glue (hu := hu) hm hB), ?_⟩` and prove the remaining obligations. Rewrite using `[← cls_pull (isLB_glue (hu := hu) hm hB) i (pull_isLB (isLB_glue (hu := hu) hm hB) i)]`. Conclude with `(cls_eq_iff _ hL).2 (iso_of_chart hL (chart hL hl hm hB))`.
+-/
 theorem GlobalTheory.LBLift.exists_pic_of_strict_lift : ∀ (R : Type) [CommRing R] (X X₀ : Scheme.{0}) (s : X ⟶ Sp R)
     (i : X₀ ⟶ X) (L : LB X₀) (hL : L.IsLB) (u : C1 (smallG i L ⋙ OAff s)), IsBasis (smallG i L) →
     IsLift s i L u → (∀ t t' a, IsUnit (u t t' a)) → mdef _ u = 0 →

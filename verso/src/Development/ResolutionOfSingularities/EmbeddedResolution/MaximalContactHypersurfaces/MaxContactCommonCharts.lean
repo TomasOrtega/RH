@@ -32,6 +32,9 @@ section
 variable {k : Type u} [Field k] [CharZero k] {X : Scheme.{u}}
   {p : X ⟶ Spec (CommRingCat.of k)} [LocallyOfFiniteType p] [AlgebraicGeometry.Smooth p]
 
+/- English proof (translation)
+Establish `hcomap : D.ideal ⟨U, hU⟩ ≤ (D.ideal ⟨V, hV⟩).comap (X.presheaf.map (homOfLE h).op).hom` using `D.ideal_le_comap_ideal h`. Conclude with `hcomap hy`.
+-/
 private theorem presheaf_map_mem_ideal_of_mem (k : Type u) [Field k] {X : Scheme.{u}}
     (p : X ⟶ Spec (CommRingCat.of k)) [LocallyOfFiniteType p] (D : X.IdealSheafData)
     {U V : X.Opens} (hU : IsAffineOpen U) (hV : IsAffineOpen V) (h : V ≤ U)
@@ -42,6 +45,13 @@ private theorem presheaf_map_mem_ideal_of_mem (k : Type u) [Field k] {X : Scheme
     D.ideal_le_comap_ideal h
   exact hcomap hy
 
+/- English proof (translation)
+Set `_ : Algebra k Γ(X, U)` to `sectionsAlgebra k p U`. Establish `: IsNoetherianRing Γ(X, U)` using `isNoetherianRing_sections k p ⟨U, hU⟩ (algebraMap_sectionsAlgebra k p U)`. Take `⟨s, hs⟩ : (D.ideal ⟨U, hU⟩).FG` from `IsNoetherian.noetherian _`. Establish `hs' : Ideal.span (↑s : Set Γ(X, U)) = D.ideal ⟨U, hU⟩` using `hs`. Establish `hspan : D.ideal ⟨V, hV⟩ = Ideal.span ((X.presheaf.map (homOfLE h).op).hom '' (↑s : Set Γ(X, U)))` using `ideal_eq_span_image_map_of_le D hU hV h (↑s : Set Γ(X, U)) hs'.symm`.
+
+Rewrite using `[hspan, Ideal.span_le]`. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Establish `hyD : y ∈ D.ideal ⟨U, hU⟩`. Rewrite using `[← hs']`. Conclude with `Ideal.subset_span hy`.
+
+Conclude with `presheaf_map_mem_ideal_of_mem k p E hU hV h (hDleE hyD)`.
+-/
 private theorem ideal_le_of_ideal_le_of_le (k : Type u) [Field k] {X : Scheme.{u}}
     (p : X ⟶ Spec (CommRingCat.of k)) [LocallyOfFiniteType p] (D E : X.IdealSheafData)
     {U V : X.Opens} (hU : IsAffineOpen U) (hV : IsAffineOpen V) (h : V ≤ U)
@@ -61,6 +71,9 @@ private theorem ideal_le_of_ideal_le_of_le (k : Type u) [Field k] {X : Scheme.{u
     exact Ideal.subset_span hy
   exact presheaf_map_mem_ideal_of_mem k p E hU hV h (hDleE hyD)
 
+/- English proof (translation)
+Establish `h1 : D.ideal ⟨V, hV⟩ = Ideal.span (c.coord '' ((({j} : Finset (Fin n))) : Set (Fin n)))` using `c.ideal_eq_span_coord hV D {j} hD`. Use `restrictIdeal_eq_coordIdeal_of_ideal_eq_span hV c' D {j} ?_` and prove the remaining obligations. Rewrite using `[h1, Finset.coe_singleton, Set.image_singleton, Set.image_singleton, hcoord]`.
+-/
 private theorem restrictIdeal_eq_coordIdeal_of_coord_eq {X : Scheme.{u}} {k : Type u} [Field k]
     {p : X ⟶ Spec (CommRingCat.of k)} {V : X.Opens} (hV : IsAffineOpen V) {n : ℕ}
     (c c' : EtaleChart p V n) (j : Fin n) (hcoord : c'.coord j = c.coord j)
@@ -72,6 +85,87 @@ private theorem restrictIdeal_eq_coordIdeal_of_coord_eq {X : Scheme.{u}} {k : Ty
   refine restrictIdeal_eq_coordIdeal_of_ideal_eq_span hV c' D {j} ?_
   rw [h1, Finset.coe_singleton, Set.image_singleton, Set.image_singleton, hcoord]
 
+/- English proof (translation)
+Establish `hxH₁ : x ∈ H₁.support` using `hadm₁.orderAtLeastLocus_subset_support hμ hx`. Establish `hxH₂ : x ∈ H₂.support` using `hadm₂.orderAtLeastLocus_subset_support hμ hx`. Take `⟨U₁, hU₁, hxU₁, hcase₁⟩` from `(isMaxContactHypersurface_iff k p A μ H₁).mp hadm₁ x`. Choose the witnesses or unpack the hypotheses as in `⟨n₁, d₁, i₁, hH₁U₁, hmc₁⟩ : ∃ (n : ℕ) (c : EtaleChart p U₁ n) (j : Fin n), restrictIdeal H₁ U₁ = c.coordIdeal {j} ∧ IsMaxContactCoord k p A μ c j := by`. Break down `hcase₁ with ⟨hdisj, -⟩ | hc` into its components or cases.
+
+Conclude with `absurd hxU₁ (Set.disjoint_left.mp hdisj hx)`. Conclude with `hc`. Take `⟨U₂, hU₂, hxU₂, hcase₂⟩` from `(isMaxContactHypersurface_iff k p A μ H₂).mp hadm₂ x`. Choose the witnesses or unpack the hypotheses as in `⟨n₂, d₂, i₂, hH₂U₂, hmc₂⟩ : ∃ (n : ℕ) (c : EtaleChart p U₂ n) (j : Fin n), restrictIdeal H₂ U₂ = c.coordIdeal {j} ∧ IsMaxContactCoord k p A μ c j := by`. Break down `hcase₂ with ⟨hdisj, -⟩ | hc` into its components or cases.
+
+Conclude with `absurd hxU₂ (Set.disjoint_left.mp hdisj hx)`. Conclude with `hc`. Establish `hM₁ : H₁.ideal ⟨U₁, hU₁⟩ ≤ (maxContactIdeal k p A μ).ideal ⟨U₁, hU₁⟩`. Establish `h1 : H₁.ideal ⟨U₁, hU₁⟩ = Ideal.span (d₁.coord '' ((({i₁} : Finset (Fin n₁))) : Set (Fin n₁)))` using `d₁.ideal_eq_span_coord hU₁ H₁ {i₁} hH₁U₁`. Rewrite using `[h1, Finset.coe_singleton, Set.image_singleton, Ideal.span_le, Set.singleton_subset_iff]`.
+
+Conclude with `(isMaxContactCoord_iff_coord_mem k p A μ hU₁ d₁ i₁).mp hmc₁`. Establish `hM₂ : H₂.ideal ⟨U₂, hU₂⟩ ≤ (maxContactIdeal k p A μ).ideal ⟨U₂, hU₂⟩`. Establish `h1 : H₂.ideal ⟨U₂, hU₂⟩ = Ideal.span (d₂.coord '' ((({i₂} : Finset (Fin n₂))) : Set (Fin n₂)))` using `d₂.ideal_eq_span_coord hU₂ H₂ {i₂} hH₂U₂`. Rewrite using `[h1, Finset.coe_singleton, Set.image_singleton, Ideal.span_le, Set.singleton_subset_iff]`. Conclude with `(isMaxContactCoord_iff_coord_mem k p A μ hU₂ d₂ i₂).mp hmc₂`.
+
+Establish `hsnc₁'` using `(inStrictNormalCrossingPosition_iff p (H₁ :: N)).mp hsnc₁`. Establish `hsnc₂'` using `(inStrictNormalCrossingPosition_iff p (H₂ :: N)).mp hsnc₂`. Establish `hcart₂ : Blowup.IsLocallyGeneratedByNonZeroDivisor H₂` using `((isSmoothDivisor_iff p H₂).mp (hsnc₂'.1 H₂ (by simp))).1`. Take `⟨⟨W₂, hW₂⟩, f₂, hxW₂, -, hf₂span⟩` from `hcart₂ x`. Take `⟨W, hxW, m₀, c₀, a, hainj, hanone, hasome⟩` from `(hsnc₁'.2 x).exists_etaleChart`.
+
+Take `⟨V₀, hV₀b, hxV₀, hV₀W⟩` from `TopologicalSpace.Opens.isBasis_iff_nbhd.mp X.isBasis_affineOpens hxW`. Establish `hV₀ : IsAffineOpen V₀` using `hV₀b`. Establish `hdesc0 : ∀ i : ℕ, ∀ hi : i < (H₁ :: N).length, (a i = none → restrictIdeal ((H₁ :: N)[i]'hi) V₀ = ⊤) ∧ ∀ j : Fin m₀, a i = some j → restrictIdeal ((H₁ :: N)[i]'hi) V₀ = (c₀.restrict hV₀W).coordIdeal {j}`. Introduce `i hi`. Use `⟨fun hn => restrictIdeal_eq_top_of_le _ hV₀W (hanone i hi hn), ?_⟩` and prove the remaining obligations.
+
+Introduce `j hj`. Conclude with `restrictIdeal_eq_restrict_coordIdeal_of_le hV₀W c₀ _ {j} (hasome i hi j hj)`. Establish `hinj0 : ∀ i i' : ℕ, i < (H₁ :: N).length → i' < (H₁ :: N).length → ∀ j : Fin m₀, a i = some j → a i' = some j → i = i'`. Introduce `i i' hi hi' j h1 h2`. Conclude with `hainj i hi i' hi' j h1 h2`.
+
+Take `⟨U', hU', hxU', n', c', a', hdesc', hinj', hprime'⟩` from `exists_etaleChart_coord_mem_primeIdealOf (H₁ :: N) x V₀ hV₀ hxV₀ (c₀.restrict hV₀W) a hdesc0 hinj0`. Establish `hlt0 : 0 < (H₁ :: N).length` using `by simp`. Choose the witnesses or unpack the hypotheses as in `⟨j₀, hj₀⟩ : ∃ t : Fin n', a' 0 = some t := by`. Consider the cases of `h0 : a' 0 with`. Consider the case `none`.
+
+It suffices to derive a contradiction. Establish `htop` using `(hdesc' 0 hlt0).1 h0`. Simplify using `only [List.getElem_cons_zero] at htop`. Conclude with `notMem_support_of_mem_opens_of_restrictIdeal_eq_top H₁ U' htop x hxU' hxH₁`. Consider the case `some t => exact ⟨t, rfl⟩`.
+
+Establish `hH₁U' : restrictIdeal H₁ U' = c'.coordIdeal {j₀}`. Establish `h1` using `(hdesc' 0 hlt0).2 j₀ hj₀`. Simplify `h1` using `only [List.getElem_cons_zero]`. Take `⟨γ, hγval, hγnone⟩ : ∃ γ : ℕ → Option (Fin n'), (∀ i : ℕ, i < N.length → γ i = a' (i + 1)) ∧ (∀ i : ℕ, ¬ i < N.length → γ i = none)` from `⟨fun i => if i < N.length then a' (i + 1) else none, fun i hi => if_pos hi, fun i hi => if_neg hi⟩`. Establish `hγinj : LabelingInjective γ N.length`.
+
+Introduce `i i' hi hi' j hj hj'`. Rewrite `hj` using `[hγval i hi]`. Rewrite `hj'` using `[hγval i' hi']`. Establish `h1 : i + 1 < (H₁ :: N).length`. Simplify using `only [List.length_cons]`.
+
+Use linear arithmetic over natural numbers and integers. Establish `h2 : i' + 1 < (H₁ :: N).length`. Simplify using `only [List.length_cons]`. Use linear arithmetic over natural numbers and integers. Establish `h3` using `hinj' (i + 1) (i' + 1) h1 h2 j hj hj'`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hγj₀ : ∀ i : ℕ, γ i ≠ some j₀`. Introduce `i hcon`. Distinguish the cases in `hi : i < N.length`. Rewrite `hcon` using `[hγval i hi]`.
+
+Establish `h1 : i + 1 < (H₁ :: N).length`. Simplify using `only [List.length_cons]`. Use linear arithmetic over natural numbers and integers. Establish `h3` using `hinj' (i + 1) 0 h1 hlt0 j₀ hcon hj₀`. Use linear arithmetic over natural numbers and integers.
+
+Rewrite `hcon` using `[hγnone i hi]`. Conclude with `Option.some_ne_none j₀ hcon.symm`. Establish `hlabU' : IsCoordLabeling c' γ N`. Introduce `i hi`. Establish `hiE : i + 1 < (H₁ :: N).length`.
+
+Simplify using `only [List.length_cons]`. Use linear arithmetic over natural numbers and integers. Establish `hget : (H₁ :: N)[i + 1]'hiE = N[i]'hi` using `by simp`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `hnone`.
+
+Establish `ha' : a' (i + 1) = none`. Rewrite using `[← hγval i hi]`. Conclude with `hnone`. Establish `htop` using `(hdesc' (i + 1) hiE).1 ha'`. Rewrite `htop` using `[hget]`.
+
+Conclude with `htop`. Introduce `j hj`. Establish `ha' : a' (i + 1) = some j`. Rewrite using `[← hγval i hi]`. Conclude with `hj`.
+
+Establish `h2` using `(hdesc' (i + 1) hiE).2 j ha'`. Rewrite `h2` using `[hget]`. Conclude with `h2`. Establish `hxN : ∀ i : ℕ, ∀ hi : i < N.length, ∀ j : Fin n', γ i = some j → x ∈ (N[i]'hi).support`. Introduce `i hi j hj`.
+
+Establish `hiE : i + 1 < (H₁ :: N).length`. Simplify using `only [List.length_cons]`. Use linear arithmetic over natural numbers and integers. Establish `ha' : a' (i + 1) = some j`. Rewrite using `[← hγval i hi]`.
+
+Conclude with `hj`. Establish `h2` using `(hlabU' i hi).2 j hj`. Establish `hideal : (N[i]'hi).ideal ⟨U', hU'⟩ = Ideal.span {c'.coord j}`. Establish `h3` using `c'.ideal_eq_span_coord hU' (N[i]'hi) {j} h2`. Rewrite `h3` using `[Finset.coe_singleton, Set.image_singleton]`. Then use the resulting hypothesis.
+
+Use `mem_support_of_ideal_le_primeIdealOf (N[i]'hi) hU' hxU' ?_` and prove the remaining obligations. Rewrite using `[hideal, Ideal.span_le, Set.singleton_subset_iff]`. Conclude with `hprime' (i + 1) hiE j ha'`. Take `⟨V, hVb, hxV, hVΩ⟩` from `TopologicalSpace.Opens.isBasis_iff_nbhd.mp X.isBasis_affineOpens (show x ∈ U' ⊓ U₁ ⊓ U₂ ⊓ W₂ from ⟨⟨⟨hxU', hxU₁⟩, hxU₂⟩, hxW₂⟩)`. Establish `hV : IsAffineOpen V` using `hVb`.
+
+Establish `hVU' : V ≤ U'` using `le_trans hVΩ (le_trans inf_le_left (le_trans inf_le_left inf_le_left))`. Establish `hVU₁ : V ≤ U₁` using `le_trans hVΩ (le_trans inf_le_left (le_trans inf_le_left inf_le_right))`. Establish `hVU₂ : V ≤ U₂` using `le_trans hVΩ (le_trans inf_le_left inf_le_right)`. Establish `hVW₂ : V ≤ W₂` using `le_trans hVΩ inf_le_right`. Establish `hH₁V : restrictIdeal H₁ V = (c'.restrict hVU').coordIdeal {j₀}` using `restrictIdeal_eq_restrict_coordIdeal_of_le hVU' c' H₁ {j₀} hH₁U'`.
+
+Establish `hlab : IsCoordLabeling (c'.restrict hVU') γ N`. Introduce `i hi`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `hnone`. Conclude with `restrictIdeal_eq_top_of_le (N[i]'hi) hVU' ((hlabU' i hi).1 hnone)`.
+
+Introduce `j hj`. Conclude with `restrictIdeal_eq_restrict_coordIdeal_of_le hVU' c' (N[i]'hi) {j} ((hlabU' i hi).2 j hj)`. Choose the witnesses or unpack the hypotheses as in `⟨g, hg⟩ : ∃ g : Γ(X, V), H₂.ideal ⟨V, hV⟩ = Ideal.span {g} := by`. Use `⟨(X.presheaf.map (homOfLE hVW₂).op).hom f₂, ?_⟩` and prove the remaining obligations. Establish `h2` using `ideal_eq_span_image_map_of_le H₂ hW₂ hV hVW₂ ({f₂} : Set Γ(X, W₂)) hf₂span`.
+
+Rewrite `h2` using `[Set.image_singleton]`. Then use the resulting hypothesis. Take `⟨jd, hjdlab, hjdpd⟩` from `exists_unlabeled_index_partialDeriv_notMem_primeIdealOf hV (c'.restrict hVU') hxV N γ H₂ g hlab hγinj (hsnc₂'.2 x) hg hxH₂ hxN`. Establish `hjdpd' : chartPartialDeriv hV (c'.restrict hVU') jd g ∉ (hV.primeIdealOf ⟨x, hxV⟩).asIdeal` using `hjdpd`. Choose the witnesses or unpack the hypotheses as in `⟨c'', hcj₀, hclab, hpd⟩ : ∃ c'' : EtaleChart p V n', c''.coord j₀ = (c'.restrict hVU').coord j₀ ∧ (∀ j : Fin n', (∃ i : ℕ, i < N.length ∧ γ i = some j) → c''.coord j = (c'.restrict hVU').coord j) ∧ chartPartialDeriv hV c'' j₀ g ∉ (hV.primeIdealOf ⟨x, hxV⟩).asIdeal := by`. Distinguish the cases in `h0 : chartPartialDeriv hV (c'.restrict hVU') j₀ g ∈ (hV.primeIdealOf ⟨x, hxV⟩).asIdeal`.
+
+Establish `hne : j₀ ≠ jd`. Introduce `hh`. Rewrite `h0` using `[hh]`. Conclude with `hjdpd' h0`. Take `⟨c'', -, hcother, hderiv, -⟩` from `exists_etaleChart_coord_add_smul_chartPartialDeriv hV (c'.restrict hVU') j₀ jd hne (1 : k)`.
+
+Use `⟨c'', hcother j₀ hne, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `j ⟨i, hi, hγi⟩`. Use `hcother j ?_` and prove the remaining obligations. Introduce `hjd`. Conclude with `hjdlab i hi (by rw [hγi, hjd])`.
+
+Rewrite using `[hderiv g, map_one, one_mul]`. Introduce `hmem`. Apply `hjdpd'` to reduce the goal to its premises. Establish `heq : chartPartialDeriv hV (c'.restrict hVU') jd g = chartPartialDeriv hV (c'.restrict hVU') j₀ g - (chartPartialDeriv hV (c'.restrict hVU') j₀ g - chartPartialDeriv hV (c'.restrict hVU') jd g)` using `by ring`. Rewrite using `[heq]`.
+
+Conclude with `Submodule.sub_mem _ h0 hmem`. Conclude with `⟨c'.restrict hVU', rfl, fun j _ => rfl, h0⟩`. Establish `hH₁V'' : restrictIdeal H₁ V = c''.coordIdeal {j₀}` using `restrictIdeal_eq_coordIdeal_of_coord_eq hV (c'.restrict hVU') c'' j₀ hcj₀ H₁ hH₁V`. Establish `hlab'' : IsCoordLabeling c'' γ N`. Introduce `i hi`.
+
+Use `⟨(hlab i hi).1, ?_⟩` and prove the remaining obligations. Introduce `j hj`. Conclude with `restrictIdeal_eq_coordIdeal_of_coord_eq hV (c'.restrict hVU') c'' j (hclab j ⟨i, hi, hj⟩) (N[i]'hi) ((hlab i hi).2 j hj)`. Take `⟨V', hV', hV'V, hxV', c₂, hc₂j₀, hc₂other⟩` from `exists_etaleChart_update_coord_of_partialDeriv_notMem hV c'' hxV j₀ g hpd`. Establish `hH₁V' : restrictIdeal H₁ V' = (c''.restrict hV'V).coordIdeal {j₀}` using `restrictIdeal_eq_restrict_coordIdeal_of_le hV'V c'' H₁ {j₀} hH₁V''`.
+
+Establish `hH₁id : H₁.ideal ⟨V', hV'⟩ = Ideal.span {(c''.restrict hV'V).coord j₀}`. Establish `h1` using `(c''.restrict hV'V).ideal_eq_span_coord hV' H₁ {j₀} hH₁V'`. Rewrite `h1` using `[Finset.coe_singleton, Set.image_singleton]`. Then use the resulting hypothesis. Establish `hgV' : H₂.ideal ⟨V', hV'⟩ = Ideal.span {c₂.coord j₀}`. Establish `h2` using `ideal_eq_span_image_map_of_le H₂ hV hV' hV'V ({g} : Set Γ(X, V)) hg`.
+
+Rewrite `h2` using `[Set.image_singleton]`. Rewrite using `[h2, hc₂j₀]`. Establish `hH₂V' : restrictIdeal H₂ V' = c₂.coordIdeal {j₀}`. Use `restrictIdeal_eq_coordIdeal_of_ideal_eq_span hV' c₂ H₂ {j₀} ?_` and prove the remaining obligations. Rewrite using `[hgV', Finset.coe_singleton, Set.image_singleton]`.
+
+Establish `hmcc₁ : IsMaxContactCoord k p A μ (c''.restrict hV'V) j₀`. Rewrite using `[isMaxContactCoord_iff_coord_mem k p A μ hV' (c''.restrict hV'V) j₀]`. Establish `h1 : H₁.ideal ⟨V', hV'⟩ ≤ (maxContactIdeal k p A μ).ideal ⟨V', hV'⟩` using `ideal_le_of_ideal_le_of_le k p H₁ (maxContactIdeal k p A μ) hU₁ hV' (le_trans hV'V hVU₁) hM₁`. Use `h1 ?_` and prove the remaining obligations. Rewrite using `[hH₁id]`.
+
+Conclude with `Ideal.mem_span_singleton_self _`. Establish `hmcc₂ : IsMaxContactCoord k p A μ c₂ j₀`. Rewrite using `[isMaxContactCoord_iff_coord_mem k p A μ hV' c₂ j₀]`. Establish `h1 : H₂.ideal ⟨V', hV'⟩ ≤ (maxContactIdeal k p A μ).ideal ⟨V', hV'⟩` using `ideal_le_of_ideal_le_of_le k p H₂ (maxContactIdeal k p A μ) hU₂ hV' (le_trans hV'V hVU₂) hM₂`. Use `h1 ?_` and prove the remaining obligations.
+
+Rewrite using `[hgV']`. Conclude with `Ideal.mem_span_singleton_self _`. Establish `hgerm₁ : (X.presheaf.germ V' x hxV').hom ((c''.restrict hV'V).coord j₀) ∈ IsLocalRing.maximalIdeal ↑(X.presheaf.stalk x)`. Establish `hmem : (c''.restrict hV'V).coord j₀ ∈ H₁.ideal ⟨V', hV'⟩`. Rewrite using `[hH₁id]`.
+
+Conclude with `Ideal.mem_span_singleton_self _`. Establish `h2` using `germ_mem_stalkIdeal H₁ x ⟨V', hV'⟩ hxV' hmem`. Conclude with `(mem_support_iff_stalkIdeal_le_maximalIdeal H₁ x).mp hxH₁ h2`. Establish `hgerm₂ : (X.presheaf.germ V' x hxV').hom (c₂.coord j₀) ∈ IsLocalRing.maximalIdeal ↑(X.presheaf.stalk x)`. Establish `hmem : c₂.coord j₀ ∈ H₂.ideal ⟨V', hV'⟩`.
+
+Rewrite using `[hgV']`. Conclude with `Ideal.mem_span_singleton_self _`. Establish `h2` using `germ_mem_stalkIdeal H₂ x ⟨V', hV'⟩ hxV' hmem`. Conclude with `(mem_support_iff_stalkIdeal_le_maximalIdeal H₂ x).mp hxH₂ h2`. Establish `hcoords : ∀ j : Fin n', j ≠ j₀ → c₂.coord j = (c''.restrict hV'V).coord j`.
+
+Introduce `j hj`. Rewrite using `[hc₂other j hj, EtaleChart.coord_restrict c'' hV'V j]`. Establish `hlabV' : ∀ i : ℕ, ∀ hi : i < N.length, (γ i = none → restrictIdeal (N[i]'hi) V' = ⊤) ∧ ∀ j : Fin n', γ i = some j → restrictIdeal (N[i]'hi) V' = (c''.restrict hV'V).coordIdeal {j}`. Introduce `i hi`. Use `⟨fun hn => restrictIdeal_eq_top_of_le (N[i]'hi) hV'V ((hlab'' i hi).1 hn), ?_⟩` and prove the remaining obligations.
+
+Introduce `j hj`. Conclude with `restrictIdeal_eq_restrict_coordIdeal_of_le hV'V c'' (N[i]'hi) {j} ((hlab'' i hi).2 j hj)`. Conclude with `⟨V', hV', hxV', n', c''.restrict hV'V, c₂, γ, j₀, hH₁V', hH₂V', hmcc₁, hmcc₂, hgerm₁, hgerm₂, hcoords, hlabV', hγinj, hγj₀⟩`.
+-/
 theorem exists_common_charts_of_isMaxContactHypersurface (A : X.IdealSheafData) {μ : ℕ}
     (hμ : 1 ≤ μ) (N : List X.IdealSheafData) (H₁ H₂ : X.IdealSheafData)
     (hsnc₁ : InStrictNormalCrossingPosition p (H₁ :: N)) (hsnc₂ : InStrictNormalCrossingPosition p (H₂ :: N))

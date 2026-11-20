@@ -13,11 +13,17 @@ section Vals
 
 variable {O : Type} [CommRing O] {X : Type} [AddCommGroup X] [Module O X]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem InvFun.evalZ_comb [Module.Finite O X] (a : ℕ) (ψ : InvFun O) (b : ℕ) (φ : InvFun O)
     (β : LinearMap.BilinForm ℤ X) : (comb a ψ b φ).evalZ β = a * ψ.evalZ β + b * φ.evalZ β := rfl
 
 end Vals
 
+/- English proof (translation)
+Take `⟨n, r, hr⟩` from `Module.Finite.exists_fin' O X`. Rewrite using `[(resInt O φ).eval_eq hr]`. Conclude with `φ.eval_comp (r := r.restrictScalars ℤ) hr B`.
+-/
 theorem InvFun.eval_resInt {O : Type} [CommRing O] [Module.Finite ℤ O] (φ : InvFun ℤ) {X : Type} [AddCommGroup X]
     [Module O X] [Module.Finite O X] [Module.Finite ℤ X] (B : X → X → ℝ) : (resInt O φ).eval X B = φ.eval X B := by
   obtain ⟨n, r, hr⟩ := Module.Finite.exists_fin' O X

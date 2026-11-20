@@ -14,6 +14,11 @@ namespace GlobalTheory.LocalFactorUnitary
 
 variable {D : D7}
 
+/- English proof (translation)
+Take `⟨hsplit, hcomm⟩` from `(GlobalTheory.T.adelicUnitaryComponentAtPlace_laws D).2 S T p g h u`. Establish `hz : idem D p • actO S T g h u = 0`. Rewrite using `[← wAt_eq_smul, hcomm, hu]`. Unfold `actO`. Simplify using the standard rewrite rules.
+
+Establish `hrest : (1 - idem D p) • u = u`. Rewrite using `[sub_smul, one_smul, ← wAt_eq_smul, hu, sub_zero]`. Rewrite using `[hsplit, hz, hrest, zero_add]`.
+-/
 theorem actO_gAt_of_wAt_eq_zero (S T : HSp D) (p : Place D) (g : GA D S) (h : GA D T) (u : WO S T)
     (hu : wAt p u = 0) : actO S T (gAt S p g) (gAt T p h) u = u := by
   obtain ⟨hsplit, hcomm⟩ := (GlobalTheory.T.adelicUnitaryComponentAtPlace_laws D).2 S T p g h u
@@ -25,6 +30,13 @@ theorem actO_gAt_of_wAt_eq_zero (S T : HSp D) (p : Place D) (g : GA D S) (h : GA
     rw [sub_smul, one_smul, ← wAt_eq_smul, hu, sub_zero]
   rw [hsplit, hz, hrest, zero_add]
 
+/- English proof (translation)
+Establish `h0 : (θ τ) ((infPart D) (idem D p)) = 0`. Take `⟨-, -, -, hfin, -, -, hinf⟩` from `GlobalTheory.T.cmAdeleIdempotentOfPlace_properties D`. Break down `p with v | τ'` into its components or cases. Rewrite using `[(hfin v).1, map_zero]`. Establish `hne : τ' ≠ τ` using `fun e => hτ (by subst e; rfl)`.
+
+Conclude with `(hinf θ hθ τ).2 τ' hne`. Unfold `compAt`. Rewrite using `[((GlobalTheory.T.adelicUnitaryComponentAtPlace_laws D).1 V p g).1]`. Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, map_add, map_mul, map_sub, map_one, h0, zero_mul, zero_add, sub_zero, one_mul]`.
+
+Rewrite using `[Matrix.one_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem compAt_mt_gAt {θ : InfFam D} (hθ : IsInfFam θ) (V : HSp D) (p : Place D) (g : GA D V) (τ : D.what₂.Tau)
     (hτ : Sum.inr τ ≠ p) : compAt θ τ (Formalism.L2.Theta.mt V (gAt V p g)) = 1 := by
   have h0 : (θ τ) ((infPart D) (idem D p)) = 0 := by
@@ -41,6 +53,19 @@ theorem compAt_mt_gAt {θ : InfFam D} (hθ : IsInfFam θ) (V : HSp D) (p : Place
   rw [Matrix.one_apply, Matrix.one_apply]
   split_ifs <;> simp
 
+/- English proof (translation)
+Introduce `D ψ θ S T χS χT om sS sT ΛS ΛT hW hθ p f hf g h`. Unfold `IsLocal IsLatVac IsFockVacAt at hf ⊢`. Take `⟨hth, ⟨hdbl, hhalf⟩, hfock⟩` from `hf`. Establish `hoff : ∀ u ∈ latO S T (ΛS : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E)) (fun v => Sum.inl v ≠ p), wAt p u = 0` using `fun u hu => (GlobalTheory.T.weilMatrixComponentAtPlace_mem_completedLattice D S T ΛS ΛT _ u hu p).2.2 (fun _ hv => hv)`. Use `⟨hW.om_pres _ f hth, ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations.
+
+Introduce `u hu`. Establish `hw2 : wAt p (2 • u) = 0`. Rewrite using `[wAt_eq_smul, smul_comm, ← wAt_eq_smul, hoff u hu, smul_zero]`. Establish `key` using `hW.om_heis (gAt S p g) (gAt T p h) (2 • u) f hth`. Rewrite `key` using `[hdbl u hu, actO_gAt_of_wAt_eq_zero S T p g h (2 • u) hw2]`.
+
+Conclude with `key.symm`. Introduce `e he u hu hu'`. Establish `key` using `hW.om_heis (gAt S p g) (gAt T p h) u f hth`. Rewrite `key` using `[hhalf e he u hu hu', actO_gAt_of_wAt_eq_zero S T p g h u (hoff u hu)]`. Conclude with `key.symm`.
+
+Introduce `τ hτ z`. Establish `hT1 : compAt θ τ (Formalism.L2.Theta.mt T (gAt T p h)) = 1` using `compAt_mt_gAt hθ T p h τ hτ`. Establish `hS1 : compAt θ τ (Formalism.L2.Theta.mt S (gAt S p g)⁻¹) = 1`. Rewrite using `[← gAt_inv]`. Conclude with `compAt_mt_gAt hθ S p g⁻¹ τ hτ`.
+
+Establish `e1` using `GlobalTheory.WeilVacMove.om_dRho hW hθ (gAt S p g) (gAt T p h) τ z hth`. Establish `e2` using `GlobalTheory.WeilVacMove.om_dRho hW hθ (gAt S p g) (gAt T p h) τ (cplxO (sS τ) (sT τ) z) hth`. Rewrite `e1`, `e2` using `[hT1, hS1, Matrix.one_mul, Matrix.mul_one]`. Establish `hz` using `hfock τ hτ z`. Unfold `annih at hz ⊢`.
+
+Rewrite using `[← e1, ← e2, ← map_smul, ← map_add, hz, map_zero]`.
+-/
 theorem isLocal_om_gAt : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D) (χS χT : (AE D)ˣ →* Circle) (om : OmT S T) (sS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ) (sT : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ) (ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)) (ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)), IsWeilDatumO ψ S T χS χT om → IsInfFam θ → ∀ (p : Place D) (f : WO S T → ℂ), IsLocal ψ θ S T sS sT ΛS ΛT p f → ∀ g h, IsLocal ψ θ S T sS sT ΛS ΛT p (om (gAt S p g, gAt T p h) f) := by
   intro D ψ θ S T χS χT om sS sT ΛS ΛT hW hθ p f hf g h
   unfold IsLocal IsLatVac IsFockVacAt at hf ⊢

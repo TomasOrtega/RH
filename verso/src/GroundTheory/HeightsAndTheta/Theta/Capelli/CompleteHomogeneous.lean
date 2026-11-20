@@ -9,6 +9,17 @@ open MvPolynomial Finset
 
 variable {σ : Type*} [Fintype σ] [DecidableEq σ]
 
+/- English proof (translation)
+Rewrite using `[hsymm, map_sum]`. Use `Finset.sum_bij' (fun s _ => Multiset.toFinsupp s.1) (fun l hl => ⟨Finsupp.toMultiset l, by` and prove the remaining obligations. Rewrite using `[Finsupp.card_toMultiset, Finsupp.sum_fintype _ _ (by simp)]`. Conclude with `(mem_finsuppAntidiag.mp hl).1⟩) ?_ ?_ ?_ ?_ ?_`. Introduce `s _`.
+
+Rewrite using `[mem_finsuppAntidiag]`. Use `⟨?_, by simp⟩` and prove the remaining obligations. Use `Multiset.toFinsupp_sum_eq s.1` as an intermediate fact. Rewrite `this` using `[Finsupp.sum_fintype _ _ (fun _ => rfl)]`. Conclude with `this.trans s.2`.
+
+Introduce `l _`. Conclude with `Finset.mem_univ _`. Introduce `s _ ext1`. Simplify using the standard rewrite rules. Introduce `l _`.
+
+Simplify using the standard rewrite rules. Introduce `s _`. Rewrite using `[map_multiset_prod, Multiset.map_map, Finset.prod_multiset_map_count]`. Rewrite using `[Finset.prod_subset (Finset.subset_univ _)]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Simplify using `[Multiset.toFinsupp_apply]`. Introduce `i _ hi`. Rewrite `hi` using `[Multiset.mem_toFinset]`. Rewrite using `[Multiset.count_eq_zero.mpr hi, pow_zero]`.
+-/
 theorem eval_hsymm (x : σ → ℂ) (b : ℕ) :
     eval x (hsymm σ ℂ b) = ∑ l ∈ finsuppAntidiag (univ : Finset σ) b, ∏ i, x i ^ l i := by
   rw [hsymm, map_sum]
@@ -40,12 +51,18 @@ theorem eval_hsymm (x : σ → ℂ) (b : ℕ) :
 
 noncomputable def hSeries (x : σ → ℂ) : PowerSeries ℂ := PowerSeries.mk fun b => eval x (hsymm σ ℂ b)
 
+/- English proof (translation)
+Use extensionality with `b`. Rewrite using `[hSeries, PowerSeries.coeff_mk, eval_hsymm, PowerSeries.coeff_prod]`. Simplify using `[PowerSeries.coeff_mk]`.
+-/
 theorem hSeries_eq_prod (x : σ → ℂ) :
     hSeries x = ∏ i, PowerSeries.mk fun k => x i ^ k := by
   ext b
   rw [hSeries, PowerSeries.coeff_mk, eval_hsymm, PowerSeries.coeff_prod]
   simp [PowerSeries.coeff_mk]
 
+/- English proof (translation)
+Use extensionality with `k`. Rewrite using `[sub_mul, one_mul, map_sub, mul_assoc, PowerSeries.coeff_C_mul]`. Break down `k with _ | k` into its components or cases. Simplify using the standard rewrite rules. Rewrite using `[PowerSeries.coeff_succ_X_mul, PowerSeries.coeff_mk, PowerSeries.coeff_mk, PowerSeries.coeff_one, if_neg (Nat.succ_ne_zero k), pow_succ, mul_comm, sub_self]`.
+-/
 theorem one_sub_mul_geom (a : ℂ) :
     (1 - PowerSeries.C a * PowerSeries.X) * PowerSeries.mk (fun k => a ^ k) = 1 := by
   ext k
@@ -55,11 +72,21 @@ theorem one_sub_mul_geom (a : ℂ) :
   · rw [PowerSeries.coeff_succ_X_mul, PowerSeries.coeff_mk, PowerSeries.coeff_mk, PowerSeries.coeff_one,
       if_neg (Nat.succ_ne_zero k), pow_succ, mul_comm, sub_self]
 
+/- English proof (translation)
+Rewrite using `[hSeries_eq_prod, ← Finset.prod_mul_distrib]`. Simplify using `[one_sub_mul_geom]`.
+-/
 theorem prod_one_sub_mul_hSeries (x : σ → ℂ) :
     (∏ i, (1 - PowerSeries.C (x i) * PowerSeries.X)) * hSeries x = 1 := by
   rw [hSeries_eq_prod, ← Finset.prod_mul_distrib]
   simp [one_sub_mul_geom]
 
+/- English proof (translation)
+Establish `h : ∏ i, (1 - PowerSeries.C (x i) * PowerSeries.X) = ∏ i, (PowerSeries.C (-x i) * PowerSeries.X + 1)`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_neg, neg_mul, ← sub_eq_neg_add]`. Rewrite using `[h, Finset.prod_add]`. Simplify using `only [Finset.prod_const_one, mul_one, Finset.prod_mul_distrib, ← map_prod, Finset.prod_const, map_sum, PowerSeries.coeff_C_mul_X_pow]`.
+
+Rewrite using `[esymm, map_sum, Finset.mul_sum, Finset.sum_ite, Finset.sum_const_zero, add_zero]`. Rewrite using `[Finset.powersetCard_eq_filter]`. Use `Finset.sum_congr (by ext t; simp [eq_comm]) fun t ht => ?_` and prove the remaining obligations. Simplify using `only [Finset.mem_filter] at ht`. Rewrite using `[map_prod]`.
+
+Simplify using `only [eval_X]`. Establish `hneg : ∀ i, -x i = (-1) * x i` using `fun i => by ring`. Repeatedly rewrite using `[hneg, Finset.prod_mul_distrib, Finset.prod_const, ht.2]`.
+-/
 theorem coeff_prod_one_sub (x : σ → ℂ) (s : ℕ) :
     PowerSeries.coeff s (∏ i, (1 - PowerSeries.C (x i) * PowerSeries.X)) =
       (-1) ^ s * eval x (esymm σ ℂ s) := by
@@ -91,6 +118,9 @@ open MvPolynomial Finset
 
 variable {σ : Type*} [Fintype σ] [DecidableEq σ]
 
+/- English proof (translation)
+Establish `h` using `congrArg (PowerSeries.coeff m) (prod_one_sub_mul_hSeries x)`. Rewrite `h` using `[PowerSeries.coeff_mul, PowerSeries.coeff_one, Finset.Nat.sum_antidiagonal_eq_sum_range_succ (fun a b => PowerSeries.coeff a (∏ i, (1 - PowerSeries.C (x i) * PowerSeries.X)) * PowerSeries.coeff b (hSeries x))]`. Rewrite using `[← h]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[coeff_prod_one_sub, hSeries, PowerSeries.coeff_mk]`.
+-/
 theorem sum_esymm_mul_hsymm (x : σ → ℂ) (m : ℕ) :
     ∑ s ∈ Finset.range (m + 1), (-1) ^ s * eval x (esymm σ ℂ s) * eval x (hsymm σ ℂ (m - s)) =
       if m = 0 then 1 else 0 := by

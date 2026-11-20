@@ -25,12 +25,18 @@ section Field
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H} {l : Level H}
   {Xo : Moduli Dw l} {c c' : Coeff l} (hle : c.F ≤ c'.F) {r : ℕ}
 
+/- English proof (translation)
+Introduce `S _ _ _ h y`. Rewrite using `[((GlobalTheory.T.ruleBaseChange_section_values_semilinear E H Dw l Xo c c' hle).1 a n f hf).2 S h y]`. Simplify using the standard rewrite rules.
+-/
 theorem isBC_rulBC {a : (E →+* ℂ) × ℕ → ℕ} {n : ℕ} {f : Rul Xo c} (hf : f ∈ sec Xo c a n) :
     IsBC hle (rulBC hle f) (fun _ : Fin 1 => (1 : c'.F)) (fun _ => f) := by
   intro S _ _ _ h y
   rw [((GlobalTheory.T.ruleBaseChange_section_values_semilinear E H Dw l Xo c c' hle).1 a n f hf).2 S h y]
   simp
 
+/- English proof (translation)
+Rewrite using `[mem_cusp]`. Use `⟨hf', fun σ' hσ' => ?_⟩` and prove the remaining obligations. Rewrite using `[rdU_unfBC hle U σ' h, laU_unfBC]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (((mem_cusp _ _ _ _ _ _).1 (hfs i)).2 _ hσ')`.
+-/
 theorem mem_cusp_of_isBC (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) {a : (E →+* ℂ) × ℕ → ℕ} {n m : ℕ} {f' : Rul Xo c'}
     {as : Fin m → c'.F} {fs : Fin m → Rul Xo c} (hf' : f' ∈ sec Xo c' a n) (hfs : ∀ i, fs i ∈ cusp Xo c U a n)
     (h : IsBC hle f' as fs) : f' ∈ cusp Xo c' (unfBC hle U) a n := by
@@ -39,6 +45,11 @@ theorem mem_cusp_of_isBC (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) {a : (E →
   rw [rdU_unfBC hle U σ' h, laU_unfBC]
   exact Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (((mem_cusp _ _ _ _ _ _).1 (hfs i)).2 _ hσ')
 
+/- English proof (translation)
+Rewrite `hf'`, the goal using `[mem_cusp]`. Use `⟨hf, fun σ hσ => ?_⟩` and prove the remaining obligations. Take `⟨σ', rfl⟩` from `exists_emb_ext hle σ`. Use `hf'.2 σ' (goodEmb_ext hle hσ rfl)` as an intermediate fact. Rewrite `this` using `[rdU_unfBC hle U σ' h, laU_unfBC, Fin.sum_univ_one, map_one, one_smul]`.
+
+Conclude with `this`.
+-/
 theorem mem_cusp_of_isBC_one (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) {a : (E →+* ℂ) × ℕ → ℕ} {n : ℕ} {f' : Rul Xo c'}
     {f : Rul Xo c} (hf : f ∈ sec Xo c a n) (hf' : f' ∈ cusp Xo c' (unfBC hle U) a n)
     (h : IsBC hle f' (fun _ : Fin 1 => (1 : c'.F)) (fun _ => f)) : f ∈ cusp Xo c U a n := by
@@ -57,10 +68,18 @@ variable {D : D7} {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.
   {Xo : Moduli Dw l} {c c' : Coeff l} (hle : c.F ≤ c'.F) {r : ℕ} {G : Type} [Group G]
   {lev : G → (Dw.La →ₗ[𝓞 D.host.E] Dw.La) × (Dw.La →ₗ[𝓞 D.host.E] Dw.La)}
 
+/- English proof (translation)
+The claim follows from `actL_mem _ _ _ _ hL.total hL.nat hL.bor _ g hf`.
+-/
 theorem actLev_mem_sec (hL : ActLev (Xo := Xo) c lev) (g : G) {a : (D.host.E →+* ℂ) × ℕ → ℕ} {n : ℕ} {f : Rul Xo c}
     (hf : f ∈ sec Xo c a n) : actLev c lev g f ∈ sec Xo c a n :=
   actL_mem _ _ _ _ hL.total hL.nat hL.bor _ g hf
 
+/- English proof (translation)
+Take `⟨hL', hB⟩` from `actLev_and_actBC D H Dw l Xo c c' hle G lev hL`. Prove the components needed by the constructor for the conclusion. Introduce `h f' hf'`. Take `⟨m, as, fs, hfs, hBC⟩` from `GlobalTheory.SecFieldChange.cuspBC_holds hle U a n f' hf'`. Conclude with `mem_cusp_of_isBC hle U (actLev_mem_sec hL' g hf'.1) (fun i => h _ (hfs i)) (hB a n g m as fs f' hf'.1 (fun i => (hfs i).1) hBC)`.
+
+Introduce `h f hf`. Establish `h1` using `((rulBC_cusp _ H Dw l Xo c c' hle r U a n f hf.1).2).2 hf`. Conclude with `mem_cusp_of_isBC_one hle U (actLev_mem_sec hL g hf.1) (h _ h1) (hB a n g 1 _ _ _ h1.1 (fun _ => hf.1) (isBC_rulBC hle hf.1))`.
+-/
 theorem keeps_iff (hL : ActLev (Xo := Xo) c lev) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (g : G)
     (a : (D.host.E →+* ℂ) × ℕ → ℕ) (n : ℕ) :
     (∀ f ∈ cusp Xo c U a n, actLev c lev g f ∈ cusp Xo c U a n) ↔
@@ -76,6 +95,13 @@ theorem keeps_iff (hL : ActLev (Xo := Xo) c lev) (U : ∀ σ : c.F →+* ℂ, Un
     exact mem_cusp_of_isBC_one hle U (actLev_mem_sec hL g hf.1) (h _ h1)
       (hB a n g 1 _ _ _ h1.1 (fun _ => hf.1) (isBC_rulBC hle hf.1))
 
+/- English proof (translation)
+Take `⟨hL', hB⟩` from `actLev_and_actBC D H Dw l Xo c c' hle G lev hL`. Prove the components needed by the constructor for the conclusion. Introduce `h f' hf'`. Take `⟨m, as, fs, hfs, hBC⟩` from `GlobalTheory.SecFieldChange.cuspBC_holds hle U a n f' hf'`. Rewrite using `[rdU_unfBC hle U σ' hBC, rdU_unfBC hle U σ' (hB a n g m as fs f' hf'.1 (fun i => (hfs i).1) hBC), map_sum, map_sum]`.
+
+Conclude with `Finset.sum_congr rfl fun i _ => by rw [map_smul, map_smul, h _ (hfs i)]`. Introduce `h f hf`. Establish `h1` using `((rulBC_cusp _ H Dw l Xo c c' hle r U a n f hf.1).2).2 hf`. Establish `h2` using `h _ h1`. Establish `hBC` using `isBC_rulBC hle hf.1`.
+
+Rewrite `h2` using `[rdU_unfBC hle U σ' hBC, rdU_unfBC hle U σ' (hB a n g 1 _ _ _ h1.1 (fun _ => hf.1) hBC), Fin.sum_univ_one, Fin.sum_univ_one, map_one, one_smul, one_smul]`. Conclude with `h2`.
+-/
 theorem reading_iff (hL : ActLev (Xo := Xo) c lev) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (σ' : c'.F →+* ℂ) (g : G)
     (a : (D.host.E →+* ℂ) × ℕ → ℕ) (n : ℕ) (Φ Ψ : FDSec (U (σ'.comp (incF c c' hle))).X →ₗ[ℂ] ℂ) :
     (∀ f ∈ cusp Xo c U a n, Φ (rdU (U _) (actLev c lev g f)) = Ψ (rdU (U _) f)) ↔
@@ -95,6 +121,11 @@ theorem reading_iff (hL : ActLev (Xo := Xo) c lev) (U : ∀ σ : c.F →+* ℂ, 
       Fin.sum_univ_one, map_one, one_smul, one_smul] at h2
     exact h2
 
+/- English proof (translation)
+Establish `h1 : ∀ a, Xo.univ.etaA (g.2 a) = Xo.univ.etaA (g'.2 a)` using `fun a => by`. Establish `e` using `Xo.univ.etaA_ker (g.2 a)`. Establish `e'` using `Xo.univ.etaA_ker (g'.2 a)`. Rewrite `e`, `e'` using `[hA, one_smul]`. Conclude with `e.trans e'.symm`.
+
+Unfold `levR IsLevMove`. Simplify using `only [h, h1]`.
+-/
 theorem levR_iff (hA : l.A = 1) {g g' : (Dw.La →ₗ[𝓞 D.host.E] Dw.La) × (Dw.La →ₗ[𝓞 D.host.E] Dw.La)} (h : g.1 = g'.1)
     {S : Type} [CommRing S] [Algebra c.F S] (y y' : FrPt Xo c S) : levR g y y' ↔ levR g' y y' := by
   have h1 : ∀ a, Xo.univ.etaA (g.2 a) = Xo.univ.etaA (g'.2 a) := fun a => by
@@ -105,6 +136,9 @@ theorem levR_iff (hA : l.A = 1) {g g' : (Dw.La →ₗ[𝓞 D.host.E] Dw.La) × (
   unfold levR IsLevMove
   simp only [h, h1]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `S _ _ g y y'`. Conclude with `propext (levR_iff hA (h g) y y')`.
+-/
 theorem levActR_eq (hA : l.A = 1) {lev' : G → (Dw.La →ₗ[𝓞 D.host.E] Dw.La) × (Dw.La →ₗ[𝓞 D.host.E] Dw.La)}
     (h : ∀ g, (lev g).1 = (lev' g).1) :
     (fun {S : Type} [CommRing S] [Algebra c.F S] (g : G) (y y' : FrPt Xo c S) => levActR (Xo := Xo) (c := c) lev g y y') =
@@ -112,12 +146,18 @@ theorem levActR_eq (hA : l.A = 1) {lev' : G → (Dw.La →ₗ[𝓞 D.host.E] Dw.
   funext S _ _ g y y'
   exact propext (levR_iff hA (h g) y y')
 
+/- English proof (translation)
+Use function extensionality and compare the values at `g`. Unfold `actLev`. Rewrite using `[levActR_eq hA h]`.
+-/
 theorem actLev_congr (hA : l.A = 1) {lev' : G → (Dw.La →ₗ[𝓞 D.host.E] Dw.La) × (Dw.La →ₗ[𝓞 D.host.E] Dw.La)}
     (h : ∀ g, (lev g).1 = (lev' g).1) : actLev (Xo := Xo) c lev = actLev c lev' := by
   funext g
   unfold actLev
   rw [levActR_eq hA h]
 
+/- English proof (translation)
+Unfold `ActLev`. Rewrite using `[levActR_eq hA h]`.
+-/
 theorem actLaws_congr (hA : l.A = 1) {lev' : G → (Dw.La →ₗ[𝓞 D.host.E] Dw.La) × (Dw.La →ₗ[𝓞 D.host.E] Dw.La)}
     (h : ∀ g, (lev g).1 = (lev' g).1) : ActLev (Xo := Xo) c lev ↔ ActLev (Xo := Xo) c lev' := by
   unfold ActLev
@@ -129,6 +169,19 @@ section Weights
 
 variable {D : D7}
 
+/- English proof (translation)
+Establish `hex : ex (T.Q.Dw j) a n = ex (T.Q.Dw j) a' n`. Use function extensionality and compare the values at `x`. Break down `x with _ | ⟨τ, i⟩` into its components or cases. Both sides reduce to the same expression. Conclude with `ha τ i i.2`.
+
+Establish `hla : ∀ σ, GoodEmb T.Q.c σ → laU (T.U j σ) a n = laU (T.U j σ) a' n`. Introduce `σ hσ`. Take `⟨h1, h2, -⟩` from `h.unf j hj σ hσ`. Establish `hs : Function.Surjective (relab (E` using `D.host.E) T.Q.c σ) := Finite.injective_iff_surjective.1 (relab_injective _ σ)`. Use function extensionality and compare the values at `k τ i`.
+
+Establish `hp0` using `(h2 k).1`. Establish `hi` using `i.2`. Establish `hτ : τ.1 (T.Q.H.rt : D.host.E) = T.Q.H.rt0` using `((h2 k).2 τ.1).1 τ.2`. Unfold `laU`. Use `split_ifs with hh`.
+
+Rewrite using `[ha]`. Rewrite using `[Datum.mult, if_pos ((relab_rt_iff _ σ hσ _).1 (by rw [Function.rightInverse_invFun hs]; exact hτ))]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[ha]`. Rewrite using `[Datum.mult, if_neg fun h' => ReciprocityTheory.ChartRestriction.G.PullbackSections.CVA.not_inPsi_both T.Q.H τ.1 ⟨hτ, by`.
+
+Use `(relab_rt_iff _ σ hσ _).2 h'` as an intermediate fact. Rewrite `this` using `[Function.rightInverse_invFun hs]`. Conclude with `this⟩]`. Use linear arithmetic over natural numbers and integers. Use extensionality with `f`.
+
+Rewrite using `[mem_cusp, mem_cusp, sec, sec, hex]`. Conclude with `and_congr_right fun _ => forall_congr' fun σ => forall_congr' fun hσ => by rw [hla σ hσ]`.
+-/
 theorem cuspA_congr {T : Core D} (h : LawsM T) {j : ℕ} (hj : InR D j) {a a' : (D.host.E →+* ℂ) × ℕ → ℕ} (n : ℕ)
     (ha : ∀ τ i, i < (T.Q.Dw j).mult τ → a (τ, i) = a' (τ, i)) : T.cuspA j a n = T.cuspA j a' n := by
   have hex : ex (T.Q.Dw j) a n = ex (T.Q.Dw j) a' n := by
@@ -168,6 +221,13 @@ def wtOf (j : ℕ) {a : (D.host.E →+* ℂ) × ℕ → ℕ} {n : ℕ} (ha : Dom
   n := n
   n_even := ha.2
 
+/- English proof (translation)
+Take `⟨-, -, h1, h2, h3⟩` from `GlobalTheory.WeightExponents.weight_exponents D T.Q h.pins j hj (wtOf j ha)`. Take `⟨hp, hq, -⟩` from `h.pins.2.2.2 j hj`. Use `cuspA_congr h hj n fun τ i hi => ?_` and prove the remaining obligations. Distinguish the cases in `hτ : InPsi T.Q.H τ`. Take `⟨t, rfl⟩` from `(h1 τ).1 hτ`.
+
+Rewrite `hi` using `[Datum.mult, if_pos (show _ = _ from hτ), hp]`. Rewrite using `[(h3 t i).1, ext0, dif_pos hi]`. Both sides reduce to the same expression. Take `⟨t, rfl⟩` from `(h2 τ).1 hτ`. Rewrite `hi` using `[Datum.mult, if_neg (show ¬ _ = _ from hτ), hq]`.
+
+Rewrite using `[(h3 t i).2, ext0, dif_pos hi]`. Both sides reduce to the same expression.
+-/
 theorem cuspA_wtOf {T : Core D} (h : LawsM T) {j : ℕ} (hj : InR D j) {a : (D.host.E →+* ℂ) × ℕ → ℕ} {n : ℕ} (ha : Dom a n) :
     T.cuspA j (wtA (wtOf j ha)) n = T.cuspA j a n := by
   obtain ⟨-, -, h1, h2, h3⟩ := GlobalTheory.WeightExponents.weight_exponents D T.Q h.pins j hj (wtOf j ha)
@@ -190,6 +250,9 @@ section Compare
 variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m}
   {T : CoreJ D} {i : Fin D.R.m}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Nat.le_add_left _ _, i.2⟩`.
+-/
 theorem inR (i : Fin D.R.m) : InR D ((i : ℕ) + 1) := ⟨Nat.le_add_left _ _, i.2⟩
 
 section Second
@@ -207,9 +270,15 @@ def ClauseSmall (cc : Y.U.Comp → ℂ) (a : (D.host.E →+* ℂ) × ℕ → ℕ
   ∀ g : G, ∀ f ∈ T.cuspA ((i : ℕ) + 1) a n, actLev T.Q.c Y.lev g f ∈ T.cuspA ((i : ℕ) + 1) a n ∧
     ∀ κ, IsLift R i g κ → ∀ x, phiSmall Y cc (actLev T.Q.c Y.lev g f) x = chiDetW R i g * phiSmall Y cc f (x * κ)
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem levelEquiv_iff_forall (cc : Y.U.Comp → ℂ) :
     Y.LevelEquiv R cc ↔ ∀ a, Dom a (Vc D i).rank → ClauseBig Y R cc a (Vc D i).rank := Iff.rfl
 
+/- English proof (translation)
+Establish `h1` using `fun g => keeps_iff Y.hle hL (T.U ((i : ℕ) + 1)) g a n`. Establish `h2` using `fun g (κ x : GA D (Wc D i)) => reading_iff Y.hle hL (T.U ((i : ℕ) + 1)) Y.σ' g a n (LinearMap.proj x ∘ₗ adel (Wc D i) Y.dict (muPin (Wc D i) Y.dict Y.mu cc)) (chiDetW R i g • (LinearMap.proj (x * κ) ∘ₗ adel (Wc D i) Y.dict (muPin (Wc D i) Y.dict Y.mu cc)))`. Conclude with `⟨fun h g f hf => ⟨(h1 g).1 (fun f hf => (h g f hf).1) f hf, fun κ hκ x => (h2 g κ x).1 (fun f hf => (h g f hf).2 κ hκ x) f hf⟩, fun h g f hf => ⟨(h1 g).2 (fun f hf => (h g f hf).1) f hf, fun κ hκ x => (h2 g κ x).2 (fun f hf => (h g f hf).2 κ hκ x) f hf⟩⟩`.
+-/
 theorem clauseSmall_iff_big (hL : ActLev (Xo := T.Q.Xo ((i : ℕ) + 1)) T.Q.c Y.lev) (cc : Y.U.Comp → ℂ)
     (a : (D.host.E →+* ℂ) × ℕ → ℕ) (n : ℕ) : ClauseSmall Y R cc a n ↔ ClauseBig Y R cc a n := by
   have h1 := fun g => keeps_iff Y.hle hL (T.U ((i : ℕ) + 1)) g a n
@@ -221,6 +290,9 @@ theorem clauseSmall_iff_big (hL : ActLev (Xo := T.Q.Xo ((i : ℕ) + 1)) T.Q.c Y.
     fun h g f hf => ⟨(h1 g).2 (fun f hf => (h g f hf).1) f hf,
       fun κ hκ x => (h2 g κ x).2 (fun f hf => (h g f hf).2 κ hκ x) f hf⟩⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => ⟨h.laws, h.char, h.std, h.chi, h.base, h.half, h.lev, h.act⟩, fun ⟨h1, h2, h3, h4, h5, h6, h7, h8⟩ => ⟨h1, h2, h3, h4, h5, h6, h7, h8, actLev_of_le Y.hle _ h8, GlobalTheory.SecFieldChange.cuspBC_holds Y.hle _, (actLev_and_actBC D _ _ _ _ _ _ Y.hle G _ h8).2⟩⟩`.
+-/
 theorem ties_iff (F : Face D A) : Y.Ties R F ↔
     LawsJ T ∧ R.Char F ∧ VStd D i ∧ T.chiW ((i : ℕ) + 1) T.σ₀ = R.mu0 ((i : ℕ) + 1) ∧
       IsModelBaseFrameFamily (R.MW i (sg0 D A)) (rank_Wc i) (T.x₀ ((i : ℕ) + 1) T.σ₀) ∧ T.Q.l.Mb = ∏ PP ∈ R.Pg, PP.asIdeal ∧
@@ -241,6 +313,9 @@ def rowOf (O : OMDat T.toCore R i Tp tup) : RowDat T G i where
   lev := O.lev2
   hV := O.hV
 
+/- English proof (translation)
+Introduce `_` and use `rfl`.
+-/
 theorem match_rowOf (O : OMDat T.toCore R i Tp tup) : Match O (rowOf O) := fun _ => rfl
 
 def bigCoeff {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E} {l : Level H} (c : Coeff l) : Coeff l where
@@ -286,12 +361,21 @@ def omOf (Y : RowDat T G i) : OMDat T.toCore R i Empty Empty.elim where
   thAd t := t.elim
   Plc t := t.elim
 
+/- English proof (translation)
+Introduce `_` and use `rfl`.
+-/
 theorem match_omOf (Y : RowDat T G i) : Match (omOf R Y) Y := fun _ => rfl
 
 variable {O : OMDat T.toCore R i Tp tup} {Y : RowDat T G i}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem phi_eq (cc : Y.U.Comp → ℂ) (f : T.R ((i : ℕ) + 1)) : O.phi cc f = phiSmall Y cc f := rfl
 
+/- English proof (translation)
+Establish `e : actLev (Xo` using `T.Q.Xo ((i : ℕ) + 1)) T.Q.c Y.lev = actLev T.Q.c O.lev2 := actLev_congr hA hM`. Unfold `ClauseSmall`. Rewrite using `[e]`. Conclude with `⟨fun h g f hf => ⟨(h g _ (hlift g).choose_spec f hf).1, fun k hk x => (h g k hk f hf).2 x⟩, fun h g k hk f hf => ⟨(h g f hf).1, fun x => (h g f hf).2 k hk x⟩⟩`.
+-/
 theorem equivAt_iff_small (hA : T.Q.l.A = 1) (hM : Match O Y) (hlift : ∀ g, ∃ k, IsLift R i g k)
     (κ : WeightFamilies.Wt D ((i : ℕ) + 1)) (cc : Y.U.Comp → ℂ) : O.EquivAt κ cc ↔ ClauseSmall Y R cc (wtA κ) κ.n := by
   have e : actLev (Xo := T.Q.Xo ((i : ℕ) + 1)) T.Q.c Y.lev = actLev T.Q.c O.lev2 := actLev_congr hA hM
@@ -300,11 +384,21 @@ theorem equivAt_iff_small (hA : T.Q.l.A = 1) (hM : Match O Y) (hlift : ∀ g, �
   exact ⟨fun h g f hf => ⟨(h g _ (hlift g).choose_spec f hf).1, fun k hk x => (h g k hk f hf).2 x⟩,
     fun h g k hk f hf => ⟨(h g f hf).1, fun x => (h g f hf).2 k hk x⟩⟩
 
+/- English proof (translation)
+The claim follows from `(equivAt_iff_small hA hM hlift κ cc).trans (clauseSmall_iff_big Y R hL cc _ _)`.
+-/
 theorem equivAt_iff_big (hA : T.Q.l.A = 1) (hM : Match O Y) (hlift : ∀ g, ∃ k, IsLift R i g k)
     (hL : ActLev (Xo := T.Q.Xo ((i : ℕ) + 1)) T.Q.c Y.lev) (κ : WeightFamilies.Wt D ((i : ℕ) + 1)) (cc : Y.U.Comp → ℂ) :
     O.EquivAt κ cc ↔ ClauseBig Y R cc (wtA κ) κ.n :=
   (equivAt_iff_small hA hM hlift κ cc).trans (clauseSmall_iff_big Y R hL cc _ _)
 
+/- English proof (translation)
+Establish `hA : T.Q.l.A = 1` using `h.pins.2.1.2`. Rewrite using `[levelEquiv_iff_forall]`. Prove the components needed by the constructor for the conclusion. Introduce `H a ha`. Establish `h1` using `(equivAt_iff_small hA hM hlift _ cc).1 (H (wtOf _ ha) rfl)`.
+
+Use `(clauseSmall_iff_big Y R hL cc _ _).1 ?_` and prove the remaining obligations. Unfold `ClauseSmall at h1 ⊢`. Rewrite using `[← cuspA_wtOf h (inR i) ha]`. Conclude with `h1`. Introduce `H κ hκ`.
+
+Rewrite using `[equivAt_iff_big hA hM hlift hL, hκ]`. Conclude with `H _ (hκ ▸ dom_wtA κ)`.
+-/
 theorem forall_equivAt_iff (h : LawsM T.toCore) (hM : Match O Y) (hlift : ∀ g, ∃ k, IsLift R i g k)
     (hL : ActLev (Xo := T.Q.Xo ((i : ℕ) + 1)) T.Q.c Y.lev) (cc : Y.U.Comp → ℂ) :
     (∀ κ : WeightFamilies.Wt D ((i : ℕ) + 1), κ.n = (Vc D i).rank → O.EquivAt κ cc) ↔ Y.LevelEquiv R cc := by
@@ -328,12 +422,20 @@ def TiesFirst (F : Face D A) : Prop :=
     IsModelBaseFrameFamily (R.MW i (sg0 D A)) (rank_Wc i) (T.x₀ ((i : ℕ) + 1) T.σ₀) ∧ T.Q.l.Mb = ∏ PP ∈ R.Pg, PP.asIdeal ∧
     LevIs R i (iotaW T i) T.Q.l.M (Mfr T.Q.l) O.lev ∧ ActLev (Xo := T.Q.Xo ((i : ℕ) + 1)) T.Q.c O.lev2
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h1, h2, hP.lift.std, h3, h4, (hP.tuple (Classical.arbitrary Tp)).half.1, hP.lift.lev, hP.act.1⟩`.
+-/
 theorem tiesFirst_of_pins [Nonempty Tp] {F : Face D A} {κ : WeightFamilies.Wt D ((i : ℕ) + 1)} {v₀ : (R.MW i (sg0 D A)).Vec}
     {x₀ : (D.host.E →+* ℂ) → Matrix (Fin D.R.r) (Fin D.R.r) ℂ} (hP : O.Pins κ v₀ (iotaW T i) x₀) (h1 : LawsJ T)
     (h2 : R.Char F) (h3 : T.chiW ((i : ℕ) + 1) T.σ₀ = R.mu0 ((i : ℕ) + 1))
     (h4 : IsModelBaseFrameFamily (R.MW i (sg0 D A)) (rank_Wc i) (T.x₀ ((i : ℕ) + 1) T.σ₀)) : TiesFirst O F :=
   ⟨h1, h2, hP.lift.std, h3, h4, (hP.tuple (Classical.arbitrary Tp)).half.1, hP.lift.lev, hP.act.1⟩
 
+/- English proof (translation)
+Rewrite using `[ties_iff]`. Establish `e : (fun g => (Y.lev g).1) = O.lev` using `funext hM`. Unfold `TiesFirst`. Rewrite using `[e]`. Use `and_congr_right fun h => ?_` and prove the remaining obligations.
+
+Rewrite using `[actLaws_congr (lev := Y.lev) (lev' := O.lev2) h.pins.2.1.2 hM]`.
+-/
 theorem tiesFirst_iff (hM : Match O Y) (F : Face D A) : TiesFirst O F ↔ Y.Ties R F := by
   rw [ties_iff]
   have e : (fun g => (Y.lev g).1) = O.lev := funext hM
@@ -342,10 +444,18 @@ theorem tiesFirst_iff (hM : Match O Y) (F : Face D A) : TiesFirst O F ↔ Y.Ties
   refine and_congr_right fun h => ?_
   rw [actLaws_congr (lev := Y.lev) (lev' := O.lev2) h.pins.2.1.2 hM]
 
+/- English proof (translation)
+The claim follows from `forall_equivAt_iff h.laws.toLawsM hM (fun g => (h.lev g).imp fun _ hk => hk.1) h.act cc`.
+-/
 theorem forall_equivAt_iff_of_ties (hM : Match O Y) {F : Face D A} (h : Y.Ties R F) (cc : Y.U.Comp → ℂ) :
     (∀ κ : WeightFamilies.Wt D ((i : ℕ) + 1), κ.n = (Vc D i).rank → O.EquivAt κ cc) ↔ Y.LevelEquiv R cc :=
   forall_equivAt_iff h.laws.toLawsM hM (fun g => (h.lev g).imp fun _ hk => hk.1) h.act cc
 
+/- English proof (translation)
+Establish `e0 : D.what₂.embLL.comp (algebraMap T.Q.c.F D.what₂.LL) = T.σ₀` using `IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 T.Q.c.F)) (RingHom.ext fun x => (congrArg D.what₂.embLL (fw.alg_eq x)).trans (fw.laws.pins.2.2.1 x))`. Establish `e1 : (sg0 D A).comp (algebraMap T.Q.c.F D.what₂.LL) = T.σ₀`. Rewrite using `[show sg0 D A = D.what₂.embLL from sgAt_mk _ R.hv0, e0]`. Use `⟨tiesFirst_of_pins hP fw.laws hC ?_ ?_, ?_⟩` and prove the remaining obligations. Use `(fw.chiR i D.what₂.embLL (e0 ▸ T.good_σ₀)).2.2.2.2 rfl` as an intermediate fact.
+
+Rewrite `this` using `[e0]`. Then use the resulting hypothesis. Use `fw.x0 i (sg0 D A) (e1 ▸ T.good_σ₀)` as an intermediate fact. Rewrite `this` using `[e1]`. Then use the resulting hypothesis. Rewrite using `[D.sp.V_rank _ (inR i).1 (inR i).2]`. Conclude with `(fw.kap i (D.eTau.symm 1)).2.2`.
+-/
 theorem tiesFirst_of_record [Nonempty Tp] {F : Face D A} {κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)}
     {v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec} (fw : FWTie T R κ v₀) (hC : R.Char F)
     {x₀ : (D.host.E →+* ℂ) → Matrix (Fin D.R.r) (Fin D.R.r) ℂ} (hP : O.Pins (κ i) (v₀ i (sg0 D A)) (iotaW T i) x₀) :
@@ -387,6 +497,11 @@ def RowSecondFrame : Prop :=
     [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F) (F : Face D A) (i : Fin D.R.m) (Y : RowDat T G i),
     Y.Ties R F → Y.EquivFrameAt R
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h D G _ _ Pl0 T0 A T _ R F i Y hY`. Take `⟨cc, h1, h2⟩` from `h D G Pl0 T0 A T R F i _ _ (omOf R Y) ((tiesFirst_iff (match_omOf Y) F).2 hY)`. Conclude with `⟨cc, h1, (forall_equivAt_iff_of_ties (match_omOf Y) hY cc).1 h2⟩`. Introduce `h D G _ _ Pl0 T0 A T _ R F i Tp tup O hO`.
+
+Establish `hY` using `(tiesFirst_iff (match_rowOf O) F).1 hO`. Take `⟨cc, h1, h2⟩` from `h D G Pl0 T0 A T R F i _ hY`. Conclude with `⟨cc, h1, (forall_equivAt_iff_of_ties (match_rowOf O) hY cc).2 h2⟩`.
+-/
 theorem rowFirst_iff : RowFirst ↔ RowSecond := by
   constructor
   · intro h D G _ _ Pl0 T0 A T _ R F i Y hY
@@ -397,6 +512,11 @@ theorem rowFirst_iff : RowFirst ↔ RowSecond := by
     obtain ⟨cc, h1, h2⟩ := h D G Pl0 T0 A T R F i _ hY
     exact ⟨cc, h1, (forall_equivAt_iff_of_ties (match_rowOf O) hY cc).2 h2⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h D G _ _ Pl0 T0 A T _ R F i Y hY`. Take `⟨cc, h1, h0, h2⟩` from `h D G Pl0 T0 A T R F i _ _ (omOf R Y) ((tiesFirst_iff (match_omOf Y) F).2 hY)`. Conclude with `⟨cc, h1, h0, (forall_equivAt_iff_of_ties (match_omOf Y) hY cc).1 h2⟩`. Introduce `h D G _ _ Pl0 T0 A T _ R F i Tp tup O hO`.
+
+Establish `hY` using `(tiesFirst_iff (match_rowOf O) F).1 hO`. Take `⟨cc, h1, h0, h2⟩` from `h D G Pl0 T0 A T R F i _ hY`. Conclude with `⟨cc, h1, h0, (forall_equivAt_iff_of_ties (match_rowOf O) hY cc).2 h2⟩`.
+-/
 theorem rowFirstFrame_iff : RowFirstFrame ↔ RowSecondFrame := by
   constructor
   · intro h D G _ _ Pl0 T0 A T _ R F i Y hY
@@ -407,12 +527,21 @@ theorem rowFirstFrame_iff : RowFirstFrame ↔ RowSecondFrame := by
     obtain ⟨cc, h1, h0, h2⟩ := h D G Pl0 T0 A T R F i _ hY
     exact ⟨cc, h1, h0, (forall_equivAt_iff_of_ties (match_rowOf O) hY cc).2 h2⟩
 
+/- English proof (translation)
+The claim follows from `rowFirstFrame_iff.2 fun D G _ _ Pl0 T0 A T _ R F i Y hY => h D G Pl0 T0 A _ R F T i Y hY`.
+-/
 theorem rowFirstFrame_of_equivRow (h : EquivRow) : RowFirstFrame :=
   rowFirstFrame_iff.2 fun D G _ _ Pl0 T0 A T _ R F i Y hY => h D G Pl0 T0 A _ R F T i Y hY
 
+/- English proof (translation)
+The claim follows from `rowFirst_iff.2 fun D G _ _ Pl0 T0 A T _ R F i Y hY => h D G Pl0 T0 A _ R F T i Y hY`.
+-/
 theorem rowFirst_of_equivRowBare (h : EquivRowBare) : RowFirst :=
   rowFirst_iff.2 fun D G _ _ Pl0 T0 A T _ R F i Y hY => h D G Pl0 T0 A _ R F T i Y hY
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ _ _ _ _ _ _ _ _ _ F _ => ⟨fun _ _ O => match_rowOf O, match_omOf, fun _ _ _ _ hM => ⟨tiesFirst_iff hM F, fun h => ⟨fun cc κ => equivAt_iff_big h.laws.pins.2.1.2 hM (fun g => (h.lev g).imp fun _ hk => hk.1) h.act κ cc, forall_equivAt_iff_of_ties hM h, exists_congr fun cc => …`.
+-/
 theorem equivariance_typings_equiv :
     (∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : FamIn D.what₂.LL G Pl0 T0 D.R.m) (T : CoreJ D)
       [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F) (F : Face D A) (i : Fin D.R.m),
@@ -437,6 +566,9 @@ theorem equivariance_typings_equiv :
         exists_congr fun cc => and_congr_right fun _ => and_congr_right fun _ => forall_equivAt_iff_of_ties hM h cc⟩⟩⟩,
     rowFirst_iff, rowFirstFrame_iff, rowFirst_of_equivRowBare, rowFirstFrame_of_equivRow⟩
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `tiesFirst_of_record fw hC hP.2`. Take `⟨cc, h3, h4, h5⟩` from `rowFirstFrame_of_equivRow h D G Pl0 T0 A T R F i _ _ (O i) h1`. Conclude with `⟨cc, h3, h4, h5 _ h2⟩`.
+-/
 theorem equivAt_record_of_equivRow (h : EquivRow) {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type}
     {A : FamIn D.what₂.LL G Pl0 T0 D.R.m} {T : CoreJ D} [Algebra T.Q.c.F D.what₂.LL] {R : RealDat D A T.Q.c.F} {F : Face D A}
     {κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)} {v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec}

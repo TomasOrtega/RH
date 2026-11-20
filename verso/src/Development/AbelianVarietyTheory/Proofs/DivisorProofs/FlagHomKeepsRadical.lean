@@ -9,6 +9,11 @@ set_option autoImplicit false
 
 namespace GlobalTheory.FlagQ
 
+/- English proof (translation)
+Establish `hd : Order.krullDim (TopologicalSpace.IrreducibleCloseds B.X) ≤ 0`. Use `B.topologicalKrullDim_eq` as an intermediate fact. Rewrite `this` using `[h]`. Conclude with `this.le`. Establish `hm` using `Order.krullDim_nonpos_iff_forall_isMax.1 hd ⟨closure {z}, isIrreducible_singleton.closure, isClosed_closure⟩`.
+
+Establish `hle` using `hm (b := ⟨Set.univ, IrreducibleSpace.isIrreducible_univ _, isClosed_univ⟩) (Set.subset_univ _)`. Establish `hz : IsGenericPoint z (Set.univ : Set B.X)` using `Set.eq_univ_of_univ_subset hle`. Conclude with `hz.eq (genericPoint_spec B.X)`.
+-/
 theorem eq_genericPoint_of_dim_zero {F : Type} [Field F] (B : GlobalTheory.ProjVar.Var F) (h : B.dim = 0) (z : B.X) :
     z = genericPoint B.X := by
   have hd : Order.krullDim (TopologicalSpace.IrreducibleCloseds B.X) ≤ 0 := by
@@ -21,6 +26,11 @@ theorem eq_genericPoint_of_dim_zero {F : Type} [Field F] (B : GlobalTheory.ProjV
   have hz : IsGenericPoint z (Set.univ : Set B.X) := Set.eq_univ_of_univ_subset hle
   exact hz.eq (genericPoint_spec B.X)
 
+/- English proof (translation)
+Introduce `Y φ h z g hg`. Establish `hall (x : (GlobalTheory.ProjVar.proj ℚ 0).Fn) : x ∈ (GlobalTheory.FlagBundle.ratOf (GlobalTheory.ProjVar.proj ℚ 0)).O (GlobalTheory.FlagQ.toPt Y z)`. Establish `e : GlobalTheory.FlagQ.toPt Y z = genericPoint (GlobalTheory.FlagBundle.ratOf (GlobalTheory.ProjVar.proj ℚ 0)).Z` using `eq_genericPoint_of_dim_zero (GlobalTheory.ProjVar.proj ℚ 0) rfl _`. Establish `e'` using `(congrArg (GlobalTheory.FlagBundle.ratOf (GlobalTheory.ProjVar.proj ℚ 0)).O e).trans (GlobalTheory.FlagBundle.ratOf (GlobalTheory.ProjVar.proj ℚ 0)).O_genericPoint`. Conclude with `e'.ge trivial`.
+
+Use `⟨(map_ne_zero φ).2 hg.1, h.map_mem_O (hall g), fun x n hx _ => ?_⟩` and prove the remaining obligations. Rewrite using `[div_eq_mul_inv, ← map_inv₀]`. Conclude with `mul_mem hx (h.map_mem_O (hall g⁻¹))`.
+-/
 theorem keepsRad_toPt : ∀ (Y : GlobalTheory.ProjVar.Var ℚ) (φ : (GlobalTheory.ProjVar.proj ℚ 0).Fn →ₐ[ℚ] Y.Fn), (GlobalTheory.FlagBundle.ratOf (GlobalTheory.ProjVar.proj ℚ 0)).IsHom (GlobalTheory.FlagBundle.ratOf Y) φ (GlobalTheory.FlagQ.toPt Y) → GlobalTheory.FlagBundle.KeepsRad (GlobalTheory.FlagBundle.ratOf (GlobalTheory.ProjVar.proj ℚ 0)) (GlobalTheory.FlagBundle.ratOf Y) φ (GlobalTheory.FlagQ.toPt Y) := by
   intro Y φ h z g hg
   have hall (x : (GlobalTheory.ProjVar.proj ℚ 0).Fn) :

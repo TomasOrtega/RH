@@ -18,14 +18,23 @@ section Helpers
 
 variable {X : Type} [AddCommGroup X]
 
+/- English proof (translation)
+The claim follows from `inRCone_trans (fun k => by simpa using inRCone_self (Fin.append v u) (Fin.castAdd a k)) h`.
+-/
 theorem inRCone_append_left {b a : ℕ} (v : Fin b → LinearMap.BilinForm ℤ X) (u : Fin a → LinearMap.BilinForm ℤ X)
     {β : LinearMap.BilinForm ℤ X} (h : InRCone v β) : InRCone (Fin.append v u) β :=
   inRCone_trans (fun k => by simpa using inRCone_self (Fin.append v u) (Fin.castAdd a k)) h
 
+/- English proof (translation)
+The claim follows from `inRCone_trans (fun k => by simpa using inRCone_self (Fin.cons β₀ F : Fin (m + 1) → _) k.succ) h`.
+-/
 theorem inRCone_cons_of {n m : ℕ} (β₀ : LinearMap.BilinForm ℤ X) {F : Fin m → LinearMap.BilinForm ℤ X}
     {β : LinearMap.BilinForm ℤ X} (h : InRCone F β) : InRCone (Fin.cons β₀ F : Fin (m + 1) → _) β :=
   inRCone_trans (fun k => by simpa using inRCone_self (Fin.cons β₀ F : Fin (m + 1) → _) k.succ) h
 
+/- English proof (translation)
+Introduce `k`. Use `Fin.cases ?_ (fun k => ?_) k` and prove the remaining obligations. Simplify using `using inRCone_self (Fin.cons β₀ F : Fin (m + 1) → _) 0`. Simplify using `using inRCone_cons_of (n := n) β₀ (h k)`.
+-/
 theorem inRCone_cons_mono {n m : ℕ} (β₀ : LinearMap.BilinForm ℤ X) {F : Fin m → LinearMap.BilinForm ℤ X}
     {δ : Fin n → LinearMap.BilinForm ℤ X} (h : ∀ k, InRCone F (δ k)) :
     ∀ k, InRCone (Fin.cons β₀ F : Fin (m + 1) → _) ((Fin.cons β₀ δ : Fin (n + 1) → _) k) := by
@@ -34,6 +43,9 @@ theorem inRCone_cons_mono {n m : ℕ} (β₀ : LinearMap.BilinForm ℤ X) {F : F
   · simpa using inRCone_self (Fin.cons β₀ F : Fin (m + 1) → _) 0
   · simpa using inRCone_cons_of (n := n) β₀ (h k)
 
+/- English proof (translation)
+Use `⟨fun l => c (s l), fun l => hc _, ?_⟩` and prove the remaining obligations. Rewrite using `[hβ]`. Use `symm`. Conclude with `Fintype.sum_of_injective s s.injective _ _ (fun j hj => by rw [h0 j hj, zero_smul]) fun l => rfl`.
+-/
 theorem inRCone_comp_of {m m' : ℕ} {G : Fin m → LinearMap.BilinForm ℤ X} (s : Fin m' ↪ Fin m) {c : Fin m → ℝ}
     (hc : ∀ j, 0 ≤ c j) {β : LinearMap.BilinForm ℤ X} (hβ : toReal β = ∑ j, c j • toReal (G j))
     (h0 : ∀ j, j ∉ Set.range s → c j = 0) : InRCone (fun l => G (s l)) β := by
@@ -42,6 +54,9 @@ theorem inRCone_comp_of {m m' : ℕ} {G : Fin m → LinearMap.BilinForm ℤ X} (
   symm
   exact Fintype.sum_of_injective s s.injective _ _ (fun j hj => by rw [h0 j hj, zero_smul]) fun l => rfl
 
+/- English proof (translation)
+Establish `e` using `apply_eq_of_toReal_eq hβ h`. Rewrite `e` using `[h0, Int.cast_zero]`. Establish `hnn : ∀ j ∈ Finset.univ, 0 ≤ c j * (h (G j) : ℝ)` using `fun j _ => mul_nonneg (hc j) (by exact_mod_cast hG j)`. Use `(Finset.sum_eq_zero_iff_of_nonneg hnn).1 e.symm j (Finset.mem_univ _)` as an intermediate fact. Conclude with `(mul_eq_zero.1 this).resolve_right (by exact_mod_cast hj)`.
+-/
 theorem coeff_eq_zero_of_apply {m : ℕ} {G : Fin m → LinearMap.BilinForm ℤ X} {c : Fin m → ℝ} (hc : ∀ j, 0 ≤ c j)
     {β : LinearMap.BilinForm ℤ X} (hβ : toReal β = ∑ j, c j • toReal (G j)) (h : LinearMap.BilinForm ℤ X →ₗ[ℤ] ℤ)
     (hG : ∀ j, 0 ≤ h (G j)) (h0 : h β = 0) (j : Fin m) (hj : h (G j) ≠ 0) : c j = 0 := by
@@ -51,6 +66,11 @@ theorem coeff_eq_zero_of_apply {m : ℕ} {G : Fin m → LinearMap.BilinForm ℤ 
   have := (Finset.sum_eq_zero_iff_of_nonneg hnn).1 e.symm j (Finset.mem_univ _)
   exact (mul_eq_zero.1 this).resolve_right (by exact_mod_cast hj)
 
+/- English proof (translation)
+Set `S` to `Finset.univ.filter fun j => h (G j) = 0`. Use `⟨S.card, (S.orderEmbOfFin rfl).toEmbedding, hG, fun j => ?_⟩` and prove the remaining obligations. Establish `: Set.range (S.orderEmbOfFin rfl).toEmbedding = (S : Set (Fin m))`. Simplify using `[Finset.range_orderEmbOfFin]`. Rewrite using `[this]`.
+
+Simplify using `[S]`.
+-/
 theorem exists_faceCut {m : ℕ} (G : Fin m → LinearMap.BilinForm ℤ X) (h : LinearMap.BilinForm ℤ X →ₗ[ℤ] ℤ)
     (hG : ∀ j, 0 ≤ h (G j)) : ∃ (m' : ℕ) (s : Fin m' ↪ Fin m), IsFaceCut G s h := by
   classical
@@ -68,6 +88,11 @@ section Reduce
 variable {O : Type} [CommRing O] {bar : O → O} {φ : InvFun O} {X : Type} [AddCommGroup X] [Module O X]
   [Module.Finite O X]
 
+/- English proof (translation)
+Take `⟨h, hh1, hh2, hh3⟩` from `GlobalTheory.T.exists_intLinearForm_cutting_subcell O bar φ X m n G γ hG hγ hcov`. Take `⟨m', s, hs⟩` from `exists_faceCut G h hh1`. Use `⟨m', s, h, hs, ?_, fun k => ?_⟩` and prove the remaining obligations. Break down `(hin.apply_nonneg h hh1).eq_or_lt with e | e` into its components or cases. Conclude with `(hnin (hh3 β₀ hb hp hin e.symm)).elim`.
+
+Conclude with `e`. Take `⟨c, hc, e⟩` from `hcov k`. Conclude with `inRCone_comp_of s hc e fun j hj => coeff_eq_zero_of_apply hc e h hh1 (hh2 k) j fun h0 => hj ((hs.2 j).1 h0)`.
+-/
 theorem reduce_of_not_mem {m n : ℕ} {G : Fin m → LinearMap.BilinForm ℤ X} {γ : Fin n → LinearMap.BilinForm ℤ X}
     (hG : IsCell bar φ G) (hγ : IsCell bar φ γ) (hcov : ∀ k, InRCone G (γ k)) {β₀ : LinearMap.BilinForm ℤ X}
     (hb : β₀ ∈ balForms bar X) (hp : ∀ y, 0 ≤ β₀ y y) (hin : InRCone G β₀) (hnin : ¬ InRCone γ β₀) :
@@ -83,6 +108,19 @@ theorem reduce_of_not_mem {m n : ℕ} {G : Fin m → LinearMap.BilinForm ℤ X} 
     exact inRCone_comp_of s hc e fun j hj =>
       coeff_eq_zero_of_apply hc e h hh1 (hh2 k) j fun h0 => hj ((hs.2 j).1 h0)
 
+/- English proof (translation)
+Take `⟨h₁, hh1, hh2, hh3⟩` from `GlobalTheory.T.exists_intLinearForm_cutting_subcell O bar φ X m n G δ hG hδ hcov`. Use `set K : ℤ := 1 + ∑ j, |h (G j)| with hK`. Establish `hKj : ∀ j, |h (G j)| < K` using `fun j => by`. Use `Finset.single_le_sum (f := fun j => |h (G j)|) (fun j _ => abs_nonneg _) (Finset.mem_univ j)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Set `h' : LinearMap.BilinForm ℤ X →ₗ[ℤ] ℤ` to `K • h₁ + h`. Establish `hv : ∀ β, h' β = K * h₁ β + h β` using `fun β => rfl`. Establish `hnn : ∀ j, 0 ≤ h' (G j)` using `fun j => by`. Rewrite using `[hv]`. Break down `(hh1 j).eq_or_lt with e | e` into its components or cases.
+
+Rewrite using `[← e, mul_zero, zero_add]`. Conclude with `(hh3 _ (hG.mem j) (hG.nonneg j) (inRCone_self G j) e.symm).apply_nonneg h hcut.1`. Establish `h1 : 1 ≤ h₁ (G j)` using `e`. Use `hKj j` as an intermediate fact. Establish `h2 : -K < h (G j)` using `by have := neg_abs_le (h (G j)); linarith`.
+
+Establish `hK0 : 0 < K` using `lt_of_le_of_lt (abs_nonneg _) (hKj j)`. Establish `h3 : K ≤ K * h₁ (G j)` using `le_mul_of_one_le_right hK0.le h1`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨m', s', hs'⟩` from `exists_faceCut G h' hnn`. Establish `hz : ∀ β, InRCone δ β → h₁ β = 0` using `fun β hβ => by`.
+
+Take `⟨c, _, e⟩` from `hβ`. Use `apply_eq_of_toReal_eq e h₁` as an intermediate fact. Simplify using `only [hh2, Int.cast_zero, mul_zero, Finset.sum_const_zero] at this`. Conclude with `this` after adjusting the coercions. Use `⟨m', s', h', hs', by rw [hv, hz β₀ hin, mul_zero, zero_add]; exact hpos, fun k => ?_⟩` and prove the remaining obligations.
+
+Take `⟨c, hc, e⟩` from `hcov (s k)`. Establish `h0 : h' (δ (s k)) = 0`. Rewrite using `[hv, hz _ (inRCone_self δ _), mul_zero, zero_add]`. Conclude with `(hcut.2 _).2 ⟨k, rfl⟩`. Conclude with `inRCone_comp_of s' hc e fun j hj => coeff_eq_zero_of_apply hc e h' hnn h0 j fun h0 => hj ((hs'.2 j).1 h0)`.
+-/
 theorem reduce_of_mem {m n n' : ℕ} {G : Fin m → LinearMap.BilinForm ℤ X} {δ : Fin n → LinearMap.BilinForm ℤ X}
     (hG : IsCell bar φ G) (hδ : IsCell bar φ δ) (hcov : ∀ k, InRCone G (δ k)) {β₀ : LinearMap.BilinForm ℤ X}
     (hin : InRCone δ β₀) {s : Fin n' ↪ Fin n} {h : LinearMap.BilinForm ℤ X →ₗ[ℤ] ℤ} (hcut : IsFaceCut δ s h)
@@ -122,6 +160,29 @@ theorem reduce_of_mem {m n n' : ℕ} {G : Fin m → LinearMap.BilinForm ℤ X} {
 
 end Reduce
 
+/- English proof (translation)
+Introduce `E _ _ _ H q ψ lab φ i hdom hψ hψt hlt hcar hφt hst`. Take `⟨w, hwt, hw⟩` from `GlobalTheory.T.markedFormIndicator_zeroOne_barycentres_polyFan E H q ψ lab i hdom hψ hψt hlt hcar`. Take `⟨hφp, hφs, hφc⟩` from `hst`. Establish `hcen : IsCentreSet H.bar q φ w`. Introduce `X _ _ _ _ hX`.
+
+Take `⟨h1, h2, h3, h4, -⟩` from `hw X hX`. Use `⟨h1, h2, fun m γ hγ β hβ hp β' hβ' hp' hw1 hw2 hc hc' => ?_⟩` and prove the remaining obligations. Take `⟨b, a, v, u, -, hv, hcov, -, -, hvl, hoff, -⟩` from `hφc X hX m γ hγ`. Establish `inv : ∀ β ∈ balForms H.bar X, (∀ y, 0 ≤ β y y) → w.evalZ β = 1 → InRCone γ β → InRCone v β`. Introduce `β hβ hp hw1 hc`.
+
+Assume the negation of the conclusion as `hn`. Use `hoff β hβ hp (inRCone_trans hcov hc) hn` as an intermediate fact. Rewrite `this` using `[h3 β hβ hp hw1]`. Conclude with `lt_irrefl _ this`. Conclude with `h4 b v hv hvl β hβ hp β' hβ' hp' hw1 hw2 (inv β hβ hp hw1 hc) (inv β' hβ' hp' hw2 hc')`.
+
+Take `⟨φ', hp', ht', hsub, hs1, hs2, hs3⟩` from `GlobalTheory.T.exists_starSubdivision_invariant_polyhedral_fan E H q φ w hdom hφp hφt hwt hcen`. Use `⟨φ', ht', hp', hsub.trans hφs, fun X _ _ _ _ hX n γ' hγ' => ?_⟩` and prove the remaining obligations. Take `⟨h1, h2, h3, h4, h5⟩` from `hw X hX`. Establish `hnat : ∀ β ∈ balForms H.bar X, (∀ y, 0 ≤ β y y) → ∃ n : ℕ, lab.evalZ β = n` using `fun β hβ hp => ⟨_, hcar X hX β hβ hp⟩`. Establish `core : ∀ (b a : ℕ) (v : Fin b → LinearMap.BilinForm ℤ X) (u : Fin a → LinearMap.BilinForm ℤ X), IsCell H.bar φ (Fin.append v u) → IsCell H.bar ψ v → Function.Injective (fun j => lab.evalZ (u j)) → (∀ j, ((i + 1 : ℕ) : ℝ) < lab.evalZ (u j)) → (∀ β ∈ balForms H.bar X, (∀ y, 0 ≤ β y …`.
+
+Introduce `b a v u hγ hv hinj hlu hvl hoff hind β₀ hb0 hp0 hw0 hin0`. Conclude with `GlobalTheory.T.starSubdivision_barycentre_cell_next_stage (𝓞 E) H.bar ψ lab φ' w i X b a v u hv hinj hlu hvl hoff hind hnat (fun m' s h hh => GlobalTheory.T.polyFan_face_cut_by_intLinearForm_isCell E H q ψ hψ X hX (hdom X) b v hv m' s h hh) h5 (fun β hβ hp β' hβ' hp' hw1 hw2 hc h …`. Break down `hs3 X hX n γ' hγ' with ⟨m, γ, hγ, hno, hcov'⟩ | ⟨m, δ, β₀, m', s, h, hδ, hb0, hp0, hw0, hin0, hcut, hpos, hcov'⟩` into its components or cases. Take `⟨b, a, v, u, hG, hv, hcov, hinj, hlu, hvl, hoff, hind⟩` from `hφc X hX m γ hγ`. Distinguish the cases in `hc : ∃ β₀ ∈ balForms H.bar X, (∀ y, 0 ≤ β₀ y y) ∧ w.evalZ β₀ = 1 ∧ InRCone (Fin.append v u) β₀`.
+
+Take `⟨β₀, hb0, hp0, hw0, hin0⟩` from `hc`. Establish `hnin : ¬ InRCone γ β₀` using `fun hh => by`. Use `hno β₀ hb0 hp0 hh` as an intermediate fact. Rewrite `this` using `[hw0]`. Conclude with `one_ne_zero this`.
+
+Take `⟨m', s, h, hcut, hpos, hsub'⟩` from `reduce_of_not_mem hG hγ hcov hb0 hp0 hin0 hnin`. Take `⟨b', a', v', u', r1, r2, r3, r4, r5, r6, r7, r8⟩` from `core b a v u hG hv hinj hlu hvl hoff hind β₀ hb0 hp0 hw0 hin0 m' s h hcut hpos`. Conclude with `⟨b', a', v', u', r1, r2, fun j => inRCone_trans r3 (inRCone_cons_of (n := 0) β₀ (inRCone_trans hsub' (hcov' j))), r4, r5, r6, r7, r8⟩`. Use `push_neg at hc`. Establish `hw0 : ∀ β ∈ balForms H.bar X, (∀ y, 0 ≤ β y y) → InRCone (Fin.append v u) β → w.evalZ β = 0` using `fun β hβ hp hin => (h1 β hβ hp).resolve_right fun e => hc β hβ hp e hin`.
+
+Use `⟨b, a, v, u, hs1 X hX _ _ hG hw0, hv, fun j => inRCone_trans hcov (hcov' j), hinj, fun j => ?_, fun β hβ hp hin => ?_, fun β hβ hp hin hn => ?_, hind⟩` and prove the remaining obligations. Use `hlu j` as an intermediate fact. Move the coercions through the operations in `at this ⊢`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨k, hk⟩` from `hnat β hβ hp`.
+
+Establish `hle` using `hvl β hβ hp hin`. Rewrite `hle`, the goal using `[hk]`. Establish `hle' : k ≤ i + 1` using `by exact_mod_cast hle`. Break down `hle'.lt_or_eq with hl | hl` into its components or cases. Conclude with `Nat.lt_succ_iff.1 hl` after adjusting the coercions.
+
+Take `⟨β₁, hb1, hp1, hw1, hin1⟩` from `h5 b v hv β hβ hp hin (by rw [hk, hl])`. Conclude with `absurd (inRCone_append_left v u hin1) (hc β₁ hb1 hp1 hw1)`. Use `hoff β hβ hp hin hn` as an intermediate fact. Move the coercions through the operations in `at this ⊢`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Take `⟨b, a, v, u, hG, hv, hcov, hinj, hlu, hvl, hoff, hind⟩` from `hφc X hX m δ hδ`. Take `⟨m'', s', h', hcut', hpos', hsub'⟩` from `reduce_of_mem hG hδ hcov hin0 hcut hpos`. Take `⟨b', a', v', u', r1, r2, r3, r4, r5, r6, r7, r8⟩` from `core b a v u hG hv hinj hlu hvl hoff hind β₀ hb0 hp0 hw0 (inRCone_trans hcov hin0) m'' s' h' hcut' hpos'`. Conclude with `⟨b', a', v', u', r1, r2, fun j => inRCone_trans r3 (inRCone_trans (inRCone_cons_mono β₀ hsub') (hcov' j)), r4, r5, r6, r7, r8⟩`.
+-/
 theorem baryStep : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (q : ℕ) (ψ lab φ : InvFun (𝓞 E)) (i : ℕ), (∀ (X : Type) [AddCommGroup X] [Module (𝓞 E) X] [Module.Finite (𝓞 E) X] [Module.Projective (𝓞 E) X], Dominates H.bar X) → IsPolyFan H.bar q ψ → IsTwInv H ψ → IsTwInv H lab → IsCarrierDim H.bar q ψ lab → IsTwInv H φ → IsBaryStage H.bar q ψ lab φ (i + 1) → ∃ φ' : InvFun (𝓞 E), IsTwInv H φ' ∧ IsBaryStage H.bar q ψ lab φ' i := by
   intro E _ _ _ H q ψ lab φ i hdom hψ hψt hlt hcar hφt hst
   obtain ⟨w, hwt, hw⟩ := GlobalTheory.T.markedFormIndicator_zeroOne_barycentres_polyFan E H q ψ lab i hdom hψ hψt hlt hcar

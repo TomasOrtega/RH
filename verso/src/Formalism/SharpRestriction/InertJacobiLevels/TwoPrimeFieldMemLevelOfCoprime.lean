@@ -13,6 +13,15 @@ section General
 
 variable {R : Ranks} (H : Host R)
 
+/- English proof (translation)
+Establish `hbc : ((bO H : 𝓞 H.E) : H.E) = H.sqd` using `rfl`. Establish `hco : (((1 + (M : 𝓞 H.E) * ((u : 𝓞 H.E) + (v : 𝓞 H.E) * bO H) : 𝓞 H.E)) : H.E) = 1 + (M : H.E) * ((u : H.E) + (v : H.E) * H.sqd)`. Rewrite using `[← hbc]`. Use `push_cast`. Both sides reduce to the same expression.
+
+Use `⟨1 + (M : 𝓞 H.E) * ((u : 𝓞 H.E) + (v : 𝓞 H.E) * bO H), ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hco]`. Establish `hb : H.sqd ∈ H.K` using `IntermediateField.mem_adjoin_simple_self ℚ _`. Conclude with `add_mem (one_mem _) (mul_mem (natCast_mem _ _) (add_mem (intCast_mem _ _) (mul_mem (intCast_mem _ _) hb)))`. Rewrite using `[hco]`.
+
+Establish `hT' : (T : H.E) = (1 + M * u) ^ 2 + H.d * (M * v) ^ 2` using `by exact_mod_cast congrArg (Int.cast : ℤ → H.E) hT`. Simplify using `only [map_add, map_mul, map_one, map_natCast, map_intCast, conj_bE]`. Rewrite using `[hT']`. Take the linear combination `(-(M : H.E) ^ 2 * (v : H.E) ^ 2) * bE_sq H`. Rewrite using `[Ideal.mem_span_singleton]`.
+
+Conclude with `⟨(u : 𝓞 H.E) + (v : 𝓞 H.E) * bO H, by ring⟩`.
+-/
 theorem norm_form (u v : ℤ) (T M : ℕ) (hT : (T : ℤ) = (1 + M * u) ^ 2 + H.d * (M * v) ^ 2) :
     ∃ π : 𝓞 H.E, (π : H.E) ∈ H.K ∧ (π : H.E) * H.conj (π : H.E) = (T : H.E) ∧
       (π - 1) ∈ Ideal.span {((M : ℕ) : 𝓞 H.E)} := by
@@ -32,6 +41,17 @@ theorem norm_form (u v : ℤ) (T M : ℕ) (hT : (T : ℤ) = (1 + M * u) ^ 2 + H.
   · rw [Ideal.mem_span_singleton]
     exact ⟨(u : 𝓞 H.E) + (v : 𝓞 H.E) * bO H, by ring⟩
 
+/- English proof (translation)
+Establish `hbc : ((bO H : 𝓞 H.E) : H.E) = H.sqd` using `rfl`. Establish `hb : H.sqd ∈ H.K` using `IntermediateField.mem_adjoin_simple_self ℚ _`. Establish `hr : ((((u : 𝓞 H.E) + (v : 𝓞 H.E) * bO H : 𝓞 H.E)) : H.E) = (u : H.E) + (v : H.E) * H.sqd`. Rewrite using `[← hbc]`. Use `push_cast`.
+
+Both sides reduce to the same expression. Establish `hco : (((1 + (M : 𝓞 H.E) * ((u : 𝓞 H.E) + (v : 𝓞 H.E) * bO H) : 𝓞 H.E)) : H.E) = 1 + (M : H.E) * ((u : H.E) + (v : H.E) * H.sqd)`. Rewrite using `[← hbc]`. Use `push_cast`. Both sides reduce to the same expression.
+
+Establish `hrK : (u : H.E) + (v : H.E) * H.sqd ∈ H.K` using `add_mem (intCast_mem _ _) (mul_mem (intCast_mem _ _) hb)`. Use `⟨1 + (M : 𝓞 H.E) * ((u : 𝓞 H.E) + (v : 𝓞 H.E) * bO H), (u : 𝓞 H.E) + (v : 𝓞 H.E) * bO H, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hco]`. Conclude with `add_mem (one_mem _) (mul_mem (natCast_mem _ _) hrK)`. Rewrite using `[hr]`.
+
+Conclude with `hrK`. Rewrite using `[hco, hr]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hco]`. Establish `hT' : (T : H.E) = (1 + M * u) ^ 2 + H.d * (M * v) ^ 2` using `by exact_mod_cast congrArg (Int.cast : ℤ → H.E) hT`.
+
+Simplify using `only [map_add, map_mul, map_one, map_natCast, map_intCast, conj_bE]`. Rewrite using `[hT']`. Take the linear combination `(-(M : H.E) ^ 2 * (v : H.E) ^ 2) * bE_sq H`.
+-/
 theorem norm_form' (u v : ℤ) (T M : ℕ) (hT : (T : ℤ) = (1 + M * u) ^ 2 + H.d * (M * v) ^ 2) :
     ∃ π ρ : 𝓞 H.E, (π : H.E) ∈ H.K ∧ (ρ : H.E) ∈ H.K ∧ (π : H.E) - 1 = (M : H.E) * ρ ∧
       (π : H.E) * H.conj (π : H.E) = (T : H.E) := by
@@ -53,10 +73,24 @@ theorem norm_form' (u v : ℤ) (T M : ℕ) (hT : (T : ℤ) = (1 + M * u) ^ 2 + H
     rw [hT']
     linear_combination (-(M : H.E) ^ 2 * (v : H.E) ^ 2) * bE_sq H
 
+/- English proof (translation)
+The claim follows from `(primeClass_eq_splitK_iff _).2 ⟨h2, hq, hd, hj⟩`.
+-/
 theorem cls_split_of {p : ℕ} (h2 : p ∉ H.small) (hq : p ≠ H.q) (hd : p ≠ H.d)
     (hj : jacobiSym (-(H.d : ℤ)) p = 1) : H.cls p = .splitK :=
   (primeClass_eq_splitK_iff _).2 ⟨h2, hq, hd, hj⟩
 
+/- English proof (translation)
+Establish `hpZ : Prime (p : ℤ)` using `Nat.prime_iff_prime_int.1 hp`. Establish `hpI : (Ideal.span {(p : ℤ)}).IsPrime` using `(Ideal.span_singleton_prime hpZ.ne_zero).2 hpZ`. Establish `hpM : (Ideal.span {(p : ℤ)}).IsMaximal` using `hpI.isMaximal (by rw [Ne, Ideal.span_singleton_eq_bot]; exact hpZ.ne_zero)`. Establish `himg : (fun v : HeightOneSpectrum (𝓞 E) => v.asIdeal) '' placesOver E p = (Ideal.span {(p : ℤ)}).primesOver (𝓞 E)`. Use extensionality with `I`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨v, hv, rfl⟩`. Use `⟨v.isPrime, ⟨?_⟩⟩` and prove the remaining obligations. Establish `hle : Ideal.span {(p : ℤ)} ≤ v.asIdeal.under ℤ`. Rewrite using `[Ideal.span_le, Set.singleton_subset_iff]`.
+
+Express the relevant statement in the definitionally equal form `algebraMap ℤ (𝓞 E) p ∈ v.asIdeal`. Establish `hv' : ((p : ℕ) : 𝓞 E) ∈ v.asIdeal` using `hv`. Simplify using `using hv'`. Conclude with `hpM.eq_of_le (Ideal.IsPrime.under ℤ v.asIdeal).ne_top hle`. Introduce and unpack `⟨hI, hIl⟩`.
+
+Establish `hmem : ((p : ℕ) : 𝓞 E) ∈ I`. Establish `: (p : ℤ) ∈ I.under ℤ` using `by rw [← hIl.over]; exact Ideal.mem_span_singleton_self _`. Simplify using `using this`. Establish `hne : I ≠ ⊥`. Introduce and unpack `rfl`.
+
+Establish `h0 : ((p : ℕ) : 𝓞 E) = 0` using `by simpa using hmem`. Conclude with `hp.ne_zero (by exact_mod_cast h0)`. Conclude with `⟨⟨I, hI, hne⟩, hmem, rfl⟩`. Rewrite using `[← himg, Set.ncard_image_of_injective _ (fun v w h => HeightOneSpectrum.ext h)]`.
+-/
 theorem primesOver_ncard (E : Type) [Field E] [NumberField E] (p : ℕ) (hp : p.Prime) :
     (Ideal.primesOver (Ideal.span {(p : ℤ)}) (𝓞 E)).ncard = (placesOver E p).ncard := by
   have hpZ : Prime (p : ℤ) := Nat.prime_iff_prime_int.1 hp
@@ -88,6 +122,11 @@ theorem primesOver_ncard (E : Type) [Field E] [NumberField E] (p : ℕ) (hp : p.
 
 end General
 
+/- English proof (translation)
+Establish `h4 : g ≡ 1 [MOD 4]` using `hg.of_dvd ((by norm_num : 4 ∣ 16).trans H.sixteen_dvd_condN)`. Establish `h4' : g % 4 = 1` using `h4`. Establish `hN : ¬ g ∣ H.condN` using `fun h => by`. Establish `: g % g = 1 % g` using `hg.of_dvd h`. Rewrite `this` using `[Nat.mod_self, Nat.mod_eq_of_lt h1]`.
+
+Use linear arithmetic over natural numbers and integers. Conclude with `⟨hN, Formalism.HC.HostRaw.notMem_small_of_not_dvd hN, Formalism.HC.HostRaw.ne_two_of_not_dvd hN, Formalism.HC.HostRaw.ne_q_of_not_dvd hN, Formalism.HC.HostRaw.ne_d_of_not_dvd hN, jacobi_neg_of_one_mod (Nat.odd_iff.2 (by have := H.q_mod_four; omega)) h4' (hg.of_dvd H.q_dvd_condN), …`.
+-/
 theorem one_mod_facts {φ : Formalism.HC.Frame} (H : Formalism.HC.HostRaw φ) {g : ℕ} (h1 : 1 < g) (hg : g ≡ 1 [MOD H.condN]) :
     ¬ g ∣ H.condN ∧ g ∉ H.small ∧ g ≠ 2 ∧ g ≠ H.q ∧ g ≠ H.d ∧ jacobiSym (-(H.q : ℤ)) g = 1 ∧
       jacobiSym (-(H.d : ℤ)) g = 1 := by
@@ -102,6 +141,9 @@ theorem one_mod_facts {φ : Formalism.HC.Frame} (H : Formalism.HC.HostRaw φ) {g
     jacobi_neg_of_one_mod (Nat.odd_iff.2 (by have := H.q_mod_four; omega)) h4' (hg.of_dvd H.q_dvd_condN),
     jacobi_neg_of_one_mod (Nat.odd_iff.2 (by have := H.d_mod_four; omega)) h4' (hg.of_dvd H.d_dvd_condN)⟩
 
+/- English proof (translation)
+Rewrite using `[← Int.natCast_modEq_iff]`. Apply `Int.ModEq.symm` to reduce the goal to its premises. Rewrite using `[Int.modEq_iff_dvd]`. Conclude with `⟨2 * u + M * u ^ 2 + d * M * v ^ 2, by rw [hT]; push_cast; ring⟩`.
+-/
 theorem form_mod {T M d : ℕ} {u v : ℤ} (hT : (T : ℤ) = (1 + M * u) ^ 2 + d * (M * v) ^ 2) : T ≡ 1 [MOD M] := by
   rw [← Int.natCast_modEq_iff]
   apply Int.ModEq.symm
@@ -158,20 +200,32 @@ variable {R : Ranks} {x eps Cp CT : ℝ} (B : Base R x eps Cp CT)
 
 namespace Base
 
+/- English proof (translation)
+Apply `Set.nonempty_of_ncard_ne_zero` to reduce the goal to its premises. Rewrite using `[B.der.cmType.2.1]`. Check the signs of the components of the expression.
+-/
 theorem cm_nonempty : B.cmType.Nonempty := by
   apply Set.nonempty_of_ncard_ne_zero
   rw [B.der.cmType.2.1]
   positivity
 
+/- English proof (translation)
+The claim follows from `B.der.principal`.
+-/
 theorem bb_ex : ∃ 𝔟 : Ideal (𝓞 B.E),
     differentIdeal (𝓞 B.K) (𝓞 B.E) = 𝔟 * (B.conj • 𝔟) ∧ 𝔟 ⊔ B.conj • 𝔟 = ⊤ ∧
     ∀ σ : B.E ≃ₐ[ℚ] B.E, B.gal σ ∈ R.Psi → σ • 𝔟 = 𝔟 :=
   B.der.principal
 
+/- English proof (translation)
+Establish `h1 : p ≡ 1 [MOD B.QS]` using `h.of_dvd ⟨B.q * B.d, by ring⟩`. Rewrite using `[Nat.Coprime, h1.gcd_eq, Nat.gcd_one_left]`.
+-/
 theorem coprime_QS_of_mod {p : ℕ} (h : p ≡ 1 [MOD B.QS * B.q * B.d]) : Nat.Coprime p B.QS := by
   have h1 : p ≡ 1 [MOD B.QS] := h.of_dvd ⟨B.q * B.d, by ring⟩
   rw [Nat.Coprime, h1.gcd_eq, Nat.gcd_one_left]
 
+/- English proof (translation)
+The claim follows from `Real.rpow_nonneg hx _`.
+-/
 theorem x_pow_nonneg (hx : 0 ≤ x) : 0 ≤ x ^ (eps / 5) := Real.rpow_nonneg hx _
 
 end Base
@@ -245,17 +299,29 @@ def host2 (u0 : R.A) (ex : Finset ℕ) : Host R where
   second_set_no_relation := B.second_set_no_relation
   CT2 := CT
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem twoPrimeField_levelPrimes (u0 : R.A) (ex : Finset ℕ) : (host2 B u0 ex).levelPrimes =
     {B.g0, B.g1, B.pde, B.pde'} ∪ ex.filter (fun p => Nat.Coprime p B.QS) := rfl
 
+/- English proof (translation)
+The claim follows from `Finset.union_subset_union_right (Finset.filter_subset _ _)`.
+-/
 theorem twoPrimeField_level_subset (u0 : R.A) (ex : Finset ℕ) :
     (host2 B u0 ex).levelPrimes ⊆ {B.g0, B.g1, B.pde, B.pde'} ∪ ex :=
   Finset.union_subset_union_right (Finset.filter_subset _ _)
 
+/- English proof (translation)
+The claim follows from `Finset.mem_union_right _ (Finset.mem_filter.2 ⟨h, hc⟩)`.
+-/
 theorem twoPrimeField_mem_level_of_coprime (u0 : R.A) (ex : Finset ℕ) {T : ℕ} (h : T ∈ ex) (hc : Nat.Coprime T B.QS) :
     T ∈ (host2 B u0 ex).levelPrimes :=
   Finset.mem_union_right _ (Finset.mem_filter.2 ⟨h, hc⟩)
 
+/- English proof (translation)
+Use `twoPrimeField_mem_level_of_coprime B u0 ex h ((Nat.Prime.coprime_iff_not_dvd hp).2 fun hd => ?_)` and prove the remaining obligations. Conclude with `((primeClass_eq_splitK_iff _).1 hc).1 (Nat.mem_primeFactors.2 ⟨hp, hd, B.QS_pos.ne'⟩)`.
+-/
 theorem twoPrimeField_mem_level_of_split (u0 : R.A) (ex : Finset ℕ) {T : ℕ} (h : T ∈ ex) (hp : T.Prime)
     (hc : (host2 B u0 ex).cls T = .splitK) : T ∈ (host2 B u0 ex).levelPrimes := by
   refine twoPrimeField_mem_level_of_coprime B u0 ex h ((Nat.Prime.coprime_iff_not_dvd hp).2 fun hd => ?_)

@@ -21,6 +21,13 @@ open GlobalTheory.ConeSmallMidJB
 
 namespace GlobalTheory.MidLineParam
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ d d₁ W W₁ H' hspan h₁ h hL hr`. Take `⟨Q, hQ, -⟩` from `rat_mulVec hr`. Take `⟨hx, hy, hι⟩` from `hL`. Use `mem_ratU_of_mulVec h fun v => ?_` and prove the remaining obligations. Take `⟨a, b, u, rfl⟩` from `hspan v`.
+
+Use `⟨a • H'.x + H'.ι *ᵥ (Q *ᵥ u) + b • H'.y, ?_⟩` and prove the remaining obligations. Establish `hx' : mat h *ᵥ incV F H'.x = incV F H'.x` using `by simpa using hx`. Establish `hy' : mat h *ᵥ incV F H'.y = incV F H'.y` using `by simpa using hy`. Establish `hu : mat h *ᵥ incV F (H'.ι *ᵥ u) = incV F (H'.ι *ᵥ (Q *ᵥ u))`. Rewrite using `[← incM_mulVec, ← incM_mulVec, ← hQ, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hι]`.
+
+Rewrite using `[incV_add, incV_add, incV_add, incV_add, incV_smul, incV_smul, Matrix.mulVec_add, Matrix.mulVec_add, Matrix.mulVec_smul, Matrix.mulVec_smul, hx', hy', hu]`.
+-/
 theorem levi_one_mem_ratU : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (d d₁ : ℕ)
     (W : Spc F E d) (W₁ : Spc F E d₁) (H' : Plane E d d₁),
     (∀ v : Fin d → E, ∃ (a b : E) (u : Fin d₁ → E), v = a • H'.x + H'.ι *ᵥ u + b • H'.y) →

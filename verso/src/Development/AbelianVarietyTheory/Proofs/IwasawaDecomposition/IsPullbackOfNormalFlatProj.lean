@@ -11,6 +11,11 @@ section Sch
 
 variable {X' X : Scheme.{0}} {f : X' ⟶ X} {U : X.Opens} {j : U.toScheme ⟶ X'}
 
+/- English proof (translation)
+Establish `h : Set.range (w ≫ f) ⊆ Set.range U.ι` using `by simpa using hw`. Set `v` to `IsOpenImmersion.lift U.ι (w ≫ f) h`. Establish `hv : v ≫ U.ι = w ≫ f` using `IsOpenImmersion.lift_fac _ _ _`. Use `⟨hp.lift w v hv.symm, hp.lift_fst _ _ _, ?_⟩` and prove the remaining obligations. Use `hp.lift_snd w v hv.symm` as an intermediate fact.
+
+Rewrite `this` using `[Category.comp_id]`. Rewrite using `[this, hv]`.
+-/
 theorem exists_lift (hp : IsPullback j (𝟙 U.toScheme) f U.ι) {T : Scheme.{0}} (w : T ⟶ X')
     (hw : Set.range (w ≫ f) ⊆ (U : Set X)) : ∃ w₀ : T ⟶ U.toScheme, w₀ ≫ j = w ∧ w₀ ≫ U.ι = w ≫ f := by
   have h : Set.range (w ≫ f) ⊆ Set.range U.ι := by simpa using hw
@@ -21,6 +26,9 @@ theorem exists_lift (hp : IsPullback j (𝟙 U.toScheme) f U.ι) {T : Scheme.{0}
   rw [Category.comp_id] at this
   rw [this, hv]
 
+/- English proof (translation)
+Take `⟨a, ha, ha'⟩` from `exists_lift hp w hw`. Take `⟨b, hb, hb'⟩` from `exists_lift hp w' (h ▸ hw)`. Establish `: a = b` using `by rw [← cancel_mono U.ι, ha', hb', h]`. Rewrite using `[← ha, ← hb, this]`.
+-/
 theorem lift_unique (hp : IsPullback j (𝟙 U.toScheme) f U.ι) {T : Scheme.{0}} (w w' : T ⟶ X')
     (hw : Set.range (w ≫ f) ⊆ (U : Set X)) (h : w ≫ f = w' ≫ f) : w = w' := by
   obtain ⟨a, ha, ha'⟩ := exists_lift hp w hw
@@ -28,12 +36,20 @@ theorem lift_unique (hp : IsPullback j (𝟙 U.toScheme) f U.ι) {T : Scheme.{0}
   have : a = b := by rw [← cancel_mono U.ι, ha', hb', h]
   rw [← ha, ← hb, this]
 
+/- English proof (translation)
+Establish `h : Set.range v ⊆ Set.range U.ι` using `by simpa using hv`. Use `⟨IsOpenImmersion.lift U.ι v h ≫ j, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, hp.w, Category.id_comp, IsOpenImmersion.lift_fac]`.
+-/
 theorem exists_lift' (hp : IsPullback j (𝟙 U.toScheme) f U.ι) {T : Scheme.{0}} (v : T ⟶ X)
     (hv : Set.range v ⊆ (U : Set X)) : ∃ w : T ⟶ X', w ≫ f = v := by
   have h : Set.range v ⊆ Set.range U.ι := by simpa using hv
   refine ⟨IsOpenImmersion.lift U.ι v h ≫ j, ?_⟩
   rw [Category.assoc, hp.w, Category.id_comp, IsOpenImmersion.lift_fac]
 
+/- English proof (translation)
+Establish `h` using `isPullback_morphismRestrict f U`. Establish `: f ∣_ U = (h.isoIsPullback _ _ hp.flip).hom`. Use `h.isoIsPullback_hom_fst _ _ hp.flip` as an intermediate fact. Simplify using `using this.symm`. Rewrite using `[this]`.
+
+Use `infer_instance`.
+-/
 theorem isIso_res (hp : IsPullback j (𝟙 U.toScheme) f U.ι) : IsIso (f ∣_ U) := by
   have h := isPullback_morphismRestrict f U
   have : f ∣_ U = (h.isoIsPullback _ _ hp.flip).hom := by
@@ -41,6 +57,11 @@ theorem isIso_res (hp : IsPullback j (𝟙 U.toScheme) f U.ι) : IsIso (f ∣_ U
     simpa using this.symm
   rw [this]; infer_instance
 
+/- English proof (translation)
+Use `isIso_res hp` as an intermediate fact. Establish `h1 : IsIso (f ∣_ U ∣_ (U.ι ⁻¹ᵁ V))` using `inferInstance`. Establish `h2 : IsIso (f ∣_ (U.ι ''ᵁ (U.ι ⁻¹ᵁ V)))` using `((MorphismProperty.isomorphisms Scheme).arrow_mk_iso_iff (morphismRestrictRestrict f U (U.ι ⁻¹ᵁ V))).1 h1`. Establish `h3 : U.ι ''ᵁ (U.ι ⁻¹ᵁ V) = V`. Rewrite using `[Scheme.Hom.image_preimage_eq_opensRange_inf, Scheme.Opens.opensRange_ι]`.
+
+Conclude with `inf_eq_right.2 hV`. Rewrite `h2` using `[h3]`. Then use the resulting hypothesis.
+-/
 theorem isIso_res_le (hp : IsPullback j (𝟙 U.toScheme) f U.ι) (V : X.Opens) (hV : V ≤ U) : IsIso (f ∣_ V) := by
   have := isIso_res hp
   have h1 : IsIso (f ∣_ U ∣_ (U.ι ⁻¹ᵁ V)) := inferInstance
@@ -51,6 +72,11 @@ theorem isIso_res_le (hp : IsPullback j (𝟙 U.toScheme) f U.ι) (V : X.Opens) 
     exact inf_eq_right.2 hV
   rwa [h3] at h2
 
+/- English proof (translation)
+Introduce and unpack `_ ⟨x, rfl⟩`. Establish `h : f (j x) = U.ι x`. Rewrite using `[← Scheme.Hom.comp_apply, hp.w, Category.id_comp]`. Express the relevant statement in the definitionally equal form `f (j x) ∈ (U : Set X)`. Rewrite using `[h]`.
+
+Conclude with `x.2`.
+-/
 theorem range_j_subset (hp : IsPullback j (𝟙 U.toScheme) f U.ι) : Set.range j ⊆ f ⁻¹' (U : Set X) := by
   rintro _ ⟨x, rfl⟩
   have h : f (j x) = U.ι x := by
@@ -59,12 +85,22 @@ theorem range_j_subset (hp : IsPullback j (𝟙 U.toScheme) f U.ι) : Set.range 
   rw [h]
   exact x.2
 
+/- English proof (translation)
+Use `isIso_res_le hp V hU` as an intermediate fact. Establish `: IsAffine V.toScheme` using `hV`. Conclude with `IsAffine.of_isIso (f ∣_ V)`.
+-/
 theorem isAffineOpen_pre (hp : IsPullback j (𝟙 U.toScheme) f U.ι) {V : X.Opens} (hV : IsAffineOpen V) (hU : V ≤ U) :
     IsAffineOpen (f ⁻¹ᵁ V) := by
   have := isIso_res_le hp V hU
   have : IsAffine V.toScheme := hV
   exact IsAffine.of_isIso (f ∣_ V)
 
+/- English proof (translation)
+Use `isIso_res_le hp V hU` as an intermediate fact. Set `hV'` to `isAffineOpen_pre hp hV hU`. Set `g : Spec Γ(X', f ⁻¹ᵁ V) ⟶ Spec Γ(X, V)` to `hV'.isoSpec.inv ≫ f ∣_ V ≫ hV.isoSpec.hom`. Establish `hg : Spec.map (Spec.preimage g) = g` using `Spec.map_preimage g`. Establish `hi : IsIso (Spec.map (Spec.preimage g))` using `by rw [hg]; infer_instance`.
+
+Establish `hi' : IsIso (Spec.preimage g)`. Establish `: IsIso (Scheme.Spec.map (Spec.preimage g).op)` using `hi`. Use `isIso_of_reflects_iso (Spec.preimage g).op Scheme.Spec` as an intermediate fact. Conclude with `isIso_of_op _`. Use `⟨(asIso (Spec.preimage g)).commRingCatIsoToRingEquiv, ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `Spec.map (Spec.preimage g) ≫ _ = _`. Rewrite using `[hg, ← hV.isoSpec_inv_ι, ← hV'.isoSpec_inv_ι]`. Simplify using `only [g, Category.assoc, Iso.hom_inv_id_assoc, morphismRestrict_ι]`.
+-/
 theorem exists_chart_iso (hp : IsPullback j (𝟙 U.toScheme) f U.ι) {V : X.Opens} (hV : IsAffineOpen V) (hU : V ≤ U) :
     ∃ ρ : Γ(X, V) ≃+* Γ(X', f ⁻¹ᵁ V), spMap ρ.toRingHom ≫ hV.fromSpec = (isAffineOpen_pre hp hV hU).fromSpec ≫ f := by
   have := isIso_res_le hp V hU
@@ -83,10 +119,16 @@ theorem exists_chart_iso (hp : IsPullback j (𝟙 U.toScheme) f U.ι) {V : X.Ope
 
 end Sch
 
+/- English proof (translation)
+Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem spMap_comp_eq {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (p : A →+* B) (q : B →+* C) :
     spMap q ≫ spMap p = spMap (q.comp p) := by
   rw [← Spec.map_comp]; rfl
 
+/- English proof (translation)
+Use `RingHom.ext fun x => ?_` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp [dualMap]`.
+-/
 theorem dualMap_comp_eq {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (p : A →+* B) (q : B →+* C) :
     (dualMap q).comp (dualMap p) = dualMap (q.comp p) := by
   refine RingHom.ext fun x => ?_
@@ -94,6 +136,9 @@ theorem dualMap_comp_eq {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (p
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ i`. Simplify using `only [Vecs.bc]`. Rewrite using `[← Category.assoc, spMap_comp_eq, dualMap_comp_eq]`.
+-/
 theorem bc_bc {X : Scheme.{0}} {t : SAB H X} {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (p : A →+* B) (q : B →+* C)
     (u : Vecs Dw t A) : (u.bc p).bc q = u.bc (q.comp p) := by
   funext τ i
@@ -102,12 +147,18 @@ theorem bc_bc {X : Scheme.{0}} {t : SAB H X} {A B C : Type} [CommRing A] [CommRi
 
 variable {Xo : ∀ l : Level H, Moduli Dw l} {p : ℕ} {W : ValuationSubring ℂ} {Y : LocalSystem Xo p W} {i₀ : Idx H p}
 
+/- English proof (translation)
+Introduce `x hx`. Express the relevant statement in the definitionally equal form `x ∈ (U : Set Z.X)`. Rewrite using `[hU, ← Z.cover]`. Conclude with `Set.mem_iUnion.2 ⟨a, hx⟩`.
+-/
 theorem chart_le (Z : Mdl Y i₀) {U : Z.X.Opens} (hU : (U : Set Z.X) = Z.opn) (a : Fin Z.m) : (Z.U a).1 ≤ U := by
   intro x hx
   change x ∈ (U : Set Z.X)
   rw [hU, ← Z.cover]
   exact Set.mem_iUnion.2 ⟨a, hx⟩
 
+/- English proof (translation)
+Introduce and unpack `_ ⟨x, rfl⟩`. Apply `chart_le Z hU a` to reduce the goal to its premises. Establish `: (Z.U a).2.fromSpec (v x) ∈ Set.range (Z.U a).2.fromSpec` using `⟨_, rfl⟩`. Conclude with `(IsAffineOpen.range_fromSpec (Z.U a).2).le this`.
+-/
 theorem range_chart (Z : Mdl Y i₀) {U : Z.X.Opens} (hU : (U : Set Z.X) = Z.opn) (a : Fin Z.m) {T : Scheme.{0}}
     (v : T ⟶ Sp Γ(Z.X, (Z.U a).1)) : Set.range (v ≫ Z.chart a) ⊆ (U : Set Z.X) := by
   rintro _ ⟨x, rfl⟩
@@ -139,10 +190,24 @@ def pre : Pre Y i₀ where
 def ch (a : Fin Z.m) : Sp Γ(I.subscheme, f ⁻¹ᵁ (Z.U a).1) ⟶ I.subscheme :=
   (isAffineOpen_pre hp (Z.U a).2 (chart_le Z hU a)).fromSpec
 
+/- English proof (translation)
+The claim follows from `(exists_chart_iso hp (Z.U a).2 (chart_le Z hU a)).choose_spec.symm`.
+-/
 theorem chart_comp (a : Fin Z.m) :
     ch Z I f hU hp a ≫ f = spMap (rho Z I f hU hp a).toRingHom ≫ Z.chart a :=
   (exists_chart_iso hp (Z.U a).2 (chart_le Z hU a)).choose_spec.symm
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(∃ (a : Fin Z.m) (φ : Γ(I.subscheme, f ⁻¹ᵁ (Z.U a).1) →+* k), spMap φ ≫ ch Z I f hU hp a = w ∧ IsFrame (Y Z.i).t (φ.comp ((rho Z I f hU hp a).toRingHom.comp (Z.alg a))) (w ≫ f ≫ Z.π) u ∧ SameFlag Z.ty (Y Z.i).t (w ≫ f ≫ Z.π) (((Z.fr a).bc (rho Z I f hU hp a).toRingHom).bc φ) u) ↔ …`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, φ, h1, h2, h3⟩`. Use `⟨a, RingHom.comp φ (rho Z I f hU hp a).toRingHom, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← spMap_comp_eq, Category.assoc, ← chart_comp, ← h1, Category.assoc]`.
+
+Rewrite using `[Category.assoc]`. Conclude with `h2`. Rewrite using `[Category.assoc, ← bc_bc]`. Conclude with `h3`. Introduce and unpack `⟨a, φ, h1, h2, h3⟩`.
+
+Establish `hφ : (φ.comp (rho Z I f hU hp a).symm.toRingHom).comp (rho Z I f hU hp a).toRingHom = φ`. Use extensionality with `x`. Simplify using the standard rewrite rules. Use `⟨a, φ.comp (rho Z I f hU hp a).symm.toRingHom, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `h : (spMap (φ.comp (rho Z I f hU hp a).symm.toRingHom) ≫ ch Z I f hU hp a) ≫ f = w ≫ f`.
+
+Rewrite using `[Category.assoc, chart_comp, ← Category.assoc, spMap_comp_eq, hφ, h1]`. Use `lift_unique hp _ _ ?_ h` and prove the remaining obligations. Rewrite using `[h, ← h1]`. Conclude with `range_chart Z hU a _`. Rewrite using `[← RingHom.comp_assoc, hφ, ← Category.assoc]`.
+
+Conclude with `h2`. Rewrite using `[bc_bc, hφ, ← Category.assoc]`. Conclude with `h3`.
+-/
 theorem flagAt_iff {k : Type} [Field k] (w : Sp k ⟶ I.subscheme) (u : Vecs Dw (Y Z.i).t k) :
     (pre Z I f hU hp).FlagAt w u ↔ Z.FlagAt (w ≫ f) u := by
   change (∃ (a : Fin Z.m) (φ : Γ(I.subscheme, f ⁻¹ᵁ (Z.U a).1) →+* k), spMap φ ≫ ch Z I f hU hp a = w ∧
@@ -170,6 +235,9 @@ theorem flagAt_iff {k : Type} [Field k] (w : Sp k ⟶ I.subscheme) (u : Vecs Dw 
     · rw [bc_bc, hφ, ← Category.assoc]
       exact h3
 
+/- English proof (translation)
+Rewrite using `[hU]`. Use extensionality with `x`. Conclude with `Iff.rfl`.
+-/
 theorem opn_eq : (pre Z I f hU hp).opn = f ⁻¹' (U : Set Z.X) := by
   rw [hU]
   ext x
@@ -245,6 +313,15 @@ def mdl (hs : f ≫ Z.s = I.subschemeι ≫ PSpace.str _ n) (hn : IsNormalScheme
       have h3 : w'' ≫ f = w := hw3 _ ⟨by rw [Category.assoc, h1], (flagAt_iff Z I f hU hp _ _).1 h2⟩
       exact lift_unique hp _ _ (h3 ▸ hr) (h3.trans hw'.symm)
 
+/- English proof (translation)
+Use `⟨hc, ?_⟩` and prove the remaining obligations. Introduce `k _`. Express the relevant statement in the definitionally equal form `∀ w : Sp k ⟶ I.subscheme, Set.range w ⊆ (pre Z I f hU hp).opn → ∃ (τ : (Y Z.i).X ⟶ (Y Z₂.i).X) (mu : SABMap (Y Z.i).t (Y Z₂.i).t τ) (u : Vecs Dw (Y Z.i).t k), IsTrans Z₂.i Z.i τ mu ∧ (w ≫ f₂) ≫ Z₂.π = w ≫ (f ≫ Z.π) ≫ τ ∧ (pre Z I f hU hp).FlagAt w u ∧ Z₂.FlagAt (w ≫ f₂) (fun σ i …`. Introduce `w hw`. Rewrite `hw` using `[opn_eq]`.
+
+Establish `hw' : Set.range (w ≫ f) ⊆ (U : Set Z.X)`. Introduce and unpack `_ ⟨x, rfl⟩`. Rewrite using `[Scheme.Hom.comp_apply]`. Conclude with `hw ⟨x, rfl⟩`. Take `⟨w₀, h1, h2⟩` from `exists_lift hp w hw'`.
+
+Take `⟨τ, mu, u, t1, t2, t3, t4⟩` from `h k w₀`. Rewrite `t2`, `t4` using `[← Category.assoc w₀ j, h1]`. Rewrite `t2`, `t3` using `[h2]`. Use `⟨τ, mu, u, t1, ?_, (flagAt_iff Z I f hU hp _ _).2 t3, t4⟩` and prove the remaining obligations. Rewrite using `[t2]`.
+
+Simplify using `only [Category.assoc]`.
+-/
 theorem isMap_mdl (hs : f ≫ Z.s = I.subschemeι ≫ PSpace.str _ n) (hn : IsNormalScheme I.subscheme) (hf : Flat (f ≫ Z.s))
     (hd : Dense (Set.range j)) (Z₂ : Mdl Y i₀) (f₂ : I.subscheme ⟶ Z₂.X) (hc : Corr Z Z₂)
     (h : ∀ (k : Type) [Field k] (w : Sp k ⟶ U.toScheme), NatImg Z Z₂ (w ≫ U.ι) (w ≫ j ≫ f₂)) :
@@ -270,6 +347,17 @@ theorem isMap_mdl (hs : f ≫ Z.s = I.subschemeι ≫ PSpace.str _ n) (hn : IsNo
 
 end Core
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw Xo p W Y i₀ Z X' f U j hU ⟨n, i, hi, hs⟩ hn hf hp hd`. Establish `hiso : IsIso i.toImage` using `inferInstance`. Set `e : i.ker.subscheme ≅ X'` to `(asIso i.toImage).symm`. Establish `he : e.inv ≫ i.ker.subschemeι = i` using `i.toImage_imageι`. Establish `hp' : IsPullback (j ≫ e.inv) (𝟙 U.toScheme) (e.hom ≫ f) U.ι` using `hp.of_iso (Iso.refl _) e.symm (Iso.refl _) (Iso.refl _) (by simp) (by simp) (by simp) (by simp)`.
+
+Establish `hs' : (e.hom ≫ f) ≫ Z.s = i.ker.subschemeι ≫ PSpace.str _ n`. Rewrite using `[Category.assoc, ← hs, ← Category.assoc]`. Use `congr 1`. Conclude with `((Iso.inv_comp_eq e).1 he).symm`. Establish `hn₀ : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme i.ker.subscheme`.
+
+Introduce `x`. Take `⟨h1, h2⟩` from `hn (e.hom x)`. Set `φ` to `(asIso (e.hom.stalkMap x)).commRingCatIsoToRingEquiv`. Conclude with `⟨φ.symm.toMulEquiv.isDomain _, IsIntegrallyClosed.of_equiv φ⟩`. Establish `hn' : GlobalTheory.IsNormalScheme i.ker.subscheme` using `⟨fun x => (hn₀ x).1, fun x => (hn₀ x).2⟩`.
+
+Establish `hf' : Flat ((e.hom ≫ f) ≫ Z.s)` using `by rw [Category.assoc]; infer_instance`. Establish `hd' : Dense (Set.range (j ≫ e.inv))`. Establish `: DenseRange e.inv` using `e.inv.surjective.denseRange`. Rewrite using `[Scheme.Hom.comp_base, TopCat.coe_comp]`. Conclude with `this.comp hd e.inv.continuous`.
+
+Use `⟨mdl Z i.ker (e.hom ≫ f) hU hp' hs' hn' hf' hd', e, rfl, rfl, fun Z₂ f₂ hc h => ?_⟩` and prove the remaining obligations. Use `isMap_mdl Z i.ker (e.hom ≫ f) hU hp' hs' hn' hf' hd' Z₂ (e.hom ≫ f₂) hc fun k _ w => ?_` and prove the remaining obligations. Simplify `h k w` using `only [Category.assoc, Iso.inv_hom_id_assoc]`.
+-/
 theorem exists_model_of_modification : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (Xo : ∀ l : Level H, Moduli Dw l) (p : ℕ) (W : ValuationSubring ℂ) (Y : LocalSystem Xo p W) (i₀ : Idx H p) (Z : Mdl Y i₀) (X' : Scheme.{0}) (f : X' ⟶ Z.X) (U : Z.X.Opens) (j : U.toScheme ⟶ X'), (U : Set Z.X) = Z.opn → IsProjOver (f ≫ Z.s) → ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme X' → Flat (f ≫ Z.s) → IsPullback j (𝟙 U.toScheme) f U.ι → Dense (Set.range j) → ∃ (Z' : Mdl Y i₀) (e : Z'.X ≅ X'), Z'.i = Z.i ∧ Z'.ty = Z.ty ∧ ∀ (Z₂ : Mdl Y i₀) (f₂ : X' ⟶ Z₂.X), GlobalTheory.LocM.Corr Z Z₂ → (∀ (k : Type) [Field k] (w : Sp k ⟶ U.toScheme), NatImg Z Z₂ (w ≫ U.ι) (w ≫ j ≫ f₂)) → IsMap Z' Z₂ (e.hom ≫ f₂) := by
   intro E _ _ _ H Dw Xo p W Y i₀ Z X' f U j hU ⟨n, i, hi, hs⟩ hn hf hp hd
   have hiso : IsIso i.toImage := inferInstance

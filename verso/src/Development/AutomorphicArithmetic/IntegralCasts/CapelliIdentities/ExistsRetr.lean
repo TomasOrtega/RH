@@ -2,6 +2,19 @@ import Mathlib
 
 namespace FiniteTypeOfFiniteProjectiveExtension
 
+/- English proof (translation)
+Set `J : Ideal C` to `LinearMap.range (LinearMap.applyₗ (R := C) (M := D) (M₂ := C) (1 : D))`. Take `⟨n, f, g, -, -, hfg⟩` from `Module.Finite.exists_comp_eq_id_of_projective C D`. Establish `key : ∀ d : D, d ∈ J • (⊤ : Submodule C D)`. Introduce `d`. Establish `hd : d = ∑ i, g d i • f (Pi.single i 1)`.
+
+Establish `e1 : d = f (g d)`. Use `LinearMap.congr_fun hfg d` as an intermediate fact. Simplify using `using this.symm`. Use `conv_lhs => rw [e1, ← Finset.univ_sum_single (g d)]`. Rewrite using `[map_sum]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← map_smul]`. Use `congr 1`. Use extensionality with `j`. Simplify using `[Pi.single_apply]`.
+
+Rewrite using `[hd]`. Use `Submodule.sum_mem _ fun i _ => Submodule.smul_mem_smul ?_ trivial` and prove the remaining obligations. Use `LinearMap.mem_range.2 ⟨(LinearMap.proj i).comp (g.comp (LinearMap.mulLeft C d)), ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules. Take `⟨r, hr1, hr0⟩` from `Submodule.exists_sub_one_mem_and_smul_eq_zero_of_fg_of_le_smul J ⊤ (Module.Finite.fg_top) (fun d _ => key d)`.
+
+Establish `hr : r = 0` using `h (by simpa [Algebra.smul_def] using hr0 1 trivial)`. Establish `h1 : (1 : C) ∈ J`. Use `J.neg_mem hr1` as an intermediate fact. Simplify `this` using `[hr]`. Take `⟨π, hπ⟩` from `LinearMap.mem_range.1 h1`.
+
+Conclude with `⟨π, by simpa using hπ⟩`.
+-/
 private lemma exists_retr {C D : Type*} [CommRing C] [CommRing D] [Algebra C D] [Module.Finite C D]
     [Module.Projective C D] (h : Function.Injective (algebraMap C D)) :
     ∃ π : D →ₗ[C] C, π 1 = 1 := by
@@ -35,6 +48,11 @@ private lemma exists_retr {C D : Type*} [CommRing C] [CommRing D] [Algebra C D] 
 
 end FiniteTypeOfFiniteProjectiveExtension
 
+/- English proof (translation)
+Introduce `R C D _ _ _ _ _ _ _ _ _ hinj hft`. Take `⟨π, hπ⟩` from `FiniteTypeOfFiniteProjectiveExtension.exists_retr (C := C) (D := D) hinj`. Take `⟨B₀, hB₀, hB₀D⟩` from `exists_subalgebra_of_fg R C D hft.out (Module.Finite.fg_top)`. Use `haveI : Module.Finite B₀ D := ⟨hB₀D⟩`. Set `π' : D →ₗ[B₀] C` to `π.restrictScalars B₀`.
+
+Establish `hsurj : Function.Surjective π'` using `fun c => ⟨algebraMap C D c, by show π (algebraMap C D c) = c`. Rewrite using `[Algebra.algebraMap_eq_smul_one, map_smul, hπ, smul_eq_mul, mul_one]⟩`. Use `haveI : Module.Finite B₀ C := Module.Finite.of_surjective π' hsurj`. Use `haveI : Algebra.FiniteType R B₀ := ⟨B₀.fg_top.2 hB₀⟩`. Conclude with `Algebra.FiniteType.trans (S := B₀) inferInstance inferInstance`.
+-/
 theorem UpperTheory.Reformulated.B.FiniteTypeDescent.main.{u_1, u_2, u_3} :
     ∀ (R : Type u_1) (C : Type u_2) (D : Type u_3) [inst : CommRing R] [inst_1 : CommRing C] [inst_2 : CommRing D]
       [inst_3 : Algebra R C] [inst_4 : Algebra C D] [inst_5 : Algebra R D] [IsScalarTower R C D] [Module.Finite C D]

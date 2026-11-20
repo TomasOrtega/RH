@@ -70,13 +70,24 @@ def HolExtend : Prop :=
     ∀ U : KMap M, IsHolCuspKMap θ M (J : Set (GA D W)) χ U →
       ∃ T : MMap M, IsMultMap θ M (J : Set (GA D W)) χ T ∧ RestrictsTo M T U
 
+/- English proof (translation)
+The claim follows from `Submodule.subset_span h`.
+-/
 theorem mem_mult {M : DSModel W S} {J : Set (GA D W)} {χ : GA D W → ℂ} {T : MMap M} (h : IsMultMap θ M J χ T) :
     T ∈ Mult θ M J χ := Submodule.subset_span h
 
+/- English proof (translation)
+Introduce `τ` and use `⟨_, _, κ τ, h τ, rfl⟩`.
+-/
 theorem isHolPar_parW (κ : ∀ τ : D.what₂.Tau, Fin (W.sig (tauE D τ)).1 ⊕ Fin (W.sig (tauE D τ)).2 → ℤ)
     (h : ∀ τ, Formalism.L2.NTheta.HolOK _ _ (κ τ)) : IsHolPar (parW W κ) :=
   fun τ => ⟨_, _, κ τ, h τ, rfl⟩
 
+/- English proof (translation)
+Establish `hu : IsUnit (M.fr τ).det` using `(Matrix.isUnit_iff_isUnit_det _).1 (M.fr_unit τ)`. Establish `h : M.fr τ * ((M.fr τ)⁻¹ * Matrix.single a b (1 : ℂ) * M.fr τ) * (M.fr τ)⁻¹ = Matrix.single a b 1`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hu, Matrix.one_mul, Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hu, Matrix.mul_one]`. Introduce `c d hcd`. Rewrite using `[h, Matrix.single_apply, if_neg]`.
+
+Introduce and unpack `⟨rfl, rfl⟩`. Conclude with `hcd ⟨ha, hb⟩`.
+-/
 theorem single_mem_pMinus (M : DSModel W S) (τ : D.what₂.Tau) {a b : Fin W.rank} (ha : M.ε τ a = false)
     (hb : M.ε τ b = true) : (M.fr τ)⁻¹ * Matrix.single a b (1 : ℂ) * M.fr τ ∈ pMinus M τ := by
   have hu : IsUnit (M.fr τ).det := (Matrix.isUnit_iff_isUnit_det _).1 (M.fr_unit τ)
@@ -88,6 +99,9 @@ theorem single_mem_pMinus (M : DSModel W S) (τ : D.what₂.Tau) {a b : Fin W.ra
   rintro ⟨rfl, rfl⟩
   exact hcd ⟨ha, hb⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨le_rfl, ⟨⊤, by simp, fun _ _ h => h⟩, fun _ _ _ _ => by simp, fun _ _ => by simp⟩`.
+-/
 theorem isLevel_top : IsLevel W (GfC W) (fun _ => 1) :=
   ⟨le_rfl, ⟨⊤, by simp, fun _ _ h => h⟩, fun _ _ _ _ => by simp, fun _ _ => by simp⟩
 

@@ -9,6 +9,11 @@ open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Toroi
 
 namespace GlobalTheory.CompanionTheory.Ar.Fan
 
+/- English proof (translation)
+Establish `e : (P.comap Q.subtype) ≃ₗ[ℤ] P` using `Submodule.comapSubtypeEquivOfLe h`. Establish `h1` using `Submodule.finrank_quotient_add_finrank (P.comap Q.subtype)`. Rewrite `h1` using `[e.finrank_eq]`. Establish `h2 : Module.finrank ℤ (Q ⧸ P.comap Q.subtype) = 0` using `by omega`. Take `⟨n, hn, hz⟩` from `Module.finrank_eq_zero_iff.1 h2 (Submodule.Quotient.mk ⟨y, hy⟩)`.
+
+Use `⟨n, hn, ?_⟩` and prove the remaining obligations. Rewrite `hz` using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`. Simplify using `using hz`.
+-/
 theorem exists_smul_mem_of_le_of_finrank_le {M : Type} [AddCommGroup M] [Module.Finite ℤ M] {P Q : Submodule ℤ M}
     (h : P ≤ Q) (hr : Module.finrank ℤ Q ≤ Module.finrank ℤ P) {y : M} (hy : y ∈ Q) :
     ∃ n : ℤ, n ≠ 0 ∧ n • y ∈ P := by
@@ -21,6 +26,15 @@ theorem exists_smul_mem_of_le_of_finrank_le {M : Type} [AddCommGroup M] [Module.
   rw [← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero] at hz
   simpa using hz
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h0`. Assume the negation of the conclusion as `hz`. Establish `hy : LinearIndependent ℤ ![z]`. Use `Fintype.linearIndependent_iff.2 fun g hg i => ?_` and prove the remaining obligations.
+
+Take `rfl : i = 0` from `Subsingleton.elim _ _`. Assume the negation of the conclusion as `hi`. Establish `hg' : g 0 • z = 0` using `by simpa using hg`. Conclude with `hz ((Submodule.mem_torsion_iff _).2 ⟨⟨g 0, mem_nonZeroDivisors_of_ne_zero hi⟩, hg'⟩)`. Use `h 1 _ hy ![1] (by simp)` as an intermediate fact.
+
+Simplify using `[h0] at this`. Introduce `hz`. Take `⟨a, ha⟩` from `(Submodule.mem_torsion_iff _).1 hz`. Establish `ha' : (a : ℤ) • z = 0` using `ha`. Establish `h1 : ((a : ℤ) : ℝ) * B z z = 0`.
+
+Rewrite using `[← zsmul_eq_mul, ← map_smul, ha', map_zero]`. Conclude with `(mul_eq_zero.1 h1).resolve_left (by exact_mod_cast nonZeroDivisors.ne_zero a.2)`.
+-/
 theorem diag_eq_zero_iff_of_isPosDef {X₁ : Type} [AddCommGroup X₁] {B : X₁ →ₗ[ℤ] X₁ →ₗ[ℤ] ℝ} (h : IsPosDef B) (z : X₁) :
     B z z = 0 ↔ z ∈ Submodule.torsion ℤ X₁ := by
   constructor
@@ -41,6 +55,9 @@ theorem diag_eq_zero_iff_of_isPosDef {X₁ : Type} [AddCommGroup X₁] {B : X₁
       rw [← zsmul_eq_mul, ← map_smul, ha', map_zero]
     exact (mul_eq_zero.1 h1).resolve_left (by exact_mod_cast nonZeroDivisors.ne_zero a.2)
 
+/- English proof (translation)
+Take `⟨X₁, _, _, _, r, B₁, -, -, h1, h2⟩` from `hB`. Use `⟨(Submodule.torsion ℤ X₁).comap r.toAddMonoidHom.toIntLinearMap, fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[h2, diag_eq_zero_iff_of_isPosDef h1]`. Both sides reduce to the same expression.
+-/
 theorem exists_radical_of_mem_psdCone {O : Type} [CommRing O] {bar : O → O} {X : Type} [AddCommGroup X] [Module O X]
     {B : X →ₗ[ℤ] X →ₗ[ℤ] ℝ} (hB : B ∈ psdCone bar X) : ∃ N : Submodule ℤ X, ∀ y, y ∈ N ↔ B y y = 0 := by
   obtain ⟨X₁, _, _, _, r, B₁, -, -, h1, h2⟩ := hB
@@ -48,6 +65,15 @@ theorem exists_radical_of_mem_psdCone {O : Type} [CommRing O] {bar : O → O} {X
   rw [h2, diag_eq_zero_iff_of_isPosDef h1]
   rfl
 
+/- English proof (translation)
+Introduce `O _ _ _ _ bar X _ _ _ K hne hK hadd`. Use `haveI : Module.Finite ℤ X := Module.Finite.trans O X`. Use `choose! N hN using fun B (hB : B ∈ K) => exists_radical_of_mem_psdCone (hK hB)`. Establish `hnn : ∀ B ∈ K, ∀ y, 0 ≤ B y y` using `fun B hB y => nonneg_of_mem_psdCone (hK hB) y`. Take `⟨B₁, hB₁, hmin⟩ : ∃ B₁ ∈ K, ∀ B ∈ K, Module.finrank ℤ (N B₁) ≤ Module.finrank ℤ (N B)` from `⟨Function.argminOn (fun B => Module.finrank ℤ (N B)) K hne, Function.argminOn_mem _ _ hne, fun B hB => Function.argminOn_le (fun B => Module.finrank ℤ (N B)) K hB⟩`.
+
+Use `⟨B₁, hB₁, fun B hB y hy => ?_⟩` and prove the remaining obligations. Establish `hsum` using `hadd B hB B₁ hB₁`. Establish `hle : N (B + B₁) ≤ N B₁` using `fun z hz => by`. Establish `h0 : B z z + B₁ z z = 0` using `by simpa using (hN _ hsum z).1 hz`. Conclude with `(hN _ hB₁ z).2 (by linarith [hnn B hB z, hnn B₁ hB₁ z])`.
+
+Take `⟨n, hn, hny⟩` from `exists_smul_mem_of_le_of_finrank_le hle (hmin _ hsum) ((hN _ hB₁ y).2 hy)`. Establish `h0 : B (n • y) (n • y) + B₁ (n • y) (n • y) = 0` using `by simpa using (hN _ hsum _).1 hny`. Establish `h1 : B (n • y) (n • y) = 0` using `by linarith [hnn B hB (n • y), hnn B₁ hB₁ (n • y)]`. Establish `h2 : ((n : ℝ) * (n : ℝ)) * B y y = 0`. Rewrite using `[← h1]`.
+
+Simplify using `only [map_smul, LinearMap.smul_apply, zsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `(mul_eq_zero.1 h2).resolve_left (mul_ne_zero (by exact_mod_cast hn) (by exact_mod_cast hn))`.
+-/
 theorem exists_least_radical : ∀ (O : Type) [CommRing O] [IsDedekindDomain O] [CharZero O] [Module.Finite ℤ O] (bar : O → O)
     (X : Type) [AddCommGroup X] [Module O X] [Module.Finite O X] (K : Set (X →ₗ[ℤ] X →ₗ[ℤ] ℝ)),
     K.Nonempty → K ⊆ psdCone bar X → (∀ B ∈ K, ∀ B' ∈ K, B + B' ∈ K) →

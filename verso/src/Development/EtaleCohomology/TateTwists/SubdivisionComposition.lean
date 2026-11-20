@@ -6,6 +6,9 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 
 namespace LateralTheory.EtaleFoundations.SubdivisionComposition
 
+/- English proof (translation)
+Use extensionality with `i`. Express the relevant statement in the definitionally equal form `((i : ℕ) + j' + j) = (i : ℕ) + (j + j')`. Use linear arithmetic over natural numbers and integers.
+-/
 lemma subint_comp (N j l j' l' : ℕ) (h : j + l ≤ N) (h' : j' + l' ≤ l) :
     SimplexCategory.subinterval j' l' h' ≫ SimplexCategory.subinterval j l h =
       SimplexCategory.subinterval (n := N) (j + j') l' (by omega) := by
@@ -13,11 +16,17 @@ lemma subint_comp (N j l j' l' : ℕ) (h : j + l ≤ N) (h' : j' + l' ≤ l) :
   change ((i : ℕ) + j' + j) = (i : ℕ) + (j + j')
   omega
 
+/- English proof (translation)
+Use extensionality with `i`. Simplify using `[SimplexCategory.subinterval]`.
+-/
 lemma subint_id (N : ℕ) :
     SimplexCategory.subinterval (n := N) 0 N (by omega) = 𝟙 _ := by
   ext i
   simp [SimplexCategory.subinterval]
 
+/- English proof (translation)
+Simplify using `only [Sx.along, op_comp, Functor.map_comp, NatTrans.comp_app, types_comp_apply]`.
+-/
 lemma along_comp {E : Spc} {U : Scheme.{0}} {N p r : ℕ} (x : Sx E N U)
     (a : SimplexCategory.mk p ⟶ SimplexCategory.mk N) (b : SimplexCategory.mk r ⟶ SimplexCategory.mk p) :
     (x.along a).along b = x.along (b ≫ a) := by
@@ -26,6 +35,19 @@ lemma along_comp {E : Spc} {U : Scheme.{0}} {N p r : ℕ} (x : Sx E N U)
 end LateralTheory.EtaleFoundations.SubdivisionComposition
 
 open LateralTheory.EtaleFoundations.SubdivisionComposition in
+/- English proof (translation)
+Introduce `E U N x`. Establish `hsa : ∀ (j l : ℕ) (h : j + l ≤ N), x.sub j l h = x.along (SimplexCategory.subinterval j l h)` using `fun _ _ _ => rfl`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `j l j' l' h h'`. Express the relevant statement in the definitionally equal form `(x.along _).along _ = x.along _`.
+
+Rewrite using `[along_comp, subint_comp]`. Rewrite using `[hsa, subint_id]`. Simplify using `[Sx.along]`. Introduce `j l h`. Use `⟨?_, ?_, hsa j l h⟩` and prove the remaining obligations.
+
+Introduce `V g`. Simplify using `only [Sx.sub, Sx.res]`. Establish `hn` using `ConcreteCategory.congr_hom ((E.map (SimplexCategory.subinterval j l h).op).naturality g.op) x`. Simplify using `only [ConcreteCategory.comp_apply] at hn`. Conclude with `hn`.
+
+Introduce `E' f`. Simplify using `only [Sx.sub, Sx.map]`. Establish `hn` using `congrArg (fun t => t.app (op U)) (f.naturality (SimplexCategory.subinterval j l h).op)`. Simplify using `only [NatTrans.comp_app] at hn`. Use `first`.
+
+Consider the case `(have hm := ConcreteCategory.congr_hom hn x`. Simplify using `only [ConcreteCategory.comp_apply] at hm`. Apply the tactic sequence `first | exact hm | exact hm.symm)`. Consider the case `exact (congrFun hn x).symm`. Consider the case `(rw [← types_comp_apply, ← hn]; rfl)`.
+
+Introduce `p r a b`. Conclude with `along_comp x a b`.
+-/
 theorem LateralTheory.EtaleFoundations.simplicial_subinterval_of_subinterval_along_etale : LateralTheory.EtaleFoundations.EtaleSimplexSubfaceComposition := by
   intro E U N x
   have hsa : ∀ (j l : ℕ) (h : j + l ≤ N), x.sub j l h = x.along (SimplexCategory.subinterval j l h) :=

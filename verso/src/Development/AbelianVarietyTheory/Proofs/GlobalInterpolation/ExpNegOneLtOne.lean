@@ -13,9 +13,21 @@ open Formalism.L2.Host
 
 variable {L : Type} [Field L] [NumberField L]
 
+/- English proof (translation)
+Rewrite using `[← WithZero.exp_zero, WithZero.exp_lt_exp]`. Evaluate the numerical expressions.
+-/
 theorem exp_neg_one_lt_one : (WithZero.exp (-1 : ℤ) : WithZero (Multiplicative ℤ)) < 1 := by
   rw [← WithZero.exp_zero, WithZero.exp_lt_exp]; norm_num
 
+/- English proof (translation)
+Establish `hx0 : v.valuation L (x : L) ≠ 0` using `by simp`. Establish `hval : ∀ k : L, Valued.v (algebraMap L (v.adicCompletion L) k) = v.valuation L k` using `fun k => HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v k`. Establish `h1 : v.valuation L (((y * x⁻¹ : Lˣ) : L) - 1) ≤ WithZero.exp (-1 : ℤ)`. Establish `: ((y * x⁻¹ : Lˣ) : L) - 1 = ((y : L) - x) * (x : L)⁻¹`. Rewrite using `[Units.val_mul, Units.val_inv_eq_inv_val, _root_.sub_mul, mul_inv_cancel₀ x.ne_zero]`.
+
+Rewrite using `[this, map_mul, map_inv₀, mul_inv_le_iff₀ (zero_lt_iff.2 hx0)]`. Conclude with `hxy`. Establish `h2 : v.valuation L ((y * x⁻¹ : Lˣ) : L) = 1`. Use `Valuation.map_one_add_of_lt (v.valuation L) (h1.trans_lt exp_neg_one_lt_one)` as an intermediate fact. Rewrite `this` using `[add_sub_cancel]`. Then use the resulting hypothesis.
+
+Establish `h3 : χ.locK v (y * x⁻¹) = 1`. Use `h (atFin v (y * x⁻¹)) ?_ ?_` and prove the remaining obligations. Conclude with `(hval _).trans h2`. Establish `: ((atFin v (y * x⁻¹) : (v.adicCompletion L)ˣ) : v.adicCompletion L) - 1 = algebraMap L (v.adicCompletion L) (((y * x⁻¹ : Lˣ) : L) - 1)`. Rewrite using `[map_sub, map_one]`.
+
+Both sides reduce to the same expression. Rewrite using `[this, hval]`. Simplify using `using h1`. Rewrite `h3` using `[map_mul, map_inv, mul_inv_eq_one]`. Then use the resulting hypothesis.
+-/
 theorem locK_eq_of_tame (χ : HChar L) {v : HeightOneSpectrum (𝓞 L)} (h : χ.TameAt v) (x y : Lˣ)
     (hxy : v.valuation L ((y : L) - x) ≤ WithZero.exp (-1 : ℤ) * v.valuation L (x : L)) :
     χ.locK v y = χ.locK v x := by
@@ -40,6 +52,13 @@ theorem locK_eq_of_tame (χ : HChar L) {v : HeightOneSpectrum (𝓞 L)} (h : χ.
       simpa using h1
   rwa [map_mul, map_inv, mul_inv_eq_one] at h3
 
+/- English proof (translation)
+Establish `hn : ∀ v : HeightOneSpectrum (𝓞 L), ∃ n : ℕ, v.intValuation (t v) = WithZero.exp (-(n : ℤ))` using `fun v => ⟨_, v.intValuation_if_neg (ht v)⟩`. Use `choose n hn using hn`. Take `⟨y, hy⟩` from `IsDedekindDomain.exists_forall_sub_mem_ideal (s := S) (fun v => v.asIdeal) (fun v => n v + 1) (fun v _ => v.prime) (fun v _ w _ h h' => h (HeightOneSpectrum.ext h')) (fun v => t v.1)`. Use `⟨y, fun v hv => ?_⟩` and prove the remaining obligations. Establish `h1` using `(v.intValuation_le_pow_iff_mem _ _).2 (hy v hv)`.
+
+Establish `e1 : v.valuation L ((y : L) - (t v : L)) = v.intValuation (y - t v)`. Rewrite using `[← HeightOneSpectrum.valuation_of_algebraMap (K := L)]`. Simplify using the standard rewrite rules. Establish `e2 : v.valuation L (t v : L) = v.intValuation (t v)` using `HeightOneSpectrum.valuation_of_algebraMap (K := L) v _`. Rewrite using `[e1, e2, hn, ← WithZero.exp_add]`.
+
+Use `h1 using 2` and compare the differences between its conclusion and the goal. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_approx (S : Finset (HeightOneSpectrum (𝓞 L))) (t : HeightOneSpectrum (𝓞 L) → 𝓞 L)
     (ht : ∀ v, t v ≠ 0) : ∃ y : 𝓞 L, ∀ v ∈ S,
       v.valuation L ((y : L) - (t v : L)) ≤ WithZero.exp (-1 : ℤ) * v.valuation L (t v : L) := by
@@ -57,6 +76,23 @@ theorem exists_approx (S : Finset (HeightOneSpectrum (𝓞 L))) (t : HeightOneSp
   convert h1 using 2
   push_cast; ring
 
+/- English proof (translation)
+Establish `hpr : χ.ProductRule` using `GlobalTheory.Mem.Chr.CharModel.productRule (F := L) ⟨χ.1, χ.2⟩`. Establish `key : ∀ (a : 𝓞 L) (ha : (a : L) ≠ 0), χ.locK P (Units.mk0 (a : L) ha) ∈ G`. Introduce `a ha`. Establish `ha' : a ≠ 0` using `fun h => ha (by simp [h])`. Take `⟨y, hy⟩` from `exists_approx (insert P T) (fun v => if v = P then a else 1) (fun v => by split_ifs; exacts [ha', one_ne_zero])`.
+
+Establish `hP` using `hy P (Finset.mem_insert_self _ _)`. Simplify using `only [if_true] at hP`. Establish `hy0 : (y : L) ≠ 0`. Introduce `h0`. Rewrite `hP` using `[h0, zero_sub, Valuation.map_neg]`.
+
+Establish `hpos : 0 < P.valuation L (a : L)` using `zero_lt_iff.2 (by simpa using ha')`. Use `mul_lt_mul_of_pos_right exp_neg_one_lt_one hpos` as an intermediate fact. Rewrite `this` using `[one_mul]`. Conclude with `absurd hP (not_le.2 this)`. Establish `e1 : χ.locK P (Units.mk0 (y : L) hy0) = χ.locK P (Units.mk0 (a : L) ha)` using `locK_eq_of_tame χ (htame P) _ _ hP`.
+
+Establish `e2 : ∏ v ∈ insert P T, χ.locK v (Units.mk0 (y : L) hy0) = χ.locK P (Units.mk0 (y : L) hy0)`. Use `Finset.prod_eq_single P (fun v hv hne => ?_) (fun h => absurd (Finset.mem_insert_self _ _) h)` and prove the remaining obligations. Establish `h1` using `hy v hv`. Simplify using `only [if_neg hne] at h1`. Rewrite using `[locK_eq_of_tame χ (htame v) 1 _ (by simpa using h1), map_one]`.
+
+Establish `h` using `hpr (insert P T) (fun v hv => hunr v fun h => hv (Finset.mem_insert_of_mem h)) (Units.mk0 (y : L) hy0)`. Rewrite `h` using `[e2, e1]`. Establish `hF : (∏ᶠ (v : HeightOneSpectrum (𝓞 L)) (_ : v ∉ insert P T), χ.val v ^ ordF v (Units.mk0 (y : L) hy0)) ∈ G` using `finprod_induction (· ∈ G) G.one_mem (fun _ _ => G.mul_mem) fun v => finprod_induction (· ∈ G) G.one_mem (fun _ _ => G.mul_mem) fun hv => G.zpow_mem (hval v fun h => hv (Finset.mem_insert_of_mem h)) _`. Establish `h1 : _ ∈ G` using `h ▸ G.one_mem`. Rewrite `h1` using `[G.mul_mem_cancel_right hF, G.mul_mem_cancel_left (hinf _)]`.
+
+Conclude with `h1`. Take `⟨a, b, hb, hab⟩` from `IsFractionRing.div_surjective (𝓞 L) (x : L)`. Establish `hb0 : (b : L) ≠ 0` using `by simpa using nonZeroDivisors.ne_zero hb`. Establish `ha0 : (a : L) ≠ 0`. Introduce `h`.
+
+Apply `x.ne_zero` to reduce the goal to its premises. Rewrite using `[← hab]`. Express the relevant statement in the definitionally equal form `(a : L) / _ = 0`. Rewrite using `[h, zero_div]`. Establish `hx : x = Units.mk0 (a : L) ha0 * (Units.mk0 (b : L) hb0)⁻¹`.
+
+Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[← hab, Units.val_mul, Units.val_inv_eq_inv_val, div_eq_mul_inv]`. Both sides reduce to the same expression. Rewrite using `[hx, map_mul, map_inv]`. Conclude with `G.mul_mem (key a ha0) (G.inv_mem (key b hb0))`.
+-/
 theorem locK_mem (χ : HChar L) (G : Subgroup ℂˣ) (T : Finset (HeightOneSpectrum (𝓞 L)))
     (htame : ∀ v, χ.TameAt v) (hunr : ∀ v, v ∉ T → χ.UnrAt v) (hval : ∀ v, v ∉ T → χ.val v ∈ G)
     (hinf : ∀ k, χ.inf k ∈ G) (P : HeightOneSpectrum (𝓞 L)) (x : Lˣ) : χ.locK P x ∈ G := by
@@ -115,12 +151,26 @@ def unitsIn (M : Subfield ℂ) : Subgroup ℂˣ where
     change ((a⁻¹ : ℂˣ) : ℂ) ∈ M
     rw [Units.val_inv_eq_inv_val]; exact M.inv_mem ha
 
+/- English proof (translation)
+Establish `h1 : z * starRingEnd ℂ z = ((‖z‖ : ℝ) : ℂ) ^ 2` using `Complex.mul_conj' z`. Establish `h2 : starRingEnd ℂ z ≠ 0` using `(map_ne_zero _).2 hz`. Rewrite using `[zpow_ofNat, div_pow, ← h1]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem sq_div_norm {z : ℂ} (hz : z ≠ 0) : (z / ((‖z‖ : ℝ) : ℂ)) ^ (2 : ℤ) = z / starRingEnd ℂ z := by
   have h1 : z * starRingEnd ℂ z = ((‖z‖ : ℝ) : ℂ) ^ 2 := Complex.mul_conj' z
   have h2 : starRingEnd ℂ z ≠ 0 := (map_ne_zero _).2 hz
   rw [zpow_ofNat, div_pow, ← h1]
   field_simp
 
+/- English proof (translation)
+Introduce `Z hZ m0 eta hT j P x`. Establish `hm` using `hT.mu0 j`. Establish `hg : ((Z.Pr.g 0 : ℕ) : 𝓞 Z.X.E) * ((Z.Pr.g 1 : ℕ) : 𝓞 Z.X.E) ≠ 0` using `mul_ne_zero (Nat.cast_ne_zero.2 (hZ.primes.g_prime 0).ne_zero) (Nat.cast_ne_zero.2 (hZ.primes.g_prime 1).ne_zero)`. Establish `hoff : ∀ v : HeightOneSpectrum (𝓞 Z.X.E), v ∉ divs (((Z.Pr.g 0 : ℕ) : 𝓞 Z.X.E) * ((Z.Pr.g 1 : ℕ) : 𝓞 Z.X.E)) → ∀ i, ((Z.Pr.g i : ℕ) : 𝓞 Z.X.E) ∉ v.asIdeal`. Introduce `v hv i hi`.
+
+Apply `hv` to reduce the goal to its premises. Rewrite using `[Formalism.L2.Col.mem_divs hg]`. Use `fin_cases i`. Conclude with `v.asIdeal.mul_mem_right _ hi`. Conclude with `v.asIdeal.mul_mem_left _ hi`.
+
+Use `locK_mem (m0 j) (unitsIn Z.sig0.fieldRange) _ hm.tame (fun v hv => hm.unr v (hoff v hv)) (fun v hv => ⟨_, hT.muVal j v (hoff v hv)⟩) (fun k => ?_) P x` and prove the remaining obligations. Take `⟨n, hn, hinf⟩` from `hm.inf`. Express the relevant statement in the definitionally equal form `(((m0 j).inf k : ℂˣ) : ℂ) ∈ Z.sig0.fieldRange`. Rewrite using `[hinf k]`. Use `prod_mem fun τ _ => ?_` and prove the remaining obligations.
+
+Take `⟨Q, hQ⟩` from `hZ.wts.row_ok τ`. Take `⟨z, hz⟩` from `Q.e_int j`. Establish `he : (Z.W.row τ).e j = z` using `by rw [← hQ]; exact hz`. Establish `hn2 : n τ = 2 * (-z)`. Use `hn τ` as an intermediate fact.
+
+Simplify using `only [he] at this`. Conclude with `this` after adjusting the coercions. Rewrite using `[hn2, zpow_mul, sq_div_norm ((map_ne_zero _).2 k.ne_zero), ← hZ.fields.conjE]`. Conclude with `zpow_mem (Z.sig0.fieldRange.div_mem ⟨_, rfl⟩ ⟨_, rfl⟩) _`.
+-/
 theorem locK_mem_coeff : ∀ (Z : Dat), Z.Ok → ∀ (m0 : Fin Z.R.m → Formalism.L2.Host.HChar Z.X.E) (eta : Formalism.L2.Host.HChar Z.X.E), Z.Ch.Tied Z.sig0 (fun j τ => (Z.W.row τ).e j) m0 eta → ∀ (j : Fin Z.R.m) (P : HeightOneSpectrum (𝓞 Z.X.E)) (x : Z.X.Eˣ), ∃ k : Z.X.K, Z.sig0 k = (((m0 j).locK P x : ℂˣ) : ℂ) := by
   intro Z hZ m0 eta hT j P x
   have hm := hT.mu0 j

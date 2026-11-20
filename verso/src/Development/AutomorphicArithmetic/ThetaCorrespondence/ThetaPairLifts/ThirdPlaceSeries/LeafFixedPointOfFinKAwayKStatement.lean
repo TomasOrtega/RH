@@ -9,6 +9,9 @@ set_option synthInstance.maxHeartbeats 200000
 section
 open GlobalTheory.BigTop GlobalTheory.BigTop.Fun GlobalTheory.SumSize
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.Adopt.leafFixedPoint_of_finK_awayK | exact _root_.GlobalTheory.Adopt.leafFixedPoint_of_finK_awayK | (intros; apply _root_.GlobalTheory.Adopt.leafFixedPoint_of_finK_awayK <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.leafFixedPoint_of_finK_awayK : _root_.GlobalTheory.BigTop.Fun.SettingAtPoint → FinK → AwayK → _root_.GlobalTheory.BigTop.Fun.LeafFixedPoint @Comparison₂ := by
   first | exact @_root_.GlobalTheory.Adopt.leafFixedPoint_of_finK_awayK | exact _root_.GlobalTheory.Adopt.leafFixedPoint_of_finK_awayK | (intros; apply _root_.GlobalTheory.Adopt.leafFixedPoint_of_finK_awayK <;> assumption)
 end

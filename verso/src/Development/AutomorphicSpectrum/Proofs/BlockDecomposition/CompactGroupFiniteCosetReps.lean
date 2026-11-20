@@ -5,6 +5,19 @@ open GlobalTheory.PRep GlobalTheory.SmGL ValuativeRel PositivityTheory.Lbc
 
 namespace GlobalTheory.CompanionTheory.CosetReps
 
+/- English proof (translation)
+Take `⟨t, ht⟩` from `hJ.elim_finite_subcover (fun a : A => (fun y : G => (a : G)⁻¹ * y) ⁻¹' (H : Set G)) (fun a => hH.preimage (continuous_const.mul continuous_id)) (fun y hy => by`. Take `⟨a, ha, hay⟩` from `hcov y hy`. Conclude with `Set.mem_iUnion.2 ⟨⟨a, ha⟩, hay⟩)`. Set `T : Finset (G ⧸ H)` to `t.image (fun a : A => ((a : G) : G ⧸ H))`. Establish `rep : ∀ q : T, ∃ a : A, ((a : G) : G ⧸ H) = q`.
+
+Introduce and unpack `⟨q, hq⟩`. Take `⟨a, -, rfl⟩` from `Finset.mem_image.1 hq`. Conclude with `⟨a, rfl⟩`. Use `choose f hf using rep`. Establish `key : ∀ y ∈ J, ((y : G) : G ⧸ H) ∈ T`.
+
+Introduce `y hy`. Take `⟨a, hat, hay⟩` from `Set.mem_iUnion₂.1 (ht hy)`. Conclude with `Finset.mem_image.2 ⟨a, hat, QuotientGroup.eq.2 hay⟩`. Set `e : T ≃ Fin T.card` to `T.equivFin`. Establish `main : ∀ y ∈ J, ∃! i, ((f (e.symm i) : A) : G)⁻¹ * y ∈ H`.
+
+Introduce `y hy`. Use `⟨e ⟨_, key y hy⟩, ?_, ?_⟩` and prove the remaining obligations. Use `QuotientGroup.eq.1 ?_` and prove the remaining obligations. Rewrite using `[Equiv.symm_apply_apply, hf]`. Introduce `i hi`.
+
+Establish `h1 : (((f (e.symm i) : A) : G) : G ⧸ H) = ((y : G) : G ⧸ H)` using `QuotientGroup.eq.2 hi`. Rewrite `h1` using `[hf]`. Rewrite using `[← Equiv.symm_apply_eq]`. Conclude with `Subtype.ext h1`. Take `⟨i₀, -⟩` from `main 1 J.one_mem`.
+
+Conclude with `⟨T.card, i₀.pos, fun i => ((f (e.symm i) : A) : G), fun i => (f (e.symm i)).2, main⟩`.
+-/
 theorem exists_fin_coset_reps (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     (J H A : Subgroup G) (hJ : IsCompact (J : Set G)) (hH : IsOpen (H : Set G))
     (_hHJ : H ≤ J) (_hAJ : A ≤ J) (hcov : ∀ y ∈ J, ∃ a ∈ A, a⁻¹ * y ∈ H) :

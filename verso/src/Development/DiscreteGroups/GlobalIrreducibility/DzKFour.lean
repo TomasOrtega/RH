@@ -18,10 +18,16 @@ variable {F : Type} [Field F] [Finite F]
 def tor (F : Type) [Field F] [Finite F] (n : ℕ) : Set (AlgebraicClosure F) :=
   {α | α ^ (Nat.card F ^ n - 1) = 1}
 
+/- English proof (translation)
+Use `Nat.one_lt_pow hn.ne' (Finite.one_lt_card (α := F))` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem N_pos {n : ℕ} (hn : 0 < n) : 0 < Nat.card F ^ n - 1 := by
   have := Nat.one_lt_pow hn.ne' (Finite.one_lt_card (α := F))
   omega
 
+/- English proof (translation)
+Use `(Polynomial.nthRoots (Nat.card F ^ n - 1) (1 : AlgebraicClosure F)).finite_toSet.subset ?_` and prove the remaining obligations. Introduce `α hα`. Conclude with `(Polynomial.mem_nthRoots (N_pos hn)).2 hα`.
+-/
 theorem tor_finite {n : ℕ} (hn : 0 < n) : (tor F n).Finite := by
   refine (Polynomial.nthRoots (Nat.card F ^ n - 1) (1 : AlgebraicClosure F)).finite_toSet.subset ?_
   intro α hα
@@ -33,10 +39,18 @@ def hT (n : ℕ) (ψ : F → ℂ) (β : AlgebraicClosure F) : ℂ :=
 def aC (n : ℕ) (θ : AlgebraicClosure F →* ℂ) (h : AlgebraicClosure F → ℂ) (l : ℕ) : ℂ :=
   ((Nat.card F ^ n - 1 : ℕ) : ℂ)⁻¹ * ∑ᶠ β ∈ tor F n, h β * star (θ β ^ l)
 
+/- English proof (translation)
+Rewrite using `[← map_pow, show β ^ (Nat.card F ^ n - 1) = 1 from hβ, map_one]`.
+-/
 theorem theta_pow_N {n : ℕ} (θ : AlgebraicClosure F →* ℂ) {β : AlgebraicClosure F} (hβ : β ∈ tor F n) :
     θ β ^ (Nat.card F ^ n - 1) = 1 := by
   rw [← map_pow, show β ^ (Nat.card F ^ n - 1) = 1 from hβ, map_one]
 
+/- English proof (translation)
+Establish `h1 : ‖c‖ = 1` using `Complex.norm_eq_one_of_pow_eq_one hc hN.ne'`. Establish `h0 : c ≠ 0` using `by rintro rfl; rw [zero_pow hN.ne'] at hc; exact zero_ne_one hc`. Use `eq_inv_of_mul_eq_one_left ?_` and prove the remaining obligations. Establish `: star c * c = ((Complex.normSq c : ℝ) : ℂ)`. Rewrite using `[Complex.normSq_eq_conj_mul_self]`.
+
+Both sides reduce to the same expression. Rewrite using `[this, Complex.normSq_eq_norm_sq, h1]`. Simplify using the standard rewrite rules.
+-/
 theorem star_eq_inv_of_pow {c : ℂ} {N : ℕ} (hN : 0 < N) (hc : c ^ N = 1) : star c = c⁻¹ := by
   have h1 : ‖c‖ = 1 := Complex.norm_eq_one_of_pow_eq_one hc hN.ne'
   have h0 : c ≠ 0 := by rintro rfl; rw [zero_pow hN.ne'] at hc; exact zero_ne_one hc
@@ -47,6 +61,21 @@ theorem star_eq_inv_of_pow {c : ℂ} {N : ℕ} (hN : 0 < N) (hc : c ^ N = 1) : s
 
 open scoped Classical in
 
+/- English proof (translation)
+Establish `hN` using `N_pos (F := F) hn`. Establish `e1` using `theta_pow_N θ hβ`. Establish `e2` using `theta_pow_N θ hβ'`. Establish `h0 : θ β' ≠ 0`. Introduce `h`.
+
+Rewrite `e2` using `[h, zero_pow hN.ne']`. Conclude with `zero_ne_one e2`. Establish `hs : star (θ β') = (θ β')⁻¹` using `star_eq_inv_of_pow hN e2`. Establish `hw : ∀ l, θ β ^ l * star (θ β' ^ l) = (θ β * (θ β')⁻¹) ^ l`. Introduce `l`.
+
+Rewrite using `[star_pow, hs, mul_pow, inv_pow]`. Repeatedly rewrite using `[hw]`. Establish `hwN : (θ β * (θ β')⁻¹) ^ (Nat.card F ^ n - 1) = 1`. Rewrite using `[mul_pow, inv_pow, e1, e2, inv_one, one_mul]`. Use `split_ifs with hb`.
+
+Substitute `hb` using the available equality. Rewrite using `[mul_inv_cancel₀ h0]`. Simplify using the standard rewrite rules. Establish `hne : θ β * (θ β')⁻¹ ≠ 1`. Introduce `h`.
+
+Establish `h' : θ β = θ β'`. Rewrite `h` using `[mul_inv_eq_one₀ h0]`. Conclude with `h`. Establish `n0 : ∀ {x : AlgebraicClosure F}, x ∈ tor F n → x ≠ 0`. Introduce `x hx h`.
+
+Rewrite `hx` using `[h]`. Establish `: (0 : AlgebraicClosure F) ^ (Nat.card F ^ n - 1) = 1` using `hx`. Rewrite `this` using `[zero_pow hN.ne']`. Conclude with `zero_ne_one this`. Conclude with `hb (hθ _ _ (n0 hβ) (n0 hβ') h')`.
+
+Rewrite using `[geom_sum_eq hne, hwN, sub_self, zero_div]`.
+-/
 theorem sum_pow_star {n : ℕ} (hn : 0 < n) (θ : AlgebraicClosure F →* ℂ)
     (hθ : ∀ x y : AlgebraicClosure F, x ≠ 0 → y ≠ 0 → θ x = θ y → x = y)
     {β β' : AlgebraicClosure F} (hβ : β ∈ tor F n) (hβ' : β' ∈ tor F n) :
@@ -77,6 +106,13 @@ theorem sum_pow_star {n : ℕ} (hn : 0 < n) (θ : AlgebraicClosure F →* ℂ)
       exact hb (hθ _ _ (n0 hβ) (n0 hβ') h')
     rw [geom_sum_eq hne, hwN, sub_self, zero_div]
 
+/- English proof (translation)
+Establish `hT` using `tor_finite (F := F) hn`. Establish `hN : ((Nat.card F ^ n - 1 : ℕ) : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 (N_pos hn).ne'`. Unfold `aC`. Repeatedly rewrite using `[finsum_mem_eq_finite_toFinset_sum _ hT, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`.
+
+Establish `e : ∀ β' ∈ hT.toFinset, ∑ l ∈ Finset.range (Nat.card F ^ n - 1), ((Nat.card F ^ n - 1 : ℕ) : ℂ)⁻¹ * (h β' * star (θ β' ^ l)) * θ β ^ l = ((Nat.card F ^ n - 1 : ℕ) : ℂ)⁻¹ * h β' * (if β = β' then ((Nat.card F ^ n - 1 : ℕ) : ℂ) else 0)`. Introduce `β' hb'`. Rewrite using `[← sum_pow_star hn θ hθ hβ ((Set.Finite.mem_toFinset hT).1 hb'), Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun l _ => by ring`. Rewrite using `[Finset.sum_congr rfl e]`.
+
+Repeatedly rewrite using `[mul_ite, mul_zero]`. Rewrite using `[Finset.sum_ite_eq hT.toFinset β, if_pos ((Set.Finite.mem_toFinset hT).2 hβ)]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem sum_aC {n : ℕ} (hn : 0 < n) (θ : AlgebraicClosure F →* ℂ)
     (hθ : ∀ x y : AlgebraicClosure F, x ≠ 0 → y ≠ 0 → θ x = θ y → x = y) (h : AlgebraicClosure F → ℂ)
     {β : AlgebraicClosure F} (hβ : β ∈ tor F n) :
@@ -98,20 +134,42 @@ theorem sum_aC {n : ℕ} (hn : 0 < n) (θ : AlgebraicClosure F →* ℂ)
   rw [Finset.sum_ite_eq hT.toFinset β, if_pos ((Set.Finite.mem_toFinset hT).2 hβ)]
   field_simp
 
+/- English proof (translation)
+Take `⟨f, hf⟩` from `exists_algHom_pow_card_pow (F := F) i`. Rewrite using `[← hf]`. Conclude with `minpoly.algHom_eq f f.toRingHom.injective β`.
+-/
 theorem minpoly_pow_card (β : AlgebraicClosure F) (i : ℕ) :
     minpoly F (β ^ Nat.card F ^ i) = minpoly F β := by
   obtain ⟨f, hf⟩ := exists_algHom_pow_card_pow (F := F) i
   rw [← hf]
   exact minpoly.algHom_eq f f.toRingHom.injective β
 
+/- English proof (translation)
+Unfold `hT`. Rewrite using `[minpoly_pow_card]`.
+-/
 theorem hT_pow_card (n : ℕ) (ψ : F → ℂ) (β : AlgebraicClosure F) (i : ℕ) :
     hT n ψ (β ^ Nat.card F ^ i) = hT n ψ β := by
   unfold hT; rw [minpoly_pow_card]
 
+/- English proof (translation)
+Use `show (β ^ m) ^ (Nat.card F ^ n - 1) = 1`. Rewrite using `[← pow_mul, mul_comm, pow_mul, show β ^ (Nat.card F ^ n - 1) = 1 from hβ, one_pow]`.
+-/
 theorem pow_mem_tor {n : ℕ} {β : AlgebraicClosure F} (hβ : β ∈ tor F n) (m : ℕ) : β ^ m ∈ tor F n := by
   show (β ^ m) ^ (Nat.card F ^ n - 1) = 1
   rw [← pow_mul, mul_comm, pow_mul, show β ^ (Nat.card F ^ n - 1) = 1 from hβ, one_pow]
 
+/- English proof (translation)
+Take `⟨α, hα⟩` from `IsAlgClosed.exists_aeval_eq_zero (AlgebraicClosure F) f (degree_pos_of_irreducible hirr).ne'`. Establish `hmin : f = minpoly F α` using `minpoly.eq_of_irreducible_of_monic hirr hα hf`. Establish `hd : f.natDegree * m = n` using `by rw [← hdeg, hP, hf.natDegree_pow, mul_comm]`. Establish `hdpos : 0 < f.natDegree` using `natDegree_pos_iff_degree_pos.2 (degree_pos_of_irreducible hirr)`. Establish `hmq : n / f.natDegree = m` using `by rw [← hd, Nat.mul_div_cancel_left _ hdpos]`.
+
+Establish `hf0 : f.coeff 0 ≠ 0`. Introduce `hc`. Apply `h0` to reduce the goal to its premises. Rewrite using `[hP, coeff_zero_eq_eval_zero, eval_pow, ← coeff_zero_eq_eval_zero, hc, zero_pow hm.ne']`. Establish `hα0 : α ≠ 0`.
+
+Introduce and unpack `rfl`. Apply `hf0` to reduce the goal to its premises. Rewrite `hα` using `[aeval_def, eval₂_at_zero, map_eq_zero_iff _ (algebraMap F _).injective]`. Then use the resulting hypothesis. Establish `hαt : α ∈ tor F n`. Establish `h1 : α ^ Nat.card F ^ n = α` using `(minpoly_natDegree_dvd_iff_pow α n).1 (by rw [← hmin, ← hd]; exact Dvd.intro m rfl)`.
+
+Use `show α ^ (Nat.card F ^ n - 1) = 1`. Establish `h2 : α ^ (Nat.card F ^ n - 1) * α = α * 1`. Rewrite using `[← pow_succ, Nat.sub_add_cancel (Nat.one_le_pow n (Nat.card F) Nat.card_pos), h1, mul_one]`. Conclude with `mul_left_cancel₀ hα0 (by rw [mul_comm] at h2; exact h2)`. Establish `hPα : P = minpoly F α ^ (n / (minpoly F α).natDegree)` using `by rw [← hmin, hmq, hP]`.
+
+Establish `hr` using `(GlobalTheory.T.frobeniusTorus_minpoly_degree_rootPowerSum F θ n hn α hαt).2.2`. Establish `hnc : ψ (-P.nextCoeff) = hT n ψ α` using `by unfold hT; rw [← hPα]`. Rewrite using `[hnc, hPα]`. Repeatedly rewrite using `[hr, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`.
+
+Establish `e : ∀ i ∈ Finset.range n, ∑ l ∈ Finset.range (Nat.card F ^ n - 1), aC n θ (hT n ψ) l * θ (α ^ Nat.card F ^ i) ^ l = hT n ψ α`. Introduce `i _`. Rewrite using `[sum_aC hn θ hθ _ (pow_mem_tor hαt _), hT_pow_card]`. Rewrite using `[Finset.sum_congr rfl e, Finset.sum_const, Finset.card_range, nsmul_eq_mul]`.
+-/
 theorem expand_primary {n : ℕ} (hn : 0 < n) (θ : AlgebraicClosure F →* ℂ)
     (hθ : ∀ x y : AlgebraicClosure F, x ≠ 0 → y ≠ 0 → θ x = θ y → x = y) (ψ : F → ℂ)
     (P f : F[X]) (m : ℕ) (hf : f.Monic) (hirr : Irreducible f) (hm : 0 < m) (hP : P = f ^ m)

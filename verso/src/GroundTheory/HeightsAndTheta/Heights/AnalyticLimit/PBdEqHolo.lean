@@ -7,6 +7,11 @@ namespace GroundTheory.Heights₂.Heights.AnalyticLimit
 open ReciprocityTheory.AnForm.A (coordDiv)
 open GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Regular (RegChartData)
 
+/- English proof (translation)
+Introduce `X _ D A R j`. Use `⟨fun m v hv => ?_, fun y hy => ?_⟩` and prove the remaining obligations. Establish `h : AnalyticAt ℂ (R.ψ j ∘ (A.chart m).symm) v` using `(R.compat j m).1 v ⟨hv.1, hv.2.1⟩`. Establish `hi : ∀ i, AnalyticAt ℂ (fun w => (R.ψ j ∘ (A.chart m).symm) w i) v` using `(analyticAt_pi_iff (f := fun i w => (R.ψ j ∘ (A.chart m).symm) w i)).1 h`. Use `show AnalyticAt ℂ (fun w => ∏ i ∈ R.S j, (R.ψ j ∘ (A.chart m).symm) w i) v`.
+
+Conclude with `Finset.analyticAt_fun_prod _ fun i _ => hi i`. Establish `hmem` using `R.mem_Yo_iff j (R.ψ j y) hy.2`. Rewrite `hmem` using `[(R.ψ j).left_inv hy.1]`. Rewrite using `[hmem, not_not]`. Simplify using `only [bdEq, Finset.prod_eq_zero_iff, coordDiv, Set.mem_ofPred_eq]`.
+-/
 theorem BdEqHolo.proof : BdEqHolo.Statement := by
   intro X _ D A R j
   refine ⟨fun m v hv => ?_, fun y hy => ?_⟩

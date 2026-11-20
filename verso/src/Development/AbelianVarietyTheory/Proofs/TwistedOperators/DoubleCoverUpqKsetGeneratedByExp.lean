@@ -14,6 +14,13 @@ open GlobalTheory.RealPar GlobalTheory.RealPar.KStabLie GlobalTheory.RealPar.Tor
 
 variable {p q : ℕ}
 
+/- English proof (translation)
+Use `⟨fun i => by simp, fun j => by simp, ?_⟩` and prove the remaining obligations. Introduce and unpack `(a | a) (b | b) hab`. Establish `hlt : a < b` using `hab`. Simplify using `only [finSumFinEquiv_apply_left, Fin.lt_def, Fin.val_castAdd]`. Conclude with `Fin.lt_def.mp hlt`.
+
+Simplify using `[posC] at hab`. Simplify using `[posC] at hab`. Establish `hlt : a < b` using `hab`. Use `Fin.lt_def.mp hlt` as an intermediate fact. Simplify using `only [finSumFinEquiv_apply_right, Fin.lt_def, Fin.val_natAdd]`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem blockOrd_std (p q : ℕ) :
     BlockOrd (p := p) (q := q) finSumFinEquiv (fun i => (finSumFinEquiv.symm i).isLeft) := by
   refine ⟨fun i => by simp, fun j => by simp, ?_⟩
@@ -28,6 +35,21 @@ theorem blockOrd_std (p q : ℕ) :
     simp only [finSumFinEquiv_apply_right, Fin.lt_def, Fin.val_natAdd]
     omega
 
+/- English proof (translation)
+Establish `hB` using `blockOrd_std p q`. Take `⟨Y, hY, hexp, -⟩` from `Formalism.REAL.compact_exponential_surjective _ _ _ (mem_Kset hB T hk)`. Use `letI : NormedRing (Mat p q) := Matrix.linftyOpNormedRing`. Use `letI : NormedAlgebra ℚ (Mat p q) := Matrix.linftyOpNormedAlgebra`. Use `letI : NormedSpace ℂ (Mat p q) := Matrix.linftyOpNormedSpace`.
+
+Use `letI : CompleteSpace (Mat p q) := FiniteDimensional.complete ℂ (Mat p q)`. Use `letI : NormedRing (Matrix (Fin (p + q)) (Fin (p + q)) ℂ) := Matrix.linftyOpNormedRing`. Use `letI : NormedAlgebra ℚ (Matrix (Fin (p + q)) (Fin (p + q)) ℂ) := Matrix.linftyOpNormedAlgebra`. Use `letI : NormedSpace ℂ (Matrix (Fin (p + q)) (Fin (p + q)) ℂ) := Matrix.linftyOpNormedSpace`. Use `letI : CompleteSpace (Matrix (Fin (p + q)) (Fin (p + q)) ℂ) := FiniteDimensional.complete ℂ (Matrix (Fin (p + q)) (Fin (p + q)) ℂ)`.
+
+Set `φ` to `Matrix.reindexAlgEquiv ℂ ℂ (finSumFinEquiv (m := p) (n := q))`. Establish `hφc : Continuous φ`. Rewrite using `[Matrix.coe_reindexAlgEquiv]`. Conclude with `continuous_id.matrix_reindex _ _`. Establish `hφX : φ (φ.symm Y) = Y` using `φ.apply_symm_apply Y`.
+
+Establish `hJ : φ (Jm p q) = Formalism.REAL.Jm (fun i => (finSumFinEquiv.symm i).isLeft)`. Rewrite using `[Matrix.coe_reindexAlgEquiv]`. Conclude with `hB.reindex_Jm`. Establish `hstar : ∀ M : Mat p q, φ Mᴴ = (φ M)ᴴ` using `fun M => (Matrix.conjTranspose_reindex _ _ M).symm`. Establish `hX : φ.symm Y ∈ upq p q` using `by show (φ.symm Y)ᴴ * Jm p q + Jm p q * φ.symm Y = 0`.
+
+Apply `φ.injective` to reduce the goal to its premises. Rewrite using `[map_add, map_mul, map_mul, hstar, hJ, hφX, map_zero]`. Conclude with `hY.1`. Use `⟨φ.symm Y, hX, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[isKC_iff]`.
+
+Apply `φ.injective` to reduce the goal to its premises. Rewrite using `[map_mul, map_mul, hJ, hφX]`. Conclude with `hY.2`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[T.expt_cov _ hX]`.
+
+Apply `φ.injective` to reduce the goal to its premises. Establish `hm : φ (NormedSpace.exp (φ.symm Y)) = NormedSpace.exp (φ (φ.symm Y))` using `NormedSpace.map_exp φ hφc _`. Rewrite using `[hm, hφX, hexp]`. Both sides reduce to the same expression.
+-/
 theorem exists_log (T : GrpData p q) {k : T.G} (hk : k ∈ T.Kset) :
     ∃ X, X ∈ upq p q ∧ IsKC X ∧ T.cov (T.expt X) = T.cov k := by
   have hB := blockOrd_std p q
@@ -69,6 +91,9 @@ theorem exists_log (T : GrpData p q) {k : T.G} (hk : k ∈ T.Kset) :
     rw [hm, hφX, hexp]
     rfl
 
+/- English proof (translation)
+Introduce `a b hab`. Establish `hne : a ≠ b`. Introduce and unpack `rfl`. Apply the tactic sequence `exact hab (by cases a <;> trivial)`. Simplify using `[torX, Matrix.diagonal_apply_ne _ hne]`.
+-/
 theorem torX_isKC (θ : Ix p q → ℝ) : IsKC (torX θ) := by
   intro a b hab
   have hne : a ≠ b := by
@@ -76,6 +101,9 @@ theorem torX_isKC (θ : Ix p q → ℝ) : IsKC (torX θ) := by
     exact hab (by cases a <;> trivial)
   simp [torX, Matrix.diagonal_apply_ne _ hne]
 
+/- English proof (translation)
+Rewrite using `[T.expt_cov _ (torX_mem θ)]`. Unfold `torX`. Rewrite using `[Matrix.exp_diagonal, Pi.exp_def, Complex.exp_eq_exp_ℂ]`.
+-/
 theorem cov_expt_torX (T : GrpData p q) (θ : Ix p q → ℝ) :
     ((T.cov (T.expt (torX θ)) : GL (Ix p q) ℂ) : Mat p q) =
       Matrix.diagonal fun a => Complex.exp ((θ a : ℂ) * Complex.I) := by
@@ -83,6 +111,9 @@ theorem cov_expt_torX (T : GrpData p q) (θ : Ix p q → ℝ) :
   unfold torX
   rw [Matrix.exp_diagonal, Pi.exp_def, Complex.exp_eq_exp_ℂ]
 
+/- English proof (translation)
+Rewrite using `[T.sq_sq, cov_expt_torX, Matrix.det_diagonal, ← Complex.exp_sum, ← Complex.exp_nat_mul]`. Use `congr 1`. Rewrite using `[← Finset.sum_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem sq_expt_torX_sq_eq_exp (T : GrpData p q) (θ : Ix p q → ℝ) :
     ((T.sq (T.expt (torX θ)) : ℂˣ) : ℂ) ^ 2 =
       Complex.exp ((∑ a, (θ a : ℂ)) * Complex.I / 2) ^ 2 := by
@@ -92,6 +123,21 @@ private theorem sq_expt_torX_sq_eq_exp (T : GrpData p q) (θ : Ix p q → ℝ) :
   push_cast
   ring
 
+/- English proof (translation)
+Set `f : ℝ → ℂ` to `fun t => ((T.sq (T.expt (t • torX θ)) : ℂˣ) : ℂ)`. Set `g : ℝ → ℂ` to `fun t => Complex.exp ((∑ a, ((t * θ a : ℝ) : ℂ)) * Complex.I / 2)`. Establish `hsq : ∀ t, f t ^ 2 = g t ^ 2` using `fun t => by`. Simplify using `only [f, g]`. Rewrite using `[smul_torX]`.
+
+Conclude with `sq_expt_torX_sq_eq_exp T _`. Establish `hg : ∀ t, g t ≠ 0` using `fun t => Complex.exp_ne_zero _`. Establish `hfc : Continuous f`. Establish `h1 : Continuous fun t : ℝ => T.expt (t • torX θ)` using `T.expt_cont.comp_continuous (continuous_id.smul continuous_const) (fun t => smul_mem_upq (torX_mem θ) t)`. Establish `h2 : Continuous fun x : T.G => T.sq x` using `continuous_snd.comp T.emb.continuous`.
+
+Conclude with `Units.continuous_val.comp (h2.comp h1)`. Establish `hgc : Continuous g` using `by fun_prop`. Establish `hh : ∀ t, f t / g t = 1 ∨ f t / g t = -1` using `fun t => by`. Establish `h2 : (f t / g t) ^ 2 = 1`. Rewrite using `[div_pow, hsq t, div_self (pow_ne_zero 2 (hg t))]`.
+
+Conclude with `mul_self_eq_one_iff.mp (by rw [← sq]; exact h2)`. Establish `h0 : f 0 / g 0 = 1`. Simplify using `[f, g, T.expt_zero]`. Establish `hcont : Continuous fun t => f t / g t` using `hfc.div hgc hg`. Establish `h1 : f 1 / g 1 = 1`.
+
+Break down `hh 1 with h1 | h1` into its components or cases. Conclude with `h1`. It suffices to derive a contradiction. Establish `hre : Continuous fun t => (f t / g t).re` using `Complex.continuous_re.comp hcont`. Establish `hmem : (0 : ℝ) ∈ Set.Icc ((f 1 / g 1).re) ((f 0 / g 0).re)`.
+
+Rewrite using `[h0, h1]`. Evaluate the numerical expressions. Take `⟨t, -, ht⟩` from `intermediate_value_Icc' zero_le_one hre.continuousOn hmem`. Apply the tactic sequence `rcases hh t with h2 | h2 <;> simp only [h2] at ht <;> norm_num at ht`. Establish `hfg : f 1 = g 1` using `(div_eq_one_iff_eq (hg 1)).mp h1`.
+
+Simplify `hfg` using `[f, g]`.
+-/
 theorem sq_expt_torX (T : GrpData p q) (θ : Ix p q → ℝ) :
     ((T.sq (T.expt (torX θ)) : ℂˣ) : ℂ) = Complex.exp ((∑ a, (θ a : ℂ)) * Complex.I / 2) := by
   let f : ℝ → ℂ := fun t => ((T.sq (T.expt (t • torX θ)) : ℂˣ) : ℂ)
@@ -128,6 +174,25 @@ theorem sq_expt_torX (T : GrpData p q) (θ : Ix p q → ℝ) :
   have hfg : f 1 = g 1 := (div_eq_one_iff_eq (hg 1)).mp h1
   simpa [f, g] using hfg
 
+/- English proof (translation)
+Introduce `p q hpq T k hk`. Establish `mem : ∀ X, X ∈ upq p q → IsKC X → T.expt X ∈ Subgroup.closure (T.expt '' {Y | Y ∈ upq p q ∧ IsKC Y})` using `fun X h1 h2 => Subgroup.subset_closure ⟨X, ⟨h1, h2⟩, rfl⟩`. Choose the witnesses or unpack the hypotheses as in `⟨a0⟩ : Nonempty (Ix p q) := by`. Break down `Nat.eq_zero_or_pos p with hp | hp` into its components or cases. Conclude with `⟨Sum.inr ⟨0, by omega⟩⟩`.
+
+Conclude with `⟨Sum.inl ⟨0, hp⟩⟩`. Establish `hc` using `mem _ (torX_mem (Pi.single a0 (2 * Real.pi))) (torX_isKC (Pi.single a0 (2 * Real.pi)))`. Establish `hcov : T.cov (T.expt (torX (Pi.single a0 (2 * Real.pi)))) = 1`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[cov_expt_torX, Units.val_one, ← Matrix.diagonal_one]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `a`. Distinguish the cases in `ha : a = a0`. Substitute `ha` using the available equality. Simplify using `only [Pi.single_eq_same]`.
+
+Use `push_cast`. Conclude with `Complex.exp_two_pi_mul_I`. Simplify using `[Pi.single_eq_of_ne ha]`. Establish `hsqc : T.sq (T.expt (torX (Pi.single a0 (2 * Real.pi)))) = -1`. Apply `Units.ext` to reduce the goal to its premises.
+
+Rewrite using `[sq_expt_torX]`. Establish `hs : (∑ a, (((Pi.single a0 (2 * Real.pi) : Ix p q → ℝ) a : ℝ) : ℂ)) = 2 * (Real.pi : ℂ)`. Rewrite using `[Finset.sum_eq_single a0 (fun b _ hb => by simp [Pi.single_eq_of_ne hb]) (by simp)]`. Simplify using the standard rewrite rules. Establish `hpi : 2 * (Real.pi : ℂ) * Complex.I / 2 = Real.pi * Complex.I` using `by ring`.
+
+Rewrite using `[hs, hpi, Complex.exp_pi_mul_I]`. Simplify using the standard rewrite rules. Take `⟨X, hX, hXK, hcovX⟩` from `exists_log T hk`. Establish `hy` using `mem X hX hXK`. Establish `huniq : ∀ x : T.G, T.cov x = T.cov k → T.sq x = T.sq k → x = k` using `fun x h1 h2 => (T.bij (T.cov k) (T.cov_mem k) (T.sq k) (T.sq_sq k)).unique ⟨h1, h2⟩ ⟨rfl, rfl⟩`.
+
+Establish `hsq2 : ((T.sq (T.expt X) : ℂˣ) : ℂ) ^ 2 = ((T.sq k : ℂˣ) : ℂ) ^ 2`. Rewrite using `[T.sq_sq, T.sq_sq, hcovX]`. Break down `sq_eq_sq_iff_eq_or_eq_neg.mp hsq2 with h | h` into its components or cases. Rewrite using `[← huniq _ hcovX (Units.ext h)]`. Conclude with `hy`.
+
+Establish `hk' : T.expt X * T.expt (torX (Pi.single a0 (2 * Real.pi))) = k`. Apply `huniq` to reduce the goal to its premises. Rewrite using `[map_mul, hcov, mul_one, hcovX]`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[map_mul, hsqc]`.
+
+Simplify using `[h]`. Rewrite using `[← hk']`. Conclude with `Subgroup.mul_mem _ hy hc`.
+-/
 theorem kset_gen : ∀ (p q : ℕ), 1 ≤ p + q → ∀ (T : GrpData p q), ∀ k ∈ T.Kset,
     k ∈ Subgroup.closure (T.expt '' {Y | Y ∈ upq p q ∧ IsKC Y}) := by
   intro p q hpq T k hk

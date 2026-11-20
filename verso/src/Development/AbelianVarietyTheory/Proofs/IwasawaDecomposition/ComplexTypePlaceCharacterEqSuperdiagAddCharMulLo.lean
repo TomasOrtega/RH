@@ -16,6 +16,17 @@ namespace GlobalTheory.XUniRead
 section Loc
 variable {L : Type} [Field L] [NumberField L] [IsCMField L]
 
+/- English proof (translation)
+Use `haveI : Fact q.Prime := ⟨hq⟩`. Use `haveI : CharZero (v.adicCompletion (maximalRealSubfield L)) := charZero_of_injective_algebraMap (algebraMap (maximalRealSubfield L) _).injective`. Establish `hp : (RingHom.ker red).IsPrime` using `RingHom.ker_isPrime red`. Establish `hne : RingHom.ker red ≠ ⊥`. Introduce `h`.
+
+Establish `h1 : ((q : ℕ) : v.adicCompletionIntegers (maximalRealSubfield L)) ∈ RingHom.ker red`. Rewrite using `[RingHom.mem_ker, map_natCast, ZMod.natCast_self]`. Rewrite `h1` using `[h, Ideal.mem_bot]`. Establish `h2` using `congrArg (fun z : v.adicCompletionIntegers (maximalRealSubfield L) => (z : v.adicCompletion (maximalRealSubfield L))) h1`. Simplify using `only [SubringClass.coe_natCast, ZeroMemClass.coe_zero, Nat.cast_eq_zero] at h2`.
+
+Conclude with `hq.ne_zero h2`. Establish `hm : RingHom.ker red = IsLocalRing.maximalIdeal _` using `IsLocalRing.eq_maximalIdeal (hp.isMaximal hne)`. Rewrite using `[← RingHom.mem_ker, hm, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Introduce `hu`. Take `⟨z, hz⟩` from `hu.exists_right_inv`.
+
+Establish `h2` using `congrArg (fun z : v.adicCompletionIntegers (maximalRealSubfield L) => Valued.v (z : v.adicCompletion (maximalRealSubfield L))) hz`. Simplify using `only [MulMemClass.coe_mul, map_mul, OneMemClass.coe_one, map_one] at h2`. Establish `hz1 : Valued.v (z : v.adicCompletion (maximalRealSubfield L)) ≤ 1` using `z.2`. Establish `h3` using `mul_le_mul_right hz1 (Valued.v (y : v.adicCompletion (maximalRealSubfield L)))`. Rewrite `h3` using `[h2, mul_one]`.
+
+Conclude with `absurd hy (not_lt.2 h3)`.
+-/
 private theorem red_zero (v : HeightOneSpectrum (𝓞 (maximalRealSubfield L))) {q : ℕ} (hq : q.Prime)
     (red : v.adicCompletionIntegers (maximalRealSubfield L) →+* ZMod q)
     (y : v.adicCompletionIntegers (maximalRealSubfield L))
@@ -46,12 +57,20 @@ private theorem red_zero (v : HeightOneSpectrum (𝓞 (maximalRealSubfield L))) 
   rw [h2, mul_one] at h3
   exact absurd hy (not_lt.2 h3)
 
+/- English proof (translation)
+Unfold `NX.intLift`. Rewrite using `[dif_pos y.2]`.
+-/
 private theorem intLift_coe (v : HeightOneSpectrum (𝓞 (maximalRealSubfield L)))
     (y : v.adicCompletionIntegers (maximalRealSubfield L)) :
     NX.intLift v (y : v.adicCompletion (maximalRealSubfield L)) = y := by
   unfold NX.intLift
   rw [dif_pos y.2]
 
+/- English proof (translation)
+Unfold `NX.supSum NX.topR`. Use `symm`. Use `Finset.sum_of_injOn (Fin.castLE h) (Fin.castLE_injective h).injOn (fun _ _ => Finset.mem_univ _) (fun a _ ha => Finset.sum_eq_zero fun b _ => if_neg fun hh => ha ⟨⟨a.val, by omega⟩, by simp, Fin.ext rfl⟩) fun a _ => ?_` and prove the remaining obligations. Use `Finset.sum_of_injOn (Fin.castLE h) (Fin.castLE_injective h).injOn (fun _ _ => Finset.mem_univ _) (fun b _ hb => if_neg fun hh => hb ⟨⟨b.val, hh.2⟩, by simp, Fin.ext rfl⟩) fun b _ => ?_` and prove the remaining obligations. Use `if_congr ?_ rfl rfl` and prove the remaining obligations.
+
+Simplify using `only [Fin.val_castLE, b.2, and_true]`. Conclude with `eq_comm`.
+-/
 private theorem sum_top {R : Type} [CommRing R] {n r : ℕ} (h : r ≤ n) (X : Matrix (Fin n) (Fin n) R) :
     (∑ a : Fin n, ∑ b : Fin n, if a.val + 1 = b.val ∧ b.val < r then X a b else 0) = NX.supSum r (NX.topR h X) := by
   unfold NX.supSum NX.topR
@@ -64,11 +83,33 @@ private theorem sum_top {R : Type} [CommRing R] {n r : ℕ} (h : r ≤ n) (X : M
   simp only [Fin.val_castLE, b.2, and_true]
   exact eq_comm
 
+/- English proof (translation)
+Unfold `NX.supSum`. Conclude with `Finset.sum_eq_zero fun a _ => Finset.sum_eq_zero fun b _ => if_neg (by have := b.2; omega)`.
+-/
 private theorem supSum_small {R : Type} [CommRing R] {r : ℕ} (h : ¬ 2 ≤ r) (M : Matrix (Fin r) (Fin r) R) :
     NX.supSum r M = 0 := by
   unfold NX.supSum
   exact Finset.sum_eq_zero fun a _ => Finset.sum_eq_zero fun b _ => if_neg (by have := b.2; omega)
 
+/- English proof (translation)
+Take `⟨⟨⟨X0, hX0⟩, hll⟩, huni⟩` from `hx`. Take `⟨X, hXu, hX⟩ : ∃ X : Matrix (Fin n) (Fin n) (s.v.adicCompletionIntegers (maximalRealSubfield L)), IsUnit X.det ∧ ∀ a b, x.val a b = (X a b : s.v.adicCompletion (maximalRealSubfield L))` from `⟨X0.val, Matrix.isUnits_det_units X0, fun a b => by rw [← hX0]; rfl⟩`. Establish `hr : ∀ a b, NX.redMat s.v red (NX.topR h x.val) a b = red (X (Fin.castLE h a) (Fin.castLE h b))` using `fun a b => by`. Simplify using `only [NX.redMat, NX.topR, Matrix.submatrix_apply]`. Rewrite using `[hX, intLift_coe]`.
+
+Establish `hd : NX.detT r x.val = ((NX.detT r X : s.v.adicCompletionIntegers (maximalRealSubfield L)) : s.v.adicCompletion (maximalRealSubfield L))`. Unfold `NX.detT`. Use `Eq.trans ?_ (RingHom.map_det (s.v.adicCompletionIntegers (maximalRealSubfield L)).subtype _).symm` and prove the remaining obligations. Use `congr 1`. Conclude with `Matrix.ext fun a b => hX _ _`.
+
+Use `⟨⟨fun a b hab => ?_, fun a => ?_⟩, ?_, ?_, NX.supSum r (NX.topR h X), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hr]`. Use `red_zero _ hq red _ ?_` and prove the remaining obligations. Rewrite using `[← hX]`. Conclude with `(huni _ _ a.2 b.2).1 hab`.
+
+Rewrite using `[hr, ← sub_eq_zero, ← map_one red, ← map_sub]`. Use `red_zero _ hq red _ ?_` and prove the remaining obligations. Use `(huni (Fin.castLE h a) (Fin.castLE h a) a.2 a.2).2 rfl` as an intermediate fact. Rewrite `this` using `[hX]`. Conclude with `this`.
+
+Rewrite using `[hd, intLift_coe]`. Establish `h1` using `hXu.map red`. Rewrite `h1` using `[RingHom.map_det, Matrix.twoBlockTriangular_det' (red.mapMatrix X) (fun a : Fin n => r ≤ a.val) (fun a ha b hb => red_zero _ hq red _ (by rw [← hX]; exact hll a b ha (not_le.1 hb)))]`. Establish `h2` using `isUnit_of_mul_isUnit_left h1`. Unfold `NX.detT`.
+
+Rewrite using `[RingHom.map_det]`. Conclude with `h2`. Rewrite using `[hd, intLift_coe, ← hd]`. Both sides reduce to the same expression. Unfold `NG.supDiag`.
+
+Rewrite using `[sum_top h]`. Unfold `NX.supSum`. Use `push_cast`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Use `split_ifs`.
+
+Conclude with `(hX _ _).symm`. Both sides reduce to the same expression. Unfold `NX.supSum`. Simplify using `only [map_sum]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations.
+
+Use `split_ifs`. Conclude with `(hr _ _).symm`. Conclude with `map_zero _`.
+-/
 private theorem loc_read (s : SplitPlace L) {n r : ℕ} (h : r ≤ n) {q : ℕ} (hq : q.Prime)
     (red : s.v.adicCompletionIntegers (maximalRealSubfield L) →+* ZMod q)
     (x : GL (Fin n) (s.v.adicCompletion (maximalRealSubfield L))) (hx : NG.UniRT s r x) :
@@ -130,6 +171,21 @@ end Loc
 
 end GlobalTheory.XUniRead
 
+/- English proof (translation)
+Introduce `D X i k b kv0 s red θ hpsi τ τ' hτ e he ψ₀ hψ₀ ξ hξ x hx uu huu`. Take `⟨h1, h2, h3, y, hy, hry⟩` from `GlobalTheory.XUniRead.loc_read s (n := D.R.nV) (Nat.le_add_right D.R.r D.R.t : D.R.r ≤ D.R.nV) (D.host.g_prime kv0.1) red x hx`. Unfold `NX.gVal`. Use `erw [dif_pos h2]`. Rewrite using `[map_mul, hτ, he, hξ _ h2 uu (huu.trans h3.symm)]`.
+
+Use `congr 1`. Generalize the expression as in `hM : NX.redMat s.v red (NX.topR (Nat.le_add_right D.R.r D.R.t : D.R.r ≤ D.R.nV) x.val) = M`. Use `erw [hM] at h1 hry`. Establish `hdet : IsUnit M.det`. Rewrite using `[Matrix.det_of_upperTriangular h1.1, Finset.prod_eq_one fun a _ => h1.2 a]`.
+
+Conclude with `isUnit_one`. Establish `hval` using `NX.glOf_val M hdet`. Generalize the expression as in `hu : (Pi.mulSingle kv0 (NX.glOf M) : G0g D.nd) = u`. Establish `hu0 : (u kv0).val = M` using `by rw [← hu, Pi.mulSingle_eq_same, hval]`. Establish `hu1 : ∀ kv, kv ≠ kv0 → (u kv).val = 1` using `fun kv hkv => by rw [← hu, Pi.mulSingle_eq_of_ne hkv]; rfl`.
+
+Establish `hm' : u ∈ Formalism.IndefR.NX.U D.nd` using `fun kv => by`. Distinguish the cases in `hkv : kv = kv0`. Substitute `hkv` using the available equality. Rewrite using `[hu0]`. Conclude with `h1`.
+
+Rewrite using `[hu1 kv hkv]`. Conclude with `⟨Matrix.blockTriangular_one, fun a => Matrix.one_apply_eq a⟩`. Establish `hm : u ∈ D.nexp.U` using `by rw [X.U_eq]; exact hm'`. Unfold `NX.psiUTot`. Rewrite using `[dif_pos hm, hpsi u hm hm', he, psiUOf_apply, Fintype.prod_eq_single kv0 (fun kv hkv => by`.
+
+Rewrite using `[hu1 kv hkv, NX.supSum_one, mul_zero, ofAdd_zero, map_one]), hu0, ← hy]`. Distinguish the cases in `hr : 2 ≤ D.R.r`. Rewrite using `[hψ₀ hr y, hry]`. Establish `h0 : NG.supDiag s D.R.r x = 0`. Unfold `NG.supDiag`.
+
+Conclude with `Finset.sum_eq_zero fun a _ => Finset.sum_eq_zero fun c _ => if_neg (by omega)`. Rewrite using `[hy, h0, GlobalTheory.XUniRead.supSum_small hr, mul_zero, ofAdd_zero, map_one, Units.val_one, map_one, AddChar.map_zero_eq_one]`.
+-/
 theorem _root_.GlobalTheory.T.complex_typePlaceCharacter_eq_superdiag_addChar_mul_lowerDet : ∀ (D : D7) (X : NExpTied D) (i : D.ntw.Tw) (k : ℕ) (b : Bool) (kv0 : Σ kk : Fin 2, D.nd.PlG kk)
     (s : SplitPlace D.host.E) (red : s.v.adicCompletionIntegers (maximalRealSubfield D.host.E) →+* ZMod (D.host.g kv0.1))
     (θ : ∀ kk : Fin 2, Multiplicative (ZMod (D.host.g kk)) →* (↥D.LL0)ˣ),

@@ -13,13 +13,22 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory
 
+/- English proof (translation)
+The claim follows from `GlobalFunctions.globalFns_of forall_geometricallyIntegral_of_smooth_of_geometricallyConnected FlatFibreInjective.injective_baseChange exists_noetherian_model_of_smooth`.
+-/
 theorem globalFns_holds : GlobalFnsSt :=
   GlobalFunctions.globalFns_of forall_geometricallyIntegral_of_smooth_of_geometricallyConnected
     FlatFibreInjective.injective_baseChange exists_noetherian_model_of_smooth
 
+/- English proof (translation)
+The claim follows from `rigidity_of_local_rigidity globalFns_holds local_rigidity`.
+-/
 theorem rigidity_holds : RigiditySt :=
   rigidity_of_local_rigidity globalFns_holds local_rigidity
 
+/- English proof (translation)
+The claim follows from `sec_eq_zero_of_dvd_pow_uniformiser forall_geometricallyIntegral_of_smooth_of_geometricallyConnected`.
+-/
 theorem lemmaB_holds : Semi.lemmaBSt.{0} :=
   sec_eq_zero_of_dvd_pow_uniformiser
     forall_geometricallyIntegral_of_smooth_of_geometricallyConnected

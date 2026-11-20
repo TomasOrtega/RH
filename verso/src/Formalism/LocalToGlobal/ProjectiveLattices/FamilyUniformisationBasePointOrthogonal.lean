@@ -118,6 +118,9 @@ def FibreU (U : Unf Xo c σ r) : Prop :=
 def ReadSecU (U : Unf Xo c σ r) : Prop :=
   ∀ a n, Dom a n → ∀ f ∈ sec Xo c a n, ∀ k, (U.X k).IsSec (laU U a n k) (rdU U f k)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hM.rank, fun k => hM.type k, hC, hF, hS, g, e, F, id, M.φ, fun k a b => hM.ef k a b, fun k x => hun k x⟩`.
+-/
 theorem isUnf_unfOf {g : ℕ} (e : Fin g ≃ Σ τ : E →+* ℂ, Fin (Dw.mult τ))
     (F : FamilyUnif Xo (σ.comp (IntermediateField.inclusion c.le).toRingHom) (fun j => relab c σ (e j).1))
     (M : ModelsOf F r) (un : ∀ k, (M.X k).dom → FrPt Xo c (CAt σ)) (hun : ∀ k x, FrameOK e F M k x (un k x))
@@ -125,11 +128,21 @@ theorem isUnf_unfOf {g : ℕ} (e : Fin g ≃ Σ τ : E →+* ℂ, Fin (Dw.mult �
     (hS : ReadSecU (unfOf e F M un)) : IsUnf (unfOf e F M un) := ⟨hM.rank, fun k => hM.type k, hC, hF, hS, g, e, F, id, M.φ, fun k a b => hM.ef k a b,
     fun k x => hun k x⟩
 
+/- English proof (translation)
+Simplify using `only [rdU, LinearMap.coe_mk, AddHom.coe_mk]`. Rewrite using `[dif_pos h]`.
+-/
 theorem rdU_mem (U : Unf Xo c σ r) (f : Rul Xo c) (k : U.Comp) {x : Frame (U.X k).Ψ r} (h : x ∈ (U.X k).dom) :
     rdU U f k x = toC (evR Xo c f (U.un k ⟨x, h⟩)) := by
   simp only [rdU, LinearMap.coe_mk, AddHom.coe_mk]
   rw [dif_pos h]
 
+/- English proof (translation)
+Introduce `a n hd f hf k`. Use `⟨hun.2.2.2 a n hd f hf k, fun x hx b hb => ?_, fun γ hγ x hx => ?_⟩` and prove the remaining obligations. Establish `hxb : rmul x b ∈ ((unfOf e F M un).X k).dom` using `(hM.domStab k x hx).1 b hb`. Take `⟨t, ht, hw⟩` from `hun.2.1 k ⟨x, hx⟩ b hb hxb`. Use `(rdU_mem _ f k hxb).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[rdU_mem _ f k hx, ← hw a n hd]`. Conclude with `congrArg toC (hW a n hd f hf t _ _ ht)`. Establish `hxg : lact γ x ∈ ((unfOf e F M un).X k).dom` using `(hM.domStab k x hx).2 γ hγ`. Take `⟨t, ht, hw⟩` from `hun.2.2.1 k γ hγ ⟨x, hx⟩ hxg`. Use `(rdU_mem _ f k hxg).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[rdU_mem _ f k hx, show ((unfOf e F M un).X k).χ (laU (unfOf e F M un) a n k) γ = 1 from hM.chi k _ γ, ← hw a n hd]`. Conclude with `congrArg toC (hW a n hd f hf t _ _ ht)`.
+-/
 theorem readSecU_of {g : ℕ} (e : Fin g ≃ Σ τ : E →+* ℂ, Fin (Dw.mult τ))
     (F : FamilyUnif Xo (σ.comp (IntermediateField.inclusion c.le).toRingHom) (fun j => relab c σ (e j).1))
     (M : ModelsOf F r) (un : ∀ k, (M.X k).dom → FrPt Xo c (CAt σ)) (hun : FramesOK e F M un) (hM : ModelBase M)
@@ -148,6 +161,9 @@ theorem readSecU_of {g : ℕ} (e : Fin g ≃ Σ τ : E →+* ℂ, Fin (Dw.mult �
       ← hw a n hd]
     exact congrArg toC (hW a n hd f hf t _ _ ht)
 
+/- English proof (translation)
+Introduce `_ _ _ k γ _` and use `hM.chi k _ γ`.
+-/
 theorem chiTriv_unfOf {g : ℕ} (e : Fin g ≃ Σ τ : E →+* ℂ, Fin (Dw.mult τ))
     (F : FamilyUnif Xo (σ.comp (IntermediateField.inclusion c.le).toRingHom) (fun j => relab c σ (e j).1))
     (M : ModelsOf F r) (un : ∀ k, (M.X k).dom → FrPt Xo c (CAt σ)) (hM : ModelBase M) :
@@ -156,6 +172,9 @@ theorem chiTriv_unfOf {g : ℕ} (e : Fin g ≃ Σ τ : E →+* ℂ, Fin (Dw.mult
 
 instance (σ : c.F →+* ℂ) : IsReduced (CAt σ) := inferInstanceAs (IsReduced ℂ)
 
+/- English proof (translation)
+The claim follows from `hA (CAt σ) (U.un k x)`.
+-/
 theorem unTest_of (hA : AllTest Xo c) (U : Unf Xo c σ r) (k : U.Comp) (x : (U.X k).dom) :
     FromTest (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) (U.un k x) :=
   hA (CAt σ) (U.un k x)
@@ -207,6 +226,9 @@ def dictOf {U : Unf Xo c σ r} {V : HSp D} {hr : V.rank = r}
   fun h => if h' : ∃ p, DictSpec U V hr ι e F ik φ th x₀ h p ∧ ∀ τ : (U.X p.1).Ψ, mat p.2 τ = x₀ τ.1 then h'.choose
     else (hG h).choose
 
+/- English proof (translation)
+Simplify using `only [dictOf]`. Use `split`. Use `next h' => exact h'.choose_spec.1`. Conclude with `(hG h).choose_spec`.
+-/
 theorem dictOf_spec {U : Unf Xo c σ r} {V : HSp D} {hr : V.rank = r}
     {ι : Dw.La →ₗ[𝓞 D.host.E] (Fin V.rank → D.host.E)} {g : ℕ} {e : Fin g ≃ Σ τ : D.host.E →+* ℂ, Fin (Dw.mult τ)}
     {F : FamilyUnif Xo (σ.comp (IntermediateField.inclusion c.le).toRingHom) (fun j => relab c σ (e j).1)}
@@ -219,6 +241,9 @@ theorem dictOf_spec {U : Unf Xo c σ r} {V : HSp D} {hr : V.rank = r}
   · next h' => exact h'.choose_spec.1
   · exact (hG h).choose_spec
 
+/- English proof (translation)
+Use `⟨⟨hM.ef, fun k x => ?_⟩, fun h => dictOf_spec hG h⟩` and prove the remaining obligations. Take `⟨Pm, h1, h2, h3, h4, -⟩` from `hun k x`. Conclude with `⟨Pm, h1, h2, h3, h4⟩`.
+-/
 theorem dictLat_unfOf {g : ℕ} (e : Fin g ≃ Σ τ : D.host.E →+* ℂ, Fin (Dw.mult τ))
     (F : FamilyUnif Xo (σ.comp (IntermediateField.inclusion c.le).toRingHom) (fun j => relab c σ (e j).1))
     (M : ModelsOf F r) (un : ∀ k, (M.X k).dom → FrPt Xo c (CAt σ)) (hun : ∀ k x, FrameOK e F M k x (un k x))
@@ -248,6 +273,9 @@ def DetRootMul (V : HSp D) : Prop :=
 def ChiRat (V : HSp D) (χ : (AE D)ˣ →* Circle) : Prop :=
   ∀ γ ∈ GQ V, ∀ x, IsDetRoot V γ x → χ x = 1
 
+/- English proof (translation)
+Introduce `g g' x x' hx hx'`. Unfold `IsDetRoot at *`. Rewrite using `[Units.val_mul, (matHom V).map_mul, Units.val_mul, Matrix.det_mul, RingHom.map_mul]`. Use `conv_lhs => rw [hx, hx']`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem detRootMul_holds (V : HSp D) : DetRootMul V := by
   intro g g' x x' hx hx'
   unfold IsDetRoot at *
@@ -255,15 +283,28 @@ theorem detRootMul_holds (V : HSp D) : DetRootMul V := by
   conv_lhs => rw [hx, hx']
   ring
 
+/- English proof (translation)
+Establish `hex : ∃ x, IsDetRoot V g x` using `⟨x, hx⟩`. Unfold `muOf`. Rewrite using `[dif_pos hex, hW g _ _ hex.choose_spec hx]`.
+-/
 theorem muOf_eq {V : HSp D} {χ : (AE D)ˣ →* Circle} (hW : ChiWD V χ) {g : GA D V} {x : (AE D)ˣ}
     (hx : IsDetRoot V g x) : muOf V χ g = ((χ x : Circle) : ℂ) := by
   have hex : ∃ x, IsDetRoot V g x := ⟨x, hx⟩
   unfold muOf
   rw [dif_pos hex, hW g _ _ hex.choose_spec hx]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h1, fun _ _ hx => muOf_eq h2 hx⟩`.
+-/
 theorem muVal_muOf {V : HSp D} {χ : (AE D)ˣ →* Circle} (h1 : DetRootEx V) (h2 : ChiWD V χ) :
     MuVal V χ (muOf V χ) := ⟨h1, fun _ _ hx => muOf_eq h2 hx⟩
 
+/- English proof (translation)
+Use `⟨fun g g' => ?_, fun g => ?_, fun γ hγ => ?_, h5⟩` and prove the remaining obligations. Take `⟨x, hx⟩` from `h1 g`. Take `⟨x', hx'⟩` from `h1 g'`. Rewrite using `[muOf_eq h2 hx, muOf_eq h2 hx', muOf_eq h2 (h3 g g' x x' hx hx'), map_mul]`. Conclude with `Circle.coe_mul _ _`.
+
+Take `⟨x, hx⟩` from `h1 g`. Rewrite using `[muOf_eq h2 hx]`. Use `first`. Consider the case `exact Circle.norm_coe _`. Consider the case `exact mem_sphere_zero_iff_norm.mp (χ x).2`.
+
+Take `⟨x, hx⟩` from `h1 γ`. Rewrite using `[muOf_eq h2 hx, h4 γ hγ x hx]`. Simplify using the standard rewrite rules.
+-/
 theorem muUnit_muOf {V : HSp D} {χ : (AE D)ˣ →* Circle} {X : Comp → Data D.host.E r}
     {dict : GA D V → Σ k, Frame (X k).Ψ r} (h1 : DetRootEx V) (h2 : ChiWD V χ) (h3 : DetRootMul V)
     (h4 : ChiRat V χ) (h5 : ∀ g τ i, ‖dmin (X (dict g).1).Gm (dict g).2 τ i‖ = 1) :
@@ -282,19 +323,31 @@ theorem muUnit_muOf {V : HSp D} {χ : (AE D)ˣ →* Circle} {X : Comp → Data D
     rw [muOf_eq h2 hx, h4 γ hγ x hx]
     simp
 
+/- English proof (translation)
+Use function extensionality and compare the values at `g`. Unfold `muOf`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem muOf_one (V : HSp D) : muOf V 1 = fun _ => 1 := by
   funext g
   unfold muOf
   split_ifs <;> simp
 
+/- English proof (translation)
+Introduce `g x x' _ _`. Simplify using `only [MonoidHom.one_apply]`.
+-/
 theorem chiWD_one (V : HSp D) : ChiWD V 1 := by
   intro g x x' _ _
   simp only [MonoidHom.one_apply]
 
+/- English proof (translation)
+Introduce `γ _ x _`. Conclude with `MonoidHom.one_apply x`.
+-/
 theorem chiRat_one (V : HSp D) : ChiRat V 1 := by
   intro γ _ x _
   exact MonoidHom.one_apply x
 
+/- English proof (translation)
+Rewrite using `[muOf_one]`. Conclude with `⟨fun _ _ => (mul_one 1).symm, fun _ => norm_one, fun _ _ => rfl, h5⟩`.
+-/
 theorem muUnit_muOf_one {V : HSp D} {X : Comp → Data D.host.E r} {dict : GA D V → Σ k, Frame (X k).Ψ r}
     (h5 : ∀ g τ i, ‖dmin (X (dict g).1).Gm (dict g).2 τ i‖ = 1) : MuUnit V dict (muOf V 1) := by
   rw [muOf_one]
@@ -311,12 +364,18 @@ open Classical in
 def x0Of (X : Data E r) : (E →+* ℂ) → Matrix (Fin r) (Fin r) ℂ :=
   fun τ => if h : τ ∈ X.Ψ then (X.signature ⟨τ, h⟩).choose else 1
 
+/- English proof (translation)
+Introduce `τ hτ`. Unfold `x0Of`. Rewrite using `[dif_pos hτ]`. Conclude with `(X.signature ⟨τ, hτ⟩).choose_spec.2`.
+-/
 theorem base_frame_orthonormal (X : Data E r) : IsOrthogonalFrame X (x0Of X) := by
   intro τ hτ
   unfold x0Of
   rw [dif_pos hτ]
   exact (X.signature ⟨τ, hτ⟩).choose_spec.2
 
+/- English proof (translation)
+Introduce `τ hτ`. Establish `h` using `base_frame_orthonormal X τ (by rw [hΨ]; exact hτ)`. Rewrite using `[← hG, ← hp]`. Conclude with `h`.
+-/
 theorem base_frame_orthonormal_of_eq {X Y : Data E r} (hΨ : X.Ψ = Y.Ψ) (hG : X.Gm = Y.Gm) (hp : X.p0 = Y.p0) :
     IsOrthogonalFrame Y (x0Of X) := by
   intro τ hτ
@@ -330,6 +389,11 @@ section Inv
 
 variable {D : D7} {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} {Comp : Type}
 
+/- English proof (translation)
+Introduce `γ hγ g`. Take `⟨γ', hγ', he⟩` from `hd γ hγ g`. Establish `hE` using `(eqv_holSub X la (holCusp_mem_holSub X la hP)).2 (dict g).1 γ' hγ' (dict g).2 (hdom g)`. Use `show mu (γ * g) * P (dict (γ * g)).1 (dict (γ * g)).2 = mu g * P (dict g).1 (dict g).2`. Rewrite using `[he, hm.1, hm.2.2.1 γ hγ, one_mul]`.
+
+Use `show mu g * P (dict g).1 (lact γ' (dict g).2) = _`. Rewrite using `[hE, hχ, one_mul]`.
+-/
 theorem adel_leftInv_triv {X : Comp → Data E r} {V : HSp D} {dict : GA D V → Σ k, Frame (X k).Ψ r}
     {mu : GA D V → ℂ} (hχ : ∀ k la γ, (X k).χ la γ = 1)
     (hd : ∀ γ ∈ GQ V, ∀ g, ∃ γ' ∈ (X (dict g).1).Γ, dict (γ * g) = ⟨(dict g).1, lact γ' (dict g).2⟩)
@@ -347,6 +411,9 @@ theorem adel_leftInv_triv {X : Comp → Data E r} {V : HSp D} {dict : GA D V →
 def AdelCont (V : HSp D) {X : Comp → Data E r} (dict : GA D V → Σ k, Frame (X k).Ψ r) (mu : GA D V → ℂ) : Prop :=
   ∀ (la : ∀ k, Wt (X k).Ψ r) (P : FDSec X), IsHolCusp X la P → Continuous (adel V dict mu P)
 
+/- English proof (translation)
+Introduce `la _ hP` and use `⟨adel_leftInv_triv hχ hd.1 hd.2.2.2.1 hm la hP, hc la _ hP⟩`.
+-/
 theorem adelAut_of {X : Comp → Data E r} {V : HSp D} {dict : GA D V → Σ k, Frame (X k).Ψ r}
     {mu : GA D V → ℂ} {Kf : Subgroup (GA D V)} {th : ∀ c, (X c).Ψ → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)}
     {hr : V.rank = r} (hχ : ∀ k la γ, (X k).χ la γ = 1) (hd : DictIsUnif V dict Kf th hr) (hm : MuUnit V dict mu)
@@ -358,6 +425,27 @@ section Rows
 
 variable {D : D7}
 
+/- English proof (translation)
+Establish `hinj : Function.Injective (relab c σ)`. Introduce `τ₁ τ₂ h`. Use extensionality with `a`. Use `congrArg (fun f : E →+* ℂ => f a) h` as an intermediate fact. Conclude with `congrArg Subtype.val (σ.injective this)`.
+
+Establish `h0 : H.rt0 ≠ 0`. Introduce `h`. Use `H.sqrt_neg_disc_sq` as an intermediate fact. Rewrite `this` using `[h]`. Establish `hd : (H.d : ℂ) = 0` using `by linear_combination this`.
+
+Conclude with `H.d_prime.ne_zero (by exact_mod_cast hd)`. Establish `hσ0 : σ ⟨H.rt0, c.le (baseKA l).ρ.2⟩ = H.rt0` using `hσ`. Establish `hrel : ∀ τ' : E →+* ℂ, (relab c σ τ' (H.rt : E) = H.rt0 ↔ τ' (H.rt : E) = H.rt0)`. Introduce `τ'`. Establish `hE : ((H.rt : E)) ^ 2 = -(H.d : E)`.
+
+Use `congrArg (fun z : 𝓞 E => (z : E)) H.rt_sq` as an intermediate fact. Simplify using `using this`. Establish `hsq : (τ' (H.rt : E)) ^ 2 = H.rt0 ^ 2`. Rewrite using `[H.sqrt_neg_disc_sq, ← map_pow, hE, map_neg, map_natCast]`. Establish `hval : relab c σ τ' (H.rt : E) = σ ⟨τ' (H.rt : E), c.conj τ' _⟩` using `rfl`.
+
+Break down `sq_eq_sq_iff_eq_or_eq_neg.1 hsq with hx | hx` into its components or cases. Use `⟨fun _ => hx, fun _ => ?_⟩` and prove the remaining obligations. Rewrite using `[hval, ← hσ0]`. Conclude with `congrArg σ (Subtype.ext hx)`. Use `⟨fun h => ?_, fun h => ?_⟩` and prove the remaining obligations.
+
+It suffices to derive a contradiction. Establish `h1 : σ ⟨τ' (H.rt : E), c.conj τ' _⟩ = -σ ⟨H.rt0, c.le (baseKA l).ρ.2⟩`. Rewrite using `[← map_neg]`. Conclude with `congrArg σ (Subtype.ext hx)`. Rewrite `h1` using `[← hval, h, hσ0]`.
+
+Conclude with `h0 (by linear_combination h1 / 2)`. It suffices to derive a contradiction. Conclude with `h0 (by linear_combination (h.symm.trans hx) / 2)`. Introduce `τ`. Take `⟨τ₀, rfl⟩` from `(Finite.injective_iff_surjective.1 hinj) τ`.
+
+Establish `hcard : Nat.card {i // tyOf c σ Dw i = relab c σ τ₀} = Dw.mult τ₀`. Establish `e1 : {i // tyOf c σ Dw i = relab c σ τ₀} ≃ {i // (letE Dw i).1 = τ₀}` using `Equiv.subtypeEquivRight (fun i => hinj.eq_iff)`. Establish `e2 : {i // (letE Dw i).1 = τ₀} ≃ {s : Σ τ : E →+* ℂ, Fin (Dw.mult τ) // s.1 = τ₀}` using `(letE Dw).subtypeEquiv (fun _ => Iff.rfl)`. Establish `e3 : {s : Σ τ : E →+* ℂ, Fin (Dw.mult τ) // s.1 = τ₀} ≃ Fin (Dw.mult τ₀)` using `Equiv.sigmaSubtype τ₀`. Rewrite using `[Nat.card_congr (e1.trans (e2.trans e3)), Nat.card_eq_fintype_card, Fintype.card_fin]`.
+
+Use `⟨fun h => ?_, fun h => ?_⟩` and prove the remaining obligations. Rewrite using `[hcard]`. Unfold `Datum.mult`. Rewrite using `[if_pos ((hrel τ₀).1 h)]`. Rewrite using `[hcard]`.
+
+Unfold `Datum.mult`. Rewrite using `[if_neg (fun h' => h ((hrel τ₀).2 h'))]`.
+-/
 theorem relabType_of {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {l : Level H} (c : Coeff l) (σ : c.F →+* ℂ) (hσ : GoodEmb c σ) (Dw : Datum H) : RelabType c σ Dw := by
   classical
@@ -440,6 +528,17 @@ def unfJ {hN : N1c} {Q : Par D} {hpq : ∀ j, 1 ≤ (Q.Dw j).p + (Q.Dw j).q} {j 
 def InfPlaceEx (D : D7) : Prop :=
   ∀ τ : D.host.E →+* ℂ, ∃ θ : Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ, Formalism.MainNotions.StandardLattice.IsInfEmb τ θ
 
+/- English proof (translation)
+Introduce `τ`. Use `D.sp.cm.totReal` as an intermediate fact. Use `set φ : D.host.F →+* ℂ := τ.comp (algebraMap D.host.F D.host.E) with hφ`. Use `set w : InfinitePlace D.host.F := InfinitePlace.mk φ`. Establish `hw : w.embedding = φ` using `InfinitePlace.embedding_mk_eq_of_isReal (IsTotallyReal.complexEmbedding_isReal φ)`.
+
+Set `_ : Algebra D.host.F ℂ` to `φ.toAlgebra`. Set `f : Ainf D.host.F →ₐ[D.host.F] ℂ` to `{ toRingHom := (InfinitePlace.Completion.extensionEmbedding w).comp (Pi.evalRingHom _ w) commutes' := fun x => by show InfinitePlace.Completion.extensionEmbedding w (algebraMap D.host.F (Ainf D.host.F) x w) = φ x`. Rewrite using `[InfiniteAdeleRing.algebraMap_apply, ← hw]`. Conclude with `InfinitePlace.Completion.extensionEmbedding_coe w _ }`. Set `g : D.host.E →ₐ[D.host.F] ℂ` to `{ toRingHom := τ, commutes' := fun _ => rfl }`.
+
+Use `⟨(Algebra.TensorProduct.lift f g (fun _ _ => Commute.all _ _)).toRingHom, fun x => ?_, ?_⟩` and prove the remaining obligations. Use `show f 1 * g x = τ x`. Rewrite using `[map_one, one_mul]`. Both sides reduce to the same expression. Establish `: (fun a : Ainf D.host.F => (Algebra.TensorProduct.lift f g (fun _ _ => Commute.all _ _)).toRingHom (a ⊗ₜ[D.host.F] (1 : D.host.E))) = fun a => InfinitePlace.Completion.extensionEmbedding w (a w)`.
+
+Use function extensionality and compare the values at `a`. Use `show f a * g 1 = _`. Rewrite using `[map_one, mul_one]`. Both sides reduce to the same expression. Rewrite using `[this]`.
+
+Conclude with `(InfinitePlace.Completion.isometry_extensionEmbedding w).continuous.comp (continuous_apply w)`.
+-/
 theorem infPlaceEx_holds (D : D7) : InfPlaceEx D := by
   intro τ
   have := D.sp.cm.totReal
@@ -490,6 +589,11 @@ def x0J {hN : N1c} {Q : Par D} {hpq : ∀ j, 1 ≤ (Q.Dw j).p + (Q.Dw j).q} {j :
 
 def XiConst (D : D7) : Prop := ∀ τ : D.host.E →+* ℂ, ‖τ D.host.xi0‖ = xiR D
 
+/- English proof (translation)
+Introduce `τ`. Unfold `xiR`. Establish `hs : ∀ σ : D.host.E →+* ℂ, ‖σ D.host.sqrtMinusD‖ ^ 2 = ‖(D.host.d : ℂ)‖` using `fun σ => by`. Rewrite using `[← norm_pow, sq_emb, norm_neg]`. Establish `hn : ‖τ D.host.sqrtMinusD‖ = ‖D.host.φ₀ D.host.sqrtMinusD‖` using `(pow_left_inj₀ (norm_nonneg _) (norm_nonneg _) two_ne_zero).1 ((hs τ).trans (hs _).symm)`.
+
+Rewrite using `[show D.host.xi0 = -1 / ((Ideal.absNorm D.host.ccK : D.host.E) * D.host.sqrtMinusD) from rfl]`. Simplify using `only [map_div₀, map_neg, map_one, map_mul, map_natCast, norm_div, norm_neg, norm_one, norm_mul, hn]`.
+-/
 theorem xiConst_holds (D : D7) : XiConst D := by
   intro τ
   unfold xiR
@@ -534,10 +638,16 @@ structure MuRows (V : HSp D) (χ : (AE D)ˣ →* Circle) : Prop where
 
   muCont : Continuous (muOf V χ)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨muUnit_muOf_one h5, by rw [muOf_one]; exact continuous_const⟩`.
+-/
 theorem muOK_one {V : HSp D} {r : ℕ} {Comp : Type} {X : Comp → Data D.host.E r} {dict : GA D V → Σ k, Frame (X k).Ψ r}
     (h5 : ∀ g τ i, ‖dmin (X (dict g).1).Gm (dict g).2 τ i‖ = 1) :
     MuUnit V dict (muOf V 1) ∧ Continuous (muOf V 1) := ⟨muUnit_muOf_one h5, by rw [muOf_one]; exact continuous_const⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨muUnit_muOf R.detRoot R.chiWD (detRootMul_holds _) R.chiRat h5, R.muCont⟩`.
+-/
 theorem muOK_of {V : HSp D} {χ : (AE D)ˣ →* Circle} {r : ℕ} {Comp : Type} {X : Comp → Data D.host.E r}
     {dict : GA D V → Σ k, Frame (X k).Ψ r} (R : MuRows V χ)
     (h5 : ∀ g τ i, ‖dmin (X (dict g).1).Gm (dict g).2 τ i‖ = 1) :
@@ -563,6 +673,9 @@ structure PkgOK2 (Q : Par D) (j : ℕ) (σ : Q.c.F →+* ℂ) (p : PkgT Q j σ) 
   cuNe : σ = Q.c.F.val.toRingHom → FJ.CuNeF p.1.X (WeightFamilies.rho D j)
   expo : σ = Q.c.F.val.toRingHom → FJ.ExpoMatch p.1.X 1 (WeightFamilies.rho D j) (D.host.g 0 * D.host.g 1)
 
+/- English proof (translation)
+The claim follows from `isUnf_unfOf _ _ _ _ P.frameEx.choose_spec.1 P.modelEx.choose_spec.1 P.cover P.fibre (readSecU_of _ _ _ _ P.frameEx.choose_spec P.modelEx.choose_spec.1 hWt) unTest := unTest_of hA _ chi1 := P.modelEx.choose_spec.1.chi dictU := ⟨_, _, fun _ τ => ((hI : ∀ τ : D.host.E →+* ℂ, ∃ θ : A …`.
+-/
 theorem pkgJ_ok {hN : N1c} {Q : Par D} {hpq : ∀ j, 1 ≤ (Q.Dw j).p + (Q.Dw j).q} {hI : InfPlaceEx D} {j : ℕ}
     {hj : InR D j} {hIo : IotaEx Q j hj} {σ : Q.c.F →+* ℂ} {hσ : GoodEmb Q.c σ} {χ : (AE D)ˣ →* Circle}
     (P : PkgRows hN Q hpq hI j hj hIo σ hσ χ) (hA : AllTest (Q.Xo j) Q.c) (hX : XiConst D)
@@ -621,13 +734,31 @@ def coreOfP (Q : Par D) (pk : ∀ j σ, PkgT Q j σ) (pb : Fin 2 → HeightOneSp
   Kf j _ := kfW (D.sp.W j) (D.host.g 0 * D.host.g 1)
   pb := pb
 
+/- English proof (translation)
+The claim follows from `(exist3_of (B.frChart j hj) (B.borChart j hj) (B.intLatU j hj)).1`.
+-/
 theorem BaseRows.evalWD {Q : Par D} (B : BaseRows Q) (j : ℕ) (hj : InR D j) :
     EvalWD (K := Q.c.F) (fun S _ _ => FrPt (Q.Xo j) Q.c S) (fun φ y z => FrMap φ y z) := (exist3_of (B.frChart j hj) (B.borChart j hj) (B.intLatU j hj)).1
 
+/- English proof (translation)
+The claim follows from `(exist3_of (B.frChart j hj) (B.borChart j hj) (B.intLatU j hj)).2.1`.
+-/
 theorem BaseRows.wtField {Q : Par D} (B : BaseRows Q) (j : ℕ) (hj : InR D j) : WtField (Q.Xo j) Q.c := (exist3_of (B.frChart j hj) (B.borChart j hj) (B.intLatU j hj)).2.1
 
+/- English proof (translation)
+The claim follows from `(exist3_of (B.frChart j hj) (B.borChart j hj) (B.intLatU j hj)).2.2`.
+-/
 theorem BaseRows.intDiagUnit {Q : Par D} (B : BaseRows Q) (j : ℕ) (hj : InR D j) : IntDiagUnit (Q.Xo j) Q.c := (exist3_of (B.frChart j hj) (B.borChart j hj) (B.intLatU j hj)).2.2
 
+/- English proof (translation)
+Establish `h0 : GoodEmb Q.c Q.c.F.val.toRingHom` using `goodEmb_val Q.c`. Establish `hT : ∀ j, InR D j → ∀ σ, GoodEmb Q.c σ → TestRd (Q.Xo j) Q.c ((coreOfP Q pk B.half.choose).U j) σ` using `fun j hj σ hσ => testRd_of (Q.Xo j) Q.c ((coreOfP Q pk B.half.choose).U j) σ (B.evalWD j hj) (hS j hj σ hσ).unf (B.bcEx j hj σ hσ) (B.wtC j hj σ hσ)`. Establish `hsup : ∀ j, InR D j → SupDef (Q.Xo j) Q.c ((coreOfP Q pk B.half.choose).U j)` using `fun j hj => supDef_of _ _ _ (rdDomInj_of _ _ _ fun σ hσ => hT j hj σ hσ)`. Establish `hL2 : ∀ j (hj : InR D j) σ (hσ : GoodEmb Q.c σ), CuspL2 ((coreOfP Q pk B.half.choose).U j) σ (D.sp.W j) ((coreOfP Q pk B.half.choose).dict j σ) ((coreOfP Q pk B.half.choose).mu j σ)`. Introduce `j hj σ hσ`.
+
+Take `⟨th, hr, -, hd⟩` from `(hS j hj σ hσ).dictU`. Conclude with `cusp_L2_of_measurable hσ (dict_dom_of hd) (hS j hj σ hσ).muUnit (adelMeas_of_aut (Q.Xo j) Q.c (hS j hj σ hσ).adelAut)`. Conclude with `{ pins := hQ half := B.half.choose_spec evalWD := B.evalWD unf := fun j hj σ hσ => (hS j hj σ hσ).unf unTest := fun j hj σ hσ => (hS j hj σ hσ).unTest chiTriv := fun j hj σ hσ _ _ _ k γ _ => (hS j hj σ hσ).chi1 k _ γ dictU := fun j hj σ hσ => (hS j hj σ hσ).dictU spaceW := fun _ …`. Take `⟨th, hr, -, hd⟩` from `(hS j hj σ hσ).dictU`. Conclude with `l2Def_of_cusp hσ (hsup j hj) (aeDom_of (hS j hj σ hσ).adelAut (finVol_alt B.volTie j) (volPair_of_tie B.volTie _ (D.sp.W_sig j)) (hS j hj σ hσ).muUnit hd) (hL2 j hj σ hσ)`.
+
+Use `unitIndep := fun j hj => unitIndep_of (B.wtField j hj) (B.intDiagUnit j hj)`. Use `ptNe := fun j hj => intFrNe_of (B.algPtLa j hj) (B.intFrExt j hj)`. Use `cuspMul := fun j _ => cusp_mul_of_M5 B.m5 _`. Use `latZ := fun j hj => (hS j hj _ h0).latZ rfl`. Use `cuNe := fun j hj => (hS j hj _ h0).cuNe rfl`.
+
+Use `expo := fun j hj => (hS j hj _ h0).expo rfl }`.
+-/
 theorem lawsCore_coreOfP {Q : Par D} (B : BaseRows Q) (pk : ∀ j σ, PkgT Q j σ)
     (hS : ∀ j, InR D j → ∀ σ, GoodEmb Q.c σ → PkgOK2 Q j σ (pk j σ)) (hQ : Q.Pins) :
     LawsCore (coreOfP Q pk B.half.choose) := by
@@ -676,6 +807,9 @@ structure LawsRemainingRows (hN : N1c) (Q : Par D) (hpq : ∀ j, 1 ≤ (Q.Dw j).
 
 variable {hN : N1c} {Q : Par D} {hpq : ∀ j, 1 ≤ (Q.Dw j).p + (Q.Dw j).q}
 
+/- English proof (translation)
+Distinguish the cases in `hj : InR D j`. Distinguish the cases in `hσ : GoodEmb Q.c σ`. Conclude with `⟨pkgJ (L.pkg j hj σ hσ), fun _ _ => pkgJ_ok _ (L.allTest j hj) (xiConst_holds D) (L.wtC j hj σ hσ) (muOK_one (L.pkg j hj σ hσ).unitFr)⟩`. Conclude with `⟨(L.dataAll j σ).some, fun _ h => absurd h hσ⟩`. Conclude with `⟨(L.dataAll j σ).some, fun h => absurd h hj⟩`.
+-/
 theorem pkgEx2 (L : LawsRemainingRows hN Q hpq) (j : ℕ) (σ : Q.c.F →+* ℂ) :
     ∃ p : PkgT Q j σ, InR D j → GoodEmb Q.c σ → PkgOK2 Q j σ p := by
   by_cases hj : InR D j
@@ -689,10 +823,16 @@ def pkgOf2 (L : LawsRemainingRows hN Q hpq) (j : ℕ) (σ : Q.c.F →+* ℂ) : P
 
 def coreOf2 (L : LawsRemainingRows hN Q hpq) : Core D := coreOfP Q (pkgOf2 L) L.half.choose
 
+/- English proof (translation)
+The claim follows from `lawsCore_coreOfP L.toBaseRows (pkgOf2 L) (fun j hj σ hσ => (pkgEx2 L j σ).choose_spec hj hσ) hQ`.
+-/
 theorem lawsCore_coreOf2 (L : LawsRemainingRows hN Q hpq) (hQ : Q.Pins) : LawsCore (coreOf2 L) := lawsCore_coreOfP L.toBaseRows (pkgOf2 L) (fun j hj σ hσ => (pkgEx2 L j σ).choose_spec hj hσ) hQ
 
 end Collected
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨coreOf2 hRest, lawsCore_coreOf2 hRest (parameter_record_conditions D hF hz (datHolds D) hN1ab)⟩`.
+-/
 theorem coreExists2 (D : D7) (hF : OFull D) (hz : OZeta D) (hN1ab : N1ab) (hN1c : N1c)
     (hRest : LawsRemainingRows hN1c (parameterOfRecord D hF hz (datHolds D) hN1ab) (parameter_record_pq_pos D hF hz (datHolds D) hN1ab)) :
     ∃ T : Core D, LawsCore T :=
@@ -717,6 +857,9 @@ structure PkgOKJ (Q : Par D) (j : ℕ) (σ : Q.c.F →+* ℂ) (χ : (AE D)ˣ →
     LatEmb (D.sp.W j) ι ∧ LatIsom (D.sp.W j) (Q.Dw j).EF ι ∧ (∀ k τ, Formalism.MainNotions.StandardLattice.IsInfEmb τ.1 (th k τ)) ∧
       DictLat p.1 (D.sp.W j) hr p.2.1 ι e F ik φ th x₀
 
+/- English proof (translation)
+The claim follows from `pkgJ_ok P hA hX hWt (muOK_of R P.unitFr) muVal := muVal_muOf R.detRoot R.chiWD modelW := ⟨_, P.modelEx.choose_spec.2⟩ familyUniformisationBasePointOrthogonal := fun k => by have hB := P.modelEx.choose_spec.1 have hW := P.modelEx.choose_spec.2 refine base_frame_orthonormal_of_eq ( …`.
+-/
 theorem pkgJ_okJ {hN : N1c} {Q : Par D} {hpq : ∀ j, 1 ≤ (Q.Dw j).p + (Q.Dw j).q} {hI : InfPlaceEx D} {j : ℕ}
     {hj : InR D j} {hIo : IotaEx Q j hj} {σ : Q.c.F →+* ℂ} {hσ : GoodEmb Q.c σ} {χ : (AE D)ˣ →* Circle}
     (P : PkgRows hN Q hpq hI j hj hIo σ hσ χ) (hA : AllTest (Q.Xo j) Q.c) (hX : XiConst D)
@@ -756,6 +899,9 @@ open Classical in
 def iotaOf (L : LawsJRest hN Q hpq chiW) (j : ℕ) : (Q.Dw j).La →ₗ[𝓞 D.host.E] (Fin D.R.r → D.host.E) :=
   if hj : InR D j then (L.iota j hj).choose else 0
 
+/- English proof (translation)
+Distinguish the cases in `hj : InR D j`. Distinguish the cases in `hσ : GoodEmb Q.c σ`. Conclude with `⟨(pkgJ (L.pkg j hj σ hσ), x0J (L.pkg j hj σ hσ).modelEx), fun _ _ => pkgJ_okJ (L.pkg j hj σ hσ) (L.allTest j hj) (xiConst_holds D) (L.wtC j hj σ hσ) (L.muRows j hj σ hσ)⟩`. Conclude with `⟨(Classical.choice (L.dataAll j σ), fun _ => 1), fun _ h => absurd h hσ⟩`. Conclude with `⟨(Classical.choice (L.dataAll j σ), fun _ => 1), fun h => absurd h hj⟩`.
+-/
 theorem pkgExJ (L : LawsJRest hN Q hpq chiW) (j : ℕ) (σ : Q.c.F →+* ℂ) :
     ∃ q : PkgT Q j σ × ((D.host.E →+* ℂ) → Matrix (Fin D.R.r) (Fin D.R.r) ℂ),
       ∀ hj : InR D j, GoodEmb Q.c σ → PkgOKJ Q j σ (chiW j σ) (L.iota j hj).choose q.1 q.2 := by
@@ -777,6 +923,11 @@ def coreJOf (L : LawsJRest hN Q hpq chiW) : CoreJ D where
   x₀ j σ := (pkgOfJ L j σ).2
   iota := iotaOf L
 
+/- English proof (translation)
+Establish `hS : ∀ j (hj : InR D j) σ, GoodEmb Q.c σ → PkgOKJ Q j σ (chiW j σ) (L.iota j hj).choose (pkgOfJ L j σ).1 (pkgOfJ L j σ).2` using `fun j hj σ hσ => (pkgExJ L j σ).choose_spec hj hσ`. Establish `hC` using `lawsCore_coreOfP L.toBaseRows (fun j σ => (pkgOfJ L j σ).1) (fun j hj σ hσ => (hS j hj σ hσ).ok) hQ`. Establish `hι : ∀ j (hj : InR D j), iotaOf L j = (L.iota j hj).choose` using `fun j hj => dif_pos hj`. Conclude with `{ toLawsM := hC.toLawsM cUnit := fun _ _ _ _ _ => norm_one muVal := fun j hj σ hσ => (hS j hj σ hσ).muVal muConj := fun j hj σ hσ => L.muConj j hj σ hσ intAll := L.intAll modelW := fun j hj σ hσ => (hS j hj σ hσ).modelW familyUniformisationBasePointOrthogonal := fun j hj σ hσ => …`. Rewrite using `[hι j hj]`.
+
+Conclude with `(hS j hj σ hσ).adPin }`.
+-/
 theorem lawsJ_coreJOf (L : LawsJRest hN Q hpq chiW) (hQ : Q.Pins) : LawsJ (coreJOf L) := by
   have hS : ∀ j (hj : InR D j) σ, GoodEmb Q.c σ →
       PkgOKJ Q j σ (chiW j σ) (L.iota j hj).choose (pkgOfJ L j σ).1 (pkgOfJ L j σ).2 :=
@@ -800,6 +951,9 @@ theorem lawsJ_coreJOf (L : LawsJRest hN Q hpq chiW) (hQ : Q.Pins) : LawsJ (coreJ
 
 end J
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨coreJOf hRest, lawsJ_coreJOf hRest (parameter_record_conditions D hF hz (datHolds D) hN1ab)⟩`.
+-/
 theorem coreJExists (D : D7) (hF : OFull D) (hz : OZeta D) (hN1ab : N1ab) (hN1c : N1c)
     (chiW : ℕ → ((parameterOfRecord D hF hz (datHolds D) hN1ab).c.F →+* ℂ) → (AE D)ˣ →* Circle)
     (hRest : LawsJRest hN1c (parameterOfRecord D hF hz (datHolds D) hN1ab) (parameter_record_pq_pos D hF hz (datHolds D) hN1ab) chiW) :

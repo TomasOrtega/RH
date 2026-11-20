@@ -13,6 +13,11 @@ section Perm
 
 variable {K : Type} [Field K]
 
+/- English proof (translation)
+Establish `hI : Set.InjOn f (Finset.range M : Set ℕ)` using `fun i hi j hj h => hinj i (Finset.mem_range.1 hi) j (Finset.mem_range.1 hj) h`. Rewrite using `[← Finset.sum_image (g := f) hI]`. Use `congr 1`. Apply `Finset.eq_of_subset_of_card_le` to reduce the goal to its premises. Introduce `x hx`.
+
+Take `⟨i, hi, rfl⟩` from `Finset.mem_image.1 hx`. Conclude with `Finset.mem_range.2 (hf i (Finset.mem_range.1 hi))`. Rewrite using `[Finset.card_image_of_injOn hI]`.
+-/
 theorem perm_range (M : ℕ) (f : ℕ → ℕ) (hf : ∀ i < M, f i < M)
     (hinj : ∀ i < M, ∀ j < M, f i = f j → i = j) (g : ℕ → K) :
     ∑ i ∈ Finset.range M, g (f i) = ∑ i ∈ Finset.range M, g i := by
@@ -26,6 +31,9 @@ theorem perm_range (M : ℕ) (f : ℕ → ℕ) (hf : ∀ i < M, f i < M)
     exact Finset.mem_range.2 (hf i (Finset.mem_range.1 hi))
   · rw [Finset.card_image_of_injOn hI]
 
+/- English proof (translation)
+Apply the tactic sequence `first | exact Bl.PeriodicFunctions.goal1 .. | (apply Bl.PeriodicFunctions.goal1 <;> assumption) | (intros; apply Bl.PeriodicFunctions.goal1 <;> assumption)`.
+-/
 theorem sum_range_mul (M m : ℕ) (g : ℕ → K) (hg : ∀ i, g (i + M) = g i) :
     ∑ i ∈ Finset.range (M * m), g i = (m : K) * ∑ i ∈ Finset.range M, g i := by
   first | exact Bl.PeriodicFunctions.goal1 .. | (apply Bl.PeriodicFunctions.goal1 <;> assumption) | (intros; apply Bl.PeriodicFunctions.goal1 <;> assumption)
@@ -45,6 +53,11 @@ def Good1 (P : HeightOneSpectrum (𝓞 E)) (a b : ℕ) (φ : E → K) : Prop :=
 
 variable {P : HeightOneSpectrum (𝓞 E)}
 
+/- English proof (translation)
+Establish `hq` using `pow_ne_zero A (qE_ne P hp)`. Unfold `valsQ Sg`. Rewrite using `[Finset.sum_image]`. Introduce `x _ y _ hxy`. Establish `h2 : ((x : ℕ) : E) = y`.
+
+Use `congrArg (· * (qOf P : E) ^ A) hxy` as an intermediate fact. Simplify `this` using `[div_mul_cancel₀ _ hq]`. Conclude with `h2` after adjusting the coercions.
+-/
 theorem sum_vals (hp : (Ideal.absNorm P.asIdeal).Prime) (A B : ℕ) (φ : E → K) :
     ∑ u ∈ valsQ E (qOf P) A B, φ u = Sg P A B φ := by
   classical
@@ -57,6 +70,9 @@ theorem sum_vals (hp : (Ideal.absNorm P.asIdeal).Prime) (A B : ℕ) (φ : E → 
     simpa [div_mul_cancel₀ _ hq] using this
   exact_mod_cast h2
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun u hu => ia_up P ha (h.1 u hu), h.2⟩`.
+-/
 theorem good_function_mono {a b a' : ℕ} (ha : a ≤ a') {φ : E → K} (h : Good1 P a b φ) : Good1 P a' b φ :=
   ⟨fun u hu => ia_up P ha (h.1 u hu), h.2⟩
 
@@ -66,6 +82,29 @@ variable (hN : NTAll) (hp : (Ideal.absNorm P.asIdeal).Prime)
     (hq : ((Ideal.absNorm P.asIdeal : ℕ) : 𝓞 E) ∉ P.asIdeal ^ 2) (hK : ((qOf P : ℕ) : K) ≠ 0)
 include hN hp hq
 
+/- English proof (translation)
+Establish `hq0` using `qE_ne P hp`. Establish `qp : 0 < qOf P` using `hp.pos`. Establish `s1 : Sg P A B φ = ∑ i ∈ Finset.range (qOf P ^ (a + B)), φ ((i : E) / (qOf P : E) ^ a)`. Unfold `Sg`. Establish `hI : Set.InjOn (fun i : ℕ => qOf P ^ (A - a) * i) (Finset.range (qOf P ^ (a + B)) : Set ℕ)` using `fun i _ j _ h => Nat.eq_of_mul_eq_mul_left (pow_pos qp _) h`.
+
+Establish `hsub : (Finset.range (qOf P ^ (a + B))).image (fun i : ℕ => qOf P ^ (A - a) * i) ⊆ Finset.range (qOf P ^ (A + B))`. Introduce `x hx`. Take `⟨i, hi, rfl⟩` from `Finset.mem_image.1 hx`. Rewrite `hi`, the goal using `[Finset.mem_range]`. Establish `: A + B = (A - a) + (a + B)` using `by omega`.
+
+Rewrite using `[this, pow_add]`. Conclude with `Nat.mul_lt_mul_of_pos_left hi (pow_pos qp _)`. Rewrite using `[← Finset.sum_subset hsub, Finset.sum_image hI]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `congr 1`.
+
+Use `push_cast`. Establish `: (qOf P : E) ^ A = (qOf P : E) ^ (A - a) * (qOf P : E) ^ a`. Rewrite using `[← pow_add, Nat.sub_add_cancel hA]`. Rewrite using `[this]`. Clear the denominators using the available nonvanishing facts.
+
+Introduce `i hi hni`. Assume the negation of the conclusion as `hne`. Establish `h1` using `h.1 _ hne`. Establish `e : (qOf P : E) ^ a * ((i : E) / (qOf P : E) ^ A) = (i : E) / (qOf P : E) ^ (A - a)`. Establish `: (qOf P : E) ^ A = (qOf P : E) ^ (A - a) * (qOf P : E) ^ a`.
+
+Rewrite using `[← pow_add, Nat.sub_add_cancel hA]`. Rewrite using `[this]`. Clear the denominators using the available nonvanishing facts. Rewrite `h1` using `[e, hN.1 E P hp hq]`. Take `⟨i', rfl⟩` from `h1`.
+
+Apply `hni` to reduce the goal to its premises. Use `Finset.mem_image.2 ⟨i', Finset.mem_range.2 ?_, rfl⟩` and prove the remaining obligations. Establish `hi'` using `Finset.mem_range.1 hi`. Establish `: A + B = (A - a) + (a + B)` using `by omega`. Rewrite `hi'` using `[this, pow_add]`.
+
+Conclude with `Nat.lt_of_mul_lt_mul_left hi'`. Rewrite using `[s1]`. Establish `e2 : qOf P ^ (a + B) = qOf P ^ (a + b) * qOf P ^ (B - b)`. Rewrite using `[← pow_add]`. Use `congr 1`.
+
+Use linear arithmetic over natural numbers and integers. Rewrite using `[e2, sum_range_mul]`. Both sides reduce to the same expression. Introduce `i`. Establish `e3 : (((i + qOf P ^ (a + b) : ℕ) : E) / (qOf P : E) ^ a) = (i : E) / (qOf P : E) ^ a + (qOf P : E) ^ b`.
+
+Use `push_cast`. Rewrite using `[pow_add]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e3]`. Apply `h.2` to reduce the goal to its premises.
+
+Rewrite using `[div_self (pow_ne_zero _ hq0)]`. Conclude with `ia_one P`.
+-/
 theorem sg_stab {a b A B : ℕ} (hA : a ≤ A) (hB : b ≤ B) {φ : E → K} (h : Good1 P a b φ) :
     Sg P A B φ = ((qOf P ^ (B - b) : ℕ) : K) * Sg P a b φ := by
   have hq0 := qE_ne P hp
@@ -126,6 +165,11 @@ theorem sg_stab {a b A B : ℕ} (hA : a ≤ A) (hB : b ≤ B) {φ : E → K} (h 
     exact ia_one P
 
 include hK in
+/- English proof (translation)
+Unfold `W1`. Rewrite using `[sg_stab hN hp hq hA hB h]`. Use `push_cast`. Establish `e : (qOf P : K) ^ B = (qOf P : K) ^ (B - b) * (qOf P : K) ^ b`. Rewrite using `[← pow_add, Nat.sub_add_cancel hB]`.
+
+Rewrite using `[e]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem weighted_sum_stable {a b A B : ℕ} (hA : a ≤ A) (hB : b ≤ B) {φ : E → K} (h : Good1 P a b φ) :
     W1 P A B φ = W1 P a b φ := by
   unfold W1
@@ -136,6 +180,23 @@ theorem weighted_sum_stable {a b A B : ℕ} (hA : a ≤ A) (hB : b ≤ B) {φ : 
   rw [e]
   field_simp
 
+/- English proof (translation)
+Establish `hq0` using `qE_ne P hp`. Establish `qp : 0 < qOf P` using `hp.pos`. Use `⟨⟨fun u hu => ?_, fun u δ hδ => ?_⟩, ?_⟩` and prove the remaining obligations. Establish `h1` using `h.1 _ hu`. Establish `e : (qOf P : E) ^ a * u = (qOf P : E) ^ a * (u + β) - (qOf P : E) ^ a * β` using `by ring`.
+
+Rewrite using `[e]`. Conclude with `ia_sub P h1 hβ`. Use `show φ (u + δ + β) = φ (u + β)`. Rewrite using `[add_right_comm]`. Conclude with `h.2 _ _ hδ`.
+
+Take `⟨j, -, hj⟩` from `hN.2.1 E P hp hq _ (a + b) hβ set M := qOf P ^ (a + b) with hM`. Establish `Mpos : 0 < M` using `pow_pos qp _`. Unfold `Sg`. Rewrite using `[← hM]`. Establish `key : ∀ i : ℕ, φ ((i : E) / (qOf P : E) ^ a + β) = φ ((((i + j) % M : ℕ) : E) / (qOf P : E) ^ a)`.
+
+Introduce `i`. Establish `hd` using `congrArg (Nat.cast (R := E)) (Nat.mod_add_div (i + j) M)`. Move the coercions through the operations in `at hd`. Establish `e : (i : E) / (qOf P : E) ^ a + β = (((i + j) % M : ℕ) : E) / (qOf P : E) ^ a + ((((i + j) / M : ℕ) : E) * (qOf P : E) ^ b + (β - (j : E) / (qOf P : E) ^ a))`. Establish `hr : (((i + j) % M : ℕ) : E) = (i : E) + j - (qOf P : E) ^ (a + b) * (((i + j) / M : ℕ) : E)`.
+
+Rewrite `hd` using `[hM]`. Move the coercions through the operations in `at hd ⊢`. Take the linear combination `hd`. Rewrite using `[hr, pow_add]`. Clear the denominators using the available nonvanishing facts.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Apply `h.2` to reduce the goal to its premises. Establish `e2 : ((((i + j) / M : ℕ) : E) * (qOf P : E) ^ b + (β - (j : E) / (qOf P : E) ^ a)) / (qOf P : E) ^ b = (((i + j) / M : ℕ) : E) + ((qOf P : E) ^ a * β - j) / (qOf P : E) ^ (a + b)`. Rewrite using `[pow_add]`.
+
+Clear the denominators using the available nonvanishing facts. Rewrite using `[e2]`. Conclude with `ia_add P (ia_nat P _) hj`. Simplify using `only [key]`. Conclude with `perm_range M (fun i => (i + j) % M) (fun i _ => Nat.mod_lt _ Mpos) (fun i hi i' hi' hii => by`.
+
+Establish `h3 : i % M = i' % M` using `Nat.ModEq.add_right_cancel' j hii`. Rewrite using `[Nat.mod_eq_of_lt hi, Nat.mod_eq_of_lt hi'] at h3)` and apply the resulting hypothesis. Use the proof step `(fun i => φ ((i : E) / (qOf P : E) ^ a))`.
+-/
 theorem sg_transl {a b : ℕ} {φ : E → K} (h : Good1 P a b φ) {β : E} (hβ : IntAt P ((qOf P : E) ^ a * β)) :
     Good1 P a b (fun u => φ (u + β)) ∧ Sg P a b (fun u => φ (u + β)) = Sg P a b φ := by
   have hq0 := qE_ne P hp
@@ -181,6 +242,25 @@ theorem sg_transl {a b : ℕ} {φ : E → K} (h : Good1 P a b φ) {β : E} (hβ 
         rwa [Nat.mod_eq_of_lt hi, Nat.mod_eq_of_lt hi'] at h3)
       (fun i => φ ((i : E) / (qOf P : E) ^ a))
 
+/- English proof (translation)
+Establish `hq0` using `qE_ne P hp`. Establish `qp : 0 < qOf P` using `hp.pos`. Use `⟨⟨fun u hu => ?_, fun u δ hδ => ?_⟩, ?_⟩` and prove the remaining obligations. Establish `h1` using `h.1 _ hu`. Establish `e : (qOf P : E) ^ a * u = w⁻¹ * ((qOf P : E) ^ a * (w * u))`.
+
+Clear denominators, using `[hw.1]` for the nonvanishing conditions. Rewrite using `[e]`. Conclude with `ia_mul P hw.2.2 h1`. Use `show φ (w * (u + δ)) = φ (w * u)`. Rewrite using `[mul_add]`.
+
+Apply `h.2` to reduce the goal to its premises. Rewrite using `[mul_div_assoc]`. Conclude with `ia_mul P hw.2.1 hδ`. Take `⟨w0, hco, hw0⟩` from `hN.2.2.2.2 E P hp hq w (a + b) hw.1 hw.2.1 hw.2.2 set M := qOf P ^ (a + b) with hM`. Establish `Mpos : 0 < M` using `pow_pos qp _`.
+
+Unfold `Sg`. Rewrite using `[← hM]`. Establish `key : ∀ i : ℕ, φ (w * ((i : E) / (qOf P : E) ^ a)) = φ ((((w0 * i) % M : ℕ) : E) / (qOf P : E) ^ a)`. Introduce `i`. Establish `hd` using `congrArg (Nat.cast (R := E)) (Nat.mod_add_div (w0 * i) M)`.
+
+Establish `e : w * ((i : E) / (qOf P : E) ^ a) = (((w0 * i) % M : ℕ) : E) / (qOf P : E) ^ a + ((((w0 * i) / M : ℕ) : E) * (qOf P : E) ^ b + (w - w0) * (i : E) / (qOf P : E) ^ a)`. Establish `hr : (((w0 * i) % M : ℕ) : E) = (w0 : E) * i - (qOf P : E) ^ (a + b) * (((w0 * i) / M : ℕ) : E)`. Rewrite `hd` using `[hM]`. Move the coercions through the operations in `at hd ⊢`. Take the linear combination `hd`.
+
+Rewrite using `[hr, pow_add]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Apply `h.2` to reduce the goal to its premises.
+
+Establish `e2 : ((((w0 * i) / M : ℕ) : E) * (qOf P : E) ^ b + (w - w0) * (i : E) / (qOf P : E) ^ a) / (qOf P : E) ^ b = (((w0 * i) / M : ℕ) : E) + (i : E) * ((w - w0) / (qOf P : E) ^ (a + b))`. Rewrite using `[pow_add]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e2]`. Conclude with `ia_add P (ia_nat P _) (ia_mul P (ia_nat P _) hw0)`.
+
+Simplify using `only [key]`. Establish `hcoM : Nat.gcd M w0 = 1`. Rewrite using `[hM, Nat.gcd_comm]`. Conclude with `Nat.Coprime.pow_right _ hco`. Conclude with `perm_range M (fun i => (w0 * i) % M) (fun i _ => Nat.mod_lt _ Mpos) (fun i hi i' hi' hii => by`.
+
+Establish `h3 : i % M = i' % M` using `Nat.ModEq.cancel_left_of_coprime hcoM hii`. Rewrite using `[Nat.mod_eq_of_lt hi, Nat.mod_eq_of_lt hi'] at h3)` and apply the resulting hypothesis. Use the proof step `(fun i => φ ((i : E) / (qOf P : E) ^ a))`.
+-/
 theorem sg_unit {a b : ℕ} {φ : E → K} (h : Good1 P a b φ) {w : E} (hw : UnitAt P w) :
     Good1 P a b (fun u => φ (w * u)) ∧ Sg P a b (fun u => φ (w * u)) = Sg P a b φ := by
   have hq0 := qE_ne P hp
@@ -231,6 +311,15 @@ theorem sg_unit {a b : ℕ} {φ : E → K} (h : Good1 P a b φ) {w : E} (hw : Un
         rwa [Nat.mod_eq_of_lt hi, Nat.mod_eq_of_lt hi'] at h3)
       (fun i => φ ((i : E) / (qOf P : E) ^ a))
 
+/- English proof (translation)
+Establish `hq0` using `qE_ne P hp`. Use `⟨⟨fun u hu => ?_, fun u δ hδ => ?_⟩, ?_⟩` and prove the remaining obligations. Establish `h1` using `h.1 _ hu`. Rewrite using `[pow_add, mul_assoc]`. Conclude with `h1`.
+
+Use `show φ ((qOf P : E) ^ f * (u + δ)) = φ ((qOf P : E) ^ f * u)`. Rewrite using `[mul_add]`. Apply `h.2` to reduce the goal to its premises. Rewrite using `[mul_div_assoc]`. Conclude with `ia_mul P (ia_qpow P _) hδ`.
+
+Establish `e : Sg P (a + f) b (fun u => φ ((qOf P : E) ^ f * u)) = Sg P a (b + f) φ`. Unfold `Sg`. Rewrite using `[show a + f + b = a + (b + f) by ring]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `congr 1`.
+
+Rewrite using `[pow_add]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e, sg_stab hN hp hq le_rfl (Nat.le_add_right b f) h, Nat.add_sub_cancel_left]`.
+-/
 theorem sg_qpow {a b : ℕ} {φ : E → K} (h : Good1 P a b φ) (f : ℕ) :
     Good1 P (a + f) b (fun u => φ ((qOf P : E) ^ f * u)) ∧
       Sg P (a + f) b (fun u => φ ((qOf P : E) ^ f * u)) = ((qOf P ^ f : ℕ) : K) * Sg P a b φ := by
@@ -253,6 +342,17 @@ theorem sg_qpow {a b : ℕ} {φ : E → K} (h : Good1 P a b φ) (f : ℕ) :
       field_simp
     rw [e, sg_stab hN hp hq le_rfl (Nat.le_add_right b f) h, Nat.add_sub_cancel_left]
 
+/- English proof (translation)
+Establish `hq0` using `qE_ne P hp`. Use `⟨⟨fun u hu => ?_, fun u δ hδ => ?_⟩, ?_⟩` and prove the remaining obligations. Establish `h1` using `h.1 _ hu`. Establish `e : (qOf P : E) ^ a * u = (qOf P : E) ^ f * ((qOf P : E) ^ a * (u / (qOf P : E) ^ f))`. Clear the denominators using the available nonvanishing facts.
+
+Rewrite using `[e]`. Conclude with `ia_mul P (ia_qpow P _) h1`. Use `show φ ((u + δ) / (qOf P : E) ^ f) = φ (u / (qOf P : E) ^ f)`. Rewrite using `[add_div]`. Apply `h.2` to reduce the goal to its premises.
+
+Establish `e : δ / (qOf P : E) ^ f / (qOf P : E) ^ b = δ / (qOf P : E) ^ (b + f)`. Rewrite using `[pow_add]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e]`. Conclude with `hδ`.
+
+Establish `e : Sg P a (b + f) (fun u => φ (u / (qOf P : E) ^ f)) = Sg P (a + f) b φ`. Unfold `Sg`. Rewrite using `[show a + (b + f) = a + f + b by ring]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `congr 1`.
+
+Rewrite using `[pow_add]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e, sg_stab hN hp hq (Nat.le_add_right a f) le_rfl h, Nat.sub_self, pow_zero, Nat.cast_one, one_mul]`.
+-/
 theorem sg_qinv {a b : ℕ} {φ : E → K} (h : Good1 P a b φ) (f : ℕ) :
     Good1 P a (b + f) (fun u => φ (u / (qOf P : E) ^ f)) ∧
       Sg P a (b + f) (fun u => φ (u / (qOf P : E) ^ f)) = Sg P a b φ := by
@@ -282,6 +382,19 @@ theorem sg_qinv {a b : ℕ} {φ : E → K} (h : Good1 P a b φ) (f : ℕ) :
 
 include hK in
 
+/- English proof (translation)
+Establish `hq0` using `qE_ne P hp`. Take `⟨w, hdw, hw⟩` from `vq_spec hN hp hq hd`. Break down `Int.eq_nat_or_neg (vq P d) with ⟨f, hf | hf⟩` into its components or cases. Use `⟨a + f, b, fun φ h => ?_⟩` and prove the remaining obligations. Establish `e : (fun u => φ (d * u)) = fun u => (fun u => φ ((qOf P : E) ^ f * u)) (w * u)`.
+
+Use function extensionality and compare the values at `u`. Rewrite using `[hdw, hf, zpow_natCast, mul_assoc]`. Take `⟨g1, s1⟩` from `sg_qpow hN hp hq h f`. Take `⟨g2, s2⟩` from `sg_unit hN hp hq g1 hw`. Rewrite using `[e]`.
+
+Use `⟨g2, ?_⟩` and prove the remaining obligations. Unfold `W1`. Rewrite using `[s2, s1, hf, zpow_natCast]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `⟨a, b + f, fun φ h => ?_⟩` and prove the remaining obligations. Establish `e : (fun u => φ (d * u)) = fun u => (fun u => φ (u / (qOf P : E) ^ f)) (w * u)`. Use function extensionality and compare the values at `u`. Rewrite using `[hdw, hf, zpow_neg, zpow_natCast]`. Use `congr 1`.
+
+Clear the denominators using the available nonvanishing facts. Take `⟨g1, s1⟩` from `sg_qinv hN hp hq h f`. Take `⟨g2, s2⟩` from `sg_unit hN hp hq g1 hw`. Rewrite using `[e]`. Use `⟨g2, ?_⟩` and prove the remaining obligations.
+
+Unfold `W1`. Rewrite using `[s2, s1, hf, zpow_neg, zpow_natCast, pow_add]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem weighted_sum_scaling {d : E} (hd : d ≠ 0) (a b : ℕ) :
     ∃ a' b' : ℕ, ∀ φ : E → K, Good1 P a b φ →
       Good1 P a' b' (fun u => φ (d * u)) ∧ W1 P a' b' (fun u => φ (d * u)) = (qOf P : K) ^ vq P d * W1 P a b φ := by

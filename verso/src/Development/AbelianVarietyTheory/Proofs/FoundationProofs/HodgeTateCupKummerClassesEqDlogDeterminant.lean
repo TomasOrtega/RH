@@ -11,6 +11,15 @@ namespace GlobalTheory.K5.KummerCup
 
 variable {p : ℕ} [Fact p.Prime] {Ω : Type} [Field Ω] [Algebra (O0 p) Ω]
 
+/- English proof (translation)
+Take `⟨P, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Establish `hC : ∀ Q : Polynomial (O0 p), f (Ideal.Quotient.mk (towerIdeal p n) (C Q)) ∈ S`. Introduce `Q`. Proceed by induction on `Q using Polynomial.induction_on' with`. Consider the case `add a b ha hb => rw [map_add, map_add, map_add]`.
+
+Conclude with `S.add_mem ha hb`. Consider the case `monomial j b`. Rewrite using `[← C_mul_X_pow_eq_monomial, map_mul, map_mul, map_mul, map_pow, map_pow, map_pow]`. Use `S.mul_mem ?_ (S.pow_mem hx j)` and prove the remaining obligations. Establish `e : (Ideal.Quotient.mk (towerIdeal p n)) (C (C b)) = algebraMap (O0 p) (On p n) b` using `rfl`.
+
+Rewrite using `[e, f.commutes]`. Conclude with `S.algebraMap_mem b`. Proceed by induction on `P using Polynomial.induction_on' with`. Consider the case `add a b ha hb => rw [map_add, map_add]`. Conclude with `S.add_mem ha hb`.
+
+Consider the case `monomial j Q`. Rewrite using `[← C_mul_X_pow_eq_monomial, map_mul, map_mul, map_pow, map_pow]`. Conclude with `S.mul_mem (hC Q) (S.pow_mem hy j)`.
+-/
 theorem map_mk_mem {n : ℕ} (f : On p n →ₐ[O0 p] Ω) (S : Subalgebra (O0 p) Ω) (hx : f (xn p n) ∈ S)
     (hy : f (yn p n) ∈ S) (x : On p n) : f x ∈ S := by
   obtain ⟨P, rfl⟩ := Ideal.Quotient.mk_surjective x
@@ -30,12 +39,23 @@ theorem map_mk_mem {n : ℕ} (f : On p n →ₐ[O0 p] Ω) (S : Subalgebra (O0 p)
     rw [← C_mul_X_pow_eq_monomial, map_mul, map_mul, map_pow, map_pow]
     exact S.mul_mem (hC Q) (S.pow_mem hy j)
 
+/- English proof (translation)
+The claim follows from `pow_ne_zero _ (Fact.out : p.Prime).ne_zero`.
+-/
 theorem pp_ne (m : ℕ) : p ^ m ≠ 0 := pow_ne_zero _ (Fact.out : p.Prime).ne_zero
 
+/- English proof (translation)
+The claim follows from `| 0 => by simp | m + 1 => by rw [pow_succ', pow_mul, T.qpow, q_pow T m]`.
+-/
 theorem q_pow (T : Tower p Ω) : ∀ m, T.qq m ^ (p ^ m) = T.qq 0
   | 0 => by simp
   | m + 1 => by rw [pow_succ', pow_mul, T.qpow, q_pow T m]
 
+/- English proof (translation)
+Establish `: IsUnit (HahnSeries.single (1 : ℤ) (1 : ℤ_[p]) : Lau p)`. Use `⟨⟨HahnSeries.single (1 : ℤ) (1 : ℤ_[p]), HahnSeries.single (-1 : ℤ) (1 : ℤ_[p]), ?_, ?_⟩, rfl⟩` and prove the remaining obligations. Rewrite using `[HahnSeries.single_mul_single]`. Simplify using the standard rewrite rules. Rewrite using `[HahnSeries.single_mul_single]`.
+
+Simplify using the standard rewrite rules. Conclude with `this.map _`.
+-/
 theorem qO_unit : IsUnit (qO p) := by
   have : IsUnit (HahnSeries.single (1 : ℤ) (1 : ℤ_[p]) : Lau p) := by
     refine ⟨⟨HahnSeries.single (1 : ℤ) (1 : ℤ_[p]), HahnSeries.single (-1 : ℤ) (1 : ℤ_[p]), ?_, ?_⟩, rfl⟩
@@ -43,25 +63,48 @@ theorem qO_unit : IsUnit (qO p) := by
     · rw [HahnSeries.single_mul_single]; simp
   exact this.map _
 
+/- English proof (translation)
+Introduce `h`. Establish `h0` using `q_pow T m`. Rewrite `h0` using `[h, zero_pow (pp_ne m), T.q0]`. Conclude with `((qO_unit (p := p)).map (algebraMap (O0 p) Ω)).ne_zero h0.symm`.
+-/
 theorem qq_ne_zero (T : Tower p Ω) (m : ℕ) : T.qq m ≠ 0 := by
   intro h
   have h0 := q_pow T m
   rw [h, zero_pow (pp_ne m), T.q0] at h0
   exact ((qO_unit (p := p)).map (algebraMap (O0 p) Ω)).ne_zero h0.symm
 
+/- English proof (translation)
+Use `IsIntegral.of_pow (Nat.pos_of_ne_zero (pp_ne (p := p) m)) ?_` and prove the remaining obligations. Rewrite using `[(T.prim m).pow_eq_one]`. Conclude with `isIntegral_one`.
+-/
 theorem zeta_mem (T : Tower p Ω) (m : ℕ) : T.ζ m ∈ integralClosure (O0 p) Ω := by
   refine IsIntegral.of_pow (Nat.pos_of_ne_zero (pp_ne (p := p) m)) ?_
   rw [(T.prim m).pow_eq_one]
   exact isIntegral_one
 
+/- English proof (translation)
+Use `IsIntegral.of_pow (Nat.pos_of_ne_zero (pp_ne (p := p) m)) ?_` and prove the remaining obligations. Rewrite using `[q_pow, T.q0]`. Conclude with `isIntegral_algebraMap`.
+-/
 theorem qq_mem (T : Tower p Ω) (m : ℕ) : T.qq m ∈ integralClosure (O0 p) Ω := by
   refine IsIntegral.of_pow (Nat.pos_of_ne_zero (pp_ne (p := p) m)) ?_
   rw [q_pow, T.q0]
   exact isIntegral_algebraMap
 
+/- English proof (translation)
+The claim follows from `sub_ne_zero.mpr ((T.prim n).ne_one (Nat.one_lt_pow (by omega) (Fact.out : p.Prime).one_lt))`.
+-/
 theorem zeta_sub_one_ne (T : Tower p Ω) {n : ℕ} (hn : 1 ≤ n) : T.ζ n - 1 ≠ 0 :=
   sub_ne_zero.mpr ((T.prim n).ne_one (Nat.one_lt_pow (by omega) (Fact.out : p.Prime).one_lt))
 
+/- English proof (translation)
+Establish `hne` using `zeta_sub_one_ne T hn`. Establish `hpos : 0 < p ^ n` using `Nat.pos_of_ne_zero (pp_ne n)`. Establish `h1 : eval 1 (cyclotomic (p ^ n) Ω) = (p : Ω)`. Take `⟨m, rfl⟩ : ∃ m, n = m + 1` from `⟨n - 1, by omega⟩`. Conclude with `eval_one_cyclotomic_prime_pow m`.
+
+Rewrite `h1` using `[cyclotomic_eq_prod_X_sub_primitiveRoots (T.prim n), eval_prod, ← Finset.mul_prod_erase _ _ ((mem_primitiveRoots hpos).mpr (T.prim n))]`. Establish `hR : (∏ μ ∈ (primitiveRoots (p ^ n) Ω).erase (T.ζ n), eval 1 (X - C μ)) ∈ integralClosure (O0 p) Ω`. Use `Subalgebra.prod_mem _ fun μ hμ => ?_` and prove the remaining obligations. Establish `hμ'` using `(mem_primitiveRoots hpos).mp (Finset.mem_of_mem_erase hμ)`. Simplify using `only [eval_sub, eval_X, eval_C]`.
+
+Use `Subalgebra.sub_mem _ (Subalgebra.one_mem _) ?_` and prove the remaining obligations. Use `IsIntegral.of_pow hpos ?_` and prove the remaining obligations. Rewrite using `[hμ'.pow_eq_one]`. Conclude with `isIntegral_one`. Generalize the expression as in `(∏ μ ∈ (primitiveRoots (p ^ n) Ω).erase (T.ζ n), eval 1 (X - C μ)) = R at h1 hR`.
+
+Simplify using `only [eval_sub, eval_X, eval_C] at h1`. Establish `: (p : Ω) / (T.ζ n - 1) = -R`. Rewrite using `[div_eq_iff hne, ← h1]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`.
+
+Conclude with `Subalgebra.neg_mem _ hR`.
+-/
 theorem p_div_mem (T : Tower p Ω) {n : ℕ} (hn : 1 ≤ n) :
     (p : Ω) / (T.ζ n - 1) ∈ integralClosure (O0 p) Ω := by
   classical
@@ -88,18 +131,32 @@ theorem p_div_mem (T : Tower p Ω) {n : ℕ} (hn : 1 ≤ n) :
   rw [this]
   exact Subalgebra.neg_mem _ hR
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_Gn {T : Tower p Ω} {n : ℕ} {g : Gal p Ω} :
     g ∈ Gn T n ↔ g (T.ζ n) = T.ζ n ∧ g (T.qq n) = T.qq n := Iff.rfl
 
+/- English proof (translation)
+The claim follows from `map_mk_mem ι (AlgHom.equalizer (g : Ω →ₐ[O0 p] Ω) (AlgHom.id _ _)) (by rw [hι.1]; exact (mem_Gn.mp hg).1) (by rw [hι.2]; exact (mem_Gn.mp hg).2) x`.
+-/
 theorem fix_emb {T : Tower p Ω} {n : ℕ} {ι : On p n →ₐ[O0 p] Ω} (hι : IsEmb T n ι) {g : Gal p Ω}
     (hg : g ∈ Gn T n) (x : On p n) : g (ι x) = ι x :=
   map_mk_mem ι (AlgHom.equalizer (g : Ω →ₐ[O0 p] Ω) (AlgHom.id _ _))
     (by rw [hι.1]; exact (mem_Gn.mp hg).1) (by rw [hι.2]; exact (mem_Gn.mp hg).2) x
 
+/- English proof (translation)
+The claim follows from `map_mk_mem ι _ (by rw [hι.1]; exact zeta_mem T n) (by rw [hι.2]; exact qq_mem T n) x`.
+-/
 theorem emb_mem {T : Tower p Ω} {n : ℕ} {ι : On p n →ₐ[O0 p] Ω} (hι : IsEmb T n ι) (x : On p n) :
     ι x ∈ integralClosure (O0 p) Ω :=
   map_mk_mem ι _ (by rw [hι.1]; exact zeta_mem T n) (by rw [hι.2]; exact qq_mem T n) x
 
+/- English proof (translation)
+Use `haveI : NeZero (p ^ n) := ⟨pp_ne n⟩`. Establish `h1` using `ha _ ((Gn T n).mul_mem hg hh)`. Rewrite `h1` using `[AlgEquiv.mul_apply, ha h hh, map_mul, map_pow, (mem_Gn.mp hg).1, ha g hg, ← mul_assoc, ← pow_add]`. Establish `h2` using `mul_right_cancel₀ hr h1`. Rewrite `h2` using `[← pow_mod_orderOf, ← (T.prim n).eq_orderOf]`.
+
+Establish `h3` using `(T.prim n).pow_inj (Nat.mod_lt _ (Nat.pos_of_ne_zero (pp_ne n))) (ZMod.val_lt _) h2`. Apply `ZMod.val_injective` to reduce the goal to its premises. Rewrite using `[ZMod.val_add, ← h3, add_comm]`.
+-/
 theorem kum_add {T : Tower p Ω} {n : ℕ} {r : Ω} (hr : r ≠ 0) {a : Gal p Ω → ZMod (p ^ n)}
     (ha : IsKum T n (Gn T n) r a) {g h : Gal p Ω} (hg : g ∈ Gn T n) (hh : h ∈ Gn T n) :
     a (g * h) = a g + a h := by
@@ -113,6 +170,9 @@ theorem kum_add {T : Tower p Ω} {n : ℕ} {r : Ω} (hr : r ≠ 0) {a : Gal p Ω
   apply ZMod.val_injective
   rw [ZMod.val_add, ← h3, add_comm]
 
+/- English proof (translation)
+Use `haveI : NeZero (p ^ n) := ⟨pp_ne n⟩`. Rewrite `e` using `[ha g hg, ha h hh]`. Conclude with `ZMod.val_injective _ ((T.prim n).pow_inj (ZMod.val_lt _) (ZMod.val_lt _) (mul_right_cancel₀ hr e))`.
+-/
 theorem kum_eq {T : Tower p Ω} {n : ℕ} {r : Ω} (hr : r ≠ 0) {a : Gal p Ω → ZMod (p ^ n)}
     (ha : IsKum T n (Gn T n) r a) {g h : Gal p Ω} (hg : g ∈ Gn T n) (hh : h ∈ Gn T n)
     (e : h r = g r) : a h = a g := by
@@ -126,15 +186,24 @@ open Classical in
 def ext0 {M : Type} [Zero M] (H : Subgroup (Gal p Ω)) (a : Gal p Ω → M) (g : Gal p Ω) : M :=
   if g ∈ H then a g else 0
 
+/- English proof (translation)
+The claim follows from `if_pos hg`.
+-/
 theorem cochainExtendByZeroSubgroup_of_mem {M : Type} [Zero M] {H : Subgroup (Gal p Ω)} (a : Gal p Ω → M) {g : Gal p Ω}
     (hg : g ∈ H) : ext0 H a g = a g := if_pos hg
 
+/- English proof (translation)
+Introduce `g hg h hh`. Rewrite using `[cochainExtendByZeroSubgroup_of_mem a hg, cochainExtendByZeroSubgroup_of_mem a hh, cochainExtendByZeroSubgroup_of_mem a ((Gn T n).mul_mem hg hh), kum_add hr ha hg hh]`.
+-/
 theorem matrixExtendByZero_add {T : Tower p Ω} {n : ℕ} {r : Ω} (hr : r ≠ 0) {a : Gal p Ω → ZMod (p ^ n)}
     (ha : IsKum T n (Gn T n) r a) : ∀ g ∈ Gn T n, ∀ h ∈ Gn T n,
     ext0 (Gn T n) a (g * h) = ext0 (Gn T n) a g + ext0 (Gn T n) a h := by
   intro g hg h hh
   rw [cochainExtendByZeroSubgroup_of_mem a hg, cochainExtendByZeroSubgroup_of_mem a hh, cochainExtendByZeroSubgroup_of_mem a ((Gn T n).mul_mem hg hh), kum_add hr ha hg hh]
 
+/- English proof (translation)
+Establish `hiff : h ∈ Gn T n ↔ g ∈ Gn T n` using `by rw [mem_Gn, mem_Gn, e1, e2]`. Distinguish the cases in `hg : g ∈ Gn T n`. Rewrite using `[cochainExtendByZeroSubgroup_of_mem a hg, cochainExtendByZeroSubgroup_of_mem a (hiff.mpr hg), kum_eq hr ha hg (hiff.mpr hg) e]`. Unfold `ext0`. Rewrite using `[if_neg hg, if_neg (fun hh => hg (hiff.mp hh))]`.
+-/
 theorem cochainExtendByZero_kummer_congr_of_action {T : Tower p Ω} {n : ℕ} {r : Ω} (hr : r ≠ 0) {a : Gal p Ω → ZMod (p ^ n)}
     (ha : IsKum T n (Gn T n) r a) {g h : Gal p Ω} (e1 : h (T.ζ n) = g (T.ζ n))
     (e2 : h (T.qq n) = g (T.qq n)) (e : h r = g r) : ext0 (Gn T n) a h = ext0 (Gn T n) a g := by
@@ -144,6 +213,11 @@ theorem cochainExtendByZero_kummer_congr_of_action {T : Tower p Ω} {n : ℕ} {r
   · unfold ext0
     rw [if_neg hg, if_neg (fun hh => hg (hiff.mp hh))]
 
+/- English proof (translation)
+Take `⟨x, hx, h⟩` from `hf`. Establish `hp : IsIntegral (O0 p) (p : Ω)` using `(integralClosure (O0 p) Ω).natCast_mem p`. Use `⟨(p : Ω) * x, hp.mul hx, fun g hg => ?_⟩` and prove the remaining obligations. Take `⟨z, hz, hz'⟩` from `h g hg`. Use `⟨(p : Ω) * z, hp.mul hz, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[e g hg, map_mul, map_natCast]`. Take the linear combination `(p : Ω) * hz'`.
+-/
 theorem kummerTower_coboundaryOne_prime_smul {k : ℕ} {H : Subgroup (Gal p Ω)} {f f' : Gal p Ω → Ω} (hf : Cob1 k H f)
     (e : ∀ g ∈ H, f' g = (p : Ω) * f g) : Cob1 k H f' := by
   obtain ⟨x, hx, h⟩ := hf
@@ -154,17 +228,26 @@ theorem kummerTower_coboundaryOne_prime_smul {k : ℕ} {H : Subgroup (Gal p Ω)}
   rw [e g hg, map_mul, map_natCast]
   linear_combination (p : Ω) * hz'
 
+/- English proof (translation)
+Take `⟨w, hw, h⟩` from `hf`. Conclude with `⟨w, hw, fun g hg g' hg' => (e g hg g' hg') ▸ h g hg g' hg'⟩`.
+-/
 theorem kummerTower_coboundaryTwo_congr {k : ℕ} {H : Subgroup (Gal p Ω)} {f f' : Gal p Ω → Gal p Ω → Ω} (hf : Cob2 k H f)
     (e : ∀ g ∈ H, ∀ h ∈ H, f' g h = f g h) : Cob2 k H f' := by
   obtain ⟨w, hw, h⟩ := hf
   exact ⟨w, hw, fun g hg g' hg' => (e g hg g' hg') ▸ h g hg g' hg'⟩
 
+/- English proof (translation)
+Introduce and unpack `rfl`. Rewrite `hr` using `[zero_pow (pp_ne n)]`. Conclude with `mul_ne_zero (zpow_ne_zero k (zeta_sub_one_ne T hn)) (w.isUnit.map ι).ne_zero hr.symm`.
+-/
 theorem root_ne_zero {T : Tower p Ω} {n : ℕ} (hn : 1 ≤ n) (ι : On p n →ₐ[O0 p] Ω) {k : ℤ}
     {w : (On p n)ˣ} {r : Ω} (hr : r ^ (p ^ n) = (T.ζ n - 1) ^ k * ι w) : r ≠ 0 := by
   rintro rfl
   rw [zero_pow (pp_ne n)] at hr
   exact mul_ne_zero (zpow_ne_zero k (zeta_sub_one_ne T hn)) (w.isUnit.map ι).ne_zero hr.symm
 
+/- English proof (translation)
+Establish `hp : (p : Ω) ∈ integralClosure (O0 p) Ω` using `(integralClosure (O0 p) Ω).natCast_mem p`. Establish `e : (p : Ω) ^ (c + 1) * (ι β + (k : Ω) * T.ζ n / (T.ζ n - 1)) = (p : Ω) ^ (c + 1) * ι β + (p : Ω) ^ c * (k : Ω) * T.ζ n * ((p : Ω) / (T.ζ n - 1))` using `by ring`. Rewrite using `[e]`. Conclude with `add_mem (mul_mem (pow_mem hp _) (emb_mem hι β)) (mul_mem (mul_mem (mul_mem (pow_mem hp _) (intCast_mem _ k)) (zeta_mem T n)) (p_div_mem T hn))`.
+-/
 theorem coef_int {T : Tower p Ω} {n : ℕ} (hn : 1 ≤ n) {ι : On p n →ₐ[O0 p] Ω} (hι : IsEmb T n ι)
     (c : ℕ) (k : ℤ) (β : On p n) :
     IsInt p ((p : Ω) ^ (c + 1) * (ι β + (k : Ω) * T.ζ n / (T.ζ n - 1))) := by
@@ -175,16 +258,31 @@ theorem coef_int {T : Tower p Ω} {n : ℕ} (hn : 1 ≤ n) {ι : On p n →ₐ[O
   exact add_mem (mul_mem (pow_mem hp _) (emb_mem hι β))
     (mul_mem (mul_mem (mul_mem (pow_mem hp _) (intCast_mem _ k)) (zeta_mem T n)) (p_div_mem T hn))
 
+/- English proof (translation)
+Establish `hp : (p : Ω) ∈ integralClosure (O0 p) Ω` using `(integralClosure (O0 p) Ω).natCast_mem p`. Conclude with `mul_mem (pow_mem hp _) (emb_mem hι α)`.
+-/
 theorem coef_int' {T : Tower p Ω} {n : ℕ} {ι : On p n →ₐ[O0 p] Ω} (hι : IsEmb T n ι)
     (c : ℕ) (α : On p n) : IsInt p ((p : Ω) ^ c * ι α) := by
   have hp : (p : Ω) ∈ integralClosure (O0 p) Ω := (integralClosure (O0 p) Ω).natCast_mem p
   exact mul_mem (pow_mem hp _) (emb_mem hι α)
 
+/- English proof (translation)
+Rewrite using `[map_add, map_div₀, map_mul, map_sub, map_one, map_intCast, fix_emb hι hg, (mem_Gn.mp hg).1]`.
+-/
 theorem coef_fix {T : Tower p Ω} {n : ℕ} {ι : On p n →ₐ[O0 p] Ω} (hι : IsEmb T n ι) {g : Gal p Ω}
     (hg : g ∈ Gn T n) (k : ℤ) (β : On p n) :
     g (ι β + (k : Ω) * T.ζ n / (T.ζ n - 1)) = ι β + (k : Ω) * T.ζ n / (T.ζ n - 1) := by
   rw [map_add, map_div₀, map_mul, map_sub, map_one, map_intCast, fix_emb hι hg, (mem_Gn.mp hg).1]
 
+/- English proof (translation)
+Introduce `p _ hp2`. Take `⟨c, hc⟩` from `GlobalTheory.T.kummerCochain_eq_dlog_combination_finiteLevel p hp2`. Use `⟨4 * (c + 1), ?_⟩` and prove the remaining obligations. Introduce `Ω _ _ hΩ T n hn ι hι k l w w' α β α' β' hw hw' r s hr hs a b lz lq ha hb hz hq`. Establish `r0` using `root_ne_zero hn ι hr`.
+
+Establish `s0` using `root_ne_zero hn ι hs`. Establish `z0 : T.ζ (2 * n) ≠ 0` using `(T.prim (2 * n)).ne_zero (pp_ne _)`. Establish `q0` using `qq_ne_zero T (2 * n)`. Establish `h1` using `hc Ω hΩ T n hn ι hι k w α β hw r hr a lz lq ha hz hq`. Establish `h2` using `hc Ω hΩ T n hn ι hι l w' α' β' hw' s hs b lz lq hb hz hq`.
+
+Establish `key` using `GlobalTheory.T.kummer_cochain_cup_product_congruence p hp2 Ω (Gn T n) n (c + 1) (ext0 (Gn T n) a) (ext0 (Gn T n) b) (ext0 (Gn T n) lz) (ext0 (Gn T n) lq) (ι α) (ι β + (k : Ω) * T.ζ n / (T.ζ n - 1)) (ι α') (ι β' + (l : Ω) * T.ζ n / (T.ζ n - 1)) (matrixExtendByZero_add r0 ha) (matr …`. Use `kummerTower_coboundaryTwo_congr key fun g hg h hh => ?_` and prove the remaining obligations. Establish `hne` using `zeta_sub_one_ne T hn`. Establish `e : ι (fPi p n k l α β α' β') / (T.ζ n - 1) = ι α * (ι β' + (l : Ω) * T.ζ n / (T.ζ n - 1)) - (ι β + (k : Ω) * T.ζ n / (T.ζ n - 1)) * ι α'`. Simplify using `only [fPi, map_sub, map_mul, map_add, map_intCast, map_one, hι.1]`.
+
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [cochainExtendByZeroSubgroup_of_mem _ hg, cochainExtendByZeroSubgroup_of_mem _ hh, e]`.
+-/
 theorem cup_kummer_dlog : ∀ (p : ℕ) [Fact p.Prime], p ≠ 2 → ∃ c : ℕ, ∀ (Ω : Type) [Field Ω] [Algebra (O0 p) Ω], IsClo p Ω →
   ∀ (T : Tower p Ω) (n : ℕ), 1 ≤ n → ∀ ι : On p n →ₐ[O0 p] Ω, IsEmb T n ι →
   ∀ (k l : ℤ) (w w' : (On p n)ˣ) (α β α' β' : On p n), IsDlog p n (w : On p n) α β → IsDlog p n (w' : On p n) α' β' →

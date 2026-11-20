@@ -15,6 +15,11 @@ open Matrix GlobalTheory.PlaneProj GlobalTheory.IsoPlaneProj
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Establish `h0 : form σ W.J H.x (H.ι *ᵥ Pi.single j 1) = 0`. Rewrite using `[GlobalTheory.UnipCocptForm.form_swap σ W.J hsk hσ, (h.2.2.2.2.1 _).1, map_zero, neg_zero]`. Rewrite using `[Pi.zero_apply, ← h0, form, ← dotProduct_single_one (H.x ᵥ* _) j, ← dotProduct_mulVec, ← mulVec_mulVec]`. Use `congr 2`.
+
+Use function extensionality and compare the values at `i`. Simplify using `[mulVec, dotProduct, Pi.single_apply]`.
+-/
 theorem x_vecMul (hσ : ∀ x, σ (σ x) = x) {n n₁ : ℕ} {H : Plane E n n₁} {W : Spc F E n} {W₁ : Spc F E n₁}
     (h : IsHypPlane σ H W W₁) (hsk : ∀ i j, σ (W.J j i) = -W.J i j) : H.x ᵥ* (W.J * H.ι.map σ) = 0 := by
   funext j
@@ -24,6 +29,21 @@ theorem x_vecMul (hσ : ∀ x, σ (σ x) = x) {n n₁ : ℕ} {H : Plane E n n₁
   congr 2
   funext i; simp [mulVec, dotProduct, Pi.single_apply]
 
+/- English proof (translation)
+Establish `exι` using `x_vecMul hσ hI hskew`. Take `⟨hn, hxx, hyy, hxy, horth, hgram⟩` from `hI`. Establish `hJ₁ : IsUnit Y₁.J.det` using `isUnit_iff_ne_zero.2 hd`. Take `⟨π, hfr⟩` from `frame_of_gram hσ hskew hn hxx hyy hxy horth hgram hJ₁`. Use `set c : AE F E →+* AE F E := ((cA σ : AE F E →ₐ[AF F] AE F E) : AE F E →+* AE F E) with hc`.
+
+Establish `eιx : (H.ιᵀ * Y.J) *ᵥ (⇑σ ∘ H.x) = 0`. Use function extensionality and compare the values at `j`. Establish `h0` using `(horth (Pi.single j 1)).1`. Rewrite `h0` using `[form, dotProduct_comm, dotProduct_mulVec, dotProduct_single_one]`. Rewrite using `[Pi.zero_apply, ← h0, ← mulVec_mulVec, mulVec_transpose]`.
+
+Both sides reduce to the same expression. Establish `hframe : vecMulVec (incV F H.x) (incM F Y.J *ᵥ (c ∘ incV F H.y)) + incM F H.ι * incM F π - vecMulVec (incV F H.y) (incM F Y.J *ᵥ (c ∘ incV F H.x)) = 1`. Rewrite using `[cA_incV, cA_incV, incM_mulVec', incM_mulVec', incM_vmv, incM_vmv, incM_mul]`. Establish `e1 : incM F (vecMulVec H.x (Y.J *ᵥ (⇑σ ∘ H.y))) + incM F (H.ι * π) - incM F (vecMulVec H.y (Y.J *ᵥ (⇑σ ∘ H.x))) = incM F (vecMulVec H.x (Y.J *ᵥ (⇑σ ∘ H.y)) + H.ι * π - vecMulVec H.y (Y.J *ᵥ (⇑σ ∘ H.x)))`. Use extensionality with `i j`.
+
+Simplify using `only [incM, Matrix.map_apply, Matrix.add_apply, Matrix.sub_apply, map_add, map_sub]`. Rewrite using `[e1, hfr]`. Use extensionality with `i j`. Simplify using `[incM, Matrix.one_apply]`. Establish `hgram' : (incM F H.ι)ᵀ * incM F Y.J * (incM F H.ι).map c = incM F Y₁.J`.
+
+Rewrite using `[incM_map, incM_transpose, incM_mul, incM_mul, hgram]`. Establish `hιx : ((incM F H.ι)ᵀ * incM F Y.J) *ᵥ (c ∘ incV F H.x) = 0`. Rewrite using `[cA_incV, incM_transpose, incM_mul, incM_mulVec', eιx, incV_zero]`. Establish `hxι : incV F H.x ᵥ* (incM F Y.J * (incM F H.ι).map c) = 0`. Rewrite using `[incM_map, incM_mul, incV_vecMul, exι, incV_zero]`.
+
+Establish `hxx' : incV F H.x ⬝ᵥ (incM F Y.J *ᵥ (c ∘ incV F H.x)) = 0`. Rewrite using `[cA_incV, incM_mulVec', incV_dot]`. Establish `: H.x ⬝ᵥ (Y.J *ᵥ (⇑σ ∘ H.x)) = 0` using `hxx`. Rewrite using `[this, map_zero]`. Establish `hJ₁' : IsUnit (incM F Y₁.J).det`.
+
+Rewrite using `[show incM F Y₁.J = (inclR (F := F) (AF F)).mapMatrix Y₁.J from rfl, ← RingHom.map_det]`. Conclude with `hJ₁.map _`. Take `⟨hU, hdet, hz⟩` from `proj_core c (mat p) (incM F Y.J) (incM F Y₁.J) (incM F H.ι) (incM F π) (incV F H.x) (incV F H.y) p.2 hp hframe hgram' hιx hxι hxx' hJ₁'`. Conclude with `⟨⟨Matrix.GeneralLinearGroup.mk'' _ hdet, hU⟩, fun z => ⟨_, hz z⟩⟩`.
+-/
 theorem exists_proj (hσ : ∀ x, σ (σ x) = x) {n n₁ : ℕ} {H : Plane E n n₁} {Y : Spc F E n} {Y₁ : Spc F E n₁}
     (hI : IsHypPlane σ H Y Y₁) (hskew : ∀ i j, σ (Y.J j i) = -Y.J i j) (hd : Y₁.J.det ≠ 0) (p : UA σ Y.J)
     (hp : mat p *ᵥ incV F H.x = incV F H.x) : ∃ h₁ : UA σ Y₁.J,

@@ -8,6 +8,29 @@ open MeasureTheory Set Filter Topology Complex
 
 namespace PositivityTheory.SiegelWeilFormula.Ald.PCI
 
+/- English proof (translation)
+Take `⟨s, C, -, hC⟩` from `Seminorm.bound_of_continuous (schwartz_withSeminorms ℂ V ℂ) ((normSeminorm ℂ ℂ).comp (T : SchwartzMap V ℂ →ₗ[ℂ] ℂ)) (continuous_norm.comp T.continuous)`. Set `B : ℕ × ℕ → ℝ` to `fun m => 3 * 2 ^ m.2 * (1 + ‖L‖) ^ (m.2 + 2) * (2 ^ (m.1 + 2) * ((Finset.Iic (m.1 + 2, m.2)).sup fun (q : ℕ × ℕ) => SchwartzMap.seminorm ℂ q.1 q.2) f)`. Establish `hB0 : ∀ m, 0 ≤ B m`. Introduce `m`. Use `apply_nonneg ((Finset.Iic (m.1 + 2, m.2)).sup fun (q : ℕ × ℕ) => SchwartzMap.seminorm ℂ q.1 q.2) f` as an intermediate fact.
+
+Check the signs of the components of the expression. Establish `hS : 0 ≤ ∑ m ∈ s, B m` using `Finset.sum_nonneg fun m _ => hB0 m`. Establish `hK : 0 ≤ (C : ℝ) * ∑ m ∈ s, B m` using `mul_nonneg C.2 hS`. Establish `key : ∀ t : ℝ, 0 < t → t ≤ 1 → ‖T g‖ ≤ t * ((C : ℝ) * ∑ m ∈ s, B m)`. Introduce `t ht0 ht1`.
+
+Establish `hG` using `GlobalTheory.CharFormDeriv.hasTemperateGrowth_char L t`. Set `M : SchwartzMap V ℂ` to `SchwartzMap.smulLeftCLM ℂ (fun x : V => cexp (I * ↑t * ↑(L x))) f`. Establish `hM : ∀ x, M x = cexp (I * ↑t * ↑(L x)) * f x`. Introduce `x`. Simplify using `[M, SchwartzMap.smulLeftCLM_apply_apply hG]`.
+
+Establish `hTM : T M = T f`. Apply `hT t f M` to reduce the goal to its premises. Introduce `x`. Rewrite using `[hM x]`. Simplify using `[mul_assoc]`.
+
+Set `u : SchwartzMap V ℂ` to `(t : ℂ)⁻¹ • M - I • g - (t : ℂ)⁻¹ • f`. Establish `hu : ∀ x, u x = GlobalTheory.CharFormDeriv.rem t (L x) * f x`. Introduce `x`. Simplify using `only [u, SchwartzMap.sub_apply, SchwartzMap.smul_apply, smul_eq_mul, hM x, hg x, GlobalTheory.CharFormDeriv.rem]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hTu : T u = -I * T g`. Simplify using `only [u, map_sub, map_smul, hTM, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hbound` using `GlobalTheory.CharFormDeriv.seminorm_rem_mul_le L f u ht0.ne' (by rw [abs_of_pos ht0]; exact ht1) hu`. Establish `h1 : (s.sup (schwartzSeminormFamily ℂ V ℂ)) u ≤ t * ∑ m ∈ s, B m`.
+
+Apply `Seminorm.finset_sup_apply_le (mul_nonneg ht0.le hS)` to reduce the goal to its premises. Introduce `m hm`. Use `hbound m.1 m.2` as an intermediate fact. Rewrite `this` using `[abs_of_pos ht0]`. Combine the equalities or inequalities in the displayed calculation.
+
+Conclude with `Finset.single_le_sum (fun i _ => hB0 i) hm`. Establish `h2` using `hC u`. Establish `h3 : ‖T u‖ ≤ (C : ℝ) * (s.sup (schwartzSeminormFamily ℂ V ℂ)) u` using `h2`. Rewrite `h3` using `[hTu, norm_mul, norm_neg, Complex.norm_I, one_mul]`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `h0 : ‖T g‖ ≤ 0`. Assume the negation of the conclusion as `hpos`. Use `push_neg at hpos`. Establish `hD : 0 < 2 * ((C : ℝ) * ∑ m ∈ s, B m + 1)` using `by positivity`. Establish `ht` using `key (min 1 (‖T g‖ / (2 * ((C : ℝ) * ∑ m ∈ s, B m + 1)))) (lt_min one_pos (div_pos hpos hD)) (min_le_left _ _)`.
+
+Establish `hle : min 1 (‖T g‖ / (2 * ((C : ℝ) * ∑ m ∈ s, B m + 1))) * ((C : ℝ) * ∑ m ∈ s, B m) ≤ ‖T g‖ / 2`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[div_mul_eq_mul_div, div_le_div_iff₀ hD (by norm_num)]`. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Conclude with `norm_le_zero_iff.mp h0`.
+-/
 theorem kills_linear_mul {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V]
     (T : SchwartzMap V ℂ →L[ℂ] ℂ) (L : V →L[ℝ] ℝ)
     (hT : ∀ (t : ℝ) (f f' : SchwartzMap V ℂ), (∀ x, f' x = Complex.exp (Complex.I * ((t • L) x : ℂ)) * f x) →
@@ -83,6 +106,15 @@ theorem kills_linear_mul {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [
 variable {W : Type} [NormedAddCommGroup W] [NormedSpace ℝ W] [FiniteDimensional ℝ W] {κ' κ'' : Type} [Fintype κ']
   [Fintype κ'']
 
+/- English proof (translation)
+Take `⟨n, L, hh, gg, hgg, hsum⟩` from `param_hadamard f hf`. Set `P : (κ' ⊕ κ'' → W) →L[ℝ] (κ'' → W)` to `ContinuousLinearMap.pi fun j => ContinuousLinearMap.proj (Sum.inr j)`. Establish `hres : ∀ i, T (gg i) = 0`. Introduce `i`. Use `kills_linear_mul T ((L i).comp P) ?_ (hh i) (gg i) ?_` and prove the remaining obligations.
+
+Introduce `t f₁ f₂ h`. Apply `hT (t • L i) f₁ f₂` to reduce the goal to its premises. Introduce `x`. Rewrite using `[h x]`. Both sides reduce to the same expression.
+
+Introduce `x`. Rewrite using `[hgg i x]`. Both sides reduce to the same expression. Establish `hf' : f = ∑ i, gg i`. Use extensionality with `x`.
+
+Rewrite using `[hsum x]`. Simplify using the standard rewrite rules. Rewrite using `[hf', map_sum]`. Simplify using `[hres]`.
+-/
 theorem arch_part (T : SchwartzMap (κ' ⊕ κ'' → W) ℂ →L[ℂ] ℂ)
     (hT : ∀ (L : (κ'' → W) →L[ℝ] ℝ) (f f' : SchwartzMap (κ' ⊕ κ'' → W) ℂ),
       (∀ x, f' x = Complex.exp (Complex.I * (L (x ∘ Sum.inr) : ℂ)) * f x) → T f' = T f)

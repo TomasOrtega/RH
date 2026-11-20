@@ -13,6 +13,9 @@ def BorelCasselman : Prop :=
     (V : Type) [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL n k) V),
     IsAdmissible π → Function.Bijective (iwahoriProj π)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(isSmooth_ofChar_iff _).2 hχ.detChar, fun _ _ _ => inferInstance⟩`.
+-/
 example (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (n : Type) [Fintype n] [DecidableEq n] {χ : kˣ →* ℂˣ} (hχ : IsSmoothChar χ) :
     IsAdmissible (detRep n χ) :=

@@ -8,6 +8,35 @@ open CategoryTheory TensorProduct MvPowerSeries GlobalTheory GlobalTheory.PDiv G
 
 namespace GlobalTheory.Katz
 
+/- English proof (translation)
+Introduce `p k k' _ _ σ d e G G' c c' s φ hφ n t`. Establish `hev` using `GlobalTheory.T.connectedChart_evalSquare_variables_swap_constant p k' e G' c' n`. Set `a : Fin d ⊕ Fin d → MvPowerSeries (Fin e ⊕ Fin e) k'` to `Sum.elim (fun j => inL (φ j)) (fun j => inR (φ j))`. Establish `ha : ∀ i, constantCoeff (a i) = 0`. Introduce `i`.
+
+Establish `hc` using `hev.2.2.2`. Consider the cases of `i with`. Consider the case `inl j`. Express the relevant statement in the definitionally equal form `constantCoeff (inL (φ j)) = 0`. Rewrite using `[← hc, hev.1, Algebra.TensorProduct.lift_tmul, map_one, mul_one]`.
+
+Express the relevant statement in the definitionally equal form `Coalgebra.counit (R := k') (c'.ev n (φ j)) = 0`. Rewrite using `[hφ n j, (s.app n).counit_map, c.aug, map_zero]`. Consider the case `inr j`. Express the relevant statement in the definitionally equal form `constantCoeff (inR (φ j)) = 0`. Rewrite using `[← hc, hev.2.1, Algebra.TensorProduct.lift_tmul, map_one, one_mul]`.
+
+Express the relevant statement in the definitionally equal form `Coalgebra.counit (R := k') (c'.ev n (φ j)) = 0`. Rewrite using `[hφ n j, (s.app n).counit_map, c.aug, map_zero]`. Establish `hs : HasSubst a` using `hasSubst_of_constantCoeff_zero ha`. Set `B` to `G'.A n ⊗[k'] G'.A n`. Use `letI : Algebra k B := ((algebraMap k' B).comp σ).toAlgebra`.
+
+Set `u : G.A n →ₐ[k] B` to `{ ((Algebra.TensorProduct.includeLeft : G'.A n →ₐ[k'] B) : G'.A n →+* B).comp (s.app n).toRingHom with commutes' := fun r => by`. Express the relevant statement in the definitionally equal form `Algebra.TensorProduct.includeLeft (R := k') (S := k') ((s.app n) (algebraMap k (G.A n) r)) = _`. Rewrite using `[(s.app n).map_algebraMap, AlgHom.commutes]`. Use `rfl }`. Set `v : G.A n →ₐ[k] B` to `{ ((Algebra.TensorProduct.includeRight : G'.A n →ₐ[k'] B) : G'.A n →+* B).comp (s.app n).toRingHom with commutes' := fun r => by`.
+
+Express the relevant statement in the definitionally equal form `Algebra.TensorProduct.includeRight (R := k') ((s.app n) (algebraMap k (G.A n) r)) = _`. Rewrite using `[(s.app n).map_algebraMap, AlgHom.commutes]`. Use `rfl }`. Set `T : G.A n ⊗[k] G.A n →ₐ[k] B` to `Algebra.TensorProduct.lift u v (fun _ _ => Commute.all _ _)`. Establish `hT : ∀ z, T z = (s.app n).two z` using `fun z => by`.
+
+Proceed by induction on `z with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`. Consider the case `tmul x y`. Rewrite using `[Algebra.TensorProduct.lift_tmul, TensorProduct.map_tmul]`.
+
+Express the relevant statement in the definitionally equal form `((s.app n) x ⊗ₜ[k'] 1) * (1 ⊗ₜ[k'] (s.app n) y) = _`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]`. Both sides reduce to the same expression. Set `L : MvPowerSeries (Fin d ⊕ Fin d) k →ₐ[k] B` to `{ (c'.ev₂ n).toRingHom.comp ((substAlgHom (R := k') hs).toRingHom.comp (MvPowerSeries.map σ)) with commutes' := fun r => by`. Express the relevant statement in the definitionally equal form `c'.ev₂ n (substAlgHom (R := k') hs (MvPowerSeries.map σ (C r))) = algebraMap k' B (σ r)`.
+
+Rewrite using `[MvPowerSeries.map_C, show (C (σ r) : MvPowerSeries (Fin d ⊕ Fin d) k') = algebraMap k' _ (σ r) by rw [MvPowerSeries.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply], AlgHom.commutes, AlgHom.commutes] }`. Establish `hL : ∀ f, L f = c'.ev₂ n (pull2 φ (MvPowerSeries.map σ f))` using `fun f => by`. Express the relevant statement in the definitionally equal form `c'.ev₂ n (substAlgHom hs (MvPowerSeries.map σ f)) = _`. Rewrite using `[coe_substAlgHom]`. Both sides reduce to the same expression.
+
+Establish `key : T.comp (c.ev₂ n) = L`. Use `GlobalTheory.T.mvPowerSeries_algHom_ext_of_isNilpotent_X k (Fin d ⊕ Fin d) B _ _ (fun i => ?_) (fun i => ?_)` and prove the remaining obligations. Rewrite using `[AlgHom.comp_apply]`. Express the relevant statement in the definitionally equal form `IsNilpotent (T (evA k (c.x₂ n) (c.nil₂ n) (X i)))`. Rewrite using `[GlobalTheory.T.powerSeriesEvalAtNilpotent_X_eq_coordinate]`.
+
+Conclude with `(c.nil₂ n i).map T`. Rewrite using `[AlgHom.comp_apply, hL, hT, MvPowerSeries.map_X]`. Express the relevant statement in the definitionally equal form `(s.app n).two (evA k (c.x₂ n) (c.nil₂ n) (X i)) = c'.ev₂ n (subst a (X i))`. Rewrite using `[GlobalTheory.T.powerSeriesEvalAtNilpotent_X_eq_coordinate, subst_X hs]`. Consider the cases of `i with`.
+
+Consider the case `inl j`. Express the relevant statement in the definitionally equal form `(s.app n).two (c.x n j ⊗ₜ 1) = c'.ev₂ n (inL (φ j))`. Rewrite using `[hev.1, hφ n j, TensorProduct.map_tmul, SemiBialgHom.lin_apply, SemiBialgHom.lin_apply]`. Use `congr 1`. Conclude with `map_one (s.app n).toRingHom`.
+
+Consider the case `inr j`. Express the relevant statement in the definitionally equal form `(s.app n).two (1 ⊗ₜ c.x n j) = c'.ev₂ n (inR (φ j))`. Rewrite using `[hev.2.1, hφ n j, TensorProduct.map_tmul, SemiBialgHom.lin_apply, SemiBialgHom.lin_apply]`. Use `congr 1`. Conclude with `map_one (s.app n).toRingHom`.
+
+Rewrite using `[← hL, ← key, AlgHom.comp_apply, hT]`.
+-/
 theorem semiHom_ev₂_pull2 : ∀ (p : ℕ) (k k' : Type) [CommRing k] [CommRing k'] (σ : k →+* k') (d e : ℕ) (G : PDivGroup p k) (G' : PDivGroup p k') (c : Chart G d) (c' : Chart G' e) (s : SemiHom σ G' G) (φ : Fin d → MvPowerSeries (Fin e) k'), (∀ n j, c'.ev n (φ j) = s.app n (c.x n j)) → ∀ n t, c'.ev₂ n (pull2 φ (MvPowerSeries.map σ t)) = (s.app n).two (c.ev₂ n t) := by
   intro p k k' _ _ σ d e G G' c c' s φ hφ n t
   have hev := GlobalTheory.T.connectedChart_evalSquare_variables_swap_constant p k' e G' c' n

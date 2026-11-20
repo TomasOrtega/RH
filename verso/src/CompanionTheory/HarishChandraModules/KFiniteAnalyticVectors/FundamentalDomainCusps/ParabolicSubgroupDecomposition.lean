@@ -7,6 +7,9 @@ noncomputable section
 
 namespace CompanionTheory.D.gk.RF
 
+/- English proof (translation)
+Establish `: (Λ : Set G).Countable`. Establish `e : (Λ : Set G) = ⋃ n, compactCovering G n ∩ Λ` using `by rw [← iUnion_inter, iUnion_compactCovering, univ_inter]`. Rewrite using `[e]`. Conclude with `countable_iUnion fun n => (h _ (isCompact_compactCovering G n)).countable`. Conclude with `this.to_subtype`.
+-/
 theorem Disc.countable {G : Type} [Group G] [TopologicalSpace G] [LocallyCompactSpace G] [SecondCountableTopology G]
     {Λ : Subgroup G} (h : Disc Λ) : Countable Λ := by
   have : (Λ : Set G).Countable := by
@@ -15,6 +18,11 @@ theorem Disc.countable {G : Type} [Group G] [TopologicalSpace G] [LocallyCompact
     exact countable_iUnion fun n => (h _ (isCompact_compactCovering G n)).countable
   exact this.to_subtype
 
+/- English proof (translation)
+Take `⟨K, hK, hK1⟩` from `exists_compact_mem_nhds (1 : G)`. Establish `hcl : IsClosed ((K ∩ Λ) \ {1})` using `((h K hK).subset sdiff_subset).isClosed`. Establish `hW : K ∩ ((K ∩ Λ) \ {1})ᶜ ∈ 𝓝 (1 : G)` using `inter_mem hK1 (hcl.isOpen_compl.mem_nhds fun h => h.2 rfl)`. Take `⟨O, hO, hOW⟩` from `exists_nhds_split_inv hW`. Use `⟨O, hO, fun a ha b hb hab => ?_⟩` and prove the remaining obligations.
+
+Use `hOW a ha b hb` as an intermediate fact. Rewrite `this` using `[div_eq_mul_inv]`. Assume the negation of the conclusion as `hne`. Conclude with `this.2 ⟨⟨this.1, hab⟩, fun e => hne (mul_inv_eq_one.1 e)⟩`.
+-/
 theorem Disc.exists_nhds {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [LocallyCompactSpace G]
     [T2Space G] {Λ : Subgroup G} (h : Disc Λ) :
     ∃ O ∈ 𝓝 (1 : G), ∀ a ∈ O, ∀ b ∈ O, a * b⁻¹ ∈ Λ → a = b := by
@@ -28,6 +36,23 @@ theorem Disc.exists_nhds {G : Type} [Group G] [TopologicalSpace G] [IsTopologica
   by_contra hne
   exact this.2 ⟨⟨this.1, hab⟩, fun e => hne (mul_inv_eq_one.1 e)⟩
 
+/- English proof (translation)
+Introduce `N _ _ _ _ _ _ _ _ Λ hd V hV hcov`. Take `⟨O, hO, hinj⟩` from `hd.exists_nhds`. Take `⟨T, hTc, hT⟩` from `TopologicalSpace.countable_cover_nhds (f := fun p : N => interior ((fun x => x * p⁻¹) ⁻¹' O)) fun p => interior_mem_nhds.2 ((continuous_id.mul continuous_const).continuousAt.preimage_mem_nhds (by simpa using hO))`. Establish `hTne : T.Nonempty`. Establish `: (1 : N) ∈ ⋃ x ∈ T, interior ((fun y => y * x⁻¹) ⁻¹' O)` using `hT ▸ mem_univ _`.
+
+Take `⟨p, hp, -⟩` from `mem_iUnion₂.1 this`. Conclude with `⟨p, hp⟩`. Take `⟨p, rfl⟩` from `hTc.exists_eq_range hTne`. Set `W : ℕ → Set N` to `fun i => V ∩ interior ((fun x => x * (p i)⁻¹) ⁻¹' O)`. Establish `hWo : ∀ i, IsOpen (W i)` using `fun i => hV.inter isOpen_interior`.
+
+Set `S : ℕ → Set N` to `fun i => {m | ∃ l ∈ Λ, l * m ∈ W i}`. Establish `hSo : ∀ i, IsOpen (S i)` using `fun i => by`. Establish `: S i = ⋃ l ∈ Λ, (fun m => l * m) ⁻¹' W i` using `by ext m; simp [S]`. Rewrite using `[this]`. Conclude with `isOpen_biUnion fun l _ => (hWo i).preimage (continuous_const.mul continuous_id)`.
+
+Establish `hSi : ∀ i, ∀ l ∈ Λ, ∀ m, l * m ∈ S i ↔ m ∈ S i` using `fun i l hl m => ⟨fun ⟨l', hl', h⟩ => ⟨l' * l, Λ.mul_mem hl' hl, by rwa [mul_assoc]⟩, fun ⟨l', hl', h⟩ => ⟨l' * l⁻¹, Λ.mul_mem hl' (Λ.inv_mem hl), by simpa [mul_assoc] using h⟩⟩`. Establish `hex : ∀ m, ∃ i, m ∈ S i` using `fun m => by`. Take `⟨l, hl, hlm⟩` from `hcov m`. Establish `: l * m ∈ ⋃ x ∈ range p, interior ((fun y => y * x⁻¹) ⁻¹' O)` using `hT ▸ mem_univ _`. Take `⟨_, ⟨i, rfl⟩, hi⟩` from `mem_iUnion₂.1 this`.
+
+Conclude with `⟨i, l, hl, hlm, hi⟩`. Use `⟨⋃ i, W i \ ⋃ j < i, S j, MeasurableSet.iUnion fun i => (hWo i).measurableSet.diff (isOpen_biUnion fun j _ => hSo j).measurableSet, iUnion_subset fun i => sdiff_subset.trans inter_subset_left, fun m => ?_⟩` and prove the remaining obligations. Establish `key : ∀ l : Λ, ∀ i, (l : N) * m ∈ W i \ ⋃ j < i, S j → i = Nat.find (hex m)` using `fun l i h => by`. Use `((Nat.find_eq_iff (hex m)).2 ⟨⟨l, l.2, h.1⟩, fun j hj hm => h.2 ?_⟩).symm` and prove the remaining obligations. Conclude with `mem_iUnion₂.2 ⟨j, hj, (hSi j l l.2 m).2 hm⟩`.
+
+Take `⟨l, hl, hlm⟩` from `Nat.find_spec (hex m)`. Use `⟨⟨l, hl⟩, mem_iUnion.2 ⟨_, hlm, fun h => ?_⟩, fun l' hl' => ?_⟩` and prove the remaining obligations. Take `⟨j, hj, hm⟩` from `mem_iUnion₂.1 h`. Conclude with `Nat.find_min (hex m) hj ((hSi j l hl m).1 hm)`. Take `⟨i, hi⟩` from `mem_iUnion.1 hl'`.
+
+Take `rfl` from `key l' i hi`. Establish `a1` using `mem_preimage.1 (interior_subset hi.1.2)`. Establish `a2` using `mem_preimage.1 (interior_subset hlm.2)`. Use `hinj _ a1 _ a2 (by` as an intermediate fact. Simplify `Λ.mul_mem l'.2 (Λ.inv_mem hl))` using `[mul_assoc]`.
+
+Conclude with `Subtype.ext (mul_right_cancel (mul_right_cancel this))`.
+-/
 theorem fundamental_domain_inclusion : FundIn := by
   classical
   intro N _ _ _ _ _ _ _ _ Λ hd V hV hcov
@@ -73,6 +98,23 @@ theorem fundamental_domain_inclusion : FundIn := by
       simpa [mul_assoc] using Λ.mul_mem l'.2 (Λ.inv_mem hl))
     exact Subtype.ext (mul_right_cancel (mul_right_cancel this))
 
+/- English proof (translation)
+Introduce `hF G _ _ _ _ _ _ _ _ N Λ hN hle hd V hV hVc hcov`. Establish `: LocallyCompactSpace N` using `hN.locallyCompactSpace`. Establish `: SecondCountableTopology N` using `TopologicalSpace.Subtype.secondCountableTopology _`. Set `Λ' : Subgroup N` to `Λ.subgroupOf N`. Establish `hd' : Disc Λ'` using `fun C hC => ((hd _ (hC.image continuous_subtype_val)).preimage Subtype.val_injective.injOn).subset fun x hx => ⟨mem_image_of_mem _ hx.1, hx.2⟩`.
+
+Use `hd'.countable` as an intermediate fact. Take `⟨D, hDm, hDV, hD⟩` from `hF N Λ' hd' (Subtype.val ⁻¹' V) (hV.preimage continuous_subtype_val) fun m => by`. Take `⟨l, hl, h⟩` from `hcov m m.2`. Conclude with `⟨⟨l, hle hl⟩, hl, h⟩`. Set `μ : Measure N` to `Measure.haar`.
+
+Establish `hFD : ∀ g : N, IsFundamentalDomain Λ' ((fun x => x * g) ⁻¹' D) μ` using `fun g => IsFundamentalDomain.mk' (measurable_mul_const g hDm).nullMeasurableSet fun m => by`. Simplify `hD (m * g)` using `[Subgroup.smul_def, mul_assoc]`. Establish `hFD1 : IsFundamentalDomain Λ' D μ` using `by simpa using hFD 1`. Establish `hfin : μ D ≠ ∞` using `((measure_mono (hDV.trans (preimage_mono subset_closure))).trans_lt (hN.isClosedEmbedding_subtypeVal.isCompact_preimage hVc).measure_lt_top).ne`. Establish `hpos : μ D ≠ 0` using `hFD1.measure_ne_zero (NeZero.ne μ)`.
+
+Establish `hR : ∀ g : N, μ.map (fun x => x * g) = μ` using `fun g => by`. Establish `h1` using `Measure.isMulLeftInvariant_eq_smul (μ.map fun x => x * g) μ`. Establish `h2` using `congrArg (fun m : Measure N => m D) h1`. Simplify using `only [Measure.map_apply (measurable_mul_const g) hDm, Measure.smul_apply] at h2`. Rewrite `h2` using `[(hFD g).measure_eq hFD1, ENNReal.smul_def, smul_eq_mul]`.
+
+Establish `h3 : ((μ.map fun x => x * g).haarScalarFactor μ : ℝ≥0∞) = 1` using `(ENNReal.mul_left_inj hpos hfin).1 (h2.symm.trans (one_mul _).symm)`. Rewrite using `[h1, show (μ.map fun x => x * g).haarScalarFactor μ = 1 by exact_mod_cast h3, one_smul]`. Establish `hE : MeasurableEmbedding (Subtype.val : N → G)` using `MeasurableEmbedding.subtype_coe hN.measurableSet`. Establish `hP : IsProbabilityMeasure ((μ D)⁻¹ • μ.restrict D)` using `⟨by rw [Measure.smul_apply, Measure.restrict_apply_univ, smul_eq_mul, ENNReal.inv_mul_cancel hpos hfin]⟩`. Use `⟨((μ D)⁻¹ • μ.restrict D).map Subtype.val, Measure.isProbabilityMeasure_map hE.measurable.aemeasurable, hE.ae_map_iff.2 (Measure.ae_smul_measure ((ae_restrict_mem hDm).mono fun x hx => hDV hx) _), fun u _ hu m₀ hm₀ y => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hE.integral_map, hE.integral_map, integral_smul_measure, integral_smul_measure]`. Use `congr 1`. Set `g : N` to `⟨m₀, hm₀⟩`. Establish `hmp : MeasurePreserving (fun x : N => x * g⁻¹) μ μ` using `⟨measurable_mul_const _, hR _⟩`. Rewrite using `[← (hFD g⁻¹).setIntegral_eq hFD1 (f := fun m : N => u (m * y)) fun l x => by show u (((l : N) : G) * x * y) = _`.
+
+Rewrite using `[mul_assoc]`. Conclude with `hu _ l.2 _,`. Use the proof step `← hmp.setIntegral_preimage_emb (measurableEmbedding_mulRight g⁻¹) (fun m : N => u (m * (m₀ * y))) D]`. Use `congr 1`. Use function extensionality and compare the values at `x`.
+
+Simplify using `[g]`.
+-/
 theorem averaging_of_fundamental_domain : FundIn → Avg := by
   intro hF G _ _ _ _ _ _ _ _ N Λ hN hle hd V hV hVc hcov
   have : LocallyCompactSpace N := hN.locallyCompactSpace
@@ -119,6 +161,15 @@ theorem averaging_of_fundamental_domain : FundIn → Avg := by
   funext x
   simp [g]
 
+/- English proof (translation)
+Introduce `ι _ _ G _ _ _ i₀ N a Ht P`. Use `⟨(continuous_mulSingle i₀).comp P.cont, fun s t => by rw [P.add, Pi.mulSingle_mul], ?_, P.hcont.comp (continuous_apply i₀), ?_, fun t g => by simp [P.ha], ?_, fun U hU => ?_⟩` and prove the remaining obligations. Introduce and unpack `t _ ⟨m, hm, rfl⟩`. Use `⟨_, P.norm t m hm, ?_⟩` and prove the remaining obligations. Simplify using `[Pi.mulSingle_mul, Pi.mulSingle_inv]`.
+
+Introduce and unpack `_ ⟨m, hm, rfl⟩ g`. Simplify using `[P.hN m hm]`. Take `⟨c, hc, hb⟩` from `P.bd`. Conclude with `⟨fun y => c (y i₀), hc.comp (continuous_apply i₀), fun x y => hb _ _⟩`. Take `⟨τ, hτ, h⟩` from `P.small (Pi.mulSingle i₀ ⁻¹' U) ((continuous_mulSingle i₀).continuousAt.preimage_mem_nhds (by simpa using hU))`.
+
+Use `⟨τ, hτ, fun t ht x => ?_⟩` and prove the remaining obligations. Take `⟨m, hm, hx⟩` from `h t ht (x i₀)`. Use `⟨_, ⟨m, hm, rfl⟩, ?_⟩` and prove the remaining obligations. Use `(congrArg (· ∈ U) ?_).mpr (mem_preimage.1 hx)` and prove the remaining obligations. Use function extensionality and compare the values at `i`.
+
+Distinguish the cases in `hi : i = i₀`. Substitute `hi` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.mulSingle_eq_of_ne hi]`.
+-/
 theorem parabolic_subgroup_decomposition : ParPi := by
   intro ι _ _ G _ _ _ i₀ N a Ht P
   refine ⟨(continuous_mulSingle i₀).comp P.cont, fun s t => by rw [P.add, Pi.mulSingle_mul], ?_,

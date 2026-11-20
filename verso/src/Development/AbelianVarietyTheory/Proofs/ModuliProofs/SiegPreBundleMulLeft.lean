@@ -15,6 +15,23 @@ namespace GlobalTheory
 
 open CechPic
 
+/- English proof (translation)
+Introduce `hΘ K _ o _ s h k ζ c P pr hpr huniv T x x' y`. Use `hpr 0` as an intermediate fact. Use `hpr 1` as an intermediate fact. Establish `hL : (c.P.pull (lift (pr 0) (pr 1)).left).IsLB` using `pull_isLB c.isLB _`. Establish `hθ` using `hΘ (Sp K) P _ hL`.
+
+Establish `hpt : ∀ z : T ⟶ P.A, CechPic.pull z.left (cls _ hL) = CechPic.pull (lift (z ≫ pr 0) (z ≫ pr 1)).left (cls c.P c.isLB)`. Introduce `z`. Rewrite using `[cls_pull c.isLB _ hL, ← pull_comp, ← Over.comp_left, comp_lift]`. Establish `hax₁ : ∀ v : T ⟶ c.A, CechPic.pull (lift (1 : T ⟶ c.A) v).left (cls c.P c.isLB) = 0`. Introduce `v`.
+
+Establish `e : lift (1 : T ⟶ c.A) v = v ≫ lift (1 : c.A ⟶ c.A) (𝟙 c.A)`. Rewrite using `[comp_lift, comp_one, Category.comp_id]`. Rewrite using `[e, Over.comp_left, pull_comp, ← cls_pull c.isLB _ (pull_isLB c.isLB _), (cls_eq_zero_iff _).2 c.rig₁, map_zero]`. Establish `hax₂ : ∀ u : T ⟶ c.A, CechPic.pull (lift u (1 : T ⟶ c.A)).left (cls c.P c.isLB) = 0`. Introduce `u`.
+
+Establish `e : lift u (1 : T ⟶ c.A) = u ≫ lift (𝟙 c.A) (1 : c.A ⟶ c.A)`. Rewrite using `[comp_lift, comp_one, Category.comp_id]`. Rewrite using `[e, Over.comp_left, pull_comp, ← cls_pull c.isLB _ (pull_isLB c.isLB _), (cls_eq_zero_iff _).2 c.rig₂, map_zero]`. Take `⟨a, ha, -⟩` from `huniv T (fun u => if u = 0 then x else 1)`. Take `⟨b, hb, -⟩` from `huniv T (fun u => if u = 0 then x' else 1)`.
+
+Take `⟨d, hd, -⟩` from `huniv T (fun u => if u = 1 then y else 1)`. Establish `ha0 : a ≫ pr 0 = x` using `by simpa using ha 0`. Establish `ha1 : a ≫ pr 1 = 1` using `by simpa using ha 1`. Establish `hb0 : b ≫ pr 0 = x'` using `by simpa using hb 0`. Establish `hb1 : b ≫ pr 1 = 1` using `by simpa using hb 1`.
+
+Establish `hd0 : d ≫ pr 0 = 1` using `by simpa using hd 0`. Establish `hd1 : d ≫ pr 1 = y` using `by simpa using hd 1`. Establish `key` using `lam_mul_left hL hθ a b d`. Establish `e1 : x * x' * (1 : T ⟶ c.A) = x * x'` using `by rw [_root_.mul_one]`. Establish `e3 : (1 : T ⟶ c.A) * 1 = 1` using `by rw [_root_.one_mul]`.
+
+Establish `e4 : x * (1 : T ⟶ c.A) = x` using `by rw [_root_.mul_one]`. Establish `e5 : x' * (1 : T ⟶ c.A) = x'` using `by rw [_root_.mul_one]`. Establish `e6 : (1 : T ⟶ c.A) * y = y` using `by rw [_root_.one_mul]`. Simplify using `only [lam, hpt, mul_comp, ha0, ha1, hb0, hb1, hd0, hd1, one_comp, e1, e3, e4, e5, e6] at key`. Simplify using `only [hax₁, hax₂, sub_zero, add_zero] at key`.
+
+Use `(cls_eq_zero_iff (LB.isLB_linComb c.isLB _ _)).1 ?_` and prove the remaining obligations. Rewrite using `[cls_linComb c.isLB, Fin.sum_univ_three]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.head_cons, Matrix.tail_cons, one_smul, neg_smul]`. Rewrite using `[key]`. Normalize the expressions using the abelian group laws.
+-/
 theorem siegPre_bundle_mul_left : (∀ (S : Scheme.{0}) (P : Out.PolAV S) (M : LB P.A.left), M.IsLB → ∃ t : LB.Gen (Theta P.A M), t.IsGen) → ∀ (K : Type) [Field K] (o : Type) [CommRing o] (s : Sp K ⟶ Sp o) (h k : ℕ) (ζ : o) (c : SiegPre h k ζ s) (P : Out.PolAV (Sp K)) (pr : Fin 8 → (P.A ⟶ c.A)), (∀ u, IsMonHom (pr u)) → (∀ (T : Over (Sp K)) (y : Fin 8 → (T ⟶ c.A)), ∃! x : T ⟶ P.A, ∀ u, x ≫ pr u = y u) → ∀ (T : Over (Sp K)) (x x' y : T ⟶ c.A), ∃ t : LB.Gen (LB.LinComb c.P (K := Fin 3) ![(lift (x * x') y).left, (lift x y).left, (lift x' y).left] ![1, -1, -1]), t.IsGen := by
   intro hΘ K _ o _ s h k ζ c P pr hpr huniv T x x' y
   have := hpr 0

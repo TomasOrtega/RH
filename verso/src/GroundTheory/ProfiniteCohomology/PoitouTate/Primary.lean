@@ -17,6 +17,9 @@ section Dual
 
 variable {G : Type u} [Group G]
 
+/- English proof (translation)
+Set `f' : M →ₗ[ULift.{u} ℤ] D` to `f`. Express the relevant statement in the definitionally equal form `q • f' = 0`. Use `LinearMap.ext fun m => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply, ← map_nsmul, hM, map_zero, LinearMap.zero_apply]`.
+-/
 theorem nsmul_dualRep_eq_zero_of_nsmul {q : ℕ} {D M : Rep.{u} (ULift.{u} ℤ) G}
     (hM : ∀ m : M, q • m = 0) (f : dualRep D M) : q • f = 0 := by
   let f' : M →ₗ[ULift.{u} ℤ] D := f
@@ -29,10 +32,16 @@ variable (D Dq : Rep.{u} (ULift.{u} ℤ) G) (j : Dq ⟶ D) (M : Rep.{u} (ULift.{
 def dualRepPost : dualRep Dq M ⟶ dualRep D M :=
   (Rep.ihom M).map j
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem dualRepPost_hom_apply (f : M →ₗ[ULift.{u} ℤ] Dq) (m : M) :
     ((dualRepPost D Dq j M).hom f : M →ₗ[ULift.{u} ℤ] D) m = j.hom (f m) :=
   rfl
 
+/- English proof (translation)
+Use `Rep.Hom.ext (Representation.IntertwiningMap.ext (LinearMap.ext fun x => ?_))` and prove the remaining obligations. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `tmul a b => rfl`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+-/
 theorem tensorHom_dualRepPost_dualEvalPairing :
     (dualRepPost D Dq j M ⊗ₘ 𝟙 M) ≫ dualEvalPairing D M =
       (𝟙 (dualRep Dq M) ⊗ₘ 𝟙 M) ≫ (dualEvalPairing Dq M ≫ j) := by
@@ -42,6 +51,11 @@ theorem tensorHom_dualRepPost_dualEvalPairing :
   | tmul a b => rfl
   | add x y hx hy => simp only [map_add, hx, hy]
 
+/- English proof (translation)
+Establish `: Finite D` using `finite_of_nonempty_addEquiv hD`. Establish `: Finite Dq` using `finite_of_nonempty_addEquiv hDq`. Establish `: Finite (dualRep D M)` using `finite_dualRep`. Establish `: Finite (dualRep Dq M)` using `finite_dualRep`. Establish `: Finite (dualRep Dq (dualRep Dq M))` using `finite_dualRep`.
+
+Use `Function.Injective.bijective_of_nat_card_le (fun f f' hff' => ?_) ?_` and prove the remaining obligations. Conclude with `LinearMap.ext fun m => hj (LinearMap.congr_fun hff' m)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem bijective_dualRepPost {N q : ℕ} [NeZero N] [NeZero q] (hD : Nonempty (D ≃+ ZMod N))
     (hDq : Nonempty (Dq ≃+ ZMod q)) (hj : Function.Injective j.hom) [Finite M]
     (hM : ∀ m : M, q • m = 0) : Function.Bijective (dualRepPost D Dq j M).hom := by
@@ -75,10 +89,16 @@ def smulSubrepProj : M ⟶ smulSubrep M c :=
 def smulSubrepIncl : smulSubrep M c ⟶ M :=
   M.subtype _ _
 
+/- English proof (translation)
+Use `Rep.Hom.ext (Representation.IntertwiningMap.ext (LinearMap.ext fun b => ?_))` and prove the remaining obligations. Both sides reduce to the same expression.
+-/
 theorem smulSubrepProj_smulSubrepIncl : smulSubrepProj M c ≫ smulSubrepIncl M c = c • 𝟙 M := by
   refine Rep.Hom.ext (Representation.IntertwiningMap.ext (LinearMap.ext fun b => ?_))
   rfl
 
+/- English proof (translation)
+Take `⟨y, m, rfl⟩` from `x`. Conclude with `⟨m, rfl⟩`.
+-/
 theorem exists_eq_smul_of_smulSubrep (x : smulSubrep M c) : ∃ m : M, x.1 = c • m := by
   obtain ⟨y, m, rfl⟩ := x
   exact ⟨m, rfl⟩
@@ -92,6 +112,9 @@ def smulSubrepPairIncl (c₀ c₁ : k) : ∀ j, smulSubrepPair M c₀ c₁ j ⟶
 def smulSubrepPairProj (c₀ c₁ : k) : ∀ j, M ⟶ smulSubrepPair M c₀ c₁ j :=
   fun j => Bool.rec (smulSubrepProj M c₀) (smulSubrepProj M c₁) j
 
+/- English proof (translation)
+Rewrite using `[Fintype.sum_bool]`. Express the relevant statement in the definitionally equal form `smulSubrepProj M c₁ ≫ smulSubrepIncl M c₁ + smulSubrepProj M c₀ ≫ smulSubrepIncl M c₀ = 𝟙 M`. Rewrite using `[smulSubrepProj_smulSubrepIncl, smulSubrepProj_smulSubrepIncl, ← add_smul, add_comm, hc, one_smul]`.
+-/
 theorem sum_smulSubrepPairProj_incl (c₀ c₁ : k) (hc : c₀ + c₁ = 1) :
     ∑ j, smulSubrepPairProj M c₀ c₁ j ≫ smulSubrepPairIncl M c₀ c₁ j = 𝟙 M := by
   rw [Fintype.sum_bool]
@@ -124,6 +147,9 @@ section Killed
 
 variable {G : Type u} [Group G]
 
+/- English proof (translation)
+Take `⟨m, hm⟩` from `exists_eq_smul_of_smulSubrep M _ x`. Use `Subtype.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `a • x.1 = 0`. Rewrite using `[hm, smul_comm, Int.cast_smul_eq_zsmul, mul_zsmul, natCast_zsmul, ← mul_nsmul, hM, zsmul_zero]`.
+-/
 theorem nsmul_smulSubrep_eq_zero {M : Rep.{u} (ULift.{u} ℤ) G} {a b : ℕ}
     (hM : ∀ m : M, (a * b) • m = 0) (β : ℤ) (x : smulSubrep M ((β * b : ℤ) : ULift.{u} ℤ)) :
     a • x = 0 := by
@@ -145,6 +171,15 @@ variable {N q : ℕ} [NeZero N] [NeZero q] (D Dq : Rep.{u} (ULift.{u} ℤ) G) [I
   (tq : compactCohomologyRes φ Dq 3 →+ ZMod q)
   (M : Rep.{u} (ULift.{u} ℤ) G) [IsDiscreteRep M] [Finite M]
 
+/- English proof (translation)
+Establish `hJ` using `bijective_dualRepPost D Dq j M hD hDq hj hM`. Use `set e := Rep.isoOfBijective (dualRepPost D Dq j M) hJ`. Establish `hJc : Function.Bijective (compactCohomologyResMap φ (dualRepPost D Dq j M) s).hom` using `bijective_compactCohomologyResMap_of_comp_eq_id φ e.hom e.inv e.hom_inv_id e.inv_hom_id s`. Establish `key : ∀ x y', zmodToQZ N (compactDualityMap φ D h t M x ((compactCohomologyResMap φ (dualRepPost D Dq j M) s).hom y')) = zmodToQZ q (compactDualityMap φ Dq h tq M x y')`. Introduce `x y'`.
+
+Rewrite using `[compactDualityMap_apply, compactDualityMap_apply, compactCupRes_compactCohomologyResMap φ (dualEvalPairing D M) (dualEvalPairing Dq M ≫ j) (dualRepPost D Dq j M) (𝟙 M) (tensorHom_dualRepPost_dualEvalPairing D Dq j M), cohomologyMap_id, ModuleCat.id_apply, ← compactCohomologyResM …`. Establish `hkill : ∀ y : compactCohomologyRes φ (dualRep Dq M) s, q • y = 0` using `nsmul_compactCohomologyRes_eq_zero φ (nsmul_dualRep_eq_zero_of_nsmul hM) s`. Use `⟨fun x₁ x₂ hx => hq.1 (AddMonoidHom.ext fun y' => zmodToQZ_injective ?_), fun χ => ?_⟩` and prove the remaining obligations. Rewrite using `[← key, ← key, hx]`. Set `F : compactCohomologyRes φ (dualRep Dq M) s →+ QZ` to `((zmodToQZ N).comp χ).comp (compactCohomologyResMap φ (dualRepPost D Dq j M) s).hom.toAddMonoidHom`.
+
+Establish `hF : ∀ y', q • F y' = 0` using `fun y' => by rw [← map_nsmul, hkill, map_zero]`. Take `⟨x, hx⟩` from `hq.2 (zmodOfQZ F hF)`. Use `⟨x, AddMonoidHom.ext fun y => ?_⟩` and prove the remaining obligations. Take `⟨y', rfl⟩` from `hJc.2 y`. Apply `zmodToQZ_injective (n := N)` to reduce the goal to its premises.
+
+Rewrite using `[key, hx, zmodToQZ_zmodOfQZ]`. Both sides reduce to the same expression.
+-/
 theorem bijective_compactDualityMap_of_level
     (htj : ∀ z, zmodToQZ N (t ((compactCohomologyResMap φ j 3).hom z)) = zmodToQZ q (tq z))
     (hD : Nonempty (D ≃+ ZMod N)) (hDq : Nonempty (Dq ≃+ ZMod q)) (hj : Function.Injective j.hom)
@@ -197,6 +232,21 @@ variable {N : ℕ} [NeZero N] (D : Rep.{u} (ULift.{u} ℤ) G) [IsDiscreteRep D]
   (tp : ∀ p, compactCohomologyRes φ (Dp p) 3 →+ ZMod (p ^ N.factorization p))
   (jp : ∀ p, Dp p ⟶ D)
 
+/- English proof (translation)
+Establish `hq : ∀ p ∈ N.primeFactors, ∀ (M : Rep.{u} (ULift.{u} ℤ) G) [IsDiscreteRep M] [Finite M], (∀ m : M, p ^ N.factorization p • m = 0) → Function.Bijective (compactDualityMap φ D h t M)`. Introduce `p hp M _ _ hMp`. Establish `: NeZero (p ^ N.factorization p)` using `⟨pow_ne_zero _ (Nat.prime_of_mem_primeFactors hp).ne_zero⟩`. Conclude with `bijective_compactDualityMap_of_level φ D (Dp p) (jp p) t (tp p) M (htp p hp) hD (hDp p hp) (hjp p hp) hMp h (hφp p hp M hMp h)`. It suffices to establish `H : ∀ d, d ∣ N → ∀ (M : Rep.{u} (ULift.{u} ℤ) G) [IsDiscreteRep M] [Finite M], (∀ m : M, d • m = 0) → Function.Bijective (compactDualityMap φ D h t M) from H N dvd_rfl M hM`.
+
+Introduce `d`. Proceed by induction on `d using Nat.recOnPrimeCoprime with`. Consider the case `zero => exact fun h0 => absurd (Nat.eq_zero_of_zero_dvd h0) (NeZero.ne N)`. Consider the case `prime_pow p n hp`. Introduce `hpn M _ _ hMd`.
+
+Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Establish `hM0 : ∀ m : M, m = 0` using `fun m => by simpa using hMd m`. Distinguish the cases in `hN1 : N = 1`. Establish `: Subsingleton M` using `⟨fun x y => (hM0 x).trans (hM0 y).symm⟩`. Use `subsingleton_cohomology_of_subsingleton M r` as an intermediate fact.
+
+Substitute `hN1` using the available equality. Use `⟨fun x y _ => Subsingleton.elim x y, fun χ => ⟨0, AddMonoidHom.ext fun y => ?_⟩⟩` and prove the remaining obligations. Conclude with `Subsingleton.elim _ _`. Take `⟨p', hp', hp'N⟩` from `Nat.exists_prime_and_dvd hN1`. Conclude with `hq p' (Nat.mem_primeFactors.2 ⟨hp', hp'N, NeZero.ne N⟩) M (fun m => by rw [hM0 m, nsmul_zero])`.
+
+Establish `hpN : p ∈ N.primeFactors` using `Nat.mem_primeFactors.2 ⟨hp, (dvd_pow_self p hn.ne').trans hpn, NeZero.ne N⟩`. Establish `hle : n ≤ N.factorization p` using `(hp.pow_dvd_iff_le_factorization (NeZero.ne N)).1 hpn`. Use `hq p hpN M fun m => ?_` and prove the remaining obligations. Take `⟨c, hc⟩` from `pow_dvd_pow p hle`. Rewrite using `[hc, mul_comm, mul_nsmul, hMd]`.
+
+Consider the case `coprime a b ha hb hab iha ihb`. Introduce `habN M _ _ hMd`. Take `⟨α, β, hαβ⟩` from `Nat.isCoprime_iff_coprime.2 hab`. Use `bijective_compactDualityMap_of_sum φ D h t (smulSubrepPair M ((α * a : ℤ) : ULift.{u} ℤ) ((β * b : ℤ) : ULift.{u} ℤ)) M (smulSubrepPairIncl M _ _) (smulSubrepPairProj M _ _) (sum_smulSubrepPairProj_incl M _ _ (by rw [← Int.cast_add, hαβ, Int.cast_one])) (fun j => ?_)` and prove the remaining obligations. Consider the cases of `j with`.
+
+Consider the case `true`. Conclude with `iha (dvd_of_mul_right_dvd habN) (smulSubrep M ((β * b : ℤ) : ULift.{u} ℤ)) (nsmul_smulSubrep_eq_zero (fun m => hMd m) β)`. Consider the case `false`. Conclude with `ihb (dvd_of_mul_left_dvd habN) (smulSubrep M ((α * a : ℤ) : ULift.{u} ℤ)) (nsmul_smulSubrep_eq_zero (fun m => by rw [mul_comm]; exact hMd m) α)`.
+-/
 theorem bijective_compactDualityMap_of_primePow (hD : Nonempty (D ≃+ ZMod N))
     (hDp : ∀ p ∈ N.primeFactors, Nonempty (Dp p ≃+ ZMod (p ^ N.factorization p)))
     (hjp : ∀ p ∈ N.primeFactors, Function.Injective (jp p).hom)

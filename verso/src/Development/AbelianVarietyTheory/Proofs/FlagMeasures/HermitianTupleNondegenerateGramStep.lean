@@ -14,6 +14,9 @@ open Formalism.L2.SG.NGCut Formalism.L2.SG.NGAnalytic
 
 namespace GlobalTheory.RowNGClosed
 
+/- English proof (translation)
+Introduce `D X Y u u' t ht`. Conclude with `Formalism.L2.SG.TermOp.Vanish.ooVanish_of Formalism.L2.SG.Closed.AvgCore_holds Formalism.L2.SG.Pf.ginfUnimod_holds Formalism.L2.SG.Pf.nLamNinf_holds Formalism.L2.SG.Closed.ChiTrivialC_holds Formalism.L2.SG.Pf.psiInfChar_holds Formalism.L2.SG.Pf.rClosedC_holds Formalism.L2.SG.Pf.r …`.
+-/
 theorem ooVanish_all : ∀ (D : Formalism.BasicNotions.D7) (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (Y : Formalism.L2.SG.Full.Full X)
     (u u' : D.what₂.Word),
     Formalism.L2.SG.TermOp.KExpCut.OOVanish (X.Fu u) (X.Fu u') (Y.what₂ u) (Y.what₂ u') (X := X) := by
@@ -23,6 +26,13 @@ theorem ooVanish_all : ∀ (D : Formalism.BasicNotions.D7) (X : Formalism.L2.SG.
     Formalism.L2.SG.Pf.rClosedC_holds Formalism.L2.SG.Pf.roDiscreteC_holds Formalism.L2.SG.TermOp.Vanish.rational_cocompact_holds
     Formalism.L2.SG.NonRelPf.nonRelCharC_holds Y t ht
 
+/- English proof (translation)
+Introduce `D X`. Establish `hn : 2 * D.R.rS + 2 ≤ X.B.I.n`. Use `X.n_eq` as an intermediate fact. Use `D.R.rS_two` as an intermediate fact. Use `D.R.r_eq` as an intermediate fact.
+
+Use `D.R.k_ge` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hH : ∀ i j, star (X.B.I.J j i) = X.B.I.J i j` using `fun i j => congrFun (congrFun X.B.I.J_herm i) j`. Take `⟨X0, h0⟩` from `exists_nondegenerate X.B.I.E X.B.I.n (2 * D.R.rS + 2) hn X.B.I.J hH X.B.I.J_det`. Use `⟨X0, ?_⟩` and prove the remaining obligations.
+
+Use `h0 using 2` and compare the differences between its conclusion and the goal. Use extensionality with `a b`. Both sides reduce to the same expression.
+-/
 theorem hermitian_tuple_nondegenerate_gram_step : NondegenerateGramTuple := by
   intro D X
   have hn : 2 * D.R.rS + 2 ≤ X.B.I.n := by
@@ -34,6 +44,9 @@ theorem hermitian_tuple_nondegenerate_gram_step : NondegenerateGramTuple := by
   ext a b
   rfl
 
+/- English proof (translation)
+Establish `h1 : StepNormOne` using `VanishingOrbitalPoints.stepNormOne_of_ooVanish ooVanish_all`. Conclude with `⟨CorankRelation.corankOne_equivalence_holds, NormalInvariants.stepNormals_of NormalVectorPairings.NmlInv_holds NormalCount.NormCount_holds h1, VanishingOrbitalPoints.stepPoints_of_ooVanish ooVanish_all, h1, hermitian_tuple_nondegenerate_gram_step⟩`.
+-/
 theorem closedSteps : CorankOneEquivalence ∧ StepNormals ∧ StepPoints ∧ StepNormOne ∧ NondegenerateGramTuple := by
   have h1 : StepNormOne := VanishingOrbitalPoints.stepNormOne_of_ooVanish ooVanish_all
   exact ⟨CorankRelation.corankOne_equivalence_holds,

@@ -15,6 +15,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open scoped Classical
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.SchrFixNbhd.schr_fix_nbhd | exact GlobalTheory.SchrFixNbhd.schr_fix_nbhd | (intros; apply GlobalTheory.SchrFixNbhd.schr_fix_nbhd <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_openSubgroups_schroedinger_fix_standardChar : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) →
     ∀ (κ : Type) [Fintype κ], ∀ Φ ∈ GlobalTheory.WeilM.schA D.host.F κ,
       ∃ L₁ L₂ : AddSubgroup (κ → FiniteAdeleRing (𝓞 D.host.F) D.host.F),

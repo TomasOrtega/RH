@@ -14,6 +14,11 @@ variable {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSp
 
 variable {k r : ℕ}
 
+/- English proof (translation)
+Use `haveI : SigmaFinite μG := hHaar.1`. Use `haveI : SFinite (muSof μW μN) := by unfold muSof; infer_instance`. Use `haveI : SFinite ν := sfinite_quot hHaar.2.1 hq`. Establish `hmap` using `quot_map hq`. Rewrite `hF` using `[hmap]`.
+
+Establish `hF' : Integrable ((fun x : Mt k r => F (Matrix.of x)) ∘ psiMap) (ν.prod (μW.prod μN))` using `(integrable_map_measure hF.aestronglyMeasurable measurable_psiMap.aemeasurable).1 hF`. Use `⟨hF'.prod_right_ae, hF'.integral_prod_left, ?_⟩` and prove the remaining obligations. Rewrite using `[hmap, integral_map measurable_psiMap.aemeasurable hF.aestronglyMeasurable]`. Conclude with `integral_prod _ hF'`.
+-/
 theorem weilGen {μG μW μN ν : Measure (Mt k r)} [SFinite μW] [SFinite μN]
     (hHaar : IsHaarOn (UH (Hpk k r)) μG) (hq : IsQuotMeas μG (muSof μW μN) ν)
     (F : Mx k r → ℂ) (hF : Integrable (fun x : Mt k r => F (Matrix.of x)) μG) :
@@ -31,6 +36,19 @@ theorem weilGen {μG μW μN ν : Measure (Mt k r)} [SFinite μW] [SFinite μN]
   rw [hmap, integral_map measurable_psiMap.aemeasurable hF.aestronglyMeasurable]
   exact integral_prod _ hF'
 
+/- English proof (translation)
+Establish `: SigmaFinite μG` using `hHaar.1`. Establish `: SFinite (muSof μW μN)` using `by unfold muSof; infer_instance`. Establish `: SFinite ν` using `sfinite_quot hHaar.2.1 hq`. Establish `hmap` using `quot_map hq`. Establish `hGm : MeasurableSet {x : Mt k r | Matrix.of x ∈ UH (Hpk k r)}` using `((PI.WUN.isClosed_UH k r).preimage PI.WUN.continuous_of).measurableSet`.
+
+Establish `hGc : μG {x : Mt k r | Matrix.of x ∉ UH (Hpk k r)} = 0` using `hHaar.2.2.1`. Establish `hGm' : MeasurableSet {x : Mt k r | Matrix.of x ∉ UH (Hpk k r)}` using `hGm.compl`. Rewrite `hGc` using `[hmap, Measure.map_apply measurable_psiMap hGm']`. Establish `hae : ∀ᵐ q ∂(ν.prod (μW.prod μN)), Matrix.of (psiMap q) ∈ UH (Hpk k r)` using `ae_iff.mpr hGc`. Establish `hae2` using `Measure.ae_ae_of_ae_prod hae`.
+
+Establish `hS : ∀ᵐ p ∂(μW.prod μN), sM p ∈ UH (Hpk k r)` using `by filter_upwards [hM1] with p hp`. Conclude with `PI.WUN.UH_mul hp.1.1 hp.2.1`. Establish `hμ0 : μW.prod μN ≠ 0`. Introduce `h0`. Apply `muS_ne_zero hHaar.2.1 hq` to reduce the goal to its premises.
+
+Unfold `muSof`. Rewrite using `[h0, Measure.map_zero]`. Use `filter_upwards [hae2] with x hx`. Assume the negation of the conclusion as `hxG`. Establish `hfalse : ∀ᵐ p ∂(μW.prod μN), False` using `by filter_upwards [hx, hS] with p hp hsp`.
+
+Apply `hxG` to reduce the goal to its premises. Establish `hp' : sM p * Matrix.of x ∈ UH (Hpk k r)` using `hp`. Establish `: Matrix.of x = (sM p)⁻¹ * (sM p * Matrix.of x)`. Rewrite using `[← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ (PI.WUN.UH_det hsp), Matrix.one_mul]`. Rewrite using `[this]`.
+
+Conclude with `PI.WUN.UH_mul (PI.WUN.UH_inv hsp) hp'`. Apply `hμ0` to reduce the goal to its premises. Rewrite `hfalse` using `[ae_iff]`. Simplify using `using hfalse`.
+-/
 theorem nuGen {z : Fin (2 * r + k + 1) → ℂ} {μG μW μN ν : Measure (Mt k r)} [SFinite μW] [SFinite μN]
     (hHaar : IsHaarOn (UH (Hpk k r)) μG) (hq : IsQuotMeas μG (muSof μW μN) ν)
     (hM1 : ∀ᵐ p ∂(μW.prod μN), Matrix.of p.1 ∈ UWset k r z ∧ Matrix.of p.2 ∈ Nset k r) :
@@ -68,6 +86,39 @@ theorem nuGen {z : Fin (2 * r + k + 1) → ℂ} {μG μW μN ν : Measure (Mt k 
   rw [ae_iff] at hfalse
   simpa using hfalse
 
+/- English proof (translation)
+Establish `hnu` using `nuGen hHaar hq hM.1`. Establish `: SFinite μG` using `sfinite_haar hHaar`. Take `⟨d, hd, hSch⟩` from `id hS`. Rewrite using `[fdegH_eq ⟨hd, hSch⟩ hu]`. Use `set μS := μW.prod (μN) with hμS`.
+
+Use `set Φ : Mt k r × (Mt k r × Mt k r) → ℂ := fun q => ⟪v, σ (Matrix.of q.1) u⟫_ℂ * star ⟪v, σ (sM q.2 * Matrix.of q.1) u⟫_ℂ * kx z c π ξ q.2 with hΦdef`. Establish `h1 : ∀ᵐ y ∂μG, Fx z c π μW (μN) σ u v ξ (Matrix.of y) = ∫ p, Φ (y, p) ∂μS` using `by filter_upwards [ae_UH_of_haar hHaar] with y hy`. Unfold `Fx Aop`. Rewrite using `[star_ev_be (hI _ hy) ξ, ← integral_const_mul]`. Use `integral_congr_ae ?_` and prove the remaining obligations.
+
+Use `filter_upwards [hM.1] with p hp`. Establish `hs : sM p ∈ UH (Hpk k r)` using `hGr.1 _ hp.1.1 _ hp.2.1`. Use `show _ = ⟪v, σ (Matrix.of y) u⟫_ℂ * star ⟪v, σ (sM p * Matrix.of y) u⟫_ℂ * kx z c π ξ p`. Rewrite using `[hSg.2.1 _ hs _ hy, ContinuousLinearMap.comp_apply]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hΦ : Integrable Φ (μG.prod μS)`. Use `Integrable.mono' (hD.const_mul (‖ξ‖ ^ 2)) ?_ ?_` and prove the remaining obligations. Establish `m1 : AEStronglyMeasurable (fun q : Mt k r × (Mt k r × Mt k r) => ⟪v, σ (Matrix.of q.1) u⟫_ℂ) (μG.prod μS)` using `(coef_aesm hds hHaar u v).comp_fst`. Establish `m2` using `matrix_coefficient_ae_strongly_measurable hds hGr hHaar hM.1 u v`. Establish `m3 : AEStronglyMeasurable (fun q : Mt k r × (Mt k r × Mt k r) => kx z c π ξ q.2) (μG.prod μS)` using `(kx_aesm hM ξ).comp_snd`.
+
+Conclude with `(m1.mul (continuous_star.comp_aestronglyMeasurable m2)).mul m3`. Use `filter_upwards [(Measure.quasiMeasurePreserving_snd (μ := μG) (ν := μS)).ae hM.1] with q hq`. Establish `hk` using `norm_kx_le (c := c) hGr hPi ξ hq.1`. Simplify using `only [Φ, norm_mul, norm_star]`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hF : Integrable (fun y : Mt k r => Fx z c π μW (μN) σ u v ξ (Matrix.of y)) μG` using `hΦ.integral_prod_left.congr (h1.mono fun y hy => hy.symm)`. Establish `hu2 : ⟪u, u⟫_ℂ = ((‖u‖ ^ 2 : ℝ) : ℂ)`. Rewrite using `[inner_self_eq_norm_sq_to_K, Complex.ofReal_pow]`. Both sides reduce to the same expression. Establish `h4 : ∀ᵐ p ∂μS, ∫ y, Φ (y, p) ∂μG = ((‖u‖ ^ 2 : ℝ) : ℂ) / (d : ℂ) * (star ⟪v, σ (sM p) v⟫_ℂ * kx z c π ξ p)` using `by filter_upwards [hM.1] with p hp`.
+
+Establish `hs : sM p ∈ UH (Hpk k r)` using `hGr.1 _ hp.1.1 _ hp.2.1`. Establish `hsi : (sM p)⁻¹ ∈ UH (Hpk k r)` using `(hGr.2.1 _ hs).2.2`. Establish `hss : sM p * (sM p)⁻¹ = 1` using `(hGr.2.1 _ hs).1`. Establish `hadj : ContinuousLinearMap.adjoint (σ (sM p)) = σ (sM p)⁻¹` using `Cv.adjoint_eq_of_iso _ _ (hSg.2.2 _ hs) (by rw [← hSg.2.1 _ hs _ hsi, hss, hSg.1])`. Establish `e0 : ∀ w : H, ⟪v, σ (sM p) w⟫_ℂ = ⟪σ (sM p)⁻¹ v, w⟫_ℂ` using `fun w => by`.
+
+Rewrite using `[← hadj, ContinuousLinearMap.adjoint_inner_left]`. Establish `hcongr : ∀ᵐ y ∂μG, Φ (y, p) = kx z c π ξ p * (⟪v, σ (Matrix.of y) u⟫_ℂ * star ⟪σ (sM p)⁻¹ v, σ (Matrix.of y) u⟫_ℂ)` using `by filter_upwards [ae_UH_of_haar hHaar] with y hy show ⟪v, σ (Matrix.of y) u⟫_ℂ * star ⟪v, σ (sM p * Matrix.of y) u⟫_ℂ * kx z c π ξ p = _`. Rewrite using `[hSg.2.1 _ hs _ hy, ContinuousLinearMap.comp_apply, e0]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[integral_congr_ae hcongr, integral_const_mul, (hSch u v u (σ (sM p)⁻¹ v)).2]`.
+
+Establish `e1 : ⟪v, σ (sM p)⁻¹ v⟫_ℂ = star ⟪v, σ (sM p) v⟫_ℂ`. Rewrite using `[← hadj, ContinuousLinearMap.adjoint_inner_right, star_inner]`. Rewrite using `[e1, hu2]`. Expand and normalize the polynomial expressions, which then agree. Establish `hFG : ∫ y, Fx z c π μW (μN) σ u v ξ (Matrix.of y) ∂μG = ((‖u‖ ^ 2 : ℝ) : ℂ) / (d : ℂ) * star ⟪ξ, be z c π μW (μN) σ v v ξ⟫_ℂ`.
+
+Rewrite using `[integral_congr_ae h1, integral_integral_swap (f := fun y p => Φ (y, p)) hΦ, integral_congr_ae h4, integral_const_mul, ← star_ev_be hIv ξ]`. Take `⟨-, hint, heq⟩` from `weilGen hHaar hq (Fx z c π μW μN σ u v ξ) hF`. Establish `hpt : ∀ᵐ x ∂ν, ‖be z c π μW (μN) σ (σ (Matrix.of x) u) v ξ‖ ^ 2 = (∫ p, Fx z c π μW (μN) σ u v ξ (sM p * Matrix.of x) ∂μS).re` using `by filter_upwards [hnu] with x hx`. Rewrite using `[← (hs_one hGr hSg hPi hPs hM ξ hx (hI _ hx)).2, Complex.ofReal_re]`. Both sides reduce to the same expression.
+
+Establish `hC : ((∫ x, ‖be z c π μW μN σ (σ (Matrix.of x) u) v ξ‖ ^ 2 ∂ν : ℝ) : ℂ) = ((‖u‖ ^ 2 : ℝ) : ℂ) / (d : ℂ) * star ⟪ξ, be z c π μW μN σ v v ξ⟫_ℂ`. Rewrite using `[← integral_complex_ofReal, ← hFG, heq]`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hnu] with x hx`. Conclude with `(hs_one hGr hSg hPi hPs hM ξ hx (hI _ hx)).2`.
+
+Establish `him : (⟪ξ, be z c π μW μN σ v v ξ⟫_ℂ).im = 0`. Establish `h1` using `congrArg Complex.im hC`. Establish `e3 : ((‖u‖ ^ 2 : ℝ) : ℂ) / (d : ℂ) * star ⟪ξ, be z c π μW μN σ v v ξ⟫_ℂ = (((‖u‖ ^ 2 / d : ℝ)) : ℂ) * star ⟪ξ, be z c π μW μN σ v v ξ⟫_ℂ`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite `h1` using `[e3, Complex.ofReal_im, Complex.im_ofReal_mul, Complex.star_def, Complex.conj_im]`. Establish `hu' : 0 < ‖u‖` using `norm_pos_iff.mpr hu`. Establish `hne : ‖u‖ ^ 2 / d ≠ 0` using `by positivity`. Establish `h2 : ‖u‖ ^ 2 / d * (⟪ξ, be z c π μW μN σ v v ξ⟫_ℂ).im = 0` using `by linarith`. Break down `mul_eq_zero.mp h2 with h | h` into its components or cases.
+
+Conclude with `absurd h hne`. Conclude with `h`. Use `⟨hint.re.congr (hpt.mono fun x hx => hx.symm), ?_, him⟩` and prove the remaining obligations. Establish `hre` using `integral_re hint`. Simplify using `only [RCLike.re_to_complex] at hre`.
+
+Rewrite using `[integral_congr_ae hpt, hre, ← heq, hFG]`. Establish `e3 : ((‖u‖ ^ 2 : ℝ) : ℂ) / (d : ℂ) * star ⟪ξ, be z c π μW (μN) σ v v ξ⟫_ℂ = (((‖u‖ ^ 2 / d : ℝ)) : ℂ) * ⟪be z c π μW (μN) σ v v ξ, ξ⟫_ℂ`. Rewrite using `[star_inner]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[e3, Complex.re_ofReal_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem normId_gen {z : Fin (2 * r + k + 1) → ℂ} {c : ℂ} {π : Mx k r → (Wp →L[ℂ] Wp)}
     {μW μN μG ν : Measure (Mt k r)} [SFinite μW] [SFinite μN] {σ : Mx k r → (H →L[ℂ] H)}
     {ε : Fin (2 * r + k + 1) → Bool} {lam : Fin (2 * r + k + 1) → ℝ} (hds : IsDSHpk k r ε lam σ)

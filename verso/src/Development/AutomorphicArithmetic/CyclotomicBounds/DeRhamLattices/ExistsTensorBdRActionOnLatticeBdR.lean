@@ -10,6 +10,23 @@ open scoped GlobalTheory.BKGal.HatVal
 set_option synthInstance.maxHeartbeats 400000
 set_option maxHeartbeats 1000000
 
+/- English proof (translation)
+Introduce `l _ LL T Pl AI Td`. Establish `hz : ∀ z : ℤ_[l], Td.eD.symm (algebraMap ℤ_[l] (Per.BdR l) z) = algebraMap ℚ_[l] Pl.R.BdR (z : ℚ_[l])` using `fun z => GlobalTheory.BKGal.JumpDR.cD_algebraMap Td z`. Set `φ : ↥(OL LL) → T.V →ₗ[ℚ_[l]] T.V` to `fun o => { toFun := fun v => (o : ↥LL.1) • v map_add' := fun v w => smul_add _ v w map_smul' := fun q v => by`. Simplify using `only [RingHom.id_apply]`. Rewrite using `[← algebraMap_smul (↥LL.1) q v, ← algebraMap_smul (↥LL.1) q ((o : ↥LL.1) • v), smul_smul, smul_smul, mul_comm] }`.
+
+Set `F : ↥(OL LL) → Per.BdR l → (T.V ⊗[ℚ_[l]] Pl.R.BdR →ₗ[ℚ_[l]] T.V ⊗[ℚ_[l]] Pl.R.BdR)` to `fun o b => TensorProduct.map (φ o) (LinearMap.mulLeft ℚ_[l] (Td.eD.symm b))`. Establish `hF : ∀ o b v c, F o b (v ⊗ₜ[ℚ_[l]] c) = ((o : ↥LL.1) • v) ⊗ₜ[ℚ_[l]] (Td.eD.symm b * c)` using `fun o b v c => rfl`. Establish `hb : ∀ o b b', F o (b + b') = F o b + F o b'` using `fun o b b' => by`. Apply `TensorProduct.ext'` to reduce the goal to its premises. Introduce `v c`.
+
+Rewrite using `[LinearMap.add_apply, hF, hF, hF, map_add, add_mul, tmul_add]`. Establish `ho : ∀ o o' b, F (o + o') b = F o b + F o' b` using `fun o o' b => by`. Apply `TensorProduct.ext'` to reduce the goal to its premises. Introduce `v c`. Rewrite using `[LinearMap.add_apply, hF, hF, hF, Subalgebra.coe_add, add_smul, add_tmul]`.
+
+Set `f : ↥(OL LL) →+ Per.BdR l →+ (T.V ⊗[ℚ_[l]] Pl.R.BdR →+ T.V ⊗[ℚ_[l]] Pl.R.BdR)` to `AddMonoidHom.mk' (fun o => AddMonoidHom.mk' (fun b => (F o b).toAddMonoidHom) (fun b b' => AddMonoidHom.ext fun x => by show F o (b + b') x = F o b x + F o b' x`. Rewrite using `[hb]`. Use the proof step `rfl))`. Use the proof step `(fun o o' => AddMonoidHom.ext fun b => AddMonoidHom.ext fun x => by show F (o + o') b x = F o b x + F o' b x`. Rewrite using `[ho]`.
+
+Use the proof step `rfl)`. Establish `hbal : ∀ (z : ℤ_[l]) (o : ↥(OL LL)) (b : Per.BdR l), f (z • o) b = f o (z • b)`. Introduce `z o b`. Apply `AddMonoidHom.ext` to reduce the goal to its premises. Introduce `x`.
+
+Use `show F (z • o) b x = F o (z • b) x`. Use `congr 1`. Apply `TensorProduct.ext'` to reduce the goal to its premises. Introduce `v c`. Rewrite using `[hF, hF, Algebra.smul_def z b, map_mul, hz, mul_assoc, ← Algebra.smul_def, ← TensorProduct.smul_tmul (R := ℚ_[l])]`.
+
+Use `congr 1`. Use `show ((z : ℚ_[l]) • (o : ↥LL.1)) • v = (z : ℚ_[l]) • ((o : ↥LL.1) • v)`. Rewrite using `[smul_assoc]`. Use `⟨TensorProduct.liftAddHom f hbal, fun o b v c => ?_⟩` and prove the remaining obligations. Rewrite using `[TensorProduct.liftAddHom_tmul]`.
+
+Both sides reduce to the same expression.
+-/
 theorem _root_.UpperTheory.KN.exists_tensorBdR_action_on_latticeBdR :
     ∀ (l : ℕ) [Fact l.Prime] (LL : FinExt l) (T : QLat LL) (Pl : LocPrime l) (AI : LocAinf l Pl) (Td : LocTied l Pl AI), ∃ B : OdR l ↥(OL LL) →+ (T.V ⊗[ℚ_[l]] Pl.R.BdR →+ T.V ⊗[ℚ_[l]] Pl.R.BdR),
     ∀ (o : ↥(OL LL)) (b : Per.BdR l) (v : T.V) (c : Pl.R.BdR), B (o ⊗ₜ[ℤ_[l]] b) (v ⊗ₜ[ℚ_[l]] c) = ((o : ↥LL.1) • v) ⊗ₜ[ℚ_[l]] (Td.eD.symm b * c) := by

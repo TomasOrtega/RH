@@ -35,6 +35,15 @@ section Slice
 variable {K P : Type} [AddCommGroup K] [TopologicalSpace K] [IsTopologicalAddGroup K] [T2Space K]
   [AddCommGroup P] [TopologicalSpace P] [IsTopologicalAddGroup P] [T2Space P]
 
+/- English proof (translation)
+Take `⟨hl, hc⟩` from `hg`. Establish `hO : IsOpen {p : K × K | g (p.1 + p.2) = g p.1}`. Establish `h1 : IsLocallyConstant fun p : K × K => g (p.1 + p.2) - g p.1` using `(hl.comp_continuous (continuous_fst.add continuous_snd)).sub (hl.comp_continuous continuous_fst)`. Use `h1.isOpen_fiber 0` as an intermediate fact. Simplify `this` using `[sub_eq_zero, Set.preimage]`.
+
+Establish `hsub : tsupport g ×ˢ ({0} : Set K) ⊆ {p : K × K | g (p.1 + p.2) = g p.1}`. Introduce and unpack `⟨x, u⟩ ⟨_, hu⟩`. Simplify using `only [Set.mem_singleton_iff] at hu`. Simplify using `[hu]`. Take `⟨U, V, hU, hV, hCU, h0V, hUV⟩` from `generalized_tube_lemma hc (isCompact_singleton (x := (0 : K))) hO hsub`.
+
+Establish `hV0 : V ∈ 𝓝 (0 : K)` using `hV.mem_nhds (h0V rfl)`. Use `⟨V ∩ Neg.neg ⁻¹' V, inter_mem hV0 (continuous_neg.continuousAt.preimage_mem_nhds (by simpa using hV0)), ?_⟩` and prove the remaining obligations. Introduce and unpack `x u ⟨hu, hu'⟩`. Distinguish the cases in `hx : x ∈ tsupport g`. Conclude with `hUV (Set.mk_mem_prod (hCU hx) hu)`.
+
+Distinguish the cases in `hxu : x + u ∈ tsupport g`. Use `hUV (Set.mk_mem_prod (hCU hxu) hu')` as an intermediate fact. Simplify using `using this.symm`. Rewrite using `[image_eq_zero_of_notMem_tsupport hx, image_eq_zero_of_notMem_tsupport hxu]`.
+-/
 theorem exists_nhds_invariant {g : K → ℂ} (hg : g ∈ SB K) : ∃ V ∈ 𝓝 (0 : K), ∀ x, ∀ u ∈ V, g (x + u) = g x := by
   obtain ⟨hl, hc⟩ := hg
   have hO : IsOpen {p : K × K | g (p.1 + p.2) = g p.1} := by
@@ -57,6 +66,9 @@ theorem exists_nhds_invariant {g : K → ℂ} (hg : g ∈ SB K) : ∃ V ∈ 𝓝
     simpa using this.symm
   · rw [image_eq_zero_of_notMem_tsupport hx, image_eq_zero_of_notMem_tsupport hxu]
 
+/- English proof (translation)
+Use `⟨hg.1.comp_continuous (continuous_const.add hε), ?_⟩` and prove the remaining obligations. Use `HasCompactSupport.intro (K := (fun c => π c - π z) '' tsupport g) (hg.2.image (hπ.sub continuous_const)) fun y hy => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Conclude with `hy ⟨z + ε y, subset_tsupport _ hne, by simp [hπε]⟩`.
+-/
 theorem slice_mem (ε : P →+ K) (π : K →+ P) (hε : Continuous ε) (hπ : Continuous π) (hπε : ∀ y, π (ε y) = y)
     {g : K → ℂ} (hg : g ∈ SB K) (z : K) : (fun y => g (z + ε y)) ∈ SB P := by
   refine ⟨hg.1.comp_continuous (continuous_const.add hε), ?_⟩
@@ -65,6 +77,25 @@ theorem slice_mem (ε : P →+ K) (π : K →+ P) (hε : Continuous ε) (hπ : C
   by_contra hne
   exact hy ⟨z + ε y, subset_tsupport _ hne, by simp [hπε]⟩
 
+/- English proof (translation)
+Take `⟨V, hV, hinv⟩` from `exists_nhds_invariant hg`. Establish `hS : ∀ z z', z' - z ∈ V → (fun y => g (z' + ε y)) = fun y => g (z + ε y)` using `fun z z' h => by`. Use function extensionality and compare the values at `y`. Use `hinv (z + ε y) _ h` as an intermediate fact. Rewrite using `[← this]`.
+
+Use `congr 1`. Normalize the expressions using the abelian group laws. Establish `hr : Continuous fun x : K => x - ε (π x)` using `continuous_id.sub (hε.comp hπ)`. Establish `hrr : ∀ x y, (x - ε (π x) + ε y) - ε (π (x - ε (π x) + ε y)) = x - ε (π x)` using `fun x y => by`. Simplify using `[hπε]`.
+
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `(IsLocallyConstant.iff_eventually_eq _).2 fun x => ?_` and prove the remaining obligations. Establish `h1 : ∀ᶠ x' in 𝓝 x, (x' - ε (π x')) - (x - ε (π x)) ∈ V`. Establish `hc : Continuous fun x' : K => (x' - ε (π x')) - (x - ε (π x))` using `hr.sub continuous_const`. Establish `ht : Tendsto (fun x' : K => (x' - ε (π x')) - (x - ε (π x))) (𝓝 x) (𝓝 0)`.
+
+Use `hc.tendsto x` as an intermediate fact. Simplify `this` using `only [sub_self]`. Conclude with `ht hV`. Establish `h2 : ∀ᶠ x' in 𝓝 x, A (fun y => g (x - ε (π x) + ε y)) (π x') = A (fun y => g (x - ε (π x) + ε y)) (π x)` using `hπ.continuousAt.eventually (((IsLocallyConstant.iff_eventually_eq _).1 (hA _ (slice_mem ε π hε hπ hπε hg _)).1) (π x))`. Use `filter_upwards [h1, h2] with x' h1' h2'`.
+
+Rewrite using `[hS _ _ h1']`. Conclude with `h2'`. Use `set rC : Set K := (fun x : K => x - ε (π x)) '' tsupport g with hrC`. Establish `hrCc : IsCompact rC` using `hg.2.image hr`. Take `⟨Z, hZ, hcov⟩` from `hrCc.elim_nhds_subcover (fun z => {w : K | w - z ∈ V}) fun z _ => by`.
+
+Establish `hc : Continuous fun w : K => w - z` using `continuous_id.sub continuous_const`. Establish `ht : Tendsto (fun w : K => w - z) (𝓝 z) (𝓝 0)`. Use `hc.tendsto z` as an intermediate fact. Simplify `this` using `only [sub_self]`. Conclude with `ht hV`.
+
+Use `set D : Set P := ⋃ z ∈ Z, tsupport (A fun y => g (z + ε y)) with hD`. Establish `hDc : IsCompact D` using `Z.isCompact_biUnion fun z _ => (hA _ (slice_mem ε π hε hπ hπε hg z)).2`. Use `HasCompactSupport.intro (K := (fun p : K × P => p.1 + ε p.2) '' (rC ×ˢ D)) ((hrCc.prod hDc).image (continuous_fst.add (hε.comp continuous_snd))) fun x hx => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Apply `hx` to reduce the goal to its premises.
+
+Establish `hne' : (fun y => g (x - ε (π x) + ε y)) ≠ 0` using `fun h0 => hne (by simp [h0])`. Take `⟨y, hy⟩` from `Function.ne_iff.1 hne'`. Establish `hmem : x - ε (π x) ∈ rC` using `⟨_, subset_tsupport _ hy, hrr x y⟩`. Take `⟨z, hz, hzV⟩` from `Set.mem_iUnion₂.1 (hcov hmem)`. Establish `hs` using `hS z _ hzV`.
+
+Use `⟨(x - ε (π x), π x), ⟨hmem, Set.mem_iUnion₂.2 ⟨z, hz, ?_⟩⟩, by simp⟩` and prove the remaining obligations. Rewrite `hne` using `[hs]`. Conclude with `subset_tsupport _ hne`.
+-/
 theorem sb_slice (ε : P →+ K) (π : K →+ P) (hε : Continuous ε) (hπ : Continuous π) (hπε : ∀ y, π (ε y) = y)
     (A : (P → ℂ) →ₗ[ℂ] (P → ℂ)) (hA : ∀ φ ∈ SB P, A φ ∈ SB P) {g : K → ℂ} (hg : g ∈ SB K) :
     (fun x => A (fun y => g (x - ε (π x) + ε y)) (π x)) ∈ SB K := by
@@ -131,12 +162,21 @@ def piK (v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F) : (�
   map_zero' := by funext i; simp
   map_add' a b := by funext i; simp
 
+/- English proof (translation)
+The claim follows from `continuous_pi fun i => (GlobalTheory.AdelicU.continuous_singleFin v).comp (continuous_apply i)`.
+-/
 theorem continuous_epsK (v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F) : Continuous (epsK (κ := κ) v) :=
   continuous_pi fun i => (GlobalTheory.AdelicU.continuous_singleFin v).comp (continuous_apply i)
 
+/- English proof (translation)
+The claim follows from `continuous_pi fun i => (RestrictedProduct.continuous_eval v).comp (continuous_apply i)`.
+-/
 theorem continuous_piK (v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F) : Continuous (piK (κ := κ) v) :=
   continuous_pi fun i => (RestrictedProduct.continuous_eval v).comp (continuous_apply i)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Conclude with `GlobalTheory.AdelicU.evalV_singleFin_self v (y i)`.
+-/
 theorem piK_epsK (v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F) (y : κ → Fv F v) : piK v (epsK v y) = y := by
   funext i
   exact GlobalTheory.AdelicU.evalV_singleFin_self v (y i)
@@ -163,12 +203,18 @@ def opL (v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F) (A :
     rw [map_smul]
     rfl
 
+/- English proof (translation)
+The claim follows from `haveI : T2Space (Af F) := GlobalTheory.AdelicUnitaryTop.t2Space_finiteAdeleRing_of_numberField F sb_slice (epsK v) (piK v) (continuous_epsK v) (continuous_piK v) (piK_epsK v) A hA hg`.
+-/
 theorem opF_mem (v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F) (A : ((κ → Fv F v) → ℂ) →ₗ[ℂ] ((κ → Fv F v) → ℂ))
     (hA : ∀ φ ∈ SB (κ → Fv F v), A φ ∈ SB (κ → Fv F v)) {g : (κ → Af F) → ℂ} (hg : g ∈ SB (κ → Af F)) :
     opF v A g ∈ SB (κ → Af F) :=
   haveI : T2Space (Af F) := GlobalTheory.AdelicUnitaryTop.t2Space_finiteAdeleRing_of_numberField F
   sb_slice (epsK v) (piK v) (continuous_epsK v) (continuous_piK v) (piK_epsK v) A hA hg
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Establish `: (fun y => pureA F f g (repl v x y)) = (f fun i => InfiniteAdeleRing.ringEquiv_mixedSpace F (x i).1) • fun y => g (finPart x - epsK v (piK v (finPart x)) + epsK v y)` using `rfl`. Express the relevant statement in the definitionally equal form `A (fun y => pureA F f g (repl v x y)) (piK v (finPart x)) = _`. Rewrite using `[this, map_smul]`. Both sides reduce to the same expression.
+-/
 theorem opL_pureA (v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F) (A : ((κ → Fv F v) → ℂ) →ₗ[ℂ] ((κ → Fv F v) → ℂ))
     (f : (κ → mixedEmbedding.mixedSpace F) → ℂ) (g : (κ → Af F) → ℂ) :
     opL v A (pureA F f g) = pureA F f (opF v A g) := by
@@ -193,6 +239,9 @@ open GlobalTheory.AdelicU (evFin)
 variable {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ]
   {vac : ∀ w : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F, (κ → Fv F w) → ℂ}
 
+/- English proof (translation)
+Establish `hint : ∀ᶠ w in cofinite, ∀ i, evFin F w (x i) ∈ (w : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F).adicCompletionIntegers F` using `eventually_all.2 fun i => (x i).2.2`. Establish `h : ∀ᶠ w in cofinite, (φ w fun i => evFin F w (x i)) = 1` using `by filter_upwards [hv, hφ, hint] with w h1 h2 h3`. Rewrite using `[h2, h1]`. Conclude with `Set.indicator_of_mem (show (fun i => evFin F w (x i)) ∈ {x : κ → Fv F w | ∀ i, x i ∈ w.adicCompletionIntegers F} from h3) 1`. Conclude with `Filter.eventually_cofinite.1 h`.
+-/
 theorem finite_mulSupport
     (hv : ∀ᶠ w in cofinite, vac w = Set.indicator {x | ∀ i, x i ∈ w.adicCompletionIntegers F} 1)
     {φ : ∀ w : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F, (κ → Fv F w) → ℂ} (hφ : ∀ᶠ w in cofinite, φ w = vac w) (x : κ → AF F) :
@@ -205,6 +254,15 @@ theorem finite_mulSupport
     exact Set.indicator_of_mem (show (fun i => evFin F w (x i)) ∈ {x : κ → Fv F w | ∀ i, x i ∈ w.adicCompletionIntegers F} from h3) 1
   exact Filter.eventually_cofinite.1 h
 
+/- English proof (translation)
+Establish `hφ1 : ∀ᶠ w in cofinite, Function.update φ v 1 w = vac w` using `by filter_upwards [hφ, Filter.eventually_cofinite_ne v] with w h1 h2`. Rewrite using `[Function.update_of_ne h2, h1]`. Establish `h1` using `finite_mulSupport hv hφ1 x`. Use `set t : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F → ℂ := fun w => if w = v then ψ (fun i => evFin F v (x i)) else 1 with ht`. Establish `hts : (Function.mulSupport t).Finite` using `(Set.finite_singleton v).subset fun w hw => by`.
+
+Assume the negation of the conclusion as `h`. Conclude with `hw (if_neg h)`. Establish `key : (fun w => Function.update φ v ψ w fun i => evFin F w (x i)) = fun w => t w * Function.update φ v 1 w fun i => evFin F w (x i)`. Use function extensionality and compare the values at `w`. Distinguish the cases in `h : w = v`.
+
+Substitute `h` using the available equality. Simplify using `[ht]`. Simplify using `[ht, h, Function.update_of_ne h]`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure`. Rewrite using `[key, finprod_mul_distrib hts h1, finprod_eq_single t v fun w hw => if_neg hw]`.
+
+Simplify using `only [ht, if_true]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem pure_update
     (hv : ∀ᶠ w in cofinite, vac w = Set.indicator {x | ∀ i, x i ∈ w.adicCompletionIntegers F} 1)
     {φ : ∀ w : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F, (κ → Fv F w) → ℂ} (hφ : ∀ᶠ w in cofinite, φ w = vac w)
@@ -232,11 +290,21 @@ theorem pure_update
   simp only [ht, if_true]
   ring
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `piK v (finPart x - epsK v (piK v (finPart x)) + epsK v y) = y`. Simplify using `[piK_epsK]`.
+-/
 theorem piK_repl (v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F) (x : κ → AF F) (y : κ → Fv F v) :
     (fun i => evFin F v (repl v x y i)) = y := by
   change piK v (finPart x - epsK v (piK v (finPart x)) + epsK v y) = y
   simp [piK_epsK]
 
+/- English proof (translation)
+Unfold `GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure`. Use `congr 1`. Use `finprod_congr fun w => ?_` and prove the remaining obligations. Distinguish the cases in `h : w = v`. Substitute `h` using the available equality.
+
+Simplify using the standard rewrite rules. Rewrite using `[Function.update_of_ne h]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Express the relevant statement in the definitionally equal form `Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F w ((x i).2 - GlobalTheory.AdelicU.singleFin v _ + GlobalTheory.AdelicU.singleFin v _) = _`.
+
+Rewrite using `[map_add, map_sub, GlobalTheory.AdelicU.evalV_singleFin_ne h, GlobalTheory.AdelicU.evalV_singleFin_ne h]`. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
+-/
 theorem pure_repl
     {φ : ∀ w : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F, (κ → Fv F w) → ℂ}
     (v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F) (f : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.SInf F κ) (x : κ → AF F) (y : κ → Fv F v) :
@@ -256,6 +324,13 @@ theorem pure_repl
     simp
     rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Establish `hs : (fun y => pureT f φ (repl v x y)) = pureT f (Function.update φ v 1) x • φ v`. Use function extensionality and compare the values at `y`. Establish `h` using `pure_update hv hφ v (φ v) f (repl v x y)`. Rewrite `h` using `[Function.update_eq_self, piK_repl, pure_repl]`.
+
+Rewrite using `[h]`. Simplify using `[mul_comm]`. Express the relevant statement in the definitionally equal form `A (fun y => pureT f φ (repl v x y)) (piK v (finPart x)) = _`. Rewrite using `[hs, map_smul, pure_update hv hφ v (A (φ v)) f x]`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`.
+
+Rewrite using `[mul_comm]`. Both sides reduce to the same expression.
+-/
 theorem opL_pure
     (hv : ∀ᶠ w in cofinite, vac w = Set.indicator {x | ∀ i, x i ∈ w.adicCompletionIntegers F} 1)
     {φ : ∀ w : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F, (κ → Fv F w) → ℂ} (hφ : ∀ᶠ w in cofinite, φ w = vac w)
@@ -275,6 +350,15 @@ theorem opL_pure
   rw [mul_comm]
   rfl
 
+/- English proof (translation)
+Establish `e : ∀ ψ, pureT f (Function.update φ v ψ) = fun x => ψ (fun i => evFin F v (x i)) * pureT f (Function.update φ v 1) x` using `fun ψ => funext (pure_update hv hφ v ψ f)`. Proceed by induction on `hψ using Submodule.span_induction with`. Consider the case `mem ψ h => exact hS ψ h`. Consider the case `zero`. Rewrite using `[e]`.
+
+Use `L.zero_mem using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`. Simplify using the standard rewrite rules. Consider the case `add a b _ _ ha hb`. Rewrite `ha`, `hb`, the goal using `[e]`.
+
+Use `L.add_mem ha hb using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`. Simplify using `[add_mul]`. Consider the case `smul c a _ ha`. Rewrite `ha`, the goal using `[e]`.
+
+Use `L.smul_mem c ha using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`. Simplify using `[mul_assoc]`.
+-/
 theorem pure_update_mem
     (hv : ∀ᶠ w in cofinite, vac w = Set.indicator {x | ∀ i, x i ∈ w.adicCompletionIntegers F} 1)
     {φ : ∀ w : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F, (κ → Fv F w) → ℂ} (hφ : ∀ᶠ w in cofinite, φ w = vac w)
@@ -308,6 +392,21 @@ section Tensor
 
 open scoped TensorProduct
 
+/- English proof (translation)
+Distinguish the cases in `hvT : v ∈ T`. Rewrite using `[Finset.insert_eq_of_mem hvT]`. Conclude with `h`. Set `ex : ∀ w, Mo w` to `Function.update 0 v ξ`. Set `e : (∀ w : T, Mo w) → ∀ w : (insert v T : Finset ι), Mo w` to `fun m w => if hw : w.1 ∈ T then m ⟨w.1, hw⟩ else ex w.1`.
+
+Establish `hup : ∀ (m : ∀ w : T, Mo w) (i : T) (x : Mo i), e (Function.update m i x) = Function.update (e m) ⟨i.1, Finset.mem_insert_of_mem i.2⟩ x`. Introduce `m i x`. Use function extensionality and compare the values at `w`. Distinguish the cases in `hw : w = ⟨i.1, Finset.mem_insert_of_mem i.2⟩`. Substitute `hw` using the available equality.
+
+Simplify using `[e]`. Rewrite using `[Function.update_of_ne hw]`. Establish `hne : ∀ hw' : w.1 ∈ T, (⟨w.1, hw'⟩ : T) ≠ i` using `fun hw' h' => hw (Subtype.ext (show w.1 = i.1 from congrArg Subtype.val h'))`. Simplify using `only [e]`. Use `split_ifs with hw'`.
+
+Rewrite using `[Function.update_of_ne (hne hw')]`. Both sides reduce to the same expression. Set `M : MultilinearMap ℂ (fun w : T => Mo w) (PiTensorProduct ℂ fun w : (insert v T : Finset ι) => Mo w)` to `MultilinearMap.mk' (fun m => PiTensorProduct.tprod ℂ (e m)) (fun m i x y => by`. Simplify using `only [hup, MultilinearMap.map_update_add])`. Use the proof step `(fun m i c x => by`.
+
+Simplify using `only [hup, MultilinearMap.map_update_smul])`. Establish `hM : ∀ c : ∀ i, Mo i, c v = ξ → M (fun w : T => c w) = PiTensorProduct.tprod ℂ fun w : (insert v T : Finset ι) => c w`. Introduce `c hc`. Establish `hMe : M (fun w : T => c w) = PiTensorProduct.tprod ℂ (e fun w : T => c w)` using `rfl`. Rewrite using `[hMe]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `w`. Break down `w with ⟨w, hw⟩` into its components or cases. Distinguish the cases in `hwT : w ∈ T`. Simplify using `[e, hwT]`.
+
+Take `rfl : w = v` from `(Finset.mem_insert.1 hw).resolve_right hwT`. Simplify using `[e, hwT, ex, hc]`. Use `congrArg (LinearMap.lTensor Q (PiTensorProduct.lift M)) h` as an intermediate fact. Simplify `this` using `only [map_sum, LinearMap.lTensor_tmul, PiTensorProduct.lift.tprod, hM _ (hb hvT _), hM _ (hb' hvT _)]`.
+-/
 theorem tensor_insert {ι Q : Type} [DecidableEq ι] {Mo : ι → Type} [∀ i, AddCommGroup (Mo i)] [∀ i, Module ℂ (Mo i)]
     [AddCommGroup Q] [Module ℂ Q] (T : Finset ι) (v : ι) (ξ : Mo v) {m m' : ℕ}
     (a : Fin m → Q) (b : Fin m → ∀ i, Mo i) (a' : Fin m' → Q) (b' : Fin m' → ∀ i, Mo i)
@@ -366,6 +465,11 @@ local notation "pureT" => GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorMode
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+Use `choose sec hsec hp using hs`. Set `b` to `Module.Basis.ofVectorSpace ℂ P`. Set `s : P →ₗ[ℂ] V` to `b.constr ℂ fun i => sec (b i)`. Establish `hps : p ∘ₗ s = LinearMap.id` using `b.ext fun i => by simp [s, hp]`. Use `⟨s ∘ₗ p, fun φ => LinearMap.congr_fun hps (p φ), fun φ => ?_⟩` and prove the remaining obligations.
+
+Establish `: LinearMap.range s ≤ Submodule.span ℂ S`. Rewrite using `[Module.Basis.constr_range]`. Conclude with `Submodule.span_mono (Set.range_subset_iff.2 fun i => hsec _)`. Conclude with `this ⟨p φ, rfl⟩`.
+-/
 theorem exists_section {V P : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup P] [Module ℂ P] (p : V →ₗ[ℂ] P) (S : Set V)
     (hs : ∀ ξ, ∃ φ ∈ S, p φ = ξ) : ∃ A : V →ₗ[ℂ] V, (∀ φ, p (A φ) = p φ) ∧ ∀ φ, A φ ∈ Submodule.span ℂ S := by
   choose sec hsec hp using hs
@@ -378,11 +482,23 @@ theorem exists_section {V P : Type} [AddCommGroup V] [Module ℂ V] [AddCommGrou
     exact Submodule.span_mono (Set.range_subset_iff.2 fun i => hsec _)
   exact this ⟨p φ, rfl⟩
 
+/- English proof (translation)
+The claim follows from `Submodule.span_le.2 fun _ h => h.1`.
+-/
 theorem soLoc_sub {n d : ℕ} {Y : Spc F E n} {Z : Spc F E d} (M : Model σ Y Z) (ψ : AddChar (AF F) ℂ)
     {v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F} (t : E →ₐ[F] Fv F v) :
     Submodule.span ℂ (M.SoLoc ψ t) ≤ SB (Fin n × Fin d → Fv F v) :=
   Submodule.span_le.2 fun _ h => h.1
 
+/- English proof (translation)
+Establish `hle : M.So ψ t₁ ≤ (M.So ψ t₁ ⊓ M.So ψ t).comap (opL v A)`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `Φ ⟨f, φ, h1, h2, h3, rfl⟩`. Establish `hU : ∀ ψ' ∈ SB (Fin n × Fin d → Fv F v), ∀ w, Function.update φ v ψ' w ∈ SB _` using `fun ψ' h' w => by`. Distinguish the cases in `h : w = v`.
+
+Substitute `h` using the available equality. Simplify using `using h'`. Rewrite using `[Function.update_of_ne h]`. Conclude with `h1 w`. Establish `hC : ∀ ψ', ∀ᶠ w in cofinite, Function.update φ v ψ' w = M.vac w` using `fun ψ' => by filter_upwards [h2, Filter.eventually_cofinite_ne v] with w h h'`.
+
+Rewrite using `[Function.update_of_ne h', h]`. Rewrite using `[SetLike.mem_coe, Submodule.mem_comap, opL_pure hM.std h2]`. Use `Submodule.mem_inf.2 ⟨Submodule.subset_span ?_, ?_⟩` and prove the remaining obligations. Use `⟨f, _, hU _ (soLoc_sub M ψ t (hA _)), hC _, ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[Function.update_of_ne hne.symm]`.
+
+Conclude with `h3`. Use `pure_update_mem hM.std h2 v f _ (S := M.SoLoc ψ t) (fun ψ' h' => Submodule.subset_span ?_) (hA _)` and prove the remaining obligations. Conclude with `⟨f, _, hU _ h'.1, hC _, by simpa using h', rfl⟩`. Conclude with `hle hΨ`.
+-/
 theorem opL_so {n d : ℕ} {Y : Spc F E n} {Z : Spc F E d} (M : Model σ Y Z) (ψ : AddChar (AF F) ℂ) (hM : M.IsGood ψ)
     {v₁ v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F} (t₁ : E →ₐ[F] Fv F v₁) (t : E →ₐ[F] Fv F v) (hne : v ≠ v₁)
     (A : ((Fin n × Fin d → Fv F v) → ℂ) →ₗ[ℂ] ((Fin n × Fin d → Fv F v) → ℂ))
@@ -412,6 +528,17 @@ theorem opL_so {n d : ℕ} {Y : Spc F E n} {Z : Spc F E d} (M : Model σ Y Z) (�
 variable {a a' : ℕ} {B : Base F E} {G : Geo σ a a'} {X : Chars F E} {om : Rep σ G.V G.W} {om' : Rep σ G.V' G.W}
   {R : RealMaps F a a'} {Rf : FinMaps F a a'}
 
+/- English proof (translation)
+Take `⟨T, hT, m, m', f, φ, f', φ', h1, h2, rfl, rfl, he⟩` from `h`. Establish `hc : ∀ j, ∀ᶠ w in cofinite, φ' j w = G.M'.vac w` using `fun j => by filter_upwards [T.finite_toSet.compl_mem_cofinite] with w hw using (h2 j).2.2 w hw`. Establish `hpu : ∀ j (w : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F), Rf.p' w (Function.update (φ' j) v (A (φ' j v)) w) = Rf.p' w (φ' j w)` using `fun j w => by`. Distinguish the cases in `h : w = v`. Substitute `h` using the available equality.
+
+Simplify using `using hp _`. Rewrite using `[Function.update_of_ne h]`. Use `⟨insert v T, hT.trans (Finset.subset_insert _ _), m, m', f, φ, f', fun j => Function.update (φ' j) v (A (φ' j v)), fun i => ⟨(h1 i).1, (h1 i).2.1, fun w hw => (h1 i).2.2 w fun h => hw (Finset.mem_insert_of_mem h)⟩, fun j => ⟨(h2 j).1, fun w => ?_, fun w hw => ?_⟩, rfl, ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Function.update (φ' j) v (A (φ' j v)) w ∈ _`. Distinguish the cases in `h : w = v`.
+
+Substitute `h` using the available equality. Simplify using `using hSB _`. Rewrite using `[Function.update_of_ne h]`. Conclude with `(h2 j).2.1 w`. Establish `h : w ≠ v` using `fun h => hw (h ▸ Finset.mem_insert_self _ _)`.
+
+Express the relevant statement in the definitionally equal form `Function.update (φ' j) v (A (φ' j v)) w = _`. Rewrite using `[Function.update_of_ne h]`. Conclude with `(h2 j).2.2 w fun h' => hw (Finset.mem_insert_of_mem h')`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => opL_pure hM'.std (hc j) v A (f' j)`.
+
+Simplify using `only [hpu]`. Conclude with `tensor_insert T v (Rf.p v (G.M.vac v)) _ (fun i w => Rf.p w (φ i w)) _ (fun j w => Rf.p' w (φ' j w)) (fun hv i => by simp only [(h1 i).2.2 v hv]) (fun hv j => by simp only [(h2 j).2.2 v hv, hsph]) he`.
+-/
 theorem polMatch_move (hM' : G.M'.IsGood B.ψ) {v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F}
     (hsph : Rf.p v (G.M.vac v) = Rf.p' v (G.M'.vac v))
     (A : ((Fin a' × Fin (a + a') → Fv F v) → ℂ) →ₗ[ℂ] ((Fin a' × Fin (a + a') → Fv F v) → ℂ))
@@ -449,6 +576,13 @@ theorem polMatch_move (hM' : G.M'.IsGood B.ψ) {v : GlobalTheory.IndefiniteRowSi
 
 abbrev mv (B : Base F E) (v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F) (τ : E →ₐ[F] Fv F v) : Base F E := { B with v₁ := v, τ₁ := τ }
 
+/- English proof (translation)
+Establish `hSB : ∀ φ, A φ ∈ SB (Fin a' × Fin (a + a') → Fv F v)` using `fun φ => soLoc_sub G.M' B.ψ τ (hA φ)`. Take `⟨hΨ, m, m', g, f, s, g', f', s', hc, hc', rfl, rfl, hk⟩` from `h`. Establish `hg : ∀ j, opF v A (g' j) ∈ SB _` using `fun j => opF_mem v A (fun φ _ => hSB φ) (hc' j).1`. Establish `he : ∀ u : Fin m' → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.SInf F (Fin a' × Fin (a + a')), opL v A (∑ j, pureA F (u j) (g' j)) = ∑ j, pureA F (u j) (opF v A (g' j))` using `fun u => by`. Rewrite using `[map_sum]`.
+
+Conclude with `Finset.sum_congr rfl fun j _ => opL_pureA v A _ _`. Establish `hso` using `opL_so G.M' B.ψ hM' B.τ₁ τ hne A hA hΨ`. Establish `hk'` using `fun k => opL_so G.M' B.ψ hM' B.τ₁ τ hne A hA (hk k).1`. Establish `hpm` using `fun k => polMatch_move (G := G) (X := X) (R := R) (Rf := Rf) hM' hsph A hSB hp (hk k).2`. Use `⟨⟨hso.1, m, m', g, f, s, fun j => opF v A (g' j), f', s', hc, fun j => ⟨hg j, (hc' j).2⟩, rfl, he f', fun k => ?_⟩, ⟨hso.2, m, m', g, f, s, fun j => opF v A (g' j), f', s', hc, fun j => ⟨hg j, (hc' j).2⟩, rfl, he f', fun k => ?_⟩⟩` and prove the remaining obligations.
+
+Rewrite using `[← he]`. Conclude with `⟨(hk' k).1, hpm k⟩`. Rewrite using `[← he]`. Conclude with `⟨(hk' k).2, hpm k⟩`.
+-/
 theorem match_move (hM' : G.M'.IsGood B.ψ) {v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F} (τ : E →ₐ[F] Fv F v) (hne : v ≠ B.v₁)
     (hsph : Rf.p v (G.M.vac v) = Rf.p' v (G.M'.vac v))
     (A : ((Fin a' × Fin (a + a') → Fv F v) → ℂ) →ₗ[ℂ] ((Fin a' × Fin (a + a') → Fv F v) → ℂ))
@@ -472,6 +606,15 @@ theorem match_move (hM' : G.M'.IsGood B.ψ) {v : GlobalTheory.IndefiniteRowSideF
   · rw [← he]
     exact ⟨(hk' k).2, hpm k⟩
 
+/- English proof (translation)
+Take `⟨A, hp, hA⟩` from `exists_section (Rf.p' v) _ hs`. Establish `hnz : ∃ Φ Ψ h, Match B G X R Rf Φ Ψ ∧ G.M'.I om' Ψ h ≠ 0`. Assume the negation of the conclusion as `hcon`. Establish `hz : ∀ Φ Ψ h, Match B G X R Rf Φ Ψ → G.M'.I om' Ψ h = 0` using `fun Φ Ψ h hm => by_contra fun hn => hcon ⟨Φ, Ψ, h, hm, hn⟩`. Take `⟨c₀, _, hu⟩` from `one.2.1`.
+
+Establish `hc1 : IsConst B G X om om' R Rf (c + 1)` using `fun Φ Ψ hm h => by`. Rewrite using `[hc Φ Ψ hm h, hz Φ Ψ h hm, mul_zero, mul_zero]`. Use `(hu _ hc1).trans (hu _ hc).symm` as an intermediate fact. Simplify using `at this`. Take `⟨Φ, Ψ, h, hm, hI⟩` from `hnz`.
+
+Take `⟨m1, m2⟩` from `match_move hM.triple.geo.hM' τ hne (hM.fin.sph v hvT).1 A hA hp hm`. Establish `e1` using `hc Φ Ψ hm h`. Establish `e2` using `hc _ _ m1 h`. Establish `e3` using `hc' _ _ m2 h`. Establish `hI' : G.M'.I om' (opL v A Ψ) h ≠ 0` using `fun h0 => by`.
+
+Rewrite `e2` using `[h0, mul_zero]`. Rewrite `e1` using `[e2]`. Conclude with `mul_ne_zero (one.2.2 c hc) hI e1.symm`. Conclude with `mul_right_cancel₀ hI' (e2.symm.trans e3)`.
+-/
 theorem const_eq (hM : IsMatched B G X om om' R Rf) (one : OneConst B G X om om' R Rf) {v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F}
     (τ : E →ₐ[F] Fv F v) (hne : v ≠ B.v₁) (hvT : v ∉ X.T) (hs : ∀ ξ, ∃ φ ∈ G.M'.SoLoc B.ψ τ, Rf.p' v φ = ξ) {c c' : ℂ}
     (hc : IsConst B G X om om' R Rf c) (hc' : IsConst (mv B v τ) G X om om' R Rf c') : c = c' := by
@@ -496,6 +639,11 @@ theorem const_eq (hM : IsMatched B G X om om' R Rf) (one : OneConst B G X om om'
     exact mul_ne_zero (one.2.2 c hc) hI e1.symm
   exact mul_right_cancel₀ hI' (e2.symm.trans e3)
 
+/- English proof (translation)
+Take `⟨⟨hb, hg, hc, hw, hw'⟩, hr, hf⟩` from `hM`. Establish `hV` using `hg.hV`. Establish `hV'` using `hg.hV'`. Establish `hW` using `hg.hW`. Establish `q` using `hr.quot`.
+
+Establish `q'` using `hr.quot'`. Conclude with `⟨⟨⟨hb.cm, hb.galois, hb.unram, hb.std, hb.inert, hb.psiP⟩, ⟨hg.lt, hg.even, hg.kappa, hg.eBig, hg.aBig, ⟨hV.herm, hV.sig, hV.lat, hV.dual, hV.cartan, hV.bas⟩, ⟨hV'.herm, hV'.sig, hV'.lat, hV'.dual, hV'.cartan, hV'.bas⟩, ⟨hW.skew, hW.sig, hW.lat, hW.dual, hW.cartan, hW.bas⟩, hg.hM …`.
+-/
 theorem matched_move (hM : IsMatched B G X om om' R Rf) {v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F} (τ : E →ₐ[F] Fv F v) (hv : X.Good v) :
     IsMatched (mv B v τ) G X om om' R Rf := by
   obtain ⟨⟨hb, hg, hc, hw, hw'⟩, hr, hf⟩ := hM
@@ -513,6 +661,11 @@ theorem matched_move (hM : IsMatched B G X om om' R Rf) {v : GlobalTheory.Indefi
     ⟨⟨q.onto, q.lie, q.cpt⟩, ⟨q'.onto, q'.lie, q'.cpt⟩, hr.lie, hr.cpt, hr.nontriv, hr.irred⟩,
     ⟨hf.onto, hf.onto', hf.inv, hf.inv', hf.equiv, hf.nontriv, hf.irred, hf.sph, hf.zeta⟩⟩
 
+/- English proof (translation)
+Establish `hM₂` using `matched_move hM τ hv`. Take `⟨one, -⟩` from `(hT.1 F E σ B a a' G X om om' hM.triple).2 R Rf hM`. Take `⟨one₂, co₂⟩` from `(hT.1 F E σ (mv B v τ) a a' G X om om' hM₂.triple).2 R Rf hM₂`. Take `⟨c₂, hc₂, -⟩` from `one₂.2.1`. Use `const_eq hM one τ hne hv.1 ((co₂.1 v hv).2.2.1 τ) hc hc₂` as an intermediate fact.
+
+Rewrite using `[this]` and apply the resulting hypothesis.
+-/
 theorem const_step (hT : ThetaIntegralsAgree) (hM : IsMatched B G X om om' R Rf) {v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F}
     (τ : E →ₐ[F] Fv F v) (hv : X.Good v) (hne : v ≠ B.v₁) {c : ℂ} (hc : IsConst B G X om om' R Rf c) :
     IsConst (mv B v τ) G X om om' R Rf c := by
@@ -525,6 +678,11 @@ theorem const_step (hT : ThetaIntegralsAgree) (hM : IsMatched B G X om om' R Rf)
 
 end Main
 
+/- English proof (translation)
+Introduce `hT F E _ _ _ _ _ σ B a a' Γ X om om' R Rf hM v τ hv`. Use `⟨matched_move hM τ hv, fun c hc => ?_⟩` and prove the remaining obligations. Use `haveI : IsGalois ℚ E := hM.triple.base.galois`. Take `⟨v₂, hS, hsp, ⟨τ₂⟩⟩` from `GlobalTheory.T.exists_split_place_outside F E (insert v (insert B.v₁ X.T))`. Establish `hv₂v : v₂ ≠ v` using `fun h => hS (h ▸ Finset.mem_insert_self _ _)`.
+
+Establish `hv₂₁ : v₂ ≠ B.v₁` using `fun h => hS (h ▸ Finset.mem_insert_of_mem (Finset.mem_insert_self _ _))`. Establish `hg₂ : X.Good v₂` using `⟨fun h => hS (Finset.mem_insert_of_mem (Finset.mem_insert_of_mem h)), hsp⟩`. Establish `hM₂` using `matched_move hM τ₂ hg₂`. Establish `hc₂` using `const_step hT hM τ₂ hg₂ hv₂₁ hc`. Conclude with `const_step hT hM₂ τ hv hv₂v.symm hc₂`.
+-/
 theorem const_good_place : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) (a a' : ℕ) (Γ : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo σ a a') (X : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chars F E) (om : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ Γ.V Γ.W) (om' : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ Γ.V' Γ.W) (R : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.RealMaps F a a') (Rf : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.FinMaps F a a'), GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsMatched B Γ X om om' R Rf → ∀ v (τ : E →ₐ[F] Fv F v), X.Good v → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsMatched { B with v₁ := v, τ₁ := τ } Γ X om om' R Rf ∧ ∀ c, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsConst B Γ X om om' R Rf c → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsConst { B with v₁ := v, τ₁ := τ } Γ X om om' R Rf c := by
   intro hT F E _ _ _ _ _ σ B a a' Γ X om om' R Rf hM v τ hv
   refine ⟨matched_move hM τ hv, fun c hc => ?_⟩

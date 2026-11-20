@@ -15,5 +15,8 @@ open GlobalTheory GlobalTheory.TorsionForm
 open scoped ContDiff Real CategoryTheory.Obj ComplexOrder
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ConjPeriodChart.isPeriodChart_conj | exact GlobalTheory.ConjPeriodChart.isPeriodChart_conj | (intros; apply GlobalTheory.ConjPeriodChart.isPeriodChart_conj <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.period_chart_conjugate : ∀ (k : Type) [CommRing k] (S : Scheme.{0}) (p : S ⟶ Sp k) (A : Over S) [GrpObj A] (g : ℕ) (w : VMetric p (omega A) g) (σ : k →+* ℂ) (D : ℕ) (c : AlgChart p σ D) (τ : V D → Matrix (Fin g) (Fin g) ℂ) (ex : Pt (V D) g → CxPts (A.hom ≫ p) σ), IsPeriodChart w c τ ex → IsPeriodChart w (σ := (starRingEnd ℂ).comp σ) (conjChart rfl c) (fun v => -(τ (conjCoord D v)).map (starRingEnd ℂ)) (fun P => conjPts (A.hom ≫ p) rfl (ex (conjCoord D P.1, star P.2))) := by
   first | exact @GlobalTheory.ConjPeriodChart.isPeriodChart_conj | exact GlobalTheory.ConjPeriodChart.isPeriodChart_conj | (intros; apply GlobalTheory.ConjPeriodChart.isPeriodChart_conj <;> assumption)

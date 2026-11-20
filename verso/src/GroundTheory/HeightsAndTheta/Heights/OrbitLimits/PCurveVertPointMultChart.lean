@@ -14,6 +14,13 @@ namespace CurveVerticalPointMultiplicity
 
 variable {K : Type} {ι : K → Type}
 
+/- English proof (translation)
+Rewrite using `[f.as_sum, map_sum, map_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations. Rewrite using `[aeval_monomial, aeval_monomial, mul_assoc]`. Use `congr 1`. Rewrite using `[Finsupp.prod_fintype _ _ (by simp), Finsupp.prod_fintype _ _ (by simp)]`.
+
+Repeatedly rewrite using `[mul_pow, Finset.prod_mul_distrib]`. Use `congr 1`. Rewrite using `[Fintype.prod_sigma]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `only`.
+
+Rewrite using `[Finset.prod_pow_eq_pow_sum, hf m hm k]`.
+-/
 theorem aeval_mul_of_homog [Fintype K] [∀ k, Fintype (ι k)] {S : Type*} [CommRing S] [Algebra ℤ S] (r : (Σ k, ι k) → S) (t : K → S) {f : MRing ι}
     {d : K → ℕ} (hf : IsMultiHomog f d) :
     aeval (fun p => r p * t p.1) f = aeval r f * ∏ k, t k ^ d k := by
@@ -30,6 +37,9 @@ theorem aeval_mul_of_homog [Fintype K] [∀ k, Fintype (ι k)] {S : Type*} [Comm
   dsimp only
   rw [Finset.prod_pow_eq_pow_sum, hf m hm k]
 
+/- English proof (translation)
+Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C n => simp`. Consider the case `add p q hp hq => simp [hp, hq]`. Consider the case `mul_X p i hp => simp [hp]`.
+-/
 theorem map_aeval_int {S T : Type*} [CommRing S] [CommRing T] [Algebra ℤ S] [Algebra ℤ T] (φ : S →+* T) (r : (Σ k, ι k) → S)
     (f : MRing ι) : φ (aeval r f) = aeval (fun p => φ (r p)) f := by
   induction f using MvPolynomial.induction_on with
@@ -41,6 +51,31 @@ end CurveVerticalPointMultiplicity
 
 open CurveVerticalPointMultiplicity GroundTheory.Heights₂.Heights.VerticalPointMultiplicityChart in
 
+/- English proof (translation)
+Introduce `K _ ι _ Ω _ y s d hP hs hsP W hW c hc a b hb hab`. Take `⟨hmax, hrat, -⟩` from `hCh K ι Ω y s d hP hs hsP W hW c hc`. Establish `hWp : W.IsPrime` using `hW.1.1.1`. Establish `hmp : (curvePtIdeal y W).IsPrime` using `hmax.isPrime`. Use `choose a' b' hb' hab' using hrat`.
+
+Take `⟨Φ, hsurj, hker, hΦ⟩` from `hN K ι Ω y s d hP hs hsP W hW c hc a' b' hb' hab'`. Establish `hPW : mCoordIdeal y ≤ W` using `le_sup_left.trans hW.1.1.2`. Establish `hyc : ∀ k, y ⟨k, c k⟩ ≠ 0` using `fun k => ne_zero_of_X_notMem fun h => hc k (hPW h)`. Establish `hunit : ∀ x : (curvePtIdeal y W).primeCompl, IsUnit ((curveRing y).subtype x)` using `fun x => isUnit_iff_ne_zero.mpr fun h => x.2 (by`. Rewrite using `[show (x : curveRing y) = 0 from Subtype.ext h]`.
+
+Conclude with `zero_mem _)`. Set `e : Localization.AtPrime (curvePtIdeal y W) →+* Ω` to `IsLocalization.lift hunit`. Establish `hinj : Function.Injective e`. Rewrite using `[IsLocalization.lift_injective_iff]`. Introduce `x z`.
+
+Rewrite using `[(IsLocalization.injective (M := (curvePtIdeal y W).primeCompl) (Localization.AtPrime (curvePtIdeal y W)) (le_nonZeroDivisors_of_noZeroDivisors fun h => h (zero_mem _))).eq_iff]`. Conclude with `Subtype.val_injective.eq_iff.symm`. Establish `hbc : b ∈ (curvePtIdeal y W).primeCompl` using `hb`. Set `r : (Σ k, ι k) → Localization.AtPrime (curvePtIdeal y W)` to `fun p => IsLocalization.mk' _ (a' p) (⟨b' p, hb' p⟩ : (curvePtIdeal y W).primeCompl)`. Establish `her : ∀ p, e (r p) = y p / y ⟨p.1, c p.1⟩` using `fun p => (IsLocalization.lift_mk'_spec _ _ _ _).mpr (hab' p).symm`.
+
+Establish `hsr : aeval r s = IsLocalization.mk' _ a (⟨b, hbc⟩ : (curvePtIdeal y W).primeCompl)`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[map_aeval_int, funext her]`. Establish `key : aeval y s = aeval (fun p => y p / y ⟨p.1, c p.1⟩) s * ∏ k, y ⟨k, c k⟩ ^ d k`. Rewrite using `[← aeval_mul_of_homog _ (fun k => y ⟨k, c k⟩) hs]`.
+
+Conclude with `congrArg (fun v => aeval v s) (funext fun p => (div_mul_cancel₀ _ (hyc p.1)).symm)`. Establish `hpc : ∏ k, y ⟨k, c k⟩ ^ d k ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun k _ => pow_ne_zero _ (hyc k)`. Use `symm`. Use `(IsLocalization.lift_mk'_spec _ _ _ _).mpr ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(a : Ω) = (b : Ω) * _`.
+
+Apply `mul_right_cancel₀ hpc` to reduce the goal to its premises. Rewrite using `[mul_assoc, ← key, hab]`. Establish `hXk : ∀ k, (X k : MvPolynomial K (Localization.AtPrime (curvePtIdeal y W))) ∈ ((IsLocalRing.maximalIdeal (Localization.AtPrime (curvePtIdeal y W))).map (MvPolynomial.C : _ →+* MvPolynomial K _)).primeCompl` using `fun k h => by`. Establish `h1` using `MvPolynomial.mem_map_C_iff.mp h (Finsupp.single k 1)`. Rewrite `h1` using `[MvPolynomial.coeff_X, if_pos rfl]`.
+
+Conclude with `(IsLocalRing.maximalIdeal _).ne_top_iff_one.mp (IsLocalRing.maximalIdeal.isMaximal _).ne_top h1`. Establish `hprod : (∏ k, X k ^ d k : MvPolynomial K (Localization.AtPrime (curvePtIdeal y W))) ∈ ((IsLocalRing.maximalIdeal (Localization.AtPrime (curvePtIdeal y W))).map (MvPolynomial.C : _ →+* MvPolynomial K _)).primeCompl` using `Submonoid.prod_mem _ fun k _ => Submonoid.pow_mem _ (hXk k) _`. Establish `hbu : IsUnit (IsLocalization.mk' (Localization.AtPrime (curvePtIdeal y W)) (1 : curveRing y) (⟨b, hbc⟩ : (curvePtIdeal y W).primeCompl))` using `isUnit_iff_exists_inv.mpr ⟨algebraMap _ _ b, (IsLocalization.mk'_spec _ _ _).trans (map_one _)⟩`. Establish `hΦs : Φ (algebraMap _ _ s) = algebraMap (Localization.AtPrime (curvePtIdeal y W)) (mNagataRing K (Localization.AtPrime (curvePtIdeal y W))) (algebraMap (curveRing y) _ a) * (algebraMap (MvPolynomial K (Localization.AtPrime (curvePtIdeal y W))) (mNagataRing K (Localization.AtPrime …`. Rewrite using `[hΦ s, aeval_mul_of_homog (fun p => MvPolynomial.C (r p)) X hs, ← map_aeval_int MvPolynomial.C, hsr, IsLocalization.mk'_eq_mul_mk'_one, map_mul, map_mul, map_mul, ← mul_assoc, IsScalarTower.algebraMap_apply (Localization.AtPrime (curvePtIdeal y W)) (MvPolynomial K (Localization.A …`.
+
+Establish `hv : IsUnit (algebraMap (MvPolynomial K (Localization.AtPrime (curvePtIdeal y W))) (mNagataRing K (Localization.AtPrime (curvePtIdeal y W))) (MvPolynomial.C (IsLocalization.mk' (Localization.AtPrime (curvePtIdeal y W)) (1 : curveRing y) (⟨b, hbc⟩ : (curvePtIdeal y W).primeCompl)) …` using `((hbu.map MvPolynomial.C).map _).mul (IsLocalization.map_units _ ⟨_, hprod⟩)`. Establish `hJ : ((mCoordIdeal y ⊔ Ideal.span {s}).map (algebraMap _ (Localization.AtPrime W))).map Φ = (Ideal.span {algebraMap (curveRing y) (Localization.AtPrime (curvePtIdeal y W)) a}).map (algebraMap _ (mNagataRing K (Localization.AtPrime (curvePtIdeal y W))))`. Rewrite using `[Ideal.map_sup, Ideal.map_sup, (Ideal.map_eq_bot_iff_le_ker _).mpr hker.ge, bot_sup_eq, Ideal.map_span, Ideal.map_span, Ideal.map_span, Set.image_singleton, Set.image_singleton, Set.image_singleton, hΦs, Ideal.span_singleton_mul_right_unit hv]`. Establish `hmap : (IsLocalRing.maximalIdeal (Localization.AtPrime (curvePtIdeal y W))).map (algebraMap _ (mNagataRing K (Localization.AtPrime (curvePtIdeal y W)))) = IsLocalRing.maximalIdeal (mNagataRing K (Localization.AtPrime (curvePtIdeal y W)))`. Rewrite using `[IsScalarTower.algebraMap_eq (Localization.AtPrime (curvePtIdeal y W)) (MvPolynomial K (Localization.AtPrime (curvePtIdeal y W))) (mNagataRing K _), ← Ideal.map_map, MvPolynomial.algebraMap_eq, IsLocalization.AtPrime.map_eq_maximalIdeal]`.
+
+Establish `: IsLocalHom (algebraMap (Localization.AtPrime (curvePtIdeal y W)) (mNagataRing K (Localization.AtPrime (curvePtIdeal y W))))`. Use `⟨fun x hx => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hx'`. Establish `h1 : x ∈ IsLocalRing.maximalIdeal _` using `hx'`. Establish `h2` using `Ideal.mem_map_of_mem (algebraMap _ (mNagataRing K (Localization.AtPrime (curvePtIdeal y W)))) h1`.
+
+Rewrite `h2` using `[hmap]`. Conclude with `h2 hx`. Establish `hfib : Module.length (mNagataRing K (Localization.AtPrime (curvePtIdeal y W))) (mNagataRing K (Localization.AtPrime (curvePtIdeal y W)) ⧸ (IsLocalRing.maximalIdeal (Localization.AtPrime (curvePtIdeal y W))).map (algebraMap _ (mNagataRing K (Localization.AtPrime (curvePtIdeal y W) …`. Rewrite using `[hmap]`. Establish `: IsSimpleModule (mNagataRing K (Localization.AtPrime (curvePtIdeal y W))) (mNagataRing K (Localization.AtPrime (curvePtIdeal y W)) ⧸ IsLocalRing.maximalIdeal (mNagataRing K (Localization.AtPrime (curvePtIdeal y W))))` using `isSimpleModule_iff_quot_maximal.mpr ⟨_, inferInstance, ⟨LinearEquiv.refl _ _⟩⟩`.
+
+Conclude with `Module.length_eq_one _ _`. Rewrite using `[multAt, dif_pos hWp, locLen, dif_pos hmp]`. Use `congr 1`. Rewrite using `[length_localizedModule_quotient, length_localizedModule_quotient, length_quotient_of_surjective Φ hsurj _ (hker.le.trans (Ideal.map_mono le_sup_left)), hJ, (Algebra.TensorProduct.quotIdealMapEquivTensorQuot (mNagataRing K (Localization.AtPrime (curvePtIdeal y W))) (Ideal.span {a …`.
+-/
 theorem CurveVertPointMultChart.proof (hCh : CurveVertPointChart.Statement)
     (hN : CurveVertPointNagata.Statement) : CurveVertPointMultChart.Statement := by
   classical

@@ -10,6 +10,11 @@ open GlobalTheory GlobalTheory.Cartier GlobalTheory.ProjVar GlobalTheory.CxPts G
 
 namespace GlobalTheory.CompanionTheory.ChernDegree
 
+/- English proof (translation)
+Introduce `Y Δ L r hL n b hb hP`. Take `⟨μ, hμ, hac, heq⟩` from `GlobalTheory.T.chern_integral_random_sections Y Δ L r hL n b hb hP`. Rewrite using `[heq, integral_congr_ae (g := fun _ => (((Y.inter fun _ => Δ : ℤ)) : ℝ)) ?_]`. Simplify using the standard rewrite rules. Use `filter_upwards [hac.ae_le (GlobalTheory.T.ae_zero_count_eq_intersection Y Δ L r hL n b hb hP)] with C hC`.
+
+Conclude with `hC` after adjusting the coercions.
+-/
 theorem chernInt_fsBasis_eq_inter : ∀ (Y : Var ℂ) (Δ : Y.Dv) (L : LB Y.X) (r : L.ι → Y.Fnˣ) (hL : L.IsLB) (n : ℕ) (b : Fin n → L.Sec) (hb : ⨆ j, nonzeroLocus (b j) = ⊤), Presents Δ L r → (Weight.fsBasis Y.str (RingHom.id ℂ) hL b hb 1 (by simp)).chernInt Y.dim Set.univ (fun _ => 1) = ((Y.inter fun _ => Δ : ℤ) : ℝ) := by
   intro Y Δ L r hL n b hb hP
   obtain ⟨μ, hμ, hac, heq⟩ := GlobalTheory.T.chern_integral_random_sections Y Δ L r hL n b hb hP

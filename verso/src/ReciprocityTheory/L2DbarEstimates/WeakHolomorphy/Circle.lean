@@ -5,6 +5,11 @@ namespace ReciprocityTheory.L2DbarEstimates.C
 open MeasureTheory Metric Set Filter Topology Complex
 open scoped ENNReal
 
+/- English proof (translation)
+Establish `ha0 : a ≠ 0`. Introduce `h`. Simplify using `[h] at ha`. Set `L : V n ≃ₗᵢ[ℝ] V n` to `{ toLinearEquiv := (LinearEquiv.smulOfNeZero ℂ (V n) a ha0).restrictScalars ℝ norm_map' := fun z => by simp [norm_smul, ha] }`. Establish `hL : (fun z : V n => a • z) = L`.
+
+Use function extensionality and compare the values at `z`. Both sides reduce to the same expression. Rewrite using `[hL]`. Conclude with `L.measurePreserving`.
+-/
 theorem measurePreserving_smul_unit {n : ℕ} (a : ℂ) (ha : ‖a‖ = 1) :
     MeasurePreserving (fun z : V n => a • z) volume volume := by
   have ha0 : a ≠ 0 := by
@@ -19,6 +24,21 @@ theorem measurePreserving_smul_unit {n : ℕ} (a : ℂ) (ha : ‖a‖ = 1) :
   rw [hL]
   exact L.measurePreserving
 
+/- English proof (translation)
+Distinguish the cases in `hw0 : w = 0`. Substitute `hw0` using the available equality. Simplify using the standard rewrite rules. Establish `hwpos : 0 < ‖w‖` using `norm_pos_iff.mpr hw0`. Establish `hρ1 : 1 < R / ‖w‖`.
+
+Rewrite using `[lt_div_iff₀ hwpos]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hg : DifferentiableOn ℂ (fun ζ : ℂ => u (c + ζ • w)) (Metric.ball 0 (R / ‖w‖))`. Introduce `ζ hζ`. Establish `hmem : c + ζ • w ∈ ball c R`.
+
+Rewrite `hζ` using `[Metric.mem_ball, dist_zero_right, lt_div_iff₀ hwpos]`. Rewrite using `[Metric.mem_ball, dist_eq_norm, add_sub_cancel_left, norm_smul]`. Conclude with `hζ`. Establish `h1 : DifferentiableAt ℂ u (c + ζ • w)` using `hu.differentiableAt (isOpen_ball.mem_nhds hmem)`. Establish `h2 : DifferentiableAt ℂ (fun ζ : ℂ => c + ζ • w) ζ` using `(differentiableAt_id.smul_const w).const_add c`.
+
+Conclude with `(h1.comp ζ h2).differentiableWithinAt`. Establish `hcl : DifferentiableOn ℂ (fun ζ : ℂ => u (c + ζ • w)) (Metric.closedBall 0 1)` using `hg.mono (Metric.closedBall_subset_ball hρ1)`. Establish `key` using `hcl.circleIntegral_sub_inv_smul (w := 0) (by simp)`. Simplify using `only [circleIntegral, deriv_circleMap, sub_zero, smul_eq_mul, zero_smul, add_zero] at key`. Establish `hcm : ∀ θ : ℝ, circleMap 0 1 θ = Complex.exp ((θ : ℂ) * I)`.
+
+Introduce `θ`. Simplify using `[circleMap]`. Establish `h3 : ∀ θ : ℝ, circleMap 0 1 θ * I * ((circleMap 0 1 θ)⁻¹ * u (c + circleMap 0 1 θ • w)) = I * u (c + Complex.exp ((θ : ℂ) * I) • w)`. Introduce `θ`. Establish `hne : circleMap 0 1 θ ≠ 0` using `circleMap_ne_center one_ne_zero`.
+
+Rewrite `hne`, the goal using `[hcm θ]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [h3, intervalIntegral.integral_const_mul] at key`. Apply `mul_left_cancel₀ Complex.I_ne_zero` to reduce the goal to its premises. Rewrite using `[key]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem circle_mean {n : ℕ} {c w : V n} {R : ℝ} {u : V n → ℂ}
     (hu : DifferentiableOn ℂ u (ball c R)) (hw : ‖w‖ < R) :
     ∫ θ in (0 : ℝ)..2 * Real.pi, u (c + Complex.exp ((θ : ℂ) * I) • w) =
@@ -61,6 +81,25 @@ theorem circle_mean {n : ℕ} {c w : V n} {R : ℝ} {u : V n → ℂ}
   push_cast
   ring
 
+/- English proof (translation)
+Establish `hmem : ∀ θ : ℝ, c + Complex.exp ((θ : ℂ) * I) • w ∈ ball c R`. Introduce `θ`. Rewrite using `[Metric.mem_ball, dist_eq_norm, add_sub_cancel_left, norm_smul, Complex.norm_exp_ofReal_mul_I, one_mul]`. Conclude with `hw`. Use `set F : ℝ → ℂ := fun θ => u (c + Complex.exp ((θ : ℂ) * I) • w) with hF`.
+
+Establish `hcont : Continuous F`. Use `continuous_iff_continuousAt.2 fun θ => ?_` and prove the remaining obligations. Establish `h1` using `(hu.differentiableAt (isOpen_ball.mem_nhds (hmem θ))).continuousAt`. Establish `h2 : Continuous fun θ : ℝ => c + Complex.exp ((θ : ℂ) * I) • w` using `by fun_prop`. Use `show ContinuousAt (u ∘ fun θ : ℝ => c + Complex.exp ((θ : ℂ) * I) • w) θ`.
+
+Conclude with `ContinuousAt.comp (f := fun θ : ℝ => c + Complex.exp ((θ : ℂ) * I) • w) (x := θ) h1 h2.continuousAt`. Establish `hpi : (0 : ℝ) ≤ 2 * Real.pi` using `by positivity`. Establish `hI : ∫ θ in Ioc (0 : ℝ) (2 * Real.pi), F θ = ((2 * Real.pi : ℝ) : ℂ) * u c`. Rewrite using `[← intervalIntegral.integral_of_le hpi]`. Conclude with `circle_mean hu hw`.
+
+Establish `hint : IntegrableOn F (Ioc (0 : ℝ) (2 * Real.pi))` using `(hcont.integrableOn_Icc).mono_set Ioc_subset_Icc_self`. Establish `hint2 : IntegrableOn (fun θ => ‖F θ‖ ^ 2) (Ioc (0 : ℝ) (2 * Real.pi))` using `((hcont.norm.pow 2).integrableOn_Icc).mono_set Ioc_subset_Icc_self`. Establish `hcr : Continuous fun θ => (F θ * (starRingEnd ℂ) (u c)).re` using `Complex.continuous_re.comp (hcont.mul continuous_const)`. Establish `hint3 : IntegrableOn (fun θ => (F θ * (starRingEnd ℂ) (u c)).re) (Ioc (0 : ℝ) (2 * Real.pi))` using `(hcr.integrableOn_Icc).mono_set Ioc_subset_Icc_self`. Establish `hpt : ∀ θ, 2 * (F θ * (starRingEnd ℂ) (u c)).re - ‖u c‖ ^ 2 ≤ ‖F θ‖ ^ 2`.
+
+Introduce `θ`. Establish `h` using `Complex.normSq_nonneg (F θ - u c)`. Rewrite `h` using `[Complex.normSq_sub]`. Rewrite using `[← Complex.normSq_eq_norm_sq, ← Complex.normSq_eq_norm_sq]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hre : ∫ θ in Ioc (0 : ℝ) (2 * Real.pi), (F θ * (starRingEnd ℂ) (u c)).re = 2 * Real.pi * ‖u c‖ ^ 2`. Establish `h1 : ∫ θ in Ioc (0 : ℝ) (2 * Real.pi), (F θ * (starRingEnd ℂ) (u c)).re = (∫ θ in Ioc (0 : ℝ) (2 * Real.pi), F θ * (starRingEnd ℂ) (u c)).re` using `integral_re (hint.mul_const _)`. Rewrite using `[h1, integral_mul_const, hI, mul_assoc, Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Simplify using the standard rewrite rules. Rewrite using `[← Complex.ofReal_pow, Complex.ofReal_re]`.
+
+Establish `hreal : ‖u c‖ ^ 2 * (2 * Real.pi) ≤ ∫ θ in Ioc (0 : ℝ) (2 * Real.pi), ‖F θ‖ ^ 2`. Establish `h : ∫ θ in Ioc (0 : ℝ) (2 * Real.pi), (2 * (F θ * (starRingEnd ℂ) (u c)).re - ‖u c‖ ^ 2) ≤ ∫ θ in Ioc (0 : ℝ) (2 * Real.pi), ‖F θ‖ ^ 2` using `integral_mono ((hint3.const_mul 2).sub (integrable_const (‖u c‖ ^ 2))) hint2 hpt`. Rewrite `h` using `[integral_sub (hint3.const_mul 2) (integrable_const _), integral_const_mul, hre, integral_const]`. Simplify using `only [Measure.restrict_apply_univ, Real.volume_Ioc, sub_zero, smul_eq_mul] at h`. Establish `hv : (volume.restrict (Ioc (0 : ℝ) (2 * Real.pi))).real univ = 2 * Real.pi`.
+
+Simplify using `[Measure.real, Real.volume_Ioc, hpi, Real.pi_pos.le]`. Rewrite `h` using `[hv]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hen : ∀ θ, ‖F θ‖ₑ ^ 2 = ENNReal.ofReal (‖F θ‖ ^ 2)` using `fun θ => by`. Rewrite using `[ENNReal.ofReal_pow (norm_nonneg _), ofReal_norm_eq_enorm]`.
+
+Use `show ‖u c‖ₑ ^ 2 * ENNReal.ofReal (2 * Real.pi) ≤ ∫⁻ θ in Ioc (0 : ℝ) (2 * Real.pi), ‖F θ‖ₑ ^ 2`. Repeatedly rewrite using `[hen]`. Rewrite using `[← ofReal_integral_eq_lintegral_ofReal hint2 (ae_of_all _ fun θ => by positivity), ← ofReal_norm_eq_enorm, ← ENNReal.ofReal_pow (norm_nonneg _), ← ENNReal.ofReal_mul (by positivity)]`. Conclude with `ENNReal.ofReal_le_ofReal hreal`.
+-/
 theorem circle_mean_sq {n : ℕ} {c w : V n} {R : ℝ} {u : V n → ℂ}
     (hu : DifferentiableOn ℂ u (ball c R)) (hw : ‖w‖ < R) :
     ‖u c‖ₑ ^ 2 * ENNReal.ofReal (2 * Real.pi) ≤

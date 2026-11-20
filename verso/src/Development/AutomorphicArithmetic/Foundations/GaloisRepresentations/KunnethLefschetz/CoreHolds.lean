@@ -2,6 +2,9 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Kunne
 
 namespace UpperTheory.Gal.KunnethLefschetz
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨GlobalTheory.EtC.etC_c2, UpperTheory.Cb.etale_cohomology_ind_etale_base_change, GlobalTheory.EtC.HomotopyInv.homotopy_invariance_etale, GlobalTheory.EtC.laurentPolynomial_cohomology_strictlyHenselian_vanishing, GlobalTheory.EtC.projectiveBundleFormula_vectorBundle_any_space⟩`.
+-/
 theorem core_holds : Core :=
   ⟨GlobalTheory.EtC.etC_c2, UpperTheory.Cb.etale_cohomology_ind_etale_base_change, GlobalTheory.EtC.HomotopyInv.homotopy_invariance_etale, GlobalTheory.EtC.laurentPolynomial_cohomology_strictlyHenselian_vanishing, GlobalTheory.EtC.projectiveBundleFormula_vectorBundle_any_space⟩
 

@@ -17,6 +17,11 @@ set_option autoImplicit false
 open GlobalTheory.CMTorsion
 open GlobalTheory.WeierstrassCurve (scheme toSpec mapHom)
 
+/- English proof (translation)
+Introduce `A _ L n u v w w' hv h h'`. Establish `hd : u.IsDiff (w - w') (toUnit (epsR ℂ) ≫ η[A])`. Introduce `U h₁ f`. Establish `hv₁ : ⊤ ≤ v.left ⁻¹ᵁ U` using `(GlobalTheory.TangentOrigin.tangent_mem_iff (u := u) hv U).2 ((GlobalTheory.TangentOrigin.tangent_mem_iff (u := u) (GlobalTheory.ArchMetricCompare.isTangent_zero A) U).1 h₁)`. Rewrite using `[GlobalTheory.ArchMetricCompare.isDiff_zero u U h₁ f, map_zero, map_sub, ← h U hv₁ f, ← h' U hv₁ f, sub_self]`.
+
+Conclude with `sub_eq_zero.1 (GlobalTheory.ArchMetricCompare.eq_zero_of_isDiff u hd)`.
+-/
 theorem eq_of_isDiff_of_isTangent : ∀ (A : Over (Sp ℂ)) [GrpObj A] (L : LB A.left) (n : ℕ) (u : HolUnif A L n)
     (v : epsR ℂ ⟶ A) (w w' : Fin n → ℂ), IsTangent v → u.IsDiff w v → u.IsDiff w' v → w = w' := by
   intro A _ L n u v w w' hv h h'

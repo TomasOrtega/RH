@@ -11,6 +11,23 @@ open GlobalTheory.Doubling (absE)
 
 noncomputable section
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ n J r X Y L a h Eis c _hS hP k U H hU hH hHE`. Take `⟨k₀, U₀, H₀, hU₀, hH₀E, hH₀sm, hH₀w⟩` from `hP.2.2.2.1 (((n : ℂ) - 1) / 2)`. Take `⟨V₀, hV₀, C₀, N₀, hB⟩` from `GlobalTheory.WeakHolFamily.locally_uniform_moderate_growth F E σ n J H₀ _ U₀ hU₀ hH₀sm hH₀w`. Establish `hW : U ∩ U₀ ∩ V₀ ∈ 𝓝 (((n : ℂ) - 1) / 2)` using `inter_mem (inter_mem hU hU₀) hV₀`. Take `⟨R, hR, hRsub⟩` from `Metric.mem_nhds_iff.1 hW`.
+
+Use `set ρ : ℂ := ((n : ℂ) - 1) / 2 with hρ`. Establish `hr : (0:ℝ) < R / 2` using `half_pos hR`. Establish `hcb : Metric.closedBall ρ (R / 2) ⊆ U ∩ U₀ ∩ V₀` using `(Metric.closedBall_subset_ball (half_lt_self hR)).trans hRsub`. Use `⟨Metric.ball ρ (R / 2), Metric.ball_mem_nhds ρ hr, (R / 2) ^ k / (R / 2) ^ k₀ * C₀, N₀, ?_⟩` and prove the remaining obligations. Introduce `s hs g`.
+
+Establish `hd : DiffContOnCl ℂ (H · g) (Metric.ball ρ (R / 2))`. Apply `DifferentiableOn.diffContOnCl` to reduce the goal to its premises. Rewrite using `[closure_ball ρ hr.ne']`. Conclude with `(hH g).mono (fun z hz => (hcb hz).1.1)`. Establish `hfr : ∀ z ∈ frontier (Metric.ball ρ (R / 2)), ‖H z g‖ ≤ (R / 2) ^ k / (R / 2) ^ k₀ * C₀ * (height σ J g : ℝ) ^ N₀`.
+
+Introduce `z hz`. Rewrite `hz` using `[frontier_ball ρ hr.ne']`. Establish `hz' : dist z ρ = R / 2` using `hz`. Establish `hzc : z ∈ Metric.closedBall ρ (R / 2)` using `Metric.sphere_subset_closedBall hz`. Take `⟨⟨hzU, hzU₀⟩, hzV₀⟩` from `hcb hzc`.
+
+Establish `hne : z ≠ ρ`. Introduce `e`. Rewrite `hz'` using `[e, dist_self]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1` using `hHE z hzU hne g`.
+
+Establish `h2` using `hH₀E z hzU₀ hne g`. Establish `hn : ‖z - ρ‖ = R / 2` using `by rw [← dist_eq_norm]; exact hz'`. Establish `hb` using `hB z hzV₀ g`. Rewrite `hb` using `[h2, norm_mul, norm_pow, hn]`. Rewrite using `[h1, norm_mul, norm_pow, hn]`.
+
+Establish `hpos : 0 < (R / 2) ^ k₀` using `pow_pos hr _`. Establish `hq : 0 ≤ (R / 2) ^ k / (R / 2) ^ k₀` using `div_nonneg (pow_pos hr _).le hpos.le`. Combine the equalities or inequalities in the displayed calculation. Clear the denominators using the available nonvanishing facts. Use `_ ≤ (R / 2) ^ k / (R / 2) ^ k₀ * (C₀ * (height σ J g : ℝ) ^ N₀) := mul_le_mul_of_nonneg_left hb hq`.
+
+Use `_ = (R / 2) ^ k / (R / 2) ^ k₀ * C₀ * (height σ J g : ℝ) ^ N₀ := by ring`. Conclude with `Complex.norm_le_of_forall_mem_frontier_norm_le Metric.isBounded_ball hd hfr (subset_closure hs)`.
+-/
 theorem GlobalTheory.EisRes.laurentMul_locally_uniform_moderate : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ)
     (J : Matrix (Fin n) (Fin n) E) (r : ℕ) (X Y : Matrix (Fin n) (Fin (r + 1)) E) (L : Submodule (𝓞 E) (Fin n → E))
     (a : GL (Fin n) (AF F ⊗[F] E)) (h : GAd σ J → ℝ) (Eis : ℂ → GAd σ J → ℂ) (c : ℂ → ℂ),

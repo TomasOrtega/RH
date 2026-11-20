@@ -28,6 +28,15 @@ section General
 
 open AlgebraicGeometry CategoryTheory ReciprocityTheory.ChartRestriction.G.Semi NumberField Formalism.L2.Pj ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G
 
+/- English proof (translation)
+Take `⟨W⟩` from `PullbackSections.nonempty_unfAt hU k x`. Take `⟨Wu⟩` from `PullbackSections.nonempty_unitAt W (PullbackSections.PfSupAtUnit.dmin_ortho _ hx)`. Establish `hH` using `GlobalTheory.OrthoHerm.hm_eq_smul_one E H Dw l Xo c σ r U ξ hσ hU k x W Wu hξ hx`. Take `⟨Φ₀⟩` from `GlobalTheory.LamT.nonempty_fibKey E H Dw l Xo ℂ (U.un k x).x hpq`. Take `⟨-, h₁, h₂⟩` from `GlobalTheory.SecTieEx.secTie_exists_unique E H Dw l Xo ℂ (U.un k x).x Φ₀.T.t Φ₀.m`.
+
+Take `⟨th, ht⟩` from `h₁ (U.un k x).s`. Establish `hne` using `(h₂ th _ ht).2.1 (GlobalTheory.Frames.secNZ_of_secGen GlobalTheory.lawsFieldsSeparately.2.1 E H Dw l Xo ℂ _ _ (U.un k x).gen)`. Set `Φ : GlobalTheory.LamT.FibKey Xo ℂ (U.un k x).x` to `{ Φ₀ with th := th, th_ne := hne }`. Take `⟨u, χ, -, hA, -, -, -, hD⟩` from `GlobalTheory.OrthoMetric.exists_unif W.F (W.ik k) W.per W.pt Φ ht Wu.herm Wu.pos Wu.c2 Wu.c3 Wu.c4 Wu.c5 Wu.c6 Wu.c7`. Rewrite `hA` using `[hH]`.
+
+Use `⟨Φ.T, Φ.m, W.g, W.e, u, χ, hA, fun τ C => ?_⟩` and prove the remaining obligations. Take `⟨t1, t2, -⟩` from `GlobalTheory.isDerivAt0_ex_isTanAt E H Dw l Xo _ W.g _ W.F (W.ik k) W.Pm W.per`. Take `⟨v, hv, -⟩` from `t2 (∑ l, toC (C l) • Pi.single (W.e.symm ⟨τ, l⟩) (1 : ℂ))`. Establish `hc` using `(GlobalTheory.DerLin.isCombAt_iff_isDerivAt0 E H Dw l Xo _ W.g _ W.F (W.ik k) W.Pm W.per (Dw.mult τ) ((U.un k x).u τ) (fun l => Pi.single (W.e.symm ⟨τ, l⟩) 1) (W.der τ) (fun l => toC (C l)) v).2 hv`. Establish `htan` using `t1 _ _ hv`.
+
+Rewrite `hc`, `htan` using `[← W.pt]`. Take `⟨w', h1, h2⟩` from `hD _ _ htan hv`. Conclude with `⟨v, w', hc, h1, h2⟩`.
+-/
 theorem exists_unif_of_ortho (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E)
     (Dw : Datum H) (l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (r : ℕ) (σ : c.F →+* ℂ) (U : Unf Xo c σ r)
     (ξ : ℝ) (hpq : 1 ≤ Dw.p + Dw.q) (hσ : GoodEmb c σ) (hU : IsUnf U) (k : U.Comp) (x : (U.X k).dom)

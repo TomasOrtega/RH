@@ -25,6 +25,9 @@ open GlobalTheory.IndefiniteRowSideFullHecke.ClassZetaValuationBounds (IsClassZe
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.isIntegral_j_of_isIntLattice | exact GlobalTheory.isIntegral_j_of_isIntLattice | (intros; apply GlobalTheory.isIntegral_j_of_isIntLattice <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.j_invariant_integral : ∀ (d : ℕ) (Λ : PeriodPair), d.Prime → GlobalTheory.IndefiniteRowSideFullHecke.ClassZetaValuationBounds.IsIntLattice d Λ →
     IsIntegral ℤ (1728 * Λ.g₂ ^ 3 / latDisc Λ) := by
   first | exact @GlobalTheory.isIntegral_j_of_isIntLattice | exact GlobalTheory.isIntegral_j_of_isIntLattice | (intros; apply GlobalTheory.isIntegral_j_of_isIntLattice <;> assumption)

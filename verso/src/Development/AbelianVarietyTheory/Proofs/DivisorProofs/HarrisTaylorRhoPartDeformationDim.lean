@@ -28,10 +28,20 @@ def trAct {k O X X' : Type*} [Field k] [Ring O] [AddCommGroup X] [Module k X] [A
   map_zero' := by ext; simp
   map_add' a b := by ext; simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem trAct_apply {k O X X' : Type*} [Field k] [Ring O] [AddCommGroup X] [Module k X] [AddCommGroup X']
     [Module k X'] (e : X ≃ₗ[k] X') (σ : O →+* Module.End k X) (a : O) (x : X') :
     trAct e σ a x = e (σ a (e.symm x)) := rfl
 
+/- English proof (translation)
+Establish `h : (homO σX σY).map (LinearEquiv.arrowCongr eX eY).toLinearMap = homO (trAct eX σX) (trAct eY σY)`. Use extensionality with `T'`. Rewrite using `[Submodule.map_equiv_eq_comap_symm, Submodule.mem_comap, mem_homO, mem_homO]`. Simplify using `only [LinearEquiv.coe_coe, LinearEquiv.arrowCongr_symm_apply, LinearMap.comp_apply, trAct_apply]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hT a x`. Use `congrArg eY (hT a (eX.symm x))` as an intermediate fact. Simplify using `using this`. Introduce `hT a x`. Use `hT a (eX x)` as an intermediate fact.
+
+Rewrite `this` using `[LinearEquiv.symm_apply_apply]`. Rewrite using `[this, LinearEquiv.symm_apply_apply]`. Rewrite using `[← h, LinearEquiv.finrank_map_eq]`.
+-/
 theorem finrank_homO_trAct {k O X Y X' Y' : Type*} [Field k] [Ring O] [AddCommGroup X] [Module k X]
     [AddCommGroup Y] [Module k Y] [AddCommGroup X'] [Module k X'] [AddCommGroup Y'] [Module k Y']
     (eX : X ≃ₗ[k] X') (eY : Y ≃ₗ[k] Y') (σX : O →+* Module.End k X) (σY : O →+* Module.End k Y) :
@@ -58,28 +68,43 @@ open Module GlobalTheory.UPel.Sm GlobalTheory.UPel.Sm.Model
 universe v
 variable {k O C : Type*} {H : Type v} [Field k] [AddCommGroup H] [Module k H] [Ring O] [CommRing C] [Algebra C O]
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.finrank_ksSub_map_cls_eq_finrank_homO σ G Z hG hZ hZG`.
+-/
 theorem finrank_ks_map_cls [FiniteDimensional k H] (σ : O →+* Module.End k H) (G Z : Submodule k H)
     (hG : ∀ a, ∀ x ∈ G, σ a x ∈ G) (hZ : ∀ a, ∀ x ∈ Z, σ a x ∈ Z) (hZG : Z ≤ G) :
     finrank k ((ksSub σ 0 G Z).map (cls G)) =
       finrank k (homO (qAct (rAct σ G hG) (Z.comap G.subtype) (fun a x hx => hZ a x hx)) (qAct σ G hG)) := GlobalTheory.T.finrank_ksSub_map_cls_eq_finrank_homO σ G Z hG hZ hZG
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.characterAugmentationSubspace_quotientAction_top σW τ χ hχ hJ`.
+-/
 theorem finrank_homO_crt {ι W V : Type*} [Fintype ι] [AddCommGroup W] [Module k W] [FiniteDimensional k W]
     [AddCommGroup V] [Module k V] [FiniteDimensional k V] (σW : O →+* Module.End k W) (τ : O →+* Module.End k V)
     (χ : ι → C →+* k) (hχ : Function.Injective χ) (hJ : jSub τ χ ⊤ = ⊥) :
     finrank k (homO σW τ) =
       ∑ i, finrank k (homO σW (qAct τ (mSub τ (χ i) ⊤) (mSub_stable τ (χ i) ⊤ (fun _ _ _ => trivial)))) := GlobalTheory.T.characterAugmentationSubspace_quotientAction_top σW τ χ hχ hJ
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.finrank_homO_eq_augmentationQuotient_of_scalar_character σW τ χ hτ`.
+-/
 theorem finrank_homO_quot {W V : Type*} [AddCommGroup W] [Module k W] [FiniteDimensional k W]
     [AddCommGroup V] [Module k V] [FiniteDimensional k V] (σW : O →+* Module.End k W) (τ : O →+* Module.End k V)
     (χ : C →+* k) (hτ : ∀ c, τ (algebraMap C O c) = χ c • 1) :
     finrank k (homO σW τ) =
       finrank k (homO (qAct σW (mSub σW χ ⊤) (mSub_stable σW χ ⊤ (fun _ _ _ => trivial))) τ) := GlobalTheory.T.finrank_homO_eq_augmentationQuotient_of_scalar_character σW τ χ hτ
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.finrank_equivariantHom_eq_augmentation_quotient σ G hG χ`.
+-/
 theorem quot_facts {ι : Type*} (σ : O →+* Module.End k H) (G : Submodule k H) (hG : ∀ a, ∀ x ∈ G, σ a x ∈ G)
     (χ : ι → C →+* k) :
     (jSub σ χ ⊤ ≤ G → jSub (qAct σ G hG) χ ⊤ = ⊥) ∧
     ∀ i, finrank k ((H ⧸ G) ⧸ mSub (qAct σ G hG) (χ i) ⊤) = finrank k (H ⧸ (G ⊔ mSub σ (χ i) ⊤)) := GlobalTheory.T.finrank_equivariantHom_eq_augmentation_quotient σ G hG χ
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.finrank_ksSub_quotient_augmentation_of_two_roots σ χ hχ Fil hFil ω r₀ r₁ hr hω hχω hG hZ hJ i`.
+-/
 theorem finrank_sub_quot {ι : Type*} [Fintype ι] [FiniteDimensional k H] (σ : O →+* Module.End k H)
     (χ : ι → C →+* k) (hχ : Function.Injective χ) (Fil : Submodule k H) (hFil : ∀ a, ∀ x ∈ Fil, σ a x ∈ Fil)
     (ω : C) (r₀ r₁ : k) (hr : r₀ ≠ r₁)
@@ -95,6 +120,21 @@ theorem finrank_sub_quot {ι : Type*} [Fintype ι] [FiniteDimensional k H] (σ :
     finrank k ((G ⧸ Z.comap G.subtype) ⧸ mSub σW (χ i) ⊤) + finrank k (H ⧸ (G ⊔ mSub σ (χ i) ⊤)) =
       finrank k (H ⧸ mSub σ (χ i) ⊤) := GlobalTheory.T.finrank_ksSub_quotient_augmentation_of_two_roots σ χ hχ Fil hFil ω r₀ r₁ hr hω hχω hG hZ hJ i
 
+/- English proof (translation)
+Use `set G := Fil ⊔ LinearMap.range (σ (algebraMap C O ω) - r₀ • 1) with hGdef`. Use `set Z := jSub σ χ (LinearMap.range (σ (algebraMap C O ω) - r₁ • 1)) with hZdef`. Establish `hωc : ∀ a, σ a * σ (algebraMap C O ω) = σ (algebraMap C O ω) * σ a` using `fun a => by`. Rewrite using `[← map_mul, ← map_mul, Algebra.commutes]`. Establish `hRst : ∀ r : k, ∀ a, ∀ x ∈ LinearMap.range (σ (algebraMap C O ω) - r • 1), σ a x ∈ LinearMap.range (σ (algebraMap C O ω) - r • 1)`.
+
+Introduce and unpack `r a _ ⟨y, rfl⟩`. Use `⟨σ a y, ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply, map_sub, map_smul]`. Rewrite using `[← Module.End.mul_apply, ← Module.End.mul_apply, hωc]`. Establish `hG : ∀ a, ∀ x ∈ G, σ a x ∈ G`.
+
+Introduce `a x hx`. Take `⟨y, hy, z, hz, rfl⟩` from `Submodule.mem_sup.1 hx`. Rewrite using `[map_add]`. Conclude with `add_mem (Submodule.mem_sup_left (hFil a y hy)) (Submodule.mem_sup_right (hRst r₀ a z hz))`. Establish `hZ : ∀ a, ∀ x ∈ Z, σ a x ∈ Z` using `jSub_stable σ χ _ (hRst r₁)`.
+
+Establish `hZG : Z ≤ G` using `le_trans (Submodule.span_mono (by`. Introduce and unpack `z ⟨r, lam, c, x, -, hc, rfl⟩`. Conclude with `⟨r, lam, c, x, trivial, hc, rfl⟩)) hJ`. Establish `key` using `GlobalTheory.UPel.Sm.KSCount.ksDim_finrank σ 0 G Z`. Rewrite `key` using `[finrank_ks_map_cls σ G Z hG hZ hZG]`.
+
+Use `key using 1` and compare the differences between its conclusion and the goal. Take `⟨hF1, hF2⟩` from `quot_facts σ G hG χ`. Rewrite using `[finrank_homO_crt _ _ χ hχ (hF1 hJ)]`. Rewrite using `[← Finset.card_univ, ← smul_eq_mul, ← Finset.sum_const]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[finrank_homO_quot _ _ (χ i) (qAct_mSub_algebraMap _ (χ i))]`. Establish `hD` using `finrank_sub_quot σ χ hχ Fil hFil ω r₀ r₁ hr hω hχω hG hZ hJ i`. Establish `hM` using `hmor i ((G ⧸ Z.comap G.subtype) ⧸ mSub (qAct (rAct σ G hG) (Z.comap G.subtype) (fun a x hx => hZ a x hx)) (χ i) ⊤) ((H ⧸ G) ⧸ mSub (qAct σ G hG) (χ i) ⊤) _ _ (qAct_mSub_algebraMap _ (χ i)) (qAct_mSub_algebraMap _ (χ i))`. Rewrite `hM` using `[hF2 i, hlie i]`. Simplify using `only at hD`.
+
+Rewrite `hD` using `[hlie i, hrank i]`. Establish `h1` using `Nat.eq_sub_of_add_eq hD`. Rewrite `hM` using `[h1, ← Nat.mul_sub_one]`. Rewrite `hM` using `[show m * (n - 1) * m = m ^ 2 * (n - 1) by ring]`. Conclude with `(Nat.eq_of_mul_eq_mul_left (by positivity) hM).symm`.
+-/
 theorem count {ι : Type*} [Fintype ι] [FiniteDimensional k H] (σ : O →+* Module.End k H)
     (χ : ι → C →+* k) (hχ : Function.Injective χ) (Fil : Submodule k H) (hFil : ∀ a, ∀ x ∈ Fil, σ a x ∈ Fil)
     (ω : C) (r₀ r₁ : k) (hr : r₀ ≠ r₁)
@@ -154,6 +194,35 @@ open GlobalTheory.UPel.Sm GlobalTheory.Cris GlobalTheory.DeRham
 
 namespace GlobalTheory.HTRho
 
+/- English proof (translation)
+Introduce `p _ D R _ b N _ _ k _ _ t o₀ β hβ`. Take `⟨hFree, hHodge, -, -, -⟩` from `GlobalTheory.T.abelianScheme_firstDeRham_structure`. Establish `hA` using `o₀.ab`. Take `⟨g, hg⟩` from `GlobalTheory.AbVarRelDim.exists_relDim k o₀.A hA`. Take `⟨hfd, -, -⟩` from `GlobalTheory.T.finrank_firstDeRhamHomology_hodgeFiltration_of_field hFree hHodge k o₀.A g hA hg`.
+
+Establish `hunit : ∀ n : ℕ, n.Coprime p → IsUnit (n : k)` using `fun n hn => by`. Simplify using `using (b.unit n hn).map β`. Use `set σ := GlobalTheory.HTCount.crysAct o₀ with hσ`. Use `set χ : Fin D.a → (𝓞 D.F →+* k) := fun i => β.comp (b.t i) with hχdef`. Establish `hχ : Function.Injective χ`.
+
+Introduce `i j hij`. Assume the negation of the conclusion as `hne`. Establish `h1` using `b.comax i j hne`. Establish `hle : Ideal.span (Set.range fun x => b.t i x - b.t j x) ≤ RingHom.ker β`. Rewrite using `[Ideal.span_le]`.
+
+Introduce and unpack `_ ⟨x, rfl⟩`. Use `congrArg (fun f : 𝓞 D.F →+* k => f x) hij` as an intermediate fact. Simplify using `only [χ, RingHom.comp_apply] at this`. Simplify using `[RingHom.mem_ker, this]`. Establish `h1' : (1 : R) ∈ RingHom.ker β` using `hle (by rw [h1]; trivial)`.
+
+Simplify using `at h1'`. Establish `hFil : ∀ a, ∀ x ∈ Fil o₀.A, σ a x ∈ Fil o₀.A` using `fun a x hx => by haveI := o₀.act.hom a`. Rewrite using `[hσ, GlobalTheory.HTCount.crysAct_apply]`. Conclude with `push_mem_Fil _ hx`. Establish `hχω : ∀ i, χ i D.ω = β b.ρ` using `fun i => by simp [χ, b.t_ω]`.
+
+Establish `hchar : ∀ n : ℕ, n.Coprime p → (n : k) ≠ 0` using `fun n hn => (hunit n hn).ne_zero`. Establish `hρk : β b.ρ ^ 2 - (D.tr : k) * β b.ρ + (D.nm : k) = 0`. Use `congrArg β b.ρ_root` as an intermediate fact. Simplify using `using this`. Establish `hr : β b.ρ ≠ (D.tr : k) - β b.ρ`.
+
+Introduce `h`. Establish `hd : ((D.tr ^ 2 - 4 * D.nm : ℤ) : k) = 0`. Use `push_cast`. Take the linear combination `(-(D.tr : k) + 2 * β b.ρ) * h - 4 * hρk`. Establish `hp : (p : ℕ).Prime` using `Fact.out`.
+
+Establish `hcop : (D.tr ^ 2 - 4 * D.nm).natAbs.Coprime p`. Use `Nat.Coprime.symm ((Nat.Prime.coprime_iff_not_dvd hp).2 fun hdv => D.disc_p ?_)` and prove the remaining obligations. Conclude with `Int.natCast_dvd.2 hdv`. Apply `hchar _ hcop` to reduce the goal to its premises. Establish `hm` using `congrArg (Int.cast : ℤ → k) (Int.natAbs_mul_self' (D.tr ^ 2 - 4 * D.nm))`.
+
+Rewrite `hm` using `[Int.cast_mul, Int.cast_mul, hd, mul_zero, Int.cast_natCast]`. Conclude with `mul_self_eq_zero.1 hm`. Establish `hω : (σ (algebraMap (𝓞 D.F) D.O D.ω) - β b.ρ • 1) * (σ (algebraMap (𝓞 D.F) D.O D.ω) - ((D.tr : k) - β b.ρ) • 1) = 0`. Establish `e1 : D.ω * D.ω - (D.tr : 𝓞 D.F) * D.ω + (D.nm : 𝓞 D.F) = 0`. Rewrite using `[← D.tr_eq, ← D.nm_eq]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `e2 : σ (algebraMap (𝓞 D.F) D.O (D.ω * D.ω - (D.tr : 𝓞 D.F) * D.ω + (D.nm : 𝓞 D.F))) = 0`. Rewrite using `[e1]`. Simplify using the standard rewrite rules. Simplify using `only [map_add, map_sub, map_mul, map_intCast] at e2`.
+
+Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Establish `e3` using `congrArg (fun T => T x) e2`. Simplify using `only [LinearMap.add_apply, LinearMap.sub_apply, Module.End.mul_apply, LinearMap.zero_apply] at e3`. Simplify using `only [Module.End.intCast_apply, ← Int.cast_smul_eq_zsmul k] at e3`. Simplify using `only [LinearMap.smul_apply, Module.End.one_apply, Module.End.mul_apply, LinearMap.sub_apply, LinearMap.zero_apply, map_sub, map_smul]`.
+
+Use `set w := σ (algebraMap (𝓞 D.F) D.O D.ω)`. Establish `: β b.ρ * ((D.tr : k) - β b.ρ) = D.nm` using `by linear_combination -hρk`. Take the linear combination `(norm := module) e3 - hρk • x`. Establish `hS2` using `GlobalTheory.T.harrisTaylor_rho_part_lie_deRham_quotient p D R b N ‹_› ‹_› k t o₀ β hβ`. Establish `key` using `count σ χ hχ (Fil o₀.A) hFil D.ω (β b.ρ) ((D.tr : k) - β b.ρ) hr hω hχω D.m D.n D.m_pos (GlobalTheory.T.harrisTaylor_finrank_deRham_quotient_character p D R b N ‹_› ‹_› k t o₀ β hβ) hS2.1 hS2.2 (fun i X Y _ _ _ _ _ _ σX σY hX hY => by`.
+
+Set `eX` to `(Module.finBasis k X).equivFun`. Set `eY` to `(Module.finBasis k Y).equivFun`. Rewrite using `[finrank_homO_trAct eX eY σX σY]`. Use `GlobalTheory.T.finrank_hom_harrisTaylorOrder_morita p D k hchar (χ i) _ _ (trAct eX σX) (trAct eY σY) (fun c => LinearMap.ext fun x => by rw [trAct_apply, hX]; simp) (fun c => LinearMap.ext fun x => by rw [trAct_apply, hY]; simp)` as an intermediate fact. Rewrite using `[← eX.finrank_eq, ← eY.finrank_eq] at this)` and apply the resulting hypothesis.
+
+Rewrite `key` using `[Fintype.card_fin]`. Conclude with `key`.
+-/
 theorem rhoCount : ∀ (p : ℕ) [Fact p.Prime] (D : GlobalTheory.UPel.HT.Datum p) (R : Type) [CommRing R] (b : GlobalTheory.UPel.HT.Base D R) (N : ℕ), 3 ≤ N → N.Coprime p → ∀ (k : Type) [Field k] [IsAlgClosed k] (t : Sp k ⟶ Sp R) (o₀ : GlobalTheory.UPel.HT.Obj b N t) (β : R →+* k), t = spMap β → KSDim (GlobalTheory.HTCount.crysAct o₀) 0 (Fil o₀.A ⊔ LinearMap.range (GlobalTheory.HTCount.crysAct o₀ (algebraMap (𝓞 D.F) D.O D.ω) - β b.ρ • 1)) (GlobalTheory.HTCount.lieZ o₀ β) (D.a * (D.n - 1)) := by
   intro p _ D R _ b N _ _ k _ _ t o₀ β hβ
   obtain ⟨hFree, hHodge, -, -, -⟩ := GlobalTheory.T.abelianScheme_firstDeRham_structure

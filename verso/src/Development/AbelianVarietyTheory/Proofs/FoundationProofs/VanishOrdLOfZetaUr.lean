@@ -10,6 +10,9 @@ open scoped Matrix
 
 namespace GlobalTheory.Ord2
 
+/- English proof (translation)
+Take `⟨g, hg⟩` from `h`. Use `⟨g⁻¹, fun s => ?_⟩` and prove the remaining obligations. Rewrite using `[hg s]`. Use `group`.
+-/
 theorem repIso_symm_srcL {l : ℕ} [Fact l.Prime] {Ω : Type} [Field Ω] [Algebra ℚ Ω] {W W' : R2 Ω l}
     (h : RepIso W W') : RepIso W' W := by
   obtain ⟨g, hg⟩ := h
@@ -17,6 +20,9 @@ theorem repIso_symm_srcL {l : ℕ} [Fact l.Prime] {Ω : Type} [Field Ω] [Algebr
   rw [hg s]
   group
 
+/- English proof (translation)
+Introduce `hC hZ l _ hl Ω _ _ _ ι e he W hW hS`. Take `⟨S, A, W', g, hiso, hnf, hsrc⟩` from `GlobalTheory.T.exists_ordinary_normal_form_unramified_source l Ω ι e W hl he hW hS`. Establish `hes : ES W' A` using `hZ l Ω ι e S A W' g hnf hsrc`. Establish `hv : BlochKatoSelmerVanishes l (Loc.colRep W')` using `GlobalTheory.Ord2.es_vanish hC l Ω e S A W' hnf hes`. Conclude with `UpperTheory.V.X.Kato.conj l ℚ Ω 2 W' W (repIso_symm_srcL hiso) hv`.
+-/
 theorem vanishOrdL_of_zetaUr : GlobalTheory.Mem.LiteralAutomorphy.LitCoh → ZetaUr → VanishOrdL := by
   intro hC hZ l _ hl Ω _ _ _ ι e he W hW hS
   obtain ⟨S, A, W', g, hiso, hnf, hsrc⟩ := GlobalTheory.T.exists_ordinary_normal_form_unramified_source l Ω ι e W hl he hW hS

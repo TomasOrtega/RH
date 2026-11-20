@@ -2,10 +2,19 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.FormalGroupPoints.AddGe
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.FormalGroupPoints.MulGenThm
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.FormalGroupPoints.ConstantCoeffLogEqZero
 
+/- English proof (translation)
+The claim follows from `PI.FglPtW.Wk.addGen_thm`.
+-/
 theorem formal_group_add_generation : PI.FglPtW.AddGen := PI.FglPtW.Wk.addGen_thm
 
+/- English proof (translation)
+The claim follows from `PI.FglPtW.Wk.mulGen_thm`.
+-/
 theorem formal_group_mul_generation : PI.FglPtW.MulGen := PI.FglPtW.Wk.mulGen_thm
 
+/- English proof (translation)
+Rewrite using `[PowerSeries.constantCoeff_subst (PowerSeries.HasSubst.of_constantCoeff_zero ha)]`. Rewrite using `[finsum_eq_single _ 0]`. Simplify using the standard rewrite rules. Introduce `d hd`. Simplify using `[map_pow, ha, zero_pow hd]`.
+-/
 private theorem cc_subst_lemma {K : Type*} [CommRing K] {σ : Type*} {a : MvPowerSeries σ K}
     (ha : MvPowerSeries.constantCoeff a = 0) (f : PowerSeries K) :
     MvPowerSeries.constantCoeff (PowerSeries.subst a f) = PowerSeries.constantCoeff f := by
@@ -15,6 +24,11 @@ private theorem cc_subst_lemma {K : Type*} [CommRing K] {σ : Type*} {a : MvPowe
   · intro d hd
     simp [map_pow, ha, zero_pow hd]
 
+/- English proof (translation)
+Use extensionality with `e`. Rewrite using `[PowerSeries.coeff_subst (PowerSeries.HasSubst.of_constantCoeff_zero (by simp))]`. Rewrite using `[finsum_eq_single _ 0]`. Simplify using `[hf]`. Introduce `d hd`.
+
+Simplify using `[zero_pow hd]`.
+-/
 private theorem powerSeries_subst_zero_of_constantCoeff_eq_zero' {K : Type*} [CommRing K] {σ : Type*} {f : PowerSeries K}
     (hf : PowerSeries.constantCoeff f = 0) : PowerSeries.subst (0 : MvPowerSeries σ K) f = 0 := by
   ext e
@@ -24,6 +38,9 @@ private theorem powerSeries_subst_zero_of_constantCoeff_eq_zero' {K : Type*} [Co
   · intro d hd
     simp [zero_pow hd]
 
+/- English proof (translation)
+Establish `hexS : PowerSeries.HasSubst ex` using `PowerSeries.HasSubst.of_constantCoeff_zero' hex`. Establish `huS : PowerSeries.HasSubst u` using `PowerSeries.HasSubst.of_constantCoeff_zero hu`. Rewrite using `[← PowerSeries.subst_comp_subst_apply hexS huS, hl, PowerSeries.subst_X huS]`.
+-/
 private theorem subst_subst_eq_of_subst_eq_X {K : Type*} [CommRing K] {l ex : PowerSeries K}
     (hex : PowerSeries.constantCoeff ex = 0) (hl : PowerSeries.subst ex l = PowerSeries.X)
     {σ : Type*} {u : MvPowerSeries σ K} (hu : MvPowerSeries.constantCoeff u = 0) :
@@ -32,6 +49,17 @@ private theorem subst_subst_eq_of_subst_eq_X {K : Type*} [CommRing K] {l ex : Po
   have huS : PowerSeries.HasSubst u := PowerSeries.HasSubst.of_constantCoeff_zero hu
   rw [← PowerSeries.subst_comp_subst_apply hexS huS, hl, PowerSeries.subst_X huS]
 
+/- English proof (translation)
+Introduce `K _ S l ex hex hl hadd ι _ c hc σ a ha`. Establish `hl0 : PowerSeries.constantCoeff l = 0`. Establish `h` using `cc_subst_lemma (σ := Unit) (a := ex) hex l`. Rewrite `h` using `[hl]`. Conclude with `h.symm.trans PowerSeries.constantCoeff_X`.
+
+Establish `hcc : ∀ j, MvPowerSeries.constantCoeff (MvPowerSeries.C (c j) * PowerSeries.subst (a j) l) = 0`. Introduce `j`. Rewrite using `[map_mul, cc_subst_lemma (ha j).2, hl0, mul_zero]`. Establish `key : ∀ s : Finset ι, PI.FglPtW.PtOver S (PowerSeries.subst (∑ j ∈ s, MvPowerSeries.C (c j) * PowerSeries.subst (a j) l) ex)`. Introduce `s`.
+
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Rewrite using `[Finset.sum_empty, powerSeries_subst_zero_of_constantCoeff_eq_zero' hex]`. Conclude with `⟨fun n => by simp [S.zero_mem], by simp⟩`. Consider the case `insert i s hi ih`.
+
+Rewrite using `[Finset.sum_insert hi]`. Establish `hw : MvPowerSeries.constantCoeff (∑ j ∈ s, MvPowerSeries.C (c j) * PowerSeries.subst (a j) l) = 0`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_eq_zero fun j _ => hcc j`. Establish `hy` using `PI.FglPtW.Wk.mulGen_thm K S l ex hex hl (c i) (hc i) σ (a i) (ha i)`.
+
+Establish `h` using `PI.FglPtW.Wk.addGen_thm K S l ex hex hl hadd σ _ _ hy ih`. Rewrite `h` using `[subst_subst_eq_of_subst_eq_X hex hl (hcc i), subst_subst_eq_of_subst_eq_X hex hl hw]`. Then use the resulting hypothesis. Conclude with `key Finset.univ`.
+-/
 theorem formal_group_lin_generation : PI.FglPtW.LinGen := by
   intro K _ S l ex hex hl hadd ι _ c hc σ a ha
   classical

@@ -10,6 +10,9 @@ namespace GlobalTheory.UnitLemma.Desc
 
 open GlobalTheory.UnitLemma Polynomial
 
+/- English proof (translation)
+Proceed by induction on `p using Polynomial.induction_on' with`. Consider the case `add p q hp hq => rw [map_add, map_add, mul_add, mul_add, hp, hq]`. Consider the case `monomial n a`. Rewrite using `[aeval_monomial, aeval_monomial, mul_pow]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem idem_mul_aeval_idem_mul {R A : Type} [CommRing R] [CommRing A] [Algebra R A] {f : A}
     (hf : IsIdempotentElem f) (w : A) (p : R[X]) :
     f * aeval (f * w) p = f * aeval w p := by
@@ -21,6 +24,11 @@ theorem idem_mul_aeval_idem_mul {R A : Type} [CommRing R] [CommRing A] [Algebra 
       _ = algebraMap R A a * (f * w ^ n) := by rw [← pow_succ', hf.pow_succ_eq]
       _ = f * (algebraMap R A a * w ^ n) := by ring
 
+/- English proof (translation)
+Take `⟨q, hq, hqw⟩` from `h`. Establish `h0 : aeval w q ∈ Ideal.span {1 - f}`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem]`. Rewrite using `[← hqw, ← aeval_def]`. Conclude with `(aeval_algHom_apply (Ideal.Quotient.mkₐ R (Ideal.span {1 - f})) w q).symm`.
+
+Take `⟨c, hc⟩` from `Ideal.mem_span_singleton.1 h0`. Establish `h1 : f * aeval w q = 0`. Rewrite using `[hc, ← mul_assoc, mul_sub, mul_one, hf.eq, sub_self, zero_mul]`. Use `⟨X * q, monic_X.mul hq, ?_⟩` and prove the remaining obligations. Rewrite using `[← aeval_def, map_mul, aeval_X, mul_assoc, mul_left_comm, idem_mul_aeval_idem_mul hf w q, h1, mul_zero]`.
+-/
 theorem isIntegral_idem_mul_of_quot {R A : Type} [CommRing R] [CommRing A] [Algebra R A] {f : A}
     (hf : IsIdempotentElem f) (w : A)
     (h : IsIntegral R (Ideal.Quotient.mk (Ideal.span {1 - f}) w)) : IsIntegral R (f * w) := by
@@ -35,6 +43,33 @@ theorem isIntegral_idem_mul_of_quot {R A : Type} [CommRing R] [CommRing A] [Alge
   refine ⟨X * q, monic_X.mul hq, ?_⟩
   rw [← aeval_def, map_mul, aeval_X, mul_assoc, mul_left_comm, idem_mul_aeval_idem_mul hf w q, h1, mul_zero]
 
+/- English proof (translation)
+Introduce `K B f y z hf hinv hyz`. Distinguish the cases in `hf0 : f = 0`. Use `left`. Rewrite using `[hf0, zero_mul]`. Conclude with `isIntegral_zero`.
+
+Use `set I : Ideal B.A := Ideal.span {1 - f} with hI`. Establish `hmk : ∀ a b : B.A, Ideal.Quotient.mk I a = Ideal.Quotient.mk I b ↔ ∃ c, a - b = (1 - f) * c`. Introduce `a b`. Rewrite using `[Ideal.Quotient.eq, hI, Ideal.mem_span_singleton]`. Both sides reduce to the same expression.
+
+Establish `hf1 : Ideal.Quotient.mk I f = 1`. Rewrite using `[← map_one (Ideal.Quotient.mk I), hmk]`. Conclude with `⟨-1, by ring⟩`. Establish `hfm : ∀ a : B.A, Ideal.Quotient.mk I (f * a) = Ideal.Quotient.mk I a`. Introduce `a`.
+
+Rewrite using `[map_mul, hf1, one_mul]`. Establish `hfield : IsField (B.A ⧸ I)`. Use `⟨⟨0, 1, fun h => hf0 ?_⟩, mul_comm, ?_⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `(hmk 0 1).1 h`. Use `congrArg (f * ·) hc` as an intermediate fact.
+
+Simplify using `only [mul_sub, mul_zero, mul_one, zero_sub] at this`. Rewrite `this` using `[← mul_assoc, mul_sub, mul_one, hf.eq, sub_self, zero_mul]`. Simplify using `using this`. Introduce `a ha`. Take `⟨x, rfl⟩` from `Ideal.Quotient.mk_surjective a`.
+
+Establish `hfx : f * x ≠ 0`. Introduce `h0`. Apply `ha` to reduce the goal to its premises. Rewrite using `[← hfm x, h0, map_zero]`. Take `⟨v, hv⟩` from `hinv x hfx`.
+
+Use `⟨Ideal.Quotient.mk I v, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_mul, ← hfm (x * v), ← mul_assoc, hv, hf1]`. Use `haveI : I.IsMaximal := Ideal.Quotient.maximal_of_isField I hfield`. Use `letI : Field (B.A ⧸ I) := Ideal.Quotient.field I`. Use `haveI : CharZero K.O := ⟨fun m n h => Nat.cast_injective (R := K.E) (by simpa using congrArg (algebraMap K.O K.E) h)⟩`.
+
+Set `e : FractionRing K.O ≃ₐ[K.O] K.E` to `IsLocalization.algEquiv (nonZeroDivisors K.O) (FractionRing K.O) K.E`. Use `letI : Algebra (FractionRing K.O) (B.A ⧸ I) := ((algebraMap K.E (B.A ⧸ I)).comp (e : FractionRing K.O →+* K.E)).toAlgebra`. Use `haveI : IsScalarTower K.O (FractionRing K.O) (B.A ⧸ I) := by`. Use `IsScalarTower.of_algebraMap_eq fun x => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = algebraMap K.E (B.A ⧸ I) (e (algebraMap K.O (FractionRing K.O) x))`.
+
+Rewrite using `[AlgEquiv.commutes]`. Use `first`. Consider the case `exact IsScalarTower.algebraMap_apply K.O K.E (B.A ⧸ I) x`. Consider the case `rw [← Ideal.Quotient.mk_algebraMap, ← Ideal.Quotient.mk_algebraMap, ← IsScalarTower.algebraMap_apply]`. Use `haveI : Algebra.IsIntegral (FractionRing K.O) (B.A ⧸ I) := by`.
+
+Use `⟨fun x => ?_⟩` and prove the remaining obligations. Establish `hx : IsIntegral K.E x` using `Algebra.IsIntegral.isIntegral x`. Use `IsIntegral.map_of_comp_eq (e.symm : K.E →+* FractionRing K.O) (RingHom.id (B.A ⧸ I)) ?_ hx` as an intermediate fact. Simplify using `using this`. Use extensionality with `t`.
+
+Express the relevant statement in the definitionally equal form `algebraMap K.E (B.A ⧸ I) (e (e.symm t)) = _`. Simplify using the standard rewrite rules. Establish `hinv' : Ideal.Quotient.mk I (f * z) = (Ideal.Quotient.mk I (f * y))⁻¹`. Apply `eq_inv_of_mul_eq_one_left` to reduce the goal to its premises. Rewrite using `[← map_mul, ← hfm, show f * (f * z * (f * y)) = f * y * z * f * f by ring, hyz, hf.eq, hf.eq, hf1]`.
+
+Break down `GlobalTheory.LN.isIntegral_or_isIntegral_inv K.O (B.A ⧸ I) (Ideal.Quotient.mk I (f * y)) with h | h` into its components or cases. Use `left`. Use `isIntegral_idem_mul_of_quot hf (f * y) h` as an intermediate fact. Rewrite `this` using `[← mul_assoc, hf.eq]`. Then use the resulting hypothesis. Use `right`.
+
+Rewrite `h` using `[← hinv']`. Use `isIntegral_idem_mul_of_quot hf (f * z) h` as an intermediate fact. Rewrite `this` using `[← mul_assoc, hf.eq]`. Then use the resulting hypothesis.
+-/
 theorem isIntegral_or_isIntegral_of_fieldFactor : ∀ (K : UQ) (B : InvAlg K) (f y z : B.A), IsIdempotentElem f →
     (∀ w, f * w ≠ 0 → ∃ v, f * w * v = f) → f * y * z = f → IsIntegral K.O (f * y) ∨ IsIntegral K.O (f * z) := by
   intro K B f y z hf hinv hyz

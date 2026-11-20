@@ -19,6 +19,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.Heat.Gens
 
+/- English proof (translation)
+Establish `h1` using `Scheme.Hom.appIso_hom U.ι V`. Rewrite `h1` using `[Scheme.Opens.ι_appIso]`. Establish `h3` using `congrArg (fun f => f.hom x) h1`. Simplify using `only [Iso.refl_hom, CommRingCat.hom_comp, RingHom.comp_apply] at h3`. Conclude with `(congrArg (fun f => (U.toScheme.presheaf.map f).hom ((U.ι.app (U.ι ''ᵁ V)).hom x)) (Subsingleton.elim (homOfLE hle).op _)).trans h3.symm`.
+-/
 theorem res_ι_app {X : Scheme.{0}} (U : X.Opens) (V : U.toScheme.Opens) (x : Γ(X, U.ι ''ᵁ V))
     (hle : V ≤ U.ι ⁻¹ᵁ (U.ι ''ᵁ V)) :
     (U.toScheme.presheaf.map (homOfLE hle).op).hom ((U.ι.app (U.ι ''ᵁ V)).hom x) = x := by
@@ -29,6 +32,9 @@ theorem res_ι_app {X : Scheme.{0}} (U : X.Opens) (V : U.toScheme.Opens) (x : Γ
   exact (congrArg (fun f => (U.toScheme.presheaf.map f).hom ((U.ι.app (U.ι ''ᵁ V)).hom x))
     (Subsingleton.elim (homOfLE hle).op _)).trans h3.symm
 
+/- English proof (translation)
+Establish `hle : V ≤ U.ι ⁻¹ᵁ (U.ι ''ᵁ V)` using `(Scheme.Hom.preimage_image_eq U.ι V).ge`. Establish `e` using `gs_res j y hle hy ((U.ι.app (U.ι ''ᵁ V)).hom x)`. Rewrite `e` using `[res_ι_app]`. Rewrite using `[e, gs_pull j U.ι y _ (hle hy), hj]`.
+-/
 theorem gs_ι {X : Scheme.{0}} (U : X.Opens) (j : X ⟶ U.toScheme) (hj : j ≫ U.ι = 𝟙 X) (V : U.toScheme.Opens)
     (x : Γ(X, U.ι ''ᵁ V)) (y : X) (hy : j y ∈ V) : gs j y V x = gs (𝟙 X) y (U.ι ''ᵁ V) x := by
   have hle : V ≤ U.ι ⁻¹ᵁ (U.ι ''ᵁ V) := (Scheme.Hom.preimage_image_eq U.ι V).ge
@@ -36,6 +42,25 @@ theorem gs_ι {X : Scheme.{0}} (U : X.Opens) (j : X ⟶ U.toScheme) (hj : j ≫ 
   rw [res_ι_app] at e
   rw [e, gs_pull j U.ι y _ (hle hy), hj]
 
+/- English proof (translation)
+Introduce `R _ _ Q`. Take `⟨N, hN, M, s, hcov, hs⟩` from `Q.P.ample ⊤ (isAffineOpen_top _)`. Use `choose haff r hr hsurj using hs`. Set `ιU` to `(Q.P.A.hom ⁻¹ᵁ (⊤ : (Spec (CommRingCat.of R)).Opens)).ι`. Set `j : Q.P.A.left ⟶ (Q.P.A.hom ⁻¹ᵁ (⊤ : (Spec (CommRingCat.of R)).Opens)).toScheme` to `Q.P.A.left.topIso.inv`.
+
+Establish `hj : j ≫ ιU = 𝟙 _` using `by show Q.P.A.left.topIso.inv ≫ (⊤ : Q.P.A.left.Opens).ι = _`. Rewrite using `[← Scheme.topIso_hom, Iso.inv_hom_id]`. Establish `hιj : ιU ≫ j = 𝟙 _` using `by show (⊤ : Q.P.A.left.Opens).ι ≫ Q.P.A.left.topIso.inv = _`. Rewrite using `[← Scheme.topIso_hom, Iso.hom_inv_id]`. Both sides reduce to the same expression.
+
+Establish `hjι : ∀ w, j (ιU w) = w` using `fun w => by show (ιU ≫ j).base w = w; rw [hιj]; rfl`. Establish `hfe : FormEq (K` using `Fin N) (fun _ => 𝟙 Q.P.A.left) (fun _ => (1 : ℤ)) (Q.famφB 0) (DegPre.famε N) := by`. Introduce `U _ h`. Use `Eq.trans ?_ (GlobalTheory.Mum.OriginSec.formEq_zero Q N U h)` and prove the remaining obligations. Simplify using `[Finset.prod_const, Fin.prod_univ_one]`.
+
+Establish `hσ : ∀ a, ∃ σ : Q.SecB N 0, ∀ (z : Q.P.A.left) J, Good Q.P.L z J → sval σ (𝟙 _) z J = sval (s a) j z J`. Introduce `a`. Take `⟨s', hs'⟩` from `GlobalTheory.UU.exists_pullSec_sval (s a : LB.Sec (LB.LinComb Q.P.L (K := Fin N) (fun _ => ιU) (fun _ => (1 : ℤ)))) j (fun _ : Fin N => 𝟙 Q.P.A.left) (fun _ => hj)`. Take `⟨σ, hσ⟩` from `exists_sec Q.P.isLB hfe s'`. Conclude with `⟨σ, fun z J hJ => (hσ _ _ z J hJ).trans ((hs' _ _ z J hJ).trans (by rw [Category.id_comp]))⟩`.
+
+Use `choose σ hσv using hσ`. Use `⟨N, hN, Fin (M + 1), fun a => ιU ''ᵁ nonzeroLocus (s a), fun _ => Fin (M + 1), fun a b => r a b, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `top_le_iff.1 fun y _ => ?_` and prove the remaining obligations. Take `⟨a, ha⟩` from `TopologicalSpace.Opens.mem_iSup.1 (show j y ∈ ⨆ a, nonzeroLocus (s a) by rw [hcov]; trivial)`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨a, ⟨j y, ha, show (j ≫ ιU).base y = y by rw [hj]; rfl⟩⟩`.
+
+Conclude with `fun a => (haff a).image_of_isOpenImmersion ιU`. Introduce `a`. Establish `key : ∀ (U U' : (Spec (CommRingCat.of R)).Opens) (_ : U = U') (W : Q.P.A.left.Opens) e e' (rr : Fin (M + 1) → Γ(Q.P.A.left, W)), Function.Surjective (MvPolynomial.eval₂Hom (Q.P.A.hom.appLE U' W e').hom rr) → Function.Surjective (MvPolynomial.eval₂Hom (Q.P.A.hom.appLE U W e).hom r …`. Introduce and unpack `_ _ rfl _ _ _ _ h`. Conclude with `h`.
+
+Establish `e2` using `morphismRestrict_appLE Q.P.A.hom ⊤ ⊤ (nonzeroLocus (s a)) le_top`. Establish `h'` using `(congrArg (fun g => Function.Surjective (MvPolynomial.eval₂Hom (CommRingCat.Hom.hom g) (r a))) e2).mp (hsurj a)`. Conclude with `key ⊤ ((⊤ : (Spec (CommRingCat.of R)).Opens).ι ''ᵁ ⊤) (Scheme.Opens.ι_image_top _).symm (ιU ''ᵁ nonzeroLocus (s a)) _ _ (r a) h'`. Introduce `a b`. Use `⟨σ b, σ a, fun z hz J hJ => ?_⟩` and prove the remaining obligations.
+
+Take `⟨w, hw, rfl⟩` from `hz`. Rewrite using `[hσv _ _ _ hJ, hσv _ _ _ hJ]`. Establish `hm` using `hJ.mem (fun _ : Fin N => ιU) j`. Establish `hw' : j (ιU w) ∈ nonzeroLocus (s a)` using `by rw [hjι]; exact hw`. Use `⟨(GlobalTheory.Mum.OriginSec.isUnit_sval_iff' (s a) j (ιU w) hJ).2 hw', ?_⟩` and prove the remaining obligations.
+
+Establish `hm' : j (ιU w) ∈ nonzeroLocus (s a) ⊓ (powOver Q.P.A Q.P.L ⊤ N).U (fun _ => J (j ≫ ιU))` using `⟨hw', hm⟩`. Establish `e` using `congrArg (gs j (ιU w) _) (hr a b (fun _ => J (j ≫ ιU)))`. Rewrite `e` using `[gs_res _ _ _ hm', gs_mul _ _ _ hm', gs_res _ _ _ hm', gs_res _ _ _ hm']`. Rewrite `e` using `[gs_ι _ j hj _ (r a b) _ hw']`. Conclude with `e`.
+-/
 theorem gens : ∀ {R : Type} [CommRing R] [IsDomain R] (Q : DegPre R), ∃ N : ℕ, 1 ≤ N ∧ ∃ (Ix : Type) (U : Ix → Q.P.A.left.Opens) (M : Ix → Type) (r : ∀ i, M i → Γ(Q.P.A.left, U i)), (⨆ i, U i = ⊤) ∧ (∀ i, IsAffineOpen (U i)) ∧ (∀ i, Function.Surjective (MvPolynomial.eval₂Hom (Q.P.A.hom.appLE ⊤ (U i) (fun _ _ => trivial)).hom (r i))) ∧ ∀ i j, ∃ σ σ' : Q.SecB N 0, ∀ z ∈ U i, ∀ J, Good Q.P.L z J → IsUnit (sval σ' (𝟙 _) z J) ∧ sval σ (𝟙 _) z J = gs (𝟙 _) z (U i) (r i j) * sval σ' (𝟙 _) z J := by
   intro R _ _ Q
   obtain ⟨N, hN, M, s, hcov, hs⟩ := Q.P.ample ⊤ (isAffineOpen_top _)

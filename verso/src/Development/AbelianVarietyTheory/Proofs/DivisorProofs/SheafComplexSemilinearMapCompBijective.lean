@@ -8,6 +8,9 @@ noncomputable section
 
 namespace GlobalTheory.EtC.OpComp
 
+/- English proof (translation)
+Simplify using `only [ev, Cochain.comp_zero_cochain_v, Cochain.ofHom_v]`. Both sides reduce to the same expression.
+-/
 theorem ev_comp_ofHom' {R : Type} [CommRing R] {E : Spc} {I K : Cx R} {n : ℤ} (α : Cochain ((chains R).obj E) I n)
     (u : I ⟶ K) (p : ℕ) (s : ℤ) (h : -(p : ℤ) + n = s) (U : Scheme.{0}) (x : Sx E p U) :
     ev (α.comp (Cochain.ofHom u) (add_zero n)) p s h U x = Sec.map (u.f s) (ev α p s h U x) := by
@@ -36,18 +39,35 @@ def invSemi {S R : Type} [CommRing S] [CommRing R] {I : Cx S} {J : Cx R} (ρ : S
     simp only [AddEquiv.ofBijective_apply] at e1 e2
     rw [e1, e2]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(AddEquiv.ofBijective (ρ.app U s) (hb U s)).symm (AddEquiv.ofBijective (ρ.app U s) (hb U s) a) = a`. Conclude with `(AddEquiv.ofBijective (ρ.app U s) (hb U s)).symm_apply_apply a`.
+-/
 theorem invSemi_app {S R : Type} [CommRing S] [CommRing R] {I : Cx S} {J : Cx R} (ρ : SemiMap I J)
     (hb : ∀ (U : Scheme.{0}) (s : ℤ), Function.Bijective (ρ.app U s)) (U : Scheme.{0}) (s : ℤ) (a : Sec (I.X s) U) :
     (invSemi ρ hb).app U s (ρ.app U s a) = a := by
   change (AddEquiv.ofBijective (ρ.app U s) (hb U s)).symm (AddEquiv.ofBijective (ρ.app U s) (hb U s) a) = a
   exact (AddEquiv.ofBijective (ρ.app U s) (hb U s)).symm_apply_apply a
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `AddEquiv.ofBijective (ρ.app U s) (hb U s) ((AddEquiv.ofBijective (ρ.app U s) (hb U s)).symm b) = b`. Conclude with `(AddEquiv.ofBijective (ρ.app U s) (hb U s)).apply_symm_apply b`.
+-/
 theorem app_invSemi {S R : Type} [CommRing S] [CommRing R] {I : Cx S} {J : Cx R} (ρ : SemiMap I J)
     (hb : ∀ (U : Scheme.{0}) (s : ℤ), Function.Bijective (ρ.app U s)) (U : Scheme.{0}) (s : ℤ) (b : Sec (J.X s) U) :
     ρ.app U s ((invSemi ρ hb).app U s b) = b := by
   change AddEquiv.ofBijective (ρ.app U s) (hb U s) ((AddEquiv.ofBijective (ρ.app U s) (hb U s)).symm b) = b
   exact (AddEquiv.ofBijective (ρ.app U s) (hb U s)).apply_symm_apply b
 
+/- English proof (translation)
+Introduce `S R _ _ I J J' ρ ρ' u hu`. Use `⟨fun E n x => ?_, fun hb E n => ?_⟩` and prove the remaining obligations. Take `⟨α, rfl⟩` from `x.mk_surjective`. Take `⟨β, hβ⟩` from `ρ.image_exists E n α`. Rewrite using `[ρ.op_spec E n α β hβ]`.
+
+Express the relevant statement in the definitionally equal form `_ = CohomologyClass.mk (zcomp β (Cocycle.ofHom u) (add_zero n))`. Use `ρ'.op_spec E n α _ (fun p s h U y => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `ev (β.1.comp (Cochain.ofHom u) (add_zero n)) p s h U y = _`. Rewrite using `[ev_comp_ofHom', hβ, hu]`. Use `set σ := invSemi ρ hb`.
+
+Establish `h1 : ∀ x, σ.op.app E n (ρ.op.app E n x) = x`. Introduce `x`. Take `⟨α, rfl⟩` from `x.mk_surjective`. Take `⟨β, hβ⟩` from `ρ.image_exists E n α`. Rewrite using `[ρ.op_spec E n α β hβ]`.
+
+Use `σ.op_spec E n β α (fun p s h U y => ?_)` and prove the remaining obligations. Rewrite using `[hβ, invSemi_app]`. Establish `h2 : ∀ y, ρ.op.app E n (σ.op.app E n y) = y`. Introduce `y`. Take `⟨β, rfl⟩` from `y.mk_surjective`.
+
+Take `⟨α, hα⟩` from `σ.image_exists E n β`. Rewrite using `[σ.op_spec E n β α hα]`. Use `ρ.op_spec E n α β (fun p s h U y => ?_)` and prove the remaining obligations. Rewrite using `[hα, app_invSemi]`. Conclude with `⟨Function.LeftInverse.injective h1, Function.RightInverse.surjective h2⟩`.
+-/
 theorem op_comp_bij : ∀ (S R : Type) [CommRing S] [CommRing R] {I : Cx S} {J J' : Cx R} (ρ : SemiMap I J) (ρ' : SemiMap I J') (u : J ⟶ J'), (∀ (U : Scheme.{0}) (s : ℤ) (a : Sec (I.X s) U), ρ'.app U s a = Sec.map (u.f s) (ρ.app U s a)) → (∀ (E : Spc) (n : ℤ) x, ρ'.op.app E n x = cpush _ u n (ρ.op.app E n x)) ∧ ((∀ (U : Scheme.{0}) (s : ℤ), Function.Bijective (ρ.app U s)) → ∀ (E : Spc) (n : ℤ), Function.Bijective (ρ.op.app E n)) := by
   intro S R _ _ I J J' ρ ρ' u hu
   refine ⟨fun E n x => ?_, fun hb E n => ?_⟩

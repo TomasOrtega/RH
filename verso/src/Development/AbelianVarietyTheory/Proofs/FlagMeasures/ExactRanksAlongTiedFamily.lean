@@ -13,6 +13,11 @@ open Formalism.BasicNotions Formalism.MainNotions
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `hU eps Fm s C0 Cg cb Cu cT CT`. Use `⟨max s.1 (Fm.x1 + 1), fun x hx i hh => ?_⟩` and prove the remaining obligations. Establish `hx1 : Fm.x1 < x` using `lt_of_lt_of_le (lt_add_one _) (le_trans (le_max_right _ _) hx)`. Establish `R` using `s.2 x hx1 (le_trans (le_max_left _ _) hx) i`. Establish `hr` using `R.T.theta.real`.
+
+Establish `hm : ∀ u, StandardLattice.Mu0Tie (Fm.D x i) u` using `GlobalTheory.T.rankCondition_of_columns_equal_symmetricLevel _ R.T.cols`. Establish `h4f : StandardLattice.Conclusion4f (Fm.D x i) (Fm.ex x hx1 i).lev` using `StandardLattice.HarishChandraReduction.rankFormula_of_classNumber _ _ (ColClassNumber.classNumber_all _ _)`. Take `⟨-, -, -, -, -, -, -, -, hT, -, h0, h1, -⟩` from `hh.1`. Establish `hS : ∀ j, StandardLattice.SplitsF (Fm.D x i) ((Fm.D x i).host.g j)` using `Fin.forall_fin_two.2 ⟨RankSplit.splitsF_of_norm _ _ ((Fm.D x i).host.g_prime 0) h0, RankSplit.splitsF_of_norm _ _ ((Fm.D x i).host.g_prime 1) h1⟩`. Conclude with `exact_ranks_of_record (Fm.D x i) hS (RankVolume.definiteSpaceVolume_eq_mass_of_volumeComparison (fun D => hU D) _ hr) (StandardLattice.factDstar_fam Fm x hx1 i) (fun u => h4f (first_type_prime_large_of_record _) hS u (RankSplit.splitsF_of_norm _ _ ((Fm.D x i).mem u).A.T_prime (hT …`.
+-/
 theorem exact_ranks_along_tied_family : (∀ D : D7, RT.MassRatioUnderVolume D) → ∀ (eps : ℝ) (Fm : FamP eps), Formalism.L2.TSelF Fm →
     ∀ C0 Cg cb Cu cT CT : ℝ, PX.RanksF Fm C0 Cg cb Cu cT CT := by
   intro hU eps Fm s C0 Cg cb Cu cT CT

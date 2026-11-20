@@ -15,5 +15,8 @@ set_option autoImplicit false
 open GlobalTheory.CMTorsion
 open GlobalTheory.WeierstrassCurve (scheme toSpec mapHom)
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CMTorsion.exists_hom_of_periodic_holomorphic | exact GlobalTheory.CMTorsion.exists_hom_of_periodic_holomorphic | (intros; apply GlobalTheory.CMTorsion.exists_hom_of_periodic_holomorphic <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.holomorphic_map_to_projective_space : ∀ (Λ : PeriodPair) (Ω : ℂ), Ω ≠ 0 → ∀ (N : ℕ) (φ : ℂ → (Sp ℂ ⟶ PSpace ℂ N)), (∀ z, φ z ≫ PSpace.str ℂ N = 𝟙 _) → (∀ z, ∀ l ∈ Λ.lattice, φ (z + l) = φ z) → (∀ (U : (PSpace ℂ N).Opens) (s : Γ(PSpace ℂ N, U)), IsOpen {z | ⊤ ≤ (φ z) ⁻¹ᵁ U} ∧ DifferentiableOn ℂ (fun z => valAt' (φ z) U s) {z | ⊤ ≤ (φ z) ⁻¹ᵁ U}) → ∃ ψ : scheme (curve Λ Ω) ⟶ PSpace ℂ N, ψ ≫ PSpace.str ℂ N = toSpec (curve Λ Ω) ∧ ∀ z, pt Λ Ω z ≫ ψ = φ z := by
   first | exact @GlobalTheory.CMTorsion.exists_hom_of_periodic_holomorphic | exact GlobalTheory.CMTorsion.exists_hom_of_periodic_holomorphic | (intros; apply GlobalTheory.CMTorsion.exists_hom_of_periodic_holomorphic <;> assumption)

@@ -14,6 +14,11 @@ open GlobalTheory.UT ReciprocityTheory.ChartRestriction.G.DVR
 
 namespace GlobalTheory.CompleteNormalDvr
 
+/- English proof (translation)
+Introduce `R _ _ _ hR`. Take `⟨h1, h2, h3, h4⟩` from `hR`. Take `⟨V, _, _, _, φ, hV, hφ, hloc⟩` from `GlobalTheory.DvrDom.exists_cdvr_dominating R`. Take `⟨g1, g2, g3⟩` from `(GlobalTheory.LN.cDvr_iff V).1 hV`. Use `⟨V, inferInstance, inferInstance, inferInstance, g1, φ, ?_, hφ, hloc⟩` and prove the remaining obligations.
+
+Conclude with `⟨inferInstance, inferInstance, g2, g3⟩`.
+-/
 theorem exists_dvr_isCN : ∀ (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V], IsCN V → ∃ (V' : Type) (_ : CommRing V') (_ : IsDomain V') (_ : IsLocalRing V') (_ : IsDiscreteValuationRing V') (j : V →+* V'), IsCN V' ∧ Function.Injective j ∧ IsLocalHom j := by
   intro R _ _ _ hR
   obtain ⟨h1, h2, h3, h4⟩ := hR

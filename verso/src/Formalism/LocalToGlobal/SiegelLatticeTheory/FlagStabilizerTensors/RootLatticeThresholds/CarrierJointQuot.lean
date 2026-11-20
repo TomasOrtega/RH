@@ -42,6 +42,13 @@ section Uniq
 
 variable {X : Formalism.L2.SG.HidaSetting.HidaSetting D}
 
+/- English proof (translation)
+Rewrite using `[hν (fun x => b x * f x) (hbm.mul hf)]`. Use `lintegral_congr fun x => ?_` and prove the remaining obligations. Use `show f x = ∫⁻ s, b (s * x) * f (s * x) ∂μR`. Establish `hS : ∀ᵐ s ∂μR, s ∈ S`. Rewrite using `[ae_iff]`.
+
+Conclude with `hS0`. Establish `h1 : ∫⁻ s, b (s * x) * f (s * x) ∂μR = ∫⁻ s, b (s * x) * f x ∂μR`. Use `lintegral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hS] with s hs`. Rewrite using `[hinv s hs x]`.
+
+Rewrite using `[h1, show ∫⁻ s, b (s * x) * f x ∂μR = (∫⁻ s, b (s * x) ∂μR) * f x from lintegral_mul_const _ (hbm.comp (measurable_mul_const x)), hb1, one_mul]`.
+-/
 theorem lint_eq_bruhat (μR ν : Measure X.B.I.Ginf) (S : Set X.B.I.Ginf) (hS0 : μR Sᶜ = 0)
     (b : X.B.I.Ginf → ℝ≥0∞) (hbm : Measurable b) (hb1 : ∀ x, ∫⁻ s, b (s * x) ∂μR = 1)
     (hν : Formalism.L2.SG.HidaSetting.IsQuotMeasS X.B.I μR ν) (f : X.B.I.Ginf → ℝ≥0∞) (hf : Measurable f)
@@ -67,9 +74,25 @@ theorem lint_eq_bruhat (μR ν : Measure X.B.I.Ginf) (S : Set X.B.I.Ginf) (hS0 :
   measurableSet_iUnion A hA := ⟨MeasurableSet.iUnion fun i => (hA i).1, fun s hs x => by
     simp only [Set.mem_iUnion]; exact exists_congr fun i => (hA i).2 s hs x⟩
 
+/- English proof (translation)
+Conclude with `fun _ hA => hA.1`.
+-/
 theorem invMS_le (S : Set X.B.I.Ginf) : invMS S ≤ (inferInstance : MeasurableSpace X.B.I.Ginf) := by
   exact fun _ hA => hA.1
 
+/- English proof (translation)
+Establish `hle` using `invMS_le (X := X) S`. Establish `hmeas : ∀ A, MeasurableSet[invMS S] A → ν₁ A = ν₂ A`. Introduce `A hA`. Establish `hAm : MeasurableSet A` using `hA.1`. Establish `hind : ∀ s ∈ S, ∀ x, A.indicator (fun _ => (1 : ℝ≥0∞)) (s * x) = A.indicator (fun _ => (1 : ℝ≥0∞)) x`.
+
+Introduce `s hs x`. Distinguish the cases in `hx : x ∈ A`. Rewrite using `[Set.indicator_of_mem hx, Set.indicator_of_mem ((hA.2 s hs x).2 hx)]`. Rewrite using `[Set.indicator_of_notMem hx, Set.indicator_of_notMem (fun hx' => hx ((hA.2 s hs x).1 hx'))]`. Establish `e₁` using `lint_eq_bruhat μR ν₁ S hS0 b hbm hb1 h₁ _ (measurable_const.indicator hAm) hind`.
+
+Establish `e₂` using `lint_eq_bruhat μR ν₂ S hS0 b hbm hb1 h₂ _ (measurable_const.indicator hAm) hind`. Rewrite `e₁`, `e₂` using `[lintegral_indicator_const hAm, one_mul]`. Rewrite using `[e₁, e₂]`. Establish `htrim : ν₁.trim hle = ν₂.trim hle`. Use `@Measure.ext _ (invMS S) _ _ fun A hA => ?_` and prove the remaining obligations.
+
+Rewrite using `[trim_measurableSet_eq hle hA, trim_measurableSet_eq hle hA]`. Conclude with `hmeas A hA`. Establish `: ProperSpace E` using `FiniteDimensional.proper ℂ E`. Use `borelize E`. Establish `hFm : StronglyMeasurable[invMS S] F`.
+
+Establish `hFm' : Measurable[invMS S] F`. Introduce `B hB`. Use `⟨hF.measurable hB, fun s hs x => ?_⟩` and prove the remaining obligations. Simplify using `only [Set.mem_preimage, hinv s hs x]`. Conclude with `hFm'.stronglyMeasurable`.
+
+Rewrite using `[integral_trim (μ := ν₁) hle hFm, integral_trim (μ := ν₂) hle hFm, htrim]`.
+-/
 theorem integral_eq_of_quot (μR ν₁ ν₂ : Measure X.B.I.Ginf) (S : Set X.B.I.Ginf) (hS0 : μR Sᶜ = 0)
     (b : X.B.I.Ginf → ℝ≥0∞) (hbm : Measurable b) (hb1 : ∀ x, ∫⁻ s, b (s * x) ∂μR = 1)
     (h₁ : Formalism.L2.SG.HidaSetting.IsQuotMeasS X.B.I μR ν₁) (h₂ : Formalism.L2.SG.HidaSetting.IsQuotMeasS X.B.I μR ν₂)
@@ -107,6 +130,9 @@ theorem integral_eq_of_quot (μR ν₁ ν₂ : Measure X.B.I.Ginf) (S : Set X.B.
 
 end Uniq
 
+/- English proof (translation)
+Establish `h2` using `X.tensU_inner u x x`. Simplify using `only [inner_self_eq_norm_sq_to_K] at h2`. Rewrite `h2` using `[Finset.prod_pow]`. Establish `h3 : ‖X.tensU u x‖ ^ 2 = (∏ v, ‖x v‖) ^ 2` using `by exact_mod_cast h2`. Conclude with `(pow_left_inj₀ (norm_nonneg _) (Finset.prod_nonneg fun v _ => norm_nonneg _) two_ne_zero).1 h3`.
+-/
 private theorem norm_tensU_eq_prod_norm (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (u : D.what₂.Word)
     (x : ∀ v, X.Vloc u v) : ‖X.tensU u x‖ = ∏ v, ‖x v‖ := by
   have h2 := X.tensU_inner u x x
@@ -115,12 +141,22 @@ private theorem norm_tensU_eq_prod_norm (X : Formalism.L2.SG.HidaSetting.HidaSet
   have h3 : ‖X.tensU u x‖ ^ 2 = (∏ v, ‖x v‖) ^ 2 := by exact_mod_cast h2
   exact (pow_left_inj₀ (norm_nonneg _) (Finset.prod_nonneg fun v _ => norm_nonneg _) two_ne_zero).1 h3
 
+/- English proof (translation)
+Unfold `TermOp.rk1`. Rewrite using `[ContinuousLinearMap.norm_smulRight_apply, innerSL_apply_norm]`.
+-/
 private theorem norm_rk1_eq_mul_norm {V V' : Type*} [NormedAddCommGroup V] [InnerProductSpace ℂ V]
     [NormedAddCommGroup V'] [InnerProductSpace ℂ V'] (a : V) (b : V') :
     ‖TermOp.rk1 a b‖ = ‖b‖ * ‖a‖ := by
   unfold TermOp.rk1
   rw [ContinuousLinearMap.norm_smulRight_apply, innerSL_apply_norm]
 
+/- English proof (translation)
+Establish `hsub : ∀ c ∈ Submodule.span ℂ (Set.range (X.tensU u)), inner ℂ c (a - b) = 0`. Introduce `c hc`. Proceed by induction on `hc using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨z, rfl⟩` from `hx`.
+
+Rewrite using `[inner_sub_right, hab, sub_self]`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [inner_add_left, hx, hy, add_zero]`. Consider the case `smul r x _ hx => rw [inner_smul_left, hx, mul_zero]`. Establish `h0` using `hsub (a - b) (by rw [X.tensU_span u]; trivial)`.
+
+Conclude with `sub_eq_zero.1 (inner_self_eq_zero.1 h0)`.
+-/
 private theorem eq_of_inner_tensU_eq (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (u : D.what₂.Word)
     (a b : X.Vpi u) (hab : ∀ z, inner ℂ (X.tensU u z) a = inner ℂ (X.tensU u z) b) : a = b := by
   have hsub : ∀ c ∈ Submodule.span ℂ (Set.range (X.tensU u)), inner ℂ c (a - b) = 0 := by
@@ -135,11 +171,39 @@ private theorem eq_of_inner_tensU_eq (X : Formalism.L2.SG.HidaSetting.HidaSettin
   have h0 := hsub (a - b) (by rw [X.tensU_span u]; trivial)
   exact sub_eq_zero.1 (inner_self_eq_zero.1 h0)
 
+/- English proof (translation)
+Rewrite using `[← norm_eq_zero, norm_tensU_eq_prod_norm]`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ v0) (by rw [h, norm_zero])`.
+-/
 private theorem tensU_eq_zero_of_apply_eq_zero (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (u : D.what₂.Word)
     (x : ∀ v, X.Vloc u v) (v0 : InfinitePlace X.B.I.F) (h : x v0 = 0) : X.tensU u x = 0 := by
   rw [← norm_eq_zero, norm_tensU_eq_prod_norm]
   exact Finset.prod_eq_zero (Finset.mem_univ v0) (by rw [h, norm_zero])
 
+/- English proof (translation)
+Use `FiniteDimensional.complete ℂ (X.Vpi u)` as an intermediate fact. Establish `: ∀ v, CompleteSpace (X.Vloc u v)` using `fun v => FiniteDimensional.complete ℂ _`. Establish `hWc : ∀ u₀, Continuous (X.Wu u₀)` using `fun u₀ => (X.Wu_spec u₀).2.2.1`. Establish `hcont : Continuous (ooF X u u' γ)`. Unfold `ooF`.
+
+Use `continuous_clm_apply.2 fun ξ => ?_` and prove the remaining obligations. Simplify using `only [TermOp.rankOneInnerOperator_apply]`. Conclude with `(((hWc u').comp (continuous_const.mul continuous_id)).inner continuous_const).smul (hWc u)`. Establish `hOO : Formalism.L2.SG.TermOp.OO νq Set.univ (X.Wu u) (X.Wu u') γ = Formalism.L2.SG.TermOp.OO (Measure.pi ν) Set.univ (X.Wu u) (X.Wu u') γ`. Unfold `Formalism.L2.SG.TermOp.OO`.
+
+Rewrite using `[Measure.restrict_univ, Measure.restrict_univ]`. Conclude with `integral_eq_of_quot μR νq (Measure.pi ν) S hS0 b hbm hb1 hq hp (ooF X u u' γ) hcont hinv`. Rewrite using `[hOO]`. Establish `hJ : ∀ v, Jv (ν v) (X.Wloc u v) (X.Wloc u' v) (γ v) = ∫ t, TermOp.rk1 (X.Wloc u v t) (X.Wloc u' v ((γ v)⁻¹ * t)) ∂(ν v)`. Introduce `v`.
+
+Simplify using `only [Jv, Formalism.L2.SG.TermOp.OO, Measure.restrict_univ]`. Simplify using `only [hJ, Formalism.L2.SG.TermOp.OO, Measure.restrict_univ]`. Establish `hLc : ∀ v, Continuous fun t : Formalism.REAL.UJ (X.B.I.ε v) => TermOp.rk1 (X.Wloc u v t) (X.Wloc u' v ((γ v)⁻¹ * t))`. Introduce `v`. Use `continuous_clm_apply.2 fun ξ => ?_` and prove the remaining obligations.
+
+Simplify using `only [TermOp.rankOneInnerOperator_apply]`. Conclude with `(((X.Wloc_cont u' v).comp (continuous_const.mul continuous_id)).inner continuous_const).smul (X.Wloc_cont u v)`. Establish `hnormf : ∀ x : X.B.I.Ginf, ‖TermOp.rk1 (X.Wu u x) (X.Wu u' (γ⁻¹ * x))‖ = ∏ v, ‖TermOp.rk1 (X.Wloc u v (x v)) (X.Wloc u' v ((γ v)⁻¹ * x v))‖`. Introduce `x`. Simplify using `only [norm_rk1_eq_mul_norm, X.Wu_tens, norm_tensU_eq_prod_norm, Pi.mul_apply, Pi.inv_apply, Finset.prod_mul_distrib]`.
+
+Establish `hmeasf : AEStronglyMeasurable (fun x : X.B.I.Ginf => TermOp.rk1 (X.Wu u x) (X.Wu u' (γ⁻¹ * x))) (Measure.pi ν)` using `hcont.aestronglyMeasurable`. Apply `eq_of_inner_tensU_eq X u` to reduce the goal to its premises. Introduce `z`. Distinguish the cases in `hint : ∀ v, Integrable (fun t : Formalism.REAL.UJ (X.B.I.ε v) => TermOp.rk1 (X.Wloc u v t) (X.Wloc u' v ((γ v)⁻¹ * t))) (ν v)`. Establish `hfint : Integrable (fun x : X.B.I.Ginf => TermOp.rk1 (X.Wu u x) (X.Wu u' (γ⁻¹ * x))) (Measure.pi ν)` using `Integrable.mono' (Integrable.fintype_prod_dep fun v => (hint v).norm) hmeasf (Filter.Eventually.of_forall fun x => (hnormf x).le)`.
+
+Establish `hpt : ∀ x : X.B.I.Ginf, inner ℂ (X.tensU u z) (TermOp.rk1 (X.Wu u x) (X.Wu u' (γ⁻¹ * x)) (X.tensU u' y)) = ∏ v, inner ℂ (z v) (TermOp.rk1 (X.Wloc u v (x v)) (X.Wloc u' v ((γ v)⁻¹ * x v)) (y v))`. Introduce `x`. Simplify using `only [TermOp.rankOneInnerOperator_apply, X.Wu_tens, inner_smul_right, X.tensU_inner, Pi.mul_apply, Pi.inv_apply, Finset.prod_mul_distrib]`. Rewrite using `[ContinuousLinearMap.integral_apply hfint, ← integral_inner (hfint.apply_continuousLinearMap _), X.tensU_inner]`. Repeatedly rewrite using `[hpt]`.
+
+Rewrite using `[integral_fintype_prod_eq_prod (fun v t => inner ℂ (z v) (TermOp.rk1 (X.Wloc u v t) (X.Wloc u' v ((γ v)⁻¹ * t)) (y v)))]`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[ContinuousLinearMap.integral_apply (hint v), ← integral_inner ((hint v).apply_continuousLinearMap _)]`. Use `push Not at hint`. Take `⟨v0, hv0⟩` from `hint`.
+
+Establish `hR0 : X.tensU u (fun v => (∫ t, TermOp.rk1 (X.Wloc u v t) (X.Wloc u' v ((γ v)⁻¹ * t)) ∂(ν v)) (y v)) = 0`. Apply `tensU_eq_zero_of_apply_eq_zero X u _ v0` to reduce the goal to its premises. Simplify using `only [integral_undef hv0, ContinuousLinearMap.zero_apply]`. Establish `hL0 : (∫ x, TermOp.rk1 (X.Wu u x) (X.Wu u' (γ⁻¹ * x)) ∂(Measure.pi ν)) (X.tensU u' y) = 0`. Distinguish the cases in `hf : Integrable (fun x : X.B.I.Ginf => TermOp.rk1 (X.Wu u x) (X.Wu u' (γ⁻¹ * x))) (Measure.pi ν)`.
+
+Establish `h0 : ∫ x, ‖TermOp.rk1 (X.Wu u x) (X.Wu u' (γ⁻¹ * x))‖ ∂(Measure.pi ν) = 0`. Repeatedly rewrite using `[hnormf]`. Rewrite using `[integral_fintype_prod_eq_prod (fun v t => ‖TermOp.rk1 (X.Wloc u v t) (X.Wloc u' v ((γ v)⁻¹ * t))‖)]`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ v0) (integral_undef fun hh => hv0 ((integrable_norm_iff (hLc v0).aestronglyMeasurable).1 hh))`. Establish `hae` using `(integral_eq_zero_iff_of_nonneg (fun x => norm_nonneg _) hf.norm).1 h0`.
+
+Establish `hae' : (fun x : X.B.I.Ginf => TermOp.rk1 (X.Wu u x) (X.Wu u' (γ⁻¹ * x))) =ᵐ[Measure.pi ν] 0` using `by filter_upwards [hae] with x hx`. Simplify using `using hx`. Rewrite using `[integral_congr_ae hae']`. Simplify using the standard rewrite rules. Rewrite using `[integral_undef hf, ContinuousLinearMap.zero_apply]`.
+
+Rewrite using `[hL0, hR0]`.
+-/
 theorem oo_eq_tens (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (u u' : D.what₂.Word) (γ : X.B.I.Ginf)
     (μR νq : Measure X.B.I.Ginf) (S : Set X.B.I.Ginf) (hS0 : μR Sᶜ = 0)
     (b : X.B.I.Ginf → ℝ≥0∞) (hbm : Measurable b) (hb1 : ∀ x, ∫⁻ s, b (s * x) ∂μR = 1)
@@ -238,6 +302,9 @@ def StRel (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (u u' : D.what₂.Word
   ∀ w, OkPt X u u' w → ∀ s ∈ StInf X u u' (gamW X u u' w),
     psiU X u s * star (psiU X u' ((gamW X u u' w)⁻¹ * s * gamW X u u' w)) = 1
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `only [TermOp.rk1, ContinuousLinearMap.smulRight_apply, ContinuousLinearMap.smul_apply, smul_smul, innerSL_apply_apply, inner_smul_left]`. Use `congr 1`. Rewrite using `[Complex.star_def]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem rankOneInnerOperator_smul_smul_eq_mul_conj_smul {V V' : Type*} [NormedAddCommGroup V] [InnerProductSpace ℂ V]
     [NormedAddCommGroup V'] [InnerProductSpace ℂ V'] (c d : ℂ) (a : V) (b : V') :
     TermOp.rk1 (c • a) (d • b) = (c * star d) • TermOp.rk1 a b := by
@@ -248,6 +315,11 @@ theorem rankOneInnerOperator_smul_smul_eq_mul_conj_smul {V V' : Type*} [NormedAd
   rw [Complex.star_def]
   ring
 
+/- English proof (translation)
+Introduce `w hw s hs x`. Establish `hrel` using `h w hw s hs`. Establish `hW : ∀ (u₀ : D.what₂.Word) (t : X.B.I.Ginf), t ∈ X.NinfU u₀ → ∀ y, X.Wu u₀ (t * y) = psiU X u₀ t • X.Wu u₀ y`. Introduce `u₀ t ht y`. Establish `h1` using `(X.Wu_spec u₀).1 t (fun v => (ht v).1) y`.
+
+Rewrite `h1` using `[(X.piU_rep u₀).2.2.2.1 t ht]`. Simplify using `only [ContinuousLinearMap.one_apply] at h1`. Conclude with `h1`. Unfold `ooF`. Rewrite using `[hW u s hs.1 x, show (gamW X u u' w)⁻¹ * (s * x) = ((gamW X u u' w)⁻¹ * s * gamW X u u' w) * ((gamW X u u' w)⁻¹ * x) by group, hW u' _ hs.2, rankOneInnerOperator_smul_smul_eq_mul_conj_smul, hrel, one_smul]`.
+-/
 theorem stInv_of_rel (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (u u' : D.what₂.Word) (h : StRel X u u') : StInv X u u' := by
   intro w hw s hs x
   have hrel := h w hw s hs

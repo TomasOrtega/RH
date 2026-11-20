@@ -193,6 +193,15 @@ def TwoLevels.regular (X : DataX E r) (U : Type) [Group U]
   tr_mul := by intro u v c; simp
   tr_faithful := by intro u c h _; simpa using h
 
+/- English proof (translation)
+Introduce `f k D T P h2 h6 hP hT`. Establish `h2' : (2 : ℝ) ≤ ((f * k : ℕ) : ℝ)` using `by exact_mod_cast h2`. Establish `h6' : (6 : ℝ) ≤ D` using `by exact_mod_cast h6`. Establish `hkf : (k : ℝ) * f = ((f * k : ℕ) : ℝ)` using `by push_cast; ring`. Use `set a : ℝ := ((f * k : ℕ) : ℝ) with ha`.
+
+Establish `ha0 : 0 < a` using `by linarith`. Establish `h3 : a ^ 3 ≤ P ^ 3` using `pow_le_pow_left₀ ha0.le hP 3`. Establish `hT' : a ^ 3 * ((D : ℝ) ^ 3 * a) ≤ T`. Combine the equalities or inequalities in the displayed calculation. Establish `hD : 4 * ((D : ℝ) * (D + 6)) ≤ (D : ℝ) ^ 3 * a`.
+
+Establish `: (D : ℝ) ^ 3 * 2 ≤ (D : ℝ) ^ 3 * a` using `by gcongr`. Use polynomial arithmetic with `[mul_nonneg (sub_nonneg.2 h6') (sq_nonneg (D : ℝ)), sq_nonneg (D : ℝ)]`. Establish `hT0 : (0 : ℝ) < T` using `lt_of_lt_of_le (by positivity) hT'`. Rewrite using `[div_le_iff₀ hT0, inv_eq_one_div, div_div, div_mul_eq_mul_div, one_mul, le_div_iff₀ (by positivity)]`. Establish `: a ^ 3 * (4 * ((D : ℝ) * (D + 6))) ≤ a ^ 3 * ((D : ℝ) ^ 3 * a)` using `by gcongr`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem epsBound : EpsBound := by
   intro f k D T P h2 h6 hP hT
   have h2' : (2 : ℝ) ≤ ((f * k : ℕ) : ℝ) := by exact_mod_cast h2

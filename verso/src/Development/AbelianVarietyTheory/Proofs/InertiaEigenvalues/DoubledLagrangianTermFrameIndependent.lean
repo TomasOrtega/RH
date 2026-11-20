@@ -14,11 +14,27 @@ namespace GlobalTheory.RawLift
 
 variable {D : D7}
 
+/- English proof (translation)
+Unfold `ratMul`. Rewrite using `[Matrix.map_mul, Matrix.mul_assoc]`.
+-/
 theorem ratMul_ratMul {m : ℕ} {a c : ℕ} (c₁ : Matrix (Fin a) (Fin m) D.host.E) (c₂ : Matrix (Fin m) (Fin m) D.host.E)
     (u : Mx D m c) : ratMul c₁ (ratMul c₂ u) = ratMul (c₁ * c₂) u := by
   unfold ratMul
   rw [Matrix.map_mul, Matrix.mul_assoc]
 
+/- English proof (translation)
+Take `⟨i1, i2, i3, i4, i5, -⟩` from `GlobalTheory.MixModel.lattice_Mx D m n`. Use `haveI : BorelSpace (Mx D m n) := ⟨rfl⟩`. Establish `hl : ∀ a : Mx D m n, ratMul c' (ratMul c a) = a` using `fun a => by`. Rewrite using `[ratMul_ratMul, h1, ratMul_one]`. Establish `hr : ∀ a : Mx D m n, ratMul c (ratMul c' a) = a` using `fun a => by`.
+
+Rewrite using `[ratMul_ratMul, h2, ratMul_one]`. Establish `mem : ∀ (d : Matrix (Fin m) (Fin m) D.host.E) (g : GlobalTheory.MixModel.ratMx D m n), ratMul d (g : Mx D m n) ∈ GlobalTheory.MixModel.ratMx D m n` using `fun d g => GlobalTheory.MixModel.ratMx_mul (GlobalTheory.MixModel.rat_mem d) g.2`. Set `A : Mx D m n ≃+ Mx D m n` to `{ toFun := fun a => ratMul c a invFun := fun a => ratMul c' a left_inv := hl right_inv := hr map_add' := fun a b => Matrix.mul_add _ _ _ }`. Set `L : Mx D m n ≃ₜ+ Mx D m n` to `{ A with continuous_toFun := continuous_const.matrix_mul continuous_id continuous_invFun := continuous_const.matrix_mul continuous_id }`. Set `e : Mx D m n ≃ᵐ Mx D m n` to `L.toHomeomorph.toMeasurableEquiv`.
+
+Use `haveI := hμ.1`. Establish `hH : (μ.map e).IsAddHaarMeasure` using `L.isAddHaarMeasure_map μ`. Establish `hmp : MeasurePreserving e μ (μ.map e)` using `e.measurable.measurePreserving μ`. Set `r : GlobalTheory.MixModel.ratMx D m n ≃ GlobalTheory.MixModel.ratMx D m n` to `{ toFun := fun g => ⟨ratMul c' (g : Mx D m n), mem c' g⟩ invFun := fun g => ⟨ratMul c (g : Mx D m n), mem c g⟩ left_inv := fun g => Subtype.ext (hr _) right_inv := fun g => Subtype.ext (hl _) }`. Establish `hcov : IsCovolOne (GlobalTheory.MixModel.ratMx D m n) (μ.map e) (e '' 𝓕)`.
+
+Use `⟨hH, ?_, ?_⟩` and prove the remaining obligations. Use `hμ.2.1.image_of_equiv e.toEquiv (hmp.symm e).quasiMeasurePreserving r fun g a => ?_ show ratMul c (ratMul c' (g : Mx D m n) + a) = (g : Mx D m n) + ratMul c a` and prove the remaining obligations. Unfold `ratMul`. Rewrite using `[Matrix.mul_add]`. Use `congr 1`.
+
+Conclude with `hr _`. Rewrite using `[e.map_apply, e.preimage_image]`. Conclude with `hμ.2.2`. Establish `h` using `GlobalTheory.MixModel.covolOne_integral_eq hμ hcov φ hφ`. Rewrite `h` using `[setIntegral_map_equiv, e.preimage_image]`.
+
+Conclude with `h`.
+-/
 theorem covolOne_integral_ratMul {m n : ℕ} {μ : Measure (Mx D m n)} {𝓕 : Set (Mx D m n)}
     (hμ : IsCovolOne (GlobalTheory.MixModel.ratMx D m n) μ 𝓕) (c c' : Matrix (Fin m) (Fin m) D.host.E) (h1 : c' * c = 1)
     (h2 : c * c' = 1) (φ : Mx D m n → ℂ) (hφ : ∀ γ ∈ GlobalTheory.MixModel.ratMx D m n, ∀ a, φ (γ + a) = φ a) :
@@ -64,6 +80,19 @@ theorem covolOne_integral_ratMul {m n : ℕ} {μ : Measure (Mx D m n)} {𝓕 : S
   rw [setIntegral_map_equiv, e.preimage_image] at h
   exact h
 
+/- English proof (translation)
+Establish `mem : ∀ {C : Matrix (Fin W.rank) (Fin W.rank) D.host.E × Matrix (Fin W.rank) (Fin W.rank) D.host.E}, IsLagFrame W Y C → ∀ j, ((fun a => C.1 a j), (fun a => C.2 a j)) ∈ Y.1` using `fun h j => h ▸ Submodule.subset_span ⟨j, rfl⟩`. Set `v : ∀ C, IsLagFrame W Y C → Fin W.rank → Y.1` to `fun C h j => ⟨_, mem h j⟩`. Establish `sp : ∀ C (h : IsLagFrame W Y C), ⊤ ≤ Submodule.span D.host.E (Set.range (v C h))`. Introduce `C h`. Use `le_of_eq (Submodule.map_injective_of_injective Y.1.injective_subtype ?_).symm` and prove the remaining obligations.
+
+Rewrite using `[Submodule.map_span, Submodule.map_top, Submodule.range_subtype, ← Set.range_comp]`. Conclude with `h`. Establish `li : ∀ C (h : IsLagFrame W Y C), LinearIndependent D.host.E (v C h)` using `fun C h => linearIndependent_of_top_le_span_of_card_eq_finrank (sp C h) (by rw [Fintype.card_fin, Y.2.1])`. Set `b` to `Module.Basis.mk (li C hC) (sp C hC)`. Set `b'` to `Module.Basis.mk (li C' hC') (sp C' hC')`.
+
+Establish `hb : ∀ j, (b j : (Fin W.rank → D.host.E) × (Fin W.rank → D.host.E)) = ((fun a => C.1 a j), (fun a => C.2 a j))` using `fun j => by simp [b, v]`. Establish `hb' : ∀ j, (b' j : (Fin W.rank → D.host.E) × (Fin W.rank → D.host.E)) = ((fun a => C'.1 a j), (fun a => C'.2 a j))` using `fun j => by simp [b', v]`. Establish `key : ∀ j, (b' j : (Fin W.rank → D.host.E) × (Fin W.rank → D.host.E)) = ∑ i, b.toMatrix b' i j • (b i : (Fin W.rank → D.host.E) × (Fin W.rank → D.host.E))` using `fun j => by`. Use `congrArg Subtype.val (b.sum_repr (b' j))` as an intermediate fact. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul] at this`.
+
+Simplify using `only [Module.Basis.toMatrix_apply]`. Conclude with `this.symm`. Use `⟨b.toMatrix b', b'.toMatrix b, ?_, ?_, Module.Basis.toMatrix_mul_toMatrix_flip b b', Module.Basis.toMatrix_mul_toMatrix_flip b' b⟩` and prove the remaining obligations. Use `Matrix.ext fun a j => ?_` and prove the remaining obligations. Use `congrArg (fun y : (Fin W.rank → D.host.E) × (Fin W.rank → D.host.E) => y.1 a) (key j)` as an intermediate fact.
+
+Simplify using `only [hb, hb', Prod.fst_sum, Prod.smul_fst, Finset.sum_apply, Pi.smul_apply, smul_eq_mul] at this`. Rewrite using `[this, Matrix.mul_apply]`. Conclude with `Finset.sum_congr rfl fun i _ => mul_comm _ _`. Use `Matrix.ext fun a j => ?_` and prove the remaining obligations. Use `congrArg (fun y : (Fin W.rank → D.host.E) × (Fin W.rank → D.host.E) => y.2 a) (key j)` as an intermediate fact.
+
+Simplify using `only [hb, hb', Prod.snd_sum, Prod.smul_snd, Finset.sum_apply, Pi.smul_apply, smul_eq_mul] at this`. Rewrite using `[this, Matrix.mul_apply]`. Conclude with `Finset.sum_congr rfl fun i _ => mul_comm _ _`.
+-/
 theorem exists_frame_change {W : HSp D} {Y : Lag W}
     {C C' : Matrix (Fin W.rank) (Fin W.rank) D.host.E × Matrix (Fin W.rank) (Fin W.rank) D.host.E}
     (hC : IsLagFrame W Y C) (hC' : IsLagFrame W Y C') :
@@ -104,6 +133,11 @@ theorem exists_frame_change {W : HSp D} {Y : Lag W}
     rw [this, Matrix.mul_apply]
     exact Finset.sum_congr rfl fun i _ => mul_comm _ _
 
+/- English proof (translation)
+Introduce `D ψ V W μ 𝓕 hμ hψ f₁ f₂ h₁ h₂ Y C C' hC hC'`. Take `⟨c, c', e1, e2, hcc, hc'c⟩` from `exists_frame_change hC hC'`. Establish `hψ' : ∀ x, ‖ψ x‖ = 1` using `hψ.1.2.1`. Unfold `lagTerm`. Rewrite using `[e1, e2]`.
+
+Simplify using `only [← ratMul_ratMul]`. Use `(covolOne_integral_ratMul (m := W.rank) (n := V.rank) hμ c c' hc'c hcc (fun u => f₁ (ratMul C.1 u) * star (f₂ (ratMul C.2 u))) ?_).symm` and prove the remaining obligations. Introduce and unpack `_ ⟨γ, rfl⟩ a`. Conclude with `GlobalTheory.RawLift.Model.integrand_periodic hψ' hC h₁ h₂ γ a`.
+-/
 theorem lagTerm_frame_indep : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (V W : HSp D) (μ : Measure (WO V W)) (𝓕 : Set (WO V W)), IsCovolOne (ratL W V) μ 𝓕 → IsStdChar D ψ (-1) → ∀ f₁ f₂, IsThetaFunO ψ V W f₁ → IsThetaFunO ψ V W f₂ → ∀ (Y : Lag W) C C', IsLagFrame W Y C → IsLagFrame W Y C' → lagTerm μ 𝓕 C f₁ f₂ = lagTerm μ 𝓕 C' f₁ f₂ := by
   intro D ψ V W μ 𝓕 hμ hψ f₁ f₂ h₁ h₂ Y C C' hC hC'
   obtain ⟨c, c', e1, e2, hcc, hc'c⟩ := exists_frame_change hC hC'

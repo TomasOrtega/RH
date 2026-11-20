@@ -15,6 +15,11 @@ abbrev RFam (D : D7) : Type := ∀ i : D.nd.Loc, D.nd.X i → (GE D.nd →* GL (
 
 abbrev RhoFam (D : D7) : Type := ∀ i : D.nd.Loc, D.nd.X i → (GE D.nd →* GL (Fin D.R.r) (D.nd.O i))
 
+/- English proof (translation)
+Establish `hp' : ((p : ℕ) : 𝓞 E) ≠ 0` using `Nat.cast_ne_zero.mpr hp`. Establish `hI : Ideal.span {((p : ℕ) : 𝓞 E)} ≠ 0`. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `hp'`. Use `(Ideal.finite_factors hI).subset ?_` and prove the remaining obligations.
+
+Introduce `v hv`. Use `show v.asIdeal ∣ Ideal.span {((p : ℕ) : 𝓞 E)}`. Rewrite using `[Ideal.dvd_span_singleton]`. Conclude with `hv`.
+-/
 theorem placesOver_finite (E : Type) [Field E] [NumberField E] (p : ℕ) (hp : p ≠ 0) :
     (placesOver E p).Finite := by
   have hp' : ((p : ℕ) : 𝓞 E) ≠ 0 := Nat.cast_ne_zero.mpr hp

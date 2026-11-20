@@ -22,6 +22,13 @@ open GlobalTheory.ZM
 
 namespace GlobalTheory.SpecialAmple
 
+/- English proof (translation)
+Take `⟨s, j, hj⟩` from `hs`. Take `⟨w, hw⟩` from `h`. Take `⟨⟨s', hs', -⟩, -⟩` from `SecPullIso.section_pull X X' π M M' w hM hM' hw s`. Use `⟨s', ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h`.
+
+Use `push Not at h`. Use `hj (fn_ext fun x hx => ?_)` and prove the remaining obligations. Take `⟨z, rfl⟩` from `π.surjective x`. Take `⟨k, hz⟩` from `exists_chart hM' z`. Establish `e` using `hs' z j k hx hz`.
+
+Establish `e₀ : gs (𝟙 X') z (M'.U k) (s'.f k) = 0` using `(congrArg (gs (𝟙 X') z _) (h k)).trans (AmpleCrit.gs_zero' _ z _ hz)`. Use `replace e := e.trans ((congrArg _ e₀).trans (mul_zero _))`. Rewrite `e` using `[gs_stalkMap π z _ hx]`. Rewrite using `[AmpleCrit.gs_zero' (𝟙 X) (π z) _ hx]`. Conclude with `AmpleCrit.injective_stalkMap π z (e.trans (map_zero _).symm)`.
+-/
 theorem exists_sec_ne_zero {X X' : Scheme.{0}} (π : X' ⟶ X) [IsIso π] {M : LB X} {M' : LB X'} (hM : M.IsLB)
     (hM' : M'.IsLB) (h : LBIso M' (M.pull π)) (hs : ∃ s : LB.Sec M, ∃ j, s.f j ≠ 0) :
     ∃ s' : LB.Sec M', ∃ j, s'.f j ≠ 0 := by
@@ -42,6 +49,9 @@ theorem exists_sec_ne_zero {X X' : Scheme.{0}} (π : X' ⟶ X) [IsIso π] {M : L
   rw [AmpleCrit.gs_zero' (𝟙 X) (π z) _ hx]
   exact AmpleCrit.injective_stalkMap π z (e.trans (map_zero _).symm)
 
+/- English proof (translation)
+Substitute `he` using the available equality. Set `u : pullback b (e ≫ f) ⟶ Y` to `h.lift (pullback.fst _ _) (pullback.snd _ _ ≫ e) (by rw [Category.assoc]; exact pullback.condition)`. Establish `hu : u ≫ φ = pullback.fst _ _` using `h.lift_fst _ _ _`. Establish `H : IsPullback u (pullback.snd b (e ≫ f)) a e` using `IsPullback.of_right (by rw [hu]; exact IsPullback.of_hasPullback _ _) (h.lift_snd _ _ _) h`. Conclude with `⟨u, H.isIso_fst_of_isIso, hu⟩`.
+-/
 theorem exists_iso {X Y S T T' : Scheme.{0}} {φ : Y ⟶ X} {a : Y ⟶ T} {b : X ⟶ S} {f : T ⟶ S}
     (h : IsPullback φ a b f) (e : T' ⟶ T) [IsIso e] (g : T' ⟶ S) (he : e ≫ f = g) :
     ∃ u : pullback b g ⟶ Y, IsIso u ∧ u ≫ φ = pullback.fst b g := by
@@ -53,6 +63,9 @@ theorem exists_iso {X Y S T T' : Scheme.{0}} {φ : Y ⟶ X} {a : Y ⟶ T} {b : X
     IsPullback.of_right (by rw [hu]; exact IsPullback.of_hasPullback _ _) (h.lift_snd _ _ _) h
   exact ⟨u, H.isIso_fst_of_isIso, hu⟩
 
+/- English proof (translation)
+The claim follows from `exists_sec_ne_zero u (pull_isLB hN a) (pull_isLB hN b) (LBIso.chartPull (chartPullSame N _ _ _ u fun _ => hu.symm) (Geo.Tor.chartPullPull _ u u rfl) ⟨_, CubePf.idIsoL_isGen (pull_isLB hN a)⟩) hs`.
+-/
 theorem exists_sec_pull {X Y Y' : Scheme.{0}} {N : LB X} (hN : N.IsLB) {a : Y ⟶ X} {b : Y' ⟶ X} (u : Y' ⟶ Y)
     [IsIso u] (hu : u ≫ a = b) (hs : ∃ s : LB.Sec (N.pull a), ∃ j, s.f j ≠ 0) :
     ∃ s : LB.Sec (N.pull b), ∃ j, s.f j ≠ 0 :=
@@ -60,6 +73,11 @@ theorem exists_sec_pull {X Y Y' : Scheme.{0}} {N : LB X} (hN : N.IsLB) {a : Y �
     (LBIso.chartPull (chartPullSame N _ _ _ u fun _ => hu.symm) (Geo.Tor.chartPullPull _ u u rfl)
       ⟨_, CubePf.idIsoL_isGen (pull_isLB hN a)⟩) hs
 
+/- English proof (translation)
+Take `⟨w, hw⟩` from `h`. Use `⟨⟨fun p => w.s p ^ t⟩, fun p q => ?_⟩` and prove the remaining obligations. Establish `e` using `congrArg (· ^ t) (hw p q)`. Simplify using `only [mul_zpow, ← map_zpow] at e`. Use `e.trans (congrArg₂ (· * ·) ?_ rfl)` and prove the remaining obligations.
+
+Conclude with `(mul_zpow _ _ t).trans (congrArg₂ (· * ·) (map_zpow _ _ t).symm ((inv_zpow _ t).trans (congrArg (·⁻¹) (map_zpow _ _ t).symm)))`.
+-/
 theorem lbIso_pw {Y : Scheme.{0}} {A B : LB Y} (h : LBIso A B) (t : ℤ) :
     LBIso (AbLaw.pw A t) (AbLaw.pw B t) := by
   obtain ⟨w, hw⟩ := h
@@ -70,9 +88,17 @@ theorem lbIso_pw {Y : Scheme.{0}} {A B : LB Y} (h : LBIso A B) (t : ℤ) :
   exact (mul_zpow _ _ t).trans (congrArg₂ (· * ·) (map_zpow _ _ t).symm
     ((inv_zpow _ t).trans (congrArg (·⁻¹) (map_zpow _ _ t).symm)))
 
+/- English proof (translation)
+The claim follows from `inferInstanceAs (IsIso (Spec.map e.toCommRingCatIso.hom))`.
+-/
 theorem isIso_spMap {R R' : Type} [CommRing R] [CommRing R'] (e : R ≃+* R') : IsIso (spMap e.toRingHom) :=
   inferInstanceAs (IsIso (Spec.map e.toCommRingCatIso.hom))
 
+/- English proof (translation)
+Take `⟨d, hd, n, a, ha, -⟩` from `(GlobalTheory.Unif.relAmple_iff_veryAmpleBy _ P.A P.L P.isLB).1 P.ample`. Establish `hy : eSec P.A (IsLocalRing.closedPoint K) ∈ ⨆ i, nonzeroLocus (a i)` using `by rw [ha]; trivial`. Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 hy`. Take `⟨j, hj⟩` from `TopologicalSpace.Opens.mem_iSup.1 hi`. Use `⟨d, hd, a i, j, fun e => ?_⟩` and prove the remaining obligations.
+
+Rewrite `hj` using `[e, Scheme.basicOpen_zero]`. Conclude with `hj`.
+-/
 theorem exists_sec_pow {K : Type} [Field K] (P : PolAV (Sp K)) :
     ∃ d : ℕ, 1 ≤ d ∧ ∃ s : LB.Sec (AbLaw.pw P.L d), ∃ j, s.f j ≠ 0 := by
   obtain ⟨d, hd, n, a, ha, -⟩ := (GlobalTheory.Unif.relAmple_iff_veryAmpleBy _ P.A P.L P.isLB).1 P.ample
@@ -83,6 +109,11 @@ theorem exists_sec_pow {K : Type} [Field K] (P : PolAV (Sp K)) :
   rw [e, Scheme.basicOpen_zero] at hj
   exact hj
 
+/- English proof (translation)
+Take `⟨n, hn, hp⟩` from `Nat.exists_infinite_primes (m + ringChar Ω + 1)`. Use `⟨n, hp, fun h => ?_, fun h => ?_⟩` and prove the remaining obligations. Break down `(Nat.dvd_prime hp).1 ((ringChar.spec Ω n).1 h) with e | e` into its components or cases. Conclude with `CharP.ringChar_ne_one e`. Use linear arithmetic over natural numbers and integers.
+
+Use `Nat.le_of_dvd hm h` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem exists_prime (Ω : Type) [Field Ω] (m : ℕ) (hm : 0 < m) : ∃ n : ℕ, n.Prime ∧ (n : Ω) ≠ 0 ∧ ¬ n ∣ m := by
   obtain ⟨n, hn, hp⟩ := Nat.exists_infinite_primes (m + ringChar Ω + 1)
   refine ⟨n, hp, fun h => ?_, fun h => ?_⟩
@@ -92,6 +123,27 @@ theorem exists_prime (Ω : Type) [Field Ω] (m : ℕ) (hm : 0 < m) : ∃ n : ℕ
   · have := Nat.le_of_dvd hm h
     omega
 
+/- English proof (translation)
+Introduce `hL hL2 V K _ _ _ _ _ _ P B _ _ M φ hB hφ hiso hV`. Use `hB.smooth` as an intermediate fact. Use `hB.proper` as an intermediate fact. Use `hB.geomConnected` as an intermediate fact. Take `⟨d, hd, h₀⟩` from `exists_sec_pow P`.
+
+Establish `hN` using `AbLaw.isLB_pw M.L.isLB d`. Establish `h₁ : ∃ s : LB.Sec ((AbLaw.pw M.L.L d).pull φ), ∃ j, s.f j ≠ 0`. Use `exists_sec_ne_zero (𝟙 _) (AbLaw.isLB_pw P.isLB d) (pull_isLB hN φ) ?_ h₀` and prove the remaining obligations. Use `LBIso.chartPull (chartPullId _) (Geo.Tor.chartPullPull _ (𝟙 _) (𝟙 _) rfl) ?_` and prove the remaining obligations. Rewrite using `[AmpleCrit.pull_pw_eq]`.
+
+Conclude with `lbIso_pw hiso.symm d`. Establish `h₂ : ∃ s : LB.Sec ((AbLaw.pw M.L.L d).pull (pullback.fst B.hom (jK V))), ∃ j, s.f j ≠ 0`. Set `e : K ≃+* FractionRing V` to `(FractionRing.algEquiv V K).symm.toRingEquiv`. Use `isIso_spMap e` as an intermediate fact. Take `⟨u, _, hu⟩` from `exists_iso hφ.1 (spMap e.toRingHom) (jK V) (by`.
+
+Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Use `congr 2`. Use extensionality with `v`. Conclude with `(FractionRing.algEquiv V K).symm.commutes v)`. Conclude with `exists_sec_pull hN u hu h₁`.
+
+Establish `h₃` using `GlobalTheory.SpreadSec.exists_ne_zero_closed_fibre V B _ hN h₂`. Set `r` to `spMap (IsLocalRing.residue V)`. Establish `h₄ : ∃ s : LB.Sec ((AbLaw.pw M.L.L d).pull (pullback.fst B.hom r)), ∃ j, s.f j ≠ 0`. Set `e : (V ⧸ IsLocalRing.maximalIdeal V ^ (0 + 1)) ≃+* IsLocalRing.ResidueField V` to `Ideal.quotEquivOfEq (by rw [zero_add, pow_one])`. Use `isIso_spMap e` as an intermediate fact.
+
+Take `⟨u, _, hu⟩` from `exists_iso (IsPullback.of_hasPullback B.hom (thick V (IsLocalRing.maximalIdeal V) 0)) (spMap e.toRingHom) r (by`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Use `congr 2)`. Conclude with `exists_sec_pull hN u hu h₃`. Rewrite `h₄` using `[AmpleCrit.pull_pw_eq]`.
+
+Take `⟨s, hs⟩` from `h₄`. Set `k` to `IsLocalRing.ResidueField V`. Set `B' : Over (Sp k)` to `(Over.pullback r).obj B`. Establish `h : IsGrpPullback B' B r (pullback.fst B.hom r)` using `isGrpPullback_pullback B r`. Establish `: IsCommMonObj B'` using `PolPull.isCommMonObj_of_isGrpPullback h`.
+
+Establish `hB'` using `PolPull.isAbelianScheme_of_isGrpPullback hB h`. Take `⟨hL', hr, ⟨c', -⟩, -⟩` from `CubePf.cubePull _ _ B B' (cubeMapOf h) M.L M.c`. Set `Ω` to `AlgebraicClosure k`. Take `⟨n, hn, hnΩ, hnd⟩` from `exists_prime Ω (2 * d) (by omega)`. Use `AmpleCrit.relAmple_of_effective (GlobalTheory.T.card_torsion_points_abelianVariety hL.globalFns hL.rigidity) k (Field.toIsField k) B' hB' ((cubeMapOf h).rigLB M.L hL' hr) c' d s hd hs Ω (spMap (algebraMap k Ω)) n hn hnΩ hnd fun x hxn htr => ?_` and prove the remaining obligations.
+
+Set `f : V →+* Ω` to `(algebraMap k Ω).comp (IsLocalRing.residue V)`. Establish `hf : IsLocalHom f` using `RingHom.isLocalHom_comp _ _`. Establish `key : ∀ p' : Sp Ω ⟶ Sp V, p' = spMap f → ∀ y : Over.mk p' ⟶ B, y ^ n = 1 → AbLaw.Triv (translDiff B M.L.L y) → y = 1`. Introduce and unpack `_ rfl`. Conclude with `GlobalTheory.T.torsion_eq_one_of_translDiff_trivial_model hL hL2 V K P B M φ hB hφ hiso hV Ω f hf n hnΩ`.
+
+Establish `e : pushHom h _ x = 1` using `key _ (Spec.map_comp _ _).symm (pushHom h _ x) (by rw [← map_pow, hxn, map_one]) (AmpleCrit.triv_translDiff_push h M.L.isLB x htr)`. Establish `e'` using `e.trans (map_one (pushHom h (Over.mk (spMap (algebraMap k Ω))))).symm`. Conclude with `Over.OverMorphism.ext (h.1.hom_ext (congrArg (fun q => q.left) e') (by rw [Over.w, Over.w]))`.
+-/
 theorem relAmple_special_fibre : Laws → Laws2 → ∀ (V K : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [Field K] [Algebra V K] [IsFractionRing V K] (P : PolAV (Sp K)) (B : Over (Sp V)) [GrpObj B] [IsCommMonObj B] (M : GlobalTheory.UU.CP B) (φ : P.A.left ⟶ B.left), IsAbelianScheme B → IsGrpPullback P.A B (spMap (algebraMap V K)) φ → LBIso P.L (M.L.L.pull φ) → IsAdicComplete (IsLocalRing.maximalIdeal V) V → RelAmple ((Over.pullback (spMap (IsLocalRing.residue V))).obj B) (M.L.L.pull (pullback.fst B.hom (spMap (IsLocalRing.residue V)))) := by
   intro hL hL2 V K _ _ _ _ _ _ P B _ _ M φ hB hφ hiso hV
   have := hB.smooth

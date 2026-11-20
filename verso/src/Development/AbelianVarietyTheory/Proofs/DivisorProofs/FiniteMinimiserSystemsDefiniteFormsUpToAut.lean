@@ -7,6 +7,25 @@ open IsLocalRing GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.PolFan Glo
 
 namespace GlobalTheory.Poinc.MinSysType
 
+/- English proof (translation)
+Introduce `g φ hφ W hW N _ hN r hr`. Establish `hX : IsPolFanOn id φ (Fin r → ℤ)` using `hφ (Fin r → ℤ) (by simpa using hr)`. Take `⟨S₀, hS₀, hfin⟩` from `hX.finite`. Use `set F := hS₀.toFinset with hF`. Set `ι` to `Σ m : Fin (F.card + 1), (Fin m.val → F)`.
+
+Set `P : ι → Prop` to `fun i => IsCone id φ (fun j => ((i.2 j : F) : LinearMap.BilinForm ℤ (Fin r → ℤ))) ∧ ∀ x, x ≠ 0 → 0 < ∑ j, ((i.2 j : F) : LinearMap.BilinForm ℤ (Fin r → ℤ)) x x`. Set `T : ι → Finset ((Fin 8 → Fin r → ZMod N) → (Fin 8 → Fin r → ℤ))` to `fun i => if h : P i then Classical.choose (GlobalTheory.T.finite_minimiser_systems_smooth_cone φ W hW N hN r i.1.val _ h.1 h.2) else ∅`. Use `⟨Finset.univ.biUnion T, ?_⟩` and prove the remaining obligations. Introduce `b hsym hpos`. Establish `hpsd` using `GlobalTheory.T.intBilinFormToReal_mem_psdCone_of_pos r b hsym hpos`.
+
+Take `⟨m, γ, cf, hcone, hcf, hb⟩` from `GlobalTheory.T.exists_pos_combination_smoothCone_symmIntForm g φ hφ r hr b hsym hpsd`. Take `⟨e, he⟩` from `hfin m γ hcone`. Use `⟨e, fun μ' h1 h2 => ?_⟩` and prove the remaining obligations. Set `γ' : Fin m → F` to `fun j => ⟨pull e.toLinearMap (γ j), hS₀.mem_toFinset.2 (he j)⟩`. Establish `hcone'` using `hcone.pull_equiv e`.
+
+Establish `hinj : Function.Injective γ'` using `fun j k hjk => by`. Establish `h` using `congrArg Subtype.val hjk`. Simplify using `only [γ'] at h`. Conclude with `hcone'.injective h`. Establish `hm : m < F.card + 1`.
+
+Use `Fintype.card_le_of_injective γ' hinj` as an intermediate fact. Simplify using `only [Fintype.card_fin, Fintype.card_coe] at this`. Use linear arithmetic over natural numbers and integers. Set `i : ι` to `⟨⟨m, hm⟩, γ'⟩`. Establish `hbyy : ∀ y, b y y = ∑ j, (cf j : ℤ) * γ j y y` using `fun y => by`.
+
+Rewrite using `[hb]`. Simplify using `[LinearMap.sum_apply]`. Establish `hPi : P i`. Use `⟨hcone', fun x hx => ?_⟩` and prove the remaining obligations. Simplify using `only [i, γ', pull_apply]`.
+
+Establish `hex : e x ≠ 0` using `by simpa using hx`. Establish `hnn : ∀ j ∈ Finset.univ, 0 ≤ γ j (e x) (e x)` using `fun j _ => hcone.nonneg j _`. Use `lt_of_le_of_ne (Finset.sum_nonneg hnn) fun h0 => ?_` and prove the remaining obligations. Establish `hz` using `(Finset.sum_eq_zero_iff_of_nonneg hnn).1 h0.symm`. Use `hpos _ hex` as an intermediate fact.
+
+Rewrite `this` using `[hbyy]`. Simplify using `[hz] at this`. Establish `hmem : μ' ∈ T i`. Simplify using `only [T, dif_pos hPi]`. Use `Classical.choose_spec (GlobalTheory.T.finite_minimiser_systems_smooth_cone φ W hW N hN r i.1.val _ hPi.1 hPi.2) (pull e.toLinearMap b) 1 cf one_pos hcf ?_ μ' h1 h2` and prove the remaining obligations.
+
+Use extensionality with `a c`. Simplify using `[i, γ', pull_apply, hb, LinearMap.sum_apply]`. Conclude with `Finset.mem_biUnion.2 ⟨i, Finset.mem_univ _, hmem⟩`.
+-/
 theorem finite_minimiser_systems_upTo_aut : ∀ (g : ℕ) (φ : InvFun ℤ), IsPolFan id g φ → ∀ (W : Matrix (Fin 8) (Fin 8) ℤ), PosW W →
     ∀ (N : ℕ) [NeZero N], 3 ≤ N → ∀ r : ℕ, r ≤ g → ∃ S : Finset ((Fin 8 → Fin r → ZMod N) → (Fin 8 → Fin r → ℤ)),
     ∀ b : LinearMap.BilinForm ℤ (Fin r → ℤ), (∀ x y, b x y = b y x) → (∀ x, x ≠ 0 → 0 < b x x) →

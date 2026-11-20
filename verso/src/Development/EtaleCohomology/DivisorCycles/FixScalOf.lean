@@ -7,6 +7,11 @@ open LateralTheory.DivDb
 
 variable {C : Type} [Field C] {N : ℕ}
 
+/- English proof (translation)
+Proceed by induction on `Q using Polynomial.induction_on with`. Consider the case `C a => simpa using Algebra.commute_algebraMap_left a p`. Consider the case `add f g hf hg => simpa using hf.add_left hg`. Consider the case `monomial k a _`. Simplify using `only [map_mul, map_pow, aeval_C, aeval_X]`.
+
+Conclude with `(Algebra.commute_algebraMap_left a p).mul_left (h.pow_left _)`.
+-/
 theorem comm_aeval (y p : Mat C N) (h : Commute y p) (Q : C[X]) : Commute (aeval y Q) p := by
   induction Q using Polynomial.induction_on with
   | C a => simpa using Algebra.commute_algebraMap_left a p
@@ -15,15 +20,32 @@ theorem comm_aeval (y p : Mat C N) (h : Commute y p) (Q : C[X]) : Commute (aeval
     simp only [map_mul, map_pow, aeval_C, aeval_X]
     exact (Algebra.commute_algebraMap_left a p).mul_left (h.pow_left _)
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.Qp10.aeval_eig y μ v hv Q`.
+-/
 theorem aeval_eig (y : Mat C N) (μ : C) (v : Fin N → C) (hv : y *ᵥ v = μ • v) (Q : C[X]) :
     aeval y Q *ᵥ v = Q.eval μ • v :=
   _root_.UpperTheory.Reformulated.B.Qp10.aeval_eig y μ v hv Q
 
+/- English proof (translation)
+Take `⟨z, hz⟩` from `h`. Rewrite `hz` using `[Equiv.Perm.zpow_apply_eq_self_of_apply_eq_self hi]`. Conclude with `hz.symm`.
+-/
 theorem same_fix {n : ℕ} (π : Equiv.Perm (Fin n)) (i a : Fin n) (hi : π i = i) (h : π.SameCycle i a) : a = i := by
   obtain ⟨z, hz⟩ := h
   rw [Equiv.Perm.zpow_apply_eq_self_of_apply_eq_self hi] at hz
   exact hz.symm
 
+/- English proof (translation)
+Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => intro w _ h`. Simplify using `using h`. Consider the case `insert a s ha ih`. Introduce `w hw h`.
+
+Establish `hai : a ≠ i` using `fun h' => hS (h' ▸ Finset.mem_insert_self a s)`. Establish `his : i ∉ s` using `fun h' => hS (Finset.mem_insert_of_mem h')`. Rewrite `h` using `[Finset.prod_insert ha, map_mul, ← mulVec_mulVec]`. Distinguish the cases in `h0 : aeval y (∏ j ∈ s, (X - Polynomial.C (l j))) *ᵥ w = 0`. Conclude with `ih his w hw h0`.
+
+It suffices to derive a contradiction. Use `set w' := aeval y (∏ j ∈ s, (X - Polynomial.C (l j))) *ᵥ w with hw'`. Establish `heig : y *ᵥ w' = l a • w'`. Simplify using `only [map_sub, aeval_X, aeval_C, sub_mulVec, Algebra.algebraMap_eq_smul_one, smul_mulVec, one_mulVec, sub_eq_zero] at h`. Conclude with `h`.
+
+Establish `hc` using `comm_aeval y (p i) hyi (∏ j ∈ s, (X - Polynomial.C (l j)))`. Establish `hcond : ∀ k, ¬ π.SameCycle i k → p k *ᵥ w' = 0`. Introduce `k hk`. Establish `hki : k ≠ i` using `fun h' => hk (h' ▸ Equiv.Perm.SameCycle.refl π i)`. Rewrite using `[hw', ← hw, mulVec_mulVec, mulVec_mulVec, mul_assoc, hc.eq, ← mul_assoc, hp.1.ortho hki, zero_mul, zero_mulVec]`.
+
+Take `⟨v, hv0, hyv, hvc⟩` from `hv a`. Conclude with `hd i a (fun h' => hai (same_fix π i a hi h')) (l a) w' v h0 hv0 heig hyv hcond hvc`.
+-/
 theorem kill {n : ℕ} (p : Fin n → Mat C N) (y : Mat C N) (π : Equiv.Perm (Fin n)) (l : Fin n → C) (hp : Sys p)
     (hd : Disj y π p)
     (hv : ∀ j, ∃ v : Fin N → C, v ≠ 0 ∧ y *ᵥ v = l j • v ∧ ∀ k, ¬ π.SameCycle j k → p k *ᵥ v = 0)
@@ -52,6 +74,27 @@ theorem kill {n : ℕ} (p : Fin n → Mat C N) (y : Mat C N) (π : Equiv.Perm (F
     obtain ⟨v, hv0, hyv, hvc⟩ := hv a
     exact hd i a (fun h' => hai (same_fix π i a hi h')) (l a) w' v h0 hv0 heig hyv hcond hvc
 
+/- English proof (translation)
+Introduce `C _ _ _ N n p y π l hp hyp hdeg hd hl hv i hi`. Take `⟨q, hq0, hqd, hqy⟩` from `hdeg`. Establish `hroot : ∀ j, q.IsRoot (l j)`. Introduce `j`. Take `⟨v, hv0, hyv, -⟩` from `hv j`.
+
+Use `aeval_eig y (l j) v hyv q` as an intermediate fact. Rewrite `this` using `[hqy, zero_mulVec, eq_comm, smul_eq_zero]`. Conclude with `this.resolve_right hv0`. Use `set s : Multiset C := Multiset.map l Finset.univ.val with hs`. Establish `hnd : s.Nodup` using `Multiset.Nodup.map hl Finset.univ.nodup`.
+
+Establish `hle : s ≤ q.roots` using `(Multiset.le_iff_subset hnd).2 (fun a ha => by`. Take `⟨j, -, rfl⟩` from `Multiset.mem_map.1 ha`. Conclude with `(mem_roots hq0).2 (hroot j))`. Take `⟨r, hr⟩` from `(Multiset.prod_X_sub_C_dvd_iff_le_roots hq0 s).2 hle`. Use `set P := (s.map fun a => X - Polynomial.C a).prod with hPdef`.
+
+Establish `hPm : P.Monic` using `monic_multiset_prod_of_monic _ _ (fun a _ => monic_X_sub_C a)`. Establish `hPd : P.natDegree = n`. Rewrite using `[hPdef, natDegree_multiset_prod_X_sub_C_eq_card, hs, Multiset.card_map, Finset.card_val, Finset.card_univ, Fintype.card_fin]`. Establish `hr0 : r ≠ 0` using `by rintro rfl; exact hq0 (by rw [hr, mul_zero])`. Establish `hrd : r.natDegree = 0`.
+
+Use `hPm.natDegree_mul' hr0` as an intermediate fact. Rewrite `this` using `[← hr, hPd]`. Use linear arithmetic over natural numbers and integers. Establish `hc0 : r.coeff 0 ≠ 0`. Introduce `h`.
+
+Apply `hr0` to reduce the goal to its premises. Rewrite using `[eq_C_of_natDegree_eq_zero hrd, h, map_zero]`. Establish `hPy : aeval y P = 0`. Rewrite `hqy` using `[hr, eq_C_of_natDegree_eq_zero hrd, map_mul, aeval_C, Algebra.algebraMap_eq_smul_one, mul_smul_one, smul_eq_zero]`. Conclude with `hqy.resolve_left hc0`.
+
+Establish `hPP : P = ∏ j, (X - Polynomial.C (l j))`. Rewrite using `[hPdef, hs, Multiset.map_map, Finset.prod_eq_multiset_prod]`. Both sides reduce to the same expression. Rewrite `hPy` using `[hPP, ← Finset.mul_prod_erase Finset.univ _ (Finset.mem_univ i), mul_comm, map_mul]`. Establish `hyi : Commute y (p i)` using `by have := hyp i; rw [hi] at this; exact this`.
+
+Use `set M := aeval y (X - Polynomial.C (l i)) with hM`. Establish `hMc : Commute M (p i)` using `comm_aeval y (p i) hyi _`. Establish `hidem : p i * p i = p i` using `hp.1.idem i`. Establish `hMp : M * p i = 0`. Rewrite using `[ext_iff_mulVec]`.
+
+Introduce `u`. Rewrite using `[zero_mulVec]`. Apply `kill p y π l hp hd hv i hi hyi (Finset.univ.erase i) (Finset.notMem_erase i _)` to reduce the goal to its premises. Rewrite using `[mulVec_mulVec, ← mul_assoc, ← hMc.eq, mul_assoc, hidem]`. Rewrite using `[mulVec_mulVec, ← mul_assoc, hPy, zero_mul, zero_mulVec]`.
+
+Use `⟨l i, ?_⟩` and prove the remaining obligations. Rewrite `hMp` using `[hM, map_sub, aeval_X, aeval_C, sub_mul, sub_eq_zero, Algebra.algebraMap_eq_smul_one, smul_mul_assoc, one_mul]`. Conclude with `hMp`.
+-/
 theorem FixScal_of : LateralTheory.DivDb.CycleCountPf.FixScal := by
   intro C _ _ _ N n p y π l hp hyp hdeg hd hl hv i hi
   obtain ⟨q, hq0, hqd, hqy⟩ := hdeg

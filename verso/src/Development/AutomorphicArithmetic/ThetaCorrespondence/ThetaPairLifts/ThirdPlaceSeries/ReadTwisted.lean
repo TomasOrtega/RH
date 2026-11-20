@@ -19,6 +19,33 @@ end Record
 end GlobalTheory.ThmAUpper.Read
 namespace GlobalTheory.ThmAUpper
 open Read GlobalTheory.ToricDenom GlobalTheory.FunObj.SqNum in
+/- English proof (translation)
+Introduce `D L hT Gi Gl Kc Y cX ex Csz p CF d hp hfit _ hF w hw i j s hs1 hs2 T₀ ψc T _ h0 _ hψ hT'`. Take `⟨_, _, -, hb, -⟩` from `hF`. Take `⟨-, ι, hι, -, hall⟩` from `hfit.1.list _ (hfit.1.setting.inW1 hw)`. Use `⟨ι, hι, fun b => ?_⟩` and prove the remaining obligations. Establish `hi` using `i.2`.
+
+Set `a : Fin D.R.m` to `⟨D.R.m - i - 1, by omega⟩`. Establish `ha : a.1 + 1 = D.R.m - i` using `by simp only [a]; omega`. Establish `hsN : s ≤ BlochKatoReduction.Gen.NFun D.R + 1`. Establish `h3 : halfRank D i j ≤ GlobalTheory.ChiGrid.bigN D`. Establish `a : GlobalTheory.ChiGrid.rankV D (i + 1) (j + 1) ≤ GlobalTheory.ChiGrid.bigN D`.
+
+Establish `h1 : (j + 1) * D.R.t ≤ D.R.m * D.R.t` using `Nat.mul_le_mul_right _ j.2`. Establish `h2 : (i + 1) * GlobalTheory.ChiGrid.sLen D ≤ D.R.m * GlobalTheory.ChiGrid.sLen D` using `Nat.mul_le_mul_right _ i.2`. Simplify using `only [GlobalTheory.ChiGrid.rankV, GlobalTheory.ChiGrid.bigN, Ranks.r, mul_add] at *`. Use linear arithmetic over natural numbers and integers. Establish `e : GlobalTheory.ChiGrid.rankV D (i + 1) (j + 1) = GlobalTheory.ChiGrid.rankV D i j + D.R.t + GlobalTheory.ChiGrid.sLen D`.
+
+Simplify using `only [GlobalTheory.ChiGrid.rankV]`. Expand and normalize the polynomial expressions, which then agree. Unfold `halfRank`. Use linear arithmetic over natural numbers and integers. Establish `h12 : BlochKatoReduction.Gen.NFun D.R = GlobalTheory.ChiGrid.bigN D` using `GlobalTheory.LamTie.nFun_eq_bigN D`.
+
+Use linear arithmetic over natural numbers and integers. Take `⟨lam, hlam, -, hth⟩` from `hall j a s b hs1 hsN`. Establish `e1 : GlobalTheory.LamTie.cond0 D.host (lamOf d.G).w0 = condF d.G.pl` using `cond0_eq d.G hb`. Establish `e2 : (lamOf d.G).lam0 (D.ntw.l (ex.nch.twI w)) j a = nuH d.G p.P.A3.A.μ0 i j * p.R.C.delAt (D.what₂.places.resChar w)`. Rewrite using `[lambdaGrid_apply, ha, ex.nch.twI_l, nuH, xiH_base p, mul_one, div_mul_eq_mul_div]`.
+
+Establish `e3 : GlobalTheory.LamTie.phi D.host ∘ D.eTau = cmPhi D` using `rfl`. Establish `e4 : (lamOf d.G).kap j a s ∘ D.eTau = kap D 1 i j s`. Use function extensionality and compare the values at `τ`. Simplify using `only [Function.comp, GlobalTheory.LamTie.LamDat.kap, lamOf, kap, Formalism.L2.Host.eExp, Equiv.symm_apply_apply, ha]`. Establish `: (GlobalTheory.ChiGrid.num D 1 τ).e (j + 1) = ⌊(D.hc τ).e j⌋` using `by show GlobalTheory.SignedHC.GridData.extend 1 (D.hc τ).e (j + 1) = _`.
+
+Simplify using `[GlobalTheory.SignedHC.GridData.extend]`. Rewrite using `[this]`. Rewrite `hth` using `[e1, e2]`. Take `⟨u, -, hth⟩` from `hth`. Take `⟨_, π, t, hπ, ht, hδ⟩` from `hth _ (hfit.1.cond w hw)`.
+
+Take `⟨_, π0, t0, -, ht0, hδ0⟩` from `hth ∅ ⟨by simp, by simp, by simp⟩`. Use `replace ht := fun q => isClassTerm_reindex D.eTau (ht q)`. Use `replace ht0 := fun q => isClassTerm_reindex D.eTau (ht0 q)`. Rewrite `ht`, `ht0` using `[e3, e4]`. Establish `e5 : condQ (condF d.G.pl) (belowSet (∅ : Finset (HeightOneSpectrum (𝓞 D.host.E)))) = condF d.G.pl`.
+
+Simplify using `[condQ, belowSet]`. Establish `s0` using `sum_th_eq ht0 hδ0 (t := T₀) (by rw [e5]; exact h0)`. Take `⟨J, hJ⟩` from `GlobalTheory.ToricDistribution.exists_emb D.ntw (ex.nch.twI w) (ex.nch.k' w)`. Take `⟨e, he, hchar⟩` from `exists_pow_char hfit.1.psi hw (hp.ties.psiVal w hw) (atSide D.ntw b ι) J`. Establish `hc : condQ (condF d.G.pl) (belowSet (ex.nch.Q w)) ≠ ⊥` using `mul_ne_zero hb.1 (Finset.prod_ne_zero_iff.2 fun q _ => q.ne_bot)`.
+
+Establish `key : ∀ a : ℤ, J (BlochKatoReduction.Gen.thEval D.ntw (ex.nch.twI w) (ex.nch.Q w) lam (ex.nch.k' w) (ex.nch.psi' w ^ a)) = u * atSide D.ntw b ι (T (ψc ^ (e * a)))` using `fun a => by`. Use `thEval_eq_twisted hJ (fun q => ?_) ht hδ (hT' _)` and prove the remaining obligations. Take `⟨y, rfl⟩` from `QuotientGroup.mk_surjective q`. Establish `h1` using `hchar hc π hπ y`. Establish `h2 : ∀ (x : (D.ntw.Ok (ex.nch.twI w) (ex.nch.k' w))ˣ), J (algebraMap (D.ntw.Ok (ex.nch.twI w) (ex.nch.k' w)) _ (x ^ a : _ˣ)) = J (algebraMap (D.ntw.Ok (ex.nch.twI w) (ex.nch.k' w)) _ x) ^ a` using `fun x => by`.
+
+Use `congrArg Units.val (map_zpow (Units.map (J.comp (algebraMap (D.ntw.Ok (ex.nch.twI w) (ex.nch.k' w)) _)).toMonoidHom) x a)` as an intermediate fact. Rewrite `this` using `[Units.val_zpow_eq_zpow_val]`. Conclude with `this`. Rewrite using `[MonoidHom.zpow_apply, MonoidHom.zpow_apply, h2, ← h1, hψ, zpow_mul, Units.val_zpow_eq_zpow_val _ a, map_zpow₀]`. Apply the tactic sequence `refine ⟨lam, J, if b then e else -e, hlam, by cases b <;> simp [he, he.neg_left], RingHom.ext hJ, fun a => ?_⟩`.
+
+Rewrite using `[hJ, s0, hlam]`. Consider the cases of `b`. Establish `: BlochKatoReduction.Gen.psiAt false (ex.nch.psi' w ^ a) = ex.nch.psi' w ^ (-a)` using `by simp [BlochKatoReduction.Gen.psiAt]`. Rewrite using `[this, key]`. Simplify using `only [Bool.false_eq_true, if_false, mul_neg, neg_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `: BlochKatoReduction.Gen.psiAt true (ex.nch.psi' w ^ a) = ex.nch.psi' w ^ a` using `rfl`. Rewrite using `[this, key]`. Simplify using `only [if_true]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem read_twisted_alt : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Y : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y cX} {Csz : ℝ} (p : PtAt ex Csz) (CF : ℝ) (d : FunIn p CF), p.PointConditions' → Fitted (@Comparison₂) p CF d → GlobalTheory.IndefiniteRowSideFullHecke.ToricSymbols.ToricRatioConjugates → (∃ (_ : IsCMField D.host.E) (_ : IsAbelianGalois ℚ D.host.E), GlobalTheory.IndefiniteRowSideFullHecke.ClassZetaValuationBounds.IsFieldData D.host.d (GlobalTheory.FunObj.SqNum.cmPhi D) ∧
     GlobalTheory.CMVal.IsBaseCond (GlobalTheory.FunObj.SqNum.condF d.G.pl) ∧ ∃ Λ, GlobalTheory.IndefiniteRowSideFullHecke.ClassZetaValuationBounds.IsIntLattice D.host.d Λ) → ∀ w : D.what₂.places.Pl, TwistedAt D w → ∀ (i j : Fin D.R.m) (s : ℕ), 1 ≤ s → s ≤ halfRank D i j →
     ∀ (T₀ : ℂ) (ψc : PicO (condQ (GlobalTheory.FunObj.SqNum.condF d.G.pl) (GlobalTheory.ToricDenom.belowSet (ex.nch.Q w))) →* ℂˣ) (T : (PicO (condQ (GlobalTheory.FunObj.SqNum.condF d.G.pl) (GlobalTheory.ToricDenom.belowSet (ex.nch.Q w))) →* ℂˣ) → ℂ), IsValChar (GlobalTheory.FunObj.SqNum.cmPhi D) s (GlobalTheory.FunObj.SqNum.kap D 1 i j s) (GlobalTheory.FunObj.SqNum.condF d.G.pl) ∅ (nuH d.G p.P.A3.A.μ0 i j * p.R.C.delAt (D.what₂.places.resChar w)) →

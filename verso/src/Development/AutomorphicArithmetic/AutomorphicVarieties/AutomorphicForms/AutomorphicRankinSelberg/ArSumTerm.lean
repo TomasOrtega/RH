@@ -2,6 +2,15 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.A
 
 open scoped ComplexConjugate
 
+/- English proof (translation)
+Establish `hn1 : 1 ≤ n₁` using `Nat.pos_of_ne_zero (by rintro rfl; simp at hn)`. Establish `hm : 1 ≤ m` using `Nat.pos_of_ne_zero (by rintro rfl; simp at hn)`. Establish `hn1r : (1:ℝ) ≤ n₁` using `by exact_mod_cast hn1`. Establish `hmr : (1:ℝ) ≤ m` using `by exact_mod_cast hm`. Establish `hx2 : x ^ 2 ≤ y ^ 2 * ((m:ℝ) ^ r) ^ 2`.
+
+Rewrite using `[← mul_pow]`. Conclude with `pow_le_pow_left₀ hx h 2`. Establish `hM : (m:ℝ) ^ 2 * ((m:ℝ) ^ r) ^ 2 ≤ ((m:ℝ) ^ 2) ^ t`. Establish `h1 : ((m:ℝ) ^ 2) ^ (r + 1) = (m:ℝ) ^ 2 * ((m:ℝ) ^ r) ^ 2` using `by ring`. Rewrite using `[← h1, ← Real.rpow_natCast]`.
+
+Conclude with `Real.rpow_le_rpow_of_exponent_le (by nlinarith) (by push_cast; linarith)`. Establish `hcast : ((n₁ * m ^ 2 : ℕ) : ℝ) ^ t = (n₁ : ℝ) ^ t * ((m:ℝ) ^ 2) ^ t`. Use `push_cast`. Conclude with `Real.mul_rpow (by positivity) (by positivity)`. Establish `hN : (0:ℝ) < (n₁ : ℝ) ^ t` using `Real.rpow_pos_of_pos (by linarith) t`.
+
+Establish `hm0 : (0:ℝ) < (m:ℝ)` using `by linarith`. Rewrite using `[hcast]`. Combine the equalities or inequalities in the displayed calculation. Clear the denominators using the available nonvanishing facts.
+-/
 private lemma arSum_term (r : ℕ) (t : ℝ) (ht : (r : ℝ) + 1 ≤ t) (x y : ℝ) (n₁ m : ℕ) (hx : 0 ≤ x)
     (hn : 1 ≤ n₁ * m ^ 2) (h : x ≤ y * (m : ℝ) ^ r) :
     x ^ 2 / ((n₁ * m ^ 2 : ℕ) : ℝ) ^ t ≤ y ^ 2 / (n₁ : ℝ) ^ t * (1 / (m : ℝ) ^ 2) := by
@@ -28,6 +37,63 @@ private lemma arSum_term (r : ℕ) (t : ℝ) (ht : (r : ℝ) + 1 ≤ t) (x y : �
     _ = y ^ 2 / (n₁ : ℝ) ^ t * (1 / (m:ℝ) ^ 2) := by
         field_simp
 
+/- English proof (translation)
+Introduce `r t a b P ht hP h3 hsu`. Establish `ht0 : 0 < t` using `by have : (0:ℝ) ≤ r := Nat.cast_nonneg r; linarith`. Use `set u : ℕ → ℝ := fun n => ‖a n‖ ^ 2 / (n:ℝ) ^ t with hu`. Use `set w : ℕ → ℂ := fun n => starRingEnd ℂ (b n) * a n / (((n:ℝ) ^ t : ℝ) : ℂ) with hw`. Establish `h3' : ∀ n : ℕ, ∃ q : ℕ × ℕ, 1 ≤ n → a n ≠ 0 → q.1 ∈ P ∧ n = q.1 * q.2 ^ 2 ∧ ‖a n‖ ≤ ‖a q.1‖ * (q.2:ℝ) ^ r ∧ ‖b n‖ ≤ ‖a q.1‖ * (q.2:ℝ) ^ r`.
+
+Introduce `n`. Distinguish the cases in `hc : 1 ≤ n ∧ a n ≠ 0`. Take `⟨n₁, hn₁, m, h1, h2, h4⟩` from `h3 n hc.1 hc.2`. Conclude with `⟨(n₁, m), fun _ _ => ⟨hn₁, h1, h2, h4⟩⟩`. Conclude with `⟨(0, 0), fun h1 h2 => absurd ⟨h1, h2⟩ hc⟩`.
+
+Use `choose φ hφ using h3'`. Use `set Q : Set ℕ := {n | n ∉ P ∧ 1 ≤ n ∧ a n ≠ 0} with hQ`. Use `set c : ℕ → ℝ := ({m | 2 ≤ m} : Set ℕ).indicator (fun m => 1 / (m:ℝ) ^ 2) with hc`. Use `set g : ℕ × ℕ → ℝ := fun q => P.indicator u q.1 * c q.2 with hg`. Use `set G : ℕ → ℝ := Q.indicator (fun n => g (φ n)) with hG`.
+
+Establish `hu0 : ∀ n, 0 ≤ u n` using `fun n => by simp only [hu]; positivity`. Establish `hc0 : ∀ m, 0 ≤ c m` using `fun m => by`. Simplify using `only [hc]`. Conclude with `Set.indicator_nonneg (fun _ _ => by positivity) _`. Establish `hPu : Summable (P.indicator u)` using `hsu.indicator P`.
+
+Establish `hzeta : Summable (fun m : ℕ => 1 / (m:ℝ) ^ 2)` using `hasSum_zeta_two.summable`. Establish `hcs : Summable c` using `hzeta.indicator _`. Establish `hgs : Summable g` using `summable_mul_of_summable_norm (f := P.indicator u) (g := c) (summable_norm_iff.mpr hPu) (summable_norm_iff.mpr hcs)`. Establish `hg0 : ∀ q, 0 ≤ g q` using `fun q => mul_nonneg (Set.indicator_nonneg (fun n _ => hu0 n) _) (hc0 _)`. Establish `hinj : Function.Injective (fun x : Q => φ x.1)`.
+
+Introduce `x y hxy`. Establish `hxQ : x.1 ∉ P ∧ 1 ≤ x.1 ∧ a x.1 ≠ 0` using `x.2`. Establish `hyQ : y.1 ∉ P ∧ 1 ≤ y.1 ∧ a y.1 ≠ 0` using `y.2`. Establish `hx` using `hφ x.1 hxQ.2.1 hxQ.2.2`. Establish `hy` using `hφ y.1 hyQ.2.1 hyQ.2.2`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only at hxy`. Rewrite using `[hx.2.1, hy.2.1, hxy]`. Establish `hGs : Summable G`. Rewrite using `[hG, ← summable_subtype_iff_indicator]`.
+
+Conclude with `hgs.comp_injective hinj`. Establish `hc34 : ∑' m, c m ≤ 3 / 4`. Establish `e1` using `hzeta.sum_add_tsum_nat_add 2`. Establish `e2` using `hcs.sum_add_tsum_nat_add 2`. Establish `s2 : ∑ i ∈ Finset.range 2, c i = 0` using `by simp [Finset.sum_range_succ, hc]`.
+
+Establish `s1 : ∑ i ∈ Finset.range 2, (1 / ((i:ℕ):ℝ) ^ 2) = 1` using `by simp [Finset.sum_range_succ]`. Establish `e3 : (fun i => c (i + 2)) = (fun i => 1 / (((i + 2 : ℕ)) : ℝ) ^ 2)`. Use function extensionality and compare the values at `i`. Simplify using `only [hc]`. Rewrite using `[Set.indicator_of_mem (show i + 2 ∈ {m : ℕ | 2 ≤ m} by simp)]`.
+
+Rewrite `e2` using `[s2, zero_add, e3]`. Rewrite `e1` using `[s1, hasSum_zeta_two.tsum_eq]`. Establish `hpi` using `Real.pi_lt_d2`. Establish `hpi0` using `Real.pi_pos`. Establish `hpi2 : Real.pi ^ 2 < 9.93` using `by nlinarith`.
+
+Rewrite using `[← e2]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hGle : ∑' n, G n ≤ (∑' n, P.indicator u n) * (3 / 4)`. Rewrite using `[hG, ← tsum_subtype]`. Combine the equalities or inequalities in the displayed calculation.
+
+Conclude with `(tsum_mul_tsum_of_summable_norm (f := P.indicator u) (g := c) (summable_norm_iff.mpr hPu) (summable_norm_iff.mpr hcs)).symm`. Use `_ ≤ _ := mul_le_mul_of_nonneg_left hc34 (tsum_nonneg (fun n => Set.indicator_nonneg (fun n _ => hu0 n) _))`. Establish `hpt : ∀ n, ‖w n‖ ≤ P.indicator u n + G n ∧ 6 * P.indicator u n - 8 * G n ≤ 7 * (w n).re - u n`. Introduce `n`. Distinguish the cases in `hn : n ∈ P`.
+
+Establish `hGn : G n = 0`. Simplify using `only [hG]`. Establish `hnQ : n ∉ Q` using `fun h => by`. Establish `h' : n ∉ P ∧ 1 ≤ n ∧ a n ≠ 0` using `h`. Conclude with `h'.1 hn`.
+
+Conclude with `Set.indicator_of_notMem hnQ _`. Establish `hPn : P.indicator u n = u n` using `Set.indicator_of_mem hn u`. Establish `hwn : w n = ((u n : ℝ) : ℂ)`. Simplify using `only [hw, hu]`. Rewrite using `[hP n hn, Complex.conj_mul']`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hGn, hPn, hwn, Complex.norm_real, Real.norm_of_nonneg (hu0 n), Complex.ofReal_re]`. Apply the tactic sequence `constructor <;> linarith [hu0 n]`. Establish `hPn : P.indicator u n = 0` using `Set.indicator_of_notMem hn u`.
+
+Distinguish the cases in `hq : 1 ≤ n ∧ a n ≠ 0`. Establish `hφn` using `hφ n hq.1 hq.2`. Establish `hGn : G n = P.indicator u (φ n).1 * c (φ n).2`. Simplify using `only [hG, hg]`. Conclude with `Set.indicator_of_mem (show n ∈ Q from ⟨hn, hq.1, hq.2⟩) _`.
+
+Break down `hφq : φ n with ⟨n₁, m⟩` into its components or cases. Rewrite `hφn`, `hGn` using `[hφq]`. Take `⟨hn₁P, hnm, hA, hB⟩` from `hφn`. Simplify using `only at hn₁P hnm hA hB hGn`. Break down `Nat.lt_or_ge m 2 with hlt | hm2` into its components or cases.
+
+Use `exfalso interval_cases m`. Simplify using `at hnm`. Use linear arithmetic over natural numbers and integers. Simplify using `at hnm`. Conclude with `hn (hnm ▸ hn₁P)`.
+
+Establish `hc2 : c m = 1 / (m:ℝ) ^ 2`. Simplify using `only [hc]`. Conclude with `Set.indicator_of_mem (show m ∈ {m : ℕ | 2 ≤ m} from hm2) _`. Establish `hPn1 : P.indicator u n₁ = u n₁` using `Set.indicator_of_mem hn₁P u`. Rewrite `hGn` using `[hc2, hPn1]`.
+
+Establish `h1n : 1 ≤ n₁ * m ^ 2` using `hnm ▸ hq.1`. Establish `k1` using `arSum_term r t ht ‖a n‖ ‖a n₁‖ n₁ m (norm_nonneg _) h1n hA`. Establish `k2` using `arSum_term r t ht ‖b n‖ ‖a n₁‖ n₁ m (norm_nonneg _) h1n hB`. Rewrite `k1`, `k2` using `[← hnm]`. Establish `hnt : 0 < (n:ℝ) ^ t` using `Real.rpow_pos_of_pos (by exact_mod_cast hq.1) t`.
+
+Establish `hwn : ‖w n‖ = ‖b n‖ * ‖a n‖ / (n:ℝ) ^ t`. Simplify using `only [hw]`. Rewrite using `[norm_div, norm_mul, Complex.norm_conj, Complex.norm_real, Real.norm_of_nonneg hnt.le]`. Establish `hw2 : ‖w n‖ ≤ G n`. Rewrite using `[hwn, hGn]`.
+
+Establish `hab : ‖b n‖ * ‖a n‖ ≤ (‖a n‖ ^ 2 + ‖b n‖ ^ 2) / 2`. Use polynomial arithmetic with `[sq_nonneg (‖a n‖ - ‖b n‖)]`. Combine the equalities or inequalities in the displayed calculation. Establish `hun : u n ≤ G n`. Rewrite using `[hGn]`.
+
+Simplify using `only [hu]`. Conclude with `k1`. Establish `hre : -‖w n‖ ≤ (w n).re`. Use `Complex.abs_re_le_norm (w n)` as an intermediate fact. Combine the linear relations using `[neg_abs_le (w n).re]`.
+
+Rewrite using `[hPn]`. Apply the tactic sequence `constructor <;> linarith`. Establish `hGn : G n = 0`. Simplify using `only [hG]`. Establish `hnQ : n ∉ Q` using `fun h => by`.
+
+Establish `h' : n ∉ P ∧ 1 ≤ n ∧ a n ≠ 0` using `h`. Conclude with `hq ⟨h'.2.1, h'.2.2⟩`. Conclude with `Set.indicator_of_notMem hnQ _`. Establish `hz : w n = 0 ∧ u n = 0`. Break down `Nat.eq_zero_or_pos n with h0 | h0` into its components or cases.
+
+Substitute `h0` using the available equality. Simplify using `[hw, hu, Real.zero_rpow (ne_of_gt ht0)]`. Establish `han : a n = 0`. Assume the negation of the conclusion as `h`. Conclude with `hq ⟨h0, h⟩`.
+
+Simplify using `[hw, hu, han]`. Rewrite using `[hPn, hGn, hz.1, hz.2]`. Simplify using the standard rewrite rules. Establish `hws : Summable w` using `Summable.of_norm_bounded (hPu.add hGs) (fun n => (hpt n).1)`. Establish `hres : Summable (fun n => (w n).re)` using `Summable.of_norm_bounded (hPu.add hGs) (fun n => by rw [Real.norm_eq_abs]; exact (Complex.abs_re_le_norm _).trans (hpt n).1)`.
+
+Rewrite using `[Complex.re_tsum hws]`. Establish `hD` using `Summable.tsum_le_tsum (fun n => (hpt n).2) ((hPu.mul_left 6).sub (hGs.mul_left 8)) ((hres.mul_left 7).sub hsu)`. Rewrite `hD` using `[Summable.tsum_sub (hPu.mul_left 6) (hGs.mul_left 8), Summable.tsum_sub (hres.mul_left 7) hsu, Summable.tsum_mul_left 6 hPu, Summable.tsum_mul_left 8 hGs, Summable.tsum_mul_left 7 hres]`. Combine the linear relations using `[hGle]`.
+-/
 theorem UpperTheory.V.Af.Rs.arSum :
     UpperTheory.V.Af.Rs.ArSum := by
   intro r t a b P ht hP h3 hsu

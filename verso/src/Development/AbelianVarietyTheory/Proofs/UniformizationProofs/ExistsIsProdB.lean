@@ -16,6 +16,11 @@ open GlobalTheory.UU
 
 namespace GlobalTheory.UU
 
+/- English proof (translation)
+Establish `e₁ : famφT D T α 1 = (DVR.cP D (T ⊗ D.P.A) α * snd T D.P.A).left` using `congrArg (fun q : T ⊗ D.P.A ⟶ D.P.A => q.left) (mul_comm (snd T D.P.A) (DVR.cP D (T ⊗ D.P.A) α))`. Establish `e₂ : famφT D T α 2 = (DVR.cP D (T ⊗ D.P.A) α).left` using `rfl`. Establish `e₃ : famφT D T α 3 = (1 : T ⊗ D.P.A ⟶ D.P.A).left` using `rfl`. Rewrite using `[Fin.prod_univ_four, e₁, e₂, e₃]`. Use `show _ ^ ((k : ℤ) - 1) * _ ^ (1 : ℤ) * _ ^ (-1 : ℤ) * _ ^ (1 : ℤ) = _`.
+
+Rewrite using `[zpow_one, zpow_one, zpow_neg_one]`. Both sides reduce to the same expression.
+-/
 theorem prod_famT {R : Type} [CommRing R] [IsDomain R] (D : DegPre R) (T : Over (Spec (CommRingCat.of R)))
     (α : D.X) (k : ℕ) {U : Type} [CommGroup U] (h : ((T ⊗ D.P.A).left ⟶ D.P.A.left) → U) :
     ∏ i, h (famφT D T α i) ^ DegPre.famε k i =
@@ -29,6 +34,17 @@ theorem prod_famT {R : Type} [CommRing R] [IsDomain R] (D : DegPre R) (T : Over 
   show _ ^ ((k : ℤ) - 1) * _ ^ (1 : ℤ) * _ ^ (-1 : ℤ) * _ ^ (1 : ℤ) = _
   rw [zpow_one, zpow_one, zpow_neg_one]; rfl
 
+/- English proof (translation)
+Introduce `R _ _ D T k l β ga α hα f g`. Substitute `hα` using the available equality. Set `a : T ⊗ D.P.A ⟶ D.P.A` to `DVR.cP D _ β`. Set `b : T ⊗ D.P.A ⟶ D.P.A` to `DVR.cP D _ ga`. Set `x : T ⊗ D.P.A ⟶ D.P.A` to `snd T D.P.A`.
+
+Establish `hu` using `DVR.pullGen_isGen _ _ _ _ D.cub.isGen (lift a (lift b x)).left`. Take `⟨t, ht⟩` from `exists_sec D.P.isLB (φ' := famφT D T (β + ga)) (ε' := DegPre.famε (k + l)) (fun U _ h => by`. Establish `p₁` using `prod_cub a b x h`. Establish `p₂` using `prod_famT D T β k h`. Establish `p₃` using `prod_famT D T ga l h`.
+
+Establish `p₄` using `prod_famT D T (β + ga) (k + l) h`. Rewrite `p₄` using `[DVR.cPoint_add]`. Use `Eq.trans (DVR.prod_sum₂ (K := Fin 4 ⊕ Fin 4) (K' := thK) (U := U) _ (DVR.prod_sum₂ (K := Fin 4) (K' := Fin 4) (U := U) _ p₂ p₃) p₁) (Eq.trans ?_ p₄.symm)` and prove the remaining obligations. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv, ofMul_zpow, a, b, x]`.
+
+Use `push_cast`. Use the proof step `module)`. Use the proof step `(H1.SectionArithmetic.mulSec (H1.SectionArithmetic.mulSec f g) (genSec (LB.pullGen D.P.L (thφ D.P.A (x3 D.P.A)) thε D.cub.t (lift a (lift b x)).left) hu))`. Use `⟨t, fun Z r z J hJ => ?_⟩` and prove the remaining obligations. Use `(ht _ _ z J hJ).trans ((H1.SectionArithmetic.sval_mulSec _ _ _ z hJ).trans (congrArg₂ (· * ·) (H1.SectionArithmetic.sval_mulSec _ _ _ z hJ) ((sval_genSec _ hu _ z hJ).trans (congrArg Units.val ((val_cub D.cub r hJ a b x).trans ?_)))))` and prove the remaining obligations.
+
+Rewrite using `[DVR.comp_cP, DVR.comp_cP]`. Both sides reduce to the same expression.
+-/
 theorem exists_isProdB : ∀ (R : Type) [CommRing R] [IsDomain R] (D : DegPre R) (T : Over (Spec (CommRingCat.of R)))
     (k l : ℕ) (β ga α : D.X), β + ga = α → ∀ (f : SecBT D T k β) (g : SecBT D T l ga),
     ∃ h : SecBT D T (k + l) α, IsProdB f g h := by

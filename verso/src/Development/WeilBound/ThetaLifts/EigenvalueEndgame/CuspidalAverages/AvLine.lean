@@ -12,6 +12,13 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {d j : ℕ}
   {W : Spc F E d} {u u' : Matrix (Fin d) (Fin j) E}
 
+/- English proof (translation)
+Take `⟨a, b⟩` from `((unipU_eq U).choose_spec.choose_spec.2 s).1 hs`. Establish `k : ∀ z, mat (γ * s * γ⁻¹) *ᵥ incV F z = mat γ *ᵥ (mat s *ᵥ incV F (g' *ᵥ z))` using `fun z => by`. Rewrite using `[mat_mul, mat_mul, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, e', incM_mulVec]`. Establish `k' : ∀ z, mat γ *ᵥ incV F (g' *ᵥ z) = incV F z` using `fun z => by`. Rewrite using `[← incM_mulVec, ← e', Matrix.mulVec_mulVec, mat_mul_inv, Matrix.one_mulVec]`.
+
+Use `((unipU_eq U').choose_spec.choose_spec.2 _).2 ⟨fun z hz => by rw [k, a _ (h2 z hz), k'], fun z hz => ?_⟩` and prove the remaining obligations. Use `b (g' *ᵥ z) fun x hx => PositivityTheory.ThKF.inclR_inj (F := F) (by` as an intermediate fact. Rewrite using `[← fa_inc, ← fa_mat γ, k', e, incM_mulVec, fa_inc, hz _ (h1 x hx)])`. Rewrite using `[k, ← k' z, ← Matrix.mulVec_sub]`. Use `(Submodule.span_le (p := (Submodule.span (AE F E) (incV F '' (U' : Set (Fin d → E)))).comap (mat γ).mulVecLin)).2 ?_ this` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `Submodule.subset_span ⟨_, h1 x hx, by rw [Matrix.mulVecLin_apply, e, incM_mulVec]⟩`.
+-/
 theorem conj_N {γ : UA σ W.J} {g g' : Matrix (Fin d) (Fin d) E} (e : mat γ = incM F g) (e' : mat γ⁻¹ = incM F g')
     {U U' : Submodule E (Fin d → E)} (h1 : ∀ z ∈ U, g *ᵥ z ∈ U') (h2 : ∀ z ∈ U', g' *ᵥ z ∈ U) (s : UA σ W.J) (hs : s ∈ unipU σ W U) :
     γ * s * γ⁻¹ ∈ unipU σ W U' := by
@@ -28,6 +35,17 @@ theorem conj_N {γ : UA σ W.J} {g g' : Matrix (Fin d) (Fin d) E} (e : mat γ = 
   rintro _ ⟨x, hx, rfl⟩
   exact Submodule.subset_span ⟨_, h1 x hx, by rw [Matrix.mulVecLin_apply, e, incM_mulVec]⟩
 
+/- English proof (translation)
+Establish `h1 : Av σ W (Submodule.span E {H.x}) f 0`. Rewrite using `[Av, ← unipLine F E σ C.cm d d₁ W W₁ H (Or.inr C.skew) hH]`. Conclude with `h0`. Take `⟨g, g1, g2⟩` from `wittVec F E σ C.cm d W.J C.skew C.det x H.x hx (fun e => by simpa [e, form] using hH.xy) hi hH.xx`. Set `γ : UA σ W.J` to `⟨Matrix.GeneralLinearGroup.map (inclR (F := F) (AF F)) g, by`.
+
+Express the relevant statement in the definitionally equal form `(incM F g.1)ᵀ * _ * (incM F g.1).map _ = _`. Rewrite using `[incM_conj, ← incM_transpose_cuspidal_averages, ← incM_mul, ← incM_mul, g1]⟩`. Establish `r : γ ∈ ratU σ W.J` using `Subgroup.mem_subgroupOf.2 ⟨g, rfl⟩`. Establish `a1 : ∀ z ∈ Submodule.span E {x}, g.1 *ᵥ z ∈ Submodule.span E {H.x}` using `fun z hz => by`. Take `⟨c, rfl⟩` from `Submodule.mem_span_singleton.1 hz`.
+
+Rewrite using `[Matrix.mulVec_smul, g2]`. Conclude with `Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self _)`. Establish `a2 : ∀ z ∈ Submodule.span E {H.x}, (g⁻¹).1 *ᵥ z ∈ Submodule.span E {x}` using `fun z hz => by`. Take `⟨c, rfl⟩` from `Submodule.mem_span_singleton.1 hz`. Rewrite using `[Matrix.mulVec_smul, ← g2, Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec]`.
+
+Conclude with `Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self _)`. Use `isAv_transport (Γ := (ratU σ W.J).subgroupOf (unipU σ W (Submodule.span E {x}))) (conjE γ (conj_N rfl rfl a1 a2) fun s hs => by simpa using conj_N (γ := γ⁻¹) rfl rfl a2 a1 s hs) (fun s => conj_rat r s.1) h1` as an intermediate fact. Introduce `μ 𝓕 b1 b2 b3 y`. Use `(this μ 𝓕 b1 b2 b3 (γ * y)).trans ?_` and prove the remaining obligations. Use `congr 1`.
+
+Use function extensionality and compare the values at `s`. Express the relevant statement in the definitionally equal form `f (γ * s.1 * γ⁻¹ * (γ * y)) = _`. Rewrite using `[mul_assoc, inv_mul_cancel_left, mul_assoc, hf.2 γ r]`.
+-/
 theorem av_line (C : Ctx σ W) {d₁ : ℕ} {W₁ : Spc F E d₁} {H : Plane E d d₁} (hH : IsPlane σ H W W₁) {f : UA σ W.J → ℂ}
     (hf : IsAut (W := W) f) (h0 : IsCT H f 0) {x : Fin d → E} (hx : x ≠ 0) (hi : form σ W.J x x = 0) :
     Av σ W (Submodule.span E {x}) f 0 := by
@@ -54,6 +72,11 @@ theorem av_line (C : Ctx σ W) {d₁ : ℕ} {W₁ : Spc F E d₁} {H : Plane E d
   change f (γ * s.1 * γ⁻¹ * (γ * y)) = _
   rw [mul_assoc, inv_mul_cancel_left, mul_assoc, hf.2 γ r]
 
+/- English proof (translation)
+Set `b` to `Module.finBasis E U`. Set `u : Matrix (Fin d) (Fin (Module.finrank E U)) E` to `Matrix.of fun i k => (b k).1 i`. Take `⟨u', h⟩` from `exists_dual (c := (σ : E →+* E)) (J := W.J) (u := u) (GlobalTheory.SiegelSet.sigma_sigma C.cm) (Matrix.ext C.skew) C.det (Matrix.mulVec_injective_iff.2 (b.linearIndependent.map' U.subtype U.ker_subtype)) (Matrix.ext fun a k => by`. Rewrite using `[Matrix.mul_assoc]`. Conclude with `hU _ (b a).2 _ (b k).2)`.
+
+Use `⟨u, u', ?_, h⟩` and prove the remaining obligations. Use `congrArg (Submodule.map U.subtype) b.span_eq` as an intermediate fact. Rewrite `this` using `[Submodule.map_span, ← Set.range_comp, Submodule.map_subtype_top]`. Then use the resulting hypothesis.
+-/
 theorem Ctx.frame (C : Ctx σ W) (U : Submodule E (Fin d → E)) (hU : ∀ x ∈ U, ∀ y ∈ U, form σ W.J x y = 0) :
     ∃ u u' : Matrix (Fin d) (Fin (Module.finrank E U)) E, colSp u = U ∧ Fr (σ : E →+* E) W.J u u' := by
   let b := Module.finBasis E U
@@ -65,6 +88,9 @@ theorem Ctx.frame (C : Ctx σ W) (U : Submodule E (Fin d → E)) (hU : ∀ x ∈
   have := congrArg (Submodule.map U.subtype) b.span_eq
   rwa [Submodule.map_span, ← Set.range_comp, Submodule.map_subtype_top] at this
 
+/- English proof (translation)
+Take `⟨a, b⟩` from `(C.good U).fin μ 𝓕 h1 h2`. Use `h ((μ 𝓕)⁻¹ • μ) 𝓕 (Measure.IsHaarMeasure.smul μ (ENNReal.inv_ne_zero.2 b.ne) (ENNReal.inv_ne_top.2 a)) (h2.mono Measure.smul_absolutelyContinuous) (by rw [Measure.smul_apply, smul_eq_mul, ENNReal.inv_mul_cancel a b.ne]) x` as an intermediate fact. Rewrite `this` using `[Measure.restrict_smul, integral_smul_measure]`. Conclude with `(smul_eq_zero.1 this.symm).resolve_left (ENNReal.toReal_ne_zero.2 ⟨ENNReal.inv_ne_zero.2 b.ne, ENNReal.inv_ne_top.2 a⟩)`.
+-/
 theorem Ctx.int_zero (C : Ctx σ W) {U : Submodule E (Fin d → E)} {f : UA σ W.J → ℂ} (h : Av σ W U f 0) (μ : Measure (unipU σ W U))
     (𝓕 : Set (unipU σ W U)) (h1 : μ.IsHaarMeasure) (h2 : IsFundamentalDomain ((ratU σ W.J).subgroupOf (unipU σ W U)) 𝓕 μ) (x) :
     ∫ s in 𝓕, f (s.1 * x) ∂μ = 0 := by

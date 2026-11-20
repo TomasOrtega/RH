@@ -14,6 +14,11 @@ variable {K : Type} [Field K] [NumberField K] [StarRing K]
 
 def clsAvg (S : CSD K) (c : S.Cl) (x : S.V) : S.V := ((S.wt c : K))⁻¹ • ∑ g : S.Gam c, S.ρ c g x
 
+/- English proof (translation)
+Unfold `clsAvg`. Rewrite using `[map_smul, map_sum]`. Use `congr 1`. Establish `hm : ∀ g' : S.Gam c, S.ρ c g (S.ρ c g' x) = S.ρ c (g * g') x`. Introduce `g'`.
+
+Rewrite using `[map_mul]`. Both sides reduce to the same expression. Repeatedly rewrite using `[hm]`. Conclude with `Equiv.sum_comp (Equiv.mulLeft g) (fun g' => S.ρ c g' x)`.
+-/
 theorem clsAvg_fixed (S : CSD K) (c : S.Cl) (x : S.V) (g : S.Gam c) : S.ρ c g (clsAvg S c x) = clsAvg S c x := by
   unfold clsAvg
   rw [map_smul, map_sum]
@@ -45,12 +50,21 @@ variable {K : Type} [Field K] [NumberField K] [StarRing K]
 variable {S : CSD K} {σ : K →+* ℂ} {ρ : Γ →* Module.End ℂ W} {J : Subgroup G} {χ : J →* ℂˣ}
   (P : ClassPres ι S σ ρ J χ)
 
+/- English proof (translation)
+The claim follows from `(P.reps h).exists.choose_spec.choose_spec.choose_spec`.
+-/
 private theorem eq_decG_mul_y_decC_mul_decK (h : G) : h = ι (P.decG h) * P.y (P.decC h) * (P.decK h : G) :=
   (P.reps h).exists.choose_spec.choose_spec.choose_spec
 
+/- English proof (translation)
+Conclude with `(P.reps (ι γ * P.y c * k)).unique (P.reps (ι γ * P.y c * k)).exists.choose_spec ⟨γ, k, rfl⟩`.
+-/
 theorem decC_eq (γ : Γ) (c : S.Cl) (k : J) : P.decC (ι γ * P.y c * k) = c := by
   exact (P.reps (ι γ * P.y c * k)).unique (P.reps (ι γ * P.y c * k)).exists.choose_spec ⟨γ, k, rfl⟩
 
+/- English proof (translation)
+Establish `hf : ∀ c (g : S.Gam c), S.ρ c g ((f : S.Cl → S.V) c) = (f : S.Cl → S.V) c` using `f.2`. Establish `h1` using `P.coef_act c ((P.stabI c).symm δ) ((f : S.Cl → S.V) c)`. Rewrite `h1` using `[MulEquiv.apply_symm_apply, hf c]`. Conclude with `h1.symm`.
+-/
 theorem coef_fixed (f : S.Forms) (c : S.Cl) (δ : stab ι J (P.y c)) :
     (χ (stabK ι δ) : ℂ) • ρ (δ : Γ) (P.coef ((f : S.Cl → S.V) c)) = P.coef ((f : S.Cl → S.V) c) := by
   have hf : ∀ c (g : S.Gam c), S.ρ c g ((f : S.Cl → S.V) c) = (f : S.Cl → S.V) c := f.2
@@ -58,6 +72,17 @@ theorem coef_fixed (f : S.Forms) (c : S.Cl) (δ : stab ι J (P.y c)) :
   rw [MulEquiv.apply_symm_apply, hf c] at h1
   exact h1.symm
 
+/- English proof (translation)
+Establish `e2 : (P.y c)⁻¹ * ι (γ'⁻¹ * γ) * P.y c = (k' : G) * (k : G)⁻¹`. Rewrite using `[map_mul, map_inv]`. Combine the equalities or inequalities in the displayed calculation. Establish `hmem : γ'⁻¹ * γ ∈ stab ι J (P.y c)`. Rewrite using `[mem_stab, e2]`.
+
+Conclude with `J.mul_mem k'.2 (J.inv_mem k.2)`. Establish `hK : stabK ι (⟨γ'⁻¹ * γ, hmem⟩ : stab ι J (P.y c)) = k * k'⁻¹`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show ((P.y c)⁻¹ * ι (γ'⁻¹ * γ) * P.y c)⁻¹ = ((k * k'⁻¹ : J) : G)`. Rewrite using `[e2]`.
+
+Simplify using the standard rewrite rules. Establish `hfix : (χ (k * k'⁻¹) : ℂ) • ρ (γ'⁻¹ * γ) (P.coef ((f : S.Cl → S.V) c)) = P.coef ((f : S.Cl → S.V) c)`. Establish `h1` using `P.coef_fixed f c ⟨γ'⁻¹ * γ, hmem⟩`. Rewrite `h1` using `[hK]`. Conclude with `h1`.
+
+Establish `hχ : χ k' * χ (k * k'⁻¹) = χ k`. Rewrite using `[map_mul, map_inv, mul_comm (χ k), mul_inv_cancel_left]`. Use `conv_lhs => rw [← hfix]`. Rewrite using `[map_smul, smul_smul, ← Units.val_mul, hχ]`. Use `congr 1`.
+
+Use `show (ρ γ' * ρ (γ'⁻¹ * γ)) (P.coef _) = _`. Rewrite using `[← map_mul, mul_inv_cancel_left]`.
+-/
 private theorem coef_smul_eq_of_double_coset_eq (f : S.Forms) (γ γ' : Γ) (c : S.Cl) (k k' : J)
     (hs : ι γ * P.y c * (k : G) = ι γ' * P.y c * (k' : G)) :
     (χ k' : ℂ) • ρ γ' (P.coef ((f : S.Cl → S.V) c)) = (χ k : ℂ) • ρ γ (P.coef ((f : S.Cl → S.V) c)) := by
@@ -88,6 +113,9 @@ private theorem coef_smul_eq_of_double_coset_eq (f : S.Forms) (γ γ' : Γ) (c :
   show (ρ γ' * ρ (γ'⁻¹ * γ)) (P.coef _) = _
   rw [← map_mul, mul_inv_cancel_left]
 
+/- English proof (translation)
+Establish `hc` using `P.decC_eq γ c k`. Establish `hs` using `eq_decG_mul_y_decC_mul_decK P (ι γ * P.y c * k)`. Unfold `ClassPres.ext`. Rewrite `hs`, the goal using `[hc]`. Conclude with `coef_smul_eq_of_double_coset_eq P f γ _ c k _ hs`.
+-/
 theorem ext_eq (f : S.Forms) (γ : Γ) (c : S.Cl) (k : J) :
     P.ext f (ι γ * P.y c * k) = (χ k : ℂ) • ρ γ (P.coef ((f : S.Cl → S.V) c)) := by
   have hc := P.decC_eq γ c k
@@ -96,6 +124,11 @@ theorem ext_eq (f : S.Forms) (γ : Γ) (c : S.Cl) (k : J) :
   rw [hc] at hs ⊢
   exact coef_smul_eq_of_double_coset_eq P f γ _ c k _ hs
 
+/- English proof (translation)
+Unfold `ClassPres.ExtMem`. Introduce `f`. Use `show ∀ (γ : Γ) (h : G) (k : J), P.ext f (ι γ * h * k) = (χ k : ℂ) • ρ γ (P.ext f h)`. Introduce `γ h k`. Take `⟨c, ⟨γ0, k0, rfl⟩, -⟩` from `P.reps h`.
+
+Establish `e1 : ι γ * (ι γ0 * P.y c * (k0 : G)) * (k : G) = ι (γ * γ0) * P.y c * ((k0 * k : J) : G)`. Rewrite using `[map_mul ι, Subgroup.coe_mul]`. Simplify using `only [mul_assoc]`. Rewrite using `[e1, P.ext_eq f (γ * γ0) c (k0 * k), P.ext_eq f γ0 c k0, map_smul, smul_smul, map_mul χ, map_mul ρ, Units.val_mul, mul_comm ((χ k0 : ℂ))]`. Both sides reduce to the same expression.
+-/
 theorem extMem_holds (P : ClassPres ι S σ ρ J χ) : P.ExtMem := by
   unfold ClassPres.ExtMem
   intro f
@@ -109,18 +142,32 @@ theorem extMem_holds (P : ClassPres ι S σ ρ J χ) : P.ExtMem := by
     Units.val_mul, mul_comm ((χ k0 : ℂ))]
   rfl
 
+/- English proof (translation)
+Rewrite using `[Nat.card_congr (P.stabI c).toEquiv.symm, Nat.card_eq_fintype_card]`. Both sides reduce to the same expression.
+-/
 theorem card_stab (c : S.Cl) : Nat.card (stab ι J (P.y c)) = S.wt c := by
   rw [Nat.card_congr (P.stabI c).toEquiv.symm, Nat.card_eq_fintype_card]
   rfl
 
+/- English proof (translation)
+Simplify using `using P.ext_eq f 1 c 1`.
+-/
 theorem ext_rep (f : S.Forms) (c : S.Cl) : P.ext f (P.y c) = P.coef ((f : S.Cl → S.V) c) := by
   simpa using P.ext_eq f 1 c 1
 
+/- English proof (translation)
+Simplify using `only [CSD.csum, map_sum, map_mul, map_inv₀, map_natCast, P.coef_pair]`.
+-/
 theorem sigma_csum (f f' : S.Forms) :
     σ (S.csum f f') = ∑ c, ((S.wt c : ℂ))⁻¹ *
       inner ℂ (P.coef ((f : S.Cl → S.V) c)) (P.coef ((f' : S.Cl → S.V) c)) := by
   simp only [CSD.csum, map_sum, map_mul, map_inv₀, map_natCast, P.coef_pair]
 
+/- English proof (translation)
+Unfold `ClassPres.Isom`. Introduce `f f'`. Rewrite using `[P.sigma_csum f f']`. Unfold `adInner`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[P.card_stab c, P.ext_rep f c, P.ext_rep f' c]`.
+-/
 theorem isom_holds (P : ClassPres ι S σ ρ J χ) : P.Isom := by
   unfold ClassPres.Isom
   intro f f'
@@ -129,6 +176,11 @@ theorem isom_holds (P : ClassPres ι S σ ρ J χ) : P.Isom := by
   refine Finset.sum_congr rfl fun c _ => ?_
   rw [P.card_stab c, P.ext_rep f c, P.ext_rep f' c]
 
+/- English proof (translation)
+Establish `h1 : ∑ i, σ (S.bV.repr x i) • P.coef (S.bV i) = 0`. Rewrite using `[← hx]`. Use `conv_rhs => rw [← S.bV.sum_repr x]`. Rewrite using `[map_sum]`. Simplify using `only [map_smulₛₗ]`.
+
+Establish `h2` using `Fintype.linearIndependent_iff.1 P.coef_li _ h1`. Apply `S.bV.repr.injective` to reduce the goal to its premises. Use extensionality with `i`. Simplify using `using h2 i`.
+-/
 theorem coef_inj {x : S.V} (hx : P.coef x = 0) : x = 0 := by
   have h1 : ∑ i, σ (S.bV.repr x i) • P.coef (S.bV i) = 0 := by
     rw [← hx]
@@ -140,12 +192,25 @@ theorem coef_inj {x : S.V} (hx : P.coef x = 0) : x = 0 := by
   ext i
   simpa using h2 i
 
+/- English proof (translation)
+Rewrite using `[← Complex.ofReal_natCast, ← Complex.ofReal_inv, Complex.re_ofReal_mul]`.
+-/
 private theorem re_natCast_inv_mul' (n : ℕ) (z : ℂ) : (((n : ℂ))⁻¹ * z).re = ((n : ℝ))⁻¹ * z.re := by
   rw [← Complex.ofReal_natCast, ← Complex.ofReal_inv, Complex.re_ofReal_mul]
 
+/- English proof (translation)
+The claim follows from `inner_self_eq_norm_sq (𝕜 := ℂ) x`.
+-/
 private theorem inner_self_re_eq_norm_sq (x : W) : (inner ℂ x x).re = ‖x‖ ^ 2 :=
   inner_self_eq_norm_sq (𝕜 := ℂ) x
 
+/- English proof (translation)
+Establish `hr` using `congrArg Complex.re h`. Rewrite `hr` using `[Complex.re_sum, Complex.zero_re]`. Simplify using `only [re_natCast_inv_mul', inner_self_re_eq_norm_sq] at hr`. Establish `hnn : ∀ c ∈ Finset.univ, 0 ≤ ((S.wt c : ℝ))⁻¹ * ‖w c‖ ^ 2` using `fun c _ => by positivity`. Establish `h0` using `(Finset.sum_eq_zero_iff_of_nonneg hnn).1 hr c (Finset.mem_univ c)`.
+
+Establish `hw : (S.wt c : ℝ) ≠ 0`. Establish `hpos : 0 < S.wt c` using `Fintype.card_pos`. Conclude with `hpos.ne'` after adjusting the coercions. Break down `mul_eq_zero.1 h0 with h1 | h1` into its components or cases. Conclude with `absurd (inv_eq_zero.1 h1) hw`.
+
+Simplify using `using h1`.
+-/
 theorem eq_zero_of_wsum {w : S.Cl → W}
     (h : ∑ c, ((S.wt c : ℂ))⁻¹ * inner ℂ (w c) (w c) = 0) (c : S.Cl) : w c = 0 := by
   have hr := congrArg Complex.re h
@@ -160,6 +225,9 @@ theorem eq_zero_of_wsum {w : S.Cl → W}
   · exact absurd (inv_eq_zero.1 h1) hw
   · simpa using h1
 
+/- English proof (translation)
+Use `show ∑ i, σ (S.H j i) * a i = _`. Simplify using `only [CSD.H, Matrix.of_apply, P.sigma_csum, inner_sum, inner_smul_right, Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem mulVec_eq (a : Fin S.dim → ℂ) (j : Fin S.dim) :
     ((S.H.map σ).mulVec a) j = ∑ c, ((S.wt c : ℂ))⁻¹ * inner ℂ (P.coef ((S.basis j : S.Cl → S.V) c))
       (∑ i, a i • P.coef ((S.basis i : S.Cl → S.V) c)) := by
@@ -169,6 +237,11 @@ theorem mulVec_eq (a : Fin S.dim → ℂ) (j : Fin S.dim) :
   refine Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun i _ => ?_
   ring
 
+/- English proof (translation)
+Establish `key : ∑ c', ((S.wt c' : ℂ))⁻¹ * inner ℂ (∑ i, a i • P.coef ((S.basis i : S.Cl → S.V) c')) (∑ i, a i • P.coef ((S.basis i : S.Cl → S.V) c')) = 0`. Establish `h0 : ∑ j, starRingEnd ℂ (a j) * ((S.H.map σ).mulVec a) j = 0` using `by simp [h]`. Rewrite using `[← h0]`. Simplify using `only [P.mulVec_eq, sum_inner, inner_smul_left, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun c' _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Conclude with `eq_zero_of_wsum key c`.
+-/
 theorem comb_zero_of_mulVec (a : Fin S.dim → ℂ) (h : (S.H.map σ).mulVec a = 0) (c : S.Cl) :
     ∑ i, a i • P.coef ((S.basis i : S.Cl → S.V) c) = 0 := by
   have key : ∑ c', ((S.wt c' : ℂ))⁻¹ * inner ℂ (∑ i, a i • P.coef ((S.basis i : S.Cl → S.V) c'))
@@ -181,6 +254,17 @@ theorem comb_zero_of_mulVec (a : Fin S.dim → ℂ) (h : (S.H.map σ).mulVec a =
     ring
   exact eq_zero_of_wsum key c
 
+/- English proof (translation)
+Establish `hH : S.H.det ≠ 0`. Introduce `hdet`. Take `⟨v, hv, hmul⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 hdet`. Apply `hv` to reduce the goal to its premises. Establish `hmulσ : (S.H.map σ).mulVec (fun i => σ (v i)) = 0`.
+
+Use function extensionality and compare the values at `j`. Establish `h3 : σ ((S.H.mulVec v) j) = ((S.H.map σ).mulVec (fun i => σ (v i))) j` using `by show σ (∑ i, S.H j i * v i) = ∑ i, σ (S.H j i) * σ (v i)`. Rewrite using `[map_sum]`. Simplify using `only [map_mul]`. Rewrite using `[← h3, congrFun hmul j]`.
+
+Simplify using the standard rewrite rules. Establish `hc` using `P.comb_zero_of_mulVec (fun i => σ (v i)) hmulσ`. Establish `hzero : ∑ i, v i • S.basis i = 0`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `c`.
+
+Use `show ((∑ i, v i • S.basis i : S.Forms) : S.Cl → S.V) c = 0`. Apply `P.coef_inj` to reduce the goal to its premises. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul, Finset.sum_apply, Pi.smul_apply, map_sum, map_smulₛₗ]`. Conclude with `hc c`. Use function extensionality and compare the values at `i`.
+
+Conclude with `Fintype.linearIndependent_iff.1 S.basis.linearIndependent v hzero i`. Establish `e : (S.H.map σ).det = σ S.H.det` using `(RingHom.map_det σ S.H).symm`. Rewrite using `[e]`. Conclude with `(map_ne_zero σ).2 hH`.
+-/
 theorem det_ne (P : ClassPres ι S σ ρ J χ) : (S.H.map σ).det ≠ 0 := by
   have hH : S.H.det ≠ 0 := by
     intro hdet
@@ -208,6 +292,13 @@ theorem det_ne (P : ClassPres ι S σ ρ J χ) : (S.H.map σ).det ≠ 0 := by
   rw [e]
   exact (map_ne_zero σ).2 hH
 
+/- English proof (translation)
+Establish `hL : ∀ f : S.Forms, P.extL f = P.ext f` using `fun f => rfl`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `a ha`. Establish `hc : ∀ c, ∑ i, a i • P.coef ((S.basis i : S.Cl → S.V) c) = 0`. Introduce `c`.
+
+Establish `h1` using `congrFun ha (P.y c)`. Simplify `h1` using `[Finset.sum_apply, Pi.smul_apply, hL, P.ext_rep]`. Establish `hmul : (S.H.map σ).mulVec a = 0`. Use function extensionality and compare the values at `j`. Rewrite using `[P.mulVec_eq]`.
+
+Simplify using `[hc]`. Introduce `i`. Assume the negation of the conclusion as `hi`. Conclude with `P.det_ne (Matrix.exists_mulVec_eq_zero_iff.1 ⟨a, fun h0 => hi (by simp [h0]), hmul⟩)`.
+-/
 theorem linInd (P : ClassPres ι S σ ρ J χ) : LinearIndependent ℂ (fun i => P.extL (S.basis i)) := by
   have hL : ∀ f : S.Forms, P.extL f = P.ext f := fun f => rfl
   rw [Fintype.linearIndependent_iff]
@@ -224,11 +315,19 @@ theorem linInd (P : ClassPres ι S σ ρ J χ) : LinearIndependent ℂ (fun i =>
   by_contra hi
   exact P.det_ne (Matrix.exists_mulVec_eq_zero_iff.1 ⟨a, fun h0 => hi (by simp [h0]), hmul⟩)
 
+/- English proof (translation)
+Simplify using `only [clsAvg, map_smulₛₗ, map_inv₀, map_natCast, map_sum, P.coef_act]`.
+-/
 theorem coef_avg (c : S.Cl) (x : S.V) :
     P.coef (clsAvg S c x) = ((S.wt c : ℂ))⁻¹ •
       ∑ g : S.Gam c, (χ (stabK ι (P.stabI c g)) : ℂ) • ρ (P.stabI c g : Γ) (P.coef x) := by
   simp only [clsAvg, map_smulₛₗ, map_inv₀, map_natCast, map_sum, P.coef_act]
 
+/- English proof (translation)
+Establish `hm : ∀ (γ : Γ) (h : G) (k : J), F (ι γ * h * k) = (χ k : ℂ) • ρ γ (F h)` using `hF`. Establish `e : ∀ δ : stab ι J (P.y c), ι (δ : Γ) * P.y c * ((stabK ι δ : J) : G) = P.y c`. Introduce `δ`. Use `show ι (δ : Γ) * P.y c * ((P.y c)⁻¹ * ι (δ : Γ) * P.y c)⁻¹ = P.y c`. Use `group`.
+
+Rewrite using `[← hm, e]`.
+-/
 theorem adForms_fixed {F : G → W} (hF : F ∈ AdForms ι ρ J χ) (c : S.Cl) (g : S.Gam c) :
     (χ (stabK ι (P.stabI c g)) : ℂ) • ρ (P.stabI c g : Γ) (F (P.y c)) = F (P.y c) := by
   have hm : ∀ (γ : Γ) (h : G) (k : J), F (ι γ * h * k) = (χ k : ℂ) • ρ γ (F h) := hF
@@ -238,17 +337,48 @@ theorem adForms_fixed {F : G → W} (hF : F ∈ AdForms ι ρ J χ) (c : S.Cl) (
     group
   rw [← hm, e]
 
+/- English proof (translation)
+Establish `hm : ∀ (γ : Γ) (h : G) (k : J), F (ι γ * h * k) = (χ k : ℂ) • ρ γ (F h)` using `hF`. Use `conv_lhs => rw [eq_decG_mul_y_decC_mul_decK P h]`. Conclude with `hm _ _ _`.
+-/
 theorem adForms_val {F : G → W} (hF : F ∈ AdForms ι ρ J χ) (h : G) :
     F h = (χ (P.decK h) : ℂ) • ρ (P.decG h) (F (P.y (P.decC h))) := by
   have hm : ∀ (γ : Γ) (h : G) (k : J), F (ι γ * h * k) = (χ k : ℂ) • ρ γ (F h) := hF
   conv_lhs => rw [eq_decG_mul_y_decC_mul_decK P h]
   exact hm _ _ _
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Rewrite using `[P.adForms_val hF x, P.adForms_val hF' x, h]`.
+-/
 theorem adForms_ext {F F' : G → W} (hF : F ∈ AdForms ι ρ J χ) (hF' : F' ∈ AdForms ι ρ J χ)
     (h : ∀ c, F (P.y c) = F' (P.y c)) : F = F' := by
   funext x
   rw [P.adForms_val hF x, P.adForms_val hF' x, h]
 
+/- English proof (translation)
+Establish `hL : ∀ f : S.Forms, P.extL f = P.ext f` using `fun f => rfl`. Establish `hle : Submodule.span ℂ (Set.range P.extL) ≤ AdForms ι ρ J χ`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨f, rfl⟩`. Conclude with `P.extMem_holds f`.
+
+Use `le_antisymm hle ?_` and prove the remaining obligations. Introduce `F hF`. Establish `hw : ∀ c, ∃ β : S.ιV → ℂ, ∑ l, β l • P.coef (S.bV l) = F (P.y c)`. Introduce `c`. Establish `hmem : F (P.y c) ∈ Submodule.span ℂ (Set.range fun l => P.coef (S.bV l))`.
+
+Rewrite using `[P.coef_span]`. Conclude with `Submodule.mem_top`. Rewrite `hmem` using `[Submodule.mem_span_range_iff_exists_fun]`. Conclude with `hmem`. Use `choose β hβ using hw`.
+
+Take `⟨F', hF'def⟩ : ∃ F' : G → W, F' = ∑ c, ∑ l, β c l • P.extL (clsSingle S c (S.bV l))` from `⟨_, rfl⟩`. Establish `hF'mem : F' ∈ Submodule.span ℂ (Set.range P.extL)`. Rewrite using `[hF'def]`. Apply `Submodule.sum_mem` to reduce the goal to its premises. Introduce `c _`.
+
+Apply `Submodule.sum_mem` to reduce the goal to its premises. Introduce `l _`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, rfl⟩)`. Establish `heq : F = F'`. Use `P.adForms_ext hF (hle hF'mem) (fun c => ?_)` and prove the remaining obligations.
+
+Establish `hz : ∀ c', c' ≠ c → ∀ l, P.extL (clsSingle S c' (S.bV l)) (P.y c) = 0`. Introduce `c' hc l`. Rewrite using `[hL, P.ext_rep]`. Simplify using `[clsSingle, Pi.single_apply, hc, Ne.symm hc]`. Establish `hs : ∀ l, P.extL (clsSingle S c (S.bV l)) (P.y c) = P.coef (clsAvg S c (S.bV l))`.
+
+Introduce `l`. Rewrite using `[hL, P.ext_rep]`. Simplify using `[clsSingle]`. Establish `hF'c : F' (P.y c) = ∑ l, β c l • P.coef (clsAvg S c (S.bV l))`. Rewrite using `[hF'def]`.
+
+Simplify using `only [Finset.sum_apply, Pi.smul_apply]`. Rewrite using `[Finset.sum_eq_single c]`. Conclude with `Finset.sum_congr rfl fun l _ => by rw [hs l]`. Introduce `c' _ hc'`. Conclude with `Finset.sum_eq_zero fun l _ => by rw [hz c' hc' l, smul_zero]`.
+
+Introduce `hc`. Conclude with `absurd (Finset.mem_univ c) hc`. Establish `hwt : ((S.wt c : ℂ)) ≠ 0`. Establish `hpos : 0 < S.wt c` using `Fintype.card_pos`. Conclude with `hpos.ne'` after adjusting the coercions.
+
+Establish `hA : ((S.wt c : ℂ))⁻¹ • ∑ g : S.Gam c, (χ (stabK ι (P.stabI c g)) : ℂ) • ρ (P.stabI c g : Γ) (F (P.y c)) = F (P.y c)`. Rewrite using `[Finset.sum_congr rfl (fun g _ => P.adForms_fixed hF c g), Finset.sum_const, Finset.card_univ]`. Express the relevant statement in the definitionally equal form `((S.wt c : ℂ))⁻¹ • (S.wt c • F (P.y c)) = F (P.y c)`. Rewrite using `[← Nat.cast_smul_eq_nsmul ℂ, smul_smul, inv_mul_cancel₀ hwt, one_smul]`. Establish `hB : ∑ l, β c l • P.coef (clsAvg S c (S.bV l)) = ((S.wt c : ℂ))⁻¹ • ∑ g : S.Gam c, (χ (stabK ι (P.stabI c g)) : ℂ) • ρ (P.stabI c g : Γ) (∑ l, β c l • P.coef (S.bV l))`.
+
+Simplify using `only [P.coef_avg, map_sum, map_smul, Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun g _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[hF'c, hB, hβ c, hA]`. Rewrite using `[heq]`. Conclude with `hF'mem`.
+-/
 theorem span_eq (P : ClassPres ι S σ ρ J χ) : Submodule.span ℂ (Set.range P.extL) = AdForms ι ρ J χ := by
   have hL : ∀ f : S.Forms, P.extL f = P.ext f := fun f => rfl
   have hle : Submodule.span ℂ (Set.range P.extL) ≤ AdForms ι ρ J χ := by
@@ -312,6 +442,9 @@ theorem span_eq (P : ClassPres ι S σ ρ J χ) : Submodule.span ℂ (Set.range 
   rw [heq]
   exact hF'mem
 
+/- English proof (translation)
+Unfold `ClassPres.ExtBij`. Conclude with `⟨P.linInd, P.span_eq⟩`.
+-/
 theorem extBij_holds (P : ClassPres ι S σ ρ J χ) : P.ExtBij := by
   unfold ClassPres.ExtBij
   exact ⟨P.linInd, P.span_eq⟩
@@ -329,6 +462,11 @@ section
 variable {G Γ : Type} [Group G] [Group Γ] {ι : Γ →* G}
 variable {W : Type} [NormedAddCommGroup W] [InnerProductSpace ℂ W]
 
+/- English proof (translation)
+Rewrite using `[mem_stab, mem_stab, map_mul ι, map_mul ι, map_inv]`. Establish `e : (ι γ * y * (k : G))⁻¹ * ι δ * (ι γ * y * (k : G)) = (k : G)⁻¹ * (y⁻¹ * ((ι γ)⁻¹ * ι δ * ι γ) * y) * (k : G)` using `by group`. Rewrite using `[e]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+
+Establish `e2 : y⁻¹ * ((ι γ)⁻¹ * ι δ * ι γ) * y = (k : G) * ((k : G)⁻¹ * (y⁻¹ * ((ι γ)⁻¹ * ι δ * ι γ) * y) * (k : G)) * (k : G)⁻¹` using `by group`. Rewrite using `[e2]`. Conclude with `J.mul_mem (J.mul_mem k.2 h) (J.inv_mem k.2)`. Introduce `h`. Conclude with `J.mul_mem (J.mul_mem (J.inv_mem k.2) h) k.2`.
+-/
 theorem mem_stab_translate (J : Subgroup G) (y : G) (γ : Γ) (k : J) (δ : Γ) :
     δ ∈ stab ι J (ι γ * y * k) ↔ γ⁻¹ * δ * γ ∈ stab ι J y := by
   rw [mem_stab, mem_stab, map_mul ι, map_mul ι, map_inv]
@@ -344,6 +482,9 @@ theorem mem_stab_translate (J : Subgroup G) (y : G) (γ : Γ) (k : J) (δ : Γ) 
   · intro h
     exact J.mul_mem (J.mul_mem (J.inv_mem k.2) h) k.2
 
+/- English proof (translation)
+Use `Nat.card_congr { toFun := fun δ => ⟨γ⁻¹ * δ * γ, (mem_stab_translate J y γ k δ).1 δ.2⟩ invFun := fun δ => ⟨γ * δ * γ⁻¹, (mem_stab_translate J y γ k _).2 (by simpa [mul_assoc] using δ.2)⟩ left_inv := fun δ => by ext; simp [mul_assoc] right_inv := fun δ => by ext; simp [mul_assoc] …` and prove the remaining obligations.
+-/
 theorem card_stab_translate (J : Subgroup G) (y : G) (γ : Γ) (k : J) :
     Nat.card (stab ι J (ι γ * y * k)) = Nat.card (stab ι J y) := by
   refine Nat.card_congr
@@ -352,6 +493,19 @@ theorem card_stab_translate (J : Subgroup G) (y : G) (γ : Γ) (k : J) :
       left_inv := fun δ => by ext; simp [mul_assoc]
       right_inv := fun δ => by ext; simp [mul_assoc] }
 
+/- English proof (translation)
+Unfold `AdInnerIndep`. Introduce `hρ hχ I I' instI instI' y y' hy hy' F hF F' hF'`. Establish `hm : ∀ (γ : Γ) (h : G) (k : J), F (ι γ * h * k) = (χ k : ℂ) • ρ γ (F h)` using `hF`. Establish `hm' : ∀ (γ : Γ) (h : G) (k : J), F' (ι γ * h * k) = (χ k : ℂ) • ρ γ (F' h)` using `hF'`. Use `choose e he using fun i => (hy' (y i)).exists`.
+
+Establish `hbij : Function.Bijective e`. Prove the components needed by the constructor for the conclusion. Introduce `i j hij`. Take `⟨γ1, k1, h1⟩` from `he i`. Take `⟨γ2, k2, h2⟩` from `he j`.
+
+Rewrite `h1` using `[hij]`. Use `(hy (y j)).unique ⟨γ2 * γ1⁻¹, k1⁻¹ * k2, ?_⟩ ⟨1, 1, by simp⟩` and prove the remaining obligations. Rewrite using `[h1, h2, map_mul, map_inv, Subgroup.coe_mul, Subgroup.coe_inv]`. Use `group`. Introduce `i'`.
+
+Take `⟨i, ⟨γ, k, hi⟩, -⟩` from `hy (y' i')`. Use `⟨i, (hy' (y i)).unique (he i) ⟨γ⁻¹, k⁻¹, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hi, map_inv, Subgroup.coe_inv]`. Use `group`. Establish `hu : ∀ k : J, starRingEnd ℂ (χ k : ℂ) * (χ k : ℂ) = 1`.
+
+Introduce `k`. Rewrite using `[mul_comm, Complex.mul_conj, Complex.normSq_eq_norm_sq, hχ k]`. Evaluate the numerical expressions. Unfold `adInner`. Use `Fintype.sum_bijective e hbij _ _ (fun i => ?_)` and prove the remaining obligations.
+
+Take `⟨γ, k, hi⟩` from `he i`. Rewrite using `[hi, hm, hm', inner_smul_left, inner_smul_right, hρ, card_stab_translate, ← mul_assoc (starRingEnd ℂ (χ k : ℂ)), hu, one_mul]`.
+-/
 theorem adInnerIndep_holds (ι : Γ →* G) (ρ : Γ →* Module.End ℂ W) (J : Subgroup G) (χ : J →* ℂˣ) :
     AdInnerIndep ι ρ J χ := by
   unfold AdInnerIndep
@@ -383,6 +537,13 @@ theorem adInnerIndep_holds (ι : Γ →* G) (ρ : Γ →* Module.End ℂ W) (J :
   rw [hi, hm, hm', inner_smul_left, inner_smul_right, hρ, card_stab_translate,
     ← mul_assoc (starRingEnd ℂ (χ k : ℂ)), hu, one_mul]
 
+/- English proof (translation)
+Unfold `LiftIndependentAction`. Introduce `hJ hred hch κ κ' hκ F hF h`. Establish `hm : ∀ (γ : Γ) (h : G) (k : J), F (ι γ * h * k) = (χ k : ℂ) • ρ γ (F h)` using `hF`. Establish `hk : ((κ⁻¹ * κ' : Q) : G) ∈ J` using `(hred _).1 (by rw [map_mul, map_inv, hκ]; group)`. Establish `e1 : h * (κ' : G) = ι 1 * (h * (κ : G)) * (((⟨((κ⁻¹ * κ' : Q) : G), hk⟩ : J)) : G)`.
+
+Simplify using `[mul_assoc]`. Establish `e2 : χ ⟨((κ⁻¹ * κ' : Q) : G), hk⟩ = (ch κ)⁻¹ * ch κ'`. Rewrite using `[← hch, ← map_inv, ← map_mul]`. Apply the tactic sequence `try rfl`. Rewrite using `[e1, hm, e2, map_one]`.
+
+Express the relevant statement in the definitionally equal form `_ = (((ch κ')⁻¹ : ℂˣ) : ℂ) • (((ch κ)⁻¹ * ch κ' : ℂˣ) : ℂ) • F (h * (κ : G))`. Rewrite using `[smul_smul, ← Units.val_mul, mul_comm ((ch κ')⁻¹), mul_inv_cancel_right]`.
+-/
 theorem lift_independent_action_holds (ι : Γ →* G) (ρ : Γ →* Module.End ℂ W) (J : Subgroup G) (χ : J →* ℂˣ)
     {Q : Subgroup G} {G0 : Type} [Group G0] (red : Q →* G0) (ch : Q →* ℂˣ) :
     LiftIndependentAction ι ρ J χ red ch := by
@@ -421,6 +582,9 @@ variable {W : Type} [NormedAddCommGroup W] [InnerProductSpace ℂ W]
 variable {ρ : Γ →* Module.End ℂ W} {J : Subgroup G} {χ : J →* ℂˣ}
 variable {I : Type} [Fintype I] {y : I → G}
 
+/- English proof (translation)
+Establish `hm : ∀ (γ : Γ) (h : G) (k : J), F (ι γ * h * k) = (χ k : ℂ) • ρ γ (F h)` using `hF`. Establish `hm' : ∀ (γ : Γ) (h : G) (k : J), F' (ι γ * h * k) = (χ k : ℂ) • ρ γ (F' h)` using `hF'`. Use function extensionality and compare the values at `x`. Take `⟨i, ⟨γ, k, rfl⟩, -⟩` from `hy x`. Rewrite using `[hm, hm', h i]`.
+-/
 theorem adForms_ext (hy : IsReps ι J y) {F F' : G → W} (hF : F ∈ AdForms ι ρ J χ)
     (hF' : F' ∈ AdForms ι ρ J χ) (h : ∀ i, F (y i) = F' (y i)) : F = F' := by
   have hm : ∀ (γ : Γ) (h : G) (k : J), F (ι γ * h * k) = (χ k : ℂ) • ρ γ (F h) := hF
@@ -434,30 +598,57 @@ def adEval (y : I → G) : AdForms ι ρ J χ →ₗ[ℂ] (I → W) where
   map_add' F F' := by funext i; rfl
   map_smul' s F := by funext i; rfl
 
+/- English proof (translation)
+Introduce `F F' hEq`. Conclude with `Subtype.ext (adForms_ext hy F.2 F'.2 fun i => congrFun hEq i)`.
+-/
 theorem adEval_injective (hy : IsReps ι J y) :
     Function.Injective (adEval (ι := ι) (ρ := ρ) (χ := χ) y) := by
   intro F F' hEq
   exact Subtype.ext (adForms_ext hy F.2 F'.2 fun i => congrFun hEq i)
 
+/- English proof (translation)
+The claim follows from `FiniteDimensional.of_injective (adEval (ι := ι) (ρ := ρ) (χ := χ) y) (adEval_injective hy)`.
+-/
 theorem adForms_fd (hy : IsReps ι J y) [FiniteDimensional ℂ W] :
     FiniteDimensional ℂ (AdForms ι ρ J χ) := FiniteDimensional.of_injective (adEval (ι := ι) (ρ := ρ) (χ := χ) y) (adEval_injective hy)
 
+/- English proof (translation)
+Simplify using `only [adInner, Pi.add_apply, inner_add_left, mul_add, Finset.sum_add_distrib]`.
+-/
 theorem adInner_add_left (F F' F'' : G → W) :
     adInner ι J y (F + F') F'' = adInner ι J y F F'' + adInner ι J y F' F'' := by
   simp only [adInner, Pi.add_apply, inner_add_left, mul_add, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Simplify using `only [adInner, Pi.smul_apply, inner_smul_left, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`.
+-/
 theorem adInner_smul_left (s : ℂ) (F F' : G → W) :
     adInner ι J y (s • F) F' = starRingEnd ℂ s * adInner ι J y F F' := by
   simp only [adInner, Pi.smul_apply, inner_smul_left, Finset.mul_sum]
   exact Finset.sum_congr rfl fun i _ => by ring
 
+/- English proof (translation)
+Simplify using `only [adInner, map_sum, map_mul, map_inv₀, map_natCast, inner_conj_symm]`.
+-/
 theorem adInner_conj (F F' : G → W) :
     starRingEnd ℂ (adInner ι J y F F') = adInner ι J y F' F := by
   simp only [adInner, map_sum, map_mul, map_inv₀, map_natCast, inner_conj_symm]
 
+/- English proof (translation)
+Rewrite using `[← Complex.ofReal_natCast, ← Complex.ofReal_inv, Complex.re_ofReal_mul]`.
+-/
 theorem re_natCast_inv_mul (n : ℕ) (z : ℂ) : (((n : ℂ))⁻¹ * z).re = ((n : ℝ))⁻¹ * z.re := by
   rw [← Complex.ofReal_natCast, ← Complex.ofReal_inv, Complex.re_ofReal_mul]
 
+/- English proof (translation)
+Establish `hex : ∃ i, F (y i) ≠ 0`. Assume the negation of the conclusion as `hall`. Use `push_neg at hall`. Conclude with `hne (adForms_ext hy hF (Submodule.zero_mem _) (fun i => by rw [hall i]; rfl))`. Establish `hre : ∀ x : W, (inner ℂ x x).re = ‖x‖ ^ 2` using `fun x => inner_self_eq_norm_sq (𝕜 := ℂ) x`.
+
+Unfold `adInner`. Rewrite using `[Complex.re_sum]`. Simplify using `only [re_natCast_inv_mul, hre]`. Take `⟨i0, hi0⟩` from `hex`. Apply `Finset.sum_pos'` to reduce the goal to its premises.
+
+Introduce `i _`. Check the signs of the components of the expression. Use `⟨i0, Finset.mem_univ _, ?_⟩` and prove the remaining obligations. Establish `h1 : (0 : ℝ) < (Nat.card (stab ι J (y i0)) : ℝ)` using `by exact_mod_cast Nat.pos_of_ne_zero (hst i0)`. Establish `h2 : 0 < ‖F (y i0)‖` using `norm_pos_iff.2 hi0`.
+
+Check the signs of the components of the expression.
+-/
 theorem adInner_pos (hy : IsReps ι J y) (hst : ∀ i, Nat.card (stab ι J (y i)) ≠ 0) {F : G → W}
     (hF : F ∈ AdForms ι ρ J χ) (hne : F ≠ 0) : 0 < (adInner ι J y F F).re := by
   have hex : ∃ i, F (y i) ≠ 0 := by
@@ -477,6 +668,9 @@ theorem adInner_pos (hy : IsReps ι J y) (hst : ∀ i, Nat.card (stab ι J (y i)
     have h2 : 0 < ‖F (y i0)‖ := norm_pos_iff.2 hi0
     positivity
 
+/- English proof (translation)
+The claim follows from `adForms_fd hy add _ _ _ := adInner_add_left _ _ _ smul _ _ _ := adInner_smul_left _ _ _ herm _ _ := adInner_conj _ _ pos x hx := adInner_pos hy hst x.2 (fun h => hx (Subtype.ext h))`.
+-/
 theorem adInner_ipOn (hy : IsReps ι J y) (hst : ∀ i, Nat.card (stab ι J (y i)) ≠ 0)
     [FiniteDimensional ℂ W] : IPOnG (AdForms ι ρ J χ) (adInner ι J y) where
   fd := adForms_fd hy

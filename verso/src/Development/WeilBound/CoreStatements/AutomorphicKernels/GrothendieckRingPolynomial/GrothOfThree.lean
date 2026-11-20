@@ -4,6 +4,9 @@ import Development.WeilBound.CoreStatements.AutomorphicKernels.GrothendieckRingP
 
 namespace PositivityTheory.Groth
 
+/- English proof (translation)
+The claim follows from `groth_of_cls fun k _ _ _ _ => cls_of hZ k (hI k) (H k)`.
+-/
 theorem groth_of_three (hZ : GlobalTheory.Published.SegmentRepresentation)
     (hI : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k], Zc.Cos.LUnlinkedIrr k)
     (H : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k],

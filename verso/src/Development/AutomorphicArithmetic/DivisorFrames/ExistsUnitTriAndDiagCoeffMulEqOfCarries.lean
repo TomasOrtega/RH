@@ -14,6 +14,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F}
   {T : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c β} {F : Type} [Field F] {e : F ≃+* c.F}
 
+/- English proof (translation)
+Rewrite using `[Vecs.bc, Vecs.bc, ← Category.assoc, ModelRelProbe.spMap_comp]`. Use `congr 2`. Apply the tactic sequence `ext z <;> simp [dualMap]`.
+-/
 private theorem dualNumber_base_change_comp {X : Scheme.{0}} {t : SAB H X} {A B C : Type} [CommRing A] [CommRing B] [CommRing C]
     (ρ : A →+* B) (χ : B →+* C) (u : Vecs Dw t A) (σ : E →+* ℂ) (j : Fin (Dw.mult σ)) :
     u.bc (χ.comp ρ) σ j = spMap (dualMap χ) ≫ u.bc ρ σ j := by
@@ -21,6 +24,9 @@ private theorem dualNumber_base_change_comp {X : Scheme.{0}} {t : SAB H X} {A B 
   congr 2
   ext z <;> simp [dualMap]
 
+/- English proof (translation)
+Substitute `hP` using the available equality. Conclude with `Pull.frame_ind (GlobalTheory.T.isFrame_compose_ringHom_baseChange E H Dw l c T.X T.t _ K _ ψ _ g.v ⟨fun τ i => ⟨g.tan τ i, g.eig τ i⟩, g.basis⟩) σ`.
+-/
 private theorem pull_ind_base_change {R K : Type} [CommRing R] [Field K] {f : c.F →+* R} {x : Sp R ⟶ T.X} (g : EigFrame T f x)
     (ψ : R →+* K) {P : Sp K ⟶ T.X} (hP : P = spMap ψ ≫ x) (σ : E →+* ℂ) :
     Pull.Ind T.t P (Vecs.bc (Dw := Dw) ψ g.v σ) := by
@@ -28,6 +34,9 @@ private theorem pull_ind_base_change {R K : Type} [CommRing R] [Field K] {f : c.
   exact Pull.frame_ind (GlobalTheory.T.isFrame_compose_ringHom_baseChange E H Dw l c T.X T.t _ K _ ψ _ g.v
     ⟨fun τ i => ⟨g.tan τ i, g.eig τ i⟩, g.basis⟩) σ
 
+/- English proof (translation)
+Take `⟨cf, c1, c2, c3⟩` from `h.2.2 σ i`. Use `⟨fun k => ψ (cf k), congrArg ψ c1, fun k hk => by simp only [c2 k hk, map_zero], ?_⟩` and prove the remaining obligations. Rewrite using `[funext (dualNumber_base_change_comp ρ ψ g.v σ), hP]`. Conclude with `GlobalTheory.LatDRFree.comb_map _ ψ c3`.
+-/
 private theorem triangular_base_change {R R' K : Type} [CommRing R] [CommRing R'] [Field K] {f : c.F →+* R} {x : Sp R ⟶ T.X}
     {f' : c.F →+* R'} {x' : Sp R' ⟶ T.X} {g : EigFrame T f x} {g' : EigFrame T f' x'} {ρ : R →+* R'}
     {t : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → R'ˣ} (h : g.Tri ρ g' t) (ψ : R' →+* K) {P : Sp K ⟶ T.X}
@@ -39,12 +48,30 @@ private theorem triangular_base_change {R R' K : Type} [CommRing R] [CommRing R'
   rw [funext (dualNumber_base_change_comp ρ ψ g.v σ), hP]
   exact GlobalTheory.LatDRFree.comb_map _ ψ c3
 
+/- English proof (translation)
+The claim follows from `Scheme.SpecMap_stalkSpecializes_fromSpecStalk (genericPoint_specializes y)`.
+-/
 private theorem add_one_pow_eq_ringHom_image_add_prime_mul_zero (Y : GlobalTheory.ProjVar.Var F) (y : Y.X) :
     spMap (algebraMap (Y.X.presheaf.stalk y) Y.X.functionField) ≫ stalkPt Y y = genericPt Y :=
   Scheme.SpecMap_stalkSpecializes_fromSpecStalk (genericPoint_specializes y)
 
 end SlopeTestRemainingChoices
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c O _ β T F _ _ e Φ K _ φ q f g x hq hc`. Take `⟨y', ψ, φ₁, f', t, t', h1, h2, h3⟩` from `hc`. Establish `hy : ∀ y : Φ.Y.X, q = spMap (φ.comp (algebraMap (Φ.Y.X.presheaf.stalk y) Φ.Y.X.functionField)) ≫ stalkPt Φ.Y y` using `fun y => by`. Rewrite using `[hq, ← add_one_pow_eq_ringHom_image_add_prime_mul_zero Φ.Y y, ← Category.assoc]`. Conclude with `congrArg (· ≫ stalkPt Φ.Y y) (ModelRelProbe.spMap_comp _ _)`.
+
+Establish `hm : Mono (stalkPt Φ.Y y')` using `inferInstanceAs (Mono (Φ.Y.X.fromSpecStalk y'))`. Take `rfl : ψ = φ.comp (algebraMap (Φ.Y.X.presheaf.stalk y') Φ.Y.X.functionField)` from `congrArg CommRingCat.Hom.hom (Spec.map_injective (a₁ := CommRingCat.ofHom _) (a₂ := CommRingCat.ofHom _) ((cancel_mono (stalkPt Φ.Y y')).1 (h1.symm.trans (hy y'))))`. Establish `hP : q ≫ Φ.π ≫ genι T = spMap φ ≫ genericPt Φ.Y ≫ Φ.π ≫ genι T` using `by rw [hq, Category.assoc]`. Establish `hPy : ∀ y : Φ.Y.X, q ≫ Φ.π ≫ genι T = spMap (φ.comp (algebraMap (Φ.Y.X.presheaf.stalk y) Φ.Y.X.functionField)) ≫ stalkPt Φ.Y y ≫ Φ.π ≫ genι T` using `fun y => (congrArg (· ≫ Φ.π ≫ genι T) (hy y)).trans (Category.assoc _ _ _)`. Establish `I0` using `pull_ind_base_change Φ.f0 φ hP`.
+
+Establish `I'` using `pull_ind_base_change f' _ (hPy y')`. Establish `Ig : ∀ σ, Pull.Ind T.t (q ≫ Φ.π ≫ genι T) (g.v σ)` using `Pull.frame_ind (f := f) (u := g.v) ⟨fun τ i => ⟨g.tan τ i, g.eig τ i⟩, g.basis⟩`. Establish `T1 : ∀ σ, Pull.Tri T.t (q ≫ Φ.π ≫ genι T) (Vecs.bc (Dw` using `Dw) _ f'.v σ) (Vecs.bc (Dw := Dw) φ Φ.f0.v σ) := fun σ j => by`. Take `⟨cf, -, c2, c3⟩` from `triangular_base_change h2 φ hP σ j`. Conclude with `⟨cf, c2, c3⟩`.
+
+Establish `T2 : ∀ σ, Pull.Tri T.t (q ≫ Φ.π ≫ genι T) (Vecs.bc (Dw` using `Dw) _ f'.v σ) (g.v σ) := fun σ j => by`. Take `⟨cf, -, c2, c3⟩` from `h3.2.2 σ j`. Conclude with `⟨cf, c2, c3⟩`. Establish `T3 : ∀ σ, Pull.Tri T.t (q ≫ Φ.π ≫ genι T) (g.v σ) (Vecs.bc (Dw` using `Dw) φ Φ.f0.v σ) := fun σ => ((T2 σ).symm (I' σ) (Ig σ)).1.trans (Ig σ).1 (I' σ).1 (T1 σ)`. Take `⟨d, d1, d2⟩` from `T3 x.1 x.2`.
+
+Use `⟨Units.mk0 (d x.2) ((T3 x.1).diag (Ig _) (I0 _) d2).1, fun y₀ => ?_⟩` and prove the remaining obligations. Establish `IF` using `pull_ind_base_change (GlobalTheory.LineNorm.fr Φ y₀) _ (hPy y₀)`. Establish `A` using `triangular_base_change (GlobalTheory.LineNorm.fr_spec Φ y₀).1 φ hP`. Establish `T4 : ∀ σ, Pull.Tri T.t (q ≫ Φ.π ≫ genι T) (Vecs.bc (φ.comp (algebraMap (Φ.Y.X.presheaf.stalk y₀) Φ.Y.X.functionField)) (GlobalTheory.LineNorm.fr Φ y₀).v σ) (g.v σ)` using `fun σ => Pull.Tri.trans (IF σ).1 (I0 σ).1 (fun j => by`. Take `⟨cf, -, c2, c3⟩` from `A σ j`.
+
+Conclude with `⟨cf, c2, c3⟩) ((T3 σ).symm (Ig σ) (I0 σ)).1`. Use `⟨T4, fun cf hcf => ?_⟩` and prove the remaining obligations. Take `⟨a, a1, -, a3⟩` from `A x.1 x.2`. Use `(T4 x.1).diag_mul (IF _) (Ig _).1 d1 d2 hcf a3` as an intermediate fact. Rewrite using `[Units.val_mk0, mul_comm, ← this]`.
+
+Conclude with `a1`.
+-/
 theorem UpperTheory.exists_unit_tri_and_diag_coeff_mul_eq_of_carries :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (T : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c β) (F : Type) [Field F] [NumberField F] (e : F ≃+* c.F) (Φ : FlagCpt T e) (K : Type) [Field K] (φ : Φ.Y.Fn →+* K) (q : Sp K ⟶ Φ.Y.X) (f : c.F →+* K) (g : EigFrame T f (q ≫ Φ.π ≫ genι T)) (x : Pad.Letter Dw), q = spMap φ ≫ genericPt Φ.Y → Φ.Carries q g → ∃ c₀ : Kˣ, ∀ y₀ : Φ.Y.X, (∀ σ, Pull.Tri T.t (q ≫ Φ.π ≫ genι T) (Vecs.bc (φ.comp (algebraMap (Φ.Y.X.presheaf.stalk y₀) Φ.Y.X.functionField)) (GlobalTheory.LineNorm.fr Φ y₀).v σ) (g.v σ)) ∧ ∀ cf : Fin (Dw.mult x.1) → K, IsCombAtG T.t (q ≫ Φ.π ≫ genι T) (Vecs.bc (φ.comp (algebraMap (Φ.Y.X.presheaf.stalk y₀) Φ.Y.X.functionField)) (GlobalTheory.LineNorm.fr Φ y₀).v x.1) cf (g.v x.1 x.2) → cf x.2 * (c₀ : K) = φ (GlobalTheory.LineNorm.dg Φ y₀ x.1 x.2 : Φ.Y.Fn) := by
   intro E _ _ _ H Dw l Xo c O _ β T F _ _ e Φ K _ φ q f g x hq hc

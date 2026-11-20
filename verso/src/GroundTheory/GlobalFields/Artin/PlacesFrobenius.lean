@@ -55,6 +55,19 @@ instance normal_inertia_subgroupOf_stabilizer :
     rw [Subgroup.mem_subgroupOf] at hn ⊢
     exact mul_mul_inv_mem_inertia g.2 hn⟩
 
+/- English proof (translation)
+Use `set D := MulAction.stabilizer Gal(L/K) w.asIdeal`. Use `set I := w.asIdeal.inertia Gal(L/K)`. Use `set u := subfieldPlace H w x`. Establish `hID : I ≤ D` using `Ideal.inertia_le_stabilizer w.asIdeal`. Establish `ha` using `Ideal.card_stabilizer_eq_card_inertia_mul_finrank (G := Gal(L/K)) (w.asIdeal.under (𝓞 K)) w.asIdeal`.
+
+Establish `hb` using `Ideal.card_stabilizer_eq_card_inertia_mul_finrank (G := H) u.asIdeal (x • w.asIdeal)`. Use `erw [stabilizer_smul_eq, inertia_smul_eq] at hb`. Establish `hc` using `Ideal.inertiaDeg_tower (R := 𝓞 K) u.asIdeal (x • w.asIdeal)`. Rewrite `hc` using `[Ideal.inertiaDeg_smul]`. Establish `hd` using `card_mul_card_eq (H := H) hID x`.
+
+Rewrite `hd` using `[Nat.card_congr (conjSubgroupOfEquiv H D x)]`. Use `set r := frobIndex H D I x`. Use `set fw := w.asIdeal.inertiaDeg (𝓞 K)`. Use `set fu := u.asIdeal.inertiaDeg (𝓞 K)`. Use `set fP := (x • w.asIdeal).inertiaDeg (𝓞 (fixedField H))`.
+
+Establish `hI : 0 < Nat.card I` using `Nat.card_pos`. Establish `hIx : 0 < Nat.card ((MulAut.conj x • I : Subgroup Gal(L/K)).subgroupOf H)` using `Nat.card_pos`. Establish `hfP : 0 < fP` using `Ideal.inertiaDeg_pos (x • w.asIdeal) _`. Rewrite `hd` using `[ha, hb]`. Establish `h1 : fw = r * fP`.
+
+Establish `: Nat.card I * Nat.card ((MulAut.conj x • I : Subgroup Gal(L/K)).subgroupOf H) * fw = Nat.card I * Nat.card ((MulAut.conj x • I : Subgroup Gal(L/K)).subgroupOf H) * (r * fP)`. Rewrite `hd` using `[← mul_assoc]`. Combine the linear relations using `[hd]`. Conclude with `Nat.eq_of_mul_eq_mul_left (Nat.mul_pos hI hIx) this`. Rewrite `h1` using `[hc]`.
+
+Conclude with `(Nat.eq_of_mul_eq_mul_right hfP h1)`.
+-/
 theorem inertiaDeg_subfieldPlace (x : Gal(L/K)) :
     (subfieldPlace H w x).asIdeal.inertiaDeg (𝓞 K) =
       frobIndex H (MulAction.stabilizer Gal(L/K) w.asIdeal) (w.asIdeal.inertia Gal(L/K)) x := by
@@ -88,6 +101,9 @@ theorem inertiaDeg_subfieldPlace (x : Gal(L/K)) :
   rw [hc] at h1
   exact (Nat.eq_of_mul_eq_mul_right hfP h1)
 
+/- English proof (translation)
+Use `subfieldPlace_liesOver H v w x` as an intermediate fact. Rewrite using `[← inertiaDeg_subfieldPlace]`. Conclude with `(Ideal.absNorm_pow_inertiaDeg v.asIdeal (subfieldPlace H w x).asIdeal).symm`.
+-/
 theorem absNorm_subfieldPlace [w.asIdeal.LiesOver v.asIdeal] (x : Gal(L/K)) :
     Ideal.absNorm (subfieldPlace H w x).asIdeal = Ideal.absNorm v.asIdeal ^
       frobIndex H (MulAction.stabilizer Gal(L/K) w.asIdeal) (w.asIdeal.inertia Gal(L/K)) x := by
@@ -95,6 +111,11 @@ theorem absNorm_subfieldPlace [w.asIdeal.LiesOver v.asIdeal] (x : Gal(L/K)) :
   rw [← inertiaDeg_subfieldPlace]
   exact (Ideal.absNorm_pow_inertiaDeg v.asIdeal (subfieldPlace H w x).asIdeal).symm
 
+/- English proof (translation)
+Proceed by induction on `n generalizing y with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[pow_succ', mul_smul]`. Use `erw [hψ.mk_apply]`.
+
+Rewrite using `[ih, ← pow_mul, ← pow_succ]`.
+-/
 theorem mk_pow_smul_of_isArithFrobAt {P : Ideal (𝓞 L)} {ψ : Gal(L/K)}
     (hψ : IsArithFrobAt (𝓞 K) ψ P) (n : ℕ) (y : 𝓞 L) :
     Ideal.Quotient.mk P ((ψ ^ n) • y) =
@@ -106,6 +127,9 @@ theorem mk_pow_smul_of_isArithFrobAt {P : Ideal (𝓞 L)} {ψ : Gal(L/K)}
     erw [hψ.mk_apply]
     rw [ih, ← pow_mul, ← pow_succ]
 
+/- English proof (translation)
+Establish `hu` using `inertiaDeg_subfieldPlace H w x`. Rewrite `hu` using `[asIdeal_subfieldPlace]`. Use `Ideal.absNorm_pow_inertiaDeg (((x • w.asIdeal).under (𝓞 (fixedField H))).under (𝓞 K)) ((x • w.asIdeal).under (𝓞 (fixedField H)))` as an intermediate fact. Rewrite `this` using `[hu, Ideal.under_under]`. Rewrite using `[← Submodule.cardQuot_apply, ← Submodule.cardQuot_apply, ← Ideal.absNorm_apply, ← Ideal.absNorm_apply, this]`.
+-/
 theorem card_quotient_subfieldPlace (x : Gal(L/K)) :
     Nat.card (𝓞 (fixedField H) ⧸ (x • w.asIdeal).under (𝓞 (fixedField H))) =
       Nat.card (𝓞 K ⧸ (x • w.asIdeal).under (𝓞 K)) ^
@@ -118,6 +142,15 @@ theorem card_quotient_subfieldPlace (x : Gal(L/K)) :
   rw [← Submodule.cardQuot_apply, ← Submodule.cardQuot_apply, ← Ideal.absNorm_apply,
     ← Ideal.absNorm_apply, this]
 
+/- English proof (translation)
+Use `set r := frobIndex H (MulAction.stabilizer Gal(L/K) w.asIdeal) (w.asIdeal.inertia Gal(L/K)) x`. Establish `hψ : IsArithFrobAt (𝓞 K) (x * φ * x⁻¹) (x • w.asIdeal)` using `hφ.conj x`. Establish `hN : Nat.card (𝓞 (fixedField H) ⧸ (x • w.asIdeal).under (𝓞 (fixedField H))) = Nat.card (𝓞 K ⧸ (x • w.asIdeal).under (𝓞 K)) ^ r` using `card_quotient_subfieldPlace H w x`. Establish `hj : (φx : Gal(L/K)) * ((x * φ * x⁻¹) ^ r)⁻¹ ∈ (x • w.asIdeal).inertia Gal(L/K)`. Introduce `y`.
+
+Rewrite using `[Submodule.mem_toAddSubgroup, ← Ideal.Quotient.eq, mul_smul]`. Establish `h1` using `mk_pow_smul_of_isArithFrobAt hψ r (((x * φ * x⁻¹) ^ r)⁻¹ • y)`. Rewrite `h1` using `[smul_inv_smul]`. Rewrite using `[h1]`. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk _ (φx • (((x * φ * x⁻¹) ^ r)⁻¹ • y)) = _`.
+
+Use `erw [h.mk_apply]`. Rewrite using `[hN]`. Establish `hs : ((x * φ * x⁻¹) ^ r)⁻¹ ∈ MulAction.stabilizer Gal(L/K) (x • w.asIdeal)` using `Subgroup.inv_mem _ (Subgroup.pow_mem _ hψ.mem_stabilizer r)`. Establish `hi` using `mul_mul_inv_mem_inertia hs hj`. Rewrite `hi` using `[inv_inv, show ((x * φ * x⁻¹) ^ r)⁻¹ * ((φx : Gal(L/K)) * ((x * φ * x⁻¹) ^ r)⁻¹) * (x * φ * x⁻¹) ^ r = ((x * φ * x⁻¹) ^ r)⁻¹ * φx by group]`.
+
+Use `⟨((x * φ * x⁻¹) ^ r)⁻¹ * φx, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_conj_smul_iff, ← mem_inertia_smul_iff]`. Conclude with `hi`. Rewrite using `[zpow_natCast, ← conj_pow] group`.
+-/
 theorem frobElem_of_isArithFrobAt {φ : Gal(L/K)} (hφ : IsArithFrobAt (𝓞 K) φ w.asIdeal)
     (x : Gal(L/K)) (φx : H) (h : IsArithFrobAt (𝓞 (fixedField H)) φx (x • w.asIdeal)) :
     ∃ i ∈ (MulAut.conj x • w.asIdeal.inertia Gal(L/K) : Subgroup Gal(L/K)),
@@ -148,6 +181,9 @@ theorem frobElem_of_isArithFrobAt {φ : Gal(L/K)} (hφ : IsArithFrobAt (𝓞 K) 
   · rw [zpow_natCast, ← conj_pow]
     group
 
+/- English proof (translation)
+Establish `: (x • w.asIdeal).IsMaximal` using `(x • w).isMaximal`. Take `⟨φx, hφx⟩` from `IsArithFrobAt.exists_of_isInvariant (𝓞 (fixedField H)) H (x • w.asIdeal)`. Conclude with `⟨φx, frobElem_of_isArithFrobAt H w hφ x φx hφx, hφx⟩`.
+-/
 theorem exists_frobElem_isArithFrobAt {φ : Gal(L/K)} (hφ : IsArithFrobAt (𝓞 K) φ w.asIdeal)
     (x : Gal(L/K)) :
     ∃ φx : H, (∃ i ∈ (MulAut.conj x • w.asIdeal.inertia Gal(L/K) : Subgroup Gal(L/K)),

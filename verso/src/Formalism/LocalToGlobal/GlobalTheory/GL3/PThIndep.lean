@@ -8,12 +8,21 @@ namespace Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity
 
 open NumberField Formalism.BasicNotions Formalism.MainNotions.TaylorLogMetric
 
+/- English proof (translation)
+The claim follows from `HfIntRec_of_gen (HfGenRec_of_arith arithmetic_hermitian_form)`.
+-/
 theorem hermitian_form_integral_values : HfIntRec := HfIntRec_of_gen (HfGenRec_of_arith arithmetic_hermitian_form)
 
+/- English proof (translation)
+The claim follows from `IopIso_of_parts hermitian_form_integral_values self_dual_lattice`.
+-/
 theorem theta_operator_isometry : ∀ D : D7, ∀ cc : Ideal (𝓞 D.host.K), IsCurveIdeal D cc → ∀ δ : ℂ,
     IsDiscriminantTwelfthRootOfIdealLattice D cc δ → IopIso D (tor0 D cc δ) :=
   IopIso_of_parts hermitian_form_integral_values self_dual_lattice
 
+/- English proof (translation)
+The claim follows from `LinkThIndep_of_arith' arithmetic_hermitian_form`.
+-/
 theorem theta_norm_indep_of_pair : LinkThIndep := LinkThIndep_of_arith' arithmetic_hermitian_form
 
 end Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity

@@ -11,8 +11,14 @@ variable {W Z S : Scheme.{0}} (r : W ⟶ Z) (p : Z ⟶ S)
 private def cr (A : Sq (r ≫ p)) : A.V ⟶ pullback p A.u :=
   pullback.lift (A.v ≫ r) A.r (by rw [Category.assoc]; exact A.pb.w)
 
+/- English proof (translation)
+The claim follows from `pullback.lift_fst _ _ _`.
+-/
 private lemma cr_fst (A : Sq (r ≫ p)) : cr r p A ≫ pullback.fst p A.u = A.v ≫ r := pullback.lift_fst _ _ _
 
+/- English proof (translation)
+The claim follows from `pullback.lift_snd _ _ _`.
+-/
 private lemma cr_snd (A : Sq (r ≫ p)) : cr r p A ≫ pullback.snd p A.u = A.r := pullback.lift_snd _ _ _
 
 private abbrev sqB (A : Sq (r ≫ p)) : Sq p := Sq.of p A.u
@@ -27,9 +33,15 @@ private def mid {A A' : Sq (r ≫ p)} (t : A.To A') : pullback p A.u ⟶ pullbac
   pullback.lift (pullback.fst p A.u) (pullback.snd p A.u ≫ t.g)
     (by rw [Category.assoc, t.hu]; exact pullback.condition)
 
+/- English proof (translation)
+The claim follows from `pullback.lift_fst _ _ _`.
+-/
 private lemma mid_fst {A A' : Sq (r ≫ p)} (t : A.To A') : mid t ≫ pullback.fst p A'.u = pullback.fst p A.u :=
   pullback.lift_fst _ _ _
 
+/- English proof (translation)
+The claim follows from `pullback.lift_snd _ _ _`.
+-/
 private lemma mid_snd {A A' : Sq (r ≫ p)} (t : A.To A') :
     mid t ≫ pullback.snd p A'.u = pullback.snd p A.u ≫ t.g := pullback.lift_snd _ _ _
 
@@ -55,6 +67,9 @@ private def comp0 {R₁ R₂ R₃ : Type} [CommRing R₁] [CommRing R₂] [CommR
     have h2 := a.nat (toC t) x
     exact h1.trans (congrArg (b.app (sqB r p A)) h2)
 
+/- English proof (translation)
+The claim follows from `(zsmulAddGroupHom d).map_finsum_mem f hs`.
+-/
 private lemma zsmul_finsum_mem {ι M : Type*} [AddCommGroup M] (d : ℤ) {s : Set ι} (f : ι → M) (hs : s.Finite) :
     d • ∑ᶠ i ∈ s, f i = ∑ᶠ i ∈ s, d • f i :=
   (zsmulAddGroupHom d).map_finsum_mem f hs
@@ -62,6 +77,21 @@ private lemma zsmul_finsum_mem {ι M : Type*} [AddCommGroup M] (d : ℤ) {s : Se
 end UpperTheory.Gal.TranscendenceTraces.FamilyComposition
 
 open UpperTheory.Gal.TranscendenceTraces.FamilyComposition in
+/- English proof (translation)
+Introduce `hS hF q i W Z S r p _ _ w' w τ' τ h' h`. Use `⟨⟨fun s => comp0 r p (τ'.deg s) (τ.deg s), fun A s t a => ?_⟩, fun A a => ?_, fun n a => ?_⟩` and prove the remaining obligations. Conclude with `((τ.comm (sqB r p A) s t _).trans (congrArg ((τ.deg t).app (sqB r p A)) (τ'.comm (sqC r p A) s t a)))`. Take `⟨b1, e1, s1⟩` from `h' (sqC r p A) a`. Take `⟨b2, e2, s2⟩` from `h (sqB r p A) b1`.
+
+Use `⟨b2, (congrArg ((τ.deg 0).app (sqB r p A)) e1).trans e2, ?_⟩` and prove the remaining obligations. Introduce `Ω _ _ x`. Use `haveI fB : IsFinite (pullback.snd p A.u) := Sq.finite (sqB r p A)`. Use `haveI fC : IsFinite (cr r p A) := Sq.finite (sqC r p A)`. Establish `key` using `hS (cr r p A) (pullback.snd p A.u) Ω x (Sec (tw q i) (gp Ω)) (fun z => (Wt.mul r w' w) Ω (z ≫ A.v) • Sec.res z a)`.
+
+Rewrite `key` using `[cr_snd]`. Use `(s2 Ω x).trans (Eq.trans ?_ key.symm)` and prove the remaining obligations. Use `finsum_mem_congr rfl fun (y : gp Ω ⟶ pullback p A.u) _ => ?_` and prove the remaining obligations. Establish `e : (Sec.res y b1 : Sec (tw q i) (gp Ω)) = ∑ᶠ z ∈ fib (cr r p A) y, w' Ω (z ≫ A.v) • Sec.res z a` using `s1 Ω y`. Use `(congrArg (fun m => w Ω (y ≫ pullback.fst p A.u) • m) e).trans ?_` and prove the remaining obligations.
+
+Use `(zsmul_finsum_mem _ _ (hF (cr r p A) Ω y)).trans ?_` and prove the remaining obligations. Use `finsum_mem_congr rfl fun z hz => ?_` and prove the remaining obligations. Establish `hy : (z ≫ A.v) ≫ r = y ≫ pullback.fst p A.u`. Establish `hz' : z ≫ cr r p A = y` using `hz`. Rewrite using `[← hz', Category.assoc, Category.assoc, cr_fst]`.
+
+Express the relevant statement in the definitionally equal form `_ = (w' Ω (z ≫ A.v) * w Ω ((z ≫ A.v) ≫ r)) • Sec.res z a`. Rewrite using `[hy, mul_comm, mul_smul]`. Set `t1 : (sqB r p (Sq.self (r ≫ p))).To (Sq.self p)` to `⟨𝟙 S, pullback.fst p (𝟙 S), Category.comp_id _, Category.comp_id _, pullback.condition⟩`. Set `t2 : (sqC r p (Sq.self (r ≫ p))).To (Sq.self r)` to `⟨pullback.fst p (𝟙 S), 𝟙 W, Category.comp_id _, Category.comp_id _, by`. Use `cr_fst r p (Sq.self (r ≫ p))` as an intermediate fact.
+
+Conclude with `(Eq.trans this.symm rfl : _)⟩`. Establish `n1` using `(τ.deg n).nat t1 ((τ'.deg n).app (Sq.self r) a)`. Establish `n2` using `(τ'.deg n).nat t2 a`. Establish `e1 : (τ.deg n).app (Sq.self p) ((τ'.deg n).app (Sq.self r) a) = (τ.deg n).app (sqB r p (Sq.self (r ≫ p))) (Sec.res (pullback.fst p (𝟙 S)) ((τ'.deg n).app (Sq.self r) a))` using `(res_id _).symm.trans n1`. Establish `e2 : Sec.res (pullback.fst p (𝟙 S)) ((τ'.deg n).app (Sq.self r) a) = (τ'.deg n).app (sqC r p (Sq.self (r ≫ p))) a` using `n2.trans (congrArg _ (res_id a))`.
+
+Conclude with `(e1.trans (congrArg _ e2)).symm`.
+-/
 theorem UpperTheory.Gal.TranscendenceTraces.famComp_of :
     SumComp → FibFin → FamComp := by
   intro hS hF q i W Z S r p _ _ w' w τ' τ h' h

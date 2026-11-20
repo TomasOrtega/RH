@@ -6,6 +6,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.R
 import Development.AbelianVarietyTheory.BlockTheory.AdelicCMFields.UnitaryHeckeCharacterIdele
 open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.MainNotions.N Polynomial GlobalTheory.CuspRep GlobalTheory.HeckeGal GlobalTheory.GalOfCusp UpperTheory.V UpperTheory.V.Af UpperTheory.V.Af.Bc UpperTheory.V.Published
 
+/- English proof (translation)
+Establish `: w.asIdeal.LiesOver (w.under (𝓞 K)).asIdeal` using `⟨rfl⟩`. Use `w.isMaximal` as an intermediate fact. Use `(w.under (𝓞 K)).isMaximal` as an intermediate fact. Use `show Ideal.absNorm w.asIdeal = Ideal.absNorm (w.under (𝓞 K)).asIdeal ^ w.asIdeal.inertiaDeg (𝓞 K)`. Rewrite using `[← Ideal.absNorm_relNorm (𝓞 K) (𝓞 K') w.asIdeal, Ideal.relNorm_eq_pow_of_isMaximal w.asIdeal (w.under (𝓞 K)).asIdeal, map_pow]`.
+-/
 private theorem normV_under {K K' : Type} [Field K] [NumberField K] [Field K'] [NumberField K'] [Algebra K K']
     (w : HeightOneSpectrum (𝓞 K')) : normV w = normV (w.under (𝓞 K)) ^ w.asIdeal.inertiaDeg (𝓞 K) := by
   have : w.asIdeal.LiesOver (w.under (𝓞 K)).asIdeal := ⟨rfl⟩
@@ -15,6 +18,11 @@ private theorem normV_under {K K' : Type} [Field K] [NumberField K] [Field K'] [
   rw [← Ideal.absNorm_relNorm (𝓞 K) (𝓞 K') w.asIdeal,
     Ideal.relNorm_eq_pow_of_isMaximal w.asIdeal (w.under (𝓞 K)).asIdeal, map_pow]
 
+/- English proof (translation)
+Establish `e : ∀ (q : ℕ) (B : Multiset ℂˣ), algSat n q B = B.map fun α : ℂˣ => (((q : ℝ) ^ (((n : ℝ) - 1) / 2) : ℝ) : ℂ) * (α : ℂ)` using `fun q B => by`. Simplify using `only [algSat, Multiset.bind_def, Multiset.pure_def, Multiset.bind_singleton, Multiset.map_map, Function.comp_def]`. Simplify using `only [e, Multiset.map_map, Function.comp_def]`. Use `Multiset.map_congr rfl fun α _ => ?_` and prove the remaining obligations. Establish `h : (((q ^ f : ℕ) : ℝ)) ^ (((n : ℝ) - 1) / 2) = ((q : ℝ) ^ (((n : ℝ) - 1) / 2)) ^ f`.
+
+Rewrite using `[Nat.cast_pow, ← Real.rpow_natCast, ← Real.rpow_natCast, ← Real.rpow_mul (Nat.cast_nonneg q), ← Real.rpow_mul (Nat.cast_nonneg q), mul_comm]`. Rewrite using `[h, mul_pow, Units.val_pow_eq_pow_val, Complex.ofReal_pow]`.
+-/
 private theorem algSat_pow (n q f : ℕ) (B : Multiset ℂˣ) :
     algSat n (q ^ f) (B.map (· ^ f)) = (algSat n q B).map (· ^ f) := by
   have e : ∀ (q : ℕ) (B : Multiset ℂˣ),
@@ -27,6 +35,13 @@ private theorem algSat_pow (n q f : ℕ) (B : Multiset ℂˣ) :
       ← Real.rpow_mul (Nat.cast_nonneg q), mul_comm]
   rw [h, mul_pow, Units.val_pow_eq_pow_val, Complex.ofReal_pow]
 
+/- English proof (translation)
+Introduce `F E Ω _ _ _ _ _ _ _ _ _ _ _ _ l _ ι n r π P hbc`. Use `⟨fun hreg => (GlobalTheory.CuspRep.CG.isRegAlg_iff _).2 fun τ => ?_, fun hatt hss => ⟨hss, ?_⟩⟩` and prove the remaining obligations. Take `⟨m, hm, hnd, hz⟩` from `hreg (InfinitePlace.mk (τ.comp (algebraMap F E)))`. Rewrite using `[CG.HasInfChar.infChar_eq (π := CG.mk P) (hbc.inf τ m hm)]`. Conclude with `⟨hnd, hz⟩`.
+
+Use `filter_upwards [hbc.unr, (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.tendsto_under F E).eventually hatt.2] with w h1 h2`. Take `⟨B, hB, hP⟩` from `h1 (w.under (𝓞 F)) rfl _ (normV_under (K := F) w)`. Take `⟨B', hB', hF⟩` from `h2`. Take `rfl` from `TR.CuspSub.HasSat.unique hB hB'`. Use `⟨_, hP, ?_⟩` and prove the remaining obligations.
+
+Establish `h3` using `(UpperTheory.frobenius_power_compatibility F E Ω l ι w _ (normV_under (K := F) w)).1 n r _ hF`. Rewrite `h3` using `[← algSat_pow, ← normV_under]`. Conclude with `h3`.
+-/
 theorem UpperTheory.V.Br.bcAtt0 :
     UpperTheory.V.Br.BcAtt0 := by
   intro F E Ω _ _ _ _ _ _ _ _ _ _ _ _ l _ ι n r π P hbc

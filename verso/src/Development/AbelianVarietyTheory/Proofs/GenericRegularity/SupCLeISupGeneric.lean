@@ -32,6 +32,9 @@ namespace GlobalTheory.SupGeneric
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l}
 
+/- English proof (translation)
+Take `⟨g, hg2, hg1, hg⟩` from `(GlobalTheory.Frames.frBor_iff_frChg y y' t).1 h`. Establish `hc` using `(GlobalTheory.Frames.ChgBC.frChg_baseChange E H Dw l Xo c S T φ y y' z z' g _ hg hz).1 hz'`. Conclude with `(GlobalTheory.Frames.frBor_iff_frChg z z' _).2 ⟨fun τ => (g τ).map φ, fun τ i j hij => by simp [hg2 τ i j hij], fun τ i => by simp [hg1], hc⟩`.
+-/
 theorem frBor_of_frMap {S T : Type} [CommRing S] [Algebra c.F S] [CommRing T] [Algebra c.F T]
     (φ : S →ₐ[c.F] T) {t : Ix Dw → Sˣ} {y y' : FrPt Xo c S} {z z' : FrPt Xo c T} (h : FrBor t y y')
     (hz : FrMap φ y z) (hz' : FrMap φ y' z') : FrBor (fun i => Units.map (φ : S →* T) (t i)) z z' := by
@@ -40,6 +43,9 @@ theorem frBor_of_frMap {S T : Type} [CommRing S] [Algebra c.F S] [CommRing T] [A
   exact (GlobalTheory.Frames.frBor_iff_frChg z z' _).2
     ⟨fun τ => (g τ).map φ, fun τ i j hij => by simp [hg2 τ i j hij], fun τ i => by simp [hg1], hc⟩
 
+/- English proof (translation)
+Take `⟨q, χ, y₀, hy₀⟩` from `hL.test S y`. Rewrite using `[evR_eq_map_of_test_point hL hg q χ y₀ y hy₀, evR_eq_map_of_test_point hL hg q (φ.comp χ) y₀ z (PullbackSections.frMap_trans χ φ hy₀ hyz)]`. Both sides reduce to the same expression.
+-/
 theorem evR_of_frMap (hL : EvLaws Xo c) {a : (E →+* ℂ) × ℕ → ℕ} {n : ℕ} {g : Rul Xo c} (hg : g ∈ sec Xo c a n)
     {S T : Type} [CommRing S] [IsReduced S] [Algebra c.F S] [CommRing T] [Algebra c.F T] (φ : S →ₐ[c.F] T)
     {y : FrPt Xo c S} {z : FrPt Xo c T} (hyz : FrMap φ y z) : evR Xo c g z = φ (evR Xo c g y) := by
@@ -48,6 +54,9 @@ theorem evR_of_frMap (hL : EvLaws Xo c) {a : (E →+* ℂ) × ℕ → ℕ} {n : 
     evR_eq_map_of_test_point hL hg q (φ.comp χ) y₀ z (PullbackSections.frMap_trans χ φ hy₀ hyz)]
   rfl
 
+/- English proof (translation)
+Use `IsFractionRing.of_field _ _ fun x => ?_` and prove the remaining obligations. Take `⟨a, ha, b, hb, hb0, e⟩` from `C.frac x`. Conclude with `⟨⟨a, ha⟩, ⟨b, hb⟩, by`. Express the relevant statement in the definitionally equal form `x = a / b`. Rewrite using `[eq_div_iff hb0, e]⟩`.
+-/
 theorem isFractionRing_chart {h : GenFrEx Xo c} (C : FChart h) : IsFractionRing C.R (Om C.Z) := by
   refine IsFractionRing.of_field _ _ fun x => ?_
   obtain ⟨a, ha, b, hb, hb0, e⟩ := C.frac x

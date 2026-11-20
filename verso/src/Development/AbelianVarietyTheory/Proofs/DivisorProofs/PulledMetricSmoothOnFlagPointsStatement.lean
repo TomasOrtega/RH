@@ -20,6 +20,9 @@ open CategoryTheory AlgebraicGeometry GlobalTheory GlobalTheory.Mean4O GlobalThe
 open GlobalTheory.ProjVar GlobalTheory.TrueGeo GlobalTheory.Cartier GlobalTheory.ShFam.Pad GlobalTheory.FlatSecCover
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.FlatSecCover.norms_flat_comb | exact GlobalTheory.FlatSecCover.norms_flat_comb | (intros; apply GlobalTheory.FlatSecCover.norms_flat_comb <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.pulled_metric_smooth_on_flag_points : ∀ (D : D7) (O : Setup D) (A : SlopeTestRemainingChoices O.Y) (T : Real0 O.Y) (H : Ht O.Y) (h : O.Reads A T H) (B : ℝ) (τ : D.what₂.Tau) (c : O.s.Comp)
     (g : (T.M c).Fun) (ε : (𝓞 D.what₂.LL →+* ℂ) → Fin ((T.M c).n + 1))
     (π : ∀ σ, GlobalTheory.CxPts (h.mdl (GlobalTheory.FlagAr.setB O.Y B) c).V.p σ → (T.M c).X (ε σ)),

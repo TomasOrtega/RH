@@ -14,6 +14,11 @@ section General
 variable {G V Y : Type} [Group G] [AddCommGroup V] [Module ℂ V] [AddCommGroup Y] [Module ℂ Y]
   {ρ : Representation ℂ G V} {τ : Representation ℂ G Y}
 
+/- English proof (translation)
+Introduce `x hx`. Establish `h` using `hS (Submodule.Quotient.mk ⟨x, hx⟩)`. Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk (⟨ρ z x, S.apply_mem_toSubmodule z hx⟩ : S.toSubmodule) = c' • Submodule.Quotient.mk (⟨x, hx⟩ : S.toSubmodule) at h`. Rewrite `h` using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.eq, Submodule.mem_comap]`. Establish `h1` using `h0 _ h`.
+
+Simplify using `only [map_sub, map_smul, Submodule.coe_subtype, Submodule.coe_sub, Submodule.coe_smul] at h1`. Rewrite `h1` using `[hf, hτ, ← sub_smul]`. Conclude with `(smul_eq_zero.1 h1).resolve_left (sub_ne_zero.2 hcc)`.
+-/
 theorem vanish_of_separated (S T : Subrepresentation ρ) {z : G} {c c' : ℂ} (hcc : c ≠ c')
     (hτ : ∀ y, τ z y = c • y) (hS : ∀ y, subQuot S T z y = c' • y) (f : V →ₗ[ℂ] Y)
     (hf : ∀ v, f (ρ z v) = τ z (f v)) (h0 : ∀ v ∈ T.toSubmodule, f v = 0) :
@@ -28,6 +33,13 @@ theorem vanish_of_separated (S T : Subrepresentation ρ) {z : G} {c c' : ℂ} (h
   rw [hf, hτ, ← sub_smul] at h1
   exact (smul_eq_zero.1 h1).resolve_left (sub_ne_zero.2 hcc)
 
+/- English proof (translation)
+Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro i hi _; exact h0 i (by simpa using hi)`. Consider the case `succ n ih`. Introduce `i hi hib`.
+
+Establish `hiN` using `i.isLt`. Set `t : Fin N` to `⟨a + n, by omega⟩`. Establish `hts : t.succ = i` using `Fin.ext (by simp [t, hi]; omega)`. Take `⟨z, c, c', hcc, hτ, hS⟩` from `hsep t (by simp [t]) (by simp [t]; omega)`. Rewrite using `[← hts]`.
+
+Conclude with `vanish_of_separated _ _ hcc hτ hS f (hf z) (ih t.castSucc (by simp [t]) (by simp [t]; omega))`.
+-/
 theorem vanish_up (N : ℕ) (S : Fin (N + 1) → Subrepresentation ρ) (f : V →ₗ[ℂ] Y)
     (hf : ∀ g v, f (ρ g v) = τ g (f v)) (a b : ℕ)
     (hsep : ∀ t : Fin N, a ≤ t.val → t.val < b →
@@ -63,6 +75,25 @@ end GlobalTheory.FiltLevi
 
 namespace GlobalTheory.FiltLevi
 
+/- English proof (translation)
+Introduce `G V Y _ _ _ _ _ ρ τ N S _ hbot htop hsep hone μ μ'`. Establish `hbase : ∀ i : Fin (N + 1), i.val = 0 → ∀ v ∈ (S i).toSubmodule, (μ.toLinearMap : V →ₗ[ℂ] Y) v = 0 ∧ (μ'.toLinearMap : V →ₗ[ℂ] Y) v = 0`. Introduce `i hi v hv`. Establish `hi0 : i = 0` using `Fin.ext hi`. Rewrite `hv` using `[hi0, hbot]`.
+
+Establish `: v = 0` using `(Submodule.mem_bot ℂ).1 hv`. Simplify using `[this]`. Establish `hint : ∀ (φ : ρ.IntertwiningMap τ) g v, φ.toLinearMap (ρ g v) = τ g (φ.toLinearMap v)` using `fun φ g v => φ.isIntertwining ρ τ g v`. Establish `hall : ∀ f : V →ₗ[ℂ] Y, (∀ v ∈ (S (Fin.last N)).toSubmodule, f v = 0) → f = 0`. Introduce `f hf`.
+
+Use extensionality with `v`. Conclude with `hf v (by rw [htop]; trivial)`. Distinguish the cases in `hs : ∀ t : Fin N, ∃ (z : G) (c c' : ℂ), c ≠ c' ∧ (∀ y, τ z y = c • y) ∧ ∀ y, subQuot (S t.succ) (S t.castSucc) z y = c' • y`. Use `left`. Apply `hall` to reduce the goal to its premises.
+
+Conclude with `vanish_up N S μ.toLinearMap (hint μ) 0 N (fun t _ _ => hs t) (fun i hi v hv => (hbase i hi v hv).1) N (Fin.last N) (by simp) le_rfl`. Take `⟨t₀, ht₀⟩` from `not_forall.1 hs`. Establish `hoth : ∀ t : Fin N, t ≠ t₀ → ∃ (z : G) (c c' : ℂ), c ≠ c' ∧ (∀ y, τ z y = c • y) ∧ ∀ y, subQuot (S t.succ) (S t.castSucc) z y = c' • y`. Introduce `t ht`. Break down `hsep t t₀ ht with h | h` into its components or cases.
+
+Conclude with `h`. Conclude with `absurd h ht₀`. Establish `hbelow : ∀ (f : V →ₗ[ℂ] Y), (∀ g v, f (ρ g v) = τ g (f v)) → (∀ i : Fin (N + 1), i.val = 0 → ∀ v ∈ (S i).toSubmodule, f v = 0) → ∀ v ∈ (S t₀.castSucc).toSubmodule, f v = 0` using `fun f hf h0 => vanish_up N S f hf 0 t₀.val (fun t _ ht => hoth t (fun h => by rw [h] at ht; exact lt_irrefl _ ht)) h0 t₀.val t₀.castSucc (by simp) (by simp)`. Establish `habove : ∀ (f : V →ₗ[ℂ] Y), (∀ g v, f (ρ g v) = τ g (f v)) → (∀ v ∈ (S t₀.succ).toSubmodule, f v = 0) → f = 0`. Introduce `f hf h1`.
+
+Apply `hall` to reduce the goal to its premises. Use `t₀.isLt` as an intermediate fact. Apply the tactic sequence `exact vanish_up N S f hf (t₀.val + 1) N (fun t ht _ => hoth t (fun h => by rw [h] at ht; omega)) (fun i hi => by rw [show i = t₀.succ from Fin.ext (by simp [hi])]; exact h1) (N - (t₀.val + 1)) (Fin.last N) (by simp <;> omega) le_rfl`. Establish `hμ` using `hbelow μ.toLinearMap (hint μ) (fun i hi v hv => (hbase i hi v hv).1)`. Establish `hμ'` using `hbelow μ'.toLinearMap (hint μ') (fun i hi v hv => (hbase i hi v hv).2)`.
+
+Break down `hone t₀ (descend _ _ μ hμ) (descend _ _ μ' hμ') with h | ⟨c, hc⟩` into its components or cases. Use `left`. Use `habove _ (hint μ) fun v hv => ?_` and prove the remaining obligations. Use `LinearMap.congr_fun h (Submodule.Quotient.mk ⟨v, hv⟩)` as an intermediate fact. Conclude with `this`.
+
+Use `right`. Use `⟨c, ?_⟩` and prove the remaining obligations. Use `habove (μ'.toLinearMap - c • μ.toLinearMap) (fun g v => by simp [hint μ, hint μ']) (fun v hv => by` as an intermediate fact. Use `LinearMap.congr_fun hc (Submodule.Quotient.mk ⟨v, hv⟩)` as an intermediate fact. Rewrite using `[LinearMap.sub_apply, LinearMap.smul_apply]`.
+
+Conclude with `sub_eq_zero.2 this)`. Conclude with `sub_eq_zero.1 this`.
+-/
 theorem homLeOne_of_filtration : ∀ {G V Y : Type} [Group G] [AddCommGroup V] [Module ℂ V] [AddCommGroup Y] [Module ℂ Y]
     (ρ : Representation ℂ G V) (τ : Representation ℂ G Y) (N : ℕ) (S : Fin (N + 1) → Subrepresentation ρ),
     Monotone S → S 0 = ⊥ → S (Fin.last N) = ⊤ →

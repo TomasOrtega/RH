@@ -14,6 +14,19 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.TorRef.SpanPos
 
+/- English proof (translation)
+Introduce `E _ _ _ H R _ _ _ t U N n b hN hb F _ ψ hψ`. Take `⟨L1, L2, -⟩` from `GlobalTheory.allSixLaws`. Establish `hP` using `GlobalTheory.DatUniq.polAt_of_unif U`. Take `⟨A, φ, w, ρ, hR⟩` from `GlobalTheory.OneBasis.exists_rigPull_of_polAt L1 L2 E H (Sp R) t (FractionRing R) (jK R) hP`. Take `⟨r, τ, hτ⟩` from `GlobalTheory.OneBasis.AllExt.exists_allBasis L1 L2 (Sp R) t.G t.PP.L t.PP.isLB (FractionRing R) (jK R) A φ w hR.1 hR.2.1 N hN`.
+
+Take `⟨M, hM⟩` from `GlobalTheory.FrameGen.exists_rel t.PP.isLB hb (𝟙 (Over.mk (jK R))) τ`. Take `⟨ψ', rfl⟩ : ∃ ψ' : FractionRing R →+* F, ψ'.comp (algebraMap R (FractionRing R)) = ψ` from `⟨IsFractionRing.lift hψ, RingHom.ext (IsFractionRing.lift_algebraMap hψ)⟩`. Set `g` to `jC (algebraMap R (FractionRing R)) ψ'`. Establish `hM'` using `hM.pull g`. Rewrite `hM'` using `[Category.comp_id, jC_toBase]`.
+
+Establish `hB : BasisAlong t.G t.PP.L N g τ` using `hτ F ψ' _ (jC (algebraMap R (FractionRing R)) ψ').w`. Introduce `s`. Take `⟨a, ha⟩` from `(hB s).exists`. Use `⟨fun i => ∑ k, a k * M.map g.left.appTop.hom k i, ?_⟩` and prove the remaining obligations. Introduce `z J hJ`.
+
+Establish `e₁` using `GlobalTheory.FrameGen.lin_all t.PP.isLB ha (𝟙 _) z hJ`. Simplify using `only [GlobalTheory.FrameGen.sv, Category.id_comp] at e₁`. Rewrite using `[e₁]`. Establish `e₂ : ∀ k, sval (L` using `t.PP.L) (φ := fun _ : Fin 1 => (snd (Over.mk (jK R)) t.G).left) (ε := fun _ => (N : ℤ)) (τ k) (g ▷ t.G).left z J = ∑ i, GlobalTheory.FrameGen.gT (fst _ t.G).left z (M.map g.left.appTop.hom k i) * sval (L := t.PP.L) (φ := fun _ : Fin 1 => (snd (Over.mk (𝟙 (Sp R))) t.G).left) (ε := …`. Introduce `k`.
+
+Use `hM' k _ (𝟙 _) z J hJ` as an intermediate fact. Simplify using `only [GlobalTheory.FrameGen.sv, Category.id_comp] at this`. Conclude with `this`. Simplify using `only [e₂, Finset.mul_sum, GlobalTheory.FrameGen.gs_top, map_sum, map_mul, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_lin_of_injective : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (R : Type) [CommRing R] [IsDomain R]
     [IsLocalRing R] (t : SAB H (Sp R)) (_ : PELUnif (maximalIdeal R) t) (N n : ℕ)
     (b : Fin n → LB.Sec (LPow t.G t.PP.L (N : ℤ) (Over.mk (𝟙 (Sp R))))), 1 ≤ N →

@@ -18,6 +18,15 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PullbackSections.Sup
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovVolumes.UpperBounds.LocalUnfoldBStatementHolds
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.WeightAlgebra Formalism.MainNotions.Gaps Formalism.MainNotions.Gaps.EtaleWeightGaps Formalism.L2.Pj ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.FD ReciprocityTheory.ChartRestriction.G.AR.Inst ReciprocityTheory.ChartRestriction.G.AR.Up GlobalTheory.RunIn GlobalTheory.Shares
 
+/- English proof (translation)
+Introduce `D T h j hj n N ka wL wF w Tn CR c hka hA hOn hM hTie`. Substitute `hka` using the available equality. Take `⟨A⟩` from `hA`. Take `⟨R, e, hR⟩` from `GlobalTheory.T.exists_base_embedding_reading_forms D T h j hj n`. Take `⟨t, ht, ⟨Fl⟩⟩` from `GlobalTheory.T.exists_algIndependent_coeffs_flatDatum D T h j hj N wL wF w Tn _ A`.
+
+Set `ι : Type` to `Σ k : (T.U j T.σ₀).Comp, Fin (Fl.Fl k).δ`. Establish `: Fintype ι` using `inferInstance`. Set `en : Fin (Fintype.card ι) ≃ ι` to `(Fintype.equivFin ι).symm`. Set `xs : Fin (Fintype.card ι) → R.Y` to `fun q => e.symm ⟨(en q).1, ⟨(Fl.Fl (en q).1).xs (en q).2, (Fl.Fl (en q).1).xs_mem _⟩⟩`. Establish `hxs : ∀ q, e (xs q) = ⟨(en q).1, ⟨(Fl.Fl (en q).1).xs (en q).2, (Fl.Fl (en q).1).xs_mem _⟩⟩` using `fun q => e.apply_symm_apply _`.
+
+Establish `h1` using `GlobalTheory.T.points_interpolation_genericSections D T h j hj n R e hR N wL wF w Tn _ A t Fl _ xs en hxs hOn`. Use `⟨R, t, _, xs, ?_, h1.1, h1.2, GlobalTheory.T.cuspForm_vanishing_at_points_mul_pow_mem_span D T h j hj n R e hR N wL wF w Tn _ A t Fl _ xs en hxs hOn, GlobalTheory.T.leadingProducts_independent_modulo_deepProducts D T h j hj n R e hR N wL wF w Tn _ A t Fl _ xs en hxs, GlobalTheory …` and prove the remaining obligations. Introduce `Q hQ`. Establish `hσ : R.σ = T.σ₀` using `RingHom.ext hR.1`. Rewrite using `[hσ]`.
+
+Conclude with `ht Q hQ`. Conclude with `fun F hF => (hTie F).1 hF`.
+-/
 theorem GlobalTheory.Shares.exists_anFacts_record : ∀ (D : D7) (T : Top D) (h : LawsP T) (j : ℕ) (hj : InR D j) (n : SecNorm (recB h.toLawsCore)) (N : ℕ) (ka wL wF : WeightFamilies.Wt D j) (w : Fin N → (recB h.toLawsCore).Cusp j wL) (Tn : ℕ) (CR c : ℝ), addL wF wL Tn = ka → Nonempty (ArchAt h j w wF Tn (WeightFamilies.c1 D CR Tn c j)) → (∀ k : ℕ, RdOnto h j (addL wF wL k)) → MggOnto h j CR Tn c ka → TieMaxCuspSt h j CR Tn c ka → ∃ (R : Rdg (recPlusN h j hj n)) (t : Idx D j N → ℂ) (δ : ℕ) (xs : Fin δ → R.Y), R.Generic t ∧ AnFacts R w t ka wF Tn (WeightFamilies.MggK n.base CR Tn c j ka) xs := by
   intro D T h j hj n N ka wL wF w Tn CR c hka hA hOn hM hTie
   subst hka

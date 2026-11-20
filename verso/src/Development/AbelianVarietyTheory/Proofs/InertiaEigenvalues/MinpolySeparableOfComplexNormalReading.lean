@@ -9,6 +9,11 @@ namespace GlobalTheory.NormalSeparable
 section SlopeTestRemainingChoices
 variable {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
 
+/- English proof (translation)
+Use `Polynomial.induction_on q ?_ ?_ ?_` and prove the remaining obligations. Introduce `a u hu`. Simplify `U.smul_mem a hu` using `[Module.algebraMap_end_apply]`. Introduce `p r hp hr u hu`. Simplify using `using U.add_mem (hp u hu) (hr u hu)`.
+
+Introduce `n a ih u hu`. Rewrite using `[pow_succ, ← mul_assoc, map_mul, Polynomial.aeval_X, Module.End.mul_apply]`. Conclude with `ih _ (hS u hu)`.
+-/
 theorem aeval_mem (U : Submodule ℂ H) (S : Module.End ℂ H) (hS : ∀ u ∈ U, S u ∈ U)
     (q : Polynomial ℂ) : ∀ u ∈ U, Polynomial.aeval S q u ∈ U := by
   refine Polynomial.induction_on q ?_ ?_ ?_
@@ -20,6 +25,13 @@ theorem aeval_mem (U : Submodule ℂ H) (S : Module.End ℂ H) (hS : ∀ u ∈ U
     rw [pow_succ, ← mul_assoc, map_mul, Polynomial.aeval_X, Module.End.mul_apply]
     exact ih _ (hS u hu)
 
+/- English proof (translation)
+Use `Polynomial.induction_on q ?_ ?_ ?_` and prove the remaining obligations. Introduce `a u hu v hv`. Simplify using `[Module.algebraMap_end_apply, inner_smul_left, inner_smul_right, mul_comm]`. Introduce `p r hp hr u hu v hv`. Simplify using `only [map_add, Polynomial.map_add, LinearMap.add_apply, inner_add_left, inner_add_right, hp u hu v hv, hr u hu v hv]`.
+
+Introduce `n a ih u hu v hv`. Establish `e : (Polynomial.C a * Polynomial.X ^ (n + 1) : Polynomial ℂ) = Polynomial.C a * Polynomial.X ^ n * Polynomial.X` using `by ring`. Rewrite using `[e]`. Generalize the expression as in `Polynomial.C a * Polynomial.X ^ n = p at ih ⊢`. Establish `e2 : (p * Polynomial.X).map (starRingEnd ℂ) = Polynomial.X * p.map (starRingEnd ℂ)`.
+
+Rewrite using `[Polynomial.map_mul, Polynomial.map_X, mul_comm]`. Rewrite using `[e2, map_mul, Polynomial.aeval_X, Module.End.mul_apply, map_mul, Polynomial.aeval_X, Module.End.mul_apply, ih _ (hS u hu) v hv]`. Conclude with `hadj u hu _ (GlobalTheory.NormalSeparable.aeval_mem U S' hS' _ v hv)`.
+-/
 theorem aeval_adj (U : Submodule ℂ H) (S S' : Module.End ℂ H) (hS : ∀ u ∈ U, S u ∈ U)
     (hadj : ∀ u ∈ U, ∀ v ∈ U, inner ℂ (S u) v = inner ℂ u (S' v)) (hS' : ∀ u ∈ U, S' u ∈ U)
     (q : Polynomial ℂ) : ∀ u ∈ U, ∀ v ∈ U, inner ℂ (Polynomial.aeval S q u) v
@@ -41,6 +53,11 @@ theorem aeval_adj (U : Submodule ℂ H) (S S' : Module.End ℂ H) (hS : ∀ u �
       Module.End.mul_apply, ih _ (hS u hu) v hv]
     exact hadj u hu _ (GlobalTheory.NormalSeparable.aeval_mem U S' hS' _ v hv)
 
+/- English proof (translation)
+Use `Polynomial.induction_on q ?_ ?_ ?_` and prove the remaining obligations. Introduce `a u hu`. Simplify using `[Module.algebraMap_end_apply]`. Introduce `p r hp hr u hu`. Simplify using `only [map_add, LinearMap.add_apply, hp u hu, hr u hu]`.
+
+Introduce `n a ih u hu`. Rewrite using `[pow_succ, ← mul_assoc, map_mul, Polynomial.aeval_X]`. Simplify using `only [Module.End.mul_apply]`. Rewrite using `[hc u hu, ih _ (hS u hu)]`.
+-/
 theorem aeval_comm (U : Submodule ℂ H) (S B : Module.End ℂ H) (hS : ∀ u ∈ U, S u ∈ U)
     (hc : ∀ u ∈ U, S (B u) = B (S u)) (q : Polynomial ℂ) :
     ∀ u ∈ U, Polynomial.aeval S q (B u) = B (Polynomial.aeval S q u) := by
@@ -54,6 +71,11 @@ theorem aeval_comm (U : Submodule ℂ H) (S B : Module.End ℂ H) (hS : ∀ u �
     simp only [Module.End.mul_apply]
     rw [hc u hu, ih _ (hS u hu)]
 
+/- English proof (translation)
+Establish `hw : A u ∈ U` using `hA u hu`. Establish `h1 : A' (A u) = 0`. Establish `h2 : inner ℂ (A' (A u)) (A' (A u)) = 0`. Rewrite using `[← hadj _ (hA' _ hw) _ hw, hc _ hw, h, map_zero, inner_zero_left]`. Conclude with `inner_self_eq_zero.mp h2`.
+
+Establish `h3 : inner ℂ (A u) (A u) = 0`. Rewrite using `[hadj _ hu _ hw, h1, inner_zero_right]`. Conclude with `inner_self_eq_zero.mp h3`.
+-/
 theorem normal_sq_zero (U : Submodule ℂ H) (A A' : Module.End ℂ H) (hA : ∀ u ∈ U, A u ∈ U)
     (hA' : ∀ u ∈ U, A' u ∈ U)
     (hadj : ∀ u ∈ U, ∀ v ∈ U, inner ℂ (A u) v = inner ℂ u (A' v))
@@ -69,6 +91,33 @@ theorem normal_sq_zero (U : Submodule ℂ H) (A A' : Module.End ℂ H) (hA : ∀
 
 end SlopeTestRemainingChoices
 
+/- English proof (translation)
+Introduce `K V H _ _ _ _ _ _ φ j T S S' hlin hT hS' hadj hc`. Use `haveI : CharZero K := φ.charZero`. Use `set U : Submodule ℂ H := Submodule.span ℂ (Set.range j) with hU`. Establish `hjU : ∀ x, j x ∈ U` using `fun x => Submodule.subset_span ⟨x, rfl⟩`. Establish `hSU : ∀ u ∈ U, S u ∈ U`.
+
+Establish `hle : U ≤ U.comap S`. Rewrite using `[hU, Submodule.span_le]`. Introduce and unpack `_ ⟨x, rfl⟩`. Rewrite using `[SetLike.mem_coe, Submodule.mem_comap, ← hT x]`. Conclude with `Submodule.subset_span ⟨T x, rfl⟩`.
+
+Introduce `u hu`. Conclude with `hle hu`. Establish `hinj : ∀ v : V, j v = 0 → v = 0`. Introduce `v hv`. Assume the negation of the conclusion as `hne`.
+
+Establish `hli : LinearIndependent K (fun _ : Fin 1 => v)`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg i`. Take `rfl : i = 0` from `Subsingleton.elim _ _`. Simplify using `only [Fin.sum_univ_one] at hg`.
+
+Conclude with `(smul_eq_zero.mp hg).resolve_right hne`. Establish `h1` using `hlin 1 (fun _ => v) hli`. Conclude with `h1.ne_zero 0 (by simpa using hv)`. Establish `htr : ∀ (p : Polynomial K) (x : V), j (Polynomial.aeval T p x) = Polynomial.aeval S (p.map φ) (j x)`. Introduce `p`.
+
+Use `Polynomial.induction_on p ?_ ?_ ?_` and prove the remaining obligations. Introduce `a x`. Simplify using `[Module.algebraMap_end_apply]`. Introduce `p r hp hr x`. Simplify using `only [map_add, Polynomial.map_add, LinearMap.add_apply, hp, hr]`.
+
+Introduce `n a ih x`. Establish `e : (Polynomial.C a * Polynomial.X ^ (n + 1) : Polynomial K) = Polynomial.C a * Polynomial.X ^ n * Polynomial.X` using `by ring`. Rewrite using `[e]`. Generalize the expression as in `Polynomial.C a * Polynomial.X ^ n = p at ih ⊢`. Rewrite using `[map_mul, Polynomial.aeval_X, Module.End.mul_apply, ih, Polynomial.map_mul, Polynomial.map_X, map_mul, Polynomial.aeval_X, Module.End.mul_apply, hT]`.
+
+Establish `hsq : Squarefree (minpoly K T)`. Introduce `q hq`. Take `⟨r, hr⟩` from `hq`. Establish `hp0 : minpoly K T ≠ 0` using `minpoly.ne_zero (Algebra.IsIntegral.isIntegral T)`. Establish `hann : Polynomial.aeval T (q * r) = 0`.
+
+Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `x`. Rewrite using `[LinearMap.zero_apply]`. Apply `hinj` to reduce the goal to its premises. Establish `e1 : Polynomial.aeval T (q * r) x = Polynomial.aeval T q (Polynomial.aeval T r x)`.
+
+Rewrite using `[map_mul, Module.End.mul_apply]`. Rewrite using `[e1, htr]`. Establish `h0 : Polynomial.aeval T q (Polynomial.aeval T q (Polynomial.aeval T r x)) = 0`. Establish `h4 : Polynomial.aeval T (q * q * r) x = 0`. Rewrite using `[← hr, minpoly.aeval, LinearMap.zero_apply]`.
+
+Simplify `h4` using `only [map_mul, Module.End.mul_apply]`. Establish `h0' : Polynomial.aeval S (q.map φ) (Polynomial.aeval S (q.map φ) (j (Polynomial.aeval T r x))) = 0`. Rewrite using `[← htr, ← htr, h0, map_zero]`. Establish `hcomm1 : ∀ u ∈ U, Polynomial.aeval S (q.map φ) (S' u) = S' (Polynomial.aeval S (q.map φ) u)` using `GlobalTheory.NormalSeparable.aeval_comm U S S' hSU hc (q.map φ)`. Establish `hcomm2` using `GlobalTheory.NormalSeparable.aeval_comm U S' (Polynomial.aeval S (q.map φ)) hS' (fun u hu => (hcomm1 u hu).symm) ((q.map φ).map (starRingEnd ℂ))`.
+
+Conclude with `GlobalTheory.NormalSeparable.normal_sq_zero U (Polynomial.aeval S (q.map φ)) (Polynomial.aeval S' ((q.map φ).map (starRingEnd ℂ))) (GlobalTheory.NormalSeparable.aeval_mem U S hSU _) (GlobalTheory.NormalSeparable.aeval_mem U S' hS' _) (GlobalTheory.NormalSeparable.aeval_adj U S S' …`. Establish `hdvd : minpoly K T ∣ q * r` using `minpoly.dvd K T hann`. Rewrite `hdvd` using `[hr]`. Establish `hqr : q * r ≠ 0`. Introduce `h`.
+
+Apply `hp0` to reduce the goal to its premises. Rewrite using `[hr, mul_assoc, h, mul_zero]`. Establish `h5 : q * (q * r) ∣ 1 * (q * r)` using `by rwa [one_mul, ← mul_assoc]`. Conclude with `isUnit_of_dvd_one ((mul_dvd_mul_iff_right hqr).mp h5)`. Conclude with `PerfectField.separable_iff_squarefree.mpr hsq`.
+-/
 theorem minpoly_separable_of_normal : ∀ (K V H : Type) [Field K] [AddCommGroup V] [Module K V] [FiniteDimensional K V] [NormedAddCommGroup H] [InnerProductSpace ℂ H] (φ : K →+* ℂ) (j : V →ₛₗ[φ] H) (T : Module.End K V) (S S' : Module.End ℂ H), (∀ (n : ℕ) (x : Fin n → V), LinearIndependent K x → LinearIndependent ℂ (fun a => j (x a))) → (∀ x, j (T x) = S (j x)) → (∀ u ∈ Submodule.span ℂ (Set.range j), S' u ∈ Submodule.span ℂ (Set.range j)) → (∀ u ∈ Submodule.span ℂ (Set.range j), ∀ v ∈ Submodule.span ℂ (Set.range j), inner ℂ (S u) v = inner ℂ u (S' v)) → (∀ u ∈ Submodule.span ℂ (Set.range j), S (S' u) = S' (S u)) → (minpoly K T).Separable := by
   intro K V H _ _ _ _ _ _ φ j T S S' hlin hT hS' hadj hc
   haveI : CharZero K := φ.charZero

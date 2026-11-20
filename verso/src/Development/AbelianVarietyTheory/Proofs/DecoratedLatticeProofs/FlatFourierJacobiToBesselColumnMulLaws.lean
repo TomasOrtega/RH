@@ -14,6 +14,13 @@ open GlobalTheory.FlatColLaw
 
 variable {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Take `⟨-, -, hX, hz, -⟩` from `hB`. Proceed by induction on `j using Fin.lastCases with`. Consider the case `last`. Rewrite using `[hz l hl x]`. Simplify using `only [xLast, Matrix.map_apply, Matrix.of_apply, Fin.snoc_last, Fin.val_last, Nat.add_sub_cancel_left, pow_one]`.
+
+Use `congr 1`. Simplify using `only [Place.pr, Matrix.mulVec, dotProduct, map_sum, map_mul]`. Both sides reduce to the same expression. Consider the case `cast j`. Rewrite using `[hX j l hl x]`.
+
+Establish `hj` using `j.isLt`. Simplify using `only [xLast, Matrix.map_apply, Matrix.of_apply, Fin.snoc_castSucc, Fin.val_castSucc]`. Rewrite using `[show σ + 1 - j.val = (σ - j.val) + 1 by omega, pow_succ', ← mul_assoc]`. Both sides reduce to the same expression.
+-/
 theorem frame_col (p : Place D k) {σ : ℕ} (B : BesLev D σ) (s : k) {n : Type} [Fintype n] [DecidableEq n] {c : ℕ}
     (FA : Frame k B.A.rank n) (FV : Frame k B.V.rank (n ⊕ Fin c)) (hB : p.IsBesFrame B (s * p.xi) FA FV)
     (j : Fin (σ + 1)) (l : Fin c) (hl : l.val = j.val) (x : Fin B.V.rank) :
@@ -33,6 +40,23 @@ theorem frame_col (p : Place D k) {σ : ℕ} (B : BesLev D σ) (s : k) {n : Type
     rw [show σ + 1 - j.val = (σ - j.val) + 1 by omega, pow_succ', ← mul_assoc]
     rfl
 
+/- English proof (translation)
+Introduce `D hFL _ k _ _ _ _ _ _ p ψ ψk hχ σ J B st s hs n n' _ _ _ _ c G₀ FW FA F₀ FV hjac _ hbes Tm hTm r q hq b Φ Φ' hΦ'`. Take `⟨i, rfl, hi, hfree⟩` from `hq`. Establish `hc : c = 2 * σ + 1` using `hbes.1`. Establish `hκ : ∀ m : ℕ, s * p.xi ^ m ≠ 0` using `fun m => mul_ne_zero hs (pow_ne_zero _ (xi_ne p))`. Set `i₀ : Fin (σ + 1)` to `⟨i.val, by omega⟩`.
+
+Set `zk : Matrix (Fin (σ + 1)) (Fin B.V.rank) k` to `Matrix.of fun i' β => if i' = i₀ then b * (s * p.xi ^ (σ + 1 - i.val)) * FV.γ r β else 0`. Set `a : Mx D B.V.rank (σ + 1)` to `giA B.V ⬝ adj (zk.map p.ι : Mx D (σ + 1) B.V.rank)`. Establish `ha : IsHalf (cA D p.e) a` using `isHalf_mul_left _ (isHalf_adj p zk)`. Establish `hy : IsHalf (cA D p.e) (J.d.extY B.V a)` using `isHalf_mul_right _ ha`. Establish `hW : ∀ j : Fin (σ + 1), (FV.γ * (xLast B.d (vecB B.o B.ζ)).map p.π) r j = (s * p.xi ^ (σ + 1 - j.val))⁻¹ * (1 : Matrix (n ⊕ Fin c) (n ⊕ Fin c) k) r (Sum.inr ⟨j.val, by omega⟩)` using `fun j => by`.
+
+Rewrite using `[← FV.γβ]`. Conclude with `col_mul _ _ _ _ _ (hκ _) (frame_col p B s FA FV hbes j ⟨j.val, by omega⟩ rfl) r`. Establish `hB : ∀ t, ψ (symplO J.W B.V (p.up FW FV t) (J.d.extY B.V a)) = (ψk (b * t r (Sum.inr i)) : ℂ)` using `fun t => by`. Rewrite using `[psi_sympl_extY p hχ, trace_row_mul, Place.up, map_iota_mul, map_iota_pi, ← Matrix.mul_assoc, ← Matrix.mul_assoc, ← Matrix.mul_assoc, FV.γβ, Matrix.one_mul, col_mul _ _ FW.β i₀ (Sum.inr i) (hκ _) (hjac.2.2.1 i₀ i rfl), Matrix.mul_assoc, FW.γβ, Matrix.mul_one, mul_assoc, mul_inv_c …`. Establish `hD : ψ (symplO J.W B.V (J.d.extX B.V (xLast B.d (vecB B.o B.ζ))) (J.d.extY B.V a)) = (ψk (b * basePt c (0 : Matrix n n' k) r (Sum.inr i)) : ℂ)`.
+
+Rewrite using `[psi_sympl_extY p hχ, trace_row_mul, HypDec.extX_apply, Matrix.mul_assoc, HypDec.pX_jX, Matrix.mul_one, hW, mul_assoc, mul_inv_cancel_left₀ (hκ _)]`. Use `congr 3`. Break down `r with r | r` into its components or cases. Simplify using `[basePt]`. Simplify using `[basePt, Matrix.one_apply, Fin.ext_iff, i₀]`.
+
+Establish `hU : GlobalTheory.FinPl.UInv B.V (xLast B.d (vecB B.o B.ζ)) a` using `fun u => by`. Rewrite using `[pairS_giA_adj, pairS_giA_adj, ← Matrix.mul_assoc]`. Use `trace_mul_uni _ (fun i' j hj => ?_) u` and prove the remaining obligations. Rewrite using `[map_iota_mul, Matrix.map_apply, row_mul]`. Use `split_ifs with h`.
+
+Substitute `h` using the available equality. Rewrite using `[hW, Matrix.one_apply_ne, mul_zero, mul_zero, map_zero]`. Introduce and unpack `rfl`. Conclude with `hfree hj`. Conclude with `map_zero _`.
+
+Take `⟨v, hv⟩` from `exists_mxAt p`. Establish `hlaw` using `((hFL ψ (· = v)).2 σ J B st).Heisenberg₂.dual _ (hTm.theta Φ) a (hv _ _ a ha) hU`. Establish `hmod` using `hTm.modul _ hy Φ ((ψk (b * basePt c (0 : Matrix n n' k) r (Sum.inr i)) : ℂ) • Φ') fun t => by`. Rewrite using `[hB, Submodule.coe_smul, Pi.smul_apply, smul_eq_mul, hΦ', ← mul_assoc, ← Circle.coe_mul, ← AddChar.map_add_eq_mul, ← mul_add, add_sub_cancel]`. Rewrite `hlaw` using `[← hmod, hD, map_smul, GlobalTheory.HandHom.flatFB_smul]`.
+
+Conclude with `smul_right_injective _ (Circle.coe_ne_zero _) hlaw`.
+-/
 theorem flatFB_mulcol : ∀ (D : D7), GlobalTheory.FinPl.FlatLaws D → OmLoc D → ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] (p : Place D k) (ψ : AddChar (AF D.host.F) ℂ) (ψk : AddChar k Circle), p.IsChar ψ ψk → ∀ (σ : ℕ) (J : JacLev D (σ + 1)) (B : BesLev D σ) (st : StepFB ψ J B) (s : k), s ≠ 0 → ∀ (n n' : Type) [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n'] (c : ℕ) (G₀ : Frame k J.W₀.rank n') (FW : Frame k J.W.rank (n' ⊕ Fin (c + 1))) (FA : Frame k B.A.rank n) (F₀ : Frame k B.V₀.rank (n ⊕ Unit)) (FV : Frame k B.V.rank (n ⊕ Fin c)), p.IsJacFrame J s (-p.xi ^ 2 * p.hz B) G₀ FW → p.IsCoreFrame B (s * p.xi) FA F₀ → p.IsBesFrame B (s * p.xi) FA FV → ∀ Tm, p.IsModel ψ FW FV Tm → ∀ (r : n ⊕ Fin c) (q : n' ⊕ Fin (c + 1)), (∃ i, q = Sum.inr i ∧ i.val ≤ σ ∧ ¬ Free (σ + 1) (r, q)) → ∀ (b : k) (Φ Φ' : SB (Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k)), (∀ t, Φ'.1 t = (ψk (b * (t r q - basePt c (0 : Matrix n n' k) r q)) : ℂ) * Φ.1 t) → flatFB st (Tm Φ') = flatFB st (Tm Φ) := by
   intro D hFL _ k _ _ _ _ _ _ p ψ ψk hχ σ J B st s hs n n' _ _ _ _ c G₀ FW FA F₀ FV hjac _ hbes Tm hTm r q hq b Φ Φ' hΦ'
   obtain ⟨i, rfl, hi, hfree⟩ := hq

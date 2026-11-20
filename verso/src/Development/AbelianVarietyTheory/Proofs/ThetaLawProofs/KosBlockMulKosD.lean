@@ -14,17 +14,28 @@ def kosBlock {R : Type} [CommRing R] {g d : ℕ} {N : ℕ → ℕ}
 section
 variable {R : Type} [CommRing R] {g d : ℕ} {N : ℕ → ℕ}
 
+/- English proof (translation)
+Simplify using `[kosBlock, Matrix.fromBlocks_multiply, ← Matrix.blockDiagonal'_mul]`.
+-/
 theorem kosBlock_mul (C C' : ∀ j, Matrix (Fin (N j)) (Fin (N j)) R) (P P' : Matrix (Fin d) (Fin d) R) :
     (kosBlock C P : Matrix (KIx g d N) (KIx g d N) R) * kosBlock C' P' =
       kosBlock (fun j => C j * C' j) (P * P') := by
   simp [kosBlock, Matrix.fromBlocks_multiply, ← Matrix.blockDiagonal'_mul]
 
+/- English proof (translation)
+Establish `: (Matrix.blockDiagonal' fun I : Finset (Fin g) => (1 : Matrix (Fin (N I.card)) (Fin (N I.card)) R)) = 1` using `Matrix.blockDiagonal'_one`. Rewrite using `[kosBlock, this, Matrix.fromBlocks_one]`.
+-/
 theorem kosBlock_one :
     (kosBlock (fun _ => 1) 1 : Matrix (KIx g d N) (KIx g d N) R) = 1 := by
   have : (Matrix.blockDiagonal' fun I : Finset (Fin g) =>
       (1 : Matrix (Fin (N I.card)) (Fin (N I.card)) R)) = 1 := Matrix.blockDiagonal'_one
   rw [kosBlock, this, Matrix.fromBlocks_one]
 
+/- English proof (translation)
+Apply the tactic sequence `rcases p with ⟨I, a⟩ | a <;> rcases q with ⟨J, b⟩ | b`. Establish `: I ≠ J` using `by rintro rfl; exact h rfl`. Simplify using `[kosBlock, Matrix.blockDiagonal'_apply_ne _ _ _ this]`. Simplify using `[kosBlock]`. Simplify using `[kosBlock]`.
+
+Conclude with `absurd rfl h`.
+-/
 theorem kosBlock_graded (C : ∀ j, Matrix (Fin (N j)) (Fin (N j)) R) (P : Matrix (Fin d) (Fin d) R)
     (p q : KIx g d N) (h : kdeg p ≠ kdeg q) : kosBlock C P p q = 0 := by
   rcases p with ⟨I, a⟩ | a <;> rcases q with ⟨J, b⟩ | b
@@ -34,6 +45,11 @@ theorem kosBlock_graded (C : ∀ j, Matrix (Fin (N j)) (Fin (N j)) R) (P : Matri
   · simp [kosBlock]
   · exact absurd rfl h
 
+/- English proof (translation)
+Rewrite using `[kosBlock, Matrix.det_fromBlocks_zero₂₁, ReciprocityTheory.ChartRestriction.G.T0.HDiscLat.det_blockDiagonal']`. Use `congr 1`. Rewrite using `[← Finset.powerset_univ, Finset.prod_powerset]`. Simplify using `only [Finset.card_univ, Fintype.card_fin]`. Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Finset.prod_congr rfl (g := fun _ => (C j).det), Finset.prod_const, Finset.card_powersetCard]`. Simplify using the standard rewrite rules. Introduce `I hI`. Rewrite using `[(Finset.mem_powersetCard.mp hI).2]`.
+-/
 theorem kosBlock_det (C : ∀ j, Matrix (Fin (N j)) (Fin (N j)) R) (P : Matrix (Fin d) (Fin d) R) :
     (kosBlock C P : Matrix (KIx g d N) (KIx g d N) R).det =
       (∏ j ∈ Finset.range (g + 1), (C j).det ^ g.choose j) * P.det := by
@@ -47,6 +63,11 @@ theorem kosBlock_det (C : ∀ j, Matrix (Fin (N j)) (Fin (N j)) R) (P : Matrix (
   · intro I hI
     rw [(Finset.mem_powersetCard.mp hI).2]
 
+/- English proof (translation)
+Apply the tactic sequence `rcases p with ⟨I, a⟩ | a <;> rcases q with ⟨J, b⟩ | b`. Simplify using `only [kosBlock, Matrix.fromBlocks_apply₁₁, Matrix.blockDiagonal'_apply]`. Rewrite using `[h1 I.card rfl]`. Simplify using `[kosBlock]`. Simplify using `[kosBlock]`.
+
+Rewrite using `[h2 rfl]`. Simplify using `[kosBlock]`.
+-/
 theorem kosBlock_congr (C C' : ∀ j, Matrix (Fin (N j)) (Fin (N j)) R)
     (P P' : Matrix (Fin d) (Fin d) R) (p q : KIx g d N)
     (h1 : ∀ j, kdeg p = j + 1 → C j = C' j) (h2 : kdeg p = 0 → P = P') :
@@ -58,6 +79,13 @@ theorem kosBlock_congr (C C' : ∀ j, Matrix (Fin (N j)) (Fin (N j)) R)
   · simp [kosBlock]
   · rw [h2 rfl]; simp [kosBlock]
 
+/- English proof (translation)
+Establish `h` using `Matrix.twoBlockTriangular_det (kosBlock (fun j => if s (j + 1) then C j else 1) (if s 0 then P else 1) : Matrix (KIx g d N) (KIx g d N) R) (fun p => s (kdeg p)) (fun i hi j hj => kosBlock_graded _ _ _ _ (fun h => hi (h ▸ hj)))`. Establish `e1 : Matrix.toSquareBlockProp (kosBlock (fun j => if s (j + 1) then C j else 1) (if s 0 then P else 1) : Matrix (KIx g d N) (KIx g d N) R) (fun p => s (kdeg p)) = (kosBlock C P : Matrix (KIx g d N) (KIx g d N) R).submatrix (fun p : {p // s (kdeg p)} => p.1) (fun p : {p // s (kdeg …`. Use extensionality with `p q`. Conclude with `kosBlock_congr (fun j => if s (j + 1) then C j else 1) C (if s 0 then P else 1) P p.1 q.1 (fun j hj => if_pos (hj ▸ p.2)) (fun hj => if_pos (hj ▸ p.2))`. Establish `e2 : Matrix.toSquareBlockProp (kosBlock (fun j => if s (j + 1) then C j else 1) (if s 0 then P else 1) : Matrix (KIx g d N) (KIx g d N) R) (fun p => ¬ s (kdeg p)) = 1`.
+
+Rewrite using `[← Matrix.submatrix_one (fun p : {p : KIx g d N // ¬ s (kdeg p)} => p.1) Subtype.val_injective, ← kosBlock_one]`. Use extensionality with `p q`. Conclude with `kosBlock_congr (fun j => if s (j + 1) then C j else 1) (fun _ => 1) (if s 0 then P else 1) 1 p.1 q.1 (fun j hj => if_neg (hj ▸ p.2)) (fun hj => if_neg (hj ▸ p.2))`. Rewrite `h` using `[e1, e2, Matrix.det_one, mul_one, kosBlock_det]`. Rewrite using `[← h]`.
+
+Use `congr 1`. Apply the tactic sequence `refine Finset.prod_congr rfl fun j _ => ?_ split_ifs <;> simp`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem kosBlock_det_sub (C : ∀ j, Matrix (Fin (N j)) (Fin (N j)) R) (P : Matrix (Fin d) (Fin d) R)
     (s : ℕ → Prop) [DecidablePred s] :
     ((kosBlock C P : Matrix (KIx g d N) (KIx g d N) R).submatrix
@@ -91,6 +119,9 @@ theorem kosBlock_det_sub (C : ∀ j, Matrix (Fin (N j)) (Fin (N j)) R) (P : Matr
     split_ifs <;> simp
   · split_ifs <;> simp
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_apply, Fintype.sum_sum_type, Fintype.sum_sigma, Finset.sum_eq_single I]`. Simplify using `[kosBlock]`. Introduce `J _ hJ`. Simplify using `[kosBlock, Matrix.blockDiagonal'_apply_ne _ _ _ hJ.symm]`. Simplify using the standard rewrite rules.
+-/
 theorem kosBlock_mul_inl (C : ∀ j, Matrix (Fin (N j)) (Fin (N j)) R) (P : Matrix (Fin d) (Fin d) R)
     (D : Matrix (KIx g d N) (KIx g d N) R) (I : Finset (Fin g)) (a : Fin (N I.card)) (q : KIx g d N) :
     (kosBlock C P * D : Matrix (KIx g d N) (KIx g d N) R) (.inl ⟨I, a⟩) q = ∑ c, C I.card a c * D (.inl ⟨I, c⟩) q := by
@@ -100,12 +131,18 @@ theorem kosBlock_mul_inl (C : ∀ j, Matrix (Fin (N j)) (Fin (N j)) R) (P : Matr
     simp [kosBlock, Matrix.blockDiagonal'_apply_ne _ _ _ hJ.symm]
   · simp
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_apply, Fintype.sum_sum_type]`. Simplify using `[kosBlock]`.
+-/
 theorem kosBlock_mul_inr (C : ∀ j, Matrix (Fin (N j)) (Fin (N j)) R) (P : Matrix (Fin d) (Fin d) R)
     (D : Matrix (KIx g d N) (KIx g d N) R) (a : Fin d) (q : KIx g d N) :
     (kosBlock C P * D : Matrix (KIx g d N) (KIx g d N) R) (.inr a) q = ∑ c, P a c * D (.inr c) q := by
   rw [Matrix.mul_apply, Fintype.sum_sum_type]
   simp [kosBlock]
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_apply, Fintype.sum_sum_type, Fintype.sum_sigma, Finset.sum_eq_single I]`. Simplify using `[kosBlock]`. Introduce `J _ hJ`. Simplify using `[kosBlock, Matrix.blockDiagonal'_apply_ne _ _ _ hJ]`. Simplify using the standard rewrite rules.
+-/
 theorem mul_kosBlock_inl (C : ∀ j, Matrix (Fin (N j)) (Fin (N j)) R) (P : Matrix (Fin d) (Fin d) R)
     (D : Matrix (KIx g d N) (KIx g d N) R) (I : Finset (Fin g)) (a : Fin (N I.card)) (q : KIx g d N) :
     (D * kosBlock C P : Matrix (KIx g d N) (KIx g d N) R) q (.inl ⟨I, a⟩) = ∑ c, D q (.inl ⟨I, c⟩) * C I.card c a := by
@@ -115,12 +152,30 @@ theorem mul_kosBlock_inl (C : ∀ j, Matrix (Fin (N j)) (Fin (N j)) R) (P : Matr
     simp [kosBlock, Matrix.blockDiagonal'_apply_ne _ _ _ hJ]
   · simp
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_apply, Fintype.sum_sum_type]`. Simplify using `[kosBlock]`.
+-/
 theorem mul_kosBlock_inr (C : ∀ j, Matrix (Fin (N j)) (Fin (N j)) R) (P : Matrix (Fin d) (Fin d) R)
     (D : Matrix (KIx g d N) (KIx g d N) R) (a : Fin d) (q : KIx g d N) :
     (D * kosBlock C P : Matrix (KIx g d N) (KIx g d N) R) q (.inr a) = ∑ c, D q (.inr c) * P c a := by
   rw [Matrix.mul_apply, Fintype.sum_sum_type]
   simp [kosBlock]
 
+/- English proof (translation)
+Establish `hm' : ∀ i j j', j < g → j' = j + 1 → C j * m' i j j' = m i j j' * C j'`. Introduce and unpack `i j _ hj rfl`. Conclude with `hm i j hj`. Use extensionality with `p q`. Apply the tactic sequence `rcases p with ⟨I, a⟩ | a <;> rcases q with ⟨J, b⟩ | b`.
+
+Rewrite using `[kosBlock_mul_inl, mul_kosBlock_inl]`. Simplify using `only [kosD, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm, Finset.sum_comm (s := Finset.univ (α := Fin (N J.card)))]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : i ∉ I ∧ J = insert i I`.
+
+Establish `hc : J.card = I.card + 1` using `by rw [h.2, Finset.card_insert_of_notMem h.1]`. Establish `hl : I.card < g`. Use `Finset.card_le_univ J` as an intermediate fact. Simplify using `only [Fintype.card_fin] at this`. Use linear arithmetic over natural numbers and integers.
+
+Use `congrFun (congrFun (hm' i _ _ hl hc) a) b` as an intermediate fact. Simplify using `only [Matrix.mul_apply] at this`. Simplify using `only [if_pos h, mul_left_comm (C _ _ _), mul_assoc, ← Finset.mul_sum, this]`. Simplify using `only [if_neg h, mul_zero, zero_mul, Finset.sum_const_zero]`. Rewrite using `[kosBlock_mul_inl, mul_kosBlock_inr]`.
+
+Simplify using `[kosD]`. Rewrite using `[kosBlock_mul_inr, mul_kosBlock_inl]`. Distinguish the cases in `h : J = ∅`. Substitute `h` using the available equality. Establish `he' : P * ev' (∅ : Finset (Fin g)).card = ev (∅ : Finset (Fin g)).card * C (∅ : Finset (Fin g)).card` using `he`.
+
+Use `congrFun (congrFun he' a) b` as an intermediate fact. Rewrite `this` using `[Matrix.mul_apply, Matrix.mul_apply]`. Simplify using `only [kosD, if_true]`. Conclude with `this`. Simplify using `[kosD, h]`.
+
+Rewrite using `[kosBlock_mul_inr, mul_kosBlock_inr]`. Simplify using `[kosD]`.
+-/
 theorem kosBlock_mul_kosD (m m' : Fin g → ∀ j j', Matrix (Fin (N j)) (Fin (N j')) R)
     (ev ev' : ∀ j, Matrix (Fin d) (Fin (N j)) R)
     (C : ∀ j, Matrix (Fin (N j)) (Fin (N j)) R) (P : Matrix (Fin d) (Fin d) R)
@@ -162,6 +217,23 @@ theorem kosBlock_mul_kosD (m m' : Fin g → ∀ j j', Matrix (Fin (N j)) (Fin (N
 
 end
 
+/- English proof (translation)
+Introduce `R _ g d N m m' ev ev' B Pm t hm he hC hT`. Use `set G : Matrix (KIx g d N) (KIx g d N) R := kosBlock (fun j => (B j).val) Pm.val with hG`. Use `set G' : Matrix (KIx g d N) (KIx g d N) R := kosBlock (fun j => ((B j)⁻¹).val) (Pm⁻¹).val with hG'`. Establish `hGG : G * G' = 1`. Rewrite using `[hG, hG', kosBlock_mul]`.
+
+Simplify using `only [Units.mul_inv]`. Conclude with `kosBlock_one`. Establish `hGG' : G' * G = 1` using `mul_eq_one_comm.mp hGG`. Establish `hD : G' * kosD m ev * G = kosD m' ev'`. Rewrite using `[Matrix.mul_assoc, ← kosBlock_mul_kosD m m' ev ev' _ _ hm he, ← Matrix.mul_assoc, hGG', Matrix.one_mul]`.
+
+Take `⟨t', h1, h2⟩` from `torsSq_conj R _ kdeg (kosD m ev) G G' t (kosBlock_graded _ _) hGG hC hT`. Rewrite `h1` using `[hD]`. Rewrite `h2` using `[hG, kosBlock_det_sub _ _ Even, kosBlock_det_sub _ _ (fun n => ¬ Even n)]`. Use `set u : ℕ → Rˣ := fun j => Matrix.GeneralLinearGroup.det (B j) ^ g.choose j with hu`. Use `set E : Rˣ := ∏ j ∈ Finset.range (g + 1), if Even (j + 1) then u j else 1 with hE`.
+
+Use `set O : Rˣ := ∏ j ∈ Finset.range (g + 1), if ¬ Even (j + 1) then u j else 1 with hO`. Use `set p : Rˣ := Matrix.GeneralLinearGroup.det Pm with hp`. Establish `h3 : t' * ((E * p) ^ 2 : Rˣ) = ((t * O ^ 2 : Rˣ) : R)`. Simplify using `only [Even.zero, if_true, not_true, if_false, mul_one] at h2`. Simplify using `only [Units.val_mul, Units.val_pow_eq_pow_val, hE, hO, hp, hu, Units.coe_prod, apply_ite Units.val, Units.val_one, Matrix.GeneralLinearGroup.val_det_apply]`.
+
+Conclude with `h2`. Establish `h4 : ((t * O ^ 2 * ((E * p) ^ 2)⁻¹ : Rˣ) : R) = t'`. Rewrite using `[Units.val_mul, ← h3, mul_assoc, Units.mul_inv, mul_one]`. Use `⟨t * O ^ 2 * ((E * p) ^ 2)⁻¹, h4 ▸ h1, ?_⟩` and prove the remaining obligations. Establish `h5 : ∏ j ∈ Finset.range (g + 1), (Matrix.GeneralLinearGroup.det (B j)) ^ (2 * (-1 : ℤ) ^ j * (g.choose j : ℤ)) = O ^ 2 * (E ^ 2)⁻¹`.
+
+Rewrite using `[hE, hO, ← Finset.prod_pow, ← Finset.prod_pow, ← Finset.prod_inv_distrib, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Break down `Nat.even_or_odd j with hj | hj` into its components or cases. Establish `: ¬ Even (j + 1)` using `by rw [Nat.even_add_one]; simpa using hj`. Rewrite using `[if_pos this, if_neg this, hj.neg_one_pow, one_pow, inv_one, mul_one, mul_one, hu, ← pow_mul, ← zpow_natCast]`.
+
+Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `: Even (j + 1)` using `hj.add_one`. Rewrite using `[if_pos this, if_neg (not_not.mpr this), hj.neg_one_pow, one_pow, one_mul, hu, ← pow_mul, ← zpow_natCast, ← zpow_neg]`.
+
+Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h5, mul_pow, mul_inv, ← mul_assoc, mul_assoc _ (p ^ 2)⁻¹, inv_mul_cancel, mul_one, mul_assoc]`.
+-/
 theorem torsSq_kosD_conj : ∀ (R : Type) [CommRing R] (g d : ℕ) (N : ℕ → ℕ) (m m' : Fin g → ∀ j j', Matrix (Fin (N j)) (Fin (N j')) R) (ev ev' : ∀ j, Matrix (Fin d) (Fin (N j)) R) (B : ∀ j, (Matrix (Fin (N j)) (Fin (N j)) R)ˣ) (Pm : (Matrix (Fin d) (Fin d) R)ˣ) (t : Rˣ), (∀ i j, j < g → (B j).val * m' i j (j + 1) = m i j (j + 1) * (B (j + 1)).val) → Pm.val * ev' 0 = ev 0 * (B 0).val → IsCx kdeg (kosD m ev) → TorsSq kdeg (kosD m ev) (t : R) → ∃ t' : Rˣ, TorsSq kdeg (kosD m' ev') (t' : R) ∧ t' * (Matrix.GeneralLinearGroup.det Pm) ^ 2 = t * ∏ j ∈ Finset.range (g + 1), (Matrix.GeneralLinearGroup.det (B j)) ^ (2 * (-1 : ℤ) ^ j * (g.choose j : ℤ)) := by
   intro R _ g d N m m' ev ev' B Pm t hm he hC hT
   set G : Matrix (KIx g d N) (KIx g d N) R := kosBlock (fun j => (B j).val) Pm.val with hG

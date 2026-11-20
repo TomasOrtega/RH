@@ -10,6 +10,17 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 namespace GlobalTheory.CompanionTheory.WaveSpd
 
+/- English proof (translation)
+Take `⟨c, hc, c0, cadd, cd⟩` from `GlobalTheory.T.skew_hermitian_unitary_flow Y hY`. Use `haveI : CompleteSpace E.V := FiniteDimensional.complete ℂ E.V`. Establish `hinv : ∀ t, (c t)⁻¹ = c (-t)` using `fun t => inv_eq_of_mul_eq_one_right (by rw [← cadd, add_neg_cancel, c0])`. Set `Φ : ℝ → (E.V →L[ℂ] E.V)` to `fun t => E.ρ (c (-t))`. Establish `hΦc : Continuous Φ` using `E.cont.comp (hc.comp continuous_neg)`.
+
+Establish `hΦ0 : Φ 0 = 1` using `by simp only [Φ, neg_zero, c0, map_one]`. Establish `hΦa : ∀ s t, Φ (s + t) = Φ s * Φ t` using `fun s t => by`. Simplify using `only [Φ, neg_add, cadd, map_mul]`. Take `⟨B, hB⟩` from `GlobalTheory.T.continuous_one_param_differentiable Φ hΦc hΦ0 hΦa`. Use `⟨B, fun f hf g hg => ?_⟩` and prove the remaining obligations.
+
+Establish `hk : ∀ t, f (g * (c t).1) = Φ t (f g)` using `fun t => by`. Rewrite using `[hf.2 g hg (c t), hinv]`. Establish `h1 : HasDerivAt (fun t => Φ t (f g)) (B (f g)) 0` using `((ContinuousLinearMap.apply ℂ E.V (f g)).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt 0 hB`. Set `L : Mat n →L[ℝ] Mat n` to `LinearMap.toContinuousLinearMap (LinearMap.mulLeft ℝ g)`. Establish `h2 : HasDerivAt (fun t => g * (c t).1) (g * Y) 0` using `L.hasFDerivAt.comp_hasDerivAt 0 cd`.
+
+Establish `hd : DifferentiableAt ℝ f g` using `(hf.1.contDiffAt (isOpen_GLs.mem_nhds hg)).differentiableAt (by simp)`. Establish `h3 : HasFDerivAt f (fderiv ℝ f g) (g * (c 0).1)`. Simplify `hd.hasFDerivAt` using `[c0]`. Establish `h4 : HasDerivAt (fun t => f (g * (c t).1)) (fderiv ℝ f g (g * Y)) 0` using `h3.comp_hasDerivAt 0 h2`. Establish `h5 : (fun t => f (g * (c t).1)) = fun t => Φ t (f g)` using `funext hk`.
+
+Rewrite `h4` using `[h5]`. Conclude with `h4.unique h1`.
+-/
 theorem rd_skew_eq_const {n : ℕ} (E : KMod n) (Y : Mat n) (hY : Yᴴ = -Y) :
     ∃ B : E.V →L[ℂ] E.V, ∀ f ∈ CE E, ∀ g ∈ GLs n, Rd Y f g = B (f g) := by
   obtain ⟨c, hc, c0, cadd, cd⟩ := GlobalTheory.T.skew_hermitian_unitary_flow Y hY

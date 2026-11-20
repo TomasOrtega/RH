@@ -25,6 +25,15 @@ open Formalism.L2.NTheta (IsIdemAt IsHeckeElt LamHat)
 open Formalism.IndefR.Bridge (IsDC)
 open scoped Matrix
 
+/- English proof (translation)
+Use `⟨fun γ hγ => ?_, ?_⟩` and prove the remaining obligations. Take `⟨k₁, hk₁, k₂, hk₂, e⟩` from `h1 γ hγ`. Conclude with `⟨⟨k₁, hk₁.1⟩, ⟨k₂, hk₂.1⟩, e⟩`. Introduce and unpack `g ⟨k₁, k₂, rfl⟩`. Take `⟨a, ha, b, hb, haL, hc, e⟩` from `hs k₁ k₁.2`.
+
+Take `⟨γ, ⟨hγ, hγJ⟩, hu⟩` from `h2 (a * x) ⟨a, ⟨ha, haL⟩, 1, Subgroup.one_mem _, by simp⟩`. Establish `eg : (k₁ : G) * x * k₂ = a * x * (b * k₂)`. Rewrite using `[e, mul_assoc a b x, ← hc.eq]`. Use `group`. Use `⟨γ, ⟨hγ, ?_⟩, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[eg, ← mul_assoc]`. Conclude with `J.mul_mem hγJ.1 (J.mul_mem hb k₂.2)`. Introduce and unpack `δ ⟨hδ, hδJ⟩`. Use `hu δ ⟨hδ, ?_, L.mul_mem (L.inv_mem (hR δ hδ)) (L.mul_mem haL hx)⟩` and prove the remaining obligations. Use `J.mul_mem hδJ (J.inv_mem (J.mul_mem hb k₂.2))` as an intermediate fact.
+
+Rewrite `this` using `[eg]`. Simplify `this` using `[mul_assoc]`.
+-/
 theorem isDC_of_local {G : Type} [Group G] {J L : Subgroup G} {x : G} {R : Finset G} (hx : x ∈ L) (hR : ∀ γ ∈ R, γ ∈ L)
     (hs : ∀ k ∈ J, ∃ a ∈ J, ∃ b ∈ J, a ∈ L ∧ Commute x b ∧ k = a * b)
     (h1 : ∀ γ ∈ R, ∃ k₁ ∈ J ⊓ L, ∃ k₂ ∈ J ⊓ L, γ = k₁ * x * k₂)
@@ -46,6 +55,9 @@ theorem isDC_of_local {G : Type} [Group G] {J L : Subgroup G} {x : G} {R : Finse
       rw [eg] at this
       simpa [mul_assoc] using this
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => rw [pow_zero, pow_zero]`. Consider the case `succ n ih`. Rewrite using `[pow_succ, pow_succ]`. Take the linear combination `s * ih + p ^ n * h`.
+-/
 theorem idem_pow {A : Type} [CommRing A] {e s p : A} (h : e * s = e * p) (n : ℕ) : e * s ^ n = e * p ^ n := by
   induction n with
   | zero => rw [pow_zero, pow_zero]
@@ -53,6 +65,9 @@ theorem idem_pow {A : Type} [CommRing A] {e s p : A} (h : e * s = e * p) (n : �
     rw [pow_succ, pow_succ]
     linear_combination s * ih + p ^ n * h
 
+/- English proof (translation)
+Establish `h1` using `idem_pow h n`. Establish `h2 : p ^ n = p ^ (n - k) * p ^ k` using `by rw [← pow_add, Nat.sub_add_cancel hk]`. Rewrite `h1` using `[h2]`. Take the linear combination `d' * h1 - (p ^ (n - k) * p ^ k * d') * hu - (p ^ (n - k) * u' * d') * h5 + (e * p ^ (n - k) * u') * hd`.
+-/
 theorem det_compl {A : Type} [CommRing A] {e s p d d' u u' : A} {n k : ℕ} (hk : k ≤ n) (h : e * s = e * p)
     (hd : d * d' = 1) (hu : e * u * u' = e) (h5 : e * d = e * p ^ k * u) :
     e * (s ^ n * d') = e * p ^ (n - k) * u' := by
@@ -62,6 +77,9 @@ theorem det_compl {A : Type} [CommRing A] {e s p d d' u u' : A} {n k : ℕ} (hk 
   linear_combination d' * h1 - (p ^ (n - k) * p ^ k * d') * hu - (p ^ (n - k) * u' * d') * h5 +
     (e * p ^ (n - k) * u') * hd
 
+/- English proof (translation)
+Establish `h1 : e • p • y = e • M *ᵥ z` using `hy`. Express the relevant statement in the definitionally equal form `e • (s • M') *ᵥ y = e • z`. Rewrite using `[Matrix.smul_mulVec, smul_smul, h, ← Matrix.mulVec_smul, mul_smul, h1, Matrix.mulVec_smul, Matrix.mulVec_mulVec, hM, Matrix.one_mulVec]`.
+-/
 theorem vec_upper {R : Type} [CommRing R] {n : ℕ} {M M' : Matrix (Fin n) (Fin n) R} (hM : M' * M = 1) {e s p : R}
     (h : e * s = e * p) {y z : Fin n → R} (hy : (fun a => e * (p * y a)) = fun a => e * M.mulVec z a) :
     (fun a => e * (s • M').mulVec y a) = fun a => e * z a := by
@@ -70,6 +88,9 @@ theorem vec_upper {R : Type} [CommRing R] {n : ℕ} {M M' : Matrix (Fin n) (Fin 
   rw [Matrix.smul_mulVec, smul_smul, h, ← Matrix.mulVec_smul, mul_smul, h1, Matrix.mulVec_smul, Matrix.mulVec_mulVec, hM,
     Matrix.one_mulVec]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `e • p • y = e • (s • M') *ᵥ (e • M *ᵥ y)`. Rewrite using `[Matrix.smul_mulVec, Matrix.mulVec_smul, Matrix.mulVec_mulVec, hM, Matrix.one_mulVec, smul_smul, smul_smul, smul_smul, h, mul_right_comm, he]`.
+-/
 theorem vec_lower {R : Type} [CommRing R] {n : ℕ} {M M' : Matrix (Fin n) (Fin n) R} (hM : M' * M = 1) {e s p : R}
     (he : e * e = e) (h : e * s = e * p) (y : Fin n → R) :
     (fun a => e * (p * y a)) = fun a => e * (s • M').mulVec (fun b => e * M.mulVec y b) a := by
@@ -79,24 +100,49 @@ theorem vec_lower {R : Type} [CommRing R] {n : ℕ} {M M' : Matrix (Fin n) (Fin 
 
 variable {D : D7} {V : HSp D}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mt_one : mt V 1 = 1 := rfl
 
+/- English proof (translation)
+Rewrite using `[← GlobalTheory.SplitCentral.hmul, inv_mul_cancel, mt_one]`.
+-/
 theorem mt_inv_mul (α : GA D V) : mt V α⁻¹ * mt V α = 1 := by
   rw [← GlobalTheory.SplitCentral.hmul, inv_mul_cancel, mt_one]
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.SplitCentral.hfin, GlobalTheory.SplitCentral.hfin, ← Matrix.map_mul, mt_inv_mul, Matrix.map_one _ (map_zero _) (map_one _)]`.
+-/
 theorem fin_inv_mul (α : GA D V) : finMat D.sp.cm.sig V.gram (α⁻¹ : GA D V) * finMat D.sp.cm.sig V.gram α = 1 := by
   rw [GlobalTheory.SplitCentral.hfin, GlobalTheory.SplitCentral.hfin, ← Matrix.map_mul, mt_inv_mul,
     Matrix.map_one _ (map_zero _) (map_one _)]
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.SplitCentral.hfin, mt_one, Matrix.map_one _ (map_zero _) (map_one _)]`.
+-/
 theorem fin_one : finMat D.sp.cm.sig V.gram (1 : GA D V) = 1 := by
   rw [GlobalTheory.SplitCentral.hfin, mt_one, Matrix.map_one _ (map_zero _) (map_one _)]
 
+/- English proof (translation)
+Rewrite using `[← map_mul, he]`.
+-/
 theorem idem_fin {e : Formalism.L2.Theta.AE D} (he : e * e = e) : finPart D e * finPart D e = finPart D e := by
   rw [← map_mul, he]
 
+/- English proof (translation)
+The claim follows from `AddSubgroup.subset_closure ⟨1, fun _ => one_mem _, ϖ, rfl⟩`.
+-/
 theorem int_mem (ϖ : 𝓞 D.host.E) : finPart D (incA D (ϖ : D.host.E)) ∈ intAE D :=
   AddSubgroup.subset_closure ⟨1, fun _ => one_mem _, ϖ, rfl⟩
 
+/- English proof (translation)
+Establish `hm` using `(GlobalTheory.LatDual.lamHat_selfDual_and_module V).2`. Establish `h1 : finPart D 1 ∈ intAE D`. Rewrite using `[map_one]`. Conclude with `int_mem 1`. Use `⟨one_mem _, fun i j => ?_, fun y hy => ?_, fun y hy => ⟨_, hm _ (int_mem ϖ) y hy, ?_⟩, 1, 1, h1, h1, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[mt_one, sub_self, Matrix.zero_apply, mul_zero]`. Rewrite using `[fin_one, Matrix.one_mulVec]`. Conclude with `hm _ (GlobalTheory.AdIdem.idempotent_mem_intAE D _ (idem_fin he)) y hy`. Rewrite using `[fin_one, Matrix.one_mulVec]`. Rewrite using `[mul_one, mul_one]`.
+
+Rewrite using `[mt_one, Matrix.det_one, pow_zero, mul_one, mul_one]`.
+-/
 theorem hecke_one {e : Formalism.L2.Theta.AE D} (he : e * e = e) (ϖ : 𝓞 D.host.E) : IsHeckeElt V e (ϖ : D.host.E) 0 1 := by
   have hm := (GlobalTheory.LatDual.lamHat_selfDual_and_module V).2
   have h1 : finPart D 1 ∈ intAE D := by
@@ -109,6 +155,15 @@ theorem hecke_one {e : Formalism.L2.Theta.AE D} (he : e * e = e) (ϖ : 𝓞 D.ho
   · rw [mul_one, mul_one]
   · rw [mt_one, Matrix.det_one, pow_zero, mul_one, mul_one]
 
+/- English proof (translation)
+Take `⟨-, -, h2, h3, u, u', hu, hu', h4, h5⟩` from `h`. Establish `hm` using `(GlobalTheory.LatDual.lamHat_selfDual_and_module V).2`. Establish `hF` using `GlobalTheory.SplitCentral.finMat_scalar α⁻¹ ζ s hζ`. Establish `hup : finPart D e * finPart D s = finPart D e * finPart D (incA D ϖ)`. Rewrite using `[← RingHom.map_mul, hs, RingHom.map_mul]`.
+
+Use `⟨h0, h1, fun y hy => ?_, fun y hy => ⟨_, h2 y hy, ?_⟩, u', u, hu', hu, ?_, ?_⟩` and prove the remaining obligations. Take `⟨z, hz, hyz⟩` from `h3 y hy`. Rewrite using `[hF, vec_upper (fin_inv_mul α) hup hyz]`. Conclude with `hm _ (GlobalTheory.AdIdem.idempotent_mem_intAE D _ (idem_fin he)) z hz`. Rewrite using `[hF]`.
+
+Conclude with `vec_lower (fin_inv_mul α) (idem_fin he) hup y`. Rewrite using `[mul_right_comm, h4]`. Establish `hd : (mt V α).det * (mt V α⁻¹).det = 1`. Rewrite using `[mul_comm, ← Matrix.det_mul, mt_inv_mul, Matrix.det_one]`. Rewrite using `[GlobalTheory.SplitCentral.hmul, hζ, Matrix.det_mul, Matrix.det_smul, Matrix.det_one, mul_one, Fintype.card_fin, mul_comm (mt V α⁻¹).det]`.
+
+Conclude with `det_compl hk hs hd h4 h5`.
+-/
 theorem hecke_compl {e s : Formalism.L2.Theta.AE D} (he : e * e = e) {ϖ : D.host.E} (hs : e * s = e * incA D ϖ) {ζ α : GA D V}
     (hζ : mt V ζ = s • (1 : Matrix (Fin V.rank) (Fin V.rank) (Formalism.L2.Theta.AE D))) {k : ℕ} (hk : k ≤ V.rank)
     (h : IsHeckeElt V e ϖ k α) (h0 : α⁻¹ * ζ ∈ GfC V) (h1 : SuppAt e V (α⁻¹ * ζ)) :
@@ -131,6 +186,9 @@ theorem hecke_compl {e s : Formalism.L2.Theta.AE D} (he : e * e = e) {ϖ : D.hos
       mul_comm (mt V α⁻¹).det]
     exact det_compl hk hs hd h4 h5
 
+/- English proof (translation)
+Use `Ideal.pow_succ_lt_pow P.ne_bot 1` as an intermediate fact. Rewrite `this` using `[pow_one]`. Conclude with `SetLike.exists_of_lt this`.
+-/
 theorem exists_unif (P : HeightOneSpectrum (𝓞 D.host.E)) : ∃ ϖ : 𝓞 D.host.E, ϖ ∈ P.asIdeal ∧ ϖ ∉ P.asIdeal ^ 2 := by
   have := Ideal.pow_succ_lt_pow P.ne_bot 1
   rw [pow_one] at this
@@ -138,6 +196,9 @@ theorem exists_unif (P : HeightOneSpectrum (𝓞 D.host.E)) : ∃ ϖ : 𝓞 D.ho
 
 variable {P : HeightOneSpectrum (𝓞 D.host.E)} {e : Formalism.L2.Theta.AE D}
 
+/- English proof (translation)
+Take `⟨h1, -, h3, -⟩` from `GlobalTheory.IdemSupport.supported_group_and_prime_idempotents V`. Take `⟨a, b, c, -⟩` from `h3 P e _ (Or.inl ⟨he, rfl⟩)`. Take `⟨⟨L, hL⟩, -, hc⟩` from `h1 _ a b`. Use `⟨L, hL, fun g hg => c g ((hL g).1 hg), fun g hg g' hg' => hc _ g g' ?_ ((hL g).1 hg) hg'⟩` and prove the remaining obligations. Rewrite using `[mul_sub, mul_one, a, sub_self]`.
+-/
 theorem exists_loc (V : HSp D) (he : IsIdemAt e P) :
     ∃ S : Subgroup (GA D V), (∀ g, g ∈ S ↔ SuppAt e V g) ∧ S ≤ GfC V ∧
       ∀ g ∈ S, ∀ g', SuppF V (1 - (e + cA D e)) g' → Commute g g' := by
@@ -147,6 +208,13 @@ theorem exists_loc (V : HSp D) (he : IsIdemAt e P) :
   refine ⟨L, hL, fun g hg => c g ((hL g).1 hg), fun g hg g' hg' => hc _ g g' ?_ ((hL g).1 hg) hg'⟩
   rw [mul_sub, mul_one, a, sub_self]
 
+/- English proof (translation)
+Take `⟨S, hS, hf, -⟩` from `exists_loc V he`. Take `⟨s, hs, hss, hse⟩` from `GlobalTheory.SplitCentral.exists_unitary (cA D) (GlobalTheory.SplitCentral.cA_cA D) e (incA D ϖ) (incA D ϖ⁻¹) he.1.1 he.1.2.1 (by rw [← RingHom.map_mul, mul_inv_cancel₀ hϖ, RingHom.map_one])`. Take `⟨ζ, hζ⟩` from `GlobalTheory.SplitCentral.exists_mt V s hs`. Establish `hζS : ζ ∈ S` using `(hS ζ).2 fun i j => by`. Rewrite using `[hζ]`.
+
+Conclude with `GlobalTheory.SplitCentral.supp_scalar _ _ hss i j`. Establish `hcom : ∀ g, Commute ζ g` using `fun g => by`. Use `GlobalTheory.SplitCentral.hinj (ζ * g) (g * ζ) ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.SplitCentral.hmul, GlobalTheory.SplitCentral.hmul, hζ]`. Conclude with `GlobalTheory.SplitCentral.scalar_comm _ _`.
+
+Use `⟨ζ, hcom, fun k hk α hα => ?_⟩` and prove the remaining obligations. Establish `hm : α⁻¹ * ζ ∈ S` using `S.mul_mem (S.inv_mem ((hS α).2 hα.2.1)) hζS`. Rewrite using `[(hcom _).eq]`. Conclude with `hecke_compl he.1.1 hse hζ hk hα (hf hm) ((hS _).1 hm)`.
+-/
 theorem exists_central (V : HSp D) (he : IsIdemAt e P) {ϖ : D.host.E} (hϖ : ϖ ≠ 0) :
     ∃ ζ : GA D V, (∀ g, Commute ζ g) ∧
       ∀ k ≤ V.rank, ∀ α, IsHeckeElt V e ϖ k α → IsHeckeElt V e ϖ (V.rank - k) (ζ * α⁻¹) := by
@@ -166,6 +234,15 @@ theorem exists_central (V : HSp D) (he : IsIdemAt e P) {ϖ : D.host.E} (hϖ : ϖ
   rw [(hcom _).eq]
   exact hecke_compl he.1.1 hse hζ hk hα (hf hm) ((hS _).1 hm)
 
+/- English proof (translation)
+Establish `hm : ∀ k, k ∈ {k | k ∈ K ∧ T k} ↔ k ∈ J ⊓ S` using `fun k => by`. Rewrite using `[Subgroup.mem_inf, hS]`. Conclude with `and_congr_left fun hk => (hK k hk).symm`. Simplify using `only [hm] at hθ hrep`. Simplify using `only [← hS] at hθ hrep hα hs hK`.
+
+Take `⟨θ, t1, t2, t3, t4, t5⟩` from `hθ`. Establish `hdc : ∀ x ∈ S, ∃ R : Finset G, (∀ γ ∈ R, γ ∈ S) ∧ IsDC J x R`. Introduce `x hx`. Take `⟨R, h1, h2, h3⟩` from `hrep x hx`. Use `⟨R, h1, isDC_of_local hx h1 (fun k hk => ?_) h2 h3⟩` and prove the remaining obligations.
+
+Take `⟨a, ha, b, hb, s1, s2, e1⟩` from `hs k hk`. Conclude with `⟨a, ha, b, hb, s1, s2 x hx, e1⟩`. Take `⟨R, hR, d1⟩` from `hdc _ (S.inv_mem hα)`. Take `⟨R', hR', d2⟩` from `hdc _ hα`. Establish `u2 : ∀ x ∈ S, ∀ y ∈ S, θ (x * y) = θ y * θ x` using `fun x hx y hy => t2 x y hx hy`.
+
+Establish `u4 : ∀ k ∈ J ⊓ S, θ k ∈ J` using `fun k hk => (hK _ (t1 k hk.2)).2 (t4 k hk)`. Conclude with `⟨R, R', d1, d2, le_antisymm (GlobalTheory.DoubleCosetComm.card_le_inv u2 t3 u4 t1 t5 d1 (by rwa [inv_inv]) hR) (GlobalTheory.DoubleCosetComm.card_le_inv u2 t3 u4 t1 t5 d2 d1 hR')⟩`.
+-/
 theorem exists_reps {G : Type} [Group G] {J S : Subgroup G} {K : Set G} {T : G → Prop} (hS : ∀ g, g ∈ S ↔ T g)
     (hK : ∀ g, T g → (g ∈ J ↔ g ∈ K)) (hs : ∀ k ∈ J, ∃ a ∈ J, ∃ b ∈ J, T a ∧ (∀ x ∈ S, Commute x b) ∧ k = a * b)
     (hθ : ∃ θ : G → G, (∀ g, T g → T (θ g)) ∧ (∀ x y, T x → T y → θ (x * y) = θ y * θ x) ∧ (∀ x, T x → θ (θ x) = x) ∧
@@ -194,6 +271,15 @@ theorem exists_reps {G : Type} [Group G] {J S : Subgroup G} {K : Set G} {T : G �
   exact ⟨R, R', d1, d2, le_antisymm (GlobalTheory.DoubleCosetComm.card_le_inv u2 t3 u4 t1 t5 d1 (by rwa [inv_inv]) hR)
     (GlobalTheory.DoubleCosetComm.card_le_inv u2 t3 u4 t1 t5 d2 d1 hR')⟩
 
+/- English proof (translation)
+Introduce `D V β Λ N L P hβ hN hL hP`. Take `⟨e, he⟩` from `GlobalTheory.MovedIdem.exists_isIdemAt P hP.1`. Take `⟨ϖ, h1, h2⟩` from `exists_unif P`. Establish `hϖ : (ϖ : D.host.E) ≠ 0` using `fun e0 => h2 (by rw [show ϖ = 0 from Subtype.ext e0]; exact zero_mem _)`. Take `⟨S, hS, -, hc⟩` from `exists_loc V he`.
+
+Take `⟨l1, -, l3⟩` from `(GlobalTheory.LevSplit.lev_split V β Λ N L hβ).2 P e _ (Or.inl ⟨he, rfl⟩) hN hL`. Take `⟨hθ, hrep, hel⟩` from `GlobalTheory.T.involution_spherical_hecke_anti V P e he`. Take `⟨ζ, hcom, hco⟩` from `exists_central V he hϖ`. Use `⟨ζ, hcom, ⟨e, ϖ, he, h1, h2, ?_⟩, fun k hk => ?_⟩` and prove the remaining obligations. Use `hco 0 (Nat.zero_le _) 1 (hecke_one he.1.1 ϖ)` as an intermediate fact.
+
+Rewrite `this` using `[Nat.sub_zero, inv_one, mul_one]`. Then use the resulting hypothesis. Take `⟨α, hα⟩` from `(hel ϖ h1 h2).1 k hk`. Take `⟨R, R', h⟩` from `exists_reps (J := levG V β L) (K := KsphC V ∅) (T := SuppAt e V) hS l1 (fun k hk => by`. Take `⟨x, hx, y, hy, s1, s2, e1⟩` from `l3 k hk`. Conclude with `⟨x, hx, y, hy, s1, fun g hg => hc g hg y s2, e1⟩) hθ (fun g hg => by`.
+
+Take `⟨R, r1, r2, r3⟩` from `hrep g hg`. Conclude with `⟨R, r1, fun γ hγ => (r2 γ hγ).2, r3⟩) hα.2.1`. Conclude with `⟨α, R, R', ⟨e, ϖ, he, h1, h2, hα⟩, ⟨e, ϖ, he, h1, h2, hco k hk α hα⟩, h⟩`.
+-/
 theorem central_and_complement : ∀ {D : D7} (V : HSp D) (β : GL (Fin V.rank) (EAf D)) (Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)) (N : ℕ) (L : LevDat D.host.E ℂ V.rank) (PP : Pl D.host.E), IsBaseFrame V β Λ N → ((N : ℕ) : 𝓞 D.host.E) ∉ PP.asIdeal → (∀ P', P' ∈ L.Pg ∨ P' ∈ L.Q → P' ≠ PP ∧ ¬ IsConjPl P' PP) → Bridge.SplitOff PP ∅ → ∃ z : GA D V, (∀ g, Commute z g) ∧ IsHeckeAt V PP V.rank z ∧ ∀ k ≤ V.rank, ∃ (α : GA D V) (R R' : Finset (GA D V)), IsHeckeAt V PP k α ∧ IsHeckeAt V PP (V.rank - k) (z * α⁻¹) ∧ Bridge.IsDC (levG V β L) α⁻¹ R ∧ Bridge.IsDC (levG V β L) α R' ∧ R.card = R'.card := by
   intro D V β Λ N L P hβ hN hL hP
   obtain ⟨e, he⟩ := GlobalTheory.MovedIdem.exists_isIdemAt P hP.1

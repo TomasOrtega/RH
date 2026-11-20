@@ -10,6 +10,11 @@ open GlobalTheory GlobalTheory.ArInt GlobalTheory.CxPts GlobalTheory.Cartier Glo
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `k _ X _ p D h B hB`. Use `letI : Algebra k Γ(X, ⊤) := ((Scheme.Hom.appTop p).hom.comp (Scheme.ΓSpecIso (CommRingCat.of k)).inv.hom).toAlgebra`. Establish `hf : ∀ r : k, algebraMap k Γ(X, ⊤) r = (Scheme.Hom.appTop p) ((Scheme.ΓSpecIso (CommRingCat.of k)).inv r)` using `fun _ => rfl`. Use `haveI := h.finite`. Use `haveI : IsNoetherianRing k := isNoetherian_of_tower ℤ inferInstance`.
+
+Establish `hfin : Module.Finite k (coh (twist (QCoh.structureModule X) B) 0)` using `finite_coh_twist_of_isProjOver hf (QCoh.structureModule X) h.isProjOver hB 0`. Use `haveI : Module.Finite ℤ (coh (twist (QCoh.structureModule X) B) 0) := Module.Finite.trans k _`. Establish `hfg : AddGroup.FG (coh (twist (QCoh.structureModule X) B) 0)` using `Module.Finite.iff_addGroup_fg.mp inferInstance`. Conclude with `AddGroup.fg_of_surjective (f := (cohZeroTwistEquiv B).toAddEquiv.toAddMonoidHom) (cohZeroTwistEquiv B).toAddEquiv.surjective`.
+-/
 theorem addGroupFG_sec_of_isArithVar : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X]
     (p : X ⟶ Sp k) (D : ℕ), IsArithVar p D → ∀ B : LB X, B.IsLB → AddGroup.FG B.Sec := by
   intro k _ X _ p D h B hB

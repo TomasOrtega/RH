@@ -24,6 +24,19 @@ open GlobalTheory.HSShort GlobalTheory.HSChoice MvPolynomial
 
 namespace GlobalTheory.HSShort
 
+/- English proof (translation)
+Introduce `hQ F _ _ X Λ₀ hX δ f Q hS s hs`. Establish `hF : SimpleAt X.toTuple δ f F s` using `hS F s (by simpa [MvPolynomial.coe_aeval_eq_eval] using hs)`. Take `⟨E, iE, nE, iFE, iEE, htow, hsp⟩` from `GlobalTheory.HSCore.exists_split F X.toTuple F s hF.good`. Establish `heq : (fun i k => @algebraMap F E _ _ iEE (s i k)) = fun i k => @algebraMap F E _ _ iFE (s i k)`. Use function extensionality and compare the values at `i k`.
+
+Rewrite using `[@IsScalarTower.algebraMap_apply F F E _ _ _ _ iEE iFE htow (s i k)]`. Both sides reduce to the same expression. Rewrite `hsp` using `[heq]`. Use `clear heq htow iEE`. Establish `hval : aeval (fun p : Fin X.D × Fin X.N => algebraMap F E (s p.1 p.2)) Q = algebraMap F E (eval (fun p : Fin X.D × Fin X.N => s p.1 p.2) Q)`.
+
+Conclude with `(MvPolynomial.eval₂_comp_left (algebraMap F E) (RingHom.id F) _ Q).symm`. Establish `hSE : SimpleAt X.toTuple δ f E (fun i k => algebraMap F E (s i k))` using `hS E _ (by rw [hval]; exact (map_ne_zero _).2 hs)`. Establish `hgood : (X.baseChange E).IsGood (fun i k => algebraMap F E (s i k))` using `Geo.isGood_baseChange_iff.2 hSE.good`. Take `⟨Co, c, hc, hspec⟩` from `GlobalTheory.T.exists_coordinates_specialisedForm_prod_linearForms F X.toGeo E _ hgood δ f hsp hSE`. Establish `hnef₂` using `nef_big_second_baseChange F X E hX.nef₂ hX.big₂`.
+
+Establish `hnefA` using `GlobalTheory.HSCore.nef_big_baseChange F X E hX.nef hX.big`. Establish `hms : (X.baseChange E).MulStable` using `(GlobalTheory.HilbertSamuel.Data.complexify_statement F X (fun _ => X.beta) hX.totallyComplex (fun _ => one_pos.trans_le X.one_le_beta) hX.mulStable hX.mulBound).2 E`. Establish `hFM : FilMono` using `GlobalTheory.HSCore.filMono_of_kerRes (GlobalTheory.HSKerRes.kerRes hQ)`. Take `⟨hind, hmul, hspan⟩` from `GlobalTheory.T.hilbertSamuelSectionBaseChange_properties F X Λ₀ E`. Take `⟨hcomm, -, -⟩` from `GlobalTheory.T.hilbertSamuelSectionShift_comm_single_monomial E (X.toGeo.baseChange E)`.
+
+Establish `honto` using `GlobalTheory.T.hilbertSamuelDegreeZeroResidues_range_eq_top hQ E (X.baseChange E) _ hgood δ Co hnef₂.1 hnef₂.2`. Establish `hker` using `totFil_totSym_ker E (X.baseChange E) _ hgood δ Co`. Establish `hmono` using `GlobalTheory.T.hilbertSamuelFiltrationSymbol_monomial_product E (X.baseChange E) _ hgood δ Co hms`. Establish `hdiv` using `GlobalTheory.T.hilbertSamuelVanishingFiltration_deepest_step_span hFM E (X.baseChange E) _ hgood hnefA.1 hnefA.2 hms`. Set `Φ : (sysOf X Λ₀).Flat E (Tot (X.toGeo.baseChange E)) (fun i k => algebraMap F E (s i k)) δ` to `{ ι := totExt X.toGeo E indep := hind mul := shift (X.toGeo.baseChange E) comm := hcomm mul_ι := hmul y := Co.y y_ne := Co.y_ne res := totRes (X := X.baseChange E) Co onto := by rw [hspan 0]; exact honto U := totFil (X.baseChange E) (fun i k => algebraMap F E (s i k)) sym := totS …`.
+
+Conclude with `⟨E, Tot (X.toGeo.baseChange E), inferInstance, inferInstance, inferInstance, inferInstance, Φ, c, hc, hspec⟩`.
+-/
 theorem flatAt_of_simpleAt : Quoted → ∀ (F : Type) [Field F] [NumberField F] (X : Data F) (Λ₀ : ℝ), GeoHyp X Λ₀ →
     ∀ (δ : ℕ) (f : MvPolynomial (Fin (X.D + 1) × Fin X.N) F) (Q : MvPolynomial (Fin X.D × Fin X.N) F),
       (∀ (E : Type) [Field E] [NumberField E] [Algebra F E] (s : Fin X.D → Fin X.N → E),

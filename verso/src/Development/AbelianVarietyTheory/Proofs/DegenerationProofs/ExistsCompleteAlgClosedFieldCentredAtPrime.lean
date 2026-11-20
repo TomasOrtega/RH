@@ -4,6 +4,13 @@ import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsComplete
 
 namespace GlobalTheory.Ex
 
+/- English proof (translation)
+Introduce `R K _ _ _ _ _ _ _ P hP hP0`. Take `⟨O, _, _, _, _, φ, hker, hcom⟩` from `GlobalTheory.exists_complete_discreteValuationRing_of_prime_lt (⊥ : Ideal R) P (bot_lt_iff_ne_bot.2 hP0)`. Establish `hφ : Function.Injective φ` using `(RingHom.injective_iff_ker_eq_bot φ).2 hker`. Take `⟨C, i1, i2, i3, i4, i5, -, -, h1, h2⟩` from `GlobalTheory.Ex.exists_complete_isAlgClosed_cExt O (FractionRing O)`. Set `ψ : R →+* C` to `(algebraMap (FractionRing O) C).comp ((algebraMap O (FractionRing O)).comp φ)`.
+
+Establish `hψ : Function.Injective ψ` using `(algebraMap (FractionRing O) C).injective.comp ((IsFractionRing.injective O (FractionRing O)).comp hφ)`. Use `letI : Algebra R C := ψ.toAlgebra`. Use `haveI : FaithfulSMul R C := (faithfulSMul_iff_algebraMap_injective R C).2 hψ`. Set `g : K →ₐ[R] C` to `IsAlgClosed.lift`. Establish `hg : ∀ r, g.toRingHom (algebraMap R K r) = ψ r` using `fun r => g.commutes r`.
+
+Use `⟨C, i1, i2, i3, i4, g.toRingHom, fun r => ?_, fun r hr => ?_⟩` and prove the remaining obligations. Rewrite using `[hg]`. Conclude with `h1 (φ r)`. Rewrite using `[hg]`. Conclude with `h2 (φ r) (by rw [← hcom] at hr; exact hr)`.
+-/
 theorem exists_complete_isAlgClosed_centred_at_prime :
     ∀ (R K : Type) [CommRing R] [IsDomain R] [IsNoetherianRing R] [Field K] [Algebra R K] [FaithfulSMul R K] [Algebra.IsAlgebraic R K] (P : Ideal R), P.IsPrime → P ≠ ⊥ → ∃ (C : Type) (_ : NontriviallyNormedField C) (_ : IsUltrametricDist C) (_ : CompleteSpace C) (_ : IsAlgClosed C) (gam : K →+* C), (∀ r, ‖gam (algebraMap R K r)‖ ≤ 1) ∧ ∀ r ∈ P, ‖gam (algebraMap R K r)‖ < 1 := by
   intro R K _ _ _ _ _ _ _ P hP hP0

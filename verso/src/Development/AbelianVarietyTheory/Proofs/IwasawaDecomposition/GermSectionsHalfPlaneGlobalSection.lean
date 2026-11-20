@@ -3,6 +3,11 @@ open Filter Topology
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Use `⟨fun z => if h : ∃ i, z ∈ U i then s h.choose z else s i₀ z, fun i z hz => ?_⟩` and prove the remaining obligations. Use `h1 z (s i) _ ?_ (hs i z hz)` and prove the remaining obligations. Use `filter_upwards [(hU i).mem_nhds hz] with w hw`. Establish `h : ∃ i, w ∈ U i` using `⟨i, hw⟩`. Rewrite using `[dif_pos h]`.
+
+Conclude with `hag i _ ⟨hw, h.choose_spec⟩`.
+-/
 theorem germSections_glue {Y ι : Type} (G : ℂ → (ℂ → Y) → Prop)
     (h1 : ∀ w s s', s =ᶠ[𝓝 w] s' → G w s → G w s') (i₀ : ι)
     (U : ι → Set ℂ) (s : ι → ℂ → Y) (hU : ∀ i, IsOpen (U i))
@@ -17,6 +22,33 @@ theorem germSections_glue {Y ι : Type} (G : ℂ → (ℂ → Y) → Prop)
   rw [dif_pos h]
   exact hag i _ ⟨hw, h.choose_spec⟩
 
+/- English proof (translation)
+Establish `hH : IsOpen {z : ℂ | T < z.im}` using `isOpen_lt continuous_const Complex.continuous_im`. Establish `glue : ∀ {ι : Type} (_ : ι) (U : ι → Set ℂ) (p : ℂ), (∀ i, IsOpen (U i)) → (∀ i, Convex ℝ (U i)) → (∀ i, ∀ z ∈ U i, T < z.im) → (∀ i, p ∈ U i) → (∀ i, ∃ s, ∀ z ∈ U i, G z s) → ∃ t : ℂ → Y, ∀ i, ∀ z ∈ U i, G z t`. Introduce `ι i₀ U p ho hc hT hp hs`. Take `⟨s₀, hs₀⟩` from `hs i₀`. Establish `: ∀ i, ∃ s : ℂ → Y, (∀ z ∈ U i, G z s) ∧ s p = s₀ p` using `fun i => by`.
+
+Take `⟨s, hs⟩` from `hs i`. Conclude with `h4 (U i) s s₀ (ho i) (hc i) (hT i) hs p (hp i) (hs₀ p (hp i₀))`. Use `choose s hs hsp using this`. Use `germSections_glue G h1 i₀ U s ho hs fun i j => ?_` and prove the remaining obligations. Conclude with `h3 (U i ∩ U j) (s i) (s j) ((ho i).inter (ho j)) ((hc i).inter (hc j)) (fun z hz => hT i z hz.1) (fun z hz => hs i z hz.1) (fun z hz => hs j z hz.2) p ⟨hp i, hp j⟩ ((hsp i).trans (hsp j).symm)`.
+
+Establish `loc : ∀ w : ℂ, T < w.im → ∃ D : Set ℂ, IsOpen D ∧ Convex ℝ D ∧ (∀ z ∈ D, T < z.im) ∧ w ∈ D ∧ ∃ s, ∀ z ∈ D, G z s`. Introduce `w hw`. Take `⟨s, hs⟩` from `h2 w hw`. Take `⟨ε, hε, hb⟩` from `Metric.eventually_nhds_iff_ball.1 (hs.and (hH.mem_nhds hw))`. Conclude with `⟨Metric.ball w ε, Metric.isOpen_ball, convex_ball w ε, fun z hz => (hb z hz).2, Metric.mem_ball_self hε, s, fun z hz => (hb z hz).1⟩`.
+
+Use `set p : ℂ := ((T + 1 : ℝ) : ℂ) * Complex.I with hpdef`. Establish `hp : T < p.im` using `by simp [hpdef]`. Set `good : ℂ → Prop` to `fun w => ∃ U : Set ℂ, IsOpen U ∧ Convex ℝ U ∧ (∀ z ∈ U, T < z.im) ∧ p ∈ U ∧ w ∈ U ∧ ∃ s, ∀ z ∈ U, G z s`. Establish `hgood : ∀ w : ℂ, T < w.im → good w`. Introduce `w hw`.
+
+Set `γ : ℝ →ᵃ[ℝ] ℂ` to `AffineMap.lineMap p w`. Establish `hγc : Continuous γ` using `AffineMap.lineMap_continuous`. Establish `hγ0 : γ 0 = p` using `AffineMap.lineMap_apply_zero p w`. Establish `hγ1 : γ 1 = w` using `AffineMap.lineMap_apply_one p w`. Establish `hγH : ∀ t ∈ Set.Icc (0 : ℝ) 1, T < (γ t).im`.
+
+Introduce `t ht`. Establish `hc` using `((convex_halfSpace_im_gt T).affine_preimage γ).ordConnected`. Conclude with `hc.out (x := 0) (y := 1) (by simpa [hγ0] using hp) (by simpa [hγ1] using hw) ht`. Establish `step : ∀ D : Set ℂ, IsOpen D → Convex ℝ D → (∀ z ∈ D, T < z.im) → (∃ s, ∀ z ∈ D, G z s) → ∀ a b : ℝ, 0 ≤ b → γ a ∈ D → γ b ∈ D → good (γ a) → good (γ b)`. Introduce and unpack `D hDo hDc hDT hDs a b hb ha hbD ⟨U, hUo, hUc, hUT, hpU, haU, hUs⟩`.
+
+Apply the tactic sequence `obtain ⟨t, ht⟩ := glue true (fun i : Bool => cond i U D) (γ a) (by rintro (_ | _) <;> assumption) (by rintro (_ | _) <;> assumption) (by rintro (_ | _) <;> assumption) (by rintro (_ | _) <;> assumption) (by rintro (_ | _) <;> assumption)`. Establish `hK : IsCompact (γ '' Set.Icc 0 b)` using `isCompact_Icc.image hγc`. Establish `hKc : Convex ℝ (γ '' Set.Icc 0 b)` using `(convex_Icc 0 b).affine_image γ`. Establish `hsub : γ '' Set.Icc 0 b ⊆ U ∪ D`. Introduce and unpack `_ ⟨r, hr, rfl⟩`.
+
+Break down `le_total r a with h | h` into its components or cases. Use `left`. Conclude with `(hUc.affine_preimage γ).ordConnected.out (x := 0) (y := a) (by simpa [hγ0] using hpU) haU ⟨hr.1, h⟩`. Use `right`. Conclude with `(hDc.affine_preimage γ).ordConnected.out (x := a) (y := b) ha hbD ⟨h, hr.2⟩`.
+
+Take `⟨δ, hδ, hth⟩` from `hK.exists_thickening_subset_open (hUo.union hDo) hsub`. Use `⟨Metric.thickening δ (γ '' Set.Icc 0 b), Metric.isOpen_thickening, hKc.thickening δ, fun z hz => ?_, ?_, ?_, t, fun z hz => ?_⟩` and prove the remaining obligations. Break down `hth hz with h | h` into its components or cases. Conclude with `hUT z h`. Conclude with `hDT z h`.
+
+Conclude with `Metric.self_subset_thickening hδ _ ⟨0, ⟨le_rfl, hb⟩, hγ0⟩`. Conclude with `Metric.self_subset_thickening hδ _ ⟨b, ⟨hb, le_rfl⟩, rfl⟩`. Break down `hth hz with h | h` into its components or cases. Conclude with `ht true z h`. Conclude with `ht false z h`.
+
+Establish `key` using `(isPreconnected_Icc (a := (0 : ℝ)) (b := 1)).induction₂' (fun a b => good (γ a) → good (γ b)) (by`. Introduce `x hx`. Take `⟨D, hDo, hDc, hDT, hxD, hDs⟩` from `loc (γ x) (hγH x hx)`. Establish `: ∀ᶠ y in 𝓝 x, γ y ∈ D` using `hγc.continuousAt.eventually (hDo.mem_nhds hxD)`. Use `filter_upwards [nhdsWithin_le_nhds this, self_mem_nhdsWithin] with y hy hyI`.
+
+Conclude with `⟨step D hDo hDc hDT hDs x y hyI.1 hxD hy, step D hDo hDc hDT hDs y x hx.1 hy hxD⟩)`. Use the proof step `(fun _ _ _ _ _ _ h h' hh => h' (h hh)) (x := 0) (y := 1) (by simp) (by simp)`. Rewrite `key` using `[hγ0, hγ1]`. Apply `key` to reduce the goal to its premises. Take `⟨D, hDo, hDc, hDT, hxD, hDs⟩` from `loc p hp`.
+
+Conclude with `⟨D, hDo, hDc, hDT, hxD, hxD, hDs⟩`. Use `choose U hUo hUc hUT hpU hwU hUs using hgood`. Take `⟨t, ht⟩` from `glue (ι := {w : ℂ // T < w.im}) ⟨p, hp⟩ (fun w => U w.1 w.2) p (fun w => hUo w.1 w.2) (fun w => hUc w.1 w.2) (fun w => hUT w.1 w.2) (fun w => hpU w.1 w.2) (fun w => hUs w.1 w.2)`. Conclude with `⟨t, fun w hw => ht ⟨w, hw⟩ w (hwU w hw)⟩`.
+-/
 theorem germSections_halfPlane_global (Y : Type) (G : ℂ → (ℂ → Y) → Prop) (T : ℝ)
     (h1 : ∀ w s s', s =ᶠ[𝓝 w] s' → G w s → G w s')
     (h2 : ∀ w : ℂ, T < w.im → ∃ s, ∀ᶠ z in 𝓝 w, G z s)

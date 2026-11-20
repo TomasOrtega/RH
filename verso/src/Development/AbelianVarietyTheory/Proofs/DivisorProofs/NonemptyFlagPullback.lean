@@ -14,6 +14,9 @@ open CategoryTheory Limits AlgebraicGeometry ReciprocityTheory.ChartRestriction.
 
 namespace GlobalTheory.FlagTwoSteps
 
+/- English proof (translation)
+Establish `h1` using `(he.res hU).pullback U.ι`. Establish `h2 : (⊤ : U.toScheme.Opens) ≤ U.ι ⁻¹ᵁ U` using `fun y _ => by simp`. Conclude with `Vert.Flag.nonempty_of_isFrame_top r _ _ (h1.res h2)`.
+-/
 theorem nonempty_flag_pullback {X : Scheme.{0}} {F : X.Modules} [F.IsQuasicoherent] {r : ℕ}
     {W U : X.Opens} {e : Fin r → Γ(F, W)} (he : IsFrame e) (hU : U ≤ W) :
     Nonempty (Vert.Flag ((Scheme.Modules.pullback U.ι).obj F) r) := by
@@ -21,6 +24,9 @@ theorem nonempty_flag_pullback {X : Scheme.{0}} {F : X.Modules} [F.IsQuasicohere
   have h2 : (⊤ : U.toScheme.Opens) ≤ U.ι ⁻¹ᵁ U := fun y _ => by simp
   exact Vert.Flag.nonempty_of_isFrame_top r _ _ (h1.res h2)
 
+/- English proof (translation)
+Use `(GlobalTheory.SubPull.isSubbundle_pullback X U.toScheme U.ι A B s r hA hs).mono` as an intermediate fact. Conclude with `⟨cokernel.condition _, { exact := ShortComplex.exact_cokernel _ }⟩`.
+-/
 theorem shortExact_pullback {X : Scheme.{0}} (U : X.Opens) {A B : X.Modules} {s : A ⟶ B}
     {r : ℕ} (hA : IsVB A r) (hs : IsSubbundle s) :
     ∃ h : (Scheme.Modules.pullback U.ι).map s ≫ cokernel.π ((Scheme.Modules.pullback U.ι).map s) = 0,
@@ -28,6 +34,21 @@ theorem shortExact_pullback {X : Scheme.{0}} (U : X.Opens) {A B : X.Modules} {s 
   have := (GlobalTheory.SubPull.isSubbundle_pullback X U.toScheme U.ι A B s r hA hs).mono
   exact ⟨cokernel.condition _, { exact := ShortComplex.exact_cokernel _ }⟩
 
+/- English proof (translation)
+Introduce `X E S P n m₁ m₂ h₁₂ h₂ s j hE hS hP hs hj x`. Establish `: Nonempty X` using `⟨x⟩`. Use `hs.mono` as an intermediate fact. Use `hj.mono` as an intermediate fact. Take `⟨a, ha⟩` from `hs.isVB_cokernel`.
+
+Take `⟨b, hb⟩` from `hj.isVB_cokernel`. Establish `hSE₁ : (ShortComplex.mk s (cokernel.π s) (cokernel.condition s)).ShortExact` using `{ exact := ShortComplex.exact_cokernel s }`. Establish `hSE₂ : (ShortComplex.mk j (cokernel.π j) (cokernel.condition j)).ShortExact` using `{ exact := ShortComplex.exact_cokernel j }`. Take `rfl : m₂ = m₁ + a` from `hP.rank_unique (VBExt.isVB_X₂_of_shortExact X _ m₁ a hSE₁ hS ha)`. Take `rfl : n = m₁ + a + b` from `hE.rank_unique (VBExt.isVB_X₂_of_shortExact X _ _ b hSE₂ hP hb)`.
+
+Take `⟨U₁, e₁, hx₁, he₁⟩` from `hS x`. Take `⟨U₂, e₂, hx₂, he₂⟩` from `ha x`. Take `⟨U₃, e₃, hx₃, he₃⟩` from `hb x`. Set `U : X.Opens` to `U₁ ⊓ U₂ ⊓ U₃`. Establish `hxU : x ∈ U` using `⟨⟨hx₁, hx₂⟩, hx₃⟩`.
+
+Use `hS.isQuasicoherent` as an intermediate fact. Use `ha.isQuasicoherent` as an intermediate fact. Use `hb.isQuasicoherent` as an intermediate fact. Take `⟨flS⟩` from `nonempty_flag_pullback (U := U) he₁ (inf_le_left.trans inf_le_left)`. Take `⟨flA⟩` from `nonempty_flag_pullback (U := U) he₂ (inf_le_left.trans inf_le_right)`.
+
+Take `⟨flB⟩` from `nonempty_flag_pullback (U := U) he₃ inf_le_right`. Use `set Φ := Scheme.Modules.pullback U.ι`. Take `⟨z₁, hz₁⟩` from `shortExact_pullback U hS hs`. Take `⟨z₂, hz₂⟩` from `shortExact_pullback U hP hj`. Take `⟨flP, hP₁, -⟩` from `Vert.Flag.concat_spec U.toScheme _ _ _ _ _ z₁ hz₁ m₁ a flS (flA.ofIso (PreservesCokernel.iso Φ s))`.
+
+Take `⟨flE, hE₁, -⟩` from `Vert.Flag.concat_spec U.toScheme _ _ _ _ _ z₂ hz₂ (m₁ + a) b flP (flB.ofIso (PreservesCokernel.iso Φ j))`. Take `⟨c₁, hc₁⟩` from `hP₁ ⟨m₁, by omega⟩ (Fin.last m₁) rfl`. Take `⟨c₂, hc₂⟩` from `hE₁ ⟨m₁, by omega⟩ ⟨m₁, by omega⟩ rfl`. Take `⟨c₃, hc₃⟩` from `hE₁ ⟨m₁ + a, by omega⟩ (Fin.last (m₁ + a)) rfl`. Use `⟨U, hxU, flE, (asIso (flS.ι (Fin.last m₁))).symm ≪≫ c₁.symm ≪≫ c₂.symm, (asIso (flP.ι (Fin.last (m₁ + a)))).symm ≪≫ c₃.symm, ?_, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [Iso.trans_hom, Iso.symm_hom, asIso_inv, Category.assoc, hc₂, Iso.inv_hom_id_assoc, hc₁, IsIso.inv_hom_id_assoc, Functor.map_comp]`. Simplify using `only [Iso.trans_hom, Iso.symm_hom, asIso_inv, Category.assoc, hc₃, Iso.inv_hom_id_assoc, IsIso.inv_hom_id_assoc]`.
+-/
 theorem exists_flag_two_steps : ∀ (X : Scheme.{0}) (E S P : X.Modules) (n m₁ m₂ : ℕ) (h₁₂ : m₁ ≤ m₂)
     (h₂ : m₂ ≤ n) (s : S ⟶ P) (j : P ⟶ E), IsVB E n → IsVB S m₁ → IsVB P m₂ → IsSubbundle s →
     IsSubbundle j → ∀ x : X, ∃ (U : X.Opens) (_ : x ∈ U)

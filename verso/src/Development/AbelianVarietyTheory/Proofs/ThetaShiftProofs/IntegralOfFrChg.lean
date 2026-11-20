@@ -24,15 +24,24 @@ def mulSec {L : LB X} (r : Γ(X, ⊤)) (s : LB.Sec L) : LB.Sec L where
       rw [← CommRingCat.comp_apply, ← Functor.map_comp]; rfl
     rw [map_mul, map_mul, s.compat i j, e, e, mul_left_comm]
 
+/- English proof (translation)
+Rewrite using `[← CommRingCat.comp_apply, ← Functor.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem res_res {U V : X.Opens} (h : V ≤ U) (r : Γ(X, ⊤)) :
     (X.presheaf.map (homOfLE h).op).hom (resG X (le_top : U ≤ ⊤) r) = resG X le_top r := by
   rw [← CommRingCat.comp_apply, ← Functor.map_comp]; rfl
 
+/- English proof (translation)
+Rewrite using `[← CommRingCat.comp_apply, ← CommRingCat.comp_apply, Scheme.Hom.map_appLE]`. Both sides reduce to the same expression.
+-/
 theorem appLE_res (f : Y ⟶ X) (U : X.Opens) (V : Y.Opens) (h : V ≤ f ⁻¹ᵁ U) (r : Γ(X, ⊤)) :
     (f.appLE U V h).hom (resG X le_top r) = resG Y le_top (f.appTop.hom r) := by
   rw [← CommRingCat.comp_apply, ← CommRingCat.comp_apply, Scheme.Hom.map_appLE]
   rfl
 
+/- English proof (translation)
+Introduce `i k`. Use `h i k` as an intermediate fact. Simplify using `only [mulSec, map_mul, res_res]`. Rewrite using `[this, mul_left_comm]`.
+-/
 theorem isoMaps_mul {L M : LB X} {w : LB.Iso L M} {s : LB.Sec L} {s' : LB.Sec M} (h : IsoMaps w s s')
     (r : Γ(X, ⊤)) : IsoMaps w (mulSec r s) (mulSec r s') := by
   intro i k
@@ -40,12 +49,18 @@ theorem isoMaps_mul {L M : LB X} {w : LB.Iso L M} {s : LB.Sec L} {s' : LB.Sec M}
   simp only [mulSec, map_mul, res_res]
   rw [this, mul_left_comm]
 
+/- English proof (translation)
+Introduce `j hj`. Simplify using `only [mulSec, map_mul, appLE_res]`. Rewrite using `[h j hj]`.
+-/
 theorem pullSec_mul {L : LB X} {f : Y ⟶ X} {s : LB.Sec L} {s' : LB.Sec (L.pull f)} (h : PullSec f s s')
     (r : Γ(X, ⊤)) : PullSec f (mulSec r s) (mulSec (f.appTop.hom r) s') := by
   intro j hj
   simp only [mulSec, map_mul, appLE_res]
   rw [h j hj]
 
+/- English proof (translation)
+Use `congrArg (fun q => q.hom a) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom φ))` as an intermediate fact. Conclude with `this.symm`.
+-/
 theorem appTop_toΓ {A B : Type} [CommRing A] [CommRing B] (φ : A →+* B) (a : A) :
     (spMap φ).appTop.hom (toΓ A a) = toΓ B (φ a) := by
   have := congrArg (fun q => q.hom a) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom φ))
@@ -56,6 +71,17 @@ end Sec
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
   {Xo : Moduli Dw l} {c : Coeff l}
 
+/- English proof (translation)
+Set `_` to `io.toAlgebra`. Introduce `y a s' hg hs h`. Take `⟨G, t', m1, m2, hu, θ, hθ, w1, w2, σ, s1, θ2, r1, r2, i1, i2, hp, hl⟩` from `h`. Establish `hc : m2.φ.appTop.hom (G.G.hom.appTop.hom (toΓ T.V a)) = t'.G.hom.appTop.hom (toΓ T.Fr (algebraMap T.V T.Fr a))`. Rewrite using `[← CommRingCat.comp_apply, ← Scheme.Hom.comp_appTop, m2.cart.1.w, Scheme.Hom.comp_appTop, CommRingCat.comp_apply]`.
+
+Conclude with `congrArg _ (appTop_toΓ _ _)`. Use `⟨G, t', m1, m2, hu, mulSec (G.G.hom.appTop.hom (toΓ T.V a)) θ, fun τ => ?_, w1, w2, _, _, _, r1, r2, isoMaps_mul i1 _, isoMaps_mul i2 _, pullSec_mul hp _, ?_⟩` and prove the remaining obligations. Take `⟨b, hb, hbu⟩` from `hθ τ`. Establish `key : ∀ (d : T.V) i, resG G.G.left le_top ((G.G.hom).appTop.hom (toΓ T.V d)) * (mulSec (G.G.hom.appTop.hom (toΓ T.V a)) θ).f i = resG G.G.left le_top ((G.G.hom).appTop.hom (toΓ T.V (d * a))) * θ.f i` using `fun d i => by`. Simplify using `only [mulSec, map_mul, _root_.mul_assoc]`.
+
+Use `⟨b * ↑a⁻¹, fun i => ?_, fun d hd => ?_⟩` and prove the remaining obligations. Rewrite using `[key, Units.inv_mul_cancel_right]`. Conclude with `hb i`. Rewrite using `[← hbu (d * a) fun i => by rw [← key]; exact hd i, Units.mul_inv_cancel_right]`. Introduce `g e1 e2 j hj`.
+
+Establish `e3` using `hl g e1 e2 j hj`. Use `show resG _ le_top _ * s1.f j = (g.appLE _ _ hj).hom (s'.f _)`. Use `Eq.symm ((congrArg _ (hs _)).trans ((map_mul _ _ _).trans (congrArg₂ (· * ·) ?_ e3.symm)))` and prove the remaining obligations. Use `(appLE_res g _ _ hj _).trans (congrArg _ ?_)` and prove the remaining obligations. Rewrite using `[hc, ← e2, Scheme.Hom.comp_appTop]`.
+
+Both sides reduce to the same expression.
+-/
 theorem integral_scal (T : CDVR) (io : c.F →+* T.Fr) : letI := io.toAlgebra
     ∀ (y : FrPt Xo c T.Fr) (a : T.Vˣ) (s' : LB.Sec (PPx y.x))
       (hg : ∀ s'' : LB.Sec (PPx y.x), ∃! b : T.Fr, ∀ i, s''.f i = scal y.x b i * s'.f i),
@@ -87,6 +113,17 @@ theorem integral_scal (T : CDVR) (io : c.F →+* T.Fr) : letI := io.toAlgebra
     rw [hc, ← e2, Scheme.Hom.comp_appTop]
     rfl
 
+/- English proof (translation)
+Set `_` to `io.toAlgebra`. Introduce `y y' k a hk ⟨hx, hu, pm, h1, h2, h3⟩ hy`. Establish `hk' : ∀ τ, IsUnit (k τ).transpose.det` using `fun τ => by rw [Matrix.det_transpose]; exact hk τ`. Establish `hK : ∀ τ, IsUnit ((k τ).transpose.map (algebraMap T.V T.Fr)).det` using `fun τ => by`. Establish `e : ((k τ).transpose.map (algebraMap T.V T.Fr)).det = algebraMap T.V T.Fr (k τ).transpose.det` using `(RingHom.map_det _ _).symm`.
+
+Rewrite using `[e]`. Conclude with `(hk' τ).map _`. Establish `hr` using `GlobalTheory.IntRebase.integral_reb T io y hy (fun τ => (k τ).transpose) hk' hK`. Take `⟨zx, zo, zu, zt, ze, zb, zs, zg⟩` from `y'`. Simplify using `only at hx`.
+
+Substitute `hx` using the available equality. Establish `eu : zu = (GlobalTheory.IntRebase.rebase₂ y _ hK).u`. Use function extensionality and compare the values at `τ i`. Conclude with `Formalism.L2.PjFree.isCombAt_unique (hu τ i) ((GlobalTheory.IntRebase.isCombAtG_iff Xo.univ.t y.x (fun j => GlobalTheory.IntRebase.ovT (t := Xo.univ.t) (y.tan τ j)) _ _).2 rfl)`. Substitute `eu` using the available equality.
+
+Establish `ep : pm = 𝟙 _`. Apply `pullback.hom_ext` to reduce the goal to its premises. Use `h2.trans ?_` and prove the remaining obligations. Simplify using `only [spMap, CommRingCat.ofHom_id, Spec.map_id, Category.comp_id, Category.id_comp]`. Both sides reduce to the same expression.
+
+Conclude with `h1.trans (Category.id_comp _).symm`. Substitute `ep` using the available equality. Use `integral_scal T io (GlobalTheory.IntRebase.rebase₂ y _ hK) a zs zg (fun i => ?_) hr` and prove the remaining obligations. Conclude with `(h3 i le_rfl).symm.trans (GlobalTheory.IntRebase.id_appLE_apply _ _ _ _)`.
+-/
 theorem integral_chg (T : CDVR) (io : c.F →+* T.Fr) : letI := io.toAlgebra
     ∀ (y y' : FrPt Xo c T.Fr) (k : ∀ τ : E →+* ℂ, Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) T.V) (a : T.Vˣ),
       (∀ τ, IsUnit (k τ).det) → FrChg (fun τ => (k τ).map (algebraMap T.V T.Fr)) (algebraMap T.V T.Fr a) y y' →
@@ -118,6 +155,9 @@ theorem integral_chg (T : CDVR) (io : c.F →+* T.Fr) : letI := io.toAlgebra
   refine integral_scal T io (GlobalTheory.IntRebase.rebase₂ y _ hK) a zs zg (fun i => ?_) hr
   exact (h3 i le_rfl).symm.trans (GlobalTheory.IntRebase.id_appLE_apply _ _ _ _)
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c T io g s hg hs y y' h hy`. Take `⟨a, rfl⟩` from `hs`. Conclude with `integral_chg T io y y' g a hg h hy`.
+-/
 theorem integral_of_frChg : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (T : CDVR) (io : c.F →+* T.Fr) (g : ∀ τ : E →+* ℂ, Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) T.V) (s : T.V), (∀ τ, IsUnit (g τ).det) → IsUnit s → letI := io.toAlgebra; ∀ y y' : FrPt Xo c T.Fr, FrChg (fun τ => (g τ).map (algebraMap T.V T.Fr)) (algebraMap T.V T.Fr s) y y' → Integral T io y → Integral T io y' := by
   intro E _ _ _ H Dw l Xo c T io g s hg hs y y' h hy
   obtain ⟨a, rfl⟩ := hs

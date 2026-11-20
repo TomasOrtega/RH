@@ -14,12 +14,24 @@ noncomputable section
 
 namespace GlobalTheory.LieSmooth
 
+/- English proof (translation)
+Rewrite using `[Algebra.norm_eq_prod_embeddings ℚ ℂ x, norm_prod, Real.log_prod (fun τ _ => norm_ne_zero_iff.2 ((map_ne_zero_iff _ τ.injective).2 hx))]`. Conclude with `Fintype.sum_equiv (RingHom.equivRatAlgHom L ℂ) _ _ fun _ => rfl`.
+-/
 theorem sum_log_norm_embeddings_eq_log_norm {L : Type} [Field L] [NumberField L] (x : L) (hx : x ≠ 0) :
     ∑ σ : L →+* ℂ, Real.log ‖σ x‖ = Real.log ‖algebraMap ℚ ℂ (Algebra.norm ℚ x)‖ := by
   rw [Algebra.norm_eq_prod_embeddings ℚ ℂ x, norm_prod, Real.log_prod (fun τ _ => norm_ne_zero_iff.2
     ((map_ne_zero_iff _ τ.injective).2 hx))]
   exact Fintype.sum_equiv (RingHom.equivRatAlgHom L ℂ) _ _ fun _ => rfl
 
+/- English proof (translation)
+Introduce `F _ _ K _ _ φ a ha`. Use `letI : Algebra F K := φ.toAlgebra`. Use `haveI : IsScalarTower ℚ F K := IsScalarTower.of_algebraMap_eq fun x => (map_ratCast φ x).symm`. Use `haveI : FiniteDimensional F K := Module.Finite.of_restrictScalars_finite ℚ F K`. Set `e : EmbOver φ ≃ (K →ₐ[F] AlgebraicClosure F)` to `{ toFun := fun θ => { θ.1 with commutes' := fun r => RingHom.congr_fun θ.2 r } invFun := fun f => ⟨f.toRingHom, RingHom.ext fun r => f.commutes r⟩ left_inv := fun θ => rfl right_inv := fun f => AlgHom.ext fun _ => rfl }`.
+
+Use `set N : F := Algebra.norm F a with hNdef`. Establish `hN : N ≠ 0` using `Algebra.norm_ne_zero_iff.2 ha`. Establish `hprod : ∏ θ : EmbOver φ, θ.1 a = algebraMap F (AlgebraicClosure F) N`. Rewrite using `[hNdef, Algebra.norm_eq_prod_embeddings F (AlgebraicClosure F) a]`. Conclude with `Fintype.prod_equiv e _ _ fun _ => rfl`.
+
+Establish `hv : ∀ v : HeightOneSpectrum (𝓞 F), ∑ θ : EmbOver φ, Real.log ((extOf v).w (θ.1 a)) = Real.log (NumberField.HeightOneSpectrum.adicAbv F v N)`. Introduce `v`. Rewrite using `[← Real.log_prod (fun θ _ => ((extOf v).w.pos ((map_ne_zero_iff _ θ.1.injective).2 ha)).ne'), ← map_prod, hprod, (extOf v).w_alg]`. Establish `hfun : (fun v : HeightOneSpectrum (𝓞 F) => ∑ θ : EmbOver φ, Real.log ((extOf v).w (θ.1 a))) = fun v => Real.log (NumberField.HeightOneSpectrum.adicAbv F v N)` using `funext hv`. Take `⟨h₁, h₂⟩` from `GlobalTheory.sum_log_embedding_add_finsum_log_adicAbv_eq_zero F N hN`.
+
+Use `⟨hfun ▸ h₁, ?_⟩` and prove the remaining obligations. Rewrite using `[hfun, eq_neg_iff_add_eq_zero, add_comm, ← h₂, sum_log_norm_embeddings_eq_log_norm a ha, sum_log_norm_embeddings_eq_log_norm N hN, hNdef, Algebra.norm_norm]`.
+-/
 theorem finsum_sum_log_embOver_eq : ∀ {F : Type} [Field F] [NumberField F] {K : Type} [Field K] [NumberField K] (φ : F →+* K) (a : K), a ≠ 0 → (Function.support fun v : HeightOneSpectrum (𝓞 F) => ∑ θ : EmbOver φ, Real.log ((extOf v).w (θ.1 a))).Finite ∧ ∑ᶠ v : HeightOneSpectrum (𝓞 F), ∑ θ : EmbOver φ, Real.log ((extOf v).w (θ.1 a)) = -∑ σ : K →+* ℂ, Real.log ‖σ a‖ := by
   intro F _ _ K _ _ φ a ha
   letI : Algebra F K := φ.toAlgebra

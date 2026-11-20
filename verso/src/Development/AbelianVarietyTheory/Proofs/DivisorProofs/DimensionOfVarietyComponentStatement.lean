@@ -8,6 +8,9 @@ open Formalism.BasicNotions.DV Formalism.MainNotions.WeightThresholdDefs GlobalT
 open GlobalTheory.Cartier GlobalTheory.CxPts GlobalTheory.ProjVar GlobalTheory.TwoLat GlobalTheory.FlagCov
 open scoped Classical
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.FlagEigDim.dim_eq_dimGr_add_sum | exact GlobalTheory.FlagEigDim.dim_eq_dimGr_add_sum | (intros; apply GlobalTheory.FlagEigDim.dim_eq_dimGr_add_sum <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.dimension_of_variety_component : ∀ (D : D7) (O : Setup D), O.Core → ∀ c : O.s.Comp,
     dimGr D.what₂.Tau O.N O.j + ∑ σ : D.host.E →+* ℂ, O.S.Dw.mult σ * (O.S.Dw.mult σ - 1) / 2 = (O.var c).dim := by
   first | exact @GlobalTheory.FlagEigDim.dim_eq_dimGr_add_sum | exact GlobalTheory.FlagEigDim.dim_eq_dimGr_add_sum | (intros; apply GlobalTheory.FlagEigDim.dim_eq_dimGr_add_sum <;> assumption)

@@ -7,20 +7,32 @@ namespace Formalism.L2.GlobalTheoryTheory.TraceIntegrality
 open MvPolynomial Formalism.BasicNotions Formalism.GradedWeylDivisibility Formalism.MainNotions.flipTwoThree
 open Formalism.REAL (fockF)
 
+/- English proof (translation)
+Rewrite using `[sgNat_eq lt sg h0 hI]`. Conclude with `fun a b h => Nat.add_le_add_right (natW_anti sg h) _`.
+-/
 theorem sgNat_anti {n : ℕ} (lt : DomWeight (n + 1)) (sg : DomWeight n) (h0 : lt.w (Fin.last n) = 0)
     (hI : Interlace lt sg) : Antitone (sgNat sg) := by
   rw [sgNat_eq lt sg h0 hI]
   exact fun a b h => Nat.add_le_add_right (natW_anti sg h) _
 
+/- English proof (translation)
+Introduce `_ _ h` and use `natW_anti lt (Fin.castSucc_le_castSucc_iff.mpr h)`.
+-/
 theorem lamNat_anti {n : ℕ} (lt : DomWeight (n + 1)) : Antitone (lamNat lt) :=
   fun _ _ h => natW_anti lt (Fin.castSucc_le_castSucc_iff.mpr h)
 
+/- English proof (translation)
+Rewrite `hv` using `[← Formalism.GradedWeylDivisibility.weylEqNablaQ n n le_rfl _ (natW_anti sg)]`. Conclude with `twist_mem_gen ℚ lt sg h0 hI v hv`.
+-/
 theorem twist_dualQ {n : ℕ} (lt : DomWeight (n + 1)) (sg : DomWeight n) (h0 : lt.w (Fin.last n) = 0)
     (hI : Interlace lt sg) (v : MvPolynomial (Fin n × Fin n) ℚ) (hv : v ∈ dualWeyl ℚ n n sg.natW) :
     dpowR ℚ n sg.detShift.toNat * v ∈ weyl ℚ n n le_rfl (sgNat sg) := by
   rw [← Formalism.GradedWeylDivisibility.weylEqNablaQ n n le_rfl _ (natW_anti sg)] at hv
   exact twist_mem_gen ℚ lt sg h0 hI v hv
 
+/- English proof (translation)
+Rewrite using `[Formalism.GradedWeylDivisibility.dualWeylIntRat, map_mul, map_dpowR]`. Conclude with `Formalism.GradedWeylDivisibility.weylLeDual ℚ n n le_rfl _ (sgNat_anti lt sg h0 hI) (twist_dualQ lt sg h0 hI _ (Formalism.GradedWeylDivisibility.dualWeylMap ℤ ℚ _ n n _ q hq))`.
+-/
 theorem twist_dualZ {n : ℕ} (lt : DomWeight (n + 1)) (sg : DomWeight n) (h0 : lt.w (Fin.last n) = 0)
     (hI : Interlace lt sg) (q : MvPolynomial (Fin n × Fin n) ℤ) (hq : q ∈ dualWeyl ℤ n n sg.natW) :
     dpowR ℤ n sg.detShift.toNat * q ∈ dualWeyl ℤ n n (sgNat sg) := by
@@ -28,10 +40,58 @@ theorem twist_dualZ {n : ℕ} (lt : DomWeight (n + 1)) (sg : DomWeight n) (h0 : 
   exact Formalism.GradedWeylDivisibility.weylLeDual ℚ n n le_rfl _ (sgNat_anti lt sg h0 hI)
     (twist_dualQ lt sg h0 hI _ (Formalism.GradedWeylDivisibility.dualWeylMap ℤ ℚ _ n n _ q hq))
 
+/- English proof (translation)
+Use `fockF_smul_right_eq_star_mul (0 : ℂ) f 0` as an intermediate fact. Simplify using `using this`.
+-/
 theorem fockF_zero_right' {κ : Type} (f : MvPolynomial κ ℂ) : fockF f 0 = 0 := by
   have := fockF_smul_right_eq_star_mul (0 : ℂ) f 0
   simpa using this
 
+/- English proof (translation)
+Introduce `n lt sg h0 hI io hio1 hio2 hio3 hio4 P hPV hPadj F hF`. Establish `hInter` using `interlace_nat lt sg h0 hI`. Take `⟨ioQ, hQ1, hQ2, hQ3, -⟩` from `Formalism.BranchingDeterminantCap.branch_map_formula ℚ n (lamNat lt) (sgNat sg) hInter`. Take `⟨ioZ, hZ1, hZ2, hZ3, -⟩` from `Formalism.BranchingDeterminantCap.branch_map_formula ℤ n (lamNat lt) (sgNat sg) hInter`. Establish `hs` using `sgNat_anti lt sg h0 hI`.
+
+Establish `hs'` using `natW_anti sg`. Establish `hlam` using `lamNat_anti lt`. Rewrite `hF` using `[delSq_eq_map ℤ lt]`. Take `⟨F0, hF0, rfl⟩` from `hF`. Express the relevant statement in the definitionally equal form `F0 ∈ weyl ℤ (n + 1) n (Nat.le_succ n) (lamNat lt) at hF0`.
+
+Use `set c := sg.detShift.toNat with hc`. Use `set V := weyl ℚ n n le_rfl sg.natW with hV`. Establish `hVd : V = dualWeyl ℚ n n sg.natW` using `Formalism.GradedWeylDivisibility.weylEqNablaQ n n le_rfl _ hs'`. Establish `: FiniteDimensional ℚ V` using `by rw [hVd]; exact Formalism.GradedWeylDivisibility.lclosedeq_fd n n _`. Establish `hmemQ : ∀ v ∈ V, dpowR ℚ n c * v ∈ dualWeyl ℚ n n (sgNat sg)` using `fun v hv => Formalism.GradedWeylDivisibility.weylLeDual ℚ n n le_rfl _ hs (twist_mem_gen ℚ lt sg h0 hI v hv)`.
+
+Set `twQ : V →ₗ[ℚ] ↥(dualWeyl ℚ n n (sgNat sg))` to `LinearMap.codRestrict _ ((LinearMap.mulLeft ℚ (dpowR ℚ n c)).comp V.subtype) (fun v => hmemQ v v.2)`. Establish `htwQ : ∀ v : V, ((twQ v : ↥(dualWeyl ℚ n n (sgNat sg))) : MvPolynomial (Fin n × Fin n) ℚ) = dpowR ℚ n c * (v : MvPolynomial (Fin n × Fin n) ℚ)` using `fun _ => rfl`. Use `set F0q := map (Int.castRingHom ℚ) F0 with hF0q`. Use `set ns := fockQ (hw ℚ le_rfl sg.natW) (hw ℚ (r := n) le_rfl sg.natW) with hns`. Use `set nl := fockQ (hw ℚ (Nat.le_succ n) (lamNat lt)) (hw ℚ (Nat.le_succ n) (lamNat lt)) with hnl`.
+
+Establish `hns0 : 0 < ns` using `fockQ_hw_pos _ _`. Establish `hnl0 : 0 < nl` using `fockQ_hw_pos _ _`. Set `φ : V →ₗ[ℚ] ℚ` to `(ns / nl) • ((fockQLin F0q).comp (ioQ.comp twQ))`. Establish `hφ : ∀ v : V, φ v = ns / nl * fockQ (ioQ (twQ v)) F0q` using `fun _ => rfl`. Take `⟨p, hpV, hp⟩` from `rieszQ V φ`.
+
+Establish `hbd : p ∈ bDual n n le_rfl sg.natW ((dualWeyl ℤ n n sg.natW).map (intQ n n))`. Use `⟨hVd ▸ hpV, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨q, hq, rfl⟩`. Establish `hqQ : intQ n n q ∈ V`. Rewrite using `[hVd]`.
+
+Conclude with `Formalism.GradedWeylDivisibility.dualWeylMap ℤ ℚ _ n n _ q hq`. Establish `e` using `hp ⟨_, hqQ⟩`. Rewrite `e` using `[hφ]`. Establish `h1 : dpowR ℤ n c * q ∈ dualWeyl ℤ n n (sgNat sg)` using `twist_dualZ lt sg h0 hI q hq`. Establish `h2 : map (Int.castRingHom ℚ) (dpowR ℤ n c * q) ∈ dualWeyl ℚ n n (sgNat sg)` using `Formalism.GradedWeylDivisibility.dualWeylMap ℤ ℚ _ n n _ _ h1`.
+
+Establish `etw : twQ ⟨_, hqQ⟩ = ⟨_, h2⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[htwQ]`. Use `show dpowR ℚ n c * intQ n n q = map (Int.castRingHom ℚ) (dpowR ℤ n c * q)`. Rewrite using `[map_mul, map_dpowR, intQ_apply]`.
+
+Take `⟨N, hN, hNq⟩` from `nablaZ_denom le_rfl (sgNat sg) hs _ h1`. Establish `ebc` using `io_bc (Int.castRingHom ℚ) Int.cast_injective (lamNat lt) (sgNat sg) hs ioZ hZ2 hZ3 ioQ hQ2 hQ3 (dpowR ℤ n c * q) N hN hNq h1 h2`. Rewrite `e` using `[etw, ebc]`. Establish `hF0b : intQ (n + 1) n F0 ∈ bDual (n + 1) n (Nat.le_succ n) (lamNat lt) ((dualWeyl ℤ (n + 1) n (lamNat lt)).map (intQ (n + 1) n))`. Rewrite using `[← weylEqDualNabla_holds (n + 1) n (Nat.le_succ n) (lamNat lt) hlam]`.
+
+Conclude with `⟨F0, hF0, rfl⟩`. Take `⟨z, hz⟩` from `hF0b.2 _ ⟨ioZ ⟨_, h1⟩, hZ1 _, rfl⟩`. Use `⟨z, ?_⟩` and prove the remaining obligations. Rewrite `hz` using `[intQ_apply, intQ_apply]`. Express the relevant statement in the definitionally equal form `_ = (z : ℚ) * nl at hz`.
+
+Express the relevant statement in the definitionally equal form `fockQ p (intQ n n q) = _ at e`. Use `show fockQ p (intQ n n q) = (z : ℚ) * ns`. Rewrite using `[e, fockQ_comm, hz]`. Clear the denominators using the available nonvanishing facts. Rewrite `hbd` using `[← weylEqDualNabla_holds n n le_rfl sg.natW hs']`.
+
+Take `⟨g, hg, hgp⟩` from `hbd`. Use `⟨g, hg, ?_⟩` and prove the remaining obligations. Rewrite `hgp` using `[intQ_apply]`. Use `show P (map (Int.castRingHom ℂ) (rename (colEmb (n + 1) n) F0)) = _`. Rewrite using `[← map_int_rat_complex g, hgp]`.
+
+Take `⟨tw1, -, -⟩` from `twist_facts lt sg h0 hI`. Use `eq_of_fock (delSq ℂ n sg) _ _ (hPV _) (Formalism.BranchingDeterminantCap.bs_map_weyl le_rfl sg.natW p hpV) ?_` and prove the remaining obligations. Introduce `v hv`. Unfold `delSq weyl at hv`. Proceed by induction on `hv using Submodule.span_induction with`.
+
+Consider the case `mem v hv`. Take `⟨w, rfl⟩` from `hv`. Use `set vq := applyWord ℚ w (hw ℚ (r := n) le_rfl sg.natW) with hvq`. Establish `hvqV : vq ∈ V` using `Submodule.subset_span ⟨w, rfl⟩`. Establish `hvmap : applyWord ℂ w (hw ℂ (r` using `n) le_rfl sg.natW) = map (algebraMap ℚ ℂ) vq := by`.
+
+Rewrite using `[hvq, ← lclosedeq_applyWord_map, lclosedeq_hw_map]`. Establish `hvC : map (algebraMap ℚ ℂ) vq ∈ delSq ℂ n sg` using `Formalism.BranchingDeterminantCap.bs_map_weyl le_rfl sg.natW vq hvqV`. Establish `hy : dpow n sg.detShift.toNat * map (algebraMap ℚ ℂ) vq ∈ dualWeyl ℂ n n (sgNat sg)` using `Formalism.GradedWeylDivisibility.weylLeDual ℂ n n le_rfl _ hs (tw1 _ hvC)`. Express the relevant statement in the definitionally equal form `fockF _ (applyWord ℂ w (hw ℂ (r := n) le_rfl sg.natW)) = fockF _ (applyWord ℂ w (hw ℂ (r := n) le_rfl sg.natW))`. Rewrite using `[hvmap]`.
+
+Establish `e` using `hPadj (map (Int.castRingHom ℂ) (rename (colEmb (n + 1) n) F0)) _ hvC hy`. Establish `h2 : map (algebraMap ℚ ℂ) ((twQ ⟨vq, hvqV⟩ : ↥(dualWeyl ℚ n n (sgNat sg))) : MvPolynomial (Fin n × Fin n) ℚ) ∈ dualWeyl ℂ n n (sgNat sg)` using `Formalism.GradedWeylDivisibility.dualWeylMap ℚ ℂ _ n n _ _ (twQ ⟨vq, hvqV⟩).2`. Establish `esub : (⟨_, hy⟩ : ↥(dualWeyl ℂ n n (sgNat sg))) = ⟨_, h2⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show dpow n sg.detShift.toNat * map (algebraMap ℚ ℂ) vq = map (algebraMap ℚ ℂ) (dpowR ℚ n c * vq)`.
+
+Rewrite using `[map_mul, map_dpowR]`. Both sides reduce to the same expression. Establish `hw1 : (1 : ℚ) • ((twQ ⟨vq, hvqV⟩ : ↥(dualWeyl ℚ n n (sgNat sg))) : MvPolynomial (Fin n × Fin n) ℚ) ∈ weyl ℚ n n le_rfl (sgNat sg)`. Rewrite using `[one_smul]`. Conclude with `twist_mem_gen ℚ lt sg h0 hI vq hvqV`.
+
+Establish `ebc` using `io_bc (algebraMap ℚ ℂ) (algebraMap ℚ ℂ).injective (lamNat lt) (sgNat sg) hs ioQ hQ2 hQ3 io hio2 hio3 _ 1 one_ne_zero hw1 (twQ ⟨vq, hvqV⟩).2 h2`. Rewrite `e` using `[esub, ebc]`. Establish `eF : map (Int.castRingHom ℂ) (rename (colEmb (n + 1) n) F0) = rename (colEmb (n + 1) n) (map (algebraMap ℚ ℂ) F0q)`. Rewrite using `[hF0q, map_int_rat_complex, map_rename]`. Establish `eext1 : extremal ℂ n sg = map (algebraMap ℚ ℂ) (hw ℚ le_rfl sg.natW)`.
+
+Rewrite using `[lclosedeq_hw_map]`. Both sides reduce to the same expression. Establish `eext2 : extremal ℂ (n + 1) lt = rename (colEmb (n + 1) n) (map (algebraMap ℚ ℂ) (hw ℚ (Nat.le_succ n) (lamNat lt)))`. Rewrite using `[lclosedeq_hw_map]`. Conclude with `hw_rename ℂ lt.natW (natW_last lt)`.
+
+Unfold `normFock at e`. Rewrite `e` using `[eext1, eext2, eF, fockF_rename _ (colEmb_inj _ _), fockF_rename _ (colEmb_inj _ _), leadj_fockF_map, leadj_fockF_map, leadj_fockF_map]`. Express the relevant statement in the definitionally equal form `_ / ((ns : ℚ) : ℂ) = _ / ((nl : ℚ) : ℂ) at e`. Rewrite using `[eF, leadj_fockF_map, hp ⟨vq, hvqV⟩, hφ]`. Establish `hnsC : ((ns : ℚ) : ℂ) ≠ 0` using `by exact_mod_cast hns0.ne'`.
+
+Establish `hnlC : ((nl : ℚ) : ℂ) ≠ 0` using `by exact_mod_cast hnl0.ne'`. Rewrite `e` using `[div_eq_iff hnsC]`. Rewrite using `[e, fockQ_comm F0q]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+
+Consider the case `zero => rw [fockF_zero_right', fockF_zero_right']`. Consider the case `add x y _ _ ihx ihy => rw [fockF_add_right_g_l4, fockF_add_right_g_l4, ihx, ihy]`. Consider the case `smul a x _ ihx => rw [fockF_smul_right_eq_star_mul, fockF_smul_right_eq_star_mul, ihx]`.
+-/
 theorem adjoint_integrality : AdjointIntegrality := by
   intro n lt sg h0 hI io hio1 hio2 hio3 hio4 P hPV hPadj F hF
   have hInter := interlace_nat lt sg h0 hI
@@ -155,8 +215,14 @@ theorem adjoint_integrality : AdjointIntegrality := by
   | add x y _ _ ihx ihy => rw [fockF_add_right_g_l4, fockF_add_right_g_l4, ihx, ihy]
   | smul a x _ ihx => rw [fockF_smul_right_eq_star_mul, fockF_smul_right_eq_star_mul, ihx]
 
+/- English proof (translation)
+The claim follows from `branching_link_of_adjoint adjoint_integrality`.
+-/
 theorem branching_link_all : Link3 := branching_link_of_adjoint adjoint_integrality
 
+/- English proof (translation)
+The claim follows from `branching_family_of_adjoint adjoint_integrality`.
+-/
 theorem branching_link_all_families : Link3F := branching_family_of_adjoint adjoint_integrality
 
 end Formalism.L2.GlobalTheoryTheory.TraceIntegrality

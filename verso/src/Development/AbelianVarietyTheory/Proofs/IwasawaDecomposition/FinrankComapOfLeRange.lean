@@ -17,6 +17,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.Mem.SJ.RowIso
 
+/- English proof (translation)
+Unfold `Module.finrank`. Use `congr 1`. Conclude with `rank_eq_of_equiv_equiv σ (AddEquiv.ofBijective f.toAddMonoidHom hf) hσ (fun r m => f.map_smulₛₗ r m)`.
+-/
 theorem finrank_eq_of_semi {σ : ℂ →+* ℂ} (hσ : Function.Bijective σ) {E F : Type} [AddCommGroup E] [Module ℂ E]
     [AddCommGroup F] [Module ℂ F] (f : E →ₛₗ[σ] F) (hf : Function.Bijective f) :
     Module.finrank ℂ E = Module.finrank ℂ F := by
@@ -24,6 +27,9 @@ theorem finrank_eq_of_semi {σ : ℂ →+* ℂ} (hσ : Function.Bijective σ) {E
   congr 1
   exact rank_eq_of_equiv_equiv σ (AddEquiv.ofBijective f.toAddMonoidHom hf) hσ (fun r m => f.map_smulₛₗ r m)
 
+/- English proof (translation)
+Establish `hσ : Function.Bijective (cj s)` using `Function.Involutive.bijective (cj_cj s)`. Set `f : (Tw.sub s V) →ₛₗ[cj s] V` to `{ toFun := fun x => ⟨Tw.out x.1, x.2⟩ map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl }`. Conclude with `finrank_eq_of_semi hσ f ⟨fun x y h => Subtype.ext (congrArg Subtype.val h), fun y => ⟨⟨Tw.mk s y.1, y.2⟩, rfl⟩⟩`.
+-/
 theorem finrank_twSub (s : Bool) {E : Type} [NormedAddCommGroup E] [InnerProductSpace ℂ E] (V : Submodule ℂ E) :
     Module.finrank ℂ (Tw.sub s V) = Module.finrank ℂ V := by
   have hσ : Function.Bijective (cj s) := Function.Involutive.bijective (cj_cj s)
@@ -33,12 +39,20 @@ theorem finrank_twSub (s : Bool) {E : Type} [NormedAddCommGroup E] [InnerProduct
       map_smul' := fun _ _ => rfl }
   exact finrank_eq_of_semi hσ f ⟨fun x y h => Subtype.ext (congrArg Subtype.val h), fun y => ⟨⟨Tw.mk s y.1, y.2⟩, rfl⟩⟩
 
+/- English proof (translation)
+Establish `h` using `(Submodule.equivMapOfInjective e he (V.comap e)).finrank_eq`. Rewrite `h` using `[Submodule.map_comap_eq_self hV]`. Then use the resulting hypothesis.
+-/
 theorem finrank_comap_of_le_range {E F : Type} [AddCommGroup E] [Module ℂ E] [AddCommGroup F] [Module ℂ F]
     (e : E →ₗ[ℂ] F) (he : Function.Injective e) (V : Submodule ℂ F) (hV : V ≤ LinearMap.range e) :
     Module.finrank ℂ (V.comap e) = Module.finrank ℂ V := by
   have h := (Submodule.equivMapOfInjective e he (V.comap e)).finrank_eq
   rwa [Submodule.map_comap_eq_self hV] at h
 
+/- English proof (translation)
+Set `f : EEC St Gd →ₛₗ[starRingEnd ℂ] goodSub St Gd` to `{ toFun := fun x => ⟨star (x : L2X St), (mem_EEC St Gd _).1 x.2⟩ map_add' := fun x y => Subtype.ext ((conjL (muX St)).map_add _ _) map_smul' := fun c x => Subtype.ext ((conjL (muX St)).map_smulₛₗ c _) }`. Use `finrank_eq_of_semi (Function.Involutive.bijective (fun z => Complex.conj_conj z)) f ⟨fun x y h => ?_, fun y => ?_⟩` and prove the remaining obligations. Conclude with `Subtype.ext (star_injective (congrArg Subtype.val h))`. Use `⟨⟨star (y : L2X St), ?_⟩, Subtype.ext (star_star _)⟩` and prove the remaining obligations. Rewrite using `[mem_EEC, star_star]`.
+
+Conclude with `y.2`.
+-/
 theorem finrank_EEC {D : D7} (St : Formalism.L2.SG.HidaSetting.HidaSetting D) (Gd : GoodOp St) :
     Module.finrank ℂ (EEC St Gd) = Module.finrank ℂ (goodSub St Gd) := by
   let f : EEC St Gd →ₛₗ[starRingEnd ℂ] goodSub St Gd :=
@@ -51,6 +65,9 @@ theorem finrank_EEC {D : D7} (St : Formalism.L2.SG.HidaSetting.HidaSetting D) (G
     rw [mem_EEC, star_star]
     exact y.2
 
+/- English proof (translation)
+Take `⟨_, _, j, _⟩` from `hE`. Rewrite using `[← finrank_EEC, ← j.finrank_eq]`.
+-/
 theorem finrank_of_evalTieT {D : D7} {S : D.what₂.Tau → Formalism.BasicNotions.TH.SPar} {M : DSModel (D.sp.Y 0) S}
     {μ : Measure (GA D (D.sp.Y 0))} {𝓕 : Set (GA D (D.sp.Y 0))} {E : Submodule ℂ (MMap M)}
     {St : Formalism.L2.SG.HidaSetting.HidaSetting D} {Gd : GoodOp St} {ι : GA D (D.sp.Y 0) ≃* St.B.I.GA} {t : GA D (D.sp.Y 0)} {c : ℝ}
@@ -58,6 +75,11 @@ theorem finrank_of_evalTieT {D : D7} {S : D.what₂.Tau → Formalism.BasicNotio
   obtain ⟨_, _, j, _⟩ := hE
   rw [← finrank_EEC, ← j.finrank_eq]
 
+/- English proof (translation)
+Substitute `hSp` using the available equality. Take `rfl` from `eq_of_heq h`. Use `⟨h1, h2, ?_⟩` and prove the remaining obligations. Rewrite using `[← h3]`. Use `(finrank_twSub s ((goodSub St Gd).comap (HHX St).subtype)).trans ?_` and prove the remaining obligations.
+
+Use `finrank_comap_of_le_range _ Subtype.val_injective _ ?_` and prove the remaining obligations. Rewrite using `[Submodule.range_subtype]`. Conclude with `inf_le_left`.
+-/
 theorem clauses {D : D7} {St : Formalism.L2.SG.HidaSetting.HidaSetting D} (s : Bool) {Bs : DefBase D.what₂.LL} {Df : DefSide Bs}
     (Dc : DefCols Df) (hK : St.LevelSubgroupCharacter) (Gd : GoodOp St) (wdD : Dc.Mem → D.what₂.Word) (pw : ∀ x, PerW St hK (wdD x))
     (bR : ∀ x, Fin (Dc.a x) → (D.mem (wdD x)).A.Mram) (Sp : SPer Dc) (hSp : Sp = spOf s Dc hK Gd wdD pw bR)
@@ -77,6 +99,13 @@ theorem clauses {D : D7} {St : Formalism.L2.SG.HidaSetting.HidaSetting D} (s : B
   rw [Submodule.range_subtype]
   exact inf_le_left
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 I0 T A3 Ks _ _ _ R F hHE hle St Gd hK wdD pw bR hSp ι t c _ hE sEE sEEc κS hh hS`. Use `clauses (twAt D.what₂.embLL A3.A.v0) (F.Dc (R.toCx3 F).zs) hK Gd wdD pw bR (F.Sp (R.toCx3 F).zs) hSp ((R.toCx3 F).EEl true) ((R.toCx3 F).nP true) sEE sEEc hh (fun e he => (hS e he).2) (fun e he => ?_) ?_` and prove the remaining obligations. Use `(congrArg (fun y : Tw (twAt D.what₂.embLL A3.A.v0) (HHX St) => ((Tw.out y : HHX St) : L2X St) ∈ goodSub St Gd) (hS e he).1).mpr ?_ show ((κS • sEEofTT (R.MY 0) R.ν0 R.fd0 _ St Gd ι t c ⟨R.HE.e (Tw.out e), he⟩ : HHX St) : L2X St) ∈ goodSub St Gd` and prove the remaining obligations. Rewrite using `[Submodule.coe_smul]`. Use `Submodule.smul_mem _ _ ?_` and prove the remaining obligations.
+
+Unfold `sEEofTT`. Rewrite using `[dif_pos hE]`. Conclude with `(mem_EEC St Gd _).1 (hE.choose_spec.2.choose _).2`. Use `(finrank_of_evalTieT hE).trans ?_` and prove the remaining obligations. Use `Eq.symm ((finrank_twSub (E := R.HE.H) (twAt D.what₂.embLL A3.A.v0) ((R.toRealDat.EEat (R.toRealDat.levR F.lv2 true)).comap R.HE.e)).trans ?_)` and prove the remaining obligations.
+
+Use `finrank_comap_of_le_range _ hHE.1 _ ?_` and prove the remaining obligations. Rewrite using `[hHE.2.1]`. Conclude with `hle`.
+-/
 theorem seeIso : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 I0 T : Type) (A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3), R.toRealDat.models_HE → (R.toRealDat.EEat (R.toRealDat.levR F.lv2 true)) ≤ R.toRealDat.EEat R.triv → ∀ (St : Formalism.L2.SG.HidaSetting.HidaSetting D) (Gd : GoodOp St) (hK : St.LevelSubgroupCharacter) (wdD : (F.Dc (R.toCx3 F).zs).Mem → D.what₂.Word) (pw : ∀ x, PerW St hK (wdD x)) (bR : ∀ x, Fin ((F.Dc (R.toCx3 F).zs).a x) → (D.mem (wdD x)).A.Mram), F.Sp (R.toCx3 F).zs = spOf (twAt D.what₂.embLL A3.A.v0) (F.Dc (R.toCx3 F).zs) hK Gd wdD pw bR → ∀ (ι : GA D (D.sp.Y 0) ≃* St.B.I.GA) (t : GA D (D.sp.Y 0)) (c : ℝ), 0 < c → EvalTieT (R.MY 0) R.ν0 R.fd0 (R.toRealDat.EEat (R.toRealDat.levR F.lv2 true)) St Gd ι t c → ∀ (sEE : (R.toCx3 F).EE →ₗ⋆[ℂ] (F.fc (R.toCx3 F).zs).Sp.HH) (sEEc : Tw (twAt D.what₂.embLL A3.A.v0) R.HE.H →ₗ⋆[ℂ] Tw (twAt D.what₂.embLL A3.A.v0) (HHX St)) (κS : ℂ), HEq sEE sEEc → (∀ (x : Tw (twAt D.what₂.embLL A3.A.v0) R.HE.H) (hx : R.HE.e (Tw.out x) ∈ (R.toRealDat.EEat (R.toRealDat.levR F.lv2 true))), sEEc x = Tw.mk (twAt D.what₂.embLL A3.A.v0) (κS • sEEofTT (R.MY 0) R.ν0 R.fd0 (R.toRealDat.EEat (R.toRealDat.levR F.lv2 true)) St Gd ι t c ⟨R.HE.e (Tw.out x), hx⟩) ∧ RealDat.nP F.lv2 true * ‖sEEc x‖ ^ 2 = ‖x‖ ^ 2) → (R.toCx3 F).SEEIso sEE := by
   intro D G _ _ Pl0 I0 T A3 Ks _ _ _ R F hHE hle St Gd hK wdD pw bR hSp ι t c _ hE sEE sEEc κS hh hS
   refine clauses (twAt D.what₂.embLL A3.A.v0) (F.Dc (R.toCx3 F).zs) hK Gd wdD pw bR (F.Sp (R.toCx3 F).zs) hSp

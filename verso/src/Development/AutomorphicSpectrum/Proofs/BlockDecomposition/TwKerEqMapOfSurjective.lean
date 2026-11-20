@@ -5,6 +5,11 @@ open GlobalTheory.PRep
 
 namespace GlobalTheory.CompanionTheory.PRep
 
+/- English proof (translation)
+Unfold `GlobalTheory.PRep.twKer`. Rewrite using `[Submodule.map_span]`. Use `congr 1`. Use extensionality with `w`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨n, w', rfl⟩`. Take `⟨v, rfl⟩` from `hf w'`. Conclude with `⟨ρ n v - (θ n : ℂ) • v, ⟨n, v, rfl⟩, by rw [map_sub, map_smul, hint]⟩`. Introduce and unpack `⟨_, ⟨n, v, rfl⟩, rfl⟩`. Conclude with `⟨n, f v, by rw [map_sub, map_smul, hint]⟩`.
+-/
 theorem twKer_eq_map_of_surjective {G V W : Type} [Group G] [AddCommGroup V] [Module ℂ V]
     [AddCommGroup W] [Module ℂ W] (ρ : Representation ℂ G V) (σ : Representation ℂ G W)
     (N : Subgroup G) (θ : N →* ℂˣ) (f : V →ₗ[ℂ] W) (hf : Function.Surjective f)
@@ -20,6 +25,9 @@ theorem twKer_eq_map_of_surjective {G V W : Type} [Group G] [AddCommGroup V] [Mo
   · rintro ⟨_, ⟨n, v, rfl⟩, rfl⟩
     exact ⟨n, f v, by rw [map_sub, map_smul, hint]⟩
 
+/- English proof (translation)
+Introduce `ρ σ N θ f hf hint` and use `GlobalTheory.CompanionTheory.PRep.twKer_eq_map_of_surjective ρ σ N θ f hf hint`.
+-/
 theorem twKer_map_closed : ∀ {G V W : Type} [Group G] [AddCommGroup V] [Module ℂ V] [AddCommGroup W]
     [Module ℂ W] (ρ : Representation ℂ G V) (σ : Representation ℂ G W) (N : Subgroup G)
     (θ : N →* ℂˣ) (f : V →ₗ[ℂ] W), Function.Surjective f → (∀ g v, f (ρ g v) = σ g (f v)) →

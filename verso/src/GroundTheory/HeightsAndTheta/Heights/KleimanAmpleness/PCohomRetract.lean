@@ -18,6 +18,9 @@ variable {M : Type v} [AddCommGroup M] [Module (Poly S N) M] [Module S M]
 variable {M' : Type w} [AddCommGroup M'] [Module (Poly S N) M'] [Module S M']
   [IsScalarTower S (Poly S N) M']
 
+/- English proof (translation)
+Introduce `x`. Proceed by induction on `x using LocalizedModule.induction_on with`. Consider the case `h m s => rw [locMap_mk, locMap_mk, hgf m]`.
+-/
 theorem locMap_retract (f : M →ₗ[Poly S N] M') (g : M' →ₗ[Poly S N] M)
     (hgf : Function.LeftInverse g f) (I : Finset (Fin (N + 1))) :
     Function.LeftInverse (locMap g I) (locMap f I) := by
@@ -25,6 +28,9 @@ theorem locMap_retract (f : M →ₗ[Poly S N] M') (g : M' →ₗ[Poly S N] M)
   induction x using LocalizedModule.induction_on with
   | h m s => rw [locMap_mk, locMap_mk, hgf m]
 
+/- English proof (translation)
+Introduce `x`. Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Conclude with `congrArg Submodule.Quotient.mk (Subtype.ext (funext fun I => locMap_retract f.toLin g.toLin hgf I.1.1 (z.1 I)))`.
+-/
 theorem cohomMap_retract {𝓜 : GradedPMod S N M} {𝓜' : GradedPMod S N M'}
     (f : GradedHom 𝓜 𝓜') (g : GradedHom 𝓜' 𝓜) (hgf : Function.LeftInverse g.toLin f.toLin)
     (i : ℕ) (c : ℤ) : Function.LeftInverse (cohomMap g i c) (cohomMap f i c) := by
@@ -33,6 +39,9 @@ theorem cohomMap_retract {𝓜 : GradedPMod S N M} {𝓜' : GradedPMod S N M'}
   exact congrArg Submodule.Quotient.mk
     (Subtype.ext (funext fun I => locMap_retract f.toLin g.toLin hgf I.1.1 (z.1 I)))
 
+/- English proof (translation)
+Introduce `S _ N M M' _ _ _ _ _ _ _ _ 𝓜 𝓜' f g hgf i c`. Conclude with `(cohomMap_retract f g hgf i c).injective`.
+-/
 theorem CohomRetract.proof : CohomRetract.Statement.{u, v, w} := by
   intro S _ N M M' _ _ _ _ _ _ _ _ 𝓜 𝓜' f g hgf i c
   exact (cohomMap_retract f g hgf i c).injective

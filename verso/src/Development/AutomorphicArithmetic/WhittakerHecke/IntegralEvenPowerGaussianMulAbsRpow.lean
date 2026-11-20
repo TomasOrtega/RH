@@ -10,6 +10,19 @@ open scoped ComplexOrder
 private noncomputable def gg (a : ℂ) (r : ℝ) : ℂ :=
   (r : ℂ) ^ (2 * a - 1) * Complex.exp (-(Real.pi : ℂ) * ((r ^ 2 : ℝ) : ℂ))
 
+/- English proof (translation)
+Set `F : ℝ → ℂ` to `fun t => (t : ℂ) ^ (a - 1) * Complex.exp (-((Real.pi : ℝ) * t))`. Establish `key : ∀ x ∈ Set.Ioi (0 : ℝ), (|(2 : ℝ)| * x ^ ((2 : ℝ) - 1)) • F (x ^ (2 : ℝ)) = 2 * gg a x` using `fun x hx => by`. Establish `hx' : (0 : ℝ) < x` using `hx`. Establish `h0 : (x : ℂ) ≠ 0` using `by exact_mod_cast hx'.ne'`. Establish `h1 : ((x ^ (2 : ℝ) : ℝ) : ℂ) ^ (a - 1) = (x : ℂ) ^ (2 * (a - 1))`.
+
+Rewrite using `[Real.rpow_two, sq, Complex.ofReal_mul, Complex.mul_cpow_ofReal_nonneg hx'.le hx'.le, ← Complex.cpow_add _ _ h0]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : (x : ℂ) ^ (2 * a - 1) = x * (x : ℂ) ^ (2 * (a - 1))`. Rewrite using `[show 2 * a - 1 = 1 + 2 * (a - 1) by ring, Complex.cpow_add _ _ h0, Complex.cpow_one]`.
+
+Simplify using `only [F, gg, h1, h2, Complex.real_smul]`. Rewrite using `[show (2 : ℝ) - 1 = 1 by norm_num, Real.rpow_one, Real.rpow_two, abs_two]`. Use `push_cast`. Put the polynomial expressions in normal form. Establish `hF : IntegrableOn F (Set.Ioi 0)`.
+
+Establish `h` using `(integrableOn_Ioi_comp_mul_left_iff (fun t : ℝ => (Real.exp (-t) : ℂ) * (t : ℂ) ^ (a - 1)) 0 Real.pi_pos).2 (by simpa using Complex.GammaIntegral_convergent ha)`. Use `(h.const_mul ((Real.pi : ℂ) ^ (a - 1))⁻¹).congr ?_` and prove the remaining obligations. Use `filter_upwards [ae_restrict_mem measurableSet_Ioi] with t ht`. Establish `hp : (Real.pi : ℂ) ^ (a - 1) ≠ 0` using `by simp [Complex.cpow_eq_zero_iff, Real.pi_ne_zero]`. Simplify using `only [F]`.
+
+Rewrite using `[Complex.ofReal_mul, Complex.mul_cpow_ofReal_nonneg Real.pi_pos.le (le_of_lt ht)]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Establish `h1` using `(integrableOn_Ioi_comp_rpow_iff F (p := 2) two_ne_zero).2 hF`. Establish `h2` using `integral_comp_rpow_Ioi F (p := 2) two_ne_zero`.
+
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `((h1.congr_fun key measurableSet_Ioi).const_mul (2 : ℂ)⁻¹).congr (ae_of_all _ fun x => ?_)` and prove the remaining obligations. Simplify using the standard rewrite rules. Rewrite `h2` using `[setIntegral_congr_fun measurableSet_Ioi key, integral_const_mul, Complex.integral_cpow_mul_exp_neg_mul_Ioi ha Real.pi_pos]`. Rewrite using `[eq_div_iff two_ne_zero, mul_comm, h2, Complex.cpow_neg, one_div, Complex.inv_cpow _ _ (by rw [Complex.arg_ofReal_of_nonneg Real.pi_pos.le]; exact Real.pi_ne_zero.symm)]`.
+-/
 private theorem gg_int {a : ℂ} (ha : 0 < a.re) : IntegrableOn (gg a) (Set.Ioi 0) ∧
     ∫ r in Set.Ioi (0 : ℝ), gg a r = (Real.pi : ℂ) ^ (-a) * Complex.Gamma a / 2 := by
   let F : ℝ → ℂ := fun t => (t : ℂ) ^ (a - 1) * Complex.exp (-((Real.pi : ℝ) * t))
@@ -46,6 +59,19 @@ private theorem gg_int {a : ℂ} (ha : 0 < a.re) : IntegrableOn (gg a) (Set.Ioi 
     rw [eq_div_iff two_ne_zero, mul_comm, h2, Complex.cpow_neg, one_div,
       Complex.inv_cpow _ _ (by rw [Complex.arg_ofReal_of_nonneg Real.pi_pos.le]; exact Real.pi_ne_zero.symm)]
 
+/- English proof (translation)
+Introduce `e s hs`. Establish `ha : 0 < (s + e).re` using `by simp; positivity`. Establish `hf : ∀ r : ℝ, r ≠ 0 → (r : ℂ) ^ (2 * e) * Complex.exp (-(Real.pi : ℂ) * ((r ^ 2 : ℝ) : ℂ)) * ((|r| : ℝ) : ℂ) ^ (2 * s - 1) = gg (s + e) |r|` using `fun r hr => by`. Establish `h1 : ((|r| : ℝ) : ℂ) ≠ 0` using `by simpa using hr`. Establish `h2 : (r : ℂ) ^ (2 * e) = ((|r| : ℝ) : ℂ) ^ ((2 * e : ℕ) : ℂ)`.
+
+Rewrite using `[Complex.cpow_natCast, ← Complex.ofReal_pow, ← Complex.ofReal_pow, pow_mul, pow_mul, sq_abs]`. Rewrite using `[h2, gg, mul_right_comm, ← Complex.cpow_add _ _ h1, sq_abs]`. Use `congr 2`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hae : (fun r : ℝ => (r : ℂ) ^ (2 * e) * Complex.exp (-(Real.pi : ℂ) * ((r ^ 2 : ℝ) : ℂ)) * ((|r| : ℝ) : ℂ) ^ (2 * s - 1)) =ᵐ[volume] fun r => gg (s + e) |r|` using `by filter_upwards [compl_mem_ae_iff.2 (measure_singleton (0 : ℝ))] with r hr using hf r hr`. Take `⟨hi, hv⟩` from `gg_int ha`. Establish `hp : IntegrableOn (fun r => gg (s + e) |r|) (Set.Ioi 0)` using `hi.congr_fun (fun r hr => by rw [abs_of_pos hr]) measurableSet_Ioi`. Establish `hn : IntegrableOn (fun r => gg (s + e) |r|) (Set.Iic 0)`. Rewrite using `[← Measure.map_neg_eq_self (volume : Measure ℝ)]`.
+
+Establish `m : MeasurableEmbedding fun x : ℝ => -x` using `(Homeomorph.neg ℝ).measurableEmbedding`. Rewrite using `[m.integrableOn_map_iff]`. Repeatedly rewrite using `[Function.comp_def, abs_neg, Set.neg_preimage, Set.neg_Iic, neg_zero]`. Conclude with `Iff.mpr integrableOn_Ici_iff_integrableOn_Ioi hp`. Establish `hall : Integrable fun r => gg (s + e) |r|`.
+
+Rewrite using `[← integrableOn_univ, ← Set.Iic_union_Ioi (a := (0 : ℝ))]`. Conclude with `hn.union hp`. Use `⟨hall.congr hae.symm, ?_⟩` and prove the remaining obligations. Establish `e1 : ∫ r in Set.Ioi (0 : ℝ), gg (s + e) |r| = ∫ r in Set.Ioi (0 : ℝ), gg (s + e) r` using `setIntegral_congr_fun measurableSet_Ioi fun r hr => by rw [abs_of_pos hr]`. Establish `e2 : ∫ r in Set.Iic (0 : ℝ), gg (s + e) |r| = ∫ r in Set.Ioi (0 : ℝ), gg (s + e) |r|`.
+
+Rewrite using `[← neg_zero, ← integral_comp_neg_Iic]`. Simplify using the standard rewrite rules. Rewrite using `[integral_congr_ae hae, ← intervalIntegral.integral_Iic_add_Ioi hn hp, e2, e1, hv]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem UpperTheory.integral_even_power_gaussian_mul_abs_rpow :
     ∀ (e : ℕ) (s : ℂ), 0 < s.re → Integrable (fun r : ℝ => (r : ℂ) ^ (2 * e) * Complex.exp (-(Real.pi : ℂ) * ((r ^ 2 : ℝ) : ℂ)) * ((|r| : ℝ) : ℂ) ^ (2 * s - 1)) ∧ ∫ r : ℝ, (r : ℂ) ^ (2 * e) * Complex.exp (-(Real.pi : ℂ) * ((r ^ 2 : ℝ) : ℂ)) * ((|r| : ℝ) : ℂ) ^ (2 * s - 1) = (Real.pi : ℂ) ^ (-(s + e)) * Complex.Gamma (s + e) := by
   intro e s hs

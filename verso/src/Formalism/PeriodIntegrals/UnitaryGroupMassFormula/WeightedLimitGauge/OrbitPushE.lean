@@ -12,6 +12,9 @@ namespace PI.RhsWLim.W
 
 open PI.RhsWLim
 
+/- English proof (translation)
+Establish `hq : ∀ i, Continuous (fun q : TrE k => ((q i : ℝ) : ℂ))` using `fun i => Complex.continuous_ofReal.comp (EuclideanSpace.proj i).continuous`. Unfold `opBeta`. Conclude with `((hq _).add ((hq _).mul continuous_const)).div_const _`.
+-/
 theorem continuous_opBeta (k : ℕ) (a : Fin k) : Continuous (fun q : TrE k => opBeta k q a) := by
 
   have hq : ∀ i, Continuous (fun q : TrE k => ((q i : ℝ) : ℂ)) :=
@@ -19,6 +22,11 @@ theorem continuous_opBeta (k : ℕ) (a : Fin k) : Continuous (fun q : TrE k => o
   unfold opBeta
   exact ((hq _).add ((hq _).mul continuous_const)).div_const _
 
+/- English proof (translation)
+Establish `hq : ∀ i, Continuous (fun q : TrE k => ((q i : ℝ) : ℂ))` using `fun i => Complex.continuous_ofReal.comp (EuclideanSpace.proj i).continuous`. Use `continuous_pi (fun i => continuous_pi (fun j => ?_))` and prove the remaining obligations. Unfold `opGen`. Use `split_ifs`. Apply the tactic sequence `all_goals first`.
+
+Consider the case `exact continuous_const`. Consider the case `exact continuous_opBeta k _`. Consider the case `exact (continuous_opBeta k _).star`. Consider the case `exact (hq none).mul continuous_const`.
+-/
 theorem continuous_opGen (k r : ℕ) : Continuous (opGen k r : TrE k → Mat k r) := by
 
   have hq : ∀ i, Continuous (fun q : TrE k => ((q i : ℝ) : ℂ)) :=
@@ -32,6 +40,11 @@ theorem continuous_opGen (k r : ℕ) : Continuous (opGen k r : TrE k → Mat k r
     | exact (continuous_opBeta k _).star
     | exact (hq none).mul continuous_const
 
+/- English proof (translation)
+Use `letI : NormedRing (Mat k r) := Matrix.linftyOpNormedRing`. Use `letI : NormedAlgebra ℂ (Mat k r) := Matrix.linftyOpNormedAlgebra`. Use `letI : NormedAlgebra ℚ (Mat k r) := Matrix.linftyOpNormedAlgebra`. Establish `h1 : Continuous (fun q : TrE k => NormedSpace.exp (opGen k r q))` using `NormedSpace.exp_continuous.comp (continuous_opGen k r)`. Establish `h2 : Continuous (fun q : TrE k => NormedSpace.exp (opGen k r q) *ᵥ opBase k r T')` using `h1.matrix_mulVec continuous_const`.
+
+Unfold `opCo`. Conclude with `(continuous_pi (fun i => (continuous_apply (wI k r (Fin.castSucc i))).comp h2)).prodMk ((continuous_apply (wI k r (Fin.last k))).comp h2)`.
+-/
 theorem continuous_opEmap (k r : ℕ) (T' : ℝ) :
     Continuous (fun q : TrE k => opCo k r (NormedSpace.exp (opGen k r q) *ᵥ opBase k r T')) := by
 
@@ -46,6 +59,13 @@ theorem continuous_opEmap (k r : ℕ) (T' : ℝ) :
   exact (continuous_pi (fun i => (continuous_apply (wI k r (Fin.castSucc i))).comp h2)).prodMk
     ((continuous_apply (wI k r (Fin.last k))).comp h2)
 
+/- English proof (translation)
+Introduce `k r T' ρ`. Unfold `opE`. Establish `hball : Metric.ball (0 : TrE k) ρ = ⋃ n : ℕ, Metric.closedBall 0 (ρ - 1 / ((n : ℝ) + 1))`. Use extensionality with `x`. Simplify using `only [Metric.mem_ball, Metric.mem_closedBall, Set.mem_iUnion, dist_zero_right]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨n, hn⟩` from `exists_nat_one_div_lt (sub_pos.mpr h)`. Conclude with `⟨n, by linarith⟩`. Introduce and unpack `⟨n, hn⟩`.
+
+Establish `: 0 < 1 / ((n : ℝ) + 1)` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[hball, Set.image_iUnion]`. Use `MeasurableSet.iUnion (fun n => ?_)` and prove the remaining obligations. Conclude with `((isCompact_closedBall _ _).image (continuous_opEmap k r T')).isClosed.measurableSet`.
+-/
 theorem opEMeas : OpEMeas := by
 
   intro k r T' ρ
@@ -64,11 +84,17 @@ theorem opEMeas : OpEMeas := by
   refine MeasurableSet.iUnion (fun n => ?_)
   exact ((isCompact_closedBall _ _).image (continuous_opEmap k r T')).isClosed.measurableSet
 
+/- English proof (translation)
+Rewrite using `[EuclideanSpace.norm_eq, Real.sq_sqrt (by positivity)]`. Conclude with `Finset.sum_congr rfl (fun i _ => by rw [Complex.sq_norm])`.
+-/
 theorem normSq_sum_eq (k : ℕ) (y : EuclideanSpace ℂ (Fin k)) : ∑ i, Complex.normSq (y i) = ‖y‖ ^ 2 := by
 
   rw [EuclideanSpace.norm_eq, Real.sq_sqrt (by positivity)]
   exact Finset.sum_congr rfl (fun i _ => by rw [Complex.sq_norm])
 
+/- English proof (translation)
+Establish `h1 : Complex.normSq (Complex.exp (q.2 * Complex.I)) = 1`. Rewrite using `[Complex.normSq_eq_norm_sq, Complex.norm_exp_ofReal_mul_I, one_pow]`. Simplify using `only [hypS, hypPar, Set.mem_setOf_eq]`. Rewrite using `[normSq_sum_eq, Complex.normSq_mul, Complex.normSq_ofReal, h1, mul_one, Real.mul_self_sqrt (by positivity)]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hypPar_mem (k : ℕ) (T' : ℝ) (hT' : 0 < T') (q : EuclideanSpace ℂ (Fin k) × ℝ) :
     hypPar k T' q ∈ hypS k T' := by
 
@@ -79,6 +105,23 @@ theorem hypPar_mem (k : ℕ) (T' : ℝ) (hT' : 0 < T') (q : EuclideanSpace ℂ (
     Real.mul_self_sqrt (by positivity)]
   ring
 
+/- English proof (translation)
+Introduce `k T' hT'`. Establish `hcont : Continuous (hypPar k T')`. Unfold `hypPar`. Use `(continuous_pi (fun i => ?_)).prodMk ?_` and prove the remaining obligations. Conclude with `(EuclideanSpace.proj i).continuous.comp continuous_fst`.
+
+Use `(Complex.continuous_ofReal.comp ?_).mul ?_` and prove the remaining obligations. Conclude with `Real.continuous_sqrt.comp (((continuous_norm.comp continuous_fst).pow 2).add continuous_const)`. Conclude with `Complex.continuous_exp.comp ((Complex.continuous_ofReal.comp continuous_snd).mul continuous_const)`. Establish `hmeas : Measurable (hypPar k T')` using `hcont.measurable`. Establish `hSc : IsClosed (hypS k T')`.
+
+Establish `h1 : Continuous (fun p : (Fin k → ℂ) × ℂ => ∑ i, Complex.normSq (p.1 i) - Complex.normSq p.2)` using `(continuous_finset_sum _ (fun i _ => Complex.continuous_normSq.comp ((continuous_apply i).comp continuous_fst))).sub (Complex.continuous_normSq.comp continuous_snd)`. Conclude with `isClosed_eq h1 continuous_const`. Prove the components needed by the constructor for the conclusion. Unfold `hypM`. Rewrite using `[Measure.smul_apply, Measure.map_apply hmeas hSc.measurableSet.compl]`.
+
+Establish `h2 : hypPar k T' ⁻¹' (hypS k T')ᶜ = ∅`. Use extensionality with `q`. Simplify using `only [Set.mem_preimage, Set.mem_compl_iff, Set.mem_empty_iff_false, iff_false, not_not]`. Conclude with `hypPar_mem k T' hT' q`. Rewrite using `[h2, measure_empty, smul_zero]`.
+
+Introduce `C hC`. Take `⟨R, hR⟩` from `(hC.image continuous_fst).isBounded.exists_norm_le`. Establish `hsub : hypPar k T' ⁻¹' C ⊆ Metric.closedBall (0 : EuclideanSpace ℂ (Fin k)) (Real.sqrt (k * R ^ 2)) ×ˢ Set.univ`. Introduce `q hq`. Use `⟨?_, Set.mem_univ _⟩` and prove the remaining obligations.
+
+Establish `h1 : ‖(hypPar k T' q).1‖ ≤ R` using `hR _ ⟨_, hq, rfl⟩`. Establish `h2 : ∀ i, ‖q.1 i‖ ≤ R` using `fun i => le_trans (norm_le_pi_norm (hypPar k T' q).1 i) h1`. Rewrite using `[Metric.mem_closedBall, dist_zero_right, EuclideanSpace.norm_eq]`. Apply `Real.sqrt_le_sqrt` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation.
+
+Unfold `hypM`. Rewrite using `[Measure.smul_apply, Measure.map_apply hmeas hC.isClosed.measurableSet, smul_eq_mul]`. Use `ENNReal.mul_lt_top (ENNReal.div_lt_top ENNReal.one_ne_top two_ne_zero) ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Apply `ENNReal.mul_lt_top measure_closedBall_lt_top` to reduce the goal to its premises.
+
+Rewrite using `[Measure.restrict_apply_univ, Real.volume_Ioc]`. Conclude with `ENNReal.ofReal_lt_top`.
+-/
 theorem hypLF : HypLF := by
   intro k T' hT'
   have hcont : Continuous (hypPar k T') := by

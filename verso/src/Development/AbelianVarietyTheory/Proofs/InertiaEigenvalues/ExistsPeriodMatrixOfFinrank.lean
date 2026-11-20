@@ -6,6 +6,37 @@ noncomputable section
 
 namespace GlobalTheory.RegularRing
 
+/- English proof (translation)
+Distinguish the cases in `hn : IsEmpty n`. Use `⟨1, fun g => ?_⟩` and prove the remaining obligations. Use extensionality with `i`. Conclude with `isEmptyElim i`. Rewrite `hn` using `[not_isEmpty_iff]`.
+
+Set `WE : Submodule E (n → B)` to `{ carrier := W add_mem' := W.add_mem zero_mem' := W.zero_mem smul_mem' := by`. Introduce `c x hx`. Rewrite `hx`, the goal using `[SetLike.mem_coe, hW]`. Introduce `g`. Establish `h1 : (fun i => act g ((c • x) i)) = algebraMap E B c • fun i => act g (x i)`.
+
+Use function extensionality and compare the values at `i`. Simplify using `[Algebra.smul_def, hE]`. Rewrite using `[h1, Matrix.mulVec_smul, hx g]`. Use function extensionality and compare the values at `i`. Simplify using `[Algebra.smul_def] }`.
+
+Establish `hWE : ∀ x, x ∈ WE ↔ x ∈ W` using `fun x => Iff.rfl`. Establish `hfr : finrank E ↥WE = Fintype.card n`. Establish `h1` using `Module.finrank_mul_finrank F E ↥WE`. Establish `h2 : finrank F ↥WE = finrank F ↥W` using `((Submodule.restrictScalarsEquiv F E (n → B) WE).restrictScalars F).finrank_eq.symm.trans (by congr 1)`. Rewrite `h1` using `[h2, hdim]`.
+
+Conclude with `Nat.eq_of_mul_eq_mul_left finrank_pos h1`. Use `haveI : Module.Finite E ↥WE := Module.finite_of_finrank_pos (by rw [hfr]; exact Fintype.card_pos)`. Set `b : Basis n E ↥WE` to `(Module.finBasisOfFinrankEq E ↥WE hfr).reindex (Fintype.equivFin n).symm`. Set `v : n → (n → B)` to `fun j => (b j : n → B)`. Establish `hv : ∀ g j, ((A g).map (algebraMap F B)).mulVec (fun i => act g (v j i)) = v j` using `fun g j => (hW _).1 ((hWE _).1 (b j).2) g`.
+
+Set `σ : G → (n → B) →+ (n → B)` to `fun g => { toFun := fun x => ((A g).map (algebraMap F B)).mulVec (fun i => act g (x i)) map_zero' := by`. Simplify using `only [Pi.zero_apply, map_zero]`. Conclude with `Matrix.mulVec_zero _`. Use the proof step `map_add' := by`. Introduce `x y`.
+
+Simplify using `only [Pi.add_apply, map_add]`. Conclude with `Matrix.mulVec_add _ _ _ }`. Establish `hσ : ∀ g (c : B) (w : n → B), σ g (c • w) = act g c • σ g w`. Introduce `g c w`. Express the relevant statement in the definitionally equal form `((A g).map (algebraMap F B)).mulVec (fun i => act g ((c • w) i)) = act g c • ((A g).map (algebraMap F B)).mulVec (fun i => act g (w i))`.
+
+Rewrite using `[← Matrix.mulVec_smul]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Establish `hvE : LinearIndependent E v` using `b.linearIndependent.map' WE.subtype WE.ker_subtype`.
+
+Establish `hvB : LinearIndependent B v`. Rewrite using `[linearIndependent_iff_finset_linearIndependent]`. Introduce `s`. Conclude with `linearIndepOn_of_invariant (fun g c => act g c) σ hσ hreg v hv s (hvE.linearIndepOn _)`. Set `Q : Matrix n n B` to `Matrix.of fun i j => v j i`.
+
+Establish `hQ : ∀ g, (A g).map (algebraMap F B) * Q.map (act g) = Q`. Introduce `g`. Use extensionality with `i j`. Use `congrFun (hv g j) i` as an intermediate fact. Rewrite using `[Matrix.mul_apply]`.
+
+Simplify `this` using `[Q, Matrix.mulVec, dotProduct]`. Establish `hdet0 : Q.det ≠ 0`. Introduce `h0`. Take `⟨c, hc, hc0⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 h0`. Apply `hc` to reduce the goal to its premises.
+
+Use function extensionality and compare the values at `j`. Use `Fintype.linearIndependent_iff.1 hvB c ?_ j` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Use `congrFun hc0 i` as an intermediate fact. Simplify `this` using `[Q, Matrix.mulVec, dotProduct, mul_comm]`.
+
+Establish `hdetU : IsUnit Q.det`. Use `hu _ hdet0 fun g => ?_` and prove the remaining obligations. Establish `h2` using `congrArg Matrix.det (hQ g)`. Rewrite `h2` using `[Matrix.det_mul]`. Establish `h3 : ((A g).map (algebraMap F B)).det = algebraMap F B (A g).det` using `(RingHom.map_det _ _).symm`.
+
+Establish `h4 : (Q.map (act g)).det = act g Q.det` using `(RingHom.map_det _ _).symm`. Rewrite `h2` using `[h3, h4]`. Use `⟨(A g).det⁻¹, ?_⟩` and prove the remaining obligations. Use `conv_rhs => rw [← h2]`. Rewrite using `[← mul_assoc, ← map_mul, inv_mul_cancel₀ (hA g), map_one, one_mul]`.
+
+Conclude with `⟨Matrix.GeneralLinearGroup.mk'' Q hdetU, hQ⟩`.
+-/
 theorem exists_periodMatrix_of_finrank (F E : Type) [Field F] [Field E] [Algebra F E] [FiniteDimensional F E]
     (B : Type) [CommRing B] [IsDomain B] [Algebra F B] [Algebra E B] [IsScalarTower F E B]
     (G : Type) (act : G → B →+* B) (n : Type) [Fintype n] [DecidableEq n] (A : G → Matrix n n F)

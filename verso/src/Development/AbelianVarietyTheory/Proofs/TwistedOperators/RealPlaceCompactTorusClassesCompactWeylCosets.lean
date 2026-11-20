@@ -20,6 +20,9 @@ section Mat
 
 variable {r : ℕ}
 
+/- English proof (translation)
+Simplify using `only [Matrix.mulVec_diagonal, dotProduct, Pi.star_apply, Complex.ofReal_sum, Complex.ofReal_mul, Complex.normSq_eq_conj_mul_self]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[mul_left_comm]`. Both sides reduce to the same expression.
+-/
 theorem form_diagonal (d : Fin r → ℝ) (u : Fin r → ℂ) :
     star u ⬝ᵥ (Matrix.diagonal (fun i => (d i : ℂ)) *ᵥ u) = ((∑ i, d i * Complex.normSq (u i) : ℝ) : ℂ) := by
   simp only [Matrix.mulVec_diagonal, dotProduct, Pi.star_apply, Complex.ofReal_sum, Complex.ofReal_mul,
@@ -28,6 +31,13 @@ theorem form_diagonal (d : Fin r → ℝ) (u : Fin r → ℂ) :
   rw [mul_left_comm]
   rfl
 
+/- English proof (translation)
+Establish `hnn : ∀ k ∈ Finset.univ, 0 ≤ x k * Complex.normSq (w k)`. Introduce `k _`. Distinguish the cases in `hk : 0 < x k`. Conclude with `mul_nonneg hk.le (Complex.normSq_nonneg _)`. Rewrite using `[hw k hk, map_zero, mul_zero]`.
+
+Establish `hz` using `(Finset.sum_eq_zero_iff_of_nonneg hnn).1 (le_antisymm hs (Finset.sum_nonneg hnn))`. Use function extensionality and compare the values at `k`. Distinguish the cases in `hk : 0 < x k`. Break down `mul_eq_zero.1 (hz k (Finset.mem_univ k)) with h0 | h0` into its components or cases. Conclude with `absurd h0 hk.ne'`.
+
+Conclude with `Complex.normSq_eq_zero.1 h0`. Conclude with `hw k hk`.
+-/
 private lemma eq_zero_of_sum_weighted_normSq_nonpos {r : ℕ} (x : Fin r → ℝ) (w : Fin r → ℂ) (hw : ∀ k, ¬ 0 < x k → w k = 0)
     (hs : ∑ k, x k * Complex.normSq (w k) ≤ 0) : w = 0 := by
   have hnn : ∀ k ∈ Finset.univ, 0 ≤ x k * Complex.normSq (w k) := by
@@ -43,6 +53,13 @@ private lemma eq_zero_of_sum_weighted_normSq_nonpos {r : ℕ} (x : Fin r → ℝ
     · exact Complex.normSq_eq_zero.1 h0
   · exact hw k hk
 
+/- English proof (translation)
+Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨i, rfl⟩` from `hy`. Introduce `k hk`. Establish `hne : k ≠ i.1` using `fun h => hk (by rw [h]; exact i.2)`.
+
+Simplify using `[Pi.single_apply, hne]`. Consider the case `zero => intro k _`. Both sides reduce to the same expression. Consider the case `add y z _ _ hy hz => intro k hk`. Simplify using `[hy k hk, hz k hk]`.
+
+Consider the case `smul a y _ hy => intro k hk`. Simplify using `[hy k hk]`.
+-/
 private lemma eq_zero_of_mem_span_single_of_not {r : ℕ} (p : Fin r → Prop) (w : Fin r → ℂ)
     (hw : w ∈ Submodule.span ℂ (Set.range fun i : {i // p i} => (Pi.single i.1 1 : Fin r → ℂ))) :
     ∀ k, ¬ p k → w k = 0 := by
@@ -56,6 +73,25 @@ private lemma eq_zero_of_mem_span_single_of_not {r : ℕ} (p : Fin r → Prop) (
   | add y z _ _ hy hz => intro k hk; simp [hy k hk, hz k hk]
   | smul a y _ hy => intro k hk; simp [hy k hk]
 
+/- English proof (translation)
+Establish `key : ∀ w : Fin r → ℂ, ∑ k, d k * Complex.normSq ((N *ᵥ w) k) = ∑ k, x k * Complex.normSq (w k)`. Introduce `w`. Establish `e1` using `form_diagonal d (N *ᵥ w)`. Establish `e2` using `form_diagonal x w`. Establish `e3 : star (N *ᵥ w) ⬝ᵥ (Matrix.diagonal (fun i => (d i : ℂ)) *ᵥ (N *ᵥ w)) = star w ⬝ᵥ (Matrix.diagonal (fun i => (x i : ℂ)) *ᵥ w)`.
+
+Rewrite using `[← h]`. Simplify using `only [Matrix.star_mulVec, Matrix.dotProduct_mulVec, Matrix.vecMul_vecMul, Matrix.mul_assoc]`. Conclude with `e1.symm.trans (e3.trans e2)` after adjusting the coercions. Establish `li : ∀ p : Fin r → Prop, LinearIndependent ℂ (fun i : {i // p i} => (Pi.single i.1 1 : Fin r → ℂ))`. Introduce `p`.
+
+Use `(Pi.basisFun ℂ (Fin r)).linearIndependent.comp (Subtype.val : {i // p i} → Fin r) Subtype.val_injective` as an intermediate fact. Simplify `this` using `[Function.comp_def]`. Establish `hv : LinearIndependent ℂ (Matrix.mulVecLin N ∘ fun i : {i // 0 < x i} => (Pi.single i.1 1 : Fin r → ℂ))`. Use `(li _).map ?_` and prove the remaining obligations. Rewrite using `[Submodule.disjoint_def]`.
+
+Introduce `w hw hk`. Rewrite `hk` using `[LinearMap.mem_ker, Matrix.mulVecLin_apply]`. Use `eq_zero_of_sum_weighted_normSq_nonpos x w (eq_zero_of_mem_span_single_of_not _ w hw) ?_` and prove the remaining obligations. Rewrite using `[← key, hk]`. Simplify using the standard rewrite rules.
+
+Establish `hvw : Disjoint (Submodule.span ℂ (Set.range (Matrix.mulVecLin N ∘ fun i : {i // 0 < x i} => (Pi.single i.1 1 : Fin r → ℂ)))) (Submodule.span ℂ (Set.range fun j : {j // ¬ 0 < d j} => (Pi.single j.1 1 : Fin r → ℂ)))`. Rewrite using `[Submodule.disjoint_def]`. Introduce `z hz1 hz2`. Rewrite `hz1` using `[Set.range_comp, Submodule.span_image, Submodule.mem_map]`. Take `⟨w, hw, rfl⟩` from `hz1`.
+
+Establish `hsupp` using `eq_zero_of_mem_span_single_of_not _ _ hz2`. Rewrite `hsupp`, the goal using `[Matrix.mulVecLin_apply]`. Establish `hle : ∑ k, d k * Complex.normSq ((N *ᵥ w) k) ≤ 0`. Use `Finset.sum_nonpos fun k _ => ?_` and prove the remaining obligations. Distinguish the cases in `hk : 0 < d k`.
+
+Rewrite using `[hsupp k (not_not.2 hk), map_zero, mul_zero]`. Conclude with `mul_nonpos_iff.2 (Or.inr ⟨not_lt.1 hk, Complex.normSq_nonneg _⟩)`. Rewrite `hle` using `[key]`. Rewrite using `[eq_zero_of_sum_weighted_normSq_nonpos x w (eq_zero_of_mem_span_single_of_not _ w hw) hle, Matrix.mulVec_zero]`. Establish `hli` using `LinearIndependent.sum_type hv (li fun j => ¬ 0 < d j) hvw`.
+
+Establish `hc` using `hli.fintype_card_le_finrank`. Rewrite `hc` using `[Fintype.card_sum, Module.finrank_fin_fun]`. Establish `h1` using `Fintype.card_subtype_compl (fun j => 0 < d j)`. Establish `h2` using `Fintype.card_subtype_le (fun j => 0 < d j)`. Simplify using `only [Fintype.card_fin] at h1 h2`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem card_pos_le (d x : Fin r → ℝ) (N : Matrix (Fin r) (Fin r) ℂ)
     (h : Nᴴ * Matrix.diagonal (fun i => (d i : ℂ)) * N = Matrix.diagonal fun i => (x i : ℂ)) :
     Fintype.card {i // 0 < x i} ≤ Fintype.card {i // 0 < d i} := by
@@ -104,6 +140,27 @@ theorem card_pos_le (d x : Fin r → ℝ) (N : Matrix (Fin r) (Fin r) ℂ)
   simp only [Fintype.card_fin] at h1 h2
   omega
 
+/- English proof (translation)
+Take `⟨s, hs⟩ : ∃ s : Fin r → ℝ, s = fun i => if ε i then 1 else -1` from `⟨_, rfl⟩`. Establish `hsε : ∀ j, 0 < s j ↔ ε j = true`. Apply the tactic sequence `intro j; cases hj : ε j <;> simp [hs, hj]`. Establish `hs0 : ∀ j, s j ≠ 0`. Apply the tactic sequence `intro j; cases hj : ε j <;> simp [hs, hj]`.
+
+Establish `hJ : Formalism.REAL.Jm ε = Matrix.diagonal (fun i => (s i : ℂ))`. Unfold `Formalism.REAL.Jm`. Use `congr 1`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `cases hi : ε i <;> simp [hs, hi]`.
+
+Rewrite `h` using `[hJ]`. Establish `hneg : Nᴴ * Matrix.diagonal (fun i => ((-s i : ℝ) : ℂ)) * N = Matrix.diagonal fun i => ((-x i : ℝ) : ℂ)`. Establish `hd : ∀ v : Fin r → ℝ, Matrix.diagonal (fun i => ((-v i : ℝ) : ℂ)) = -Matrix.diagonal (fun i => (v i : ℂ))`. Apply the tactic sequence `intro v; ext i j; by_cases hij : i = j <;> simp [Matrix.diagonal_apply, hij]`. Rewrite using `[hd, hd, Matrix.mul_neg, Matrix.neg_mul, h]`.
+
+Establish `c1` using `card_pos_le s x N h`. Establish `c2` using `card_pos_le (fun i => -s i) (fun i => -x i) N hneg`. Establish `compl : ∀ v : Fin r → ℝ, (∀ i, v i ≠ 0) → Fintype.card {i // 0 < -v i} = r - Fintype.card {i // 0 < v i}`. Introduce `v hv`. Establish `hc` using `Fintype.card_subtype_compl (fun i => 0 < v i)`.
+
+Simplify using `only [Fintype.card_fin] at hc`. Rewrite using `[← hc]`. Conclude with `Fintype.card_congr (Equiv.subtypeEquivRight fun i => ⟨fun h1 h2 => by linarith [neg_pos.1 h1], fun h1 => neg_pos.2 (lt_of_le_of_ne (not_lt.1 h1) (hv i))⟩)`. Rewrite `c2` using `[compl s hs0, compl x hx]`. Establish `b1` using `Fintype.card_subtype_le (fun i => 0 < s i)`.
+
+Establish `b2` using `Fintype.card_subtype_le (fun i => 0 < x i)`. Simplify using `only [Fintype.card_fin] at b1 b2`. Establish `hAB : Fintype.card {i // 0 < x i} = Fintype.card {i // 0 < s i}` using `by omega`. Establish `e1 : {i // 0 < x i} ≃ {j // 0 < s j}` using `Fintype.equivOfCardEq hAB`. Establish `e2 : {i // ¬ 0 < x i} ≃ {j // ¬ 0 < s j}`.
+
+Apply `Fintype.equivOfCardEq` to reduce the goal to its premises. Use `clear c1 c2 compl b1 b2 hneg h hJ hs0 hsε hs e1`. Rewrite using `[Fintype.card_subtype_compl, Fintype.card_subtype_compl]`. Conclude with `congrArg _ hAB`. Use `clear c1 c2 compl b1 b2 hneg h hJ hs0 hs hAB`.
+
+Use `⟨Equiv.subtypeCongr e1 e2, funext fun i => ?_⟩` and prove the remaining obligations. Use `show ε (Equiv.subtypeCongr e1 e2 i) = decide (0 < x i)`. Distinguish the cases in `h0 : 0 < x i`. Establish `hy : Equiv.subtypeCongr e1 e2 i = (e1 ⟨i, h0⟩ : Fin r)`. Simplify using `only [Equiv.subtypeCongr, Equiv.trans_apply]`.
+
+Rewrite using `[Equiv.sumCompl_symm_apply_of_pos (p := fun j => 0 < x j) (a := i) h0]`. Both sides reduce to the same expression. Rewrite using `[hy, decide_eq_true h0]`. Simplify `(e1 ⟨i, h0⟩).2` using `[hsε]`. Establish `hy : Equiv.subtypeCongr e1 e2 i = (e2 ⟨i, h0⟩ : Fin r)`.
+
+Simplify using `only [Equiv.subtypeCongr, Equiv.trans_apply]`. Rewrite using `[Equiv.sumCompl_symm_apply_of_neg (p := fun j => 0 < x j) (a := i) h0]`. Both sides reduce to the same expression. Rewrite using `[hy, decide_eq_false h0]`. Simplify `(e2 ⟨i, h0⟩).2` using `[hsε]`.
+-/
 theorem exists_perm (ε : Fin r → Bool) (x : Fin r → ℝ) (hx : ∀ i, x i ≠ 0) (N : Matrix (Fin r) (Fin r) ℂ)
     (h : Nᴴ * Formalism.REAL.Jm ε * N = Matrix.diagonal fun i => (x i : ℂ)) :
     ∃ y : Equiv.Perm (Fin r), ε ∘ y = fun i => decide (0 < x i) := by
@@ -163,6 +220,11 @@ theorem exists_perm (ε : Fin r → Bool) (x : Fin r → ℝ) (hx : ∀ i, x i �
 
 def permM (y : Equiv.Perm (Fin r)) : Matrix (Fin r) (Fin r) ℂ := fun i j => if i = y j then 1 else 0
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [permM, Matrix.mul_diagonal, Matrix.diagonal_mul]`. Use `split_ifs with h`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+
+Simplify using the standard rewrite rules.
+-/
 theorem permM_mul_diagonal (y : Equiv.Perm (Fin r)) (c : Fin r → ℂ) :
     permM y * Matrix.diagonal c = Matrix.diagonal (fun i => c (y⁻¹ i)) * permM y := by
   ext i j
@@ -172,6 +234,11 @@ theorem permM_mul_diagonal (y : Equiv.Perm (Fin r)) (c : Fin r → ℂ) :
     simp
   · simp
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single (y i)]`. Simplify using `[permM, Matrix.one_apply]`. Introduce `k _ hk`. Simplify using `[permM, hk]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem conjTranspose_permM_mul (y : Equiv.Perm (Fin r)) : (permM y)ᴴ * permM y = 1 := by
   ext i j
   rw [Matrix.mul_apply, Finset.sum_eq_single (y i)]
@@ -180,6 +247,9 @@ theorem conjTranspose_permM_mul (y : Equiv.Perm (Fin r)) : (permM y)ᴴ * permM 
     simp [permM, hk]
   · simp
 
+/- English proof (translation)
+Establish `h1 : Matrix.diagonal (fun a => if ε a then (1 : ℂ) else -1) * permM y = permM y * Matrix.diagonal (fun a => if ε (y a) then (1 : ℂ) else -1)`. Rewrite using `[permM_mul_diagonal]`. Simplify using the standard rewrite rules. Simplify using `only [Formalism.REAL.Jm, Function.comp_apply]`. Rewrite using `[Matrix.mul_assoc, h1, ← Matrix.mul_assoc, conjTranspose_permM_mul, Matrix.one_mul]`.
+-/
 theorem permM_gram (ε : Fin r → Bool) (y : Equiv.Perm (Fin r)) :
     (permM y)ᴴ * Formalism.REAL.Jm ε * permM y = Formalism.REAL.Jm (ε ∘ y) := by
   have h1 : Matrix.diagonal (fun a => if ε a then (1 : ℂ) else -1) * permM y =
@@ -189,6 +259,9 @@ theorem permM_gram (ε : Fin r → Bool) (y : Equiv.Perm (Fin r)) :
   simp only [Formalism.REAL.Jm, Function.comp_apply]
   rw [Matrix.mul_assoc, h1, ← Matrix.mul_assoc, conjTranspose_permM_mul, Matrix.one_mul]
 
+/- English proof (translation)
+Establish `hs : (Real.sqrt |a|)⁻¹ * (Real.sqrt |a|)⁻¹ = |a|⁻¹`. Rewrite using `[← mul_inv, Real.mul_self_sqrt (abs_nonneg a)]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[abs_of_pos h, mul_inv_cancel₀ ha]`. Rewrite using `[abs_of_neg (lt_of_le_of_ne (not_lt.mp h) ha), inv_neg, mul_neg, mul_inv_cancel₀ ha]`.
+-/
 private lemma sign_lemma' (a : ℝ) (ha : a ≠ 0) :
     (Real.sqrt |a|)⁻¹ * a * (Real.sqrt |a|)⁻¹ = if 0 < a then 1 else -1 := by
   have hs : (Real.sqrt |a|)⁻¹ * (Real.sqrt |a|)⁻¹ = |a|⁻¹ := by
@@ -200,6 +273,33 @@ private lemma sign_lemma' (a : ℝ) (ha : a ≠ 0) :
       · rw [abs_of_pos h, mul_inv_cancel₀ ha]
       · rw [abs_of_neg (lt_of_le_of_ne (not_lt.mp h) ha), inv_neg, mul_neg, mul_inv_cancel₀ ha]
 
+/- English proof (translation)
+Establish `hPP : (permM y)ᴴ * permM y = 1` using `conjTranspose_permM_mul y`. Establish `hPP' : permM y * (permM y)ᴴ = 1`. Use extensionality with `i j`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single (y⁻¹ i)]`. Distinguish the cases in `hij : i = j`.
+
+Substitute `hij` using the available equality. Simplify using `[permM]`. Simplify using `[permM, Matrix.one_apply, hij, Ne.symm hij]`. Introduce `k _ hk`. Establish `hik : i ≠ y k` using `fun e => hk (by simp [e])`.
+
+Simplify using `[permM, hik]`. Simplify using the standard rewrite rules. Set `S : Matrix (Fin r) (Fin r) ℂ` to `Matrix.diagonal fun i => (((Real.sqrt |x i|)⁻¹ : ℝ) : ℂ)`. Establish `hS : Sᴴ = S` using `by simp [S, Matrix.diagonal_conjTranspose]`. Establish `hSxS : S * Matrix.diagonal (fun i => (x i : ℂ)) * S = Formalism.REAL.Jm (ε ∘ y)`.
+
+Rewrite using `[hy]`. Simplify using `only [S, Matrix.diagonal_mul_diagonal, Formalism.REAL.Jm]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[← Complex.ofReal_mul, ← Complex.ofReal_mul, sign_lemma' (x i) (hx i)]`.
+
+Apply the tactic sequence `by_cases h0 : 0 < x i <;> simp [h0]`. Set `Q : Matrix (Fin r) (Fin r) ℂ` to `N * S * (permM y)ᴴ`. Establish `hQ : Qᴴ * Formalism.REAL.Jm ε * Q = Formalism.REAL.Jm ε`. Establish `e1 : Qᴴ * Formalism.REAL.Jm ε * Q = permM y * (S * (Nᴴ * Formalism.REAL.Jm ε * N) * S) * (permM y)ᴴ`. Simplify using `only [Q, Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, hS, Matrix.mul_assoc]`.
+
+Rewrite using `[e1, h, hSxS, ← permM_gram]`. Combine the equalities or inequalities in the displayed calculation. Establish `hDc : Matrix.diagonal c * (permM y)ᴴ = (permM y)ᴴ * Matrix.diagonal (fun i => c (y⁻¹ i))`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Matrix.mul_assoc, hPP, Matrix.one_mul]`.
+
+Use `_ = (permM y)ᴴ * Matrix.diagonal (fun i => c (y⁻¹ i)) * (permM y * (permM y)ᴴ) := by`. Rewrite using `[permM_mul_diagonal]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by rw [hPP', Matrix.mul_one]`. Establish `hcS : Matrix.diagonal c * S = S * Matrix.diagonal c`.
+
+Simplify using `only [S, Matrix.diagonal_mul_diagonal]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Expand and normalize the polynomial expressions, which then agree. Establish `hmQ : m * Q = Q * Matrix.diagonal (fun i => c (y⁻¹ i))`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hJJ : Formalism.REAL.Jm ε * Formalism.REAL.Jm ε = 1`. Simplify using `only [Formalism.REAL.Jm, Matrix.diagonal_mul_diagonal]`. Rewrite using `[← Matrix.diagonal_one]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `i`. Apply the tactic sequence `split_ifs <;> norm_num`. Establish `hdet : IsUnit Q.det`. Apply `Matrix.isUnit_det_of_left_inverse (B := Formalism.REAL.Jm ε * Qᴴ * Formalism.REAL.Jm ε)` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [Matrix.mul_assoc]`. Use `_ = 1 := by rw [hQ, hJJ]`. Use `⟨Q⁻¹, ?_, ?_⟩` and prove the remaining obligations. Use `show (Q⁻¹)ᴴ * Formalism.REAL.Jm ε * Q⁻¹ = Formalism.REAL.Jm ε`. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = Formalism.REAL.Jm ε := by`. Rewrite using `[Matrix.mul_nonsing_inv Q hdet, Matrix.conjTranspose_one, Matrix.one_mul, Matrix.mul_one]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc, Matrix.mul_nonsing_inv Q hdet, Matrix.mul_one]`.
+
+Use `_ = Matrix.diagonal (fun i => c (y⁻¹ i)) * Q⁻¹ := by`. Rewrite using `[hmQ]`. Simplify using `only [← Matrix.mul_assoc, Matrix.nonsing_inv_mul Q hdet, Matrix.one_mul]`.
+-/
 theorem exists_conj_diag (ε : Fin r → Bool) (x : Fin r → ℝ) (hx : ∀ i, x i ≠ 0) (N : Matrix (Fin r) (Fin r) ℂ)
     (h : Nᴴ * Formalism.REAL.Jm ε * N = Matrix.diagonal fun i => (x i : ℂ)) (y : Equiv.Perm (Fin r))
     (hy : ε ∘ y = fun i => decide (0 < x i)) (m : Matrix (Fin r) (Fin r) ℂ) (c : Fin r → ℂ)
@@ -276,6 +376,21 @@ theorem exists_conj_diag (ε : Fin r → Bool) (x : Fin r → ℝ) (hx : ∀ i, 
           rw [hmQ]
           simp only [← Matrix.mul_assoc, Matrix.nonsing_inv_mul Q hdet, Matrix.one_mul]
 
+/- English proof (translation)
+Use `choose yq hyq using h1`. Establish `hinj : Function.Injective yq` using `fun q q' e => hi (by rw [← hyq q, ← hyq q', e])`. Set `T : Finset (Equiv.Perm (Fin r))` to `Finset.univ.filter (fun t => t ∈ Set.range yq)`. Establish `memT : ∀ t, t ∈ T ↔ ∃ q, yq q = t`. Introduce `t`.
+
+Simplify using `[T]`. Set `b : X ≃ T` to `Equiv.ofBijective (fun q => ⟨yq q, (memT _).2 ⟨q, rfl⟩⟩) ⟨fun q q' e => hinj (congrArg Subtype.val e), fun t => by`. Take `⟨q, hq⟩` from `(memT t.1).1 t.2`. Conclude with `⟨q, Subtype.ext hq⟩⟩`. Establish `key : ∀ w ∈ WK, ∀ t : Equiv.Perm (Fin r), ε ∘ ⇑(w⁻¹ * t) = ε ∘ ⇑t`.
+
+Introduce `w hw t`. Rewrite using `[Equiv.Perm.coe_mul, ← Function.comp_assoc, (hW _).1 (WK.inv_mem hw)]`. Use `⟨T, b, ⟨?_, ?_⟩, fun q => hyq q⟩` and prove the remaining obligations. Introduce and unpack `⟨w, t⟩ ⟨w', t'⟩ he`. Simplify using `only at he`.
+
+Establish `he'` using `congrArg (fun z : Equiv.Perm (Fin r) => z⁻¹) he`. Simplify using `only [mul_inv_rev, inv_inv] at he'`. Establish `e1 : ε ∘ ⇑(t : Equiv.Perm (Fin r)) = ε ∘ ⇑(t' : Equiv.Perm (Fin r))`. Rewrite using `[← key w w.2 t, he', key w' w'.2 t']`. Take `⟨q, hq⟩` from `(memT _).1 t.2`.
+
+Take `⟨q', hq'⟩` from `(memT _).1 t'.2`. Establish `hqq : q = q'` using `hi (by rw [← hyq q, ← hyq q', hq, hq', e1])`. Establish `htt : t = t'` using `Subtype.ext (by rw [← hq, ← hq', hqq])`. Substitute `htt` using the available equality. Establish `hww : w = w'` using `Subtype.ext (mul_left_cancel he)`.
+
+Rewrite using `[hww]`. Introduce `s`. Take `⟨q, hq⟩` from `h2 s⁻¹`. Establish `htT : yq q ∈ T` using `(memT _).2 ⟨q, rfl⟩`. Establish `hw : yq q * s ∈ WK`.
+
+Rewrite using `[hW, Equiv.Perm.coe_mul, ← Function.comp_assoc, hyq q, hq, Function.comp_assoc, ← Equiv.Perm.coe_mul, inv_mul_cancel, Equiv.Perm.coe_one, Function.comp_id]`. Conclude with `⟨(⟨yq q * s, hw⟩, ⟨yq q, htT⟩), by simp⟩`.
+-/
 theorem exists_reps (ε : Fin r → Bool) (WK : Subgroup (Equiv.Perm (Fin r))) (hW : ∀ w, w ∈ WK ↔ ε ∘ w = ε)
     {X : Type} (sg : X → Fin r → Bool) (hi : Function.Injective sg)
     (h1 : ∀ q, ∃ y : Equiv.Perm (Fin r), ε ∘ y = sg q) (h2 : ∀ y : Equiv.Perm (Fin r), ∃ q, sg q = ε ∘ y) :
@@ -326,6 +441,11 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {P : PPol σ r} {w : InfinitePlace F} {τ : EmbOver E w} {J : Matrix (Fin r) (Fin r) E}
   {Ψ : w.Completion ⊗[F] Fld P ≃+* (Fin r → ℂ)}
 
+/- English proof (translation)
+Unfold `Formalism.UG.hform`. Simplify using `only [map_sum, map_mul, dotProduct, Matrix.mulVec, Function.comp_apply, Pi.star_apply, Finset.mul_sum, Matrix.map_apply]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `hJ : infEmb τ (JR w.Completion J i j) = τ.1 (J i j)`. Rewrite using `[JR, Matrix.map_apply, inclR]`.
+
+Simplify using `only [AlgHom.toRingHom_eq_coe, RingHom.coe_coe, Algebra.TensorProduct.includeRight_apply, infEmb_tmul, map_one, one_mul]`. Rewrite using `[← infEmb_sigR hc τ, hJ, starRingEnd_apply]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem infEmb_hform (hc : IsCMExt F E σ) (u v : Fin r → w.Completion ⊗[F] E) :
     infEmb τ (Formalism.UG.hform (sigR w.Completion σ) (JR w.Completion J) u v) =
       star (infEmb τ ∘ u) ⬝ᵥ (J.map τ.1 *ᵥ (infEmb τ ∘ v)) := by
@@ -340,6 +460,9 @@ theorem infEmb_hform (hc : IsCMExt F E σ) (u v : Fin r → w.Completion ⊗[F] 
   rw [← infEmb_sigR hc τ, hJ, starRingEnd_apply]
   ring
 
+/- English proof (translation)
+Rewrite using `[hx, h4]`. Simplify using `only [map_mul, Pi.mul_apply, h1, dotProduct, Matrix.mulVec_diagonal, Pi.star_apply, starRingEnd_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem infEmb_hx (h1 : ∀ y i, Ψ (sigR w.Completion (star' P) y) i = conj (Ψ y i))
     (h4 : ∀ y, infEmb τ (trBase P w.Completion y) = ∑ i, Ψ y i) (x y y' : w.Completion ⊗[F] Fld P) :
     infEmb τ (hx P w.Completion x y y') = star (Ψ y') ⬝ᵥ (Matrix.diagonal (Ψ x) *ᵥ Ψ y) := by
@@ -348,6 +471,9 @@ theorem infEmb_hx (h1 : ∀ y i, Ψ (sigR w.Completion (star' P) y) i = conj (Ψ
   refine Finset.sum_congr rfl fun i _ => ?_
   ring
 
+/- English proof (translation)
+Introduce `h0`. Establish `h2` using `congrArg (fun z => Ψ z i) u.mul_inv`. Simplify using `only [map_mul, Pi.mul_apply, h0, zero_mul, map_one, Pi.one_apply] at h2`. Conclude with `zero_ne_one h2`.
+-/
 private theorem Psi_units_ne_zero (u : (w.Completion ⊗[F] Fld P)ˣ) (i : Fin r) :
     Ψ (u : w.Completion ⊗[F] Fld P) i ≠ 0 := by
   intro h0
@@ -355,6 +481,11 @@ private theorem Psi_units_ne_zero (u : (w.Completion ⊗[F] Fld P)ˣ) (i : Fin r
   simp only [map_mul, Pi.mul_apply, h0, zero_mul, map_one, Pi.one_apply] at h2
   exact zero_ne_one h2
 
+/- English proof (translation)
+Establish `hfix : sigR w.Completion (star' P) x.1.1 = x.1.1`. Establish `h0` using `congrArg Units.val (show Units.map (sigR w.Completion (star' P)).toMonoidHom x.1 = x.1 from x.2)`. Simplify using `using h0`. Establish `hr : conj (Ψ x.1.1 i) = Ψ x.1.1 i` using `by rw [← h1, hfix]`. Establish `hre : ((Ψ x.1.1 i).re : ℂ) = Ψ x.1.1 i` using `Complex.conj_eq_iff_re.1 hr`.
+
+Use `⟨hre, fun h0 => Psi_units_ne_zero (Ψ := Ψ) x.1 i ?_⟩` and prove the remaining obligations. Rewrite using `[← hre, h0, Complex.ofReal_zero]`.
+-/
 theorem plus_real (h1 : ∀ y i, Ψ (sigR w.Completion (star' P) y) i = conj (Ψ y i)) (x : plusUnits P w.Completion)
     (i : Fin r) : ((Ψ x.1.1 i).re : ℂ) = Ψ x.1.1 i ∧ (Ψ x.1.1 i).re ≠ 0 := by
   have hfix : sigR w.Completion (star' P) x.1.1 = x.1.1 := by
@@ -366,12 +497,38 @@ theorem plus_real (h1 : ∀ y i, Ψ (sigR w.Completion (star' P) y) i = conj (Ψ
   refine ⟨hre, fun h0 => Psi_units_ne_zero (Ψ := Ψ) x.1 i ?_⟩
   rw [← hre, h0, Complex.ofReal_zero]
 
+/- English proof (translation)
+Establish `h2` using `congrArg (fun z => Ψ z i) u.mul_inv`. Simplify using `only [map_mul, Pi.mul_apply, map_one, Pi.one_apply] at h2`. Conclude with `eq_inv_of_mul_eq_one_right h2`.
+-/
 private theorem Psi_inv_units_eq_inv (u : (w.Completion ⊗[F] Fld P)ˣ) (i : Fin r) :
     Ψ ((u⁻¹ : (w.Completion ⊗[F] Fld P)ˣ) : w.Completion ⊗[F] Fld P) i = (Ψ (u : w.Completion ⊗[F] Fld P) i)⁻¹ := by
   have h2 := congrArg (fun z => Ψ z i) u.mul_inv
   simp only [map_mul, Pi.mul_apply, map_one, Pi.one_apply] at h2
   exact eq_inv_of_mul_eq_one_right h2
 
+/- English proof (translation)
+Rewrite using `[QuotientGroup.eq, Subgroup.mem_subgroupOf, norms, MonoidHom.mem_range]`. Simplify using `only [MonoidHom.mul_apply, MonoidHom.id_apply, Subgroup.coe_mul, Subgroup.coe_inv]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, hc⟩ i`. Establish `hv : (c : w.Completion ⊗[F] Fld P) * sigR w.Completion (star' P) c = ((x.1⁻¹ : (w.Completion ⊗[F] Fld P)ˣ) : w.Completion ⊗[F] Fld P) * x'.1.1`.
+
+Establish `h0` using `congrArg Units.val hc`. Simplify using `using h0`. Establish `hv2` using `congrArg (fun z => Ψ z i) hv`. Simplify using `only [map_mul, Pi.mul_apply, h1, Psi_inv_units_eq_inv] at hv2`. Take `⟨hxr, hx0⟩` from `plus_real h1 x i`.
+
+Take `⟨hyr, -⟩` from `plus_real h1 x' i`. Rewrite `hv2` using `[Complex.mul_conj, ← hxr, ← hyr]`. Establish `hn : Complex.normSq (Ψ (c : w.Completion ⊗[F] Fld P) i) = (Ψ x.1.1 i).re⁻¹ * (Ψ x'.1.1 i).re`. Conclude with `hv2` after adjusting the coercions. Establish `hpos : 0 < (Ψ x.1.1 i).re⁻¹ * (Ψ x'.1.1 i).re`.
+
+Rewrite using `[← hn]`. Conclude with `Complex.normSq_pos.2 (Psi_units_ne_zero (Ψ := Ψ) c i)`. Break down `mul_pos_iff.mp hpos with ⟨ha, hb⟩ | ⟨ha, hb⟩` into its components or cases. Conclude with `⟨fun _ => hb, fun _ => inv_pos.mp ha⟩`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h`. Conclude with `absurd (inv_pos.mpr h) (not_lt.mpr ha.le)`. Introduce `h`. Conclude with `absurd h (not_lt.mpr hb.le)`. Introduce `hs`.
+
+Establish `hq : ∀ i, 0 < (Ψ x.1.1 i).re⁻¹ * (Ψ x'.1.1 i).re`. Introduce `i`. Establish `ha` using `(plus_real h1 x i).2`. Establish `hb` using `(plus_real h1 x' i).2`. Break down `lt_or_gt_of_ne ha with ha' | ha'` into its components or cases.
+
+Establish `hb' : (Ψ x'.1.1 i).re < 0`. Break down `lt_or_gt_of_ne hb with hb' | hb'` into its components or cases. Conclude with `hb'`. Conclude with `absurd ((hs i).2 hb') (not_lt.mpr ha'.le)`. Conclude with `mul_pos_of_neg_of_neg (inv_lt_zero.mpr ha') hb'`.
+
+Conclude with `mul_pos (inv_pos.mpr ha') ((hs i).1 ha')`. Use `set v : Fin r → ℂ := fun i => ((Real.sqrt ((Ψ x.1.1 i).re⁻¹ * (Ψ x'.1.1 i).re) : ℝ) : ℂ) with hvdef`. Establish `hv0 : ∀ i, v i ≠ 0`. Introduce `i`. Simplify using `only [hvdef, ne_eq, Complex.ofReal_eq_zero]`.
+
+Conclude with `(Real.sqrt_pos.2 (hq i)).ne'`. Use `⟨Units.map (Ψ.symm : (Fin r → ℂ) →* w.Completion ⊗[F] Fld P) ⟨v, fun i => (v i)⁻¹, ?_, ?_⟩, Units.ext ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Simplify using `[hv0 i]`. Use function extensionality and compare the values at `i`.
+
+Simplify using `[hv0 i]`. Apply `Ψ.injective` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Take `⟨hxr, -⟩` from `plus_real h1 x i`. Take `⟨hyr, -⟩` from `plus_real h1 x' i`.
+
+Express the relevant statement in the definitionally equal form `Ψ (Ψ.symm v * sigR w.Completion (star' P) (Ψ.symm v)) i = Ψ (((x.1⁻¹ : (w.Completion ⊗[F] Fld P)ˣ) : w.Completion ⊗[F] Fld P) * x'.1.1) i`. Rewrite using `[map_mul, Pi.mul_apply, map_mul, Pi.mul_apply, h1, RingEquiv.apply_symm_apply, Psi_inv_units_eq_inv, ← hxr, ← hyr]`. Simplify using `only [hvdef]`. Rewrite using `[Complex.conj_ofReal, ← Complex.ofReal_mul, Real.mul_self_sqrt (hq i).le, Complex.ofReal_mul, Complex.ofReal_inv]`.
+-/
 theorem mk_eq_iff_sign (h1 : ∀ y i, Ψ (sigR w.Completion (star' P) y) i = conj (Ψ y i))
     (x x' : plusUnits P w.Completion) : (QuotientGroup.mk x : Cls P w.Completion) = QuotientGroup.mk x' ↔
       ∀ i, 0 < (Ψ x.1.1 i).re ↔ 0 < (Ψ x'.1.1 i).re := by
@@ -434,6 +591,9 @@ theorem mk_eq_iff_sign (h1 : ∀ y i, Ψ (sigR w.Completion (star' P) y) i = con
     rw [Complex.conj_ofReal, ← Complex.ofReal_mul, Real.mul_self_sqrt (hq i).le, Complex.ofReal_mul,
       Complex.ofReal_inv]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `Matrix.det ((HA.mat k (star' P) (one₁ P) (GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.diagH (star' P) (one₁ P) k (alphaRat P)) : GL (Fin 1) (k ⊗[F] Fld P)) : Matrix (Fin 1) (Fin 1) (k ⊗[F] Fld P)) = _`. Rewrite using `[Matrix.det_unique]`. Use `show ((Matrix.scalar (Fin 1) (alpha P)).map (fun a => (1 : k) ⊗ₜ[F] a)) 0 0 = 1 ⊗ₜ[F] alpha P`. Simplify using the standard rewrite rules.
+-/
 private theorem torUnit_diagH_alphaRat_eq_one_tmul_alpha {F E : Type} [Field F] [Field E] [Algebra F E] {σ : E →ₐ[F] E} {r : ℕ}
     (P : PPol σ r) (k : Type) [CommRing k] [Algebra F k] :
     ((torUnit (GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.diagH (star' P) (one₁ P) k (alphaRat P)) : (k ⊗[F] Fld P)ˣ) : k ⊗[F] Fld P) =
@@ -444,6 +604,25 @@ private theorem torUnit_diagH_alphaRat_eq_one_tmul_alpha {F E : Type} [Field F] 
   show ((Matrix.scalar (Fin 1) (alpha P)).map (fun a => (1 : k) ⊗ₜ[F] a)) 0 0 = 1 ⊗ₜ[F] alpha P
   simp
 
+/- English proof (translation)
+Establish `hsurj` using `(infEmb_bijective hc τ).2`. Choose the witnesses or unpack the hypotheses as in `⟨N, hN⟩ : ∃ N : Matrix (Fin r) (Fin r) ℂ, ∀ y, infEmb τ ∘ φ y = N *ᵥ Ψ y := by`. Use `⟨Matrix.of fun i j => infEmb τ (φ (Ψ.symm (Pi.single j 1)) i), fun y => ?_⟩` and prove the remaining obligations. Use `choose e he using fun j => hsurj (Ψ y j)`. Establish `hy : y = ∑ j, e j • Ψ.symm (Pi.single j 1)`.
+
+Apply `Ψ.injective` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Rewrite using `[map_sum, Finset.sum_apply]`. Simplify using `only [Algebra.smul_def, map_mul, Pi.mul_apply, h2, he, RingEquiv.apply_symm_apply, Pi.single_apply, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Use function extensionality and compare the values at `i`.
+
+Use `conv_lhs => rw [hy]`. Simplify using `only [Function.comp_apply, map_sum, map_smul, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, map_mul, he, Matrix.mulVec, dotProduct, Matrix.of_apply]`. Conclude with `Finset.sum_congr rfl fun j _ => mul_comm _ _`. Use `⟨N, ?_, ?_⟩` and prove the remaining obligations. Establish `key : ∀ a b : Fin r → ℂ, a ⬝ᵥ ((Nᴴ * J.map τ.1 * N) *ᵥ b) = a ⬝ᵥ (Matrix.diagonal (Ψ x) *ᵥ b)`.
+
+Introduce `a b`. Establish `e1` using `infEmb_hform (J := J) (τ := τ) hc (φ (Ψ.symm (star a))) (φ (Ψ.symm b))`. Rewrite `e1` using `[h, infEmb_hx h1 h4, hN, hN, RingEquiv.apply_symm_apply, RingEquiv.apply_symm_apply, star_star, Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, star_star]`. Conclude with `e1.symm`. Use extensionality with `i j`.
+
+Establish `e2 : (Nᴴ * J.map τ.1 * N) i j = (Pi.single i (1 : ℂ) : Fin r → ℂ) j * Ψ x j` using `by simpa using key (Pi.single i 1) (Pi.single j 1)`. Rewrite using `[e2, Matrix.diagonal_apply]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using the standard rewrite rules.
+
+Simplify using `[hij, Pi.single_apply, Ne.symm hij]`. Establish `ht` using `torUnit_diagH_alphaRat_eq_one_tmul_alpha P w.Completion`. Establish `hg : ((matHom w.Completion σ J (gam h) : GL (Fin r) (w.Completion ⊗[F] E)) : Matrix (Fin r) (Fin r) (w.Completion ⊗[F] E)) = mulMat φ (1 ⊗ₜ[F] alpha P)`. Rewrite using `[← ht]`. Both sides reduce to the same expression.
+
+Apply `Matrix.toLin'.injective` to reduce the goal to its premises. Use `LinearMap.ext fun v => ?_` and prove the remaining obligations. Take `⟨y, rfl⟩` from `Ψ.surjective v`. Rewrite using `[Matrix.toLin'_apply, Matrix.toLin'_apply, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, ← hN, archMat_apply]`. Establish `hm : ((matHom w.Completion σ J (gam h)).1.map (infEmb τ)) *ᵥ (infEmb τ ∘ φ y) = infEmb τ ∘ (mulMat φ (1 ⊗ₜ[F] alpha P) *ᵥ φ y)`.
+
+Rewrite using `[← hg]`. Use function extensionality and compare the values at `i`. Simplify using `[Matrix.mulVec, dotProduct, map_sum, map_mul]`. Rewrite using `[hm, mulMat_mulVec, hN, map_mul]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `i`. Rewrite using `[Matrix.mulVec_diagonal]`. Both sides reduce to the same expression.
+-/
 theorem exists_matrix (hc : IsCMExt F E σ) (h1 : ∀ y i, Ψ (sigR w.Completion (star' P) y) i = conj (Ψ y i))
     (h2 : ∀ e i, Ψ (algebraMap (w.Completion ⊗[F] E) _ e) i = infEmb τ e)
     (h4 : ∀ y, infEmb τ (trBase P w.Completion y) = ∑ i, Ψ y i) {x : w.Completion ⊗[F] Fld P}
@@ -499,6 +678,21 @@ theorem exists_matrix (hc : IsCMExt F E σ) (h1 : ∀ y i, Ψ (sigR w.Completion
     rw [Matrix.mulVec_diagonal]
     rfl
 
+/- English proof (translation)
+Establish `hbij` using `infEmb_bijective hc τ`. Take `⟨ι, hι'⟩ : ∃ ι : w.Completion ⊗[F] E ≃+* ℂ, ∀ a, infEmb τ a = ι a` from `⟨RingEquiv.ofBijective (infEmb τ) hbij, fun _ => rfl⟩`. Establish `hsm : ∀ (e : w.Completion ⊗[F] E) (y : w.Completion ⊗[F] Fld P), Ψ (e • y) = ι e • Ψ y`. Introduce `e y`. Rewrite using `[Algebra.smul_def, map_mul]`.
+
+Use function extensionality and compare the values at `i`. Simplify using `[h2, hι']`. Choose the witnesses or unpack the hypotheses as in `⟨f, hf⟩ : ∃ f : (w.Completion ⊗[F] Fld P) →ₗ[w.Completion ⊗[F] E] (Fin r → w.Completion ⊗[F] E), ∀ y i, ι (f y i) = (N *ᵥ Ψ y) i := by`. Use `⟨{ toFun := fun y i => ι.symm ((N *ᵥ Ψ y) i) map_add' := fun y y' => ?_ map_smul' := fun e y => ?_ }, fun y i => by simp⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`.
+
+Apply `ι.injective` to reduce the goal to its premises. Simplify using `[Matrix.mulVec_add]`. Use function extensionality and compare the values at `i`. Apply `ι.injective` to reduce the goal to its premises. Simplify using `[hsm, Matrix.mulVec_smul]`.
+
+Establish `hinj : Function.Injective f`. Introduce `y y' hyy`. Establish `e1 : N *ᵥ Ψ y = N *ᵥ Ψ y'` using `funext fun i => by rw [← hf, ← hf, hyy]`. Establish `e2` using `congrArg (fun v => N⁻¹ *ᵥ v) e1`. Simplify using `only [Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ hN, Matrix.one_mulVec] at e2`.
+
+Conclude with `Ψ.injective e2`. Establish `hsur : Function.Surjective f`. Introduce `u`. Use `⟨Ψ.symm (N⁻¹ *ᵥ fun i => ι (u i)), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`.
+
+Apply `ι.injective` to reduce the goal to its premises. Rewrite using `[hf, RingEquiv.apply_symm_apply, Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ hN, Matrix.one_mulVec]`. Use `⟨LinearEquiv.ofBijective f ⟨hinj, hsur⟩, ?_⟩` and prove the remaining obligations. Introduce `y y'`. Establish `hφ : ∀ z, infEmb τ ∘ (LinearEquiv.ofBijective f ⟨hinj, hsur⟩) z = N *ᵥ Ψ z` using `fun z => by`.
+
+Use function extensionality and compare the values at `i`. Rewrite using `[Function.comp_apply, hι']`. Conclude with `hf z i`. Apply `ι.injective` to reduce the goal to its premises. Rewrite using `[← hι', ← hι', infEmb_hform (J := J) (τ := τ) hc, infEmb_hx h1 h4, hφ, hφ, ← h, Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec]`.
+-/
 theorem exists_isIsom (hc : IsCMExt F E σ) (h1 : ∀ y i, Ψ (sigR w.Completion (star' P) y) i = conj (Ψ y i))
     (h2 : ∀ e i, Ψ (algebraMap (w.Completion ⊗[F] E) _ e) i = infEmb τ e)
     (h4 : ∀ y, infEmb τ (trBase P w.Completion y) = ∑ i, Ψ y i) (x : w.Completion ⊗[F] Fld P)
@@ -548,6 +742,43 @@ theorem exists_isIsom (hc : IsCMExt F E σ) (h1 : ∀ y i, Ψ (sigR w.Completion
 
 end Bridge
 
+/- English proof (translation)
+Introduce `D V S M P ρ hT WK hW`. Establish `hc` using `GlobalTheory.AdelicU.isCMExt_host D`. Take `⟨Ψ, h1, h2, hα, h4, -, -⟩` from `GlobalTheory.T.compact_unitaryTorus_real_place_tensor_eq_complex_pow D.host.F D.host.E D.sp.cm.sig hc V.rank P (placeOf D ρ) (embOverOf D ρ) hT`. Establish `hfr` using `M.fr_gram ρ`. Establish `hgram : gramAt D V ρ = V.gram.map (embOverOf D ρ).1` using `rfl`.
+
+Establish `hFu : IsUnit (M.fr ρ).det` using `(Matrix.isUnit_iff_isUnit_det _).1 (M.fr_unit ρ)`. Take `⟨sg, hsg⟩ : ∃ sg : XSet P (placeOf D ρ).Completion V.gram → Fin V.rank → Bool, ∀ q i, sg q i = decide (0 < (Ψ (Quotient.out q.1).1.1 i).re)` from `⟨fun q i => _, fun _ _ => rfl⟩`. Establish `hsign : ∀ (q : XSet P (placeOf D ρ).Completion V.gram) (x : plusUnits P (placeOf D ρ).Completion), (QuotientGroup.mk x : Cls P (placeOf D ρ).Completion) = q.1 → sg q = fun i => decide (0 < (Ψ x.1.1 i).re)`. Introduce `q x hx`. Use function extensionality and compare the values at `i`.
+
+Rewrite using `[hsg]`. Conclude with `decide_eq_decide.2 ((mk_eq_iff_sign h1 _ _).1 ((Quotient.out_eq q.1).trans hx.symm) i)`. Establish `hframe : ∀ (x : plusUnits P (placeOf D ρ).Completion) (N : Matrix (Fin V.rank) (Fin V.rank) ℂ), Nᴴ * V.gram.map (embOverOf D ρ).1 * N = Matrix.diagonal (Ψ x.1.1) → (M.fr ρ * N)ᴴ * Formalism.REAL.Jm (M.ε ρ) * (M.fr ρ * N) = Matrix.diagonal fun i => ((Ψ x.1.1 i).re : ℂ)`. Introduce `x N hN`. Establish `hd : Matrix.diagonal (Ψ x.1.1) = Matrix.diagonal fun i => ((Ψ x.1.1 i).re : ℂ)`.
+
+Use `congr 1`. Use function extensionality and compare the values at `i`. Conclude with `((plus_real h1 x i).1).symm`. Rewrite using `[← hd, ← hN, ← hgram, ← hfr, Matrix.conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc]`.
+
+Establish `hA : ∀ q : XSet P (placeOf D ρ).Completion V.gram, ∃ y : Equiv.Perm (Fin V.rank), M.ε ρ ∘ y = sg q`. Introduce `q`. Take `⟨x, φ, hxq, hiso⟩` from `q.2`. Take `⟨N, hN1, -⟩` from `exists_matrix hc h1 h2 h4 hiso`. Take `⟨y, hy⟩` from `exists_perm (M.ε ρ) (fun i => (Ψ x.1.1 i).re) (fun i => (plus_real h1 x i).2) _ (hframe x N hN1)`.
+
+Conclude with `⟨y, hy.trans (hsign q x hxq).symm⟩`. Establish `hPu : ∀ y : Equiv.Perm (Fin V.rank), IsUnit (permM y).det`. Introduce `y`. Establish `e` using `congrArg Matrix.det (conjTranspose_permM_mul y)`. Rewrite `e` using `[Matrix.det_mul, Matrix.det_one]`.
+
+Conclude with `⟨⟨_, _, (mul_comm _ _).trans e, e⟩, rfl⟩`. Establish `hB : ∀ y : Equiv.Perm (Fin V.rank), ∃ q, sg q = M.ε ρ ∘ y`. Introduce `y`. Apply the tactic sequence `have hu : IsUnit (fun i => if M.ε ρ (y i) then (1 : ℂ) else -1) := Pi.isUnit_iff.2 fun i => by by_cases h : M.ε ρ (y i) <;> simp [h, isUnit_iff_ne_zero]`. Establish `hu' : IsUnit (Ψ.symm fun i => if M.ε ρ (y i) then (1 : ℂ) else -1)` using `(isUnit_map_iff Ψ _).1 (by rw [RingEquiv.apply_symm_apply]; exact hu)`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨xP, hxP⟩ : ∃ xP : plusUnits P (placeOf D ρ).Completion, Ψ xP.1.1 = fun i => if M.ε ρ (y i) then (1 : ℂ) else -1 := by`. Use `⟨⟨hu'.unit, ?_⟩, by simp⟩` and prove the remaining obligations. Use `ext1`. Use `show sigR (placeOf D ρ).Completion (star' P) (Ψ.symm fun i => if M.ε ρ (y i) then (1 : ℂ) else -1) = Ψ.symm fun i => if M.ε ρ (y i) then (1 : ℂ) else -1`. Apply `Ψ.injective` to reduce the goal to its premises.
+
+Use function extensionality and compare the values at `i`. Rewrite using `[h1, RingEquiv.apply_symm_apply]`. Apply the tactic sequence `by_cases h : M.ε ρ (y i) <;> simp [h]`. Establish `hi : M.fr ρ * (M.fr ρ)⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hFu`. Establish `hi' : ((M.fr ρ)⁻¹)ᴴ * (M.fr ρ)ᴴ = 1`.
+
+Rewrite using `[← Matrix.conjTranspose_mul, hi, Matrix.conjTranspose_one]`. Establish `e : ((M.fr ρ)⁻¹ * permM y)ᴴ * V.gram.map (embOverOf D ρ).1 * ((M.fr ρ)⁻¹ * permM y) = Matrix.diagonal (Ψ xP.1.1)`. Rewrite using `[hxP, ← hgram, ← hfr, Matrix.conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`.
+
+Use `_ = (permM y)ᴴ * Formalism.REAL.Jm (M.ε ρ) * permM y := by rw [hi, hi', Matrix.mul_one, Matrix.mul_one]`. Use `_ = Formalism.REAL.Jm (M.ε ρ ∘ y) := permM_gram _ _`. Use `_ = _ := rfl`. Establish `hNu : IsUnit ((M.fr ρ)⁻¹ * permM y).det`. Rewrite using `[Matrix.det_mul]`.
+
+Conclude with `(Matrix.isUnit_nonsing_inv_det _ hFu).mul (hPu y)`. Take `⟨φ0, hφ0⟩` from `exists_isIsom hc h1 h2 h4 xP.1.1 _ hNu e`. Use `⟨⟨QuotientGroup.mk xP, xP, φ0, rfl, hφ0⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hsign _ xP rfl, hxP]`. Use function extensionality and compare the values at `i`.
+
+Apply the tactic sequence `by_cases h : M.ε ρ (y i) <;> simp [h]`. Establish `hinj : Function.Injective sg`. Introduce `q q' hq`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `e` using `(mk_eq_iff_sign h1 (Quotient.out q.1) (Quotient.out q'.1)).2 fun i => decide_eq_decide.1 (by rw [← hsg, ← hsg, hq])`.
+
+Conclude with `(Quotient.out_eq q.1).symm.trans (e.trans (Quotient.out_eq q'.1))`. Establish `hW' : ∀ w, w ∈ WK ↔ M.ε ρ ∘ w = M.ε ρ` using `fun w => (hW w).trans (by simp [GlobalTheory.HCChar.compactWeyl])`. Take `⟨T, b, hbij, hb⟩` from `exists_reps (M.ε ρ) WK hW' sg hinj hA hB`. Use `⟨T, b, hbij, ?_⟩` and prove the remaining obligations. Introduce `q γ hγ`.
+
+Take `⟨x, φ, hiso, hxq, rfl⟩` from `hγ`. Take `⟨N, hN1, hN2⟩` from `exists_matrix hc h1 h2 h4 hiso`. Establish `hy : M.ε ρ ∘ (b q : Equiv.Perm (Fin V.rank)) = fun i => decide (0 < (Ψ x.1.1 i).re)` using `(hb q).trans (hsign q x hxq)`. Establish `hm : frameMat M ρ (gam hiso) * (M.fr ρ * N) = (M.fr ρ * N) * Matrix.diagonal (cxRoots (embOverOf D ρ).1 P)`. Establish `hfm : frameMat M ρ (gam hiso) = M.fr ρ * archMat D.sp.cm.sig V.gram (embOverOf D ρ) (gam hiso) * (M.fr ρ)⁻¹` using `rfl`.
+
+Rewrite using `[hfm, ← hα]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = M.fr ρ * (archMat D.sp.cm.sig V.gram (embOverOf D ρ) (gam hiso) * N) := by`. Rewrite using `[Matrix.nonsing_inv_mul _ hFu, Matrix.mul_one, Matrix.mul_assoc]`.
+
+Use `_ = _ := by rw [hN2, Matrix.mul_assoc]`. Take `⟨G, hG, hGm⟩` from `exists_conj_diag (M.ε ρ) (fun i => (Ψ x.1.1 i).re) (fun i => (plus_real h1 x i).2) _ (hframe x N hN1) (b q) hy _ _ hm`. Take `⟨g, hg⟩` from `exists_frameMat_eq M ρ hG`. Use `⟨g, ?_⟩` and prove the remaining obligations. Establish `hinv : G * frameMat M ρ g⁻¹ = 1`.
+
+Rewrite using `[← hg, ← map_mul, mul_inv_cancel, map_one]`. Rewrite using `[map_mul, map_mul, hg, hGm, Matrix.mul_assoc, hinv, Matrix.mul_one]`.
+-/
 theorem real_classes : ∀ (D : D7) (V : HSp D) (S : D.what₂.Tau → SPar) (M : DSModel V S) (P : PPol D.sp.cm.sig V.rank) (ρ : D.what₂.Tau), CompactSpace (Tor P (placeOf D ρ).Completion) → ∀ WK : Subgroup (Equiv.Perm (Fin V.rank)), (∀ w, w ∈ WK ↔ w ∈ GlobalTheory.HCChar.compactWeyl (M.ε ρ)) → ∃ (T : Finset (Equiv.Perm (Fin V.rank))) (b : XSet P (placeOf D ρ).Completion V.gram ≃ T), Function.Bijective (fun p : WK × T => ((p.2 : Equiv.Perm (Fin V.rank)))⁻¹ * (p.1 : Equiv.Perm (Fin V.rank))) ∧ ∀ (q : XSet P (placeOf D ρ).Completion V.gram) (γ : GArch D.sp.cm.sig V.gram (placeOf D ρ)), HasCls P (placeOf D ρ).Completion V.gram γ q.1 → ∃ g, frameMat M ρ (g * γ * g⁻¹) = Matrix.diagonal fun i => cxRoots (embOverOf D ρ).1 P ((b q : Equiv.Perm (Fin V.rank))⁻¹ i) := by
   intro D V S M P ρ hT WK hW
   classical

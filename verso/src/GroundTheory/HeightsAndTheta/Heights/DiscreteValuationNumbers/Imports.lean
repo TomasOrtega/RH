@@ -8,6 +8,23 @@ open MvPolynomial
 
 universe u
 
+/- English proof (translation)
+Introduce `O _ _ _ ϖ hϖ K _ _ ι _ P d hP b f g hD c s hs hsP hsH hcommon IH L`. Establish `hPp : P.IsPrime` using `hP.multiProj.isPrime`. Establish `hε` using `hpos O ϖ hϖ K ι P d hP b f g hD s hsP hcommon`. Take `⟨e, h, hh, hhP, hle, hhH, hhG, hh0, hmulε⟩` from `havoid O ϖ hϖ K ι P d hP b f g hD (fun k => (b k).toNat)`. Establish `hdiv : ∀ W, divCycle P (s * h) W = divCycle P s W + divCycle P h W` using `fun W => by`.
+
+Rewrite using `[hmul O K ι P s h hPp hsP hhP]`. Both sides reduce to the same expression. Establish `hshP : s * h ∉ P` using `fun hm => (hPp.mem_or_mem hm).elim hsP hhP`. Establish `hshH : ∀ H, divCycle P (s * h) H ≠ 0 → (C ϖ : MRing ι O) ∉ H → IsVerticalDivisor H ϖ b f g`. Introduce `H hH hϖH`.
+
+Rewrite `hH` using `[hdiv]`. Distinguish the cases in `h1 : divCycle P s H = 0`. Conclude with `hhH H (by rwa [h1, zero_add] at hH) hϖH`. Conclude with `hsH H h1 hϖH`. Establish `hcommon' : ∃ G, (C ϖ : MRing ι O) ∈ G ∧ divCycle P (s * h) G ≠ 0 ∧ ratDiv P f g G ≠ 0`.
+
+Take `⟨G, hG, hsG, hDG⟩` from `hcommon`. Conclude with `⟨G, hG, by rwa [hdiv, hhG G hG hDG, add_zero], hDG⟩`. Use `set e₂ : K → ℕ := fun k => (((c + e) k : ℕ) - b k : ℤ).toNat with he₂def`. Establish `he₂ : ∀ k, (((c + e) k : ℕ) : ℤ) = b k + e₂ k`. Introduce `k`.
+
+Establish `h1 : (b k).toNat ≤ e k` using `hle k`. Establish `h2 : b k ≤ ((b k).toNat : ℤ)` using `Int.self_le_toNat (b k)`. Simplify using `only [he₂def, Pi.add_apply, Nat.cast_add]`. Rewrite using `[Int.toNat_of_nonneg (by omega)]`. Expand and normalize the polynomial expressions, which then agree.
+
+Take `⟨m, hm, hmP, hmH⟩` from `hhor O ϖ hϖ K ι P d hP (s * h) hshP e₂`. Take `⟨hmodel, hsl, hslP, hY₀P, hD₁, hE, hH₁, hH₀⟩` from `hpieces O ϖ hϖ K ι P d hP b f g hD (c + e) (s * h) (hs.mul hh) hshP hshH e₂ he₂ m hm hmP hmH`. Take `⟨hdrop₁, hdrop₀⟩` from `hdrop O ϖ hϖ K ι P d hP b f g hD (c + e) (s * h) (hs.mul hh) hshP hshH e₂ he₂ m hm hmP hmH hcommon'`. Rewrite `hdrop₁`, `hdrop₀` using `[hmulε s hsP]`. Establish `hId₁` using `IH (Option K) (extIdx ι (BlowUpIdx ι)) _ d hmodel _ _ _ hD₁ _ _ hsl hslP (fun H hH hϖH => (hH₁ H hH hϖH).1) hdrop₁ (liftDegs L)`.
+
+Establish `hId₀` using `IH (Option K) (extIdx ι (BlowUpIdx ι)) _ d hmodel _ _ _ hE (Pi.single none 1) (newVar none) (isWeightedHomogeneous_X _ _ _) hY₀P hH₀ hdrop₀ (liftDegs L)`. Establish `hIdsh` using `hred O ϖ hϖ K ι P d hP b f g hD (c + e) (s * h) (hs.mul hh) hshP hshH e₂ he₂ m hm hmP hmH L hId₁ hId₀`. Establish `hIdh` using `IH K ι P d hP b f g hD e h hh hhP hhH (by rw [hh0]; exact hε) L`. Rewrite `hIdsh`, `hIdh`, the goal using `[cutIdentity_iff]`. Establish `h1` using `hlhs O ϖ hϖ K ι P d hP b f g hD.1 c e L`.
+
+Establish `h2` using `hrhs O ϖ hϖ K ι P d hP b f g s h hsP hhP L`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem CommonFactorInduction.proof (hpos : ExcessPositive.Statement.{u}) (havoid : AvoidingFormExists.Statement.{u})
     (hhor : HorizontalAvoidingForm.Statement.{u}) (hpieces : BlowUpDecomposition.Statement.{u})
     (hdrop : BlowUpExcessDecreases.Statement.{u}) (hred : BlowUpReduction.Statement.{u})

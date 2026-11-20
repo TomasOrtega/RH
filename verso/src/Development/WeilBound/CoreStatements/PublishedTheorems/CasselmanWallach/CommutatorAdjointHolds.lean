@@ -36,16 +36,27 @@ def Jk : ℕ → Submodule ℂ (Module.End ℂ V)
         refine ⟨r • u, Submodule.smul_mem _ r hu, r • w, fun c d => Submodule.smul_mem _ r (hw c d), ?_⟩
         simp [smul_add, Finset.smul_sum] }
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 lemma mem_Jk_succ_succ (k : ℕ) (x : Module.End ℂ V) : x ∈ Jk ε E (k + 2) ↔ ∃ u ∈ U E (k + 1),
     ∃ w : Fin n → Fin n → Module.End ℂ V, (∀ c d, w c d ∈ U E k) ∧ x = u + ∑ c, ∑ d, w c d * Z ε E c d :=
   Iff.rfl
 
+/- English proof (translation)
+Break down `k with _ | k` into its components or cases. Conclude with `le_rfl`. Introduce `x hx`. Conclude with `(mem_Jk_succ_succ ε E k x).2 ⟨x, hx, 0, fun _ _ => zero_mem _, by simp⟩`.
+-/
 lemma U_le_Jk (k : ℕ) : U E k ≤ Jk ε E (k + 1) := by
   rcases k with _ | k
   · exact le_rfl
   · intro x hx
     exact (mem_Jk_succ_succ ε E k x).2 ⟨x, hx, 0, fun _ _ => zero_mem _, by simp⟩
 
+/- English proof (translation)
+Establish `: U E 0 ≤ Submodule.span ℂ {(1 : Module.End ℂ V)}`. Apply `Submodule.span_le.mpr` to reduce the goal to its premises. Introduce and unpack `_ ⟨l, hl, rfl⟩`. Establish `: l = []` using `List.eq_nil_of_length_eq_zero (by omega)`. Substitute `this` using the available equality.
+
+Conclude with `Submodule.subset_span rfl`. Take `⟨c, hc⟩` from `Submodule.mem_span_singleton.mp (this hx)`. Conclude with `⟨c, hc.symm⟩`.
+-/
 lemma U0 {x : Module.End ℂ V} (hx : x ∈ U E 0) : ∃ c : ℂ, x = c • (1 : Module.End ℂ V) := by
   have : U E 0 ≤ Submodule.span ℂ {(1 : Module.End ℂ V)} := by
     apply Submodule.span_le.mpr
@@ -58,6 +69,11 @@ lemma U0 {x : Module.End ℂ V} (hx : x ∈ U E 0) : ∃ c : ℂ, x = c • (1 :
 
 variable {ε E}
 
+/- English proof (translation)
+Break down `j with _ | _ | j` into its components or cases. Establish `: y = 0` using `(Submodule.mem_bot ℂ).mp hy`. Simplify using `[this]`. Conclude with `U_le_Jk ε E i (by simpa using h.mul i 0 x hx y hy)`. Take `⟨u, hu, w, hw, rfl⟩` from `(mem_Jk_succ_succ ε E j y).1 hy`.
+
+Rewrite using `[show i + (j + 2) = (i + j) + 2 by omega, mem_Jk_succ_succ]`. Use `⟨x * u, ?_, fun c d => x * w c d, fun c d => h.mul i j x hx _ (hw c d), ?_⟩` and prove the remaining obligations. Use `h.mul i (j + 1) x hx u hu` as an intermediate fact. Rewrite `this` using `[← add_assoc]`. Then use the resulting hypothesis. Simplify using `[mul_add, Finset.mul_sum, mul_assoc]`.
+-/
 lemma memJ_left (h : Hyp ε E) (i j : ℕ) {x y : Module.End ℂ V} (hx : x ∈ U E i) (hy : y ∈ Jk ε E j) :
     x * y ∈ Jk ε E (i + j) := by
   rcases j with _ | _ | j
@@ -70,6 +86,13 @@ lemma memJ_left (h : Hyp ε E) (i j : ℕ) {x y : Module.End ℂ V} (hx : x ∈ 
     · have := h.mul i (j + 1) x hx u hu; rwa [← add_assoc] at this
     · simp [mul_add, Finset.mul_sum, mul_assoc]
 
+/- English proof (translation)
+Break down `j with _ | _ | j` into its components or cases. Establish `: y = 0` using `(Submodule.mem_bot ℂ).mp hy`. Simplify using `[this]`. Rewrite using `[add_comm]; exact U_le_Jk ε E i (by simpa using h.mul 0 i y hy x hx)`. Take `⟨u, hu, w, hw, rfl⟩` from `(mem_Jk_succ_succ ε E j y).1 hy`.
+
+Rewrite using `[show j + 2 + i = (j + i) + 2 by omega, mem_Jk_succ_succ]`. Use `⟨u * x + ∑ c, ∑ d, w c d * (Z ε E c d * x - x * Z ε E c d), ?_, fun c d => w c d * x, fun c d => h.mul j i _ (hw c d) x hx, ?_⟩` and prove the remaining obligations. Use `add_mem ?_ (Submodule.sum_mem _ fun c _ => Submodule.sum_mem _ fun d _ => ?_)` and prove the remaining obligations. Use `h.mul (j + 1) i u hu x hx; rwa [show j + 1 + i = j + i + 1 by omega] at this` as an intermediate fact. Use `h.mul j (2 + i - 1) _ (hw c d) _ (h.comm 2 i _ (h.zmem c d) x hx)` as an intermediate fact.
+
+Rewrite `this` using `[show j + (2 + i - 1) = j + i + 1 by omega]`. Then use the resulting hypothesis. Simplify using `only [add_mul, Finset.sum_mul, mul_sub, mul_assoc, Finset.sum_sub_distrib]`. Normalize the expressions using the abelian group laws.
+-/
 lemma memJ_right (h : Hyp ε E) (i j : ℕ) {x y : Module.End ℂ V} (hy : y ∈ Jk ε E j) (hx : x ∈ U E i) :
     y * x ∈ Jk ε E (j + i) := by
   rcases j with _ | _ | j
@@ -105,18 +128,27 @@ variable (ε E) in
 
 def inJ (f : (Module.End ℂ V)[X]) : Prop := ∀ k, f.coeff k ∈ Jk ε E k
 
+/- English proof (translation)
+Introduce `k` and use `by rw [coeff_mul] exact Submodule.sum_mem _ fun p hp => by have := memJ_right h _ _ (hx p.1) (hg p.2); rwa [Finset.HasAntidiagonal.mem_antidiagonal.mp hp] at this`.
+-/
 lemma inJ_mul_right (h : Hyp ε E) {x g : (Module.End ℂ V)[X]} (hx : inJ ε E x) (hg : g ∈ Rr ε E h) :
     inJ ε E (x * g) := fun k => by
   rw [coeff_mul]
   exact Submodule.sum_mem _ fun p hp => by
     have := memJ_right h _ _ (hx p.1) (hg p.2); rwa [Finset.HasAntidiagonal.mem_antidiagonal.mp hp] at this
 
+/- English proof (translation)
+Introduce `k` and use `by rw [coeff_mul] exact Submodule.sum_mem _ fun p hp => by have := memJ_left h _ _ (hg p.1) (hx p.2); rwa [Finset.HasAntidiagonal.mem_antidiagonal.mp hp] at this`.
+-/
 lemma inJ_mul_left (h : Hyp ε E) {x g : (Module.End ℂ V)[X]} (hx : inJ ε E x) (hg : g ∈ Rr ε E h) :
     inJ ε E (g * x) := fun k => by
   rw [coeff_mul]
   exact Submodule.sum_mem _ fun p hp => by
     have := memJ_left h _ _ (hg p.1) (hx p.2); rwa [Finset.HasAntidiagonal.mem_antidiagonal.mp hp] at this
 
+/- English proof (translation)
+Introduce `k` and use `by have e : (g * f).coeff k = ∑ x ∈ antidiagonal k, g.coeff x.2 * f.coeff x.1 := by rw [coeff_mul, ← Finset.Nat.sum_antidiagonal_swap]; rfl rw [coeff_sub, e, coeff_mul, ← Finset.sum_sub_distrib] rcases k with _ | k · obtain ⟨a, ha⟩ := U0 E (hf 0) obtain ⟨b, hb⟩ := U0 E (hg 0) sim …`.
+-/
 lemma inJ_comm (h : Hyp ε E) {f g : (Module.End ℂ V)[X]} (hf : f ∈ Rr ε E h) (hg : g ∈ Rr ε E h) :
     inJ ε E (f * g - g * f) := fun k => by
   have e : (g * f).coeff k = ∑ x ∈ antidiagonal k, g.coeff x.2 * f.coeff x.1 := by
@@ -166,6 +198,9 @@ instance instCR (h : Hyp ε E) : CommRing (Q ε E h) :=
 
 instance instQA (h : Hyp ε E) : Algebra ℚ (Q ε E h) := Algebra.compHom _ (algebraMap ℚ ℂ)
 
+/- English proof (translation)
+The claim follows from `A4' (Q ε E h) n N hN`.
+-/
 example (h : Hyp ε E) (A4' : A4) (N : Matrix (Fin n) (Fin n) (Q ε E h)) (hN : ∀ k, (N ^ (k + 1)).trace = 0) :
     N ^ n = 0 := A4' (Q ε E h) n N hN
 
@@ -177,18 +212,27 @@ def L (j : ℕ) (x : Module.End ℂ V) (hx : x ∈ U E j) : Rr ε E h :=
     · subst hk; exact hx
     · exact zero_mem _⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] lemma coe_L (j : ℕ) (x : Module.End ℂ V) (hx : x ∈ U E j) :
     ((L h j x hx : Rr ε E h) : (Module.End ℂ V)[X]) = C x * X ^ j := rfl
 
 def MR (M : Matrix (Fin n) (Fin n) (Module.End ℂ V)) (j : ℕ) (hM : ∀ a b, M a b ∈ U E j) :
     Matrix (Fin n) (Fin n) (Rr ε E h) := fun a b => L h j (M a b) (hM a b)
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation.
+-/
 lemma CX_mul (x y : Module.End ℂ V) (i j : ℕ) :
     (C x * X ^ i) * (C y * X ^ j) = C (x * y) * X ^ (i + j) := by
   calc (C x * X ^ i) * (C y * X ^ j) = C x * (X ^ i * C y) * X ^ j := by simp only [mul_assoc]
     _ = C x * (C y * X ^ i) * X ^ j := by rw [(Polynomial.commute_X_pow (C y) i).eq]
     _ = C (x * y) * X ^ (i + j) := by simp only [mul_assoc, C_mul, pow_add]
 
+/- English proof (translation)
+Use `⟨fun a b => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply]`. Conclude with `Submodule.sum_mem _ fun c _ => h.mul _ _ _ (hM a c) _ (hM' c b)`. Use `Matrix.ext fun a b => Subtype.ext ?_` and prove the remaining obligations. Simplify using `only [Matrix.mul_apply, MR, AddSubmonoidClass.coe_finsetSum, Subalgebra.coe_mul, coe_L, CX_mul, map_sum, Finset.sum_mul]`.
+-/
 lemma MR_mul (M M' : Matrix (Fin n) (Fin n) (Module.End ℂ V)) (i j : ℕ) (hM : ∀ a b, M a b ∈ U E i)
     (hM' : ∀ a b, M' a b ∈ U E j) :
     ∃ h'' : ∀ a b, (M * M') a b ∈ U E (i + j), MR h M i hM * MR h M' j hM' = MR h (M * M') (i + j) h'' := by
@@ -199,6 +243,13 @@ lemma MR_mul (M M' : Matrix (Fin n) (Fin n) (Module.End ℂ V)) (i j : ℕ) (hM 
     simp only [Matrix.mul_apply, MR, AddSubmonoidClass.coe_finsetSum, Subalgebra.coe_mul, coe_L, CX_mul, map_sum,
       Finset.sum_mul]
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero`. Use `⟨fun a b => by simpa using hM a b, ?_⟩` and prove the remaining obligations. Use `Matrix.ext fun a b => Subtype.ext ?_` and prove the remaining obligations. Simplify using `[MR]`.
+
+Consider the case `succ k ih`. Take `⟨hk, e⟩` from `ih`. Take `⟨h'', e'⟩` from `MR_mul h _ M _ j hk hM`. Use `⟨fun a b => ?_, ?_⟩` and prove the remaining obligations. Use `h'' a b; rwa [← pow_succ, show j * (k + 1) + j = j * (k + 1 + 1) by ring] at this` as an intermediate fact.
+
+Rewrite using `[pow_succ, e, e']`. Use `Matrix.ext fun a b => Subtype.ext ?_` and prove the remaining obligations. Simplify using `only [MR, coe_L, ← pow_succ, show j * (k + 1) + j = j * (k + 1 + 1) by ring]`.
+-/
 lemma MR_pow (M : Matrix (Fin n) (Fin n) (Module.End ℂ V)) (j : ℕ) (hM : ∀ a b, M a b ∈ U E j) (k : ℕ) :
     ∃ hk : ∀ a b, (M ^ (k + 1)) a b ∈ U E (j * (k + 1)), MR h M j hM ^ (k + 1) = MR h (M ^ (k + 1)) (j * (k + 1)) hk := by
   induction k with
@@ -216,6 +267,13 @@ lemma MR_pow (M : Matrix (Fin n) (Fin n) (Module.End ℂ V)) (j : ℕ) (hM : ∀
 
 abbrev psi : Rr ε E h →+* Q ε E h := RingCon.mk' (con ε E h)
 
+/- English proof (translation)
+Rewrite using `[← map_zero (psi h)]`. Express the relevant statement in the definitionally equal form `((L h j x hx : Rr ε E h) : Q ε E h) = ((0 : Rr ε E h) : Q ε E h) ↔ _`. Rewrite using `[RingCon.eq]`. Express the relevant statement in the definitionally equal form `inJ ε E (C x * X ^ j - 0) ↔ _`. Simplify using `only [sub_zero, inJ, coeff_C_mul_X_pow]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `H`. Simplify using `using H j`. Introduce `H k`. Use `split_ifs with hk`.
+
+Substitute `hk` using the available equality. Conclude with `H`. Conclude with `zero_mem _`.
+-/
 lemma psiL_iff (j : ℕ) (x : Module.End ℂ V) (hx : x ∈ U E j) : psi h (L h j x hx) = 0 ↔ x ∈ Jk ε E j := by
   rw [← map_zero (psi h)]
   change ((L h j x hx : Rr ε E h) : Q ε E h) = ((0 : Rr ε E h) : Q ε E h) ↔ _
@@ -228,10 +286,16 @@ lemma psiL_iff (j : ℕ) (x : Module.End ℂ V) (hx : x ∈ U E j) : psi h (L h 
     · subst hk; exact H
     · exact zero_mem _
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[sub_mul]`.
+-/
 lemma L_sub (j : ℕ) (x y : Module.End ℂ V) (hx : x ∈ U E j) (hy : y ∈ U E j) :
     L h j x hx - L h j y hy = L h j (x - y) (sub_mem hx hy) := by
   apply Subtype.ext; simp [sub_mul]
 
+/- English proof (translation)
+Establish `: L h j M.trace hT = ∑ i, MR h M j hM i i`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[MR, Matrix.trace, Finset.sum_mul]`. Rewrite using `[this, map_sum]`. Both sides reduce to the same expression.
+-/
 lemma trace_MR (M : Matrix (Fin n) (Fin n) (Module.End ℂ V)) (j : ℕ) (hM : ∀ a b, M a b ∈ U E j)
     (hT : M.trace ∈ U E j) : ((psi h).mapMatrix (MR h M j hM)).trace = psi h (L h j M.trace hT) := by
   have : L h j M.trace hT = ∑ i, MR h M j hM i i := by
@@ -241,6 +305,25 @@ lemma trace_MR (M : Matrix (Fin n) (Fin n) (Module.End ℂ V)) (j : ℕ) (hM : �
   rfl
 
 include h in
+/- English proof (translation)
+Introduce `m hm hnm a b`. Establish `hM : ∀ a b, Mm E a b ∈ U E 1` using `fun a b => h.e1 a b`. Establish `hD : ∀ a b, Md ε E a b ∈ U E 1` using `fun a b => Submodule.smul_mem _ _ (h.e1 a b)`. Use `set N := (psi h).mapMatrix (MR h (Mm E) 1 hM) with hNdef`. Use `set N' := (psi h).mapMatrix (MR h (Md ε E) 1 hD) with hN'def`.
+
+Establish `htr : ∀ k, (N ^ (k + 1)).trace = 0`. Introduce `k`. Take `⟨hk, e⟩` from `MR_pow h (Mm E) 1 hM k`. Take `⟨c, hc⟩` from `h3 _ (fun a b => h2 (k + 1) a b)`. Establish `hT : (Mm E ^ (k + 1)).trace = c • 1` using `LinearMap.ext fun v => by simp [hc]`.
+
+Establish `hT' : (Mm E ^ (k + 1)).trace ∈ U E (1 * (k + 1))`. Rewrite using `[hT]`. Conclude with `h.mono 0 _ (Nat.zero_le _) (Submodule.smul_mem _ c h.one)`. Rewrite using `[hNdef, ← map_pow, e, trace_MR h _ _ _ hT', psiL_iff, hT, one_mul]`. Conclude with `U_le_Jk ε E k (h.mono 0 k (Nat.zero_le _) (Submodule.smul_mem _ c h.one))`.
+
+Establish `hN : N ^ n = 0` using `h4 (Q ε E h) n N htr`. Take `⟨h1, e1⟩` from `MR_mul h (Mm E) (Md ε E) 1 1 hM hD`. Take `⟨h1', e1'⟩` from `MR_mul h (Md ε E) (Mm E) 1 1 hD hM`. Establish `hcomm : Commute N N'` using `by show N * N' = N' * N`. Rewrite using `[hNdef, hN'def, ← map_mul, ← map_mul, e1, e1']`.
+
+Use `Matrix.ext fun a b => ?_` and prove the remaining obligations. Rewrite using `[← sub_eq_zero]`. Simplify using `only [RingHom.mapMatrix_apply, Matrix.map_apply, MR]`. Rewrite using `[← map_sub, L_sub, psiL_iff]`. Use `show _ ∈ Jk ε E (0 + 2)`.
+
+Rewrite using `[mem_Jk_succ_succ]`. Use `⟨(Mm E * Md ε E - Md ε E * Mm E) a b + Z ε E a b, h5 a b, fun c d => if c = a then (if d = b then -1 else 0) else 0, fun c d => ?_, ?_⟩` and prove the remaining obligations. Simplify using `only split_ifs`. Conclude with `neg_mem h.one`. Conclude with `zero_mem _`.
+
+Conclude with `zero_mem _`. Simplify using `[ite_mul, Finset.sum_ite_eq', Matrix.sub_apply]`. Establish `hNm : N ^ m = 0` using `by rw [← Nat.sub_add_cancel hnm, pow_add, hN, mul_zero]`. Establish `hprod : (N' * N) ^ m = 0` using `by rw [hcomm.symm.mul_pow, hNm, mul_zero]`. Take `⟨k, rfl⟩ : ∃ k, m = k + 1` from `⟨m - 1, by omega⟩`.
+
+Take `⟨hk, ek⟩` from `MR_pow h (Md ε E * Mm E) (1 + 1) h1' k`. Establish `hx : ((Md ε E * Mm E) ^ (k + 1)) a b ∈ Jk ε E ((1 + 1) * (k + 1))`. Rewrite using `[← psiL_iff h _ _ (hk a b)]`. Use `congrFun (congrFun hprod a) b` as an intermediate fact. Rewrite `this` using `[hNdef, hN'def, ← map_mul, e1', ← map_pow, ek]`.
+
+Simplify `this` using `[MR]`. Rewrite `hx` using `[show (1 + 1) * (k + 1) = (2 * (k + 1) - 2) + 2 by omega, mem_Jk_succ_succ]`. Take `⟨u, hu, w, hw, e⟩` from `hx`. Conclude with `⟨u, by rwa [show 2 * (k + 1) - 2 + 1 = 2 * (k + 1) - 1 by omega] at hu, w, hw, e⟩`.
+-/
 theorem main (h2 : ∀ (k : ℕ) c d, E c d * (Mm E ^ k).trace = (Mm E ^ k).trace * E c d)
     (h3 : ∀ T : Module.End ℂ V, (∀ a b, E a b * T = T * E a b) → ∃ c : ℂ, ∀ v, T v = c • v)
     (h4 : A4) (h5 : ∀ a b, (Mm E * Md ε E - Md ε E * Mm E) a b + Z ε E a b ∈ U E 1) :
@@ -295,6 +378,9 @@ theorem main (h2 : ∀ (k : ℕ) c d, E c d * (Mm E ^ k).trace = (Mm E ^ k).trac
 
 end GradedNormalNilpotent
 
+/- English proof (translation)
+Introduce `h1 h2 h3 h4 h5 n ε V _ _ E hE`. Take `⟨hm, ho, he, hmu, hc, -, hz⟩` from `h1 n ε V E hE`. Conclude with `GradedNormalNilpotent.main ⟨hm, ho, he, hmu, hc, hz⟩ (h2 n ε V E hE) (h3 n ε V E hE) h4 (h5 n ε V E hE)`.
+-/
 theorem normal_nilpotent_of_commutator : A1 → A2 → A3 → A4 → CommutatorAdjointModLower → A5 := by
   intro h1 h2 h3 h4 h5 n ε V _ _ E hE
   obtain ⟨hm, ho, he, hmu, hc, -, hz⟩ := h1 n ε V E hE

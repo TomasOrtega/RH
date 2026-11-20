@@ -12,6 +12,11 @@ set_option autoImplicit false
 
 namespace GlobalTheory.Desc.GaussComp
 
+/- English proof (translation)
+Set `N` to `Submodule.span T (Set.range z)`. Establish `: Module.Finite T N` using `Module.Finite.span_of_finite T (Set.finite_range z)`. Establish `: Module.Free T N` using `Module.free_of_finite_type_torsion_free'`. Set `b` to `Module.finBasis T N`. Establish `hz : ∀ i, z i ∈ N` using `fun i => Submodule.subset_span ⟨i, rfl⟩`.
+
+Use `⟨Module.finrank T N, fun l => (b l : M), fun i l => b.repr ⟨z i, hz i⟩ l, ?_, fun i => ?_⟩` and prove the remaining obligations. Conclude with `b.linearIndependent.map' N.subtype (Submodule.ker_subtype N)`. Establish `h` using `congrArg Subtype.val (b.sum_repr ⟨z i, hz i⟩)`. Rewrite `h` using `[Submodule.coe_sum]`. Simplify using `using h.symm`.
+-/
 theorem exists_indep {T M I : Type} [CommRing T] [IsDomain T] [IsPrincipalIdealRing T] [AddCommGroup M] [Module T M]
     [Module.IsTorsionFree T M] [Finite I] (z : I → M) :
     ∃ (p : ℕ) (x : Fin p → M) (A : I → Fin p → T), LinearIndependent T x ∧ ∀ i, z i = ∑ l, A i l • x l := by
@@ -27,6 +32,11 @@ theorem exists_indep {T M I : Type} [CommRing T] [IsDomain T] [IsPrincipalIdealR
     rw [Submodule.coe_sum] at h
     simpa using h.symm
 
+/- English proof (translation)
+Simplify using `only [spanBy]`. Rewrite using `[Submodule.mem_span_set']`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨n, r, t, ht, rfl⟩`. Conclude with `⟨n, r, fun i => ⟨t i, ht i⟩, by simp [Algebra.smul_def]⟩`.
+
+Introduce and unpack `⟨n, f, g, hg⟩`. Conclude with `⟨n, f, fun i => g i, fun i => (g i).2, by rw [← hg]; simp [Algebra.smul_def]⟩`.
+-/
 theorem mem_spanBy_iff {R F : Type} [CommRing R] [CommRing F] [Algebra R F] (S : Set F) (v : F) :
     v ∈ spanBy (algebraMap R F) S ↔ v ∈ Submodule.span R S := by
   simp only [spanBy]
@@ -43,12 +53,22 @@ variable {T E F' FE : Type} [CommRing T] [IsDomain T] [IsPrincipalIdealRing T] [
   [CommRing FE] [Algebra T E] [Algebra T F'] [Algebra E FE] (θb : F' →+* FE)
 
 omit [IsDomain T] [IsPrincipalIdealRing T] in
+/- English proof (translation)
+Establish `h : θb (algebraMap T F' t) = algebraMap E FE (algebraMap T E t)` using `congrArg (fun g => g t) hc`. Simplify using `only [Algebra.smul_def, map_mul, h]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem map_smul' (hc : θb.comp (algebraMap T F') = (algebraMap E FE).comp (algebraMap T E)) (t : T) (e : E)
     (x : F') : e • θb (t • x) = (t • e) • θb x := by
   have h : θb (algebraMap T F' t) = algebraMap E FE (algebraMap T E t) := congrArg (fun g => g t) hc
   simp only [Algebra.smul_def, map_mul, h]
   ring
 
+/- English proof (translation)
+Take `⟨p, x, A, hx, hy⟩` from `exists_indep (T := T) y`. Establish `h2 : ∑ l, algebraMap E FE (∑ b, A b l • ε b) * θb (x l) = 0`. Rewrite using `[← h]`. Simplify using `only [hy, map_sum, Finset.smul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`.
+
+Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by`. Rewrite using `[← Algebra.smul_def]`. Conclude with `(map_smul' θb hc _ _ _).symm`. Establish `h3 : (fun l => ∑ b, A b l • ε b) = 0`. Use `hL p x (fun r hr => ?_) _ h2` and prove the remaining obligations.
+
+Conclude with `funext (Fintype.linearIndependent_iff.mp hx r (by simpa [Algebra.smul_def] using hr))`. Establish `h4 : ∀ b l, A b l = 0` using `fun b l => Fintype.linearIndependent_iff.mp hε (fun b => A b l) (congrFun h3 l) b`. Rewrite using `[hy a]`. Simplify using `[h4]`.
+-/
 theorem symm_indep [Module.IsTorsionFree T F']
     (hc : θb.comp (algebraMap T F') = (algebraMap E FE).comp (algebraMap T E))
     (hL : LinDisj (algebraMap T F') (algebraMap E FE) θb) {I : Type} [Fintype I] {ε : I → E}
@@ -69,6 +89,9 @@ theorem symm_indep [Module.IsTorsionFree T F']
   rw [hy a]
   simp [h4]
 
+/- English proof (translation)
+Simplify using `only [hcA, Finset.sum_smul, map_sum, Finset.smul_sum]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => (map_smul' θb hc _ _ _).symm`.
+-/
 private theorem sum_smul_theta_eq_sum_basis_smul_theta (hc : θb.comp (algebraMap T F') = (algebraMap E FE).comp (algebraMap T E))
     {K : Type} [Fintype K] {p : ℕ} (c : K → E) (z : K → F') (A : K → Fin p → T) (e : Fin p → E)
     (hcA : ∀ k, c k = ∑ l, A k l • e l) :
@@ -78,6 +101,23 @@ private theorem sum_smul_theta_eq_sum_basis_smul_theta (hc : θb.comp (algebraMa
   exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ =>
     (map_smul' θb hc _ _ _).symm
 
+/- English proof (translation)
+Set `ψ : (Fin p → R₀) →ₗ[R₀] (Fin p → FractionRing R₀)` to `LinearMap.pi fun l => (Algebra.linearMap R₀ (FractionRing R₀)).comp (LinearMap.proj l)`. Establish `hψ : ∀ x l, ψ x l = algebraMap R₀ (FractionRing R₀) (x l)` using `fun _ _ => rfl`. Establish `hker : LinearMap.ker ψ = ⊥`. Rewrite using `[LinearMap.ker_eq_bot']`. Introduce `x hx`.
+
+Use function extensionality and compare the values at `l`. Establish `h0` using `congrFun hx l`. Rewrite `h0` using `[hψ]`. Apply `IsFractionRing.injective R₀ (FractionRing R₀)` to reduce the goal to its premises. Rewrite using `[h0]`.
+
+Simplify using the standard rewrite rules. Establish `h2 : LinearIndependent (FractionRing R₀) (ψ ∘ B)` using `(LinearIndependent.iff_fractionRing R₀ (FractionRing R₀)).mp (hB.map' ψ hker)`. Establish `h3 : (ψ ∘ B) j ∉ Submodule.span (FractionRing R₀) ((ψ ∘ B) '' {a | a ≠ j})` using `h2.notMem_span_image (by simp)`. Take `⟨f, hf, hf0⟩` from `Submodule.exists_dual_map_eq_bot_of_notMem h3 inferInstance`. Establish `hfa : ∀ a, a ≠ j → f ((ψ ∘ B) a) = 0`.
+
+Introduce `a ha`. Establish `hm : f ((ψ ∘ B) a) ∈ (Submodule.span (FractionRing R₀) ((ψ ∘ B) '' {a | a ≠ j})).map f` using `Submodule.mem_map_of_mem (Submodule.subset_span ⟨a, ha, rfl⟩)`. Rewrite `hm` using `[hf0]`. Conclude with `(Submodule.mem_bot (FractionRing R₀)).mp hm`. Take `⟨b, hb⟩` from `IsLocalization.exist_integer_multiples (nonZeroDivisors R₀) Finset.univ (fun l => f (fun m => if l = m then 1 else 0))`.
+
+Establish `hb' : ∀ l, ∃ d : R₀, algebraMap R₀ (FractionRing R₀) d = (b : R₀) • f (fun m => if l = m then 1 else 0)` using `fun l => RingHom.mem_rangeS.mp (hb l (Finset.mem_univ l))`. Use `choose D hD using hb'`. Establish `key : ∀ a, algebraMap R₀ (FractionRing R₀) (∑ l, D l * B a l) = (b : R₀) • f ((ψ ∘ B) a)`. Introduce `a`. Rewrite using `[LinearMap.pi_apply_eq_sum_univ f ((ψ ∘ B) a), map_sum, Finset.smul_sum]`.
+
+Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, hD l, Function.comp_apply, hψ, smul_eq_mul, Algebra.smul_def, Algebra.smul_def]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨D, ∑ l, D l * B j l, fun h0 => hf ?_, fun a => ?_⟩` and prove the remaining obligations. Establish `hj` using `key j`.
+
+Rewrite `hj` using `[h0, map_zero, Algebra.smul_def]`. Conclude with `(mul_eq_zero.mp hj.symm).resolve_left (IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors b.2)`. Use `split_ifs with h`. Rewrite using `[h]`. Apply `IsFractionRing.injective R₀ (FractionRing R₀)` to reduce the goal to its premises.
+
+Rewrite using `[key a, hfa a h, smul_zero, map_zero]`.
+-/
 private theorem exists_dual_coeffs_of_linearIndependent {R₀ : Type} [CommRing R₀] [IsDomain R₀] {Jx : Type} [Fintype Jx] [DecidableEq Jx]
     {p : ℕ} (B : Jx → Fin p → R₀) (hB : LinearIndependent R₀ B) (j : Jx) :
     ∃ (D : Fin p → R₀) (t : R₀), t ≠ 0 ∧ ∀ a, ∑ l, D l * B a l = if a = j then t else 0 := by
@@ -126,6 +166,21 @@ private theorem exists_dual_coeffs_of_linearIndependent {R₀ : Type} [CommRing 
     · apply IsFractionRing.injective R₀ (FractionRing R₀)
       rw [key a, hfa a h, smul_zero, map_zero]
 
+/- English proof (translation)
+Take `⟨p, e, A, he, hz⟩` from `exists_indep (T := T) (Sum.elim ε r)`. Establish `h1 : ∑ i, ε i • θb (w i) = ∑ l, e l • θb (∑ i, A (Sum.inl i) l • w i)` using `sum_smul_theta_eq_sum_basis_smul_theta θb hc ε w (fun i => A (Sum.inl i)) e (fun i => hz (Sum.inl i))`. Establish `h2 : ∑ k, r k • θb (y k) = ∑ l, e l • θb (∑ k, A (Sum.inr k) l • y k)` using `sum_smul_theta_eq_sum_basis_smul_theta θb hc r y (fun k => A (Sum.inr k)) e (fun k => hz (Sum.inr k))`. Establish `key : ∀ l, ∑ i, A (Sum.inl i) l • w i - ∑ k, A (Sum.inr k) l • y k = 0`. Introduce `l`.
+
+Use `symm_indep θb hc hL he (fun l => ∑ i, A (Sum.inl i) l • w i - ∑ k, A (Sum.inr k) l • y k) ?_ l` and prove the remaining obligations. Simplify using `only [map_sub, smul_sub, Finset.sum_sub_distrib]`. Rewrite using `[← h1, ← h2, h, sub_self]`. Establish `hmem : ∀ l, ∑ i, A (Sum.inl i) l • w i ∈ N` using `fun l => by`. Rewrite using `[sub_eq_zero.mp (key l)]`.
+
+Conclude with `N.sum_mem fun k _ => N.smul_mem _ (hy k)`. Establish `hB : LinearIndependent T (fun i l => A (Sum.inl i) l)`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg`. Apply `Fintype.linearIndependent_iff.mp hε g` to reduce the goal to its premises.
+
+Establish `hz' : ∀ i, ε i = ∑ l, A (Sum.inl i) l • e l` using `fun i => hz (Sum.inl i)`. Establish `hg' : ∀ l, ∑ i, g i * A (Sum.inl i) l = 0` using `fun l => by`. Simplify using `using congrFun hg l`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [hz', Finset.smul_sum, smul_smul, Finset.sum_smul]`.
+
+Conclude with `Finset.sum_comm`. Use `_ = 0 := by simp [hg']`. Take `⟨D, t, ht, hD⟩` from `exists_dual_coeffs_of_linearIndependent (fun i l => A (Sum.inl i) l) hB j`. Establish `hD' : ∀ a, ∑ l, D l * A (Sum.inl a) l = if a = j then t else 0` using `hD`. Use `⟨t, ht, ?_⟩` and prove the remaining obligations.
+
+Establish `ht' : t • w j = ∑ l, D l • ∑ i, A (Sum.inl i) l • w i`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Finset.sum_smul, Finset.smul_sum, smul_smul]`. Conclude with `Finset.sum_comm`. Rewrite using `[ht']`.
+
+Conclude with `N.sum_mem fun l _ => N.smul_mem _ (hmem l)`.
+-/
 theorem exists_mul_mem [Module.IsTorsionFree T F'] [Module.IsTorsionFree T E]
     (hc : θb.comp (algebraMap T F') = (algebraMap E FE).comp (algebraMap T E))
     (hL : LinDisj (algebraMap T F') (algebraMap E FE) θb) (N : Submodule T F') {I J : Type} [Fintype I] [Fintype J]
@@ -170,6 +225,9 @@ theorem exists_mul_mem [Module.IsTorsionFree T F'] [Module.IsTorsionFree T E]
   rw [ht']
   exact N.sum_mem fun l _ => N.smul_mem _ (hmem l)
 
+/- English proof (translation)
+Simplify using `only [hcA, Finset.sum_smul, map_sum, Finset.smul_sum]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => (map_smul' θb hc _ _ _).symm`.
+-/
 private theorem sum_smul_thetab_expand_in_basis {T E F' FE : Type} [CommRing T] [CommRing E] [CommRing F'] [CommRing FE]
     [Algebra T E] [Algebra T F'] [Algebra E FE] (θb : F' →+* FE)
     (hc : θb.comp (algebraMap T F') = (algebraMap E FE).comp (algebraMap T E))
@@ -183,6 +241,47 @@ private theorem sum_smul_thetab_expand_in_basis {T E F' FE : Type} [CommRing T] 
 
 end
 
+/- English proof (translation)
+Establish `hcT : ∀ t : T, θb (algebraMap T F' t) = algebraMap E FE (algebraMap T E t)` using `fun t => congrArg (fun g => g t) hc`. Establish `h1q : (1 : T) ∉ q` using `fun h => (Ideal.IsPrime.ne_top inferInstance) ((Ideal.eq_top_iff_one q).mpr h)`. Establish `hW : ∀ u ∈ W, θ u ∈ W'`. Introduce `u hu`. Use `(G₁ (θ u) ⟨1, one_ne_zero, ?_⟩).mpr ⟨1, h1q, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_one, _root_.one_mul]`. Conclude with `subset_spanBy _ _ (Set.mem_range_self u)`. Rewrite using `[map_one, _root_.one_mul]`. Conclude with `subset_spanBy _ _ (Set.mem_image_of_mem θ hu)`. Establish `himg : ∀ x ∈ Submodule.span T (θ '' W), θb x ∈ Submodule.span E ((θb.comp θ) '' W)`.
+
+Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨u, hu, rfl⟩` from `hx`. Conclude with `Submodule.subset_span ⟨u, hu, rfl⟩`.
+
+Consider the case `zero => rw [map_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul a x _ hx`.
+
+Rewrite using `[Algebra.smul_def, map_mul, hcT, ← Algebra.smul_def]`. Conclude with `Submodule.smul_mem _ _ hx`. Introduce `v hv`. Take `⟨d, hd, hdv⟩` from `hv`. Establish `hdv' : algebraMap E FE d * v ∈ spanBy (algebraMap E FE) (Set.range θb)`.
+
+Rewrite using `[mem_spanBy_iff]`. Conclude with `Submodule.span_mono (Set.range_comp_subset_range θ θb) ((mem_spanBy_iff _ _).mp hdv)`. Rewrite using `[G₂ v ⟨d, hd, hdv'⟩]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, hs, hsv⟩`.
+
+Rewrite `hsv` using `[mem_spanBy_iff, Submodule.mem_span_set']`. Take `⟨n, f, g, hfg⟩` from `hsv`. Establish `hg : ∀ i, ∃ x, x ∈ W' ∧ θb x = (g i : FE)` using `fun i => (g i).2`. Use `choose w hw hwg using hg`. Take `⟨m, ε, A, hε, hA⟩` from `exists_indep (T := T) f`.
+
+Use `set w' : Fin m → F' := fun l => ∑ i, A i l • w i with hw'`. Establish `hw'W : ∀ l, w' l ∈ W'` using `fun l => W'.sum_mem fun i _ => W'.smul_mem _ (hw i)`. Establish `e1 : algebraMap E FE s * v = ∑ l, ε l • θb (w' l)`. Rewrite using `[← hfg]`. Repeatedly rewrite using `[← hwg]`.
+
+Conclude with `sum_smul_thetab_expand_in_basis θb hc f w A ε hA`. Rewrite `hdv` using `[mem_spanBy_iff, Submodule.mem_span_set']`. Take `⟨n', r, g', hrg⟩` from `hdv`. Establish `hg'' : ∀ k, ∃ x, (θb.comp θ) x = (g' k : FE)` using `fun k => (g' k).2`. Use `choose fk hfk using hg''`.
+
+Establish `hdε : LinearIndependent T (fun l => d * ε l)`. Rewrite `hε`, the goal using `[Fintype.linearIndependent_iff]`. Introduce `c hc0`. Apply `hε c` to reduce the goal to its premises. Establish `h0 : d * ∑ l, c l • ε l = 0`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun l _ => mul_smul_comm _ _ _`. Use `_ = 0 := hc0`. Conclude with `(mul_eq_zero.mp h0).resolve_left hd`.
+
+Establish `heq : ∑ l, (d * ε l) • θb (w' l) = ∑ k, (s * r k) • θb (θ (fk k))`. Establish `hl : ∑ l, (d * ε l) • θb (w' l) = algebraMap E FE d * (algebraMap E FE s * v)`. Rewrite using `[e1, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, Algebra.smul_def, map_mul, _root_.mul_assoc]`.
+
+Establish `hr : ∑ k, (s * r k) • θb (θ (fk k)) = algebraMap E FE s * (algebraMap E FE d * v)`. Rewrite using `[← hrg, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← hfk k, RingHom.comp_apply, Algebra.smul_def, Algebra.smul_def, map_mul, _root_.mul_assoc]`. Rewrite using `[hl, hr, _root_.mul_left_comm]`.
+
+Establish `hG : ∀ l, ∃ σ : T, σ ∉ q ∧ σ • w' l ∈ Submodule.span T (θ '' W)`. Introduce `l`. Take `⟨t, ht, htm⟩` from `exists_mul_mem θb hc hL (Submodule.span T (Set.range θ)) hdε w' (fun k => s * r k) (fun k => θ (fk k)) (fun k => Submodule.subset_span ⟨fk k, rfl⟩) heq l`. Establish `hpre : ∃ d' : T, d' ≠ 0 ∧ algebraMap T F' d' * w' l ∈ spanBy (algebraMap T F') (Set.range θ)` using `⟨t, ht, by rw [mem_spanBy_iff, ← Algebra.smul_def]; exact htm⟩`. Take `⟨σ, hσ, hσm⟩` from `(G₁ (w' l) hpre).mp (hw'W l)`.
+
+Rewrite `hσm` using `[mem_spanBy_iff, ← Algebra.smul_def]`. Conclude with `⟨σ, hσ, hσm⟩`. Use `choose σ hσq hσm using hG`. Establish `hτ : (∏ l, σ l) ∉ q`. Establish `hτ' : (∏ l, σ l) ∈ q.primeCompl` using `Submonoid.prod_mem _ fun l _ => hσq l`.
+
+Conclude with `hτ'`. Establish `hτm : ∀ l, (∏ k, σ k) • w' l ∈ Submodule.span T (θ '' W)`. Introduce `l`. Rewrite using `[← Finset.prod_erase_mul _ _ (Finset.mem_univ l), mul_smul]`. Conclude with `Submodule.smul_mem _ _ (hσm l)`.
+
+Use `⟨algebraMap T E (∏ l, σ l) * s, ?_, ?_⟩` and prove the remaining obligations. Introduce `hmem`. Break down `(inferInstance : Q.IsPrime).mem_or_mem hmem with h | h` into its components or cases. Conclude with `hq _ hτ h`. Conclude with `hs h`.
+
+Rewrite using `[mem_spanBy_iff]`. Establish `e2 : algebraMap E FE (algebraMap T E (∏ l, σ l) * s) * v = ∑ l, ε l • θb ((∏ k, σ k) • w' l)`. Rewrite using `[map_mul, _root_.mul_assoc, e1, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def (∏ k, σ k) (w' l), map_mul, hcT, Algebra.smul_def, Algebra.smul_def]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e2]`. Conclude with `Submodule.sum_mem _ fun l _ => Submodule.smul_mem _ _ (himg _ (hτm l))`. Introduce and unpack `⟨s, hs, hsv⟩`. Use `⟨s, hs, ?_⟩` and prove the remaining obligations.
+
+Rewrite `hsv`, the goal using `[mem_spanBy_iff]`. Use `Submodule.span_mono ?_ hsv` and prove the remaining obligations. Introduce and unpack `_ ⟨u, hu, rfl⟩`. Conclude with `⟨θ u, hW u hu, rfl⟩`.
+-/
 theorem gaussAt_comp_alg {T E F F' FE : Type} [CommRing T] [IsDomain T] [IsPrincipalIdealRing T] [CommRing E]
     [IsDomain E] [CommRing F] [CommRing F'] [CommRing FE] [Algebra T E] [Algebra T F'] [Algebra E FE]
     [Module.IsTorsionFree T F'] [Module.IsTorsionFree T E] (θ : F →+* F') (θb : F' →+* FE)
@@ -293,6 +392,15 @@ theorem gaussAt_comp_alg {T E F F' FE : Type} [CommRing T] [IsDomain T] [IsPrinc
     rintro _ ⟨u, hu, rfl⟩
     exact ⟨θ u, hW u hu, rfl⟩
 
+/- English proof (translation)
+Introduce `T E F F' FE _ _ _ _ _ _ _ _ b c' cE θ θb q _ Q _ W W' WE hb hc' hq hcomm hL h0 hadd hsmul G₁ G₂`. Use `letI : Algebra T E := b.toAlgebra`. Use `letI : Algebra T F' := c'.toAlgebra`. Use `letI : Algebra E FE := cE.toAlgebra`. Establish `: Module.IsTorsionFree T F'` using `Module.isTorsionFree_iff_smul_eq_zero.mpr fun t x h => by`.
+
+Rewrite `h` using `[Algebra.smul_def]`. Break down `mul_eq_zero.mp h with h | h` into its components or cases. Conclude with `Or.inl ((map_eq_zero_iff c' hc').mp h)`. Conclude with `Or.inr h`. Establish `: Module.IsTorsionFree T E` using `Module.isTorsionFree_iff_smul_eq_zero.mpr fun t x h => by`.
+
+Rewrite `h` using `[Algebra.smul_def]`. Break down `mul_eq_zero.mp h with h | h` into its components or cases. Conclude with `Or.inl ((map_eq_zero_iff b hb).mp h)`. Conclude with `Or.inr h`. Set `W'' : Submodule T F'` to `{ carrier := W' add_mem' := fun hx hy => hadd _ hx _ hy zero_mem' := h0 smul_mem' := fun t x hx => hsmul t x hx }`.
+
+Conclude with `gaussAt_comp_alg θ θb q Q W W'' WE hq hcomm hL G₁ G₂`.
+-/
 theorem gaussAt_comp : ∀ (T E F F' FE : Type) [CommRing T] [IsDomain T] [IsPrincipalIdealRing T] [CommRing E] [IsDomain E] [Field F] [Field F'] [Field FE] (b : T →+* E) (c' : T →+* F') (cE : E →+* FE) (θ : F →+* F') (θb : F' →+* FE) (q : Ideal T) [q.IsPrime] (Q : Ideal E) [Q.IsPrime] (W : Set F) (W' : Set F') (WE : Set FE), Function.Injective b → Function.Injective c' → (∀ s, s ∉ q → b s ∉ Q) → θb.comp c' = cE.comp b → LinDisj c' cE θb → (0 : F') ∈ W' → (∀ u ∈ W', ∀ v ∈ W', u + v ∈ W') → (∀ (t : T), ∀ u ∈ W', c' t * u ∈ W') → GaussAt c' q θ W W' → GaussAt cE Q θb W' WE → GaussAt cE Q (θb.comp θ) W WE := by
   intro T E F F' FE _ _ _ _ _ _ _ _ b c' cE θ θb q _ Q _ W W' WE hb hc' hq hcomm hL h0 hadd hsmul G₁ G₂
   letI : Algebra T E := b.toAlgebra

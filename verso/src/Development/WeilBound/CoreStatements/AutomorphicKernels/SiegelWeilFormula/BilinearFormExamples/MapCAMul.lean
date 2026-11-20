@@ -15,6 +15,9 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 
 variable {m n : ℕ}
 
+/- English proof (translation)
+Simplify using `only [hTens, Matrix.trace, Matrix.diag, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Finset.sum_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hTens_eq {α β : Type} [Fintype α] [Fintype β] [DecidableEq α] [DecidableEq β] (c : AE F E →ₐ[AF F] AE F E)
     (JA : Matrix α α (AE F E)) (JB : Matrix β β (AE F E)) (x y : Matrix α β (AE F E)) :
     hTens c JA JB x y = (x * (JB * (y.map c)ᵀ * JAᵀ)).trace := by
@@ -24,27 +27,51 @@ theorem hTens_eq {α β : Type} [Fintype α] [Fintype β] [DecidableEq α] [Deci
     Finset.sum_congr rfl fun l _ => ?_
   ring
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[Matrix.mul_apply, map_sum, map_mul]`.
+-/
 theorem map_cA_mul {σ : E →ₐ[F] E} {a b c : Type} [Fintype b] (x : Matrix a b (AE F E)) (y : Matrix b c (AE F E)) :
     (x * y).map (cA σ) = x.map (cA σ) * y.map (cA σ) := by
   ext i j; simp [Matrix.mul_apply, map_sum, map_mul]
 
+/- English proof (translation)
+Apply the tactic sequence `ext (i | i) (j | j) <;> simp [jeps, incM, Matrix.one_apply] <;> split_ifs <;> simp`.
+-/
 theorem incM_jeps (ε : ℤˣ) : incM F (jeps (E := E) n ε) =
     Matrix.fromBlocks 0 1 (((ε : ℤ) : AE F E) • 1) 0 := by
   ext (i | i) (j | j) <;> simp [jeps, incM, Matrix.one_apply] <;> split_ifs <;> simp
 
+/- English proof (translation)
+Apply the tactic sequence `ext (i | i) (j | j) <;> simp [dbl, incM]`.
+-/
 theorem incM_dbl (YJ : Matrix (Fin n) (Fin n) E) : dbl (incM F YJ) = incM F (dbl YJ) := by
   ext (i | i) (j | j) <;> simp [dbl, incM]
 
+/- English proof (translation)
+Apply the tactic sequence `ext (i | i) j <;> rfl`.
+-/
 theorem incM_b (b : GL (Fin n ⊕ Fin n) E) :
     (incM F b.1)ᵀ = Matrix.fromRows (incM F b.1.toCols₁)ᵀ (incM F b.1.toCols₂)ᵀ := by
   ext (i | i) j <;> rfl
 
+/- English proof (translation)
+Rewrite using `[← Matrix.trace_transpose]`. Simplify using `only [Matrix.transpose_mul, Matrix.transpose_transpose]`. Rewrite using `[Matrix.mul_assoc, Matrix.trace_mul_comm, Matrix.mul_assoc, Matrix.trace_mul_comm, Matrix.mul_assoc]`.
+-/
 theorem tr_swap (JA : Matrix (Fin m) (Fin m) (AE F E)) (Z W : Mx F E m n) :
     (Z * Wᵀ * JAᵀ).trace = (Zᵀ * JA * W).trace := by
   rw [← Matrix.trace_transpose]
   simp only [Matrix.transpose_mul, Matrix.transpose_transpose]
   rw [Matrix.mul_assoc, Matrix.trace_mul_comm, Matrix.mul_assoc, Matrix.trace_mul_comm, Matrix.mul_assoc]
 
+/- English proof (translation)
+Establish `hw : ∀ Z X : Mx F E m n, Z * (incM F b.1.toCols₁)ᵀ + X * (incM F b.1.toCols₂)ᵀ = Matrix.fromCols Z X * (incM F b.1)ᵀ` using `fun Z X => by`. Rewrite using `[incM_b, Matrix.fromCols_mul_fromRows]`. Rewrite using `[hw, hw, symp, hTens_eq, map_cA_mul]`. Establish `hN : (incM F b.1)ᵀ * dbl (incM F YJ) * ((incM F b.1)ᵀ.map (cA σ))ᵀ = incM F (jeps n ε)`. Rewrite using `[← hb, incM_dbl, Matrix.transpose_map, map_cA_incM, Matrix.transpose_transpose, incM_mul, incM_mul, incM_transpose]`.
+
+Rewrite using `[Matrix.transpose_mul]`. Simplify using `only [← Matrix.mul_assoc]`. Establish `hN' : Matrix.fromCols Z X * (incM F b.1)ᵀ * dbl (incM F YJ) * ((incM F b.1)ᵀ.map (cA σ))ᵀ = (Matrix.fromCols Z X * (incM F (jeps (E` using `E) n ε) : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) (AE F E)) : Matrix (Fin m) (Fin n ⊕ Fin n) (AE F E)) := by`. Rewrite using `[← hN]`. Simplify using `only [Matrix.mul_assoc]`.
+
+Establish `hc : (Matrix.fromCols Z' X').map (cA σ) = Matrix.fromCols (Z'.map (cA σ)) (X'.map (cA σ))`. Apply the tactic sequence `ext i (j | j) <;> rfl`. Rewrite using `[hN', hc, Matrix.transpose_fromCols, incM_jeps, Matrix.fromCols_mul_fromBlocks, Matrix.fromCols_mul_fromRows]`. Simplify using `only [Matrix.mul_zero, Matrix.mul_one, zero_add, add_zero, Matrix.mul_smul, Matrix.smul_mul, Matrix.add_mul, Matrix.trace_add, Matrix.trace_smul, tr_swap]`. Establish `key : ∀ t : AE F E, Algebra.trace (AF F) (AE F E) (((ε : ℤ) : AE F E) * t) = ((ε : ℤ) : AF F) * Algebra.trace (AF F) (AE F E) t` using `fun t => by`.
+
+Rewrite using `[← zsmul_eq_mul, map_zsmul, zsmul_eq_mul]`. Establish `key2 : ∀ t : AE F E, Algebra.trace (AF F) (AE F E) (((ε : ℤ) : AE F E) • t) = ((ε : ℤ) : AF F) * Algebra.trace (AF F) (AE F E) t` using `fun t => by rw [smul_eq_mul, key]`. Establish `key3 : ∀ t : AE F E, Algebra.trace (AF F) (AE F E) (t * ((ε : ℤ) : AE F E)) = ((ε : ℤ) : AF F) * Algebra.trace (AF F) (AE F E) t` using `fun t => by rw [mul_comm, key]`. Simplify using `only [Bf, neg_one_mul, map_neg, map_add, key, key2, key3]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem symp_frame (σ : E →ₐ[F] E) (JA : Matrix (Fin m) (Fin m) E) (YJ : Matrix (Fin n) (Fin n) E)
     (b : GL (Fin n ⊕ Fin n) E) (ε : ℤˣ) (hb : b.1ᵀ * dbl YJ * b.1.map σ = jeps n ε) (Z X Z' X' : Mx F E m n) :
     symp (R := AF F) (cA σ) (-1) (incM F JA) (dbl (incM F YJ)) (Z * (incM F b.1.toCols₁)ᵀ + X * (incM F b.1.toCols₂)ᵀ)

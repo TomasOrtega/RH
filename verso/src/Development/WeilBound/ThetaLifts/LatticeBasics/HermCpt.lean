@@ -17,9 +17,25 @@ attribute [local instance] kc_ring adele_t2Space kc_smul
 
 namespace Herm
 
+/- English proof (translation)
+The claim follows from `Matrix.map_mul (f := starRingEnd ℂ)`.
+-/
 theorem map_star_mul' {a b c : Type} [Fintype b] (x : Matrix a b ℂ) (y : Matrix b c ℂ) :
     (x * y).map star = x.map star * y.map star := Matrix.map_mul (f := starRingEnd ℂ)
 
+/- English proof (translation)
+Take `⟨hn, A, hA⟩` from `h`. Choose the witnesses or unpack the hypotheses as in `⟨ε, e1, e2⟩ : ∃ ε : ℂ, ε * ε = 1 ∧ Aᵀ * M * A.map star = ε • 1 := by`. Break down `Nat.min_eq_zero_iff.1 h0 with rfl | rfl` into its components or cases. Use `⟨-1, by simp, hA.trans ?_⟩` and prove the remaining obligations. Apply the tactic sequence `ext (i | i) (j | j) <;> first | exact i.elim0 | exact j.elim0 | (simp only [Matrix.fromBlocks_apply₂₂, Matrix.neg_apply, neg_smul, one_smul, Matrix.one_apply, Sum.inr.injEq])`.
+
+Use `⟨1, by simp, hA.trans ?_⟩` and prove the remaining obligations. Apply the tactic sequence `ext (i | i) (j | j) <;> first | exact i.elim0 | exact j.elim0 | simp [Matrix.one_apply]`. Take `⟨N, hN⟩ : ∃ N : Matrix (Fin n) (Fin r ⊕ Fin s) ℂ, Aᵀ * N = (1 : Matrix (Fin r ⊕ Fin s) (Fin r ⊕ Fin s) ℂ)` from `⟨ε • (M * A.map star), by rw [Matrix.mul_smul, ← Matrix.mul_assoc, e2, smul_smul, e1, one_smul]⟩`. Establish `hN' : N * Aᵀ = 1` using `(Matrix.mul_eq_one_comm_of_card_eq _ _ _ (by simp [hn])).1 hN`. Establish `h1 : A * Nᵀ = 1` using `by simpa using congrArg Matrix.transpose hN'`.
+
+Establish `h2 : A.map star * Nᵀ.map star = 1` using `by rw [← map_star_mul', h1]; simp`. Use `⟨(fun u : Matrix (Fin r ⊕ Fin s) (Fin r ⊕ Fin s) ℂ => A * u * Nᵀ) '' Set.univ.pi fun _ => Set.univ.pi fun _ => Metric.closedBall 0 1, (isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => isCompact_closedBall _ _).image ((continuous_const.matrix_mul continuous_id).matrix_mul con …` and prove the remaining obligations. Simplify using `only [← Matrix.mul_assoc, h1, Matrix.one_mul]`. Rewrite using `[Matrix.mul_assoc, h1, Matrix.mul_one]⟩⟩`. Establish `e3 : N * Nᵀ.map star = ε • M`.
+
+Establish `: N * (Aᵀ * M * A.map star) * Nᵀ.map star = M`. Simplify using `only [← Matrix.mul_assoc, hN', Matrix.one_mul]`. Rewrite using `[Matrix.mul_assoc, h2, Matrix.mul_one]`. Rewrite using `[← this, e2, Matrix.mul_smul, Matrix.smul_mul, smul_smul, e1, one_smul, Matrix.mul_one]`. Establish `e4 : (Nᵀ * g * A)ᵀ * (Nᵀ * g * A).map star = 1`.
+
+Combine the equalities or inequalities in the displayed calculation. Simplify using `only [map_star_mul', Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.mul_assoc]`. Use `_ = 1 := by rw [e3, Matrix.mul_smul, Matrix.smul_mul, hg, Matrix.mul_smul, Matrix.smul_mul, e2, smul_smul, e1, one_smul]`. Generalize the expression as in `Nᵀ * g * A = u at e4`. Establish `e5 : ∑ l, ‖u l i‖ ^ 2 = 1`.
+
+Use `congrFun (congrFun e4 i) i` as an intermediate fact. Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Matrix.one_apply_eq, Complex.star_def, Complex.mul_conj'] at this`. Conclude with `this` after adjusting the coercions. Rewrite using `[mem_closedBall_zero_iff, ← sq_le_one_iff₀ (norm_nonneg _), ← e5]`. Conclude with `Finset.single_le_sum (f := fun l => ‖u l i‖ ^ 2) (fun _ _ => by positivity) (Finset.mem_univ k)`.
+-/
 theorem cpt_sig {n r s : ℕ} {M : Matrix (Fin n) (Fin n) ℂ} (h : HasSig M r s) (h0 : min r s = 0) :
     ∃ C : Set (Matrix (Fin n) (Fin n) ℂ), IsCompact C ∧ ∀ g, gᵀ * M * g.map star = M → g ∈ C := by
   obtain ⟨hn, A, hA⟩ := h
@@ -61,8 +77,16 @@ variable (F) in
 
 def fA : Af F →+ AF F := AddMonoidHom.inr (Ainf F) (Af F)
 
+/- English proof (translation)
+The claim follows from `Prod.ext (zero_mul _) rfl`.
+-/
 theorem fA_mul (x : Af F) (a : AF F) : fA F x * a = fA F (x * a.2) := Prod.ext (zero_mul _) rfl
 
+/- English proof (translation)
+Use `Continuous.prodMk (Continuous.comp (g := (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm) (continuous_pi fun v => ?_) (continuous_algebraMap ℝ _)) continuous_const` and prove the remaining obligations. Break down `v.isReal_or_isComplex with hv | hv` into its components or cases. Rewrite using `[(InfinitePlace.Completion.isometry_extensionEmbeddingOfIsReal hv).isEmbedding.continuous_iff]`. Conclude with `((continuous_apply _).comp continuous_fst).congr fun y => (congrFun (congrArg Prod.fst ((InfiniteAdeleRing.ringEquiv_mixedSpace F).apply_symm_apply y)) ⟨v, hv⟩).symm`. Rewrite using `[(InfinitePlace.Completion.isometry_extensionEmbedding v).isEmbedding.continuous_iff]`.
+
+Conclude with `((continuous_apply _).comp continuous_snd).congr fun y => (congrFun (congrArg Prod.snd ((InfiniteAdeleRing.ringEquiv_mixedSpace F).apply_symm_apply y)) ⟨v, hv⟩).symm`.
+-/
 theorem cont_realAd : Continuous (realAd F) := by
   refine Continuous.prodMk (Continuous.comp (g := (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm) (continuous_pi fun v => ?_)
     (continuous_algebraMap ℝ _)) continuous_const
@@ -74,6 +98,13 @@ theorem cont_realAd : Continuous (realAd F) := by
     exact ((continuous_apply _).comp continuous_snd).congr fun y =>
       (congrFun (congrArg Prod.snd ((InfiniteAdeleRing.ringEquiv_mixedSpace F).apply_symm_apply y)) ⟨v, hv⟩).symm
 
+/- English proof (translation)
+Use `choose x x1 x2 using GlobalTheory.CompanionTheory.RealPlaceAdele.exists_adele_piInf σ h τ`. Establish `sm : ∀ w (t : AF F) (a : AE F E), piInf (τ w) (t • a) = InfinitePlace.Completion.extensionEmbedding w (evInf F w t) * piInf (τ w) a` using `fun w t a => by`. Rewrite using `[Algebra.smul_def, map_mul, PositivityTheory.ThKEst.LatArchPf.piInf_alg]`. Use `⟨fun z => ∑ w, (realAd F (z w).re • x (Pi.single w 1) + realAd F (z w).im • x (Pi.single w Complex.I)), continuous_finsetSum _ fun w _ => by have := cont_realAd (F := F); fun_prop, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[← sub_eq_iff_eq_add, ← sub_eq_zero]`.
+
+Use `eq_zero_of_piInf σ h τ _ (fun c hc => ?_) fun w => ?_` and prove the remaining obligations. Establish `h1 : c.1 = 0` using `(InfiniteAdeleRing.ringEquiv_mixedSpace F).map_eq_zero_iff.1 hc`. Establish `h2 : c * fA F 1 = c` using `Prod.ext ((mul_zero _).trans h1.symm) (mul_one _)`. Establish `h3 : ∀ t z, c • realAd F t • x z = 0` using `fun t z => by rw [smul_comm, x1 _ c hc, smul_zero]`. Rewrite using `[smul_sub, smul_sub, smul_smul c, h2]`.
+
+Simplify using `only [sub_self, Finset.smul_sum, smul_add, h3, add_zero, Finset.sum_const_zero]`. Simplify using `only [map_sub, map_sum, map_add, sm, x2, PositivityTheory.ThKEst.LatArchPf.emb_realAd h.1]`. Rewrite using `[show evInf F w (fA F 1) = 0 from rfl, Finset.sum_eq_single w (fun v _ hv => by simp [Pi.single_eq_of_ne hv.symm]) (by simp)]`. Simplify using the standard rewrite rules.
+-/
 theorem exists_arch_section (h : IsCMExt F E σ) (τ : ∀ w : InfinitePlace F, EmbOver E w) :
     ∃ T : (InfinitePlace F → ℂ) → AE F E, Continuous T ∧ ∀ a, a = T (fun w => piInf (τ w) a) + fA F 1 • a := by
   choose x x1 x2 using GlobalTheory.CompanionTheory.RealPlaceAdele.exists_adele_piInf σ h τ
@@ -109,6 +140,15 @@ def lamF : AddSubgroup (AE F E) where
     refine ⟨-x, fun i _ v => neg_mem (hx i trivial v), ?_⟩
     simp
 
+/- English proof (translation)
+Take `⟨x, hx, rfl⟩` from `ha`. Take `⟨y, hy, rfl⟩` from `hb`. Rewrite using `[Finset.sum_mul_sum]`. Use `sum_mem fun i _ => sum_mem fun j _ => ?_` and prove the remaining obligations. Take `⟨c, hc⟩` from `bA_mul (F := F) i j`.
+
+Rewrite using `[smul_mul_smul_comm, hc, Finset.smul_sum]`. Use `sum_mem fun k _ => ?_` and prove the remaining obligations. Rewrite using `[smul_comm]`. Use `zsmul_mem (⟨Pi.single k (x i * y j), fun l _ v => ?_, ?_⟩ : _ ∈ lamF F E) _` and prove the remaining obligations. Distinguish the cases in `h : l = k`.
+
+Substitute `h` using the available equality. Rewrite using `[Pi.single_eq_same]`. Conclude with `mul_mem (hx i trivial v) (hy j trivial v)`. Rewrite using `[Pi.single_eq_of_ne h]`. Conclude with `zero_mem _`.
+
+Use `(Finset.sum_eq_single k (fun l _ h => by simp [Pi.single_eq_of_ne h]) (by simp)).trans ?_` and prove the remaining obligations. Rewrite using `[Pi.single_eq_same, fA_mul]`. Both sides reduce to the same expression.
+-/
 theorem lamF_mul {a b : AE F E} (ha : a ∈ lamF F E) (hb : b ∈ lamF F E) : a * b ∈ lamF F E := by
   obtain ⟨x, hx, rfl⟩ := ha
   obtain ⟨y, hy, rfl⟩ := hb
@@ -126,11 +166,19 @@ theorem lamF_mul {a b : AE F E} (ha : a ∈ lamF F E) (hb : b ∈ lamF F E) : a 
     rw [Pi.single_eq_same, fA_mul]
     rfl
 
+/- English proof (translation)
+The claim follows from `(isCompact_univ_pi fun _ => GlobalTheory.CompanionTheory.SW.Core.AfTop.isCompact_Oh F).image (continuous_finsetSum _ fun i _ => Continuous.fun_smul (f := fun x : Ix E → Af F => fA F (x i)) (continuous_const.prodMk (continuous_apply i)) continuous_const)`.
+-/
 theorem lamF_cpt : IsCompact (lamF F E : Set (AE F E)) :=
   (isCompact_univ_pi fun _ => GlobalTheory.CompanionTheory.SW.Core.AfTop.isCompact_Oh F).image (continuous_finsetSum _ fun i _ =>
     Continuous.fun_smul (f := fun x : Ix E → Af F => fA F (x i)) (continuous_const.prodMk (continuous_apply i))
       continuous_const)
 
+/- English proof (translation)
+Take `⟨S, hS⟩` from `exists_sectionC (F := F) (E := E)`. Establish `hSc : Continuous S` using `IsModuleTopology.continuous_of_linearMap S`. Establish `: ∀ᶠ a in 𝓝 (0 : AE F E), ∀ i, (S a i).2 ∈ Oh F` using `eventually_all.2 fun i => (continuous_snd.comp ((continuous_apply i).comp hSc)).continuousAt.eventually_mem ((GlobalTheory.CompanionTheory.SW.Core.AfTop.isOpen_Oh F).mem_nhds (show (S 0 i).2 ∈ Oh F by rw [map_zero]; exact fun v => zero_mem _))`. Use `this.mono fun a ha => ⟨fun i => (S a i).2, fun i _ => ha i, ?_⟩` and prove the remaining obligations. Use `conv_rhs => rw [← hS a, Finset.smul_sum]`.
+
+Conclude with `Finset.sum_congr rfl fun i _ => by`. Rewrite using `[smul_smul, fA_mul, one_mul]`.
+-/
 theorem lamF_nhds : ∀ᶠ a in 𝓝 (0 : AE F E), fA F 1 • a ∈ lamF F E := by
   obtain ⟨S, hS⟩ := exists_sectionC (F := F) (E := E)
   have hSc : Continuous S := IsModuleTopology.continuous_of_linearMap S
@@ -161,6 +209,9 @@ def kInt (σ : E →ₐ[F] E) (J : Matrix (Fin n) (Fin n) E) : Subgroup (UA σ J
     exact key _ _ (fun i j => (hh i j).2) (fun i j => (hg i j).2) i j
   inv_mem' := fun {g} hg i j => ⟨(hg i j).2, by rw [inv_inv]; exact (hg i j).1⟩
 
+/- English proof (translation)
+Establish `hm` using `kc_cont_mat (σ := σ) J`. Use `(kInt σ J).isOpen_of_mem_nhds (g := 1) (show ∀ᶠ g in 𝓝 1, ∀ i j, _ from eventually_all.2 fun i => eventually_all.2 fun j => Eventually.and ?_ ?_)` and prove the remaining obligations. Conclude with `(((hm.sub continuous_const).matrix_elem i j).tendsto' 1 0 (by simp [mat_one'])).eventually lamF_nhds`. Conclude with `((((hm.comp continuous_inv).sub continuous_const).matrix_elem i j).tendsto' 1 0 (by simp [mat_one'])).eventually lamF_nhds`.
+-/
 theorem kInt_open (J : Matrix (Fin n) (Fin n) E) : IsOpen (kInt σ J : Set (UA σ J)) := by
   have hm := kc_cont_mat (σ := σ) J
   refine (kInt σ J).isOpen_of_mem_nhds (g := 1) (show ∀ᶠ g in 𝓝 1, ∀ i j, _ from
@@ -171,6 +222,17 @@ theorem kInt_open (J : Matrix (Fin n) (Fin n) E) : IsOpen (kInt σ J : Set (UA �
 end Herm
 
 open Herm in
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n Y r s hB hY h0`. Use `⟨kInt σ Y.J, kInt_open _, ?_⟩` and prove the remaining obligations. Establish `: ∀ w, ∃ C : Set (Matrix (Fin n) (Fin n) ℂ), IsCompact C ∧ ∀ g : UA σ Y.J, (mat g).map (piInf (B.emb w)) ∈ C` using `fun w => by`. Establish `e : ∀ g : UA σ Y.J, ((mat g).map (piInf (B.emb w)))ᵀ * Y.J.map (B.emb w).1 * ((mat g).map (piInf (B.emb w))).map star = Y.J.map (B.emb w).1` using `fun g => by`. Use `congrArg (·.map (piInf (B.emb w))) (show (mat g)ᵀ * incM F Y.J * (mat g).map (cA σ) = incM F Y.J from g.2)` as an intermediate fact.
+
+Simplify using `only [Matrix.map_mul, map_incM, Matrix.transpose_map] at this`. Use `this using 2` and compare the differences between its conclusion and the goal. Use extensionality with `i j`. Conclude with `(piInf_cA hB.cm _ _).symm`. Break down `hY with h | h` into its components or cases.
+
+Conclude with `(cpt_sig (h.sig w) h0).imp fun C hC => ⟨hC.1, fun g => hC.2 _ (e g)⟩`. Conclude with `(cpt_sig (h.sig w) h0).imp fun C hC => ⟨hC.1, fun g => hC.2 _ (by rw [Matrix.mul_smul, Matrix.smul_mul, e])⟩`. Use `choose C h1 h2 using this`. Take `⟨T, t1, t2⟩` from `exists_arch_section hB.cm B.emb`. Set `f : (InfinitePlace F → Matrix (Fin n) (Fin n) ℂ) × Matrix (Fin n) (Fin n) (AE F E) → Matrix (Fin n) (Fin n) (AE F E)` to `fun p i j => T (fun w => p.1 w i j) + (p.2 i j + fA F 1 • (1 : Matrix (Fin n) (Fin n) (AE F E)) i j)`.
+
+Establish `cf : Continuous f` using `continuous_matrix fun i j => (t1.comp (continuous_pi fun w => ((continuous_apply w).comp continuous_fst).matrix_elem i j)).add ((continuous_snd.matrix_elem i j).add continuous_const)`. Establish `key : ∀ g ∈ kInt σ Y.J, mat g ∈ f '' (Set.univ.pi C ×ˢ Set.univ.pi fun _ => Set.univ.pi fun _ => (lamF F E : Set _))` using `fun g hg => ⟨(fun w => (mat g).map (piInf (B.emb w)), fun i j => fA F 1 • (mat g - 1) i j), ⟨fun w _ => h2 w g, fun i _ j _ => (hg i j).1⟩, by`. Use extensionality with `i j`. Simplify using `only [f, Matrix.sub_apply, ← smul_add, sub_add_cancel, Matrix.map_apply]`. Conclude with `(t2 _).symm⟩`.
+
+Conclude with `isCompact_of_units _ (kc_closedU Y.J) _ ((kInt σ Y.J).isClosed_of_isOpen (kInt_open _)) _ (((isCompact_univ_pi h1).prod (isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => lamF_cpt)).image cf) fun k hk => ⟨key k hk, key k⁻¹ (inv_mem hk)⟩`.
+-/
 theorem cptOpen : CptOpen := by
   intro F E _ _ _ _ _ σ B n Y r s hB hY h0
   refine ⟨kInt σ Y.J, kInt_open _, ?_⟩
@@ -202,6 +264,9 @@ theorem cptOpen : CptOpen := by
     (((isCompact_univ_pi h1).prod (isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => lamF_cpt)).image cf)
     fun k hk => ⟨key k hk, key k⁻¹ (inv_mem hk)⟩
 
+/- English proof (translation)
+The claim follows from `hermLine_of hC cptOpen polRank hS hJ hF hN hW hB hI hM`.
+-/
 theorem hermLine_of' (hC : CptAll) (hS : PairsStable) (hJ : PairsIrr) (hF : Factor) (hN : NonZeroAn)
     (hW : WeilConv) (hB : ThetaBasic) (hI : PositivityTheory.ThKF.ICont) (hM : MatchEx) : HermLine :=
   hermLine_of hC cptOpen polRank hS hJ hF hN hW hB hI hM

@@ -18,6 +18,37 @@ namespace Data
 
 variable (d : Data K ι Ω WT A)
 
+/- English proof (translation)
+Use `letI := (OpToKT D N la).toAlgebra`. Establish `hinjT : Function.Injective (OTtoKT K D N)`. Unfold `OTtoKT`. Conclude with `MvPolynomial.map_injective _ (IsFractionRing.injective (𝓞 K) K)`. Establish `hinj : Function.Injective (algebraMap (Op D N la) (KTf K D N))` using `by show Function.Injective (OpToKT D N la)`.
+
+Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Take `⟨⟨a, s⟩, rfl⟩` from `IsLocalization.mk'_surjective (laT D N la).primeCompl x`. Unfold `OpToKT at hx`. Rewrite `hx` using `[IsLocalization.lift_mk'_spec, mul_zero, RingHom.comp_apply]`.
+
+Establish `h2 : OTtoKT K D N a = 0` using `(injective_iff_map_eq_zero _).mp (IsFractionRing.injective (KTp K D N) (KTf K D N)) _ hx`. Establish `h3 : a = 0` using `(injective_iff_map_eq_zero _).mp hinjT _ h2`. Substitute `h3` using the available equality. Conclude with `IsLocalization.mk'_zero _`. Establish `hC : ∀ s : 𝓞 K, OTtoKT K D N (MvPolynomial.C s) = MvPolynomial.C (algebraMap (𝓞 K) K s)` using `fun s => MvPolynomial.map_C _ _`.
+
+Establish `hX : ∀ i, OTtoKT K D N (MvPolynomial.X i) = MvPolynomial.X i` using `fun i => MvPolynomial.map_X _ _`. Establish `hcl : ∀ p : KTp K D N, ∃ s : 𝓞 K, s ≠ 0 ∧ ∃ p' : OT K D N, OTtoKT K D N p' = MvPolynomial.C (algebraMap (𝓞 K) K s) * p`. Introduce `p`. Proceed by induction on `p using MvPolynomial.induction_on`. Use `next a =>`.
+
+Take `⟨x, y, hy, rfl⟩` from `IsFractionRing.div_surjective (A := 𝓞 K) a`. Establish `hy' : algebraMap (𝓞 K) K y ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors hy`. Use `⟨y, nonZeroDivisors.ne_zero hy, MvPolynomial.C x, ?_⟩` and prove the remaining obligations. Rewrite using `[hC, ← MvPolynomial.C_mul]`. Use `congr 1`.
+
+Use `first`. Consider the case `(field_simp; done)`. Consider the case `(rw [mul_div_assoc', mul_div_cancel_left₀ _ hy'])`. Consider the case `(field_simp; ring)`. Use `next p q hp hq =>`.
+
+Take `⟨s1, hs1, p1, hp1⟩` from `hp`. Take `⟨s2, hs2, q1, hq1⟩` from `hq`. Use `⟨s1 * s2, mul_ne_zero hs1 hs2, MvPolynomial.C s2 * p1 + MvPolynomial.C s1 * q1, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, map_mul, map_mul, hp1, hq1, hC, hC, map_mul (algebraMap (𝓞 K) K), MvPolynomial.C_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `next p i hp =>`. Take `⟨s, hs, p1, hp1⟩` from `hp`. Conclude with `⟨s, hs, p1 * MvPolynomial.X i, by rw [map_mul, hp1, hX, mul_assoc]⟩`. Establish `hCne : ∀ s : 𝓞 K, s ≠ 0 → algebraMap (KTp K D N) (KTf K D N) (MvPolynomial.C (algebraMap (𝓞 K) K s)) ≠ 0`. Introduce `s hs`.
+
+Rewrite using `[ne_eq, IsFractionRing.to_map_eq_zero_iff, MvPolynomial.C_eq_zero]`. Conclude with `(map_ne_zero_iff _ (IsFractionRing.injective (𝓞 K) K)).mpr hs`. Establish `hOp : ∀ a : OT K D N, algebraMap (Op D N la) (KTf K D N) (algebraMap (OT K D N) (Op D N la) a) = algebraMap (KTp K D N) (KTf K D N) (OTtoKT K D N a)`. Introduce `a`. Use `show OpToKT D N la _ = _`.
+
+Unfold `OpToKT`. Conclude with `IsLocalization.lift_eq _ _`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨y, hy⟩`. Conclude with `IsUnit.mk0 _ ((map_ne_zero_iff _ hinj).mpr (nonZeroDivisors.ne_zero hy))`.
+
+Introduce `z`. Take `⟨p, q, hq, rfl⟩` from `IsFractionRing.div_surjective (A := KTp K D N) z`. Take `⟨sp, hsp, p', hp'⟩` from `hcl p`. Take `⟨sq, hsq, q', hq'⟩` from `hcl q`. Establish `hq0 : algebraMap (KTp K D N) (KTf K D N) q ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors hq`.
+
+Establish `e1 : algebraMap (Op D N la) (KTf K D N) (algebraMap (OT K D N) (Op D N la) (p' * MvPolynomial.C sq)) = algebraMap (KTp K D N) (KTf K D N) (MvPolynomial.C (algebraMap (𝓞 K) K sp)) * algebraMap (KTp K D N) (KTf K D N) p * algebraMap (KTp K D N) (KTf K D N) (MvPolynomial.C (algebraM …`. Rewrite using `[hOp, map_mul, hp', hC, map_mul, map_mul]`. Establish `e2 : algebraMap (Op D N la) (KTf K D N) (algebraMap (OT K D N) (Op D N la) (q' * MvPolynomial.C sp)) = algebraMap (KTp K D N) (KTf K D N) (MvPolynomial.C (algebraMap (𝓞 K) K sq)) * algebraMap (KTp K D N) (KTf K D N) q * algebraMap (KTp K D N) (KTf K D N) (MvPolynomial.C (algebraM …`. Rewrite using `[hOp, map_mul, hq', hC, map_mul, map_mul]`. Establish `hx2 : algebraMap (OT K D N) (Op D N la) (q' * MvPolynomial.C sp) ≠ 0` using `(map_ne_zero_iff _ hinj).mp (by`.
+
+Rewrite using `[e2]`. Conclude with `mul_ne_zero (mul_ne_zero (hCne sq hsq) hq0) (hCne sp hsp))`. Use `⟨⟨algebraMap (OT K D N) (Op D N la) (p' * MvPolynomial.C sq), ⟨_, mem_nonZeroDivisors_of_ne_zero hx2⟩⟩, ?_⟩` and prove the remaining obligations. Use `show _ * algebraMap (Op D N la) (KTf K D N) (algebraMap (OT K D N) (Op D N la) (q' * MvPolynomial.C sp)) = _`. Rewrite using `[e1, e2]`.
+
+Establish `h1` using `hCne sq hsq`. Establish `h2` using `hCne sp hsp`. Use `first`. Consider the case `(field_simp; done)`. Consider the case `(field_simp; ring)`.
+
+Consider the case `(rw [div_mul_eq_mul_div, div_eq_iff hq0]; ring)`. Introduce `x y hxy`. Conclude with `⟨1, by rw [hinj hxy]⟩`.
+-/
 private theorem op_isFractionRing' (D N : ℕ) (la : HeightOneSpectrum (𝓞 K)) :
     letI := (OpToKT D N la).toAlgebra
     IsFractionRing (Op D N la) (KTf K D N) := by
@@ -116,6 +147,35 @@ private theorem op_isFractionRing' (D N : ℕ) (la : HeightOneSpectrum (𝓞 K))
   · intro x y hxy
     exact ⟨1, by rw [hinj hxy]⟩
 
+/- English proof (translation)
+Choose the witnesses or unpack the hypotheses as in `⟨ϖ, hϖ, hϖ2⟩ : ∃ ϖ : 𝓞 K, ϖ ∈ la.asIdeal ∧ ϖ ∉ la.asIdeal ^ 2 := by`. Establish `hlt : la.asIdeal ^ 2 < la.asIdeal ^ 1` using `Ideal.pow_right_strictAnti la.asIdeal la.ne_bot la.isPrime.ne_top (by norm_num)`. Rewrite `hlt` using `[pow_one]`. Conclude with `SetLike.exists_of_lt hlt`. Establish `hdvd : la.asIdeal ∣ Ideal.span {ϖ}` using `Ideal.dvd_iff_le.mpr ((Ideal.span_singleton_le_iff_mem _).mpr hϖ)`.
+
+Take `⟨J, hJ⟩` from `hdvd`. Establish `hJla : ¬ J ≤ la.asIdeal`. Introduce `hle`. Apply `hϖ2` to reduce the goal to its premises. Establish `hsub : Ideal.span {ϖ} ≤ la.asIdeal ^ 2`.
+
+Rewrite using `[hJ, sq]`. Conclude with `Ideal.mul_mono_right hle`. Conclude with `hsub (Ideal.mem_span_singleton_self ϖ)`. Take `⟨s, hsJ, hsla⟩` from `Set.not_subset.mp hJla`. Establish `key : ∀ a ∈ la.asIdeal, ∃ b, s * a = ϖ * b`.
+
+Introduce `a ha`. Establish `hmem : s * a ∈ Ideal.span {ϖ}`. Rewrite using `[hJ, mul_comm s a]`. Conclude with `Ideal.mul_mem_mul ha hsJ`. Conclude with `Ideal.mem_span_singleton.mp hmem`.
+
+Establish `hsnot : MvPolynomial.C s ∉ laT D N la`. Unfold `laT`. Rewrite using `[MvPolynomial.mem_map_C_iff]`. Introduce `h`. Apply `hsla` to reduce the goal to its premises.
+
+Simplify using `using h 0`. Establish `hsu : IsUnit (algebraMap (OT K D N) (Op D N la) (MvPolynomial.C s))` using `IsLocalization.map_units (Op D N la) (⟨MvPolynomial.C s, hsnot⟩ : (laT D N la).primeCompl)`. Establish `hsub : ∀ a ∈ la.asIdeal, algebraMap (OT K D N) (Op D N la) (MvPolynomial.C a) ∈ Ideal.span {algebraMap (OT K D N) (Op D N la) (MvPolynomial.C ϖ)}`. Introduce `a ha`. Take `⟨b, hb⟩` from `key a ha`.
+
+Take `⟨u, hu⟩` from `hsu`. Establish `e : algebraMap (OT K D N) (Op D N la) (MvPolynomial.C s) * algebraMap (OT K D N) (Op D N la) (MvPolynomial.C a) = algebraMap (OT K D N) (Op D N la) (MvPolynomial.C ϖ) * algebraMap (OT K D N) (Op D N la) (MvPolynomial.C b)`. Simplify using `only [← map_mul, hb]`. Rewrite `e` using `[← hu]`. Use `Ideal.mem_span_singleton.mpr ⟨algebraMap (OT K D N) (Op D N la) (MvPolynomial.C b) * ↑u⁻¹, ?_⟩` and prove the remaining obligations.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hm : IsLocalRing.maximalIdeal (Op D N la) = Ideal.span {algebraMap (OT K D N) (Op D N la) (MvPolynomial.C ϖ)}`. Rewrite using `[← Localization.AtPrime.map_eq_maximalIdeal]`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Ideal.map_le_iff_le_comap]`.
+
+Establish `hle : laT D N la ≤ Ideal.comap (algebraMap (OT K D N) (Op D N la)) (Ideal.span {algebraMap (OT K D N) (Op D N la) (MvPolynomial.C ϖ)})` using `by show Ideal.map (MvPolynomial.C : 𝓞 K →+* OT K D N) la.asIdeal ≤ _`. Use `Ideal.map_le_iff_le_comap.mpr ?_` and prove the remaining obligations. Introduce `a ha`. Conclude with `hsub a ha`. Conclude with `hle`.
+
+Rewrite using `[Ideal.span_le, Set.singleton_subset_iff]`. Conclude with `Ideal.mem_map_of_mem _ (Ideal.mem_map_of_mem _ hϖ)`. Use `set x := algebraMap (OT K D N) (Op D N la) (MvPolynomial.C ϖ) with hxdef`. Establish `hx0 : x ≠ 0`. Establish `hϖ0 : ϖ ≠ 0` using `fun h => hϖ2 (h ▸ Ideal.zero_mem _)`.
+
+Rewrite using `[hxdef]`. Use `(map_ne_zero_iff _ (IsLocalization.injective (Op D N la) (Ideal.primeCompl_le_nonZeroDivisors (laT D N la)))).mpr ?_` and prove the remaining obligations. Simplify using `using hϖ0`. Establish `hxm : x ∈ IsLocalRing.maximalIdeal (Op D N la)`. Rewrite using `[hm]`.
+
+Conclude with `Ideal.mem_span_singleton_self x`. Use `haveI : IsNoetherianRing (Op D N la) := by first`. Consider the case `infer_instance`. Consider the case `exact IsLocalization.isNoetherianRing (laT D N la).primeCompl (Op D N la) inferInstance`. Establish `hnf : ¬ IsField (Op D N la)`.
+
+Rewrite using `[IsLocalRing.isField_iff_maximalIdeal_eq]`. Introduce `h`. Apply `hx0` to reduce the goal to its premises. Rewrite `hxm` using `[h]`. Conclude with `Ideal.mem_bot.mp hxm`.
+
+Establish `hprinc : (IsLocalRing.maximalIdeal (Op D N la)).IsPrincipal` using `⟨⟨x, hm⟩⟩`. Conclude with `((IsDiscreteValuationRing.TFAE (Op D N la) hnf).out 4 2).mp hprinc`.
+-/
 private theorem isDedekindDomain_Op (D N : ℕ) (la : HeightOneSpectrum (𝓞 K)) :
     IsDedekindDomain (Op D N la) := by
   classical
@@ -203,6 +263,23 @@ private theorem isDedekindDomain_Op (D N : ℕ) (la : HeightOneSpectrum (𝓞 K)
   have hprinc : (IsLocalRing.maximalIdeal (Op D N la)).IsPrincipal := ⟨⟨x, hm⟩⟩
   exact ((IsDiscreteValuationRing.TFAE (Op D N la) hnf).out 4 2).mp hprinc
 
+/- English proof (translation)
+Use `letI iKS : Algebra (KTf K d.D d.N) (OmS (Ω c) d.D d.N) := (d.KTtoS h c).toAlgebra`. Use `letI iOS : Algebra (Op d.D d.N la) (OmS (Ω c) d.D d.N) := d.algOp h la c`. Use `letI iOK : Algebra (Op d.D d.N la) (KTf K d.D d.N) := algOpKT (K := K) d.D d.N la`. Use `haveI hF : IsFractionRing (Op d.D d.N la) (KTf K d.D d.N) := op_isFractionRing' d.D d.N la`. Use `haveI hT : IsScalarTower (Op d.D d.N la) (KTf K d.D d.N) (OmS (Ω c) d.D d.N) := IsScalarTower.of_algebraMap_eq (fun _ => rfl)`.
+
+Use `haveI : CharZero (KTf K d.D d.N) := charZero_of_injective_algebraMap (algebraMap K (KTf K d.D d.N)).injective`. Use `haveI hFD : FiniteDimensional (KTf K d.D d.N) (OmS (Ω c) d.D d.N) := by`. Take `⟨_, _, hsp⟩` from `hd.a4.choose_spec`. Use `Module.finite_def.mpr ⟨Finset.univ.image (fun k => d.bvecG hd.sel hd.a4.choose k c), eq_top_iff.mpr fun y _ => ?_⟩` and prove the remaining obligations. Take `⟨q, hq, p, hp⟩` from `hsp (Pi.single c y)`.
+
+Establish `hy` using `hp c`. Rewrite `hy` using `[Pi.single_eq_same]`. Establish `hq'` using `hq c`. Establish `hS : ∀ r : KTp K d.D d.N, d.KTtoS h c (algebraMap (KTp K d.D d.N) (KTf K d.D d.N) r) = d.sH c r`. Introduce `r`.
+
+Unfold `Data.KTtoS`. Conclude with `IsFractionRing.lift_algebraMap _ _`. Establish `hyy : y = ∑ k, (algebraMap _ (KTf K d.D d.N) (p k) / algebraMap _ (KTf K d.D d.N) q) • d.bvecG hd.sel hd.a4.choose k c` using `by show y = ∑ k, d.KTtoS h c (algebraMap _ (KTf K d.D d.N) (p k) / algebraMap _ (KTf K d.D d.N) q) * d.bvecG hd.sel hd.a4.choose k c`. Simplify using `only [map_div₀, hS]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[← mul_assoc, inv_mul_cancel₀ hq', one_mul]`. Use `_ = (d.sH c q)⁻¹ * ∑ k, d.sH c (p k) * d.bvecG hd.sel hd.a4.choose k c := congrArg (fun t => (d.sH c q)⁻¹ * t) hy`. Use `_ = _ := by`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hyy]`. Conclude with `Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (Submodule.subset_span (by simp))`. Use `haveI hsep : Algebra.IsSeparable (KTf K d.D d.N) (OmS (Ω c) d.D d.N) := inferInstance`. Use `haveI : IsDedekindDomain (Op d.D d.N la) := isDedekindDomain_Op d.D d.N la`.
+
+Use `⟨hF, hT, hFD, hsep, ?_, ?_⟩` and prove the remaining obligations. Use `first`. Consider the case `exact integralClosure.isDedekindDomain (A := Op d.D d.N la) (K := KTf K d.D d.N) (L := OmS (Ω c) d.D d.N)`. Consider the case `exact integralClosure.isDedekindDomain (Op d.D d.N la) (KTf K d.D d.N) (OmS (Ω c) d.D d.N)`. Use `first`.
+
+Consider the case `exact integralClosure.isFractionRing_of_finite_extension (A := Op d.D d.N la) (K := KTf K d.D d.N) (L := OmS (Ω c) d.D d.N)`. Consider the case `exact integralClosure.isFractionRing_of_finite_extension (KTf K d.D d.N) (OmS (Ω c) d.D d.N)`.
+-/
 theorem comp_facts (hd : d.AxH 𝒜) (h : d.S1) (la : HeightOneSpectrum (𝓞 K)) (c : ι) :
     letI : Algebra (KTf K d.D d.N) (OmS (Ω c) d.D d.N) := (d.KTtoS h c).toAlgebra
     letI : Algebra (Op d.D d.N la) (OmS (Ω c) d.D d.N) := d.algOp h la c
@@ -262,6 +339,21 @@ theorem comp_facts (hd : d.AxH 𝒜) (h : d.S1) (la : HeightOneSpectrum (𝓞 K)
           (K := KTf K d.D d.N) (L := OmS (Ω c) d.D d.N)
       | exact integralClosure.isFractionRing_of_finite_extension (KTf K d.D d.N) (OmS (Ω c) d.D d.N)
 
+/- English proof (translation)
+Use `letI : Algebra (Op d.D d.N la) (OmS (Ω c) d.D d.N) := d.algOp h la c`. Establish `hOS : ∀ x : OT K d.D d.N, algebraMap (Op d.D d.N la) (OmS (Ω c) d.D d.N) (algebraMap (OT K d.D d.N) (Op d.D d.N la) x) = d.OTtoS c x`. Introduce `x`. Use `show d.KTtoS h c (OpToKT d.D d.N la (algebraMap _ _ x)) = _`. Unfold `OpToKT Data.KTtoS Data.OTtoS`.
+
+Rewrite using `[IsLocalization.lift_eq, RingHom.comp_apply, IsFractionRing.lift_algebraMap]`. Apply the tactic sequence `all_goals rfl`. Use extensionality with `w`. Simplify using `only [Data.PlOver, ValPl.PlacesOver, Set.mem_setOf_eq]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨hnd, hw⟩`. Use `⟨hnd, fun y => ?_⟩` and prove the remaining obligations. Take `⟨⟨a, s⟩, rfl⟩` from `IsLocalization.mk'_surjective (laT d.D d.N la).primeCompl y`. Establish `hs0 : w (d.OTtoS c s) = 0`. Establish `h1` using `(hw s).1`.
+
+Establish `h2 : ¬ 0 < w (d.OTtoS c s)` using `fun hlt => (show (s : OT K d.D d.N) ∉ laT d.D d.N la from s.2) ((hw s).2.mp hlt)`. Conclude with `le_antisymm (not_lt.mp h2) h1`. Establish `hmul : w (algebraMap _ (OmS (Ω c) d.D d.N) (IsLocalization.mk' (Op d.D d.N la) a s)) = w (d.OTtoS c a)`. Establish `e : algebraMap _ (OmS (Ω c) d.D d.N) (IsLocalization.mk' (Op d.D d.N la) a s) * d.OTtoS c s = d.OTtoS c a`. Rewrite using `[← hOS, ← hOS, ← map_mul, IsLocalization.mk'_spec]`.
+
+Use `congrArg w e` as an intermediate fact. Rewrite `this` using `[AddValuation.map_mul, hs0, add_zero]`. Conclude with `this`. Rewrite using `[hmul, IsLocalization.AtPrime.mk'_mem_maximal_iff (S := Op d.D d.N la) (I := laT d.D d.N la)]`. Conclude with `hw a`.
+
+Introduce and unpack `⟨hnd, hw⟩`. Use `⟨hnd, fun x => ?_⟩` and prove the remaining obligations. Use `hw (algebraMap _ (Op d.D d.N la) x)` as an intermediate fact. Establish `key : algebraMap (OT K d.D d.N) (Op d.D d.N la) x ∈ IsLocalRing.maximalIdeal (Op d.D d.N la) ↔ x ∈ laT d.D d.N la` using `by first`. Consider the case `exact IsLocalization.AtPrime.to_map_mem_maximal_iff (S := Op d.D d.N la) (I := laT d.D d.N la) x`.
+
+Consider the case `(rw [← IsLocalization.mk'_one (M := (laT d.D d.N la).primeCompl) (Op d.D d.N la) x]`. Conclude with `IsLocalization.AtPrime.mk'_mem_maximal_iff (S := Op d.D d.N la) (I := laT d.D d.N la) x 1)`. Rewrite `this` using `[hOS, key]`. Conclude with `this`.
+-/
 theorem plOver_eq (h : d.S1) (la : HeightOneSpectrum (𝓞 K)) (c : ι) :
     letI : Algebra (Op d.D d.N la) (OmS (Ω c) d.D d.N) := d.algOp h la c
     d.PlOver la c = ValPl.PlacesOver (Op d.D d.N la) (OmS (Ω c) d.D d.N) := by
@@ -308,6 +400,13 @@ theorem plOver_eq (h : d.S1) (la : HeightOneSpectrum (𝓞 K)) (c : ι) :
     rw [hOS, key] at this
     exact this
 
+/- English proof (translation)
+Use `letI : Algebra (KTf K d.D d.N) (OmS (Ω c) d.D d.N) := (d.KTtoS h c).toAlgebra`. Use `letI : Algebra (Op d.D d.N la) (OmS (Ω c) d.D d.N) := d.algOp h la c`. Use `letI := algOpKT (K := K) d.D d.N la`. Take `⟨i1, i2, i3, i4, i5, i6⟩` from `d.comp_facts hd h la c`. Use `haveI := Op_isDVR (K := K) d.D d.N la`.
+
+Take `⟨g, hg0, hg⟩` from `HDiscVal.exists_val_eq (Op d.D d.N la) (KTf K d.D d.N) n`. Rewrite using `[d.plOver_eq h la c]`. Use `⟨g, hg0, hg, fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[HDiscVal.mem_integralClosure_iff (Op d.D d.N la) (KTf K d.D d.N)]`. Use `forall₂_congr fun w hw => ?_` and prove the remaining obligations.
+
+Rewrite using `[AddValuation.map_mul, hg w hw, add_comm]`.
+-/
 theorem comp_g (hd : d.AxH 𝒜) (h : d.S1) (la : HeightOneSpectrum (𝓞 K)) (c : ι)
     (n : AddValuation (OmS (Ω c) d.D d.N) (WithTop ℤ) → ℤ) :
     letI : Algebra (Op d.D d.N la) (OmS (Ω c) d.D d.N) := d.algOp h la c
@@ -326,6 +425,15 @@ theorem comp_g (hd : d.AxH 𝒜) (h : d.S1) (la : HeightOneSpectrum (𝓞 K)) (c
   refine forall₂_congr fun w hw => ?_
   rw [AddValuation.map_mul, hg w hw, add_comm]
 
+/- English proof (translation)
+Use `letI : Algebra (KTf K d.D d.N) (OmS (Ω c) d.D d.N) := (d.KTtoS h c).toAlgebra`. Use `letI : Algebra (Op d.D d.N la) (OmS (Ω c) d.D d.N) := d.algOp h la c`. Use `letI := algOpKT (K := K) d.D d.N la`. Take `⟨i1, i2, i3, i4, i5, i6⟩` from `d.comp_facts hd h la c`. Use `haveI := Op_isDVR (K := K) d.D d.N la`.
+
+Take `⟨u, hu, hN⟩` from `ValPl.norm_eq_places (O := Op d.D d.N la) (F := KTf K d.D d.N) g hg0 (unifOp_irreducible d.D d.N la)`. Use `⟨u, hu, ?_⟩` and prove the remaining obligations. Rewrite using `[hN]`. Establish `hg' : ∀ w ∈ ValPl.PlacesOver (Op d.D d.N la) (OmS (Ω c) d.D d.N), w g = n w`. Rewrite using `[← d.plOver_eq h la c]`.
+
+Conclude with `hg`. Rewrite using `[d.plOver_eq h la c]`. Use `congr 2`. Use `finsum_congr fun w => finsum_congr fun hw => ?_` and prove the remaining obligations. Rewrite using `[hg' w hw, WithTop.untopD_coe]`.
+
+Both sides reduce to the same expression.
+-/
 theorem comp_norm (hd : d.AxH 𝒜) (h : d.S1) (la : HeightOneSpectrum (𝓞 K)) (c : ι)
     {g : OmS (Ω c) d.D d.N} (hg0 : g ≠ 0) (n : AddValuation (OmS (Ω c) d.D d.N) (WithTop ℤ) → ℤ)
     (hg : ∀ w ∈ d.PlOver la c, w g = n w) :

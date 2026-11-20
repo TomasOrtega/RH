@@ -10,6 +10,13 @@ namespace GlobalTheory.LatBasis
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
+/- English proof (translation)
+Introduce `r X W`. Use `choose n hn hmem using (GlobalTheory.LatDen.latDen r X).1`. Use `set b := Module.finBasis E W`. Use `set v : Fin (Module.finrank E W) → Fin r → E := fun i => (b i : Fin r → E) with hv`. Establish `hvli : LinearIndependent E v` using `b.linearIndependent.map' W.subtype (Submodule.ker_subtype W)`.
+
+Establish `hne : ∀ i, (n (v i) : E) ≠ 0` using `fun i => Nat.cast_ne_zero.2 (hn (v i)).ne'`. Use `set c : Fin (Module.finrank E W) → Eˣ := fun i => Units.mk0 _ (hne i)`. Establish `hli : LinearIndependent E (fun i => (n (v i) : E) • v i)` using `hvli.units_smul c`. Use `⟨fun i => (n (v i) : E) • v i, hli, fun a => hmem (v a), ?_⟩` and prove the remaining obligations. Establish `hle : Submodule.span E (Set.range fun i => (n (v i) : E) • v i) ≤ W`.
+
+Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `W.smul_mem _ (b i).2`. Apply `Submodule.eq_of_le_of_finrank_eq hle` to reduce the goal to its premises. Rewrite using `[finrank_span_eq_card hli, Fintype.card_fin]`.
+-/
 theorem exists_basis_mem : (∀ (r : ℕ) (X : Data E r) (W : Submodule E (Fin r → E)), ∃ w : Fin (Module.finrank E W) → Fin r → E, LinearIndependent E w ∧ (∀ a, w a ∈ X.Λ) ∧ Submodule.span E (Set.range w) = W) := by
   intro r X W
   choose n hn hmem using (GlobalTheory.LatDen.latDen r X).1

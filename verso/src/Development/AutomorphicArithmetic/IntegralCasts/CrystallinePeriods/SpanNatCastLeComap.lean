@@ -12,6 +12,9 @@ section Adic
 
 variable {A : Type u} {B : Type v} {C : Type w} [CommRing A] [CommRing B] [CommRing C]
 
+/- English proof (translation)
+The claim follows from `(Ideal.pow_right_mono h n).trans (Ideal.le_comap_pow f n)`.
+-/
 theorem pow_le_comap_pow {I : Ideal A} {J : Ideal B} {f : A →+* B} (h : I ≤ J.comap f) (n : ℕ) :
     I ^ n ≤ (J ^ n).comap f :=
   (Ideal.pow_right_mono h n).trans (Ideal.le_comap_pow f n)
@@ -30,6 +33,11 @@ def adicMap (I : Ideal A) (J : Ideal B) (f : A →+* B) (h : I ≤ J.comap f) :
         rw [← Ideal.quotientMap_mk (H := pow_le_comap_pow h m),
           ← Ideal.quotientMap_mk (H := pow_le_comap_pow h m), AdicCompletion.Ideal.mk_eq_mk I hle])
 
+/- English proof (translation)
+Unfold `adicMap`. Rewrite using `[AdicCompletion.evalₐ_liftRingHom]`. Both sides reduce to the same expression. Introduce `m n hle`. Use extensionality with `x`.
+
+Proceed by induction on `x using AdicCompletion.induction_on with`. Consider the case `h x`. Simplify using `only [RingHom.comp_apply, RingHom.coe_coe, AdicCompletion.evalₐ_mk, Ideal.quotientMap_mk, Ideal.Quotient.factorPow, Ideal.Quotient.factor_mk]`. Rewrite using `[← Ideal.quotientMap_mk (H := pow_le_comap_pow h m), ← Ideal.quotientMap_mk (H := pow_le_comap_pow h m), AdicCompletion.Ideal.mk_eq_mk I hle]`.
+-/
 theorem evalₐ_adicMap (I : Ideal A) (J : Ideal B) (f : A →+* B) (h : I ≤ J.comap f) (n : ℕ)
     (x : AdicCompletion I A) :
     AdicCompletion.evalₐ J n (adicMap I J f h x) =
@@ -46,6 +54,9 @@ theorem evalₐ_adicMap (I : Ideal A) (J : Ideal B) (f : A →+* B) (h : I ≤ J
       rw [← Ideal.quotientMap_mk (H := pow_le_comap_pow h m),
         ← Ideal.quotientMap_mk (H := pow_le_comap_pow h m), AdicCompletion.Ideal.mk_eq_mk I hle]
 
+/- English proof (translation)
+Apply `AdicCompletion.ext_evalₐ` to reduce the goal to its premises. Introduce `n`. Rewrite using `[evalₐ_adicMap, AlgHom.commutes, AlgHom.commutes]`. Both sides reduce to the same expression.
+-/
 @[simp] theorem adicMap_algebraMap (I : Ideal A) (J : Ideal B) (f : A →+* B) (h : I ≤ J.comap f)
     (a : A) : adicMap I J f h (algebraMap A _ a) = algebraMap B _ (f a) := by
   apply AdicCompletion.ext_evalₐ
@@ -53,6 +64,9 @@ theorem evalₐ_adicMap (I : Ideal A) (J : Ideal B) (f : A →+* B) (h : I ≤ J
   rw [evalₐ_adicMap, AlgHom.commutes, AlgHom.commutes]
   rfl
 
+/- English proof (translation)
+Apply `AdicCompletion.ext_evalₐ` to reduce the goal to its premises. Introduce `n`. Rewrite using `[evalₐ_adicMap]`. Take `⟨a, ha⟩` from `Ideal.Quotient.mk_surjective (AdicCompletion.evalₐ I n x)`. Rewrite using `[← ha, Ideal.quotientMap_mk, hf]`.
+-/
 theorem adicMap_eq_id (I : Ideal A) (f : A →+* A) (h : I ≤ I.comap f) (hf : ∀ a, f a = a)
     (x : AdicCompletion I A) : adicMap I I f h x = x := by
   apply AdicCompletion.ext_evalₐ
@@ -61,6 +75,9 @@ theorem adicMap_eq_id (I : Ideal A) (f : A →+* A) (h : I ≤ I.comap f) (hf : 
   obtain ⟨a, ha⟩ := Ideal.Quotient.mk_surjective (AdicCompletion.evalₐ I n x)
   rw [← ha, Ideal.quotientMap_mk, hf]
 
+/- English proof (translation)
+Apply `AdicCompletion.ext_evalₐ` to reduce the goal to its premises. Introduce `n`. Rewrite using `[evalₐ_adicMap, evalₐ_adicMap, evalₐ_adicMap]`. Take `⟨a, ha⟩` from `Ideal.Quotient.mk_surjective (AdicCompletion.evalₐ I n x)`. Rewrite using `[← ha, Ideal.quotientMap_mk, Ideal.quotientMap_mk, Ideal.quotientMap_mk, he]`.
+-/
 theorem adicMap_adicMap (I : Ideal A) (J : Ideal B) (K : Ideal C) (f : A →+* B) (g : B →+* C)
     (e : A →+* C) (h : I ≤ J.comap f) (h' : J ≤ K.comap g) (h'' : I ≤ K.comap e)
     (he : ∀ a, g (f a) = e a) (x : AdicCompletion I A) :
@@ -71,6 +88,9 @@ theorem adicMap_adicMap (I : Ideal A) (J : Ideal B) (K : Ideal C) (f : A →+* B
   obtain ⟨a, ha⟩ := Ideal.Quotient.mk_surjective (AdicCompletion.evalₐ I n x)
   rw [← ha, Ideal.quotientMap_mk, Ideal.quotientMap_mk, Ideal.quotientMap_mk, he]
 
+/- English proof (translation)
+Rewrite using `[Ideal.span_le, Set.singleton_subset_iff]`. Simplify using `[Ideal.mem_comap]`.
+-/
 theorem span_natCast_le_comap (p : ℕ) (f : A →+* B) :
     span {(p : A)} ≤ (span {(p : B)}).comap f := by
   rw [Ideal.span_le, Set.singleton_subset_iff]
@@ -98,19 +118,31 @@ def map (f : R →+* S) : Tilt p R →+* Tilt p S :=
 
 variable {p}
 
+/- English proof (translation)
+The claim follows from `Perfection.ext h`.
+-/
 theorem ext {x y : Tilt p R} (h : ∀ n, PreTilt.coeff n x = PreTilt.coeff n y) : x = y :=
   Perfection.ext h
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coeff_map (f : R →+* S) (x : Tilt p R) (n : ℕ) :
     PreTilt.coeff n (map p f x) =
       Ideal.quotientMap (span {(p : S)}) f (span_natCast_le_comap p f) (PreTilt.coeff n x) := rfl
 
+/- English proof (translation)
+Use `ext fun n => ?_` and prove the remaining obligations. Rewrite using `[coeff_map]`. Take `⟨a, ha⟩` from `Ideal.Quotient.mk_surjective (PreTilt.coeff n x)`. Rewrite using `[← ha]`. Both sides reduce to the same expression.
+-/
 @[simp] theorem map_id (x : Tilt p R) : map p (RingHom.id R) x = x := by
   refine ext fun n => ?_
   rw [coeff_map]
   obtain ⟨a, ha⟩ := Ideal.Quotient.mk_surjective (PreTilt.coeff n x)
   rw [← ha]; rfl
 
+/- English proof (translation)
+Use `ext fun n => ?_` and prove the remaining obligations. Rewrite using `[coeff_map, coeff_map, coeff_map]`. Take `⟨a, ha⟩` from `Ideal.Quotient.mk_surjective (PreTilt.coeff n x)`. Rewrite using `[← ha]`. Both sides reduce to the same expression.
+-/
 theorem map_map (f : R →+* S) (g : S →+* U) (x : Tilt p R) :
     map p g (map p f x) = map p (g.comp f) x := by
   refine ext fun n => ?_
@@ -120,6 +152,13 @@ theorem map_map (f : R →+* S) (g : S →+* U) (x : Tilt p R) :
 
 variable [IsAdicComplete (span {(p : R)}) R] [IsAdicComplete (span {(p : S)}) S]
 
+/- English proof (translation)
+Use `Perfection.teichmuller_spec fun n => ?_` and prove the remaining obligations. Take `⟨a, ha⟩` from `Ideal.Quotient.mk_surjective (PreTilt.coeff n x)`. Use `⟨f a, ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = PreTilt.coeff n (map p f x)`. Rewrite using `[coeff_map, ← ha]`.
+
+Both sides reduce to the same expression. Establish `h` using `Perfection.teichmuller_sModEq (p := p) (I := span {(p : R)}) (x := x) (y := a) (n := n) ha`. Rewrite `h`, the goal using `[SModEq.sub_mem]`. Establish `h2` using `pow_le_comap_pow (span_natCast_le_comap p f) (n + 1) (neg_mem h)`. Rewrite `h2` using `[Ideal.mem_comap, neg_sub, map_sub, map_pow]`.
+
+Conclude with `h2`.
+-/
 theorem untilt_map (f : R →+* S) (x : Tilt p R) :
     PreTilt.untilt (map p f x) = f (PreTilt.untilt x) := by
   refine Perfection.teichmuller_spec fun n => ?_
@@ -155,27 +194,51 @@ instance : Algebra ℤ_[p] (Ainf p R) := (ofPadicInt p R).toAlgebra
 
 variable {p}
 
+/- English proof (translation)
+Use extensionality with `n`. Simplify using `[map]`.
+-/
 @[simp] theorem map_id (x : Ainf p R) : map p (RingHom.id R) x = x := by
   ext n; simp [map]
 
+/- English proof (translation)
+Use extensionality with `n`. Simplify using `[map, Tilt.map_map]`.
+-/
 theorem map_map (f : R →+* S) (g : S →+* U) (x : Ainf p R) :
     map p g (map p f x) = map p (g.comp f) x := by
   ext n; simp [map, Tilt.map_map]
 
+/- English proof (translation)
+The claim follows from `WittVector.map_teichmuller p _ x`.
+-/
 @[simp] theorem map_teich (f : R →+* S) (x : Tilt p R) :
     map p f (teich p x) = teich p (Tilt.map p f x) := WittVector.map_teichmuller p _ x
 
+/- English proof (translation)
+The claim follows from `WittVector.frobenius_eq_map_frobenius p`.
+-/
 theorem frob_eq_map : frob p R = WittVector.map (frobenius (Tilt p R) p) :=
   WittVector.frobenius_eq_map_frobenius p
 
+/- English proof (translation)
+Rewrite using `[frob_eq_map, ← map_pow]`. Conclude with `WittVector.map_teichmuller p _ x`.
+-/
 @[simp] theorem frob_teich (x : Tilt p R) : frob p R (teich p x) = teich p x ^ p := by
   rw [frob_eq_map, ← map_pow]; exact WittVector.map_teichmuller p _ x
 
+/- English proof (translation)
+Use extensionality with `n`. Simplify using `[map, frob_eq_map, frobenius_def]`.
+-/
 theorem map_frob (f : R →+* S) (x : Ainf p R) : map p f (frob p R x) = frob p S (map p f x) := by
   ext n; simp [map, frob_eq_map, frobenius_def]
 
+/- English proof (translation)
+The claim follows from `WittVector.frobenius_bijective p _`.
+-/
 theorem frob_bijective : Function.Bijective (frob p R) := WittVector.frobenius_bijective p _
 
+/- English proof (translation)
+Use extensionality with `n`. Express the relevant statement in the definitionally equal form `Tilt.map p f (ZMod.castHom (dvd_refl p) (Tilt p R) _) = ZMod.castHom (dvd_refl p) _ _`. Conclude with `RingHom.congr_fun (Subsingleton.elim ((Tilt.map p f).comp (ZMod.castHom (dvd_refl p) _)) (ZMod.castHom (dvd_refl p) (Tilt p S))) _`.
+-/
 @[simp] theorem map_algebraMap (f : R →+* S) (a : ℤ_[p]) :
     map p f (algebraMap ℤ_[p] _ a) = algebraMap ℤ_[p] _ a := by
   ext n
@@ -183,6 +246,9 @@ theorem frob_bijective : Function.Bijective (frob p R) := WittVector.frobenius_b
   exact RingHom.congr_fun (Subsingleton.elim ((Tilt.map p f).comp (ZMod.castHom (dvd_refl p) _))
     (ZMod.castHom (dvd_refl p) (Tilt p S))) _
 
+/- English proof (translation)
+Rewrite using `[frob_eq_map]`. Use extensionality with `n`. Express the relevant statement in the definitionally equal form `frobenius _ p (ZMod.castHom (dvd_refl p) (Tilt p R) _) = ZMod.castHom (dvd_refl p) _ _`. Conclude with `RingHom.congr_fun (Subsingleton.elim ((frobenius _ p).comp (ZMod.castHom (dvd_refl p) _)) (ZMod.castHom (dvd_refl p) (Tilt p R))) _`.
+-/
 @[simp] theorem frob_algebraMap (a : ℤ_[p]) :
     frob p R (algebraMap ℤ_[p] _ a) = algebraMap ℤ_[p] _ a := by
   rw [frob_eq_map]
@@ -191,6 +257,9 @@ theorem frob_bijective : Function.Bijective (frob p R) := WittVector.frobenius_b
   exact RingHom.congr_fun (Subsingleton.elim ((frobenius _ p).comp (ZMod.castHom (dvd_refl p) _))
     (ZMod.castHom (dvd_refl p) (Tilt p R))) _
 
+/- English proof (translation)
+Rewrite using `[← Ideal.mem_span_singleton, ← WittVector.ker_constantCoeff, RingHom.mem_ker, map_sub, map_pow, frob_eq_map]`. Simplify using `[frobenius_def]`.
+-/
 theorem p_dvd_frob_sub_pow (x : Ainf p R) : (p : Ainf p R) ∣ frob p R x - x ^ p := by
   rw [← Ideal.mem_span_singleton, ← WittVector.ker_constantCoeff, RingHom.mem_ker, map_sub, map_pow,
     frob_eq_map]
@@ -202,9 +271,17 @@ variable (p R) in
 
 def theta : Ainf p R →+* R := WittVector.fontaineTheta R p
 
+/- English proof (translation)
+The claim follows from `WittVector.fontaineTheta_teichmuller x`.
+-/
 @[simp] theorem theta_teich (x : Tilt p R) : theta p R (teich p x) = PreTilt.untilt x :=
   WittVector.fontaineTheta_teichmuller x
 
+/- English proof (translation)
+Rewrite using `[IsHausdorff.eq_iff_smodEq (I := span {(p : S)})]`. Introduce `n`. Rewrite using `[smul_eq_mul, Ideal.mul_top, SModEq]`. Use `WittVector.eq_of_apply_teichmuller_eq ((Ideal.Quotient.mk (span {(p : S)} ^ n)).comp ((theta p S).comp (map p f))) ((Ideal.Quotient.mk (span {(p : S)} ^ n)).comp (f.comp (theta p R))) (by` as an intermediate fact. Use `⟨n, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← map_natCast (Ideal.Quotient.mk (span {(p : S)} ^ n)), ← map_pow, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Ideal.pow_mem_pow (mem_span_singleton_self _) _)`. Use the proof step `(by intro y; simp [Tilt.untilt_map])`. Conclude with `RingHom.congr_fun this x`.
+-/
 theorem theta_map (f : R →+* S) (x : Ainf p R) : theta p S (map p f x) = f (theta p R x) := by
   rw [IsHausdorff.eq_iff_smodEq (I := span {(p : S)})]
   intro n
@@ -224,6 +301,9 @@ end Ainf
 
 namespace AinfInv
 
+/- English proof (translation)
+Simplify using `using IsLocalization.Away.algebraMap_isUnit (S := AinfInv p R) (p : Ainf p R)`.
+-/
 theorem isUnit_p : IsUnit (p : AinfInv p R) := by
   simpa using IsLocalization.Away.algebraMap_isUnit (S := AinfInv p R) (p : Ainf p R)
 
@@ -232,11 +312,17 @@ def extend (f : Ainf p R →+* Ainf p S) : AinfInv p R →+* AinfInv p S :=
     (by simpa using isUnit_p p)
 
 variable {p} in
+/- English proof (translation)
+The claim follows from `IsLocalization.Away.lift_eq _ _ x`.
+-/
 @[simp] theorem extend_algebraMap (f : Ainf p R →+* Ainf p S) (x : Ainf p R) :
     extend p f (algebraMap _ _ x) = algebraMap _ _ (f x) :=
   IsLocalization.Away.lift_eq _ _ x
 
 variable {p} in
+/- English proof (translation)
+The claim follows from `IsLocalization.ringHom_ext (Submonoid.powers (p : Ainf p R)) (RingHom.ext h)`.
+-/
 theorem hom_ext {B : Type*} [CommRing B] {f g : AinfInv p R →+* B}
     (h : ∀ x : Ainf p R, f (algebraMap _ _ x) = g (algebraMap _ _ x)) : f = g :=
   IsLocalization.ringHom_ext (Submonoid.powers (p : Ainf p R)) (RingHom.ext h)
@@ -257,11 +343,17 @@ def padicLift {B : Type*} [CommRing B] (f : ℤ_[p] →+* B) (h : IsUnit (p : B)
     rw [PadicInt.unitCoeff_spec hx0, map_mul, map_pow, map_natCast]
     exact ((Units.isUnit _).map f).mul (h.pow _))
 
+/- English proof (translation)
+The claim follows from `IsLocalization.lift_eq _ a`.
+-/
 @[simp] theorem padicLift_algebraMap {B : Type*} [CommRing B] (f : ℤ_[p] →+* B)
     (h : IsUnit (p : B)) (a : ℤ_[p]) : padicLift p f h (algebraMap _ _ a) = f a :=
   IsLocalization.lift_eq _ a
 
 variable {p} in
+/- English proof (translation)
+The claim follows from `IsLocalization.ringHom_ext (nonZeroDivisors ℤ_[p]) (RingHom.ext h)`.
+-/
 theorem padic_hom_ext {B : Type*} [CommRing B] {f g : ℚ_[p] →+* B}
     (h : ∀ a : ℤ_[p], f (algebraMap _ _ a) = g (algebraMap _ _ a)) : f = g :=
   IsLocalization.ringHom_ext (nonZeroDivisors ℤ_[p]) (RingHom.ext h)
@@ -279,20 +371,35 @@ instance : IsScalarTower ℤ_[p] ℚ_[p] (AinfInv p R) :=
 
 variable {p}
 
+/- English proof (translation)
+The claim follows from `extend_algebraMap _ x`.
+-/
 @[simp] theorem map_algebraMap (f : R →+* S) (x : Ainf p R) :
     map p f (algebraMap _ _ x) = algebraMap _ _ (Ainf.map p f x) := extend_algebraMap _ x
 
+/- English proof (translation)
+The claim follows from `extend_algebraMap _ x`.
+-/
 @[simp] theorem frob_algebraMap (x : Ainf p R) :
     frob p R (algebraMap _ _ x) = algebraMap _ _ (Ainf.frob p R x) := extend_algebraMap _ x
 
+/- English proof (translation)
+The claim follows from `RingHom.congr_fun (hom_ext (f := map p (RingHom.id R)) (g := RingHom.id _) (by simp)) x`.
+-/
 @[simp] theorem map_id (x : AinfInv p R) : map p (RingHom.id R) x = x :=
   RingHom.congr_fun (hom_ext (f := map p (RingHom.id R)) (g := RingHom.id _) (by simp)) x
 
+/- English proof (translation)
+The claim follows from `RingHom.congr_fun (hom_ext (f := (map p g).comp (map p f)) (g := map p (g.comp f)) (by simp [Ainf.map_map])) x`.
+-/
 theorem map_map (f : R →+* S) (g : S →+* U) (x : AinfInv p R) :
     map p g (map p f x) = map p (g.comp f) x :=
   RingHom.congr_fun (hom_ext (f := (map p g).comp (map p f)) (g := map p (g.comp f))
     (by simp [Ainf.map_map])) x
 
+/- English proof (translation)
+The claim follows from `RingHom.congr_fun (hom_ext (f := (map p f).comp (frob p R)) (g := (frob p S).comp (map p f)) (by simp [Ainf.map_frob])) x`.
+-/
 theorem map_frob (f : R →+* S) (x : AinfInv p R) : map p f (frob p R x) = frob p S (map p f x) :=
   RingHom.congr_fun (hom_ext (f := (map p f).comp (frob p R)) (g := (frob p S).comp (map p f))
     (by simp [Ainf.map_frob])) x
@@ -303,6 +410,9 @@ variable (p R) in
 
 def theta : AinfInv p R →+* Localization.Away (p : R) := fontaineThetaInvertP R p
 
+/- English proof (translation)
+Unfold `theta fontaineThetaInvertP Localization.awayLift`. Rewrite using `[IsLocalization.Away.lift_eq]`. Both sides reduce to the same expression.
+-/
 @[simp] theorem theta_algebraMap (x : Ainf p R) :
     theta p R (algebraMap _ _ x) = algebraMap R _ (Ainf.theta p R x) := by
   unfold theta fontaineThetaInvertP Localization.awayLift
@@ -317,11 +427,17 @@ def awayMap {R : Type u} {S : Type v} [CommRing R] [CommRing S] (f : R →+* S) 
     (by simpa using IsLocalization.Away.algebraMap_isUnit (S := Localization.Away (p : S)) (p : S))
 
 omit [Fact p.Prime] in
+/- English proof (translation)
+The claim follows from `IsLocalization.Away.lift_eq _ _ x`.
+-/
 @[simp] theorem awayMap_algebraMap {R : Type u} {S : Type v} [CommRing R] [CommRing S]
     (f : R →+* S) (x : R) : awayMap p f (algebraMap _ _ x) = algebraMap _ _ (f x) :=
   IsLocalization.Away.lift_eq _ _ x
 
 variable {p} in
+/- English proof (translation)
+The claim follows from `RingHom.congr_fun (AinfInv.hom_ext (f := (AinfInv.theta p S).comp (AinfInv.map p f)) (g := (awayMap p f).comp (AinfInv.theta p R)) (by simp [Ainf.theta_map])) x`.
+-/
 theorem AinfInv.theta_map [IsAdicComplete (span {(p : R)}) R] [IsAdicComplete (span {(p : S)}) S]
     (f : R →+* S) (x : AinfInv p R) :
     AinfInv.theta p S (AinfInv.map p f x) = awayMap p f (AinfInv.theta p R x) :=

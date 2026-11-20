@@ -10,9 +10,19 @@ variable {n : ℕ}
 
 open scoped Matrix.Norms.Frobenius
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using the standard rewrite rules.
+-/
 theorem coe_smul_eq (t : ℝ) (X : Matrix (Fin n) (Fin n) ℂ) : (t : ℂ) • X = t • X := by
   ext i j; simp
 
+/- English proof (translation)
+Establish `hp : ∀ k : ℕ, X ^ (k + 1) ∈ A`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => simpa using hX`. Consider the case `succ k ih => rw [pow_succ]`.
+
+Conclude with `hA _ ih _ hX`. Establish `hs` using `NormedSpace.exp_series_hasSum_exp' (𝕂 := ℝ) X`. Establish `hs'` using `(hasSum_nat_add_iff' 1).2 hs`. Simplify using `only [Finset.range_one, Finset.sum_singleton, Nat.factorial_zero, Nat.cast_one, inv_one, pow_zero, one_smul] at hs'`. Establish `hc : IsClosed (A : Set (Matrix (Fin n) (Fin n) ℂ))` using `A.closed_of_finiteDimensional`.
+
+Conclude with `hc.mem_of_tendsto hs'.tendsto_sum_nat (Filter.Eventually.of_forall fun m => A.sum_mem fun k _ => A.smul_mem _ (hp k))`.
+-/
 theorem exp_sub_one_mem (A : Submodule ℝ (Matrix (Fin n) (Fin n) ℂ))
     (hA : ∀ X ∈ A, ∀ Y ∈ A, X * Y ∈ A) {X : Matrix (Fin n) (Fin n) ℂ} (hX : X ∈ A) :
     NormedSpace.exp X - 1 ∈ A := by
@@ -29,6 +39,11 @@ theorem exp_sub_one_mem (A : Submodule ℝ (Matrix (Fin n) (Fin n) ℂ))
   exact hc.mem_of_tendsto hs'.tendsto_sum_nat (Filter.Eventually.of_forall fun m =>
     A.sum_mem fun k _ => A.smul_mem _ (hp k))
 
+/- English proof (translation)
+Establish `hd : HasDerivAt (fun t : ℝ => NormedSpace.exp (t • X)) (NormedSpace.exp ((0 : ℝ) • X) * X) 0` using `hasDerivAt_exp_smul_const X 0`. Rewrite `hd` using `[zero_smul, NormedSpace.exp_zero, one_mul]`. Establish `hc : IsClosed (T : Set (Matrix (Fin n) (Fin n) ℂ))` using `T.closed_of_finiteDimensional`. Use `hc.mem_of_tendsto hd.tendsto_slope_zero (Filter.Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Simplify using `only [zero_add, zero_smul, NormedSpace.exp_zero]`.
+
+Conclude with `T.smul_mem _ (h t)`.
+-/
 theorem mem_of_exp_sub_one_mem (T : Submodule ℝ (Matrix (Fin n) (Fin n) ℂ)) (X : Matrix (Fin n) (Fin n) ℂ)
     (h : ∀ t : ℝ, NormedSpace.exp (t • X) - 1 ∈ T) : X ∈ T := by
   have hd : HasDerivAt (fun t : ℝ => NormedSpace.exp (t • X)) (NormedSpace.exp ((0 : ℝ) • X) * X) 0 :=
@@ -39,10 +54,22 @@ theorem mem_of_exp_sub_one_mem (T : Submodule ℝ (Matrix (Fin n) (Fin n) ℂ)) 
   simp only [zero_add, zero_smul, NormedSpace.exp_zero]
   exact T.smul_mem _ (h t)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨GlobalTheory.GaugeConst.expJ ε ⟨t • X, (GlobalTheory.GaugeConst.lieJ ε).smul_mem t hX⟩, rfl⟩`.
+-/
 theorem exists_exp {ε : Fin n → Bool} {X : Matrix (Fin n) (Fin n) ℂ} (hX : Formalism.REAL.inG ε X) (t : ℝ) :
     ∃ g : Formalism.REAL.UJ ε, uMat g = NormedSpace.exp (t • X) :=
   ⟨GlobalTheory.GaugeConst.expJ ε ⟨t • X, (GlobalTheory.GaugeConst.lieJ ε).smul_mem t hX⟩, rfl⟩
 
+/- English proof (translation)
+Introduce and unpack `n ε S d E ⟨A, hA, -, hE, rfl⟩`. Simplify using `only [coe_smul_eq]`. Establish `h1 : ∀ X ∈ Submodule.span ℝ (Set.range E), ∀ t : ℝ, ∃ g ∈ {g : Formalism.REAL.UJ ε | uMat g - 1 ∈ A}, uMat g = NormedSpace.exp (t • X)`. Introduce `X hX t`. Take `⟨hXA, hXG⟩` from `(hE X).2 hX`.
+
+Take `⟨g, hg⟩` from `exists_exp hXG t`. Use `⟨g, ?_, hg⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `uMat g - 1 ∈ A`. Rewrite using `[hg]`. Conclude with `exp_sub_one_mem A hA (A.smul_mem t hXA)`.
+
+Use `⟨h1, fun T hT i => mem_of_exp_sub_one_mem T _ fun t => ?_, fun X hX h => (hE X).1 ⟨?_, hX⟩⟩` and prove the remaining obligations. Take `⟨g, hg, hg'⟩` from `h1 (E i) (Submodule.subset_span ⟨i, rfl⟩) t`. Rewrite using `[← hg']`. Conclude with `hT g hg`. Use `mem_of_exp_sub_one_mem A _ fun t => ?_` and prove the remaining obligations.
+
+Take `⟨g, hg⟩` from `exists_exp hX t`. Rewrite using `[← hg]`. Conclude with `h t g hg`.
+-/
 theorem lie_algebra_of_isCut : ∀ (n : ℕ) (ε : Fin n → Bool) (S : Set (Formalism.REAL.UJ ε)) (d : ℕ) (E : Fin d → Matrix (Fin n) (Fin n) ℂ), IsCut ε S E → (∀ X ∈ Submodule.span ℝ (Set.range E), ∀ t : ℝ, ∃ g ∈ S, uMat g = NormedSpace.exp ((t : ℂ) • X)) ∧ (∀ T : Submodule ℝ (Matrix (Fin n) (Fin n) ℂ), (∀ g ∈ S, uMat g - 1 ∈ T) → ∀ i, E i ∈ T) ∧ ∀ X : Matrix (Fin n) (Fin n) ℂ, Formalism.REAL.inG ε X → (∀ (t : ℝ) (g : Formalism.REAL.UJ ε), uMat g = NormedSpace.exp ((t : ℂ) • X) → g ∈ S) → X ∈ Submodule.span ℝ (Set.range E) := by
   rintro n ε S d E ⟨A, hA, -, hE, rfl⟩
   simp only [coe_smul_eq]

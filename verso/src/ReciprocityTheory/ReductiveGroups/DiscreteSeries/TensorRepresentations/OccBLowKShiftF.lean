@@ -20,10 +20,16 @@ def occPsiCoef (dual : Bool) {ε : Fin n → Bool} {Λ : Fin n → ℝ} {T : S7.
     (Ψ : Matrix (Fin n) (Fin n) ℂ → (T.V →L[ℂ] T.V)) (ξ ζ : Fin n → T.V) (g : Matrix (Fin n) (Fin n) ℂ) : ℂ :=
   ∑ c, inner ℂ (ξ c) (∑ d, (cond dual ((g⁻¹) d c) (g c d)) • Ψ g (ζ d))
 
+/- English proof (translation)
+Conclude with `lowWeight_shifted dual ε lam s`.
+-/
 theorem occB_lowK_shiftF (dual : Bool) (ε : Fin n → Bool) (lam : Fin n → ℝ) (s : Fin n) :
     lowK ε (shiftF dual lam s) = cond dual (lowK ε lam - Pi.single s 1) (lowK ε lam + Pi.single s 1) := by
   exact lowWeight_shifted dual ε lam s
 
+/- English proof (translation)
+Conclude with `pieri_standard_embedding dual T T' s hΛ`.
+-/
 theorem occB_pieri (dual : Bool) {ε : Fin n → Bool} {Λ Λ' : Fin n → ℝ} (T : S7.KType ε Λ) (T' : S7.KType ε Λ')
     (s : Fin n) (hΛ : Λ' = cond dual (Λ - Pi.single s 1) (Λ + Pi.single s 1)) :
     ∃ ι₀ : T'.V →ₗ[ℂ] (Fin n → T.V), ι₀ ≠ 0 ∧
@@ -35,6 +41,9 @@ section Psi
 variable {ε : Fin n → Bool} {lam lam' : Fin n → ℝ} {T : S7.KType ε (lowK ε lam)} {T' : S7.KType ε (lowK ε lam')}
   {Ψ : Matrix (Fin n) (Fin n) ℂ → (T.V →L[ℂ] T.V)} {Ψ' : Matrix (Fin n) (Fin n) ℂ → (T'.V →L[ℂ] T'.V)}
 
+/- English proof (translation)
+Conclude with `psi_weighted_memLp hgap hP hv₀ hW v w`.
+-/
 theorem occB_memLp_psi {v₀ : T.V} (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (hv₀ : v₀ ≠ 0)
     (hW : ∀ v ∈ genSub (smE ε (rreg ε)) (datumV ε Ψ v₀), ∀ w ∈ genSub (smE ε (rreg ε)) (datumV ε Ψ v₀),
       MemLp (fun g : Formalism.REAL.UJ ε => ((Real.sqrt (S7.hs (Formalism.MainNotions.S.umat g)) : ℝ) : ℂ) *
@@ -44,6 +53,9 @@ theorem occB_memLp_psi {v₀ : T.V} (hgap : StdGap ε lam) (hP : IsPsiFor ε lam
       inner ℂ w (Ψ (Formalism.MainNotions.S.umat g) v)) 2 (Formalism.REAL.muG ε) := by
   exact psi_weighted_memLp hgap hP hv₀ hW v w
 
+/- English proof (translation)
+Conclude with `psi_pairing_trace_pos dual hP hP' hpos hpos' hWT ι₀ hι₀ hK`.
+-/
 theorem occB_trace_pos (dual : Bool) (hP : IsPsiFor ε lam T Ψ) (hP' : IsPsiFor ε lam' T' Ψ')
     (hpos : ∀ X, inP ε X → (Ψ (NormedSpace.exp X)).IsPositive)
     (hpos' : ∀ X, inP ε X → (Ψ' (NormedSpace.exp X)).IsPositive)
@@ -58,6 +70,9 @@ theorem occB_trace_pos (dual : Bool) (hP : IsPsiFor ε lam T Ψ) (hP' : IsPsiFor
         ∂(Formalism.REAL.muG ε)).re := by
   exact psi_pairing_trace_pos dual hP hP' hpos hpos' hWT ι₀ hι₀ hK
 
+/- English proof (translation)
+Conclude with `psi_pairing_vanishing_spread dual hP hP' hv₀' hWT h0`.
+-/
 theorem occB_spread (dual : Bool) (hP : IsPsiFor ε lam T Ψ) (hP' : IsPsiFor ε lam' T' Ψ') {v₀' : T'.V} (hv₀' : v₀' ≠ 0)
     (hWT : ∀ v w : T.V, MemLp (fun g : Formalism.REAL.UJ ε => ((Real.sqrt (S7.hs (Formalism.MainNotions.S.umat g)) : ℝ) : ℂ) *
       inner ℂ w (Ψ (Formalism.MainNotions.S.umat g) v)) 2 (Formalism.REAL.muG ε))
@@ -69,6 +84,11 @@ theorem occB_spread (dual : Bool) (hP : IsPsiFor ε lam T Ψ) (hP' : IsPsiFor ε
         ∂(Formalism.REAL.muG ε) = 0 := by
   exact psi_pairing_vanishing_spread dual hP hP' hv₀' hWT h0
 
+/- English proof (translation)
+Establish `hΛ : lowK ε lam' = cond dual (lowK ε lam - Pi.single s 1) (lowK ε lam + Pi.single s 1)`. Rewrite using `[hlam']`. Conclude with `occB_lowK_shiftF dual ε lam s`. Take `⟨ι₀, hι₀, hK⟩` from `occB_pieri dual T T' s hΛ`. Assume the negation of the conclusion as `hne`.
+
+Use `push Not at hne`. Establish `hall` using `occB_spread dual hP hP' hv₀' hWT hne`. Establish `hpos0` using `occB_trace_pos dual hP hP' hpos hpos' hWT ι₀ hι₀ hK`. Simplify using `only [hall, Finset.sum_const_zero, Complex.zero_re, lt_self_iff_false] at hpos0`.
+-/
 theorem occB_pairing_ne (dual : Bool) (hP : IsPsiFor ε lam T Ψ) (hP' : IsPsiFor ε lam' T' Ψ') {v₀' : T'.V}
     (hv₀' : v₀' ≠ 0)
     (hpos : ∀ X, inP ε X → (Ψ (NormedSpace.exp X)).IsPositive)

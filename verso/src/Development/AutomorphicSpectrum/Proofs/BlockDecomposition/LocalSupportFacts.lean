@@ -12,6 +12,11 @@ open scoped Classical
 
 namespace GlobalTheory.CompanionTheory.TwistOrbit
 
+/- English proof (translation)
+Take `⟨s, hs⟩` from `compact_covered_by_mul_left_translates hD (show (interior (K' : Set G)).Nonempty from ⟨1, hK'.interior_eq.symm ▸ K'.one_mem⟩)`. Use `(s.finite_toSet.image fun g => DoubleCoset.mk T K' g⁻¹).subset ?_` and prove the remaining obligations. Introduce `q hq`. Take `⟨t, ht, d, hd, hx⟩` from `hP _ hq`. Use `hs hd` as an intermediate fact.
+
+Simplify using `only [Set.mem_iUnion, Set.mem_preimage, SetLike.mem_coe] at this`. Take `⟨g, hg, hgd⟩` from `this`. Use `⟨g, hg, ?_⟩` and prove the remaining obligations. Rewrite using `[← DoubleCoset.out_eq' T K' q, DoubleCoset.eq]`. Conclude with `⟨t, ht, g * d, hgd, by simp [hx, mul_assoc]⟩`.
+-/
 theorem finite_of_subset_mul' {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] (T K' : Subgroup G)
     (hK' : IsOpen (K' : Set G)) (D : Set G) (hD : IsCompact D)
     (P : G → Prop) (hP : ∀ x, P x → ∃ t ∈ T, ∃ d ∈ D, x = t * d) :
@@ -30,6 +35,11 @@ theorem finite_of_subset_mul' {G : Type} [Group G] [TopologicalSpace G] [IsTopol
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
+/- English proof (translation)
+Distinguish the cases in `hs : IsSplitAt w`. Establish `h1 : thL n w = MonoidHom.id _` using `by rw [thL, if_pos hs]`. Simplify using `only [nrmL, if_pos hs, h1, MonoidHom.id_apply]`. Establish `h1 : thL n w = thetaGL n (cj w)` using `by rw [thL, if_neg hs]`. Establish `h2` using `(GlobalTheory.BCT.thL_continuous_involutive E hU n w).2`.
+
+Rewrite `h2` using `[h1]`. Simplify using `only [nrmL, if_neg hs, h1, map_mul, map_inv, h2]`. Use `group`.
+-/
 theorem nrmL_twConj' (hU : Unr E) (n : ℕ) (w : Pl E) (x y : GLw n w) :
     nrmL n w (x⁻¹ * y * thL n w x) = x⁻¹ * nrmL n w y * x := by
   by_cases hs : IsSplitAt w
@@ -41,6 +51,11 @@ theorem nrmL_twConj' (hU : Unr E) (n : ℕ) (w : Pl E) (x y : GLw n w) :
     simp only [nrmL, if_neg hs, h1, map_mul, map_inv, h2]
     group
 
+/- English proof (translation)
+Distinguish the cases in `hs : IsSplitAt w`. Establish `e : nrmL n w = fun u => u` using `funext fun u => by simp [nrmL, hs]`. Rewrite using `[e]`. Conclude with `continuous_id`. Establish `h1 : thL n w = thetaGL n (cj w)` using `by rw [thL, if_neg hs]`.
+
+Establish `hc` using `(GlobalTheory.BCT.thL_continuous_involutive E hU n w).1`. Rewrite `hc` using `[h1]`. Establish `e : nrmL n w = fun u => u * thetaGL n (cj w) u` using `funext fun u => by simp [nrmL, hs]`. Rewrite using `[e]`. Conclude with `continuous_id.mul hc`.
+-/
 theorem continuous_nrmL' (hU : Unr E) (n : ℕ) (w : Pl E) : Continuous (nrmL n w) := by
   by_cases hs : IsSplitAt w
   · have e : nrmL n w = fun u => u := funext fun u => by simp [nrmL, hs]
@@ -51,6 +66,13 @@ theorem continuous_nrmL' (hU : Unr E) (n : ℕ) (w : Pl E) : Continuous (nrmL n 
     have e : nrmL n w = fun u => u * thetaGL n (cj w) u := funext fun u => by simp [nrmL, hs]
     rw [e]; exact continuous_id.mul hc
 
+/- English proof (translation)
+Establish `hθ` using `(GlobalTheory.BCT.thL_continuous_involutive E hU n w).1`. Take `⟨D₁, hD₁, h₁⟩` from `GlobalTheory.T.orbit_compact_mod_centralizer_separable_local E hU n w (nrmL n w y) hy _ (hC.image (continuous_nrmL' hU n w))`. Use `set C₂ := (fun p : GLw n w × GLw n w × GLw n w => p.1 * p.2.1 * (thL n w p.2.2)⁻¹) '' (D₁ ×ˢ C ×ˢ D₁)`. Establish `hC₂ : IsCompact C₂` using `(hD₁.prod (hC.prod hD₁)).image (by fun_prop)`. Take `⟨D₂, hD₂, h₂⟩` from `GlobalTheory.NormOneProper.main E hU n w y hy C₂ hC₂`.
+
+Use `⟨(fun p : GLw n w × GLw n w => p.1 * p.2) '' (D₂ ×ˢ D₁), (hD₂.prod hD₁).image (by fun_prop), ?_⟩` and prove the remaining obligations. Introduce `x hx`. Take `⟨z, hz, d, hd, rfl⟩` from `h₁ x ⟨_, hx, by rw [nrmL_twConj' hU]⟩`. Establish `hz2 : z⁻¹ * y * thL n w z ∈ C₂` using `⟨(d, (z * d)⁻¹ * y * thL n w (z * d), d), ⟨hd, hx, hd⟩, by`. Simplify using `only [map_mul]`.
+
+Use the proof step `group⟩`. Take `⟨t, ht, d₂, hd₂, rfl⟩` from `h₂ z hz hz2`. Conclude with `⟨t, ht, d₂ * d, ⟨(d₂, d), ⟨hd₂, hd⟩, rfl⟩, by group⟩`.
+-/
 theorem proper' (hU : Unr E) (n : ℕ) (w : Pl E) (y : GLw n w) (hy : (nrmL n w y).val.charpoly.Separable)
     (C : Set (GLw n w)) (hC : IsCompact C) : ∃ D : Set (GLw n w), IsCompact D ∧
       ∀ x : GLw n w, x⁻¹ * y * thL n w x ∈ C → ∃ t ∈ twCent (thL n w) y, ∃ d ∈ D, x = t * d := by
@@ -67,12 +89,18 @@ theorem proper' (hU : Unr E) (n : ℕ) (w : Pl E) (y : GLw n w) (hy : (nrmL n w 
   obtain ⟨t, ht, d₂, hd₂, rfl⟩ := h₂ z hz hz2
   exact ⟨t, ht, d₂ * d, ⟨(d₂, d), ⟨hd₂, hd⟩, rfl⟩, by group⟩
 
+/- English proof (translation)
+Establish `h1` using `(GlobalTheory.BCT.thL_continuous_involutive E hU a w).1`. Establish `h2` using `(GlobalTheory.BCT.thL_continuous_involutive E hU b w).1`. Conclude with `(h1.comp continuous_fst).prodMk (h2.comp continuous_snd)`.
+-/
 theorem continuous_thPair (hU : Unr E) (a b : ℕ) (w : Pl E) :
     Continuous ((thL a w).prodMap (thL b w)) := by
   have h1 := (GlobalTheory.BCT.thL_continuous_involutive E hU a w).1
   have h2 := (GlobalTheory.BCT.thL_continuous_involutive E hU b w).1
   exact (h1.comp continuous_fst).prodMk (h2.comp continuous_snd)
 
+/- English proof (translation)
+Take `⟨o₁, c₁⟩` from `GlobalTheory.LFun.SatCompare.isOpen_isCompact_KGL w a`. Take `⟨o₂, c₂⟩` from `GlobalTheory.LFun.SatCompare.isOpen_isCompact_KGL w b`. Rewrite using `[K2, Subgroup.coe_prod]`. Conclude with `⟨o₁.prod o₂, c₁.prod c₂⟩`.
+-/
 theorem isOpen_isCompact_pair_integral_points (a b : ℕ) (w : Pl E) :
     IsOpen (K2 a b w : Set (GLw a w × GLw b w)) ∧ IsCompact (K2 a b w : Set (GLw a w × GLw b w)) := by
   obtain ⟨o₁, c₁⟩ := GlobalTheory.LFun.SatCompare.isOpen_isCompact_KGL w a
@@ -80,6 +108,11 @@ theorem isOpen_isCompact_pair_integral_points (a b : ℕ) (w : Pl E) :
   rw [K2, Subgroup.coe_prod]
   exact ⟨o₁.prod o₂, c₁.prod c₂⟩
 
+/- English proof (translation)
+Take `⟨D₁, hD₁, p₁⟩` from `proper' hU a w y.1 h₁ _ (hC.image continuous_fst)`. Take `⟨D₂, hD₂, p₂⟩` from `proper' hU b w y.2 h₂ _ (hC.image continuous_snd)`. Use `⟨D₁ ×ˢ D₂, hD₁.prod hD₂, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨t₁, ht₁, d₁, hd₁, e₁⟩` from `p₁ x.1 ⟨_, hx, rfl⟩`. Take `⟨t₂, ht₂, d₂, hd₂, e₂⟩` from `p₂ x.2 ⟨_, hx, rfl⟩`.
+
+Use `⟨(t₁, t₂), ?_, (d₁, d₂), ⟨hd₁, hd₂⟩, Prod.ext e₁ e₂⟩` and prove the remaining obligations. Conclude with `Prod.ext ht₁ ht₂`.
+-/
 theorem proper_pair (hU : Unr E) (a b : ℕ) (w : Pl E) (y : GLw a w × GLw b w)
     (h₁ : (nrmL a w y.1).val.charpoly.Separable) (h₂ : (nrmL b w y.2).val.charpoly.Separable)
     (C : Set (GLw a w × GLw b w)) (hC : IsCompact C) :
@@ -94,6 +127,11 @@ theorem proper_pair (hU : Unr E) (a b : ℕ) (w : Pl E) (y : GLw a w × GLw b w)
   refine ⟨(t₁, t₂), ?_, (d₁, d₂), ⟨hd₁, hd₂⟩, Prod.ext e₁ e₂⟩
   exact Prod.ext ht₁ ht₂
 
+/- English proof (translation)
+Take `⟨hKo, hKc⟩` from `isOpen_isCompact_pair_integral_points (E := E) a b w`. Take `⟨D, hD, hp⟩` from `proper_pair hU a b w y h₁ h₂ C hC`. Establish `hD' : IsCompact ((fun p : (GLw a w × GLw b w) × (GLw a w × GLw b w) => p.1 * p.2⁻¹) '' (D ×ˢ (K2 a b w : Set (GLw a w × GLw b w))))` using `(hD.prod hKc).image (continuous_fst.mul continuous_snd.inv)`. Use `finite_of_subset_mul' _ (K2 a b w) hKo _ hD' (fun x => ∃ k ∈ K2 a b w, (x * k)⁻¹ * y * ((thL a w).prodMap (thL b w)) (x * k) ∈ C) ?_` and prove the remaining obligations. Introduce and unpack `x ⟨k, hk, hx⟩`.
+
+Take `⟨t, ht, d, hd, e⟩` from `hp _ hx`. Use `⟨t, ht, d * k⁻¹, ⟨(d, k), ⟨hd, hk⟩, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← mul_assoc, ← e, mul_inv_cancel_right]`.
+-/
 theorem finite_doubleCosets (hU : Unr E) (a b : ℕ) (w : Pl E) (y : GLw a w × GLw b w)
     (h₁ : (nrmL a w y.1).val.charpoly.Separable) (h₂ : (nrmL b w y.2).val.charpoly.Separable)
     (C : Set (GLw a w × GLw b w)) (hC : IsCompact C) :
@@ -112,6 +150,17 @@ theorem finite_doubleCosets (hU : Unr E) (a b : ℕ) (w : Pl E) (y : GLw a w × 
   refine ⟨t, ht, d * k⁻¹, ⟨(d, k), ⟨hd, hk⟩, rfl⟩, ?_⟩
   rw [← mul_assoc, ← e, mul_inv_cancel_right]
 
+/- English proof (translation)
+Take `⟨-, hKc⟩` from `isOpen_isCompact_pair_integral_points (E := E) a b w`. Establish `hθ` using `continuous_thPair hU a b w`. Use `set θ := (thL a w).prodMap (thL b w) with hθdef`. Use `set W : Subgroup (GLw a w × GLw b w) := K' ⊓ K'.comap θ with hW`. Establish `hWo : IsOpen (W : Set (GLw a w × GLw b w))`.
+
+Rewrite using `[hW, Subgroup.coe_inf]`. Conclude with `ho.inter (ho.preimage hθ)`. Use `haveI : CompactSpace (K2 a b w) := isCompact_iff_compactSpace.mp hKc`. Establish `hWo' : IsOpen ((W.subgroupOf (K2 a b w) : Subgroup (K2 a b w)) : Set (K2 a b w))` using `hWo.preimage continuous_subtype_val`. Use `haveI := Subgroup.quotient_finite_of_isOpen _ hWo'`.
+
+Use `haveI : (W.subgroupOf (K2 a b w)).FiniteIndex := ⟨Subgroup.index_ne_zero_of_finite⟩`. Establish `hle : W.subgroupOf (K2 a b w) ≤ rStab fun k : K2 a b w => f (((x * k : K2 a b w) : GLw a w × GLw b w)⁻¹ * y * θ ((x : GLw a w × GLw b w) * k))`. Introduce `k' hk' k`. Establish `hk'W : (k' : GLw a w × GLw b w) ∈ W` using `Subgroup.mem_subgroupOf.mp hk'`. Establish `hl : (k' : GLw a w × GLw b w)⁻¹ ∈ K'` using `K'.inv_mem hk'W.1`.
+
+Establish `hr : θ (k' : GLw a w × GLw b w) ∈ K'` using `hk'W.2`. Establish `e : (((x * (k * k') : K2 a b w) : GLw a w × GLw b w)⁻¹ * y * θ ((x : GLw a w × GLw b w) * (k * k' : K2 a b w))) = (k' : GLw a w × GLw b w)⁻¹ * ((((x * k : K2 a b w) : GLw a w × GLw b w)⁻¹ * y * θ ((x : GLw a w × GLw b w) * k)) * θ (k' : GLw a w × GLw b w))`. Simplify using `only [Subgroup.coe_mul, map_mul, _root_.mul_inv_rev, mul_assoc]`. Use `show f _ = f _`. Rewrite using `[e, (hf.2 _ hl _).1, (hf.2 _ hr _).2]`.
+
+Conclude with `(Subgroup.finiteIndex_of_le hle).index_ne_zero`.
+-/
 theorem rStab_index_ne_zero (hU : Unr E) (a b : ℕ) (w : Pl E) (y : GLw a w × GLw b w)
     (K' : Subgroup (GLw a w × GLw b w)) (f : GLw a w × GLw b w → ℂ) (ho : IsOpen (K' : Set (GLw a w × GLw b w)))
     (hf : IsHecke K' f) (x : K2 a b w) :
@@ -143,6 +192,9 @@ theorem rStab_index_ne_zero (hU : Unr E) (a b : ℕ) (w : Pl E) (y : GLw a w × 
     rw [e, (hf.2 _ hl _).1, (hf.2 _ hr _).2]
   exact (Subgroup.finiteIndex_of_le hle).index_ne_zero
 
+/- English proof (translation)
+Introduce `E _ _ _ hU a b w y h₁ h₂`. Conclude with `⟨fun C hC => finite_doubleCosets hU a b w y h₁ h₂ C hC, fun K' f ho _ hf x => rStab_index_ne_zero hU a b w y K' f ho hf x⟩`.
+-/
 theorem locSupp : PositivityTheory.Rg.BcB.G8.Fin.LocSupp := by
   intro E _ _ _ hU a b w y h₁ h₂
   exact ⟨fun C hC => finite_doubleCosets hU a b w y h₁ h₂ C hC,

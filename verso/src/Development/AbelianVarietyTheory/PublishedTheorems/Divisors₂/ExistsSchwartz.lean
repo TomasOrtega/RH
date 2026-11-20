@@ -18,6 +18,19 @@ namespace GlobalTheory.Published.ThetaConvModel
 
 variable {D : D7}
 
+/- English proof (translation)
+Set `b : ContDiffBump (0 : D.what₂.Tau → Fin m → Fin n → ℂ)` to `⟨1, 2, one_pos, one_lt_two⟩`. Establish `hb1 : HasCompactSupport fun x => ((b x : ℝ) : ℂ)` using `b.hasCompactSupport.comp_left (g := fun r : ℝ => (r : ℂ)) (by simp)`. Establish `hb2 : ContDiff ℝ (⊤ : ℕ∞) fun x => ((b x : ℝ) : ℂ)` using `Complex.ofRealCLM.contDiff.comp b.contDiff`. Set `f : SchwartzMap (D.what₂.Tau → Fin m → Fin n → ℂ) ℂ` to `hb1.toSchwartzMap hb2`. Establish `hf : f 0 = 1` using `by show ((b 0 : ℝ) : ℂ) = 1`.
+
+Rewrite using `[b.one_of_mem_closedBall (Metric.mem_closedBall_self zero_le_one)]`. Simplify using the standard rewrite rules. Set `W : AddSubgroup (Matrix (Fin m) (Fin n) (Af D.host.F ⊗[D.host.F] D.host.E))` to `{ carrier := {a | ∀ i j, a i j ∈ Formalism.L2.Theta.intAE D} add_mem' := fun ha hb i j => (Formalism.L2.Theta.intAE D).add_mem (ha i j) (hb i j) zero_mem' := fun _ _ => (Formalism.L2.Theta.intAE D).zero_mem neg_mem' := fun ha i j => (Formalism.L2.Theta.intAE D).neg_mem (ha i j) }`. Establish `hWe : (W : Set (Matrix (Fin m) (Fin n) (Af D.host.F ⊗[D.host.F] D.host.E))) = ⋂ i, ⋂ j, (fun a : Matrix (Fin m) (Fin n) (Af D.host.F ⊗[D.host.F] D.host.E) => a i j) ⁻¹' (Formalism.L2.Theta.intAE D : Set (Af D.host.F ⊗[D.host.F] D.host.E))`. Use extensionality with `a`.
+
+Simplify using `only [Set.mem_iInter, Set.mem_preimage, SetLike.mem_coe]`. Both sides reduce to the same expression. Establish `hWo : IsOpen (W : Set (Matrix (Fin m) (Fin n) (Af D.host.F ⊗[D.host.F] D.host.E)))`. Rewrite using `[hWe]`. Conclude with `isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j => (GlobalTheory.SchwartzBruhatTensor.isOpen_intAE D).preimage ((continuous_apply j).comp (continuous_apply i))`.
+
+Establish `hWc : IsCompact (W : Set (Matrix (Fin m) (Fin n) (Af D.host.F ⊗[D.host.F] D.host.E)))` using `isCompact_pi_infinite fun _ => isCompact_pi_infinite fun _ => GlobalTheory.SchwartzBruhatTensor.isCompact_intAE D`. Set `g : (Fin m → Fin n → Af D.host.F ⊗[D.host.F] D.host.E) → ℂ` to `fun a => if (QuotientAddGroup.mk (show Matrix (Fin m) (Fin n) _ from a) : _ ⧸ W) = 0 then (1 : ℂ) else 0`. Establish `hg : g ∈ GlobalTheory.WeilM.SB (Fin m → Fin n → Af D.host.F ⊗[D.host.F] D.host.E)` using `GlobalTheory.SchwartzBruhatTensor.coset_mem_SB W hWo hWc 0`. Set `φ : Mx D m n → ℂ` to `fun x => f (fun τ i j => compAt θ τ x i j) * g (fun i j => finPart D (x i j))`. Establish `hφ : φ ∈ schwartzA θ m n` using `Submodule.subset_span ⟨f, g, hg, rfl⟩`.
+
+Use `⟨⟨φ, hφ⟩, ?_⟩` and prove the remaining obligations. Use `show f _ * g _ ≠ 0`. Establish `e : (fun τ i j => compAt θ τ (0 : Mx D m n) i j : D.what₂.Tau → Fin m → Fin n → ℂ) = 0`. Use extensionality with `τ i j`. Simplify using `[compAt]`.
+
+Rewrite using `[e, hf]`. Simplify using `[g]`. Conclude with `(QuotientAddGroup.eq_zero_iff (N := W) (0 : Matrix (Fin m) (Fin n) _)).2 W.zero_mem`.
+-/
 theorem exists_schwartz (θ : InfFam D) (m n : ℕ) : ∃ Φ : schwartzA θ m n, Φ.1 0 ≠ 0 := by
   classical
   let b : ContDiffBump (0 : D.what₂.Tau → Fin m → Fin n → ℂ) := ⟨1, 2, one_pos, one_lt_two⟩
@@ -59,6 +72,11 @@ theorem exists_schwartz (θ : InfFam D) (m n : ℕ) : ∃ Φ : schwartzA θ m n,
   simp [g]
   exact (QuotientAddGroup.eq_zero_iff (N := W) (0 : Matrix (Fin m) (Fin n) _)).2 W.zero_mem
 
+/- English proof (translation)
+Rewrite using `[← lintegral_const]`. Use `lintegral_mono fun q => ?_` and prove the remaining obligations. Establish `h` using `ENNReal.le_tsum (f := fun ξ : Matrix (Fin V.rank) (Fin n) D.host.E => ‖φ (invPt V q.out ξ)‖ₑ) 0`. Establish `e : invPt V q.out (0 : Matrix (Fin V.rank) (Fin n) D.host.E) = 0`. Simplify using `[invPt]`.
+
+Rewrite `h` using `[e]`. Conclude with `h`.
+-/
 theorem le_absThetaInt (V : HSp D) (ν : Measure (GA D V)) {n : ℕ} (φ : Mx D V.rank n → ℂ) :
     ‖φ 0‖ₑ * autMeasure V ν Set.univ ≤ absThetaInt V ν φ := by
   rw [← lintegral_const]
@@ -69,10 +87,16 @@ theorem le_absThetaInt (V : HSp D) (ν : Measure (GA D V)) {n : ℕ} (φ : Mx D 
   rw [e] at h
   exact h
 
+/- English proof (translation)
+The claim follows from `lt_of_lt_of_le (ENNReal.mul_pos (by simpa using h) (NeZero.ne _)) (le_absThetaInt V ν φ)`.
+-/
 theorem absThetaInt_pos (V : HSp D) (ν : Measure (GA D V)) [ν.IsHaarMeasure] {n : ℕ} (φ : Mx D V.rank n → ℂ)
     (h : φ 0 ≠ 0) : 0 < absThetaInt V ν φ :=
   lt_of_lt_of_le (ENNReal.mul_pos (by simpa using h) (NeZero.ne _)) (le_absThetaInt V ν φ)
 
+/- English proof (translation)
+Use `haveI : Infinite (Matrix (Fin V.rank) (Fin n) D.host.E) := Infinite.of_surjective (fun x => x ⟨0, hV⟩ ⟨0, hn⟩) fun a => ⟨fun _ _ => a, rfl⟩`. Establish `h3 : descend (GQ V) (absTheta V (fun _ : Mx D V.rank n => (1 : ℂ))) = fun _ => ⊤` using `funext fun q => by`. Rewrite using `[AutomorphicL2Unitary.descend, absTheta]`. Simplify using the standard rewrite rules. Rewrite using `[absThetaInt, h3, lintegral_const, ENNReal.top_mul (NeZero.ne _)]`.
+-/
 theorem absThetaInt_one (V : HSp D) (hV : 1 ≤ V.rank) (ν : Measure (GA D V)) [ν.IsHaarMeasure] {n : ℕ} (hn : 1 ≤ n) :
     absThetaInt V ν (fun _ : Mx D V.rank n => (1 : ℂ)) = ⊤ := by
   haveI : Infinite (Matrix (Fin V.rank) (Fin n) D.host.E) :=
@@ -82,6 +106,11 @@ theorem absThetaInt_one (V : HSp D) (hV : 1 ≤ V.rank) (ν : Measure (GA D V)) 
     simp
   rw [absThetaInt, h3, lintegral_const, ENNReal.top_mul (NeZero.ne _)]
 
+/- English proof (translation)
+Establish `: IsEmpty (Fin V.rank)` using `by rw [hV]; infer_instance`. Establish `h3 : descend (GQ V) (absTheta V φ) = fun _ => ‖φ 0‖ₑ` using `funext fun q => by`. Establish `hs : Subsingleton (Matrix (Fin V.rank) (Fin n) D.host.E)` using `⟨fun x y => Matrix.ext fun i => isEmptyElim i⟩`. Rewrite using `[AutomorphicL2Unitary.descend, absTheta, tsum_eq_single 0 fun b hb => (hb (Subsingleton.elim _ _)).elim]`. Conclude with `congrArg (fun z => ‖φ z‖ₑ) (Matrix.ext fun i => isEmptyElim i)`.
+
+Rewrite using `[absThetaInt, h3, lintegral_const]`. Conclude with `ENNReal.mul_lt_top enorm_lt_top (measure_lt_top _ _)`.
+-/
 theorem rank_zero (V : HSp D) (hV : V.rank = 0) (ν : Measure (GA D V)) [ν.IsHaarMeasure] {n : ℕ} (φ : Mx D V.rank n → ℂ) :
     absThetaInt V ν φ < ⊤ := by
   have : IsEmpty (Fin V.rank) := by rw [hV]; infer_instance
@@ -92,6 +121,9 @@ theorem rank_zero (V : HSp D) (hV : V.rank = 0) (ν : Measure (GA D V)) [ν.IsHa
   rw [absThetaInt, h3, lintegral_const]
   exact ENNReal.mul_lt_top enorm_lt_top (measure_lt_top _ _)
 
+/- English proof (translation)
+Take `⟨θ, hθ⟩` from `GlobalTheory.AdelicU.exists_isInfFam D`. Take `⟨Φ, hΦ⟩` from `exists_schwartz θ (pos D 1).rank n`. Take `⟨Ψ, hΨ⟩` from `exists_schwartz θ (dblSp (pos D 2)).rank 1`. Use `⟨⟨θ, Φ, hθ, absThetaInt_pos _ _ _ hΦ, H D n _ hn (.inl (wittIdx_pos 1)) θ hθ _ inferInstance Φ⟩, ⟨θ, Ψ, hθ, wittIdx_dblSp _, absThetaInt_pos _ _ _ hΨ, H D 1 _ le_rfl (.inr ?_) θ hθ _ inferInstance Ψ⟩⟩` and prove the remaining obligations. Rewrite using `[wittIdx_dblSp]; exact show 1 + 2 < 2 + 2 by decide`.
+-/
 theorem instances (H : GlobalTheory.Published.WeilThetaConvergence) (D : D7) (n : ℕ) (hn : 1 ≤ n) :
     (∃ (θ : InfFam D) (Φ : schwartzA θ (pos D 1).rank n), IsInfFam θ ∧
       0 < absThetaInt (pos D 1) Measure.haar Φ.1 ∧ absThetaInt (pos D 1) Measure.haar Φ.1 < ⊤) ∧
@@ -104,6 +136,9 @@ theorem instances (H : GlobalTheory.Published.WeilThetaConvergence) (D : D7) (n 
     ⟨θ, Ψ, hθ, wittIdx_dblSp _, absThetaInt_pos _ _ _ hΨ, H D 1 _ le_rfl (.inr ?_) θ hθ _ inferInstance Ψ⟩⟩
   rw [wittIdx_dblSp]; exact show 1 + 2 < 2 + 2 by decide
 
+/- English proof (translation)
+Rewrite using `[wittIdx_dblSp]`. Use `show ¬ (k = 0 ∨ n + k < k + k)`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem split_excluded (D : D7) (k n : ℕ) (hk : 1 ≤ k) (h : k ≤ n) : ¬ (Formalism.MainNotions.SchurIrreducible.wittIdx (dblSp (pos D k)) = 0 ∨
     n + Formalism.MainNotions.SchurIrreducible.wittIdx (dblSp (pos D k)) < (dblSp (pos D k)).rank) := by
   rw [wittIdx_dblSp]

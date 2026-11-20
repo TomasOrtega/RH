@@ -11,6 +11,19 @@ namespace CMRootsOfUnity
 
 variable {q : Fin 3 → ℕ}
 
+/- English proof (translation)
+Rewrite using `[← Int.cast_prod, ← Int.cast_mul, Rat.isSquare_intCast_iff]`. Introduce and unpack `⟨r, hr⟩`. Break down `S.eq_empty_or_nonempty with rfl | ⟨i0, hi0⟩` into its components or cases. Break down `hS with ⟨x, hx⟩ | hd` into its components or cases. Simplify using `at hx`.
+
+Simplify using `only [Finset.prod_empty, mul_one] at hr`. Use polynomial arithmetic with `[mul_self_nonneg r]`. Establish `hp : Prime (q i0 : ℤ)` using `Nat.prime_iff_prime_int.mp (hq.1 i0).1`. Establish `hprod : d * ∏ i ∈ S, -(q i : ℤ) = -(q i0 : ℤ) * (d * ∏ i ∈ S.erase i0, -(q i : ℤ))`. Rewrite using `[← Finset.mul_prod_erase S (fun i => -(q i : ℤ)) hi0]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hpr : (q i0 : ℤ) ∣ r`. Apply `hp.dvd_of_dvd_pow (n := 2)` to reduce the goal to its premises. Rewrite using `[sq, ← hr, hprod]`. Conclude with `Dvd.dvd.mul_right (dvd_neg.mpr dvd_rfl) _`.
+
+Take `⟨t, rfl⟩` from `hpr`. Establish `h0 : (q i0 : ℤ) ≠ 0` using `by exact_mod_cast (hq.1 i0).1.ne_zero`. Establish `hrest : (q i0 : ℤ) ∣ d * ∏ i ∈ S.erase i0, -(q i : ℤ)`. Use `⟨-(t * t), ?_⟩` and prove the remaining obligations. Rewrite `hr` using `[hprod]`.
+
+Apply `mul_left_cancel₀ h0` to reduce the goal to its premises. Take the linear combination `-hr`. Break down `hp.dvd_or_dvd hrest with h | h` into its components or cases. Conclude with `hdq i0 h`. Take `⟨i, hi, hdiv⟩` from `(hp.dvd_finsetProd_iff _).mp h`.
+
+Rewrite `hdiv` using `[dvd_neg, Int.natCast_dvd_natCast, Nat.prime_dvd_prime_iff_eq (hq.1 i0).1 (hq.1 i).1]`. Conclude with `(Finset.ne_of_mem_erase hi) (hq.2 hdiv).symm`.
+-/
 lemma not_sq_d (hq : Hyp3 q) (d : ℤ) (S : Finset (Fin 3)) (hS : S.Nonempty ∨ d < 0)
     (hdq : ∀ i, ¬ (q i : ℤ) ∣ d) :
     ¬ IsSquare ((d : ℚ) * ∏ i ∈ S, (((-(q i : ℤ)) : ℤ) : ℚ)) := by
@@ -44,6 +57,9 @@ lemma not_sq_d (hq : Hyp3 q) (d : ℤ) (S : Finset (Fin 3)) (hS : S.Nonempty ∨
         Nat.prime_dvd_prime_iff_eq (hq.1 i0).1 (hq.1 i).1] at hdiv
       exact (Finset.ne_of_mem_erase hi) (hq.2 hdiv).symm
 
+/- English proof (translation)
+Introduce `h`. Establish `h1 : q i ∣ 1` using `by exact_mod_cast h`. Conclude with `(hq.1 i).1.one_lt.ne' (Nat.dvd_one.1 h1)`.
+-/
 lemma not_dvd_one (hq : Hyp3 q) (i : Fin 3) : ¬ (q i : ℤ) ∣ 1 := by
   intro h
   have h1 : q i ∣ 1 := by exact_mod_cast h
@@ -51,6 +67,11 @@ lemma not_dvd_one (hq : Hyp3 q) (i : Fin 3) : ¬ (q i : ℤ) ∣ 1 := by
 
 variable {E : Type} [Field E] [NumberField E] {α : Fin 3 → E}
 
+/- English proof (translation)
+Introduce `h`. Establish `hns : ∀ S : Finset (Fin 3), S.Nonempty → ¬ IsSquare (∏ i ∈ S, (((-(q i : ℤ)) : ℤ) : ℚ))`. Introduce `S hS`. Use `not_sq_d hq 1 S (Or.inl hS) (fun i => by simpa using not_dvd_one hq i)` as an intermediate fact. Simplify using `using this`.
+
+Take `⟨_, _, hsq⟩` from `hK 3 E (fun i => -(q i : ℤ)) α hα hns`. Establish `h' : IsSquare (algebraMap ℚ E (d : ℚ))` using `by simpa using h`. Take `⟨S, hS⟩` from `(hsq d).1 h'`. Conclude with `not_sq_d hq d S (Or.inr hd) hdq hS`.
+-/
 lemma not_sq_in_E (hK : MQKummer) (hq : Hyp3 q) (hα : IsHost q α) (d : ℤ) (hd : d < 0)
     (hdq : ∀ i, ¬ (q i : ℤ) ∣ d) : ¬ IsSquare (d : E) := by
   intro h
@@ -64,6 +85,11 @@ lemma not_sq_in_E (hK : MQKummer) (hq : Hyp3 q) (hα : IsHost q α) (d : ℤ) (h
   obtain ⟨S, hS⟩ := (hsq d).1 h'
   exact not_sq_d hq d S (Or.inr hd) hdq hS
 
+/- English proof (translation)
+Take `⟨_, _, hbij, hmul⟩` from `hH q hq E α hα`. Apply `hbij.1` to reduce the goal to its premises. Rewrite using `[hmul]`. Use function extensionality and compare the values at `i`. Establish `h1 : galSign α (1 : Gal(E/ℚ)) i = 1` using `by simp [galSign]`.
+
+Rewrite using `[Pi.mul_apply, h1, Int.units_mul_self]`.
+-/
 lemma gal_sq (hH : HostGalois) (hq : Hyp3 q) (hα : IsHost q α) (σ : Gal(E/ℚ)) :
     σ * σ = 1 := by
   obtain ⟨_, _, hbij, hmul⟩ := hH q hq E α hα
@@ -73,6 +99,15 @@ lemma gal_sq (hH : HostGalois) (hq : Hyp3 q) (hα : IsHost q α) (σ : Gal(E/ℚ
   have h1 : galSign α (1 : Gal(E/ℚ)) i = 1 := by simp [galSign]
   rw [Pi.mul_apply, h1, Int.units_mul_self]
 
+/- English proof (translation)
+Take `⟨hGal, _, _, _⟩` from `hH q hq E α hα`. Use `hGal` as an intermediate fact. Establish `hpos` using `hp.pos`. Establish `hcop : Nat.Coprime 2 p` using `(Nat.coprime_primes Nat.prime_two hp).2 (Ne.symm hp2)`. Establish `hη2 : IsPrimitiveRoot (η ^ 2) p` using `hη.pow_of_coprime 2 hcop`.
+
+Establish `hmin : minpoly ℚ (η ^ 2) = minpoly ℚ η`. Rewrite using `[← cyclotomic_eq_minpoly_rat hη hpos, ← cyclotomic_eq_minpoly_rat hη2 hpos]`. Take `⟨σ, hσ⟩` from `(Normal.minpoly_eq_iff_mem_orbit (F := ℚ) (E := E)).1 hmin`. Establish `hσ' : σ η = η ^ 2` using `hσ`. Establish `hsq` using `gal_sq hH hq hα σ`.
+
+Establish `h4 : η = η ^ 4`. Combine the equalities or inequalities in the displayed calculation. Use `_ = σ (σ η) := rfl`. Use `_ = η ^ 4 := by rw [hσ', map_pow, hσ', ← pow_mul]`. Establish `h3 : η ^ 3 = 1`.
+
+Establish `hne : η ≠ 0` using `hη.ne_zero hp.ne_zero`. Apply `mul_left_cancel₀ hne` to reduce the goal to its premises. Take the linear combination `-h4`. Establish `h5` using `(hη.pow_eq_one_iff_dvd 3).1 h3`. Conclude with `hp3 ((Nat.prime_dvd_prime_iff_eq hp Nat.prime_three).1 h5)`.
+-/
 lemma no_prime_root (hH : HostGalois) (hq : Hyp3 q) (hα : IsHost q α) (p : ℕ) (hp : p.Prime)
     (hp2 : p ≠ 2) (hp3 : p ≠ 3) (η : E) (hη : IsPrimitiveRoot η p) : False := by
   obtain ⟨hGal, _, _, _⟩ := hH q hq E α hα
@@ -96,6 +131,9 @@ lemma no_prime_root (hH : HostGalois) (hq : Hyp3 q) (hα : IsHost q α) (p : ℕ
   have h5 := (hη.pow_eq_one_iff_dvd 3).1 h3
   exact hp3 ((Nat.prime_dvd_prime_iff_eq hp Nat.prime_three).1 h5)
 
+/- English proof (translation)
+Establish `h2 : IsPrimitiveRoot (η ^ 2) 2` using `hη.pow (by norm_num) (by norm_num)`. Establish `h` using `h2.eq_neg_one_of_two_right`. Use `not_sq_in_E hK hq hα (-1) (by norm_num) (fun i hi => not_dvd_one hq i ?_) ⟨η, by push_cast; linear_combination -h⟩` and prove the remaining obligations. Conclude with `dvd_neg.1 hi`.
+-/
 lemma no_four (hK : MQKummer) (hq : Hyp3 q) (hα : IsHost q α) (η : E)
     (hη : IsPrimitiveRoot η 4) : False := by
   have h2 : IsPrimitiveRoot (η ^ 2) 2 := hη.pow (by norm_num) (by norm_num)
@@ -104,6 +142,13 @@ lemma no_four (hK : MQKummer) (hq : Hyp3 q) (hα : IsHost q α) (η : E)
     ⟨η, by push_cast; linear_combination -h⟩
   exact dvd_neg.1 hi
 
+/- English proof (translation)
+Establish `h3 : ω ^ 3 = 1` using `hω.pow_eq_one`. Establish `h1 : ω ≠ 1` using `hω.ne_one (by norm_num)`. Establish `hs : ω ^ 2 + ω + 1 = 0`. Establish `: (ω - 1) * (ω ^ 2 + ω + 1) = 0` using `by linear_combination h3`. Break down `mul_eq_zero.1 this with h | h` into its components or cases.
+
+Conclude with `absurd (sub_eq_zero.1 h) h1`. Conclude with `h`. Use `not_sq_in_E hK hq hα (-3) (by norm_num) (fun i hi => ?_) ⟨2 * ω + 1, by push_cast; linear_combination (-4) * hs⟩` and prove the remaining obligations. Establish `h3' : q i ∣ 3`. Use `dvd_neg.1 hi` as an intermediate fact.
+
+Conclude with `this` after adjusting the coercions. Conclude with `hq3 i ((Nat.prime_dvd_prime_iff_eq (hq.1 i).1 Nat.prime_three).1 h3')`.
+-/
 lemma no_three (hK : MQKummer) (hq : Hyp3 q) (hq3 : ∀ i, q i ≠ 3) (hα : IsHost q α) (ω : E)
     (hω : IsPrimitiveRoot ω 3) : False := by
   have h3 : ω ^ 3 = 1 := hω.pow_eq_one
@@ -124,6 +169,21 @@ end CMRootsOfUnity
 
 open CMRootsOfUnity
 
+/- English proof (translation)
+Introduce `q hq hq3 E _ _ α hα ζ ⟨n, hn, hζn⟩`. Establish `hfin : IsOfFinOrder ζ` using `isOfFinOrder_iff_pow_eq_one.2 ⟨n, hn, hζn⟩`. Establish `hmpos : 0 < orderOf ζ` using `orderOf_pos_iff.2 hfin`. Establish `hprim : IsPrimitiveRoot ζ (orderOf ζ)` using `IsPrimitiveRoot.orderOf ζ`. Establish `hodd : ∀ {p : ℕ}, p.Prime → p ∣ orderOf ζ → p = 2`.
+
+Introduce `p hp hpm`. Take `⟨k, hk⟩` from `hpm`. Establish `hη : IsPrimitiveRoot (ζ ^ k) p` using `hprim.pow hmpos (by rw [hk, mul_comm])`. Assume the negation of the conclusion as `hp2`. Distinguish the cases in `hp3 : p = 3`.
+
+Substitute `hp3` using the available equality. Conclude with `no_three hK hq hq3 hα (ζ ^ k) hη`. Conclude with `no_prime_root hH hq hα p hp hp2 hp3 (ζ ^ k) hη`. Establish `h4 : ¬ 4 ∣ orderOf ζ`. Introduce and unpack `⟨k, hk⟩`.
+
+Conclude with `no_four hK hq hα (ζ ^ k) (hprim.pow hmpos (by rw [hk, mul_comm]))`. Establish `hm2 : orderOf ζ ∣ 2`. Establish `hpow` using `Nat.eq_prime_pow_of_unique_prime_dvd hmpos.ne' hodd`. Rewrite `h4`, the goal using `[hpow]`. Break down `h : (orderOf ζ).primeFactorsList.length with _ | _ | a` into its components or cases.
+
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. It suffices to derive a contradiction. Rewrite `h4` using `[h]`. Conclude with `h4 (by`.
+
+Establish `: (4 : ℕ) = 2 ^ 2` using `by norm_num`. Rewrite using `[this]`. Conclude with `pow_dvd_pow 2 (by omega))`. Establish `hζ2 : ζ * ζ = 1`. Rewrite using `[← sq]`.
+
+Conclude with `(hprim.pow_eq_one_iff_dvd 2).2 hm2`. Conclude with `mul_self_eq_one_iff.1 hζ2`.
+-/
 theorem hostMu_of (hK : MQKummer) (hH : HostGalois) : HostMu := by
   intro q hq hq3 E _ _ α hα ζ ⟨n, hn, hζn⟩
   have hfin : IsOfFinOrder ζ := isOfFinOrder_iff_pow_eq_one.2 ⟨n, hn, hζn⟩

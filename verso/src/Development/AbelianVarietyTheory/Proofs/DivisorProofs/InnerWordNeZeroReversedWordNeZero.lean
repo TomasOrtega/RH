@@ -11,20 +11,36 @@ open scoped InnerProductSpace
 
 namespace GlobalTheory.SignInnerAdjoint
 
+/- English proof (translation)
+Apply the tactic sequence `unfold Formalism.REAL.sgn; split_ifs <;> norm_num`.
+-/
 theorem sgn_sq_one {n : ℕ} (ε : Fin n → Bool) (a b : Fin n) :
     (Formalism.REAL.sgn ε a b : ℂ) * (Formalism.REAL.sgn ε a b : ℂ) = 1 := by
   unfold Formalism.REAL.sgn; split_ifs <;> norm_num
 
+/- English proof (translation)
+Apply the tactic sequence `unfold Formalism.REAL.sgn; split_ifs with h1 h2 h2 <;> simp_all [eq_comm]`.
+-/
 theorem sgn_symm {n : ℕ} (ε : Fin n → Bool) (a b : Fin n) :
     Formalism.REAL.sgn ε b a = Formalism.REAL.sgn ε a b := by
   unfold Formalism.REAL.sgn; split_ifs with h1 h2 h2 <;> simp_all [eq_comm]
 
+/- English proof (translation)
+Rewrite using `[hU b a w y, sgn_symm, ← mul_assoc, sgn_sq_one, one_mul]`.
+-/
 theorem inner_E_right {n : ℕ} {ε : Fin n → Bool} {V : Type} [NormedAddCommGroup V]
     [InnerProductSpace ℂ V] {E : Fin n → Fin n → Module.End ℂ V} (hU : IsUnitary ε E)
     (a b : Fin n) (w y : V) :
     ⟪w, E a b y⟫_ℂ = (Formalism.REAL.sgn ε a b : ℂ) * ⟪E b a w, y⟫_ℂ := by
   rw [hU b a w y, sgn_symm, ← mul_assoc, sgn_sq_one, one_mul]
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => exact ⟨1, one_ne_zero, fun w x => by simp⟩`. Consider the case `cons p t ih`. Take `⟨c, hc, h⟩` from `ih`. Use `⟨(Formalism.REAL.sgn ε p.1 p.2 : ℂ) * c, mul_ne_zero ?_ hc, fun w x => ?_⟩` and prove the remaining obligations.
+
+Introduce `h0`. Use `sgn_sq_one ε p.1 p.2` as an intermediate fact. Rewrite `this` using `[h0]`. Simplify using `at this`. Simplify using `only [List.map_cons, List.prod_cons, List.reverse_cons, List.map_append, List.map_nil, List.prod_append, List.prod_nil, mul_one, Module.End.mul_apply, Prod.fst_swap, Prod.snd_swap] at h ⊢`.
+
+Rewrite using `[inner_E_right hU, h, mul_assoc]`.
+-/
 theorem word_adj {n : ℕ} {ε : Fin n → Bool} {V : Type} [NormedAddCommGroup V]
     [InnerProductSpace ℂ V] {E : Fin n → Fin n → Module.End ℂ V} (hU : IsUnitary ε E)
     (l : List (Fin n × Fin n)) : ∃ c : ℂ, c ≠ 0 ∧ ∀ w x : V,
@@ -43,6 +59,11 @@ theorem word_adj {n : ℕ} {ε : Fin n → Bool} {V : Type} [NormedAddCommGroup 
 
 end GlobalTheory.SignInnerAdjoint
 
+/- English proof (translation)
+Introduce `n ε V _ _ E hU l w x hne`. Take `⟨c, hc, h⟩` from `GlobalTheory.SignInnerAdjoint.word_adj hU l`. Rewrite `hne` using `[h]`. Establish `h2` using `right_ne_zero_of_mul hne`. Introduce `h3`.
+
+Conclude with `h2 (inner_eq_zero_symm.mp h3)`.
+-/
 theorem GlobalTheory.SignInnerAdjoint.main : ∀ (n : ℕ) (ε : Fin n → Bool) (V : Type) [NormedAddCommGroup V] [InnerProductSpace ℂ V] (E : Fin n → Fin n → Module.End ℂ V), IsUnitary ε E → ∀ (l : List (Fin n × Fin n)) (w x : V), ⟪w, (l.map fun p : Fin n × Fin n => E p.1 p.2).prod x⟫_ℂ ≠ 0 → ⟪x, ((l.reverse.map Prod.swap).map fun p : Fin n × Fin n => E p.1 p.2).prod w⟫_ℂ ≠ 0 := by
   intro n ε V _ _ E hU l w x hne
   obtain ⟨c, hc, h⟩ := GlobalTheory.SignInnerAdjoint.word_adj hU l

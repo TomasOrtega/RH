@@ -12,12 +12,18 @@ open GlobalTheory GlobalTheory.Cartier GlobalTheory.CechPic GlobalTheory.ProjVar
 open GlobalTheory.VertCmp
 open scoped Classical
 
+/- English proof (translation)
+Establish `h' : ⊤ ≤ (spMap χ ≫ w) ⁻¹ᵁ U` using `fun q _ => h (Set.mem_univ (spMap χ q))`. Rewrite using `[valF, valF, dif_pos h, dif_pos h', ← Scheme.Hom.appLE_comp_appLE (spMap χ) w U ⊤ ⊤ h le_rfl]`. Conclude with `congrArg (fun g => g.hom ((w.appLE U ⊤ h).hom r)) (Scheme.ΓSpecIso_naturality (CommRingCat.ofHom χ))`.
+-/
 private theorem valF_map {F F' : Type} [Field F] [Field F'] {X : Scheme.{0}} (χ : F →+* F') {w : Sp F ⟶ X}
     {U : X.Opens} (h : ⊤ ≤ w ⁻¹ᵁ U) (r : Γ(X, U)) : valF (spMap χ ≫ w) U r = χ (valF w U r) := by
   have h' : ⊤ ≤ (spMap χ ≫ w) ⁻¹ᵁ U := fun q _ => h (Set.mem_univ (spMap χ q))
   rw [valF, valF, dif_pos h, dif_pos h', ← Scheme.Hom.appLE_comp_appLE (spMap χ) w U ⊤ ⊤ h le_rfl]
   exact congrArg (fun g => g.hom ((w.appLE U ⊤ h).hom r)) (Scheme.ΓSpecIso_naturality (CommRingCat.ofHom χ))
 
+/- English proof (translation)
+Rewrite using `[Vecs.bc, Vecs.bc, ← Category.assoc, ModelRelProbe.spMap_comp]`. Use `congr 2`. Apply the tactic sequence `ext z <;> simp [dualMap]`.
+-/
 private theorem bc_comp {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {Dw : Datum H} {X : Scheme.{0}} {t : SAB H X} {A B C : Type} [CommRing A] [CommRing B] [CommRing C]
     (ρ : A →+* B) (χ : B →+* C) (u : Vecs Dw t A) (σ : E →+* ℂ) (j : Fin (Dw.mult σ)) :
@@ -26,6 +32,17 @@ private theorem bc_comp {E : Type} [Field E] [NumberField E] [IsCMField E] {H : 
   congr 2
   ext z <;> simp [dualMap]
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw Xo p W Y i₀ Z O _ β T b₀ hp hW hb hD k st x hx M a i τ mu hT _ K _ V io hio zO φ y f u G cf hφ hi hy hf hu hG htr htri hc`. Take `⟨C, j, hj⟩` from `UpperTheory.exists_spherically_complete_isometric p`. Set `χ : K →+* ↥C.S` to `j.toRingHom.comp io`. Set `χO : ↥V →+* ↥(Formalism.MainNotions.DIV.Cons.intO ↥C.S)` to `(χ.comp V.subtype).codRestrict (Formalism.MainNotions.DIV.Cons.intO ↥C.S) fun s => show ‖j (io s)‖ ≤ 1 from (hj _).trans_le ((hio s).2 s.2)`. Establish `e : spMap (Formalism.MainNotions.DIV.Cons.intO ↥C.S).subtype ≫ spMap χO ≫ zO = spMap χ ≫ spMap V.subtype ≫ zO`.
+
+Rewrite using `[← Category.assoc, ← Category.assoc, ModelRelProbe.spMap_comp, ModelRelProbe.spMap_comp]`. Both sides reduce to the same expression. Establish `hw : ⊤ ≤ (spMap V.subtype ≫ zO) ⁻¹ᵁ ((Z.U a).1 ⊓ M.L.U i)` using `fun q hq => ⟨Pull.le_of_fromSpec (Z.U a).2 hφ hq, hi (Set.mem_univ (spMap V.subtype q))⟩`. Establish `key` using `UpperTheory.admissible_model_valuation E H Dw Xo p W Y i₀ Z O β T b₀ hp hW hb hD k st x hx M a i τ mu hT C (spMap χO ≫ zO) (χ.comp φ) (spMap χ ≫ y) (χ.comp f) (Vecs.bc χ u) (Vecs.bc χ G) (fun m => χ (cf m)) (by rw [e, ← ModelRelProbe.spMap_comp, Category.assoc, hφ]) (fun q _ => h …`. Rewrite using `[bc_comp φ χ, Category.assoc]`.
+
+Conclude with `(UpperTheory.tangent_models_compat E H Dw _ _ _ _ _ _ _ _ _ _ _ _ _ (htr σ m)).2 _ χ)`. Use the proof step `(fun σ m => by`. Take `⟨c, c1, c2⟩` from `htri σ m`. Use `⟨fun n => χ (c n), fun n hn => (congrArg χ (c1 n hn)).trans (map_zero χ), ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc]`.
+
+Conclude with `GlobalTheory.LatDRFree.comb_map _ χ c2)`. Use the proof step `(by rw [Category.assoc]; exact GlobalTheory.LatDRFree.comb_map _ χ hc)`. Rewrite `key` using `[e, valF_map χ hw]`. Establish `e1 : Vecs.bc χ G = Vecs.bc j.toRingHom (Vecs.bc io G)` using `funext fun σ => funext fun m => bc_comp io _ G σ m`. Establish `e2 : (spMap χ ≫ y) ≫ T.j = spMap j.toRingHom ≫ spMap io ≫ y ≫ T.j`.
+
+Rewrite using `[Category.assoc, ← Category.assoc (spMap j.toRingHom), ModelRelProbe.spMap_comp]`. Rewrite `key` using `[e1, e2, UpperTheory.lnStep_isometric_base_change E H Dw _ _ _ _ j hj]`. Rewrite using `[key, ← hj (io (cf x.2)), ← hj (io _)]`. Both sides reduce to the same expression.
+-/
 theorem UpperTheory.admissible_model_valuation_alt :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (Xo : ∀ l : Level H, Moduli Dw l) (p : ℕ) (W : ValuationSubring ℂ) (Y : LocalSystem Xo p W) (i₀ : Idx H p) (Z : LocM.Mdl Y i₀) (O : Type) [CommRing O] (β : O →+* i₀.c.F) (T : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model (Xo i₀.l) i₀.c β) (b₀ : O →+* i₀.c.V W), p.Prime → (p : ℂ) ∈ W.nonunits → (i₀.c.V W).subtype.comp b₀ = β → Dominates T (Y i₀) b₀ → ∀ (k : Bool) (st : ((E →+* ℂ) × ℕ) ⊕ ℕ) (x : Pad.Letter Dw), letterOf Dw st = some x → ∀ (M : LineModel Z k st x) (a : Fin Z.m) (i : Fin M.L.n) (τ : (Y Z.i).X ⟶ (Y i₀).X) (mu : SABMap (Y Z.i).t (Y i₀).t τ), LocM.IsTrans i₀ Z.i τ mu → ∀ [Fact p.Prime] (K : Type) [Field K] (V : ValuationSubring K) (io : K →+* ℂ_[p]), (∀ s, ‖io s‖ ≤ 1 ↔ s ∈ V) → ∀ (zO : Sp ↥V ⟶ Z.X) (φ : Γ(Z.X, (Z.U a).1) →+* K) (y : Sp K ⟶ (Xo i₀.l).XF i₀.c) (f : i₀.c.F →+* K) (u G : Vecs Dw T.t K) (cf : Fin (Dw.mult x.1) → K), spMap φ ≫ Z.chart a = spMap V.subtype ≫ zO → ⊤ ≤ zO ⁻¹ᵁ M.L.U i → y ≫ (Y i₀).j = (spMap V.subtype ≫ zO) ≫ Z.π ≫ τ → y ≫ pullback.snd _ _ = spMap f → LocM.IsFrame T.t f (y ≫ T.j) u → LocM.IsFrame T.t f (y ≫ T.j) G → (∀ σ m, Transp T (Y i₀) y (u σ m) ((Z.fr a).bc φ σ m ≫ mu.φ)) → (∀ σ, Pull.Tri T.t (y ≫ T.j) (G σ) (u σ)) → IsCombAtG T.t (y ≫ T.j) (G x.1) cf (u x.1 x.2) → lnStep T.t (spMap io ≫ y ≫ T.j) (Vecs.bc io G) p k st = -Real.log ‖io (cf x.2)‖ - Real.log ‖io (valF (spMap V.subtype ≫ zO) _ (M.r a i).val)‖ := by
   intro E _ _ _ H Dw Xo p W Y i₀ Z O _ β T b₀ hp hW hb hD k st x hx M a i τ mu hT _ K _ V io hio zO φ y f u G cf

@@ -22,6 +22,9 @@ section Algebra
 
 variable {R : Type} [CommRing R]
 
+/- English proof (translation)
+Introduce `h`. Take `⟨c, hc⟩` from `(IsLocalization.map_eq_zero_iff P.primeCompl _ b).1 h`. Establish `: (c : R) = 0` using `(mem_nonZeroDivisors_iff_right.1 hb) _ hc`. Conclude with `c.2 (this ▸ P.zero_mem)`.
+-/
 theorem map_ne_zero_of_mem (P : Ideal R) [P.IsPrime] {b : R} (hb : b ∈ nonZeroDivisors R) :
     algebraMap R (Localization.AtPrime P) b ≠ 0 := by
   intro h
@@ -29,6 +32,11 @@ theorem map_ne_zero_of_mem (P : Ideal R) [P.IsPrime] {b : R} (hb : b ∈ nonZero
   have : (c : R) = 0 := (mem_nonZeroDivisors_iff_right.1 hb) _ hc
   exact c.2 (this ▸ P.zero_mem)
 
+/- English proof (translation)
+Rewrite using `[← Ideal.mem_span_singleton]`. Use `Ideal.mem_of_localization_maximal fun m hm => ?_` and prove the remaining obligations. Take `⟨_, _⟩` from `hR m`. Establish `: IsNoetherianRing (Localization.AtPrime m)` using `IsLocalization.isNoetherianRing m.primeCompl _ inferInstance`. Rewrite using `[Ideal.map_span, Set.image_singleton, Ideal.mem_span_singleton]`.
+
+Use `GlobalTheory.dvd_of_forall_height_eq_one (map_ne_zero_of_mem m hb) fun Q _ hQ hbQ => ?_` and prove the remaining obligations. Establish `hP : (Q.comap (algebraMap R (Localization.AtPrime m))).height = 1` using `(IsLocalization.height_comap m.primeCompl Q).trans hQ`. Take `⟨s, hs, t, ht⟩` from `h _ hP hbQ`. Conclude with `⟨algebraMap R _ s, hs, algebraMap R _ t, by rw [← map_mul, ht, map_mul]⟩`.
+-/
 theorem dvd_of_height_one [IsNoetherianRing R]
     (hR : ∀ (P : Ideal R) [P.IsPrime], IsDomain (Localization.AtPrime P) ∧ IsIntegrallyClosed (Localization.AtPrime P))
     {a b : R} (hb : b ∈ nonZeroDivisors R)
@@ -44,6 +52,13 @@ theorem dvd_of_height_one [IsNoetherianRing R]
   obtain ⟨s, hs, t, ht⟩ := h _ hP hbQ
   exact ⟨algebraMap R _ s, hs, algebraMap R _ t, by rw [← map_mul, ht, map_mul]⟩
 
+/- English proof (translation)
+Establish `: IsNoetherianRing (Localization.AtPrime P)` using `IsLocalization.isNoetherianRing P.primeCompl _ inferInstance`. Establish `hd : ringKrullDim (Localization.AtPrime P) = 1`. Rewrite using `[IsLocalization.AtPrime.ringKrullDim_eq_height P, hP]`. Both sides reduce to the same expression. Establish `h1 : Ring.KrullDimLE 1 (Localization.AtPrime P)`.
+
+Rewrite using `[Ring.krullDimLE_iff, hd]`. Both sides reduce to the same expression. Establish `hf : ¬ IsField (Localization.AtPrime P)` using `fun h => by`. Use `ringKrullDim_eq_zero_of_isField h` as an intermediate fact. Rewrite `this` using `[hd]`.
+
+Simplify using `at this`. Establish `hm` using `IsLocalRing.isField_iff_maximalIdeal_eq.not.mp hf`. Establish `h3 : IsIntegrallyClosed (Localization.AtPrime P) ∧ ∃! Q : Ideal (Localization.AtPrime P), Q ≠ ⊥ ∧ Q.IsPrime` using `⟨inferInstance, _, ⟨hm, inferInstance⟩, fun Q hQ => IsLocalRing.eq_maximalIdeal (Ring.krullDimLE_one_iff_of_noZeroDivisors.mp h1 Q hQ.1 hQ.2)⟩`. Conclude with `((IsDiscreteValuationRing.TFAE (Localization.AtPrime P) hf).out 0 3).mpr h3`.
+-/
 theorem isDVR_of_height_one [IsNoetherianRing R] (P : Ideal R) [P.IsPrime] (hP : P.height = 1)
     [IsDomain (Localization.AtPrime P)] [IsIntegrallyClosed (Localization.AtPrime P)] :
     IsDiscreteValuationRing (Localization.AtPrime P) := by
@@ -65,6 +80,11 @@ theorem isDVR_of_height_one [IsNoetherianRing R] (P : Ideal R) [P.IsPrime] (hP :
       (Ring.krullDimLE_one_iff_of_noZeroDivisors.mp h1 Q hQ.1 hQ.2)⟩
   exact ((IsDiscreteValuationRing.TFAE (Localization.AtPrime P) hf).out 0 3).mpr h3
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `h`. Take `⟨⟨x, t⟩, he⟩` from `IsLocalization.surj P.primeCompl c`. Establish `e : algebraMap R (Localization.AtPrime P) (a * t) = algebraMap R (Localization.AtPrime P) (b * x)`. Rewrite using `[map_mul, map_mul, hc, _root_.mul_assoc]`. Conclude with `congrArg _ he`.
+
+Take `⟨u, hu⟩` from `IsLocalization.exists_of_eq (M := P.primeCompl) e`. Use `⟨u * t, fun hm => ?_, u * x, ?_⟩` and prove the remaining obligations. Break down `Ideal.IsPrime.mem_or_mem inferInstance hm with h | h exacts [u.2 h, t.2 h]` into its components or cases. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem exists_of_dvd (P : Ideal R) [P.IsPrime] {a b : R}
     (h : algebraMap R (Localization.AtPrime P) b ∣ algebraMap R (Localization.AtPrime P) a) :
     ∃ s, s ∉ P ∧ b ∣ s * a := by
@@ -81,6 +101,11 @@ theorem exists_of_dvd (P : Ideal R) [P.IsPrime] {a b : R}
       _ = u * (b * x) := hu
       _ = b * (u * x) := by ring
 
+/- English proof (translation)
+Establish `s : Function.Surjective fun x : R × P.primeCompl => IsLocalization.mk' (Localization.AtPrime P) x.1 x.2` using `fun v => by`. Take `⟨x, e⟩` from `IsLocalization.mk'_surjective P.primeCompl v`. Conclude with `⟨x, e⟩`. Use `(Cardinal.mk_le_of_surjective s).trans ?_` and prove the remaining obligations. Rewrite using `[Cardinal.mk_prod, Cardinal.lift_id, Cardinal.lift_id]`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem mk_localization_le (P : Ideal R) [P.IsPrime] (h : Cardinal.mk R ≤ Cardinal.continuum) :
     Cardinal.mk (Localization.AtPrime P) ≤ Cardinal.continuum := by
   have s : Function.Surjective fun x : R × P.primeCompl => IsLocalization.mk' (Localization.AtPrime P) x.1 x.2 :=
@@ -92,6 +117,9 @@ theorem mk_localization_le (P : Ideal R) [P.IsPrime] (h : Cardinal.mk R ≤ Card
   calc _ ≤ Cardinal.continuum * Cardinal.continuum := mul_le_mul' h ((Cardinal.mk_subtype_le _).trans h)
     _ = _ := Cardinal.continuum_mul_self
 
+/- English proof (translation)
+Use `letI := σ.toAlgebra`. Establish `: Algebra.FiniteType D R` using `hσ`. Take `⟨n, f, hf⟩` from `Algebra.FiniteType.iff_quotient_mvPolynomial''.1 this`. Use `(Cardinal.mk_le_of_surjective hf).trans (MvPolynomial.cardinalMk_le_max.trans ?_)` and prove the remaining obligations. Conclude with `max_le (max_le h ((Cardinal.lt_aleph0_of_finite _).le.trans Cardinal.aleph0_le_continuum)) Cardinal.aleph0_le_continuum`.
+-/
 theorem mk_le_of_finiteType {D : Type} [CommRing D] (σ : D →+* R) (hσ : σ.FiniteType)
     (h : Cardinal.mk D ≤ Cardinal.continuum) : Cardinal.mk R ≤ Cardinal.continuum := by
   letI := σ.toAlgebra
@@ -100,6 +128,11 @@ theorem mk_le_of_finiteType {D : Type} [CommRing D] (σ : D →+* R) (hσ : σ.F
   refine (Cardinal.mk_le_of_surjective hf).trans (MvPolynomial.cardinalMk_le_max.trans ?_)
   exact max_le (max_le h ((Cardinal.lt_aleph0_of_finite _).le.trans Cardinal.aleph0_le_continuum)) Cardinal.aleph0_le_continuum
 
+/- English proof (translation)
+Introduce `r hr`. Take `⟨c, hc⟩` from `(IsLocalization.map_eq_zero_iff P.primeCompl _ r).1 hr`. Use `((inferInstance : q.IsPrime).mem_or_mem (hc ▸ q.zero_mem)).resolve_left fun hcq => ?_` and prove the remaining obligations. Establish `e : algebraMap R (Localization.AtPrime P) c = 0` using `h hcq`. Establish `u` using `IsLocalization.map_units (Localization.AtPrime P) c`.
+
+Rewrite `u` using `[e]`. Establish `: Nontrivial (Localization.AtPrime P)` using `inferInstance`. Conclude with `not_isUnit_zero u`.
+-/
 theorem ker_le_of_le (P q : Ideal R) [P.IsPrime] [q.IsPrime] (h : q ≤ RingHom.ker (algebraMap R (Localization.AtPrime P))) :
     RingHom.ker (algebraMap R (Localization.AtPrime P)) ≤ q := by
   intro r hr
@@ -111,6 +144,11 @@ theorem ker_le_of_le (P q : Ideal R) [P.IsPrime] [q.IsPrime] (h : q ≤ RingHom.
   have : Nontrivial (Localization.AtPrime P) := inferInstance
   exact not_isUnit_zero u
 
+/- English proof (translation)
+Use `letI := σ.toAlgebra`. Establish `: Module.Flat D R` using `hσ`. Establish `hr : (n : D) ∈ nonZeroDivisors D` using `mem_nonZeroDivisors_of_ne_zero (Nat.cast_ne_zero.2 hn)`. Establish `reg` using `Module.Flat.isSMulRegular_of_nonZeroDivisors (M := R) hr`. Use `mem_nonZeroDivisors_iff_right.2 fun x hx => reg ?_` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `(n : D) • x = (n : D) • 0`. Rewrite using `[Algebra.smul_def, smul_zero]`. Establish `e : algebraMap D R (n : D) = (n : R)` using `map_natCast _ n`. Rewrite using `[e, mul_comm, hx]`.
+-/
 theorem natCast_mem {D : Type} [CommRing D] [IsDomain D] [CharZero D] (σ : D →+* R) (hσ : σ.Flat) {n : ℕ} (hn : n ≠ 0) :
     (n : R) ∈ nonZeroDivisors R := by
   letI := σ.toAlgebra
@@ -130,6 +168,17 @@ section Model
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
   {Xo : ∀ l : Level H, Moduli Dw l} {p : ℕ} {W : ValuationSubring ℂ} {Y : LocalSystem Xo p W} {i₀ : Idx H p}
 
+/- English proof (translation)
+Rewrite `h`, the goal using `[Scheme.Hom.comp_apply]`. Take `⟨q, hq⟩ : ∃ q : PrimeSpectrum Γ(X, U), q = spMap θ t` from `⟨_, rfl⟩`. Rewrite `h`, the goal using `[← hq]`. Establish `hk : q.asIdeal = RingHom.ker θ`. Establish `: t.asIdeal.IsPrime` using `t.2`.
+
+Establish `e : t.asIdeal = ⊥` using `Ideal.eq_bot_of_prime _`. Rewrite using `[hq]`. Express the relevant statement in the definitionally equal form `Ideal.comap θ t.asIdeal = _`. Rewrite using `[e]`. Both sides reduce to the same expression.
+
+Establish `hm : hU.fromSpec q ∈ U`. Establish `: hU.fromSpec q ∈ Set.range hU.fromSpec` using `⟨q, rfl⟩`. Rewrite `this` using `[hU.range_fromSpec]`. Then use the resulting hypothesis. Establish `hx : x' ∈ Set.range hU.fromSpec`. Rewrite using `[hU.range_fromSpec]`.
+
+Conclude with `h.mem_open U.isOpen hm`. Take `⟨q', rfl⟩` from `hx`. Establish `hs : q' ⤳ q` using `hU.fromSpec.isOpenEmbedding.isInducing.specializes_iff.1 h`. Establish `hle : q'.asIdeal ≤ q.asIdeal` using `(PrimeSpectrum.le_iff_specializes _ _).2 hs`. Use `q'.isPrime` as an intermediate fact.
+
+Establish `: q' = q` using `PrimeSpectrum.ext (le_antisymm hle (by`. Rewrite using `[hk, hθ]`. Conclude with `ker_le_of_le P q'.asIdeal (by rw [← hθ, ← hk]; exact hle)))`. Rewrite using `[this]`.
+-/
 theorem eq_of_specializes {X : Scheme.{0}} {U : X.Opens} (hU : IsAffineOpen U) {F : Type} [Field F] (θ : Γ(X, U) →+* F)
     (P : Ideal Γ(X, U)) [P.IsPrime] (hθ : RingHom.ker θ = RingHom.ker (algebraMap Γ(X, U) (Localization.AtPrime P)))
     (t : Sp F) (x' : X) (h : x' ⤳ (spMap θ ≫ hU.fromSpec) t) : x' = (spMap θ ≫ hU.fromSpec) t := by
@@ -158,6 +207,13 @@ theorem eq_of_specializes {X : Scheme.{0}} {U : X.Opens} (hU : IsAffineOpen U) {
     exact ker_le_of_le P q'.asIdeal (by rw [← hθ, ← hk]; exact hle)))
   rw [this]
 
+/- English proof (translation)
+Use `GlobalTheory.ProjBlowup.isDiscreteValuationRing_coeff Z.i.c hp.ne_zero hW` as an intermediate fact. Establish `hN : GlobalTheory.IsNormalScheme Z.X` using `Z.normal`. Use `isProper_str (Z.i.c.V W) Z.n` as an intermediate fact. Establish `: LocallyOfFiniteType Z.toPre.s`. Unfold `Pre.s`.
+
+Use `infer_instance`. Establish `: IsLocallyNoetherian Z.X` using `LocallyOfFiniteType.isLocallyNoetherian Z.toPre.s`. Establish `hc` using `irreducibleComponent_mem_irreducibleComponents x`. Establish `ho` using `GlobalTheory.IsNormalScheme.isOpen_of_mem_irreducibleComponents hc`. Establish `hg` using `hc.1.isGenericPoint_genericPoint (isClosed_of_mem_irreducibleComponents _ hc)`.
+
+Establish `e` using `hx _ (hg.specializes mem_irreducibleComponent)`. Rewrite `hg` using `[e]`. Take `⟨y, hy, hyo⟩` from `Z.dense.inter_open_nonempty _ ho ⟨_, mem_irreducibleComponent⟩`. Establish `hopen : IsOpen Z.opn` using `Z.cover ▸ isOpen_iUnion fun a => (Z.U a).1.isOpen`. Conclude with `(hg.specializes hy).mem_open hopen hyo`.
+-/
 theorem mem_opn (hp : p.Prime) (hW : (p : ℂ) ∈ W.nonunits) (Z : Mdl Y i₀) {x : Z.X} (hx : ∀ x' : Z.X, x' ⤳ x → x' = x) :
     x ∈ Z.opn := by
   have := GlobalTheory.ProjBlowup.isDiscreteValuationRing_coeff Z.i.c hp.ne_zero hW
@@ -176,6 +232,13 @@ theorem mem_opn (hp : p.Prime) (hW : (p : ℂ) ∈ W.nonunits) (Z : Mdl Y i₀) 
   have hopen : IsOpen Z.opn := Z.cover ▸ isOpen_iUnion fun a => (Z.U a).1.isOpen
   exact (hg.specializes hy).mem_open hopen hyo
 
+/- English proof (translation)
+Use `GlobalTheory.ProjBlowup.isDiscreteValuationRing_coeff Z.i.c hp.ne_zero hW` as an intermediate fact. Use `isProper_str (Z.i.c.V W) Z.n` as an intermediate fact. Establish `: LocallyOfFiniteType Z.toPre.s`. Unfold `Pre.s`. Use `infer_instance`.
+
+Use `Z.flat` as an intermediate fact. Set `σ : Z.i.c.V W →+* Γ(Z.X, U)` to `(Spec.preimage (hU.fromSpec ≫ Z.toPre.s)).hom`. Establish `e : spMap σ = hU.fromSpec ≫ Z.toPre.s` using `Spec.map_preimage _`. Establish `h1 : Flat (spMap σ)` using `by rw [e]; infer_instance`. Establish `h2 : LocallyOfFiniteType (spMap σ)` using `by rw [e]; infer_instance`.
+
+Conclude with `⟨σ, (HasRingHomProperty.Spec_iff (P := @Flat)).1 h1, (HasRingHomProperty.Spec_iff (P := @LocallyOfFiniteType)).1 h2⟩`.
+-/
 theorem exists_base (hp : p.Prime) (hW : (p : ℂ) ∈ W.nonunits) (Z : Mdl Y i₀) {U : Z.X.Opens} (hU : IsAffineOpen U) :
     ∃ σ : Z.i.c.V W →+* Γ(Z.X, U), σ.Flat ∧ σ.FiniteType := by
   have := GlobalTheory.ProjBlowup.isDiscreteValuationRing_coeff Z.i.c hp.ne_zero hW
@@ -192,6 +255,19 @@ theorem exists_base (hp : p.Prime) (hW : (p : ℂ) ∈ W.nonunits) (Z : Mdl Y i�
 
 open GlobalTheory.ShFam.Pad.Pull in
 
+/- English proof (translation)
+Use `isDVR_of_height_one P hP` as an intermediate fact. Establish `: CharZero (Localization.AtPrime P)` using `charZero_of_inj_zero fun n hn => by`. Assume the negation of the conclusion as `h0`. Conclude with `map_ne_zero_of_mem P (hnz n h0) (by rw [map_natCast]; exact hn)`. Establish `hpV : (p : Localization.AtPrime P) ∈ IsLocalRing.maximalIdeal (Localization.AtPrime P)`.
+
+Use `(IsLocalization.AtPrime.to_map_mem_maximal_iff (Localization.AtPrime P) P (p : Γ(Z.X, U))).2 hpP` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Take `⟨C, φ, φi, hφ⟩` from `GlobalTheory.T.exists_spherically_complete_embedding' p (Localization.AtPrime P) hp hpV (mk_localization_le P hc)`. Set `ψ : Γ(Z.X, U) →+* ↥(intO ↥C.S)` to `φ.comp (algebraMap _ _)`. Set `θ : Γ(Z.X, U) →+* ↥C.S` to `(intO ↥C.S).subtype.comp ψ`.
+
+Establish `hθ : RingHom.ker θ = RingHom.ker (algebraMap Γ(Z.X, U) (Localization.AtPrime P))`. Use extensionality with `r`. Simplify using `only [RingHom.mem_ker, θ, ψ, RingHom.comp_apply]`. Use `⟨fun e => φi ?_, fun e => by rw [e, map_zero, map_zero]⟩` and prove the remaining obligations. Rewrite using `[map_zero]`.
+
+Conclude with `(intO ↥C.S).subtype_injective (by rw [e, map_zero])`. Establish `hgen : spMap (intO ↥C.S).subtype ≫ spMap ψ ≫ hU.fromSpec = spMap θ ≫ hU.fromSpec`. Rewrite using `[← Category.assoc, ModelRelProbe.spMap_comp]`. Establish `hr : Set.range (spMap (intO ↥C.S).subtype ≫ spMap ψ ≫ hU.fromSpec) ⊆ Z.opn`. Introduce and unpack `_ ⟨t, rfl⟩`.
+
+Rewrite using `[hgen]`. Conclude with `mem_opn hp hW Z fun x' hx' => eq_of_specializes hU θ P hθ t x' hx'`. Take `⟨Q, hQ⟩` from `GlobalTheory.T.exists_point_of_integral_point E H Dw Xo p W Y i₀ hp hW Z C (spMap ψ ≫ hU.fromSpec) hr`. Set `y : Z.Pt` to `⟨C, Q, spMap ψ ≫ hU.fromSpec, hQ⟩`. Establish `hy : y.gen = spMap θ ≫ hU.fromSpec` using `hgen`.
+
+Use `h y (le_of_fromSpec hU rfl)` as an intermediate fact. Rewrite `this` using `[hy, valF_fromSpec, valF_fromSpec]`. Conclude with `exists_of_dvd P (hφ _ _ this)`.
+-/
 theorem exists_local (hp : p.Prime) (hW : (p : ℂ) ∈ W.nonunits) (Z : Mdl Y i₀) {U : Z.X.Opens} (hU : IsAffineOpen U)
     (a b : Γ(Z.X, U)) (h : ∀ y : Z.Pt, ⊤ ≤ y.z ⁻¹ᵁ U → ‖valF y.gen U a‖ ≤ ‖valF y.gen U b‖)
     (P : Ideal Γ(Z.X, U)) [P.IsPrime] (hP : P.height = 1) (hpP : (p : Γ(Z.X, U)) ∈ P)
@@ -227,6 +303,15 @@ theorem exists_local (hp : p.Prime) (hW : (p : ℂ) ∈ W.nonunits) (Z : Mdl Y i
   rw [hy, valF_fromSpec, valF_fromSpec] at this
   exact exists_of_dvd P (hφ _ _ this)
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw Xo p W Y i₀ hp hW Z U hU a b hrad h`. Use `GlobalTheory.ProjBlowup.isDiscreteValuationRing_coeff Z.i.c hp.ne_zero hW` as an intermediate fact. Take `⟨σ, hf, hft⟩` from `exists_base hp hW Z hU`. Establish `: CharZero (Z.i.c.V W)` using `RingHom.charZero (Z.i.c.V W).subtype`. Establish `hN : GlobalTheory.IsNormalScheme Z.X` using `Z.normal`.
+
+Establish `hR` using `(GlobalTheory.IsNormalScheme.iff_forall_isAffineOpen Z.X).1 hN U hU`. Establish `hnz : ∀ n : ℕ, n ≠ 0 → (n : Γ(Z.X, U)) ∈ nonZeroDivisors Γ(Z.X, U)` using `fun n hn => natCast_mem σ hf hn`. Establish `hD : Cardinal.mk (Z.i.c.V W) ≤ Cardinal.continuum` using `(Cardinal.mk_subtype_le _).trans ((Cardinal.mk_subtype_le _).trans Cardinal.mk_complex.le)`. Establish `hc` using `mk_le_of_finiteType σ hft hD`. Establish `: IsNoetherianRing Γ(Z.X, U)`.
+
+Use `letI := σ.toAlgebra`. Establish `: Algebra.FiniteType (Z.i.c.V W) Γ(Z.X, U)` using `hft`. Conclude with `Algebra.FiniteType.isNoetherianRing (Z.i.c.V W) _`. Take `⟨N, hN'⟩` from `hrad`. Take `⟨c, hc'⟩` from `Ideal.mem_span_singleton.1 hN'`.
+
+Establish `hb : b ∈ nonZeroDivisors Γ(Z.X, U)` using `(mul_mem_nonZeroDivisors.1 (hc' ▸ pow_mem (hnz p hp.ne_zero) N)).1`. Use `dvd_of_height_one hR hb fun P _ hP hbP => ?_` and prove the remaining obligations. Take `⟨_, _⟩` from `hR P`. Establish `hpP : (p : Γ(Z.X, U)) ∈ P` using `(inferInstance : P.IsPrime).mem_of_pow_mem N (hc' ▸ P.mul_mem_right c hbP)`. Conclude with `exists_local hp hW Z hU a b h P hP hpP hc hnz`.
+-/
 theorem dvd_of_forall_pt : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (Xo : ∀ l : Level H, Moduli Dw l) (p : ℕ) (W : ValuationSubring ℂ) (Y : LocalSystem Xo p W) (i₀ : Idx H p), p.Prime → (p : ℂ) ∈ W.nonunits → ∀ (Z : Mdl Y i₀) (U : Z.X.Opens), IsAffineOpen U → ∀ a b : Γ(Z.X, U), (p : Γ(Z.X, U)) ∈ (Ideal.span {b}).radical → (∀ y : Z.Pt, ⊤ ≤ y.z ⁻¹ᵁ U → ‖valF y.gen U a‖ ≤ ‖valF y.gen U b‖) → b ∣ a := by
   intro E _ _ _ H Dw Xo p W Y i₀ hp hW Z U hU a b hrad h
   have := GlobalTheory.ProjBlowup.isDiscreteValuationRing_coeff Z.i.c hp.ne_zero hW

@@ -5,6 +5,9 @@ open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC
 
 namespace LateralTheory.CohomologicalPurity.Thom.ExcP.Chart
 
+/- English proof (translation)
+Introduce `n`. Use `⟨fun x y h => ?_, fun y => ⟨pull R (inv f) F n y, ?_⟩⟩` and prove the remaining obligations. Use `congrArg (pull R (inv f) F n) h` as an intermediate fact. Rewrite `this` using `[← pull_comp, ← pull_comp, IsIso.inv_hom_id, pull_id, pull_id]`. Then use the resulting hypothesis. Rewrite using `[← pull_comp, IsIso.hom_inv_id, pull_id]`.
+-/
 theorem eqv_of_isIso {R : Type} [CommRing R] {E E' : Spc} (f : E ⟶ E') [IsIso f] (F : Shv R) : Eqv R f F := by
   intro n
   refine ⟨fun x y h => ?_, fun y => ⟨pull R (inv f) F n y, ?_⟩⟩
@@ -12,12 +15,20 @@ theorem eqv_of_isIso {R : Type} [CommRing R] {E E' : Spc} (f : E ⟶ E') [IsIso 
     rwa [← pull_comp, ← pull_comp, IsIso.inv_hom_id, pull_id, pull_id] at this
   · rw [← pull_comp, IsIso.hom_inv_id, pull_id]
 
+/- English proof (translation)
+Introduce `n`. Establish `: (pull R (f ≫ g) F n : _ → _) = pull R f F n ∘ pull R g F n` using `funext fun x => pull_comp R f g F n x`. Rewrite using `[this]`. Conclude with `(hf n).comp (hg n)`.
+-/
 theorem eqv_comp {R : Type} [CommRing R] {E E' E'' : Spc} {f : E ⟶ E'} {g : E' ⟶ E''} {F : Shv R}
     (hf : Eqv R f F) (hg : Eqv R g F) : Eqv R (f ≫ g) F := by
   intro n
   have : (pull R (f ≫ g) F n : _ → _) = pull R f F n ∘ pull R g F n := funext fun x => pull_comp R f g F n x
   rw [this]; exact (hf n).comp (hg n)
 
+/- English proof (translation)
+Introduce `n`. Establish `hc : (pull R f F n : _ → _) ∘ pull R r F n = id`. Use function extensionality and compare the values at `x`. Express the relevant statement in the definitionally equal form `pull R f F n (pull R r F n x) = x`. Rewrite using `[← pull_comp, h, pull_id]`.
+
+Establish `: Function.Bijective ((pull R f F n : _ → _) ∘ pull R r F n)` using `by rw [hc]; exact Function.bijective_id`. Conclude with `(Function.Bijective.of_comp_iff _ (hr n)).1 this`.
+-/
 theorem eqv_of_section {R : Type} [CommRing R] {E E' : Spc} {f : E ⟶ E'} {r : E' ⟶ E} {F : Shv R}
     (h : f ≫ r = 𝟙 _) (hr : Eqv R r F) : Eqv R f F := by
   intro n
@@ -30,6 +41,11 @@ def fW (d : ℕ) (R : Type) [CommRing R] :
     Spec (CommRingCat.of (LaurentPolynomial (MvPolynomial (Fin d) R))) ⟶ Spec (CommRingCat.of (MvPolynomial (Fin d) R)) :=
   Spec.map (CommRingCat.ofHom (LaurentPolynomial.C : MvPolynomial (Fin d) R →+* _))
 
+/- English proof (translation)
+Establish `h1 : (Polynomial.C : A →+* Polynomial A).Smooth`. Rewrite using `[show (Polynomial.C : A →+* Polynomial A) = algebraMap A (Polynomial A) from rfl]`. Conclude with `RingHom.smooth_algebraMap.2 ⟨inferInstance, inferInstance⟩`. Establish `h2 : (algebraMap (Polynomial A) (LaurentPolynomial A)).Smooth` using `RingHom.Smooth.holdsForLocalizationAway (R := Polynomial A) (S := LaurentPolynomial A) Polynomial.X`. Establish `h3` using `RingHom.Smooth.comp h1 h2`.
+
+Use `h3 using 1` and compare the differences between its conclusion and the goal. Use extensionality with `a`. Simplify using the standard rewrite rules.
+-/
 theorem smooth_C (A : Type) [CommRing A] : (LaurentPolynomial.C : A →+* LaurentPolynomial A).Smooth := by
   have h1 : (Polynomial.C : A →+* Polynomial A).Smooth := by
     rw [show (Polynomial.C : A →+* Polynomial A) = algebraMap A (Polynomial A) from rfl]
@@ -56,6 +72,9 @@ instance (d : ℕ) (R : Type) [CommRing R] : Surjective (fW d R) := by
 def LeafWCech : Prop := ∀ (d : ℕ) (R : Type) [CommRing R],
   ∃ ψ : W d R ⟶ cech (fW d R), IsIso ψ ∧ wa d R ≫ ψ ≫ cechAug (fW d R) = 𝟙 _
 
+/- English proof (translation)
+Introduce `hH q _ d R _ _ i`. Take `⟨ψ, hψ, he⟩` from `hW d R`. Establish `hA : Eqv _ (cechAug (fW d R)) (tw q i)` using `hH.2.1 (ZMod q) (fW d R) (tw q i)`. Conclude with `eqv_of_section (by rw [← he]) (eqv_comp (eqv_of_isIso ψ _) hA)`.
+-/
 theorem LeafWEqvR_of (hW : LeafWCech) : LeafWEqvR := by
   intro hH q _ d R _ _ i
   obtain ⟨ψ, hψ, he⟩ := hW d R

@@ -12,6 +12,13 @@ open GlobalTheory.InertLocField
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨a, ha, -, y, -, rfl⟩` from `hz`. Introduce `u hu`. Rewrite using `[Pi.smul_apply, smul_smul, ← smul_eq_mul u a, ha u hu, zero_smul]`.
+
+Consider the case `zero => intro u _`. Conclude with `smul_zero u`. Consider the case `add x y _ _ hx hy => intro u hu`. Rewrite using `[Pi.add_apply, smul_add, hx u hu, hy u hu, add_zero]`. Consider the case `neg x _ hx => intro u hu`.
+
+Rewrite using `[Pi.neg_apply, smul_neg, hx u hu, neg_zero]`.
+-/
 theorem at_of_mem {d : ℕ} {W : Spc F E d} {v : Pl F} {z : Fin d → AE F E} (hz : z ∈ latAt W v) (i : Fin d) :
     At (evFin F v) (z i) := by
   induction hz using AddSubgroup.closure_induction with
@@ -23,10 +30,16 @@ theorem at_of_mem {d : ℕ} {W : Spc F E d} {v : Pl F} {z : Fin d → AE F E} (h
   | add x y _ _ hx hy => intro u hu; rw [Pi.add_apply, smul_add, hx u hu, hy u hu, add_zero]
   | neg x _ hx => intro u hu; rw [Pi.neg_apply, smul_neg, hx u hu, neg_zero]
 
+/- English proof (translation)
+Take `⟨y, rfl⟩` from `(at_iff v x).1 hx`. Rewrite using `[evT_liftT]`.
+-/
 theorem liftT_evT_of_at {v : Pl F} {x : AE F E} (hx : At (evFin F v) x) : liftT E v (evT E v x) = x := by
   obtain ⟨y, rfl⟩ := (at_iff v x).1 hx
   rw [evT_liftT]
 
+/- English proof (translation)
+Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a e`. Rewrite using `[TensorProduct.smul_tmul', liftT_tmul, liftT_tmul, smul_eq_mul, liftV_mul, TensorProduct.smul_tmul', smul_eq_mul]`. Consider the case `add x y hx hy => rw [smul_add, map_add, hx, hy, map_add, smul_add]`.
+-/
 theorem liftT_smul (v : Pl F) (t : Fv F v) (y : Fv F v ⊗[F] E) :
     liftT E v (t • y) = GlobalTheory.LatVac.liftV v t • liftT E v y := by
   induction y using TensorProduct.induction_on with
@@ -35,6 +48,11 @@ theorem liftT_smul (v : Pl F) (t : Fv F v) (y : Fv F v ⊗[F] E) :
     rw [TensorProduct.smul_tmul', liftT_tmul, liftT_tmul, smul_eq_mul, liftV_mul, TensorProduct.smul_tmul', smul_eq_mul]
   | add x y hx hy => rw [smul_add, map_add, hx, hy, map_add, smul_add]
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul b e`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul]`. Use `show evFin F v (a * b) ⊗ₜ[F] e = evFin F v a • (evFin F v b ⊗ₜ[F] e)`.
+
+Rewrite using `[map_mul, TensorProduct.smul_tmul', smul_eq_mul]`. Consider the case `add x y hx hy => rw [smul_add, map_add, hx, hy, map_add, smul_add]`.
+-/
 theorem evT_smul (v : Pl F) (a : AF F) (x : AE F E) : evT E v (a • x) = evFin F v a • evT E v x := by
   induction x using TensorProduct.induction_on with
   | zero => simp
@@ -44,6 +62,13 @@ theorem evT_smul (v : Pl F) (a : AF F) (x : AE F E) : evT E v (a • x) = evFin 
     rw [map_mul, TensorProduct.smul_tmul', smul_eq_mul]
   | add x y hx hy => rw [smul_add, map_add, hx, hy, map_add, smul_add]
 
+/- English proof (translation)
+Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨a', ha', hv, y, hy, rfl⟩` from `hz`. Rewrite using `[smul_smul]`. Use `AddSubgroup.subset_closure ⟨GlobalTheory.LatVac.liftV v t * a', ?_, ?_, y, hy, rfl⟩` and prove the remaining obligations.
+
+Introduce `u hu`. Rewrite using `[smul_eq_mul, mul_left_comm, ← smul_eq_mul u a', ha' u hu, mul_zero]`. Rewrite using `[map_mul, GlobalTheory.LatVac.evFin_liftV]`. Conclude with `mul_mem ht hv`. Consider the case `zero => rw [smul_zero]`.
+
+Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [smul_add]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [smul_neg]`. Conclude with `neg_mem hx`.
+-/
 theorem smul_mem {d : ℕ} {W : Spc F E d} {v : Pl F} {t : Fv F v} (ht : t ∈ v.adicCompletionIntegers F)
     {z : Fin d → AE F E} (hz : z ∈ latAt W v) : GlobalTheory.LatVac.liftV v t • z ∈ latAt W v := by
   induction hz using AddSubgroup.closure_induction with
@@ -59,6 +84,9 @@ theorem smul_mem {d : ℕ} {W : Spc F E d} {v : Pl F} {t : Fv F v} (ht : t ∈ v
   | add x y _ _ hx hy => rw [smul_add]; exact add_mem hx hy
   | neg x _ hx => rw [smul_neg]; exact neg_mem hx
 
+/- English proof (translation)
+Establish `h1 : liftT E v y = GlobalTheory.LatVac.liftV v 1 • liftT E v y`. Rewrite using `[liftV_one_smul, evT_liftT]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem mul_liftT (v : Pl F) (x : AE F E) (y : Fv F v ⊗[F] E) :
     x * liftT E v y = liftT E v (evT E v x * y) := by
   have h1 : liftT E v y = GlobalTheory.LatVac.liftV v 1 • liftT E v y := by
@@ -67,6 +95,9 @@ theorem mul_liftT (v : Pl F) (x : AE F E) (y : Fv F v ⊗[F] E) :
     _ = (GlobalTheory.LatVac.liftV v 1 • x) * liftT E v y := by rw [smul_mul_assoc]
     _ = liftT E v (evT E v x * y) := by rw [liftV_one_smul, liftT_mul]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `only [Matrix.mulVec, dotProduct, map_sum, mul_liftT, Matrix.map_apply]`.
+-/
 theorem mulVec_liftT {d : ℕ} (v : Pl F) (X : Matrix (Fin d) (Fin d) (AE F E)) (u : Fin d → Fv F v ⊗[F] E) :
     X *ᵥ (fun i => liftT E v (u i)) = fun i => liftT E v (((X.map (evT E v)) *ᵥ u) i) := by
   funext i
@@ -101,9 +132,15 @@ def latV {d : ℕ} (W : Spc F E d) (v : Pl F) : Submodule (v.adicCompletionInteg
     simp_rw [liftT_smul]
     exact smul_mem r.2 hu
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_latV {d : ℕ} {W : Spc F E d} {v : Pl F} {u : Fin d → Fv F v ⊗[F] E} :
     u ∈ latV W v ↔ (fun i => liftT E v (u i)) ∈ latAt W v := Iff.rfl
 
+/- English proof (translation)
+Rewrite using `[mem_latV]`. Use `hz using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Conclude with `liftT_evT_of_at (at_of_mem hz i)`.
+-/
 theorem evT_mem_latV {d : ℕ} {W : Spc F E d} {v : Pl F} {z : Fin d → AE F E} (hz : z ∈ latAt W v) :
     (fun i => evT E v (z i)) ∈ latV W v := by
   rw [mem_latV]
@@ -111,6 +148,15 @@ theorem evT_mem_latV {d : ℕ} {W : Spc F E d} {v : Pl F} {z : Fin d → AE F E}
   funext i
   exact liftT_evT_of_at (at_of_mem hz i)
 
+/- English proof (translation)
+Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Introduce `hu`. Take `⟨w, hw⟩` from `hu.exists_right_inv`. Establish `hval : Valued.v (algebraMap F (Fv F v) ((p : 𝓞 F) : F)) = v.valuation F ((p : 𝓞 F) : F)` using `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v _`. Establish `hlt : v.valuation F ((p : 𝓞 F) : F) < 1` using `(v.valuation_lt_one_iff_mem _).2 hp`.
+
+Establish `hpF : algebraMap F (Fv F v) ((p : 𝓞 F) : F) = ((p : v.adicCompletionIntegers F) : Fv F v)`. Use `push_cast`. Both sides reduce to the same expression. Rewrite `hval` using `[hpF]`. Establish `h1 : ((p : v.adicCompletionIntegers F) : Fv F v) * (w : Fv F v) = 1`.
+
+Rewrite using `[← Subring.coe_mul, hw]`. Both sides reduce to the same expression. Establish `h2 : Valued.v (w : Fv F v) ≤ 1` using `w.2`. Establish `h3` using `congrArg Valued.v h1`. Rewrite `h3` using `[map_mul, map_one, hval]`.
+
+Establish `h4 : v.valuation F ((p : 𝓞 F) : F) * Valued.v (w : Fv F v) < 1` using `lt_of_le_of_lt (mul_le_of_le_one_right' h2) hlt`. Conclude with `absurd h3 h4.ne`.
+-/
 theorem natCast_mem_maximalIdeal (v : Pl F) {p : ℕ} (hp : (p : 𝓞 F) ∈ v.asIdeal) :
     (p : v.adicCompletionIntegers F) ∈ IsLocalRing.maximalIdeal (v.adicCompletionIntegers F) := by
   rw [IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]
@@ -133,6 +179,17 @@ theorem natCast_mem_maximalIdeal (v : Pl F) {p : ℕ} (hp : (p : 𝓞 F) ∈ v.a
     lt_of_le_of_lt (mul_le_of_le_one_right' h2) hlt
   exact absurd h3 h4.ne
 
+/- English proof (translation)
+Set `f : (Fin d → Fv F v ⊗[F] E) →ₗ[v.adicCompletionIntegers F] (Fin d → Fv F v ⊗[F] E)` to `{ toFun := fun y => (M.map (evT E v)) *ᵥ y map_add' := Matrix.mulVec_add _ map_smul' := fun r y => Matrix.mulVec_smul _ _ _ }`. Establish `hJ : Ideal.span {(p : v.adicCompletionIntegers F)} ≤ (⊥ : Ideal (v.adicCompletionIntegers F)).jacobson`. Rewrite using `[IsLocalRing.jacobson_eq_maximalIdeal ⊥ bot_ne_top, Ideal.span_le, Set.singleton_subset_iff]`. Conclude with `natCast_mem_maximalIdeal v hp`. Establish `key` using `Submodule.le_of_le_smul_of_le_jacobson_bot (N := (latV W v).map f) hfg hJ ?_`.
+
+Introduce `u hu`. Take `⟨y, hy, e⟩` from `Submodule.mem_map.1 (key hu)`. Conclude with `⟨y, hy, e.symm⟩`. Introduce `u hu`. Take `⟨y, hy, y', hy', e⟩` from `hsurj _ hu`.
+
+Establish `hyv` using `evT_mem_latV hy`. Establish `hyv'` using `evT_mem_latV hy'`. Establish `hy_eq : y = fun i => liftT E v (evT E v (y i))` using `funext fun i => (liftT_evT_of_at (at_of_mem hy i)).symm`. Rewrite `e` using `[hy_eq, mulVec_liftT]`. Establish `hu' : u = f (fun i => evT E v (y i)) + (p : v.adicCompletionIntegers F) • fun i => evT E v (y' i)`.
+
+Use function extensionality and compare the values at `i`. Use `congrArg (fun z => evT E v (z i)) e` as an intermediate fact. Simplify using `only [Pi.add_apply, Pi.smul_apply, map_add, map_nsmul, evT_liftT] at this`. Rewrite using `[this, Pi.add_apply, Pi.smul_apply, Nat.cast_smul_eq_nsmul]`. Both sides reduce to the same expression.
+
+Rewrite using `[hu']`. Conclude with `Submodule.add_mem_sup (Submodule.mem_map_of_mem hyv) (Submodule.smul_mem_smul (Ideal.subset_span rfl) hyv')`.
+-/
 theorem latV_le {d : ℕ} {W : Spc F E d} {v : Pl F} {p : ℕ} (hp : (p : 𝓞 F) ∈ v.asIdeal) (hfg : (latV W v).FG)
     (M : Matrix (Fin d) (Fin d) (AE F E))
     (hsurj : ∀ z ∈ latAt W v, ∃ y ∈ latAt W v, ∃ y' ∈ latAt W v, z = M *ᵥ y + p • y') :
@@ -175,8 +232,14 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 def oneT (v : Pl F) (d : ℕ) : (Fin d → E) →ₗ[F] (Fin d → Fv F v ⊗[F] E) :=
   LinearMap.pi fun i => (TensorProduct.mk F (Fv F v) E 1).comp (LinearMap.proj i)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem oneT_apply (v : Pl F) {d : ℕ} (x : Fin d → E) (i : Fin d) : oneT v d x i = (1 : Fv F v) ⊗ₜ[F] x i := rfl
 
+/- English proof (translation)
+Rewrite using `[mem_latV]`. Use `AddSubgroup.subset_closure ⟨GlobalTheory.LatVac.liftV v 1, GlobalTheory.LatVac.at_liftV v 1, by rw [GlobalTheory.LatVac.evFin_liftV]; exact one_mem _, y, hy, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Rewrite using `[oneT_apply, liftT_tmul, Pi.smul_apply, show inclR (F := F) (AF F) (y i) = (1 : AF F) ⊗ₜ[F] y i from rfl, TensorProduct.smul_tmul', smul_eq_mul, mul_one]`.
+-/
 theorem oneT_mem {d : ℕ} {W : Spc F E d} (v : Pl F) {y : Fin d → E} (hy : y ∈ W.L) : oneT v d y ∈ latV W v := by
   rw [mem_latV]
   refine AddSubgroup.subset_closure ⟨GlobalTheory.LatVac.liftV v 1, GlobalTheory.LatVac.at_liftV v 1,
@@ -185,6 +248,25 @@ theorem oneT_mem {d : ℕ} {W : Spc F E d} (v : Pl F) {y : Fin d → E} (hy : y 
   rw [oneT_apply, liftT_tmul, Pi.smul_apply, show inclR (F := F) (AF F) (y i) = (1 : AF F) ⊗ₜ[F] y i from rfl,
     TensorProduct.smul_tmul', smul_eq_mul, mul_one]
 
+/- English proof (translation)
+Take `⟨G, hG⟩` from `(hL.fg.restrictScalars (R := ℤ))`. Set `φ : (Fin d → E) →ₗ[ℤ] (Fin d → Fv F v ⊗[F] E)` to `(oneT v d).restrictScalars ℤ`. Establish `hφ : ∀ y ∈ W.L, oneT v d y ∈ Submodule.span (v.adicCompletionIntegers F) (oneT v d '' G)`. Introduce `y hy`. Establish `hy' : y ∈ Submodule.span ℤ (G : Set (Fin d → E))` using `by rw [hG]; exact hy`.
+
+Establish `h1 : φ y ∈ (Submodule.span ℤ (G : Set (Fin d → E))).map φ` using `Submodule.mem_map_of_mem hy'`. Rewrite `h1` using `[Submodule.map_span]`. Conclude with `Submodule.span_le_restrictScalars ℤ _ _ h1`. Use `⟨G.image (oneT v d), le_antisymm ?_ ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.coe_image, Submodule.span_le]`.
+
+Introduce and unpack `_ ⟨g, hg, rfl⟩`. Establish `hg' : g ∈ W.L.restrictScalars ℤ` using `hG ▸ Submodule.subset_span hg`. Conclude with `oneT_mem v hg'`. Introduce `u hu`. Rewrite using `[Finset.coe_image]`.
+
+Establish `key : ∀ z ∈ latAt W v, (fun i => evT E v (z i)) ∈ Submodule.span (v.adicCompletionIntegers F) (oneT v d '' G)`. Introduce `z hz`. Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨a, -, haO, y, hy, rfl⟩` from `hz`.
+
+Establish `e : (fun i => evT E v ((a • fun i => inclR (F` using `F) (AF F) (y i)) i)) = (⟨evFin F v a, haO⟩ : v.adicCompletionIntegers F) • oneT v d y := by`. Use function extensionality and compare the values at `i`. Rewrite using `[Pi.smul_apply, evT_smul, Pi.smul_apply, oneT_apply]`. Use `show evFin F v a • evT E v ((1 : AF F) ⊗ₜ[F] y i) = evFin F v a • ((1 : Fv F v) ⊗ₜ[F] y i)`. Use `congr 1`.
+
+Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ _ (hφ y hy)`. Consider the case `zero`. Use `zero_mem (Submodule.span (v.adicCompletionIntegers F) (oneT v d '' (G : Set (Fin d → E)))) using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`.
+
+Simplify using the standard rewrite rules. Consider the case `add x y _ _ hx hy`. Use `add_mem hx hy using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules.
+
+Consider the case `neg x _ hx`. Use `neg_mem hx using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Use `key _ hu using 1` and compare the differences between its conclusion and the goal.
+
+Use function extensionality and compare the values at `i`. Rewrite using `[evT_liftT]`.
+-/
 theorem latV_fg {d : ℕ} {W : Spc F E d} (hL : W.L.IsLattice E) (v : Pl F) : (latV W v).FG := by
   obtain ⟨G, hG⟩ := (hL.fg.restrictScalars (R := ℤ))
   let φ : (Fin d → E) →ₗ[ℤ] (Fin d → Fv F v ⊗[F] E) := (oneT v d).restrictScalars ℤ
@@ -237,6 +319,25 @@ open GlobalTheory.InertLocField
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Set `T` to `LinearMap.range (Matrix.mulVecLin Mv)`. Set `S : Submodule E (Fin d → E)` to `{ carrier := {x | oneT v d x ∈ T} add_mem' := fun {a b} ha hb => by`. Simplify using `only [Set.mem_setOf_eq, map_add] at ha hb ⊢`. Conclude with `add_mem ha hb`. Use the proof step `zero_mem' := by`.
+
+Simplify using `only [Set.mem_setOf_eq, map_zero]`. Conclude with `zero_mem _`. Use the proof step `smul_mem' := fun e x hx => by`. Establish `he : oneT v d (e • x) = ((1 : Fv F v) ⊗ₜ[F] e) • oneT v d x`. Use function extensionality and compare the values at `i`.
+
+Rewrite using `[oneT_apply, Pi.smul_apply, Pi.smul_apply, oneT_apply, smul_eq_mul, smul_eq_mul, Algebra.TensorProduct.tmul_mul_tmul, one_mul]`. Simplify using `only [Set.mem_setOf_eq] at hx ⊢`. Rewrite using `[he]`. Conclude with `T.smul_mem _ hx }`. Establish `hLS : Submodule.span E (W.L : Set (Fin d → E)) ≤ S`.
+
+Rewrite using `[Submodule.span_le]`. Introduce `y hy`. Take `⟨y', e⟩` from `h _ (oneT_mem v hy)`. Conclude with `⟨y', e.symm⟩`. Establish `hT : ∀ x, oneT v d x ∈ T` using `fun x => hLS (by rw [hL.span_eq_top]; trivial)`.
+
+Establish `hsingle : ∀ (i : Fin d) (b : Fv F v ⊗[F] E), Pi.single i b ∈ T`. Introduce `i b`. Proceed by induction on `b using TensorProduct.induction_on with`. Consider the case `zero => rw [Pi.single_zero]`. Conclude with `zero_mem _`.
+
+Consider the case `add x y hx hy => rw [Pi.single_add]`. Conclude with `add_mem hx hy`. Consider the case `tmul t e`. Establish `he : Pi.single i (t ⊗ₜ[F] e) = (t ⊗ₜ[F] (1 : E)) • oneT v d (Pi.single i e)`. Use function extensionality and compare the values at `j`.
+
+Rewrite using `[Pi.smul_apply, oneT_apply, smul_eq_mul, Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, hj]`.
+
+Rewrite using `[he]`. Conclude with `T.smul_mem _ (hT _)`. Introduce `w`. Establish `hw : w ∈ T`. Rewrite using `[← Finset.univ_sum_single w]`.
+
+Conclude with `sum_mem fun i _ => hsingle i (w i)`. Take `⟨y, hy⟩` from `hw`. Conclude with `⟨y, hy⟩`.
+-/
 theorem mulVec_surj {d : ℕ} {W : Spc F E d} (hL : W.L.IsLattice E) (v : Pl F)
     (Mv : Matrix (Fin d) (Fin d) (Fv F v ⊗[F] E)) (h : ∀ u ∈ latV W v, ∃ y, u = Mv *ᵥ y) :
     Function.Surjective (Mv *ᵥ ·) := by
@@ -284,6 +385,11 @@ theorem mulVec_surj {d : ℕ} {W : Spc F E d} (hL : W.L.IsLattice E) (v : Pl F)
   obtain ⟨y, hy⟩ := hw
   exact ⟨y, hy⟩
 
+/- English proof (translation)
+Use extensionality with `i j`. Establish `a` using `congrFun (congrFun h1 i) j`. Establish `b` using `congrFun (congrFun h2 i) j`. Simplify using `only [Matrix.map_apply, Matrix.smul_apply] at a b`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[sub_smul, one_smul, sub_add_cancel]`. Use `_ = (1 - GlobalTheory.LatVac.liftV v 1 : AF F) • Y i j + GlobalTheory.LatVac.liftV v 1 • Y i j := by`. Rewrite using `[b, liftV_one_smul, liftV_one_smul, a]`. Use `_ = Y i j := by rw [sub_smul, one_smul, sub_add_cancel]`.
+-/
 theorem mat_ext {d : ℕ} (v : Pl F) {X Y : Matrix (Fin d) (Fin d) (AE F E)} (h1 : X.map (evT E v) = Y.map (evT E v))
     (h2 : (1 - GlobalTheory.LatVac.liftV v 1 : AF F) • X = (1 - GlobalTheory.LatVac.liftV v 1 : AF F) • Y) : X = Y := by
   ext i j
@@ -302,6 +408,27 @@ noncomputable section
 namespace GlobalTheory.InertSph
 open GlobalTheory.InertLocField GlobalTheory.InertSph.Invert
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ d W hL v p hp c hc M hMc _ hsurj`. Establish `hN` using `latV_le hp (latV_fg hL v) M hsurj`. Establish `hS` using `mulVec_surj hL v (M.map (evT E v)) (fun u hu => by`. Take `⟨y, -, e⟩` from `hN u hu`. Conclude with `⟨y, e⟩)`.
+
+Establish `hdet : IsUnit (M.map (evT E v)).det` using `(Matrix.isUnit_iff_isUnit_det _).1 (Matrix.mulVec_surjective_iff_isUnit.1 hS)`. Use `set Nv := (M.map (evT E v))⁻¹ with hNv`. Use `set s : AF F := 1 - GlobalTheory.LatVac.liftV v 1 with hs`. Establish `hs0 : evFin F v s = 0` using `evFin_one_sub v`. Establish `hss : s * s = s`.
+
+Establish `he : GlobalTheory.LatVac.liftV v (1 : Fv F v) * GlobalTheory.LatVac.liftV v 1 = GlobalTheory.LatVac.liftV v 1`. Rewrite using `[← liftV_mul, mul_one]`. Rewrite using `[hs, sub_mul, one_mul, mul_sub, mul_one, he, sub_self, sub_zero]`. Set `M' : Matrix (Fin d) (Fin d) (AE F E)` to `((↑hc.unit⁻¹ : AF F) * s) • (1 : Matrix (Fin d) (Fin d) (AE F E)) + Nv.map (liftT E v)`. Establish `hM'v : M'.map (evT E v) = Nv`.
+
+Use extensionality with `i j`. Simplify using `only [M', Matrix.map_apply, Matrix.add_apply, Matrix.smul_apply, map_add, evT_smul, map_mul, hs0, mul_zero, zero_smul, zero_add, evT_liftT]`. Establish `hsM : s • M = (s * c) • (1 : Matrix (Fin d) (Fin d) (AE F E))`. Use `hMc s hs0` as an intermediate fact. Rewrite `this` using `[smul_sub, sub_eq_zero]`.
+
+Rewrite using `[this, smul_smul]`. Establish `hmul : M * M' = 1`. Apply `mat_ext v` to reduce the goal to its premises. Establish `h1 : (M * M').map (evT E v) = M.map (evT E v) * M'.map (evT E v)`. Use extensionality with `i j`.
+
+Simplify using `only [Matrix.map_apply, Matrix.mul_apply, map_sum, map_mul]`. Rewrite using `[h1, hM'v, hNv, Matrix.mul_nonsing_inv _ hdet]`. Use extensionality with `i j`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality.
+
+Simplify using the standard rewrite rules. Simplify using `[Matrix.one_apply, hij]`. Rewrite using `[← hs, ← Matrix.smul_mul, hsM, Matrix.smul_mul, Matrix.one_mul]`. Simplify using `only [M', smul_add, smul_smul]`. Establish `h0 : (s * c) • Nv.map (liftT E v) = 0`.
+
+Use extensionality with `i j`. Rewrite using `[Matrix.smul_apply, Matrix.map_apply, mul_comm, mul_smul, at_liftT v _ s hs0, smul_zero, Matrix.zero_apply]`. Rewrite using `[h0, add_zero]`. Use `congr 1`. Rewrite using `[mul_assoc, ← mul_assoc c, hc.mul_val_inv, one_mul, hss]`.
+
+Use `⟨M', hmul, mul_eq_one_comm.1 hmul, fun z hz => ?_⟩` and prove the remaining obligations. Take `⟨y, hy, hu⟩` from `hN _ (evT_mem_latV hz)`. Establish `hz' : z = fun i => liftT E v (evT E v (z i))` using `funext fun i => (liftT_evT_of_at (at_of_mem hz i)).symm`. Rewrite using `[hz', mulVec_liftT, hM'v]`. Establish `: (fun i => evT E v (z i)) = (M.map (evT E v)) *ᵥ y` using `hu`.
+
+Rewrite using `[this, Matrix.mulVec_mulVec, hNv, Matrix.nonsing_inv_mul _ hdet, Matrix.one_mulVec]`. Conclude with `hy`.
+-/
 theorem exists_inv_keeps_latAt : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (d : ℕ) (W : Spc F E d),
     W.L.IsLattice E → ∀ (v : Pl F) (p : ℕ), (p : 𝓞 F) ∈ v.asIdeal → ∀ c : AF F, IsUnit c →
     ∀ M : Matrix (Fin d) (Fin d) (AE F E), At (evFin F v) (M - c • (1 : Matrix (Fin d) (Fin d) (AE F E))) →

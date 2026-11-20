@@ -12,6 +12,21 @@ namespace Formalism.L2.Th1.Top
 open Formalism.L2.Th1.A (logSer expSer)
 open Formalism.G (unitBall)
 
+/- English proof (translation)
+Introduce `d L hd hCM ι W hU hI ha1 ω₀ hω hn1 hn2 n _ κ _ r s N hr hN hodd hs`. Take `⟨-, -, hG⟩` from `h d L hd hCM ι W hU hI ha1 ω₀ hω hn1 hn2`. Use `set R := unitBall ℂ_[2] with hR`. Establish `hmem : ∀ a : ℂ_[2], a ∈ R ↔ ‖a‖ ≤ 1` using `fun a => Iff.rfl`. Take `⟨h1, h2, h3, h4, h6, -⟩` from `hI`.
+
+Establish `hco` using `Formalism.L2.Th1.A.coeffMem ℂ_[2] W R ((hmem _).2 h1) ((hmem _).2 h2) ((hmem _).2 h3) ((hmem _).2 h4) ((hmem _).2 h6)`. Establish `hlog` using `Formalism.L2.Th1.A.logSpec ℂ_[2] W`. Establish `hexp` using `Formalism.L2.Th1.A.expSpec ℂ_[2] W`. Establish `hLP : C.IsLogPair (logSer W) (expSer W)` using `⟨hlog.1, hlog.2.1, hexp.1, hexp.2.2.2.1, hexp.2.2.1⟩`. Establish `hOU : C.IsOneUnit R (PowerSeries.derivative ℂ_[2] (logSer W))`.
+
+Rewrite using `[hlog.2.2.1]`. Use `⟨?_, hco.2.2.2.2.1⟩` and prove the remaining obligations. Simplify using `[Formalism.L2.Th1.A.om]`. Use `set T : κ → n → PowerSeries ℂ_[2] := fun k i => E.inW 2 ι W (F.opU L (s k i) (F.th0 L (ω₀ / 2))) with hT`. Establish `hTI : ∀ k i, E.IntS (T k i)` using `fun k i => (hG (s k i) N hN hodd (hs k i)).1`.
+
+Establish `hInt : DworkPowerSeriesWeights.Integral (E.thetaProd r T)` using `(E.prodInt ℂ_[2] κ n 0 r T (by simp) hr hTI).2`. Establish `hIM : C.IntMv R (E.thetaProd r T)` using `fun m => (hmem _).2 (hInt m)`. Establish `hJ` using `G.jetsIn_toZ hLP hOU hIM`. Establish `heq : G.toZ (expSer W) (E.thetaProd r T) = thetaZ 2 L ι ω₀ r s`. Rewrite using `[KJ.toZ_thetaProd hexp.1]`.
+
+Unfold `thetaZ`. Use `congr 1`. Use function extensionality and compare the values at `k i`. Simplify using `only [hT, E.inW]`. Rewrite using `[PowerSeries.subst_comp_subst_apply (PowerSeries.HasSubst.of_constantCoeff_zero' hlog.1) (PowerSeries.HasSubst.of_constantCoeff_zero' hexp.1), hexp.2.2.1, PowerSeries.X_subst]`.
+
+Rewrite `hJ` using `[heq]`. Establish `hJI : DworkPowerSeriesWeights.JetsIntegral (thetaZ 2 L ι ω₀ r s)` using `(G.jets_in_norm_holds ℂ_[2] n _).2 hJ`. Use `⟨hJI, fun P hP => ?_⟩` and prove the remaining obligations. Use `show DworkPowerSeriesWeights.jetPair P (thetaZ 2 L ι ω₀ r s) ∈ R`. Unfold `DworkPowerSeriesWeights.jetPair`.
+
+Use `Subring.sum_mem _ fun m _ => ?_` and prove the remaining obligations. Rewrite using `[mul_assoc]`. Conclude with `Subring.mul_mem _ ((hmem _).2 (hP m)) ((hmem _).2 (hJI m))`.
+-/
 theorem IntOpTwoOrth_of (h : Formalism.L2.Th1.B.ThetaZeroTwoCM) : IntOpTwoOrth := by
   intro d L hd hCM ι W hU hI ha1 ω₀ hω hn1 hn2 n _ κ _ r s N hr hN hodd hs
   obtain ⟨-, -, hG⟩ := h d L hd hCM ι W hU hI ha1 ω₀ hω hn1 hn2
@@ -51,6 +66,9 @@ theorem IntOpTwoOrth_of (h : Formalism.L2.Th1.B.ThetaZeroTwoCM) : IntOpTwoOrth :
   rw [mul_assoc]
   exact Subring.mul_mem _ ((hmem _).2 (hP m)) ((hmem _).2 (hJI m))
 
+/- English proof (translation)
+The claim follows from `IntOpTwoOrth_of Formalism.L2.Th1.B.th0TwoCM`.
+-/
 theorem integral_operator_two_orthogonal : IntOpTwoOrth := IntOpTwoOrth_of Formalism.L2.Th1.B.th0TwoCM
 
 end Formalism.L2.Th1.Top

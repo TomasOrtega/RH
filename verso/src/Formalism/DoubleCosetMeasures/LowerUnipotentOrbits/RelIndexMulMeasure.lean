@@ -9,18 +9,30 @@ variable {F : Type} [Field F] (O : Subring F) {a : ℕ}
 def intM (M : Matrix (Fin a) (Fin a) F) (h : IsInt O M) : Matrix (Fin a) (Fin a) O :=
   fun i j => ⟨M i j, h i j⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem map_intM (M : Matrix (Fin a) (Fin a) F) (h : IsInt O M) : (intM O M h).map O.subtype = M :=
   rfl
 
+/- English proof (translation)
+The claim follows from `Matrix.map_injective Subtype.val_injective`.
+-/
 theorem map_sub_inj : Function.Injective
     (fun M : Matrix (Fin a) (Fin a) O => M.map O.subtype) :=
   Matrix.map_injective Subtype.val_injective
 
+/- English proof (translation)
+Apply `map_sub_inj O` to reduce the goal to its premises. Simplify using `only [Matrix.map_mul, map_intM]`.
+-/
 theorem intM_mul (M N : Matrix (Fin a) (Fin a) F) (hM : IsInt O M) (hN : IsInt O N)
     (hMN : IsInt O (M * N)) : intM O (M * N) hMN = intM O M hM * intM O N hN := by
   apply map_sub_inj O
   simp only [Matrix.map_mul, map_intM]
 
+/- English proof (translation)
+Apply `map_sub_inj O` to reduce the goal to its premises. Simplify using `only [map_intM, Matrix.map_one _ (map_zero O.subtype) (map_one O.subtype)]`.
+-/
 theorem intM_one (h : IsInt O (1 : Matrix (Fin a) (Fin a) F)) :
     intM O (1 : Matrix (Fin a) (Fin a) F) h = 1 := by
   apply map_sub_inj O
@@ -52,6 +64,9 @@ variable (ϖ : F) (hϖ : ϖ ∈ O)
 def red : GLint O a →* GL (Fin a) (kF O ϖ hϖ) :=
   (Matrix.GeneralLinearGroup.map (Ideal.Quotient.mk (Ideal.span {(⟨ϖ, hϖ⟩ : O)}))).comp (toO O a)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem red_val (g : GLint O a) (i j : Fin a) :
     ((red O a ϖ hϖ g : GL (Fin a) (kF O ϖ hϖ)) : Matrix (Fin a) (Fin a) (kF O ϖ hϖ)) i j =
       Ideal.Quotient.mk _ ⟨((g : GL (Fin a) F) : Matrix (Fin a) (Fin a) F) i j, g.2.1 i j⟩ :=
@@ -59,6 +74,11 @@ theorem red_val (g : GLint O a) (i j : Fin a) :
 
 variable {a}
 
+/- English proof (translation)
+Rewrite using `[Ideal.mem_span_singleton']`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, hc⟩`. Establish `: (x : F) = c * ϖ` using `by rw [← hc]; rfl`. Rewrite using `[this, mul_comm (c : F), ← mul_assoc, inv_mul_cancel₀ hϖ0, one_mul]`.
+
+Conclude with `c.2`. Introduce `h`. Use `⟨⟨_, h⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `ϖ⁻¹ * (x : F) * ϖ = x`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem mem_span_iff (hϖ0 : ϖ ≠ 0) (x : O) :
     x ∈ Ideal.span {(⟨ϖ, hϖ⟩ : O)} ↔ ϖ⁻¹ * (x : F) ∈ O := by
   rw [Ideal.mem_span_singleton']
@@ -71,14 +91,29 @@ theorem mem_span_iff (hϖ0 : ϖ ≠ 0) (x : O) :
     change ϖ⁻¹ * (x : F) * ϖ = x
     field_simp
 
+/- English proof (translation)
+Apply the tactic sequence `rw [Matrix.one_apply, Matrix.one_apply]; split_ifs <;> simp`.
+-/
 theorem one_kF (i j : Fin a) : (1 : Matrix (Fin a) (Fin a) (kF O ϖ hϖ)) i j =
     Ideal.Quotient.mk _ ((1 : Matrix (Fin a) (Fin a) O) i j) := by
   rw [Matrix.one_apply, Matrix.one_apply]; split_ifs <;> simp
 
+/- English proof (translation)
+Apply the tactic sequence `rw [Matrix.one_apply, Matrix.one_apply]; split_ifs <;> simp`.
+-/
 theorem one_coe (i j : Fin a) :
     (((1 : Matrix (Fin a) (Fin a) O) i j : O) : F) = (1 : Matrix (Fin a) (Fin a) F) i j := by
   rw [Matrix.one_apply, Matrix.one_apply]; split_ifs <;> simp
 
+/- English proof (translation)
+Use extensionality with `g`. Rewrite using `[MonoidHom.mem_ker, Subgroup.mem_subgroupOf]`. Express the relevant statement in the definitionally equal form `_ ↔ (g : GL (Fin a) F) ∈ GLint O a ∧ _`. Establish `key : ∀ i j, ((red O a ϖ hϖ g : GL (Fin a) (kF O ϖ hϖ)) : Matrix (Fin a) (Fin a) _) i j = (1 : Matrix (Fin a) (Fin a) (kF O ϖ hϖ)) i j ↔ (ϖ⁻¹ • (((g : GL (Fin a) F) : Matrix (Fin a) (Fin a) F) - 1)) i j ∈ O`. Introduce `i j`.
+
+Rewrite using `[red_val, one_kF, Ideal.Quotient.eq, mem_span_iff O ϖ hϖ hϖ0]`. Simplify using `[Matrix.smul_apply, Matrix.sub_apply, one_coe]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨g.2, fun i j => (key i j).1 ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[h]`. Both sides reduce to the same expression. Introduce and unpack `⟨-, h⟩`. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`.
+
+Conclude with `(key i j).2 (h i j)`.
+-/
 theorem ker_red (hϖ0 : ϖ ≠ 0) :
     (red O a ϖ hϖ).ker = (congSub O ϖ a).subgroupOf (GLint O a) := by
   ext g
@@ -98,6 +133,11 @@ theorem ker_red (hϖ0 : ϖ ≠ 0) :
     apply Units.ext; ext i j
     exact (key i j).2 (h i j)
 
+/- English proof (translation)
+Apply `Ideal.Quotient.nontrivial_iff.mpr` to reduce the goal to its premises. Rewrite using `[Ne, Ideal.eq_top_iff_one, Ideal.mem_span_singleton']`. Introduce and unpack `⟨c, hc⟩`. Establish `h1 : (c : F) * ϖ = 1` using `congrArg Subtype.val hc`. Apply `hloc.1` to reduce the goal to its premises.
+
+Rewrite using `[← eq_inv_of_mul_eq_one_left h1]`. Conclude with `c.2`.
+-/
 theorem nontriv (hloc : IsLocalAt O ϖ) : Nontrivial (kF O ϖ hϖ) := by
   apply Ideal.Quotient.nontrivial_iff.mpr
   rw [Ne, Ideal.eq_top_iff_one, Ideal.mem_span_singleton']
@@ -108,6 +148,23 @@ theorem nontriv (hloc : IsLocalAt O ϖ) : Nontrivial (kF O ϖ hϖ) := by
 
 variable (a)
 
+/- English proof (translation)
+Introduce `gb`. Use `nontriv O ϖ hϖ hloc` as an intermediate fact. Set `G0 : Matrix (Fin a) (Fin a) O` to `fun i j => (Ideal.Quotient.mk_surjective (gb.val i j)).choose`. Establish `hG0 : ∀ i j, Ideal.Quotient.mk _ (G0 i j) = gb.val i j` using `fun i j => (Ideal.Quotient.mk_surjective (gb.val i j)).choose_spec`. Establish `hG0' : G0.map (Ideal.Quotient.mk (Ideal.span {(⟨ϖ, hϖ⟩ : O)})) = gb.val`.
+
+Use extensionality with `i j`. Conclude with `hG0 i j`. Establish `hdet : Ideal.Quotient.mk (Ideal.span {(⟨ϖ, hϖ⟩ : O)}) G0.det = gb.val.det`. Rewrite using `[RingHom.map_det, RingHom.mapMatrix_apply, hG0']`. Establish `hdetu : IsUnit (Ideal.Quotient.mk (Ideal.span {(⟨ϖ, hϖ⟩ : O)}) G0.det)`.
+
+Rewrite using `[hdet]`. Conclude with `(Matrix.isUnit_iff_isUnit_det _).mp gb.isUnit`. Establish `hnot : G0.det ∉ Ideal.span {(⟨ϖ, hϖ⟩ : O)}` using `fun h => by`. Rewrite `h` using `[← Ideal.Quotient.eq_zero_iff_mem]`. Rewrite `hdetu` using `[h]`.
+
+Conclude with `not_isUnit_zero hdetu`. Establish `hnot' : ∀ o ∈ O, (G0.det : F) ≠ ϖ * o`. Introduce `o ho he`. Apply `hnot` to reduce the goal to its premises. Rewrite using `[Ideal.mem_span_singleton']`.
+
+Conclude with `⟨⟨o, ho⟩, Subtype.ext (by simp [he, mul_comm])⟩`. Establish `hinv : (G0.det : F)⁻¹ ∈ O` using `hloc.2 _ G0.det.2 hnot'`. Establish `hne : (G0.det : F) ≠ 0` using `by simpa using hnot' 0 O.zero_mem`. Establish `hu : IsUnit G0.det` using `⟨⟨G0.det, ⟨_, hinv⟩, Subtype.ext (by simp [hne]), Subtype.ext (by simp [hne])⟩, rfl⟩`. Set `U : GL (Fin a) O` to `((Matrix.isUnit_iff_isUnit_det G0).mpr hu).unit`.
+
+Set `g : GL (Fin a) F` to `Matrix.GeneralLinearGroup.map O.subtype U`. Establish `hg : g ∈ GLint O a`. Use `⟨fun i j => ?_, fun i j => ?_⟩` and prove the remaining obligations. Conclude with `((U : Matrix (Fin a) (Fin a) O) i j).2`. Rewrite using `[← map_inv]`.
+
+Conclude with `(((U⁻¹ : GL (Fin a) O) : Matrix (Fin a) (Fin a) O) i j).2`. Use `⟨⟨g, hg⟩, ?_⟩` and prove the remaining obligations. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Rewrite using `[red_val]`.
+
+Conclude with `hG0 i j`.
+-/
 theorem red_surj (hloc : IsLocalAt O ϖ) : Function.Surjective (red O a ϖ hϖ) := by
   intro gb
   have := nontriv O ϖ hϖ hloc
@@ -140,6 +197,9 @@ theorem red_surj (hloc : IsLocalAt O ϖ) : Function.Surjective (red O a ϖ hϖ) 
   rw [red_val]
   exact hG0 i j
 
+/- English proof (translation)
+Rewrite using `[← ker_red O ϖ hϖ hϖ0]`. Conclude with `Nat.card_congr (QuotientGroup.quotientKerEquivOfSurjective _ (red_surj O a ϖ hϖ hloc)).toEquiv`.
+-/
 theorem card_eq (hϖ0 : ϖ ≠ 0) (hloc : IsLocalAt O ϖ) :
     Nat.card ((GLint O a) ⧸ (congSub O ϖ a).subgroupOf (GLint O a)) =
       Nat.card (GL (Fin a) (kF O ϖ hϖ)) := by
@@ -150,6 +210,9 @@ end Formalism.DoubleCosetMeasures.P.GLRed
 
 namespace Formalism.DoubleCosetMeasures.P
 
+/- English proof (translation)
+Introduce `F _ O ϖ hϖ hϖ0 hloc _ a`. Conclude with `GLRed.card_eq O a ϖ hϖ hϖ0 hloc`.
+-/
 theorem glRed : Formalism.DoubleCosetMeasures.GLRed := by
   intro F _ O ϖ hϖ hϖ0 hloc _ a
   exact GLRed.card_eq O a ϖ hϖ hϖ0 hloc
@@ -158,6 +221,19 @@ end Formalism.DoubleCosetMeasures.P
 
 namespace Formalism.DoubleCosetMeasures.P.GLRed
 
+/- English proof (translation)
+Take `⟨s, hs, -⟩` from `(H.subgroupOf L).exists_isComplement_left 1`. Establish `hs' : Finite s` using `hs.finite_left_iff.mpr inferInstance`. Establish `hU : (⋃ a : s, (a.val : L) • (H : Set G)) = (L : Set G)`. Use extensionality with `x`. Simplify using `only [mem_iUnion, Set.mem_smul_set, SetLike.mem_coe]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, h, hh, rfl⟩`. Conclude with `L.mul_mem a.val.2 (hHL hh)`. Introduce `hx`. Take `⟨⟨b, h⟩, hbh, -⟩` from `hs.existsUnique ⟨x, hx⟩`.
+
+Use `⟨b, (h.val : G), Subgroup.mem_subgroupOf.mp h.2, ?_⟩` and prove the remaining obligations. Use `congrArg Subtype.val hbh` as an intermediate fact. Conclude with `this`. Establish `hdisj : Pairwise (Function.onFun Disjoint fun a : s => (a.val : L) • (H : Set G))`. Introduce `a b hab`.
+
+Rewrite using `[Function.onFun, Set.disjoint_left]`. Introduce and unpack `x ⟨h1, hh1, rfl⟩ ⟨h2, hh2, he⟩`. Apply `hab` to reduce the goal to its premises. Establish `hh1' : (⟨h1, hHL hh1⟩ : L) ∈ H.subgroupOf L` using `Subgroup.mem_subgroupOf.mpr hh1`. Establish `hh2' : (⟨h2, hHL hh2⟩ : L) ∈ H.subgroupOf L` using `Subgroup.mem_subgroupOf.mpr hh2`.
+
+Establish `e : (a.val : L) * ⟨h1, hHL hh1⟩ = (b.val : L) * ⟨h2, hHL hh2⟩` using `Subtype.ext he.symm`. Use `(hs.existsUnique ((a.val : L) * ⟨h1, hHL hh1⟩)).unique (y₁ := (a, ⟨_, hh1'⟩)) (y₂ := (b, ⟨_, hh2'⟩)) rfl e.symm` as an intermediate fact. Conclude with `congrArg Prod.fst this`. Combine the equalities or inequalities in the displayed calculation. Simplify using `[measure_smul, hs.encard_left, Subgroup.relIndex]`.
+
+Use `_ = μ (⋃ a : s, (a.val : L) • (H : Set G)) := (measure_iUnion hdisj fun a => hH.const_smul _).symm`. Use `_ = μ L := by rw [hU]`.
+-/
 theorem relIndex_mul_measure {G : Type*} [Group G] [MeasurableSpace G] [MeasurableMul G]
     (H L : Subgroup G) (hHL : H ≤ L) [(H.subgroupOf L).FiniteIndex]
     (hH : MeasurableSet (H : Set G)) (μ : Measure G) [μ.IsMulLeftInvariant] :
@@ -196,6 +272,11 @@ section Top
 
 variable {F : Type} [Field F] [TopologicalSpace F] [IsTopologicalRing F]
 
+/- English proof (translation)
+Establish `e : (congSub O ϖ a : Set (GL (Fin a) F)) = ((⋂ i, ⋂ j, (fun g : GL (Fin a) F => (g : Matrix (Fin a) (Fin a) F) i j) ⁻¹' (O : Set F)) ∩ (⋂ i, ⋂ j, (fun g : GL (Fin a) F => ((g⁻¹ : GL (Fin a) F) : Matrix (Fin a) (Fin a) F) i j) ⁻¹' (O : Set F))) ∩ (⋂ i, ⋂ j, (fun g : GL (Fin a) F = …`. Use extensionality with `g`. Simplify using `[congSub, GLint, IsInt]`. Rewrite using `[e]`. Use `IsOpen.inter (IsOpen.inter (isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j => hO.preimage ?_) (isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j => hO.preimage ?_)) (isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j => hO.preimage ?_)` and prove the remaining obligations.
+
+Conclude with `Units.continuous_val.matrix_elem i j`. Conclude with `Units.continuous_coe_inv.matrix_elem i j`. Conclude with `continuous_const.mul ((Units.continuous_val.matrix_elem i j).sub continuous_const)`.
+-/
 theorem congSub_open (O : Subring F) (hO : IsOpen (O : Set F)) (ϖ : F) (a : ℕ) :
     IsOpen (congSub O ϖ a : Set (GL (Fin a) F)) := by
   have e : (congSub O ϖ a : Set (GL (Fin a) F)) =
@@ -221,6 +302,17 @@ end Formalism.DoubleCosetMeasures.P.GLRed
 
 namespace Formalism.DoubleCosetMeasures.P
 
+/- English proof (translation)
+Introduce `F _ _ _ O hO ϖ hϖ hϖ0 hloc hfin a μ _ J' hKJ hJL`. Establish `hKL : congSub O ϖ a ≤ GLint O a` using `fun g hg => hg.1`. Establish `hcard` using `GLRed.card_eq O a ϖ hϖ hϖ0 hloc`. Establish `hfinGL : Finite (GL (Fin a) (kF O ϖ hϖ))`. Establish `: Finite (Matrix (Fin a) (Fin a) (kF O ϖ hϖ))` using `inferInstanceAs (Finite (Fin a → Fin a → kF O ϖ hϖ))`.
+
+Conclude with `Finite.of_injective _ Units.val_injective`. Establish `hpos : Nat.card (GL (Fin a) (kF O ϖ hϖ)) ≠ 0` using `Nat.card_pos.ne'`. Establish `hrel : (congSub O ϖ a).relIndex (GLint O a) = Nat.card (GL (Fin a) (kF O ϖ hϖ))`. Rewrite using `[← hcard]`. Both sides reduce to the same expression.
+
+Establish `hmul` using `Subgroup.relIndex_mul_relIndex (congSub O ϖ a) J' (GLint O a) hKJ hJL`. Establish `hJfin : J'.relIndex (GLint O a) ≠ 0`. Introduce `h0`. Rewrite `hmul` using `[h0, mul_zero, hrel]`. Conclude with `hpos hmul.symm`.
+
+Establish `: (J'.subgroupOf (GLint O a)).FiniteIndex` using `⟨hJfin⟩`. Establish `hJopen : IsOpen (J' : Set (GL (Fin a) F))` using `Subgroup.isOpen_mono hKJ (GLRed.congSub_open O hO ϖ a)`. Establish `hmeas` using `GLRed.relIndex_mul_measure J' (GLint O a) hJL hJopen.measurableSet μ`. Establish `hq : Nat.card (J' ⧸ (congSub O ϖ a).subgroupOf J') = (congSub O ϖ a).relIndex J'` using `rfl`. Rewrite using `[hq, ← hmeas, ← hrel, ← hmul]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem volJ : Formalism.DoubleCosetMeasures.VolJ := by
   intro F _ _ _ O hO ϖ hϖ hϖ0 hloc hfin a μ _ J' hKJ hJL
   have hKL : congSub O ϖ a ≤ GLint O a := fun g hg => hg.1

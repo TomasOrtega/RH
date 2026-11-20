@@ -8,6 +8,9 @@ open GlobalTheory.CuspRep GlobalTheory.WeilDeligne GlobalTheory.Pst GlobalTheory
 open GlobalTheory.GalCut GlobalTheory.UnitaryBC GlobalTheory.Cong GlobalTheory.DefU
 open MeasureTheory GroundTheory.Automorphic.Spherical UpperTheory.Gal.Gen
 
+/- English proof (translation)
+Take `⟨l, rfl⟩` from `Quotient.exists_rep B`. Establish `hl : l.length = a` using `hB`. Substitute `hl` using the available equality. Conclude with `⟨l.get, by rw [Fin.univ_val_map, List.ofFn_get]; rfl⟩`.
+-/
 private theorem exists_map_eq {α : Type} {a : ℕ} (B : Multiset α) (hB : Multiset.card B = a) :
     ∃ z : Fin a → α, Finset.univ.val.map z = B := by
   obtain ⟨l, rfl⟩ := Quotient.exists_rep B
@@ -15,6 +18,27 @@ private theorem exists_map_eq {α : Type} {a : ℕ} (B : Multiset α) (hB : Mult
   subst hl
   exact ⟨l.get, by rw [Fin.univ_val_map, List.ofFn_get]; rfl⟩
 
+/- English proof (translation)
+Introduce `hLoc E _ _ _ a K w hw hK`. Take `⟨C, hC⟩` from `hLoc E w a`. Use `⟨C, fun p hp => ?_⟩` and prove the remaining obligations. Take `⟨h, hdist, hsum, hact⟩` from `hC p hp`. Set `zf : SmIrr (GL (Fin a) (w.adicCompletion E)) → ℂ` to `fun σ => if hz : ∃ z : Fin a → ℂˣ, GlobalTheory.LFun.HasSatGL w σ.ρ (Finset.univ.val.map z) then evalAt hz.choose p else 0`.
+
+Establish `hop : ∀ (σ : SmIrr (GL (Fin a) (w.adicCompletion E))), ∀ v ∈ GlobalTheory.PRep.fixed σ.ρ (GlobalTheory.LFun.KGL w a), opOf σ.ρ h v = zf σ • v`. Introduce `σ v hv`. Distinguish the cases in `hv0 : v = 0`. Substitute `hv0` using the available equality. Simplify using `[opOf]`.
+
+Take `⟨B, hB⟩` from `GlobalTheory.SatInd.exists_hasSatGL_of_isIrreducible σ.smooth σ.irred ((Submodule.ne_bot_iff _).2 ⟨v, hv, hv0⟩)`. Take `⟨z, rfl⟩` from `exists_map_eq B (GlobalTheory.LFun.HasSatGL.card hB)`. Establish `hz : ∃ z : Fin a → ℂˣ, GlobalTheory.LFun.HasSatGL w σ.ρ (Finset.univ.val.map z)` using `⟨z, hB⟩`. Establish `hzf : zf σ = evalAt hz.choose p` using `dif_pos hz`. Rewrite using `[hzf]`.
+
+Conclude with `hact σ _ hz.choose_spec v hv`. Take `⟨hKo, hKc⟩` from `GlobalTheory.LFun.SatCompare.isOpen_isCompact_KGL (E := E) w a`. Take `⟨h', hsup, hU⟩` from `GlobalTheory.T.localOperator_acts_by_localComponentScalar E a w hw (GlobalTheory.LFun.KGL w a) hKc hKo h zf hop`. Take `⟨e, he⟩` from `GlobalTheory.locU_equiv_GL E a w hw`. Establish `hinj : ∀ g ∈ locU a w, ∀ g' ∈ locU a w, cLoc w g = cLoc w g' → g = g'`.
+
+Introduce `g hg g' hg' hgg`. Establish `: (⟨g, hg⟩ : locU a w) = ⟨g', hg'⟩` using `e.injective (by rw [he, he]; exact hgg)`. Conclude with `congrArg Subtype.val this`. Establish `hmem : ∀ g ∈ h'.support, cLoc w g ∈ h.support`. Introduce `g hg`.
+
+Rewrite using `[Finsupp.mem_support_iff, ← (hsup g hg).2]`. Conclude with `Finsupp.mem_support_iff.1 hg`. Use `⟨h', fun g hg => (hsup g hg).1, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `g hg g' hg' hgK`. Establish `hl : g⁻¹ * g' ∈ locU a w` using `(locU a w).mul_mem ((locU a w).inv_mem (hsup g hg).1) (hsup g' hg').1`.
+
+Establish `hk` using `(hK _ hl).1 hgK`. Rewrite `hk` using `[map_mul, map_inv]`. Conclude with `hinj g (hsup g hg).1 g' (hsup g' hg').1 (hdist _ (hmem g hg) _ (hmem g' hg') hk)`. Use `le_trans ?_ hsum` and prove the remaining obligations. Establish `h1 : ∑ g ∈ h'.support, ‖h' g‖ ^ 2 = ∑ x ∈ h'.support.image (cLoc w), ‖h x‖ ^ 2`.
+
+Rewrite using `[Finset.sum_image fun g hg g' hg' hgg => hinj g (hsup g hg).1 g' (hsup g' hg').1 hgg]`. Conclude with `Finset.sum_congr rfl fun g hg => by rw [(hsup g hg).2]`. Rewrite using `[h1]`. Use `Finset.sum_le_sum_of_subset_of_nonneg ?_ fun _ _ _ => by positivity` and prove the remaining obligations. Introduce `x hx`.
+
+Take `⟨g, hg, rfl⟩` from `Finset.mem_image.1 hx`. Conclude with `hmem g hg`. Introduce and unpack `U hUa z ⟨σ, hcomp, hsat⟩ φ hφ hfix`. Rewrite using `[hU U hUa σ hcomp φ hφ fun x hx hk => hfix x ((hK x hx).2 hk)]`. Take `⟨v, hv, hv0⟩` from `(Submodule.ne_bot_iff _).1 hsat.1`.
+
+Establish `h1` using `hop σ v hv`. Rewrite `h1` using `[hact σ z hsat v hv]`. Rewrite using `[smul_left_injective ℂ hv0 h1]`.
+-/
 theorem UpperTheory.Gal.Gen.globOp_pf :
     UpperTheory.Gal.Gen.LocOp → UpperTheory.Gal.Gen.GlobOp := by
   classical

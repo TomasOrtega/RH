@@ -11,6 +11,11 @@ section Mat
 
 variable {F : Type} [Field F] {r : ℕ} {k : Fin r} {H U : Matrix (Fin r) (Fin r) F}
 
+/- English proof (translation)
+Establish `: (H * N) i j = ((1 : Matrix (Fin r) (Fin r) F) * N) i j`. Rewrite using `[Matrix.mul_apply, Matrix.mul_apply]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Establish `: H i m = (1 : Matrix (Fin r) (Fin r) F) i m`. Assume the negation of the conclusion as `hne`.
+
+Conclude with `hi (hH i m hne).1`. Rewrite using `[this]`. Rewrite using `[this, one_mul]`.
+-/
 theorem corner_row (hH : ∀ i j, H i j ≠ (1 : Matrix (Fin r) (Fin r) F) i j → i < k ∧ j < k)
     (N : Matrix (Fin r) (Fin r) F) {i : Fin r} (hi : ¬ i < k) (j : Fin r) : (H * N) i j = N i j := by
   have : (H * N) i j = ((1 : Matrix (Fin r) (Fin r) F) * N) i j := by
@@ -22,6 +27,11 @@ theorem corner_row (hH : ∀ i j, H i j ≠ (1 : Matrix (Fin r) (Fin r) F) i j �
     rw [this]
   rw [this, one_mul]
 
+/- English proof (translation)
+Use `conv_rhs => rw [← mul_one (U - 1)]`. Use extensionality with `i j`. Rewrite using `[Matrix.mul_apply, Matrix.mul_apply]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Distinguish the cases in `hm : m < k`.
+
+Rewrite using `[Matrix.sub_apply, hU i m hm, sub_self, zero_mul, zero_mul]`. Establish `: H m j = (1 : Matrix (Fin r) (Fin r) F) m j`. Assume the negation of the conclusion as `hne`. Conclude with `hm (hH m j hne).1`. Rewrite using `[this]`.
+-/
 theorem corner_nil_mul (hH : ∀ i j, H i j ≠ (1 : Matrix (Fin r) (Fin r) F) i j → i < k ∧ j < k)
     (hU : ∀ i j : Fin r, j.val < k.val → U i j = (1 : Matrix (Fin r) (Fin r) F) i j) :
     (U - 1) * H = U - 1 := by
@@ -40,6 +50,9 @@ end Mat
 
 variable {F : Type} [Field F] {r : ℕ}
 
+/- English proof (translation)
+Rewrite using `[Units.val_mul, Units.mul_inv_eq_iff_eq_mul, add_mul, mul_assoc, corner_nil_mul hH hU, Units.val_mul, mul_sub, one_mul, mul_one, add_sub_cancel]`.
+-/
 theorem corner_conj_val {k : Fin r} (h u : GL (Fin r) F)
     (hH : ∀ i j, (h : Matrix (Fin r) (Fin r) F) i j ≠ (1 : Matrix (Fin r) (Fin r) F) i j → i < k ∧ j < k)
     (hU : ∀ i j : Fin r, j.val < k.val → (u : Matrix (Fin r) (Fin r) F) i j = (1 : Matrix (Fin r) (Fin r) F) i j) :
@@ -48,6 +61,11 @@ theorem corner_conj_val {k : Fin r} (h u : GL (Fin r) F)
   rw [Units.val_mul, Units.mul_inv_eq_iff_eq_mul, add_mul, mul_assoc, corner_nil_mul hH hU, Units.val_mul,
     mul_sub, one_mul, mul_one, add_sub_cancel]
 
+/- English proof (translation)
+Rewrite using `[corner_conj_val h u hH hU]`. Use `⟨fun i j hi => ?_, fun i j hj => ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.add_apply, corner_row hH _ hi, Matrix.sub_apply, add_sub_cancel]`. Rewrite using `[Matrix.add_apply, Matrix.mul_apply, Finset.sum_eq_zero, add_zero]`. Introduce `m _`.
+
+Rewrite using `[Matrix.sub_apply, hU m j hj, sub_self, mul_zero]`. Establish `: (h : Matrix (Fin r) (Fin r) F) i k = (1 : Matrix (Fin r) (Fin r) F) i k`. Assume the negation of the conclusion as `hne`. Conclude with `lt_irrefl _ (hH i k hne).2`. Rewrite using `[mul_sub, mul_one, Matrix.add_apply, Matrix.sub_apply, this, add_sub_cancel]`.
+-/
 theorem corner_conj {k : Fin r} (h u : GL (Fin r) F)
     (hH : ∀ i j, (h : Matrix (Fin r) (Fin r) F) i j ≠ (1 : Matrix (Fin r) (Fin r) F) i j → i < k ∧ j < k)
     (hU : ∀ i j : Fin r, j.val < k.val → (u : Matrix (Fin r) (Fin r) F) i j = (1 : Matrix (Fin r) (Fin r) F) i j) :
@@ -68,6 +86,25 @@ theorem corner_conj {k : Fin r} (h u : GL (Fin r) F)
       exact lt_irrefl _ (hH i k hne).2
     rw [mul_sub, mul_one, Matrix.add_apply, Matrix.sub_apply, this, add_sub_cancel]
 
+/- English proof (translation)
+Rewrite `hne`, the goal using `[Submodule.ne_bot_iff]`. Take `⟨v, hv, hv0⟩` from `hne`. Rewrite `hv` using `[mem_eig]`. Use `⟨σ h⁻¹ v, ?_, fun h0 => hv0 ?_⟩` and prove the remaining obligations. Rewrite using `[mem_eig]`.
+
+Introduce and unpack `u ⟨hu, hU⟩`. Take `⟨c1, c2, c3⟩` from `corner_conj (h : GL (Fin r) F) (u : GL (Fin r) F) hH hU`. Establish `hc : ((h * u * h⁻¹ : blockTri (κ` using `F) b) : GL (Fin r) F) = (h : GL (Fin r) F) * (u : GL (Fin r) F) * (h : GL (Fin r) F)⁻¹ := rfl`. Establish `hmem : h * u * h⁻¹ ∈ colSet F b k.val`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hc]`. Use `⟨fun i j hij => ?_, fun i => ?_⟩` and prove the remaining obligations. Establish `hij' : j < i` using `hij`. Distinguish the cases in `hj : j < k`. Rewrite using `[c2 i j hj, Matrix.one_apply_ne (ne_of_gt hij')]`.
+
+Rewrite using `[c1 i j (fun hi => hj (hij'.trans hi)), unip_lower hu hij']`. Distinguish the cases in `hi : i < k`. Rewrite using `[c2 i i hi, Matrix.one_apply_eq]`. Rewrite using `[c1 i i hi, unip_diag hu]`. Rewrite using `[hc]`.
+
+Conclude with `c2`. Establish `hχ : colChar ψ b k l (h * u * h⁻¹) = colChar ψ b k (Matrix.vecMul l ((h : GL (Fin r) F) : Matrix (Fin r) (Fin r) F)) u`. Unfold `colChar`. Rewrite using `[hc]`. Use `congr 2`.
+
+Simplify using `only [c3]`. Use `congrFun (Matrix.vecMul_vecMul l ((h : GL (Fin r) F) : Matrix (Fin r) (Fin r) F) ((u : GL (Fin r) F) : Matrix (Fin r) (Fin r) F)) k` as an intermediate fact. Conclude with `this.symm`. Unfold `edgeSum`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Use `split_ifs with hij`. Use `c1 i j fun hi => ?_` and prove the remaining obligations. Establish `h1 : j.val = i.val + 1` using `hij.1.1`. Establish `h2 : k.val < j.val` using `hij.2`. Establish `h3 : i.val < k.val` using `hi`.
+
+Use linear arithmetic over natural numbers and integers. Both sides reduce to the same expression. Establish `e : σ u (σ h⁻¹ v) = σ h⁻¹ (σ (h * u * h⁻¹) v)`. Rewrite using `[← Module.End.mul_apply, ← Module.End.mul_apply, ← map_mul, ← map_mul]`. Use `congr 2`.
+
+Use `group`. Rewrite using `[e, hv _ hmem, map_smul, hχ]`. Establish `: σ h (σ h⁻¹ v) = v`. Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`. Rewrite using `[← this, h0, map_zero]`.
+-/
 theorem eig_colChar_vecMul_ne_bot (F : Type) [Field F] (ψ : AddChar F ℂ) (r : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V]
     (b : Fin r → ℕ) (σ : Representation ℂ (blockTri (κ := F) b) V) (k : Fin r) (l : Fin r → F)
     (h : blockTri (κ := F) b)

@@ -18,6 +18,9 @@ namespace GlobalTheory.BesPair
 variable {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
   (p : Place D k)
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `∑ r, Witness.prH p (x r) * Witness.prH p (star (y r)) = Witness.prH p (star (star x ⬝ᵥ y))`. Rewrite using `[dotProduct, star_sum, map_sum]`. Use `Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.star_apply, star_mul, star_star, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sum_pr_star {N : ℕ} (x y : Fin N → D.host.E) :
     ∑ r, p.pr (x r) * p.pr (star (y r)) = p.pr (star (star x ⬝ᵥ y)) := by
   change ∑ r, Witness.prH p (x r) * Witness.prH p (star (y r)) = Witness.prH p (star (star x ⬝ᵥ y))
@@ -26,21 +29,54 @@ theorem sum_pr_star {N : ℕ} (x y : Fin N → D.host.E) :
   rw [Pi.star_apply, star_mul, star_star, map_mul]
   ring
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_assoc, Matrix.mul_apply]`. Both sides reduce to the same expression.
+-/
 theorem col_pair {N : ℕ} {ι τ : Type} [Fintype ι] (X : Matrix (Fin N) ι D.host.E)
     (G : Matrix (Fin N) (Fin N) D.host.E) (e : Matrix (Fin N) τ D.host.E) (j : ι) (i : τ) :
     star (fun r => X r j) ⬝ᵥ (G *ᵥ fun r => e r i) = (Xᴴ * G * e) j i := by
   rw [Matrix.mul_assoc, Matrix.mul_apply]
   rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `u`. Both sides reduce to the same expression.
+-/
 theorem mulVec_col {N M : ℕ} {τ : Type} (A : Matrix (Fin M) (Fin N) D.host.E) (e : Matrix (Fin N) τ D.host.E) (i : τ) :
     (A *ᵥ fun r => e r i) = fun u => (A * e) u i := by
   funext u
   rfl
 
+/- English proof (translation)
+The claim follows from `(Witness.prH p).map_zero`.
+-/
 theorem pr_zero : p.pr (0 : D.host.E) = 0 := (Witness.prH p).map_zero
 
+/- English proof (translation)
+The claim follows from `(Witness.prH p).map_one`.
+-/
 theorem pr_one : p.pr (1 : D.host.E) = 1 := (Witness.prH p).map_one
 
+/- English proof (translation)
+Introduce `D k _ _ _ _ p ρ B s n _ _ c FA F h hs hz hx i`. Take `⟨rfl, h1, h2, h3, h4⟩` from `h`. Establish `hC : ∀ t : ℕ, valuation k (s * (-p.hz B / p.xi) * (-1 / p.xi) ^ t) = 1`. Introduce `t`. Simplify using `[map_mul, map_div₀, Valuation.map_neg, map_pow, hs, hz, hx]`.
+
+Establish `hval : ∀ (i' : Fin ρ) (j : Fin (2 * ρ + 1)), j.val + i'.val = 2 * ρ → ∑ r, F.β r (Sum.inr j) * p.pr (star ((B.V.gram *ᵥ fun r => B.d.e r i) r)) = s * (-p.hz B / p.xi) * (-1 / p.xi) ^ (ρ - 1 - i'.val) * p.pr (star ((1 : Matrix (Fin ρ) (Fin ρ) D.host.E) i' i))`. Introduce `i' j hj`. Repeatedly rewrite using `[h4 i' j hj, mul_assoc, ← Finset.mul_sum]`. Rewrite using `[sum_pr_star, col_pair, B.d.e'e]`. Establish `hq : ∀ m, (∑ r, F.β r m * p.pr (star ((B.V.gram *ᵥ fun r => B.d.e r i) r))) = 0 ∨ valuation k (∑ r, F.β r m * p.pr (star ((B.V.gram *ᵥ fun r => B.d.e r i) r))) = 1`.
+
+Introduce and unpack `(a | ⟨j, hj⟩)`. Use `left`. Establish `hM : (B.d.i₀ * B.o.iA)ᴴ * B.V.gram * B.d.e = 0`. Rewrite using `[Matrix.conjTranspose_mul, show B.o.iAᴴ * B.d.i₀ᴴ * B.V.gram * B.d.e = B.o.iAᴴ * (B.d.i₀ᴴ * B.V.gram * B.d.e) by`. Simplify using `only [Matrix.mul_assoc],`.
+
+Use the proof step `B.d.i₀e, Matrix.mul_zero]`. Repeatedly rewrite using `[h1, Matrix.mul_apply, Matrix.map_apply, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_eq_zero fun u _ => ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[Finset.sum_mul]; exact Finset.sum_congr rfl fun _ _ => by ring`. Use `_ = 0 := by`. Rewrite using `[sum_pr_star p (fun r => (B.d.i₀ * B.o.iA) r u), col_pair, hM, Matrix.zero_apply, star_zero, pr_zero, zero_mul]`. Break down `lt_trichotomy j ρ with hlt | heq | hgt` into its components or cases. Use `left`.
+
+Repeatedly rewrite using `[h2 ⟨j, hlt⟩ ⟨j, hj⟩ rfl, mul_assoc, ← Finset.mul_sum]`. Rewrite using `[sum_pr_star, col_pair, B.d.ee, Matrix.zero_apply, star_zero, pr_zero, mul_zero, mul_zero]`. Use `left`. Repeatedly rewrite using `[h3 ⟨j, hj⟩ heq, mul_assoc, ← Finset.mul_sum]`. Rewrite using `[sum_pr_star, Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, mulVec_col, B.d.i₀e]`.
+
+Simplify using `only [Matrix.zero_apply]`. Rewrite using `[dotProduct_zero', star_zero, pr_zero, mul_zero]`. Establish `hi' : 2 * ρ - j < ρ` using `by omega`. Rewrite using `[hval ⟨2 * ρ - j, hi'⟩ ⟨j, hj⟩ (by simp only; omega)]`. Distinguish the cases in `he : (⟨2 * ρ - j, hi'⟩ : Fin ρ) = i`.
+
+Use `right`. Rewrite using `[he, Matrix.one_apply_eq, star_one, pr_one, mul_one]`. Conclude with `hC _`. Use `left`. Rewrite using `[Matrix.one_apply_ne he, star_zero, pr_zero, mul_zero]`.
+
+Use `⟨s * p.xi ^ (ρ - i.val), Sum.inr ⟨i.val, by omega⟩, ?_, fun r => (h2 i _ rfl r).symm, fun m => ?_, ?_⟩` and prove the remaining obligations. Simplify using `[map_mul, map_pow, hs, hx]`. Rewrite using `[Valuation.mem_integer_iff]`. Break down `hq m with h0 | h0` into its components or cases. Rewrite using `[h0, map_zero]`.
+
+Conclude with `zero_le'`. Conclude with `h0.le`. Use `⟨Sum.inr ⟨2 * ρ - i.val, by omega⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hval i _ (by simp only; omega), Matrix.one_apply_eq, star_one, pr_one, mul_one]`. Conclude with `hC _`.
+-/
 theorem bes_cols : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (p : Place D k) (ρ : ℕ) (B : BesLev D ρ) (s : k) (n : Type) [Fintype n] [DecidableEq n] (c : ℕ)
     (FA : Frame k B.A.rank n) (F : Frame k B.V.rank (n ⊕ Fin c)),

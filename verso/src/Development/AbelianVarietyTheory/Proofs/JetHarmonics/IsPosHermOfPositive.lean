@@ -46,6 +46,11 @@ section Phi
 
 variable (E : Type) [Field E] [NumberField E]
 
+/- English proof (translation)
+Establish `h1` using `congrArg Complex.re (trace_eq_sum_embeddings ℂ (K := ℚ) (L := E) (x := (u : E)))`. Rewrite `h1` using `[← Algebra.coe_trace_int, Complex.re_sum]`. Establish `h2 : 0 < ∑ σ : E →ₐ[ℚ] ℂ, (σ (u : E)).re`. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Conclude with `Finset.sum_pos (fun σ _ => h σ.toRingHom) ⟨τ.toRatAlgHom, Finset.mem_univ _⟩`.
+
+Rewrite `h2` using `[← h1]`. Simplify using `using h2`.
+-/
 theorem trace_pos {u : 𝓞 E} (h : ∀ τ : E →+* ℂ, 0 < (τ (u : E)).re) :
     0 < Algebra.trace ℤ (𝓞 E) u := by
   have h1 := congrArg Complex.re (trace_eq_sum_embeddings ℂ (K := ℚ) (L := E) (x := (u : E)))
@@ -58,6 +63,9 @@ theorem trace_pos {u : 𝓞 E} (h : ∀ τ : E →+* ℂ, 0 < (τ (u : E)).re) :
 
 variable {X : Type} [AddCommGroup X] [Module (𝓞 E) X]
 
+/- English proof (translation)
+Introduce `h`. Take `⟨r, hr, α, hα⟩` from `(Algebra.IsAlgebraic.isAlgebraic (R := ℤ) c).exists_nonzero_dvd (mem_nonZeroDivisors_of_ne_zero hc)`. Establish `: r • x = 0`. Rewrite using `[← algebraMap_smul (𝓞 E) r x, hα, mul_comm, mul_smul, h, smul_zero]`. Conclude with `hx ((smul_eq_zero.1 this).resolve_left hr)`.
+-/
 theorem smul_ne_zero_of_free [Module.Free ℤ X] {c : 𝓞 E} {x : X} (hc : c ≠ 0) (hx : x ≠ 0) :
     c • x ≠ 0 := by
   intro h
@@ -67,6 +75,11 @@ theorem smul_ne_zero_of_free [Module.Free ℤ X] {c : 𝓞 E} {x : X} (hc : c �
     rw [← algebraMap_smul (𝓞 E) r x, hα, mul_comm, mul_smul, h, smul_zero]
   exact hx ((smul_eq_zero.1 this).resolve_left hr)
 
+/- English proof (translation)
+Establish `: Module.Finite (𝓞 E) X` using `Module.Finite.of_restrictScalars_finite ℤ _ _`. Establish `: Module.Flat (𝓞 E) X`. Rewrite using `[IsDedekindDomain.flat_iff_torsion_eq_bot, eq_bot_iff]`. Introduce and unpack `x ⟨c, hc⟩`. Assume the negation of the conclusion as `hx`.
+
+Conclude with `smul_ne_zero_of_free E (nonZeroDivisors.coe_ne_zero c) hx hc`. Establish `: Module.FinitePresentation (𝓞 E) X` using `Module.finitePresentation_of_finite _ _`. Conclude with `Module.Flat.projective_of_finitePresentation`.
+-/
 theorem projective_of_free [Module.Free ℤ X] [Module.Finite ℤ X] : Module.Projective (𝓞 E) X := by
   have : Module.Finite (𝓞 E) X := Module.Finite.of_restrictScalars_finite ℤ _ _
   have : Module.Flat (𝓞 E) X := by
@@ -79,15 +92,43 @@ theorem projective_of_free [Module.Free ℤ X] [Module.Finite ℤ X] : Module.Pr
 
 variable [IsCMField E]
 
+/- English proof (translation)
+Use `ext`. Simplify using `[IsCMField.coe_ringOfIntegersComplexConj]`.
+-/
 theorem bar_bar (a : 𝓞 E) : bar E (bar E a) = a := by
   ext; simp [IsCMField.coe_ringOfIntegersComplexConj]
 
+/- English proof (translation)
+The claim follows from `IsCMField.complexEmbedding_complexConj E τ _`.
+-/
 theorem emb_bar (τ : E →+* ℂ) (a : 𝓞 E) : τ (bar E a : E) = starRingEnd ℂ (τ (a : E)) :=
   IsCMField.complexEmbedding_complexConj E τ _
 
+/- English proof (translation)
+The claim follows from `Algebra.trace_eq_of_algEquiv ((IsCMField.ringOfIntegersComplexConj E).restrictScalars ℤ) a`.
+-/
 theorem trace_bar (a : 𝓞 E) : Algebra.trace ℤ (𝓞 E) (bar E a) = Algebra.trace ℤ (𝓞 E) a :=
   Algebra.trace_eq_of_algEquiv ((IsCMField.ringOfIntegersComplexConj E).restrictScalars ℤ) a
 
+/- English proof (translation)
+Take `⟨N, ι, _, ω, θ, hN, hsum, htr⟩` from `exists_traceDual E`. Establish `htr' : ∀ (f : X →ₗ[ℤ] ℤ) (a : X) (α : 𝓞 E), Algebra.trace ℤ (𝓞 E) (α * ∑ s, f (ω s • a) • θ s) = N * f (α • a)` using `fun f a α => htr (f ∘ₗ (LinearMap.toSpanSingleton (𝓞 E) X a).restrictScalars ℤ) α`. Set `up : (X →ₗ[ℤ] ℤ) → Module.Dual (𝓞 E) X` to `fun f => { toFun := fun a => ∑ s, f (ω s • a) • θ s map_add' := fun a b => by simp [add_smul, Finset.sum_add_distrib] map_smul' := fun c a => by`. Rewrite using `[← sub_eq_zero]`. Use `eq_zero_of_trace_mul E fun α => ?_` and prove the remaining obligations.
+
+Rewrite using `[mul_sub, map_sub, htr', RingHom.id_apply, smul_eq_mul, ← mul_assoc, htr', mul_smul, sub_self] }`. Establish `hup : ∀ f a, up f a = ∑ s, f (ω s • a) • θ s` using `fun _ _ => rfl`. Establish `key : ∀ f g : X →ₗ[ℤ] ℤ, Algebra.trace ℤ (𝓞 E) (outer E x x' (up f) (up g)) = N * ∑ p : Fin n × ι, f (ω p.2 • x p.1) * g (bar E (θ p.2) • x' p.1)`. Introduce `f g`. Rewrite using `[outer, map_sum, Fintype.sum_prod_type, Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hup f, Finset.sum_mul, map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Establish `e : θ s * bar E (up g (x' i)) = bar E (bar E (θ s) * up g (x' i))` using `by conv_lhs => rw [← bar_bar E (θ s)]`. Conclude with `(map_mul (IsCMField.ringOfIntegersComplexConj E) _ _).symm`.
+
+Rewrite using `[smul_mul_assoc, map_smul, e, trace_bar, hup g, htr', smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hN' : (0 : ℤ) < N` using `by exact_mod_cast hN`. Establish `h1` using `sum_pos_of_tensor_pos X (Fin n × ι) (fun p => ω p.2 • x p.1) (fun p => bar E (θ p.2) • x' p.1) (fun f g => by`. Apply `mul_left_cancel₀ hN'.ne'` to reduce the goal to its premises.
+
+Rewrite using `[← key, ← key, hl.1 (up g) (up f), trace_bar])`. Use the proof step `(fun f hf => by`. Establish `hne : up f ≠ 0`. Introduce `h`. Apply `hf` to reduce the goal to its premises.
+
+Use extensionality with `a`. Use `htr' f a 1` as an intermediate fact. Rewrite `this` using `[← hup, h]`. Simplify `this` using `[hN.ne']`. Use `trace_pos E (hl.2 _ hne)` as an intermediate fact.
+
+Rewrite `this` using `[key]`. Conclude with `pos_of_mul_pos_right this hN'.le) γ hγ.1 hp h0`. Establish `h2 : ∑ p : Fin n × ι, γ (ω p.2 • x p.1) (bar E (θ p.2) • x' p.1) = N * ∑ i, γ (x i) (x' i)`. Rewrite using `[Fintype.sum_prod_type, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Establish `: ∀ s, γ (ω s • x i) (bar E (θ s) • x' i) = γ ((θ s * ω s) • x i) (x' i)` using `fun s => by`. Rewrite using `[← hγ.2, mul_smul]`. Simplify using `only [this]`. Rewrite using `[← LinearMap.sum_apply, ← map_sum, ← Finset.sum_smul, hsum, Nat.cast_smul_eq_nsmul, map_nsmul, LinearMap.smul_apply, nsmul_eq_mul]`. Rewrite `h1` using `[h2]`.
+
+Conclude with `pos_of_mul_pos_right h1 (Nat.cast_nonneg N)`.
+-/
 theorem sum_pos_of_isPosHerm [Module.Free ℤ X] [Module.Finite ℤ X] {n : ℕ} {x x' : Fin n → X}
     (hl : IsPosHerm E (outer E x x')) (γ : Bil X) (hγ : GlobalTheory.IndefiniteRowSideFullHecke.BalancedHermitianSpace.IsBalanced E γ)
     (hp : ∀ a, 0 ≤ γ a a) (h0 : γ ≠ 0) : 0 < ∑ i, γ (x i) (x' i) := by
@@ -152,9 +193,17 @@ def rankOne (η : Module.Dual (𝓞 E) X) (τ : E →+* ℂ) : Bil X :=
     (fun k a c => by simp [mul_add, mul_left_comm])
 
 omit [IsCMField E] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem rankOne_apply (η : Module.Dual (𝓞 E) X) (τ : E →+* ℂ) (a c : X) :
     rankOne E η τ a c = (τ (η a : E) * starRingEnd ℂ (τ (η c : E))).re := rfl
 
+/- English proof (translation)
+Use `⟨fun a c => by simp [rankOne_apply, mul_comm], fun e a c => ?_⟩` and prove the remaining obligations. Rewrite using `[rankOne_apply, rankOne_apply, map_smul, map_smul, smul_eq_mul, smul_eq_mul]`. Use `push_cast`. Rewrite using `[map_mul, map_mul, emb_bar E τ e, map_mul, Complex.conj_conj]`. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem rankOne_balanced (η : Module.Dual (𝓞 E) X) (τ : E →+* ℂ) :
     GlobalTheory.IndefiniteRowSideFullHecke.BalancedHermitianSpace.IsBalanced E (rankOne E η τ) := by
   refine ⟨fun a c => by simp [rankOne_apply, mul_comm], fun e a c => ?_⟩
@@ -163,23 +212,35 @@ theorem rankOne_balanced (η : Module.Dual (𝓞 E) X) (τ : E →+* ℂ) :
   rw [map_mul, map_mul, emb_bar E τ e, map_mul, Complex.conj_conj]
   congr 1; ring
 
+/- English proof (translation)
+Simplify using `only [outer, Fin.sum_univ_add, Fin.append_left, Fin.append_right]`.
+-/
 theorem outer_append {n : ℕ} (x x' : Fin n → X) (η η' : Module.Dual (𝓞 E) X) :
     outer E (Fin.append x x') (Fin.append x' x) η η' = outer E x x' η η' + outer E x' x η η' := by
   simp only [outer, Fin.sum_univ_add, Fin.append_left, Fin.append_right]
 
 omit [NumberField E] [IsCMField E] [Module (𝓞 E) X] in
+/- English proof (translation)
+Simplify using `only [pairing, Fin.sum_univ_add, Fin.append_left, Fin.append_right]`. Rewrite using `[Finset.sum_congr rfl fun i _ => hγ (x' i) (x i)]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem pairing_append (γ : Bil X) (hγ : ∀ a c, γ a c = γ c a) {n : ℕ} (x x' : Fin n → X) :
     pairing (fun a c => γ a c) (Fin.append x x') (Fin.append x' x) = ∑ i, γ (x i) (x' i) := by
   simp only [pairing, Fin.sum_univ_add, Fin.append_left, Fin.append_right]
   rw [Finset.sum_congr rfl fun i _ => hγ (x' i) (x i)]
   ring
 
+/- English proof (translation)
+Use `bar_bar E` as an intermediate fact. Simplify using `only [outer, bar, map_sum, map_mul] at this ⊢`. Simplify using `only [this, mul_comm]`.
+-/
 theorem bar_outer {n : ℕ} (x x' : Fin n → X) (η η' : Module.Dual (𝓞 E) X) :
     bar E (outer E x x' η η') = outer E x' x η' η := by
   have := bar_bar E
   simp only [outer, bar, map_sum, map_mul] at this ⊢
   simp only [this, mul_comm]
 
+/- English proof (translation)
+Simplify using `only [outer, rankOne_apply]`. Use `push_cast`. Rewrite using `[map_sum, Complex.re_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, ← emb_bar]`.
+-/
 theorem re_outer {n : ℕ} (x x' : Fin n → X) (η : Module.Dual (𝓞 E) X) (τ : E →+* ℂ) :
     (τ (outer E x x' η η : E)).re = ∑ i, rankOne E η τ (x i) (x' i) := by
   simp only [outer, rankOne_apply]
@@ -190,6 +251,13 @@ theorem re_outer {n : ℕ} (x x' : Fin n → X) (η : Module.Dual (𝓞 E) X) (�
 
 variable {S : Submodule ℝ (Bil X)}
 
+/- English proof (translation)
+Use `⟨fun η η' => ?_, fun η hη τ => ?_⟩` and prove the remaining obligations. Rewrite using `[outer_append, outer_append, ← bar_outer E x' x η η', ← bar_outer E x x' η η', add_comm]`. Conclude with `(map_add (IsCMField.ringOfIntegersComplexConj E) _ _).symm`. Establish `h1` using `pairing_append _ (rankOne_balanced E η τ).1 x x'`. Establish `h2` using `h ⟨_, (hS _).2 (rankOne_balanced E η τ)⟩ (fun a => by show 0 ≤ rankOne E η τ a a`.
+
+Rewrite using `[rankOne_apply, Complex.mul_conj, Complex.ofReal_re]`. Conclude with `Complex.normSq_nonneg _)`. Use the proof step `(fun h0 => hη (LinearMap.ext fun a => by`. Establish `: rankOne E η τ a a = 0` using `congrArg (fun β : S => (β : Bil X) a a) h0`. Rewrite `this` using `[rankOne_apply, Complex.mul_conj, Complex.ofReal_re, Complex.normSq_eq_zero]`.
+
+Simplify using `using this))`. Rewrite using `[re_outer]`. Simplify using `only [pairing] at h1`. Simplify using `only at h2`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem isPosHerm_of_positive (hS : IsBalancedSpace E S) {n : ℕ} {x x' : Fin n → X}
     (h : ∀ γ : S, (∀ a, 0 ≤ (γ : Bil X) a a) → γ ≠ 0 → 0 < ∑ i, (γ : Bil X) (x i) (x' i)) :
     IsPosHerm E (outer E (Fin.append x x') (Fin.append x' x)) := by
@@ -212,6 +280,9 @@ theorem isPosHerm_of_positive (hS : IsBalancedSpace E S) {n : ℕ} {x x' : Fin n
 
 variable [Module.Free ℤ X] [Module.Finite ℤ X]
 
+/- English proof (translation)
+Take `⟨m, x, x', hx⟩` from `exists_eq_sum_eval X S (fun γ hγ => (hS γ).2 ⟨fun a c => hγ _ _ _ _ fun β hβ => ((hS β).1 hβ).1 a c, fun e a c => hγ _ _ _ _ fun β hβ => ((hS β).1 hβ).2 e a c⟩) l hi`. Conclude with `⟨_, _, _, isPosHerm_of_positive E hS fun γ h1 h2 => hx γ ▸ hp γ h1 h2, fun β => by rw [pairing_append _ ((hS _).1 β.2).1, hx]⟩`.
+-/
 theorem exists_exponent (hS : IsBalancedSpace E S) (l : S →ₗ[ℝ] ℝ) (hi : IsIntegralFn S l)
     (hp : IsPositiveFn S l) : ∃ (n : ℕ) (x x' : Fin n → X), IsPosHerm E (outer E x x') ∧
       ∀ β : S, l β = pairing (fun a c => (β : Bil X) a c) x x' := by
@@ -221,6 +292,15 @@ theorem exists_exponent (hS : IsBalancedSpace E S) (l : S →ₗ[ℝ] ℝ) (hi :
   exact ⟨_, _, _, isPosHerm_of_positive E hS fun γ h1 h2 => hx γ ▸ hp γ h1 h2,
     fun β => by rw [pairing_append _ ((hS _).1 β.2).1, hx]⟩
 
+/- English proof (translation)
+Establish `: Module.Finite (𝓞 E) X` using `Module.Finite.of_restrictScalars_finite ℤ _ _`. Use `projective_of_free E (X := X)` as an intermediate fact. Establish `ho : outer E (Fin.append (fun i => w • x i) x') (Fin.append x' fun i => w • x i) = outer E x x'`. Use function extensionality and compare the values at `η η'`. Establish `e1 : outer E (fun i => w • x i) x' η η' = w * outer E x x' η η'`.
+
+Simplify using `[outer, Finset.mul_sum, mul_assoc]`. Establish `e2 : outer E (fun i => w • x i) x' η' η = w * outer E x x' η' η`. Simplify using `[outer, Finset.mul_sum, mul_assoc]`. Rewrite using `[outer_append, ← bar_outer E (fun i => w • x i) x' η' η, e1, e2, hl.1 η η']`. Establish `e3 : bar E (w * bar E (outer E x x' η η')) = bar E w * outer E x x' η η'` using `by conv_rhs => rw [← bar_bar E (outer E x x' η η')]`.
+
+Conclude with `map_mul (IsCMField.ringOfIntegersComplexConj E) _ _`. Rewrite using `[e3, ← add_mul, hw, one_mul]`. Establish `hv : ∀ β : S, evalSum S (fun i => w • x i) x' β = pairing (fun a c => (β : Bil X) a c) x x'` using `fun β => by`. Rewrite using `[← pairing_eq_of_outer_eq E (β : Bil X) ((hS _).1 β.2).2 _ _ _ _ ho, pairing_append _ ((hS _).1 β.2).1]`. Both sides reduce to the same expression.
+
+Use `⟨_, GlobalTheory.IndefiniteRowSideFullHecke.BalancedHermitianSpace.isIntegralFn_evalSum S _ _, fun γ h1 h2 => ?_, hv⟩` and prove the remaining obligations. Rewrite using `[hv, pairing]`. Conclude with `half_pos (sum_pos_of_isPosHerm E hl _ ((hS _).1 γ.2) h1 fun h => h2 (Subtype.ext h))`.
+-/
 theorem exists_functional (hS : IsBalancedSpace E S) {w : 𝓞 E} (hw : w + bar E w = 1) {n : ℕ}
     {x x' : Fin n → X} (hl : IsPosHerm E (outer E x x')) :
     ∃ l : S →ₗ[ℝ] ℝ, IsIntegralFn S l ∧ IsPositiveFn S l ∧
@@ -248,6 +328,11 @@ theorem exists_functional (hS : IsBalancedSpace E S) {w : 𝓞 E} (hw : w + bar 
   rw [hv, pairing]
   exact half_pos (sum_pos_of_isPosHerm E hl _ ((hS _).1 γ.2) h1 fun h => h2 (Subtype.ext h))
 
+/- English proof (translation)
+Set `b` to `Module.finBasis ℤ X`. Use `⟨evalSum S b b, GlobalTheory.IndefiniteRowSideFullHecke.BalancedHermitianSpace.isIntegralFn_evalSum S _ _, fun γ h1 h2 => ?_⟩` and prove the remaining obligations. Use `sum_pos_of_isPosHerm E ⟨fun η η' => (bar_outer E _ _ _ _).symm, fun η hη τ => ?_⟩ _ ((hS _).1 γ.2) h1 fun h => h2 (Subtype.ext h)` and prove the remaining obligations. Rewrite using `[re_outer]`. Simplify using `only [rankOne_apply, Complex.mul_conj, Complex.ofReal_re]`.
+
+Use `lt_of_le_of_ne (Finset.sum_nonneg fun _ _ => Complex.normSq_nonneg _) fun h0 => hη ?_` and prove the remaining obligations. Establish `hz` using `(Finset.sum_eq_zero_iff_of_nonneg fun _ _ => Complex.normSq_nonneg _).1 h0.symm`. Establish `: η.restrictScalars ℤ = 0` using `b.ext fun i => by simpa using hz i (Finset.mem_univ _)`. Conclude with `LinearMap.ext fun a => LinearMap.congr_fun this a`.
+-/
 theorem exists_admissible (hS : IsBalancedSpace E S) :
     ∃ l : S →ₗ[ℝ] ℝ, IsIntegralFn S l ∧ IsPositiveFn S l := by
   let b := Module.finBasis ℤ X
@@ -320,6 +405,9 @@ section Clauses
 
 variable {S : FormSpaces} {φ : FormValues S}
 
+/- English proof (translation)
+Introduce `β`. Rewrite using `[hS]`. Use `and_congr Iff.rfl ⟨fun h c => h c _ (hcj c), fun h c c' hc => ?_⟩` and prove the remaining obligations. Take `rfl : c' = bar E c` from `RingOfIntegers.ext (hc.trans (hcj c).symm)`. Conclude with `h c`.
+-/
 theorem isBalancedSpace (hS : AreBalancedSpaces S) (E : Type) [Field E] [NumberField E] [IsCMField E]
     {cj : E → E} (hcj : ∀ c : 𝓞 E, (bar E c : E) = cj c) (Y : Type) [AddCommGroup Y] [Module (𝓞 E) Y] :
     IsBalancedSpace E (S E cj Y) := by

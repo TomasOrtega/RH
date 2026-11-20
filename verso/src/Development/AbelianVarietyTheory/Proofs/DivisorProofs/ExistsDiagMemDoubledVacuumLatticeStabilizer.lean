@@ -12,11 +12,17 @@ open Matrix
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Use `show ((k * k⁻¹ : UA σ J) : GL (Fin d) (AE F E)).1 = 1`. Rewrite using `[mul_inv_cancel]`. Both sides reduce to the same expression.
+-/
 theorem mat_mul_mat_inv {σ : E →ₐ[F] E} {d : ℕ} {J : Matrix (Fin d) (Fin d) E} (k : UA σ J) :
     mat k * mat k⁻¹ = 1 := by
   show ((k * k⁻¹ : UA σ J) : GL (Fin d) (AE F E)).1 = 1
   rw [mul_inv_cancel]; rfl
 
+/- English proof (translation)
+Use `show ((k⁻¹ * k : UA σ J) : GL (Fin d) (AE F E)).1 = 1`. Rewrite using `[inv_mul_cancel]`. Both sides reduce to the same expression.
+-/
 theorem mat_inv_mul_mat {σ : E →ₐ[F] E} {d : ℕ} {J : Matrix (Fin d) (Fin d) E} (k : UA σ J) :
     mat k⁻¹ * mat k = 1 := by
   show ((k⁻¹ * k : UA σ J) : GL (Fin d) (AE F E)).1 = 1
@@ -27,6 +33,19 @@ def diagOne {R : Type} [CommRing R] {d : ℕ} (A B : Matrix (Fin d) (Fin d) R) (
   ⟨fromBlocks A 0 0 1, fromBlocks B 0 0 1, by simp [fromBlocks_multiply, hAB, ← fromBlocks_one],
     by simp [fromBlocks_multiply, hBA, ← fromBlocks_one]⟩
 
+/- English proof (translation)
+Introduce `k hk`. Set `M` to `diagOne (mat k) (mat k⁻¹) (mat_mul_mat_inv k) (mat_inv_mul_mat k)`. Establish `hU : (M : Matrix (Fin d ⊕ Fin d) (Fin d ⊕ Fin d) (AE F E))ᵀ * dbl (incM F W.J) * (M : Matrix (Fin d ⊕ Fin d) (Fin d ⊕ Fin d) (AE F E)).map (cA σ) = dbl (incM F W.J)`. Establish `hk2 : (mat k)ᵀ * incM F W.J * (mat k).map (cA σ) = incM F W.J` using `k.2`. Use `show (fromBlocks (mat k) 0 0 1)ᵀ * fromBlocks (incM F W.J) 0 0 (-incM F W.J) * (fromBlocks (mat k) 0 0 (1 : Matrix (Fin d) (Fin d) (AE F E))).map (cA σ) = fromBlocks (incM F W.J) 0 0 (-incM F W.J)`.
+
+Rewrite using `[fromBlocks_transpose, fromBlocks_map, fromBlocks_multiply, fromBlocks_multiply]`. Simplify using `[hk2, Matrix.map_one _ (map_zero (cA σ)) (map_one (cA σ))]`. Use `⟨⟨M, hU⟩, rfl, ?_, ?_⟩` and prove the remaining obligations. Introduce `u hu`. Establish `h1` using `hk.1 u hu`.
+
+Use `show u • (fromBlocks (mat k) 0 0 1 - 1 : Matrix (Fin d ⊕ Fin d) (Fin d ⊕ Fin d) (AE F E)) = 0`. Establish `h1' : u • (mat k - 1) = 0` using `h1`. Rewrite using `[← fromBlocks_one, sub_eq_add_neg, fromBlocks_neg, fromBlocks_add, fromBlocks_smul, ← sub_eq_add_neg]`. Simplify using `[h1']`. Introduce `z hz`.
+
+Establish `hinv : GlobalTheory.DblVac.matD (⟨M, hU⟩ : GlobalTheory.DblVac.UD σ W)⁻¹ = fromBlocks (mat k⁻¹) 0 0 1` using `rfl`. Establish `hfw : GlobalTheory.DblVac.matD (⟨M, hU⟩ : GlobalTheory.DblVac.UD σ W) = fromBlocks (mat k) 0 0 1` using `rfl`. Rewrite using `[hinv, hfw]`. Use `⟨⟨?_, ?_⟩, ⟨?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[fromBlocks_mulVec]`.
+
+Simplify using `using ((hk.2 _ hz.1).1)`. Rewrite using `[fromBlocks_mulVec]`. Simplify using `using hz.2`. Rewrite using `[fromBlocks_mulVec]`. Simplify using `using ((hk.2 _ hz.1).2)`.
+
+Rewrite using `[fromBlocks_mulVec]`. Simplify using `using hz.2`.
+-/
 theorem diag_mem_KD (σ : E →ₐ[F] E) {d : ℕ} (W : Spc F E d) (v : Pl F) :
     ∀ k ∈ GlobalTheory.InertSph.KAt σ W v, ∃ g : GlobalTheory.DblVac.UD σ W,
       ((g : GL (Fin d ⊕ Fin d) (AE F E)) : Matrix (Fin d ⊕ Fin d) (Fin d ⊕ Fin d) (AE F E)) =

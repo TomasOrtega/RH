@@ -18,6 +18,19 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `hI hN E _ _ _ H Dw l Xo c hpos T io p hp hpT hg`. Take `⟨Xf, hXf⟩ : ∃ Xf : ∀ l' : Level H, Moduli Dw l', Xf l = Xo` from `⟨Function.update (fun l' => (hN E H Dw l' hpos).some) l Xo, Function.update_self ..⟩`. Substitute `hXf` using the available equality. Set `U₀ : ValuationSubring T.Fr` to `(ValuationRing.valuation T.V T.Fr).valuationSubring`. Establish `hU₀ : ∀ x : T.Fr, x ∈ U₀ ↔ ∃ a : T.V, algebraMap T.V T.Fr a = x` using `fun x => ValuationRing.mem_integer_iff T.V T.Fr x`.
+
+Establish `hinj : Function.Injective (algebraMap T.V T.Fr)` using `IsFractionRing.injective _ _`. Establish `hpU : (p : c.F) ∈ (U₀.comap io).nonunits`. Rewrite using `[ValuationSubring.mem_nonunits_iff_or]`. Use `right`. Introduce `h`.
+
+Rewrite `h` using `[ValuationSubring.mem_comap, hU₀]`. Take `⟨a, ha⟩` from `h`. Establish `hp0 : (p : c.F) ≠ 0` using `Nat.cast_ne_zero.2 hp.ne_zero`. Establish `h1 : a * (p : T.V) = 1`. Apply `hinj` to reduce the goal to its premises.
+
+Rewrite using `[map_mul, ha, map_natCast, map_one, ← map_natCast io p, ← map_mul, inv_mul_cancel₀ hp0, map_one]`. Conclude with `(IsLocalRing.mem_maximalIdeal _).1 hpT (IsUnit.of_mul_eq_one_right a h1)`. Take `⟨W, hW, hWU⟩` from `GlobalTheory.T.exists_valuationSubring_complex_comap_eq c.F (U₀.comap io) p hpU`. Take `⟨Y, hY, -⟩` from `hI.2 E H Dw hpos Xf`. Establish `hmem : ∀ x : c.V W, ∃ a : T.V, algebraMap T.V T.Fr a = io x`.
+
+Introduce `x`. Establish `hx : (x : c.F) ∈ U₀.comap io` using `hWU ▸ x.2`. Conclude with `(hU₀ _).1 (ValuationSubring.mem_comap.1 hx)`. Use `choose f hf using hmem`. Use `⟨c.V W, inferInstance, (c.V W).subtype, Y p W hp hW ⟨l, c, hg⟩, ((hY p W hp hW).1.1 ⟨l, c, hg⟩).2.2.1, ?_⟩` and prove the remaining obligations.
+
+Use `⟨{ toFun := f map_one' := hinj (by simp [hf]) map_mul' := fun x y => hinj (by simp [hf]) map_zero' := hinj (by simp [hf]) map_add' := fun x y => hinj (by simp [hf]) }, ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Conclude with `hf x`.
+-/
 theorem exists_model_pushInvertible_under_cdvr : PartI → N1ab → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), 1 ≤ Dw.p + Dw.q → ∀ (T : CDVR) (io : c.F →+* T.Fr) (p : ℕ), p.Prime → (p : T.V) ∈ IsLocalRing.maximalIdeal T.V → l.GoodAt p → ∃ (O : Type) (_ : CommRing O) (β : O →+* c.F) (Y : Model Xo c β), PushInvertible Y.t.G Y.t.PP.L ∧ ∃ b : O →+* T.V, (algebraMap T.V T.Fr).comp b = io.comp β := by
   intro hI hN E _ _ _ H Dw l Xo c hpos T io p hp hpT hg
   classical

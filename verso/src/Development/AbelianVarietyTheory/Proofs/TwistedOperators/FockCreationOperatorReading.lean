@@ -15,6 +15,13 @@ open Complex
 
 variable {D : D7}
 
+/- English proof (translation)
+Unfold `fmR fockMat Formalism.L2.Ker.coordX`. Rewrite using `[Finset.sum_eq_single l.2.1, Finset.sum_eq_single l.2.2]`. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Introduce `j _ hj`.
+
+Simplify using `[hj]`. Simplify using the standard rewrite rules. Introduce `i _ hi`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Simplify using `[hi]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem fmR_coordX_self {S T : HSp D} (A : GlobalTheory.ChainFr.Fr S) (B : GlobalTheory.ChainFr.Fr T) (l : DVar D.what₂.Tau S.rank T.rank) :
     fmR A B (Formalism.L2.Ker.coordX l) l.1 = unitMap (A.onb l.1) (B.onb l.1) l.2.1 l.2.2 := by
   unfold fmR fockMat Formalism.L2.Ker.coordX
@@ -25,12 +32,22 @@ theorem fmR_coordX_self {S T : HSp D} (A : GlobalTheory.ChainFr.Fr S) (B : Globa
   · intro i _ hi; refine Finset.sum_eq_zero fun j _ => ?_; simp [hi]
   · simp
 
+/- English proof (translation)
+Unfold `fmR fockMat Formalism.L2.Ker.coordX`. Use `Finset.sum_eq_zero fun i _ => Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Simplify using `[h]`. Both sides reduce to the same expression.
+-/
 theorem fmR_coordX_ne {S T : HSp D} (A : GlobalTheory.ChainFr.Fr S) (B : GlobalTheory.ChainFr.Fr T) (l : DVar D.what₂.Tau S.rank T.rank)
     (τ' : D.what₂.Tau) (h : τ' ≠ l.1) : fmR A B (Formalism.L2.Ker.coordX l) τ' = 0 := by
   unfold fmR fockMat Formalism.L2.Ker.coordX
   refine Finset.sum_eq_zero fun i _ => Finset.sum_eq_zero fun j _ => ?_
   simp [h]; rfl
 
+/- English proof (translation)
+Unfold `fmR fockMat Formalism.L2.Ker.coordX`. Rewrite using `[Finset.sum_eq_single l.2.1, Finset.sum_eq_single l.2.2]`. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Introduce `j _ hj`.
+
+Simplify using `[hj]`. Simplify using the standard rewrite rules. Introduce `i _ hi`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Simplify using `[hi]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem fmR_I_coordX_self {S T : HSp D} (A : GlobalTheory.ChainFr.Fr S) (B : GlobalTheory.ChainFr.Fr T) (l : DVar D.what₂.Tau S.rank T.rank) :
     fmR A B (I • Formalism.L2.Ker.coordX l) l.1 =
       cplxO (A.cart l.1) (B.cart l.1) (unitMap (A.onb l.1) (B.onb l.1) l.2.1 l.2.2) := by
@@ -42,12 +59,20 @@ theorem fmR_I_coordX_self {S T : HSp D} (A : GlobalTheory.ChainFr.Fr S) (B : Glo
   · intro i _ hi; refine Finset.sum_eq_zero fun j _ => ?_; simp [hi]
   · simp
 
+/- English proof (translation)
+Unfold `fmR fockMat Formalism.L2.Ker.coordX`. Use `Finset.sum_eq_zero fun i _ => Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Simplify using `[h]`. Both sides reduce to the same expression.
+-/
 theorem fmR_I_coordX_ne {S T : HSp D} (A : GlobalTheory.ChainFr.Fr S) (B : GlobalTheory.ChainFr.Fr T) (l : DVar D.what₂.Tau S.rank T.rank)
     (τ' : D.what₂.Tau) (h : τ' ≠ l.1) : fmR A B (I • Formalism.L2.Ker.coordX l) τ' = 0 := by
   unfold fmR fockMat Formalism.L2.Ker.coordX
   refine Finset.sum_eq_zero fun i _ => Finset.sum_eq_zero fun j _ => ?_
   simp [h]; rfl
 
+/- English proof (translation)
+Establish `key : ∀ (k : ℝ) (p q : ℂ), k * ‖p + t • q‖ ^ 2 = k * ‖p‖ ^ 2 + t * (2 * (k * (p * conj q).re)) + t ^ 2 * (k * ‖q‖ ^ 2)`. Introduce `k p q`. Rewrite using `[Complex.sq_norm, Complex.sq_norm, Complex.sq_norm]`. Simplify using `[Complex.normSq_apply]`. Expand and normalize the polynomial expressions, which then agree.
+
+Unfold `gq gD`. Simplify using `only [Pi.add_apply, Pi.smul_apply, key, Finset.sum_add_distrib, Finset.mul_sum]`.
+-/
 theorem gq_add_smul {ι : Type} [Fintype ι] {a b : ℕ} (c : ι → ℝ) (z e : VCx ι a b) (t : ℝ) :
     gq c (z + t • e) = gq c z + t * gD c z e + t ^ 2 * gq c e := by
   have key : ∀ (k : ℝ) (p q : ℂ), k * ‖p + t • q‖ ^ 2 =
@@ -59,6 +84,9 @@ theorem gq_add_smul {ι : Type} [Fintype ι] {a b : ℕ} (c : ι → ℝ) (z e :
   unfold gq gD
   simp only [Pi.add_apply, Pi.smul_apply, key, Finset.sum_add_distrib, Finset.mul_sum]
 
+/- English proof (translation)
+Unfold `rd`. Rewrite using `[Complex.ofReal_exp, ← mul_assoc, ← Complex.exp_add]`. Use `push_cast`. Put the polynomial expressions in normal form. Simplify using the standard rewrite rules.
+-/
 theorem heisO_eq_exp_rd (ψ : AddChar (AF D.host.F) ℂ) (σ : (D.what₂.Tau → ℂ) →+ AE D) {S T : HSp D}
     (A : GlobalTheory.ChainFr.Fr S) (B : GlobalTheory.ChainFr.Fr T) (h : WO S T → ℂ) (x : WO S T) (w : VCx D.what₂.Tau S.rank T.rank) :
     heisO ψ S T (fockPt σ A B w) h x = Complex.exp (-((gq (fw D) w : ℂ) / 2)) * rd ψ σ A B h x w := by
@@ -68,6 +96,17 @@ theorem heisO_eq_exp_rd (ψ : AddChar (AF D.host.F) ℂ) (σ : (D.what₂.Tau �
   ring_nf
   simp
 
+/- English proof (translation)
+Rewrite using `[heis_dRho_fock D ψ θ σ hψ hC S T A B h x z e τ v hv h0]`. Establish `hfun : (fun t : ℝ => Complex.exp (-((Real.pi : ℂ) * I) * ((t * omF A B z e : ℝ) : ℂ)) * heisO ψ S T (fockPt σ A B (z + t • e)) h x) = fun t : ℝ => Complex.exp (-((Real.pi : ℂ) * I) * ((t : ℂ) * (omF A B z e : ℂ)) - ((gq (fw D) z : ℂ) + (t : ℂ) * (gD (fw D) z e : ℂ) + (t : ℂ) ^ 2 …`. Use function extensionality and compare the values at `t`. Rewrite using `[heisO_eq_exp_rd, gq_add_smul, ← mul_assoc, ← Complex.exp_add]`. Use `push_cast`.
+
+Put the polynomial expressions in normal form. Rewrite using `[hfun]`. Establish `hline : HasDerivAt (fun t : ℝ => z + t • e) e 0`. Simplify using `using ((hasDerivAt_id (0 : ℝ)).smul_const e).const_add z`. Establish `hRd : HasDerivAt (fun t : ℝ => rd ψ σ A B h x (z + t • e)) (fderiv ℝ (rd ψ σ A B h x) z e) 0`.
+
+Use `hd.hasFDerivAt.comp_hasDerivAt_of_eq (0 : ℝ) hline (by simp)` as an intermediate fact. Conclude with `this`. Establish `hid : HasDerivAt (fun t : ℝ => (t : ℂ)) 1 0` using `(hasDerivAt_id (0 : ℝ)).ofReal_comp`. Establish `hP : HasDerivAt (fun t : ℝ => -((Real.pi : ℂ) * I) * ((t : ℂ) * (omF A B z e : ℂ)) - ((gq (fw D) z : ℂ) + (t : ℂ) * (gD (fw D) z e : ℂ) + (t : ℂ) ^ 2 * (gq (fw D) e : ℂ)) / 2) (-((Real.pi : ℂ) * I) * (omF A B z e : ℂ) - (gD (fw D) z e : ℂ) / 2) 0`. Establish `h1` using `(hid.mul_const (omF A B z e : ℂ)).const_mul (-((Real.pi : ℂ) * I))`.
+
+Establish `h2` using `((hid.mul_const (gD (fw D) z e : ℂ)).const_add (gq (fw D) z : ℂ)).add ((hid.pow 2).mul_const (gq (fw D) e : ℂ))`. Establish `h3` using `h1.sub (h2.div_const 2)`. Use `h3 using 1` and compare the differences between its conclusion and the goal. Apply the tactic sequence `all_goals first | rfl | (funext t; rfl) | simp`. Establish `hD : HasDerivAt (fun t : ℝ => Complex.exp (-((Real.pi : ℂ) * I) * ((t : ℂ) * (omF A B z e : ℂ)) - ((gq (fw D) z : ℂ) + (t : ℂ) * (gD (fw D) z e : ℂ) + (t : ℂ) ^ 2 * (gq (fw D) e : ℂ)) / 2) * rd ψ σ A B h x (z + t • e)) _ 0` using `hP.cexp.mul hRd`.
+
+Rewrite using `[hD.deriv]`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem heis_dRho_fock_eval (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (σ : (D.what₂.Tau → ℂ) →+ AE D)
     (hψ : IsStdChar D ψ (-1)) (hC : GlobalTheory.FockCompare.Chart θ σ) (S T : HSp D) (A : GlobalTheory.ChainFr.Fr S)
     (B : GlobalTheory.ChainFr.Fr T) (h : WO S T → ℂ) (x : WO S T) (z e : VCx D.what₂.Tau S.rank T.rank) (τ : D.what₂.Tau)
@@ -109,6 +148,13 @@ theorem heis_dRho_fock_eval (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfF
   simp
   ring
 
+/- English proof (translation)
+Introduce `D ψ θ σ hψ hC S T A B h x l z hd`. Establish `h1` using `heis_dRho_fock_eval D ψ θ σ hψ hC S T A B h x z (Formalism.L2.Ker.coordX l) l.1 _ (fmR_coordX_self A B l) (fmR_coordX_ne A B l) hd`. Establish `h2` using `heis_dRho_fock_eval D ψ θ σ hψ hC S T A B h x z (I • Formalism.L2.Ker.coordX l) l.1 _ (fmR_I_coordX_self A B l) (fmR_I_coordX_ne A B l) hd`. Establish `hlin : heisO ψ S T (fockPt σ A B z) (aPlusAll (heisO ψ S T) θ (fun τ => cplxO (A.cart τ) (B.cart τ)) A.onb B.onb l h) x = (fockScale D l.1 : ℂ)⁻¹ * (heisO ψ S T (fockPt σ A B z) (Formalism.IndefR.Datum.dRho (heisO ψ S T) θ l.1 (unitMap (A.onb l.1) (B.onb l.1) l.2.1 l.2.2) h) x - …`. Simplify using `only [aPlusAll, aPlus, crea, heisO, Pi.smul_apply, Pi.sub_apply, smul_eq_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hexp : (Real.exp (gq (fw D) z / 2) : ℂ) * Complex.exp (-((gq (fw D) z : ℂ) / 2)) = 1`. Rewrite using `[Complex.ofReal_exp, ← Complex.exp_add]`. Use `push_cast`. Simplify using the standard rewrite rules.
+
+Establish `hrd : rd ψ σ A B (aPlusAll (heisO ψ S T) θ (fun τ => cplxO (A.cart τ) (B.cart τ)) A.onb B.onb l h) x z = (Real.exp (gq (fw D) z / 2) : ℂ) * heisO ψ S T (fockPt σ A B z) (aPlusAll (heisO ψ S T) θ (fun τ => cplxO (A.cart τ) (B.cart τ)) A.onb B.onb l h) x` using `rfl`. Rewrite using `[hrd, hlin, h1, h2]`. Unfold `crOp lamF`. Take the linear combination `(↑(fockScale D l.1))⁻¹ * ((-((Real.pi : ℂ) * I) * (omF A B z (Formalism.L2.Ker.coordX l) : ℂ) - (gD (fw D) z (Formalism.L2.Ker.coordX l) : ℂ) / 2) * rd ψ σ A B h x z + fderiv ℝ (rd ψ σ A B h x) z (Formalism.L2.Ker.coordX l) - I * ((-((Real.pi : ℂ) * I) * (omF A B z (I • Formalism …`.
+-/
 theorem rd_aPlusAll : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (σ : (D.what₂.Tau → ℂ) →+ AE D), IsStdChar D ψ (-1) → GlobalTheory.FockCompare.Chart θ σ → ∀ (S T : HSp D) (A : GlobalTheory.ChainFr.Fr S) (B : GlobalTheory.ChainFr.Fr T) (h : WO S T → ℂ) (x : WO S T) (l : FVar D T.rank S.rank) (z : VCx D.what₂.Tau S.rank T.rank), DifferentiableAt ℝ (rd ψ σ A B h x) z → rd ψ σ A B (aPlusAll (heisO ψ S T) θ (fun τ => cplxO (A.cart τ) (B.cart τ)) A.onb B.onb l h) x z = (2 / (fockScale D l.1 : ℂ)) * GlobalTheory.FockTransl.Jet.crOp A B l (rd ψ σ A B h x) z := by
   intro D ψ θ σ hψ hC S T A B h x l z hd
   have h1 := heis_dRho_fock_eval D ψ θ σ hψ hC S T A B h x z (Formalism.L2.Ker.coordX l) l.1 _

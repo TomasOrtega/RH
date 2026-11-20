@@ -4,6 +4,9 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.H1MapSubgroup
 open CategoryTheory GlobalTheory.SelFun
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.SelFun.Level.level | exact GlobalTheory.SelFun.Level.level | (intros; apply GlobalTheory.SelFun.Level.level <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.leftExact_functor_representable_torsion_modules : ∀ (Λ : Type) [CommRing Λ] [IsLocalRing Λ] [IsNoetherianRing Λ] [Finite (IsLocalRing.ResidueField Λ)]
   (F : ModuleCat.{0} Λ ⥤ ModuleCat.{0} Λ) [F.Additive] [F.Linear Λ],
   (∀ (B' B B'' : ModuleCat.{0} Λ), Tors Λ B → Tors Λ B'' → ∀ (f : B' ⟶ B) (g : B ⟶ B''), Function.Injective f.hom →

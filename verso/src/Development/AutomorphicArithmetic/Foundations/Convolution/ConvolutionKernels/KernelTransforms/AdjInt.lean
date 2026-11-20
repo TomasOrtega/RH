@@ -12,6 +12,17 @@ open GroundTheory.Automorphic GroundTheory.Automorphic.Reduction GroundTheory.Au
 open GroundTheory.Automorphic.AutomorphicForm GroundTheory.Automorphic.CuspidalSpectrum
 open scoped TensorProduct InnerProductSpace ComplexConjugate Pointwise
 
+/- English proof (translation)
+Introduce `G H _ _ _ _ _ _ _ _ _ _ _ π μ _ _ f g hg`. Establish `hf1 : ((UnitaryRep.ccToL1 μ f : G →₁[μ] ℂ) : G → ℂ) =ᵐ[μ] f`. Unfold `UnitaryRep.ccToL1`. Conclude with `MemLp.coeFn_toLp _`. Establish `hg1 : ((UnitaryRep.ccToL1 μ g : G →₁[μ] ℂ) : G → ℂ) =ᵐ[μ] g`.
+
+Unfold `UnitaryRep.ccToL1`. Conclude with `MemLp.coeFn_toLp _`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[UnitaryRep.adjoint_integrated]`. Use `congr 1`.
+
+Apply `Lp.ext` to reduce the goal to its premises. Establish `h2 : (fun x => (UnitaryRep.ccToL1 μ f : G →₁[μ] ℂ) x⁻¹) =ᵐ[μ] fun x => f x⁻¹` using `(Measure.measurePreserving_inv μ).quasiMeasurePreserving.ae_eq_comp hf1`. Use `filter_upwards [UnitaryRep.coeFn_involution μ (UnitaryRep.ccToL1 μ f), h2, hg1] with x h1 h2 h3`. Rewrite using `[h1, h2, h3, hg]`. Use `(π.norm_integrated_le μ _).trans (le_of_eq ?_)` and prove the remaining obligations.
+
+Rewrite using `[L1.norm_eq_integral_norm]`. Conclude with `integral_congr_ae (hf1.mono fun x hx => by simp only [hx])`. Rewrite using `[← integral_inv_eq_self (fun x => ‖f x‖) μ]`. Use `congr 1`. Use extensionality with `x`.
+
+Rewrite using `[hg, RCLike.norm_conj]`.
+-/
 theorem UpperTheory.ConvolutionTheory.Tf.adjInt :
     ∀ (G H : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [LocallyCompactSpace G] [T2Space G] [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G] [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (π : UnitaryRep G H) (μ : Measure G) [μ.IsHaarMeasure] [μ.IsInvInvariant]
       (f g : CompactlySupportedContinuousMap G ℂ), (∀ x, g x = conj (f x⁻¹)) →

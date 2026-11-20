@@ -14,6 +14,9 @@ def padMat {n m : ℕ} (A : Matrix (Fin n) (Fin n) R) : Matrix (Fin m) (Fin m) R
   Matrix.of fun i j =>
     if h : (i : ℕ) < n ∧ (j : ℕ) < n then A ⟨i, h.1⟩ ⟨j, h.2⟩ else if i = j then 1 else 0
 
+/- English proof (translation)
+Use extensionality with `i j`. Apply the tactic sequence `refine Fin.addCases (fun a => ?_) (fun a => ?_) i <;> refine Fin.addCases (fun c => ?_) (fun c => ?_) j <;>`. Apply the tactic sequence `simp [padMat, Matrix.one_apply, Fin.ext_iff] <;> omega`.
+-/
 theorem padMat_add {n k : ℕ} (A : Matrix (Fin n) (Fin n) R) :
     (padMat R A : Matrix (Fin (n + k)) (Fin (n + k)) R) =
       Matrix.reindex finSumFinEquiv finSumFinEquiv (Matrix.fromBlocks A 0 0 1) := by
@@ -33,6 +36,9 @@ def padHom {n m : ℕ} (h : n ≤ m) : Matrix (Fin n) (Fin n) R →* Matrix (Fin
 
 def stab (n m : ℕ) (h : n ≤ m) : GL (Fin n) R →* GL (Fin m) R := Units.map (padHom R h)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem stab_apply {n m : ℕ} (h : n ≤ m) (g : GL (Fin n) R) (i j : Fin m) :
     (stab R n m h g : Matrix (Fin m) (Fin m) R) i j =
       if h : (i : ℕ) < n ∧ (j : ℕ) < n then (g : Matrix (Fin n) (Fin n) R) ⟨i, h.1⟩ ⟨j, h.2⟩

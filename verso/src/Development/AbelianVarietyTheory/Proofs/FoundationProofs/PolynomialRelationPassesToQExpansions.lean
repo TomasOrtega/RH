@@ -11,6 +11,9 @@ open scoped UpperHalfPlane MatrixGroups ModularForm Manifold BigOperators
 
 namespace GlobalTheory.QFam
 
+/- English proof (translation)
+Establish `h` using `hf.mul_conv hg`. Establish `e : conv (fun n => PowerSeries.coeff n φ) (fun n => PowerSeries.coeff n ψ) = fun n => PowerSeries.coeff n (φ * ψ)`. Use function extensionality and compare the values at `n`. Rewrite using `[conv, PowerSeries.coeff_mul]`. Rewrite `h` using `[e]`. Then use the resulting hypothesis.
+-/
 theorem HasQ.mul_powerSeries {N : ℕ} {f g : ℍ → ℂ} {φ ψ : PowerSeries ℂ}
     (hf : HasQ N f (fun n => PowerSeries.coeff n φ)) (hg : HasQ N g (fun n => PowerSeries.coeff n ψ)) :
     HasQ N (fun τ => f τ * g τ) (fun n => PowerSeries.coeff n (φ * ψ)) := by
@@ -20,6 +23,11 @@ theorem HasQ.mul_powerSeries {N : ℕ} {f g : ℍ → ℂ} {φ ψ : PowerSeries 
     funext n; rw [conv, PowerSeries.coeff_mul]
   rwa [e] at h
 
+/- English proof (translation)
+Proceed by induction on `i with`. Consider the case `zero`. Establish `h` using `HasQ.const N (1 : ℂ)`. Apply the tactic sequence `convert h using 2 <;> simp [PowerSeries.coeff_one]`. Consider the case `succ i ih`.
+
+Establish `hb : HasQ N f (fun n => PowerSeries.coeff n (PowerSeries.mk b))`. Simplify `hf` using `only [PowerSeries.coeff_mk]`. Establish `h` using `ih.mul_powerSeries hb`. Simplify `h` using `only [pow_succ]`.
+-/
 theorem HasQ.pow_powerSeries {N : ℕ} {f : ℍ → ℂ} {b : ℕ → ℂ} (hf : HasQ N f b) (i : ℕ) :
     HasQ N (fun τ => f τ ^ i) (fun n => PowerSeries.coeff n (PowerSeries.mk b ^ i)) := by
   induction i with
@@ -32,6 +40,15 @@ theorem HasQ.pow_powerSeries {N : ℕ} {f : ℍ → ℂ} {b : ℕ → ℂ} (hf :
     have h := ih.mul_powerSeries hb
     simpa only [pow_succ] using h
 
+/- English proof (translation)
+Introduce `N n f b p c hN hf hp hrel`. Establish `hterm : ∀ i ∈ Finset.range (n + 1), HasQ N (fun τ => p i τ * f τ ^ i) (fun m => PowerSeries.coeff m (PowerSeries.mk (c i) * PowerSeries.mk b ^ i))`. Introduce `i _`. Establish `hpi : HasQ N (p i) (fun m => PowerSeries.coeff m (PowerSeries.mk (c i)))`. Simplify `hp i` using `only [PowerSeries.coeff_mk]`.
+
+Conclude with `hpi.mul_powerSeries (hf.pow_powerSeries i)`. Establish `hsum` using `HasQ.sum (Finset.range (n + 1)) hterm`. Establish `hzero : HasQ N (fun τ => ∑ i ∈ Finset.range (n + 1), p i τ * f τ ^ i) (fun _ => 0)`. Establish `h0` using `HasQ.const N (0 : ℂ)`. Establish `e : (fun τ => ∑ i ∈ Finset.range (n + 1), p i τ * f τ ^ i) = fun _ => (0 : ℂ)`.
+
+Use function extensionality and compare the values at `hrel`. Rewrite using `[e]`. Simplify using `using h0`. Establish `hc` using `HasQ.coeff_unique hN hsum hzero`. Rewrite using `[Polynomial.eval_finset_sum]`.
+
+Simplify using `only [Polynomial.eval_monomial]`. Use extensionality with `m`. Use `congrFun hc m` as an intermediate fact. Simplify `this` using `[map_sum]`.
+-/
 theorem polyRel_qSeries : ∀ (N n : ℕ) (f : ℍ → ℂ) (b : ℕ → ℂ) (p : ℕ → ℍ → ℂ) (c : ℕ → ℕ → ℂ), 0 < N → HasQ N f b → (∀ i, HasQ N (p i) (c i)) → (∀ τ, ∑ i ∈ Finset.range (n + 1), p i τ * f τ ^ i = 0) → (∑ i ∈ Finset.range (n + 1), Polynomial.monomial i (PowerSeries.mk (c i))).eval (PowerSeries.mk b) = 0 := by
   intro N n f b p c hN hf hp hrel
   have hterm : ∀ i ∈ Finset.range (n + 1), HasQ N (fun τ => p i τ * f τ ^ i)

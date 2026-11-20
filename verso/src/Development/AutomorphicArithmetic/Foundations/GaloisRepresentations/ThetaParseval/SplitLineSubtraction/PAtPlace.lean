@@ -8,6 +8,29 @@ open UpperTheory.V.Af (FrobEig algSat RepIso tw)
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 open UpperTheory.Gal.TP.Sub
 
+/- English proof (translation)
+Introduce `hCE hSat hFI hPA hCT hCA hCL hSS E Ω _ _ _ _ _ _ l _ ι n hO hT U hU lam hl w₀ hw₀`. Take `⟨t, κ, m, U₁, U₂, lam₁, lam₂, ψ₁, ψ₂, p₁, p₂, hodd, hκ, h1, h2, hne, hκ0, hψ0⟩` from `hT U hU lam hl w₀ hw₀`. Take `⟨L, hL, hLinj⟩` from `hCE E Ω l ι`. Establish `ha_ne : ∀ i j, L (ψ₁ i) (p₁ i) ≠ L (ψ₂ j) (p₂ j)` using `fun i j h => hne i j (hLinj _ _ _ _ (h1.alg i) (h2.alg j) h)`. Take `⟨⟨r₁, hr₁⟩, hC₁⟩` from `hO (n + t) hodd U₁ h1.aut lam₁ h1.wt`.
+
+Take `⟨⟨r₂, hr₂⟩, -⟩` from `hO (n + t) hodd U₂ h2.aut lam₂ h2.wt`. Establish `hc1 : ∀ i, Continuous (L (ψ₁ i) (p₁ i))` using `fun i => (hL _ _ (h1.alg i)).1`. Establish `hc2 : ∀ j, Continuous (L (ψ₂ j) (p₂ j))` using `fun j => (hL _ _ (h2.alg j)).1`. Establish `hμc : Continuous (L κ m)` using `(hL _ _ hκ).1`. Establish `h0 : Ideal.span {((l : ℕ) : 𝓞 E)} ≠ 0`.
+
+Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `(Fact.out : l.Prime).ne_zero` after adjusting the coercions. Establish `hlw : ∀ᶠ v : HeightOneSpectrum (𝓞 E) in Filter.cofinite, ((l : ℕ) : 𝓞 E) ∉ v.asIdeal` using `(Ideal.finite_factors h0).subset fun v hv => Ideal.dvd_span_singleton.mpr (not_not.1 hv)`. Establish `hunr : ∀ χ : HChar E, ∀ᶠ v : HeightOneSpectrum (𝓞 E) in Filter.cofinite, χ.UnrAt v` using `fun χ => Filter.eventually_cofinite.2 (GlobalTheory.Mem.UnrAe.unr_ae_and_level E χ).1`. Establish `hu1 : ∀ᶠ v : HeightOneSpectrum (𝓞 E) in Filter.cofinite, ∀ i, (ψ₁ i).UnrAt v` using `Filter.eventually_all.2 fun i => hunr _`.
+
+Establish `hu2 : ∀ᶠ v : HeightOneSpectrum (𝓞 E) in Filter.cofinite, ∀ j, (ψ₂ j).UnrAt v` using `Filter.eventually_all.2 fun j => hunr _`. Establish `hid : ∀ g, cp r₁ g * lin (fun j => L (ψ₂ j) (p₂ j)) g = cp r₂ g * lin (fun i => L (ψ₁ i) (p₁ i)) g`. Use `hFI E Ω l ι (n + t) t r₁ r₂ _ _ hr₁.1 hr₂.1 hc1 hc2 ?_` and prove the remaining obligations. Use `filter_upwards [hlw, hunr κ, hu1, hu2, hr₁.2.2, hr₂.2.2, hSat E n U hU] with w hw hk hp1 hp2 hw1 hw2 hsat hs`. Take `⟨B, hB⟩` from `hsat hs`.
+
+Take `⟨B₁, hB₁, e₁⟩` from `h1.sat w hs hk hp1 B hB`. Take `⟨B₂, hB₂, e₂⟩` from `h2.sat w hs hk hp2 B hB`. Use `⟨(algSat n (normV w) B).map (· * ((κ.val w : ℂˣ) : ℂ)⁻¹), fun i => (((ψ₁ i).val w : ℂˣ) : ℂ), fun j => (((ψ₂ j).val w : ℂˣ) : ℂ), ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← e₁]`. Conclude with `hw1 hs B₁ hB₁`.
+
+Rewrite using `[← e₂]`. Conclude with `hw2 hs B₂ hB₂`. Conclude with `fun i => ((hL _ _ (h1.alg i)).2 w (hp1 i)).1 hw`. Conclude with `fun j => ((hL _ _ (h2.alg j)).2 w (hp2 j)).1 hw`. Take `⟨s, hsc, hss, hcl⟩` from `hPA E Ω l ι n (n + t) t r₂ _ hr₂.2.1 t r₁ _ hr₁.1 hr₁.2.1 hc1 ha_ne hid`.
+
+Establish `key : ∀ w, IsSplitAt w → κ.UnrAt w → (∀ i, (ψ₁ i).UnrAt w) → ∀ B, SatU U w B → Cl ι (tw s (L κ m)) w (algSat n (normV w) B) (GlobalTheory.GalDef.jumpsOf ι lam)`. Introduce `w hs hk hp B hB`. Take `⟨B₁, hB₁, e₁⟩` from `h1.sat w hs hk hp B hB`. Establish `c1` using `hC₁ r₁ hr₁ w hs B₁ hB₁`. Rewrite `c1` using `[e₁]`.
+
+Establish `hj : GlobalTheory.GalDef.jumpsOf ι lam₁ = fun τ => (fun τ => (GlobalTheory.GalDef.jumpsOf ι lam τ).map (· + m (ι.toRingHom.comp τ))) τ + Finset.univ.val.map fun i => (fun i τ => -p₁ i (ι.toRingHom.comp τ)) i τ`. Use function extensionality and compare the values at `τ`. Simplify using `only [jumpsOf_eq]`. Conclude with `h1.inf _`. Rewrite `c1` using `[hj]`.
+
+Establish `c2` using `hcl w _ (fun i => (((ψ₁ i).val w : ℂˣ) : ℂ)) _ (fun i τ => -p₁ i (ι.toRingHom.comp τ)) (fun i => (hL _ _ (h1.alg i)).2 w (hp i)) c1`. Establish `c3` using `hCT E Ω l ι n s (L κ m) hsc hμc w _ ((κ.val w : ℂˣ) : ℂ) _ (fun τ => -m (ι.toRingHom.comp τ)) ((hL _ _ hκ).2 w hk) c2`. Establish `eS : ((algSat n (normV w) B).map (· * ((κ.val w : ℂˣ) : ℂ)⁻¹)).map (· * ((κ.val w : ℂˣ) : ℂ)) = algSat n (normV w) B`. Rewrite using `[Multiset.map_map]`. Simplify using `[Function.comp_def]`.
+
+Establish `eJ : (fun τ => ((GlobalTheory.GalDef.jumpsOf ι lam τ).map (· + m (ι.toRingHom.comp τ))).map (· + -m (ι.toRingHom.comp τ))) = GlobalTheory.GalDef.jumpsOf ι lam`. Use function extensionality and compare the values at `τ`. Rewrite using `[Multiset.map_map]`. Simplify using `[Function.comp_def]`. Rewrite `c3` using `[eS]`.
+
+Simplify `c3` using `only [eJ]`. Use `⟨tw s (L κ m), ⟨(hCL (G E Ω) (Qbar l) n 0).2.2.1 s _ hsc hμc, (hSS (G E Ω) (Qbar l) n 0).2.2 s _ hss, ?_⟩, fun B hB => key w₀ hw₀ hκ0 hψ0 B hB⟩` and prove the remaining obligations. Use `filter_upwards [hlw, hunr κ, hu1] with w hw hk hp hs B hB`. Conclude with `(key w hs hk hp B hB).1 hw`.
+-/
 theorem UpperTheory.Gal.TP.Sub.atPlace_holds :
     CharEx → SatAE → FrobId → PeelAll → ClTw → ClAway → ContLeft → SSLeft → AtPlace := by
   intro hCE hSat hFI hPA hCT hCA hCL hSS E Ω _ _ _ _ _ _ l _ ι n hO hT U hU lam hl w₀ hw₀

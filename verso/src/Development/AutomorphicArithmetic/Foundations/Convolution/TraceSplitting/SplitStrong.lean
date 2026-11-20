@@ -5,6 +5,15 @@ import Development.AutomorphicArithmetic.Foundations.Convolution.TraceSplitting.
 import Development.AutomorphicArithmetic.Foundations.Convolution.NormCharacterPowers.NormCharPowHolds
 import Development.AutomorphicArithmetic.Foundations.Convolution.CentreSplitting.IsoEq
 
+/- English proof (translation)
+Introduce `hD F E _ _ _ _ _ _ _ _ σ hσ hp n hn π P hc hw v w i hi hcomp τ τ' hτ hτ'`. Take `⟨-, -, -, -, -, hpl⟩` from `UpperTheory.ConvolutionTheory.T.places F E hp`. Take `⟨hs, u, rfl, hiu⟩` from `hpl v w i hi hcomp`. Take `⟨π', hl, hloc⟩` from `hD F E σ hσ hp n hn P hc v u hs`. Take `⟨η, hη, hiso⟩` from `(UpperTheory.ConvolutionTheory.R.fibre_holds F E hp n hn (.cx π') (.cx P) hl.1).2 (.cx π) hw`.
+
+Establish `he : π'.twist η = π` using `(UpperTheory.ConvolutionTheory.Dp.isoEq F n (π'.twist η) π).1 hiso`. Substitute `he` using the available equality. Establish `hτ₀ : (UpperTheory.CBC.Cusp.cx π').locComp v τ`. Break down `hη with rfl | hη` into its components or cases. Simplify `hτ` using `[GlobalTheory.CuspRep.CuspSub.twist_one]`.
+
+Conclude with `(UpperTheory.ConvolutionTheory.T.normCharSplit F E σ hσ hp n hn η hη v hs π' τ).1 hτ`. Take `⟨e, he⟩` from `hloc τ τ' hτ₀ hτ'`. Establish `hm : i.toRingHom = GroundTheory.Global.SemiLocal.completionMap v u.1` using `RingHom.ext hiu`. Use `⟨e, fun g x => ?_⟩` and prove the remaining obligations. Rewrite using `[hm]`.
+
+Conclude with `he g x`.
+-/
 theorem UpperTheory.ConvolutionTheory.T.splitStrong :
     UpperTheory.ConvolutionTheory.T.DescStep → UpperTheory.ConvolutionTheory.T.SplitStrong := by
   intro hD F E _ _ _ _ _ _ _ _ σ hσ hp n hn π P hc hw v w i hi hcomp τ τ' hτ hτ'

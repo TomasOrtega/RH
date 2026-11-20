@@ -12,6 +12,21 @@ open Matrix in
 open scoped TensorProduct ContDiff ComplexOrder in
 attribute [local instance] _root_.Formalism.BasicNotions.Host.cmStar in
 
+/- English proof (translation)
+Introduce `G R _ _ _ _ ι π om _ hform M hSm hM`. Establish `hdiff : ∀ f ∈ M, ∀ w : G, DifferentiableAt ℝ (fun x : R => f (w + ι x)) 0` using `fun f hf w => ((hSm f hf w).differentiable (by simp)).differentiableAt`. Use `⟨fun u => { toFun := fun f => ⟨_root_.GlobalTheory.FockCompare.hD ι π om u f, hM u f f.2⟩ map_add' := ?_ map_smul' := ?_ }, fun u f => rfl, ?_, ?_⟩` and prove the remaining obligations. Introduce `f g`. Use extensionality with `w`.
+
+Simplify using `only [Submodule.coe_add, Pi.add_apply]`. Rewrite using `[hform _ (hSm _ (M.add_mem f.2 g.2)), hform _ (hSm _ f.2), hform _ (hSm _ g.2)]`. Establish `hfun : (fun x : R => ((f : G → ℂ) + g) (w + ι x)) = (fun x : R => (f : G → ℂ) (w + ι x)) + fun x : R => (g : G → ℂ) (w + ι x)` using `rfl`. Rewrite using `[hfun, fderiv_add (hdiff _ f.2 w) (hdiff _ g.2 w)]`. Simplify using `only [Pi.add_apply, ContinuousLinearMap.add_apply]`.
+
+Expand and normalize the polynomial expressions, which then agree. Introduce `a f`. Use extensionality with `w`. Simplify using `only [SetLike.val_smul, Pi.smul_apply, smul_eq_mul, RingHom.id_apply]`. Rewrite using `[hform _ (hSm _ (M.smul_mem a f.2)), hform _ (hSm _ f.2)]`.
+
+Establish `hfun : (fun x : R => (a • (f : G → ℂ)) (w + ι x)) = a • fun x : R => (f : G → ℂ) (w + ι x)` using `rfl`. Rewrite using `[hfun, fderiv_const_smul (hdiff _ f.2 w)]`. Simplify using `only [Pi.smul_apply, smul_eq_mul, ContinuousLinearMap.smul_apply]`. Expand and normalize the polynomial expressions, which then agree. Introduce `u v`.
+
+Use extensionality with `f w`. Simplify using `only [LinearMap.coe_mk, AddHom.coe_mk, LinearMap.add_apply, Submodule.coe_add, Pi.add_apply]`. Rewrite using `[hform _ (hSm _ f.2), hform _ (hSm _ f.2), hform _ (hSm _ f.2)]`. Simplify using `only [map_add]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Introduce `c u`. Use extensionality with `f w`. Simplify using `only [LinearMap.coe_mk, AddHom.coe_mk, LinearMap.smul_apply, SetLike.val_smul, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[hform _ (hSm _ f.2), hform _ (hSm _ f.2)]`.
+
+Simplify using `only [map_smul, smul_eq_mul, Complex.real_smul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem _root_.GlobalTheory.FockCompare.exists_heisenberg_operators : ∀ (G R : Type) [AddCommGroup G] [NormedAddCommGroup R] [NormedSpace ℝ R] [FiniteDimensional ℝ R] (ι : R →+ G) (π : G →+ R) (om : R →ₗ[ℝ] R →ₗ[ℝ] ℝ), (∀ x, π (ι x) = x) → (∀ (f : G → ℂ), _root_.GlobalTheory.FockCompare.Sm ι f → ∀ (u : R) (w : G), _root_.GlobalTheory.FockCompare.hD ι π om u f w = -(Real.pi * Complex.I) * (om (π w) u : ℝ) * f w + fderiv ℝ (fun x : R => f (w + ι x)) 0 u) → ∀ (M : Submodule ℂ (G → ℂ)), (∀ f ∈ M, _root_.GlobalTheory.FockCompare.Sm ι f) → (∀ u, ∀ f ∈ M, _root_.GlobalTheory.FockCompare.hD ι π om u f ∈ M) → ∃ Dop : R → Module.End ℂ M, (∀ u (f : M), ((Dop u f : M) : G → ℂ) = _root_.GlobalTheory.FockCompare.hD ι π om u f) ∧ (∀ u v, Dop (u + v) = Dop u + Dop v) ∧ ∀ (c : ℝ) u, Dop (c • u) = (c : ℂ) • Dop u := by
   intro G R _ _ _ _ ι π om _ hform M hSm hM
   have hdiff : ∀ f ∈ M, ∀ w : G, DifferentiableAt ℝ (fun x : R => f (w + ι x)) 0 :=

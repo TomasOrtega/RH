@@ -8,6 +8,15 @@ open scoped TensorProduct Pointwise
 
 namespace GlobalTheory.RingChain
 
+/- English proof (translation)
+Take `⟨b, hb⟩` from `h`. Establish `hinj : Function.Injective ((algebraMap B (FractionRing B)).comp g)` using `(IsFractionRing.injective B (FractionRing B)).comp hg`. Set `φ : FractionRing A' →+* FractionRing B` to `IsFractionRing.lift hinj`. Establish `hφ : ∀ y, φ (algebraMap A' _ y) = algebraMap B (FractionRing B) (g y)` using `fun y => IsFractionRing.lift_algebraMap hinj y`. Establish `ha' : algebraMap A' (FractionRing A') a ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective A' (FractionRing A'))).2 ha`.
+
+Establish `ha'' : algebraMap B (FractionRing B) (g a) ≠ 0` using `(map_ne_zero_iff _ hinj).2 ha`. Establish `hq : φ (algebraMap A' (FractionRing A') x / algebraMap A' (FractionRing A') a) = algebraMap B _ b`. Rewrite using `[map_div₀, hφ, hφ, hb, map_mul, mul_div_cancel_left₀ _ ha'']`. Establish `hint : IsIntegral A' (algebraMap A' (FractionRing A') x / algebraMap A' (FractionRing A') a)`. Take `⟨P, hP, hPb⟩` from `hi b`.
+
+Use `⟨P, hP, φ.injective ?_⟩` and prove the remaining obligations. Establish `hc : φ.comp (algebraMap A' (FractionRing A')) = (algebraMap B (FractionRing B)).comp g` using `RingHom.ext hφ`. Rewrite using `[Polynomial.hom_eval₂, hq, hc, ← Polynomial.hom_eval₂, hPb, map_zero, map_zero]`. Take `⟨c, hc⟩` from `IsIntegrallyClosed.isIntegral_iff.1 hint`. Use `⟨c, IsFractionRing.injective A' (FractionRing A') ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_mul, hc, mul_div_cancel₀ _ ha']`.
+-/
 theorem dvd_of_map_dvd_of_isIntegral {A' B : Type} [CommRing A'] [IsDomain A'] [IsIntegrallyClosed A'] [CommRing B]
     [IsDomain B] (g : A' →+* B) (hg : Function.Injective g) (hi : g.IsIntegral) (a x : A') (ha : a ≠ 0)
     (h : g a ∣ g x) : a ∣ x := by
@@ -31,6 +40,9 @@ theorem dvd_of_map_dvd_of_isIntegral {A' B : Type} [CommRing A'] [IsDomain A'] [
   refine ⟨c, IsFractionRing.injective A' (FractionRing A') ?_⟩
   rw [map_mul, hc, mul_div_cancel₀ _ ha']
 
+/- English proof (translation)
+Rewrite using `[Submodule.mem_smul_pointwise_iff_exists]`. Use `⟨fun ⟨y, _, e⟩ i => ⟨y i, (congrFun e i).symm⟩, fun k => ?_⟩` and prove the remaining obligations. Use `choose c hc using k`. Conclude with `⟨c, trivial, funext fun i => (hc i).symm⟩`.
+-/
 theorem mem_baseOf_iff_forall_dvd {A : Type} [CommRing A] (a : A) (h : ℕ) (x : Fin h → A) :
     x ∈ baseOf a h ↔ ∀ i, a ∣ x i := by
   rw [Submodule.mem_smul_pointwise_iff_exists]
@@ -38,6 +50,9 @@ theorem mem_baseOf_iff_forall_dvd {A : Type} [CommRing A] (a : A) (h : ℕ) (x :
   choose c hc using k
   exact ⟨c, trivial, funext fun i => (hc i).symm⟩
 
+/- English proof (translation)
+Introduce `A' B _ _ _ _ _ g hg hi`. Use `⟨dvd_of_map_dvd_of_isIntegral g hg hi, fun h a ha x => ?_⟩` and prove the remaining obligations. Rewrite using `[mem_baseOf_iff_forall_dvd, mem_baseOf_iff_forall_dvd]`. Conclude with `forall_congr' fun i => ⟨dvd_of_map_dvd_of_isIntegral g hg hi a (x i) ha, fun k => map_dvd g k⟩`.
+-/
 theorem dvd_descends_of_isIntegral :
     ∀ (A' B : Type) [CommRing A'] [IsDomain A'] [IsIntegrallyClosed A'] [CommRing B] [IsDomain B] (g : A' →+* B), Function.Injective g → g.IsIntegral → (∀ a x : A', a ≠ 0 → g a ∣ g x → a ∣ x) ∧ ∀ (h : ℕ) (a : A'), a ≠ 0 → ∀ x : Fin h → A', piMap g (Fin h) x ∈ baseOf (g a) h ↔ x ∈ baseOf a h := by
   intro A' B _ _ _ _ _ g hg hi

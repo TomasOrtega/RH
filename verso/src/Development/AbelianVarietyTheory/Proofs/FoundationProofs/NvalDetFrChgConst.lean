@@ -21,6 +21,13 @@ open NumberField IsDedekindDomain AlgebraicGeometry CategoryTheory ReciprocityTh
 
 namespace GlobalTheory.FlatLine.PlaceConst
 
+/- English proof (translation)
+Distinguish the cases in `hx : x = 0`. Simplify using `[hx, vV]`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible V`. Take `⟨n, u, rfl⟩` from `IsDiscreteValuationRing.exists_units_eq_smul_zpow_of_irreducible hϖ hx`. Establish `h' : ∀ a, χ (algebraMap V K a) = algebraMap V' K' (g a)` using `fun a => RingHom.congr_fun h a`.
+
+Establish `h1` using `he ϖ hϖ`. Establish `h2` using `GlobalTheory.PlaceCompletion.valV_algebraMap_of_irreducible (K' := K) hϖ`. Establish `h3` using `GlobalTheory.PlaceCompletion.valV_algebraMap_of_isUnit (K' := K) u.isUnit`. Establish `h4` using `GlobalTheory.PlaceCompletion.valV_algebraMap_of_isUnit (K' := K') (u.isUnit.map g)`. Simplify using `only [vV] at h1 ⊢`.
+
+Rewrite using `[Units.smul_def, Algebra.smul_def, map_mul, map_zpow₀, h', h', map_mul, map_mul, map_zpow₀, map_zpow₀, h2, h3, h4, one_mul, one_mul, WithZero.log_zpow, WithZero.log_zpow, WithZero.log_exp, ← h1]`. Simplify using `only [smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem vV_map_eq {V K V' K' : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [Field K]
     [Algebra V K] [IsFractionRing V K] [CommRing V'] [IsDomain V'] [IsDiscreteValuationRing V'] [Field K']
     [Algebra V' K'] [IsFractionRing V' K'] (g : V →+* V') (χ : K →+* K')
@@ -42,6 +49,25 @@ theorem vV_map_eq {V K V' K' : Type} [CommRing V] [IsDomain V] [IsDiscreteValuat
   simp only [smul_eq_mul]
   ring
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c hr hg y₀ τ w`. Establish `hB` using `GlobalTheory.abelianSchemeLaws_all.1.secBaseChange`. Establish `hT` using `GlobalTheory.abelianSchemeLaws_all.2.secTwist`. Take `⟨T₀, io₀, ho₀, -, hini⟩` from `GlobalTheory.PlaceCompletion.exists_initial_completion c.F w`. Take `⟨O, _, β, Y, -, hY, hb⟩` from `modelAtSt_of_good GlobalTheory.partI_closed GlobalTheory.Moduli.moduli_scheme_exists E H Dw l Xo c hr hg w`.
+
+Take `⟨b₀, hb₀⟩` from `hb T₀ io₀ 1 ho₀`. Use `letI := io₀.toAlgebra`. Take `⟨z₀, hz₀⟩` from `GlobalTheory.Frames.FramedBaseChange.exists_frMap hB E H Dw l Xo c c.F T₀.Fr (Algebra.ofId c.F T₀.Fr) y₀`. Take `⟨y₁, t, hbor⟩` from `intFr_of_model (GlobalTheory.intFrames_of_laws hB hT E H Dw l Xo c) T₀ io₀ Y hY b₀ hb₀ z₀`. Take `⟨g₁, a₁, hg₁, hc₁⟩` from `(frChg_exists_unique E H Dw l Xo c T₀.Fr y₁.1 z₀).1 hbor.1.symm`.
+
+Use `⟨(vV T₀.V (g₁ τ).det : ℝ) / (1 : ℕ), ?_⟩` and prove the remaining obligations. Introduce `T io e ho`. Take `⟨φ, χ, -, hio, hχ, hϖ⟩` from `hini T io e ho`. Substitute `hio` using the available equality. Use `letI := (χ.comp io₀).toAlgebra`.
+
+Introduce `y z g a hy hz hc`. Set `ψ : T₀.Fr →ₐ[c.F] T.Fr` to `{ χ with commutes' := fun _ => rfl }`. Take `⟨y₂, hy₂⟩` from `GlobalTheory.Frames.FramedBaseChange.exists_frMap hB E H Dw l Xo c T₀.Fr T.Fr ψ y₁.1`. Establish `hi₂ : Integral T (χ.comp io₀) y₂` using `GlobalTheory.PlaceInt.Ext.integral_of_frMap T₀ T io₀ χ φ (fun s => (RingHom.congr_fun hχ s).symm) ψ y₁.1 y₂ rfl hy₂ y₁.2.2`. Take `⟨z', hz'⟩` from `GlobalTheory.Frames.FramedBaseChange.exists_frMap hB E H Dw l Xo c T₀.Fr T.Fr ψ z₀`.
+
+Establish `hzz : z' = z`. Establish `h1` using `Formalism.L2.Pj.frMap_trans (Xo := Xo) (c := c) _ _ _ _ ψ y₀ z₀ z' hz₀ hz'`. Establish `h2 : ψ.comp (Algebra.ofId c.F T₀.Fr) = Algebra.ofId c.F T.Fr` using `Subsingleton.elim _ _`. Rewrite `h1` using `[h2]`. Conclude with `(frMap_unique_refl_iff E H Dw l Xo c c.F T.Fr _ y₀).1 _ _ h1 hz`.
+
+Substitute `hzz` using the available equality. Establish `hc₂` using `(ChgBC.frChg_baseChange E H Dw l Xo c T₀.Fr T.Fr ψ y₁.1 z₀ y₂ z' g₁ a₁ hc₁ hy₂).1 hz'`. Establish `hx : y₂.x = y.x` using `hc₂.1.symm.trans hc.1`. Establish `hA` using `allTest_of_secBaseChange hB E H Dw l Xo c T.Fr`. Take `⟨A, hAu, hAc⟩` from `(intLatU_holds E H Dw l Xo c T (χ.comp io₀) ⟨y, hA y, hy⟩ ⟨y₂, hA y₂, hi₂⟩ hx).1 τ`.
+
+Take `⟨g₃, a₃, -, hc₃⟩` from `(frChg_exists_unique E H Dw l Xo c T.Fr y y₂).1 hx`. Establish `h3 : g₃ τ = A.map (algebraMap T.V T.Fr)`. Use function extensionality and compare the values at `i`. Conclude with `(y.basis τ (y₂.u τ i) (hx ▸ y₂.tan τ i) (y₂.eig τ i)).unique (hc₃.2.1 τ i) (hAc i)`. Establish `h4` using `(frChg_refl_and_comp E H Dw l Xo c T.Fr y y₂ z').2 _ _ _ _ hc₃ hc₂`.
+
+Establish `h5` using `congrFun ((frChg_exists_unique E H Dw l Xo c T.Fr y z').2 _ _ _ _ hc h4).1 τ`. Establish `h6 : (g τ).det = algebraMap T.V T.Fr A.det * χ (g₁ τ).det`. Rewrite using `[h5, Matrix.det_mul, h3, RingHom.map_det, RingHom.map_det, mul_comm]`. Both sides reduce to the same expression. Establish `hu` using `valV_algebraMap_unit T hAu`.
+
+Establish `h7` using `nval_bc χ ho.1 (vV_map_eq φ χ hχ e hϖ) 1 (g₁ τ).det`. Rewrite `h7` using `[mul_one]`. Rewrite using `[h6, nval_mul_unit e (hAu.map _).ne_zero (by simp [vV, hu]), h7, nval_of_ne (hg₁ τ).ne_zero]`.
+-/
 theorem nval_det_frChg_const : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), 1 ≤ Dw.p + Dw.q → (∀ p : ℕ, p.Prime → l.GoodAt p) → ∀ (y₀ : FrPt Xo c c.F) (τ : E →+* ℂ) (w : HeightOneSpectrum (𝓞 c.F)), ∃ b : ℝ, ∀ (T : CDVR) (io : c.F →+* T.Fr) (e : ℕ), OverLa w T.V io e → letI := io.toAlgebra; ∀ (y z : FrPt Xo c T.Fr) (g : (∀ ρ : E →+* ℂ, Matrix (Fin (Dw.mult ρ)) (Fin (Dw.mult ρ)) T.Fr)) (a : T.Fr), Integral T io y → FrMap (Algebra.ofId c.F T.Fr) y₀ z → FrChg g a y z → nval T.V e (g τ).det = (b : EReal) := by
   intro E _ _ _ H Dw l Xo c hr hg y₀ τ w
   have hB := GlobalTheory.abelianSchemeLaws_all.1.secBaseChange

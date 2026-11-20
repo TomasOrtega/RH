@@ -12,6 +12,23 @@ open MeasureTheory NumberField Matrix Finset Formalism.MainNotions.S GlobalTheor
 
 namespace GlobalTheory.IwasawaShape
 
+/- English proof (translation)
+Take `⟨h0, hinv, hlim⟩` from `hμ`. Establish `hL0 : volume (Metric.ball (0 : EuclideanSpace ℝ (Fin d)) 1) ≠ 0` using `(Metric.measure_ball_pos volume _ one_pos).ne'`. Establish `hLt : volume (Metric.ball (0 : EuclideanSpace ℝ (Fin d)) 1) ≠ ⊤` using `measure_ball_lt_top.ne`. Establish `hpos : ∀ᶠ r in nhdsWithin (0 : ℝ) (Set.Ioi 0), 0 < r` using `self_mem_nhdsWithin`. Take `⟨r, hr, hr0, hrt⟩` from `(hpos.and ((hlim.eventually_ne hL0).and (hlim.eventually_ne hLt))).exists`.
+
+Use `set B : Set (Formalism.REAL.UJ ε) := {g | Real.sqrt (Formalism.REAL.hs (uMat g - 1)) ≤ r} with hB`. Establish `hden0 : ENNReal.ofReal (r ^ d) ≠ 0`. Rewrite using `[Ne, ENNReal.ofReal_eq_zero, not_le]`. Conclude with `pow_pos hr d`. Establish `hB0 : μ B ≠ 0`.
+
+Introduce `h`. Apply `hr0` to reduce the goal to its premises. Rewrite using `[h, ENNReal.zero_div]`. Establish `hBt : μ B ≠ ⊤`. Introduce `h`.
+
+Apply `hrt` to reduce the goal to its premises. Rewrite using `[h]`. Conclude with `ENNReal.top_div_of_ne_top ENNReal.ofReal_ne_top`. Establish `hf : Continuous fun g : Formalism.REAL.UJ ε => Real.sqrt (Formalism.REAL.hs (uMat g - 1))`. Use `Real.continuous_sqrt.comp ?_` and prove the remaining obligations.
+
+Unfold `Formalism.REAL.hs`. Use `continuous_finsetSum _ fun i _ => continuous_finsetSum _ fun k _ => ?_` and prove the remaining obligations. Use `(Continuous.norm ?_).pow 2` and prove the remaining obligations. Conclude with `(continuous_apply k).comp ((continuous_apply i).comp (GlobalTheory.FlagLeviGroup.continuous_uMat.sub continuous_const))`. Establish `hBm : MeasurableSet B` using `(isClosed_le hf continuous_const).measurableSet`.
+
+Establish `hBn : B ∈ nhds (1 : Formalism.REAL.UJ ε)`. Establish `hO : IsOpen {g : Formalism.REAL.UJ ε | Real.sqrt (Formalism.REAL.hs (uMat g - 1)) < r}` using `isOpen_lt hf continuous_const`. Use `Filter.mem_of_superset (hO.mem_nhds ?_) fun g hg => by` and prove the remaining obligations. Rewrite using `[hB, Set.mem_ofPred_eq]`. Rewrite `hg` using `[Set.mem_ofPred_eq]`.
+
+Conclude with `hg.le`. Use `show Real.sqrt (Formalism.REAL.hs (uMat (1 : Formalism.REAL.UJ ε) - 1)) < r`. Rewrite using `[GlobalTheory.FlagLeviGroup.uMat_one, sub_self]`. Unfold `Formalism.REAL.hs`. Simplify using `using hr`.
+
+Use `⟨fun h => hB0 (by rw [h]; rfl), ?_⟩` and prove the remaining obligations. Conclude with `finiteOnCompacts_of_nhds M μ h0 hM (fun s hs => hinv s hs) B hBm hBn hBt`.
+-/
 theorem gauge_ne_zero_finite {n : ℕ} {ε : Fin n → Bool} (M : Subgroup (Formalism.REAL.UJ ε)) (d : ℕ)
     (μ : Measure (Formalism.REAL.UJ ε)) (hM : IsClosed (M : Set (Formalism.REAL.UJ ε)))
     (hμ : IsGaugeSub (M : Set (Formalism.REAL.UJ ε)) d μ) : μ ≠ 0 ∧ IsFiniteMeasureOnCompacts μ := by
@@ -48,6 +65,11 @@ theorem gauge_ne_zero_finite {n : ℕ} {ε : Fin n → Bool} (M : Subgroup (Form
   refine ⟨fun h => hB0 (by rw [h]; rfl), ?_⟩
   exact finiteOnCompacts_of_nhds M μ h0 hM (fun s hs => hinv s hs) B hBm hBn hBt
 
+/- English proof (translation)
+Use extensionality with `g`. Establish `hJ` using `GlobalTheory.RealIwasawa.uMat_form g`. Express the relevant statement in the definitionally equal form `g ∈ Formalism.REAL.KG ε ↔ (uMat g)ᴴ * uMat g = 1`. Rewrite using `[Formalism.REAL.mem_KG]`. Express the relevant statement in the definitionally equal form `(uMat g ∈ Matrix.unitaryGroup (Fin n) ℂ ∧ uMat g * Formalism.REAL.Jm ε = Formalism.REAL.Jm ε * uMat g) ↔ _`.
+
+Rewrite using `[Matrix.mem_unitaryGroup_iff', Matrix.star_eq_conjTranspose]`. Use `⟨fun h => h.1, fun h => ⟨h, ?_⟩⟩` and prove the remaining obligations. Establish `h' : uMat g * (uMat g)ᴴ = 1` using `mul_eq_one_comm.mp h`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem coe_KG {n : ℕ} (ε : Fin n → Bool) : (Formalism.REAL.KG ε : Set (Formalism.REAL.UJ ε)) = maxK ε := by
   ext g
   have hJ := GlobalTheory.RealIwasawa.uMat_form g
@@ -61,6 +83,21 @@ theorem coe_KG {n : ℕ} (ε : Fin n → Bool) : (Formalism.REAL.KG ε : Set (Fo
     _ = (uMat g * (uMat g)ᴴ) * Formalism.REAL.Jm ε * uMat g := by simp only [Matrix.mul_assoc]
     _ = Formalism.REAL.Jm ε * uMat g := by rw [h', Matrix.one_mul]
 
+/- English proof (translation)
+Introduce `n ε p q _ _ a j hj W hW μN μM μK hN hM hK0 hK1 hKi`. Take `⟨⟨N, hNs⟩, hNc, -⟩` from `GlobalTheory.FlagMeas.UnipRad.flagN_subgroup_closed_keeps n ε a j W hW`. Take `⟨⟨M, hMs⟩, hMc, ⟨K, hKs⟩, -, hnorm⟩` from `GlobalTheory.FlagLeviGroup.levi_compact_subgroups n ε a W`. Take `⟨hdec, huniq⟩` from `GlobalTheory.RealIwasawa.iwasawa n ε a j W hW`. Establish `eN : ∀ x, x ∈ N ↔ x ∈ flagN ε W` using `fun x => by rw [← hNs]; rfl`.
+
+Establish `eM : ∀ x, x ∈ M ↔ x ∈ flagM ε W` using `fun x => by rw [← hMs]; rfl`. Establish `eK : ∀ x, x ∈ K ↔ x ∈ maxK ε` using `fun x => by rw [← hKs]; rfl`. Establish `hKc : IsCompact (K : Set (Formalism.REAL.UJ ε))`. Rewrite using `[hKs, ← coe_KG]`. Conclude with `isCompact_iff_compactSpace.mpr (Formalism.REAL.instCompactKG n ε)`.
+
+Establish `hN' : IsGaugeSub (N : Set (Formalism.REAL.UJ ε)) (dimN n j) μN` using `by rw [hNs]; exact hN`. Establish `hM' : IsGaugeSub (M : Set (Formalism.REAL.UJ ε)) ((n - 2 * ∑ i, j i) ^ 2 + 2 * ∑ i, j i ^ 2) μM`. Rewrite using `[hMs]`. Conclude with `hM`. Establish `hNc' : IsClosed (N : Set (Formalism.REAL.UJ ε))` using `by rw [hNs]; exact hNc`.
+
+Establish `hMc' : IsClosed (M : Set (Formalism.REAL.UJ ε))` using `by rw [hMs]; exact hMc`. Take `⟨hN0, hNf⟩` from `gauge_ne_zero_finite N _ μN hNc' hN'`. Take `⟨hM0, hMf⟩` from `gauge_ne_zero_finite M _ μM hMc' hM'`. Use `hNf` as an intermediate fact. Use `hMf` as an intermediate fact.
+
+Establish `: IsProbabilityMeasure μK` using `⟨hK1⟩`. Establish `: (Formalism.REAL.muG ε).IsMulRightInvariant` using `⟨fun g => Formalism.REAL.indefinite_unitary_unimodular n ε g⟩`. Establish `hmod` using `GlobalTheory.T.isotropicFlag_levi_conj_haar_modulus n ε a j W hj hW μN hN`. Take `⟨c, hc0, hct, hc⟩` from `GlobalTheory.IwasawaShape.exists_lintegral_eq N M K hNc' hMc' hKc (fun m hm u hu => (eN _).2 (hnorm m ((eM m).1 hm) u ((eN u).1 hu))) (fun u hu m hm hk => huniq u ((eN u).1 hu) m ((eM m).1 hm) ((eK _).1 hk)) (fun g => by`. Take `⟨u, hu, m, hm, k, hk, rfl⟩` from `hdec g`.
+
+Conclude with `⟨u, (eN u).2 hu, m, (eM m).2 hm, k, (eK k).2 hk, rfl⟩)`. Use the proof step `(Formalism.REAL.muG ε) μN μM μK (NeZero.ne _) hN0 hM0 hN'.1 hM'.1`. Use the proof step `(fun s hs => hN'.2.1 s hs) (fun s hs => hM'.2.1 s hs) (fun s hs => hKi s ((eK s).1 hs))`. Use the proof step `(fun m => ENNReal.ofReal (layerProd n 1 j (locSize j W (uMat m)) id))`. Use the proof step `(fun m hm => hmod m ((eM m).1 hm))`.
+
+Conclude with `⟨c, hc0, hct, hc⟩`.
+-/
 theorem iwasawa_shape : ∀ (n : ℕ) (ε : Fin n → Bool) (p q : ℕ), (univ.filter fun a => ε a = true).card = p → (univ.filter fun a => ε a = false).card = q → ∀ (a : ℕ) (j : Fin a → ℕ), (∀ i, 1 ≤ j i) → ∀ (W : Fin (a + 1) → Submodule ℂ (Fin n → ℂ)), IsIsoFlag ε j W → ∀ (μN μM μK : Measure (Formalism.REAL.UJ ε)), IsGaugeSub (flagN ε W) (dimN n j) μN → IsGaugeSub (flagM ε W) ((n - 2 * ∑ i, j i) ^ 2 + 2 * ∑ i, j i ^ 2) μM → μK (maxK ε)ᶜ = 0 → μK Set.univ = 1 → (∀ k ∈ maxK ε, μK.map (fun g => k * g) = μK) → ∃ κ : ENNReal, κ ≠ 0 ∧ κ ≠ ⊤ ∧ ∀ φ : Formalism.REAL.UJ ε → ENNReal, Measurable φ → ∫⁻ g, φ g ∂(Formalism.REAL.muG ε) = κ * ∫⁻ u, ∫⁻ m, ENNReal.ofReal (layerProd n 1 j (locSize j W (uMat m)) id) * ∫⁻ k, φ (u * m * k) ∂μK ∂μM ∂μN := by
   intro n ε p q _ _ a j hj W hW μN μM μK hN hM hK0 hK1 hKi
   obtain ⟨⟨N, hNs⟩, hNc, -⟩ := GlobalTheory.FlagMeas.UnipRad.flagN_subgroup_closed_keeps n ε a j W hW

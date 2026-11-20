@@ -9,6 +9,9 @@ noncomputable section
 
 namespace GlobalTheory.ConjSplit
 
+/- English proof (translation)
+Simplify using `[cA, sigR, incA, inclR]`.
+-/
 theorem sigR_incA (D : D7) (x : D.host.E) :
     cA D (incA D x) = incA D ((D.sp.cm.sig : D.host.E →+* D.host.E) x) := by
   simp [cA, sigR, incA, inclR]
@@ -24,6 +27,9 @@ def ratPt (D : D7) (V : HSp D) (γ : GL (Fin V.rank) D.host.E)
     simp only [Matrix.map_mul] at this
     simpa [Formalism.UG.bc, JR, hc] using this⟩
 
+/- English proof (translation)
+Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `Algebra.TensorProduct.comm (↥D.host.F) (Af ↥D.host.F) D.host.E (Algebra.TensorProduct.map (AlgHom.snd (↥D.host.F) (Ainf ↥D.host.F) (Af ↥D.host.F)) (AlgHom.id (↥D.host.F) D.host.E) (Algebra.TensorProduct.includeRight (γ.1 i j))) = _`. Simplify using `[eToEAf]`.
+-/
 theorem finE_ratPt (D : D7) (V : HSp D) (γ : GL (Fin V.rank) D.host.E) hγ :
     (Formalism.IndefR.Lev.finE V (ratPt D V γ hγ)).1 = γ.1.map (eToEAf D) := by
   ext i j
@@ -32,12 +38,23 @@ theorem finE_ratPt (D : D7) (V : HSp D) (γ : GL (Fin V.rank) D.host.E) hγ :
       (Algebra.TensorProduct.includeRight (γ.1 i j))) = _
   simp [eToEAf]
 
+/- English proof (translation)
+Simplify using `[Formalism.L2.Theta.mt, map_mul]`.
+-/
 theorem mt_mul (D : D7) (V : HSp D) (a b : GA D V) : mt V (a * b) = mt V a * mt V b := by
   simp [Formalism.L2.Theta.mt, map_mul]
 
+/- English proof (translation)
+Rewrite using `[← mt_mul, mul_inv_cancel]`. Simplify using `[Formalism.L2.Theta.mt]`.
+-/
 theorem mt_mul_inv (D : D7) (V : HSp D) (a : GA D V) : mt V a * mt V a⁻¹ = 1 := by
   rw [← mt_mul, mul_inv_cancel]; simp [Formalism.L2.Theta.mt]
 
+/- English proof (translation)
+Establish `hm : (e + cA D e) • (mt V h - 1) = mt V h - 1` using `Matrix.ext fun i j => by`. Rewrite using `[Matrix.smul_apply, smul_eq_mul]`. Conclude with `hs i j`. Establish `key : mt V (g * h * g⁻¹) - 1 = mt V g * (mt V h - 1) * mt V g⁻¹`. Rewrite using `[mt_mul, mt_mul, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, mt_mul_inv]`.
+
+Establish `hm' : (e + cA D e) • (mt V (g * h * g⁻¹) - 1) = mt V (g * h * g⁻¹) - 1`. Rewrite using `[key, ← Matrix.smul_mul, ← Matrix.mul_smul, hm]`. Introduce `i j`. Use `congrFun (congrFun hm' i) j` as an intermediate fact. Rewrite `this` using `[Matrix.smul_apply, smul_eq_mul]`. Then use the resulting hypothesis.
+-/
 theorem suppAt_conj {D : D7} {V : HSp D} {e : AE D} {h : GA D V} (hs : SuppAt e V h) (g : GA D V) :
     SuppAt e V (g * h * g⁻¹) := by
   have hm : (e + cA D e) • (mt V h - 1) = mt V h - 1 := Matrix.ext fun i j => by
@@ -50,10 +67,16 @@ theorem suppAt_conj {D : D7} {V : HSp D} {e : AE D} {h : GA D V} (hs : SuppAt e 
   have := congrFun (congrFun hm' i) j
   rwa [Matrix.smul_apply, smul_eq_mul] at this
 
+/- English proof (translation)
+The claim follows from `Units.ext (finE_ratPt D V γ hγ)`.
+-/
 theorem finE_ratPt_units (D : D7) (V : HSp D) (γ : GL (Fin V.rank) D.host.E) hγ :
     Formalism.IndefR.Lev.finE V (ratPt D V γ hγ) = Formalism.UG.bc (eToEAf D) γ :=
   Units.ext (finE_ratPt D V γ hγ)
 
+/- English proof (translation)
+Introduce `D V S γ h hγ hh ⟨P, e, he, hs, hoff⟩`. Use `⟨ratPt D V γ hγ * h * (ratPt D V γ hγ)⁻¹, ?_, ⟨P, e, he, suppAt_conj hs _, hoff⟩, ?_⟩` and prove the remaining obligations. Conclude with `(MonoidHom.normal_ker (infHom V)).conj_mem h hh _`. Rewrite using `[map_mul, map_mul, map_inv, finE_ratPt_units, Units.val_mul, Units.val_mul, ← map_inv]`. Both sides reduce to the same expression.
+-/
 theorem conj_supp : ∀ (D : D7) (V : HSp D) (S : Finset ℕ) (γ : GL (Fin V.rank) D.host.E) (h : GA D V),
     Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) γ.1 * V.gram * γ.1 = V.gram → h ∈ GfC V →
     (∃ (P : Finset (Pl D.host.E)) (e : AE D), IsIdemSum e P ∧ SuppAt e V h ∧ ∀ w ∈ P, Off S w) →

@@ -16,23 +16,44 @@ def prodPt {d : ℕ} (z : V d) (x : ℂ) : V (d + 1) := WithLp.toLp 2 (Fin.snoc 
 
 def basePt {d : ℕ} (v : V (d + 1)) : V d := WithLp.toLp 2 fun a => v a.castSucc
 
+/- English proof (translation)
+Simplify using `[prodPt]`.
+-/
 @[simp] theorem prodPt_castSucc {d : ℕ} (z : V d) (x : ℂ) (a : Fin d) : prodPt z x a.castSucc = z a := by
   simp [prodPt]
 
+/- English proof (translation)
+Simplify using `[prodPt]`.
+-/
 @[simp] theorem prodPt_last {d : ℕ} (z : V d) (x : ℂ) : prodPt z x (Fin.last d) = x := by simp [prodPt]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem basePt_apply {d : ℕ} (v : V (d + 1)) (a : Fin d) : basePt v a = v a.castSucc := rfl
 
+/- English proof (translation)
+Use extensionality with `a`. Simplify using the standard rewrite rules.
+-/
 @[simp] theorem basePt_prodPt {d : ℕ} (z : V d) (x : ℂ) : basePt (prodPt z x) = z := by
   ext a; simp
 
+/- English proof (translation)
+Use extensionality with `a`. Apply the tactic sequence `induction a using Fin.lastCases <;> simp`.
+-/
 @[simp] theorem prodPt_basePt {d : ℕ} (v : V (d + 1)) : prodPt (basePt v) (v (Fin.last d)) = v := by
   ext a
   induction a using Fin.lastCases <;> simp
 
+/- English proof (translation)
+The claim follows from `differentiable_euclidean.2 fun a => by simp only [basePt_apply]; fun_prop`.
+-/
 theorem differentiable_basePt {d : ℕ} : Differentiable ℂ (basePt (d := d)) :=
   differentiable_euclidean.2 fun a => by simp only [basePt_apply]; fun_prop
 
+/- English proof (translation)
+The claim follows from `differentiable_euclidean.2 fun a => by induction a using Fin.lastCases · simp only [prodPt_last]; fun_prop · simp only [prodPt_castSucc]; fun_prop`.
+-/
 theorem differentiable_prodPt {d : ℕ} : Differentiable ℂ fun z : V d × ℂ => prodPt z.1 z.2 :=
   differentiable_euclidean.2 fun a => by
     induction a using Fin.lastCases
@@ -55,12 +76,18 @@ def infPart (σ : k →+* ℂ) : Set (CxPts p σ) :=
 
 include w in
 
+/- English proof (translation)
+Introduce `h` and use `by have hu := (cE.pull hE π).isUnit_tr ((frameAt fl y).mid (lineSC_shortExact fl)) (y := y) hy (mem_frameAt fl y) refine ((Matrix.isUnit_iff_isUnit_det _).1 hu).ne_zero (Matrix.det_eq_zero_of_column_eq_zero 0 fun i => ?_) exact congrFun h i`.
+-/
 theorem lineVec_ne_zero {y : CxPts p σ} (hy : PtsOver.map π w (spMap σ) y ∈ ptsIn q σ cE.U) :
     lineVec π hE cE fl y ≠ 0 := fun h => by
   have hu := (cE.pull hE π).isUnit_tr ((frameAt fl y).mid (lineSC_shortExact fl)) (y := y) hy (mem_frameAt fl y)
   refine ((Matrix.isUnit_iff_isUnit_det _).1 hu).ne_zero (Matrix.det_eq_zero_of_column_eq_zero 0 fun i => ?_)
   exact congrFun h i
 
+/- English proof (translation)
+Use extensionality with `y`. Simplify using `only [infPart, finPart, Set.mem_diff, Set.mem_preimage, Set.mem_setOf_eq]`. The claim follows by propositional logic.
+-/
 theorem infPart_eq : infPart π w hE cE fl σ =
     PtsOver.map π w (spMap σ) ⁻¹' ptsIn q σ cE.U \ finPart π w hE cE fl σ := by
   ext y

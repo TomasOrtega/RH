@@ -20,12 +20,22 @@ def upow {u : A} (hu : u ∈ 𝒜 1) (k : ℤ) :
     ((preMod (Proj 𝒜)).obj (twistingSheaf 𝒜 k)).obj (op (Proj.basicOpen 𝒜 u)) :=
   twistMap hu k (W := Proj.basicOpen 𝒜 u) (fun x => x.2) 1
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `twistFrac u k x.1 x.2 * ((1 : (ProjectiveSpectrum.Proj.structureSheaf 𝒜).obj.obj (op (Proj.basicOpen 𝒜 u))).1 x).val = _`. Use `erw [Proj.one_apply, HomogeneousLocalization.val_one, mul_one]`.
+-/
 lemma val_upow {u : A} (hu : u ∈ 𝒜 1) (k : ℤ) (x : Proj.basicOpen 𝒜 u) :
     val (k := k) (U := Proj.basicOpen 𝒜 u) (upow 𝒜 hu k) x = twistFrac u k x.1 x.2 := by
   change twistFrac u k x.1 x.2 * ((1 : (ProjectiveSpectrum.Proj.structureSheaf 𝒜).obj.obj
     (op (Proj.basicOpen 𝒜 u))).1 x).val = _
   erw [Proj.one_apply, HomogeneousLocalization.val_one, mul_one]
 
+/- English proof (translation)
+Introduce `V h`. Establish `hW : ∀ x : V, u ∉ x.1.asHomogeneousIdeal` using `fun x => h x.2`. Establish `e : ∀ r : ringOn (Proj 𝒜) V, r • resM ((preMod (Proj 𝒜)).obj (twistingSheaf 𝒜 k)) h (upow 𝒜 hu k) = twistMap hu k (W` using `V) hW r := by`. Introduce `r`. Apply `ProjTwist.ext (k := k) (U := V)` to reduce the goal to its premises.
+
+Use function extensionality and compare the values at `x`. Express the relevant statement in the definitionally equal form `(r.1 x).val * val (k := k) (U := Proj.basicOpen 𝒜 u) (upow 𝒜 hu k) ⟨x.1, h x.2⟩ = twistFrac u k x.1 (hW x) * (r.1 x).val`. Rewrite using `[val_upow, mul_comm]`. Establish `hb` using `twistMap_bijective hu k (W := V) hW`. Use `⟨fun a b hab => hb.1 ?_, fun s => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← e, ← e]`. Conclude with `hab`. Take `⟨r, hr⟩` from `hb.2 s`. Conclude with `⟨r, (e r).trans hr⟩`.
+-/
 theorem isBasisOn_upow {u : A} (hu : u ∈ 𝒜 1) (k : ℤ) :
     IsBasisOn ((preMod (Proj 𝒜)).obj (twistingSheaf 𝒜 k)) (Proj.basicOpen 𝒜 u) (upow 𝒜 hu k) := by
   intro V h
@@ -49,16 +59,33 @@ theorem isBasisOn_upow {u : A} (hu : u ∈ 𝒜 1) (k : ℤ) :
 def ratio {u v : A} (hu : u ∈ 𝒜 1) (hv : v ∈ 𝒜 1) : Γ(Proj 𝒜, Proj.basicOpen 𝒜 u) :=
   (Proj.awayToSection 𝒜 u).hom (HomogeneousLocalization.mk ⟨1, ⟨v, hv⟩, ⟨u, hu⟩, ⟨1, pow_one u⟩⟩)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma ratio_apply {u v : A} (hu : u ∈ 𝒜 1) (hv : v ∈ 𝒜 1) (x : Proj.basicOpen 𝒜 u) :
     (ratio 𝒜 hu hv).1 x = HomogeneousLocalization.mk ⟨1, ⟨v, hv⟩, ⟨u, hu⟩, x.2⟩ :=
   rfl
 
+/- English proof (translation)
+Rewrite using `[ratio_apply, HomogeneousLocalization.val_mk]`.
+-/
 lemma ratio_apply_val {u v : A} (hu : u ∈ 𝒜 1) (hv : v ∈ 𝒜 1) (x : Proj.basicOpen 𝒜 u) :
     ((ratio 𝒜 hu hv).1 x).val = Localization.mk v ⟨u, x.2⟩ := by
   rw [ratio_apply, HomogeneousLocalization.val_mk]
 
 variable {𝒜}
 
+/- English proof (translation)
+Use extensionality with `x`. Express the relevant statement in the definitionally equal form `x ∈ (Proj 𝒜).basicOpen (ratio 𝒜 hu hv) ↔ x ∈ Proj.basicOpen 𝒜 u ∧ x ∈ Proj.basicOpen 𝒜 v`. Rewrite using `[Scheme.mem_basicOpen'']`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hx, hunit⟩`.
+
+Use `⟨hx, ?_⟩` and prove the remaining obligations. Establish `h1` using `hunit.map (Proj.stalkIso' 𝒜 x)`. Express the relevant statement in the definitionally equal form `IsUnit (Proj.stalkIso' 𝒜 x ((ProjectiveSpectrum.Proj.structureSheaf 𝒜).presheaf.germ _ x hx (ratio 𝒜 hu hv))) at h1`. Use `erw [Proj.stalkIso'_germ] at h1`. Rewrite `h1` using `[← HomogeneousLocalization.isUnit_iff_isUnit_val]`.
+
+Use `erw [ratio_apply_val] at h1`. Rewrite `h1` using `[Localization.mk_eq_mk', IsLocalization.AtPrime.isUnit_mk'_iff]`. Conclude with `h1`. Introduce and unpack `⟨hx, hv'⟩`. Use `⟨hx, ?_⟩` and prove the remaining obligations.
+
+Establish `h1 : IsUnit (Proj.stalkIso' 𝒜 x ((ProjectiveSpectrum.Proj.structureSheaf 𝒜).presheaf.germ _ x hx (ratio 𝒜 hu hv)))` using `by erw [Proj.stalkIso'_germ]`. Rewrite using `[← HomogeneousLocalization.isUnit_iff_isUnit_val]`. Use `erw [ratio_apply_val]`. Rewrite using `[Localization.mk_eq_mk', IsLocalization.AtPrime.isUnit_mk'_iff]`. Conclude with `hv'`.
+
+Establish `h2` using `h1.map (Proj.stalkIso' 𝒜 x).symm`. Rewrite `h2` using `[RingEquiv.symm_apply_apply]`. Conclude with `h2`.
+-/
 theorem basicOpen_ratio {u v : A} (hu : u ∈ 𝒜 1) (hv : v ∈ 𝒜 1) :
     (Proj 𝒜).basicOpen (ratio 𝒜 hu hv) = Proj.basicOpen 𝒜 u ⊓ Proj.basicOpen 𝒜 v := by
   ext x
@@ -88,6 +115,11 @@ theorem basicOpen_ratio {u v : A} (hu : u ∈ 𝒜 1) (hv : v ∈ 𝒜 1) :
     rw [RingEquiv.symm_apply_apply] at h2
     exact h2
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `x`. Apply `HomogeneousLocalization.val_injective` to reduce the goal to its premises. Use `erw [ratio_apply_val, Proj.one_apply, HomogeneousLocalization.val_one]`. Rewrite using `[← Localization.mk_one, Localization.mk_eq_mk_iff, Localization.r_iff_exists]`.
+
+Conclude with `⟨1, by simp⟩`.
+-/
 theorem ratio_self {u : A} (hu : u ∈ 𝒜 1) : ratio 𝒜 hu hu = 1 := by
   apply Subtype.ext
   funext x
@@ -96,6 +128,11 @@ theorem ratio_self {u : A} (hu : u ∈ 𝒜 1) : ratio 𝒜 hu hu = 1 := by
   rw [← Localization.mk_one, Localization.mk_eq_mk_iff, Localization.r_iff_exists]
   exact ⟨1, by simp⟩
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `x`. Apply `HomogeneousLocalization.val_injective` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `((ratio 𝒜 hv hw).1 ⟨x.1, x.2.2⟩ * (ratio 𝒜 hu hv).1 ⟨x.1, x.2.1⟩).val = ((ratio 𝒜 hu hw).1 ⟨x.1, x.2.1⟩).val`. Rewrite using `[HomogeneousLocalization.val_mul]`.
+
+Use `erw [ratio_apply_val, ratio_apply_val, ratio_apply_val]`. Rewrite using `[Localization.mk_mul, Localization.mk_eq_mk_iff, Localization.r_iff_exists]`. Conclude with `⟨1, by simp only [Submonoid.coe_mul, OneMemClass.coe_one, one_mul]; ring⟩`.
+-/
 theorem ratio_mul_ratio' {u v w : A} (hu : u ∈ 𝒜 1) (hv : v ∈ 𝒜 1) (hw : w ∈ 𝒜 1) :
     resR (inf_le_right : Proj.basicOpen 𝒜 u ⊓ Proj.basicOpen 𝒜 v ≤ Proj.basicOpen 𝒜 v)
         (ratio 𝒜 hv hw) *
@@ -113,6 +150,11 @@ theorem ratio_mul_ratio' {u v w : A} (hu : u ∈ 𝒜 1) (hv : v ∈ 𝒜 1) (hw
   rw [Localization.mk_mul, Localization.mk_eq_mk_iff, Localization.r_iff_exists]
   exact ⟨1, by simp only [Submonoid.coe_mul, OneMemClass.coe_one, one_mul]; ring⟩
 
+/- English proof (translation)
+Apply `ProjTwist.ext (k := m) (U := Proj.basicOpen 𝒜 u ⊓ Proj.basicOpen 𝒜 v)` to reduce the goal to its premises. Use function extensionality and compare the values at `x`. Express the relevant statement in the definitionally equal form `val (k := m) (U := Proj.basicOpen 𝒜 v) (upow 𝒜 hv m) ⟨x.1, x.2.2⟩ = (((ratio 𝒜 hu hv).1 ⟨x.1, x.2.1⟩) ^ m).val * val (k := m) (U := Proj.basicOpen 𝒜 u) (upow 𝒜 hu m) ⟨x.1, x.2.1⟩`. Rewrite using `[val_upow, val_upow, HomogeneousLocalization.val_pow]`. Use `erw [ratio_apply_val]`.
+
+Simplify using `only [twistFrac, Int.toNat_natCast, Int.toNat_neg_natCast, pow_zero, Localization.mk_pow, Localization.mk_mul]`. Rewrite using `[Localization.mk_eq_mk_iff, Localization.r_iff_exists]`. Conclude with `⟨1, by simp only [Submonoid.coe_mul, SubmonoidClass.coe_pow, OneMemClass.coe_one, one_mul, mul_one]; ring⟩`.
+-/
 theorem upow_res {u v : A} (hu : u ∈ 𝒜 1) (hv : v ∈ 𝒜 1) (m : ℕ) :
     resM ((preMod (Proj 𝒜)).obj (twistingSheaf 𝒜 m))
         (inf_le_right : Proj.basicOpen 𝒜 u ⊓ Proj.basicOpen 𝒜 v ≤ Proj.basicOpen 𝒜 v)
@@ -138,6 +180,9 @@ theorem upow_res {u v : A} (hu : u ∈ 𝒜 1) (hv : v ∈ 𝒜 1) (m : ℕ) :
 variable {A σ : Type u} [CommRing A] [SetLike σ A] [AddSubgroupClass σ A]
 variable {𝒜 : ℕ → σ} [GradedRing 𝒜]
 
+/- English proof (translation)
+Rewrite using `[twistFrac, twistFrac, twistFrac, Localization.mk_mul, Localization.mk_eq_mk_iff, Localization.r_iff_exists]`. Use `⟨1, ?_⟩` and prove the remaining obligations. Simplify using `only [Submonoid.coe_mul, OneMemClass.coe_one, one_mul, ← pow_add]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers.
+-/
 lemma twistFrac_mul (u : A) (a b : ℤ) (x : ProjectiveSpectrum 𝒜)
     (hx : u ∉ x.asHomogeneousIdeal) :
     twistFrac u a x hx * twistFrac u b x hx = twistFrac u (a + b) x hx := by
@@ -153,6 +198,9 @@ def mulSec {a b : ℤ} {U : (Proj 𝒜).Opens} (s : Γ(twistingSheaf 𝒜 a, U))
   mkSection (val s * val t) (isLocallyFraction_mul rfl (isLocallyFraction_val s)
     (isLocallyFraction_val t))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] lemma val_mulSec {a b : ℤ} {U : (Proj 𝒜).Opens} (s : Γ(twistingSheaf 𝒜 a, U))
     (t : Γ(twistingSheaf 𝒜 b, U)) (x : U) : val (mulSec s t) x = val s x * val t x := rfl
 
@@ -195,6 +243,9 @@ variable (𝒜) in
 def twistMul (a b : ℤ) : twistingSheaf 𝒜 a ⊗ twistingSheaf 𝒜 b ⟶ twistingSheaf 𝒜 (a + b) :=
   tensorLift (mulPre 𝒜 a b)
 
+/- English proof (translation)
+Use `congrArg (fun φ => φ.app (op U) (s ⊗ₜ t : ((preMod (Proj 𝒜)).obj (twistingSheaf 𝒜 a) ⊗ (preMod (Proj 𝒜)).obj (twistingSheaf 𝒜 b)).obj (op U))) (tensorToSheaf_tensorLift (mulPre 𝒜 a b))` as an intermediate fact. Conclude with `this`.
+-/
 lemma twistMul_app (a b : ℤ) (U : (Proj 𝒜).Opens)
     (s : ((preMod (Proj 𝒜)).obj (twistingSheaf 𝒜 a)).obj (op U))
     (t : ((preMod (Proj 𝒜)).obj (twistingSheaf 𝒜 b)).obj (op U)) :
@@ -206,6 +257,9 @@ lemma twistMul_app (a b : ℤ) (U : (Proj 𝒜).Opens)
     (preMod (Proj 𝒜)).obj (twistingSheaf 𝒜 b)).obj (op U))) (tensorToSheaf_tensorLift (mulPre 𝒜 a b))
   exact this
 
+/- English proof (translation)
+The claim follows from `ProjTwist.ext (funext fun x => by erw [val_mulSec, val_upow, val_upow, val_upow, twistFrac_mul])`.
+-/
 lemma mulSec_upow {u : A} (hu : u ∈ 𝒜 1) (a b : ℤ) :
     mulSec (upow 𝒜 hu a) (upow 𝒜 hu b) = upow 𝒜 hu (a + b) :=
   ProjTwist.ext (funext fun x => by
@@ -219,6 +273,9 @@ def oneSections : (twistingSheaf 𝒜 0).sections :=
       (isLocallyFraction_val_section (𝒜 := 𝒜) _),
     fun _ => ProjTwist.ext (funext fun _ => rfl)⟩
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `((1 : (ProjectiveSpectrum.Proj.structureSheaf 𝒜).obj.obj (op U)).1 x).val = 1`. Use `erw [Proj.one_apply, HomogeneousLocalization.val_one]`.
+-/
 lemma val_oneSections (U : (Proj 𝒜).Opens) (x : U) :
     val (k := 0) (U := U) ((oneSections 𝒜).val (op U)) x = 1 := by
   change ((1 : (ProjectiveSpectrum.Proj.structureSheaf 𝒜).obj.obj (op U)).1 x).val = 1
@@ -229,6 +286,11 @@ variable (𝒜) in
 def unitToTwistZero : 𝟙_ (Proj 𝒜).Modules ⟶ twistingSheaf 𝒜 0 :=
   (SheafOfModules.unitHomEquiv _).symm (oneSections 𝒜)
 
+/- English proof (translation)
+Establish `e : ((preMod (Proj 𝒜)).map (unitToTwistZero 𝒜)).app (op U) (1 : ringOn (Proj 𝒜) U) = (1 : ringOn (Proj 𝒜) U) • (show ((preMod (Proj 𝒜)).obj (twistingSheaf 𝒜 0)).obj (op U) from (oneSections 𝒜).val (op U))` using `rfl`. Rewrite using `[e, one_smul]`. Apply `ProjTwist.ext (k := 0) (U := U)` to reduce the goal to its premises. Use function extensionality and compare the values at `x`. Express the relevant statement in the definitionally equal form `val (k := 0) (U := U) ((oneSections 𝒜).val (op U)) x = val (k := 0) (U := Proj.basicOpen 𝒜 u) (upow 𝒜 hu 0) ⟨x.1, h x.2⟩`.
+
+Rewrite using `[val_oneSections]`. Use `erw [val_upow]`. Simplify using `[twistFrac]`.
+-/
 lemma unitToTwistZero_one (U : (Proj 𝒜).Opens) {u : A} (hu : u ∈ 𝒜 1)
     (h : U ≤ Proj.basicOpen 𝒜 u) :
     ((preMod (Proj 𝒜)).map (unitToTwistZero 𝒜)).app (op U) (1 : ringOn (Proj 𝒜) U) =
@@ -245,6 +307,11 @@ lemma unitToTwistZero_one (U : (Proj 𝒜).Opens) {u : A} (hu : u ∈ 𝒜 1)
   erw [val_upow]
   simp [twistFrac]
 
+/- English proof (translation)
+Apply `isIso_of_isBasisOn` to reduce the goal to its premises. Introduce `x`. Take `⟨u, hu, hx⟩` from `hc x`. Establish `e` using `(twistMul_app a b (Proj.basicOpen 𝒜 u) (upow 𝒜 hu a) (upow 𝒜 hu b)).trans (mulSec_upow hu a b)`. Use `⟨Proj.basicOpen 𝒜 u, hx, (tensorToSheaf _ _).app (op (Proj.basicOpen 𝒜 u)) (upow 𝒜 hu a ⊗ₜ upow 𝒜 hu b : ((preMod _).obj (twistingSheaf 𝒜 a) ⊗ (preMod _).obj (twistingSheaf 𝒜 b)).obj (op (Proj.basicOpen 𝒜 u))), ((isBasisOn_upow _ hu a).tmul (isBasisOn_upow _ hu b)).map_of_alt _ ( …` and prove the remaining obligations.
+
+Rewrite using `[e]`. Conclude with `isBasisOn_upow _ hu (a + b)`.
+-/
 private theorem isIso_twistMul_of_cover (a b : ℤ)
     (hc : ∀ x : Proj 𝒜, ∃ u, u ∈ 𝒜 1 ∧ x ∈ Proj.basicOpen 𝒜 u) : IsIso (twistMul 𝒜 a b) := by
   apply isIso_of_isBasisOn
@@ -271,10 +338,16 @@ open ProjTwist
 
 attribute [local instance] MvPolynomial.gradedAlgebra
 
+/- English proof (translation)
+Establish `hx : x ∈ ⨆ j, stdOpen A n j` using `by rw [iSup_stdOpen]; trivial`. Conclude with `Opens.mem_iSup.1 hx`.
+-/
 lemma exists_mem_stdOpen_proj (x : projectiveSpace A n) : ∃ j, x ∈ stdOpen A n j := by
   have hx : x ∈ ⨆ j, stdOpen A n j := by rw [iSup_stdOpen]; trivial
   exact Opens.mem_iSup.1 hx
 
+/- English proof (translation)
+Introduce `x`. Take `⟨j, hj⟩` from `exists_mem_stdOpen_proj x`. Conclude with `⟨stdOpen A n j, hj, upow (grading A n) (X_mem j) k, isBasisOn_upow _ (X_mem j) k⟩`.
+-/
 theorem isInvertibleSheaf_twistingSheaf (k : ℤ) :
     IsInvertibleSheaf (twistingSheaf (grading A n) k) := by
   intro x

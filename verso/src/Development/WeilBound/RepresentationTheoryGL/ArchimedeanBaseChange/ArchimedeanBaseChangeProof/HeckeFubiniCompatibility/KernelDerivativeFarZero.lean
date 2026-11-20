@@ -31,6 +31,9 @@ structure Good (U : Set H) (l : H → ℝ) (K : H → H → A) : Prop where
 variable {U : Set H} (hU : IsOpen U) {l : H → ℝ} (hl : ContinuousOn l U)
 
 include hU hl in
+/- English proof (translation)
+Establish `ho : IsOpen (U ×ˢ U)` using `hU.prod hU`. Establish `h1 : ContinuousOn (fun p : H × H => R + l p.1) (U ×ˢ U)` using `continuousOn_const.add (hl.comp continuousOn_fst fun p hp => hp.1)`. Establish `h2 : ContinuousOn (fun p : H × H => l p.2) (U ×ˢ U)` using `hl.comp continuousOn_snd fun p hp => hp.2`. Conclude with `(h1.prodMk h2).isOpen_inter_preimage ho isOpen_lt_prod`.
+-/
 theorem isOpen_far (R : ℝ) : IsOpen (U ×ˢ U ∩ (fun p : H × H => (R + l p.1, l p.2)) ⁻¹' {q : ℝ × ℝ | q.1 < q.2}) := by
   have ho : IsOpen (U ×ˢ U) := hU.prod hU
   have h1 : ContinuousOn (fun p : H × H => R + l p.1) (U ×ˢ U) :=
@@ -39,6 +42,9 @@ theorem isOpen_far (R : ℝ) : IsOpen (U ×ˢ U ∩ (fun p : H × H => (R + l p.
   exact (h1.prodMk h2).isOpen_inter_preimage ho isOpen_lt_prod
 
 include hU hl in
+/- English proof (translation)
+Establish `hev : Function.uncurry K =ᶠ[𝓝 (x, y)] fun _ => 0` using `Filter.eventually_of_mem ((isOpen_far hU hl R).mem_nhds ⟨⟨hx, hy⟩, hl'⟩) fun p hp => hR p.1 hp.1.1 p.2 hp.1.2 hp.2`. Rewrite using `[D1, hev.fderiv_eq]`. Simplify using the standard rewrite rules.
+-/
 theorem kernel_derivative_far_zero {K : H → H → A} {R : ℝ} (hR : ∀ x ∈ U, ∀ y ∈ U, R + l x < l y → K x y = 0) {x y : H} (hx : x ∈ U)
     (hy : y ∈ U) (hl' : R + l x < l y) : D1 K x y = 0 := by
   have hev : Function.uncurry K =ᶠ[𝓝 (x, y)] fun _ => 0 :=
@@ -47,6 +53,9 @@ theorem kernel_derivative_far_zero {K : H → H → A} {R : ℝ} (hR : ∀ x ∈
   simp
 
 include hU hl in
+/- English proof (translation)
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `hD : ContDiffOn ℝ ∞ (fderiv ℝ (Function.uncurry K)) (U ×ˢ U)` using `h.smooth.fderiv_of_isOpen (hU.prod hU) (by simp)`. Conclude with `hD.clm_comp contDiffOn_const`. Take `⟨R, hR⟩` from `h.supp`. Conclude with `⟨R, fun x hx y hy hl' => kernel_derivative_far_zero hU hl hR hx hy hl'⟩`.
+-/
 theorem Good.d1 {K : H → H → A} (h : Good U l K) : Good U l (D1 K) := by
   refine ⟨?_, ?_⟩
   · have hD : ContDiffOn ℝ ∞ (fderiv ℝ (Function.uncurry K)) (U ×ˢ U) :=
@@ -61,6 +70,27 @@ variable [ProperSpace H] {Γ : Type} [TopologicalSpace Γ] [T2Space Γ] [SecondC
   {B : Type} [NormedAddCommGroup B] [NormedSpace ℝ B] {φ : Γ → B} (hφ : Continuous φ)
 
 include hU hl hv hvU hlc hφ in
+/- English proof (translation)
+Take `⟨R, hR⟩` from `hK.supp`. Establish `ho : IsOpen (U ×ˢ U)` using `hU.prod hU`. Establish `hD1` using `hK.d1 hU hl`. Take `⟨ε, hε, hB⟩` from `Metric.nhds_basis_closedBall.mem_iff.1 (hU.mem_nhds hx₀)`. Establish `hBc : IsCompact (Metric.closedBall x₀ ε)` using `isCompact_closedBall x₀ ε`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨M, hM⟩ : ∃ M, ∀ x ∈ Metric.closedBall x₀ ε, l x ≤ M := by`. Take `⟨M, hM⟩` from `hBc.exists_bound_of_continuousOn (hl.mono hB)`. Conclude with `⟨M, fun x hx => (le_abs_self _).trans (hM x hx)⟩`. Establish `hS : IsCompact {y | l (v y) ≤ R + M}` using `hlc _`. Set `F' : H → Γ → H →L[ℝ] W` to `fun x y => L.precompL H (D1 K x (v y)) (φ y)`.
+
+Establish `hF'c : ContinuousOn (fun p : H × Γ => F' p.1 p.2) (Metric.closedBall x₀ ε ×ˢ Set.univ)`. Establish `h1 : ContinuousOn (fun p : H × Γ => D1 K p.1 (v p.2)) (Metric.closedBall x₀ ε ×ˢ Set.univ)` using `hD1.smooth.continuousOn.comp (f := fun p : H × Γ => (p.1, v p.2)) (continuous_fst.prodMk (hv.comp continuous_snd)).continuousOn fun p hp => ⟨hB hp.1, hvU _⟩`. Conclude with `((L.precompL H).continuous.comp_continuousOn h1).clm_apply (hφ.comp continuous_snd).continuousOn`. Take `⟨C, hC⟩` from `(hBc.prod hS).exists_bound_of_continuousOn (hF'c.mono (Set.prod_mono subset_rfl (Set.subset_univ _)))`. Establish `hF0 : ∀ x ∈ U, ∀ y, R + l x < l (v y) → F' x y = 0` using `fun x hx y h => by`.
+
+Simplify using `only [F', kernel_derivative_far_zero hU hl hR hx (hvU y) h, map_zero, ContinuousLinearMap.zero_apply]`. Establish `hb : ∀ y, ∀ x ∈ Metric.closedBall x₀ ε, ‖F' x y‖ ≤ {y | l (v y) ≤ R + M}.indicator (fun _ => C) y`. Introduce `y x hx`. Distinguish the cases in `hy : y ∈ {y | l (v y) ≤ R + M}`. Simplify `hC (x, y) ⟨hx, hy⟩` using `[Set.indicator_of_mem hy]`.
+
+Establish `hlt : R + l x < l (v y)`. Use `hM x hx` as an intermediate fact. Establish `h2 : R + M < l (v y)` using `not_le.1 hy`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[Set.indicator_of_notMem hy, hF0 x (hB hx) y hlt, norm_zero]`.
+
+Establish `hbi : Integrable ({y | l (v y) ≤ R + M}.indicator fun _ => C) μ` using `(integrable_indicator_iff hS.measurableSet).2 (integrableOn_const hS.measure_lt_top.ne)`. Establish `hxB : x₀ ∈ Metric.closedBall x₀ ε` using `Metric.mem_closedBall_self hε.le`. Establish `hF'x : Continuous (F' x₀)` using `hF'c.comp_continuous (f := fun y : Γ => (x₀, y)) (continuous_const.prodMk continuous_id) fun y => ⟨hxB, trivial⟩`. Establish `hFd : ∀ x ∈ U, ∀ y, HasFDerivAt (fun x' => L (K x' (v y)) (φ y)) (F' x y) x`. Introduce `x hx y`.
+
+Establish `hd : DifferentiableAt ℝ (Function.uncurry K) (x, v y)` using `(hK.smooth.contDiffAt (ho.mem_nhds ⟨hx, hvU y⟩)).differentiableAt (by simp)`. Establish `h1 : HasFDerivAt (fun x' => K x' (v y)) (D1 K x (v y)) x` using `HasFDerivAt.comp (g := Function.uncurry K) (f := fun e => (e, v y)) x hd.hasFDerivAt (hasFDerivAt_prodMk_left x (v y))`. Establish `h2` using `((L.flip (φ y)).hasFDerivAt).comp x h1`. Use `h2 using 1` and compare the differences between its conclusion and the goal. Use extensionality with `w`.
+
+Both sides reduce to the same expression. Use extensionality with `w`. Both sides reduce to the same expression. Establish `hcont : ∀ x ∈ U, Continuous fun y => L (K x (v y)) (φ y)`. Introduce `x hx`.
+
+Establish `hs : ContinuousOn (fun y => K x y) U` using `hK.smooth.continuousOn.comp (f := fun y => (x, y)) (continuous_const.prodMk continuous_id).continuousOn fun y hy => ⟨hx, hy⟩`. Conclude with `(L.continuous.comp (hs.comp_continuous hv hvU)).clm_apply hφ`. Establish `hint0 : Integrable (fun y => L (K x₀ (v y)) (φ y)) μ`. Use `(hcont x₀ hx₀).integrable_of_hasCompactSupport (HasCompactSupport.intro (hlc (R + l x₀)) fun y hy => ?_)` and prove the remaining obligations. Rewrite using `[hR x₀ hx₀ (v y) (hvU y) (not_le.1 hy), map_zero, ContinuousLinearMap.zero_apply]`.
+
+Conclude with `hasFDerivAt_integral_of_dominated_of_fderiv_le (Metric.closedBall_mem_nhds _ hε) (Filter.eventually_of_mem (hU.mem_nhds hx₀) fun x hx => (hcont x hx).aestronglyMeasurable) hint0 hF'x.aestronglyMeasurable (ae_of_all _ hb) hbi (ae_of_all _ fun y x hx => hFd x (hB hx) y)`.
+-/
 theorem hasFDerivAt_Iop {W : Type} [NormedAddCommGroup W] [NormedSpace ℝ W] [CompleteSpace W]
     (L : A →L[ℝ] B →L[ℝ] W) {K : H → H → A} (hK : Good U l K) {x₀ : H} (hx₀ : x₀ ∈ U) :
     HasFDerivAt (fun x => ∫ y, L (K x (v y)) (φ y) ∂μ) (∫ y, L.precompL H (D1 K x₀ (v y)) (φ y) ∂μ) x₀ := by
@@ -122,6 +152,11 @@ theorem hasFDerivAt_Iop {W : Type} [NormedAddCommGroup W] [NormedSpace ℝ W] [C
     hF'x.aestronglyMeasurable (ae_of_all _ hb) hbi (ae_of_all _ fun y x hx => hFd x (hB hx) y)
 
 include hU hl hv hvU hlc hφ in
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero`. Introduce `A W _ _ _ _ _ L K hK`. Conclude with `contDiffOn_zero.2 fun x hx => (hasFDerivAt_Iop hU hl μ hv hvU hlc hφ L hK hx).continuousAt.continuousWithinAt`. Consider the case `succ m ih`.
+
+Introduce `A W _ _ _ _ _ L K hK`. Rewrite using `[Nat.cast_succ, contDiffOn_succ_iff_fderiv_of_isOpen hU]`. Use `⟨fun x hx => (hasFDerivAt_Iop hU hl μ hv hvU hlc hφ L hK hx).differentiableAt.differentiableWithinAt, fun h => absurd h (by simp), ?_⟩` and prove the remaining obligations. Conclude with `(ih (L.precompL H) (hK.d1 hU hl)).congr fun x hx => (hasFDerivAt_Iop hU hl μ hv hvU hlc hφ L hK hx).fderiv`.
+-/
 theorem contDiffOn_Iop_nat (m : ℕ) : ∀ {A W : Type} [NormedAddCommGroup A] [NormedSpace ℝ A] [NormedAddCommGroup W]
     [NormedSpace ℝ W] [CompleteSpace W] (L : A →L[ℝ] B →L[ℝ] W) {K : H → H → A}, Good U l K →
     ContDiffOn ℝ m (fun x => ∫ y, L (K x (v y)) (φ y) ∂μ) U := by
@@ -138,6 +173,9 @@ theorem contDiffOn_Iop_nat (m : ℕ) : ∀ {A W : Type} [NormedAddCommGroup A] [
     exact (ih (L.precompL H) (hK.d1 hU hl)).congr fun x hx => (hasFDerivAt_Iop hU hl μ hv hvU hlc hφ L hK hx).fderiv
 
 include hU hl hv hvU hlc hφ in
+/- English proof (translation)
+The claim follows from `contDiffOn_infty.2 fun m => contDiffOn_Iop_nat hU hl μ hv hvU hlc hφ m L hK`.
+-/
 theorem contDiffOn_Iop {W : Type} [NormedAddCommGroup W] [NormedSpace ℝ W] [CompleteSpace W]
     (L : A →L[ℝ] B →L[ℝ] W) {K : H → H → A} (hK : Good U l K) :
     ContDiffOn ℝ ∞ (fun x => ∫ y, L (K x (v y)) (φ y) ∂μ) U :=
@@ -151,6 +189,11 @@ variable {n : ℕ} [MeasurableSpace (G n)] [BorelSpace (G n)] (μ : Measure (G n
 
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
+/- English proof (translation)
+Use `haveI : ProperSpace (Mat n) := inferInstanceAs (ProperSpace (Fin n → Fin n → ℂ))`. Establish `hL` using `GlobalTheory.T.length_function_facts_hold`. Establish `hCl` using `GlobalTheory.CompanionTheory.WaveK.Word.cl_kK hL hk hR`. Establish `hG : Good (GLs n) lg (GlobalTheory.CompanionTheory.WaveK.Word.kK k)` using `⟨hCl.smooth, hCl.supp⟩`. Establish `hv : Continuous (fun y : G n => (y.val : Mat n))` using `Units.continuous_val`.
+
+Establish `h` using `contDiffOn_Iop (Γ := G n) GlobalTheory.CompanionTheory.WaveAll.isOpen_GLs ((hL n).2.2.2.1.continuousOn) μ hv val_mem_GLs (hL n).2.2.2.2.1 (hF.comp_continuous hv val_mem_GLs) (ContinuousLinearMap.restrictScalarsL ℂ M.V M.V ℝ ℝ) hG`. Conclude with `h.congr fun x hx => GlobalTheory.CompanionTheory.WaveK.Word.act_eq_Iop M k F hx`.
+-/
 theorem act_contDiffOn (M : KMod n)
     {k : Mat n → (M.V →L[ℂ] M.V)} (hk : ContDiffOn ℝ ∞ k (GLs n)) {R : ℝ} (hR : ∀ y ∈ GLs n, R < lg y → k y = 0)
     {F : Mat n → M.V} (hF : ContinuousOn F (GLs n)) : ContDiffOn ℝ ∞ (act μ M k F) (GLs n) := by
@@ -164,6 +207,9 @@ theorem act_contDiffOn (M : KMod n)
     (ContinuousLinearMap.restrictScalarsL ℂ M.V M.V ℝ ℝ) hG
   exact h.congr fun x hx => GlobalTheory.CompanionTheory.WaveK.Word.act_eq_Iop M k F hx
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨act_contDiffOn μ M hk hR hF, (GlobalTheory.T.kernel_action_equivariant GlobalTheory.T.length_function_facts_hold n μ M k F ⟨hk.continuousOn, R, hR⟩ hF hkq).2⟩`.
+-/
 theorem act_mem_CE (M : KMod n)
     {k : Mat n → (M.V →L[ℂ] M.V)} (hk : ContDiffOn ℝ ∞ k (GLs n)) {R : ℝ} (hR : ∀ y ∈ GLs n, R < lg y → k y = 0)
     (hkq : ∀ y ∈ GLs n, ∀ k₁ : Matrix.unitaryGroup (Fin n) ℂ, k (k₁.1 * y) = M.ρ k₁ * k y)
@@ -174,6 +220,11 @@ section Clm
 
 variable {V W : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] [NormedAddCommGroup W] [NormedSpace ℂ W]
 
+/- English proof (translation)
+Introduce `g hg`. Establish `hd` using `(GlobalTheory.CompanionTheory.RCalc.differentiableAt_of_smooth hf hg).hasFDerivAt`. Establish `h : HasFDerivAt (fun x => T (f x)) ((T.restrictScalars ℝ).comp (fderiv ℝ f g)) g` using `(T.restrictScalars ℝ).hasFDerivAt.comp g hd`. Use `show fderiv ℝ (fun x => T (f x)) g (g * X) = _`. Rewrite using `[h.fderiv]`.
+
+Both sides reduce to the same expression.
+-/
 theorem Rd_clm (T : V →L[ℂ] W) (X : Mat n) {f : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GLs n)) :
     Set.EqOn (Rd X fun x => T (f x)) (fun x => T (Rd X f x)) (GLs n) := by
   intro g hg
@@ -184,11 +235,19 @@ theorem Rd_clm (T : V →L[ℂ] W) (X : Mat n) {f : Mat n → V} (hf : ContDiffO
   rw [h.fderiv]
   rfl
 
+/- English proof (translation)
+Introduce `g hg`. Simplify using `only [Eu, Pi.smul_apply, Pi.add_apply, Rd_clm T _ hf hg, map_smul, map_add]`.
+-/
 theorem Eu_clm (T : V →L[ℂ] W) (s : Bool) (a b : Fin n) {f : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GLs n)) :
     Set.EqOn (Eu s a b fun x => T (f x)) (fun x => T (Eu s a b f x)) (GLs n) := by
   intro g hg
   simp only [Eu, Pi.smul_apply, Pi.add_apply, Rd_clm T _ hf hg, map_smul, map_add]
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero`. Introduce `a b x _`. Apply the tactic sequence `by_cases hab : a = b <;> simp [Epow, hab]`. Consider the case `succ m ih`.
+
+Introduce `a b x hx`. Simplify using `only [Epow, Finset.sum_apply, map_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.CompanionTheory.WaveAll.Eu_congr GlobalTheory.CompanionTheory.WaveAll.isOpen_GLs (ih c b) s a c hx]`. Conclude with `Eu_clm T s a c (GlobalTheory.CompanionTheory.WaveAll.Epow_smooth GlobalTheory.T.right_derivative_calculus_holds hf s m c b) hx`.
+-/
 theorem Epow_clm (T : V →L[ℂ] W) (s : Bool) {f : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GLs n)) (m : ℕ) :
     ∀ a b : Fin n, Set.EqOn (Epow s m a b fun x => T (f x)) (fun x => T (Epow s m a b f x)) (GLs n) := by
   induction m with
@@ -202,6 +261,9 @@ theorem Epow_clm (T : V →L[ℂ] W) (s : Bool) {f : Mat n → V} (hf : ContDiff
     rw [GlobalTheory.CompanionTheory.WaveAll.Eu_congr GlobalTheory.CompanionTheory.WaveAll.isOpen_GLs (ih c b) s a c hx]
     exact Eu_clm T s a c (GlobalTheory.CompanionTheory.WaveAll.Epow_smooth GlobalTheory.T.right_derivative_calculus_holds hf s m c b) hx
 
+/- English proof (translation)
+Simplify using `only [gel, Finset.sum_apply, map_sum]`. Conclude with `Finset.sum_congr rfl fun a _ => Epow_clm T s hf m a a hx`.
+-/
 theorem gel_clm (T : V →L[ℂ] W) (s : Bool) (m : ℕ) {f : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GLs n)) {x : Mat n}
     (hx : x ∈ GLs n) : gel s m (fun x => T (f x)) x = T (gel s m f x) := by
   simp only [gel, Finset.sum_apply, map_sum]
@@ -213,31 +275,49 @@ section Mult
 
 variable {M : KMod n} {k : Mat n → (M.V →L[ℂ] M.V)} {val : Inf n → ℂ} {T : ℝ}
 
+/- English proof (translation)
+Take `⟨m, c, w, g, ks, hks, hk, -⟩` from `h`. Conclude with `(ContDiffOn.sum fun i _ => ((hks i).2.1).const_smul (c i)).congr fun y hy => hk y hy`.
+-/
 theorem mult_contDiffOn (h : IsMult μ M k val T) : ContDiffOn ℝ ∞ k (GLs n) := by
   obtain ⟨m, c, w, g, ks, hks, hk, -⟩ := h
   exact (ContDiffOn.sum fun i _ => ((hks i).2.1).const_smul (c i)).congr fun y hy => hk y hy
 
+/- English proof (translation)
+Introduce `y hy k₁`. Establish `e` using `mult_equivariant h y hy k₁ 1`. Simplify using `using e`.
+-/
 theorem mult_left_equivariant (h : IsMult μ M k val T) :
     ∀ y ∈ GLs n, ∀ k₁ : Matrix.unitaryGroup (Fin n) ℂ, k (k₁.1 * y) = M.ρ k₁ * k y := by
   intro y hy k₁
   have e := mult_equivariant h y hy k₁ 1
   simpa using e
 
+/- English proof (translation)
+Take `⟨R, hR⟩` from `mult_exists_lg h`. Conclude with `act_contDiffOn μ M (mult_contDiffOn μ h) hR hF`.
+-/
 theorem act_contDiffOn_of_mult (h : IsMult μ M k val T) {F : Mat n → M.V} (hF : ContinuousOn F (GLs n)) :
     ContDiffOn ℝ ∞ (act μ M k F) (GLs n) := by
   obtain ⟨R, hR⟩ := mult_exists_lg h
   exact act_contDiffOn μ M (mult_contDiffOn μ h) hR hF
 
+/- English proof (translation)
+Take `⟨R, hR⟩` from `mult_exists_lg h`. Conclude with `act_mem_CE μ M (mult_contDiffOn μ h) hR (mult_left_equivariant μ h) hF`.
+-/
 theorem act_mem_CE_of_mult (h : IsMult μ M k val T) {F : Mat n → M.V} (hF : ContinuousOn F (GLs n)) :
     act μ M k F ∈ CE M := by
   obtain ⟨R, hR⟩ := mult_exists_lg h
   exact act_mem_CE μ M (mult_contDiffOn μ h) hR (mult_left_equivariant μ h) hF
 
 omit [BorelSpace (G n)] [μ.IsHaarMeasure] in
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨1, fun _ => 1, fun _ => w, fun _ => g, fun _ => k, fun _ => ⟨hg, hk⟩, fun y _ => by simp, fun χ => by simp⟩`.
+-/
 theorem isMult_of_isKer {w : List (Bool × ℕ)} {g : ℝ → ℝ} (hg : IsBump g T) (hk : IsKer μ M w g k) :
     IsMult μ M k (fun χ => zVal w χ * coshT g (cas χ)) T :=
   ⟨1, fun _ => 1, fun _ => w, fun _ => g, fun _ => k, fun _ => ⟨hg, hk⟩, fun y _ => by simp, fun χ => by simp⟩
 
+/- English proof (translation)
+Unfold `act`. Conclude with `integral_congr_ae (ae_of_all _ fun t => by show k t.val (F (x * t.val)) = k t.val (F' (x * t.val))`. Rewrite using `[h (GlobalTheory.CompanionTheory.WaveAll.mul_mem_GLs hx (val_mem_GLs t))])`.
+-/
 theorem act_congr_GLs {F F' : Mat n → M.V} (h : Set.EqOn F F' (GLs n)) {x : Mat n} (hx : x ∈ GLs n) :
     act μ M k F x = act μ M k F' x := by
   unfold act
@@ -245,6 +325,19 @@ theorem act_congr_GLs {F F' : Mat n → M.V} (h : Set.EqOn F F' (GLs n)) {x : Ma
     show k t.val (F (x * t.val)) = k t.val (F' (x * t.val))
     rw [h (GlobalTheory.CompanionTheory.WaveAll.mul_mem_GLs hx (val_mem_GLs t))])
 
+/- English proof (translation)
+Take `⟨u, hu, hu0⟩` from `hW n M F hF`. Establish `hZ : ContDiffOn ℝ ∞ (act μ M k F) (GLs n)` using `act_contDiffOn_of_mult μ hkm hFc`. Establish `hu0' : Set.EqOn (u 0) F (GLs n)` using `fun x hx => hu0 x hx`. Establish `hYZ : Set.EqOn (fun x => ∫ t, (g t : ℂ) • u t x) (act μ M k F) (GLs n)` using `fun x hx => by`. Establish `h` using `hk.2.2.2 u hu x hx`.
+
+Rewrite `h` using `[act_congr_GLs μ hu0' hx]`. Conclude with `h.symm`. Establish `hgel : act μ M k' F x = gel s m (fun x => ∫ t, (g t : ℂ) • u t x) x`. Establish `h` using `hk'.2.2.2 u hu x hx`. Rewrite `h` using `[act_congr_GLs μ hu0' hx]`.
+
+Conclude with `h`. Establish `hAs : ContDiffOn ℝ ∞ A (GLs n)`. Establish `h1 : ContDiffOn ℝ ∞ (fun x => c⁻¹ * ⟪e, act μ M k F x⟫_ℂ) (GLs n)` using `contDiffOn_const.mul (((innerSL ℂ e).restrictScalars ℝ).contDiff.comp_contDiffOn hZ)`. Use `h1.congr fun y hy => ?_` and prove the remaining obligations. Rewrite using `[← hA y hy, ← mul_assoc, inv_mul_cancel₀ hc, one_mul]`.
+
+Establish `h2 : gel s m (fun x => ⟪e, act μ M k F x⟫_ℂ) x = ⟪e, gel s m (act μ M k F) x⟫_ℂ` using `gel_clm (innerSL ℂ e) s m hZ hx`. Establish `h3 : gel s m (fun x => ⟪e, act μ M k F x⟫_ℂ) x = gel s m (fun x => c * A x) x` using `GlobalTheory.CompanionTheory.WaveAll.gel_congr GlobalTheory.CompanionTheory.WaveAll.isOpen_GLs (fun y hy => (hA y hy).symm) s m hx`. Establish `h4 : gel s m (fun x => c * A x) x = c * gel s m A x`. Establish `e1 : (fun x => c * A x) = fun x => (c • ContinuousLinearMap.id ℂ ℂ) (A x)`. Use function extensionality and compare the values at `y`.
+
+Simplify using the standard rewrite rules. Rewrite using `[e1, gel_clm _ s m hAs hx]`. Simplify using the standard rewrite rules. Establish `h5 : c' * A x = c * gel s m A x`. Rewrite using `[hA' x hx, hgel, GlobalTheory.CompanionTheory.WaveAll.gel_congr GlobalTheory.CompanionTheory.WaveAll.isOpen_GLs hYZ s m hx, ← h2, h3, h4]`.
+
+Rewrite using `[smul_eq_mul, div_mul_eq_mul_div, eq_div_iff hc]`. Take the linear combination `(-1 : ℂ) * h5`.
+-/
 theorem gel_eigen_of_act (hW : WaveEx) {k' : Mat n → (M.V →L[ℂ] M.V)} {g : ℝ → ℝ} {s : Bool} {m : ℕ}
     (hk : IsKer μ M [] g k) (hk' : IsKer μ M [(s, m)] g k') (hkm : IsMult μ M k val T) {F : Mat n → M.V}
     (hF : F ∈ CE M) (hFc : ContinuousOn F (GLs n)) (e : M.V) {A : Mat n → ℂ} {c c' : ℂ} (hc : c ≠ 0)

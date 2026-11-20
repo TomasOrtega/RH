@@ -19,37 +19,64 @@ namespace GlobalTheory.HeckeKeep
 
 variable {D : D7} {V : HSp D}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => Matrix.ext fun i j => h i j, fun h i j => congrFun (congrFun h i) j⟩`.
+-/
 theorem suppF_iff (f : Formalism.L2.Theta.AE D) (g : GA D V) :
     SuppF V f g ↔ f • (Formalism.L2.Theta.mt V g - 1) = Formalism.L2.Theta.mt V g - 1 :=
   ⟨fun h => Matrix.ext fun i j => h i j, fun h i j => congrFun (congrFun h i) j⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mt_mul (g h : GA D V) : Formalism.L2.Theta.mt V (g * h) = Formalism.L2.Theta.mt V g * Formalism.L2.Theta.mt V h := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mt_one : Formalism.L2.Theta.mt V 1 = 1 := rfl
 
+/- English proof (translation)
+Establish `e : a * b - 1 = (a - 1) * b + (b - 1)` using `by rw [sub_mul, one_mul]; abel`. Rewrite using `[e, smul_add, hb, ← smul_mul_assoc, ha]`.
+-/
 theorem fix_mul {A n : Type} [CommRing A] [Fintype n] [DecidableEq n] {f : A} {a b : Matrix n n A}
     (ha : f • (a - 1) = a - 1) (hb : f • (b - 1) = b - 1) : f • (a * b - 1) = a * b - 1 := by
   have e : a * b - 1 = (a - 1) * b + (b - 1) := by rw [sub_mul, one_mul]; abel
   rw [e, smul_add, hb, ← smul_mul_assoc, ha]
 
+/- English proof (translation)
+Establish `e : b - 1 = -((a - 1) * b)` using `by rw [sub_mul, one_mul, hb, neg_sub]`. Rewrite using `[e, smul_neg, ← smul_mul_assoc, ha]`.
+-/
 theorem fix_inv {A n : Type} [CommRing A] [Fintype n] [DecidableEq n] {f : A} {a b : Matrix n n A}
     (ha : f • (a - 1) = a - 1) (hb : a * b = 1) : f • (b - 1) = b - 1 := by
   have e : b - 1 = -((a - 1) * b) := by rw [sub_mul, one_mul, hb, neg_sub]
   rw [e, smul_neg, ← smul_mul_assoc, ha]
 
+/- English proof (translation)
+Rewrite `ha`, `hb`, the goal using `[suppF_iff]`. Rewrite using `[mt_mul]`. Conclude with `fix_mul ha hb`.
+-/
 theorem suppF_mul {f : Formalism.L2.Theta.AE D} {a b : GA D V} (ha : SuppF V f a) (hb : SuppF V f b) :
     SuppF V f (a * b) := by
   rw [suppF_iff] at ha hb ⊢
   rw [mt_mul]
   exact fix_mul ha hb
 
+/- English proof (translation)
+Rewrite `ha`, the goal using `[suppF_iff]`. Conclude with `fix_inv ha (by rw [← mt_mul, mul_inv_cancel, mt_one])`.
+-/
 theorem suppF_inv {f : Formalism.L2.Theta.AE D} {a : GA D V} (ha : SuppF V f a) : SuppF V f a⁻¹ := by
   rw [suppF_iff] at ha ⊢
   exact fix_inv ha (by rw [← mt_mul, mul_inv_cancel, mt_one])
 
+/- English proof (translation)
+Rewrite using `[suppF_iff, mt_one, sub_self, smul_zero]`.
+-/
 theorem suppF_one (f : Formalism.L2.Theta.AE D) : SuppF V f 1 := by
   rw [suppF_iff, mt_one, sub_self, smul_zero]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨{ carrier := {g | SuppF V f g}, mul_mem' := suppF_mul, one_mem' := suppF_one f, inv_mem' := suppF_inv }, fun _ => Iff.rfl⟩`.
+-/
 theorem exists_loc (V : HSp D) (f : Formalism.L2.Theta.AE D) : ∃ L : Subgroup (GA D V), ∀ g, g ∈ L ↔ SuppF V f g :=
   ⟨{ carrier := {g | SuppF V f g}, mul_mem' := suppF_mul, one_mem' := suppF_one f, inv_mem' := suppF_inv },
     fun _ => Iff.rfl⟩

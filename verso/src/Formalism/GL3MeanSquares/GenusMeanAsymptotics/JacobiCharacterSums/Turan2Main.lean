@@ -8,6 +8,13 @@ noncomputable section
 
 namespace Formalism.HermitianLattices.Ext.PrimesInProgressions.T2
 
+/- English proof (translation)
+Establish `hfac : ∀ i, ρ⁻¹ * |ρ - ‖z i‖| ≤ ‖1 - z i * ξ‖`. Introduce `i`. Establish `h1 : ρ⁻¹ * (ρ - ‖z i‖) = 1 - ‖z i‖ * ρ⁻¹`. Rewrite using `[mul_sub, inv_mul_cancel₀ hρ.ne']`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `h2 : ρ⁻¹ * |ρ - ‖z i‖| = |1 - ‖z i‖ * ρ⁻¹|`. Rewrite using `[← h1, abs_mul, abs_of_pos (inv_pos.mpr hρ)]`. Rewrite using `[h2]`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, Fintype.card_fin]`. Use `_ ≤ ∏ i, ‖1 - z i * ξ‖ := Finset.prod_le_prod (fun i _ => mul_nonneg (inv_nonneg.mpr hρ.le) (abs_nonneg _)) (fun i _ => hfac i)`. Use `_ = ‖∏ i, (1 - z i * ξ)‖ := (norm_prod Finset.univ _).symm`.
+-/
 theorem prodLower (n : ℕ) (z : Fin n → ℂ) (ρ : ℝ) (hρ : 0 < ρ) (ξ : ℂ) (hξ : ‖ξ‖ = ρ⁻¹) :
     ρ⁻¹ ^ n * ∏ i, |ρ - ‖z i‖| ≤ ‖∏ i, (1 - z i * ξ)‖ := by
   have hfac : ∀ i, ρ⁻¹ * |ρ - ‖z i‖| ≤ ‖1 - z i * ξ‖ := by
@@ -26,6 +33,57 @@ theorem prodLower (n : ℕ) (z : Fin n → ℂ) (ρ : ℝ) (hρ : 0 < ρ) (ξ : 
           (fun i _ => hfac i)
     _ = ‖∏ i, (1 - z i * ξ)‖ := (norm_prod Finset.univ _).symm
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Take `⟨i0, hi0⟩` from `hz1`. Use `set B : ℝ := ((n : ℝ) / (1600 * ((m : ℝ) + n))) ^ n with hBdef`. Establish `hnR : (1 : ℝ) ≤ n` using `by exact_mod_cast hn`.
+
+Establish `hm0 : (0 : ℝ) ≤ m` using `Nat.cast_nonneg m`. Establish `hM : (0 : ℝ) < (m : ℝ) + n` using `by linarith`. Establish `hnM : (n : ℝ) ≤ (m : ℝ) + n` using `by linarith`. Establish `hq1 : m + 1 ≤ (m + n) / n * n`. Establish `h1` using `Nat.div_add_mod (m + n) n`.
+
+Establish `h2` using `Nat.mod_lt (m + n) (show n > 0 by omega)`. Rewrite `h1` using `[Nat.mul_comm]`. Generalize the expression as in `(m + n) / n * n = Q at h1 ⊢`. Generalize the expression as in `(m + n) % n = t at h1 h2`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hq2 : (((m + n) / n : ℕ) : ℝ) * (n : ℝ) ≤ (m : ℝ) + n`. Conclude with `Nat.div_mul_le_self (m + n) n` after adjusting the coercions. Use `set q : ℕ := (m + n) / n with hqdef`. Use `set M : ℝ := (m : ℝ) + n with hMdef`. Use `set r : ℝ := (n : ℝ) / (6 * M) with hr`.
+
+Establish `hr0 : 0 < r` using `div_pos (by linarith) (by linarith)`. Establish `hr6 : r ≤ 1 / 6`. Rewrite using `[hr, div_le_iff₀ (by linarith)]; linarith`. Take `⟨ρ, hρc, hP⟩` from `prodDist (fun i : Fin n => ‖z i‖) Finset.univ (1 - 2 * r) r hr0`. Establish `hP' : (r / 25) ^ n ≤ ∏ j : Fin n, |ρ - ‖z j‖|`.
+
+Establish `h` using `hP`. Rewrite `h` using `[Finset.card_univ, Fintype.card_fin]`. Conclude with `h`. Use `set P : ℝ := ∏ j : Fin n, |ρ - ‖z j‖| with hPdef`. Establish `hρlo : 1 - 3 * r ≤ ρ` using `by have := (abs_le.mp hρc).1; linarith`.
+
+Establish `hρhi : ρ ≤ 1 - r` using `by have := (abs_le.mp hρc).2; linarith`. Establish `hρ0 : 0 < ρ` using `by linarith`. Establish `hρ1 : ρ < 1` using `by linarith`. Establish `hP0 : 0 < P` using `lt_of_lt_of_le (pow_pos (div_pos hr0 (by norm_num)) n) hP'`. Establish `hρq : (1 : ℝ) / 2 ≤ ρ ^ q`.
+
+Establish `hb` using `one_add_mul_le_pow (a := ρ - 1) (by linarith) q`. Establish `he : 1 + (ρ - 1) = ρ` using `by ring`. Rewrite `hb` using `[he]`. Establish `h3 : (q : ℝ) * (3 * r) ≤ 1 / 2`. Establish `he2 : (q : ℝ) * (3 * r) = ((q : ℝ) * n) / (2 * M)` using `by rw [hr]; ring_nf`.
+
+Rewrite using `[he2, div_le_iff₀ (by linarith)]; linarith`. Establish `hq0 : (0 : ℝ) ≤ q` using `Nat.cast_nonneg q`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left (show 1 - ρ ≤ 3 * r by linarith) hq0]`. Establish `hρm : (1 / 2 : ℝ) ^ n ≤ ρ ^ (m + 1)`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hkey : (n : ℝ) * (2 ^ n * B) < ρ ^ (m + 1) * P`. Establish `hlow : ((n : ℝ) / (300 * M)) ^ n ≤ ρ ^ (m + 1) * P`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_pow]`. Use `congr 1`.
+
+Rewrite using `[hr]`. Put the polynomial expressions in normal form. Use `_ ≤ ρ ^ (m + 1) * P := mul_le_mul hρm hP' (pow_pos (div_pos hr0 (by norm_num)) n).le (pow_pos hρ0 _).le`. Establish `hB : (n : ℝ) * (2 ^ n * B) = n * ((3 / 8 : ℝ) ^ n * ((n : ℝ) / (300 * M)) ^ n)`. Rewrite using `[hBdef, ← mul_pow, ← mul_pow]`.
+
+Use `congr 2`. Put the polynomial expressions in normal form. Establish `hY : 0 < ((n : ℝ) / (300 * M)) ^ n` using `pow_pos (div_pos (by linarith) (by linarith)) n`. Establish `hsmall : (n : ℝ) * (3 / 8 : ℝ) ^ n < 1`. Establish `hb` using `one_add_mul_le_pow (a := (5 / 3 : ℝ)) (by norm_num) n`.
+
+Establish `h83 : (1 + 5 / 3 : ℝ) = 8 / 3` using `by norm_num`. Rewrite `hb` using `[h83]`. Establish `hone : (3 / 8 : ℝ) ^ n * (8 / 3) ^ n = 1` using `by rw [← mul_pow]; norm_num`. Establish `hpos : (0 : ℝ) < (3 / 8) ^ n` using `pow_pos (by norm_num) n`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left hb hpos.le]`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `set ξ : ℂ := ((ρ⁻¹ : ℝ) : ℂ) with hξdef`. Establish `hξ : ‖ξ‖ = ρ⁻¹`. Rewrite using `[hξdef, Complex.norm_real, Real.norm_eq_abs, abs_of_pos (inv_pos.mpr hρ0)]`. Establish `hρinv1 : 1 < ρ⁻¹`.
+
+Establish `hc : ρ * ρ⁻¹ = 1` using `mul_inv_cancel₀ hρ0.ne'`. Use polynomial arithmetic with `[inv_pos.mpr hρ0]`. Establish `hzρ : ∀ i, ‖z i‖ * ρ⁻¹ ≠ 1`. Introduce `i h`. Establish `hzi : ‖z i‖ = ρ`.
+
+Establish `h' : ‖z i‖ * ρ⁻¹ * ρ = 1 * ρ` using `by rw [h]`. Rewrite `h'` using `[mul_assoc, inv_mul_cancel₀ hρ0.ne', mul_one, one_mul]`. Then use the resulting hypothesis. Establish `hP00 : P = 0`. Rewrite using `[hPdef]`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ i) (by simp [hzi])`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Use `set y : Fin n → ℂ := fun i => z i * ξ with hydef`. Establish `hyn : ∀ i, ‖y i‖ = ‖z i‖ * ρ⁻¹` using `fun i => by show ‖z i * ξ‖ = _`. Rewrite using `[norm_mul, hξ]`. Establish `hy : ∀ i, ‖y i‖ ≠ 1` using `fun i => by rw [hyn]; exact hzρ i`.
+
+Establish `hβ : ∀ k, m + 1 ≤ k → k ≤ m + n → ‖∑ i, z i ^ k‖ ≤ B` using `fun k h1 h2 => (hcon k h1 h2).le`. Establish `hRP : 0 < ρ ^ (m + 1) * P` using `mul_pos (pow_pos hρ0 _) hP0`. Use `set K : ℝ := ((n : ℝ) * (2 ^ n * B)) / (ρ ^ (m + 1) * P) with hK`. Establish `hKlt : K < 1` using `by rw [hK, div_lt_one hRP]; exact hkey`. Establish `hbound : ∀ ζ : ℂ, ‖ζ‖ = 1 → ‖∑ i, (y i * ζ) ^ (m + 1) / (1 - y i * ζ)‖ ≤ K`.
+
+Introduce `ζ hζ`. Establish `hnζ' : ‖ξ * ζ‖ = ρ⁻¹` using `by rw [norm_mul, hξ, hζ, mul_one]`. Establish `hsum : ∑ i, (y i * ζ) ^ (m + 1) / (1 - y i * ζ) = ∑ i, (z i * (ξ * ζ)) ^ (m + 1) / (1 - z i * (ξ * ζ))`. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Establish `hyz : y i * ζ = z i * (ξ * ζ)` using `by show z i * ξ * ζ = z i * (ξ * ζ)`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hyz]`. Rewrite using `[hsum]`. Establish `hne : ∀ i, 1 - z i * (ξ * ζ) ≠ 0`. Introduce `i h`.
+
+Establish `h1 : z i * (ξ * ζ) = 1` using `(sub_eq_zero.mp h).symm`. Establish `h2 : ‖z i * (ξ * ζ)‖ = 1` using `by rw [h1, norm_one]`. Rewrite `h2` using `[norm_mul, hnζ']`. Conclude with `hzρ i h2`. Establish `hA` using `prodLower n z ρ hρ0 (ξ * ζ) hnζ'`.
+
+Establish `hmain` using `Tbound n m hn z hz B hβ (ξ * ζ) (by rw [hnζ']; exact hρinv1.le) hne`. Rewrite `hmain` using `[hnζ']`. Establish `hS0 : 0 ≤ ‖∑ i, (z i * (ξ * ζ)) ^ (m + 1) / (1 - z i * (ξ * ζ))‖` using `norm_nonneg _`. Establish `h1 : ρ⁻¹ ^ n * (P * ‖∑ i, (z i * (ξ * ζ)) ^ (m + 1) / (1 - z i * (ξ * ζ))‖) ≤ ρ⁻¹ ^ n * (ρ⁻¹ ^ (m + 1) * (n * (2 ^ n * B)))`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `h2 : P * ‖∑ i, (z i * (ξ * ζ)) ^ (m + 1) / (1 - z i * (ξ * ζ))‖ ≤ ρ⁻¹ ^ (m + 1) * (n * (2 ^ n * B))` using `le_of_mul_le_mul_left h1 (pow_pos (inv_pos.mpr hρ0) n)`. Establish `h3 : ρ ^ (m + 1) * (P * ‖∑ i, (z i * (ξ * ζ)) ^ (m + 1) / (1 - z i * (ξ * ζ))‖) ≤ n * (2 ^ n * B)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hK, le_div_iff₀ hRP]`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hcard` using `avgLimit y hy (m + 1) (by omega) K hbound`. Establish `hmem : i0 ∈ Finset.univ.filter (fun i => 1 < ‖y i‖)`. Rewrite using `[Finset.mem_filter]`. Use `⟨Finset.mem_univ _, ?_⟩` and prove the remaining obligations. Rewrite using `[hyn, hi0, one_mul]`.
+
+Conclude with `hρinv1`. Establish `hpos : 0 < (Finset.univ.filter (fun i => 1 < ‖y i‖)).card` using `Finset.card_pos.mpr ⟨i0, hmem⟩`. Establish `hone : (1 : ℝ) ≤ ((Finset.univ.filter (fun i => 1 < ‖y i‖)).card : ℝ)` using `by exact_mod_cast hpos`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem turan2Main (n m : ℕ) (z : Fin n → ℂ) (hn : 1 ≤ n) (hz : ∀ i, ‖z i‖ ≤ 1) (hz1 : ∃ i, ‖z i‖ = 1) :
     ∃ k : ℕ, m + 1 ≤ k ∧ k ≤ m + n ∧ ((n : ℝ) / (1600 * ((m : ℝ) + n))) ^ n ≤ ‖∑ i, z i ^ k‖ := by
   by_contra hcon

@@ -3,6 +3,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CharacterLevelBoun
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal IsLocalRing UpperTheory.V.HV UpperTheory.V.U3 UpperTheory.V.Base UpperTheory.V.Pr UpperTheory.V.Fr UpperTheory.V
 
+/- English proof (translation)
+Introduce `Ω _ _ _ M a hM C _ χ hk`. Use `haveI : NeZero (M ^ a) := ⟨pow_ne_zero _ hM⟩`. Take `⟨hopen, -, -, -, hine⟩` from `UpperTheory.V.Chr.clsFacts ℚ Ω (M ^ a)`. Establish `hle : (UpperTheory.V.Chr.cls ℚ Ω (M ^ a)).ker ≤ χ.ker`. Introduce `s hs`.
+
+Rewrite `hs`, the goal using `[MonoidHom.mem_ker]`. Apply `hk s` to reduce the goal to its premises. Introduce `ζ hζ`. Rewrite using `[UpperTheory.V.Chr.cls_spec (M ^ a) s ζ hζ, hs, Units.val_one, ZMod.val_one_eq_one_mod, ← pow_eq_pow_mod 1 hζ, pow_one]`. Use `⟨Subgroup.isOpen_mono hle hopen, ?_⟩` and prove the remaining obligations.
+
+Introduce `A hA`. Use `le_trans (hine A ?_) hle` and prove the remaining obligations. Rewrite using `[Nat.cast_pow, map_pow, not_lt]`. Conclude with `one_le_pow₀ (not_lt.mp hA)`.
+-/
 theorem UpperTheory.V.Fr.st_mu :
     ∀ (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (M a : ℕ), M ≠ 0 → ∀ (C : Type) [Group C] (χ : G ℚ Ω →* C), Af.KillsMu (M ^ a) χ → IsOpen (χ.ker : Set (G ℚ Ω)) ∧ ∀ A : ValuationSubring Ω, ¬ A.valuation (M : Ω) < 1 → Ine (F := ℚ) A ≤ χ.ker := by
   intro Ω _ _ _ M a hM C _ χ hk

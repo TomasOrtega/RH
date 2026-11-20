@@ -19,6 +19,9 @@ def adjEnt {Ψ : Finset (E →+* ℂ)} (k w : Frame Ψ r) (τ : Ψ) (a c : Fin r
   (Matrix.adjugate (mat k τ) * mat w τ) a c
 
 omit [NumberField E] [IsCMField E] in
+/- English proof (translation)
+Use function extensionality and compare the values at `τ`. Use `show ((a : Matrix (Fin r) (Fin r) E).map τ.1 * ((b : Matrix (Fin r) (Fin r) E).map τ.1 * mat x τ) : Matrix (Fin r) (Fin r) ℂ) = (((a * b : GL (Fin r) E) : Matrix (Fin r) (Fin r) E).map τ.1 * mat x τ)`. Rewrite using `[Units.val_mul, Matrix.map_mul, Matrix.mul_assoc]`.
+-/
 theorem lact_lact {Ψ : Finset (E →+* ℂ)} (a b : GL (Fin r) E) (x : Frame Ψ r) :
     lact a (lact b x) = lact (a * b) x := by
   funext τ
@@ -27,6 +30,9 @@ theorem lact_lact {Ψ : Finset (E →+* ℂ)} (a b : GL (Fin r) E) (x : Frame Ψ
   rw [Units.val_mul, Matrix.map_mul, Matrix.mul_assoc]
 
 omit [NumberField E] [IsCMField E] in
+/- English proof (translation)
+Use function extensionality and compare the values at `τ`. Use `show (((1 : GL (Fin r) E) : Matrix (Fin r) (Fin r) E).map τ.1 * mat x τ : Matrix (Fin r) (Fin r) ℂ) = x τ`. Rewrite using `[Units.val_one, Matrix.map_one _ (map_zero τ.1) (map_one τ.1), Matrix.one_mul]`. Both sides reduce to the same expression.
+-/
 theorem lact_one {Ψ : Finset (E →+* ℂ)} (x : Frame Ψ r) : lact (1 : GL (Fin r) E) x = x := by
   funext τ
   show (((1 : GL (Fin r) E) : Matrix (Fin r) (Fin r) E).map τ.1 * mat x τ : Matrix (Fin r) (Fin r) ℂ) = x τ
@@ -34,6 +40,9 @@ theorem lact_one {Ψ : Finset (E →+* ℂ)} (x : Frame Ψ r) : lact (1 : GL (Fi
 
 omit [NumberField E] [IsCMField E] in
 
+/- English proof (translation)
+Establish `h1 : mat (rmul k b) τ = mat k τ * mat b τ` using `rfl`. Rewrite using `[adjEnt, h1, ← Matrix.mul_assoc, Matrix.adjugate_mul]`. Simplify using `[Matrix.smul_mul, mat, (hb τ).2 a c hca]`.
+-/
 theorem adjEnt_rmul {Ψ : Finset (E →+* ℂ)} (k b : Frame Ψ r) (hb : b ∈ Bor Ψ r) (τ : Ψ) (a c : Fin r)
     (hca : c < a) : adjEnt k (rmul k b) τ a c = 0 := by
   have h1 : mat (rmul k b) τ = mat k τ * mat b τ := rfl
@@ -42,6 +51,13 @@ theorem adjEnt_rmul {Ψ : Finset (E →+* ℂ)} (k b : Frame Ψ r) (hb : b ∈ B
 
 omit [NumberField E] [IsCMField E] in
 
+/- English proof (translation)
+Use `⟨fun τ => ((mat k τ)⁻¹ * mat w τ : Matrix (Fin r) (Fin r) ℂ), fun τ => ⟨?_, fun a c hca => ?_⟩, ?_⟩` and prove the remaining obligations. Use `show ((mat k τ)⁻¹ * mat w τ).det ≠ 0`. Rewrite using `[Matrix.det_mul, Matrix.det_nonsing_inv, Ring.inverse_eq_inv']`. Conclude with `mul_ne_zero (inv_ne_zero (hk τ)) (hw τ)`. Use `show ((mat k τ)⁻¹ * mat w τ) a c = 0`.
+
+Rewrite using `[Matrix.inv_def, Matrix.smul_mul, Matrix.smul_apply]`. Use `h0 τ a c hca` as an intermediate fact. Rewrite `this` using `[adjEnt]`. Rewrite using `[this, smul_zero]`. Use function extensionality and compare the values at `τ show mat w τ = mat k τ * ((mat k τ)⁻¹ * mat w τ)`.
+
+Rewrite using `[Matrix.mul_nonsing_inv_cancel_left _ _ (isUnit_iff_ne_zero.2 (hk τ))]`.
+-/
 theorem exists_of_adjEnt {Ψ : Finset (E →+* ℂ)} (k w : Frame Ψ r) (hk : ∀ τ, (mat k τ).det ≠ 0)
     (hw : ∀ τ, (mat w τ).det ≠ 0) (h0 : ∀ τ a c, c < a → adjEnt k w τ a c = 0) :
     ∃ b ∈ Bor Ψ r, w = rmul k b := by
@@ -59,22 +75,52 @@ theorem exists_of_adjEnt {Ψ : Finset (E →+* ℂ)} (k w : Frame Ψ r) (hk : �
     rw [Matrix.mul_nonsing_inv_cancel_left _ _ (isUnit_iff_ne_zero.2 (hk τ))]
 
 omit [NumberField E] [IsCMField E] in
+/- English proof (translation)
+The claim follows from `(continuous_apply τ).comp hf`.
+-/
 theorem continuous_mat {α : Type} [TopologicalSpace α] {Ψ : Finset (E →+* ℂ)} {f : α → Frame Ψ r}
     (hf : Continuous f) (τ : Ψ) : Continuous fun p => mat (f p) τ :=
   (continuous_apply τ).comp hf
 
 omit [NumberField E] [IsCMField E] in
+/- English proof (translation)
+Use `continuous_pi fun τ => ?_` and prove the remaining obligations. Conclude with `continuous_const.matrix_mul (continuous_mat continuous_id τ)`.
+-/
 theorem continuous_lact {Ψ : Finset (E →+* ℂ)} (γ : GL (Fin r) E) :
     Continuous (lact (Ψ := Ψ) γ) := by
   refine continuous_pi fun τ => ?_
   exact continuous_const.matrix_mul (continuous_mat continuous_id τ)
 
 omit [NumberField E] [IsCMField E] in
+/- English proof (translation)
+The claim follows from `(((continuous_mat hf τ).matrix_adjugate).matrix_mul (continuous_mat hg τ)).matrix_elem a c`.
+-/
 theorem continuous_adjEnt {α : Type} [TopologicalSpace α] {Ψ : Finset (E →+* ℂ)} {f g : α → Frame Ψ r}
     (hf : Continuous f) (hg : Continuous g) (τ : Ψ) (a c : Fin r) :
     Continuous fun p => adjEnt (f p) (g p) τ a c :=
   (((continuous_mat hf τ).matrix_adjugate).matrix_mul (continuous_mat hg τ)).matrix_elem a c
 
+/- English proof (translation)
+Introduce `E _ _ _ r X x ρ hΩ y hy hny`. Establish `hcpt : Continuous (cpt X x)` using `(GlobalTheory.InterpCompare.differentiable_chart X x).continuous`. Establish `hK : IsCompact (Metric.closedBall (0 : V (nd X)) ρ)` using `isCompact_closedBall 0 ρ`. Establish `key : ∀ z ∈ Metric.closedBall (0 : V (nd X)) ρ, ∀ᶠ p : Frame X.Ψ r × V (nd X) in 𝓝 (y, z), ∀ γ ∈ X.Γ, ∀ b ∈ Bor X.Ψ r, p.1 ≠ lact γ (rmul (cpt X x p.2) b)`. Introduce `z hz`.
+
+Establish `hz' : ‖z‖ ≤ ρ` using `by simpa using hz`. Establish `hk : cpt X x z ∈ X.dom` using `hΩ z hz'`. Take `⟨U, hU, U', hU', hfin⟩` from `GlobalTheory.ClosedDiscontinuity.propDisc_closed r X y hy _ hk`. Establish `h1 : ∀ᶠ p : Frame X.Ψ r × V (nd X) in 𝓝 (y, z), p.1 ∈ U ∧ cpt X x p.2 ∈ U'`. Use `Filter.Eventually.and (continuous_fst.continuousAt.preimage_mem_nhds hU) ?_` and prove the remaining obligations.
+
+Conclude with `(hcpt.comp continuous_snd).continuousAt.preimage_mem_nhds hU'`. Establish `h2 : ∀ᶠ p : Frame X.Ψ r × V (nd X) in 𝓝 (y, z), ∀ δ ∈ {γ : GL (Fin r) E | γ ∈ X.Γ ∧ ∃ u ∈ U, ∃ u' ∈ U', ∃ b ∈ Bor X.Ψ r, lact γ u = rmul u' b}, ∃ τ : X.Ψ, ∃ a c : Fin r, c < a ∧ adjEnt (cpt X x p.2) (lact δ p.1) τ a c ≠ 0`. Use `(Filter.eventually_all_finite hfin).2 fun δ hδ => ?_` and prove the remaining obligations. Establish `hopen : IsOpen {p : Frame X.Ψ r × V (nd X) | ∃ τ : X.Ψ, ∃ a c : Fin r, c < a ∧ adjEnt (cpt X x p.2) (lact δ p.1) τ a c ≠ 0}`. Simplify using `only [Set.setOf_exists]`.
+
+Use `isOpen_iUnion fun τ => isOpen_iUnion fun a => isOpen_iUnion fun c => ?_` and prove the remaining obligations. Distinguish the cases in `hca : c < a`. Simplify using `only [hca, true_and]`. Conclude with `isOpen_ne_fun (continuous_adjEnt (hcpt.comp continuous_snd) ((continuous_lact δ).comp continuous_fst) τ a c) continuous_const`. Simplify using `[hca]`.
+
+Use `hopen.mem_nhds ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hcon`. Simplify using `only [Set.mem_setOf_eq, not_exists, not_and, not_not] at hcon`. Establish `hdk : ∀ τ, (mat (cpt X x z) τ).det ≠ 0` using `fun τ => (hk τ).1`. Establish `hdw : ∀ τ, (mat (lact δ y) τ).det ≠ 0`.
+
+Introduce `τ h0`. Establish `e : y = lact δ⁻¹ (lact δ y)` using `by rw [lact_lact, inv_mul_cancel, lact_one]`. Establish `: (mat y τ).det = 0`. Rewrite using `[e]`. Use `show (((δ⁻¹ : GL (Fin r) E) : Matrix (Fin r) (Fin r) E).map τ.1 * mat (lact δ y) τ).det = 0`.
+
+Rewrite using `[Matrix.det_mul, h0, mul_zero]`. Conclude with `(hy τ).1 this`. Take `⟨b, hb, hwb⟩` from `exists_of_adjEnt _ _ hdk hdw hcon`. Use `hny ⟨δ⁻¹, X.Γ.inv_mem hδ.1, b, hb, z, hz', ?_⟩` and prove the remaining obligations. Rewrite using `[← hwb, lact_lact, inv_mul_cancel, lact_one]`.
+
+Use `filter_upwards [h1, h2] with p hp1 hp2`. Introduce `γ hγ b hb he`. Establish `hδ : γ⁻¹ ∈ {γ : GL (Fin r) E | γ ∈ X.Γ ∧ ∃ u ∈ U, ∃ u' ∈ U', ∃ b ∈ Bor X.Ψ r, lact γ u = rmul u' b}`. Use `⟨X.Γ.inv_mem hγ, p.1, hp1.1, cpt X x p.2, hp1.2, b, hb, ?_⟩` and prove the remaining obligations. Rewrite using `[he, lact_lact, inv_mul_cancel, lact_one]`.
+
+Take `⟨τ, a, c, hca, hne⟩` from `hp2 _ hδ`. Apply `hne` to reduce the goal to its premises. Rewrite using `[he, lact_lact, inv_mul_cancel, lact_one]`. Conclude with `adjEnt_rmul _ _ hb τ a c hca`. Use `filter_upwards [hK.eventually_forall_of_forall_eventually (P := fun y' z => ∀ γ ∈ X.Γ, ∀ b ∈ Bor X.Ψ r, y' ≠ lact γ (rmul (cpt X x z) b)) key] with y' hy'`.
+
+Introduce and unpack `⟨γ, hγ, b, hb, z, hz, he⟩`. Conclude with `hy' z (by simpa using hz) γ hγ b hb he`.
+-/
 theorem eventually_not_mem_saturation : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ)
     (X : Data E r) (x : Frame X.Ψ r) (ρ : ℝ), (∀ z : V (nd X), ‖z‖ ≤ ρ → z ∈ OmF X x) →
     ∀ y ∈ X.dom, (¬ ∃ γ ∈ X.Γ, ∃ b ∈ Bor X.Ψ r, ∃ z : V (nd X), ‖z‖ ≤ ρ ∧

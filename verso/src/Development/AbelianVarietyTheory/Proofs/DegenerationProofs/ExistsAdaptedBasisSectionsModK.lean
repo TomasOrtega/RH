@@ -24,6 +24,17 @@ namespace GlobalTheory.AdaptedBasis
 
 open ReciprocityTheory.ChartRestriction.G.DVR GlobalTheory.FamDimension IsLocalRing
 
+/- English proof (translation)
+Establish `h' : FormEq (Sum.elim (fun k => π ≫ φ' k) (fun k => π ≫ φ₃ k)) (Sum.elim ε' fun k => -ε₃ k) φ ε` using `fun U _ w => by`. Use `hf U (fun ψ => w (π ≫ ψ))` as an intermediate fact. Simplify using `only [Fintype.prod_sum_type, Sum.elim_inl, Sum.elim_inr, ← Category.assoc, e₂, Category.id_comp] at this ⊢`. Rewrite using `[← this]`. Simplify using `only [zpow_neg, Finset.prod_inv_distrib, mul_inv_cancel_right]`.
+
+Use `choose b' hb' using fun i => exists_sec hL hf (pullMulSec (b i) h u hu)`. Use `⟨b', fun s => ?_⟩` and prove the remaining obligations. Establish `hu'` using `pullGen_isGen L _ _ _ (invGen_isGen L _ _ u hu) π`. Take `⟨t, ht⟩` from `exists_sec hL h' (pullMulSec s π (LB.pullGen L _ _ (LB.invGen L _ _ u) π) hu')`. Use `(existsUnique_congr fun c => ⟨fun H => ?_, fun H => ?_⟩).1 (hb t)` and prove the remaining obligations.
+
+Use `(isComb_iff_sval hL _ _ _).2 fun y J hJ => ?_` and prove the remaining obligations. Establish `E` using `SectionScalarValuation.sval_lin _ b H h y hJ`. Rewrite `E` using `[ht _ _ y J hJ, sval_pullMulSec _ _ _ hu' _ y hJ, val_pull hJ, val_inv, e₁, Units.mul_inv_eq_iff_eq_mul, Finset.sum_mul]`. Use `E.trans (Finset.sum_congr rfl fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[hb' i _ _ y J hJ, sval_pullMulSec _ _ _ hu _ y hJ, Category.id_comp, _root_.mul_assoc]`.
+
+Use `congr 1`. Conclude with `(gs_pull h π y ⊤ trivial _).trans (by rw [e₁])`. Use `(isComb_iff_sval hL _ _ _).2 fun y J hJ => ?_` and prove the remaining obligations. Establish `E` using `SectionScalarValuation.sval_lin _ b' H π y hJ`. Rewrite using `[ht _ _ y J hJ, sval_pullMulSec _ _ _ hu' _ y hJ, val_pull hJ, val_inv, Units.mul_inv_eq_iff_eq_mul, Finset.sum_mul, Category.id_comp]`.
+
+Use `E.trans (Finset.sum_congr rfl fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[hb' i _ _ y J hJ, sval_pullMulSec _ _ _ hu _ y hJ, e₂, _root_.mul_assoc]`. Use `congr 1`.
+-/
 theorem exists_basis_of_iso {X Y Y₀ : Scheme.{0}} {n : ℕ} {L : LB X} (hL : L.IsLB) {K K' K₃ : Type} [Fintype K]
     [Fintype K'] [Fintype K₃] (h : Y₀ ⟶ Y) (π : Y ⟶ Y₀) (e₁ : h ≫ π = 𝟙 _) (e₂ : π ≫ h = 𝟙 _)
     {φ : K → (Y ⟶ X)} {ε : K → ℤ} {φ' : K' → (Y₀ ⟶ X)} {ε' : K' → ℤ} {φ₃ : K₃ → (Y₀ ⟶ X)} {ε₃ : K₃ → ℤ}
@@ -60,6 +71,21 @@ theorem exists_basis_of_iso {X Y Y₀ : Scheme.{0}} {n : ℕ} {L : LB X} (hL : L
     rw [hb' i _ _ y J hJ, sval_pullMulSec _ _ _ hu _ y hJ, e₂, _root_.mul_assoc]
     congr 1
 
+/- English proof (translation)
+Set `T : Over (Spec (CommRingCat.of R))` to `Over.mk (𝟙 _)`. Take `⟨⟨b, hb⟩, -⟩` from `hT _ D.P k hk R (𝟙 _) (SectionScalarValuation.cQ D T α)`. Set `a : D.P.A ⟶ T` to `Over.homMk D.P.A.hom (Category.comp_id _)`. Establish `ha : ∀ {Z : Over (Spec (CommRingCat.of R))} (x y : Z ⟶ T), x = y` using `fun x y => Over.OverMorphism.ext (((Category.comp_id _).symm.trans (Over.w x)).trans ((Category.comp_id _).symm.trans (Over.w y)).symm)`. Set `h : D.P.A ⟶ T ⊗ D.P.A` to `lift a (𝟙 _)`.
+
+Establish `e₁ : h ≫ snd T D.P.A = 𝟙 _` using `lift_snd _ _`. Establish `e₂ : snd T D.P.A ≫ h = 𝟙 _` using `CartesianMonoidalCategory.hom_ext _ _ (ha _ _) (by rw [Category.assoc, e₁, Category.comp_id, Category.id_comp])`. Take `⟨e, he⟩` from `exists_gen_of_local (V := R) D.P.L D.P.isLB (K := Fin 2) ![(SectionScalarValuation.cQ D T α).left, (1 : T ⟶ D.P.A).left] ![-1, 1]`. Establish `e₃ : (snd T D.P.A).left ≫ D.P.A.hom = (fst T D.P.A).left` using `congrArg (fun q => q.left) (ha (snd T D.P.A ≫ a) (fst T D.P.A))`. Take `⟨b', hb'⟩` from `exists_basis_of_iso D.P.isLB h.left (snd T D.P.A).left (congrArg (fun q => q.left) e₁) (congrArg (fun q => q.left) e₂) (φ' := D.famφB α) (ε' := DegPre.famε k) (LB.pullGen D.P.L _ _ e a.left) (pullGen_isGen _ _ _ _ he _) (fun U _ w => by`.
+
+Establish `p` using `SectionScalarValuation.prod_famB D (𝟙 _) α k w`. Simplify using `only [Over.id_left, Category.id_comp] at p`. Rewrite using `[p]`. Establish `a₀ : h.left ≫ (snd T D.P.A).left = 𝟙 _` using `congrArg (fun q => q.left) e₁`. Establish `a₁ : a.left ≫ (SectionScalarValuation.cQ D T α).left = (SectionScalarValuation.cQ D D.P.A α).left` using `congrArg (fun x => x.left) (SectionScalarValuation.comp_cQ D a α)`.
+
+Establish `a₂ : a.left ≫ (1 : T ⟶ D.P.A).left = (1 : D.P.A ⟶ D.P.A).left` using `congrArg (fun x : D.P.A ⟶ D.P.A => x.left) (MonObj.comp_one (M := D.P.A) a)`. Establish `a₃ : h.left ≫ (translPt D.P.A (SectionScalarValuation.cQ D T α)).left = (𝟙 D.P.A * SectionScalarValuation.cQ D D.P.A α).left`. Establish `: h ≫ translPt D.P.A (SectionScalarValuation.cQ D T α) = 𝟙 D.P.A * SectionScalarValuation.cQ D D.P.A α` using `by show h ≫ ((fst T D.P.A ≫ SectionScalarValuation.cQ D T α) * snd T D.P.A) = _`. Rewrite using `[MonObj.comp_mul, e₁, ← Category.assoc, SectionScalarValuation.comp_cQ, mul_comm]`. Conclude with `congrArg (fun x => x.left) this`.
+
+Rewrite using `[Fintype.prod_sum_type, Fin.prod_univ_two, Fin.prod_univ_two, ← _root_.mul_assoc]`. Use `congrArg₂ (· * ·) (congrArg₂ (· * ·) (congrArg₂ (· * ·) (congrArg (fun x => w x ^ ((k : ℤ) - 1)) a₀) ?_) ?_) ?_` and prove the remaining obligations. Conclude with `(zpow_one _).trans (congrArg w a₃)`. Conclude with `(zpow_neg_one _).trans (congrArg (fun x => (w x)⁻¹) a₁)`. Conclude with `(zpow_one _).trans (congrArg w a₂)) (scal D.P.A.hom) b (fun s => by`.
+
+Use `(Equiv.existsUnique_congr (Equiv.piCongrRight fun _ : Fin (k ^ D.P.g) => (Scheme.ΓSpecIso (CommRingCat.of R)).symm.commRingCatIsoToRingEquiv.toEquiv) fun c => ?_).2 (hb s)` and prove the remaining obligations. Establish `: ∀ x : R, (snd T D.P.A).left.appTop.hom (scal D.P.A.hom x) = (fst T D.P.A).left.appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom x)` using `fun x => by`. Rewrite using `[← e₃]`. Both sides reduce to the same expression. Simplify using `only [this]`.
+
+Use the proof step `rfl)`. Conclude with `⟨b', hb'⟩`.
+-/
 theorem exists_isBasisB (hT : SecTwistSt) {R : Type} [CommRing R] [IsDomain R] [IsLocalRing R] (D : DegPre R)
     {k : ℕ} (hk : 1 ≤ k) (α : D.X) : ∃ b : Fin (k ^ D.P.g) → D.SecB k α, IsBasisB D b := by
   let T : Over (Spec (CommRingCat.of R)) := Over.mk (𝟙 _)
@@ -106,6 +132,9 @@ theorem exists_isBasisB (hT : SecTwistSt) {R : Type} [CommRing R] [IsDomain R] [
       rfl)
   exact ⟨b', hb'⟩
 
+/- English proof (translation)
+Introduce `s` and use `by refine (Equiv.existsUnique_congr (Equiv.arrowCongr ε (Equiv.refl R)) fun a => forall_congr' fun j => ?_).2 (hb s) refine Eq.congr_right (Fintype.sum_equiv ε _ _ fun i => ?_) simp [h]`.
+-/
 theorem isBasisB_reindex {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {k : ℕ} {α : D.X} {I I' : Type}
     [Fintype I] [Fintype I'] (ε : I ≃ I') {b : I' → D.SecB k α} (hb : IsBasisB D b) {β : I → D.SecB k α}
     (h : ∀ i, β i = b (ε i)) : IsBasisB D β := fun s => by
@@ -119,6 +148,13 @@ variable {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] {ϖ : 
 
 open GlobalTheory.FamInt in
 
+/- English proof (translation)
+Take `⟨n, a, σ, σF, hσ, hva, hsum⟩` from `hs`. Use `choose b hb using fun i => (le_ordFn_iff hϖ (a i) 0).1 (le_trans (by exact_mod_cast hr) (hva i))`. Use `⟨secLin (fun i => scal D.toPre.P.A.hom (b i)) σ, SectionScalarValuation.secScal_of_sval D.toPre.P.isLB fun y J hJ => ?_⟩` and prove the remaining obligations. Rewrite using `[SectionScalarValuation.sval_lin (fun i => scal D.toPre.P.A.hom (b i)) σ (fun _ => rfl) _ y hJ, SectionScalarValuation.sval_lin (fun i => gF D.toPre (FractionRing V) (a i)) σF (fun j => hsum j) (𝟙 _) y hJ]`. Use `Finset.sum_congr rfl fun i _ => congrArg₂ (· * ·) ?_ (SectionScalarValuation.secScal_sval (hσ i) _ y hJ)` and prove the remaining obligations.
+
+Establish `e1 : gs (𝟙 _ ≫ (DegPre.prB D.toPre (FractionRing V)).left) y ⊤ (scal D.toPre.P.A.hom (b i)) = cst ((𝟙 _ ≫ (DegPre.prB D.toPre (FractionRing V)).left) ≫ D.toPre.P.A.hom) y (b i)` using `gs_pull _ _ y ⊤ trivial _`. Establish `e2 : gs (𝟙 _) y ⊤ (gF D.toPre (FractionRing V) (a i)) = cst (𝟙 _ ≫ (fst (TF (R` using `V) (FractionRing V)) D.toPre.P.A).left) y (a i) := gs_pull _ (fst (TF (R := V) (FractionRing V)) D.toPre.P.A).left y ⊤ trivial _`. Establish `e3 : (𝟙 _ ≫ (DegPre.prB D.toPre (FractionRing V)).left) ≫ D.toPre.P.A.hom = ((𝟙 _ ≫ (fst (TF (R` using `V) (FractionRing V)) D.toPre.P.A).left) ≫ spMap (algebraMap (FractionRing V) (FractionRing V))) ≫ spMap (algebraMap V (FractionRing V)) := by`. Rewrite using `[Category.id_comp, Category.id_comp, Category.assoc, Over.w]`. Conclude with `(Over.w (fst (TF (R := V) (FractionRing V)) D.toPre.P.A)).symm`.
+
+Rewrite using `[e1, e2, e3, cst_comp, cst_comp, hb i, zpow_zero, _root_.one_mul]`. Both sides reduce to the same expression.
+-/
 theorem exists_int_of_vge (hϖ : Irreducible ϖ) {k : ℕ} {α : D.toPre.X}
     {s : LB.Sec (LB.LinComb D.toPre.P.L (DegPre.famφ D.toPre (FractionRing V) α) (DegPre.famε k))} {r : ℚ}
     (hr : 0 ≤ r) (hs : VGe D (FractionRing V) (ordVal hϖ) k α s r) :
@@ -145,6 +181,17 @@ theorem exists_int_of_vge (hϖ : Irreducible ϖ) {k : ℕ} {α : D.toPre.X}
   rw [e1, e2, e3, cst_comp, cst_comp, hb i, zpow_zero, _root_.one_mul]
   rfl
 
+/- English proof (translation)
+Take `⟨σ, hσ⟩` from `FamInt.exists_pull (F := FractionRing V) β`. Take `⟨Φ, hΦ, hΦ0⟩` from `FamFree.exists_fam_single (F := FractionRing V) hG D.tau_bimult hq χ σ`. Establish `h0 : VGe D (FractionRing V) (FamInt.ordVal hϖ) q χ (Φ.s χ) 0`. Use `⟨1, fun _ => 1, fun _ => β, fun _ => Φ.s χ, fun _ => hΦ ▸ hσ, fun _ => ?_, fun j => ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules.
+
+Simplify using `[DegPre.constBF]`. Establish `key : ∀ α : D.toPre.X, ∃ f : D.toPre.SecB q α, GeneratorPullback.SecScal D.toPre.P.L (DegPre.famφ D.toPre (FractionRing V) α) (DegPre.famε q) (Φ.s α) (D.toPre.famφB α) (DegPre.famε q) f (DegPre.prB D.toPre (FractionRing V)).left 1 ∧ (∀ h : χ = α, f = h ▸ β) ∧ ((∀ z, α ≠ χ + q • z …`. Introduce `α`. Distinguish the cases in `hα : χ = α`. Substitute `hα` using the available equality.
+
+Conclude with `⟨β, hΦ ▸ hσ, fun _ => rfl, fun h => absurd (by simp) (h 0)⟩`. Distinguish the cases in `hc : ∃ z, α = χ + q • z`. Take `⟨z, rfl⟩` from `hc`. Establish `H` using `SectionScalarValuation.fe_move hϖ hQ (FamInt.valOver_ordVal hϖ) q z χ Φ h0`. Establish `hle` using `hmin z`.
+
+Rewrite `hle` using `[q_shift hϖ hQ, le_add_iff_nonneg_right]`. Establish `hpos : (0 : ℤ) ≤ q * Q z + QForm.bOf D.toPre Q z χ` using `nonneg_of_mul_nonneg_right hle (by omega)`. Take `⟨f, h1⟩` from `exists_int_of_vge hϖ (by rw [zero_add]; exact_mod_cast hpos) H`. Conclude with `⟨f, h1, fun h => absurd h hα, fun h => absurd rfl (h z)⟩`. Use `⟨SecOps.secZero, SectionScalarValuation.secScal_of_sval D.toPre.P.isLB fun y J hJ => ?_, fun h => absurd h hα, fun _ _ => rfl⟩` and prove the remaining obligations.
+
+Rewrite using `[UUA.sval_zero_of (s := SecOps.secZero) (fun _ => rfl) _ y J (hJ.mem _ _), UUA.sval_zero_of (hΦ0 α fun mu e => hc ⟨mu, e.symm⟩) _ y J (hJ.mem _ _)]`. Use `choose f h1 h2 h3 using key`. Conclude with `⟨Φ, f, h1, h2 χ rfl, h3⟩`.
+-/
 theorem integralFamily_of_min (hG : GlobalFnsSt) (hϖ : Irreducible ϖ) {Q : D.toPre.X → ℤ}
     (hQ : QForm.IsQ D.toPre ϖ Q) {q : ℕ} (hq : 1 ≤ q) (χ : D.toPre.X) (β : D.toPre.SecB q χ)
     (hmin : ∀ z, Q χ ≤ Q (χ + q • z)) :
@@ -181,6 +228,21 @@ theorem integralFamily_of_min (hG : GlobalFnsSt) (hϖ : Irreducible ϖ) {Q : D.t
 
 end Family
 
+/- English proof (translation)
+Introduce `hL o Ω _ _ _ _ S ρ p _ y₀ u l k hk J _ hJ`. Take `⟨ϖ, Q, hϖ, hQ, hlt, hq⟩` from `GlobalTheory.T.testQuadraticForm_eq_psi_valuation_mul o Ω S ρ p y₀ u l`. Establish `hdim` using `(GlobalTheory.T.uniformisedTest_dimensions_and_split_fibre hL o Ω S ρ p y₀ u).2.1`. Set `C` to `u.D.toPre.X ⧸ FamFree.multiples u.D.toPre k`. Establish `hc : Nat.card C = k ^ Module.finrank ℤ u.D.toPre.X` using `AddSubgroup.index_range_nsmul u.D.toPre.X k`.
+
+Establish `: Finite C` using `Nat.finite_of_card_ne_zero (by rw [hc]; positivity)`. Use `Fintype.ofFinite C` as an intermediate fact. Set `e : J ≃ C × Fin (k ^ u.D.toPre.P.g)` to `Fintype.equivOfCardEq (by`. Rewrite using `[hJ, Fintype.card_prod, Fintype.card_fin, ← Nat.card_eq_fintype_card, hc, ← pow_add, add_comm, hdim])`. Use `choose rep hrep hmin using fun c : C => l.pos.exists_within_forall_le (s := {α | (QuotientAddGroup.mk α : C) = c}) ⟨c.out, c.out_eq⟩`.
+
+Establish `hsh : ∀ c, Short l.q k (rep c)` using `fun c m => hmin c _ (((FamFree.mk_eq_mk_iff _ _).2 ⟨m, rfl⟩).symm.trans (hrep c))`. Establish `hpos : 0 < -Real.log ‖(u.j ϖ : PadicAlgCl p)‖`. Use `neg_pos.2 (Real.log_neg (norm_pos_iff.2 ?_) hlt)` and prove the remaining obligations. Conclude with `(map_ne_zero (algebraMap (FractionRing u.V) (PadicAlgCl p))).2 ((map_ne_zero_iff _ (IsFractionRing.injective u.V (FractionRing u.V))).2 hϖ.ne_zero)`. Establish `hQmin : ∀ c z, Q (rep c) ≤ Q (rep c + k • z)` using `fun c z => by`.
+
+Use `hsh c z` as an intermediate fact. Rewrite `this` using `[hq, hq]`. Conclude with `le_of_mul_le_mul_right this hpos` after adjusting the coercions. Use `choose b hb using fun c => exists_isBasisB hL.2.1.secTwist u.D.toPre hk (rep c)`. Use `choose Φ f hΦ hf hz using fun c m => integralFamily_of_min hL.1.globalFns hϖ hQ hk (rep c) (b c m) (hQmin c)`.
+
+Use `choose σ hσ using fun c m => GlobalTheory.IntegralExpansion.main hL.1 u.V u.D u.A u.G u.U k hk (Φ c m) (f c m) (hΦ c m)`. Establish `inj : ∀ c c', rep c = rep c' → c = c'` using `fun c c' h => (hrep c).symm.trans (by rw [h]; exact hrep c')`. Use `⟨fun i => σ (e i).1 (e i).2, fun i => rep (e i).1, fun i => f (e i).1 (e i).2, fun i => hsh _, fun i i' ⟨m, hm⟩ => ?_, fun α => ?_, fun i => hσ _ _, fun i => ⟨_, hΦ _ _⟩, fun i => hz _ _, fun i₀ => ?_⟩` and prove the remaining obligations. Conclude with `congrArg rep ((hrep _).symm.trans (((FamFree.mk_eq_mk_iff _ _).2 ⟨m, hm.symm⟩).symm.trans (hrep _)))`. Take `⟨m, hm⟩` from `(FamFree.mk_eq_mk_iff _ _).1 (hrep (QuotientAddGroup.mk α))`.
+
+Use `⟨e.symm (QuotientAddGroup.mk α, ⟨0, by positivity⟩), m, ?_⟩` and prove the remaining obligations. Simplify using `only [Equiv.apply_symm_apply]`. Conclude with `hm.symm`. Set `ε : {i // rep (e i).1 = rep (e i₀).1} ≃ Fin (k ^ u.D.toPre.P.g)` to `{ toFun := fun i => (e i.1).2 invFun := fun m => ⟨e.symm ((e i₀).1, m), by rw [Equiv.apply_symm_apply]⟩ left_inv := fun i => Subtype.ext ( e.symm_apply_eq.2 (Prod.ext (inj _ _ i.2).symm rfl)) right_inv := fun m => by simp }`. Use `isBasisB_reindex ε (hb (e i₀).1) fun i => ?_` and prove the remaining obligations.
+
+Establish `key : ∀ c c' m, c = c' → f c m (rep c') = b c' m`. Introduce and unpack `c _ m rfl`. Conclude with `hf c m`. Conclude with `key _ _ _ (inj _ _ i.2)`.
+-/
 theorem main : GlobalTheory.UT.LL → ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω] (S : ThetaSys o Ω) (ρ : S.Real) (p : ℕ) [Fact p.Prime] (y₀ : S.R →+* PadicAlgCl p) (u : ρ.UTest p y₀) (l : u.Lab) (k : ℕ), 1 ≤ k → ∀ (J : Type) [Fintype J], Fintype.card J = k ^ S.g → ∃ (σ : J → (u.H k).Sec) (cls : J → u.D.toPre.X) (f : J → ∀ α, u.D.toPre.SecB k α), u.Basis l k σ cls f := by
   intro hL o Ω _ _ _ _ S ρ p _ y₀ u l k hk J _ hJ
   obtain ⟨ϖ, Q, hϖ, hQ, hlt, hq⟩ := GlobalTheory.T.testQuadraticForm_eq_psi_valuation_mul o Ω S ρ p y₀ u l

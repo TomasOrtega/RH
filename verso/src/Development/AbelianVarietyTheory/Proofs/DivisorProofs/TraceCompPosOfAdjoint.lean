@@ -7,6 +7,19 @@ open scoped TensorProduct InnerProductSpace
 
 namespace GlobalTheory.UPel.HT
 
+/- English proof (translation)
+Use `letI core : InnerProductSpace.Core ℝ V := { inner := fun x y => g x y conj_inner_symm := fun x y => by simpa using hs y x re_inner_nonneg := fun x => by`. Distinguish the cases in `h : x = 0`. Simplify using `[h]`. Simplify using `using (hp x h).le`. Use `add_left := fun x y z => by simp`.
+
+Use `smul_left := fun x y r => by simp`. Use `definite := fun x hx => by`. Assume the negation of the conclusion as `h`. Conclude with `(hp x h).ne' hx }`. Use `letI : NormedAddCommGroup V := InnerProductSpace.Core.toNormedAddCommGroup (𝕜 := ℝ)`.
+
+Use `letI : InnerProductSpace ℝ V := InnerProductSpace.ofCore core.toCore`. Set `b` to `stdOrthonormalBasis ℝ V`. Rewrite using `[LinearMap.trace_eq_sum_inner _ b]`. Establish `key : ∀ i, ⟪b i, (T ∘ₗ T') (b i)⟫_ℝ = g (T' (b i)) (T' (b i))`. Introduce `i`.
+
+Use `show g (b i) (T (T' (b i))) = _`. Rewrite using `[hs, hadj]`. Simplify using `only [key]`. Establish `hnn : ∀ i, 0 ≤ g (T' (b i)) (T' (b i))` using `fun i => by`. Distinguish the cases in `h : T' (b i) = 0`.
+
+Simplify using `[h]`. Conclude with `(hp _ h).le`. Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, T' (b i) ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`.
+
+Apply `hT'` to reduce the goal to its premises. Conclude with `b.toBasis.ext (fun i => by simpa using h i)`. Conclude with `Finset.sum_pos' (fun i _ => hnn i) ⟨i, Finset.mem_univ _, hp _ hi⟩`.
+-/
 theorem trace_comp_pos_of_adjoint {V : Type} [AddCommGroup V] [Module ℝ V] [FiniteDimensional ℝ V]
     (g : V →ₗ[ℝ] V →ₗ[ℝ] ℝ) (hs : ∀ u v, g u v = g v u) (hp : ∀ u, u ≠ 0 → 0 < g u u)
     (T T' : V →ₗ[ℝ] V) (hadj : ∀ u v, g (T u) v = g u (T' v)) (hT' : T' ≠ 0) :
@@ -43,6 +56,37 @@ theorem trace_comp_pos_of_adjoint {V : Type} [AddCommGroup V] [Module ℝ V] [Fi
     exact b.toBasis.ext (fun i => by simpa using h i)
   exact Finset.sum_pos' (fun i _ => hnn i) ⟨i, Finset.mem_univ _, hp _ hi⟩
 
+/- English proof (translation)
+Introduce `p _ D x hx`. Use `haveI := D.freeLa`. Use `haveI := D.finLa`. Take `⟨J, hJJ, hJinv, hpos, hcomm, -⟩` from `D.dom`. Set `A : D.O → (ℝ ⊗[ℤ] D.La →ₗ[ℝ] ℝ ⊗[ℤ] D.La)` to `fun b => (DistribMulAction.toLinearMap ℤ D.La b).baseChange ℝ`.
+
+Establish `hcomp : A x ∘ₗ A (D.star x).unop = (DistribMulAction.toLinearMap ℤ D.La (x * (D.star x).unop)).baseChange ℝ` using `by clear hcomm hpos hJinv hJJ`. Simplify using `only [A]`. Rewrite using `[← LinearMap.baseChange_comp]`. Use `congr 1`. Use extensionality with `y`.
+
+Use `show x • ((D.star x).unop • y) = (x * (D.star x).unop) • y`. Rewrite using `[mul_smul]`. Establish `hA : ∀ b (r : ℝ) (y : D.La), A b (r ⊗ₜ y) = r ⊗ₜ (b • y)` using `fun _ _ _ => rfl`. Establish `hAJ : ∀ b, J ∘ₗ A b = A b ∘ₗ J` using `fun b => hcomm b (A b) (fun y => rfl)`. Establish `hEF : ∀ y z : D.La, D.EF y z = - D.EF z y`.
+
+Introduce `y z`. Establish `h` using `D.alt (y + z)`. Simplify using `only [map_add, LinearMap.add_apply, D.alt y, D.alt z, zero_add, add_zero] at h`. Use linear arithmetic over natural numbers and integers. Establish `hanti : ∀ u v, D.EF.baseChange ℝ u v = - D.EF.baseChange ℝ v u`.
+
+Introduce `u v`. Proceed by induction on `u using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul r y`. Proceed by induction on `v using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp`. Consider the case `tmul s z`. Rewrite using `[LinearMap.BilinForm.baseChange_tmul, LinearMap.BilinForm.baseChange_tmul, hEF y z]`. Simplify using `only [zsmul_eq_mul, Int.cast_neg]`. Expand and normalize the polynomial expressions, which then agree.
+
+Consider the case `add v w hv hw`. Simplify using `only [map_add, LinearMap.add_apply]`. Rewrite using `[hv, hw]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `add u w hu hw`.
+
+Simplify using `only [map_add, LinearMap.add_apply]`. Rewrite using `[hu, hw]`. Expand and normalize the polynomial expressions, which then agree. Establish `hadjB : ∀ b u v, D.EF.baseChange ℝ (A b u) v = D.EF.baseChange ℝ u (A (D.star b).unop v)`. Introduce `b u v`.
+
+Proceed by induction on `u using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul r y`. Proceed by induction on `v using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+
+Consider the case `tmul s z`. Rewrite using `[hA, hA, LinearMap.BilinForm.baseChange_tmul, LinearMap.BilinForm.baseChange_tmul, D.adj]`. Consider the case `add v w hv hw => simp only [map_add, LinearMap.add_apply, hv, hw]`. Consider the case `add u w hu hw => simp only [map_add, LinearMap.add_apply, hu, hw]`. Establish `hsym : ∀ u v, D.EF.baseChange ℝ (J u) v = D.EF.baseChange ℝ (J v) u`.
+
+Introduce `u v`. Rewrite using `[← hJinv (J v) u, hJJ, map_neg, LinearMap.neg_apply, hanti v (J u), neg_neg]`. Establish `hadjg : ∀ u v, (D.EF.baseChange ℝ ∘ₗ J) (A x u) v = (D.EF.baseChange ℝ ∘ₗ J) u (A (D.star x).unop v)`. Introduce `u v`. Simplify using `only [LinearMap.comp_apply]`.
+
+Rewrite using `[← LinearMap.comp_apply J (A x), hAJ, LinearMap.comp_apply, hadjB]`. Establish `hinj : ∀ y : D.La, (1 : ℝ) ⊗ₜ[ℤ] y = 0 → y = 0`. Introduce `y hy`. Use `(Module.forall_dual_apply_eq_zero_iff ℤ y).1 fun φ => ?_` and prove the remaining obligations. Establish `h` using `congrArg (fun t => TensorProduct.rid ℤ ℝ (LinearMap.baseChange ℝ φ t)) hy`.
+
+Simplify using `only [LinearMap.baseChange_tmul, TensorProduct.rid_tmul, map_zero] at h`. Simplify using `using h`. Establish `hT' : A (D.star x).unop ≠ 0`. Introduce `h0`. Apply `hx` to reduce the goal to its premises.
+
+Establish `hz : ∀ y : D.La, (D.star x).unop • y = 0` using `fun y => hinj _ (by`. Use `LinearMap.congr_fun h0 ((1 : ℝ) ⊗ₜ y)` as an intermediate fact. Rewrite using `[hA, LinearMap.zero_apply] at this)` and apply the resulting hypothesis. Establish `h1` using `GlobalTheory.T.harrisTaylor_order_faithful_lattice p D _ hz`. Rewrite using `[← D.star_star x, h1]`.
+
+Simplify using the standard rewrite rules. Establish `htr` using `trace_comp_pos_of_adjoint (D.EF.baseChange ℝ ∘ₗ J) (fun u v => by simp only [LinearMap.comp_apply]; exact hsym u v) (fun u hu => by simpa only [LinearMap.comp_apply] using hpos u hu) (A x) (A (D.star x).unop) hadjg hT'`. Rewrite `htr` using `[hcomp, LinearMap.trace_baseChange]`. Simplify using `using htr`.
+-/
 theorem trace_mul_star_pos : ∀ (p : ℕ) [Fact p.Prime] (D : GlobalTheory.UPel.HT.Datum p) (x : D.O), x ≠ 0 →
     0 < LinearMap.trace ℤ D.La (DistribMulAction.toLinearMap ℤ D.La (x * (D.star x).unop)) := by
   intro p _ D x hx

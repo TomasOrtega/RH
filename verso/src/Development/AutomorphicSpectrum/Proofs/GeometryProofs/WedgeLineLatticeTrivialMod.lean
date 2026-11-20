@@ -26,10 +26,18 @@ def CongM (R : Subring Ω) (ϖ : Ω) {m n : Type} (M N : Matrix m n Ω) : Prop :
 def frameDet {p q : ℕ} (J : Matrix (Fin (p + q)) (Fin p) Ω) (T : Matrix (Fin (p + q)) (Fin q) Ω) : Ω :=
   (fromCols (J.submatrix finSumFinEquiv id) (T.submatrix finSumFinEquiv id)).det
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun i j => ⟨M i j, h i j⟩, by ext i j; rfl⟩`.
+-/
 theorem IntM.exists_lift {R : Subring Ω} {m n : Type} {M : Matrix m n Ω} (h : IntM R M) :
     ∃ M' : Matrix m n R, M'.map R.subtype = M :=
   ⟨fun i j => ⟨M i j, h i j⟩, by ext i j; rfl⟩
 
+/- English proof (translation)
+Use extensionality with `i j`. Take `⟨c, hc, e⟩` from `h i j`. Simplify using `only [Matrix.map_apply]`. Rewrite using `[Ideal.Quotient.eq, Ideal.mem_span_singleton']`. Use `⟨⟨c, hc⟩, Subtype.ext ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [Matrix.map_apply, Subring.subtype_apply] at e`. Use `push_cast`. Rewrite using `[e, mul_comm]`.
+-/
 theorem map_quot_eq {R : Subring Ω} {ϖ : Ω} (hϖ : ϖ ∈ R) {m n : Type} {M N : Matrix m n R}
     (h : CongM R ϖ (M.map R.subtype) (N.map R.subtype)) :
     M.map (Ideal.Quotient.mk (Ideal.span {(⟨ϖ, hϖ⟩ : R)})) =
@@ -43,6 +51,13 @@ theorem map_quot_eq {R : Subring Ω} {ϖ : Ω} (hϖ : ϖ ∈ R) {m n : Type} {M 
   push_cast
   rw [e, mul_comm]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hd`. Take `⟨u, hu⟩` from `h.exists_right_inv`. Take `⟨u, rfl⟩` from `Ideal.Quotient.mk_surjective u`. Rewrite `hu` using `[← map_mul, ← map_one (Ideal.Quotient.mk (Ideal.span {π})), Ideal.Quotient.eq, Ideal.mem_span_singleton']`. Take `⟨c, hc⟩` from `hu`.
+
+Establish `h1 : d * u ∈ IsLocalRing.maximalIdeal R` using `Ideal.mul_mem_right _ _ ((IsLocalRing.mem_maximalIdeal _).2 hd)`. Establish `h2 : c * π ∈ IsLocalRing.maximalIdeal R` using `Ideal.mul_mem_left _ _ ((IsLocalRing.mem_maximalIdeal _).2 hπ)`. Establish `h3 : (1 : R) ∈ IsLocalRing.maximalIdeal R`. Establish `: (1 : R) = d * u - c * π` using `by rw [hc]; ring`. Rewrite using `[this]`.
+
+Conclude with `sub_mem h1 h2`. Conclude with `(IsLocalRing.mem_maximalIdeal _).1 h3 isUnit_one`.
+-/
 theorem isUnit_of_quot {R : Type} [CommRing R] [IsLocalRing R] {π d : R} (hπ : ¬ IsUnit π)
     (h : IsUnit (Ideal.Quotient.mk (Ideal.span {π}) d)) : IsUnit d := by
   by_contra hd
@@ -61,6 +76,11 @@ theorem isUnit_of_quot {R : Type} [CommRing R] [IsLocalRing R] {π d : R} (hπ :
     exact sub_mem h1 h2
   exact (IsLocalRing.mem_maximalIdeal _).1 h3 isUnit_one
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨⟨u, hu⟩, hv⟩` from `h.exists_right_inv`. Establish `e : a * u = 1` using `congrArg Subtype.val hv`. Establish `h0 : a ≠ 0` using `left_ne_zero_of_mul_eq_one e`.
+
+Use `⟨h0, ha, ?_⟩` and prove the remaining obligations. Rewrite using `[← eq_inv_of_mul_eq_one_right e]`. Conclude with `hu`. Introduce and unpack `⟨h0, h1, h2⟩`. Conclude with `IsUnit.of_mul_eq_one (⟨a⁻¹, h2⟩ : R) (Subtype.ext (mul_inv_cancel₀ h0))`.
+-/
 theorem isUnit_sub_iff {R : Subring Ω} {a : Ω} (ha : a ∈ R) : IsUnit (⟨a, ha⟩ : R) ↔ UnitIn R a := by
   constructor
   · intro h
@@ -77,6 +97,9 @@ section Det
 
 variable {p q : ℕ}
 
+/- English proof (translation)
+Establish `: fromCols ((J.map R.subtype).submatrix finSumFinEquiv id) ((T.map R.subtype).submatrix finSumFinEquiv id) = (fromCols (J.submatrix finSumFinEquiv id) (T.submatrix finSumFinEquiv id)).map R.subtype`. Apply the tactic sequence `ext i (j | j) <;> simp`. Rewrite using `[frameDet, this]`. Conclude with `(RingHom.map_det R.subtype _).symm`.
+-/
 theorem frameDet_map {R : Subring Ω} (J : Matrix (Fin (p + q)) (Fin p) R) (T : Matrix (Fin (p + q)) (Fin q) R) :
     frameDet (J.map R.subtype) (T.map R.subtype) =
       ((fromCols (J.submatrix finSumFinEquiv id) (T.submatrix finSumFinEquiv id)).det : R) := by
@@ -86,6 +109,9 @@ theorem frameDet_map {R : Subring Ω} (J : Matrix (Fin (p + q)) (Fin p) R) (T : 
   rw [frameDet, this]
   exact (RingHom.map_det R.subtype _).symm
 
+/- English proof (translation)
+Substitute `hM hN` using the available equality. Conclude with `map_quot_eq hϖ h`.
+-/
 theorem quot_of_cong {R : Subring Ω} {ϖ : Ω} (hϖ : ϖ ∈ R) {m n : Type} {M N : Matrix m n R} {M₀ N₀ : Matrix m n Ω}
     (hM : M.map R.subtype = M₀) (hN : N.map R.subtype = N₀) (h : CongM R ϖ M₀ N₀) :
     M.map (Ideal.Quotient.mk (Ideal.span {(⟨ϖ, hϖ⟩ : R)})) =
@@ -93,6 +119,17 @@ theorem quot_of_cong {R : Subring Ω} {ϖ : Ω} (hϖ : ϖ ∈ R) {m n : Type} {M
   subst hM hN
   exact map_quot_eq hϖ h
 
+/- English proof (translation)
+Take `⟨J, rfl⟩` from `hJ.exists_lift`. Take `⟨S, rfl⟩` from `hS.exists_lift`. Take `⟨T, rfl⟩` from `hT.exists_lift`. Take `⟨P, rfl⟩` from `hP.exists_lift`. Establish `e0` using `quot_of_cong hϖ (M := S * J) (N := 0) Matrix.map_mul (Matrix.map_zero _ (map_zero _)) h0`.
+
+Establish `e1` using `quot_of_cong hϖ (M := P * J) (N := 1) Matrix.map_mul (Matrix.map_one _ (map_zero _) (map_one _)) h1`. Establish `e2` using `quot_of_cong hϖ (M := S * T) (N := 1) Matrix.map_mul (Matrix.map_one _ (map_zero _) (map_one _)) h2`. Use `set φ := Ideal.Quotient.mk (Ideal.span {(⟨ϖ, hϖ⟩ : R)}) with hφ`. Rewrite `e0` using `[Matrix.map_zero _ (map_zero _)]`. Rewrite `e1`, `e2` using `[Matrix.map_one _ (map_zero _) (map_one _)]`.
+
+Set `e` to `(finSumFinEquiv : Fin p ⊕ Fin q ≃ Fin (p + q))`. Establish `key : ∀ {m n : Type} [Fintype m] [Fintype n] [DecidableEq n] (M : Matrix m (Fin (p + q)) R) (N : Matrix (Fin (p + q)) n R), (M.submatrix id e).map φ * (N.submatrix e id).map φ = (M * N).map φ`. Introduce `m n _ _ _ M N`. Rewrite using `[← Matrix.map_mul, Matrix.submatrix_mul_equiv, Matrix.submatrix_id_id]`. Establish `hu` using `(splitExact_of_rank _ p q ((J.submatrix e id).map φ) ((S.submatrix id e).map φ) (by rw [key, e0]) ⟨(P.submatrix id e).map φ, by rw [key, e1]⟩ ⟨(T.submatrix e id).map φ, by rw [key, e2]⟩).1 ((T.submatrix e id).map φ) (by rw [key, e2])`.
+
+Establish `e3 : fromCols ((J.submatrix e id).map φ) ((T.submatrix e id).map φ) = (fromCols (J.submatrix e id) (T.submatrix e id)).map φ`. Apply the tactic sequence `ext i (j | j) <;> simp`. Rewrite `hu` using `[e3, show ∀ M : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) R, (M.map φ).det = φ M.det from fun M => (RingHom.map_det φ M).symm]`. Establish `hπ : ¬ IsUnit (⟨ϖ, hϖ⟩ : R)` using `fun h => hn ((isUnit_sub_iff hϖ).1 h)`. Establish `hd` using `isUnit_of_quot hπ hu`.
+
+Rewrite using `[frameDet_map]`. Conclude with `(isUnit_sub_iff (Subtype.coe_prop _)).1 hd`.
+-/
 theorem unit_frameDet {R : Subring Ω} [IsLocalRing R] {ϖ : Ω} (hϖ : ϖ ∈ R) (hn : ¬ UnitIn R ϖ)
     {J : Matrix (Fin (p + q)) (Fin p) Ω} {S : Matrix (Fin q) (Fin (p + q)) Ω}
     {T : Matrix (Fin (p + q)) (Fin q) Ω} {P : Matrix (Fin p) (Fin (p + q)) Ω}
@@ -127,6 +164,29 @@ theorem unit_frameDet {R : Subring Ω} [IsLocalRing R] {ϖ : Ω} (hϖ : ϖ ∈ R
   rw [frameDet_map]
   exact (isUnit_sub_iff (Subtype.coe_prop _)).1 hd
 
+/- English proof (translation)
+Take `⟨J, rfl⟩` from `hJ.exists_lift`. Take `⟨S, rfl⟩` from `hS.exists_lift`. Take `⟨T, rfl⟩` from `hT.exists_lift`. Take `⟨J₂, rfl⟩` from `hJ₂.exists_lift`. Take `⟨S₂, rfl⟩` from `hS₂.exists_lift`.
+
+Take `⟨T₂, rfl⟩` from `hT₂.exists_lift`. Take `⟨M, rfl⟩` from `hM.exists_lift`. Take `⟨B, rfl⟩` from `hB.exists_lift`. Establish `e0` using `quot_of_cong hϖ (M := S * J) (N := 0) Matrix.map_mul (Matrix.map_zero _ (map_zero _)) h0`. Establish `e2` using `quot_of_cong hϖ (M := S * T) (N := 1) Matrix.map_mul (Matrix.map_one _ (map_zero _) (map_one _)) h2`.
+
+Establish `e2'` using `quot_of_cong hϖ (M := S₂ * T₂) (N := 1) Matrix.map_mul (Matrix.map_one _ (map_zero _) (map_one _)) h2'`. Establish `e4` using `quot_of_cong hϖ (M := J₂) (N := J * M) rfl Matrix.map_mul hJM`. Establish `e5` using `quot_of_cong hϖ (M := S) (N := B * S₂) rfl Matrix.map_mul hSB`. Use `set φ := Ideal.Quotient.mk (Ideal.span {(⟨ϖ, hϖ⟩ : R)}) with hφ`. Rewrite `e0` using `[Matrix.map_zero _ (map_zero _)]`.
+
+Rewrite `e2`, `e2'` using `[Matrix.map_one _ (map_zero _) (map_one _)]`. Set `e` to `(finSumFinEquiv : Fin p ⊕ Fin q ≃ Fin (p + q))`. Establish `key : ∀ {m n : Type} [Fintype m] [Fintype n] [DecidableEq n] (M : Matrix m (Fin (p + q)) R) (N : Matrix (Fin (p + q)) n R), (M.submatrix id e).map φ * (N.submatrix e id).map φ = (M * N).map φ`. Introduce `m n _ _ _ M N`. Rewrite using `[← Matrix.map_mul, Matrix.submatrix_mul_equiv, Matrix.submatrix_id_id]`.
+
+Establish `hdet : ∀ {n : Type} [Fintype n] [DecidableEq n] (M : Matrix n n R), (M.map φ).det = φ M.det` using `fun M => (RingHom.map_det φ M).symm`. Establish `e3 : ∀ (J : Matrix (Fin (p + q)) (Fin p) R) (T : Matrix (Fin (p + q)) (Fin q) R), (fromCols ((J.submatrix e id).map φ) ((T.submatrix e id).map φ)).det = φ (fromCols (J.submatrix e id) (T.submatrix e id)).det`. Introduce `J T`. Rewrite using `[← hdet]`. Use `congr 1`.
+
+Apply the tactic sequence `ext i (j | j) <;> simp`. Establish `hu' : IsUnit (fromCols ((J.submatrix e id).map φ) ((T.submatrix e id).map φ)).det`. Rewrite using `[e3]`. Apply `IsUnit.map φ` to reduce the goal to its premises. Rewrite `hu` using `[frameDet_map]`.
+
+Conclude with `(isUnit_sub_iff (Subtype.coe_prop _)).2 hu`. Establish `s1 : (J * M).submatrix e id = J.submatrix e id * M`. Use extensionality with `i j`. Simplify using `[Matrix.mul_apply]`. Establish `s2 : (B * S₂).submatrix id e = B * S₂.submatrix id e`.
+
+Use extensionality with `i j`. Simplify using `[Matrix.mul_apply]`. Establish `main` using `det_fromCols_frame_change _ p q ((J.submatrix e id).map φ) ((J₂.submatrix e id).map φ) ((S.submatrix id e).map φ) ((S₂.submatrix id e).map φ) ((T.submatrix e id).map φ) ((T₂.submatrix e id).map φ) (M.map φ) (B.map φ) (by rw [key, e0]) (by rw [key, e2]) hu' (by rw [key, e2']) (by`. Express the relevant statement in the definitionally equal form `(J₂.map φ).submatrix e id = _`. Rewrite using `[e4]`.
+
+Express the relevant statement in the definitionally equal form `((J * M).submatrix e id).map φ = _`. Rewrite using `[s1, Matrix.map_mul])`. Use the proof step `(by`. Express the relevant statement in the definitionally equal form `(S.map φ).submatrix id e = _`. Rewrite using `[e5]`.
+
+Express the relevant statement in the definitionally equal form `((B * S₂).submatrix id e).map φ = _`. Rewrite using `[s2, Matrix.map_mul])`. Rewrite `main` using `[e3, e3, hdet, hdet, ← map_mul, ← map_mul, hφ, Ideal.Quotient.eq, Ideal.mem_span_singleton']`. Take `⟨c, hc⟩` from `main`. Use `⟨c, c.2, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[frameDet_map, frameDet_map, show (M.map R.subtype).det = (M.det : R) from (RingHom.map_det R.subtype M).symm, show (B.map R.subtype).det = (B.det : R) from (RingHom.map_det R.subtype B).symm]`. Use `congrArg Subtype.val hc` as an intermediate fact. Move the coercions through the operations in `at this`. Rewrite using `[← this, mul_comm]`.
+-/
 theorem frameDet_cong {R : Subring Ω} {ϖ : Ω} (hϖ : ϖ ∈ R)
     {J J₂ : Matrix (Fin (p + q)) (Fin p) Ω} {S S₂ : Matrix (Fin q) (Fin (p + q)) Ω}
     {T T₂ : Matrix (Fin (p + q)) (Fin q) Ω} {M : Matrix (Fin p) (Fin p) Ω} {B : Matrix (Fin q) (Fin q) Ω}
@@ -209,14 +269,35 @@ variable {Ω : Type} [Field Ω] {E : Type} [AddCommGroup E] [Module Ω E]
 def Mat {N r : ℕ} (Jl : E →ₗ[Ω] (Fin N → Ω)) (v : Fin r → E) : Matrix (Fin N) (Fin r) Ω :=
   fun k i => Jl (v i) k
 
+/- English proof (translation)
+Take `⟨c, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun R).1 h`. Conclude with `⟨fun i => c i, fun i => (c i).2, rfl⟩`.
+-/
 theorem exists_coeff {R : Subring Ω} {n : ℕ} {v : Fin n → E} {e : E}
     (h : e ∈ Submodule.span R (Set.range v)) : ∃ c : Fin n → Ω, (∀ i, c i ∈ R) ∧ e = ∑ i, c i • v i := by
   obtain ⟨c, rfl⟩ := (Submodule.mem_span_range_iff_exists_fun R).1 h
   exact ⟨fun i => c i, fun i => (c i).2, rfl⟩
 
+/- English proof (translation)
+The claim follows from `Submodule.subset_span ⟨i, rfl⟩`.
+-/
 theorem mem_span_self {R : Subring Ω} {n : ℕ} (v : Fin n → E) (i : Fin n) :
     v i ∈ Submodule.span R (Set.range v) := Submodule.subset_span ⟨i, rfl⟩
 
+/- English proof (translation)
+Establish `h1' : ∀ k, ∃ c : Fin r → Ω, (∀ i, c i ∈ R) ∧ Rm (Pi.single k 1) = ∑ i, c i • v i` using `fun k => exists_coeff (hL ▸ h1 k)`. Use `choose C hC hCe using h1'`. Establish `h2' : ∀ i, ∃ d : Fin r → Ω, (∀ l, d l ∈ R) ∧ Rm (Jl (v i)) = v i + ϖ • ∑ l, d l • v l`. Introduce `i`. Take `⟨w', hw', e⟩` from `h2 (v i) (hL ▸ mem_span_self v i)`.
+
+Take `⟨d, hd, rfl⟩` from `exists_coeff (hL ▸ hw')`. Conclude with `⟨d, hd, e⟩`. Use `choose D hD hDe using h2'`. Use `set P : Matrix (Fin r) (Fin N) Ω := fun i k => C k i with hP`. Use `⟨P, fun i k => hC k i, fun l i => ⟨D i l, hD i l, ?_⟩⟩` and prove the remaining obligations.
+
+Establish `hx : ∀ x : Fin N → Ω, Rm x = ∑ k, x k • Rm (Pi.single k 1)`. Introduce `x`. Establish `: x = ∑ k, x k • (Pi.single k 1 : Fin N → Ω)`. Use extensionality with `j`. Simplify using `[Finset.sum_apply, Pi.single_apply]`.
+
+Use `conv_lhs => rw [this]`. Simplify using the standard rewrite rules. Establish `e1 : Rm (Jl (v i)) = ∑ l, (P * Mat Jl v) l i • v l`. Rewrite using `[hx]`. Simplify using `only [hCe, Finset.smul_sum, Matrix.mul_apply, Finset.sum_smul, smul_smul]`.
+
+Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`. Both sides reduce to the same expression. Establish `e2` using `hDe i`.
+
+Rewrite `e2` using `[e1]`. Establish `e3 : ∑ l, ((P * Mat Jl v) l i - (1 : Matrix (Fin r) (Fin r) Ω) l i - ϖ * D i l) • v l = 0`. Simplify using `only [sub_smul, Finset.sum_sub_distrib, e2, mul_smul, ← Finset.smul_sum]`. Simplify using `[Matrix.one_apply, ite_smul]`. Use `Fintype.linearIndependent_iff.1 hv _ e3 l` as an intermediate fact.
+
+Conclude with `sub_eq_zero.1 this`.
+-/
 theorem split_matrix {R : Subring Ω} {ϖ : Ω} {r N : ℕ} (L : Submodule R E) {v : Fin r → E}
     (hv : LinearIndependent Ω v) (hL : L = Submodule.span R (Set.range v)) (Jl : E →ₗ[Ω] (Fin N → Ω))
     (Rm : (Fin N → Ω) →ₗ[Ω] E) (h1 : ∀ k, Rm (Pi.single k 1) ∈ L)
@@ -257,18 +338,34 @@ theorem split_matrix {R : Subring Ω} {ϖ : Ω} {r N : ℕ} (L : Submodule R E) 
   have := Fintype.linearIndependent_iff.1 hv _ e3 l
   exact sub_eq_zero.1 this
 
+/- English proof (translation)
+Use extensionality with `k i`. Simplify using `[Mat, Matrix.mul_apply, mul_comm]`.
+-/
 theorem Mat_comb {N r s : ℕ} (Jl : E →ₗ[Ω] (Fin N → Ω)) (u : Fin s → E) (C : Matrix (Fin s) (Fin r) Ω) :
     Mat Jl (fun i => ∑ l, C l i • u l) = Mat Jl u * C := by
   ext k i
   simp [Mat, Matrix.mul_apply, mul_comm]
 
+/- English proof (translation)
+Introduce `i j` and use `h j i`.
+-/
 theorem CongM.transpose {R : Subring Ω} {ϖ : Ω} {m n : Type} {M N : Matrix m n Ω} (h : CongM R ϖ M N) :
     CongM R ϖ Mᵀ Nᵀ := fun i j => h j i
 
+/- English proof (translation)
+Introduce `k i` and use `⟨_, h i k, by simp only [Mat]; field_simp⟩`.
+-/
 theorem cong_Mat {R : Subring Ω} {ϖ : Ω} (h0 : ϖ ≠ 0) {N r : ℕ} {J₁ J₂ : E →ₗ[Ω] (Fin N → Ω)} {v : Fin r → E}
     (h : ∀ i k, (J₁ (v i) k - J₂ (v i) k) / ϖ ∈ R) : CongM R ϖ (Mat J₁ v) (Mat J₂ v) := fun k i =>
   ⟨_, h i k, by simp only [Mat]; field_simp⟩
 
+/- English proof (translation)
+Establish `h1 : d - ϖ * c ∈ R` using `sub_mem hd.2.1 (mul_mem hϖ hc)`. Establish `h2 : ϖ * c ∈ R` using `mul_mem hϖ hc`. Establish `h3 : IsUnit ((⟨d - ϖ * c, h1⟩ : R) + ⟨ϖ * c, h2⟩)`. Establish `: (⟨d - ϖ * c, h1⟩ : R) + ⟨ϖ * c, h2⟩ = ⟨d, hd.2.1⟩` using `Subtype.ext (by simp)`. Rewrite using `[this]`.
+
+Conclude with `(isUnit_sub_iff _).2 hd`. Break down `IsLocalRing.isUnit_or_isUnit_of_isUnit_add h3 with h | h` into its components or cases. Conclude with `(isUnit_sub_iff _).1 h`. It suffices to derive a contradiction. Establish `: (⟨ϖ * c, h2⟩ : R) = ⟨ϖ, hϖ⟩ * ⟨c, hc⟩` using `rfl`.
+
+Rewrite `h` using `[this]`. Conclude with `hn ((isUnit_sub_iff _).1 (isUnit_of_mul_isUnit_left h))`.
+-/
 theorem UnitIn.sub_mul {R : Subring Ω} [IsLocalRing R] {ϖ d c : Ω} (hϖ : ϖ ∈ R) (hn : ¬ UnitIn R ϖ)
     (hd : UnitIn R d) (hc : c ∈ R) : UnitIn R (d - ϖ * c) := by
   have h1 : d - ϖ * c ∈ R := sub_mem hd.2.1 (mul_mem hϖ hc)
@@ -284,6 +381,17 @@ theorem UnitIn.sub_mul {R : Subring Ω} [IsLocalRing R] {ϖ d c : Ω} (hϖ : ϖ 
     rw [this] at h
     exact hn ((isUnit_sub_iff _).1 (isUnit_of_mul_isUnit_left h))
 
+/- English proof (translation)
+Establish `hD : UnitIn R (dy * m * n)`. Use `UnitIn.sub_mul hϖ hn hdx hc` as an intermediate fact. Rewrite `this` using `[← hm, sub_sub_cancel]`. Then use the resulting hypothesis. Establish `hm0 : m ≠ 0` using `fun h => hD.1 (by simp [h])`. Establish `hn0 : n ≠ 0` using `fun h => hD.1 (by simp [h])`.
+
+Establish `hy0` using `hdy.1`. Establish `hx0` using `hdx.1`. Establish `hαy : αy ≠ 0` using `fun h => hα (by simp [h])`. Establish `hβy : βy ≠ 0` using `fun h => hα (by simp [h])`. Establish `hβx : βx ≠ 0` using `fun h => hg (by simp [h])`.
+
+Establish `hgen : αx / βx / dx = (⟨dx⁻¹, hdx.2.2⟩ : R) • (αx / βx)`. Express the relevant statement in the definitionally equal form `_ = dx⁻¹ * _`. Rewrite using `[div_eq_mul_inv _ dx, mul_comm]`. Establish `hu : IsUnit (⟨dx⁻¹, hdx.2.2⟩ : R)` using `(isUnit_sub_iff _).2 ⟨inv_ne_zero hx0, hdx.2.2, by rw [inv_inv]; exact hdx.2.1⟩`. Use `⟨div_ne_zero hg hx0, ?_, (⟨-c * dx⁻¹ * (dy * m * n)⁻¹, ?_⟩ : R) • (αx / βx), ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hM, hgen]`. Conclude with `(Submodule.span_singleton_smul_eq hu _).symm`. Conclude with `mul_mem (mul_mem (neg_mem hc) hdx.2.2) hD.2.2`. Rewrite using `[hM]`. Conclude with `Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self _)`.
+
+Express the relevant statement in the definitionally equal form `_ = ϖ * ((-c * dx⁻¹ * (dy * m * n)⁻¹) * (αx / βx))`. Establish `e : ϖ * ((-c * dx⁻¹ * (dy * m * n)⁻¹) * (αx / βx)) = -(ϖ * c) * dx⁻¹ * (dy * m * n)⁻¹ * (αx / βx)` using `by ring`. Rewrite using `[e, ← hm, h1, h2]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem final_field {R : Subring Ω} [IsLocalRing R] {ϖ : Ω} (hϖ : ϖ ∈ R) (hn : ¬ UnitIn R ϖ) {M : Submodule R Ω}
     {αx βx αy βy dx dy m n c : Ω} (hα : αy / βy ≠ 0) (hM : M = Submodule.span R {αx / βx}) (hg : αx / βx ≠ 0)
     (hdx : UnitIn R dx) (hdy : UnitIn R dy) (hc : c ∈ R) (hm : dx - dy * m * n = ϖ * c)
@@ -335,6 +443,13 @@ structure Loc (A B : Lat ξ E) (ϖ : Ω) {N p q : ℕ} (J J' : Cpt ξ → (E →
   ti : IntM (regAt ξ y) T
   tc : CongM (regAt ξ y) ϖ ((Mat (J' x) w)ᵀ * T) 1
 
+/- English proof (translation)
+Take `⟨U₁, hU₁, v, -, hv⟩` from `hA x trivial`. Take `⟨U₂, hU₂, w, -, hw⟩` from `hB x trivial`. Take `⟨-, ⟨-, Rm, hR1, hR2⟩, -⟩` from `H x hU₀ hx`. Establish `hfb` using `hw x trivial hU₂`. Take `⟨P, hP, hPc⟩` from `split_matrix (B x) hfb.1 hfb.2 (J' x) Rm hR1 hR2`.
+
+Establish `hc` using `hPc.transpose`. Rewrite `hc` using `[Matrix.transpose_mul, Matrix.transpose_one]`. Use `choose c hc1 hc2 using hc`. Take `⟨U₃, hU₃, hreg⟩` from `EigSplit.exists_open_forall_mem_regAt x (Sum.elim (fun ij : Fin N × Fin q => Pᵀ ij.1 ij.2) (fun ij : Fin q × Fin q => c ij.1 ij.2)) (by rintro (⟨i, j⟩ | ⟨i, j⟩)`. Conclude with `hP j i`.
+
+Conclude with `hc1 i j)`. Use `⟨v, w, Pᵀ, U₀ ⊓ U₁ ⊓ U₂ ⊓ U₃, ⟨⟨⟨hU₀, hU₁⟩, hU₂⟩, hU₃⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `y ⟨⟨⟨hy₀, hy₁⟩, hy₂⟩, hy₃⟩ hy`. Take `⟨s1, s2, s3⟩` from `H y hy₀ hy`. Conclude with `⟨hv y trivial hy₁, hw y trivial hy₂, s1, s2, s3, fun i j => hreg y hy₃ (Sum.inl (i, j)), fun i j => ⟨c i j, hreg y hy₃ (Sum.inr (i, j)), hc2 i j⟩⟩`.
+-/
 theorem exists_loc {A B : Lat ξ E} {ϖ : Ω} {N p q : ℕ} {V V' : Submodule Ω E}
     {J J' : Cpt ξ → (E →ₗ[Ω] (Fin N → Ω))} (hA : A.IsVB p V) (hB : B.IsVB q V') {x : Cpt ξ} (hx : ¬ unitAt ξ x ϖ)
     {U₀ : X.Opens} (hU₀ : x.1 ∈ U₀)
@@ -366,18 +481,33 @@ section
 variable {A B : Lat ξ E} {ϖ : Ω} {p q : ℕ} {J J' : Cpt ξ → (E →ₗ[Ω] (Fin (p + q) → Ω))}
   {x y : Cpt ξ} {v : Fin p → E} {w : Fin q → E} {T : Matrix (Fin (p + q)) (Fin q) Ω}
 
+/- English proof (translation)
+Rewrite using `[h.fa.2]`. Conclude with `mem_span_self v i`.
+-/
 theorem Loc.mem_a (h : Loc A B ϖ J J' x v w T y) (i : Fin p) : v i ∈ A y := by
   rw [h.fa.2]; exact mem_span_self v i
 
+/- English proof (translation)
+Rewrite using `[h.fb.2]`. Conclude with `mem_span_self w i`.
+-/
 theorem Loc.mem_b (h : Loc A B ϖ J J' x v w T y) (i : Fin q) : w i ∈ B y := by
   rw [h.fb.2]; exact mem_span_self w i
 
+/- English proof (translation)
+Introduce `k i` and use `(h.sa.1 _ (h.mem_a i) k).1`.
+-/
 theorem Loc.intJ (h : Loc A B ϖ J J' x v w T y) : IntM (regAt ξ y) (Mat (J x) v) :=
   fun k i => (h.sa.1 _ (h.mem_a i) k).1
 
+/- English proof (translation)
+Introduce `i k` and use `(h.sb.1 _ (h.mem_b i) k).1`.
+-/
 theorem Loc.intS (h : Loc A B ϖ J J' x v w T y) : IntM (regAt ξ y) (Mat (J' x) w)ᵀ :=
   fun i k => (h.sb.1 _ (h.mem_b i) k).1
 
+/- English proof (translation)
+Introduce `j i`. Use `⟨_, h.orth _ (h.mem_a i) _ (h.mem_b j), ?_⟩` and prove the remaining obligations. Simplify using `only [Matrix.zero_apply, sub_zero, Matrix.mul_apply, Matrix.transpose_apply, Mat]`. Rewrite using `[mul_div_cancel₀ _ h0, dotProduct]`. Conclude with `Finset.sum_congr rfl fun k _ => mul_comm _ _`.
+-/
 theorem Loc.orthM (h : Loc A B ϖ J J' x v w T y) (h0 : ϖ ≠ 0) :
     CongM (regAt ξ y) ϖ ((Mat (J' x) w)ᵀ * Mat (J x) v) 0 := by
   intro j i
@@ -386,6 +516,9 @@ theorem Loc.orthM (h : Loc A B ϖ J J' x v w T y) (h0 : ϖ ≠ 0) :
   rw [mul_div_cancel₀ _ h0, dotProduct]
   exact Finset.sum_congr rfl fun k _ => mul_comm _ _
 
+/- English proof (translation)
+Use `haveI := EigSplit.isLocalRing_regAt y`. Take `⟨-, Rm, hR1, hR2⟩` from `h.sa`. Take `⟨P, hP, hPc⟩` from `split_matrix (A y) h.fa.1 h.fa.2 (J x) Rm hR1 hR2`. Conclude with `unit_frameDet hϖ hn h.intJ h.intS h.ti hP (h.orthM h0) hPc h.tc`.
+-/
 theorem Loc.unit (h : Loc A B ϖ J J' x v w T y) (h0 : ϖ ≠ 0) (hϖ : ϖ ∈ regAt ξ y) (hn : ¬ unitAt ξ y ϖ) :
     unitAt ξ y (frameDet (Mat (J x) v) T) := by
   haveI := EigSplit.isLocalRing_regAt y
@@ -393,6 +526,19 @@ theorem Loc.unit (h : Loc A B ϖ J J' x v w T y) (h0 : ϖ ≠ 0) (hϖ : ϖ ∈ r
   obtain ⟨P, hP, hPc⟩ := split_matrix (A y) h.fa.1 h.fa.2 (J x) Rm hR1 hR2
   exact unit_frameDet hϖ hn h.intJ h.intS h.ti hP (h.orthM h0) hPc h.tc
 
+/- English proof (translation)
+Establish `h1 : ∀ i, ∃ c : Fin p → Ω, (∀ l, c l ∈ regAt ξ y) ∧ v i = ∑ l, c l • vy l` using `fun i => exists_coeff (hy.fa.2 ▸ hx.mem_a i)`. Establish `h2 : ∀ j, ∃ c : Fin q → Ω, (∀ l, c l ∈ regAt ξ y) ∧ wy j = ∑ l, c l • w l` using `fun j => exists_coeff (hx.fb.2 ▸ hy.mem_b j)`. Take `⟨C, hC, hCe⟩ : ∃ C : Matrix (Fin p) (Fin p) Ω, (∀ i l, C i l ∈ regAt ξ y) ∧ ∀ i, v i = ∑ l, C i l • vy l` from `by choose C hC hCe using h1`. Conclude with `⟨C, hC, hCe⟩`. Take `⟨D, hD, hDe⟩ : ∃ D : Matrix (Fin q) (Fin q) Ω, (∀ i l, D i l ∈ regAt ξ y) ∧ ∀ j, wy j = ∑ l, D j l • w l` from `by choose D hD hDe using h2`.
+
+Conclude with `⟨D, hD, hDe⟩`. Establish `hvC : v = fun i => ∑ l, (Cᵀ : Matrix (Fin p) (Fin p) Ω) l i • vy l` using `funext hCe`. Establish `hJ : CongM (regAt ξ y) ϖ (Mat (J x) v) (Mat (J y) vy * Cᵀ)`. Rewrite using `[← Mat_comb, ← hvC]`. Conclude with `cong_Mat h0 fun i k => (hx.sa.1 _ (hx.mem_a i) k).2`.
+
+Establish `hS : CongM (regAt ξ y) ϖ (Mat (J' y) wy)ᵀ (D * (Mat (J' x) w)ᵀ)`. Establish `hwD : wy = fun j => ∑ l, (Dᵀ : Matrix (Fin q) (Fin q) Ω) l j • w l` using `funext hDe`. Establish `e : D * (Mat (J' x) w)ᵀ = (Mat (J' x) wy)ᵀ` using `by conv_rhs => rw [hwD, Mat_comb, Matrix.transpose_mul, Matrix.transpose_transpose]`. Rewrite using `[e]`. Use `CongM.transpose (cong_Mat h0 fun j k => ?_)` and prove the remaining obligations.
+
+Use `(hx.sb.1 _ (hy.mem_b j) k).2` as an intermediate fact. Establish `e2 : (J' y (wy j) k - J' x (wy j) k) / ϖ = - ((J' x (wy j) k - J' y (wy j) k) / ϖ)` using `by ring`. Rewrite using `[e2]`. Conclude with `neg_mem this`. Establish `hM : IntM (regAt ξ y) Cᵀ` using `fun i j => hC j i`.
+
+Take `⟨c, hc, e⟩` from `frameDet_cong hϖ hy.intJ hy.intS hy.ti hx.intJ hx.intS hx.ti hM hD (hy.orthM h0) hy.tc (hy.unit h0 hϖ hn) hx.tc hJ hS`. Use `⟨Cᵀ.det, D.det, c, hc, ?_, ?_, e⟩` and prove the remaining obligations. Use `alternating_map_sum_smul_eq_det_smul (exteriorPower.ιMulti Ω p (M := E)) C vy` as an intermediate fact. Rewrite using `[Matrix.det_transpose, ← this]`. Conclude with `congrArg _ (funext hCe)`.
+
+Use `alternating_map_sum_smul_eq_det_smul (exteriorPower.ιMulti Ω q (M := E)) D w` as an intermediate fact. Rewrite using `[← this]`. Conclude with `congrArg _ (funext hDe)`.
+-/
 theorem Loc.compare {vy : Fin p → E} {wy : Fin q → E} {Ty : Matrix (Fin (p + q)) (Fin q) Ω}
     (hx : Loc A B ϖ J J' x v w T y) (hy : Loc A B ϖ J J' y vy wy Ty y) (h0 : ϖ ≠ 0) (hϖ : ϖ ∈ regAt ξ y)
     (hn : ¬ unitAt ξ y ϖ) :
@@ -440,6 +586,25 @@ end Pt
 
 section Main
 
+/- English proof (translation)
+Introduce `X Ω _ ξ E _ _ A B p q V V' a b ϖ _ h0 hϖ hA hB ha hb ⟨x₀, f, hf⟩ ⟨J, J', hE⟩`. Take `⟨hL, hGen, hFr⟩` from `GlobalTheory.T.wedge_line_lattice_vector_bundle X Ω ξ E A B p q V V' Set.univ a b hA hB ha hb ⟨x₀, trivial, f, hf⟩`. Establish `hcoef : ∀ x : Cpt ξ, ∃ α₀ β₀ : Ω, A.wedge p x = Submodule.span (regAt ξ x) {α₀ • a} ∧ B.wedge q x = Submodule.span (regAt ξ x) {β₀ • b}`. Introduce `x`. Take `⟨e, he, h1, -⟩` from `exists_gen_of_isVB_one (L := lineLat A B p q a b) hL x`.
+
+Take `⟨-, α₀, β₀, -, -, h2, h3, -⟩` from `(hGen x trivial e).1 ⟨he, h1⟩`. Conclude with `⟨α₀, β₀, h2, h3⟩`. Establish `H : ∀ x : Cpt ξ, ∃ (v : Fin p → E) (w : Fin q → E) (T : Matrix (Fin (p + q)) (Fin q) Ω) (U : X.Opens) (α β : Ω), ¬ unitAt ξ x ϖ → x.1 ∈ U ∧ (∀ y : Cpt ξ, y.1 ∈ U → ¬ unitAt ξ y ϖ → Loc A B ϖ J J' x v w T y) ∧ exteriorPower.ιMulti Ω p v = α • a ∧ exteriorPower.ιMulti Ω q w = β • b`. Introduce `x`. Distinguish the cases in `hx : unitAt ξ x ϖ`.
+
+Conclude with `⟨0, 0, 0, ⊤, 0, 0, fun h => absurd hx h⟩`. Take `⟨U₀, hU₀, H₀⟩` from `hE x hx`. Take `⟨v, w, T, U, hU, hl⟩` from `exists_loc hA hB hx hU₀ H₀`. Establish `hxx` using `hl x hU hx`. Take `⟨α₀, β₀, h2, h3⟩` from `hcoef x`.
+
+Establish `m1 : exteriorPower.ιMulti Ω p v ∈ A.wedge p x` using `Submodule.subset_span ⟨v, fun i => hxx.mem_a i, rfl⟩`. Establish `m2 : exteriorPower.ιMulti Ω q w ∈ B.wedge q x` using `Submodule.subset_span ⟨w, fun i => hxx.mem_b i, rfl⟩`. Rewrite `m1` using `[h2]`. Rewrite `m2` using `[h3]`. Take `⟨r, hr⟩` from `Submodule.mem_span_singleton.1 m1`.
+
+Take `⟨s, hs⟩` from `Submodule.mem_span_singleton.1 m2`. Use `⟨v, w, T, U, (r : Ω) * α₀, (s : Ω) * β₀, fun _ => ⟨hU, hl, ?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← hr, mul_smul]`. Both sides reduce to the same expression. Rewrite using `[← hs, mul_smul]`.
+
+Both sides reduce to the same expression. Use `choose v w T U α β hD using H`. Use `⟨fun x => (α x / β x) / frameDet (Mat (J x) (v x)) (T x), fun x hx => ⟨U x, (hD x hx).1, fun y hy hy' => ?_⟩⟩` and prove the remaining obligations. Use `haveI := EigSplit.isLocalRing_regAt y`. Establish `Lx` using `(hD x hx).2.1 y hy hy'`.
+
+Establish `Ly` using `(hD y hy').2.1 y (hD y hy').1 hy'`. Establish `gx` using `hFr y trivial (v x) (w x) (α x) (β x) Lx.fa Lx.fb (hD x hx).2.2.1 (hD x hx).2.2.2`. Establish `gy` using `hFr y trivial (v y) (w y) (α y) (β y) Ly.fa Ly.fb (hD y hy').2.2.1 (hD y hy').2.2.2`. Take `⟨m, n, c, hc, e1, e2, e3⟩` from `Lx.compare Ly h0 (hϖ y) hy'`. Establish `hαy : α y ≠ 0` using `fun h => gy.1 (by simp [h])`.
+
+Establish `hβx : β x ≠ 0` using `fun h => gx.1 (by simp [h])`. Establish `f1 : α x = m * α y`. Rewrite `e1` using `[(hD x hx).2.2.1, (hD y hy').2.2.1, smul_smul]`. Conclude with `smul_left_injective Ω ha e1`. Establish `f2 : β y = n * β x`.
+
+Rewrite `e2` using `[(hD x hx).2.2.2, (hD y hy').2.2.2, smul_smul]`. Conclude with `smul_left_injective Ω hb e2`. Conclude with `final_field (hϖ y) hy' gy.1 gx.2 gx.1 (Lx.unit h0 (hϖ y) hy') (Ly.unit h0 (hϖ y) hy') hc e3 f1 f2`.
+-/
 theorem trivMod_lineLat : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X) (E : Type) [AddCommGroup E] [Module Ω E] (A B : Lat ξ E) (p q : ℕ) (V V' : Submodule Ω E) (a : ⋀[Ω]^p E) (b : ⋀[Ω]^q E) (ϖ : Ω), IsCptGen ξ → ϖ ≠ 0 → (∀ x, ϖ ∈ regAt ξ x) → A.IsVB p V → B.IsVB q V' → a ≠ 0 → b ≠ 0 → (∃ x f, IsCoeffAt A B p q a b x f) → ExactModLat A B ϖ (p + q) → TrivMod (lineLat A B p q a b) ϖ := by
   intro X Ω _ ξ E _ _ A B p q V V' a b ϖ _ h0 hϖ hA hB ha hb ⟨x₀, f, hf⟩ ⟨J, J', hE⟩
   obtain ⟨hL, hGen, hFr⟩ := GlobalTheory.T.wedge_line_lattice_vector_bundle X Ω ξ E A B p q V V' Set.univ a b hA hB ha hb ⟨x₀, trivial, f, hf⟩

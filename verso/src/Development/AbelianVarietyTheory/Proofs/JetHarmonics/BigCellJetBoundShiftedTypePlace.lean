@@ -9,6 +9,11 @@ namespace GlobalTheory.JetBoundShifted
 open Formalism.FourierDecayAlt.TBB MeasureTheory
 open scoped ENNReal
 
+/- English proof (translation)
+Establish `hT0 : 0 ≤ (Tq p)⁻¹ ^ n₀` using `by positivity`. Unfold `jN2 bigCellDetWeightedEnergyIntegral`. Rewrite using `[← lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`. Use `lintegral_mono fun c => ?_` and prove the remaining obligations. Rewrite using `[← ENNReal.ofReal_mul hT0]`.
+
+Use `ENNReal.ofReal_le_ofReal ((h c).trans (le_of_eq ?_))` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem bigCellJetBound_shiftedTypePlace {P : M.Par} {Wp Wq Wq' : Type}
     [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [FiniteDimensional ℂ Wp]
     [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq]
@@ -34,6 +39,31 @@ namespace GlobalTheory.JetBoundShifted
 open MeasureTheory
 open scoped ENNReal
 
+/- English proof (translation)
+Introduce `C₃ CΛ C₀ C₂ hC₃ hCΛ hC₀ hC₂`. Take `⟨C₄, hC₄⟩` from `GlobalTheory.JetConstSq.main C₃ CΛ C₀ C₂ hC₃ hCΛ hC₀ hC₂`. Use `⟨C₄, ?_⟩` and prove the remaining obligations. Introduce `P Wp Wq Wqp Wqm _ _ _ _ _ _ _ _ _ _ _ _ up up' um um' p pp pm f Fp Fm b Λ n₀ p₀ hb hΛ hΛb hn₀ hp₀ htp htm hNorm hPp hPm hReg γ hγ hG`. Establish `hGp : 0 < TBB.Gp pp γ` using `by rw [gp_eq p pp htp]; exact hG`.
+
+Establish `hGm : 0 < TBB.Gp pm γ` using `by rw [gp_eq p pm htm]; exact hG`. Establish `hK` using `hC₄ b Λ P.r n₀ p₀ hb hΛ hΛb hn₀ hp₀`. Use `set G := TBB.Gp p γ with hGdef`. Use `set m : ℝ := ((2 * P.r + 2 : ℕ) : ℝ) with hm`. Establish `hb0 : 0 < b` using `by linarith`.
+
+Establish `hT0 : 0 < TBB.Tq p` using `p.T.base.T'_pos`. Use `set c : ℝ := 1 * (C₂ * Λ ^ 2) ^ (P.r + 1) with hc`. Establish `hc0 : 0 ≤ c` using `by positivity`. Use `set T : ℝ := (TBB.Tq p)⁻¹ ^ n₀ with hTdef`. Establish `hT0' : 0 ≤ T` using `by positivity`.
+
+Use `set B3 : ℝ := b ^ (2 * C₃ * m ^ 2 * ((2 * p₀ + n₀ : ℕ) : ℝ)) with hB3`. Establish `hB30 : 0 ≤ B3` using `by positivity`. Use `set A : ℝ := (3 * b) ^ (2 * n₀) * (TBB.Tq p / G) ^ n₀ * G⁻¹ ^ (2 * p₀) with hA`. Establish `hA0 : 0 ≤ A` using `by positivity`. Use `set J := TBB.jN2 p f`.
+
+Establish `hReg' : TBB.bigCellDetWeightedEnergyIntegral p f (2 * p₀ + n₀) ≤ ENNReal.ofReal B3 * J` using `hReg _ le_rfl`. Establish `hEp : ENNReal.ofReal (TBB.Ew pp (fun _ => 1) Fp (P.r + 1) [] γ) ≤ ENNReal.ofReal c * (ENNReal.ofReal T * (ENNReal.ofReal B3 * J))`. Use `(hPp γ hγ hGp).trans ?_` and prove the remaining obligations. Use `gcongr`. Conclude with `(bigCellJetBound_shiftedTypePlace p pp f Fp n₀ p₀ hT0 fun c => hNorm.2.1 c).trans (by gcongr)`.
+
+Establish `hEm : ENNReal.ofReal (TBB.Ew pm (fun _ => 1) Fm (P.r + 1) [] γ) ≤ ENNReal.ofReal c * (ENNReal.ofReal T * (ENNReal.ofReal B3 * J))`. Use `(hPm γ hγ hGm).trans ?_` and prove the remaining obligations. Use `gcongr`. Conclude with `(bigCellJetBound_shiftedTypePlace p pm f Fm n₀ p₀ hT0 fun c => hNorm.2.2 c).trans (by gcongr)`. Use `set X := ENNReal.ofReal c * (ENNReal.ofReal T * (ENNReal.ofReal B3 * J))`.
+
+Establish `hE : ENNReal.ofReal (TBB.Ew p (fun _ => 1) f (P.r + 1) [] γ) ≤ ENNReal.ofReal A * (2 * X)`. Use `(ENNReal.ofReal_le_ofReal (hNorm.1 γ hγ hG)).trans ?_` and prove the remaining obligations. Rewrite using `[ENNReal.ofReal_mul hA0]`. Use `gcongr`. Use `ENNReal.ofReal_add_le.trans ?_` and prove the remaining obligations.
+
+Rewrite using `[two_mul]`. Conclude with `add_le_add hEp hEm`. Use `hE.trans ?_` and prove the remaining obligations. Use `clear_value A c T B3 J G m`. Establish `hX : ENNReal.ofReal A * (2 * X) = ENNReal.ofReal (A * 2 * c * T * B3) * J`.
+
+Simplify using `only [X]`. Rewrite using `[show A * 2 * c * T * B3 = A * (2 * (c * (T * B3))) by ring, ENNReal.ofReal_mul hA0, ENNReal.ofReal_mul (by norm_num), ENNReal.ofReal_mul hc0, ENNReal.ofReal_mul hT0', ENNReal.ofReal_ofNat]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hX]`. Use `mul_le_mul_of_nonneg_right (ENNReal.ofReal_le_ofReal ?_) (by simp)` and prove the remaining obligations.
+
+Establish `hGne : G ≠ 0` using `hG.ne'`. Establish `heq : A * 2 * c * T * B3 = (2 * (3 * b) ^ (2 * n₀) * c * B3) * G⁻¹ ^ (2 * p₀ + n₀)`. Simplify using `only [hA, hTdef]`. Rewrite using `[pow_add, div_eq_mul_inv]`. Establish `: (TBB.Tq p * G⁻¹) ^ n₀ * (TBB.Tq p)⁻¹ ^ n₀ = G⁻¹ ^ n₀`.
+
+Rewrite using `[← mul_pow]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts. Take the linear combination `(2 * (3 * b) ^ (2 * n₀) * G⁻¹ ^ (2 * p₀) * c * B3) * this`. Rewrite using `[heq]`.
+
+Conclude with `mul_le_mul_of_nonneg_right hK (by positivity)`.
+-/
 theorem main : ∀ C₃ CΛ C₀ C₂ : ℝ, 0 ≤ C₃ → 0 ≤ CΛ → 0 ≤ C₀ → 0 < C₂ → ∃ C₄ : ℝ, ∀ (P : M.Par) (Wp Wq Wqp Wqm : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [FiniteDimensional ℂ Wp] [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq] [NormedAddCommGroup Wqp] [InnerProductSpace ℂ Wqp] [FiniteDimensional ℂ Wqp] [NormedAddCommGroup Wqm] [InnerProductSpace ℂ Wqm] [FiniteDimensional ℂ Wqm] (up up' um um' : ℕ → ℝ) (p : KB.Pl P Wp Wq) (pp : KB.Pl (shP P up up') Wp Wqp) (pm : KB.Pl (shP P um um') Wp Wqm) (f : B.Mat P.k P.r → (Wq →L[ℂ] Wp)) (Fp : B.Mat P.k P.r → (Wqp →L[ℂ] Wp)) (Fm : B.Mat P.k P.r → (Wqm →L[ℂ] Wp)) (b Λ : ℝ) (n₀ p₀ : ℕ), 3 ≤ b → 1 ≤ Λ → Λ ≤ b ^ (CΛ * ((2 * P.r + 2 : ℕ) : ℝ)) → n₀ ≤ 30 * (P.r + 1) ^ 2 + 6 → (p₀ : ℝ) ≤ C₀ * ((P.r : ℝ) + 1) ^ 2 → TBB.TTp pp = TBB.TTp p → TBB.TTp pm = TBB.TTp p → NormAtSh p pp pm f Fp Fm b n₀ p₀ → TBB.PtBound pp Fp (1 * (C₂ * Λ ^ 2) ^ (P.r + 1)) → TBB.PtBound pm Fm (1 * (C₂ * Λ ^ 2) ^ (P.r + 1)) → TBB.RegularityBoundBigCell p f b C₃ (2 * p₀ + n₀) → TBB.ThmBpAt p f b C₄ n₀ p₀ := by
   intro C₃ CΛ C₀ C₂ hC₃ hCΛ hC₀ hC₂
   obtain ⟨C₄, hC₄⟩ := GlobalTheory.JetConstSq.main C₃ CΛ C₀ C₂ hC₃ hCΛ hC₀ hC₂

@@ -20,14 +20,23 @@ section Inst
 variable {D : D7} {X : Formalism.L2.Herm.Herm0 D} {u : D.what₂.Word} {w : D.what₂.places.Pl}
   {hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)}
 
+/- English proof (translation)
+Introduce `v x`. Conclude with `(X.g u w hg).completion_integers_iff v _ rfl x`.
+-/
 theorem locInt_locAt (B : GL (Fin D.R.k) D.host.E) : LocInt (locAt X u w hg B) := by
   intro v x
   exact (X.g u w hg).completion_integers_iff v _ rfl x
 
+/- English proof (translation)
+Introduce `v a`. Conclude with `(X.g u w hg).spl_alg _ _ a`.
+-/
 theorem splAlg_locAt (B : GL (Fin D.R.k) D.host.E) : GlobalTheory.TwV.SplAlg (locAt X u w hg B) := by
   intro v a
   exact (X.g u w hg).spl_alg _ _ a
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 theorem reL_eq_map {a b : ℕ} (h : a = b) (L : Submodule (𝓞 D.host.E) (Fin a → D.host.E)) :
     reL h L = L.map (((Formalism.L2.PairingIndexBounds.F.reE (E := D.host.E) h : (Fin a → D.host.E) ≃ₗ[D.host.E] (Fin b → D.host.E)) :
       (Fin a → D.host.E) →ₗ[D.host.E] (Fin b → D.host.E)).restrictScalars (𝓞 D.host.E)) := by
@@ -36,6 +45,9 @@ theorem reL_eq_map {a b : ℕ} (h : a = b) (L : Submodule (𝓞 D.host.E) (Fin a
 
 set_option maxHeartbeats 400000 in
 
+/- English proof (translation)
+Rewrite using `[hL, reL_eq_map]`. Conclude with `lbAtB_of _ (locInt_locAt B) (splAlg_locAt B) _ (frAtB_re (rank_eq_first_level D.R) (locAt X u w hg B) (X.lev0 u).Lb B rfl (fun v => (X.g u w hg).fr _ ((X.g u w hg).pl v).2) (fun v tt => (X.g u w hg).fr_lat _ _ tt) (fun v => hrat _ _))`.
+-/
 theorem lbAtB_locAt (B : GL (Fin D.R.k) D.host.E) (hrat : FrRat X u w hg B) (L : Submodule (𝓞 D.host.E) (Fin (D.R.N 0) → D.host.E))
     (hL : L = reL (rank_eq_first_level D.R) (X.lev0 u).Lb) : GlobalTheory.TwV.LbAtB (locAt X u w hg B) L := by
   rw [hL, reL_eq_map]
@@ -45,6 +57,9 @@ theorem lbAtB_locAt (B : GL (Fin D.R.k) D.host.E) (hrat : FrRat X u w hg B) (L :
 
 end Inst
 
+/- English proof (translation)
+Introduce `D Gt c g u w hg hJ`. Conclude with `lbAtB_locAt g.cmp.B (g.cmp.fr_B u w hg) _ hJ.Lb_eq`.
+-/
 theorem lbAtB_lev0At : ∀ {D : D7} (Gt : GatTies D) (c : LatCmp D) (g : GroupCompatibilityAll D Gt c) (u : D.what₂.Word) (w : D.what₂.places.Pl) (hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)), Joint0 g.herm.lev0 u (g.forms u) → GlobalTheory.TwV.LbAtB (lev0At g u w hg).A (lev0At g u w hg).Lb := by
   intro D Gt c g u w hg hJ
   exact lbAtB_locAt g.cmp.B (g.cmp.fr_B u w hg) _ hJ.Lb_eq

@@ -11,6 +11,15 @@ noncomputable section
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `I I' _ _ g g' W W' b M hb hΦ h a f`. Use `Hol.ext_fn fun p hp ↦ ?_` and prove the remaining obligations. Establish `e : HasFDerivAt (fun p : Tot I' g' ↦ ((b p.1, M p.2) : Tot I g)) (((fderiv ℂ b p.1).comp (ContinuousLinearMap.fst ℂ _ _)).prod ((LinearMap.toContinuousLinearMap M).comp (ContinuousLinearMap.snd ℂ _ _))) p` using `((hb p hp).differentiableAt.hasFDerivAt.comp p hasFDerivAt_fst).prodMk ((LinearMap.toContinuousLinearMap M).hasFDerivAt.comp p hasFDerivAt_snd)`. Establish `hv : ((0 : I → ℂ), M (Pi.single a 1)) = ∑ c, M (Pi.single a 1) c • (((0 : I → ℂ), Pi.single c 1) : Tot I g)`. Use extensionality with `i`.
+
+Simplify using `[Prod.fst_sum]`. Simplify using `[Prod.snd_sum, Finset.sum_apply, Pi.single_apply]`. Express the relevant statement in the definitionally equal form `(Hol.der _ (Hol.comap _ hΦ h f)).fn p = _`. Rewrite using `[Hol.fn_der_comap _ _ _ _ f hp, e.fderiv]`. Establish `e2 : (((fderiv ℂ b p.1).comp (ContinuousLinearMap.fst ℂ _ _)).prod ((LinearMap.toContinuousLinearMap M).comp (ContinuousLinearMap.snd ℂ _ _))) (((0 : I' → ℂ), Pi.single a 1) : Tot I' g') = ((0 : I → ℂ), M (Pi.single a 1))`.
+
+Simplify using the standard rewrite rules. Rewrite using `[e2, hv, map_sum, ← Hol.ev_apply p hp, map_sum]`. Use `Finset.sum_congr rfl fun c _ ↦ ?_` and prove the remaining obligations. Rewrite using `[map_smul, map_smul, smul_eq_mul, smul_eq_mul, Hol.ev_apply p hp, Hol.fn_comap _ _ _ _ hp]`. Express the relevant statement in the definitionally equal form `_ = _ * (Hol.der _ f).fn _`.
+
+Rewrite using `[Hol.fn_der _ _ (h p hp)]`.
+-/
 theorem AnPer.dw_comap_linear : ∀ {I I' : Type} [Fintype I] [Fintype I'] {g g' : ℕ} {W : Opens (Tot I g)} {W' : Opens (Tot I' g')} (b : (I' → ℂ) → I → ℂ) (M : (Fin g' → ℂ) →ₗ[ℂ] (Fin g → ℂ)), (∀ p ∈ W', AnalyticAt ℂ b p.1) → ∀ (hΦ : AnalyticOnNhd ℂ (fun p : Tot I' g' ↦ ((b p.1, M p.2) : Tot I g)) W') (h : ∀ p ∈ W', ((b p.1, M p.2) : Tot I g) ∈ W) (a : Fin g') (f : Hol W), dw a (Hol.comap _ hΦ h f) = ∑ c, M (Pi.single a 1) c • Hol.comap _ hΦ h (dw c f) := by
   intro I I' _ _ g g' W W' b M hb hΦ h a f
   refine Hol.ext_fn fun p hp ↦ ?_

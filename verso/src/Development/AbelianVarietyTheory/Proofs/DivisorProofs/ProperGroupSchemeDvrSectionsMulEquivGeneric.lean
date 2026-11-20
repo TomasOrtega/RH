@@ -39,6 +39,9 @@ noncomputable def pullPtsEquiv {S S' : Scheme.{0}} (A : Over S') [GrpObj A] (G :
           simp only [Over.mk_hom, Category.assoc]
           rw [h.1.w, ← Category.assoc, Over.w])) rfl rfl).symm)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] lemma pullPtsEquiv_left {S S' : Scheme.{0}} (A : Over S') [GrpObj A] (G : Over S) [GrpObj G] (f : S' ⟶ S)
     (φ : A.left ⟶ G.left) (h : IsGrpPullback A G f φ) (T : Over S') (x : T ⟶ A) :
     (pullPtsEquiv A G f φ h T x).left = x.left ≫ φ := rfl
@@ -55,6 +58,13 @@ end GlobalTheory.LevExt
 
 namespace GlobalTheory.LevExt
 
+/- English proof (translation)
+Introduce `W L _ _ _ _ _ _ G _ A _ φ hP hφ`. Take `⟨e1, he1⟩` from `GlobalTheory.T.proper_group_scheme_points_valuationRing_mulEquiv W L (Sp W) G hP (𝟙 (Sp W))`. Set `i : Over.mk (spMap (algebraMap W L) ≫ 𝟙 (Sp W)) ≅ Over.mk ((𝟙_ (Over (Sp L))).hom ≫ spMap (algebraMap W L))` to `Over.isoMk (Iso.refl _) (by simp)`. Set `e : (𝟙_ (Over (Sp L)) ⟶ A) ≃* (𝟙_ (Over (Sp W)) ⟶ G)` to `((pullPtsEquiv A G (spMap (algebraMap W L)) φ hφ _).trans (precompEquiv i)).trans e1.symm`. Use `⟨e, fun y => ?_⟩` and prove the remaining obligations.
+
+Establish `h1` using `he1 (e y)`. Establish `h2 : e1 (e y) = i.hom ≫ pullPtsEquiv A G (spMap (algebraMap W L)) φ hφ _ y` using `e1.apply_symm_apply _`. Rewrite `h1` using `[h2]`. Simplify using `only [i] at h1`. Simplify using `only [Over.isoMk_hom_left, Iso.refl_hom, Over.comp_left] at h1`.
+
+Rewrite using `[← h1]`. Simplify using `only [Category.id_comp]`. Both sides reduce to the same expression.
+-/
 theorem sections_generic_mulEquiv : ∀ (W L : Type) [CommRing W] [IsDomain W] [IsDiscreteValuationRing W] [Field L] [Algebra W L] [IsFractionRing W L] (G : Over (Sp W)) [GrpObj G] (A : Over (Sp L)) [GrpObj A] (φ : A.left ⟶ G.left), IsProper G.hom → IsGrpPullback A G (spMap (algebraMap W L)) φ → ∃ e : (𝟙_ (Over (Sp L)) ⟶ A) ≃* (𝟙_ (Over (Sp W)) ⟶ G), ∀ y, y.left ≫ φ = spMap (algebraMap W L) ≫ (e y).left := by
   intro W L _ _ _ _ _ _ G _ A _ φ hP hφ
   obtain ⟨e1, he1⟩ := GlobalTheory.T.proper_group_scheme_points_valuationRing_mulEquiv W L (Sp W) G hP (𝟙 (Sp W))

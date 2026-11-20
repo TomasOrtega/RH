@@ -3,11 +3,19 @@ open Finset Polynomial
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Rewrite using `[comp, eval₂_eq_sum_range]`. Simplify using `[finset_sum_coeff, coeff_C_mul, coeff_X_add_one_pow]`.
+-/
 lemma shiftDiffPoly_coeff_comp (f : ℂ[X]) (n : ℕ) :
     (f.comp (X + 1)).coeff n = ∑ i ∈ range (f.natDegree + 1), f.coeff i * (i.choose n : ℂ) := by
   rw [comp, eval₂_eq_sum_range]
   simp [finset_sum_coeff, coeff_C_mul, coeff_X_add_one_pow]
 
+/- English proof (translation)
+Rewrite using `[coeff_sub, shiftDiffPoly_coeff_comp, Finset.sum_eq_single n]`. Simplify using the standard rewrite rules. Introduce `b hb hbn`. Establish `: b < n` using `by simp at hb; omega`. Simplify using `[Nat.choose_eq_zero_of_lt this]`.
+
+Introduce `hn'`. Establish `: f.coeff n = 0` using `coeff_eq_zero_of_natDegree_lt (by simp at hn'; omega)`. Simplify using `[this]`.
+-/
 lemma shiftDiffPoly_coeff_top (f : ℂ[X]) (n : ℕ) (hn : f.natDegree ≤ n) :
     (f.comp (X + 1) - f).coeff n = 0 := by
   rw [coeff_sub, shiftDiffPoly_coeff_comp, Finset.sum_eq_single n]
@@ -19,6 +27,11 @@ lemma shiftDiffPoly_coeff_top (f : ℂ[X]) (n : ℕ) (hn : f.natDegree ≤ n) :
     have : f.coeff n = 0 := coeff_eq_zero_of_natDegree_lt (by simp at hn'; omega)
     simp [this]
 
+/- English proof (translation)
+Rewrite using `[coeff_sub, shiftDiffPoly_coeff_comp, he, Finset.sum_range_succ, Finset.sum_range_succ, Finset.sum_eq_zero]`. Simplify using `[Nat.choose_succ_self_right]`. Expand and normalize the polynomial expressions, which then agree. Introduce `i hi`. Simplify using `at hi`.
+
+Simplify using `[Nat.choose_eq_zero_of_lt hi]`.
+-/
 lemma shiftDiffPoly_coeff_sub (f : ℂ[X]) (e : ℕ) (he : f.natDegree = e + 1) :
     (f.comp (X + 1) - f).coeff e = ((e : ℂ) + 1) * f.coeff (e + 1) := by
   rw [coeff_sub, shiftDiffPoly_coeff_comp, he, Finset.sum_range_succ, Finset.sum_range_succ,
@@ -28,6 +41,33 @@ lemma shiftDiffPoly_coeff_sub (f : ℂ[X]) (e : ℕ) (he : f.natDegree = e + 1) 
     simp at hi
     simp [Nat.choose_eq_zero_of_lt hi]
 
+/- English proof (translation)
+Introduce `m N p f r hmN hp0 hf hr hid`. Establish `hlead : ∀ k : ℕ, ((X - C (m:ℂ)) ^ k).coeff k = 1` using `fun k => by`. Establish `h` using `((monic_X_sub_C (m:ℂ)).pow k).coeff_natDegree`. Rewrite `h` using `[natDegree_pow, natDegree_X_sub_C, mul_one]`. Then use the resulting hypothesis. Use `set Pi : ℂ[X] := ∑ k ∈ range (N + 1), C ((-1) ^ k * p k) * (X - C (m:ℂ)) ^ (N - k) with hPi`.
+
+Use `set g : ℂ[X] := f.comp (X + 1) - f with hg`. Establish `hpoly : (X - C (m:ℂ)) ^ (N + 1) * g - f * Pi = r`. Apply `Polynomial.funext` to reduce the goal to its premises. Introduce `u`. Simplify using `only [hg, hPi, eval_sub, eval_mul, eval_pow, eval_X, eval_C, eval_comp, eval_add, eval_one, eval_finset_sum]`.
+
+Rewrite using `[← hid u]`. Use `congr 2`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `k _`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hPiN : Pi.coeff N = (m : ℂ) + 1`. Rewrite using `[hPi, finset_sum_coeff, Finset.sum_range_succ', Finset.sum_eq_zero]`. Simplify using `only [pow_zero, one_mul, Nat.sub_zero, coeff_C_mul, hlead, hp0, mul_one, zero_add]`. Introduce `k hk`. Rewrite using `[coeff_C_mul, coeff_eq_zero_of_natDegree_lt, mul_zero]`.
+
+Rewrite using `[natDegree_pow, natDegree_X_sub_C]`. Simplify using `at hk`. Use linear arithmetic over natural numbers and integers. Establish `hPideg : Pi.natDegree ≤ N`. Rewrite using `[hPi]`.
+
+Apply `natDegree_sum_le_of_forall_le` to reduce the goal to its premises. Introduce `k _`. Use `(natDegree_C_mul_le _ _).trans ?_` and prove the remaining obligations. Rewrite using `[natDegree_pow, natDegree_X_sub_C]`. Use linear arithmetic over natural numbers and integers.
+
+Use `set d := f.natDegree with hd`. Establish `hcoef : ((X - C (m:ℂ)) ^ (N + 1) * g - f * Pi).coeff (d + N) = r.coeff (d + N)` using `by rw [hpoly]`. Rewrite `hcoef` using `[coeff_sub]`. Establish `hr0 : r.coeff (d + N) = 0` using `coeff_eq_zero_of_natDegree_lt (by omega)`. Establish `h2 : (f * Pi).coeff (d + N) = f.coeff d * Pi.coeff N` using `coeff_mul_add_eq_of_natDegree_le le_rfl hPideg`.
+
+Establish `h1 : ((X - C (m:ℂ)) ^ (N + 1) * g).coeff (d + N) = d * f.coeff d`. Break down `Nat.eq_zero_or_pos d with h0 | hpos` into its components or cases. Establish `hg0 : g = 0`. Use extensionality with `n`. Rewrite using `[coeff_zero]`.
+
+Conclude with `shiftDiffPoly_coeff_top f n (by omega)`. Rewrite using `[hg0, mul_zero, coeff_zero, h0]`. Simplify using the standard rewrite rules. Take `⟨e, he⟩ : ∃ e, d = e + 1` from `⟨d - 1, by omega⟩`. Establish `hgdeg : g.natDegree ≤ e`.
+
+Rewrite using `[natDegree_le_iff_coeff_eq_zero]`. Introduce `n hn`. Conclude with `shiftDiffPoly_coeff_top f n (by omega)`. Establish `hidx : d + N = (N + 1) + e` using `by omega`. Rewrite using `[hidx, coeff_mul_add_eq_of_natDegree_le (by rw [natDegree_pow, natDegree_X_sub_C, mul_one]) hgdeg, hlead, one_mul, shiftDiffPoly_coeff_sub f e he, he]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hcoef` using `[h1, h2, hPiN, hr0]`. Establish `hne : (d : ℂ) - ((m : ℂ) + 1) ≠ 0`. Introduce `h`.
+
+Establish `h' : (d : ℂ) = ((m + 1 : ℕ) : ℂ)` using `by push_cast; linear_combination h`. Use `Nat.cast_injective h'` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hc : f.coeff d = 0`. Establish `: f.coeff d * ((d : ℂ) - ((m : ℂ) + 1)) = 0` using `by linear_combination hcoef`.
+
+Break down `mul_eq_zero.mp this with h | h` into its components or cases. Conclude with `h`. Conclude with `absurd h hne`. Conclude with `leadingCoeff_eq_zero.mp hc`.
+-/
 theorem newton_recursion_poly_unique : ∀ (m N : ℕ) (p : ℕ → ℂ) (f r : ℂ[X]), m < N → p 0 = (m : ℂ) + 1 → f.natDegree ≤ m → r.natDegree ≤ m → (∀ u : ℂ, (u - m) ^ (N + 1) * (f.eval (u + 1) - f.eval u) - f.eval u * ∑ k ∈ range (N + 1), (-1) ^ k * (u - m) ^ (N - k) * p k = r.eval u) → f = 0 := by
   intro m N p f r hmN hp0 hf hr hid
   have hlead : ∀ k : ℕ, ((X - C (m:ℂ)) ^ k).coeff k = 1 := fun k => by

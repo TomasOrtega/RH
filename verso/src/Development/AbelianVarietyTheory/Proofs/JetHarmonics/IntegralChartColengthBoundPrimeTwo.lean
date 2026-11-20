@@ -14,10 +14,48 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.CharDepth
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 theorem family_cast_iff {V : Type} (P : ∀ s : ℕ, (Fin s → V) → Prop) {n s : ℕ} (h : n = s) (g : Fin s → V) :
     P n (fun i => g (Fin.cast h i)) ↔ P s g := by
   subst h; rfl
 
+/- English proof (translation)
+Introduce `p _ hAV E _ _ _ H Dw l Xo c`. Use `letI := H.starRing`. Introduce `T io y Ch X hy f vd hTP`. Take `⟨U⟩` from `GlobalTheory.T.nonempty_uniformised_formal_chart_algebraic_point E H Dw l Xo c T io y Ch hy p X`. Take `⟨τT, -, hty, hinj, hrt, -⟩` from `GlobalTheory.T.exists_cmType_embeddings_into_valuation_ring E H l c T io p X`.
+
+Use `set τO : (E →+* ℂ) → (𝓞 E →+* X.O) := fun τ => X.ι.comp (τT τ) with hτO`. Establish `heig` using `fun τ => (GlobalTheory.T.cmTypeDirections_eigenbasis_valuedIntegers E H Dw l Xo c T io y Ch p X τO hty τ).1`. Take `⟨n, w, vdi, hwn, hsum, he, hu, hb, hvd⟩` from `hTP X.C X.v X.O X.ints τO hinj hrt`. Use `choose t hvd using hvd`. Use `choose s hs hst using fun (i : Fin n) (j : Fin (w i).n) => he i (t i j : 𝓞 E →+* X.O) (t i j).2`.
+
+Establish `hp : ∀ τ, InPsi H τ → Dw.p = Dw.mult τ` using `fun τ h => by`. Unfold `Datum.mult`. Conclude with `(if_pos h).symm`. Establish `hq : ∀ τ, ¬ InPsi H τ → Dw.q = Dw.mult τ` using `fun τ h => by`. Unfold `Datum.mult`.
+
+Conclude with `(if_neg h).symm`. Establish `hact : actMap U.ι' U.act = fun a i => MvPowerSeries.map X.ι (Ch.actT a i)` using `funext U.act_eq`. Establish `hnu : ¬ IsUnit ((p : U.T'.V))` using `fun h => X.nonunit.out (by have h' := h.map U.ι'; rwa [map_natCast] at h')`. Establish `key` using `fun i0 : Fin n => hAV U.T'.V hnu U.t.G U.P.D U.P.A U.P.U.toUnifPre _ U.F U.x U.chart (𝓞 E) U.t.act.toRingAct U.P.oD U.P.oA U.P.lin U.act U.acts X.C X.v X.O X.ints U.ι' U.ι'_local (w i0) (t i0) (vdi i0) (hvd i0) Dw.p Dw.q (fun j i k => X.ι (Ch.uvecT ⟨s i0 j, Fin.cast (hp _ (hs i0 …`. Rewrite using `[hact, hst i0 j]`.
+
+Conclude with `(family_cast_iff (fun _ g => IsEigBasis (fun a i => MvPowerSeries.map X.ι (Ch.actT a i)) (τO (s i0 j)) g) (hp _ (hs i0 j)) (fun i k => X.ι (Ch.uvecT ⟨s i0 j, i⟩ k))).2 (heig (s i0 j)))`. Use the proof step `(fun σ hσ => by`. Take `⟨τ, hτ, rfl⟩` from `hb i0 σ hσ`. Rewrite using `[hact]`. Conclude with `⟨_, (family_cast_iff (fun _ g => IsEigBasis (fun a i => MvPowerSeries.map X.ι (Ch.actT a i)) (τO τ) g) (hq _ hτ) (fun i k => X.ι (Ch.uvecT ⟨τ, i⟩ k))).2 (heig τ)⟩)`.
+
+Use `choose xs hxs hle using key`. Set `σs : (Σ i : Fin n, Fin (w i).n) → (E →+* ℂ)` to `fun z => s z.1 z.2`. Establish `hmem : ∀ i j, τO (s i j) ∈ Emb (O` using `X.O) (w i).e := fun i j => by rw [← hst i j]; exact (t i j).2`. Establish `hsinj : Function.Injective σs`. Introduce and unpack `⟨i, j⟩ ⟨i', j'⟩ h`.
+
+Establish `h' : s i j = s i' j'` using `h`. Take `rfl : i = i'` from `(hu _ (hs i j)).unique (hmem i j) (by rw [h']; exact hmem i' j')`. Establish `: j = j'`. Apply `(t i).injective` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Rewrite using `[hst i j, hst i j', h']`. Rewrite using `[this]`. Establish `hssurj : ∀ τ, InPsi H τ → ∃ z, σs z = τ` using `fun τ h => by`. Take `⟨i, hi, -⟩` from `hu τ h`. Use `⟨⟨i, (t i).symm ⟨τO τ, hi⟩⟩, hinj ?_⟩` and prove the remaining obligations.
+
+Use `hst i ((t i).symm ⟨τO τ, hi⟩)` as an intermediate fact. Rewrite `this` using `[Equiv.apply_symm_apply]`. Conclude with `this.symm`. Set `xz : (Σ i : Fin n, Fin (w i).n) → NNReal` to `fun z => xs z.1 z.2`. Use `⟨Function.extend σs xz (fun _ => 1), ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `τ hτ`. Take `⟨⟨i, j⟩, rfl⟩` from `hssurj τ hτ`. Rewrite using `[hsinj.extend_apply, ← U.law_eq]`. Conclude with `(family_cast_iff (fun _ g => HasAF X.v (U.F.mapF U.ι') g (xs i j)) (hp _ (hs i j)) (fun i' k => X.ι (Ch.uvecT ⟨s i j, i'⟩ k))).1 (hxs i j)`. Establish `hprod : ∏ τ ∈ Finset.univ.filter (fun τ => InPsi H τ), ((Function.extend σs xz (fun _ => 1) τ : NNReal) : ℝ) = ∏ z, (xz z : ℝ)`.
+
+Use `symm`. Use `Finset.prod_bij (fun z _ => σs z) (fun z _ => by simpa using hs z.1 z.2) (fun j _ j' _ h => hsinj h) (fun τ hτ => ?_) (fun j _ => by rw [hsinj.extend_apply])` and prove the remaining obligations. Take `⟨j, hj⟩` from `hssurj τ (by simpa using hτ)`. Conclude with `⟨j, Finset.mem_univ _, hj⟩`. Establish `h2 : algebraMap X.O X.C (p : X.O) = (p : X.C)` using `map_natCast _ _`.
+
+Establish `hpp : p.Prime` using `Fact.out`. Establish `hr0 : (0 : ℝ) < (X.v (p : X.C) : ℝ)`. Establish `: X.v (p : X.C) ≠ 0` using `(Valuation.ne_zero_iff _).2 (Nat.cast_ne_zero.2 hpp.ne_zero)`. Conclude with `pos_iff_ne_zero.2 this` after adjusting the coercions. Establish `hr1 : (X.v (p : X.C) : ℝ) ≤ 1`.
+
+Establish `hle : X.v (p : X.C) ≤ 1` using `by rw [← h2]; exact X.ints.map_le_one _`. Conclude with `hle` after adjusting the coercions. Establish `h1 : (1 : ℝ) / ((p : ℝ) - 1) ≤ 1`. Establish `: (2 : ℝ) ≤ p` using `by exact_mod_cast hpp.two_le`. Rewrite using `[div_le_one (by linarith)]; linarith`.
+
+Establish `hi : ∀ i, (X.v (p : X.C) : ℝ) ^ (((w i).n : ℝ) * Dw.q * (1 + vdi i / 2)) ≤ ∏ j, (xs i j : ℝ)` using `fun i => by`. Establish `h3` using `NNReal.coe_le_coe.2 (hle i)`. Rewrite `h3` using `[h2, NNReal.coe_rpow, NNReal.coe_prod]`. Use `le_trans (Real.rpow_le_rpow_of_exponent_ge hr0 hr1 ?_) h3` and prove the remaining obligations. Establish `: (0 : ℝ) ≤ ((w i).n : ℝ) * Dw.q` using `by positivity`.
+
+Use the polynomial consequences of the given equalities and inequalities. Establish `hexp : (f : ℝ) * Dw.q * (1 + vd / 2) = ∑ i, ((w i).n : ℝ) * Dw.q * (1 + vdi i / 2)`. Establish `a1 : (f : ℝ) = ∑ i, ((w i).n : ℝ)` using `by rw [← hwn]; push_cast; rfl`. Establish `a2 : ∑ i, ((w i).n : ℝ) * Dw.q * (1 + vdi i / 2) = Dw.q * (∑ i, ((w i).n : ℝ)) + Dw.q / 2 * ∑ i, ((w i).n : ℝ) * vdi i`. Rewrite using `[Finset.mul_sum, Finset.mul_sum, ← Finset.sum_add_distrib]`.
+
+Conclude with `Finset.sum_congr rfl fun i _ => by ring`. Rewrite using `[a2, hsum, ← a1]`. Expand and normalize the polynomial expressions, which then agree. Establish `hfin : (X.v (p : X.C) : ℝ) ^ ((f : ℝ) * Dw.q * (1 + vd / 2)) ≤ ∏ z, (xz z : ℝ)`. Rewrite using `[hexp, Real.rpow_sum_of_pos hr0, Fintype.prod_sigma]`.
+
+Conclude with `Finset.prod_le_prod (fun i _ => (Real.rpow_pos_of_pos hr0 _).le) fun i _ => hi i`. Use `hfin using 1` and compare the differences between its conclusion and the goal.
+-/
 theorem colength_bound_at_two : ∀ (p : ℕ) [Fact p.Prime], AvFSt p → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), letI := H.starRing; ∀ (T : CDVR) (io : c.F →+* T.Fr) (y : IntFr Xo c T io) (Ch : IntegralChartA3 Xo c T io y) (X : ValExt T p), y.IsAlg → ∀ (f : ℕ) (vd : ℝ), UpperTheory.Depth.SplitPlaces p H f vd → ∃ xs : (E →+* ℂ) → NNReal, (∀ τ, InPsi H τ → HasAF X.v (fun i => MvPowerSeries.map X.ι (Ch.FT i)) (fun (i : Fin (Dw.mult τ)) j => X.ι (Ch.uvecT ⟨τ, i⟩ j)) (xs τ)) ∧ (open Classical in (X.v ((p : ℕ) : X.C) : ℝ) ^ ((f : ℝ) * Dw.q * (1 + vd / 2)) ≤ ∏ τ ∈ Finset.univ.filter (fun τ => InPsi H τ), (xs τ : ℝ)) := by
   intro p _ hAV E _ _ _ H Dw l Xo c
   letI := H.starRing

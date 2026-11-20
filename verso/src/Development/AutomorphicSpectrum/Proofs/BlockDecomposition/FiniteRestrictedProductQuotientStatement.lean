@@ -13,6 +13,9 @@ open scoped Classical
 open GlobalTheory.CompanionTheory.FinActS
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.FinActS.finite_cosets_of_components_mem | exact GlobalTheory.CompanionTheory.FinActS.finite_cosets_of_components_mem | (intros; apply GlobalTheory.CompanionTheory.FinActS.finite_cosets_of_components_mem <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.finite_restricted_product_quotient : ∀ {ι Γ : Type} [Group Γ] {Hl : ι → Type} [∀ i, Group (Hl i)] (p : ∀ i, Γ →* Hl i) (V : ∀ i, Subgroup (Hl i)) (Q : ∀ i, Set (Hl i))
     (hQ : ∀ i, ∀ x ∈ Q i, ∀ u ∈ V i, x * u ∈ Q i)
     (hQf : ∀ i, {q : Hl i ⧸ V i | q.out ∈ Q i}.Finite)

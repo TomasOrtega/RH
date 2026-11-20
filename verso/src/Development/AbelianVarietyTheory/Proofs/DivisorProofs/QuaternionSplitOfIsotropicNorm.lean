@@ -15,6 +15,11 @@ end GlobalTheory.QSA.Split
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.MatrixHomBijective.split_of_isotropic`. Consider the case `exact _root_.GlobalTheory.MatrixHomBijective.split_of_isotropic`. Consider the case `(apply _root_.GlobalTheory.MatrixHomBijective.split_of_isotropic <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.MatrixHomBijective.split_of_isotropic <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.MatrixHomBijective.split_of_isotropic <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.MatrixHomBijective.split_of_isotropic ..)`.
+-/
 theorem quaternion_split_of_isotropic : ∀ (F : Type) [Field F] [NumberField F] (a b : F), a ≠ 0 → b ≠ 0 →
     (∃ x : ℍ[F, a, b], x ≠ 0 ∧ nrm x = 0) →
     ∃ φ : ℍ[F, a, b] ≃ₐ[F] Matrix (Fin 2) (Fin 2) F, ∀ x, (φ x).det = nrm x := by

@@ -13,6 +13,9 @@ namespace IdeleGroup
 
 variable {K : Type*} [Field K] [NumberField K]
 
+/- English proof (translation)
+Use `filter_upwards [(prodRestrictedEquiv K x).2.2] with v hv`. Rewrite using `[finiteProj_eq]`. Conclude with `hv`.
+-/
 theorem eventually_finiteProj_mem_units (x : IdeleGroup K) :
     ∀ᶠ v in cofinite, finiteProj v x ∈
       (Submonoid.ofClass (v.adicCompletionIntegers K)).units := by
@@ -30,6 +33,9 @@ variable {K : Type*} [Field K] [NumberField K] {G : Type*} [CommGroup G]
   (φ : ∀ v : HeightOneSpectrum (𝓞 K), (v.adicCompletion K)ˣ →* G)
   (φinf : ∀ w : InfinitePlace K, (w.Completion)ˣ →* G)
 
+/- English proof (translation)
+Establish `h : ∀ᶠ v in cofinite, φ v (finiteProj v x) = 1` using `by filter_upwards [hφ, eventually_finiteProj_mem_units x] with v hv hx`. Conclude with `hv hx`. Conclude with `eventually_cofinite.1 h`.
+-/
 theorem hasFiniteMulSupport
     (hφ : ∀ᶠ v in cofinite, (Submonoid.ofClass (v.adicCompletionIntegers K)).units ≤ (φ v).ker)
     (x : IdeleGroup K) :
@@ -53,11 +59,17 @@ def ideleMap
 variable (hφ : ∀ᶠ v in cofinite,
   (Submonoid.ofClass (v.adicCompletionIntegers K)).units ≤ (φ v).ker)
 
+/- English proof (translation)
+The claim follows from `rfl @[simp]`.
+-/
 theorem ideleMap_apply (x : IdeleGroup K) :
     ideleMap φ φinf hφ x = (∏ᶠ v, φ v (finiteProj v x)) * ∏ w, φinf w (infiniteProj w x) :=
   rfl
 
 @[simp]
+/- English proof (translation)
+Rewrite using `[ideleMap_apply, finprod_eq_single _ v fun u hu ↦ by`. Rewrite using `[finiteProj_finiteEmbedding_of_ne hu, map_one]]`. Establish `h : ∀ w, infiniteProj w (finiteEmbedding v a) = 1` using `fun w ↦ Units.ext rfl`. Simplify using `[h]`. Use the proof step `@[simp]`.
+-/
 theorem ideleMap_finiteEmbedding (v : HeightOneSpectrum (𝓞 K)) (a : (v.adicCompletion K)ˣ) :
     ideleMap φ φinf hφ (finiteEmbedding v a) = φ v a := by
   rw [ideleMap_apply, finprod_eq_single _ v fun u hu ↦ by
@@ -66,6 +78,9 @@ theorem ideleMap_finiteEmbedding (v : HeightOneSpectrum (𝓞 K)) (a : (v.adicCo
   simp [h]
 
 @[simp]
+/- English proof (translation)
+Rewrite using `[ideleMap_apply, Finset.prod_eq_single w (fun u _ hu ↦ by`. Rewrite using `[infiniteProj_infiniteEmbedding_of_ne hu, map_one]) (fun h ↦ (h (Finset.mem_univ w)).elim)]`. Establish `h : ∀ v, finiteProj v (infiniteEmbedding w a) = 1` using `fun v ↦ Units.ext rfl`. Simplify using `[h]`.
+-/
 theorem ideleMap_infiniteEmbedding (w : InfinitePlace K) (a : (w.Completion)ˣ) :
     ideleMap φ φinf hφ (infiniteEmbedding w a) = φinf w a := by
   rw [ideleMap_apply, Finset.prod_eq_single w (fun u _ hu ↦ by
@@ -73,14 +88,23 @@ theorem ideleMap_infiniteEmbedding (w : InfinitePlace K) (a : (w.Completion)ˣ) 
   have h : ∀ v, finiteProj v (infiniteEmbedding w a) = 1 := fun v ↦ Units.ext rfl
   simp [h]
 
+/- English proof (translation)
+The claim follows from `MonoidHom.ext (ideleMap_finiteEmbedding φ φinf hφ v)`.
+-/
 theorem ideleMap_comp_finiteEmbedding (v : HeightOneSpectrum (𝓞 K)) :
     (ideleMap φ φinf hφ).comp (finiteEmbedding v) = φ v :=
   MonoidHom.ext (ideleMap_finiteEmbedding φ φinf hφ v)
 
+/- English proof (translation)
+The claim follows from `MonoidHom.ext (ideleMap_infiniteEmbedding φ φinf hφ w)`.
+-/
 theorem ideleMap_comp_infiniteEmbedding (w : InfinitePlace K) :
     (ideleMap φ φinf hφ).comp (infiniteEmbedding w) = φinf w :=
   MonoidHom.ext (ideleMap_infiniteEmbedding φ φinf hφ w)
 
+/- English proof (translation)
+Rewrite using `[ideleMap_apply, finprod_eq_one_of_forall_eq_one fun v ↦ hN v (hx v), Finset.prod_eq_one fun w _ ↦ hNinf w (hxinf w), mul_one]`.
+-/
 theorem ideleMap_eq_one_of_forall_mem
     (N : ∀ v : HeightOneSpectrum (𝓞 K), Subgroup (v.adicCompletion K)ˣ)
     (Ninf : ∀ w : InfinitePlace K, Subgroup (w.Completion)ˣ)
@@ -92,6 +116,13 @@ theorem ideleMap_eq_one_of_forall_mem
 
 variable [TopologicalSpace G] [DiscreteTopology G]
 
+/- English proof (translation)
+Establish `hker : ∀ {X : Type _} [TopologicalSpace X] [Group X] (f : X →* G), Continuous f → IsOpen (f.ker : Set X)` using `fun f hf ↦ by`. Rewrite using `[MonoidHom.coe_ker]`. Conclude with `(isOpen_discrete ({1} : Set G)).preimage hf`. Use `set V : ∀ v : HeightOneSpectrum (𝓞 K), Set (v.adicCompletion K)ˣ := fun v ↦ ((Submonoid.ofClass (v.adicCompletionIntegers K)).units : Set (v.adicCompletion K)ˣ) ∩ ((φ v).ker : Set (v.adicCompletion K)ˣ) with hVdef`. Use `set W : Set (IdeleGroup K) := {x | (∀ w, infiniteProj w x ∈ ((φinf w).ker : Set (w.Completion)ˣ)) ∧ ∀ v, finiteProj v x ∈ V v} with hWdef`.
+
+Establish `hWo : IsOpen W` using `(isTopologicalBasis K).isOpen ⟨fun w ↦ ((φinf w).ker : Set (w.Completion)ˣ), V, fun w ↦ hker _ (hφinfc w), fun v ↦ (isOpen_units_adicCompletionIntegers K v).inter (hker _ (hφc v)), hφ.mono fun v hv ↦ Set.inter_eq_left.2 (SetLike.coe_subset_coe.2 hv), rfl⟩`. Establish `h1W : (1 : IdeleGroup K) ∈ W` using `⟨fun w ↦ by simp, fun v ↦ by simp [V]⟩`. Establish `hψW : ∀ x ∈ W, ideleMap φ φinf hφ x = 1` using `fun x hx ↦ ideleMap_eq_one_of_forall_mem φ φinf hφ (fun v ↦ (φ v).ker) (fun w ↦ (φinf w).ker) (fun _ ↦ le_rfl) (fun _ ↦ le_rfl) (fun v ↦ (hx.2 v).2) hx.1`. Use `continuous_of_continuousAt_one _ ?_` and prove the remaining obligations. Rewrite using `[ContinuousAt, map_one, nhds_discrete G, tendsto_pure]`.
+
+Conclude with `eventually_of_mem (hWo.mem_nhds h1W) hψW`.
+-/
 theorem continuous_ideleMap (hφc : ∀ v, Continuous (φ v)) (hφinfc : ∀ w, Continuous (φinf w)) :
     Continuous (ideleMap φ φinf hφ) := by
   have hker : ∀ {X : Type _} [TopologicalSpace X] [Group X] (f : X →* G), Continuous f →
@@ -123,6 +154,9 @@ def continuousIdeleMap (hφc : ∀ v, Continuous (φ v)) (hφinfc : ∀ w, Conti
   continuous_toFun := continuous_ideleMap φ φinf hφ hφc hφinfc
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem continuousIdeleMap_apply (hφc : ∀ v, Continuous (φ v))
     (hφinfc : ∀ w, Continuous (φinf w)) (x : IdeleGroup K) :
     continuousIdeleMap φ φinf hφ hφc hφinfc x = ideleMap φ φinf hφ x :=

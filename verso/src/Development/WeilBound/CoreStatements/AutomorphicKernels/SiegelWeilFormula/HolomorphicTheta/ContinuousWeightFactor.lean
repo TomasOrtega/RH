@@ -18,15 +18,29 @@ def bmap (q : ℕ) (y : GR n) : Matrix (Fin n) (Fin n) ℂ := if q = 0 then zOf 
 
 def negConj (W : Fin n → Fin n → ℂ) : Fin n → Fin n → ℂ := fun i j => -star (W j i)
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[negConj]`.
+-/
 theorem negConj_eq (W : Fin n → Fin n → ℂ) : negConj W = (-(Matrix.of W)ᴴ : Matrix (Fin n) (Fin n) ℂ) := by
   ext i j; simp [negConj]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[negConj]`.
+-/
 theorem negConj_negConj (W : Fin n → Fin n → ℂ) : negConj (negConj W) = W := by
   ext i j; simp [negConj]
 
+/- English proof (translation)
+Rewrite using `[negConj_eq]`. Conclude with `neg_conj_mem' hW`.
+-/
 theorem negConj_mem {W : Fin n → Fin n → ℂ} (hW : W ∈ Dom n) : negConj W ∈ Dom n := by
   rw [negConj_eq]; exact neg_conj_mem' hW
 
+/- English proof (translation)
+Use `(pi_norm_le_iff_of_nonneg (norm_nonneg _)).2 fun i => (pi_norm_le_iff_of_nonneg (norm_nonneg _)).2 fun j => ?_` and prove the remaining obligations. Establish `h : (negConj W - negConj W') i j = -star ((W - W') j i)` using `by show -star (W j i) - -star (W' j i) = -star (W j i - W' j i)`. Rewrite using `[star_sub]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h, norm_neg, norm_star]`.
+
+Conclude with `(norm_le_pi_norm ((W - W') j) i).trans (norm_le_pi_norm (W - W') j)`.
+-/
 theorem norm_negConj_sub (W W' : Fin n → Fin n → ℂ) : ‖negConj W - negConj W'‖ ≤ ‖W - W'‖ := by
   refine (pi_norm_le_iff_of_nonneg (norm_nonneg _)).2 fun i => (pi_norm_le_iff_of_nonneg (norm_nonneg _)).2 fun j => ?_
   have h : (negConj W - negConj W') i j = -star ((W - W') j i) := by
@@ -35,6 +49,17 @@ theorem norm_negConj_sub (W W' : Fin n → Fin n → ℂ) : ‖negConj W - negCo
   rw [h, norm_neg, norm_star]
   exact (norm_le_pi_norm ((W - W') j) i).trans (norm_le_pi_norm (W - W') j)
 
+/- English proof (translation)
+Distinguish the cases in `hq : q = 0`. Take `⟨r, hr, hsub, S, hS, hcov⟩` from `zOf_surj_bdd' W₀ hW₀`. Use `⟨r, hr, hsub, S, hS, fun W hW => ?_⟩` and prove the remaining obligations. Take `⟨y, hy, hyW⟩` from `hcov W hW`. Use `⟨y, hy, ?_⟩` and prove the remaining obligations.
+
+Unfold `bmap`. Rewrite using `[if_pos hq]`. Conclude with `hyW`. Take `⟨r, hr, hsub, S, hS, hcov⟩` from `zOf_surj_bdd' (negConj W₀) (negConj_mem hW₀)`. Establish `key : ∀ W ∈ closedBall W₀ r, negConj W ∈ closedBall (negConj W₀) r`.
+
+Introduce `W hW`. Rewrite `hW`, the goal using `[mem_closedBall, dist_eq_norm]`. Conclude with `(norm_negConj_sub W W₀).trans hW`. Use `⟨r, hr, fun W hW => ?_, S, hS, fun W hW => ?_⟩` and prove the remaining obligations. Establish `h` using `negConj_mem (hsub (key W hW))`.
+
+Rewrite `h` using `[negConj_negConj]`. Then use the resulting hypothesis. Take `⟨y, hy, hyW⟩` from `hcov (negConj W) (key W hW)`. Use `⟨y, hy, ?_⟩` and prove the remaining obligations. Unfold `bmap`. Rewrite using `[if_neg hq, hyW]`.
+
+Use function extensionality and compare the values at `i j`. Use `show -star (negConj W j i) = W i j`. Simplify using `[negConj]`.
+-/
 theorem bmap_local (q : ℕ) (W₀ : Fin n → Fin n → ℂ) (hW₀ : W₀ ∈ Dom n) : ∃ r > 0, closedBall W₀ r ⊆ Dom n ∧
     ∃ S : Set (GR n), IsCompact S ∧ ∀ W ∈ closedBall W₀ r, ∃ y ∈ S, (bmap q y : Fin n → Fin n → ℂ) = W := by
   by_cases hq : q = 0
@@ -61,6 +86,13 @@ theorem bmap_local (q : ℕ) (W₀ : Fin n → Fin n → ℂ) (hW₀ : W₀ ∈ 
       show -star (negConj W j i) = W i j
       simp [negConj]
 
+/- English proof (translation)
+Distinguish the cases in `hq : q = 0`. Take `⟨y, hy⟩` from `zOf_surj' hW`. Use `⟨y, ?_⟩` and prove the remaining obligations. Unfold `bmap`. Rewrite using `[if_pos hq]`.
+
+Conclude with `hy`. Take `⟨y, hy⟩` from `zOf_surj' (negConj_mem hW)`. Use `⟨y, ?_⟩` and prove the remaining obligations. Unfold `bmap`. Rewrite using `[if_neg hq, hy]`.
+
+Use function extensionality and compare the values at `i j`. Use `show -star (negConj W j i) = W i j`. Simplify using `[negConj]`.
+-/
 theorem bmap_surj (q : ℕ) {W : Fin n → Fin n → ℂ} (hW : W ∈ Dom n) : ∃ y : GR n, (bmap q y : Fin n → Fin n → ℂ) = W := by
   by_cases hq : q = 0
   · obtain ⟨y, hy⟩ := zOf_surj' hW
@@ -76,21 +108,40 @@ theorem bmap_surj (q : ℕ) {W : Fin n → Fin n → ℂ} (hW : W ∈ Dom n) : �
     show -star (negConj W j i) = W i j
     simp [negConj]
 
+/- English proof (translation)
+The claim follows from `Units.continuous_val.comp continuous_subtype_val`.
+-/
 theorem continuous_mR : Continuous (mR : GR n → M2 n) :=
   Units.continuous_val.comp continuous_subtype_val
 
+/- English proof (translation)
+The claim follows from `continuous_pi fun i => continuous_pi fun j => (continuous_apply (Sum.inl j)).comp (continuous_apply (Sum.inr i))`.
+-/
 theorem continuous_toBlocks₂₁ : Continuous fun M : M2 n => M.toBlocks₂₁ :=
   continuous_pi fun i => continuous_pi fun j => (continuous_apply (Sum.inl j)).comp (continuous_apply (Sum.inr i))
 
+/- English proof (translation)
+The claim follows from `continuous_pi fun i => continuous_pi fun j => (continuous_apply (Sum.inr j)).comp (continuous_apply (Sum.inr i))`.
+-/
 theorem continuous_toBlocks₂₂ : Continuous fun M : M2 n => M.toBlocks₂₂ :=
   continuous_pi fun i => continuous_pi fun j => (continuous_apply (Sum.inr j)).comp (continuous_apply (Sum.inr i))
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Take `⟨rfl, hk⟩` from `hc`. Conclude with `h (zero_zpow k (ne_of_lt hk))`.
+-/
 theorem zpow_cond {a : ℂ} {k : ℤ} (h : a ^ k ≠ 0) : a ≠ 0 ∨ 0 ≤ k := by
   by_contra hc
   push_neg at hc
   obtain ⟨rfl, hk⟩ := hc
   exact h (zero_zpow k (ne_of_lt hk))
 
+/- English proof (translation)
+Establish `hd : Continuous fun y : GR n => (mR y).det` using `continuous_mR.matrix_det`. Establish `hb1 : Continuous fun y : GR n => toBlocks₂₁ (mR y)` using `continuous_toBlocks₂₁.comp continuous_mR`. Establish `hb2 : Continuous fun y : GR n => toBlocks₂₂ (mR y)` using `continuous_toBlocks₂₂.comp continuous_mR`. Establish `h1 : Continuous fun y : GR n => (u1 (mR y)).det`. Unfold `u1`.
+
+Conclude with `(((continuous_const (y := Complex.I)).smul hb1).add hb2).matrix_det`. Establish `h2 : Continuous fun y : GR n => (u2 (mR y)).det`. Unfold `u2`. Conclude with `((((continuous_const (y := Complex.I)).smul hb1).neg).add hb2).matrix_det`. Establish `hne` using `spherical_section_ne_zero_group (n := n) p q e`.
+
+Simplify using `only [F0, f0] at hne ⊢`. Conclude with `(hd.zpow₀ e fun y => zpow_cond (left_ne_zero_of_mul (hne y))).mul ((h1.zpow₀ _ fun y => zpow_cond (left_ne_zero_of_mul (right_ne_zero_of_mul (hne y)))).mul (h2.zpow₀ _ fun y => zpow_cond (right_ne_zero_of_mul (right_ne_zero_of_mul (hne y)))))`.
+-/
 theorem continuous_weight_factor (p q : ℕ) (e : ℤ) : Continuous (F0 p q e : GR n → ℂ) := by
   have hd : Continuous fun y : GR n => (mR y).det := continuous_mR.matrix_det
   have hb1 : Continuous fun y : GR n => toBlocks₂₁ (mR y) := continuous_toBlocks₂₁.comp continuous_mR

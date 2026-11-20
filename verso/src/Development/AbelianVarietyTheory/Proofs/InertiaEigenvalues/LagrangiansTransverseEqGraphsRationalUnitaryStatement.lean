@@ -11,6 +11,9 @@ open scoped TensorProduct InnerProductSpace
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.RawLift
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.RawLift.Graphs.graphs | exact GlobalTheory.RawLift.Graphs.graphs | (intros; apply GlobalTheory.RawLift.Graphs.graphs <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.lagrangians_transverse_eq_graphs_rational_unitary : ∀ (D : D7) (W : HSp D), ∃ e : GQ W ≃ {Y : Lag W // Y.1.comap (LinearMap.inl D.host.E _ _) = ⊥},
     ∀ γ : GQ W, ∃ c : Matrix (Fin W.rank) (Fin W.rank) D.host.E, mt W (γ : GA D W) = c.map (incA D) ∧ IsLagFrame W (e γ).1 (1, c) := by
   first | exact @GlobalTheory.RawLift.Graphs.graphs | exact GlobalTheory.RawLift.Graphs.graphs | (intros; apply GlobalTheory.RawLift.Graphs.graphs <;> assumption)

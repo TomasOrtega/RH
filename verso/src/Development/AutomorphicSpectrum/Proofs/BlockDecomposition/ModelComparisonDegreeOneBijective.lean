@@ -18,6 +18,23 @@ variable {S A₀ A₁ A₂ B₀ B₁ B₂ D₀ D₁ D₂ H : Type} [CommRing S]
   [Module S A₀] [Module S A₁] [Module S A₂] [Module S B₀] [Module S B₁] [Module S B₂]
   [Module S D₀] [Module S D₁] [Module S D₂] [Module S H]
 
+/- English proof (translation)
+Establish `hmem : ∀ x : LinearMap.ker a₁, (t₁ ∘ₗ f₁ ∘ₗ (LinearMap.ker a₁).subtype) x ∈ Z`. Introduce and unpack `⟨x, hx⟩`. Rewrite using `[hZ, LinearMap.mem_ker]`. Establish `hx' : a₁ x = 0` using `hx`. Express the relevant statement in the definitionally equal form `e₁ (t₁ (f₁ x)) = 0`.
+
+Rewrite using `[← ht₂, ← hf₂, hx', map_zero, map_zero]`. Set `Φ : LinearMap.ker a₁ →ₗ[S] H` to `q ∘ₗ (t₁ ∘ₗ f₁ ∘ₗ (LinearMap.ker a₁).subtype).codRestrict Z hmem`. Establish `hΦ : ∀ x : LinearMap.ker a₁, Φ x = q ⟨t₁ (f₁ x.1), hmem x⟩` using `fun x ↦ rfl`. Establish `hs : Function.Surjective Φ`. Introduce `c`.
+
+Take `⟨w, rfl⟩` from `hq c`. Take `⟨w₀, hw₀⟩` from `ht₁b.2 w.1`. Establish `hker : ∀ d, d ∈ Z → e₁ d = 0` using `fun d hd ↦ by`. Rewrite `hd` using `[hZ]`. Conclude with `hd`.
+
+Establish `hw : e₁ w.1 = 0` using `hker _ w.2`. Establish `hd : b₁ w₀ = 0` using `ht₂i (by rw [ht₂, hw₀, hw, map_zero])`. Take `⟨x, y, hx, hxy⟩` from `hsurj w₀ hd`. Use `⟨⟨x, hx⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hΦ, ← sub_eq_zero, ← map_sub, hq0]`.
+
+Use `⟨t₀ y, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `e₀ (t₀ y) = t₁ (f₁ x) - w.1`. Rewrite using `[← ht₁, ← hxy, map_sub, hw₀]`. Establish `hk : (LinearMap.range a₀).comap (LinearMap.ker a₁).subtype = LinearMap.ker Φ`. Use extensionality with `⟨x, hx⟩`.
+
+Establish `hx' : a₁ x = 0` using `hx`. Simplify using `only [Submodule.mem_comap, Submodule.subtype_apply, LinearMap.mem_range, LinearMap.mem_ker]`. Rewrite using `[hΦ, hq0]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩`.
+
+Conclude with `⟨t₀ (f₀ y), by simp only [← ht₁, hf₁]⟩`. Introduce and unpack `⟨g, hg⟩`. Take `⟨g₀, rfl⟩` from `ht₀s g`. Use `hinj x hx' ⟨g₀, ht₁b.1 ?_⟩` and prove the remaining obligations. Rewrite using `[ht₁]`.
+
+Conclude with `hg`. Use `⟨(Submodule.quotEquivOfEq _ _ hk).trans (Φ.quotKerEquivOfSurjective hs), fun x hx ↦ ?_⟩` and prove the remaining obligations. Conclude with `⟨hmem ⟨x, hx⟩, rfl⟩`.
+-/
 theorem homology_equiv (a₀ : A₀ →ₗ[S] A₁) (a₁ : A₁ →ₗ[S] A₂) (b₀ : B₀ →ₗ[S] B₁)
     (b₁ : B₁ →ₗ[S] B₂) (e₀ : D₀ →ₗ[S] D₁) (e₁ : D₁ →ₗ[S] D₂) (f₀ : A₀ →ₗ[S] B₀)
     (f₁ : A₁ →ₗ[S] B₁) (f₂ : A₂ →ₗ[S] B₂) (t₀ : B₀ →ₗ[S] D₀) (t₁ : B₁ →ₗ[S] D₁)
@@ -77,6 +94,11 @@ end Abstract
 variable {R S C : Type} [CommRing R] [CommRing S] [Algebra R S] [Category.{0} C]
   {F : C ⥤ CommAlgCat.{0} R} {F' : C ⥤ CommAlgCat.{0} S}
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul s g`. Rewrite using `[LinearMap.baseChange_tmul, th1, th0, liftSemi_tmul, liftSemi_tmul, map_smul]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `T T' φ`. Express the relevant statement in the definitionally equal form `m.α T' (g T' - mp F φ (g T)) = m.α T' (g T') - mp F' φ (m.α T (g T))`. Rewrite using `[map_sub, m.naturality]`.
+-/
 theorem comparison_degree_one_coboundary (m : BC F F') (x : S ⊗[R] C0 F) :
     th1 m ((d0 F).baseChange S x) = d0 F' (th0 m x) := by
   induction x using TensorProduct.induction_on with
@@ -89,6 +111,11 @@ theorem comparison_degree_one_coboundary (m : BC F F') (x : S ⊗[R] C0 F) :
     change m.α T' (g T' - mp F φ (g T)) = m.α T' (g T') - mp F' φ (m.α T (g T))
     rw [map_sub, m.naturality]
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul s g`. Rewrite using `[LinearMap.baseChange_tmul, th2, th1, liftSemi_tmul, liftSemi_tmul, map_smul]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `T T' T'' φ ψ`. Express the relevant statement in the definitionally equal form `m.α T'' (mp F ψ (g T T' φ) - g T T'' (φ ≫ ψ) + g T' T'' ψ) = mp F' ψ (m.α T' (g T T' φ)) - m.α T'' (g T T'' (φ ≫ ψ)) + m.α T'' (g T' T'' ψ)`. Rewrite using `[map_add, map_sub, m.naturality]`.
+-/
 theorem comparison_degree_two_coboundary (m : BC F F') (x : S ⊗[R] C1 F) :
     th2 m ((d1 F).baseChange S x) = d1 F' (th1 m x) := by
   induction x using TensorProduct.induction_on with
@@ -102,6 +129,11 @@ theorem comparison_degree_two_coboundary (m : BC F F') (x : S ⊗[R] C1 F) :
       mp F' ψ (m.α T' (g T T' φ)) - m.α T'' (g T T'' (φ ≫ ψ)) + m.α T'' (g T' T'' ψ)
     rw [map_add, map_sub, m.naturality]
 
+/- English proof (translation)
+Introduce and unpack `⟨-, hc0, hc1, hq⟩ b0 b1 b2`. Take `⟨-, hq2⟩` from `hq (ModuleCat.of R S)`. Use `homology_equiv (a₀.baseChange S) (a₁.baseChange S) ((d0 F).baseChange S) ((d1 F).baseChange S) (d0 F') (d1 F') (ψ₀.baseChange S) (ψ₁.baseChange S) (ψ₂.baseChange S) (th0 m) (th1 m) (th2 m) (Z1 F') (H1.mk F') (commAlgFunctorCocyclesOne_eq_ker F') (H1.mk_surjective F') (fun z ↦ H1. …` and prove the remaining obligations. Introduce `y`. Rewrite using `[← LinearMap.comp_apply, ← LinearMap.baseChange_comp, hc0, LinearMap.baseChange_comp, LinearMap.comp_apply]`.
+
+Introduce `y`. Rewrite using `[← LinearMap.comp_apply, ← LinearMap.baseChange_comp, hc1, LinearMap.baseChange_comp, LinearMap.comp_apply]`.
+-/
 theorem model_comparison_degree_zero_bijective (R S C P₀ P₁ P₂ : Type) [CommRing R] [CommRing S] [Algebra R S] [Category.{0} C]
     (F : C ⥤ CommAlgCat.{0} R) (F' : C ⥤ CommAlgCat.{0} S) [AddCommGroup P₀] [AddCommGroup P₁]
     [AddCommGroup P₂] [Module R P₀] [Module R P₁] [Module R P₂] (a₀ : P₀ →ₗ[R] P₁)

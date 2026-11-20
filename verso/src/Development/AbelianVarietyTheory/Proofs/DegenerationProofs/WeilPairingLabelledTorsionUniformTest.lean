@@ -11,6 +11,15 @@ attribute [local instance] Over.cartesianMonoidalCategory
 noncomputable section
 namespace GlobalTheory.ZH
 
+/- English proof (translation)
+Introduce `hL o Ω _ _ _ _ S ρ p _ y₀ u x hx a b c hc`. Establish `hpos : (S.r * S.N) ^ 2 ≠ 0` using `pow_ne_zero _ (Nat.mul_ne_zero (by have := S.r_pos; omega) (by have := S.N_ge; omega))`. Establish `hζ : IsUnit S.ζ` using `S.prim.isUnit hpos`. Take `⟨c₀, hc₀⟩` from `(hζ.pow (S.r * S.N * (eStd S.g _ a b).val)).map (algebraMap o S.R)`. Establish `H` using `ρ.weil a b c₀ hc₀`.
+
+Establish `hf : (TFK (R` using `u.V) (PadicAlgCl p)).hom ≫ spMap u.yK = spMap y₀ := by`. Use `Eq.trans ?_ (congrArg spMap u.fac)` and prove the remaining obligations. Conclude with `(Spec.map_comp (CommRingCat.ofHom u.yK) (CommRingCat.ofHom (algebraMap (FractionRing u.V) (PadicAlgCl p)))).symm`. Set `h : Over.mk ((TFK (R` to `u.V) (PadicAlgCl p)).hom ≫ spMap u.yK) ⟶ baseOver (Sp S.R) := Over.homMk (spMap y₀) ((Category.comp_id _).trans hf.symm)`. Establish `H'` using `CommPairing.weilIs_pull hL.globalFns ρ.P.isAb ρ.P.isLB h H`.
+
+Establish `e : Units.map h.left.appTop.hom.toMonoidHom (unitOn c₀) = unitOn c`. Use `Units.ext ?_` and prove the remaining obligations. Use `(congrArg (fun q => q.hom c₀.val) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom y₀))).symm.trans ?_` and prove the remaining obligations. Use `show (Scheme.ΓSpecIso (CommRingCat.of (PadicAlgCl p))).inv.hom (y₀ c₀.val) = (Scheme.ΓSpecIso (CommRingCat.of (PadicAlgCl p))).inv.hom c.val`. Rewrite using `[hc, hc₀]`.
+
+Rewrite `H'` using `[e]`. Conclude with `(weilIs_grpPullback_of_comm' _ _ ρ.P.A u.A.A (spMap u.yK) u.φ ρ.P.L u.A.L ρ.P.isLB u.A.isLB u.cart u.lb (TFK (R := u.V) (PadicAlgCl p)) _ (x a) (x b) (h ≫ ρ.pt a) (h ≫ ρ.pt b) (unitOn c) (hx a).symm (hx b).symm).2 H'`.
+-/
 theorem weilIs_uTest : Laws → ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω] (S : ThetaSys o Ω) (ρ : S.Real) (p : ℕ) [Fact p.Prime] (y₀ : S.R →+* PadicAlgCl p) (u : ρ.UTest p y₀) (x : S.Gam → (TFK (R := u.V) (PadicAlgCl p) ⟶ u.A.A)), (∀ a, (x a).left ≫ u.φ = spMap y₀ ≫ (ρ.pt a).left) → ∀ a b (c : (PadicAlgCl p)ˣ), (c : PadicAlgCl p) = y₀ (algebraMap o S.R (S.ζ ^ (S.r * S.N * (eStd S.g _ a b).val))) → WeilIs u.A.A u.A.L (S.r * S.N : ℕ) (x a) (x b) (unitOn c) := by
   intro hL o Ω _ _ _ _ S ρ p _ y₀ u x hx a b c hc
   have hpos : (S.r * S.N) ^ 2 ≠ 0 :=

@@ -7,10 +7,18 @@ namespace ReciprocityTheory.Cheb
 def Smooth {E : Type} [Field E] [NumberField E] (S : Finset (Prm E)) (a : Ideal (𝓞 E)) : Prop :=
   ∀ q : Prm E, q.asIdeal ∣ a → q ∈ S
 
+/- English proof (translation)
+The claim follows from `IsDedekindDomain.HeightOneSpectrum.ext ((prime_dvd_prime_iff_eq p.prime q.prime).1 h)`.
+-/
 theorem prm_eq_of_dvd {E : Type} [Field E] [NumberField E] {p q : Prm E}
     (h : p.asIdeal ∣ q.asIdeal) : p = q :=
   IsDedekindDomain.HeightOneSpectrum.ext ((prime_dvd_prime_iff_eq p.prime q.prime).1 h)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hs`. Assume the negation of the conclusion as `htop`. Take `⟨M, hM, haM⟩` from `Ideal.exists_le_maximal a htop`. Establish `hMb : M ≠ ⊥` using `fun h => ha (le_bot_iff.1 (h ▸ haM))`.
+
+Set `q : Prm E` to `⟨M, hM.isPrime, hMb⟩`. Conclude with `absurd (hs q (Ideal.dvd_iff_le.2 haM)) (Finset.notMem_empty q)`. Introduce and unpack `rfl q hq`. Rewrite `hq` using `[← Ideal.one_eq_top]`. Conclude with `absurd (isUnit_of_dvd_one hq) q.prime.not_isUnit`.
+-/
 theorem smooth_empty_iff {E : Type} [Field E] [NumberField E] {a : Ideal (𝓞 E)} (ha : a ≠ ⊥) :
     Smooth ∅ a ↔ a = ⊤ := by
   constructor
@@ -24,6 +32,9 @@ theorem smooth_empty_iff {E : Type} [Field E] [NumberField E] {a : Ideal (𝓞 E
     rw [← Ideal.one_eq_top] at hq
     exact absurd (isUnit_of_dvd_one hq) q.prime.not_isUnit
 
+/- English proof (translation)
+Introduce `p hp`. Break down `p.prime.dvd_or_dvd hp with h | h` into its components or cases. Conclude with `Finset.mem_insert.2 (Or.inl (prm_eq_of_dvd (p.prime.dvd_of_dvd_pow h)))`. Conclude with `Finset.mem_insert_of_mem (hb p h)`.
+-/
 theorem smooth_insert_mul {E : Type} [Field E] [NumberField E] [DecidableEq (Prm E)] {S : Finset (Prm E)} {b : Ideal (𝓞 E)}
     (q : Prm E) (k : ℕ) (hb : Smooth S b) : Smooth (insert q S) (q.asIdeal ^ k * b) := by
   intro p hp
@@ -31,6 +42,11 @@ theorem smooth_insert_mul {E : Type} [Field E] [NumberField E] [DecidableEq (Prm
   · exact Finset.mem_insert.2 (Or.inl (prm_eq_of_dvd (p.prime.dvd_of_dvd_pow h)))
   · exact Finset.mem_insert_of_mem (hb p h)
 
+/- English proof (translation)
+Take `⟨k, b, hqb, hab⟩` from `WfDvdMonoid.max_power_factor (a₀ := a) ha q.irreducible`. Use `⟨k, b, ?_, ?_, hab⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Conclude with `ha (by rw [hab, Ideal.mul_bot])`. Introduce `p hp`.
+
+Establish `hpa : p.asIdeal ∣ a` using `hab ▸ dvd_mul_of_dvd_right hp _`. Break down `Finset.mem_insert.1 (hs p hpa) with h | h` into its components or cases. Conclude with `absurd (h ▸ hp) hqb`. Conclude with `h`.
+-/
 theorem smooth_insert_decomp {E : Type} [Field E] [NumberField E] [DecidableEq (Prm E)] {S : Finset (Prm E)} (q : Prm E)
     {a : Ideal (𝓞 E)} (ha : a ≠ ⊥) (hs : Smooth (insert q S) a) :
     ∃ (k : ℕ) (b : Ideal (𝓞 E)), b ≠ ⊥ ∧ Smooth S b ∧ a = q.asIdeal ^ k * b := by
@@ -44,6 +60,13 @@ theorem smooth_insert_decomp {E : Type} [Field E] [NumberField E] [DecidableEq (
     · exact absurd (h ▸ hp) hqb
     · exact h
 
+/- English proof (translation)
+Establish `hq0 : q.asIdeal ≠ 0` using `q.ne_bot`. Establish `key : ∀ {c c' : Ideal (𝓞 E)} {m m' : ℕ}, Smooth S c → m < m' → q.asIdeal ^ m * c ≠ q.asIdeal ^ m' * c'`. Introduce `c c' m m' hc hlt he`. Take `⟨n, rfl⟩` from `Nat.exists_eq_add_of_lt hlt`. Rewrite using `[show q.asIdeal ^ (m + n + 1) * c' = q.asIdeal ^ m * (q.asIdeal ^ (n + 1) * c') by`.
+
+Rewrite `he` using `[← mul_assoc, ← pow_add, add_assoc]]`. Establish `hc'` using `mul_left_cancel₀ (pow_ne_zero m hq0) he`. Conclude with `hq (hc q (hc' ▸ dvd_mul_of_dvd_left (dvd_pow_self _ (Nat.succ_ne_zero n)) _))`. Break down `lt_trichotomy k k' with hlt | rfl | hlt` into its components or cases. Conclude with `absurd h (key hb hlt)`.
+
+Conclude with `⟨rfl, mul_left_cancel₀ (pow_ne_zero k hq0) h⟩`. Conclude with `absurd h.symm (key hb' hlt)`.
+-/
 theorem smooth_mul_inj {E : Type} [Field E] [NumberField E] {S : Finset (Prm E)} {q : Prm E} (hq : q ∉ S)
     {b b' : Ideal (𝓞 E)} (hb : Smooth S b) (hb' : Smooth S b') {k k' : ℕ}
     (h : q.asIdeal ^ k * b = q.asIdeal ^ k' * b') : k = k' ∧ b = b' := by

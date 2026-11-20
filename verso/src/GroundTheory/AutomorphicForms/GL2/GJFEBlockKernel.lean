@@ -15,11 +15,17 @@ open scoped NNReal ENNReal Pointwise
 variable {F : Type*} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
   [MeasurableSpace F] [BorelSpace F] {m : ℕ} [MeasurableSpace (GL (Fin m) F)] [BorelSpace (GL (Fin m) F)]
 
+/- English proof (translation)
+The claim follows from `hΦ.1.continuous.integrable_of_hasCompactSupport hΦ.2`.
+-/
 theorem IsSchwartzBruhat.integrable_matrix {Φ : Matrix (Fin m) (Fin m) F → ℂ}
     (hΦ : IsSchwartzBruhat Φ) (μ₁ : Measure F) [μ₁.IsAddHaarMeasure] :
     Integrable Φ (matrixMeasure (n := Fin m) μ₁) :=
   hΦ.1.continuous.integrable_of_hasCompactSupport hΦ.2
 
+/- English proof (translation)
+Establish `hprod` using `(hΦ.integrable_matrix μ₁).mul_prod hbi`. Use `hprod.mono ?_ (Filter.Eventually.of_forall fun p => ?_)` and prove the remaining obligations. Conclude with `(((hΦ.1.continuous.comp continuous_fst).mul ((continuous_subtype_val.comp hψ).comp (Continuous.matrix_trace ((ha.comp continuous_fst).matrix_mul continuous_snd)))).mul ((hΨ.1.continuous.comp hb).comp continuous_snd)).aestronglyMeasurable`. Simplify using `only [norm_mul, Circle.norm_coe, mul_one]`. Both sides reduce to the same expression.
+-/
 theorem integrable_fourier_kernel {ψ : AddChar F Circle} (hψ : Continuous ψ)
     {Φ Ψ : Matrix (Fin m) (Fin m) F → ℂ} (hΦ : IsSchwartzBruhat Φ) (hΨ : IsSchwartzBruhat Ψ)
     (μ₁ : Measure F) [μ₁.IsAddHaarMeasure] (a b : Matrix (Fin m) (Fin m) F → Matrix (Fin m) (Fin m) F)
@@ -35,6 +41,15 @@ theorem integrable_fourier_kernel {ψ : AddChar F Circle} (hψ : Continuous ψ)
   · simp only [norm_mul, Circle.norm_coe, mul_one]
     rfl
 
+/- English proof (translation)
+Use `set M := matrixMeasure (n := Fin m) (LocalField.selfDualMeasure ψ)`. Establish `hint` using `integrable_fourier_kernel hψ hf hg (LocalField.selfDualMeasure ψ) id id continuous_id continuous_id (hg.integrable_matrix _)`. Simplify using `only [id] at hint`. Establish `h1 : ∫ W, localMatrixFourier ψ f W * g W ∂M = ∫ W, ∫ Z, f Z * ((ψ (Matrix.trace (Z * W)) : Circle) : ℂ) * g W ∂M ∂M`. Use `integral_congr_ae (Filter.Eventually.of_forall fun W => ?_)` and prove the remaining obligations.
+
+Simplify using `only [localMatrixFourier]`. Rewrite using `[← integral_mul_const]`. Establish `h2 : ∫ Z, f Z * localMatrixFourier ψ g Z ∂M = ∫ Z, ∫ W, f Z * ((ψ (Matrix.trace (Z * W)) : Circle) : ℂ) * g W ∂M ∂M`. Use `integral_congr_ae (Filter.Eventually.of_forall fun Z => ?_)` and prove the remaining obligations. Simplify using `only [localMatrixFourier]`.
+
+Rewrite using `[← integral_const_mul]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun W => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[Matrix.trace_mul_comm W Z]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[h1, h2, ← integral_prod_symm _ hint, integral_prod _ hint]`.
+-/
 theorem integral_fourier_mul {ψ : AddChar F Circle} (hψ : Continuous ψ)
     {f g : Matrix (Fin m) (Fin m) F → ℂ} (hf : IsSchwartzBruhat f) (hg : IsSchwartzBruhat g) :
     ∫ W, localMatrixFourier ψ f W * g W ∂matrixMeasure (LocalField.selfDualMeasure ψ) =
@@ -59,6 +74,11 @@ theorem integral_fourier_mul {ψ : AddChar F Circle} (hψ : Continuous ψ)
     ring
   rw [h1, h2, ← integral_prod_symm _ hint, integral_prod _ hint]
 
+/- English proof (translation)
+Establish `h` using `integral_comp_mul_left_matrix (LocalField.selfDualMeasure ψ) y (fun Z => Φ Z * ((ψ (Matrix.trace (Z * (W * ((y⁻¹ : GL (Fin m) F) : Matrix (Fin m) (Fin m) F)))) : Circle) : ℂ))`. Establish `htr : ∀ Z : Matrix (Fin m) (Fin m) F, Matrix.trace ((y : Matrix (Fin m) (Fin m) F) * Z * (W * ((y⁻¹ : GL (Fin m) F) : Matrix (Fin m) (Fin m) F))) = Matrix.trace (Z * W)`. Introduce `Z`. Rewrite using `[Matrix.mul_assoc, Matrix.trace_mul_comm, Matrix.mul_assoc, Matrix.mul_assoc, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.mul_one]`. Simplify using `only [localMatrixFourier]`.
+
+Rewrite using `[← h]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun Z => ?_)` and prove the remaining obligations. Simplify using `only [htr]`.
+-/
 theorem localMatrixFourier_comp_mul_left {ψ : AddChar F Circle} (Φ : Matrix (Fin m) (Fin m) F → ℂ)
     (y : GL (Fin m) F) (W : Matrix (Fin m) (Fin m) F) :
     localMatrixFourier ψ (fun Z => Φ ((y : Matrix (Fin m) (Fin m) F) * Z)) W =
@@ -77,6 +97,15 @@ theorem localMatrixFourier_comp_mul_left {ψ : AddChar F Circle} (Φ : Matrix (F
   refine integral_congr_ae (Filter.Eventually.of_forall fun Z => ?_)
   simp only [htr]
 
+/- English proof (translation)
+Use `set d : ℝ := (LocalField.modulus (y : Matrix (Fin m) (Fin m) F).det : ℝ) ^ m with hd`. Establish `hd0 : d ≠ 0` using `pow_ne_zero _ (by`. Conclude with `(LocalField.modulus_ne_zero (det_ne_zero y)))` after adjusting the coercions. Establish `h1` using `integral_comp_mul_right_matrix (LocalField.selfDualMeasure ψ) y⁻¹ (fun X => localMatrixFourier ψ Φ X * Ψ (X * (y : Matrix (Fin m) (Fin m) F)))`. Establish `hdinv : (LocalField.modulus ((y⁻¹ : GL (Fin m) F) : Matrix (Fin m) (Fin m) F).det : ℝ) ^ m = d⁻¹`.
+
+Rewrite using `[hd, ← inv_pow]`. Use `congr 1`. Establish `hm` using `LocalField.modulus_mul ((y : Matrix (Fin m) (Fin m) F).det) ((y⁻¹ : GL (Fin m) F) : Matrix (Fin m) (Fin m) F).det`. Rewrite `hm` using `[← Matrix.det_mul, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.det_one, LocalField.modulus_one]`. Establish `h' : (LocalField.modulus (y : Matrix (Fin m) (Fin m) F).det : ℝ) * (LocalField.modulus ((y⁻¹ : GL (Fin m) F) : Matrix (Fin m) (Fin m) F).det : ℝ) = 1`.
+
+Conclude with `hm.symm` after adjusting the coercions. Conclude with `eq_inv_of_mul_eq_one_right h'`. Rewrite `h1` using `[hdinv, inv_inv]`. Establish `h2 : ∫ X, localMatrixFourier ψ Φ X * Ψ (X * (y : Matrix (Fin m) (Fin m) F)) ∂matrixMeasure (LocalField.selfDualMeasure ψ) = ∫ W, localMatrixFourier ψ (fun Z => Φ ((y : Matrix (Fin m) (Fin m) F) * Z)) W * Ψ W ∂matrixMeasure (LocalField.selfDualMeasure ψ)`. Rewrite using `[← inv_smul_smul₀ hd0 (∫ X, _ ∂_), ← h1, ← integral_smul]`.
+
+Use `integral_congr_ae (Filter.Eventually.of_forall fun W => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[localMatrixFourier_comp_mul_left, Matrix.mul_assoc, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.mul_one, smul_mul_assoc]`. Rewrite using `[h2, integral_fourier_mul hψ (hΦ.comp_mul_left y) hΨ]`.
+-/
 theorem integral_fourier_mul_right {ψ : AddChar F Circle} (hψ : Continuous ψ)
     {Φ Ψ : Matrix (Fin m) (Fin m) F → ℂ} (hΦ : IsSchwartzBruhat Φ) (hΨ : IsSchwartzBruhat Ψ)
     (y : GL (Fin m) F) :
@@ -114,6 +143,13 @@ theorem integral_fourier_mul_right {ψ : AddChar F Circle} (hψ : Continuous ψ)
       Units.val_one, Matrix.mul_one, smul_mul_assoc]
   rw [h2, integral_fourier_mul hψ (hΦ.comp_mul_left y) hΨ]
 
+/- English proof (translation)
+Establish `hLc : Continuous L` using `L.toLinearMap.continuous_on_pi`. Establish `hLic : Continuous L.symm` using `L.symm.toLinearMap.continuous_on_pi`. Set `e : (ι → F) ≃ₜ (ι → F)` to `⟨L.toEquiv, hLc, hLic⟩`. Establish `hmap : Measure.map L μ₀ = ((distribHaarChar (ι → F) L)⁻¹ : ℝ≥0) • μ₀`. Use extensionality with `S hS`.
+
+Rewrite using `[Measure.map_apply hLc.measurable hS, Measure.smul_apply]`. Establish `h` using `distribHaarChar_mul μ₀ L⁻¹ S`. Establish `hpre : (L : (ι → F) → (ι → F)) ⁻¹' S = L⁻¹ • S`. Use extensionality with `x`. Rewrite using `[Set.mem_smul_set_iff_inv_smul_mem, inv_inv, LinearEquiv.smul_def]`.
+
+Both sides reduce to the same expression. Rewrite using `[hpre, ← h, map_inv, ENNReal.smul_def, smul_eq_mul]`. Use `e.measurableEmbedding.lintegral_map (μ := μ₀) f` as an intermediate fact. Express the relevant statement in the definitionally equal form `∫⁻ y, f y ∂(Measure.map L μ₀) = _ at this`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem lintegral_comp_linearEquiv {ι : Type*} [Fintype ι] (μ₀ : Measure (ι → F))
     [μ₀.IsAddHaarMeasure] (L : (ι → F) ≃ₗ[F] (ι → F)) (f : (ι → F) → ℝ≥0∞) :
     ∫⁻ x, f (L x) ∂μ₀ = ((distribHaarChar (ι → F) L)⁻¹ : ℝ≥0) * ∫⁻ x, f x ∂μ₀ := by
@@ -134,6 +170,13 @@ theorem lintegral_comp_linearEquiv {ι : Type*} [Fintype ι] (μ₀ : Measure (�
   calc ∫⁻ x, f (L x) ∂μ₀ = ∫⁻ x, f (e x) ∂μ₀ := rfl
     _ = _ := by rw [← this, hmap, ENNReal.smul_def, lintegral_smul_measure, smul_eq_mul]
 
+/- English proof (translation)
+Establish `hmp` using `measurePreserving_matrixCoord (n := Fin m) μ₁`. Establish `hemb` using `(Measures.entriesHomeomorph F m).measurableEmbedding`. Establish `hconv : ∀ g : Matrix (Fin m) (Fin m) F → ℝ≥0∞, ∫⁻ X, g X ∂matrixMeasure (n` using `Fin m) μ₁ = ∫⁻ x, g ((Measures.entries F m).symm x) ∂(Measure.pi fun _ : Fin m × Fin m => μ₁) := fun g => by`. Rewrite using `[← hmp.lintegral_comp_emb hemb]`. Both sides reduce to the same expression.
+
+Rewrite using `[hconv, hconv]`. Establish `h` using `lintegral_comp_linearEquiv (Measure.pi fun _ : Fin m × Fin m => μ₁) ((Measures.glChart F m).right y) (fun x => f ((Measures.entries F m).symm x))`. Establish `hR : ∀ x, (Measures.entries F m).symm ((Measures.glChart F m).right y x) = (Measures.entries F m).symm x * (y : Matrix (Fin m) (Fin m) F)` using `fun x => by`. Simplify using `[Measures.glChart]`. Simplify using `only [hR] at h`.
+
+Rewrite using `[h]`. Use `congr 2`. Establish `hc` using `Measures.glChart_rightModulus F m y`. Rewrite `hc` using `[Measures.LinearChart.rightModulus]`. Rewrite using `[hc, LocalField.distribHaarChar_eq_modulus, Matrix.GeneralLinearGroup.val_det_apply]`.
+-/
 theorem lintegral_comp_mul_right_matrix (μ₁ : Measure F) [μ₁.IsAddHaarMeasure] (y : GL (Fin m) F)
     (f : Matrix (Fin m) (Fin m) F → ℝ≥0∞) :
     ∫⁻ X, f (X * (y : Matrix (Fin m) (Fin m) F)) ∂matrixMeasure (n := Fin m) μ₁ =
@@ -158,6 +201,13 @@ theorem lintegral_comp_mul_right_matrix (μ₁ : Measure F) [μ₁.IsAddHaarMeas
   rw [Measures.LinearChart.rightModulus] at hc
   rw [hc, LocalField.distribHaarChar_eq_modulus, Matrix.GeneralLinearGroup.val_det_apply]
 
+/- English proof (translation)
+Establish `hmp` using `measurePreserving_matrixCoord (n := Fin m) μ₁`. Establish `hemb` using `(Measures.entriesHomeomorph F m).measurableEmbedding`. Establish `hconv : ∀ g : Matrix (Fin m) (Fin m) F → ℝ≥0∞, ∫⁻ X, g X ∂matrixMeasure (n` using `Fin m) μ₁ = ∫⁻ x, g ((Measures.entries F m).symm x) ∂(Measure.pi fun _ : Fin m × Fin m => μ₁) := fun g => by`. Rewrite using `[← hmp.lintegral_comp_emb hemb]`. Both sides reduce to the same expression.
+
+Rewrite using `[hconv, hconv]`. Establish `h` using `lintegral_comp_linearEquiv (Measure.pi fun _ : Fin m × Fin m => μ₁) ((Measures.glChart F m).left y) (fun x => f ((Measures.entries F m).symm x))`. Establish `hL : ∀ x, (Measures.entries F m).symm ((Measures.glChart F m).left y x) = (y : Matrix (Fin m) (Fin m) F) * (Measures.entries F m).symm x` using `fun x => by`. Simplify using `[Measures.glChart]`. Simplify using `only [hL] at h`.
+
+Rewrite using `[h]`. Use `congr 2`. Establish `hc` using `Measures.glChart_leftModulus F m y`. Rewrite `hc` using `[Measures.LinearChart.leftModulus]`. Rewrite using `[hc, LocalField.distribHaarChar_eq_modulus, Matrix.GeneralLinearGroup.val_det_apply]`.
+-/
 theorem lintegral_comp_mul_left_matrix (μ₁ : Measure F) [μ₁.IsAddHaarMeasure] (y : GL (Fin m) F)
     (f : Matrix (Fin m) (Fin m) F → ℝ≥0∞) :
     ∫⁻ X, f ((y : Matrix (Fin m) (Fin m) F) * X) ∂matrixMeasure (n := Fin m) μ₁ =
@@ -182,6 +232,9 @@ theorem lintegral_comp_mul_left_matrix (μ₁ : Measure F) [μ₁.IsAddHaarMeasu
   rw [Measures.LinearChart.leftModulus] at hc
   rw [hc, LocalField.distribHaarChar_eq_modulus, Matrix.GeneralLinearGroup.val_det_apply]
 
+/- English proof (translation)
+Rewrite using `[LocalField.modulus_of_ne_zero (det_ne_zero y)]`. Use `push_cast`. Rewrite using `[← zpow_natCast, ← zpow_mul, ← zpow_natCast, ← zpow_mul, ← zpow_neg, ordDet]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem inv_modulus_det_pow (y : GL (Fin m) F) :
     (((LocalField.modulus (y : Matrix (Fin m) (Fin m) F).det ^ m)⁻¹ : ℝ≥0) : ℝ) =
       ((LocalField.residueCard F : ℝ) ^ m) ^ ordDet y := by
@@ -191,11 +244,35 @@ theorem inv_modulus_det_pow (y : GL (Fin m) F) :
   congr 1
   ring
 
+/- English proof (translation)
+The claim follows from `(hΦ.integrable_matrix μ₁).2`.
+-/
 theorem IsSchwartzBruhat.lintegral_lt_top {Φ : Matrix (Fin m) (Fin m) F → ℂ}
     (hΦ : IsSchwartzBruhat Φ) (μ₁ : Measure F) [μ₁.IsAddHaarMeasure] :
     ∫⁻ X, ‖Φ X‖ₑ ∂matrixMeasure (n := Fin m) μ₁ < ∞ :=
   (hΦ.integrable_matrix μ₁).2
 
+/- English proof (translation)
+Take `⟨BΦ, hBΦ0, hBΦ⟩` from `hΦ'.exists_bound`. Take `⟨A, hA⟩` from `hΦ'.exists_ordDet_ge`. Take `⟨K, hK, hKΨ⟩` from `hΨK`. Take `⟨e₁, he₁⟩` from `(hK.image isLocallyConstant_ordDet_GL.continuous).bddAbove`. Use `set q : ℝ := (LocalField.residueCard F : ℝ) with hqdef`.
+
+Establish `hq : 1 < q` using `by rw [hqdef]; exact_mod_cast LocalField.one_lt_residueCard (K := F)`. Establish `hqm : 1 ≤ q ^ m` using `one_le_pow₀ hq.le`. Use `set k₂ : ℤ := e₁ + m * A`. Use `set C₁ : ℝ≥0∞ := ENNReal.ofReal BΦ * ∫⁻ X, ‖Ψ X‖ₑ ∂matrixMeasure (n := Fin m) μ₁ with hC₁def`. Establish `hC₁ : C₁ ≠ ∞` using `ENNReal.mul_ne_top ENNReal.ofReal_ne_top (hΨ.lintegral_lt_top μ₁).ne`.
+
+Use `clear_value C₁`. Use `⟨C₁ * ENNReal.ofReal ((q ^ m) ^ max k₂ 0), ENNReal.mul_ne_top hC₁ ENNReal.ofReal_ne_top, fun y => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hy : k₂ < ordDet y`. Establish `hz : ∀ X, ‖Φ' X * Ψ (X * (y : Matrix (Fin m) (Fin m) F))‖ₑ = 0`. Introduce `X`.
+
+Rewrite using `[enorm_eq_zero]`. Assume the negation of the conclusion as `hne`. Establish `hΨne : Ψ (X * (y : Matrix (Fin m) (Fin m) F)) ≠ 0` using `right_ne_zero_of_mul hne`. Establish `hΦne : Φ' X ≠ 0` using `left_ne_zero_of_mul hne`. Take `⟨k, hk, hkX⟩` from `hKΨ _ hΨne`.
+
+Establish `hX : X = ((k * y⁻¹ : GL (Fin m) F) : Matrix (Fin m) (Fin m) F)`. Rewrite using `[Units.val_mul, hkX, Matrix.mul_assoc, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.mul_one]`. Rewrite `hΦne` using `[hX]`. Establish `h1` using `hA _ hΦne`. Rewrite `h1` using `[ordDet_mul, ordDet_inv]`.
+
+Establish `h2` using `he₁ ⟨k, hk, rfl⟩`. Use linear arithmetic over natural numbers and integers. Simplify using `[hz]`. Use `push Not at hy`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `lintegral_mono fun X => ?_` and prove the remaining obligations. Rewrite using `[enorm_mul, ← ofReal_norm]`. Use `gcongr`. Conclude with `hBΦ X`. Use `_ = C₁ * ENNReal.ofReal ((q ^ m) ^ ordDet y) := by`.
+
+Rewrite using `[hC₁def, lintegral_const_mul' _ _ ENNReal.ofReal_ne_top, lintegral_comp_mul_right_matrix μ₁ y (fun X => ‖Ψ X‖ₑ), ← inv_modulus_det_pow, ENNReal.ofReal_coe_nnreal]`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ C₁ * ENNReal.ofReal ((q ^ m) ^ max k₂ 0) * ENNReal.ofReal (min 1 ((q ^ m) ^ ordDet y)) := by`. Rewrite using `[mul_assoc]`. Use `gcongr C₁ * ?_`.
+
+Rewrite using `[← ENNReal.ofReal_mul (zpow_nonneg (by positivity) _)]`. Use `ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations. Distinguish the cases in `h0 : ordDet y ≤ 0`. Rewrite using `[min_eq_right (zpow_le_one_of_nonpos₀ hqm h0)]`. Conclude with `le_mul_of_one_le_left (zpow_nonneg (by positivity) _) (one_le_zpow₀ hqm (le_max_right _ _))`.
+
+Use `push Not at h0`. Rewrite using `[min_eq_left (one_le_zpow₀ hqm h0.le), mul_one]`. Conclude with `zpow_le_zpow_right₀ hqm (le_trans hy (le_max_left _ _))`.
+-/
 theorem exists_bound_kernel₁ {Φ' Ψ : Matrix (Fin m) (Fin m) F → ℂ} (hΦ' : IsSchwartzBruhat Φ')
     (hΨ : IsSchwartzBruhat Ψ) (hΨK : ∃ K : Set (GL (Fin m) F), IsCompact K ∧
       ∀ X, Ψ X ≠ 0 → ∃ g ∈ K, (g : Matrix (Fin m) (Fin m) F) = X)
@@ -260,6 +337,21 @@ theorem exists_bound_kernel₁ {Φ' Ψ : Matrix (Fin m) (Fin m) F → ℂ} (hΦ'
             rw [min_eq_left (one_le_zpow₀ hqm h0.le), mul_one]
             exact zpow_le_zpow_right₀ hqm (le_trans hy (le_max_left _ _))
 
+/- English proof (translation)
+Take `⟨BΦ, hBΦ0, hBΦ⟩` from `hΦ.exists_bound`. Take `⟨BΨ, hBΨ0, hBΨ⟩` from `hΨ'.exists_bound`. Use `set q : ℝ := (LocalField.residueCard F : ℝ) with hqdef`. Establish `hq : 1 < q` using `by rw [hqdef]; exact_mod_cast LocalField.one_lt_residueCard (K := F)`. Establish `hqm : 1 ≤ q ^ m` using `one_le_pow₀ hq.le`.
+
+Use `set C₂ : ℝ≥0∞ := ENNReal.ofReal BΨ * ∫⁻ X, ‖Φ X‖ₑ ∂matrixMeasure (n := Fin m) μ₁`. Use `set C₃ : ℝ≥0∞ := ENNReal.ofReal BΦ * ∫⁻ X, ‖Ψ' X‖ₑ ∂matrixMeasure (n := Fin m) μ₁`. Establish `hC₂ : C₂ ≠ ∞` using `ENNReal.mul_ne_top ENNReal.ofReal_ne_top (hΦ.lintegral_lt_top μ₁).ne`. Establish `hC₃ : C₃ ≠ ∞` using `ENNReal.mul_ne_top ENNReal.ofReal_ne_top (hΨ'.lintegral_lt_top μ₁).ne`. Use `⟨max C₂ C₃, max_ne_top hC₂ hC₃, fun y => ?_⟩` and prove the remaining obligations.
+
+Establish `h2 : ∫⁻ X, ‖Φ ((y : Matrix (Fin m) (Fin m) F) * X) * Ψ' X‖ₑ ∂matrixMeasure (n` using `Fin m) μ₁ ≤ C₂ * ENNReal.ofReal ((q ^ m) ^ ordDet y) := by`. Combine the equalities or inequalities in the displayed calculation. Use `lintegral_mono fun X => ?_` and prove the remaining obligations. Rewrite using `[enorm_mul, ← ofReal_norm (Ψ' X), mul_comm]`. Use `gcongr`.
+
+Conclude with `hBΨ X`. Use `_ = _ := by`. Rewrite using `[lintegral_const_mul' _ _ ENNReal.ofReal_ne_top, lintegral_comp_mul_left_matrix μ₁ y (fun X => ‖Φ X‖ₑ), ← inv_modulus_det_pow, ENNReal.ofReal_coe_nnreal]`. Expand and normalize the polynomial expressions, which then agree. Establish `h3 : ∫⁻ X, ‖Φ ((y : Matrix (Fin m) (Fin m) F) * X) * Ψ' X‖ₑ ∂matrixMeasure (n` using `Fin m) μ₁ ≤ C₃ := by`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `lintegral_mono fun X => ?_` and prove the remaining obligations. Rewrite using `[enorm_mul, ← ofReal_norm (Φ _)]`. Use `gcongr`. Conclude with `hBΦ _`.
+
+Use `_ = C₃ := lintegral_const_mul' _ _ ENNReal.ofReal_ne_top`. Distinguish the cases in `h0 : (q ^ m) ^ ordDet y ≤ 1`. Rewrite using `[min_eq_right h0]`. Conclude with `h2.trans (by gcongr; exact le_max_left _ _)`. Use `push Not at h0`.
+
+Rewrite using `[min_eq_left h0.le, ENNReal.ofReal_one, mul_one]`. Conclude with `h3.trans (le_max_right _ _)`.
+-/
 theorem exists_bound_kernel₂ {Φ Ψ' : Matrix (Fin m) (Fin m) F → ℂ} (hΦ : IsSchwartzBruhat Φ)
     (hΨ' : IsSchwartzBruhat Ψ') (μ₁ : Measure F) [μ₁.IsAddHaarMeasure] :
     ∃ B : ℝ≥0∞, B ≠ ∞ ∧ ∀ y : GL (Fin m) F,
@@ -303,12 +395,18 @@ theorem exists_bound_kernel₂ {Φ Ψ' : Matrix (Fin m) (Fin m) F → ℂ} (hΦ 
     rw [min_eq_left h0.le, ENNReal.ofReal_one, mul_one]
     exact h3.trans (le_max_right _ _)
 
+/- English proof (translation)
+Establish `h : (absDet g : ℂ) ≠ 0`. Rewrite using `[absDet]`. Conclude with `LocalField.modulus_ne_zero (det_ne_zero g)` after adjusting the coercions. Rewrite using `[detPow, detPow, detPow, Complex.cpow_add _ _ h]`.
+-/
 theorem detPow_mul_detPow (g : GL (Fin m) F) (a b : ℂ) : detPow g a * detPow g b = detPow g (a + b) := by
   have h : (absDet g : ℂ) ≠ 0 := by
     rw [absDet]
     exact_mod_cast LocalField.modulus_ne_zero (det_ne_zero g)
   rw [detPow, detPow, detPow, Complex.cpow_add _ _ h]
 
+/- English proof (translation)
+Rewrite using `[detPow_natCast, ← ofReal_norm, Complex.norm_real, Real.norm_of_nonneg (NNReal.coe_nonneg _), ENNReal.ofReal_coe_nnreal]`.
+-/
 theorem enorm_detPow_natCast (g : GL (Fin m) F) :
     ‖detPow g (m : ℂ)‖ₑ = ((detModulusPow g : ℝ≥0) : ℝ≥0∞) := by
   rw [detPow_natCast, ← ofReal_norm, Complex.norm_real, Real.norm_of_nonneg (NNReal.coe_nonneg _),
@@ -332,6 +430,27 @@ def shearRight (G : Type*) [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
 
 variable [NeZero m] {α : ℂ} {c : GL (Fin m) F → ℂ}
 
+/- English proof (translation)
+Use `set M := matrixMeasure (n := Fin m) (LocalField.selfDualMeasure ψ)`. Use `set Φh := localMatrixFourier ψ Φ with hΦhdef`. Establish `hΦh : IsSchwartzBruhat Φh` using `hΦ.localMatrixFourier hψ hψ1`. Use `set F₁ : GL (Fin m) F × GL (Fin m) F → ℂ := fun p => Φh (p.1 : Matrix (Fin m) (Fin m) F) * detPow p.1 (m - s) * (Ψ (p.2 : Matrix (Fin m) (Fin m) F) * detPow p.2 s) * c (p.1⁻¹ * p.2) with hF₁`. Establish `hT : MeasurePreserving (shearLeft (GL (Fin m) F)) (μ.prod μ) (μ.prod μ)` using `measurePreserving_prod_mul μ μ`.
+
+Establish `hTe : MeasurableEmbedding (shearLeft (GL (Fin m) F))` using `(shearLeft _).measurableEmbedding`. Establish `hF₁T : ∀ p : GL (Fin m) F × GL (Fin m) F, F₁ (shearLeft _ p) = (Φh (p.1 : Matrix (Fin m) (Fin m) F) * Ψ ((p.1 : Matrix (Fin m) (Fin m) F) * (p.2 : Matrix (Fin m) (Fin m) F)) * detPow p.1 (m : ℂ)) * (detPow p.2 s * c p.2)`. Introduce `p`. Simplify using `only [hF₁, shearLeft, Homeomorph.homeomorph_mk_coe, Equiv.coe_fn_mk, inv_mul_cancel_left, Units.val_mul, detPow_mul]`. Establish `hadd` using `detPow_mul_detPow p.1 ((m : ℂ) - s) s`.
+
+Rewrite `hadd` using `[sub_add_cancel]`. Rewrite using `[← hadd]`. Expand and normalize the polynomial expressions, which then agree. Establish `hcontT : Continuous (F₁ ∘ shearLeft (GL (Fin m) F))`. Establish `: (F₁ ∘ shearLeft (GL (Fin m) F)) = fun p => (Φh (p.1 : Matrix (Fin m) (Fin m) F) * Ψ ((p.1 : Matrix (Fin m) (Fin m) F) * (p.2 : Matrix (Fin m) (Fin m) F)) * detPow p.1 (m : ℂ)) * (detPow p.2 s * c p.2)` using `funext hF₁T`.
+
+Rewrite using `[this]`. Conclude with `(((hΦh.1.continuous.comp (Units.continuous_val.comp continuous_fst)).mul (hΨ.1.continuous.comp ((Units.continuous_val.comp continuous_fst).mul (Units.continuous_val.comp continuous_snd)))).mul ((continuous_detPow _).comp continuous_fst)).mul (((continuous_detPow _).comp continuou …`. Take `⟨B₁, hB₁, hbound⟩` from `exists_bound_kernel₁ hΦh hΨ hΨK (LocalField.selfDualMeasure ψ)`. Establish `hlint : ∫⁻ p, ‖(F₁ ∘ shearLeft (GL (Fin m) F)) p‖ₑ ∂(μ.prod μ) < ∞`. Rewrite using `[lintegral_prod_symm _ hcontT.enorm.measurable.aemeasurable]`.
+
+Establish `hin : ∀ y : GL (Fin m) F, ∫⁻ h, ‖(F₁ ∘ shearLeft (GL (Fin m) F)) (h, y)‖ₑ ∂μ = ‖c y * detPow y s‖ₑ * (κ * ∫⁻ X, ‖Φh X * Ψ (X * (y : Matrix (Fin m) (Fin m) F))‖ₑ ∂M)`. Introduce `y`. Establish `e1 : ∀ h : GL (Fin m) F, ‖(F₁ ∘ shearLeft (GL (Fin m) F)) (h, y)‖ₑ = ‖Φh (h : Matrix (Fin m) (Fin m) F) * Ψ ((h : Matrix (Fin m) (Fin m) F) * (y : Matrix (Fin m) (Fin m) F))‖ₑ * (detModulusPow h : ℝ≥0∞) * ‖c y * detPow y s‖ₑ` using `fun h => by`. Rewrite using `[Function.comp_apply, hF₁T, enorm_mul, enorm_mul, enorm_detPow_natCast, mul_comm (detPow y s)]`. Simplify using `only [e1]`.
+
+Rewrite using `[lintegral_mul_const' _ _ enorm_ne_top, hκlint (fun X => ‖Φh X * Ψ (X * (y : Matrix (Fin m) (Fin m) F))‖ₑ) ((hΦh.1.continuous.mul (hΨ.1.continuous.comp (continuous_id.mul continuous_const))).enorm.measurable)]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [hin]`. Conclude with `hc.lintegral_weight_lt_top μ (J := fun y => κ * ∫⁻ X, ‖Φh X * Ψ (X * (y : Matrix (Fin m) (Fin m) F))‖ₑ ∂M) (B := κ * B₁) (ENNReal.mul_ne_top ENNReal.coe_ne_top hB₁) (fun y => by`. Rewrite using `[mul_assoc]`.
+
+Use `gcongr`. Conclude with `hbound y) hs hs'`. Establish `hF₁Ti : Integrable (F₁ ∘ shearLeft (GL (Fin m) F)) (μ.prod μ)` using `⟨hcontT.aestronglyMeasurable, hlint⟩`. Establish `hF₁i : Integrable F₁ (μ.prod μ)` using `(hT.integrable_comp_emb hTe).1 hF₁Ti`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `integral_congr_ae (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Simplify using `only [hF₁]`. Rewrite using `[← integral_const_mul]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun h => ?_)` and prove the remaining obligations. Simplify using `only`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `_ = ∫ p, F₁ p ∂(μ.prod μ) := (integral_prod_symm F₁ hF₁i).symm`. Use `_ = ∫ p, F₁ (shearLeft (GL (Fin m) F) p) ∂(μ.prod μ) := (hT.integral_comp hTe F₁).symm`. Use `_ = ∫ y, ∫ h, F₁ (shearLeft (GL (Fin m) F) (h, y)) ∂μ ∂μ := integral_prod_symm _ hF₁Ti`. Use `_ = _ := by`.
+
+Use `integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Simplify using `only [hF₁T]`. Rewrite using `[integral_mul_const, hκint (fun X => Φh X * Ψ (X * (y : Matrix (Fin m) (Fin m) F)))]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem integral_kernel_left (hc : IsCentralCoeff m α c) (μ : Measure (GL (Fin m) F))
     [μ.IsHaarMeasure] {ψ : AddChar F Circle} (hψ : Continuous ψ) (hψ1 : ψ ≠ 1)
     {Φ Ψ : Matrix (Fin m) (Fin m) F → ℂ} (hΦ : IsSchwartzBruhat Φ) (hΨ : IsSchwartzBruhat Ψ)
@@ -425,6 +544,27 @@ theorem integral_kernel_left (hc : IsCentralCoeff m α c) (μ : Measure (GL (Fin
         rw [integral_mul_const, hκint (fun X => Φh X * Ψ (X * (y : Matrix (Fin m) (Fin m) F)))]
         ring
 
+/- English proof (translation)
+Establish `: μ.IsMulRightInvariant` using `Measures.isMulRightInvariant_GL F m μ`. Use `set M := matrixMeasure (n := Fin m) (LocalField.selfDualMeasure ψ)`. Use `set Ψh := localMatrixFourier ψ Ψ with hΨhdef`. Establish `hΨh : IsSchwartzBruhat Ψh` using `hΨ.localMatrixFourier hψ hψ1`. Use `set F₂ : GL (Fin m) F × GL (Fin m) F → ℂ := fun p => Φ (p.1 : Matrix (Fin m) (Fin m) F) * detPow p.1 s * (Ψh (p.2 : Matrix (Fin m) (Fin m) F) * detPow p.2 (m - s)) * c (p.1 * p.2⁻¹) with hF₂`.
+
+Establish `hT : MeasurePreserving (shearRight (GL (Fin m) F)) (μ.prod μ) (μ.prod μ)` using `measurePreserving_mul_prod μ μ`. Establish `hTe : MeasurableEmbedding (shearRight (GL (Fin m) F))` using `(shearRight _).measurableEmbedding`. Establish `hF₂T : ∀ p : GL (Fin m) F × GL (Fin m) F, F₂ (shearRight _ p) = (Φ ((p.1 : Matrix (Fin m) (Fin m) F) * (p.2 : Matrix (Fin m) (Fin m) F)) * Ψh (p.2 : Matrix (Fin m) (Fin m) F) * detPow p.2 (m : ℂ)) * (detPow p.1 s * c p.1)`. Introduce `p`. Simplify using `only [hF₂, shearRight, Homeomorph.homeomorph_mk_coe, Equiv.coe_fn_mk, mul_inv_cancel_right, Units.val_mul, detPow_mul]`.
+
+Establish `hadd` using `detPow_mul_detPow p.2 s ((m : ℂ) - s)`. Rewrite `hadd` using `[add_sub_cancel]`. Rewrite using `[← hadd]`. Expand and normalize the polynomial expressions, which then agree. Establish `hcontT : Continuous (F₂ ∘ shearRight (GL (Fin m) F))`.
+
+Establish `: (F₂ ∘ shearRight (GL (Fin m) F)) = fun p => (Φ ((p.1 : Matrix (Fin m) (Fin m) F) * (p.2 : Matrix (Fin m) (Fin m) F)) * Ψh (p.2 : Matrix (Fin m) (Fin m) F) * detPow p.2 (m : ℂ)) * (detPow p.1 s * c p.1)` using `funext hF₂T`. Rewrite using `[this]`. Conclude with `(((hΦ.1.continuous.comp ((Units.continuous_val.comp continuous_fst).mul (Units.continuous_val.comp continuous_snd))).mul (hΨh.1.continuous.comp (Units.continuous_val.comp continuous_snd))).mul ((continuous_detPow _).comp continuous_snd)).mul (((continuous_detPow _).comp continuou …`. Take `⟨B₂, hB₂, hbound⟩` from `exists_bound_kernel₂ hΦ hΨh (LocalField.selfDualMeasure ψ)`. Establish `hlint : ∫⁻ p, ‖(F₂ ∘ shearRight (GL (Fin m) F)) p‖ₑ ∂(μ.prod μ) < ∞`.
+
+Rewrite using `[lintegral_prod _ hcontT.enorm.measurable.aemeasurable]`. Establish `hin : ∀ y : GL (Fin m) F, ∫⁻ h, ‖(F₂ ∘ shearRight (GL (Fin m) F)) (y, h)‖ₑ ∂μ = ‖c y * detPow y s‖ₑ * (κ * ∫⁻ X, ‖Φ ((y : Matrix (Fin m) (Fin m) F) * X) * Ψh X‖ₑ ∂M)`. Introduce `y`. Establish `e1 : ∀ h : GL (Fin m) F, ‖(F₂ ∘ shearRight (GL (Fin m) F)) (y, h)‖ₑ = ‖Φ ((y : Matrix (Fin m) (Fin m) F) * (h : Matrix (Fin m) (Fin m) F)) * Ψh (h : Matrix (Fin m) (Fin m) F)‖ₑ * (detModulusPow h : ℝ≥0∞) * ‖c y * detPow y s‖ₑ` using `fun h => by`. Rewrite using `[Function.comp_apply, hF₂T, enorm_mul, enorm_mul, enorm_detPow_natCast, mul_comm (detPow y s)]`.
+
+Simplify using `only [e1]`. Rewrite using `[lintegral_mul_const' _ _ enorm_ne_top, hκlint (fun X => ‖Φ ((y : Matrix (Fin m) (Fin m) F) * X) * Ψh X‖ₑ) (((hΦ.1.continuous.comp (continuous_const.mul continuous_id)).mul hΨh.1.continuous).enorm.measurable)]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [hin]`. Conclude with `hc.lintegral_weight_lt_top μ (J := fun y => κ * ∫⁻ X, ‖Φ ((y : Matrix (Fin m) (Fin m) F) * X) * Ψh X‖ₑ ∂M) (B := κ * B₂) (ENNReal.mul_ne_top ENNReal.coe_ne_top hB₂) (fun y => by`.
+
+Rewrite using `[mul_assoc]`. Use `gcongr`. Conclude with `hbound y) hs hs'`. Establish `hF₂Ti : Integrable (F₂ ∘ shearRight (GL (Fin m) F)) (μ.prod μ)` using `⟨hcontT.aestronglyMeasurable, hlint⟩`. Establish `hF₂i : Integrable F₂ (μ.prod μ)` using `(hT.integrable_comp_emb hTe).1 hF₂Ti`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `integral_congr_ae (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Simplify using `only [hF₂]`. Rewrite using `[← integral_const_mul]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun h => ?_)` and prove the remaining obligations.
+
+Simplify using `only`. Expand and normalize the polynomial expressions, which then agree. Use `_ = ∫ p, F₂ p ∂(μ.prod μ) := (integral_prod F₂ hF₂i).symm`. Use `_ = ∫ p, F₂ (shearRight (GL (Fin m) F) p) ∂(μ.prod μ) := (hT.integral_comp hTe F₂).symm`. Use `_ = ∫ y, ∫ h, F₂ (shearRight (GL (Fin m) F) (y, h)) ∂μ ∂μ := integral_prod _ hF₂Ti`.
+
+Use `_ = _ := by`. Use `integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Simplify using `only [hF₂T]`. Rewrite using `[integral_mul_const, hκint (fun X => Φ ((y : Matrix (Fin m) (Fin m) F) * X) * Ψh X)]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem integral_kernel_right (hc : IsCentralCoeff m α c) (μ : Measure (GL (Fin m) F))
     [μ.IsHaarMeasure] {ψ : AddChar F Circle} (hψ : Continuous ψ) (hψ1 : ψ ≠ 1)
     {Φ Ψ : Matrix (Fin m) (Fin m) F → ℂ} (hΦ : IsSchwartzBruhat Φ) (hΨ : IsSchwartzBruhat Ψ)
@@ -518,6 +658,9 @@ theorem integral_kernel_right (hc : IsCentralCoeff m α c) (μ : Measure (GL (Fi
         rw [integral_mul_const, hκint (fun X => Φ ((y : Matrix (Fin m) (Fin m) F) * X) * Ψh X)]
         ring
 
+/- English proof (translation)
+Take `⟨κ, -, hκint, hκlint⟩` from `exists_integral_GL_eq μ (LocalField.selfDualMeasure ψ)`. Rewrite using `[integral_kernel_left hc μ hψ hψ1 hΦ hΨ hΨK hs hs' hκint hκlint, integral_kernel_right hc μ hψ hψ1 hΦ hΨ hs hs' hκint hκlint]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[integral_fourier_mul_right hψ hΦ hΨ y]`.
+-/
 theorem integral_kernel_eq (hc : IsCentralCoeff m α c) (μ : Measure (GL (Fin m) F))
     [μ.IsHaarMeasure] {ψ : AddChar F Circle} (hψ : Continuous ψ) (hψ1 : ψ ≠ 1)
     {Φ Ψ : Matrix (Fin m) (Fin m) F → ℂ} (hΦ : IsSchwartzBruhat Φ) (hΨ : IsSchwartzBruhat Ψ)

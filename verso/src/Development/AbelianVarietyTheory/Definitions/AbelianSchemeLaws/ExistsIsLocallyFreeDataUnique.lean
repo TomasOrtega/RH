@@ -21,14 +21,23 @@ variable (M V) in
 
 def sectionsEquiv : Γ(lbSheaf M, V) ≃ₗ[Γ(X, V)] SecOn M V := LinearEquiv.refl _ _
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem sectionsEquiv_apply (s : Γ(lbSheaf M, V)) : sectionsEquiv M V s = s := rfl
 
 def chartIso (hM : M.IsLB) (i : M.ι) :
     unitMod (M.U i).toScheme ≅ (lbSheaf M).restrict (M.U i).ι :=
   GlobalTheory.LB.chartIso hM i
 
+/- English proof (translation)
+The claim follows from `isQuasicoherent_toMod hM`.
+-/
 theorem isQuasicoherent (hM : M.IsLB) : (lbSheaf M).IsQuasicoherent := isQuasicoherent_toMod hM
 
+/- English proof (translation)
+Establish `hx : x ∈ ⨆ i, M.U i` using `by rw [hM.cover]; trivial`. Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 hx`. Conclude with `⟨M.U i, hi, ⟨GlobalTheory.LB.chartIso hM i⟩⟩`.
+-/
 theorem exists_restrict_iso (hM : M.IsLB) (x : X) :
     ∃ (U : X.Opens) (_ : x ∈ U), Nonempty (unitMod U.toScheme ≅ (lbSheaf M).restrict U.ι) := by
   have hx : x ∈ ⨆ i, M.U i := by rw [hM.cover]; trivial
@@ -38,6 +47,9 @@ theorem exists_restrict_iso (hM : M.IsLB) (x : X) :
 def isoOfGen (hM : M.IsLB) (hM' : M'.IsLB) (w : LB.Gen (LB.div M' M)) (hw : w.IsGen) :
     lbSheaf M ≅ lbSheaf M' := GlobalTheory.LB.isoOfGen hM hM' w hw
 
+/- English proof (translation)
+The claim follows from `existsUnique_gen_of_iso hM hM' φ`.
+-/
 theorem existsUnique_gen (hM : M.IsLB) (hM' : M'.IsLB) (φ : lbSheaf M ≅ lbSheaf M') :
     ∃! w : LB.Gen (LB.div M' M), ∃ hw : w.IsGen, isoOfGen hM hM' w hw = φ :=
   existsUnique_gen_of_iso hM hM' φ
@@ -48,6 +60,9 @@ def genEquivIso (hM : M.IsLB) (hM' : M'.IsLB) :
     ⟨fun w w' h => Subtype.ext ((existsUnique_gen hM hM' _).unique ⟨w.2, h⟩ ⟨w'.2, rfl⟩),
       fun φ => let ⟨w, ⟨hw, h⟩, _⟩ := existsUnique_gen hM hM' φ; ⟨⟨w, hw⟩, h⟩⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem genEquivIso_apply (hM : M.IsLB) (hM' : M'.IsLB)
     (w : {w : LB.Gen (LB.div M' M) // w.IsGen}) :
     genEquivIso hM hM' w = isoOfGen hM hM' w.1 w.2 := rfl
@@ -55,12 +70,18 @@ def genEquivIso (hM : M.IsLB) (hM' : M'.IsLB) :
 def secEquivHom (hM : M.IsLB) (hM' : M'.IsLB) :
     LB.Sec (LB.div M' M) ≃ (lbSheaf M ⟶ lbSheaf M') := homEquiv hM hM'
 
+/- English proof (translation)
+The claim follows from `lbIso_iff_nonempty_iso hM hM'`.
+-/
 theorem triv_div_iff (hM : M.IsLB) (hM' : M'.IsLB) :
     Triv (LB.div M' M) ↔ Nonempty (lbSheaf M ≅ lbSheaf M') := lbIso_iff_nonempty_iso hM hM'
 
 def unitIso (hM : M.IsLB) (t : LB.Gen M) (ht : t.IsGen) :
     unitMod X ≅ lbSheaf M := GlobalTheory.LB.unitIso hM t ht
 
+/- English proof (translation)
+The claim follows from `(exists_isGen_iff_nonempty_iso hM).trans ⟨fun ⟨e⟩ => ⟨e.symm⟩, fun ⟨e⟩ => ⟨e.symm⟩⟩`.
+-/
 theorem triv_iff (hM : M.IsLB) :
     Triv M ↔ Nonempty (lbSheaf M ≅ unitMod X) :=
   (exists_isGen_iff_nonempty_iso hM).trans ⟨fun ⟨e⟩ => ⟨e.symm⟩, fun ⟨e⟩ => ⟨e.symm⟩⟩
@@ -68,12 +89,18 @@ theorem triv_iff (hM : M.IsLB) :
 def pullbackIso (hM : M.IsLB) (π : X' ⟶ X) :
     (Scheme.Modules.pullback π).obj (lbSheaf M) ≅ lbSheaf (M.pull π) := GlobalTheory.LB.pullbackIso hM π
 
+/- English proof (translation)
+The claim follows from `(triv_iff (LB.isLB_pull hM π)).trans ⟨fun ⟨e⟩ => ⟨pullbackIso hM π ≪≫ e⟩, fun ⟨e⟩ => ⟨(pullbackIso hM π).symm ≪≫ e⟩⟩`.
+-/
 theorem triv_pull_iff (hM : M.IsLB) (π : X' ⟶ X) :
     Triv (M.pull π) ↔
       Nonempty ((Scheme.Modules.pullback π).obj (lbSheaf M) ≅ unitMod X') :=
   (triv_iff (LB.isLB_pull hM π)).trans
     ⟨fun ⟨e⟩ => ⟨pullbackIso hM π ≪≫ e⟩, fun ⟨e⟩ => ⟨(pullbackIso hM π).symm ≪≫ e⟩⟩
 
+/- English proof (translation)
+Use `⟨?_, exists_toMod_iso_of_restrict_iso F⟩` and prove the remaining obligations. Introduce and unpack `⟨M, hM, ⟨φ⟩⟩ x`. Take `⟨U, hx, ⟨e⟩⟩` from `exists_restrict_iso hM x`. Conclude with `⟨U, hx, ⟨e ≪≫ (Scheme.Modules.restrictFunctor U.ι).mapIso φ⟩⟩`.
+-/
 theorem exists_iso_iff (F : X.Modules) :
     (∃ M : LB X, M.IsLB ∧ Nonempty (lbSheaf M ≅ F)) ↔
       ∀ x : X, ∃ (U : X.Opens) (_ : x ∈ U), Nonempty (unitMod U.toScheme ≅ F.restrict U.ι) := by
@@ -84,12 +111,21 @@ theorem exists_iso_iff (F : X.Modules) :
 
 end lbSheaf
 
+/- English proof (translation)
+The claim follows from `(lbSheaf.triv_iff (Inh.trivLB_isLB X)).1 (triv_trivLB X)`.
+-/
 example (X : Scheme.{0}) : Nonempty (lbSheaf (Inh.trivLB X) ≅ unitMod X) :=
   (lbSheaf.triv_iff (Inh.trivLB_isLB X)).1 (triv_trivLB X)
 
+/- English proof (translation)
+The claim follows from `(secOnRTrivEquiv (𝟙 (Spec (CommRingCat.of ℚ))) rfl).toEquiv.symm.nontrivial`.
+-/
 example : Nontrivial Γ(lbSheaf (Inh.trivLB (Spec (CommRingCat.of ℚ))), ⊤) :=
   (secOnRTrivEquiv (𝟙 (Spec (CommRingCat.of ℚ))) rfl).toEquiv.symm.nontrivial
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨lbSheaf.unitIso (twoChart_isLB h _) _ (twoChart_isGen _ a 1 (by rw [map_one, _root_.mul_one])), (congrArg (· * rs X (inf_le_right : ⊤ ⊓ U₀ ≤ U₀) a.val) (map_one (rs X (inf_le_left : ⊤ ⊓ U₀ ≤ ⊤)))).trans (_root_.one_mul _)⟩`.
+-/
 example {U₀ U₁ : X.Opens} (h : U₀ ⊔ U₁ = ⊤) (a : Γ(X, U₀)ˣ) :
     ∃ e : unitMod X ≅ lbSheaf (twoChart U₀ U₁ (res inf_le_left a)),
       coord (e.hom.app ⊤ (1 : Γ(X, ⊤))) true = rs X (inf_le_right : ⊤ ⊓ U₀ ≤ U₀) a.val :=
@@ -97,12 +133,18 @@ example {U₀ U₁ : X.Opens} (h : U₀ ⊔ U₁ = ⊤) (a : Γ(X, U₀)ˣ) :
     (congrArg (· * rs X (inf_le_right : ⊤ ⊓ U₀ ≤ U₀) a.val)
       (map_one (rs X (inf_le_left : ⊤ ⊓ U₀ ≤ ⊤)))).trans (_root_.one_mul _)⟩
 
+/- English proof (translation)
+Use `by_contra! h`. Conclude with `not_subsingleton (CommRing.Pic R) ((subsingleton_pic_iff R).2 fun M hM => (lbSheaf.triv_iff hM).2 (h M hM))`.
+-/
 example (R : Type) [CommRing R] [Nontrivial (CommRing.Pic R)] :
     ∃ M : LB (Spec (CommRingCat.of R)), M.IsLB ∧ IsEmpty (lbSheaf M ≅ unitMod _) := by
   by_contra! h
   exact not_subsingleton (CommRing.Pic R)
     ((subsingleton_pic_iff R).2 fun M hM => (lbSheaf.triv_iff hM).2 (h M hM))
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨lbSheaf.exists_restrict_iso (GlobalTheory.ProjSpace.O1_isLB ℤ 1), fun h => SheafModel.not_exists_gen ℤ ((lbSheaf.triv_iff (GlobalTheory.ProjSpace.O1_isLB ℤ 1)).2 h)⟩`.
+-/
 example : (∀ x, ∃ (U : (Geo.Tor.PSpace ℤ 1).Opens) (_ : x ∈ U),
       Nonempty (unitMod U.toScheme ≅ (lbSheaf (GlobalTheory.ProjSpace.O1 ℤ 1)).restrict U.ι)) ∧
     ¬ Nonempty (lbSheaf (GlobalTheory.ProjSpace.O1 ℤ 1) ≅ unitMod _) :=

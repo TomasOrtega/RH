@@ -15,6 +15,11 @@ noncomputable section
 
 namespace GlobalTheory.FlagEigDim
 
+/- English proof (translation)
+Establish `hp` using `O.S.p_eq`. Establish `hq` using `O.S.rank_eq`. Take `⟨t, _ | _⟩` from `a`. Express the relevant statement in the definitionally equal form `O.N - O.j = O.S.Dw.mult (conjEmb (DV.tauEmb D t))`. Rewrite using `[Datum.mult, if_neg (GlobalTheory.Proof.LetterConjugation.conj_ne (Amb.cm _ t))]`.
+
+Use linear arithmetic over natural numbers and integers. Express the relevant statement in the definitionally equal form `O.j = O.S.Dw.mult (DV.tauEmb D t)`. Rewrite using `[Datum.mult, if_pos (Amb.cm _ t), hp]`.
+-/
 theorem rkB_eq_mult {D : D7} (O : Setup D) (a : D.what₂.Tau × Bool) :
     rkB D.what₂.Tau O.N O.j a = O.S.Dw.mult (embB D a) := by
   have hp := O.S.p_eq
@@ -26,6 +31,9 @@ theorem rkB_eq_mult {D : D7} (O : Setup D) (a : D.what₂.Tau × Bool) :
   · change O.j = O.S.Dw.mult (DV.tauEmb D t)
     rw [Datum.mult, if_pos (Amb.cm _ t), hp]
 
+/- English proof (translation)
+Introduce `D O _ c`. Rewrite using `[← GlobalTheory.FlagBlockDim.dim_eq_dimGr_add O c]`. Use `congr 1`. Use `(Fintype.sum_bijective (embB D) (GlobalTheory.FlagCls.embB_bijective D) _ _ fun a => ?_).symm` and prove the remaining obligations. Rewrite using `[rkB_eq_mult O a]`.
+-/
 theorem dim_eq_dimGr_add_sum : ∀ (D : D7) (O : Setup D), O.Core → ∀ c : O.s.Comp,
     dimGr D.what₂.Tau O.N O.j + ∑ σ : D.host.E →+* ℂ, O.S.Dw.mult σ * (O.S.Dw.mult σ - 1) / 2 = (O.var c).dim := by
   intro D O _ c

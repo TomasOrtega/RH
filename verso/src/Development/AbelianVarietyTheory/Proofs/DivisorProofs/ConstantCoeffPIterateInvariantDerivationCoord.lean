@@ -32,10 +32,48 @@ def iterLin {R : Type} [CommRing R] {d : ℕ} {μ : Fin d → MvPowerSeries (Fin
     | zero => intro a F; rfl
     | succ n ih => intro a F; simp only [Function.iterate_succ_apply', ih, hsmul, RingHom.id_apply]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem iterLin_apply {R : Type} [CommRing R] {d : ℕ} {μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) R}
     (hμ : ∀ i, constantCoeff (μ i) = 0) (u : Fin d → R) (n : ℕ) (F : MvPowerSeries (Fin d) R) :
     iterLin hμ u n F = (invDer μ u)^[n] F := rfl
 
+/- English proof (translation)
+Introduce `p _ B O Q _ _ _ _ θ hF d μ hL l j hQL hcob hlin c hc u`. Establish `hp : p.Prime` using `Fact.out`. Establish `hμ` using `hL.const`. Establish `hμQ : ∀ i, constantCoeff (up Q μ i) = 0` using `fun i => by`. Rewrite using `[up, ← coeff_zero_eq_constantCoeff_apply, coeff_map, coeff_zero_eq_constantCoeff_apply, hμ, map_zero]`.
+
+Take `⟨b, hbN, hb⟩` from `GlobalTheory.T.constantCoeff_iterate_invariantDerivation_mem B Q d μ hμ (RingHom.ker θ) l j hcob hlin u p hp.two_le`. Establish `h3` using `GlobalTheory.T.coeff_quasiLogarithm_integral_low_degree p B O Q θ hF d μ hL l hQL`. Set `P : (Fin d →₀ ℕ) → Prop` to `fun α => α.degree ≤ p ∧ ∀ i, α ≠ Finsupp.single i p`. Set `h : (Fin d →₀ ℕ) → B` to `fun α => if hα : P α then (h3 α hα.1 hα.2).choose else 0`. Establish `hh : ∀ α, P α → algebraMap B Q (h α) = coeff α l` using `fun α hα => by`.
+
+Simplify using `only [h, dif_pos hα]`. Conclude with `(h3 α hα.1 hα.2).choose_spec.symm`. Set `H : MvPowerSeries (Fin d) B` to `fun α => h α`. Establish `hH : ∀ α, coeff α H = h α` using `fun α => rfl`. Set `q : Fin d → Q` to `fun i => coeff (Finsupp.single i p) l`.
+
+Establish `hinj : ∀ i k : Fin d, Finsupp.single i p = Finsupp.single k p ↔ i = k` using `fun i k => Finsupp.single_left_inj hp.ne_zero`. Set `G : MvPowerSeries (Fin d) Q` to `map (algebraMap B Q) H + ∑ i, q i • monomial (Finsupp.single i p) (1 : Q)`. Establish `hG : ∀ α : Fin d →₀ ℕ, α.degree ≤ p → coeff α l = coeff α G`. Introduce `α hα`. Simplify using `only [G, map_add, coeff_map, hH, map_sum, map_smul, coeff_monomial, smul_eq_mul, mul_ite, mul_one, mul_zero]`.
+
+Distinguish the cases in `hP : ∀ i, α ≠ Finsupp.single i p`. Rewrite using `[hh α ⟨hα, hP⟩, Finset.sum_eq_zero (fun i _ => if_neg (hP i)), add_zero]`. Use `push_neg at hP`. Take `⟨i, rfl⟩` from `hP`. Establish `: h (Finsupp.single i p) = 0` using `dif_neg fun hα => hα.2 i rfl`.
+
+Rewrite using `[this, map_zero, zero_add, Finset.sum_eq_single i (fun k _ hk => if_neg fun e => hk ((hinj i k).1 e).symm) (by simp), if_pos rfl]`. Establish `hnat : ∀ F : MvPowerSeries (Fin d) B, constantCoeff ((invDer (up Q μ) (fun i => algebraMap B Q (u i)))^[p] (map (algebraMap B Q) F)) = algebraMap B Q (constantCoeff ((invDer μ u)^[p] F))` using `fun F => by`. Rewrite using `[← constantCoeff_map, GlobalTheory.T.map_invariantDerivationFormalGroupLaw_iterate B Q (algebraMap B Q) d μ hμ u p F]`. Both sides reduce to the same expression. Establish `hmon : ∀ i : Fin d, monomial (Finsupp.single i p) (1 : Q) = map (algebraMap B Q) (monomial (Finsupp.single i p) (1 : B))` using `fun i => by`.
+
+Rewrite using `[map_monomial, (algebraMap B Q).map_one]`. Establish `hmono : ∀ i : Fin d, constantCoeff ((invDer μ u)^[p] (monomial (Finsupp.single i p) (1 : B))) = (p.factorial : B) * u i ^ p` using `fun i => by`. Use `GlobalTheory.T.constantCoeff_iterate_invariant_derivation_monomial B d μ hμ hL.unit hL.comm u (Finsupp.single i p)` as an intermediate fact. Rewrite `this` using `[Finsupp.degree_single]`. Rewrite using `[this, Finset.prod_eq_single i (fun k _ hk => by rw [Finsupp.single_apply, if_neg (Ne.symm hk), pow_zero]) (by simp), Finsupp.single_eq_same]`.
+
+Establish `e1` using `GlobalTheory.T.constantCoeff_iterate_invariantDerivation_congr Q d (up Q μ) hμQ (fun i => algebraMap B Q (u i)) p l G hG`. Establish `e2 : constantCoeff ((invDer (up Q μ) (fun i => algebraMap B Q (u i)))^[p] G) = algebraMap B Q (constantCoeff ((invDer μ u)^[p] H)) + ∑ i, q i * algebraMap B Q ((p.factorial : B) * u i ^ p)`. Rewrite using `[← iterLin_apply hμQ]`. Simplify using `only [G, map_add, map_sum, map_smul, iterLin_apply, hmon, hnat]`. Use `congr 1`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[smul_eq_C_mul, map_mul, constantCoeff_C, hnat, hmono]`. Take `⟨r, hr⟩` from `GlobalTheory.T.constantCoeff_iterate_invariant_derivation_linear p B d μ hμ hL.unit hL.comm u H`. Establish `hlin1 : ∀ k, coeff (Finsupp.single k 1) H = if k = j then 1 else 0` using `fun k => by`. Apply `hF.inj` to reduce the goal to its premises.
+
+Establish `hPk : P (Finsupp.single k 1)` using `⟨by rw [Finsupp.degree_single]; exact hp.one_le, fun i e => by`. Break down `(Finsupp.single_eq_single_iff _ _ _ _).1 e with ⟨_, h1⟩ | ⟨h1, _⟩` into its components or cases. Conclude with `hp.one_lt.ne h1`. Conclude with `one_ne_zero h1⟩`. Rewrite using `[hH, hh _ hPk]`.
+
+Use `congrFun hlin k` as an intermediate fact. Simplify using `only [lin] at this`. Rewrite using `[this, Pi.single_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `hsumX : ∑ k, constantCoeff ((invDer μ u)^[p] (X k)) * coeff (Finsupp.single k 1) H = constantCoeff ((invDer μ u)^[p] (X j))`.
+
+Simplify using `[hlin1]`. Rewrite `hr` using `[hsumX]`. Establish `key : b = constantCoeff ((invDer μ u)^[p] H) + ((p - 1).factorial : B) * ∑ i, c i * u i ^ p`. Apply `hF.inj` to reduce the goal to its premises. Rewrite using `[← hb, e1, e2]`.
+
+Simplify using `only [map_add, map_mul, map_sum, map_pow, map_natCast]`. Use `congr 1`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hc, ← Nat.mul_factorial_pred hp.ne_zero]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Choose the witnesses or unpack the hypotheses as in `⟨m, hm⟩ : p ∣ (p - 1).factorial + 1 := by`. Rewrite using `[← ZMod.natCast_eq_zero_iff]`. Use `push_cast`.
+
+Rewrite using `[ZMod.wilsons_lemma]`. Expand and normalize the polynomial expressions, which then agree. Establish `hmB : ((p - 1).factorial : B) = p * m - 1`. Use `congrArg (Nat.cast : ℕ → B) hm` as an intermediate fact. Move the coercions through the operations in `at this`.
+
+Take the linear combination `this`. Establish `eq : constantCoeff ((invDer μ u)^[p] (X j)) - ∑ i, c i * u i ^ p = b - p * (r + m * ∑ i, c i * u i ^ p)`. Rewrite using `[key, hmB]`. Take the linear combination `-hr`. Rewrite using `[eq]`.
+
+Conclude with `Ideal.sub_mem _ (Ideal.mem_sup_left hbN) (Ideal.mem_sup_right (Ideal.mem_span_singleton.2 ⟨_, rfl⟩))`.
+-/
 theorem constantCoeff_iterate_invDer_X_sub_mem : ∀ (p : ℕ) [Fact p.Prime] (B O Q : Type) [CommRing B] [CommRing Q] [CommRing O] [Algebra B Q] (θ : B →+* O), IsFrame p Q θ → ∀ (d : ℕ) (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) B), IsLift θ μ → ∀ (l : MvPowerSeries (Fin d) Q) (j : Fin d), QL μ ⊤ l → In (RingHom.ker θ) (cob1 (up Q μ) l) → lin l = Pi.single j 1 → ∀ c : Fin d → B, (∀ i, algebraMap B Q (c i) = (p : Q) * coeff (Finsupp.single i p) l) → ∀ u : Fin d → B, constantCoeff ((invDer μ u)^[p] (X j)) - ∑ i, c i * u i ^ p ∈ RingHom.ker θ ⊔ Ideal.span {(p : B)} := by
   intro p _ B O Q _ _ _ _ θ hF d μ hL l j hQL hcob hlin c hc u
   classical

@@ -32,82 +32,160 @@ set_option maxSynthPendingDepth 1
 
 namespace GroundTheory.Heights₂.Heights.FlagBundles
 
+/- English proof (translation)
+The claim follows from `UnipotentLeadingMinor.proof`.
+-/
 theorem UnipotentLeadingMinor.full : UnipotentLeadingMinor.Statement :=
   UnipotentLeadingMinor.proof
 
+/- English proof (translation)
+The claim follows from `PluckerFrameChange.proof`.
+-/
 theorem PluckerFrameChange.full : PluckerFrameChange.Statement :=
   PluckerFrameChange.proof
 
+/- English proof (translation)
+The claim follows from `GramSumOfMinors.proof PluckerFrameChange.full`.
+-/
 theorem GramSumOfMinors.full : GramSumOfMinors.Statement :=
   GramSumOfMinors.proof PluckerFrameChange.full
 
+/- English proof (translation)
+The claim follows from `OmitStepPolynomial.proof`.
+-/
 theorem OmitStepPolynomial.full : OmitStepPolynomial.Statement :=
   OmitStepPolynomial.proof
 
+/- English proof (translation)
+The claim follows from `LineQuotientDeterminant.proof`.
+-/
 theorem LineQuotientDeterminant.full : LineQuotientDeterminant.Statement :=
   LineQuotientDeterminant.proof
 
+/- English proof (translation)
+The claim follows from `SectionLocalEquation.proof`.
+-/
 theorem SectionLocalEquation.full : SectionLocalEquation.Statement :=
   SectionLocalEquation.proof
 
+/- English proof (translation)
+The claim follows from `DiagonalQuotient.proof`.
+-/
 theorem DiagonalQuotient.full : DiagonalQuotient.Statement :=
   DiagonalQuotient.proof
 
+/- English proof (translation)
+The claim follows from `DiagonalLocalDVR.proof DiagonalQuotient.full`.
+-/
 theorem DiagonalLocalDVR.full : DiagonalLocalDVR.Statement :=
   DiagonalLocalDVR.proof DiagonalQuotient.full
 
+/- English proof (translation)
+The claim follows from `BlochOverlap.proof`.
+-/
 theorem BlochOverlap.full : BlochOverlap.Statement :=
   BlochOverlap.proof
 
+/- English proof (translation)
+The claim follows from `SectionNormLog.proof BlochOverlap.full`.
+-/
 theorem SectionNormLog.full : SectionNormLog.Statement :=
   SectionNormLog.proof BlochOverlap.full
 
+/- English proof (translation)
+The claim follows from `GKernelIdentity.proof`.
+-/
 theorem GKernelIdentity.full : GKernelIdentity.Statement :=
   GKernelIdentity.proof
 
+/- English proof (translation)
+The claim follows from `MixedCoefficient.proof`.
+-/
 theorem MixedCoefficient.full : MixedCoefficient.Statement :=
   MixedCoefficient.proof
 
+/- English proof (translation)
+The claim follows from `ZonalKernel.proof`.
+-/
 theorem ZonalKernel.full : ZonalKernel.Statement :=
   ZonalKernel.proof
 
+/- English proof (translation)
+The claim follows from `SphereLongitudeCoordinates.proof`.
+-/
 theorem SphereLongitudeCoordinates.full : SphereLongitudeCoordinates.Statement :=
   SphereLongitudeCoordinates.proof
 
+/- English proof (translation)
+The claim follows from `ZonalHeightReduction.proof SphereLongitudeCoordinates.full ZonalKernel.full`.
+-/
 theorem ZonalHeightReduction.full : ZonalHeightReduction.Statement :=
   ZonalHeightReduction.proof SphereLongitudeCoordinates.full ZonalKernel.full
 
+/- English proof (translation)
+The claim follows from `ZonalKernelPairing.proof`.
+-/
 theorem ZonalKernelPairing.full : ZonalKernelPairing.Statement :=
   ZonalKernelPairing.proof
 
+/- English proof (translation)
+The claim follows from `ZonalBilinearFormula.proof ZonalHeightReduction.full ZonalKernelPairing.full`.
+-/
 theorem ZonalBilinearFormula.full : ZonalBilinearFormula.Statement :=
   ZonalBilinearFormula.proof ZonalHeightReduction.full ZonalKernelPairing.full
 
+/- English proof (translation)
+The claim follows from `GHatIdentity.proof GKernelIdentity.full`.
+-/
 theorem GHatIdentity.full : GHatIdentity.Statement :=
   GHatIdentity.proof GKernelIdentity.full
 
+/- English proof (translation)
+The claim follows from `FibreConstantClosedForm.proof ZonalBilinearFormula.full GHatIdentity.full`.
+-/
 theorem FibreConstantClosedForm.full : FibreConstantClosedForm.Statement :=
   FibreConstantClosedForm.proof ZonalBilinearFormula.full GHatIdentity.full
 
+/- English proof (translation)
+The claim follows from `FibreConstantClosedForm.full.1 k`.
+-/
 theorem fibreConstant_eq (k : ℕ) :
     fibreConstant k = -(1 / 2) * ∑ j ∈ Finset.range k, (1 : ℝ) / (2 * j + 1) :=
   FibreConstantClosedForm.full.1 k
 
+/- English proof (translation)
+The claim follows from `FibreIntegralInvariant.proof FibreConstantClosedForm.full`.
+-/
 theorem FibreIntegralInvariant.full : FibreIntegralInvariant.Statement :=
   FibreIntegralInvariant.proof FibreConstantClosedForm.full
 
+/- English proof (translation)
+The claim follows from `CompactPairCurveForm.proof`.
+-/
 theorem CompactPairCurveForm.full : CompactPairCurveForm.Statement :=
   CompactPairCurveForm.proof
 
+/- English proof (translation)
+The claim follows from `BarCurveForm.proof`.
+-/
 theorem BarCurveForm.full : BarCurveForm.Statement :=
   BarCurveForm.proof
 
+/- English proof (translation)
+The claim follows from `TorusInvariantDiagonal.proof`.
+-/
 theorem TorusInvariantDiagonal.full : TorusInvariantDiagonal.Statement :=
   TorusInvariantDiagonal.proof
 
+/- English proof (translation)
+The claim follows from `TopPowerDiagonal.proof`.
+-/
 theorem TopPowerDiagonal.full : TopPowerDiagonal.Statement :=
   TopPowerDiagonal.proof
 
+/- English proof (translation)
+The claim follows from `PolarisationDegreeD.proof`.
+-/
 theorem PolarisationDegreeD.full : PolarisationDegreeD.Statement :=
   PolarisationDegreeD.proof
 

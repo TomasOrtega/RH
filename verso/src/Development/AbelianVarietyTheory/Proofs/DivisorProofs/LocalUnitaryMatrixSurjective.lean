@@ -16,6 +16,19 @@ open GlobalTheory.LeviAtPlace
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
   {v : HeightOneSpectrum (𝓞 F)} {n : ℕ}
 
+/- English proof (translation)
+Establish `hJl : ∀ τ : E →ₐ[F] Fv F v, (J.map (inclR (Fv F v))).map (splitProj τ) = J.map τ` using `fun τ => Matrix.ext fun i j => by`. Simplify using `only [Matrix.map_apply]`. Conclude with `splitProj_inclR τ (J i j)`. Establish `hs1 : ((GlobalTheory.LeviAtPlace.locMat h t J g).map (sigR (Fv F v) σ)).map (splitProj t) = conjComp t J g`. Rewrite using `[Matrix.map_map]`.
+
+Establish `: (splitProj t ∘ sigR (Fv F v) σ) = splitProj (t.comp σ)` using `funext fun y => (splitProj_comp t σ y).symm`. Rewrite using `[this, GlobalTheory.LeviAtPlace.locMat, pairMat_snd]`. Establish `hs2 : ((GlobalTheory.LeviAtPlace.locMat h t J g).map (sigR (Fv F v) σ)).map (splitProj (t.comp σ)) = g`. Rewrite using `[Matrix.map_map]`. Establish `: (splitProj (t.comp σ) ∘ sigR (Fv F v) σ) = splitProj t` using `funext fun y => splitProj_comp_sigR h t y`.
+
+Rewrite using `[this, GlobalTheory.LeviAtPlace.locMat, pairMat_fst]`. Establish `hJs : J.map (t.comp σ) = -(J.map t)ᵀ`. Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, Matrix.transpose_apply, AlgHom.comp_apply, Matrix.neg_apply]`. Rewrite using `[skew j i, map_neg]`.
+
+Use `mat_split_ext h t ?_ ?_` and prove the remaining obligations. Rewrite using `[map_mul_alg, map_mul_alg, Matrix.transpose_map, hJl, hs1, GlobalTheory.LeviAtPlace.locMat, pairMat_fst, conjComp] set Jt := J.map t set A : Matrix (Fin n) (Fin n) (Fv F v) := ((g⁻¹ : GL (Fin n) (Fv F v)) : Matrix (Fin n) (Fin n) (Fv F v))`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_nonsing_inv _ hJ, Matrix.mul_one, Matrix.transpose_mul]`. Use `_ = Jt := by`.
+
+Rewrite using `[show A * (g : Matrix (Fin n) (Fin n) (Fv F v)) = 1 from Units.inv_mul g, Matrix.transpose_one, Matrix.one_mul]`. Rewrite using `[map_mul_alg, map_mul_alg, Matrix.transpose_map, hJl, hs2, GlobalTheory.LeviAtPlace.locMat, pairMat_snd, conjComp, hJs] set Jt := J.map t set A : Matrix (Fin n) (Fin n) (Fv F v) := ((g⁻¹ : GL (Fin n) (Fv F v)) : Matrix (Fin n) (Fin n) (Fv F v))`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.mul_assoc, Matrix.mul_neg, Matrix.neg_mul]`. Use `_ = -(Jtᵀ * (A * (g : Matrix (Fin n) (Fin n) (Fv F v)))) := by`.
+
+Rewrite using `[Matrix.mul_nonsing_inv _ hJ, Matrix.transpose_one, Matrix.mul_one, Matrix.mul_assoc]`. Use `_ = -Jtᵀ := by rw [show A * (g : Matrix (Fin n) (Fin n) (Fv F v)) = 1 from Units.inv_mul g, Matrix.mul_one]`.
+-/
 theorem locMat_unitary_skew (h : IsCMExt F E σ) (t : E →ₐ[F] Fv F v) (J : Matrix (Fin n) (Fin n) E)
     (hJ : IsUnit (J.map t).det) (skew : ∀ i j, σ (J j i) = -J i j) (g : GL (Fin n) (Fv F v)) :
     (GlobalTheory.LeviAtPlace.locMat h t J g)ᵀ * J.map (inclR (Fv F v)) *
@@ -61,6 +74,17 @@ end GlobalTheory.SkewSplitSurj
 
 open GlobalTheory.SkewSplitSurj in
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B d W r s hB hW v t c x`. Establish `hcm` using `hB.cm`. Establish `hJ : IsUnit (W.J.map t).det`. Take `⟨φ⟩ : Nonempty (F →+* ℂ)` from `inferInstance`. Establish `h0` using `GlobalTheory.LeviAtPlace.det_ne_zero_of_sig (hW.sig (InfinitePlace.mk φ))`.
+
+Establish `h1 : W.J.det ≠ 0` using `fun e => h0 (by`. Rewrite using `[Matrix.det_smul, show W.J.map _ = RingHom.mapMatrix _ W.J from rfl, ← RingHom.map_det, e, map_zero, mul_zero])`. Rewrite using `[show W.J.map t = (t : E →+* Fv F v).mapMatrix W.J from rfl, ← RingHom.map_det]`. Conclude with `isUnit_iff_ne_zero.2 ((map_ne_zero _).2 h1)`. Use `set g : GL (Fin d) (Fv F v) := c * x * c⁻¹ with hg`.
+
+Set `hU : UA σ W.J` to `⟨GlobalTheory.LeviAtPlace.adelicGL hcm t W.J hJ g, GlobalTheory.LeviAtPlace.lift_unitary v σ W.J _ (locMat_unitary_skew hcm t W.J hJ hW.skew g)⟩`. Establish `hmat : mat hU = GlobalTheory.LeviAtPlace.lift v (GlobalTheory.LeviAtPlace.locMat hcm t W.J g)` using `rfl`. Establish `hpi : (mat hU).map (piW t) = g.val`. Establish `e : ∀ M : Matrix (Fin d) (Fin d) (AE F E), M.map (piW t) = (M.map (compFin F E v)).map (splitProj t)` using `fun M => by rw [Matrix.map_map]; rfl`. Rewrite using `[hmat, e, GlobalTheory.LeviAtPlace.compFin_lift]`.
+
+Conclude with `GlobalTheory.LeviAtPlace.pairMat_fst hcm t _ _`. Use `⟨hU, ?_, ?_⟩` and prove the remaining obligations. Use `show At (evFin F v) (mat hU - 1)`. Rewrite using `[hmat]`. Conclude with `GlobalTheory.LeviAtPlace.lift_sub_one_at v _`.
+
+Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[GlobalTheory.KSplit.locMat_val, hpi, hg]`. Simplify using `[Matrix.mul_assoc]`.
+-/
 theorem GlobalTheory.SkewSplitSurj.exists_locMat_eq : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (d : ℕ)
     (W : Spc F E d) (r s : ℕ), B.IsGood σ → W.IsSkew σ B r s → ∀ (v : Pl F) (t : E →ₐ[F] Fv F v) (c x : GL (Fin d) (Fv F v)),
     ∃ h ∈ UAt σ W (evFin F v), locMat t c h = x := by

@@ -25,11 +25,19 @@ instance connectedSpace_level (e : ℕ) : ConnectedSpace (Spec (CommRingCat.of (
 
 omit [IsDomain V] [GrpObj G] [IsCommMonObj G] in
 
+/- English proof (translation)
+The claim follows from `(pullback.lift_fst _ _ _).trans (Category.comp_id _)`.
+-/
 theorem thickMap_pr (e : ℕ) : thickMap V 𝔪 e G ≫ pr 𝔪 (e + 1) G = pr 𝔪 e G :=
   (pullback.lift_fst _ _ _).trans (Category.comp_id _)
 
 omit [IsDomain V] in
 
+/- English proof (translation)
+Use `hG.smooth` as an intermediate fact. Use `hG.geomConnected` as an intermediate fact. Establish `hs : ∀ e, Smooth (thickObj V 𝔪 e G).hom` using `fun e => inferInstanceAs (Smooth (pullback.snd _ _))`. Establish `hc : ∀ e, GeometricallyConnected (thickObj V 𝔪 e G).hom` using `fun e => inferInstanceAs (GeometricallyConnected (pullback.snd _ _))`. Establish `step : ∀ (e : ℕ) (Q : TQ (thickObj V 𝔪 e G) X), ∃ Q' : TQ (thickObj V 𝔪 (e + 1) G) X, TorusCompat (thickTrans V _ e) (thickMap V _ e G) Q.i Q'.i` using `fun e Q => by`.
+
+Conclude with `exists_tq_lift (TowerEx.isNilpotent_max (e + 1)) _ (Ideal.Quotient.factor_surjective _) _ _ (TowerEx.isGrpPullback_thickMap 𝔪 e G) Q`. Use `choose nxt hnxt using step`. Set `Q : ∀ e, TQ (thickObj V 𝔪 e G) X` to `fun e => Nat.rec (motive := fun e => TQ (thickObj V 𝔪 e G) X) Q₀ nxt e`. Conclude with `⟨⟨fun e => (Q e).i, fun e => (Q e).i_hom, rfl, fun e => hnxt e (Q e)⟩⟩`.
+-/
 theorem nonempty_formalTorus (hG : IsSemiAbelian G) (Q₀ : TQ (thickObj V 𝔪 0 G) X) :
     Nonempty (FormalTorus 𝔪 Q₀.i) := by
   have := hG.smooth
@@ -47,12 +55,20 @@ theorem nonempty_formalTorus (hG : IsSemiAbelian G) (Q₀ : TQ (thickObj V 𝔪 
 
 omit [IsLocalRing V] [Module.Free ℤ X] [Module.Finite ℤ X] in
 
+/- English proof (translation)
+Take `⟨w, hw⟩` from `h`. Conclude with `nonempty_symTriv_iff hw _`.
+-/
 theorem level_iff {I : Ideal V} {P : CP G} {e : ℕ} {Pe : CP (thickObj V I e G)} (h : IsLevelCP I e Pe P)
     {i : splitTorus (Lv I e) X ⟶ thickObj V I e G} (hi : IsMonHom i) :
     Nonempty (SymTriv P (i.left ≫ pr I e G) (torus_w i)) ↔ ∃ σ : CubTriv Pe.c i, σ.Even := by
   obtain ⟨w, hw⟩ := h
   exact nonempty_symTriv_iff hw _
 
+/- English proof (translation)
+Use `hG.smooth` as an intermediate fact. Use `hG.geomConnected` as an intermediate fact. Establish `hs : Smooth (thickObj V 𝔪 (e + 1) G).hom` using `inferInstanceAs (Smooth (pullback.snd _ _))`. Establish `hc : GeometricallyConnected (thickObj V 𝔪 (e + 1) G).hom` using `inferInstanceAs (GeometricallyConnected (pullback.snd _ _))`. Take `⟨_, hP⟩` from `TowerEx.exists_isCPMap_thickMap h₁ h₂`.
+
+Conclude with `exists_even_lift (TowerEx.isNilpotent_max (e + 1)) _ (Ideal.Quotient.factor_surjective _) _ _ (TowerEx.isGrpPullback_thickMap _ e G) hP hi h`.
+-/
 theorem level_lift (hG : IsSemiAbelian G) {P : CP G} {e : ℕ} {P₁ : CP (thickObj V 𝔪 e G)}
     {P₂ : CP (thickObj V 𝔪 (e + 1) G)} (h₁ : IsLevelCP 𝔪 e P₁ P) (h₂ : IsLevelCP 𝔪 (e + 1) P₂ P)
     {i₁ : splitTorus (Lv 𝔪 e) X ⟶ thickObj V 𝔪 e G} {i₂ : splitTorus (Lv 𝔪 (e + 1)) X ⟶ thickObj V 𝔪 (e + 1) G}
@@ -67,6 +83,13 @@ theorem level_lift (hG : IsSemiAbelian G) {P : CP G} {e : ℕ} {P₁ : CP (thick
   exact exists_even_lift (TowerEx.isNilpotent_max (e + 1)) _ (Ideal.Quotient.factor_surjective _) _ _
     (TowerEx.isGrpPullback_thickMap _ e G) hP hi h
 
+/- English proof (translation)
+Take `⟨i, hom, rfl, compat⟩` from `F`. Use `Iff.trans ⟨fun ⟨σ, _⟩ => ⟨σ 0⟩, fun h => ?_⟩ (level_iff h₀ (hom 0))` and prove the remaining obligations. Establish `all : ∀ e, Nonempty (SymTriv P ((i e).left ≫ pr 𝔪 e G) (torus_w (i e)))` using `fun e => by`. Proceed by induction on `e with`. Consider the case `zero => exact h`.
+
+Consider the case `succ e ih`. Take `⟨P₁, h₁⟩` from `exists_isLevelCP 𝔪 e P`. Take `⟨P₂, h₂⟩` from `exists_isLevelCP 𝔪 (e + 1) P`. Conclude with `(level_iff h₂ (hom _)).2 (level_lift hG h₁ h₂ (hom _) (hom _) (compat e) ((level_iff h₁ (hom _)).1 ih))`. Establish `ej : ∀ e, SplitTorus.bcMap (thickTrans V 𝔪 e) X ≫ (i (e + 1)).left ≫ pr 𝔪 (e + 1) G = (i e).left ≫ pr 𝔪 e G` using `fun e => by`.
+
+Rewrite using `[← Category.assoc, torusCompat_iff.1 (compat e), Category.assoc, thickMap_pr]`. Conclude with `⟨fun e => (all e).some, fun e => symTriv_compat (all (e + 1)).some (all e).some (thickTrans_comp V 𝔪 e) (ej e)⟩`.
+-/
 theorem hasSymTriv_iff (hG : IsSemiAbelian G) {P : CP G} {P₀ : CP (thickObj V 𝔪 0 G)} (h₀ : IsLevelCP 𝔪 0 P₀ P)
     {i₀ : splitTorus (Lv 𝔪 0) X ⟶ thickObj V 𝔪 0 G} (F : FormalTorus 𝔪 i₀) :
     F.HasSymTriv P ↔ ∃ σ : CubTriv P₀.c i₀, σ.Even := by
@@ -84,6 +107,9 @@ theorem hasSymTriv_iff (hG : IsSemiAbelian G) {P : CP G} {P₀ : CP (thickObj V 
     rw [← Category.assoc, torusCompat_iff.1 (compat e), Category.assoc, thickMap_pr]
   exact ⟨fun e => (all e).some, fun e => symTriv_compat (all (e + 1)).some (all e).some (thickTrans_comp V 𝔪 e) (ej e)⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => (nonempty_formalTorus hG Q₀).elim fun F => (hasSymTriv_iff hG h₀ F).1 (h F), fun h F => (hasSymTriv_iff hG h₀ F).2 h⟩`.
+-/
 theorem symTriv_clause_iff (hG : IsSemiAbelian G) {P : CP G} {P₀ : CP (thickObj V 𝔪 0 G)} (h₀ : IsLevelCP 𝔪 0 P₀ P)
     (Q₀ : TQ (thickObj V 𝔪 0 G) X) :
     (∀ F : FormalTorus 𝔪 Q₀.i, F.HasSymTriv P) ↔ ∃ σ : CubTriv P₀.c Q₀.i, σ.Even :=
@@ -92,6 +118,9 @@ theorem symTriv_clause_iff (hG : IsSemiAbelian G) {P : CP G} {P₀ : CP (thickOb
 
 omit [IsLocalRing V] in
 
+/- English proof (translation)
+Take `⟨_, h⟩` from `h₁`. Take `⟨_, h'⟩` from `h₂`. Establish `: IsMonHom (Iso.refl (thickObj V I e G)).hom` using `inferInstanceAs (IsMonHom (𝟙 _))`. Take `⟨w, hw, -⟩` from `cancel_of_eq (isGrpPullback_of_iso (Iso.refl _)) (Category.id_comp _) (Category.id_comp _) h' h`. Conclude with `⟨w, hw, fun _ hv => cp_unique Q hv hw⟩`.
+-/
 theorem existsUnique_level_iso {I : Ideal V} {e : ℕ} [ConnectedSpace (Lv I e)] (Q : TQ (thickObj V I e G) X)
     {P : CP G} {P₁ P₂ : CP (thickObj V I e G)} (h₁ : IsLevelCP I e P₁ P) (h₂ : IsLevelCP I e P₂ P) :
     ∃! w, IsCPMap P₁ P₂ (𝟙 _) (𝟙 _) (by simp) w := by

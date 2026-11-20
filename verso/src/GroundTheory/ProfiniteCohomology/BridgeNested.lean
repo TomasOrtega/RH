@@ -20,6 +20,9 @@ def finConsHomeomorph (m : ℕ) : G × (Fin m → G) ≃ₜ (Fin (m + 1) → G) 
   continuous_invFun := (continuous_apply 0).prodMk (continuous_pi fun _ => continuous_apply _)
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem finConsHomeomorph_symm_apply (m : ℕ) (x : Fin (m + 1) → G) :
     (finConsHomeomorph m).symm x = (x 0, Fin.tail x) :=
   rfl
@@ -37,16 +40,27 @@ def nestedHomeomorph (X : TopRep.{u} k G) : (m : ℕ) → resolutionX X m ≃ₜ
 variable (X : TopRep.{u} k G)
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem nestedHomeomorph_zero_apply (v : resolutionX X 0) (x : Fin 0 → G) :
     nestedHomeomorph X 0 v x = v :=
   rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem nestedHomeomorph_succ_apply (m : ℕ) (f : resolutionX X (m + 1))
     (x : Fin (m + 1) → G) :
     nestedHomeomorph X (m + 1) f x =
       nestedHomeomorph X m ((f : C(G, resolutionX X m)) (x 0)) (Fin.tail x) :=
   rfl
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero => ext x`. Both sides reduce to the same expression. Consider the case `succ m ih`. Use extensionality with `x`.
+
+Express the relevant statement in the definitionally equal form `nestedHomeomorph X m (((a + b : resolutionX X (m + 1)) : C(G, resolutionX X m)) (x 0)) (Fin.tail x) = nestedHomeomorph X m ((a : C(G, resolutionX X m)) (x 0)) (Fin.tail x) + nestedHomeomorph X m ((b : C(G, resolutionX X m)) (x 0)) (Fin.tail x)`. Rewrite using `[ContinuousMap.add_apply, ih]`. Both sides reduce to the same expression.
+-/
 theorem nestedHomeomorph_add (m : ℕ) (a b : resolutionX X m) :
     nestedHomeomorph X m (a + b) = nestedHomeomorph X m a + nestedHomeomorph X m b := by
   induction m with
@@ -59,6 +73,11 @@ theorem nestedHomeomorph_add (m : ℕ) (a b : resolutionX X m) :
     rw [ContinuousMap.add_apply, ih]
     rfl
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero => ext x`. Both sides reduce to the same expression. Consider the case `succ m ih`. Use extensionality with `x`.
+
+Express the relevant statement in the definitionally equal form `nestedHomeomorph X m (((r • a : resolutionX X (m + 1)) : C(G, resolutionX X m)) (x 0)) (Fin.tail x) = r • nestedHomeomorph X m ((a : C(G, resolutionX X m)) (x 0)) (Fin.tail x)`. Rewrite using `[ContinuousMap.smul_apply, ih]`. Both sides reduce to the same expression.
+-/
 theorem nestedHomeomorph_smul (m : ℕ) (r : k) (a : resolutionX X m) :
     nestedHomeomorph X m (r • a) = r • nestedHomeomorph X m a := by
   induction m with
@@ -79,10 +98,16 @@ def nestedLinearEquiv (m : ℕ) : resolutionX X m ≃ₗ[k] C(Fin m → G, X) wh
   right_inv := (nestedHomeomorph X m).apply_symm_apply
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem nestedLinearEquiv_apply (m : ℕ) (a : resolutionX X m) :
     nestedLinearEquiv X m a = nestedHomeomorph X m a :=
   rfl
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero => rfl`. Consider the case `succ m ih`. Rewrite using `[nestedHomeomorph_succ_apply, nestedHomeomorph_succ_apply]`. Conclude with `ih _ _`.
+-/
 theorem nestedHomeomorph_ρ_apply (m : ℕ) (g : G) (a : resolutionX X m) (x : Fin m → G) :
     nestedHomeomorph X m ((resolutionX X m).ρ g a) x =
       X.ρ g (nestedHomeomorph X m a fun i => g⁻¹ * x i) := by
@@ -92,6 +117,15 @@ theorem nestedHomeomorph_ρ_apply (m : ℕ) (g : G) (a : resolutionX X m) (x : F
     rw [nestedHomeomorph_succ_apply, nestedHomeomorph_succ_apply]
     exact ih _ _
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero`. Rewrite using `[Fin.sum_univ_succ, Fin.sum_univ_zero, add_zero]`. Simplify using `only [Fin.val_zero, pow_zero, one_smul]`. Both sides reduce to the same expression.
+
+Consider the case `succ m ih`. Establish `h1 : ((d X (m + 1)).hom a : C(G, resolutionX X (m + 1))) (x 0) = a - (d X m).hom ((a : C(G, resolutionX X m)) (x 0))`. Rewrite using `[hom_d_succ]`. Both sides reduce to the same expression. Rewrite using `[nestedHomeomorph_succ_apply, h1, show nestedHomeomorph X (m + 1) (a - (d X m).hom ((a : C(G, resolutionX X m)) (x 0))) = nestedHomeomorph X (m + 1) a - nestedHomeomorph X (m + 1) ((d X m).hom ((a : C(G, resolutionX X m)) (x 0))) from map_sub (nestedLinearEquiv X (m + 1)) _ _, Co …`.
+
+Simplify using `only [Fin.val_zero, pow_zero, one_smul, Fin.succAbove_zero, Fin.val_succ, pow_succ, mul_neg_one, neg_smul, Finset.sum_neg_distrib, sub_eq_add_neg]`. Use `congr 1`. Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `congr 1`.
+
+Rewrite using `[nestedHomeomorph_succ_apply X m a, Fin.succ_succAbove_zero]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Simplify using `only [Fin.tail, Fin.succ_succAbove_succ]`.
+-/
 theorem nestedHomeomorph_d_apply (m : ℕ) (a : resolutionX X m) (x : Fin (m + 1) → G) :
     nestedHomeomorph X (m + 1) ((d X m).hom a) x =
       ∑ i : Fin (m + 1), (-1 : k) ^ (i : ℕ) • nestedHomeomorph X m a (fun j => x (i.succAbove j)) := by

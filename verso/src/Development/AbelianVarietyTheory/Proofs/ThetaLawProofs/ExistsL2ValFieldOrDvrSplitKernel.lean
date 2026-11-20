@@ -36,6 +36,33 @@ namespace GlobalTheory.SimilLocal
 
 open GlobalTheory.RelBasis GlobalTheory.SimilDet
 
+/- English proof (translation)
+Introduce `laws K _ _ x m N al b ξ w Q hm hal hξ hw hE`. Establish `hL` using `x.P.isLB`. Introduce `h0`. Take `⟨c, hc, hcQ⟩` from `Matrix.exists_vecMul_eq_zero_iff.2 h0`. Take `⟨I₀, -⟩` from `Function.ne_iff.1 hc`.
+
+Use `hc ?_` and prove the remaining obligations. Set `S : Over (Sp K)` to `𝟙_ _`. Set `T` to `Out.powObj x.P.A 4`. Use `haveI : IsIntegral S.left := inferInstanceAs (IsIntegral (Spec (CommRingCat.of K)))`. Use `haveI : Subsingleton S.left := inferInstanceAs (Subsingleton (PrimeSpectrum K))`.
+
+Set `p : S.left` to `IsLocalRing.closedPoint K`. Use `choose J hJ using fun χ : S.left ⟶ x.P.A.left => exists_chart hL (χ p)`. Use `replace hJ : Good x.P.L p J := hJ`. Set `ev : Γ(S.left, ⊤) →+* S.left.presheaf.stalk p` to `(S.left.presheaf.germ ⊤ p trivial).hom`. Establish `hev : ∀ (y : S ⟶ T) a, gs (y.left ≫ T.hom) p ⊤ a = ev a` using `fun y a => by`.
+
+Rewrite using `[Over.w y]`. Conclude with `gs_eq (𝟙 S.left) p ⊤ trivial a`. Set `κ : K →+* S.left.presheaf.stalk p` to `ev.comp (Scheme.ΓSpecIso (CommRingCat.of K)).inv.hom`. Use `choose a ha using fun I v => exists_transl_ratio laws x m al (ξ I₀) (ξ I) (w I₀) (w I) (hw I₀) (hw I) v`. Set `u : (Fin 4 → Fin N) → (S ⟶ T) → (S.left.presheaf.stalk p)ˣ` to `fun I y => val (w I₀) y.left p J * (val (w I) y.left p J)⁻¹`.
+
+Establish `hu : ∀ I (v : ker x al) (y : S ⟶ T), (u I (v.1 * y)).val = ev (a I v) * (u I y).val` using `fun I v y => by`. Use `ha I v _ y.left p J hJ` as an intermediate fact. Rewrite `this` using `[hev, ← Over.comp_left, pt_tr]`. Rewrite using `[← this, ← Units.val_mul, inv_mul_cancel_right]`. Set `χ : (Fin 4 → Fin N) → ker x al →* S.left.presheaf.stalk p` to `fun I => { toFun := fun v => ev (a I v) map_one' := by`.
+
+Use `hu I 1 1` as an intermediate fact. Rewrite `this` using `[Submonoid.coe_one, _root_.one_mul]`. Conclude with `(Units.mul_left_inj (u I 1)).1 (this.symm.trans (_root_.one_mul _).symm)`. Use the proof step `map_mul' := fun v v' => by`. Use `hu I (v * v') 1` as an intermediate fact.
+
+Rewrite `this` using `[Submonoid.coe_mul, _root_.mul_assoc, hu, hu, ← _root_.mul_assoc]`. Conclude with `((Units.mul_left_inj (u I 1)).1 this).symm }`. Establish `hχ : Function.Injective χ` using `fun I I' h => by`. Establish `e` using `GlobalTheory.T.eq_of_similitudeIso_quotient_kernel_invariant laws K x m al (ξ I) (ξ I') (w I) (w I') hm hal (hw I) (hw I') (fun v hv Z r z J hJ => by`. Establish `e₁ : a I ⟨v, hv⟩ = a I' ⟨v, hv⟩` using `fn_ext (X := S.left) fun y _ => by`.
+
+Take `rfl : y = p` from `Subsingleton.elim _ _`. Conclude with `(gs_eq (𝟙 S.left) p ⊤ trivial _).trans ((DFunLike.congr_fun h ⟨v, hv⟩).trans (gs_eq (𝟙 S.left) p ⊤ trivial _).symm)`. Establish `e₂` using `Units.ext ((ha I ⟨v, hv⟩ Z r z J hJ).trans (e₁ ▸ (ha I' ⟨v, hv⟩ Z r z J hJ).symm))`. Establish `alg : ∀ {U : Type} [CommGroup U] (A B B' C D D' : U), A * B⁻¹ * (C * D⁻¹)⁻¹ = A * B'⁻¹ * (C * D'⁻¹)⁻¹ → B * D' = B' * D` using `fun A B B' C D D' h => by`. Rewrite `h` using `[mul_inv, mul_inv, inv_inv, inv_inv, _root_.mul_assoc, _root_.mul_assoc, mul_right_inj, mul_left_comm, mul_left_comm B'⁻¹, mul_right_inj, inv_mul_eq_iff_eq_mul]`.
+
+Rewrite using `[h, mul_left_comm B', mul_inv_cancel_left]`. Conclude with `alg _ _ _ _ _ _ e₂)`. Conclude with `hξ e`. Set `θ : (Fin 4 → Fin N) → (S ⟶ T) → S.left.presheaf.stalk p` to `fun I y => ∏ r, gs (y.left ≫ (alMap x al r (ξ I r)).left) p _ (x.th.f (J (y.left ≫ (alMap x al r (ξ I r)).left)))`. Use `eq_zero_of_eigen κ χ hχ (fun v y => v.1 * y) (fun I y => θ I y * (u I y).val) (fun I v y => ?_) (fun I => ?_) c (fun y => ?_)` and prove the remaining obligations.
+
+Establish `e : θ I (v.1 * y) = θ I y` using `Finset.prod_congr rfl fun r _ => congrArg (fun ψ : S.left ⟶ x.P.A.left => gs ψ p _ (x.th.f (J ψ))) (by`. Rewrite using `[← Over.comp_left, ← Over.comp_left, ← pt_tr, Category.assoc, tr_alMap])`. Simplify using `only [hu, e]`. Conclude with `mul_left_comm _ _ _`. Take `⟨y, hy⟩` from `GlobalTheory.SimilNonvan.exists_pt_isUnit laws K x m al (ξ I) hm hal`.
+
+Conclude with `⟨y, mul_ne_zero (Finset.prod_ne_zero_iff.2 fun r _ => (hy p J hJ r).ne_zero) (Units.ne_zero _)⟩`. Establish `e : ∀ I, θ I y * (u I y).val = (val (w I₀) y.left p J).val * ∑ I', κ (Q I I') * ∏ c, gs (y.left ≫ (Out.powPr x.P.A c).left) p _ ((b (I' c)).f (J (y.left ≫ (Out.powPr x.P.A c).left)))` using `fun I => by`. Establish `e₁ : θ I y = _` using `hE I _ y.left p J hJ`. Rewrite using `[e₁, mul_right_comm, ← Units.val_mul, mul_comm (val (w I) y.left p J), inv_mul_cancel_right]`. Use `congrArg _ (Finset.sum_congr rfl fun I' _ => ?_)` and prove the remaining obligations.
+
+Rewrite using `[gs_cst, hev]`. Both sides reduce to the same expression. Simplify using `only [e, mul_left_comm _ (val (w I₀) y.left p J).val, ← Finset.mul_sum]`. Use `mul_eq_zero_of_right _ ?_` and prove the remaining obligations. Simplify using `only [Finset.mul_sum, ← _root_.mul_assoc, ← map_mul]`.
+
+Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_eq_zero fun I' _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_mul, ← map_sum, show ∑ I, c I * Q I I' = 0 from congrFun hcQ I', map_zero, zero_mul]`.
+-/
 theorem det_ne_zero : Out.Laws → ∀ (K : Type) [Field K] [IsAlgClosed K] (x : KeyIn K) (m N : ℕ) (al : Matrix (Fin 4) (Fin 4) ℤ) (b : Fin N → RR x m) (ξ : (Fin 4 → Fin N) → Fin 4 → Pt x) (w : ∀ I, LB.Gen (LB.LinComb x.P.L (K := Fin 4 ⊕ Fin 4) (Sum.elim (fun r => (alMap x al r (ξ I r)).left) (fun c => (Out.powPr x.P.A c).left)) (Sum.elim (fun _ => 1) (fun _ => -(m : ℤ))))) (Q : Matrix (Fin 4 → Fin N) (Fin 4 → Fin N) K), (m : K) ≠ 0 → al.transpose * al = (m : ℤ) • (1 : Matrix (Fin 4) (Fin 4) ℤ) → Function.Injective ξ → (∀ I, (w I).IsGen) → (∀ I, ∀ (Z : Scheme.{0}) (ρ : Z ⟶ (Out.powObj x.P.A 4).left) (z : Z) J, Good x.P.L z J → ∏ r, gs (ρ ≫ (alMap x al r (ξ I r)).left) z (x.P.L.U (J (ρ ≫ (alMap x al r (ξ I r)).left))) (x.th.f (J (ρ ≫ (alMap x al r (ξ I r)).left))) = (val (w I) ρ z J).val * ∑ I' : Fin 4 → Fin N, gs ρ z ⊤ (cst (Out.powObj x.P.A 4).hom ⊤ (Q I I')) * ∏ c, gs (ρ ≫ (Out.powPr x.P.A c).left) z (x.P.L.U (J (ρ ≫ (Out.powPr x.P.A c).left))) ((b (I' c)).f (J (ρ ≫ (Out.powPr x.P.A c).left)))) → Q.det ≠ 0 := by
   intro laws K _ _ x m N al b ξ w Q hm hal hξ hw hE
   classical
@@ -114,6 +141,13 @@ theorem det_ne_zero : Out.Laws → ∀ (K : Type) [Field K] [IsAlgClosed K] (x :
     refine Finset.sum_eq_zero fun I' _ => ?_
     rw [← Finset.sum_mul, ← map_sum, show ∑ I, c I * Q I I' = 0 from congrFun hcQ I', map_zero, zero_mul]
 
+/- English proof (translation)
+Use `GlobalTheory.T.boxProducts_span_external_powers_of_boxSpan R x.P.A x.P.L m _ b x.P.isLB (fun T => ?_) n s` and prove the remaining obligations. Use `GlobalTheory.T.pullbackSectionsSpanTwisted_of_indep_span _ _ _ _ _ _ b _ _ x.P.isLB (GlobalTheory.T.pullbackSections_basis_of_affine_opens _ _ _ _ _ _ b _ _ ?_)` and prove the remaining obligations. Use `GlobalTheory.T.pullbackSections_basis_affine_baseChange_of_affine R _ x.P.A.hom x.P.L _ _ b (fun R' _ f => ?_) _ _ T.hom _ _ (IsPullback.of_hasPullback x.P.A.hom T.hom)` and prove the remaining obligations. Take `⟨x', hx'⟩` from `GlobalTheory.KeyPow.keyIn_baseChange laws.polBaseChange R R' x f`. Take `⟨h₁, h₂⟩` from `GlobalTheory.KeyVia.main R R' x x' f`.
+
+Take `⟨φ, w, hv⟩` from `h₁.1 hx'`. Use `choose b' hb' using fun k => ((h₂ φ w hv).1 m (b k)).exists`. Establish `hP : IsPullback φ x'.P.A.hom x.P.A.hom (spMap f)`. Take `⟨he, hg, F, ⟨hP, -⟩, -⟩` from `hv`. Conclude with `hP`.
+
+Conclude with `⟨_, x'.P.A.hom, φ, hP, GlobalTheory.T.basisBaseChange_relativeBasis_pulledBackSections R R' x x' f φ w m _ b b' hv hb' ((GlobalTheory.KeyBasis.main laws R x m hm).2 b hb R' f x' φ w b' hv hb')⟩`.
+-/
 theorem exists_coords_pow (laws : Out.Laws) (R : Type) [CommRing R] [IsLocalRing R] [IsNoetherianRing R] (x : KeyIn R)
     (m : ℕ) (hm : 1 ≤ m) (b : Fin (m ^ x.P.g) → RR x m) (hb : IsBasis x b) (n : ℕ)
     (s : LB.Sec (LB.LinComb x.P.L (K := Fin n) (fun c => (Out.powPr x.P.A c).left) (fun _ => (m : ℤ)))) :
@@ -135,6 +169,25 @@ theorem exists_coords_pow (laws : Out.Laws) (R : Type) [CommRing R] [IsLocalRing
   exact ⟨_, x'.P.A.hom, φ, hP, GlobalTheory.T.basisBaseChange_relativeBasis_pulledBackSections R R' x x' f φ w m _ b b' hv hb'
     ((GlobalTheory.KeyBasis.main laws R x m hm).2 b hb R' f x' φ w b' hv hb')⟩
 
+/- English proof (translation)
+Introduce `laws R _ _ _ _ x m al b ξ hm hal hb hξ hk`. Establish `hm0 : m ≠ 0`. Introduce and unpack `rfl`. Conclude with `not_isUnit_zero (M₀ := R) (by simpa using hm)`. Take `⟨mu, hmu, hmu'⟩` from `GlobalTheory.KeyKa.exists_normalised_mulPull laws R x m`.
+
+Use `choose w hw using fun I => GlobalTheory.SimilPull.exists_gen_similitude_pull laws R x m al (ξ I) hal (hk I)`. Use `choose rho hrho using fun I => GlobalTheory.SimilUnit.exists_normalising_unit R x m al (ξ I) mu (w I) hm0 hal (hk I) hmu (hw I)`. Use `choose s hs using fun I => GlobalTheory.KeyQuot.exists_sec_quot _ _ x.P.L x.P.isLB _ _ _ _ (m : ℤ) x.th (w I) (hw I)`. Use `choose Q hQ using fun I => exists_coords_pow laws R x m (Nat.one_le_iff_ne_zero.2 hm0) b hb 4 (s I)`. Establish `hZ : ∀ I, ∀ (Z : Scheme.{0}) (ρ : Z ⟶ (Out.powObj x.P.A 4).left) (z : Z) J, Good x.P.L z J → ∏ r, gs (ρ ≫ (alMap x al r (ξ I r)).left) z (x.P.L.U (J (ρ ≫ (alMap x al r (ξ I r)).left))) (x.th.f (J (ρ ≫ (alMap x al r (ξ I r)).left))) = (val (w I) ρ z J).val * ∑ I' : Fin 4 → Fin (m …`.
+
+Introduce `I Z ρ z J hJ`. Rewrite using `[← hQ I Z ρ z J hJ]`. Conclude with `hs I Z ρ z J hJ`. Establish `hE : ∀ I, ∀ (y : (Out.powObj x.P.A 4).left) J, Good x.P.L y J → ∏ r, gs (alMap x al r (ξ I r)).left y _ (x.th.f (J (alMap x al r (ξ I r)).left)) = (val (w I) (𝟙 _) y J).val * ∑ I' : Fin 4 → Fin (m ^ x.P.g), gs (𝟙 _) y ⊤ (cst (Out.powObj x.P.A 4).hom ⊤ (Q I I')) * ∏ c, gs (Out.pow …`. Introduce `I y J hJ`.
+
+Establish `e₁` using `hZ I _ (𝟙 _) y J hJ`. Establish `c₁ : ∀ ψ : (Out.powObj x.P.A 4).left ⟶ x.P.A.left, gs (𝟙 _ ≫ ψ) y (x.P.L.U (J (𝟙 _ ≫ ψ))) (x.th.f (J (𝟙 _ ≫ ψ))) = gs ψ y (x.P.L.U (J ψ)) (x.th.f (J ψ))` using `fun ψ => by rw [Category.id_comp]`. Establish `c₂ : ∀ (ψ : (Out.powObj x.P.A 4).left ⟶ x.P.A.left) k, gs (𝟙 _ ≫ ψ) y (x.P.L.U (J (𝟙 _ ≫ ψ))) ((b k).f (J (𝟙 _ ≫ ψ))) = gs ψ y (x.P.L.U (J ψ)) ((b k).f (J ψ))` using `fun ψ k => by rw [Category.id_comp]`. Simplify `e₁` using `only [c₁, c₂]`. Establish `hdet : IsUnit (Matrix.det (Matrix.of Q))`.
+
+Set `k` to `AlgebraicClosure (IsLocalRing.ResidueField R)`. Set `f : R →+* k` to `(algebraMap (IsLocalRing.ResidueField R) k).comp (IsLocalRing.residue R)`. Take `⟨x', hx'⟩` from `GlobalTheory.KeyPow.keyIn_baseChange laws.polBaseChange R k x f`. Take `⟨h₁, h₂⟩` from `GlobalTheory.KeyVia.main R k x x' f`. Take `⟨φ, u, hv⟩` from `h₁.1 hx'`.
+
+Use `choose b' hb' using fun j => ((h₂ φ u hv).1 m (b j)).exists`. Use `choose ξ' hξ' using fun I r => ((h₂ φ u hv).2.1 (ξ I r)).exists`. Use `choose w' hw' hE' using fun I => GlobalTheory.T.similitudeIso_thetaProduct_baseChange R k x x' f φ u m _ al b b' (ξ I) (ξ' I) (w I) (Q I) hv hb' (hξ' I) (hw I) (hZ I)`. Establish `hinj : Function.Injective ξ'` using `fun I I' e => by`. Assume the negation of the conclusion as `hne`.
+
+Take `⟨r, hr⟩` from `hξ I I' hne (spMap f (IsLocalRing.closedPoint k))`. Establish `e' : spMap f ≫ (ξ I r).left = spMap f ≫ (ξ I' r).left` using `by rw [← hξ' I r, ← hξ' I' r, e]`. Conclude with `hr (congrArg (fun q => q (IsLocalRing.closedPoint k)) e')`. Establish `hne` using `det_ne_zero laws k x' m _ al b' ξ' w' ((Matrix.of Q).map f) (by simpa only [map_natCast] using (hm.map f).ne_zero) hal hinj hw' hE'`. Rewrite `hne` using `[← RingHom.mapMatrix_apply, ← RingHom.map_det]`.
+
+Assume the negation of the conclusion as `hu`. Use `hne ?_` and prove the remaining obligations. Establish `: IsLocalRing.residue R (Matrix.det (Matrix.of Q)) = 0` using `(IsLocalRing.residue_eq_zero_iff _).2 hu`. Use `show algebraMap (IsLocalRing.ResidueField R) k (IsLocalRing.residue R _) = 0`. Rewrite using `[this, map_zero]`.
+
+Use `⟨hdet.unit ^ (2 * m ^ 2) * ∏ I, rho I ^ 2, ξ, mu, w, Matrix.of Q, rho, hξ, hk, hmu, hw, fun p J hJ => ⟨hmu' p J hJ, fun I => hrho I p J hJ⟩, hE, ?_⟩` and prove the remaining obligations. Simplify using `only [Units.val_mul, Units.val_pow_eq_pow_val, IsUnit.unit_spec, Units.coe_prod]`.
+-/
 theorem exists_l2Val : Out.Laws → ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [IsPrincipalIdealRing R] (x : KeyIn R) (m : ℕ) (al : Matrix (Fin 4) (Fin 4) ℤ) (b : Fin (m ^ x.P.g) → RR x m) (ξ : (Fin 4 → Fin (m ^ x.P.g)) → Fin 4 → Pt x), IsUnit (m : R) → al.transpose * al = (m : ℤ) • (1 : Matrix (Fin 4) (Fin 4) ℤ) → IsBasis x b → (∀ I I', I ≠ I' → ∀ p : Sp R, ∃ r, (ξ I r).left p ≠ (ξ I' r).left p) → (∀ I c, (List.ofFn fun r : Fin 4 => ξ I r ^ al r c).prod = 1) → ∃ lam, IsSquareDeterminantComparison x m al b lam := by
   intro laws R _ _ _ _ x m al b ξ hm hal hb hξ hk
   have hm0 : m ≠ 0 := by

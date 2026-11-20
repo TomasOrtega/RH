@@ -12,6 +12,15 @@ set_option autoImplicit false
 
 namespace GlobalTheory.FlagCell
 
+/- English proof (translation)
+Introduce `X F r fl V e H i t ht`. Take `⟨s, hs, es⟩` from `H i.castSucc`. Take `⟨s', hs', es'⟩` from `H i.succ`. Establish `e₁ (j : Fin i) : (fl.ι i.succ).app V ((fl.step i).app V (s j)) = e (Fin.castLE i.isLt.le j)`. Use `Eq.trans ?_ (es j)` and prove the remaining obligations.
+
+Rewrite using `[← fl.step_ι i]`. Both sides reduce to the same expression. Establish `key` using `isFrame_cokernel_π (l := i) (m := 1) (fl.step i) hs' hs fun j => QCoh.injective_app_of_mono (fl.ι i.succ) V ((e₁ j).trans (es' (Fin.castAdd 1 j)).symm)`. Establish `htt : s' (Fin.natAdd i 0) = t`. Use `QCoh.injective_app_of_mono (fl.ι i.succ) V ((es' _).trans (Eq.trans ?_ ht.symm))` and prove the remaining obligations.
+
+Conclude with `congrArg e (Fin.ext rfl)`. Establish `hf : (fun _ : Fin 1 => (fl.π i).app V t) = fun k : Fin 1 => (cokernel.π (fl.step i)).app V (s' (Fin.natAdd i k))`. Use function extensionality and compare the values at `k`. Take `rfl : k = 0` from `Subsingleton.elim _ _`. Rewrite using `[htt]`.
+
+Both sides reduce to the same expression. Rewrite using `[hf]`. Conclude with `key`.
+-/
 theorem isFrame_π_of_spans : ∀ (X : Scheme.{0}) (F : X.Modules) (r : ℕ) (fl : Vert.Flag F r) (V : X.Opens)
     (e : Fin r → Γ(F, V)), Spans fl V e → ∀ (i : Fin r) (t : Γ(fl.F i.succ, V)),
     (fl.ι i.succ).app V t = e i → IsFrame fun _ : Fin 1 => (fl.π i).app V t := by

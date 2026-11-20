@@ -6,6 +6,11 @@ open MeasureTheory NumberField Matrix Finset Formalism.MainNotions.S GlobalTheor
 
 namespace GlobalTheory.IwConst
 
+/- English proof (translation)
+Establish `hs24 : s < 1 / 24` using `lt_of_lt_of_le hst ht`. Establish `hA : a < 4 / 23` using `by nlinarith [mul_nonneg ha (sub_nonneg.2 hs24.le)]`. Establish `hkey : a * (1 - s - a) ≤ r` using `by nlinarith`. Establish `hgap : 433 / 552 ≤ 1 - s - a` using `by linarith`. Establish `hat : a * (433 / 552) < t` using `by nlinarith [mul_le_mul_of_nonneg_left hgap ha]`.
+
+Establish `hsum : (1 + η) * (s + a) ≤ η`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left (show s + a ≤ 3 * t by linarith) (show (0 : ℝ) ≤ 1 + η by linarith)]`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left hkey (show (0 : ℝ) ≤ 1 + η by linarith), mul_le_mul_of_nonneg_left hsum ha]`.
+-/
 theorem slab_arith_lower {a s r t η u v : ℝ} (ha : 0 ≤ a) (hs : 0 ≤ s) (hst : s < t) (hrt : r < t)
     (ht : t ≤ 1 / 24) (hη : 0 < η) (htη : 3 * t * (1 + η) ≤ η) (h1 : a < 1 / 8 + s + a * s)
     (h2 : a ≤ u + a ^ 2) (h3 : u ≤ v + a * s) (h4 : v ≤ r) : a ≤ (1 + η) * r := by
@@ -20,6 +25,33 @@ theorem slab_arith_lower {a s r t η u v : ℝ} (ha : 0 ≤ a) (hs : 0 ≤ s) (h
   nlinarith [mul_le_mul_of_nonneg_left hkey (show (0 : ℝ) ≤ 1 + η by linarith),
     mul_le_mul_of_nonneg_left hsum ha]
 
+/- English proof (translation)
+Introduce `n ε S d E hS ρ η hρ hρ8 hη`. Establish `hON` using `hS.isON`. Choose the witnesses or unpack the hypotheses as in `⟨t, ht0, ht24, htη, htρ⟩ : ∃ t : ℝ, 0 < t ∧ t ≤ 1 / 24 ∧ 3 * t * (1 + η) ≤ η ∧ 3 * t ≤ ρ := by`. Use `⟨min (1 / 24) (min (η / (3 * (1 + η))) (ρ / 3)), lt_min (by norm_num) (lt_min (by positivity) (by positivity)), min_le_left _ _, ?_, ?_⟩` and prove the remaining obligations. Establish `h : min (1 / 24) (min (η / (3 * (1 + η))) (ρ / 3)) * (3 * (1 + η)) ≤ η` using `(le_div_iff₀ (by positivity)).1 (le_trans (min_le_right _ _) (min_le_left _ _))`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `h` using `le_trans (min_le_right (1 / 24 : ℝ) _) (min_le_right (η / (3 * (1 + η))) (ρ / 3))`. Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨t, ht0, ?_⟩` and prove the remaining obligations. Introduce `r hr hrt k hk hk0 l hl`.
+
+Establish `hmul : uMat (l * k) - 1 = (uMat l - 1) + (uMat k - 1) + (uMat l - 1) * (uMat k - 1)`. Establish `e : uMat (l * k) = uMat l * uMat k` using `rfl`. Rewrite using `[e]`. Use `noncomm_ring`. Establish `hXY : nrm ((uMat l - 1) * (uMat k - 1)) ≤ nrm (uMat l - 1) * nrm (uMat k - 1)` using `nrm_mul_le _ _`.
+
+Establish `ha0` using `nrm_nonneg (uMat l - 1)`. Establish `hs0` using `nrm_nonneg (uMat k - 1)`. Establish `htle : t ≤ η` using `by nlinarith`. Prove the components needed by the constructor for the conclusion. Introduce `hlB`.
+
+Establish `ha : nrm (uMat l - 1) ≤ r / (1 + η)` using `hlB`. Establish `ha' : nrm (uMat l - 1) * (1 + η) ≤ r` using `(le_div_iff₀ (by positivity)).1 ha`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `h1 : nrm (uMat (l * k) - 1) ≤ nrm (uMat l - 1) + nrm (uMat k - 1) + nrm ((uMat l - 1) * (uMat k - 1))`. Rewrite using `[hmul]`.
+
+Conclude with `le_trans (nrm_add_le _ _) (by linarith [nrm_add_le (uMat l - 1) (uMat k - 1)])`. Establish `hat : nrm (uMat l - 1) < t` using `by nlinarith`. Establish `hprod : nrm (uMat l - 1) * nrm (uMat k - 1) ≤ t * t`. Conclude with `mul_le_mul hat.le hk.le hs0 ht0.le`. Use the polynomial consequences of the given equalities and inequalities.
+
+Establish `hc : crd E (uMat (l * k) - 1) = crd E (uMat l - 1) + crd E ((uMat l - 1) * (uMat k - 1))`. Rewrite using `[hmul, crd_add, crd_add, hk0, add_zero]`. Establish `hlen : len (crd E (uMat (l * k) - 1)) ≤ nrm (uMat l - 1) + nrm (uMat l - 1) * nrm (uMat k - 1)`. Rewrite using `[hc]`. Conclude with `le_trans (len_add_le _ _) (add_le_add (len_crd_le hON _) (le_trans (len_crd_le hON _) hXY))`.
+
+Establish `hsη : nrm (uMat l - 1) * nrm (uMat k - 1) ≤ nrm (uMat l - 1) * η` using `mul_le_mul_of_nonneg_left (by linarith) ha0`. Use `show len (crd E (uMat (l * k) - 1)) ≤ r`. Use the polynomial consequences of the given equalities and inequalities. Introduce `hslab`. Take `⟨hZ, hv⟩` from `hslab`.
+
+Use `show nrm (uMat l - 1) ≤ (1 + η) * r`. Establish `hX : uMat l - 1 = (uMat (l * k) - 1) - (uMat k - 1) - (uMat l - 1) * (uMat k - 1)`. Rewrite using `[hmul]`. Normalize the expressions using the abelian group laws. Establish `h1 : nrm (uMat l - 1) < 1 / 8 + nrm (uMat k - 1) + nrm (uMat l - 1) * nrm (uMat k - 1)`.
+
+Establish `e` using `nrm_sub_le ((uMat (l * k) - 1) - (uMat k - 1)) ((uMat l - 1) * (uMat k - 1))`. Establish `e'` using `nrm_sub_le (uMat (l * k) - 1) (uMat k - 1)`. Rewrite `e` using `[← hX]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2 : nrm (uMat l - 1) ≤ len (crd E (uMat l - 1)) + nrm (uMat l - 1) ^ 2`.
+
+Establish `hp` using `GlobalTheory.T.cutOut_subgroup_tangent_second_order_hilbertSchmidt n ε S d E hS l hl`. Establish `e` using `nrm_add_le (cmb E (crd E (uMat l - 1))) (uMat l - 1 - cmb E (crd E (uMat l - 1)))`. Rewrite `e` using `[add_sub_cancel, nrm_cmb hON]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h3 : len (crd E (uMat l - 1)) ≤ len (crd E (uMat (l * k) - 1)) + nrm (uMat l - 1) * nrm (uMat k - 1)`.
+
+Establish `hc : crd E (uMat l - 1) = crd E (uMat (l * k) - 1) + -crd E ((uMat l - 1) * (uMat k - 1))` using `by conv_lhs => rw [hX]`. Rewrite using `[crd_sub, crd_sub, hk0, sub_zero, sub_eq_add_neg]`. Rewrite using `[hc]`. Use `le_trans (len_add_le _ _) (add_le_add le_rfl ?_)` and prove the remaining obligations. Rewrite using `[len_neg]`.
+
+Conclude with `le_trans (len_crd_le hON _) hXY`. Conclude with `slab_arith_lower ha0 hs0 hk hrt ht24 hη htη (by linarith) h2 h3 hv`.
+-/
 theorem slab_squeeze : ∀ (n : ℕ) (ε : Fin n → Bool) (S : Set (Formalism.REAL.UJ ε)) (d : ℕ)
     (E : Fin d → Matrix (Fin n) (Fin n) ℂ), IsCut ε S E → ∀ ρ η : ℝ, 0 < ρ → ρ ≤ 1 / 8 → 0 < η →
     ∃ t : ℝ, 0 < t ∧ ∀ r : ℝ, 0 < r → r < t → ∀ k : Formalism.REAL.UJ ε, nrm (uMat k - 1) < t →

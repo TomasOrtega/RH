@@ -31,6 +31,13 @@ def lieSubR (k r : ℕ) : Submodule ℝ (B.Mat k r) where
 
 end LieBasisConstruction
 
+/- English proof (translation)
+Introduce `k r`. Set `S` to `LieBasisConstruction.lieSubR k r`. Set `b` to `Module.finBasis ℝ S`. Set `L0 : (Fin (Module.finrank ℝ S) → ℝ) →ₗ[ℝ] B.Mat k r` to `S.subtype ∘ₗ b.equivFun.symm.toLinearMap`. Establish `hinj : LinearMap.ker L0 = ⊥`.
+
+Rewrite using `[LinearMap.ker_eq_bot]`. Conclude with `S.injective_subtype.comp b.equivFun.symm.injective`. Take `⟨M0, hM0⟩` from `L0.exists_leftInverse_of_injective hinj`. Establish `hML : ∀ y, M0 (L0 y) = y` using `fun y => LinearMap.congr_fun hM0 y`. Use `⟨Module.finrank ℝ S, LinearMap.toContinuousLinearMap L0, LinearMap.toContinuousLinearMap M0, fun x => (b.equivFun.symm x).2, fun x => hML x, fun X hX => ?_⟩` and prove the remaining obligations.
+
+Establish `e : L0 (b.equivFun ⟨X, hX⟩) = X` using `by simp [L0]`. Use `show L0 (M0 X) = X`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem lie_basis_holds : LieBasis := by
   intro k r
   let S := LieBasisConstruction.lieSubR k r

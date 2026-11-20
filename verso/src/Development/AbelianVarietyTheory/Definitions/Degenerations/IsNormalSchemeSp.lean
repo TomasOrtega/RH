@@ -121,6 +121,9 @@ structure Law where
 
 end Core
 
+/- English proof (translation)
+Introduce `x`. Use `⟨inferInstance, ?_⟩` and prove the remaining obligations. Establish `: (PrimeSpectrum.asIdeal x).IsPrime` using `PrimeSpectrum.isPrime x`. Establish `h` using `StructureSheaf.IsLocalization.to_stalk R x`. Conclude with `@isIntegrallyClosed_of_isLocalization R ((Spec.structureSheaf R).presheaf.stalk x) _ _ (_) _ _ (PrimeSpectrum.asIdeal x).primeCompl (Ideal.primeCompl_le_nonZeroDivisors _) h`.
+-/
 theorem isNormalScheme_sp (R : Type) [CommRing R] [IsDomain R] [IsIntegrallyClosed R] :
     ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme (Sp R) := by
   intro x
@@ -169,9 +172,17 @@ def Core.zero (U : (Sp ℤ).Opens) (hU : (U : Set (Sp ℤ)).Nonempty) : Core whe
 
 instance : Inhabited Core := ⟨Core.zero ⊤ ⟨(⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum ℤ), trivial⟩⟩
 
+/- English proof (translation)
+Introduce `_ _` and use `trivial`.
+-/
 example (h : ((⊤ : (Sp ℤ).Opens) : Set (Sp ℤ)).Nonempty) (p : ℕ) [Fact p.Prime] (y : Sp (OO p) ⟶ Sp ℤ) :
     (Core.zero ⊤ h).Cl y := fun _ _ => trivial
 
+/- English proof (translation)
+Introduce `p _ y y' _ _ h b hb`. Establish `hι : (Core.zero U hU).GG.hom = (⊤ : (Sp ℤ).Opens).ι` using `Category.comp_id _`. Establish `: IsIso (Core.zero U hU).GG.hom`. Rewrite using `[hι]`. Conclude with `inferInstanceAs (IsIso (Sp ℤ).topIso.hom)`.
+
+Use `⟨y' ≫ inv (Core.zero U hU).GG.hom, by simp, ?_⟩` and prove the remaining obligations. Rewrite using `[← cancel_mono (Core.zero U hU).GG.hom]`. Simplify using `only [Category.assoc, IsIso.inv_hom_id, Category.comp_id, hb, h]`.
+-/
 example (U : (Sp ℤ).Opens) (hU : (U : Set (Sp ℤ)).Nonempty) : (Core.zero U hU).Indep := by
   intro p _ y y' _ _ h b hb
   have hι : (Core.zero U hU).GG.hom = (⊤ : (Sp ℤ).Opens).ι := Category.comp_id _

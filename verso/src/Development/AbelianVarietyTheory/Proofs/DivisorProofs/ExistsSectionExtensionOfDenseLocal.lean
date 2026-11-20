@@ -12,6 +12,11 @@ noncomputable section
 
 namespace GlobalTheory.CompHS
 
+/- English proof (translation)
+Use `eq_zero_of_basicOpen_eq_bot a ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Take `⟨y, hy', hy⟩` from `hd.inter_open_nonempty _ (Y.basicOpen a).isOpen (Set.nonempty_iff_ne_empty.2 fun e => hne (Opens.ext e))`. Establish `hm` using `Y.basicOpen_le _ hy'`. Establish `hu : IsUnit (ger y hm a)` using `(Y.mem_basicOpen _ y hm).1 hy'`.
+
+Rewrite `hu` using `[h y hm hy]`. Conclude with `not_isUnit_zero hu`.
+-/
 theorem eq_zero_of_ger_dense {Y : Scheme.{0}} [IsReduced Y] {O V : Y.Opens} (hd : Dense (O : Set Y))
     (a : Γ(Y, V)) (h : ∀ z (hz : z ∈ V), z ∈ O → ger z hz a = 0) : a = 0 := by
   refine eq_zero_of_basicOpen_eq_bot a ?_
@@ -23,6 +28,27 @@ theorem eq_zero_of_ger_dense {Y : Scheme.{0}} [IsReduced Y] {O V : Y.Opens} (hd 
   rw [h y hm hy] at hu
   exact not_isUnit_zero hu
 
+/- English proof (translation)
+Introduce `k _ Y _ p B hB O hd m hloc`. Use `choose W i hi b hyW hagree hmax using hloc`. Set `τ` to `B.ι ⊕ {y : Y // y ∉ O}`. Set `V : τ → Y.Opens` to `fun t => Sum.elim (fun j => O ⊓ B.U j) (fun y => W y.1 y.2) t`. Set `c : τ → B.ι` to `fun t => Sum.elim (fun j => j) (fun y => i y.1 y.2) t`.
+
+Establish `hc : ∀ t, V t ≤ B.U (c t)` using `fun t => by`. Break down `t with j | ⟨y, hy⟩` into its components or cases. Conclude with `inf_le_right`. Conclude with `hi y hy`. Set `u : ∀ t, Γ(Y, V t)` to `fun t => match t with`.
+
+Consider the case `Sum.inl j => m.loc j`. Consider the case `Sum.inr y => b y.1 y.2`. Establish `key : ∀ t z (h : z ∈ V t) (hz : z ∈ O), ger z h (u t) = H0.germ (c t) z hz (hc t h) m`. Introduce `t z h hz`. Break down `t with j | ⟨y, hy⟩` into its components or cases.
+
+Both sides reduce to the same expression. Conclude with `hagree y hy z h hz`. Establish `cover : ∀ y ∈ (⊤ : Y.Opens), ∃ t, y ∈ V t` using `fun y _ => by`. Distinguish the cases in `hy : y ∈ O`. Take `⟨j, hj⟩` from `exists_chart hB y`.
+
+Conclude with `⟨Sum.inl j, hy, hj⟩`. Conclude with `⟨Sum.inr ⟨y, hy⟩, hyW y hy⟩`. Establish `rule : ∀ y t t' (h : y ∈ V t) (h' : y ∈ V t'), ger y h (u t) = tr B y (c t) (c t') * ger y h' (u t')`. Introduce `y t t' h h'`. Establish `l₁ : V t ⊓ V t' ≤ V t` using `inf_le_left`.
+
+Establish `l₂ : V t ⊓ V t' ≤ V t'` using `inf_le_right`. Establish `l₃ : V t ⊓ V t' ≤ B.U (c t) ⊓ B.U (c t')` using `inf_le_inf (hc t) (hc t')`. Establish `hz : ∀ z (hz : z ∈ V t ⊓ V t'), ger z hz (resG Y l₁ (u t) - resG Y l₃ (B.g (c t) (c t')).val * resG Y l₂ (u t')) = ger z (l₁ hz) (u t) - (tr B z (c t) (c t')).val * ger z (l₂ hz) (u t')`. Introduce `z hz`. Rewrite using `[map_sub, map_mul, ger_resG, ger_resG, ger_resG, val_tr B z (l₃ hz)]`.
+
+Establish `e` using `eq_zero_of_ger_dense hd _ fun z hzV hzO => by`. Rewrite using `[hz z hzV, key t z (l₁ hzV) hzO, key t' z (l₂ hzV) hzO, sub_eq_zero]`. Conclude with `H0.germ_change _ _ z hzO _ _ m`. Establish `e'` using `congrArg (ger y (memInf h h')) e`. Rewrite `e'` using `[hz y (memInf h h'), map_zero, sub_eq_zero]`.
+
+Conclude with `e'`. Take `⟨f, hf⟩` from `H0.exists_of_germs (p := p) (O := ⊤) hB V c (fun _ => le_top) hc cover u rule`. Use `⟨f, ?_, ?_⟩` and prove the remaining obligations. Use `H0.ext_germ fun y hy => ?_` and prove the remaining obligations. Take `⟨j, hj⟩` from `exists_chart hB y`.
+
+Use `⟨j, hj, ?_⟩` and prove the remaining obligations. Rewrite using `[H0.germ_restr]`. Conclude with `(hf (Sum.inl j) y ⟨hy, hj⟩).trans rfl`. Introduce `y hy j hj`. Rewrite using `[H0.germ_change j (i y hy) y _ hj (hi y hy (hyW y hy))]`.
+
+Establish `e` using `hf (Sum.inr ⟨y, hy⟩) y (hyW y hy)`. Use `(congrArg (fun x => (tr B y j (i y hy)).val * x) e).symm ▸ ?_` and prove the remaining obligations. Conclude with `Ideal.mul_mem_left _ _ (hmax y hy y (hyW y hy) hy)`.
+-/
 theorem exists_ext_of_dense_local : ∀ {k : Type} [CommRing k] {Y : Scheme.{0}} [IsReduced Y] (p : Y ⟶ Sp k) (B : LB Y), B.IsLB → ∀ (O : Y.Opens), Dense (O : Set Y) → ∀ (m : H0 p B O), (∀ y : Y, y ∉ O → ∃ (W : Y.Opens) (i : B.ι) (hi : W ≤ B.U i) (b : Γ(Y, W)), y ∈ W ∧ (∀ y' (h : y' ∈ W) (h' : y' ∈ O), ger y' h b = H0.germ i y' h' (hi h) m) ∧ ∀ y' (h : y' ∈ W), y' ∉ O → ger y' h b ∈ IsLocalRing.maximalIdeal (Y.presheaf.stalk y')) → ∃ s : H0 p B ⊤, H0.restr le_top s = m ∧ ∀ y : Y, y ∉ O → ∀ (i : B.ι) (hi : y ∈ B.U i), H0.germ i y (memTop y) hi s ∈ IsLocalRing.maximalIdeal (Y.presheaf.stalk y) := by
   intro k _ Y _ p B hB O hd m hloc
   choose W i hi b hyW hagree hmax using hloc

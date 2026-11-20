@@ -13,6 +13,13 @@ noncomputable section
 
 namespace GlobalTheory.AV.KerKill
 
+/- English proof (translation)
+Establish `haff : IsAffine H.left` using `isAffine_of_isAffineHom H.hom`. Take `⟨A, ⟨e⟩⟩` from `(essImage_hopfSpec (G := Grp.mk H)).2 haff`. Set `B : Type` to `A.unop`. Use `letI : HopfAlgebra K B := A.unop.hopfAlgebra`. Set `G : Over (Spec (CommRingCat.of K))` to `(Spec (CommRingCat.of B)).asOver (Spec (CommRingCat.of K))`.
+
+Use `letI : GrpObj G := instGrpObjSpecAsOverSpec (R := CommRingCat.of K) (A := CommRingCat.of B)`. Set `i : G ≅ H` to `(Grp.forget _).mapIso e`. Take `⟨j, hj, hw⟩ : ∃ j : Spec (CommRingCat.of B) ⟶ H.left, IsIso j ∧ Spec.map (CommRingCat.ofHom (algebraMap K B)) = j ≫ H.hom` from `⟨i.hom.left, inferInstanceAs (IsIso ((Over.forget _).map i.hom)), (Over.w i.hom).symm⟩`. Use `haveI h1 : Flat (Spec.map (CommRingCat.ofHom (algebraMap K B))) := by`. Rewrite using `[Flat.SpecMap_iff]`.
+
+Conclude with `RingHom.flat_algebraMap_iff.2 inferInstance`. Establish `e : H.hom = inv j ≫ Spec.map (CommRingCat.ofHom (algebraMap K B))`. Rewrite using `[hw, IsIso.inv_hom_id_assoc]`. Rewrite using `[e]`. Use `infer_instance`.
+-/
 theorem flat_of_isFinite_field (K : Type) [Field K] (H : Over (Sp K)) [GrpObj H] (hf : IsFinite H.hom) :
     Flat H.hom := by
   have haff : IsAffine H.left := isAffine_of_isAffineHom H.hom
@@ -34,6 +41,11 @@ theorem flat_of_isFinite_field (K : Type) [Field K] (H : Over (Sp K)) [GrpObj H]
   rw [e]
   infer_instance
 
+/- English proof (translation)
+Introduce `K _ A B f hf`. Take `⟨H, _, _, i, hi, hHf, hp⟩` from `GlobalTheory.CompanionTheory.KerPull.Kernel.exists_finite_kernel K A.X B.X A.ab f.hom inferInstance hf`. Establish `hfl : Flat H.hom` using `flat_of_isFinite_field K H hHf`. Take `⟨N, hN, h⟩` from `GlobalTheory.FiniteFlatKilled.main K H hHf hfl`. Use `⟨N, hN, fun T x hx => ?_⟩` and prove the remaining obligations.
+
+Take `⟨y, rfl⟩ : ∃ y : T ⟶ H, y ≫ i = x` from `⟨_, GlobalTheory.CompanionTheory.KerPull.Kernel.kerLift_comp hp x hx⟩`. Rewrite using `[← MonObj.comp_pow, ← Category.id_comp i, ← MonObj.pow_comp, h, MonObj.one_comp, MonObj.comp_one]`.
+-/
 theorem kernel_killed : ∀ (K : Type) [Field K] (A B : AbVar K) (f : A ⟶ B), IsFinite f.hom.left →
     ∃ n : ℕ, 0 < n ∧ ∀ (T : Over (Sp K)) (x : T ⟶ A.X), x ≫ f.hom = 1 → x ^ n = 1 := by
   intro K _ A B f hf

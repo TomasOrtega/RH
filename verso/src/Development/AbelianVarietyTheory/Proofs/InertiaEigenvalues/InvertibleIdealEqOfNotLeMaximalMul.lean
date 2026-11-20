@@ -6,6 +6,9 @@ open scoped Formalism.Per NNReal
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `h : (x : A) • y = (y : A) • x` using `Subtype.ext (by simp [mul_comm])`. Use `congrArg f h` as an intermediate fact. Simplify using `only [map_smul, smul_eq_mul] at this`. Rewrite using `[mul_comm (f x), ← this, mul_comm]`.
+-/
 theorem ideal_dual_symm {A : Type} [CommRing A] (I : Ideal A) (f : Module.Dual A ↥I)
     (x y : ↥I) : f x * (y : A) = f y * (x : A) := by
   have h : (x : A) • y = (y : A) • x := Subtype.ext (by simp [mul_comm])
@@ -13,6 +16,19 @@ theorem ideal_dual_symm {A : Type} [CommRing A] (I : Ideal A) (f : Module.Dual A
   simp only [map_smul, smul_eq_mul] at this
   rw [mul_comm (f x), ← this, mul_comm]
 
+/- English proof (translation)
+Introduce `hI hNI hm`. Use `set c : Ideal A := N.colon I with hc`. Establish `key : ∀ (f : Module.Dual A ↥I) (n : ↥I), (n : A) ∈ N → f n ∈ c`. Introduce `f n hn`. Rewrite using `[hc, Submodule.mem_colon]`.
+
+Introduce `p hp`. Rewrite using `[smul_eq_mul, ideal_dual_symm I f n ⟨p, hp⟩]`. Conclude with `N.mul_mem_left _ hn`. Establish `hcTop : c = ⊤`. Assume the negation of the conclusion as `hne`.
+
+Take `⟨m, hmax, hcm⟩` from `Ideal.exists_le_maximal c hne`. Apply `hm m hmax` to reduce the goal to its premises. Introduce `n hn`. Take `⟨t, ht⟩` from `hI.bijective.2 1`. Establish `hall : ∀ t : Module.Dual A ↥I ⊗[A] ↥I, contractLeft A ↥I t * n ∈ m * I`.
+
+Introduce `t`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul f x`. Rewrite using `[contractLeft_apply, ideal_dual_symm I f x ⟨n, hNI hn⟩]`.
+
+Conclude with `Ideal.mul_mem_mul (hcm (key f ⟨n, hNI hn⟩ hn)) x.2`. Consider the case `add s u hs hu => rw [map_add, add_mul]`. Conclude with `Ideal.add_mem _ hs hu`. Simplify `hall t` using `[ht]`. Apply `le_antisymm hNI` to reduce the goal to its premises.
+
+Introduce `y hy`. Establish `h1 : (1 : A) ∈ c` using `hcTop ▸ Submodule.mem_top`. Rewrite `h1` using `[hc, Submodule.mem_colon]`. Simplify using `using h1 y hy`.
+-/
 theorem invertible_ideal_eq_of_not_le_maximal_mul (A : Type) [CommRing A] (I N : Ideal A) :
     Module.Invertible A ↥I → N ≤ I → (∀ m : Ideal A, m.IsMaximal → ¬ N ≤ m * I) → N = I := by
   intro hI hNI hm

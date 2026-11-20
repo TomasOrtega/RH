@@ -11,10 +11,20 @@ section
 variable {C : Type} [Field C] [CharZero C] {σ : Type}
 
 omit [CharZero C] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mvExp_coeff_apply (a : MvPowerSeries σ C) (m : σ →₀ ℕ) :
     MvPowerSeries.coeff m (mvExp a) =
       ∑ k ∈ Finset.range (m.degree + 1), MvPowerSeries.coeff m (a ^ k) / (k.factorial : C) := rfl
 
+/- English proof (translation)
+Use extensionality with `m`. Rewrite using `[mvExp_coeff_apply, PowerSeries.coeff_subst (PowerSeries.HasSubst.of_constantCoeff_zero ha), finsum_eq_sum_of_support_subset (s := Finset.range (m.degree + 1))]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[PowerSeries.coeff_exp, smul_eq_mul]`. Simplify using `[div_eq_mul_inv, mul_comm]`.
+
+Introduce `k hk`. Assume the negation of the conclusion as `hk'`. Apply `hk` to reduce the goal to its premises. Establish `hlt : m.degree < k` using `by simpa using hk'`. Establish `: MvPowerSeries.coeff m (a ^ k) = 0` using `MvPowerSeries.coeff_of_lt_order (lt_of_lt_of_le (by exact_mod_cast hlt) (MvPowerSeries.le_order_pow_of_constantCoeff_eq_zero k ha))`.
+
+Simplify using `[this]`.
+-/
 theorem mvExp_eq_subst_exp (a : MvPowerSeries σ C) (ha : MvPowerSeries.constantCoeff a = 0) :
     mvExp a = PowerSeries.subst a (PowerSeries.exp C) := by
   ext m
@@ -32,6 +42,15 @@ theorem mvExp_eq_subst_exp (a : MvPowerSeries σ C) (ha : MvPowerSeries.constant
         (MvPowerSeries.le_order_pow_of_constantCoeff_eq_zero k ha))
     simp [this]
 
+/- English proof (translation)
+Establish `hL : (∑ s, y s • (MvPowerSeries.X s : MvPowerSeries σ C)) = ((∑ s, y s • (MvPolynomial.X s : MvPolynomial σ C) : MvPolynomial σ C) : MvPowerSeries σ C)`. Rewrite using `[← MvPolynomial.coeToMvPowerSeries.ringHom_apply, map_sum]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.coeToMvPowerSeries.ringHom_apply, MvPolynomial.smul_eq_C_mul, MvPolynomial.coe_mul, MvPolynomial.coe_C, MvPolynomial.coe_X, MvPowerSeries.smul_eq_C_mul]`. Establish `hdeg : (m.sum fun _ e => e) = m.degree`.
+
+Rewrite using `[Finsupp.degree_apply]`. Both sides reduce to the same expression. Rewrite using `[mvExp_coeff_apply, hL, Finset.sum_eq_single m.degree]`. Rewrite using `[← MvPolynomial.coe_pow, MvPolynomial.coeff_coe, MvPolynomial.coeff_linearCombination_X_pow_of_fintype, if_pos hdeg]`. Establish `hs : mfact m * m.multinomial = m.degree.factorial`.
+
+Rewrite using `[Finsupp.multinomial_eq, Finsupp.degree_apply, ← Nat.multinomial_spec]`. Both sides reduce to the same expression. Establish `hs' : (mfact m : C) * (m.multinomial : C) = (m.degree.factorial : C)` using `by exact_mod_cast hs`. Establish `h0 : (m.degree.factorial : C) ≠ 0` using `by exact_mod_cast Nat.factorial_ne_zero _`. Rewrite using `[← mul_div_assoc, ← mul_assoc, hs', mul_div_cancel_left₀ _ h0]`.
+
+Both sides reduce to the same expression. Introduce `k _ hk`. Rewrite using `[← MvPolynomial.coe_pow, MvPolynomial.coeff_coe, MvPolynomial.coeff_linearCombination_X_pow_of_fintype, if_neg (by rw [hdeg]; exact Ne.symm hk), zero_div]`. Introduce `h`. Conclude with `absurd (Finset.self_mem_range_succ _) h`.
+-/
 theorem mfact_mul_coeff_mvExp_linear [Fintype σ] (y : σ → C) (m : σ →₀ ℕ) :
     (mfact m : C) * MvPowerSeries.coeff m (mvExp (∑ s, y s • (MvPowerSeries.X s : MvPowerSeries σ C))) =
       ∏ i ∈ m.support, y i ^ m i := by
@@ -61,6 +80,11 @@ theorem mfact_mul_coeff_mvExp_linear [Fintype σ] (y : σ → C) (m : σ →₀ 
 
 end
 
+/- English proof (translation)
+Introduce `C _ _ σ _`. Use `⟨fun a b ha hb => ?_, fun a ha => mvExp_eq_subst_exp a ha, fun τ _ φ a hφ ha => ?_, fun y P => ?_⟩` and prove the remaining obligations. Rewrite using `[mvExp_eq_subst_exp a ha, mvExp_eq_subst_exp b hb, mvExp_eq_subst_exp (a + b) (by rw [map_add, ha, hb, add_zero])]`. Conclude with `ReciprocityTheory.ChartRestriction.G.TB.WickVanishing.exp_add ha hb`. Establish `hs` using `MvPowerSeries.hasSubst_of_constantCoeff_zero hφ`.
+
+Rewrite using `[mvExp_eq_subst_exp a ha, mvExp_eq_subst_exp _ (MvPowerSeries.constantCoeff_subst_eq_zero hs hφ ha), PowerSeries.subst_def, PowerSeries.subst_def, MvPowerSeries.subst_comp_subst_apply (PowerSeries.HasSubst.of_constantCoeff_zero ha).const hs]`. Rewrite using `[MvPolynomial.eval_eq, jetAt0]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[mul_assoc, mfact_mul_coeff_mvExp_linear]`.
+-/
 theorem mvExp_add_subst_linear : ∀ (C : Type) [Field C] [CharZero C] (σ : Type) [Fintype σ],
   (∀ a b : MvPowerSeries σ C, MvPowerSeries.constantCoeff a = 0 → MvPowerSeries.constantCoeff b = 0 → mvExp (a + b) = mvExp a * mvExp b) ∧
   (∀ a : MvPowerSeries σ C, MvPowerSeries.constantCoeff a = 0 → mvExp a = PowerSeries.subst a (PowerSeries.exp C)) ∧

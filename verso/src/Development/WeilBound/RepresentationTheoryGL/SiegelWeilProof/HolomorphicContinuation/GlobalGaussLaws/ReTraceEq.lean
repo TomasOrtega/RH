@@ -35,6 +35,11 @@ def Lc : (Fin m → Fin n → ℂ) ≃L[ℝ] V m n :=
     (by
       ext u a j <;> simp [creL, cimL])).toContinuousLinearEquiv
 
+/- English proof (translation)
+Establish `hL : ∀ z : Fin m → Fin n → ℂ, Lc z = creL z` using `fun _ => rfl`. Rewrite using `[hL, hL, PiLp.inner_apply, Fintype.sum_prod_type, Finset.sum_congr rfl]`. Introduce `a _`. Rewrite using `[Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Simplify using `[creL, Fin.sum_univ_two, Complex.mul_re]`.
+-/
 theorem inner_Lc (y v : Fin m → Fin n → ℂ) :
     inner ℝ (Lc y) (Lc v) = ∑ a, ∑ j, ((starRingEnd ℂ) (v a j) * y a j).re := by
   have hL : ∀ z : Fin m → Fin n → ℂ, Lc z = creL z := fun _ => rfl
@@ -55,6 +60,9 @@ def Dlin (ε : Fin m → Bool) : (Fin m → Fin n → ℂ) ≃L[ℝ] (Fin m → 
     (by ext u a j <;> simp [sgn] <;> split_ifs <;> simp)
     (by ext u a j <;> simp [sgn] <;> split_ifs <;> simp)).toContinuousLinearEquiv
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem Dlin_apply (ε : Fin m → Bool) (u : Fin m → Fin n → ℂ) (a : Fin m) (j : Fin n) :
     Dlin ε u a j = sgn ε a * u a j := rfl
 
@@ -63,9 +71,17 @@ def Mt (ε : Fin m → Bool) (t : ℝ) (ht : t ≠ 0) : (Fin m → Fin n → ℂ
     (LinearEquiv.smulOfNeZero ℝ (V m n) (-t / Real.pi)
       (div_ne_zero (neg_ne_zero.2 ht) Real.pi_pos.ne')).toContinuousLinearEquiv
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem Mt_apply (ε : Fin m → Bool) (t : ℝ) (ht : t ≠ 0) (u : Fin m → Fin n → ℂ) :
     Mt ε t ht u = (-t / Real.pi) • Lc (Dlin ε u) := rfl
 
+/- English proof (translation)
+Rewrite using `[inner_Lc, Matrix.trace]`. Simplify using `only [Matrix.diag, Matrix.mul_diagonal, Matrix.mul_apply, Matrix.conjTranspose_apply, Matrix.of_apply, Dlin_apply, map_mul, Complex.re_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `hs : (starRingEnd ℂ) (sgn ε a) = sgn ε a`.
+
+Apply the tactic sequence `simp only [sgn]; split_ifs <;> simp`. Rewrite using `[hs, ← Complex.star_def]`. Simplify using `only [Matrix.diagonal_apply, mul_ite, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Put the polynomial expressions in normal form.
+-/
 theorem re_trace_eq (ε : Fin m → Bool) (u y : Fin m → Fin n → ℂ) :
     (((Matrix.of u)ᴴ * Matrix.diagonal (sgn ε) * Matrix.of y).trace).re = inner ℝ (Lc y) (Lc (Dlin ε u)) := by
   rw [inner_Lc, Matrix.trace]
@@ -79,6 +95,11 @@ theorem re_trace_eq (ε : Fin m → Bool) (u y : Fin m → Fin n → ℂ) :
   simp only [Matrix.diagonal_apply, mul_ite, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]
   ring_nf
 
+/- English proof (translation)
+Use `haveI : (volume : Measure (Fin m → Fin n → ℂ)).IsAddHaarMeasure := Measure.pi.isAddHaarMeasure _`. Use `haveI : (Measure.map (Lc (m := m) (n := n)) volume).IsAddHaarMeasure := (Lc (m := m) (n := n)).isAddHaarMeasure_map volume`. Establish `hmap` using `Measure.isAddLeftInvariant_eq_smul (Measure.map (Lc (m := m) (n := n)) volume) (volume : Measure (V m n))`. Use `set c := (Measure.map (Lc (m := m) (n := n)) volume).addHaarScalarFactor (volume : Measure (V m n)) with hc`. Use `⟨(c : ℝ), NNReal.coe_pos.2 (Measure.addHaarScalarFactor_pos_of_isAddHaarMeasure _ _), fun F _ => ?_⟩` and prove the remaining obligations.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[integral_smul_nnreal_measure, NNReal.smul_def, Complex.real_smul]`.
+-/
 theorem haar_Lc : ∃ c : ℝ, 0 < c ∧ ∀ F : V m n → ℂ, Continuous F →
     ∫ y : Fin m → Fin n → ℂ, F (Lc y) = (c : ℂ) * ∫ w, F w := by
   haveI : (volume : Measure (Fin m → Fin n → ℂ)).IsAddHaarMeasure := Measure.pi.isAddHaarMeasure _
@@ -94,6 +115,13 @@ theorem haar_Lc : ∃ c : ℝ, 0 < c ∧ ∀ F : V m n → ℂ, Continuous F →
     _ = (c : ℂ) * ∫ w, F w := by
         rw [integral_smul_nnreal_measure, NNReal.smul_def, Complex.real_smul]
 
+/- English proof (translation)
+Take `⟨c, hc, hH⟩` from `haar_Lc (m := m) (n := n)`. Use `⟨c, hc, fun S u => ?_⟩` and prove the remaining obligations. Rewrite using `[SchwartzMap.fourier_coe, Real.fourier_eq', ← hH (fun v => Complex.exp (↑(-2 * π * inner ℝ v (Mt ε t ht u)) * Complex.I) • (SchwartzMap.compCLMOfContinuousLinearEquiv ℂ (Lc (m := m) (n := n)).symm S) v) ?_]`. Simplify using `only [ftLoc]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations.
+
+Simplify using `only [re_trace_eq, Mt_apply, real_inner_smul_right, SchwartzMap.compCLMOfContinuousLinearEquiv_apply, Function.comp_apply, ContinuousLinearEquiv.symm_apply_apply, smul_eq_mul]`. Rewrite using `[mul_comm]`. Use `congr 2`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+
+Use `fun_prop`.
+-/
 theorem ftLoc_eq (ε : Fin m → Bool) (t : ℝ) (ht : t ≠ 0) :
     ∃ c : ℝ, 0 < c ∧ ∀ (S : SchwartzMap (Fin m → Fin n → ℂ) ℂ) (u : Fin m → Fin n → ℂ),
       ftLoc ε t (⇑S) u = (c : ℂ) * 𝓕 (SchwartzMap.compCLMOfContinuousLinearEquiv ℂ (Lc (m := m) (n := n)).symm S)
@@ -112,6 +140,11 @@ theorem ftLoc_eq (ε : Fin m → Bool) (t : ℝ) (ht : t ≠ 0) :
     field_simp
   · fun_prop
 
+/- English proof (translation)
+Take `⟨S, rfl⟩` from `hf`. Take `⟨c, -, h⟩` from `ftLoc_eq (n := n) ε t ht`. Use `⟨(κ * c) • SchwartzMap.compCLMOfContinuousLinearEquiv ℂ (Mt ε t ht) (𝓕 (SchwartzMap.compCLMOfContinuousLinearEquiv ℂ (Lc (m := m) (n := n)).symm S)), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `u`. Simplify using `only [SchwartzMap.smul_apply, SchwartzMap.compCLMOfContinuousLinearEquiv_apply, Function.comp_apply, h, smul_eq_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem isSch_ftLoc (ε : Fin m → Bool) (t : ℝ) (ht : t ≠ 0) (κ : ℂ) (f : (Fin m → Fin n → ℂ) → ℂ) (hf : IsSch f) :
     IsSch (fun u => κ * ftLoc ε t f u) := by
   obtain ⟨S, rfl⟩ := hf
@@ -123,6 +156,13 @@ theorem isSch_ftLoc (ε : Fin m → Bool) (t : ℝ) (ht : t ≠ 0) (κ : ℂ) (f
     smul_eq_mul]
   ring
 
+/- English proof (translation)
+Take `⟨T, rfl⟩` from `hg`. Take `⟨c, hc, hH⟩` from `ftLoc_eq ε t ht`. Use `set G : SchwartzMap (V m n) ℂ := SchwartzMap.compCLMOfContinuousLinearEquiv ℂ (Mt ε t ht).symm T with hG`. Use `⟨SchwartzMap.compCLMOfContinuousLinearEquiv ℂ (Lc (m := m) (n := n)) (𝓕⁻ (((c : ℂ)⁻¹) • G)), ⟨_, rfl⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `u`.
+
+Rewrite using `[hH]`. Establish `h1 : SchwartzMap.compCLMOfContinuousLinearEquiv ℂ (Lc (m` using `m) (n := n)).symm (SchwartzMap.compCLMOfContinuousLinearEquiv ℂ (Lc (m := m) (n := n)) (𝓕⁻ (((c : ℂ)⁻¹) • G))) = 𝓕⁻ (((c : ℂ)⁻¹) • G) := by`. Use extensionality with `w`. Simplify using the standard rewrite rules. Rewrite using `[h1, FourierInvPair.fourier_fourierInv_eq]`.
+
+Establish `hc0 : (c : ℂ) ≠ 0` using `by exact_mod_cast hc.ne'`. Simplify using `only [SchwartzMap.smul_apply, hG, SchwartzMap.compCLMOfContinuousLinearEquiv_apply, Function.comp_apply, ContinuousLinearEquiv.symm_apply_apply, smul_eq_mul]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem ftLoc_surj (ε : Fin m → Bool) (t : ℝ) (ht : t ≠ 0) (g : (Fin m → Fin n → ℂ) → ℂ) (hg : IsSch g) :
     ∃ f, IsSch f ∧ (fun u => ftLoc ε t f u) = g := by
   obtain ⟨T, rfl⟩ := hg
@@ -142,6 +182,11 @@ theorem ftLoc_surj (ε : Fin m → Bool) (t : ℝ) (ht : t ≠ 0) (g : (Fin m �
     ContinuousLinearEquiv.symm_apply_apply, smul_eq_mul]
   field_simp
 
+/- English proof (translation)
+Simplify using `only [ftLoc]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Establish `hm : Matrix.of (-u) = -Matrix.of u` using `rfl`. Simplify using `only [hm, Matrix.conjTranspose_neg, Matrix.neg_mul, Matrix.trace_neg, Complex.neg_re]`. Use `push_cast`.
+
+Put the polynomial expressions in normal form.
+-/
 theorem ftLoc_neg (ε : Fin m → Bool) (t : ℝ) (f : (Fin m → Fin n → ℂ) → ℂ) (u : Fin m → Fin n → ℂ) :
     ftLoc ε t f (-u) = ftLoc ε (-t) f u := by
   simp only [ftLoc]

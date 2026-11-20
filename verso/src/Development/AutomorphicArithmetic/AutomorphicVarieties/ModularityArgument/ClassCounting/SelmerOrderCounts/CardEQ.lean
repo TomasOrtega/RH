@@ -7,6 +7,15 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 
 open NumberField IsDedekindDomain UpperTheory.V UpperTheory.V.ZK UpperTheory.V.ZK.Ct
 
+/- English proof (translation)
+Set `φ : (E × ℤ) →ₗ[ℤ] (E ⧸ (LinearMap.range δ ⊔ Submodule.torsion ℤ E)) × ZMod m` to `(Submodule.mkQ _).prodMap (Int.castAddHom (ZMod m)).toIntLinearMap`. Establish `hs : Function.Surjective φ` using `fun ⟨x, y⟩ => by`. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Take `⟨y, rfl⟩` from `ZMod.intCast_surjective y`. Conclude with `⟨(x, y), rfl⟩`.
+
+Establish `hk : LinearMap.ker φ = LinearMap.range (δ.prodMap ((-(m : ℤ)) • LinearMap.id)) ⊔ Submodule.torsion ℤ (E × ℤ)`. Use extensionality with `⟨x, y⟩`. Rewrite using `[LinearMap.mem_ker, Prod.ext_iff, Submodule.mem_sup]`. Express the relevant statement in the definitionally equal form `(Submodule.Quotient.mk x = 0 ∧ (y : ZMod m) = 0) ↔ _`. Rewrite using `[Submodule.Quotient.mk_eq_zero, ZMod.intCast_zmod_eq_zero_iff_dvd, Submodule.mem_sup]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨_, ⟨a, rfl⟩, t, ⟨r, hr⟩, rfl⟩, k, rfl⟩`. Conclude with `⟨_, ⟨(a, -k), rfl⟩, (t, 0), ⟨r, Prod.ext hr (by simp)⟩, by simp⟩`. Introduce and unpack `⟨_, ⟨⟨a, k⟩, rfl⟩, ⟨t, s⟩, ⟨r, hr⟩, h⟩`. Take `⟨h1, h2⟩` from `Prod.ext_iff.1 h`.
+
+Take `⟨h3, h4⟩` from `Prod.ext_iff.1 hr`. Establish `hs : s = 0` using `(mul_eq_zero.1 (show (r : ℤ) * s = 0 from h4)).resolve_left (nonZeroDivisors.coe_ne_zero r)`. Use `⟨⟨_, ⟨a, rfl⟩, t, ⟨r, h3⟩, h1⟩, -k, ?_⟩` and prove the remaining obligations. Simplify `h2.symm` using `[hs]`. Conclude with `⟨((Submodule.quotEquivOfEq _ _ hk.symm).trans (φ.quotKerEquivOfSurjective hs)).toEquiv⟩`.
+-/
 private theorem card_prod (E : Type) [AddCommGroup E] (δ : Module.End ℤ E) (m : ℕ) :
     Nonempty (((E × ℤ) ⧸ (LinearMap.range (δ.prodMap ((-(m : ℤ)) • LinearMap.id)) ⊔ Submodule.torsion ℤ (E × ℤ))) ≃
       (E ⧸ (LinearMap.range δ ⊔ Submodule.torsion ℤ E)) × ZMod m) := by
@@ -33,6 +42,39 @@ private theorem card_prod (E : Type) [AddCommGroup E] (δ : Module.End ℤ E) (m
       simpa [hs] using h2.symm
   exact ⟨((Submodule.quotEquivOfEq _ _ hk.symm).trans (φ.quotKerEquivOfSurjective hs)).toEquiv⟩
 
+/- English proof (translation)
+Introduce `L F _ _ _ _ _ γ a D hL hG hγ hD`. Take `⟨hF, hc, hfree⟩` from `places L F γ hL hG hγ`. Establish `ha : 2 ≤ a` using `hD.a_eq ▸ D.two_le`. Establish `hn : 0 < orderOf γ` using `hD.n_eq ▸ D.n_pos`. Set `ι : Additive (𝓞 F)ˣ →ₗ[ℤ] Additive Fˣ` to `(MonoidHom.toAdditive (Units.map (algebraMap (𝓞 F) F : 𝓞 F →* F))).toIntLinearMap`.
+
+Establish `hι : Function.Injective ι` using `Units.map_injective RingOfIntegers.coe_injective`. Establish `hr : LinearMap.range ι = LinearMap.ker D.d`. Use extensionality with `α`. Take `⟨α, rfl⟩` from `Additive.ofMul.surjective α`. Establish `hv : D.d (Additive.ofMul α) = 0 ↔ ∀ P : HeightOneSpectrum (𝓞 F), P.valuation F (α : F) = 1`.
+
+Rewrite using `[Finsupp.ext_iff]`. Use `forall_congr' fun P => ?_` and prove the remaining obligations. Rewrite using `[hD.d_eq, valuation_eq_exp_ordP, ← WithZero.exp_zero, WithZero.exp_inj, neg_eq_zero]`. Both sides reduce to the same expression. Rewrite using `[LinearMap.mem_ker, hv]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu⟩ P`. Take `rfl : Units.map (algebraMap (𝓞 F) F : 𝓞 F →* F) u.toMul = α` from `hu`. Use `le_antisymm (P.valuation_le_one (K := F) _) ?_` and prove the remaining obligations. Establish `h1` using `P.valuation_le_one (K := F) ((u.toMul⁻¹ : (𝓞 F)ˣ) : 𝓞 F)`.
+
+Establish `h2 : P.valuation F (algebraMap (𝓞 F) F (u.toMul : (𝓞 F)ˣ)) * P.valuation F (algebraMap (𝓞 F) F ((u.toMul⁻¹ : (𝓞 F)ˣ) : 𝓞 F)) = 1`. Rewrite using `[← map_mul, ← map_mul, Units.mul_inv, map_one, map_one]`. Combine the equalities or inequalities in the displayed calculation. Introduce `h`. Take `⟨x, hx⟩` from `HeightOneSpectrum.mem_integers_of_valuation_le_one F (α : F) fun P => (h P).le`.
+
+Take `⟨y, hy⟩` from `HeightOneSpectrum.mem_integers_of_valuation_le_one F ((α⁻¹ : Fˣ) : F) fun P => by`. Rewrite using `[Units.val_inv_eq_inv_val, map_inv₀, h P, inv_one]`. Establish `hxy : x * y = 1` using `RingOfIntegers.coe_injective (by rw [map_mul, hx, hy, map_one, Units.mul_inv])`. Conclude with `⟨Additive.ofMul (Units.mkOfMulEqOne x y hxy), Units.ext hx⟩`. Set `g : Module.End ℤ (Additive (𝓞 F)ˣ)` to `(MonoidHom.toAdditive (Units.map (RingOfIntegers.mapRingEquiv (γ⁻¹).toRingEquiv : 𝓞 F →* 𝓞 F))).toIntLinearMap`.
+
+Set `δ : Module.End ℤ (Additive (𝓞 F)ˣ)` to `g - (a : ℤ) • 1`. Establish `hδ : ∀ u, ι (δ u) = D.del (ι u)` using `fun u => by`. Establish `: ι (g u) = D.g (ι u)`. Use `Eq.trans ?_ (hD.g_eq (ι u).toMul).symm` and prove the remaining obligations. Conclude with `congrArg Additive.ofMul (Units.ext rfl)`.
+
+Simplify using `only [δ, Dat.del, LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply, map_sub, map_zsmul, this, hD.a_eq]`. Set `e : Additive (𝓞 F)ˣ ≃ₗ[ℤ] LinearMap.ker D.d` to `(LinearEquiv.ofInjective ι hι).trans (LinearEquiv.ofEq _ _ hr)`. Establish `he : ∀ u, (e u : Additive Fˣ) = ι u` using `fun _ => rfl`. Establish `e2 : (Additive (𝓞 F)ˣ ⧸ (LinearMap.range δ ⊔ Submodule.torsion ℤ _)) ≃ₗ[ℤ] D.EQ`. Use `Submodule.Quotient.equiv _ _ e ?_` and prove the remaining obligations.
+
+Use extensionality with `y`. Take `⟨u, rfl⟩` from `e.surjective y`. Rewrite using `[Submodule.mem_map_equiv, e.symm_apply_apply, Submodule.submoduleOf, Submodule.mem_comap, Submodule.subtype_apply, he, Submodule.mem_sup, Submodule.mem_sup]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨v, rfl⟩, t, ⟨r, ht⟩, rfl⟩`.
+
+Use `⟨_, ⟨ι v, hr ▸ ⟨v, rfl⟩, rfl⟩, ι t, ⟨r, ?_⟩, by rw [map_add, hδ]⟩` and prove the remaining obligations. Rewrite `ht`, the goal using `[Submonoid.smul_def]`. Rewrite using `[← map_smul, ht, map_zero]`. Introduce and unpack `⟨_, ⟨v, hv, rfl⟩, t, ⟨r, ht⟩, h⟩`. Rewrite `hv` using `[← hr]`.
+
+Take `⟨v, rfl⟩` from `hv`. Use `⟨_, ⟨v, rfl⟩, u - δ v, ⟨r, hι ?_⟩, by abel⟩` and prove the remaining obligations. Rewrite `ht`, the goal using `[Submonoid.smul_def]`. Rewrite using `[map_smul, map_sub, hδ, ← h, add_sub_cancel_left, ht, map_zero]`. Set `lam : Additive (𝓞 F)ˣ × ℤ →ₗ[ℤ] (InfinitePlace F → ℝ)` to `AddMonoidHom.toIntLinearMap { toFun := fun x w => Real.log (w ((x.1.toMul : 𝓞 F) : F)) + x.2 map_zero' := by ext w; simp map_add' := fun x y => by`.
+
+Use extensionality with `w`. Simplify using `only [Prod.fst_add, toMul_add, Units.val_mul, map_mul, Prod.snd_add, Int.cast_add, Pi.add_apply]`. Rewrite using `[Real.log_mul (Units.pos_at_place _ _).ne' (Units.pos_at_place _ _).ne']`. Use `ring }`. Take `⟨u1, u2, u3⟩` from `unitLat F hF lam fun _ _ _ => rfl`.
+
+Establish `hdet` using `permDet (InfinitePlace F) (MulAction.toPerm γ) (orderOf γ) _ (a : ℝ) hn (by exact_mod_cast (by omega : 1 ≤ a)) hc fun k w => by rw [← hfree, ← MulAction.toPermHom_apply, ← map_pow]; rfl`. Establish `h1 : (1 : ℝ) < (a : ℝ) ^ orderOf γ` using `one_lt_pow₀ (by exact_mod_cast (by omega : 1 < a)) hn.ne'`. Take `⟨f1, f2⟩` from `latDet _ _ lam (δ.prodMap ((-((a - 1 : ℕ) : ℤ)) • LinearMap.id)) (LinearMap.funLeft ℝ ℝ (MulAction.toPerm γ : Equiv.Perm (InfinitePlace F)) - (a : ℝ) • LinearMap.id) (by`. Introduce and unpack `⟨u, m⟩`. Establish `h2 : lam (g u, m) = LinearMap.funLeft ℝ ℝ (MulAction.toPerm γ : Equiv.Perm (InfinitePlace F)) (lam (u, m))`.
+
+Use extensionality with `w`. Both sides reduce to the same expression. Establish `h3 : (δ.prodMap ((-((a - 1 : ℕ) : ℤ)) • LinearMap.id)) (u, m) = (g u, m) - (a : ℤ) • (u, m)`. Use `Prod.ext rfl ?_` and prove the remaining obligations. Simplify using `only [LinearMap.prodMap_apply, LinearMap.smul_apply, LinearMap.id_apply, smul_eq_mul, Prod.snd_sub, Prod.smul_snd]`.
+
+Rewrite using `[Nat.cast_sub (by omega)]; push_cast; ring`. Rewrite using `[h3, map_sub, h2, map_zsmul, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, natCast_zsmul, Nat.cast_smul_eq_nsmul]) u1 u2 u3`. Use the proof step `(by rw [← abs_pos, hdet]; exact pow_pos (by linarith) _)`. Take `⟨e3⟩` from `card_prod _ δ (a - 1)`. Use `haveI : NeZero (a - 1) := ⟨by omega⟩`.
+
+Establish `f3` using `(e3.finite_iff).1 f1`. Use `⟨e2.toEquiv.finite_iff.1 (Finite.prod_left (ZMod (a - 1))), ?_⟩` and prove the remaining obligations. Rewrite `f2` using `[Nat.card_congr e3, Nat.card_prod, Nat.card_zmod, Nat.card_congr e2.toEquiv, hdet]`. Establish `h4 : 1 ≤ a ^ orderOf γ` using `Nat.one_le_pow _ _ (by omega)`. Conclude with `f2.trans (by rw [Nat.cast_pow, Nat.cast_sub h4]; push_cast; rfl : ((a : ℝ) ^ orderOf γ - 1) ^ InfinitePlace.nrComplexPlaces L = (((a ^ orderOf γ - 1) ^ InfinitePlace.nrComplexPlaces L : ℕ) : ℝ))` after adjusting the coercions.
+-/
 theorem UpperTheory.V.ZK.Ct.cardEQ :
     ∀ (L F : Type) [Field L] [NumberField L] [Field F] [NumberField F] [Algebra L F] (γ : F ≃ₐ[L] F) (a : ℕ) (D : Dat (Additive Fˣ) (HeightOneSpectrum (𝓞 F) →₀ ℤ)), IsTotallyComplex L → IsGalois L F → (∀ σ : F ≃ₐ[L] F, σ ∈ Subgroup.zpowers γ) → IsDat γ a D → Finite D.EQ ∧ Nat.card D.EQ * (a - 1) = (a ^ orderOf γ - 1) ^ InfinitePlace.nrComplexPlaces L := by
   intro L F _ _ _ _ _ γ a D hL hG hγ hD

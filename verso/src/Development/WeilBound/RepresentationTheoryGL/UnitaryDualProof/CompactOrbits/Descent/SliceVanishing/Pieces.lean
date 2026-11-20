@@ -12,6 +12,11 @@ open PositivityTheory.RgUd.T PositivityTheory.RgUd.T.Desc
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n : ℕ}
 
+/- English proof (translation)
+Apply `Algebra.adjoin_le` to reduce the goal to its premises. Introduce `a ha`. Rewrite using `[SetLike.mem_coe, Subalgebra.mem_centralizer_iff]`. Introduce `y hy`. Rewrite `hy` using `[Set.mem_singleton_iff]`.
+
+Substitute `hy` using the available equality. Break down `Set.mem_insert_iff.mp ha with rfl | ha` into its components or cases. Conclude with `hs.symm`. Conclude with `(hx a ha).symm`.
+-/
 theorem centralizer_le_of {Z : Subalgebra k (Matrix (Fin n) (Fin n) k)} {s x : Matrix (Fin n) (Fin n) k}
     (hx : ∀ a ∈ Z, a * x = x * a) (hs : s * x = x * s) :
     adj Z s ≤ Subalgebra.centralizer k ({x} : Set (Matrix (Fin n) (Fin n) k)) := by
@@ -25,6 +30,9 @@ theorem centralizer_le_of {Z : Subalgebra k (Matrix (Fin n) (Fin n) k)} {s x : M
   · exact hs.symm
   · exact (hx a ha).symm
 
+/- English proof (translation)
+Use `show ∀ a ∈ adj Z s, a * x = x * a`. Introduce `a ha`. Establish `h` using `centralizer_le_of hx hs ha`. Rewrite `h` using `[Subalgebra.mem_centralizer_iff]`. Conclude with `(h x (Set.mem_singleton x)).symm`.
+-/
 theorem mem_Bz_adj {Z : Subalgebra k (Matrix (Fin n) (Fin n) k)} {s x : Matrix (Fin n) (Fin n) k}
     (hx : x ∈ Bz Z) (hs : s * x = x * s) : x ∈ Bz (adj Z s) := by
   show ∀ a ∈ adj Z s, a * x = x * a
@@ -33,6 +41,11 @@ theorem mem_Bz_adj {Z : Subalgebra k (Matrix (Fin n) (Fin n) k)} {s x : Matrix (
   rw [Subalgebra.mem_centralizer_iff] at h
   exact (h x (Set.mem_singleton x)).symm
 
+/- English proof (translation)
+Simplify using `only [Gz, Set.mem_setOf_eq]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `⟨fun a ha => h a (Algebra.subset_adjoin (Set.mem_insert_of_mem _ ha)), h s (Algebra.subset_adjoin (Set.mem_insert _ _))⟩`. Introduce and unpack `⟨h1, h2⟩ a ha`.
+
+Establish `h` using `centralizer_le_of (x := (g : Matrix (Fin n) (Fin n) k)) h1 h2 ha`. Rewrite `h` using `[Subalgebra.mem_centralizer_iff]`. Conclude with `(h _ (Set.mem_singleton _)).symm`.
+-/
 theorem mem_Gz_adj_iff {Z : Subalgebra k (Matrix (Fin n) (Fin n) k)} {s : Matrix (Fin n) (Fin n) k} {g : GL (Fin n) k} :
     g ∈ Gz (adj Z s) ↔ g ∈ Gz Z ∧ s * g.val = g.val * s := by
   simp only [Gz, Set.mem_setOf_eq]
@@ -53,13 +66,22 @@ variable {Z : Subalgebra k (Matrix (Fin n) (Fin n) k)} {F : Set (Matrix (Fin n) 
   (hFinv : ∀ g ∈ Gz Z, ∀ x ∈ F, g.val * x * g⁻¹.val ∈ F)
 
 include hFinv in
+/- English proof (translation)
+Use `Set.mem_prod.mpr ⟨?_, Set.mem_univ _⟩` and prove the remaining obligations. Conclude with `hFinv g hg q.1 (Set.mem_prod.mp hq).1`.
+-/
 theorem act_mem_Xs {g : GL (Fin n) k} (hg : g ∈ Gz Z) {q : Sp k n} (hq : q ∈ Xs F) : act g q ∈ Xs F := by
   refine Set.mem_prod.mpr ⟨?_, Set.mem_univ _⟩
   exact hFinv g hg q.1 (Set.mem_prod.mp hq).1
 
+/- English proof (translation)
+Simplify using `only [act, Units.val_mul, _root_.mul_inv_rev, Matrix.mulVec_mulVec, Matrix.mul_assoc]`.
+-/
 theorem act_mul (g h : GL (Fin n) k) (q : Sp k n) : act (g * h) q = act g (act h q) := by
   simp only [act, Units.val_mul, _root_.mul_inv_rev, Matrix.mulVec_mulVec, Matrix.mul_assoc]
 
+/- English proof (translation)
+Simplify using `[act]`.
+-/
 theorem act_one (q : Sp k n) : act (1 : GL (Fin n) k) q = q := by simp [act]
 
 def actX : MulAction (GzS Z) (Xs F) where
@@ -67,6 +89,9 @@ def actX : MulAction (GzS Z) (Xs F) where
   one_smul q := Subtype.ext (act_one q.1)
   mul_smul g h q := Subtype.ext (act_mul g.1 h.1 q.1)
 
+/- English proof (translation)
+Unfold `act`. Use `Continuous.prodMk ?_ ?_` and prove the remaining obligations. Conclude with `((Units.continuous_val.comp continuous_fst).matrix_mul (continuous_fst.comp continuous_snd)).matrix_mul (Units.continuous_coe_inv.comp continuous_fst)`. Conclude with `(Units.continuous_val.comp continuous_fst).matrix_mulVec (continuous_snd.comp continuous_snd)`.
+-/
 theorem continuous_act : Continuous fun p : GL (Fin n) k × Sp k n => act p.1 p.2 := by
   unfold act
   refine Continuous.prodMk ?_ ?_
@@ -76,6 +101,9 @@ theorem continuous_act : Continuous fun p : GL (Fin n) k × Sp k n => act p.1 p.
   · exact (Units.continuous_val.comp continuous_fst).matrix_mulVec
       (continuous_snd.comp continuous_snd)
 
+/- English proof (translation)
+Use `letI := actX hFinv`. Use `⟨Continuous.subtype_mk ?_ _⟩` and prove the remaining obligations. Conclude with `continuous_act.comp ((continuous_subtype_val.comp continuous_fst).prodMk (continuous_subtype_val.comp continuous_snd))`.
+-/
 theorem continuousSMul_actX : @ContinuousSMul (GzS Z) (Xs F) (actX hFinv).toSMul _ _ := by
   letI := actX hFinv
   refine ⟨Continuous.subtype_mk ?_ _⟩

@@ -19,11 +19,21 @@ noncomputable section
 namespace GlobalTheory.MBLow.Cl.JetFam
 
 open TrivSqZeroExt in
+/- English proof (translation)
+Rewrite using `[TrivSqZeroExt.isUnit_iff_isUnit_fst]`. Simplify using `using ha`.
+-/
 theorem dual_unit {a a' : ℂ} (ha : a ≠ 0) : IsUnit (inl a + inr a' : DualNumber ℂ) := by
   rw [TrivSqZeroExt.isUnit_iff_isUnit_fst]
   simpa using ha
 
 open TrivSqZeroExt in
+/- English proof (translation)
+Establish `ua : IsUnit (inl a : DualNumber ℂ)` using `by simpa using dual_unit (a' := 0) ha`. Establish `ur : IsUnit (inl r : DualNumber ℂ)` using `by simpa using dual_unit (a' := 0) hr`. Establish `hu` using `((ua.mul (dual_unit (a' := r') hr)).mul (dual_unit (a' := a') ha)).mul ur`. Establish `key : S * V = (inl p + inr p') * (inl r + inr r') ^ k * (1 + inr e)`. Apply `hu.mul_right_cancel` to reduce the goal to its premises.
+
+Take the linear combination `(V * (inl a + inr a') * inl r) * h1 + ((inl p + inr p') * (inl r + inr r') ^ k * (inl a + inr a') * inl r) * h2`. Rewrite using `[key]`. Prove the components needed by the constructor for the conclusion. Simplify using `[hr]`. Break down `k with _ | k` into its components or cases.
+
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using `[TrivSqZeroExt.snd_pow]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem dual_mul {S V : DualNumber ℂ} {a a' r r' p p' e : ℂ} {k : ℕ} (ha : a ≠ 0) (hr : r ≠ 0)
     (h1 : S * inl a * (inl r + inr r') = (inl p + inr p') * (inl r + inr r') ^ k * (inl a + inr a') * inl r)
     (h2 : V * (inl a + inr a') * inl r = (1 + inr e) * inl a * (inl r + inr r')) :
@@ -45,6 +55,9 @@ theorem dual_mul {S V : DualNumber ℂ} {a a' r r' p p' e : ℂ} {k : ℕ} (ha :
       ring
 
 open TrivSqZeroExt in
+/- English proof (translation)
+Establish `ua : IsUnit (inl a : DualNumber ℂ)` using `by simpa using dual_unit (a' := 0) ha`. Establish `ur : IsUnit (inl r : DualNumber ℂ)` using `by simpa using dual_unit (a' := 0) hr`. Apply `(ua.mul ur).mul_right_cancel` to reduce the goal to its premises. Rewrite `h2` using `[inr_zero, add_zero, add_zero]`. Take the linear combination `h2`.
+-/
 theorem dual_zero {V : DualNumber ℂ} {a r e : ℂ} (ha : a ≠ 0) (hr : r ≠ 0)
     (h2 : V * (inl a + inr 0) * inl r = (1 + inr e) * inl a * (inl r + inr 0)) : V = 1 + inr e := by
   have ua : IsUnit (inl a : DualNumber ℂ) := by simpa using dual_unit (a' := 0) ha
@@ -57,15 +70,29 @@ variable {g' r g : ℕ} (σ : Fin g ≃ Fin g' ⊕ Fin r)
 
 def join (z : Fin g' → ℂ) (t : Fin r → ℂ) : Fin g → ℂ := fun j => Sum.elim z t (σ j)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[zP, join]`.
+-/
 theorem leftComponent_join (z : Fin g' → ℂ) (t : Fin r → ℂ) : zP σ (join σ z t) = z := by
   funext i; simp [zP, join]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[tP, join]`.
+-/
 theorem secondBlock_join (z : Fin g' → ℂ) (t : Fin r → ℂ) : tP σ (join σ z t) = t := by
   funext i; simp [tP, join]
 
+/- English proof (translation)
+Apply the tactic sequence `funext j; simp only [join]; rcases σ j with i | i <;> simp`.
+-/
 theorem join_zero : join σ 0 0 = 0 := by
   funext j; simp only [join]; rcases σ j with i | i <;> simp
 
+/- English proof (translation)
+Use `differentiable_pi.2 fun j => ?_` and prove the remaining obligations. Simplify using `only [join]`. Break down `σ j with i | i` into its components or cases. Simplify using `only [Sum.elim_inl]`. Use `fun_prop`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem diff_join : Differentiable ℂ fun z : Fin g' → ℂ => join σ z 0 := by
   refine differentiable_pi.2 fun j => ?_
   simp only [join]
@@ -78,11 +105,22 @@ def zL : (Fin g → ℂ) →L[ℂ] (Fin g' → ℂ) := ContinuousLinearMap.pi fu
 def tL (c : ℂ) (v : Fin r → ℂ) : (Fin g → ℂ) →L[ℂ] ℂ :=
   c • ∑ l, v l • ContinuousLinearMap.proj (σ.symm (Sum.inr l))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem zL_apply (Y : Fin g → ℂ) : zL σ Y = zP σ Y := rfl
 
+/- English proof (translation)
+Simplify using `[tL, tP, dotProduct]`.
+-/
 theorem tL_apply (c : ℂ) (v : Fin r → ℂ) (Y : Fin g → ℂ) : tL σ c v Y = c * (v ⬝ᵥ tP σ Y) := by
   simp [tL, tP, dotProduct]
 
+/- English proof (translation)
+Establish `e : F = fun Y => Complex.exp (tL σ c v Y) * φ (zL σ Y)`. Use function extensionality and compare the values at `Y`. Rewrite using `[h, tL_apply, zL_apply]`. Establish `h1 : HasFDerivAt (fun Y => Complex.exp (tL σ c v Y)) _ (0 : Fin g → ℂ)` using `(tL σ c v).hasFDerivAt.cexp`. Establish `h2 : HasFDerivAt (fun Y => φ (zL σ Y)) _ (0 : Fin g → ℂ)` using `(hφ (zL σ 0)).hasFDerivAt.comp (0 : Fin g → ℂ) (zL σ).hasFDerivAt`.
+
+Establish `h3` using `(h1.mul h2).fderiv`. Rewrite using `[e]`. Use `(congrArg (fun L => L Z) h3).trans ?_` and prove the remaining obligations. Rewrite using `[map_zero, map_zero]`. Simplify using `[tL_apply, zL_apply, mul_comm]`.
+-/
 theorem fderiv_eq (c : ℂ) (v : Fin r → ℂ) {F : (Fin g → ℂ) → ℂ} {φ : (Fin g' → ℂ) → ℂ} (hφ : Differentiable ℂ φ)
     (h : ∀ Y, F Y = Complex.exp (c * (v ⬝ᵥ tP σ Y)) * φ (zP σ Y)) (Z : Fin g → ℂ) :
     fderiv ℂ F 0 Z = fderiv ℂ φ 0 (zP σ Z) + c * (v ⬝ᵥ tP σ Z) * φ 0 := by
@@ -103,6 +141,25 @@ namespace GlobalTheory.MBLow.Cl
 
 open JetFam
 
+/- English proof (translation)
+Introduce `R _ _ _ _ D hE hT _ N ν g' r g bX d σ G gm W ho hW`. Take `⟨T, hT'⟩` from `GlobalTheory.T.torusExtension_tangent_generators_holomorphicFrame R D hE hT N ν g' r bX d G gm W ho hW`. Establish `hrg : ν.rg ≠ 0` using `GlobalTheory.Ex.FamVal.rg_ne ν`. Establish `hne : ∀ z, G.frG (ν.J (ν.eA (d.ex z)).left) z ≠ 0` using `fun z => by`. Rewrite using `[← G.fr_eq]`.
+
+Conclude with `mul_ne_zero (Units.ne_zero _) hrg`. Establish `h0 : G.frG (ν.J (ν.eA (d.ex 0)).left) 0 = ν.rg`. Rewrite using `[← G.fr_eq, d.fr_zero]`. Simplify using the standard rewrite rules. Use `⟨join σ W T, fderiv ℂ (G.frG (ν.J (ν.eA (d.ex 0)).left)) 0 W / ν.rg, leftComponent_join σ W T, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `hW0 χ`. Use `hT' χ _ rfl` as an intermediate fact. Substitute `hW0` using the available equality. Rewrite `this` using `[map_zero, map_zero]`. Rewrite using `[secondBlock_join]`.
+
+Conclude with `dual_zero (hne _) (hne _) this`. Introduce `k s f α F hs hF hf`. Take `⟨o, hz, hp⟩` from `ho`. Establish `hb : redE ℂ ≫ gm.b.left = (DegPre.zeroF D ℂ).left`. Rewrite using `[← hz.1]`.
+
+Conclude with `hp.1.symm`. Establish `hpt` using `fun Y => ((GlobalTheory.MBLow.Cl.exp_onto_torusExt N g' r g bX d σ).1 Y).exists`. Establish `hφ : Differentiable ℂ fun z => F (join σ z 0)` using `hF.comp (diff_join σ)`. Establish `hA : ∀ z, f α (d.ex z) * d.fr (d.t12 *ᵥ co bX α) * d.fr z = F (join σ z 0) * (d.fr z : ℂ) ^ k * d.fr (d.t12 *ᵥ co bX α + z)` using `fun z => by`. Take `⟨h, hh⟩` from `hpt (join σ z 0)`.
+
+Establish `e1` using `hf _ h hh`. Establish `e2` using `hh.2 α`. Rewrite `e1` using `[hh.1]`. Rewrite `e1`, `e2` using `[leftComponent_join]`. Rewrite `e2` using `[secondBlock_join]`.
+
+Simplify using `only [dotProduct_zero, mul_zero, Complex.exp_zero, one_mul] at e2`. Take the linear combination `(d.fr (d.t12 *ᵥ co bX α + z) : ℂ) * e1 - f α (d.ex z) * e2`. Establish `hB : ∀ Y, F Y = Complex.exp ((2 * Real.pi * Complex.I : ℂ) * (co bX α ⬝ᵥ tP σ Y)) * F (join σ (zP σ Y) 0)` using `fun Y => by`. Take `⟨h, hh⟩` from `hpt Y`. Establish `e1` using `hf _ h hh`.
+
+Establish `e2` using `hh.2 α`. Establish `e3` using `hA (zP σ Y)`. Rewrite `e1` using `[hh.1]`. Apply `mul_right_cancel₀ (mul_ne_zero (pow_ne_zero k (d.fr (zP σ Y)).ne_zero) (d.fr (d.t12 *ᵥ co bX α + zP σ Y)).ne_zero)` to reduce the goal to its premises. Take the linear combination `(-(d.fr (d.t12 *ᵥ co bX α + zP σ Y) : ℂ)) * e1 + f α (d.ex (zP σ Y)) * e2 + Complex.exp ((2 * Real.pi * Complex.I : ℂ) * (co bX α ⬝ᵥ tP σ Y)) * e3`.
+
+Establish `h1` using `GlobalTheory.T.familyMember_tangentValue_eq_firstJet R D hE hT N ν g' d.toAB G gm.b W hb hW k s f α _ _ hs (d.c_eq α) hφ hA`. Establish `h2` using `dual_mul (hne _) (hne _) h1 (hT' α _ rfl)`. Rewrite `h2` using `[h0, join_zero]`. Rewrite using `[fderiv_eq σ _ _ hφ hB, leftComponent_join, secondBlock_join, join_zero]`. Conclude with `h2`.
+-/
 theorem jet_family_deriv : AllC fun {R} _ _ {D} _ {N} ν => ∀ (g' r g : ℕ) (bX : Module.Basis (Fin r) ℤ N.X) (d : CD N g' r bX) (σ : Fin g ≃ Fin g' ⊕ Fin r) (_ : Geo ν d.toAB) (gm : GtPt D (TE R ℂ)) (W : Fin g' → ℂ), (∃ o : GtPtF D ℂ, o.IsZero ∧ GtPt.IsPullF ℂ (redE ℂ) gm o) → IsD ν d.toAB W gm.b → ∃ (Z : Fin g → ℂ) (c₀ : ℂ), zP σ Z = W ∧ (W = 0 → ∀ χ, vE (gm.s (ν.eX χ)) (𝟙 _) ν.J = 1 + TrivSqZeroExt.inr ((2 * Real.pi * Complex.I : ℂ) * (co bX χ ⬝ᵥ tP σ Z))) ∧ ∀ (k : ℕ) (s : Fam D ℂ k) (f : N.X → N.A → ℂ) (α : N.X) (F : (Fin g → ℂ) → ℂ), ν.FamV s f → Differentiable ℂ F → (∀ Y h, d.IsPt σ Y h → f α h.b * h.s α = (d.fr (zP σ Y) : ℂ) ^ k * F Y) → (jc ν s gm α).fst / ν.rg ^ k = F 0 ∧ (jc ν s gm α).snd / ν.rg ^ k = fderiv ℂ F 0 Z + k * c₀ * F 0 := by
   intro R _ _ _ _ D hE hT _ N ν g' r g bX d σ G gm W ho hW
   obtain ⟨T, hT'⟩ := GlobalTheory.T.torusExtension_tangent_generators_holomorphicFrame R D hE hT N ν g' r bX d G gm W ho hW

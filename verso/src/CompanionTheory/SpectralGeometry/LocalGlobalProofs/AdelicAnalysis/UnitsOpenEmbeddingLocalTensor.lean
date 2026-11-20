@@ -7,6 +7,11 @@ open scoped TensorProduct ENNReal NNReal Matrix
 
 namespace GlobalTheory.CompanionTheory.SW.KUnits
 
+/- English proof (translation)
+Introduce and unpack `_ ⟨u, rfl⟩`. Use `ContinuousAt.continuousWithinAt ?_` and prove the remaining obligations. Use `(h.continuousAt_iff).1 ?_` and prove the remaining obligations. Establish `: (Ring.inverse ∘ (Units.val : Rˣ → R)) = fun u : Rˣ => ((u⁻¹ : Rˣ) : R)`. Use function extensionality and compare the values at `v`.
+
+Simplify using the standard rewrite rules. Rewrite using `[this]`. Conclude with `(Units.continuous_val.comp continuous_inv).continuousAt`.
+-/
 theorem continuousOn_ringInverse {R : Type} [CommRing R] [TopologicalSpace R] [IsTopologicalRing R]
     (h : IsOpenEmbedding (Units.val : Rˣ → R)) :
     ContinuousOn (Ring.inverse : R → R) {r | IsUnit r} := by
@@ -19,6 +24,37 @@ theorem continuousOn_ringInverse {R : Type} [CommRing R] [TopologicalSpace R] [I
   rw [this]
   exact (Units.continuous_val.comp continuous_inv).continuousAt
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hσ R _ _ _ _ _ hR`. Take `⟨hTR, hLC, hSC, hT2, hArt, hRd, hUo, -⟩` from `hR`. Use `haveI := hTR`. Use `haveI := hLC`. Use `haveI := hSC`.
+
+Use `haveI := hT2`. Use `haveI := hArt`. Use `haveI := hRd`. Take `⟨-, -, -, hinv, -, hfix, hunit⟩` from `GlobalTheory.T.tensor_involution_algebra_properties F E σ hσ R`. Take `⟨hTK, -, -, -, hsc, htr, -⟩` from `GlobalTheory.T.tensor_locally_compact_ring F E σ hσ R`.
+
+Use `haveI := hTK`. Use `haveI : IsModuleTopology R (R ⊗[F] E) := ⟨rfl⟩`. Use `haveI : ContinuousSMul R (R ⊗[F] E) := IsModuleTopology.toContinuousSMul R (R ⊗[F] E)`. Establish `hfin : Module.finrank F E = 2` using `hσ.2.2.1`. Use `haveI : Module.Finite F E := Module.finite_of_finrank_pos (by omega)`.
+
+Set `b : Module.Basis (Fin 2) F E` to `Module.finBasisOfFinrankEq F E hfin`. Set `N : R ⊗[F] E → R` to `fun y => algebraMap F R (1 / 2) * Algebra.trace R (R ⊗[F] E) (y * sigR R σ y)`. Establish `hNc : Continuous N` using `continuous_const.mul (htr.comp (continuous_id.mul hsc))`. Establish `hhalf : algebraMap F R (1 / 2) * (2 : R) = 1`. Establish `: algebraMap F R (1 / 2) * algebraMap F R 2 = 1`.
+
+Rewrite using `[← map_mul]`. Evaluate the numerical expressions. Rewrite `this` using `[map_ofNat]`. Then use the resulting hypothesis. Establish `hnorm : ∀ y : R ⊗[F] E, y * sigR R σ y = N y ⊗ₜ[F] (1 : E)`. Introduce `y`.
+
+Take `⟨r, hr⟩` from `hfix (y * sigR R σ y) (by rw [map_mul, hinv, mul_comm])`. Establish `htrace : Algebra.trace R (R ⊗[F] E) (r ⊗ₜ[F] (1 : E)) = 2 * r`. Establish `h1 : (r ⊗ₜ[F] (1 : E) : R ⊗[F] E) = algebraMap R (R ⊗[F] E) r`. Simplify using `[Algebra.TensorProduct.algebraMap_apply]`. Rewrite using `[h1, Algebra.trace_algebraMap_of_basis (Algebra.TensorProduct.basis R b) r]`.
+
+Simplify using `[two_mul, two_nsmul]`. Establish `hNr : N y = r` using `by show algebraMap F R (1 / 2) * Algebra.trace R (R ⊗[F] E) (y * sigR R σ y) = r`. Rewrite using `[hr, htrace, ← mul_assoc, hhalf, one_mul]`. Rewrite using `[hNr, hr]`. Establish `hiff : ∀ y : R ⊗[F] E, IsUnit y ↔ IsUnit (N y)`.
+
+Introduce `y`. Prove the components needed by the constructor for the conclusion. Introduce `hy`. Establish `h1 : IsUnit (y * sigR R σ y)` using `hy.mul (hy.map (sigR R σ))`. Rewrite `h1` using `[hnorm y]`.
+
+Conclude with `(hunit _).1 h1`. Introduce `hy`. Establish `h1 : IsUnit (y * sigR R σ y)`. Rewrite using `[hnorm y]`. Conclude with `(hunit _).2 hy`.
+
+Conclude with `isUnit_of_mul_isUnit_left h1`. Establish `hone : Continuous fun r : R => (r ⊗ₜ[F] (1 : E) : R ⊗[F] E)`. Establish `h1 : (fun r : R => (r ⊗ₜ[F] (1 : E) : R ⊗[F] E)) = fun r : R => r • (1 : R ⊗[F] E)`. Use function extensionality and compare the values at `r`. Simplify using `[Algebra.TensorProduct.one_def, TensorProduct.smul_tmul']`.
+
+Rewrite using `[h1]`. Conclude with `Continuous.smul (f := fun r : R => r) (g := fun _ => (1 : R ⊗[F] E)) continuous_id continuous_const`. Set `f : R ⊗[F] E → R ⊗[F] E` to `fun y => sigR R σ y * (Ring.inverse (N y) ⊗ₜ[F] (1 : E))`. Establish `hfc : ContinuousOn f {y | IsUnit y}`. Establish `h1 : ContinuousOn (fun y => Ring.inverse (N y)) {y : R ⊗[F] E | IsUnit y}` using `(continuousOn_ringInverse hUo).comp hNc.continuousOn (fun y hy => (hiff y).1 hy)`.
+
+Conclude with `hsc.continuousOn.mul (hone.comp_continuousOn h1)`. Establish `hfu : ∀ u : (R ⊗[F] E)ˣ, f u.1 = ((u⁻¹ : (R ⊗[F] E)ˣ) : R ⊗[F] E)`. Introduce `u`. Use `symm`. Use `Units.inv_eq_of_mul_eq_one_right ?_` and prove the remaining obligations.
+
+Establish `hu : IsUnit (N u.1)` using `(hiff _).1 u.isUnit`. Use `show u.1 * (sigR R σ u.1 * (Ring.inverse (N u.1) ⊗ₜ[F] (1 : E))) = 1`. Rewrite using `[← mul_assoc, hnorm, Algebra.TensorProduct.tmul_mul_tmul, Ring.mul_inverse_cancel _ hu, mul_one]`. Both sides reduce to the same expression. Use `⟨Units.isEmbedding_val_mk' hfc hfu, ?_⟩` and prove the remaining obligations.
+
+Establish `hrange : Set.range (Units.val : (R ⊗[F] E)ˣ → R ⊗[F] E) = N ⁻¹' Set.range (Units.val : Rˣ → R)`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, rfl⟩`. Conclude with `(hiff _).1 u.isUnit`.
+
+Introduce `hy`. Conclude with `(hiff y).2 hy`. Rewrite using `[hrange]`. Conclude with `hUo.isOpen_range.preimage hNc`.
+-/
 theorem units_val_isOpenEmbedding : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E]
     [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (R : Type) [CommRing R] [Algebra F R]
     [TopologicalSpace R] [MeasurableSpace R] [BorelSpace R], IsLocR R →

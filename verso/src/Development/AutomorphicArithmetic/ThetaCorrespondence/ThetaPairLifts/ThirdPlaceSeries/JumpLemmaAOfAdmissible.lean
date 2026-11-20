@@ -12,6 +12,33 @@ noncomputable section
 namespace GlobalTheory.JumpSets
 open Formalism Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.MainNotions.AdmissibleParameterJ Formalism.MainNotions.N Formalism.WeaklyAdmissibleFiltrations Classical
 variable {D : D7}
+/- English proof (translation)
+Take `⟨ep, hdict⟩` from `hDi`. Use `⟨ep, ?_⟩` and prove the remaining obligations. Introduce `i r hr w hw C τ`. Take `⟨hInd, ⟨g, hg⟩, hread⟩` from `hRd i r hr w hw C τ`. Take `⟨ρ, hρ⟩` from `exists_placeOf (D := D) g`.
+
+Establish `hRA : ReadAt D i (gEmb C τ) g ρ` using `⟨hg, hρ⟩`. Take `⟨sg, cτ, hsU, hsD, hJ0, hchi⟩` from `hdict i (gEmb C τ) g ρ hRA`. Take `⟨hχdR, hχJ⟩` from `hchi w hInd`. Rewrite `hχJ` using `[Multiset.map_eq_singleton]`. Take `⟨c, hc, hcq⟩` from `hχJ`.
+
+Establish `hjr` using `D.nd.j_range i`. Establish `hF` using `jFacts_of hP (D.nd.j i) hjr.1 hjr.2 ρ`. Use `set up := decide (TypeU D ep g) with hup`. Establish `hsU' : up = true → sg = 1` using `fun h => hsU (by simpa [hup] using h)`. Establish `hsD' : up = false → sg = -1` using `fun h => hsD (by simpa [hup] using h)`.
+
+Establish `hx : ∀ x, D.naut.IsdRW i (rQ D i r x) w ∧ D.naut.jumpsW i (rQ D i r x) (gEmb C τ) = D.naut.locAutHodgeTateWeightsLevelZero i (gEmb C τ)`. Introduce `x`. Distinguish the cases in `hl : D.nd.l i = D.host.g 0 ∨ D.nd.l i = D.host.g 1`. Establish `h` using `_root_.UpperTheory.GalS.g2g' hG2g i r hr hl w hw x`. Conclude with `⟨h.1, h.2 _ hInd⟩`.
+
+Use `push Not at hl`. Establish `h` using `_root_.UpperTheory.GalS.g2a' (hG2 i r hr) w hw hl.1 hl.2 x`. Establish `hcont` using `SumRepresentations.contQ_of_continuous D.nd D.naut i (r x) (hr x).1`. Conclude with `⟨((hCr i _ _ w hw hcont).1 h.1).1, h.2 _ hInd⟩`. Establish `hkey : ∀ a : ℤ, (((D.naut.locAutHodgeTateWeightsLevelZero i (gEmb C τ)).count (a + c) : ℕ) : ℤ) = if (a : ℚ) ∈ JJ D up (D.nd.j i) ρ then 1 else 0` using `count_key hF _ sg cτ c up hsU' hsD' hJ0 hcq`.
+
+Establish `hTw : ∀ x (a : ℤ), multV (Br.PD D.loc D.nbr i w hw) (matRep (TruncatedSeriesCountingIdentities.locC C (rTwO D.nd i r x))) τ a = if (a : ℚ) ∈ JJ D up (D.nd.j i) ρ then 1 else 0`. Introduce `x a`. Take `⟨h1, h2, h3⟩` from `hread x (hx x).1 hχdR c hc`. Rewrite using `[(h1 a).1, (hx x).2, hkey]`. Establish `hDu : ∀ x (a : ℤ), multV (Br.PD D.loc D.nbr i w hw) (matRep (TruncatedSeriesCountingIdentities.locC C (rDuO D.nd i r x))) τ a = if (a : ℚ) ∈ dualS (JJ D up (D.nd.j i) ρ) then 1 else 0`.
+
+Introduce `x a`. Take `⟨h1, h2, h3⟩` from `hread x (hx x).1 hχdR c hc`. Rewrite using `[(h1 a).2, (hx x).2, dualS_int, ← hkey]`. Use `congr 3`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `⟨g, ρ, hRA, ?_, ?_⟩` and prove the remaining obligations. Introduce `x a`. Take `⟨h1, h2, h3⟩` from `hread x (hx x).1 hχdR c hc`. Use `⟨?_, hTw x a, ?_, hDu x a⟩` and prove the remaining obligations. Rewrite using `[h2 _ (Or.inl rfl) a, hTw x a]`.
+
+Conclude with `ite_ne_zero_iff' _`. Rewrite using `[h2 _ (Or.inr rfl) a, hDu x a]`. Conclude with `ite_ne_zero_iff' _`. Introduce `ρπ π hπ hdec a`. Take `⟨h1, h2, h3⟩` from `hread π (hx π).1 hχdR c hc`.
+
+Establish `hW : ∀ a : ℤ, multV (Br.PD D.loc D.nbr i w hw) (matRep (TruncatedSeriesCountingIdentities.locC C (WpO D.nd i ρπ π))) τ a = if (a : ℚ) ∈ JW D up (D.nd.j i) ρ then 1 else 0`. Introduce `a`. Rewrite using `[(h3 ρπ hπ hdec a).1, hTw π a]`. Distinguish the cases in `hb : (a : ℚ) ∈ blockJ D`. Establish `hb'` using `(block_mem_iff (D := D) a).1 hb`.
+
+Rewrite using `[if_pos (block_sub_JJ up _ ρ _ hb), if_pos hb', if_neg (block_not_mem_JW hF up _ hb)]`. Simplify using the standard rewrite rules. Establish `hb' : ¬ (0 ≤ a ∧ a < (D.R.t : ℤ))` using `fun h => hb ((block_mem_iff a).2 h)`. Rewrite using `[if_neg hb', sub_zero]`. Simplify using `only [JJ_iff_JW hF up _ hb]`.
+
+Establish `hT : ∀ a : ℤ, multV (Br.PD D.loc D.nbr i w hw) (matRep (TruncatedSeriesCountingIdentities.locC C (T2O D.nd i ρπ π))) τ a = if (a : ℚ) ∈ dualS (JW D up (D.nd.j i) ρ) then 1 else 0`. Introduce `a`. Rewrite using `[(h3 ρπ hπ hdec a).2.1, hW, dualS_int]`. Use `⟨?_, hW a, ?_, hT a⟩` and prove the remaining obligations. Rewrite using `[(h3 ρπ hπ hdec a).2.2.1, hW a]`.
+
+Conclude with `ite_ne_zero_iff' _`. Rewrite using `[(h3 ρπ hπ hdec a).2.2.2, hT a]`. Conclude with `ite_ne_zero_iff' _`.
+-/
 theorem jumpLemma_a_of_admissible_alt_alt {L : SizeData₂ D} (hP : AdmPar L) (hG2 : _root_.Formalism.MainNotions.AdmissibleParameterJ.DeRhamFamilyAwayAlt D) (hCr : CrysIffWD D.nd D.naut)
     (hG2g : _root_.UpperTheory.GalS.DeRhamJumpsDistinctCondition D) (hDi : AdmDict D) (hRd : AdmRead D) : ConclusionJa D := by
   obtain ⟨ep, hdict⟩ := hDi

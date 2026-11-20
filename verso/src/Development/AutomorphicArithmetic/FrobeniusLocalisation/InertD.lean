@@ -9,6 +9,27 @@ open UpperTheory.HF
 open NumberField Ideal Formalism.HC Formalism.FrobeniusOrbits
 open scoped Pointwise
 
+/- English proof (translation)
+Introduce `φ H`. Use `haveI : Fact (Nat.Prime H.d) := ⟨H.d_prime⟩`. Establish `hd` using `H.d_prime`. Establish `hQq : H.QS * H.q ≠ 0` using `Nat.mul_ne_zero H.QS_ne_zero H.q_prime.ne_zero`. Establish `hfac : H.condN.factorization H.d = 1` using `by show (H.QS * H.q * H.d).factorization H.d = 1`.
+
+Rewrite using `[Nat.factorization_mul hQq hd.ne_zero, Finsupp.add_apply, Nat.factorization_eq_zero_of_not_dvd H.d_not_dvd_QSq, hd.factorization_self]`. Establish `hquot : H.condN / H.d ^ H.condN.factorization H.d = H.QS * H.q`. Rewrite using `[hfac, pow_one]`. Conclude with `Nat.mul_div_cancel _ hd.pos`. Establish `hmem : φ.iod ∈ H.inertG H.d`.
+
+Take `⟨P, hPm, hPl⟩` from `Ideal.exists_maximal_ideal_liesOver_of_isIntegral (S := 𝓞 H.E) (Ideal.span {(H.d : ℤ)})`. Establish `h1` using `(H.der.inertia_d P (H.gal.symm φ.iod)).2 (Or.inr (by simp))`. Take `⟨u, hu, h⟩` from `(H.der.inertia H.d P (H.gal.symm φ.iod)).1 h1`. Conclude with `(H.mem_inertG H.d _).2 ⟨u, hu, by simpa using h⟩`. Establish `hG : H.inertG H.d = Subgroup.zpowers φ.iod`.
+
+Use `le_antisymm (fun g hg => ?_) (Subgroup.zpowers_le.2 hmem)` and prove the remaining obligations. Take `⟨u, hu, rfl⟩` from `(H.mem_inertG H.d g).1 hg`. Rewrite `hu` using `[hquot]`. Break down `H.art_d u hu with h | h` into its components or cases. Rewrite using `[h]`.
+
+Conclude with `one_mem _`. Rewrite using `[h]`. Conclude with `Subgroup.mem_zpowers _`. Establish `hord : orderOf φ.iod = 2` using `by haveI : Fact (Nat.Prime 2) := ⟨Nat.prime_two⟩`. Conclude with `orderOf_eq_prime (by simp [Frame.iod, sq, Prod.ext_iff]) (by simp [Frame.iod, Prod.ext_iff])`.
+
+Establish `hel : H.el H.d = 2` using `by show Nat.card (H.inertG H.d) = 2`. Rewrite using `[hG, Nat.card_zpowers, hord]`. Establish `hndvd : ¬ H.d ∣ H.el H.d`. Rewrite using `[hel]`. Conclude with `(Nat.prime_dvd_prime_iff_eq hd Nat.prime_two).not.2 H.d_ne_two`.
+
+Establish `htw` using `vd_tame_wild H hd`. Establish `hv : H.vdH H.d = 1 / 2`. Rewrite using `[htw.1 hndvd, hel]`. Evaluate the numerical expressions. Establish `hs : H.sl H.d = 1` using `htw.2.2 hndvd`.
+
+Establish `hram` using `mem_ram H hd`. Establish `hdram : H.d ∈ H.ram` using `hram.1.2 (by rw [hel]; norm_num)`. Establish `h2ram : 2 ∈ H.ram` using `by show 2 ∈ (NumberField.discr H.E).natAbs.primeFactors`. Use `Nat.mem_primeFactors.2 ⟨Nat.prime_two, ?_, Int.natAbs_ne_zero.2 (NumberField.discr_ne_zero H.E)⟩` and prove the remaining obligations. Conclude with `Int.natAbs_dvd_natAbs.2 (H.der.discr_primes).2.1`.
+
+Establish `hpos` using `(condE_spec H.toHostRaw).2.1`. Establish `hdvd : H.d ∣ H.condE` using `hram.2.1.1 hdram`. Establish `hle : H.condE.factorization H.d ≤ 1`. Establish `h : max 1 (H.condE.factorization H.d) = 1` using `hs`. Conclude with `max_eq_left_iff.1 h`.
+
+Establish `hge : 1 ≤ H.condE.factorization H.d` using `(hd.dvd_iff_one_le_factorization hpos.ne').1 hdvd`. Conclude with `⟨hG, hel, hv, hs, hdram, h2ram, le_antisymm hle hge⟩`.
+-/
 theorem UpperTheory.HF.inert_d :
     ∀ {φ : Frame} (H : HostAx φ), H.inertG H.d = Subgroup.zpowers φ.iod ∧ H.el H.d = 2 ∧ H.vdH H.d = 1 / 2 ∧ H.sl H.d = 1 ∧ H.d ∈ H.ram ∧ 2 ∈ H.ram ∧ H.condE.factorization H.d = 1 := by
   intro φ H

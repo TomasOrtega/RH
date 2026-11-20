@@ -22,6 +22,9 @@ namespace GlobalTheory.UnitSec
 section Gen
 variable {X Y Y' : Scheme.{0}} {L : LB X} {K : Type} [Fintype K]
 
+/- English proof (translation)
+Take `rfl : φ' = fun k => h ≫ φ k` from `funext hφ`. Conclude with `⟨_, fun Z r z J hJ => DVR.SectionScalarValuation.sval_pullSec φ ε s h r z hJ⟩`.
+-/
 theorem exists_pull {φ : K → (Y ⟶ X)} {ε : K → ℤ} {φ' : K → (Y' ⟶ X)} (h : Y' ⟶ Y)
     (hφ : ∀ k, φ' k = h ≫ φ k) (s : LB.Sec (LB.LinComb L φ ε)) :
     ∃ s' : LB.Sec (LB.LinComb L φ' ε), ∀ (Z : Scheme.{0}) (r : Z ⟶ Y') (z : Z) (J), Good L z J →
@@ -29,6 +32,9 @@ theorem exists_pull {φ : K → (Y ⟶ X)} {ε : K → ℤ} {φ' : K → (Y' ⟶
   obtain rfl : φ' = fun k => h ≫ φ k := funext hφ
   exact ⟨_, fun Z r z J hJ => DVR.SectionScalarValuation.sval_pullSec φ ε s h r z hJ⟩
 
+/- English proof (translation)
+Take `⟨s, hs⟩` from `exists_pull (φ' := φ) g (fun k => by rw [hφ k, ← Category.assoc, h₁, Category.id_comp]) s'`. Use `⟨s, fun Z r z J hJ => ?_⟩` and prove the remaining obligations. Rewrite using `[hs Z _ z J hJ, Category.assoc, h₂, Category.comp_id]`.
+-/
 theorem exists_push {φ : K → (Y ⟶ X)} {ε : K → ℤ} {φ' : K → (Y' ⟶ X)} (h : Y' ⟶ Y) (g : Y ⟶ Y')
     (h₁ : g ≫ h = 𝟙 Y) (h₂ : h ≫ g = 𝟙 Y')
     (hφ : ∀ k, φ' k = h ≫ φ k) (s' : LB.Sec (LB.LinComb L φ' ε)) :
@@ -41,14 +47,27 @@ theorem exists_push {φ : K → (Y ⟶ X)} {ε : K → ℤ} {φ' : K → (Y' ⟶
 
 end Gen
 
+/- English proof (translation)
+Rewrite using `[← Over.comp_left, leftUnitor_inv_snd, Over.id_left]`.
+-/
 theorem unit_inv_snd {S : Scheme.{0}} (G : Over S) :
     (λ_ G).inv.left ≫ (snd (𝟙_ (Over S)) G).left = 𝟙 G.left := by
   rw [← Over.comp_left, leftUnitor_inv_snd, Over.id_left]
 
+/- English proof (translation)
+Rewrite using `[← Over.comp_left, ← leftUnitor_hom, Iso.hom_inv_id, Over.id_left]`.
+-/
 theorem snd_unit_inv {S : Scheme.{0}} (G : Over S) :
     (snd (𝟙_ (Over S)) G).left ≫ (λ_ G).inv.left = 𝟙 (𝟙_ (Over S) ⊗ G).left := by
   rw [← Over.comp_left, ← leftUnitor_hom, Iso.hom_inv_id, Over.id_left]
 
+/- English proof (translation)
+Use `fin_cases k`. Express the relevant statement in the definitionally equal form `(snd T D.P.A).left = (snd T D.P.A).left ≫ 𝟙 _`. Rewrite using `[Category.comp_id]`. Express the relevant statement in the definitionally equal form `(padd D.P.A (snd T D.P.A) (toUnit _ ≫ D.c α)).left = (snd T D.P.A).left ≫ (padd D.P.A (𝟙 D.P.A) (toUnit _ ≫ D.c α)).left`. Rewrite using `[← Over.comp_left]`.
+
+Use `congr 1`. Simplify using `only [padd]`. Rewrite using `[← Category.assoc, comp_lift, Category.comp_id, ← Category.assoc, comp_toUnit]`. Express the relevant statement in the definitionally equal form `(toUnit (T ⊗ D.P.A) ≫ D.c α).left = (snd T D.P.A).left ≫ (toUnit D.P.A ≫ D.c α).left`. Rewrite using `[← Over.comp_left, ← Category.assoc, comp_toUnit]`.
+
+Express the relevant statement in the definitionally equal form `(toUnit (T ⊗ D.P.A) ≫ η[D.P.A]).left = (snd T D.P.A).left ≫ (toUnit D.P.A ≫ η[D.P.A]).left`. Rewrite using `[← Over.comp_left, ← Category.assoc, comp_toUnit]`.
+-/
 theorem famφT_eq {R : Type} [CommRing R] [IsDomain R] (D : DegPre R) (T : Over (Spec (CommRingCat.of R)))
     (α : D.X) (k : Fin 4) : famφT D T α k = (snd T D.P.A).left ≫ D.famφB α k := by
   fin_cases k
@@ -64,6 +83,11 @@ theorem famφT_eq {R : Type} [CommRing R] [IsDomain R] (D : DegPre R) (T : Over 
   · change (toUnit (T ⊗ D.P.A) ≫ η[D.P.A]).left = (snd T D.P.A).left ≫ (toUnit D.P.A ≫ η[D.P.A]).left
     rw [← Over.comp_left, ← Category.assoc, comp_toUnit]
 
+/- English proof (translation)
+Introduce `R _ _ D G L _ k`. Use `⟨fun σ => ?_, fun σ' => ?_, fun f => ?_, fun f' => ?_⟩` and prove the remaining obligations. Conclude with `exists_pull (snd _ G).left (fun _ => (Category.comp_id _).symm) σ`. Conclude with `exists_push (φ := fun _ : Fin 1 => 𝟙 G.left) (snd _ G).left (λ_ G).inv.left (unit_inv_snd G) (snd_unit_inv G) (fun _ => (Category.comp_id _).symm) σ'`. Use `choose f' hf' using fun α => exists_pull (snd _ D.P.A).left (famφT_eq D (𝟙_ _) α) (f α)`.
+
+Conclude with `⟨f', hf'⟩`. Use `choose f hf using fun α => exists_push (snd _ D.P.A).left (λ_ D.P.A).inv.left (unit_inv_snd _) (snd_unit_inv _) (famφT_eq D (𝟙_ _) α) (f' α)`. Conclude with `⟨f, hf⟩`.
+-/
 theorem same_exists : ∀ (R : Type) [CommRing R] [IsDomain R] (D : DegPre R) (G : Over (Spec (CommRingCat.of R))) (L : LB G.left), L.IsLB → ∀ k : ℕ, (∀ σ : H0 L k, ∃ σ', SameG σ σ') ∧ (∀ σ', ∃ σ : H0 L k, SameG σ σ') ∧ (∀ f : ∀ α, D.SecB k α, ∃ f', SameB f f') ∧ ∀ f', ∃ f : ∀ α, D.SecB k α, SameB f f' := by
   intro R _ _ D G L _ k
   refine ⟨fun σ => ?_, fun σ' => ?_, fun f => ?_, fun f' => ?_⟩

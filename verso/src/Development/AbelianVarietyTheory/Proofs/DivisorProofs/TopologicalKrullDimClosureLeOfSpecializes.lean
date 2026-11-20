@@ -12,6 +12,11 @@ open GlobalTheory GlobalTheory.CechPic GlobalTheory.Cartier GlobalTheory.TopForm
 
 namespace GlobalTheory.PairStep
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.ClosureDimensionSpecialization.dim_closure_le_of_specializes`. Consider the case `exact _root_.GlobalTheory.ClosureDimensionSpecialization.dim_closure_le_of_specializes`. Consider the case `(apply _root_.GlobalTheory.ClosureDimensionSpecialization.dim_closure_le_of_specializes <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.ClosureDimensionSpecialization.dim_closure_le_of_specializes <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.ClosureDimensionSpecialization.dim_closure_le_of_specializes <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.ClosureDimensionSpecialization.dim_closure_le_of_specializes ..)`.
+-/
 theorem topologicalKrullDim_closure_le_of_specializes :
     ∀ (X : Scheme.{0}) (z w : X) (j : ℕ), z ⤳ w → w ≠ z →
       topologicalKrullDim (closure ({z} : Set X)) = (j + 1 : ℕ) →

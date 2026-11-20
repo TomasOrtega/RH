@@ -14,6 +14,9 @@ section Ring
 
 variable {A B : Type} [CommRing A] [CommRing B] {n : Type} [Fintype n] [DecidableEq n]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[cT, h]`.
+-/
 theorem cT_map {m p : Type} (σ : A →+* A) (σ' : B →+* B) (φ : A → B) (h : ∀ x, σ' (φ x) = φ (σ x))
     (M : Matrix m p A) : cT σ' (M.map φ) = (cT σ M).map φ := by
   ext i j; simp [cT, h]
@@ -29,6 +32,9 @@ def mapU (σ : A →+* A) (σ' : B →+* B) (φ : A →+* B) (h : ∀ x, σ' (φ
 def glue (j : B →ₙ+* A) (a : Matrix n n A) (b : Matrix n n B) : Matrix n n A :=
   (1 - j 1) • a + b.map j
 
+/- English proof (translation)
+Establish `h1 : ∀ y, j 1 * j y = j y` using `fun y => by rw [← map_mul, one_mul]`. Use extensionality with `r s`. Simplify using `only [glue, Matrix.mul_apply, Matrix.add_apply, Matrix.smul_apply, Matrix.map_apply, smul_eq_mul, map_sum, map_mul, Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Take the linear combination `(a r k * a' k s) * h1 1 - a r k * h1 (b' k s) - a' k s * h1 (b r k)`.
+-/
 theorem glue_mul (j : B →ₙ+* A) (a a' : Matrix n n A) (b b' : Matrix n n B) :
     glue j a b * glue j a' b' = glue j (a * a') (b * b') := by
   have h1 : ∀ y, j 1 * j y = j y := fun y => by rw [← map_mul, one_mul]
@@ -38,6 +44,9 @@ theorem glue_mul (j : B →ₙ+* A) (a a' : Matrix n n A) (b b' : Matrix n n B) 
   refine Finset.sum_congr rfl fun k _ => ?_
   linear_combination (a r k * a' k s) * h1 1 - a r k * h1 (b' k s) - a' k s * h1 (b r k)
 
+/- English proof (translation)
+Use extensionality with `r s`. Distinguish the cases in `h : r = s`. Substitute `h` using the available equality. Simplify using `[glue]`. Simplify using `[glue, h]`.
+-/
 theorem glue_one (j : B →ₙ+* A) : glue j (1 : Matrix n n A) 1 = 1 := by
   ext r s
   by_cases h : r = s
@@ -64,6 +73,9 @@ def extU (σ : B →+* B) (σ' : A →+* A) (j : B →ₙ+* A) (h : ∀ x, σ' (
 
 variable {m : Type} [Fintype m] [DecidableEq m]
 
+/- English proof (translation)
+Establish `: M * (a - 1) * P * (M * (b - 1) * P) = M * ((a - 1) * (b - 1)) * P`. Combine the equalities or inequalities in the displayed calculation. Establish `e : a * b - 1 = (b - 1) + (a - 1) + (a - 1) * (b - 1)` using `by noncomm_ring`. Rewrite using `[e, add_mul, mul_add, mul_add, this]`. Simplify using `only [Matrix.mul_add, Matrix.add_mul, one_mul, mul_one, add_assoc]`.
+-/
 theorem emb_mul (M : Matrix m n A) (P : Matrix n m A) (hP : P * M = 1) (a b : Matrix n n A) :
     (1 + M * (a - 1) * P) * (1 + M * (b - 1) * P) = 1 + M * (a * b - 1) * P := by
   have : M * (a - 1) * P * (M * (b - 1) * P) = M * ((a - 1) * (b - 1)) * P := by
@@ -143,6 +155,9 @@ def tensNU (j : R →ₗ[F] R') (hj : ∀ a b, j (a * b) = j a * j b) : R ⊗[F]
       | add y y' hy hy' => simp only [mul_add, map_add, hy, hy']
       | tmul b e' => simp [hj]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem tensNU_tmul (j : R →ₗ[F] R') (hj : ∀ a b, j (a * b) = j a * j b) (a : R) (e : E) :
     tensNU j hj (a ⊗ₜ[F] e) = j a ⊗ₜ[F] e := rfl
 
@@ -167,10 +182,16 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarR
 def placeOf (F : Type) [Field F] [Algebra F E] (τ : E →+* ℂ) : InfinitePlace F :=
   InfinitePlace.mk (τ.comp (algebraMap F E))
 
+/- English proof (translation)
+The claim follows from `haveI := hc.totReal IsTotallyReal.isReal _`.
+-/
 theorem placeOf_isReal (hc : CMData F E) (τ : E →+* ℂ) : (placeOf F τ).IsReal :=
   haveI := hc.totReal
   IsTotallyReal.isReal _
 
+/- English proof (translation)
+Establish `h1 : ComplexEmbedding.IsReal (τ.comp (algebraMap F E))` using `InfinitePlace.isReal_mk_iff.1 (placeOf_isReal hc τ)`. Establish `h2 : (placeOf F τ).embedding = τ.comp (algebraMap F E)` using `InfinitePlace.embedding_mk_eq_of_isReal h1`. Establish `h3` using `InfinitePlace.Completion.extensionEmbedding_coe (placeOf F τ) ((WithAbs.equiv (placeOf F τ).1).symm a)`. Rewrite `h3` using `[RingEquiv.apply_symm_apply, h2]`. Conclude with `h3`.
+-/
 theorem ext_algebraMap (hc : CMData F E) (τ : E →+* ℂ) (a : F) :
     InfinitePlace.Completion.extensionEmbedding (placeOf F τ)
       (algebraMap F (placeOf F τ).Completion a) = τ (algebraMap F E a) := by
@@ -190,9 +211,17 @@ def locMap (hc : CMData F E) (τ : E →+* ℂ) : (placeOf F τ).Completion ⊗[
         commutes' := ext_algebraMap hc τ } : (placeOf F τ).Completion →ₐ[F] ℂ)
     ({ τ with commutes' := fun _ => rfl } : E →ₐ[F] ℂ)).toRingHom
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem locMap_tmul (hc : CMData F E) (τ : E →+* ℂ) (a : (placeOf F τ).Completion) (x : E) :
     locMap hc τ (a ⊗ₜ[F] x) = InfinitePlace.Completion.extensionEmbedding (placeOf F τ) a * τ x := rfl
 
+/- English proof (translation)
+Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul a e`. Establish `h1 : τ (hc.sig e) = starRingEnd ℂ (τ e)` using `hc.cmUnram.2.1 τ e`.
+
+Establish `h2` using `InfinitePlace.Completion.extensionEmbeddingOfIsReal_apply (placeOf_isReal hc τ) a`. Establish `h3 : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR _ hc.sig (a ⊗ₜ[F] e) = a ⊗ₜ[F] hc.sig e` using `rfl`. Rewrite using `[h3, locMap_tmul, locMap_tmul, map_mul, h1, ← h2, Complex.conj_ofReal]`.
+-/
 theorem locMap_sig (hc : CMData F E) (τ : E →+* ℂ) (y : (placeOf F τ).Completion ⊗[F] E) :
     starRingEnd ℂ (locMap hc τ y) = locMap hc τ (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR _ hc.sig y) := by
   induction y using TensorProduct.induction_on with
@@ -204,6 +233,25 @@ theorem locMap_sig (hc : CMData F E) (τ : E →+* ℂ) (y : (placeOf F τ).Comp
     have h3 : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR _ hc.sig (a ⊗ₜ[F] e) = a ⊗ₜ[F] hc.sig e := rfl
     rw [h3, locMap_tmul, locMap_tmul, map_mul, h1, ← h2, Complex.conj_ofReal]
 
+/- English proof (translation)
+Establish `hr` using `placeOf_isReal hc τ`. Set `e : (placeOf F τ).Completion ≃+* ℝ` to `InfinitePlace.Completion.ringEquivRealOfIsReal hr`. Establish `he : ∀ a, InfinitePlace.Completion.extensionEmbedding (placeOf F τ) a = ((e a : ℝ) : ℂ)` using `fun a => (InfinitePlace.Completion.extensionEmbeddingOfIsReal_apply hr a).symm`. Choose the witnesses or unpack the hypotheses as in `⟨x, hx⟩ : ∃ x : E, (τ x).im ≠ 0 := by`. Assume the negation of the conclusion as `hcon`.
+
+Use `push Not at hcon`. Establish `hs : Function.Surjective (algebraMap F E)`. Introduce `a`. Establish `: star a = a` using `τ.injective (by`. Rewrite using `[hc.cmUnram.2.1 τ a]`.
+
+Conclude with `Complex.conj_eq_iff_im.2 (hcon a))`. Conclude with `(hc.fixed a).1 this`. Establish `h1 : Module.finrank F E = 1`. Rewrite using `[← (LinearEquiv.ofBijective (Algebra.linearMap F E) ⟨(algebraMap F E).injective, hs⟩).finrank_eq, Module.finrank_self]`. Use `hc.deg2` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Establish `hsurj : Function.Surjective (locMap hc τ)`. Introduce `z`. Use `⟨e.symm (z.re - z.im / (τ x).im * (τ x).re) ⊗ₜ[F] 1 + e.symm (z.im / (τ x).im) ⊗ₜ[F] x, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, locMap_tmul, locMap_tmul, he, he, e.apply_symm_apply, e.apply_symm_apply, map_one]`.
+
+Apply `Complex.ext` to reduce the goal to its premises. Simplify using `only [mul_one, Complex.add_re, Complex.ofReal_re, Complex.re_ofReal_mul]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [mul_one, Complex.add_im, Complex.ofReal_im, Complex.im_ofReal_mul]`. Clear the denominators using the available nonvanishing facts.
+
+Expand and normalize the polynomial expressions, which then agree. Use `letI : Algebra (placeOf F τ).Completion ℂ := (InfinitePlace.Completion.extensionEmbedding (placeOf F τ)).toAlgebra`. Use `haveI : Module.Finite F E := Module.finite_of_finrank_pos (by rw [hc.deg2]; norm_num)`. Establish `hC : Module.finrank (placeOf F τ).Completion ℂ = 2`. Rewrite using `[← Complex.finrank_real_complex]`.
+
+Conclude with `Algebra.finrank_eq_of_equiv_equiv e (RingEquiv.refl ℂ) (by ext a; exact (he a).symm)`. Use `haveI : Module.Finite (placeOf F τ).Completion ℂ := Module.finite_of_finrank_pos (by rw [hC]; norm_num)`. Set `L : (placeOf F τ).Completion ⊗[F] E →ₗ[(placeOf F τ).Completion] ℂ` to `{ toFun := locMap hc τ map_add' := map_add _ map_smul' := by`. Introduce `c y`. Establish `: c • y = (c ⊗ₜ[F] (1 : E)) * y`.
+
+Rewrite using `[Algebra.smul_def]`. Both sides reduce to the same expression. Rewrite using `[this, map_mul, locMap_tmul, map_one, mul_one]`. Use `rfl }`. Establish `hinj : Function.Injective L` using `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank (by rw [Module.finrank_baseChange, hc.deg2, hC])).2 hsurj`.
+
+Conclude with `⟨hinj, hsurj⟩`.
+-/
 theorem locMap_bijective (hc : CMData F E) (τ : E →+* ℂ) : Function.Bijective (locMap hc τ) := by
   have hr := placeOf_isReal hc τ
   let e : (placeOf F τ).Completion ≃+* ℝ := InfinitePlace.Completion.ringEquivRealOfIsReal hr
@@ -340,15 +388,27 @@ def act {R : Type} [CommRing R] [Algebra F R] (g : HA R hc.sig V.gram) (y : Fin 
 section Act
 variable {R : Type} [CommRing R] [Algebra F R]
 
+/- English proof (translation)
+The claim follows from `Matrix.one_mulVec y`.
+-/
 theorem act_one (y : Fin V.rank → R ⊗[F] E) : act hc V (1 : HA R hc.sig V.gram) y = y :=
   Matrix.one_mulVec y
 
+/- English proof (translation)
+The claim follows from `(Matrix.mulVec_mulVec _ _ _).symm`.
+-/
 theorem act_mul (g h : HA R hc.sig V.gram) (y : Fin V.rank → R ⊗[F] E) :
     act hc V (g * h) y = act hc V g (act hc V h y) := (Matrix.mulVec_mulVec _ _ _).symm
 
+/- English proof (translation)
+The claim follows from `Matrix.mulVec_sub _ _ _`.
+-/
 theorem act_sub (g : HA R hc.sig V.gram) (y z : Fin V.rank → R ⊗[F] E) :
     act hc V g (y - z) = act hc V g y - act hc V g z := Matrix.mulVec_sub _ _ _
 
+/- English proof (translation)
+Rewrite using `[← act_mul, inv_mul_cancel, act_one]`.
+-/
 theorem act_inv (g : HA R hc.sig V.gram) (y : Fin V.rank → R ⊗[F] E) :
     act hc V g⁻¹ (act hc V g y) = y := by rw [← act_mul, inv_mul_cancel, act_one]
 
@@ -492,6 +552,9 @@ section Embedding
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E]
   (hc : CMData F E)
 
+/- English proof (translation)
+Use `conv_lhs => rw [← V.frame.sum_repr x, ← V.frame.sum_repr y]`. Simplify using `only [map_sum, LinearMap.sum_apply, LinearMap.map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, HSpace.gram, RingHom.id_apply, starRingEnd_apply]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun i _ => by`. Rewrite using `[Finset.mul_sum]; exact Finset.sum_congr rfl fun j _ => by ring`.
+-/
 theorem hT_coord (V : HSpace E) (x y : V.V) :
     V.hT x y = ∑ i, ∑ j, star (V.frame.repr x i) * V.gram i j * V.frame.repr y j := by
   conv_lhs => rw [← V.frame.sum_repr x, ← V.frame.sum_repr y]
@@ -501,6 +564,13 @@ theorem hT_coord (V : HSpace E) (x y : V.V) :
   exact Finset.sum_congr rfl fun i _ => by
     rw [Finset.mul_sum]; exact Finset.sum_congr rfl fun j _ => by ring
 
+/- English proof (translation)
+Rewrite using `[isUnit_iff_ne_zero]`. Introduce `h0`. Take `⟨v, hv, hz⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 h0`. Establish `hy : V.frame.equivFun.symm v = 0`. Apply `V.nondeg.2` to reduce the goal to its premises.
+
+Introduce `x`. Rewrite using `[hT_coord]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Use `congrFun hz i` as an intermediate fact. Simplify using `only [Matrix.mulVec, dotProduct, Pi.zero_apply] at this`.
+
+Establish `e : ∀ j, V.frame.repr (V.frame.equivFun.symm v) j = v j` using `fun j => by`. Rewrite using `[← Module.Basis.equivFun_apply, LinearEquiv.apply_symm_apply]`. Simplify using `only [e, mul_assoc, ← Finset.mul_sum, this, mul_zero]`. Conclude with `hv (V.frame.equivFun.symm.map_eq_zero_iff.1 hy)`.
+-/
 theorem gram_det_isUnit (V : HSpace E) : IsUnit V.gram.det := by
   rw [isUnit_iff_ne_zero]
   intro h0
@@ -517,6 +587,9 @@ theorem gram_det_isUnit (V : HSpace E) : IsUnit V.gram.det := by
     simp only [e, mul_assoc, ← Finset.mul_sum, this, mul_zero]
   exact hv (V.frame.equivFun.symm.map_eq_zero_iff.1 hy)
 
+/- English proof (translation)
+Use extensionality with `i j`. Conclude with `V.herm.eq (V.frame j) (V.frame i)`.
+-/
 theorem cT_gram (V : HSpace E) : cT (hc.sig : E →+* E) V.gram = V.gram := by
   ext i j
   exact V.herm.eq (V.frame j) (V.frame i)
@@ -528,6 +601,11 @@ def embMat : Matrix (Fin A.rank) (Fin B.rank) E := LinearMap.toMatrix B.frame A.
 def projMat : Matrix (Fin B.rank) (Fin A.rank) E :=
   B.gram⁻¹ * cT (hc.sig : E →+* E) (embMat B A ι) * A.gram
 
+/- English proof (translation)
+Use extensionality with `i j`. Use `hT_coord A (ι (B.frame i)) (ι (B.frame j))` as an intermediate fact. Rewrite `this` using `[h]`. Rewrite using `[HSpace.gram, this, Finset.sum_comm]`. Simplify using `only [Matrix.mul_apply, cT, embMat, Matrix.transpose_apply, Matrix.map_apply, LinearMap.toMatrix_apply, Finset.sum_mul]`.
+
+Both sides reduce to the same expression.
+-/
 theorem embMat_isom (h : HSpace.IsIsomEmb B A ι) :
     cT (hc.sig : E →+* E) (embMat B A ι) * A.gram * embMat B A ι = B.gram := by
   ext i j
@@ -538,14 +616,25 @@ theorem embMat_isom (h : HSpace.IsIsomEmb B A ι) :
     LinearMap.toMatrix_apply, Finset.sum_mul]
   rfl
 
+/- English proof (translation)
+Rewrite using `[projMat, ← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ (gram_det_isUnit B), Matrix.one_mul]`.
+-/
 theorem gram_projMat : cT (hc.sig : E →+* E) (embMat B A ι) * A.gram = B.gram * projMat hc B A ι := by
   rw [projMat, ← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ (gram_det_isUnit B),
     Matrix.one_mul]
 
+/- English proof (translation)
+Rewrite using `[projMat, Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc (cT _ _), embMat_isom hc B A ι h, Matrix.nonsing_inv_mul _ (gram_det_isUnit B)]`.
+-/
 theorem projMat_embMat (h : HSpace.IsIsomEmb B A ι) : projMat hc B A ι * embMat B A ι = 1 := by
   rw [projMat, Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc (cT _ _), embMat_isom hc B A ι h,
     Matrix.nonsing_inv_mul _ (gram_det_isUnit B)]
 
+/- English proof (translation)
+Establish `h` using `congrArg (cT (hc.sig : E →+* E)) (gram_projMat hc B A ι)`. Rewrite `h` using `[cT_mul, cT_mul, cT_gram, cT_gram]`. Rewrite using `[← h]`. Use `congr 1`. Use extensionality with `i j`.
+
+Conclude with `star_star _`.
+-/
 theorem cT_projMat : cT (hc.sig : E →+* E) (projMat hc B A ι) * B.gram = A.gram * embMat B A ι := by
   have h := congrArg (cT (hc.sig : E →+* E)) (gram_projMat hc B A ι)
   rw [cT_mul, cT_mul, cT_gram, cT_gram] at h
@@ -615,6 +704,11 @@ def EmbSpec (B A : HSpace E) (ι : B.V →ₗ[E] A.V) (h : HSpace.IsIsomEmb B A 
       (embMat B A ι).map (inclR (F := F) (AF F)) *ᵥ act hc B g y) ∧
     ∀ z ∈ extSub (F := F) A (AF F) (perp A (LinearMap.range ι)), act hc A (embA hc B A ι h g) z = z
 
+/- English proof (translation)
+Use extensionality with `g`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨γ, rfl⟩`. Conclude with `⟨γ.1, γ.2, rfl⟩`. Introduce and unpack `⟨γ, hγ, e⟩`.
+
+Conclude with `⟨⟨γ, hγ⟩, Subtype.ext e⟩`.
+-/
 theorem ratPts_eq : ratPts hc V = HFinIn (AF F) hc.sig V.gram := by
   ext g
   constructor

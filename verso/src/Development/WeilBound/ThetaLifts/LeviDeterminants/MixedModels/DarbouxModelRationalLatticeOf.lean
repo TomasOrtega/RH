@@ -5,6 +5,17 @@ open scoped TensorProduct NNReal Matrix
 open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n d X W M r s r' s' hB _ _ hM co _`. Take `⟨e, ei, ev, h1, h2, h3, h4, h5, h6⟩` from `hA F B.ψ hB.std (Fin n × Fin d) (M.co.e.symm.trans co.e) fun w w' => by`. Rewrite using `[LinearEquiv.trans_apply, LinearEquiv.trans_apply, ← co.form, M.co.form, LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply]`. Establish `hS : ∀ u, (M.co.e.symm.trans co.e) (M.co.e u) = co.e u` using `fun u => by simp`. Use `⟨e, ei, ev, ei.surjective, h1, fun u Φ hΦ => ?_, fun v => SetLike.coe_injective (h3 v).image_eq, fun v => ?_, ?_, fun f φ hφ hv => h6 f φ hφ ?_⟩` and prove the remaining obligations.
+
+Use `h2 (M.co.e u) Φ hΦ` as an intermediate fact. Rewrite `this` using `[hS]`. Then use the resulting hypothesis. Take `⟨hsb, hne, θ, hθ, h⟩` from `hM.vac v`. Use `⟨(h3 v).1 hsb, fun e0 => hne ((h3 v).2.1 hsb (zero_mem (SB _)) (e0.trans (map_zero _).symm)), θ, hθ, fun γ hγ => ?_⟩` and prove the remaining obligations. Establish `hat : At (evFin F v) γ`.
+
+Proceed by induction on `hγ using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨a, ha, -, x, -, y, -, rfl⟩` from `hz`. Conclude with `fun u hu => by rw [smul_smul, show u * a = 0 from ha u hu, zero_smul]`. Consider the case `zero => exact fun u _ => smul_zero u`.
+
+Consider the case `add a b _ _ ha hb => exact fun u hu => by rw [smul_add, ha u hu, hb u hu, add_zero]`. Consider the case `neg a _ ha => exact fun u hu => by rw [smul_neg, ha u hu, neg_zero]`. Use `h4 v (M.co.e γ) (fun u hu => by rw [← map_smul, hat u hu, map_zero]) _ hsb _ (h γ hγ)` as an intermediate fact. Rewrite `this` using `[hS, map_smul]`. Then use the resulting hypothesis. Use `filter_upwards [hM.std, h5] with v e1 e2`.
+
+Rewrite using `[e1, e2]`. Use `filter_upwards [hM.std, hv] with v e1 e2`. Rewrite using `[e2, e1]`.
+-/
 theorem PositivityTheory.Mix.darboux_model_rational_lattice_of (hA : PositivityTheory.Mix.AdelSt) : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (r s r' s' : ℕ), B.IsGood σ → X.IsHerm σ B r s →
     W.IsSkew σ B r' s' → M.IsGood B.ψ →

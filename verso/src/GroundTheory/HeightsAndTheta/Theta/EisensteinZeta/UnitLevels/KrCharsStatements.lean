@@ -67,6 +67,9 @@ def IsSplitSelection (c : E ≃ₐ[F] E) (S : Finset (HeightOneSpectrum (𝓞 E)
 def unitAt (w : HeightOneSpectrum (𝓞 E)) (x : Eˣ) : (w.adicCompletion E)ˣ :=
   Units.map (algebraMap E (w.adicCompletion E)).toMonoidHom x
 
+/- English proof (translation)
+Use `mem_unitsLevel.2 ⟨hx, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem mem_unitsLevel_zero_of_valued_eq_one {w : HeightOneSpectrum (𝓞 E)}
     {x : (w.adicCompletion E)ˣ} (hx : Valued.v (x : w.adicCompletion E) = 1) :
     x ∈ unitsLevel (K := E) w 0 := by
@@ -79,6 +82,13 @@ theorem mem_unitsLevel_zero_of_valued_eq_one {w : HeightOneSpectrum (𝓞 E)}
 def negOneAt (w : HeightOneSpectrum (𝓞 E)) : unitsLevel (K := E) w 0 :=
   ⟨-1, mem_unitsLevel_zero_of_valued_eq_one (by simp)⟩
 
+/- English proof (translation)
+Take `⟨n, hn, h⟩` from `hζ`. Apply `mem_unitsLevel_zero_of_valued_eq_one` to reduce the goal to its premises. Establish `hζn : unitAt w ζ ^ n = 1`. Simplify using `only [unitAt, ← map_pow, h, map_one]`. Establish `hpow : Valued.v (unitAt w ζ : w.adicCompletion E) ^ n = 1`.
+
+Rewrite using `[← map_pow, ← Units.val_pow_eq_pow_val, hζn, Units.val_one, map_one]`. Establish `h0 : Valued.v (unitAt w ζ : w.adicCompletion E) ≠ 0` using `by simp`. Break down `lt_trichotomy (Valued.v (unitAt w ζ : w.adicCompletion E)) 1 with hl | he | hg` into its components or cases. Conclude with `absurd hpow (pow_lt_one₀ zero_le hl hn.ne').ne`. Conclude with `he`.
+
+Conclude with `absurd hpow (one_lt_pow₀ hg hn.ne').ne'`.
+-/
 theorem unitAt_mem_of_pow_eq_one (w : HeightOneSpectrum (𝓞 E)) {ζ : Eˣ}
     (hζ : ∃ n : ℕ, 0 < n ∧ ζ ^ n = 1) : unitAt w ζ ∈ unitsLevel (K := E) w 0 := by
   obtain ⟨n, hn, h⟩ := hζ
@@ -121,6 +131,11 @@ variable {F E : Type*} [Field F] [NumberField F] [Field E] [NumberField E] [Alge
 
 omit [NumberField E] in
 
+/- English proof (translation)
+Unfold `extAt`. Use `split_ifs with h`. Rewrite using `[Completion.extensionEmbedding_coe, h]`. Establish `h'` using `(embedding_mk_eq τ).resolve_left h`. Rewrite using `[RingHom.comp_apply, Completion.extensionEmbedding_coe, h', ComplexEmbedding.conjugate_coe_eq]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem extAt_coe (τ : E →+* ℂ) (x : WithAbs (InfinitePlace.mk τ).1) :
     extAt τ (x : (InfinitePlace.mk τ).Completion) = τ (WithAbs.equiv _ x) := by
   unfold extAt
@@ -132,6 +147,11 @@ theorem extAt_coe (τ : E →+* ℂ) (x : WithAbs (InfinitePlace.mk τ).1) :
 
 omit [NumberField E] in
 
+/- English proof (translation)
+Establish `hs` using `Completion.surjective_extensionEmbedding_of_isComplex (IsTotallyComplex.isComplex (InfinitePlace.mk τ))`. Unfold `extAt`. Use `split_ifs`. Conclude with `hs`. Introduce `y`.
+
+Take `⟨x, hx⟩` from `hs (conj y)`. Conclude with `⟨x, by simp [hx]⟩`.
+-/
 theorem extAt_surjective [IsTotallyComplex E] (τ : E →+* ℂ) : Function.Surjective (extAt τ) := by
   have hs := Completion.surjective_extensionEmbedding_of_isComplex
     (IsTotallyComplex.isComplex (InfinitePlace.mk τ))
@@ -142,10 +162,20 @@ theorem extAt_surjective [IsTotallyComplex E] (τ : E →+* ℂ) : Function.Surj
     obtain ⟨x, hx⟩ := hs (conj y)
     exact ⟨x, by simp [hx]⟩
 
+/- English proof (translation)
+Introduce `z`. Simplify using `[HeckeCharacter.infiniteComponent_apply, HeckeCharacter.toIdele_apply]`.
+-/
 theorem one_hasAngularType_zero (τ : E →+* ℂ) : HasAngularType (1 : HeckeCharacter E) τ 0 := by
   intro z
   simp [HeckeCharacter.infiniteComponent_apply, HeckeCharacter.toIdele_apply]
 
+/- English proof (translation)
+Introduce `h`. Take `⟨x, hx⟩` from `extAt_surjective τ Complex.I`. Establish `hx0 : x ≠ 0`. Introduce and unpack `rfl`. Rewrite `hx` using `[map_zero]`.
+
+Conclude with `Complex.I_ne_zero hx.symm`. Use `h (Units.mk0 x hx0)` as an intermediate fact. Simplify using `only [Units.val_mk0, hx, Complex.norm_I, zpow_one] at this`. Simplify using `[HeckeCharacter.infiniteComponent_apply, HeckeCharacter.toIdele_apply] at this`. Use `congrArg Complex.re this` as an intermediate fact.
+
+Simplify using `at this`.
+-/
 theorem not_one_hasAngularType_one [IsTotallyComplex E] (τ : E →+* ℂ) :
     ¬ HasAngularType (1 : HeckeCharacter E) τ 1 := by
   intro h
@@ -160,15 +190,24 @@ theorem not_one_hasAngularType_one [IsTotallyComplex E] (τ : E →+* ℂ) :
   have := congrArg Complex.re this
   simp at this
 
+/- English proof (translation)
+Introduce `a _`. Both sides reduce to the same expression.
+-/
 theorem one_isUnramifiedAt (w : HeightOneSpectrum (𝓞 E)) :
     IsUnramifiedAt (1 : HeckeCharacter E) w := by
   intro a _
   rfl
 
+/- English proof (translation)
+Introduce `x`. Both sides reduce to the same expression.
+-/
 theorem one_isTrivialOnBase : IsTrivialOnBase F (1 : HeckeCharacter E) := by
   intro x
   rfl
 
+/- English proof (translation)
+Rewrite using `[← map_pow, h, ← h2, ← ideleClassNorm_ideleClassMap]`. Conclude with `⟨_, rfl⟩`.
+-/
 theorem IsQuadraticCharacterOf.sq_eq_one {η : HeckeCharacter F} (h : IsQuadraticCharacterOf E η)
     (h2 : Module.finrank F E = 2) (x : IdeleClassGroup F) : η x ^ 2 = 1 := by
   rw [← map_pow, h, ← h2, ← ideleClassNorm_ideleClassMap]
@@ -176,6 +215,9 @@ theorem IsQuadraticCharacterOf.sq_eq_one {η : HeckeCharacter F} (h : IsQuadrati
 
 omit [NumberField F] [NumberField E] in
 
+/- English proof (translation)
+Introduce `w hw`. Simplify using `at hw`.
+-/
 theorem isSplitSelection_empty (c : E ≃ₐ[F] E) : IsSplitSelection c ∅ := by
   intro w hw
   simp at hw
@@ -185,6 +227,11 @@ variable (E) in
 def embeddingImage : Finset (E →+* ℂ) :=
   open Classical in Finset.univ.image fun w : InfinitePlace E ↦ w.embedding
 
+/- English proof (translation)
+Simplify using `only [embeddingImage, Finset.mem_image, Finset.mem_univ, true_and]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, rfl⟩`. Rewrite using `[mk_embedding]`. Introduce `h`.
+
+Conclude with `⟨InfinitePlace.mk σ, h⟩`.
+-/
 theorem mem_embeddingImage_iff (σ : E →+* ℂ) :
     σ ∈ embeddingImage E ↔ (InfinitePlace.mk σ).embedding = σ := by
   classical
@@ -195,6 +242,11 @@ theorem mem_embeddingImage_iff (σ : E →+* ℂ) :
   · intro h
     exact ⟨InfinitePlace.mk σ, h⟩
 
+/- English proof (translation)
+Introduce `σ`. Rewrite using `[mem_embeddingImage_iff, mem_embeddingImage_iff, mk_conjugate_eq]`. Establish `hσ : ComplexEmbedding.conjugate σ ≠ σ` using `IsTotallyComplex.complexEmbedding_not_isReal σ`. Break down `embedding_mk_eq σ with h | h` into its components or cases. Rewrite using `[h]`.
+
+Conclude with `⟨fun _ h' ↦ hσ h'.symm, fun _ ↦ rfl⟩`. Rewrite using `[h]`. Conclude with `⟨fun h' ↦ absurd h' hσ, fun h' ↦ absurd rfl h'⟩`.
+-/
 theorem isCMType_embeddingImage [IsTotallyComplex E] : IsCMType (embeddingImage E) := by
   intro σ
   rw [mem_embeddingImage_iff, mem_embeddingImage_iff, mk_conjugate_eq]

@@ -19,6 +19,9 @@ open ValuativeRel
 open scoped GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.SmallDatumPure.exists_datum_pure_selfdual | exact GlobalTheory.SmallDatumPure.exists_datum_pure_selfdual | (intros; apply GlobalTheory.SmallDatumPure.exists_datum_pure_selfdual <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_pureTensorSum_datum_routeThroughSmallVertex : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {μ₀ : T} (hL : L.Is μ₀) (W : G.Weil) (B : Frames G)
     (ρ : RealMatch W) (t : T) (i j : Fin D.R.m) (M : Vol G) (hM : M.Is t) (Θ : TotT G (routeBig t i j))
     (Θ' : TotT G (routeSmall t i j)) (hΘ : IsMatched B t ρ i j Θ Θ')

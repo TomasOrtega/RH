@@ -7,6 +7,17 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.C
 open MeasureTheory GlobalTheory.AutomorphicL2Unitary GlobalTheory.CuspRep GlobalTheory.CuspRep.CuspidalL2GL GlobalTheory.UnitaryBC GlobalTheory.DiscSpec
 open GroundTheory.Automorphic GroundTheory.Automorphic.AutomorphicForm GroundTheory.Automorphic.CuspidalSpectrum
 
+/- English proof (translation)
+Introduce `E _ _ _ a μ _ μ₁ _ hp φ hφ h`. Take `⟨hc, hl, hz, hcu⟩` from `mem_cuspCont.1 hφ`. Establish `hL : IsLeftInvariant φ` using `fun γ g => hl γ g`. Establish `hcusp : AutomorphicForm.IsCuspidal φ` using `UpperTheory.constantTerm_eq_zero_of_isCuspidal E a φ hL hc hcu`. Establish `hr : ∀ g : GA E a, φ (retractOne g : UpperTheory.V.KernelIndexFullLattice.G1 E a) = φ g` using `fun g => by`.
+
+Take `⟨t, ht⟩` from `UpperTheory.V.KernelIndexFullLattice.exists_split (E := E) (a := a) UpperTheory.V.KernelIndexFullLattice.splitEq_holds (Reduction.detModule E a g)`. Establish `h1` using `hz t (retractOne g : UpperTheory.V.KernelIndexFullLattice.G1 E a)`. Rewrite using `[← h1, splitCentre_comm, coe_retractOne, ← ht, inv_mul_cancel_right]`. Establish `hΦ : cuspQuot hL ∘ UpperTheory.V.KernelIndexFullLattice.quotMap E a = descend (latticeGL E a) φ`. Use function extensionality and compare the values at `fun q => hr q.out`.
+
+Establish `hm : MemLp (cuspQuot hL) 2 (RightCosetSpace.quotientMeasure (UpperTheory.V.KernelIndexFullLattice.Γ1 E a) μ₁)`. Establish `hs` using `(continuous_cuspQuot hL hc).aestronglyMeasurable (μ := Measure.map (UpperTheory.V.KernelIndexFullLattice.quotMap E a) (quotMeasure (latticeGL E a) μ))`. Rewrite using `[← hp.map_eq, memLp_map_measure_iff hs hp.measurable.aemeasurable, hΦ]`. Conclude with `h.2`. Establish `hv : hm.toLp _ ∈ cuspidalL2 μ₁`.
+
+Introduce `r h0 h1`. Use `filter_upwards [ae_ctFun_congr μ₁ r (MemLp.coeFn_toLp hm)] with y hy`. Rewrite using `[constantTermL2, hy]`. Conclude with `hcusp r h0 h1 y`. Use `⟨⟨hm.toLp _, hv⟩, l2DiscreteQuotient_ext_iff_lift_ae_eq.2 ?_⟩` and prove the remaining obligations.
+
+Establish `h2` using `UpperTheory.V.KernelIndexFullLattice.liftCmp_holds E a μ μ₁ hp ⟨hm.toLp _, hv⟩ (cuspQuot hL) (MemLp.coeFn_toLp hm)`. Use `h2.trans (Filter.EventuallyEq.trans (Filter.Eventually.of_forall fun g => ?_) h.lift_toL2_ae_eq.symm)` and prove the remaining obligations. Conclude with `hr g`.
+-/
 theorem UpperTheory.V.KernelIndexFullLattice.contMem_holds :
     UpperTheory.V.KernelIndexFullLattice.ContMem := by
   intro E _ _ _ a μ _ μ₁ _ hp φ hφ h

@@ -8,6 +8,15 @@ import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ConjOpInvolutive
 
 open NumberField IsDedekindDomain GlobalTheory.CuspRep
 
+/- English proof (translation)
+Introduce `P K _ _ _ n hn m hm M π hπ w B hB b hb`. Take `⟨hinf, hdual, -⟩` from `hπ`. Establish `A` using `P.litN.aut`. Establish `hcsd : π.IsCsd` using `GlobalTheory.CsdBack.isCsd_of_paired A.fin K n π (A.gk K n π) hdual`. Establish `hreg : (CG.mk π).IsRegAlg` using `(GlobalTheory.CuspRep.CG.isRegAlg_iff _).2 fun τ => by`.
+
+Establish `h1 : (CG.mk π).HasInfChar τ (UpperTheory.V.Af.infOf m)` using `hinf τ`. Rewrite using `[h1.infChar_eq]`. Use `⟨Finset.univ.nodup.map fun i j hij => hm.injective ?_, fun z hz => ?_⟩` and prove the remaining obligations. Conclude with `add_left_cancel hij` after adjusting the coercions. Take `⟨i, -, rfl⟩` from `Multiset.mem_map.1 hz`.
+
+Conclude with `⟨m i, add_comm _ _⟩`. Take `⟨σ, hσ, -⟩` from `GlobalTheory.CuspRep.LocEx.exists_isLocComp A.fin K n π w`. Establish `ht` using `GlobalTheory.Published.cohomologicalCsdTempered_of_caraianiTempered A.ctemp P.litN.loc.temp P.litN.loc.seg K n hn π hcsd (A.coh K n (by omega) π hreg) w σ hσ`. Establish `h1` using `GlobalTheory.TempSat.norm_eq_one_of_isTemperedGL ht ((GlobalTheory.BcSpehCompare.hasSat_iff hσ B).1 hB)`. Take `⟨α, hα, rfl⟩` from `Multiset.mem_map.1 hb`.
+
+Take `⟨β, hβ, e⟩` from `Multiset.mem_bind.1 hα`. Take `rfl` from `Multiset.mem_singleton.1 e`. Rewrite using `[norm_mul, h1 β hβ, mul_one, Complex.norm_real, Real.norm_of_nonneg (by positivity)]`.
+-/
 theorem UpperTheory.V.Af.pureK :
     UpperTheory.V.Af.Hypotheses₂ → UpperTheory.V.Af.PureK := by
   intro P K _ _ _ n hn m hm M π hπ w B hB b hb

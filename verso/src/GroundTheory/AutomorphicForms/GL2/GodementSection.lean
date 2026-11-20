@@ -15,16 +15,28 @@ variable {K : Type*} [Field K] [NumberField K]
 
 def modPow (x : IdeleGroup K) (s : ℂ) : ℂ := ((ideleModule K x : ℝ) : ℂ) ^ s
 
+/- English proof (translation)
+Simplify using `only [modPow, map_mul, Positive.val_mul, Complex.ofReal_mul]`. Conclude with `Complex.mul_cpow_ofReal_nonneg (ideleModule K x).2.le (ideleModule K y).2.le s`.
+-/
 theorem modPow_mul (x y : IdeleGroup K) (s : ℂ) : modPow (x * y) s = modPow x s * modPow y s := by
   simp only [modPow, map_mul, Positive.val_mul, Complex.ofReal_mul]
   exact Complex.mul_cpow_ofReal_nonneg (ideleModule K x).2.le (ideleModule K y).2.le s
 
+/- English proof (translation)
+The claim follows from `Complex.cpow_add _ _ (Complex.ofReal_ne_zero.2 (ideleModule K x).2.ne')`.
+-/
 theorem modPow_add (x : IdeleGroup K) (s t : ℂ) : modPow x (s + t) = modPow x s * modPow x t :=
   Complex.cpow_add _ _ (Complex.ofReal_ne_zero.2 (ideleModule K x).2.ne')
 
+/- English proof (translation)
+Simplify using `[modPow]`.
+-/
 theorem modPow_one (s : ℂ) : modPow (1 : IdeleGroup K) s = 1 := by
   simp [modPow]
 
+/- English proof (translation)
+Simplify using `[modPow, (ideleModule K x).2.ne']`.
+-/
 theorem modPow_ne_zero (x : IdeleGroup K) (s : ℂ) : modPow x s ≠ 0 := by
   simp [modPow, (ideleModule K x).2.ne']
 
@@ -43,14 +55,23 @@ def borelElt (a d : IdeleGroup K) (x : 𝔸[K]) : GL (Fin 2) 𝔸[K] where
       simp [Matrix.mul_apply, Fin.sum_univ_two]
     all_goals ring
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem borelElt_val (a d : IdeleGroup K) (x : 𝔸[K]) :
     (borelElt a d x : Matrix (Fin 2) (Fin 2) 𝔸[K]) = !![(a : 𝔸[K]), x; 0, (d : 𝔸[K])] := rfl
 
+/- English proof (translation)
+Use `ext`. Simplify using `[Matrix.GeneralLinearGroup.val_det_apply, borelElt_val, Matrix.det_fin_two]`.
+-/
 theorem det_borelElt (a d : IdeleGroup K) (x : 𝔸[K]) :
     Matrix.GeneralLinearGroup.det (borelElt a d x) = a * d := by
   ext
   simp [Matrix.GeneralLinearGroup.val_det_apply, borelElt_val, Matrix.det_fin_two]
 
+/- English proof (translation)
+Use extensionality with `i`. Apply the tactic sequence `fin_cases i <;> simp [borelElt_val, Matrix.vecMul, dotProduct, Fin.sum_univ_two]`.
+-/
 theorem vecMul_borelElt (a d : IdeleGroup K) (x : 𝔸[K]) (t : 𝔸[K]) :
     ![0, t] ᵥ* (borelElt a d x : Matrix (Fin 2) (Fin 2) 𝔸[K]) = ![0, t * d] := by
   ext i
@@ -75,9 +96,15 @@ def IsKFinite (f : GL (Fin 2) 𝔸[K] → ℂ) : Prop :=
   FiniteDimensional ℂ (Submodule.span ℂ {F | ∃ k ∈ (maxCompact : Subgroup (AdelicGLn.AdelicGL K 2)),
     F = rightReg k f})
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem rightReg_add (h : GL (Fin 2) 𝔸[K]) (f₁ f₂ : GL (Fin 2) 𝔸[K] → ℂ) :
     rightReg h (f₁ + f₂) = rightReg h f₁ + rightReg h f₂ := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem rightReg_smul (h : GL (Fin 2) 𝔸[K]) (c : ℂ) (f : GL (Fin 2) 𝔸[K] → ℂ) :
     rightReg h (c • f) = c • rightReg h f := rfl
 
@@ -115,6 +142,15 @@ def IsKFiniteVec (Φ : (Fin 2 → 𝔸[K]) → ℂ) : Prop :=
   FiniteDimensional ℂ (Submodule.span ℂ {F | ∃ k ∈ (maxCompact : Subgroup (AdelicGLn.AdelicGL K 2)),
     F = rightTranslate k Φ})
 
+/- English proof (translation)
+Use `set G : IdeleGroup K → ℂ := fun x ↦ F x * (μ.toIdele x : ℂ) * modPow x s with hG`. Establish `hpt : ∀ x : IdeleGroup K, F ((x : 𝔸[K]) * d) * (μ.toIdele x : ℂ) * modPow x s = (((μ.toIdele d)⁻¹ : Circle) : ℂ) * modPow d (-s) * G (x * d)`. Introduce `x`. Establish `h1 : modPow d (-s) * modPow d s = 1`. Rewrite using `[← modPow_add, neg_add_cancel]`.
+
+Simplify using `[modPow]`. Establish `h2 : (((μ.toIdele d)⁻¹ : Circle) : ℂ) * (μ.toIdele d : ℂ) = 1`. Rewrite using `[← Circle.coe_mul, inv_mul_cancel, Circle.coe_one]`. Simplify using `only [hG, Units.val_mul, map_mul, Circle.coe_mul, modPow_mul]`. Take the linear combination `(-(F ((x : 𝔸[K]) * d) * (μ.toIdele x : ℂ) * modPow x s)) * ((((μ.toIdele d)⁻¹ : Circle) : ℂ) * (μ.toIdele d : ℂ) * h1 + h2)`.
+
+Establish `: globalZeta (fun t ↦ F (t * (d : 𝔸[K]))) μ s = ∫ x, (((μ.toIdele d)⁻¹ : Circle) : ℂ) * modPow d (-s) * G (x * d) ∂ideleMeasure K`. Simplify using `only [globalZeta]`. Conclude with `integral_congr_ae (Eventually.of_forall fun x ↦ hpt x)`. Rewrite using `[this, integral_const_mul]`. Repeatedly rewrite using `[mul_comm _ d]`.
+
+Rewrite using `[integral_mul_left_eq_self G d]`. Both sides reduce to the same expression.
+-/
 theorem globalZeta_mul_right (F : 𝔸[K] → ℂ) (μ : HeckeCharacter K) (s : ℂ) (d : IdeleGroup K) :
     globalZeta (fun t ↦ F (t * (d : 𝔸[K]))) μ s =
       (((μ.toIdele d)⁻¹ : Circle) : ℂ) * modPow d (-s) * globalZeta F μ s := by
@@ -141,6 +177,9 @@ theorem globalZeta_mul_right (F : 𝔸[K] → ℂ) (μ : HeckeCharacter K) (s : 
 def slice (Φ : (Fin 2 → 𝔸[K]) → ℂ) (g : GL (Fin 2) 𝔸[K]) : 𝔸[K] → ℂ :=
   fun t ↦ Φ (![0, t] ᵥ* (g : Matrix (Fin 2) (Fin 2) 𝔸[K]))
 
+/- English proof (translation)
+The claim follows from `slice_mem_schwartzBruhat (rightTranslate_mem_schwartzBruhat2 g hΦ)`.
+-/
 theorem slice_mem {Φ : (Fin 2 → 𝔸[K]) → ℂ} (hΦ : Φ ∈ schwartzBruhat2 K) (g : GL (Fin 2) 𝔸[K]) :
     slice Φ g ∈ schwartzBruhat K :=
   slice_mem_schwartzBruhat (rightTranslate_mem_schwartzBruhat2 g hΦ)
@@ -149,8 +188,14 @@ def godementSection (χ₁ χ₂ : HeckeCharacter K) (s : ℂ) (Φ : (Fin 2 → 
     (g : GL (Fin 2) 𝔸[K]) : ℂ :=
   (χ₁.toIdele (detI g) : ℂ) * modPow (detI g) s * globalZeta (slice Φ g) (χ₁ * χ₂⁻¹) (2 * s)
 
+/- English proof (translation)
+Simplify using the standard rewrite rules.
+-/
 theorem two_mul_re (s : ℂ) : (2 * s).re = 2 * s.re := by simp
 
+/- English proof (translation)
+The claim follows from `integrable_globalZetaIntegrand (slice_mem hΦ g) _ (by rw [two_mul_re]; exact hs)`.
+-/
 theorem integrable_godementIntegrand (χ₁ χ₂ : HeckeCharacter K) {s : ℂ} (hs : 1 < 2 * s.re)
     {Φ : (Fin 2 → 𝔸[K]) → ℂ} (hΦ : Φ ∈ schwartzBruhat2 K) (g : GL (Fin 2) 𝔸[K]) :
     Integrable (fun t : IdeleGroup K ↦
@@ -158,12 +203,22 @@ theorem integrable_godementIntegrand (χ₁ χ₂ : HeckeCharacter K) {s : ℂ} 
         (ideleMeasure K) :=
   integrable_globalZetaIntegrand (slice_mem hΦ g) _ (by rw [two_mul_re]; exact hs)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `t`. Simplify using `only [slice, Units.val_mul, ← Matrix.vecMul_vecMul, vecMul_borelElt]`.
+-/
 theorem slice_borelElt_mul (Φ : (Fin 2 → 𝔸[K]) → ℂ) (a d : IdeleGroup K) (x : 𝔸[K])
     (g : GL (Fin 2) 𝔸[K]) :
     slice Φ (borelElt a d x * g) = fun t ↦ slice Φ g (t * (d : 𝔸[K])) := by
   funext t
   simp only [slice, Units.val_mul, ← Matrix.vecMul_vecMul, vecMul_borelElt]
 
+/- English proof (translation)
+Simplify using `only [godementSection, slice_borelElt_mul, globalZeta_mul_right, det_borelElt, map_mul, modPow_mul]`. Establish `hμ : (((χ₁ * χ₂⁻¹).toIdele d)⁻¹ : Circle) = (χ₁.toIdele d)⁻¹ * χ₂.toIdele d`. Express the relevant statement in the definitionally equal form `((χ₁ (IdeleClassGroup.mk K d) * (χ₂ (IdeleClassGroup.mk K d))⁻¹)⁻¹ : Circle) = _`. Rewrite using `[mul_inv, inv_inv]`. Both sides reduce to the same expression.
+
+Establish `h1 : modPow d s * modPow d (-(2 * s)) = modPow d (-s)`. Rewrite using `[← modPow_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : (χ₁.toIdele d : ℂ) * (((χ₁.toIdele d)⁻¹ : Circle) : ℂ) = 1`.
+
+Rewrite using `[← Circle.coe_mul, mul_inv_cancel, Circle.coe_one]`. Rewrite using `[hμ, Circle.coe_mul, ← h1]`. Simplify using `only [Circle.coe_mul]`. Take the linear combination `(χ₁.toIdele a : ℂ) * (χ₂.toIdele d : ℂ) * modPow a s * modPow d s * modPow d (-(2 * s)) * (χ₁.toIdele (detI g) : ℂ) * modPow (detI g) s * globalZeta (slice Φ g) (χ₁ * χ₂⁻¹) (2 * s) * h2`.
+-/
 theorem godementSection_borelElt_mul (χ₁ χ₂ : HeckeCharacter K) (s : ℂ)
     (Φ : (Fin 2 → 𝔸[K]) → ℂ) (a d : IdeleGroup K) (x : 𝔸[K]) (g : GL (Fin 2) 𝔸[K]) :
     godementSection χ₁ χ₂ s Φ (borelElt a d x * g) =
@@ -184,11 +239,19 @@ theorem godementSection_borelElt_mul (χ₁ χ₂ : HeckeCharacter K) (s : ℂ)
     modPow d (-(2 * s)) * (χ₁.toIdele (detI g) : ℂ) * modPow (detI g) s *
     globalZeta (slice Φ g) (χ₁ * χ₂⁻¹) (2 * s) * h2
 
+/- English proof (translation)
+The claim follows from `fun a d x g ↦ godementSection_borelElt_mul χ₁ χ₂ s Φ a d x g`.
+-/
 theorem godementSection_mem_principalSeries (χ₁ χ₂ : HeckeCharacter K) (s : ℂ)
     (Φ : (Fin 2 → 𝔸[K]) → ℂ) :
     godementSection χ₁ χ₂ s Φ ∈ principalSeries χ₁ χ₂ s :=
   fun a d x g ↦ godementSection_borelElt_mul χ₁ χ₂ s Φ a d x g
 
+/- English proof (translation)
+Use function extensionality and compare the values at `g`. Establish `hZ : globalZeta (slice (Φ + Ψ) g) (χ₁ * χ₂⁻¹) (2 * s) = globalZeta (slice Φ g) (χ₁ * χ₂⁻¹) (2 * s) + globalZeta (slice Ψ g) (χ₁ * χ₂⁻¹) (2 * s)`. Simplify using `only [globalZeta]`. Rewrite using `[← integral_add (integrable_godementIntegrand χ₁ χ₂ hs hΦ g) (integrable_godementIntegrand χ₁ χ₂ hs hΨ g)]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `t`. Simplify using `only [slice, Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [godementSection, Pi.add_apply, hZ]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem godementSection_add (χ₁ χ₂ : HeckeCharacter K) {s : ℂ} (hs : 1 < 2 * s.re)
     {Φ Ψ : (Fin 2 → 𝔸[K]) → ℂ} (hΦ : Φ ∈ schwartzBruhat2 K) (hΨ : Ψ ∈ schwartzBruhat2 K) :
     godementSection χ₁ χ₂ s (Φ + Ψ) = godementSection χ₁ χ₂ s Φ + godementSection χ₁ χ₂ s Ψ := by
@@ -205,6 +268,11 @@ theorem godementSection_add (χ₁ χ₂ : HeckeCharacter K) {s : ℂ} (hs : 1 <
   simp only [godementSection, Pi.add_apply, hZ]
   ring
 
+/- English proof (translation)
+Use function extensionality and compare the values at `g`. Establish `hZ : globalZeta (slice (c • Φ) g) (χ₁ * χ₂⁻¹) (2 * s) = c * globalZeta (slice Φ g) (χ₁ * χ₂⁻¹) (2 * s)`. Simplify using `only [globalZeta]`. Rewrite using `[← integral_const_mul]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `t`. Simplify using `only [slice, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [godementSection, Pi.smul_apply, smul_eq_mul, hZ]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem godementSection_smul (χ₁ χ₂ : HeckeCharacter K) (s : ℂ) (c : ℂ)
     (Φ : (Fin 2 → 𝔸[K]) → ℂ) :
     godementSection χ₁ χ₂ s (c • Φ) = c • godementSection χ₁ χ₂ s Φ := by

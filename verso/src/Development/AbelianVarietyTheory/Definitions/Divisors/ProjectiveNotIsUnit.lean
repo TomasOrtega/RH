@@ -67,16 +67,25 @@ def Charts.point (R : Type) [CommRing R] (I : Ideal R) :
     obtain ⟨a, ha⟩ := (cst_bijective (𝟙 (Spec (CommRingCat.of (R ⧸ I ^ (0 + 1))))) rfl).2 y
     exact ⟨MvPolynomial.C a, (MvPolynomial.eval₂Hom_C _ _ _).trans ha⟩
 
+/- English proof (translation)
+Rewrite using `[Charts.ev]`. Conclude with `MvPolynomial.eval₂Hom_X' _ _ _`.
+-/
 @[simp] theorem Charts.ev_X (C : Charts I Y β n) (e : ℕ) (i j : Fin (n + 1)) :
     C.ev e i (MvPolynomial.X j) = C.ρ e i j := by
   rw [Charts.ev]
   exact MvPolynomial.eval₂Hom_X' _ _ _
 
+/- English proof (translation)
+Rewrite using `[Charts.ev]`. Conclude with `MvPolynomial.eval₂Hom_C _ _ _`.
+-/
 @[simp] theorem Charts.ev_C (C : Charts I Y β n) (e : ℕ) (i : Fin (n + 1)) (r : R) :
     C.ev e i (MvPolynomial.C r) = cst ((Y e).hom ≫ thick R I e) (C.D e i) r := by
   rw [Charts.ev]
   exact MvPolynomial.eval₂Hom_C _ _ _
 
+/- English proof (translation)
+Establish `h` using `C.cocycle i j i`. Rewrite `h` using `[C.ρ_self, map_one]`. Conclude with `h.symm`.
+-/
 theorem Charts.ρ_mul_ρ (C : Charts I Y β n) (i j : Fin (n + 1)) :
     rs (Y 0).left (inf_le_left : C.D 0 i ⊓ C.D 0 j ≤ C.D 0 i) (C.ρ 0 i j) *
       rs (Y 0).left (inf_le_right : C.D 0 i ⊓ C.D 0 j ≤ C.D 0 j) (C.ρ 0 j i) = 1 := by
@@ -85,6 +94,9 @@ theorem Charts.ρ_mul_ρ (C : Charts I Y β n) (i j : Fin (n + 1)) :
   rw [C.ρ_self, map_one] at h
   exact h.symm
 
+/- English proof (translation)
+Establish `h1` using `(Y 0).left.basicOpen_of_isUnit h`. Rewrite `h1` using `[C.basic]`. Conclude with `inf_eq_left.mp h1`.
+-/
 theorem Charts.le_of_isUnit (C : Charts I Y β n) {i j : Fin (n + 1)} (h : IsUnit (C.ρ 0 i j)) :
     C.D 0 i ≤ C.D 0 j := by
 
@@ -98,6 +110,9 @@ open GlobalTheory.ProjSpace
 open ReciprocityTheory.ChartRestriction.G.Semi (LB)
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor (PSpace)
 
+/- English proof (translation)
+Conclude with `(congrArg (fun φ => φ.hom x) (b.naturality (homOfLE h).op)).symm`.
+-/
 theorem rs_app {X Z : Scheme.{0}} (b : Z ⟶ X) {U V : X.Opens} (h : V ≤ U) (h' : b ⁻¹ᵁ V ≤ b ⁻¹ᵁ U) (x : Γ(X, U)) :
     rs Z h' ((b.app U).hom x) = (b.app V).hom (rs X h x) := by
   exact (congrArg (fun φ => φ.hom x) (b.naturality (homOfLE h).op)).symm
@@ -175,6 +190,13 @@ def Charts.projective (R : Type) [CommRing R] (I : Ideal R) (n : ℕ) :
 
 attribute [local instance] ProjSpace.algebraSections in
 
+/- English proof (translation)
+Establish `hne : I ^ (e + 1) ≠ ⊤`. Introduce `h`. Apply `hI` to reduce the goal to its premises. Rewrite using `[eq_top_iff, ← h]`. Conclude with `Ideal.pow_le_self (Nat.succ_ne_zero e)`.
+
+Establish `: Nontrivial (R ⧸ I ^ (e + 1))` using `Ideal.Quotient.nontrivial_iff.mpr hne`. Introduce `hu`. Establish `hr : IsUnit (chartAlgEquiv (R ⧸ I ^ (e + 1)) 1 0 (MvPolynomial.X ⟨1, by decide⟩))`. Rewrite using `[chartAlgEquiv_X]`. Conclude with `hu`.
+
+Establish `hu'` using `(hr.map (chartAlgEquiv (R ⧸ I ^ (e + 1)) 1 0).symm).map (MvPolynomial.eval fun _ => (0 : R ⧸ I ^ (e + 1)))`. Rewrite `hu'` using `[AlgEquiv.symm_apply_apply, MvPolynomial.eval_X]`. Conclude with `not_isUnit_zero hu'`.
+-/
 theorem Charts.projective_not_isUnit (R : Type) [CommRing R] (I : Ideal R) (hI : I ≠ ⊤) (e : ℕ) :
     ¬ IsUnit ((Charts.projective R I 1).ρ e 0 1) := by
   have hne : I ^ (e + 1) ≠ ⊤ := by
@@ -193,6 +215,9 @@ theorem Charts.projective_not_isUnit (R : Type) [CommRing R] (I : Ideal R) (hI :
   rw [AlgEquiv.symm_apply_apply, MvPolynomial.eval_X] at hu'
   exact not_isUnit_zero hu'
 
+/- English proof (translation)
+Introduce `h`. Apply `Charts.projective_not_isUnit R I hI 0` to reduce the goal to its premises. Use `show IsUnit (ratio (R ⧸ I ^ (0 + 1)) 1 0 1)`. Conclude with `⟨ratioUnit (chart (R ⧸ I ^ (0 + 1)) 1 0) 0 1 le_rfl h.le, val_ratioUnit⟩`.
+-/
 theorem Charts.projective_D_ne (R : Type) [CommRing R] (I : Ideal R) (hI : I ≠ ⊤) :
     (Charts.projective R I 1).D 0 0 ≠ (Charts.projective R I 1).D 0 1 := by
 

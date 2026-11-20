@@ -20,6 +20,27 @@ open scoped ContDiff
 
 namespace GlobalTheory.SchLine
 
+/- English proof (translation)
+Introduce `D ψ hψ A B ν 𝓨 hν f hf M hM hMf`. Take `⟨θ, hθ⟩` from `GlobalTheory.DualPairCompare.exists_infFam D`. Set `v : GlobalTheory.Unf.VolM D B.rank A.rank` to `⟨ν, 𝓨, hν⟩`. Set `L : ℝ →+ WO (dblSp A) B` to `((dblDec A).extX B).comp M`. Establish `hLc : Continuous L` using `(continuous_id.matrix_mul continuous_const).comp hM`.
+
+Establish `hLf : ∀ t, (L t).map (finPart D) = 0`. Introduce `t`. Use `show (((dblDec A).extX B) (M t)).map (finPart D) = 0`. Rewrite using `[HypDec.extX_apply, Matrix.map_mul, hMf t, Matrix.zero_mul]`. Take `⟨_, hT⟩` from `GlobalTheory.HeisTaylor.heisO_taylor D ψ hψ θ hθ (dblSp A) B 0 f hf`.
+
+Take `⟨hf', hlim⟩` from `hT L hLc hLf`. Use `⟨_, hf', fun x => ?_⟩` and prove the remaining obligations. Use `set f' := fun p => deriv (fun t : ℝ => heisO ψ (dblSp A) B (L t) f p) 0 with hf'def`. Take `⟨C, hC⟩` from `GlobalTheory.Unf.mixS_decay D ψ hψ θ hθ (dblSp A) (zeroSp D) B A.rank (dblDec A) v 0`. Establish `hS` using `(GlobalTheory.HeisMixSource.heis_mixS D ψ hψ (dblSp A) (zeroSp D) B A.rank (dblDec A) v f hf).1`.
+
+Establish `hth : ∀ t, IsThetaFunO ψ (dblSp A) B (heisO ψ (dblSp A) B (L t) f)` using `fun t => GlobalTheory.ThetaClosed.isThetaFunO_heisO_all hψ hf _`. Establish `lin` using `GlobalTheory.StdUnn.sch_linear D ψ hψ A B ν 𝓨 hν`. Establish `htr : ∀ t : ℝ, sch ψ A B ν 𝓨 f (x + M t) = sch ψ A B ν 𝓨 (heisO ψ (dblSp A) B (L t) f) x`. Introduce `t`. Conclude with `(congrFun (hS x (M t)) 0).symm`.
+
+Establish `key : ∀ t : ℝ, IsThetaFunO ψ (dblSp A) B ((t⁻¹ : ℂ) • (heisO ψ (dblSp A) B (L t) f - f) - f') ∧ sch ψ A B ν 𝓨 ((t⁻¹ : ℂ) • (heisO ψ (dblSp A) B (L t) f - f) - f') x = (t⁻¹ : ℂ) * (sch ψ A B ν 𝓨 (heisO ψ (dblSp A) B (L t) f) x - sch ψ A B ν 𝓨 f x) - sch ψ A B ν 𝓨 f' x`. Introduce `t`. Establish `e : (t⁻¹ : ℂ) • (heisO ψ (dblSp A) B (L t) f - f) - f' = ((t⁻¹ : ℂ) • heisO ψ (dblSp A) B (L t) f + (-(t⁻¹ : ℂ)) • f) + (-1 : ℂ) • f'`. Use function extensionality and compare the values at `p`. Simplify using `only [Pi.sub_apply, Pi.add_apply, Pi.smul_apply, smul_eq_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `h1` using `lin _ _ (hth t) hf (t⁻¹ : ℂ)`. Establish `h2` using `lin _ _ hf hf (-(t⁻¹ : ℂ))`. Establish `ha` using `GlobalTheory.OrientedHeis.theta_smul (t⁻¹ : ℂ) (hth t)`. Establish `hb` using `GlobalTheory.OrientedHeis.theta_smul (-(t⁻¹ : ℂ)) hf`.
+
+Establish `hc` using `GlobalTheory.OrientedHeis.theta_smul (-1 : ℂ) hf'`. Establish `hab` using `GlobalTheory.OrientedHeis.theta_add ha hb`. Rewrite using `[e]`. Use `⟨GlobalTheory.OrientedHeis.theta_add hab hc, ?_⟩` and prove the remaining obligations. Rewrite using `[(lin _ _ hab hc 1).2.2.1, (lin _ _ ha hb 1).2.2.1, (lin _ _ (hth t) hf (t⁻¹ : ℂ)).2.2.2, (lin _ _ hf hf (-(t⁻¹ : ℂ))).2.2.2, (lin _ _ hf' hf' (-1 : ℂ)).2.2.2]`.
+
+Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hasDerivAt_iff_tendsto_slope_zero, tendsto_iff_edist_tendsto_0]`. Establish `hup : Filter.Tendsto (fun t : ℝ => (C : ℝ≥0∞) * GlobalTheory.Unf.supSob ψ θ 0 ((t⁻¹ : ℂ) • (heisO ψ (dblSp A) B (L t) f - f) - f')) (nhdsWithin 0 {0}ᶜ) (nhds 0)`. Simplify `ENNReal.Tendsto.const_mul hlim (Or.inr ENNReal.coe_ne_top)` using `only [mul_zero]`.
+
+Use `tendsto_of_tendsto_of_tendsto_of_le_of_le tendsto_const_nhds hup (fun _ => by simp) (fun t => ?_)` and prove the remaining obligations. Establish `hb` using `hC _ (key t).1 x 0`. Rewrite `hb` using `[pow_zero, ENNReal.ofReal_one, mul_one]`. Establish `e2 : t⁻¹ • (sch ψ A B ν 𝓨 f (x + M (0 + t)) - sch ψ A B ν 𝓨 f (x + M 0)) = (t⁻¹ : ℂ) * (sch ψ A B ν 𝓨 (heisO ψ (dblSp A) B (L t) f) x - sch ψ A B ν 𝓨 f x)`. Rewrite using `[zero_add, htr t, map_zero, add_zero, Complex.real_smul, Complex.ofReal_inv]`.
+
+Simplify using `only`. Rewrite using `[e2, edist_eq_enorm_sub, ← (key t).2]`. Conclude with `hb`.
+-/
 theorem sch_hasDerivAt_line : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (A B : HSp D) (ν : Measure (WO A B)) (𝓨 : Set (WO A B)), IsCovolOne (ratL B A) ν 𝓨 → ∀ f, IsThetaFunO ψ (dblSp A) B f → ∀ M : ℝ →+ Mx D B.rank A.rank, Continuous M → (∀ t, (M t).map (finPart D) = 0) → ∃ f', IsThetaFunO ψ (dblSp A) B f' ∧ ∀ x, HasDerivAt (fun t : ℝ => sch ψ A B ν 𝓨 f (x + M t)) (sch ψ A B ν 𝓨 f' x) 0 := by
   intro D ψ hψ A B ν 𝓨 hν f hf M hM hMf
   obtain ⟨θ, hθ⟩ := GlobalTheory.DualPairCompare.exists_infFam D

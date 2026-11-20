@@ -38,6 +38,9 @@ def HessRel {e : ℕ} {M : Man e} {k : Type} [CommRing k] {X : Scheme.{0}} {p : 
     c.hess (L.φ σ) i y =
       ReciprocityTheory.L2DbarEstimates.cHess e (fun v => ((2 * (P (ε σ)).φ (π σ y) (π σ (c.e.symm v)) : ℝ) : ℂ)) (c.e y)
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ _` and use `rfl`.
+-/
 theorem hessRel_fnB {e : ℕ} {M : Man e} {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k}
     (ε : (k →+* ℂ) → Fin (M.n + 1)) (π : ∀ σ, CxPts p σ → M.X (ε σ)) (u : M.Fun) (hu hc) :
     HessRel ε π (ArInt.fnB (M.pull ε π ((2 : ℝ) • u)) hu hc) fun a => LocPot.ofFun (u a) :=

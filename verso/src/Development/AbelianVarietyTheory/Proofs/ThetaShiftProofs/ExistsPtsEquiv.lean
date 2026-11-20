@@ -18,6 +18,9 @@ variable {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D : DegData R I}
   {A : PolAV (Spec (CommRingCat.of (FractionRing R)))} {G : Over (Spec (CommRingCat.of R))} [GrpObj G]
   [IsCommMonObj G] (U : UnifPre I D A G) (F : Type) [Field F] [Algebra (FractionRing R) F] {k : ℕ}
 
+/- English proof (translation)
+Use `(expandsG_iff U F k _ s).2 ⟨1, fun _ => e, fun _ => (σ, f), fun _ => h, by rw [Fin.sum_univ_one], fun α => ?_⟩` and prove the remaining obligations. Rewrite using `[Fin.sum_univ_one]`. Use `(hs α).trans (congrArg (fun q : SecFMod D.toPre F k α => e • q) (sec_ext' D.toPre.P.isLB fun y J hJ => ?_))` and prove the remaining obligations. Conclude with `(sval_resF D.toPre F _ _ hJ).trans ((sval_pullOver _ _ _ _ hJ).trans ((sval_pullOver _ _ _ _ hJ).trans (congrArg (fun q => sval (f α) q y J) ((Category.assoc _ _ _).trans (congrArg (𝟙 _ ≫ ·) (congrArg (fun q => q.left) (famMap_snd D.toPre (FractionRing R) F))))))).symm`.
+-/
 theorem expandsG_smul {σ : H0 U.LG.L k} {f : ∀ x, SecBMod D.toPre k x} {s : Fam D.toPre F k} {e : F}
     (h : ∀ n, U.ExpandsAt n k σ f) (hs : ∀ x, famComp D.toPre F k x s = e • resF D.toPre F k x (f x)) :
     U.ExpandsG F k (e • extendSec U F k (genericSec U k σ) : GroupSec U F k) s := by
@@ -29,6 +32,23 @@ theorem expandsG_smul {σ : H0 U.LG.L k} {f : ∀ x, SecBMod D.toPre k x} {s : F
     (congrArg (fun q => sval (f α) q y J) ((Category.assoc _ _ _).trans (congrArg (𝟙 _ ≫ ·)
       (congrArg (fun q => q.left) (famMap_snd D.toPre (FractionRing R) F))))))).symm
 
+/- English proof (translation)
+Set `y : Sp F` to `IsLocalRing.closedPoint F`. Use `⟨fun z i j => valF (F := F) (z ≫ U.gen.inv).left ((U.LG.L.pull (pullback.fst G.hom (jK R))).U (fun _ => j) ⊓ (A.L.pull U.gen.hom.left).U (fun _ => i)) (w.s (fun _ => j, fun _ => i)).val ^ k, fun σ f s e h hs => ?_⟩` and prove the remaining obligations. Set `n : TFK (R` to `R) F ⊗ A.A ⟶ UnifPre.GF (G := G) F := lift (fst _ _) (snd _ _ ≫ U.gen.inv)`. Establish `hn : n ≫ U.genF F = 𝟙 _`. Apply the tactic sequence `apply CartesianMonoidalCategory.hom_ext <;> simp [n]`.
+
+Establish `hn' : U.genF F ≫ n = 𝟙 _`. Apply the tactic sequence `apply CartesianMonoidalCategory.hom_ext <;> simp [n]`. Take `⟨t, ht⟩` from `((isoRelM_bijective (k := k) (m := (snd (TFK (R := R) F) ((Over.pullback (jK R)).obj G)).left) (g₁ := (snd (TFK (R := R) F) A.A).left) (h₁ := (U.genF F).left) A.isLB U.LG.isLB hw (congrArg (fun q => q.left) (lift_snd _ _ : U.genF F ≫ snd _ _ = _)) n.left (congrArg (fun q => q.lef …`. Use `⟨t, ⟨_, ht, expandsG_smul U F h hs⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `z _ i j rfl hi hj`.
+
+Set `r : TFK (R` to `R) F ⟶ UnifPre.GF (G := G) F := lift (𝟙 _) (z ≫ U.gen.inv)`. Establish `r₁ : r.left ≫ (snd (TFK (R` using `R) F) ((Over.pullback (jK R)).obj G)).left = (z ≫ U.gen.inv).left := congrArg (fun q => q.left) (lift_snd _ _ : r ≫ snd _ _ = _)`. Establish `r₂ : r.left ≫ (U.genF F).left = (ptSecT A.A z).left`. Use `congrArg (fun q => q.left) (?_ : r ≫ U.genF F = ptSecT A.A z)` and prove the remaining obligations. Apply the tactic sequence `apply CartesianMonoidalCategory.hom_ext <;> simp [r, ptSecT]`.
+
+Establish `r₃ : r.left ≫ groupBase G F = 𝟙 _` using `congrArg (fun q => q.left) (lift_fst _ _ : r ≫ fst _ _ = _)`. Establish `r₄ : r.left ≫ UnifPre.gFK (G` using `G) F = z.left ≫ U.gen.inv.left ≫ pullback.fst G.hom (jK R) := by`. Rewrite using `[← Category.assoc, r₁, Over.comp_left, Category.assoc]`. Establish `r₅ : r.left ≫ (snd (TFK (R` using `R) F) ((Over.pullback (jK R)).obj G)).left ≫ U.gen.hom.left = z.left := by`. Rewrite using `[← Category.assoc, r₁, ← Over.comp_left, Category.assoc, Iso.inv_hom_id, Category.comp_id]`.
+
+Establish `a₂ : (r.left ≫ UnifPre.gFK (G` using `G) F) y ∈ U.LG.L.U j := r₄.symm ▸ hj trivial`. Establish `a₁ : (r.left ≫ (snd (TFK (R` using `R) F) ((Over.pullback (jK R)).obj G)).left ≫ U.gen.hom.left) y ∈ A.L.U i := r₅.symm ▸ hi trivial`. Establish `key` using `(isoRelM_iff w _ k _ ht.1 _ ht.2.1 _ _).1 ht _ r.left y j i a₂ a₁`. Rewrite `key` using `[Category.comp_id, r₁, r₂, powVal_smul (π := groupBase G F) (g := UnifPre.gFK (G := G) F) e _ r.left y a₂, r₃]`. Use `(toStk y).injective ?_` and prove the remaining obligations.
+
+Establish `m₀ : (z ≫ U.gen.inv).left y ∈ (U.LG.L.pull (pullback.fst G.hom (jK R))).U (fun _ => j) ⊓ (A.L.pull U.gen.hom.left).U (fun _ => i)`. Rewrite using `[← r₁]`. Conclude with `⟨mem_pull.2 a₂, mem_pull.2 a₁⟩`. Rewrite `key` using `[zpow_natCast, Units.val_pow_eq_pow_val]`. Rewrite using `[map_mul, map_mul, map_pow, toStk_valF (F := F) _ _ y m₀ (w.s (fun _ => j, fun _ => i))]`.
+
+Establish `m₁ : (ptSecT A.A z).left y ∈ (LPow A.A A.L (k : ℤ) (TFK (R` using `R) F)).U (fun _ => i) := by`. Use `mem_wchart.2 fun _ => ?_` and prove the remaining obligations. Establish `: (ptSecT A.A z).left ≫ (snd (TFK (R` using `R) F) A.A).left = z.left := congrArg (fun q => q.left) (lift_snd _ _ : ptSecT A.A z ≫ snd _ _ = _)`. Establish `h' : ((ptSecT A.A z).left ≫ (snd (TFK (R` using `R) F) A.A).left) y ∈ A.L.U i := this.symm ▸ hi trivial`. Conclude with `h'`.
+
+Use `Eq.trans ?_ (key.trans (congrArg _ (ThetaScalar.toStk_valF_gs _ _ y m₁ _).symm))` and prove the remaining obligations. Use `congrArg₂ (· * ·) (toStk_eq y e) ?_` and prove the remaining obligations. Use `(FormalValue.toStkA_valR_eq_gs _ _ y (FormalValue.top_le_secChart hj) _).trans ?_` and prove the remaining obligations. Rewrite using `[← r₄]`. Conclude with `((gs_pullFn _ _ _ _ y (mem_wchart.2 fun _ => a₂)).trans ((gs_pullFn _ _ _ _ y (mem_wchart.2 fun _ => a₂)).trans (by rw [Category.assoc]; rfl))).symm`.
+-/
 theorem exists_expandsF (w : LB.Iso (A.L.pull U.gen.hom.left) (U.LG.L.pull (pullback.fst G.hom (jK R))))
     (hw : w.IsGen) : ∃ nu : (TFK (R := R) F ⟶ A.A) → A.L.ι → U.LG.L.ι → F,
       ∀ (σ : H0 U.LG.L k) (f : ∀ x, SecBMod D.toPre k x) (s : Fam D.toPre F k) (e : F),
@@ -88,6 +108,11 @@ theorem exists_expandsF (w : LB.Iso (A.L.pull U.gen.hom.left) (U.LG.L.pull (pull
   exact ((gs_pullFn _ _ _ _ y (mem_wchart.2 fun _ => a₂)).trans ((gs_pullFn _ _ _ _ y (mem_wchart.2 fun _ => a₂)).trans
     (by rw [Category.assoc]; rfl))).symm
 
+/- English proof (translation)
+Use `U.gen_hom` as an intermediate fact. Set `e₁` to `Hom.mulEquivCongrRight U.gen (TFK (R := R) F)`. Set `e₂ : (TFK (R` to `R) F ⟶ (Over.pullback (jK R)).obj G) ≃* (TF (R := R) F ⟶ G) := TorsionLift.ptsEquiv (jK R) G (TFK (R := R) F) (jFK (R := R) F ≫ jK R) rfl`. Establish `h₁ : ∀ z, e₁.symm z = z ≫ U.gen.inv` using `fun z => e₁.symm_apply_eq.2 (by show z = (z ≫ U.gen.inv) ≫ U.gen.hom simp)`. Use `⟨e₁.symm.trans e₂, fun z => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[MulEquiv.trans_apply, h₁, ← Category.assoc, ← Over.comp_left]`. Conclude with `TorsionLift.ptsEquiv_left (jK R) G (TFK (R := R) F) (jFK (R := R) F ≫ jK R) rfl _`.
+-/
 theorem exists_ptsEquiv : ∃ Φ : (TFK (R := R) F ⟶ A.A) ≃* (TF (R := R) F ⟶ G),
     ∀ z, (Φ z).left = z.left ≫ U.gen.inv.left ≫ pullback.fst G.hom (jK R) := by
   have := U.gen_hom
@@ -112,6 +137,17 @@ variable {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D : DegData R I}
   {A : PolAV (Spec (CommRingCat.of (FractionRing R)))} {G : Over (Spec (CommRingCat.of R))} [GrpObj G]
   [IsCommMonObj G] (U : Unif I D A G) (F : Type) [Field F] [Algebra (FractionRing R) F] {k : ℕ}
 
+/- English proof (translation)
+Take `⟨w, hw⟩` from `U.ext`. Take `⟨Φ, hΦ⟩` from `exists_ptsEquiv U.toUnifPre F`. Take `rfl : Φ x = xG` from `Over.OverMorphism.ext ((hΦ x).trans hxG)`. Use `⟨by rw [← map_pow, (hx w hw).1, map_one], fun v hv σ₁ σ₂ σ₁' σ₂' f₁ f₂ f₁' f₂' s₁ s₂ s₁' s₂' e₁ e₂ e₁' e₂' a₁ a₂ a₁' a₂' b₁ b₂ b₁' b₂' c₁ c₂ z j j' hj hj' => ?_⟩` and prove the remaining obligations. Take `⟨z, rfl⟩` from `Φ.surjective z`.
+
+Rewrite `hj`, the goal using `[← map_mul]`. Take `⟨nu, hnu⟩` from `exists_expandsF U.toUnifPre F (k := k) w hw`. Take `⟨t₁, d₁, v₁⟩` from `hnu σ₁ f₁ s₁ e₁ a₁ b₁`. Take `⟨t₂, d₂, v₂⟩` from `hnu σ₂ f₂ s₂ e₂ a₂ b₂`. Take `⟨t₁', d₁', v₁'⟩` from `hnu σ₁' f₁' s₁' e₁' a₁' b₁'`.
+
+Take `⟨t₂', d₂', v₂'⟩` from `hnu σ₂' f₂' s₂' e₂' a₂' b₂'`. Set `y : Sp F` to `IsLocalRing.closedPoint F`. Establish `ch : ∀ u : TFK (R` using `R) F ⟶ A.A, ∃ i, ⊤ ≤ u.left ⁻¹ᵁ A.L.U i ∧ ⊤ ≤ (ptSecT A.A u).left ⁻¹ᵁ (LPow A.A A.L (k : ℤ) (TFK (R := R) F)).U (fun _ => i) := fun u => by`. Take `⟨i, hi⟩` from `exists_chart A.isLB (u.left y)`. Use `⟨i, (top_le_iff_mem (F := F) u.left _ y).2 hi, (top_le_iff_mem (F := F) _ _ y).2 (mem_wchart.2 fun _ => ?_)⟩` and prove the remaining obligations.
+
+Establish `: (ptSecT A.A u).left ≫ (snd (TFK (R` using `R) F) A.A).left = u.left := congrArg (fun q => q.left) (lift_snd _ _ : ptSecT A.A u ≫ snd _ _ = _)`. Establish `h' : ((ptSecT A.A u).left ≫ (snd (TFK (R` using `R) F) A.A).left) y ∈ A.L.U i := this.symm ▸ hi`. Conclude with `h'`. Take `⟨i, hi, gi⟩` from `ch (z * x)`. Take `⟨i', hi', gi'⟩` from `ch z`.
+
+Establish `key` using `(values_at_translate hG hK U F hk p x hx w hw v hv).2.2 t₁ t₂ t₁' t₂' s₁ s₂ s₁' s₂' d₁ d₂ c₁ c₂ d₁' d₂' z _ _ gi gi'`. Rewrite using `[v₁ _ _ i j (hΦ _).symm hi hj, v₂ _ _ i j (hΦ _).symm hi hj, v₁' _ _ i' j' (hΦ _).symm hi' hj', v₂' _ _ i' j' (hΦ _).symm hi' hj']`. Take the linear combination `(nu (z * x) i j * nu z i' j') * key`.
+-/
 theorem cross_secVal (hG : GlobalFnsSt) (hK : KerPowSt) (hk : 1 ≤ k) (p : QkPt D.toPre F k)
     (x : TFK (R := R) F ⟶ A.A) (xG : TF (R := R) F ⟶ G) (hx : QkToAkU U.toUnifPre F k p x)
     (hxG : x.left ≫ U.gen.inv.left ≫ pullback.fst G.hom (jK R) = xG.left) : xG ^ k = 1 ∧

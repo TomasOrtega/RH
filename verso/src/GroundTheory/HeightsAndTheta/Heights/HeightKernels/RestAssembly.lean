@@ -25,6 +25,13 @@ set_option maxSynthPendingDepth 1
 
 namespace GroundTheory.Heights₂.Heights
 
+/- English proof (translation)
+Establish `hIdealSum : RestCutIdealSum.Statement` using `RestCutIdealSum.proof`. Establish `hPsum : RestCutTransportPsum.Statement` using `RestCutTransportPsum.proof`. Establish `hFlagKills : RestCutFlagKillsIdeal.Statement` using `RestCutFlagKillsIdeal.proof h₂ hIdealSum`. Establish `hIKills : RestCutIKillsIdeal.Statement` using `RestCutIKillsIdeal.proof hIdealSum hPsum`. Establish `hStairNonzero : RestCutStairNonzero.Statement` using `RestCutStairNonzero.proof h₁ hFlagKills`.
+
+Establish `hCompare : RestCutCompare.Statement` using `RestCutCompare.proof h₁ RestCutStairHom.proof hFlagKills hIKills`. Establish `hCaseCompare : RestCutCaseCompare.Statement` using `RestCutCaseCompare.proof h₄ RestCutRestHom.proof hStairNonzero hCompare RestCutCompareReal.proof`. Establish `hPsiFlag : RestCutPsiFlag.Statement` using `RestCutPsiFlag.proof`. Establish `hSyzygy : RestCutRealSyzygy.Statement` using `RestCutRealSyzygy.proof h₃ hPsiFlag`. Establish `hTermEq : RestCutTermEq.Statement` using `RestCutTermEq.proof hSyzygy hPsiFlag hPsum`.
+
+Establish `hCaseDecomp : RestCutCaseDecomp.Statement` using `RestCutCaseDecomp.proof RestCutRestHom.proof RestCutHomDecomp.proof hPsum`. Establish `hCaseSharp : RestCutCaseSharp.Statement` using `RestCutCaseSharp.proof h₅ hCaseCompare hCaseDecomp hTermEq RestCutPrimeEq.proof`. Conclude with `RestTermSharp.proof hCaseSharp RestCutTransportLast.proof RestCutTransportFirst.proof RestCutLieLast.proof RestCutLieFirst.proof`.
+-/
 theorem RestTermSharp.ofRestTerms (h₁ : RestTerms.CoinvariantTopDegree.Statement)
     (h₂ : RestTerms.FlagIntegralKillsPowerSums.Statement)
     (h₃ : RestTerms.RestTermWellDefined.Statement) (h₄ : RestTerms.SameFactorBound.Statement)
@@ -48,6 +55,9 @@ theorem RestTermSharp.ofRestTerms (h₁ : RestTerms.CoinvariantTopDegree.Stateme
   exact RestTermSharp.proof hCaseSharp RestCutTransportLast.proof RestCutTransportFirst.proof
     RestCutLieLast.proof RestCutLieFirst.proof
 
+/- English proof (translation)
+The claim follows from `RestTerm.proof (RestTermSharp.ofRestTerms h₁ h₂ h₃ h₄ h₅)`.
+-/
 theorem RestTerm.ofRestTerms (h₁ : RestTerms.CoinvariantTopDegree.Statement)
     (h₂ : RestTerms.FlagIntegralKillsPowerSums.Statement)
     (h₃ : RestTerms.RestTermWellDefined.Statement) (h₄ : RestTerms.SameFactorBound.Statement)

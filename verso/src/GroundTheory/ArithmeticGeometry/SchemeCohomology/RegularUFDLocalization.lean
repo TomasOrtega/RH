@@ -11,6 +11,27 @@ universe u
 
 variable {R : Type u} [CommRing R]
 
+/- English proof (translation)
+Proceed by induction on `k generalizing M with`. Consider the case `zero`. Rewrite `hM`, the goal using `[zero_add, ← projective_iff_hasProjectiveDimensionLT_one, ← IsProjective.iff_projective]`. Establish `: Module.Free R M` using `Module.free_of_flat_of_isLocalRing`. Use `infer_instance`.
+
+Consider the case `succ k ih`. Take `⟨n, π, hπ⟩` from `Module.Finite.exists_fin' R M`. Set `K` to `LinearMap.ker π`. Establish `hS` using `LinearMap.shortExact_shortComplexKer hπ`. Establish `hproj : Projective (π.shortComplexKer).X₂`.
+
+Rewrite using `[← IsProjective.iff_projective]`. Use `infer_instance`. Establish `hK : HasProjectiveDimensionLT (ModuleCat.of R K) (k + 1)` using `(hS.hasProjectiveDimensionLT_X₃_iff k hproj).mp hM`. Establish `hxF : IsSMulRegular (Fin n → R) x`. Introduce `a b h`.
+
+Use function extensionality and compare the values at `i`. Conclude with `hxR (congrFun h i)`. Establish `hxK : IsSMulRegular K x` using `fun a b h ↦ Subtype.ext (hxF (congrArg Subtype.val h))`. Establish `hK'` using `ih K hxK hK`. Set `f₁ : QuotSMulTop x K →ₗ[R] QuotSMulTop x (Fin n → R)` to `QuotSMulTop.map x K.subtype`.
+
+Set `f₂ : QuotSMulTop x (Fin n → R) →ₗ[R] QuotSMulTop x M` to `QuotSMulTop.map x π`. Establish `hex0 : Function.Exact K.subtype π` using `fun y ↦ ⟨fun h ↦ ⟨⟨y, h⟩, rfl⟩, by rintro ⟨k, rfl⟩; exact k.2⟩`. Establish `ex : Function.Exact f₁ f₂` using `QuotSMulTop.map_exact x hex0 hπ`. Establish `surj : Function.Surjective f₂` using `QuotSMulTop.map_surjective x hπ`. Establish `inj : Function.Injective f₁`.
+
+Rewrite using `[← LinearMap.ker_eq_bot, eq_bot_iff]`. Introduce `y hy`. Take `⟨y, rfl⟩` from `Submodule.mkQ_surjective _ y`. Rewrite `hy` using `[LinearMap.mem_ker]`. Simplify using `only [f₁, Submodule.mkQ_apply, QuotSMulTop.map_apply_mk, Submodule.Quotient.mk_eq_zero, Submodule.mem_smul_pointwise_iff_exists] at hy`.
+
+Take `⟨b, -, hb⟩` from `hy`. Establish `hπb : π b = 0`. Apply `hxM` to reduce the goal to its premises. Use `show x • π b = x • 0`. Rewrite using `[← map_smul, hb, smul_zero]`.
+
+Conclude with `y.2`. Rewrite using `[Submodule.mem_bot, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero, Submodule.mem_smul_pointwise_iff_exists]`. Conclude with `⟨⟨b, hπb⟩, Submodule.mem_top, Subtype.ext hb⟩`. Set `g₁` to `f₁.extendScalarsOfSurjective (Ideal.Quotient.mk_surjective (I := span {x}))`. Set `g₂` to `f₂.extendScalarsOfSurjective (Ideal.Quotient.mk_surjective (I := span {x}))`.
+
+Set `T` to `ModuleCat.shortComplexOfCompEqZero g₁ g₂ (LinearMap.ext fun y ↦ ex.apply_apply_eq_zero y)`. Establish `hT : T.ShortExact` using `ModuleCat.shortComplex_shortExact T ex inj surj`. Establish `hproj2 : Projective T.X₂`. Rewrite using `[← IsProjective.iff_projective]`. Use `infer_instance`.
+
+Conclude with `(hT.hasProjectiveDimensionLT_X₃_iff k hproj2).mpr hK'`.
+-/
 theorem hasProjectiveDimensionLT_quotSMulTop [IsLocalRing R] [IsNoetherianRing R] {x : R}
     (hxR : IsSMulRegular R x) (k : ℕ) (M : Type u) [AddCommGroup M] [Module R M]
     [Module.Finite R M] (hxM : IsSMulRegular M x)
@@ -67,6 +88,9 @@ theorem hasProjectiveDimensionLT_quotSMulTop [IsLocalRing R] [IsNoetherianRing R
       rw [← IsProjective.iff_projective]; infer_instance
     exact (hT.hasProjectiveDimensionLT_X₃_iff k hproj2).mpr hK'
 
+/- English proof (translation)
+Set `b` to `Module.Free.chooseBasis R M`. Take `⟨i⟩` from `b.index_nonempty`. Use `congrArg b.repr (h (b i))` as an intermediate fact. Rewrite `this` using `[map_smul, b.repr_self, map_zero, Finsupp.smul_single, smul_eq_mul, mul_one, Finsupp.single_eq_zero]`. Conclude with `this`.
+-/
 theorem eq_zero_of_forall_smul_eq_zero_of_free {M : Type*} [AddCommGroup M] [Module R M]
     [Module.Free R M] [Nontrivial M] {a : R} (h : ∀ m : M, a • m = 0) : a = 0 := by
   let b := Module.Free.chooseBasis R M
@@ -76,6 +100,33 @@ theorem eq_zero_of_forall_smul_eq_zero_of_free {M : Type*} [AddCommGroup M] [Mod
     Finsupp.single_eq_zero] at this
   exact this
 
+/- English proof (translation)
+Proceed by induction on `k generalizing M with`. Consider the case `zero`. Rewrite `hM` using `[zero_add, ← projective_iff_hasProjectiveDimensionLT_one, ← IsProjective.iff_projective]`. Conclude with `Module.free_of_flat_of_isLocalRing`. Consider the case `succ k ih => classical`.
+
+Establish `hfg : (⊤ : Submodule R M).FG` using `Module.Finite.fg_top`. Take `⟨t, hcard, hspan⟩` from `Submodule.FG.exists_span_finset_card_eq_spanFinrank hfg`. Set `π : (t → R) →ₗ[R] M` to `Fintype.linearCombination R (fun j : t ↦ (j : M))`. Establish `hπ : Function.Surjective π`. Rewrite using `[← LinearMap.range_eq_top, Fintype.range_linearCombination, eq_top_iff, ← hspan]`.
+
+Conclude with `Submodule.span_mono (fun y hy ↦ ⟨⟨y, hy⟩, rfl⟩)`. Establish `hker : ∀ v ∈ LinearMap.ker π, ∀ i, v i ∈ maximalIdeal R`. Introduce `v hv i`. Assume the negation of the conclusion as `hvi`. Establish `hu : IsUnit (v i)` using `(IsLocalRing.notMem_maximalIdeal.mp hvi)`.
+
+Establish `hsum : ∑ j, v j • (j : M) = 0`. Rewrite `hv` using `[LinearMap.mem_ker]`. Simplify `hv` using `[π, Fintype.linearCombination_apply]`. Rewrite `hsum` using `[Fintype.sum_eq_add_sum_compl i]`. Establish `hmem : (i : M) ∈ Submodule.span R ((t.erase i : Finset M) : Set M)`.
+
+Establish `h1 : v i • (i : M) = -∑ j ∈ ({i}ᶜ : Finset t), v j • (j : M)` using `eq_neg_of_add_eq_zero_left hsum`. Establish `h2 : ∑ j ∈ ({i}ᶜ : Finset t), v j • (j : M) ∈ Submodule.span R ((t.erase i : Finset M) : Set M)`. Use `Submodule.sum_mem _ fun j hj ↦ Submodule.smul_mem _ _ (Submodule.subset_span ?_)` and prove the remaining obligations. Simplify using `only [Finset.mem_compl, Finset.mem_singleton] at hj`. Simplify using `only [Finset.coe_erase, Set.mem_sdiff, Finset.mem_coe, Set.mem_singleton_iff]`.
+
+Conclude with `⟨j.2, fun h ↦ hj (Subtype.ext h)⟩`. Establish `h3 : (i : M) = ((hu.unit⁻¹ : Rˣ) : R) • (v i • (i : M))`. Rewrite using `[smul_smul, IsUnit.val_inv_mul, one_smul]`. Establish `h4 : ((hu.unit⁻¹ : Rˣ) : R) • (v i • (i : M)) ∈ Submodule.span R ((t.erase i : Finset M) : Set M)`. Rewrite using `[h1]`.
+
+Conclude with `Submodule.smul_mem _ _ (Submodule.neg_mem _ h2)`. Rewrite `h4` using `[← h3]`. Then use the resulting hypothesis. Establish `htop : Submodule.span R ((t.erase i : Finset M) : Set M) = ⊤`. Rewrite using `[eq_top_iff, ← hspan, Submodule.span_le]`. Introduce `y hy`.
+
+Distinguish the cases in `hyi : y = i`. Rewrite using `[hyi]`. Conclude with `hmem`. Conclude with `Submodule.subset_span (by simp [hyi, hy])`. Establish `hle` using `Submodule.spanFinrank_span_le_ncard_of_finite (R := R) (Finset.finite_toSet (t.erase i))`.
+
+Rewrite `hle` using `[htop, Set.ncard_coe_finset, Finset.card_erase_of_mem i.2, hcard]`. Establish `hpos : 0 < (⊤ : Submodule R M).spanFinrank`. Rewrite using `[← hcard]`. Conclude with `Finset.card_pos.mpr ⟨i, i.2⟩`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hS` using `LinearMap.shortExact_shortComplexKer hπ`. Establish `hproj : Projective (π.shortComplexKer).X₂`. Rewrite using `[← IsProjective.iff_projective]`. Use `infer_instance`. Establish `hK : HasProjectiveDimensionLT (ModuleCat.of R (LinearMap.ker π)) (k + 1)` using `(hS.hasProjectiveDimensionLT_X₃_iff k hproj).mp hM`.
+
+Establish `hKfree` using `ih (LinearMap.ker π) hK`. Establish `hKzero : Subsingleton (LinearMap.ker π)`. Assume the negation of the conclusion as `hnt`. Rewrite `hnt` using `[not_subsingleton_iff_nontrivial]`. Conclude with `hs (eq_zero_of_forall_smul_eq_zero_of_free (M := LinearMap.ker π) fun v ↦ Subtype.ext (funext fun i ↦ by`.
+
+Simplify using `only [SetLike.val_smul, Pi.smul_apply, smul_eq_mul, ZeroMemClass.coe_zero, Pi.zero_apply]`. Rewrite using `[mul_comm]`. Conclude with `hms _ (hker v v.2 i)))`. Establish `hinj : Function.Injective π`. Rewrite using `[← LinearMap.ker_eq_bot]`.
+
+Conclude with `Submodule.eq_bot_of_subsingleton`. Conclude with `Module.Free.of_equiv (LinearEquiv.ofBijective π ⟨hinj, hπ⟩)`.
+-/
 theorem free_of_hasProjectiveDimensionLT_of_mul_eq_zero [IsLocalRing R] [IsNoetherianRing R]
     {s : R} (hs : s ≠ 0) (hms : ∀ a ∈ maximalIdeal R, a * s = 0) (k : ℕ) (M : Type u)
     [AddCommGroup M] [Module R M] [Module.Finite R M]
@@ -150,6 +201,15 @@ theorem free_of_hasProjectiveDimensionLT_of_mul_eq_zero [IsLocalRing R] [IsNoeth
       exact Submodule.eq_bot_of_subsingleton
     exact Module.Free.of_equiv (LinearEquiv.ofBijective π ⟨hinj, hπ⟩)
 
+/- English proof (translation)
+Take `⟨t, hcard, hspan⟩` from `Submodule.FG.exists_span_finset_card_eq_spanFinrank (maximalIdeal (R ⧸ span {x})).fg_of_isNoetherianRing`. Set `lift : R ⧸ span {x} → R` to `Function.surjInv Ideal.Quotient.mk_surjective`. Establish `hlift : ∀ b, Ideal.Quotient.mk (span {x}) (lift b) = b` using `Function.surjInv_eq Ideal.Quotient.mk_surjective`. Set `S : Finset R` to `insert x (t.image lift)`. Establish `hloc : IsLocalHom (Ideal.Quotient.mk (span {x}))` using `IsLocalHom.of_surjective _ Ideal.Quotient.mk_surjective`.
+
+Establish `hcomap : (maximalIdeal (R ⧸ span {x})).comap (Ideal.Quotient.mk (span {x})) = maximalIdeal R` using `IsLocalRing.maximalIdeal_comap _`. Establish `hmap : (span ((t.image lift : Finset R) : Set R)).map (Ideal.Quotient.mk (span {x})) = maximalIdeal (R ⧸ span {x})`. Rewrite using `[Ideal.map_span, ← hspan, Finset.coe_image, ← Set.image_comp]`. Use `congr 1`. Use extensionality with `b`.
+
+Simplify using `[hlift]`. Establish `heq : span (S : Set R) = maximalIdeal R`. Establish `h2` using `congrArg (Ideal.comap (Ideal.Quotient.mk (span {x}))) hmap`. Rewrite `h2` using `[Ideal.comap_map_of_surjective' _ Ideal.Quotient.mk_surjective, Ideal.mk_ker, hcomap]`. Rewrite using `[Finset.coe_insert, Ideal.span_insert, ← h2, sup_comm]`.
+
+Establish `hle : (Ideal.span (S : Set R)).spanFinrank ≤ (S : Set R).ncard` using `Submodule.spanFinrank_span_le_ncard_of_finite (Finset.finite_toSet S)`. Rewrite `hle` using `[heq, Set.ncard_coe_finset]`. Use `hle.trans ((Finset.card_insert_le _ _).trans ?_)` and prove the remaining obligations. Rewrite using `[← hcard]`. Conclude with `Nat.add_le_add_right Finset.card_image_le 1`.
+-/
 theorem spanFinrank_maximalIdeal_le_quotient_add_one [IsLocalRing R] [IsNoetherianRing R]
     {x : R} [IsLocalRing (R ⧸ span {x})] :
     (maximalIdeal R).spanFinrank ≤ (maximalIdeal (R ⧸ span {x})).spanFinrank + 1 := by
@@ -184,6 +244,55 @@ theorem spanFinrank_maximalIdeal_le_quotient_add_one [IsLocalRing R] [IsNoetheri
 
 set_option backward.isDefEq.respectTransparency false in
 
+/- English proof (translation)
+It suffices to establish `H : ∀ e : ℕ, ∀ (S : Type u) [CommRing S] [IsLocalRing S] [IsNoetherianRing S] (n : ℕ), HasProjectiveDimensionLT (ModuleCat.of S (S ⧸ maximalIdeal S)) (n + 1) → (maximalIdeal S).spanFinrank = e → IsRegularLocalRing S from H _ R n hk rfl`. Introduce `e`. Proceed by induction on `e using Nat.strong_induction_on with`. Consider the case `_ e ih`. Introduce `S _ _ _ n hk he`.
+
+Establish `hfg : (maximalIdeal S).FG` using `(maximalIdeal S).fg_of_isNoetherianRing`. Distinguish the cases in `he0 : e = 0`. Apply `IsRegularLocalRing.of_spanFinrank_maximalIdeal_le` to reduce the goal to its premises. Rewrite using `[he, he0]`. Conclude with `ringKrullDim_nonneg_of_nontrivial` after adjusting the coercions.
+
+Establish `hjac : maximalIdeal S ≤ jacobson ⊥` using `(IsLocalRing.jacobson_eq_maximalIdeal ⊥ bot_ne_top).ge`. Establish `hmne : maximalIdeal S ≠ ⊥` using `fun h ↦ he0 (by rw [← he, h]; simp)`. Distinguish the cases in `hass : maximalIdeal S ∈ associatedPrimes S S`. It suffices to derive a contradiction. Take `⟨-, s, hs⟩` from `(isAssociatedPrime_iff (I := maximalIdeal S) (M := S)).mp hass`.
+
+Establish `hms : ∀ a ∈ maximalIdeal S, a * s = 0` using `fun a ha ↦ by`. Use `hs ▸ ha` as an intermediate fact. Simplify `this` using `[Submodule.mem_colon_singleton, smul_eq_mul]`. Establish `hs0 : s ≠ 0`. Introduce and unpack `rfl`.
+
+Establish `h1 : (1 : S) ∈ maximalIdeal S`. Rewrite using `[hs]`. Simplify using `[Submodule.mem_colon_singleton]`. Conclude with `(IsLocalRing.maximalIdeal.isMaximal S).ne_top ((Ideal.eq_top_iff_one _).mpr h1)`. Establish `hfree` using `free_of_hasProjectiveDimensionLT_of_mul_eq_zero hs0 hms n (S ⧸ maximalIdeal S) hk`.
+
+Apply `hmne` to reduce the goal to its premises. Rewrite using `[eq_bot_iff]`. Introduce `a ha`. Rewrite using `[Submodule.mem_bot]`. Conclude with `eq_zero_of_forall_smul_eq_zero_of_free (M := S ⧸ maximalIdeal S) fun y ↦ by`.
+
+Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Rewrite using `[Algebra.smul_def, Ideal.Quotient.algebraMap_eq, ← map_mul, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `(maximalIdeal S).mul_mem_right y ha`. Establish `hsq : ¬ maximalIdeal S ≤ maximalIdeal S ^ 2`. Introduce `hle`.
+
+Conclude with `hmne (Submodule.eq_bot_of_le_smul_of_le_jacobson_bot _ _ hfg (by simpa [pow_two, smul_eq_mul] using hle) hjac)`. Establish `hfin` using `associatedPrimes.finite S S`. Take `⟨x, hx, hxn⟩ : ∃ x ∈ maximalIdeal S, x ∉ ⋃ i ∈ (↑(insert (maximalIdeal S ^ 2) hfin.toFinset) : Set (Ideal S)), (i : Set S)` from `by by_contra! hcon`. Take `⟨i, hi, hle⟩` from `(Ideal.subset_union_prime (f := id) (maximalIdeal S ^ 2) (maximalIdeal S ^ 2) (fun i hi h1 _ ↦ by`. Break down `Finset.mem_insert.mp hi with h | h` into its components or cases.
+
+Conclude with `absurd h h1`. Conclude with `((Set.Finite.mem_toFinset _).mp h).isPrime)).mp hcon`. Break down `Finset.mem_insert.mp hi with h | h` into its components or cases. Conclude with `hsq (h ▸ hle)`. Establish `hP` using `(Set.Finite.mem_toFinset _).mp h`.
+
+Establish `: i = maximalIdeal S` using `le_antisymm (IsLocalRing.le_maximalIdeal hP.isPrime.ne_top) hle`. Conclude with `hass (this ▸ hP)`. Simplify using `only [Finset.coe_insert, Set.Finite.coe_toFinset, Set.mem_insert_iff, Set.iUnion_iUnion_eq_or_left, Set.mem_union, Set.mem_iUnion, not_or, not_exists] at hxn`. Take `⟨hx2, hxP⟩` from `hxn`. Establish `hxreg : IsSMulRegular S x`.
+
+Establish `: x ∉ ⋃ p ∈ associatedPrimes S S, (p : Set S)`. Simplify using `only [Set.mem_iUnion, not_exists]`. Conclude with `fun p hp hxp ↦ hxP p hp hxp`. Rewrite `this` using `[biUnion_associatedPrimes_eq_compl_regular S S]`. Simplify using `using this`.
+
+Establish `hne : span {x} ≠ ⊤` using `fun h ↦ (IsLocalRing.maximalIdeal.isMaximal S).ne_top (top_le_iff.mp (h ▸ (span_singleton_le_iff_mem _).mpr hx))`. Establish `: Nontrivial (S ⧸ span {x})` using `Ideal.Quotient.nontrivial_iff.mpr hne`. Establish `: IsLocalRing (S ⧸ span {x})` using `.of_surjective' _ Ideal.Quotient.mk_surjective`. Establish `hloc : IsLocalHom (Ideal.Quotient.mk (span {x}))` using `IsLocalHom.of_surjective _ Ideal.Quotient.mk_surjective`. Set `T` to `ModuleCat.shortComplexOfCompEqZero (maximalIdeal S).subtype (maximalIdeal S).mkQ (LinearMap.exact_subtype_mkQ _).linearMap_comp_eq_zero`.
+
+Establish `hT : T.ShortExact` using `ModuleCat.shortComplex_shortExact T (LinearMap.exact_subtype_mkQ _) (Submodule.injective_subtype _) (Submodule.mkQ_surjective _)`. Establish `: HasProjectiveDimensionLT T.X₃ (n + 1)` using `hk`. Establish `hk2 : HasProjectiveDimensionLT T.X₃ (n + 2)` using `hasProjectiveDimensionLT_of_ge T.X₃ (n + 1) (n + 2) (by omega)`. Establish `hproj : Projective T.X₂`. Rewrite using `[← IsProjective.iff_projective]`.
+
+Use `infer_instance`. Establish `hm : HasProjectiveDimensionLT (ModuleCat.of S (maximalIdeal S)) (n + 1)` using `(hT.hasProjectiveDimensionLT_X₃_iff n hproj).mp hk2`. Establish `hxm : IsSMulRegular (maximalIdeal S) x` using `fun a b h ↦ Subtype.ext (hxreg (congrArg Subtype.val h))`. Establish `hB` using `hasProjectiveDimensionLT_quotSMulTop hxreg n (maximalIdeal S) hxm hm`. Set `x' : maximalIdeal S` to `⟨x, hx⟩`.
+
+Set `ι₀ : (S ⧸ span {x}) →ₗ[S ⧸ span {x}] QuotSMulTop x (maximalIdeal S)` to `LinearMap.toSpanSingleton (S ⧸ span {x}) _ (Submodule.mkQ _ x')`. Establish `hι : maximalIdeal (S ⧸ span {x}) ≤ LinearMap.ker ι₀`. Introduce `b hb`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective b`. Establish `ha : a ∈ maximalIdeal S`.
+
+Rewrite using `[← IsLocalRing.maximalIdeal_comap (Ideal.Quotient.mk (span {x}))]`. Conclude with `hb`. Rewrite using `[LinearMap.mem_ker, LinearMap.toSpanSingleton_apply, show Ideal.Quotient.mk (span {x}) a = algebraMap S (S ⧸ span {x}) a from rfl, algebraMap_smul, ← map_smul, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero, Submodule.mem_smul_pointwise_iff_exists]`. Conclude with `⟨⟨a, ha⟩, Submodule.mem_top, Subtype.ext (mul_comm x a)⟩`. Set `ι` to `(maximalIdeal (S ⧸ span {x})).liftQ ι₀ hι`.
+
+Set `v0` to `(maximalIdeal S).toCotangent x'`. Establish `hv0 : v0 ≠ 0`. Rewrite using `[Ne, Ideal.toCotangent_eq_zero]`. Simplify `hx2` using `[pow_two]`. Take `⟨f, hf⟩` from `Module.Projective.exists_dual_eq_one (ResidueField S) hv0`.
+
+Set `q : (S ⧸ maximalIdeal S) →ₐ[S] (S ⧸ span {x}) ⧸ maximalIdeal (S ⧸ span {x})` to `Ideal.quotientMapₐ (maximalIdeal (S ⧸ span {x})) (Ideal.Quotient.mkₐ S (span {x})) (by`. Introduce `a ha`. Rewrite using `[Ideal.mem_comap, Ideal.Quotient.mkₐ_eq_mk, ← Ideal.mem_comap, IsLocalRing.maximalIdeal_comap]`. Conclude with `ha)`. Set `φ : maximalIdeal S →ₗ[S] (S ⧸ span {x}) ⧸ maximalIdeal (S ⧸ span {x})` to `q.toLinearMap ∘ₗ (f.restrictScalars S) ∘ₗ (maximalIdeal S).toCotangent`.
+
+Establish `hxq : algebraMap S ((S ⧸ span {x}) ⧸ maximalIdeal (S ⧸ span {x})) x = 0`. Rewrite using `[IsScalarTower.algebraMap_apply S (S ⧸ span {x}), show algebraMap S (S ⧸ span {x}) x = 0 from Ideal.Quotient.eq_zero_iff_mem.mpr (mem_span_singleton_self x), map_zero]`. Establish `hφ : x • (⊤ : Submodule S (maximalIdeal S)) ≤ LinearMap.ker φ`. Introduce `y hy`. Take `⟨z, -, rfl⟩` from `(Submodule.mem_smul_pointwise_iff_exists _ _ _).mp hy`.
+
+Rewrite using `[LinearMap.mem_ker, map_smul, Algebra.smul_def, hxq, zero_mul]`. Set `ρ₀ : QuotSMulTop x (maximalIdeal S) →ₗ[S] (S ⧸ span {x}) ⧸ maximalIdeal (S ⧸ span {x})` to `(x • (⊤ : Submodule S (maximalIdeal S))).liftQ φ hφ`. Set `ρ` to `ρ₀.extendScalarsOfSurjective (Ideal.Quotient.mk_surjective (I := span {x}))`. Establish `hρι : ρ ∘ₗ ι = LinearMap.id`. Apply `Submodule.linearMap_qext` to reduce the goal to its premises.
+
+Apply `LinearMap.ext_ring` to reduce the goal to its premises. Establish `h1 : f v0 = 1` using `hf`. Simplify using `only [LinearMap.comp_apply, Submodule.mkQ_apply, ι, Submodule.liftQ_apply, ι₀, LinearMap.toSpanSingleton_apply, one_smul, ρ, LinearMap.extendScalarsOfSurjective_apply, ρ₀, φ, LinearMap.coe_comp, Function.comp_apply, LinearMap.id_apply]`. Express the relevant statement in the definitionally equal form `q (f v0) = _`. Rewrite using `[h1, map_one]`.
+
+Both sides reduce to the same expression. Set `rt : Retract (ModuleCat.of (S ⧸ span {x}) ((S ⧸ span {x}) ⧸ maximalIdeal (S ⧸ span {x}))) (ModuleCat.of (S ⧸ span {x}) (QuotSMulTop x (maximalIdeal S)))` to `{ i := ModuleCat.ofHom ι r := ModuleCat.ofHom ρ retract := by rw [← ModuleCat.ofHom_comp, hρι, ModuleCat.ofHom_id] }`. Establish `hkB` using `rt.hasProjectiveDimensionLT (n + 1)`. Establish `hlt` using `spanFinrank_maximalIdeal_quotient_add_one_le hx hx2`. Establish `hregB` using `ih _ (by omega) (S ⧸ span {x}) n hkB rfl`.
+
+Establish `hdimB` using `(isRegularLocalRing_iff (S ⧸ span {x})).mp hregB`. Establish `hdim : ringKrullDim (S ⧸ span {x}) + 1 = ringKrullDim S` using `ringKrullDim_quotient_span_singleton_succ_eq_ringKrullDim hxreg hx`. Apply `IsRegularLocalRing.of_spanFinrank_maximalIdeal_le` to reduce the goal to its premises. Establish `h1` using `spanFinrank_maximalIdeal_le_quotient_add_one (R := S) (x := x)`. Rewrite using `[← hdim, ← hdimB]`.
+
+Conclude with `h1` after adjusting the coercions.
+-/
 theorem isRegularLocalRing_of_hasProjectiveDimensionLT [IsLocalRing R] [IsNoetherianRing R]
     (n : ℕ) (hk : HasProjectiveDimensionLT (ModuleCat.of R (R ⧸ maximalIdeal R)) (n + 1)) :
     IsRegularLocalRing R := by
@@ -342,6 +451,13 @@ theorem isRegularLocalRing_of_hasProjectiveDimensionLT [IsLocalRing R] [IsNoethe
   rw [← hdim, ← hdimB]
   exact_mod_cast h1
 
+/- English proof (translation)
+Take `⟨d, hd⟩ : ∃ d : ℕ, ringKrullDim R = d` from `⟨_, ((isRegularLocalRing_iff R).mp inferInstance).symm⟩`. Establish `h1` using `hasProjectiveDimensionLT_of_isRegularLocalRing hd (R ⧸ p)`. Establish `h2 : HasProjectiveDimensionLE ((ModuleCat.of R (R ⧸ p)).localizedModule p.primeCompl) d` using `ModuleCat.localizedModule_hasProjectiveDimensionLE d p.primeCompl _`. Set `Rp` to `Localization.AtPrime p`. Set `f` to `Algebra.linearMap R Rp`.
+
+Set `g` to `(p : Submodule R R).toLocalizedQuotient' Rp p.primeCompl f`. Establish `hl : (p : Submodule R R).localized' Rp p.primeCompl f = maximalIdeal Rp`. Rewrite using `[Ideal.localized'_eq_map, Localization.AtPrime.map_eq_maximalIdeal]`. Set `e : (Rp ⧸ (p : Submodule R R).localized' Rp p.primeCompl f) ≃ₗ[Rp] Rp ⧸ maximalIdeal Rp` to `Submodule.quotEquivOfEq _ _ hl`. Set `g'` to `(e.restrictScalars R).toLinearMap ∘ₗ g`.
+
+Establish `: IsLocalizedModule p.primeCompl g'` using `IsLocalizedModule.of_linearEquiv _ _ _`. Use `ModuleCat.localizedModule_isLocalizedModule (ModuleCat.of R (R ⧸ p)) p.primeCompl` as an intermediate fact. Set `e'` to `(IsLocalizedModule.linearEquiv p.primeCompl ((ModuleCat.of R (R ⧸ p)).localizedModuleMkLinearMap p.primeCompl) g').extendScalarsOfIsLocalization p.primeCompl Rp`. Establish `h3 : HasProjectiveDimensionLT (ModuleCat.of Rp (Rp ⧸ maximalIdeal Rp)) (d + 1)` using `hasProjectiveDimensionLT_of_iso e'.toModuleIso (d + 1)`. Conclude with `isRegularLocalRing_of_hasProjectiveDimensionLT d h3`.
+-/
 theorem IsRegularLocalRing.localization_atPrime [IsRegularLocalRing R] (p : Ideal R) [p.IsPrime] :
     IsRegularLocalRing (Localization.AtPrime p) := by
   obtain ⟨d, hd⟩ : ∃ d : ℕ, ringKrullDim R = d :=

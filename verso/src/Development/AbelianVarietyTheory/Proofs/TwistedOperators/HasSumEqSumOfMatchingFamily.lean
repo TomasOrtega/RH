@@ -4,6 +4,19 @@ open Finset
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `C n m t m' c R s hs h1 h2 h3 h4 h5`. Use `set P : Finset (Fin n) := Finset.univ.filter (fun i : Fin n => m' i ≠ 0) with hPdef`. Set `g : P → C` to `fun i => Classical.choose (h2 i.1 (Finset.mem_filter.1 i.2).2)`. Establish `hg : ∀ i : P, R (g i) i.1` using `fun i => Classical.choose_spec (h2 i.1 (Finset.mem_filter.1 i.2).2)`. Establish `ginj : Function.Injective g`.
+
+Introduce `i j hij`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `hj` using `hg j`. Rewrite `hj` using `[← hij]`. Conclude with `h4 _ _ _ (hg i) hj`.
+
+Establish `hT : ∀ x ∉ (Finset.univ.image g), (m x : ℂ) * t x = 0`. Introduce `x hx`. Assume the negation of the conclusion as `hne`. Establish `hm : m x ≠ 0` using `by intro h; apply hne; simp [h]`. Establish `ht : t x ≠ 0` using `by intro h; apply hne; simp [h]`.
+
+Take `⟨i, hi⟩` from `h1 x hm ht`. Establish `hmi : m' i ≠ 0` using `by rw [← (h3 x i hi).1]; exact hm`. Establish `hiP : i ∈ P` using `Finset.mem_filter.2 ⟨Finset.mem_univ _, hmi⟩`. Apply `hx` to reduce the goal to its premises. Rewrite using `[Finset.mem_image]`.
+
+Conclude with `⟨⟨i, hiP⟩, Finset.mem_univ _, h5 _ _ _ (hg ⟨i, hiP⟩) hi⟩`. Establish `hs2 : HasSum (fun x => (m x : ℂ) * t x) (∑ x ∈ Finset.univ.image g, (m x : ℂ) * t x)` using `hasSum_sum_of_ne_finset_zero hT`. Rewrite using `[hs.unique hs2, Finset.sum_image (fun i _ j _ h => ginj h)]`. Rewrite using `[← Finset.sum_filter_of_ne (p := fun i => m' i ≠ 0) (fun i _ hne => by intro h; apply hne; simp [h])]`. Rewrite using `[← hPdef, ← Finset.sum_attach P (fun i => (m' i : ℂ) * c i), Finset.univ_eq_attach]`.
+
+Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `i _`. Rewrite using `[(h3 _ _ (hg i)).1, (h3 _ _ (hg i)).2]`.
+-/
 theorem hasSum_eq_sum_of_matching_family : ∀ (C : Type 1) (n : ℕ) (m : C → ℕ) (t : C → ℂ) (m' : Fin n → ℕ) (c : Fin n → ℂ) (R : C → Fin n → Prop) (s : ℂ), HasSum (fun x => (m x : ℂ) * t x) s → (∀ x, m x ≠ 0 → t x ≠ 0 → ∃ i, R x i) → (∀ i, m' i ≠ 0 → ∃ x, R x i) → (∀ x i, R x i → m x = m' i ∧ t x = c i) → (∀ x i j, R x i → R x j → i = j) → (∀ x y i, R x i → R y i → x = y) → s = ∑ i, (m' i : ℂ) * c i := by
   intro C n m t m' c R s hs h1 h2 h3 h4 h5
   classical

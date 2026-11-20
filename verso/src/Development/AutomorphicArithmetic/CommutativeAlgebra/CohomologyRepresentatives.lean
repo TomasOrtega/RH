@@ -5,6 +5,23 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.E5
 noncomputable section
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex GlobalTheory.EtC UpperTheory.Et
 
+/- English proof (translation)
+Introduce `A R _ I U m n k hmn hnk`. Establish `hrep` using `A.rep R U I m n k hmn hnk`. Establish `hev` using `(A.evs R (E := sch.obj U) (I := I) (n := n)).1`. Establish `hvan : ∀ (z : Sec (I.X n) U) c, Rep z c → Sec.map (I.d n k) z = 0 ∧ (c = 0 ↔ ∃ y : Sec (I.X m) U, Sec.map (I.d m n) y = z)`. Introduce and unpack `z c ⟨α, rfl, rfl⟩`.
+
+Conclude with `hrep.2 α`. Establish `hadd : ∀ (z z' : Sec (I.X n) U) c c', Rep z c → Rep z' c' → Rep (z + z') (c + c')`. Introduce and unpack `z z' c c' ⟨α, rfl, rfl⟩ ⟨β, rfl, rfl⟩`. Conclude with `⟨α + β, CohomologyClass.mk_add α β, (hev α.1 β.1 0 n (by simp) U (𝟙 U)).1⟩`. Establish `hsub : ∀ (z z' : Sec (I.X n) U) c c', Rep z c → Rep z' c' → Rep (z - z') (c - c')`.
+
+Introduce and unpack `z z' c c' ⟨α, rfl, rfl⟩ ⟨β, rfl, rfl⟩`. Conclude with `⟨α - β, CohomologyClass.mk_sub α β, (hev α.1 β.1 0 n (by simp) U (𝟙 U)).2.1⟩`. Establish `hzero : Rep (0 : Sec (I.X n) U) 0` using `⟨0, CohomologyClass.mk_zero _ _ _, (hev 0 0 0 n (by simp) U (𝟙 U)).2.2.1⟩`. Use `⟨?_, ?_, hvan, ?_, hzero, ?_⟩` and prove the remaining obligations. Introduce `z hz`.
+
+Take `⟨α, h0, -⟩` from `hrep.1 z hz`. Use `⟨CohomologyClass.mk α, α, rfl, ?_⟩` and prove the remaining obligations. Rewrite using `[h0]`. Express the relevant statement in the definitionally equal form `((I.X n).obj.map (𝟙 (op U))).hom z = z`. Rewrite using `[CategoryTheory.Functor.map_id]`.
+
+Both sides reduce to the same expression. Introduce `c`. Take `⟨α, rfl⟩` from `c.mk_surjective`. Conclude with `⟨_, α, rfl, rfl⟩`. Introduce `z z' c c' h h'`.
+
+Use `⟨hadd _ _ _ _ h h', hsub _ _ _ _ h h', ?_⟩` and prove the remaining obligations. Rewrite using `[← sub_eq_zero, (hvan _ _ (hsub _ _ _ _ h h')).2]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy⟩`. Conclude with `⟨y, by rw [hy]; abel⟩`.
+
+Introduce and unpack `⟨y, hy⟩`. Conclude with `⟨y, by rw [hy]; abel⟩`. Introduce `a z c h`. Proceed by induction on `a with`. Consider the case `zero => simpa using hzero`.
+
+Consider the case `succ a ih => simpa [succ_nsmul] using hadd _ _ _ _ ih h`.
+-/
 theorem UpperTheory.cohomology_representatives :
     SlopeTestRemainingChoices → ∀ (R : Type) [CommRing R] (I : Cx R) (U : Scheme.{0}) (m n k : ℤ), m + 1 = n → n + 1 = k →
       (∀ z : Sec (I.X n) U, Sec.map (I.d n k) z = 0 → ∃ c, Rep z c) ∧ (∀ c, ∃ z : Sec (I.X n) U, Rep z c) ∧

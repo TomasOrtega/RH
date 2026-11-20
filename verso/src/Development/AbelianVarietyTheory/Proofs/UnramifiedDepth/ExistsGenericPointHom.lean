@@ -14,6 +14,21 @@ open GlobalTheory.ChTor
 
 namespace GlobalTheory.ChTor
 
+/- English proof (translation)
+Establish `hid : spMap (algebraMap O O) = 𝟙 (Sp O)`. Simplify using `[spMap]`. Set `e₀ : (Over.mk ((Over.mk (𝟙 (Sp C)) : Over (Sp C)).hom ≫ spMap (algebraMap O C)) : Over (Sp O)) ⟶ algOver O O` to `Over.homMk (spMap (algebraMap O C)) (by`. Express the relevant statement in the definitionally equal form `spMap (algebraMap O C) ≫ spMap (algebraMap O O) = 𝟙 _ ≫ spMap (algebraMap O C)`. Rewrite using `[hid, Category.comp_id, Category.id_comp])`.
+
+Establish `hw : ∀ P : algOver O O ⟶ G, (spMap (algebraMap O C) ≫ P.left) ≫ G.hom = 𝟙 (Sp C) ≫ spMap (algebraMap O C)` using `fun P => by`. Use `Over.w (e₀ ≫ P)` as an intermediate fact. Conclude with `this`. Set `j₀ : (algOver O O ⟶ G) → Pts A` to `fun P => Over.homMk (h.1.lift (spMap (algebraMap O C) ≫ P.left) (𝟙 (Sp C)) (hw P)) (h.1.lift_snd _ _ _)`. Establish `hj : ∀ P, (j₀ P).left ≫ gen = spMap (algebraMap O C) ≫ P.left` using `fun P => h.1.lift_fst _ _ _`.
+
+Establish `key : ∀ (P : algOver O O ⟶ G) (z : Pts A), z.left ≫ gen = spMap (algebraMap O C) ≫ P.left ↔ z = j₀ P` using `fun P z => by`. Prove the components needed by the constructor for the conclusion. Introduce `hz`. Use `Over.OverMorphism.ext (h.1.hom_ext (hz.trans (hj P).symm) ?_)` and prove the remaining obligations. Conclude with `(Over.w z).trans (Over.w (j₀ P)).symm`.
+
+Introduce and unpack `rfl`. Conclude with `hj P`. Establish `hmul : ∀ P Q, j₀ (P * Q) = j₀ P * j₀ Q` using `fun P Q => by`. Use `((key _ _).1 ?_).symm` and prove the remaining obligations. Establish `e` using `h.2 _ (j₀ P) (j₀ Q) (e₀ ≫ P) (e₀ ≫ Q) (hj P).symm (hj Q).symm`.
+
+Rewrite `e` using `[← MonObj.comp_mul]`. Conclude with `e.symm`. Use `⟨MonoidHom.mk' j₀ hmul, fun P Q hPQ => ?_, key⟩` and prove the remaining obligations. Establish `hPQ' : j₀ P = j₀ Q` using `hPQ`. Use `haveI : IsDomain O := hinj.isDomain _`.
+
+Use `haveI : IsDominant (spMap (algebraMap O C)) := by`. Use `⟨?_⟩` and prove the remaining obligations. Conclude with `(PrimeSpectrum.denseRange_comap_iff_ker_le_nilRadical (algebraMap O C)).2 (by rw [(RingHom.injective_iff_ker_eq_bot _).1 hinj]; exact bot_le)`. Use `Over.OverMorphism.ext ?_` and prove the remaining obligations. Use `ext_of_isDominant_of_isSeparated (X := Sp O) G.hom ?_ (spMap (algebraMap O C)) ?_` and prove the remaining obligations.
+
+Conclude with `(Over.w P).trans (Over.w Q).symm`. Conclude with `(hj P).symm.trans (by rw [hPQ']; exact hj Q)`.
+-/
 theorem exists_genericPoint_hom (C : Type) [Field C] (O : Type) [CommRing O] [Algebra O C]
     (hinj : Function.Injective (algebraMap O C)) (G : Over (Sp O)) [GrpObj G] (hsep : IsSeparated G.hom)
     (A : Over (Sp C)) [GrpObj A] (gen : A.left ⟶ G.left)

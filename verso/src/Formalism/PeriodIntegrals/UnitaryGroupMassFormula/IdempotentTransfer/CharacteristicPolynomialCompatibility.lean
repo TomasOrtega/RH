@@ -20,6 +20,11 @@ def epsSum (P : Pair K G) : MonoidAlgebra K G :=
   ∑ h : P.H, (((P.chi h)⁻¹ : Kˣ) : K) • MonoidAlgebra.of K G (h : G)
 
 open Classical in
+/- English proof (translation)
+Rewrite using `[eps, epsSum, Nat.card_eq_fintype_card]`. Use `congr 1`. Use `symm`. Use `Fintype.sum_of_injective Subtype.val Subtype.val_injective _ _ ?_ ?_` and prove the remaining obligations. Introduce `x hx`.
+
+Rewrite using `[dif_neg]`. Introduce `hm`. Conclude with `hx ⟨⟨x, hm⟩, rfl⟩`. Introduce `h`. Rewrite using `[dif_pos h.2]`.
+-/
 lemma eps_eq (P : Pair K G) : eps P = ((Fintype.card P.H : ℕ) : K)⁻¹ • epsSum P := by
   rw [eps, epsSum, Nat.card_eq_fintype_card]
   congr 1
@@ -32,11 +37,17 @@ lemma eps_eq (P : Pair K G) : eps P = ((Fintype.card P.H : ℕ) : K)⁻¹ • ep
   · intro h
     rw [dif_pos h.2]
 
+/- English proof (translation)
+Rewrite using `[map_mul, mul_inv, Units.val_mul, ← mul_assoc, Units.mul_inv, one_mul]`.
+-/
 lemma characteristic_polynomial_compatibility (P : Pair K G) (y h : P.H) :
     ((P.chi y : Kˣ) : K) * (((P.chi (y * h))⁻¹ : Kˣ) : K) = (((P.chi h)⁻¹ : Kˣ) : K) := by
   rw [map_mul, mul_inv, Units.val_mul, ← mul_assoc, Units.mul_inv, one_mul]
 
 open Classical in
+/- English proof (translation)
+Rewrite using `[epsSum, Finset.mul_sum, Finset.smul_sum]`. Use `Fintype.sum_equiv (Equiv.mulLeft y) _ _ (fun h => ?_)` and prove the remaining obligations. Rewrite using `[mul_smul_comm, ← map_mul, smul_smul, Equiv.coe_mulLeft, Subgroup.coe_mul, characteristic_polynomial_compatibility]`.
+-/
 lemma of_mul_epsSum (P : Pair K G) (y : P.H) :
     MonoidAlgebra.of K G (y : G) * epsSum P = ((P.chi y : Kˣ) : K) • epsSum P := by
   rw [epsSum, Finset.mul_sum, Finset.smul_sum]
@@ -44,6 +55,9 @@ lemma of_mul_epsSum (P : Pair K G) (y : P.H) :
   rw [mul_smul_comm, ← map_mul, smul_smul, Equiv.coe_mulLeft, Subgroup.coe_mul, characteristic_polynomial_compatibility]
 
 open Classical in
+/- English proof (translation)
+Use `conv_lhs => arg 1`. Rewrite using `[epsSum]`. Rewrite using `[Finset.sum_mul]`. Repeatedly rewrite using `[smul_mul_assoc, of_mul_epsSum, smul_smul, Units.inv_mul, one_smul]`. Rewrite using `[Finset.sum_const, Finset.card_univ, Nat.cast_smul_eq_nsmul]`.
+-/
 lemma epsSum_sq (P : Pair K G) : epsSum P * epsSum P = ((Fintype.card P.H : ℕ) : K) • epsSum P := by
   conv_lhs => arg 1; rw [epsSum]
   rw [Finset.sum_mul]
@@ -51,6 +65,9 @@ lemma epsSum_sq (P : Pair K G) : epsSum P * epsSum P = ((Fintype.card P.H : ℕ)
   rw [Finset.sum_const, Finset.card_univ, Nat.cast_smul_eq_nsmul]
 
 open Classical in
+/- English proof (translation)
+Establish `hc : ((Fintype.card P.H : ℕ) : K) ≠ 0` using `by exact_mod_cast Fintype.card_ne_zero`. Rewrite using `[eps_eq, smul_mul_smul_comm, epsSum_sq, smul_smul, mul_assoc, inv_mul_cancel₀ hc, mul_one]`.
+-/
 lemma eps_idem (P : Pair K G) : eps P * eps P = eps P := by
   have hc : ((Fintype.card P.H : ℕ) : K) ≠ 0 := by exact_mod_cast Fintype.card_ne_zero
   rw [eps_eq, smul_mul_smul_comm, epsSum_sq, smul_smul, mul_assoc, inv_mul_cancel₀ hc, mul_one]
@@ -59,12 +76,18 @@ end Eps
 
 section Idem
 
+/- English proof (translation)
+Rewrite using `[mul_assoc, ← mul_assoc b, hc, mul_assoc, hb, ← mul_assoc, ha]`.
+-/
 lemma mul_idem {R : Type*} [Semiring R] {a b : R} (ha : a * a = a) (hb : b * b = b) (hc : b * a = a * b) :
     (a * b) * (a * b) = a * b := by
   rw [mul_assoc, ← mul_assoc b, hc, mul_assoc, hb, ← mul_assoc, ha]
 
 variable {K : Type} [Field K] {V : Type} [AddCommGroup V] [Module K V] [FiniteDimensional K V]
 
+/- English proof (translation)
+The claim follows from `(((LinearMap.isProj_range_iff_isIdempotentElem f).mpr h).trace).symm`.
+-/
 lemma finrank_range_idem (f : Module.End K V) (h : f * f = f) :
     ((finrank K (LinearMap.range f) : ℕ) : K) = LinearMap.trace K V f :=
   (((LinearMap.isProj_range_iff_isIdempotentElem f).mpr h).trace).symm
@@ -75,6 +98,15 @@ section Alg
 
 variable {K : Type} [Field K] [CharZero K] {G : Type} [Group G] [Fintype G]
 
+/- English proof (translation)
+Use `choose c hc using fun s => trace_mul_eS T s ρ`. Establish `hn : ∀ (Q : Pair K G) s, ((nS T Q s : ℕ) : K) = LinearMap.trace K (T.W s) ((T.tau s).asAlgebraHom (eps Q))`. Introduce `Q s`. Rewrite using `[nS]`. Conclude with `finrank_range_idem _ (by rw [← map_mul, eps_idem])`.
+
+Establish `hidS : ∀ (Q : Pair K G) s, (eps Q * eS T s) * (eps Q * eS T s) = eps Q * eS T s` using `fun Q s => mul_idem (eps_idem Q) (eS_idem T s) (eS_comm T s (eps Q)).symm`. Establish `hidG : (eps P * eG T) * (eps P * eG T) = eps P * eG T` using `mul_idem (eps_idem P) (eG_idem T) (eG_comm T (eps P)).symm`. Establish `hr : ∀ s, ((finrank K (LinearMap.range (ρ.asAlgebraHom (eps P0 * eS T s))) : ℕ) : K) = c s`. Introduce `s`. Rewrite using `[finrank_range_idem _ (by rw [← map_mul, hidS]), hc, ← hn, hM s, Nat.cast_one, mul_one]`.
+
+Apply `Nat.cast_injective (R := K)` to reduce the goal to its premises. Rewrite using `[finrank_range_idem _ (by rw [← map_mul, hidG])]`. Rewrite using `[eG, Finset.mul_sum, map_sum, map_sum]`. Use `push_cast`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[hc, hr, hn, mul_comm]`.
+-/
 theorem rank_identity (T : GoodSet K G) (P0 P : Pair K G) (hM : M1 T P0)
     {V : Type} [AddCommGroup V] [Module K V] [FiniteDimensional K V] (ρ : Representation K G V) :
     finrank K (LinearMap.range (ρ.asAlgebraHom (eps P * eG T))) =
@@ -106,11 +138,21 @@ open NumberField
 
 variable {K : Type} [Field K] [NumberField K]
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.KudlaSiegelWeil.exists_den L hy`.
+-/
 lemma exists_den {V : Type} [AddCommGroup V] [Module K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V]
     (L : Submodule (𝓞 K) V) {y : V} (hy : y ∈ Submodule.span K (L : Set V)) :
     ∃ d : 𝓞 K, d ≠ 0 ∧ d • y ∈ L :=
   _root_.UpperTheory.Reformulated.B.KudlaSiegelWeil.exists_den L hy
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce `x hx`. Conclude with `(Submodule.mem_inf.mp hx).2`. Introduce `y hy`.
+
+Establish `hy' : y ∈ Submodule.span K (L : Set V)` using `by rw [hL]; exact Submodule.mem_top`. Take `⟨d, hd, hm⟩` from `exists_den L hy'`. Establish `hdy : d • y ∈ R` using `by rw [← algebraMap_smul K d y]; exact R.smul_mem _ hy`. Establish `hmem : d • y ∈ (L ⊓ R.restrictScalars (𝓞 K) : Submodule (𝓞 K) V)` using `Submodule.mem_inf.mpr ⟨hm, hdy⟩`. Establish `hd' : algebraMap (𝓞 K) K d ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective (𝓞 K) K)).mpr hd`.
+
+Establish `hyy : y = (algebraMap (𝓞 K) K d)⁻¹ • (d • y)`. Rewrite using `[← algebraMap_smul K d y, smul_smul, inv_mul_cancel₀ hd', one_smul]`. Rewrite using `[hyy]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span hmem)`.
+-/
 lemma span_cut {V : Type} [AddCommGroup V] [Module K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V]
     (L : Submodule (𝓞 K) V) (hL : Submodule.span K (L : Set V) = ⊤) (R : Submodule K V) :
     Submodule.span K ((L ⊓ R.restrictScalars (𝓞 K) : Submodule (𝓞 K) V) : Set V) = R := by
@@ -132,6 +174,9 @@ lemma span_cut {V : Type} [AddCommGroup V] [Module K V] [Module (𝓞 K) V] [IsS
 
 variable [StarRing K] {G : Type} [Group G] [Fintype G]
 
+/- English proof (translation)
+Unfold `rkL Formalism.HN.rkK cut cutE`. Rewrite using `[span_cut A.L hA.2.2]`.
+-/
 lemma rkL_cut (A : Formalism.BasicNotions.HLat K) (hA : A.Good) (ρ : Representation K G A.V) (a : MonoidAlgebra K G) :
     rkL A (cut A ρ a A.L) = finrank K (LinearMap.range (ρ.asAlgebraHom a)) := by
   unfold rkL Formalism.HN.rkK cut cutE
@@ -139,6 +184,9 @@ lemma rkL_cut (A : Formalism.BasicNotions.HLat K) (hA : A.Good) (ρ : Representa
 
 end Lat
 
+/- English proof (translation)
+Introduce `K _ _ _ _ G _ _ T P0 P hM A ρ hA`. Establish `: FiniteDimensional K A.V` using `Module.Finite.of_basis A.b`. Rewrite using `[rkT, rkL_cut A hA.1, rank_identity T P0 P hM ρ]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[rS, rkL_cut A hA.1]`.
+-/
 theorem rankPart : RankPart := by
   intro K _ _ _ _ G _ _ T P0 P hM A ρ hA
   have : FiniteDimensional K A.V := Module.Finite.of_basis A.b

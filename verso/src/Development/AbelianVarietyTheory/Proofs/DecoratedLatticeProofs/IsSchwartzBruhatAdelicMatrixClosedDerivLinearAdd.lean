@@ -19,6 +19,15 @@ section General
 
 variable {X : Type} [AddCommGroup X] [TopologicalSpace X] [IsTopologicalAddGroup X] [T2Space X]
 
+/- English proof (translation)
+Establish `hq : ∀ q : ℚ, h ((q : ℝ) * b) = 0`. Introduce `q`. Establish `hn : (q.den : F) ≠ 0` using `Nat.cast_ne_zero.mpr q.den_nz`. Establish `hnum : (q.den : ℝ) * ((q : ℝ) * b) = (q.num : ℝ) * b`. Rewrite using `[← mul_assoc]`.
+
+Use `congr 1`. Establish `: ((q.den : ℚ) * q : ℚ) = q.num` using `by rw [mul_comm]; exact Rat.mul_den_eq_num q`. Conclude with `this` after adjusting the coercions. Establish `h1 : q.den • h ((q : ℝ) * b) = 0`. Rewrite using `[← map_nsmul, nsmul_eq_mul, hnum, ← zsmul_eq_mul, map_zsmul, h0, smul_zero]`.
+
+Establish `h2 : h ((q : ℝ) * b) = (q.den : F)⁻¹ • ((q.den : F) • h ((q : ℝ) * b))`. Rewrite using `[smul_smul, inv_mul_cancel₀ hn, one_smul]`. Rewrite using `[h2, Nat.cast_smul_eq_nsmul, h1, smul_zero]`. Establish `hsurj : Function.Surjective fun y : ℝ => y * b` using `fun y => ⟨y / b, div_mul_cancel₀ y hb⟩`. Establish `hdense : DenseRange fun q : ℚ => (q : ℝ) * b` using `hsurj.denseRange.comp Rat.denseRange_cast (continuous_mul_const b)`.
+
+Conclude with `hdense.induction_on t (isClosed_eq hc continuous_const) hq`.
+-/
 theorem addHom_eq_zero (F : Type) [DivisionRing F] [CharZero F] [Module F X] (h : ℝ →+ X) (hc : Continuous h) {b : ℝ}
     (hb : b ≠ 0) (h0 : h b = 0) (t : ℝ) : h t = 0 := by
 
@@ -40,6 +49,11 @@ theorem addHom_eq_zero (F : Type) [DivisionRing F] [CharZero F] [Module F X] (h 
     hsurj.denseRange.comp Rat.denseRange_cast (continuous_mul_const b)
   exact hdense.induction_on t (isClosed_eq hc continuous_const) hq
 
+/- English proof (translation)
+Establish `h1 : HasDerivAt (fun t : ℝ => s + t • c) c 0`. Simplify using `using ((hasDerivAt_id (0 : ℝ)).smul_const c).const_add s`. Establish `h2 : HasFDerivAt (G : E → ℂ) (fderiv ℝ (G : E → ℂ) (s + (0 : ℝ) • c)) (s + (0 : ℝ) • c)` using `G.differentiableAt.hasFDerivAt`. Establish `h3` using `h2.comp_hasDerivAt (0 : ℝ) h1`. Simplify using `only [zero_smul, add_zero] at h3`.
+
+Rewrite using `[SchwartzMap.lineDerivOp_apply_eq_fderiv]`. Conclude with `h3`.
+-/
 theorem hasDerivAt_line {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] (G : SchwartzMap E ℂ) (c s : E) :
     HasDerivAt (fun t : ℝ => G (s + t • c)) ((LineDeriv.lineDerivOp c G : SchwartzMap E ℂ) s) 0 := by
   have h1 : HasDerivAt (fun t : ℝ => s + t • c) c 0 := by
@@ -51,6 +65,33 @@ theorem hasDerivAt_line {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] (G
   rw [SchwartzMap.lineDerivOp_apply_eq_fderiv]
   exact h3
 
+/- English proof (translation)
+Take `⟨hLc, hLP⟩` from `hL`. Set `A : (Fin (k + 1) → ℝ) →+ (Fin k → ℝ)` to `(LinearMap.funLeft ℝ ℝ (Fin.castSucc : Fin k → Fin (k + 1))).toAddMonoidHom`. Set `B : (Fin (k + 1) → ℝ) →+ ℝ` to `Pi.evalAddMonoidHom (fun _ => ℝ) (Fin.last k)`. Set `L' : (Fin (k + 1) → ℝ) →+ X` to `L.comp A + M.comp B`. Establish `hA : Continuous A` using `continuous_pi fun i => continuous_apply _`.
+
+Establish `hB : Continuous B` using `continuous_apply _`. Establish `hL'c : Continuous L'` using `(hLc.comp hA).add (hM.comp hB)`. Establish `hL'P : ∀ u, P (L' u)` using `fun u => hP _ _ (hLP _) (hMP _)`. Establish `hL'apply : ∀ u, L' u = L (fun i => u (Fin.castSucc i)) + M (u (Fin.last k))` using `fun u => rfl`. Distinguish the cases in `hinj : Function.Injective L'`.
+
+Take `⟨H, hH⟩` from `hφ (k + 1) L' ⟨hL'c, hL'P⟩ hinj x`. Set `e : Fin (k + 1) → ℝ` to `Pi.single (Fin.last k) 1`. Set `j : (Fin k → ℝ) →L[ℝ] (Fin (k + 1) → ℝ)` to `ContinuousLinearMap.pi (Fin.lastCases (motive := fun _ => (Fin k → ℝ) →L[ℝ] ℝ) 0 fun i => ContinuousLinearMap.proj i)`. Establish `hj_cs : ∀ s i, j s (Fin.castSucc i) = s i` using `by intro s i; simp [j]`. Establish `hj_last : ∀ s, j s (Fin.last k) = 0` using `by intro s; simp [j]`.
+
+Establish `hup : ∃ (n : ℕ) (C : ℝ), ∀ s, ‖s‖ ≤ C * (1 + ‖j s‖) ^ n`. Use `⟨1, 1, fun s => ?_⟩` and prove the remaining obligations. Rewrite using `[one_mul, pow_one]`. Use `(pi_norm_le_iff_of_nonneg (by positivity)).2 fun i => ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+
+Use `⟨SchwartzMap.compCLM ℝ j.hasTemperateGrowth hup (LineDeriv.lineDerivOp e H), fun s => ?_⟩` and prove the remaining obligations. Establish `hd` using `hasDerivAt_line H e (j s)`. Establish `heq : (fun t : ℝ => H (j s + t • e)) = fun t => φ (x + L s + M t)`. Use function extensionality and compare the values at `t`. Establish `e1 : (fun i => (j s + t • e) (Fin.castSucc i)) = s`.
+
+Use function extensionality and compare the values at `i`. Simplify using `[e, hj_cs, Fin.castSucc_ne_last]`. Establish `e2 : (j s + t • e) (Fin.last k) = t` using `by simp [e, hj_last]`. Rewrite using `[hH, hL'apply, e1, e2, add_assoc]`. Rewrite `hd` using `[heq]`.
+
+Conclude with `hd`. Choose the witnesses or unpack the hypotheses as in `⟨u, hu, hu0⟩ : ∃ u, L' u = 0 ∧ u ≠ 0 := by`. Rewrite `hinj` using `[injective_iff_map_eq_zero]`. Use `push Not at hinj`. Conclude with `hinj`.
+
+Rewrite `hu` using `[hL'apply]`. Establish `ht0 : u (Fin.last k) ≠ 0`. Introduce `h`. Rewrite `hu` using `[h, map_zero, add_zero]`. Establish `hs : (fun i => u (Fin.castSucc i)) = 0` using `hi (by rw [hu, map_zero])`.
+
+Apply `hu0` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Use `Fin.lastCases ?_ (fun i => ?_) i` and prove the remaining obligations. Conclude with `h`. Conclude with `congrFun hs i`.
+
+Set `v : Fin k → ℝ` to `-((u (Fin.last k))⁻¹ • fun i => u (Fin.castSucc i))`. Set `Lv : ℝ →+ (Fin k → ℝ)` to `AddMonoidHom.mk' (fun t => t • v) fun a b => add_smul a b v`. Establish `hMv : ∀ t, M t = L (t • v)`. Introduce `t`. Establish `h1` using `addHom_eq_zero F (M - L.comp Lv) (hM.sub (hLc.comp (continuous_id.smul continuous_const))) ht0 ?_ t`.
+
+Simplify `h1` using `[sub_eq_zero, Lv]`. Simplify using `only [AddMonoidHom.sub_apply, AddMonoidHom.comp_apply, AddMonoidHom.mk'_apply, Lv, v, smul_neg, smul_smul, mul_inv_cancel₀ ht0, one_smul, map_neg, sub_neg_eq_add]`. Rewrite using `[add_comm]`. Conclude with `hu`. Take `⟨G, hG⟩` from `hφ k L ⟨hLc, hLP⟩ hi x`.
+
+Use `⟨LineDeriv.lineDerivOp v G, fun s => ?_⟩` and prove the remaining obligations. Establish `hd` using `hasDerivAt_line G v s`. Establish `heq : (fun t : ℝ => G (s + t • v)) = fun t => φ (x + L s + M t)`. Use function extensionality and compare the values at `t`. Rewrite using `[hG, hMv, map_add, add_assoc]`.
+
+Rewrite `hd` using `[heq]`. Conclude with `hd`.
+-/
 theorem exists_schwartz_deriv (F : Type) [DivisionRing F] [CharZero F] [Module F X] (P : X → Prop)
     (hP : ∀ a b, P a → P b → P (a + b)) (φ : X → ℂ)
     (hφ : ∀ (k : ℕ) (L : (Fin k → ℝ) →+ X), (Continuous L ∧ ∀ t, P (L t)) → Function.Injective L →
@@ -137,6 +178,15 @@ open GlobalTheory.IndefiniteRowSideFullHecke.SchwartzBruhatMixedFamilies
 
 variable {D : D7} {m n : ℕ}
 
+/- English proof (translation)
+Take `⟨U, hU, hφU⟩` from `h.level`. Take `⟨U', hU', hφU'⟩` from `h'.level`. Use `⟨U ⊓ U', by simpa [AddSubgroup.coe_inf] using hU.inter hU', fun u hu hu0 x => ?_⟩` and prove the remaining obligations. Establish `hu'` using `AddSubgroup.mem_inf.mp hu`. Simplify using `[hφU u hu'.1 hu0 x, hφU' u hu'.2 hu0 x]`.
+
+Use `supp := by`. Take `⟨K, hK, hφK⟩` from `h.supp`. Take `⟨K', hK', hφK'⟩` from `h'.supp`. Use `⟨K ∪ K', hK.union hK', fun x hx => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h1 : φ x = 0`.
+
+Establish `h2 : φ' x ≠ 0` using `by simpa [h1] using hx`. Conclude with `Or.inr (hφK' x h2)`. Conclude with `Or.inl (hφK x h1)`. Use `schwartz := by`. Introduce `k L hL hi x`.
+
+Take `⟨g, hg⟩` from `h.schwartz k L hL hi x`. Take `⟨g', hg'⟩` from `h'.schwartz k L hL hi x`. Conclude with `⟨g + g', fun t => by simp [hg, hg']⟩`.
+-/
 theorem isSchwartzBruhat_add {φ φ' : Mx D m n → ℂ} (h : IsSchwartzBruhat φ) (h' : IsSchwartzBruhat φ') :
     IsSchwartzBruhat (φ + φ') where
   level := by
@@ -159,6 +209,13 @@ theorem isSchwartzBruhat_add {φ φ' : Mx D m n → ℂ} (h : IsSchwartzBruhat �
     obtain ⟨g', hg'⟩ := h'.schwartz k L hL hi x
     exact ⟨g + g', fun t => by simp [hg, hg']⟩
 
+/- English proof (translation)
+Take `⟨U, hU, hφU⟩` from `h.level`. Use `⟨U, hU, fun u hu hu0 x => ?_⟩` and prove the remaining obligations. Use `show ℓ (x + u) * φ (x + u) = ℓ x * φ x`. Rewrite using `[map_add, h0 u hu0, add_zero, hφU u hu hu0 x]`. Use `supp := by`.
+
+Take `⟨K, hK, hφK⟩` from `h.supp`. Conclude with `⟨K, hK, fun x hx => hφK x (right_ne_zero_of_mul hx)⟩`. Use `schwartz := by`. Introduce `k L hL hi x`. Take `⟨g, hg⟩` from `h.schwartz k L hL hi x`.
+
+Set `A : (Fin k → ℝ) →L[ℝ] ℂ` to `(ℓ.comp L).toRealLinearMap (hc.comp hL.1)`. Establish `ht : (fun t => ℓ x + A t).HasTemperateGrowth` using `by fun_prop`. Use `⟨SchwartzMap.smulLeftCLM ℂ (fun t => ℓ x + A t) g, fun t => ?_⟩` and prove the remaining obligations. Rewrite using `[SchwartzMap.smulLeftCLM_apply_apply ht, hg]`. Simplify using `[A, smul_eq_mul]`.
+-/
 theorem isSchwartzBruhat_linear_mul {φ : Mx D m n → ℂ} (h : IsSchwartzBruhat φ) (ℓ : Mx D m n →+ ℂ) (hc : Continuous ℓ)
     (h0 : ∀ u : Mx D m n, u.map (infPart D) = 0 → ℓ u = 0) : IsSchwartzBruhat fun x => ℓ x * φ x where
   level := by
@@ -179,6 +236,19 @@ theorem isSchwartzBruhat_linear_mul {φ : Mx D m n → ℂ} (h : IsSchwartzBruha
     rw [SchwartzMap.smulLeftCLM_apply_apply ht, hg]
     simp [A, smul_eq_mul]
 
+/- English proof (translation)
+Establish `: T2Space (Mx D m n)` using `(lattice_Mx D m n).2.2.2.1`. Establish `hP : ∀ a b : Mx D m n, a.map (finPart D) = 0 → b.map (finPart D) = 0 → (a + b).map (finPart D) = 0`. Introduce `a b ha hb`. Rewrite using `[Matrix.map_add _ (map_add _), ha, hb, add_zero]`. Establish `hdiff : ∀ y, HasDerivAt (fun t : ℝ => φ (y + M t)) (deriv (fun t : ℝ => φ (y + M t)) 0) 0`.
+
+Introduce `y`. Take `⟨g, hg⟩` from `exists_schwartz_deriv D.host.F (fun u : Mx D m n => u.map (finPart D) = 0) hP φ h.schwartz M hM hM0 (k := 0) 0 ⟨continuous_const, fun t => by simp⟩ (fun a b _ => Subsingleton.elim a b) y`. Establish `hg0` using `hg 0`. Simplify using `only [AddMonoidHom.zero_apply, add_zero] at hg0`. Conclude with `hg0.differentiableAt.hasDerivAt`.
+
+Use `⟨fun x => deriv (fun t : ℝ => φ (x + M t)) 0, ⟨?_, ?_, ?_⟩, hdiff⟩` and prove the remaining obligations. Take `⟨U, hU, hφU⟩` from `h.level`. Use `⟨U, hU, fun u hu hu0 x => ?_⟩` and prove the remaining obligations. Simplify using `only [add_right_comm x u, hφU u hu hu0]`. Take `⟨K, hK, hφK⟩` from `h.supp`.
+
+Use `⟨K, hK, fun x hx => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hxK`. Apply `hx` to reduce the goal to its premises. Establish `hz : (fun t : ℝ => φ (x + M t)) = fun _ => 0`. Use function extensionality and compare the values at `t`.
+
+Assume the negation of the conclusion as `ht`. Apply `hxK` to reduce the goal to its premises. Use `hφK _ ht` as an intermediate fact. Rewrite `this` using `[Matrix.map_add _ (map_add _), hM0, add_zero]`. Then use the resulting hypothesis. Simplify using `only [hz, deriv_const]`.
+
+Introduce `k L hL hi x`. Take `⟨g, hg⟩` from `exists_schwartz_deriv D.host.F (fun u : Mx D m n => u.map (finPart D) = 0) hP φ h.schwartz M hM hM0 L hL hi x`. Conclude with `⟨g, fun s => (hg s).deriv.symm⟩`.
+-/
 theorem exists_isSchwartzBruhat_deriv {φ : Mx D m n → ℂ} (h : IsSchwartzBruhat φ) (M : ℝ →+ Mx D m n) (hM : Continuous M)
     (hM0 : ∀ t, (M t).map (finPart D) = 0) :
     ∃ φ', IsSchwartzBruhat φ' ∧ ∀ x, HasDerivAt (fun t : ℝ => φ (x + M t)) (φ' x) 0 := by
@@ -214,6 +284,9 @@ theorem exists_isSchwartzBruhat_deriv {φ : Mx D m n → ℂ} (h : IsSchwartzBru
       M hM hM0 L hL hi x
     exact ⟨g, fun s => (hg s).deriv.symm⟩
 
+/- English proof (translation)
+Introduce `_ _ _ _ hφ` and use `⟨fun M hM hM0 => exists_isSchwartzBruhat_deriv hφ M hM hM0, fun ℓ hc h0 => isSchwartzBruhat_linear_mul hφ ℓ hc h0, fun _ h' => isSchwartzBruhat_add hφ h'⟩`.
+-/
 theorem isSchwartzBruhat_closed : ∀ (D : D7) (m n : ℕ) (φ : Mx D m n → ℂ), GlobalTheory.IndefiniteRowSideFullHecke.SchwartzBruhatMixedFamilies.IsSchwartzBruhat φ → (∀ M : ℝ →+ Mx D m n, Continuous M → (∀ t, (M t).map (finPart D) = 0) → ∃ φ', GlobalTheory.IndefiniteRowSideFullHecke.SchwartzBruhatMixedFamilies.IsSchwartzBruhat φ' ∧ ∀ x, HasDerivAt (fun t : ℝ => φ (x + M t)) (φ' x) 0) ∧ (∀ ℓ : Mx D m n →+ ℂ, Continuous ℓ → (∀ u : Mx D m n, u.map (infPart D) = 0 → ℓ u = 0) → GlobalTheory.IndefiniteRowSideFullHecke.SchwartzBruhatMixedFamilies.IsSchwartzBruhat fun x => ℓ x * φ x) ∧ ∀ φ', GlobalTheory.IndefiniteRowSideFullHecke.SchwartzBruhatMixedFamilies.IsSchwartzBruhat φ' → GlobalTheory.IndefiniteRowSideFullHecke.SchwartzBruhatMixedFamilies.IsSchwartzBruhat (φ + φ') := fun _ _ _ _ hφ =>
   ⟨fun M hM hM0 => exists_isSchwartzBruhat_deriv hφ M hM hM0, fun ℓ hc h0 => isSchwartzBruhat_linear_mul hφ ℓ hc h0,
     fun _ h' => isSchwartzBruhat_add hφ h'⟩

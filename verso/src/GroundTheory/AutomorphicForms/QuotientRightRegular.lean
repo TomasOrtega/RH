@@ -10,6 +10,9 @@ noncomputable section
 
 namespace RightCosetSpace
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 theorem compMeasurePreserving_congr {α : Type*} [MeasurableSpace α] {ν : Measure α} {p : ℝ≥0∞}
     {f f' : α → α} (h : f = f') (hf : MeasurePreserving f ν ν) (hf' : MeasurePreserving f' ν ν)
     (φ : Lp ℂ p ν) :
@@ -39,11 +42,17 @@ def rightTranslate (g : G) :
         rw [← rightMul_mul, mul_inv_cancel, rightMul_one] }
   norm_map' φ := Lp.norm_compMeasurePreserving φ _
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem rightTranslate_apply (g : G) (φ : Lp ℂ 2 (quotientMeasure Γ μ)) :
     rightTranslate Γ μ g φ =
       Lp.compMeasurePreserving (rightMul Γ g) (measurePreserving_rightMul μ g) φ :=
   rfl
 
+/- English proof (translation)
+The claim follows from `Lp.coeFn_compMeasurePreserving φ _`.
+-/
 theorem coeFn_rightTranslate (g : G) (φ : Lp ℂ 2 (quotientMeasure Γ μ)) :
     rightTranslate Γ μ g φ =ᵐ[quotientMeasure Γ μ] fun x ↦ φ (rightMul Γ g x) :=
   Lp.coeFn_compMeasurePreserving φ _
@@ -64,6 +73,9 @@ def rightRegular : G →* (Lp ℂ 2 (quotientMeasure Γ μ) ≃ₗᵢ[ℂ] Lp �
     exact compMeasurePreserving_congr (rightMul_mul Γ g h) _ _ φ
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem rightRegular_apply (g : G) : rightRegular Γ μ g = rightTranslate Γ μ g :=
   rfl
 
@@ -71,10 +83,16 @@ def rightRegularUnitary :
     G →* unitary (Lp ℂ 2 (quotientMeasure Γ μ) →L[ℂ] Lp ℂ 2 (quotientMeasure Γ μ)) :=
   (Unitary.linearIsometryEquiv (𝕜 := ℂ)).symm.toMonoidHom.comp (rightRegular Γ μ)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem rightRegularUnitary_apply (g : G) (φ : Lp ℂ 2 (quotientMeasure Γ μ)) :
     (rightRegularUnitary Γ μ g : Lp ℂ 2 (quotientMeasure Γ μ) →L[ℂ] _) φ = rightRegular Γ μ g φ :=
   rfl
 
+/- English proof (translation)
+The claim follows from `(rightRegular Γ μ g).inner_map_map φ ψ`.
+-/
 theorem inner_rightRegular (g : G) (φ ψ : Lp ℂ 2 (quotientMeasure Γ μ)) :
     inner ℂ (rightRegular Γ μ g φ) (rightRegular Γ μ g ψ) = inner ℂ φ ψ :=
   (rightRegular Γ μ g).inner_map_map φ ψ
@@ -85,6 +103,21 @@ variable [IsFiniteMeasureOnCompacts μ]
 
 omit [μ.IsMulRightInvariant] in
 
+/- English proof (translation)
+Take `⟨N, hN, hNn⟩` from `exists_compact_mem_nhds g₀`. Use `set K : Set (RightCosetSpace Γ) := (fun p : RightCosetSpace Γ × G ↦ rightMul Γ p.2⁻¹ p.1) '' (tsupport ψ ×ˢ N) with hKdef`. Establish `hK : IsCompact K` using `(hs.prod hN).image ((continuous_rightMul_prod Γ).comp (continuous_fst.prodMk continuous_snd.inv))`. Take `⟨M, hM⟩` from `hc.bounded_above_of_compact_support hs`. Establish `hzero : ∀ g ∈ N, ∀ x ∉ K, ψ (rightMul Γ g x) = 0`.
+
+Introduce `g hg x hx`. Assume the negation of the conclusion as `h`. Use `hx ⟨(rightMul Γ g x, g), ⟨subset_tsupport ψ h, hg⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `rightMul Γ g⁻¹ (rightMul Γ g x) = x`. Rewrite using `[rightMul_rightMul, mul_inv_cancel, rightMul_one, id]`.
+
+Establish `hg₀N : g₀ ∈ N` using `mem_of_mem_nhds hNn`. Use `set c : ℝ≥0∞ := ENNReal.ofReal (2 * M) ^ (2 : ℝ) with hc_def`. Establish `hmeas : ∀ g, Measurable fun x ↦ ‖ψ (rightMul Γ g x) - ψ (rightMul Γ g₀ x)‖ₑ ^ (2 : ℝ)` using `fun g ↦ (((hc.comp (continuous_rightMul Γ g)).sub (hc.comp (continuous_rightMul Γ g₀))).measurable.enorm).pow_const _`. It suffices to establish `key : Tendsto (fun g ↦ ∫⁻ x, ‖ψ (rightMul Γ g x) - ψ (rightMul Γ g₀ x)‖ₑ ^ (2 : ℝ) ∂quotientMeasure Γ μ) (𝓝 g₀) (𝓝 (∫⁻ _, (0 : ℝ≥0∞) ∂quotientMeasure Γ μ)) by`. Rewrite `key` using `[lintegral_zero]`. Then use the resulting hypothesis.
+
+Use `tendsto_lintegral_filter_of_dominated_convergence (K.indicator fun _ ↦ c) (Eventually.of_forall hmeas) ?_ ?_ ?_` and prove the remaining obligations. Use `filter_upwards [hNn] with g hg`. Use `Eventually.of_forall fun x ↦ ?_` and prove the remaining obligations. Distinguish the cases in `hx : x ∈ K`. Rewrite using `[Set.indicator_of_mem hx]`.
+
+Use `ENNReal.rpow_le_rpow ?_ (by norm_num)` and prove the remaining obligations. Rewrite using `[← ofReal_norm]`. Use `ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hzero g hg x hx, hzero g₀ hg₀N x hx, sub_self, enorm_zero, ENNReal.zero_rpow_of_pos (by norm_num)]`.
+
+Conclude with `zero_le`. Rewrite using `[lintegral_indicator_const hK.measurableSet]`. Conclude with `ENNReal.mul_ne_top (ENNReal.rpow_ne_top_of_nonneg (by norm_num) ENNReal.ofReal_ne_top) hK.measure_lt_top.ne`. Use `Eventually.of_forall fun x ↦ ?_` and prove the remaining obligations. Establish `hcont : Continuous fun g ↦ ‖ψ (rightMul Γ g x) - ψ (rightMul Γ g₀ x)‖ₑ ^ (2 : ℝ)` using `(ENNReal.continuous_rpow_const).comp (continuous_enorm.comp ((hc.comp ((continuous_rightMul_prod Γ).comp (continuous_const.prodMk continuous_id))).sub continuous_const))`.
+
+Use `hcont.tendsto g₀` as an intermediate fact. Rewrite `this` using `[sub_self, enorm_zero, ENNReal.zero_rpow_of_pos (by norm_num)]`. Then use the resulting hypothesis.
+-/
 theorem tendsto_lintegral_rightMul_sub {ψ : RightCosetSpace Γ → ℂ} (hc : Continuous ψ)
     (hs : HasCompactSupport ψ) (g₀ : G) :
     Tendsto (fun g ↦ ∫⁻ x, ‖ψ (rightMul Γ g x) - ψ (rightMul Γ g₀ x)‖ₑ ^ (2 : ℝ)
@@ -135,6 +168,11 @@ theorem tendsto_lintegral_rightMul_sub {ψ : RightCosetSpace Γ → ℂ} (hc : C
     have := hcont.tendsto g₀
     rwa [sub_self, enorm_zero, ENNReal.zero_rpow_of_pos (by norm_num)] at this
 
+/- English proof (translation)
+Establish `hψ : MemLp ψ 2 (quotientMeasure Γ μ)` using `hc.memLp_of_hasCompactSupport hs`. Rewrite using `[Lp.tendsto_Lp_iff_tendsto_eLpNorm']`. Establish `hae : ∀ g, ⇑(rightRegular Γ μ g (hψ.toLp ψ)) =ᵐ[quotientMeasure Γ μ] fun x ↦ ψ (rightMul Γ g x)` using `fun g ↦ (coeFn_rightTranslate Γ μ g _).trans ((measurePreserving_rightMul μ g).quasiMeasurePreserving.ae_eq_comp hψ.coeFn_toLp)`. Establish `heq : ∀ g, eLpNorm (⇑(rightRegular Γ μ g (hψ.toLp ψ)) - ⇑(rightRegular Γ μ g₀ (hψ.toLp ψ))) 2 (quotientMeasure Γ μ) = (∫⁻ x, ‖ψ (rightMul Γ g x) - ψ (rightMul Γ g₀ x)‖ₑ ^ (2 : ℝ) ∂quotientMeasure Γ μ) ^ (1 / (2 : ℝ))` using `fun g ↦ by`. Rewrite using `[eLpNorm_congr_ae ((hae g).sub (hae g₀)), eLpNorm_eq_lintegral_rpow_enorm_toReal (by norm_num) (by norm_num)]`.
+
+Simplify using `only [Pi.sub_apply, ENNReal.toReal_ofNat]`. Repeatedly rewrite using `[heq]`. Use `((ENNReal.continuous_rpow_const (y := 1 / (2 : ℝ))).tendsto 0).comp (tendsto_lintegral_rightMul_sub Γ μ hc hs g₀)` as an intermediate fact. Rewrite `this` using `[ENNReal.zero_rpow_of_pos (by norm_num)]`. Then use the resulting hypothesis.
+-/
 theorem tendsto_rightRegular_of_continuous {ψ : RightCosetSpace Γ → ℂ} (hc : Continuous ψ)
     (hs : HasCompactSupport ψ) (g₀ : G) :
     Tendsto (fun g ↦ rightRegular Γ μ g ((hc.memLp_of_hasCompactSupport hs).toLp ψ)) (𝓝 g₀)
@@ -156,6 +194,13 @@ theorem tendsto_rightRegular_of_continuous {ψ : RightCosetSpace Γ → ℂ} (hc
     (tendsto_lintegral_rightMul_sub Γ μ hc hs g₀)
   rwa [ENNReal.zero_rpow_of_pos (by norm_num)] at this
 
+/- English proof (translation)
+Use `continuous_iff_continuousAt.2 fun g₀ ↦ Metric.tendsto_nhds.2 fun ε hε ↦ ?_` and prove the remaining obligations. Establish `hε4 : 0 < ε / 4` using `by positivity`. Take `⟨ψ, hs, hψφ, hc, hmem⟩` from `(Lp.memLp φ).exists_hasCompactSupport_eLpNorm_sub_le ENNReal.ofNat_ne_top (ε := ENNReal.ofReal (ε / 4)) (by simpa using hε4)`. Use `set φ₀ : Lp ℂ 2 (quotientMeasure Γ μ) := (hc.memLp_of_hasCompactSupport hs).toLp ψ`. Establish `hd : dist φ φ₀ ≤ ε / 4`.
+
+Rewrite using `[Lp.dist_def, eLpNorm_congr_ae (EventuallyEq.rfl.sub (MemLp.coeFn_toLp _))]`. Conclude with `ENNReal.toReal_le_of_le_ofReal hε4.le hψφ`. Use `filter_upwards [Metric.tendsto_nhds.1 (tendsto_rightRegular_of_continuous Γ μ hc hs g₀) (ε / 4) hε4] with g hg`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[LinearIsometryEquiv.dist_map, LinearIsometryEquiv.dist_map]`.
+
+Use `_ < ε := by`. Rewrite using `[dist_comm φ₀ φ]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem continuous_rightRegular_apply (φ : Lp ℂ 2 (quotientMeasure Γ μ)) :
     Continuous fun g ↦ rightRegular Γ μ g φ := by
   refine continuous_iff_continuousAt.2 fun g₀ ↦ Metric.tendsto_nhds.2 fun ε hε ↦ ?_
@@ -179,6 +224,11 @@ theorem continuous_rightRegular_apply (φ : Lp ℂ 2 (quotientMeasure Γ μ)) :
         rw [dist_comm φ₀ φ]
         linarith
 
+/- English proof (translation)
+Use `continuous_iff_continuousAt.2 fun ⟨g₀, φ₀⟩ ↦ Metric.tendsto_nhds.2 fun ε hε ↦ ?_` and prove the remaining obligations. Establish `h1` using `(continuous_rightRegular_apply Γ μ φ₀).tendsto g₀`. Establish `h2 : ∀ᶠ p : G × Lp ℂ 2 (quotientMeasure Γ μ) in 𝓝 (g₀, φ₀), dist (rightRegular Γ μ p.1 φ₀) (rightRegular Γ μ g₀ φ₀) < ε / 2` using `(Metric.tendsto_nhds.1 h1 (ε / 2) (by positivity)).prod_inl_nhds φ₀`. Establish `h3 : ∀ᶠ p : G × Lp ℂ 2 (quotientMeasure Γ μ) in 𝓝 (g₀, φ₀), dist p.2 φ₀ < ε / 2` using `(Metric.tendsto_nhds.1 tendsto_id (ε / 2) (by positivity)).prod_inr_nhds g₀`. Use `filter_upwards [h2, h3] with p hp2 hp3`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[LinearIsometryEquiv.dist_map]`. Use `_ < ε := by linarith`.
+-/
 theorem continuous_rightRegular_prod :
     Continuous fun p : G × Lp ℂ 2 (quotientMeasure Γ μ) ↦ rightRegular Γ μ p.1 p.2 := by
   refine continuous_iff_continuousAt.2 fun ⟨g₀, φ₀⟩ ↦ Metric.tendsto_nhds.2 fun ε hε ↦ ?_

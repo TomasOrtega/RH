@@ -24,6 +24,9 @@ section Sign
 
 variable {R : Type*} [CommRing R]
 
+/- English proof (translation)
+Apply the tactic sequence `rcases h with rfl | rfl <;> rcases h' with rfl | rfl`. Conclude with `Or.inl rfl`. Conclude with `Or.inr (by ring)`. Conclude with `Or.inr (by ring)`. Conclude with `Or.inl (by ring)`.
+-/
 theorem Sg.mul {a b c d : R} (h : Sg a b) (h' : Sg c d) : Sg (a * c) (b * d) := by
   rcases h with rfl | rfl <;> rcases h' with rfl | rfl
   · exact Or.inl rfl
@@ -31,6 +34,9 @@ theorem Sg.mul {a b c d : R} (h : Sg a b) (h' : Sg c d) : Sg (a * c) (b * d) := 
   · exact Or.inr (by ring)
   · exact Or.inl (by ring)
 
+/- English proof (translation)
+Apply the tactic sequence `rcases h with rfl | rfl <;> rcases h' with rfl | rfl`. Conclude with `Or.inl rfl`. Conclude with `Or.inr rfl`. Conclude with `Or.inr rfl`. Conclude with `Or.inl (by ring)`.
+-/
 theorem Sg.trans {a b c : R} (h : Sg a b) (h' : Sg b c) : Sg a c := by
   rcases h with rfl | rfl <;> rcases h' with rfl | rfl
   · exact Or.inl rfl
@@ -38,6 +44,9 @@ theorem Sg.trans {a b c : R} (h : Sg a b) (h' : Sg b c) : Sg a c := by
   · exact Or.inr rfl
   · exact Or.inl (by ring)
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact Or.inl rfl`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.prod_insert ha, Finset.prod_insert ha]`. Conclude with `(h a (Finset.mem_insert_self _ _)).mul (ih fun i hi => h i (Finset.mem_insert_of_mem hi))`.
+-/
 theorem Sg.prod {ι : Type*} (s : Finset ι) (f g : ι → R) (h : ∀ i ∈ s, Sg (f i) (g i)) :
     Sg (∏ i ∈ s, f i) (∏ i ∈ s, g i) := by
   classical
@@ -50,6 +59,17 @@ theorem Sg.prod {ι : Type*} (s : Finset ι) (f g : ι → R) (h : ∀ i ∈ s, 
 
 def pairProd {m : ℕ} (v : Fin m → R) : R := ∏ a, ∏ b, if a < b then v b - v a else 1
 
+/- English proof (translation)
+Establish `h1 : GroundTheory.Heights₂.Heights.vandermonde v = ((Matrix.vandermonde v).submatrix id (Fin.revPerm : Equiv.Perm (Fin m))).det`. Unfold `GroundTheory.Heights₂.Heights.vandermonde`. Use `congr 1`. Use extensionality with `a b`. Simplify using `only [Matrix.of_apply, Matrix.submatrix_apply, id, Matrix.vandermonde_apply, Fin.revPerm_apply, Fin.val_rev]`.
+
+Use `congr 1`. Use `b.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `h2 : pairProd v = ∏ i, ∏ j ∈ Finset.Ioi i, (v j - v i)`. Unfold `pairProd`.
+
+Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.prod_filter]`. Use `Finset.prod_congr ?_ fun _ _ => rfl` and prove the remaining obligations. Use extensionality with `b`. Simplify using the standard rewrite rules.
+
+Rewrite using `[h1, Matrix.det_permute', Matrix.det_vandermonde, ← h2]`. Break down `Int.units_eq_one_or (Equiv.Perm.sign (Fin.revPerm : Equiv.Perm (Fin m))) with h | h` into its components or cases. Use `left`. Simplify using `[h]`. Use `right`.
+
+Simplify using `[h]`.
+-/
 theorem vandermonde_sg {m : ℕ} (v : Fin m → R) :
     Sg (GroundTheory.Heights₂.Heights.vandermonde v) (pairProd v) := by
   have h1 : GroundTheory.Heights₂.Heights.vandermonde v =
@@ -74,12 +94,32 @@ theorem vandermonde_sg {m : ℕ} (v : Fin m → R) :
   · left; simp [h]
   · right; simp [h]
 
+/- English proof (translation)
+Use `Sg.prod _ _ _ fun a _ => Sg.prod _ _ _ fun b _ => ?_` and prove the remaining obligations. Use `split_ifs`. Use `right`. Expand and normalize the polynomial expressions, which then agree. Use `left`.
+
+Both sides reduce to the same expression.
+-/
 theorem pairProd_neg {m : ℕ} (v : Fin m → R) : Sg (pairProd fun a => -v a) (pairProd v) := by
   refine Sg.prod _ _ _ fun a _ => Sg.prod _ _ _ fun b _ => ?_
   split_ifs
   · right; ring
   · left; rfl
 
+/- English proof (translation)
+Rewrite using `[Finset.prod_filter, Fintype.prod_prod_type, Fin.prod_univ_add]`. Unfold `pairProd`. Use `congr 1`. Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Fin.prod_univ_add]`.
+
+Establish `h2 : ∀ b : Fin k, ¬ ((Fin.castAdd k a) < (Fin.natAdd j b) ∧ (((Fin.castAdd k a : Fin (j + k)) : ℕ) < j ↔ ((Fin.natAdd j b : Fin (j + k)) : ℕ) < j))`. Introduce and unpack `b ⟨_, h⟩`. Establish `h' : j + (b : ℕ) < j` using `h.1 a.isLt`. Use linear arithmetic over natural numbers and integers. Rewrite using `[Finset.prod_eq_one (s := Finset.univ) (fun b _ => if_neg (h2 b)), mul_one]`.
+
+Use `Finset.prod_congr rfl fun b _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : a < b`. Rewrite using `[if_pos h, if_pos]`. Conclude with `⟨show (a : ℕ) < (b : ℕ) from h, iff_of_true a.isLt b.isLt⟩`. Rewrite using `[if_neg h, if_neg]`.
+
+Introduce `h'`. Conclude with `h (show (a : ℕ) < (b : ℕ) from h'.1)`. Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Fin.prod_univ_add]`. Establish `h2 : ∀ b : Fin j, ¬ ((Fin.natAdd j a) < (Fin.castAdd k b) ∧ (((Fin.natAdd j a : Fin (j + k)) : ℕ) < j ↔ ((Fin.castAdd k b : Fin (j + k)) : ℕ) < j))`.
+
+Introduce and unpack `b ⟨_, h⟩`. Establish `h' : j + (a : ℕ) < j` using `h.2 b.isLt`. Use linear arithmetic over natural numbers and integers. Rewrite using `[Finset.prod_eq_one (s := Finset.univ) (fun b _ => if_neg (h2 b)), one_mul]`. Use `Finset.prod_congr rfl fun b _ => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `h : a < b`. Rewrite using `[if_pos h, if_pos]`. Establish `hab : (a : ℕ) < (b : ℕ)` using `h`. Use `⟨show j + (a : ℕ) < j + (b : ℕ) by omega, ?_⟩` and prove the remaining obligations. Conclude with `iff_of_false (show ¬ j + (a : ℕ) < j by omega) (show ¬ j + (b : ℕ) < j by omega)`.
+
+Rewrite using `[if_neg h, if_neg]`. Introduce `h'`. Establish `hab : j + (a : ℕ) < j + (b : ℕ)` using `h'.1`. Conclude with `h (show (a : ℕ) < (b : ℕ) by omega)`.
+-/
 theorem pair_split {j k : ℕ} (x : Fin (j + k) → R) :
     ∏ ab ∈ Finset.univ.filter (fun ab : Fin (j + k) × Fin (j + k) =>
         ab.1 < ab.2 ∧ ((ab.1 : ℕ) < j ↔ (ab.2 : ℕ) < j)), (x ab.2 - x ab.1) =
@@ -124,12 +164,18 @@ theorem pair_split {j k : ℕ} (x : Fin (j + k) → R) :
 
 end Sign
 
+/- English proof (translation)
+Rewrite using `[Finset.sum_filter, Fin.sum_univ_add]`. Simplify using the standard rewrite rules.
+-/
 theorem sum_low {M : Type*} [AddCommMonoid M] {j k : ℕ} (g : Fin (j + k) → M) :
     ∑ i ∈ Finset.univ.filter (fun i : Fin (j + k) => (i : ℕ) < j), g i =
       ∑ a : Fin j, g (Fin.castAdd k a) := by
   rw [Finset.sum_filter, Fin.sum_univ_add]
   simp
 
+/- English proof (translation)
+Rewrite using `[Finset.sum_filter, Fin.sum_univ_add]`. Establish `h1 : ∀ a : Fin j, ¬ j ≤ ((Fin.castAdd k a : Fin (j + k)) : ℕ)` using `fun a => not_le.2 a.isLt`. Rewrite using `[Finset.sum_eq_zero (fun a _ => if_neg (h1 a)), zero_add]`. Conclude with `Finset.sum_congr rfl fun b _ => if_pos (show j ≤ j + (b : ℕ) by omega)`.
+-/
 theorem sum_high {M : Type*} [AddCommMonoid M] {j k : ℕ} (g : Fin (j + k) → M) :
     ∑ i ∈ Finset.univ.filter (fun i : Fin (j + k) => j ≤ (i : ℕ)), g i =
       ∑ b : Fin k, g (Fin.natAdd j b) := by
@@ -149,6 +195,11 @@ def degFlL (N : ℕ) : RP Ψ N →ₗ[ℝ] ℝ where
     refine Finset.sum_congr rfl fun _ _ => ?_
     ring
 
+/- English proof (translation)
+Rewrite using `[Finsupp.degree_eq_sum, Fintype.sum_prod_type]`. Establish `h : ∀ τ : Ψ, ∑ i : Fin N, (permExp (fun _ => 1) : (Ψ × Fin N) →₀ ℕ) (τ, i) = N * (N - 1) / 2`. Introduce `τ`. Simplify using `only [permExp, Finsupp.equivFunOnFinite_symm_apply_apply, Equiv.Perm.coe_one, id]`. Rewrite using `[Fin.sum_univ_eq_sum_range (fun i => N - 1 - i) N, Finset.sum_range_reflect (fun i => i) N, Finset.sum_range_id]`.
+
+Simplify using `[h, dimFl]`.
+-/
 theorem permExp_degree (N : ℕ) :
     (permExp (fun _ => 1) : (Ψ × Fin N) →₀ ℕ).degree = dimFl Ψ N := by
   rw [Finsupp.degree_eq_sum, Fintype.sum_prod_type]
@@ -159,6 +210,15 @@ theorem permExp_degree (N : ℕ) :
       Finset.sum_range_id]
   simp [h, dimFl]
 
+/- English proof (translation)
+Unfold `degFl`. Rewrite using `[Finset.sum_eq_single (fun _ => 1)]`. Simplify using the standard rewrite rules. Introduce `σ _ hσ`. Rewrite using `[coeff_monomial, if_neg, mul_zero]`.
+
+Introduce `h`. Apply `hσ` to reduce the goal to its premises. Use function extensionality and compare the values at `τ`. Use extensionality with `i`. Use `DFunLike.congr_fun h (τ, i)` as an intermediate fact.
+
+Simplify using `only [permExp, Finsupp.equivFunOnFinite_symm_apply_apply, Equiv.Perm.coe_one, id] at this`. Establish `h1` using `i.isLt`. Establish `h2` using `(σ τ i).isLt`. Simplify using `only [Equiv.Perm.coe_one, id]`. Use linear arithmetic over natural numbers and integers.
+
+Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+-/
 theorem degFl_permExp (N : ℕ) :
     degFl (monomial (permExp (fun _ => 1) : (Ψ × Fin N) →₀ ℕ) (1 : ℝ)) = (-1) ^ dimFl Ψ N := by
   unfold degFl
@@ -192,6 +252,11 @@ def rli (e : Ψ ≃ Fin f) (j k : ℕ) : RestTerms.Roots f j k →ₐ[ℝ] RP Ψ
   rename fun x => (e.symm x.1, x.2)
 
 omit [Fintype Ψ] [DecidableEq Ψ] in
+/- English proof (translation)
+Unfold `rli rl`. Rewrite using `[rename_rename]`. Establish `: ((fun x : Fin f × Fin (j + k) => (e.symm x.1, x.2)) ∘ fun x : Ψ × Fin (j + k) => (e x.1, x.2)) = id`. Use function extensionality and compare the values at `x`. Simplify using the standard rewrite rules.
+
+Rewrite using `[this, rename_id_apply]`.
+-/
 theorem rli_rl (e : Ψ ≃ Fin f) (F : RP Ψ (j + k)) : rli e j k (rl e j k F) = F := by
   unfold rli rl
   rw [rename_rename]
@@ -202,11 +267,17 @@ theorem rli_rl (e : Ψ ≃ Fin f) (F : RP Ψ (j + k)) : rli e j k (rl e j k F) =
   rw [this, rename_id_apply]
 
 omit [Fintype Ψ] [DecidableEq Ψ] in
+/- English proof (translation)
+Simplify using `[rl]`.
+-/
 theorem rl_X (e : Ψ ≃ Fin f) (τ : Ψ) (i : Fin (j + k)) :
     rl e j k (X (τ, i)) = X (e τ, i) := by
   simp [rl]
 
 omit [Fintype Ψ] [DecidableEq Ψ] in
+/- English proof (translation)
+Simplify using `[rli]`.
+-/
 theorem rli_X (e : Ψ ≃ Fin f) (τ : Fin f) (i : Fin (j + k)) :
     rli e j k (X (τ, i)) = X (e.symm τ, i) := by
   simp [rli]
@@ -214,17 +285,31 @@ theorem rli_X (e : Ψ ≃ Fin f) (τ : Fin f) (i : Fin (j + k)) :
 def flagI (e : Ψ ≃ Fin f) (j k : ℕ) : RestTerms.Roots f j k →ₗ[ℝ] ℝ :=
   (degFlL (j + k)).comp (rli e j k).toLinearMap
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem flagI_apply (e : Ψ ≃ Fin f) (G : RestTerms.Roots f j k) :
     flagI e j k G = degFl (rli e j k G) := rfl
 
+/- English proof (translation)
+Rewrite using `[flagI_apply, rli_rl]`.
+-/
 theorem flagI_rl (e : Ψ ≃ Fin f) (F : RP Ψ (j + k)) : flagI e j k (rl e j k F) = degFl F := by
   rw [flagI_apply, rli_rl]
 
 omit [Fintype Ψ] [DecidableEq Ψ] in
+/- English proof (translation)
+Simplify using `only [RestTerms.psumAt, pk, map_sum, map_pow, rl_X]`.
+-/
 theorem psumAt_eq (e : Ψ ≃ Fin f) (m : ℕ) (τ : Ψ) :
     RestTerms.psumAt f j k m (e τ) = rl e j k (pk τ m) := by
   simp only [RestTerms.psumAt, pk, map_sum, map_pow, rl_X]
 
+/- English proof (translation)
+Take `⟨t, rfl⟩` from `e.surjective τ`. Rewrite using `[flagI_apply, psumAt_eq, map_mul, rli_rl]`. Conclude with `GlobalTheory.T.flag_degree_power_sum_mul_zero Ψ (j + k) t m _ h1`. Use `ne_zero := by`. Substitute `hf` using the available equality.
+
+Use `⟨rl e j k (monomial (permExp fun _ => 1) 1), ?_, ?_⟩` and prove the remaining obligations. Establish `h` using `(isHomogeneous_monomial (R := ℝ) (1 : ℝ) (permExp_degree (Ψ := Ψ) (j + k))).rename_isHomogeneous (f := fun x : Ψ × Fin (j + k) => (e x.1, x.2))`. Conclude with `h`. Rewrite using `[flagI_rl, degFl_permExp]`. Conclude with `pow_ne_zero _ (by norm_num)`.
+-/
 theorem isFlag (e : Ψ ≃ Fin f) (hf : Fintype.card Ψ = f) : RestTerms.IsFlagIntegral f j k (flagI e j k) where
   kills m τ G h1 _ _ := by
     obtain ⟨t, rfl⟩ := e.surjective τ
@@ -244,6 +329,11 @@ def conv (e : Ψ ≃ Fin f) : Ψ ⊕ Ψ → Fin f × Bool
   | Sum.inr t => (e t, true)
 
 omit [Fintype Ψ] [DecidableEq Ψ] in
+/- English proof (translation)
+Consider the cases of `s with`. Consider the case `inl t`. Simplify using `only [conv, RestTerms.lieClass, pLie, pkLow, sum_low, map_sum, map_pow, rl_X]`. Simplify using the standard rewrite rules. Consider the case `inr t`.
+
+Simplify using `only [conv, RestTerms.lieClass, pLie, sum_high, map_sum, map_pow, map_neg, rl_X, if_true]`. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun b _ => (neg_pow _ m).symm`.
+-/
 theorem lie_eq (e : Ψ ≃ Fin f) (m : ℕ) (s : Ψ ⊕ Ψ) :
     RestTerms.lieClass f j k m (conv e s) = rl e j k (pLie j m s) := by
   cases s with
@@ -255,6 +345,13 @@ theorem lie_eq (e : Ψ ≃ Fin f) (m : ℕ) (s : Ψ ⊕ Ψ) :
     rw [Finset.mul_sum]
     exact Finset.sum_congr rfl fun b _ => (neg_pow _ m).symm
 
+/- English proof (translation)
+Unfold `RestTerms.muClass muSmall`. Rewrite using `[← Equiv.sum_comp e]`. Establish `hk : j + k - j = k` using `by omega`. Distinguish the cases in `h : k ≤ j`. Establish `hb : bot = true` using `by simp [hbot, h]`.
+
+Rewrite using `[if_pos (by rw [hk]; exact h), hb]`. Simplify using `only [RestTerms.smallPsum, if_true, sum_high, map_sum, rl_X, pow_one]`. Establish `hb : bot = false` using `by simp [hbot, h]`. Rewrite using `[if_neg (by rw [hk]; exact h), hb]`. Simplify using `only [RestTerms.smallPsum, pkLow, sum_low, map_neg, map_sum, rl_X, pow_one]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem mu_eq (e : Ψ ≃ Fin f) (bot : Bool) (hbot : bot = decide (k ≤ j)) :
     RestTerms.muClass f j k bot = rl e j k (muSmall j) := by
   unfold RestTerms.muClass muSmall
@@ -269,6 +366,15 @@ theorem mu_eq (e : Ψ ≃ Fin f) (bot : Bool) (hbot : bot = decide (k ≤ j)) :
     simp only [RestTerms.smallPsum, pkLow, sum_low, map_neg, map_sum, rl_X, pow_one]
     simp
 
+/- English proof (translation)
+Unfold `RestTerms.fibClass fibClass`. Rewrite using `[← Equiv.prod_comp e, map_prod]`. Use `Sg.prod _ _ _ fun τ _ => ?_` and prove the remaining obligations. Establish `h : rl e j k (∏ ab ∈ Finset.univ.filter (fun ab : Fin (j + k) × Fin (j + k) => ab.1 < ab.2 ∧ ((ab.1 : ℕ) < j ↔ (ab.2 : ℕ) < j)), (X (τ, ab.2) - X (τ, ab.1))) = pairProd (fun a : Fin j => (X (e τ, Fin.castAdd k a) : RestTerms.Roots f j k)) * pairProd (fun b : Fin k => (X (e τ, Fin …`. Rewrite using `[map_prod, ← pair_split (fun i => (X (e τ, i) : RestTerms.Roots f j k))]`.
+
+Use `Finset.prod_congr rfl fun ab _ => ?_` and prove the remaining obligations. Rewrite using `[map_sub, rl_X, rl_X]`. Rewrite using `[h]`. Consider the cases of `bot with`. Consider the case `true`.
+
+Simplify using `only [if_true]`. Rewrite using `[mul_comm (pairProd _)]`. Conclude with `(vandermonde_sg _).mul (vandermonde_sg _)`. Consider the case `false`. Simplify using `only [Bool.false_eq_true, if_false]`.
+
+Conclude with `((vandermonde_sg _).trans (pairProd_neg _)).mul (vandermonde_sg _)`.
+-/
 theorem fib_sg (e : Ψ ≃ Fin f) (bot : Bool) :
     Sg (RestTerms.fibClass f j k bot) (rl e j k (fibClass j)) := by
   unfold RestTerms.fibClass fibClass
@@ -297,6 +403,9 @@ namespace GlobalTheory.CompanionTheory.Ar.Top.TestRest
 
 variable {Ψ : Type} [Fintype Ψ] [DecidableEq Ψ] {j k : ℕ}
 
+/- English proof (translation)
+The claim follows from `|∑ p ∈ S, ∑ τ, ∑ m ∈ Finset.Icc 1 (j + k), restTerm j p (frob p τ) m (Q τ m)| ≤ 1.6 * (((dimX Ψ (j + k) j : ℝ) + 1) * testDeg Ψ (j + k) j) := by let e : Ψ ≃ Fin (Fintype.card Ψ) := Fintype.equivFin Ψ have hf1 : 1 ≤ Fintype.card Ψ := Fintype.card_pos let bot : Bool := decide (k ≤ …`.
+-/
 theorem finite_bound [Nonempty Ψ] (hj : 1 ≤ j) (hk : 1 ≤ k) (frob : ℕ → Ψ → ℕ → Ψ ⊕ Ψ) (B₀ : ℕ)
     (Q : Ψ → ℕ → RP Ψ (j + k)) (hB : 4 * Fintype.card Ψ * (j + k) ^ 2 ≤ B₀)
     (hQ : IsDecomp (testPoly j) Q) (S : Finset ℕ) (hS : ∀ p ∈ S, p.Prime ∧ B₀ < p) :
@@ -414,6 +523,15 @@ end GlobalTheory.CompanionTheory.Ar.Top.TestRest
 
 namespace GlobalTheory.CompanionTheory.Ar.Top
 
+/- English proof (translation)
+Introduce `Ψ _ _ N j bad frob B₀ Q hj hjN hB hQ`. Take `⟨k, rfl⟩ : ∃ k, N = j + k` from `⟨N - j, by omega⟩`. Establish `hk : 1 ≤ k` using `by omega`. Establish `hJ : 0 < testDeg Ψ (j + k) j` using `(GlobalTheory.T.test_polynomial_shift_total Ψ (j + k) j hj hjN).2.1`. Break down `isEmpty_or_nonempty Ψ with hΨ | hΨ` into its components or cases.
+
+Simplify using `only [Finset.univ_eq_empty, Finset.sum_empty, abs_zero]`. Conclude with `mul_nonneg (by norm_num) (mul_nonneg (by positivity) hJ.le)`. Establish `hlim : Tendsto (fun B : ℕ => ∑ τ, ∑ m ∈ Finset.Icc 1 (j + k), ∑ p ∈ (Finset.Ioc B₀ B).filter (fun p => p.Prime ∧ p ∉ bad), restTerm j p (frob p τ) m (Q τ m)) atTop (𝓝 (∑ τ, ∑ m ∈ Finset.Icc 1 (j + k), restSum j bad frob B₀ τ m (Q τ m)))` using `tendsto_finset_sum _ fun τ _ => tendsto_finset_sum _ fun m _ => (GlobalTheory.T.remainder_term_summable Ψ (j + k) j bad frob τ m (Q τ m)).2 B₀`. Use `le_of_tendsto hlim.abs (Eventually.of_forall fun B => ?_)` and prove the remaining obligations. Establish `h` using `TestRest.finite_bound hj hk frob B₀ Q hB hQ ((Finset.Ioc B₀ B).filter (fun p => p.Prime ∧ p ∉ bad)) (fun p hp => by`.
+
+Rewrite `hp` using `[Finset.mem_filter, Finset.mem_Ioc]`. Conclude with `⟨hp.2.1, hp.1.1⟩)`. Establish `h2 : ∑ p ∈ (Finset.Ioc B₀ B).filter (fun p => p.Prime ∧ p ∉ bad), ∑ τ, ∑ m ∈ Finset.Icc 1 (j + k), restTerm j p (frob p τ) m (Q τ m) = ∑ τ, ∑ m ∈ Finset.Icc 1 (j + k), ∑ p ∈ (Finset.Ioc B₀ B).filter (fun p => p.Prime ∧ p ∉ bad), restTerm j p (frob p τ) m (Q τ m)`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun τ _ => Finset.sum_comm`.
+
+Rewrite `h` using `[h2]`. Then use the resulting hypothesis.
+-/
 theorem testRest_bound : ∀ (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N : ℕ) (j : ℕ) (bad : Finset ℕ) (frob : ℕ → Ψ → ℕ → Ψ ⊕ Ψ) (B₀ : ℕ) (Q : Ψ → ℕ → RP Ψ N), 1 ≤ j → j < N → 4 * Fintype.card Ψ * N ^ 2 ≤ B₀ → IsDecomp (testPoly j) Q → |∑ τ, ∑ k ∈ Finset.Icc 1 N, restSum j bad frob B₀ τ k (Q τ k)| ≤ 1.6 * (((dimX Ψ N j : ℝ) + 1) * testDeg Ψ N j) := by
   intro Ψ _ _ N j bad frob B₀ Q hj hjN hB hQ
   obtain ⟨k, rfl⟩ : ∃ k, N = j + k := ⟨N - j, by omega⟩

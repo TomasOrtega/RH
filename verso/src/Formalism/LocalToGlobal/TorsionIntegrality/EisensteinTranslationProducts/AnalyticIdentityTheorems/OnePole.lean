@@ -9,17 +9,28 @@ namespace OnePole
 
 open AnalyticIdentityTheoremsZetaFacts
 
+/- English proof (translation)
+Conclude with `tendsto_nhds_unique (h₁.tendsto.mono_left nhdsWithin_le_nhds) ((h₂.tendsto.mono_left nhdsWithin_le_nhds).congr' h.symm)`.
+-/
 lemma eq_of_eventuallyEq_nhdsNE {g₁ g₂ : ℂ → ℂ} {z : ℂ} (h₁ : ContinuousAt g₁ z)
     (h₂ : ContinuousAt g₂ z) (h : g₁ =ᶠ[𝓝[≠] z] g₂) : g₁ z = g₂ z := by
   exact tendsto_nhds_unique (h₁.tendsto.mono_left nhdsWithin_le_nhds)
     ((h₂.tendsto.mono_left nhdsWithin_le_nhds).congr' h.symm)
 
+/- English proof (translation)
+Use `tendsto_nhdsWithin_of_tendsto_nhds_of_eventually_within _ ((continuous_add_right ω).continuousAt.tendsto.mono_left nhdsWithin_le_nhds) ?_` and prove the remaining obligations. Use `filter_upwards [self_mem_nhdsWithin] with w hw`. Simplify using `using hw`.
+-/
 lemma tendsto_add_nhdsNE (z ω : ℂ) : Tendsto (fun w : ℂ => w + ω) (𝓝[≠] z) (𝓝[≠] (z + ω)) := by
   refine tendsto_nhdsWithin_of_tendsto_nhds_of_eventually_within _
     ((continuous_add_right ω).continuousAt.tendsto.mono_left nhdsWithin_le_nhds) ?_
   filter_upwards [self_mem_nhdsWithin] with w hw
   simpa using hw
 
+/- English proof (translation)
+Establish `hx : ∀ x : ℂ, ∀ᶠ u in 𝓝[≠] x, u ∉ L.lattice`. Introduce `x`. Distinguish the cases in `hx : x ∈ L.lattice`. Establish `hd : DiscreteTopology (L.lattice : Set ℂ)` using `(inferInstance : DiscreteTopology L.lattice)`. Conclude with `Filter.inf_principal_eq_bot.1 ((discreteTopology_subtype_iff.1 hd) x hx)`.
+
+Conclude with `eventually_nhdsWithin_of_eventually_nhds ((L.isClosed_lattice.isOpen_compl).mem_nhds hx)`. Use `(tendsto_add_nhdsNE z (-p)).eventually (hx (z + -p))` as an intermediate fact. Simplify `this` using `[sub_eq_add_neg]`.
+-/
 lemma eventually_notMem (L : PeriodPair) (p z : ℂ) : ∀ᶠ w in 𝓝[≠] z, w - p ∉ L.lattice := by
   have hx : ∀ x : ℂ, ∀ᶠ u in 𝓝[≠] x, u ∉ L.lattice := by
     intro x
@@ -30,9 +41,17 @@ lemma eventually_notMem (L : PeriodPair) (p z : ℂ) : ∀ᶠ w in 𝓝[≠] z, 
   have := (tendsto_add_nhdsNE z (-p)).eventually (hx (z + -p))
   simpa [sub_eq_add_neg] using this
 
+/- English proof (translation)
+Conclude with `(differentiableOn_wZeta L).analyticAt ((L.isClosed_lattice.isOpen_compl).mem_nhds hz)`.
+-/
 lemma analyticAt_wZeta (L : PeriodPair) (z : ℂ) (hz : z ∉ L.lattice) : AnalyticAt ℂ (wZeta L) z := by
   exact (differentiableOn_wZeta L).analyticAt ((L.isClosed_lattice.isOpen_compl).mem_nhds hz)
 
+/- English proof (translation)
+Use `(differentiableOn_zetaExcept L 0).analyticAt ?_` and prove the remaining obligations. Use `filter_upwards [eventually_nhdsWithin_iff.1 (eventually_notMem L 0 0)] with w hw`. Simplify using `only [Set.mem_compl_iff, Set.mem_diff, Set.mem_singleton_iff, SetLike.mem_coe, not_and, not_not]`. Introduce `hmem`. Assume the negation of the conclusion as `hne`.
+
+Conclude with `hw hne (by simpa using hmem)`.
+-/
 lemma analyticAt_zetaExcept (L : PeriodPair) : AnalyticAt ℂ (zetaExcept L 0) 0 := by
   refine (differentiableOn_zetaExcept L 0).analyticAt ?_
   filter_upwards [eventually_nhdsWithin_iff.1 (eventually_notMem L 0 0)] with w hw
@@ -41,12 +60,28 @@ lemma analyticAt_zetaExcept (L : PeriodPair) : AnalyticAt ℂ (zetaExcept L 0) 0
   by_contra hne
   exact hw hne (by simpa using hmem)
 
+/- English proof (translation)
+Use `filter_upwards [eventually_notMem L z₀ z₀] with w hw`. Rewrite using `[show w - p = w - z₀ + (z₀ - p) by ring, hq L (z₀ - p) (w - z₀) h hw, ← zetaExcept_zero_add]`.
+-/
 lemma zeta_local (hq : ZetaQuasi) (L : PeriodPair) (p z₀ : ℂ) (h : z₀ - p ∈ L.lattice) :
     ∀ᶠ w in 𝓝[≠] z₀,
       wZeta L (w - p) = zetaExcept L 0 (w - z₀) + 1 / (w - z₀) + wEta L (z₀ - p) := by
   filter_upwards [eventually_notMem L z₀ z₀] with w hw
   rw [show w - p = w - z₀ + (z₀ - p) by ring, hq L (z₀ - p) (w - z₀) h hw, ← zetaExcept_zero_add]
 
+/- English proof (translation)
+Consider the cases of `h : meromorphicOrderAt f p with`. Consider the case `top`. Use `⟨0, fun _ => 0, analyticAt_const, ?_⟩` and prove the remaining obligations. Use `filter_upwards [meromorphicOrderAt_eq_top_iff.1 h] with w hw`. Simplify using `[hw]`.
+
+Consider the case `coe n`. Take `⟨g, hg, -, hfg⟩` from `(meromorphicOrderAt_eq_int_iff hf).1 h`. Establish `hn : (-1 : ℤ) ≤ n`. Rewrite `ho` using `[h]`. Establish `h2 : ((-1 : ℤ) : WithTop ℤ) ≤ (n : WithTop ℤ)` using `by simpa using ho`.
+
+Conclude with `WithTop.coe_le_coe.1 h2`. Break down `eq_or_lt_of_le hn with hn | hn` into its components or cases. Substitute `hn` using the available equality. Take `⟨q, hq⟩` from `hg`. Use `⟨g p, dslope g p, ⟨_, hq.has_fpower_series_dslope_fslope⟩, ?_⟩` and prove the remaining obligations.
+
+Use `filter_upwards [hfg, self_mem_nhdsWithin] with w hw hwp`. Establish `hwp' : w ≠ p` using `hwp`. Establish `hne : w - p ≠ 0` using `sub_ne_zero.2 hwp'`. Rewrite using `[hw, zpow_neg_one, smul_eq_mul, dslope_of_ne _ hwp', slope_def_field]`. Clear the denominators using the available nonvanishing facts.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hn0 : 0 ≤ n` using `by omega lift n to ℕ using hn0`. Use `⟨0, fun w => (w - p) ^ n * g w, by fun_prop, ?_⟩` and prove the remaining obligations. Use `filter_upwards [hfg] with w hw`. Rewrite using `[hw]`.
+
+Simplify using `[zpow_natCast, smul_eq_mul]`.
+-/
 lemma simple_local {f : ℂ → ℂ} {p : ℂ} (hf : MeromorphicAt f p) (ho : -1 ≤ meromorphicOrderAt f p) :
     ∃ (r : ℂ) (k : ℂ → ℂ), AnalyticAt ℂ k p ∧ ∀ᶠ w in 𝓝[≠] p, f w = r / (w - p) + k w := by
   cases h : meromorphicOrderAt f p with
@@ -81,6 +116,55 @@ end OnePole
 
 open OnePole AnalyticIdentityTheoremsZetaFacts
 
+/- English proof (translation)
+Introduce `L f p hmer hper hord hp`. Take `⟨r, k, hk, hfk⟩` from `simple_local (hmer p) hp`. Use `set g : ℂ → ℂ := fun w => f w - r * wZeta L (w - p) with hg`. Establish `hB : ∀ z, 0 ≤ meromorphicOrderAt f z → ∃ B : ℂ → ℂ, AnalyticAt ℂ B z ∧ f =ᶠ[𝓝[≠] z] B`. Introduce `z hz`.
+
+Consider the cases of `h : meromorphicOrderAt f z with`. Consider the case `top`. Conclude with `⟨fun _ => 0, analyticAt_const, meromorphicOrderAt_eq_top_iff.1 h⟩`. Consider the case `coe n`. Take `⟨B, hBa, -, hfB⟩` from `(meromorphicOrderAt_eq_int_iff (hmer z)).1 h`.
+
+Establish `hn : 0 ≤ n` using `by rw [h] at hz; exact_mod_cast hz`. Use `lift n to ℕ using hn`. Use `⟨fun w => (w - z) ^ n * B w, by fun_prop, ?_⟩` and prove the remaining obligations. Use `filter_upwards [hfB] with w hw`. Rewrite using `[hw]`.
+
+Simplify using `[zpow_natCast, smul_eq_mul]`. Establish `hloc : ∀ z, ∃ A : ℂ → ℂ, AnalyticAt ℂ A z ∧ g =ᶠ[𝓝[≠] z] A`. Introduce `z`. Distinguish the cases in `hz : z - p ∈ L.lattice`. Use `⟨fun w => k (w - (z - p)) - r * zetaExcept L 0 (w - z) - r * wEta L (z - p), ?_, ?_⟩` and prove the remaining obligations.
+
+Establish `h1 : AnalyticAt ℂ (fun w => k (w - (z - p))) z`. Establish `hk' : AnalyticAt ℂ k (z - (z - p))` using `by simpa using hk`. Conclude with `AnalyticAt.comp (f := fun w : ℂ => w - (z - p)) (g := k) hk' (by fun_prop)`. Establish `h2 : AnalyticAt ℂ (fun w => zetaExcept L 0 (w - z)) z`. Establish `hz' : AnalyticAt ℂ (zetaExcept L 0) (z - z)` using `by simpa using analyticAt_zetaExcept L`.
+
+Conclude with `AnalyticAt.comp (f := fun w : ℂ => w - z) (g := zetaExcept L 0) hz' (by fun_prop)`. Conclude with `(h1.sub (analyticAt_const.mul h2)).sub analyticAt_const`. Establish `hshift : Tendsto (fun w : ℂ => w - (z - p)) (𝓝[≠] z) (𝓝[≠] p)`. Establish `h'` using `tendsto_add_nhdsNE z (-(z - p))`. Rewrite `h'` using `[show z + -(z - p) = p by ring]`.
+
+Simplify `h'` using `only [← sub_eq_add_neg]`. Use `filter_upwards [hshift.eventually hfk, zeta_local hq L p z hz] with w hw1 hw2`. Establish `hfw : f w = f (w - (z - p))`. Use `hper (z - p) hz (w - (z - p))` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`.
+
+Conclude with `this`. Use `show f w - r * wZeta L (w - p) = _`. Rewrite using `[hfw, hw1, hw2, show w - (z - p) - p = w - z by ring]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨B, hBa, hfB⟩` from `hB z (hord z hz)`.
+
+Use `⟨fun w => B w - r * wZeta L (w - p), ?_, ?_⟩` and prove the remaining obligations. Establish `: AnalyticAt ℂ (wZeta L) (z - p)` using `analyticAt_wZeta L _ hz`. Conclude with `hBa.sub (analyticAt_const.mul (AnalyticAt.comp (f := fun w : ℂ => w - p) (g := wZeta L) this (by fun_prop)))`. Use `filter_upwards [hfB] with w hw show f w - r * wZeta L (w - p) = _`. Rewrite using `[hw]`.
+
+Use `set G : ℂ → ℂ := fun w => limUnder (𝓝[≠] w) g with hG`. Establish `hGA : ∀ z, ∀ A : ℂ → ℂ, AnalyticAt ℂ A z → g =ᶠ[𝓝[≠] z] A → G =ᶠ[𝓝 z] A`. Introduce `z A hA hgA`. Establish `h1 : ∀ᶠ y in 𝓝 z, y ∈ ({z}ᶜ : Set ℂ) → g y = A y` using `eventually_nhdsWithin_iff.1 hgA`. Use `filter_upwards [eventually_eventually_nhds.2 h1, hA.eventually_analyticAt] with w hw hAw`.
+
+Use `show limUnder (𝓝[≠] w) g = A w`. Apply `Tendsto.limUnder_eq` to reduce the goal to its premises. Distinguish the cases in `hwz : w = z`. Substitute `hwz` using the available equality. Conclude with `(hAw.continuousAt.tendsto.mono_left nhdsWithin_le_nhds).congr' hgA.symm`.
+
+Establish `hgw : g =ᶠ[𝓝[≠] w] A`. Apply `eventually_nhdsWithin_of_eventually_nhds` to reduce the goal to its premises. Use `filter_upwards [hw, isOpen_ne.mem_nhds hwz] with y hy hyz`. Conclude with `hy hyz`. Conclude with `(hAw.continuousAt.tendsto.mono_left nhdsWithin_le_nhds).congr' hgw.symm`.
+
+Establish `hGd : Differentiable ℂ G` using `fun z => by`. Take `⟨A, hA, hgA⟩` from `hloc z`. Conclude with `hA.differentiableAt.congr_of_eventuallyEq (hGA z A hA hgA)`. Establish `hgG : ∀ z, g =ᶠ[𝓝[≠] z] G` using `fun z => by`. Take `⟨A, hA, hgA⟩` from `hloc z`.
+
+Use `filter_upwards [hgA, nhdsWithin_le_nhds (hGA z A hA hgA)] with w h1 h2`. Rewrite using `[h1, h2]`. Establish `hGq : ∀ ω ∈ L.lattice, ∀ w, G (w + ω) = G w - r * wEta L ω`. Introduce `ω hω w`. Use `eq_of_eventuallyEq_nhdsNE (g₁ := fun y => G (y + ω)) (g₂ := fun y => G y - r * wEta L ω) (hGd.continuous.comp (continuous_add_right ω)).continuousAt (hGd.continuous.sub continuous_const).continuousAt ?_` and prove the remaining obligations.
+
+Use `filter_upwards [(tendsto_add_nhdsNE w ω).eventually (hgG (w + ω)), hgG w, eventually_notMem L p w] with y h1 h2 h3`. Use `show G (y + ω) = G y - r * wEta L ω`. Rewrite using `[← h1, ← h2]`. Use `show f (y + ω) - r * wZeta L (y + ω - p) = f y - r * wZeta L (y - p) - r * wEta L ω`. Rewrite using `[hper ω hω y, show y + ω - p = (y - p) + ω by ring, hq L ω (y - p) hω h3]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hDd : Differentiable ℂ (deriv G)` using `fun z => ((hGd.analyticAt z).deriv).differentiableAt`. Establish `hDp : IsPeriodic L (deriv G)`. Introduce `ω hω z`. Establish `hfun : (fun y => G (y + ω)) = fun y => G y - r * wEta L ω` using `funext fun y => hGq ω hω y`.
+
+Rewrite using `[← deriv_comp_add_const, hfun, deriv_sub_const]`. Establish `hDc` using `hE L (deriv G) hDd hDp`. Use `set a := deriv G 0 with ha`. Establish `hlin : ∀ w, G w = a * w + G 0`. Establish `hH : Differentiable ℂ (fun w => G w - a * w)` using `hGd.sub (differentiable_id.const_mul a)`.
+
+Establish `hH' : ∀ x, deriv (fun w => G w - a * w) x = 0`. Introduce `x`. Establish `h1 : HasDerivAt G a x` using `by rw [← hDc x]; exact (hGd x).hasDerivAt`. Establish `h2 : HasDerivAt (fun w : ℂ => a * w) (a * 1) x` using `(hasDerivAt_id' x).const_mul a`. Establish `h3 : HasDerivAt (fun w => G w - a * w) (a - a * 1) x` using `h1.sub h2`.
+
+Rewrite using `[h3.deriv]`. Expand and normalize the polynomial expressions, which then agree. Introduce `w`. Use `is_const_of_deriv_eq_zero hH hH' w 0` as an intermediate fact. Simplify using `only [mul_zero, sub_zero] at this`.
+
+Take the linear combination `this`. Establish `hr : r = 0`. Establish `e1` using `hGq L.ω₁ L.ω₁_mem_lattice 0`. Establish `e2` using `hGq L.ω₂ L.ω₂_mem_lattice 0`. Rewrite `e1` using `[zero_add, hlin L.ω₁]`.
+
+Rewrite `e2` using `[zero_add, hlin L.ω₂]`. Establish `hs : (if 0 < (L.ω₂ / L.ω₁).im then (1 : ℂ) else -1) * (2 * (Real.pi : ℂ) * Complex.I) ≠ 0`. Apply `mul_ne_zero` to reduce the goal to its premises. Apply the tactic sequence `split_ifs <;> norm_num`. Simplify using `[Real.pi_ne_zero, Complex.I_ne_zero]`.
+
+Establish `key : r * (wEta L L.ω₁ * L.ω₂ - wEta L L.ω₂ * L.ω₁) = 0`. Take the linear combination `L.ω₂ * e1 - L.ω₁ * e2`. Rewrite `key` using `[hL L]`. Conclude with `(mul_eq_zero.1 key).resolve_right hs`. Establish `hGp : IsPeriodic L G` using `fun ω hω w => by rw [hGq ω hω w, hr]; ring`.
+
+Use `⟨G 0, fun z hz => ?_⟩` and prove the remaining obligations. Establish `hfG : f =ᶠ[𝓝[≠] z] G` using `by filter_upwards [hgG z] with w hw`. Rewrite using `[← hw]`. Use `show f w = f w - r * wZeta L (w - p)`. Rewrite using `[hr]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[eq_of_eventuallyEq_nhdsNE hz (hGd z).continuousAt hfG]`. Conclude with `hE L G hGd hGp z`.
+-/
 theorem ellipticOnePole_of (hN : EllipticNoPole) (hE : EllipticEntire) (hq : ZetaQuasi)
     (hL : Legendre) : EllipticOnePole := by
   intro L f p hmer hper hord hp

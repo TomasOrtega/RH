@@ -7,6 +7,9 @@ import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsSubAug
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RkSubSuccLe
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ThetaGLLayer.layer_bound | exact GlobalTheory.ThetaGLLayer.layer_bound | (intros; apply GlobalTheory.ThetaGLLayer.layer_bound <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.theta_rank_submodule_chain_bounded : GlobalTheory.FunPr.Hypotheses₂ → ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (n m : ℕ) (χ : GL (Fin n) k →* ℂˣ), IsOpen {g | χ g = 1} → ∀ ρ : ℕ,
     ∃ L : ℕ, ∀ (r : ℕ) (N : Fin r → Submodule ℂ (Matrix (Fin n) (Fin m) k → ℂ)),

@@ -13,6 +13,23 @@ open scoped InnerProductSpace ENNReal
 
 namespace GlobalTheory.SuppliedNorm
 
+/- English proof (translation)
+Introduce `hy P Wp Wq _ _ _ _ _ _ p lam b bv ga h q0 R l l' dg s J tau hN hS`. Use `haveI := FiniteDimensional.complete ℂ Wp`. Use `haveI := FiniteDimensional.complete ℂ Wq`. Take `⟨c₁, hc₁, h1⟩` from `GlobalTheory.T.bessel_setting_uniform_constant hy P.k P.r Wp Wq p.T.base`. Establish `hH : PI.BesselPeriodGGP.IsHaarOn (GG P.k P.r) p.T.base.μG` using `by haveI : IsFiniteMeasureOnCompacts p.T.base.μG := ⟨fun K hK => p.T.base.haarG.finite_compact K hK⟩ haveI : IsLocallyFiniteMeasure p.T.base.μG := inferInstance`.
+
+Conclude with `⟨inferInstance, p.T.base.haarG.ne_zero, p.T.base.haarG.conc, p.T.base.haarG.left⟩`. Take `⟨c₂, hc₂, h2⟩` from `GlobalTheory.BesselDegree.schur_fdeg hy P.k P.r (PI.BesselPeriodGGP.eps48 P.k P.r) _ hH`. Take `⟨⟨-, -, -, -, hgap⟩, hfam⟩` from `GlobalTheory.NumFam.num_fam P.k P.r lam P.u b bv ga h q0 hN`. Use `⟨c₁ * c₂, mul_pos hc₁ hc₂, fun ν hν => ?_⟩` and prove the remaining obligations. Establish `hDS` using `hS.fam ν hν`.
+
+Take `⟨hl, hdg, hfd⟩` from `hS.left ν hν`. Take `⟨hl', -, -⟩` from `hS.right ν hν`. Establish `hP` using `h1 _ _ (h / 2) (R ν) (l ν) (l' ν) (dg ν) hDS (hfam ν hν).2.2.1 hgap hl hl' hfd`. Establish `h0 : TBB.jN2 p (0 : B.Mat P.k P.r → (Wq →L[ℂ] Wp)) = 0`. Rewrite using `[GlobalTheory.T.jN2_eq_normSq_base, hP 0 0 ⟨0, fun i => i.elim0, fun i => i.elim0, fun i => i.elim0, fun i => i.elim0, fun g _ => by simp, by simp⟩]`.
+
+Simplify using the standard rewrite rules. Distinguish the cases in `hnz : NzOn (R ν) (l ν) ∧ NzOn (R ν) (l' ν)`. Use `right`. Take `⟨hc, hs⟩` from `hS.coef ν hν hnz.1 hnz.2`. Establish `hj : TBB.jN2 p (J ν) = ENNReal.ofReal (c₁ * dg ν)`.
+
+Rewrite using `[GlobalTheory.T.jN2_eq_normSq_base, hP _ _ hc, hs]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts. Take `⟨w, hw, -⟩` from `(GlobalTheory.rep_basic_of_isDS hy.1.2.2.1 P.k P.r _ _ (R ν) hDS).2.2.2.2.2.2.2.1`. Establish `hw0 : w ≠ 0`.
+
+Introduce and unpack `rfl`. Simplify using `at hw`. Establish `hd : dg ν = c₂ * Formalism.QuantumDeterminants.fdegHC (fun a => lam a + (ν a : ℝ))`. Rewrite using `[← hfd w hw0, (h2 _ (R ν) hDS).1 w hw0]`. Use `⟨?_, hnz.1, hnz.2, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `hJ`. Rewrite `hj` using `[hJ, h0]`. Conclude with `absurd hj.symm (ENNReal.ofReal_pos.2 (mul_pos hc₁ hdg)).ne'`. Introduce `hs0`. Rewrite `hs` using `[hs0, norm_zero]`.
+
+Conclude with `hdg.ne hs`. Rewrite using `[hj, hd, mul_assoc]`. Use `left`. Establish `hJ` using `hS.zero ν (fun hh => hnz hh.2)`. Conclude with `⟨hJ, by rw [hJ, h0], hnz⟩`.
+-/
 theorem sup_norm : Hyps → ∀ (P : M.Par) (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] (p : KB.Pl P Wp Wq) (lam : Fin (2 * P.r + P.k + 1) → ℝ) (b bv ga h : ℝ) (q0 : ℕ) (R : (Fin (2 * P.r + P.k + 1) → ℤ) → Rep P.k P.r) (l : ∀ ν, (R ν).H → Wp) (l' : ∀ ν, (R ν).H → Wq) (dg : (Fin (2 * P.r + P.k + 1) → ℤ) → ℝ) (s : (Fin (2 * P.r + P.k + 1) → ℤ) → ℂ) (J : (Fin (2 * P.r + P.k + 1) → ℤ) → B.Mat P.k P.r → (Wq →L[ℂ] Wp)) (tau : (Fin (2 * P.r + P.k + 1) → ℤ) → Finset (Fin (2 * P.r + P.k + 1)) → ℂ), Num P.k P.r lam P.u b bv ga h q0 → Sup p lam q0 R l l' dg s J tau → ∃ c : ℝ, 0 < c ∧ ∀ ν, n1 ν ≤ q0 → (J ν = 0 ∧ TBB.jN2 p (J ν) = 0 ∧ ¬ (NzOn (R ν) (l ν) ∧ NzOn (R ν) (l' ν))) ∨ (J ν ≠ 0 ∧ NzOn (R ν) (l ν) ∧ NzOn (R ν) (l' ν) ∧ s ν ≠ 0 ∧ TBB.jN2 p (J ν) = ENNReal.ofReal (c * Formalism.QuantumDeterminants.fdegHC (fun a => lam a + (ν a : ℝ)))) := by
   intro hy P Wp Wq _ _ _ _ _ _ p lam b bv ga h q0 R l l' dg s J tau hN hS
   haveI := FiniteDimensional.complete ℂ Wp

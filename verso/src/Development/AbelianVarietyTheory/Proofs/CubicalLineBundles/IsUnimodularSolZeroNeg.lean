@@ -13,6 +13,9 @@ namespace GlobalTheory.WeierstrassCurve.OriginTangent
 
 variable {R : Type} [CommRing R] (W : WeierstrassCurve R) {A : Type} [CommRing A]
 
+/- English proof (translation)
+Establish `e₁` using `(SpecMap_originEval_chartY W ρ z w h.equation).trans (e.trans (SpecMap_originEval_chartY W ρ' z' w' h'.equation).symm)`. Rewrite `e₁` using `[cancel_mono]`. Establish `e' : originEval W ρ z w h.equation = originEval W ρ' z' w' h'.equation` using `congrArg (·.hom) (Spec.map_injective e₁)`. Conclude with `⟨(originEval_originZ ..).symm.trans ((RingHom.congr_fun e' (originZ W)).trans (originEval_originZ ..)), (originEval_originW ..).symm.trans ((RingHom.congr_fun e' (originW W)).trans (originEval_originW ..))⟩`.
+-/
 theorem ptHom_origin_inj {ρ ρ' : R →+* A} {z w z' w' : A}
     (h : IsUnimodularSol (W.map ρ) ![z, -1, w]) (h' : IsUnimodularSol (W.map ρ') ![z', -1, w'])
     (e : ptHom W ρ ![z, -1, w] h = ptHom W ρ' ![z', -1, w'] h') : z = z' ∧ w = w' := by
@@ -26,6 +29,15 @@ theorem ptHom_origin_inj {ρ ρ' : R →+* A} {z w z' w' : A}
     (originEval_originW ..).symm.trans
       ((RingHom.congr_fun e' (originW W)).trans (originEval_originW ..))⟩
 
+/- English proof (translation)
+Establish `hr : Set.range g ⊆ Set.range (chartY W)`. Introduce and unpack `_ ⟨p, rfl⟩`. Rewrite using `[← Scheme.Hom.coe_opensRange, opensRange_chartY]`. Conclude with `hY p`. Take `⟨ψ, hψ⟩` from `Spec.map_surjective (IsOpenImmersion.lift _ _ hr)`.
+
+Establish `hl : Spec.map ψ ≫ chartY W = g` using `hψ ▸ IsOpenImmersion.lift_fac _ _ hr`. Establish `hc : ψ.hom.comp (algebraMap R (OriginRing W)) = ρ`. Rewrite `hg` using `[← hl, Category.assoc, chartY_toSpec, ← Spec.map_comp]`. Conclude with `congrArg (·.hom) (Spec.map_injective hg)`. Apply the tactic sequence `have hP : (ψ.hom ∘ ![originZ W, -1, originW W]) = ![ψ.hom (originZ W), -1, ψ.hom (originW W)] := by ext1 j; fin_cases j <;> simp`.
+
+Establish `h₀ : IsUnimodularSol (W.map (algebraMap R (OriginRing W))) ![originZ W, -1, originW W]` using `isUnimodularSol_origin (equation_originZ_originW W)`. Establish `h₁` using `h₀.map_comp ψ.hom`. Establish `h₂ : IsUnimodularSol (W.map ρ) ![ψ.hom (originZ W), -1, ψ.hom (originW W)]`. Rewrite using `[← hc, ← hP]`. Conclude with `h₁`.
+
+Use `⟨_, _, h₂, ?_⟩` and prove the remaining obligations. Rewrite using `[← hl]`. Conclude with `(SpecMap_ptHom W _ _ h₀ ψ.hom).trans (ptHom_congr W _ _ _ hc hP _)`.
+-/
 theorem exists_eq_ptHom_origin (ρ : R →+* A) (g : Spec (.of A) ⟶ scheme W)
     (hY : ∀ p, g p ∈ coordOpen W 1) (hg : g ≫ toSpec W = Spec.map (CommRingCat.ofHom ρ)) :
     ∃ (z w : A) (h : IsUnimodularSol (W.map ρ) ![z, -1, w]), g = ptHom W ρ ![z, -1, w] h := by
@@ -50,14 +62,33 @@ theorem exists_eq_ptHom_origin (ρ : R →+* A) (g : Spec (.of A) ⟶ scheme W)
   rw [← hl]
   exact (SpecMap_ptHom W _ _ h₀ ψ.hom).trans (ptHom_congr W _ _ _ hc hP _)
 
+/- English proof (translation)
+Rewrite using `[SpecMap_zero, ← ptHom_smul W ρ _ _ isUnit_one.neg]`. Apply the tactic sequence `exact ptHom_congr W _ _ _ rfl (by ext1 j; fin_cases j <;> simp) _`.
+-/
 theorem SpecMap_zero_origin (ρ : R →+* A) (h : IsUnimodularSol (W.map ρ) ![0, -1, 0]) :
     Spec.map (CommRingCat.ofHom ρ) ≫ zero W = ptHom W ρ ![0, -1, 0] h := by
   rw [SpecMap_zero, ← ptHom_smul W ρ _ _ isUnit_one.neg]
   exact ptHom_congr W _ _ _ rfl (by ext1 j; fin_cases j <;> simp) _
 
+/- English proof (translation)
+The claim follows from `isUnimodularSol_origin (by rw [equation_origin_iff]; simp)`.
+-/
 theorem isUnimodularSol_zero_neg (V : WeierstrassCurve A) : IsUnimodularSol V ![0, -1, 0] :=
   isUnimodularSol_origin (by rw [equation_origin_iff]; simp)
 
+/- English proof (translation)
+Establish `hY : ∀ p, g p ∈ coordOpen W 1`. Introduce `p`. Establish `hs : Function.Surjective (PrimeSpectrum.comap (TrivSqZeroExt.fstHom A A A).toRingHom)`. Rewrite using `[← Set.range_eq_univ, range_comap_of_surjective _ _ TrivSqZeroExt.fst_surjective, PrimeSpectrum.zeroLocus_eq_univ_iff]`. Introduce `x hx`.
+
+Establish `hx' : x.fst = 0` using `hx`. Use `⟨2, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp [pow_two, hx']`. Take `⟨q, rfl⟩` from `hs p`. Establish `e : g (PrimeSpectrum.comap (TrivSqZeroExt.fstHom A A A).toRingHom q) = zero W (Spec.map (CommRingCat.ofHom f) q)`.
+
+Conclude with `(Scheme.Hom.comp_apply (Spec.map (CommRingCat.ofHom (TrivSqZeroExt.fstHom A A A).toRingHom)) g q).symm.trans ((congrArg (fun t => t q) h0).trans (Scheme.Hom.comp_apply (Spec.map (CommRingCat.ofHom f)) (zero W) q))`. Rewrite using `[e]`. Conclude with `(zero_preimage_coordOpen_one W).ge (Set.mem_univ _)`. Take `⟨z, w, h, rfl⟩` from `exists_eq_ptHom_origin W _ g hY hg`. Apply the tactic sequence `have hP : ((TrivSqZeroExt.fstHom A A A).toRingHom ∘ ![z, -1, w]) = ![z.fst, -1, w.fst] := by ext1 j; fin_cases j <;> simp`.
+
+Establish `h₁` using `h.map_comp (TrivSqZeroExt.fstHom A A A).toRingHom`. Establish `h₂` using `h₁`. Rewrite `h₂` using `[hP]`. Rewrite `h0` using `[SpecMap_ptHom, SpecMap_zero_origin W f (isUnimodularSol_zero_neg _), ptHom_congr W _ _ h₁ rfl hP h₂]`. Take `⟨hz, hw⟩` from `ptHom_origin_inj W _ _ h0`.
+
+Establish `he` using `(equation_origin_iff _ _ _).mp h.equation`. Apply the tactic sequence `have hzz : z * z = 0 := by ext <;> simp [hz]`. Apply the tactic sequence `have hzw : z * w = 0 := by ext <;> simp [hz, hw]`. Apply the tactic sequence `have hww : w * w = 0 := by ext <;> simp [hw]`. Establish `hw0 : w = 0` using `by set V := W.map ((algebraMap A (DualNumber A)).comp f)`.
+
+Take the linear combination `he + z * hzz + (V.a₁ + V.a₂ * z + V.a₄ * w) * hzw + (V.a₃ + V.a₆ * w) * hww`. Apply the tactic sequence `have hz0 : z = TrivSqZeroExt.inr z.snd := by ext <;> simp [hz]`. Establish `hQ : ![z, -1, w] = ![TrivSqZeroExt.inr z.snd, -1, 0]` using `by rw [hw0, ← hz0]`. Conclude with `⟨z.snd, hQ ▸ h, ptHom_congr W _ _ _ rfl hQ _⟩`.
+-/
 theorem exists_eq_ptHom_eps (f : R →+* A) (g : Spec (.of (DualNumber A)) ⟶ scheme W)
     (hg : g ≫ toSpec W =
       Spec.map (CommRingCat.ofHom ((algebraMap A (DualNumber A)).comp f)))
@@ -104,6 +135,11 @@ theorem exists_eq_ptHom_eps (f : R →+* A) (g : Spec (.of (DualNumber A)) ⟶ s
   have hQ : ![z, -1, w] = ![TrivSqZeroExt.inr z.snd, -1, 0] := by rw [hw0, ← hz0]
   exact ⟨z.snd, hQ ▸ h, ptHom_congr W _ _ _ rfl hQ _⟩
 
+/- English proof (translation)
+Establish `hρ : (epsScaleR c).comp ((algebraMap A (DualNumber A)).comp f) = (algebraMap A (DualNumber A)).comp f`. Apply the tactic sequence `ext a <;> simp [epsScaleR, TrivSqZeroExt.algebraMap_eq_inl]`. Establish `hP : (epsScaleR c ∘ ![DualNumber.eps, -1, 0]) = ![TrivSqZeroExt.inr c, -1, 0]` using `by ext1 j; fin_cases j`. Apply the tactic sequence `ext <;> simp [epsScaleR]`. Simplify using the standard rewrite rules.
+
+Simplify using the standard rewrite rules. Establish `h₁` using `h.map_comp (epsScaleR c)`. Rewrite `h₁` using `[hρ, hP]`. Conclude with `⟨h₁, (SpecMap_ptHom W _ _ h _).trans (ptHom_congr W _ _ _ hρ hP _)⟩`.
+-/
 theorem epsScale_ptHom (f : R →+* A) (c : A)
     (h : IsUnimodularSol (W.map ((algebraMap A (DualNumber A)).comp f)) ![DualNumber.eps, -1, 0]) :
     ∃ h', spMap (epsScaleR c) ≫
@@ -121,6 +157,11 @@ theorem epsScale_ptHom (f : R →+* A) (c : A)
   rw [hρ, hP] at h₁
   exact ⟨h₁, (SpecMap_ptHom W _ _ h _).trans (ptHom_congr W _ _ _ hρ hP _)⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, rfl⟩`. Simplify using `using hu 0`. Introduce `hw`. Use `⟨![w], fun i => ?_, by simp⟩` and prove the remaining obligations.
+
+Use `fin_cases i`. Conclude with `hw`.
+-/
 theorem isLieComb_one_iff {G : Over (Sp A)} [GrpObj G] (c : Fin 1 → A) (v w : epsR A ⟶ G) :
     IsLieComb c ![v] w ↔ w.left = spMap (epsScaleR (c 0)) ≫ v.left := by
   constructor
@@ -131,6 +172,21 @@ theorem isLieComb_one_iff {G : Over (Sp A)} [GrpObj G] (c : Fin 1 → A) (v w : 
     fin_cases i
     exact hw
 
+/- English proof (translation)
+Introduce `R _ W R' _ f A _ φ v h hpb he hv`. Establish `hover : ∀ w : epsR R' ⟶ A, w.left ≫ A.hom = spMap (algebraMap R' (DualNumber R'))` using `fun w => Over.w w`. Establish `hη : η[A].left ≫ A.hom = 𝟙 (Sp R')` using `Over.w η[A]`. Establish `he' : η[A].left ≫ φ = spMap f ≫ zero W` using `he`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `i fin_cases i`. Express the relevant statement in the definitionally equal form `spMap (TrivSqZeroExt.fstHom R' R' R').toRingHom ≫ v.left = η[A].left`. Use `hpb.hom_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, hv, he', SpecMap_zero_origin W f (isUnimodularSol_zero_neg _)]`. Use `(SpecMap_ptHom W _ _ h _).trans (ptHom_congr W _ _ _ ?_ ?_ _)` and prove the remaining obligations.
+
+Use extensionality with `a`. Simplify using `[TrivSqZeroExt.algebraMap_eq_inl]`. Apply the tactic sequence `ext1 j; fin_cases j <;> simp`. Rewrite using `[Category.assoc, hover, hη, ← Spec.map_comp, ← Spec.map_id]`. Use `congr 1`.
+
+Introduce `w hw`. Establish `hw' : spMap (TrivSqZeroExt.fstHom R' R' R').toRingHom ≫ w.left = η[A].left` using `hw`. Take `⟨c, hc, hwc⟩` from `exists_eq_ptHom_eps W f (w.left ≫ φ) (by rw [Category.assoc, hpb.w, ← Category.assoc, hover, ← Spec.map_comp]; rfl) (by rw [← Category.assoc, hw', he'])`. Establish `key : ∀ a : R', w.left = spMap (epsScaleR a) ≫ v.left ↔ a = c`. Introduce `a`.
+
+Take `⟨ha, hea⟩` from `epsScale_ptHom W f a h`. Prove the components needed by the constructor for the conclusion. Introduce `e`. Rewrite `hwc` using `[e, Category.assoc, hv, hea]`. Conclude with `TrivSqZeroExt.inr_injective (ptHom_origin_inj W _ _ hwc).1`.
+
+Introduce and unpack `rfl`. Use `hpb.hom_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, hv, hea, hwc]`. Rewrite using `[Category.assoc, hover, hover, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Use `congr 2`.
+
+Apply the tactic sequence `ext b <;> simp [epsScaleR, TrivSqZeroExt.algebraMap_eq_inl]`. Use `⟨fun _ => c, (isLieComb_one_iff _ _ _).mpr ((key c).mpr rfl), fun c' hc' => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Use `fin_cases i`. Conclude with `(key _).mp ((isLieComb_one_iff _ _ _).mp hc')`.
+-/
 theorem isLieBasis_eps : ∀ (R : Type) [CommRing R] (W : WeierstrassCurve R) (R' : Type) [CommRing R'] (f : R →+* R') (A : Over (Sp R')) [GrpObj A] (φ : A.left ⟶ scheme W) (v : epsR R' ⟶ A) (h : IsUnimodularSol (W.map ((algebraMap R' (DualNumber R')).comp f)) ![DualNumber.eps, -1, 0]), IsPullback φ A.hom (toSpec W) (spMap f) → eSec A ≫ φ = spMap f ≫ zero W → v.left ≫ φ = ptHom W ((algebraMap R' (DualNumber R')).comp f) ![DualNumber.eps, -1, 0] h → IsLieBasis ![v] := by
   intro R _ W R' _ f A _ φ v h hpb he hv
   have hover : ∀ w : epsR R' ⟶ A, w.left ≫ A.hom = spMap (algebraMap R' (DualNumber R')) :=

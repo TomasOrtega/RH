@@ -28,6 +28,13 @@ open GlobalTheory.TraceIncl
 variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m}
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
 
+/- English proof (translation)
+Establish `hsum : ∀ s : Finset (Fin n), Φ (∑ k ∈ s, ⟪b k, w⟫_ℂ • b k) = ∑ k ∈ s, star ⟪b k, w⟫_ℂ * Φ (b k)`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Establish `h0` using `hsmul 0 0`.
+
+Simplify using `only [zero_smul, star_zero, zero_mul] at h0`. Simplify using `using h0`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, hadd, hsmul, ih]`. Use `conv_rhs => rw [← b.sum_repr' w]`. Rewrite using `[hsum, inner_sum]`.
+
+Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[inner_smul_right, mul_comm]`. Use `congr 1`. Conclude with `(inner_conj_symm (𝕜 := ℂ) w (b k)).symm`.
+-/
 theorem inner_sum_eq {W : Type} [NormedAddCommGroup W] [InnerProductSpace ℂ W] {n : ℕ}
     (b : OrthonormalBasis (Fin n) ℂ W) (Φ : W → ℂ) (hadd : ∀ w w', Φ (w + w') = Φ w + Φ w')
     (hsmul : ∀ (c : ℂ) w, Φ (c • w) = star c * Φ w) (w : W) :
@@ -47,6 +54,11 @@ theorem inner_sum_eq {W : Type} [NormedAddCommGroup W] [InnerProductSpace ℂ W]
   congr 1
   exact (inner_conj_symm (𝕜 := ℂ) w (b k)).symm
 
+/- English proof (translation)
+Take `⟨n, hn, hpow⟩` from `hu.exists_pow_eq_one`. Establish `h1 : ‖(u : ℂ)‖ = 1`. Establish `: ‖(u : ℂ)‖ ^ n = 1`. Rewrite using `[← norm_pow, ← Units.val_pow_eq_pow_val, hpow, Units.val_one, norm_one]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) hn.ne').1 this`.
+
+Establish `hne : (u : ℂ) ≠ 0` using `u.ne_zero`. Rewrite using `[Units.val_inv_eq_inv_val, star_inv₀, Complex.star_def, Complex.inv_def, Complex.normSq_eq_norm_sq, Complex.norm_conj, h1]`. Simplify using the standard rewrite rules.
+-/
 theorem star_inv_of_finOrder (u : ℂˣ) (hu : IsOfFinOrder u) : star (((u⁻¹ : ℂˣ) : ℂ)) = (u : ℂ) := by
   obtain ⟨n, hn, hpow⟩ := hu.exists_pow_eq_one
   have h1 : ‖(u : ℂ)‖ = 1 := by
@@ -66,6 +78,11 @@ def phi (K : (R.cV i).W →ₗ[ℂ] Ser R i) (w : (R.cV i).W) : ℂ :=
 def coVec {n : ℕ} (b : OrthonormalBasis (Fin n) ℂ (R.cV i).W) (K : (R.cV i).W →ₗ[ℂ] Ser R i) : (R.cV i).W :=
   ∑ k, phi R i v y K (b k) • b k
 
+/- English proof (translation)
+Use `inner_sum_eq b _ (fun w w' => ?_) (fun c w => ?_) w` and prove the remaining obligations. Unfold `phi`. Rewrite using `[← integral_add (hI w) (hI w')]`. Use `integral_congr_ae (.of_forall fun g => ?_)` and prove the remaining obligations. Simplify using `only [map_add, Pi.add_apply, star_add, add_mul]`.
+
+Unfold `phi`. Rewrite using `[← integral_const_mul]`. Use `integral_congr_ae (.of_forall fun g => ?_)` and prove the remaining obligations. Simplify using `only [map_smul, Pi.smul_apply, smul_eq_mul, star_mul', mul_assoc]`.
+-/
 theorem inner_coVec {n : ℕ} (b : OrthonormalBasis (Fin n) ℂ (R.cV i).W) (K : (R.cV i).W →ₗ[ℂ] Ser R i)
     (hI : ∀ w, IntegrableOn (fun g => star (K w v g) * val R i v y g) (R.fdW i) (R.νW i)) (w : (R.cV i).W) :
     ⟪w, coVec R i v y b K⟫_ℂ = phi R i v y K w := by
@@ -88,6 +105,13 @@ open GlobalTheory.TraceIncl
 variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m}
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
 
+/- English proof (translation)
+Establish `hω` using `hL.thP.ωP i t`. Establish `hf` using `hL.thP.pt_theta i t (R.ioP i (PiTensorProduct.tprod ℂ v) ((R.cV i).ρ h⁻¹ w))`. Establish `hMem : (R.HW i (sg0 D A)).e y ∈ R.Wall i (sg0 D A)`. Rewrite using `[← (hL.models.HW i (sg0 D A)).2.1]`. Conclude with `LinearMap.mem_range_self _ y`.
+
+Establish `hMM` using `(GlobalTheory.MultMem.mem_mult_iff _ _ _ _ _ _ _ _).1 hMem`. Establish `hR : GlobalTheory.Grow.RapidDec (Wc D i) (val R i v y)` using `GlobalTheory.Grow.rapidDec_of_cuspForm hP hL.models.inf (hMM.aut _) (hMM.cusp _)`. Establish `: BorelSpace (GA D (Wc D i))` using `⟨rfl⟩`. Establish `hm : GlobalTheory.Grow.ModGrowth (Wc D i) (fun g => star (thetaKO (R.ωP i t) h g (R.ptP i t (R.ioP i (PiTensorProduct.tprod ℂ v) ((R.cV i).ρ h⁻¹ w)))))` using `((GlobalTheory.Core.Rk.ThetaGrowthBoth.thetaKO_modGrowth₂ D _ _ _ _ _ _ hω _ hf).right h).of_le (fun g => (norm_star _).le)`. Establish `hl : ∀ γ ∈ GQ (Wc D i), ∀ g, star (thetaKO (R.ωP i t) h (γ * g) (R.ptP i t (R.ioP i (PiTensorProduct.tprod ℂ v) ((R.cV i).ρ h⁻¹ w)))) = star (thetaKO (R.ωP i t) h g (R.ptP i t (R.ioP i (PiTensorProduct.tprod ℂ v) ((R.cV i).ρ h⁻¹ w))))` using `fun γ hγ g => by rw [GlobalTheory.Chain.LiftConv.thetaKO_left hω hf h γ hγ g]`.
+
+Establish `hms` using `((GlobalTheory.Chain.LiftConv.thetaKO_continuous hω hf h).star).measurable.aestronglyMeasurable (μ := (R.νW i).restrict (R.fdW i))`. Conclude with `hR.integrableOn_modGrowth_mul (hL.models.νW i).1.1 (hL.models.νW i).2 hm hl hms`.
+-/
 theorem integrable_kernA (hP : GlobalTheory.Published.CuspRapidDecay) (R : RealDat D A Ks) (F : Face D A) (hL : Laws R F)
     (i : Fin D.R.m) (t : T) (v : ∀ ρ, lowT (R.MW i (sg0 D A)) ρ) (y : (R.HW i (sg0 D A)).H) (h : GA D (Vc D i))
     (w : (R.cV i).W) :
@@ -113,6 +137,9 @@ theorem integrable_kernA (hP : GlobalTheory.Published.CuspRapidDecay) (R : RealD
     (μ := (R.νW i).restrict (R.fdW i))
   exact hR.integrableOn_modGrowth_mul (hL.models.νW i).1.1 (hL.models.νW i).2 hm hl hms
 
+/- English proof (translation)
+Take `⟨h, -, rfl⟩` from `KernLaws.exists_finite_lift _ x`. Rewrite using `[KernLaws.kern_fin R i t hL.thP.ioP]`. Conclude with `integrable_kernA hP R F hL i t v y h w`.
+-/
 theorem integrable_kern (hP : GlobalTheory.Published.CuspRapidDecay) (R : RealDat D A Ks) (F : Face D A) (hL : Laws R F)
     (i : Fin D.R.m) (t : T) (v : ∀ ρ, lowT (R.MW i (sg0 D A)) ρ) (y : (R.HW i (sg0 D A)).H)
     (x : Formalism.IndefR.Bridge.Gf (Vc D i)) (w : (R.cV i).W) :
@@ -121,11 +148,23 @@ theorem integrable_kern (hP : GlobalTheory.Published.CuspRapidDecay) (R : RealDa
   rw [KernLaws.kern_fin R i t hL.thP.ioP]
   exact integrable_kernA hP R F hL i t v y h w
 
+/- English proof (translation)
+Rewrite using `[← (hL.models.cV i).2.1 h⁻¹ x ((R.cV i).ρ h z), ← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]`.
+-/
 theorem inner_rho (R : RealDat D A Ks) (F : Face D A) (hL : Laws R F) (i : Fin D.R.m) (h : GA D (Vc D i))
     (x z : (R.cV i).W) : ⟪x, (R.cV i).ρ h z⟫_ℂ = ⟪(R.cV i).ρ h⁻¹ x, z⟫_ℂ := by
   rw [← (hL.models.cV i).2.1 h⁻¹ x ((R.cV i).ρ h z), ← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one,
     Module.End.one_apply]
 
+/- English proof (translation)
+Establish `hinv : ∀ x : (R.cV i).W, (R.cV i).ρ h⁻¹ ((R.cV i).ρ h x) = x` using `fun x => by`. Rewrite using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]`. Establish `hin` using `inner_coVec R i v y b (kernA R i t h) (integrable_kernA hP R F hL i t v y h)`. Apply `ext_inner_left ℂ` to reduce the goal to its premises. Introduce `w`.
+
+Rewrite using `[inner_rho R F hL, inv_inv, KernLaws.kern_fin R i t hL.thP.ioP, hin]`. Establish `e2 : upVec R i t v b y h = ∑ k, phi R i v y (kernA R i t h) ((R.cV i).ρ h (b k)) • b k`. Unfold `upVec`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Use `congr 1`.
+
+Unfold `upLift phi`. Use `integral_congr_ae (.of_forall fun g => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[KernLaws.kernA_apply, hinv]`. Both sides reduce to the same expression.
+
+Rewrite using `[e2]`. Use `inner_sum_eq b (fun w => phi R i v y (kernA R i t h) ((R.cV i).ρ h w)) (fun w w' => ?_) (fun c w => ?_) w` and prove the remaining obligations. Simplify using `only [map_add, ← hin, inner_add_left]`. Simplify using `only [map_smul, ← hin, inner_smul_left, Complex.star_def]`.
+-/
 theorem upVec_eq (hP : GlobalTheory.Published.CuspRapidDecay) (R : RealDat D A Ks) (F : Face D A) (hL : Laws R F)
     (i : Fin D.R.m) (t : T) (v : ∀ ρ, lowT (R.MW i (sg0 D A)) ρ) {n : ℕ}
     (b : OrthonormalBasis (Fin n) ℂ (R.cV i).W) (y : (R.HW i (sg0 D A)).H) (h : GA D (Vc D i)) :
@@ -152,6 +191,13 @@ theorem upVec_eq (hP : GlobalTheory.Published.CuspRapidDecay) (R : RealDat D A K
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Establish `hlev` using `(kern_laws R i t hL.models.inf hL.models.cV hL.thP.ωP hL.thP.pt_theta hL.thP.ioP hT).2.2.1`. Unfold `coVec`. Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul]`.
+
+Use `congr 1`. Unfold `phi`. Rewrite using `[← integral_const_mul]`. Use `integral_congr_ae (.of_forall fun g => ?_)` and prove the remaining obligations. Rewrite using `[hlev]`.
+
+Simplify using `only [Pi.smul_apply, smul_eq_mul, star_mul']`. Rewrite using `[star_inv_of_finOrder _ (GlobalTheory.LevelCharOrder.levEnv_chi_isOfFinOrder (Vc D i) (R.βV i) (R.datVt i t) k), mul_assoc]`.
+-/
 theorem coVec_level (R : RealDat D A Ks) (F : Face D A) (hL : Laws R F) (i : Fin D.R.m) (t : T)
     (v : ∀ ρ, lowT (R.MW i (sg0 D A)) ρ) {n : ℕ} (b : OrthonormalBasis (Fin n) ℂ (R.cV i).W)
     (y : (R.HW i (sg0 D A)).H) (hT : DatumType R i t) (z : Formalism.IndefR.Bridge.Gf (Vc D i))
@@ -171,6 +217,11 @@ theorem coVec_level (R : RealDat D A Ks) (F : Face D A) (hL : Laws R F) (i : Fin
   simp only [Pi.smul_apply, smul_eq_mul, star_mul']
   rw [star_inv_of_finOrder _ (GlobalTheory.LevelCharOrder.levEnv_chi_isOfFinOrder (Vc D i) (R.βV i) (R.datVt i t) k), mul_assoc]
 
+/- English proof (translation)
+Establish `hrat` using `(kern_laws R i t hL.models.inf hL.models.cV hL.thP.ωP hL.thP.pt_theta hL.thP.ioP hT).2.1`. Apply `ext_inner_left ℂ` to reduce the goal to its premises. Introduce `w`. Rewrite using `[inner_coVec R i v y b _ (integrable_kern hP R F hL i t v y _), inner_rho R F hL, inner_coVec R i v y b _ (integrable_kern hP R F hL i t v y x)]`. Unfold `phi`.
+
+Establish `e` using `hrat γ x ((R.cV i).ρ (γ : GA D (Vc D i))⁻¹ w)`. Establish `e' : (R.cV i).coef.ρ γ ((R.cV i).ρ (γ : GA D (Vc D i))⁻¹ w) = w` using `by show (R.cV i).ρ (γ : GA D (Vc D i)) ((R.cV i).ρ (γ : GA D (Vc D i))⁻¹ w) = w`. Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`. Rewrite `e` using `[e']`. Rewrite using `[e]`.
+-/
 theorem coVec_rat (hP : GlobalTheory.Published.CuspRapidDecay) (R : RealDat D A Ks) (F : Face D A) (hL : Laws R F)
     (i : Fin D.R.m) (t : T) (v : ∀ ρ, lowT (R.MW i (sg0 D A)) ρ) {n : ℕ} (b : OrthonormalBasis (Fin n) ℂ (R.cV i).W)
     (y : (R.HW i (sg0 D A)).H) (hT : DatumType R i t) (γ : GQ (Vc D i)) (x : Formalism.IndefR.Bridge.Gf (Vc D i)) :
@@ -189,11 +240,23 @@ theorem coVec_rat (hP : GlobalTheory.Published.CuspRapidDecay) (R : RealDat D A 
   rw [e'] at e
   rw [e]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coefExt_apply {V : HSp D} (c : CoefA V) (f : Formalism.IndefR.Bridge.Gf V → c.W) (h : GA D V) :
     c.ext f h = c.ρ h⁻¹ (f (Formalism.IndefR.FWT.fin V h)) := rfl
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Introduce `hP D G _ _ Pl0 T A Ks _ _ _ R F hL _ i t v n b y`. Establish `hT : DatumType R i t` using `fun g0 κ κ' h1 h2 => GlobalTheory.VecInv.omega_lifts_vP R hL.lev hL.models.inf hL.thP.ωP hL.thP.vP i t g0 κ κ' h1 h2`. Take `⟨f, hfd⟩ : ∃ f : Formalism.IndefR.Bridge.Gf (Vc D i) → (R.cV i).W, ∀ x, f x = coVec R i v y b (kern R i t x)` from `⟨_, fun _ => rfl⟩`. Establish `hext : (R.cV i).ext f = upVec R i t v b y`. Use function extensionality and compare the values at `h`.
+
+Rewrite using `[coefExt_apply, upVec_eq hP R F hL i t v b y h, hfd]`. Establish `hmem : ∀ (γ : GQ (Vc D i)) (x : Formalism.IndefR.Bridge.Gf (Vc D i)) (k : (levEnv (Vc D i) (R.βV i) (R.datVt i t)).J), f (Formalism.IndefR.Bridge.ratF (Vc D i) γ * x * k) = (((levEnv (Vc D i) (R.βV i) (R.datVt i t)).χ k : ℂˣ) : ℂ) • (R.cV i).ρ (γ : GA D (Vc D i)) (f x)`. Introduce `γ x k`. Rewrite using `[hfd, hfd]`. Conclude with `(coVec_level R F hL i t v b y hT (Formalism.IndefR.Bridge.ratF (Vc D i) γ * x) k).trans (congrArg _ (coVec_rat hP R F hL i t v b y hT γ x))`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨u, hu⟩ : f ∈ LinearMap.range (R.HV i t).e := by`. Rewrite using `[(hL.models.HV i t).2.1]`. Conclude with `hmem`. Use `⟨u, ?_⟩` and prove the remaining obligations. Use `show (R.cV i).ext ((R.HV i t).e u) = _`.
+
+Rewrite using `[hu, hext]`.
+-/
 theorem upVec_mem_range : GlobalTheory.Published.CuspRapidDecay → ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A : FamIn D.what₂.LL G Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), Laws R F → R.FullP → ∀ (i : Fin D.R.m) (t : T) (v : ∀ ρ, lowT (R.MW i (sg0 D A)) ρ) (n : ℕ) (b : OrthonormalBasis (Fin n) ℂ (R.cV i).W) (y : (R.HW i (sg0 D A)).H), ∃ u : (R.HV i t).H, R.extV i t u = upVec R i t v b y := by
   intro hP D G _ _ Pl0 T A Ks _ _ _ R F hL _ i t v n b y
   have hT : DatumType R i t := fun g0 κ κ' h1 h2 =>

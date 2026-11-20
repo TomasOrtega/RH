@@ -24,6 +24,11 @@ open Classical
 
 namespace GlobalTheory.CuspGK
 
+/- English proof (translation)
+Establish `I1` using `GlobalTheory.T.cusp_form_finite_dim_stable`. Establish `I2` using `GlobalTheory.T.gk_generated_cusp_forms_of_type`. Establish `I3` using `GlobalTheory.T.irreducible_gk_le_multiplicity_span`. Introduce `hP D θ V S M hθ ψ hA hC hT hW`. Establish `hψ : IsKFinCuspOfType θ M ψ` using `⟨hA, hC, hT, hW⟩`.
+
+Establish `h1` using `I1 hP θ V S M hθ ψ hA hC hW`. Establish `hle : (⨆ (A : Submodule ℂ (GA D V → ℂ)) (_ : A ≤ gkGen θ M ψ ∧ IsIrrGKSub θ M A), A) ≤ multSpan θ M` using `iSup_le fun A => iSup_le fun hA' => I3 hP θ V S M hθ A hA'.2 fun f hf => I2 hP θ V S M hθ ψ hψ f (hA'.1 hf)`. Take `⟨n, F, u, hF, hsum⟩` from `exists_sum_of_mem_multSpan θ M (hle h1)`. Conclude with `⟨n, F, u, fun l => ⟨(hF l).aut, (hF l).cusp, (hF l).equivK, (hF l).equivLie⟩, hsum⟩`.
+-/
 theorem exists_finite_sum_gkMult : GlobalTheory.FunPr.Hypotheses₂ → ∀ {D : D7} (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)) (V : HSp D)
     (S : D.what₂.Tau → SPar) (M : Formalism.IndefR.Mult.DSModel V S), IsInfFam (D := D) θ →
     ∀ ψ : GA D V → ℂ, IsAutFunSm θ V ψ → IsCuspFun V ψ → (∀ τ, IsTypeAt θ V τ (S τ) ψ) →

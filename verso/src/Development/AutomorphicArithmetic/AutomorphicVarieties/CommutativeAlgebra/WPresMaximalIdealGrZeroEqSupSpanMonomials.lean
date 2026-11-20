@@ -3,6 +3,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra
 
 open IsLocalRing MvPowerSeries UpperTheory.V.Alg
 
+/- English proof (translation)
+Introduce `n hn`. Rewrite using `[coeff_monomial, if_neg]`. Introduce and unpack `rfl`. Conclude with `hn hm`.
+-/
 private theorem UpperTheory.V.Alg.monomial_mem_weight_zero {O σ X : Type} [CommRing O] [AddCommGroup X] (wt : σ → X)
     (m : σ →₀ ℕ) (hm : Finsupp.weight wt m = 0) : (monomial m (1 : O) : MvPowerSeries σ O) ∈ wtPart O wt 0 := by
   classical
@@ -11,6 +14,29 @@ private theorem UpperTheory.V.Alg.monomial_mem_weight_zero {O σ X : Type} [Comm
   rintro rfl
   exact hn hm
 
+/- English proof (translation)
+Introduce `O _ _ _ _ X _ _ _ _ R _ _ _ W hz _`. Set `φ : W.gr 0 →ₐ[O] R` to `{ toFun := fun b => ((b : W.A) : R) map_one' := rfl map_mul' := fun _ _ => rfl map_zero' := rfl map_add' := fun _ _ => rfl commutes' := fun _ => rfl }`. Establish `hφ : ∀ b : W.gr 0, φ b = ((b : W.A) : R)` using `fun _ => rfl`. Establish `hinj : Function.Injective φ` using `fun a b h => Subtype.ext (Subtype.ext h)`. Establish `h1 : ∀ b : W.gr 0, b ∈ maximalIdeal (W.gr 0) ↔ ((b : W.A) : R) ∈ maximalIdeal R` using `fun b => by`.
+
+Rewrite using `[← hφ, ← res_eq_zero_iff O, ← res_eq_zero_iff O, res_map]`. Use `⟨h1, ?_⟩` and prove the remaining obligations. Set `mk : ∀ f : MvPowerSeries W.σ O, f ∈ wtPart O W.wt 0 → W.gr 0` to `fun f hf => ⟨⟨W.π f, W.part_le_A (j := 0) ⟨f, hf, rfl⟩⟩, ⟨f, hf, rfl⟩⟩`. Establish `hmk : ∀ f hf, φ (mk f hf) = W.π f` using `fun _ _ => rfl`. Take `⟨μ, hμ, hspan⟩` from `UpperTheory.V.Alg.part_span O R X W {n | n ≠ 0 ∧ Finsupp.weight W.wt n = 0} 0 (fun n hn => hn.2)`.
+
+Set `U : μ → W.gr 0` to `fun m => mk (monomial m.1 1) (UpperTheory.V.Alg.monomial_mem_weight_zero W.wt m.1 (hμ m.2).2)`. Establish `hU : ∀ m : μ, φ (U m) = m.1.prod fun s k => W.z s ^ k` using `fun m => by show W.π (monomial m.1 1) = _`. Rewrite using `[monomial_one_eq, Finsupp.prod, Finsupp.prod, map_prod]`. Simplify using `only [map_pow, WPres.z]`. Establish `hUm : ∀ m : μ, U m ∈ maximalIdeal (W.gr 0)` using `fun m => by`.
+
+Rewrite using `[h1, ← hφ, hU]`. Take `⟨s, hs⟩` from `Finsupp.support_nonempty_iff.2 (hμ m.2).1`. Conclude with `Ideal.prod_mem _ hs (Ideal.pow_mem_of_mem _ (hz s) _ (Nat.pos_of_ne_zero (Finsupp.mem_support_iff.1 hs)))`. Establish `hle : Ideal.span ((Finset.univ.image U : Finset (W.gr 0)) : Set (W.gr 0)) ≤ maximalIdeal (W.gr 0)`. Rewrite using `[Ideal.span_le]`.
+
+Introduce `b hb`. Take `⟨m, -, rfl⟩` from `Finset.mem_image.1 (Finset.mem_coe.1 hb)`. Conclude with `hUm m`. Use `⟨Finset.univ.image U, fun b hb => ?_, le_antisymm (fun b hb => ?_) (sup_le ?_ hle)⟩` and prove the remaining obligations. Take `⟨m, -, rfl⟩` from `Finset.mem_image.1 hb`.
+
+Conclude with `⟨m.1, (hμ m.2).1, (hμ m.2).2, hU m⟩`. Take `⟨f, hf, hfb⟩ : ((b : W.A) : R) ∈ W.part 0` from `b.2`. Take `⟨c, hc, hsum⟩` from `hspan (f - C (constantCoeff f)) (fun n hn => by`. Rewrite using `[map_sub, coeff_C]`. Distinguish the cases in `h0 : n = 0`.
+
+Substitute `h0` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[if_neg h0, sub_zero]`. Conclude with `hf n fun h => hn ⟨h0, h⟩)`. Establish `hb' : b - algebraMap O (W.gr 0) (constantCoeff f) = ∑ m : μ, mk (c m.1) (hc m.1) * U m`.
+
+Apply `hinj` to reduce the goal to its premises. Establish `h2` using `congrArg W.π hsum`. Rewrite `h2` using `[map_sub, map_sum, ← Finset.sum_coe_sort]`. Rewrite using `[map_sub, map_sum, AlgHom.commutes, hφ, ← hfb, ← W.π.commutes]`. Simplify using `only [map_mul] at h2 ⊢`.
+
+Conclude with `h2`. Establish `hs : b - algebraMap O (W.gr 0) (constantCoeff f) ∈ Ideal.span ((Finset.univ.image U : Finset (W.gr 0)) : Set (W.gr 0))`. Rewrite using `[hb']`. Conclude with `Ideal.sum_mem _ fun m _ => Ideal.mul_mem_left _ _ (Ideal.subset_span (Finset.mem_coe.2 (Finset.mem_image_of_mem U (Finset.mem_univ m))))`. Establish `h3 : algebraMap O (W.gr 0) (constantCoeff f) ∈ maximalIdeal (W.gr 0)`.
+
+Simplify using `using Ideal.sub_mem _ hb (hle hs)`. Establish `h4 : constantCoeff f ∈ maximalIdeal O` using `fun h => h3 (h.map _)`. Rewrite using `[← add_sub_cancel (algebraMap O (W.gr 0) (constantCoeff f)) b]`. Conclude with `Submodule.add_mem_sup (Ideal.mem_map_of_mem _ h4) hs`. Rewrite using `[Ideal.map_le_iff_le_comap]`.
+
+Introduce `a ha h`. Conclude with `ha (IsLocalHom.map_nonunit a h)`.
+-/
 theorem UpperTheory.V.Alg.wPres_maximalIdeal_gr_zero_eq_sup_span_monomials :
     ∀ (O : Type) [CommRing O] [IsLocalRing O] [IsNoetherianRing O] [IsAdicComplete (maximalIdeal O) O] (X : Type) [AddCommGroup X] [Module.Free ℤ X] [Module.Finite ℤ X] [DecidableEq X] (R : Type) [CommRing R] [Algebra O R] [IsCO O R] (W : WPres O X R), (∀ s, W.z s ∈ maximalIdeal R) → ∀ [IsCO O (W.gr 0)], (∀ b : W.gr 0, b ∈ maximalIdeal (W.gr 0) ↔ ((b : W.A) : R) ∈ maximalIdeal R) ∧
       ∃ u : Finset (W.gr 0), (∀ b ∈ u, ∃ n : W.σ →₀ ℕ, n ≠ 0 ∧ Finsupp.weight W.wt n = 0 ∧ ((b : W.A) : R) = n.prod fun s k => W.z s ^ k) ∧

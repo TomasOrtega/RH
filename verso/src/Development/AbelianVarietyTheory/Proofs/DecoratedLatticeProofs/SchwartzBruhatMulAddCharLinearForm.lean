@@ -5,6 +5,13 @@ open MeasureTheory ValuativeRel Matrix GlobalTheory.SplitWeil GlobalTheory.RootE
 
 namespace GlobalTheory.PartRed
 
+/- English proof (translation)
+Introduce `k _ _ _ _ ψ hψ R Q _ _ f z Φ hΦ`. Take `⟨h1, h2⟩` from `hΦ`. Establish `hexp : ∀ x : Matrix R Q k, f x = ∑ i, ∑ j, x i j * f (Matrix.single i j 1)`. Introduce `x`. Use `conv_lhs => rw [Matrix.matrix_eq_sum_single x]`.
+
+Simplify using `only [map_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← smul_eq_mul, ← LinearMap.map_smul, Matrix.smul_single, smul_eq_mul, mul_one]`. Establish `hf : Continuous f`. Establish `: (f : Matrix R Q k → k) = fun x => ∑ i, ∑ j, x i j * f (Matrix.single i j 1)` using `funext hexp`.
+
+Rewrite using `[this]`. Conclude with `continuous_finset_sum _ fun i _ => continuous_finset_sum _ fun j _ => (continuous_id.matrix_elem i j).mul continuous_const`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `((OpenKernel.isLocallyConstant_coe_addChar ψ hψ).comp_continuous (hf.add continuous_const)).mul h1`. Conclude with `h2.mul_left`.
+-/
 theorem sb_mul_addChar_linear : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (ψ : AddChar k Circle), Continuous ψ → ∀ (R Q : Type) [Fintype R] [Fintype Q] (f : Matrix R Q k →ₗ[k] k) (z : k) (Φ : Matrix R Q k → ℂ), Φ ∈ SB (Matrix R Q k) → (fun x => (ψ (f x + z) : ℂ) * Φ x) ∈ SB (Matrix R Q k) := by
   intro k _ _ _ _ ψ hψ R Q _ _ f z Φ hΦ
   classical

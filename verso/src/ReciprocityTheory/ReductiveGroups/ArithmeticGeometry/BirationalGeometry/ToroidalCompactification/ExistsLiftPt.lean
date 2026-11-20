@@ -9,6 +9,9 @@ namespace ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj
 open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.DVR
 
+/- English proof (translation)
+Establish `: CompactSpace ↥(pullback f x)` using `QuasiCompact.compactSpace_of_compactSpace (pullback.snd f x)`. Take `⟨p, -⟩` from `(pullback.snd f x).surjective (default : PrimeSpectrum F)`. Take `⟨q, -, hq⟩` from `isClosed_univ.exists_closed_singleton (X := ↥(pullback f x)) ⟨p, trivial⟩`. Use `⟨pointOfClosedPoint (pullback.snd f x) q hq ≫ pullback.fst f x, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, pointOfClosedPoint_comp, Category.id_comp]`.
+-/
 theorem exists_lift_pt {F : Type} [Field F] [IsAlgClosed F] {X Y : Scheme.{0}} (f : X ⟶ Y) [IsFinite f] [Surjective f]
     (x : Sp F ⟶ Y) : ∃ b : Sp F ⟶ X, b ≫ f = x := by
   have : CompactSpace ↥(pullback f x) := QuasiCompact.compactSpace_of_compactSpace (pullback.snd f x)
@@ -17,6 +20,13 @@ theorem exists_lift_pt {F : Type} [Field F] [IsAlgClosed F] {X Y : Scheme.{0}} (
   refine ⟨pointOfClosedPoint (pullback.snd f x) q hq ≫ pullback.fst f x, ?_⟩
   rw [Category.assoc, pullback.condition, ← Category.assoc, pointOfClosedPoint_comp, Category.id_comp]
 
+/- English proof (translation)
+Introduce `R _ _ _ D hB F _ _ _ n hn y`. Take `⟨h₁, -, h₂, -⟩` from `hM _ D.P n hn`. Take `⟨b, hb⟩` from `exists_lift_pt (mulA D.P.A n).left (cP D (TF (R := R) F) y).left`. Take `⟨J, hJ⟩` from `good_pt D.P.isLB (default : PrimeSpectrum F)`. Set `b' : TF (R` to `R) F ⟶ D.P.A := Over.homMk b (by`.
+
+Rewrite using `[← Over.w (mulA D.P.A n), ← Category.assoc, hb]`. Conclude with `Over.w _)`. Take `⟨q, hq, -⟩` from `exists_qk_over (F := F) hJ hB hn y b' (Over.OverMorphism.ext (by`. Rewrite using `[← hb, ← Category.comp_id b', ← MonObj.comp_pow]`. Use the proof step `rfl))`.
+
+Conclude with `⟨q, hq⟩`.
+-/
 theorem qkYOnto (hM : MulNSt) : QkYOntoSt := by
   intro R _ _ _ D hB F _ _ _ n hn y
   obtain ⟨h₁, -, h₂, -⟩ := hM _ D.P n hn

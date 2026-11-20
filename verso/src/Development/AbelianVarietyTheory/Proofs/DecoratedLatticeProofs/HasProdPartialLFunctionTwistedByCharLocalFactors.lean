@@ -10,6 +10,9 @@ open GlobalTheory.Core.Rk.IP
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `D Sf par χ r κ h z hz`. Conclude with `GlobalTheory.LFun.hasProd_Lv (h.converges_twist_val χ hz)`.
+-/
 theorem LSD_hasProd_LvTw : ∀ (D : D7) (Sf : Finset (FinPl D)) (par : GlobalTheory.LFun.Fam D.host.E) (χ : (AE D)ˣ →* Circle) (r : ℕ) (κ : ℝ), GlobalTheory.LFun.Bounded (GlobalTheory.LFun.above D.host.E (Sf : Set (FinPl D))) par r κ → ∀ z : ℂ, κ + 1 < z.re → HasProd (fun v : {v : FinPl D // v ∉ (Sf : Set (FinPl D))} => GlobalTheory.LFun.LvTw par (GlobalTheory.LFun.val χ) v.1 z) (GlobalTheory.LFun.LSD D Sf par χ z) := by
   intro D Sf par χ r κ h z hz
   exact GlobalTheory.LFun.hasProd_Lv (h.converges_twist_val χ hz)

@@ -19,6 +19,19 @@ namespace GlobalTheory.PairScheme
 
 open GlobalTheory.TorusModel GlobalTheory.TorsionFormCompare
 
+/- English proof (translation)
+Establish `hm : ((𝟙 G) ^ k : G ⟶ G).left ≫ G.hom = G.hom` using `Over.w _`. Establish `hn : n ≫ G.hom = q ≫ w` using `by rw [← hm, ← Category.assoc, H.w, Category.assoc, hs]`. Establish `e : (Over.pullback j).map ((𝟙 G) ^ k : G ⟶ G) = mulA ((Over.pullback j).obj G) k` using `(map_pow (Over.pullback j).homMonoidHom (𝟙 G) k).trans (congrArg (· ^ k) (CategoryTheory.Functor.map_id (Over.pullback j) G))`. Set `m' : pullback G.hom j ⟶ pullback G.hom j` to `((Over.pullback j).map ((𝟙 G) ^ k : G ⟶ G)).left`. Establish `hu : FormallyUnramified m'`.
+
+Use `formallyUnramified_mulA S' ((Over.pullback j).obj G) k hk` as an intermediate fact. Rewrite `this` using `[← e]`. Conclude with `this`. Establish `m1 : m' ≫ pullback.fst G.hom j = pullback.fst G.hom j ≫ ((𝟙 G) ^ k : G ⟶ G).left` using `pullback.lift_fst _ _ _`. Establish `m2 : m' ≫ pullback.snd G.hom j = pullback.snd G.hom j` using `pullback.lift_snd _ _ _`.
+
+Establish `PR : IsPullback (pullback.fst G.hom j) m' ((𝟙 G) ^ k : G ⟶ G).left (pullback.fst G.hom j)` using `IsPullback.of_bot (by rw [m2, hm]; exact IsPullback.of_hasPullback _ _) m1.symm (IsPullback.of_hasPullback _ _)`. Set `q' : pullback (q ≫ w) j ⟶ pullback w j` to `pullback.lift (pullback.fst _ _ ≫ q) (pullback.snd _ _) (by rw [Category.assoc, pullback.condition])`. Establish `q1 : q' ≫ pullback.fst w j = pullback.fst _ _ ≫ q` using `pullback.lift_fst _ _ _`. Establish `q2 : q' ≫ pullback.snd w j = pullback.snd _ _` using `pullback.lift_snd _ _ _`. Establish `PQ : IsPullback (pullback.fst (q ≫ w) j) q' q (pullback.fst w j)` using `IsPullback.of_bot (by rw [q2]; exact IsPullback.of_hasPullback _ _) q1.symm (IsPullback.of_hasPullback _ _)`.
+
+Set `n' : pullback (q ≫ w) j ⟶ pullback G.hom j` to `pullback.lift (pullback.fst _ _ ≫ n) (pullback.snd _ _) (by rw [Category.assoc, hn, pullback.condition])`. Establish `n1 : n' ≫ pullback.fst G.hom j = pullback.fst _ _ ≫ n` using `pullback.lift_fst _ _ _`. Establish `n2 : n' ≫ pullback.snd G.hom j = pullback.snd _ _` using `pullback.lift_snd _ _ _`. Set `s' : pullback w j ⟶ pullback G.hom j` to `pullback.lift (pullback.fst _ _ ≫ s) (pullback.snd _ _) (by rw [Category.assoc, hs, pullback.condition])`. Establish `s1 : s' ≫ pullback.fst G.hom j = pullback.fst _ _ ≫ s` using `pullback.lift_fst _ _ _`.
+
+Establish `s2 : s' ≫ pullback.snd G.hom j = pullback.snd _ _` using `pullback.lift_snd _ _ _`. Establish `PL : IsPullback n' q' m' s'`. Use `IsPullback.of_right (by rw [n1, s1]; exact PQ.paste_horiz H) ?_ PR` and prove the remaining obligations. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, Category.assoc, m1, s1, reassoc_of% n1, reassoc_of% q1, H.w]`.
+
+Rewrite using `[Category.assoc, Category.assoc, m2, s2, n2, q2]`. Establish `: FormallyUnramified q'` using `MorphismProperty.of_isPullback (P := @FormallyUnramified) PL hu`. Rewrite using `[← q2]`. Conclude with `MorphismProperty.comp_mem (@FormallyUnramified) _ _ this inferInstance`.
+-/
 theorem formallyUnramified_fibre {S S' N W : Scheme.{0}} (G : Over S) [GrpObj G] [IsCommMonObj G] (k : ℕ)
     (j : S' ⟶ S) (hk : IsUnit (k : Γ(S', ⊤))) (w : W ⟶ S) [IsOpenImmersion w] {s : W ⟶ G.left} (hs : s ≫ G.hom = w)
     {n : N ⟶ G.left} {q : N ⟶ W} (H : IsPullback n q ((𝟙 G) ^ k : G ⟶ G).left s) :
@@ -63,6 +76,13 @@ theorem formallyUnramified_fibre {S S' N W : Scheme.{0}} (G : Over S) [GrpObj G]
 variable {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {Gt : Over (Sp R)} [GrpObj Gt]
   {Φ : ∀ T, (T ⟶ Gt) ≃ GtPt D T}
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, u0, us, hz⟩`. Establish `: ∀ i : Fin (k + 1), u i = Φ T (x ^ (i : ℕ))` using `fun i => by`. Proceed by induction on `i using Fin.induction with`. Consider the case `zero => exact isZero_unique u0 (by simpa using isZero_one hΦ T)`.
+
+Consider the case `succ i ih`. Establish `h` using `us i`. Rewrite `h` using `[ih]`. Rewrite using `[Fin.val_succ, pow_succ]`. Conclude with `isAdd_unique h (hΦ.2 T _ _)`.
+
+Conclude with `(Φ T).injective ((this (Fin.last k)).symm.trans hz)`. Introduce and unpack `rfl`. Use `⟨fun i => Φ T (x ^ (i : ℕ)), by simpa using isZero_one hΦ T, fun i => ?_, rfl⟩` and prove the remaining obligations. Simplify using `only [Fin.val_succ, Fin.val_castSucc, pow_succ]`. Conclude with `hΦ.2 T _ _`.
+-/
 theorem isNsmul_iff (hΦ : Represents Φ) (k : ℕ) {T : Over (Sp R)} (x z : T ⟶ Gt) :
     GtPt.IsNsmul k (Φ T x) (Φ T z) ↔ x ^ k = z := by
   constructor
@@ -81,6 +101,9 @@ theorem isNsmul_iff (hΦ : Represents Φ) (k : ℕ) {T : Over (Sp R)} (x z : T �
     simp only [Fin.val_succ, Fin.val_castSucc, pow_succ]
     exact hΦ.2 T _ _
 
+/- English proof (translation)
+Use `⟨Over.OverMorphism.ext (H.1.trans ?_), fun χ => corr_of_val D.P.isLB fun z J hJ => ?_⟩` and prove the remaining obligations. Rewrite using `[hg.1]`. Conclude with `congrArg (·.left) (comp_toUnit_assoc ((Over.map W.ι).map h) (D.c y))`. Use `(val_corr hJ (H.2 χ) _).trans ((val_pull hJ _ _ _).trans ((val_corr hJ (hg.2 χ) _).trans ((val_pull hJ _ _ _).trans (Eq.trans ?_ (val_pull hJ _ _ _).symm))))` and prove the remaining obligations. Rewrite using `[Category.assoc, Over.w h]`.
+-/
 theorem isIotaW_pull {W : (Sp R).Opens} {ψW : PsiOn D W} {T T' : Over W.toScheme} (h : T' ⟶ T) {y : D.X}
     {g : GtPt D (overW W T)} {g' : GtPt D (overW W T')} (H : GtPt.IsPull h.left g g') (hg : GtPt.IsIotaW ψW y g) :
     GtPt.IsIotaW ψW y g' := by
@@ -91,6 +114,25 @@ theorem isIotaW_pull {W : (Sp R).Opens} {ψW : PsiOn D W} {T T' : Over W.toSchem
       ((val_pull hJ _ _ _).trans (Eq.trans ?_ (val_pull hJ _ _ _).symm))))
     rw [Category.assoc, Over.w h]
 
+/- English proof (translation)
+Take `⟨g₀, hg₀, -⟩` from `hι (Over.mk (𝟙 _))`. Take `⟨s, rfl⟩` from `(Φ _).surjective g₀`. Set `s₀ : W.toScheme ⟶ Gt.left` to `s.left`. Establish `hs : s₀ ≫ Gt.hom = W.ι` using `(Over.w s).trans (Category.id_comp _)`. Set `m : Gt.left ⟶ Gt.left` to `((𝟙 Gt) ^ k : Gt ⟶ Gt).left`.
+
+Establish `hm : m ≫ Gt.hom = Gt.hom` using `Over.w _`. Set `τ : ∀ T : Over W.toScheme, T ⟶ Over.mk (𝟙 _)` to `fun T => Over.homMk T.hom (Category.comp_id _)`. Establish `io : ∀ T, GtPt.IsIotaW ψW y (Φ _ ((Over.map W.ι).map (τ T) ≫ s))` using `fun T => isIotaW_pull (τ T) (hΦ.1 _ _ ((Over.map W.ι).map (τ T)) s) hg₀`. Establish `key : ∀ (T : Over W.toScheme) (x : overW W T ⟶ Gt), (∃ h, GtPt.IsNsmul k (Φ _ x) h ∧ GtPt.IsIotaW ψW y h) ↔ x.left ≫ m = T.hom ≫ s₀` using `fun T x => by`. Establish `e : x.left ≫ m = (x ^ k).left`.
+
+Rewrite using `[← Category.comp_id x, ← MonObj.comp_pow, Category.comp_id]`. Both sides reduce to the same expression. Rewrite using `[e]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, h₁, h₂⟩`.
+
+Rewrite `h₁` using `[(hι T).unique h₂ (io T), isNsmul_iff hΦ]`. Conclude with `congrArg (·.left) h₁`. Conclude with `fun h => ⟨_, (isNsmul_iff hΦ _ _ _).2 (Over.OverMorphism.ext h), io T⟩`. Set `N : Over W.toScheme` to `Over.mk (pullback.snd m s₀)`. Set `n : overW W N ⟶ Gt` to `Over.homMk (pullback.fst m s₀) (by`.
+
+Rewrite using `[← hm, ← Category.assoc, pullback.condition, Category.assoc, hs]`. Use the proof step `rfl)`. Establish `hf : IsFinite N.hom` using `inferInstanceAs (IsFinite (pullback.snd m s₀))`. Establish `hl : Flat N.hom` using `inferInstanceAs (Flat (pullback.snd m s₀))`. Use `⟨N, ⟨y, Φ _ n, (key N n).2 pullback.condition⟩, ⟨hf, hl, ?_⟩, inferInstanceAs (Surjective (pullback.snd m s₀)), rfl, ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `Etale (pullback.snd (N.hom ≫ W.ι) (jK R))`. Establish `: FormallyUnramified (pullback.snd (N.hom ≫ W.ι) (jK R))`. Use `formallyUnramified_fibre Gt k (jK R) ?_ W.ι hs (IsPullback.of_hasPullback m s₀)` and prove the remaining obligations. Establish `: IsUnit (k : FractionRing R)`. Establish `: CharZero (FractionRing R)` using `IsFractionRing.charZero_of_isFractionRing R`.
+
+Conclude with `(Nat.cast_ne_zero.2 (by omega) : (k : FractionRing R) ≠ 0).isUnit`. Simplify using `using this.map (Scheme.ΓSpecIso (CommRingCat.of (FractionRing R))).inv.hom`. Conclude with `Etale.of_formallyUnramified_of_flat _`. Introduce and unpack `T ⟨y', g, hg⟩ rfl`. Take `⟨x, rfl⟩` from `(Φ _).surjective g`.
+
+Establish `hx` using `(key T x).1 hg`. Use `⟨Over.homMk (pullback.lift x.left T.hom hx) (pullback.lift_snd _ _ _), ⟨rfl, ?_⟩, fun h hh => ?_⟩` and prove the remaining obligations. Conclude with `(isPull_iff_comp hΦ ((Over.map W.ι).map (Over.homMk (pullback.lift x.left T.hom hx) (pullback.lift_snd _ _ _) : T ⟶ N)) n x).2 (Over.OverMorphism.ext (pullback.lift_fst _ _ _))`. Establish `e` using `(isPull_iff_comp hΦ ((Over.map W.ι).map h) n x).1 hh.2`. Use `Over.OverMorphism.ext (pullback.hom_ext ?_ ?_)` and prove the remaining obligations.
+
+Conclude with `(congrArg (·.left) e).trans (pullback.lift_fst x.left T.hom hx).symm`. Conclude with `(Over.w h).trans (pullback.lift_snd x.left T.hom hx).symm`.
+-/
 theorem exists_pairRep [CharZero R] [IsCommMonObj Gt] (hΦ : Represents Φ) {W : (Sp R).Opens} (ψW : PsiOn D W) {k : ℕ}
     (hk : 1 ≤ k) [IsFinite ((𝟙 Gt) ^ k : Gt ⟶ Gt).left] [Flat ((𝟙 Gt) ^ k : Gt ⟶ Gt).left]
     [Surjective ((𝟙 Gt) ^ k : Gt ⟶ Gt).left] (y : D.X)
@@ -141,6 +183,9 @@ theorem exists_pairRep [CharZero R] [IsCommMonObj Gt] (hΦ : Represents Φ) {W :
       · exact (congrArg (·.left) e).trans (pullback.lift_fst x.left T.hom hx).symm
       · exact (Over.w h).trans (pullback.lift_snd x.left T.hom hx).symm
 
+/- English proof (translation)
+Introduce `E _ _ _ H R _ _ _ _ hR t P W hW hp ψW k hk y`. Use `hR.1` as an intermediate fact. Take `⟨Gt, _, _, Φ, hΦ, -, -, h⟩` from `GlobalTheory.ExtensionMul.exists_represents_pow R P.D.toPre`. Take `⟨_, _, _⟩` from `h k hk`. Conclude with `exists_pairRep hΦ ψW hk y fun T => GlobalTheory.IotaExists.iota_existsUnique E H R hR t P W hW hp ψW k hk T y`.
+-/
 theorem pairRep_exists : AllFlat fun {E} _ _ _ {H} {R} _ _ _ {t} P {W} ψW k => ∀ y : P.D.toPre.X,
     ∃ (N : Over W.toScheme) (p₀ : QkPtW P.D.toPre W ψW k N), PairRep ψW k y N p₀ := by
   intro E _ _ _ H R _ _ _ _ hR t P W hW hp ψW k hk y

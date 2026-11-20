@@ -12,6 +12,19 @@ namespace GlobalTheory.ThK.ZFinHasDer
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
   {B : Base F E} {a a' : ℕ} {G : Geo σ a a'} {X : Chars F E} {om : Rep σ G.V G.W} {om' : Rep σ G.V' G.W}
 
+/- English proof (translation)
+Take `⟨δ, hδ⟩` from `GlobalTheory.T.exists_lieDerivative_polynomialFock_seesaw B G X om om' hT γ hγ`. Establish `hle` using `GlobalTheory.ThKDer.polData_le (B := B) hT.geo.hM`. Introduce `Φ hΦ`. Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `mem x hx`.
+
+Take `⟨f, hf, φ, hSB, hvac, rfl⟩` from `hx`. Use `⟨pure (δ f) φ, Submodule.subset_span ⟨δ f, (hδ f hf).1, φ, hSB, hvac, rfl⟩, fun y => ?_, fun g h => GlobalTheory.ThKDer.kerDer F E σ B a a' G X om om' hKP hT γ hγ f hf (δ f) (hδ f hf).2 φ hSB hvac g h⟩` and prove the remaining obligations. Establish `hstd : ∀ᶠ v in Filter.cofinite, φ v = Set.indicator {x | ∀ i, x i ∈ v.adicCompletionIntegers F} 1` using `(hvac.and hT.geo.hM.std).mono fun v hv => hv.1.trans hv.2`. Conclude with `(hδ f hf).2 _ (GlobalTheory.ThK.EvUniqInf.rest_pure f φ hSB hstd) y`. Consider the case `zero`.
+
+Conclude with `⟨0, zero_mem _, fun y => by simpa using hasDerivAt_const (0 : ℝ) (0 : ℂ), fun g h => by simpa [GlobalTheory.ThKDer.theta_zero] using hasDerivAt_const (0 : ℝ) (0 : ℂ)⟩`. Consider the case `add x y hx hy ihx ihy`. Take `⟨x₁, hx₁, px, ex⟩` from `ihx`. Take `⟨y₁, hy₁, py, ey⟩` from `ihy`. Use `⟨x₁ + y₁, add_mem hx₁ hy₁, fun z => ?_, fun g h => ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [map_add, Pi.add_apply]`. Conclude with `(px z).add (py z)`. Rewrite using `[GlobalTheory.ThKDer.theta_add hT (hle hx₁) (hle hy₁)]`. Simplify using `only [GlobalTheory.ThKDer.theta_add hT (hle hx) (hle hy)]`. Conclude with `(ex g h).add (ey g h)`.
+
+Consider the case `smul c x hx ihx`. Take `⟨x₁, hx₁, px, ex⟩` from `ihx`. Use `⟨c • x₁, Submodule.smul_mem _ c hx₁, fun z => ?_, fun g h => ?_⟩` and prove the remaining obligations. Simplify using `only [map_smul, Pi.smul_apply, smul_eq_mul]`. Conclude with `(px z).const_mul c`.
+
+Simplify using `only [GlobalTheory.ThKDer.theta_smul]`. Conclude with `(ex g h).const_mul c`.
+-/
 theorem exists_der_both (hKP : GlobalTheory.ThK.KP) (hT : IsTriple B G X om om') {γ} (hγ : γ ∈ Lines σ G.W) :
     ∀ Φ ∈ GlobalTheory.ThK.PolData B G.M, ∃ Φ₁ ∈ GlobalTheory.ThK.PolData B G.M,
       (∀ y, HasDerivAt (fun t : ℝ => om (1, γ (Multiplicative.ofAdd t)) Φ y) (Φ₁ y) 0) ∧ ∀ g h,
@@ -47,6 +60,9 @@ theorem exists_der_both (hKP : GlobalTheory.ThK.KP) (hT : IsTriple B G X om om')
     · simp only [GlobalTheory.ThKDer.theta_smul]
       exact (ex g h).const_mul c
 
+/- English proof (translation)
+Simplify using `only [Model.I, theta]`. Use `congr 1`. Use function extensionality and compare the values at `g`. Rewrite using `[← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, mul_one]`.
+-/
 theorem I_translate (Φ : (Fin a × Fin (a + a') → AF F) → ℂ) (k h : UA σ G.W.J) :
     G.M.I om (om (1, k) Φ) h = G.M.I om Φ (h * k) := by
   simp only [Model.I, theta]
@@ -54,6 +70,13 @@ theorem I_translate (Φ : (Fin a × Fin (a + a') → AF F) → ℂ) (k h : UA σ
   funext g
   rw [← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, mul_one]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hσ B a a' G X om om' hKP hT c hc _ Φ hΦ γ hγ h`. Take `⟨γL, hγL, eγ⟩` from `GlobalTheory.ThKDer.lineA F E σ hσ hT.base.cm G.W c hc γ hγ`. Establish `eb : back hσ G.W.J hc γ = fun t => γL (Multiplicative.ofAdd t)` using `funext eγ`. Take `⟨Φ₁, h1, p1, d1⟩` from `exists_der_both hKP hT hγL Φ hΦ`. Take `⟨Φ₂, h2, -, d2⟩` from `exists_der_both hKP hT hγL Φ₁ h1`.
+
+Establish `e1 : derR om (back hσ G.W.J hc γ) Φ = Φ₁`. Rewrite using `[eb]`. Conclude with `funext fun y => (p1 y).deriv`. Rewrite using `[e1, eb]`. Simplify using `only [I_translate]`.
+
+Conclude with `GlobalTheory.ThKDer.hasDerivAt_I hKP hT hγL hΦ h1 h2 d1 d2 h`.
+-/
 theorem hasDerivAt_I_derR : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (hσ : ∀ x, σ (σ x) = x) (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E)
     (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), GlobalTheory.ThK.KP → IsTriple B G X om om' →

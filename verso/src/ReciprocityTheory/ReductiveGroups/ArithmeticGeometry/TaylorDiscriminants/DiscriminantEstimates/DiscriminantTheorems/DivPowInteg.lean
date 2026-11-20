@@ -4,6 +4,9 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.TaylorDiscriminants.
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.TaylorDiscriminants.DiscriminantEstimates.DiscriminantLemmas.DividedPowerIntegrals.GenVan
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.TaylorDiscriminants.DiscriminantEstimates.DiscriminantLemmas.DividedPowerIntegrals.NatMulFactorialBound
 
+/- English proof (translation)
+The claim follows from `PI.DivPowInteg.Top.divPowInteg_of PI.DivPowInteg.Gen.powXL_holds PI.DivPowInteg.Gen.powXR_holds PI.DivPowInteg.Gen.vanL_holds PI.DivPowInteg.Gen.vanR_holds`.
+-/
 theorem divided_power_integrality : PI.DivPowInteg :=
   PI.DivPowInteg.Top.divPowInteg_of PI.DivPowInteg.Gen.powXL_holds PI.DivPowInteg.Gen.powXR_holds
     PI.DivPowInteg.Gen.vanL_holds PI.DivPowInteg.Gen.vanR_holds

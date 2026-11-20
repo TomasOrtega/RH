@@ -9,6 +9,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.TwV.DelA
 
+/- English proof (translation)
+Establish `hB : Matrix.BlockTriangular M id` using `fun i j h => hU i j h`. Establish `hdet : M.det ≠ 0`. Rewrite using `[Matrix.det_of_upperTriangular hB]`. Conclude with `Finset.prod_ne_zero_iff.2 fun r _ => hd r`. Establish `hunit : IsUnit M.det` using `isUnit_iff_ne_zero.2 hdet`.
+
+Use `letI := M.invertibleOfIsUnitDet hunit`. Establish `hBi : Matrix.BlockTriangular M⁻¹ id` using `Matrix.blockTriangular_inv_of_blockTriangular hB`. Use `⟨fun r s h => hBi h, fun i => ?_⟩` and prove the remaining obligations. Establish `h` using `congrFun (congrFun (Matrix.mul_nonsing_inv M hunit) i) i`. Rewrite `h` using `[Matrix.mul_apply, Matrix.one_apply_eq]`.
+
+Rewrite `h` using `[Finset.sum_eq_single i]`. Conclude with `eq_inv_of_mul_eq_one_right h`. Introduce `k _ hk`. Break down `lt_or_gt_of_ne hk with hk | hk` into its components or cases. Rewrite using `[hU i k hk, zero_mul]`.
+
+Rewrite using `[hBi hk, mul_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ i) h`.
+-/
 theorem upper_inv_diag {n : ℕ} (M : Matrix (Fin n) (Fin n) ℂ) (hU : ∀ r s, s < r → M r s = 0) (hd : ∀ r, M r r ≠ 0) :
     (∀ r s, s < r → M⁻¹ r s = 0) ∧ ∀ r, M⁻¹ r r = (M r r)⁻¹ := by
   classical
@@ -32,6 +41,11 @@ theorem upper_inv_diag {n : ℕ} (M : Matrix (Fin n) (Fin n) ℂ) (hU : ∀ r s,
 
 variable {p : ℕ} [Fact p.Prime] (X : Sys p) (D : D7) (pos : (Σ v : X.Pl, Fin (X.G.P.n' v)) ≃ D.what₂.Tau)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ`. Unfold `zT`. Use `split_ifs with h`. Rewrite using `[Matrix.mul_inv_rev, Matrix.transpose_mul]`. Use extensionality with `i j`.
+
+Simplify using `only [Matrix.mul_apply, Matrix.submatrix_apply, id]`. Conclude with `(Equiv.sum_comp Fin.revPerm (fun k => ((x τ)⁻¹).transpose i k * ((β τ)⁻¹).transpose k (Fin.rev j))).symm`. Both sides reduce to the same expression.
+-/
 theorem zT_mul {n : ℕ} (x β : D.what₂.Tau → Matrix (Fin n) (Fin n) ℂ) :
     zT X D pos (fun τ => x τ * β τ) = fun τ => zT X D pos x τ *
       (if IsOddPos (pos.symm τ).2 then ((β τ)⁻¹).transpose.submatrix Fin.rev Fin.rev else β τ) := by
@@ -44,6 +58,11 @@ theorem zT_mul {n : ℕ} (x β : D.what₂.Tau → Matrix (Fin n) (Fin n) ℂ) :
     exact (Equiv.sum_comp Fin.revPerm (fun k => ((x τ)⁻¹).transpose i k * ((β τ)⁻¹).transpose k (Fin.rev j))).symm
   · rfl
 
+/- English proof (translation)
+Rewrite using `[← Finset.prod_zpow, ← Finset.prod_mul_distrib]`. Rewrite using `[← Equiv.prod_comp Fin.revPerm (fun r => b r ^ (c - (ν (Fin.rev r) : ℤ)).toNat)]`. Use `Finset.prod_congr rfl fun r _ => ?_` and prove the remaining obligations. Simplify using `only [Fin.revPerm_apply, Fin.rev_rev]`. Establish `e : b (Fin.rev r) ^ (c - (ν r : ℤ)).toNat = b (Fin.rev r) ^ (c - (ν r : ℤ))`.
+
+Rewrite using `[← zpow_natCast, Int.toNat_of_nonneg (by linarith [h r])]`. Rewrite using `[e, inv_zpow', neg_neg, inv_pow, ← zpow_natCast, ← zpow_neg, ← zpow_add₀ (hb _)]`. Use `congr 1`.
+-/
 theorem prod_inv_rev_zpow_mul_prod_pow_eq_odd_position {n : ℕ} (b : Fin n → ℂ) (hb : ∀ r, b r ≠ 0) (c : ℤ) (ν : Fin n → ℕ) (h : ∀ r, (ν r : ℤ) ≤ c) :
     (∏ r, (b (Fin.rev r))⁻¹) ^ (-c) * ∏ r, (b (Fin.rev r))⁻¹ ^ ν r = ∏ r, b r ^ (c - (ν (Fin.rev r) : ℤ)).toNat := by
   rw [← Finset.prod_zpow, ← Finset.prod_mul_distrib]
@@ -55,6 +74,23 @@ theorem prod_inv_rev_zpow_mul_prod_pow_eq_odd_position {n : ℕ} (b : Fin n → 
   rw [e, inv_zpow', neg_neg, inv_pow, ← zpow_natCast, ← zpow_neg, ← zpow_add₀ (hb _)]
   congr 1
 
+/- English proof (translation)
+Introduce `p _ X D pos n ν c hνc Q hQ x β _hx hβ`. Establish `hbd : ∀ τ r, β τ r r ≠ 0` using `fun τ r => (hβ τ).2 r`. Establish `hinv : ∀ τ, (∀ r s, s < r → ((β τ)⁻¹) r s = 0) ∧ ∀ r, ((β τ)⁻¹) r r = (β τ r r)⁻¹` using `fun τ => upper_inv_diag (β τ) (hβ τ).1 (hbd τ)`. Set `β' : D.what₂.Tau → Matrix (Fin n) (Fin n) ℂ` to `fun τ => if IsOddPos (pos.symm τ).2 then ((β τ)⁻¹).transpose.submatrix Fin.rev Fin.rev else β τ`. Establish `hd' : ∀ τ r, β' τ r r = if IsOddPos (pos.symm τ).2 then (β τ (Fin.rev r) (Fin.rev r))⁻¹ else β τ r r`.
+
+Introduce `τ r`. Simplify using `only [β']`. Use `split_ifs`. Simplify using `[(hinv τ).2]`. Both sides reduce to the same expression.
+
+Establish `hB' : IsBor β'`. Introduce `τ`. Use `⟨fun r s hsr => ?_, fun r => ?_⟩` and prove the remaining obligations. Simplify using `only [β'] split_ifs`. Simplify using `only [Matrix.submatrix_apply, Matrix.transpose_apply]`.
+
+Conclude with `(hinv τ).1 _ _ (Fin.rev_lt_rev.2 hsr)`. Conclude with `(hβ τ).1 r s hsr`. Rewrite using `[hd'] split_ifs`. Conclude with `inv_ne_zero (hbd τ _)`. Conclude with `hbd τ r`.
+
+Establish `hz : zT X D pos (fun τ => x τ * β τ) = fun τ => zT X D pos x τ * β' τ` using `zT_mul X D pos x β`. Establish `hev : GL3Theta.evFr D Q (fun τ => zT X D pos x τ * β' τ) = (∏ τ, ∏ r, β' τ r r ^ ν τ r) * GL3Theta.evFr D Q (zT X D pos x)`. Establish `h1` using `Formalism.L2.KerInert.SharpPolyP.sp_eval_colSub β' (zT X D pos x) Q`. Rewrite `h1` using `[hQ β' hB', MvPolynomial.smul_eval]`. Conclude with `h1.symm`.
+
+Establish `key : ∀ τ, (if IsOddPos (pos.symm τ).2 then (zT X D pos x τ * β' τ).det ^ (-(c τ)) else 1) * ∏ r, β' τ r r ^ ν τ r = (∏ r, β τ r r ^ (if IsOddPos (pos.symm τ).2 then (c τ - (ν τ (Fin.rev r) : ℤ)).toNat else ν τ r)) * (if IsOddPos (pos.symm τ).2 then (zT X D pos x τ).det ^ (-(c τ) …`. Introduce `τ`. Distinguish the cases in `ho : IsOddPos (pos.symm τ).2`. Simplify using `only [if_pos ho]`. Rewrite using `[Matrix.det_mul, Formalism.L2.KerInert.SharpPolyP.sp_det_bor hB', mul_zpow]`.
+
+Simplify using `only [hd', if_pos ho]`. Rewrite using `[← prod_inv_rev_zpow_mul_prod_pow_eq_odd_position (fun r => β τ r r) (hbd τ) (c τ) (ν τ) (hνc τ)]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [if_neg ho, one_mul, mul_one, hd']`. Unfold `twF`.
+
+Rewrite using `[hz, hev]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem twF_mul_bor : ∀ {p : ℕ} [Fact p.Prime] (X : Sys p) (D : D7) (pos : (Σ v : X.Pl, Fin (X.G.P.n' v)) ≃ D.what₂.Tau) {n : ℕ} (ν : D.what₂.Tau → Fin n → ℕ) (c : D.what₂.Tau → ℤ), (∀ τ r, (ν τ r : ℤ) ≤ c τ) → ∀ Q : MvPolynomial (GL3Theta.FrV D n) ℂ, Q ∈ WtPol ℂ ν → ∀ (x β : D.what₂.Tau → Matrix (Fin n) (Fin n) ℂ), (∀ τ, (x τ).det ≠ 0) → IsBor β → twF X D pos c Q (fun τ => x τ * β τ) = (∏ τ, ∏ r, β τ r r ^ (if IsOddPos (pos.symm τ).2 then (c τ - (ν τ (Fin.rev r) : ℤ)).toNat else ν τ r)) * twF X D pos c Q x := by
   intro p _ X D pos n ν c hνc Q hQ x β _hx hβ
   classical

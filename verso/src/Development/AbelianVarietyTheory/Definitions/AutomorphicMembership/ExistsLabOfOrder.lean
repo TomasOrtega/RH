@@ -11,6 +11,11 @@ variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAl
 variable {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)}
 variable {g : ℕ} [Fact g.Prime]
 
+/- English proof (translation)
+Proceed by induction on `x using Quotient.inductionOn with`. Consider the case `h a`. Use `⟨a.1, a.2, fun δ => ?_⟩` and prove the remaining obligations. Use `show (WD.inePol (WD.lpTame ⟦a⟧) δ).roots = (WD.inePol (WD.lpTame (WD.mk a.2)) δ).roots`. Rewrite using `[WD.lpTame_mk]`.
+
+Both sides reduce to the same expression.
+-/
 private theorem exists_rep_tameEig_eq {h : IsPlaceOver A w} (x : WD h) :
     ∃ (n : ℕ) (b : WDRep h (Fin n → ℂ)), ∀ δ : G E Ω, WD.tameEig x δ = WD.tameEig (WD.mk b) δ := by
   induction x using Quotient.inductionOn with
@@ -20,6 +25,13 @@ private theorem exists_rep_tameEig_eq {h : IsPlaceOver A w} (x : WD h) :
     rw [WD.lpTame_mk]
     rfl
 
+/- English proof (translation)
+Establish `hγ : γ ∈ Ine (F` using `E) A := H.2.1`. Establish `hu' : u ∈ Ine (F` using `E) A := Wild_le_Ine hu`. Establish `H' : TeichmullerInertiaLabelCondition A w τ (γ * u)` using `⟨H.1, mul_mem hγ hu', H.2.2⟩`. Rewrite using `[WD.lab_eq_iff H']`. Use `⟨WD.lab_monic _ _ _, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[WD.map_rootsBar_lab H]`. Take `⟨n, b, hb⟩` from `exists_rep_tameEig_eq x`. Establish `hγW : γ ∈ Weil h` using `Ine_le_Weil h hγ`. Establish `huW : u ∈ Weil h` using `Ine_le_Weil h hu'`. Rewrite using `[hb, hb, WD.tameEig_mk b hγW, WD.tameEig_mk b (mul_mem hγW huW)]`.
+
+Establish `e : (⟨γ * u, mul_mem hγW huW⟩ : Weil h) = ⟨γ, hγW⟩ * ⟨u, huW⟩` using `rfl`. Rewrite using `[e, map_mul, b.tamePart_ρ_of_wild (σ := ⟨u, huW⟩) hu, mul_one]`.
+-/
 theorem lab_mul_wild {h : IsPlaceOver A w} {τ : Fbar g →* ℂ} {γ u : G E Ω}
     (H : TeichmullerInertiaLabelCondition A w τ γ) (hu : u ∈ Wild E A) (x : WD h) :
     WD.lab τ (γ * u) x = WD.lab τ γ x := by
@@ -36,6 +48,11 @@ theorem lab_mul_wild {h : IsPlaceOver A w} {τ : Fbar g →* ℂ} {γ u : G E Ω
   have e : (⟨γ * u, mul_mem hγW huW⟩ : Weil h) = ⟨γ, hγW⟩ * ⟨u, huW⟩ := rfl
   rw [e, map_mul, b.tamePart_ρ_of_wild (σ := ⟨u, huW⟩) hu, mul_one]
 
+/- English proof (translation)
+Proceed by induction on `x using Quotient.inductionOn with`. Consider the case `h a`. Use `⟨a.1, a.2, fun δ => ?_⟩` and prove the remaining obligations. Use `show (WD.inePol (WD.lpTame ⟦a⟧) δ).roots = (WD.inePol (WD.lpTame (WD.mk a.2)) δ).roots`. Rewrite using `[WD.lpTame_mk]`.
+
+Both sides reduce to the same expression.
+-/
 private theorem tameEig_eq_tameEig_mk_of_rep {h : IsPlaceOver A w} (x : WD h) :
     ∃ (n : ℕ) (b : WDRep h (Fin n → ℂ)), ∀ δ : G E Ω, WD.tameEig x δ = WD.tameEig (WD.mk b) δ := by
   induction x using Quotient.inductionOn with
@@ -45,6 +62,11 @@ private theorem tameEig_eq_tameEig_mk_of_rep {h : IsPlaceOver A w} (x : WD h) :
     rw [WD.lpTame_mk]
     rfl
 
+/- English proof (translation)
+Use `set B := Module.finBasis ℂ V`. Establish `hm : ∀ k : ℕ, LinearMap.toMatrix B B (f ^ k) = (LinearMap.toMatrix B B f) ^ k`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => simp [LinearMap.toMatrix_one]`.
+
+Consider the case `succ k ih => rw [pow_succ, pow_succ, LinearMap.toMatrix_mul, ih]`. Rewrite using `[← LinearMap.charpoly_toMatrix (f ^ r) B, ← LinearMap.charpoly_toMatrix f B, hm]`. Conclude with `GlobalTheory.CharpolyPow.roots_charpoly_pow ℂ _ r _`.
+-/
 private theorem roots_charpoly_pow_eq_map_pow' {V : Type*} [AddCommGroup V] [Module ℂ V]
     [FiniteDimensional ℂ V] (f : Module.End ℂ V) (r : ℕ) :
     (f ^ r).charpoly.roots = f.charpoly.roots.map (· ^ r) := by
@@ -57,6 +79,13 @@ private theorem roots_charpoly_pow_eq_map_pow' {V : Type*} [AddCommGroup V] [Mod
   rw [← LinearMap.charpoly_toMatrix (f ^ r) B, ← LinearMap.charpoly_toMatrix f B, hm]
   exact GlobalTheory.CharpolyPow.roots_charpoly_pow ℂ _ r _
 
+/- English proof (translation)
+Establish `hγ : γ ∈ Ine (F` using `E) A := H.2.1`. Establish `H' : TeichmullerInertiaLabelCondition A w τ (γ ^ g)` using `⟨H.1, pow_mem hγ g, H.2.2⟩`. Rewrite using `[WD.lab_eq_iff H']`. Use `⟨WD.lab_monic _ _ _, ?_⟩` and prove the remaining obligations. Rewrite using `[WD.map_rootsBar_lab H]`.
+
+Establish `hmap` using `WD.tameEig_map_pow x hγ`. Rewrite `hmap` using `[H.1]`. Take `⟨n, b, hb⟩` from `tameEig_eq_tameEig_mk_of_rep x`. Simplify using `only [hb] at hmap ⊢`. Establish `hγW : γ ∈ Weil h` using `Ine_le_Weil h hγ`.
+
+Rewrite using `[WD.tameEig_mk b (pow_mem hγW g)]`. Establish `e : (⟨γ ^ g, pow_mem hγW g⟩ : Weil h) = ⟨γ, hγW⟩ ^ g` using `by ext; simp`. Rewrite using `[e, map_pow, roots_charpoly_pow_eq_map_pow', ← WD.tameEig_mk b hγW]`. Conclude with `hmap.symm`.
+-/
 theorem lab_pow {h : IsPlaceOver A w} {τ : Fbar g →* ℂ} {γ : G E Ω}
     (H : TeichmullerInertiaLabelCondition A w τ γ) (x : WD h) : WD.lab τ (γ ^ g) x = WD.lab τ γ x := by
   have hγ : γ ∈ Ine (F := E) A := H.2.1
@@ -74,6 +103,13 @@ theorem lab_pow {h : IsPlaceOver A w} {τ : Fbar g →* ℂ} {γ : G E Ω}
   rw [e, map_pow, roots_charpoly_pow_eq_map_pow', ← WD.tameEig_mk b hγW]
   exact hmap.symm
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Take `⟨γ', hγ'⟩` from `GlobalTheory.MemTame.exists_tameGenAt E Ω w A h`. Take `⟨σ0, hσ0I, hσ0x⟩` from `GlobalTheory.InertiaMovesRoot.exists_mem_Ine_apply_ne E Ω A w h 2 Nat.prime_two ϖ h1 h2 x hx`. Establish `hγ1 : sqrtChar h hx (ineIncl h ⟨γ', hγ'.1⟩) ≠ 1`.
+
+Introduce `hc`. Use `IsSmooth.eq_one_of_tameGenAt (isSmooth_sqrtChar h hx) hγ' hc hne ⟨σ0, hσ0I⟩` as an intermediate fact. Rewrite `this` using `[sqrtChar_eq_one_iff, coe_ineIncl]`. Conclude with `hσ0x this`. Establish `hrel` using `tame_relation (A := A) hγ'.1 (isFrob_frob (h := h))`.
+
+Establish `key` using `hne ((ineIncl h ⟨γ', hγ'.1⟩ ^ normV w)⁻¹ * (frob h * ineIncl h ⟨γ', hγ'.1⟩ * (frob h)⁻¹)) (by simpa using hrel)`. Rewrite `key` using `[map_mul, map_inv, map_pow, map_mul, map_mul, map_inv, hw, mul_right_comm (sqrtChar h hx (frob h)), mul_inv_cancel, one_mul, pow_two, mul_inv_rev, mul_assoc, inv_mul_cancel, mul_one, inv_eq_one]`. Conclude with `hγ1 key`.
+-/
 private theorem exists_wild_sqrtChar_ne_one_of_normV_two (h : IsPlaceOver A w) (hw : normV w = 2) {ϖ : 𝓞 E}
     (h1 : ϖ ∈ w.asIdeal) (h2 : ϖ ∉ w.asIdeal ^ 2) {x : Ω} (hx : x ^ 2 = algebraMap E Ω (ϖ : E)) :
     ∃ σ : Weil h, (σ : G E Ω) ∈ Wild E A ∧ sqrtChar h hx σ ≠ 1 := by
@@ -95,6 +131,13 @@ private theorem exists_wild_sqrtChar_ne_one_of_normV_two (h : IsPlaceOver A w) (
     mul_assoc, inv_mul_cancel, mul_one, inv_eq_one] at key
   exact hγ1 key
 
+/- English proof (translation)
+Establish `hd : WD.lpDim (WD.lpOfChar h _ (isSmooth_sqrtChar h hx)) = 1`. Unfold `WD.lpOfChar WD.lpDim WD.mk WD.std`. Simplify using the standard rewrite rules. Take `⟨σ, hσW, hσ⟩` from `exists_wild_sqrtChar_ne_one_of_normV_two h H.1 h1 h2 hx`. Use `⟨?_, WD.lab_lpOfChar_of_wild τ γ (isSmooth_sqrtChar h hx) hσW hσ⟩` and prove the remaining obligations.
+
+Unfold `WD.lpOfChar`. Rewrite using `[WD.tame_mk]`. Unfold `WDRep.Tame WDRep.ofChars`. Introduce `ht`. Establish `e` using `congrFun (LinearMap.congr_fun (ht σ hσW) (fun _ => (1 : ℂ))) default`.
+
+Simplify using `[diagEnd_apply] at e`. Conclude with `hσ e`.
+-/
 theorem lab_sqrtChar_two {h : IsPlaceOver A w} {τ : Fbar 2 →* ℂ} {γ : G E Ω}
     (H : TeichmullerInertiaLabelCondition A w τ γ) {ϖ : 𝓞 E} (h1 : ϖ ∈ w.asIdeal)
     (h2 : ϖ ∉ w.asIdeal ^ 2) {x : Ω} (hx : x ^ 2 = algebraMap E Ω (ϖ : E)) :
@@ -113,6 +156,23 @@ theorem lab_sqrtChar_two {h : IsPlaceOver A w} {τ : Fbar 2 →* ℂ} {γ : G E 
   simp [diagEnd_apply] at e
   exact hσ e
 
+/- English proof (translation)
+Establish `hg : g.Prime` using `Fact.out`. Assume the negation of the conclusion as `hne`. Establish `hl0 : l ≠ 0`. Introduce and unpack `rfl`. Rewrite `hc` using `[Nat.Coprime, Nat.gcd_zero_left]`.
+
+Conclude with `hg.ne_one hc`. Establish `hv : A.valuation u ≤ 1`. Use `A.valuation.map_add (u - 1) 1` as an intermediate fact. Rewrite `this` using `[sub_add_cancel, map_one]`. Conclude with `this.trans (max_le h1.le le_rfl)`.
+
+Establish `hs : ∑ i ∈ Finset.range l, u ^ i = 0`. Establish `e` using `geom_sum_mul u l`. Rewrite `e` using `[hu, sub_self]`. Conclude with `(mul_eq_zero.mp e).resolve_right (sub_ne_zero.mpr hne)`. Establish `hlv : A.valuation (l : Ω) < 1`.
+
+Establish `e : (l : Ω) = -∑ i ∈ Finset.range l, (u ^ i - 1)`. Rewrite using `[Finset.sum_sub_distrib, hs]`. Simplify using the standard rewrite rules. Rewrite using `[e, Valuation.map_neg]`. Conclude with `Valuation.map_sum_lt _ one_ne_zero fun i _ => by`.
+
+Simplify using `using GlobalTheory.WeilDeligne.cong_pow hv (by simp) h1 i`. Establish `hgw : ((g : ℕ) : 𝓞 E) ∈ w.asIdeal`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_natCast, ← hw]`. Establish `: Finite (𝓞 E ⧸ w.asIdeal)` using `Nat.finite_of_card_ne_zero (by`. Rewrite using `[show Nat.card (𝓞 E ⧸ w.asIdeal) = normV w from rfl, hw]`.
+
+Conclude with `hg.ne_zero)`. Rewrite using `[show normV w = Nat.card (𝓞 E ⧸ w.asIdeal) from rfl, ← nsmul_one]`. Conclude with `card_nsmul_eq_zero'`. Establish `hlw : ((l : ℕ) : 𝓞 E) ∉ w.asIdeal`. Introduce `hl`.
+
+Take `⟨a, b, hab⟩` from `(Nat.isCoprime_iff_coprime.mpr hc).map (Int.castRingHom (𝓞 E))`. Establish `h1 : (1 : 𝓞 E) ∈ w.asIdeal`. Rewrite using `[← hab]`. Simplify using `only [eq_intCast, Int.cast_natCast]`. Conclude with `w.asIdeal.add_mem (w.asIdeal.mul_mem_left a hl) (w.asIdeal.mul_mem_left b hgw)`.
+
+Conclude with `w.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h1)`. Use `GlobalTheory.InertiaMovesRoot.val_eq_one_of_notMem h hlw` as an intermediate fact. Establish `e : algebraMap E Ω ((((l : ℕ) : 𝓞 E)) : E) = (l : Ω)` using `by simp`. Rewrite `this` using `[e]`. Conclude with `(ne_of_lt hlv) this`.
+-/
 theorem eq_one_of_cong (h : IsPlaceOver A w) (hw : normV w = g) {l : ℕ} (hc : l.Coprime g)
     {u : Ω} (hu : u ^ l = 1) (h1 : A.valuation (u - 1) < 1) : u = 1 := by
   have hg : g.Prime := Fact.out
@@ -156,6 +216,27 @@ theorem eq_one_of_cong (h : IsPlaceOver A w) (hw : normV w = g) {l : ℕ} (hc : 
   rw [e] at this
   exact (ne_of_lt hlv) this
 
+/- English proof (translation)
+Establish `hg : g.Prime` using `Fact.out`. Establish `hg2` using `hg.two_le`. Establish `hl0 : l ≠ 0`. Introduce and unpack `rfl`. Rewrite `hl` using `[zero_dvd_iff]`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hlg : l.Coprime g`. Use `Nat.Coprime.symm ((Nat.Prime.coprime_iff_not_dvd hg).2 fun hd => ?_)` and prove the remaining obligations. Use `Nat.le_of_dvd (by omega) (hd.trans hl)` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+
+Establish `key : ∀ (y : Ω), y ^ l = 1 → ∀ k : ℕ, y ^ (g ^ k) = y`. Introduce `y hy k`. Establish `hpos : 1 ≤ g ^ k` using `Nat.one_le_pow _ _ (by omega)`. Establish `hd : l ∣ g ^ k - 1`. Use `((Nat.modEq_iff_dvd' (by omega : 1 ≤ g)).mpr hl).pow k` as an intermediate fact.
+
+Rewrite `this` using `[one_pow]`. Conclude with `(Nat.modEq_iff_dvd' hpos).mp this`. Take `⟨m, hm⟩` from `hd`. Establish `: g ^ k = l * m + 1` using `by omega`. Rewrite using `[this, pow_succ, pow_mul, hy, one_pow, one_mul]`.
+
+Establish `hζ0 : ζ ≠ 0`. Introduce and unpack `rfl`. Rewrite `hζ` using `[zero_pow hl0]`. Conclude with `zero_ne_one hζ`. Establish `hσζ : ((σ : G E Ω) ζ) ^ l = 1` using `by rw [← map_pow, hζ, map_one]`.
+
+Establish `hv1 : A.valuation ζ = 1`. Establish `e : A.valuation ζ ^ l = 1` using `by rw [← map_pow, hζ, map_one]`. Break down `lt_trichotomy (A.valuation ζ) 1 with hlt | heq | hgt` into its components or cases. It suffices to derive a contradiction. Establish `: A.valuation ζ ^ l < 1`.
+
+Conclude with `pow_lt_one' hlt hl0`. Conclude with `(ne_of_lt this) e`. Conclude with `heq`. It suffices to derive a contradiction. Establish `: 1 < A.valuation ζ ^ l`.
+
+Conclude with `one_lt_pow' hgt hl0`. Conclude with `(ne_of_gt this) e`. Take `⟨a, b, hab⟩` from `(mem_Weil h).mp σ.2`. Establish `hc` using `hab.2 ζ hv1.le`. Rewrite `hc` using `[hw, key _ hσζ, key _ hζ]`.
+
+Establish `hσ0 : (σ : G E Ω) ζ ≠ 0` using `(_root_.map_ne_zero _).2 hζ0`. Establish `hq : (σ : G E Ω) ζ / ζ = 1`. Use `eq_one_of_cong h hw hlg (by rw [div_pow, hσζ, hζ, div_one]) ?_` and prove the remaining obligations. Rewrite using `[show (σ : G E Ω) ζ / ζ - 1 = ((σ : G E Ω) ζ - ζ) / ζ by field_simp, map_div₀, hv1, div_one]`. Conclude with `hc`.
+
+Conclude with `(div_eq_one_iff_eq hζ0).mp hq`.
+-/
 theorem weil_fix (h : IsPlaceOver A w) (hw : normV w = g) {l : ℕ} (hl : l ∣ g - 1)
     (σ : Weil h) {ζ : Ω} (hζ : ζ ^ l = 1) : (σ : G E Ω) ζ = ζ := by
   have hg : g.Prime := Fact.out
@@ -220,15 +301,26 @@ def kummer (h : IsPlaceOver A w) (hw : normV w = g) {l : ℕ} (hl : l ∣ g - 1)
         show (σ : G E Ω) ((σ' : G E Ω) x) / x = _
         field_simp }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem kummer_apply (h : IsPlaceOver A w) (hw : normV w = g) {l : ℕ} (hl : l ∣ g - 1)
     (ι : Ω →+* ℂ) {x : Ω} (h0 : x ≠ 0) {a : E} (hx : x ^ l = algebraMap E Ω a) (σ : Weil h) :
     (kummer h hw hl ι h0 hx σ : ℂ) = ι ((σ : G E Ω) x / x) := rfl
 
+/- English proof (translation)
+Rewrite using `[← Units.val_eq_one, kummer_apply, ← map_one ι, ι.injective.eq_iff, div_eq_one_iff_eq h0]`.
+-/
 theorem kummer_eq_one_iff (h : IsPlaceOver A w) (hw : normV w = g) {l : ℕ} (hl : l ∣ g - 1)
     (ι : Ω →+* ℂ) {x : Ω} (h0 : x ≠ 0) {a : E} (hx : x ^ l = algebraMap E Ω a) (σ : Weil h) :
     kummer h hw hl ι h0 hx σ = 1 ↔ (σ : G E Ω) x = x := by
   rw [← Units.val_eq_one, kummer_apply, ← map_one ι, ι.injective.eq_iff, div_eq_one_iff_eq h0]
 
+/- English proof (translation)
+Establish `hxalg : IsIntegral E x` using `Algebra.IsIntegral.isIntegral x`. Establish `: FiniteDimensional E (IntermediateField.adjoin E {x})` using `IntermediateField.adjoin.finiteDimensional hxalg`. Establish `hle : ((IntermediateField.adjoin E {x})).fixingSubgroup ≤ MulAction.stabilizer (G E Ω) x` using `fun σ hσ => MulAction.mem_stabilizer_iff.mpr ((IntermediateField.mem_fixingSubgroup_iff _ _).mp hσ x (IntermediateField.subset_adjoin E {x} rfl))`. Establish `hopen : IsOpen (MulAction.stabilizer (G E Ω) x : Set (G E Ω))` using `Subgroup.isOpen_mono hle (IntermediateField.fixingSubgroup_isOpen _)`. Unfold `IsSmooth`.
+
+Establish `e : {σ : Ine (F` using `E) A | kummer h hw hl ι h0 hx (ineIncl h σ) = 1} = Subtype.val ⁻¹' (MulAction.stabilizer (G E Ω) x : Set (G E Ω)) := by`. Use extensionality with `σ`. Simplify using `[kummer_eq_one_iff, MulAction.mem_stabilizer_iff, AlgEquiv.smul_def]`. Rewrite using `[e]`. Conclude with `hopen.preimage continuous_subtype_val`.
+-/
 theorem isSmooth_kummer (h : IsPlaceOver A w) (hw : normV w = g) {l : ℕ} (hl : l ∣ g - 1)
     (ι : Ω →+* ℂ) {x : Ω} (h0 : x ≠ 0) {a : E} (hx : x ^ l = algebraMap E Ω a) :
     IsSmooth (kummer h hw hl ι h0 hx) := by
@@ -247,6 +339,41 @@ theorem isSmooth_kummer (h : IsPlaceOver A w) (hw : normV w = g) {l : ℕ} (hl :
   rw [e]
   exact hopen.preimage continuous_subtype_val
 
+/- English proof (translation)
+Establish `hg : g.Prime` using `Fact.out`. Establish `hg2` using `hg.two_le`. Establish `hw : normV w = g` using `H.1`. Establish `hlg : l.Coprime g`. Use `Nat.Coprime.symm ((Nat.Prime.coprime_iff_not_dvd hg).2 fun hd => ?_)` and prove the remaining obligations.
+
+Use `Nat.le_of_dvd (by omega) (hd.trans hl)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Choose the witnesses or unpack the hypotheses as in `⟨ϖ, h1, h2⟩ : ∃ ϖ : 𝓞 E, ϖ ∈ w.asIdeal ∧ ϖ ∉ w.asIdeal ^ 2 := by`. Take `⟨ϖ, hϖ1, hϖ2⟩` from `SetLike.exists_of_lt (Ideal.pow_succ_lt_pow w.ne_bot 1)`. Conclude with `⟨ϖ, by simpa using hϖ1, by simpa using hϖ2⟩`.
+
+Establish `: IsAlgClosed Ω` using `IsAlgClosure.isAlgClosed E`. Take `⟨x, hx⟩` from `IsAlgClosed.exists_pow_nat_eq (algebraMap E Ω (ϖ : E)) hp.pos`. Establish `hϖ0 : (ϖ : E) ≠ 0`. Introduce `e`. Apply `h2` to reduce the goal to its premises.
+
+Establish `: ϖ = 0` using `by exact_mod_cast e`. Rewrite using `[this]`. Conclude with `Ideal.zero_mem _`. Establish `hx0 : x ≠ 0`. Introduce and unpack `rfl`.
+
+Rewrite `hx` using `[zero_pow hp.ne_zero, eq_comm, map_eq_zero]`. Conclude with `hϖ0 hx`. Take `⟨φ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Use `letI : Algebra E ℂ := φ.toAlgebra`. Establish `: Algebra.IsAlgebraic E Ω` using `IsAlgClosure.isAlgebraic`.
+
+Set `ι : Ω →+* ℂ` to `(IsAlgClosed.lift : Ω →ₐ[E] ℂ).toRingHom`. Establish `hχ : IsSmooth (kummer h hw hl ι hx0 hx)` using `isSmooth_kummer h hw hl ι hx0 hx`. Establish `hχ' : IsSmooth (kummer h hw hl ι hx0 hx)⁻¹`. Unfold `IsSmooth at hχ ⊢`. Simplify using `using hχ`.
+
+Establish `hσx : ∀ σ : Weil h, ((σ : G E Ω) x) ^ l = x ^ l` using `fun σ => by`. Rewrite using `[← map_pow, hx, AlgEquiv.commutes]`. Establish `htame : ∀ σ : Weil h, (σ : G E Ω) ∈ Wild E A → kummer h hw hl ι hx0 hx σ = 1`. Introduce `σ hσ`. Rewrite using `[kummer_eq_one_iff]`.
+
+Establish `hq : (σ : G E Ω) x / x = 1`. Use `eq_one_of_cong h hw hlg (by rw [div_pow, hσx σ, div_self (pow_ne_zero _ hx0)]) ?_` and prove the remaining obligations. Conclude with `(mem_Wild.mp hσ) x hx0`. Conclude with `(div_eq_one_iff_eq hx0).mp hq`. Establish `htame' : ∀ σ : Weil h, (σ : G E Ω) ∈ Wild E A → (kummer h hw hl ι hx0 hx)⁻¹ σ = 1` using `fun σ hσ => by rw [MonoidHom.inv_apply, htame σ hσ, inv_one]`.
+
+Establish `hγW : γ ∈ Weil h` using `Ine_le_Weil h H.2.1`. Establish `hγx : kummer h hw hl ι hx0 hx ⟨γ, hγW⟩ ≠ 1`. Introduce `hc`. Take `⟨σ0, hσ0I, hσ0x⟩` from `GlobalTheory.InertiaMovesRoot.exists_mem_Ine_apply_ne E Ω A w h l hp ϖ h1 h2 x hx`. Use `IsSmooth.eq_one_of_tameGenAt hχ hγ hc htame ⟨σ0, hσ0I⟩` as an intermediate fact.
+
+Rewrite `this` using `[kummer_eq_one_iff, coe_ineIncl]`. Conclude with `hσ0x this`. Establish `htχ : WD.tame (WD.lpOfChar h _ hχ)`. Unfold `WD.lpOfChar`. Rewrite using `[WD.tame_mk]`.
+
+Unfold `WDRep.Tame WDRep.ofChars`. Introduce `σ hσ`. Use `LinearMap.ext fun v => funext fun i => ?_` and prove the remaining obligations. Simplify using `[diagEnd_apply, htame σ hσ]`. Establish `hd : WD.lpDim (WD.lpOfChar h _ hχ) = 1`.
+
+Unfold `WD.lpOfChar WD.lpDim WD.mk WD.std`. Simplify using the standard rewrite rules. Establish `hdeg : (WD.lab τ γ (WD.lpOfChar h _ hχ)).natDegree = 1`. Rewrite using `[(WD.natDegree_lab_eq_iff H _).mpr htχ, hd]`. Take `⟨c, hf⟩ : ∃ c : ZMod g, WD.lab τ γ (WD.lpOfChar h _ hχ) = X - C c` from `⟨-(WD.lab τ γ (WD.lpOfChar h _ hχ)).coeff 0, by conv_lhs => rw [(WD.lab_monic τ γ _).eq_X_add_C hdeg]`.
+
+Simplify using `[sub_eq_add_neg]⟩`. Establish `hc` using `(WD.lab_lpOfChar_eq_iff H hχ htame c).mp hf`. Establish `hζ : ((kummer h hw hl ι hx0 hx ⟨γ, hγW⟩ : ℂˣ) : ℂ) ^ l = 1`. Rewrite using `[kummer_apply, ← map_pow, div_pow, hσx, div_self (pow_ne_zero _ hx0), map_one]`. Establish `hτinj` using `IsTeich.injective H.2.2`.
+
+Establish `halg` using `(algebraMap (ZMod g) (Fbar g)).injective`. Establish `hcl : c ^ l = 1`. Apply `halg` to reduce the goal to its premises. Apply `hτinj` to reduce the goal to its premises. Rewrite using `[map_pow, map_pow, hc, hζ, map_one, map_one]`.
+
+Establish `hc1 : c ≠ 1`. Introduce and unpack `rfl`. Rewrite `hc` using `[map_one, map_one]`. Conclude with `hγx (Units.val_eq_one.mp hc.symm)`. Establish `hc0 : c ≠ 0`.
+
+Introduce and unpack `rfl`. Rewrite `hcl` using `[zero_pow hp.ne_zero]`. Conclude with `zero_ne_one hcl`. Establish `: Fact l.Prime` using `⟨hp⟩`. Establish `hinv : τ (algebraMap (ZMod g) (Fbar g) c⁻¹) = (((kummer h hw hl ι hx0 hx)⁻¹ ⟨γ, hγW⟩ : ℂˣ) : ℂ)`.
+
+Rewrite using `[MonoidHom.inv_apply, Units.val_inv_eq_inv_val, ← hc, map_inv₀]`. Establish `ha : algebraMap (ZMod g) (Fbar g) c ≠ 0` using `(_root_.map_ne_zero _).mpr hc0`. Conclude with `eq_inv_of_mul_eq_one_left (by rw [← map_mul, inv_mul_cancel₀ ha, map_one])`. Conclude with `⟨_, hχ, hχ', c, orderOf_eq_prime hcl hc1, hf, (WD.lab_lpOfChar_eq_iff H hχ' htame' c⁻¹).mpr hinv⟩`.
+-/
 theorem exists_lab_of_order {h : IsPlaceOver A w} {τ : Fbar g →* ℂ} {γ : G E Ω}
     (H : TeichmullerInertiaLabelCondition A w τ γ) (hγ : TameGenAt A γ) {l : ℕ} (hp : l.Prime) (hl : l ∣ g - 1) :
     ∃ (χ : Weil h →* ℂˣ) (hχ : IsSmooth χ) (hχ' : IsSmooth χ⁻¹) (c : ZMod g), orderOf c = l ∧
@@ -344,6 +471,21 @@ theorem exists_lab_of_order {h : IsPlaceOver A w} {τ : Fbar g →* ℂ} {γ : G
   exact ⟨_, hχ, hχ', c, orderOf_eq_prime hcl hc1, hf,
     (WD.lab_lpOfChar_eq_iff H hχ' htame' c⁻¹).mpr hinv⟩
 
+/- English proof (translation)
+Take `⟨v, hv⟩` from `exists_normV_eq 7 Fact.out`. Take `⟨B, hB⟩` from `exists_isPlaceOver K v`. Take `⟨τ, γ, hγ, H⟩` from `exists_tameInertiaSetting hB hv`. Take `⟨χ, hχ, hχ', c, hc, e1, e2⟩` from `exists_lab_of_order H hγ (l := 3) Nat.prime_three (by norm_num)`. Establish `h3 : c ^ 3 = 1` using `hc ▸ pow_orderOf_eq_one c`.
+
+Establish `hc1 : c ≠ 1`. Introduce `e`. Rewrite `hc` using `[e, orderOf_one]`. Evaluate the numerical expressions using `at hc`. Establish `hq : c ^ 2 + c + 1 = 0`.
+
+Establish `: (c - 1) * (c ^ 2 + c + 1) = 0` using `by linear_combination h3`. Conclude with `(mul_eq_zero.mp this).resolve_left (sub_ne_zero.mpr hc1)`. Establish `hi : c⁻¹ = c ^ 2`. Rewrite using `[inv_eq_of_mul_eq_one_right]`. Rewrite using `[← pow_succ']`.
+
+Conclude with `h3`. Use `⟨v, B, hB, τ, γ, χ, hχ, hχ', hγ, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[e1, e2, hi]`. Introduce `e`. Establish `e' : c = c ^ 2` using `C_injective (sub_right_injective e)`.
+
+Establish `: c * (c - 1) = 0` using `by linear_combination -e'`. Break down `mul_eq_zero.mp this with h0 | h0` into its components or cases. Rewrite `h3` using `[h0]`. Evaluate the numerical expressions using `at h3`. Conclude with `hc1 (sub_eq_zero.mp h0)`.
+
+Rewrite using `[WD.lab_lpSum, e1, e2, hi]`. Establish `f1 : c + c ^ 2 = -1` using `by linear_combination hq`. Establish `f2 : c * c ^ 2 = 1` using `by rw [← pow_succ']; exact h3`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [C_add, C_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `_ = X ^ 2 + X + 1 := by`. Rewrite using `[f1, f2]`. Simplify using `only [map_neg, map_one]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_rat_seven [Fact (Nat.Prime 7)] (K : Type) [Field K] [Algebra ℚ K] [IsAlgClosure ℚ K] :
     ∃ (v : HeightOneSpectrum (𝓞 ℚ)) (B : ValuationSubring K) (hB : IsPlaceOver B v)
       (τ : Fbar 7 →* ℂ) (γ : G ℚ K) (χ : Weil hB →* ℂˣ) (hχ : IsSmooth χ) (hχ' : IsSmooth χ⁻¹),
@@ -386,6 +528,13 @@ theorem exists_rat_seven [Fact (Nat.Prime 7)] (K : Type) [Field K] [Algebra ℚ 
           simp only [map_neg, map_one]
           ring
 
+/- English proof (translation)
+Take `⟨v, hv⟩` from `exists_normV_eq 2 Nat.prime_two`. Take `⟨B, hB⟩` from `exists_isPlaceOver K v`. Take `⟨τ, γ, hγ, H⟩` from `exists_tameInertiaSetting hB hv`. Choose the witnesses or unpack the hypotheses as in `⟨ϖ, h1, h2⟩ : ∃ ϖ : 𝓞 ℚ, ϖ ∈ v.asIdeal ∧ ϖ ∉ v.asIdeal ^ 2 := by`. Take `⟨ϖ, hϖ1, hϖ2⟩` from `SetLike.exists_of_lt (Ideal.pow_succ_lt_pow v.ne_bot 1)`.
+
+Conclude with `⟨ϖ, by simpa using hϖ1, by simpa using hϖ2⟩`. Establish `: IsAlgClosed K` using `IsAlgClosure.isAlgClosed ℚ`. Take `⟨x, hx⟩` from `IsAlgClosed.exists_pow_nat_eq (algebraMap ℚ K (ϖ : ℚ)) two_pos`. Establish `hd : WD.lpDim (WD.lpOfChar hB _ (isSmooth_sqrtChar hB hx)) = 1`. Unfold `WD.lpOfChar WD.lpDim WD.mk WD.std`.
+
+Simplify using the standard rewrite rules. Take `⟨ht, hl⟩` from `lab_sqrtChar_two H h1 h2 hx`. Conclude with `⟨v, B, hB, τ, γ, _, hγ, H, hd, ht, hl⟩`.
+-/
 theorem exists_rat_two (K : Type) [Field K] [Algebra ℚ K] [IsAlgClosure ℚ K] :
     ∃ (v : HeightOneSpectrum (𝓞 ℚ)) (B : ValuationSubring K) (hB : IsPlaceOver B v)
       (τ : Fbar 2 →* ℂ) (γ : G ℚ K) (L : WD hB), TameGenAt B γ ∧ TeichmullerInertiaLabelCondition B v τ γ ∧

@@ -25,9 +25,17 @@ def discL (s : ℂ) : (Σ _ : Unit, Fin 2) → ℂ := fun p => if p.2 = 0 then 1
 
 def velL : (Σ _ : Unit, Fin 2) → ℂ := fun p => if p.2 = 0 then 0 else 1
 
+/- English proof (translation)
+The claim follows from `mem_mcPts_line.2 ⟨0, by simp [discL]⟩`.
+-/
 theorem discL_mem (s : ℂ) : discL s ∈ mcPts (mCoordIdeal yLine) :=
   mem_mcPts_line.2 ⟨0, by simp [discL]⟩
 
+/- English proof (translation)
+Establish `hne : vecL (discL s) ≠ 0` using `vecL_ne_zero (discL_mem s)`. Rewrite using `[sChart_apply]`. Unfold `projL`. Rewrite using `[dif_pos hne, CP.chartCoord_mk]`. Use function extensionality and compare the values at `j`.
+
+Simplify using `[vecL, discL]`.
+-/
 theorem sChart_projL_discL (s : ℂ) : sChart 0 (projL (discL s)) = fun _ => (2 : ℂ)⁻¹ * s := by
   have hne : vecL (discL s) ≠ 0 := vecL_ne_zero (discL_mem s)
   rw [sChart_apply]

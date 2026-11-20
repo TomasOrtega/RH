@@ -10,32 +10,62 @@ namespace PI.PolynomialProperness.GN
 
 open Formalism.QuantumDeterminants Formalism.FourierDecayAlt
 
+/- English proof (translation)
+The claim follows from `GBasic.Hpk_herm k r`.
+-/
 theorem hpk_herm (k r : ℕ) : (Hpk k r)ᴴ = Hpk k r := GBasic.Hpk_herm k r
 
+/- English proof (translation)
+The claim follows from `GBasic.Hpk_sq k r`.
+-/
 theorem hpk_sq (k r : ℕ) : Hpk k r * Hpk k r = 1 := GBasic.Hpk_sq k r
 
+/- English proof (translation)
+The claim follows from `isUnit_det_of_left_inverse (hpk_sq k r)`.
+-/
 theorem hpk_isUnit_det (k r : ℕ) : IsUnit (Hpk k r).det :=
   isUnit_det_of_left_inverse (hpk_sq k r)
 
+/- English proof (translation)
+The claim follows from `(unitary_group_holds _ _ (hpk_isUnit_det k r)).1`.
+-/
 theorem one_mem (k r : ℕ) : (1 : B.Mat k r) ∈ B.GV k r :=
   (unitary_group_holds _ _ (hpk_isUnit_det k r)).1
 
+/- English proof (translation)
+The claim follows from `(unitary_group_holds _ _ (hpk_isUnit_det k r)).2.1 g hg h hh`.
+-/
 theorem mul_mem {k r : ℕ} {g h : B.Mat k r} (hg : g ∈ B.GV k r) (hh : h ∈ B.GV k r) :
     g * h ∈ B.GV k r :=
   (unitary_group_holds _ _ (hpk_isUnit_det k r)).2.1 g hg h hh
 
+/- English proof (translation)
+The claim follows from `((unitary_group_holds _ _ (hpk_isUnit_det k r)).2.2 g hg).2`.
+-/
 theorem inv_mem {k r : ℕ} {g : B.Mat k r} (hg : g ∈ B.GV k r) : g⁻¹ ∈ B.GV k r :=
   ((unitary_group_holds _ _ (hpk_isUnit_det k r)).2.2 g hg).2
 
+/- English proof (translation)
+The claim follows from `((unitary_group_holds _ _ (hpk_isUnit_det k r)).2.2 g hg).1`.
+-/
 theorem det_isUnit {k r : ℕ} {g : B.Mat k r} (hg : g ∈ B.GV k r) : IsUnit g.det :=
   ((unitary_group_holds _ _ (hpk_isUnit_det k r)).2.2 g hg).1
 
+/- English proof (translation)
+The claim follows from `mul_nonsing_inv _ (det_isUnit hg)`.
+-/
 theorem mul_inv {k r : ℕ} {g : B.Mat k r} (hg : g ∈ B.GV k r) : g * g⁻¹ = 1 :=
   mul_nonsing_inv _ (det_isUnit hg)
 
+/- English proof (translation)
+The claim follows from `nonsing_inv_mul _ (det_isUnit hg)`.
+-/
 theorem inv_mul {k r : ℕ} {g : B.Mat k r} (hg : g ∈ B.GV k r) : g⁻¹ * g = 1 :=
   nonsing_inv_mul _ (det_isUnit hg)
 
+/- English proof (translation)
+Establish `h : gᴴ * Hpk k r * g = Hpk k r` using `hg`. Establish `h1 : (Hpk k r * gᴴ * Hpk k r) * g = 1`. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc gᴴ, h, hpk_sq]`. Conclude with `Matrix.inv_eq_left_inv h1`.
+-/
 theorem inv_eq {k r : ℕ} {g : B.Mat k r} (hg : g ∈ B.GV k r) :
     g⁻¹ = Hpk k r * gᴴ * Hpk k r := by
   have h : gᴴ * Hpk k r * g = Hpk k r := hg
@@ -43,6 +73,9 @@ theorem inv_eq {k r : ℕ} {g : B.Mat k r} (hg : g ∈ B.GV k r) :
     rw [Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc gᴴ, h, hpk_sq]
   exact Matrix.inv_eq_left_inv h1
 
+/- English proof (translation)
+Establish `h : gᴴ * Hpk k r * g = Hpk k r` using `hg`. Unfold `herm`. Rewrite using `[star_mulVec, ← dotProduct_mulVec]`. Simplify using `only [mulVec_mulVec]`. Rewrite using `[← Matrix.mul_assoc, h]`.
+-/
 theorem herm_mulVec {k r : ℕ} {g : B.Mat k r} (hg : g ∈ B.GV k r) (v w : Fin (2 * r + k + 1) → ℂ) :
     herm (Hpk k r) (g *ᵥ v) (g *ᵥ w) = herm (Hpk k r) v w := by
   have h : gᴴ * Hpk k r * g = Hpk k r := hg
@@ -53,21 +86,41 @@ theorem herm_mulVec {k r : ℕ} {g : B.Mat k r} (hg : g ∈ B.GV k r) (v w : Fin
 
 def hs {ι : Type*} [Fintype ι] (M : Matrix ι ι ℂ) : ℝ := ∑ i, ∑ j, Complex.normSq (M i j)
 
+/- English proof (translation)
+The claim follows from `Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => Complex.normSq_nonneg _`.
+-/
 theorem hs_nonneg {ι : Type*} [Fintype ι] (M : Matrix ι ι ℂ) : 0 ≤ hs M :=
   Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => Complex.normSq_nonneg _
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem gN_eq {k r : ℕ} (g : B.Mat k r) : B.gN g = Real.sqrt (hs g) := rfl
 
+/- English proof (translation)
+The claim follows from `Real.sqrt_nonneg _`.
+-/
 theorem gN_nonneg {k r : ℕ} (g : B.Mat k r) : 0 ≤ B.gN g := Real.sqrt_nonneg _
 
+/- English proof (translation)
+Rewrite using `[gN_eq, Real.sq_sqrt (hs_nonneg g)]`.
+-/
 theorem gN_sq {k r : ℕ} (g : B.Mat k r) : B.gN g ^ 2 = hs g := by
   rw [gN_eq, Real.sq_sqrt (hs_nonneg g)]
 
+/- English proof (translation)
+Unfold `hs`. Simplify using `only [conjTranspose_apply, RCLike.star_def, Complex.normSq_conj]`. Conclude with `Finset.sum_comm`.
+-/
 theorem hs_conjTranspose {ι : Type*} [Fintype ι] (M : Matrix ι ι ℂ) : hs Mᴴ = hs M := by
   unfold hs
   simp only [conjTranspose_apply, RCLike.star_def, Complex.normSq_conj]
   exact Finset.sum_comm
 
+/- English proof (translation)
+Unfold `hs`. Establish `e : ∀ i j, (Hpk k r * M) i j = GBasic.sgn k r i * M (GBasic.sig k r i) j`. Introduce `i j`. Rewrite using `[mul_apply]`. Simplify using `only [GBasic.Hpk_eq k r i, ite_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
+
+Establish `hs1 : ∀ i, Complex.normSq (GBasic.sgn k r i) = 1`. Apply the tactic sequence `intro i; unfold GBasic.sgn; split_ifs <;> simp`. Simplify using `only [e, Complex.normSq_mul, hs1, one_mul]`. Conclude with `Equiv.sum_comp (Function.Involutive.toPerm _ (GBasic.sig_sig k r)) (fun i => ∑ j, Complex.normSq (M i j))`.
+-/
 theorem hs_hpk_mul {k r : ℕ} (M : B.Mat k r) : hs (Hpk k r * M) = hs M := by
   unfold hs
   have e : ∀ i j, (Hpk k r * M) i j = GBasic.sgn k r i * M (GBasic.sig k r i) j := by
@@ -80,17 +133,29 @@ theorem hs_hpk_mul {k r : ℕ} (M : B.Mat k r) : hs (Hpk k r * M) = hs M := by
   exact Equiv.sum_comp (Function.Involutive.toPerm _ (GBasic.sig_sig k r))
     (fun i => ∑ j, Complex.normSq (M i j))
 
+/- English proof (translation)
+Rewrite using `[gN_eq, gN_eq, hs_conjTranspose]`.
+-/
 theorem gN_conjTranspose {k r : ℕ} (g : B.Mat k r) : B.gN gᴴ = B.gN g := by
   rw [gN_eq, gN_eq, hs_conjTranspose]
 
+/- English proof (translation)
+Rewrite using `[gN_eq, gN_eq, hs_hpk_mul]`.
+-/
 theorem gN_hpk_mul {k r : ℕ} (g : B.Mat k r) : B.gN (Hpk k r * g) = B.gN g := by
   rw [gN_eq, gN_eq, hs_hpk_mul]
 
+/- English proof (translation)
+Establish `e : g * Hpk k r = (Hpk k r * gᴴ)ᴴ`. Rewrite using `[conjTranspose_mul, hpk_herm, conjTranspose_conjTranspose]`. Rewrite using `[e, gN_conjTranspose, gN_hpk_mul, gN_conjTranspose]`.
+-/
 theorem gN_mul_hpk {k r : ℕ} (g : B.Mat k r) : B.gN (g * Hpk k r) = B.gN g := by
   have e : g * Hpk k r = (Hpk k r * gᴴ)ᴴ := by
     rw [conjTranspose_mul, hpk_herm, conjTranspose_conjTranspose]
   rw [e, gN_conjTranspose, gN_hpk_mul, gN_conjTranspose]
 
+/- English proof (translation)
+Rewrite using `[inv_eq hg, gN_mul_hpk, gN_hpk_mul, gN_conjTranspose]`.
+-/
 theorem gN_inv {k r : ℕ} {g : B.Mat k r} (hg : g ∈ B.GV k r) : B.gN g⁻¹ = B.gN g := by
   rw [inv_eq hg, gN_mul_hpk, gN_hpk_mul, gN_conjTranspose]
 
@@ -99,16 +164,29 @@ section Frob
 attribute [local instance] Matrix.frobeniusSeminormedAddCommGroup Matrix.frobeniusNormedAddCommGroup
   Matrix.frobeniusNormedSpace Matrix.frobeniusNormedRing
 
+/- English proof (translation)
+Rewrite using `[Matrix.frobenius_norm_def, B.gN, Real.sqrt_eq_rpow]`. Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.normSq_eq_norm_sq]`. Use `norm_cast`.
+-/
 theorem gN_eq_frob {k r : ℕ} (g : B.Mat k r) : B.gN g = ‖g‖ := by
   rw [Matrix.frobenius_norm_def, B.gN, Real.sqrt_eq_rpow]
   congr 1
   refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_
   rw [Complex.normSq_eq_norm_sq]; norm_cast
 
+/- English proof (translation)
+Rewrite using `[gN_eq_frob, gN_eq_frob, gN_eq_frob]`. Conclude with `Matrix.frobenius_norm_mul a b`.
+-/
 theorem gN_mul_le {k r : ℕ} (a b : B.Mat k r) : B.gN (a * b) ≤ B.gN a * B.gN b := by
   rw [gN_eq_frob, gN_eq_frob, gN_eq_frob]
   exact Matrix.frobenius_norm_mul a b
 
+/- English proof (translation)
+Rewrite using `[gN_eq_frob]`. Establish `hH : Hpk k r ≠ 0`. Introduce `h0`. Use `hpk_sq k r` as an intermediate fact. Rewrite `this` using `[h0, Matrix.zero_mul]`.
+
+Conclude with `zero_ne_one this`. Establish `hpos : 0 < ‖Hpk k r‖` using `norm_pos_iff.mpr hH`. Establish `h1 : ‖Hpk k r‖ ≤ ‖g‖ * ‖Hpk k r‖ * ‖g‖`. Establish `e : gᴴ * Hpk k r * g = Hpk k r` using `hg`. Combine the equalities or inequalities in the displayed calculation.
+
+Assume the negation of the conclusion as `hlt`. Rewrite `hlt` using `[not_le]`. Establish `hg0 : 0 ≤ ‖g‖` using `norm_nonneg _`. Establish `: ‖g‖ * ‖Hpk k r‖ * ‖g‖ < ‖Hpk k r‖` using `by nlinarith [mul_nonneg hg0 hpos.le]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem gN_ge_one {k r : ℕ} {g : B.Mat k r} (hg : g ∈ B.GV k r) : 1 ≤ B.gN g := by
   rw [gN_eq_frob]
   have hH : Hpk k r ≠ 0 := by
@@ -132,9 +210,15 @@ theorem gN_ge_one {k r : ℕ} {g : B.Mat k r} (hg : g ∈ B.GV k r) : 1 ≤ B.gN
 
 end Frob
 
+/- English proof (translation)
+The claim follows from `lt_of_lt_of_le one_pos (gN_ge_one hg)`.
+-/
 theorem gN_pos {k r : ℕ} {g : B.Mat k r} (hg : g ∈ B.GV k r) : 0 < B.gN g :=
   lt_of_lt_of_le one_pos (gN_ge_one hg)
 
+/- English proof (translation)
+Unfold `hs`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem normSq_le_hs {ι : Type*} [Fintype ι] (M : Matrix ι ι ℂ) (i j : ι) :
     Complex.normSq (M i j) ≤ hs M := by
   unfold hs
@@ -145,10 +229,18 @@ theorem normSq_le_hs {ι : Type*} [Fintype ι] (M : Matrix ι ι ℂ) (i j : ι)
         Finset.single_le_sum (f := fun i' => ∑ j', Complex.normSq (M i' j'))
           (fun _ _ => Finset.sum_nonneg fun _ _ => Complex.normSq_nonneg _) (Finset.mem_univ i)
 
+/- English proof (translation)
+Rewrite using `[gN_eq, Complex.norm_def]`. Conclude with `Real.sqrt_le_sqrt (normSq_le_hs g i j)`.
+-/
 theorem entry_le_gN {k r : ℕ} (g : B.Mat k r) (i j : Fin (2 * r + k + 1)) : ‖g i j‖ ≤ B.gN g := by
   rw [gN_eq, Complex.norm_def]
   exact Real.sqrt_le_sqrt (normSq_le_hs g i j)
 
+/- English proof (translation)
+Unfold `hs`. Establish `h1 : ∀ i j, Complex.normSq (M i j) ≤ c ^ 2`. Introduce `i j`. Rewrite using `[Complex.normSq_eq_norm_sq]`. Conclude with `pow_le_pow_left₀ (norm_nonneg _) (h i j) 2`.
+
+Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hs_le_of_entry {ι : Type*} [Fintype ι] (M : Matrix ι ι ℂ) {c : ℝ}
     (h : ∀ i j, ‖M i j‖ ≤ c) : hs M ≤ (Fintype.card ι : ℝ) ^ 2 * c ^ 2 := by
   unfold hs
@@ -161,6 +253,9 @@ theorem hs_le_of_entry {ι : Type*} [Fintype ι] (M : Matrix ι ι ℂ) {c : ℝ
     _ = (Fintype.card ι : ℝ) ^ 2 * c ^ 2 := by
         simp only [Finset.sum_const, Finset.card_univ, nsmul_eq_mul]; ring
 
+/- English proof (translation)
+Rewrite using `[gN_eq]`. Apply the tactic sequence `have h1 := hs_le_of_entry g h`. Rewrite `h1` using `[Fintype.card_fin]`. Establish `h2 : (0 : ℝ) ≤ ((2 * r + k + 1 : ℕ) : ℝ) * c` using `by positivity`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem gN_le_of_entry {k r : ℕ} (g : B.Mat k r) {c : ℝ} (hc : 0 ≤ c) (h : ∀ i j, ‖g i j‖ ≤ c) :
     B.gN g ≤ (2 * r + k + 1 : ℕ) * c := by
   rw [gN_eq]
@@ -171,14 +266,25 @@ theorem gN_le_of_entry {k r : ℕ} (g : B.Mat k r) {c : ℝ} (hc : 0 ≤ c) (h :
         Real.sqrt_le_sqrt (by rw [mul_pow]; exact h1)
     _ = ((2 * r + k + 1 : ℕ) : ℝ) * c := Real.sqrt_sq h2
 
+/- English proof (translation)
+The claim follows from `norm_nonneg _`.
+-/
 theorem mx_nonneg {m : ℕ} (M : Matrix (Fin m) (Fin m) ℂ) : 0 ≤ C2.mx M := norm_nonneg _
 
+/- English proof (translation)
+Unfold `C2.mx`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem entry_le_mx {m : ℕ} (M : Matrix (Fin m) (Fin m) ℂ) (i j : Fin m) : ‖M i j‖ ≤ C2.mx M := by
   unfold C2.mx
   calc ‖M i j‖ = ‖(Matrix.of.symm M) i j‖ := rfl
     _ ≤ ‖(Matrix.of.symm M) i‖ := norm_le_pi_norm _ j
     _ ≤ ‖Matrix.of.symm M‖ := norm_le_pi_norm _ i
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h i j`. Conclude with `(entry_le_mx M i j).trans h`. Introduce `h`. Unfold `C2.mx`.
+
+Use `(pi_norm_le_iff_of_nonneg hc).2 fun i => (pi_norm_le_iff_of_nonneg hc).2 fun j => ?_` and prove the remaining obligations. Conclude with `h i j`.
+-/
 theorem mx_le_iff {m : ℕ} (M : Matrix (Fin m) (Fin m) ℂ) {c : ℝ} (hc : 0 ≤ c) :
     C2.mx M ≤ c ↔ ∀ i j, ‖M i j‖ ≤ c := by
   constructor
@@ -188,6 +294,11 @@ theorem mx_le_iff {m : ℕ} (M : Matrix (Fin m) (Fin m) ℂ) {c : ℝ} (hc : 0 �
     refine (pi_norm_le_iff_of_nonneg hc).2 fun i => (pi_norm_le_iff_of_nonneg hc).2 fun j => ?_
     exact h i j
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Use `(mx_le_iff _ (mx_nonneg M)).2 fun i j => ?_` and prove the remaining obligations. Rewrite using `[conjTranspose_apply, norm_star]`. Conclude with `entry_le_mx M j i`. Use `(mx_le_iff _ (mx_nonneg Mᴴ)).2 fun i j => ?_` and prove the remaining obligations.
+
+Use `entry_le_mx Mᴴ j i` as an intermediate fact. Rewrite `this` using `[conjTranspose_apply, norm_star]`. Then use the resulting hypothesis.
+-/
 theorem mx_conjTranspose {m : ℕ} (M : Matrix (Fin m) (Fin m) ℂ) : C2.mx Mᴴ = C2.mx M := by
   apply le_antisymm
   · refine (mx_le_iff _ (mx_nonneg M)).2 fun i j => ?_
@@ -196,6 +307,13 @@ theorem mx_conjTranspose {m : ℕ} (M : Matrix (Fin m) (Fin m) ℂ) : C2.mx Mᴴ
     have := entry_le_mx Mᴴ j i
     rwa [conjTranspose_apply, norm_star] at this
 
+/- English proof (translation)
+Establish `h0 : 0 ≤ (m : ℝ) * C2.mx A * C2.mx B'`. Use `mx_nonneg A` as an intermediate fact. Use `mx_nonneg B'` as an intermediate fact. Check the signs of the components of the expression. Use `(mx_le_iff _ h0).2 fun i j => ?_` and prove the remaining obligations.
+
+Rewrite using `[mul_apply]`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun l _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_mul (entry_le_mx A i l) (entry_le_mx B' l j) (norm_nonneg _) (mx_nonneg A)`.
+
+Use `_ = m * C2.mx A * C2.mx B' := by`. Simplify using `only [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem mx_mul_le {m : ℕ} (A B' : Matrix (Fin m) (Fin m) ℂ) :
     C2.mx (A * B') ≤ m * C2.mx A * C2.mx B' := by
   have h0 : 0 ≤ (m : ℝ) * C2.mx A * C2.mx B' := by
@@ -210,6 +328,13 @@ theorem mx_mul_le {m : ℕ} (A B' : Matrix (Fin m) (Fin m) ℂ) :
     _ = m * C2.mx A * C2.mx B' := by
         simp only [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]; ring
 
+/- English proof (translation)
+Simplify using `only [dotProduct, mulVec, Pi.star_apply]`. Combine the equalities or inequalities in the displayed calculation. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul, norm_star]`. Use `mul_le_mul_of_nonneg_left ?_ (norm_nonneg _)` and prove the remaining obligations.
+
+Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul, mul_comm]`. Conclude with `mul_le_mul_of_nonneg_left (hE i j) (norm_nonneg _)`. Use `_ = (∑ i, ‖w i‖) * (∑ j, ‖v j‖) * E := by`. Rewrite using `[← Finset.sum_mul, ← Finset.sum_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem dot_bound {ι : Type*} [Fintype ι] (M : Matrix ι ι ℂ) (v w : ι → ℂ) {E : ℝ}
     (hE : ∀ i j, ‖M i j‖ ≤ E) :
     ‖star w ⬝ᵥ (M *ᵥ v)‖ ≤ (∑ i, ‖w i‖) * (∑ j, ‖v j‖) * E := by
@@ -224,6 +349,11 @@ theorem dot_bound {ι : Type*} [Fintype ι] (M : Matrix ι ι ℂ) (v w : ι →
     _ = (∑ i, ‖w i‖) * (∑ j, ‖v j‖) * E := by
         rw [← Finset.sum_mul, ← Finset.sum_mul]; ring
 
+/- English proof (translation)
+Establish `hz : 0 ≤ ∑ i, ‖z i‖` using `Finset.sum_nonneg fun _ _ => norm_nonneg _`. Unfold `fvec`. Use `split_ifs with h`. Establish `e : ∀ i, ‖bvec (eI k r ⟨a.val, h⟩) i‖ = if i = eI k r ⟨a.val, h⟩ then 1 else 0`. Apply the tactic sequence `intro i; unfold bvec; rw [Pi.single_apply]; split_ifs <;> simp`.
+
+Simplify using `only [e, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem fvec_sum_le (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ) (a : Fin (r + 1)) :
     ∑ i, ‖fvec k r z a i‖ ≤ 1 + ∑ i, ‖z i‖ := by
   have hz : 0 ≤ ∑ i, ‖z i‖ := Finset.sum_nonneg fun _ _ => norm_nonneg _
@@ -235,6 +365,17 @@ theorem fvec_sum_le (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ) (a : Fin (r + 
     linarith
   · linarith
 
+/- English proof (translation)
+Introduce `k r z z'`. Use `⟨(1 + ∑ i, ‖z i‖) * (1 + ∑ i, ‖z' i‖), fun g => ?_⟩` and prove the remaining obligations. Establish `hz : 0 ≤ ∑ i, ‖z i‖` using `Finset.sum_nonneg fun _ _ => norm_nonneg _`. Establish `hz' : 0 ≤ ∑ i, ‖z' i‖` using `Finset.sum_nonneg fun _ _ => norm_nonneg _`. Establish `hC : 0 ≤ (1 + ∑ i, ‖z i‖) * (1 + ∑ i, ‖z' i‖) * B.gN g`.
+
+Use `gN_nonneg g` as an intermediate fact. Check the signs of the components of the expression. Use `(mx_le_iff _ hC).2 fun a b => ?_` and prove the remaining obligations. Use `show ‖herm (Hpk k r) (g *ᵥ fvec k r z' b) (fvec k r z a)‖ ≤ _`. Unfold `herm`.
+
+Rewrite using `[mulVec_mulVec]`. Establish `hE : ∀ i j, ‖(Hpk k r * g) i j‖ ≤ B.gN g`. Introduce `i j`. Rewrite using `[← gN_hpk_mul g]`. Conclude with `entry_le_gN _ i j`.
+
+Use `(dot_bound _ _ _ hE).trans ?_` and prove the remaining obligations. Establish `h1` using `fvec_sum_le k r z a`. Establish `h2` using `fvec_sum_le k r z' b`. Establish `h3 : 0 ≤ ∑ i, ‖fvec k r z a i‖` using `Finset.sum_nonneg fun _ _ => norm_nonneg _`. Establish `h4 : 0 ≤ ∑ i, ‖fvec k r z' b i‖` using `Finset.sum_nonneg fun _ _ => norm_nonneg _`.
+
+Establish `h5` using `gN_nonneg g`. Conclude with `mul_le_mul_of_nonneg_right (mul_le_mul h1 h2 h4 (by linarith)) h5`.
+-/
 theorem zhat_norm_linear_bound : C2.ZhatBound := by
   intro k r z z'
   refine ⟨(1 + ∑ i, ‖z i‖) * (1 + ∑ i, ‖z' i‖), fun g => ?_⟩
@@ -256,6 +397,9 @@ theorem zhat_norm_linear_bound : C2.ZhatBound := by
   have h5 := gN_nonneg g
   exact mul_le_mul_of_nonneg_right (mul_le_mul h1 h2 h4 (by linarith)) h5
 
+/- English proof (translation)
+Introduce `_ _ _ hg` and use `⟨gN_inv hg, gN_ge_one hg⟩`.
+-/
 theorem polynomial_normInv : C2.NormInv := fun _ _ _ hg => ⟨gN_inv hg, gN_ge_one hg⟩
 
 end PI.PolynomialProperness.GN

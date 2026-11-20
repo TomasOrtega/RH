@@ -4,6 +4,11 @@ namespace Formalism.MainNotions.N.FrobeniusPowerSeries
 
 open Finset
 
+/- English proof (translation)
+Proceed by induction on `S with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Establish `h1 : (m + (n + 1)).factorial = (m + n + 1) * (m + n).factorial`. Rewrite using `[show m + (n + 1) = m + n + 1 by omega, Nat.factorial_succ]`.
+
+Establish `h2 : padicValNat l ((m + n + 1) * (m + n).factorial) = padicValNat l (m + n + 1) + padicValNat l (m + n).factorial` using `padicValNat.mul (by omega) (Nat.factorial_ne_zero _)`. Rewrite using `[Finset.sum_range_succ, h1, h2, show m + 1 + n = m + n + 1 by omega]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem padicValNat_factorial_add_sum (l : ℕ) [Fact l.Prime] (m S : ℕ) :
     padicValNat l m.factorial + ∑ j ∈ range S, padicValNat l (m + 1 + j) =
       padicValNat l (m + S).factorial := by
@@ -18,6 +23,13 @@ theorem padicValNat_factorial_add_sum (l : ℕ) [Fact l.Prime] (m S : ℕ) :
     rw [Finset.sum_range_succ, h1, h2, show m + 1 + n = m + n + 1 by omega]
     omega
 
+/- English proof (translation)
+Establish `hl : 2 ≤ l` using `hp.out.two_le`. Establish `hlR : (0 : ℝ) < (l : ℝ) - 1`. Establish `: (2 : ℝ) ≤ l` using `by exact_mod_cast hl`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `key` using `sub_one_mul_padicValNat_factorial (p := l) n`.
+
+Establish `hle : (l - 1) * padicValNat l n.factorial ≤ n`. Rewrite using `[key]`. Conclude with `Nat.sub_le _ _`. Establish `hcast : ((l - 1 : ℕ) : ℝ) = (l : ℝ) - 1`. Rewrite using `[Nat.cast_sub (by omega), Nat.cast_one]`.
+
+Establish `h' : ((l : ℝ) - 1) * (padicValNat l n.factorial : ℝ) ≤ n`. Rewrite using `[← hcast]`. Conclude with `hle` after adjusting the coercions. Rewrite using `[le_div_iff₀ hlR]`. Combine the linear relations using `[mul_comm ((l : ℝ) - 1) (padicValNat l n.factorial : ℝ)]`.
+-/
 theorem padicValNat_factorial_le_div_sub_one' (l : ℕ) [hp : Fact l.Prime] (n : ℕ) :
     (padicValNat l n.factorial : ℝ) ≤ n / ((l : ℝ) - 1) := by
   have hl : 2 ≤ l := hp.out.two_le
@@ -34,6 +46,13 @@ theorem padicValNat_factorial_le_div_sub_one' (l : ℕ) [hp : Fact l.Prime] (n :
   rw [le_div_iff₀ hlR]
   linarith [mul_comm ((l : ℝ) - 1) (padicValNat l n.factorial : ℝ)]
 
+/- English proof (translation)
+Establish `h1 : (m + S) / q * q ≤ m + S` using `Nat.div_mul_le_self _ _`. Establish `h2 : m < q * (m / q) + q`. Establish `h3` using `Nat.div_add_mod m q`. Establish `h4` using `Nat.mod_lt m hq`. Use linear arithmetic over natural numbers and integers.
+
+Establish `h1' : (((m + S) / q : ℕ) : ℝ) * q ≤ (m : ℝ) + S` using `by exact_mod_cast h1`. Establish `h2' : (m : ℝ) < q * ((m / q : ℕ) : ℝ) + q` using `by exact_mod_cast h2`. Establish `hq' : (0 : ℝ) < q` using `by exact_mod_cast hq`. Establish `h5 : ((((m + S) / q : ℕ) : ℝ) - ((m / q : ℕ) : ℝ) - 1) * q ≤ S`. Use the polynomial consequences of the given equalities and inequalities.
+
+Establish `h6 : (((m + S) / q : ℕ) : ℝ) - ((m / q : ℕ) : ℝ) - 1 ≤ S / q`. Rewrite using `[le_div_iff₀ hq']`. Conclude with `h5`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 private theorem floor_div_add_sub_floor_div_le_div_add_one (q m S : ℕ) (hq : 0 < q) :
     (((m + S) / q : ℕ) : ℝ) - ((m / q : ℕ) : ℝ) ≤ (S : ℝ) / (q : ℝ) + 1 := by
   have h1 : (m + S) / q * q ≤ m + S := Nat.div_mul_le_self _ _
@@ -50,6 +69,21 @@ private theorem floor_div_add_sub_floor_div_le_div_add_one (q m S : ℕ) (hq : 0
     rw [le_div_iff₀ hq']; exact h5
   linarith
 
+/- English proof (translation)
+Establish `hl : 2 ≤ l` using `hp.out.two_le`. Establish `hlR : (2 : ℝ) ≤ l` using `by exact_mod_cast hl`. Establish `hA` using `padicValNat_factorial (p := l) (n := m + S) hb`. Establish `hB` using `padicValNat_factorial (p := l) (n := m) (lt_of_le_of_lt (Nat.log_mono_right (by omega)) hb)`. Establish `h1` using `padicValNat_factorial_add_sum l m S`.
+
+Rewrite `h1` using `[hA, hB]`. Establish `h1' : ∑ i ∈ Finset.Ico 1 b, ((m / l ^ i : ℕ) : ℝ) + ((∑ j ∈ range S, padicValNat l (m + 1 + j) : ℕ) : ℝ) = ∑ i ∈ Finset.Ico 1 b, (((m + S) / l ^ i : ℕ) : ℝ)`. Conclude with `h1` after adjusting the coercions. Establish `key : ∀ i ∈ Finset.Ico 1 b, (((m + S) / l ^ i : ℕ) : ℝ) - ((m / l ^ i : ℕ) : ℝ) ≤ (S : ℝ) * ((l : ℝ)⁻¹) ^ i + 1`. Introduce `i _`.
+
+Establish `hq : 0 < l ^ i` using `pow_pos (by omega) i`. Use `floor_div_add_sub_floor_div_le_div_add_one (l ^ i) m S hq` as an intermediate fact. Rewrite `this` using `[Nat.cast_pow]`. Rewrite using `[inv_pow, ← div_eq_mul_inv]`. Conclude with `this`.
+
+Establish `hsum : ∑ i ∈ Finset.Ico 1 b, (((m + S) / l ^ i : ℕ) : ℝ) - ∑ i ∈ Finset.Ico 1 b, ((m / l ^ i : ℕ) : ℝ) ≤ ∑ i ∈ Finset.Ico 1 b, ((S : ℝ) * ((l : ℝ)⁻¹) ^ i + 1)`. Rewrite using `[← Finset.sum_sub_distrib]`. Conclude with `Finset.sum_le_sum key`. Establish `hl0 : (l : ℝ) ≠ 0` using `ne_of_gt (by linarith)`. Establish `hl1 : (l : ℝ) - 1 ≠ 0` using `ne_of_gt (by linarith)`.
+
+Establish `hgeom : ∑ i ∈ Finset.Ico 1 b, ((l : ℝ)⁻¹) ^ i ≤ 1 / ((l : ℝ) - 1)`. Establish `hx0 : (0 : ℝ) ≤ (l : ℝ)⁻¹` using `by positivity`. Establish `hx1 : (l : ℝ)⁻¹ < 1`. Rewrite using `[inv_eq_one_div, div_lt_one (by linarith)]; linarith`. Use `(geom_sum_Ico_le_of_lt_one hx0 hx1).trans (le_of_eq ?_)` and prove the remaining obligations.
+
+Rewrite using `[pow_one]`. Clear the denominators using the available nonvanishing facts. Establish `hcard : ∑ i ∈ Finset.Ico 1 b, ((S : ℝ) * ((l : ℝ)⁻¹) ^ i + 1) = S * ∑ i ∈ Finset.Ico 1 b, ((l : ℝ)⁻¹) ^ i + ((b - 1 : ℕ) : ℝ)`. Rewrite using `[Finset.sum_add_distrib, ← Finset.mul_sum, Finset.sum_const, Nat.card_Ico, nsmul_eq_mul, mul_one]`. Establish `hS : (S : ℝ) * ∑ i ∈ Finset.Ico 1 b, ((l : ℝ)⁻¹) ^ i ≤ S / ((l : ℝ) - 1)`.
+
+Combine the equalities or inequalities in the displayed calculation. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 private theorem sum_padicValNat_window_le_of_log_lt (l : ℕ) [hp : Fact l.Prime] (m S b : ℕ)
     (hb : Nat.log l (m + S) < b) :
     ((∑ j ∈ range S, padicValNat l (m + 1 + j) : ℕ) : ℝ) ≤
@@ -97,6 +131,11 @@ private theorem sum_padicValNat_window_le_of_log_lt (l : ℕ) [hp : Fact l.Prime
       _ = S / ((l : ℝ) - 1) := by rw [mul_one_div]
   linarith
 
+/- English proof (translation)
+Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Simplify using the standard rewrite rules. Establish `hl1 : (1 : ℝ) < l`. Establish `: (2 : ℝ) ≤ l` using `by exact_mod_cast hl`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Rewrite using `[Real.le_logb_iff_rpow_le hl1 (by exact_mod_cast hn), Real.rpow_natCast]`. Conclude with `Nat.pow_log_le_self l hn.ne'` after adjusting the coercions.
+-/
 private theorem natLog_le_logb_natCast_of_two_le (l n : ℕ) (hl : 2 ≤ l) :
     ((Nat.log l n : ℕ) : ℝ) ≤ Real.logb l (n : ℝ) := by
   rcases Nat.eq_zero_or_pos n with rfl | hn
@@ -107,6 +146,9 @@ private theorem natLog_le_logb_natCast_of_two_le (l n : ℕ) (hl : 2 ≤ l) :
     rw [Real.le_logb_iff_rpow_le hl1 (by exact_mod_cast hn), Real.rpow_natCast]
     exact_mod_cast Nat.pow_log_le_self l hn.ne'
 
+/- English proof (translation)
+Establish `hl : 2 ≤ l` using `hp.out.two_le`. Establish `h` using `sum_padicValNat_window_le_of_log_lt l m S (Nat.log l (m + S) + 1) (Nat.lt_succ_self _)`. Establish `h2` using `natLog_le_logb_natCast_of_two_le l (m + S) hl`. Simplify using `only [Nat.add_sub_cancel] at h`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem sum_padicValNat_window_le (l : ℕ) [hp : Fact l.Prime] (m S : ℕ) :
     ((∑ j ∈ range S, padicValNat l (m + 1 + j) : ℕ) : ℝ) ≤
       S / ((l : ℝ) - 1) + Real.logb l ((m + S : ℕ) : ℝ) := by
@@ -116,6 +158,11 @@ theorem sum_padicValNat_window_le (l : ℕ) [hp : Fact l.Prime] (m S : ℕ) :
   simp only [Nat.add_sub_cancel] at h
   linarith
 
+/- English proof (translation)
+Proceed by induction on `S with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Establish `hI : Finset.Ico a (a + ((n + 1 : ℕ) : ℤ)) = insert (a + n) (Finset.Ico a (a + n))`. Use extensionality with `x`.
+
+Simplify using `only [Finset.mem_insert, Finset.mem_Ico]`. Use `push_cast`. Apply the tactic sequence `constructor <;> intro h <;> omega`. Rewrite using `[hI, Finset.sum_insert (by simp), ih, Finset.sum_range_succ, add_comm]`.
+-/
 private theorem sum_Ico_int_eq_sum_range_add (a : ℤ) (S : ℕ) (f : ℤ → ℕ) :
     ∑ i ∈ Finset.Ico a (a + S), f i = ∑ j ∈ range S, f (a + j) := by
   induction S with
@@ -128,6 +175,19 @@ private theorem sum_Ico_int_eq_sum_range_add (a : ℤ) (S : ℕ) (f : ℤ → �
       constructor <;> intro h <;> omega
     rw [hI, Finset.sum_insert (by simp), ih, Finset.sum_range_succ, add_comm]
 
+/- English proof (translation)
+Break down `Nat.eq_zero_or_pos S with rfl | hS` into its components or cases. Conclude with `⟨0, by simp, by simp⟩`. Establish `hfirst` using `ha a (by simp only [Finset.mem_Ico]; omega)`. Establish `hlast` using `ha (a + S - 1) (by simp only [Finset.mem_Ico]; omega)`. Rewrite using `[sum_Ico_int_eq_sum_range_add]`.
+
+Break down `lt_or_gt_of_ne hfirst.1 with hneg | hpos` into its components or cases. Establish `hend : a + S ≤ 0`. Assume the negation of the conclusion as `hc`. Establish `h0` using `ha 0 (by simp only [Finset.mem_Ico]; omega)`. Conclude with `h0.1 rfl`.
+
+Take `⟨m, hm⟩` from `Int.eq_ofNat_of_zero_le (show (0 : ℤ) ≤ -a - S by omega)`. Use `⟨m, ?_, ?_⟩` and prove the remaining obligations. Use `(abs_le.mp hfirst.2).1` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[← Finset.sum_range_reflect (fun j => padicValNat l (m + 1 + j)) S]`.
+
+Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `j hj`. Rewrite `hj` using `[Finset.mem_range]`. Establish `he : a + (j : ℤ) = -(((m + 1 + (S - 1 - j) : ℕ)) : ℤ)` using `by omega`. Rewrite using `[padicValInt, he, Int.natAbs_neg]`.
+
+Both sides reduce to the same expression. Take `⟨m, hm⟩` from `Int.eq_ofNat_of_zero_le (show (0 : ℤ) ≤ a - 1 by omega)`. Use `⟨m, ?_, ?_⟩` and prove the remaining obligations. Use `(abs_le.mp hlast.2).2` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+
+Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `j _`. Establish `he : a + (j : ℤ) = ((m + 1 + j : ℕ) : ℤ)` using `by push_cast; omega`. Rewrite using `[padicValInt, he]`. Both sides reduce to the same expression.
+-/
 theorem exists_sum_padicValInt_window_eq (l : ℕ) (a : ℤ) (S N : ℕ)
     (ha : ∀ i ∈ Finset.Ico a (a + S), i ≠ 0 ∧ |i| ≤ (N : ℤ)) :
     ∃ m : ℕ, m + S ≤ N ∧ ∑ i ∈ Finset.Ico a (a + S), padicValInt l i =
@@ -163,6 +223,13 @@ theorem exists_sum_padicValInt_window_eq (l : ℕ) (a : ℤ) (S N : ℕ)
       rw [padicValInt, he]
       rfl
 
+/- English proof (translation)
+Take `⟨m, hmN, heq⟩` from `exists_sum_padicValInt_window_eq l a S N ha`. Rewrite using `[heq]`. Establish `h1` using `padicValNat_factorial_add_sum l m S`. Establish `h2` using `padicValNat_factorial_le_div_sub_one' l (m + S)`. Establish `hl : 2 ≤ l` using `(Fact.out : l.Prime).two_le`.
+
+Establish `hlR : (0 : ℝ) < (l : ℝ) - 1`. Establish `: (2 : ℝ) ≤ l` using `by exact_mod_cast hl`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h3n : ∑ j ∈ range S, padicValNat l (m + 1 + j) ≤ padicValNat l (m + S).factorial`. Use linear arithmetic over natural numbers and integers.
+
+Establish `h3 : ((∑ j ∈ range S, padicValNat l (m + 1 + j) : ℕ) : ℝ) ≤ (padicValNat l (m + S).factorial : ℝ)` using `by exact_mod_cast h3n`. Establish `h4 : ((m + S : ℕ) : ℝ) / ((l : ℝ) - 1) ≤ N / ((l : ℝ) - 1)`. Rewrite using `[le_div_iff₀ hlR, div_mul_cancel₀ _ hlR.ne']`. Conclude with `hmN` after adjusting the coercions. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem sum_padicValInt_window_le (l : ℕ) [Fact l.Prime] (a : ℤ) (S N : ℕ)
     (ha : ∀ i ∈ Finset.Ico a (a + S), i ≠ 0 ∧ |i| ≤ (N : ℤ)) :
     ((∑ i ∈ Finset.Ico a (a + S), padicValInt l i : ℕ) : ℝ) ≤ N / ((l : ℝ) - 1) := by
@@ -183,6 +250,13 @@ theorem sum_padicValInt_window_le (l : ℕ) [Fact l.Prime] (a : ℤ) (S N : ℕ)
     exact_mod_cast hmN
   linarith
 
+/- English proof (translation)
+Take `⟨m, hmN, heq⟩` from `exists_sum_padicValInt_window_eq l a S N ha`. Rewrite using `[heq]`. Establish `h1` using `sum_padicValNat_window_le l m S`. Establish `hl : 2 ≤ l` using `(Fact.out : l.Prime).two_le`. Establish `hl1 : (1 : ℝ) < l`.
+
+Establish `: (2 : ℝ) ≤ l` using `by exact_mod_cast hl`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2 : Real.logb l ((m + S : ℕ) : ℝ) ≤ Real.logb l N`. Break down `Nat.eq_zero_or_pos (m + S) with h0 | hpos` into its components or cases. Rewrite using `[h0, Nat.cast_zero, Real.logb_zero]`.
+
+Conclude with `Real.logb_nonneg hl1 (by exact_mod_cast hN)`. Conclude with `Real.logb_le_logb_of_le hl1 (by exact_mod_cast hpos) (by exact_mod_cast hmN)`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem sum_padicValInt_window_le_logb (l : ℕ) [Fact l.Prime] (a : ℤ) (S N : ℕ) (hN : 1 ≤ N)
     (ha : ∀ i ∈ Finset.Ico a (a + S), i ≠ 0 ∧ |i| ≤ (N : ℤ)) :
     ((∑ i ∈ Finset.Ico a (a + S), padicValInt l i : ℕ) : ℝ) ≤
@@ -201,6 +275,11 @@ theorem sum_padicValInt_window_le_logb (l : ℕ) [Fact l.Prime] (a : ℤ) (S N :
     · exact Real.logb_le_logb_of_le hl1 (by exact_mod_cast hpos) (by exact_mod_cast hmN)
   linarith
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `@insert k s hk ih`. Rewrite using `[Finset.biUnion_insert, Finset.sum_insert hk]`. Establish `h : ∑ x ∈ t k ∪ s.biUnion t, f x + ∑ x ∈ t k ∩ s.biUnion t, f x = ∑ x ∈ t k, f x + ∑ x ∈ s.biUnion t, f x` using `Finset.sum_union_inter`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem sum_biUnion_le_sum_sum {ι : Type*} [DecidableEq ι] (s : Finset ι) (t : ι → Finset ℤ)
     (f : ℤ → ℕ) : ∑ i ∈ s.biUnion t, f i ≤ ∑ k ∈ s, ∑ i ∈ t k, f i := by
   induction s using Finset.induction_on with

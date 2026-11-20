@@ -40,45 +40,153 @@ namespace UpperTheory.Gal.CertificateRingHomMap
 
 universe u v
 
+/- English proof (translation)
+The claim follows from `pProjOne_holds`.
+-/
 theorem projOne_holds : ProjOne.{u} := pProjOne_holds
+/- English proof (translation)
+The claim follows from `pProjTwo_holds`.
+-/
 theorem projTwo_holds : ProjTwo.{u, v} := pProjTwo_holds
+/- English proof (translation)
+The claim follows from `pCertProj_holds`.
+-/
 theorem certProj_holds : CertProj.{u} := pCertProj_holds
+/- English proof (translation)
+The claim follows from `pProjTrace_holds`.
+-/
 theorem projTrace_holds : ProjTrace.{u} := pProjTrace_holds
+/- English proof (translation)
+The claim follows from `pTracePow_holds`.
+-/
 theorem tracePow_holds : TracePow.{u} := pTracePow_holds
+/- English proof (translation)
+The claim follows from `pExtZero_holds`.
+-/
 theorem extZero_holds : ExtZero := pExtZero_holds
+/- English proof (translation)
+The claim follows from `pCentralEig_holds`.
+-/
 theorem centralEig_holds : CentralEig := pCentralEig_holds
+/- English proof (translation)
+The claim follows from `pExtEig_holds extZero_holds centralEig_holds`.
+-/
 theorem extEig_holds : ExtEig := pExtEig_holds extZero_holds centralEig_holds
+/- English proof (translation)
+The claim follows from `pExtHecke_holds extEig_holds`.
+-/
 theorem extHecke_holds : ExtHecke := pExtHecke_holds extEig_holds
+/- English proof (translation)
+The claim follows from `pCentralEig2_of`.
+-/
 theorem centralEig2_holds : CentralEig2 := pCentralEig2_of
+/- English proof (translation)
+The claim follows from `pExtEig2_of extZero_holds centralEig2_holds`.
+-/
 theorem extEig2_holds : ExtEig2 := pExtEig2_of extZero_holds centralEig2_holds
+/- English proof (translation)
+The claim follows from `pLocAdj_of`.
+-/
 theorem locAdj_holds : LocAdj := pLocAdj_of
+/- English proof (translation)
+The claim follows from `pRootsAlg_of`.
+-/
 theorem rootsAlg_holds : RootsAlg := pRootsAlg_of
+/- English proof (translation)
+The claim follows from `pFinToHecke_of`.
+-/
 theorem finToHecke_holds : FinToHecke := pFinToHecke_of
+/- English proof (translation)
+The claim follows from `pClassFin_of`.
+-/
 theorem classFin_holds : ClassFin := pClassFin_of
+/- English proof (translation)
+The claim follows from `pXiScalar_of`.
+-/
 theorem xiScalar_holds : XiScalar := pXiScalar_of
+/- English proof (translation)
+The claim follows from `pXiZeta_of xiScalar_holds`.
+-/
 theorem xiZeta_holds : XiZeta := pXiZeta_of xiScalar_holds
+/- English proof (translation)
+The claim follows from `pIntConj_of`.
+-/
 theorem intConj_holds : IntConj := pIntConj_of
+/- English proof (translation)
+The claim follows from `pIntSim_of`.
+-/
 theorem intSim_holds : IntSim := pIntSim_of
+/- English proof (translation)
+The claim follows from `pOfUBij_of`.
+-/
 theorem ofUBij_holds : OfUBij := pOfUBij_of
+/- English proof (translation)
+The claim follows from `pLocComm_of`.
+-/
 theorem locComm_holds : LocComm := pLocComm_of
+/- English proof (translation)
+The claim follows from `pLocMem_of intConj_holds locComm_holds`.
+-/
 theorem locMem_holds : LocMem := pLocMem_of intConj_holds locComm_holds
+/- English proof (translation)
+The claim follows from `pLevOpen_of`.
+-/
 theorem levOpen_holds : LevOpen := pLevOpen_of
+/- English proof (translation)
+The claim follows from `pIntCompact_of`.
+-/
 theorem intCompact_holds : IntCompact := pIntCompact_of
+/- English proof (translation)
+The claim follows from `pLevCompact_of intCompact_holds intConj_holds locComm_holds levOpen_holds`.
+-/
 theorem levCompact_holds : LevCompact := pLevCompact_of intCompact_holds intConj_holds locComm_holds levOpen_holds
+/- English proof (translation)
+The claim follows from `pNbhd2_of`.
+-/
 theorem nhds_basis_levelSubgroup : Nbhd2 := pNbhd2_of
+/- English proof (translation)
+The claim follows from `pNbhdU_of nhds_basis_levelSubgroup intConj_holds locComm_holds ofUBij_holds`.
+-/
 theorem nbhdU_holds : NbhdU := pNbhdU_of nhds_basis_levelSubgroup intConj_holds locComm_holds ofUBij_holds
+/- English proof (translation)
+The claim follows from `pSphType_of intConj_holds locComm_holds`.
+-/
 theorem sphType_holds : SphType := pSphType_of intConj_holds locComm_holds
+/- English proof (translation)
+The claim follows from `pStepAt_of locAdj_holds locComm_holds ofUBij_holds`.
+-/
 theorem stepAt_holds : StepAt := pStepAt_of locAdj_holds locComm_holds ofUBij_holds
+/- English proof (translation)
+The claim follows from `pVecU_of nbhdU_holds stepAt_holds sphType_holds locComm_holds`.
+-/
 theorem vecU_holds : VecU := pVecU_of nbhdU_holds stepAt_holds sphType_holds locComm_holds
+/- English proof (translation)
+The claim follows from `pSatVal_of`.
+-/
 theorem satVal_holds : SatVal := pSatVal_of
+/- English proof (translation)
+The claim follows from `pKerFormU_of ofUBij_holds`.
+-/
 theorem kerFormU_holds : KerFormU := pKerFormU_of ofUBij_holds
+/- English proof (translation)
+The claim follows from `pHeckePres_of locComm_holds locMem_holds`.
+-/
 theorem heckePres_holds : HeckePres := pHeckePres_of locComm_holds locMem_holds
+/- English proof (translation)
+The claim follows from `pKapOf_of finToHecke_holds xiZeta_holds intSim_holds levOpen_holds`.
+-/
 theorem kapOf_holds : KapOf := pKapOf_of finToHecke_holds xiZeta_holds intSim_holds levOpen_holds
 
+/- English proof (translation)
+The claim follows from `pFormGU_of extEig2_holds classFin_holds xiZeta_holds kerFormU_holds heckePres_holds satVal_holds locMem_holds locComm_holds levOpen_holds ofUBij_holds`.
+-/
 theorem formGU_holds : FormGU :=
   pFormGU_of extEig2_holds classFin_holds xiZeta_holds kerFormU_holds heckePres_holds satVal_holds locMem_holds locComm_holds
     levOpen_holds ofUBij_holds
 
+/- English proof (translation)
+The claim follows from `seedGU_of zetaEx_holds vecU_holds sphType_holds formGU_holds kapOf_holds levOpen_holds levCompact_holds`.
+-/
 theorem seedGU_holds : SeedGU :=
   seedGU_of zetaEx_holds vecU_holds sphType_holds formGU_holds kapOf_holds levOpen_holds levCompact_holds
 

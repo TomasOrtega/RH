@@ -16,11 +16,19 @@ def genericMatrix' (R : Type) [CommRing R] (r : ℕ) :
 def genericDet (R : Type) [CommRing R] (r : ℕ) : MvPolynomial (Fin r × Fin r) R :=
   (genericMatrix' R r).det
 
+/- English proof (translation)
+Substitute `hs` using the available equality. Both sides reduce to the same expression.
+-/
 theorem leading_minor_full_eq_det (R : Type) [CommRing R] {r : ℕ} (s : ℕ) (hs : s = r) (hr : s ≤ r)
     (hn : s ≤ r) : lpMinor R s hr hn = genericDet R r := by
   subst hs
   rfl
 
+/- English proof (translation)
+Establish `hM : (rowGen R a b).mapMatrix (genericMatrix' R r) = (RingHom.mapMatrix Polynomial.C (genericMatrix' R r)).updateRow b (RingHom.mapMatrix Polynomial.C (genericMatrix' R r) b + (Polynomial.X : Polynomial (MvPolynomial (Fin r × Fin r) R)) • RingHom.mapMatrix Polynomial.C (genericMa …`. Use extensionality with `p q`. Distinguish the cases in `hp : p = b`. Substitute `hp` using the available equality. Simplify using `[rowGen, genericMatrix', Matrix.updateRow_apply]`.
+
+Simplify using `[rowGen, genericMatrix', Matrix.updateRow_apply, hp]`. Unfold `genericDet`. Rewrite using `[AlgHom.map_det (rowGen R a b), hM, Matrix.det_updateRow_add_smul_self _ (Ne.symm hab), ← RingHom.map_det]`.
+-/
 theorem row_generator_det_of_ne (R : Type) [CommRing R] {r : ℕ} (a b : Fin r) (hab : a ≠ b) :
     rowGen R a b (genericDet R r) = Polynomial.C (genericDet R r) := by
   have hM : (rowGen R a b).mapMatrix (genericMatrix' R r) =
@@ -37,6 +45,11 @@ theorem row_generator_det_of_ne (R : Type) [CommRing R] {r : ℕ} (a b : Fin r) 
   rw [AlgHom.map_det (rowGen R a b), hM, Matrix.det_updateRow_add_smul_self _ (Ne.symm hab),
     ← RingHom.map_det]
 
+/- English proof (translation)
+Establish `hM : (rowGen R a a).mapMatrix (genericMatrix' R r) = (RingHom.mapMatrix Polynomial.C (genericMatrix' R r)).updateRow a ((1 + Polynomial.X : Polynomial (MvPolynomial (Fin r × Fin r) R)) • RingHom.mapMatrix Polynomial.C (genericMatrix' R r) a)`. Use `Matrix.ext fun p q => ?_` and prove the remaining obligations. Distinguish the cases in `hp : p = a`. Substitute `hp` using the available equality. Apply the tactic sequence `simp [rowGen, genericMatrix', Matrix.updateRow_apply] <;> ring`.
+
+Simplify using `[rowGen, genericMatrix', Matrix.updateRow_apply, hp]`. Unfold `genericDet`. Rewrite using `[AlgHom.map_det (rowGen R a a), hM, Matrix.det_updateRow_smul, Matrix.updateRow_eq_self, ← RingHom.map_det]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem row_generator_det_diag (R : Type) [CommRing R] {r : ℕ} (a : Fin r) :
     rowGen R a a (genericDet R r) = Polynomial.C (genericDet R r) * (1 + Polynomial.X) := by
   have hM : (rowGen R a a).mapMatrix (genericMatrix' R r) =
@@ -53,12 +66,18 @@ theorem row_generator_det_diag (R : Type) [CommRing R] {r : ℕ} (a : Fin r) :
     ← RingHom.map_det]
   ring
 
+/- English proof (translation)
+Unfold `rowDiv`. Rewrite using `[map_mul, row_generator_det_of_ne R a b hab, Polynomial.coeff_C_mul]`.
+-/
 theorem divided_power_det_mul_of_ne (R : Type) [CommRing R] {r : ℕ} (a b : Fin r) (hab : a ≠ b) (k : ℕ)
     (f : MvPolynomial (Fin r × Fin r) R) :
     rowDiv R a b k (genericDet R r * f) = genericDet R r * rowDiv R a b k f := by
   unfold rowDiv
   rw [map_mul, row_generator_det_of_ne R a b hab, Polynomial.coeff_C_mul]
 
+/- English proof (translation)
+Unfold `rowDiv`. Rewrite using `[map_mul, row_generator_det_diag, mul_assoc, Polynomial.coeff_C_mul, add_mul, one_mul, Polynomial.coeff_add, Polynomial.coeff_X_mul_zero, add_zero]`.
+-/
 theorem divided_power_zero_det_mul (R : Type) [CommRing R] {r : ℕ} (a : Fin r)
     (f : MvPolynomial (Fin r × Fin r) R) :
     rowDiv R a a 0 (genericDet R r * f) = genericDet R r * rowDiv R a a 0 f := by
@@ -66,6 +85,9 @@ theorem divided_power_zero_det_mul (R : Type) [CommRing R] {r : ℕ} (a : Fin r)
   rw [map_mul, row_generator_det_diag, mul_assoc, Polynomial.coeff_C_mul, add_mul, one_mul,
     Polynomial.coeff_add, Polynomial.coeff_X_mul_zero, add_zero]
 
+/- English proof (translation)
+Unfold `rowDiv`. Rewrite using `[map_mul, row_generator_det_diag, mul_assoc, Polynomial.coeff_C_mul, add_mul, one_mul, Polynomial.coeff_add, Polynomial.coeff_X_mul]`.
+-/
 theorem divided_power_succ_det_mul (R : Type) [CommRing R] {r : ℕ} (a : Fin r) (k : ℕ)
     (f : MvPolynomial (Fin r × Fin r) R) :
     rowDiv R a a (k + 1) (genericDet R r * f) =
@@ -74,6 +96,13 @@ theorem divided_power_succ_det_mul (R : Type) [CommRing R] {r : ℕ} (a : Fin r)
   rw [map_mul, row_generator_det_diag, mul_assoc, Polynomial.coeff_C_mul, add_mul, one_mul,
     Polynomial.coeff_add, Polynomial.coeff_X_mul]
 
+/- English proof (translation)
+Take `⟨g, hg, rfl⟩` from `Submodule.mem_map.mp hf`. Rewrite using `[LinearMap.mulLeft_apply]`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Consider the cases of `k with`.
+
+Consider the case `zero`. Rewrite using `[divided_power_zero_det_mul]`. Conclude with `Submodule.mem_map.mpr ⟨_, hs a a 0 g hg, by simp⟩`. Consider the case `succ k`. Rewrite using `[divided_power_succ_det_mul]`.
+
+Conclude with `Submodule.mem_map.mpr ⟨_, L.add_mem (hs a a (k + 1) g hg) (hs a a k g hg), by simp⟩`. Rewrite using `[divided_power_det_mul_of_ne R a b hab]`. Conclude with `Submodule.mem_map.mpr ⟨_, hs a b k g hg, by simp⟩`.
+-/
 theorem divided_power_stable_det_mul (R : Type) [CommRing R] {r : ℕ}
     (L : Submodule R (MvPolynomial (Fin r × Fin r) R))
     (hs : ∀ (a b : Fin r) (k : ℕ) (f : MvPolynomial (Fin r × Fin r) R), f ∈ L →
@@ -94,6 +123,13 @@ theorem divided_power_stable_det_mul (R : Type) [CommRing R] {r : ℕ}
   · rw [divided_power_det_mul_of_ne R a b hab]
     exact Submodule.mem_map.mpr ⟨_, hs a b k g hg, by simp⟩
 
+/- English proof (translation)
+Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Proceed by induction on `k with`. Consider the case `zero`. Rewrite using `[← divided_power_zero_det_mul]`.
+
+Conclude with `hW a a 0 _ hf`. Consider the case `succ k ih`. Establish `h1` using `hW a a (k + 1) _ hf`. Rewrite `h1` using `[divided_power_succ_det_mul, mul_add]`. Establish `h2` using `W.sub_mem h1 ih`.
+
+Simplify using `using h2`. Rewrite using `[← divided_power_det_mul_of_ne R a b hab]`. Conclude with `hW a b k _ hf`.
+-/
 theorem det_mul_divided_power_mem (R : Type) [CommRing R] {r : ℕ}
     (W : Submodule R (MvPolynomial (Fin r × Fin r) R))
     (hW : ∀ (a b : Fin r) (k : ℕ) (f : MvPolynomial (Fin r × Fin r) R), f ∈ W →
@@ -113,6 +149,15 @@ theorem det_mul_divided_power_mem (R : Type) [CommRing R] {r : ℕ}
   · rw [← divided_power_det_mul_of_ne R a b hab]
     exact hW a b k _ hf
 
+/- English proof (translation)
+Consider the cases of `r with`. Consider the case `zero => simp [hw, genericDet]`. Consider the case `succ r`. Establish `hl : ∀ μ : Fin (r + 1) → ℕ, nuNext μ (Fin.last r) = 0` using `fun μ => by simp [nuNext]`. Establish `key : ∀ i : Fin r, ν i.castSucc + 1 - nuNext (fun a => ν a + 1) i.castSucc = ν i.castSucc - nuNext ν i.castSucc`.
+
+Introduce `i`. Establish `hs : (Fin.castSucc i).val + 1 < r + 1`. Use `i.isLt` as an intermediate fact. Simplify using `only [Fin.coe_castSucc]`. Use linear arithmetic over natural numbers and integers.
+
+Simplify using `only [nuNext, dif_pos hs]`. Use linear arithmetic over natural numbers and integers. Establish `hL : ∀ (h1 : (Fin.last r).val + 1 ≤ r + 1) (h2 : (Fin.last r).val + 1 ≤ r + 1), lpMinor R ((Fin.last r).val + 1) h1 h2 = genericDet R (r + 1)` using `fun h1 h2 => leading_minor_full_eq_det R _ (by simp) h1 h2`. Unfold `hw`. Rewrite using `[Fin.prod_univ_castSucc, Fin.prod_univ_castSucc]`.
+
+Simplify using `only [key, hl, Nat.sub_zero, hL]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem highest_weight_shift_eq_det_mul (R : Type) [CommRing R] {r : ℕ} (ν : Fin r → ℕ) :
     hw R le_rfl (fun a => ν a + 1) = genericDet R r * hw R le_rfl ν := by
   cases r with
@@ -136,12 +181,22 @@ theorem highest_weight_shift_eq_det_mul (R : Type) [CommRing R] {r : ℕ} (ν : 
     simp only [key, hl, Nat.sub_zero, hL]
     ring
 
+/- English proof (translation)
+Establish `h` using `highest_weight_shift_eq_det_mul R (fun _ : Fin r => 0)`. Establish `h0 : hw R le_rfl (fun _ : Fin r => 0) = 1` using `by simp [hw]`. Simplify `h` using `[h0]`.
+-/
 theorem highest_weight_ones_eq_det (R : Type) [CommRing R] (r : ℕ) :
     hw R le_rfl (fun _ : Fin r => 1) = genericDet R r := by
   have h := highest_weight_shift_eq_det_mul R (fun _ : Fin r => 0)
   have h0 : hw R le_rfl (fun _ : Fin r => 0) = 1 := by simp [hw]
   simpa [h0] using h
 
+/- English proof (translation)
+Unfold `weyl at hf ⊢`. Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨w, rfl⟩` from `hx`. Conclude with `Submodule.subset_span ⟨(a, b, k) :: w, rfl⟩`.
+
+Consider the case `zero => simp [rowDiv]`. Consider the case `add x y _ _ hx hy`. Unfold `rowDiv at hx hy ⊢`. Rewrite using `[map_add, Polynomial.coeff_add]`. Conclude with `Submodule.add_mem _ hx hy`.
+
+Consider the case `smul c x _ hx`. Unfold `rowDiv at hx ⊢`. Rewrite using `[map_smul, Polynomial.coeff_smul]`. Conclude with `Submodule.smul_mem _ c hx`.
+-/
 private theorem divOp_mem_weyl (R : Type) [CommRing R] {r : ℕ} (μ : Fin r → ℕ)
     (a b : Fin r) (k : ℕ) (f : MvPolynomial (Fin r × Fin r) R)
     (hf : f ∈ weyl R r r le_rfl μ) : rowDiv R a b k f ∈ weyl R r r le_rfl μ := by
@@ -160,6 +215,9 @@ private theorem divOp_mem_weyl (R : Type) [CommRing R] {r : ℕ} (μ : Fin r →
     rw [map_smul, Polynomial.coeff_smul]
     exact Submodule.smul_mem _ c hx
 
+/- English proof (translation)
+Proceed by induction on `w with`. Consider the case `nil => exact hf`. Consider the case `cons x w ih => exact hs x.1 x.2.1 x.2.2 _ ih`.
+-/
 private theorem applyWord_mem_of_stable' (R : Type) [CommRing R] {r : ℕ}
     (L : Submodule R (MvPolynomial (Fin r × Fin r) R))
     (hs : ∀ (a b : Fin r) (k : ℕ) (f : MvPolynomial (Fin r × Fin r) R), f ∈ L →
@@ -169,11 +227,17 @@ private theorem applyWord_mem_of_stable' (R : Type) [CommRing R] {r : ℕ}
   | nil => exact hf
   | cons x w ih => exact hs x.1 x.2.1 x.2.2 _ ih
 
+/- English proof (translation)
+Unfold `weyl`. Conclude with `Submodule.subset_span ⟨[], rfl⟩`.
+-/
 private theorem hw_mem_weyl (R : Type) [CommRing R] {r : ℕ} (μ : Fin r → ℕ) :
     hw R le_rfl μ ∈ weyl R r r le_rfl μ := by
   unfold weyl
   exact Submodule.subset_span ⟨[], rfl⟩
 
+/- English proof (translation)
+Proceed by induction on `w with`. Consider the case `nil => exact hf`. Consider the case `cons x w ih => exact det_mul_divided_power_mem R W hW x.1 x.2.1 x.2.2 _ ih`.
+-/
 private theorem genericDet_mul_applyWord_mem (R : Type) [CommRing R] {r : ℕ}
     (W : Submodule R (MvPolynomial (Fin r × Fin r) R))
     (hW : ∀ (a b : Fin r) (k : ℕ) (f : MvPolynomial (Fin r × Fin r) R), f ∈ W →
@@ -183,6 +247,13 @@ private theorem genericDet_mul_applyWord_mem (R : Type) [CommRing R] {r : ℕ}
   | nil => exact hf
   | cons x w ih => exact det_mul_divided_power_mem R W hW x.1 x.2.1 x.2.2 _ ih
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨w, rfl⟩`. Simplify using `only [SetLike.mem_coe]`. Rewrite using `[highest_weight_shift_eq_det_mul]`.
+
+Conclude with `applyWord_mem_of_stable' R ((weyl R r r le_rfl ν).map (LinearMap.mulLeft R (genericDet R r))) (fun a b k f hf => divided_power_stable_det_mul R (weyl R r r le_rfl ν) (divOp_mem_weyl R ν) a b k f hf) w _ (Submodule.mem_map.mpr ⟨_, hw_mem_weyl R ν, by simp⟩)`. Rewrite using `[Submodule.map_le_iff_le_comap]`. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨w, rfl⟩`. Simplify using `only [SetLike.mem_coe, Submodule.mem_comap, LinearMap.mulLeft_apply]`.
+
+Apply `genericDet_mul_applyWord_mem R (weyl R r r le_rfl (fun a => ν a + 1)) (divOp_mem_weyl R (fun a => ν a + 1)) w` to reduce the goal to its premises. Rewrite using `[← highest_weight_shift_eq_det_mul]`. Conclude with `hw_mem_weyl R _`.
+-/
 theorem weyl_shift_eq_map_det_mul (R : Type) [CommRing R] {r : ℕ} (ν : Fin r → ℕ) :
     weyl R r r le_rfl (fun a => ν a + 1) =
       (weyl R r r le_rfl ν).map (LinearMap.mulLeft R (genericDet R r)) := by
@@ -203,9 +274,23 @@ theorem weyl_shift_eq_map_det_mul (R : Type) [CommRing R] {r : ℕ} (ν : Fin r 
     rw [← highest_weight_shift_eq_det_mul]
     exact hw_mem_weyl R _
 
+/- English proof (translation)
+Conclude with `Matrix.det_mvPolynomialX_ne_zero (Fin r) ℤ`.
+-/
 theorem generic_det_ne_zero (r : ℕ) : genericDet ℤ r ≠ 0 := by
   exact Matrix.det_mvPolynomialX_ne_zero (Fin r) ℤ
 
+/- English proof (translation)
+Unfold `dualWeyl`. Rewrite using `[Submodule.mem_inf]`. Prove the components needed by the constructor for the conclusion. Unfold `genericDet`. Rewrite using `[Matrix.det_apply]`.
+
+Use `Submodule.sum_mem _ (fun σ _ => ?_)` and prove the remaining obligations. Rewrite using `[Units.smul_def]`. Use `Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Rewrite using `[mem_weightedHomogeneousSubmodule]`. Establish `hp` using `IsWeightedHomogeneous.prod (w := colW r r) Finset.univ (fun i => genericMatrix' ℤ r (σ i) i) (fun i => colW r r (σ i, i)) (fun i _ => by simpa [genericMatrix'] using isWeightedHomogeneous_X (R := ℤ) (w := colW r r) (σ i, i))`.
+
+Use `hp using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `t`. Simplify using `[colW, Finset.sum_apply, Pi.single_apply]`. Simplify using `only [Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, AlgHom.toLinearMap_apply, sub_eq_zero]`. Introduce `l j hlj`.
+
+Establish `hM : (colAddGen ℤ l j).mapMatrix (genericMatrix' ℤ r) = Matrix.transpose ((Matrix.transpose ((rename (R` using `ℤ) (some : Fin r × Fin r → Option (Fin r × Fin r))).mapMatrix (genericMatrix' ℤ r))).updateRow j (Matrix.transpose ((rename (R := ℤ) (some : Fin r × Fin r → Option (Fin r × Fin r))).mapMatrix (genericMatrix' ℤ r)) j + (X none : MvPolynomial (Option (Fin r × Fin r)) ℤ) • Matrix.tr …`. Use extensionality with `p q`. Distinguish the cases in `hq : q = j`. Substitute `hq` using the available equality. Simplify using `[colAddGen, genericMatrix', Matrix.updateRow_apply]`.
+
+Simplify using `[colAddGen, genericMatrix', Matrix.updateRow_apply, hq]`. Unfold `genericDet`. Rewrite using `[AlgHom.map_det (colAddGen ℤ l j), hM, Matrix.det_transpose, Matrix.det_updateRow_add_smul_self _ hlj.ne', Matrix.det_transpose, ← AlgHom.map_det]`.
+-/
 theorem det_mem_dual_weyl_ones (r : ℕ) : genericDet ℤ r ∈ dualWeyl ℤ r r (fun _ => 1) := by
   unfold dualWeyl
   rw [Submodule.mem_inf]
@@ -242,6 +327,29 @@ theorem det_mem_dual_weyl_ones (r : ℕ) : genericDet ℤ r ∈ dualWeyl ℤ r r
     rw [AlgHom.map_det (colAddGen ℤ l j), hM, Matrix.det_transpose,
       Matrix.det_updateRow_add_smul_self _ hlj.ne', Matrix.det_transpose, ← AlgHom.map_det]
 
+/- English proof (translation)
+Unfold `IsWeightedHomogeneous`. Introduce `d hd`. Assume the negation of the conclusion as `hne`. Establish `key : ∀ e : σ →₀ ℕ, coeff e (D * weightedHomogeneousComponent w (Finsupp.weight w d) g) = if Finsupp.weight w e = δ + Finsupp.weight w d then coeff e (D * g) else 0`. Introduce `e`.
+
+Rewrite using `[coeff_mul, coeff_mul]`. Use `split_ifs with he`. Use `Finset.sum_congr rfl ?_` and prove the remaining obligations. Introduce and unpack `⟨x, y⟩ hxy`. Establish `hxy' : x + y = e` using `by first`.
+
+Consider the case `simpa using hxy`. Consider the case `exact Finset.mem_antidiagonal.mp hxy`. Consider the case `exact Finsupp.mem_antidiagonal.mp hxy`. Simplify using `only`. Rewrite using `[coeff_weightedHomogeneousComponent]`.
+
+Use `split_ifs with hy`. Both sides reduce to the same expression. Distinguish the cases in `hx : coeff x D = 0`. Simplify using `[hx]`. It suffices to derive a contradiction.
+
+Apply `hy` to reduce the goal to its premises. Establish `h1` using `hD hx`. Rewrite `he` using `[← hxy', map_add, h1]`. Conclude with `add_left_cancel he`. Use `Finset.sum_eq_zero ?_` and prove the remaining obligations.
+
+Introduce and unpack `⟨x, y⟩ hxy`. Establish `hxy' : x + y = e` using `by first`. Consider the case `simpa using hxy`. Consider the case `exact Finset.mem_antidiagonal.mp hxy`. Consider the case `exact Finsupp.mem_antidiagonal.mp hxy`.
+
+Simplify using `only`. Rewrite using `[coeff_weightedHomogeneousComponent]`. Use `split_ifs with hy`. Distinguish the cases in `hx : coeff x D = 0`. Simplify using `[hx]`.
+
+It suffices to derive a contradiction. Apply `he` to reduce the goal to its premises. Rewrite using `[← hxy', map_add, hD hx, hy]`. Simplify using the standard rewrite rules. Establish `hz : D * weightedHomogeneousComponent w (Finsupp.weight w d) g = 0`.
+
+Use extensionality with `e`. Rewrite using `[key, coeff_zero]`. Use `split_ifs with he`. Assume the negation of the conclusion as `hc`. Apply `hne` to reduce the goal to its premises.
+
+Establish `h3` using `h hc`. Rewrite `h3` using `[he]`. Conclude with `add_left_cancel h3`. Both sides reduce to the same expression. Break down `mul_eq_zero.mp hz with h0 | h0` into its components or cases.
+
+Conclude with `hD0 h0`. Apply `hd` to reduce the goal to its premises. Establish `h4` using `congrArg (coeff d) h0`. Rewrite `h4` using `[coeff_weightedHomogeneousComponent, if_pos rfl, coeff_zero]`. Conclude with `h4`.
+-/
 theorem weighted_homogeneous_cancel {σ : Type} {n : ℕ} (w : σ → Fin n → ℕ) (D g : MvPolynomial σ ℤ)
     (δ ν : Fin n → ℕ) (hD0 : D ≠ 0) (hD : IsWeightedHomogeneous w D δ)
     (h : IsWeightedHomogeneous w (D * g) (δ + ν)) : IsWeightedHomogeneous w g ν := by
@@ -306,6 +414,13 @@ theorem weighted_homogeneous_cancel {σ : Type} {n : ℕ} (w : σ → Fin n → 
     rw [coeff_weightedHomogeneousComponent, if_pos rfl, coeff_zero] at h4
     exact h4
 
+/- English proof (translation)
+Establish `hd` using `det_mem_dual_weyl_ones r`. Unfold `dualWeyl at hg hd ⊢`. Rewrite `hg`, `hd`, the goal using `[Submodule.mem_inf]`. Take `⟨hg1, hg2⟩` from `hg`. Take `⟨hd1, hd2⟩` from `hd`.
+
+Prove the components needed by the constructor for the conclusion. Rewrite `hg1`, `hd1`, the goal using `[mem_weightedHomogeneousSubmodule]`. Establish `h` using `hd1.mul hg1`. Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `a`.
+
+Simplify using `only [Pi.add_apply]`. Use linear arithmetic over natural numbers and integers. Simplify using `only [Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, AlgHom.toLinearMap_apply, sub_eq_zero] at hg2 hd2 ⊢`. Introduce `l j hlj`. Rewrite using `[map_mul, map_mul, hd2 l j hlj, hg2 l j hlj]`.
+-/
 theorem det_mul_mem_dual_weyl_shift {r : ℕ} (ν : Fin r → ℕ) {g : MvPolynomial (Fin r × Fin r) ℤ}
     (hg : g ∈ dualWeyl ℤ r r ν) : genericDet ℤ r * g ∈ dualWeyl ℤ r r (fun a => ν a + 1) := by
   have hd := det_mem_dual_weyl_ones r
@@ -325,6 +440,17 @@ theorem det_mul_mem_dual_weyl_shift {r : ℕ} (ν : Fin r → ℕ) {g : MvPolyno
     intro l j hlj
     rw [map_mul, map_mul, hd2 l j hlj, hg2 l j hlj]
 
+/- English proof (translation)
+Establish `hd` using `det_mem_dual_weyl_ones r`. Establish `hne : rename (R` using `ℤ) (some : Fin r × Fin r → Option (Fin r × Fin r)) (genericDet ℤ r) ≠ 0 := by`. Introduce `h0`. Apply `generic_det_ne_zero r` to reduce the goal to its premises. Apply `MvPolynomial.rename_injective _ (Option.some_injective _)` to reduce the goal to its premises.
+
+Rewrite using `[h0, map_zero]`. Unfold `dualWeyl at h hd ⊢`. Rewrite `h`, `hd`, the goal using `[Submodule.mem_inf]`. Take `⟨h1, h2⟩` from `h`. Take `⟨hd1, hd2⟩` from `hd`.
+
+Prove the components needed by the constructor for the conclusion. Rewrite `h1`, `hd1`, the goal using `[mem_weightedHomogeneousSubmodule]`. Establish `e : (fun a => ν a + 1) = (fun _ => 1) + ν`. Use function extensionality and compare the values at `a`. Simplify using `only [Pi.add_apply]`.
+
+Use linear arithmetic over natural numbers and integers. Rewrite `h1` using `[e]`. Conclude with `weighted_homogeneous_cancel (colW r r) (genericDet ℤ r) g (fun _ => 1) ν (generic_det_ne_zero r) hd1 h1`. Simplify using `only [Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, AlgHom.toLinearMap_apply, sub_eq_zero] at h2 hd2 ⊢`. Introduce `l j hlj`.
+
+Establish `h3` using `h2 l j hlj`. Rewrite `h3` using `[map_mul, map_mul, hd2 l j hlj]`. Conclude with `mul_left_cancel₀ hne h3`.
+-/
 theorem mem_dual_weyl_of_det_mul {r : ℕ} (ν : Fin r → ℕ) {g : MvPolynomial (Fin r × Fin r) ℤ}
     (h : genericDet ℤ r * g ∈ dualWeyl ℤ r r (fun a => ν a + 1)) : g ∈ dualWeyl ℤ r r ν := by
   have hd := det_mem_dual_weyl_ones r
@@ -352,6 +478,21 @@ theorem mem_dual_weyl_of_det_mul {r : ℕ} (ν : Fin r → ℕ) {g : MvPolynomia
     rw [map_mul, map_mul, hd2 l j hlj] at h3
     exact mul_left_cancel₀ hne h3
 
+/- English proof (translation)
+Establish `hev : MvPolynomial.eval (fun v : Fin r × Fin r => if v.1 = v.2 then (1 : ℤ) else 0) (genericDet ℤ r) = 1`. Unfold `genericDet`. Rewrite using `[RingHom.map_det]`. Establish `hM : (MvPolynomial.eval (fun v : Fin r × Fin r => if v.1 = v.2 then (1 : ℤ) else 0)).mapMatrix (genericMatrix' ℤ r) = 1`. Use extensionality with `p q`.
+
+Simplify using `[genericMatrix', Matrix.one_apply]`. Rewrite using `[hM, Matrix.det_one]`. Establish `hnd : ∀ p : ℕ, p.Prime → ¬ (C (p : ℤ) ∣ genericDet ℤ r)`. Introduce and unpack `p hp ⟨h', hh⟩`. Establish `he` using `congrArg (MvPolynomial.eval (fun v : Fin r × Fin r => if v.1 = v.2 then (1 : ℤ) else 0)) hh`.
+
+Rewrite `he` using `[hev, map_mul, eval_C]`. Establish `h1 : (p : ℤ) ∣ 1` using `⟨_, he⟩`. Establish `h2 : (p : ℤ) = 1` using `Int.eq_one_of_dvd_one (by positivity) h1`. Conclude with `hp.one_lt.ne' (by exact_mod_cast h2)`. Use `revert f g`.
+
+Use `Nat.recOnMul (motive := fun N => N ≠ 0 → ∀ f g : MvPolynomial (Fin r × Fin r) ℤ, (N : ℤ) • f = genericDet ℤ r * g → genericDet ℤ r ∣ f) ?_ ?_ ?_ ?_ N hN` and prove the remaining obligations. Introduce `h0`. Conclude with `absurd rfl h0`. Introduce `_ f g h`. Rewrite `h` using `[Nat.cast_one, one_smul]`.
+
+Conclude with `⟨g, h⟩`. Introduce `p hp _ f g h`. Establish `hpr : Prime (C (p : ℤ) : MvPolynomial (Fin r × Fin r) ℤ)` using `(MvPolynomial.prime_C_iff (Fin r × Fin r)).mpr (Nat.prime_iff_prime_int.mp hp)`. Rewrite `h` using `[MvPolynomial.smul_eq_C_mul]`. Break down `hpr.dvd_or_dvd ⟨f, h.symm⟩ with hd | ⟨g', rfl⟩` into its components or cases.
+
+Conclude with `absurd hd (hnd p hp)`. Use `⟨g', mul_left_cancel₀ hpr.ne_zero ?_⟩` and prove the remaining obligations. Rewrite using `[h]`. Expand and normalize the polynomial expressions, which then agree. Introduce `a b ha hb hab f g h`.
+
+Establish `h' : (a : ℤ) • ((b : ℤ) • f) = genericDet ℤ r * g`. Rewrite using `[smul_smul, ← Nat.cast_mul]`. Conclude with `h`. Take `⟨g', hg'⟩` from `ha (left_ne_zero_of_mul hab) _ g h'`. Conclude with `hb (right_ne_zero_of_mul hab) f g' hg'`.
+-/
 private theorem genericDet_dvd_of_nsmul_eq_mul {r : ℕ} (N : ℕ) (hN : N ≠ 0)
     (f g : MvPolynomial (Fin r × Fin r) ℤ) (h : (N : ℤ) • f = genericDet ℤ r * g) :
     genericDet ℤ r ∣ f := by
@@ -396,6 +537,9 @@ private theorem genericDet_dvd_of_nsmul_eq_mul {r : ℕ} (N : ℕ) (hN : N ≠ 0
     obtain ⟨g', hg'⟩ := ha (left_ne_zero_of_mul hab) _ g h'
     exact hb (right_ne_zero_of_mul hab) f g' hg'
 
+/- English proof (translation)
+Take `⟨N, hN, hNx⟩` from `la_uniform r r le_rfl (fun a => ν a + 1) (fun a b hab => Nat.add_le_add_right (hν hab) 1)`. Establish `hmem` using `hNx f hf`. Rewrite `hmem` using `[weyl_shift_eq_map_det_mul]`. Take `⟨g, -, hg⟩` from `Submodule.mem_map.mp hmem`. Conclude with `genericDet_dvd_of_nsmul_eq_mul N hN f g (by rw [← hg, LinearMap.mulLeft_apply])`.
+-/
 theorem det_dvd_of_mem_dual_weyl_shift {r : ℕ} (ν : Fin r → ℕ) (hν : Antitone ν)
     {f : MvPolynomial (Fin r × Fin r) ℤ} (hf : f ∈ dualWeyl ℤ r r (fun a => ν a + 1)) :
     genericDet ℤ r ∣ f := by
@@ -406,6 +550,17 @@ theorem det_dvd_of_mem_dual_weyl_shift {r : ℕ} (ν : Fin r → ℕ) (hν : Ant
   obtain ⟨g, -, hg⟩ := Submodule.mem_map.mp hmem
   exact genericDet_dvd_of_nsmul_eq_mul N hN f g (by rw [← hg, LinearMap.mulLeft_apply])
 
+/- English proof (translation)
+Unfold `InclZ`. Establish `hW` using `weyl_shift_eq_map_det_mul ℤ ν`. Establish `hdn` using `generic_det_ne_zero r`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨m, hm, h⟩`.
+
+Use `⟨m, hm, fun x hx => ?_⟩` and prove the remaining obligations. Establish `h1` using `h _ (det_mul_mem_dual_weyl_shift ν hx)`. Rewrite `h1` using `[hW]`. Take `⟨y, hy, hxy⟩` from `Submodule.mem_map.mp h1`. Rewrite `hxy` using `[LinearMap.mulLeft_apply]`.
+
+Establish `hyx : y = ((m * l ^ e : ℕ) : ℤ) • x`. Apply `mul_left_cancel₀ hdn` to reduce the goal to its premises. Rewrite using `[hxy, mul_smul_comm]`. Rewrite using `[← hyx]`. Conclude with `hy`.
+
+Introduce and unpack `⟨m, hm, h⟩`. Use `⟨m, hm, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨g, rfl⟩` from `det_dvd_of_mem_dual_weyl_shift ν hν hx`. Establish `hg` using `mem_dual_weyl_of_det_mul ν hx`. Rewrite using `[hW, ← mul_smul_comm]`.
+
+Conclude with `Submodule.mem_map.mpr ⟨_, h g hg, by simp⟩`.
+-/
 theorem incl_z_shift_by_one_iff (r : ℕ) (ν : Fin r → ℕ) (l e : ℕ) (hν : Antitone ν) :
     InclZ r r le_rfl (fun a => ν a + 1) l e ↔ InclZ r r le_rfl ν l e := by
   unfold InclZ
@@ -430,6 +585,13 @@ theorem incl_z_shift_by_one_iff (r : ℕ) (ν : Fin r → ℕ) (l e : ℕ) (hν 
     rw [hW, ← mul_smul_comm]
     exact Submodule.mem_map.mpr ⟨_, h g hg, by simp⟩
 
+/- English proof (translation)
+Unfold `InclZTwist`. Introduce `r ν c l e hν hl`. Proceed by induction on `c with`. Consider the case `zero => simp`. Consider the case `succ c ih`.
+
+Establish `hνc : Antitone (fun a => ν a + c)` using `fun a b hab => Nat.add_le_add_right (hν hab) c`. Establish `he : (fun a => ν a + (c + 1)) = (fun a => (fun a => ν a + c) a + 1)`. Use function extensionality and compare the values at `a`. Use `show ν a + (c + 1) = ν a + c + 1`. Use linear arithmetic over natural numbers and integers.
+
+Rewrite using `[he]`. Conclude with `(incl_z_shift_by_one_iff r (fun a => ν a + c) l e hνc).trans ih`.
+-/
 theorem incl_z_twist_by_det : InclZTwist := by
   unfold InclZTwist
   intro r ν c l e hν hl
@@ -444,6 +606,9 @@ theorem incl_z_twist_by_det : InclZTwist := by
     rw [he]
     exact (incl_z_shift_by_one_iff r (fun a => ν a + c) l e hνc).trans ih
 
+/- English proof (translation)
+Unfold `ExZTwist`. Introduce `r ν c l hν hl`. Establish `h : ∀ e, InclZ r r le_rfl (fun a => ν a + c) l e ↔ InclZ r r le_rfl ν l e` using `fun e => incl_z_twist_by_det r ν c l e hν hl`. Unfold `exZ`. Simplify using `only [h]`.
+-/
 theorem exact_z_twist_by_det : ExZTwist := by
   unfold ExZTwist
   intro r ν c l hν hl

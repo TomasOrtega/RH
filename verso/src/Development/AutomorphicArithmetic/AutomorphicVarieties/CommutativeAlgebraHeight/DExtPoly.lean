@@ -5,6 +5,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra
 
 open TensorProduct IsLocalRing Polynomial UpperTheory.V.W UpperTheory.V.Alg UpperTheory.V.CA
 
+/- English proof (translation)
+Establish `e : (u ⊗ₜ[A] (1 : E) + ∑ a, b a ⊗ₜ[A] x a) = u • Algebra.TensorProduct.map (MvPolynomial.aeval fun a => v * b a) (AlgHom.id A E) (1 + Det.gen x)`. Simplify using `only [Det.gen, map_add, map_one, map_sum, Algebra.TensorProduct.map_tmul, MvPolynomial.aeval_X, AlgHom.id_apply, smul_add, Finset.smul_sum, smul_tmul', smul_eq_mul, ← mul_assoc, huv, one_mul]`. Rewrite using `[Algebra.TensorProduct.one_def, smul_tmul', smul_eq_mul, mul_one]`. Rewrite using `[e, D.homog, D'.homog, D.nat, D'.nat, h]`.
+-/
 private theorem d_ext_unit {n : ℕ} {A E : Type} [CommRing A] [Ring E] [Algebra A E] (D D' : Det n A E)
     {k : ℕ} (x : Fin k → E)
     (h : D.D (MvPolynomial (Fin k) A) (1 + Det.gen x) = D'.D (MvPolynomial (Fin k) A) (1 + Det.gen x))
@@ -17,6 +20,15 @@ private theorem d_ext_unit {n : ℕ} {A E : Type} [CommRing A] [Ring E] [Algebra
     rw [Algebra.TensorProduct.one_def, smul_tmul', smul_eq_mul, mul_one]
   rw [e, D.homog, D'.homog, D.nat, D'.nat, h]
 
+/- English proof (translation)
+Set `R` to `MvPolynomial (Fin k) A`. Set `L` to `Localization.Away (X : R[X])`. Set `y : R[X] ⊗[A] E` to `(X : R[X]) ⊗ₜ 1 + ∑ a, C (MvPolynomial.X a) ⊗ₜ x a`. Establish `hinj : Function.Injective (algebraMap R[X] L)` using `IsLocalization.injective L (M := Submonoid.powers (X : R[X])) ((Submonoid.powers_le).2 X_mem_nonzeroDivisors)`. Establish `h1 : D.D R[X] y = D'.D R[X] y`.
+
+Apply `hinj` to reduce the goal to its premises. Set `f : R[X] →ₐ[A] L` to `IsScalarTower.toAlgHom A R[X] L`. Express the relevant statement in the definitionally equal form `f _ = f _`. Rewrite using `[← D.nat, ← D'.nat]`. Establish `e : Algebra.TensorProduct.map f (AlgHom.id A E) y = f X ⊗ₜ 1 + ∑ a, f (C (MvPolynomial.X a)) ⊗ₜ x a`.
+
+Simplify using `only [y, map_add, map_sum, Algebra.TensorProduct.map_tmul, AlgHom.id_apply]`. Rewrite using `[e]`. Conclude with `d_ext_unit D D' x h L _ (IsLocalization.Away.invSelf (X : R[X])) (IsLocalization.Away.mul_invSelf (S := L) (X : R[X])) _`. Set `g : R[X] →ₐ[A] R` to `(Polynomial.aeval (0 : R)).restrictScalars A`. Establish `e : Algebra.TensorProduct.map g (AlgHom.id A E) y = Det.gen x`.
+
+Simplify using `only [y, g, map_add, map_sum, Algebra.TensorProduct.map_tmul, AlgHom.id_apply, AlgHom.coe_restrictScalars', aeval_X, aeval_C, zero_tmul, zero_add, Det.gen]`. Both sides reduce to the same expression. Establish `h2` using `congrArg g h1`. Rewrite `h2` using `[← D.nat, ← D'.nat, e]`. Conclude with `h2`.
+-/
 private theorem d_ext_poly {n : ℕ} {A E : Type} [CommRing A] [Ring E] [Algebra A E] (D D' : Det n A E)
     {k : ℕ} (x : Fin k → E)
     (h : D.D (MvPolynomial (Fin k) A) (1 + Det.gen x) = D'.D (MvPolynomial (Fin k) A) (1 + Det.gen x)) :
@@ -47,6 +59,13 @@ private theorem d_ext_poly {n : ℕ} {A E : Type} [CommRing A] [Ring E] [Algebra
   rw [← D.nat, ← D'.nat, e] at h2
   exact h2
 
+/- English proof (translation)
+Introduce `n A E _ _ _ D D' M hM h`. Use `d_poly_ext D D' (M : Set E) hM fun k x hx => d_ext_poly D D' x ?_` and prove the remaining obligations. Use extensionality with `α`. Take `⟨P, hP, -, hc⟩` from `d_amitsur n k α`. Rewrite using `[hc D x, hc D' x]`.
+
+Use `MvPolynomial.eval₂Hom_congr' rfl (fun v hv _ => ?_) rfl` and prove the remaining obligations. Use `h _ ?_ _ (hP v hv).1 (hP v hv).2.1` and prove the remaining obligations. Proceed by induction on `v.2 using FreeMonoid.inductionOn' with`. Consider the case `one => rw [map_one]`. Conclude with `M.one_mem`.
+
+Consider the case `of_mul a w ih => rw [map_mul, FreeMonoid.lift_eval_of]`. Conclude with `M.mul_mem (hx a) ih`.
+-/
 theorem UpperTheory.V.CA.d_ext :
     ∀ {n : ℕ} {A E : Type} [CommRing A] [Ring E] [Algebra A E] (D : Det n A E) (D' : Det n A E) (M : Submonoid E), Submodule.span A (M : Set E) = ⊤ → (∀ x ∈ M, ∀ i, 1 ≤ i → i ≤ n → D.lam i x = D'.lam i x) → D = D' := by
   intro n A E _ _ _ D D' M hM h

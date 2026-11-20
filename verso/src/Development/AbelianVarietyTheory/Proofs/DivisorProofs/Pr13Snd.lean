@@ -16,9 +16,15 @@ def pr13 : Tr f ⟶ pullback f f :=
     simp only [Category.assoc]
     rw [pullback.condition (f := f) (g := f), pullback.condition_assoc, pullback.condition (f := f) (g := f)])
 
+/- English proof (translation)
+The claim follows from `pullback.lift_fst _ _ _`.
+-/
 @[reassoc (attr := simp)] theorem pr13_fst : pr13 f ≫ pullback.fst f f = pullback.fst _ _ ≫ pullback.fst f f :=
   pullback.lift_fst _ _ _
 
+/- English proof (translation)
+The claim follows from `pullback.lift_snd _ _ _`.
+-/
 @[reassoc (attr := simp)] theorem pr13_snd : pr13 f ≫ pullback.snd f f = pullback.snd _ _ ≫ pullback.snd f f :=
   pullback.lift_snd _ _ _
 
@@ -30,6 +36,9 @@ def d1 : (freeOn R).obj (pullback f f) ⟶ (freeOn R).obj Y :=
 def d2 : (freeOn R).obj (Tr f) ⟶ (freeOn R).obj (pullback f f) :=
   (freeOn R).map (pullback.snd _ _) - (freeOn R).map (pr13 f) + (freeOn R).map (pullback.fst _ _)
 
+/- English proof (translation)
+Simplify using `only [d1, d2, Preadditive.sub_comp, Preadditive.add_comp, Preadditive.comp_sub, ← Functor.map_comp, pr13_fst, pr13_snd, pullback.condition]`. Normalize the expressions using the abelian group laws.
+-/
 theorem d2_comp : d2 f R ≫ d1 f R = 0 := by
   simp only [d1, d2, Preadditive.sub_comp, Preadditive.add_comp, Preadditive.comp_sub, ← Functor.map_comp,
     pr13_fst, pr13_snd, pullback.condition]

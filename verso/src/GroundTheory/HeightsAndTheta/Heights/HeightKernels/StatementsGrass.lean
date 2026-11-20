@@ -45,15 +45,27 @@ def RootsOfUnityDense.Statement : Prop :=
   ∀ (n : ℕ) (P : MvPolynomial (Fin n) ℂ),
     (∀ z : Fin n → ℂ, (∀ i, ∃ k : ℕ, 0 < k ∧ z i ^ k = 1) → MvPolynomial.eval z P = 0) → P = 0
 
+/- English proof (translation)
+Introduce `a b`. Apply the tactic sequence `fin_cases a; fin_cases b <;> simp`.
+-/
 example : ∀ a b, ‖(!![1, Complex.I] : Matrix (Fin 1) (Fin 2) ℂ) a b‖ = 1 := by
   intro a b
   fin_cases a; fin_cases b <;> simp
 
+/- English proof (translation)
+The claim follows from `PosSemidef.one`.
+-/
 example : (1 : Matrix (Fin 2) (Fin 2) ℂ).PosSemidef := PosSemidef.one
 
+/- English proof (translation)
+The claim follows from `PosSemidef.one.add (posSemidef_self_mul_conjTranspose Z)`.
+-/
 example (Z : Matrix (Fin 1) (Fin 2) ℂ) : (1 + Z * Zᴴ).PosSemidef :=
   PosSemidef.one.add (posSemidef_self_mul_conjTranspose Z)
 
+/- English proof (translation)
+Introduce `i`. Use `⟨2, by norm_num, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> simp`.
+-/
 example : ∀ i, ∃ k : ℕ, 0 < k ∧ (![1, -1] : Fin 2 → ℂ) i ^ k = 1 := by
   intro i
   refine ⟨2, by norm_num, ?_⟩

@@ -8,6 +8,33 @@ namespace GlobalTheory.Core.Rk
 open Formalism.BasicNotions Formalism.MainNotions.S
 open scoped InnerProductSpace
 
+/- English proof (translation)
+Introduce `D u`. Establish `hfN : 1 ≤ D.R.f`. Apply `Nat.one_le_iff_ne_zero.2` to reduce the goal to its premises. Unfold `Ranks.f Ranks.n`. Check the signs of the components of the expression.
+
+Establish `hkN : 5 ≤ D.R.k` using `by have := D.R.m_add_three_le_k; have := D.R.two_le_m; omega`. Establish `hf : (1 : ℝ) ≤ D.R.f` using `by exact_mod_cast hfN`. Establish `hk : (5 : ℝ) ≤ D.R.k` using `by exact_mod_cast hkN`. Establish `hfk : (0 : ℝ) < (D.R.f : ℝ) * D.R.k` using `by positivity`. Establish `hdu : (0 : ℝ) < (D.mem u).A.duStar` using `by exact_mod_cast (D.mem u).A.duStar_pos`.
+
+Establish `hDs : 0 < (D.mem u).A.Dstar` using `(D.mem u).A.Dstar_pos`. Establish `hDpos : 0 < D.what₂.Dstar` using `D.Dstar_eq u ▸ hDs`. Establish `hq : 0 < (D.mem u).A.Dstar / (D.mem u).A.duStar` using `div_pos hDs hdu`. Establish `hGp : 0 < (D.mem u).A.GamP` using `lt_trans one_pos (D.mem u).A.one_lt_gammaP`. Establish `hXu : 0 < (D.mem u).A.Xu` using `Real.rpow_pos_of_pos hq _`.
+
+Establish `hTs : 0 < (D.mem u).A.Tstar` using `mul_pos hXu (Real.rpow_pos_of_pos hGp _)`. Establish `hlogTs : Real.log (D.mem u).A.Tstar = Real.log (D.mem u).A.Xu - 2 * Real.log (D.mem u).A.GamP / ((D.R.f : ℝ) * D.R.k)`. Unfold `ColumnsAtT.Tstar`. Rewrite using `[Real.log_mul hXu.ne' (Real.rpow_pos_of_pos hGp _).ne', Real.log_rpow hGp]`. Expand and normalize the polynomial expressions, which then agree.
+
+Take `⟨hT1, hT2⟩` from `D.T_win u`. Establish `hT0 : (0 : ℝ) < ((D.mem u).A.T : ℝ)` using `hTs.trans_le hT1`. Establish `part2 : Real.log (D.mem u).A.Xu - 2 * Real.log (D.mem u).A.GamP / ((D.R.f : ℝ) * D.R.k) ≤ Real.log ((D.mem u).A.T : ℝ)`. Rewrite using `[← hlogTs]`. Conclude with `Real.log_le_log hTs hT1`.
+
+Establish `hTs_pow : (D.mem u).A.Tstar ^ (D.R.f * D.R.k) = (D.mem u).A.Dstar / (D.mem u).A.duStar / (D.mem u).A.GamP ^ 2`. Establish `hn : ((D.R.f * D.R.k : ℕ) : ℝ) = (D.R.f : ℝ) * D.R.k` using `by push_cast; ring`. Rewrite using `[← Real.rpow_natCast, hn]`. Unfold `ColumnsAtT.Tstar ColumnsAtT.Xu`. Rewrite using `[Real.mul_rpow (Real.rpow_pos_of_pos hq _).le (Real.rpow_pos_of_pos hGp _).le, ← Real.rpow_mul hq.le, ← Real.rpow_mul hGp.le, one_div_mul_cancel hfk.ne', div_mul_cancel₀ _ hfk.ne', Real.rpow_one, Real.rpow_neg hGp.le, Real.rpow_two, div_eq_mul_inv _ ((D.mem u).A.GamP ^ 2)]`.
+
+Establish `hexp : (1 + 1 / ((D.R.f : ℝ) * D.R.k)) ^ (D.R.f * D.R.k) ≤ Real.exp 1`. Establish `h` using `Real.add_one_le_exp (1 / ((D.R.f : ℝ) * D.R.k))`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Real.exp_nat_mul]`. Use `congr 1`.
+
+Use `push_cast`. Clear the denominators using the available nonvanishing facts. Establish `hTpow : ((D.mem u).A.T : ℝ) ^ (D.R.f * D.R.k) ≤ Real.exp 1 * ((D.mem u).A.Dstar / (D.mem u).A.duStar / (D.mem u).A.GamP ^ 2)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_pow, hTs_pow]`.
+
+Use `_ ≤ _ := mul_le_mul_of_nonneg_right hexp (by positivity)`. Establish `part1 : RankMu D u → (d0 D u : ℝ) ≤ Real.exp 1 / (D.mem u).A.GamP ^ 2 * D.what₂.Dstar`. Introduce `h`. Unfold `RankMu at h`. Rewrite using `[h]`.
+
+Establish `hT1' : (1 : ℝ) ≤ ((D.mem u).A.T : ℝ)`. Establish `: 0 < (D.mem u).A.T` using `by exact_mod_cast hT0`. Conclude with `this` after adjusting the coercions. Establish `hTk : 1 ≤ ((D.mem u).A.T : ℝ) ^ D.R.k` using `one_le_pow₀ hT1'`. Establish `h1 : (((D.mem u).A.T : ℝ) ^ D.R.k - 1) ^ D.R.f ≤ ((D.mem u).A.T : ℝ) ^ (D.R.f * D.R.k)`.
+
+Rewrite using `[mul_comm, pow_mul]`. Conclude with `pow_le_pow_left₀ (by linarith) (by linarith) _`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← D.Dstar_eq u]`. Apply the tactic sequence `first | (field_simp; ring) | field_simp`.
+
+Use `⟨part1, part2, fun L C hR hLC => ?_⟩` and prove the remaining obligations. Unfold `Small`. Establish `hG2 : Real.exp (2 * Real.log (D.mem u).A.GamP) = (D.mem u).A.GamP ^ 2`. Rewrite using `[show 2 * Real.log (D.mem u).A.GamP = Real.log ((D.mem u).A.GamP ^ 2) by rw [Real.log_pow]; push_cast; ring, Real.exp_log (by positivity)]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[Real.exp_sub, hG2]`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ D.what₂.Dstar * Real.exp (-(2 * C * mfL D L)) := mul_le_mul_of_nonneg_left (Real.exp_le_exp.2 (by linarith)) hDpos.le`.
+-/
 theorem levelPrime_window : ∀ (D : D7) (u : D.what₂.Word),
     (RankMu D u → (d0 D u : ℝ) ≤ Real.exp 1 / (D.mem u).A.GamP ^ 2 * D.what₂.Dstar) ∧
     (Real.log (D.mem u).A.Xu - 2 * Real.log (D.mem u).A.GamP / ((D.R.f : ℝ) * D.R.k) ≤ Real.log ((D.mem u).A.T : ℝ)) ∧

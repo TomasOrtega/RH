@@ -20,6 +20,11 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchim
   [Algebra F E] [ValuativeExtension F E] [FiniteDimensional F E]
 
 omit [ValuativeRel F] [IsNonarchimedeanLocalField F] in
+/- English proof (translation)
+Use `⟨Units.isEmbedding_val₀, ?_⟩` and prove the remaining obligations. Establish `: Set.range (Units.val : Fˣ → F) = {0}ᶜ`. Use extensionality with `a`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, rfl⟩`.
+
+Conclude with `u.ne_zero`. Introduce `h`. Conclude with `⟨Units.mk0 a h, rfl⟩`. Rewrite using `[this]`. Conclude with `isOpen_compl_singleton`.
+-/
 theorem isOpenEmbedding_units_val' [IsTopologicalDivisionRing F] [T1Space F] :
     Topology.IsOpenEmbedding (Units.val : Fˣ → F) := by
   refine ⟨Units.isEmbedding_val₀, ?_⟩
@@ -33,6 +38,9 @@ theorem isOpenEmbedding_units_val' [IsTopologicalDivisionRing F] [T1Space F] :
   rw [this]
   exact isOpen_compl_singleton
 
+/- English proof (translation)
+Establish `: LocallyCompactSpace (normUnits F E).range` using `hHo.locallyCompactSpace`. Establish `hc : Continuous (normUnits F E).rangeRestrict` using `(continuous_normUnits F E).subtype_mk _`. Establish `ho : IsOpenMap (normUnits F E).rangeRestrict` using `MonoidHom.isOpenMap_of_sigmaCompact _ (normUnits F E).rangeRestrict_surjective hc`. Conclude with `hHo.isOpenMap_subtype_val.comp ho`.
+-/
 theorem isOpenMap_normUnits_of_isOpen_range
     (hHo : IsOpen ((normUnits F E).range : Set Fˣ)) : IsOpenMap (normUnits F E) := by
   have : LocallyCompactSpace (normUnits F E).range := hHo.locallyCompactSpace
@@ -42,6 +50,11 @@ theorem isOpenMap_normUnits_of_isOpen_range
     MonoidHom.isOpenMap_of_sigmaCompact _ (normUnits F E).rangeRestrict_surjective hc
   exact hHo.isOpenMap_subtype_val.comp ho
 
+/- English proof (translation)
+Introduce `F _ _ _ _ _ _ E _ _ _ _ _ _ _ _ _ _ _ t₀ T hT`. Establish `hopen : IsOpenMap (normUnits F E)` using `isOpenMap_normUnits_of_isOpen_range (GroundTheory.LocalField.FiltrationCocycleLiftCriterion.WeilRep.isOpen_range_normUnits (K := F) (E := E))`. Establish `hF : IsOpenMap (fun t : Eˣ => ((normUnits F E t : Fˣ) : F))` using `isOpenEmbedding_units_val'.isOpenMap.comp hopen`. Establish `hmem` using `hF.image_mem_nhds hT`. Use `filter_upwards [hmem]`.
+
+Introduce and unpack `a ⟨t, ht, rfl⟩`. Conclude with `⟨t, ht, rfl⟩`.
+-/
 theorem eventually_exists_norm_eq : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] (E : Type) [Field E] [ValuativeRel E] [TopologicalSpace E] [IsNonarchimedeanLocalField E] [MeasurableSpace E] [BorelSpace E] [Algebra F E] [ValuativeExtension F E] [FiniteDimensional F E] [Algebra.IsSeparable F E] [Fact (Module.finrank F E = 2)] (t₀ : Eˣ) (T : Set Eˣ), T ∈ 𝓝 t₀ → ∀ᶠ a in 𝓝 (Algebra.norm F (t₀ : E)), ∃ t ∈ T, Algebra.norm F (t : E) = a := by
   intro F _ _ _ _ _ _ E _ _ _ _ _ _ _ _ _ _ _ t₀ T hT
   have hopen : IsOpenMap (normUnits F E) := isOpenMap_normUnits_of_isOpen_range

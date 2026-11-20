@@ -3,6 +3,9 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Integ
 open CategoryTheory MonoidalCategory CartesianMonoidalCategory MonObj
 open UpperTheory.Gal.Int.Geo
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Rewrite using `[_root_.one_mul, hm, _root_.mul_assoc, ht, _root_.mul_one]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem unit_aux {A : Type} [CommRing A] {m c t t' s : A} (hm : m = c * t) (ht : t * t' = 1)
     (hs : m * s = 1) : c = 1 * (m * t') ∧ (m * t') * (t * s) = 1 := by
   constructor
@@ -10,6 +13,13 @@ private theorem unit_aux {A : Type} [CommRing A] {m c t t' s : A} (hm : m = c * 
   · calc (m * t') * (t * s) = (m * s) * (t * t') := by ring
       _ = 1 := by rw [hs, ht, _root_.one_mul]
 
+/- English proof (translation)
+Introduce `hB hM p _ D G L R _ _ gb h X s N' N o' o ψ hT hh`. Take `⟨ψ', -, e₁, e₂⟩` from `hB p D G L R gb h X s N' N o' o ψ hT 1 (Nat.coprime_one_left p) (fun v hv => ⟨L.actG h⁻¹ v, integ_of_mem (inv_mem hh) v hv, by`. Rewrite using `[one_smul, ← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]⟩)`. Establish `hiso : CategoryTheory.IsIso ψ` using `⟨ψ', e₁.trans (pow_one _), e₂.trans (pow_one _)⟩`. Use `⟨hiso, ?_⟩` and prove the remaining obligations.
+
+Take `⟨-, -, -, ⟨c, hc, hP, t, t', ht, ht', htt, hm⟩, -⟩` from `hT`. Take `⟨hu, hfix⟩` from `hM p D G L`. Take `⟨s', hi, hs, hs1⟩` from `hu h hh`. Take `⟨a₁, a₂⟩` from `unit_aux hm htt hs1`. Establish `hint : ∀ {a b : GlobalTheory.LKTrip.AfP p}, GlobalTheory.LKGeo.IsIntAf a → GlobalTheory.LKGeo.IsIntAf b → GlobalTheory.LKGeo.IsIntAf (a * b)` using `fun ha hb v => by`.
+
+Rewrite using `[map_mul]`. Conclude with `mul_mem (ha v) (hb v)`. Establish `hc1 : c = 1` using `hfix c 1 _ _ hc (Nat.coprime_one_left p) (hint hi ht') (hint ht hs) a₂ (by rw [Nat.cast_one]; exact a₁)`. Substitute `hc1` using the available equality. Conclude with `hP`.
+-/
 theorem UpperTheory.trace_unit_of_pullback_multiplier :
     TrBack → MultUnit → TrUnit := by
   intro hB hM p _ D G L R _ _ gb h X s N' N o' o ψ hT hh

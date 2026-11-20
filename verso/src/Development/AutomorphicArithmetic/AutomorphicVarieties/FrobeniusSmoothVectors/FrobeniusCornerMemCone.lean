@@ -2,6 +2,23 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVec
 
 open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.U3 UpperTheory.V.Fr
 
+/- English proof (translation)
+Introduce `l _ O _ _ F C _ _ _ K _ _ ρ σ hc hC`. Establish `cinj : Function.Injective cor`. Introduce `a b h`. Apply the tactic sequence `fin_cases a <;> fin_cases b <;> simp_all [cor]`. Use `⟨?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `g i`. Take `⟨c, h1, h2⟩` from `hC.dg g (cor i)`. Conclude with `⟨c, by rw [h1, hc.r], by rw [h2, w_cor]⟩`. Introduce `L hs hne`. Establish `hs' : (List.map (fun s => w 3 s.2.1 - w 3 s.2.2) (L.map fun s => (s.1, cor s.2.1, cor s.2.2))).sum = 0`.
+
+Rewrite using `[← hs, List.map_map]`. Use `congr 1`. Apply `List.map_congr_left` to reduce the goal to its premises. Introduce `s _`. Simplify using `[w_cor]`.
+
+Establish `hne' : ∃ s ∈ L.map (fun s => (s.1, cor s.2.1, cor s.2.2)), s.2.1 ≠ s.2.2`. Take `⟨s, hs1, hs2⟩` from `hne`. Conclude with `⟨(s.1, cor s.2.1, cor s.2.2), List.mem_map_of_mem hs1, fun h => hs2 (cinj h)⟩`. Take `⟨c, hcm, he⟩` from `hC.cyc _ hs' hne'`. Use `⟨c, hcm, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[he, List.map_map]`. Use `congr 1`. Apply `List.map_congr_left` to reduce the goal to its premises. Introduce `s _`. Simplify using `[hc.r]`.
+
+Introduce `i j`. Simplify using `only [hc.r]`. Conclude with `hC.fg _ _`. Introduce `i j N`. Establish `e : (fun g => σ.r g i j) = fun g => ρ.r g (cor i) (cor j)` using `funext fun g => hc.r g i j`.
+
+Establish `h` using `hC.cont (cor i) (cor j) N`. Rewrite `h` using `[← e]`. Establish `e3 : (fun g => (maximalIdeal C ^ N • Submodule.span C (Set.range fun g => σ.r g i j)).mkQ (σ.r g i j)) = fun g => (maximalIdeal C ^ N • Submodule.span C (Set.range fun g => σ.r g i j)).mkQ (ρ.r g (cor i) (cor j))`. Use function extensionality and compare the values at `fun g => by rw [hc.r]`. Rewrite using `[e3]`.
+
+Conclude with `h`. Take `⟨χ, hχ, hχρ⟩` from `hC.psi`. Use `⟨fun v i g => χ v (cor i) g, fun v i => ⟨(hχ v (cor i)).1, fun g => ?_⟩, fun v i g => ?_⟩` and prove the remaining obligations. Rewrite using `[(hχ v (cor i)).2 g, w_cor]`. Rewrite using `[hχρ, hc.ψ]`.
+-/
 theorem UpperTheory.V.Fr.frobenius_corner_mem_cone :
     ∀ {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsLocalRing O] {F : Frame l (ResidueField O)} (C : Type) [CommRing C] [Algebra O C] [IsCO O C] (K : Type) [CommRing K] [Algebra C K] (ρ : NRep F 3 K) (σ : NRep F 2 K), IsCorner ρ σ → Cone O C ρ → Cone O C σ := by
   intro l _ O _ _ F C _ _ _ K _ _ ρ σ hc hC

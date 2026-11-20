@@ -8,6 +8,15 @@ open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Toroi
 
 namespace GlobalTheory.PolFan
 
+/- English proof (translation)
+Introduce `c hc`. Use `choose a ha he using h`. Establish `hpt : ∀ j x y, (γ' j x y : ℝ) = ∑ i, a j i * (γ i x y : ℝ)`. Introduce `j x y`. Use `LinearMap.congr_fun₂ (he j) x y` as an intermediate fact.
+
+Simplify `this` using `[LinearMap.sum_apply]`. Establish `hev : ∀ j, χ.evalZ (γ' j) = ∑ i, a j i * χ.evalZ (γ i)`. Introduce `j`. Rewrite using `[← hχ (a j) (ha j)]`. Simplify using `only [InvFun.evalZ, hpt]`.
+
+Establish `e : (fun x y => ∑ j, c j * (γ' j x y : ℝ)) = fun x y => ∑ i, (∑ j, c j * a j i) * (γ i x y : ℝ)`. Use function extensionality and compare the values at `x y`. Simplify using `only [hpt, Finset.mul_sum, Finset.sum_mul, mul_assoc]`. Conclude with `Finset.sum_comm`. Rewrite using `[e, hχ _ (fun i => Finset.sum_nonneg fun j _ => mul_nonneg (hc j) (ha j i))]`.
+
+Simplify using `only [hev, Finset.mul_sum, Finset.sum_mul, mul_assoc]`. Conclude with `Finset.sum_comm`.
+-/
 theorem linearOn_of_forall_inRCone {O : Type} [CommRing O] (χ : InvFun O) {X : Type} [AddCommGroup X] [Module O X]
     [Module.Finite O X] {m n : ℕ} {γ : Fin m → LinearMap.BilinForm ℤ X} {γ' : Fin n → LinearMap.BilinForm ℤ X}
     (hχ : χ.LinearOn γ) (h : ∀ j, InRCone γ (γ' j)) : χ.LinearOn γ' := by
@@ -29,6 +38,11 @@ theorem linearOn_of_forall_inRCone {O : Type} [CommRing O] (χ : InvFun O) {X : 
   simp only [hev, Finset.mul_sum, Finset.sum_mul, mul_assoc]
   exact Finset.sum_comm
 
+/- English proof (translation)
+Introduce `O _ bar q ψ w ψ' hs χ hχ X _ _ _ _ hX n γ' hγ'`. Break down `hs.2.2 X hX n γ' hγ' with ⟨m, γ, hγ, -, hin⟩ | ⟨m, γ, β₀, m', s, h, hγ, -, -, -, hβ₀, -, -, hin⟩` into its components or cases. Conclude with `linearOn_of_forall_inRCone χ (hχ X hX m γ hγ) hin`. Use `linearOn_of_forall_inRCone χ (hχ X hX m γ hγ) fun j => inRCone_trans (fun k => ?_) (hin j)` and prove the remaining obligations. Use `Fin.cases ?_ (fun k => ?_) k` and prove the remaining obligations.
+
+Simplify using `using hβ₀`. Simplify using `using inRCone_self γ (s k)`.
+-/
 theorem subordinate_of_isStarOf : ∀ (O : Type) [CommRing O] (bar : O → O) (q : ℕ) (ψ w ψ' : InvFun O),
     IsStarOf bar q ψ w ψ' → Subordinate bar q ψ' ψ := by
   intro O _ bar q ψ w ψ' hs χ hχ X _ _ _ _ hX n γ' hγ'
@@ -39,6 +53,9 @@ theorem subordinate_of_isStarOf : ∀ (O : Type) [CommRing O] (bar : O → O) (q
     · simpa using hβ₀
     · simpa using inRCone_self γ (s k)
 
+/- English proof (translation)
+The claim follows from `subordinate_of_isStarOf`.
+-/
 example : ∀ (O : Type) [CommRing O] (bar : O → O) (q : ℕ) (ψ w ψ' : InvFun O), IsStarOf bar q ψ w ψ' → Subordinate bar q ψ' ψ :=
   subordinate_of_isStarOf
 

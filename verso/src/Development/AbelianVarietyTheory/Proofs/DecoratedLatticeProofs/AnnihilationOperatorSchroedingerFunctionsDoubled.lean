@@ -17,6 +17,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.StdUnnAnnih
 
+/- English proof (translation)
+Establish `hM : M = (M.submatrix finSumFinEquiv id).submatrix finSumFinEquiv.symm id` using `by ext; simp`. Rewrite using `[hM, blk4, Matrix.submatrix_mul_equiv]`. Use extensionality with `i j`. Simplify using `[Matrix.mul_apply, Fintype.sum_sum_type, Matrix.one_apply]`.
+-/
 theorem blockMatrix_swap_mul_top_rows_eq_bottom_rows {n k : ℕ} (M : Matrix (Fin (n + n)) (Fin k) ℂ) :
     (blk4 (0 : Matrix (Fin n) (Fin n) ℂ) 1 (-1) 0 * M).submatrix (fun i => finSumFinEquiv (Sum.inl i)) id =
       M.submatrix (fun i => finSumFinEquiv (Sum.inr i)) id := by
@@ -25,6 +28,9 @@ theorem blockMatrix_swap_mul_top_rows_eq_bottom_rows {n k : ℕ} (M : Matrix (Fi
   ext i j
   simp [Matrix.mul_apply, Fintype.sum_sum_type, Matrix.one_apply]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[Matrix.mul_apply]`.
+-/
 theorem row_sub_mul {a b k l : ℕ} (M : Matrix (Fin a) (Fin k) ℂ) (N : Matrix (Fin k) (Fin l) ℂ) (r : Fin b → Fin a) :
     M.submatrix r id * N = (M * N).submatrix r id := by
   ext i j
@@ -32,6 +38,21 @@ theorem row_sub_mul {a b k l : ℕ} (M : Matrix (Fin a) (Fin k) ℂ) (N : Matrix
 
 variable {D : D7}
 
+/- English proof (translation)
+Take `⟨-, hdet, hinv⟩` from `GlobalTheory.T.doubledBasisSkewColumnMatrix_gram_inverse D A μ hμ`. Establish `hRT : (Tm A μ)⁻¹ * Tm A μ = 1` using `Matrix.nonsing_inv_mul _ hdet`. Establish `hTR : Tm A μ * (Tm A μ)⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hdet`. Establish `h1 : ((Tm A μ)⁻¹).map (tauE D τ) * (Tm A μ).map (tauE D τ) = 1`. Rewrite using `[← Matrix.map_mul, hRT, Matrix.map_one _ (tauE D τ).map_zero (tauE D τ).map_one]`.
+
+Establish `h2 : (Tm A μ).map (tauE D τ) * ((Tm A μ)⁻¹).map (tauE D τ) = 1`. Rewrite using `[← Matrix.map_mul, hTR, Matrix.map_one _ (tauE D τ).map_zero (tauE D τ).map_one]`. Establish `hqX : (dblDec A).qX.map (tauE D τ) = (((Tm A μ)⁻¹).map (tauE D τ)).submatrix (fun i => finSumFinEquiv (Sum.inl i)) id`. Rewrite using `[hinv]`. Use extensionality with `i j`.
+
+Simplify using `only [Matrix.map_apply, Matrix.submatrix_apply, id, Equiv.symm_apply_apply, Matrix.fromRows_apply_inl]`. Establish `hqY : (μ⁻¹ • (dblDec A).qY).map (tauE D τ) = (((Tm A μ)⁻¹).map (tauE D τ)).submatrix (fun i => finSumFinEquiv (Sum.inr i)) id`. Rewrite using `[hinv]`. Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, Matrix.submatrix_apply, id, Equiv.symm_apply_apply, Matrix.fromRows_apply_inr]`.
+
+Establish `hμ0 : tauE D τ μ ≠ 0` using `(map_ne_zero (tauE D τ)).2 hμ.1`. Establish `hn0 : (‖tauE D τ μ‖ : ℂ) ≠ 0` using `by exact_mod_cast (norm_ne_zero_iff.2 hμ0)`. Establish `hsτ : s τ * (Tm A μ).map (tauE D τ) = (Tm A μ).map (tauE D τ) * stdInv A.rank μ τ` using `hs τ`. Establish `hsR : ((Tm A μ)⁻¹).map (tauE D τ) * s τ = stdInv A.rank μ τ * ((Tm A μ)⁻¹).map (tauE D τ)`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[h2, Matrix.mul_one]`. Use `_ = ((Tm A μ)⁻¹).map (tauE D τ) * ((Tm A μ).map (tauE D τ) * stdInv A.rank μ τ) * ((Tm A μ)⁻¹).map (tauE D τ) := by`. Rewrite using `[← Matrix.mul_assoc (s τ), hsτ]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by rw [← Matrix.mul_assoc, h1, Matrix.one_mul]`.
+
+Rewrite using `[hqX, row_sub_mul, hsR, stdInv, Matrix.smul_mul]`. Establish `hb` using `blockMatrix_swap_mul_top_rows_eq_bottom_rows (((Tm A μ)⁻¹).map (tauE D τ))`. Rewrite `hb` using `[← hqY]`. Use extensionality with `i j`. Establish `hij` using `congrFun (congrFun hb i) j`.
+
+Simplify using `only [Matrix.submatrix_apply, Matrix.smul_apply, id] at hij ⊢`. Rewrite using `[hij]`. Simplify using `only [Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, map_mul, map_inv₀]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem qX_mul_stdInv (A : HSp D) (μ : D.host.E) (hμ : IsSkew μ) (s : RealMat (dblSp A)) (hs : IsStdInv A μ s)
     (τ : D.what₂.Tau) :
     (dblDec A).qX.map (tauE D τ) * s τ = ((‖tauE D τ μ‖ : ℂ)⁻¹) • (dblDec A).qY.map (tauE D τ) := by
@@ -75,6 +96,11 @@ end GlobalTheory.StdUnnAnnih
 
 namespace GlobalTheory.StdUnnAnnih
 
+/- English proof (translation)
+Establish `hn : ‖a‖ = a.im`. Rewrite using `[Complex.norm_def, Complex.normSq_apply, hre, zero_mul, zero_add, Real.sqrt_mul_self him.le]`. Establish `ha : a = (a.im : ℂ) * Complex.I` using `Complex.ext (by simp [hre]) (by simp)`. Rewrite using `[hn, ha]`. Establish `: (a.im : ℂ) * Complex.I * (-(Complex.I / (r : ℂ))) = ((a.im / r : ℝ) : ℂ)`.
+
+Use `push_cast`. Rewrite using `[div_eq_mul_inv, div_eq_mul_inv]`. Take the linear combination `(-(a.im : ℂ) * (r : ℂ)⁻¹) * Complex.I_sq`. Rewrite using `[this, Complex.re_ofReal_mul]`. Simplify using the standard rewrite rules.
+-/
 theorem re_imaginary_mul_neg_I_div_mul {a w : ℂ} (hre : a.re = 0) (him : 0 < a.im) (r : ℝ) :
     (a * (-(Complex.I / (r : ℂ))) * w).re = ‖a‖ / r * w.re := by
   have hn : ‖a‖ = a.im := by
@@ -88,6 +114,17 @@ theorem re_imaginary_mul_neg_I_div_mul {a w : ℂ} (hre : a.re = 0) (him : 0 < a
   rw [this, Complex.re_ofReal_mul]
   simp
 
+/- English proof (translation)
+Introduce `D ψ hψ θ hθ A B ν 𝓨 hcov μ hμ s' sB hs hsB l hl f hf τ X`. Establish `hJ : cplxO (s' τ) (sB τ) (X * (dblDec A).qX.map (tauE D τ)) = ((Complex.I / (‖tauE D τ μ‖ : ℂ)) • (sB τ * X)) * (dblDec A).qY.map (tauE D τ)`. Unfold `cplxO`. Rewrite using `[Matrix.mul_assoc (sB τ), Matrix.mul_assoc X, qX_mul_stdInv A μ hμ s' hs τ, Matrix.mul_smul, Matrix.mul_smul, Matrix.smul_mul, smul_smul, ← Matrix.mul_assoc, div_eq_mul_inv]`. Use `set Y := (Complex.I / (‖tauE D τ μ‖ : ℂ)) • (sB τ * X) with hY`.
+
+Establish `hd1` using `GlobalTheory.OrientedHeis.theta_dRho (S := dblSp A) (T := B) hθ hψ τ (X * (dblDec A).qX.map (tauE D τ)) hf`. Establish `hd2` using `GlobalTheory.OrientedHeis.theta_dRho (S := dblSp A) (T := B) hθ hψ τ (Y * (dblDec A).qY.map (tauE D τ)) hf`. Take `⟨-, hsm, -, hsmul⟩` from `GlobalTheory.T.schrodingerFunction_linear_thetaFunctions D ψ hψ A B ν 𝓨 hcov _ _ hd2 hd2 Complex.I`. Take `⟨-, -, hadd, -⟩` from `GlobalTheory.T.schrodingerFunction_linear_thetaFunctions D ψ hψ A B ν 𝓨 hcov _ _ hd1 hsm 0`. Use function extensionality and compare the values at `x`.
+
+Rewrite using `[annih, hJ, hadd, hsmul, Pi.add_apply, Pi.smul_apply, GlobalTheory.T.heisenbergDerivative_diagonalHalf_eq_schrodingerDerivative D ψ hψ θ hθ A B ν 𝓨 hcov f hf τ X x, GlobalTheory.T.schrodinger_dualHalf_derivative_linear_form D ψ hψ θ hθ A B ν 𝓨 hcov f hf τ Y x]`. Unfold `annS linF`. Use `congr 1`. Take `⟨hss, hiso, -⟩` from `hsB τ`. Establish `hsG : (sB τ)ᴴ * gramAt D B τ = gramAt D B τ * sB τ`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `htr : Matrix.trace (Yᴴ * gramAt D B τ * compAt θ τ x) = -(Complex.I / (‖tauE D τ μ‖ : ℂ)) * Matrix.trace (Xᴴ * (gramAt D B τ * sB τ) * compAt θ τ x)`. Rewrite using `[hY, Matrix.conjTranspose_smul, Matrix.conjTranspose_mul, Matrix.smul_mul, Matrix.smul_mul, Matrix.trace_smul, smul_eq_mul, Matrix.mul_assoc Xᴴ, hsG]`. Use `congr 1`. Simplify using `[Complex.conj_ofReal, div_eq_mul_inv]`.
+
+Establish `key : (tauE D τ D.host.xi0 * Matrix.trace (Yᴴ * gramAt D B τ * compAt θ τ x)).re = |l τ| * (Matrix.trace (Xᴴ * (gramAt D B τ * sB τ) * compAt θ τ x)).re`. Rewrite using `[htr, ← mul_assoc, re_imaginary_mul_neg_I_div_mul (Formalism.IndefR.Fock.CCR.realPlace_imaginaryGenerator_re_eq_zero D τ) (Formalism.L2.Theta.xi_zero_im_pos D τ), hl τ]`. Rewrite using `[key, smul_eq_mul]`. Use `push_cast`. Take the linear combination `(-(4 : ℂ) * Real.pi * ((|l τ| : ℝ) : ℂ) * ((Matrix.trace (Xᴴ * (gramAt D B τ * sB τ) * compAt θ τ x)).re : ℂ) * sch ψ A B ν 𝓨 f x) * Complex.I_sq`.
+-/
 theorem annih_sch : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ θ : InfFam D, IsInfFam θ → ∀ (A B : HSp D) (ν : Measure (WO A B)) (𝓨 : Set (WO A B)), IsCovolOne (ratL B A) ν 𝓨 → ∀ μ : D.host.E, IsSkew μ → ∀ (s' : RealMat (dblSp A)) (sB : RealMat B), IsStdInv A μ s' → (∀ τ, IsCartanInv (gramAt D B τ) (sB τ)) → ∀ l : D.what₂.Tau → ℝ, (∀ τ, |l τ| = ‖tauE D τ D.host.xi0‖ / ‖tauE D τ μ‖) → ∀ f, IsThetaFunO ψ (dblSp A) B f → ∀ (τ : D.what₂.Tau) (X : Matrix (Fin B.rank) (Fin A.rank) ℂ), sch ψ A B ν 𝓨 (annih (heisO ψ (dblSp A) B) θ τ (cplxO (s' τ) (sB τ)) (X * (dblDec A).qX.map (tauE D τ)) f) = annS B l sB θ τ X (sch ψ A B ν 𝓨 f) := by
   intro D ψ hψ θ hθ A B ν 𝓨 hcov μ hμ s' sB hs hsB l hl f hf τ X
   have hJ : cplxO (s' τ) (sB τ) (X * (dblDec A).qX.map (tauE D τ)) =

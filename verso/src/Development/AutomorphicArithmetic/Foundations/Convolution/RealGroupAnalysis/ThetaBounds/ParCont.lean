@@ -5,12 +5,20 @@ open Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual GlobalTheory.CuspR
 open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.Ff
 open scoped Classical
 
+/- English proof (translation)
+The claim follows from `Continuous.units_map _ (continuous_const.add (continuous_id.matrix_map ((TR.continuous_infEq F).prodMk continuous_const : Continuous fun x : TR.Rinf F => ((TR.infEq F x, 0) : InfiniteAdeleRing F × Af F))))`.
+-/
 private theorem parCont_infGL (F : Type) [Field F] [NumberField F] [IsTotallyReal F] :
     Continuous (TR.infGL F 2) :=
   Continuous.units_map _ (continuous_const.add (continuous_id.matrix_map
     ((TR.continuous_infEq F).prodMk continuous_const :
     Continuous fun x : TR.Rinf F => ((TR.infEq F x, 0) : InfiniteAdeleRing F × Af F))))
 
+/- English proof (translation)
+Establish `h0 : ContinuousAt (fun t => (c t).val) 0` using `h.2.continuousAt`. Use `continuous_iff_continuousAt.2 fun t => ?_` and prove the remaining obligations. Establish `e : (fun s => (c s).val) = fun s => (c t).val * (c (s - t)).val`. Use function extensionality and compare the values at `s`. Rewrite using `[← Units.val_mul, ← h.1, add_sub_cancel]`.
+
+Rewrite using `[e]`. Establish `hs : ContinuousAt (fun s : ℝ => s - t) t` using `(continuous_id.sub continuous_const).continuousAt`. Establish `h0' : ContinuousAt (fun t => (c t).val) ((fun s : ℝ => s - t) t)`. Simplify using `using h0`. Conclude with `continuousAt_const.mul (ContinuousAt.comp (f := fun s : ℝ => s - t) h0' hs)`.
+-/
 private theorem parCont_val {F : Type} [Field F] [NumberField F] [IsTotallyReal F]
     {c : ℝ → GL (Fin 2) (TR.Rinf F)} {Y : TR.Lie F 2} (h : Par c Y) :
     Continuous fun t => (c t).val := by
@@ -25,6 +33,17 @@ private theorem parCont_val {F : Type} [Field F] [NumberField F] [IsTotallyReal 
     simpa using h0
   exact continuousAt_const.mul (ContinuousAt.comp (f := fun s : ℝ => s - t) h0' hs)
 
+/- English proof (translation)
+Introduce `F _ _ _`. Use `⟨parCont_infGL F, fun c Y h => ?_⟩` and prove the remaining obligations. Establish `h1 : c 0 = 1`. Use `h.1 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`.
+
+Conclude with `left_eq_mul.1 this`. Establish `hinv : ∀ t, (c t)⁻¹ = c (-t)` using `fun t => inv_eq_of_mul_eq_one_right (by rw [← h.1, add_neg_cancel, h1])`. Establish `hv` using `parCont_val h`. Use `⟨h1, Units.continuous_iff.2 ⟨hv, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Establish `: (fun t => ((c t)⁻¹ : GL (Fin 2) (TR.Rinf F)).val) = fun t => (c (-t)).val`.
+
+Use function extensionality and compare the values at `t`. Rewrite using `[hinv]`. Express the relevant statement in the definitionally equal form `Continuous (fun t => ((c t)⁻¹ : GL (Fin 2) (TR.Rinf F)).val)`. Rewrite using `[this]`. Conclude with `hv.comp continuous_neg`.
+
+Introduce `s t`. Express the relevant statement in the definitionally equal form `c (-(s + t)) = c (-s) * c (-t)`. Rewrite using `[neg_add, h.1]`. Establish `h2 : HasDerivAt (fun t => TR.toL (c t).val) Y (-(0 : ℝ))` using `by simpa using h.2`. Use `HasDerivAt.scomp (0 : ℝ) h2 (hasDerivAt_neg 0)` as an intermediate fact.
+
+Simplify `this` using `[Function.comp_def]`.
+-/
 theorem UpperTheory.ConvolutionTheory.R2.Ff.parCont :
     ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F], ParCont F := by
   intro F _ _ _

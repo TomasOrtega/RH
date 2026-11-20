@@ -17,27 +17,47 @@ section Okp
 
 variable (D : D7) {p : ℕ} [Fact p.Prime] (lam : Qbar →+* ℂ_[p])
 
+/- English proof (translation)
+The claim follows from `subset_closure ⟨a, rfl⟩`.
+-/
 theorem okp_range (a : 𝓞 D.host.K) :
     (tauK D lam (a : D.host.K), tauKc D lam (a : D.host.K)) ∈ OKp D lam :=
   subset_closure ⟨a, rfl⟩
 
+/- English proof (translation)
+The claim follows from `isClosed_closure`.
+-/
 theorem okp_closed : IsClosed (OKp D lam) := isClosed_closure
 
+/- English proof (translation)
+Unfold `tauK`. Establish `: (((n : D.host.K)) : D.host.E) = (n : D.host.E)` using `by simp`. Rewrite using `[this, lamPhi_int]`.
+-/
 theorem tauK_int (n : ℤ) : tauK D lam (n : D.host.K) = n := by
   unfold tauK
   have : (((n : D.host.K)) : D.host.E) = (n : D.host.E) := by simp
   rw [this, lamPhi_int]
 
+/- English proof (translation)
+Unfold `tauKc`. Establish `: (((n : D.host.K)) : D.host.E) = (n : D.host.E)` using `by simp`. Rewrite using `[this, map_intCast, lamPhi_int]`.
+-/
 theorem tauKc_int (n : ℤ) : tauKc D lam (n : D.host.K) = n := by
   unfold tauKc
   have : (((n : D.host.K)) : D.host.E) = (n : D.host.E) := by simp
   rw [this, map_intCast, lamPhi_int]
 
+/- English proof (translation)
+Establish `h` using `okp_range D lam (n : 𝓞 D.host.K)`. Establish `e : (((n : 𝓞 D.host.K)) : D.host.K) = (n : D.host.K)` using `by simp`. Rewrite `h` using `[e, tauK_int, tauKc_int]`. Then use the resulting hypothesis.
+-/
 theorem okp_intPair (n : ℤ) : ((n : ℂ_[p]), (n : ℂ_[p])) ∈ OKp D lam := by
   have h := okp_range D lam (n : 𝓞 D.host.K)
   have e : (((n : 𝓞 D.host.K)) : D.host.K) = (n : D.host.K) := by simp
   rwa [e, tauK_int, tauKc_int] at h
 
+/- English proof (translation)
+Establish `hf : Continuous (fun z : ℤ_[p] => (zc z, zc z))` using `zc_continuous.prodMk zc_continuous`. Establish `hu : u ∈ closure (Set.range (Int.cast : ℤ → ℤ_[p]))` using `PadicInt.denseRange_intCast u`. Establish `h` using `map_mem_closure hf hu (t := OKp D lam) (by`. Introduce and unpack `_ ⟨n, rfl⟩`. Simplify `okp_intPair D lam n)` using `[zc_int]`.
+
+Rewrite `h` using `[(okp_closed D lam).closure_eq]`. Then use the resulting hypothesis.
+-/
 theorem okp_zp (u : ℤ_[p]) : (zc u, zc u) ∈ OKp D lam := by
   have hf : Continuous (fun z : ℤ_[p] => (zc z, zc z)) := zc_continuous.prodMk zc_continuous
   have hu : u ∈ closure (Set.range (Int.cast : ℤ → ℤ_[p])) := PadicInt.denseRange_intCast u
@@ -46,18 +66,27 @@ theorem okp_zp (u : ℤ_[p]) : (zc u, zc u) ∈ OKp D lam := by
     simpa [zc_int] using okp_intPair D lam n)
   rwa [(okp_closed D lam).closure_eq] at h
 
+/- English proof (translation)
+Establish `h` using `norm_int_cp (p := p) (p : ℤ)`. Move the coercions through the operations in `at h`. Rewrite using `[h]`. Conclude with `PadicInt.norm_p`.
+-/
 theorem norm_p_cp : ‖(p : ℂ_[p])‖ = (p : ℝ)⁻¹ := by
   have h := norm_int_cp (p := p) (p : ℤ)
   push_cast at h
   rw [h]
   exact PadicInt.norm_p
 
+/- English proof (translation)
+Rewrite `h` using `[norm_int_cp, norm_p_cp]`. Apply `PadicInt.norm_int_le_pow_iff_dvd.1` to reduce the goal to its premises. Rewrite using `[zpow_neg, zpow_natCast, ← inv_pow]`. Conclude with `h`.
+-/
 theorem pow_dvd_of_norm (t : ℤ) (e : ℕ) (h : ‖(t : ℂ_[p])‖ ≤ ‖(p : ℂ_[p])‖ ^ e) : ((p : ℤ) ^ e) ∣ t := by
   rw [norm_int_cp, norm_p_cp] at h
   apply PadicInt.norm_int_le_pow_iff_dvd.1
   rw [zpow_neg, zpow_natCast, ← inv_pow]
   exact h
 
+/- English proof (translation)
+The claim follows from `(IsFractionRing.isAlgebraic_iff ℤ ℚ D.host.K).2 (Algebra.IsAlgebraic.isAlgebraic k)`.
+-/
 theorem isAlg (k : D.host.K) : IsAlgebraic ℤ k :=
   (IsFractionRing.isAlgebraic_iff ℤ ℚ D.host.K).2 (Algebra.IsAlgebraic.isAlgebraic k)
 
@@ -67,18 +96,64 @@ section Key
 
 variable (D : D7) {p : ℕ} [Fact p.Prime] (lam : Qbar →+* ℂ_[p])
 
+/- English proof (translation)
+Establish `h` using `tauK_int D lam (n : ℤ)`. Move the coercions through the operations in `at h`. Conclude with `h`.
+-/
 theorem tauK_nat (n : ℕ) : tauK D lam (n : D.host.K) = n := by
   have h := tauK_int D lam (n : ℤ)
   push_cast at h
   exact h
 
+/- English proof (translation)
+Establish `h` using `tauKc_int D lam (n : ℤ)`. Move the coercions through the operations in `at h`. Conclude with `h`.
+-/
 theorem tauKc_nat (n : ℕ) : tauKc D lam (n : D.host.K) = n := by
   have h := tauKc_int D lam (n : ℤ)
   push_cast at h
   exact h
 
+/- English proof (translation)
+Simplify using `[zc]`.
+-/
 theorem zc_mul' (a b : ℤ_[p]) : zc (a * b) = zc a * zc b := by simp [zc]
 
+/- English proof (translation)
+Establish `hp : p.Prime` using `Fact.out`. Take `⟨y, hy0, hyI⟩` from `(isAlg D k).exists_integral_multiple`. Take `⟨m, hm⟩ : ∃ m : ℕ, y = m ∨ y = -m` from `⟨y.natAbs, Int.natAbs_eq y⟩`. Establish `hm0 : m ≠ 0`. Introduce and unpack `rfl`.
+
+Apply the tactic sequence `rcases hm with h | h <;> simp [h] at hy0`. Establish `hy : IsIntegral ℤ ((y : D.host.K) * k)` using `by rwa [zsmul_eq_mul] at hyI`. Establish `hmI : IsIntegral ℤ ((m : D.host.K) * k)`. Break down `hm with h | h` into its components or cases. Substitute `h` using the available equality.
+
+Simplify using `using hy`. Substitute `h` using the available equality. Establish `e : ((m : D.host.K)) * k = -((((-(m : ℤ)) : ℤ) : D.host.K) * k)` using `by push_cast; ring`. Rewrite using `[e]`. Conclude with `hy.neg`.
+
+Take `⟨e, n', hn', hmn⟩` from `Nat.exists_eq_pow_mul_and_not_dvd hm0 p hp.ne_one`. Set `c : 𝓞 D.host.K` to `⟨(m : D.host.K) * k, hmI⟩`. Establish `hcK : ((c : 𝓞 D.host.K) : D.host.K) = (m : D.host.K) * k` using `rfl`. Establish `ht` using `tau_trace D lam c`. Establish `hn` using `tau_norm D lam c`.
+
+Rewrite `ht`, `hn` using `[hcK, tauK_mul, tauKc_mul, tauK_nat, tauKc_nat]`. Generalize the expression as in `(Algebra.norm ℤ (1 + c) - Algebra.norm ℤ c - 1 : ℤ) = T at ht`. Generalize the expression as in `(Algebra.norm ℤ c : ℤ) = Nn at hn`. Establish `hn'1 : ‖(n' : ℂ_[p])‖ = 1`. Use `norm_int_cp_eq_one (p := p) (n' : ℤ) (by exact_mod_cast hn')` as an intermediate fact.
+
+Simplify using `using this`. Establish `hmc : (m : ℂ_[p]) = (p : ℂ_[p]) ^ e * n'` using `by rw [hmn]; push_cast; ring`. Establish `hnorm_m : ‖(m : ℂ_[p])‖ = ‖(p : ℂ_[p])‖ ^ e`. Rewrite using `[hmc, norm_mul, norm_pow, hn'1, mul_one]`. Establish `hA : ‖(m : ℂ_[p]) * tauK D lam k‖ ≤ ‖(p : ℂ_[p])‖ ^ e`.
+
+Rewrite using `[norm_mul, hnorm_m]`. Conclude with `mul_le_of_le_one_right (pow_nonneg (norm_nonneg _) _) h1`. Establish `hB : ‖(m : ℂ_[p]) * tauKc D lam k‖ ≤ ‖(p : ℂ_[p])‖ ^ e`. Rewrite using `[norm_mul, hnorm_m]`. Conclude with `mul_le_of_le_one_right (pow_nonneg (norm_nonneg _) _) h2`.
+
+Establish `hT : ‖(T : ℂ_[p])‖ ≤ ‖(p : ℂ_[p])‖ ^ e`. Rewrite using `[← ht]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le hA hB)`. Establish `hN : ‖(Nn : ℂ_[p])‖ ≤ ‖(p : ℂ_[p])‖ ^ (2 * e)`. Rewrite using `[← hn, norm_mul, two_mul, pow_add]`.
+
+Conclude with `mul_le_mul hA hB (norm_nonneg _) (pow_nonneg (norm_nonneg _) _)`. Take `⟨t', rfl⟩` from `pow_dvd_of_norm T e hT`. Take `⟨n'', rfl⟩` from `pow_dvd_of_norm Nn (2 * e) hN`. Establish `hp0 : (p : ℂ_[p]) ≠ 0` using `by exact_mod_cast hp.ne_zero`. Establish `hpe : (p : ℂ_[p]) ^ e ≠ 0` using `pow_ne_zero _ hp0`.
+
+Establish `hpe2 : (p : ℂ_[p]) ^ (2 * e) ≠ 0` using `pow_ne_zero _ hp0`. Establish `hsum : (n' : ℂ_[p]) * tauK D lam k + n' * tauKc D lam k = t'`. Apply `mul_left_cancel₀ hpe` to reduce the goal to its premises. Rewrite `ht` using `[hmc]`. Move the coercions through the operations in `at ht`.
+
+Take the linear combination `ht`. Establish `hprod : ((n' : ℂ_[p]) * tauK D lam k) * (n' * tauKc D lam k) = n''`. Apply `mul_left_cancel₀ hpe2` to reduce the goal to its premises. Rewrite `hn` using `[hmc]`. Move the coercions through the operations in `at hn`.
+
+Take the linear combination `hn`. Set `c' : D.host.K` to `(n' : D.host.K) * k`. Establish `htc' : tauKp D lam c' = (n' : ℂ_[p]) * tauK D lam k`. Rewrite using `[tauKp_apply]`. Use `show tauK D lam ((n' : D.host.K) * k) = _`.
+
+Rewrite using `[tauK_mul, tauK_nat]`. Establish `hK : c' ^ 2 - (t' : D.host.K) * c' + (n'' : D.host.K) = 0`. Apply `(tauKp D lam).injective` to reduce the goal to its premises. Rewrite using `[map_zero, map_add, map_sub, map_mul, map_pow, map_intCast, map_intCast, htc']`. Take the linear combination `(↑n' * tauK D lam k) * hsum - hprod`.
+
+Establish `hc'I : IsIntegral ℤ c'`. Use `⟨Polynomial.X ^ 2 - Polynomial.C t' * Polynomial.X + Polynomial.C n'', ?_, ?_⟩` and prove the remaining obligations. Use `monicity!`. Simplify using `only [Polynomial.eval₂_add, Polynomial.eval₂_sub, Polynomial.eval₂_mul, Polynomial.eval₂_pow, Polynomial.eval₂_X, Polynomial.eval₂_C]`. Simplify using `only [eq_intCast]`.
+
+Conclude with `hK`. Choose the witnesses or unpack the hypotheses as in `⟨u, hu⟩ : ∃ u : ℤ_[p], zc u * (n' : ℂ_[p]) = 1 := by`. Establish `h1 : ‖(n' : ℤ_[p])‖ = 1`. Simplify using `using norm_int_zp_eq_one (p := p) (n' : ℤ) (by exact_mod_cast hn')`. Take `⟨w, hw⟩` from `PadicInt.isUnit_iff.2 h1`.
+
+Use `⟨((w⁻¹ : ℤ_[p]ˣ) : ℤ_[p]), ?_⟩` and prove the remaining obligations. Establish `h4 : zc ((n' : ℤ_[p])) = (n' : ℂ_[p])` using `by simpa using zc_int (p := p) (n' : ℤ)`. Rewrite using `[← h4, ← zc_mul', ← hw, Units.inv_mul]`. Simplify using `[zc]`. Set `c'' : 𝓞 D.host.K` to `⟨c', hc'I⟩`.
+
+Establish `e1 : tauK D lam (c'' : D.host.K) = (n' : ℂ_[p]) * tauK D lam k` using `by show tauK D lam ((n' : D.host.K) * k) = _`. Rewrite using `[tauK_mul, tauK_nat]`. Establish `e2 : tauKc D lam (c'' : D.host.K) = (n' : ℂ_[p]) * tauKc D lam k` using `by show tauKc D lam ((n' : D.host.K) * k) = _`. Rewrite using `[tauKc_mul, tauKc_nat]`. Establish `hm'` using `okp_mul D lam _ _ (okp_zp D lam u) (okp_range D lam c'')`.
+
+Rewrite `hm'` using `[Prod.mk_mul_mk, e1, e2, ← mul_assoc, ← mul_assoc, hu, one_mul, one_mul]`. Conclude with `hm'`.
+-/
 theorem keyInt (k : D.host.K) (h1 : ‖tauK D lam k‖ ≤ 1) (h2 : ‖tauKc D lam k‖ ≤ 1) :
     (tauK D lam k, tauKc D lam k) ∈ OKp D lam := by
   have hp : p.Prime := Fact.out
@@ -172,6 +247,13 @@ theorem keyInt (k : D.host.K) (h1 : ‖tauK D lam k‖ ≤ 1) (h2 : ‖tauKc D l
   rw [Prod.mk_mul_mk, e1, e2, ← mul_assoc, ← mul_assoc, hu, one_mul, one_mul] at hm'
   exact hm'
 
+/- English proof (translation)
+Establish `hσc : Continuous σ`. Use `AddMonoidHomClass.continuous_of_bound σ 1 (fun y => ?_)` and prove the remaining obligations. Rewrite using `[hσ.2 y, one_mul]`. Establish `hU : IsOpen (Metric.closedBall (0 : ℂ_[p]) 1)` using `IsUltrametricDist.isOpen_closedBall 0 one_ne_zero`. Establish `hx' : x ∈ closure (Metric.closedBall (0 : ℂ_[p]) 1 ∩ Set.range fun k : D.host.K => lamC lam (D.host.φ₀ (k : D.host.E)))` using `hU.inter_closure ⟨by simpa using hx1, hx⟩`.
+
+Establish `h` using `map_mem_closure (continuous_id.prodMk hσc) hx' (t := OKp D lam) (by`. Introduce and unpack `_ ⟨hy1, k, rfl⟩`. Establish `hy1' : ‖tauK D lam k‖ ≤ 1` using `by simpa [tauK] using hy1`. Establish `hc : σ (tauK D lam k) = tauKc D lam k` using `hσ.1 k`. Establish `hk` using `keyInt D lam k hy1' (by rw [← hc, hσ.2]; exact hy1')`.
+
+Rewrite `hk` using `[← hc]`. Conclude with `hk)`. Rewrite `h` using `[(okp_closed D lam).closure_eq]`. Then use the resulting hypothesis.
+-/
 theorem conv (σ : ℂ_[p] →+* ℂ_[p]) (hσ : IsConjP D lam σ) (x : ℂ_[p])
     (hx : x ∈ closure (Set.range fun k : D.host.K => lamC lam (D.host.φ₀ (k : D.host.E)))) (hx1 : ‖x‖ ≤ 1) :
     (x, σ x) ∈ OKp D lam := by
@@ -202,10 +284,20 @@ variable (D : D7) {p : ℕ} [Fact p.Prime] (lam : Qbar →+* ℂ_[p])
 def tauE : D.host.E →+* ℂ_[p] :=
   lam.comp (D.host.φ₀.codRestrict Qbar.toSubring (fun z => test_vector_mem_schwartz_bruhat D z))
 
+/- English proof (translation)
+Rewrite using `[lamC_mem' lam (test_vector_mem_schwartz_bruhat D x)]`. Both sides reduce to the same expression.
+-/
 theorem tauE_apply (x : D.host.E) : tauE D lam x = lamC lam (D.host.φ₀ x) := by
   rw [lamC_mem' lam (test_vector_mem_schwartz_bruhat D x)]
   rfl
 
+/- English proof (translation)
+Establish `hσQ : ∀ a c, σ (lamC lam (D.host.φ₀ (Q a c))) = tauE D lam (D.host.conj (Q a c))`. Introduce `a c`. Rewrite using `[tauE_apply]`. Conclude with `hσ.1 ⟨Q a c, hQK a c⟩`. Use extensionality with `m n`.
+
+Simplify using `only [Matrix.of_apply, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, hσQ]`. Simplify using `only [← tauE_apply]`. Rewrite using `[hb' m, hb' n, hYY_comb D b (fun i => Q i m) (fun i => Q i n) (fun i => hQK i m) (fun i => hQK i n)]`. Simplify using `only [map_sum, map_mul, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem gram_change (σ : ℂ_[p] →+* ℂ_[p]) (hσ : IsConjP D lam σ) {N N' r : ℕ}
     (b b' : Fin r → Matrix (Fin N') (Fin N) D.host.E) (Q : Fin r → Fin r → D.host.E)
     (hQK : ∀ i j, Q i j ∈ D.host.K) (hb' : ∀ j, b' j = ∑ i, Q i j • b i) :
@@ -226,6 +318,9 @@ theorem gram_change (σ : ℂ_[p] →+* ℂ_[p]) (hσ : IsConjP D lam σ) {N N' 
   refine Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun i _ => ?_
   ring
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[Matrix.one_apply, ← h i j]`. Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`.
+-/
 theorem unitary_mat {n : Type*} [Fintype n] [DecidableEq n] {F : Type*} [CommRing F] (σ : F →+* F)
     (A G : Matrix n n F) (h : ∀ i j, ∑ m, ∑ k, A i m * G m k * σ (A j k) = if i = j then 1 else 0) :
     A * G * (A.map σ)ᵀ = 1 := by
@@ -234,6 +329,13 @@ theorem unitary_mat {n : Type*} [Fintype n] [DecidableEq n] {F : Type*} [CommRin
   simp only [Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Finset.sum_mul]
   rw [Finset.sum_comm]
 
+/- English proof (translation)
+Establish `hBA : A⁻¹ * A = 1` using `Matrix.nonsing_inv_mul A (isUnit_iff_ne_zero.2 hdet)`. Establish `hBs : A⁻¹.map σ * A.map σ = 1`. Rewrite using `[← Matrix.map_mul, hBA, Matrix.map_one _ (map_zero σ) (map_one σ)]`. Establish `hG : A⁻¹ * (A⁻¹.map σ)ᵀ = G`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[Matrix.transpose_mul]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = G := by rw [hBA, hBs]; simp`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.map_mul, Matrix.transpose_mul, Matrix.mul_assoc]`.
+
+Use `_ = 1 := by rw [hG]; exact hA'`.
+-/
 theorem unitary_P {n : Type*} [Fintype n] [DecidableEq n] {F : Type*} [Field F] (σ : F →+* F)
     (A A' G Qt : Matrix n n F) (hA : A * G * (A.map σ)ᵀ = 1)
     (hA' : A' * (Qt * G * (Qt.map σ)ᵀ) * (A'.map σ)ᵀ = 1) (hdet : A.det ≠ 0) :
@@ -251,6 +353,9 @@ theorem unitary_P {n : Type*} [Fintype n] [DecidableEq n] {F : Type*} [Field F] 
         simp only [Matrix.map_mul, Matrix.transpose_mul, Matrix.mul_assoc]
     _ = 1 := by rw [hG]; exact hA'
 
+/- English proof (translation)
+Rewrite using `[IntegralOrthonormalChange.lamC_embT, hb' m, Matrix.sum_apply]`. Simplify using `only [Matrix.smul_apply, smul_eq_mul, map_sum, map_mul]`. Use `Finset.sum_congr rfl fun n _ => ?_` and prove the remaining obligations. Rewrite using `[← IntegralOrthonormalChange.embT_K D k.1 _ (hQK n m), IntegralOrthonormalChange.lamC_embT, IntegralOrthonormalChange.lamC_embT]`.
+-/
 theorem lamb_change {N N' r : ℕ} (b b' : Fin r → Matrix (Fin N') (Fin N) D.host.E) (Q : Fin r → Fin r → D.host.E)
     (hQK : ∀ i j, Q i j ∈ D.host.K) (hb' : ∀ j, b' j = ∑ i, Q i j • b i) (m : Fin r)
     (k : D.what₂.Tau × Fin N' × Fin N) :
@@ -261,6 +366,15 @@ theorem lamb_change {N N' r : ℕ} (b b' : Fin r → Matrix (Fin N') (Fin N) D.h
   refine Finset.sum_congr rfl fun n _ => ?_
   rw [← IntegralOrthonormalChange.embT_K D k.1 _ (hQK n m), IntegralOrthonormalChange.lamC_embT, IntegralOrthonormalChange.lamC_embT]
 
+/- English proof (translation)
+Introduce `i k`. Use `set Qt : Matrix (Fin r) (Fin r) ℂ_[p] := Matrix.of fun m n => lamC lam (D.host.φ₀ (Q n m)) with hQt`. Use `set w : Fin r → ℂ_[p] := fun n => lamC lam (embT D k.1 (b n k.2.1 k.2.2)) with hw`. Establish `h1 : (fun j => v j k) = A *ᵥ w`. Use function extensionality and compare the values at `j`.
+
+Rewrite using `[hv j k]`. Both sides reduce to the same expression. Establish `h2 : (fun j => v' j k) = (A' * Qt) *ᵥ w`. Use function extensionality and compare the values at `j`. Rewrite using `[hv' j k, ← Matrix.mulVec_mulVec]`.
+
+Simplify using `only [Matrix.mulVec, dotProduct]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[lamb_change D lam b b' Q hQK hb' m k]`. Both sides reduce to the same expression. Establish `hBA : A⁻¹ * A = 1` using `Matrix.nonsing_inv_mul A (isUnit_iff_ne_zero.2 hdet)`.
+
+Establish `h3 : (fun j => v' j k) = (A' * Qt * A⁻¹) *ᵥ (fun j => v j k)`. Rewrite using `[h1, h2, Matrix.mulVec_mulVec, Matrix.mul_assoc (A' * Qt), hBA, Matrix.mul_one]`. Conclude with `congrFun h3 i`.
+-/
 theorem v_change {N N' r : ℕ} (b b' : Fin r → Matrix (Fin N') (Fin N) D.host.E) (Q : Fin r → Fin r → D.host.E)
     (hQK : ∀ i j, Q i j ∈ D.host.K) (hb' : ∀ j, b' j = ∑ i, Q i j • b i)
     (A A' : Matrix (Fin r) (Fin r) ℂ_[p]) (hdet : A.det ≠ 0)
@@ -287,6 +401,11 @@ theorem v_change {N N' r : ℕ} (b b' : Fin r → Matrix (Fin N') (Fin N) D.host
     rw [h1, h2, Matrix.mulVec_mulVec, Matrix.mul_assoc (A' * Qt), hBA, Matrix.mul_one]
   exact congrFun h3 i
 
+/- English proof (translation)
+Set `Xl : Matrix n n R'` to `Matrix.of fun i j => ⟨X i j, hX i j⟩`. Establish `hX' : R'.subtype.mapMatrix Xl = X`. Use extensionality with `i j`. Both sides reduce to the same expression. Prove the components needed by the constructor for the conclusion.
+
+Rewrite using `[← hX', ← RingHom.map_det]`. Conclude with `(Xl.det).2`. Introduce `i j`. Rewrite using `[← hX', ← RingHom.map_adjugate]`. Conclude with `(Xl.adjugate i j).2`.
+-/
 theorem lift_mem {n : Type*} [Fintype n] [DecidableEq n] (R' : Subring ℂ_[p]) (X : Matrix n n ℂ_[p])
     (hX : ∀ i j, X i j ∈ R') : X.det ∈ R' ∧ ∀ i j, X.adjugate i j ∈ R' := by
   let Xl : Matrix n n R' := Matrix.of fun i j => ⟨X i j, hX i j⟩
@@ -300,6 +419,27 @@ theorem lift_mem {n : Type*} [Fintype n] [DecidableEq n] (R' : Subring ℂ_[p]) 
     rw [← hX', ← RingHom.map_adjugate]
     exact (Xl.adjugate i j).2
 
+/- English proof (translation)
+Establish `hp : p.Prime` using `Fact.out`. Use `set S := Set.range fun x : D.host.K => lamC lam (D.host.φ₀ (x : D.host.E)) with hS`. Set `Kc : Subfield ℂ_[p]` to `(tauKp D lam).fieldRange.topologicalClosure`. Establish `hKc : (Kc : Set ℂ_[p]) = closure S` using `by show closure ((tauKp D lam).fieldRange : Set ℂ_[p]) = closure S`. Rewrite using `[RingHom.coe_fieldRange]`.
+
+Use `congr 1`. Use extensionality with `x`. Simplify using `only [S, Set.mem_range, tauKp_apply]`. Set `R' : Subring ℂ_[p]` to `Kc.toSubring ⊓ intRing p`. Establish `memR : ∀ x, x ∈ R' ↔ x ∈ closure S ∧ ‖x‖ ≤ 1` using `fun x => by`.
+
+Rewrite using `[← hKc]`. Conclude with `Iff.rfl`. Establish `mulR : ∀ X Y : Matrix (Fin r) (Fin r) ℂ_[p], (∀ i j, X i j ∈ R') → (∀ i j, Y i j ∈ R') → ∀ i j, (X * Y) i j ∈ R'` using `fun X Y hX hY i j => by`. Rewrite using `[Matrix.mul_apply]`. Conclude with `sum_mem fun k _ => mul_mem (hX i k) (hY k j)`.
+
+Establish `hAR : ∀ i j, A i j ∈ R'` using `fun i j => (memR _).2 ⟨(hA i j).2, (hA i j).1⟩`. Establish `hA'R : ∀ i j, A' i j ∈ R'` using `fun i j => (memR _).2 ⟨(hA' i j).2, (hA' i j).1⟩`. Establish `hQR : ∀ m n, (Matrix.of fun m n => lamC lam (D.host.φ₀ (Q n m)) : Matrix (Fin r) (Fin r) ℂ_[p]) m n ∈ R'`. Introduce `m n`. Use `(memR _).2 ⟨subset_closure ⟨⟨Q n m, hQK n m⟩, rfl⟩, ?_⟩` and prove the remaining obligations.
+
+Take `⟨s, hs, c, hc⟩` from `hQp n m`. Establish `h1` using `congrArg (tauE D lam) hc`. Rewrite `h1` using `[map_mul, map_natCast]`. Establish `hc1 : ‖tauE D lam ((c : D.host.K) : D.host.E)‖ ≤ 1`. Use `(okp_norm_le D lam _ (okp_range D lam c)).1` as an intermediate fact.
+
+Rewrite using `[tauE_apply]`. Conclude with `this`. Establish `hs1 : ‖(s : ℂ_[p])‖ = 1`. Establish `hnd : ¬ (p : ℤ) ∣ (s : ℤ)`. Introduce `h`.
+
+Establish `h' : p ∣ s` using `by exact_mod_cast h`. Conclude with `(hp.coprime_iff_not_dvd.1 hs.symm) h'`. Simplify using `using norm_int_cp_eq_one (p := p) (s : ℤ) hnd`. Use `show ‖lamC lam (D.host.φ₀ (Q n m))‖ ≤ 1`. Rewrite using `[← tauE_apply]`.
+
+Establish `h2 : ‖(s : ℂ_[p]) * tauE D lam (Q n m)‖ ≤ 1` using `by rw [h1]; exact hc1`. Rewrite `h2` using `[norm_mul, hs1, one_mul]`. Then use the resulting hypothesis. Take `⟨hdR, hadjR⟩` from `lift_mem R' A hAR`. Establish `hdinv : A.det⁻¹ ∈ R'`. Use `(memR _).2 ⟨?_, ?_⟩` and prove the remaining obligations.
+
+Establish `hd : A.det ∈ (Kc : Set ℂ_[p])` using `by rw [hKc]; exact ((memR _).1 hdR).1`. Rewrite using `[← hKc]`. Conclude with `Kc.inv_mem hd`. Rewrite using `[norm_inv, hdet, inv_one]`. Establish `hBR : ∀ i j, A⁻¹ i j ∈ R'`.
+
+Introduce `i j`. Rewrite using `[Matrix.inv_def, Ring.inverse_eq_inv', Matrix.smul_apply, smul_eq_mul]`. Conclude with `mul_mem hdinv (hadjR i j)`. Introduce `i j`. Conclude with `(memR _).1 (mulR _ _ (mulR _ _ hA'R hQR) hBR i j)`.
+-/
 theorem entries {r : ℕ} (A A' : Matrix (Fin r) (Fin r) ℂ_[p])
     (Q : Fin r → Fin r → D.host.E) (hQK : ∀ i j, Q i j ∈ D.host.K)
     (hQp : ∀ i j, ∃ s : ℕ, Nat.Coprime s p ∧ ∃ c : 𝓞 D.host.K, (s : D.host.E) * Q i j = ((c : D.host.K) : D.host.E))
@@ -364,6 +504,15 @@ theorem entries {r : ℕ} (A A' : Matrix (Fin r) (Fin r) ℂ_[p])
   intro i j
   exact (memR _).1 (mulR _ _ (mulR _ _ hA'R hQR) hBR i j)
 
+/- English proof (translation)
+Establish `hl0` using `flog_constantCoeff (C • wModel lam Λ) wq`. Establish `hX : ∀ i, MvPowerSeries.constantCoeff (PowerSeries.subst (MvPowerSeries.X i : MvPowerSeries (Fin r) ℂ_[p]) (flog (C • wModel lam Λ) wq)) = 0` using `fun i => PowerSeries.constantCoeff_subst_eq_zero (MvPowerSeries.constantCoeff_X i) _ hl0`. Establish `hY : MvPowerSeries.HasSubst (fun k : D.what₂.Tau × Fin N' × Fin N => ∑ i, algebraMap ℂ_[p] (MvPowerSeries (Fin r) ℂ_[p]) (((C.u⁻¹ : ℂ_[p]ˣ) : ℂ_[p]) * v i k) * PowerSeries.subst (MvPowerSeries.X i : MvPowerSeries (Fin r) ℂ_[p]) (flog (C • wModel lam Λ) wq))`. Apply `MvPowerSeries.hasSubst_of_constantCoeff_zero` to reduce the goal to its premises. Introduce `k`.
+
+Simplify using `[map_sum, hX]`. Establish `hSs : MvPowerSeries.HasSubst S` using `MvPowerSeries.hasSubst_of_constantCoeff_zero hS0`. Unfold `atLogV`. Simplify using `only []`. Rewrite using `[MvPowerSeries.subst_comp_subst_apply hY hSs]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `k`. Rewrite using `[← MvPowerSeries.coe_substAlgHom hSs, map_sum]`. Simplify using `only [map_mul, AlgHom.commutes, MvPowerSeries.coe_substAlgHom, subst_subst_X S hSs, hSl, hvP]`. Simplify using `only [Finset.mul_sum, Finset.sum_mul, map_sum, map_mul]`.
+
+Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem atLogV_change {N N' r : ℕ} (Λ : AddSubgroup ℂ) (C : WeierstrassCurve.VariableChange ℂ_[p])
     (wq : PowerSeries ℂ_[p]) (v v' : Fin r → (D.what₂.Tau × Fin N' × Fin N → ℂ_[p]))
     (P : Matrix (Fin r) (Fin r) ℂ_[p]) (hvP : ∀ i k, v' i k = ∑ j, P i j * v j k)
@@ -396,6 +545,23 @@ theorem atLogV_change {N N' r : ℕ} (Λ : AddSubgroup ℂ) (C : WeierstrassCurv
   refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_
   ring
 
+/- English proof (translation)
+Use `set G : Matrix (Fin r) (Fin r) ℂ_[p] := Matrix.of fun m n => lamC lam (D.host.φ₀ ((hYY D (b m) (b n) : D.host.K) : D.host.E)) with hGd`. Use `set Qt : Matrix (Fin r) (Fin r) ℂ_[p] := Matrix.of fun m n => lamC lam (D.host.φ₀ (Q n m)) with hQt`. Establish `hG'` using `gram_change D lam σ hσ b b' Q hQK hb'`. Establish `hAm : A * G * (A.map σ)ᵀ = 1` using `unitary_mat σ A G hAu`. Establish `hA'm : A' * (Matrix.of fun m n => lamC lam (D.host.φ₀ ((hYY D (b' m) (b' n) : D.host.K) : D.host.E))) * (A'.map σ)ᵀ = 1` using `unitary_mat σ A' _ hA'u`.
+
+Rewrite `hA'm` using `[hG']`. Establish `hdet0 : A.det ≠ 0`. Introduce `h`. Rewrite `hdet` using `[h, norm_zero]`. Conclude with `zero_ne_one hdet`.
+
+Establish `hPu` using `unitary_P σ A A' G Qt hAm hA'm hdet0`. Use `set P : Matrix (Fin r) (Fin r) ℂ_[p] := A' * Qt * A⁻¹ with hP`. Establish `hvP : ∀ i k, v' i k = ∑ j, P i j * v j k` using `v_change D lam b b' Q hQK hb' A A' hdet0 v v' hv hv'`. Establish `hPe` using `entries D lam A A' Q hQK hQp hA hA' hdet`. Set `M : Fin r → Fin r → ℂ_[p] × ℂ_[p]` to `fun i j => (P j i, σ (P j i))`.
+
+Establish `hM : ∀ i j, M i j ∈ OKp D lam` using `fun i j => conv D lam σ hσ _ (hPe j i).1 (hPe j i).2`. Establish `hrow : ∀ j j', ∑ i, P j i * σ (P j' i) = if j = j' then 1 else 0`. Introduce `j j'`. Establish `h` using `congrFun (congrFun hPu j) j'`. Simplify `h` using `[Matrix.mul_apply, Matrix.one_apply]`.
+
+Establish `hMu : ∀ j j', ∑ i, M i j * (M i j').swap = if j = j' then 1 else 0`. Introduce `j j'`. Establish `e1 : (∑ i, M i j * (M i j').swap).1 = ∑ i, P j i * σ (P j' i)`. Simplify using `[M, Prod.fst_sum]`. Establish `e2 : (∑ i, M i j * (M i j').swap).2 = ∑ i, P j' i * σ (P j i)`.
+
+Simplify using `only [M, Prod.snd_sum, Prod.snd_mul, Prod.snd_swap]`. Conclude with `Finset.sum_congr rfl fun i _ => mul_comm _ _`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Rewrite using `[e1, hrow]`. Apply the tactic sequence `by_cases h : j = j' <;> simp [h]`.
+
+Rewrite using `[e2, hrow]`. Apply the tactic sequence `by_cases h : j = j' <;> simp [h, eq_comm]`. Introduce `C wq hC hW`. Take `⟨S, hS0, hSI, hSl, V, hV, hPV⟩` from `hU D cc δ hcc hδ p hp5 hin lam C wq hC hW r M hM hMu`. Establish `hSs : MvPowerSeries.HasSubst S` using `MvPowerSeries.hasSubst_of_constantCoeff_zero hS0`.
+
+Establish `key` using `atLogV_change D lam (lamOf D cc δ) C wq v v' P hvP S hS0 (fun j => hSl j) F`. Use `show IntegralMv (atLogV D lam (lamOf D cc δ) C wq v' F * ePh lam (lamOf D cc δ) C wq r)`. Rewrite using `[key, hPV, ← mul_assoc, ← MvPowerSeries.subst_mul hSs]`. Conclude with `integral_mul (integral_subst S hS0 hSI (hI C wq hC hW)) hV`.
+-/
 theorem locInv_core (hU : UnitSubstLoc) (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (hcc : IsCurveIdeal D cc)
     (hδ : IsDiscriminantTwelfthRootOfIdealLattice D cc δ) (p : ℕ) [Fact p.Prime] (hp5 : 5 ≤ p) (hin : jacobiSym (-(D.host.d : ℤ)) p = -1)
     (lam : Qbar →+* ℂ_[p]) (σ : ℂ_[p] →+* ℂ_[p]) (hσ : IsConjP D lam σ) {N N' r : ℕ}
@@ -465,6 +631,11 @@ end ThetaInverseLemmas
 
 open ThetaInverseLemmas in
 
+/- English proof (translation)
+Introduce `D cc δ hcc hδ p _ hp5 hin lam σ hσ N N' Y r r' v v' F hv hv' hI`. Take `⟨b, A, hbL, hA, hdet, hAu, hvA⟩` from `hv`. Take `⟨b', A', hb'L, hA', hdet', hA'u, hvA'⟩` from `hv'`. Establish `hp : p.Prime` using `Fact.out`. Take `⟨Q, hQK, hQp, hb'⟩` from `IntegralOrthonormalChange.exists_coeffs D hp hbL hb'L`.
+
+Take `⟨Q', hQK', -, hbb⟩` from `IntegralOrthonormalChange.exists_coeffs D hp hb'L hbL`. Establish `hrr : r' = r` using `le_antisymm (IntegralOrthonormalChange.card_le D Q hQK hb'L.1 hb') (IntegralOrthonormalChange.card_le D Q' hQK' hbL.1 hbb)`. Substitute `hrr` using the available equality. Conclude with `locInv_core hU D cc δ hcc hδ p hp5 hin lam σ hσ b b' A A' Q hQK hQp hb' hA hA' hdet hAu hA'u v v' hvA hvA' F hI`.
+-/
 theorem locInv_of (hU : UnitSubstLoc) : LocInv := by
   intro D cc δ hcc hδ p _ hp5 hin lam σ hσ N N' Y r r' v v' F hv hv' hI
   obtain ⟨b, A, hbL, hA, hdet, hAu, hvA⟩ := hv
@@ -480,6 +651,27 @@ theorem locInv_of (hU : UnitSubstLoc) : LocInv := by
 
 open ThetaInverseLemmas in
 
+/- English proof (translation)
+Introduce `D cc δ hcc hδ p _ hp5 hin lam C wq hC hW r A hAK hAp hAu`. Establish `hp : p.Prime` using `Fact.out`. Set `M : Fin r → Fin r → ℂ_[p] × ℂ_[p]` to `fun i j => (Formalism.MainNotions.GL3Theta.tauK D lam ⟨A i j, hAK i j⟩, Formalism.MainNotions.GL3Theta.tauKc D lam ⟨A i j, hAK i j⟩)`. Establish `hM : ∀ i j, M i j ∈ Formalism.MainNotions.GL3Theta.OKp D lam`. Introduce `i j`.
+
+Take `⟨s, hs, c, hc⟩` from `hAp i j`. Establish `hs1 : ‖(s : ℂ_[p])‖ = 1`. Establish `hnd : ¬ (p : ℤ) ∣ (s : ℤ)`. Introduce `h`. Establish `h' : p ∣ s` using `by exact_mod_cast h`.
+
+Conclude with `(hp.coprime_iff_not_dvd.1 hs.symm) h'`. Simplify using `using Formalism.MainNotions.Ext.CutA.norm_int_cp_eq_one (p := p) (s : ℤ) hnd`. Establish `hc2` using `Formalism.MainNotions.Ext.CutA.okp_norm_le D lam _ (okp_range D lam c)`. Establish `h1` using `congrArg (tauE D lam) hc`. Establish `h2` using `congrArg (fun x => tauE D lam (D.host.conj x)) hc`.
+
+Simplify using `only [map_mul, map_natCast] at h1 h2`. Use `keyInt D lam _ ?_ ?_` and prove the remaining obligations. Use `show ‖lamC lam (D.host.φ₀ (A i j))‖ ≤ 1`. Rewrite using `[← tauE_apply]`. Establish `h3 : ‖(s : ℂ_[p]) * tauE D lam (A i j)‖ ≤ 1`.
+
+Rewrite using `[h1, tauE_apply]`. Conclude with `hc2.1`. Rewrite `h3` using `[norm_mul, hs1, one_mul]`. Then use the resulting hypothesis. Use `show ‖lamC lam (D.host.φ₀ (D.host.conj (A i j)))‖ ≤ 1`. Rewrite using `[← tauE_apply]`.
+
+Establish `h3 : ‖(s : ℂ_[p]) * tauE D lam (D.host.conj (A i j))‖ ≤ 1`. Rewrite using `[h2, tauE_apply]`. Conclude with `hc2.2`. Rewrite `h3` using `[norm_mul, hs1, one_mul]`. Then use the resulting hypothesis. Establish `hE : ∀ j j', ∑ i, tauE D lam (A i j) * tauE D lam (D.host.conj (A i j')) = if j = j' then 1 else 0`.
+
+Introduce `j j'`. Simplify using `only [← map_mul, ← map_sum]`. Rewrite using `[hAu j j']`. Apply the tactic sequence `split_ifs <;> simp`. Establish `hMu : ∀ j j', ∑ i, M i j * (M i j').swap = if j = j' then 1 else 0`.
+
+Introduce `j j'`. Establish `e1 : (∑ i, M i j * (M i j').swap).1 = ∑ i, tauE D lam (A i j) * tauE D lam (D.host.conj (A i j'))`. Simplify using `only [M, Prod.fst_sum, Prod.fst_mul, Prod.fst_swap, tauE_apply]`. Both sides reduce to the same expression. Establish `e2 : (∑ i, M i j * (M i j').swap).2 = ∑ i, tauE D lam (A i j') * tauE D lam (D.host.conj (A i j))`.
+
+Simplify using `only [M, Prod.snd_sum, Prod.snd_mul, Prod.snd_swap, tauE_apply]`. Conclude with `Finset.sum_congr rfl fun i _ => mul_comm _ _`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Rewrite using `[e1, hE]`. Apply the tactic sequence `by_cases h : j = j' <;> simp [h]`.
+
+Rewrite using `[e2, hE]`. Apply the tactic sequence `by_cases h : j = j' <;> simp [h, eq_comm]`. Take `⟨S, hS0, hSI, hSl, V, hV, hPV⟩` from `hU D cc δ hcc hδ p hp5 hin lam C wq hC hW r M hM hMu`. Conclude with `⟨S, hS0, hSI, fun i => hSl i, V, hV, hPV⟩`.
+-/
 theorem unitSubst_of_loc (hU : UnitSubstLoc) : UnitSubst := by
   intro D cc δ hcc hδ p _ hp5 hin lam C wq hC hW r A hAK hAp hAu
   have hp : p.Prime := Fact.out
@@ -532,6 +724,9 @@ theorem unitSubst_of_loc (hU : UnitSubstLoc) : UnitSubst := by
   obtain ⟨S, hS0, hSI, hSl, V, hV, hPV⟩ := hU D cc δ hcc hδ p hp5 hin lam C wq hC hW r M hM hMu
   exact ⟨S, hS0, hSI, fun i => hSl i, V, hV, hPV⟩
 
+/- English proof (translation)
+The claim follows from `basisInv_of_unitSubst (unitSubst_of_loc hU)`.
+-/
 theorem basisInv_of_loc (hU : UnitSubstLoc) : BasisInv := basisInv_of_unitSubst (unitSubst_of_loc hU)
 
 end Formalism.L2.KerInert

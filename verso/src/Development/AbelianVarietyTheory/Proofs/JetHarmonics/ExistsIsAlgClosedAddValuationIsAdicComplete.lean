@@ -7,6 +7,9 @@ namespace GlobalTheory
 
 open scoped NNReal
 
+/- English proof (translation)
+The claim follows from `le_antisymm ((expNegTop_le_iff _ _).1 h.ge) ((expNegTop_le_iff _ _).1 h.le)`.
+-/
 theorem expNegTop_inj_of_eq {a b : WithTop ℚ} (h : expNegTop a = expNegTop b) : a = b :=
   le_antisymm ((expNegTop_le_iff _ _).1 h.ge) ((expNegTop_le_iff _ _).1 h.le)
 
@@ -22,6 +25,9 @@ noncomputable def expNegAbsoluteValue {F : Type} [Field F] (v : AddValuation F (
       h.trans (max_le le_self_add le_add_self)
     exact_mod_cast h'
 
+/- English proof (translation)
+Introduce `x y`. Establish `h` using `(expNegValuation v).map_add x y`. Express the relevant statement in the definitionally equal form `((expNegValuation v (x + y) : ℝ≥0) : ℝ) ≤ max ((expNegValuation v x : ℝ≥0) : ℝ) ((expNegValuation v y : ℝ≥0) : ℝ)`. Conclude with `h` after adjusting the coercions.
+-/
 theorem isNonarchimedean_expNegAbsoluteValue {F : Type} [Field F]
     (v : AddValuation F (WithTop ℚ)) : IsNonarchimedean (expNegAbsoluteValue v) := by
   intro x y
@@ -30,6 +36,11 @@ theorem isNonarchimedean_expNegAbsoluteValue {F : Type} [Field F]
     max ((expNegValuation v x : ℝ≥0) : ℝ) ((expNegValuation v y : ℝ≥0) : ℝ)
   exact_mod_cast h
 
+/- English proof (translation)
+Use `haveI : IsUltrametricDist (UniformSpace.Completion K) := IsUltrametricDist.of_normedAlgebra K`. Break down `eq_or_ne x 0 with rfl | hx` into its components or cases. Conclude with `⟨0, by simp⟩`. Take `⟨y, hy⟩` from `Metric.denseRange_iff.1 (UniformSpace.Completion.denseRange_coe (α := K)) x ‖x‖ (norm_pos_iff.2 hx)`. Use `⟨y, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← UniformSpace.Completion.norm_coe y]`. Rewrite `hy` using `[dist_comm, dist_eq_norm]`. Establish `h` using `IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm (x := x) (y := y - x) hy.ne'`. Rewrite `h` using `[add_sub_cancel, max_eq_left hy.le]`. Conclude with `h.symm`.
+-/
 theorem exists_norm_eq_of_completion {K : Type*} [NormedField K] [IsUltrametricDist K]
     (x : UniformSpace.Completion K) : ∃ y : K, ‖x‖ = ‖y‖ := by
   haveI : IsUltrametricDist (UniformSpace.Completion K) := IsUltrametricDist.of_normedAlgebra K
@@ -44,6 +55,13 @@ theorem exists_norm_eq_of_completion {K : Type*} [NormedField K] [IsUltrametricD
   rw [add_sub_cancel, max_eq_left hy.le] at h
   exact h.symm
 
+/- English proof (translation)
+Use `choose f hf using h`. Use `⟨AddValuation.of f ?_ ?_ ?_ ?_, hf⟩` and prove the remaining obligations. Apply `expNegTop_inj_of_eq` to reduce the goal to its premises. Rewrite using `[hf, nnnorm_zero, expNegTop_top]`. Apply `expNegTop_inj_of_eq` to reduce the goal to its premises.
+
+Rewrite using `[hf, nnnorm_one, expNegTop_zero]`. Introduce `x y`. Break down `le_max_iff.1 (IsUltrametricDist.nnnorm_add_le_max x y) with h | h` into its components or cases. Conclude with `min_le_of_left_le ((expNegTop_le_iff _ _).1 (by rwa [hf, hf]))`. Conclude with `min_le_of_right_le ((expNegTop_le_iff _ _).1 (by rwa [hf, hf]))`.
+
+Introduce `x y`. Apply `expNegTop_inj_of_eq` to reduce the goal to its premises. Rewrite using `[expNegTop_add, hf, hf, hf, nnnorm_mul]`.
+-/
 theorem exists_addValuation_expNegTop_eq_nnnorm {C : Type} [NormedField C] [IsUltrametricDist C]
     (h : ∀ x : C, ∃ t : WithTop ℚ, expNegTop t = ‖x‖₊) :
     ∃ v : AddValuation C (WithTop ℚ), ∀ x, expNegTop (v x) = ‖x‖₊ := by
@@ -61,6 +79,19 @@ theorem exists_addValuation_expNegTop_eq_nnnorm {C : Type} [NormedField C] [IsUl
     apply expNegTop_inj_of_eq
     rw [expNegTop_add, hf, hf, hf, nnnorm_mul]
 
+/- English proof (translation)
+Introduce `F₀ _ _ _ v₀ p hp hv`. Set `w` to `expNegAbsoluteValue v₀`. Establish `hw : ∀ x, w x = (expNegTop (v₀ x) : ℝ)` using `fun _ => rfl`. Establish `hp1 : w (p : F₀) < 1`. Rewrite using `[hw, ← NNReal.coe_one, NNReal.coe_lt_coe, ← expNegTop_zero, ← not_le, expNegTop_le_iff]`.
+
+Conclude with `not_le.2 hv`. Establish `hp0 : 0 < w (p : F₀)` using `w.pos (Nat.cast_ne_zero.2 hp.ne_zero)`. Use `letI : NontriviallyNormedField (WithAbs w) := { (inferInstance : NormedField (WithAbs w)) with non_trivial := ⟨(WithAbs.toAbs w (p : F₀))⁻¹, by`. Rewrite using `[norm_inv]`. Express the relevant statement in the definitionally equal form `1 < (w (p : F₀))⁻¹`.
+
+Conclude with `(one_lt_inv₀ hp0).2 hp1⟩ }`. Use `haveI : IsUltrametricDist (WithAbs w) := IsUltrametricDist.isUltrametricDist_of_forall_norm_add_le_max_norm fun x y => isNonarchimedean_expNegAbsoluteValue v₀ x.ofAbs y.ofAbs`. Use `haveI : IsAlgClosed (WithAbs w) := IsAlgClosed.of_ringEquiv F₀ _ (WithAbs.equiv w).symm`. Set `C` to `UniformSpace.Completion (WithAbs w)`. Use `letI : NontriviallyNormedField C := completionNontriviallyNormedField (WithAbs w)`.
+
+Use `haveI : IsUltrametricDist C := IsUltrametricDist.of_normedAlgebra (WithAbs w)`. Use `haveI : IsAlgClosed C := isAlgClosed_of_denseRange (K := WithAbs w) UniformSpace.Completion.denseRange_coe`. Set `e : F₀ →+* C` to `(algebraMap (WithAbs w) C).comp (WithAbs.equiv w).symm.toRingHom`. Establish `he : ∀ x, ‖e x‖₊ = expNegTop (v₀ x)` using `fun x => NNReal.coe_injective (UniformSpace.Completion.norm_coe (WithAbs.toAbs w x))`. Use `haveI : CharZero C := charZero_of_injective_ringHom e.injective`.
+
+Take `⟨v, hvC⟩` from `exists_addValuation_expNegTop_eq_nnnorm (C := C) fun x => by`. Take `⟨y, hy⟩` from `exists_norm_eq_of_completion x`. Conclude with `⟨v₀ y.ofAbs, NNReal.coe_injective hy.symm⟩`. Establish `hmem : ∀ x : C, NormedField.valuation x ≤ 1 ↔ 0 ≤ v x` using `fun x => by`. Rewrite using `[NormedField.valuation_apply, ← hvC, ← expNegTop_zero, expNegTop_le_iff]`.
+
+Establish `hO : (NormedField.valuation (K` using `C)).Integers (ReciprocityTheory.ChartRestriction.G.DVR.TWO.Ov v) := ⟨Subtype.val_injective, fun x => (hmem _).2 x.2, fun r hr => ⟨⟨r, (hmem r).1 hr⟩, rfl⟩⟩`. Use `⟨C, inferInstance, inferInstance, inferInstance, e, v, fun x => expNegTop_inj_of_eq (by rw [hvC, he]), NormIntegers.isAdicComplete_span_singleton hO ?_⟩` and prove the remaining obligations. Rewrite using `[map_natCast, ← map_natCast e, ← coe_nnnorm, he, ← hw]`. Conclude with `hp1`.
+-/
 theorem exists_isAlgClosed_addValuation_isAdicComplete :
     ∀ (F₀ : Type) [Field F₀] [IsAlgClosed F₀] [CharZero F₀] (v₀ : AddValuation F₀ (WithTop ℚ))
       (p : ℕ), p.Prime → 0 < v₀ (p : F₀) →

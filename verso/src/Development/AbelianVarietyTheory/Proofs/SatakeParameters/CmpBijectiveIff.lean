@@ -14,6 +14,9 @@ abbrev toBase {A : Type} [CommRing A] (g : Spec (CommRingCat.of A) ⟶ Spec (Com
     [Algebra A C] : Spec (CommRingCat.of C) ⟶ Spec (CommRingCat.of O) :=
   Spec.map (CommRingCat.ofHom (algebraMap A C)) ≫ g
 
+/- English proof (translation)
+Rewrite using `[toBase, toBase, ← Category.assoc, ← Spec.map_comp, ← CommRingCat.ofHom_comp, AlgHom.comp_algebraMap]`.
+-/
 theorem toBase_comp {A : Type} [CommRing A] (g : Spec (CommRingCat.of A) ⟶ Spec (CommRingCat.of O)) {C B : Type}
     [CommRing C] [Algebra A C] [CommRing B] [Algebra A B] (u : C →ₐ[A] B) :
     Spec.map (CommRingCat.ofHom (u : C →+* B)) ≫ toBase g C = toBase g B := by
@@ -31,6 +34,9 @@ def fibStr {A : Type} [CommRing A] (g : Spec (CommRingCat.of A) ⟶ Spec (CommRi
     [Algebra A C] : fib Ω g C ⟶ GlobalTheory.NCyc.gfib Ω g :=
   GlobalTheory.NCyc.gfibMap Ω (Spec.map (CommRingCat.ofHom (algebraMap A C))) rfl
 
+/- English proof (translation)
+Apply `pullback.hom_ext` to reduce the goal to its premises. Simplify using `only [fibMap, Category.assoc, GlobalTheory.NCyc.gfibMap_fst, GlobalTheory.NCyc.gfibMap_fst_assoc]`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Both sides reduce to the same expression. Simplify using `only [fibMap, Category.assoc, GlobalTheory.NCyc.gfibMap_snd]`.
+-/
 theorem fibMap_comp {A : Type} [CommRing A] (g : Spec (CommRingCat.of A) ⟶ Spec (CommRingCat.of O)) {C B D : Type}
     [CommRing C] [Algebra A C] [CommRing B] [Algebra A B] [CommRing D] [Algebra A D] (u : C →ₐ[A] B)
     (v : B →ₐ[A] D) : fibMap Ω g (v.comp u) = fibMap Ω g v ≫ fibMap Ω g u := by
@@ -39,6 +45,9 @@ theorem fibMap_comp {A : Type} [CommRing A] (g : Spec (CommRingCat.of A) ⟶ Spe
     rw [← Spec.map_comp, ← CommRingCat.ofHom_comp]; rfl
   · simp only [fibMap, Category.assoc, GlobalTheory.NCyc.gfibMap_snd]
 
+/- English proof (translation)
+Apply `pullback.hom_ext` to reduce the goal to its premises. Simplify using `only [fibMap, fibStr, Category.assoc, GlobalTheory.NCyc.gfibMap_fst, GlobalTheory.NCyc.gfibMap_fst_assoc]`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp, AlgHom.comp_algebraMap]`. Simplify using `only [fibMap, fibStr, Category.assoc, GlobalTheory.NCyc.gfibMap_snd]`.
+-/
 theorem fibMap_str {A : Type} [CommRing A] (g : Spec (CommRingCat.of A) ⟶ Spec (CommRingCat.of O)) {C B : Type}
     [CommRing C] [Algebra A C] [CommRing B] [Algebra A B] (u : C →ₐ[A] B) :
     fibMap Ω g u ≫ fibStr Ω g C = fibStr Ω g B := by

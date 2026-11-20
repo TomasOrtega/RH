@@ -26,6 +26,11 @@ variable {K : Type} [NormedField K] (l : ℕ) {e a : ℕ} [Fact l.Prime] [Normed
   [NeZero a] [TameDescentExponentData K l e a]
 
 omit [NeZero a] in
+/- English proof (translation)
+Establish `h1 : ζ ^ e = 1` using `Subtype.ext ζ.2`. Establish `h2 (k : ℕ) : ζ ^ (l ^ a) ^ k = ζ`. Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih => rw [pow_succ, pow_mul, ih, ← TameDescentExponentData.succ_eq (K := K) (e := e), pow_succ, h1, one_mul]`.
+
+Use `conv_rhs => rw [← Nat.div_add_mod n a, pow_add, pow_mul l, pow_mul, h2]`.
+-/
 theorem pow_pow_mod (ζ : rootsOfUnity e K) (n : ℕ) : ζ ^ l ^ (n % a) = ζ ^ l ^ n := by
   have h1 : ζ ^ e = 1 := Subtype.ext ζ.2
   have h2 (k : ℕ) : ζ ^ (l ^ a) ^ k = ζ := by
@@ -37,16 +42,28 @@ theorem pow_pow_mod (ζ : rootsOfUnity e K) (n : ℕ) : ζ ^ l ^ (n % a) = ζ ^ 
 def powL (s : ZMod a) : rootsOfUnity e K →* rootsOfUnity e K := powMonoidHom (l ^ s.val)
 
 omit [Fact l.Prime] [NormedAlgebra ℚ_[l] K] [NeZero a] [TameDescentExponentData K l e a] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem powL_apply (s : ZMod a) (ζ : rootsOfUnity e K) : powL l s ζ = ζ ^ l ^ s.val := rfl
 
 omit [Fact l.Prime] [NormedAlgebra ℚ_[l] K] [NeZero a] [TameDescentExponentData K l e a] in
+/- English proof (translation)
+Simplify using `[powL_apply]`.
+-/
 @[simp] theorem powL_zero (ζ : rootsOfUnity e K) : powL l (0 : ZMod a) ζ = ζ := by simp [powL_apply]
 
+/- English proof (translation)
+Rewrite using `[powL_apply, powL_apply, powL_apply, ZMod.val_add, pow_pow_mod l, ← pow_mul, ← pow_add, add_comm]`.
+-/
 theorem powL_add (s t : ZMod a) (ζ : rootsOfUnity e K) :
     powL l (s + t) ζ = powL l s (powL l t ζ) := by
   rw [powL_apply, powL_apply, powL_apply, ZMod.val_add, pow_pow_mod l, ← pow_mul, ← pow_add, add_comm]
 
 omit [NeZero a] in
+/- English proof (translation)
+Rewrite using `[powL_apply, ZMod.val_one_eq_one_mod, pow_pow_mod l, pow_one]`.
+-/
 theorem powL_one (ζ : rootsOfUnity e K) : powL l (1 : ZMod a) ζ = ζ ^ l := by
   rw [powL_apply, ZMod.val_one_eq_one_mod, pow_pow_mod l, pow_one]
 
@@ -77,21 +94,45 @@ def shift (g : TameGal K l e a) : ZMod a := g.right.toAdd
 
 def root (g : TameGal K l e a) (τ : ZMod a) : K := ((powL l (-τ) g.left : rootsOfUnity e K) : Kˣ)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem shift_one : shift (1 : TameGal K l e a) = 0 := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem shift_mul (g h : TameGal K l e a) : shift (g * h) = shift g + shift h := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem shift_inertia (ζ : rootsOfUnity e K) : shift (inertia ζ : TameGal K l e a) = 0 := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem shift_fr : shift (fr : TameGal K l e a) = 1 := rfl
 
+/- English proof (translation)
+Simplify using `[root]`.
+-/
 @[simp] theorem root_one (τ : ZMod a) : root (1 : TameGal K l e a) τ = 1 := by simp [root]
 
+/- English proof (translation)
+Simplify using `[root]`.
+-/
 @[simp] theorem root_fr (τ : ZMod a) : root (fr : TameGal K l e a) τ = 1 := by simp [root]
 
+/- English proof (translation)
+Simplify using `[root]`.
+-/
 @[simp] theorem root_inertia_zero (ζ : rootsOfUnity e K) :
     root (inertia ζ : TameGal K l e a) 0 = (ζ : Kˣ) := by simp [root]
 
+/- English proof (translation)
+Establish `: powL l (-τ) (g * h).left = powL l (-τ) g.left * powL l (-(τ - shift g)) h.left`. Rewrite using `[SemidirectProduct.mul_left, map_mul, neg_sub', sub_neg_eq_add, powL_add]`. Both sides reduce to the same expression. Rewrite using `[root, this]`. Simplify using `[root]`.
+-/
 theorem root_mul (g h : TameGal K l e a) (τ : ZMod a) :
     root (g * h) τ = root g τ * root h (τ - shift g) := by
   have : powL l (-τ) (g * h).left = powL l (-τ) g.left * powL l (-(τ - shift g)) h.left := by
@@ -100,23 +141,38 @@ theorem root_mul (g h : TameGal K l e a) (τ : ZMod a) :
   rw [root, this]
   simp [root]
 
+/- English proof (translation)
+Rewrite using `[root, neg_sub, sub_eq_add_neg, powL_add, powL_one]`. Simplify using `[root]`.
+-/
 theorem root_sub_one (g : TameGal K l e a) (τ : ZMod a) : root g (τ - 1) = root g τ ^ l := by
   rw [root, neg_sub, sub_eq_add_neg, powL_add, powL_one]
   simp [root]
 
+/- English proof (translation)
+The claim follows from `(mem_rootsOfUnity' _ _).1 (powL l (-τ) g.left).2`.
+-/
 theorem root_pow (g : TameGal K l e a) (τ : ZMod a) : root g τ ^ e = 1 :=
   (mem_rootsOfUnity' _ _).1 (powL l (-τ) g.left).2
 
+/- English proof (translation)
+Use `ext1`. Simplify `powL_one (a := a) l ζ` using `[-map_pow, frobAut]`. Simplify using `[-map_pow]`.
+-/
 theorem fr_mul_inertia (ζ : rootsOfUnity e K) :
     (fr : TameGal K l e a) * inertia ζ = inertia (ζ ^ l) * fr := by
   ext1
   · simpa [-map_pow, frobAut] using powL_one (a := a) l ζ
   · simp [-map_pow]
 
+/- English proof (translation)
+The claim follows from `Units.ne_zero _`.
+-/
 theorem root_ne_zero (g : TameGal K l e a) (τ : ZMod a) : root g τ ≠ 0 := Units.ne_zero _
 
 variable [NeZero e]
 
+/- English proof (translation)
+Establish `h` using `congrArg norm (g.root_pow τ)`. Rewrite `h` using `[norm_pow, norm_one]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) (NeZero.ne e)).1 h`.
+-/
 theorem norm_root (g : TameGal K l e a) (τ : ZMod a) : ‖root g τ‖ = 1 := by
   have h := congrArg norm (g.root_pow τ)
   rw [norm_pow, norm_one] at h
@@ -124,11 +180,17 @@ theorem norm_root (g : TameGal K l e a) (τ : ZMod a) : ‖root g τ‖ = 1 := b
 
 instance : Finite (TameGal K l e a) := Finite.of_equiv _ SemidirectProduct.equivProd.symm
 
+/- English proof (translation)
+Take `⟨ζ, hζ⟩` from `TameDescentExponentData.prim (K := K) (l := l) (e := e) (a := a)`. Rewrite using `[Nat.card_congr SemidirectProduct.equivProd, Nat.card_prod, hζ.card_rootsOfUnity, Nat.card_congr Multiplicative.toAdd, Nat.card_zmod]`.
+-/
 theorem card : Nat.card (TameGal K l e a) = e * a := by
   obtain ⟨ζ, hζ⟩ := TameDescentExponentData.prim (K := K) (l := l) (e := e) (a := a)
   rw [Nat.card_congr SemidirectProduct.equivProd, Nat.card_prod,
     hζ.card_rootsOfUnity, Nat.card_congr Multiplicative.toAdd, Nat.card_zmod]
 
+/- English proof (translation)
+Rewrite using `[card, (Fact.out : l.Prime).dvd_mul, not_or]`. Use `⟨fun h => (Fact.out : l.Prime).one_lt.ne' (Nat.dvd_one.1 ?_), TameDescentExponentData.not_dvd K e⟩` and prove the remaining obligations. Use `(Nat.dvd_add_right h).1 ?_` and prove the remaining obligations. Rewrite using `[TameDescentExponentData.succ_eq (K := K) (l := l) (a := a)]`. Conclude with `dvd_pow_self l (NeZero.ne a)`.
+-/
 theorem not_dvd_card : ¬ l ∣ Nat.card (TameGal K l e a) := by
   rw [card, (Fact.out : l.Prime).dvd_mul, not_or]
   refine ⟨fun h => (Fact.out : l.Prime).one_lt.ne' (Nat.dvd_one.1 ?_), TameDescentExponentData.not_dvd K e⟩
@@ -156,9 +218,15 @@ def ringAct : TameGal K l e a →* ((ZMod a → K⟦X⟧) →ₐ[K] (ZMod a → 
     ext f τ : 2
     simp [TameGal.root_mul, TameGal.shift_mul, rescale_rescale, sub_sub, mul_comm]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ringAct_apply (g : TameGal K l e a) (f : ZMod a → K⟦X⟧) (τ : ZMod a) :
     ringAct g f τ = rescale (g.root τ) (f (τ - g.shift)) := rfl
 
+/- English proof (translation)
+Use extensionality with `τ n`. Rewrite using `[ringAct_apply, frobTot_apply, frobTot_apply, ringAct_apply, coeff_rescale, coeff_frob, coeff_frob, coeff_rescale, TameGal.root_sub_one, sub_right_comm]`. Use `split_ifs with h`. Rewrite using `[← pow_mul, Nat.mul_div_cancel' h]`. Simplify using the standard rewrite rules.
+-/
 theorem ringAct_frobTot (g : TameGal K l e a) (f : ZMod a → K⟦X⟧) :
     ringAct g (frobTot K a l f) = frobTot K a l (ringAct g f) := by
   ext τ n
@@ -168,19 +236,31 @@ theorem ringAct_frobTot (g : TameGal K l e a) (f : ZMod a → K⟦X⟧) :
   · rw [← pow_mul, Nat.mul_div_cancel' h]
   · simp
 
+/- English proof (translation)
+Use extensionality with `τ n`. Simplify using `only [ringAct_apply, NTot, coeff_rescale, coeff_N]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem ringAct_NTot (g : TameGal K l e a) (f : ZMod a → K⟦X⟧) :
     ringAct g (NTot f) = NTot (ringAct g f) := by
   ext τ n
   simp only [ringAct_apply, NTot, coeff_rescale, coeff_N]
   ring
 
+/- English proof (translation)
+The claim follows from `funext fun _ => rescale_X _`.
+-/
 theorem ringAct_X (g : TameGal K l e a) :
     ringAct g (fun _ => X) = fun τ => C (g.root τ) * X := funext fun _ => rescale_X _
 
+/- English proof (translation)
+Use `ext1 τ`. Rewrite using `[ringAct_apply, map_pow, rescale_X, mul_pow, ← map_pow, g.root_pow, map_one, one_mul]`.
+-/
 theorem ringAct_X_pow (g : TameGal K l e a) : ringAct g (fun _ => X ^ e) = fun _ => X ^ e := by
   ext1 τ
   rw [ringAct_apply, map_pow, rescale_X, mul_pow, ← map_pow, g.root_pow, map_one, one_mul]
 
+/- English proof (translation)
+Use `ext1 τ`. Use `congrFun (ringAct_X_pow g) τ` as an intermediate fact. Rewrite `this`, the goal using `[ringAct_apply]`. Rewrite using `[E, map_add, this, map_natCast]`.
+-/
 theorem ringAct_E (g : TameGal K l e a) : ringAct g (fun _ => E K l e) = fun _ => E K l e := by
   ext1 τ
   have := congrFun (ringAct_X_pow g) τ
@@ -194,22 +274,37 @@ section Join
 variable {K : Type} [NormedField K] {a : ℕ} {ι : Type}
 
 omit [NormedField K] in
+/- English proof (translation)
+Apply the tactic sequence `ext τ (i | i) : 2 <;> rfl`.
+-/
 theorem join_eta (w : Vec K a (ι ⊕ Unit)) :
     join (fun τ i => w τ (.inl i)) (fun τ => w τ (.inr ())) = w := by
   ext τ (i | i) : 2 <;> rfl
 
+/- English proof (translation)
+Apply the tactic sequence `ext τ (i | i) : 2 <;> rfl`.
+-/
 theorem join_add (v v' : Vec K a ι) (f f' : ZMod a → K⟦X⟧) :
     join (v + v') (f + f') = join v f + join v' f' := by
   ext τ (i | i) : 2 <;> rfl
 
+/- English proof (translation)
+Apply the tactic sequence `ext τ (i | i) : 2 <;> rfl`.
+-/
 theorem join_smul (c : K) (v : Vec K a ι) (f : ZMod a → K⟦X⟧) :
     join (c • v) (c • f) = c • join v f := by
   ext τ (i | i) : 2 <;> rfl
 
+/- English proof (translation)
+Apply the tactic sequence `ext τ (i | i) : 2 <;> rfl`.
+-/
 theorem join_smul_tot (c : ZMod a → K⟦X⟧) (v : Vec K a ι) (f : ZMod a → K⟦X⟧) :
     join (c • v) (c * f) = c • join v f := by
   ext τ (i | i) : 2 <;> rfl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => ⟨mem_tot.2 fun τ i => mem_tot.1 h τ (.inl i), fun τ => mem_tot.1 h τ (.inr ())⟩, fun h => mem_tot.2 fun τ i => by rcases i with i | i exacts [mem_tot.1 h.1 τ i, h.2 τ]⟩`.
+-/
 theorem PhiMod.join_mem_Mext {O : Type} [CommRing O] [IsUltrametricDist K] [Algebra O K]
     [IsUnitBall O K] {l e : ℕ} [Fintype ι] [DecidableEq ι] (P : PhiMod O K l e a ι) {y : Vec K a ι}
     (hy : y ∈ P.Mext (invE l e (A O K))) {B : Subalgebra O K⟦X⟧} {v : Vec K a ι}
@@ -230,6 +325,9 @@ def Rot (e : ℕ) (B : Subalgebra O K⟦X⟧) : Prop :=
   ∀ c : K, c ^ e = 1 → ∀ f ∈ B, rescale c f ∈ B
 
 omit [IsUltrametricDist K] in
+/- English proof (translation)
+Establish `h` using `congrArg norm hc`. Rewrite `h` using `[norm_pow, norm_one]`. Rewrite using `[coeff_rescale, norm_mul, norm_pow, (pow_eq_one_iff_of_nonneg (norm_nonneg _) (NeZero.ne e)).1 h, one_pow, one_mul]`.
+-/
 theorem norm_coeff_rescale [NeZero e] {c : K} (hc : c ^ e = 1) (f : K⟦X⟧) (n : ℕ) :
     ‖coeff n (rescale c f)‖ = ‖coeff n f‖ := by
   have h := congrArg norm hc
@@ -237,21 +335,36 @@ theorem norm_coeff_rescale [NeZero e] {c : K} (hc : c ^ e = 1) (f : K⟦X⟧) (n
   rw [coeff_rescale, norm_mul, norm_pow,
     (pow_eq_one_iff_of_nonneg (norm_nonneg _) (NeZero.ne e)).1 h, one_pow, one_mul]
 
+/- English proof (translation)
+Introduce `_ hc f hf n` and use `(norm_coeff_rescale hc f n).trans_le (hf n)`.
+-/
 theorem rot_A [NeZero e] : Rot e (A O K) := fun _ hc f hf n =>
   (norm_coeff_rescale hc f n).trans_le (hf n)
 
+/- English proof (translation)
+Introduce `_ hc f hf` and use `by simpa only [mem_S, norm_coeff_rescale hc] using hf`.
+-/
 theorem rot_S [NeZero e] : Rot e (S O K e) := fun _ hc f hf => by
   simpa only [mem_S, norm_coeff_rescale hc] using hf
 
+/- English proof (translation)
+Introduce `_ hc f hf` and use `by simpa only [mem_R, norm_coeff_rescale hc] using hf`.
+-/
 theorem rot_R [NeZero e] (k : ℝ) : Rot e (R O K l k) := fun _ hc f hf => by
   simpa only [mem_R, norm_coeff_rescale hc] using hf
 
 omit [IsUltrametricDist K] [IsUnitBall O K] in
+/- English proof (translation)
+Introduce and unpack `c hc f ⟨n, hn⟩`. Conclude with `⟨n, by simpa using h c hc _ hn⟩`.
+-/
 theorem Rot.invL {B : Subalgebra O K⟦X⟧} (h : Rot e B) : Rot e (invL l B) := by
   rintro c hc f ⟨n, hn⟩
   exact ⟨n, by simpa using h c hc _ hn⟩
 
 omit [IsUltrametricDist K] [IsUnitBall O K] in
+/- English proof (translation)
+Introduce and unpack `c hc f ⟨n, hn⟩`. Use `⟨n, ?_⟩` and prove the remaining obligations. Use `h c hc _ hn` as an intermediate fact. Rewrite `this` using `[map_mul, map_pow, coe_EIn, E, map_add, map_pow, rescale_X, mul_pow, ← map_pow, hc, map_one, one_mul, map_natCast]`. Then use the resulting hypothesis.
+-/
 theorem Rot.invE {B : Subalgebra O K⟦X⟧} [HasU B] (h : Rot e B) : Rot e (invE l e B) := by
   rintro c hc f ⟨n, hn⟩
   refine ⟨n, ?_⟩
@@ -264,6 +377,9 @@ end Rot
 variable [Fact l.Prime] [NormedAlgebra ℚ_[l] K] [NeZero a] [TameDescentExponentData K l e a]
 
 omit [IsUltrametricDist K] [IsUnitBall O K] in
+/- English proof (translation)
+The claim follows from `h _ (g.root_pow τ) _ (hf _)`.
+-/
 theorem Rot.ringAct_mem {B : Subalgebra O K⟦X⟧} (h : Rot e B) (g : TameGal K l e a)
     {f : ZMod a → K⟦X⟧} (hf : ∀ τ, f τ ∈ B) (τ : ZMod a) : ringAct g f τ ∈ B :=
   h _ (g.root_pow τ) _ (hf _)
@@ -294,6 +410,9 @@ def matAct (g : TameGal K l e a) (G : ZMod a → Matrix ι ι K⟦X⟧) : Module
     exact congrFun (map_smul (ringAct g) c fun σ => v σ i) τ
 
 omit [IsUltrametricDist K] [DecidableEq ι] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem matAct_apply (g : TameGal K l e a) (G : ZMod a → Matrix ι ι K⟦X⟧) (v : Vec K a ι)
     (τ : ZMod a) :
     matAct g G v τ = G τ *ᵥ fun i => rescale (g.root τ) (v (τ - g.shift) i) := rfl
@@ -348,19 +467,33 @@ def ofMatrix (P : PhiMod O K l e a ι) (G : TameGal K l e a → ZMod a → Matri
 
 variable {P : PhiMod O K l e a ι} (Δ : Descent P) (g : TameGal K l e a)
 
+/- English proof (translation)
+Establish `h` using `Δ.act_smul_tot g ((fun _ => E K l e) ^ n) v`. Rewrite `h` using `[map_pow, ringAct_E]`. Then use the resulting hypothesis.
+-/
 theorem act_E_pow_smul (n : ℕ) (v : Vec K a ι) :
     Δ.act g (E K l e ^ n • v) = E K l e ^ n • Δ.act g v := by
   have h := Δ.act_smul_tot g ((fun _ => E K l e) ^ n) v
   rwa [map_pow, ringAct_E] at h
 
+/- English proof (translation)
+Simplify using `using Δ.act_E_pow_smul g 1 v`.
+-/
 theorem act_E_smul (v : Vec K a ι) : Δ.act g (E K l e • v) = E K l e • Δ.act g v := by
   simpa using Δ.act_E_pow_smul g 1 v
 
+/- English proof (translation)
+Establish `h` using `Δ.act_smul_tot g (fun _ => X ^ e) v`. Rewrite `h` using `[ringAct_X_pow]`. Then use the resulting hypothesis.
+-/
 theorem act_X_pow_smul (v : Vec K a ι) :
     Δ.act g ((X : K⟦X⟧) ^ e • v) = (X : K⟦X⟧) ^ e • Δ.act g v := by
   have h := Δ.act_smul_tot g (fun _ => X ^ e) v
   rwa [ringAct_X_pow] at h
 
+/- English proof (translation)
+Take `⟨w, rfl⟩` from `mem_uPow_iff_exists.1 hv`. Establish `h` using `Δ.act_smul_tot g ((fun _ => X) ^ m) w`. Rewrite `h` using `[map_pow, ringAct_X]`. Introduce `τ i`. Rewrite using `[show Δ.act g ((X : K⟦X⟧) ^ m • w) = _ from h]`.
+
+Conclude with `Dvd.dvd.mul_right (pow_dvd_pow_of_dvd (Dvd.intro_left _ rfl) m) _`.
+-/
 theorem act_mem_uPow {m : ℕ} {v : Vec K a ι} (hv : v ∈ uPow K a ι m) :
     Δ.act g v ∈ uPow K a ι m := by
   obtain ⟨w, rfl⟩ := mem_uPow_iff_exists.1 hv
@@ -370,6 +503,9 @@ theorem act_mem_uPow {m : ℕ} {v : Vec K a ι} (hv : v ∈ uPow K a ι m) :
   rw [show Δ.act g ((X : K⟦X⟧) ^ m • w) = _ from h]
   exact Dvd.dvd.mul_right (pow_dvd_pow_of_dvd (Dvd.intro_left _ rfl) m) _
 
+/- English proof (translation)
+Rewrite using `[eq_sum_bas v, map_sum]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[act_smul_tot]`. Conclude with `P.smul_tot_mem_Mext (hB.ringAct_mem g fun τ => mem_tot.1 hv τ i) (P.Mext_mono hA (Δ.act_mem_M g _ (P.bas_mem_M i)))`.
+-/
 theorem act_mem_Mext {B : Subalgebra O K⟦X⟧} (hA : A O K ≤ B) (hB : Rot e B) {v : Vec K a ι}
     (hv : v ∈ P.Mext B) : Δ.act g v ∈ P.Mext B := by
   rw [eq_sum_bas v, map_sum]
@@ -378,6 +514,9 @@ theorem act_mem_Mext {B : Subalgebra O K⟦X⟧} (hA : A O K ≤ B) (hB : Rot e 
   exact P.smul_tot_mem_Mext (hB.ringAct_mem g fun τ => mem_tot.1 hv τ i)
     (P.Mext_mono hA (Δ.act_mem_M g _ (P.bas_mem_M i)))
 
+/- English proof (translation)
+Rewrite using `[P.eq_sum_phi_bas v, map_sum]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[act_smul_tot, act_phi]`. Conclude with `P.smul_tot_mem_ext (hB.ringAct_mem g fun τ => P.mem_extc_iff.1 (mem_tot.1 hv τ) i) (P.ext_mono hA (P.phi_mem_L (Δ.act_mem_M g _ (P.bas_mem_M i))))`.
+-/
 theorem act_mem_ext {B : Subalgebra O K⟦X⟧} (hA : A O K ≤ B) (hB : Rot e B) {v : Vec K a ι}
     (hv : v ∈ P.ext B) : Δ.act g v ∈ P.ext B := by
   rw [P.eq_sum_phi_bas v, map_sum]
@@ -386,13 +525,22 @@ theorem act_mem_ext {B : Subalgebra O K⟦X⟧} (hA : A O K ≤ B) (hB : Rot e B
   exact P.smul_tot_mem_ext (hB.ringAct_mem g fun τ => P.mem_extc_iff.1 (mem_tot.1 hv τ) i)
     (P.ext_mono hA (P.phi_mem_L (Δ.act_mem_M g _ (P.bas_mem_M i))))
 
+/- English proof (translation)
+The claim follows from `PhiMod.map_conn (Δ.act g).toAddMonoidHom (ringAct g) (ringAct_NTot g) (Δ.act_smul_tot g) (Δ.act_phi g) v`.
+-/
 theorem act_conn (v : Vec K a ι) : Δ.act g (P.conn v) = P.conn (Δ.act g v) :=
   PhiMod.map_conn (Δ.act g).toAddMonoidHom (ringAct g) (ringAct_NTot g) (Δ.act_smul_tot g)
     (Δ.act_phi g) v
 
+/- English proof (translation)
+The claim follows from `PhiMod.map_zeta (Δ.act g) (fun _ => Δ.act_mem_uPow g) (Δ.act_phi g) (Δ.act_conn g) y`.
+-/
 theorem act_zeta (y : Vec K a ι) : Δ.act g (P.zeta y) = P.zeta (Δ.act g y) :=
   PhiMod.map_zeta (Δ.act g) (fun _ => Δ.act_mem_uPow g) (Δ.act_phi g) (Δ.act_conn g) y
 
+/- English proof (translation)
+Rewrite using `[← sub_eq_zero, ← map_sub, ← map_sub, ← mem_uPow_one]`. Conclude with `Δ.act_mem_uPow g (by rw [mem_uPow_one, map_sub, red_cst, sub_self])`.
+-/
 theorem red_act_cst_red (v : Vec K a ι) : red (Δ.act g (cst (red v))) = red (Δ.act g v) := by
   rw [← sub_eq_zero, ← map_sub, ← map_sub, ← mem_uPow_one]
   exact Δ.act_mem_uPow g (by rw [mem_uPow_one, map_sub, red_cst, sub_self])
@@ -403,12 +551,21 @@ def actD : Representation K (TameGal K l e a) P.D where
   map_mul' g h := LinearMap.ext fun d => by
     simp only [map_mul, LinearMap.comp_apply, Module.End.mul_apply, red_act_cst_red]
 
+/- English proof (translation)
+The claim follows from `(Δ.red_act_cst_red g v).symm`.
+-/
 theorem red_act (v : Vec K a ι) : red (Δ.act g v) = Δ.actD g (red v) :=
   (Δ.red_act_cst_red g v).symm
 
+/- English proof (translation)
+Use `conv_lhs => rw [← red_cst d, ← P.red_phi, ← red_act, act_phi, P.red_phi, red_act, red_cst]`.
+-/
 theorem actD_phiD (d : P.D) : Δ.actD g (P.phiD d) = P.phiD (Δ.actD g d) := by
   conv_lhs => rw [← red_cst d, ← P.red_phi, ← red_act, act_phi, P.red_phi, red_act, red_cst]
 
+/- English proof (translation)
+Rewrite using `[PhiMod.map_xi (Δ.act_phi g), red_act, PhiMod.red_xi]`.
+-/
 theorem act_xi (d : P.D) : Δ.act g (P.xi d) = P.xi (Δ.actD g d) := by
   rw [PhiMod.map_xi (Δ.act_phi g), red_act, PhiMod.red_xi]
 
@@ -434,6 +591,9 @@ def plusAct : Module.End K (Vec K a (ι ⊕ Unit)) where
     rw [RingHom.id_apply, ← join_smul, ← map_smul, ← map_smul]
     rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem plusAct_join (v : Vec K a ι) (f : ZMod a → K⟦X⟧) :
     Δ.plusAct g (join v f) = join (Δ.act g v) (ringAct g f) := rfl
 
@@ -462,6 +622,9 @@ def plus [NeZero e] {y : Vec K a ι} (hy : y ∈ P.Mext (invE l e (A O K))) (hin
     rw [← join_eta w, P.plus_phi_join, plusAct_join, plusAct_join, P.plus_phi_join, map_add, act_phi,
       act_smul_tot, hinv g, ringAct_frobTot]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem plus_act_join [NeZero e] {y : Vec K a ι} (hy : y ∈ P.Mext (invE l e (A O K)))
     (hinv : y ∈ Δ.inv) (v : Vec K a ι) (f : ZMod a → K⟦X⟧) :
     (Δ.plus hy hinv).act g (join v f) = join (Δ.act g v) (ringAct g f) := rfl
@@ -473,9 +636,15 @@ def frobPeriod (l : ℕ) {e : ℕ} (c : ZMod e) : ℕ := Function.minimalPeriod 
 def maxPeriod (l : ℕ) {e : ℕ} (T : Finset (ZMod e)) : ℕ :=
   (T ×ˢ T).sup fun p => frobPeriod l (p.1 - p.2)
 
+/- English proof (translation)
+The claim follows from `Function.minimalPeriod_eq_prime (p := 2) (by decide) (by decide)`.
+-/
 example : frobPeriod 3 (1 : ZMod 8) = 2 :=
   Function.minimalPeriod_eq_prime (p := 2) (by decide) (by decide)
 
+/- English proof (translation)
+Rewrite using `[ringAct_X]`. Simplify using the standard rewrite rules.
+-/
 example : ringAct (TameGal.inertia (rootsOfUnity.mkOfPowEq (-1 : ℚ_[3]) (n := 2) (by norm_num)) :
     TameGal ℚ_[3] 3 2 1) (fun _ => X) 0 = -X := by
   rw [ringAct_X]

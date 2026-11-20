@@ -11,6 +11,9 @@ section Cont
 
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.Theta
 
+/- English proof (translation)
+Establish `: IsModuleTopology (AF D.host.F) (AE D)` using `⟨rfl⟩`. Establish `: IsTopologicalRing (AE D)` using `IsModuleTopology.isTopologicalRing (AF D.host.F) (AE D)`. Establish `hT : Continuous (Algebra.trace (AF D.host.F) (AE D))` using `IsModuleTopology.continuous_of_linearMap _`. Conclude with `hT.comp (continuous_const.mul continuous_id)`.
+-/
 theorem GlobalTheory.Core.Rk.SplitPsi.continuous_trace_mul (D : D7) (a : AE D) :
     Continuous fun z : AE D => Algebra.trace (AF D.host.F) (AE D) (a * z) := by
   have : IsModuleTopology (AF D.host.F) (AE D) := ⟨rfl⟩

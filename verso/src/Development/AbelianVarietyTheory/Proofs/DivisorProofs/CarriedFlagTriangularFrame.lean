@@ -20,6 +20,9 @@ open GlobalTheory.FlagCell GlobalTheory.FlagConnect
 
 namespace GlobalTheory.FlagCell
 
+/- English proof (translation)
+Substitute `w` using the available equality. Rewrite using `[← Vert.DivPull.pullbackComp_inv_app g' π E hV h h' t, QCoh.app_app, Iso.inv_hom_id_app_assoc]`. Both sides reduce to the same expression.
+-/
 theorem pullbackComp_congr_app_pullbackSections {B Y T : Scheme.{0}} (π : Y ⟶ B) (g' : T ⟶ Y) (g : T ⟶ B)
     (w : g' ≫ π = g) (E : B.Modules) {U : B.Opens} {V : Y.Opens} {V' : T.Opens} (hV : V ≤ π ⁻¹ᵁ U)
     (h : V' ≤ g' ⁻¹ᵁ V) (h' : V' ≤ g ⁻¹ᵁ U) (t : Γ(E, U)) :
@@ -29,6 +32,13 @@ theorem pullbackComp_congr_app_pullbackSections {B Y T : Scheme.{0}} (π : Y ⟶
   rw [← Vert.DivPull.pullbackComp_inv_app g' π E hV h h' t, QCoh.app_app, Iso.inv_hom_id_app_assoc]
   rfl
 
+/- English proof (translation)
+Introduce `B Y T π ι r E fl g' g w fl' hC U a e V hV M V' h h' hS l`. Take `⟨s, hs, hsι⟩` from `hS l`. Take `⟨φ, hφ⟩` from `hC a l`. Use `haveI := ((fl a).isVB l).isQuasicoherent`. Use `⟨fun j => φ.hom.app V' (QCoh.pullbackSections g' _ h (s j)), ?_, fun j => ?_⟩` and prove the remaining obligations.
+
+Establish `h1` using `(hs.pullback g').res h`. Simplify using `only [Twist.resM, QCoh.res_pullbackSections] at h1`. Conclude with `h1.map_iso φ.hom`. Simplify using `only`. Rewrite using `[QCoh.app_app, hφ, ← QCoh.app_app, QCoh.pullback_map_app_pullbackSections, hsι j]`.
+
+Simplify using `only [pullCol, map_sum, QCoh.pullbackSections_smul, Scheme.Modules.Hom.app_smul, Matrix.map_apply, pullbackComp_congr_app_pullbackSections π g' g w (E a) hV h h']`.
+-/
 theorem spans_pullCol_of_carries : ∀ (B Y T : Scheme.{0}) (π : Y ⟶ B) (ι : Type) (r : ι → ℕ) (E : ι → B.Modules) (fl : ∀ a, Vert.Flag ((Scheme.Modules.pullback π).obj (E a)) (r a)) (g' : T ⟶ Y) (g : T ⟶ B) (w : g' ≫ π = g) (fl' : ∀ a, Vert.Flag ((Scheme.Modules.pullback g).obj (E a)) (r a)), Carries π E r fl g' g w fl' → ∀ (U : B.Opens) (a : ι) (e : Fin (r a) → Γ(E a, U)) (V : Y.Opens) (hV : V ≤ π ⁻¹ᵁ U) (M : Matrix (Fin (r a)) (Fin (r a)) Γ(Y, V)) (V' : T.Opens) (h : V' ≤ g' ⁻¹ᵁ V) (h' : V' ≤ g ⁻¹ᵁ U), Spans (fl a) V (pullCol π e hV M) → Spans (fl' a) V' (pullCol g e h' (M.map (g'.appLE V V' h).hom)) := by
   intro B Y T π ι r E fl g' g w fl' hC U a e V hV M V' h h' hS l
   obtain ⟨s, hs, hsι⟩ := hS l

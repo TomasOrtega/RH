@@ -17,16 +17,25 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 
 attribute [local instance] t2Sp lcSp tdSp contSMul lcH tdH scH contSMulH
 
+/- English proof (translation)
+Simplify using `only [PositivityTheory.RgUd.TP.Nil.hom, act, Prod.mk.injEq, and_true]`. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul]`.
+-/
 theorem hom_act (t : kˣ) (h : GL (Fin n) k) (q : Sp k n) :
     PositivityTheory.RgUd.TP.Nil.hom t (act h q) = act h (PositivityTheory.RgUd.TP.Nil.hom t q) := by
   simp only [PositivityTheory.RgUd.TP.Nil.hom, act, Prod.mk.injEq, and_true]
   rw [Matrix.mul_smul, Matrix.smul_mul]
 
+/- English proof (translation)
+Simplify using `only [PositivityTheory.RgUd.TP.Nil.hom, smul_smul]`. Simplify using the standard rewrite rules.
+-/
 theorem hom_inv_hom (t : kˣ) (q : Sp k n) :
     PositivityTheory.RgUd.TP.Nil.hom t⁻¹ (PositivityTheory.RgUd.TP.Nil.hom t q) = q := by
   simp only [PositivityTheory.RgUd.TP.Nil.hom, smul_smul]
   simp
 
+/- English proof (translation)
+The claim follows from `(continuous_fst.const_smul (t : k)).prodMk continuous_snd`.
+-/
 theorem continuous_hom (t : kˣ) : Continuous (PositivityTheory.RgUd.TP.Nil.hom (n := n) t) :=
   (continuous_fst.const_smul (t : k)).prodMk continuous_snd
 
@@ -38,12 +47,38 @@ def homE (t : kˣ) : Sp k n ≃ₜ Sp k n where
   continuous_toFun := continuous_hom t
   continuous_invFun := continuous_hom t⁻¹
 
+/- English proof (translation)
+Use `⟨⟨hf.1.1.comp_continuous (homE (n := n) t).continuous, hf.1.2.comp_homeomorph (homE t)⟩, fun q hq => ?_⟩` and prove the remaining obligations. Use `hf.2 (show PositivityTheory.RgUd.TP.Nil.hom t q ∈ Function.support f from hq)` as an intermediate fact. Conclude with `this`.
+-/
 theorem comp_hom_mem (t : kˣ) {f : Sp k n → ℂ} (hf : f ∈ supportedIn UU) :
     (fun q => f (PositivityTheory.RgUd.TP.Nil.hom t q)) ∈ supportedIn UU := by
   refine ⟨⟨hf.1.1.comp_continuous (homE (n := n) t).continuous, hf.1.2.comp_homeomorph (homE t)⟩, fun q hq => ?_⟩
   have := hf.2 (show PositivityTheory.RgUd.TP.Nil.hom t q ∈ Function.support f from hq)
   exact this
 
+/- English proof (translation)
+Establish `hOorb : orbit (GzS Z) (toT p) = orb Z p` using `Set.ext fun q => mem_orbit_iff' Z (p := p) (q := q)`. Establish `hO' : ((U₁ : Set (SpT k n)) ∩ C) = orbit (GzS Z) (toT p)` using `by rw [hOorb]; exact hO`. Establish `hOl : IsLocallyClosed (orbit (GzS Z) (toT p))` using `⟨U₁, C, hU₁, hC, hO'.symm⟩`. Take `⟨𝒮, -, h𝒮, hsum⟩` from `exists_finset_orbitPiece (X := SpT k n) hOl hJc hAo hAJ hn (mem_orbit_self (toT p))`. Use `choose! j hjJ hjS using h𝒮`.
+
+Establish `hPsub : ∀ B : Subgroup (GzS Z), ∀ x, toT x ∈ orbitPiece B (toT p) → x ∈ orb Z p`. Introduce `B x hx`. Conclude with `(mem_orbit_iff' Z).1 (orbitPiece_subset_orbit (mem_orbit_self (toT p)) hx)`. Establish `hfAUU : fA ∈ supportedIn UU` using `supportedIn_mono hU₁UU hfA`. Establish `htr : ∀ S ∈ 𝒮, ξ (fun q => fA (act (((j S)⁻¹ : GzS Z) : GL (Fin n) k) q)) = ξ fA`.
+
+Introduce `S _`. Conclude with `hξ _ ((j S)⁻¹).2 fA hfAUU`. Establish `hsumξ : ξ fJ = ∑ S ∈ 𝒮, ξ (fun q => fA (act (((j S)⁻¹ : GzS Z) : GL (Fin n) k) q))`. Rewrite using `[← map_sum]`. Use `xi_eq hξC (supportedIn_mono hU₁UU hfJ) (Submodule.sum_mem _ fun S _ => comp_act_memUU ((j S)⁻¹ : GzS Z).1 hfAUU) fun x hx => ?_` and prove the remaining obligations.
+
+Rewrite using `[lift_on_C' hO (hPsub J) hfJ hfJO x hx, hsum (toT x), Finset.sum_apply]`. Use `Finset.sum_congr rfl fun S hS => ?_` and prove the remaining obligations. Establish `hx' : act (((j S)⁻¹ : GzS Z) : GL (Fin n) k) x ∈ C` using `hCinv _ ((j S)⁻¹).2 x hx`. Rewrite using `[lift_on_C' hO (hPsub A) hfA hfAO _ hx']`. Use `conv_lhs => rw [hjS S hS]`.
+
+Distinguish the cases in `hxS : toT (act (((j S)⁻¹ : GzS Z) : GL (Fin n) k) x) ∈ orbitPiece A (toT p)`. Rewrite using `[Set.indicator_of_mem (Set.mem_smul_set_iff_inv_smul_mem.2 (show (j S)⁻¹ • toT x ∈ _ from hxS)), Set.indicator_of_mem hxS]`. Both sides reduce to the same expression. Rewrite using `[Set.indicator_of_notMem (fun h' => hxS (Set.mem_smul_set_iff_inv_smul_mem.1 h')), Set.indicator_of_notMem hxS]`. Establish `hcard : ξ fJ = (𝒮.card : ℂ) * ξ fA`.
+
+Rewrite using `[hsumξ, Finset.sum_congr rfl htr, Finset.sum_const, nsmul_eq_mul]`. Establish `hset : ((𝒮 : Set (Set (SpT k n)))) = (fun i : GzS Z => i • orbitPiece A (toT p)) '' (J : Set (GzS Z))`. Use extensionality with `P`. Prove the components needed by the constructor for the conclusion. Introduce `hP`.
+
+Conclude with `⟨j P, hjJ P hP, (hjS P hP).symm⟩`. Introduce and unpack `⟨i, hi, rfl⟩`. Establish `hx : i • toT p ∈ orbitPiece J (toT p)` using `⟨i, hi, rfl⟩`. Establish `h1` using `hsum (i • toT p)`. Rewrite `h1` using `[Set.indicator_of_mem hx]`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨S, hS, hiS⟩ : ∃ S ∈ 𝒮, i • toT p ∈ S := by`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Rewrite `h1` using `[Finset.sum_eq_zero (fun S hS => Set.indicator_of_notMem (hcon S hS) _)]`. Conclude with `one_ne_zero h1`.
+
+Establish `e1 : i • orbitPiece A (toT p) = orbitPiece A (i • toT p)` using `smul_orbitPiece (hn i hi) (fun a ha => by simpa using hn i⁻¹ (J.inv_mem hi) a ha) _`. Establish `e2 : S = orbitPiece A (j S • toT p)` using `(hjS S hS).trans (smul_orbitPiece (hn _ (hjJ S hS)) (fun a ha => by simpa using hn _ (J.inv_mem (hjJ S hS)) a ha) _)`. Establish `e3 : orbitPiece A (i • toT p) = orbitPiece A (j S • toT p)` using `orbitPiece_eq_of_mem (e2 ▸ hiS)`. Use `show i • orbitPiece A (toT p) ∈ (𝒮 : Set (Set (SpT k n)))`. Rewrite using `[Finset.mem_coe, e1, e3, ← e2]`.
+
+Conclude with `hS`. Establish `hc` using `count J A hAJ hn (toT p)`. Express the relevant statement in the definitionally equal form `Nat.card ((fun i : GzS Z => i • orbitPiece A (toT p)) '' (J : Set (GzS Z))) * _ = _ at hc`. Rewrite `hc` using `[← hset, Nat.card_coe_set_eq, Set.ncard_coe_finset]`. Rewrite using `[hcard, mul_assoc, mul_comm (ξ fA), ← mul_assoc]`.
+
+Conclude with `congrArg (fun N : ℕ => (N : ℂ) * ξ fA) hc` after adjusting the coercions.
+-/
 theorem piece_countU (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) {ξ : (Sp k n → ℂ) →ₗ[ℂ] ℂ} (hξ : InvU Z ξ)
     {C U₁ : Set (Sp k n)} (hC : IsClosed C) (hU₁ : IsOpen U₁) (hU₁UU : U₁ ⊆ UU) {p : Sp k n}
     (hCinv : ∀ h ∈ Gz Z, ∀ q ∈ C, act h q ∈ C)

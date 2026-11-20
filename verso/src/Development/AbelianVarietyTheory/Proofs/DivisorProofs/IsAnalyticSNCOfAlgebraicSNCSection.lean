@@ -26,6 +26,11 @@ section Local
 
 variable {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} {σ : k →+* ℂ}
 
+/- English proof (translation)
+Take `⟨W, hW, iU, iV, he⟩` from `TopCat.Presheaf.germ_eq X.presheaf _ hU hV f g h`. Establish `hWU : W ≤ U` using `leOfHom iU`. Establish `hWV : W ≤ V` using `leOfHom iV`. Establish `hres : resG X hWU f = resG X hWV g` using `he`. Use `Filter.eventually_of_mem ((isOpen_ptsIn W).mem_nhds (mem_ptsIn.2 hW)) fun z hz => ?_` and prove the remaining obligations.
+
+Rewrite using `[← ev_res hWU hz, ← ev_res hWV hz, hres]`.
+-/
 theorem eventually_ev_eq (x : CxPts p σ) {U V : X.Opens} (hU : x.1 (IsLocalRing.closedPoint ℂ) ∈ U)
     (hV : x.1 (IsLocalRing.closedPoint ℂ) ∈ V) (f : Γ(X, U)) (g : Γ(X, V))
     (h : X.presheaf.germ U _ hU f = X.presheaf.germ V _ hV g) :
@@ -37,12 +42,18 @@ theorem eventually_ev_eq (x : CxPts p σ) {U V : X.Opens} (hU : x.1 (IsLocalRing
   refine Filter.eventually_of_mem ((isOpen_ptsIn W).mem_nhds (mem_ptsIn.2 hW)) fun z hz => ?_
   rw [← ev_res hWU hz, ← ev_res hWV hz, hres]
 
+/- English proof (translation)
+Establish `hx : x ∈ ptsIn p σ (X.basicOpen g)` using `mem_ptsIn.2 ((X.mem_basicOpen g _ hV).2 h)`. Use `Filter.eventually_of_mem ((isOpen_ptsIn _).mem_nhds hx) fun z hz => ?_` and prove the remaining obligations. Conclude with `(mem_ptsIn_basicOpen (ptsIn_mono (X.basicOpen_le g) hz) g).1 hz`.
+-/
 theorem eventually_ev_ne_zero (x : CxPts p σ) {V : X.Opens} (hV : x.1 (IsLocalRing.closedPoint ℂ) ∈ V)
     (g : Γ(X, V)) (h : IsUnit (X.presheaf.germ V _ hV g)) : ∀ᶠ y in 𝓝 x, ev p σ V g y ≠ 0 := by
   have hx : x ∈ ptsIn p σ (X.basicOpen g) := mem_ptsIn.2 ((X.mem_basicOpen g _ hV).2 h)
   refine Filter.eventually_of_mem ((isOpen_ptsIn _).mem_nhds hx) fun z hz => ?_
   exact (mem_ptsIn_basicOpen (ptsIn_mono (X.basicOpen_le g) hz) g).1 hz
 
+/- English proof (translation)
+Rewrite `h` using `[WMult.stalkId_eq_map_germ _ _ V hV]`. Take `⟨s, hs, H⟩` from `GlobalTheory.IdealSpread.ideal_eq_span_of_germ X _ V _ hV g (IsLocallyNoetherian.component_noetherian V) h`. Use `Filter.eventually_of_mem ((isOpen_ptsIn _).mem_nhds (mem_ptsIn.2 hs)) fun z hz => ?_` and prove the remaining obligations. Rewrite using `[← ev_res (X.basicOpen_le s) hz]`. Conclude with `ev_eq_zero_iff (V := X.affineBasicOpen s) (H s le_rfl) hz`.
+-/
 theorem eventually_ev_eq_zero_iff [IsLocallyNoetherian X] (x : CxPts p σ) (V : X.affineOpens)
     (hV : x.1 (IsLocalRing.closedPoint ℂ) ∈ V.1) (g : Γ(X, V.1)) (C : Closeds X)
     (h : FinalTheorems.stalkId (Scheme.IdealSheafData.vanishingIdeal C) (x.1 (IsLocalRing.closedPoint ℂ)) =
@@ -55,6 +66,15 @@ theorem eventually_ev_eq_zero_iff [IsLocallyNoetherian X] (x : CxPts p σ) (V : 
   rw [← ev_res (X.basicOpen_le s) hz]
   exact ev_eq_zero_iff (V := X.affineBasicOpen s) (H s le_rfl) hz
 
+/- English proof (translation)
+Establish `hr : Set.range (closι z) = (Closeds.closure {z} : Closeds X)` using `(Scheme.IdealSheafData.range_subschemeι _).trans (Scheme.IdealSheafData.coe_support_vanishingIdeal _)`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, rfl⟩`. Establish `: closι z (w.1 (IsLocalRing.closedPoint ℂ)) ∈ Set.range (closι z)` using `⟨_, rfl⟩`. Rewrite `this` using `[hr]`.
+
+Conclude with `this`. Introduce `hy`. Establish `: IsReduced (Sp ℂ)` using `inferInstanceAs (IsReduced (Spec _))`. Establish `hle : Set.range y.1 ⊆ Set.range (closι z)`. Introduce and unpack `_ ⟨a, rfl⟩`.
+
+Establish `ha : a = IsLocalRing.closedPoint ℂ` using `Subsingleton.elim _ _`. Rewrite using `[hr, ha]`. Conclude with `hy`. Establish `hk : (closι z).ker ≤ y.1.ker` using `ker_le_ker_of_range_subset_of_isReduced (closι z) y.1 hle`. Establish `hl` using `IsClosedImmersion.lift_fac (closι z) y.1 hk`.
+
+Conclude with `⟨⟨IsClosedImmersion.lift (closι z) y.1 hk, by rw [← Category.assoc, hl, y.2]⟩, Subtype.ext hl⟩`.
+-/
 theorem mem_range_ptMap_closι (z : X) (y : CxPts p σ) :
     y ∈ Set.range (ptMap (closι z) rfl σ) ↔ LiesIn y (Closeds.closure {z}) := by
   have hr : Set.range (closι z) = (Closeds.closure {z} : Closeds X) :=
@@ -77,6 +97,19 @@ theorem mem_range_ptMap_closι (z : X) (y : CxPts p σ) :
 
 end Local
 
+/- English proof (translation)
+Use `haveI : CharZero F := σ.charZero`. Take `⟨c, hc⟩` from `AlgChart.exists_mem_source (D := D) (p := p) (σ := σ) x`. Establish `hli` using `SncChart.linearIndependent_fderiv_params F X p D σ c x hc V hV n G hR`. Establish `hxV : x ∈ ptsIn p σ V.1` using `mem_ptsIn.2 hV`. Establish `h0 : ∀ i, ev p σ V.1 (G i) x = 0`.
+
+Introduce `i`. Assume the negation of the conclusion as `hne`. Establish `hb` using `mem_ptsIn.1 ((mem_ptsIn_basicOpen hxV (G i)).2 hne)`. Rewrite `hb` using `[Scheme.mem_basicOpen _ _ _ hV]`. Establish `hmem : X.presheaf.germ V.1 _ hV (G i) ∈ IsLocalRing.maximalIdeal _`.
+
+Rewrite using `[← hR.1]`. Conclude with `Ideal.subset_span ⟨i, rfl⟩`. Conclude with `hmem hb`. Establish `hn : n ≤ D`. Use `hli.fintype_card_le_finrank` as an intermediate fact.
+
+Rewrite `this` using `[← (LinearMap.toContinuousLinearMap (𝕜 := ℂ) (E := ReciprocityTheory.L2DbarEstimates.V D) (F' := ℂ)).finrank_eq, Module.finrank_linearMap, Module.finrank_self, _root_.mul_one]`. Simplify `this` using `[ReciprocityTheory.L2DbarEstimates.V]`. Take `⟨e, hx0, hsub, -, hhol, hsymm, hev⟩` from `SncChart.exists_chart_of_fderiv F X p D σ c x hc V.1 hxV n G h0 hli`. Take `⟨O, hON, hO, hxO⟩` from `mem_nhds_iff.1 hN`. Set `ψ` to `e.restrOpen O hO`.
+
+Establish `hψs : ψ.source = e.source ∩ O` using `e.restrOpen_source O hO`. Use `⟨hn, ψ, ?_, hψs ▸ ⟨hx0, hxO⟩, fun y hy => hON (hψs ▸ hy).2, fun y hy => hsub (hψs ▸ hy).1, fun y hy j => hev y (hψs ▸ hy).1 (Fin.castLE hn j) j.2⟩` and prove the remaining obligations. Use `GlobalTheory.DivSec.isCompatChart_of_holAlong F X p σ D A hA ψ (fun j => ?_) ?_` and prove the remaining obligations. Introduce `V _ _ _ B' y hB' hy hm`. Conclude with `hhol j V B' y hB' hy (fun b hb => (hψs ▸ hm hb).1)`.
+
+Conclude with `GlobalTheory.LocLift.isHolTo_mono hsymm ψ.open_target fun z hz => hz.1`.
+-/
 theorem exists_compatChart {F : Type} [Field F] {X : Scheme.{0}} {p : X ⟶ Sp F} {σ : F →+* ℂ} {D : ℕ}
     [SmoothOfRelativeDimension D p] {A : FinHolAtlas D (CxPts p σ)} (hA : IsAlgAtlas A) (x : CxPts p σ)
     {N : Set (CxPts p σ)} (hN : N ∈ 𝓝 x) (V : X.affineOpens) (hV : x.1 (IsLocalRing.closedPoint ℂ) ∈ V.1) {n : ℕ}
@@ -114,6 +147,25 @@ theorem exists_compatChart {F : Type} [Field F] {X : Scheme.{0}} {p : X ⟶ Sp F
     exact hhol j V B' y hB' hy (fun b hb => (hψs ▸ hm hb).1)
   · exact GlobalTheory.LocLift.isHolTo_mono hsymm ψ.open_target fun z hz => hz.1
 
+/- English proof (translation)
+Introduce `F _ X _ _ p σ D _ hsm A hA M s hs r z hz hco hzero hsnc x`. Use `haveI := hsm`. Establish `hxi` using `mem_pick (p := p) (σ := σ) M.φ.isLB x`. Establish `hi` using `mem_ptsIn.1 hxi`. Take `⟨n, g, e, u, inst, hR, hI, hf⟩` from `GlobalTheory.SncForm.germ_eq_unit_mul_monomial X M.B M.φ.isLB s hs r z hz hco hzero _ (hsnc _) (pick M.φ.isLB x) hi`.
+
+Take `⟨V, hV, G', hG'⟩` from `GlobalTheory.DivSec.exists_affine_germ_eq X (x.1 (IsLocalRing.closedPoint ℂ)) (n + 1) (Fin.cons (u : X.presheaf.stalk _) g)`. Set `G : Fin n → Γ(X, V.1)` to `fun j => G' j.succ`. Establish `hG : ∀ j, X.presheaf.germ V.1 _ hV (G j) = g j` using `fun j => hG' j.succ`. Establish `hU : X.presheaf.germ V.1 _ hV (G' 0) = u` using `hG' 0`. Establish `e1` using `eventually_ev_eq x hi hV (s.f (pick M.φ.isLB x)) (G' 0 * ∏ a, G (e a) ^ ((divOfSec M.φ.isLB s hs).mult (z a.1)).toNat) (by`.
+
+Rewrite using `[hf, map_mul, map_prod, hU]`. Simplify using `only [map_pow, hG])`. Establish `e2` using `eventually_ev_ne_zero x hV (G' 0) (hU ▸ u.isUnit)`. Establish `e3` using `Filter.eventually_all.2 fun a => eventually_ev_eq_zero_iff x V hV (G (e a)) _ (by rw [hG]; exact hI a)`. Establish `e4 : ∀ᶠ y in 𝓝 x, ∀ a, ¬ LiesIn x (Closeds.closure {z a}) → ¬ LiesIn y (Closeds.closure {z a})` using `Filter.eventually_all.2 fun a => by`.
+
+Distinguish the cases in `h : LiesIn x (Closeds.closure {z a})`. Conclude with `Filter.Eventually.of_forall fun _ h' => absurd h h'`. Conclude with `Filter.eventually_of_mem ((isOpen_not_liesIn _).mem_nhds h) fun y hy _ => hy`. Establish `e5 : ∀ᶠ y in 𝓝 x, y ∈ M.φ.locPot.U x` using `(M.φ.locPot.isOpen_U x).mem_nhds (M.φ.locPot.mem_U x)`. Take `⟨hn, ψ, hψ, hxψ, hN, hψV, hev⟩` from `exists_compatChart hA x (e1.and (e2.and (e3.and (e4.and e5)))) V hV G (by rw [funext hG]; exact hR)`.
+
+Set `τ : Fin r → Option (Fin D)` to `fun a => if h : x.1 (IsLocalRing.closedPoint ℂ) ∈ Closeds.closure {z a} then some (Fin.castLE hn (e ⟨a, h⟩)) else none`. Use `⟨ψ, hψ, hxψ, fun y hy => (hN hy).2.2.2.2, τ, ?_, ?_, ev p σ V.1 (G' 0), ?_, fun y hy => (hN hy).2.1, ?_⟩` and prove the remaining obligations. Introduce `a a' i h1 h2`. Simplify using `only [τ] at h1 h2`. Use `split_ifs at h1 h2 with ha ha'`.
+
+Use `Fin.castLE_injective hn ((Option.some.inj h1).trans (Option.some.inj h2).symm)` as an intermediate fact. Conclude with `congrArg Subtype.val (e.injective this)`. Introduce `a`. Use extensionality with `y`. Simplify using `only [Set.mem_inter_iff, Set.mem_setOf_eq, mem_range_ptMap_closι]`.
+
+Use `and_comm.trans (and_congr_right fun hy => ?_)` and prove the remaining obligations. Distinguish the cases in `h : x.1 (IsLocalRing.closedPoint ℂ) ∈ Closeds.closure {z a}`. Simplify using `only [τ, dif_pos h, Option.some.injEq, exists_eq_left', hev y hy]`. Conclude with `((hN hy).2.2.1 ⟨a, h⟩).symm`. Simplify using `only [τ, dif_neg h, reduceCtorEq, false_and, exists_false, iff_false]`.
+
+Conclude with `(hN hy).2.2.2.1 a h`. Conclude with `(hA.holoOn_iff hA.anRead ψ.open_source).2 ((hA.anRead.holoOn_ev V.1 (G' 0)).mono hψV)`. Introduce `y hy`. Use `(hN hy).1.trans ?_` and prove the remaining obligations. Rewrite using `[ev_mul, ev_eq (hψV hy) (∏ _, _), map_prod, ← Fintype.prod_subtype_mul_prod_subtype (fun a => x.1 (IsLocalRing.closedPoint ℂ) ∈ Closeds.closure {z a})]`.
+
+Use `congr 1`. Rewrite using `[Finset.prod_eq_one (s := Finset.univ) (f := fun a : {a // ¬ x.1 (IsLocalRing.closedPoint ℂ) ∈ Closeds.closure {z a}} => _) (fun a _ => by simp only [τ, dif_neg a.2]), mul_one]`. Use `Finset.prod_congr (by ext; simp) fun a _ => ?_` and prove the remaining obligations. Simplify using `only [τ, dif_pos a.2, map_pow, hev y hy, ev_eq (hψV hy)]`.
+-/
 theorem isSNC_locSec : ∀ (F : Type) [Field F] (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X] (p : X ⟶ Sp F) (σ : F →+* ℂ) (D : ℕ), IsProjOver p → SmoothOfRelativeDimension D p → ∀ (A : FinHolAtlas D (CxPts p σ)), IsAlgAtlas A → ∀ (M : MLine p σ) (s : M.B.Sec) (hs : genericPoint X ∈ nonzeroLocus s) (r : ℕ) (z : Fin r → X), Function.Injective z → (∀ a, Order.coheight (z a) = 1) → ((nonzeroLocus s : Set X)ᶜ = ⋃ a, closure {z a}) → (∀ x : X, FinalTheorems.LSncAt X (fun a => (Closeds.closure {z a})) x) → IsSNC A M.φ.locPot (M.φ.locSec (secVal p σ s)) (fun a => ((divOfSec M.φ.isLB s hs).mult (z a)).toNat) (fun a => Set.range (ptMap (closι (z a)) rfl σ)) := by
   intro F _ X _ _ p σ D _ hsm A hA M s hs r z hz hco hzero hsnc x
   classical

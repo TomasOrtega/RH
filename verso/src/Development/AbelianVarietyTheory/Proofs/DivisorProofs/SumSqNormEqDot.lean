@@ -18,6 +18,9 @@ def formRight {K V : Type} [Field K] [AddCommGroup V] [Module K V] (nm : HermFam
     (σ : K →+* ℂ) (x : V) : V →+ ℂ :=
   AddMonoidHom.mk' (nm.form σ x) (nm.add_right σ x)
 
+/- English proof (translation)
+Use `map_sum (formRight nm σ x) (fun j => a j • w j) s` as an intermediate fact. Simplify using `only [formRight, AddMonoidHom.mk'_apply] at this`. Rewrite using `[this]`. Conclude with `Finset.sum_congr rfl fun j _ => nm.smul_right σ (a j) x (w j)`.
+-/
 theorem form_sum_right {K V : Type} [Field K] [AddCommGroup V] [Module K V] (nm : HermFam K V)
     (σ : K →+* ℂ) (x : V) {ι : Type} (s : Finset ι) (a : ι → K) (w : ι → V) :
     nm.form σ x (∑ j ∈ s, a j • w j) = ∑ j ∈ s, σ (a j) * nm.form σ x (w j) := by
@@ -26,6 +29,9 @@ theorem form_sum_right {K V : Type} [Field K] [AddCommGroup V] [Module K V] (nm 
   rw [this]
   exact Finset.sum_congr rfl fun j _ => nm.smul_right σ (a j) x (w j)
 
+/- English proof (translation)
+Rewrite using `[← nm.conj_symm, form_sum_right, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, nm.conj_symm]`.
+-/
 theorem form_sum_left {K V : Type} [Field K] [AddCommGroup V] [Module K V] (nm : HermFam K V)
     (σ : K →+* ℂ) (y : V) {ι : Type} (s : Finset ι) (a : ι → K) (w : ι → V) :
     nm.form σ (∑ i ∈ s, a i • w i) y = ∑ i ∈ s, starRingEnd ℂ (σ (a i)) * nm.form σ (w i) y := by

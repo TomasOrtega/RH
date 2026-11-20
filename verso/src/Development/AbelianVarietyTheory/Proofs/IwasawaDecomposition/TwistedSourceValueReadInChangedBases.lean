@@ -18,6 +18,11 @@ namespace GlobalTheory.Mem.SrcFunRead
 
 open MvPolynomial
 
+/- English proof (translation)
+Simplify using `only [twSubK, map_mul, map_C, map_prod, map_zpow₀, RingHom.comp_apply]`. Use `congr 1`. Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C a => simp`. Consider the case `add p q hp hq => simp [hp, hq]`.
+
+Consider the case `mul_X p k hp => simp [hp]`.
+-/
 theorem map_twSubK_field {E K K' ι : Type} [Field E] [Field K] [Field K'] [Fintype ι] {n : ℕ} (t : ι → E →+* K)
     (M : GL (Fin n) E) (s : ι → ℤ) (P : MvPolynomial (ι × Fin n × Fin n) K) (φ : K →+* K') :
     map φ (twSubK t M s P) = twSubK (fun τ => φ.comp (t τ)) M s (map φ P) := by
@@ -28,6 +33,17 @@ theorem map_twSubK_field {E K K' ι : Type} [Field E] [Field K] [Field K'] [Fint
   | add p q hp hq => simp [hp, hq]
   | mul_X p k hp => simp [hp]
 
+/- English proof (translation)
+Set `d : MvPolynomial (ι × Fin n × Fin n) ℂ` to `∏ τ, (Matrix.of fun a b : Fin n => (X (τ, a, b) : MvPolynomial (ι × Fin n × Fin n) ℂ)).det`. Establish `hd : ∀ y : ι → Matrix (Fin n) (Fin n) ℂ, eval (fun k : ι × Fin n × Fin n => y k.1 k.2.1 k.2.2) d = ∏ τ, (y τ).det`. Introduce `y`. Simplify using `only [d, map_prod]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[RingHom.map_det]`. Use `congr 1`. Use extensionality with `a b`. Simplify using the standard rewrite rules. Establish `hd0 : d ≠ 0`.
+
+Introduce `h0`. Establish `h1` using `hd (fun _ => 1)`. Rewrite `h1` using `[h0]`. Simplify using `at h1`. Establish `hm : d * map e A = d * map e B`.
+
+Apply `MvPolynomial.funext` to reduce the goal to its premises. Introduce `x`. Take `⟨y, rfl⟩ : ∃ y : ι → Matrix (Fin n) (Fin n) ℂ, x = fun k : ι × Fin n × Fin n => y k.1 k.2.1 k.2.2` from `⟨fun τ a b => x (τ, a, b), rfl⟩`. Rewrite using `[eval_mul, eval_mul, hd]`. Distinguish the cases in `hy : ∀ τ, (y τ).det ≠ 0`.
+
+Rewrite using `[h _ hy]`. Use `push_neg at hy`. Take `⟨τ, hτ⟩` from `hy`. Rewrite using `[Finset.prod_eq_zero (Finset.mem_univ τ) hτ, zero_mul, zero_mul]`. Conclude with `MvPolynomial.map_injective e e.injective (mul_left_cancel₀ hd0 hm)`.
+-/
 theorem eq_of_eval_invertible {LL ι : Type} [Field LL] [Fintype ι] {n : ℕ} (e : LL →+* ℂ)
     {A B : MvPolynomial (ι × Fin n × Fin n) LL}
     (h : ∀ y : ι → Matrix (Fin n) (Fin n) ℂ, (∀ τ, (y τ).det ≠ 0) →
@@ -68,6 +84,29 @@ end GlobalTheory.Mem.SrcFunRead
 namespace GlobalTheory.Mem.SrcFunRead
 open MvPolynomial
 
+/- English proof (translation)
+Introduce `B X I hOk hPins l Z Y O Pl Bs hQp hStd hBas hEnt u μ w hLev i hi eY hId c f P0 hf R0 hR0 k hk Bm g hBs v hv`. Establish `hPI : (secC O u μ i v : MvPolynomial (GL3Theta.FrV (I.rec7 l Z) ((I.rec7 l Z).R.N i)) (I.rec7 l Z).what₂.LL) * ∏ τ, frDet (I.rec7 l Z).what₂.LL ((I.rec7 l Z).R.N i) τ ^ (((I.rec7 l Z).chTw u μ).sSharp i τ - twB (I.rec7 l Z) u μ i τ).toNat = R0 * ∏ τ, frDet (I.rec7 l Z).what₂.LL ( …`. Apply `eq_of_eval_invertible (I.rec7 l Z).what₂.embLL` to reduce the goal to its premises. Introduce `y hy`. Choose the witnesses or unpack the hypotheses as in `⟨z, hz⟩ : ∃ z : (I.chain l u μ).Y i, z.1 = y := by`.
+
+Use `⟨eY.symm ⟨y, fun τ => isUnit_iff_ne_zero.2 (hy τ)⟩, ?_⟩` and prove the remaining obligations. Establish `h2` using `hId (eY.symm ⟨y, fun τ => isUnit_iff_ne_zero.2 (hy τ)⟩)`. Conclude with `h2.symm.trans (congrArg Subtype.val (eY.apply_symm_apply _))`. Establish `h1 : evP O u μ i (secC O u μ i v) z = f z` using `(congrFun (evC_sec O u μ i v) z).symm.trans (congrFun hv z)`. Rewrite `h1` using `[hf z]`.
+
+Establish `hfr : (O u μ).frm i z = y` using `(hStd.frm u μ i z).trans hz`. Establish `hde : ∀ τ, ((I.rec7 l Z).chTw u μ).de i z τ = (y τ).det` using `fun τ => ((O u μ).frm_de i hi.le z τ).trans (congrArg (fun M => (M τ).det) hfr)`. Establish `hez : (eY z).1 = y` using `(hId z).trans hz`. Simplify using `only [evP, LinearMap.coe_mk, AddHom.coe_mk, fnOf, GL3Theta.evFr, hfr, hde, hez, Matrix.one_mul, Pi.one_apply] at h1`. Rewrite `h1` using `[← hR0]`.
+
+Simplify using `only [map_mul, map_prod, map_pow, eval_mul, eval_prod, eval_pow, eval_detP (D := I.rec7 l Z)]`. Establish `e1 : ∀ τ, (y τ).det ^ (((I.rec7 l Z).chTw u μ).sSharp i τ - twB (I.rec7 l Z) u μ i τ).toNat = (y τ).det ^ (-twB (I.rec7 l Z) u μ i τ) * (y τ).det ^ (((I.rec7 l Z).chTw u μ).sSharp i τ)`. Introduce `τ`. Rewrite using `[← zpow_natCast, Int.toNat_of_nonneg (sub_nonneg.2 (twLe (I.rec7 l Z) u μ i hi τ)), ← zpow_add₀ (hy τ)]`. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `e2 : ∀ τ, (y τ).det ^ k τ = (y τ).det ^ shiftOf (lamTG (I.fm l u μ) i) τ * (y τ).det ^ (((I.rec7 l Z).chTw u μ).sSharp i τ)`. Introduce `τ`. Rewrite using `[← zpow_natCast, hk τ, zpow_add₀ (hy τ)]`. Simplify using `only [e1, e2, Finset.prod_mul_distrib]`.
+
+Take the linear combination `(∏ τ, (y τ).det ^ (((I.rec7 l Z).chTw u μ).sSharp i τ)) * h1`. Use function extensionality and compare the values at `y`. Simplify using `only [srcFun, atBas, LinearMap.coe_comp, Function.comp_apply, LinearMap.smul_apply, LinearMap.id_apply, LinearMap.mulRight_apply, Submodule.coe_subtype, LinearMap.coe_mk, AddHom.coe_mk, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[hPI]`. Establish `hφ : ∀ τ x, ((Pl.iL w).comp (Formalism.L2.G.Cmp.tEL (I.rec7 l Z) τ)) x = TaylorLogMetric.tauEmb (I.rec7 l Z) (Pl.lam w) τ x`.
+
+Introduce `τ x`. Establish `hx : (I.rec7 l Z).what₂.embLL (Formalism.L2.G.Cmp.tEL (I.rec7 l Z) τ x) ∈ algebraicClosure ℚ ℂ` using `embLL_alg w _`. Establish `he` using `Formalism.L2.G.Cmp.tEL_emb (I.rec7 l Z) τ x`. Rewrite using `[RingHom.comp_apply, Pl.iL_lam' w _ hx]`. Unfold `TaylorLogMetric.tauEmb TaylorLogMetric.lamC`.
+
+Rewrite using `[dif_pos (he ▸ hx)]`. Conclude with `congrArg (Pl.lam w) (Subtype.ext he)`. Establish `hA : ∀ τ, (Bm : Matrix (Fin ((I.rec7 l Z).R.N i)) (Fin ((I.rec7 l Z).R.N i)) (I.rec7 l Z).host.E).map (TaylorLogMetric.tauEmb (I.rec7 l Z) (Pl.lam w) τ) = (Bm : Matrix (Fin ((I.rec7 l Z).R.N i)) (Fin ((I.rec7 l Z).R.N i)) (I.rec7 l Z).host.E).map ((Pl.iL w).comp (Formalism.L2.G.C …` using `fun τ => by`. Use extensionality with `a b`. Conclude with `(hφ τ _).symm`.
+
+Establish `hdetA : ∀ τ, ((Bm : Matrix (Fin ((I.rec7 l Z).R.N i)) (Fin ((I.rec7 l Z).R.N i)) (I.rec7 l Z).host.E).map ((Pl.iL w).comp (Formalism.L2.G.Cmp.tEL (I.rec7 l Z) τ))).det = ((Pl.iL w).comp (Formalism.L2.G.Cmp.tEL (I.rec7 l Z) τ)) (Bm : Matrix (Fin ((I.rec7 l Z).R.N i)) (Fin ((I.rec7 …` using `fun τ => (RingHom.map_det _ _).symm`. Establish `ha : ∀ τ, ((Pl.iL w).comp (Formalism.L2.G.Cmp.tEL (I.rec7 l Z) τ)) (Bm : Matrix (Fin ((I.rec7 l Z).R.N i)) (Fin ((I.rec7 l Z).R.N i)) (I.rec7 l Z).host.E).det ≠ 0` using `fun τ => ((Matrix.isUnits_det_units Bm).map _).ne_zero`. Simplify using `only [hBs, hA]`. Rewrite using `[map_twSubK_field, polFun_apply, eval_twSubK _ _ _ _ (fun τ => g τ * y τ)]`. Simplify using `only [map_mul, map_prod, map_pow, eval_mul, eval_prod, eval_pow, eval_detP (D := I.rec7 l Z), Matrix.mul_assoc, Matrix.det_mul, hdetA]`.
+
+Establish `hev : ∀ τ, eval (fun k : GL3Theta.FrV (I.rec7 l Z) ((I.rec7 l Z).R.N i) => ((Bm : Matrix (Fin ((I.rec7 l Z).R.N i)) (Fin ((I.rec7 l Z).R.N i)) (I.rec7 l Z).host.E).map ((Pl.iL w).comp (Formalism.L2.G.Cmp.tEL (I.rec7 l Z) k.1)) * (g k.1 * y k.1)) k.2.1 k.2.2) (MvPolynomial.map (Pl …` using `fun τ => eval_detP (D := I.rec7 l Z) (Pl.iL w) (fun t => (Bm : Matrix (Fin ((I.rec7 l Z).R.N i)) (Fin ((I.rec7 l Z).R.N i)) (I.rec7 l Z).host.E).map ((Pl.iL w).comp (Formalism.L2.G.Cmp.tEL (I.rec7 l Z) t)) * (g t * y t)) τ`. Simplify using `only [hev, Matrix.det_mul, hdetA]`. Establish `hper : ∀ τ, (((Pl.iL w).comp (Formalism.L2.G.Cmp.tEL (I.rec7 l Z) τ)) (Bm : Matrix (Fin ((I.rec7 l Z).R.N i)) (Fin ((I.rec7 l Z).R.N i)) (I.rec7 l Z).host.E).det * (g τ).det) ^ (-((I.rec7 l Z).chTw u μ).sSharp i τ) * (((Pl.iL w).comp (Formalism.L2.G.Cmp.tEL (I.rec7 l Z) τ)) (Bm : …`. Introduce `τ`. Establish `h0` using `ha τ`.
+
+Rewrite using `[mul_zpow, mul_pow, ← zpow_natCast (((Pl.iL w).comp (Formalism.L2.G.Cmp.tEL (I.rec7 l Z) τ)) (Bm : Matrix (Fin ((I.rec7 l Z).R.N i)) (Fin ((I.rec7 l Z).R.N i)) (I.rec7 l Z).host.E).det), hk τ, zpow_add₀ h0, _root_.zpow_neg]`. Establish `h1 : ((Pl.iL w).comp (Formalism.L2.G.Cmp.tEL (I.rec7 l Z) τ)) (Bm : Matrix (Fin ((I.rec7 l Z).R.N i)) (Fin ((I.rec7 l Z).R.N i)) (I.rec7 l Z).host.E).det ^ (((I.rec7 l Z).chTw u μ).sSharp i τ) ≠ 0` using `zpow_ne_zero _ h0`. Clear the denominators using the available nonvanishing facts. Rewrite using `[mul_left_comm, ← mul_assoc, mul_assoc, ← Finset.prod_mul_distrib, Finset.prod_congr rfl fun τ _ => hper τ, Finset.prod_mul_distrib, Finset.prod_mul_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem srcFun_secC_read : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)),
     ∀ (Y : DivX (I.rec7 l Z)) (O : ∀ u a, GL3Theta.LiftObj (I.rec7 l Z) ((I.rec7 l Z).chTw u a)) (Pl : Examples₂.EntPl (I.rec7 l Z))
     (Bs : PlaceMatrixFamily (I.rec7 l Z)), I.QpIs Y.Qp → I.StdO l Z Y.Qp O → BasOk Pl O Bs →

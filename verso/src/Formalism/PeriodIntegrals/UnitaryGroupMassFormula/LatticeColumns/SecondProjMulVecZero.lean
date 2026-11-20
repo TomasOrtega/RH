@@ -10,6 +10,11 @@ open scoped Matrix TensorProduct
 
 variable {D : D7}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Establish `hv' : ∀ j, (θ (v j)).2 = 0` using `fun j => congrFun hv j`. Use `show (θ ((M *ᵥ v) i)).2 = 0`. Use `first`. Consider the case `simp only [Matrix.mulVec, dotProduct, map_sum, map_mul, Prod.snd_sum, Prod.snd_mul, hv', mul_zero, Finset.sum_const_zero]`.
+
+Consider the case `simp only [Matrix.mulVec, Matrix.dotProduct, map_sum, map_mul, Prod.snd_sum, Prod.snd_mul, hv', mul_zero, Finset.sum_const_zero]`.
+-/
 theorem secondProj_mulVec_zero (X : HidaSetting D) (p : TypX X) (θ : TpX X p ≃ₐ[FpX X p] FpX X p × FpX X p)
     (M : Matrix (Fin X.B.I.n) (Fin X.B.I.n) (TpX X p)) (v : Fin X.B.I.n → TpX X p) (hv : pr2 θ v = 0) :
     pr2 θ (M *ᵥ v) = 0 := by
@@ -22,6 +27,9 @@ theorem secondProj_mulVec_zero (X : HidaSetting D) (p : TypX X) (θ : TpX X p �
     | simp only [Matrix.mulVec, Matrix.dotProduct, map_sum, map_mul, Prod.snd_sum, Prod.snd_mul, hv', mul_zero,
         Finset.sum_const_zero]
 
+/- English proof (translation)
+Use `first`. Consider the case `simp [Formalism.FourierDecayAlt.S3.hEmb, Formalism.FourierDecayAlt.S3.midEmb, Matrix.fromBlocks_mulVec, Matrix.mulVec, dotProduct]`. Consider the case `simp [Formalism.FourierDecayAlt.S3.hEmb, Formalism.FourierDecayAlt.S3.midEmb, Matrix.fromBlocks_mulVec, Matrix.mulVec, Matrix.dotProduct]`.
+-/
 private theorem hEmb_mulVec_wI_apply {A : Type} [CommRing A] {r k : ℕ} (M : Matrix (Fin k) (Fin k) A)
     (w : Idx r k → A) (j : Fin k) :
     (hEmb r M *ᵥ w) (wI j) = ∑ j' : Fin k, M j j' * w (wI j') := by
@@ -29,6 +37,9 @@ private theorem hEmb_mulVec_wI_apply {A : Type} [CommRing A] {r k : ℕ} (M : Ma
     | simp [Formalism.FourierDecayAlt.S3.hEmb, Formalism.FourierDecayAlt.S3.midEmb, Matrix.fromBlocks_mulVec, Matrix.mulVec, dotProduct]
     | simp [Formalism.FourierDecayAlt.S3.hEmb, Formalism.FourierDecayAlt.S3.midEmb, Matrix.fromBlocks_mulVec, Matrix.mulVec, Matrix.dotProduct]
 
+/- English proof (translation)
+Rewrite using `[Pi.sub_apply, hEmb_mulVec_wI_apply]`. Simplify using `only [Pi.sub_apply, Pi.smul_apply, smul_eq_mul, Pi.single_apply, Sum.inr.injEq, Sum.inl.injEq, mul_sub, mul_ite, mul_one, mul_zero, Finset.sum_sub_distrib, Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Simplify using `only [mul_left_comm _ ((gOf p : ℕ) : FpX X p) _, ← Finset.mul_sum]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem key_coord (X : HidaSetting D) (p : TypX X) (θ : TpX X p ≃ₐ[FpX X p] FpX X p × FpX X p)
     (Q : GL (Idx D.R.rS D.R.k) (FpX X p)) (Bk : Matrix (Fin D.R.k) (Fin D.R.k) (FpX X p))
     (i j : Fin D.R.k) (c : Idx D.R.rS D.R.k → p.1.adicCompletionIntegers X.B.I.F) :
@@ -51,6 +62,9 @@ abbrev Ymat (X : HidaSetting D) (u : D.what₂.Word) (p : TypX X) (x : KvH X u p
   HA.mat (Fv X.B.I.F p.1) X.B.I.cm.sig X.B.I.J
     ((x : Hsub (Fv X.B.I.F p.1) X.B.I.cm.sig X.B.I.J (frameOf X u)) : HA (Fv X.B.I.F p.1) X.B.I.cm.sig X.B.I.J)
 
+/- English proof (translation)
+Establish `h1 : (A : Matrix (Fin X.B.I.n) (Fin X.B.I.n) (TpX X p)) * ((A⁻¹ * Y * A : GL (Fin X.B.I.n) (TpX X p)) : Matrix (Fin X.B.I.n) (Fin X.B.I.n) (TpX X p)) = (Y : Matrix (Fin X.B.I.n) (Fin X.B.I.n) (TpX X p)) * (A : Matrix (Fin X.B.I.n) (Fin X.B.I.n) (TpX X p))`. Rewrite using `[Units.val_mul, Units.val_mul, ← mul_assoc, ← mul_assoc, Units.mul_inv, one_mul]`. Rewrite using `[Matrix.sub_mulVec, Matrix.one_mulVec, Matrix.mulVec_sub]`. Simplify using `only [Matrix.mulVec_mulVec]`. Rewrite using `[h1]`.
+-/
 theorem hAv_eq (X : HidaSetting D) (p : TypX X) (A Y : GL (Fin X.B.I.n) (TpX X p)) (v : Fin X.B.I.n → TpX X p) :
     (A : Matrix (Fin X.B.I.n) (Fin X.B.I.n) (TpX X p)) *ᵥ
       ((((A⁻¹ * Y * A : GL (Fin X.B.I.n) (TpX X p)) : Matrix (Fin X.B.I.n) (Fin X.B.I.n) (TpX X p)) - 1) *ᵥ v) =
@@ -64,6 +78,11 @@ theorem hAv_eq (X : HidaSetting D) (p : TypX X) (A Y : GL (Fin X.B.I.n) (TpX X p
   simp only [Matrix.mulVec_mulVec]
   rw [h1]
 
+/- English proof (translation)
+Rewrite using `[crd_mulVec]`. Use `congr 1`. Establish `h1` using `hform (inclH X u p x)`. Rewrite `h1` using `[hB, MassDataIdxRed.glRed_coe, hEmbGL_val, hEmb_map]`. Rewrite using `[h1]`.
+
+Both sides reduce to the same expression.
+-/
 theorem hYc_of (X : HidaSetting D) (u : D.what₂.Word) (p : TypX X) (θ : TpX X p ≃ₐ[FpX X p] FpX X p × FpX X p)
     (Q : GL (Idx D.R.rS D.R.k) (FpX X p)) (ψ : KvA X p.1 →* GL (Idx D.R.rS D.R.k) (Op X p))
     (hform : ∀ x : KvA X p.1, ((MassDataIdxRed.glRed (algebraMap (Op X p) (FpX X p)) (ψ x) : GL (Idx D.R.rS D.R.k) (FpX X p)) :
@@ -88,6 +107,9 @@ section Main
 variable (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (u : D.what₂.Word) (p : TypX X)
   (θ : TpX X p ≃ₐ[FpX X p] FpX X p × FpX X p) (Q : GL (Idx D.R.rS D.R.k) (FpX X p))
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `coords_weight_vector X hb u p θ Q hW i`. Use `⟨c, ?_⟩` and prove the remaining obligations. Rewrite using `[hAv_eq, crd_sub, hYc, hc]`. Conclude with `key_coord X p θ Q Bk i j c`.
+-/
 theorem coord_wj (hW : WClause X hb u p θ Q) (x : KvH X u p.1) (Bk : Matrix (Fin D.R.k) (Fin D.R.k) (FpX X p))
     (hYc : ∀ v, crd X p θ Q ((Ymat X u p x : Matrix (Fin X.B.I.n) (Fin X.B.I.n) (TpX X p)) *ᵥ v) =
       hEmb D.R.rS Bk *ᵥ crd X p θ Q v) (i j : Fin D.R.k) :
@@ -102,6 +124,13 @@ theorem coord_wj (hW : WClause X hb u p θ Q) (x : KvH X u p.1) (Bk : Matrix (Fi
   rw [hAv_eq, crd_sub, hYc, hc]
   exact key_coord X p θ Q Bk i j c
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `coord_wj X hb u p θ Q hW x Bk hYc i j`. Unfold `InModP at h`. Take `⟨a, ha, b, hb', hab⟩` from `Submodule.mem_sup.1 h`. Establish `hK : HA.mat (Fv X.B.I.F p.1) X.B.I.cm.sig X.B.I.J (xuP X hb u p) ∈ Kloc (E` using `X.B.I.E) p.1 (X.B.I.L : Set (Fin X.B.I.n → X.B.I.E)) := unipotent_mem_localStabilizer X hb u p`. Establish `h1 : InG X p (crd X p θ Q ((Amat X hb u p : Matrix (Fin X.B.I.n) (Fin X.B.I.n) (TpX X p)) *ᵥ a) (wI j))` using `span_coord X hb u p θ Q hLB hy1 hW i j hij a ha`.
+
+Establish `h2 : InG X p (crd X p θ Q ((Amat X hb u p : Matrix (Fin X.B.I.n) (Fin X.B.I.n) (TpX X p)) *ᵥ b) (wI j))` using `crd_gLam X p θ Q hLB _ (kloc_gLam X p _ hK b hb') (wI j)`. Establish `h3 : InG X p (((gOf p : ℕ) : FpX X p) * (∑ j' : Fin D.R.k, Bk j j' * (c (wI j') : FpX X p) - (c (wI j) : FpX X p)))`. Use `⟨∑ j' : Fin D.R.k, (⟨Bk j j', hBint j j'⟩ : p.1.adicCompletionIntegers X.B.I.F) * c (wI j') - c (wI j), ?_⟩` and prove the remaining obligations. Use `push_cast`. Both sides reduce to the same expression.
+
+Rewrite `hc` using `[← hab, Matrix.mulVec_add, crd_add, Pi.add_apply]`. Establish `h4` using `inG_add (inG_add h1 h2) h3`. Use `h4 using 1` and compare the differences between its conclusion and the goal. Take the linear combination `-hc`.
+-/
 theorem fwd_col (hLB : LatBasis X p θ (reindex₂ X p Q))
     (hy1 : ∀ s, ¬ IsW s → ((Q⁻¹ : GL (Idx D.R.rS D.R.k) (FpX X p)) : Matrix (Idx D.R.rS D.R.k) (Idx D.R.rS D.R.k) (FpX X p)) *ᵥ
         (pr1 θ (ratV (F := X.B.I.F) (FpX X p) (vecAt (frameOf X u) s)) ∘ (idxEquiv X).symm) =
@@ -135,6 +164,11 @@ theorem fwd_col (hLB : LatBasis X p θ (reindex₂ X p Q))
   convert h4 using 1
   linear_combination -hc
 
+/- English proof (translation)
+Break down `s with a | (m | b)` into its components or cases. Simplify using `[Formalism.FourierDecayAlt.S3.hEmb, Matrix.fromBlocks_mulVec]`. Break down `m with i | c` into its components or cases. Conclude with `(hs ⟨i, rfl⟩).elim`. Simplify using `[Formalism.FourierDecayAlt.S3.hEmb, Formalism.FourierDecayAlt.S3.midEmb, Matrix.fromBlocks_mulVec]`.
+
+Simplify using `[Formalism.FourierDecayAlt.S3.hEmb, Matrix.fromBlocks_mulVec]`.
+-/
 theorem hEmb_mulVec_frame {A : Type} [CommRing A] {r k : ℕ} (M : Matrix (Fin k) (Fin k) A) (w : Idx r k → A)
     (s : Idx r k) (hs : ¬ IsW s) : (hEmb r M *ᵥ w) s = w s := by
   rcases s with a | (m | b)
@@ -144,6 +178,9 @@ theorem hEmb_mulVec_frame {A : Type} [CommRing A] {r k : ℕ} (M : Matrix (Fin k
     · simp [Formalism.FourierDecayAlt.S3.hEmb, Formalism.FourierDecayAlt.S3.midEmb, Matrix.fromBlocks_mulVec]
   · simp [Formalism.FourierDecayAlt.S3.hEmb, Matrix.fromBlocks_mulVec]
 
+/- English proof (translation)
+Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty => simp [crd_zero]`. Consider the case `insert j t hj ih`. Rewrite using `[Finset.sum_insert hj, Finset.sum_insert hj, crd_add, Pi.add_apply, ih, crd_osmul, Pi.smul_apply, smul_eq_mul]`.
+-/
 theorem crd_sum_smul (t : Finset (Fin D.R.k)) (f : Fin D.R.k → Op X p)
     (g : Fin D.R.k → Fin X.B.I.n → TpX X p) (s : Idx D.R.rS D.R.k) :
     crd X p θ Q (∑ j ∈ t, f j • g j) s = ∑ j ∈ t, (f j : FpX X p) * crd X p θ Q (g j) s := by
@@ -154,6 +191,27 @@ theorem crd_sum_smul (t : Finset (Fin D.R.k)) (f : Fin D.R.k → Op X p)
     rw [Finset.sum_insert hj, Finset.sum_insert hj, crd_add, Pi.add_apply, ih, crd_osmul, Pi.smul_apply,
       smul_eq_mul]
 
+/- English proof (translation)
+Use `choose c hc using coords_weight_vector X hb u p θ Q hW`. Establish `hY : crd X p θ Q ((Amat X hb u p : Matrix (Fin X.B.I.n) (Fin X.B.I.n) (TpX X p)) *ᵥ (((((Amat X hb u p)⁻¹ * Ymat X u p x * Amat X hb u p : GL (Fin X.B.I.n) (TpX X p)) : Matrix (Fin X.B.I.n) (Fin X.B.I.n) (TpX X p)) - 1) *ᵥ PI.FinKW.vecV X.B.I p.1 (X.bw i))) = hEmb D.R.rS (Bo.map …`. Rewrite using `[hAv_eq, crd_sub, hYc, hc i]`. Rewrite using `[hY]`. Repeatedly rewrite using `[hc]`.
+
+Establish `hal : ∀ z : Op X p, algebraMap (Op X p) (FpX X p) z = (z : FpX X p)` using `fun z => rfl`. Use `set F := Finset.univ.filter (fun j : Fin D.R.k => j.1 < i.1) with hF`. Establish `hG2 : ∀ s' : Idx D.R.rS D.R.k, InG X p (((gOf p : ℕ) : FpX X p) * ∑ j ∈ F, (Bo j i : FpX X p) * ((c j s' : p.1.adicCompletionIntegers X.B.I.F) : FpX X p))` using `fun s' => ⟨∑ j ∈ F, Bo j i * c j s', by push_cast; rfl⟩`. Distinguish the cases in `hs : IsW s`. Take `⟨j0, rfl⟩` from `hs`.
+
+Establish `h1` using `key_coord X p θ Q (Bo.map (algebraMap (Op X p) (FpX X p))) i j0 (c i)`. Rewrite using `[h1]`. Establish `hG1 : InG X p (((gOf p : ℕ) : FpX X p) * (∑ j' : Fin D.R.k, (Bo.map (algebraMap (Op X p) (FpX X p))) j0 j' * ((c i (wI j') : p.1.adicCompletionIntegers X.B.I.F) : FpX X p) - ((c i (wI j0) : p.1.adicCompletionIntegers X.B.I.F) : FpX X p)))` using `⟨∑ j' : Fin D.R.k, Bo j0 j' * c i (wI j') - c i (wI j0), by push_cast; rfl⟩`. Establish `hsum : ∑ j ∈ F, (Bo j i : FpX X p) * ((Pi.single (wI j) 1 - ((gOf p : ℕ) : FpX X p) • (fun s => ((c j s : p.1.adicCompletionIntegers X.B.I.F) : FpX X p)) : Idx D.R.rS D.R.k → FpX X p)) (wI j0) = (if j0 ∈ F then (Bo j0 i : FpX X p) else 0) - ((gOf p : ℕ) : FpX X p) * ∑ j ∈ F, (Bo …`. Simplify using `only [Pi.sub_apply, Pi.smul_apply, smul_eq_mul, Pi.single_apply, Sum.inr.injEq, Sum.inl.injEq, mul_sub, mul_ite, mul_one, mul_zero, Finset.sum_sub_distrib, Finset.sum_ite_eq, Finset.mul_sum]`.
+
+Use `congr 1`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hsum]`. Distinguish the cases in `hij : i ≤ j0`.
+
+Establish `hn : j0 ∉ F`. Rewrite using `[hF, Finset.mem_filter]`. Introduce `h`. Conclude with `absurd h.2 (not_lt.2 hij)`. Rewrite using `[if_neg hn]`.
+
+Establish `h3` using `inG_add (inG_sub (hcol j0 hij) hG1) (hG2 (wI j0))`. Use `h3 using 1` and compare the differences between its conclusion and the goal. Simplify using `only [Matrix.map_apply, hal]`. Expand and normalize the polynomial expressions, which then agree. Establish `hm : j0 ∈ F`.
+
+Rewrite using `[hF, Finset.mem_filter]`. Conclude with `⟨Finset.mem_univ _, lt_of_not_ge hij⟩`. Establish `hne : j0 ≠ i` using `fun h => hij (h ▸ le_rfl)`. Rewrite using `[if_pos hm, if_neg hne]`. Establish `h3` using `inG_add (inG_sub (inG_zero (X := X) (p := p)) hG1) (hG2 (wI j0))`.
+
+Use `h3 using 1` and compare the differences between its conclusion and the goal. Simplify using `only [Matrix.map_apply, hal]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Pi.sub_apply, hEmb_mulVec_frame _ _ s hs, sub_self, zero_sub]`. Establish `hsum : ∑ j ∈ F, (Bo j i : FpX X p) * ((Pi.single (wI j) 1 - ((gOf p : ℕ) : FpX X p) • (fun s => ((c j s : p.1.adicCompletionIntegers X.B.I.F) : FpX X p)) : Idx D.R.rS D.R.k → FpX X p)) s = -(((gOf p : ℕ) : FpX X p) * ∑ j ∈ F, (Bo j i : FpX X p) * ((c j s : p.1.adicCompletionInteg …`.
+
+Rewrite using `[Finset.mul_sum, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `hsj : s ≠ wI j` using `fun h => hs ⟨j, h⟩`. Rewrite using `[Pi.sub_apply, Pi.single_eq_of_ne hsj, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[hsum, neg_neg]`. Conclude with `hG2 s`.
+-/
 theorem bwd_coords (hW : WClause X hb u p θ Q) (x : KvH X u p.1) (Bo : Matrix (Fin D.R.k) (Fin D.R.k) (Op X p))
     (hYc : ∀ v, crd X p θ Q ((Ymat X u p x : Matrix (Fin X.B.I.n) (Fin X.B.I.n) (TpX X p)) *ᵥ v) =
       hEmb D.R.rS (Bo.map (algebraMap (Op X p) (FpX X p))) *ᵥ crd X p θ Q v) (i : Fin D.R.k)
@@ -235,6 +293,27 @@ theorem bwd_coords (hW : WClause X hb u p θ Q) (x : KvH X u p.1) (Bo : Matrix (
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Use `set Am : Matrix (Fin X.B.I.n) (Fin X.B.I.n) (TpX X p) := (Amat X hb u p : Matrix (Fin X.B.I.n) (Fin X.B.I.n) (TpX X p)) with hAm`. Use `set y := (((((Amat X hb u p)⁻¹ * Ymat X u p x * Amat X hb u p : GL (Fin X.B.I.n) (TpX X p)) : Matrix (Fin X.B.I.n) (Fin X.B.I.n) (TpX X p)) - 1) *ᵥ PI.FinKW.vecV X.B.I p.1 (X.bw i)) with hy`. Use `set F := Finset.univ.filter (fun j : Fin D.R.k => j.1 < i.1) with hF`. Use `set z := Am *ᵥ y - ∑ j ∈ F, Bo j i • (Am *ᵥ PI.FinKW.vecV X.B.I p.1 (X.bw j)) with hz`. Establish `hcrd : ∀ s, InG X p (crd X p θ Q z s)`.
+
+Introduce `s`. Rewrite using `[hz, crd_sub, Pi.sub_apply, crd_sum_smul]`. Conclude with `bwd_coords X hb u p θ Q hW x Bo hYc i hcol s`. Use `choose yv hyv using hcrd`. Use `set w' := mkVec X p θ Q (fun s => ((yv s : p.1.adicCompletionIntegers X.B.I.F) : FpX X p)) with hw'`.
+
+Establish `hw'lat : w' ∈ latLoc (E` using `X.B.I.E) p.1 (X.B.I.L : Set (Fin X.B.I.n → X.B.I.E)) := lat_of_crd X p θ Q hLB w' (secondProj_mkVec_zero X p θ Q _) (fun s => by rw [hw', crd_mkVec]; exact (yv s).2)`. Use `set gO : p.1.adicCompletionIntegers X.B.I.F := ((gOf p : ℕ) : p.1.adicCompletionIntegers X.B.I.F) with hgO`. Establish `hpr2v : ∀ j, pr2 θ (PI.FinKW.vecV X.B.I p.1 (X.bw j)) = 0` using `fun j => secondProj_weight_vector_zero X p θ hε j`. Establish `hpr2y : pr2 θ y = 0` using `secondProj_mulVec_zero X p θ _ _ (hpr2v i)`. Establish `hpr2z : pr2 θ z = 0`.
+
+Rewrite using `[hz, map_sub, map_sum, secondProj_mulVec_zero X p θ _ _ hpr2y, zero_sub, neg_eq_zero]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.map_smul_of_tower, secondProj_mulVec_zero X p θ _ _ (hpr2v j), smul_zero]`. Establish `hzw : z = gO • w'`. Apply `eq_of_crd X p θ Q` to reduce the goal to its premises.
+
+Rewrite using `[crd_osmul, hw', crd_mkVec]`. Use function extensionality and compare the values at `s`. Rewrite using `[hyv s, Pi.smul_apply, smul_eq_mul, hgO]`. Use `push_cast`. Both sides reduce to the same expression.
+
+Rewrite using `[hpr2z, LinearMap.map_smul_of_tower, hw', secondProj_mkVec_zero, smul_zero]`. Establish `hK : HA.mat (Fv X.B.I.F p.1) X.B.I.cm.sig X.B.I.J (xuP X hb u p) ∈ Kloc (E` using `X.B.I.E) p.1 (X.B.I.L : Set (Fin X.B.I.n → X.B.I.E)) := unipotent_mem_localStabilizer X hb u p`. Establish `hKi` using `(Kloc (E := X.B.I.E) p.1 (X.B.I.L : Set (Fin X.B.I.n → X.B.I.E))).inv_mem hK`. Establish `hlat : (((Amat X hb u p)⁻¹ : GL (Fin X.B.I.n) (TpX X p)) : Matrix (Fin X.B.I.n) (Fin X.B.I.n) (TpX X p)) *ᵥ w' ∈ latLoc (E` using `X.B.I.E) p.1 (X.B.I.L : Set (Fin X.B.I.n → X.B.I.E)) := (hKi w').1 hw'lat`. Establish `hinv : ∀ v, (((Amat X hb u p)⁻¹ : GL (Fin X.B.I.n) (TpX X p)) : Matrix (Fin X.B.I.n) (Fin X.B.I.n) (TpX X p)) *ᵥ (Am *ᵥ v) = v`.
+
+Introduce `v`. Rewrite using `[hAm, Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec]`. Establish `hAz : (((Amat X hb u p)⁻¹ : GL (Fin X.B.I.n) (TpX X p)) : Matrix (Fin X.B.I.n) (Fin X.B.I.n) (TpX X p)) *ᵥ z = y - ∑ j ∈ F, Bo j i • PI.FinKW.vecV X.B.I p.1 (X.bw j)`. Rewrite using `[hz, Matrix.mulVec_sub, hinv, Matrix.mulVec_sum]`. Use `congr 1`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_smul, hinv]`. Establish `hmem : y - ∑ j ∈ F, Bo j i • PI.FinKW.vecV X.B.I p.1 (X.bw j) ∈ Ideal.span {((gOf p : ℕ) : p.1.adicCompletionIntegers X.B.I.F)} • latLoc (E` using `X.B.I.E) p.1 (X.B.I.L : Set (Fin X.B.I.n → X.B.I.E)) := by`. Rewrite using `[← hAz, hzw, Matrix.mulVec_smul]`. Conclude with `Submodule.smul_mem_smul (Ideal.mem_span_singleton_self _) hlat`.
+
+Establish `hsp : ∑ j ∈ F, Bo j i • PI.FinKW.vecV X.B.I p.1 (X.bw j) ∈ Submodule.span (p.1.adicCompletionIntegers X.B.I.F) {w | ∃ t ∈ OEp X p, ∃ s ∈ (Set.range fun b => PI.FinKW.vecV X.B.I p.1 (X.e0 b)) ∪ (fun j' => PI.FinKW.vecV X.B.I p.1 (X.bw j')) '' {j' | j'.1 < i.1}, w = t • s}`. Use `Submodule.sum_mem _ fun j hj => Submodule.smul_mem _ _ (Submodule.subset_span ?_)` and prove the remaining obligations. Use `⟨1, imA_OEp_one X p, PI.FinKW.vecV X.B.I p.1 (X.bw j), Or.inr ⟨j, ?_, rfl⟩, (one_smul _ _).symm⟩` and prove the remaining obligations. Rewrite `hj` using `[hF, Finset.mem_filter]`. Conclude with `hj.2`.
+
+Rewrite using `[imA_inModP_Bg]`. Unfold `InModP`. Conclude with `Submodule.mem_sup.2 ⟨_, hsp, _, hmem, add_sub_cancel _ _⟩`.
+-/
 theorem bwd_col (hLB : LatBasis X p θ (reindex₂ X p Q)) (hε : θ (epsP X p) = (1, 0))
     (hW : WClause X hb u p θ Q) (x : KvH X u p.1) (Bo : Matrix (Fin D.R.k) (Fin D.R.k) (Op X p))
     (hYc : ∀ v, crd X p θ Q ((Ymat X u p x : Matrix (Fin X.B.I.n) (Fin X.B.I.n) (TpX X p)) *ᵥ v) =

@@ -3,6 +3,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.DualL
 
 open Polynomial Matrix IsLocalRing TensorProduct
 
+/- English proof (translation)
+Introduce `x hx`. Rewrite using `[LinearMap.BilinForm.mem_dualSubmodule]`. Introduce `y hy`. Establish `h1` using `(Bf.mem_dualSubmodule).1 (h hy) x hx`. Rewrite `h1` using `[hs.eq]`. Then use the resulting hypothesis.
+-/
 private theorem UpperTheory.V.AlgebraTools.almost_selfdual_swap {A : Type} [CommRing A] {F V : Type} [Field F]
     [Algebra A F] [AddCommGroup V] [Module F V] [Module A V] [IsScalarTower A F V]
     (Bf : LinearMap.BilinForm F V) (hs : Bf.IsSymm) {M N : Submodule A V}
@@ -13,6 +16,15 @@ private theorem UpperTheory.V.AlgebraTools.almost_selfdual_swap {A : Type} [Comm
   have h1 := (Bf.mem_dualSubmodule).1 (h hy) x hx
   rwa [hs.eq] at h1
 
+/- English proof (translation)
+Introduce `x hx`. Rewrite using `[LinearMap.BilinForm.mem_dualSubmodule]`. Introduce `z hz`. Use `Submodule.smul_induction_on (p := fun z => Bf x z ∈ (1 : Submodule A F)) hz ?_ ?_` and prove the remaining obligations. Introduce `a ha n hn`.
+
+Establish `h1` using `(Bf.mem_dualSubmodule).1 (h (Submodule.smul_mem_smul ha hx)) n hn`. Establish `e1 : Bf x (a • n) = algebraMap A F a * Bf x n`. Rewrite using `[← algebraMap_smul F a n, map_smul, smul_eq_mul]`. Establish `e2 : Bf (a • x) n = algebraMap A F a * Bf x n`. Rewrite using `[← algebraMap_smul F a x, map_smul, LinearMap.smul_apply, smul_eq_mul]`.
+
+Use `show Bf x (a • n) ∈ (1 : Submodule A F)`. Rewrite using `[e1, ← e2]`. Conclude with `h1`. Introduce `y z hy hz show Bf x (y + z) ∈ (1 : Submodule A F)`. Rewrite using `[map_add]`.
+
+Conclude with `Submodule.add_mem _ hy hz`.
+-/
 private theorem UpperTheory.V.AlgebraTools.almost_selfdual_move {A : Type} [CommRing A] {F V : Type} [Field F]
     [Algebra A F] [AddCommGroup V] [Module F V] [Module A V] [IsScalarTower A F V]
     (Bf : LinearMap.BilinForm F V) (I : Ideal A) {M N : Submodule A V}
@@ -35,6 +47,11 @@ private theorem UpperTheory.V.AlgebraTools.almost_selfdual_move {A : Type} [Comm
     rw [map_add]
     exact Submodule.add_mem _ hy hz
 
+/- English proof (translation)
+Introduce `y hy`. Use `Submodule.smul_induction_on (p := fun y => f y ∈ I • M) hy ?_ ?_` and prove the remaining obligations. Introduce `a ha n hn show f (a • n) ∈ I • M`. Rewrite using `[← algebraMap_smul F a n, map_smul, algebraMap_smul]`. Conclude with `Submodule.smul_mem_smul ha (h n hn)`.
+
+Introduce `y z hy hz show f (y + z) ∈ I • M`. Rewrite using `[map_add]`. Conclude with `Submodule.add_mem _ hy hz`.
+-/
 private theorem UpperTheory.V.AlgebraTools.almost_selfdual_smul {A : Type} [CommRing A] {F V : Type} [Field F]
     [Algebra A F] [AddCommGroup V] [Module F V] [Module A V] [IsScalarTower A F V]
     (f : Module.End F V) (I : Ideal A) {M : Submodule A V} (h : ∀ y ∈ M, f y ∈ M) :
@@ -50,6 +67,11 @@ private theorem UpperTheory.V.AlgebraTools.almost_selfdual_smul {A : Type} [Comm
     rw [map_add]
     exact Submodule.add_mem _ hy hz
 
+/- English proof (translation)
+Introduce `g y hy`. Rewrite `hy`, the goal using `[LinearMap.BilinForm.mem_dualSubmodule]`. Introduce `z hz`. Establish `hz' : r (σ g) (r (σ g)⁻¹ z) = z`. Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`.
+
+Take `⟨a, ha⟩` from `Submodule.mem_one.mp (hy _ (hY _ _ hz))`. Rewrite using `[← hz', hr, ← ha, ← map_mul]`. Conclude with `Submodule.mem_one.mpr ⟨_, rfl⟩`.
+-/
 private theorem UpperTheory.V.AlgebraTools.map_mem_dualSubmodule_of_bilinForm_similitude {A : Type} [CommRing A] {F V G : Type} [Field F]
     [Algebra A F] [AddCommGroup V] [Module F V] [Module A V] [IsScalarTower A F V] [Group G]
     (Bf : LinearMap.BilinForm F V) (r : G →* Module.End F V) (σ : G → G) (u : G → A)
@@ -65,6 +87,9 @@ private theorem UpperTheory.V.AlgebraTools.map_mem_dualSubmodule_of_bilinForm_si
   rw [← hz', hr, ← ha, ← map_mul]
   exact Submodule.mem_one.mpr ⟨_, rfl⟩
 
+/- English proof (translation)
+Introduce `y hy`. Take `⟨p, hp, q, hq, rfl⟩` from `Submodule.mem_sup.mp hy`. Rewrite using `[map_add]`. Conclude with `Submodule.add_mem_sup (hP p hp) (hQ q hq)`.
+-/
 private theorem UpperTheory.V.AlgebraTools.end_apply_mem_sup_of_apply_mem {A : Type} [CommRing A] {F V : Type} [Field F]
     [AddCommGroup V] [Module F V] [Module A V] (f : Module.End F V) {P Q : Submodule A V}
     (hP : ∀ y ∈ P, f y ∈ P) (hQ : ∀ y ∈ Q, f y ∈ Q) : ∀ y ∈ P ⊔ Q, f y ∈ P ⊔ Q := by
@@ -73,6 +98,25 @@ private theorem UpperTheory.V.AlgebraTools.end_apply_mem_sup_of_apply_mem {A : T
   rw [map_add]
   exact Submodule.add_mem_sup (hP p hp) (hQ q hq)
 
+/- English proof (translation)
+Introduce `A _ _ _ F V G _ _ _ _ _ _ _ _ _ Bf r σ u hs hnd hσ hr Y₀ hY₀ hst₀`. Establish `anti : ∀ {P Q : Submodule A V}, P ≤ Q → Bf.dualSubmodule Q ≤ Bf.dualSubmodule P` using `fun hPQ x hx => (Bf.mem_dualSubmodule).2 fun y hy => (Bf.mem_dualSubmodule).1 hx y (hPQ hy)`. Establish `dst : ∀ Y : Submodule A V, (∀ g, ∀ y ∈ Y, r g y ∈ Y) → ∀ g, ∀ y ∈ Bf.dualSubmodule Y, r g y ∈ Bf.dualSubmodule Y` using `fun Y hY => UpperTheory.V.AlgebraTools.map_mem_dualSubmodule_of_bilinForm_similitude Bf r σ u hr hY`. Establish `key : ∀ n : ℕ, ∀ Y : Submodule A V, Submodule.IsLattice F Y → (∀ g, ∀ y ∈ Y, r g y ∈ Y) → Y ≤ Bf.dualSubmodule Y → maximalIdeal A ^ n • Bf.dualSubmodule Y ≤ Y → ∃ Y : Submodule A V, Submodule.IsLattice F Y ∧ (∀ g, ∀ y ∈ Y, r g y ∈ Y) ∧ (∀ g, ∀ y ∈ Bf.dualSubmodule Y, r g y ∈ Bf.d …`. Introduce `n`.
+
+Proceed by induction on `n with`. Consider the case `zero`. Introduce `Y hY hst hle hn`. Use `⟨Y, hY, hst, dst Y hst, hle, le_trans Submodule.smul_le_right ?_⟩` and prove the remaining obligations. Simplify using `using hn`.
+
+Consider the case `succ n ih`. Introduce `Y hY hst hle hn`. Break down `n with _ | k` into its components or cases. Conclude with `⟨Y, hY, hst, dst Y hst, hle, by simpa using hn⟩`. Establish `hDY` using `(UpperTheory.V.AlgebraTools.dual_lattice Bf hs hnd Y hY).1`.
+
+Establish `hDDY : Y ≤ Bf.dualSubmodule (Bf.dualSubmodule Y)` using `UpperTheory.V.AlgebraTools.almost_selfdual_swap Bf hs le_rfl`. Establish `hsm : maximalIdeal A ^ (k + 1) • Bf.dualSubmodule Y ≤ Bf.dualSubmodule Y` using `Submodule.smul_le_right`. Establish `hYW : Y ≤ Y ⊔ maximalIdeal A ^ (k + 1) • Bf.dualSubmodule Y` using `le_sup_left`. Establish `hWD : Y ⊔ maximalIdeal A ^ (k + 1) • Bf.dualSubmodule Y ≤ Bf.dualSubmodule Y` using `sup_le hle hsm`. Establish `hWl : Submodule.IsLattice F (Y ⊔ maximalIdeal A ^ (k + 1) • Bf.dualSubmodule Y)` using `by haveI := hY haveI := hDY`.
+
+Use `Submodule.IsLattice.of_le_of_isLattice_of_fg F hYW ?_` and prove the remaining obligations. Establish `: IsNoetherian A ↥(Bf.dualSubmodule Y)` using `inferInstance`. Establish `: IsNoetherian A ↥(Y ⊔ maximalIdeal A ^ (k + 1) • Bf.dualSubmodule Y : Submodule A V)` using `isNoetherian_of_le hWD`. Conclude with `Module.Finite.iff_fg.mp inferInstance`. Establish `hWst : ∀ g, ∀ y ∈ Y ⊔ maximalIdeal A ^ (k + 1) • Bf.dualSubmodule Y, r g y ∈ Y ⊔ maximalIdeal A ^ (k + 1) • Bf.dualSubmodule Y` using `fun g => UpperTheory.V.AlgebraTools.end_apply_mem_sup_of_apply_mem (r g) (hst g) (UpperTheory.V.AlgebraTools.almost_selfdual_smul (r g) _ (dst Y hst g))`.
+
+Establish `hsq : maximalIdeal A ^ (k + 1) • (maximalIdeal A ^ (k + 1) • Bf.dualSubmodule Y) ≤ Bf.dualSubmodule (Bf.dualSubmodule Y)`. Rewrite using `[← Submodule.mul_smul, ← pow_add]`. Use `le_trans (Submodule.smul_mono (Ideal.pow_le_pow_right (by omega)) le_rfl) (le_trans hn hDDY)` and prove the remaining obligations. Establish `hWW : Y ⊔ maximalIdeal A ^ (k + 1) • Bf.dualSubmodule Y ≤ Bf.dualSubmodule (Y ⊔ maximalIdeal A ^ (k + 1) • Bf.dualSubmodule Y)`. Use `sup_le (UpperTheory.V.AlgebraTools.almost_selfdual_swap Bf hs hWD) ?_` and prove the remaining obligations.
+
+Use `UpperTheory.V.AlgebraTools.almost_selfdual_swap Bf hs (sup_le ?_ ?_)` and prove the remaining obligations. Conclude with `UpperTheory.V.AlgebraTools.almost_selfdual_swap Bf hs hsm`. Conclude with `UpperTheory.V.AlgebraTools.almost_selfdual_move Bf _ hsq`. Establish `hWdual : maximalIdeal A ^ (k + 1) • Bf.dualSubmodule (Y ⊔ maximalIdeal A ^ (k + 1) • Bf.dualSubmodule Y) ≤ Y ⊔ maximalIdeal A ^ (k + 1) • Bf.dualSubmodule Y` using `le_trans (Submodule.smul_mono le_rfl (anti hYW)) le_sup_right`. Conclude with `ih _ hWl hWst hWW hWdual`.
+
+Establish `hD₀` using `(UpperTheory.V.AlgebraTools.dual_lattice Bf hs hnd Y₀ hY₀).1`. Use `haveI := hY₀`. Use `haveI := hD₀`. Establish `hY₁ : Submodule.IsLattice F (Y₀ ⊓ Bf.dualSubmodule Y₀)` using `inferInstance`. Establish `hst₁ : ∀ g, ∀ y ∈ Y₀ ⊓ Bf.dualSubmodule Y₀, r g y ∈ Y₀ ⊓ Bf.dualSubmodule Y₀` using `fun g y hy => Submodule.mem_inf.mpr ⟨hst₀ g y (Submodule.mem_inf.mp hy).1, dst Y₀ hst₀ g y (Submodule.mem_inf.mp hy).2⟩`.
+
+Establish `hle₁ : Y₀ ⊓ Bf.dualSubmodule Y₀ ≤ Bf.dualSubmodule (Y₀ ⊓ Bf.dualSubmodule Y₀)` using `le_trans inf_le_right (anti inf_le_left)`. Take `⟨s, hs'⟩` from `(UpperTheory.V.AlgebraTools.dual_lattice Bf hs hnd _ hY₁).2.2 _ (UpperTheory.V.AlgebraTools.dual_lattice Bf hs hnd _ hY₁).1`. Conclude with `key s _ hY₁ hst₁ hle₁ hs'`.
+-/
 theorem UpperTheory.V.AlgebraTools.almost_selfdual :
     ∀ {A : Type} [CommRing A] [IsDomain A] [IsDiscreteValuationRing A] {F V G : Type} [Field F] [Algebra A F] [IsFractionRing A F] [AddCommGroup V] [Module F V] [Module A V] [IsScalarTower A F V] [Module.Finite F V] [Group G] (Bf : LinearMap.BilinForm F V) (r : G →* Module.End F V) (σ : G → G) (u : G → A), Bf.IsSymm → Bf.Nondegenerate → Function.Surjective σ → (∀ g y z, Bf (r g y) (r (σ g) z) = algebraMap A F (u g) * Bf y z) → ∀ Y₀ : Submodule A V, Submodule.IsLattice F Y₀ → (∀ g, ∀ y ∈ Y₀, r g y ∈ Y₀) → ∃ Y : Submodule A V, Submodule.IsLattice F Y ∧ (∀ g, ∀ y ∈ Y, r g y ∈ Y) ∧ (∀ g, ∀ y ∈ Bf.dualSubmodule Y, r g y ∈ Bf.dualSubmodule Y) ∧ Y ≤ Bf.dualSubmodule Y ∧ maximalIdeal A • Bf.dualSubmodule Y ≤ Y := by
   intro A _ _ _ F V G _ _ _ _ _ _ _ _ _ Bf r σ u hs hnd hσ hr Y₀ hY₀ hst₀

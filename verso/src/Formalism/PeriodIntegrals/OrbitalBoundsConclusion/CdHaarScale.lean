@@ -4,6 +4,17 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.HaarScaling.MapEqSelfOf
 
 open MeasureTheory MeasureTheory.Measure PI.UnitaryGroupMassFormula.CdHaarScale.Main
 
+/- English proof (translation)
+Introduce `cd n ε`. Distinguish the cases in `hex : ∃ (P Q : ℕ) (e : Fin P ⊕ Fin Q ≃ Fin n), (∀ i, ε (e (Sum.inl i)) = true) ∧ (∀ j, ε (e (Sum.inr j)) = false)`. Take `⟨P₀, Q₀, e₀, h1₀, h2₀⟩` from `hex`. Establish `key : ∀ (P Q : ℕ) (e : Fin P ⊕ Fin Q ≃ Fin n) (h1 : ∀ i, ε (e (Sum.inl i)) = true) (h2 : ∀ j, ε (e (Sum.inr j)) = false), (cd.cd P Q).map (phi e h1 h2) = (cd.cd P₀ Q₀).map (phi e₀ h1₀ h2₀)`. Introduce `P Q e h1 h2`.
+
+Establish `hP : P = P₀` using `(card_true e h1 h2).symm.trans (card_true e₀ h1₀ h2₀)`. Establish `hQ : Q = Q₀` using `(card_false e h1 h2).symm.trans (card_false e₀ h1₀ h2₀)`. Substitute `hP hQ` using the available equality. Use `cd.haar P Q` as an intermediate fact. Conclude with `map_phi_indep e₀ e h1₀ h2₀ h1 h2 (cd.cd P Q)`.
+
+Use `cd.haar P₀ Q₀` as an intermediate fact. Establish `hν : (cd.cd P₀ Q₀).map (phi e₀ h1₀ h2₀) = haarScalarFactor ((cd.cd P₀ Q₀).map (phi e₀ h1₀ h2₀)) (Formalism.REAL.muG ε) • Formalism.REAL.muG ε` using `isMulLeftInvariant_eq_smul _ _`. Use `⟨haarScalarFactor ((cd.cd P₀ Q₀).map (phi e₀ h1₀ h2₀)) (Formalism.REAL.muG ε), haarScalarFactor_pos_of_isHaarMeasure _ _, ?_⟩` and prove the remaining obligations. Introduce `P Q e h1 h2 A hA`. Establish `hp : Measurable (⇑(phi e h1 h2))` using `(phi e h1 h2).continuous.measurable`.
+
+Rewrite using `[tie_set e h1 h2 A, ← Measure.map_apply hp hA, key P Q e h1 h2]`. Use `conv_rhs => rw [hν]`. Rewrite using `[ENNReal.smul_def]`. Use `⟨1, one_pos, ?_⟩` and prove the remaining obligations. Introduce `P Q e h1 h2`.
+
+Conclude with `absurd ⟨P, Q, e, h1, h2⟩ hex`.
+-/
 theorem cd_haar_scaling : PI.CdHaarScale := by
   intro cd n ε
   by_cases hex : ∃ (P Q : ℕ) (e : Fin P ⊕ Fin Q ≃ Fin n),

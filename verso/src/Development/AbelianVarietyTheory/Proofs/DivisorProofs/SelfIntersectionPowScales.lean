@@ -20,6 +20,11 @@ noncomputable section
 
 namespace GlobalTheory.SelfInterPow
 
+/- English proof (translation)
+Introduce `hC k _ X _ p D hX L a ha e`. Take `⟨Φ, hΦ⟩` from `((hC.arExists k X p D hX).2 Unit fun _ => L).1`. Establish `h₁` using `(((hC.arIso k X p D hX).2 Unit _ Φ hΦ).1 ()).unique hX ha`. Take `⟨H, hH, he⟩` from `hΦ.1 fun _ => (e : ℤ)`. Use `⟨H, (hC.arIso k X p D hX).1 _ _ H (GlobalTheory.ArInt.isometric_comb_unit_pow k X p L e) hH, he.trans ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← h₁, ← smul_eq_mul, ← map_smul, ArInt.lin, Fintype.sum_unique, mul_pow, ← map_pow, MvPolynomial.smul_eq_C_mul]`. Simplify using the standard rewrite rules.
+-/
 theorem isSelfInter_pow : GlobalTheory.Published.ArCalc → ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ),
     IsArithVar p D → ∀ (L : HermLB p) (a : ℝ), L.IsSelfInter a → ∀ e : ℕ,
       (L.pow e).IsSelfInter ((e : ℝ) ^ (D + 1) * a) := by

@@ -16,6 +16,19 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 
 end
 
+/- English proof (translation)
+Use `haveI : FaithfulSMul (𝓞 F) (𝓞 E) := FaithfulSMul.of_field_isFractionRing (𝓞 F) (𝓞 E) F E`. Use `haveI : NoZeroSMulDivisors (𝓞 F) (𝓞 E) := ⟨fun {c x} h => by`. Rewrite `h` using `[Algebra.smul_def]`. Break down `mul_eq_zero.mp h with h | h` into its components or cases. Use `left`.
+
+Conclude with `(FaithfulSMul.algebraMap_injective (𝓞 F) (𝓞 E)) (by simpa using h)`. Conclude with `Or.inr h⟩`. Establish `hv : v.asIdeal ≠ ⊥` using `v.ne_bot`. Use `haveI : v.asIdeal.IsMaximal := v.isMaximal`. Establish `hc` using `Ideal.card_primesOverFinset_le_finrank (𝓞 E) F E hv`.
+
+Rewrite `hc` using `[h2]`. Establish `mem : ∀ W : HeightOneSpectrum (𝓞 E), HeightOneSpectrum.under (𝓞 F) W = v → W.asIdeal ∈ IsDedekindDomain.primesOverFinset v.asIdeal (𝓞 E)`. Introduce `W hW`. Rewrite using `[IsDedekindDomain.mem_primesOverFinset_iff hv]`. Use `⟨W.isPrime, ⟨?_⟩⟩` and prove the remaining obligations.
+
+Rewrite using `[← hW]`. Both sides reduce to the same expression. Establish `hsub : ({P.asIdeal, Q.asIdeal, R.asIdeal} : Finset (Ideal (𝓞 E))) ⊆ IsDedekindDomain.primesOverFinset v.asIdeal (𝓞 E)`. Introduce `x hx`. Simplify using `only [Finset.mem_insert, Finset.mem_singleton] at hx`.
+
+Break down `hx with rfl | rfl | rfl` into its components or cases. Use `exacts [mem P hP, mem Q hQ, mem R hR]`. Establish `h3` using `Finset.card_le_card hsub`. Establish `e1 : P.asIdeal ≠ Q.asIdeal` using `fun h => hPQ (HeightOneSpectrum.ext h)`. Establish `e2 : P.asIdeal ≠ R.asIdeal` using `fun h => hPR (HeightOneSpectrum.ext h)`.
+
+Establish `e3 : Q.asIdeal ≠ R.asIdeal` using `fun h => hQR (HeightOneSpectrum.ext h)`. Rewrite `h3` using `[Finset.card_insert_of_notMem (by simp [e1, e2]), Finset.card_insert_of_notMem (by simp [e3]), Finset.card_singleton]`. Use linear arithmetic over natural numbers and integers.
+-/
 private theorem false_of_three_distinct_primes_over_of_finrank_eq_two {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (h2 : Module.finrank F E = 2) (v : HeightOneSpectrum (𝓞 F)) (P Q R : HeightOneSpectrum (𝓞 E))
     (hP : HeightOneSpectrum.under (𝓞 F) P = v) (hQ : HeightOneSpectrum.under (𝓞 F) Q = v)
@@ -52,6 +65,13 @@ private theorem false_of_three_distinct_primes_over_of_finrank_eq_two {F E : Typ
     Finset.card_singleton] at h3
   omega
 
+/- English proof (translation)
+Establish `hfin : finPartF F E y = 0`. Apply `(finAdEquiv F E).injective` to reduce the goal to its premises. Rewrite using `[map_zero]`. Use extensionality with `Q`. Establish `h` using `(hf Q).trans (map_zero (evalV E Q)).symm`.
+
+Use `first`. Consider the case `exact h`. Consider the case `exact congrArg _ h`. Consider the case `simpa [ev, evalV] using h`. Establish `h1` using `GlobalTheory.HeisThetaF.smul_eq_zero_of_infPartF hi`.
+
+Establish `h2` using `GlobalTheory.HeisThetaF.smul_eq_zero_of_finPartF hfin`. Establish `h3 : pairA F 1 0 + pairA F 0 1 = (1 : AF F)`. Conclude with `Prod.ext (add_zero _) (zero_add _)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem exists_lift_sub_mem_pow_of_mem_wtPart_zero {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (y : AEF F E) (hi : infPartF F E y = 0) (hf : ∀ Q, ev F E Q y = 0) : y = 0 := by
   have hfin : finPartF F E y = 0 := by
@@ -70,6 +90,41 @@ private theorem exists_lift_sub_mem_pow_of_mem_wtPart_zero {F E : Type} [Field F
   calc y = (1 : AF F) • y := (one_smul _ _).symm
     _ = 0 := by rw [← h3, add_smul, h1, h2, add_zero]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hcm e he`. Take `⟨he2, hes, v, η, hη, hsum⟩` from `he`. Take `⟨α, hηα, hαv, hα0⟩` from `id hη`. Substitute `hηα` using the available equality. Establish `hfix : ∀ a : AF F, cAF σ (algebraMap (AF F) (AEF F E) a) = algebraMap (AF F) (AEF F E) a`.
+
+Introduce `a`. Simplify using `[cAF, sigR]`. Establish `hinj : Function.Injective (algebraMap (AF F) (AEF F E))`. Introduce `a b h`. Conclude with `Algebra.TensorProduct.includeLeft_injective (S := F) (R := F) (A := AF F) (B := E) (algebraMap F E).injective h`.
+
+Establish `hs2 : cAF σ e * cAF σ e = cAF σ e` using `by rw [← map_mul, he2]`. Establish `heη : e * algebraMap (AF F) (AEF F E) (pairA F 0 α) = e`. Rewrite using `[← hsum, mul_add, he2, hes, add_zero]`. Establish `hsη : cAF σ e * algebraMap (AF F) (AEF F E) (pairA F 0 α) = cAF σ e`. Rewrite using `[← hsum, mul_add, mul_comm, hes, zero_add, hs2]`.
+
+Establish `evη0 : ∀ Q : HeightOneSpectrum (𝓞 E), HeightOneSpectrum.under (𝓞 F) Q ≠ v → ev F E Q (algebraMap (AF F) (AEF F E) (pairA F 0 α)) = 0`. Introduce `Q hQ`. Rewrite using `[ev_fin, hα0 _ hQ, map_zero]`. Establish `hinfη` using `GlobalTheory.WeilPartsF.infPartF_placeIdem (E := E) hη`. Establish `hie : infPartF F E e = 0`.
+
+Rewrite using `[← heη, map_mul, hinfη, mul_zero]`. Establish `his : infPartF F E (cAF σ e) = 0`. Rewrite using `[← hsη, map_mul, hinfη, mul_zero]`. Establish `hne : e ≠ 0`. Introduce `h0`.
+
+Rewrite `hsum` using `[h0, map_zero, zero_add]`. Establish `h1 : pairA F 0 α = 0` using `hinj (by rw [← hsum, map_zero])`. Establish `h2 : α = 0` using `congrArg Prod.snd h1`. Rewrite `hαv` using `[h2, map_zero]`. Conclude with `zero_ne_one hαv`.
+
+Establish `hnes : cAF σ e ≠ 0`. Introduce `h0`. Establish `h1 : e = algebraMap (AF F) (AEF F E) (pairA F 0 α)` using `by rw [← hsum, h0, add_zero]`. Apply `hne` to reduce the goal to its premises. Rewrite using `[← h0, h1, hfix, ← h1]`.
+
+Establish `hover : ∀ (y : AEF F E) (Q : HeightOneSpectrum (𝓞 E)), y * algebraMap (AF F) (AEF F E) (pairA F 0 α) = y → ev F E Q y ≠ 0 → HeightOneSpectrum.under (𝓞 F) Q = v`. Introduce `y Q hy hQ`. Assume the negation of the conclusion as `hv`. Apply `hQ` to reduce the goal to its premises. Rewrite using `[← hy, map_mul, evη0 Q hv, mul_zero]`.
+
+Establish `prod0 : ∀ Q : HeightOneSpectrum (𝓞 E), ev F E Q e * ev F E Q (cAF σ e) = 0`. Introduce `Q`. Rewrite using `[← map_mul, hes, map_zero]`. Establish `idem1 : ∀ Q : HeightOneSpectrum (𝓞 E), ev F E Q e ≠ 0 → ev F E Q e = 1`. Introduce `Q hQ`.
+
+Establish `h` using `congrArg (ev F E Q) he2`. Rewrite `h` using `[map_mul]`. Conclude with `mul_left_cancel₀ hQ (h.trans (mul_one _).symm)`. Choose the witnesses or unpack the hypotheses as in `⟨P, hP⟩ : ∃ P, ev F E P e ≠ 0 := by`. Assume the negation of the conclusion as `hall`.
+
+Use `push_neg at hall`. Conclude with `hne (exists_lift_sub_mem_pow_of_mem_wtPart_zero e hie hall)`. Choose the witnesses or unpack the hypotheses as in `⟨R, hR⟩ : ∃ R, ev F E R (cAF σ e) ≠ 0 := by`. Assume the negation of the conclusion as `hall`. Use `push_neg at hall`.
+
+Conclude with `hnes (exists_lift_sub_mem_pow_of_mem_wtPart_zero _ his hall)`. Establish `hPv` using `hover e P heη hP`. Establish `hRv` using `hover _ R hsη hR`. Establish `hRe : ev F E R e = 0`. Break down `mul_eq_zero.mp (prod0 R) with h | h` into its components or cases.
+
+Conclude with `h`. Conclude with `absurd h hR`. Establish `hPR : P ≠ R`. Introduce and unpack `rfl`. Conclude with `hP hRe`.
+
+Use `⟨P, ?_, idem1 P hP, ?_⟩` and prove the remaining obligations. Introduce `hfx`. Take `⟨θ, d, -, -, hd, hσθ, hθθ, hspan, -⟩` from `exists_half hcm`. Establish `hsplit : Formalism.MainNotions.SchurIrreducible.IsSplit (E` using `E) v := by`. Use `⟨P, R, hPR, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← hPv]`. Both sides reduce to the same expression. Rewrite using `[← hRv]`. Both sides reduce to the same expression. Establish `hsq` using `sq_of_split hcm hd hσθ hθθ hspan hsplit`.
+
+Establish `hnsq` using `not_sq_of_fx hcm hd hσθ hθθ hspan hfx`. Substitute `hPv` using the available equality. Conclude with `hnsq hsq`. Introduce `Q hQP`. Assume the negation of the conclusion as `hQ`.
+
+Establish `hQv` using `hover e Q heη hQ`. Establish `hQR : Q ≠ R`. Introduce and unpack `rfl`. Conclude with `hQ hRe`. Conclude with `false_of_three_distinct_primes_over_of_finrank_eq_two hcm.2.2.1 v P Q R hPv hQv hRv (Ne.symm hQP) hPR hQR`.
+-/
 theorem UpperTheory.exists_place_of_splitIdempotent_cmExt :
     ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E),
         IsCMExt F E σ → ∀ e, IsSplitIdemF σ e →

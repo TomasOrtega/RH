@@ -9,6 +9,11 @@ namespace PI.KerTens.W
 
 open Formalism.L2.Th1.H (Sesq matH alphaQ qOf opU Th fixedBy)
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `hyp _ (slice_th c L ΛM F hF w b)`. Establish `e1` using `congrFun ha t`. Establish `e2` using `congrFun ha t'`. Simplify using `only [Pi.smul_apply, smul_eq_mul] at e1 e2`. Rewrite using `[e1, e2]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem cross (c : ℝ) (L : PeriodPair) {n : Type} [Fintype n] [DecidableEq n] (ΛM : AddSubgroup (n → ℂ))
     (θ : (n → ℂ) → ℂ)
     (hyp : ∀ F ∈ Th (matH (hOne L n)) (alphaQ c (matH (hOne L n))) ΛM, ∃ a : ℂ, F = a • θ)
@@ -24,6 +29,17 @@ theorem cross (c : ℝ) (L : PeriodPair) {n : Type} [Fintype n] [DecidableEq n] 
   rw [e1, e2]
   ring
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on generalizing z with`. Consider the case `empty`. Establish `hr : repl t0 ∅ z = z`. Use function extensionality and compare the values at `τ i j`. Unfold `repl`.
+
+Simplify using the standard rewrite rules. Rewrite using `[hr]`. Simplify using the standard rewrite rules. Consider the case `insert b s hb ih`. Establish `hc` using `cross c L ΛM θ hyp F hF (repl t0 s z) b (part z b) t0`.
+
+Establish `h1 : upd (repl t0 s z) b (part z b) = repl t0 s z`. Use function extensionality and compare the values at `τ i j`. Distinguish the cases in `h : (i, j) = b`. Substitute `h` using the available equality. Simplify using `[upd, repl, part, hb]`.
+
+Simplify using `[upd, h]`. Establish `h2 : upd (repl t0 s z) b t0 = repl t0 (insert b s) z`. Use function extensionality and compare the values at `τ i j`. Distinguish the cases in `h : (i, j) = b`. Substitute `h` using the available equality.
+
+Simplify using `[upd, repl]`. Simplify using `[upd, repl, Finset.mem_insert, h]`. Rewrite `hc` using `[h1, h2]`. Rewrite using `[Finset.card_insert_of_notMem hb, pow_succ, ← mul_assoc, ih z, Finset.prod_insert hb]`. Take the linear combination `(∏ x ∈ s, θ (part z x)) * hc`.
+-/
 theorem key (c : ℝ) (L : PeriodPair) {n : Type} [Fintype n] [DecidableEq n] (ΛM : AddSubgroup (n → ℂ))
     (θ : (n → ℂ) → ℂ)
     (hyp : ∀ F ∈ Th (matH (hOne L n)) (alphaQ c (matH (hOne L n))) ΛM, ∃ a : ℂ, F = a • θ)
@@ -58,11 +74,27 @@ theorem key (c : ℝ) (L : PeriodPair) {n : Type} [Fintype n] [DecidableEq n] (�
     rw [Finset.card_insert_of_notMem hb, pow_succ, ← mul_assoc, ih z, Finset.prod_insert hb]
     linear_combination (∏ x ∈ s, θ (part z x)) * hc
 
+/- English proof (translation)
+Rewrite using `[tensPow, Fintype.prod_prod_type]`. Both sides reduce to the same expression.
+-/
 theorem tens_eq {n : Type} (θ : (n → ℂ) → ℂ) (N N' : ℕ) (z : n → Fin N' → Fin N → ℂ) :
     tensPow θ N N' z = ∏ b : Fin N' × Fin N, θ (part z b) := by
   rw [tensPow, Fintype.prod_prod_type]
   rfl
 
+/- English proof (translation)
+Introduce `c L n _ _ ΛM θ hyp N N' F hF`. Distinguish the cases in `hex : ∃ t0, θ t0 ^ Fintype.card (Fin N' × Fin N) ≠ 0`. Take `⟨t0, ht0⟩` from `hex`. Use `⟨F (fun τ _ _ => t0 τ) / θ t0 ^ Fintype.card (Fin N' × Fin N), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `z`.
+
+Establish `h` using `key c L ΛM θ hyp F hF t0 Finset.univ z`. Establish `hr : repl t0 Finset.univ z = fun τ _ _ => t0 τ`. Use function extensionality and compare the values at `τ i j`. Simplify using `[repl]`. Rewrite `h` using `[hr, Finset.card_univ, ← tens_eq]`.
+
+Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Clear the denominators using the available nonvanishing facts. Take the linear combination `h`. Simplify using `only [not_exists, not_not] at hex`. Establish `hcard : Fintype.card (Fin N' × Fin N) ≠ 0`.
+
+Introduce `h0`. Use `hex 0` as an intermediate fact. Rewrite `this` using `[h0, pow_zero]`. Conclude with `one_ne_zero this`. Establish `hθ : ∀ t, θ t = 0` using `fun t => (pow_eq_zero_iff hcard).mp (hex t)`.
+
+Take `⟨b⟩ : Nonempty (Fin N' × Fin N)` from `Fintype.card_pos_iff.mp (Nat.pos_of_ne_zero hcard)`. Use `⟨0, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `z`. Take `⟨a, ha⟩` from `hyp _ (slice_th c L ΛM F hF z b)`. Establish `e` using `congrFun ha (part z b)`.
+
+Simplify using `only [Pi.smul_apply, smul_eq_mul, upd_part, hθ, mul_zero] at e`. Simplify using `[e]`.
+-/
 theorem tensSpans : PI.KerTens.TensSpans := by
   intro c L n _ _ ΛM θ hyp N N' F hF
   by_cases hex : ∃ t0, θ t0 ^ Fintype.card (Fin N' × Fin N) ≠ 0

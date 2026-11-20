@@ -12,18 +12,29 @@ open NumberField IsDedekindDomain Matrix PI.UnitaryGroupMassFormula.AdIndexEq PI
 open scoped TensorProduct
 open Formalism.MainNotions.S PI.ScRefExists
 
+/- English proof (translation)
+Use `first`. Consider the case `exact hp.2.2.2.1`. Consider the case `exact hp.2.2.2`.
+-/
 theorem gp_int (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F)) (ε : RV I v) (p1 : RV I v →+* KV I v)
     (hp : IsAdaptedFirstProjection I v ε p1) : ∀ x ∈ Formalism.UG.intOE I.E, p1 (inclV I v x) ∈ OV I v := by
   first
   | exact hp.2.2.2.1
   | exact hp.2.2.2
 
+/- English proof (translation)
+The claim follows from `hp.1`.
+-/
 theorem gp_lin (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F)) (ε : RV I v) (p1 : RV I v →+* KV I v)
     (hp : IsAdaptedFirstProjection I v ε p1) : ∀ c : KV I v, p1 (algebraMap (KV I v) (RV I v) c) = c := hp.1
 
 def hl (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F)) (X Y : Fin I.n → RV I v) : RV I v :=
   Formalism.UG.hform (sigV I v) (I.J.map (inclV I v)) X Y
 
+/- English proof (translation)
+Proceed by induction on `r using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b`. Simplify using `only [sigV, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, Algebra.TensorProduct.map_tmul, AlgHom.id_apply]`. Rewrite using `[spl_sig_sig]`.
+
+Consider the case `add a b ha hb => rw [map_add, map_add, ha, hb]`.
+-/
 theorem sig2 (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F)) (r : RV I v) :
     sigV I v (sigV I v r) = r := by
   induction r using TensorProduct.induction_on with
@@ -34,25 +45,42 @@ theorem sig2 (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F)) (r : RV I v) :
     rw [spl_sig_sig]
   | add a b ha hb => rw [map_add, map_add, ha, hb]
 
+/- English proof (translation)
+Rewrite using `[Algebra.TensorProduct.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply]`.
+-/
 theorem alg_eq (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F)) (c : KV I v) :
     algebraMap (KV I v) (RV I v) c = c ⊗ₜ[I.F] (1 : I.E) := by
   rw [Algebra.TensorProduct.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply]
 
+/- English proof (translation)
+Rewrite using `[alg_eq]`. Simplify using `[sigV]`.
+-/
 theorem sig_alg (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F)) (c : KV I v) :
     sigV I v (algebraMap (KV I v) (RV I v) c) = algebraMap (KV I v) (RV I v) c := by
   rw [alg_eq]
   simp [sigV]
 
+/- English proof (translation)
+Simplify using `only [hl, Formalism.UG.hform, Pi.sub_apply, map_sub, sub_mul, Finset.sum_sub_distrib]`.
+-/
 theorem hl_sub_left (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F)) (X Y Z : Fin I.n → RV I v) :
     hl I v (X - Y) Z = hl I v X Z - hl I v Y Z := by
   simp only [hl, Formalism.UG.hform, Pi.sub_apply, map_sub, sub_mul, Finset.sum_sub_distrib]
 
+/- English proof (translation)
+Simplify using `only [hl, Formalism.UG.hform, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hl_smul_left (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F)) (c : RV I v) (X Z : Fin I.n → RV I v) :
     hl I v (c • X) Z = sigV I v c * hl I v X Z := by
   simp only [hl, Formalism.UG.hform, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]
   refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_
   ring
 
+/- English proof (translation)
+Establish `hJ` using `spl_herm_v I v`. Establish `hJij : ∀ i j, sigV I v ((I.J.map (inclV I v)) j i) = (I.J.map (inclV I v)) i j`. Introduce `i j`. Use `congrFun (congrFun hJ i) j` as an intermediate fact. Simplify `this` using `[Formalism.UG.cT]`.
+
+Simplify using `only [hl, Formalism.UG.hform, map_sum, map_mul, sig2]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hJij j i]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hl_swap (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F)) (X Y : Fin I.n → RV I v) :
     hl I v Y X = sigV I v (hl I v X Y) := by
   have hJ := spl_herm_v I v
@@ -66,6 +94,9 @@ theorem hl_swap (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F)) (X Y : Fin I.n 
   rw [hJij j i]
   ring
 
+/- English proof (translation)
+Simplify using `only [pr, Pm, vec1, vec2, hl, Formalism.UG.hform, dotProduct, mulVec, map_sum, map_mul, Matrix.map_apply, RingHom.comp_apply, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem pr_vec (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F)) (p1 : RV I v →+* KV I v)
     (X Y : Fin I.n → RV I v) :
     pr (Pm I v p1) (vec2 p1 X) (vec1 p1 Y) = p1 (hl I v X Y) := by
@@ -74,6 +105,9 @@ theorem pr_vec (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F)) (p1 : RV I v →
   refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_
   ring
 
+/- English proof (translation)
+Establish `h1 : Formalism.L2.SG.Sub.ratV (F` using `I.F) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv I.F v) l = fun i => inclV I v (l i) := rfl`. Establish `h2 : Formalism.L2.SG.Sub.ratV (F` using `I.F) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv I.F v) l' = fun i => inclV I v (l' i) := rfl`. Rewrite using `[h1, h2]`. Simplify using `only [hl, Formalism.UG.hform, spl_sigV_inclV, Matrix.map_apply, map_sum, map_mul]`.
+-/
 theorem hl_ratV (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F)) (l l' : Fin I.n → I.E) :
     hl I v (Formalism.L2.SG.Sub.ratV (F := I.F) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv I.F v) l)
       (Formalism.L2.SG.Sub.ratV (F := I.F) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv I.F v) l') =
@@ -83,22 +117,36 @@ theorem hl_ratV (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F)) (l l' : Fin I.n
   rw [h1, h2]
   simp only [hl, Formalism.UG.hform, spl_sigV_inclV, Matrix.map_apply, map_sum, map_mul]
 
+/- English proof (translation)
+Simplify using `only [hA, hl, Formalism.UG.hform, map_sum, map_mul, Matrix.map_apply, psiV_sigR, psiV_inclE, PI.FinKW.vecV]`.
+-/
 theorem psiV_hA (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F)) (x y : VA I) :
     PI.FinKW.psiV I v (hA I x y) = hl I v (PI.FinKW.vecV I v x) (PI.FinKW.vecV I v y) := by
   simp only [hA, hl, Formalism.UG.hform, map_sum, map_mul, Matrix.map_apply, psiV_sigR, psiV_inclE,
     PI.FinKW.vecV]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `only [PI.FinKW.vecV, incl, PI.FinKW.LocTo.psiV_inclE]`. Both sides reduce to the same expression.
+-/
 theorem vecV_incl' (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F)) (l : Fin I.n → I.E) :
     PI.FinKW.vecV I v (incl I l) = Formalism.L2.SG.Sub.ratV (F := I.F) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv I.F v) l := by
   funext i
   simp only [PI.FinKW.vecV, incl, PI.FinKW.LocTo.psiV_inclE]
   rfl
 
+/- English proof (translation)
+Rewrite using `[pr_vec, vecV_incl', vecV_incl', hl_ratV]`.
+-/
 theorem pr_rat (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F)) (p1 : RV I v →+* KV I v) (x y : Fin I.n → I.E) :
     pr (Pm I v p1) (vec2 p1 (PI.FinKW.vecV I v (incl I x))) (vec1 p1 (PI.FinKW.vecV I v (incl I y))) =
       p1 (inclV I v (Formalism.UG.hform (starRingEnd I.E) I.J x y)) := by
   rw [pr_vec, vecV_incl', vecV_incl', hl_ratV]
 
+/- English proof (translation)
+Establish `hJij : ∀ i j, starRingEnd I.E (I.J j i) = I.J i j`. Introduce `i j`. Use `congrFun (congrFun I.J_herm i) j` as an intermediate fact. Simplify `this` using `[Formalism.UG.cT]`. Simplify using `only [Formalism.UG.hform, map_sum, map_mul, RingHomCompTriple.comp_apply, RingHom.id_apply]`.
+
+Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hJij j i]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hformE_swap (I : AutInst) (x y : Fin I.n → I.E) :
     Formalism.UG.hform (starRingEnd I.E) I.J y x = starRingEnd I.E (Formalism.UG.hform (starRingEnd I.E) I.J x y) := by
   have hJij : ∀ i j, starRingEnd I.E (I.J j i) = I.J i j := by
@@ -111,6 +159,9 @@ theorem hformE_swap (I : AutInst) (x y : Fin I.n → I.E) :
   rw [hJij j i]
   ring
 
+/- English proof (translation)
+Rewrite using `[PI.FinKW.LocTo.ov_smul_vec]`. Use function extensionality and compare the values at `i`. Simplify using `only [vec1, Pi.smul_apply, smul_eq_mul, map_mul]`. Rewrite using `[← alg_eq, hp]`. Both sides reduce to the same expression.
+-/
 theorem first_coordinate_vector_smul (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F)) (p1 : RV I v →+* KV I v)
     (hp : ∀ c : KV I v, p1 (algebraMap (KV I v) (RV I v) c) = c) (c : OV I v) (X : Fin I.n → RV I v) :
     vec1 p1 (c • X) = c • vec1 p1 X := by
@@ -120,6 +171,9 @@ theorem first_coordinate_vector_smul (I : AutInst) (v : HeightOneSpectrum (𝓞 
   rw [← alg_eq, hp]
   rfl
 
+/- English proof (translation)
+Rewrite using `[PI.FinKW.LocTo.ov_smul_vec]`. Use function extensionality and compare the values at `i`. Simplify using `only [vec2, Pi.smul_apply, smul_eq_mul, map_mul]`. Rewrite using `[← alg_eq, sig_alg, hp]`. Both sides reduce to the same expression.
+-/
 theorem second_coordinate_vector_smul (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F)) (p1 : RV I v →+* KV I v)
     (hp : ∀ c : KV I v, p1 (algebraMap (KV I v) (RV I v) c) = c) (c : OV I v) (X : Fin I.n → RV I v) :
     vec2 p1 (c • X) = c • vec2 p1 X := by
@@ -129,18 +183,30 @@ theorem second_coordinate_vector_smul (I : AutInst) (v : HeightOneSpectrum (𝓞
   rw [← alg_eq, sig_alg, hp]
   rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[vec1]`.
+-/
 theorem first_coordinate_vector_add {I : AutInst} {v : HeightOneSpectrum (𝓞 I.F)} (p1 : RV I v →+* KV I v) (X Y : Fin I.n → RV I v) :
     vec1 p1 (X + Y) = vec1 p1 X + vec1 p1 Y := by
   funext i; simp [vec1]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[vec2]`.
+-/
 theorem vec2_add {I : AutInst} {v : HeightOneSpectrum (𝓞 I.F)} (p1 : RV I v →+* KV I v) (X Y : Fin I.n → RV I v) :
     vec2 p1 (X + Y) = vec2 p1 X + vec2 p1 Y := by
   funext i; simp [vec2]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[vec1]`.
+-/
 theorem first_coordinate_vector_zero {I : AutInst} {v : HeightOneSpectrum (𝓞 I.F)} (p1 : RV I v →+* KV I v) :
     vec1 p1 (0 : Fin I.n → RV I v) = 0 := by
   funext i; simp [vec1]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[vec2]`.
+-/
 theorem second_coordinate_vector_zero {I : AutInst} {v : HeightOneSpectrum (𝓞 I.F)} (p1 : RV I v →+* KV I v) :
     vec2 p1 (0 : Fin I.n → RV I v) = 0 := by
   funext i; simp [vec2]
@@ -149,18 +215,35 @@ section PrSpan
 
 variable {K : Type} [Field K] (O : ValuationSubring K) {n : ℕ} (P : Matrix (Fin n) (Fin n) K)
 
+/- English proof (translation)
+Simplify using `[pr, add_dotProduct]`.
+-/
 theorem prA_add_left (β β' x : Fin n → K) : pr P (β + β') x = pr P β x + pr P β' x := by
   simp [pr, add_dotProduct]
 
+/- English proof (translation)
+Simplify using `[pr, smul_dotProduct]`.
+-/
 theorem prA_smul_left (c : K) (β x : Fin n → K) : pr P (c • β) x = c * pr P β x := by
   simp [pr, smul_dotProduct]
 
+/- English proof (translation)
+Simplify using `[pr, mulVec_add, dotProduct_add]`.
+-/
 theorem prA_add_right (β x y : Fin n → K) : pr P β (x + y) = pr P β x + pr P β y := by
   simp [pr, mulVec_add, dotProduct_add]
 
+/- English proof (translation)
+Simplify using `[pr, mulVec_smul, dotProduct_smul]`.
+-/
 theorem prA_smul_right (c : K) (β x : Fin n → K) : pr P β (c • x) = c * pr P β x := by
   simp [pr, mulVec_smul, dotProduct_smul]
 
+/- English proof (translation)
+Introduce `β hβ`. Proceed by induction on `hβ using Submodule.span_induction with`. Consider the case `mem y hy => exact h y hy`. Consider the case `zero => simp [pr]`. Consider the case `add a b _ _ ha hb => rw [prA_add_left]`.
+
+Conclude with `add_mem ha hb`. Consider the case `smul c a _ ha`. Establish `: c • a = (c : K) • a` using `rfl`. Rewrite using `[this, prA_smul_left]`. Conclude with `mul_mem c.2 ha`.
+-/
 theorem pr_span_left {S : Set (Fin n → K)} {x : Fin n → K} (h : ∀ β ∈ S, pr P β x ∈ O) :
     ∀ β ∈ Submodule.span O S, pr P β x ∈ O := by
   intro β hβ
@@ -173,6 +256,11 @@ theorem pr_span_left {S : Set (Fin n → K)} {x : Fin n → K} (h : ∀ β ∈ S
     rw [this, prA_smul_left]
     exact mul_mem c.2 ha
 
+/- English proof (translation)
+Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy => exact h y hy`. Consider the case `zero => simp [pr]`. Consider the case `add a b _ _ ha hb => rw [prA_add_right]`.
+
+Conclude with `add_mem ha hb`. Consider the case `smul c a _ ha`. Establish `: c • a = (c : K) • a` using `rfl`. Rewrite using `[this, prA_smul_right]`. Conclude with `mul_mem c.2 ha`.
+-/
 theorem pr_span_right {S : Set (Fin n → K)} {β : Fin n → K} (h : ∀ x ∈ S, pr P β x ∈ O) :
     ∀ x ∈ Submodule.span O S, pr P β x ∈ O := by
   intro x hx
@@ -187,6 +275,11 @@ theorem pr_span_right {S : Set (Fin n → K)} {β : Fin n → K} (h : ∀ x ∈ 
 
 end PrSpan
 
+/- English proof (translation)
+Proceed by induction on `hX using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨l, hl, rfl⟩` from `hy`. Conclude with `Submodule.subset_span ⟨l, hl, rfl⟩`. Consider the case `zero => rw [first_coordinate_vector_zero]`.
+
+Conclude with `zero_mem _`. Consider the case `add a b _ _ ha hb => rw [first_coordinate_vector_add]`. Conclude with `add_mem ha hb`. Consider the case `smul c a _ ha => rw [first_coordinate_vector_smul I v p1 hp]`. Conclude with `Submodule.smul_mem _ c ha`.
+-/
 theorem first_coordinate_vector_mem_span (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F)) (p1 : RV I v →+* KV I v)
     (hp : ∀ c : KV I v, p1 (algebraMap (KV I v) (RV I v) c) = c) (X : Fin I.n → RV I v)
     (hX : X ∈ Formalism.L2.SG.Sub.latLoc v (I.L : Set (Fin I.n → I.E))) :
@@ -200,6 +293,11 @@ theorem first_coordinate_vector_mem_span (I : AutInst) (v : HeightOneSpectrum (�
   | add a b _ _ ha hb => rw [first_coordinate_vector_add]; exact add_mem ha hb
   | smul c a _ ha => rw [first_coordinate_vector_smul I v p1 hp]; exact Submodule.smul_mem _ c ha
 
+/- English proof (translation)
+Proceed by induction on `hX using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨l, hl, rfl⟩` from `hy`. Conclude with `Submodule.subset_span ⟨l, hl, rfl⟩`. Consider the case `zero => rw [second_coordinate_vector_zero]`.
+
+Conclude with `zero_mem _`. Consider the case `add a b _ _ ha hb => rw [vec2_add]`. Conclude with `add_mem ha hb`. Consider the case `smul c a _ ha => rw [second_coordinate_vector_smul I v p1 hp]`. Conclude with `Submodule.smul_mem _ c ha`.
+-/
 theorem second_coordinate_vector_mem_span (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F)) (p1 : RV I v →+* KV I v)
     (hp : ∀ c : KV I v, p1 (algebraMap (KV I v) (RV I v) c) = c) (X : Fin I.n → RV I v)
     (hX : X ∈ Formalism.L2.SG.Sub.latLoc v (I.L : Set (Fin I.n → I.E))) :
@@ -213,6 +311,15 @@ theorem second_coordinate_vector_mem_span (I : AutInst) (v : HeightOneSpectrum (
   | add a b _ _ ha hb => rw [vec2_add]; exact add_mem ha hb
   | smul c a _ ha => rw [second_coordinate_vector_smul I v p1 hp]; exact Submodule.smul_mem _ c ha
 
+/- English proof (translation)
+Establish `h0 : ∀ l ∈ (I.L : Set (Fin I.n → I.E)), ∀ l' ∈ (I.L : Set (Fin I.n → I.E)), pr (Pm I v p1) (vec2 p1 (Formalism.L2.SG.Sub.ratV (F` using `I.F) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv I.F v) l)) (vec1 p1 (Formalism.L2.SG.Sub.ratV (F := I.F) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv I.F v) l')) ∈ OV I v := by`. Introduce `l hl l' hl'`. Rewrite using `[pr_vec, hl_ratV]`. Conclude with `gp_int I v ε p1 hp _ ((I.L_dual l').1 hl' l hl)`. Establish `h1 : ∀ β ∈ Submodule.span (OV I v) ((fun l => vec2 p1 (Formalism.L2.SG.Sub.ratV (F` using `I.F) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv I.F v) l)) '' (I.L : Set _)), ∀ x ∈ Submodule.span (OV I v) ((fun l => vec1 p1 (Formalism.L2.SG.Sub.ratV (F := I.F) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv I.F v) l)) '' (I.L : Set _)), pr (P …`.
+
+Introduce `β hβ x hx`. Use `pr_span_left (OV I v) (Pm I v p1) (fun β' hβ' => ?_) β hβ` and prove the remaining obligations. Take `⟨l, hl, rfl⟩` from `hβ'`. Use `pr_span_right (OV I v) (Pm I v p1) (fun x' hx' => ?_) x hx` and prove the remaining obligations. Take `⟨l', hl', rfl⟩` from `hx'`.
+
+Conclude with `h0 l hl l' hl'`. Introduce `β hβ x hx`. Use `pr_span_left (OV I v) (Pm I v p1) (fun β' hβ' => ?_) β hβ` and prove the remaining obligations. Take `⟨X, hX, rfl⟩` from `hβ'`. Use `pr_span_right (OV I v) (Pm I v p1) (fun x' hx' => ?_) x hx` and prove the remaining obligations.
+
+Take `⟨Y, hY, rfl⟩` from `hx'`. Conclude with `h1 _ (second_coordinate_vector_mem_span I v p1 hp.1 X hX) _ (first_coordinate_vector_mem_span I v p1 hp.1 Y hY)`.
+-/
 theorem pr_int (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F)) (ε : RV I v) (p1 : RV I v →+* KV I v)
     (hp : IsAdaptedFirstProjection I v ε p1) : ∀ β ∈ Lam2 I v p1, ∀ x ∈ Lam1 I v p1, pr (Pm I v p1) β x ∈ OV I v := by
 
@@ -240,6 +347,9 @@ theorem pr_int (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F)) (ε : RV I v) (p
   obtain ⟨Y, hY, rfl⟩ := hx'
   exact h1 _ (second_coordinate_vector_mem_span I v p1 hp.1 X hX) _ (first_coordinate_vector_mem_span I v p1 hp.1 Y hY)
 
+/- English proof (translation)
+Rewrite using `[← pr_vec]`. Conclude with `pr_int I v ε p1 hp _ (Submodule.subset_span ⟨X, hX, rfl⟩) _ (Submodule.subset_span ⟨Y, hY, rfl⟩)`.
+-/
 theorem hl_int (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F)) (ε : RV I v) (p1 : RV I v →+* KV I v)
     (hp : IsAdaptedFirstProjection I v ε p1) (X Y : Fin I.n → RV I v)
     (hX : X ∈ Formalism.L2.SG.Sub.latLoc v (I.L : Set (Fin I.n → I.E)))
@@ -247,6 +357,9 @@ theorem hl_int (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F)) (ε : RV I v) (p
   rw [← pr_vec]
   exact pr_int I v ε p1 hp _ (Submodule.subset_span ⟨X, hX, rfl⟩) _ (Submodule.subset_span ⟨Y, hY, rfl⟩)
 
+/- English proof (translation)
+Take `⟨o, rfl⟩` from `hx`. Establish `h : IsIntegral ℤ (starRingEnd I.E (algebraMap (𝓞 I.E) I.E o))` using `(RingOfIntegers.isIntegral_coe o).map (starRingEnd I.E).toIntAlgHom`. Conclude with `⟨⟨_, h⟩, rfl⟩`.
+-/
 theorem conj_intOE (I : AutInst) (x : I.E) (hx : x ∈ Formalism.UG.intOE I.E) :
     starRingEnd I.E x ∈ Formalism.UG.intOE I.E := by
   obtain ⟨o, rfl⟩ := hx
@@ -254,6 +367,15 @@ theorem conj_intOE (I : AutInst) (x : I.E) (hx : x ∈ Formalism.UG.intOE I.E) :
     (RingOfIntegers.isIntegral_coe o).map (starRingEnd I.E).toIntAlgHom
   exact ⟨⟨_, h⟩, rfl⟩
 
+/- English proof (translation)
+Proceed by induction on `ht using Subring.closure_induction with`. Consider the case `mem x hx`. Break down `hx with ⟨y, rfl⟩ | ⟨y, rfl⟩` into its components or cases. Establish `e1 : PI.FinKW.psiV I v ((y : I.E) ⊗ₜ[I.F] (1 : Af I.F)) = inclV I v (y : I.E)` using `psiV_inclE I v (y : I.E)`. Rewrite using `[e1, spl_sigV_inclV]`.
+
+Conclude with `⟨gp_int I v ε p1 hp _ y.2, gp_int I v ε p1 hp _ (conj_intOE I _ y.2)⟩`. Establish `e1 : PI.FinKW.psiV I v ((1 : I.E) ⊗ₜ[I.F] (y : Af I.F)) = algebraMap (KV I v) (RV I v) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV I.F v (y : Af I.F))`. Rewrite using `[PI.FinKW.LocTo.psiV_tmul, alg_eq]`. Establish `hy : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV I.F v (y : Af I.F) ∈ OV I v` using `y.2 v`. Rewrite using `[e1, sig_alg, hp.1]`.
+
+Conclude with `⟨hy, hy⟩`. Consider the case `zero => simp`. Consider the case `one => simp`. Consider the case `add a b _ _ ha hb => simp only [map_add]`. Conclude with `⟨add_mem ha.1 hb.1, add_mem ha.2 hb.2⟩`.
+
+Consider the case `neg a _ ha => simp only [map_neg]`. Conclude with `⟨neg_mem ha.1, neg_mem ha.2⟩`. Consider the case `mul a b _ _ ha hb => simp only [map_mul]`. Conclude with `⟨mul_mem ha.1 hb.1, mul_mem ha.2 hb.2⟩`.
+-/
 theorem adaptedProjection_psiV_mem_integers_of_mem_intAf (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F)) (ε : RV I v) (p1 : RV I v →+* KV I v)
     (hp : IsAdaptedFirstProjection I v ε p1) (t : I.E ⊗[I.F] Af I.F) (ht : t ∈ IntAf I.F I.E) :
     p1 (PI.FinKW.psiV I v t) ∈ OV I v ∧ p1 (sigV I v (PI.FinKW.psiV I v t)) ∈ OV I v := by

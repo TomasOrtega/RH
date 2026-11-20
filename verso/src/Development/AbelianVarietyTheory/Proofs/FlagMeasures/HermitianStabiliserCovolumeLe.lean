@@ -16,6 +16,9 @@ open scoped Pointwise ENNReal Classical
 
 namespace GlobalTheory.DegVol.Cov
 
+/- English proof (translation)
+Use `letI : MulAction G α := { smul := act, one_smul := h1, mul_smul := h2 }`. Conclude with `GlobalTheory.T.fundamental_set_measure_commensurable_index_ratio G α μ R A B Ω K hm cA cB hR hinv hAB hBA hΩ hK fA fB`.
+-/
 theorem covol_of_act {G α : Type} [Group G] [MeasurableSpace α] (act : G → α → α) (h1 : ∀ x, act 1 x = x)
     (h2 : ∀ s t x, act (s * t) x = act s (act t x)) (μ : Measure α) (R : Set α) (A B : Subgroup G) (Ω K : Set α)
     (hm : ∀ s, Measurable (act s)) (cA : Countable A) (cB : Countable B) (hR : μ Rᶜ = 0)
@@ -25,12 +28,20 @@ theorem covol_of_act {G α : Type} [Group G] [MeasurableSpace α] (act : G → �
   letI : MulAction G α := { smul := act, one_smul := h1, mul_smul := h2 }
   exact GlobalTheory.T.fundamental_set_measure_commensurable_index_ratio G α μ R A B Ω K hm cA cB hR hinv hAB hBA hΩ hK fA fB
 
+/- English proof (translation)
+Unfold `lmulM`. Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Simplify using `only [Matrix.mul_apply, Matrix.of_apply]`. Use `fun_prop`.
+-/
 theorem continuous_lmulM {k r : ℕ} (a : Mat k r) : Continuous (lmulM (k := k) (r := r) a) := by
   unfold lmulM
   refine continuous_pi fun i => continuous_pi fun j => ?_
   simp only [Matrix.mul_apply, Matrix.of_apply]
   fun_prop
 
+/- English proof (translation)
+Use `⟨WeylGroupFacts.mem_n_mul ha.1 hb.1, ?_⟩` and prove the remaining obligations. Establish `e : γ * (a * b) * γ⁻¹ = (γ * a * γ⁻¹) * (γ * b * γ⁻¹)`. Establish `: (γ * a * γ⁻¹) * (γ * b * γ⁻¹) = γ * a * (γ⁻¹ * γ) * b * γ⁻¹` using `by simp only [Matrix.mul_assoc]`. Rewrite using `[this, nonsing_inv_mul _ hu, Matrix.mul_one]`. Simplify using `only [Matrix.mul_assoc]`.
+
+Rewrite using `[e]`. Conclude with `WeylGroupFacts.mem_n_mul ha.2 hb.2`.
+-/
 theorem rset_mul {k r : ℕ} {γ : Mat k r} (hu : IsUnit γ.det) {a b : Mat k r} (ha : a ∈ Rset k r γ) (hb : b ∈ Rset k r γ) :
     a * b ∈ Rset k r γ := by
   refine ⟨WeylGroupFacts.mem_n_mul ha.1 hb.1, ?_⟩
@@ -41,6 +52,9 @@ theorem rset_mul {k r : ℕ} {γ : Mat k r} (hu : IsUnit γ.det) {a b : Mat k r}
   rw [e]
   exact WeylGroupFacts.mem_n_mul ha.2 hb.2
 
+/- English proof (translation)
+Use `haveI : Countable K := (Module.finBasis ℚ K).equivFun.injective.countable`. Use `haveI : Countable V := (Module.finBasis K V).equivFun.injective.countable`. Set `b` to `Module.finBasis K V`. Use `Function.Injective.countable (f := fun s : V ≃ₗ[K] V => fun i => s (b i)) fun s t e => ?_` and prove the remaining obligations. Conclude with `LinearEquiv.toLinearMap_injective (b.ext fun i => congrFun e i)`.
+-/
 theorem countable_aut (K V : Type) [Field K] [NumberField K] [AddCommGroup V] [Module K V] [FiniteDimensional K V] :
     Countable (V ≃ₗ[K] V) := by
   haveI : Countable K := (Module.finBasis ℚ K).equivFun.injective.countable
@@ -49,6 +63,35 @@ theorem countable_aut (K V : Type) [Field K] [NumberField K] [AddCommGroup V] [M
   refine Function.Injective.countable (f := fun s : V ≃ₗ[K] V => fun i => s (b i)) fun s t e => ?_
   exact LinearEquiv.toLinearMap_injective (b.ext fun i => congrFun e i)
 
+/- English proof (translation)
+Introduce `K V _ _ _ _ _ _ _ _ H hK r N k ι _ σ β Φ z z' g hP hd hF hN hv gg Λ Kf hgg hT hKf`. Take `⟨hex, hsep, hsub, -⟩` from `RealMat.real_points K V H hK r N k ι σ β Φ z z' g hP hd hF`. Establish `hι : Nonempty ι`. Take `⟨w⟩ : Nonempty (InfinitePlace K)` from `inferInstance`. Conclude with `⟨(hP.2 w).choose⟩`.
+
+Take `⟨v0⟩` from `id hι`. Use `choose m hm using fun s => (hex s).exists`. Establish `hmu : ∀ (s : V ≃ₗ[K] V) (y : ι → Mt k r), (∀ v x, Matrix.of (y v) *ᵥ Φ v x = Φ v (s x)) → y = m s` using `fun s y hy => (hex s).unique hy (hm s)`. Establish `hH : ∀ v, IsHaarOn (Rset k r (g v)) (lebR0 k r N.j β)` using `fun v => by`. Take `⟨-, hz, hz', hT0, ⟨c, hc⟩, -⟩` from `hF v`.
+
+Conclude with `(GlobalTheory.Amp.StabHaar.lebesgue_haar_unimodular_stabilizer k r N.j N.j_le (z v) (z' v) (g v) β c hz hz' hT0 hc).1`. Use `haveI : SigmaFinite (lebR0 k r N.j β) := (hH v0).1`. Establish `hu : ∀ v, IsUnit (g v).det` using `fun v => RealMat.isUnit_det (hF v).2.2.2.2.1.choose_spec.1`. Establish `hone : m 1 = fun _ => Matrix.of.symm (1 : Mat k r)` using `(hmu 1 _ fun v x => by simp).symm`. Establish `hmul : ∀ s t, m (s * t) = fun v => Matrix.of.symm (Matrix.of (m s v) * Matrix.of (m t v))` using `fun s t => (hmu (s * t) _ fun v x => by`.
+
+Simplify using `only [Equiv.apply_symm_apply]`. Rewrite using `[← mulVec_mulVec, hm, hm]`. Use the proof step `rfl).symm`. Establish `h1 : ∀ x : ι → Mt k r, mulP (m 1) x = x` using `fun x => by`. Rewrite using `[hone]`.
+
+Use function extensionality and compare the values at `v`. Use `show (1 : Mat k r) * Matrix.of (x v) = x v`. Rewrite using `[Matrix.one_mul]`. Both sides reduce to the same expression. Establish `h2 : ∀ s t (x : ι → Mt k r), mulP (m (s * t)) x = mulP (m s) (mulP (m t) x)` using `fun s t x => by`.
+
+Rewrite using `[hmul]`. Use function extensionality and compare the values at `v`. Use `show (Matrix.of (m s v) * Matrix.of (m t v)) * Matrix.of (x v) = Matrix.of (m s v) * (Matrix.of (m t v) * Matrix.of (x v))`. Rewrite using `[Matrix.mul_assoc]`. Establish `hmeas : ∀ s, Measurable (mulP (k` using `k) (r := r) (m s)) := fun s => measurable_pi_lambda _ fun v => (continuous_lmulM _).measurable.comp (measurable_pi_apply v)`.
+
+Establish `hmR : ∀ s ∈ N.R, m s ∈ RP k r g` using `fun s hs => hsub ⟨s, hs, hm s⟩`. Establish `hnull : Measure.pi (fun _ : ι => lebR0 k r N.j β) (RP k r g)ᶜ = 0`. Use `measure_mono_null (t := ⋃ v, Function.eval v ⁻¹' {x : Mt k r | Matrix.of x ∉ Rset k r (g v)}) ?_ (measure_iUnion_null fun v => Measure.pi_eval_preimage_null _ (hH v).2.2.1)` and prove the remaining obligations. Introduce `x hx`. Simplify using `only [RP, Set.mem_compl_iff, Set.mem_setOf_eq, not_forall] at hx`.
+
+Take `⟨v, hv'⟩` from `hx`. Conclude with `Set.mem_iUnion.2 ⟨v, hv'⟩`. Establish `hpres : ∀ s ∈ N.R, (Measure.pi fun _ : ι => lebR0 k r N.j β).map (mulP (m s)) = Measure.pi fun _ : ι => lebR0 k r N.j β` using `fun s hs => by`. Establish `e : ∀ v, (lebR0 k r N.j β).map (lmulM (Matrix.of (m s v))) = lebR0 k r N.j β` using `fun v => (hH v).2.2.2 _ (hmR s hs v)`. Use `haveI : ∀ v, SigmaFinite ((lebR0 k r N.j β).map (lmulM (Matrix.of (m s v)))) := fun v => by rw [e]; infer_instance`.
+
+Use `Measure.pi_map_pi (μ := fun _ : ι => lebR0 k r N.j β) (f := fun v => lmulM (Matrix.of (m s v))) fun v => (continuous_lmulM _).measurable.aemeasurable` as an intermediate fact. Simplify using `only [e] at this`. Conclude with `this`. Establish `conv : ∀ (Γ : Subgroup (V ≃ₗ[K] V)) (Ω : Set (ι → Mt k r)), IsFund (realPts Φ (Γ : Set (V ≃ₗ[K] V))) (RP k r g) Ω → ∀ x ∈ RP k r g, ∃! s, s ∈ Γ ∧ mulP (m s) x ∈ Ω`. Introduce `Γ Ω h x hx`.
+
+Take `⟨m0, ⟨⟨s, hs, hsm⟩, hΩ⟩, hun⟩` from `h.2 x hx`. Establish `e : m0 = m s` using `hmu s m0 hsm`. Use `⟨s, ⟨hs, e ▸ hΩ⟩, fun t ht => ?_⟩` and prove the remaining obligations. Establish `e2 : m t = m0` using `hun _ ⟨⟨t, ht.1, hm t⟩, ht.2⟩`. Conclude with `hsep t s hι fun v x => by rw [← hm t v x, ← hm s v x, e2, e]`.
+
+Take `⟨hLU, -, hz1, -, hRefLat, -⟩` from `GlobalTheory.DegCnt.InnerLat.main K V H hK r N gg Λ hgg hT`. Establish `hzL : N.F.z ∈ latL N.F N.F' Λ`. Use `(hz1 1).2 (Submodule.mem_one.2 ⟨1, map_one _⟩)` as an intermediate fact. Simplify using `using this`. Establish `hΛ : Submodule.IsLattice K Λ` using `((GlobalTheory.HermLat.isUnimod_iff H Λ).1 hT.1.1).1`.
+
+Take `⟨Ω, hΩ, -, hΩle⟩` from `GlobalTheory.T.covolume_referenceLattice_stabiliser_bounds K V H hK r N k ι σ β Φ z z' g hP hd hF hN hv (latL N.F N.F' Λ) hLU hzL`. Establish `hnil` using `(GlobalTheory.UnipStab.common_unipotent_stabiliser K V H hK r N).2.2.2.2`. Establish `hc1` using `(GlobalTheory.DegCnt.Unimod.invVol_smul K V N.R (2 * r + 1) hnil _ _ hRefLat hΛ).1`. Establish `hc2` using `(GlobalTheory.DegCnt.Unimod.invVol_smul K V N.R (2 * r + 1) hnil _ _ hΛ hRefLat).1`. Use `haveI := countable_aut K V`.
+
+Establish `key` using `covol_of_act (fun s x => mulP (m s) x) h1 h2 (Measure.pi fun _ : ι => lebR0 k r N.j β) (RP k r g) (N.Gam (N.Ref (latL N.F N.F' Λ))) (N.Gam Λ) Ω Kf hmeas inferInstance inferInstance hnull (fun s hs => by`. Establish `hsR : s ∈ N.R` using `(sup_le inf_le_left inf_le_left : _ ≤ N.R) hs`. Conclude with `⟨fun x hx v => rset_mul (hu v) (hmR s hsR v) (hx v), hpres s hsR⟩)`. Use `hc1 hc2 hΩ.1 hKf.1 (conv _ _ hΩ) (conv _ _ hKf)`. Establish `hom : 0 ≤ N.om Λ` using `div_nonneg (Nat.cast_nonneg _) (Nat.cast_nonneg _)`.
+
+Rewrite using `[key, ENNReal.ofReal_mul hom]`. Conclude with `mul_le_mul_right hΩle _`.
+-/
 theorem cov_le : ∀ (K V : Type) [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [Module K V] [FiniteDimensional K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] (H : HermSpace K V), Formalism.HermitianLatticesTheory.IsCMUnram K → ∀ (r : ℕ), ∀ (N : NF H r) (k : ℕ) (ι : Type) [Fintype ι] (σ : ι → (K →+* ℂ)) (β : Fin r → ℕ) (Φ : ι → V → Fin (2 * r + k + 1) → ℂ) (z z' : ι → Fin (2 * r + k + 1) → ℂ) (g : ι → Mat k r), IsPlaces σ → Module.finrank K V = 2 * r + k + 1 → (∀ v, IsFrameOf N k (σ v) (2 * Formalism.HermitianLatticesTheory.vInv K) β (Φ v) (z v) (z' v) (g v)) → (Ideal.absNorm N.𝔡 : ℝ) = (2 * Formalism.HermitianLatticesTheory.vInv K) ^ (2 * Fintype.card ι) → 1 ≤ Formalism.HermitianLatticesTheory.vInv K → ∀ (gg : ℕ) (Λ : Submodule (𝓞 K) V) (Kf : Set (ι → Mt k r)), 1 ≤ gg → N.IsTerm gg Λ → IsFund (realPts Φ (N.Gam Λ : Set (V ≃ₗ[K] V))) (RP k r g) Kf → Measure.pi (fun _ : ι => lebR0 k r N.j β) Kf ≤ ENNReal.ofReal (N.om Λ * (Formalism.HermitianLatticesTheory.vInv K ^ (k * (r - N.j) * Fintype.card ι) * (8 * Formalism.HermitianLatticesTheory.vInv K) ^ (2 * (r + 1) ^ 2 * Fintype.card ι))) := by
   intro K V _ _ _ _ _ _ _ _ H hK r N k ι _ σ β Φ z z' g hP hd hF hN hv gg Λ Kf hgg hT hKf
   obtain ⟨hex, hsep, hsub, -⟩ := RealMat.real_points K V H hK r N k ι σ β Φ z z' g hP hd hF

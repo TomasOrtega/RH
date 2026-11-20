@@ -5,6 +5,9 @@ noncomputable section
 
 namespace PI.SqPair.LCP
 
+/- English proof (translation)
+Introduce `R _ _ _ ι κ _ _ _ _ hc A hA x y hxx hyy hxy`. Take `⟨u, v, A₁, h1, h2, h3, h4, h5, -, -⟩` from `PI.LocCartanPair.splPlane hc A hA x y hxx hyy hxy`. Conclude with `⟨u, v, A₁, h1, h2, h3, h4, h5⟩`.
+-/
 theorem split_off_hyperbolic : SplitOff := by
   intro R _ _ _ ι κ _ _ _ _ hc A hA x y hxx hyy hxy
   obtain ⟨u, v, A₁, h1, h2, h3, h4, h5, -, -⟩ := PI.LocCartanPair.splPlane hc A hA x y hxx hyy hxy

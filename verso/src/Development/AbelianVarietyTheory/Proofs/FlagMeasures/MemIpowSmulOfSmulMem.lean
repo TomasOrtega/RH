@@ -14,6 +14,9 @@ def gen (H : HermSpace K V) (J : Finset ι) (e ρ : ι → V) (c : ι → ι →
   LinearMap.id + ∑ b ∈ J, ((H.B.flip (e b)).smulRight (ρ b) - (H.B.flip (ρ b)).smulRight (e b) +
     ∑ a ∈ J, (c a b • H.B.flip (e b)).smulRight (e a))
 
+/- English proof (translation)
+Simplify using `[gen, LinearMap.sum_apply, mul_smul]`.
+-/
 theorem gen_apply (H : HermSpace K V) (J : Finset ι) (e ρ : ι → V) (c : ι → ι → K) (v : V) :
     gen H J e ρ c v = v + ∑ b ∈ J, (H.B v (e b) • ρ b - H.B v (ρ b) • e b +
       ∑ a ∈ J, (c a b * H.B v (e b)) • e a) := by
@@ -24,6 +27,9 @@ end Gen
 section Ideal
 variable {K : Type} [Field K] [NumberField K]
 
+/- English proof (translation)
+Establish `h0 : ((𝔡 : FractionalIdeal (𝓞 K)⁰ K)) ≠ 0`. Simplify using `using h𝔡`. Unfold `ipow at *`. Rewrite using `[zpow_add₀ h0, FractionalIdeal.coe_mul]`. Conclude with `Submodule.mul_mem_mul hx hy`.
+-/
 theorem ipow_mul_mem {𝔡 : Ideal (𝓞 K)} (h𝔡 : 𝔡 ≠ ⊥) {m n : ℤ} {x y : K} (hx : x ∈ ipow 𝔡 m)
     (hy : y ∈ ipow 𝔡 n) : x * y ∈ ipow 𝔡 (m + n) := by
   have h0 : ((𝔡 : FractionalIdeal (𝓞 K)⁰ K)) ≠ 0 := by
@@ -32,6 +38,9 @@ theorem ipow_mul_mem {𝔡 : Ideal (𝓞 K)} (h𝔡 : 𝔡 ≠ ⊥) {m n : ℤ} 
   rw [zpow_add₀ h0, FractionalIdeal.coe_mul]
   exact Submodule.mul_mem_mul hx hy
 
+/- English proof (translation)
+Establish `h0 : ((𝔡 : FractionalIdeal (𝓞 K)⁰ K)) ≠ 0`. Simplify using `using h𝔡`. Unfold `ipow`. Rewrite using `[← FractionalIdeal.coe_mul, ← zpow_add₀ h0, add_neg_cancel, zpow_zero, FractionalIdeal.coe_one]`. Conclude with `Submodule.one_le.mp le_rfl`.
+-/
 theorem one_mem_ipow_mul {𝔡 : Ideal (𝓞 K)} (h𝔡 : 𝔡 ≠ ⊥) (m : ℤ) :
     (1 : K) ∈ ipow 𝔡 m * ipow 𝔡 (-m) := by
   have h0 : ((𝔡 : FractionalIdeal (𝓞 K)⁰ K)) ≠ 0 := by
@@ -40,9 +49,17 @@ theorem one_mem_ipow_mul {𝔡 : Ideal (𝓞 K)} (h𝔡 : 𝔡 ≠ ⊥) (m : ℤ
   rw [← FractionalIdeal.coe_mul, ← zpow_add₀ h0, add_neg_cancel, zpow_zero, FractionalIdeal.coe_one]
   exact Submodule.one_le.mp le_rfl
 
+/- English proof (translation)
+Simplify using `[ipow]`.
+-/
 theorem ipow_zero (𝔡 : Ideal (𝓞 K)) : ipow 𝔡 0 = 1 := by
   simp [ipow]
 
+/- English proof (translation)
+Establish `key : ∀ y ∈ ipow 𝔡 m * ipow 𝔡 (-m), y * x ∈ ipow 𝔡 (m + n)`. Introduce `y hy`. Use `Submodule.mul_induction_on hy ?_ ?_` and prove the remaining obligations. Introduce `a ha t ht`. Rewrite using `[mul_assoc]`.
+
+Conclude with `ipow_mul_mem h𝔡 ha (h t ht)`. Introduce `a b ha hb`. Rewrite using `[add_mul]`. Conclude with `Submodule.add_mem _ ha hb`. Simplify using `using key 1 (one_mem_ipow_mul h𝔡 m)`.
+-/
 theorem mem_ipow_of_mul {𝔡 : Ideal (𝓞 K)} (h𝔡 : 𝔡 ≠ ⊥) {m n : ℤ} {x : K}
     (h : ∀ t ∈ ipow 𝔡 (-m), t * x ∈ ipow 𝔡 n) : x ∈ ipow 𝔡 (m + n) := by
   have key : ∀ y ∈ ipow 𝔡 m * ipow 𝔡 (-m), y * x ∈ ipow 𝔡 (m + n) := by
@@ -62,6 +79,13 @@ section Smul
 variable {K V : Type} [Field K] [NumberField K] [AddCommGroup V] [Module K V] [Module (𝓞 K) V]
   [IsScalarTower (𝓞 K) K V]
 
+/- English proof (translation)
+Use `Submodule.smul_induction_on hv ?_ ?_` and prove the remaining obligations. Introduce `a ha n hn`. Establish `h1 : t * a ∈ ipow 𝔡 0`. Simplify `ipow_mul_mem h𝔡 ht ha` using `[add_comm]`. Rewrite `h1` using `[ipow_zero]`.
+
+Take `⟨o, ho⟩` from `Submodule.mem_one.mp h1`. Rewrite using `[smul_smul, ← ho, algebraMap_smul]`. Conclude with `M.smul_mem o hn`. Introduce `x y hx hy`. Rewrite using `[smul_add]`.
+
+Conclude with `M.add_mem hx hy`.
+-/
 theorem smul_mem_of_mem_ipow_smul {𝔡 : Ideal (𝓞 K)} (h𝔡 : 𝔡 ≠ ⊥) {m : ℤ} {M : Submodule (𝓞 K) V} {v : V}
     (hv : v ∈ ipow 𝔡 m • M) {t : K} (ht : t ∈ ipow 𝔡 (-m)) : t • v ∈ M := by
   refine Submodule.smul_induction_on hv ?_ ?_
@@ -76,6 +100,11 @@ theorem smul_mem_of_mem_ipow_smul {𝔡 : Ideal (𝓞 K)} (h𝔡 : 𝔡 ≠ ⊥)
     rw [smul_add]
     exact M.add_mem hx hy
 
+/- English proof (translation)
+Establish `key : ∀ y ∈ ipow 𝔡 m * ipow 𝔡 (-m), y • v ∈ ipow 𝔡 m • M`. Introduce `y hy`. Use `Submodule.mul_induction_on hy ?_ ?_` and prove the remaining obligations. Introduce `a ha t ht`. Rewrite using `[mul_smul]`.
+
+Conclude with `Submodule.smul_mem_smul ha (h t ht)`. Introduce `a b ha hb`. Rewrite using `[add_smul]`. Conclude with `Submodule.add_mem _ ha hb`. Simplify using `using key 1 (one_mem_ipow_mul h𝔡 m)`.
+-/
 theorem mem_ipow_smul_of_smul_mem {𝔡 : Ideal (𝓞 K)} (h𝔡 : 𝔡 ≠ ⊥) {m : ℤ} {M : Submodule (𝓞 K) V} {v : V}
     (h : ∀ t ∈ ipow 𝔡 (-m), t • v ∈ M) : v ∈ ipow 𝔡 m • M := by
   have key : ∀ y ∈ ipow 𝔡 m * ipow 𝔡 (-m), y • v ∈ ipow 𝔡 m • M := by
@@ -94,11 +123,23 @@ end Smul
 section Star
 variable {K : Type} [Field K] [NumberField K] [StarRing K]
 
+/- English proof (translation)
+Establish `h : IsIntegral ℤ (star (y : K))`. Conclude with `(RingOfIntegers.isIntegral_coe y).map ((starRingEnd K).toIntAlgHom)`. Conclude with `⟨⟨star (y : K), h⟩, rfl⟩`.
+-/
 theorem star_integral (y : 𝓞 K) : ∃ y' : 𝓞 K, (y' : K) = star (y : K) := by
   have h : IsIntegral ℤ (star (y : K)) := by
     exact (RingOfIntegers.isIntegral_coe y).map ((starRingEnd K).toIntAlgHom)
   exact ⟨⟨star (y : K), h⟩, rfl⟩
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero`. Introduce `x _`. Take `⟨y, hy⟩` from `star_integral x`. Conclude with `⟨y, by simp, hy⟩`.
+
+Consider the case `succ k ih`. Introduce `x hx`. Rewrite `hx` using `[pow_succ]`. Use `Submodule.mul_induction_on hx ?_ ?_` and prove the remaining obligations. Introduce `a ha b hb`.
+
+Take `⟨a', ha', ea⟩` from `ih a ha`. Take `⟨b', hb', eb⟩` from `h𝔡s b hb`. Use `⟨a' * b', ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_succ]`. Conclude with `Submodule.mul_mem_mul ha' hb'`.
+
+Simplify using `[ea, eb, star_mul']`. Introduce and unpack `a b ⟨a', ha', ea⟩ ⟨b', hb', eb⟩`. Conclude with `⟨a' + b', Submodule.add_mem _ ha' hb', by simp [ea, eb]⟩`.
+-/
 theorem star_pow_mem {𝔡 : Ideal (𝓞 K)} (h𝔡s : ∀ x ∈ 𝔡, ∃ y ∈ 𝔡, (y : K) = star (x : K)) (k : ℕ) :
     ∀ x ∈ 𝔡 ^ k, ∃ y ∈ 𝔡 ^ k, (y : K) = star (x : K) := by
   induction k with
@@ -119,6 +160,9 @@ theorem star_pow_mem {𝔡 : Ideal (𝓞 K)} (h𝔡s : ∀ x ∈ 𝔡, ∃ y ∈
     · rintro a b ⟨a', ha', ea⟩ ⟨b', hb', eb⟩
       exact ⟨a' + b', Submodule.add_mem _ ha' hb', by simp [ea, eb]⟩
 
+/- English proof (translation)
+Rewrite `*` using `[FractionalIdeal.mem_one_iff]`. Take `⟨y, rfl⟩` from `hx`. Take `⟨y', hy'⟩` from `star_integral y`. Conclude with `⟨y', hy'⟩`.
+-/
 theorem star_mem_one {x : K} (hx : x ∈ (1 : FractionalIdeal (𝓞 K)⁰ K)) :
     star x ∈ (1 : FractionalIdeal (𝓞 K)⁰ K) := by
   rw [FractionalIdeal.mem_one_iff] at *
@@ -126,6 +170,15 @@ theorem star_mem_one {x : K} (hx : x ∈ (1 : FractionalIdeal (𝓞 K)⁰ K)) :
   obtain ⟨y', hy'⟩ := star_integral y
   exact ⟨y', hy'⟩
 
+/- English proof (translation)
+Establish `hA : ∀ k : ℕ, ∀ x : K, x ∈ ((𝔡 : FractionalIdeal (𝓞 K)⁰ K) ^ k) → star x ∈ ((𝔡 : FractionalIdeal (𝓞 K)⁰ K) ^ k)`. Introduce `k x hx`. Rewrite `*` using `[← FractionalIdeal.coeIdeal_pow, FractionalIdeal.mem_coeIdeal]`. Take `⟨y, hy, rfl⟩` from `hx`. Take `⟨y', hy', e⟩` from `star_pow_mem h𝔡s k y hy`.
+
+Conclude with `⟨y', hy', e⟩`. Unfold `ipow at *`. Rewrite `*` using `[FractionalIdeal.mem_coe]`. Break down `n with k | k` into its components or cases. Simplify using `only [Int.ofNat_eq_coe, zpow_natCast] at *`.
+
+Conclude with `hA k x hx`. Establish `h0 : ((𝔡 : FractionalIdeal (𝓞 K)⁰ K)) ^ (k + 1) ≠ 0`. Apply `pow_ne_zero` to reduce the goal to its premises. Simplify using `using h𝔡`. Rewrite `*` using `[zpow_negSucc, FractionalIdeal.mem_inv_iff h0]`.
+
+Introduce `y hy`. Use `star_mem_one (hx (star y) (hA _ y hy))` as an intermediate fact. Simplify `this` using `[star_mul', mul_comm]`.
+-/
 theorem star_mem_ipow {𝔡 : Ideal (𝓞 K)} (h𝔡 : 𝔡 ≠ ⊥)
     (h𝔡s : ∀ x ∈ 𝔡, ∃ y ∈ 𝔡, (y : K) = star (x : K)) (n : ℤ) {x : K} (hx : x ∈ ipow 𝔡 n) :
     star x ∈ ipow 𝔡 n := by

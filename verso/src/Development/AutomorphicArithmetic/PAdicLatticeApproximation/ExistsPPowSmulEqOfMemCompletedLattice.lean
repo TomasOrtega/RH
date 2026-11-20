@@ -5,6 +5,19 @@ open NumberField
 open GlobalTheory GlobalTheory.PELU GlobalTheory.UPel.HT GlobalTheory.LKTrip GlobalTheory.LKRes GlobalTheory.LKMid GlobalTheory.LKGeo UpperTheory.Gal.W2.Wit
 open scoped TensorProduct
 
+/- English proof (translation)
+Introduce `p _ D w hw`. Use `D.freeLa` as an intermediate fact. Use `D.finLa` as an intermediate fact. Set `b` to `Module.Free.chooseBasis ℤ D.La`. Set `B` to `b.baseChange ℚ`.
+
+Establish `hint : ∀ i, IsIntAf (algebraMap ℚ (AfP p) (B.repr w i))`. Introduce `i`. Establish `h` using `GlobalTheory.LKGeo.LatDvd.isIntAf_adBasis_repr b i hw`. Establish `e : (GlobalTheory.LKGeo.LatDvd.adBasis b).repr ((1 : AfP p) ⊗ₜ[ℚ] w) i = algebraMap ℚ (AfP p) (B.repr w i)`. Simplify using `only [GlobalTheory.LKGeo.LatDvd.adBasis, Module.Basis.baseChange_repr_tmul]`.
+
+Rewrite using `[Algebra.algebraMap_eq_smul_one]`. Rewrite `h` using `[e]`. Then use the resulting hypothesis. Use `choose r z hz using fun i => UpperTheory.exists_p_pow_mul_int_of_isIntAf_algebraMap p (B.repr w i) (hint i)`. Set `R : ℕ` to `Finset.univ.sup r`. Establish `hR : ∀ i, r i ≤ R` using `fun i => Finset.le_sup (Finset.mem_univ i)`.
+
+Set `a : D.La` to `∑ i, ((p : ℤ) ^ (R - r i) * z i) • b i`. Use `⟨R, a, B.ext_elem fun i => ?_⟩` and prove the remaining obligations. Establish `ha : b.repr a i = (p : ℤ) ^ (R - r i) * z i`. Simplify using `[a, map_sum, Finsupp.single_apply]`. Establish `e2 : B.repr ((1 : ℚ) ⊗ₜ[ℤ] a) i = ((b.repr a i : ℤ) : ℚ)`.
+
+Simplify using `[B, Module.Basis.baseChange_repr_tmul]`. Rewrite using `[e2, ha, map_nsmul, Finsupp.smul_apply, nsmul_eq_mul]`. Use `push_cast`. Rewrite using `[← hz i]`. Establish `: (p : ℚ) ^ R = (p : ℚ) ^ (R - r i) * (p : ℚ) ^ r i`.
+
+Rewrite using `[← pow_add, Nat.sub_add_cancel (hR i)]`. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem UpperTheory.exists_p_pow_smul_eq_of_mem_completedLattice :
     ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (w : VQ D), (1 : AfP p) ⊗ₜ[ℚ] w ∈ LaHat D → ∃ (r : ℕ) (a : D.La), p ^ r • w = (1 : ℚ) ⊗ₜ[ℤ] a := by
   intro p _ D w hw

@@ -8,6 +8,15 @@ open GlobalTheory.Doubling (absE)
 
 namespace GlobalTheory.LocTateInt
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ v μ hμ C hC e he`. Take `⟨_, _, _, _, _⟩` from `idelesAt_facts E (evFin F v)`. Take `⟨μ₀, h₀, -⟩` from `existsUnique_isNormE E v`. Use `haveI := h₀.1`. Use `haveI := t2Space_Fv_tensor (E := E) v`.
+
+Take `⟨c, -, hc⟩` from `haar_idelesAt_eq_smul μ μ₀`. Establish `hm : MeasurableSet {l : idelesAt E (evFin F v) | ((GlobalTheory.Doubling.unitFin F E v l.1 : (Fv F v ⊗[F] E)ˣ) : Fv F v ⊗[F] E) ∈ C}` using `(hC.isClosed.preimage (Units.continuous_val.comp (idelesAtEquiv E v).continuous)).measurableSet`. Rewrite using `[← integrable_indicator_iff hm, hc]`. Use `Integrable.smul_measure ?_ ENNReal.coe_ne_top` and prove the remaining obligations. Establish `hfun : {l : idelesAt E (evFin F v) | ((GlobalTheory.Doubling.unitFin F E v l.1 : (Fv F v ⊗[F] E)ˣ) : Fv F v ⊗[F] E) ∈ C}.indicator (fun l : idelesAt E (evFin F v) => (absE F E l.1 : ℝ) ^ e) = fun l : idelesAt E (evFin F v) => C.indicator (fun _ => ((absE F E l.1 : ℝ)) ^ e) (compF …`.
+
+Use function extensionality and compare the values at `l`. Distinguish the cases in `h : compFin F E v l.1 ∈ C`. Rewrite using `[Set.indicator_of_mem h, Set.indicator_of_mem (show l ∈ _ from h)]`. Rewrite using `[Set.indicator_of_notMem h, Set.indicator_of_notMem (show l ∉ _ from h)]`. Rewrite using `[hfun]`.
+
+Conclude with `integrable_indicator_absE_pow v μ₀ h₀ C hC e he`.
+-/
 theorem integrableOn_absE_pow : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (v : Pl F)
     (μ : Measure (idelesAt E (evFin F v))), μ.IsHaarMeasure → ∀ C : Set (Fv F v ⊗[F] E), IsCompact C → ∀ e : ℕ, 1 ≤ e →
       IntegrableOn (fun l : idelesAt E (evFin F v) => (absE F E l.1 : ℝ) ^ e)

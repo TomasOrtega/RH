@@ -168,14 +168,25 @@ def ChowHeightCycle.Statement : Prop :=
         chowHt (fun w => formSphereLaw (S w) (e + 1)) (cycleChowForm Z f) (Z.sum fun i m => m * δ i) =
           Z.sum fun i m => (m : ℝ) * chowHt (fun w => formSphereLaw (S w) (e + 1)) (f i) (δ i)
 
+/- English proof (translation)
+Use `Ideal.comap_bot_of_injective _ (rename_injective _ fun a b h => ?_)` and prove the remaining obligations. Simplify using `using h`.
+-/
 theorem finIdeal_bot (n : ℕ) : finIdeal (⊥ : Ideal (MRing (PBlk n))) = ⊥ := by
   refine Ideal.comap_bot_of_injective _ (rename_injective _ fun a b h => ?_)
   simpa using h
 
+/- English proof (translation)
+Simplify using `[conePts]`.
+-/
 theorem mem_conePts_bot {n : ℕ} (z : Fin n → ℂ) :
     z ∈ conePts (Int.castRingHom ℂ) (⊥ : Ideal (MvPolynomial (Fin n) ℤ)) ↔ z ≠ 0 := by
   simp [conePts]
 
+/- English proof (translation)
+Introduce `m hm k`. Establish `hX : ∀ a b : Fin (1 + 1) × Fin 2, (X a * X b : MvPolynomial (Fin (1 + 1) × Fin 2) R) = monomial (Finsupp.single a 1 + Finsupp.single b 1) 1`. Introduce `a b`. Simplify using `[X, monomial_mul]`. Apply the tactic sequence `rcases Finset.mem_union.mp (support_sub _ _ _ hm) with h | h <;>`.
+
+Rewrite `h` using `[hX]`. Establish `h'` using `support_monomial_subset h`. Rewrite `h'` using `[Finset.mem_singleton]`. Substitute `h'` using the available equality. Apply the tactic sequence `fin_cases k <;> simp [Finsupp.single_apply]`.
+-/
 theorem isMultihomog_detForm (R : Type*) [CommRing R] [Nontrivial R] :
     IsMultihomog (detForm R) 1 := by
   classical
@@ -191,17 +202,36 @@ theorem isMultihomog_detForm (R : Type*) [CommRing R] [Nontrivial R] :
     subst h'
     fin_cases k <;> simp [Finsupp.single_apply]
 
+/- English proof (translation)
+Introduce `h`. Establish `h'` using `congrArg (eval fun p : Fin (1 + 1) × Fin 2 => if p.1.val = p.2.val then (1 : ℂ) else 0) h`. Simplify using `[detForm] at h'`.
+-/
 theorem detForm_ne_zero : detForm ℂ ≠ 0 := by
   intro h
   have h' := congrArg (eval fun p : Fin (1 + 1) × Fin 2 => if p.1.val = p.2.val then (1 : ℂ) else 0) h
   simp [detForm] at h'
 
+/- English proof (translation)
+Apply the tactic sequence `refine (degreeOf_sub_le _ _ _).trans (max_le ?_ ?_) <;>`. Apply the tactic sequence `refine (degreeOf_mul_le _ _ _).trans ?_ <;>`. Apply the tactic sequence `simp only [degreeOf_X] <;> fin_cases x <;> simp`.
+-/
 theorem degreeOf_detForm_le (x : Fin (1 + 1) × Fin 2) : degreeOf x (detForm ℂ) ≤ 1 := by
   classical
   refine (degreeOf_sub_le _ _ _).trans (max_le ?_ ?_) <;>
   refine (degreeOf_mul_le _ _ _).trans ?_ <;>
   simp only [degreeOf_X] <;> fin_cases x <;> simp
 
+/- English proof (translation)
+Introduce and unpack `a ⟨b, hb⟩`. Establish `ha : a ≠ 0`. Introduce and unpack `rfl`. Conclude with `detForm_ne_zero (by simpa using hb)`. Establish `hb0 : b ≠ 0`.
+
+Introduce and unpack `rfl`. Conclude with `detForm_ne_zero (by simpa using hb)`. Establish `hdeg : ∀ x, degreeOf x a = 0`. Introduce `x`. Establish `h1` using `degreeOf_detForm_le x`.
+
+Rewrite `h1` using `[hb, degreeOf_mul_eq (mul_ne_zero ha ha) hb0, degreeOf_mul_eq ha ha]`. Use linear arithmetic over natural numbers and integers. Establish `hC : a = C (a.coeff 0)`. Use extensionality with `m`. Rewrite using `[coeff_C]`.
+
+Use `split_ifs with hm`. Rewrite using `[← hm]`. Assume the negation of the conclusion as `hne`. Apply `hm` to reduce the goal to its premises. Use extensionality with `x`.
+
+Establish `h2` using `monomial_le_degreeOf x (mem_support_iff.mpr hne)`. Rewrite `h2` using `[hdeg x]`. Simplify using `only [Finsupp.coe_zero, Pi.zero_apply]`. Use linear arithmetic over natural numbers and integers. Establish `hc : a.coeff 0 ≠ 0` using `fun h0 => ha (by rw [hC, h0, map_zero])`.
+
+Rewrite using `[hC]`. Conclude with `(isUnit_iff_ne_zero.mpr hc).map C`.
+-/
 theorem squarefree_detForm : Squarefree (detForm ℂ) := by
   rintro a ⟨b, hb⟩
   have ha : a ≠ 0 := by
@@ -231,6 +261,13 @@ theorem squarefree_detForm : Squarefree (detForm ℂ) := by
   rw [hC]
   exact (isUnit_iff_ne_zero.mpr hc).map C
 
+/- English proof (translation)
+Use `⟨isMultihomog_detForm ℂ, squarefree_detForm, fun u => ?_⟩` and prove the remaining obligations. Rewrite using `[finIdeal_bot]`. Establish `key` using `Matrix.exists_mulVec_eq_zero_iff (M := (Matrix.of u : Matrix (Fin 2) (Fin 2) ℂ))`. Rewrite `key` using `[Matrix.det_fin_two]`. Simplify using `only [detForm, map_sub, map_mul, eval_X]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨z, hz, hz0⟩` from `key.mpr (by simpa using h)`. Conclude with `⟨z, (mem_conePts_bot z).mpr hz, fun j => by`. Simplify `congrFun hz0 j⟩` using `[Matrix.mulVec, dotProduct]`.
+
+Introduce and unpack `⟨z, hz, hj⟩`. Establish `h` using `key.mp ⟨z, (mem_conePts_bot z).mp hz, funext fun j => by`. Simplify `hj j⟩` using `[Matrix.mulVec, dotProduct]`. Simplify using `using h`.
+-/
 theorem isChowForm_detForm :
     IsChowForm (Int.castRingHom ℂ) (finIdeal (⊥ : Ideal (MRing (PBlk 2)))) 1 1 (detForm ℂ) := by
   refine ⟨isMultihomog_detForm ℂ, squarefree_detForm, fun u => ?_⟩
@@ -248,12 +285,23 @@ theorem isChowForm_detForm :
       simpa [Matrix.mulVec, dotProduct] using hj j⟩
     simpa using h
 
+/- English proof (translation)
+Simplify using `[detForm]`.
+-/
 theorem map_detForm_int : map (Int.castRingHom ℂ) (detForm ℤ) = detForm ℂ := by
   simp [detForm]
 
+/- English proof (translation)
+Simplify using `[detForm]`.
+-/
 theorem map_detForm_rat : map (Rat.castHom ℂ) (detForm ℚ) = detForm ℂ := by
   simp [detForm]
 
+/- English proof (translation)
+Introduce `c hc`. Establish `h` using `hc (Finsupp.single (0, 0) 1 + Finsupp.single (1, 1) 1)`. Establish `hne : (Finsupp.single ((0 : Fin (1 + 1)), (1 : Fin 2)) 1 + Finsupp.single (1, 0) 1 : Fin (1 + 1) × Fin 2 →₀ ℕ) ≠ Finsupp.single (0, 0) 1 + Finsupp.single (1, 1) 1`. Introduce `h`. Establish `h'` using `DFunLike.congr_fun h (0, 1)`.
+
+Simplify using `at h'`. Establish `h1 : (detForm ℤ).coeff (Finsupp.single (0, 0) 1 + Finsupp.single (1, 1) 1) = 1`. Simplify using `[detForm, X, monomial_mul, coeff_monomial, hne]`. Rewrite `h` using `[h1]`. Conclude with `isUnit_of_dvd_one h`.
+-/
 theorem isPrimitive_detForm : IsPrimitive (detForm ℤ) := by
   classical
   intro c hc
@@ -268,38 +316,65 @@ theorem isPrimitive_detForm : IsPrimitive (detForm ℤ) := by
   rw [h1] at h
   exact isUnit_of_dvd_one h
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨isPrimitive_detForm, by rw [map_detForm_int]; exact isChowForm_detForm⟩`.
+-/
 theorem isIntChowForm_detForm : IsIntChowForm (⊥ : Ideal (MRing (PBlk 2))) 1 1 (detForm ℤ) :=
   ⟨isPrimitive_detForm, by rw [map_detForm_int]; exact isChowForm_detForm⟩
 
+/- English proof (translation)
+Rewrite using `[Submodule.mem_bot]`. Simplify using `[linForm, Fin.sum_univ_two, Xc, X_ne_zero]`.
+-/
 theorem linForm_ne_zero : linForm (![1, 0] : Fin 2 → ℤ) ∉ (⊥ : Ideal (MRing (PBlk 2))) := by
   rw [Submodule.mem_bot]
   simp [linForm, Fin.sum_univ_two, Xc, X_ne_zero]
 
+/- English proof (translation)
+Simplify using `[specFirst, detForm]`. Both sides reduce to the same expression.
+-/
 theorem specFirst_detForm : specFirst (e := 1) (![1, 0] : Fin 2 → ℂ) (detForm ℂ) = X (0, 1) := by
   simp [specFirst, detForm]
   rfl
 
+/- English proof (translation)
+Rewrite using `[specFirst_detForm]`. Conclude with `X_ne_zero _`.
+-/
 theorem specFirst_detForm_ne_zero : specFirst (e := 1) (![1, 0] : Fin 2 → ℂ) (detForm ℂ) ≠ 0 := by
   rw [specFirst_detForm]
   exact X_ne_zero _
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.Inter.isArithVar_projLine`.
+-/
 theorem isArithVar_projLine' : IsArithVar (⊥ : Ideal (MRing (PBlk 2))) (1 + 1) :=
   GroundTheory.Heights₂.Heights.Inter.isArithVar_projLine
 
+/- English proof (translation)
+Simplify using `[normSq, Fin.sum_univ_two]`.
+-/
 theorem SphereMeanLinear.hyps_inhabited : normSq (![1, 0] : Fin 2 → ℂ) = 1 := by
   simp [normSq, Fin.sum_univ_two]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨isArithVar_projLine', isChowForm_detForm⟩`.
+-/
 theorem ChowFormTransposition.hyps_inhabited :
     IsArithVar (⊥ : Ideal (MRing (PBlk 2))) (1 + 1) ∧
       IsChowForm (Int.castRingHom ℂ) (finIdeal (⊥ : Ideal (MRing (PBlk 2)))) 1 1 (detForm ℂ) :=
   ⟨isArithVar_projLine', isChowForm_detForm⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨isArithVar_projLine', isIntChowForm_detForm, linForm_ne_zero⟩`.
+-/
 theorem ChowFormSection.hyps_inhabited :
     IsArithVar (⊥ : Ideal (MRing (PBlk 2))) (0 + 1 + 1) ∧
       IsIntChowForm (⊥ : Ideal (MRing (PBlk 2))) (0 + 1) 1 (detForm ℤ) ∧
         linForm (![1, 0] : Fin 2 → ℤ) ∉ (⊥ : Ideal (MRing (PBlk 2))) :=
   ⟨isArithVar_projLine', isIntChowForm_detForm, linForm_ne_zero⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨isArithVar_projLine', by rw [map_detForm_rat]; exact isChowForm_detForm, linForm_ne_zero⟩`.
+-/
 theorem VerticalPartGauss.hyps_inhabited :
     IsArithVar (⊥ : Ideal (MRing (PBlk 2))) (1 + 1) ∧
       IsChowForm (Int.castRingHom ℂ) (finIdeal (⊥ : Ideal (MRing (PBlk 2)))) 1 1
@@ -307,18 +382,31 @@ theorem VerticalPartGauss.hyps_inhabited :
         linForm (![1, 0] : Fin 2 → ℤ) ∉ (⊥ : Ideal (MRing (PBlk 2))) :=
   ⟨isArithVar_projLine', by rw [map_detForm_rat]; exact isChowForm_detForm, linForm_ne_zero⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨isUnit_one, isArithVar_projLine', isChowForm_detForm, specFirst_detForm_ne_zero⟩`.
+-/
 theorem LogNormIntegral.hyps_inhabited :
     IsUnit (1 : Matrix (Fin 2) (Fin 2) ℂ) ∧ IsArithVar (⊥ : Ideal (MRing (PBlk 2))) (1 + 1) ∧
       IsChowForm (Int.castRingHom ℂ) (finIdeal (⊥ : Ideal (MRing (PBlk 2)))) 1 1 (detForm ℂ) ∧
         specFirst (e := 1) (![1, 0] : Fin 2 → ℂ) (detForm ℂ) ≠ 0 :=
   ⟨isUnit_one, isArithVar_projLine', isChowForm_detForm, specFirst_detForm_ne_zero⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨isUnit_one, isArithVar_projLine', by rw [map_detForm_rat]; exact isChowForm_detForm⟩`.
+-/
 theorem IntersectionEqChowHeight.hyps_inhabited :
     IsUnit (1 : Matrix (Fin 2) (Fin 2) ℂ) ∧ IsArithVar (⊥ : Ideal (MRing (PBlk 2))) (1 + 1) ∧
       IsChowForm (Int.castRingHom ℂ) (finIdeal (⊥ : Ideal (MRing (PBlk 2)))) 1 1
         (map (Rat.castHom ℂ) (detForm ℚ)) :=
   ⟨isUnit_one, isArithVar_projLine', by rw [map_detForm_rat]; exact isChowForm_detForm⟩
 
+/- English proof (translation)
+Use `⟨Set.range fun i => Pi.single i 1, ?_, ?_⟩` and prove the remaining obligations. Establish `h : (fun i : Fin n => (Pi.single i (1 : ℤ) : Fin n → ℤ)) = ⇑(Pi.basisFun ℤ (Fin n))`. Use extensionality with `i j`. Simplify using `[Pi.basisFun_apply]`. Rewrite using `[h]`.
+
+Conclude with `(Pi.basisFun ℤ (Fin n)).span_eq`. Introduce and unpack `_ ⟨i, rfl⟩`. Establish `hv : (fun j => ((Pi.single i (1 : ℤ) : Fin n → ℤ) j : ℂ)) = Pi.single i 1`. Use extensionality with `j`. Distinguish the cases in `h : j = i`.
+
+Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h]`. Rewrite using `[formNorm, hv, inv_one, transpose_one, one_mulVec, EuclideanSpace.norm_eq]`. Simplify using `[Pi.single_apply, apply_ite]`.
+-/
 theorem span_basis_formNorm_le (n : ℕ) :
     ∃ G : Set (Fin n → ℤ), Submodule.span ℤ G = ⊤ ∧
       ∀ u ∈ G, formNorm (1 : Matrix (Fin n) (Fin n) ℂ) (fun i => (u i : ℂ)) ≤ 1 := by
@@ -338,6 +426,9 @@ theorem span_basis_formNorm_le (n : ℕ) :
     rw [formNorm, hv, inv_one, transpose_one, one_mulVec, EuclideanSpace.norm_eq]
     simp [Pi.single_apply, apply_ite]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨isUnit_one, isArithVar_projLine', by rw [map_detForm_rat]; exact isChowForm_detForm, span_basis_formNorm_le 2⟩`.
+-/
 theorem ChowHeightLowerBound.hyps_inhabited :
     IsUnit (1 : Matrix (Fin 2) (Fin 2) ℂ) ∧ IsArithVar (⊥ : Ideal (MRing (PBlk 2))) (1 + 1) ∧
       IsChowForm (Int.castRingHom ℂ) (finIdeal (⊥ : Ideal (MRing (PBlk 2)))) 1 1
@@ -347,16 +438,27 @@ theorem ChowHeightLowerBound.hyps_inhabited :
   ⟨isUnit_one, isArithVar_projLine', by rw [map_detForm_rat]; exact isChowForm_detForm,
     span_basis_formNorm_le 2⟩
 
+/- English proof (translation)
+Introduce `x y`. Establish `h` using `padicNorm.nonarchimedean (p := 2) (q := x) (r := y)`. Simplify using `only [Rat.AbsoluteValue.padic_eq_padicNorm]`. Conclude with `h` after adjusting the coercions.
+-/
 theorem GaussNormMul.hyps_inhabited : IsNonarchimedean (Rat.AbsoluteValue.padic 2) := by
   intro x y
   have h := padicNorm.nonarchimedean (p := 2) (q := x) (r := y)
   simp only [Rat.AbsoluteValue.padic_eq_padicNorm]
   exact_mod_cast h
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨isUnit_one, detForm_ne_zero⟩`.
+-/
 theorem LogMeanMul.hyps_inhabited :
     IsUnit (1 : Matrix (Fin 2) (Fin 2) ℂ) ∧ detForm ℂ ≠ 0 :=
   ⟨isUnit_one, detForm_ne_zero⟩
 
+/- English proof (translation)
+Use `⟨fun _ => isUnit_one, fun _ _ => ?_⟩` and prove the remaining obligations. Introduce `h`. Apply `detForm_ne_zero` to reduce the goal to its premises. Rewrite using `[← map_detForm_rat]`. Simplify using `only at h`.
+
+Rewrite using `[h, map_zero]`.
+-/
 theorem ChowHeightCycle.hyps_inhabited :
     (∀ w : NumberField.InfinitePlace ℚ, IsUnit ((fun _ => 1 : NumberField.InfinitePlace ℚ →
       Matrix (Fin 2) (Fin 2) ℂ) w)) ∧
@@ -368,6 +470,11 @@ theorem ChowHeightCycle.hyps_inhabited :
   simp only at h
   rw [h, map_zero]
 
+/- English proof (translation)
+Use `⟨inferInstance, ⟨Ideal.isPrime_bot, ⟨∅, fun f hf => absurd hf (Set.notMem_empty f), Ideal.span_empty.symm⟩, fun _ => ⟨0, by rw [Submodule.mem_bot]; exact X_ne_zero _⟩⟩, ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `a`. Simplify using `[Ideal.mem_comap]`. Rewrite using `[ringKrullDim_eq_of_ringEquiv (RingEquiv.quotientBot _), MvPolynomial.ringKrullDim_of_isNoetherianRing, IsPrincipalIdealRing.ringKrullDim_eq_one ℤ Int.not_isField]`. Establish `hc : Nat.card ((_ : Unit) × PBlk 1 ()) = 1`.
+
+Rewrite using `[Nat.card_eq_fintype_card, Fintype.card_sigma]`. Simplify using the standard rewrite rules. Rewrite using `[hc, Fintype.card_unit]`. Both sides reduce to the same expression.
+-/
 theorem isArithVar_point : IsArithVar (⊥ : Ideal (MRing (PBlk 1))) (0 + 1) := by
   refine ⟨inferInstance, ⟨Ideal.isPrime_bot,
     ⟨∅, fun f hf => absurd hf (Set.notMem_empty f), Ideal.span_empty.symm⟩,
@@ -383,6 +490,17 @@ theorem isArithVar_point : IsArithVar (⊥ : Ideal (MRing (PBlk 1))) (0 + 1) := 
     rw [hc, Fintype.card_unit]
     rfl
 
+/- English proof (translation)
+Use `⟨fun m hm k => ?_, (X_prime).squarefree, fun u => ?_⟩` and prove the remaining obligations. Rewrite `hm` using `[support_X, Finset.mem_singleton]`. Substitute `hm` using the available equality. Use `fin_cases k`. Simplify using the standard rewrite rules.
+
+Rewrite using `[finIdeal_bot]`. Simplify using `only [eval_X]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨1, (mem_conePts_bot _).mpr one_ne_zero, fun j => ?_⟩` and prove the remaining obligations.
+
+Use `fin_cases j`. Simplify using `using h`. Introduce and unpack `⟨z, hz, hj⟩`. Establish `hz0 : z 0 ≠ 0`. Introduce `h0`.
+
+Apply `(mem_conePts_bot z).mp hz` to reduce the goal to its premises. Use extensionality with `i`. Use `fin_cases i`. Simplify using `using h0`. Establish `h` using `hj 0`.
+
+Simplify using `only [Fin.sum_univ_one] at h`. Conclude with `(mul_eq_zero.mp h).resolve_right hz0`.
+-/
 theorem isChowForm_point :
     IsChowForm (Int.castRingHom ℂ) (finIdeal (⊥ : Ideal (MRing (PBlk 1)))) 0 1
       (X (0, 0) : MvPolynomial (Fin (0 + 1) × Fin 1) ℂ) := by
@@ -410,6 +528,11 @@ theorem isChowForm_point :
       simp only [Fin.sum_univ_one] at h
       exact (mul_eq_zero.mp h).resolve_right hz0
 
+/- English proof (translation)
+Use `⟨isArithVar_point, ⟨fun c hc => ?_, by rw [map_X]; exact isChowForm_point⟩, ?_⟩` and prove the remaining obligations. Establish `h` using `hc (Finsupp.single (0, 0) 1)`. Rewrite `h` using `[coeff_X, if_pos rfl]`. Conclude with `isUnit_of_dvd_one h`. Rewrite using `[Submodule.mem_bot]`.
+
+Simplify using `[linForm, Xc, X_ne_zero]`.
+-/
 theorem ChowFormSectionPoint.hyps_inhabited :
     IsArithVar (⊥ : Ideal (MRing (PBlk 1))) (0 + 1) ∧
       IsIntChowForm (⊥ : Ideal (MRing (PBlk 1))) 0 1 (X (0, 0)) ∧

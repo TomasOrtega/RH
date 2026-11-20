@@ -21,14 +21,23 @@ open GlobalTheory.ZM.RepBC GlobalTheory.AbLaw.Segre
 section Box
 variable {X Y P : Scheme.{0}} (p : P ⟶ X) (q : P ⟶ Y) {H : LB X} {K : LB Y}
 
+/- English proof (translation)
+Introduce `_ h` and use `le_pull H (x ≫ p) (fun _ => (J PUnit.unit).1) (pull_le (box p q H K) x J h).1`.
+-/
 theorem le_fst {Z : Scheme.{0}} (x : Z ⟶ P) (J : PUnit → (box p q H K).ι) :
     ((box p q H K).pull x).U J ≤ (H.pull (x ≫ p)).U (fun _ => (J PUnit.unit).1) :=
   fun _ h => le_pull H (x ≫ p) (fun _ => (J PUnit.unit).1) (pull_le (box p q H K) x J h).1
 
+/- English proof (translation)
+Introduce `_ h` and use `le_pull K (x ≫ q) (fun _ => (J PUnit.unit).2) (pull_le (box p q H K) x J h).2`.
+-/
 theorem le_snd {Z : Scheme.{0}} (x : Z ⟶ P) (J : PUnit → (box p q H K).ι) :
     ((box p q H K).pull x).U J ≤ (K.pull (x ≫ q)).U (fun _ => (J PUnit.unit).2) :=
   fun _ h => le_pull K (x ≫ q) (fun _ => (J PUnit.unit).2) (pull_le (box p q H K) x J h).2
 
+/- English proof (translation)
+Rewrite using `[map_mul]`. Conclude with `congrArg₂ (· * ·) (appLE_appLE x p h₁ e e₁ a) (appLE_appLE x q h₂ e e₂ b)`.
+-/
 theorem appLE_ap {Z : Scheme.{0}} (x : Z ⟶ P) {U : X.Opens} {V : Y.Opens} {W : P.Opens} {W' : Z.Opens}
     (h₁ : W ≤ p ⁻¹ᵁ U) (h₂ : W ≤ q ⁻¹ᵁ V) (e : W' ≤ x ⁻¹ᵁ W) (e₁ : W' ≤ (x ≫ p) ⁻¹ᵁ U) (e₂ : W' ≤ (x ≫ q) ⁻¹ᵁ V)
     (a : Γ(X, U)) (b : Γ(Y, V)) :
@@ -37,6 +46,17 @@ theorem appLE_ap {Z : Scheme.{0}} (x : Z ⟶ P) {U : X.Opens} {V : Y.Opens} {W :
   rw [map_mul]
   exact congrArg₂ (· * ·) (appLE_appLE x p h₁ e e₁ a) (appLE_appLE x q h₂ e e₂ b)
 
+/- English proof (translation)
+Take `⟨τ₁, g₁, c₁⟩` from `h₁`. Take `⟨τ₂, g₂, c₂⟩` from `h₂`. Use `⟨⟨fun J => res (le_fst p q x J) (τ₁.s _) * res (le_snd p q x J) (τ₂.s _)⟩, (isGen_val _).2 fun J J' => ?_, fun i J e => ?_⟩` and prove the remaining obligations. Establish `e₁` using `inf_le_inf (le_fst p q x J) (le_fst p q x J')`. Establish `e₂` using `inf_le_inf (le_snd p q x J) (le_snd p q x J')`.
+
+Establish `a₁` using `congrArg (resG (Sp T) e₁) ((isGen_val τ₁).1 g₁ _ _)`. Establish `a₂` using `congrArg (resG (Sp T) e₂) ((isGen_val τ₂).1 g₂ _ _)`. Rewrite `a₁`, `a₂` using `[map_mul, rr, rr, pull_g _ _ _ _ (pull_inf_le _ _ _ _), r_appLE]`. Use `erw [pull_g (box p q H K) x J J' (pull_inf_le _ _ _ _)]`. Establish `l : ∀ (J : PUnit → (box p q H K).ι) (W : (Sp T).Opens) (h : W ≤ ((box p q H K).pull x).U J), resG (Sp T) h (res (le_fst p q x J) (τ₁.s _) * res (le_snd p q x J) (τ₂.s _)).val = resG (Sp T) (h.trans (le_fst p q x J)) (τ₁.s _).val * resG (Sp T) (h.trans (le_snd p q x J)) (τ₂.s _).v …`.
+
+Introduce `J W h`. Rewrite using `[Units.val_mul, map_mul]`. Conclude with `congrArg₂ (· * ·) (rr _ _ _) (rr _ _ _)`. Use `(l J _ _).trans (Eq.trans ?_ (congrArg₂ (· * ·) (appLE_ap p q x _ _ _ (e₁.trans (pull_inf_le _ _ _ _)) (e₂.trans (pull_inf_le _ _ _ _)) _ _) (l J' _ _)).symm)` and prove the remaining obligations. Conclude with `(congrArg₂ (· * ·) a₁ a₂).trans (mul_mul_mul_comm _ _ _ _)`.
+
+Establish `a₁` using `congrArg (resG (Sp T) (le_fst p q x J)) (c₁ i.1 _ (pull_le _ _ _))`. Establish `a₂` using `congrArg (resG (Sp T) (le_snd p q x J)) (c₂ i.2 _ (pull_le _ _ _))`. Rewrite `a₁`, `a₂` using `[map_mul, rr, r_appLE]`. Use `(appLE_ap p q x _ _ e ((le_fst p q x J).trans (pull_le _ _ _)) ((le_snd p q x J).trans (pull_le _ _ _)) _ _).trans ?_` and prove the remaining obligations. Use `(congrArg₂ (· * ·) a₁ a₂).trans ((mul_mul_mul_comm _ _ _ _).trans ?_)` and prove the remaining obligations.
+
+Rewrite using `[map_mul, map_mul]`. Both sides reduce to the same expression.
+-/
 theorem secCoord_box {σ₁ σ₂ : Type} (s : σ₁ → H.Sec) (t : σ₂ → K.Sec) {T : Type} [CommRing T] (x : Sp T ⟶ P)
     (v₁ : σ₁ → T) (v₂ : σ₂ → T) (h₁ : SecCoord H s (x ≫ p) v₁) (h₂ : SecCoord K t (x ≫ q) v₂) :
     SecCoord (box p q H K) (fun i : σ₁ × σ₂ => boxSec p q (s i.1) (t i.2)) x (fun i => v₁ i.1 * v₂ i.2) := by
@@ -69,24 +89,45 @@ theorem secCoord_box {σ₁ σ₂ : Type} (s : σ₁ → H.Sec) (t : σ₂ → K
     rfl
 end Box
 
+/- English proof (translation)
+The claim follows from `(spMap_comp f g).symm`.
+-/
 theorem spc {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap g ≫ spMap f = spMap (g.comp f) := (spMap_comp f g).symm
 
 section General
 variable {X : Scheme.{0}} {M : LB X} {σ : Type} {th : σ → M.Sec}
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.ZM.Coord.secCoord_bc_scale_unique X M σ th T x v hM h).1 T' φ`.
+-/
 theorem bc (hM : M.IsLB) {T T' : Type} [CommRing T] [CommRing T'] {x : Sp T ⟶ X} {v : σ → T}
     (h : SecCoord M th x v) (φ : T →+* T') : SecCoord M th (spMap φ ≫ x) (fun i => φ (v i)) :=
   (GlobalTheory.ZM.Coord.secCoord_bc_scale_unique X M σ th T x v hM h).1 T' φ
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.ZM.Coord.secCoord_bc_scale_unique X M σ th T x v hM h).2.1 u`.
+-/
 theorem scale (hM : M.IsLB) {T : Type} [CommRing T] {x : Sp T ⟶ X} {v : σ → T}
     (h : SecCoord M th x v) (u : Tˣ) : SecCoord M th x (fun i => u * v i) :=
   (GlobalTheory.ZM.Coord.secCoord_bc_scale_unique X M σ th T x v hM h).2.1 u
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.ZM.Coord.secCoord_bc_scale_unique X M σ th T x v hM h).2.2 v' h'`.
+-/
 theorem uniq (hM : M.IsLB) {T : Type} [CommRing T] {x : Sp T ⟶ X} {v v' : σ → T}
     (h : SecCoord M th x v) (h' : SecCoord M th x v') : ∃ u : Tˣ, ∀ i, v' i = u * v i :=
   (GlobalTheory.ZM.Coord.secCoord_bc_scale_unique X M σ th T x v hM h).2.2 v' h'
 
+/- English proof (translation)
+Set `φ : T →+* LaurentPolynomial T` to `(Polynomial.toLaurent (R := T)).comp Polynomial.C`. Establish `h1` using `scale hI.1 (bc hI.1 h φ) (LaurentPolynomial.isUnit_T (R := T) 1).unit`. Establish `h2` using `(hI.2.1 _ (φ.comp β) _ _ (by rw [Category.assoc, hx, spc]) h1).2 F hF`. Establish `h3 : MvPolynomial.eval₂ (Polynomial.C.comp β) (fun i => Polynomial.X * Polynomial.C (v i)) F = 0`. Apply `Polynomial.toLaurent_injective` to reduce the goal to its premises.
+
+Rewrite using `[map_zero, MvPolynomial.eval₂_comp_left, ← h2]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `[φ]`. Establish `h4` using `congrArg (Polynomial.evalRingHom c) h3`.
+
+Rewrite `h4` using `[map_zero, MvPolynomial.eval₂_comp_left]`. Rewrite using `[← h4]`. Use `congr 1`. Use extensionality with `r`. Simplify using the standard rewrite rules.
+
+Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem eval_smul {R : Type} [CommRing R] {I : Ideal (MvPolynomial σ R)} {s : X ⟶ Sp R} (hI : ProjRep I s M th)
     {T : Type} [CommRing T] (β : R →+* T) {x : Sp T ⟶ X} {v : σ → T} (hx : x ≫ s = spMap β)
     (h : SecCoord M th x v) (c : T) {F : MvPolynomial σ R} (hF : F ∈ I) :
@@ -107,6 +148,11 @@ theorem eval_smul {R : Type} [CommRing R] {I : Ideal (MvPolynomial σ R)} {s : X
   · ext r; simp
   · funext i; simp; ring
 
+/- English proof (translation)
+Use `W.affineOpenCover.openCover.hom_ext _ _ fun i => ?_` and prove the remaining obligations. Set `y : Sp (W.affineOpenCover.X i) ⟶ W` to `W.affineOpenCover.f i`. Use `h _ y (Spec.preimage (y ≫ a)).hom (Spec.preimage (y ≫ b)).hom (Spec.map_preimage _).symm (Spec.map_preimage _).symm` as an intermediate fact. Express the relevant statement in the definitionally equal form `y ≫ a ≫ f = y ≫ b ≫ g`. Rewrite using `[← Category.assoc, ← Category.assoc, ← Spec.map_preimage (y ≫ a), ← Spec.map_preimage (y ≫ b)]`.
+
+Conclude with `this`.
+-/
 theorem hom_ext_affine {W Z : Scheme.{0}} {T₁ T₂ : Type} [CommRing T₁] [CommRing T₂]
     (a : W ⟶ Sp T₁) (b : W ⟶ Sp T₂) (f : Sp T₁ ⟶ Z) (g : Sp T₂ ⟶ Z)
     (h : ∀ (T : Type) [CommRing T] (y : Sp T ⟶ W) (φ₁ : T₁ →+* T) (φ₂ : T₂ →+* T), y ≫ a = spMap φ₁ →
@@ -119,6 +165,19 @@ theorem hom_ext_affine {W Z : Scheme.{0}} {T₁ T₂ : Type} [CommRing T₁] [Co
   rw [← Category.assoc, ← Category.assoc, ← Spec.map_preimage (y ≫ a), ← Spec.map_preimage (y ≫ b)]
   exact this
 
+/- English proof (translation)
+Set `𝒰` to `(Scheme.affineOpenCoverOfSpanRangeEqTop (R := CommRingCat.of T) w hw).openCover`. Establish `hu : ∀ k, IsUnit (algebraMap T (Localization.Away (w k)) (w k))` using `fun k => IsLocalization.Away.algebraMap_isUnit (w k)`. Use `choose x hx hx' using fun k => h (Localization.Away (w k)) (algebraMap _ _) k (hu k)`. Establish `hc : ∀ k l : 𝒰.I₀, pullback.fst (𝒰.f k) (𝒰.f l) ≫ x k = pullback.snd (𝒰.f k) (𝒰.f l) ≫ x l`. Introduce `k l`.
+
+Use `hom_ext_affine _ _ _ _ fun T' _ y φ₁ φ₂ e₁ e₂ => ?_` and prove the remaining obligations. Establish `e : φ₁.comp (algebraMap T _) = φ₂.comp (algebraMap T _)`. Establish `: spMap (φ₁.comp (algebraMap T _)) = spMap (φ₂.comp (algebraMap T _))`. Rewrite using `[← spc _ φ₁, ← spc _ φ₂, ← e₁, ← e₂]`. Conclude with `(Category.assoc _ _ _).trans ((congrArg (y ≫ ·) (pullback.condition (f := 𝒰.f k) (g := 𝒰.f l))).trans (Category.assoc _ _ _).symm)`.
+
+Conclude with `congrArg CommRingCat.Hom.hom (Spec.map_injective this)`. Use `(h T' (φ₁.comp (algebraMap T _)) k ((hu k).map φ₁)).unique ⟨?_, bc hM (hx k).2 φ₁⟩ ⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, (hx k).1, spc, RingHom.comp_assoc]`. Rewrite using `[Category.assoc, (hx l).1, spc, e, RingHom.comp_assoc]`. Rewrite using `[e]`.
+
+Conclude with `bc hM (hx l).2 φ₂`. Take `⟨g, hg⟩ : ∃ g : Sp T ⟶ X, ∀ k, spMap (algebraMap T (Localization.Away (w k))) ≫ g = x k` from `⟨𝒰.glueMorphisms x hc, fun k => 𝒰.ι_glueMorphisms x hc k⟩`. Use `⟨g, ⟨𝒰.hom_ext _ _ fun (k : σ) => ?_, ?_⟩, fun y hy => 𝒰.hom_ext _ _ fun (k : σ) => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `spMap (algebraMap T (Localization.Away (w k))) ≫ _ = spMap (algebraMap T (Localization.Away (w k))) ≫ _`. Rewrite using `[← Category.assoc, hg, (hx k).1, spc]`.
+
+Use `GlobalTheory.T.isSectionCoordinateVector_of_locally_on_ring X M σ th T _ w hM hw fun p => ?_` and prove the remaining obligations. Take `⟨k, hk⟩ : ∃ k : σ, p ∈ Set.range (spMap (algebraMap T (Localization.Away (w k))))` from `𝒰.exists_eq p`. Use `⟨Localization.Away (w k), inferInstance, algebraMap _ _, inferInstance, hk, ?_⟩` and prove the remaining obligations. Rewrite using `[hg]`. Conclude with `(hx k).2`.
+
+Express the relevant statement in the definitionally equal form `spMap (algebraMap T (Localization.Away (w k))) ≫ _ = spMap (algebraMap T (Localization.Away (w k))) ≫ _`. Rewrite using `[hg]`. Use `hx' k _ ⟨?_, bc hM hy.2 _⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, hy.1, spc]`.
+-/
 theorem glue_points (hM : M.IsLB) {R : Type} [CommRing R] (s : X ⟶ Sp R) {T : Type} [CommRing T] (β : R →+* T)
     (w : σ → T) (hw : Ideal.span (Set.range w) = ⊤)
     (h : ∀ (T' : Type) [CommRing T'] (φ : T →+* T') (k : σ), IsUnit (φ (w k)) →
@@ -161,6 +220,9 @@ section Main
 variable {X Y P : Scheme.{0}} (p : P ⟶ X) (q : P ⟶ Y) {H : LB X} {K : LB Y} {σ₁ σ₂ : Type}
   (s : σ₁ → H.Sec) (t : σ₂ → K.Sec)
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `(GlobalTheory.T.sectionCoordinateVector_exists_locally X H σ₁ s hH).1 T (x ≫ p)`. Take `⟨b, hb⟩` from `(GlobalTheory.T.sectionCoordinateVector_exists_locally Y K σ₂ t hK).1 T (x ≫ q)`. Take `⟨u, hu⟩` from `uniq (isLB_box p q hH hK) (secCoord_box p q s t x a b ha hb) hw`. Conclude with `⟨fun i => u * a i, b, scale hH ha u, hb, funext fun i => (hu i).trans (_root_.mul_assoc _ _ _).symm⟩`.
+-/
 theorem split_local (hH : H.IsLB) (hK : K.IsLB) {T : Type} [CommRing T] [IsLocalRing T] (x : Sp T ⟶ P)
     (w : σ₁ × σ₂ → T) (hw : SecCoord (box p q H K) (fun i : σ₁ × σ₂ => boxSec p q (s i.1) (t i.2)) x w) :
     ∃ a b, SecCoord H s (x ≫ p) a ∧ SecCoord K t (x ≫ q) b ∧ w = fun i => a i.1 * b i.2 := by
@@ -169,6 +231,13 @@ theorem split_local (hH : H.IsLB) (hK : K.IsLB) {T : Type} [CommRing T] [IsLocal
   obtain ⟨u, hu⟩ := uniq (isLB_box p q hH hK) (secCoord_box p q s t x a b ha hb) hw
   exact ⟨fun i => u * a i, b, scale hH ha u, hb, funext fun i => (hu i).trans (_root_.mul_assoc _ _ _).symm⟩
 
+/- English proof (translation)
+Take `⟨f, hf, a, ha⟩` from `(GlobalTheory.T.sectionCoordinateVector_exists_locally X H σ₁ s hH).2.1 T (x ≫ p) z`. Take `⟨z', hz'⟩ : z ∈ Set.range (spMap (algebraMap T (Localization.Away f)))` from `(PrimeSpectrum.localization_away_comap_range (Localization.Away f) f).ge hf`. Take `⟨g, hg, b, hb⟩` from `(GlobalTheory.T.sectionCoordinateVector_exists_locally Y K σ₂ t hK).2.1 _ (spMap (algebraMap T (Localization.Away f)) ≫ x ≫ q) z'`. Take `⟨z'', hz''⟩ : z' ∈ Set.range (spMap (algebraMap _ (Localization.Away g)))` from `(PrimeSpectrum.localization_away_comap_range (Localization.Away g) g).ge hg`. Establish `ha'` using `bc hH ha (algebraMap _ (Localization.Away g))`.
+
+Rewrite `ha'`, `hb` using `[← Category.assoc, spc]`. Use `set φ := (algebraMap _ (Localization.Away g)).comp (algebraMap T (Localization.Away f)) with hφ`. Take `⟨u, hu⟩` from `uniq (isLB_box p q hH hK) (secCoord_box p q s t (spMap φ ≫ x) _ b (by rw [Category.assoc]; exact ha') (by rw [Category.assoc]; exact hb)) (bc (isLB_box p q hH hK) hw φ)`. Use `⟨_, inferInstance, φ, ?_, ⟨z'', ?_⟩, _, b, scale hH ha' u, hb, fun i => (hu i).trans (_root_.mul_assoc _ _ _).symm⟩` and prove the remaining obligations. Rewrite using `[hφ, ← spc]`.
+
+Use `infer_instance`. Rewrite using `[hφ, ← spc, Scheme.Hom.comp_apply, hz'', hz']`.
+-/
 theorem split_near (hH : H.IsLB) (hK : K.IsLB) {T : Type} [CommRing T] (x : Sp T ⟶ P)
     (w : σ₁ × σ₂ → T) (hw : SecCoord (box p q H K) (fun i : σ₁ × σ₂ => boxSec p q (s i.1) (t i.2)) x w)
     (z : Sp T) : ∃ (T' : Type) (_ : CommRing T') (φ : T →+* T'), IsOpenImmersion (spMap φ) ∧
@@ -192,6 +261,13 @@ theorem split_near (hH : H.IsLB) (hK : K.IsLB) {T : Type} [CommRing T] (x : Sp T
   · rw [hφ, ← spc]; infer_instance
   · rw [hφ, ← spc, Scheme.Hom.comp_apply, hz'', hz']
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Use `GlobalTheory.T.isSectionCoordinateVector_of_locally_on_ring X H σ₁ s T _ _ hH (Ideal.eq_top_of_isUnit_mem _ (Ideal.subset_span ⟨k.1, rfl⟩) hk) fun z => ?_` and prove the remaining obligations. Take `⟨T', _, φ, h1, h2, a, b, ha, hb, e⟩` from `split_near p q s t hH hK x w hw z`. Use `⟨T', _, φ, h1, h2, ?_⟩` and prove the remaining obligations. Establish `hu : IsUnit (b k.2)` using `isUnit_of_mul_isUnit_right (e k ▸ hk.map φ)`.
+
+Use `scale hH ha hu.unit using 2 with i` and compare the differences between its conclusion and the goal. Rewrite using `[e, IsUnit.unit_spec, _root_.mul_comm]`. Use `GlobalTheory.T.isSectionCoordinateVector_of_locally_on_ring Y K σ₂ t T _ _ hK (Ideal.eq_top_of_isUnit_mem _ (Ideal.subset_span ⟨k.2, rfl⟩) hk) fun z => ?_` and prove the remaining obligations. Take `⟨T', _, φ, h1, h2, a, b, ha, hb, e⟩` from `split_near p q s t hH hK x w hw z`. Use `⟨T', _, φ, h1, h2, ?_⟩` and prove the remaining obligations.
+
+Establish `hu : IsUnit (a k.1)` using `isUnit_of_mul_isUnit_left (e k ▸ hk.map φ)`. Use `scale hK hb hu.unit using 2 with i` and compare the differences between its conclusion and the goal. Rewrite using `[e, IsUnit.unit_spec]`.
+-/
 theorem col_row (hH : H.IsLB) (hK : K.IsLB) {T : Type} [CommRing T] (x : Sp T ⟶ P)
     (w : σ₁ × σ₂ → T) (hw : SecCoord (box p q H K) (fun i : σ₁ × σ₂ => boxSec p q (s i.1) (t i.2)) x w)
     (k : σ₁ × σ₂) (hk : IsUnit (w k)) :
@@ -210,12 +286,40 @@ theorem col_row (hH : H.IsLB) (hK : K.IsLB) {T : Type} [CommRing T] (x : Sp T �
     convert scale hK hb hu.unit using 2 with i
     rw [e, IsUnit.unit_spec]
 
+/- English proof (translation)
+Simplify using `only [graphIdeal, Ideal.mem_iInf, RingHom.mem_ker, MvPolynomial.coe_eval₂Hom, and_imp]`.
+-/
 theorem mem_graphIdeal {R : Type} [CommRing R] (f : P ⟶ Sp R) (F : MvPolynomial (σ₁ × σ₂) R) :
     F ∈ graphIdeal f H s p K t q ↔ ∀ (T : Type) [CommRing T] (β : R →+* T) (y : Sp T ⟶ P) (a : σ₁ → T) (b : σ₂ → T),
       y ≫ f = spMap β → SecCoord H s (y ≫ p) a → SecCoord K t (y ≫ q) b →
         MvPolynomial.eval₂ β (fun i : σ₁ × σ₂ => a i.1 * b i.2) F = 0 := by
   simp only [graphIdeal, Ideal.mem_iInf, RingHom.mem_ker, MvPolynomial.coe_eval₂Hom, and_imp]
 
+/- English proof (translation)
+Establish `hB` using `isLB_box p q h₁.1 h₂.1`. Use `⟨hB, fun T _ β x w hx hw => ⟨?_, fun F hF => ?_⟩, fun T _ β w hw hI => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Take `⟨m, hm, hle⟩` from `Ideal.exists_le_maximal _ hne`. Use `letI := Ideal.Quotient.field m`.
+
+Take `⟨a, b, ha, hb, e⟩` from `split_local p q s t h₁.1 h₂.1 _ _ (bc hB hw (Ideal.Quotient.mk m))`. Establish `ua` using `(h₁.2.1 _ ((Ideal.Quotient.mk m).comp β) _ a (by rw [Category.assoc, Category.assoc, hx, spc]) ha).1`. Establish `ub` using `(h₂.2.1 _ ((Ideal.Quotient.mk m).comp β) _ b (by rw [Category.assoc, Category.assoc, ← sq.w, hx, spc]) hb).1`. Establish `na : ∃ i, a i ≠ 0` using `by by_contra! h`. Conclude with `bot_ne_top ((Ideal.span_eq_bot.2 (by rintro _ ⟨i, rfl⟩; exact h i)).symm.trans ua)`.
+
+Establish `nb : ∃ i, b i ≠ 0` using `by by_contra! h`. Conclude with `bot_ne_top ((Ideal.span_eq_bot.2 (by rintro _ ⟨i, rfl⟩; exact h i)).symm.trans ub)`. Take `⟨i, hi⟩` from `na`. Take `⟨j, hj⟩` from `nb`. Use `mul_ne_zero hi hj ((congrFun e (i, j)).symm.trans ?_)` and prove the remaining obligations.
+
+Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 (hle (Ideal.subset_span ⟨_, rfl⟩))`. Use `eq_zero_of_localization _ fun m hm => ?_` and prove the remaining obligations. Take `⟨a, b, ha, hb, e⟩` from `split_local p q s t h₁.1 h₂.1 _ _ (bc hB hw (algebraMap T (Localization.AtPrime m)))`. Rewrite using `[MvPolynomial.eval₂_comp_left]`. Use `(mem_graphIdeal p q s t _ F).1 hF _ ((algebraMap T (Localization.AtPrime m)).comp β) _ a b (by rw [Category.assoc, hx, spc]) ha hb` as an intermediate fact.
+
+Rewrite `this` using `[← e]`. Conclude with `this`. Use `glue_points hB _ β w hw fun T' _ φ k hk => ?_` and prove the remaining obligations. Establish `hI' : ∀ F ∈ graphIdeal (p ≫ f) H s p K t q, MvPolynomial.eval₂ (φ.comp β) (fun i => φ (w i)) F = 0`. Introduce `F hF`.
+
+Use `congrArg φ (hI F hF)` as an intermediate fact. Rewrite `this` using `[MvPolynomial.eval₂_comp_left, map_zero]`. Then use the resulting hypothesis. Generalize the expression as in `φ.comp β = β' at hI'`. Take `⟨v, hv⟩ : ∃ v : σ₁ × σ₂ → T', v = fun i => φ (w i)` from `⟨_, rfl⟩`. Use `replace hk : IsUnit (v k) := hv ▸ hk`.
+
+Rewrite `hI'`, the goal using `[← hv]`. Establish `minor : ∀ i, v (i.1, k.2) * v (k.1, i.2) = v k * v i`. Introduce `i`. Use `hI' (MvPolynomial.X (i.1, k.2) * MvPolynomial.X (k.1, i.2) - MvPolynomial.X k * MvPolynomial.X i) ((mem_graphIdeal p q s t _ _).2 fun T _ β y a b _ _ _ => by simp; ring)` as an intermediate fact. Simplify `this` using `[sub_eq_zero]`.
+
+Take `⟨y₁, ⟨e₁, c₁⟩, u₁⟩` from `h₁.2.2 T' β' (fun i => v (i, k.2)) (Ideal.eq_top_of_isUnit_mem _ (Ideal.subset_span ⟨k.1, rfl⟩) hk) fun F hF => by`. Use `hI' (MvPolynomial.rename (fun i => (i, k.2)) F) ((mem_graphIdeal p q s t _ _).2 fun T _ β y a b hy ha _ => by` as an intermediate fact. Rewrite using `[MvPolynomial.eval₂_rename, ← eval_smul h₁ β (by rw [Category.assoc, hy]) ha (b k.2) hF]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+
+Conclude with `_root_.mul_comm _ _)`. Rewrite `this` using `[MvPolynomial.eval₂_rename]`. Then use the resulting hypothesis. Take `⟨y₂, ⟨e₂, c₂⟩, u₂⟩` from `h₂.2.2 T' β' (fun j => v (k.1, j)) (Ideal.eq_top_of_isUnit_mem _ (Ideal.subset_span ⟨k.2, rfl⟩) hk) fun F hF => by`. Use `hI' (MvPolynomial.rename (fun j => (k.1, j)) F) ((mem_graphIdeal p q s t _ _).2 fun T _ β y a b hy _ hb => by` as an intermediate fact. Rewrite using `[MvPolynomial.eval₂_rename]`.
+
+Conclude with `eval_smul h₂ β (by rw [Category.assoc, ← sq.w, hy]) hb (a k.1) hF)`. Rewrite `this` using `[MvPolynomial.eval₂_rename]`. Then use the resulting hypothesis. Use `⟨sq.lift y₁ y₂ (e₁.trans e₂.symm), ⟨by rw [sq.lift_fst_assoc, e₁], ?_⟩, fun y hy => ?_⟩` and prove the remaining obligations. Use `scale hB (secCoord_box p q s t (sq.lift y₁ y₂ (e₁.trans e₂.symm)) _ _ (by rw [sq.lift_fst]; exact c₁) (by rw [sq.lift_snd]; exact c₂)) hk.unit⁻¹` as an intermediate fact. Use `this using 2 with i` and compare the differences between its conclusion and the goal.
+
+Rewrite using `[minor, ← _root_.mul_assoc, IsUnit.val_inv_mul, _root_.one_mul]`. Take `⟨d₁, d₂⟩` from `col_row p q s t h₁.1 h₂.1 y v hy.2 k hk`. Apply `sq.hom_ext` to reduce the goal to its premises. Rewrite using `[sq.lift_fst]`. Conclude with `u₁ _ ⟨by rw [Category.assoc, hy.1], d₁⟩`.
+
+Rewrite using `[sq.lift_snd]`. Conclude with `u₂ _ ⟨by rw [Category.assoc, ← sq.w, hy.1], d₂⟩`.
+-/
 theorem projRep_box {R : Type} [CommRing R] {f : X ⟶ Sp R} {g : Y ⟶ Sp R} (sq : IsPullback p q f g)
     {I₁ : Ideal (MvPolynomial σ₁ R)} {I₂ : Ideal (MvPolynomial σ₂ R)} (h₁ : ProjRep I₁ f H s) (h₂ : ProjRep I₂ g K t) :
     ProjRep (graphIdeal (p ≫ f) H s p K t q) (p ≫ f) (box p q H K)
@@ -288,6 +392,9 @@ theorem projRep_box {R : Type} [CommRing R] {f : X ⟶ Sp R} {g : Y ⟶ Sp R} (s
         exact u₂ _ ⟨by rw [Category.assoc, ← sq.w, hy.1], d₂⟩
 end Main
 
+/- English proof (translation)
+Introduce `R σ₁ σ₂ _ _ _ I₁ I₂ Z₁ Z₂ M₁ M₂ th₁ th₂ h₁ h₂`. Conclude with `⟨_, _, _, projRep_box _ _ th₁ th₂ (IsPullback.of_hasPullback Z₁.hom Z₂.hom) h₁ h₂, fun T _ x v₁ v₂ => secCoord_box _ _ th₁ th₂ x v₁ v₂⟩`.
+-/
 theorem segre_coordinates : ∀ (R σ₁ σ₂ : Type) [CommRing R] [Finite σ₁] [Finite σ₂] (I₁ : Ideal (MvPolynomial σ₁ R)) (I₂ : Ideal (MvPolynomial σ₂ R)) (Z₁ Z₂ : Over (Sp R)) (M₁ : LB Z₁.left) (M₂ : LB Z₂.left) (th₁ : σ₁ → M₁.Sec) (th₂ : σ₂ → M₂.Sec), ProjRep I₁ Z₁.hom M₁ th₁ → ProjRep I₂ Z₂.hom M₂ th₂ → ∃ (I₃ : Ideal (MvPolynomial (σ₁ × σ₂) R)) (M₃ : LB (Z₁ ⊗ Z₂).left) (th₃ : σ₁ × σ₂ → M₃.Sec), ProjRep I₃ (Z₁ ⊗ Z₂).hom M₃ th₃ ∧ ∀ (T : Type) [CommRing T] (x : Sp T ⟶ (Z₁ ⊗ Z₂).left) (v₁ : σ₁ → T) (v₂ : σ₂ → T), SecCoord M₁ th₁ (x ≫ (fst Z₁ Z₂).left) v₁ → SecCoord M₂ th₂ (x ≫ (snd Z₁ Z₂).left) v₂ → SecCoord M₃ th₃ x (fun i => v₁ i.1 * v₂ i.2) := by
   intro R σ₁ σ₂ _ _ _ I₁ I₂ Z₁ Z₂ M₁ M₂ th₁ th₂ h₁ h₂
   exact ⟨_, _, _, projRep_box _ _ th₁ th₂ (IsPullback.of_hasPullback Z₁.hom Z₂.hom) h₁ h₂,

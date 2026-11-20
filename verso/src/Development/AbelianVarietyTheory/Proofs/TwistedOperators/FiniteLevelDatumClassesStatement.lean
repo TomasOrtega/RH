@@ -10,5 +10,8 @@ open scoped TensorProduct ComplexConjugate Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.LiftLevel.lvCls_finite | exact GlobalTheory.LiftLevel.lvCls_finite | (intros; apply GlobalTheory.LiftLevel.lvCls_finite <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.finite_levelDatumClasses : ∀ (D : D7) (S T : HSp D) (C : Ctx S T) (Lv : GlobalTheory.SW.Level C.X), Finite (GlobalTheory.LiftLevel.LvCls C Lv) := by
   first | exact @GlobalTheory.LiftLevel.lvCls_finite | exact GlobalTheory.LiftLevel.lvCls_finite | (intros; apply GlobalTheory.LiftLevel.lvCls_finite <;> assumption)

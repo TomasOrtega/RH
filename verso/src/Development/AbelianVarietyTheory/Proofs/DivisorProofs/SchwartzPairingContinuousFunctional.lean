@@ -4,6 +4,11 @@ open scoped SchwartzMap
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Set `kc : 𝓢(V, ℂ)` to `SchwartzMap.postcompCLM (𝕜 := ℝ) (Complex.conjCLE : ℂ →L[ℝ] ℂ) k`. Establish `hkc : ∀ x, kc x = starRingEnd ℂ (k x)` using `fun x => rfl`. Establish `hg : Function.HasTemperateGrowth (fun x => starRingEnd ℂ (k x))`. Use `kc.hasTemperateGrowth` as an intermediate fact. Simplify `this` using `[funext hkc]`.
+
+Use `⟨(SchwartzMap.integralCLM ℂ μ).comp (SchwartzMap.smulLeftCLM ℂ (fun x => starRingEnd ℂ (k x))), fun u => ?_⟩` and prove the remaining obligations. Rewrite using `[ContinuousLinearMap.comp_apply, SchwartzMap.integralCLM_apply, SchwartzMap.smulLeftCLM_apply hg]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Simplify using `only [smul_eq_mul, mul_comm]`.
+-/
 theorem schwartz_pairing_conj_clm_of_borelSpace (V : Type) [NormedAddCommGroup V] [NormedSpace ℝ V]
     [FiniteDimensional ℝ V] [MeasurableSpace V] [BorelSpace V]
     (μ : MeasureTheory.Measure V) [μ.IsAddHaarMeasure] (k : SchwartzMap V ℂ) :

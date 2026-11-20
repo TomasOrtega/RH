@@ -3,6 +3,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.Deter
 
 open Polynomial Matrix
 
+/- English proof (translation)
+Introduce `A G ι _ _ _ _ t`. Use `⟨⋃ g : ι × ι → G, ((PrimeSpectrum.basicOpen (Matrix.of fun a b => t (g a * g b)).det : TopologicalSpace.Opens (PrimeSpectrum A)) : Set (PrimeSpectrum A)), isOpen_iUnion (fun g => (PrimeSpectrum.basicOpen _).isOpen), ?_⟩` and prove the remaining obligations. Introduce `K _ φ ρ p hp htr`. Rewrite using `[UpperTheory.V.AlgebraTools.Det.gramIff, Set.mem_iUnion]`. Apply `exists_congr` to reduce the goal to its premises.
+
+Introduce `g`. Establish `hM : φ.mapMatrix (Matrix.of fun a b => t (g a * g b)) = Matrix.of fun a b => (ρ (g a * g b)).trace`. Use extensionality with `a b`. Use `show φ (t (g a * g b)) = (ρ (g a * g b)).trace`. Rewrite using `[htr]`.
+
+Rewrite using `[SetLike.mem_coe, PrimeSpectrum.mem_basicOpen, hp, RingHom.mem_ker, RingHom.map_det, hM]`.
+-/
 theorem UpperTheory.V.AlgebraTools.Det.irrOpen :
     ∀ {A G ι : Type} [CommRing A] [Group G] [Fintype ι] [DecidableEq ι] (t : G → A),
     ∃ U : Set (PrimeSpectrum A), IsOpen U ∧

@@ -22,11 +22,19 @@ open GlobalTheory.IndefiniteRowSideFullHecke.HarmonicSystemChartValues
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
 variable (Xo : Moduli Dw l) (c : Coeff l)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem chartVal_eq [StarRing (𝓞 E)] {S : Type} [CommRing S] [Algebra c.F S] [Algebra ℚ S] {y : FrPt Xo c S}
     (C : ChartAt Xo c y) (k : ℕ) {n : ℕ} (f : Fin n → MvPowerSeries (Fin 1 × Fin C.d) S)
     (P : MvPolynomial (LtN Dw n) c.F) :
     Formalism.MainNotions.ModuliIntegralCharts.H1.chartVal C k f P = GlobalTheory.IndefiniteRowSideFullHecke.HarmonicSystemChartValues.chartVal Xo c C k f P := rfl
 
+/- English proof (translation)
+Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C a => simp`. Consider the case `add p q hp hq => simp [hp, hq]`. Consider the case `mul_X p s hp`. Simplify using `only [Derivation.leibniz, smul_eq_mul, map_add, hp, MvPolynomial.pderiv_X, Pi.single_apply]`.
+
+Apply the tactic sequence `split_ifs <;> simp <;> ring`.
+-/
 theorem pderiv_swap {σ R : Type} [CommRing R] (i j : σ) (P : MvPolynomial σ R) :
     MvPolynomial.pderiv i (MvPolynomial.pderiv j P) = MvPolynomial.pderiv j (MvPolynomial.pderiv i P) := by
   classical
@@ -37,6 +45,13 @@ theorem pderiv_swap {σ R : Type} [CommRing R] (i j : σ) (P : MvPolynomial σ R
     simp only [Derivation.leibniz, smul_eq_mul, map_add, hp, MvPolynomial.pderiv_X, Pi.single_apply]
     split_ifs <;> simp <;> ring
 
+/- English proof (translation)
+Establish `e : P ∈ harmK Dw.mult n c.F ComplexEmbedding.conjugate (InPsi H) (fun _ => 1) ↔ ∀ τ : E →+* ℂ, InPsi H τ → ∀ (i : Fin (Dw.mult τ)) (i' : Fin (Dw.mult (ComplexEmbedding.conjugate τ))), ∑ b : Fin n, MvPolynomial.pderiv (⟨τ, i, b⟩ : LtN Dw n) (MvPolynomial.pderiv (⟨ComplexEmbedding. …`. Simplify using `only [harmK, Submodule.mem_iInf, LinearMap.mem_ker, lap, LinearMap.sum_apply, LinearMap.smul_apply, Matrix.one_apply, ite_smul, one_smul, zero_smul, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Both sides reduce to the same expression. Rewrite using `[e]`. Use `⟨fun h τ _ => h τ, fun h τ => ?_⟩` and prove the remaining obligations.
+
+Distinguish the cases in `hτ : InPsi H τ`. Conclude with `h τ hτ`. Establish `key : ∀ σ : E →+* ℂ, σ = ComplexEmbedding.conjugate (ComplexEmbedding.conjugate τ) → ∀ (i : Fin (Dw.mult σ)) (i' : Fin (Dw.mult (ComplexEmbedding.conjugate τ))), ∑ b : Fin n, MvPolynomial.pderiv (⟨σ, i, b⟩ : LtN Dw n) (MvPolynomial.pderiv (⟨ComplexEmbedding.conjugate τ, i', b⟩ : …`. Introduce and unpack `σ rfl i i'`. Rewrite using `[← h _ ((GlobalTheory.ThetaRuleCheck.inPsi_conjugate_iff τ).2 hτ) i' i]`.
+
+Conclude with `Finset.sum_congr rfl fun b _ => pderiv_swap _ _ _`. Conclude with `key τ (by ext x; simp)`.
+-/
 theorem isHarmonic_iff_cmType {n : ℕ} (P : MvPolynomial (LtN Dw n) c.F) :
     IsHarmonic c P ↔ P ∈ harmK Dw.mult n c.F ComplexEmbedding.conjugate (InPsi H) (fun _ => 1) := by
   have e : P ∈ harmK Dw.mult n c.F ComplexEmbedding.conjugate (InPsi H) (fun _ => 1) ↔
@@ -64,6 +79,9 @@ def IsTopHarmonic {n : ℕ} (P : MvPolynomial (LtN Dw n) c.F) : Prop :=
   IsHarmonic c P ∧ RowInv Dw.mult n c.F P ∧
     ∃ a : (E →+* ℂ) × ℕ → ℕ, RowDeg Dw.mult n c.F (fun τ i => a (τ, i)) P
 
+/- English proof (translation)
+Rewrite using `[isHarmonic_iff_cmType]`. Conclude with `⟨fun h => ⟨h.1.1, h.1.2.1, h.1.2.2, h.2⟩, fun h => ⟨⟨h.1, h.2.1, h.2.2.1⟩, h.2.2.2⟩⟩`.
+-/
 theorem mem_harmA_iff {n : ℕ} (a : (E →+* ℂ) × ℕ → ℕ) (P : MvPolynomial (LtN Dw n) c.F) :
     P ∈ harmA c a n ↔ IsHarmonic c P ∧ RowInv Dw.mult n c.F P ∧
       RowDeg Dw.mult n c.F (fun τ i => a (τ, i)) P ∧ ∀ m, IsIntegral ℤ (P.coeff m) := by
@@ -74,6 +92,11 @@ def colSumL {S : Type} [CommRing S] [Algebra c.F S] {n : ℕ} (v : Fin n → (Lt
     MvPolynomial (LtN Dw n) c.F →ₗ[c.F] S :=
   (MvPolynomial.basisMonomials (LtN Dw n) c.F).constr c.F fun m => ∏ b : Fin n, v b (colOf m b)
 
+/- English proof (translation)
+Use `conv_lhs => rw [P.as_sum]`. Rewrite using `[map_sum, colSum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Establish `: (MvPolynomial.monomial m (P.coeff m) : MvPolynomial (LtN Dw n) c.F) = P.coeff m • MvPolynomial.basisMonomials (LtN Dw n) c.F m`. Simplify using `[MvPolynomial.smul_monomial]`.
+
+Rewrite using `[this, map_smul, colSumL, Module.Basis.constr_basis, Algebra.smul_def]`.
+-/
 theorem colSumL_apply {S : Type} [CommRing S] [Algebra c.F S] {n : ℕ} (v : Fin n → (Lt1 Dw →₀ ℕ) → S)
     (P : MvPolynomial (LtN Dw n) c.F) : colSumL c v P = colSum c v P := by
   conv_lhs => rw [P.as_sum]
@@ -90,12 +113,23 @@ def UniqueOn (Q : ∀ n : ℕ, MvPolynomial (LtN Dw n) c.F → Prop) : Prop :=
       (F : Fin n → SecAt Xo c y k) (P : MvPolynomial (LtN Dw n) c.F), Q n P →
         sysVal Xo c nab y k F P = sysVal Xo c nab' y k F P
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem nabUnique_iff : NabUnique Xo c ↔ UniqueOn Xo c fun _ P => IsHarmonic c P := Iff.rfl
 
+/- English proof (translation)
+Introduce `nab nab' h1 h2 S _ _ y k n F P hP` and use `h nab nab' h1 h2 S y k n F P (hQ n P hP)`.
+-/
 theorem UniqueOn.mono {Q Q' : ∀ n : ℕ, MvPolynomial (LtN Dw n) c.F → Prop} (h : UniqueOn Xo c Q)
     (hQ : ∀ n P, Q' n P → Q n P) : UniqueOn Xo c Q' :=
   fun nab nab' h1 h2 S _ _ y k n F P hP => h nab nab' h1 h2 S y k n F P (hQ n P hP)
 
+/- English proof (translation)
+Use `⟨fun h => h.mono Xo c fun n P hP => Submodule.subset_span hP, ?_⟩` and prove the remaining obligations. Introduce `h _ nab nab' h1 h2 S _ _ y k n F P hP`. Unfold `sysVal`. Rewrite using `[← colSumL_apply, ← colSumL_apply]`. Use `LinearMap.eqOn_span ?_ hP` and prove the remaining obligations.
+
+Introduce `P' hP'`. Rewrite using `[colSumL_apply, colSumL_apply]`. Conclude with `h nab nab' h1 h2 S y k n F P' hP'`.
+-/
 theorem uniqueOn_span_iff (Q : ∀ n : ℕ, MvPolynomial (LtN Dw n) c.F → Prop) :
     (UniqueOn Xo c fun n P => P ∈ Submodule.span c.F {P' | Q n P'}) ↔ UniqueOn Xo c Q := by
   refine ⟨fun h => h.mono Xo c fun n P hP => Submodule.subset_span hP, ?_⟩
@@ -107,6 +141,13 @@ theorem uniqueOn_span_iff (Q : ∀ n : ℕ, MvPolynomial (LtN Dw n) c.F → Prop
   rw [colSumL_apply, colSumL_apply]
   exact h nab nab' h1 h2 S y k n F P' hP'
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Use `Submodule.span_mono ?_` and prove the remaining obligations. Introduce and unpack `P ⟨a, ha⟩`. Rewrite `ha` using `[mem_harmA_iff]`. Conclude with `⟨ha.1, ha.2.1, a, ha.2.2.1⟩`.
+
+Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `P ⟨h1, h2, a, h3⟩`. Take `⟨N, hN, hP, -⟩` from `GlobalTheory.exists_natCast_smul_mem_harmA E H Dw l c a n P ⟨(isHarmonic_iff_cmType c P).1 h1, h2, h3⟩`. Establish `hN' : (N : c.F) ≠ 0` using `Nat.cast_ne_zero.2 hN.ne'`. Use `Submodule.smul_mem _ (N : c.F)⁻¹ (Submodule.subset_span (s := {P : MvPolynomial (LtN Dw n) c.F | ∃ a, P ∈ harmA c a n}) ⟨a, hP⟩)` as an intermediate fact.
+
+Rewrite `this` using `[inv_smul_smul₀ hN']`. Then use the resulting hypothesis.
+-/
 theorem span_harmA_eq (n : ℕ) :
     Submodule.span c.F {P : MvPolynomial (LtN Dw n) c.F | ∃ a, P ∈ harmA c a n} =
       Submodule.span c.F {P | IsTopHarmonic c P} := by
@@ -124,6 +165,11 @@ theorem span_harmA_eq (n : ℕ) :
       (s := {P : MvPolynomial (LtN Dw n) c.F | ∃ a, P ∈ harmA c a n}) ⟨a, hP⟩)
     rwa [inv_smul_smul₀ hN'] at this
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `h E _ _ _ H Dw l Xo c _ nab nab' h1 h2 S _ _ y k n F P ⟨a, ha⟩`. Use `letI : Algebra ℚ S := ((algebraMap c.F S).comp (algebraMap ℚ c.F)).toAlgebra`. Conclude with `h E H Dw l Xo c nab nab' h1 h2 S y k n F a P ha`. Introduce `h E _ _ _ H Dw l Xo c _ nab nab' h1 h2 S _ _ _ y k n F a P ha`.
+
+Conclude with `h E H Dw l Xo c nab nab' h1 h2 S y k n F P ⟨a, ha⟩`.
+-/
 theorem thExprUniqSt_iff_harmA : Formalism.MainNotions.ModuliIntegralCharts.H1.ThExprUniqSt ↔
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H)
       (Xo : Moduli Dw l) (c : Coeff l), UniqueOn Xo c fun n P => ∃ a, P ∈ harmA c a n := by
@@ -134,6 +180,9 @@ theorem thExprUniqSt_iff_harmA : Formalism.MainNotions.ModuliIntegralCharts.H1.T
   · intro h E _ _ _ H Dw l Xo c _ nab nab' h1 h2 S _ _ _ y k n F a P ha
     exact h E H Dw l Xo c nab nab' h1 h2 S y k n F P ⟨a, ha⟩
 
+/- English proof (translation)
+Rewrite using `[thExprUniqSt_iff_harmA]`. Use `forall₅_congr fun E _ _ _ H => forall₄_congr fun Dw l Xo c => ?_` and prove the remaining obligations. Rewrite using `[← uniqueOn_span_iff]`. Simplify using `only [span_harmA_eq]`.
+-/
 theorem thExprUniqSt_iff_span : Formalism.MainNotions.ModuliIntegralCharts.H1.ThExprUniqSt ↔
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H)
       (Xo : Moduli Dw l) (c : Coeff l),
@@ -143,18 +192,29 @@ theorem thExprUniqSt_iff_span : Formalism.MainNotions.ModuliIntegralCharts.H1.Th
   rw [← uniqueOn_span_iff]
   simp only [span_harmA_eq]
 
+/- English proof (translation)
+Rewrite using `[thExprUniqSt_iff_span]`. Conclude with `forall₅_congr fun E _ _ _ H => forall₄_congr fun Dw l Xo c => uniqueOn_span_iff Xo c _`.
+-/
 theorem thExprUniqSt_iff_top : Formalism.MainNotions.ModuliIntegralCharts.H1.ThExprUniqSt ↔
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H)
       (Xo : Moduli Dw l) (c : Coeff l), UniqueOn Xo c fun _ P => IsTopHarmonic c P := by
   rw [thExprUniqSt_iff_span]
   exact forall₅_congr fun E _ _ _ H => forall₄_congr fun Dw l Xo c => uniqueOn_span_iff Xo c _
 
+/- English proof (translation)
+The claim follows from `thExprUniqSt_iff_top.2 fun E _ _ _ H Dw l Xo c => @UniqueOn.mono E _ _ _ H Dw l Xo c (fun _ P => IsHarmonic c P) _ (@h E _ _ _ H Dw l Xo c) fun _ _ hP => hP.1`.
+-/
 theorem thExprUniqSt_of_nabUnique
     (h : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H)
       (Xo : Moduli Dw l) (c : Coeff l), NabUnique Xo c) : Formalism.MainNotions.ModuliIntegralCharts.H1.ThExprUniqSt :=
   thExprUniqSt_iff_top.2 fun E _ _ _ H Dw l Xo c =>
     @UniqueOn.mono E _ _ _ H Dw l Xo c (fun _ P => IsHarmonic c P) _ (@h E _ _ _ H Dw l Xo c) fun _ _ hP => hP.1
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `σ j j'`. Use `Finset.sum_eq_zero fun b _ => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.pderiv_X, Pi.single_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+
+Introduce `hP`. Use `LinearMap.eqOn_span (f := (rowShift Dw.mult n c.F τ i i' 1).toLinearMap) (g := LinearMap.id) (fun P' hP' => hP'.2.1 τ i i' h 1) hP` as an intermediate fact. Simplify using `only [rowShift, AlgHom.toLinearMap_apply, MvPolynomial.aeval_X, LinearMap.id_apply] at this`. Rewrite `this` using `[if_pos ⟨b, rfl⟩]`. Simplify using `at this`.
+-/
 theorem X_later_harmonic_not_mem_span {n : ℕ} (τ : E →+* ℂ) (i i' : Fin (Dw.mult τ)) (h : i' < i) (b : Fin n) :
     IsHarmonic c (MvPolynomial.X ⟨τ, i, b⟩ : MvPolynomial (LtN Dw n) c.F) ∧
       (MvPolynomial.X ⟨τ, i, b⟩ : MvPolynomial (LtN Dw n) c.F) ∉
@@ -177,6 +237,21 @@ section Reframe
 open GlobalTheory.RowSpan GlobalTheory.RowTriangular ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ in
 open scoped TensorProduct in
 
+/- English proof (translation)
+Set `Ψ : MvPolynomial (Lt1 Dw) S →ₐ[S] Module.End S (PS S 1 d)` to `GlobalTheory.Wick.commEval S (fun ℓ => dEnd (B.FK S) (u ℓ)) fun i j => LinearMap.ext fun g => by`. Simplify using `only [Module.End.mul_apply, dEnd_apply]`. Conclude with `GlobalTheory.FormalConnection.invariantDerivations_commute_formal_connection S d (𝓞 E) S B _ _ g`. Establish `hΨ : ∀ ℓ, Ψ (MvPolynomial.X ℓ) = dEnd (B.FK S) (u ℓ)` using `fun ℓ => GlobalTheory.Wick.commEval_X _ _ ℓ`. Set `s : Fin n → PS S 1 d` to `fun b => f b * FB.expS S ((k : S) • B.hL S hg H.w0)`.
+
+Set `lam : Fin n → MvPolynomial (Lt1 Dw) S →ₗ[S] S` to `fun b => (MvPowerSeries.coeff 0) ∘ₗ (LinearMap.applyₗ (s b)) ∘ₗ Ψ.toLinearMap`. Set `T` to `⨂[S] _ : Fin n, MvPolynomial (Lt1 Dw) S`. Set `sg : Fin n → (MvPolynomial (Lt1 Dw) S →ₐ[S] T)` to `fun b => PiTensorProduct.singleAlgHom (R := S) (A := fun _ : Fin n => MvPolynomial (Lt1 Dw) S) b`. Set `φ : c.F →+* T` to `(algebraMap S T).comp (algebraMap c.F S)`. Establish `key : ∀ (w : Lt1 Dw → Fin d → S) (x : Lt1 Dw → MvPolynomial (Lt1 Dw) S), (∀ ℓ, Ψ (x ℓ) = dEnd (B.FK S) (w ℓ)) → ∀ Q : MvPolynomial (LtN Dw n) c.F, colSum c (fun b α => B.nabVal S hg H.w0 k (f b) w (MvPolynomial.monomial α 1)) Q = prodForm lam (MvPolynomial.eval₂Hom φ (fun ℓ : LtN …`.
+
+Introduce `w x hx Q`. Rewrite using `[colSum, MvPolynomial.coe_eval₂Hom, MvPolynomial.eval₂_eq', map_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Establish `e : ∏ ℓ : LtN Dw n, sg ℓ.2.2 (x ⟨ℓ.1, ℓ.2.1⟩) ^ m ℓ = ∏ b, sg b (∏ ℓ, x ℓ ^ colOf m b ℓ)`. Simplify using `only [map_prod, map_pow]`.
+
+Rewrite using `[Finset.prod_comm]`. Simplify using `only [Fintype.prod_sigma, Fintype.prod_prod_type]`. Both sides reduce to the same expression. Rewrite using `[e, RingHom.comp_apply, ← Algebra.smul_def (A := T), map_smul, prodForm_prod, smul_eq_mul]`. Use `congr 1`.
+
+Use `Finset.prod_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[FB.nabVal, dpoly_monomial, dmon_eq _ Ψ w x hx]`. Both sides reduce to the same expression. Rewrite using `[key u MvPolynomial.X hΨ, key u' (fun ℓ => ∑ j, algebraMap c.F S (g ℓ.1 ℓ.2 j) • MvPolynomial.X ⟨ℓ.1, j⟩) (fun ℓ => by`. Rewrite using `[dEnd_comb (B.FK S) (fun j => algebraMap c.F S (g ℓ.1 ℓ.2 j)) (fun j => u ⟨ℓ.1, j⟩) (u' ℓ) (hu ℓ.1 ℓ.2)]`.
+
+Simplify using `only [map_sum, map_smul, hΨ])]`. Use `congr 1`. Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C a => simp [rowAct]`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`.
+
+Consider the case `mul_X p ℓ hp`. Rewrite using `[map_mul, map_mul, map_mul, hp, rowAct_X]`. Use `congr 1`. Simplify using `only [MvPolynomial.eval₂Hom_X', map_sum, map_mul, MvPolynomial.eval₂Hom_C, map_smul]`. Conclude with `Finset.sum_congr rfl fun j _ => Algebra.smul_def (A := T) _ _`.
+-/
 theorem colSum_nabVal_rowAct [StarRing (𝓞 E)] {S : Type} [CommRing S] [Algebra c.F S] [Algebra ℚ S] {d : ℕ}
     (B : Germ.FB S d (𝓞 E)) (hg : Germ.PS S 2 d) (k : ℕ) {n : ℕ} (f : Fin n → MvPowerSeries (Fin 1 × Fin d) S)
     (u u' : Lt1 Dw → Fin d → S) (g : ∀ τ : E →+* ℂ, Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) c.F)
@@ -228,6 +303,15 @@ theorem colSum_nabVal_rowAct [StarRing (𝓞 E)] {S : Type} [CommRing S] [Algebr
     simp only [MvPolynomial.eval₂Hom_X', map_sum, map_mul, MvPolynomial.eval₂Hom_C, map_smul]
     exact Finset.sum_congr rfl fun j _ => Algebra.smul_def (A := T) _ _
 
+/- English proof (translation)
+Establish `key : ∀ (a : (Σ τ : T, Fin (r τ)) → S) e, ∑ ℓ, a ℓ * (∑ j, g ℓ.1 ℓ.2 j * u ⟨ℓ.1, j⟩ e) = ∑ ℓ : (Σ τ : T, Fin (r τ)), Matrix.vecMul (fun i => a ⟨ℓ.1, i⟩) (g ℓ.1) ℓ.2 * u ℓ e`. Introduce `a e`. Rewrite using `[Fintype.sum_sigma, Fintype.sum_sigma]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Simplify using `only [Matrix.vecMul, dotProduct, Finset.mul_sum, Finset.sum_mul]`.
+
+Simplify using `only [_root_.mul_assoc]`. Conclude with `Finset.sum_comm (s := Finset.univ) (t := Finset.univ) (f := fun (i j : Fin (r τ)) => a ⟨τ, i⟩ * (g τ i j * u ⟨τ, j⟩ e))`. Simplify using `only [key]`. Take `⟨b, hb1, hb2⟩` from `hb v`. Use `⟨fun ℓ => Matrix.vecMul (fun i => b ⟨ℓ.1, i⟩) (g ℓ.1)⁻¹ ℓ.2, fun e => ?_, fun a ha => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← hb1 e]`. Use `Finset.sum_congr rfl fun ℓ _ => ?_` and prove the remaining obligations. Use `congr 1`. Use `show Matrix.vecMul (Matrix.vecMul (fun i => b ⟨ℓ.1, i⟩) (g ℓ.1)⁻¹) _ _ = _`. Rewrite using `[Matrix.vecMul_vecMul, Matrix.nonsing_inv_mul _ (hdet _), Matrix.vecMul_one]`.
+
+Use `hb2 _ ha` as an intermediate fact. Substitute `this` using the available equality. Use function extensionality and compare the values at `ℓ`. Use `show _ = Matrix.vecMul (Matrix.vecMul (fun i => a ⟨ℓ.1, i⟩) (g ℓ.1)) _ _`. Rewrite using `[Matrix.vecMul_vecMul, Matrix.mul_nonsing_inv _ (hdet _), Matrix.vecMul_one]`.
+-/
 theorem basis_of_isUnit {T : Type} [Fintype T] {r : T → ℕ} {S : Type} [CommRing S] {d : ℕ}
     (u : (Σ τ : T, Fin (r τ)) → Fin d → S) (g : ∀ τ : T, Matrix (Fin (r τ)) (Fin (r τ)) S)
     (hdet : ∀ τ, IsUnit (g τ).det)
@@ -267,6 +351,11 @@ def PinAt [StarRing (𝓞 E)] {S : Type} [CommRing S] [Algebra c.F S] (y : FrPt 
       IsGerm y C.d C.x C.B.A.act C.e C.wP k F f →
         ∀ α : Lt1 Dw →₀ ℕ, v k F α = C.B.nabVal S C.h H.w0 k f C.uvec (MvPolynomial.monomial α 1)
 
+/- English proof (translation)
+Set `Pt : Type 1` to `Σ (R : Type) (_ : CommRing R) (_ : Algebra c.F R), FrPt Xo c R`. Set `Val : Pt → Type` to `fun p => @ValAt E _ _ _ H Dw l Xo c p.1 p.2.1 p.2.2.1 p.2.2.2`. Set `Pin : ∀ p : Pt, Val p → Prop` to `fun p => @PinAt E _ _ _ H Dw l Xo c _ p.1 p.2.1 p.2.2.1 p.2.2.2`. Set `N₀ : ∀ p : Pt, Val p` to `fun p => @nab p.1 p.2.1 p.2.2.1 p.2.2.2`. Set `N₁ : ∀ p : Pt, Val p` to `Function.update N₀ ⟨S, _, _, y⟩ v`.
+
+Establish `hN : ∀ p, Pin p (N₁ p)` using `(Function.forall_update_iff N₀ Pin).2 ⟨hv, fun p _ _ => @h.2 p.1 p.2.1 p.2.2.1 _ p.2.2.2⟩`. Conclude with `⟨fun {R} _ _ z => N₁ ⟨R, _, _, z⟩, ⟨h.1, fun R _ _ _ z => hN ⟨R, _, _, z⟩⟩, Function.update_self _ _ _⟩`.
+-/
 theorem exists_isNab_eq [StarRing (𝓞 E)] {nab : NabV Xo c} (h : IsNab Xo c nab) {S : Type} [CommRing S]
     [Algebra c.F S] (y : FrPt Xo c S) (v : ValAt Xo c y) (hv : PinAt Xo c y v) :
     ∃ nab₁ : NabV Xo c, IsNab Xo c nab₁ ∧ nab₁ y = v := by
@@ -283,6 +372,25 @@ theorem exists_isNab_eq [StarRing (𝓞 E)] {nab : NabV Xo c} (h : IsNab Xo c na
 
 open GlobalTheory.RowSpan in
 
+/- English proof (translation)
+Use `set y' : FrPt Xo c S := ⟨y.x, ho, u', h1, h2, h3, s', h4⟩ with hy'`. Set `one : (Lt1 Dw →₀ ℕ) → (LtN Dw 1 →₀ ℕ)` to `fun α => Finsupp.equivFunOnFinite.symm fun ℓ => α ⟨ℓ.1, ℓ.2.1⟩`. Establish `hone : ∀ (w : (Lt1 Dw →₀ ℕ) → S) α, colSum c (fun _ : Fin 1 => w) (MvPolynomial.monomial (one α) 1) = w α`. Introduce `w α`. Rewrite using `[colSum, MvPolynomial.support_monomial, if_neg one_ne_zero]`.
+
+Simplify using `only [Finset.sum_singleton, MvPolynomial.coeff_monomial, if_true, map_one, one_mul, Fin.prod_univ_one]`. Use `congr 1`. Use extensionality with `ℓ`. Both sides reduce to the same expression. Set `v : ValAt Xo c y'` to `fun k F α => colSum c (fun _ : Fin 1 => nab y k F) (rowAct g (MvPolynomial.monomial (one α) 1))`.
+
+Establish `hv : ∀ [Algebra ℚ S] (C : ChartAt Xo c y) (k : ℕ) (F : SecAt Xo c y k) (f : MvPowerSeries (Fin 1 × Fin C.d) S), (∀ α, nab y k F α = C.B.nabVal S C.h H.w0 k f C.uvec (MvPolynomial.monomial α 1)) → ∀ α, v k F α = C.B.nabVal S C.h H.w0 k f (fun ℓ e => ∑ j, algebraMap c.F S (g ℓ.1 ℓ. …`. Introduce `_ C k F f hf α`. Use `colSum_nabVal_rowAct c C.B C.h k (fun _ : Fin 1 => f) C.uvec (fun ℓ e => ∑ j, algebraMap c.F S (g ℓ.1 ℓ.2 j) * C.uvec ⟨ℓ.1, j⟩ e) g (fun _ _ _ => rfl) (MvPolynomial.monomial (one α) 1)` as an intermediate fact. Rewrite `this` using `[hone]`. Rewrite using `[this, ← funext hf]`.
+
+Establish `hpin : PinAt Xo c y' v`. Introduce `_`. Take `⟨C, hex, hval⟩` from `h.2 S y`. Set `uv : Lt1 Dw → Fin C.d → S` to `fun ℓ e => ∑ j, algebraMap c.F S (g ℓ.1 ℓ.2 j) * C.uvec ⟨ℓ.1, j⟩ e`. Set `D : ChartAt Xo c y'` to `⟨C.d, C.B, uv, C.x, C.e, C.wP, C.h, ⟨C.chart.zero, C.chart.trunc, C.chart.law, C.chart.act, fun ℓ => by`.
+
+Use `GlobalTheory.TangentLinear.isCombAt_mulVec E H Dw l Xo S y.x _ (fun j => GlobalTheory.TriangularFrame.isTanAt_jetTan y.x (C.x 1) (C.chart.zero 1) ((0 : Fin 1), j)) (y.u ℓ.1) (Matrix.of fun e j => C.uvec ⟨ℓ.1, j⟩ e) (fun j => algebraMap c.F S (g ℓ.1 ℓ.2 j)) (u' ℓ.1 ℓ.2) (fun i => …` as an intermediate fact. Establish `e : (Matrix.of fun e j => C.uvec ⟨ℓ.1, j⟩ e).mulVec (fun j => algebraMap c.F S (g ℓ.1 ℓ.2 j)) = uv ℓ`. Use function extensionality and compare the values at `e`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.of_apply, uv]`. Conclude with `Finset.sum_congr rfl fun j _ => _root_.mul_comm _ _`.
+
+Rewrite `this` using `[e]`. Conclude with `this,`. Use `basis_of_isUnit C.uvec (fun τ => (algebraMap c.F S).mapMatrix (g τ)) (fun τ => by rw [← RingHom.map_det]; exact (hdet τ).map _) C.chart.basis⟩,`. Use the proof step `⟨C.frame.gen, C.frame.ph1, C.frame.ph2, C.frame.sy, C.frame.ad⟩, C.prim, C.gauge, C.rig0⟩`. Conclude with `⟨D, hex, fun k F f hf => hv C k F f (hval k F f hf)⟩`.
+
+Take `⟨nab₁, hn, e⟩` from `exists_isNab_eq Xo c h y' v hpin`. Use `⟨nab₁, hn, fun k n F P => ?_⟩` and prove the remaining obligations. Use `letI : Algebra ℚ S := ((algebraMap c.F S).comp (algebraMap ℚ c.F)).toAlgebra`. Take `⟨C, hex, hval⟩` from `h.2 S y`. Use `choose f hf using fun b => hex k (F b)`.
+
+Use `colSum_nabVal_rowAct c C.B C.h k f C.uvec (fun ℓ e => ∑ j, algebraMap c.F S (g ℓ.1 ℓ.2 j) * C.uvec ⟨ℓ.1, j⟩ e) g (fun _ _ _ => rfl) P` as an intermediate fact. Use `Eq.trans (congrArg (fun w => colSum c w (rowAct g P)) ?_) (this.symm.trans (congrArg (fun w => colSum c w P) ?_))` and prove the remaining obligations. Use function extensionality and compare the values at `b α`. Conclude with `hval k (F b) (f b) (hf b) α`. Use function extensionality and compare the values at `b α`.
+
+Conclude with `(hv C k (F b) (f b) (hval k (F b) (f b) (hf b)) α).symm.trans (congrArg (fun w : ValAt Xo c y' => w k (F b) α) e).symm`.
+-/
 theorem exists_isNab_rowAct [StarRing (𝓞 E)] {nab : NabV Xo c} (h : IsNab Xo c nab) {S : Type} [CommRing S]
     [Algebra c.F S] (y : FrPt Xo c S) (ho u' h1 h2 h3 s' h4)
     (g : ∀ τ : E →+* ℂ, Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) c.F) (hdet : ∀ τ, IsUnit (g τ).det)
@@ -353,6 +461,15 @@ theorem exists_isNab_rowAct [StarRing (𝓞 E)] {nab : NabV Xo c} (h : IsNab Xo 
 
 open GlobalTheory.RowSpan in
 
+/- English proof (translation)
+Use `⟨fun h => ?_, fun h => h.mono Xo c fun _ _ hP => hP.1⟩` and prove the remaining obligations. Introduce `_ nab nab' h1 h2 S _ _ y k n F P hP`. Set `U : Submodule c.F (MvPolynomial (LtN Dw n) c.F)` to `⨅ (nab : NabV Xo c) (nab' : NabV Xo c) (_ : IsNab Xo c nab) (_ : IsNab Xo c nab') (y : FrPt Xo c S) (F : Fin n → SecAt Xo c y k), LinearMap.eqLocus (colSumL c fun b α => nab y k (F b) α) (colSumL c fun b α => nab' y k (F b) α)`. Establish `hU : ∀ Q, Q ∈ U ↔ ∀ (nab nab' : NabV Xo c), IsNab Xo c nab → IsNab Xo c nab' → ∀ (y : FrPt Xo c S) (F : Fin n → SecAt Xo c y k), sysVal Xo c nab y k F Q = sysVal Xo c nab' y k F Q`. Introduce `Q`.
+
+Simplify using `only [U, Submodule.mem_iInf, LinearMap.mem_eqLocus, colSumL_apply, sysVal]`. Use `(hU P).1 (harmK_le_of_top (U := U) ComplexEmbedding.conjugate (InPsi H) ?_ ?_ ((isHarmonic_iff_cmType c P).1 hP)) nab nab' h1 h2 y F` and prove the remaining obligations. Introduce `g hg Q hQ`. Rewrite `hQ`, the goal using `[hU]`. Introduce `nab nab' h1 h2 y F`.
+
+Take `⟨⟨x', ho, u', e1, e2, e3, s', e4⟩, hx, hcomb⟩` from `GlobalTheory.Reg.ReframeEx.exists_reframe y (fun τ => ((algebraMap c.F S).mapMatrix (g τ)).transpose) (fun τ => by rw [Matrix.det_transpose, ← RingHom.map_det]; exact (hg τ).map _)`. Simplify using `only at hx`. Substitute `hx` using the available equality. Take `⟨n₁, hn₁, v₁⟩` from `exists_isNab_rowAct Xo c h1 y ho u' e1 e2 e3 s' e4 g hg hcomb`. Take `⟨n₂, hn₂, v₂⟩` from `exists_isNab_rowAct Xo c h2 y ho u' e1 e2 e3 s' e4 g hg hcomb`.
+
+Rewrite using `[v₁, v₂]`. Conclude with `hQ n₁ n₂ hn₁ hn₂ ⟨y.x, ho, u', e1, e2, e3, s', e4⟩ F`. Introduce and unpack `Q hQ hI ⟨a, ha⟩`. Conclude with `(hU Q).2 fun nab nab' h1 h2 y F => h nab nab' h1 h2 S y k n F Q ⟨(isHarmonic_iff_cmType c Q).2 hQ, hI, fun p => a p.1 p.2, ha⟩`.
+-/
 theorem uniqueOn_top_iff :
     (UniqueOn Xo c fun _ P => IsTopHarmonic c P) ↔ UniqueOn Xo c fun _ P => IsHarmonic c P := by
   refine ⟨fun h => ?_, fun h => h.mono Xo c fun _ _ hP => hP.1⟩
@@ -385,11 +502,17 @@ theorem uniqueOn_top_iff :
 
 end Reframe
 
+/- English proof (translation)
+The claim follows from `thExprUniqSt_iff_top.trans (forall₅_congr fun _ _ _ _ _ => forall₄_congr fun _ _ Xo c => uniqueOn_top_iff Xo c)`.
+-/
 theorem thExprUniqSt_iff_nabUnique : Formalism.MainNotions.ModuliIntegralCharts.H1.ThExprUniqSt ↔
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H)
       (Xo : Moduli Dw l) (c : Coeff l), NabUnique Xo c :=
   thExprUniqSt_iff_top.trans (forall₅_congr fun _ _ _ _ _ => forall₄_congr fun _ _ Xo c => uniqueOn_top_iff Xo c)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ _ _ _ _ _ _ Xo c _ _ _ _ _ _ C k _ f P => chartVal_eq Xo c C k f P, fun _ _ _ _ _ _ _ Xo c => by rw [nabUnique_iff, ← uniqueOn_top_iff, ← uniqueOn_span_iff, ← uniqueOn_span_iff Xo c fun n P => ∃ a, P ∈ harmA c a n] simp only [span_harmA_eq], thExprUniqSt_iff_nabUnique⟩`.
+-/
 theorem comparison :
     (∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H)
       (Xo : Moduli Dw l) (c : Coeff l) [StarRing (𝓞 E)] (S : Type) [CommRing S] [Algebra c.F S] [Algebra ℚ S]

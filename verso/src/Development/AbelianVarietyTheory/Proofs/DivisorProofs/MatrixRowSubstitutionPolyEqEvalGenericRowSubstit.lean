@@ -12,6 +12,13 @@ def evY (O : Type) [CommRing O] (N : ℕ) (R : Type) [CommRing R] [Algebra O R] 
     MvPolynomial (Fin N × Fin N) (MvPolynomial (Fin N × Fin N) O) →+* MvPolynomial (Fin N × Fin N) R :=
   eval₂Hom (MvPolynomial.map (algebraMap O R)) (fun v => C (Y v.1 v.2))
 
+/- English proof (translation)
+Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a`. Simplify using `[evY, GlobalTheory.HighWt.genSub, rowSubst, MvPolynomial.algebraMap_eq]`. Consider the case `add p q hp hq`. Simplify using `only [GlobalTheory.HighWt.genSub, map_add] at hp hq ⊢`.
+
+Rewrite using `[hp, hq]`. Consider the case `mul_X p v hp`. Simplify using `only [GlobalTheory.HighWt.genSub, map_mul] at hp ⊢`. Rewrite using `[hp]`. Use `congr 1`.
+
+Simplify using `[evY, rowSubst, map_sum]`.
+-/
 theorem evY_genSub (O : Type) [CommRing O] (N : ℕ) (R : Type) [CommRing R] [Algebra O R] (Y : Matrix (Fin N) (Fin N) R)
     (f : MvPolynomial (Fin N × Fin N) O) : evY O N R Y (GlobalTheory.HighWt.genSub O N f) = rowSubst O N R Y f := by
   induction f using MvPolynomial.induction_on with
@@ -26,6 +33,11 @@ theorem evY_genSub (O : Type) [CommRing O] (N : ℕ) (R : Type) [CommRing R] [Al
     congr 1
     simp [evY, rowSubst, map_sum]
 
+/- English proof (translation)
+Simplify using `only [evY, coe_eval₂Hom, MvPolynomial.eval₂, Finsupp.sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Establish `h : (m.prod fun v k => (C (Y v.1 v.2) : MvPolynomial (Fin N × Fin N) R) ^ k) = C (m.prod fun v k => Y v.1 v.2 ^ k)`. Simplify using `[Finsupp.prod, map_prod, map_pow]`. Rewrite using `[h, mul_comm, C_mul']`.
+
+Both sides reduce to the same expression.
+-/
 theorem evY_eq_sum (O : Type) [CommRing O] (N : ℕ) (R : Type) [CommRing R] [Algebra O R] (Y : Matrix (Fin N) (Fin N) R)
     (P : MvPolynomial (Fin N × Fin N) (MvPolynomial (Fin N × Fin N) O)) :
     evY O N R Y P = ∑ m ∈ P.support, (m.prod fun v k => Y v.1 v.2 ^ k) • MvPolynomial.map (algebraMap O R) (P.coeff m) := by
@@ -36,6 +48,9 @@ theorem evY_eq_sum (O : Type) [CommRing O] (N : ℕ) (R : Type) [CommRing R] [Al
   rw [h, mul_comm, C_mul']
   rfl
 
+/- English proof (translation)
+Introduce `O _ N R _ _ Y f`. Rewrite using `[← evY_genSub, evY_eq_sum]`.
+-/
 theorem main : ∀ (O : Type) [CommRing O] (N : ℕ) (R : Type) [CommRing R] [Algebra O R] (Y : Matrix (Fin N) (Fin N) R) (f : MvPolynomial (Fin N × Fin N) O), rowSubst O N R Y f = ∑ m ∈ (GlobalTheory.HighWt.genSub O N f).support, (m.prod fun v k => Y v.1 v.2 ^ k) • MvPolynomial.map (algebraMap O R) ((GlobalTheory.HighWt.genSub O N f).coeff m) := by
   intro O _ N R _ _ Y f
   rw [← evY_genSub, evY_eq_sum]

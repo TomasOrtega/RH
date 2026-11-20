@@ -8,6 +8,11 @@ namespace GroundTheory.Heights₂.Heights.RestTerms
 
 open MvPolynomial Finset
 
+/- English proof (translation)
+Rewrite using `[Schur.hsymm_eq_sum_finsuppAntidiag]`. Use `IsHomogeneous.sum _ _ _ fun l hl => ?_` and prove the remaining obligations. Establish `hsum : ∑ i, l i = n` using `(mem_finsuppAntidiag.mp hl).1`. Rewrite using `[← hsum]`. Conclude with `IsHomogeneous.prod _ _ _ fun i _ => by`.
+
+Simplify using `using (isHomogeneous_X ℚ i).pow (l i)`.
+-/
 theorem hsymm_isHomogeneous (σ : Type*) [Fintype σ] [DecidableEq σ] (n : ℕ) :
     (hsymm σ ℚ n).IsHomogeneous n := by
   rw [Schur.hsymm_eq_sum_finsuppAntidiag]
@@ -17,6 +22,17 @@ theorem hsymm_isHomogeneous (σ : Type*) [Fintype σ] [DecidableEq σ] (n : ℕ)
   exact IsHomogeneous.prod _ _ _ fun i _ => by
     simpa using (isHomogeneous_X ℚ i).pow (l i)
 
+/- English proof (translation)
+Introduce `σ _ _ r lam`. Unfold `schur`. Rewrite using `[Matrix.det_apply]`. Use `IsHomogeneous.sum _ _ _ fun π _ => ?_` and prove the remaining obligations. Rewrite using `[Units.smul_def]`.
+
+Establish `hmem : (∏ i, (Matrix.of fun i j : Fin r => completeSymmetric σ ((lam i : ℤ) - ((i : ℕ) : ℤ) + ((j : ℕ) : ℤ))) (π i) i) ∈ homogeneousSubmodule σ ℚ (∑ i, lam i)`. Rewrite using `[mem_homogeneousSubmodule]`. Distinguish the cases in `h : ∀ i, 0 ≤ (lam (π i) : ℤ) - ((π i : ℕ) : ℤ) + ((i : ℕ) : ℤ)`. Establish `hdeg : ∑ i, ((lam (π i) : ℤ) - ((π i : ℕ) : ℤ) + ((i : ℕ) : ℤ)).toNat = ∑ i, lam i`. Establish `h1 : ((∑ i, ((lam (π i) : ℤ) - ((π i : ℕ) : ℤ) + ((i : ℕ) : ℤ)).toNat : ℕ) : ℤ) = ∑ i, ((lam (π i) : ℤ) - ((π i : ℕ) : ℤ) + ((i : ℕ) : ℤ))`.
+
+Use `push_cast`. Conclude with `Finset.sum_congr rfl fun i _ => Int.toNat_of_nonneg (h i)`. Establish `h2 : ∑ i, ((lam (π i) : ℤ) - ((π i : ℕ) : ℤ) + ((i : ℕ) : ℤ)) = ∑ i, (lam i : ℤ)`. Rewrite using `[Finset.sum_add_distrib, Finset.sum_sub_distrib, Equiv.sum_comp π (fun i => (lam i : ℤ)), Equiv.sum_comp π (fun i => ((i : ℕ) : ℤ))]`. Expand and normalize the polynomial expressions, which then agree.
+
+Conclude with `h1.trans h2` after adjusting the coercions. Rewrite using `[← hdeg]`. Use `IsHomogeneous.prod _ _ _ fun i _ => ?_` and prove the remaining obligations. Simplify using `only [Matrix.of_apply, completeSymmetric, if_pos (h i)]`. Conclude with `hsymm_isHomogeneous σ _`.
+
+Use `push Not at h`. Take `⟨i, hi⟩` from `h`. Rewrite using `[Finset.prod_eq_zero (Finset.mem_univ i) (by simp [completeSymmetric, not_le.mpr hi])]`. Conclude with `isHomogeneous_zero _ _ _`. Conclude with `zsmul_mem hmem _`.
+-/
 theorem SchSchurHomogeneous.proof : SchSchurHomogeneous.Statement := by
   intro σ _ _ r lam
   unfold schur

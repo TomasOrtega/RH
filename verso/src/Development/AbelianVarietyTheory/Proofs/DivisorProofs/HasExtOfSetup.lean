@@ -12,11 +12,17 @@ open GlobalTheory.Desc
 
 namespace GlobalTheory.Desc
 
+/- English proof (translation)
+Establish `hc : σ.Common` using `GlobalTheory.T.abelianSchemeDescentData_charts_common σ`. Take `⟨E⟩` from `GlobalTheory.T.nonempty_descentSeparatedEmbedding σ hc`. Conclude with `GlobalTheory.T.extendsToSemiAbelian_of_local_groups σ E hc (GlobalTheory.T.exists_localGroup_range_union_closedFibres σ E hc)`.
+-/
 theorem Setup.hasExt (σ : Setup) : HasExt (awayMap σ.f) σ.A := by
   have hc : σ.Common := GlobalTheory.T.abelianSchemeDescentData_charts_common σ
   obtain ⟨E⟩ := GlobalTheory.T.nonempty_descentSeparatedEmbedding σ hc
   exact GlobalTheory.T.extendsToSemiAbelian_of_local_groups σ E hc (GlobalTheory.T.exists_localGroup_range_union_closedFibres σ E hc)
 
+/- English proof (translation)
+The claim follows from `Setup.hasExt`.
+-/
 theorem hasExt_of_setup : ∀ σ : Setup, HasExt (awayMap σ.f) σ.A := Setup.hasExt
 
 end GlobalTheory.Desc

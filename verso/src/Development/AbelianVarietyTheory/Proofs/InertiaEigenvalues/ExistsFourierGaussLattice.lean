@@ -35,6 +35,11 @@ open scoped nonZeroDivisors SchwartzMap
 
 variable {E : Type} [Field E] [NumberField E]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(1 - sFin E 1 + sFin E (u : Af E) : Ad E) = _`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(1 : InfiniteAdeleRing E) - 0 + 0 = 1`. Simplify using the standard rewrite rules. Express the relevant statement in the definitionally equal form `(1 : Af E) - 1 + (u : Af E) = u`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem finId_val (u : (Af E)ˣ) :
     ((finId E u : (Ad E)ˣ) : Ad E) = ((1, (u : Af E)) : InfiniteAdeleRing E × Af E) := by
   change (1 - sFin E 1 + sFin E (u : Af E) : Ad E) = _
@@ -44,20 +49,62 @@ theorem finId_val (u : (Af E)ˣ) :
   · change (1 : Af E) - 1 + (u : Af E) = u
     simp
 
+/- English proof (translation)
+Simplify using `only [mem_idealFiniteAdeles, Units.val_one, FractionalIdeal.count_one, neg_zero, WithZero.exp_zero]`. Both sides reduce to the same expression.
+-/
 theorem mem_one_iff (x : Af E) :
     x ∈ idealFiniteAdeles (1 : (FractionalIdeal (𝓞 E)⁰ E)ˣ) ↔ ∀ v, Valued.v (pLoc E v x) ≤ 1 := by
   simp only [mem_idealFiniteAdeles, Units.val_one, FractionalIdeal.count_one, neg_zero, WithZero.exp_zero]
   rfl
 
+/- English proof (translation)
+Rewrite using `[map_zpow₀, h, ← WithZero.coe_zpow, ← ofAdd_zsmul]`. Simplify using the standard rewrite rules.
+-/
 theorem val_zpow_unif {w : HeightOneSpectrum (𝓞 E)} {ϖ : w.adicCompletion E} (h : IsUnifV E w ϖ) (n : ℤ) :
     Valued.v (ϖ ^ n) = ((Multiplicative.ofAdd (-n) : Multiplicative ℤ) : WithZero (Multiplicative ℤ)) := by
   rw [map_zpow₀, h, ← WithZero.coe_zpow, ← ofAdd_zsmul]
   simp
 
+/- English proof (translation)
+Rewrite using `[← WithZero.coe_one, WithZero.coe_le_coe, ← ofAdd_zero, Multiplicative.ofAdd_le]`.
+-/
 theorem ofAdd_le_one_iff (n : ℤ) :
     ((Multiplicative.ofAdd n : Multiplicative ℤ) : WithZero (Multiplicative ℤ)) ≤ 1 ↔ n ≤ 0 := by
   rw [← WithZero.coe_one, WithZero.coe_le_coe, ← ofAdd_zero, Multiplicative.ofAdd_le]
 
+/- English proof (translation)
+Introduce `E _ _ _ m S y₀ hy₀`. Set `φ : 𝓢(Fin (m + 1) → NumberField.mixedEmbedding.mixedSpace E, ℂ)` to `SchwartzMap.compCLMOfContinuousLinearEquiv ℂ (toEuclidean (E := Fin (m + 1) → NumberField.mixedEmbedding.mixedSpace E)) (GroundTheory.Global.gaussianSchwartz _)`. Establish `hφ : ∀ x, φ x = ((Real.exp (-Real.pi * ‖toEuclidean x‖ ^ 2) : ℝ) : ℂ)` using `fun x => by`. Simplify using `[φ, SchwartzMap.compCLMOfContinuousLinearEquiv_apply]`. Set `g : (Fin (m + 1) → Af E) → ℂ` to `finiteTensor fun j => cosetIndicator 1 (pFin E (y₀ j))`.
+
+Establish `hg : g ∈ finiteSchwartzBruhatPi E` using `finiteTensor_mem fun j => cosetIndicator_mem_finiteSchwartzBruhat _ _`. Set `G` to `schwartzBruhatTensorPi φ g`. Establish `hG : G ∈ schwartzBruhatPi E (Fin (m + 1))` using `schwartzBruhatTensorPi_mem φ hg`. Establish `hG1` using `adelicFourierPi_mem_schwartzBruhatPi hG`. Establish `hG2` using `adelicFourierPi_mem_schwartzBruhatPi hG1`.
+
+Establish `hG3` using `adelicFourierPi_mem_schwartzBruhatPi hG2`. Establish `hFG : adelicFourierPi E (adelicFourierPi E (adelicFourierPi E (adelicFourierPi E G))) = G`. Rewrite using `[adelicFourierPi_adelicFourierPi hG2, adelicFourierPi_adelicFourierPi hG]`. Use function extensionality and compare the values at `x`. Simplify using the standard rewrite rules.
+
+Establish `hGv : ∀ y, G y = φ (infPartPi y) * if ∀ j v, Valued.v (pLoc E v (pFin E (y j)) - pLoc E v (pFin E (y₀ j))) ≤ 1 then 1 else 0`. Introduce `y`. Simplify using `only [G, g, schwartzBruhatTensorPi, finiteTensor, cosetIndicator_apply, Finset.prod_boole, Finset.mem_univ, true_implies, mem_one_iff, map_sub]`. Both sides reduce to the same expression. Use `⟨adelicFourierPi E (adelicFourierPi E (adelicFourierPi E G)), hG3, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hFG]`. Conclude with `continuous_of_mem_schwartzBruhatPi hG`. Introduce `y`. Rewrite using `[hFG, hGv, hφ]`. Use `split_ifs`.
+
+Rewrite using `[mul_one]`. Conclude with `⟨by rw [Complex.ofReal_re]; exact (Real.exp_pos _).le, Complex.ofReal_im _⟩`. Rewrite using `[mul_zero]`. Conclude with `⟨le_refl _, rfl⟩`. Rewrite using `[hFG, hGv, hφ, if_pos (fun j v => by simp)]`.
+
+Rewrite using `[mul_one, Complex.ofReal_re]`. Conclude with `Real.exp_pos _`. Introduce `ϖ hϖ a ha y hy`. Establish `hFy : ∀ z, adelicFourierPi E (adelicFourierPi E (adelicFourierPi E (adelicFourierPi E G))) z = G z` using `fun z => by rw [hFG]`. Establish `hinf : infPartPi (fun j => ((finId E (GlobalTheory.CellDec.adl ϖ a) : (Ad E)ˣ) : Ad E) * y j) = infPartPi y`.
+
+Use function extensionality and compare the values at `j`. Simplify using `only [infPartPi, finId_val]`. Use `congr 1`. Express the relevant statement in the definitionally equal form `(1 : InfiniteAdeleRing E) * (y j).1 = (y j).1`. Conclude with `one_mul _`.
+
+Establish `hfin : ∀ j v, pLoc E v (pFin E (((finId E (GlobalTheory.CellDec.adl ϖ a) : (Ad E)ˣ) : Ad E) * y j)) = ((ϖ v : v.adicCompletion E) ^ a v) * pLoc E v (pFin E (y j))`. Introduce `j v`. Rewrite using `[map_mul, map_mul, finId_val]`. Express the relevant statement in the definitionally equal form `((ϖ v ^ a v : (v.adicCompletion E)ˣ) : v.adicCompletion E) * _ = _`. Rewrite using `[Units.val_zpow_eq_zpow_val]`.
+
+Establish `hint : ∀ w ∉ S, ∀ j, Valued.v (pLoc E w (pFin E (y₀ j))) ≤ 1` using `fun w hw j => by`. Simplify `hy₀ w hw j` using `[HeightOneSpectrum.mem_adicCompletionIntegers]`. Prove the components needed by the constructor for the conclusion. Introduce `hpos`. Rewrite using `[hFy, hFy, hGv, hGv, hinf]`.
+
+Use `congr 1`. Use `if_congr ?_ rfl rfl` and prove the remaining obligations. Use `forall_congr' fun j => forall_congr' fun v => ?_` and prove the remaining obligations. Rewrite using `[hfin]`. Distinguish the cases in `hv : v ∈ S`.
+
+Rewrite using `[ha v hv, zpow_zero, one_mul]`. Establish `h1` using `hint v hv j`. Establish `h2 : Valued.v (pLoc E v (pFin E (y j))) ≤ 1`. Simplify `(hy v hv).1 j` using `[HeightOneSpectrum.mem_adicCompletionIntegers]`. Establish `h3 : Valued.v ((ϖ v : v.adicCompletion E) ^ a v) ≤ 1`.
+
+Rewrite using `[val_zpow_unif (hϖ v), ofAdd_le_one_iff]`. Combine the linear relations using `[hpos v]`. Establish `key : ∀ t, Valued.v t ≤ 1 → Valued.v (t - pLoc E v (pFin E (y₀ j))) ≤ 1` using `fun t ht => (Valuation.map_sub _ _ _).trans (max_le ht h1)`. Conclude with `iff_of_true (key _ (by rw [map_mul]; exact mul_le_one' h3 h2)) (key _ h2)`. Introduce and unpack `⟨w, hw⟩`.
+
+Rewrite using `[hFy, hGv, if_neg, mul_zero]`. Introduce `hP`. Establish `hwS : w ∉ S` using `fun h => by rw [ha w h] at hw; exact lt_irrefl _ hw`. Take `⟨j, hj⟩` from `(hy w hwS).2`. Establish `h1` using `hint w hwS j`.
+
+Establish `h` using `hP j w`. Rewrite `h` using `[hfin]`. Establish `ht : Valued.v ((ϖ w : w.adicCompletion E) ^ a w * pLoc E w (pFin E (y j))) ≤ 1`. Establish `h4` using `Valuation.map_add Valued.v ((ϖ w : w.adicCompletion E) ^ a w * pLoc E w (pFin E (y j)) - pLoc E w (pFin E (y₀ j))) (pLoc E w (pFin E (y₀ j)))`. Rewrite `h4` using `[sub_add_cancel]`.
+
+Conclude with `h4.trans (max_le h h1)`. Rewrite `ht` using `[map_mul, hj, mul_one, val_zpow_unif (hϖ w), ofAdd_le_one_iff]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem exists_fourier_gauss_lattice : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (m : ℕ) (S : Finset (HeightOneSpectrum (𝓞 E)))
     (y₀ : Fin (m + 1) → Ad E),
     (∀ w ∉ S, ∀ j, pLoc E w (pFin E (y₀ j)) ∈ w.adicCompletionIntegers E) →

@@ -18,6 +18,11 @@ open GlobalTheory.LN
 noncomputable section
 namespace GlobalTheory.LN.SelfCmp
 
+/- English proof (translation)
+Substitute `hf` using the available equality. Use `⟨IsPullback.of_horiz_isIso ⟨by simp⟩, fun T x y x₀ y₀ hx hy => ?_⟩` and prove the remaining obligations. Set `ρ : Over.mk (T.hom ≫ 𝟙 S) ⟶ T` to `Over.homMk (𝟙 T.left) (by simp)`. Establish `ex : x₀ = ρ ≫ x` using `Over.OverMorphism.ext (hx.trans ((Category.comp_id _).trans (Category.id_comp _).symm))`. Establish `ey : y₀ = ρ ≫ y` using `Over.OverMorphism.ext (hy.trans ((Category.comp_id _).trans (Category.id_comp _).symm))`.
+
+Rewrite using `[ex, ey, ← MonObj.comp_mul]`. Conclude with `(Category.id_comp _).trans (Category.comp_id _).symm`.
+-/
 theorem isGrpPullback_of_eq_id {S : Scheme.{0}} (G : Over S) [GrpObj G] {f : S ⟶ S} (hf : f = 𝟙 S) :
     IsGrpPullback G G f (𝟙 G.left) := by
   subst hf
@@ -28,11 +33,17 @@ theorem isGrpPullback_of_eq_id {S : Scheme.{0}} (G : Over S) [GrpObj G] {f : S �
   rw [ex, ey, ← MonObj.comp_mul]
   exact (Category.id_comp _).trans (Category.comp_id _).symm
 
+/- English proof (translation)
+Substitute `hf` using the available equality. Conclude with `IsCPMap.id P`.
+-/
 theorem isCPMap_of_eq_id {S : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj G] (P : CP G) {f : S ⟶ S}
     (hf : f = 𝟙 S) (hw : 𝟙 G.left ≫ G.hom = G.hom ≫ f) : IsCPMap P P f (𝟙 G.left) hw (GlobalTheory.UU.idIso P.L.L) := by
   subst hf
   exact IsCPMap.id P
 
+/- English proof (translation)
+The claim follows from `Spec.map_id _`.
+-/
 theorem spMap_id (R : Type) [CommRing R] : spMap (RingHom.id R) = 𝟙 (Sp R) := Spec.map_id _
 
 def selfCmp {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D : DegPre R} {A : PolAV (Sp (FractionRing R))}

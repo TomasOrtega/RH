@@ -14,6 +14,21 @@ noncomputable section
 
 namespace GlobalTheory.ThetaIntegralInv
 
+/- English proof (translation)
+Use function extensionality and compare the values at `y`. Establish `hinv : ∀ γ ∈ ratU σ X.J, ∀ x, theta om Φ (γ * x) y = theta om Φ x y`. Introduce `γ hγ x`. Simplify using `only [theta]`. Establish `e : om (γ * x, y) Φ = om (γ, 1) (om (x, y) Φ)`.
+
+Rewrite using `[← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, one_mul]`. Rewrite using `[e]`. Conclude with `GlobalTheory.T.thetaSum_invariant_rational_unitary hP F E σ B n d X W M χX χW om r s r' s' hp γ hγ 1 (one_mem _) _ (hp.weil.isUSplitting.pres _ _ hΦ)`. Use `haveI : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) _`. Use `haveI : BorelSpace (UA σ X.J) := ⟨rfl⟩`.
+
+Use `haveI := hp.good.haar`. Use `haveI : M.μ.IsMulRightInvariant := GlobalTheory.ThetaRightTranslate.isMulRightInvariant σ hp.base.cm X.J hp.herm.herm (GlobalTheory.isUnit_det_of_isHerm F E σ B n X r s hp.herm) M.μ`. Use `haveI := GlobalTheory.ThetaRightTranslate.countable_ratU σ X.J`. Use `haveI : MeasurableConstSMul (ratU σ X.J) (UA σ X.J) := ⟨fun c => measurable_const_mul (c : UA σ X.J)⟩`. Use `haveI : SMulInvariantMeasure (ratU σ X.J) (UA σ X.J) M.μ := ⟨fun c s _ => measure_preimage_mul M.μ (c : UA σ X.J) s⟩`.
+
+Establish `hL : M.I om (om (g, 1) Φ) y = ∫ x in M.dom, theta om Φ (x * g) y ∂M.μ`. Unfold `Model.I theta`. Use `congr 1`. Use function extensionality and compare the values at `x`. Rewrite using `[← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, mul_one]`.
+
+Establish `hmp` using `measurePreserving_mul_right M.μ g`. Establish `h1` using `hmp.setIntegral_preimage_emb (measurableEmbedding_mulRight g) (fun x => theta om Φ x y) ((fun x : UA σ X.J => x * g⁻¹) ⁻¹' M.dom)`. Establish `hpre : (fun x : UA σ X.J => x * g) ⁻¹' ((fun x : UA σ X.J => x * g⁻¹) ⁻¹' M.dom) = M.dom`. Use extensionality with `x`. Simplify using the standard rewrite rules.
+
+Rewrite `h1` using `[hpre]`. Establish `hfd' : IsFundamentalDomain (ratU σ X.J) ((fun x : UA σ X.J => x * g⁻¹) ⁻¹' M.dom) M.μ` using `hp.good.dom.preimage_of_equiv (measurePreserving_mul_right M.μ g⁻¹).quasiMeasurePreserving (e := id) Function.bijective_id (fun γ x => by show (γ.1 * x) * g⁻¹ = γ.1 * (x * g⁻¹)`. Conclude with `mul_assoc _ _ _)`. Establish `h2` using `hfd'.setIntegral_eq hp.good.dom (f := fun x => theta om Φ x y) (fun γ x => hinv γ.1 γ.2 x)`. Rewrite using `[hL, h1, h2]`.
+
+Both sides reduce to the same expression.
+-/
 theorem integral_translate (hP : GlobalTheory.FunPr.Hypotheses₂) {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E]
     [Algebra F E] {σ : E →ₐ[F] E} {B : Base F E} {n d : ℕ} {X : Spc F E n} {W : Spc F E d} {M : Model σ X W}
     {χX χW : Chr F E} {om : Rep σ X W} {r s r' s' : ℕ} (hp : IsPair B M χX χW om r s r' s') (g : UA σ X.J)
@@ -56,6 +71,11 @@ theorem integral_translate (hP : GlobalTheory.FunPr.Hypotheses₂) {F E : Type} 
   rw [hL, h1, h2]
   rfl
 
+/- English proof (translation)
+Introduce `hK F E _ _ _ _ _ σ B a a' G X om om' R Rf hm g Φ hΦ`. Establish `hp` using `GlobalTheory.ThK.Inhab.pairV' hm.triple`. Establish `hPol : PolData B G.M' ≤ schA F (Fin a' × Fin (a + a'))`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨f, -, φ, hSB, hev, rfl⟩`.
+
+Conclude with `GlobalTheory.TensUniq.pure_mem_schA f φ hSB ((hev.and hp.good.std).mono fun v hv => hv.1.trans hv.2)`. Conclude with `integral_translate hK.base hp g Φ (hPol hΦ.1)`.
+-/
 theorem thetaIntegral_small_translate : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E]
     [Algebra F E] (σ : E →ₐ[F] E) (B : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) (a a' : ℕ) (G : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo σ a a')
     (X : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chars F E) (om : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ G.V G.W) (om' : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ G.V' G.W)

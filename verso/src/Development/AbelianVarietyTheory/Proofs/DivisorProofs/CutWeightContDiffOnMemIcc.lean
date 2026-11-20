@@ -7,6 +7,17 @@ noncomputable section
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `ι _ χ hχ κ R hR U r hr hre`. Establish `hRpos : 0 < R` using `by linarith`. Establish `hlogR : 0 < Real.log R` using `Real.log_pos (by linarith)`. Establish `hrpos : ∀ z ∈ U, 0 < r z` using `fun z hz => lt_of_lt_of_le (Real.exp_pos 1) (hre z hz)`. Establish `hlogr : ∀ z ∈ U, 1 ≤ Real.log (r z)`.
+
+Introduce `z hz`. Rewrite using `[Real.le_log_iff_exp_le (hrpos z hz)]`. Conclude with `hre z hz`. Establish `hq : ∀ z ∈ U, 0 ≤ Real.log (r z) / Real.log R` using `fun z hz => div_nonneg (by linarith [hlogr z hz]) hlogR.le`. Establish `hden : ∀ z ∈ U, 1 ≤ 1 + (r z / R) ^ κ` using `fun z hz => by`.
+
+Establish `: 0 ≤ (r z / R) ^ κ` using `Real.rpow_nonneg (div_nonneg (hrpos z hz).le hRpos.le) κ`. Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `hL : ContDiffOn ℝ ∞ (fun z => Real.log (r z) / Real.log R) U` using `(hr.log fun z hz => (hrpos z hz).ne').div_const _`. Establish `hC : ContDiffOn ℝ ∞ (fun z => χ (Real.log (r z) / Real.log R)) U` using `hχ.smooth.comp hL (fun z hz => hq z hz)`.
+
+Establish `hP : ContDiffOn ℝ ∞ (fun z => (r z / R) ^ κ) U` using `(hr.div_const R).rpow_const_of_ne fun z hz => (div_pos (hrpos z hz) hRpos).ne'`. Establish `hD : ContDiffOn ℝ ∞ (fun z => 1 + (r z / R) ^ κ) U` using `contDiffOn_const.add hP`. Conclude with `hC.div hD fun z hz => (lt_of_lt_of_le one_pos (hden z hz)).ne'`. Introduce `z hz`. Establish `hm` using `hχ.mem _ (hq z hz)`.
+
+Unfold `cutWeight`. Use `⟨div_nonneg hm.1 (by linarith [hden z hz]), ?_⟩` and prove the remaining obligations. Conclude with `div_le_one_of_le₀ (le_trans hm.2 (hden z hz)) (by linarith [hden z hz])`.
+-/
 theorem cutWeight_contDiffOn_mem_Icc : ∀ {ι : Type} [Fintype ι] {χ : ℝ → ℝ}, IsCutoff χ → ∀ (κ : ℝ) {R : ℝ}, 2 ≤ R →
     ∀ {U : Set (ι → ℂ)} {r : (ι → ℂ) → ℝ}, ContDiffOn ℝ ∞ r U → (∀ z ∈ U, Real.exp 1 ≤ r z) →
     ContDiffOn ℝ ∞ (cutWeight χ κ R r) U ∧ ∀ z ∈ U, cutWeight χ κ R r z ∈ Icc (0 : ℝ) 1 := by

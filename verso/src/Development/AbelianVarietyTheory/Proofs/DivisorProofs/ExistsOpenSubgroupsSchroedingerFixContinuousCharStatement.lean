@@ -9,6 +9,9 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 open GlobalTheory.WeilM GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 open scoped Classical
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.SchrFixFin.exists_fix | exact GlobalTheory.SchrFixFin.exists_fix | (intros; apply GlobalTheory.SchrFixFin.exists_fix <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_openSubgroups_schroedinger_fix_continuousChar : ∀ (F : Type) [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ), Continuous ψ →
     ∀ (κ : Type) [Fintype κ], ∀ Φ ∈ schA F κ,
       ∃ L₁ L₂ : AddSubgroup (κ → FiniteAdeleRing (𝓞 F) F),

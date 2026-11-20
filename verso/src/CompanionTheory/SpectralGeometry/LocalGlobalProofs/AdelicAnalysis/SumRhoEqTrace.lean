@@ -11,11 +11,20 @@ variable {F : Type} [Field F] [NumberField F] {ι : Type} [Fintype ι] [Decidabl
 
 def toA (x : ι → F) : ι → A F := fun j => algebraMap F (A F) (x j)
 
+/- English proof (translation)
+Introduce `v` and use `add_mem (hx v) (hy v)`.
+-/
 theorem oh_add {x y : A F} (hx : x ∈ Oh F) (hy : y ∈ Oh F) : x + y ∈ Oh F :=
   fun v => add_mem (hx v) (hy v)
 
+/- English proof (translation)
+Introduce `_` and use `zero_mem _`.
+-/
 theorem oh_zero : (0 : A F) ∈ Oh F := fun _ => zero_mem _
 
+/- English proof (translation)
+Introduce `v` and use `neg_mem (hx v)`.
+-/
 theorem oh_neg {x : A F} (hx : x ∈ Oh F) : -x ∈ Oh F := fun v => neg_mem (hx v)
 
 variable (ι F) in
@@ -60,6 +69,17 @@ def gM [DecidableEq (InfinitePlace F)] (ρ : InfinitePlace F → (F →+* ℝ))
     Matrix (ι × InfinitePlace F) (ι × InfinitePlace F) ℝ :=
   (N : ℝ) • ((1 : Matrix ι ι ℝ) ⊗ₖ EM ρ b)
 
+/- English proof (translation)
+Establish `h1` using `trace_eq_sum_embeddings (K := ℚ) (L := F) ℂ (x := c)`. Establish `hb : Function.Bijective (fun w : InfinitePlace F => (w.embedding).toRatAlgHom)`. Prove the components needed by the constructor for the conclusion. Introduce `w v h`. Establish `: w.embedding = v.embedding`.
+
+Use extensionality with `x`. Conclude with `DFunLike.congr_fun h x`. Rewrite using `[← InfinitePlace.mk_embedding w, ← InfinitePlace.mk_embedding v, this]`. Introduce `σ`. Use `⟨InfinitePlace.mk σ.toRingHom, ?_⟩` and prove the remaining obligations.
+
+Establish `hr : (InfinitePlace.mk σ.toRingHom).IsReal` using `hT.isReal _`. Establish `he` using `InfinitePlace.embedding_mk_eq_of_isReal (InfinitePlace.isReal_mk_iff.mp hr)`. Use extensionality with `x`. Use `show ((InfinitePlace.mk σ.toRingHom).embedding) x = σ x`. Rewrite using `[he]`.
+
+Both sides reduce to the same expression. Establish `h2 : ∑ σ : F →ₐ[ℚ] ℂ, σ c = ∑ w : InfinitePlace F, w.embedding c`. Rewrite using `[← (Equiv.ofBijective _ hb).sum_comp]`. Both sides reduce to the same expression. Apply `Complex.ofReal_injective` to reduce the goal to its premises.
+
+Rewrite using `[Complex.ofReal_sum]`. Simplify using `only [hρ]`. Rewrite using `[← h2, ← h1]`. Simplify using the standard rewrite rules.
+-/
 theorem sum_rho_eq_trace {ρ : InfinitePlace F → (F →+* ℝ)} (hT : IsTotallyReal F)
     (hρ : ∀ w x, ((ρ w x : ℝ) : ℂ) = w.embedding x) (c : F) :
     ∑ w, ρ w c = ((Algebra.trace ℚ F c : ℚ) : ℝ) := by

@@ -9,6 +9,9 @@ namespace GroundTheory.Heights₂.Heights.ForSecondHalf
 
 open ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.ArakelovGeometry
 
+/- English proof (translation)
+The claim follows from `HilbertSamuel.ArithmeticVolumeBig.arithmeticVolumeBig_smoothFibre (HilbertSamuel.ArithmeticVolumeBig.of_moriwakiBig_only hM)`.
+-/
 theorem BigLineBundleMoriwaki.of_moriwakiBig (hM : MoriwakiBigStatement) : ArithmeticVolumeLowerBound :=
   HilbertSamuel.ArithmeticVolumeBig.arithmeticVolumeBig_smoothFibre (HilbertSamuel.ArithmeticVolumeBig.of_moriwakiBig_only hM)
 

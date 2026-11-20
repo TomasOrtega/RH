@@ -11,6 +11,65 @@ open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.Basi
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Introduce `l _ K LL hA hl5`. Use `set W := (HW l).W K 1 LL hA.2.2 with hW`. Introduce `ζ ζ' hζ hζ'`. Establish `hpl : ((D.loc l).PD K).p = l` using `(D.loc l).PD_p K`. Rewrite `hζ`, `hζ'` using `[hpl]`.
+
+Establish `hcard` using `Formalism.MainNotions.UnusedSlot80.LevR.card_delF D HW F h9 l K LL hA`. Establish `hv : (D.loc l).v LL ((l : ℕ) : ↥LL.1) = 1` using `(D.loc l).v_l LL`. Establish `hvO` using `(D.loc l).v_O LL`. Establish `hl0 : ((l : ℕ) : ↥LL.1) ≠ 0`. Introduce `h`.
+
+Rewrite `hv` using `[h, AddValuation.map_zero]`. Conclude with `WithTop.top_ne_coe hv`. Establish `hcong : ∀ δ : ↥W.DelF, ∃ a : ℕ, ((1 : ℕ) : WithTop ℚ) ≤ (D.loc l).v LL (algebraMap ↥(OL LL) ↥LL.1 (W.χΓ δ : ↥(OL LL)) - (a : ↥LL.1))`. Introduce `δ`. Take `⟨g, hg⟩` from `W.resΓ_onto δ`.
+
+Take `⟨a, ha, -⟩` from `(D.loc l).χQ_cyc (g : GQ l) 1 ((D.loc l).ζQ 1) (by rw [pow_one]; exact (Formalism.MainNotions.UnusedSlot80.LevR.root_of_unity_primitive D l).pow_eq_one)`. Use `⟨a, ?_⟩` and prove the remaining obligations. Establish `hres` using `W.χΓ_res g`. Establish `hPD` using `(D.loc l).PD_χ K g`. Rewrite using `[← hg, hres, hPD]`.
+
+Use `set t : ℚ_[l] := ((D.loc l).χQ (g : GQ l) : ℚ_[l]) - (a : ℚ_[l]) with ht`. Establish `hlQ : ((l : ℕ) : ℚ_[l]) ≠ 0` using `by exact_mod_cast (Fact.out : l.Prime).ne_zero`. Establish `e : algebraMap ℚ_[l] ↥LL.1 ((D.loc l).χQ (g : GQ l) : ℚ_[l]) - (a : ↥LL.1) = ((l : ℕ) : ↥LL.1) * algebraMap ℚ_[l] ↥LL.1 (t / (l : ℚ_[l]))`. Rewrite using `[map_div₀, map_natCast, mul_div_cancel₀ _ hl0, ht, map_sub, map_natCast]`. Rewrite using `[e, AddValuation.map_mul, hv]`.
+
+Establish `hz : ‖t / (l : ℚ_[l])‖ ≤ 1`. Rewrite using `[norm_div, Padic.norm_p, div_le_one (by positivity)]`. Use `ha` as an intermediate fact. Simplify `this` using `[zpow_neg, zpow_one]`. Establish `hint : algebraMap ℚ_[l] ↥LL.1 (t / (l : ℚ_[l])) ∈ OL LL`.
+
+Establish `e2 : algebraMap ℚ_[l] ↥LL.1 (t / (l : ℚ_[l])) = algebraMap ℤ_[l] ↥LL.1 (⟨t / (l : ℚ_[l]), hz⟩ : ℤ_[l])` using `(IsScalarTower.algebraMap_apply ℤ_[l] ℚ_[l] ↥LL.1 (⟨t / (l : ℚ_[l]), hz⟩ : ℤ_[l])).symm`. Rewrite using `[e2]`. Conclude with `(algebraMap ℤ_[l] ↥(OL LL) (⟨t / (l : ℚ_[l]), hz⟩ : ℤ_[l])).2`. Conclude with `le_add_of_nonneg_right ((hvO _).2 hint)`. Use `choose aδ haδ using hcong`.
+
+Establish `hvunit : ∀ w : (↥(OL LL))ˣ, (D.loc l).v LL (algebraMap ↥(OL LL) ↥LL.1 (w : ↥(OL LL))) = 0`. Introduce `w`. Establish `h1` using `(hvO (algebraMap ↥(OL LL) ↥LL.1 (w : ↥(OL LL)))).2 (w : ↥(OL LL)).2`. Establish `h2` using `(hvO (algebraMap ↥(OL LL) ↥LL.1 ((w⁻¹ : (↥(OL LL))ˣ) : ↥(OL LL)))).2 ((w⁻¹ : (↥(OL LL))ˣ) : ↥(OL LL)).2`. Establish `h3 : (D.loc l).v LL (algebraMap ↥(OL LL) ↥LL.1 (w : ↥(OL LL))) + (D.loc l).v LL (algebraMap ↥(OL LL) ↥LL.1 ((w⁻¹ : (↥(OL LL))ˣ) : ↥(OL LL))) = 0`.
+
+Rewrite using `[← AddValuation.map_mul, ← map_mul, Units.mul_inv, map_one, AddValuation.map_one]`. Conclude with `le_antisymm (le_trans (le_add_of_nonneg_right h2) h3.le) h1`. Establish `hne : ∀ δ, ((aδ δ : ℕ) : ZMod l) ≠ 0`. Introduce `δ h`. Rewrite `h` using `[ZMod.natCast_eq_zero_iff]`.
+
+Take `⟨c, hc⟩` from `h`. Establish `hva : (1 : WithTop ℚ) ≤ (D.loc l).v LL ((aδ δ : ℕ) : ↥LL.1)`. Rewrite using `[hc, Nat.cast_mul, AddValuation.map_mul, hv]`. Conclude with `le_add_of_nonneg_right (Formalism.MainNotions.N.Pv.LocalLengthBound.Val.v_natCast_nonneg _ c)`. Establish `hsum` using `AddValuation.map_add ((D.loc l).v LL) (algebraMap ↥(OL LL) ↥LL.1 (W.χΓ δ : ↥(OL LL)) - (aδ δ : ↥LL.1)) ((aδ δ : ℕ) : ↥LL.1)`.
+
+Rewrite `hsum` using `[sub_add_cancel, hvunit]`. Establish `h1` using `haδ δ`. Rewrite `h1` using `[Nat.cast_one]`. Conclude with `absurd hsum (not_le.2 (lt_of_lt_of_le (by exact_mod_cast zero_lt_one) (le_min h1 hva)))`. Set `U : ↥W.DelF → (ZMod l)ˣ` to `fun δ => Units.mk0 _ (hne δ)`.
+
+Establish `hUinj : Function.Injective U`. Introduce `δ δ' h`. Establish `h1 : ((aδ δ : ℕ) : ZMod l) = ((aδ δ' : ℕ) : ZMod l)` using `congrArg Units.val h`. Rewrite `h1` using `[ZMod.natCast_eq_natCast_iff']`. Use `set χd := algebraMap ↥(OL LL) ↥LL.1 (W.χΓ δ : ↥(OL LL))`.
+
+Use `set χd' := algebraMap ↥(OL LL) ↥LL.1 (W.χΓ δ' : ↥(OL LL))`. Establish `hdiff : (1 : WithTop ℚ) ≤ (D.loc l).v LL (χd - χd')`. Establish `e : χd - χd' = (χd - (aδ δ : ↥LL.1)) - (χd' - (aδ δ' : ↥LL.1)) + ((aδ δ : ↥LL.1) - (aδ δ' : ↥LL.1))` using `by ring`. Rewrite using `[e]`. Establish `hA1` using `haδ δ`.
+
+Establish `hA2` using `haδ δ'`. Rewrite `hA1`, `hA2` using `[Nat.cast_one]`. Use `le_trans (le_min (le_trans (le_min hA1 hA2) (AddValuation.map_sub ((D.loc l).v LL) _ _)) ?_) (AddValuation.map_add ((D.loc l).v LL) _ _)` and prove the remaining obligations. Break down `le_total (aδ δ') (aδ δ) with hle | hle` into its components or cases. Establish `hd : l ∣ aδ δ - aδ δ'` using `(Nat.modEq_iff_dvd' hle).1 h1.symm`.
+
+Take `⟨c, hc⟩` from `hd`. Establish `e2 : ((aδ δ : ℕ) : ↥LL.1) - ((aδ δ' : ℕ) : ↥LL.1) = ((aδ δ - aδ δ' : ℕ) : ↥LL.1)`. Rewrite using `[Nat.cast_sub hle]`. Rewrite using `[e2, hc, Nat.cast_mul, AddValuation.map_mul, hv]`. Conclude with `le_add_of_nonneg_right (Formalism.MainNotions.N.Pv.LocalLengthBound.Val.v_natCast_nonneg _ c)`.
+
+Establish `hd : l ∣ aδ δ' - aδ δ` using `(Nat.modEq_iff_dvd' hle).1 h1`. Take `⟨c, hc⟩` from `hd`. Establish `e2 : ((aδ δ : ℕ) : ↥LL.1) - ((aδ δ' : ℕ) : ↥LL.1) = -((aδ δ' - aδ δ : ℕ) : ↥LL.1)`. Rewrite using `[Nat.cast_sub hle]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[e2, AddValuation.map_neg, hc, Nat.cast_mul, AddValuation.map_mul, hv]`. Conclude with `le_add_of_nonneg_right (Formalism.MainNotions.N.Pv.LocalLengthBound.Val.v_natCast_nonneg _ c)`. Use `set g := (δ : W.Gam) * (δ' : W.Gam)⁻¹`. Establish `hξ : algebraMap ↥(OL LL) ↥LL.1 (W.χΓ g : ↥(OL LL)) = χd * χd'⁻¹`. Establish `hχ'0 : χd' ≠ 0`.
+
+Introduce `h0`. Use `hvunit (W.χΓ δ')` as an intermediate fact. Express the relevant statement in the definitionally equal form `(D.loc l).v LL χd' = 0 at this`. Rewrite `this` using `[h0, AddValuation.map_zero]`. Conclude with `WithTop.top_ne_coe this`.
+
+Rewrite using `[eq_mul_inv_iff_mul_eq₀ hχ'0]`. Simplify using `only [χd, χd', g, ← map_mul, ← Units.val_mul, ← map_mul (W.χΓ), inv_mul_cancel_right]`. Establish `hξ1 : (1 : WithTop ℚ) ≤ (D.loc l).v LL (algebraMap ↥(OL LL) ↥LL.1 (W.χΓ g : ↥(OL LL)) - 1)`. Establish `hχ'0 : χd' ≠ 0`. Introduce `h0`.
+
+Use `hvunit (W.χΓ δ')` as an intermediate fact. Express the relevant statement in the definitionally equal form `(D.loc l).v LL χd' = 0 at this`. Rewrite `this` using `[h0, AddValuation.map_zero]`. Conclude with `WithTop.top_ne_coe this`. Establish `e : χd * χd'⁻¹ - 1 = (χd - χd') * χd'⁻¹` using `by field_simp`.
+
+Rewrite using `[hξ, e, AddValuation.map_mul]`. Establish `hinv : (D.loc l).v LL χd'⁻¹ = 0`. Use `hvunit (W.χΓ δ')⁻¹` as an intermediate fact. Simplify `this` using `[χd', map_inv₀]`. Rewrite using `[hinv, add_zero]`.
+
+Conclude with `hdiff`. Take `⟨k, hk, hδk⟩` from `(W.DelF_def δ).1 δ.2`. Take `⟨k', hk', hδk'⟩` from `(W.DelF_def δ').1 δ'.2`. Establish `hgk : g ^ (k * k') = 1`. Simplify using `only [g, mul_pow, inv_pow]`.
+
+Rewrite using `[pow_mul, hδk, one_pow, one_mul, mul_comm k k', pow_mul, hδk', one_pow, inv_one]`. Establish `hξk : (algebraMap ↥(OL LL) ↥LL.1 (W.χΓ g : ↥(OL LL))) ^ (k * k') = 1`. Rewrite using `[← map_pow, ← Units.val_pow_eq_pow_val, ← map_pow, hgk, map_one, Units.val_one, map_one]`. Establish `hl3 : 3 ≤ l` using `by omega`. Establish `hξeq : algebraMap ↥(OL LL) ↥LL.1 (W.χΓ g : ↥(OL LL)) = 1`.
+
+Assume the negation of the conclusion as `hne1`. Conclude with `Formalism.MainNotions.N.Pv.LocalLengthBound.Val.pow_ne_one_of_close ((D.loc l).v LL) (Fact.out : l.Prime) hv hl3 (k * k') _ (Nat.mul_pos hk hk') hξ1 hne1 hξk`. Establish `hg1 : g = 1`. Apply `W.χΓ_inj` to reduce the goal to its premises. Rewrite using `[map_one]`.
+
+Apply `Units.ext` to reduce the goal to its premises. Apply `Subtype.val_injective` to reduce the goal to its premises. Simplify using `using hξeq`. Conclude with `Subtype.ext (mul_inv_eq_one.1 hg1)`. Establish `hUbij : Function.Bijective U`.
+
+Rewrite using `[Fintype.bijective_iff_injective_and_card]`. Conclude with `⟨hUinj, by rw [Fintype.card_coe, hcard, ZMod.card_units]⟩`. Take `⟨b, hb, hζb⟩` from `hζ.eq_pow_of_pow_eq_one hζ'.pow_eq_one`. Establish `hb0 : ((b : ℕ) : ZMod l) ≠ 0`. Rewrite using `[Ne, ZMod.natCast_eq_zero_iff]`.
+
+Introduce `hd`. Establish `: b = 0` using `Nat.eq_zero_of_dvd_of_lt hd hb`. Substitute `this` using the available equality. Rewrite `hζb` using `[pow_zero]`. Conclude with `hζ'.ne_one (Fact.out : l.Prime).one_lt hζb.symm`.
+
+Take `⟨δ, hδ⟩` from `hUbij.2 (Units.mk0 _ hb0)`. Establish `h1 : ((aδ δ : ℕ) : ZMod l) = ((b : ℕ) : ZMod l)` using `congrArg Units.val hδ`. Rewrite `h1` using `[ZMod.natCast_eq_natCast_iff]`. Establish `hpowmod : ∀ m : ℕ, ζ ^ m = ζ ^ (m % l)` using `fun m => by conv_lhs => rw [← Nat.mod_add_div m l, pow_add, pow_mul, hζ.pow_eq_one, one_pow, mul_one]`. Use `⟨δ, δ.2, aδ δ, ?_, haδ δ⟩` and prove the remaining obligations.
+
+Rewrite using `[hpowmod, h1, ← hpowmod, hζb]`.
+-/
 theorem ptTrans_rec (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW)
     (h9 : Formalism.MainNotions.DeltaInvariantLattices.P9 D HW F) :
     Formalism.MainNotions.WachCoordinates.AtCaseA fun l _ K LL h => PtTrans ((HW l).W K 1 LL h.2.2) := by

@@ -20,6 +20,29 @@ namespace GlobalTheory.CompanionTheory.Ar.Cusp
 
 open MuRegSmooth TopNPoly in
 
+/- English proof (translation)
+Introduce `K _ J _ II Ψ _ Ω _ _ W _ _ D Hd M S B hS`. Establish `hP : ProjSmoothAlong.Statement` using `ProjSmoothAlong.proof HoloInjDerivInj.proof GlobalTheory.T.local_orbit_chart_statement_holds`. Establish `hVS : VertFactorSmooth.Statement` using `VertFactorSmooth.proof VertFactorPos.proof`. Establish `hSB : ∀ p ∈ D.SB B, p ∈ D.S` using `fun p hp => (Finset.mem_filter.1 hp).1`. Use `filter_upwards [regWeight_smooth S hS] with t ht`.
+
+Establish `hPm : IsMultiHomogIdeal (mCoordIdeal D.y)` using `D.arith.2.1.2.1`. Use `set F : ((Σ k, J k) → ℂ) → ℝ := fun z => S.ref.h z * Real.exp (S.regWeight t (M.proj z)) * ∏ p ∈ D.SB B, D.vertFactor p z with hFdef`. Establish `hvpos : ∀ z ∈ mcPts (mCoordIdeal D.y), ∀ p ∈ D.SB B, 0 < D.vertFactor p z` using `fun z hz p hp => VertFactorPos.proof II Ψ K J Ω W D p (hSB p hp) z hz`. Establish `hpos : ∀ z ∈ mcPts (mCoordIdeal D.y), 0 < F z` using `fun z hz => mul_pos (mul_pos (S.ref.pos z hz.1) (Real.exp_pos _)) (Finset.prod_pos (hvpos z hz))`. Establish `hhom : ∀ z ∈ mcPts (mCoordIdeal D.y), ∀ c : K → ℂ, (∀ k, c k ≠ 0) → F (torusSmul c z) = (∏ k, ‖c k‖ ^ muTwDeg Hd B k) * F z`.
+
+Introduce `z hz c hc`. Establish `hcz : torusSmul c z ∈ mcPts (mCoordIdeal D.y)` using `mcPts_smul hPm c hc hz`. Establish `hproj : M.proj (torusSmul c z) = M.proj z` using `((M.fibre z hz _ hcz).2 ⟨c, hc, rfl⟩).symm`. Establish `href : S.ref.h (torusSmul c z) = (∏ k, ‖c k‖ ^ Hd.aMu k) * S.ref.h z`. Rewrite using `[show torusSmul c z = fun p => c p.1 * z p from rfl, S.ref.smul c z hc, S.ref_deg]`.
+
+Both sides reduce to the same expression. Establish `hvf : ∏ p ∈ D.SB B, D.vertFactor p (torusSmul c z) = (∏ p ∈ D.SB B, ∏ k, ‖c k‖ ^ D.vdeg p k) * ∏ p ∈ D.SB B, D.vertFactor p z`. Rewrite using `[← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_congr rfl fun p hp => (hVS II Ψ K J Ω W D p (hSB p hp)).1 z hz c hc`. Simplify using `only [hFdef]`.
+
+Rewrite using `[href, hproj, hvf, muTwDeg, prod_norm_zpow_add_sum hc]`. Expand and normalize the polynomial expressions, which then agree. Establish `hsm : SmoothAlong (mcPts (mCoordIdeal D.y)) F` using `smoothAlong_mul (smoothAlong_mul (smoothAlong_of_contDiffOn S.ref_smooth) (smoothAlong_exp (hP II Ψ K J Ω W D M _ ht))) (smoothAlong_prod _ fun p hp => (hVS II Ψ K J Ω W D p (hSB p hp)).2)`. Take `⟨Z, hZa, hZs, hZh⟩` from `HermExtend.proof K J (mCoordIdeal D.y) (muTwDeg Hd B) F hPm hpos hhom hsm`. Establish `hagree : ∀ z ∈ mcPts (mCoordIdeal D.y), Z.h z = (hermOfFun J (muTwDeg Hd B) fun z => (S.regLine t).h z * ∏ p ∈ D.SB B, D.vertFactor p z).h z`.
+
+Introduce `z hz`. Take `⟨c, hc, hzc⟩` from `exists_eq_smul_orbitRep z`. Establish `hw0` using `orbitRep_blocks hz.1`. Establish `hwP : orbitRep z ∈ mcPts (mCoordIdeal D.y)`. Establish `h` using `mcPts_smul hPm (fun k => (c k)⁻¹) (fun k => inv_ne_zero (hc k)) hz`.
+
+Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `p`. Establish `hp : z p = c p.1 * orbitRep z p` using `congrFun hzc p`. Rewrite using `[hp, ← _root_.mul_assoc, inv_mul_cancel₀ (hc _), _root_.one_mul]`. Establish `hG0 : 0 < S.ref.h (orbitRep z) * Real.exp (S.regWeight t (M.proj (orbitRep z)))` using `mul_pos (S.ref.pos _ hw0) (Real.exp_pos _)`.
+
+Establish `hreg : (S.regLine t).h (orbitRep z) = S.ref.h (orbitRep z) * Real.exp (S.regWeight t (M.proj (orbitRep z)))` using `hermOfFun_h_orbitRep hz.1 hG0`. Establish `hFw : (S.regLine t).h (orbitRep z) * ∏ p ∈ D.SB B, D.vertFactor p (orbitRep z) = F (orbitRep z)`. Rewrite using `[hreg]`. Rewrite using `[hZh z hz, hermOfFun_h_smul hc hzc hz.1 (by rw [hFw]; exact hpos _ hwP), hFw]`. Use `conv_lhs => rw [hzc]`.
+
+Conclude with `hhom _ hwP c hc`. Use `⟨?_, smoothRep_a _ _, fun z hz => ?_⟩` and prove the remaining obligations. Unfold `muReg`. Conclude with `smoothRep_smooth_of (Z := Z) hZa hZs hagree`. Establish `hmu : (muReg Hd S B t).h z = F z`.
+
+Unfold `muReg`. Rewrite using `[smoothRep_h _ hz, ← hagree z hz, hZh z hz]`. Establish `h1 : S.ref.h z ≠ 0` using `(S.ref.pos z hz.1).ne'`. Establish `h2 : ∏ p ∈ D.SB B, D.vertFactor p z ≠ 0` using `(Finset.prod_pos (hvpos z hz)).ne'`. Rewrite using `[hmu]`.
+
+Simplify using `only [hFdef]`. Rewrite using `[Real.log_mul (mul_ne_zero h1 (Real.exp_pos _).ne') h2, Real.log_mul h1 (Real.exp_pos _).ne', Real.log_exp, Real.log_prod fun p hp => (hvpos z hz p hp).ne']`.
+-/
 theorem muReg_smooth_log : ∀ (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (II : IntersectionSystem) (Ψ : Type) [Fintype Ψ] (Ω : Type) [Field Ω] [Algebra ℚ Ω] (W : Ψ → Type) [∀ τ, AddCommGroup (W τ)] [∀ τ, Module Ω (W τ)] (D : ComponentData II Ψ K J Ω W) (Hd : HodgeData D) (M : XModel D) (S : LogLogRegularisationSetting M D.Xo (muLine Hd)) (B : ℕ), S.IsTied → ∀ᶠ t in 𝓝[>] (0 : ℝ), IsSmoothHerm (muReg Hd S B t) ∧ (muReg Hd S B t).a = muTwDeg Hd B ∧ ∀ z ∈ mcPts (mCoordIdeal D.y), Real.log ((muReg Hd S B t).h z) = Real.log (S.ref.h z) + S.regWeight t (M.proj z) + ∑ p ∈ D.SB B, Real.log (D.vertFactor p z) := by
   intro K _ J _ II Ψ _ Ω _ _ W _ _ D Hd M S B hS
   have hP : ProjSmoothAlong.Statement := ProjSmoothAlong.proof HoloInjDerivInj.proof GlobalTheory.T.local_orbit_chart_statement_holds

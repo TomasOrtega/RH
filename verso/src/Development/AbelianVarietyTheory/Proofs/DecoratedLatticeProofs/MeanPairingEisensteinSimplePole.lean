@@ -27,6 +27,11 @@ namespace GlobalTheory.RegSch.EisensteinPairing
 
 variable {D : D7} {T T₀ : HSp D} {r : ℕ} {d : HypDec T T₀ r} {b : GL (Fin T.rank) (AE D)} {s₀ : ℂ} {j k : ℕ}
 
+/- English proof (translation)
+Establish `e : sphericalEisenstein d b h = fun s => ∑' q, (fun _ => (1 : ℂ)) q * npow ((fun q => GlobalTheory.Eis.term (stab d) (GQ T) (iwAbs (absDet d) (Kmax T b)) h q) q) (s - (-(rhoH T r : ℂ)))`. Use function extensionality and compare the values at `s`. Simplify using `only [sphericalEisenstein, GlobalTheory.Eis.cosetSum, GlobalTheory.Eis.term, sphericalSection, one_mul, sub_neg_eq_add]`. Rewrite using `[e]`. Use `GlobalTheory.Eis.analyticOnNhd_tsum_npow (fun _ => iwAbs_pos _ _ _) fun s hs => ?_` and prove the remaining obligations.
+
+Use `hA.1 s hs h` as an intermediate fact. Simplify `this` using `only [GlobalTheory.Eis.CosetConv, GlobalTheory.Eis.term, sphericalSection, one_mul, sub_neg_eq_add]`.
+-/
 theorem eisenstein_analytic_half_plane (hA : EisensteinContinues d b) (h : GA D T) :
     AnalyticOnNhd ℂ (sphericalEisenstein d b h) (rightOf (rhoH T r)) := by
   have e : sphericalEisenstein d b h = fun s => ∑' q, (fun _ => (1 : ℂ)) q *
@@ -38,6 +43,13 @@ theorem eisenstein_analytic_half_plane (hA : EisensteinContinues d b) (h : GA D 
   have := hA.1 s hs h
   simpa only [GlobalTheory.Eis.CosetConv, GlobalTheory.Eis.term, sphericalSection, one_mul, sub_neg_eq_add] using this
 
+/- English proof (translation)
+Use function extensionality and compare the values at `s`. Establish `hL : GlobalTheory.AutomorphicL2Unitary.LeftInv (stab d ⊓ GQ T) (sphericalSection d b s)`. Introduce `δ hδ g`. Take `⟨u, hu⟩` from `GlobalTheory.EisCont.det_onX_rat d ⟨δ, hδ.1⟩ hδ.2`. Establish `h1 : absDet d ⟨δ, hδ.1⟩ = 1`.
+
+Rewrite using `[absDet, MonoidHom.comp_apply, MonoidHom.comp_apply, ← hu]`. Conclude with `absE_inclR u`. Establish `h2` using `hI.isIwasawa.iwAbs_left ⟨δ, hδ.1⟩ g`. Rewrite `h2` using `[h1, one_mul]`. Conclude with `congrArg (npow · _) h2`.
+
+Conclude with `GlobalTheory.Eis.leftInv_cosetSum hL γ hγ h`.
+-/
 theorem eisenstein_left_invariant_rational (hI : HasIw d (Kmax T b)) {γ : GA D T} (hγ : γ ∈ GQ T) (h : GA D T) :
     sphericalEisenstein d b (γ * h) = sphericalEisenstein d b h := by
   funext s
@@ -52,6 +64,9 @@ theorem eisenstein_left_invariant_rational (hI : HasIw d (Kmax T b)) {γ : GA D 
     exact congrArg (npow · _) h2
   exact GlobalTheory.Eis.leftInv_cosetSum hL γ hγ h
 
+/- English proof (translation)
+Take `⟨ε, H, hr, e, hd, hc, C, N, hb⟩` from `h`. Use `⟨ε, fun s g => (s - s₀) * H s g, hr, fun s hs h0 g => by simp only [e s hs h0]; ring, fun g => (differentiableOn_id.sub_const _).mul (hd g), (by fun_prop : ContinuousOn (fun x : ℂ × _ => x.1 - s₀) _).mul hc, ε * C, N, fun s hs g => ?_⟩` and prove the remaining obligations. Rewrite using `[norm_mul, mul_assoc]`. Conclude with `mul_le_mul (mem_ball_iff_norm.1 hs).le (hb s hs g) (norm_nonneg _) hr.le`.
+-/
 theorem regularAt_succ (h : EisensteinRegularAt d b s₀ k) : EisensteinRegularAt d b s₀ (k + 1) := by
   obtain ⟨ε, H, hr, e, hd, hc, C, N, hb⟩ := h
   refine ⟨ε, fun s g => (s - s₀) * H s g, hr, fun s hs h0 g => by simp only [e s hs h0]; ring,
@@ -60,6 +75,15 @@ theorem regularAt_succ (h : EisensteinRegularAt d b s₀ k) : EisensteinRegularA
   rw [norm_mul, mul_assoc]
   exact mul_le_mul (mem_ball_iff_norm.1 hs).le (hb s hs g) (norm_nonneg _) hr.le
 
+/- English proof (translation)
+Take `⟨ε, H, hr, e, hd, hc, C, N, hb⟩` from `h`. Establish `h0 : ∀ g, H s₀ g = 0` using `fun g => by`. Take `⟨E, hE, -⟩` from `id (hp g)`. Take `⟨c, hc⟩` from `hE.poleLE_iff.1 (hp g)`. Establish `h1 : Tendsto (fun s => (s - s₀) ^ (k + 1 - j)) (𝓝[≠] s₀) (𝓝 0)` using `(Continuous.tendsto' (by fun_prop) s₀ 0 (by simp; omega)).mono_left nhdsWithin_le_nhds`.
+
+Use `tendsto_nhds_unique (((hd g).continuousOn.continuousAt (ball_mem_nhds _ hr)).tendsto.mono_left (nhdsWithin_le_nhds (s := {s₀}ᶜ))) ((zero_mul c ▸ h1.mul hc).congr' ?_)` and prove the remaining obligations. Use `filter_upwards [hE.cont_eventuallyEq, self_mem_nhdsWithin, mem_nhdsWithin_of_mem_nhds (ball_mem_nhds s₀ hr)] with s h2 h3 h4`. Rewrite using `[e s h4 h3, ← mul_assoc, ← pow_add, Nat.sub_add_cancel (by omega), ← h2]`. Take `⟨h1, h2, h3⟩` from `GlobalTheory.Eis.dslope_family hr hd hc hb h0`. Use `⟨ε / 2, fun s g => dslope (H · g) s₀ s, half_pos hr, fun s hs hs' g => ?_, h1, h2, C / ε, N, fun s hs g => ?_⟩` and prove the remaining obligations.
+
+Use `sub_ne_zero.2 hs'` as an intermediate fact. Simplify using `only [dslope_of_ne _ hs', slope_def_field, h0, e s (ball_subset_ball (by linarith) hs) hs']`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[div_mul_eq_mul_div]`.
+
+Conclude with `h3 s hs g`.
+-/
 theorem regularAt_pred (h : EisensteinRegularAt d b s₀ (k + 1)) (hp : ∀ g, PoleLE (sphericalEisenstein d b g) s₀ j) (hj : j ≤ k) :
     EisensteinRegularAt d b s₀ k := by
   obtain ⟨ε, H, hr, e, hd, hc, C, N, hb⟩ := h
@@ -81,6 +105,9 @@ theorem regularAt_pred (h : EisensteinRegularAt d b s₀ (k + 1)) (hp : ∀ g, P
     ring
   · rw [div_mul_eq_mul_div]; exact h3 s hs g
 
+/- English proof (translation)
+Break down `le_total k j with hk | hk` into its components or cases. Conclude with `Nat.le_induction h (fun _ _ => regularAt_succ) j hk`. Conclude with `Nat.decreasingInduction (motive := fun i _ => j ≤ i → EisensteinRegularAt d b s₀ i) (fun i _ ih hi => regularAt_pred (ih (by omega)) hp hi) (fun _ => h) hk le_rfl`.
+-/
 theorem regularAt_of_poleLE (h : EisensteinRegularAt d b s₀ k) (hp : ∀ g, PoleLE (sphericalEisenstein d b g) s₀ j) :
     EisensteinRegularAt d b s₀ j := by
   rcases le_total k j with hk | hk
@@ -88,6 +115,9 @@ theorem regularAt_of_poleLE (h : EisensteinRegularAt d b s₀ k) (hp : ∀ g, Po
   · exact Nat.decreasingInduction (motive := fun i _ => j ≤ i → EisensteinRegularAt d b s₀ i)
       (fun i _ ih hi => regularAt_pred (ih (by omega)) hp hi) (fun _ => h) hk le_rfl
 
+/- English proof (translation)
+Simplify using `only [meanPair, MeasureTheory.average]`. Rewrite using `[← MeasureTheory.integral_const_mul]`. Use `congrArg _ (funext fun q => ?_)` and prove the remaining obligations. Simplify using `only [GlobalTheory.AutomorphicL2Unitary.descend, mul_left_comm]`.
+-/
 theorem meanPair_const_mul (m : Measure (GA D T)) (F E : GA D T → ℂ) (c : ℂ) :
     meanPair T m F (fun h => c * E h) = c * meanPair T m F E := by
   simp only [meanPair, MeasureTheory.average]
@@ -95,6 +125,15 @@ theorem meanPair_const_mul (m : Measure (GA D T)) (F E : GA D T → ℂ) (c : �
   refine congrArg _ (funext fun q => ?_)
   simp only [GlobalTheory.AutomorphicL2Unitary.descend, mul_left_comm]
 
+/- English proof (translation)
+Establish `: BorelSpace (GA D T)` using `⟨rfl⟩`. Establish `hbi` using `(GlobalTheory.Core.Rk.IP.integrable_quotHeight_pow_mul_norm_of_rapidDec D T m hm F hF N).const_mul (C * 2 ^ N)`. Establish `hmeas : ∀ s ∈ ball s₀ ε, AEStronglyMeasurable (descend (GQ T) fun h => F h * A s h) (autMeasure T m)`. Introduce `s hs`. Establish `hL : GlobalTheory.AutomorphicL2Unitary.LeftInv (GQ T) fun h => F h * A s h` using `fun γ hγ g => by`.
+
+Simplify using `only [hF.left hγ, hinv s hs γ hγ]`. Establish `hcont : Continuous (A s)` using `hc.comp_continuous (f := fun g => (s, g)) (by fun_prop) fun g => ⟨hs, trivial⟩`. Use `Measurable.aestronglyMeasurable (measurable_from_quotient.2 ?_)` and prove the remaining obligations. Establish `h' : (descend (GQ T) (fun h => F h * A s h) ∘ Quotient.mk'') = fun h => F h * A s h`. Use function extensionality and compare the values at `fun g => hL.descend_mk g`.
+
+Rewrite using `[h']`. Conclude with `(hF.continuous.mul hcont).measurable`. Use `GlobalTheory.differentiableOn_integral_of_holomorphic_of_locally_dominated (μ := autMeasure T m) (F := fun q s => descend (GQ T) (fun h => F h * A s h) q) (isOpen_ball (x := s₀) (ε := ε)) hmeas (ae_of_all _ fun q => (hd _).const_mul _) fun x hx => ⟨ball s₀ ε, isOpen_ball.mem_nhds …` as an intermediate fact. Establish `h1` using `GlobalTheory.Grow.norm_le_quotHeight_pow (hinv y hy) (hb y hy) q.out`. Use `show ‖F q.out * A y q.out‖ ≤ _`.
+
+Rewrite using `[norm_mul, mul_comm, ← mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_right h1 (norm_nonneg _)⟩`. Use `⟨fun s hs => (this.2 s hs).1, ?_⟩` and prove the remaining obligations. Simplify using `only [meanPair, MeasureTheory.average_eq]`. Conclude with `this.1.const_smul _`.
+-/
 theorem pair_family {m : Measure (GA D T)} (hm : m.IsHaarMeasure) {F : GA D T → ℂ} (hF : GlobalTheory.Grow.RapidDec T F)
     {A : ℂ → GA D T → ℂ} {ε : ℝ} (hinv : ∀ s ∈ ball s₀ ε, ∀ γ ∈ GQ T, ∀ h, A s (γ * h) = A s h)
     (hd : ∀ h, DifferentiableOn ℂ (A · h) (ball s₀ ε))
@@ -126,6 +165,15 @@ theorem pair_family {m : Measure (GA D T)} (hm : m.IsHaarMeasure) {F : GA D T �
   simp only [meanPair, MeasureTheory.average_eq]
   exact this.1.const_smul _
 
+/- English proof (translation)
+Take `⟨ε, H, hr, e, hd, hc, C, N, hb⟩` from `hk`. Establish `ht : ∀ h, Tendsto (fun s => (s - s₀) ^ k * cont (sphericalEisenstein d b h) s) (𝓝[≠] s₀) (𝓝 (H s₀ h))` using `fun h => by`. Use `(((hd h).continuousOn.continuousAt (ball_mem_nhds _ hr)).tendsto.mono_left nhdsWithin_le_nhds).congr' ?_` and prove the remaining obligations. Use `filter_upwards [self_mem_nhdsWithin, mem_nhdsWithin_of_mem_nhds (ball_mem_nhds s₀ hr)] with w h1 h2`. Conclude with `e w h2 h1 h`.
+
+Establish `hinv : ∀ s ∈ ball s₀ ε, ∀ γ ∈ GQ T, ∀ h, H s (γ * h) = H s h`. Introduce `s hs γ hγ g`. Break down `eq_or_ne s s₀ with rfl | h0` into its components or cases. Establish `h1` using `ht (γ * g)`. Rewrite `h1` using `[eisenstein_left_invariant_rational hI hγ]`.
+
+Conclude with `tendsto_nhds_unique h1 (ht g)`. Rewrite using `[e s hs h0, e s hs h0, eisenstein_left_invariant_rational hI hγ]`. Take `⟨hi, hdiff⟩` from `pair_family hm hF hinv hd hc hb`. Use `⟨_, H s₀, hdiff.analyticAt (ball_mem_nhds _ hr), rfl, hi s₀ (mem_ball_self hr), ht, ?_⟩` and prove the remaining obligations. Use `filter_upwards [self_mem_nhdsWithin, mem_nhdsWithin_of_mem_nhds (ball_mem_nhds s₀ hr)] with w h1 h2`.
+
+Rewrite using `[← meanPair_const_mul]`. Conclude with `congrArg _ (funext (e w h2 h1))`.
+-/
 theorem pair_regular (hI : HasIw d (Kmax T b)) {m : Measure (GA D T)} (hm : m.IsHaarMeasure) {F : GA D T → ℂ}
     (hF : GlobalTheory.Grow.RapidDec T F) (hk : EisensteinRegularAt d b s₀ k) :
     ∃ (M : ℂ → ℂ) (E : GA D T → ℂ), AnalyticAt ℂ M s₀ ∧ M s₀ = meanPair T m F E ∧
@@ -154,6 +202,19 @@ end GlobalTheory.RegSch.EisensteinPairing
 
 open GlobalTheory.RegSch.EisensteinPairing in
 
+/- English proof (translation)
+Introduce `D T T₀ r d b _ hI hA m hm F hF`. Use `set Z : ℂ → ℂ := fun s => meanPair T m F fun h => cont (sphericalEisenstein d b h) s with hZ`. Establish `hmer : ∀ s₁, MeromorphicAt Z s₁`. Introduce `s₁`. Take `⟨k, hk⟩` from `hA.2.2.1 s₁`.
+
+Take `⟨M, E, han, -, -, -, e⟩` from `pair_regular hI hm hF hk`. Establish `h1 : MeromorphicAt (fun s : ℂ => s - s₁) s₁` using `(MeromorphicAt.id s₁).sub (MeromorphicAt.const _ _)`. Establish `hm1 : MeromorphicAt (fun s => ((s - s₁) ^ k)⁻¹ * M s) s₁` using `(h1.pow k).inv.mul han.meromorphicAt`. Use `hm1.congr ?_` and prove the remaining obligations. Use `filter_upwards [self_mem_nhdsWithin, e] with w h1 h2`.
+
+Rewrite using `[h2, ← mul_assoc, inv_mul_cancel₀ (pow_ne_zero _ (sub_ne_zero.2 h1)), one_mul]`. Establish `hext : IsMerExt (fun s => meanPair T m F fun h => sphericalEisenstein d b h s) univ Z` using `⟨isRightDomain_univ, fun s _ => hmer s, rhoH T r, fun s hs => congrArg (meanPair T m F) (funext fun h => eqOn_cont (eisenstein_analytic_half_plane hA h) hs)⟩`. Establish `key : ∀ (s₁ : ℂ) (j : ℕ) (E : GA D T → ℂ), (∀ h, PoleLE (sphericalEisenstein d b h) s₁ j) → (∀ h, CoeffAt (sphericalEisenstein d b h) s₁ (-j) (E h)) → Integrable (descend (GQ T) fun h => F h * E h) (autMeasure T m) ∧ Tendsto (fun s => (s - s₁) ^ j * Z s) (𝓝[≠] s₁) (𝓝 (meanPair T …`. Introduce `s₁ j E hp hc`. Take `⟨k, hk⟩` from `hA.2.2.1 s₁`.
+
+Take `⟨M, E', han, h0, hi, ht, e⟩` from `pair_regular hI hm hF (regularAt_of_poleLE hk hp)`. Establish `hE : E' = E` using `funext fun h => by`. Take `⟨H, hH, -⟩` from `id (hp h)`. Use `tendsto_nhds_unique (ht h) ((hH.tendsto_of_poleLE (hp h) (hc h)).congr' ?_)` and prove the remaining obligations. Use `filter_upwards [hH.cont_eventuallyEq] with w hw`.
+
+Rewrite using `[hw]`. Substitute `hE` using the available equality. Conclude with `⟨hi, (h0 ▸ han.continuousAt.tendsto.mono_left nhdsWithin_le_nhds).congr' e⟩`. Establish `hρ` using `(key (rhoH T r) 1 (fun h => eisensteinResidue d b * (1 : GA D T → ℂ) h) (fun h => (hA.2.2.2.2 h).1) fun h => by simpa using (hA.2.2.2.2 h).2).2`. Rewrite `hρ` using `[meanPair_const_mul]`.
+
+Use `⟨⟨Z, hext⟩, (hext.isExtAt trivial).poleLE_iff.2 ⟨_, hρ⟩, (hext.isExtAt trivial).coeffAt_of_tendsto hρ, fun s E hE => ?_⟩` and prove the remaining obligations. Take `⟨h1, h2⟩` from `key s 0 E (fun h => (holValueAt_iff_poleLE.1 (hE h)).1) fun h => by simpa using (hE h).valueAt`. Conclude with `⟨h1, (hext.isExtAt trivial).holValueAt_iff.2 (by simpa using h2)⟩`.
+-/
 theorem GlobalTheory.RegSch.mean_pairing_eisenstein_continues : ∀ (D : D7) (T T₀ : HSp D) (r : ℕ) (d : HypDec T T₀ r) (b : GL (Fin T.rank) (AE D)), IsMaj T b → HasIw d (Kmax T b) → EisensteinContinues d b → ∀ m : Measure (GA D T), m.IsHaarMeasure → ∀ F : GA D T → ℂ, GlobalTheory.Grow.RapidDec T F → Continues (fun s => meanPair T m F fun h => sphericalEisenstein d b h s) ∧ PoleLE (fun s => meanPair T m F fun h => sphericalEisenstein d b h s) (rhoH T r) 1 ∧ ResidueAt (fun s => meanPair T m F fun h => sphericalEisenstein d b h s) (rhoH T r) (eisensteinResidue d b * meanPair T m F 1) ∧ ∀ (s : ℂ) (E : GA D T → ℂ), (∀ h, HolValueAt (sphericalEisenstein d b h) s (E h)) → Integrable (descend (GQ T) fun h => F h * E h) (autMeasure T m) ∧ HolValueAt (fun s => meanPair T m F fun h => sphericalEisenstein d b h s) s (meanPair T m F E) := by
   intro D T T₀ r d b _ hI hA m hm F hF
   set Z : ℂ → ℂ := fun s => meanPair T m F fun h => cont (sphericalEisenstein d b h) s with hZ

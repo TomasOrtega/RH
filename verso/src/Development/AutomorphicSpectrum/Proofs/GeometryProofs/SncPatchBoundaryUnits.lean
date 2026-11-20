@@ -10,6 +10,9 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.Ar.SncBase.Mdl
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using unitAt_one ξ p`. Consider the case `insert i s hi ih`. Rewrite using `[Finset.prod_insert hi]`. Conclude with `unitAt_mul (hf i (Finset.mem_insert_self i s)) (ih fun j hj => hf j (Finset.mem_insert_of_mem hj))`.
+-/
 theorem unitAt_finsetProd {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Sp Ω ⟶ X} {p : Cpt ξ}
     {I : Type} (s : Finset I) (f : I → Ω) (hf : ∀ i ∈ s, unitAt ξ p (f i)) :
     unitAt ξ p (∏ i ∈ s, f i) := by
@@ -21,6 +24,9 @@ theorem unitAt_finsetProd {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Sp Ω �
     exact unitAt_mul (hf i (Finset.mem_insert_self i s))
       (ih fun j hj => hf j (Finset.mem_insert_of_mem hj))
 
+/- English proof (translation)
+Rewrite `hu` using `[← Finset.mul_prod_erase s f hi]`. Conclude with `unitAt_of_mul_left hu (hf i hi) (prod_mem fun j hj => hf j (Finset.mem_of_mem_erase hj))`.
+-/
 theorem unitAt_of_finsetProd {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Sp Ω ⟶ X} {p : Cpt ξ}
     {I : Type} (s : Finset I) (f : I → Ω) (hf : ∀ i ∈ s, f i ∈ regAt ξ p)
     (hu : unitAt ξ p (∏ i ∈ s, f i)) {i : I} (hi : i ∈ s) : unitAt ξ p (f i) := by
@@ -29,6 +35,17 @@ theorem unitAt_of_finsetProd {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Sp Ω
   exact unitAt_of_mul_left hu (hf i hi)
     (prod_mem fun j hj => hf j (Finset.mem_of_mem_erase hj))
 
+/- English proof (translation)
+Use `set S : Finset (Fin e) := Finset.univ.filter fun i => (i : ℕ) < n with hS`. Use `set f : Fin e → Ω := fun i => (z i : Ω) with hf`. Use `set ζ : Ω := ∏ i ∈ S, f i with hζ`. Establish `hζm : ζ ∈ Mdl.invAdj (Mdl.chartQ x c) h` using `Subalgebra.prod_mem _ fun i _ => (z i).2`. Take `⟨m, hm⟩` from `exists_mul_pow_mem hh h0 hζm`.
+
+Use `⟨ζ * h ^ m * h, (Mdl.chartQ x c).mul_mem hm hh, ?_, ?_⟩` and prove the remaining obligations. Establish `hz : ∀ i ∈ S, unitAt ξ p (f i)`. Introduce `i hi`. Assume the negation of the conclusion as `hni`. Conclude with `hpB ((hcl p hp hpc hph).2 ⟨i, (Finset.mem_filter.1 hi).2, hni⟩)`.
+
+Conclude with `unitAt_mul (unitAt_mul (unitAt_finsetProd S f hz) (unitAt_pow hph m)) hph`. Introduce `q hq hqc hua`. Establish `hq0` using `hB q hq`. Establish `hA : ∀ s ∈ Mdl.chartQ x c, s ∈ regAt ξ q` using `fun s hs => chartQ_le hq0 hqc hs`. Distinguish the cases in `hqh : unitAt ξ q h`.
+
+Take `⟨i, hin, hni⟩` from `(hcl q hq0 hqc hqh).1 hq`. Establish `hreg : ∀ j ∈ S, f j ∈ regAt ξ q` using `fun j _ => invAdj_le hq0 hA hqh (z j).2`. Establish `hζr : ζ ∈ regAt ξ q` using `prod_mem hreg`. Establish `hhm : h ^ m * h ∈ regAt ξ q` using `(regAt ξ q).mul_mem (pow_mem (hA h hh) m) (hA h hh)`. Establish `hua' : unitAt ξ q (ζ * (h ^ m * h))` using `by rwa [← _root_.mul_assoc]`.
+
+Establish `hζu : unitAt ξ q ζ` using `unitAt_of_mul_left hua' hζr hhm`. Conclude with `hni (unitAt_of_finsetProd S f hreg hζu (Finset.mem_filter.2 ⟨Finset.mem_univ i, hin⟩))`. Conclude with `hqh (unitAt_of_mul_right hua (hA _ hm) (hA h hh))`.
+-/
 theorem exists_chartQ_unit_sep (Ω : Type) [Field Ω] [CharZero Ω] (X : Scheme.{0}) (ξ : Sp Ω ⟶ X)
     (κ : Type) (x : κ → Ω) (c : κ) (B : Set (Cpt ξ)) (h : Ω) (e n : ℕ)
     (z : Fin e → Mdl.invAdj (Mdl.chartQ x c) h) (p : Cpt ξ) (_hξ : IsCptGen ξ)

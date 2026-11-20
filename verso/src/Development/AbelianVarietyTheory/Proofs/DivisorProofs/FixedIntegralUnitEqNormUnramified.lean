@@ -8,6 +8,13 @@ open scoped Classical
 
 namespace GlobalTheory.UnitLemma
 
+/- English proof (translation)
+Take `⟨ζ, -, hζ⟩` from `GlobalTheory.NormUnits.exists_far_unit F E`. Take `⟨a, ha⟩` from `GlobalTheory.NormUnits.fixed_mem_range F E ζ hζ w hs`. Establish `hprod : ‖w‖ * ‖w'‖ = 1` using `by rw [← norm_mul, hww, norm_one]`. Establish `hwn : ‖w‖ = 1`. Use `le_antisymm h1 ?_` and prove the remaining obligations.
+
+Assume the negation of the conclusion as `h`. Use `push_neg at h`. Establish `: ‖w‖ * ‖w'‖ < 1`. Combine the equalities or inequalities in the displayed calculation. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `han : ‖a‖ = 1` using `by rw [← norm_algebraMap' E a, ha, hwn]`. Take `⟨v, hv⟩` from `GlobalTheory.NormUnits.norm_onto_units F E a han`. Conclude with `⟨v, by rw [hv, ha]⟩`.
+-/
 theorem UQ.norm_of_fixed_unit {F E : Type} [NontriviallyNormedField F] [NontriviallyNormedField E]
     [NormedAlgebra F E] [StarRing E] [GlobalTheory.JR.Unram F E] (w w' : E) (hs : star w = w) (h1 : ‖w‖ ≤ 1)
     (h1' : ‖w'‖ ≤ 1) (hww : w * w' = 1) : ∃ v : E, v * star v = w := by
@@ -26,6 +33,13 @@ theorem UQ.norm_of_fixed_unit {F E : Type} [NontriviallyNormedField F] [Nontrivi
   obtain ⟨v, hv⟩ := GlobalTheory.NormUnits.norm_onto_units F E a han
   exact ⟨v, by rw [hv, ha]⟩
 
+/- English proof (translation)
+Introduce `K t ht hct`. Take `⟨F, nF, nE, hE, nA, st, hU, hst, hball⟩` from `K.exists_unram`. Establish `hmul : ∀ x y : K.E, @HMul.hMul K.E K.E K.E (@instHMul K.E nE.toMul) x y = x * y`. Introduce `x y`. Rewrite using `[← hE]`.
+
+Establish `hone : @OfNat.ofNat K.E 1 (@One.toOfNat1 K.E nE.toOne) = 1` using `by rw [← hE]`. Take `⟨u, rfl⟩` from `ht`. Establish `hww : algebraMap K.O K.E u * algebraMap K.O K.E (u⁻¹ : K.Oˣ) = 1`. Rewrite using `[← map_mul, Units.mul_inv, map_one]`. Take `⟨v, hv⟩` from `@UQ.norm_of_fixed_unit F K.E nF nE nA st hU (algebraMap K.O K.E u) (algebraMap K.O K.E (u⁻¹ : K.Oˣ)) (by rw [hst]; exact hct) ((hball _).2 ⟨u, rfl⟩) ((hball _).2 ⟨_, rfl⟩) (by rw [hmul, hone]; exact hww)`.
+
+Use `⟨v, ?_⟩` and prove the remaining obligations. Rewrite using `[← hst, ← hmul]`. Conclude with `hv`.
+-/
 theorem UQ.unit_fixed_is_norm : ∀ (K : GlobalTheory.UnitLemma.UQ) (t : K.O), IsUnit t → K.c (algebraMap K.O K.E t) = algebraMap K.O K.E t →
     ∃ v : K.E, v * K.c v = algebraMap K.O K.E t := by
   intro K t ht hct

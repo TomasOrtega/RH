@@ -11,6 +11,11 @@ open scoped ENNReal
 
 namespace Formalism.L2.SG.Pf.RMeasP
 
+/- English proof (translation)
+Establish `hui : IsUnit (g₀⁻¹).det` using `Matrix.isUnit_nonsing_inv_det g₀ hu`. Establish `hc` using `Formalism.FourierDecayAlt.P.Dx2.OrbJ.closedR (k := k) (r := r) hui`. Establish `hset : Formalism.FourierDecayAlt.C6.Rset g₀⁻¹ = Formalism.MainNotions.S.Rset k r g₀`. Use extensionality with `x`. Simplify using `only [Formalism.FourierDecayAlt.C6.Rset, Formalism.MainNotions.S.Rset, Set.mem_ofPred_eq, Matrix.nonsing_inv_nonsing_inv _ hu]`.
+
+Rewrite using `[← hset]`. Conclude with `⟨hc.closed, hc.one_mem, hc.mul_mem, fun a ha => ⟨hc.inv_mem a ha, Matrix.mul_nonsing_inv a (hc.unit a ha)⟩⟩`.
+-/
 theorem rset_matGroup {k r : ℕ} {g₀ : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} (hu : IsUnit g₀.det) :
     PI.IsMatGroup (Formalism.MainNotions.S.Rset k r g₀) := by
   have hui : IsUnit (g₀⁻¹).det := Matrix.isUnit_nonsing_inv_det g₀ hu
@@ -21,6 +26,15 @@ theorem rset_matGroup {k r : ℕ} {g₀ : Matrix (Fin (2 * r + k + 1)) (Fin (2 *
   rw [← hset]
   exact ⟨hc.closed, hc.one_mem, hc.mul_mem, fun a ha => ⟨hc.inv_mem a ha, Matrix.mul_nonsing_inv a (hc.unit a ha)⟩⟩
 
+/- English proof (translation)
+Unfold `Formalism.MainNotions.S.IsHaarOn at h ⊢`. Take `⟨hs, hne, hnull, hinv⟩` from `h`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `first`. Consider the case `infer_instance`.
+
+Consider the case `(rw [← ENNReal.coe_toNNReal h1, ← ENNReal.smul_def]; infer_instance)`. Use `first`. Consider the case `exact smul_ne_zero h0 hne`. Consider the case `(intro hz`. Apply `hne` to reduce the goal to its premises.
+
+Establish `hu` using `congrArg (fun ν : Measure (Mt k r) => ν Set.univ) hz`. Simplify using `[h0] at hu`. Use `first`. Consider the case `exact hu`. Consider the case `exact Measure.measure_univ_eq_zero.mp hu)`.
+
+Rewrite using `[Measure.smul_apply, hnull, smul_zero]`. Introduce `s hs'`. Rewrite using `[Measure.map_smul, hinv s hs']`.
+-/
 theorem isHaarOn_smul' {k r : ℕ} {S : Set (Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ)} {μ : Measure (Mt k r)}
     (h : Formalism.MainNotions.S.IsHaarOn S μ) {c : ℝ≥0∞} (h0 : c ≠ 0) (h1 : c ≠ ⊤) : Formalism.MainNotions.S.IsHaarOn S (c • μ) := by
   unfold Formalism.MainNotions.S.IsHaarOn at h ⊢
@@ -42,6 +56,23 @@ theorem isHaarOn_smul' {k r : ℕ} {S : Set (Matrix (Fin (2 * r + k + 1)) (Fin (
   · intro s hs'
     rw [Measure.map_smul, hinv s hs']
 
+/- English proof (translation)
+Establish `hk : 1 ≤ D.R.k` using `by have := D.R.m_add_three_le_k; omega`. Take `⟨μ₀', c, hH, hc0, hc1, hmap⟩` from `Formalism.L2.SG.Pf.RootHaarLoc.locRootHaar D.R.k D.R.rS hk W.z W.z' hz hT hz' hT' p g₀ hg hZ`. Use `set K : ℝ≥0∞ := ENNReal.ofReal ((2 * D.host.ka / gg D / (2 * Real.pi)) ^ (rootPat p).card) with hK`. Establish `hu : IsUnit g₀.det` using `(Formalism.FourierDecayAlt.P.unitary_group_closed D.R.k D.R.rS).unit g₀ hg`. Distinguish the cases in `hK0 : K = 0`.
+
+It suffices to derive a contradiction. Establish `hka : 0 < 2 * D.host.ka / gg D / (2 * Real.pi)`. Establish `h1 : 0 < D.host.ka`. Unfold `Formalism.BasicNotions.Host.ka Formalism.BasicNotions.Host.v Formalism.BasicNotions.Host.rdE`. Establish `h : (0 : ℝ) < |(NumberField.discr D.host.E : ℝ)|` using `abs_pos.2 (by exact_mod_cast NumberField.discr_ne_zero D.host.E)`.
+
+Use `Real.rpow_pos_of_pos h ((1 : ℝ) / (Module.finrank ℚ D.host.E : ℝ))` as an intermediate fact. Check the signs of the components of the expression. Establish `h2 : 0 < gg D`. Unfold `gg`. Establish `a` using `(D.host.g_prime 0).pos`.
+
+Establish `b` using `(D.host.g_prime 1).pos`. Check the signs of the components of the expression. Check the signs of the components of the expression. Rewrite `hK0` using `[hK, ENNReal.ofReal_eq_zero]`. Conclude with `absurd hK0 (not_le.2 (pow_pos hka _))`.
+
+Establish `hKt : K ≠ ⊤` using `ENNReal.ofReal_ne_top`. Use `set μ₀ : Measure (Mt D.R.k D.R.rS) := (K * c⁻¹) • μ₀' with hμ₀`. Establish `hKc0 : K * c⁻¹ ≠ 0` using `mul_ne_zero hK0 (ENNReal.inv_ne_zero.2 hc1)`. Establish `hKc1 : K * c⁻¹ ≠ ⊤` using `ENNReal.mul_ne_top hKt (ENNReal.inv_ne_top.2 hc0)`. Establish `hH0 : Formalism.MainNotions.S.IsHaarOn (Formalism.MainNotions.S.Rset D.R.k D.R.rS g₀) μ₀` using `isHaarOn_smul' hH hKc0 hKc1`.
+
+Establish `hmap0 : μ₀.map (rootCoords D.R.k D.R.rS W.z' p) = K • volume`. Rewrite using `[hμ₀, Measure.map_smul, hmap, smul_smul, mul_assoc, ENNReal.inv_mul_cancel hc0 hc1, mul_one]`. Establish `hid : μ₀.map (fun x => fun i j => ((1 : MatKR D.R.k D.R.rS)⁻¹ * Matrix.of x * 1) i j) = μ₀`. Establish `: (fun x : Mt D.R.k D.R.rS => fun i j => ((1 : MatKR D.R.k D.R.rS)⁻¹ * Matrix.of x * 1) i j) = id`. Use function extensionality and compare the values at `x i j`.
+
+Simplify using the standard rewrite rules. Rewrite using `[this, Measure.map_id]`. Establish `hN1 : (1 : MatKR D.R.k D.R.rS) ∈ Nset D.R.k D.R.rS` using `(Formalism.FourierDecayAlt.P.unipotent_radical_closed D.R.k D.R.rS).one_mem`. Establish `hsub : Formalism.MainNotions.S.Rset D.R.k D.R.rS g₀ ⊆ UH (Hpk D.R.k D.R.rS)` using `fun x hx => hx.1.1`. Take `⟨ν, hν⟩` from `Formalism.L2.SG.Pf.QuotMeasExists.quotM_exists (PI.QuotSetU.UnitaryGroupMassFormula.unitary_hermitian_group D.R.k D.R.rS) (rset_matGroup hu) hsub hG hH0`.
+
+Use `⟨ν, p, μ₀, ⟨1, hN1, 1, hN1, g₀, by simp, hZ, μ₀, hH0.2.2.1, ?_, hid.symm⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hmap0]`. Rewrite using `[ENNReal.ofReal_one, one_smul]`. Conclude with `hν`.
+-/
 theorem rMeas_exact (D : D7) (W : LocW D.R.k D.R.rS) (hz : inWb D.R.k D.R.rS W.z) (hT : 0 < Tz D.R.k D.R.rS W.z)
     (hz' : inWb D.R.k D.R.rS W.z') (hT' : 0 < Tz D.R.k D.R.rS W.z')
     (hG : Formalism.MainNotions.S.IsHaarOn (UH (Hpk D.R.k D.R.rS)) W.μG) (p : Point ℂ (D.R.rS + 1)) (g₀ : MatKR D.R.k D.R.rS)
@@ -94,6 +125,9 @@ theorem rMeas_exact (D : D7) (W : LocW D.R.k D.R.rS) (hz : inWb D.R.k D.R.rS W.z
 
 variable {D : D7} {X : HidaSetting D} {θ : ℝ} (C : Choice X θ) (u u' : D.what₂.Word)
 
+/- English proof (translation)
+Introduce `w _ hrep τ`. Take `⟨_, _, h3, h4, h5, h6, h7, _⟩` from `hW τ`. Establish `hTu : 0 < Tr D u` using `Nat.cast_pos.2 (D.mem u).A.T_prime.pos`. Establish `hTu' : 0 < Tr D u'` using `Nat.cast_pos.2 (D.mem u').A.T_prime.pos`. Conclude with `rMeas_exact D (locW C u u' τ) h3 (by rw [h5]; exact hTu) h4 (by rw [h6]; exact hTu') h7 (ptLoc D τ w) (Formalism.L2.SG.Pf.JointAmplitudePoints.gamP C u u' w τ) (Formalism.L2.SG.Pf.LTL.trG_mem _ _ _ (C.isT τ).2.1 (C.isT τ).2.2.1 _) (Formalism.L2.SG.Pf.RelPtR.zhatO_gamP C u u' w hr …`.
+-/
 theorem rMeasExP_of_goodW (hW : ∀ τ, GoodW D τ u u' θ (locW C u u' τ)) : Formalism.L2.SG.Pf.JointAmplitudePoints.RMeasExP u u' C := by
   intro w _ hrep τ
   obtain ⟨_, _, h3, h4, h5, h6, h7, _⟩ := hW τ

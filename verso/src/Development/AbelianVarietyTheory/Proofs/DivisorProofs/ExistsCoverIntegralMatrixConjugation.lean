@@ -17,12 +17,18 @@ open GlobalTheory.FrameGlue.ModPTest
 
 variable {F : Type} [Field F] [NumberField F] {Y : Var F}
 
+/- English proof (translation)
+Use `⟨m, ?_, map_natCast _ _⟩` and prove the remaining obligations. Establish `h` using `RelEx.isUnit_natCast V z hm`. Rewrite `h` using `[← map_natCast (V.j.stalkMap z).hom]`. Conclude with `isUnit_of_map_unit _ _ h`.
+-/
 theorem unitAt_j_natCast (V : Cover Y) (z : V.G) {m : ℕ} (hm : m ≠ 0) : UnitAt (V.j z) (m : V.X.functionField) := by
   refine ⟨m, ?_, map_natCast _ _⟩
   have h := RelEx.isUnit_natCast V z hm
   rw [← map_natCast (V.j.stalkMap z).hom] at h
   exact isUnit_of_map_unit _ _ h
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(z ≫ V.j) _ ∈ U'`. Rewrite using `[← h]`. Conclude with `hU (x := spMap e.O.subtype _) trivial`.
+-/
 theorem j_below_mem (V : Cover Y) {v : HeightOneSpectrum (𝓞 F)} (e : TrueGeo.Ext v) (z : Sp (AlgebraicClosure F) ⟶ V.G)
     (yt : Sp e.O ⟶ V.X) (h : spMap e.O.subtype ≫ yt = z ≫ V.j) {U' : V.X.Opens} (hU : ⊤ ≤ yt ⁻¹ᵁ U') :
     V.j (below z) ∈ U' := by
@@ -30,6 +36,13 @@ theorem j_below_mem (V : Cover Y) {v : HeightOneSpectrum (𝓞 F)} (e : TrueGeo.
   rw [← h]
   exact hU (x := spMap e.O.subtype _) trivial
 
+/- English proof (translation)
+Establish `hu : ∀ z : V.G, UnitAt (V.j z) ((p : V.X.functionField) ^ k)` using `fun z => by`. Simplify using `using unitAt_j_natCast V z (pow_ne_zero k hp.ne_zero)`. Use `GlobalTheory.Mean4O.Cover.RegOverP.regAt_of_values_over F Y V p hp W hW U _ (fun z hz => ?_) (fun v hv e y hy z yt hzy hyt hU => ?_) x hx hxp` and prove the remaining obligations. Rewrite using `[div_eq_mul_inv]`. Conclude with `(h₁ z hz).mul (hu z).inv.regAt`.
+
+Establish `hz` using `j_below_mem V e z yt hyt hU`. Establish `hpos : 0 < e.w (p : AlgebraicClosure F) ^ k` using `pow_pos (e.w.pos (Nat.cast_ne_zero.2 hp.ne_zero)) k`. Establish `hv' : valAt (z ≫ V.j) ((p : V.X.functionField) ^ k) = (p : AlgebraicClosure F) ^ k`. Simplify using `using RelEx.valAt_natCast (z ≫ V.j) (p ^ k)`. Rewrite using `[valAt_div (y := z ≫ V.j) (h₁ _ hz) (hu _), hv', map_div₀, map_pow, div_le_one hpos]`.
+
+Conclude with `h₂ v hv e y hy z yt hzy hyt hU`.
+-/
 theorem regAt_div_pow (V : Cover Y) {p : ℕ} (hp : p.Prime) (k : ℕ) (W : Y.X.Opens) (hW : genericPoint Y.X ∈ W)
     (U : V.X.Opens) (f : V.X.functionField) (h₁ : ∀ z : V.G, V.j z ∈ U → RegAt (V.j z) f)
     (h₂ : ∀ v : HeightOneSpectrum (𝓞 F), resP v = p → ∀ (e : TrueGeo.Ext v) (y : AlgPt Y), below y.1 ∈ W →
@@ -49,12 +62,18 @@ theorem regAt_div_pow (V : Cover Y) {p : ℕ} (hp : p.Prime) (k : ℕ) (W : Y.X.
     rw [valAt_div (y := z ≫ V.j) (h₁ _ hz) (hu _), hv', map_div₀, map_pow, div_le_one hpos]
     exact h₂ v hv e y hy z yt hzy hyt hU
 
+/- English proof (translation)
+Use `⟨hd.ne_zero, h, fun i j => ?_⟩` and prove the remaining obligations. Use `regAt_inv_mul h hd (Q := 1) (fun i j => (one_mem (loc x).matrix : (1 : Matrix _ _ _) ∈ _) i j) i j` as an intermediate fact. Rewrite `this` using `[mul_one]`. Then use the resulting hypothesis.
+-/
 theorem fr_of_det {X : Scheme.{0}} [IsIntegral X] {x : X} {N : ℕ} {M : Matrix (Fin N) (Fin N) X.functionField}
     (h : ∀ i j, RegAt x (M i j)) (hd : UnitAt x M.det) : Fr (loc x) M := by
   refine ⟨hd.ne_zero, h, fun i j => ?_⟩
   have := regAt_inv_mul h hd (Q := 1) (fun i j => (one_mem (loc x).matrix : (1 : Matrix _ _ _) ∈ _) i j) i j
   rwa [mul_one] at this
 
+/- English proof (translation)
+Use `⟨Matrix.of fun i j => if j < i then B i j / h else if j = i then (B i i - d i) / h else 0, fun i j => ?_, fun i j hij => ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.of_apply] split_ifs with a b exacts [h₁ i j a, h₂ i, zero_mem _]`. Establish `hij' : j < i` using `hij`. Simplify using `[hij', mul_div_cancel₀ _ hh]`. Simplify using `[mul_div_cancel₀ _ hh]`.
+-/
 theorem triMod_of_div {K : Type} [Field K] {N : ℕ} {R : Subring K} {h : K} (hh : h ≠ 0) {B : Matrix (Fin N) (Fin N) K}
     {d : Fin N → K} (h₁ : ∀ i j, j < i → B i j / h ∈ R) (h₂ : ∀ i, (B i i - d i) / h ∈ R) : TriMod R h B d := by
   refine ⟨Matrix.of fun i j => if j < i then B i j / h else if j = i then (B i i - d i) / h else 0, fun i j => ?_,
@@ -70,6 +89,39 @@ end GlobalTheory.LatChain.CrossOfRel
 
 open GlobalTheory.FrameGlue.ModPTest GlobalTheory.LatChain.CrossOfRel in
 
+/- English proof (translation)
+Introduce `F _ _ Y C N A A' p n k hp hD hR`. Take `⟨hn, V, W, ι, U, M, M', c, c', P, Q, hW, hPQ, hint, H1, H2, H3, H4⟩` from `hR`. Establish `hη : V.j (genericPoint V.G) ⤳ genericPoint V.X` using `GlobalTheory.CoverGenPt.j_genericPoint_specializes F Y V`. Use `haveI : IsPreimmersion V.j :=`. Establish `h : IsPreimmersion (spMap (algebraMap (𝓞 F) F))` using `IsPreimmersion.of_isLocalization (nonZeroDivisors (𝓞 F))`.
+
+Use the proof step `MorphismProperty.of_isPullback (P := @IsPreimmersion) V.pb.flip h`. Establish `lift : ∀ u : V.G.functionFieldˣ, ∃ w : V.X.functionFieldˣ, SmallSec.fnMap V.j hη w = u` using `fun u => by`. Take `⟨w, hw⟩` from `SmallSec.fnMap_surjective V.j hη (u : V.G.functionField)`. Conclude with `⟨Units.mk0 w fun h => u.ne_zero (by rw [← hw, h, map_zero]), hw⟩`. Use `choose L hL using lift`.
+
+Establish `hmap : ∀ a b i, SmallSec.fnMap V.j hη ((L (c' a i) : V.X.functionField) / L (c b i)) = ((c' a i / c b i : V.G.functionFieldˣ) : V.G.functionField)`. Introduce `a b i`. Rewrite using `[map_div₀, hL, hL, Units.val_div_eq_div_val]`. Establish `hgen : ∀ a b i (z : V.G), V.j z ∈ U a → V.j z ∈ U b → RegAt (V.j z) ((L (c' a i) : V.X.functionField) / L (c b i))`. Introduce `a b i z ha hb`.
+
+Establish `h1` using `(H3 a i z ha).2`. Establish `h2` using `(H3 b i z hb).1`. Rewrite `h1` using `[hD]`. Rewrite using `[← SmallSec.regAt_fnMap_iff V.j hη, hmap, Units.val_div_eq_div_val, ← mul_div_mul_left _ _ (left_ne_zero_of_mul h2.ne_zero), div_eq_mul_inv]`. Conclude with `(h1.mul h2.inv).regAt`.
+
+Establish `hfr : ∀ a, ∀ x ∈ U a, Ov p x → Fr (loc x) (M a) ∧ Fr (loc x) (M' a)` using `fun a x hx hxp => ⟨fr_of_det (fun i j => ((H2 a x hx hxp).1 i j).1) (H2 a x hx hxp).2.1, fr_of_det (fun i j => ((H2 a x hx hxp).1 i j).2.1) (H2 a x hx hxp).2.2⟩`. Establish `key : ∀ a b, ∀ x ∈ U a, x ∈ U b → Ov p x → TriMod (loc x) ((p : V.X.functionField) ^ k) ((M' a)⁻¹ * P * M b) fun i => (L (c' a i) : V.X.functionField) / L (c b i)`. Introduce `a b x ha hb hx`. Establish `hnP : ((n : V.X.functionField) • P) ∈ (loc x).matrix` using `fun i j => ((H2 a x ha hx).1 i j).2.2`. Establish `hev` using `((((eventually_mem_matrix (hfr a x ha hx).2.2.2).and (eventually_mem_matrix (hfr b x hb hx).1.2.1)).and (eventually_mem_matrix hnP)).and (Filter.eventually_mem_set.2 ((U a).isOpen.mem_nhds ha))).and (Filter.eventually_mem_set.2 ((U b).isOpen.mem_nhds hb))`.
+
+Take `⟨O, hO, hOo, hxO⟩` from `eventually_nhds_iff.1 hev`. Set `O' : V.X.Opens` to `⟨O, hOo⟩`. Establish `hB : ∀ z : V.G, V.j z ∈ O' → ∀ i j, RegAt (V.j z) (((M' a)⁻¹ * P * M b) i j)`. Introduce `z hz`. Take `⟨⟨⟨⟨g1, g2⟩, g3⟩, -⟩, -⟩` from `hO _ hz`.
+
+Establish `hu` using `unitAt_j_natCast V z hn`. Establish `hP : P ∈ (loc (V.j z)).matrix` using `fun i j => by`. Use `hu.inv.regAt.mul (g3 i j)` as an intermediate fact. Rewrite `this` using `[Matrix.smul_apply, smul_eq_mul, inv_mul_cancel_left₀ hu.ne_zero]`. Then use the resulting hypothesis. Conclude with `mul_mem (mul_mem g1 hP) g2`.
+
+Use `triMod_of_div (pow_ne_zero k (RelEx.natCast_ne_zero_X V hp.ne_zero)) (fun i j hij => ?_) fun i => ?_` and prove the remaining obligations. Use `regAt_div_pow V hp k W hW O' _ (fun z hz => hB z hz i j) (fun v hv e y hy z yt hzy hyt hU => ?_) x hxO hx` and prove the remaining obligations. Conclude with `((H4 v hv e y hy z yt hzy hyt a fun q hq => (hO _ (hU hq)).1.2).2 b (fun q hq => (hO _ (hU hq)).2) i).1 j hij`. Use `regAt_div_pow V hp k W hW O' _ (fun z hz => regAt_sub (hB z hz i i) (hgen a b i z (hO _ hz).1.2 (hO _ hz).2)) (fun v hv e y hy z yt hzy hyt hU => ?_) x hxO hx` and prove the remaining obligations. Establish `hz` using `j_below_mem V e z yt hyt hU`.
+
+Establish `hu'` using `hgen a b i _ (hO _ hz).1.2 (hO _ hz).2`. Rewrite using `[valAt_sub (y := z ≫ V.j) (hB _ hz i i) hu', ← SmallSec.valAt_fnMap V.j hη z hu', hmap]`. Conclude with `((H4 v hv e y hy z yt hzy hyt a fun q hq => (hO _ (hU hq)).1.2).2 b (fun q hq => (hO _ (hU hq)).2) i).2`. Use `choose ch hch using H1`. Set `U₀ : V.X → V.X.Opens` to `fun x => if h : Ov p x then U (ch x h) else ⊥`.
+
+Establish `hU₀ : ∀ x, Ov p x → x ∈ U₀ x` using `fun x h => by`. Simplify using `only [U₀, dif_pos h]`. Conclude with `hch x h`. Establish `hov : ∀ x y, y ∈ U₀ x → Ov p x` using `fun x y hy => by`. Assume the negation of the conclusion as `h`.
+
+Simplify using `only [U₀, dif_neg h] at hy`. Conclude with `hy`. Use `⟨V, fun x => if h : Ov p x then M (ch x h) else 1, fun x => if h : Ov p x then M' (ch x h) else 1, fun x i => if h : Ov p x then L (c (ch x h) i) else 1, fun x i => if h : Ov p x then L (c' (ch x h) i) else 1, P, Q, hPQ, hint, fun x hx => ?_, fun i => ⟨⟨hη, W, U₀, hW, hU₀, fun x …` and prove the remaining obligations. Simplify using `only [dif_pos hx]`. Use `⟨(hfr _ x (hch x hx) hx).1, (hfr _ x (hch x hx) hx).2, ?_⟩` and prove the remaining obligations.
+
+Use `filter_upwards [(U (ch x hx)).isOpen.mem_nhds (hch x hx)] with z hz hzp`. Simplify using `only [dif_pos hzp]`. Conclude with `⟨key _ _ z hz (hch z hzp) hzp, key _ _ z (hch z hzp) hz hzp⟩`. Establish `hx` using `hov x _ hz`. Simplify using `only [U₀, dif_pos hx] at hz ⊢`.
+
+Rewrite using `[hL]`. Conclude with `(H3 _ i z hz).1`. Introduce `v hv e y hy z yt hzy hyt x hU`. Establish `hx` using `hov x _ (j_below_mem V e z yt hyt hU)`. Simplify using `only [U₀, dif_pos hx] at hU ⊢`.
+
+Rewrite using `[hL]`. Conclude with `((H4 v hv e y hy z yt hzy hyt _ hU).1 i).1`. Establish `hx` using `hov x _ hz`. Simplify using `only [U₀, dif_pos hx] at hz ⊢`. Rewrite using `[hL]`.
+
+Conclude with `(H3 _ i z hz).2`. Introduce `v hv e y hy z yt hzy hyt x hU`. Establish `hx` using `hov x _ (j_below_mem V e z yt hyt hU)`. Simplify using `only [U₀, dif_pos hx] at hU ⊢`. Rewrite using `[hL]`.
+
+Conclude with `((H4 v hv e y hy z yt hzy hyt _ hU).1 i).2`.
+-/
 theorem GlobalTheory.LatChain.exists_cross_of_relFlag : ∀ (F : Type) [Field F] [NumberField F] (Y : Var F) (C : CxSt F) (N : ℕ) (A A' : Fin N → Adl C Y) (p n k : ℕ), p.Prime → (∀ i, (A' i).D = (A i).D) → RelFlag A A' p n k → ∃ (V : Cover Y) (M M' : V.X → Matrix (Fin N) (Fin N) V.X.functionField) (c c' : V.X → Fin N → V.X.functionFieldˣ) (P Q : Matrix (Fin N) (Fin N) V.X.functionField), P * Q = 1 ∧ (∀ i j, IsIntegral ℤ ((n : V.X.functionField) * P i j) ∧ IsIntegral ℤ ((n : V.X.functionField) * Q i j)) ∧ Cross p k M M' c c' P ∧ ∀ i, Reads V p (A i) (fun x => c x i) ∧ Reads V p (A' i) fun x => c' x i := by
   intro F _ _ Y C N A A' p n k hp hD hR
   obtain ⟨hn, V, W, ι, U, M, M', c, c', P, Q, hW, hPQ, hint, H1, H2, H3, H4⟩ := hR

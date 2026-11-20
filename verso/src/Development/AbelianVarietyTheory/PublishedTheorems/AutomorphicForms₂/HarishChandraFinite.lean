@@ -61,6 +61,11 @@ namespace AutFin
 
 variable {D : D7} (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)) (V : HSp D)
 
+/- English proof (translation)
+Establish `hd : IsUnit P.det` using `(Matrix.isUnit_iff_isUnit_det P).1 hP`. Establish `hk : (Formalism.REAL.toMK k)ᴴ * Formalism.REAL.Jm e * Formalism.REAL.toMK k = Formalism.REAL.Jm e` using `(k : Formalism.REAL.UJ e).2`. Establish `h1 : (P⁻¹)ᴴ * Pᴴ = 1` using `by rw [← conjTranspose_mul, mul_nonsing_inv _ hd, conjTranspose_one]`. Express the relevant statement in the definitionally equal form `(P⁻¹ * Formalism.REAL.toMK k * P)ᴴ * G * (P⁻¹ * Formalism.REAL.toMK k * P) = G`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[← h]`. Simplify using `only [conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = G := by rw [h1, mul_nonsing_inv _ hd, Matrix.mul_one, Matrix.mul_one, hk, h]`.
+-/
 theorem conj_mem_UH {n : ℕ} {e : Fin n → Bool} {P G : Matrix (Fin n) (Fin n) ℂ} (hP : IsUnit P)
     (h : Pᴴ * Formalism.REAL.Jm e * P = G) (k : Formalism.REAL.KG e) :
     P⁻¹ * Formalism.REAL.toMK k * P ∈ Formalism.QuantumDeterminants.UH G := by
@@ -75,6 +80,13 @@ theorem conj_mem_UH {n : ℕ} {e : Fin n → Bool} {P G : Matrix (Fin n) (Fin n)
 
 open Classical in
 
+/- English proof (translation)
+Take `⟨g, hg, h1⟩` from `((GlobalTheory.SmoothForms.RealPts.realPoints D).2 θ hθ V).2.1 (Function.update (fun _ => 1) τ (P⁻¹ * Formalism.REAL.toMK k * P)) (fun τ' => by`. Distinguish the cases in `c : τ' = τ`. Substitute `c` using the available equality. Rewrite using `[Function.update_self]`. Conclude with `conj_mem_UH hP h k`.
+
+Rewrite using `[Function.update_of_ne c]`. Express the relevant statement in the definitionally equal form `(1 : Matrix _ _ ℂ)ᴴ * _ * 1 = _`. Rewrite using `[conjTranspose_one, Matrix.one_mul, Matrix.mul_one])`. Establish `hex : ∃ x, IsAtTau θ V τ (P⁻¹ * Formalism.REAL.toMK k * P) x` using `⟨g, hg, by rw [h1, Function.update_self], fun τ' c => by rw [h1, Function.update_of_ne c]⟩`. Rewrite using `[kAt, atTau, dif_pos hex]`.
+
+Conclude with `hex.choose_spec`.
+-/
 theorem isAtTau_kAt (hθ : IsInfFam θ) (τ : D.what₂.Tau) {e : Fin V.rank → Bool}
     {P : Matrix (Fin V.rank) (Fin V.rank) ℂ} (hP : IsUnit P) (h : Pᴴ * Formalism.REAL.Jm e * P = gramAt D V τ)
     (k : Formalism.REAL.KG e) : IsAtTau θ V τ (P⁻¹ * Formalism.REAL.toMK k * P) (kAt θ V τ e P k) := by
@@ -90,11 +102,25 @@ theorem isAtTau_kAt (hθ : IsInfFam θ) (τ : D.what₂.Tau) {e : Fin V.rank →
   rw [kAt, atTau, dif_pos hex]
   exact hex.choose_spec
 
+/- English proof (translation)
+Introduce `x` and use `Submodule.subset_span ⟨(LinearMap.proj x).comp T, w, funext fun k => (congrFun (hT k w) x).symm⟩`.
+-/
 theorem hasTypeAt_of_map (τ : D.what₂.Tau) (e : Fin V.rank → Bool) (P : Matrix (Fin V.rank) (Fin V.rank) ℂ) {W : Type}
     [AddCommGroup W] [Module ℂ W] (ρ : Representation ℂ (Formalism.REAL.KG e) W) (T : W →ₗ[ℂ] (GA D V → ℂ))
     (hT : ∀ k w, T (ρ k w) = rTr V (kAt θ V τ e P k) (T w)) (w : W) : HasTypeAt θ V τ e P ρ (T w) := fun x =>
   Submodule.subset_span ⟨(LinearMap.proj x).comp T, w, funext fun k => (congrFun (hT k w) x).symm⟩
 
+/- English proof (translation)
+Establish `key : ∀ τ, ∃ (e : Fin V.rank → Bool) (P : Matrix (Fin V.rank) (Fin V.rank) ℂ), IsUnit P ∧ Pᴴ * Formalism.REAL.Jm e * P = gramAt D V τ`. Introduce `τ`. Take `⟨hpq, ⟨A, hA⟩, hB⟩` from `GlobalTheory.Mem.SignatureFactor.exists_factor _ _ _ _ (hV (tauE D τ))`. Take `⟨B, hAB, -⟩` from `hB A hA`. Set `s` to `(finSumFinEquiv.trans (finCongr hpq)).symm`.
+
+Establish `hJ : Formalism.REAL.Jm (fun i => (s i).isLeft) = (Formalism.UG.Jpq _ _).submatrix s s`. Use extensionality with `i j`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Rewrite using `[Formalism.REAL.Jm, diagonal_apply_eq, submatrix_apply]`.
+
+Apply the tactic sequence `rcases s i with a | a <;> simp [Formalism.UG.Jpq]`. Establish `hs : s i ≠ s j` using `fun h => hij (s.injective h)`. Rewrite using `[Formalism.REAL.Jm, diagonal_apply_ne _ hij, submatrix_apply]`. Use `revert hs`. Apply the tactic sequence `rcases s i with a | a <;> rcases s j with b | b <;> simp +contextual [Formalism.UG.Jpq, Matrix.one_apply]`.
+
+Use `⟨fun i => (s i).isLeft, A.submatrix s id, ?_, ?_⟩` and prove the remaining obligations. Use `IsUnit.of_mul_eq_one (B.submatrix id s) ?_` and prove the remaining obligations. Rewrite using `[← submatrix_mul A B s id s Function.bijective_id, hAB, submatrix_one_equiv]`. Rewrite using `[hJ, conjTranspose_submatrix, submatrix_mul_equiv, submatrix_mul_equiv, hA]`. Both sides reduce to the same expression.
+
+Use `choose ε fr h using key`. Conclude with `⟨ε, fr, h⟩`.
+-/
 theorem exists_isFrameFam (hV : V.SigOK) : ∃ ε fr, IsFrameFam V ε fr := by
   have key : ∀ τ, ∃ (e : Fin V.rank → Bool) (P : Matrix (Fin V.rank) (Fin V.rank) ℂ),
       IsUnit P ∧ Pᴴ * Formalism.REAL.Jm e * P = gramAt D V τ := by
@@ -120,6 +146,11 @@ theorem exists_isFrameFam (hV : V.SigOK) : ∃ ε fr, IsFrameFam V ε fr := by
   choose ε fr h using key
   exact ⟨ε, fr, h⟩
 
+/- English proof (translation)
+Use `⟨isAutFunSm_const θ V a, fun _ _ _ _ => rfl, fun τ x => Submodule.subset_span ⟨LinearMap.id, a, rfl⟩, fun τ k => ?_⟩` and prove the remaining obligations. Rewrite using `[zero_smul, gelf]`. Use `Finset.sum_eq_zero fun idx _ => ?_` and prove the remaining obligations. Rewrite using `[List.ofFn_succ, List.foldr_cons]`. Take `⟨b, hb⟩` from `foldr_const V (List.ofFn fun i : Fin k => RderC θ V τ (Matrix.single (idx i.succ) (idx (i.succ + 1)) 1)) (fun f hf c₀ => by`.
+
+Take `⟨i, rfl⟩` from `List.mem_ofFn.1 hf`. Conclude with `⟨0, RderC_const θ V τ _ c₀⟩) a`. Rewrite using `[hb, RderC_const]`. Both sides reduce to the same expression.
+-/
 theorem const_mem_forms (U : Subgroup (GA D V)) (ε : D.what₂.Tau → Fin V.rank → Bool)
     (fr : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ) (a : ℂ) :
     (fun _ => a) ∈ forms θ V U ε fr (fun τ => Representation.trivial ℂ (Formalism.REAL.KG (ε τ)) ℂ) (fun _ _ => 0) := by
@@ -135,6 +166,9 @@ theorem const_mem_forms (U : Subgroup (GA D V)) (ε : D.what₂.Tau → Fin V.ra
   rw [hb, RderC_const]
   rfl
 
+/- English proof (translation)
+Introduce `ℓ w` and use `(continuous_const : Continuous fun _ : K => ℓ w)`.
+-/
 theorem isContRep_trivial {K : Type} [Group K] [TopologicalSpace K] : IsContRep (Representation.trivial ℂ K ℂ) :=
   fun ℓ w => (continuous_const : Continuous fun _ : K => ℓ w)
 

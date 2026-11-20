@@ -9,6 +9,11 @@ namespace Formalism.HermitianLattices.Ext.L3.MeanB
 
 variable {K F : Type} [Field K] [NumberField K] [StarRing K] [Field F] [NumberField F] [Algebra F K]
 
+/- English proof (translation)
+Take `⟨P, hP⟩` from `Ideal.exists_maximal (𝓞 K)`. Take `⟨θ, t, e, h⟩` from `hK.2.2 P hP`. Use `⟨algebraMap (𝓞 K) K θ, fun h' => h ?_⟩` and prove the remaining obligations. Rewrite `e` using `[h']`. Establish `: t = θ` using `RingOfIntegers.coe_injective e`.
+
+Rewrite using `[this, sub_self]`. Conclude with `P.zero_mem`.
+-/
 theorem exists_star_ne (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) : ∃ θ : K, star θ ≠ θ := by
   obtain ⟨P, hP⟩ := Ideal.exists_maximal (𝓞 K)
   obtain ⟨θ, t, e, h⟩ := hK.2.2 P hP
@@ -17,9 +22,27 @@ theorem exists_star_ne (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) : �
   have : t = θ := RingOfIntegers.coe_injective e
   rw [this, sub_self]; exact P.zero_mem
 
+/- English proof (translation)
+The claim follows from `(hF _).2 ⟨a, rfl⟩`.
+-/
 theorem star_algebraMap (hF : IsFixF K F) (a : F) : star (algebraMap F K a) = algebraMap F K a :=
   (hF _).2 ⟨a, rfl⟩
 
+/- English proof (translation)
+Take `⟨θ, hθ⟩` from `exists_star_ne hK`. Use `set δ : K := θ - star θ with hδ`. Establish `hδ0 : δ ≠ 0` using `fun h => hθ (sub_eq_zero.1 h).symm`. Establish `hsδ : star δ = -δ` using `by rw [hδ, star_sub, star_star]; ring`. Establish `h2 : (2 : K) ≠ 0` using `two_ne_zero`.
+
+Establish `hli : LinearIndependent F ![(1 : K), δ]`. Rewrite using `[LinearIndependent.pair_iff]`. Introduce `s t e`. Rewrite `e` using `[Algebra.smul_def, Algebra.smul_def, mul_one]`. Establish `e'` using `congrArg star e`.
+
+Rewrite `e'` using `[star_add, star_mul', star_algebraMap hF, star_algebraMap hF, hsδ, star_zero]`. Establish `hs : algebraMap F K s = 0`. Establish `: 2 * algebraMap F K s = 0` using `by linear_combination e + e'`. Conclude with `(mul_eq_zero.1 this).resolve_left h2`. Establish `ht : algebraMap F K t = 0`.
+
+Rewrite `e` using `[hs, zero_add]`. Conclude with `(mul_eq_zero.1 e).resolve_right hδ0`. Conclude with `⟨(map_eq_zero _).1 hs, (map_eq_zero _).1 ht⟩`. Establish `hsp : ⊤ ≤ Submodule.span F (Set.range ![(1 : K), δ])`. Introduce `a _`.
+
+Take `⟨f1, hf1⟩` from `(hF ((a + star a) / 2)).1 (by`. Rewrite using `[star_div₀, star_add, star_star, star_ofNat, add_comm])`. Take `⟨f2, hf2⟩` from `(hF ((a - star a) / (2 * δ))).1 (by`. Rewrite using `[star_div₀, star_sub, star_star, star_mul', star_ofNat, hsδ]`. Clear the denominators using the available nonvanishing facts.
+
+Use the proof step `ring)`. Establish `: Set.range ![(1 : K), δ] = {1, δ}`. Simplify using `[Matrix.range_cons, Set.pair_comm]`. Rewrite using `[this, Submodule.mem_span_pair]`. Use `⟨f1, f2, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Algebra.smul_def, Algebra.smul_def, hf1, hf2]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Use `finrank_eq_card_basis (Basis.mk hli hsp)` as an intermediate fact. Simplify using `using this`.
+-/
 theorem finrank_eq_two (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F) : finrank F K = 2 := by
   obtain ⟨θ, hθ⟩ := exists_star_ne hK
   set δ : K := θ - star θ with hδ
@@ -57,12 +80,40 @@ theorem finrank_eq_two (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF 
   have := finrank_eq_card_basis (Basis.mk hli hsp)
   simpa using this
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem algebraMap_comp (a : 𝓞 F) :
     algebraMap (𝓞 K) K (algebraMap (𝓞 F) (𝓞 K) a) = algebraMap F K (a : F) := rfl
 
 variable {V : Type} [AddCommGroup V] [Module K V] [FiniteDimensional K V] [Module (𝓞 K) V]
   [IsScalarTower (𝓞 K) K V]
 
+/- English proof (translation)
+Set `_ : Module F V` to `Module.compHom V (algebraMap F K)`. Establish `t1 : IsScalarTower F K V` using `⟨fun a b v => by`. Express the relevant statement in the definitionally equal form `(a • b) • v = (algebraMap F K a) • (b • v)`. Rewrite using `[Algebra.smul_def, mul_smul]⟩`. Set `_ : Module (𝓞 F) V` to `Module.compHom V (algebraMap (𝓞 F) (𝓞 K))`.
+
+Establish `t2 : IsScalarTower (𝓞 F) (𝓞 K) V` using `⟨fun a b v => by`. Express the relevant statement in the definitionally equal form `(a • b) • v = (algebraMap (𝓞 F) (𝓞 K) a) • (b • v)`. Rewrite using `[Algebra.smul_def, mul_smul]⟩`. Establish `t3 : IsScalarTower (𝓞 F) F V` using `⟨fun a b v => by`. Express the relevant statement in the definitionally equal form `(algebraMap F K (a • b)) • v = (algebraMap (𝓞 F) (𝓞 K) a) • ((algebraMap F K b) • v)`.
+
+Rewrite using `[← algebraMap_smul K (algebraMap (𝓞 F) (𝓞 K) a), algebraMap_comp, Algebra.smul_def, map_mul, mul_smul]⟩`. Establish `: FiniteDimensional F V` using `FiniteDimensional.trans F K V`. Establish `hrank : finrank F V = 2 * finrank K V`. Rewrite using `[← finrank_mul_finrank F K V, finrank_eq_two hK hF]`. Set `M : Submodule (𝓞 F) V` to `L.restrictScalars (𝓞 F)`.
+
+Set `e : ↥M ≃ₗ[𝓞 F] ↥L` to `(Submodule.restrictScalarsEquiv (𝓞 F) (𝓞 K) V L).restrictScalars (𝓞 F)`. Establish `hfg : M.FG`. Establish `: Module.Finite (𝓞 K) ↥L` using `Module.Finite.iff_fg.2 hL.fg`. Establish `: Module.Finite (𝓞 F) ↥L` using `Module.Finite.trans (𝓞 K) ↥L`. Conclude with `Module.Finite.iff_fg.1 (Module.Finite.equiv e.symm)`.
+
+Establish `hspan : Submodule.span F (M : Set V) = ⊤`. Establish `key : ∀ (a : K), ∀ w ∈ Submodule.span F (M : Set V), a • w ∈ Submodule.span F (M : Set V)`. Introduce `a w hw`. Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem l hl`.
+
+Take `⟨d, hd, hint⟩` from `((IsFractionRing.isAlgebraic_iff ℤ ℚ K).2 (Algebra.IsAlgebraic.isAlgebraic (R := ℚ) a)).exists_integral_multiple`. Set `z : 𝓞 K` to `⟨d • a, hint⟩`. Establish `hz : algebraMap (𝓞 K) K z = d • a` using `rfl`. Establish `hd' : (d : F) ≠ 0` using `Int.cast_ne_zero.2 hd`. Establish `: a • l = ((d : F)⁻¹) • (z • l)`.
+
+Rewrite using `[← algebraMap_smul K z l, hz, ← algebraMap_smul K ((d : F)⁻¹), smul_smul, map_inv₀, map_intCast, zsmul_eq_mul, ← mul_assoc, inv_mul_cancel₀ (Int.cast_ne_zero.2 hd), one_mul]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span (L.smul_mem z hl))`. Consider the case `zero => rw [smul_zero]`. Conclude with `zero_mem _`.
+
+Consider the case `add x y _ _ hx hy => rw [smul_add]`. Conclude with `add_mem hx hy`. Consider the case `smul f x _ hx => rw [smul_comm]`. Conclude with `Submodule.smul_mem _ _ hx`. Rewrite using `[eq_top_iff]`.
+
+Introduce `v hv0`. Use `clear hv0`. Establish `hv : v ∈ Submodule.span K (L : Set V)` using `hL.span_eq_top ▸ Submodule.mem_top`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem l hl => exact Submodule.subset_span hl`.
+
+Consider the case `zero => exact zero_mem _`. Consider the case `add x y _ _ hx hy => exact add_mem hx hy`. Consider the case `smul a x _ hx => exact key a x hx`. Establish `main` using `MeanA.card_quot_pow_smul_top (F := F) M hfg hspan h𝔭 k`. Establish `hQ : Nat.card (𝓞 F ⧸ 𝔭 ^ k) = Ideal.absNorm 𝔭 ^ k`.
+
+Rewrite using `[← map_pow, Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Establish `hmap : (𝔭 ^ k • ⊤ : Submodule (𝓞 F) ↥M).map (e : ↥M →ₗ[𝓞 F] ↥L) = ((extP K 𝔭) ^ k • ⊤ : Submodule (𝓞 K) ↥L).restrictScalars (𝓞 F)`. Rewrite using `[Submodule.map_smul'', Submodule.map_top, LinearEquiv.range, extP, ← Ideal.map_pow, Ideal.smul_restrictScalars, Submodule.restrictScalars_top]`. Establish `e1` using `Submodule.Quotient.equiv _ _ e hmap`. Establish `e2` using `Submodule.Quotient.restrictScalarsEquiv (𝓞 F) ((extP K 𝔭) ^ k • ⊤ : Submodule (𝓞 K) ↥L)`.
+
+Rewrite using `[← Nat.card_congr e2.toEquiv, ← Nat.card_congr e1.toEquiv, main, hQ, hrank, ← pow_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem card_quot_extP (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F) {L : Submodule (𝓞 K) V}
     (hL : Submodule.IsLattice K L) {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) (k : ℕ) :
     Nat.card (↥L ⧸ ((extP K 𝔭) ^ k • ⊤ : Submodule (𝓞 K) ↥L)) =
@@ -128,9 +179,19 @@ theorem card_quot_extP (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF 
   rw [← Nat.card_congr e2.toEquiv, ← Nat.card_congr e1.toEquiv, main, hQ, hrank, ← pow_mul]
   congr 1; ring
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨star (algebraMap (𝓞 K) K a), map_isIntegral_int (starRingEnd K) (RingOfIntegers.isIntegral_coe a)⟩, rfl⟩`.
+-/
 theorem exists_star_int (a : 𝓞 K) : ∃ a' : 𝓞 K, algebraMap (𝓞 K) K a' = star (algebraMap (𝓞 K) K a) :=
   ⟨⟨star (algebraMap (𝓞 K) K a), map_isIntegral_int (starRingEnd K) (RingOfIntegers.isIntegral_coe a)⟩, rfl⟩
 
+/- English proof (translation)
+Rewrite `hz`, the goal using `[extP, ← Ideal.map_pow, Ideal.map]`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨t, ht, rfl⟩` from `hx`. Conclude with `⟨_, Ideal.subset_span ⟨t, ht, rfl⟩, by rw [algebraMap_comp, star_algebraMap hF]⟩`.
+
+Consider the case `zero => exact ⟨0, zero_mem _, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨x', hx', ex⟩` from `hx`. Take `⟨y', hy', ey⟩` from `hy`. Conclude with `⟨x' + y', add_mem hx' hy', by rw [map_add, map_add, star_add, ex, ey]⟩`.
+
+Consider the case `smul a x _ hx`. Take `⟨x', hx', ex⟩` from `hx`. Take `⟨a', ea⟩` from `exists_star_int a`. Conclude with `⟨a' * x', Ideal.mul_mem_left _ _ hx', by`. Rewrite using `[smul_eq_mul, map_mul, map_mul, star_mul', ex, ea]⟩`.
+-/
 theorem star_mem_extP (hF : IsFixF K F) (𝔭 : Ideal (𝓞 F)) (k : ℕ) {z : 𝓞 K} (hz : z ∈ extP K 𝔭 ^ k) :
     ∃ z' ∈ extP K 𝔭 ^ k, algebraMap (𝓞 K) K z' = star (algebraMap (𝓞 K) K z) := by
   rw [extP, ← Ideal.map_pow, Ideal.map] at hz ⊢
@@ -149,10 +210,20 @@ theorem star_mem_extP (hF : IsFixF K F) (𝔭 : Ideal (𝓞 F)) (k : ℕ) {z : �
     exact ⟨a' * x', Ideal.mul_mem_left _ _ hx', by
       rw [smul_eq_mul, map_mul, map_mul, star_mul', ex, ea]⟩
 
+/- English proof (translation)
+Rewrite using `[extP, ← Ideal.map_pow, Ideal.comap_map_eq_self_of_faithfullyFlat]`.
+-/
 theorem comap_extP_pow (𝔭 : Ideal (𝓞 F)) (k : ℕ) :
     (extP K 𝔭 ^ k).comap (algebraMap (𝓞 F) (𝓞 K)) = 𝔭 ^ k := by
   rw [extP, ← Ideal.map_pow, Ideal.comap_map_eq_self_of_faithfullyFlat]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨t, ht, z, hz, e⟩`. Establish `: z = algebraMap (𝓞 F) (𝓞 K) (t * (a - b))`. Apply `RingOfIntegers.coe_injective` to reduce the goal to its premises. Rewrite using `[e, algebraMap_comp]`.
+
+Simplify using the standard rewrite rules. Rewrite `hz` using `[this, ← Ideal.mem_comap, comap_extP_pow]`. Conclude with `MeanA.mem_pow_of_mul_mem h𝔭 ht hz`. Introduce `h`. Use `⟨1, fun h1 => h𝔭.ne_top ((Ideal.eq_top_iff_one _).2 h1), algebraMap (𝓞 F) (𝓞 K) (a - b), ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← Ideal.mem_comap, comap_extP_pow]`. Conclude with `h`. Rewrite using `[algebraMap_comp]`. Simplify using the standard rewrite rules.
+-/
 theorem congrP_algebraMap_iff_sub_mem {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) (k : ℕ) (a b : 𝓞 F) :
     CongrP (K := K) 𝔭 k (algebraMap F K (a : F)) (algebraMap F K (b : F)) ↔ a - b ∈ 𝔭 ^ k := by
   constructor
@@ -172,6 +243,11 @@ section form
 
 variable {h : V →ₗ⋆[K] V →ₗ[K] K} {L : Submodule (𝓞 K) V}
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `(hF (h y y)).1 (hs.eq y y)`. Take `⟨z, hz⟩` from `Submodule.mem_one.1 (hLi y y.2 y y.2)`. Establish `hint : IsIntegral ℤ a`. Rewrite using `[← isIntegral_algebraMap_iff (algebraMap F K).injective, ha, ← hz]`. Conclude with `RingOfIntegers.isIntegral_coe z`.
+
+Conclude with `⟨⟨a, hint⟩, ha.symm⟩`.
+-/
 theorem exists_val (hF : IsFixF K F) (hs : h.IsSymm) (hLi : Formalism.HermitianLatticesTheory.IsIntegralLat h L) (y : ↥L) :
     ∃ n : 𝓞 F, h (y : V) (y : V) = algebraMap F K (n : F) := by
   obtain ⟨a, ha⟩ := (hF (h y y)).1 (hs.eq y y)
@@ -181,6 +257,11 @@ theorem exists_val (hF : IsFixF K F) (hs : h.IsSymm) (hLi : Formalism.HermitianL
     exact RingOfIntegers.isIntegral_coe z
   exact ⟨⟨a, hint⟩, ha.symm⟩
 
+/- English proof (translation)
+Proceed by induction on `hw using Submodule.smul_induction_on' with`. Consider the case `smul a ha v _`. Take `⟨c, hc⟩` from `Submodule.mem_one.1 (hLi u u.2 v v.2)`. Use `⟨a * c, Ideal.mul_mem_right _ _ ha, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, hc, Submodule.coe_smul, ← algebraMap_smul K a (v : V), map_smul, smul_eq_mul]`.
+
+Consider the case `add a _ b _ ha hb`. Take `⟨x', hx', ex⟩` from `ha`. Take `⟨y', hy', ey⟩` from `hb`. Conclude with `⟨x' + y', add_mem hx' hy', by rw [map_add, ex, ey, Submodule.coe_add, map_add]⟩`.
+-/
 theorem form_mem_right (hLi : Formalism.HermitianLatticesTheory.IsIntegralLat h L) (𝔭 : Ideal (𝓞 F)) (k : ℕ) (u : ↥L) {w : ↥L}
     (hw : w ∈ ((extP K 𝔭) ^ k • ⊤ : Submodule (𝓞 K) ↥L)) :
     ∃ z ∈ extP K 𝔭 ^ k, algebraMap (𝓞 K) K z = h (u : V) (w : V) := by
@@ -194,6 +275,13 @@ theorem form_mem_right (hLi : Formalism.HermitianLatticesTheory.IsIntegralLat h 
     obtain ⟨y', hy', ey⟩ := hb
     exact ⟨x' + y', add_mem hx' hy', by rw [map_add, ex, ey, Submodule.coe_add, map_add]⟩
 
+/- English proof (translation)
+Take `⟨z1, hz1, e1⟩` from `form_mem_right hLi 𝔭 k y' hy`. Take `⟨z2, hz2, e2⟩` from `form_mem_right hLi 𝔭 k (y - y') hy`. Take `⟨z3, hz3, e3⟩` from `star_mem_extP hF 𝔭 k hz1`. Rewrite using `[← comap_extP_pow (K := K), Ideal.mem_comap]`. Establish `: algebraMap (𝓞 F) (𝓞 K) (n - n') = z1 + z2 + z3`.
+
+Apply `RingOfIntegers.coe_injective` to reduce the goal to its premises. Establish `h3 : star (h (y' : V) ((y - y' : ↥L) : V)) = h ((y - y' : ↥L) : V) (y' : V)` using `hs.eq _ _`. Rewrite using `[algebraMap_comp, map_add, map_add, e1, e2, e3, e1, h3]`. Establish `: algebraMap F K ((n - n' : 𝓞 F) : F) = algebraMap F K (n : F) - algebraMap F K (n' : F)`. Simplify using the standard rewrite rules.
+
+Rewrite using `[this, ← e, ← e']`. Simplify using `only [Submodule.coe_sub, map_sub, LinearMap.sub_apply]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `add_mem (add_mem hz1 hz2) hz3`.
+-/
 theorem val_congr (hF : IsFixF K F) (hs : h.IsSymm) (hLi : Formalism.HermitianLatticesTheory.IsIntegralLat h L)
     (𝔭 : Ideal (𝓞 F)) (k : ℕ) {y y' : ↥L} {n n' : 𝓞 F}
     (hy : y - y' ∈ ((extP K 𝔭) ^ k • ⊤ : Submodule (𝓞 K) ↥L))

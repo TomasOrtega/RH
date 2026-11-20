@@ -21,6 +21,9 @@ open scoped TensorProduct
 
 namespace GlobalTheory.PrimeDivDim
 
+/- English proof (translation)
+Take `⟨f, hfq, hf0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hq0`. Use `Ideal.height_le_one_of_isPrincipal_of_mem_minimalPrimes (Ideal.span {f}) q ⟨⟨inferInstance, (Ideal.span_singleton_le_iff_mem _).2 hfq⟩, fun q' hq' hle => ?_⟩` and prove the remaining obligations. Break down `hmin q' hq'.1 hle with h | h` into its components or cases. Conclude with `absurd (h ▸ (Ideal.span_singleton_le_iff_mem _).1 hq'.2) (by simpa using hf0)`. Conclude with `h.ge`.
+-/
 theorem height_le_one_of_forall_le {A : Type} [CommRing A] [IsDomain A] [IsNoetherianRing A]
     (q : Ideal A) [q.IsPrime] (hq0 : q ≠ ⊥)
     (hmin : ∀ q' : Ideal A, q'.IsPrime → q' ≤ q → q' = ⊥ ∨ q' = q) : q.height ≤ 1 := by
@@ -33,6 +36,19 @@ theorem height_le_one_of_forall_le {A : Type} [CommRing A] [IsDomain A] [IsNoeth
 
 attribute [local instance] Algebra.TensorProduct.rightAlgebra in
 
+/- English proof (translation)
+Establish `hint' : ∀ n : ℤ, algebraMap ℤ A n ∈ q → n = 0` using `fun n h => hint n (by simpa using h)`. Establish `: FaithfulSMul ℤ A` using `(faithfulSMul_iff_algebraMap_injective _ _).2 ((injective_iff_map_eq_zero _).2 fun n hn => hint' n (hn ▸ q.zero_mem))`. Establish `: FaithfulSMul ℤ (A ⧸ q)` using `(faithfulSMul_iff_algebraMap_injective _ _).2 ((injective_iff_map_eq_zero _).2 fun n hn => hint' n (by`. Rewrite `hn` using `[IsScalarTower.algebraMap_apply ℤ A (A ⧸ q), Ideal.Quotient.algebraMap_eq, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hn))`.
+
+Establish `: Algebra.FiniteType ℤ (A ⧸ q)` using `Algebra.FiniteType.of_surjective (Ideal.Quotient.mkₐ ℤ q) Ideal.Quotient.mk_surjective`. Use `IsLocalization.tensorRight (S := A) ℚ (nonZeroDivisors ℤ)` as an intermediate fact. Establish `hle : Algebra.algebraMapSubmonoid A (nonZeroDivisors ℤ) ≤ nonZeroDivisors A` using `Submonoid.map_le_iff_le_comap.mpr fun x hx ↦ mem_nonZeroDivisors_of_ne_zero ((map_ne_zero_iff _ (FaithfulSMul.algebraMap_injective ℤ A)).2 (nonZeroDivisors.ne_zero hx))`. Establish `: IsDomain (ℚ ⊗[ℤ] A)` using `IsLocalization.isDomain_of_le_nonZeroDivisors _ hle`. Establish `hdisj : Disjoint (Algebra.algebraMapSubmonoid A (nonZeroDivisors ℤ) : Set A) q`.
+
+Rewrite using `[Set.disjoint_left]`. Introduce and unpack `_ ⟨v, hv, rfl⟩ h`. Conclude with `nonZeroDivisors.ne_zero hv (hint' v h)`. Establish `hP : (q.map (algebraMap A (ℚ ⊗[ℤ] A))).IsPrime` using `IsLocalization.isPrime_of_isPrime_disjoint _ _ q inferInstance hdisj`. Establish `hh` using `IsLocalization.height_map_of_disjoint (Algebra.algebraMapSubmonoid A (nonZeroDivisors ℤ)) (S := ℚ ⊗[ℤ] A) q hdisj`.
+
+Establish `hS : ringKrullDim (ℚ ⊗[ℤ] A) = d` using `ringKrullDim_genericFibre_eq ℤ ℚ hd`. Establish `hF` using `height_add_ringKrullDim_quotient_of_finiteType ℚ (q.map (algebraMap A (ℚ ⊗[ℤ] A)))`. Establish `hk` using `Algebra.TensorProduct.lTensor_ker (A := ℚ) (Ideal.Quotient.mkₐ ℤ q) Ideal.Quotient.mk_surjective`. Rewrite `hk` using `[show RingHom.ker (Ideal.Quotient.mkₐ ℤ q) = q from Ideal.mk_ker]`. Establish `hs : Function.Surjective (Algebra.TensorProduct.map (AlgHom.id ℤ ℚ) (Ideal.Quotient.mkₐ ℤ q))` using `LinearMap.lTensor_surjective ℚ (g := (Ideal.Quotient.mkₐ ℤ q).toLinearMap) Ideal.Quotient.mk_surjective`.
+
+Establish `hQ : ringKrullDim ((ℚ ⊗[ℤ] A) ⧸ q.map (algebraMap A (ℚ ⊗[ℤ] A))) = e`. Establish `e1 : q.map (algebraMap A (ℚ ⊗[ℤ] A)) = q.map (Algebra.TensorProduct.includeRight : A →ₐ[ℤ] ℚ ⊗[ℤ] A)` using `rfl`. Rewrite using `[e1, ← hk, ringKrullDim_eq_of_ringEquiv (Ideal.quotientKerAlgEquivOfSurjective hs).toRingEquiv]`. Conclude with `ringKrullDim_genericFibre_eq ℤ ℚ he`. Rewrite `hF` using `[hh, hQ, hS]`.
+
+Take `⟨n, hn⟩ : ∃ n : ℕ, q.height = n` from `ENat.ne_top_iff_exists.1 (ne_top_of_le_ne_top (by decide) hq1) |>.imp fun _ h => h.symm`. Rewrite `hF`, `hq1` using `[hn]`. Establish `h1 : n ≤ 1` using `by exact_mod_cast hq1`. Establish `h2 : n + e = d` using `by exact_mod_cast hF`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem trdeg_le_succ_trdeg_quotient (A : Type) [CommRing A] [IsDomain A]
     [Algebra.FiniteType ℤ A] (q : Ideal A) [q.IsPrime] (hq1 : q.height ≤ 1)
     (hint : ∀ n : ℤ, (n : A) ∈ q → n = 0) {d e : ℕ} (hd : Algebra.trdeg ℤ A = d)
@@ -82,6 +98,17 @@ theorem trdeg_le_succ_trdeg_quotient (A : Type) [CommRing A] [IsDomain A]
   have h2 : n + e = d := by exact_mod_cast hF
   omega
 
+/- English proof (translation)
+Take `rfl : inst = Ring.toIntAlgebra B` from `Subsingleton.elim _ _`. Take `⟨m, hm⟩` from `Ideal.exists_maximal B`. Establish `hft : Algebra.FiniteType ℤ (B ⧸ m)` using `Algebra.FiniteType.of_surjective (Ideal.Quotient.mkₐ ℤ m) Ideal.Quotient.mk_surjective`. Use `letI := Ideal.Quotient.field m`. Establish `: @Algebra.FiniteType ℤ (B ⧸ m) _ _ (Ring.toIntAlgebra (B ⧸ m))`.
+
+Apply the tactic sequence `convert hft using 2 <;> first | rfl | exact Subsingleton.elim _ _`. Use `finite_field_of_finiteType_int (B ⧸ m)` as an intermediate fact. Take `⟨l, hl⟩` from `CharP.exists (B ⧸ m)`. Establish `hl0 : l ≠ 0` using `CharP.char_ne_zero_of_finite (B ⧸ m) l`. Establish `: Fact l.Prime` using `⟨(CharP.char_is_prime_or_zero (B ⧸ m) l).resolve_right hl0⟩`.
+
+Establish `hlm : (l : B) ∈ m`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_natCast]`. Conclude with `CharP.cast_eq_zero _ l`. Take `⟨q', hq', -⟩` from `Ideal.exists_minimalPrimes_le ((Ideal.span_singleton_le_iff_mem _).2 hlm)`. Use `hq'.1.1` as an intermediate fact.
+
+Establish `h1` using `ringKrullDim_quotient_eq_trdeg_of_mem_minimalPrimes_natPrime B l q' hq' e he`. Establish `hne : (l : B) ≠ 0` using `Nat.cast_ne_zero.2 hl0`. Establish `h2` using `ringKrullDim_quotient_succ_le_of_nonZeroDivisor (mem_nonZeroDivisors_of_ne_zero hne)`. Establish `h3 : ringKrullDim (B ⧸ q') ≤ ringKrullDim (B ⧸ Ideal.span {(l : B)})` using `ringKrullDim_le_of_surjective (Ideal.Quotient.factor hq'.1.2) (Ideal.Quotient.factor_surjective hq'.1.2)`. Rewrite `h3` using `[h1]`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem succ_trdeg_le_ringKrullDim (B : Type) [CommRing B] [IsDomain B] [CharZero B]
     [inst : Algebra ℤ B] [Algebra.FiniteType ℤ B] {e : ℕ} (he : Algebra.trdeg ℤ B = e) :
     ((e + 1 : ℕ) : WithBot ℕ∞) ≤ ringKrullDim B := by
@@ -112,6 +139,11 @@ theorem succ_trdeg_le_ringKrullDim (B : Type) [CommRing B] [IsDomain B] [CharZer
     _ ≤ ringKrullDim (B ⧸ Ideal.span {(l : B)}) + 1 := by gcongr
     _ ≤ _ := h2
 
+/- English proof (translation)
+Establish `hinj : Function.Injective (algebraMap ℤ (A ⧸ q))` using `(injective_iff_map_eq_zero _).2 fun n hn => hint n (by`. Rewrite `hn` using `[IsScalarTower.algebraMap_apply ℤ A (A ⧸ q), Ideal.Quotient.algebraMap_eq, Ideal.Quotient.eq_zero_iff_mem]`. Simplify using `using hn)`. Establish `: CharZero (A ⧸ q)` using `charZero_of_injective_algebraMap hinj`. Establish `: Algebra.FiniteType ℤ (A ⧸ q)` using `Algebra.FiniteType.of_surjective (Ideal.Quotient.mkₐ ℤ q) Ideal.Quotient.mk_surjective`.
+
+Take `⟨e, he⟩` from `exists_trdeg_eq_natCast ℤ (A := A ⧸ q)`. Establish `h1` using `trdeg_le_succ_trdeg_quotient A q hq1 hint hd he`. Conclude with `(show (d : WithBot ℕ∞) ≤ ((e + 1 : ℕ) : WithBot ℕ∞) by exact_mod_cast h1).trans (succ_trdeg_le_ringKrullDim _ he)`.
+-/
 theorem le_ringKrullDim_quotient (A : Type) [CommRing A] [IsDomain A]
     [Algebra.FiniteType ℤ A] (q : Ideal A) [q.IsPrime] (hq1 : q.height ≤ 1)
     (hint : ∀ n : ℤ, (n : A) ∈ q → n = 0) {d : ℕ} (hd : Algebra.trdeg ℤ A = d) :
@@ -133,6 +165,51 @@ end GlobalTheory.PrimeDivDim
 
 namespace GlobalTheory.PrimeDivDim
 
+/- English proof (translation)
+Introduce `k _ X p D hX Z i _ _ hcoh`. Use `hX.isIntegral` as an intermediate fact. Use `set z := i (genericPoint Z) with hiz`. Set `t : X ⟶ Sp ℤ` to `p ≫ spMap (Int.castRingHom k)`. Establish `hrange : Set.range i = closure {z}`.
+
+Establish `h₁` using `(genericPoint_spec Z).image i.continuous`. Rewrite `h₁` using `[Set.image_univ, i.isClosedEmbedding.isClosed_range.closure_eq]`. Conclude with `h₁.def.symm`. Rewrite using `[← topologicalKrullDim_eq_of_isEmbedding i.isClosedEmbedding.isEmbedding hrange]`. Establish `hgen : genericPoint X ∉ closure ({z} : Set X)`.
+
+Introduce `h`. Establish `e : z = genericPoint X` using `((genericPoint_specializes z).antisymm (specializes_iff_mem_closure.2 h)).eq.symm`. Rewrite `hcoh` using `[e, Order.coheight_eq_zero.2 (fun y _ => genericPoint_specializes y)]`. Conclude with `zero_ne_one hcoh`. Establish `hX1 : topologicalKrullDim (Set.univ : Set X) = (D + 1 : ℕ)` using `(topologicalKrullDim_eq_of_isEmbedding Topology.IsEmbedding.id Set.range_id).trans hX.dim_eq`.
+
+Establish `hup : topologicalKrullDim (closure ({z} : Set X)) + 1 ≤ (D + 1 : ℕ)` using `hX1 ▸ topologicalKrullDim_add_one_le isClosed_closure isClosed_univ fun x hx => ⟨genericPoint X, trivial, hgen, genericPoint_specializes x⟩`. Take `⟨N, jN, _, hjN⟩` from `hX.isProjOver`. Use `isProper_str k N` as an intermediate fact. Establish `: IsProper p` using `hjN ▸ inferInstance`. Establish `: IsFinite (spMap (Int.castRingHom k))` using `(IsFinite.SpecMap_iff _).2 (RingHom.finite_algebraMap.2 hX.finite)`.
+
+Establish `: LocallyOfFiniteType t` using `inferInstance`. Establish `: Flat t` using `hX.flat`. Take `⟨A, _, _, instA, _, _, j, _, ⟨a, ha⟩, hjt, hA⟩` from `exists_affine_chart_trdeg_eq t z`. Take `rfl : instA = Ring.toIntAlgebra A` from `Subsingleton.elim _ _`. Establish `: CharZero A` using `⟨fun m n h => Nat.cast_injective (R := ℤ) (FaithfulSMul.algebraMap_injective ℤ A (by simpa using h))⟩`.
+
+Establish `: IsNoetherianRing A` using `Algebra.FiniteType.isNoetherianRing ℤ A`. Take `⟨d, hd⟩` from `exists_trdeg_eq_natCast ℤ (A := A)`. Establish `hdimX : topologicalKrullDim X ≤ (d + 1 : ℕ)`. Use `topologicalKrullDim_le_of_forall_exists_isOpen fun x => ?_` and prove the remaining obligations. Take `⟨B, _, _, _, _, _, j', _, ⟨b, rfl⟩, -, hB⟩` from `exists_affine_chart_trdeg_eq t x`.
+
+Use `⟨Set.range j', j'.isOpenEmbedding.isOpen_range, ⟨b, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[topologicalKrullDim_eq_of_isEmbedding j'.isOpenEmbedding.isEmbedding rfl]`. Use `(PrimeSpectrum.topologicalKrullDim_eq_ringKrullDim B).le.trans ?_` and prove the remaining obligations. Establish `hdB : Algebra.trdeg ℤ B = d` using `hB.trans (hA.symm.trans hd)`. Establish `hZ1 : ringKrullDim ℤ ≤ 1`.
+
+Conclude with `Ring.krullDimLE_iff.mp (inferInstance : Ring.KrullDimLE 1 ℤ)` after adjusting the coercions. Use `(IntModel.ringKrullDim_le_add (O := ℤ) ℚ).trans ?_` and prove the remaining obligations. Rewrite using `[ringKrullDim_genericFibre_eq ℤ ℚ hdB]`. Use `(add_le_add hZ1 (le_refl ((d : ℕ) : WithBot ℕ∞))).trans_eq ?_` and prove the remaining obligations. Use `push_cast`.
+
+Conclude with `add_comm _ _`. Establish `hDd : D ≤ d`. Use `hX.dim_eq.symm.trans_le hdimX` as an intermediate fact. Establish `: ((D + 1 : ℕ) : WithBot ℕ∞) ≤ ((d + 1 : ℕ) : WithBot ℕ∞)` using `this`. Conclude with `Nat.le_of_succ_le_succ (by exact_mod_cast this)`.
+
+Use `set q := a.asIdeal with hqdef`. Establish `: q.IsPrime` using `a.isPrime`. Establish `hsp (u v : PrimeSpectrum A) : j u ⤳ j v ↔ u.asIdeal ≤ v.asIdeal` using `j.isOpenEmbedding.isInducing.specializes_iff.trans (PrimeSpectrum.le_iff_specializes u v).symm`. Establish `hmin : ∀ q' : Ideal A, q'.IsPrime → q' ≤ q → q' = ⊥ ∨ q' = q`. Introduce `q' hq'p hle`.
+
+Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Set `b' : PrimeSpectrum A` to `⟨q', hq'p⟩`. Set `g : PrimeSpectrum A` to `⟨⊥, Ideal.isPrime_bot⟩`. Establish `h₁ : z < j b'`.
+
+Rewrite using `[← ha]`. Conclude with `⟨(hsp b' a).2 hle, fun h => hne.2 (le_antisymm hle ((hsp a b').1 h))⟩`. Establish `h₂ : j b' < j g` using `⟨(hsp g b').2 bot_le, fun h => hne.1 (le_bot_iff.1 ((hsp b' g).1 h))⟩`. Establish `h₃` using `Order.coheight_add_one_le h₁`. Establish `h₄` using `Order.coheight_add_one_le h₂`.
+
+Rewrite `h₃` using `[hcoh]`. Establish `h₅ : (1 : ℕ∞) + 1 ≤ 1` using `(add_le_add_left (le_add_self.trans h₄) 1).trans h₃`. Conclude with `absurd h₅ (by decide)`. Establish `hq0 : q ≠ ⊥`. Introduce `h0`.
+
+Take `⟨b, hb⟩ : genericPoint X ∈ Set.range j` from `((genericPoint_spec X).mem_open_set_iff j.isOpenEmbedding.isOpen_range).2 ⟨z, trivial, a, ha⟩`. Apply `hgen` to reduce the goal to its premises. Rewrite using `[← hb, ← ha]`. Conclude with `specializes_iff_mem_closure.1 ((hsp a b).2 (by rw [show a.asIdeal = ⊥ from h0]; exact bot_le))`. Establish `hlowq : (d : WithBot ℕ∞) ≤ ringKrullDim (A ⧸ q)`.
+
+Distinguish the cases in `hv : ∀ n : ℤ, (n : A) ∈ q → n = 0`. Conclude with `le_ringKrullDim_quotient A q (height_le_one_of_forall_le q hq0 hmin) hv hd`. Use `push_neg at hv`. Take `⟨n, hnq, hn0⟩` from `hv`. Establish `hP : (q.comap (algebraMap ℤ A)).IsPrime` using `Ideal.comap_isPrime _ _`.
+
+Establish `hPne : q.comap (algebraMap ℤ A) ≠ ⊥` using `fun h => hn0 (by`. Establish `: n ∈ q.comap (algebraMap ℤ A)` using `by simpa using hnq`. Rewrite `this` using `[h]`. Conclude with `(Ideal.mem_bot.1 this))`. Take `⟨x, hxP, hx⟩` from `Ideal.IsPrime.exists_mem_prime_of_ne_bot hP hPne`.
+
+Establish `hl : Nat.Prime x.natAbs` using `Int.prime_iff_natAbs_prime.1 hx`. Establish `: Fact x.natAbs.Prime` using `⟨hl⟩`. Establish `hlP : ((x.natAbs : ℕ) : ℤ) ∈ q.comap (algebraMap ℤ A)` using `Ideal.mem_of_dvd _ (Int.dvd_natAbs.2 dvd_rfl) hxP`. Establish `hlq : ((x.natAbs : ℕ) : A) ∈ q`. Use `Ideal.mem_comap.1 hlP` as an intermediate fact.
+
+Rewrite `this` using `[eq_intCast, Int.cast_natCast]`. Then use the resulting hypothesis. Establish `hminl : q ∈ (Ideal.span {((x.natAbs : ℕ) : A)}).minimalPrimes`. Use `⟨⟨inferInstance, (Ideal.span_singleton_le_iff_mem _).2 hlq⟩, fun q' hq' hle => ?_⟩` and prove the remaining obligations. Break down `hmin q' hq'.1 hle with h | h` into its components or cases. Establish `h1` using `(Ideal.span_singleton_le_iff_mem _).1 hq'.2`.
+
+Rewrite `h1` using `[h, Ideal.mem_bot, Nat.cast_eq_zero]`. Conclude with `absurd h1 hl.ne_zero`. Conclude with `h.ge`. Conclude with `(ringKrullDim_quotient_eq_trdeg_of_mem_minimalPrimes_natPrime A x.natAbs q hminl d hd).ge`. Establish `hlow : topologicalKrullDim (Set.range j ∩ closure {j a} : Set X) ≤ topologicalKrullDim (closure ({z} : Set X))`.
+
+Rewrite using `[ha]`. Conclude with `(Topology.IsEmbedding.inclusion Set.inter_subset_right).isInducing.topologicalKrullDim_le`. Rewrite `hlow` using `[topologicalKrullDim_range_inter_closure_eq j a]`. Establish `hlow'` using `hlowq.trans hlow`. Choose the witnesses or unpack the hypotheses as in `⟨e, he⟩ : ∃ e : ℕ, topologicalKrullDim (closure ({z} : Set X)) = e :=`.
+
+Establish `⟨e, he⟩` using `hX.exists_dim_eq i`. Use the proof step `⟨e, (topologicalKrullDim_eq_of_isEmbedding i.isClosedEmbedding.isEmbedding hrange).trans he⟩`. Rewrite `hlow'`, `hup`, the goal using `[he]`. Establish `h1 : d ≤ e` using `by exact_mod_cast hlow'`. Establish `h2 : e + 1 ≤ D + 1` using `by exact_mod_cast hup`.
+
+Establish `: e = D` using `by omega`. Rewrite using `[this]`.
+-/
 theorem dim_eq_of_coheight_eq_one : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k)
     (D : ℕ), IsArithVar p D → ∀ (Z : Scheme.{0}) (i : Z ⟶ X) [IsClosedImmersion i] [IsIntegral Z],
     Order.coheight (i (genericPoint Z)) = 1 → topologicalKrullDim Z = D := by

@@ -12,6 +12,15 @@ open scoped InnerProductSpace ENNReal
 
 namespace GlobalTheory.CellOrbInt
 
+/- English proof (translation)
+Establish `h` using `hW (Sᶜ.indicator 1) (measurable_one.indicator hS.compl)`. Establish `h0 : ∫⁻ x, Sᶜ.indicator (1 : X → ENNReal) x ∂P = 0`. Rewrite using `[lintegral_indicator_one hS.compl]`. Conclude with `hP`. Establish `h1 : ∀ x, Sᶜ.indicator (fun _ => μ Set.univ) x ≤ ∫⁻ a, Sᶜ.indicator (1 : X → ENNReal) (act a x) ∂μ`.
+
+Introduce `x`. Distinguish the cases in `hx : x ∈ S`. Simplify using `[hx]`. Establish `: ∫⁻ a, Sᶜ.indicator (1 : X → ENNReal) (act a x) ∂μ = ∫⁻ _, 1 ∂μ`. Apply `lintegral_congr_ae` to reduce the goal to its premises.
+
+Use `filter_upwards [hact] with a ha`. Establish `: act a x ∉ S` using `fun h => hx (ha x h)`. Simplify using `[this]`. Rewrite using `[this, lintegral_const]`. Simplify using `[hx]`.
+
+Establish `h2` using `lintegral_mono (μ := ν) h1`. Rewrite `h2` using `[← h, h0, lintegral_indicator_const hS.compl, nonpos_iff_eq_zero]`. Break down `mul_eq_zero.1 h2 with h2 | h2` into its components or cases. Conclude with `absurd (Measure.measure_univ_eq_zero.1 h2) hμ`. Conclude with `h2`.
+-/
 theorem ae_of_weil {X A : Type} [MeasurableSpace X] [MeasurableSpace A]
     (P ν : Measure X) (μ : Measure A) (act : A → X → X) (S : Set X) (hS : MeasurableSet S)
     (hP : ∀ᵐ x ∂P, x ∈ S) (hμ : μ ≠ 0)
@@ -40,6 +49,11 @@ theorem ae_of_weil {X A : Type} [MeasurableSpace X] [MeasurableSpace A]
 
 variable {k r : ℕ}
 
+/- English proof (translation)
+Unfold `haarLie`. Apply `Measure.ae_smul_measure` to reduce the goal to its premises. Distinguish the cases in `h : AEMeasurable (fun x : lieE (Nset k r) => (fun i j => NormedSpace.exp (unrealify (x : EuclideanSpace ℝ _)) i j : Mt k r)) volume`. Establish `hcl : IsClosed {y : Mt k r | Matrix.of y ∈ Nset k r}` using `(Formalism.FourierDecayAlt.P.unipotent_radical_closed k r).closed`. Rewrite using `[ae_map_iff h hcl.measurableSet]`.
+
+Conclude with `Filter.Eventually.of_forall fun x => GlobalTheory.Amp.NLie.exp_mem (GlobalTheory.Amp.NLie.mem_lieE x.2)`. Rewrite using `[Measure.map_of_not_aemeasurable h]`. Simplify using the standard rewrite rules.
+-/
 theorem ae_mem_N (κ : ℝ≥0∞) : ∀ᵐ y ∂(haarLie (Nset k r) κ), Matrix.of y ∈ Nset k r := by
   unfold haarLie
   apply Measure.ae_smul_measure
@@ -54,6 +68,9 @@ def pairSet (L : LocBessel k r) : Set (PairSp k r) :=
   {p | Matrix.of p.1.1 ∈ UWset k r L.z ∧ Matrix.of p.1.2 ∈ Nset k r ∧ Matrix.of p.2.1 ∈ UWset k r L.z' ∧
     Matrix.of p.2.2 ∈ Nset k r}
 
+/- English proof (translation)
+Establish `hWc` using `(Formalism.FourierDecayAlt.P.weyl_subgroup_closed k r L.z).closed`. Establish `hWc'` using `(Formalism.FourierDecayAlt.P.weyl_subgroup_closed k r L.z').closed`. Establish `hNc` using `(Formalism.FourierDecayAlt.P.unipotent_radical_closed k r).closed`. Conclude with `(hWc.preimage continuous_fst.fst).inter ((hNc.preimage continuous_fst.snd).inter ((hWc'.preimage continuous_snd.fst).inter (hNc.preimage continuous_snd.snd)))`.
+-/
 theorem closed_pairSet (L : LocBessel k r) : IsClosed (pairSet L) := by
   have hWc := (Formalism.FourierDecayAlt.P.weyl_subgroup_closed k r L.z).closed
   have hWc' := (Formalism.FourierDecayAlt.P.weyl_subgroup_closed k r L.z').closed
@@ -61,10 +78,20 @@ theorem closed_pairSet (L : LocBessel k r) : IsClosed (pairSet L) := by
   exact (hWc.preimage continuous_fst.fst).inter ((hNc.preimage continuous_fst.snd).inter
     ((hWc'.preimage continuous_snd.fst).inter (hNc.preimage continuous_snd.snd)))
 
+/- English proof (translation)
+Use `haveI : BorelSpace (PairSp k r) := Prod.borelSpace`. Conclude with `(closed_pairSet L).measurableSet`.
+-/
 theorem meas_pairSet (L : LocBessel k r) : MeasurableSet (pairSet L) := by
   haveI : BorelSpace (PairSp k r) := Prod.borelSpace
   exact (closed_pairSet L).measurableSet
 
+/- English proof (translation)
+Establish `: SFinite L.μN` using `by unfold LocBessel.μN haarLie; infer_instance`. Establish `: SigmaFinite L.μW` using `L.hμW.1.1`. Establish `: SigmaFinite L.μW'` using `L.hμW'.1.1`. Establish `aN : ∀ᵐ y ∂L.μN, Matrix.of y ∈ Nset k r` using `ae_mem_N _`. Establish `aW : ∀ᵐ y ∂L.μW, Matrix.of y ∈ UWset k r L.z` using `by rw [ae_iff]; exact L.hμW.1.2.2.1`.
+
+Establish `aW' : ∀ᵐ y ∂L.μW', Matrix.of y ∈ UWset k r L.z'` using `by rw [ae_iff]; exact L.hμW'.1.2.2.1`. Establish `b1` using `(Measure.quasiMeasurePreserving_fst (μ := L.μW) (ν := L.μN)).ae aW`. Establish `b2` using `(Measure.quasiMeasurePreserving_snd (μ := L.μW) (ν := L.μN)).ae aN`. Establish `c1` using `(Measure.quasiMeasurePreserving_fst (μ := L.μW') (ν := L.μN)).ae aW'`. Establish `c2` using `(Measure.quasiMeasurePreserving_snd (μ := L.μW') (ν := L.μN)).ae aN`.
+
+Establish `d1` using `(Measure.quasiMeasurePreserving_fst (μ := L.μW.prod L.μN) (ν := L.μW'.prod L.μN)).ae (b1.and b2)`. Establish `d2` using `(Measure.quasiMeasurePreserving_snd (μ := L.μW.prod L.μN) (ν := L.μW'.prod L.μN)).ae (c1.and c2)`. Unfold `pairMeas`. Use `filter_upwards [d1, d2] with p hp hq`. Conclude with `⟨hp.1, hp.2, hq.1, hq.2⟩`.
+-/
 theorem ae_pairMeas (L : LocBessel k r) : ∀ᵐ p ∂(pairMeas L), p ∈ pairSet L := by
   have : SFinite L.μN := by unfold LocBessel.μN haarLie; infer_instance
   have : SigmaFinite L.μW := L.hμW.1.1
@@ -82,12 +109,18 @@ theorem ae_pairMeas (L : LocBessel k r) : ∀ᵐ p ∂(pairMeas L), p ∈ pairSe
   filter_upwards [d1, d2] with p hp hq
   exact ⟨hp.1, hp.2, hq.1, hq.2⟩
 
+/- English proof (translation)
+Establish `hN` using `Formalism.FourierDecayAlt.P.unipotent_radical_closed k r`. Use `hN.mul_mem _ (hN.inv_mem a ha) _ h` as an intermediate fact. Rewrite `this` using `[Matrix.nonsing_inv_mul_cancel_left _ _ (hN.unit a ha)]`. Then use the resulting hypothesis.
+-/
 theorem mem_N_of_mul {a x : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} (ha : a ∈ Nset k r)
     (h : a * x ∈ Nset k r) : x ∈ Nset k r := by
   have hN := Formalism.FourierDecayAlt.P.unipotent_radical_closed k r
   have := hN.mul_mem _ (hN.inv_mem a ha) _ h
   rwa [Matrix.nonsing_inv_mul_cancel_left _ _ (hN.unit a ha)] at this
 
+/- English proof (translation)
+Use `ae_of_weil (pairMeas L) ν μR (fun x p => stabAct γ (Matrix.of x) p) _ (meas_pairSet L) (ae_pairMeas L) hR.2.1 hQ ?_` and prove the remaining obligations. Establish `aR : ∀ᵐ y ∂μR, Matrix.of y ∈ RStab k r γ` using `by rw [ae_iff]; exact hR.2.2.1`. Use `filter_upwards [aR] with a ha p hp`. Conclude with `⟨hp.1, mem_N_of_mul ha.1 hp.2.1, hp.2.2.1, mem_N_of_mul ha.2 hp.2.2.2⟩`.
+-/
 theorem ae_quot (L : LocBessel k r) {γ : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     {μR : Measure (Mt k r)} {ν : Measure (PairSp k r)} (hR : IsHaarOn (RStab k r γ) μR)
     (hQ : IsOrbQuot L γ μR ν) : ∀ᵐ p ∂ν, p ∈ pairSet L := by
@@ -97,6 +130,9 @@ theorem ae_quot (L : LocBessel k r) {γ : Matrix (Fin (2 * r + k + 1)) (Fin (2 *
   filter_upwards [aR] with a ha p hp
   exact ⟨hp.1, mem_N_of_mul ha.1 hp.2.1, hp.2.2.1, mem_N_of_mul ha.2 hp.2.2.2⟩
 
+/- English proof (translation)
+Establish `hG` using `Formalism.FourierDecayAlt.P.unitary_group_closed k r`. Conclude with `hG.mul_mem _ (hG.mul_mem _ (hG.mul_mem _ (hG.mul_mem _ (hG.inv_mem _ hp.1.1) _ (hG.inv_mem _ hp.2.1.1)) _ hγ) _ hp.2.2.2.1) _ hp.2.2.1.1`.
+-/
 theorem point_mem (L : LocBessel k r) {γ : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     (hγ : γ ∈ UH (Hpk k r)) {p : PairSp k r} (hp : p ∈ pairSet L) :
     (Matrix.of p.1.1)⁻¹ * (Matrix.of p.1.2)⁻¹ * γ * Matrix.of p.2.2 * Matrix.of p.2.1 ∈ UH (Hpk k r) := by
@@ -104,18 +140,31 @@ theorem point_mem (L : LocBessel k r) {γ : Matrix (Fin (2 * r + k + 1)) (Fin (2
   exact hG.mul_mem _ (hG.mul_mem _ (hG.mul_mem _ (hG.mul_mem _ (hG.inv_mem _ hp.1.1) _ (hG.inv_mem _ hp.2.1.1)) _ hγ)
     _ hp.2.2.2.1) _ hp.2.2.1.1
 
+/- English proof (translation)
+Unfold `psi`. Conclude with `Complex.continuous_exp.comp (continuous_const.mul (Complex.continuous_ofReal.comp (Complex.continuous_re.comp (continuous_const.mul (Formalism.FourierDecayAlt.P.B7.continuous_ell z)))))`.
+-/
 theorem continuous_psi (z : Fin (2 * r + k + 1) → ℂ) (c : ℂ) :
     Continuous fun x : Mt k r => psi k r z c (Matrix.of x) := by
   unfold psi
   exact Complex.continuous_exp.comp (continuous_const.mul (Complex.continuous_ofReal.comp
     (Complex.continuous_re.comp (continuous_const.mul (Formalism.FourierDecayAlt.P.B7.continuous_ell z)))))
 
+/- English proof (translation)
+Unfold `psi`. Rewrite using `[mul_comm]`. Conclude with `Complex.norm_exp_ofReal_mul_I _`.
+-/
 theorem norm_psi (z : Fin (2 * r + k + 1) → ℂ) (c : ℂ) (g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) :
     ‖psi k r z c g‖ = 1 := by
   unfold psi
   rw [mul_comm]
   exact Complex.norm_exp_ofReal_mul_I _
 
+/- English proof (translation)
+Use `set S := pairSet L with hS`. Establish `hc : ContinuousOn L.π (UWset k r L.z)` using `continuousOn_clm_apply.mpr (Formalism.FourierDecayAlt.P.MatrixMultiplicationContinuity.piW_cont L.hz.2 (u := L.u) L.hπ)`. Establish `hc' : ContinuousOn L.π' (UWset k r L.z')` using `continuousOn_clm_apply.mpr (Formalism.FourierDecayAlt.P.MatrixMultiplicationContinuity.piW_cont L.hz'.2 (u := L.u') L.hπ')`. Establish `hxi : Continuous fun p : PairSp k r => psi k r L.z L.c (Matrix.of p.1.2) * star (psi k r L.z' L.c (Matrix.of p.2.2))` using `((continuous_psi L.z L.c).comp continuous_fst.snd).mul ((continuous_psi L.z' L.c).comp continuous_snd.snd).star`. Establish `hπ : ContinuousOn (fun p : PairSp k r => L.π (Matrix.of p.1.1)) S` using `hc.comp (continuous_fst.fst).continuousOn (fun p hp => hp.1)`.
+
+Establish `hinv1 : ContinuousOn (fun p : PairSp k r => (Matrix.of p.1.1 : Formalism.FourierDecayAlt.B.Mat k r)⁻¹) S` using `(Formalism.FourierDecayAlt.P.B6.inv_continuousOn k r).comp (continuous_fst.fst).continuousOn (fun p hp => hp.1.1)`. Establish `hinv2 : ContinuousOn (fun p : PairSp k r => (Matrix.of p.1.2 : Formalism.FourierDecayAlt.B.Mat k r)⁻¹) S` using `(Formalism.FourierDecayAlt.P.B6.inv_continuousOn k r).comp (continuous_fst.snd).continuousOn (fun p hp => hp.2.1.1)`. Establish `hinv3 : ContinuousOn (fun p : PairSp k r => (Matrix.of p.2.1 : Formalism.FourierDecayAlt.B.Mat k r)⁻¹) S` using `(Formalism.FourierDecayAlt.P.B6.inv_continuousOn k r).comp (continuous_snd.fst).continuousOn (fun p hp => hp.2.2.1.1)`. Establish `hπ' : ContinuousOn (fun p : PairSp k r => L.π' (Matrix.of p.2.1 : Formalism.FourierDecayAlt.B.Mat k r)⁻¹) S` using `hc'.comp hinv3 (fun p hp => (Formalism.FourierDecayAlt.P.MatrixMultiplicationContinuity.uw_inv hp.2.2.1).1)`. Establish `hc4 : ContinuousOn (fun p : PairSp k r => (Matrix.of p.2.2 : Formalism.FourierDecayAlt.B.Mat k r)) S` using `(continuous_snd.snd).continuousOn`.
+
+Establish `hc5 : ContinuousOn (fun p : PairSp k r => (Matrix.of p.2.1 : Formalism.FourierDecayAlt.B.Mat k r)) S` using `(continuous_snd.fst).continuousOn`. Establish `hsgs : ContinuousOn (fun p : PairSp k r => (Matrix.of p.1.1)⁻¹ * (Matrix.of p.1.2)⁻¹ * γ * Matrix.of p.2.2 * Matrix.of p.2.1) S` using `((((hinv1.mul hinv2).mul continuousOn_const).mul hc4).mul hc5)`. Establish `hFs` using `hF.comp hsgs (fun p hp => point_mem L hγ hp)`. Unfold `besselIntg`. Conclude with `hxi.continuousOn.smul (hπ.clm_comp (hFs.clm_comp hπ'))`.
+-/
 theorem contOn_intg (L : LocBessel k r) {γ : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     (hγ : γ ∈ UH (Hpk k r)) {F : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ → (L.Wq →L[ℂ] L.Wp)}
     (hF : ContinuousOn F (UH (Hpk k r))) : ContinuousOn (besselIntg L F γ) (pairSet L) := by
@@ -148,6 +197,11 @@ theorem contOn_intg (L : LocBessel k r) {γ : Matrix (Fin (2 * r + k + 1)) (Fin 
   unfold besselIntg
   exact hxi.continuousOn.smul (hπ.clm_comp (hFs.clm_comp hπ'))
 
+/- English proof (translation)
+Establish `hu` using `Formalism.FourierDecayAlt.P.MatrixMultiplicationContinuity.piW_unitary L.hz.2 (u := L.u) L.hπ _ hp.1`. Establish `hu'` using `Formalism.FourierDecayAlt.P.MatrixMultiplicationContinuity.piW_unitary L.hz'.2 (u := L.u') L.hπ' _ (Formalism.FourierDecayAlt.P.MatrixMultiplicationContinuity.uw_inv hp.2.2.1).1`. Unfold `besselIntg`. Rewrite using `[norm_smul, norm_mul, norm_star, norm_psi, norm_psi, one_mul, one_mul]`. Use `ContinuousLinearMap.opNorm_le_bound _ (norm_nonneg _) fun w => ?_` and prove the remaining obligations.
+
+Rewrite using `[ContinuousLinearMap.comp_apply, ContinuousLinearMap.comp_apply, hu, ← hu' w]`. Conclude with `ContinuousLinearMap.le_opNorm _ _`.
+-/
 theorem norm_intg_le (L : LocBessel k r) (γ : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ)
     (F : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ → (L.Wq →L[ℂ] L.Wp)) {p : PairSp k r}
     (hp : p ∈ pairSet L) : ‖besselIntg L F γ p‖ ≤
@@ -160,6 +214,9 @@ theorem norm_intg_le (L : LocBessel k r) (γ : Matrix (Fin (2 * r + k + 1)) (Fin
   rw [ContinuousLinearMap.comp_apply, ContinuousLinearMap.comp_apply, hu, ← hu' w]
   exact ContinuousLinearMap.le_opNorm _ _
 
+/- English proof (translation)
+Use extensionality with `w`. Simplify using `only [coefF, ContinuousLinearMap.smulRight_apply, ContinuousLinearMap.smul_apply]`. Rewrite using `[smul_comm]`.
+-/
 theorem coefF_eq (L : LocBessel k r) (v v' : L.Hs) (ξ : L.Wp) (ξ' : L.Wq)
     (g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) :
     coefF L v v' ξ ξ' g = ⟪v, L.σ g v'⟫_ℂ • (innerSL ℂ ξ').smulRight ξ := by
@@ -167,6 +224,19 @@ theorem coefF_eq (L : LocBessel k r) (v v' : L.Hs) (ξ : L.Wp) (ξ' : L.Wq)
   simp only [coefF, ContinuousLinearMap.smulRight_apply, ContinuousLinearMap.smul_apply]
   rw [smul_comm]
 
+/- English proof (translation)
+Introduce `H k r L h μG γ μR νR ν hgap hok _ hC`. Take `⟨hγ, -, -, -, hR, hQ, -⟩` from `hC`. Establish `hae` using `ae_quot L hR hQ`. Use `⟨hae, fun b _ hb hint v v' hv hv' ξ ξ' => ?_⟩` and prove the remaining obligations. Establish `hσ : PI.UpqRep.IsDSHpk k r L.ε L.lam L.σ` using `L.hσ`.
+
+Establish `hsm` using `H.1.2.2.1 k r L.ε L.lam L.Hs L.σ L.hlam hσ v' hv'`. Take `⟨C, Ws, -, hdec⟩` from `H.1.2.1 k r L.ε L.lam h L.Hs L.σ L.hlam hσ hgap hok v hv`. Establish `hd` using `hdec v' hsm`. Generalize the expression as in `C * (Ws.map fun W => ‖PI.UpqRep.dsigW (k := k) (r := r) L.σ W v'‖).sum = A at hd`. Establish `hF : ContinuousOn (coefF L v v' ξ ξ') (UH (Hpk k r))`.
+
+Establish `e : coefF L v v' ξ ξ' = fun g => ⟪v, L.σ g v'⟫_ℂ • (innerSL ℂ ξ').smulRight ξ`. Use function extensionality and compare the values at `(coefF_eq L v v' ξ ξ')`. Rewrite using `[e]`. Conclude with `(ContinuousOn.inner (𝕜 := ℂ) continuousOn_const (Formalism.FourierDecayAlt.P.S3dx4.sigma_contOn hσ v')).smul continuousOn_const`. Use `haveI : BorelSpace (PairSp k r) := Prod.borelSpace`.
+
+Establish `hm : AEStronglyMeasurable (besselIntg L (coefF L v v' ξ ξ') γ) ν`. Use `(contOn_intg L hγ hF).aestronglyMeasurable (μ := ν) (meas_pairSet L)` as an intermediate fact. Rewrite `this` using `[Measure.restrict_eq_self_of_ae_mem hae]`. Then use the resulting hypothesis. Use `(hint.const_mul (|A| * ‖(innerSL ℂ ξ').smulRight ξ‖)).mono' hm ?_` and prove the remaining obligations. Use `filter_upwards [hae] with p hp`.
+
+Use `(norm_intg_le L γ _ hp).trans ?_` and prove the remaining obligations. Establish `hx` using `point_mem L hγ hp`. Unfold `pairMaj`. Use `set x := (Matrix.of p.1.1)⁻¹ * (Matrix.of p.1.2)⁻¹ * γ * Matrix.of p.2.2 * Matrix.of p.2.1`. Establish `h1 : 1 ≤ Formalism.FourierDecayAlt.B.gN x` using `PI.PolynomialProperness.GN.gN_ge_one hx`.
+
+Establish `h2 : Formalism.FourierDecayAlt.B.gN x ^ (1 - Formalism.FourierDecayAlt.ThreeDimData.aOf r h) ≤ Formalism.FourierDecayAlt.B.gN x ^ (-b)` using `Real.rpow_le_rpow_of_exponent_le h1 (by linarith)`. Establish `h3 : ‖⟪v, L.σ x v'⟫_ℂ‖ ≤ |A| * Formalism.FourierDecayAlt.B.gN x ^ (-b)` using `(hd x hx).trans ((mul_le_mul_of_nonneg_right (le_abs_self A) (by positivity)).trans (mul_le_mul_of_nonneg_left h2 (abs_nonneg A)))`. Rewrite using `[coefF_eq, norm_smul, mul_right_comm]`. Conclude with `mul_le_mul_of_nonneg_right h3 (norm_nonneg _)`.
+-/
 theorem orbInt_integrable : Hyps → ∀ (k r : ℕ) (L : LocBessel k r) (h : ℝ) (μG : Measure (Mt k r)) (γ : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) (μR νR : Measure (Mt k r)) (ν : Measure (PairSp k r)), GapAtLeast L.ε L.lam h → Formalism.FourierDecayAlt.ThreeDimData.GapOK k r h → L.κN ≠ ⊤ → CellData L μG γ μR νR ν → (∀ᵐ p ∂ν, Matrix.of p.1.1 ∈ UWset k r L.z ∧ Matrix.of p.1.2 ∈ Nset k r ∧ Matrix.of p.2.1 ∈ UWset k r L.z' ∧ Matrix.of p.2.2 ∈ Nset k r) ∧ ∀ b : ℝ, 0 ≤ b → b ≤ Formalism.FourierDecayAlt.ThreeDimData.aOf r h - 1 → Integrable (pairMaj γ b) ν → ∀ v v' : L.Hs, PI.UpqRep.IsKFinHpk (k := k) (r := r) L.σ v → PI.UpqRep.IsKFinHpk (k := k) (r := r) L.σ v' → ∀ (ξ : L.Wp) (ξ' : L.Wq), Integrable (besselIntg L (coefF L v v' ξ ξ') γ) ν := by
   intro H k r L h μG γ μR νR ν hgap hok _ hC
   obtain ⟨hγ, -, -, -, hR, hQ, -⟩ := hC

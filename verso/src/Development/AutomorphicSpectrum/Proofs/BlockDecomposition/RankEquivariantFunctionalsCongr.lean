@@ -34,6 +34,9 @@ namespace GlobalTheory.CompanionTheory.StdSubTop
 
 variable (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.unique_irreducible_sub_length_two (GlobalTheory.T.segment_length_two_irreducible_sub GlobalTheory.T.segment_length_two_reducible)`.
+-/
 theorem segmentRepresentation : GlobalTheory.Published.SegmentRepresentation :=
   GlobalTheory.T.unique_irreducible_sub_length_two (GlobalTheory.T.segment_length_two_irreducible_sub GlobalTheory.T.segment_length_two_reducible)
 

@@ -8,6 +8,11 @@ open MvPolynomial
 
 noncomputable section
 
+/- English proof (translation)
+Rewrite using `[coeff_sum, Finset.sum_eq_single i]`. Rewrite using `[mul_comm, coeff_C_mul, coeff_X]`. Simplify using the standard rewrite rules. Introduce `j _ hji`. Rewrite using `[mul_comm, coeff_C_mul, coeff_X, if_neg, mul_zero]`.
+
+Introduce `h`. Conclude with `hji ((Finsupp.single_left_inj one_ne_zero).mp h)`. Simplify using the standard rewrite rules.
+-/
 theorem linearForm_coeff_single {F : Type} [Field F] {n : ℕ} (a : Fin n → F) (i : Fin n) :
     (∑ m, X m * C (a m) : MvPolynomial (Fin n) F).coeff (Finsupp.single i 1) = a i := by
   classical
@@ -20,6 +25,15 @@ theorem linearForm_coeff_single {F : Type} [Field F] {n : ℕ} (a : Fin n → F)
     exact hji ((Finsupp.single_left_inj one_ne_zero).mp h)
   · simp
 
+/- English proof (translation)
+Introduce `F _ n a ha`. Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, a i ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `ha (funext h)`.
+
+Use `Irreducible.prime (irreducible_of_totalDegree_eq_one ?_ ?_)` and prove the remaining obligations. Apply `le_antisymm` to reduce the goal to its premises. Use `(totalDegree_finsetSum _ _).trans (Finset.sup_le fun m _ => ?_)` and prove the remaining obligations. Use `(totalDegree_mul _ _).trans ?_` and prove the remaining obligations. Rewrite using `[totalDegree_X, totalDegree_C]`.
+
+Establish `hs : Finsupp.single i 1 ∈ (∑ m, X m * C (a m) : MvPolynomial (Fin n) F).support`. Rewrite using `[mem_support_iff, linearForm_coeff_single]`. Conclude with `hi`. Simplify using `using le_totalDegree hs`. Introduce `x hx`.
+
+Establish `h` using `hx (Finsupp.single i 1)`. Rewrite `h` using `[linearForm_coeff_single]`. Use `isUnit_iff_ne_zero.mpr ?_` and prove the remaining obligations. Introduce and unpack `rfl`. Conclude with `hi (zero_dvd_iff.mp h)`.
+-/
 theorem LinearFormPrime.proof : LinearFormPrime.Statement := by
   intro F _ n a ha
   obtain ⟨i, hi⟩ : ∃ i, a i ≠ 0 := by

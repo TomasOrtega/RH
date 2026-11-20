@@ -12,6 +12,19 @@ namespace GroundTheory.Global.Artin
 variable {K L : Type*} [Field K] [NumberField K] [Field L] [NumberField L] [Algebra K L]
   [IsGalois K L]
 
+/- English proof (translation)
+Use `set Q := w.asIdeal with hQ`. Use `set P := Q.under (𝓞 K) with hP`. Establish `: Q.IsMaximal` using `w.isMaximal`. Establish `: P.IsMaximal` using `by rw [hP]; infer_instance`. Set `_ : Field (𝓞 K ⧸ P)` to `Ideal.Quotient.field P`.
+
+Set `_ : Field (𝓞 L ⧸ Q)` to `Ideal.Quotient.field Q`. Establish `: Finite (𝓞 K ⧸ P)` using `hφ.finite_quotient`. Use `Fintype.ofFinite (𝓞 K ⧸ P)` as an intermediate fact. Establish `: Finite (𝓞 L ⧸ Q)` using `Ideal.finiteQuotientOfFreeOfNeBot Q w.ne_bot`. Use `set e := Ideal.Quotient.stabilizerHom Q P Gal(L/K)`.
+
+Establish `hfrob : e ⟨φ, hφ.mem_stabilizer⟩ = FiniteField.frobeniusAlgEquivOfAlgebraic (𝓞 K ⧸ P) (𝓞 L ⧸ Q)`. Use extensionality with `y`. Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Rewrite using `[FiniteField.coe_frobeniusAlgEquivOfAlgebraic]`. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk Q (φ • y) = Ideal.Quotient.mk Q y ^ Fintype.card (𝓞 K ⧸ P)`.
+
+Rewrite using `[← Nat.card_eq_fintype_card]`. Conclude with `hφ.mk_apply y`. Rewrite using `[eq_top_iff]`. Introduce and unpack `c -`. Proceed by induction on `c using QuotientGroup.induction_on with | H d => ?_`.
+
+Take `⟨n, hn⟩` from `(FiniteField.bijective_frobeniusAlgEquivOfAlgebraic_pow (𝓞 K ⧸ P) (𝓞 L ⧸ Q)).2 (e d)`. Use `Subgroup.mem_zpowers_iff.2 ⟨(n.1 : ℤ), ?_⟩` and prove the remaining obligations. Establish `hk : ((⟨φ, hφ.mem_stabilizer⟩ : MulAction.stabilizer Gal(L/K) Q) ^ n.1)⁻¹ * d ∈ e.ker`. Rewrite using `[MonoidHom.mem_ker, map_mul, map_inv, map_pow, hfrob, ← hn, inv_mul_cancel]`. Rewrite `hk` using `[Ideal.Quotient.ker_stabilizerHom, ← Ideal.coe_mem_inertia]`.
+
+Rewrite using `[zpow_natCast, ← QuotientGroup.mk_pow, QuotientGroup.eq, Subgroup.mem_subgroupOf]`. Conclude with `hk`.
+-/
 theorem zpowers_arithFrob_eq_top (w : HeightOneSpectrum (𝓞 L)) {φ : Gal(L/K)}
     (hφ : IsArithFrobAt (𝓞 K) φ w.asIdeal) :
     Subgroup.zpowers ((⟨φ, hφ.mem_stabilizer⟩ : MulAction.stabilizer Gal(L/K) w.asIdeal) :

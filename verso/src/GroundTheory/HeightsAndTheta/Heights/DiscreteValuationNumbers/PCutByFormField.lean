@@ -15,6 +15,9 @@ universe u
 
 namespace CutByFormField
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Use `Fin.lastCases ?_ (fun k => ?_) j` and prove the remaining obligations. Simplify using the standard rewrite rules. Rewrite using `[Function.comp_apply, finRotate_apply, Fin.coeSucc_eq_succ, Fin.snoc_castSucc, Matrix.cons_val_succ]`.
+-/
 theorem vecCons_comp_finRotate {α : Type*} {n : ℕ} (c : α) (bs : Fin n → α) :
     Matrix.vecCons c bs ∘ finRotate (n + 1) = Fin.snoc (α := fun _ => α) bs c := by
   funext j

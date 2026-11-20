@@ -190,6 +190,9 @@ def Asm : Prop :=
   UwTop → SliceTop → PbSmooth → PbRight → PbSupp → PbEquiv → MkTop → MkCpt → TopPt → ZxDet → HeadFam → RadSliceTop →
     RadOfFun → RadExt → ResTop → PBI.FrameParam → PBI.RadWordSlice → PBI.PicSlice → PBI.ExhPic
 
+/- English proof (translation)
+The claim follows from `hA h1 h2 h3 h3' h4 h5 h6 h7 h8 h9 h10 h11 h12 h13 h14 hFP hRW hPS`.
+-/
 theorem exhPic_of_leaves (hA : Asm) (h1 : UwTop) (h2 : SliceTop) (h3 : PbSmooth) (h3' : PbRight) (h4 : PbSupp) (h5 : PbEquiv)
     (h6 : MkTop) (h7 : MkCpt) (h8 : TopPt) (h9 : ZxDet) (h10 : HeadFam) (h11 : RadSliceTop) (h12 : RadOfFun)
     (h13 : RadExt) (h14 : ResTop) (hFP : PBI.FrameParam) (hRW : PBI.RadWordSlice) (hPS : PBI.PicSlice) :

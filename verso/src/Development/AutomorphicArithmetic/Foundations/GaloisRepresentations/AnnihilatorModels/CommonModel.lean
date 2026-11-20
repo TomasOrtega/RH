@@ -11,12 +11,18 @@ namespace UpperTheory.Gal.crystallineComparison
 def co {F L B : Type} [Field F] [Field L] [Algebra F L] [CommRing B] [Algebra F B] {a : ℕ} (x : (Fin a → L) ⊗[F] B) (i : Fin a) :
     L ⊗[F] B := AlgebraTensorModule.map (LinearMap.proj i : (Fin a → L) →ₗ[L] L) (LinearMap.id : B →ₗ[F] B) x
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem co_tmul {F L B : Type} [Field F] [Field L] [Algebra F L] [CommRing B] [Algebra F B] {a : ℕ} (v : Fin a → L) (b : B) (i : Fin a) :
     co (v ⊗ₜ[F] b) i = v i ⊗ₜ[F] b := rfl
 
 def onR {F B : Type} (L : Type) [Field F] [Field L] [Algebra F L] [CommRing B] [Algebra F B] (s : B →ₐ[F] B) : L ⊗[F] B →+* L ⊗[F] B :=
   (Algebra.TensorProduct.map (AlgHom.id F L) s).toRingHom
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem onR_tmul {F B : Type} (L : Type) [Field F] [Field L] [Algebra F L] [CommRing B] [Algebra F B] (s : B →ₐ[F] B) (x : L) (b : B) :
     onR L s (x ⊗ₜ[F] b) = x ⊗ₜ[F] s b := rfl
 

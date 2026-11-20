@@ -12,6 +12,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.ChainOnto
 
+/- English proof (translation)
+Introduce `D θ V Sp M J χ hθ v b`. Set `g : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ` to `fun τ => infMat D.sp.cm.sig V.gram (θ τ) (b : GA D V)`. Establish `hg : ∀ τ, g τ ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ)` using `fun τ => GlobalTheory.FockCompare.RealAction.infMat_mem_UH hθ V (b : GA D V) τ`. Establish `hsm : ∀ τ, M.rep τ (g τ) (v τ : M.H τ) ∈ M.sm τ` using `fun τ => GlobalTheory.SmoothStable.rep_mem_sm D V Sp M τ (g τ) (hg τ) _ (v τ).2`. Establish `hb : GlobalTheory.AdelicScalar.realElt θ V g = (b : GA D V)`.
+
+Establish `hR` using `(GlobalTheory.SmoothForms.RealPts.realPoints D).2 θ hθ V`. Use `hR.2.2.1 _ (GlobalTheory.RealLift.prodAt_mem θ V _ g) _ b.2 fun τ => ?_` and prove the remaining obligations. Establish `e` using `GlobalTheory.RealLift.infMat_prodAt hθ V (u := g) hg τ _ (Finset.nodup_toList Finset.univ)`. Rewrite `e` using `[if_pos (Finset.mem_toList.2 (Finset.mem_univ _))]`. Conclude with `e`.
+
+Use `⟨fun τ => ⟨_, hsm τ⟩, fun τ => rfl, fun U hU => ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.RealEquiv.mult_realElt D V Sp θ M J χ U hU g hg v _ (fun τ => rfl), hb]`.
+-/
 theorem mult_equiv_real : ∀ (D : D7) (θ : InfFam D) (V : HSp D) (Sp : D.what₂.Tau → SPar) (M : DSModel V Sp) (J : Set (GA D V)) (χ : GA D V → ℂ), IsInfFam θ → ∀ (v : M.Vec) (b : GinfC V), ∃ w : M.Vec, (∀ τ, (w τ : M.H τ) = M.rep τ (infMat D.sp.cm.sig V.gram (θ τ) (b : GA D V)) (v τ : M.H τ)) ∧ ∀ U ∈ Mult θ M J χ, U w = rTr V (b : GA D V) (U v) := by
   intro D θ V Sp M J χ hθ v b
   classical

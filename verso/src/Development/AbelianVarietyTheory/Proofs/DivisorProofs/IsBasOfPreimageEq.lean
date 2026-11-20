@@ -8,6 +8,15 @@ set_option autoImplicit false
 
 namespace GlobalTheory.LBObs
 
+/- English proof (translation)
+Establish `hle : ∀ (t : C) (U : X.Opens), V₀ t ≤ i ⁻¹ᵁ U → V t ≤ U`. Introduce `t U htU z hz`. Take `⟨w, rfl⟩` from `i.surjective z`. Establish `hw : w ∈ V₀ t` using `by rw [← hV t]; exact hz`. Conclude with `htU hw`.
+
+Establish `hmem : ∀ (t : C) (y : X₀), y ∈ V₀ t → i y ∈ V t`. Introduce `t y hy`. Rewrite `hy` using `[← hV t]`. Conclude with `hy`. Establish `hmem' : ∀ (t : C) (y : X₀), i y ∈ V t → y ∈ V₀ t`.
+
+Introduce `t y hy`. Rewrite using `[← hV t]`. Conclude with `hy`. Use `⟨fun x U hx ↦ ?_, fun t₁ t₂ x U hx h₁ h₂ ↦ ?_⟩` and prove the remaining obligations. Take `⟨y, rfl⟩` from `i.surjective x`.
+
+Take `⟨t, hyt, htU⟩` from `h.1 y (i ⁻¹ᵁ U) hx`. Conclude with `⟨t, hmem t y hyt, hle t U htU⟩`. Take `⟨y, rfl⟩` from `i.surjective x`. Take `⟨t₃, a₁, a₂, hy₃, h₃U⟩` from `h.2 t₁ t₂ y (i ⁻¹ᵁ U) hx (hmem' t₁ y h₁) (hmem' t₂ y h₂)`. Conclude with `⟨t₃, a₁, a₂, hmem t₃ y hy₃, hle t₃ U h₃U⟩`.
+-/
 theorem isBas_of_preimage_eq (X X₀ : Scheme.{0}) (i : X₀ ⟶ X) [IsClosedImmersion i] [Surjective i] (C : Type)
     [Category.{0} C] (V : C → X.Opens) (V₀ : C → X₀.Opens) (hV : ∀ T, i ⁻¹ᵁ V T = V₀ T) (h : IsBas V₀) :
     IsBas V := by

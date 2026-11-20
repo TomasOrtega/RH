@@ -15,6 +15,11 @@ namespace GlobalTheory.CompanionTheory.ConcCount
 
 variable {K : Type} [Field K] [NumberField K] {n : ℕ}
 
+/- English proof (translation)
+Simplify using `only [map_mul, map_inv]`. Generalize the expression as in `detModule K n b = u`. Generalize the expression as in `detModule K n a = v`. Generalize the expression as in `detModule K n c = w`. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [mul_comm, mul_left_comm, mul_assoc]`. Use `_ = w := by simp`.
+-/
 theorem detModule_conj (b a c : AdelicGLn.AdelicGL K n) :
     detModule K n (b * a * c * a⁻¹ * b⁻¹) = detModule K n c := by
   simp only [map_mul, map_inv]
@@ -25,6 +30,17 @@ theorem detModule_conj (b a c : AdelicGLn.AdelicGL K n) :
         simp only [mul_comm, mul_left_comm, mul_assoc]
     _ = w := by simp
 
+/- English proof (translation)
+Establish `hdc : Continuous fun g : AdelicGLn.AdelicGL K n => (detModule K n g : ℝ)` using `continuous_subtype_val.comp continuous_detModule`. Take `⟨a, b, ha, -, hab⟩` from `Reduction.exists_pos_bounds hQ hdc (fun g _ => (detModule K n g).2)`. Establish `hN : 0 < (n : ℝ) * (Module.finrank ℚ K : ℝ)` using `mul_pos (Nat.cast_pos.2 hn) (Nat.cast_pos.2 Module.finrank_pos)`. Use `set N : ℝ := (n : ℝ) * (Module.finrank ℚ K : ℝ) with hNdef`. Use `⟨Finset.Icc ⌊Real.log a / N⌋ ⌈Real.log b / N⌉, ?_⟩` and prove the remaining obligations.
+
+Introduce `g x q hq γ₀ m h`. Establish `h1` using `congrArg (fun g => (detModule K n g : ℝ)) h`. Use `beta_reduce at h1`. Rewrite `h1` using `[GlobalTheory.CompanionTheory.Latexp.detModule_lhs, detModule_conj]`. Take `⟨h2, h3⟩` from `hab q hq`.
+
+Rewrite `h2`, `h3` using `[← h1]`. Establish `h4 : Real.log a ≤ (m : ℝ) * N` using `(Real.log_le_iff_le_exp ha).2 h2`. Establish `h5 : (m : ℝ) * N ≤ Real.log b`. Establish `hb : 0 < b` using `lt_of_lt_of_le (Real.exp_pos _) h3`. Conclude with `(Real.le_log_iff_exp_le hb).2 h3`.
+
+Rewrite using `[Finset.mem_Icc]`. Prove the components needed by the constructor for the conclusion. Establish `: Real.log a / N ≤ (m : ℝ)` using `(div_le_iff₀ hN).2 h4`. Conclude with `Int.cast_le.1 ((Int.floor_le _).trans this)`. Establish `: (m : ℝ) ≤ Real.log b / N` using `(le_div_iff₀ hN).2 h5`.
+
+Conclude with `Int.cast_le.1 (this.trans (Int.le_ceil _))`.
+-/
 theorem exponent_mem (hn : 0 < n) {Q : Set (AdelicGLn.AdelicGL K n)} (hQ : IsCompact Q) :
     ∃ M : Finset ℤ, ∀ (b : AdelicGLn.AdelicGL K n) (x : Fin n → ℝ), ∀ c ∈ Q, ∀ (γ₀ : GL (Fin n) K) (m : ℤ),
       AdelicGLn.diagonal K n γ₀ * count.cen K n ^ m = b * An.tor K x * c * (An.tor K x)⁻¹ * b⁻¹ → m ∈ M := by
@@ -52,6 +68,13 @@ theorem exponent_mem (hn : 0 < n) {Q : Set (AdelicGLn.AdelicGL K n)} (hQ : IsCom
   · have : (m : ℝ) ≤ Real.log b / N := (le_div_iff₀ hN).2 h5
     exact Int.cast_le.1 (this.trans (Int.le_ceil _))
 
+/- English proof (translation)
+Use `⟨⋃ i : Fin n, ⋃ j : Fin n, (fun p : AdelicGLn.AdelicGL K n × AdelicGLn.AdelicGL K n => ((AdelicGLn.prodEquiv K n (p.1 * p.2 * p.1⁻¹)).2 : Matrix (Fin n) (Fin n) (FiniteAdeleRing (𝓞 K) K)) i j) '' (W ×ˢ Q), ?_, ?_⟩` and prove the remaining obligations. Use `isCompact_iUnion fun i => isCompact_iUnion fun j => (hW.prod hQ).image ?_` and prove the remaining obligations. Conclude with `((continuous_apply j).comp (continuous_apply i)).comp (Units.continuous_val.comp (continuous_snd.comp ((AdelicGLn.prodEquiv K n).continuous.comp ((continuous_fst.mul continuous_snd).mul continuous_fst.inv))))`. Introduce `x b hb c hc γ hγ i j`. Establish `hA : (AdelicGLn.prodEquiv K n (An.tor K x)).2 = 1` using `prodEquiv_diagUnits_posIdele_snd _ _`.
+
+Establish `e1 : algebraMap K (FiniteAdeleRing (𝓞 K) K) ((γ : Matrix (Fin n) (Fin n) K) i j) = ((AdelicGLn.prodEquiv K n (b * An.tor K x * c * (An.tor K x)⁻¹ * b⁻¹)).2 : Matrix (Fin n) (Fin n) (FiniteAdeleRing (𝓞 K) K)) i j`. Rewrite using `[← hγ, AdelicGLn.prodEquiv_apply_snd, AdelicGLn.diagonal_apply]`. Both sides reduce to the same expression. Rewrite using `[e1]`. Use `Set.mem_iUnion₂.2 ⟨i, j, (b, c), ⟨hb, hc⟩, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [map_mul, map_inv, Prod.snd_mul, Prod.snd_inv, hA, mul_one, inv_one]`.
+-/
 theorem exists_fin_bound {W Q : Set (AdelicGLn.AdelicGL K n)} (hW : IsCompact W) (hQ : IsCompact Q) :
     ∃ 𝒦 : Set (FiniteAdeleRing (𝓞 K) K), IsCompact 𝒦 ∧ ∀ x : Fin n → ℝ, ∀ b ∈ W, ∀ c ∈ Q, ∀ γ : GL (Fin n) K,
       AdelicGLn.diagonal K n γ = b * An.tor K x * c * (An.tor K x)⁻¹ * b⁻¹ →
@@ -76,6 +99,13 @@ theorem exists_fin_bound {W Q : Set (AdelicGLn.AdelicGL K n)} (hW : IsCompact W)
     refine Set.mem_iUnion₂.2 ⟨i, j, (b, c), ⟨hb, hc⟩, ?_⟩
     simp only [map_mul, map_inv, Prod.snd_mul, Prod.snd_inv, hA, mul_one, inv_one]
 
+/- English proof (translation)
+Take `⟨β₁, hβ₁0, hβ₁⟩` from `exists_norm_infAt_entry_le hW`. Take `⟨β₂, hβ₂0, hβ₂⟩` from `exists_norm_infAt_entry_le hQ`. Take `⟨β₃, hβ₃0, hβ₃⟩` from `exists_norm_infAt_entry_le (hW.image (continuous_inv (G := AdelicGLn.AdelicGL K n)))`. Use `⟨(n : ℝ) ^ 2 * (β₁ * β₂ * β₃), by positivity, ?_⟩` and prove the remaining obligations. Introduce `x L hL0 hL b hb c hc γ hγ i j w`.
+
+Establish `e1 : w ((γ : Matrix (Fin n) (Fin n) K) i j) = ‖(infAt w (b * An.tor K x * c * (An.tor K x)⁻¹ * b⁻¹) : Matrix (Fin n) (Fin n) w.Completion) i j‖`. Rewrite using `[infAt_apply, ← hγ, AdelicGLn.diagonal_apply, ← GroundTheory.Global.norm_algebraMap_apply]`. Both sides reduce to the same expression. Rewrite using `[e1]`. Establish `key` using `count.norm_entry_le w b c b⁻¹ x (L := L) i j (hβ₁ b hb w) (hβ₂ c hc w) (hβ₃ _ ⟨b, hb, rfl⟩ w) hβ₁0 hβ₂0 hβ₃0 hL0 (fun l m _ _ => hL l m)`.
+
+Use `le_trans key (le_of_eq ?_)` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_inf_bound {W Q : Set (AdelicGLn.AdelicGL K n)} (hW : IsCompact W) (hQ : IsCompact Q) :
     ∃ β : ℝ, 0 ≤ β ∧ ∀ (x : Fin n → ℝ) (L : ℝ), 0 ≤ L → (∀ l m, Real.exp (x l) / Real.exp (x m) ≤ L) →
       ∀ b ∈ W, ∀ c ∈ Q, ∀ γ : GL (Fin n) K,
@@ -97,6 +127,13 @@ theorem exists_inf_bound {W Q : Set (AdelicGLn.AdelicGL K n)} (hW : IsCompact W)
   refine le_trans key (le_of_eq ?_)
   ring
 
+/- English proof (translation)
+Proceed by induction on `j, hij using Nat.le_induction with`. Consider the case `base => simp`. Consider the case `succ j hij ih`. Establish `hj' : j < n` using `by omega`. Rewrite using `[Finset.sum_Ioc_succ_top hij, ← ih hj']`.
+
+Establish `: An.sr x (j + 1) = x ⟨j, hj'⟩ - x ⟨j + 1, hj⟩`. Unfold `An.sr`. Rewrite using `[dif_pos ⟨by omega, hj⟩]`. Both sides reduce to the same expression. Rewrite using `[this]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sub_eq_sum (x : Fin n → ℝ) (i j : ℕ) (hij : i ≤ j) (hj : j < n) :
     x ⟨i, by omega⟩ - x ⟨j, hj⟩ = ∑ r ∈ Finset.Ioc i j, An.sr x r := by
   induction j, hij using Nat.le_induction with
@@ -111,6 +148,19 @@ theorem sub_eq_sum (x : Fin n → ℝ) (i j : ℕ) (hij : i ≤ j) (hj : j < n) 
     rw [this]
     ring
 
+/- English proof (translation)
+Establish `hf : ∀ r, 0 ≤ An.sr x r + t` using `fun r => by linarith [ht r]`. Establish `htot : ∑ r ∈ Finset.range n, (An.sr x r + t) = ∑ r ∈ Finset.range n, An.sr x r + n * t`. Rewrite using `[Finset.sum_add_distrib, Finset.sum_const, Finset.card_range, nsmul_eq_mul]`. Establish `hnn : 0 ≤ ∑ r ∈ Finset.range n, An.sr x r + n * t` using `htot ▸ Finset.sum_nonneg fun r _ => hf r`. Establish `hnt : 0 ≤ (n : ℝ) * t` using `by positivity`.
+
+Break down `le_total (l : ℕ) (m : ℕ) with h | h` into its components or cases. Establish `e` using `sub_eq_sum x l m h m.2`. Establish `hsub : Finset.Ioc (l : ℕ) m ⊆ Finset.range n` using `fun r hr => by`. Use `Finset.mem_Ioc.1 hr` as an intermediate fact. Use `m.2` as an intermediate fact.
+
+Conclude with `Finset.mem_range.2 (by omega)`. Establish `h1 : ∑ r ∈ Finset.Ioc (l : ℕ) m, An.sr x r ≤ ∑ r ∈ Finset.Ioc (l : ℕ) m, (An.sr x r + t)` using `Finset.sum_le_sum fun r _ => by linarith`. Establish `h2` using `Finset.sum_le_sum_of_subset_of_nonneg (f := fun r => An.sr x r + t) hsub (fun r _ _ => hf r)`. Establish `e' : x l - x m = ∑ r ∈ Finset.Ioc (l : ℕ) m, An.sr x r` using `e`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `e` using `sub_eq_sum x m l h l.2`. Establish `e' : x m - x l = ∑ r ∈ Finset.Ioc (m : ℕ) l, An.sr x r` using `e`. Establish `h1 : -(((Finset.Ioc (m : ℕ) l).card : ℝ) * t) ≤ ∑ r ∈ Finset.Ioc (m : ℕ) l, An.sr x r`. Use `Finset.card_nsmul_le_sum (Finset.Ioc (m : ℕ) l) (fun r => An.sr x r) (-t) (fun r _ => ht r)` as an intermediate fact. Simplify using `using this`.
+
+Establish `h2 : ((Finset.Ioc (m : ℕ) l).card : ℝ) * t ≤ n * t`. Use `mul_le_mul_of_nonneg_right ?_ ht0` and prove the remaining obligations. Rewrite using `[Nat.card_Ioc]`. Use `l.2` as an intermediate fact. Conclude with `(by omega : (l : ℕ) - m ≤ n)` after adjusting the coercions.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem sub_le_sum (x : Fin n → ℝ) {t : ℝ} (ht0 : 0 ≤ t) (ht : ∀ r, -t ≤ An.sr x r) (l m : Fin n) :
     x l - x m ≤ ∑ r ∈ Finset.range n, An.sr x r + 2 * n * t := by
   have hf : ∀ r, 0 ≤ An.sr x r + t := fun r => by linarith [ht r]
@@ -141,6 +191,43 @@ theorem sub_le_sum (x : Fin n → ℝ) {t : ℝ} (ht0 : 0 ≤ t) (ht : ∀ r, -t
       exact_mod_cast (by omega : (l : ℕ) - m ≤ n)
     linarith
 
+/- English proof (translation)
+Use `set c := count.cen K n with hc`. Use `set Qc : Set (AdelicGLn.AdelicGL K n) := (fun p : AdelicGLn.AdelicGL K n × AdelicGLn.AdelicGL K n × AdelicGLn.AdelicGL K n => p.1 * p.2.1 * p.2.2⁻¹ * p.1⁻¹) '' (Q ×ˢ Q' ×ˢ Q') with hQc_def`. Establish `hQc : IsCompact Qc` using `(hQ.prod (hQ'.prod hQ')).image (((continuous_fst.mul (continuous_fst.comp continuous_snd)).mul (continuous_snd.comp continuous_snd).inv).mul continuous_fst.inv)`. Take `⟨M, hM⟩` from `exponent_mem hn hQc`. Use `set Qd : Set (AdelicGLn.AdelicGL K n) := ⋃ m ∈ M, (fun q => c ^ (-m) * q) '' Qc with hQd_def`.
+
+Establish `hQd : IsCompact Qd` using `M.isCompact_biUnion fun m _ => hQc.image (continuous_const.mul continuous_id)`. Take `⟨𝒦, h𝒦, hfinb⟩` from `exists_fin_bound hω hQd`. Take `⟨β, hβ, hinfb⟩` from `exists_inf_bound hω hQd`. Take `⟨C₀, hC₀, hbox⟩` from `count.exists_ncard_box_le K n h𝒦`. Use `set d := Module.finrank ℚ K with hd`.
+
+Use `set t : ℝ := |t₀| with ht`. Establish `ht0 : 0 ≤ t` using `abs_nonneg _`. Use `set A : ℝ := Real.exp (n * t) + β * Real.exp (2 * n * t) with hA`. Establish `hA0 : 0 ≤ A` using `by positivity`. Use `⟨M.card * (C₀ ^ (n * n) * A ^ (d * (n * n))), fun b hb x hx q hq => ?_⟩` and prove the remaining obligations.
+
+Establish `hx' : ∀ r, -t ≤ An.sr x r` using `fun r => by`. Use `le_abs_self t₀` as an intermediate fact. Combine the linear relations using `[hx r]`. Use `set S : ℝ := ∑ r ∈ Finset.range n, An.sr x r with hS`. Establish `hSnn : 0 ≤ S + n * t`.
+
+Establish `h1 : ∑ r ∈ Finset.range n, (An.sr x r + t) = S + n * t`. Rewrite using `[Finset.sum_add_distrib, Finset.sum_const, Finset.card_range, nsmul_eq_mul]`. Rewrite using `[← h1]`. Conclude with `Finset.sum_nonneg fun r _ => by linarith [hx' r]`. Use `set L : ℝ := Real.exp (S + 2 * n * t) with hL`.
+
+Establish `hL0 : 0 ≤ L` using `(Real.exp_pos _).le`. Establish `hratio : ∀ l m, Real.exp (x l) / Real.exp (x m) ≤ L` using `fun l m => by`. Rewrite using `[← Real.exp_sub]`. Conclude with `Real.exp_le_exp.2 (sub_le_sum x ht0 hx' l m)`. Use `set T : Fin n → Fin n → ℝ := fun _ _ => β * L with hT`.
+
+Take `⟨hfin, hcard⟩` from `hbox T (fun i j => by simp only [T]; positivity)`. Use `set B := hfin.toFinset`. Use `set g : ℤ × GL (Fin n) K → AdelicGLn.AdelicGL K n := fun p => AdelicGLn.diagonal K n p.2 * c ^ p.1`. Use `set St := {γ : AdelicGLn.AdelicGL K n | γ ∈ An.lat K n ∧ ∃ a ∈ Q', ∃ a' ∈ Q', γ = (b * An.tor K x * q) * a * a'⁻¹ * (b * An.tor K x * q)⁻¹}`. Establish `hsub : St ⊆ (((M ×ˢ B).image g : Finset _) : Set (AdelicGLn.AdelicGL K n))`.
+
+Introduce and unpack `γ ⟨hγl, a, ha, a', ha', hγ⟩`. Take `⟨γ₀, m, hγm⟩` from `count.mem_lat hγl`. Use `set cc := q * a * a'⁻¹ * q⁻¹ with hcc_def`. Establish `hcc : cc ∈ Qc` using `⟨(q, a, a'), ⟨hq, ha, ha'⟩, rfl⟩`. Establish `hγ' : γ = b * An.tor K x * cc * (An.tor K x)⁻¹ * b⁻¹`.
+
+Rewrite using `[hγ, hcc_def]`. Use `group`. Establish `hm : m ∈ M` using `hM b x cc hcc γ₀ m (hγm.symm.trans hγ')`. Establish `h0 : AdelicGLn.diagonal K n γ₀ = b * An.tor K x * (c ^ (-m) * cc) * (An.tor K x)⁻¹ * b⁻¹`. Establish `e1 : AdelicGLn.diagonal K n γ₀ = γ * c ^ (-m)`.
+
+Rewrite using `[hγm, mul_assoc, ← _root_.zpow_add, add_neg_cancel, zpow_zero, mul_one]`. Rewrite using `[e1, hγ']`. Establish `e2` using `count.cen_zpow_comm (-m) (cc * (An.tor K x)⁻¹ * b⁻¹)`. Simplify using `only [mul_assoc] at e2 ⊢`. Rewrite using `[e2]`.
+
+Establish `hq' : c ^ (-m) * cc ∈ Qd` using `Set.mem_biUnion hm ⟨cc, hcc, rfl⟩`. Establish `hB : γ₀ ∈ B`. Rewrite using `[Set.Finite.mem_toFinset]`. Introduce `i j`. Conclude with `⟨hfinb x b hb _ hq' γ₀ h0 i j, fun w => hinfb x L hL0 hratio b hb _ hq' γ₀ h0 i j w⟩`.
+
+Rewrite using `[Finset.coe_image]`. Conclude with `⟨(m, γ₀), Finset.mem_coe.2 (Finset.mem_product.2 ⟨hm, hB⟩), hγm.symm⟩`. Establish `h1T : 1 + β * L ≤ A * Real.exp S`. Establish `e1 : (1 : ℝ) ≤ Real.exp (n * t) * Real.exp S`. Rewrite using `[← Real.exp_add]`.
+
+Conclude with `Real.one_le_exp (by linarith)`. Establish `e2 : L = Real.exp (2 * n * t) * Real.exp S`. Rewrite using `[hL, ← Real.exp_add, add_comm]`. Rewrite using `[e2, hA]`. Use the polynomial consequences of the given equalities and inequalities.
+
+Establish `hB : (B.card : ℝ) ≤ C₀ ^ (n * n) * A ^ (d * (n * n)) * Real.exp (((n : ℝ) ^ 2 * (d : ℝ)) * S)`. Rewrite using `[← Set.ncard_eq_toFinset_card _ hfin]`. Use `hcard.trans ?_` and prove the remaining obligations. Simplify using `only [T, Finset.prod_const, Finset.card_univ, Fintype.card_fin]`. Rewrite using `[← pow_mul]`.
+
+Establish `e3 : Real.exp (((n : ℝ) ^ 2 * (d : ℝ)) * S) = Real.exp S ^ (d * (n * n))`. Rewrite using `[← Real.exp_nat_mul]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[e3, mul_assoc, ← mul_pow]`. Rewrite using `[mul_pow]`. Use `mul_le_mul_of_nonneg_left ?_ (pow_nonneg hC₀ _)` and prove the remaining obligations. Rewrite using `[← pow_mul]`. Conclude with `pow_le_pow_left₀ (by positivity) h1T _`.
+
+Establish `hnat : (((M ×ˢ B).image g).card : ℝ) ≤ M.card * (C₀ ^ (n * n) * A ^ (d * (n * n))) * Real.exp (((n : ℝ) ^ 2 * (d : ℝ)) * S)`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Use `Nat.le_ceil (M.card * (C₀ ^ (n * n) * A ^ (d * (n * n))) * Real.exp (((n : ℝ) ^ 2 * (d : ℝ)) * S))` as an intermediate fact. Establish `h2 : ((M ×ˢ B).image g).card ≤ ⌈M.card * (C₀ ^ (n * n) * A ^ (d * (n * n))) * Real.exp (((n : ℝ) ^ 2 * (d : ℝ)) * S)⌉₊`.
+
+Conclude with `hnat.trans this` after adjusting the coercions. Conclude with `h2` after adjusting the coercions.
+-/
 theorem count_core (hn : 0 < n) {Q' ω Q : Set (AdelicGLn.AdelicGL K n)} (t₀ : ℝ) (hQ' : IsCompact Q')
     (hω : IsCompact ω) (hQ : IsCompact Q) :
     ∃ C : ℝ, ∀ b ∈ ω, ∀ x : Fin n → ℝ, (∀ r, -t₀ ≤ An.sr x r) → ∀ q ∈ Q,
@@ -248,6 +335,15 @@ theorem count_core (hn : 0 < n) {Q' ω Q : Set (AdelicGLn.AdelicGL K n)} (t₀ :
         exact_mod_cast hnat.trans this
       exact_mod_cast h2
 
+/- English proof (translation)
+Introduce `E _ _ _ N`. Use `⟨(N : ℝ) ^ 2 * (Module.finrank ℚ E : ℝ), by positivity, ?_⟩` and prove the remaining obligations. Introduce `Q' ω t₀ Q hQ' hω _ hQ`. Establish `hS : splitCentre E N 1 = An.tor E fun _ => 1` using `(PositivityTheory.Rg.Rs.JDict.tor_const N 1).symm`. Establish `hLat : latticeGL E N = An.lat E N`.
+
+Unfold `latticeGL An.lat`. Rewrite using `[hS]`. Both sides reduce to the same expression. Break down `Nat.eq_zero_or_pos N with rfl | hN` into its components or cases. Use `⟨1, fun b _ x _ q _ => ?_⟩` and prove the remaining obligations.
+
+Establish `hsub : Subsingleton (GA E 0)` using `⟨fun u v => Units.ext (Subsingleton.elim _ _)⟩`. Use `(Set.encard_le_one_iff_subsingleton.2 (Set.subsingleton_of_subsingleton)).trans ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Take `⟨C, hC⟩` from `count_core (K := E) hN (Q' := Q') (ω := ω) (Q := Q) t₀ hQ' hω hQ`. Use `⟨C, fun b hb x hx q hq => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hLat]`. Conclude with `hC b hb x hx q hq`.
+-/
 theorem count_conj_siegel : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (N : ℕ), ∃ M : ℝ, 0 ≤ M ∧ ∀ (Q' : Set (GA E N)) (ω : Set (GA E N)) (t₀ : ℝ)
   (Q : Set (GA E N)), IsCompact Q' → IsCompact ω → ω ⊆ (adelicBorel (K := E) (n := N) : Set _) → IsCompact Q → ∃ C : ℝ, ∀ b ∈ ω, ∀ x : Fin N → ℝ,
     (∀ r, -t₀ ≤ An.sr x r) → ∀ q ∈ Q,

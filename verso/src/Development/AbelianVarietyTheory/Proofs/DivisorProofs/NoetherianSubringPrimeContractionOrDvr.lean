@@ -21,6 +21,35 @@ noncomputable section
 
 namespace GlobalTheory.PrimeReach
 
+/- English proof (translation)
+Introduce `R _ R₁ _ p`. Distinguish the cases in `hp : p ∈ Set.range (PrimeSpectrum.comap R₁.subtype)`. Conclude with `Or.inl hp`. Use `right`. Use `haveI := p.isPrime`.
+
+Take `⟨q, hq, hqp⟩` from `Ideal.exists_minimalPrimes_le (I := (⊥ : Ideal R₁)) (J := p.asIdeal) bot_le`. Take `⟨P, hP, hPq⟩` from `Ideal.exists_comap_eq_of_mem_minimalPrimes_of_injective (f := R₁.subtype) Subtype.val_injective q hq`. Set `Q : PrimeSpectrum R` to `⟨P, hP⟩`. Use `haveI hqpr : q.IsPrime := hq.1.1`. Set `f₀ : R₁ →+* Q.asIdeal.ResidueField` to `(algebraMap R Q.asIdeal.ResidueField).comp R₁.subtype`.
+
+Establish `hker : RingHom.ker f₀ = q`. Rewrite using `[← hPq]`. Use extensionality with `x`. Simplify using `only [f₀, RingHom.mem_ker, RingHom.comp_apply, Ideal.mem_comap]`. Conclude with `(Ideal.algebraMap_residueField_eq_zero).trans Iff.rfl`.
+
+Set `A` to `R₁ ⧸ q`. Set `g₀ : A →+* Q.asIdeal.ResidueField` to `Ideal.Quotient.lift q f₀ (fun a ha => by rw [← RingHom.mem_ker, hker]; exact ha)`. Establish `hg₀ : Function.Injective g₀`. Rewrite using `[RingHom.injective_iff_ker_eq_bot, eq_bot_iff]`. Introduce `x hx`.
+
+Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Rewrite `hx` using `[RingHom.mem_ker, Ideal.Quotient.lift_mk, ← RingHom.mem_ker, hker]`. Conclude with `(Submodule.mem_bot _).2 (Ideal.Quotient.eq_zero_iff_mem.2 hx)`. Set `k` to `FractionRing A`. Set `i : R₁ →+* k` to `(algebraMap A k).comp (Ideal.Quotient.mk q)`.
+
+Set `j : k →+* Q.asIdeal.ResidueField` to `IsFractionRing.lift hg₀`. Establish `hji : j.comp i = f₀`. Use extensionality with `x`. Simplify using `only [i, j, RingHom.comp_apply, IsFractionRing.lift_algebraMap]`. Both sides reduce to the same expression.
+
+Set `p' : Ideal A` to `p.asIdeal.map (Ideal.Quotient.mk q)`. Use `haveI hp' : p'.IsPrime := Ideal.map_isPrime_of_surjective Ideal.Quotient.mk_surjective (by rw [Ideal.mk_ker]; exact hqp)`. Establish `hcp' : p'.comap (Ideal.Quotient.mk q) = p.asIdeal`. Rewrite using `[Ideal.comap_map_of_surjective _ Ideal.Quotient.mk_surjective, ← RingHom.ker_eq_comap_bot, Ideal.mk_ker]`. Conclude with `sup_eq_left.2 hqp`.
+
+Set `O` to `Localization.AtPrime p'`. Use `haveI : IsDomain O := IsLocalization.isDomain_localization p'.primeCompl_le_nonZeroDivisors`. Establish `hOinj : Function.Injective (algebraMap A O)` using `IsLocalization.injective O p'.primeCompl_le_nonZeroDivisors`. Establish `hcm : (IsLocalRing.maximalIdeal O).comap (algebraMap A O) = p'` using `Localization.AtPrime.comap_maximalIdeal`. Establish `hnf : ¬ IsField O`.
+
+Introduce `hF`. Apply `hp` to reduce the goal to its premises. Establish `hm : IsLocalRing.maximalIdeal O = ⊥`. Use `letI := hF.toField`. Conclude with `IsLocalRing.maximalIdeal_eq_bot`.
+
+Establish `h1 : p' = ⊥`. Rewrite using `[← hcm, hm, ← RingHom.ker_eq_comap_bot, (RingHom.injective_iff_ker_eq_bot _).1 hOinj]`. Use `⟨Q, PrimeSpectrum.ext ?_⟩` and prove the remaining obligations. Use `show P.comap R₁.subtype = p.asIdeal`. Rewrite using `[hPq, ← hcp', h1, ← RingHom.ker_eq_comap_bot, Ideal.mk_ker]`.
+
+Take `⟨V, _, _, _, ρ₀, hρinj, hρloc⟩` from `GlobalTheory.KTrivSpread.exists_dvr O hnf`. Set `ρ : R₁ →+* V` to `ρ₀.comp ((algebraMap A O).comp (Ideal.Quotient.mk q))`. Set `g' : A →+* FractionRing V` to `(algebraMap V (FractionRing V)).comp (ρ₀.comp (algebraMap A O))`. Establish `hg' : Function.Injective g'` using `(IsFractionRing.injective V (FractionRing V)).comp (hρinj.comp hOinj)`. Set `e : k →+* FractionRing V` to `IsFractionRing.lift hg'`.
+
+Use `⟨Q, k, inferInstance, i, j, V, inferInstance, inferInstance, inferInstance, ρ, e, hji, ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Simplify using `only [e, i, ρ, RingHom.comp_apply, IsFractionRing.lift_algebraMap]`. Both sides reduce to the same expression. Establish `hmV : (IsLocalRing.maximalIdeal V).comap ρ₀ = IsLocalRing.maximalIdeal O`.
+
+Use `le_antisymm (IsLocalRing.le_maximalIdeal (Ideal.comap_ne_top _ (IsLocalRing.maximalIdeal.isMaximal V).ne_top)) ?_` and prove the remaining obligations. Introduce `x hx`. Rewrite using `[Ideal.mem_comap, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Introduce `hu`. Conclude with `(IsLocalRing.mem_maximalIdeal x).1 hx (isUnit_of_map_unit ρ₀ x hu)`.
+
+Use `⟨⟨IsLocalRing.maximalIdeal V, inferInstance⟩, PrimeSpectrum.ext ?_⟩` and prove the remaining obligations. Use `show (IsLocalRing.maximalIdeal V).comap ρ = p.asIdeal`. Rewrite using `[show ρ = (ρ₀.comp (algebraMap A O)).comp (Ideal.Quotient.mk q) from rfl, ← Ideal.comap_comap, ← Ideal.comap_comap, hmV, hcm, hcp']`.
+-/
 theorem prime_contraction_or_dvr : ∀ (R : Type) [CommRing R] (R₁ : Subring R) [IsNoetherianRing R₁] (p : PrimeSpectrum R₁), p ∈ Set.range (PrimeSpectrum.comap R₁.subtype) ∨ ∃ (Q : PrimeSpectrum R) (k : Type) (_ : Field k) (i : R₁ →+* k) (j : k →+* Q.asIdeal.ResidueField) (V : Type) (_ : CommRing V) (_ : IsDomain V) (_ : IsDiscreteValuationRing V) (ρ : R₁ →+* V) (e : k →+* FractionRing V), j.comp i = (algebraMap R Q.asIdeal.ResidueField).comp R₁.subtype ∧ e.comp i = (algebraMap V (FractionRing V)).comp ρ ∧ p ∈ Set.range (PrimeSpectrum.comap ρ) := by
   intro R _ R₁ _ p
   by_cases hp : p ∈ Set.range (PrimeSpectrum.comap R₁.subtype)

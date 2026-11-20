@@ -16,6 +16,11 @@ noncomputable section
 
 namespace PositivityTheory.Xgn.TestGroupPoint
 
+/- English proof (translation)
+Use `AddSubgroup.closure_induction (fun x hx => ?_) ?_ (fun x y _ _ h1 h2 => ?_) (fun x _ h => ?_) hx` and prove the remaining obligations. Take `⟨b, hb, e, he, rfl⟩` from `hx`. Conclude with `AddSubgroup.subset_closure ⟨a * b, RC.mul_mem ha hb, e, he, smul_smul a b e⟩`. Rewrite using `[smul_zero]`. Conclude with `AddSubgroup.zero_mem _`.
+
+Rewrite using `[smul_add]`. Conclude with `AddSubgroup.add_mem _ h1 h2`. Rewrite using `[smul_neg]`. Conclude with `AddSubgroup.neg_mem _ h`.
+-/
 theorem smul_mem_spanOver {o C V : Type} [CommRing o] [Field C] [Algebra o C] [AddCommGroup V] [Module C V]
     (RC : Subalgebra o C) (S : Set V) {a : C} (ha : a ∈ RC) {x : V} (hx : x ∈ spanOver RC S) :
     a • x ∈ spanOver RC S := by
@@ -26,6 +31,11 @@ theorem smul_mem_spanOver {o C V : Type} [CommRing o] [Field C] [Algebra o C] [A
   · rw [smul_add]; exact AddSubgroup.add_mem _ h1 h2
   · rw [smul_neg]; exact AddSubgroup.neg_mem _ h
 
+/- English proof (translation)
+Take `⟨n, t, ht⟩` from `Module.Finite.exists_fin' A M`. Take `⟨s, hs⟩` from `Module.projective_lifting_property t LinearMap.id ht`. Use `⟨n, fun i => t (Pi.single i 1), fun i => LinearMap.proj i ∘ₗ s, fun m => ?_⟩` and prove the remaining obligations. Establish `h` using `LinearMap.congr_fun hs m`. Rewrite `h` using `[LinearMap.comp_apply, LinearMap.id_apply]`.
+
+Use `conv_rhs => rw [← h, pi_eq_sum_univ' (s m), map_sum]`. Simplify using `only [map_smul, LinearMap.comp_apply, LinearMap.proj_apply]`.
+-/
 theorem exists_dual_family (A M : Type) [CommRing A] [AddCommGroup M] [Module A M] [Module.Finite A M]
     [Module.Projective A M] :
     ∃ (n : ℕ) (e : Fin n → M) (f : Fin n → Module.Dual A M), ∀ m, ∑ i, f i m • e i = m := by
@@ -37,6 +47,49 @@ theorem exists_dual_family (A M : Type) [CommRing A] [AddCommGroup M] [Module A 
   conv_rhs => rw [← h, pi_eq_sum_univ' (s m), map_sum]
   simp only [map_smul, LinearMap.comp_apply, LinearMap.proj_apply]
 
+/- English proof (translation)
+Establish `hadd : ∀ x (u u' : Fin g → RC), ev x (fun j => ((u + u') j : C)) = ev x (fun j => (u j : C)) + ev x fun j => (u' j : C)` using `fun x u u' => by`. Rewrite using `[← map_add]`. Both sides reduce to the same expression. Establish `hsm : ∀ x (s : RC) (u : Fin g → RC), ev x (fun j => ((s • u) j : C)) = (s : C) * ev x (fun j => (u j : C))` using `fun x s u => by`. Rewrite using `[← smul_eq_mul, ← map_smul]`.
+
+Both sides reduce to the same expression. Establish `hzero : ∀ x, ev x (fun j => ((0 : Fin g → RC) j : C)) = 0` using `fun x => map_zero (ev x)`. Establish `hall : ∀ u : Fin g → RC, u ∈ Submodule.span RC (Set.range io)` using `fun u => by rw [hio]; trivial`. Establish `hdd : ∀ m, m ∈ dotDual R W ↔ ∀ l ∈ W, l ⬝ᵥ m ∈ R` using `fun m => by`. Simplify using `only [dotDual, AddSubgroup.mem_iInf]`.
+
+Both sides reduce to the same expression. Use `⟨fun z => ⟨fun hz => ?_, ?_⟩, fun a => ⟨fun ha u => ?_, fun ha => ?_⟩⟩` and prove the remaining obligations. Use `AddSubgroup.closure_induction (p := fun z _ => ∃ u : Fin g → RC, ∀ k, z k = ev (b k) fun j => (u j : C)) ?_ ⟨0, fun k => (hzero _).symm⟩ ?_ ?_ hz` and prove the remaining obligations. Introduce and unpack `_ ⟨s, hs, _, ⟨m, hm, rfl⟩, rfl⟩`. Set `U : Module.Dual Ω Li` to `(Fintype.linearCombination Ω m) ∘ₗ co`.
+
+Establish `hU : ∀ x, U x = co x ⬝ᵥ m` using `fun x => by`. Simplify using `[U, Fintype.linearCombination_apply, dotProduct]`. Set `w₀ : Module.Dual R L` to `{ toFun := fun v => ⟨U (toLi v), by rw [hU]; exact (hdd m).1 hm _ (hW1 v)⟩ map_add' := fun a b => Subtype.ext (by simp) map_smul' := fun a b => Subtype.ext (by`. Express the relevant statement in the definitionally equal form `U (toLi (a • b)) = (a : Ω) * U (toLi b)`. Rewrite using `[toLi.map_smul, ← smul_eq_mul, ← U.map_smul]`.
+
+Use the proof step `rfl) }`. Establish `hjw : j w₀ = U` using `hbc.algHom_ext _ _ fun v => by rw [hj]; rfl`. Use `⟨(⟨s, hs⟩ : RC) • io ⟨U, by rw [hom]; exact ⟨w₀, hjw⟩⟩, fun k => ?_⟩` and prove the remaining obligations. Rewrite using `[hsm, hev]`. Express the relevant statement in the definitionally equal form `s * algebraMap Ω C (m k) = s * algebraMap Ω C (U (b k))`.
+
+Rewrite using `[hU, hco, single_one_dotProduct]`. Introduce and unpack `x y _ _ ⟨u, hu⟩ ⟨u', hu'⟩`. Conclude with `⟨u + u', fun k => by rw [hadd, ← hu, ← hu']; rfl⟩`. Introduce and unpack `x _ ⟨u, hu⟩`. Conclude with `⟨(-1 : RC) • u, fun k => by rw [hsm, ← hu]; simp⟩`.
+
+Introduce and unpack `⟨u, hu⟩`. Take `rfl : z = fun k => ev (b k) fun j => (u j : C)` from `funext hu`. Use `clear hu`. Proceed by induction on `hall u using Submodule.span_induction with`. Consider the case `mem _ h`.
+
+Take `⟨y, rfl⟩` from `h`. Use `AddSubgroup.subset_closure ⟨1, RC.one_mem, _, ⟨fun k => y.1 (b k), (hdd _).2 fun l hl => ?_, rfl⟩, ?_⟩` and prove the remaining obligations. Use `hW2 l hl y.1 y.2` as an intermediate fact. Rewrite `this` using `[map_sum]`. Simplify `this` using `only [map_smul, smul_eq_mul, dotProduct]`.
+
+Rewrite using `[one_smul]`. Conclude with `funext fun k => hev _ _`. Consider the case `zero => simp only [hzero]`. Conclude with `AddSubgroup.zero_mem _`. Consider the case `add x y _ _ hx hy => simp only [hadd]`.
+
+Conclude with `AddSubgroup.add_mem _ hx hy`. Consider the case `smul s x _ hx => simp only [hsm]`. Conclude with `smul_mem_spanOver RC _ s.2 hx`. Use `AddSubgroup.closure_induction (p := fun a _ => ∑ k, a k * ev (b k) (fun j => (u j : C)) ∈ RC) ?_ (by simp) ?_ ?_ ha` and prove the remaining obligations. Introduce and unpack `_ ⟨s, hs, _, ⟨a₀, ha₀, rfl⟩, rfl⟩`.
+
+Establish `key : ∑ k, algebraMap Ω C (a₀ k) * ev (b k) (fun j => (u j : C)) ∈ RC`. Use `Submodule.span_induction (p := fun u _ => ∑ k, algebraMap Ω C (a₀ k) * ev (b k) (fun j => ((u : Fin g → RC) j : C)) ∈ RC) ?_ ?_ ?_ ?_ (hall u)` and prove the remaining obligations. Introduce and unpack `_ ⟨y, rfl⟩`. Use `hR _ (hW2 a₀ ha₀ y.1 y.2)` as an intermediate fact. Rewrite `this` using `[map_sum, map_sum]`.
+
+Simplify `this` using `only [map_smul, smul_eq_mul, map_mul, hev]`. Simplify using `only [hzero, mul_zero, Finset.sum_const_zero]`. Conclude with `RC.zero_mem`. Introduce `x y _ _ hx hy`. Simplify using `only [hadd, mul_add, Finset.sum_add_distrib]`.
+
+Conclude with `RC.add_mem hx hy`. Introduce `s x _ hx`. Simplify using `only [hsm, mul_left_comm _ (s : C), ← Finset.mul_sum]`. Conclude with `RC.mul_mem s.2 hx`. Use `RC.mul_mem hs key` as an intermediate fact.
+
+Rewrite `this` using `[Finset.mul_sum]`. Use `this using 2 with k` and compare the differences between its conclusion and the goal. Conclude with `_root_.mul_assoc _ _ _`. Introduce `x y _ _ hx hy`. Simplify using `only [Pi.add_apply, add_mul, Finset.sum_add_distrib]`.
+
+Conclude with `RC.add_mem hx hy`. Introduce `x _ hx`. Simplify using `only [Pi.neg_apply, neg_mul, Finset.sum_neg_distrib]`. Conclude with `RC.neg_mem hx`. Take `⟨n, e, f, hef⟩` from `exists_dual_family R L`.
+
+Establish `hid : (∑ m, (j (f m)).smulRight (toLi (e m)) : Li →ₗ[Ω] Li) = LinearMap.id` using `hbc.algHom_ext _ _ fun v => by`. Rewrite using `[LinearMap.id_apply, LinearMap.sum_apply]`. Use `conv_rhs => rw [← hef v, map_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.smulRight_apply, hj, map_smul, algebraMap_smul]`.
+
+Establish `hk : ∀ k k', (Pi.single k 1 : Fin r → Ω) k' = ∑ m, j (f m) (b k) * co (toLi (e m)) k'` using `fun k k' => by`. Use `congrArg co (LinearMap.congr_fun hid (b k))` as an intermediate fact. Rewrite `this` using `[LinearMap.id_apply, hco, LinearMap.sum_apply, map_sum]`. Rewrite using `[← this, Finset.sum_apply]`. Simplify using `only [LinearMap.smulRight_apply, map_smul, Pi.smul_apply, smul_eq_mul]`.
+
+Establish `hjm : ∀ m, j (f m) ∈ om` using `fun m => by rw [hom]; exact ⟨_, rfl⟩`. Establish `ha' : a = ∑ m, (∑ k, a k * ev (b k) (fun i => (io ⟨_, hjm m⟩ i : C))) • bcMap Ω C _ (co (toLi (e m)))`. Use function extensionality and compare the values at `k'`. Rewrite using `[Finset.sum_apply]`. Simplify using `only [hev, Pi.smul_apply, smul_eq_mul, Finset.sum_mul]`.
+
+Rewrite using `[Finset.sum_comm]`. Establish `: ∀ k, ∑ m, a k * algebraMap Ω C (j (f m) (b k)) * bcMap Ω C _ (co (toLi (e m))) k' = a k * algebraMap Ω C ((Pi.single k 1 : Fin r → Ω) k')` using `fun k => by`. Rewrite using `[hk, map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, _root_.mul_assoc]`.
+
+Both sides reduce to the same expression. Simplify using `only [this]`. Rewrite using `[Finset.sum_eq_single k' (fun k _ h => by simp [Pi.single_eq_of_ne h.symm]) (by simp)]`. Simplify using the standard rewrite rules. Rewrite using `[ha']`.
+
+Conclude with `AddSubgroup.sum_mem _ fun m _ => AddSubgroup.subset_closure ⟨_, ha _, _, ⟨_, hW1 _, rfl⟩, rfl⟩`.
+-/
 theorem lattices_alg {O Ω C : Type} [CommRing O] [Field Ω] [Field C] [Algebra O Ω] [Algebra O C] [Algebra Ω C]
     (R : Subalgebra O Ω) (RC : Subalgebra O C) (hR : ∀ a ∈ R, algebraMap Ω C a ∈ RC)
     {L Li : Type} [AddCommGroup L] [Module R L] [Module.Finite R L] [Module.Projective R L]
@@ -160,6 +213,31 @@ theorem lattices_alg {O Ω C : Type} [CommRing O] [Field Ω] [Field C] [Algebra 
     rw [ha']
     exact AddSubgroup.sum_mem _ fun m _ => AddSubgroup.subset_closure ⟨_, ha _, _, ⟨_, hW1 _, rfl⟩, rfl⟩
 
+/- English proof (translation)
+Use `haveI : CharZero Ω := (RingHom.charZero_iff 𝔐.cst.injective).1 inferInstance`. Establish `hξ : IsCptGen 𝔐.ξ` using `𝔐.tie.gen`. Use `haveI := 𝔐.t.semi.smooth`. Use `haveI := 𝔐.t.semi.comm`. Use `haveI := P.fin`.
+
+Use `haveI := P.proj`. Establish `hinj : Function.Injective (algebraMap (CR O y c') Ω)` using `Subtype.val_injective`. Take `⟨σ, hσ, -, -⟩` from `PositivityTheory.Xgn.exists_cm_type_embedding E H D l Xo c O₀ β Y S Ω K J y 𝔐 t`. Take `⟨hσO, x₀, hx₀, o₀, ho₀⟩` from `PositivityTheory.Xgn.SequenceDifferentials.main E Ω p hdisc A m hpm O σ`. Establish `hσR : ∀ a : 𝓞 E, σ (a : E) ∈ (algebraMap (CR O y c') Ω).range` using `fun a => by`.
+
+Take `⟨o, ho⟩` from `hσO a`. Conclude with `⟨algebraMap O _ o, ho⟩`. Establish `hdual : ∀ k, σ (HT.dualInt E k) ∈ (algebraMap (CR O y c') Ω).range` using `fun k => by`. Use `(HT.different_generator_dualInt (CR O y c') Ω E σ 1 hinj hσR (le_antisymm ?_ ?_)).2.1 k` as an intermediate fact. Rewrite `this` using `[map_one, _root_.one_mul]`. Then use the resulting hypothesis.
+
+Rewrite using `[Submodule.span_singleton_le_iff_mem, map_one, ← ho₀]`. Conclude with `Submodule.smul_mem _ (algebraMap O (CR O y c') o₀) (Submodule.subset_span ⟨x₀, hx₀, rfl⟩)`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨x, -, rfl⟩`. Take `⟨s, hs⟩` from `hσR x`.
+
+Conclude with `Submodule.mem_span_singleton.2 ⟨s, by rw [map_one, Algebra.smul_def, _root_.mul_one, hs]⟩`. Establish `heig : ∀ x, x ∈ HT.eigSp 𝔐.ρ σ ↔ x ∈ 𝔐.Vgen t` using `fun x => by`. Rewrite using `[HT.LatBasic.mem_eigSp]`. Simplify using `[HodgeCpt.Vgen, GlobalTheory.CompanionTheory.Ar.eigSp, Submodule.mem_iInf, sub_eq_zero, hσ]`. Establish `hπ : ∀ x, HT.eigProj 𝔐.ρ σ x ∈ Submodule.span Ω (Set.range b)` using `fun x => by`.
+
+Rewrite using `[hb', ← heig]`. Conclude with `HT.LatBasic.eigProj_mem _ _ _`. Set `co : 𝔐.Li →ₗ[Ω] (Fin r → Ω)` to `(Finsupp.linearEquivFunOnFinite Ω Ω (Fin r)).toLinearMap ∘ₗ hb.repr ∘ₗ (HT.eigProj 𝔐.ρ σ).codRestrict _ hπ`. Establish `hsum : ∀ x, ∑ k, co x k • b k = HT.eigProj 𝔐.ρ σ x` using `fun x => by`. Use `hb.linearCombination_repr ⟨_, hπ x⟩` as an intermediate fact.
+
+Rewrite `this` using `[Finsupp.linearCombination_apply, Finsupp.sum_fintype _ _ (by simp)]`. Conclude with `this`. Establish `hco : ∀ k, co (b k) = Pi.single k 1` using `fun k => by`. Establish `h1 : HT.eigProj 𝔐.ρ σ (b k) = b k` using `HT.LatBasic.eigProj_of_mem ((heig _).2 (hb' ▸ Submodule.subset_span ⟨k, rfl⟩))`. Use `funext (Fintype.linearIndependent_iffₛ.1 hb _ _ ?_)` and prove the remaining obligations.
+
+Rewrite using `[hsum, h1, Finset.sum_eq_single k (fun i _ h => by simp [Pi.single_eq_of_ne h]) (by simp)]`. Simplify using the standard rewrite rules. Establish `hρ : ∀ a v, 𝔐.ρ a (P.toLi v) = P.toLi (P.ρ a v)` using `fun a v => by`. Apply `𝔐.M.inj` to reduce the goal to its premises. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
+
+Rewrite using `[𝔐.act a (P.toLi v), P.toLi_pt, P.act a v, Over.comp_left, P.toLi_pt, Over.comp_left, Category.assoc]`. Use `lattices_alg (CR O y c') RC hR P.toLi P.toLi_bc P.j P.j_apply P.Dh.om P.isHT.1 io ev hio hev b co hco _ (fun v => ?_) fun a ha u hu => ?_` and prove the remaining obligations. Rewrite using `[Fam.mem_coordLat_iff]`. Introduce `q hq hO`. Establish `hsub : ∀ a : CR O y c', algebraMap (CR O y c') Ω a ∈ regAt 𝔐.ξ q` using `fun a => GlobalTheory.CompanionTheory.Ar.Fam.chartRing_le_regAt O y c' q hq hO a.2`.
+
+Establish `hr : q.1 ∈ Set.range P.x`. Take `⟨U, hU, hmem⟩` from `𝔐.tie.affine c' hc'`. Conclude with `PositivityTheory.Xgn.SequenceLocalization.mem_range hξ hU _ P.x P.x_gen (fun z => (hmem _).2 ⟨𝔐.all _, (PositivityTheory.Xgn.exists_function_at_point E H D l Xo c O₀ β Y S Ω K J y 𝔐 d hd p hpS A m hpm O G c' hc' P z).1⟩) q ((hmem _).2 ⟨q.2, hq⟩) hsub`. Take `⟨Q, hQ⟩ : ∃ Q : PrimeSpectrum (CR O y c'), P.x Q = q.1` from `hr`. Take `⟨_, -, hzs, hg⟩` from `GlobalTheory.CompanionTheory.HtLink.stalk_loc hξ _ hinj P.x P.x_gen Q q hQ hsub`.
+
+Establish `hlat : ∀ v, P.toLi v ∈ 𝔐.M.lat q` using `fun v => Submodule.subset_span (GlobalTheory.CompanionTheory.HtLink.tan_ext 𝔐.M P.M hzs (genMap 𝔐.ξ q) hg P.toLi P.toLi_pt v)`. Rewrite using `[hsum]`. Use `⟨?_, (heig _).1 (HT.LatBasic.eigProj_mem _ _ _)⟩` and prove the remaining obligations. Simplify using `only [HT.eigProj, LinearMap.sum_apply, LinearMap.smul_apply, hρ]`. Use `Submodule.sum_mem _ fun k _ => ?_` and prove the remaining obligations.
+
+Take `⟨s, hs⟩` from `hdual k`. Conclude with `(𝔐.M.lat q).smul_mem ⟨_, hs ▸ hsub s⟩ (hlat _)`. Conclude with `PositivityTheory.Xgn.sequence_family_pairing E H D l Xo c O₀ β Y S Ω K J y 𝔐 d hd hpq p hpS A m hpm O G c' hc' P u hu _ fun q h1 h2 => ((Fam.mem_coordLat_iff O y _ b c' a).1 ha q h1 h2).1`.
+-/
 theorem lattices (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O₀ : Type) [CommRing O₀] (β : O₀ →+* c.F) (Y : Model Xo c β) (S : Finset ℕ) (Ω : Type) [Field Ω] (K : Type) [Fintype K] [DecidableEq K] (J : K → Type) [∀ k, Fintype (J k)] (y : (Σ k, J k) → Ω) (𝔐 : HodgeCpt Y S y) (d : ℕ) (hd : IsArithVar (mCoordIdeal y) (d + 1)) (hpq : 0 < D.p + D.q) (p : ℕ) [Fact p.Prime] (hpS : p ∈ S) (A : Type) [CommRing A] [Algebra A Ω] [IsIntegralClosure A ℤ Ω] (m : Ideal A) [m.IsPrime] (hpm : (p : A) ∈ m) (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Algebra A O] [IsLocalization.AtPrime O m] [Algebra O Ω] [IsScalarTower A O Ω] (G : GenTors 𝔐 p) (c' : ∀ k, J k) (hc' : mseg y c' ≠ 0) (P : ChartPack G O c') (C : Type) [Field C] [Algebra O C] [Algebra Ω C] [IsScalarTower O Ω C] (RC : Subalgebra O C)
     (hdisc : ¬ (p : ℤ) ∣ NumberField.discr E) (hR : ∀ a ∈ CR O y c', algebraMap Ω C a ∈ RC) {g : ℕ}
     (io : P.Dh.om →ₛₗ[toRC (CR O y c') RC hR] (Fin g → RC)) (ev : 𝔐.Li → ((Fin g → C) →ₗ[C] C))

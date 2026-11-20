@@ -19,6 +19,11 @@ namespace TameWeilRepresentationIrreducibility
 variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω]
   {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)}
 
+/- English proof (translation)
+Use `⟨Wild_le_Ine hσ, fun x hx => ?_⟩` and prove the remaining obligations. Establish `hlt` using `(mem_Wild.mp hσ) x hx`. Establish `hx0 : A.valuation x ≠ 0` using `(Valuation.ne_zero_iff _).mpr hx`. Establish `e : σ x - x = x * (σ x / x - 1)`. Rewrite using `[mul_sub, mul_div_cancel₀ _ hx, mul_one]`.
+
+Rewrite using `[e, map_mul]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem wild_inertia_isWild {σ : G E Ω} (hσ : σ ∈ GlobalTheory.WeilDeligne.Wild E A) : Formalism.MainNotions.BlochKatoReduction.IsWild A σ := by
   refine ⟨Wild_le_Ine hσ, fun x hx => ?_⟩
   have hlt := (mem_Wild.mp hσ) x hx
@@ -32,6 +37,17 @@ theorem wild_inertia_isWild {σ : G E Ω} (hσ : σ ∈ GlobalTheory.WeilDeligne
 
 variable [IsAlgClosure E Ω] {h : IsPlaceOver A w}
 
+/- English proof (translation)
+Set `S' : Subgroup (Ine A)` to `S.comap (ineIncl h)`. Set `K : Subgroup (Ine A)` to `(f.comp (ineIncl h)).ker`. Establish `hKS : K ≤ S'` using `fun τ hτ => hS _ hτ`. Establish `hKo : IsOpen (SetLike.coe K)`. Unfold `GlobalTheory.WeilDeligne.IsSmooth at hf`.
+
+Conclude with `hf`. Establish `hcl : IsClosed (SetLike.coe S')` using `Subgroup.isClosed_of_isOpen _ (Subgroup.isOpen_mono hKS hKo)`. Establish `hineS : ∀ τ : Ine A, τ ∈ S'`. Use `GlobalTheory.TameCharUnique.mem_of_tameGen hγ S' hcl ?_ ?_` and prove the remaining obligations. Use `show ineIncl h ⟨γ0, hγ.1⟩ ∈ S`.
+
+Establish `e : ineIncl h ⟨γ0, hγ.1⟩ = ⟨γ0, GlobalTheory.WeilDeligne.Ine_le_Weil h hγ.1⟩` using `Subtype.ext (coe_ineIncl h _)`. Rewrite using `[e]`. Conclude with `h1`. Introduce `τ hτ show ineIncl h τ ∈ S`. Apply `hS` to reduce the goal to its premises.
+
+Apply `hw` to reduce the goal to its premises. Rewrite using `[coe_ineIncl]`. Conclude with `mem_Wild.mpr hτ`. Establish `hd : deg φ⁻¹ = 1`. Rewrite using `[deg_inv, hφ]`.
+
+Both sides reduce to the same expression. Take `⟨τ, hτ⟩` from `exists_eq_zpow_mul hd σ`. Rewrite using `[hτ]`. Conclude with `S.mul_mem (S.zpow_mem (S.inv_mem h2) _) (hineS τ)`.
+-/
 theorem mem_of_tame_generator_frobenius {M : Type*} [Monoid M] (f : Weil h →* M) (hf : GlobalTheory.WeilDeligne.IsSmooth f)
     (hw : ∀ σ : Weil h, (σ : G E Ω) ∈ GlobalTheory.WeilDeligne.Wild E A → f σ = 1)
     {γ0 : G E Ω} (hγ : Formalism.BasicNotions.TameGenAt A γ0) {φ : Weil h} (hφ : deg φ = -1)
@@ -68,6 +84,9 @@ theorem mem_of_tame_generator_frobenius {M : Type*} [Monoid M] (f : Weil h →* 
 variable {V V' : Type*} [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V]
   [AddCommGroup V'] [Module ℂ V'] [FiniteDimensional ℂ V']
 
+/- English proof (translation)
+Break down `hρ.eq_bot_or_eq_top (⟨U, fun σ v hv => hU σ v hv⟩ : Subrepresentation ρ) with h | h` into its components or cases. Use `left`. Conclude with `congrArg Subrepresentation.toSubmodule h`. Use `right`. Conclude with `congrArg Subrepresentation.toSubmodule h`.
+-/
 theorem irreducible_stable_bot_or_top {ρ : Representation ℂ (Weil h) V} (hρ : ρ.IsIrreducible)
     (U : Submodule ℂ V) (hU : ∀ σ, ∀ v ∈ U, ρ σ v ∈ U) : U = ⊥ ∨ U = ⊤ := by
   rcases hρ.eq_bot_or_eq_top (⟨U, fun σ v hv => hU σ v hv⟩ : Subrepresentation ρ) with h | h
@@ -76,6 +95,11 @@ theorem irreducible_stable_bot_or_top {ρ : Representation ℂ (Weil h) V} (hρ 
   · right
     exact congrArg Subrepresentation.toSubmodule h
 
+/- English proof (translation)
+Use `hρ` as an intermediate fact. Assume the negation of the conclusion as `hV`. Rewrite `hV` using `[not_nontrivial_iff_subsingleton]`. Apply `(bot_ne_top : (⊥ : Subrepresentation ρ) ≠ ⊤)` to reduce the goal to its premises. Apply `Subrepresentation.toSubmodule_injective` to reduce the goal to its premises.
+
+Use extensionality with `x`. Rewrite using `[@Subsingleton.elim _ hV x 0]`. Conclude with `⟨fun _ => Submodule.zero_mem _, fun _ => Submodule.zero_mem _⟩`.
+-/
 theorem irreducible_nontrivial {ρ : Representation ℂ (Weil h) V} (hρ : ρ.IsIrreducible) :
     Nontrivial V := by
   have := hρ
@@ -87,6 +111,17 @@ theorem irreducible_nontrivial {ρ : Representation ℂ (Weil h) V} (hρ : ρ.Is
   rw [@Subsingleton.elim _ hV x 0]
   exact ⟨fun _ => Submodule.zero_mem _, fun _ => Submodule.zero_mem _⟩
 
+/- English proof (translation)
+Establish `hne : Nontrivial V` using `irreducible_nontrivial ha`. Establish `hq : ((normV w : ℕ) : ℂ) ≠ 0`. Use `one_lt_normV w` as an intermediate fact. Conclude with `(show normV w ≠ 0 by omega)` after adjusting the coercions. Establish `hinv : ∀ σ, ∀ v ∈ LinearMap.ker a.N, a.ρ σ v ∈ LinearMap.ker a.N`.
+
+Introduce `σ v hv`. Rewrite `hv`, the goal using `[LinearMap.mem_ker]`. Establish `hc` using `congrArg (fun M : Module.End ℂ V => M v) (a.comm σ)`. Simplify using `only [Module.End.mul_apply, LinearMap.smul_apply, hv, map_zero] at hc`. Conclude with `(smul_eq_zero.mp hc.symm).resolve_left (zpow_ne_zero _ hq)`.
+
+Break down `irreducible_stable_bot_or_top ha _ hinv with h | h` into its components or cases. It suffices to derive a contradiction. Take `⟨k, hk⟩` from `a.nilpotent`. Establish `hi : Function.Injective a.N` using `LinearMap.ker_eq_bot.mp h`. Establish `hk' : Function.Injective (a.N ^ k)`.
+
+Rewrite using `[Module.End.coe_pow]`. Conclude with `hi.iterate k`. Rewrite `hk'` using `[hk]`. Take `⟨x, y, hxy⟩` from `hne`. Conclude with `hxy (hk' (by simp))`.
+
+Conclude with `LinearMap.ker_eq_top.mp h`.
+-/
 theorem irreducible_monodromy_zero (a : WDRep h V) (ha : a.ρ.IsIrreducible) : a.N = 0 := by
   have hne : Nontrivial V := irreducible_nontrivial ha
   have hq : ((normV w : ℕ) : ℂ) ≠ 0 := by
@@ -110,6 +145,11 @@ theorem irreducible_monodromy_zero (a : WDRep h V) (ha : a.ρ.IsIrreducible) : a
     exact hxy (hk' (by simp))
   · exact LinearMap.ker_eq_top.mp h
 
+/- English proof (translation)
+Set `T' : U →ₗ[ℂ] U` to `T.restrict hU`. Establish `hinj : Function.Injective T'` using `fun x y hxy => by`. Establish `e : T x = T y` using `congrArg Subtype.val hxy`. Conclude with `Subtype.ext (hT e)`. Take `⟨u, hu⟩` from `(LinearMap.injective_iff_surjective.mp hinj) ⟨T v, hv⟩`.
+
+Establish `e : T u = T v` using `congrArg Subtype.val hu`. Rewrite using `[← hT e]`. Conclude with `u.2`.
+-/
 theorem mem_of_injective_maps_into {T : Module.End ℂ V} (hT : Function.Injective T) {U : Submodule ℂ V}
     (hU : ∀ v ∈ U, T v ∈ U) {v : V} (hv : T v ∈ U) : v ∈ U := by
   let T' : U →ₗ[ℂ] U := T.restrict hU
@@ -142,6 +182,9 @@ def weilStabiliserSubgroup (ρ : Representation ℂ (Weil h) V) (U : Submodule �
     rw [Representation.self_inv_apply] at e
     exact e.symm
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_weil_stabiliser_iff {ρ : Representation ℂ (Weil h) V} {U : Submodule ℂ V} {σ : Weil h} :
     σ ∈ weilStabiliserSubgroup ρ U ↔ ∀ v, v ∈ U ↔ ρ σ v ∈ U := Iff.rfl
 
@@ -167,12 +210,42 @@ def weilIntertwiningSubgroup (ρ : Representation ℂ (Weil h) V) (ρ' : Represe
     rw [Representation.self_inv_apply] at e1
     rw [e1, Representation.inv_self_apply]
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_weil_intertwining_iff {ρ : Representation ℂ (Weil h) V} {ρ' : Representation ℂ (Weil h) V'}
     {e : V ≃ₗ[ℂ] V'} {σ : Weil h} : σ ∈ weilIntertwiningSubgroup ρ ρ' e ↔ ∀ v, e (ρ σ v) = ρ' σ (e v) := Iff.rfl
 
 end TameWeilRepresentationIrreducibility
 
 open TameWeilRepresentationIrreducibility in
+/- English proof (translation)
+Introduce `E Ω _ _ _ _ _ A w h φ hφ`. Take `⟨γ0, hγ⟩` from `GlobalTheory.MemTame.exists_tameGenAt E Ω w A h`. Set `γ : Weil h` to `⟨γ0, GlobalTheory.WeilDeligne.Ine_le_Weil h hγ.1⟩`. Establish `hd : deg φ⁻¹ = 1`. Rewrite using `[deg_inv, hφ]`.
+
+Both sides reduce to the same expression. Establish `hfr` using `deg_eq_one_iff.mp hd`. Set `x : Weil h` to `(γ ^ normV w)⁻¹ * (φ⁻¹ * γ * φ⁻¹⁻¹)`. Establish `hx : Formalism.MainNotions.BlochKatoReduction.IsWild A (x : G E Ω)`. Apply `wild_inertia_isWild` to reduce the goal to its premises.
+
+Establish `ht` using `tame_relation (γ := γ0) (q := normV w) hγ.1 hfr`. Simplify `ht` using `[x, γ]`. Establish `hid : γ * φ = φ * γ ^ normV w * x`. Simplify using `only [x]`. Use `group`.
+
+Establish `hinj : ∀ {m : ℕ} (b : WDRep h (Fin m → ℂ)) (g : Weil h), Function.Injective (b.ρ g)` using `fun b g u v huv => by simpa using congrArg (b.ρ g⁻¹) huv`. Establish `hstab : ∀ {m : ℕ} (b : WDRep h (Fin m → ℂ)), (∀ σ : Weil h, Formalism.MainNotions.BlochKatoReduction.IsWild A (σ : G E Ω) → b.ρ σ = 1) → ∀ U : Submodule ℂ (Fin m → ℂ), (∀ v ∈ U, b.ρ γ v ∈ U) → (∀ v ∈ U, b.ρ φ v ∈ U) → ∀ σ, ∀ v ∈ U, b.ρ σ v ∈ U`. Introduce `m b hb U h1 h2 σ v hv`. Establish `hmem` using `mem_of_tame_generator_frobenius (S := weilStabiliserSubgroup b.ρ U) b.ρ b.smooth (fun τ hτ => hb τ (wild_inertia_isWild hτ)) hγ hφ ?_ ?_ ?_ σ`. Conclude with `(mem_weil_stabiliser_iff.mp hmem v).mp hv`.
+
+Introduce `τ hτ`. Rewrite using `[mem_weil_stabiliser_iff]`. Introduce `u`. Simplify using `[hτ]`. Rewrite using `[mem_weil_stabiliser_iff]`.
+
+Introduce `u`. Conclude with `⟨h1 u, mem_of_injective_maps_into (hinj b _) h1⟩`. Rewrite using `[mem_weil_stabiliser_iff]`. Introduce `u`. Conclude with `⟨h2 u, mem_of_injective_maps_into (hinj b _) h2⟩`.
+
+Use `⟨γ, ?_, ?_⟩` and prove the remaining obligations. Introduce `n a ha`. Use `⟨?_, fun hirr => ⟨irreducible_nontrivial hirr, fun U h1 h2 => irreducible_stable_bot_or_top hirr U (hstab a ha U h1 h2)⟩⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Introduce `n m a b ha hb hai hbi e he1 he2`.
+
+Use `⟨e, ?_, ?_⟩` and prove the remaining obligations. Introduce `σ v`. Set `F : Weil h →* Module.End ℂ (Fin n → ℂ) × Module.End ℂ (Fin m → ℂ)` to `MonoidHom.prod a.ρ b.ρ`. Establish `hF : GlobalTheory.WeilDeligne.IsSmooth F`. Establish `ha'` using `a.smooth`.
+
+Establish `hb'` using `b.smooth`. Unfold `GlobalTheory.WeilDeligne.IsSmooth at ha' hb' ⊢`. Establish `hset : {τ : Ine A | F (ineIncl h τ) = 1} = {τ : Ine A | a.ρ (ineIncl h τ) = 1} ∩ {τ : Ine A | b.ρ (ineIncl h τ) = 1}`. Use extensionality with `τ`. Simplify using `[F, Prod.ext_iff]`.
+
+Rewrite using `[hset]`. Conclude with `ha'.inter hb'`. Establish `hmem` using `mem_of_tame_generator_frobenius (S := weilIntertwiningSubgroup a.ρ b.ρ e) F hF ?_ hγ hφ ?_ ?_ ?_ σ`. Conclude with `mem_weil_intertwining_iff.mp hmem v`. Introduce `τ hτ`.
+
+Establish `hw'` using `wild_inertia_isWild hτ`. Simplify using `[F, ha τ hw', hb τ hw']`. Introduce `τ hτ`. Simplify using `only [F, MonoidHom.prod_apply, Prod.ext_iff] at hτ`. Rewrite using `[mem_weil_intertwining_iff]`.
+
+Introduce `u`. Rewrite using `[hτ.1, hτ.2]`. Both sides reduce to the same expression. Rewrite using `[mem_weil_intertwining_iff]`. Conclude with `he1`.
+
+Rewrite using `[mem_weil_intertwining_iff]`. Conclude with `he2`. Introduce `v`. Rewrite using `[irreducible_monodromy_zero a hai, irreducible_monodromy_zero b hbi]`. Simplify using the standard rewrite rules.
+-/
 theorem st2 : St2 := by
   intro E Ω _ _ _ _ _ A w h φ hφ
   obtain ⟨γ0, hγ⟩ := GlobalTheory.MemTame.exists_tameGenAt E Ω w A h

@@ -14,5 +14,8 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.InertDatumAtInert.main | exact GlobalTheory.InertDatumAtInert.main | (intros; apply GlobalTheory.InertDatumAtInert.main <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_inertLocalDatum_at_inertPlace : ∀ (D : D7), D.host.F = maximalRealSubfield D.host.E → ∀ (Pp : HeightOneSpectrum (𝓞 D.host.E)), Formalism.UG.IsInertAt D.host.F D.host.E (Pp.under (𝓞 D.host.F)) Pp → ∃ (v : HeightOneSpectrum (𝓞 (maximalRealSubfield D.host.E))) (_ : InertDatum D.host.E D.R.nV v Pp), NG.OverPl Pp v := by
   first | exact @GlobalTheory.InertDatumAtInert.main | exact GlobalTheory.InertDatumAtInert.main | (intros; apply GlobalTheory.InertDatumAtInert.main <;> assumption)

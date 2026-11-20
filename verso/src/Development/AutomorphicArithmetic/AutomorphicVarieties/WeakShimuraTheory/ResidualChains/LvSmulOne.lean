@@ -10,18 +10,34 @@ private def Par (X : M4 k) : Prop := ∀ i j : Fin 4, i.1 < 2 → 2 ≤ j.1 → 
 
 private def lv (X : M4 k) : M4 k := Matrix.of fun i j => if (i.1 < 2 ↔ j.1 < 2) then X i j else 0
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem lv_apply (X : M4 k) (i j : Fin 4) : lv X i j = if (i.1 < 2 ↔ j.1 < 2) then X i j else 0 := rfl
 
+/- English proof (translation)
+Rewrite using `[lv_apply, if_pos Iff.rfl]`.
+-/
 private theorem lv_diag (X : M4 k) (i : Fin 4) : lv X i i = X i i := by
   rw [lv_apply, if_pos Iff.rfl]
 
 end UpperTheory.V.Ws.Chain.Levi
 
+/- English proof (translation)
+Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [adj, UpperTheory.V.Ws.Chain.Levi.lv_apply] <;> rfl`.
+-/
 private theorem levi_lemma {k : Type} [Field k] (X : M4 k) :
     adj (UpperTheory.V.Ws.Chain.Levi.lv X) = UpperTheory.V.Ws.Chain.Levi.lv (adj X) := by
   ext i j
   fin_cases i <;> fin_cases j <;> simp [adj, UpperTheory.V.Ws.Chain.Levi.lv_apply] <;> rfl
 
+/- English proof (translation)
+Establish `h02` using `hX 0 2 (by decide) (by decide)`. Establish `h03` using `hX 0 3 (by decide) (by decide)`. Establish `h12` using `hX 1 2 (by decide) (by decide)`. Establish `h13` using `hX 1 3 (by decide) (by decide)`. Establish `g02` using `hY 0 2 (by decide) (by decide)`.
+
+Establish `g03` using `hY 0 3 (by decide) (by decide)`. Establish `g12` using `hY 1 2 (by decide) (by decide)`. Establish `g13` using `hY 1 3 (by decide) (by decide)`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`.
+
+Simplify using `[UpperTheory.V.Ws.Chain.Levi.lv_apply, Matrix.mul_apply, Fin.sum_univ_four, h02, h03, h12, h13, g02, g03, g12, g13]`.
+-/
 private theorem levi_lv_mul_of_par {k : Type} [Field k] (X Y : M4 k) (hX : UpperTheory.V.Ws.Chain.Levi.Par X)
     (hY : UpperTheory.V.Ws.Chain.Levi.Par Y) :
     UpperTheory.V.Ws.Chain.Levi.lv (X * Y) = UpperTheory.V.Ws.Chain.Levi.lv X * UpperTheory.V.Ws.Chain.Levi.lv Y := by
@@ -38,6 +54,9 @@ private theorem levi_lv_mul_of_par {k : Type} [Field k] (X Y : M4 k) (hX : Upper
     simp [UpperTheory.V.Ws.Chain.Levi.lv_apply, Matrix.mul_apply, Fin.sum_univ_four,
       h02, h03, h12, h13, g02, g03, g12, g13]
 
+/- English proof (translation)
+Introduce `i j hi hj`. Rewrite using `[Matrix.mul_apply, Fin.sum_univ_four, hY 0 j (by decide) hj, hY 1 j (by decide) hj, hX i 2 hi (by decide), hX i 3 hi (by decide)]`. Simplify using the standard rewrite rules.
+-/
 private theorem levi_par_mul {k : Type} [Field k] (X Y : M4 k) (hX : UpperTheory.V.Ws.Chain.Levi.Par X)
     (hY : UpperTheory.V.Ws.Chain.Levi.Par Y) : UpperTheory.V.Ws.Chain.Levi.Par (X * Y) := by
   intro i j hi hj
@@ -45,17 +64,26 @@ private theorem levi_par_mul {k : Type} [Field k] (X Y : M4 k) (hX : UpperTheory
     hX i 2 hi (by decide), hX i 3 hi (by decide)]
   simp
 
+/- English proof (translation)
+Introduce `i j hi hj`. Establish `h` using `hX j.rev i.rev (by rw [Fin.val_rev]; omega) (by rw [Fin.val_rev]; omega)`. Simplify using `[adj, h]`.
+-/
 private theorem levi_par_adj {k : Type} [Field k] (X : M4 k) (hX : UpperTheory.V.Ws.Chain.Levi.Par X) :
     UpperTheory.V.Ws.Chain.Levi.Par (adj X) := by
   intro i j hi hj
   have h := hX j.rev i.rev (by rw [Fin.val_rev]; omega) (by rw [Fin.val_rev]; omega)
   simp [adj, h]
 
+/- English proof (translation)
+Introduce `i j hi hj`. Conclude with `hX i j (Fin.lt_def.2 (by omega))`.
+-/
 private theorem levi_par_of_apply_eq_zero_of_lt {k : Type} [Field k] (X : M4 k) (hX : ∀ i j : Fin 4, i < j → X i j = 0) :
     UpperTheory.V.Ws.Chain.Levi.Par X := by
   intro i j hi hj
   exact hX i j (Fin.lt_def.2 (by omega))
 
+/- English proof (translation)
+Introduce `i j hij`. Apply `hX i j (ne_of_lt hij)` to reduce the goal to its premises. Use `revert hij`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> decide`.
+-/
 private theorem levi_lemma_6 {k : Type} [Field k] (X : M4 k) (hX : SuppM nM X) :
     ∀ i j : Fin 4, i < j → X i j = 0 := by
   intro i j hij
@@ -63,6 +91,11 @@ private theorem levi_lemma_6 {k : Type} [Field k] (X : M4 k) (hX : SuppM nM X) :
   revert hij
   fin_cases i <;> fin_cases j <;> decide
 
+/- English proof (translation)
+Introduce `i j hij hw`. Rewrite using `[UpperTheory.V.Ws.Chain.Levi.lv_apply]`. Use `split_ifs with h`. Break down `lt_or_gt_of_ne hij with hlt | hgt` into its components or cases. Conclude with `hX i j hlt`.
+
+Apply the tactic sequence `exfalso revert hgt hw h fin_cases i <;> fin_cases j <;> decide`. Both sides reduce to the same expression.
+-/
 private theorem suppM_neg_wAl_levi_lv_of_apply_eq_zero_of_lt {k : Type} [Field k] (X : M4 k) (hX : ∀ i j : Fin 4, i < j → X i j = 0) :
     SuppM {-wAl} (UpperTheory.V.Ws.Chain.Levi.lv X) := by
   intro i j hij hw
@@ -75,11 +108,17 @@ private theorem suppM_neg_wAl_levi_lv_of_apply_eq_zero_of_lt {k : Type} [Field k
       fin_cases i <;> fin_cases j <;> decide
   · rfl
 
+/- English proof (translation)
+Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [UpperTheory.V.Ws.Chain.Levi.lv_apply]`.
+-/
 private theorem levi_lv_smul_one {k : Type} [Field k] (c : k) :
     UpperTheory.V.Ws.Chain.Levi.lv (c • (1 : M4 k)) = c • 1 := by
   ext i j
   fin_cases i <;> fin_cases j <;> simp [UpperTheory.V.Ws.Chain.Levi.lv_apply]
 
+/- English proof (translation)
+Introduce `i j h`. Rewrite using `[UpperTheory.V.Ws.Chain.Levi.lv_apply]`. Use `split_ifs`. Conclude with `hX i j h`. Both sides reduce to the same expression.
+-/
 private theorem isUp_levi_lv_of_isUp {k : Type} [Field k] (X : M4 k) (hX : IsUp X) :
     IsUp (UpperTheory.V.Ws.Chain.Levi.lv X) := by
   intro i j h
@@ -88,18 +127,55 @@ private theorem isUp_levi_lv_of_isUp {k : Type} [Field k] (X : M4 k) (hX : IsUp 
   · exact hX i j h
   · rfl
 
+/- English proof (translation)
+Rewrite using `[levi_lv_mul_of_par _ _ (levi_par_mul _ _ (levi_par_adj _ hA) hB) hA, levi_lv_mul_of_par _ _ (levi_par_adj _ hA) hB, levi_lemma]`.
+-/
 private theorem levi_lv_adj_mul_mul_of_par {k : Type} [Field k] (A B : M4 k) (hA : UpperTheory.V.Ws.Chain.Levi.Par A)
     (hB : UpperTheory.V.Ws.Chain.Levi.Par B) :
     UpperTheory.V.Ws.Chain.Levi.lv (adj A * B * A) =
       adj (UpperTheory.V.Ws.Chain.Levi.lv A) * UpperTheory.V.Ws.Chain.Levi.lv B * UpperTheory.V.Ws.Chain.Levi.lv A := by
   rw [levi_lv_mul_of_par _ _ (levi_par_mul _ _ (levi_par_adj _ hA) hB) hA, levi_lv_mul_of_par _ _ (levi_par_adj _ hA) hB, levi_lemma]
 
+/- English proof (translation)
+Unfold `IsGSp at h ⊢`. Rewrite using `[levi_lemma, ← levi_lv_mul_of_par _ _ (levi_par_adj _ hX) hX, h, levi_lv_smul_one]`.
+-/
 private theorem isGSp_levi_lv_of_par {k : Type} [Field k] (X : M4 k) (hX : UpperTheory.V.Ws.Chain.Levi.Par X)
     (ν : k) (h : IsGSp ν X) : IsGSp ν (UpperTheory.V.Ws.Chain.Levi.lv X) := by
   unfold IsGSp at h ⊢
   rw [levi_lemma, ← levi_lv_mul_of_par _ _ (levi_par_adj _ hX) hX, h, levi_lv_smul_one]
 
 open UpperTheory.V.Ws.Chain.Levi in
+/- English proof (translation)
+Introduce `O Γ _ _ _ Φ k _ a _ c hc hr`. Establish `hL : ∀ g, ∀ i j : Fin 4, i < j → c.r g i j = 0` using `fun g => levi_lemma_6 _ (hr g)`. Establish `hP : ∀ g, Par (c.r g)` using `fun g => levi_par_of_apply_eq_zero_of_lt _ (hL g)`. Establish `hNL : ∀ v, ∀ i j : Fin 4, i < j → c.n v i j = 0` using `fun v => (hc.pair.low v).2.2`. Establish `hN : ∀ v, Par (c.n v)` using `fun v => levi_par_of_apply_eq_zero_of_lt _ (hNL v)`.
+
+Set `r' : Γ →* M4 k` to `{ toFun := fun g => lv (c.r g) map_one' := by`. Simplify using `only [map_one]`. Simplify using `using levi_lv_smul_one (1 : k)`. Use the proof step `map_mul' := fun x y => by`. Simplify using `only [map_mul]`.
+
+Conclude with `levi_lv_mul_of_par _ _ (hP x) (hP y) }`. Establish `hr' : ∀ g, r' g = lv (c.r g)` using `fun g => rfl`. Establish `hψ : ∀ v i s, (PD.mk r' (fun v => lv (c.n v))).ψ v i s = c.ψ v i s`. Introduce `v i s`. Use `show (adj (lv (c.n v)) * r' s * lv (c.n v)) i i = (adj (c.n v) * c.r s * c.n v) i i`.
+
+Rewrite using `[hr', ← levi_lv_adj_mul_mul_of_par _ _ (hN v) (hP s), lv_diag]`. Use `⟨PD.mk r' (fun v => lv (c.n v)), ⟨⟨?_, ?_, ?_, ?_, ?_, ?_⟩, ⟨?_, ?_, ?_⟩, ?_⟩, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `g`. Conclude with `isGSp_levi_lv_of_par _ (hP g) _ (hc.pair.mult g)`. Introduce `g hg show lv (c.r g) = 1`.
+
+Rewrite using `[hc.pair.kill g hg]`. Simplify using `using levi_lv_smul_one (1 : k)`. Introduce `i j hij show lv (c.r Φ.g0) i j = 0`. Rewrite using `[lv_apply]`. Use `split_ifs`.
+
+Conclude with `hc.pair.nrm hij`. Both sides reduce to the same expression. Introduce `v`. Use `⟨isGSp_levi_lv_of_par _ (hN v) _ (hc.pair.low v).1, fun i => ?_, fun i j hij => ?_⟩` and prove the remaining obligations. Use `show lv (c.n v) i i = 1`.
+
+Rewrite using `[lv_diag]`. Conclude with `(hc.pair.low v).2.1 i`. Use `show lv (c.n v) i j = 0`. Rewrite using `[lv_apply]`. Use `split_ifs`.
+
+Conclude with `hNL v i j hij`. Both sides reduce to the same expression. Introduce `v s hs show IsUp (adj (lv (c.n v)) * r' s * lv (c.n v))`. Rewrite using `[hr', ← levi_lv_adj_mul_mul_of_par _ _ (hN v) (hP s)]`. Conclude with `isUp_levi_lv_of_isUp _ (hc.pair.flag v s hs)`.
+
+Introduce `v s hs i`. Rewrite using `[hψ]`. Conclude with `hc.pair.mu v s hs i`. Introduce `g i show lv (c.r g) i i = _`. Rewrite using `[lv_diag]`.
+
+Conclude with `hc.res.diag g i`. Introduce `v s hs i`. Rewrite using `[hψ]`. Conclude with `hc.res.char v s hs i`. Use `right`.
+
+Introduce `g`. Use `show SuppM nM (lv (c.r g))`. Introduce `i j hij hw`. Conclude with `suppM_neg_wAl_levi_lv_of_apply_eq_zero_of_lt _ (hL g) i j hij (by`. Introduce `hm`.
+
+Apply `hw` to reduce the goal to its premises. Rewrite `hm` using `[Finset.mem_singleton]`. Rewrite using `[hm]`. Use the proof step `decide)`. Introduce `i j show AdicCont ⊥ (fun g => lv (c.r g) i j)`.
+
+Simplify using `only [lv_apply]`. Use `split_ifs`. Conclude with `hc.cont i j`. Introduce `N`. Conclude with `IsLocallyConstant.const _`.
+
+Introduce `g`. Conclude with `suppM_neg_wAl_levi_lv_of_apply_eq_zero_of_lt _ (hL g)`. Introduce `v`. Conclude with `suppM_neg_wAl_levi_lv_of_apply_eq_zero_of_lt _ (hNL v)`. Use `⟨fun g => ?_, fun v => ?_⟩` and prove the remaining obligations.
+
+Use `show c.r g 1 0 = lv (c.r g) 1 0`. Rewrite using `[lv_apply, if_pos (by decide)]`. Use `show c.n v 1 0 = lv (c.n v) 1 0`. Rewrite using `[lv_apply, if_pos (by decide)]`.
+-/
 theorem UpperTheory.V.Ws.Chain.levi :
     ∀ {O Γ : Type} [CommRing O] [Group Γ] [TopologicalSpace Γ] (Φ : Fr O Γ) {k : Type} [Field k] (a : O →+* k),
       (∀ v, ∀ s ∈ Φ.Mu v, s ∈ Φ.Gv v) → ∀ c : PD Φ.ι Γ k, Φ.IsRes a c → Supp nM c.r →

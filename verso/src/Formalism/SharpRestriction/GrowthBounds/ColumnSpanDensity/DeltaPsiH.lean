@@ -17,6 +17,13 @@ def deltaB (K : Type) [Field K] (m : ℕ) :
     MvPolynomial (Bool × (Fin (m + 1) × Fin (m + 1))) K →ₐ[K] MvPolynomial (Fin (m + 1) × Fin (m + 1)) K :=
   rename Prod.snd
 
+/- English proof (translation)
+Take `⟨k, rfl⟩ : ∃ k, m = k + 1` from `⟨m - 1, by omega⟩`. Set `N : Matrix (Fin (k + 2)) (Fin (k + 2)) (MvPolynomial (Fin (k + 2) × Fin (k + 2)) K)` to `Matrix.of fun a c => Fin.cases (X (a, 0)) (fun b : Fin (k + 1) => X (a, b.castSucc)) c`. Establish `h0 : N.det = 0` using `Matrix.det_zero_of_column_eq (i := 0) (j := (0 : Fin (k + 1)).succ) (Fin.succ_ne_zero 0).symm (fun a => rfl)`. Rewrite `h0` using `[Matrix.det_succ_column_zero]`. Rewrite using `[← h0]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `hsub : N.submatrix i.succAbove Fin.succ = fun a b => (X (i.succAbove a, b.castSucc) : MvPolynomial (Fin (k + 2) × Fin (k + 2)) K)`. Use extensionality with `a b`. Simplify using `[N]`. Establish `hN0 : N i 0 = X (i, 0)` using `by simp [N]`.
+
+Rewrite using `[hsub, hN0, covY]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sum_covY (K : Type) [Field K] (m : ℕ) (hm : 1 ≤ m) :
     ∑ i : Fin (m + 1), (X (i, (0 : Fin (m + 1))) : MvPolynomial (Fin (m + 1) × Fin (m + 1)) K) * covY K m i = 0 := by
   obtain ⟨k, rfl⟩ : ∃ k, m = k + 1 := ⟨m - 1, by omega⟩
@@ -36,6 +43,11 @@ theorem sum_covY (K : Type) [Field K] (m : ℕ) (hm : 1 ≤ m) :
   rw [hsub, hN0, covY]
   ring
 
+/- English proof (translation)
+Establish `hid : (Prod.snd ∘ Prod.mk false : Fin (m + 1) × Fin (m + 1) → Fin (m + 1) × Fin (m + 1)) = id` using `rfl`. Establish `h1 : ∀ i : Fin (m + 1), deltaB K m (PsiXY K m (X (Sum.inl i) * X (Sum.inr i))) = X (i, 0) * covY K m i`. Introduce `i`. Simplify using `only [PsiXY, deltaB, map_mul, aeval_X, Sum.elim_inl, Sum.elim_inr, rename_X, rename_rename, hid, rename_id, AlgHom.id_apply]`. Rewrite using `[hXY, map_sum, map_sum, Finset.sum_congr rfl fun i _ => h1 i]`.
+
+Conclude with `sum_covY K m hm`.
+-/
 theorem delta_Psi_h (K : Type) [Field K] (m : ℕ) (hm : 1 ≤ m) : deltaB K m (PsiXY K m (hXY K (m + 1))) = 0 := by
   have hid : (Prod.snd ∘ Prod.mk false : Fin (m + 1) × Fin (m + 1) → Fin (m + 1) × Fin (m + 1)) = id := rfl
   have h1 : ∀ i : Fin (m + 1), deltaB K m (PsiXY K m (X (Sum.inl i) * X (Sum.inr i))) =

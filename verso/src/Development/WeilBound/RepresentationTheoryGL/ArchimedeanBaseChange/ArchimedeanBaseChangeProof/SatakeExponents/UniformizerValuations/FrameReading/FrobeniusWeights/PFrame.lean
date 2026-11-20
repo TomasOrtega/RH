@@ -14,6 +14,9 @@ namespace PositivityTheory.Rg.BcB.F.FG
 attribute [local instance] borelG borelF borelA GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Introduce `h1 h2 hR E _ _ _ hE n π hπ S T F₀ F i s₁ s₂ Pa Pb D hc A G h0 hG hl he`. Take `⟨e1, e2, e3, e4, -⟩` from `F.same`. Establish `hP : (↑F.d.P : Set (Pl E)) ⊆ F₀.Sec` using `fun w hw => F.levOff.1 (Finset.mem_coe.2 (Finset.mem_union_left _ hw))`. Take `⟨l1, l2, -⟩` from `h2 E n F₀.Sec F.d (F₀.C.a i) (F₀.C.le i) F₀.hSec F.ok hP`. Conclude with `h1 E hE n (F₀.C.a i) (F₀.C.le i) π hπ F₀.μ F₀.e F₀.hμ F₀.Sec F₀.hSec F.d F.ok hP (fun w => (congrFun e3 w).trans (F₀.μloc w)) (fun w => by rw [e4]; exact (F₀.unif w).2) (fun w hw a b => (F₀.good w hw (e1 ▸ a) (e2 ▸ b)).2) (F.fam.σ F.i₀) (fun w hw => ⟨F.comp w hw, ((F.fam.comp F.i …`.
+-/
 theorem frGoodOf_holds : FRGoodOf := by
   intro h1 h2 hR E _ _ _ hE n π hπ S T F₀ F i s₁ s₂ Pa Pb D hc A G h0 hG hl he
   obtain ⟨e1, e2, e3, e4, -⟩ := F.same
@@ -26,6 +29,9 @@ theorem frGoodOf_holds : FRGoodOf := by
     fun w hw hg k intersection_update_fsHerm_neg_one => he (⟨w, hw, hg⟩, k, intersection_update_fsHerm_neg_one)
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Introduce `h1 hR E _ _ _ hE n hn π hπ S F₀ d i s₁ s₂ Pa Pb D hc`. Take `⟨G, hG, h0, -⟩` from `hc.vec`. Conclude with `h1 E hE n hn π hπ F₀.μ F₀.e F₀.hμ F₀.lam F₀.hlam _ _ (F₀.C.l₁ i) (F₀.C.l₂ i) (F₀.C.inf i) s₁ s₂ Pa Pb D hc.ctx hc.inf₁ hc.inf₂ ⟨G, hG, h0⟩`.
+-/
 theorem frWeightOf_holds : FRWeightOf := by
   intro h1 hR E _ _ _ hE n hn π hπ S F₀ d i s₁ s₂ Pa Pb D hc
   obtain ⟨G, hG, h0, -⟩ := hc.vec

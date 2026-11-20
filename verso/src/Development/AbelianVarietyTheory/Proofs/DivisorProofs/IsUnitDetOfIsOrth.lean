@@ -11,12 +11,21 @@ open NumberField Matrix Complex GlobalTheory.SUVol GlobalTheory.RiemConst Recipr
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
+/- English proof (translation)
+Apply the tactic sequence `unfold angles; split_ifs <;> simp [Finset.sum_add_distrib]; ring`.
+-/
 theorem angles_add (φ ψ : Fin (r - 1) → ℝ) (a : Fin r) : angles (φ + ψ) a = angles φ a + angles ψ a := by
   unfold angles; split_ifs <;> simp [Finset.sum_add_distrib]; ring
 
+/- English proof (translation)
+Apply the tactic sequence `unfold angles; split_ifs <;> simp [Finset.mul_sum]`.
+-/
 theorem angles_smul (c : ℝ) (φ : Fin (r - 1) → ℝ) (a : Fin r) : angles (c • φ) a = c * angles φ a := by
   unfold angles; split_ifs <;> simp [Finset.mul_sum]
 
+/- English proof (translation)
+Apply the tactic sequence `unfold angles; split_ifs <;> simp`.
+-/
 theorem angles_zero (a : Fin r) : angles (0 : Fin (r - 1) → ℝ) a = 0 := by
   unfold angles; split_ifs <;> simp
 
@@ -25,15 +34,26 @@ def anglesL (r : ℕ) : (Fin (r - 1) → ℝ) →ₗ[ℝ] (Fin r → ℝ) where
   map_add' φ ψ := funext fun a => angles_add φ ψ a
   map_smul' c φ := funext fun a => angles_smul c φ a
 
+/- English proof (translation)
+The claim follows from `((continuous_apply a).comp (LinearMap.continuous_of_finiteDimensional (anglesL r)) :)`.
+-/
 theorem continuous_angles (a : Fin r) : Continuous fun φ : Fin (r - 1) → ℝ => angles φ a :=
   ((continuous_apply a).comp (LinearMap.continuous_of_finiteDimensional (anglesL r)) :)
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `only [ReciprocityTheory.ChartRestriction.G.FD.gram, hermC, ReciprocityTheory.ChartRestriction.G.FD.col, of_apply, mul_apply, transpose_apply, map_apply, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`.
+-/
 theorem gram_eq (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (M : Matrix (Fin r) (Fin r) ℂ) :
     gram τ G M = Mᵀ * G.map τ * M.map (starRingEnd ℂ) := by
   ext a b
   simp only [ReciprocityTheory.ChartRestriction.G.FD.gram, hermC, ReciprocityTheory.ChartRestriction.G.FD.col, of_apply, mul_apply, transpose_apply, map_apply, Finset.sum_mul]
   rw [Finset.sum_comm]
 
+/- English proof (translation)
+Establish `h` using `congrArg Matrix.det (hx τ)`. Rewrite `h` using `[gram_eq, det_mul, det_mul, det_transpose, det_diagonal]`. Use `isUnit_iff_ne_zero.2 fun h0 => ?_` and prove the remaining obligations. Rewrite `h` using `[h0, zero_mul, zero_mul]`. Use `(Finset.prod_ne_zero_iff.2 fun a _ => ?_) h.symm` and prove the remaining obligations.
+
+Apply the tactic sequence `unfold sgn; split_ifs <;> norm_num`.
+-/
 theorem isUnit_det_of_isOrth {X : Data E r} {x : Frame X.Ψ r} (hx : IsOrth X x) (τ : X.Ψ) :
     IsUnit (mat x τ).det := by
   have h := congrArg Matrix.det (hx τ)
@@ -56,6 +76,9 @@ def torusGL {X : Data E r} {x : Frame X.Ψ r} (hx : IsOrth X x) (θ : X.Ψ → F
     X.Ψ → GL (Fin r) ℂ :=
   fun τ => frameU hx τ * phaseU (θ τ) * (frameU hx τ)⁻¹
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem torusGL_val {X : Data E r} {x : Frame X.Ψ r} (hx : IsOrth X x) (θ : X.Ψ → Fin (r - 1) → ℝ) (τ : X.Ψ) :
     ((torusGL hx θ τ : GL (Fin r) ℂ) : Matrix (Fin r) (Fin r) ℂ) =
       mat x τ * diagonal (fun a => exp (I * (angles (θ τ) a : ℂ))) * (mat x τ)⁻¹ := rfl
@@ -77,6 +100,9 @@ def torusDer {Ψ : Finset (E →+* ℂ)} (x : Frame Ψ r) :
     (Ψ → Fin (r - 1) → ℝ) →L[ℝ] (Ψ → Fin r → Fin r → ℂ) :=
   LinearMap.toContinuousLinearMap (torusDerL x)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem torusDer_apply {Ψ : Finset (E →+* ℂ)} (x : Frame Ψ r) (θ : Ψ → Fin (r - 1) → ℝ) (τ : Ψ) (a b : Fin r) :
     torusDer x θ τ a b = (mat x τ * diagonal (fun c => I * (angles (θ τ) c : ℂ)) * (mat x τ)⁻¹) a b := rfl
 

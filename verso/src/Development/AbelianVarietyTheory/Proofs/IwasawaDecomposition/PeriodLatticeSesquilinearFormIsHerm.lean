@@ -12,21 +12,38 @@ open scoped BigOperators ComplexConjugate Real
 
 variable (L : PeriodPair)
 
+/- English proof (translation)
+The claim follows from `(latticeArea_eq L).symm`.
+-/
 theorem area_eq : F.area L = latticeArea L := (latticeArea_eq L).symm
 
+/- English proof (translation)
+Rewrite using `[F.herm, latticeForm, area_eq]`.
+-/
 theorem herm_eq (z w : ℂ) : F.herm L z w = latticeForm L z w := by
   rw [F.herm, latticeForm, area_eq]
 
+/- English proof (translation)
+Unfold `F.semiChar sigmaSign`. Reduce the equality to equality of the corresponding arguments.
+-/
 theorem semiChar_eq (w : ℂ) : F.semiChar L w = sigmaSign L w := by
   unfold F.semiChar sigmaSign
   congr
 
+/- English proof (translation)
+Establish `: F.wZeta L = weierstrassZeta L`. Use function extensionality and compare the values at `z`. Simplify using `only [F.wZeta, weierstrassZeta, zetaTerm_eq]`. Rewrite using `[F.wEta, quasiPeriod, this]`.
+-/
 theorem wEta_eq : F.wEta L = quasiPeriod L := by
   have : F.wZeta L = weierstrassZeta L := by
     funext z
     simp only [F.wZeta, weierstrassZeta, zetaTerm_eq]
   rw [F.wEta, quasiPeriod, this]
 
+/- English proof (translation)
+Establish `h : L.ω₁ * conj L.ω₂ - L.ω₂ * conj L.ω₁ ≠ 0`. Introduce `h0`. Establish `h1` using `latticeArea_pos L`. Rewrite `h1` using `[latticeArea_eq]`. Establish `h2` using `congrArg Complex.im h0`.
+
+Simplify using `at h1 h2`. Apply `h1` to reduce the goal to its premises. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[F.s2, wEta_eq, quasiPeriod_eq, quasiPeriod_eq, div_eq_iff h]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem quasiPeriodConst_eq : F.s2 L = sTwo L := by
   have h : L.ω₁ * conj L.ω₂ - L.ω₂ * conj L.ω₁ ≠ 0 := by
     intro h0
@@ -39,6 +56,11 @@ theorem quasiPeriodConst_eq : F.s2 L = sTwo L := by
   rw [F.s2, wEta_eq, quasiPeriod_eq, quasiPeriod_eq, div_eq_iff h]
   ring
 
+/- English proof (translation)
+Use function extensionality and compare the values at `z`. Establish `: ∀ l : ℂ, F.wFactor l z = sigmaFactor l z`. Introduce `l`. Rewrite using `[sigmaFactor_eq, F.wFactor, primaryFactor, div_pow, div_div, mul_comm (l ^ 2)]`. Rewrite using `[F.sgStar, canonicalSigma, F.wSigma, weierstrassSigma, sigmaProd, quasiPeriodConst_eq]`.
+
+Simplify using `only [this]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sgStar_eq : F.sgStar L = canonicalSigma L := by
   funext z
   have : ∀ l : ℂ, F.wFactor l z = sigmaFactor l z := by
@@ -54,21 +76,43 @@ def form1 : Sesq ℂ :=
     (latticeForm_add_left L) (fun a u v => latticeForm_mul_left L a u v) (latticeForm_add_right L)
     (fun a u v => latticeForm_mul_right L a u v)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem periodLatticeSesquilinearForm_apply (z w : ℂ) : form1 L z w = latticeForm L z w := rfl
 
+/- English proof (translation)
+Introduce `x y` and use `(conj_latticeForm L x y).symm`.
+-/
 theorem periodLatticeSesquilinearForm_isHerm : IsHerm (form1 L) := fun x y => (conj_latticeForm L x y).symm
 
+/- English proof (translation)
+Use function extensionality and compare the values at `z`. Simplify using `only [F.opU, opU, herm_eq, periodLatticeSesquilinearForm_apply]`.
+-/
 theorem opU_eq (x : ℂ) (G : ℂ → ℂ) : F.opU L x G = opU (form1 L) x G := by
   funext z
   simp only [F.opU, opU, herm_eq, periodLatticeSesquilinearForm_apply]
 
+/- English proof (translation)
+Rewrite using `[F.thetaZeroCharacter, semiChar_eq, F.altE, herm_eq]`. Both sides reduce to the same expression.
+-/
 theorem th0Char_eq (ω₀ ω : ℂ) :
     F.thetaZeroCharacter L ω₀ ω = sigmaSign L ω * cexp (π * I * (altE (form1 L) ω ω₀ : ℂ)) := by
   rw [F.thetaZeroCharacter, semiChar_eq, F.altE, herm_eq]; rfl
 
+/- English proof (translation)
+Apply the tactic sequence `unfold sigmaSign; split_ifs <;> simp`.
+-/
 theorem sigmaSign_sq (w : ℂ) : sigmaSign L w * sigmaSign L w = 1 := by
   unfold sigmaSign; split_ifs <;> simp
 
+/- English proof (translation)
+Establish `he : cexp (-(π : ℂ) * form1 L z w - π * form1 L w w / 2) * cexp (π * latticeForm L z w + π * latticeForm L w w / 2) = 1`. Rewrite using `[← Complex.exp_add, periodLatticeSesquilinearForm_apply, periodLatticeSesquilinearForm_apply, ← Complex.exp_zero]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `hs` using `sigmaSign_sq L w`.
+
+Rewrite using `[opU]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[← h]`. Take the linear combination `(-G (z + w)) * he - (G (z + w) * cexp (-(π : ℂ) * form1 L z w - π * form1 L w w / 2) * cexp (π * latticeForm L z w + π * latticeForm L w w / 2)) * hs`.
+
+Introduce `h`. Rewrite using `[h]`. Take the linear combination `(G z) * he + (G z * cexp (-(π : ℂ) * form1 L z w - π * form1 L w w / 2) * cexp (π * latticeForm L z w + π * latticeForm L w w / 2)) * hs`.
+-/
 theorem law_iff (G : ℂ → ℂ) (w z : ℂ) :
     sigmaSign L w * opU (form1 L) w G z = G z ↔
       G (z + w) = sigmaSign L w * cexp (π * latticeForm L z w + π * latticeForm L w w / 2) * G z := by
@@ -87,6 +131,11 @@ theorem law_iff (G : ℂ → ℂ) (w z : ℂ) :
     linear_combination (G z) * he + (G z * cexp (-(π : ℂ) * form1 L z w - π * form1 L w w / 2) *
       cexp (π * latticeForm L z w + π * latticeForm L w w / 2)) * hs
 
+/- English proof (translation)
+Establish `: altE (form1 L) ω ω₀ = 2 * altE (form1 L) ω (ω₀ / 2)` using `by conv_lhs => rw [← add_halves ω₀]`. Simplify using `only [altE, map_add, add_im]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[chi, ← Complex.exp_add, this, ← Complex.exp_zero]`. Use `congr 1`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem chi_half (ω ω₀ : ℂ) :
     cexp (π * I * (altE (form1 L) ω ω₀ : ℂ)) * chi (form1 L) ω (ω₀ / 2) = 1 := by
   have : altE (form1 L) ω ω₀ = 2 * altE (form1 L) ω (ω₀ / 2) := by
@@ -95,23 +144,42 @@ theorem chi_half (ω ω₀ : ℂ) :
   rw [chi, ← Complex.exp_add, this, ← Complex.exp_zero]
   congr 1; push_cast; ring
 
+/- English proof (translation)
+Rewrite using `[F.th0, opU_eq, sgStar_eq]`.
+-/
 theorem thetaZero_periodLattice_eq (t z : ℂ) :
     F.th0 L t z = opU (form1 L) t (canonicalSigma L) z / opU (form1 L) t (canonicalSigma L) 0 := by
   rw [F.th0, opU_eq, sgStar_eq]
 
+/- English proof (translation)
+Rewrite using `[opU, zero_add]`. Conclude with `mul_ne_zero ((canonicalSigma_eq_zero_iff L).not.2 ht) (Complex.exp_ne_zero _)`.
+-/
 theorem const_ne {t : ℂ} (ht : t ∉ L.lattice) : opU (form1 L) t (canonicalSigma L) 0 ≠ 0 := by
   rw [opU, zero_add]
   exact mul_ne_zero ((canonicalSigma_eq_zero_iff L).not.2 ht) (Complex.exp_ne_zero _)
 
+/- English proof (translation)
+Rewrite using `[thetaZero_periodLattice_eq, div_self (const_ne L ht)]`.
+-/
 theorem evenTheta_zero_eq_one {t : ℂ} (ht : t ∉ L.lattice) : F.th0 L t 0 = 1 := by
   rw [thetaZero_periodLattice_eq, div_self (const_ne L ht)]
 
+/- English proof (translation)
+Establish `: F.th0 L t = fun z => opU (form1 L) t (canonicalSigma L) z / opU (form1 L) t (canonicalSigma L) 0`. Use function extensionality and compare the values at `(thetaZero_periodLattice_eq L t)`. Rewrite using `[this]`. Conclude with `(differentiable_opU (differentiable_canonicalSigma L) t).div_const _`.
+-/
 theorem differentiable_evenTheta (t : ℂ) : Differentiable ℂ (F.th0 L t) := by
   have : F.th0 L t = fun z => opU (form1 L) t (canonicalSigma L) z / opU (form1 L) t (canonicalSigma L) 0 :=
     funext (thetaZero_periodLattice_eq L t)
   rw [this]
   exact (differentiable_opU (differentiable_canonicalSigma L) t).div_const _
 
+/- English proof (translation)
+Establish `e : F.th0 L (ω₀ / 2) = fun z => (opU (form1 L) (ω₀ / 2) (canonicalSigma L) 0)⁻¹ * opU (form1 L) (ω₀ / 2) (canonicalSigma L) z`. Use function extensionality and compare the values at `z`. Rewrite using `[thetaZero_periodLattice_eq, div_eq_inv_mul]`. Establish `e2 : opU (form1 L) ω (canonicalSigma L) = fun z => sigmaSign L ω * canonicalSigma L z`. Use function extensionality and compare the values at `z`.
+
+Rewrite using `[← (law_iff L _ ω z).2 (canonicalSigma_add L hω z), ← mul_assoc, sigmaSign_sq, one_mul]`. Rewrite using `[e, opU_mul, opU_comm (periodLatticeSesquilinearForm_isHerm L), e2, opU_mul, th0Char_eq]`. Establish `h1` using `chi_half L ω ω₀`. Establish `h2` using `sigmaSign_sq L ω`. Use `set c := (opU (form1 L) (ω₀ / 2) (canonicalSigma L) 0)⁻¹ * opU (form1 L) (ω₀ / 2) (canonicalSigma L) z`.
+
+Take the linear combination `(c * sigmaSign L ω * sigmaSign L ω) * h1 + c * h2`.
+-/
 theorem evenTheta_translation_law (ω₀ : ℂ) {ω : ℂ} (hω : ω ∈ L.lattice) (z : ℂ) :
     F.thetaZeroCharacter L ω₀ ω * opU (form1 L) ω (F.th0 L (ω₀ / 2)) z = F.th0 L (ω₀ / 2) z := by
   have e : F.th0 L (ω₀ / 2) = fun z => (opU (form1 L) (ω₀ / 2) (canonicalSigma L) 0)⁻¹ *
@@ -126,9 +194,23 @@ theorem evenTheta_translation_law (ω₀ : ℂ) {ω : ℂ} (hω : ω ∈ L.latti
   set c := (opU (form1 L) (ω₀ / 2) (canonicalSigma L) 0)⁻¹ * opU (form1 L) (ω₀ / 2) (canonicalSigma L) z
   linear_combination (c * sigmaSign L ω * sigmaSign L ω) * h1 + c * h2
 
+/- English proof (translation)
+Use function extensionality and compare the values at `w`. Simplify using `[opU]`.
+-/
 theorem opU_zero {V : Type*} [AddCommGroup V] [Module ℂ V] (H : Sesq V) (G : V → ℂ) : opU H 0 G = G := by
   funext w; simp [opU]
 
+/- English proof (translation)
+Use `set t := ω₀ / 2 with ht`. Take `⟨c, hc⟩` from `exists_eq_mul_canonicalSigma L (differentiable_opU (H := form1 L) hG (-t)) fun w hw z => by`. Rewrite using `[← law_iff, opU_comm (periodLatticeSesquilinearForm_isHerm L)]`. Use `conv_rhs => rw [← funext (hlaw w hw)]`. Rewrite using `[opU_mul, th0Char_eq]`.
+
+Establish `h1` using `chi_half L w ω₀`. Establish `h2 : chi (form1 L) w (-t) * chi (form1 L) w t = 1`. Rewrite using `[← chi_add_right]`. Simplify using `[chi, altE]`. Use `set u := sigmaSign L w * opU (form1 L) (-t) (opU (form1 L) w G) z`.
+
+Take the linear combination `(-u * chi (form1 L) w (-t)) * h1 + u * cexp (π * I * (altE (form1 L) w ω₀ : ℂ)) * h2`. Establish `key : ∀ z, G z = c * opU (form1 L) t (canonicalSigma L) z`. Introduce `z`. Rewrite using `[← opU_mul, ← funext hc, opU_opU (periodLatticeSesquilinearForm_isHerm L), add_neg_cancel, opU_zero]`. Establish `: altE (form1 L) t (-t) = 0`.
+
+Use `altE_swap (periodLatticeSesquilinearForm_isHerm L) t t` as an intermediate fact. Simplify using `only [altE, map_neg, neg_im] at this ⊢`. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `[this]`. Rewrite using `[key z, key 0, thetaZero_periodLattice_eq]`.
+
+Use `const_ne L h0` as an intermediate fact. Clear the denominators using the available nonvanishing facts.
+-/
 theorem evenTheta_spans_thetaSpace {ω₀ : ℂ} (h0 : ω₀ / 2 ∉ L.lattice) {G : ℂ → ℂ} (hG : Differentiable ℂ G)
     (hlaw : ∀ ω ∈ L.lattice, ∀ z, F.thetaZeroCharacter L ω₀ ω * opU (form1 L) ω G z = G z) (z : ℂ) :
     G z = G 0 * F.th0 L (ω₀ / 2) z := by
@@ -154,12 +236,18 @@ theorem evenTheta_spans_thetaSpace {ω₀ : ℂ} (h0 : ω₀ / 2 ∉ L.lattice) 
   have := const_ne L h0
   field_simp
 
+/- English proof (translation)
+Rewrite using `[mul_comm, Complex.ofReal_intCast, Complex.exp_int_mul, Complex.exp_pi_mul_I]`. Break down `Int.even_or_odd k with h | h` into its components or cases. Conclude with `Or.inl h.neg_one_zpow`. Conclude with `Or.inr h.neg_one_zpow`.
+-/
 theorem exp_int_sign (k : ℤ) : cexp (π * I * ((k : ℝ) : ℂ)) = 1 ∨ cexp (π * I * ((k : ℝ) : ℂ)) = -1 := by
   rw [mul_comm, Complex.ofReal_intCast, Complex.exp_int_mul, Complex.exp_pi_mul_I]
   rcases Int.even_or_odd k with h | h
   · exact Or.inl h.neg_one_zpow
   · exact Or.inr h.neg_one_zpow
 
+/- English proof (translation)
+Take `⟨k, hk⟩` from `exists_int_im_latticeForm L h h0`. Establish `: altE (form1 L) ω ω₀ = k` using `hk`. Rewrite using `[th0Char_eq, this, mul_mul_mul_comm, sigmaSign_sq]`. Apply the tactic sequence `rcases exp_int_sign k with h | h <;> rw [h] <;> norm_num`.
+-/
 theorem th0Char_sq {ω₀ ω : ℂ} (h0 : ω₀ ∈ L.lattice) (h : ω ∈ L.lattice) :
     F.thetaZeroCharacter L ω₀ ω * F.thetaZeroCharacter L ω₀ ω = 1 := by
   obtain ⟨k, hk⟩ := exists_int_im_latticeForm L h h0
@@ -167,10 +255,18 @@ theorem th0Char_sq {ω₀ ω : ℂ} (h0 : ω₀ ∈ L.lattice) (h : ω ∈ L.lat
   rw [th0Char_eq, this, mul_mul_mul_comm, sigmaSign_sq]
   rcases exp_int_sign k with h | h <;> rw [h] <;> norm_num
 
+/- English proof (translation)
+Rewrite using `[th0Char_eq, sigmaSign_of_mem L (by simp)]`. Simplify using `[altE]`.
+-/
 theorem th0Char_zero (ω₀ : ℂ) : F.thetaZeroCharacter L ω₀ 0 = 1 := by
   rw [th0Char_eq, sigmaSign_of_mem L (by simp)]
   simp [altE]
 
+/- English proof (translation)
+Simplify using `only [th0Char_eq, sigmaSign_add L ha hb]`. Establish `: (altE (form1 L) (a + b) ω₀ : ℂ) = altE (form1 L) a ω₀ + altE (form1 L) b ω₀`. Simplify using `[altE]`. Rewrite using `[this, mul_add, Complex.exp_add]`. Express the relevant statement in the definitionally equal form `_ * _ * cexp (π * I * (altE (form1 L) a b : ℂ)) * _ = _`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem th0Char_add (ω₀ : ℂ) {a b : ℂ} (ha : a ∈ L.lattice) (hb : b ∈ L.lattice) :
     F.thetaZeroCharacter L ω₀ (a + b) = F.thetaZeroCharacter L ω₀ a * F.thetaZeroCharacter L ω₀ b * cexp (π * I * (altE (form1 L) a b : ℂ)) := by
   simp only [th0Char_eq, sigmaSign_add L ha hb]
@@ -180,6 +276,17 @@ theorem th0Char_add (ω₀ : ℂ) {a b : ℂ} (ha : a ∈ L.lattice) (hb : b ∈
   change _ * _ * cexp (π * I * (altE (form1 L) a b : ℂ)) * _ = _
   ring
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `h _ L.ω₁_mem_lattice`. Take `⟨b, hb⟩` from `h _ L.ω₂_mem_lattice`. Establish `hx` using `L.basis.sum_repr x`. Rewrite `hx` using `[Fin.sum_univ_two, L.basis_zero, L.basis_one]`. Use `set s := L.basis.repr x 0`.
+
+Use `set t := L.basis.repr x 1`. Establish `hs : ∀ u : ℂ, altE (form1 L) u u = 0` using `fun u => by`. Use `altE_swap (periodLatticeSesquilinearForm_isHerm L) u u` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `e : ∀ y, altE (form1 L) x y = s * altE (form1 L) L.ω₁ y + t * altE (form1 L) L.ω₂ y`.
+
+Introduce `y`. Rewrite using `[← altE_real_smul_left, ← altE_real_smul_left, ← hx]`. Simplify using `only [altE, map_add, LinearMap.add_apply, add_im]`. Rewrite `ha`, `hb` using `[e, hs]`. Rewrite `hb` using `[altE_swap (periodLatticeSesquilinearForm_isHerm L) L.ω₂]`.
+
+Establish `h1 : |altE (form1 L) L.ω₂ L.ω₁| = 1` using `abs_im_latticeForm L`. Rewrite using `[PeriodPair.mem_lattice]`. Apply the tactic sequence `rcases (abs_eq zero_le_one).1 h1 with h2 | h2 <;> rw [h2] at ha hb`. Use `⟨-b, a, ?_⟩` and prove the remaining obligations. Rewrite using `[← hx, show s = -b by linarith, show t = a by linarith]`.
+
+Simplify using the standard rewrite rules. Use `⟨b, -a, ?_⟩` and prove the remaining obligations. Rewrite using `[← hx, show s = b by linarith, show t = -a by linarith]`. Simplify using the standard rewrite rules.
+-/
 theorem mem_of_int {x : ℂ} (h : ∀ y ∈ L.lattice, ∃ m : ℤ, altE (form1 L) x y = m) : x ∈ L.lattice := by
   obtain ⟨a, ha⟩ := h _ L.ω₁_mem_lattice
   obtain ⟨b, hb⟩ := h _ L.ω₂_mem_lattice
@@ -210,6 +317,9 @@ section Std
 
 variable {n : Type} [Fintype n] [DecidableEq n]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `∑ i, ∑ j, z i * _ * conj (w j) = _`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single i (fun j _ hj => by simp [Matrix.one_apply_ne hj.symm]) (by simp), periodLatticeSesquilinearForm_apply, latticeForm, area_eq]`. Simplify using `only [Matrix.smul_apply, Matrix.one_apply_eq, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem stdH_apply (z w : n → ℂ) : stdH L n z w = ∑ i, form1 L (z i) (w i) := by
   change ∑ i, ∑ j, z i * _ * conj (w j) = _
   refine Finset.sum_congr rfl fun i _ => ?_
@@ -218,27 +328,49 @@ theorem stdH_apply (z w : n → ℂ) : stdH L n z w = ∑ i, form1 L (z i) (w i)
   simp only [Matrix.smul_apply, Matrix.one_apply_eq, smul_eq_mul]
   ring
 
+/- English proof (translation)
+Introduce `x y` and use `by simp only [stdH_apply, map_sum, ← periodLatticeSesquilinearForm_isHerm L _ _]`.
+-/
 theorem stdH_herm : IsHerm (stdH L n) := fun x y => by
   simp only [stdH_apply, map_sum, ← periodLatticeSesquilinearForm_isHerm L _ _]
 
+/- English proof (translation)
+Simplify using `only [altE, stdH_apply, Complex.im_sum]`.
+-/
 theorem altE_stdH (z w : n → ℂ) : altE (stdH L n) z w = ∑ i, altE (form1 L) (z i) (w i) := by
   simp only [altE, stdH_apply, Complex.im_sum]
 
+/- English proof (translation)
+Rewrite using `[stdH_apply, Finset.sum_eq_single i (fun j _ hj => by simp [Pi.single_eq_of_ne hj]) (by simp)]`. Simplify using the standard rewrite rules.
+-/
 theorem stdH_single (z : n → ℂ) (i : n) (w : ℂ) : stdH L n z (Pi.single i w) = form1 L (z i) w := by
   rw [stdH_apply, Finset.sum_eq_single i (fun j _ hj => by simp [Pi.single_eq_of_ne hj]) (by simp)]
   simp
 
 omit [Fintype n] [DecidableEq n] in
+/- English proof (translation)
+Simplify using `[stdLat, AddSubgroup.mem_pi]`.
+-/
 theorem mem_stdLat {x : n → ℂ} : x ∈ stdLat L n ↔ ∀ i, x i ∈ L.lattice := by
   simp [stdLat, AddSubgroup.mem_pi]
 
 omit [Fintype n] in
+/- English proof (translation)
+The claim follows from `(mem_stdLat L).2 fun j => by by_cases h : j = i · subst h; simpa using hw · simp [Pi.single_eq_of_ne h]`.
+-/
 theorem single_mem (i : n) {w : ℂ} (hw : w ∈ L.lattice) : (Pi.single i w : n → ℂ) ∈ stdLat L n :=
   (mem_stdLat L).2 fun j => by
     by_cases h : j = i
     · subst h; simpa using hw
     · simp [Pi.single_eq_of_ne h]
 
+/- English proof (translation)
+Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `(mem_stdLat L).2 fun i => mem_of_int L fun y hy => ?_` and prove the remaining obligations. Use `h _ (single_mem L i hy)` as an intermediate fact.
+
+Rewrite `this` using `[altE, stdH_single]`. Then use the resulting hypothesis. Introduce `h y hy choose k hk using fun i => exists_int_im_latticeForm L ((mem_stdLat L).1 h i) ((mem_stdLat L).1 hy i)`. Use `⟨∑ i, k i, ?_⟩` and prove the remaining obligations. Rewrite using `[altE_stdH]`. Use `push_cast`.
+
+Conclude with `Finset.sum_congr rfl fun i _ => hk i`.
+-/
 theorem std_selfDual : IsSelfDual (stdH L n) (stdLat L n) := by
   ext x
   constructor
@@ -253,6 +385,9 @@ theorem std_selfDual : IsSelfDual (stdH L n) (stdLat L n) := by
     push_cast
     exact Finset.sum_congr rfl fun i _ => hk i
 
+/- English proof (translation)
+Use `⟨fun x hx => ?_, fun x hx y hy => ?_⟩` and prove the remaining obligations. Rewrite using `[← mul_self_eq_one_iff, hα x hx, stdChar, ← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_eq_one fun i _ => th0Char_sq L h0 ((mem_stdLat L).1 hx i)`. Rewrite using `[hα x hx, hα y hy, hα _ (add_mem hx hy), stdChar, stdChar, stdChar, altE_stdH, Complex.ofReal_sum, Finset.mul_sum, Complex.exp_sum, ← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_congr rfl fun i _ => th0Char_add L ω₀ ((mem_stdLat L).1 hx i) ((mem_stdLat L).1 hy i)`.
+-/
 theorem std_semiChar {ω₀ : ℂ} (h0 : ω₀ ∈ L.lattice) {α : (n → ℂ) → ℂ}
     (hα : ∀ x ∈ stdLat L n, α x = stdChar L ω₀ x) : IsSemiChar (stdH L n) (stdLat L n) α := by
   refine ⟨fun x hx => ?_, fun x hx y hy => ?_⟩
@@ -263,9 +398,15 @@ theorem std_semiChar {ω₀ : ℂ} (h0 : ω₀ ∈ L.lattice) {α : (n → ℂ) 
     exact Finset.prod_congr rfl fun i _ => th0Char_add L ω₀ ((mem_stdLat L).1 hx i) ((mem_stdLat L).1 hy i)
 
 omit [DecidableEq n] in
+/- English proof (translation)
+Simplify using `[F0, prodFn, evenTheta_zero_eq_one L h]`.
+-/
 theorem productEvenTheta_zero_eq_one {ω₀ : ℂ} (h : ω₀ / 2 ∉ L.lattice) : F0 L ω₀ n 0 = 1 := by
   simp [F0, prodFn, evenTheta_zero_eq_one L h]
 
+/- English proof (translation)
+Use `⟨fun z _ => ?_, fun x hx z => ?_⟩` and prove the remaining obligations. Use `Finset.analyticAt_fun_prod (f := fun i (z : n → ℂ) => F.th0 L (ω₀ / 2) (z i)) _ fun i _ => ?_` and prove the remaining obligations. Conclude with `((differentiable_evenTheta L _).analyticAt _).comp (f := fun z : n → ℂ => z i) ((ContinuousLinearMap.proj i : (n → ℂ) →L[ℂ] ℂ).analyticAt z)`. Rewrite using `[hα x hx, stdChar, opU, stdH_apply, stdH_apply, Finset.mul_sum, Finset.mul_sum, Finset.sum_div, ← Finset.sum_sub_distrib, Complex.exp_sum, F0, prodFn, prodFn, ← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_congr rfl fun i _ => evenTheta_translation_law L ω₀ ((mem_stdLat L).1 hx i) (z i)`.
+-/
 theorem productEvenTheta_mem_thetaSpace (ω₀ : ℂ) {α : (n → ℂ) → ℂ} (hα : ∀ x ∈ stdLat L n, α x = stdChar L ω₀ x) :
     F0 L ω₀ n ∈ Th (stdH L n) α (stdLat L n) := by
   refine ⟨fun z _ => ?_, fun x hx z => ?_⟩
@@ -277,6 +418,21 @@ theorem productEvenTheta_mem_thetaSpace (ω₀ : ℂ) {α : (n → ℂ) → ℂ}
       ← Finset.prod_mul_distrib]
     exact Finset.prod_congr rfl fun i _ => evenTheta_translation_law L ω₀ ((mem_stdLat L).1 hx i) (z i)
 
+/- English proof (translation)
+Establish `one : ∀ (z : n → ℂ) (i : n), G z = G (Function.update z i 0) * F.th0 L (ω₀ / 2) (z i)`. Introduce `z i`. Use `evenTheta_spans_thetaSpace L h0 (G := fun x => G (Function.update z i x)) (hG.comp (fun x => (hasDerivAt_update z i x).differentiableAt)) (fun ω hω x => by` as an intermediate fact. Establish `h1` using `hF _ (single_mem L i hω) (Function.update z i x)`. Rewrite `h1` using `[hα _ (single_mem L i hω), stdChar, Finset.prod_eq_single i (fun j _ hj => by rw [Pi.single_eq_of_ne hj, th0Char_zero]) (by simp), opU, stdH_single, stdH_single]`.
+
+Establish `h2 : Function.update z i x + Pi.single i ω = Function.update z i (x + ω)`. Use function extensionality and compare the values at `j`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+
+Simplify using `[Function.update_of_ne h, Pi.single_eq_of_ne h]`. Rewrite `h1` using `[h2]`. Simplify `h1) (z i)` using `[opU]`. Simplify using `using this`. Establish `all : ∀ (s : Finset n) (z : n → ℂ), G z = G (fun i => if i ∈ s then 0 else z i) * ∏ i ∈ s, F.th0 L (ω₀ / 2) (z i)`.
+
+Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert i s hi ih`. Introduce `z`.
+
+Rewrite using `[ih z, one _ i, Finset.prod_insert hi, if_neg hi, mul_assoc]`. Use `congr 2`. Use function extensionality and compare the values at `j`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality.
+
+Simplify using the standard rewrite rules. Simplify using `[h]`. Use function extensionality and compare the values at `z`. Rewrite using `[all Finset.univ z]`. Simplify using `only [Finset.mem_univ, if_true]`.
+
+Both sides reduce to the same expression.
+-/
 theorem std_line {ω₀ : ℂ} (h0 : ω₀ / 2 ∉ L.lattice) {α : (n → ℂ) → ℂ}
     (hα : ∀ x ∈ stdLat L n, α x = stdChar L ω₀ x) {G : (n → ℂ) → ℂ} (hG : Differentiable ℂ G)
     (hF : G ∈ fixedBy (stdH L n) α (stdLat L n)) : G = G 0 • F0 L ω₀ n := by
@@ -320,8 +476,14 @@ section Four
 
 variable {n : Type} [Fintype n]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem matH_apply (h : Matrix n n ℂ) (z w : n → ℂ) : matH h z w = ∑ i, ∑ j, z i * h i j * conj (w j) := rfl
 
+/- English proof (translation)
+Simplify using `only [matH_apply, Fintype.sum_prod_type, blk4, slice]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single a (fun b _ hb => by simp [hb.symm]) (by simp)]`. Simplify using the standard rewrite rules.
+-/
 theorem matrixForm_fourfoldBlock (h : Matrix n n ℂ) (z w : Fin 4 × n → ℂ) :
     matH (blk4 h) z w = ∑ a, matH h (slice a z) (slice a w) := by
   simp only [matH_apply, Fintype.sum_prod_type, blk4, slice]
@@ -329,9 +491,15 @@ theorem matrixForm_fourfoldBlock (h : Matrix n n ℂ) (z w : Fin 4 × n → ℂ)
   rw [Finset.sum_eq_single a (fun b _ hb => by simp [hb.symm]) (by simp)]
   simp
 
+/- English proof (translation)
+The claim follows from `(ContinuousLinearMap.pi fun i : n => (ContinuousLinearMap.proj (a, i) : (Fin 4 × n → ℂ) →L[ℂ] ℂ)).analyticAt z`.
+-/
 theorem analyticAt_slice (a : Fin 4) (z : Fin 4 × n → ℂ) : AnalyticAt ℂ (slice (n := n) a) z :=
   (ContinuousLinearMap.pi fun i : n => (ContinuousLinearMap.proj (a, i) : (Fin 4 × n → ℂ) →L[ℂ] ℂ)).analyticAt z
 
+/- English proof (translation)
+Introduce `n _ h Λ α θ hθ`. Use `⟨fun z _ => ?_, fun x hx z => ?_⟩` and prove the remaining obligations. Conclude with `Finset.analyticAt_fun_prod (f := fun a (v : Fin 4 × n → ℂ) => θ a (slice a v)) _ fun a _ => ((hθ a).1 _ trivial).comp (analyticAt_slice a z)`. Rewrite using `[opU, matrixForm_fourfoldBlock, matrixForm_fourfoldBlock, Finset.mul_sum, Finset.mul_sum, Finset.sum_div, ← Finset.sum_sub_distrib, Complex.exp_sum, ← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_congr rfl fun a _ => (hθ a).2 _ (hx a) (slice a z)`.
+-/
 theorem tens4Mem : Tens4Mem := by
   intro n _ h Λ α θ hθ
   refine ⟨fun z _ => ?_, fun x hx z => ?_⟩
@@ -344,11 +512,21 @@ theorem tens4Mem : Tens4Mem := by
 def ins (z : Fin 4 × n → ℂ) (x : n → ℂ) : Fin 4 × n → ℂ := fun w => if w.1 = 0 then x w.2 else z w
 
 omit [Fintype n] in
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Apply the tactic sequence `by_cases h : a = 0 <;> simp [slice, ins, h]`.
+-/
 theorem slice_ins (z : Fin 4 × n → ℂ) (x : n → ℂ) (a : Fin 4) :
     slice a (ins z x) = if a = 0 then x else slice a z := by
   funext i
   by_cases h : a = 0 <;> simp [slice, ins, h]
 
+/- English proof (translation)
+Establish `hs : ∀ a, slice a (0 : Fin 4 × n → ℂ) = 0` using `fun _ => rfl`. Use `⟨fun x _ => ?_, fun y hy x => ?_⟩` and prove the remaining obligations. Use `(hP.1 _ trivial).comp (f := ins z) (analyticAt_pi_iff.2 fun w => ?_)` and prove the remaining obligations. Distinguish the cases in `hw : w.1 = 0`. Simplify using `only [ins, hw, if_true]`.
+
+Conclude with `(ContinuousLinearMap.proj w.2 : (n → ℂ) →L[ℂ] ℂ).analyticAt x`. Simplify using `only [ins, hw, if_false]`. Conclude with `analyticAt_const`. Establish `h1` using `hP.2 (ins 0 y) (fun a => by rw [slice_ins]; split_ifs; exacts [hy, Λ.zero_mem]) (ins z x)`. Establish `h2 : ins z x + ins 0 y = ins z (x + y)`.
+
+Use function extensionality and compare the values at `w`. Apply the tactic sequence `by_cases hw : w.1 = 0 <;> simp [ins, hw]`. Rewrite `h1` using `[opU, h2, matrixForm_fourfoldBlock, matrixForm_fourfoldBlock]`. Simplify `h1` using `[opU, slice_ins, Fin.sum_univ_four, Fin.prod_univ_four, hs, h0]`.
+-/
 theorem ins_mem {h : Matrix n n ℂ} {Λ : AddSubgroup (n → ℂ)} {α : (n → ℂ) → ℂ} (h0 : α 0 = 1)
     {P : (Fin 4 × n → ℂ) → ℂ} (hP : P ∈ Th (matH (blk4 h)) (fun x => ∏ a, α (slice a x)) (pow4 Λ))
     (z : Fin 4 × n → ℂ) : (fun x => P (ins z x)) ∈ Th (matH h) α Λ := by
@@ -367,6 +545,25 @@ theorem ins_mem {h : Matrix n n ℂ} {Λ : AddSubgroup (n → ℂ)} {α : (n →
     rw [opU, h2, matrixForm_fourfoldBlock, matrixForm_fourfoldBlock] at h1
     simpa [opU, slice_ins, Fin.sum_univ_four, Fin.prod_univ_four, hs, h0] using h1
 
+/- English proof (translation)
+Introduce `n _ h Λ α h0 P hP hne hline`. Take `⟨z₀, hz₀⟩` from `Function.ne_iff.1 hne`. Prove the components needed by the constructor for the conclusion. Establish `hf` using `ins_mem h0 hP z₀`. Take `⟨c, hc⟩` from `hline _ (tens4Mem n h Λ α (fun _ => fun x => P (ins z₀ x)) fun _ => hf)`.
+
+Establish `hz : ins z₀ (slice 0 z₀) = z₀`. Use function extensionality and compare the values at `⟨a, i⟩`. Apply the tactic sequence `by_cases hw : a = 0 <;> simp [ins, slice, hw]`. Establish `hc0 : c ≠ 0`. Introduce and unpack `rfl`.
+
+Use `congrFun hc fun w => z₀ (0, w.2)` as an intermediate fact. Rewrite `this` using `[zero_smul, Pi.zero_apply, Finset.prod_eq_zero_iff]`. Take `⟨a, -, ha⟩` from `this`. Conclude with `hz₀ (hz ▸ ha)`. Take `⟨r, hr⟩` from `IsAlgClosed.exists_pow_nat_eq c⁻¹ (n := 4) (by norm_num)`.
+
+Use `⟨r • fun x => P (ins z₀ x), Submodule.smul_mem _ r hf, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `v`. Use `congrFun hc v` as an intermediate fact. Simplify using `only [tens4, Pi.smul_apply, smul_eq_mul, Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, Fintype.card_fin] at this ⊢`. Rewrite using `[this, hr, inv_mul_cancel_left₀ hc0]`.
+
+Introduce `θ hθ hP4`. Take `⟨a, ha⟩ : ∃ a, θ a ≠ 0` from `⟨slice 0 z₀, fun h0 => hz₀ (by`. Rewrite using `[← hP4]`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ 0) h0)⟩`. Establish `span : ∀ G ∈ Th (matH h) α Λ, ∃ c : ℂ, G = c • θ`.
+
+Introduce `G hG`. Apply the tactic sequence `obtain ⟨c, hc⟩ := hline _ (tens4Mem n h Λ α ![G, θ, θ, θ] fun b => by fin_cases b <;> simpa)`. Use `⟨c, funext fun x => ?_⟩` and prove the remaining obligations. Use `congrFun hc (ins (fun w => a w.2) x)` as an intermediate fact. Establish `hs : ∀ b, slice b (fun w : Fin 4 × n => a w.2) = a` using `fun _ => rfl`.
+
+Rewrite `this` using `[← hP4]`. Simplify using `only [tens4, Pi.smul_apply, smul_eq_mul, Fin.prod_univ_four, slice_ins, hs] at this`. Simplify using `only [Fin.isValue, if_true, Fin.reduceEq, if_false, Matrix.cons_val] at this`. Apply `mul_right_cancel₀ (pow_ne_zero 3 ha)` to reduce the goal to its premises. Rewrite using `[Pi.smul_apply, smul_eq_mul]`.
+
+Take the linear combination `this`. Use `⟨fun θ' hθ' hP' => ?_, span⟩` and prove the remaining obligations. Take `⟨c, rfl⟩` from `span θ' hθ'`. Use `⟨c, ?_, rfl⟩` and prove the remaining obligations. Use `congrFun (hP'.trans hP4.symm) z₀` as an intermediate fact.
+
+Rewrite `hz₀` using `[← hP4]`. Simplify using `only [tens4, Pi.smul_apply, smul_eq_mul, Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, Fintype.card_fin] at this`. Conclude with `mul_right_cancel₀ hz₀ (this.trans (one_mul _).symm)`.
+-/
 theorem fourthRoot : FourthRoot := by
   intro n _ h Λ α h0 P hP hne hline
   obtain ⟨z₀, hz₀⟩ := Function.ne_iff.1 hne
@@ -413,6 +610,11 @@ theorem fourthRoot : FourthRoot := by
       Fintype.card_fin] at this
     exact mul_right_cancel₀ hz₀ (this.trans (one_mul _).symm)
 
+/- English proof (translation)
+Use `Fintype.ofFinite (A₂ ⧸ A₁.addSubgroupOf A₂)` as an intermediate fact. Rewrite using `[inter_eq]`. Introduce `z _`. Use `analyticAt_const.mul (Finset.analyticAt_fun_sum _ fun c _ => analyticAt_const.mul ?_)` and prove the remaining obligations. Generalize the expression as in `((Quotient.out c : A₂) : n → ℂ) = x`.
+
+Establish `h : AnalyticAt ℂ (fun z => H z x) z` using `(LinearMap.toContinuousLinearMap (H.flip x)).analyticAt z`. Conclude with `((hG _ trivial).comp (f := fun z => z + x) (analyticAt_id.add analyticAt_const)).mul (((analyticAt_const.mul h).sub analyticAt_const).cexp)`.
+-/
 theorem analytic_inter (H : Sesq (n → ℂ)) (α : (n → ℂ) → ℂ) (A₁ A₂ : AddSubgroup (n → ℂ))
     [Finite (A₂ ⧸ A₁.addSubgroupOf A₂)] {G : (n → ℂ) → ℂ} (hG : AnalyticOnNhd ℂ G Set.univ) :
     AnalyticOnNhd ℂ (inter H α A₁ A₂ G) Set.univ := by
@@ -425,6 +627,9 @@ theorem analytic_inter (H : Sesq (n → ℂ)) (α : (n → ℂ) → ℂ) (A₁ A
   exact ((hG _ trivial).comp (f := fun z => z + x) (analyticAt_id.add analyticAt_const)).mul
     (((analyticAt_const.mul h).sub analyticAt_const).cexp)
 
+/- English proof (translation)
+Use `Fintype.ofFinite (A₂ ⧸ A₁.addSubgroupOf A₂)` as an intermediate fact. Rewrite using `[inter_eq, inter_eq]`. Use function extensionality and compare the values at `z`. Simplify using `only [opU, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun _ _ => by ring`.
+-/
 theorem inter_smul {V : Type*} [AddCommGroup V] [Module ℂ V] (H : Sesq V) (α : V → ℂ) (A₁ A₂ : AddSubgroup V)
     [Finite (A₂ ⧸ A₁.addSubgroupOf A₂)] (c : ℂ) (G : V → ℂ) :
     inter H α A₁ A₂ (c • G) = c • inter H α A₁ A₂ G := by
@@ -434,6 +639,29 @@ theorem inter_smul {V : Type*} [AddCommGroup V] [Module ℂ V] (H : Sesq V) (α 
   simp only [opU, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]
   exact Finset.sum_congr rfl fun _ _ => by ring
 
+/- English proof (translation)
+Introduce `L ω₀ n _ _ h Λ α β g S κ hκ`. Use `set A := imgLat (g : (Fin 4 × n → ℂ) →ₗ[ℂ] (Fin 4 × n → ℂ)) (pow4 Λ) with hA`. Establish `f1 : Finite (A ⧸ (stdLat L (Fin 4 × n)).addSubgroupOf A)` using `Nat.finite_of_card_ne_zero S.idx₁`. Establish `f2 : Finite (stdLat L (Fin 4 × n) ⧸ A.addSubgroupOf (stdLat L (Fin 4 × n)))` using `Nat.finite_of_card_ne_zero S.idx₂`. Establish `hH` using `stdH_herm L (n := Fin 4 × n)`.
+
+Establish `hd` using `std_selfDual L (n := Fin 4 × n)`. Establish `hs` using `std_semiChar L S.per S.betaStd`. Establish `hF` using `productEvenTheta_mem_thetaSpace L ω₀ S.betaStd`. Establish `hiso : ∀ x y, stdH L (Fin 4 × n) (g x) (g y) = matH (blk4 h) x y` using `S.isom`. Establish `hK : inter (stdH L (Fin 4 × n)) β (stdLat L (Fin 4 × n)) A (F0 L ω₀ (Fin 4 × n)) ∈ Th (stdH L _) β A` using `⟨analytic_inter _ _ _ _ hF.1, inter_mem_fixedBy hH hs S.selfDual S.betaSemi hF.2⟩`.
+
+Use `set K := inter (stdH L (Fin 4 × n)) β (stdLat L (Fin 4 × n)) A (F0 L ω₀ (Fin 4 × n)) with hKdef`. Establish `hk : kernel4 L ω₀ Λ β g = fun z => K (g z)` using `rfl`. Establish `hK0 : K ≠ 0`. Introduce `h0`. Establish `h1` using `inter_inter hH hd S.selfDual hs hF.2`.
+
+Rewrite `h1` using `[← hKdef, h0, ← zero_smul ℂ (0 : (Fin 4 × n → ℂ) → ℂ), inter_smul, zero_smul]`. Use `congrFun h1 0` as an intermediate fact. Rewrite `this` using `[productEvenTheta_zero_eq_one L S.half]`. Conclude with `zero_ne_one this`. Establish `hP : kernel4 L ω₀ Λ β g ∈ Th (matH (blk4 h)) (fun x => ∏ a, α (slice a x)) (pow4 Λ)`.
+
+Rewrite using `[hk]`. Use `⟨fun z _ => (hK.1 _ trivial).comp ((LinearMap.toContinuousLinearMap (g : (Fin 4 × n → ℂ) →ₗ[ℂ] (Fin 4 × n → ℂ))).analyticAt z), fun x hx z => ?_⟩` and prove the remaining obligations. Use `hK.2 (g x) ⟨x, hx, rfl⟩ (g z)` as an intermediate fact. Rewrite `this` using `[opU, hiso, hiso, ← map_add, S.betaAlpha]`. Conclude with `this`.
+
+Establish `hne : κ • kernel4 L ω₀ Λ β g ≠ 0`. Use `smul_ne_zero hκ fun h0 => hK0 (funext fun z => ?_)` and prove the remaining obligations. Simplify `congrFun h0 (g.symm z)` using `[hk]`. Establish `hline : ∀ G ∈ Th (matH (blk4 h)) (fun x => ∏ a, α (slice a x)) (pow4 Λ), ∃ c : ℂ, G = c • κ • kernel4 L ω₀ Λ β g`. Introduce `G hG`.
+
+Establish `hG' : (fun z => G (g.symm z)) ∈ Th (stdH L _) β A`. Use `⟨fun z _ => (hG.1 _ trivial).comp ((LinearMap.toContinuousLinearMap (g.symm : (Fin 4 × n → ℂ) →ₗ[ℂ] (Fin 4 × n → ℂ))).analyticAt z), ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩ z`. Take `⟨y, rfl⟩` from `g.surjective z`. Express the relevant statement in the definitionally equal form `β (g x) * opU _ (g x) _ (g y) = G (g.symm (g y))`.
+
+Rewrite using `[opU, hiso, hiso, ← map_add, S.betaAlpha, g.symm_apply_apply, g.symm_apply_apply]`. Conclude with `hG.2 x hx y`. Establish `h1` using `std_line L S.half S.betaStd (differentiableOn_univ.1 (analytic_inter (stdH L _) β A (stdLat L _) hG'.1).differentiableOn) (inter_mem_fixedBy hH S.betaSemi hd hs hG'.2)`. Establish `h2` using `inter_inter hH S.selfDual hd S.betaSemi hG'.2`. Rewrite `h2` using `[h1, inter_smul, ← hKdef]`.
+
+Generalize the expression as in `inter (stdH L (Fin 4 × n)) β A (stdLat L _) (fun z => G (g.symm z)) 0 = c at h2`. Use `⟨c * κ⁻¹, funext fun z => ?_⟩` and prove the remaining obligations. Use `congrFun h2 (g z)` as an intermediate fact. Rewrite `this` using `[g.symm_apply_apply]`. Rewrite using `[← this, smul_smul, inv_mul_cancel_right₀ hκ, hk]`.
+
+Both sides reduce to the same expression. Take `⟨e, u⟩` from `fourthRoot n h Λ α S.alpha0 _ (Submodule.smul_mem _ κ hP) hne hline`. Use `⟨e, fun θ hθ h4 => ⟨?_, u θ hθ h4⟩⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Apply `hne` to reduce the goal to its premises.
+
+Rewrite using `[← h4]`. Use function extensionality and compare the values at `z`. Simplify using `[tens4]`.
+-/
 theorem thetaVector : ThetaVector := by
   intro L ω₀ n _ _ h Λ α β g S κ hκ
   set A := imgLat (g : (Fin 4 × n → ℂ) →ₗ[ℂ] (Fin 4 × n → ℂ)) (pow4 Λ) with hA

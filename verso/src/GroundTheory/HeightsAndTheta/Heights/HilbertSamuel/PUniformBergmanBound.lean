@@ -10,6 +10,11 @@ open MeasureTheory Set Filter Topology ReciprocityTheory.AnForm ReciprocityTheor
 
 noncomputable section
 
+/- English proof (translation)
+Unfold `gaussDiscMass`. Use `split_ifs with h`. Check the signs of the components of the expression. Establish `hl : 0 < lam` using `lt_of_le_of_ne hlam (Ne.symm h)`. Establish `: Real.exp (-lam * R ^ 2) < 1` using `(Real.exp_lt_exp.2 (by nlinarith [sq_pos_of_pos hR] : -lam * R ^ 2 < 0)).trans_eq Real.exp_zero`.
+
+Establish `: 0 < 1 - Real.exp (-lam * R ^ 2)` using `by linarith`. Check the signs of the components of the expression.
+-/
 lemma gaussDiscMass_pos {lam R : ℝ} (hlam : 0 ≤ lam) (hR : 0 < R) : 0 < gaussDiscMass lam R := by
   unfold gaussDiscMass
   split_ifs with h
@@ -20,6 +25,29 @@ lemma gaussDiscMass_pos {lam R : ℝ} (hlam : 0 ≤ lam) (hR : 0 < R) : 0 < gaus
     have : 0 < 1 - Real.exp (-lam * R ^ 2) := by linarith
     positivity
 
+/- English proof (translation)
+Introduce `D X _ _ _ _ _ A L W₀ W₁ dV _ _`. Take `⟨r, hr, M, c, hc, hcov⟩` from `hC A L W₀ W₁ dV`. Use `set M' := max M 0 with hM'`. Establish `hM'0 : 0 ≤ M'` using `le_max_right _ _`. Establish `hI : 0 < gaussDiscMass M' r` using `gaussDiscMass_pos hM'0 hr`.
+
+Establish `hK : 0 < c * gaussDiscMass M' r ^ D` using `by positivity`. Use `⟨(c * gaussDiscMass M' r ^ D)⁻¹, fun n hn t ht V _ hV x => ?_⟩` and prove the remaining obligations. Establish `hn0 : 0 < n` using `hn`. Establish `hnD : 0 < (n : ℝ) ^ D` using `by positivity`. Take `⟨j, hxj, hball, hdens, hW⟩` from `hcov x`.
+
+Take `⟨ℓ₀, h₀⟩` from `hW W₀ (by simp)`. Take `⟨ℓ₁, h₁⟩` from `hW W₁ (by simp)`. Use `set e := A.chart j`. Use `set y := e x`. Use `set ψ : (Fin D → ℂ) → ℝ := (W₀.lerp W₁ t).φ j ∘ e.symm with hψ`.
+
+Establish `hψy : ψ y = (W₀.lerp W₁ t).φ j x` using `by simp [hψ, y, e.left_inv hxj]`. Establish `hsub : Metric.closedBall y r ⊆ e.target ∩ e.symm ⁻¹' e.source` using `fun w hw => ⟨hball hw, e.map_target (hball hw)⟩`. Establish `hT : ∀ z : Fin D → ℂ, ‖z‖ ≤ r → ψ (y + z) ≤ ψ y + (ℓ₀ + t • (ℓ₁ - ℓ₀)) z + M' * ∑ i, ‖z i‖ ^ 2`. Introduce `z hz`. Establish `a₀` using `h₀ z hz`.
+
+Establish `a₁` using `h₁ z hz`. Establish `hS : 0 ≤ ∑ i, ‖z i‖ ^ 2` using `by positivity`. Establish `hMM : M * ∑ i, ‖z i‖ ^ 2 ≤ M' * ∑ i, ‖z i‖ ^ 2` using `mul_le_mul_of_nonneg_right (le_max_left _ _) hS`. Rewrite using `[hψy]`. Simplify using `only [hψ, Function.comp, Weight.lerp, FunLike.coe_add, FunLike.coe_smul, FunLike.coe_sub, Pi.add_apply, Pi.smul_apply, Pi.sub_apply, smul_eq_mul]`.
+
+Establish `ht0 : 0 ≤ t` using `ht.1`. Establish `ht1 : 0 ≤ 1 - t` using `by linarith [ht.2]`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left a₀ ht1, mul_le_mul_of_nonneg_left a₁ ht0]`. Use `ciSup_le fun s => ?_` and prove the remaining obligations. Establish `hs : (s : Fin A.n → X → ℂ) ∈ L.sections n` using `hV s.2`.
+
+Establish `hs' : _ ∧ _ ∧ _` using `hs`. Use `set F : (Fin D → ℂ) → ℂ := (s : Fin A.n → X → ℂ) j ∘ e.symm with hF`. Establish `hFa : AnalyticOnNhd ℂ F (Metric.closedBall y r)` using `((hs'.1 j) j).mono hsub`. Establish `hψc : ContinuousOn ψ (Metric.closedBall y r)` using `(((W₀.lerp W₁ t).smooth j) j).continuousOn.mono hsub`. Establish `hloc` using `gauss_local hP hn0 hr hM'0 hFa hψc (ℓ₀ + t • (ℓ₁ - ℓ₀)) hT`.
+
+Establish `hρr : r / Real.sqrt n ≤ r` using `div_le_self hr.le (Real.one_le_sqrt.2 (by exact_mod_cast hn))`. Establish `hBr : Metric.closedBall y (r / Real.sqrt n) ⊆ Metric.closedBall y r` using `Metric.closedBall_subset_closedBall hρr`. Establish `hlow` using `le_l2NormSq_of_chart (W₀.lerp W₁ t) dV hs j Metric.isClosed_closedBall.measurableSet (hBr.trans hball) hc.le (fun w hw => hdens w (hBr hw))`. Establish `hpt : ptNormSq (W₀.lerp W₁ t) n s x = ‖F y‖ ^ 2 * Real.exp (-(n : ℝ) * ψ y)`. Rewrite using `[ptNormSq_eq_of_mem _ hs j hxj, hψy]`.
+
+Simplify using `[hF, y, e.left_inv hxj]`. Establish `hmain : ptNormSq (W₀.lerp W₁ t) n s x * ((n : ℝ) ^ D)⁻¹ * gaussDiscMass M' r ^ D * c ≤ sectionL2NormSq (W₀.lerp W₁ t) dV n s`. Rewrite using `[hpt]`. Combine the equalities or inequalities in the displayed calculation. Establish `hl0 : 0 ≤ sectionL2NormSq (W₀.lerp W₁ t) dV n s` using `sectionL2NormSq_nonneg _ _ _ _`.
+
+Break down `hl0.eq_or_lt with h0 | hpos` into its components or cases. Rewrite using `[← h0, div_zero]`. Check the signs of the components of the expression. Rewrite using `[div_le_iff₀ hpos]`. Establish `hp0 : 0 ≤ ptNormSq (W₀.lerp W₁ t) n s x` using `ptNormSq_nonneg _ _ _ _`.
+
+Combine the equalities or inequalities in the displayed calculation. Clear the denominators using the available nonvanishing facts. Use `_ ≤ (c * gaussDiscMass M' r ^ D)⁻¹ * (n : ℝ) ^ D * sectionL2NormSq (W₀.lerp W₁ t) dV n s := mul_le_mul_of_nonneg_left hmain (by positivity)`.
+-/
 theorem UniformBergmanBound.proof (hP : PolydiscSubmean.Statement)
     (hC : ChartTaylorCover.Statement) : UniformBergmanBound.Statement := by
   intro D X _ _ _ _ _ A L W₀ W₁ dV _ _

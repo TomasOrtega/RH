@@ -9,19 +9,41 @@ namespace GlobalTheory.FlagLeviGroup
 
 variable {n : ℕ} {ε : Fin n → Bool}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem uMat_mul (g h : Formalism.REAL.UJ ε) : uMat (g * h) = uMat g * uMat h := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem uMat_one : uMat (1 : Formalism.REAL.UJ ε) = 1 := rfl
 
+/- English proof (translation)
+Rewrite using `[← uMat_mul, mul_inv_cancel, uMat_one]`.
+-/
 theorem uMat_mul_inv (g : Formalism.REAL.UJ ε) : uMat g * uMat g⁻¹ = 1 := by
   rw [← uMat_mul, mul_inv_cancel, uMat_one]
 
+/- English proof (translation)
+Rewrite using `[← uMat_mul, inv_mul_cancel, uMat_one]`.
+-/
 theorem uMat_inv_mul (g : Formalism.REAL.UJ ε) : uMat g⁻¹ * uMat g = 1 := by
   rw [← uMat_mul, inv_mul_cancel, uMat_one]
 
+/- English proof (translation)
+The claim follows from `Units.continuous_val.comp continuous_subtype_val`.
+-/
 theorem continuous_uMat : Continuous (fun g : Formalism.REAL.UJ ε => uMat g) :=
   Units.continuous_val.comp continuous_subtype_val
 
+/- English proof (translation)
+Establish `hA' : ∀ y ∈ V, Matrix.toLin' A y ∈ V` using `fun y hy => by simpa using hA y hy`. Establish `hinj : Function.Injective ((Matrix.toLin' A).restrict hA')`. Introduce `x y hxy`. Establish `h1 : A *ᵥ (x : Fin n → ℂ) = A *ᵥ (y : Fin n → ℂ)`. Simplify using `using congrArg Subtype.val hxy`.
+
+Establish `h2` using `congrArg (fun z => B *ᵥ z) h1`. Simplify using `only [Matrix.mulVec_mulVec, hBA, Matrix.one_mulVec] at h2`. Conclude with `Subtype.ext h2`. Establish `hsurj` using `LinearMap.injective_iff_surjective.mp hinj`. Introduce `y hy`.
+
+Take `⟨x, hx⟩` from `hsurj ⟨y, hy⟩`. Establish `h1 : A *ᵥ (x : Fin n → ℂ) = y`. Simplify using `using congrArg Subtype.val hx`. Rewrite using `[← h1, Matrix.mulVec_mulVec, hBA, Matrix.one_mulVec]`. Conclude with `x.2`.
+-/
 theorem inv_keeps {A B : Matrix (Fin n) (Fin n) ℂ} (hBA : B * A = 1) (V : Submodule ℂ (Fin n → ℂ))
     (hA : ∀ y ∈ V, A *ᵥ y ∈ V) : ∀ y ∈ V, B *ᵥ y ∈ V := by
   have hA' : ∀ y ∈ V, Matrix.toLin' A y ∈ V := fun y hy => by simpa using hA y hy
@@ -81,6 +103,11 @@ def compactSub : Subgroup (Formalism.REAL.UJ ε) where
     conv_lhs => enter [1]; rw [h1, Matrix.conjTranspose_conjTranspose]
     exact uMat_mul_inv g
 
+/- English proof (translation)
+Establish `h : flagM ε W = ⋂ i, ⋂ y ∈ W i, ((fun g : Formalism.REAL.UJ ε => uMat g *ᵥ y) ⁻¹' (W i : Set (Fin n → ℂ)) ∩ (fun g : Formalism.REAL.UJ ε => (uMat g)ᴴ *ᵥ y) ⁻¹' (W i : Set (Fin n → ℂ)))`. Use extensionality with `g`. Simplify using `only [flagM, Set.mem_iInter, Set.mem_inter_iff, Set.mem_preimage, SetLike.mem_coe]`. Both sides reduce to the same expression. Rewrite using `[h]`.
+
+Use `isClosed_iInter fun i => isClosed_iInter fun y => isClosed_iInter fun _ => ?_` and prove the remaining obligations. Conclude with `((W i).closed_of_finiteDimensional.preimage (continuous_uMat.matrix_mulVec continuous_const)).inter ((W i).closed_of_finiteDimensional.preimage (continuous_uMat.matrix_conjTranspose.matrix_mulVec continuous_const))`.
+-/
 theorem isClosed_flagM {a : ℕ} (W : Fin (a + 1) → Submodule ℂ (Fin n → ℂ)) : IsClosed (flagM ε W) := by
   have h : flagM ε W = ⋂ i, ⋂ y ∈ W i,
       ((fun g : Formalism.REAL.UJ ε => uMat g *ᵥ y) ⁻¹' (W i : Set (Fin n → ℂ)) ∩
@@ -95,14 +122,23 @@ theorem isClosed_flagM {a : ℕ} (W : Fin (a + 1) → Submodule ℂ (Fin n → �
     ((W i).closed_of_finiteDimensional.preimage
       (continuous_uMat.matrix_conjTranspose.matrix_mulVec continuous_const))
 
+/- English proof (translation)
+The claim follows from `isClosed_eq (continuous_uMat.matrix_conjTranspose.matrix_mul continuous_uMat) continuous_const`.
+-/
 theorem isClosed_maxK : IsClosed (maxK ε) :=
   isClosed_eq (continuous_uMat.matrix_conjTranspose.matrix_mul continuous_uMat) continuous_const
 
+/- English proof (translation)
+Rewrite using `[Matrix.mulVec_sub, Matrix.mulVec_mulVec y (uMat m) (uMat m⁻¹), uMat_mul_inv, Matrix.one_mulVec, uMat_mul, uMat_mul, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec]`.
+-/
 theorem conj_sub (m u : Formalism.REAL.UJ ε) (y : Fin n → ℂ) :
     uMat (m * u * m⁻¹) *ᵥ y - y = uMat m *ᵥ (uMat u *ᵥ (uMat m⁻¹ *ᵥ y) - uMat m⁻¹ *ᵥ y) := by
   rw [Matrix.mulVec_sub, Matrix.mulVec_mulVec y (uMat m) (uMat m⁻¹), uMat_mul_inv, Matrix.one_mulVec,
     uMat_mul, uMat_mul, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec]
 
+/- English proof (translation)
+Establish `hm : (uMat m)ᴴ * Formalism.REAL.Jm ε * uMat m = Formalism.REAL.Jm ε` using `m.2`. Establish `h1 : Formalism.REAL.Jm ε * uMat m⁻¹ = (uMat m)ᴴ * Formalism.REAL.Jm ε`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mulVec_mulVec, h1, ← Matrix.mulVec_mulVec, Matrix.star_mulVec, Matrix.dotProduct_mulVec]`.
+-/
 theorem form_inv (m : Formalism.REAL.UJ ε) (x y : Fin n → ℂ) :
     star x ⬝ᵥ (Formalism.REAL.Jm ε *ᵥ (uMat m⁻¹ *ᵥ y)) = star (uMat m *ᵥ x) ⬝ᵥ (Formalism.REAL.Jm ε *ᵥ y) := by
   have hm : (uMat m)ᴴ * Formalism.REAL.Jm ε * uMat m = Formalism.REAL.Jm ε := m.2
@@ -111,6 +147,11 @@ theorem form_inv (m : Formalism.REAL.UJ ε) (x y : Fin n → ℂ) :
       _ = _ := by rw [Matrix.mul_assoc, uMat_mul_inv, Matrix.mul_one]
   rw [Matrix.mulVec_mulVec, h1, ← Matrix.mulVec_mulVec, Matrix.star_mulVec, Matrix.dotProduct_mulVec]
 
+/- English proof (translation)
+Establish `hm' : m⁻¹ ∈ flagM ε W` using `(leviSub ε W).inv_mem hm`. Use `⟨fun i y hy => ?_, fun y hy => ?_⟩` and prove the remaining obligations. Rewrite using `[conj_sub]`. Conclude with `(hm _ _ (hu.1 i _ (hm' _ y hy).1)).1`. Rewrite using `[conj_sub]`.
+
+Use `(hm _ _ (hu.2 _ fun x hx => ?_)).1` and prove the remaining obligations. Rewrite using `[form_inv]`. Conclude with `hy _ (hm _ x hx).1`.
+-/
 theorem conj_mem_flagN {a : ℕ} (W : Fin (a + 1) → Submodule ℂ (Fin n → ℂ)) {m u : Formalism.REAL.UJ ε}
     (hm : m ∈ flagM ε W) (hu : u ∈ flagN ε W) : m * u * m⁻¹ ∈ flagN ε W := by
   have hm' : m⁻¹ ∈ flagM ε W := (leviSub ε W).inv_mem hm
@@ -122,6 +163,9 @@ theorem conj_mem_flagN {a : ℕ} (W : Fin (a + 1) → Submodule ℂ (Fin n → �
     rw [form_inv]
     exact hy _ (hm _ x hx).1
 
+/- English proof (translation)
+Introduce `_ ε _ W` and use `⟨⟨leviSub ε W, rfl⟩, isClosed_flagM W, ⟨compactSub ε, rfl⟩, isClosed_maxK, fun _ hm _ hu => conj_mem_flagN W hm hu⟩`.
+-/
 theorem levi_compact_subgroups : ∀ (n : ℕ) (ε : Fin n → Bool) (a : ℕ)
     (W : Fin (a + 1) → Submodule ℂ (Fin n → ℂ)),
     (∃ M : Subgroup (Formalism.REAL.UJ ε), (M : Set (Formalism.REAL.UJ ε)) = flagM ε W) ∧ IsClosed (flagM ε W) ∧

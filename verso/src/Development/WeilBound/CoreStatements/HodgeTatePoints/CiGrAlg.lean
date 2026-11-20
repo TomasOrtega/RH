@@ -9,6 +9,21 @@ namespace PositivityTheory.HtPt.Ci
 
 variable {K : Type} [Field K] {V : Type} [AddCommGroup V] [Module K V] {n : ℕ}
 
+/- English proof (translation)
+Substitute `hW` using the available equality. Establish `hmem : ∀ k : Fin s, β (Fin.castLE hs k) ∈ Submodule.span K (β '' {k | (k : ℕ) < s})` using `fun k => Submodule.subset_span ⟨Fin.castLE hs k, by simp, rfl⟩`. Set `f : Fin s → Submodule.span K (β '' {k | (k : ℕ) < s})` to `fun k => ⟨β (Fin.castLE hs k), hmem k⟩`. Establish `hli : LinearIndependent K f`. Apply `LinearIndependent.of_comp (Submodule.span K (β '' {k | (k : ℕ) < s})).subtype` to reduce the goal to its premises.
+
+Conclude with `β.linearIndependent.comp _ (Fin.castLE_injective hs)`. Establish `hsp : ⊤ ≤ Submodule.span K (Set.range f)`. Rewrite using `[← Submodule.span_span_coe_preimage (R := K) (s := β '' {k | (k : ℕ) < s})]`. Apply `Submodule.span_mono` to reduce the goal to its premises. Introduce `y hy`.
+
+Take `⟨k, hk, hky⟩` from `hy`. Use `⟨⟨k, hk⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Use `show β (Fin.castLE hs ⟨k, hk⟩) = y`. Conclude with `hky`. Set `γ` to `Module.Basis.mk hli hsp`.
+
+Establish `hγ : ∀ k, (γ k : V) = β (Fin.castLE hs k)` using `fun k => by simp [γ, f]`. Establish `key : ∀ (x : Submodule.span K (β '' {k | (k : ℕ) < s})) (l : Fin n), β.repr x l = ∑ k, γ.repr x k * (if Fin.castLE hs k = l then 1 else 0)`. Introduce `x l`. Use `conv_lhs => rw [← γ.sum_repr x]`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul, hγ, map_sum, map_smul, Finsupp.coe_finset_sum, Finset.sum_apply, Finsupp.smul_apply, Module.Basis.repr_self, Finsupp.single_apply, smul_eq_mul]`.
+
+Use `⟨γ, hγ, fun x k => ?_, fun x l hl => ?_⟩` and prove the remaining obligations. Rewrite using `[key, Finset.sum_eq_single k]`. Simplify using the standard rewrite rules. Introduce `j _ hj`. Simplify using `[(Fin.castLE_injective hs).ne hj]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[key]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `k _`. Establish `: Fin.castLE hs k ≠ l`.
+
+Introduce `h`. Rewrite `hl` using `[← h]`. Simplify using `at hl`. Use linear arithmetic over natural numbers and integers. Simplify using `[this]`.
+-/
 theorem step_basis (β : Module.Basis (Fin n) K V) {s : ℕ} (hs : s ≤ n) {W : Submodule K V}
     (hW : W = Submodule.span K (β '' {k | (k : ℕ) < s})) :
     ∃ γ : Module.Basis (Fin s) K W, (∀ k, (γ k : V) = β (Fin.castLE hs k)) ∧
@@ -53,6 +68,13 @@ theorem step_basis (β : Module.Basis (Fin n) K V) {s : ℕ} (hs : s ≤ n) {W :
       omega
     simp [this]
 
+/- English proof (translation)
+Unfold `IsLatOf at he ⊢`. Introduce `x`. Establish `hx : x ∈ sub C Λ W i ↔ (x : V) ∈ Λ i` using `Iff.rfl`. Rewrite using `[hx, he]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h k`. Rewrite using `[← h2]`. Conclude with `h _`. Introduce `h q`. Distinguish the cases in `hq : (q : ℕ) < s`.
+
+Establish `hq' : q = Fin.castLE hs ⟨q, hq⟩` using `rfl`. Rewrite using `[hq', h2]`. Conclude with `h _`. Rewrite using `[h3 x q (by omega)]`. Simplify using the standard rewrite rules.
+-/
 private theorem isLatOf_sub_of_basis_castLE (C : ACurve K) {Λ : C.I → AddSubgroup V} (i : C.I)
     (e : Module.Basis (Fin n) K V) {s : ℕ} (hs : s ≤ n) {W : Submodule K V}
     (ε : Module.Basis (Fin s) K W)
@@ -75,6 +97,11 @@ private theorem isLatOf_sub_of_basis_castLE (C : ACurve K) {Λ : C.I → AddSubg
     · rw [h3 x q (by omega)]
       simp
 
+/- English proof (translation)
+Establish `hsum : e'.repr x l = ∑ k, e.repr x k * e'.repr (e k) l` using `by conv_lhs => rw [← e.sum_repr x]`. Simplify using `only [map_sum, map_smul, Finsupp.coe_finset_sum, Finset.sum_apply, Finsupp.smul_apply, smul_eq_mul]`. Rewrite using `[hsum]`. Apply `Valuation.map_sum_le` to reduce the goal to its premises. Introduce `k _`.
+
+Rewrite using `[map_mul]`. Conclude with `mul_le_one' (hx k) (hee k l)`.
+-/
 private theorem v_repr_le_one_of_basis_change (C : ACurve K) (i : C.I) {ι ι' : Type} [Fintype ι] [Fintype ι']
     (e : Module.Basis ι K V) (e' : Module.Basis ι' K V) (hee : ∀ k l, C.v i (e'.repr (e k) l) ≤ 1)
     (x : V) (hx : ∀ k, C.v i (e.repr x k) ≤ 1) (l : ι') : C.v i (e'.repr x l) ≤ 1 := by
@@ -88,6 +115,15 @@ private theorem v_repr_le_one_of_basis_change (C : ACurve K) (i : C.I) {ι ι' :
   rw [map_mul]
   exact mul_le_one' (hx k) (hee k l)
 
+/- English proof (translation)
+Take `⟨-, b0, hb0⟩` from `hΛ`. Establish `hfin : ∀ e : K, {i | 1 < C.v i e}.Finite`. Introduce `e`. Distinguish the cases in `he : e = 0`. Simplify using `[he]`.
+
+Conclude with `(C.fin e he).subset (fun i hi => ne_of_gt hi)`. Establish `hS : ({i | ¬IsLatOf C i b0 (Λ i)} ∪ (⋃ k, ⋃ l, {i | 1 < C.v i (β.repr (b0 k) l)}) ∪ (⋃ k, ⋃ l, {i | 1 < C.v i (b0.repr (β k) l)})).Finite` using `(hb0.union (Set.finite_iUnion fun k => Set.finite_iUnion fun l => hfin _)).union (Set.finite_iUnion fun k => Set.finite_iUnion fun l => hfin _)`. Apply `hS.subset` to reduce the goal to its premises. Introduce `i hi`. Assume the negation of the conclusion as `hni`.
+
+Apply `hi` to reduce the goal to its premises. Simplify using `only [Set.mem_union, Set.mem_iUnion, Set.mem_setOf_eq, not_or, not_exists, not_lt, not_not] at hni`. Take `⟨⟨h0, h1⟩, h2⟩` from `hni`. Unfold `IsLatOf at h0 ⊢`. Introduce `x`.
+
+Rewrite using `[h0 x]`. Conclude with `⟨fun hx l => v_repr_le_one_of_basis_change C i b0 β h1 x hx l, fun hx l => v_repr_le_one_of_basis_change C i β b0 h2 x hx l⟩`.
+-/
 private theorem finite_setOf_not_isLatOf (C : ACurve K) {Λ : C.I → AddSubgroup V} (hΛ : IsBun C Λ)
     (β : Module.Basis (Fin n) K V) : {i | ¬ IsLatOf C i β (Λ i)}.Finite := by
   obtain ⟨-, b0, hb0⟩ := hΛ
@@ -112,6 +148,9 @@ private theorem finite_setOf_not_isLatOf (C : ACurve K) {Λ : C.I → AddSubgrou
   rw [h0 x]
   exact ⟨fun hx l => v_repr_le_one_of_basis_change C i b0 β h1 x hx l, fun hx l => v_repr_le_one_of_basis_change C i β b0 h2 x hx l⟩
 
+/- English proof (translation)
+Unfold `IsLatOf at h ⊢`. Introduce `x`. Rewrite using `[h x]`. Simplify using `only [Module.Basis.repr_reindex_apply]`. Conclude with `⟨fun hx q => hx _, fun hx k => by simpa using hx (e k)⟩`.
+-/
 private theorem isLatOf_reindex' (C : ACurve K) (i : C.I) {U : Type} [AddCommGroup U] [Module K U]
     {m r : ℕ} (d : Module.Basis (Fin m) K U) (e : Fin m ≃ Fin r) (L : AddSubgroup U)
     (h : IsLatOf C i d L) : IsLatOf C i (d.reindex e) L := by
@@ -121,6 +160,33 @@ private theorem isLatOf_reindex' (C : ACurve K) (i : C.I) {U : Type} [AddCommGro
   simp only [Module.Basis.repr_reindex_apply]
   exact ⟨fun hx q => hx _, fun hx k => by simpa using hx (e k)⟩
 
+/- English proof (translation)
+Use `set W := Submodule.span K (β '' {k | (k : ℕ) < s}) with hWdef`. Take `⟨γ, hγ1, hγ2, hγ3⟩` from `step_basis β hs (W := W) rfl`. Establish `hbi : ∀ i, W = Submodule.span K ((b i) '' {k | (k : ℕ) < s})`. Introduce `i`. Take `⟨δ, -, -, -⟩` from `step_basis (b i) hs (W := Submodule.span K ((b i) '' {k | (k : ℕ) < s})) rfl`.
+
+Use `symm`. Apply `Submodule.eq_of_le_of_finrank_eq` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨k, hk, rfl⟩`. Rewrite using `[SetLike.mem_coe, hWdef, β.mem_span_image]`.
+
+Introduce `l hl`. Rewrite `hl` using `[Finset.mem_coe, Finsupp.mem_support_iff]`. Simplify using `only [Set.mem_setOf_eq]`. Assume the negation of the conclusion as `hls`. Conclude with `hl (tri i k l hk (Fin.lt_iff_val_lt_val.mpr (by simp only [Set.mem_setOf_eq] at hk; omega)))`.
+
+Rewrite using `[Module.finrank_eq_card_basis δ, Module.finrank_eq_card_basis γ]`. Use `choose δ hδ1 hδ2 hδ3 using fun i => step_basis (b i) hs (hbi i)`. Establish `hlat : ∀ i, IsLatOf C i (δ i) (sub C Λ W i)` using `fun i => isLatOf_sub_of_basis_castLE C i (b i) hs (δ i) (hδ2 i) (hδ3 i) (hb i)`. Establish `hD : ∀ i, γ.det (δ i) = ∏ k : Fin s, β.repr (b i (Fin.castLE hs k)) (Fin.castLE hs k)`. Introduce `i`.
+
+Rewrite using `[Module.Basis.det_apply, Matrix.det_of_isUpperTriangular]`. Apply `Finset.prod_congr rfl` to reduce the goal to its premises. Introduce `k _`. Rewrite using `[Module.Basis.toMatrix_apply, ← hγ2, hδ1]`. Introduce `k l hlk`.
+
+Rewrite using `[Module.Basis.toMatrix_apply, ← hγ2, hδ1]`. Conclude with `tri i _ _ (by simp) (Fin.lt_iff_val_lt_val.mpr (by simpa using hlk))`. Establish `hne : ∀ i, ∏ k : Fin s, β.repr (b i (Fin.castLE hs k)) (Fin.castLE hs k) ≠ 0`. Introduce `i`. Rewrite using `[← hD]`.
+
+Conclude with `(γ.isUnit_det (δ i)).ne_zero`. Establish `hfinP : {i | C.v i (∏ k : Fin s, β.repr (b i (Fin.castLE hs k)) (Fin.castLE hs k)) ≠ 1}.Finite`. Apply `(finite_setOf_not_isLatOf C hΛ β).subset` to reduce the goal to its premises. Introduce `i hi hβ`. Apply `hi` to reduce the goal to its premises.
+
+Rewrite using `[← hD]`. Conclude with `Inhab.v_det C (isLatOf_sub_of_basis_castLE C i β hs γ hγ2 hγ3 hβ) (hlat i)`. Use `⟨hne, hfinP, ?_⟩` and prove the remaining obligations. Establish `hr : Module.finrank K W = s` using `by rw [Module.finrank_eq_card_basis γ, Fintype.card_fin]`. Use `set e : Fin s ≃ Fin (Module.finrank K W) := finCongr hr.symm`.
+
+Establish `hdeg : subDeg C Λ W = ∑ᶠ i, (C.w i : ℤ) * WithZero.log (C.v i ((Module.finBasis K W).det ((δ i).reindex e)))` using `Inhab.deg_eq C _ (fun i => isLatOf_reindex' C i (δ i) e _ (hlat i))`. Rewrite using `[hdeg]`. Use `set c := (Module.finBasis K W).det (γ.reindex e)`. Establish `hc : c ≠ 0` using `((Module.finBasis K W).isUnit_det _).ne_zero`. Establish `hsplit : ∀ i, (Module.finBasis K W).det ((δ i).reindex e) = c * ∏ k : Fin s, β.repr (b i (Fin.castLE hs k)) (Fin.castLE hs k)`.
+
+Introduce `i`. Rewrite using `[← hD, ← (Module.finBasis K W).det_mul_det (γ.reindex e) ((δ i).reindex e), Module.Basis.det_reindex]`. Use `congr 2`. Use extensionality with `k`. Simplify using the standard rewrite rules.
+
+Repeatedly rewrite using `[hsplit]`. Establish `hlog : ∀ i, (C.w i : ℤ) * WithZero.log (C.v i (c * ∏ k : Fin s, β.repr (b i (Fin.castLE hs k)) (Fin.castLE hs k))) = (C.w i : ℤ) * WithZero.log (C.v i c) + (C.w i : ℤ) * WithZero.log (C.v i (∏ k : Fin s, β.repr (b i (Fin.castLE hs k)) (Fin.castLE hs k)))`. Introduce `i`. Rewrite using `[map_mul, WithZero.log_mul ((C.v i).ne_zero_iff.mpr hc) ((C.v i).ne_zero_iff.mpr (hne i)), mul_add]`. Repeatedly rewrite using `[hlog]`.
+
+Rewrite using `[finsum_add_distrib, C.prod c hc, zero_add]`. Apply `(C.fin c hc).subset` to reduce the goal to its premises. Introduce `i hi h1`. Apply `hi` to reduce the goal to its premises. Simplify using `[h1]`.
+
+Apply `hfinP.subset` to reduce the goal to its premises. Introduce `i hi h1`. Apply `hi` to reduce the goal to its premises. Simplify using `[h1]`.
+-/
 theorem subDeg_step [FiniteDimensional K V] (C : ACurve K) {Λ : C.I → AddSubgroup V} (hΛ : IsBun C Λ)
     (β : Module.Basis (Fin n) K V) (b : C.I → Module.Basis (Fin n) K V) (hb : ∀ i, IsLatOf C i (b i) (Λ i))
     {s : ℕ} (hs : s ≤ n) (tri : ∀ i (k l : Fin n), (k : ℕ) < s → k < l → β.repr (b i k) l = 0) :
@@ -200,6 +266,23 @@ theorem subDeg_step [FiniteDimensional K V] (C : ACurve K) {Λ : C.I → AddSubg
     apply hi
     simp [h1]
 
+/- English proof (translation)
+Establish `hs1 : (s : ℕ) + 1 ≤ n` using `s.isLt`. Establish `hs0 : (s : ℕ) ≤ n` using `s.isLt.le`. Take `⟨ne1, fin1, eq1⟩` from `subDeg_step C hΛ β b hb hs1 (fun i k l hk hkl => tri i k l (Fin.le_iff_val_le_val.mpr (by omega)) hkl)`. Take `⟨ne0, fin0, eq0⟩` from `subDeg_step C hΛ β b hb hs0 (fun i k l hk hkl => tri i k l (Fin.le_iff_val_le_val.mpr (by omega)) hkl)`. Establish `hprod : ∀ i, ∏ k : Fin ((s : ℕ) + 1), β.repr (b i (Fin.castLE hs1 k)) (Fin.castLE hs1 k) = (∏ k : Fin s, β.repr (b i (Fin.castLE hs0 k)) (Fin.castLE hs0 k)) * β.repr (b i s) s`.
+
+Introduce `i`. Rewrite using `[Fin.prod_univ_castSucc]`. Establish `h1 : ∀ k : Fin s, Fin.castLE hs1 (Fin.castSucc k) = Fin.castLE hs0 k` using `fun k => Fin.ext (by simp)`. Establish `h2 : Fin.castLE hs1 (Fin.last s) = s` using `Fin.ext (by simp)`. Simplify using `only [h1, h2]`.
+
+Establish `hd : ∀ i, β.repr (b i s) s ≠ 0`. Introduce `i`. Use `ne1 i` as an intermediate fact. Rewrite `this` using `[hprod]`. Conclude with `right_ne_zero_of_mul this`.
+
+Establish `hdfin : {i | C.v i (β.repr (b i s) s) ≠ 1}.Finite`. Apply `(fin1.union fin0).subset` to reduce the goal to its premises. Introduce `i hi`. Assume the negation of the conclusion as `hc`. Simplify using `only [Set.mem_union, Set.mem_setOf_eq, not_or, not_not, hprod, map_mul] at hc`.
+
+Take `⟨h1, h2⟩` from `hc`. Rewrite `h1` using `[h2, one_mul]`. Conclude with `hi h1`. Use `⟨hd, hdfin, ?_⟩` and prove the remaining obligations. Rewrite using `[eq1, eq0]`.
+
+Establish `hlog : ∀ i, (C.w i : ℤ) * WithZero.log (C.v i (∏ k : Fin ((s : ℕ) + 1), β.repr (b i (Fin.castLE hs1 k)) (Fin.castLE hs1 k))) = (C.w i : ℤ) * WithZero.log (C.v i (∏ k : Fin s, β.repr (b i (Fin.castLE hs0 k)) (Fin.castLE hs0 k))) + (C.w i : ℤ) * WithZero.log (C.v i (β.repr (b i s) …`. Introduce `i`. Rewrite using `[hprod, map_mul, WithZero.log_mul ((C.v i).ne_zero_iff.mpr (ne0 i)) ((C.v i).ne_zero_iff.mpr (hd i)), mul_add]`. Repeatedly rewrite using `[hlog]`. Rewrite using `[finsum_add_distrib, add_sub_cancel_left]`.
+
+Apply `fin0.subset` to reduce the goal to its premises. Introduce `i hi h1`. Apply `hi` to reduce the goal to its premises. Simplify using `[h1]`. Apply `hdfin.subset` to reduce the goal to its premises.
+
+Introduce `i hi h1`. Apply `hi` to reduce the goal to its premises. Simplify using `[h1]`.
+-/
 theorem subDeg_succ [FiniteDimensional K V] (C : ACurve K) {Λ : C.I → AddSubgroup V} (hΛ : IsBun C Λ)
     (β : Module.Basis (Fin n) K V) (b : C.I → Module.Basis (Fin n) K V) (hb : ∀ i, IsLatOf C i (b i) (Λ i))
     (s : Fin n) (tri : ∀ i (k l : Fin n), k ≤ s → k < l → β.repr (b i k) l = 0) :

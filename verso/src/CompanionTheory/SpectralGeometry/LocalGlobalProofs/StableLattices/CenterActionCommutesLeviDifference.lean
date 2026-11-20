@@ -11,6 +11,9 @@ open CompanionTheory.D.LK (Pos Cn ann cre lift bd cpt allT wt ev)
 open CompanionTheory.RgExh CompanionTheory.RgExh.U
 open GlobalTheory.CuspRep GlobalTheory.UnitaryBC GlobalTheory.SmGL GlobalTheory.DiscSpec
 
+/- English proof (translation)
+Unfold `fa`. Rewrite using `[map_qdet]`. Use `congr 1`. Use function extensionality and compare the values at `p q`. Simplify using `[ev]`.
+-/
 theorem ev_fa {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V] (E : Fin n → Fin n → Module.End ℂ V) (Y : ℂ) :
     ev E (fa n Y) = qdet E (Y + ((n : ℂ) - 1) / 2) := by
   unfold fa
@@ -19,6 +22,11 @@ theorem ev_fa {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V] (E : Fin n �
   funext p q
   simp [ev]
 
+/- English proof (translation)
+Unfold `fb`. Rewrite using `[map_list_prod, List.map_ofFn]`. Use `congr 2`. Use function extensionality and compare the values at `i`. Simplify using `only [Function.comp]`.
+
+Rewrite using `[map_qdet, shift, add_sub_assoc]`. Use `congr 1`. Use function extensionality and compare the values at `p q`. Simplify using `[evL, hlev]`.
+-/
 theorem evL_fb {n M : ℕ} (lev : Fin n → ℕ) (d : Fin M → ℕ) (h : ∑ i, d i = n)
     (hlev : ∀ (i : Fin M) (p : Fin (d i)), lev (stdBlocks d h ⟨i, p⟩) = (i : ℕ))
     {V : Type} [AddCommGroup V] [Module ℂ V] (E : Fin n → Fin n → Module.End ℂ V) (Y : ℂ) :
@@ -35,6 +43,19 @@ theorem evL_fb {n M : ℕ} (lev : Fin n → ℕ) (d : Fin M → ℕ) (h : ∑ i,
   funext p q
   simp [evL, hlev]
 
+/- English proof (translation)
+Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨p, q, w, hpq, rfl⟩` from `hy`. Establish `hl` using `hr p q hpq`. Establish `hlt : p < q`.
+
+Assume the negation of the conclusion as `hc`. Conclude with `absurd (hm (not_lt.mp hc)) (not_le.mpr hl)`. Use `⟨Pi.single (⟨(p, q), hlt⟩ : Pos n) (w x), ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single (⟨(p, q), hlt⟩ : Pos n)]`. Simplify using `[inU, hl]`.
+
+Introduce `b _ hb`. Simplify using `[Pi.single_eq_of_ne hb]`. Introduce `hb`. Conclude with `absurd (Finset.mem_univ _) hb`. Consider the case `zero => exact ⟨0, by simp⟩`.
+
+Consider the case `add a b _ _ ha hb`. Take `⟨u, hu⟩` from `ha`. Take `⟨v, hv⟩` from `hb`. Use `⟨u + v, ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.add_apply, hu, hv, ← Finset.sum_add_distrib]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`. Consider the case `smul c a _ ha`. Take `⟨u, hu⟩` from `ha`. Use `⟨c • u, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[LinearMap.smul_apply, hu, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem span_apply_sum {n : ℕ} (lev : Fin n → ℕ) (hm : Monotone lev) {V : Type} [AddCommGroup V] [Module ℂ V]
     (E : Fin n → Fin n → Module.End ℂ V) (r : Fin n → Fin n → Prop) (hr : ∀ p q, r p q → lev p < lev q)
     {y : Module.End ℂ V}
@@ -70,6 +91,11 @@ theorem span_apply_sum {n : ℕ} (lev : Fin n → ℕ) (hm : Monotone lev) {V : 
     refine Finset.sum_congr rfl fun i _ => ?_
     split_ifs <;> simp
 
+/- English proof (translation)
+Introduce `n M lev d h Y hm hlev V _ _ E hE`. Rewrite using `[ev_fa, evL_fb lev d h hlev]`. Use `⟨fun i _ => (Formalism.REAL.qDetCentral (Module.End ℂ V) n E hE _ i.1.1 i.1.2).symm, fun x => ?_⟩` and prove the remaining obligations. Establish `hlevb : ∀ p : Fin n, lev p = ((blk (stdBlocks d h) p : Fin M) : ℕ)`. Introduce `p`.
+
+Use `hlev ((stdBlocks d h).symm p).1 ((stdBlocks d h).symm p).2` as an intermediate fact. Simplify `this` using `[blk]`. Establish `hc` using `GlobalTheory.CapHC.qdet_blocks_congr (Module.End ℂ V) d h E hE Y`. Take `⟨w, hw⟩` from `span_apply_sum lev hm E (fun p q => blk (stdBlocks d h) p < blk (stdBlocks d h) q) (fun p q hpq => by rw [hlevb p, hlevb q]; exact hpq) hc x`. Conclude with `⟨w, by rw [← hw, LinearMap.sub_apply]⟩`.
+-/
 theorem co_hyp : ∀ (n M : ℕ) (lev : Fin n → ℕ) (d : Fin M → ℕ) (h : ∑ i, d i = n) (Y : ℂ), Monotone lev →
     (∀ (i : Fin M) (p : Fin (d i)), lev (stdBlocks d h ⟨i, p⟩) = (i : ℕ)) →
     ∀ (V : Type) [AddCommGroup V] [Module ℂ V] (E : Fin n → Fin n → Module.End ℂ V), GlRel E →

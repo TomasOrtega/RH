@@ -8,6 +8,11 @@ namespace Formalism.MainNotions.N.Ln03.K8
 
 open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.MainNotions.WachCoordinates Formalism.MainNotions.WachCoordinates.Br Formalism.ExponentWindows Formalism.ExponentWindows.G TensorProduct
 
+/- English proof (translation)
+Rewrite using `[PowerSeries.X_pow_dvd_iff]`. Introduce `m hm`. Use function extensionality and compare the values at `i`. Use `(PowerSeries.X_pow_dvd_iff.1 (h i)) m hm` as an intermediate fact. Rewrite `this` using `[PowerSeries.coeff_map]`.
+
+Simplify using `using this`.
+-/
 theorem X_pow_dvd_of_components {ι R : Type} [CommRing R] (F : PowerSeries (ι → R)) (e : ℕ)
     (h : ∀ i, PowerSeries.X ^ e ∣ PowerSeries.map (Pi.evalRingHom (fun _ => R) i) F) :
     PowerSeries.X ^ e ∣ F := by
@@ -29,6 +34,41 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {Lb : LevB W} {hR : Ring9 W} {uZ : ℤ_[PD.p]ˣ} {ιZ : ℤ_[PD.p] →+* O}
     {T : LocLat G Qp LL O} {C : Coord W (baseIdOf hR) T} {c : ZMod n}
 
+/- English proof (translation)
+Take `⟨r, b, hind, hspan⟩` from `hfree`. Establish `hb : ∀ j, b j ∈ (latOf C).N c` using `fun j => hspan ▸ Submodule.subset_span ⟨j, rfl⟩`. Take `⟨hfd, hr⟩` from `rank_eq hP3 hmod b hind hspan`. Establish `hy' : y ∈ Submodule.span (PowerSeries O) (Set.range b)` using `hspan.symm ▸ hy`. Take `⟨a, ha⟩` from `(Submodule.mem_span_range_iff_exists_fun _).1 hy'`.
+
+Establish `hyN : (⟨C.t c y, hy⟩ : ↥(W.N T)) = ∑ j, (baseIdOf hR).d (a j) • (⟨C.t c (b j), hb j⟩ : ↥(W.N T))`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[Submodule.coe_sum]`. Simplify using `only [Submodule.coe_smul]`. Rewrite using `[← ha, coord_t_finset_sum]`.
+
+Conclude with `Finset.sum_congr rfl fun j _ => C.t_smul c (a j) (b j)`. Establish `hdiv : ∀ (ζ : Rs LL PD.p s) (j : Fin r), PowerSeries.X ^ e ∣ W.lev c ζ ((baseIdOf hR).d (a j))`. Introduce `ζ`. Use `hfd` as an intermediate fact. Use `detect_pt (FilD W T c s) hfilt hr (fun j k => (⟨Lb.levB T c ζ ⟨C.t c (b j), hb j⟩ k, Lb.mem T c ζ _ k⟩ : Dc W T c)) (fun j => ?_) (fun j k => levB_mem_fil hP4 hcrys hLb s ζ _ k) (span_classes hP4 hcrys hLb hmod s hfilt ζ b hb hspan) (fun j => W.lev c ζ ((baseIdOf hR).d (a j))) e …` and prove the remaining obligations.
+
+Take `⟨m, hm⟩` from `Lb.supp T c ζ ⟨C.t c (b j), hb j⟩`. Conclude with `⟨m, fun k hk => Subtype.ext (hm k hk)⟩`. Introduce `k`. Establish `hk` using `h ζ k`. Express the relevant statement in the definitionally equal form `ιV PD (LL := LL) (V := T.V) (Lb.levB T c ζ ⟨C.t c y, hy⟩ k) ∈ FilLev W T c s ((e : ℤ) - k) at hk`.
+
+Rewrite `hk` using `[← hLb, hyN, map_sum, Finset.sum_apply]`. Use `show ((ιV PD (LL := LL) (V := T.V)).comp (DcrisL PD T.ρ (W.emb c)).subtype) (∑ j, ∑ᶠ i : ℕ, PowerSeries.coeff i (W.lev c ζ ((baseIdOf hR).d (a j))) • (⟨Lb.levB T c ζ ⟨C.t c (b j), hb j⟩ (k - i), Lb.mem T c ζ _ (k - i)⟩ : Dc W T c)) ∈ FilLev W T c s ((e : ℤ) - k)`. It suffices to establish `heq : ∀ j, ((ιV PD (LL` using `LL) (V := T.V)).comp (DcrisL PD T.ρ (W.emb c)).subtype) (∑ᶠ i : ℕ, PowerSeries.coeff i (W.lev c ζ ((baseIdOf hR).d (a j))) • (⟨Lb.levB T c ζ ⟨C.t c (b j), hb j⟩ (k - i), Lb.mem T c ζ _ (k - i)⟩ : Dc W T c)) = W.levN T c ζ ((baseIdOf hR).d (a j) • (⟨C.t c (b j), hb j⟩ : ↥(W.N T))) …`. Rewrite using `[map_sum, Finset.sum_congr rfl fun j _ => heq j]`. Conclude with `hk`.
+
+Introduce `j`. Rewrite using `[W.levN_smul]`. Take `⟨m, hm⟩` from `Lb.supp T c ζ ⟨C.t c (b j), hb j⟩`. Establish `hfin : (Function.support fun i : ℕ => PowerSeries.coeff i (W.lev c ζ ((baseIdOf hR).d (a j))) • (⟨Lb.levB T c ζ ⟨C.t c (b j), hb j⟩ (k - i), Lb.mem T c ζ _ (k - i)⟩ : Dc W T c)).Finite`. Use `(Finset.range ((k - m).toNat + 1)).finite_toSet.subset fun i hi => ?_` and prove the remaining obligations.
+
+Rewrite using `[Finset.coe_range, Set.mem_Iio]`. Assume the negation of the conclusion as `hlt`. Apply `hi` to reduce the goal to its premises. Establish `h0 : (⟨Lb.levB T c ζ ⟨C.t c (b j), hb j⟩ (k - i), Lb.mem T c ζ _ (k - i)⟩ : Dc W T c) = 0` using `Subtype.ext (hm _ (by omega))`. Use `show _ • _ = 0`.
+
+Rewrite using `[h0, smul_zero]`. Rewrite using `[map_finsum _ hfin]`. Use `finsum_congr fun i => ?_` and prove the remaining obligations. Rewrite using `[map_smul, LinearMap.comp_apply, Submodule.subtype_apply, ← hLb]`. Establish `hcj : ∀ j, ∃ (N : ℕ) (z : PowerSeries O), PowerSeries.C (ϖ ^ N) * a j = (baseIdOf hR).Bs.p s ^ e * z`.
+
+Introduce `j`. Use `hcompl s hs e (a j) (X_pow_dvd_of_components _ e fun ζ => ?_)` and prove the remaining obligations. Rewrite using `[map_eval_rhoL]`. Conclude with `hdiv ζ j`. Use `choose Nj z hz using hcj`.
+
+Take `⟨N', u, hu⟩` from `hϖ`. Use `set Nt := ∑ j, Nj j with hNt`. Use `set K := N' * Nt with hK`. Establish `hlK : ∀ j, PowerSeries.C (((PD.p : ℕ) : O) ^ K) * a j = (baseIdOf hR).Bs.p s ^ e * (PowerSeries.C (u ^ Nt * ϖ ^ (Nt - Nj j)) * z j)`. Introduce `j`.
+
+Establish `hle : Nj j ≤ Nt` using `Finset.single_le_sum (fun j _ => Nat.zero_le (Nj j)) (Finset.mem_univ j)`. Establish `e1 : ((PD.p : ℕ) : O) ^ K = u ^ Nt * ϖ ^ (Nt - Nj j) * ϖ ^ Nj j`. Rewrite using `[hK, pow_mul, hu, mul_pow, mul_assoc, ← pow_add, Nat.sub_add_cancel hle, mul_comm]`. Rewrite using `[e1, map_mul, mul_assoc, hz j]`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `set w : C.V := ∑ j, (PowerSeries.C (u ^ Nt * ϖ ^ (Nt - Nj j)) * z j) • b j with hw`. Establish `hwN : w ∈ (latOf C).N c` using `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (hb j)`. Establish `hyw : PowerSeries.C (((PD.p : ℕ) : O) ^ K) • y = (baseIdOf hR).Bs.p s ^ e • w`. Rewrite using `[← ha, Finset.smul_sum, hw, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[smul_smul, smul_smul, hlK j]`. Establish `hd : (baseIdOf hR).d ((baseIdOf hR).Bs.p s ^ e) = ∏ s' ∈ Finset.range (s + 1), pS W s' ^ (if s' = s then e else 0)`. Rewrite using `[map_pow, BaseId.d_p, Finset.prod_eq_single s (fun s' _ hs' => by rw [if_neg hs', pow_zero]) (fun hns => absurd (Finset.mem_range.2 (Nat.lt_succ_self s)) hns), if_pos rfl]`. Establish `hdl : (baseIdOf hR).d (PowerSeries.C (((PD.p : ℕ) : O) ^ K)) = ((PD.p : ℕ) : LetA O n) ^ K`. Rewrite using `[BaseId.d_C, map_pow, map_natCast]`.
+
+Establish `hNΔ : ∀ x : W.DD T, x ∈ W.N T → (∀ δ ∈ W.DelF, W.γD T δ x = x) → x ∈ W.NΔ T` using `fun x h1 h2 => ⟨h1, h2⟩`. Establish `hx : C.t c y ∈ mulSet W T ((baseIdOf hR).d ((baseIdOf hR).Bs.p s ^ e)) (W.NΔ T)`. Use `hSat T ((baseIdOf hR).d ((baseIdOf hR).Bs.p s ^ e)) 1 hcrys ⟨0, (baseIdOf hR).d ((baseIdOf hR).Bs.p s ^ e), ⟨fun s' => if s' = s then e else 0, s + 1, hd⟩, by simp⟩ ⟨0, 1, ⟨fun _ => 0, 0, by simp⟩, by simp⟩ (C.t c y) (fun δ hδ => C.t_Δ c y δ hδ) ?_ ?_` and prove the remaining obligations. Rewrite using `[one_smul]`. Conclude with `hNΔ _ hy (fun δ hδ => C.t_Δ c y δ hδ)`.
+
+Use `⟨K, C.t c w, hNΔ _ hwN (fun δ hδ => C.t_Δ c w δ hδ), ?_⟩` and prove the remaining obligations. Rewrite using `[← hdl, ← Coord.t_smul, hyw, Coord.t_smul]`. Take `⟨z', hz', hxz⟩` from `hx`. Establish `hlet : (letE c : LetA O n) • ((letE c : LetA O n) • z') = (letE c : LetA O n) • z'`. Rewrite using `[smul_smul, letE_mul_self]`.
+
+Establish `hΔ : ∀ δ ∈ W.DelF, W.γD T δ ((letE c : LetA O n) • z') = (letE c : LetA O n) • z'`. Introduce `δ hδ`. Rewrite using `[γD_smulA, γA_letE, hz'.2 δ hδ]`. Take `⟨y'', hy''⟩` from `C.t_surj c _ hlet hΔ`. Use `⟨y'', ?_, ?_⟩` and prove the remaining obligations.
+
+Use `show C.t c y'' ∈ W.N T`. Rewrite using `[hy'']`. Conclude with `(W.N T).smul_mem _ hz'.1`. Apply `C.t_inj c` to reduce the goal to its premises. Rewrite using `[Coord.t_smul, hy'', smul_smul, mul_comm, ← smul_smul, ← hxz, C.t_letter]`.
+-/
 theorem detect [IsFractionRing O LL] (hP4 : LevelMapHodgeFiltration W) (hSat : Sat W) (hcrys : IsCrys PD T.ρ)
     (hLb : ∀ (i : ZMod n) (ζ : LL) (x : ↥(W.N T)) (k : ℤ),
       W.levN T i ζ x k = ιV PD (LL := LL) (V := T.V) (Lb.levB T i ζ x k))

@@ -15,6 +15,13 @@ section Generic
 variable {G : Type} [Group G] {Q V V' W : Type} [Field Q] [AddCommGroup V] [Module Q V] [AddCommGroup V']
   [Module Q V'] [AddCommGroup W] [Module Q W] [FiniteDimensional Q V]
 
+/- English proof (translation)
+Set `e` to `dualTensorHomEquiv Q V V'`. Use `⟨e.symm.toLinearMap ∘ₗ b, fun g w => ?_, e.symm.injective.comp hi⟩` and prove the remaining obligations. Establish `key : ∀ (t : Module.Dual Q V ⊗[Q] V') (x : V), e ((ρ.dual.tprod ρ') g t) (ρ g x) = ρ' g (e t x)`. Introduce `t x`. Proceed by induction on `t using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp`. Consider the case `add s t hs ht => simp only [map_add, LinearMap.add_apply, hs, ht]`. Consider the case `tmul f y => simp [e, Module.Dual.transpose_apply]`. Apply `e.injective` to reduce the goal to its premises. Use extensionality with `x`.
+
+Take `⟨x, rfl⟩ : ∃ y, ρ g y = x` from `⟨ρ g⁻¹ x, by simp⟩`. Rewrite using `[key]`. Simplify using `[hb]`.
+-/
 private theorem exists_inj_dual_tprod (ρ : Representation Q G V) (ρ' : Representation Q G V')
     (π : Representation Q G W) (b : W →ₗ[Q] V →ₗ[Q] V') (hb : ∀ g w x, b (π g w) (ρ g x) = ρ' g (b w x))
     (hi : Function.Injective b) :
@@ -42,6 +49,13 @@ section Transport
 variable {l : ℕ} [Fact l.Prime] {G H A V : Type} [Group G] [Group H] [CommRing A] [Algebra ℚ_[l] A]
   [AddCommGroup V] [Module A V] [Module ℚ_[l] V] [IsScalarTower ℚ_[l] A V]
 
+/- English proof (translation)
+Establish `hr : (ψ.comp e.toMonoidHom).range = ψ.range`. Use extensionality with `x`. Conclude with `⟨fun ⟨g, hg⟩ => ⟨e g, hg⟩, fun ⟨h, hh⟩ => ⟨e.symm h, by simpa using hh⟩⟩`. Establish `h1 : Dcr (ψ.comp e.toMonoidHom) (resCoef ℚ_[l] ρ) = Dcr ψ (resCoef ℚ_[l] (ρ.comp e.symm.toMonoidHom : Representation A H V))`. Unfold `Dcr`.
+
+Use `e.toEquiv.iInf_congr fun g => ?_` and prove the remaining obligations. Simplify using `[actC, resCoef]`. Establish `h2 : Ddr (ψ.comp e.toMonoidHom) (resCoef ℚ_[l] ρ) = Ddr ψ (resCoef ℚ_[l] (ρ.comp e.symm.toMonoidHom : Representation A H V))`. Unfold `Ddr`. Use `e.toEquiv.iInf_congr fun g => ?_` and prove the remaining obligations.
+
+Simplify using `[actD, resCoef]`. Unfold `IsCr IsDr`. Rewrite using `[hr, h1, h2]`. Conclude with `⟨Iff.rfl, Iff.rfl⟩`.
+-/
 private theorem admissible_transport_equiv (ψ : H →* GQ l) (e : G ≃* H) (ρ : Representation A G V) :
     (IsCr (ψ.comp e.toMonoidHom) ρ ↔ IsCr ψ (ρ.comp e.symm.toMonoidHom : Representation A H V)) ∧
     (IsDr (ψ.comp e.toMonoidHom) ρ ↔ IsDr ψ (ρ.comp e.symm.toMonoidHom : Representation A H V)) := by
@@ -74,6 +88,11 @@ variable {l : ℕ} [Fact l.Prime] (K : FinExt l) {V V' W : Type} [AddCommGroup V
   (hf : ∀ g w, f (π g w) = (ρ.dual.tprod ρ') g (f w)) (hi : Function.Injective f)
 include hf hi
 
+/- English proof (translation)
+Take `⟨T⟩` from `tiedP l`. Take `⟨C, hfit⟩` from `GlobalTheory.MemLoc.FitsEx.exists_fits l _ _ T`. Use `haveI := GlobalTheory.RegularRing.isDomain_of_tied T K`. Establish `h1` using `GlobalTheory.RegularRing.fracInv hfit (GlobalTheory.T.algClosure_tensor_bcris_to_bdR_injective l C) K`. Establish `h2` using `GlobalTheory.RegularRing.lineUnit hfit (GlobalTheory.T.bcris_regular_of_tensorInj l C (GlobalTheory.T.algClosure_tensor_bcris_to_bdR_injective l C)) K`.
+
+Conclude with `GlobalTheory.RegularRing.subCrys _ ℚ_[l] h1 _ _ _ π f hf hi (GlobalTheory.RegularRing.tensorCrys _ ℚ_[l] h1 h2 _ _ _ _ (GlobalTheory.RegularRing.dualCrys _ ℚ_[l] h1 h2 _ ρ h) h')`.
+-/
 private theorem crys_hom (h : IsCrys ((PP l).PD K) ρ) (h' : IsCrys ((PP l).PD K) ρ') :
     IsCrys ((PP l).PD K) π := by
   obtain ⟨T⟩ := tiedP l
@@ -85,6 +104,11 @@ private theorem crys_hom (h : IsCrys ((PP l).PD K) ρ) (h' : IsCrys ((PP l).PD K
     (GlobalTheory.RegularRing.tensorCrys _ ℚ_[l] h1 h2 _ _ _ _
       (GlobalTheory.RegularRing.dualCrys _ ℚ_[l] h1 h2 _ ρ h) h')
 
+/- English proof (translation)
+Take `⟨T⟩` from `tiedP l`. Use `K.2` as an intermediate fact. Establish `hF` using `GlobalTheory.DRFil.isField_dR T`. Establish `s : GlobalTheory.DRFil.Spans ((PP l).PD K) ρ` using `GlobalTheory.Per.DeRhamSpan.span_of_isField _ ρ hF h`. Establish `s' : GlobalTheory.DRFil.Spans ((PP l).PD K) ρ'` using `GlobalTheory.Per.DeRhamSpan.span_of_isField _ ρ' hF h'`.
+
+Establish `sd : GlobalTheory.DRFil.Spans ((PP l).PD K) ρ.dual` using `GlobalTheory.DRFil.spans_dual_of_spans _ ρ ρ.dual (Module.Dual.eval ℚ_[l] V) hF (fun g x y => by simp [Module.Dual.transpose_apply]) Function.bijective_id s`. Establish `st : GlobalTheory.DRFil.Spans ((PP l).PD K) (ρ.dual.tprod ρ')` using `GlobalTheory.DRFil.Spans.tensor _ (LinearEquiv.refl _ _) (fun g x y => by simp) sd s'`. Establish `sw` using `GlobalTheory.DRSubQuot.spans_of_injective _ π _ f hf hF hi st`. Take `⟨h1, h2⟩` from `GlobalTheory.Per.FontaineBound.ddR_finite_le ((PP l).PD K) hF π`. Conclude with `le_antisymm h2 (GlobalTheory.DRFil.finrank_mul_le_finrank_DdR_of_spans _ π h1 sw)`.
+-/
 private theorem dR_hom (h : IsDR ((PP l).PD K) ρ) (h' : IsDR ((PP l).PD K) ρ') :
     IsDR ((PP l).PD K) π := by
   obtain ⟨T⟩ := tiedP l
@@ -105,6 +129,9 @@ end Field
 
 end UpperTheory.V.Loc
 
+/- English proof (translation)
+Introduce `l _ G _ _ _ φ hφ A _ _ V _ _ _ _ _ _ _ _ _ V' _ _ _ _ _ _ _ _ _ W _ _ _ _ _ _ _ _ _ ρ ρ' π _ _ _ b hb hi`. Take `⟨K, e, -, -, rfl, -⟩` from `openField φ hφ`. Take `⟨f, hf, hfi⟩` from `exists_inj_dual_tprod (resCoef ℚ_[l] (ρ.comp e.symm.toMonoidHom : Representation A ↥(GK K) V)) (resCoef ℚ_[l] (ρ'.comp e.symm.toMonoidHom : Representation A ↥(GK K) V')) (resCoef ℚ_[l] (π.comp e.symm.toMonoidHom : Representation A ↥(GK K) W)) b (fun g w x => hb (e.symm g) w x) hi`. Rewrite using `[(admissible_transport_equiv _ e ρ).1, (admissible_transport_equiv _ e ρ').1, (admissible_transport_equiv _ e π).1, (admissible_transport_equiv _ e ρ).2, (admissible_transport_equiv _ e ρ').2, (admissible_transport_equiv _ e π).2, (isCrIff K _).1, (isCrIff K _).1, (isCrIff K _).1 …`. Conclude with `⟨crys_hom K _ _ _ f hf hfi, dR_hom K _ _ _ f hf hfi⟩`.
+-/
 theorem UpperTheory.V.Loc.isCrys_isDR_internalHom :
     ∀ {l : ℕ} [Fact l.Prime] {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] (φ : G →* GQ l) (hφ : IsOpenEmbedding φ) {A : Type} [CommRing A] [Algebra ℚ_[l] A] {V : Type} [AddCommGroup V] [Module A V] [Module ℚ_[l] V] [IsScalarTower ℚ_[l] A V] [FiniteDimensional ℚ_[l] V] [TopologicalSpace V] [IsModuleTopology ℚ_[l] V] [IsTopologicalAddGroup V] [ContinuousConstSMul A V] {V' : Type} [AddCommGroup V'] [Module A V'] [Module ℚ_[l] V'] [IsScalarTower ℚ_[l] A V'] [FiniteDimensional ℚ_[l] V'] [TopologicalSpace V'] [IsModuleTopology ℚ_[l] V'] [IsTopologicalAddGroup V'] [ContinuousConstSMul A V'] {W : Type} [AddCommGroup W] [Module A W] [Module ℚ_[l] W] [IsScalarTower ℚ_[l] A W] [FiniteDimensional ℚ_[l] W] [TopologicalSpace W] [IsModuleTopology ℚ_[l] W] [IsTopologicalAddGroup W] [ContinuousConstSMul A W] (ρ : Representation A G V) (ρ' : Representation A G V') (π : Representation A G W), ContAction ρ → ContAction ρ' → ContAction π → ∀ b : W →ₗ[ℚ_[l]] V →ₗ[ℚ_[l]] V', (∀ g w x, b (π g w) (ρ g x) = ρ' g (b w x)) → Function.Injective b → (IsCr φ ρ → IsCr φ ρ' → IsCr φ π) ∧ (IsDr φ ρ → IsDr φ ρ' → IsDr φ π) := by
   intro l _ G _ _ _ φ hφ A _ _ V _ _ _ _ _ _ _ _ _ V' _ _ _ _ _ _ _ _ _ W _ _ _ _ _ _ _ _ _ ρ ρ' π _ _ _ b hb hi

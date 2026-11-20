@@ -18,6 +18,19 @@ open GlobalTheory.UnipCT
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+Take `⟨hx, -, hι⟩` from `hm`. Establish `hι1 : mat m * incM F H.ι = incM F H.ι`. Rewrite using `[hι]`. Use `show incM F H.ι * (1 : Matrix (Fin n₁) (Fin n₁) (AE F E)) = _`. Rewrite using `[Matrix.mul_one]`.
+
+Establish `hx' : mat m⁻¹ *ᵥ incV F H.x = (t⁻¹).1 • incV F H.x`. Establish `e : mat m⁻¹ *ᵥ (mat m *ᵥ incV F H.x) = incV F H.x`. Rewrite using `[Matrix.mulVec_mulVec, mat_inv_mul', Matrix.one_mulVec]`. Rewrite `e` using `[hx, Matrix.mulVec_smul]`. Use `conv_rhs => rw [← e]`.
+
+Rewrite using `[smul_smul]`. Simplify using the standard rewrite rules. Establish `hι' : mat m⁻¹ * incM F H.ι = incM F H.ι` using `by conv_lhs => rw [← hι1]`. Rewrite using `[← Matrix.mul_assoc, mat_inv_mul', Matrix.one_mul]`. Rewrite `hu`, the goal using `[unip_eq]`.
+
+Take `⟨h1, h2⟩` from `hu`. Use `⟨?_, fun z => ?_⟩` and prove the remaining obligations. Rewrite using `[mat_mul', mat_mul', ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hx', Matrix.mulVec_smul, Matrix.mulVec_smul, h1, hx, smul_smul]`. Simplify using the standard rewrite rules. Take `⟨a, ha⟩` from `h2 z`.
+
+Use `⟨a * t.1, ?_⟩` and prove the remaining obligations. Establish `e1 : mat m⁻¹ *ᵥ (incM F H.ι *ᵥ z) = incM F H.ι *ᵥ z`. Rewrite using `[Matrix.mulVec_mulVec, hι']`. Establish `e2 : mat m *ᵥ (incM F H.ι *ᵥ z) = incM F H.ι *ᵥ z`. Rewrite using `[Matrix.mulVec_mulVec, hι1]`.
+
+Rewrite using `[mat_mul', mat_mul', ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, e1, ha, Matrix.mulVec_add, Matrix.mulVec_smul, e2, hx, smul_smul]`.
+-/
 theorem levi_conj_mem_unip {n n₁ : ℕ} {W : Spc F E n} {W₁ : Spc F E n₁} (H : Plane E n n₁) (t : (AE F E)ˣ)
     (m : UA σ W.J) (hm : IsLevi (W₁ := W₁) H t 1 m) (u : UA σ W.J) (hu : u ∈ unip σ W H) :
     m * u * m⁻¹ ∈ unip σ W H := by
@@ -49,6 +62,53 @@ theorem levi_conj_mem_unip {n n₁ : ℕ} {W : Spc F E n} {W₁ : Spc F E n₁} 
     rw [mat_mul', mat_mul', ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, e1, ha, Matrix.mulVec_add,
       Matrix.mulVec_smul, e2, hx, smul_smul]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ n n₁ W W₁ H α β za zb ⟨K, hK, hcov⟩ t₀ m₀ hm₀ hab`. Take `⟨i1, i2, i3, i4⟩` from `topFacts (F := F) σ W.J`. Use `haveI : BorelSpace (UA σ W.J) := ⟨rfl⟩`. Use `haveI : LocallyCompactSpace (unip σ W H) := (isClosed_unip σ W H).isClosedEmbedding_subtypeVal.locallyCompactSpace`. Use `haveI : SecondCountableTopology (unip σ W H) := TopologicalSpace.Subtype.secondCountableTopology _`.
+
+Use `haveI := countable_ratU (σ := σ) W.J`. Use `haveI := GlobalTheory.RatUDisc.discrete_ratU F E σ n W.J`. Establish `hinj : Function.Injective fun γ : (ratU σ W.J).subgroupOf (unip σ W H) => (⟨γ.1.1, γ.2⟩ : ratU σ W.J)` using `fun x y h => Subtype.ext (Subtype.ext (congrArg (fun t : ratU σ W.J => (t : UA σ W.J)) h))`. Use `haveI : Countable ((ratU σ W.J).subgroupOf (unip σ W H)) := hinj.countable`. Use `haveI : DiscreteTopology ((ratU σ W.J).subgroupOf (unip σ W H)) := DiscreteTopology.of_continuous_injective ((continuous_subtype_val.comp continuous_subtype_val).subtype_mk _) hinj`.
+
+Establish `hcov' : ∀ u, ∃ γ ∈ (ratU σ W.J).subgroupOf (unip σ W H), ∃ k ∈ K, u = γ * k` using `fun u => by`. Take `⟨γ, hγ, hk⟩` from `hcov u`. Conclude with `⟨γ⁻¹, inv_mem hγ, γ * u, hk, by group⟩`. Take `⟨μ₀, 𝓕₀, hμ₀, h𝓕₀, h1⟩` from `GlobalTheory.Per.UnitN.exists_unit_of_cocompact _ hK hcov'`. Establish `hex : ∃ (μ : Measure (unip σ W H)) (𝓕 : Set (unip σ W H)), μ.IsHaarMeasure ∧ IsFundamentalDomain ((ratU σ W.J).subgroupOf (unip σ W H)) 𝓕 μ ∧ μ 𝓕 = 1` using `⟨μ₀, 𝓕₀, hμ₀, h𝓕₀, h1⟩`.
+
+Set `V : Submodule ℂ (UA σ W.J → ℂ)` to `{ carrier := {f | ∀ h, IntegrableOn (fun u : unip σ W H => f (u.1 * h)) 𝓕₀ μ₀} add_mem' := fun {f g} hf hg h => (hf h).add (hg h) zero_mem' := fun h => by simpa using (integrableOn_zero : IntegrableOn (fun _ : unip σ W H => (0 : ℂ)) 𝓕₀ μ₀) smul_mem' := fun c f hf h => (hf h).smul …`. Set `L₀ : V →ₗ[ℂ] (UA σ W.J → ℂ)` to `{ toFun := fun f h => ((∫ u in 𝓕₀, (f : UA σ W.J → ℂ) (u.1 * (m₀ * h)) ∂μ₀) - (β t₀ : ℂ) * (((GlobalTheory.Doubling.absE F E t₀ : ℝ) ^ zb : ℝ) : ℂ) * ∫ u in 𝓕₀, (f : UA σ W.J → ℂ) (u.1 * h) ∂μ₀) / ((α t₀ : ℂ) * (((GlobalTheory.Doubling.absE F E t₀ : ℝ) ^ za : ℝ) : ℂ) - (β t₀ : ℂ) …`. Establish `hf : ∀ h, IntegrableOn (fun u : unip σ W H => (f : UA σ W.J → ℂ) (u.1 * h)) 𝓕₀ μ₀` using `f.2`. Establish `hg : ∀ h, IntegrableOn (fun u : unip σ W H => (g : UA σ W.J → ℂ) (u.1 * h)) 𝓕₀ μ₀` using `g.2`. Use function extensionality and compare the values at `h`.
+
+Simplify using `only [Submodule.coe_add, Pi.add_apply]`. Rewrite using `[integral_add (hf _) (hg _), integral_add (hf _) (hg _)]`. Expand and normalize the polynomial expressions, which then agree. Use the proof step `map_smul' := fun c f => by`. Use function extensionality and compare the values at `h`.
+
+Simplify using `only [Submodule.coe_smul, Pi.smul_apply, smul_eq_mul, RingHom.id_apply]`. Rewrite using `[integral_const_mul, integral_const_mul]`. Use `ring }`. Take `⟨Λ, hΛ⟩` from `LinearMap.exists_extend L₀`. Establish `hΛV : ∀ f ∈ V, Λ f = fun h => ((∫ u in 𝓕₀, f (u.1 * (m₀ * h)) ∂μ₀) - (β t₀ : ℂ) * (((GlobalTheory.Doubling.absE F E t₀ : ℝ) ^ zb : ℝ) : ℂ) * ∫ u in 𝓕₀, f (u.1 * h) ∂μ₀) / ((α t₀ : ℂ) * (((GlobalTheory.Doubling.absE F E t₀ : ℝ) ^ za : ℝ) : ℂ) - (β t₀ : ℂ) * (((GlobalTheory.Doublin …` using `fun f hf => LinearMap.congr_fun hΛ ⟨f, hf⟩`.
+
+Establish `hfa : ∀ f fa fb, f ∈ V → SplitZ W₁ H α β za zb f fa fb → Λ f = fa`. Introduce `f fa fb hV hs`. Rewrite using `[hΛV f hV]`. Use function extensionality and compare the values at `h`. Establish `hc : ∀ h, ∫ u in 𝓕₀, f (u.1 * h) ∂μ₀ = fa h + fb h` using `fun h => (hs.1 μ₀ 𝓕₀ hμ₀ h𝓕₀ h1 h).symm`.
+
+Rewrite using `[hc, hc, hs.2.1 t₀ m₀ hm₀ h, hs.2.2 t₀ m₀ hm₀ h, div_eq_iff (sub_ne_zero.2 hab)]`. Expand and normalize the polynomial expressions, which then agree. Set `S0 : Set (UA σ W.J → ℂ)` to `{f | Continuous f ∧ (∀ γ ∈ ratU σ W.J, ∀ z, f (γ * z) = f z) ∧ ∃ fa fb, SplitZ W₁ H α β za zb f fa fb}`. Establish `hS0V : S0 ⊆ V`. Introduce and unpack `f ⟨hc, hinv, -⟩ h`.
+
+Establish `hg : Continuous fun u : unip σ W H => f (u.1 * h)` using `hc.comp (continuous_subtype_val.mul continuous_const)`. Take `⟨C, hC⟩` from `hK.exists_bound_of_continuousOn hg.continuousOn`. Establish `hb : ∀ u : unip σ W H, ‖f (u.1 * h)‖ ≤ C` using `fun u => by`. Take `⟨γ, hγ, hγK⟩` from `hcov u`. Establish `e : f ((γ * u).1 * h) = f (u.1 * h)`.
+
+Rewrite using `[Subgroup.coe_mul, mul_assoc]`. Conclude with `hinv _ (Subgroup.mem_subgroupOf.1 hγ) _`. Rewrite using `[← e]`. Conclude with `hC _ hγK`. Conclude with `Measure.integrableOn_of_bounded (by rw [h1]; exact ENNReal.one_ne_top) hg.aestronglyMeasurable (Eventually.of_forall hb)`.
+
+Establish `hRS0 : ∀ y, ∀ f ∈ S0, (fun z => f (z * y)) ∈ S0`. Introduce and unpack `y f ⟨hc, hinv, fa, fb, hct, hla, hlb⟩`. Use `⟨hc.comp (continuous_id.mul continuous_const), fun γ hγ z => ?_, fun z => fa (z * y), fun z => fb (z * y), ?_, ?_, ?_⟩` and prove the remaining obligations. Use `show f (γ * z * y) = f (z * y)`. Rewrite using `[mul_assoc]`.
+
+Conclude with `hinv γ hγ _`. Introduce `μ 𝓕 hμ h𝓕 h1' h`. Establish `e` using `hct μ 𝓕 hμ h𝓕 h1' (h * y)`. Simplify using `only [Pi.add_apply, mul_assoc] at e ⊢`. Conclude with `e`.
+
+Introduce `t m hm h show fa (m * h * y) = _ * fa (h * y)`. Rewrite using `[mul_assoc]`. Conclude with `hla t m hm (h * y)`. Introduce `t m hm h show fb (m * h * y) = _ * fb (h * y)`. Rewrite using `[mul_assoc]`.
+
+Conclude with `hlb t m hm (h * y)`. Set `D : Submodule ℂ (UA σ W.J → ℂ)` to `Submodule.span ℂ S0`. Establish `hDV : D ≤ V` using `Submodule.span_le.2 hS0V`. Establish `hDR : ∀ y, ∀ f ∈ D, (fun z => f (z * y)) ∈ D`. Introduce `y f hf`.
+
+Establish `hle : D.map (LinearMap.funLeft ℂ ℂ (fun z : UA σ W.J => z * y)) ≤ D`. Rewrite using `[Submodule.map_span_le]`. Introduce `g hg`. Conclude with `Submodule.subset_span (hRS0 y g hg)`. Conclude with `hle (Submodule.mem_map_of_mem hf)`.
+
+Set `P : Submodule ℂ (UA σ W.J → ℂ)` to `{ carrier := {f | HasLaw W₁ H α za (Λ f) ∧ ∀ u ∈ unip σ W H, ∀ z, Λ f (u * z) = Λ f z} add_mem' := by`. Introduce and unpack `f g ⟨hf1, hf2⟩ ⟨hg1, hg2⟩`. Use `⟨?_, fun u hu z => ?_⟩` and prove the remaining obligations. Introduce `t m hm h`. Simplify using `only [map_add, Pi.add_apply, hf1 t m hm h, hg1 t m hm h]`.
+
+Expand and normalize the polynomial expressions, which then agree. Simplify using `only [map_add, Pi.add_apply, hf2 u hu z, hg2 u hu z]`. Use the proof step `zero_mem' := by`. Use `⟨?_, fun u hu z => ?_⟩` and prove the remaining obligations. Introduce `t m hm h`.
+
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Use the proof step `smul_mem' := by`. Introduce and unpack `c f ⟨hf1, hf2⟩`. Use `⟨?_, fun u hu z => ?_⟩` and prove the remaining obligations.
+
+Introduce `t m hm h`. Simplify using `only [map_smul, Pi.smul_apply, smul_eq_mul, hf1 t m hm h]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [map_smul, Pi.smul_apply, smul_eq_mul, hf2 u hu z] }`. Establish `hDP : D ≤ P`.
+
+Use `Submodule.span_le.2 fun f hf => ?_` and prove the remaining obligations. Take `⟨hc, hinv, fa, fb, hs⟩` from `hf`. Establish `hV : f ∈ V` using `hS0V ⟨hc, hinv, fa, fb, hs⟩`. Establish `hΛf : Λ f = fa` using `hfa f fa fb hV hs`. Use `⟨hΛf ▸ hs.2.1, fun u hu z => ?_⟩` and prove the remaining obligations.
+
+Establish `hinvc : ∀ v ∈ unip σ W H, ∀ h, fa (v * h) + fb (v * h) = fa h + fb h` using `fun v hv h => GlobalTheory.ThK.UnipInv.isCT_unip_mul hex hs.1 v hv h`. Establish `hc : ∀ h, ∫ u in 𝓕₀, f (u.1 * h) ∂μ₀ = fa h + fb h` using `fun h => (hs.1 μ₀ 𝓕₀ hμ₀ h𝓕₀ h1 h).symm`. Establish `e1 : fa (m₀ * (u * z)) + fb (m₀ * (u * z)) = fa (m₀ * z) + fb (m₀ * z)`. Establish `e` using `hinvc _ (GlobalTheory.CTFirst.levi_conj_mem_unip H t₀ m₀ hm₀ u hu) (m₀ * z)`. Rewrite `e` using `[show m₀ * u * m₀⁻¹ * (m₀ * z) = m₀ * (u * z) by group]`. Then use the resulting hypothesis.
+
+Rewrite using `[hΛV f hV]`. Simplify using `only [hc]`. Rewrite using `[e1, hinvc u hu z]`. Use `⟨D, Λ, fun f fa fb hc hinv hs => ⟨Submodule.subset_span ⟨hc, hinv, fa, fb, hs⟩, hfa f fa fb (hS0V ⟨hc, hinv, fa, fb, hs⟩) hs⟩, fun f hf y => ⟨hDR y f hf, ?_⟩, fun f hf => hDP hf⟩` and prove the remaining obligations. Rewrite using `[hΛV _ (hDV (hDR y f hf)), hΛV f (hDV hf)]`.
+
+Use function extensionality and compare the values at `z`. Simplify using `only [mul_assoc]`.
+-/
 theorem ct_first_linear : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (n n₁ : ℕ) (W : Spc F E n) (W₁ : Spc F E n₁) (H : Plane E n n₁) (α β : Chr F E) (za zb : ℝ),
     (∃ K : Set (unip σ W H), IsCompact K ∧ ∀ u : unip σ W H, ∃ γ ∈ (ratU σ W.J).subgroupOf (unip σ W H), γ * u ∈ K) →

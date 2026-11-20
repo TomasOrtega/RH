@@ -13,6 +13,17 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `A U X _ _ _ θ h H _ q c _ t h₁ h₂ a b x y`. Establish `e₀ : t b 1 = 1`. Establish `e` using `h₂ b 1 1`. Rewrite `e` using `[_root_.mul_one, map_one, h.face₃, _root_.mul_one]`. Conclude with `(mul_eq_left.mp e.symm)`.
+
+Establish `e₁` using `h₂ a x y`. Establish `e₂` using `h₂ b x y⁻¹`. Establish `e₃` using `h₂ b y y⁻¹`. Establish `e₄` using `h₁ a b x`. Establish `e₅` using `h₁ (a - b) b y`.
+
+Rewrite `e₂`, `e₃` using `[map_inv]`. Rewrite `e₃` using `[_root_.mul_inv_cancel, e₀, _root_.one_mul]`. Rewrite `e₅` using `[sub_add_cancel]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Establish `E` using `fun {p q : U} (e : p = q) => congrArg Additive.ofMul e`.
+
+Establish `a₁` using `E e₁`. Establish `a₂` using `E e₂`. Establish `a₃` using `E e₃`. Establish `a₄` using `E e₄`. Establish `a₅` using `E e₅`.
+
+Simplify using `only [ofMul_mul] at a₁ a₂ a₃ a₄ a₅ ⊢`. Take the linear combination `(norm := abel) a₁ + a₂ - a₃ - a₄ + a₅`.
+-/
 theorem cub_coord_mul_mul_inv : ∀ (A U X : Type) [CommGroup A] [CommGroup U] [AddCommGroup X] (θ : A → A → A → U), IsCub θ → ∀ (H : Type) [CommGroup H] (q : H →* A) (c : X → A), (∀ a b, c (a + b) = c a * c b) → ∀ t : X → H → U, (∀ a b x, t (a + b) x * θ (c a) (c b) (q x) = t a x * t b x) → (∀ a x y, t a (x * y) * θ (c a) (q x) (q y) = t a x * t a y) → ∀ a b x y, t a (x * y) * t b (x * y⁻¹) * (θ (c a) (q x) (q y) * θ (c b) (q x) (q y)⁻¹ * θ (c (a - b)) (c b) (q y)) = t (a + b) x * t (a - b) y * (θ (c a) (c b) (q x) * θ (c b) (q y) (q y)⁻¹) := by
   intro A U X _ _ _ θ h H _ q c _ t h₁ h₂ a b x y
   have e₀ : t b 1 = 1 := by

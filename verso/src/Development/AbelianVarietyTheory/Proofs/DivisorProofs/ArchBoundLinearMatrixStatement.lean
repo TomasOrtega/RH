@@ -9,6 +9,9 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK GlobalTheory.ThetaDecay
 open scoped TensorProduct NNReal Matrix
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ThetaDecay.linMap_archBound | exact GlobalTheory.ThetaDecay.linMap_archBound | (intros; apply GlobalTheory.ThetaDecay.linMap_archBound <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.arch_bound_linear_matrix : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (n d : ℕ) (κ : Type) [Fintype κ]
     (f : (κ → AF F) × (κ → AF F) →ₗ[AF F] Matrix (Fin n) (Fin d) (AE F E)), ∃ K : ℝ, 0 ≤ K ∧
     ∀ (v : (κ → AF F) × (κ → AF F)) (B : ℝ), 0 ≤ B → (∀ w i, ‖archAt F w (v.1 i)‖ ≤ B ∧ ‖archAt F w (v.2 i)‖ ≤ B) →

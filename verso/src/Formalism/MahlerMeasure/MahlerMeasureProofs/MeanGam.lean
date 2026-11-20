@@ -5,6 +5,9 @@ import Formalism.MahlerMeasure.LegendreDigits
 namespace Formalism.GM.MeanGammaLemmas
 open Polynomial Finset
 
+/- English proof (translation)
+Simplify using `only [binK, Polynomial.eval_mul, Polynomial.eval_C, descPochhammer_eval_eq_descFactorial, Nat.descFactorial_eq_factorial_mul_choose]`. Use `push_cast`. Rewrite using `[← mul_assoc, inv_mul_cancel₀ (by exact_mod_cast Nat.factorial_ne_zero k), one_mul]`.
+-/
 lemma binK_eval_nat (F : Type) [Field F] [CharZero F] (k n : ℕ) :
     (binK F k).eval (n : F) = (n.choose k : F) := by
   simp only [binK, Polynomial.eval_mul, Polynomial.eval_C, descPochhammer_eval_eq_descFactorial,
@@ -12,21 +15,33 @@ lemma binK_eval_nat (F : Type) [Field F] [CharZero F] (k n : ℕ) :
   push_cast
   rw [← mul_assoc, inv_mul_cancel₀ (by exact_mod_cast Nat.factorial_ne_zero k), one_mul]
 
+/- English proof (translation)
+Simplify using `only [binK, Polynomial.map_mul, Polynomial.map_C, map_inv₀, map_natCast, descPochhammer_map]`.
+-/
 lemma binK_map (F L : Type) [Field F] [Field L] (φ : F →+* L) (k : ℕ) :
     (binK F k).map φ = binK L k := by
   simp only [binK, Polynomial.map_mul, Polynomial.map_C, map_inv₀, map_natCast, descPochhammer_map]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i j`. Simplify using `only [binMatK, Matrix.map_apply, Polynomial.map_sum, Polynomial.map_mul, Polynomial.map_C, binK_map]`.
+-/
 lemma binMatK_map (F L : Type) [Field F] [Field L] (φ : F →+* L) {n : ℕ} (del : ℕ)
     (c : Fin n → Fin n → ℕ → F) :
     binMatK L del (fun i j k => φ (c i j k)) = (binMatK F del c).map (Polynomial.map φ) := by
   funext i j
   simp only [binMatK, Matrix.map_apply, Polynomial.map_sum, Polynomial.map_mul, Polynomial.map_C, binK_map]
 
+/- English proof (translation)
+Simplify using `only [binMatK, Polynomial.eval_finset_sum, Polynomial.eval_mul, Polynomial.eval_C, binK_eval_nat]`.
+-/
 lemma binMatK_eval_nat (F : Type) [Field F] [CharZero F] {n : ℕ} (del : ℕ)
     (c : Fin n → Fin n → ℕ → F) (i j : Fin n) (t : ℕ) :
     (binMatK F del c i j).eval (t : F) = ∑ k ∈ range (del + 1), c i j k * (t.choose k : F) := by
   simp only [binMatK, Polynomial.eval_finset_sum, Polynomial.eval_mul, Polynomial.eval_C, binK_eval_nat]
 
+/- English proof (translation)
+Establish `h1 : ((n : ℚ) : ℚ_[p]) = (n : ℚ_[p])` using `by push_cast; rfl`. Rewrite using `[← h1, Padic.eq_padicNorm, padicNorm.eq_zpow_of_nonzero (by exact_mod_cast hn), padicValRat.of_nat]`. Use `push_cast`. Apply the tactic sequence `try rfl`.
+-/
 lemma norm_nat (p : ℕ) [hp : Fact p.Prime] (n : ℕ) (hn : n ≠ 0) :
     ‖(n : ℚ_[p])‖ = (p : ℝ) ^ (-(padicValNat p n : ℤ)) := by
   have h1 : ((n : ℚ) : ℚ_[p]) = (n : ℚ_[p]) := by push_cast; rfl
@@ -35,12 +50,18 @@ lemma norm_nat (p : ℕ) [hp : Fact p.Prime] (n : ℕ) (hn : n ≠ 0) :
   push_cast
   try rfl
 
+/- English proof (translation)
+Establish `hp1 : (1 : ℝ) < p` using `by exact_mod_cast hp.out.one_lt`. Establish `hp0 : (0 : ℝ) < p` using `by linarith`. Rewrite using `[← Real.rpow_intCast, Real.logb_rpow hp0 hp1.ne']`. Simplify using the standard rewrite rules.
+-/
 lemma neglog_zpow (p : ℕ) [hp : Fact p.Prime] (z : ℤ) : -Real.logb p ((p : ℝ) ^ (-z)) = z := by
   have hp1 : (1 : ℝ) < p := by exact_mod_cast hp.out.one_lt
   have hp0 : (0 : ℝ) < p := by linarith
   rw [← Real.rpow_intCast, Real.logb_rpow hp0 hp1.ne']
   simp
 
+/- English proof (translation)
+Rewrite using `[norm_nat p n hn, neglog_zpow]`. Simplify using the standard rewrite rules.
+-/
 lemma neglog_nat (p : ℕ) [hp : Fact p.Prime] (n : ℕ) (hn : n ≠ 0) :
     -Real.logb p ‖(n : ℚ_[p])‖ = padicValNat p n := by
   rw [norm_nat p n hn, neglog_zpow]
@@ -53,6 +74,11 @@ open MvPolynomial Finset Formalism.GM.M
 
 variable {p : ℕ} [hp : Fact p.Prime] {σ : Type}
 
+/- English proof (translation)
+Simplify using `only [initPart, MvPolynomial.coeff_sum]`. Rewrite using `[Finset.sum_eq_single m]`. Apply the tactic sequence `by_cases h : m v = e <;> simp [h]`. Introduce `b _ hb`. Apply the tactic sequence `by_cases h : b v = e <;> simp [h, MvPolynomial.coeff_monomial, hb]`.
+
+Introduce `hm`. Establish `h0 : f.coeff m = 0` using `by simpa [MvPolynomial.mem_support_iff] using hm`. Apply the tactic sequence `by_cases h : m v = e <;> simp [h, h0]`.
+-/
 lemma coeff_initPart (v : σ) (e : ℕ) (f : MvPolynomial σ ℚ_[p]) (m : σ →₀ ℕ) :
     (initPart v e f).coeff m = if m v = e then f.coeff m else 0 := by
   classical
@@ -76,8 +102,16 @@ noncomputable def initL (p : ℕ) [Fact p.Prime] (v : σ) (e : ℕ) :
     rw [MvPolynomial.coeff_smul, MvPolynomial.coeff_smul, coeff_initPart]
     split_ifs <;> simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma initL_apply (v : σ) (e : ℕ) (f : MvPolynomial σ ℚ_[p]) : initL p v e f = initPart v e f := rfl
 
+/- English proof (translation)
+Use extensionality with `m`. Rewrite using `[coeff_initPart, MvPolynomial.coeff_zero]`. Use `split_ifs with hme`. Distinguish the cases in `hm : m ∈ f.support`. Use `hf.1 m hm` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Simplify `hm` using `[MvPolynomial.mem_support_iff]`. Both sides reduce to the same expression.
+-/
 lemma initPart_eq_zero_of_lt (v : σ) (e o : ℕ) (f : MvPolynomial σ ℚ_[p]) (hf : HasOrder v o f) (h : e < o) :
     initPart v e f = 0 := by
   ext m
@@ -89,6 +123,25 @@ lemma initPart_eq_zero_of_lt (v : σ) (e o : ℕ) (f : MvPolynomial σ ℚ_[p]) 
     · simpa [MvPolynomial.mem_support_iff] using hm
   · rfl
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Rewrite using `[linearIndepOn_iff]`. Introduce `l hl h0`. Establish `hlsub : l ∈ Finsupp.supported ℤ_[p] ℤ_[p] {b | e ≤ ord b}` using `Finsupp.supported_mono (fun b hb => le_of_eq (Eq.symm hb)) hl`. Establish `hx : Finsupp.linearCombination ℤ_[p] f l ∈ Fil e`.
+
+Rewrite using `[← hfil, Finsupp.mem_span_image_iff_linearCombination]`. Conclude with `⟨l, hlsub, rfl⟩`. Establish `hinit : initPart v e (Finsupp.linearCombination ℤ_[p] f l) = 0`. Rewrite using `[← initL_apply, Finsupp.apply_linearCombination]`. Conclude with `h0`.
+
+Establish `hx1` using `hstep e _ hx hinit`. Rewrite `hx1` using `[← hfil, Finsupp.mem_span_image_iff_linearCombination]`. Take `⟨l', hl', hll'⟩` from `hx1`. Establish `heq : l' = l`. Use `linearIndependent_iff.mp hli (l' - l) (by rw [map_sub, hll', sub_self])` as an intermediate fact.
+
+Conclude with `sub_eq_zero.mp this`. Use extensionality with `b`. Distinguish the cases in `hb : ord b = e`. Rewrite using `[← heq, Finsupp.coe_zero, Pi.zero_apply]`. Conclude with `(Finsupp.mem_supported' _ _).mp hl' b (by simp [hb])`.
+
+Rewrite using `[Finsupp.coe_zero, Pi.zero_apply]`. Conclude with `(Finsupp.mem_supported' _ _).mp hl b hb`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨b, hb, rfl⟩`.
+
+Apply `Submodule.subset_span` to reduce the goal to its premises. Use `⟨f b, ?_, rfl⟩` and prove the remaining obligations. Use `show f b ∈ (Fil e : Set (MvPolynomial σ ℚ_[p]))`. Rewrite using `[← hfil]`. Conclude with `Submodule.subset_span ⟨b, le_of_eq (Eq.symm hb), rfl⟩`.
+
+Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Establish `hx' : x ∈ Submodule.span ℤ_[p] (f '' {b | e ≤ ord b})`. Rewrite using `[hfil]`. Conclude with `hx`.
+
+Establish `hmap : initL p v e x ∈ Submodule.span ℤ_[p] (initL p v e '' (f '' {b | e ≤ ord b}))`. Rewrite using `[Submodule.span_image]`. Conclude with `Submodule.mem_map_of_mem hx'`. Rewrite `hmap` using `[initL_apply]`. Use `(Submodule.span_le.mpr ?_) hmap` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨_, ⟨b, hb, rfl⟩, rfl⟩`. Distinguish the cases in `hbe : ord b = e`. Conclude with `Submodule.subset_span ⟨b, hbe, rfl⟩`. Rewrite using `[SetLike.mem_coe, initL_apply, initPart_eq_zero_of_lt v e (ord b) (f b) (hord b) (lt_of_le_of_ne hb (Ne.symm hbe))]`. Conclude with `Submodule.zero_mem _`.
+-/
 lemma init_basis {ι : Type} (f : ι → MvPolynomial σ ℚ_[p]) (ord : ι → ℕ) (v : σ)
     (Fil : ℕ → Submodule ℤ_[p] (MvPolynomial σ ℚ_[p]))
     (hli : LinearIndependent ℤ_[p] f) (hord : ∀ b, HasOrder v (ord b) (f b))
@@ -150,6 +203,15 @@ end Formalism.GM.MeanGammaLemmas
 namespace Formalism.GM.MeanGammaLemmas
 open Finset
 
+/- English proof (translation)
+Establish `hBT : B.BlockTriangular e`. Introduce `i j hij`. Rewrite using `[hB, if_neg (ne_of_gt hij)]`. Establish `hblock : ∀ a, B.toSquareBlock e a = β a • G.toSquareBlock e a`. Introduce `a`.
+
+Use extensionality with `i j`. Simplify using `[Matrix.toSquareBlock_def, hB, i.2, j.2]`. Rewrite using `[hBT.det, norm_prod]`. Establish `hc` using `Finset.prod_comp (s := Finset.univ) (fun a => ‖β a‖ * c) e`. Rewrite using `[hc]`.
+
+Apply `Finset.prod_le_prod (fun a _ => by positivity)` to reduce the goal to its premises. Introduce `a _`. Rewrite using `[hblock, Matrix.det_smul, norm_mul, norm_pow, mul_pow]`. Establish `hcard : Fintype.card {i // e i = a} = (Finset.univ.filter fun b => e b = a).card`. Rewrite using `[Fintype.card_subtype]`.
+
+Rewrite using `[← hcard]`. Conclude with `mul_le_mul_of_nonneg_left (hG a) (by positivity)`.
+-/
 lemma det_block_norm {F : Type} [NormedField F] {n : ℕ} (B G : Matrix (Fin n) (Fin n) F) (e : Fin n → ℕ)
     (β : ℕ → F) (c : ℝ) (hc : 0 ≤ c)
     (hB : ∀ i j, B i j = if e i = e j then β (e i) * G i j else 0)
@@ -179,6 +241,11 @@ end Formalism.GM.MeanGammaLemmas
 namespace Formalism.GM.MeanGammaLemmas
 open Finset
 
+/- English proof (translation)
+Establish `hp1` using `hp.out.one_lt`. Establish `h` using `sub_one_mul_padicValNat_factorial (p := p) n`. Establish `h2 : (p - 1) * padicValNat p n.factorial ≤ n` using `by rw [h]; exact Nat.sub_le _ _`. Establish `hp1r : (1 : ℝ) < p` using `by exact_mod_cast hp1`. Establish `hpm : (0 : ℝ) < (p : ℝ) - 1` using `by linarith`.
+
+Rewrite using `[le_div_iff₀ hpm]`. Establish `h3 : ((p - 1 : ℕ) : ℝ) = (p : ℝ) - 1` using `by rw [Nat.cast_sub hp1.le]; simp`. Establish `h4 : (((p - 1) * padicValNat p n.factorial : ℕ) : ℝ) ≤ n` using `by exact_mod_cast h2`. Rewrite `h4` using `[Nat.cast_mul, h3]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 lemma vfact_le (p : ℕ) [hp : Fact p.Prime] (n : ℕ) :
     (padicValNat p n.factorial : ℝ) ≤ n / ((p : ℝ) - 1) := by
   have hp1 := hp.out.one_lt
@@ -192,6 +259,11 @@ lemma vfact_le (p : ℕ) [hp : Fact p.Prime] (n : ℕ) :
   rw [Nat.cast_mul, h3] at h4
   linarith
 
+/- English proof (translation)
+Break down `Nat.lt_or_ge p 2 with hp | hp` into its components or cases. Apply the tactic sequence `rw [Nat.log_of_left_le_one (by omega) x] interval_cases p <;> simp [Real.logb]`. Break down `Nat.eq_zero_or_pos x with rfl | hx0` into its components or cases. Break down `Nat.eq_zero_or_pos B with rfl | hB` into its components or cases. Simplify using the standard rewrite rules.
+
+Simplify using `only [Nat.log_zero_right, Nat.cast_zero]`. Conclude with `Real.logb_nonneg (by exact_mod_cast hp) (by exact_mod_cast hB)`. Rewrite using `[Real.le_logb_iff_rpow_le (by exact_mod_cast hp) (by exact_mod_cast (lt_of_lt_of_le hx0 hx)), Real.rpow_natCast]`. Conclude with `(Nat.pow_log_le_self p hx0.ne').trans hx` after adjusting the coercions.
+-/
 lemma nlog_le (p x B : ℕ) (hx : x ≤ B) : (Nat.log p x : ℝ) ≤ Real.logb p B := by
   rcases Nat.lt_or_ge p 2 with hp | hp
   · rw [Nat.log_of_left_le_one (by omega) x]
@@ -205,6 +277,17 @@ lemma nlog_le (p x B : ℕ) (hx : x ≤ B) : (Nat.log p x : ℝ) ≤ Real.logb p
         (by exact_mod_cast (lt_of_lt_of_le hx0 hx)), Real.rpow_natCast]
       exact_mod_cast (Nat.pow_log_le_self p hx0.ne').trans hx
 
+/- English proof (translation)
+Establish `hp1` using `hp.out.one_lt`. Establish `h` using `sub_one_mul_padicValNat_factorial (p := p) n`. Establish `hds` using `Nat.digit_sum_le p n`. Establish `hsum : (p.digits n).sum ≤ (p.digits n).length * (p - 1)`. Use `List.sum_le_card_nsmul (p.digits n) (p - 1) (fun d hd => Nat.le_sub_one_of_lt (Nat.digits_lt_base hp1 hd))` as an intermediate fact.
+
+Simplify using `using this`. Establish `hp1r : (1 : ℝ) < p` using `by exact_mod_cast hp1`. Establish `hpm : (0 : ℝ) < (p : ℝ) - 1` using `by linarith`. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Simplify using the standard rewrite rules.
+
+Establish `hlen` using `Nat.digits_len p n hp1 hn.ne'`. Establish `key : ((p : ℝ) - 1) * (padicValNat p n.factorial) = n - (p.digits n).sum`. Use `congrArg (fun x : ℕ => (x : ℝ)) h` as an intermediate fact. Rewrite `this` using `[Nat.cast_mul, Nat.cast_sub hp1.le, Nat.cast_sub hds, Nat.cast_one]`. Conclude with `this`.
+
+Establish `hsumR : ((p.digits n).sum : ℝ) ≤ ((Nat.log p n : ℝ) + 1) * ((p : ℝ) - 1)`. Rewrite `hsum` using `[hlen]`. Use `(Nat.cast_le (α := ℝ)).mpr hsum` as an intermediate fact. Rewrite `this` using `[Nat.cast_mul, Nat.cast_sub hp1.le, Nat.cast_add, Nat.cast_one]`. Conclude with `this`.
+
+Establish `hv : (padicValNat p n.factorial : ℝ) = (n - (p.digits n).sum) / ((p : ℝ) - 1)`. Rewrite using `[eq_div_iff hpm.ne', ← key]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hv, ← sub_div, sub_sub_cancel, div_le_iff₀ hpm]`. Conclude with `hsumR`.
+-/
 lemma legendre' (p : ℕ) [hp : Fact p.Prime] (n : ℕ) :
     (n : ℝ) / ((p : ℝ) - 1) - (padicValNat p n.factorial : ℝ) ≤ (Nat.log p n : ℝ) + 1 := by
   have hp1 := hp.out.one_lt
@@ -234,17 +317,28 @@ lemma legendre' (p : ℕ) [hp : Fact p.Prime] (n : ℕ) :
     rw [hv, ← sub_div, sub_sub_cancel, div_le_iff₀ hpm]
     exact hsumR
 
+/- English proof (translation)
+Use `Nat.factorization_choose_le_log (p := p) (n := n) (k := k)` as an intermediate fact. Rewrite `this` using `[Nat.factorization_def _ hp.out]`. Conclude with `this` after adjusting the coercions.
+-/
 lemma vchoose_le (p : ℕ) [hp : Fact p.Prime] (n k : ℕ) :
     (padicValNat p (n.choose k) : ℝ) ≤ (Nat.log p n : ℝ) := by
   have := Nat.factorization_choose_le_log (p := p) (n := n) (k := k)
   rw [Nat.factorization_def _ hp.out] at this
   exact_mod_cast this
 
+/- English proof (translation)
+Establish `hp1 : (1 : ℝ) < p` using `by exact_mod_cast hp.out.one_lt`. Establish `hp0 : (0 : ℝ) < p` using `by linarith`. Rewrite using `[← Real.rpow_intCast, Real.logb_rpow hp0 hp1.ne']`.
+-/
 lemma neg_logb_zpow_self (p : ℕ) [hp : Fact p.Prime] (z : ℤ) : -Real.logb p ((p : ℝ) ^ z) = -z := by
   have hp1 : (1 : ℝ) < p := by exact_mod_cast hp.out.one_lt
   have hp0 : (0 : ℝ) < p := by linarith
   rw [← Real.rpow_intCast, Real.logb_rpow hp0 hp1.ne']
 
+/- English proof (translation)
+Establish `hp0 : (0 : ℝ) < p` using `by exact_mod_cast hp.out.pos`. Establish `hA : e.factorial * (z + e).choose e ≠ 0` using `Nat.mul_ne_zero (Nat.factorial_ne_zero _) (Nat.choose_pos (Nat.le_add_left e z)).ne'`. Establish `hB : o.factorial * S.factorial ≠ 0` using `Nat.mul_ne_zero (Nat.factorial_ne_zero _) (Nat.factorial_ne_zero _)`. Rewrite using `[norm_div, norm_mul, norm_pow, Padic.norm_p, norm_nat p _ hA, norm_nat p _ hB, padicValNat.mul (Nat.factorial_ne_zero _) (Nat.choose_pos (Nat.le_add_left e z)).ne', padicValNat.mul (Nat.factorial_ne_zero _) (Nat.factorial_ne_zero _)]`. Rewrite using `[show ((p : ℝ)⁻¹) ^ M = (p : ℝ) ^ (-(M : ℤ)) by rw [zpow_neg, zpow_natCast, inv_pow], ← zpow_add₀ hp0.ne', ← zpow_sub₀ hp0.ne', neg_logb_zpow_self]`.
+
+Simplify using `only [Int.cast_sub, Int.cast_add, Int.cast_neg, Int.cast_natCast, Nat.cast_add]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma negLog_beta (p : ℕ) [hp : Fact p.Prime] (M e z o S : ℕ) :
     -Real.logb p ‖(p : ℚ_[p]) ^ M * ((e.factorial * (z + e).choose e : ℕ) : ℚ_[p]) /
         ((o.factorial * S.factorial : ℕ) : ℚ_[p])‖ =
@@ -263,6 +357,21 @@ lemma negLog_beta (p : ℕ) [hp : Fact p.Prime] (M e z o S : ℕ) :
   simp only [Int.cast_sub, Int.cast_add, Int.cast_neg, Int.cast_natCast, Nat.cast_add]
   ring
 
+/- English proof (translation)
+Rewrite using `[negLog_beta]`. Establish `hp1r : (1 : ℝ) < p` using `by exact_mod_cast hp.out.one_lt`. Establish `hpm : (0 : ℝ) < (p : ℝ) - 1` using `by linarith`. Establish `hr1 : (1 : ℝ) ≤ r` using `by exact_mod_cast hr`. Establish `ha0 : (0 : ℝ) ≤ a` using `Nat.cast_nonneg a`.
+
+Establish `L0 : 0 ≤ Real.logb p (8 * a + r)` using `Real.logb_nonneg hp1r (by linarith)`. Establish `hκ0 : 0 ≤ κ` using `by linarith`. Establish `hzl : (Nat.log p (z + e) : ℝ) ≤ Real.logb p (8 * a + r)`. Use `nlog_le p (z + e) (8 * a + r) (by omega)` as an intermediate fact. Move the coercions through the operations in `at this`.
+
+Conclude with `this`. Establish `hol : (Nat.log p o : ℝ) ≤ Real.logb p (8 * a + r)`. Use `nlog_le p o (8 * a + r) (by omega)` as an intermediate fact. Move the coercions through the operations in `at this`. Conclude with `this`.
+
+Establish `hSl : (Nat.log p S : ℝ) ≤ Real.logb p (8 * a + r)`. Use `nlog_le p S (8 * a + r) (by omega)` as an intermediate fact. Move the coercions through the operations in `at this`. Conclude with `this`. Establish `h1` using `vfact_le p e`.
+
+Establish `h2` using `legendre' p o`. Establish `h3` using `legendre' p S`. Establish `h4` using `vchoose_le p (z + e) e`. Establish `hceil` using `Nat.ceil_lt_add_one hκ0`. Establish `hSoe : ((S + o - e : ℕ) : ℝ) = (S : ℝ) + o - e`.
+
+Rewrite using `[Nat.cast_sub (by omega)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hsplit : (e : ℝ) / ((p : ℝ) - 1) + ((S : ℝ) + o - e) / ((p : ℝ) - 1) = (S : ℝ) / ((p : ℝ) - 1) + (o : ℝ) / ((p : ℝ) - 1)`. Rewrite using `[← add_div, ← add_div]`.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hSoe]`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 lemma per_row (p : ℕ) [hp : Fact p.Prime] (a r S o z e cI : ℕ) (κ C : ℝ)
     (heo : e ≤ o) (ho : o ≤ 2 * a) (hS : S ≤ 2 * a) (hz : z ≤ 2 * a) (hr : 1 ≤ r)
     (hκ : 12 * (Real.logb p (8 * a + r) + 1) ≤ κ) (hcI : (cI : ℝ) ≤ C * κ) :
@@ -311,6 +420,9 @@ end Formalism.GM.MeanGammaLemmas
 namespace Formalism.GM.MeanGammaLemmas
 open Polynomial Finset Formalism.GM.M
 
+/- English proof (translation)
+Rewrite using `[← Finset.sum_filter]`. Use `congr 1`. Use extensionality with `k`. Simplify using `only [Finset.mem_filter, Finset.mem_range]`. Use linear arithmetic over natural numbers and integers.
+-/
 lemma sum_trunc {F : Type} [Field F] (D0 del : ℕ) (h : D0 ≤ del) (g : ℕ → F) :
     ∑ k ∈ range (del + 1), (if k ≤ D0 then g k else 0) = ∑ k ∈ range (D0 + 1), g k := by
   rw [← Finset.sum_filter]
@@ -319,6 +431,11 @@ lemma sum_trunc {F : Type} [Field F] (D0 del : ℕ) (h : D0 ≤ del) (g : ℕ �
   simp only [Finset.mem_filter, Finset.mem_range]
   omega
 
+/- English proof (translation)
+Apply `Polynomial.eq_of_infinite_eval_eq` to reduce the goal to its premises. Use `Set.infinite_of_injective_forall_mem (f := fun n : ℕ => ((n + S : ℕ) : ℚ_[p])) ?_ ?_` and prove the remaining obligations. Introduce `x y hxy`. Use `Nat.cast_injective hxy` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+
+Introduce `n`. Simplify using `only [Set.mem_setOf_eq, eval_mul, eval_C]`. Conclude with `h _ (by omega)`.
+-/
 lemma poly_eq_of_eval (p : ℕ) [Fact p.Prime] (Q P : ℚ_[p][X]) (S : ℕ) (a : ℚ_[p])
     (h : ∀ n : ℕ, S ≤ n → Q.eval (n : ℚ_[p]) = a * P.eval (n : ℚ_[p])) : Q = C a * P := by
   apply Polynomial.eq_of_infinite_eval_eq
@@ -330,6 +447,9 @@ lemma poly_eq_of_eval (p : ℕ) [Fact p.Prime] (Q P : ℚ_[p][X]) (S : ℕ) (a :
     simp only [Set.mem_setOf_eq, eval_mul, eval_C]
     exact h _ (by omega)
 
+/- English proof (translation)
+Take `⟨P, hP, hPe⟩` from `hDeg p K r LLw ρ z e e' f f' hr hv hf hf' he he'`. Establish `hQP : Q = C a * P` using `poly_eq_of_eval p Q P LLw.total a (fun n hn => by rw [hQ n hn, hPe n hn])`. Rewrite using `[hQP]`. Conclude with `(natDegree_C_mul_le a P).trans hP`.
+-/
 lemma entry_deg (hDeg : GamDeg) {p : ℕ} [Fact p.Prime] {K r : ℕ} (LLw : Letters (K + 1)) (ρ : Fin r)
     (z e e' : ℕ) (f f' : MvPolynomial (Fin (K + 1) × Fin r) ℚ_[p]) (hr : 1 ≤ r)
     (hv : LLw.vec (Fin.last K) = true) (hf : f ∈ Pol p r LLw) (hf' : f' ∈ Pol p r LLw)
@@ -342,6 +462,11 @@ lemma entry_deg (hDeg : GamDeg) {p : ℕ} [Fact p.Prime] {K r : ℕ} (LLw : Lett
   rw [hQP]
   exact (natDegree_C_mul_le a P).trans hP
 
+/- English proof (translation)
+Establish `hP : ∀ n : ℕ, LLw.total ≤ n → tieGam p LLw ρ z n f f' = (C a⁻¹ * Q).eval (n : ℚ_[p])`. Introduce `n hn`. Rewrite using `[eval_mul, eval_C, hQ n hn, ← mul_assoc, inv_mul_cancel₀ ha, one_mul]`. Establish `h` using `hLead p K r LLw ρ z e f f' (C a⁻¹ * Q) hr hv hf hf' he he' hP`. Rewrite `h` using `[coeff_C_mul]`.
+
+Rewrite using `[← h, ← mul_assoc, mul_inv_cancel₀ ha, one_mul]`.
+-/
 lemma entry_lead (hLead : GamLead) {p : ℕ} [Fact p.Prime] {K r : ℕ} (LLw : Letters (K + 1)) (ρ : Fin r)
     (z e : ℕ) (f f' : MvPolynomial (Fin (K + 1) × Fin r) ℚ_[p]) (hr : 1 ≤ r)
     (hv : LLw.vec (Fin.last K) = true) (hf : f ∈ Pol p r LLw) (hf' : f' ∈ Pol p r LLw)
@@ -360,12 +485,18 @@ lemma entry_lead (hLead : GamLead) {p : ℕ} [Fact p.Prime] {K r : ℕ} (LLw : L
   rw [coeff_C_mul] at h
   rw [← h, ← mul_assoc, mul_inv_cancel₀ ha, one_mul]
 
+/- English proof (translation)
+Establish `h` using `RingHom.map_det (Polynomial.mapRingHom (algebraMap ℚ_[p] (PadicAlgCl p))) Aq`. Simplify using `using h.symm`.
+-/
 lemma split_det (p : ℕ) [Fact p.Prime] {n : ℕ} (Aq : Matrix (Fin n) (Fin n) ℚ_[p][X]) :
     (Aq.map (Polynomial.map (algebraMap ℚ_[p] (PadicAlgCl p)))).det =
       (Aq.det).map (algebraMap ℚ_[p] (PadicAlgCl p)) := by
   have h := RingHom.map_det (Polynomial.mapRingHom (algebraMap ℚ_[p] (PadicAlgCl p))) Aq
   simpa using h.symm
 
+/- English proof (translation)
+Establish `hc : Multiset.card Dk.roots = Dk.natDegree` using `splits_iff_card_roots.mp (IsAlgClosed.splits Dk)`. Conclude with `⟨(C_leadingCoeff_mul_prod_multiset_X_sub_C hc).symm, hc⟩`.
+-/
 lemma splits_form {L : Type} [Field L] [IsAlgClosed L] (Dk : L[X]) :
     Dk = C Dk.leadingCoeff * (Dk.roots.map (fun ζ => X - C ζ)).prod ∧ Dk.roots.card = Dk.natDegree := by
   have hc : Multiset.card Dk.roots = Dk.natDegree := splits_iff_card_roots.mp (IsAlgClosed.splits Dk)
@@ -388,6 +519,9 @@ noncomputable def coefT (p : ℕ) [Fact p.Prime] {n : ℕ} (D0 m : ℕ) (cc : Fi
     Fin n → Fin n → ℕ → ℚ_[p] :=
   fun x y k => if k ≤ D0 then (p : ℚ_[p]) ^ m * (cc x y k : ℚ_[p]) else 0
 
+/- English proof (translation)
+Establish `hp0 : (p : ℚ_[p]) ≠ 0` using `Nat.cast_ne_zero.mpr hp.out.ne_zero`. Establish `hA : e.factorial * (z + e).choose e ≠ 0` using `Nat.mul_ne_zero (Nat.factorial_ne_zero _) (Nat.choose_pos (Nat.le_add_left e z)).ne'`. Establish `hB : o.factorial * S.factorial ≠ 0` using `Nat.mul_ne_zero (Nat.factorial_ne_zero _) (Nat.factorial_ne_zero _)`. Simplify using `only [betaT]`. Conclude with `div_ne_zero (mul_ne_zero (pow_ne_zero _ hp0) (Nat.cast_ne_zero.mpr hA)) (Nat.cast_ne_zero.mpr hB)`.
+-/
 lemma betaT_ne_zero (p : ℕ) [hp : Fact p.Prime] (m z o S e : ℕ) : betaT p m z o S e ≠ 0 := by
   have hp0 : (p : ℚ_[p]) ≠ 0 := Nat.cast_ne_zero.mpr hp.out.ne_zero
   have hA : e.factorial * (z + e).choose e ≠ 0 :=
@@ -397,6 +531,47 @@ lemma betaT_ne_zero (p : ℕ) [hp : Fact p.Prime] (m z o S e : ℕ) : betaT p m 
   simp only [betaT]
   exact div_ne_zero (mul_ne_zero (pow_ne_zero _ hp0) (Nat.cast_ne_zero.mpr hA)) (Nat.cast_ne_zero.mpr hB)
 
+/- English proof (translation)
+Establish `hmem : ∀ b, f b ∈ MMwZ p LLw J M ρ w` using `fun b => hspan ▸ Submodule.subset_span ⟨b, rfl⟩`. Establish `hPol : ∀ b, f b ∈ Pol p r LLw` using `fun b => (Submodule.mem_inf.mp (Submodule.mem_inf.mp (Submodule.mem_inf.mp (Submodule.mem_inf.mp (hmem b)).1).1).1).1`. Establish `hoS : LLw.deg (Fin.last K) ≤ LLw.total` using `Finset.single_le_sum (f := LLw.deg) (fun _ _ => Nat.zero_le _) (Finset.mem_univ _)`. Establish `hord_le : ∀ b, ord b ≤ LLw.deg (Fin.last K)`. Introduce `b`.
+
+Take `⟨mm, hm, hme⟩` from `(hord b).2`. Establish `hmd : MultiDeg LLw mm` using `((MvPolynomial.mem_restrictSupport_iff _).mp (hPol b)) hm`. Use `hmd (Fin.last K)` as an intermediate fact. Rewrite using `[← this, ← hme]`. Conclude with `Finset.single_le_sum (f := fun c => mm (Fin.last K, c)) (fun _ _ => Nat.zero_le _) (Finset.mem_univ ρ)`.
+
+Establish `hp0 : (p : ℚ_[p]) ≠ 0` using `by exact_mod_cast hp.out.ne_zero`. Use `set S := LLw.total with hSdef`. Use `set o := LLw.deg (Fin.last K) with hodef`. Use `set Aq := binMatK ℚ_[p] (2 * S) (coefT p (S + o) m cc) with hAqdef`. Establish `hAeval : ∀ x y (n : ℕ), S ≤ n → (Aq x y).eval (n : ℚ_[p]) = (p : ℚ_[p]) ^ (m + cI) * tieGam p LLw ρ z n (f x) (f y)`.
+
+Introduce `x y n hn`. Rewrite using `[hAqdef, binMatK_eval_nat]`. Simplify using `only [coefT, ite_mul, zero_mul]`. Rewrite using `[sum_trunc (S + o) (2 * S) (by omega)]`. Simplify using `only [mul_assoc]`.
+
+Rewrite using `[← Finset.mul_sum, ← hcc x y n hn, pow_add, mul_assoc]`. Establish `hAdeg : ∀ x y, (Aq x y).natDegree + max (ord x) (ord y) ≤ S + o`. Introduce `x y`. Use `entry_deg hDeg LLw ρ z (ord x) (ord y) (f x) (f y) hr1 hv (hPol x) (hPol y) (hord x) (hord y) (Aq x y) _ (hAeval x y)` as an intermediate fact. Establish `h1` using `hord_le x`.
+
+Establish `h2` using `hord_le y`. Establish `: max (ord x) (ord y) ≤ o` using `max_le h1 h2`. Use linear arithmetic over natural numbers and integers. Establish `hAtop : ∀ x y, ord x = ord y → (Aq x y).coeff (S + o - ord x) = betaT p (m + cI) z o S (ord x) * gramT p LLw ρ f ord x y`. Introduce `x y hxy`.
+
+Establish `hy : HasOrder (Fin.last K, ρ) (ord x) (f y)` using `hxy ▸ hord y`. Rewrite using `[entry_lead hLead LLw ρ z (ord x) (f x) (f y) hr1 hv (hPol x) (hPol y) (hord x) hy (Aq x y) _ (pow_ne_zero _ hp0) (hAeval x y)]`. Simplify using `only [betaT, gramT, Matrix.of_apply]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Take `⟨hdeg1, hcoef, hlead⟩` from `Formalism.GM.Top.detBlockLead ℚ_[p] n₀ Aq (S + o) ord (fun i => (hord_le i).trans (by omega)) hAdeg`. Use `set B := Matrix.of fun i j => if ord i = ord j then (Aq i j).coeff (S + o - ord i) else 0 with hBdef`. Establish `hB : ∀ i j, B i j = if ord i = ord j then betaT p (m + cI) z o S (ord i) * gramT p LLw ρ f ord i j else 0`. Introduce `i j`. Simplify using `only [hBdef, Matrix.of_apply]`.
+
+Use `split_ifs with h`. Conclude with `hAtop i j h`. Both sides reduce to the same expression. Establish `hstep : ∀ e x, x ∈ FilE p LLw J M ρ w (Fin.last K, ρ) e → initPart (Fin.last K, ρ) e x = 0 → x ∈ FilE p LLw J M ρ w (Fin.last K, ρ) (e + 1)`. Introduce `e x hx h0`.
+
+Establish `hx'` using `Submodule.mem_inf.mp hx`. Use `Submodule.mem_inf.mpr ⟨hx'.1, ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.restrictScalars_mem, MvPolynomial.mem_restrictSupport_iff]`. Establish `h2` using `hx'.2`. Rewrite `h2` using `[Submodule.restrictScalars_mem, MvPolynomial.mem_restrictSupport_iff]`.
+
+Introduce `mm hmm`. Establish `h3 : e ≤ mm (Fin.last K, ρ)` using `h2 hmm`. Use `show e + 1 ≤ mm (Fin.last K, ρ)`. Break down `Nat.lt_or_eq_of_le h3 with h | h` into its components or cases. Conclude with `h`.
+
+It suffices to derive a contradiction. Establish `hc` using `congrArg (MvPolynomial.coeff mm) h0`. Rewrite `hc` using `[coeff_initPart, if_pos h.symm, MvPolynomial.coeff_zero]`. Conclude with `(MvPolynomial.mem_support_iff.mp hmm) hc`. Establish `hGblk : ∀ a', ((p : ℝ) ^ (-κ)) ^ (Fintype.card {b // ord b = a'}) ≤ ‖((gramT p LLw ρ f ord).toSquareBlock ord a').det‖`.
+
+Introduce `a'`. Use `set k := Fintype.card {b // ord b = a'}`. Set `σe : {b // ord b = a'} ≃ Fin k` to `Fintype.equivFin _`. Set `g : Fin k → MvPolynomial (Fin (K + 1) × Fin r) ℚ_[p]` to `fun i => initPart (Fin.last K, ρ) a' (f (σe.symm i))`. Take `⟨hli', hsp'⟩` from `init_basis f ord (Fin.last K, ρ) (FilE p LLw J M ρ w (Fin.last K, ρ)) hli hord hfil hstep a'`.
+
+Establish `hg_li : LinearIndependent ℤ_[p] g`. Establish `h0 : LinearIndependent ℤ_[p] (fun b : {b // ord b = a'} => initPart (Fin.last K, ρ) a' (f b))` using `hli'`. Conclude with `h0.comp σe.symm σe.symm.injective`. Establish `hg_sp : Submodule.span ℤ_[p] (Set.range g) = grLat p LLw J M ρ w (Fin.last K, ρ) a'`. Unfold `grLat`.
+
+Rewrite using `[← hsp']`. Use `congr 1`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨i, rfl⟩`.
+
+Conclude with `⟨(σe.symm i : Fin n₀), (σe.symm i).2, rfl⟩`. Introduce and unpack `⟨b, hb, rfl⟩`. Use `⟨σe ⟨b, hb⟩, ?_⟩` and prove the remaining obligations. Simplify using `[g]`. Establish `h4` using `hL4 w a' k g hg_li hg_sp`.
+
+Establish `hmat : (Matrix.of fun i j => fock p (g i) (g j) / ∏ i, ((LLw.deg i).factorial : ℚ_[p])) = Matrix.reindex σe σe ((gramT p LLw ρ f ord).toSquareBlock ord a')`. Use extensionality with `i j`. Simplify using `only [Matrix.of_apply, Matrix.reindex_apply, Matrix.submatrix_apply, Matrix.toSquareBlock_def, gramT, g]`. Rewrite using `[(σe.symm i).2]`. Rewrite `h4` using `[hmat, Matrix.det_reindex_self]`.
+
+Establish `hp0' : (0 : ℝ) ≤ p` using `by positivity`. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul hp0']`. Use `h4 using 2` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Establish `hBnorm` using `det_block_norm B (gramT p LLw ρ f ord) ord (betaT p (m + cI) z o S) ((p : ℝ) ^ (-κ)) (by positivity) hB hGblk`.
+
+Establish `hprod_pos : 0 < ∏ b, (‖betaT p (m + cI) z o S (ord b)‖ * (p : ℝ) ^ (-κ))`. Apply `Finset.prod_pos` to reduce the goal to its premises. Introduce `b _`. Establish `hpr : (0 : ℝ) < p` using `by exact_mod_cast hp.out.pos`. Conclude with `mul_pos (norm_pos_iff.mpr (betaT_ne_zero p _ _ _ _ _)) (Real.rpow_pos_of_pos hpr _)`.
+
+Establish `hBne : B.det ≠ 0` using `norm_pos_iff.mp (lt_of_lt_of_le hprod_pos hBnorm)`. Take `⟨hnat, hlc⟩` from `hlead hBne`. Use `⟨hAeval, hnat, ?_, hord_le, hoS⟩` and prove the remaining obligations. Rewrite using `[hlc]`. Conclude with `hBnorm`.
+-/
 lemma lead_part (hDeg : GamDeg) (hLead : GamLead) {p : ℕ} [hp : Fact p.Prime] {K r : ℕ} [NeZero r]
     (LLw : Letters (K + 1)) {q : ℕ} (J : Fin q → ℕ) (M : Fin q → WithTop ℤ) (ρ : Fin r) (z : ℕ)
     (w : Fin r → ℤ) (n₀ : ℕ) (f : Fin n₀ → MvPolynomial (Fin (K + 1) × Fin r) ℚ_[p]) (ord : Fin n₀ → ℕ)
@@ -543,6 +718,15 @@ end Formalism.GM.MeanGammaLemmas
 namespace Formalism.GM.MeanGammaLemmas
 open Polynomial Finset Formalism.GM.M
 
+/- English proof (translation)
+Establish `hp1 : (1 : ℝ) < p` using `by exact_mod_cast hp.out.one_lt`. Establish `hp0 : (0 : ℝ) < p` using `by linarith`. Establish `hpos : 0 < ∏ b, (β b * (p : ℝ) ^ (-κ))` using `Finset.prod_pos (fun b _ => mul_pos (hβ b) (Real.rpow_pos_of_pos hp0 _))`. Establish `h1 : Real.logb p (∏ b, (β b * (p : ℝ) ^ (-κ))) ≤ Real.logb p Lnorm` using `Real.logb_le_logb_of_le hp1 hpos hprod`. Establish `hlogp : 0 < Real.log p` using `Real.log_pos hp1`.
+
+Establish `h2 : Real.logb p (∏ b, (β b * (p : ℝ) ^ (-κ))) = ∑ b, (Real.logb p (β b) - κ)`. Simplify using `only [Real.logb]`. Rewrite using `[Real.log_prod (fun b _ => (mul_pos (hβ b) (Real.rpow_pos_of_pos hp0 _)).ne'), Finset.sum_div]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `b _`.
+
+Rewrite using `[Real.log_mul (hβ b).ne' (Real.rpow_pos_of_pos hp0 _).ne', Real.log_rpow hp0, add_div, mul_div_assoc, div_self hlogp.ne']`. Expand and normalize the polynomial expressions, which then agree. Establish `h3 : ∑ b, (-Real.logb p (β b) + (dgs b : ℝ) / ((p : ℝ) - 1) + κ) ≤ n * La`. Combine the equalities or inequalities in the displayed calculation. Establish `h4 : ∑ b, (-Real.logb p (β b) + (dgs b : ℝ) / ((p : ℝ) - 1) + κ) = -(∑ b, (Real.logb p (β b) - κ)) + ((∑ b, dgs b : ℕ) : ℝ) / ((p : ℝ) - 1)`.
+
+Rewrite using `[Nat.cast_sum, Finset.sum_div, ← Finset.sum_neg_distrib, ← Finset.sum_add_distrib]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `b _`. Expand and normalize the polynomial expressions, which then agree. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 lemma lead_bound (p : ℕ) [hp : Fact p.Prime] {n : ℕ} (β : Fin n → ℝ) (dgs : Fin n → ℕ) (κ La Lnorm : ℝ)
     (hβ : ∀ b, 0 < β b) (hprod : ∏ b, (β b * (p : ℝ) ^ (-κ)) ≤ Lnorm)
     (hrow : ∀ b, -Real.logb p (β b) + (dgs b : ℝ) / ((p : ℝ) - 1) + κ ≤ La) :
@@ -578,6 +762,73 @@ end Formalism.GM.MeanGammaLemmas
 namespace Formalism.GM
 open Polynomial Finset Formalism.GM.M Formalism.GM.MeanGammaLemmas
 
+/- English proof (translation)
+Take `⟨C, hC⟩` from `hInt`. Use `⟨(C : ℝ) + 3, by positivity, ?_⟩` and prove the remaining obligations. Introduce `p hp K r hr LLw q J M ρ z w n₀ f ord s d Yw a E κ U V dg hρ hr2 hv hli hspan hord hfil hE hYw hd hcop hSs hdeg hsY hz hκ hL4 hsmith`. Establish `hr1 : 1 ≤ r` using `by omega`. Establish `hmem : ∀ b, f b ∈ MMwZ p LLw J M ρ w` using `fun b => hspan ▸ Submodule.subset_span ⟨b, rfl⟩`.
+
+Establish `hPol : ∀ b, f b ∈ Pol p r LLw` using `fun b => (Submodule.mem_inf.mp (Submodule.mem_inf.mp (Submodule.mem_inf.mp (Submodule.mem_inf.mp (hmem b)).1).1).1).1`. Establish `hPolZ : ∀ b, f b ∈ PolZ p r LLw` using `fun b => Submodule.mem_inf.mpr ⟨hPol b, (Submodule.mem_inf.mp (hmem b)).2⟩`. Establish `hCI` using `fun x y => hC p K r LLw ρ z (f x) (f y) hr1 hv (hPolZ x) (hPolZ y)`. Use `choose cc hcc using hCI`. Use `set S := LLw.total with hSdef`.
+
+Use `set o := LLw.deg (Fin.last K) with hodef`. Use `set cI := C * (K + 3) * r ^ 2 * (Nat.log p (S + o + r) + 1) with hcIdef`. Take `⟨hAeval, hnat, hlead, hord_le, hoS⟩` from `lead_part hDeg hLead LLw J M ρ z w n₀ f ord κ ⌈κ⌉₊ cI cc hr1 hv hli hspan hord hfil hL4 (fun x y n hn => hcc x y n hn)`. Use `set Aq := binMatK ℚ_[p] (2 * S) (coefT p (S + o) ⌈κ⌉₊ cc) with hAqdef`. Establish `hp1 : (1 : ℝ) < p` using `by exact_mod_cast hp.out.one_lt`.
+
+Establish `hlg0 : 0 ≤ Real.logb p (8 * a + r)`. Apply `Real.logb_nonneg hp1` to reduce the goal to its premises. Establish `: (2 : ℝ) ≤ r` using `by exact_mod_cast hr2`. Establish `: (0 : ℝ) ≤ a` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hlgdef : lgV2 p a r = Real.logb p (8 * a + r) + 1` using `rfl`. Establish `h12 : (12 : ℝ) ≤ ((K : ℝ) + 3) * (r : ℝ) ^ 2`. Establish `: (2 : ℝ) ≤ r` using `by exact_mod_cast hr2`. Establish `: (0 : ℝ) ≤ K` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities.
+
+Establish `hκ12 : 12 * (Real.logb p (8 * a + r) + 1) ≤ κ`. Rewrite `hκ` using `[hlgdef]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hκ0 : 0 ≤ κ` using `by linarith`. Establish `hS2a : S ≤ 2 * a` using `le_trans hSs (le_trans (Nat.le_add_right _ _) hsY)`.
+
+Establish `ho2a : o ≤ 2 * a` using `hdeg _`. Establish `hcI : (cI : ℝ) ≤ C * κ`. Establish `hl` using `nlog_le p (S + o + r) (8 * a + r) (by omega)`. Establish `hcast : (((8 * a + r : ℕ)) : ℝ) = 8 * (a : ℝ) + r` using `by push_cast; ring`. Rewrite `hl` using `[hcast]`.
+
+Establish `hC0 : (0 : ℝ) ≤ C` using `by positivity`. Establish `hK0 : (0 : ℝ) ≤ ((K : ℝ) + 3) * (r : ℝ) ^ 2` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hcIdef]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ (C : ℝ) * ((((K : ℝ) + 3) * (r : ℝ) ^ 2) * lgV2 p a r) := by`. Rewrite using `[hlgdef]`. Use `gcongr`. Use `_ ≤ C * κ := by gcongr`.
+
+Establish `hLB` using `lead_bound p (fun b => ‖betaT p (⌈κ⌉₊ + cI) z o S (ord b)‖) (fun b => S + o - ord b) κ ((C + 3) * κ) ‖Aq.det.leadingCoeff‖ (fun b => norm_pos_iff.mpr (betaT_ne_zero p _ _ _ _ _)) hlead (fun b => per_row p a r S o z (ord b) cI κ C (hord_le b) ho2a hS2a hz hr1 hκ12 hcI)`. Use `set alg := algebraMap ℚ_[p] (PadicAlgCl p) with halg`. Use `set c' : Fin n₀ → Fin n₀ → ℕ → PadicAlgCl p := fun i j k => alg (coefT p (S + o) ⌈κ⌉₊ cc i j k) with hc'`. Establish `hAK : binMatK (PadicAlgCl p) (2 * S) c' = Aq.map (Polynomial.map alg)` using `binMatK_map ℚ_[p] (PadicAlgCl p) alg (2 * S) _`. Establish `hDk : (binMatK (PadicAlgCl p) (2 * S) c').det = Aq.det.map alg`.
+
+Rewrite using `[hAK]`. Conclude with `split_det p Aq`. Take `⟨hsplit, hcard⟩` from `splits_form (binMatK (PadicAlgCl p) (2 * S) c').det`. Establish `hlc : (binMatK (PadicAlgCl p) (2 * S) c').det.leadingCoeff = alg Aq.det.leadingCoeff`. Rewrite using `[hDk, leadingCoeff_map]`.
+
+Establish `hnd : (binMatK (PadicAlgCl p) (2 * S) c').det.natDegree = Aq.det.natDegree`. Rewrite using `[hDk, natDegree_map]`. Establish `hlcnorm : ‖(binMatK (PadicAlgCl p) (2 * S) c').det.leadingCoeff‖ = ‖Aq.det.leadingCoeff‖`. Rewrite using `[hlc, halg, norm_algebraMap']`. Establish `hprod_pos : 0 < ∏ b, (‖betaT p (⌈κ⌉₊ + cI) z o S (ord b)‖ * (p : ℝ) ^ (-κ))`.
+
+Apply `Finset.prod_pos` to reduce the goal to its premises. Introduce `b _`. Conclude with `mul_pos (norm_pos_iff.mpr (betaT_ne_zero p _ _ _ _ _)) (Real.rpow_pos_of_pos (by linarith) _)`. Establish `hleadne : (binMatK (PadicAlgCl p) (2 * S) c').det.leadingCoeff ≠ 0`. Rewrite using `[← norm_pos_iff, hlcnorm]`.
+
+Conclude with `lt_of_lt_of_le hprod_pos hlead`. Establish `hLB' : -Real.logb p ‖(binMatK (PadicAlgCl p) (2 * S) c').det.leadingCoeff‖ + ((binMatK (PadicAlgCl p) (2 * S) c').det.roots.card : ℝ) / ((p : ℝ) - 1) ≤ (n₀ : ℝ) * ((C + 3) * κ)`. Rewrite using `[hlcnorm, hcard, hnd, hnat]`. Conclude with `hLB`. Establish `hc'norm : ∀ i j k, ‖c' i j k‖ ≤ 1`.
+
+Introduce `i j k`. Simplify using `only [hc', halg, norm_algebraMap', coefT]`. Use `split_ifs`. Rewrite using `[norm_mul, norm_pow, Padic.norm_p]`. Establish `h1 : ‖((cc i j k : ℤ_[p]) : ℚ_[p])‖ ≤ 1`.
+
+Rewrite using `[← PadicInt.norm_def]`. Conclude with `PadicInt.norm_le_one _`. Establish `h2 : ((p : ℝ)⁻¹) ^ ⌈κ⌉₊ ≤ 1` using `pow_le_one₀ (by positivity) (inv_le_one_of_one_le₀ hp1.le)`. Combine the equalities or inequalities in the displayed calculation. Simplify using the standard rewrite rules.
+
+Use `set h := Nat.clog p (8 * a + r) with hhdef`. Establish `hph : 8 * a + r ≤ p ^ h` using `Nat.le_pow_clog hp.out.one_lt _`. Establish `hhl : (h : ℝ) ≤ lgV2 p a r`. Rewrite using `[hlgdef]`. Break down `Nat.eq_zero_or_pos h with h0 | hpos` into its components or cases.
+
+Rewrite using `[h0]`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1` using `Nat.pow_pred_clog_lt_self hp.out.one_lt (x := 8 * a + r) (by omega)`. Rewrite `h1` using `[← hhdef, Nat.pred_eq_sub_one]`.
+
+Establish `h2 : h - 1 ≤ Nat.log p (8 * a + r)` using `Nat.le_log_of_pow_le hp.out.one_lt h1.le`. Establish `h3` using `nlog_le p (8 * a + r) (8 * a + r) le_rfl`. Establish `hcast : (((8 * a + r : ℕ)) : ℝ) = 8 * (a : ℝ) + r` using `by push_cast; ring`. Rewrite `h3` using `[hcast]`. Establish `h4 : ((h - 1 : ℕ) : ℝ) ≤ (Nat.log p (8 * a + r) : ℝ)` using `by exact_mod_cast h2`.
+
+Establish `h5 : (h : ℝ) = ((h - 1 : ℕ) : ℝ) + 1`. Rewrite using `[Nat.cast_sub (by omega)]; push_cast; ring`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hYle : Yw ≤ 2 * a + 1`. Establish `h1` using `Nat.le_mul_of_pos_left (Yw - 1) hd`.
+
+Establish `h2 : d * (Yw - 1) ≤ 2 * a` using `le_trans (Nat.le_add_left _ _) hsY`. Use linear arithmetic over natural numbers and integers. Establish `hYh : Yw ≤ p ^ h` using `by omega`. Establish `hdelh : 2 * S ≤ p ^ h` using `by omega`. Use `set idx : ℤ → ℕ := fun t => ((t - (s : ℤ)) / (d : ℤ)).toNat with hidxdef`.
+
+Establish `hidx : ∀ j : ℕ, idx (progr (s : ℤ) (d : ℤ) j) = j`. Introduce `j`. Simplify using `only [hidxdef, progr, add_sub_cancel_left]`. Rewrite using `[Int.mul_ediv_cancel_left _ (by exact_mod_cast hd.ne')]`. Simplify using the standard rewrite rules.
+
+Use `set U' : ℤ → Matrix (Fin n₀) (Fin n₀) (PadicAlgCl p) := fun t => (U (idx t)).map alg with hU'`. Use `set V' : ℤ → Matrix (Fin n₀) (Fin n₀) (PadicAlgCl p) := fun t => (V (idx t)).map alg with hV'`. Use `set dg' : ℤ → Fin n₀ → PadicAlgCl p := fun t b => alg ((p : ℚ_[p]) ^ cI * dg (idx t) b) with hdg'`. Establish `hsm : ∀ j ∈ range Yw, (∀ x y, ‖U' (progr (s : ℤ) (d : ℤ) j) x y‖ ≤ 1) ∧ (∀ x y, ‖V' (progr (s : ℤ) (d : ℤ) j) x y‖ ≤ 1) ∧ ‖(U' (progr (s : ℤ) (d : ℤ) j)).det‖ = 1 ∧ ‖(V' (progr (s : ℤ) (d : ℤ) j)).det‖ = 1 ∧ (binMatK (PadicAlgCl p) (2 * S) c').map (Polynomial.eval ((progr (s : ℤ) …`. Introduce `j hj`.
+
+Take `⟨hU1, hV1, hUd, hVd, hfac⟩` from `hsmith j (Finset.mem_range.mp hj)`. Simplify using `only [hU', hV', hdg', hidx]`. Use `⟨fun x y => ?_, fun x y => ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.map_apply, halg, norm_algebraMap']`. Conclude with `hU1 x y`.
+
+Rewrite using `[Matrix.map_apply, halg, norm_algebraMap']`. Conclude with `hV1 x y`. Rewrite using `[← RingHom.mapMatrix_apply, ← RingHom.map_det, halg, norm_algebraMap']`. Conclude with `hUd`. Rewrite using `[← RingHom.mapMatrix_apply, ← RingHom.map_det, halg, norm_algebraMap']`.
+
+Conclude with `hVd`. Rewrite using `[hAK]`. Use extensionality with `x y`. Establish `hpt : ((progr (s : ℤ) (d : ℤ) j : ℤ) : PadicAlgCl p) = ((s + d * j : ℕ) : PadicAlgCl p)`. Simplify using `[progr]`.
+
+Establish `hfe` using `congrFun (congrFun hfac x) y`. Simplify using `only [Matrix.of_apply, Matrix.mul_apply, Matrix.mul_diagonal] at hfe`. Simplify using `only [Matrix.map_apply, hpt, eval_natCast_map, Matrix.mul_apply, Matrix.mul_diagonal]`. Rewrite using `[hAeval x y (s + d * j) (le_trans hSs (Nat.le_add_right _ _)), pow_add, mul_comm ((p : ℚ_[p]) ^ ⌈κ⌉₊), mul_assoc, hfe, Finset.mul_sum, map_sum]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises.
+
+Introduce `b _`. Simplify using `[Matrix.diagonal_apply, map_sum]`. Expand and normalize the polynomial expressions, which then agree. Establish `hcop' : IsCoprime (d : ℤ) (p : ℤ)` using `hcop`. Establish `hE0 : (0 : ℝ) < E` using `by linarith`.
+
+Establish `key` using `hW p (PadicAlgCl p) n₀ (2 * S) h E c' (binMatK (PadicAlgCl p) (2 * S) c').det.leadingCoeff (binMatK (PadicAlgCl p) (2 * S) c').det.roots (s : ℤ) (d : ℤ) Yw ((C + 3) * κ) U' V' dg' hcop' (by omega) hYh hdelh hE0 hleadne hc'norm hsplit hsm hLB'`. Establish `hcnt : ∀ j ∈ range Yw, ((univ.filter (fun b => ‖dg j b‖ < (p : ℝ) ^ (-E))).card : ℝ) ≤ ((univ.filter (fun b => ‖dg' (progr (s : ℤ) (d : ℤ) j) b‖ ≤ (p : ℝ) ^ (-E))).card : ℝ)`. Introduce `j _`. Establish `hsub : univ.filter (fun b => ‖dg j b‖ < (p : ℝ) ^ (-E)) ⊆ univ.filter (fun b => ‖dg' (progr (s : ℤ) (d : ℤ) j) b‖ ≤ (p : ℝ) ^ (-E))`. Introduce `b hb`.
+
+Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hb ⊢`. Simplify using `only [hdg', hidx, halg, norm_algebraMap', norm_mul, norm_pow, Padic.norm_p]`. Establish `h2 : ((p : ℝ)⁻¹) ^ cI ≤ 1` using `pow_le_one₀ (by positivity) (inv_le_one_of_one_le₀ hp1.le)`. Combine the equalities or inequalities in the displayed calculation. Conclude with `Finset.card_le_card hsub` after adjusting the coercions.
+
+Establish `hYpos : (0 : ℝ) < Yw` using `by exact_mod_cast hYw`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← hSdef]`. Use `push_cast`. Establish `h1 : 2 * (S : ℝ) * h / Yw ≤ 2 * (S : ℝ) * lgV2 p a r / Yw`.
+
+Apply `div_le_div_of_nonneg_right _ hYpos.le` to reduce the goal to its premises. Conclude with `mul_le_mul_of_nonneg_left hhl (by positivity)`. Establish `h2 : ((C : ℝ) + 3) * κ + 2 * (S : ℝ) * h / Yw ≤ ((C : ℝ) + 3) * κ + 2 * (S : ℝ) * lgV2 p a r / Yw`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h3` using `div_le_div_of_nonneg_right h2 hE0.le`.
+
+Establish `hn0 : (0 : ℝ) ≤ n₀` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem meanGam_of (hDeg : GamDeg) (hLead : GamLead) (hInt : GamInt) (hW : Formalism.GM.WindowFullAP) :
     MeanGam := by
   obtain ⟨C, hC⟩ := hInt

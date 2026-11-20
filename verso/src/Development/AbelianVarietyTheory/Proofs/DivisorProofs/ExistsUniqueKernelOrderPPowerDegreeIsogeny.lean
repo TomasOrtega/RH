@@ -8,11 +8,21 @@ open CategoryTheory TensorProduct Coalgebra Bialgebra GlobalTheory GlobalTheory.
 
 namespace GlobalTheory.Dieu
 
+/- English proof (translation)
+Establish `h` using `G.rank_eq n ⟨⊥, Ideal.isPrime_bot⟩`. Rewrite `h` using `[Module.rankAtStalk_eq_finrank_of_free]`. Then use the resulting hypothesis.
+-/
 theorem finrank_A_eq {p : ℕ} {k : Type} [Field k] (G : PDivGroup p k) (n : ℕ) :
     Module.finrank k (G.A n) = p ^ (n * G.height) := by
   have h := G.rank_eq n ⟨⊥, Ideal.isPrime_bot⟩
   rwa [Module.rankAtStalk_eq_finrank_of_free] at h
 
+/- English proof (translation)
+Introduce `p _ k _ _ G Q q hq`. Establish `hp : p.Prime` using `Fact.out`. Take `⟨n, q', h1, -⟩` from `hq`. Establish `hlag` using `GlobalTheory.T.finrank_hopfAlgebra_eq_range_mul_kernel k (G.A n) (Q.A n) (q.app n)`. Rewrite `hlag` using `[finrank_A_eq]`.
+
+Establish `hdvd : Module.finrank k (G.A n ⧸ kerIdeal (q.app n)) ∣ p ^ (n * G.height)` using `⟨_, hlag.trans (mul_comm _ _)⟩`. Take `⟨e, -, he⟩` from `(Nat.dvd_prime_pow hp).1 hdvd`. Use `⟨e, ⟨n, fun m hm => (GlobalTheory.T.finrank_quot_kernelIdeal_eq_beyond_exponent p k G Q n m q q' h1 hm).trans he⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `e' ⟨N, hN⟩`. Establish `h2` using `hN (max N n) (le_max_left _ _)`.
+
+Rewrite `h2` using `[GlobalTheory.T.finrank_quot_kernelIdeal_eq_beyond_exponent p k G Q n (max N n) q q' h1 (le_max_right _ _), he]`. Conclude with `Nat.pow_right_injective hp.two_le h2.symm`.
+-/
 theorem existsUnique_hasLogDeg : ∀ (p : ℕ) [Fact p.Prime] (k : Type) [Field k] [CharP k p] (G Q : PDivGroup p k)
     (q : G ⟶ Q), IsIsog q → ∃! e : ℕ, HasLogDeg q e := by
   intro p _ k _ _ G Q q hq

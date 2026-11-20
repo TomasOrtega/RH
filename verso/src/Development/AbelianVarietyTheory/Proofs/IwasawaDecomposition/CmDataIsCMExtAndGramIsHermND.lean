@@ -6,6 +6,15 @@ open scoped TensorProduct
 
 namespace GlobalTheory.Mem.Vol
 
+/- English proof (translation)
+Introduce `h0`. Take `⟨v, hv, hmul⟩` from `Matrix.exists_mulVec_eq_zero_iff.mpr h0`. Establish `hb : ∀ i, W.hT (W.frame i) (∑ j, v j • W.frame j) = 0`. Introduce `i`. Use `congrFun hmul i` as an intermediate fact.
+
+Simplify using `only [Matrix.mulVec, dotProduct, HSpace.gram, Pi.zero_apply] at this`. Rewrite using `[map_sum, ← this]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, smul_eq_mul, mul_comm]`. Establish `hz : (∑ j, v j • W.frame j) = 0`.
+
+Use `W.nondeg.2 _ fun x => ?_` and prove the remaining obligations. Rewrite using `[← W.frame.sum_repr x, map_sum W.hT, LinearMap.sum_apply]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.map_smulₛₗ, LinearMap.smul_apply, hb, smul_zero]`. Apply `hv` to reduce the goal to its premises.
+
+Use function extensionality and compare the values at `j`. Conclude with `Fintype.linearIndependent_iff.mp W.frame.linearIndependent v hz j`.
+-/
 theorem hspace_gram_det_ne_zero {E : Type} [Field E] [NumberField E] [StarRing E] (W : HSpace E) :
     W.gram.det ≠ 0 := by
   classical
@@ -27,6 +36,9 @@ theorem hspace_gram_det_ne_zero {E : Type} [Field E] [NumberField E] [StarRing E
   funext j
   exact Fintype.linearIndependent_iff.mp W.frame.linearIndependent v hz j
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ cm`. Use `⟨⟨cm.totReal, cm.cmUnram.1, cm.deg2, fun τ x => cm.cmUnram.2.1 τ x⟩, fun W => ⟨fun i j => ?_, hspace_gram_det_ne_zero W⟩⟩` and prove the remaining obligations. Conclude with `W.herm.eq (W.frame j) (W.frame i)`.
+-/
 theorem cmData_isCMExt_and_gram_isHermND : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E] (cm : CMData F E), IsCMExt F E cm.sig ∧ ∀ W : HSpace E, IsHermND cm.sig W.gram := by
   intro F E _ _ _ _ _ _ cm
   refine ⟨⟨cm.totReal, cm.cmUnram.1, cm.deg2, fun τ x => cm.cmUnram.2.1 τ x⟩, fun W => ⟨fun i j => ?_, hspace_gram_det_ne_zero W⟩⟩

@@ -7,5 +7,8 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestric
 open Formalism.MainNotions
 open MeasureTheory Formalism.IndefR.Lev Formalism.IndefR.Datum Formalism.IndefR.Mult Formalism.BasicNotions.TH Formalism.L2.Theta
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CovTop.LevelIndex.indexBound | exact GlobalTheory.CovTop.LevelIndex.indexBound | (intros; apply GlobalTheory.CovTop.LevelIndex.indexBound <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.level_index_bound_of_classicalTheorems : ∀ (hP : Hypotheses2) (D : D7) (Tu : Type) (C : LevCh D Tu) (t0 : Tu) (hC : C.Is t0) (i : Fin D.R.m) (P : LevelP C.Pg D.R.r ℂ), GlobalTheory.IndefiniteRowSideFullHecke.OneMeasureSizes.IndexBound C i P := by
   first | exact @GlobalTheory.CovTop.LevelIndex.indexBound | exact GlobalTheory.CovTop.LevelIndex.indexBound | (intros; apply GlobalTheory.CovTop.LevelIndex.indexBound <;> assumption)

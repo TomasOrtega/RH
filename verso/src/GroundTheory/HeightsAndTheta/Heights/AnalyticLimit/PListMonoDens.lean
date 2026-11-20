@@ -13,6 +13,19 @@ open scoped ComplexOrder Matrix
 open ReciprocityTheory.AnForm (levi hessC maDens)
 open ReciprocityTheory.AnForm.M (FinHolAtlas LocPot IsPotential locDens)
 
+/- English proof (translation)
+Introduce `D X _ A Yo th Om u hYo hth hOm hu hle hnn j y hy hyY`. Use `set p := (A.chart j).symm y with hp`. Use `set f : Fin D → (Fin D → ℂ) → ℝ := fun i y' => (th i).φ p ((A.chart j).symm y') with hf`. Use `set v : Fin D → (Fin D → ℂ) → ℝ := fun i y' => u i ((A.chart j).symm y') with hv`. Use `set o : (Fin D → ℂ) → ℝ := fun y' => Om.φ p ((A.chart j).symm y') with ho`.
+
+Establish `hfC : ∀ i, ContDiffAt ℝ 2 (f i) y` using `fun i => ReciprocityTheory.AnForm.M.pot_contDiffAt_two (hth i) p j hy ((th i).mem_U p)`. Establish `hoC : ContDiffAt ℝ 2 o y` using `ReciprocityTheory.AnForm.M.pot_contDiffAt_two hOm p j hy (Om.mem_U p)`. Establish `hopen : IsOpen ((A.chart j).target ∩ (A.chart j).symm ⁻¹' Yo)` using `(A.chart j).isOpen_inter_preimage_symm hYo`. Apply the tactic sequence `have hvC : ∀ i, ContDiffAt ℝ 2 (v i) y := fun i => ((hu i j).contDiffAt (hopen.mem_nhds ⟨hy, hyY⟩)).of_le (by first | simp | exact_mod_cast (le_top : ((2 : ℕ) : ℕ∞) ≤ ⊤) | exact WithTop.coe_le_coe.mpr le_top)`. Establish `hgC : ∀ i, ContDiffAt ℝ 2 (fun y' => o y' + (-1) * f i y') y` using `fun i => hoC.add (contDiffAt_const.mul (hfC i))`.
+
+Establish `hA : ∀ i, (hessC (fun y' => f i y' + v i y') y).PosSemidef` using `fun i => ReciprocityTheory.AnForm.M.hessC_posSemidef_of_levi _ y ((hfC i).add (hvC i)) fun w => hnn i p j y ⟨hy, hyY, (th i).mem_U p, Set.mem_univ _⟩ w`. Establish `hB : ∀ i, (hessC (fun y' => o y' + (-1) * f i y') y).PosSemidef` using `fun i => by`. Use `ReciprocityTheory.AnForm.M.hessC_posSemidef_of_levi _ y (hgC i) fun w => ?_` and prove the remaining obligations. Rewrite using `[ReciprocityTheory.AnForm.levi_add_smul (-1) hoC (hfC i) w]`. Establish `h` using `hle i p j y ⟨hy, ⟨⟨Set.mem_univ _, (th i).mem_U p⟩, Om.mem_U p⟩⟩ w`.
+
+Establish `h' : 1 * levi (f i) y w ≤ 1 * levi o y w` using `h`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hsum : ∀ i, hessC (fun y' => o y' + v i y') y = hessC (fun y' => f i y' + v i y') y + hessC (fun y' => o y' + (-1) * f i y') y` using `fun i => by`. Rewrite using `[← ReciprocityTheory.AnForm.A.hessC_add _ _ y ((hfC i).add (hvC i)) (hgC i)]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `y'`. Expand and normalize the polynomial expressions, which then agree. Establish `e1 : locDens A (fun i => potForm (th i) (u i)) j y = maDens (fun i y' => f i y' + v i y') y` using `rfl`. Establish `e2 : locDens A (fun i => potForm Om (u i)) j y = maDens (fun i y' => o y' + v i y') y` using `rfl`. Rewrite using `[e1, e2]`.
+
+Use `⟨ReciprocityTheory.AnForm.A.maDens_nonneg_of_posSemidef _ y hA, ?_⟩` and prove the remaining obligations. Unfold `maDens`. Use `mul_le_mul_of_nonneg_left (ReciprocityTheory.AnForm.A.mdisc_re_mono _ _ hA fun i => ?_) (by positivity)` and prove the remaining obligations. Simplify `hB i` using `[hsum i]`.
+-/
 theorem ListMonoDens.proof : ListMonoDens.Statement := by
   intro D X _ A Yo th Om u hYo hth hOm hu hle hnn j y hy hyY
   set p := (A.chart j).symm y with hp

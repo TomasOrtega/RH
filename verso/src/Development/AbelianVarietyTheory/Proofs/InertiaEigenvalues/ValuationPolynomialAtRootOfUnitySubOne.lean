@@ -7,6 +7,33 @@ open IsDiscreteValuationRing
 
 namespace GlobalTheory.PolyCycloValue
 
+/- English proof (translation)
+Set `M : ℕ → ℕ → Prop` to `fun k i => i ∈ S ∧ ∀ m ∈ S, (a i : ℝ) + i * q k ≤ a m + m * q k`. Set `B : Set ℕ` to `{k | 1 ≤ k ∧ ∃ i j, i < j ∧ M k i ∧ M k j}`. Establish `hch : ∀ k, ∃ i j, k ∈ B → i < j ∧ M k i ∧ M k j`. Introduce `k`. Distinguish the cases in `hk : k ∈ B`.
+
+Take `⟨-, i, j, h⟩` from `hk`. Conclude with `⟨i, j, fun _ => h⟩`. Conclude with `⟨0, 0, fun h => absurd h hk⟩`. Use `choose I J hIJ using hch`. Establish `hA : ∀ k, 1 ≤ k → ∀ i m, M k i → m ∈ S → m ≤ i → a i ≤ a m`.
+
+Introduce `k hk i m hi hm hmi`. Establish `h1` using `hi.2 m hm`. Establish `h2 : (m : ℝ) * q k ≤ i * q k` using `mul_le_mul_of_nonneg_right (by exact_mod_cast hmi) (hq k hk).le`. Establish `: (a i : ℝ) ≤ a m` using `by linarith`. Conclude with `this` after adjusting the coercions.
+
+Establish `hA' : ∀ k, 1 ≤ k → ∀ i m, M k i → m ∈ S → m < i → a i < a m`. Introduce `k hk i m hi hm hmi`. Establish `h1` using `hi.2 m hm`. Establish `h2 : (m : ℝ) * q k < i * q k` using `mul_lt_mul_of_pos_right (by exact_mod_cast hmi) (hq k hk)`. Establish `: (a i : ℝ) < a m` using `by linarith`.
+
+Conclude with `this` after adjusting the coercions. Establish `hB : ∀ k k', 1 ≤ k → k < k' → ∀ m m', M k m → M k' m' → m ≤ m'`. Introduce `k k' hk hkk m m' hm hm'`. Assume the negation of the conclusion as `hlt`. Establish `hlt' : (m' : ℝ) < m` using `by exact_mod_cast (not_le.mp hlt)`.
+
+Establish `h1` using `hm.2 m' hm'.1`. Establish `h2` using `hm'.2 m hm.1`. Establish `h3` using `hqa k k' hk hkk`. Use polynomial arithmetic with `[mul_pos (sub_pos.mpr hlt') (sub_pos.mpr h3)]`. Set `φ : ℕ → ℕ` to `fun k => if I k < w then I k else w + a (J k)`.
+
+Establish `hmaps : Set.MapsTo φ B (Finset.range (w + a w) : Set ℕ)`. Introduce `k hk`. Take `⟨hlt, hi, hj⟩` from `hIJ k hk`. Simplify using `only [Finset.coe_range, Set.mem_Iio, φ]`. Use `split_ifs with h`.
+
+Use linear arithmetic over natural numbers and integers. Use `hA' k hk.1 (J k) w hj hw (by omega)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hne : ∀ k ∈ B, ∀ k' ∈ B, k < k' → φ k ≠ φ k'`. Introduce `k hk k' hk' hkk`.
+
+Take `⟨hlt, hi, hj⟩` from `hIJ k hk`. Take `⟨hlt', hi', hj'⟩` from `hIJ k' hk'`. Establish `h1` using `hB k k' hk.1 hkk _ _ hj hi'`. Establish `h2` using `hA' k' hk'.1 (J k') (J k) hj' hj.1 (by omega)`. Simplify using `only [φ]`.
+
+Apply the tactic sequence `split_ifs <;> omega`. Establish `hinj : Set.InjOn φ B`. Introduce `k hk k' hk' h`. Break down `lt_trichotomy k k' with h1 | h1 | h1` into its components or cases. Conclude with `absurd h (hne k hk k' hk' h1)`.
+
+Conclude with `h1`. Conclude with `absurd h.symm (hne k' hk' k hk h1)`. Establish `hfin : B.Finite` using `Set.Finite.of_injOn hmaps hinj (Finset.finite_toSet _)`. Use `⟨hfin.toFinset, ?_, ?_⟩` and prove the remaining obligations. Use `Finset.card_le_card_of_injOn (s := hfin.toFinset) (t := Finset.range (w + a w)) φ (by simpa using hmaps) (by simpa using hinj)` as an intermediate fact.
+
+Simplify using `using this`. Introduce `k hk hkB i hi j hj hmi hmj`. Rewrite `hkB` using `[Set.Finite.mem_toFinset]`. Assume the negation of the conclusion as `hij`. Break down `lt_or_gt_of_ne hij with h | h` into its components or cases.
+
+Conclude with `hkB ⟨hk, i, j, h, ⟨hi, hmi⟩, ⟨hj, hmj⟩⟩`. Conclude with `hkB ⟨hk, j, i, h, ⟨hj, hmj⟩, ⟨hi, hmi⟩⟩`.
+-/
 theorem card_double_min (S : Set ℕ) (a : ℕ → ℕ) (q : ℕ → ℝ) (w : ℕ) (hw : w ∈ S)
     (hq : ∀ k, 1 ≤ k → 0 < q k) (hqa : ∀ k k', 1 ≤ k → k < k' → q k' < q k) :
     ∃ BB : Finset ℕ, BB.card ≤ w + a w ∧ ∀ k, 1 ≤ k → k ∉ BB → ∀ i ∈ S, ∀ j ∈ S,
@@ -84,14 +111,25 @@ section Val
 
 variable {R : Type} [CommRing R] [IsDomain R] [IsDiscreteValuationRing R]
 
+/- English proof (translation)
+Rewrite using `[Ne, addVal_eq_top_iff]` and apply the resulting hypothesis.
+-/
 theorem addVal_ne_top {x : R} (hx : x ≠ 0) : addVal R x ≠ ⊤ := by
   rwa [Ne, addVal_eq_top_iff]
 
+/- English proof (translation)
+Establish `h1` using `addVal_ne_top hx`. Establish `h2 : addVal R x ≠ 0` using `by rwa [Ne, addVal_eq_zero_iff]`. Conclude with `Nat.pos_of_ne_zero (by simp [ENat.toNat_eq_zero, h1, h2])`.
+-/
 theorem toNat_addVal_pos {x : R} (hx : x ≠ 0) (hu : ¬ IsUnit x) : 0 < (addVal R x).toNat := by
   have h1 := addVal_ne_top hx
   have h2 : addVal R x ≠ 0 := by rwa [Ne, addVal_eq_zero_iff]
   exact Nat.pos_of_ne_zero (by simp [ENat.toNat_eq_zero, h1, h2])
 
+/- English proof (translation)
+Unfold `Formalism.MainNotions.BlochKatoReduction.Gen.nval`. Take `⟨s, hs⟩` from `ENat.ne_top_iff_exists.mp (addVal_ne_top hx)`. Take `⟨t, ht⟩` from `ENat.ne_top_iff_exists.mp (addVal_ne_top hy)`. Establish `: addVal R (x * y ^ n) = ((s + n * t : ℕ) : ℕ∞)`. Rewrite using `[(addVal R).map_mul, (addVal R).map_pow, ← hs, ← ht]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[this, ← hs, ← ht]`. Simplify using `only [ENat.toNat_coe]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem nval_mul_pow (l : ℕ) {x y : R} (hx : x ≠ 0) (hy : y ≠ 0) (n : ℕ) :
     Formalism.MainNotions.BlochKatoReduction.Gen.nval R l (x * y ^ n) =
       Formalism.MainNotions.BlochKatoReduction.Gen.nval R l x + n * Formalism.MainNotions.BlochKatoReduction.Gen.nval R l y := by
@@ -105,6 +143,11 @@ theorem nval_mul_pow (l : ℕ) {x y : R} (hx : x ≠ 0) (hy : y ≠ 0) (n : ℕ)
   push_cast
   ring
 
+/- English proof (translation)
+Unfold `Formalism.MainNotions.BlochKatoReduction.Gen.nval at h`. Take `⟨s, hs⟩` from `ENat.ne_top_iff_exists.mp (addVal_ne_top hx)`. Take `⟨t, ht⟩` from `ENat.ne_top_iff_exists.mp (addVal_ne_top hy)`. Rewrite `h`, the goal using `[← hs, ← ht]`. Simplify using `only [ENat.toNat_coe] at h`.
+
+Establish `: (s : ℝ) < t` using `lt_of_not_ge fun hge => absurd h (not_lt.mpr (div_le_div_of_nonneg_right hge (Nat.cast_nonneg _)))`. Conclude with `this` after adjusting the coercions.
+-/
 theorem addVal_lt_of_nval_lt (l : ℕ) {x y : R} (hx : x ≠ 0) (hy : y ≠ 0)
     (h : Formalism.MainNotions.BlochKatoReduction.Gen.nval R l x < Formalism.MainNotions.BlochKatoReduction.Gen.nval R l y) : addVal R x < addVal R y := by
   unfold Formalism.MainNotions.BlochKatoReduction.Gen.nval at h
@@ -116,6 +159,11 @@ theorem addVal_lt_of_nval_lt (l : ℕ) {x y : R} (hx : x ≠ 0) (hy : y ≠ 0)
     absurd h (not_lt.mpr (div_le_div_of_nonneg_right hge (Nat.cast_nonneg _)))
   exact_mod_cast this
 
+/- English proof (translation)
+Establish `h0` using `addVal_ne_top (ht i₀ hi₀)`. Establish `h1 : addVal R (t i₀) < addVal R (∑ i ∈ S.erase i₀, t i)` using `(addVal R).map_lt_sum h0 fun i hi => addVal_lt_of_nval_lt l (ht i₀ hi₀) (ht i (Finset.mem_of_mem_erase hi)) (h i (Finset.mem_of_mem_erase hi) (Finset.ne_of_mem_erase hi))`. Establish `h2 : addVal R (∑ i ∈ S, t i) = addVal R (t i₀)`. Rewrite using `[← Finset.add_sum_erase S t hi₀]`. Conclude with `(addVal R).map_add_eq_of_lt_left h1`.
+
+Use `⟨fun hz => h0 ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← h2, hz]`. Simplify using the standard rewrite rules. Unfold `Formalism.MainNotions.BlochKatoReduction.Gen.nval`. Rewrite using `[h2]`.
+-/
 theorem sum_unique_min (l : ℕ) (S : Finset ℕ) (t : ℕ → R) (ht : ∀ i ∈ S, t i ≠ 0) (i₀ : ℕ)
     (hi₀ : i₀ ∈ S)
     (h : ∀ i ∈ S, i ≠ i₀ → Formalism.MainNotions.BlochKatoReduction.Gen.nval R l (t i₀) < Formalism.MainNotions.BlochKatoReduction.Gen.nval R l (t i)) :
@@ -135,6 +183,27 @@ theorem sum_unique_min (l : ℕ) (S : Finset ℕ) (t : ℕ → R) (ht : ∀ i �
 
 end Val
 
+/- English proof (translation)
+Introduce `O _ _ _ l hl hl0 hlu h w hw`. Use `set e : ℝ := ((addVal O (l : O)).toNat : ℝ) with he`. Establish `hepos : 0 < e` using `by rw [he]; exact_mod_cast toNat_addVal_pos hl0 hlu`. Establish `hphi : ∀ k, (0 : ℝ) < (Nat.totient (l ^ k) : ℝ)` using `fun k => by`. Conclude with `Nat.totient_pos.mpr (pow_pos hl.pos k)` after adjusting the coercions.
+
+Set `a : ℕ → ℕ` to `fun i => (addVal O (h.coeff i)).toNat`. Set `q : ℕ → ℝ` to `fun k => e / (Nat.totient (l ^ k) : ℝ)`. Establish `hwS : w ∈ h.support` using `Polynomial.mem_support_iff.mpr hw`. Take `⟨BB, hcard, hBB⟩` from `card_double_min (h.support : Set ℕ) a q w hwS (fun k _ => div_pos hepos (hphi k)) (by`. Introduce `k k' hk hkk`.
+
+Use `div_lt_div_of_pos_left hepos (hphi k) ?_` and prove the remaining obligations. Rewrite using `[Nat.totient_prime_pow hl (by omega), Nat.totient_prime_pow hl (by omega)]`. Establish `h1 : l ^ (k - 1) < l ^ (k' - 1)` using `Nat.pow_lt_pow_right hl.one_lt (by omega)`. Establish `h2 : 0 < l - 1` using `by have := hl.one_lt; omega`. Conclude with `Nat.mul_lt_mul_of_pos_right h1 h2)` after adjusting the coercions.
+
+Establish `hmin : ∀ k, ∃ i ∈ h.support, ∀ m ∈ h.support, (a i : ℝ) + i * q k ≤ a m + m * q k` using `fun k => Finset.exists_min_image h.support (fun i => (a i : ℝ) + i * q k) ⟨w, hwS⟩`. Use `choose I hIS hI using hmin`. Establish `hform : ∀ k i : ℕ, Formalism.MainNotions.BlochKatoReduction.Gen.nval O l (h.coeff i) + i / (Nat.totient (l ^ k) : ℝ) = ((a i : ℝ) + i * q k) / e`. Introduce `k i`. Use `hphi k` as an intermediate fact.
+
+Simplify using `only [Formalism.MainNotions.BlochKatoReduction.Gen.nval, a, q, ← he]`. Clear the denominators using the available nonvanishing facts. Use `⟨BB, fun k => ((a (I k) : ℝ) + I k * q k) / e, hcard, fun k hk hkB => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hform]`. Conclude with `div_le_div_of_nonneg_right (hI k w hwS) hepos.le`.
+
+Introduce `O' _ _ _ _ _ hinj ζ hζ`. Establish `hl0' : (l : O') ≠ 0`. Rewrite using `[← map_natCast (algebraMap O O')]`. Conclude with `fun h0 => hl0 (hinj (by rw [h0, map_zero]))`. Establish `hlu' : ¬ IsUnit (l : O')`.
+
+Rewrite using `[← map_natCast (algebraMap O O')]`. Conclude with `fun h0 => hlu (IsLocalHom.map_nonunit _ h0)`. Take `⟨hz, hv⟩` from `GlobalTheory.T.normalizedValuation_primitiveRoot_prime_pow_sub_one O' l k hl hk hl0' hlu' ζ hζ`. Establish `hc : ∀ i ∈ h.support, algebraMap O O' (h.coeff i) ≠ 0` using `fun i hi h0 => Polynomial.mem_support_iff.mp hi (hinj (by rw [h0, map_zero]))`. Establish `hval : ∀ i ∈ h.support, Formalism.MainNotions.BlochKatoReduction.Gen.nval O' l (algebraMap O O' (h.coeff i) * (ζ - 1) ^ i) = ((a i : ℝ) + i * q k) / e`.
+
+Introduce `i hi`. Rewrite using `[nval_mul_pow l (hc i hi) hz, hv, GlobalTheory.T.normalizedValuation_algebraMap_eq O O' hinj, ← hform, mul_one_div]`. Establish `key` using `sum_unique_min l h.support (fun i => algebraMap O O' (h.coeff i) * (ζ - 1) ^ i) (fun i hi => mul_ne_zero (hc i hi) (pow_ne_zero _ hz)) (I k) (hIS k) (by`. Introduce `i hi hne`. Rewrite using `[hval i hi, hval _ (hIS k)]`.
+
+Use `div_lt_div_of_pos_right ?_ hepos` and prove the remaining obligations. Use `lt_of_le_of_ne (hI k i hi) fun heq => hne ?_` and prove the remaining obligations. Conclude with `hBB k hk hkB i hi (I k) (hIS k) (fun m hm => heq ▸ hI k m hm) (hI k))`. Rewrite `key` using `[hval _ (hIS k)]`. Rewrite using `[Polynomial.aeval_def, Polynomial.eval₂_eq_sum, Polynomial.sum_def]`.
+
+Conclude with `key`.
+-/
 theorem value_at_root_sub_one : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (l : ℕ), l.Prime → (l : O) ≠ 0 → ¬ IsUnit (l : O) → ∀ (h : Polynomial O) (w : ℕ), h.coeff w ≠ 0 → ∃ (BB : Finset ℕ) (c : ℕ → ℝ), BB.card ≤ w + (IsDiscreteValuationRing.addVal O (h.coeff w)).toNat ∧ ∀ k, 1 ≤ k → k ∉ BB → c k ≤ Formalism.MainNotions.BlochKatoReduction.Gen.nval O l (h.coeff w) + w / (Nat.totient (l ^ k) : ℝ) ∧ ∀ (O' : Type) [CommRing O'] [IsDomain O'] [IsDiscreteValuationRing O'] [Algebra O O'] [IsLocalHom (algebraMap O O')], Function.Injective (algebraMap O O') → ∀ ζ : O', IsPrimitiveRoot ζ (l ^ k) → Polynomial.aeval (ζ - 1) h ≠ 0 ∧ Formalism.MainNotions.BlochKatoReduction.Gen.nval O' l (Polynomial.aeval (ζ - 1) h) = c k := by
   intro O _ _ _ l hl hl0 hlu h w hw
   set e : ℝ := ((addVal O (l : O)).toNat : ℝ) with he

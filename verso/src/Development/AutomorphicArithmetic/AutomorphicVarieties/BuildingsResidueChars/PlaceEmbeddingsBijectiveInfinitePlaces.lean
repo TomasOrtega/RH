@@ -9,6 +9,13 @@ open scoped TensorProduct
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option synthInstance.maxHeartbeats 200000
 
+/- English proof (translation)
+Establish `h : w.asIdeal ≤ (GlobalTheory.EvExtend.placeOf (j.1.comp (algebraMap L _))).asIdeal` using `fun y hy => by`. Rewrite using `[GlobalTheory.EvExtend.mem_placeOf]`. Establish `h1 : Valued.v (algebraMap L (w.adicCompletion L) (y : L)) < 1`. Rewrite using `[ReciprocityTheory.Aut.adic_valued_algebraMap]`. Conclude with `(w.valuation_lt_one_iff_mem (K := L) y).2 hy`.
+
+Establish `h2` using `(j.2.tendsto 0).comp (Valued.tendsto_zero_pow_of_v_lt_one h1)`. Rewrite `h2` using `[map_zero]`. Use `tendsto_pow_atTop_nhds_zero_iff_norm_lt_one.1 (h2.congr fun n => ?_)` and prove the remaining obligations. Conclude with `map_pow j.1 _ n`. Rewrite using `[w.isMaximal.eq_of_le (GlobalTheory.EvExtend.placeOf _).isPrime.ne_top h, GlobalTheory.EvExtend.mem_placeOf]`.
+
+Both sides reduce to the same expression.
+-/
 private theorem mem_iff {l : ℕ} [Fact l.Prime] {L : Type} [Field L] [NumberField L] {w : Plc L} (j : W.Emb l w) (x : 𝓞 L) :
     x ∈ w.asIdeal ↔ ‖j.1 (algebraMap L _ (x : L))‖ < 1 := by
   have h : w.asIdeal ≤ (GlobalTheory.EvExtend.placeOf (j.1.comp (algebraMap L _))).asIdeal := fun y hy => by
@@ -23,10 +30,18 @@ private theorem mem_iff {l : ℕ} [Fact l.Prime] {L : Type} [Field L] [NumberFie
   rw [w.isMaximal.eq_of_le (GlobalTheory.EvExtend.placeOf _).isPrime.ne_top h, GlobalTheory.EvExtend.mem_placeOf]
   rfl
 
+/- English proof (translation)
+The claim follows from `RingOfIntegers.ext (IsCMField.complexConj_apply_apply L x)`.
+-/
 private theorem cc {L : Type} [Field L] [NumberField L] [IsCMField L] (x : 𝓞 L) :
     IsCMField.ringOfIntegersComplexConj L (IsCMField.ringOfIntegersComplexConj L x) = x :=
   RingOfIntegers.ext (IsCMField.complexConj_apply_apply L x)
 
+/- English proof (translation)
+Take `⟨y, hy⟩` from `(IsCMField.ringOfIntegersComplexConj_eq_self_iff L (x * IsCMField.ringOfIntegersComplexConj L x)).1 (by`. Rewrite using `[map_mul, mul_comm, cc])`. Establish `h1 : y ∈ (u.under (𝓞 (Lp L))).asIdeal`. Express the relevant statement in the definitionally equal form `algebraMap _ (𝓞 L) y ∈ u.asIdeal`. Rewrite using `[hy]`.
+
+Conclude with `Ideal.mul_mem_right _ _ hx`. Rewrite `h1` using `[hu]`. Express the relevant statement in the definitionally equal form `algebraMap _ (𝓞 L) y ∈ w.asIdeal at h1`. Rewrite `h1` using `[hy]`. Conclude with `w.isPrime.mem_or_mem h1`.
+-/
 private theorem norm_mem {L : Type} [Field L] [NumberField L] [IsCMField L] {u w : Plc L}
     (hu : u.under (𝓞 (Lp L)) = w.under (𝓞 (Lp L))) {x : 𝓞 L} (hx : x ∈ u.asIdeal) :
     x ∈ w.asIdeal ∨ IsCMField.ringOfIntegersComplexConj L x ∈ w.asIdeal := by
@@ -41,11 +56,19 @@ private theorem norm_mem {L : Type} [Field L] [NumberField L] [IsCMField L] {u w
   rw [hy] at h1
   exact w.isPrime.mem_or_mem h1
 
+/- English proof (translation)
+Take `⟨u, hu, hu'⟩` from `hw`. Conclude with `hu (HeightOneSpectrum.ext (u.isMaximal.eq_of_le w.isPrime.ne_top fun x hx => (norm_mem hu' hx).elim id (h x)))`.
+-/
 private theorem not_stable {L : Type} [Field L] [NumberField L] [IsCMField L] {w : Plc L} (hw : IsSplitAt w)
     (h : ∀ x, IsCMField.ringOfIntegersComplexConj L x ∈ w.asIdeal → x ∈ w.asIdeal) : False := by
   obtain ⟨u, hu, hu'⟩ := hw
   exact hu (HeightOneSpectrum.ext (u.isMaximal.eq_of_le w.isPrime.ne_top fun x hx => (norm_mem hu' hx).elim id (h x)))
 
+/- English proof (translation)
+Use `haveI := w.isPrime`. Establish `h : (u.asIdeal : Set (𝓞 L)) ⊆ w.asIdeal ∪ w.asIdeal.comap (IsCMField.ringOfIntegersComplexConj L)` using `fun x hx => norm_mem hu hx`. Break down `Ideal.subset_union.1 h with h | h` into its components or cases. Conclude with `Or.inl (HeightOneSpectrum.ext (u.isMaximal.eq_of_le w.isPrime.ne_top h))`. Use `Or.inr fun x => ?_` and prove the remaining obligations.
+
+Rewrite using `[u.isMaximal.eq_of_le (Ideal.comap_ne_top _ w.isPrime.ne_top) h, Ideal.mem_comap]`.
+-/
 private theorem two {L : Type} [Field L] [NumberField L] [IsCMField L] {u w : Plc L}
     (hu : u.under (𝓞 (Lp L)) = w.under (𝓞 (Lp L))) :
     u = w ∨ ∀ x, x ∈ u.asIdeal ↔ IsCMField.ringOfIntegersComplexConj L x ∈ w.asIdeal := by
@@ -57,6 +80,9 @@ private theorem two {L : Type} [Field L] [NumberField L] [IsCMField L] {u w : Pl
   · refine Or.inr fun x => ?_
     rw [u.isMaximal.eq_of_le (Ideal.comap_ne_top _ w.isPrime.ne_top) h, Ideal.mem_comap]
 
+/- English proof (translation)
+Establish `e : w = GlobalTheory.EvExtend.placeOf τ` using `HeightOneSpectrum.ext (Ideal.ext fun x => by`. Rewrite using `[GlobalTheory.EvExtend.mem_placeOf, h])`. Substitute `e` using the available equality. Take `⟨j, hc, hx, -⟩` from `GlobalTheory.EvExtend.exists_ext τ`. Conclude with `⟨⟨j, hc⟩, RingHom.ext hx⟩`.
+-/
 private theorem ex_emb {l : ℕ} [Fact l.Prime] {L : Type} [Field L] [NumberField L] {w : Plc L} (τ : L →+* Qbar l)
     (h : ∀ x : 𝓞 L, x ∈ w.asIdeal ↔ ‖τ x‖ < 1) : ∃ j : W.Emb l w, j.1.comp (algebraMap L _) = τ := by
   have e : w = GlobalTheory.EvExtend.placeOf τ := HeightOneSpectrum.ext (Ideal.ext fun x => by
@@ -65,6 +91,25 @@ private theorem ex_emb {l : ℕ} [Fact l.Prime] {L : Type} [Field L] [NumberFiel
   obtain ⟨j, hc, hx, -⟩ := GlobalTheory.EvExtend.exists_ext τ
   exact ⟨⟨j, hc⟩, RingHom.ext hx⟩
 
+/- English proof (translation)
+Introduce `l _ L Ω _ _ _ _ _ _ s V ι`. Take `⟨hun, hsp⟩` from `UpperTheory.under_chosen_place_and_isSplitAt_of_decomp_le l L Ω s`. Establish `hinj : Function.Injective (fun x : Emb l (fun v : V.frame.Vl => s.w v.1) => InfinitePlace.mk (ι.toRingHom.comp x.res))`. Introduce and unpack `⟨v, j⟩ ⟨v', j'⟩ h`. Break down `InfinitePlace.mk_eq_iff.1 h with h | h` into its components or cases.
+
+Establish `h1 : ∀ x : L, j.1 (algebraMap L _ x) = j'.1 (algebraMap L _ x)` using `fun x => ι.injective (RingHom.congr_fun h x)`. Establish `h2 : s.w v.1 = s.w v'.1` using `HeightOneSpectrum.ext (Ideal.ext fun x => by`. Rewrite using `[mem_iff j, mem_iff j', h1])`. Establish `h3 : v = v'` using `Subtype.ext (by rw [← hun v.1, h2, hun])`. Substitute `h3` using the available equality.
+
+Use `congrArg (Sigma.mk v) (Subtype.ext (DFunLike.coe_injective ?_))` and prove the remaining obligations. Conclude with `(HeightOneSpectrum.denseRange_algebraMap L (s.w v.1)).equalizer j.2 j'.2 (funext h1)`. Establish `h1 : ∀ x : L, j.1 (algebraMap L _ (IsCMField.complexConj L x)) = j'.1 (algebraMap L _ x)` using `fun x => ι.injective ((IsCMField.complexEmbedding_complexConj L _ x).trans (RingHom.congr_fun h x))`. Establish `h2 : ∀ x, IsCMField.ringOfIntegersComplexConj L x ∈ (s.w v.1).asIdeal ↔ x ∈ (s.w v'.1).asIdeal` using `fun x => by`. Rewrite using `[mem_iff j, mem_iff j', ← h1]`.
+
+Both sides reduce to the same expression. Establish `h3 : v = v'` using `Subtype.ext (by`. Rewrite using `[← hun v.1, ← hun v'.1]`. Use `HeightOneSpectrum.ext (Ideal.ext fun y => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `algebraMap _ (𝓞 L) y ∈ (s.w v.1).asIdeal ↔ algebraMap _ (𝓞 L) y ∈ (s.w v'.1).asIdeal`.
+
+Rewrite using `[← h2, (IsCMField.ringOfIntegersComplexConj_eq_self_iff L _).2 ⟨y, rfl⟩])`. Substitute `h3` using the available equality. Use `(not_stable (hsp (s.w v.1) ?_) fun x hx => (h2 x).1 hx).elim` and prove the remaining obligations. Rewrite using `[hun]`. Conclude with `s.split _ (Or.inl v.2)`.
+
+Use `⟨Finite.of_injective _ hinj, hinj, fun p => ?_⟩` and prove the remaining obligations. Take `⟨φ, rfl⟩ : ∃ φ, InfinitePlace.mk φ = p` from `⟨_, p.mk_embedding⟩`. Set `τ : L →+* Qbar l` to `ι.symm.toRingHom.comp φ`. Establish `hl : ((l : ℕ) : 𝓞 (Lp L)) ∈ ((GlobalTheory.EvExtend.placeOf τ).under (𝓞 (Lp L))).asIdeal`. Express the relevant statement in the definitionally equal form `algebraMap _ (𝓞 L) ((l : ℕ) : 𝓞 (Lp L)) ∈ (GlobalTheory.EvExtend.placeOf τ).asIdeal`.
+
+Rewrite using `[map_natCast, GlobalTheory.EvExtend.mem_placeOf]`. Simplify using `using GlobalTheory.EvExtend.norm_natCast_lt_one (l := l)`. Break down `two (hun ((GlobalTheory.EvExtend.placeOf τ).under (𝓞 (Lp L)))).symm with h | h` into its components or cases. Take `⟨j, hj⟩` from `ex_emb (w := s.w ((GlobalTheory.EvExtend.placeOf τ).under (𝓞 (Lp L)))) τ fun x => by`. Rewrite using `[← h, GlobalTheory.EvExtend.mem_placeOf]`.
+
+Use `⟨⟨⟨_, hl⟩, j⟩, congrArg InfinitePlace.mk (RingHom.ext fun x => ?_)⟩` and prove the remaining obligations. Conclude with `(congrArg ι (RingHom.congr_fun hj x)).trans (ι.apply_symm_apply _)`. Take `⟨j, hj⟩` from `ex_emb (w := s.w ((GlobalTheory.EvExtend.placeOf τ).under (𝓞 (Lp L)))) (τ.comp (IsCMField.complexConj L).toRingEquiv.toRingHom) fun x => by`. Establish `h1` using `h (IsCMField.ringOfIntegersComplexConj L x)`. Rewrite `h1` using `[cc, GlobalTheory.EvExtend.mem_placeOf]`.
+
+Conclude with `h1.symm`. Use `⟨⟨⟨_, hl⟩, j⟩, InfinitePlace.mk_eq_iff.2 (Or.inr (RingHom.ext fun x => ?_))⟩` and prove the remaining obligations. Establish `h1 : ι (j.1 (algebraMap L _ x)) = φ (IsCMField.complexConj L x)` using `(congrArg ι (RingHom.congr_fun hj x)).trans (ι.apply_symm_apply _)`. Express the relevant statement in the definitionally equal form `starRingEnd ℂ (ι (j.1 (algebraMap L _ x))) = φ x`. Rewrite using `[h1, IsCMField.complexEmbedding_complexConj, Complex.conj_conj]`.
+-/
 theorem UpperTheory.placeEmbeddings_bijective_infinitePlaces :
     ∀ (l : ℕ) [Fact l.Prime] (L Ω : Type) [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] (s : HidaSetting l L Ω) (V : s.Lev) (ι : Qbar l ≃+* ℂ), Finite (Emb l (fun v : V.frame.Vl => s.w v.1)) ∧ Function.Bijective (fun x : Emb l (fun v : V.frame.Vl => s.w v.1) => InfinitePlace.mk (ι.toRingHom.comp x.res)) := by
   intro l _ L Ω _ _ _ _ _ _ s V ι

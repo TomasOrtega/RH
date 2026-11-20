@@ -25,6 +25,13 @@ noncomputable section
 
 namespace GlobalTheory.HalfSplit
 
+/- English proof (translation)
+Introduce `D e SS hI P hP hP'`. Take `⟨⟨es, hes, he⟩, hc⟩` from `hI`. Establish `h1 : ∀ i ∈ SS, es i * es i = es i` using `fun i hi => (hes i hi).1.1`. Establish `hcross : ∀ i ∈ SS, ∀ j ∈ SS, es i * cA D (es j) = 0`. Substitute `he` using the available equality.
+
+Conclude with `GlobalTheory.PlaceDatum.cross_eq_zero (R := AE D) GlobalTheory.PlaceDatum.isUnit_natCast (cA D) es SS h1 hc`. Establish `hcj : Lev.IsConjPl (D` using `D) (Formalism.L2.Col.conjPrime₂ P) P := by`. Introduce `c hc'`. Conclude with `⟨Formalism.L2.Col.cO D.host.E c, (Formalism.L2.Col.mem_conjP P c).1 hc', rfl⟩`. Establish `heq : es P = cA D (es (Formalism.L2.Col.conjPrime₂ P))` using `Formalism.IndefR.Fin.conj_idem_eq (hes _ hP') (hes P hP) hcj`.
+
+Apply `Formalism.IndefR.Fin.idemAt_ne_zero (hes P hP)` to reduce the goal to its premises. Use `hcross P hP _ hP'` as an intermediate fact. Rewrite `this` using `[← heq, h1 P hP]`. Conclude with `this`.
+-/
 theorem noConj_of_idemSum : ∀ (D : D7) (e : AE D) (SS : Finset (Formalism.L2.DIV.Pl D.host.E)), IsIdemSum e SS → ∀ P ∈ SS, Formalism.L2.Col.conjPrime₂ P ∉ SS := by
   intro D e SS hI P hP hP'
   obtain ⟨⟨es, hes, he⟩, hc⟩ := hI
@@ -42,6 +49,13 @@ theorem noConj_of_idemSum : ∀ (D : D7) (e : AE D) (SS : Finset (Formalism.L2.D
   rw [← heq, h1 P hP] at this
   exact this
 
+/- English proof (translation)
+Introduce `D ψ θ S T δ sc hP e SS hI N N' c hc hcS h2 hL hN hN'`. Establish `hSS : ∀ P ∈ SS, Formalism.L2.Col.conjPrime₂ P ∉ SS` using `noConj_of_idemSum D e SS hI`. Establish `hT : Nonempty D.what₂.Tau` using `⟨D.eTau.symm (Classical.arbitrary _)⟩`. Establish `hconj : ∀ τ (x : D.host.E), tauE D τ (star x) = starRingEnd ℂ (tauE D τ x)` using `fun τ x => GlobalTheory.FockCompare.tauE_star τ x`. Establish `he1 : ∀ Q, expS SS Q = 1 ∨ expS SS Q = 0 ∨ expS SS Q = -1`.
+
+Apply the tactic sequence `intro Q; unfold expS; split_ifs <;> simp`. Establish `hc1 : ∀ Q, expS SS (Formalism.L2.Col.conjPrime₂ Q) = -expS SS Q` using `exponent_set_conjugate D.host.E SS hSS`. Establish `hfg : N.FG` using `hN.1.fg`. Establish `tw : ∀ f : HeightOneSpectrum (𝓞 D.host.E) → ℤ, (∀ Q, f (Formalism.L2.Col.conjPrime₂ Q) = -f Q) → (∀ Q, f Q = 1 ∨ f Q = 0 ∨ f Q = -1) → LaFacts (tauE D) δ D.host.d sc (D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E) N (twist₂ N' c f)`. Introduce `f hf1 hf2`.
+
+Unfold `LaFacts LamC`. Rewrite using `[← twist_homomorphism D.host.E _ _ _ N N' c f hfg hc]`. Conclude with `⟨GlobalTheory.TwPerSelfDual.twO_selfDual D.host.E D.what₂.Tau _ _ (tauE D) δ D.host.d sc _ c f hP.ne hconj hc hf1 hf2 hL.1 hL.2, GlobalTheory.SemiTwist.semiChar_twO D.host.E D.what₂.Tau _ _ (tauE D) δ D.host.d sc _ c f hP.ne hconj hc hf1 hf2 hL.1 hL.2⟩`. Apply the tactic sequence `exact half_periods_of_lattice D.host.E D.what₂.Tau _ _ (tauE D) δ D.host.d sc _ SS N N' c hP.ne hc hSS hfg hL (tw _ hc1 he1) (tw (fun Q => -expS SS Q) (fun Q => by simp [hc1]) (fun Q => by rcases he1 Q with h | h | h <;> simp [h]))`.
+-/
 theorem splitHyp_halves : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D) (δ : ℂ) (sc : ℝ), StdPair θ S T δ sc ψ → ∀ (e : AE D) (SS : Finset (Formalism.L2.DIV.Pl D.host.E)), IsIdemSum e SS → ∀ (N : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)) (N' : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)) (c : ℕ), 0 < c → Odd c → (∀ Q ∈ SS, ((D.host.QS * D.host.q * D.host.d : ℕ) : 𝓞 D.host.E) ∉ Q.asIdeal) → LaFacts (tauE D) δ D.host.d sc (D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E) N N' → IsSelfDualC S N → IsSelfDualC T N' → SplitHyp (HV sc) (alV D.host.d sc) (AC (tauE D) δ (D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E) SS N N' c) (BC (tauE D) δ (D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E) SS N N' c) (LamC (tauE D) δ (D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E) N N') := by
   intro D ψ θ S T δ sc hP e SS hI N N' c hc hcS h2 hL hN hN'
   have hSS : ∀ P ∈ SS, Formalism.L2.Col.conjPrime₂ P ∉ SS := noConj_of_idemSum D e SS hI

@@ -76,6 +76,25 @@ def HilbertClassFieldJ : Prop :=
       Set.range (fun g : K⟮(latticeCurve L₀).j⟯ ≃ₐ[K] K⟮(latticeCurve L₀).j⟯ =>
         (g (IntermediateField.AdjoinSimple.gen K (latticeCurve L₀).j) : ℂ)) = idealInvariants K
 
+/- English proof (translation)
+Introduce `K _ _ _ _ h2 L₀ hL₀`. Take `⟨H, art, hH, hart, hgen, hj⟩` from `id h K h2`. Establish `hm : ∀ {𝔞 L}, IsIdealLattice (K` using `K) 𝔞 L → (latticeCurve L).j ∈ H := fun {𝔞 L} hL => hgen 𝔞 L hL ▸ IntermediateField.mem_adjoin_simple_self K _`. Establish `hiff : ∀ (𝔞 𝔟 : (FractionalIdeal (𝓞 K)⁰ K)ˣ) (L L' : PeriodPair), IsIdealLattice 𝔞 L → IsIdealLattice 𝔟 L' → ((latticeCurve L).j = (latticeCurve L').j ↔ ClassGroup.mk K 𝔞 = ClassGroup.mk K 𝔟)`. Introduce `𝔞 𝔟 L L' hL hL'`.
+
+Establish `hL'' : IsIdealLattice ((𝔞 * 𝔟⁻¹)⁻¹ * 𝔞) L'`. Rewrite using `[mul_inv_rev, inv_inv, inv_mul_cancel_right]` and apply the resulting hypothesis. Establish `e` using `hj 𝔞 _ L L' hL hL'' ⟨_, hm hL⟩ rfl`. Rewrite using `[← mul_inv_eq_one (a := ClassGroup.mk K 𝔞), ← map_inv, ← map_mul]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hjj`. Rewrite `e` using `[← hjj]`. Rewrite using `[← map_eq_one_iff art art.injective]`. Generalize the expression as in `art (ClassGroup.mk K (𝔞 * 𝔟⁻¹)) = g at e`. Establish `hH'` using `hgen 𝔞 L hL`.
+
+Substitute `hH'` using the available equality. Apply `AlgEquiv.coe_toAlgHom_injective` to reduce the goal to its premises. Use `IntermediateField.algHom_ext_of_eq_adjoin K rfl ?_` and prove the remaining obligations. Introduce and unpack `x rfl`. Conclude with `Subtype.ext e`.
+
+Introduce `hc`. Rewrite `e` using `[hc, map_one]`. Conclude with `e`. Take `rfl` from `hgen 1 L₀ hL₀`. Establish `hrange : Set.range (fun g : K⟮(latticeCurve L₀).j⟯ ≃ₐ[K] K⟮(latticeCurve L₀).j⟯ => (g (IntermediateField.AdjoinSimple.gen K (latticeCurve L₀).j) : ℂ)) = idealInvariants K`.
+
+Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, rfl⟩`. Take `⟨c, rfl⟩` from `art.surjective g`. Take `⟨I, rfl⟩` from `ClassGroup.mk0_surjective c`.
+
+Take `⟨L', hL'⟩` from `exists_isIdealLattice h2 ((FractionalIdeal.mk0 K I)⁻¹ * 1)`. Use `⟨_, L', hL', ?_⟩` and prove the remaining obligations. Rewrite using `[← hj 1 _ L₀ L' hL₀ hL' (IntermediateField.AdjoinSimple.gen K _) rfl, ClassGroup.mk_mk0]`. Introduce and unpack `⟨𝔠, L', hL', rfl⟩`. Conclude with `⟨art (ClassGroup.mk K 𝔠⁻¹), hj 1 𝔠⁻¹ L₀ L' hL₀ (by simpa using hL') _ rfl⟩`.
+
+Use `⟨hH, h.finrank_eq h2 hH, hiff, ?_, hrange⟩` and prove the remaining obligations. Rewrite using `[← hrange, ← Set.image_univ, Set.ncard_image_of_injective, Set.ncard_univ, ← Nat.card_congr art.toEquiv, classNumber, Nat.card_eq_fintype_card]`. Introduce `g g' e`. Apply `AlgEquiv.coe_toAlgHom_injective` to reduce the goal to its premises. Use `IntermediateField.algHom_ext_of_eq_adjoin K rfl ?_` and prove the remaining obligations.
+
+Introduce and unpack `x rfl`. Conclude with `Subtype.ext e`.
+-/
 theorem ComplexMultiplicationJSt.hilbertClassFieldJ (h : ComplexMultiplicationJSt) :
     HilbertClassFieldJ := by
   intro K _ _ _ _ h2 L₀ hL₀
@@ -126,6 +145,9 @@ theorem ComplexMultiplicationJSt.hilbertClassFieldJ (h : ComplexMultiplicationJS
   rintro x rfl
   exact Subtype.ext e
 
+/- English proof (translation)
+Set `ι : AlgebraicClosure K →ₐ[K] ℂ` to `IsAlgClosed.lift`. Set `` to `ι.toRingHom.toAlgebra`. Establish `: IsScalarTower K (AlgebraicClosure K) ℂ` using `IsScalarTower.of_algebraMap_eq fun x => (ι.commutes x).symm`. Conclude with `⟨_, ι, σ.restrictNormal (AlgebraicClosure K), fun x => (σ.restrictNormal_commutes (AlgebraicClosure K) x).symm, rfl⟩`.
+-/
 theorem exists_restrictsTo {K : Type} [Field K] [NumberField K] [Algebra K ℂ] (σ : ℂ ≃ₐ[K] ℂ) :
     ∃ a, RestrictsTo σ a := by
   let ι : AlgebraicClosure K →ₐ[K] ℂ := IsAlgClosed.lift
@@ -135,6 +157,9 @@ theorem exists_restrictsTo {K : Type} [Field K] [NumberField K] [Algebra K ℂ] 
   exact ⟨_, ι, σ.restrictNormal (AlgebraicClosure K),
     fun x => (σ.restrictNormal_commutes (AlgebraicClosure K) x).symm, rfl⟩
 
+/- English proof (translation)
+Take `⟨Art, hArt⟩` from `hA`. Take `⟨a, ha⟩` from `exists_restrictsTo σ`. Take `⟨c, rfl⟩` from `hArt.2.1 a`. Take `⟨s, rfl⟩` from `QuotientGroup.mk_surjective c`. Conclude with `⟨finitePart s, fun X _ 𝔞 h𝔞 ξ hξ => h K h2 Art hArt σ s ha X 𝔞 h𝔞 ξ hξ⟩`.
+-/
 theorem EllipticMainTheoremCM.exists_idele (h : EllipticMainTheoremCM) {K : Type} [Field K]
     [NumberField K] [IsTotallyComplex K] [Algebra K ℂ] (h2 : Module.finrank ℚ K = 2)
     (hA : GlobalReciprocity K) (σ : ℂ ≃ₐ[K] ℂ) :
@@ -157,6 +182,17 @@ section Analytic
 
 variable {X : WeierstrassCurve ℂ} {Λ : AddSubgroup ℂ} {L : PeriodPair} {C : VariableChange ℂ}
 
+/- English proof (translation)
+Establish `hinj` using `(variableChangePoint_bijective C h).1`. Take `⟨q, hq⟩` from `ξ.surjective (variableChangePoint C h (latticePoint L (L.ω₁ / 2)))`. Take `⟨z₀, rfl⟩` from `QuotientAddGroup.mk_surjective q`. Establish `hz₀ : z₀ ∉ Λ` using `fun hz => by`. Rewrite `hq` using `[(QuotientAddGroup.eq_zero_iff _).2 hz, map_zero, eq_comm, map_eq_zero_iff _ hinj, latticePoint_eq_zero_iff]`.
+
+Conclude with `L.ω₁_div_two_notMem_lattice hq`. Take `⟨f, g, hf, -, hev⟩` from `hξ z₀ hz₀`. Set `ψ : ℂ →+ (latticeCurve L).toAffine.Point` to `(variableChangePointEquiv C h).symm.toAddMonoidHom.comp (ξ.toAddMonoidHom.comp (QuotientAddGroup.mk' Λ))`. Establish `hψ : ∀ z : ℂ, variableChangePoint C h (ψ z) = ξ z` using `fun z => (variableChangePointEquiv C h).apply_symm_apply _`. Take `⟨α, hα⟩` from `exists_eq_latticePoint_mul ψ (z₀ := z₀) (F := fun w => (f w - C.r) / (C.u : ℂ) ^ 2) (by fun_prop) (by filter_upwards [hev] with w ⟨hw, e⟩`.
+
+Rewrite `e` using `[← hψ]`. Break down `hP : ψ w with _ | ⟨x, y, hxy⟩` into its components or cases. Rewrite `e` using `[hP]`. Conclude with `(Affine.Point.some_ne_zero _ (e.symm.trans (map_zero _))).elim`. Rewrite `e` using `[hP, variableChangePoint_some, Affine.Point.some.injEq]`.
+
+Choose the witnesses or unpack the hypotheses as in `rfl : x = (f w - C.r) / (C.u : ℂ) ^ 2 := by`. Rewrite using `[← e.1]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Conclude with `⟨y, hxy, rfl⟩)`.
+
+Establish `hΛ : ∀ z, z ∈ Λ ↔ α * z ∈ L.lattice` using `fun z => by`. Rewrite using `[← latticePoint_eq_zero_iff, ← hα, ← map_eq_zero_iff _ hinj, hψ, ξ.map_eq_zero_iff, QuotientAddGroup.eq_zero_iff]`. Use `⟨α, ?_, hΛ, fun z => by rw [← hα, hψ]⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Conclude with `hz₀ ((hΛ _).2 (by simp))`.
+-/
 theorem IsAnalyticIso.exists_mul {ξ : (ℂ ⧸ Λ) ≃+ X.toAffine.Point} (hξ : IsAnalyticIso ξ)
     (h : C • X = latticeCurve L) :
     ∃ α : ℂ, α ≠ 0 ∧ (∀ z, z ∈ Λ ↔ α * z ∈ L.lattice) ∧
@@ -192,6 +228,13 @@ theorem IsAnalyticIso.exists_mul {ξ : (ℂ ⧸ Λ) ≃+ X.toAffine.Point} (hξ 
   rintro rfl
   exact hz₀ ((hΛ _).2 (by simp))
 
+/- English proof (translation)
+Set `φ : ℂ →+ X.toAffine.Point` to `(variableChangePoint C h).comp ((latticePointHom L).comp (AddMonoidHom.mulLeft α))`. Establish `hφ : ∀ z, φ z = variableChangePoint C h (latticePoint L (α * z))` using `fun _ => rfl`. Establish `hker : Λ = φ.ker`. Use extensionality with `z`. Rewrite using `[AddMonoidHom.mem_ker, hφ, map_eq_zero_iff _ (variableChangePoint_bijective C h).1, latticePoint_eq_zero_iff, hΛ]`.
+
+Establish `hs : Function.Surjective φ` using `(variableChangePoint_bijective C h).2.comp ((latticePoint_surjective L).comp (mul_left_surjective₀ hα))`. Use `⟨(QuotientAddGroup.quotientAddEquivOfEq hker).trans (QuotientAddGroup.quotientKerEquivOfSurjective φ hs), fun z hz => ?_, fun z => rfl⟩` and prove the remaining obligations. Establish `hz' : α * z ∉ L.lattice` using `(hΛ z).not.1 hz`. Establish `hP : AnalyticAt ℂ (fun w => L.weierstrassP (α * w)) z` using `(L.analyticOnNhd_weierstrassP _ hz').comp_of_eq (f := fun w => α * w) (by fun_prop) rfl`. Establish `hP' : AnalyticAt ℂ (fun w => L.derivWeierstrassP (α * w)) z` using `(L.analyticOnNhd_derivWeierstrassP _ hz').comp_of_eq (f := fun w => α * w) (by fun_prop) rfl`.
+
+Use `⟨fun w => (C.u : ℂ) ^ 2 * L.weierstrassP (α * w) + C.r, fun w => (C.u : ℂ) ^ 3 * (L.derivWeierstrassP (α * w) / 2) + (C.u : ℂ) ^ 2 * C.s * L.weierstrassP (α * w) + C.t, by fun_prop, by fun_prop, ?_⟩` and prove the remaining obligations. Use `filter_upwards [(continuous_const_mul α).continuousAt.eventually (eventually_notMem_periodLattice L hz')] with w hw`. Express the relevant statement in the definitionally equal form `∃ h, φ w = _`. Rewrite using `[hφ, latticePoint_of_notMem L hw, variableChangePoint_some]`. Conclude with `⟨_, rfl⟩`.
+-/
 theorem exists_isAnalyticIso (h : C • X = latticeCurve L) {α : ℂ} (hα : α ≠ 0)
     (hΛ : ∀ z, z ∈ Λ ↔ α * z ∈ L.lattice) :
     ∃ ξ : (ℂ ⧸ Λ) ≃+ X.toAffine.Point, IsAnalyticIso ξ ∧
@@ -222,12 +265,20 @@ theorem exists_isAnalyticIso (h : C • X = latticeCurve L) {α : ℂ} (hα : α
   rw [hφ, latticePoint_of_notMem L hw, variableChangePoint_some]
   exact ⟨_, rfl⟩
 
+/- English proof (translation)
+Take `⟨n, hn, hn0⟩` from `(((tendsto_const_div_atTop_nhds_zero_nat c).eventually (L.compl_lattice_sdiff_singleton_mem_nhds 0)).and (eventually_gt_atTop 0)).exists`. Assume the negation of the conclusion as `hc`. Conclude with `hn ⟨h n, div_ne_zero hc (by exact_mod_cast hn0.ne')⟩`.
+-/
 theorem eq_zero_of_forall_div_mem {c : ℂ} (h : ∀ n : ℕ, c / n ∈ L.lattice) : c = 0 := by
   obtain ⟨n, hn, hn0⟩ := (((tendsto_const_div_atTop_nhds_zero_nat c).eventually
     (L.compl_lattice_sdiff_singleton_mem_nhds 0)).and (eventually_gt_atTop 0)).exists
   by_contra hc
   exact hn ⟨h n, div_ne_zero hc (by exact_mod_cast hn0.ne')⟩
 
+/- English proof (translation)
+Take `⟨L, C, h⟩` from `exists_variableChange_eq_latticeCurve X`. Take `⟨α, -, -, hα⟩` from `hξ.exists_mul h`. Take `⟨β, -, -, hβ⟩` from `hξ'.exists_mul h`. Take `rfl : α = β` from `sub_eq_zero.1 <| eq_zero_of_forall_div_mem (L := L) fun n => by`. Use `e n` as an intermediate fact.
+
+Rewrite `this` using `[hα, hβ, (variableChangePoint_bijective C h).1.eq_iff, latticePoint_eq_iff]`. Rewrite using `[div_eq_mul_inv, sub_mul]` and apply the resulting hypothesis. Use extensionality with `q`. Take `⟨z, rfl⟩` from `QuotientAddGroup.mk_surjective q`. Rewrite using `[hα, hβ]`.
+-/
 theorem IsAnalyticIso.ext [X.IsElliptic] {ξ ξ' : (ℂ ⧸ Λ) ≃+ X.toAffine.Point}
     (hξ : IsAnalyticIso ξ) (hξ' : IsAnalyticIso ξ')
     (e : ∀ n : ℕ, ξ ((n : ℂ)⁻¹ : ℂ) = ξ' ((n : ℂ)⁻¹ : ℂ)) : ξ = ξ' := by
@@ -242,6 +293,11 @@ theorem IsAnalyticIso.ext [X.IsElliptic] {ξ ξ' : (ℂ ⧸ Λ) ≃+ X.toAffine.
   obtain ⟨z, rfl⟩ := QuotientAddGroup.mk_surjective q
   rw [hα, hβ]
 
+/- English proof (translation)
+Break down `P with _ | ⟨x, y, hP⟩` into its components or cases. Express the relevant statement in the definitionally equal form `mapPoint X σ (variableChangePoint C h 0) = variableChangePoint (C.map σ) h' (s 0)`. Simplify using the standard rewrite rules. Take `⟨h'', e⟩` from `hs x y hP`. Rewrite using `[e, variableChangePoint_some, variableChangePoint_some]`.
+
+Express the relevant statement in the definitionally equal form `Affine.Point.some _ _ _ = _`. Rewrite using `[Affine.Point.some.injEq]`. Simplify using `[VariableChange.map]`.
+-/
 theorem mapPoint_variableChangePoint {Y Y' : WeierstrassCurve ℂ} (σ : ℂ →+* ℂ) (h : C • X = Y)
     (h' : C.map σ • X.map σ = Y') {s : Y.toAffine.Point ≃+ Y'.toAffine.Point}
     (hs : ∀ x y h, ∃ h', s (.some x y h) = .some (σ x) (σ y) h') (P : Y.toAffine.Point) :
@@ -262,20 +318,36 @@ section Ideals
 variable {K : Type} [Field K] [NumberField K] [Algebra K ℂ]
 
 omit [NumberField K] in
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_idealSub {𝔞 : FractionalIdeal (𝓞 K)⁰ K} {z : ℂ} :
     z ∈ idealSub 𝔞 ↔ ∃ x ∈ 𝔞, algebraMap K ℂ x = z := Iff.rfl
 
 omit [NumberField K] in
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun ⟨_, hy, e⟩ => (algebraMap K ℂ).injective e ▸ hy, fun h => ⟨x, h, rfl⟩⟩`.
+-/
 theorem algebraMap_mem_idealSub {𝔞 : FractionalIdeal (𝓞 K)⁰ K} {x : K} :
     algebraMap K ℂ x ∈ idealSub 𝔞 ↔ x ∈ 𝔞 :=
   ⟨fun ⟨_, hy, e⟩ => (algebraMap K ℂ).injective e ▸ hy, fun h => ⟨x, h, rfl⟩⟩
 
 omit [NumberField K] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem torsionIncl_mk (𝔞 : FractionalIdeal (𝓞 K)⁰ K) (x : K) :
     torsionIncl 𝔞 (Submodule.Quotient.mk x) = (algebraMap K ℂ x : ℂ) := rfl
 
 omit [Algebra K ℂ] in
 
+/- English proof (translation)
+Take `⟨c, hc0, hc⟩` from `FractionalIdeal.exists_ne_zero_mem_isInteger h𝔞`. Take `⟨r, b, hb, rfl⟩` from `IsFractionRing.div_surjective (A := 𝓞 K) x`. Establish `hb0 : b ≠ 0` using `nonZeroDivisors.ne_zero hb`. Establish `hb1 : algebraMap (𝓞 K) K b ≠ 0` using `by simpa using hb0`. Take `⟨e, he⟩` from `Ideal.mem_span_singleton'.1 (Ideal.absNorm_mem (Ideal.span {b * c}))`.
+
+Use `⟨Ideal.absNorm (Ideal.span {b * c}), by simp [hb0, hc0], ?_⟩` and prove the remaining obligations. Use `(𝔞 : Submodule (𝓞 K) K).smul_mem (e * r) hc` as an intermediate fact. Rewrite using `[← map_natCast (algebraMap (𝓞 K) K), ← he]`. Rewrite using `[← FractionalIdeal.mem_coe]`. Use `this using 1` and compare the differences between its conclusion and the goal.
+
+Simplify using `only [Algebra.smul_def, map_mul]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem exists_natCast_mul_mem {𝔞 : FractionalIdeal (𝓞 K)⁰ K} (h𝔞 : 𝔞 ≠ 0) (x : K) :
     ∃ n : ℕ, n ≠ 0 ∧ (n : K) * x ∈ 𝔞 := by
   obtain ⟨c, hc0, hc⟩ := FractionalIdeal.exists_ne_zero_mem_isInteger h𝔞
@@ -293,6 +365,9 @@ theorem exists_natCast_mul_mem {𝔞 : FractionalIdeal (𝓞 K)⁰ K} (h𝔞 : �
 
 omit [NumberField K] in
 
+/- English proof (translation)
+Take `⟨x, -, e⟩` from `mem_idealSub.1 hz`. Use `⟨x / n, ?_⟩` and prove the remaining obligations. Establish `: (n : ℂ) ≠ 0` using `by exact_mod_cast hn`. Rewrite using `[map_div₀, e, map_natCast]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem exists_eq_of_natCast_mul_mem {𝔞 : FractionalIdeal (𝓞 K)⁰ K} {n : ℕ} (hn : n ≠ 0) {z : ℂ}
     (hz : (n : ℂ) * z ∈ idealSub 𝔞) : ∃ x : K, algebraMap K ℂ x = z := by
   obtain ⟨x, -, e⟩ := mem_idealSub.1 hz
@@ -301,6 +376,13 @@ theorem exists_eq_of_natCast_mul_mem {𝔞 : FractionalIdeal (𝓞 K)⁰ K} {n :
   rw [map_div₀, e, map_natCast]
   field_simp
 
+/- English proof (translation)
+Take `⟨L, hL⟩` from `Published.exists_isIdealLattice h2 (Units.mk0 𝔞 h𝔞)`. Establish `hΛ : ∀ z, z ∈ idealSub 𝔞 ↔ z ∈ L.lattice` using `fun z => by`. Express the relevant statement in the definitionally equal form `_ ↔ z ∈ (L.lattice : Set ℂ)`. Rewrite using `[hL]`. Both sides reduce to the same expression.
+
+Take `⟨ξ, h1, h2⟩` from `exists_isAnalyticIso (X := latticeCurve L) (C := 1) (one_smul _ _) one_ne_zero (fun z => by rw [one_mul, hΛ])`. Use `⟨L, ξ, hΛ, h1, fun z => ?_⟩` and prove the remaining obligations. Rewrite using `[h2, one_mul]`. Break down `latticePoint L z with _ | ⟨x, y, h⟩` into its components or cases. Both sides reduce to the same expression.
+
+Rewrite using `[variableChangePoint_some, Affine.Point.some.injEq]`. Simplify using `[VariableChange.one_def]`.
+-/
 theorem exists_uniformised [IsTotallyComplex K] (h2 : Module.finrank ℚ K = 2)
     {𝔞 : FractionalIdeal (𝓞 K)⁰ K} (h𝔞 : 𝔞 ≠ 0) :
     ∃ (L : PeriodPair) (ξ : (ℂ ⧸ idealSub 𝔞) ≃+ (latticeCurve L).toAffine.Point),
@@ -320,6 +402,9 @@ theorem exists_uniformised [IsTotallyComplex K] (h2 : Module.finrank ℚ K = 2)
   · rw [variableChangePoint_some, Affine.Point.some.injEq]
     simp [VariableChange.one_def]
 
+/- English proof (translation)
+Substitute `h𝔟` using the available equality. Use `⟨ξ', ⟨h', h⟩, fun η hη => hη.1.ext h' fun n => ?_⟩` and prove the remaining obligations. Take `⟨x, hx⟩` from `(mulEquiv t⁻¹ h𝔞 rfl).surjective (Submodule.Quotient.mk (n : K)⁻¹)`. Use `(hη.2 x).symm.trans (h x)` as an intermediate fact. Rewrite `this` using `[hx, torsionIncl_mk, map_inv₀, map_natCast]`. Then use the resulting hypothesis.
+-/
 theorem transports_of_exists {σ : ℂ ≃ₐ[K] ℂ} {t : (IsDedekindDomain.FiniteAdeleRing (𝓞 K) K)ˣ}
     {X : WeierstrassCurve ℂ} [X.IsElliptic] {𝔞 𝔟 : FractionalIdeal (𝓞 K)⁰ K} (h𝔞 : 𝔞 ≠ 0)
     (h𝔟 : 𝔟 = t⁻¹ • 𝔞) {ξ : (ℂ ⧸ idealSub 𝔞) ≃+ X.toAffine.Point}
@@ -333,6 +418,9 @@ theorem transports_of_exists {σ : ℂ ≃ₐ[K] ℂ} {t : (IsDedekindDomain.Fin
   rwa [hx, torsionIncl_mk, map_inv₀, map_natCast] at this
 
 omit [Algebra K ℂ] in
+/- English proof (translation)
+Use `by_contra! h`. Establish `h1 : Module.finrank ℤ (𝓞 K) ≤ Module.finrank ℤ ℤ` using `LinearMap.finrank_le_finrank_of_surjective (f := Algebra.linearMap ℤ (𝓞 K)) fun s => (h s).imp fun a e => by simpa using e.symm`. Rewrite `h1` using `[RingOfIntegers.rank, h2, Module.finrank_self]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem exists_ne_intCast (h2 : Module.finrank ℚ K = 2) : ∃ s : 𝓞 K, ∀ a : ℤ, s ≠ a := by
   by_contra! h
   have h1 : Module.finrank ℤ (𝓞 K) ≤ Module.finrank ℤ ℤ :=
@@ -341,6 +429,39 @@ theorem exists_ne_intCast (h2 : Module.finrank ℚ K = 2) : ∃ s : 𝓞 K, ∀ 
   rw [RingOfIntegers.rank, h2, Module.finrank_self] at h1
   omega
 
+/- English proof (translation)
+Take `⟨L, C, h⟩` from `exists_variableChange_eq_latticeCurve X`. Take `⟨α, hα0, hα, hξα⟩` from `hξ.exists_mul h`. Take `⟨L', g2, g3⟩` from `CMRam.exists_conj_lattice σ.toRingEquiv L`. Take `⟨s, hs, hc⟩` from `exists_conjEquiv g2 g3`. Set `f : 𝓞 K →+* ℂ` to `(algebraMap K ℂ).comp (algebraMap (𝓞 K) K)`.
+
+Establish `hst : ∀ r : 𝓞 K, ∀ l ∈ L.lattice, f r * l ∈ L.lattice` using `fun r l hl => by`. Take `⟨x, hx, e⟩` from `mem_idealSub.1 ((hα (l / α)).2 (by rwa [mul_div_cancel₀ _ hα0]))`. Use `(hα _).1 (algebraMap_mem_idealSub.2 ((𝔞 : Submodule (𝓞 K) K).smul_mem r hx))` as an intermediate fact. Rewrite `this` using `[Algebra.smul_def, map_mul, e]`. Use `this using 1` and compare the differences between its conclusion and the goal.
+
+Simplify using `only [f, RingHom.comp_apply]`. Clear the denominators using the available nonvanishing facts. Establish `hmul : ∀ (r : 𝓞 K) {u u' : ℂ}, IsConj L L' σ.toRingEquiv u u' → IsConj L L' σ.toRingEquiv (f r * u) (f r * u')` using `fun r u u' huu => by`. Use `huu.mul g2 g3 (hst r)` as an intermediate fact. Rewrite `this` using `[show σ.toRingEquiv (f r) = f r from σ.commutes _]`. Then use the resulting hypothesis.
+
+Establish `hmem : ∀ {u u' : ℂ}, IsConj L L' σ.toRingEquiv u u' → (u ∈ L.lattice ↔ u' ∈ L'.lattice)` using `fun huu => by simpa using huu.nsmul_mem_iff g2 g3 1`. Take `⟨r₀, hr₀⟩` from `exists_ne_intCast h2`. Take `⟨I, δ, hI, hδ, hIδ⟩` from `ConjCurve.exists_ideal f L'.lattice.toAddSubgroup L'.ω₁ L'.ω₂ (by simpa using L'.indep.ne_zero 0) (fun z => PeriodPair.mem_lattice) (fun r z hz => (hmem (hmul r (.inl ⟨zero_mem _, hz⟩))).1 (by simp)) r₀ (fun a e => hr₀ a (IsFractionRing.injective (𝓞 K) K ((algebraMap K ℂ).injecti …`. Set `𝔟 : FractionalIdeal (𝓞 K)⁰ K` to `I`. Establish `h𝔟 : 𝔟 ≠ 0` using `by simpa [𝔟] using hI`.
+
+Establish `hδ' : ∀ z, z ∈ idealSub 𝔟 ↔ δ * z ∈ L'.lattice` using `fun z => by`. Rewrite using `[← Submodule.mem_toAddSubgroup, hIδ, mem_idealSub]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, hx, rfl⟩`. Take `⟨c, hc, rfl⟩` from `(FractionalIdeal.mem_coeIdeal _).1 hx`.
+
+Conclude with `⟨c, hc, rfl⟩`. Introduce and unpack `⟨c, hc, e⟩`. Conclude with `⟨_, (FractionalIdeal.mem_coeIdeal _).2 ⟨c, hc, rfl⟩, (mul_left_cancel₀ hδ e).symm⟩`. Set `R : K → K → Prop` to `fun x y => IsConj L L' σ.toRingEquiv (α * algebraMap K ℂ x) (δ * algebraMap K ℂ y)`. Establish `Rtot : ∀ x, ∃ y, R x y` using `fun x => by`.
+
+Take `⟨w, hw⟩` from `latticePoint_surjective L' (s (latticePoint L (α * algebraMap K ℂ x)))`. Establish `hw'` using `(hc _ _).2 hw.symm`. Take `⟨n, hn, hx⟩` from `exists_natCast_mul_mem h𝔞 x`. Establish `h1` using `(hα _).1 (algebraMap_mem_idealSub.2 hx)`. Rewrite `h1` using `[map_mul, map_natCast, mul_left_comm, hw'.nsmul_mem_iff g2 g3]`.
+
+Take `⟨y, hy⟩` from `exists_eq_of_natCast_mul_mem (𝔞 := 𝔟) hn (z := w / δ) ((hδ' _).2 (by convert h1 using 1; field_simp))`. Conclude with `⟨y, by simp only [R]; rwa [hy, mul_div_cancel₀ _ hδ]⟩`. Establish `Rsurj : ∀ y, ∃ x, R x y` using `fun y => by`. Take `⟨w, hw⟩` from `latticePoint_surjective L (s.symm (latticePoint L' (δ * algebraMap K ℂ y)))`. Establish `hw'` using `(hc w _).2 (by rw [hw, s.apply_symm_apply])`.
+
+Take `⟨n, hn, hy⟩` from `exists_natCast_mul_mem h𝔟 y`. Establish `h1` using `(hδ' _).1 (algebraMap_mem_idealSub.2 hy)`. Rewrite `h1` using `[map_mul, map_natCast, mul_left_comm, ← hw'.nsmul_mem_iff g2 g3]`. Take `⟨x, hx⟩` from `exists_eq_of_natCast_mul_mem (𝔞 := 𝔞) hn (z := w / α) ((hα _).2 (by convert h1 using 1; field_simp))`. Conclude with `⟨x, by simp only [R]; rwa [hx, mul_div_cancel₀ _ hα0]⟩`.
+
+Establish `Radd : ∀ {x y x' y'}, R x y → R x' y' → R (x + x') (y + y')` using `fun a b => by`. Simplify `a.add g2 g3 b` using `only [R, map_add, mul_add]`. Establish `Rsmul : ∀ (r : 𝓞 K) {x y}, R x y → R (r • x) (r • y)` using `fun r x y a => by`. Use `hmul r a` as an intermediate fact. Rewrite `this` using `[mul_left_comm, mul_left_comm (f r)]`.
+
+Simplify using `only [R, Algebra.smul_def, map_mul]`. Conclude with `this`. Establish `Rmem : ∀ {x y}, R x y → (x ∈ 𝔞 ↔ y ∈ 𝔟)` using `fun a => by`. Rewrite using `[← algebraMap_mem_idealSub, ← algebraMap_mem_idealSub, hα, hδ', hmem a]`. Establish `Runiq : ∀ {x y y'}, R x y → R x y' → (Submodule.Quotient.mk y : K ⧸ (𝔟 : Submodule (𝓞 K) K)) = Submodule.Quotient.mk y'` using `fun a b => by`.
+
+Use `Rmem (Radd a (Rsmul (-1) b))` as an intermediate fact. Rewrite `this` using `[neg_one_smul, neg_one_smul, add_neg_cancel, ← sub_eq_add_neg]`. Conclude with `(Submodule.Quotient.eq _).2 (this.1 (FractionalIdeal.zero_mem _))`. Use `choose F hF using Rtot`. Set `Φ : K →ₗ[𝓞 K] K ⧸ (𝔟 : Submodule (𝓞 K) K)` to `{ toFun := fun x => Submodule.Quotient.mk (F x) map_add' := fun x y => Runiq (hF _) (Radd (hF x) (hF y)) map_smul' := fun r x => Runiq (hF _) (Rsmul r (hF x)) }`.
+
+Establish `hker : (𝔞 : Submodule (𝓞 K) K) = LinearMap.ker Φ`. Use extensionality with `x`. Conclude with `(Rmem (hF x)).trans (Submodule.Quotient.mk_eq_zero _).symm`. Establish `hΦ : Function.Surjective Φ` using `fun q => by`. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`.
+
+Take `⟨x, hx⟩` from `Rsurj y`. Conclude with `⟨x, Runiq (hF x) hx⟩`. Take `⟨u, ⟨hu, hφ⟩, -⟩` from `existsUnique_mulEquiv h𝔞 ((Submodule.quotEquivOfEq _ _ hker).trans (Φ.quotKerEquivOfSurjective hΦ))`. Establish `h' : C.map (σ : ℂ →+* ℂ) • X.map (σ : ℂ →+* ℂ) = latticeCurve L'`. Rewrite using `[map_variableChange, h]`.
+
+Simplify using `[latticeCurve, WeierstrassCurve.map, g2, g3, map_ofNat]`. Take `⟨ξ', hξ', e'⟩` from `exists_isAnalyticIso h' hδ hδ'`. Take `⟨t, rfl⟩ : ∃ t, u = t⁻¹` from `⟨u⁻¹, (inv_inv u).symm⟩`. Use `⟨t, transports_of_exists h𝔞 hu hξ' fun q => ?_⟩` and prove the remaining obligations. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`.
+
+Rewrite using `[← hφ]`. Express the relevant statement in the definitionally equal form `_ = ξ' (torsionIncl 𝔟 (Submodule.Quotient.mk (F x)))`. Rewrite using `[torsionIncl_mk, torsionIncl_mk, hξα, e', mapPoint_variableChangePoint _ h h' hs, (hc _ _).1 (hF x)]`.
+-/
 theorem exists_transports (h2 : Module.finrank ℚ K = 2) (σ : ℂ ≃ₐ[K] ℂ)
     {X : WeierstrassCurve ℂ} [X.IsElliptic] {𝔞 : FractionalIdeal (𝓞 K)⁰ K} (h𝔞 : 𝔞 ≠ 0)
     {ξ : (ℂ ⧸ idealSub 𝔞) ≃+ X.toAffine.Point} (hξ : IsAnalyticIso ξ) :
@@ -439,6 +560,21 @@ theorem exists_transports (h2 : Module.finrank ℚ K = 2) (σ : ℂ ≃ₐ[K] �
   rw [torsionIncl_mk, torsionIncl_mk, hξα, e', mapPoint_variableChangePoint _ h h' hs,
     (hc _ _).1 (hF x)]
 
+/- English proof (translation)
+Take `⟨η, ⟨hη, e⟩, -⟩` from `h`. Take `⟨η', ⟨hη', e'⟩, -⟩` from `h'`. Take `⟨L, C, hC⟩` from `exists_variableChange_eq_latticeCurve (X.map (σ : ℂ →+* ℂ))`. Take `⟨α, hα0, hα, a⟩` from `hη.exists_mul hC`. Take `⟨β, hβ0, hβ, b⟩` from `hη'.exists_mul hC`.
+
+Establish `h0` using `Idele.smul_ne_zero t⁻¹ h𝔞`. Take `⟨x₀, hx0, hx⟩` from `FractionalIdeal.exists_ne_zero_mem_isInteger h0`. Establish `hx1 : algebraMap K ℂ (algebraMap (𝓞 K) K x₀) ≠ 0` using `by simpa using hx0`. Take `⟨y₀, -, hy⟩` from `mem_idealSub.1 ((hβ (α * algebraMap K ℂ (algebraMap (𝓞 K) K x₀) / β)).2 (by rw [mul_div_cancel₀ _ hβ0]; exact (hα _).1 (algebraMap_mem_idealSub.2 hx)))`. Take `⟨c, hc⟩ : ∃ c : K, β * algebraMap K ℂ c = α` from `⟨y₀ / algebraMap (𝓞 K) K x₀, by rw [map_div₀, hy]; field_simp⟩`.
+
+Establish `hc0 : c ≠ 0` using `by rintro rfl; exact hα0 (by simpa using hc.symm)`. Use `set u := IsDedekindDomain.FiniteAdeleRing.unitEmbedding (𝓞 K) K (Units.mk0 c hc0) with hu`. Establish `hJ : t'⁻¹ • 𝔞 = u • t⁻¹ • 𝔞`. Use extensionality with `y`. Rewrite using `[smul_def u, hu, idealOf_unitEmbedding, FractionalIdeal.mem_singleton_mul]`.
+
+Take `⟨y, rfl⟩` from `mul_left_surjective₀ hc0 y`. Rewrite using `[← algebraMap_mem_idealSub, hβ, map_mul, ← mul_assoc, hc, ← hα, algebraMap_mem_idealSub]`. Conclude with `⟨fun h => ⟨y, h, rfl⟩, fun ⟨y', h, e⟩ => mul_left_cancel₀ hc0 e ▸ h⟩`. Establish `hJ' : t'⁻¹ • 𝔞 = (u * t⁻¹) • 𝔞` using `by rw [mul_smul, hJ]`. Establish `key : t'⁻¹ = u * t⁻¹`.
+
+Use `mulEquiv_injective h𝔞 rfl hJ' ?_` and prove the remaining obligations. Rewrite using `[mulEquiv_mul u t⁻¹ h𝔞 h0 rfl hJ]`. Use extensionality with `q`. Take `⟨y, hy⟩` from `Submodule.Quotient.mk_surjective _ (mulEquiv t⁻¹ h𝔞 rfl q)`. Take `⟨y', hy'⟩` from `Submodule.Quotient.mk_surjective _ (mulEquiv t'⁻¹ h𝔞 rfl q)`.
+
+Use `(e' q).symm.trans (e q)` as an intermediate fact. Rewrite `this` using `[← hy, ← hy', torsionIncl_mk, torsionIncl_mk, a, b, (variableChangePoint_bijective C hC).1.eq_iff, latticePoint_eq_iff, ← hc, mul_assoc, ← mul_sub, ← hβ, ← map_mul, ← map_sub, algebraMap_mem_idealSub]`. Rewrite using `[LinearEquiv.trans_apply, ← hy, ← hy']`. Conclude with `((Submodule.Quotient.eq _).2 this).trans (mulEquiv_unitEmbedding_mk (Units.mk0 c hc0) h0 hJ y).symm`. Conclude with `⟨Units.mk0 c hc0, by`.
+
+Rewrite using `[← hu, mul_comm, ← inv_mul_eq_iff_eq_mul, ← eq_mul_inv_iff_mul_eq]`. Conclude with `key⟩`.
+-/
 theorem Transports.unique {σ : ℂ ≃ₐ[K] ℂ} {t t' : (IsDedekindDomain.FiniteAdeleRing (𝓞 K) K)ˣ}
     {X : WeierstrassCurve ℂ} [X.IsElliptic] {𝔞 : FractionalIdeal (𝓞 K)⁰ K} {h𝔞 : 𝔞 ≠ 0}
     {ξ : (ℂ ⧸ idealSub 𝔞) ≃+ X.toAffine.Point} (h : Transports σ t h𝔞 ξ)
@@ -481,6 +617,11 @@ theorem Transports.unique {σ : ℂ ≃ₐ[K] ℂ} {t t' : (IsDedekindDomain.Fin
   exact ⟨Units.mk0 c hc0, by
     rw [← hu, mul_comm, ← inv_mul_eq_iff_eq_mul, ← eq_mul_inv_iff_mul_eq]; exact key⟩
 
+/- English proof (translation)
+Take `⟨L, C, hC⟩` from `exists_variableChange_eq_latticeCurve X`. Take `⟨α, hα0, hα, -⟩` from `hξ.exists_mul hC`. Take `⟨a, τ, ha, h⟩` from `exists_lattice_eq_mul_tau M`. Establish `hj : X.j = (latticeCurve L).j`. Rewrite using `[← X.variableChange_j C]`.
+
+Use `congr 1`. Rewrite using `[hj, latticeCurve_j ha h, latticeCurve_j (mul_ne_zero hα0 ha) (τ := τ) fun x => ?_]`. Take `⟨x, rfl⟩` from `mul_left_surjective₀ hα0 x`. Simplify using `only [← hα, hM, h, mul_assoc, mul_right_inj' hα0]`.
+-/
 theorem IsAnalyticIso.j_eq {X : WeierstrassCurve ℂ} [X.IsElliptic] {Λ : AddSubgroup ℂ}
     {ξ : (ℂ ⧸ Λ) ≃+ X.toAffine.Point} (hξ : IsAnalyticIso ξ) {M : PeriodPair}
     (hM : ∀ z, z ∈ Λ ↔ z ∈ M.lattice) : X.j = (latticeCurve M).j := by
@@ -494,6 +635,9 @@ theorem IsAnalyticIso.j_eq {X : WeierstrassCurve ℂ} [X.IsElliptic] {Λ : AddSu
   obtain ⟨x, rfl⟩ := mul_left_surjective₀ hα0 x
   simp only [← hα, hM, h, mul_assoc, mul_right_inj' hα0]
 
+/- English proof (translation)
+Take `⟨η, ⟨hη, -⟩, -⟩` from `h`. Conclude with `(X.map_j (σ : ℂ →+* ℂ)).symm.trans (hη.j_eq hM)`.
+-/
 theorem Transports.map_j {σ : ℂ ≃ₐ[K] ℂ} {t : (IsDedekindDomain.FiniteAdeleRing (𝓞 K) K)ˣ}
     {X : WeierstrassCurve ℂ} [X.IsElliptic] {𝔞 : FractionalIdeal (𝓞 K)⁰ K} {h𝔞 : 𝔞 ≠ 0}
     {ξ : (ℂ ⧸ idealSub 𝔞) ≃+ X.toAffine.Point} (h : Transports σ t h𝔞 ξ) {M : PeriodPair}
@@ -503,6 +647,9 @@ theorem Transports.map_j {σ : ℂ ≃ₐ[K] ℂ} {t : (IsDedekindDomain.FiniteA
 
 omit [Algebra K ℂ] in
 
+/- English proof (translation)
+The claim follows from `Units.ext rfl`.
+-/
 theorem finitePart_inr (t : (IsDedekindDomain.FiniteAdeleRing (𝓞 K) K)ˣ) :
     finitePart (K := K) (Units.map (MonoidHom.inr (InfiniteAdeleRing K) _) t) = t :=
   Units.ext rfl

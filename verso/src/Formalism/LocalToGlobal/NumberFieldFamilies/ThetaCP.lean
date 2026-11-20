@@ -15,6 +15,9 @@ open Formalism.MainNotions.Inhab Formalism.BasicNotions.Examples₂
 
 variable {D : D7}
 
+/- English proof (translation)
+Establish `h1 : j * (t + 1) = j * t + j` using `by ring`. Rewrite using `[h1]`. Generalize the expression as in `j * t = s`. Unfold `Ranks.r`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem xs_fits (R : Ranks) (t j : ℕ) (hj : j < R.m) : R.k + j * (t + 1) ≤ R.r + j * t - (R.m - j) / 2 := by
   have h1 : j * (t + 1) = j * t + j := by ring
   rw [h1]
@@ -22,6 +25,9 @@ theorem xs_fits (R : Ranks) (t j : ℕ) (hj : j < R.m) : R.k + j * (t + 1) ≤ R
   unfold Ranks.r
   omega
 
+/- English proof (translation)
+Establish `hk` using `R.m_add_three_le_k`. Establish `: (R.m - j) / 2 ≤ R.r` using `by unfold Ranks.r; omega`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem nu_le (R : Ranks) (t j : ℕ) : (R.m - j) / 2 ≤ R.r + j * t := by
   have hk := R.m_add_three_le_k
   have : (R.m - j) / 2 ≤ R.r := by unfold Ranks.r; omega
@@ -48,6 +54,9 @@ open Classical in
 
 def towC (D : D7) (t : ℕ) : Tow D t := if h : t = D.R.t then h ▸ recTow D else sigTow D t
 
+/- English proof (translation)
+Unfold `towC`. Rewrite using `[dif_pos rfl]`.
+-/
 theorem towC_rec (D : D7) : towC D D.R.t = recTow D := by
   unfold towC
   rw [dif_pos rfl]
@@ -56,6 +65,11 @@ def SpSig (D : D7) : Prop :=
   ∀ j, j ≤ D.R.m → (D.sp.X j).IsPosDef ∧
     ∀ τ, (D.sp.Y j).sig τ = (D.R.r + j * D.R.t - (D.R.m - j) / 2, (D.R.m - j) / 2)
 
+/- English proof (translation)
+Distinguish the cases in `e : t = D.R.t`. Substitute `e` using the available equality. Rewrite using `[towC_rec]`. Conclude with `h j hj`. Unfold `towC`.
+
+Rewrite using `[dif_neg e]`. Conclude with `⟨fun _ => rfl, fun _ => rfl⟩`.
+-/
 theorem towC_sig (h : SpSig D) (t j : ℕ) (hj : j ≤ D.R.m) : ((towC D t).Xs j).IsPosDef ∧
     ∀ τ, ((towC D t).Ys j).sig τ = (D.R.r + j * t - (D.R.m - j) / 2, (D.R.m - j) / 2) := by
   by_cases e : t = D.R.t
@@ -66,6 +80,11 @@ theorem towC_sig (h : SpSig D) (t j : ℕ) (hj : j ≤ D.R.m) : ((towC D t).Xs j
     rw [dif_neg e]
     exact ⟨fun _ => rfl, fun _ => rfl⟩
 
+/- English proof (translation)
+Distinguish the cases in `e : t = D.R.t`. Substitute `e` using the available equality. Rewrite using `[towC_rec]`. Conclude with `D.sp.Y_sig j`. Unfold `towC`.
+
+Rewrite using `[dif_neg e]`. Conclude with `dSpace_sigOK star_isIntegral _ _ (nu_le D.R t j)`.
+-/
 theorem towC_ok (t j : ℕ) : ((towC D t).Ys j).SigOK := by
   by_cases e : t = D.R.t
   · subst e
@@ -83,6 +102,11 @@ open Classical in
 def lowC (V : HSp D) (i : ℕ) : HSp D :=
   if i = 0 then V else if h : ∃ V' : HSp D, IsWittLower V V' i then fixSig h.choose else V
 
+/- English proof (translation)
+Unfold `lowC`. Distinguish the cases in `e : i = 0`. Substitute `e` using the available equality. Rewrite using `[if_pos rfl]`. Take `⟨C, hC⟩` from `h`.
+
+Conclude with `⟨⟨rfl, LinearMap.id, fun _ _ => rfl, C, hC, Subsingleton.elim _ _⟩, hV⟩`. Establish `h'` using `hW V i h`. Rewrite using `[if_neg e, dif_pos h']`. Conclude with `⟨h'.choose_spec, fixSig_ok _⟩`.
+-/
 theorem lowC_spec (hW : WittLow D) (V : HSp D) (hV : V.SigOK) (i : ℕ)
     (h : ∃ C : Matrix (Fin V.rank) (Fin i) D.host.E, IsIsoSub V C) : IsWittLower V (lowC V i) i ∧ (lowC V i).SigOK := by
   unfold lowC
@@ -101,6 +125,9 @@ def EmbU (D : D7) : Prop := ∀ (A B : HSp D) (ι : B.V →ₗ[D.host.E] A.V), H
 def EmbRat (D : D7) : Prop := ∀ (A B : HSp D) (ι : B.V →ₗ[D.host.E] A.V), HSpace.IsIsomEmb B A ι →
   ∀ γ ∈ GQ B, ∃ γ' ∈ GQ A, EmbRel A B ι γ' γ
 
+/- English proof (translation)
+Use `⟨?_, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, Units.val_mul, Units.val_mul, Matrix.mul_assoc, b.1, ← Matrix.mul_assoc, a.1, Matrix.mul_assoc]`. Rewrite using `[map_mul, Units.val_mul, ← Matrix.mulVec_mulVec, b.2 x hx, a.2 x hx]`.
+-/
 theorem embRel_mul {A B : HSp D} {ι : B.V →ₗ[D.host.E] A.V} {g g' : GA D A} {h h' : GA D B} (a : EmbRel A B ι g h)
     (b : EmbRel A B ι g' h') : EmbRel A B ι (g * g') (h * h') := by
   refine ⟨?_, fun x hx => ?_⟩
@@ -112,9 +139,15 @@ def EmbCond (A B : HSp D) (ι : B.V →ₗ[D.host.E] A.V) : Prop :=
 
 def embC {A B : HSp D} {ι : B.V →ₗ[D.host.E] A.V} (h : EmbCond A B ι) : GA D B → GA D A := h.2.choose
 
+/- English proof (translation)
+The claim follows from `h.2.choose_spec x`.
+-/
 theorem embC_spec {A B : HSp D} {ι : B.V →ₗ[D.host.E] A.V} (h : EmbCond A B ι) (x : GA D B) : EmbRel A B ι (embC h x) x :=
   h.2.choose_spec x
 
+/- English proof (translation)
+Take `⟨γ', a, b⟩` from `hR A B ι h.1 γ hγ`. Conclude with `⟨γ', a, b, fun x => hU A B ι h.1 _ _ _ (embC_spec h _) (embRel_mul b (embC_spec h x))⟩`.
+-/
 theorem embC_left (hU : EmbU D) (hR : EmbRat D) {A B : HSp D} {ι : B.V →ₗ[D.host.E] A.V} (h : EmbCond A B ι)
     {γ : GA D B} (hγ : γ ∈ GQ B) : ∃ γ' ∈ GQ A, EmbRel A B ι γ' γ ∧ ∀ x, embC h (γ * x) = γ' * embC h x := by
   obtain ⟨γ', a, b⟩ := hR A B ι h.1 γ hγ
@@ -131,11 +164,19 @@ open Classical in
 def btopC (petF : HSp D → ℝ) (A B : HSp D) (ι : B.V →ₗ[D.host.E] A.V) (φ : afC D A) (F : cuspC D B) : ℂ :=
   if h : EmbCond A B ι then (petCOf D petF (petRC D) B : ℂ) * intC B fun x => star (φ.1 (embC h x)) * F.1.1 x else 0
 
+/- English proof (translation)
+The claim follows from `hI A B ι h.1 _ (embC_spec h) _ _ (pairC_spec G.volEx B).1 (pairC_spec G.volEx B).2.1 _ _ ((mem_afC G.add).1 φ.2) ((mem_afC G.add).1 F.1.2) ((mem_cuspC G.add G.cuspInt).1 F.2)`.
+-/
 theorem top_int (G : FormGaps D) (hI : TopInt D) {A B : HSp D} {ι : B.V →ₗ[D.host.E] A.V} (h : EmbCond A B ι) (φ : afC D A)
     (F : cuspC D B) : IntegrableOn (fun x => star (φ.1 (embC h x)) * F.1.1 x) (pairC B).2 (pairC B).1 :=
   hI A B ι h.1 _ (embC_spec h) _ _ (pairC_spec G.volEx B).1 (pairC_spec G.volEx B).2.1 _ _ ((mem_afC G.add).1 φ.2)
     ((mem_afC G.add).1 F.1.2) ((mem_cuspC G.add G.cuspInt).1 F.2)
 
+/- English proof (translation)
+Unfold `btopC intC`. Distinguish the cases in `h : EmbCond A B ι`. Simplify using `only [dif_pos h]`. Use `⟨fun F F' => ?_, fun c F => ?_⟩` and prove the remaining obligations. Rewrite using `[← mul_add, ← integral_add (top_int G hI h φ F) (top_int G hI h φ F')]`.
+
+Simplify using `only [Submodule.coe_add, Pi.add_apply, mul_add]`. Rewrite using `[smul_eq_mul, mul_left_comm, ← integral_const_mul c]`. Simplify using `only [Submodule.coe_smul, Pi.smul_apply, smul_eq_mul, mul_left_comm c]`. Simplify using `only [dif_neg h]`. Conclude with `⟨fun _ _ => by simp, fun _ _ => by simp⟩`.
+-/
 theorem btopC_right (G : FormGaps D) (hI : TopInt D) (petF : HSp D → ℝ) (A B : HSp D) (ι : B.V →ₗ[D.host.E] A.V)
     (φ : afC D A) : IsLinearMap ℂ (btopC petF A B ι φ) := by
   unfold btopC intC
@@ -149,6 +190,11 @@ theorem btopC_right (G : FormGaps D) (hI : TopInt D) (petF : HSp D → ℝ) (A B
   · simp only [dif_neg h]
     exact ⟨fun _ _ => by simp, fun _ _ => by simp⟩
 
+/- English proof (translation)
+Unfold `btopC intC`. Distinguish the cases in `h : EmbCond A B ι`. Simplify using `only [dif_pos h]`. Rewrite using `[← mul_add, ← integral_add (top_int G hI h φ F) (top_int G hI h φ' F)]`. Simplify using `only [Submodule.coe_add, Pi.add_apply, star_add, add_mul]`.
+
+Simplify using `only [dif_neg h, add_zero]`.
+-/
 theorem btopC_add (G : FormGaps D) (hI : TopInt D) (petF : HSp D → ℝ) (A B : HSp D) (ι : B.V →ₗ[D.host.E] A.V)
     (φ φ' : afC D A) (F : cuspC D B) : btopC petF A B ι (φ + φ') F = btopC petF A B ι φ F + btopC petF A B ι φ' F := by
   unfold btopC intC
@@ -158,6 +204,11 @@ theorem btopC_add (G : FormGaps D) (hI : TopInt D) (petF : HSp D → ℝ) (A B :
     simp only [Submodule.coe_add, Pi.add_apply, star_add, add_mul]
   · simp only [dif_neg h, add_zero]
 
+/- English proof (translation)
+Unfold `btopC intC`. Distinguish the cases in `h : EmbCond A B ι`. Simplify using `only [dif_pos h]`. Rewrite using `[mul_left_comm, ← integral_const_mul (star c)]`. Simplify using `only [Submodule.coe_smul, Pi.smul_apply, smul_eq_mul, star_mul', mul_assoc]`.
+
+Simplify using `only [dif_neg h, mul_zero]`.
+-/
 theorem pairing_smul_left₂ (petF : HSp D → ℝ) (A B : HSp D) (ι : B.V →ₗ[D.host.E] A.V)
     (c : ℂ) (φ : afC D A) (F : cuspC D B) : btopC petF A B ι (c • φ) F = star c * btopC petF A B ι φ F := by
   unfold btopC intC
@@ -167,6 +218,11 @@ theorem pairing_smul_left₂ (petF : HSp D → ℝ) (A B : HSp D) (ι : B.V →�
     simp only [Submodule.coe_smul, Pi.smul_apply, smul_eq_mul, star_mul', mul_assoc]
   · simp only [dif_neg h, mul_zero]
 
+/- English proof (translation)
+Establish `h : EmbCond A B ι` using `⟨hι, s, hs⟩`. Establish `e : s = embC h` using `funext fun x => hU A B ι hι _ _ _ (hs x) (embC_spec h x)`. Unfold `btopC`. Rewrite using `[dif_pos h, e, intC_eq G.volEx G.volU hB hp]`. Introduce `γ hγ x`.
+
+Take `⟨γ', a, -, b⟩` from `embC_left hU hR h hγ`. Rewrite using `[b, ((mem_afC G.add).1 φ.2).left γ' a, ((mem_afC G.add).1 F.1.2).left γ hγ]`.
+-/
 theorem btopC_eq (G : FormGaps D) (hU : EmbU D) (hR : EmbRat D) (petF : HSp D → ℝ) (A B : HSp D)
     (ι : B.V →ₗ[D.host.E] A.V) (hB : B.SigOK) (hι : HSpace.IsIsomEmb B A ι) (μ : Measure (GA D B)) (𝓕 : Set (GA D B))
     (hp : IsVolPair D B μ 𝓕) (s : GA D B → GA D A) (hs : ∀ h, EmbRel A B ι (s h) h) (φ : afC D A) (F : cuspC D B) :
@@ -205,11 +261,17 @@ def BesInt2 (ψ : AddChar (AF D.host.F) ℂ) : Prop := ∀ (A B : HSp D) (ι : A
   ∀ (φ : GA D A → ℂ) (F : GA D B → ℂ), IsAutFunSm (th0 D) A φ → IsCuspFun A φ → IsAutFunSm (th0 D) B F → IsCuspFun B F →
     IntegrableOn (fun h => star (φ h) * besIn ψ d p F (s h * (d.y : GA D B))) 𝓕 μ
 
+/- English proof (translation)
+The claim follows from `LinearMap.exists_leftInverse_of_injective _ (Submodule.ker_subtype _)`.
+-/
 theorem proj_ex (A : HSp D) : ∃ g : afC D A →ₗ[ℂ] cuspC D A, g ∘ₗ (cuspC D A).subtype = LinearMap.id :=
   LinearMap.exists_leftInverse_of_injective _ (Submodule.ker_subtype _)
 
 def projC (A : HSp D) : afC D A →ₗ[ℂ] cuspC D A := (proj_ex A).choose
 
+/- English proof (translation)
+Use `LinearMap.congr_fun (proj_ex A).choose_spec ⟨φ, h⟩` as an intermediate fact. Conclude with `congrArg Subtype.val this`.
+-/
 theorem projC_eq (A : HSp D) (φ : afC D A) (h : φ ∈ cuspC D A) : (projC A φ).1 = φ := by
   have := LinearMap.congr_fun (proj_ex A).choose_spec ⟨φ, h⟩
   exact congrArg Subtype.val this
@@ -234,6 +296,9 @@ def besC (ψ : AddChar (AF D.host.F) ℂ) (petF : HSp D → ℝ) (d : BesDat A B
       intC A fun x => star ((projC A φ).1.1 x) * besIn ψ d h.2.choose F.1.1 (embC h.1 x * (d.y : GA D B))
   else 0
 
+/- English proof (translation)
+The claim follows from `P.int2 A B ι d h.1.1 _ h.2.choose_spec _ (embC_spec h.1) _ _ (pairC_spec G.volEx A).1 (pairC_spec G.volEx A).2.1 _ _ ((mem_afC G.add).1 (projC A φ).1.2) ((mem_cuspC G.add G.cuspInt).1 (projC A φ).2) ((mem_afC G.add).1 F.1.2) ((mem_cuspC G.add G.cuspInt).1 F.2)`.
+-/
 theorem bes_int (G : FormGaps D) (P : PerGaps ψ) (d : BesDat A B ι) (h : EmbCond B A ι ∧ ∃ p, NPair d p) (φ : afC D A)
     (F : cuspC D B) : IntegrableOn
       (fun x => star ((projC A φ).1.1 x) * besIn ψ d h.2.choose F.1.1 (embC h.1 x * (d.y : GA D B))) (pairC A).2 (pairC A).1 :=
@@ -241,6 +306,15 @@ theorem bes_int (G : FormGaps D) (P : PerGaps ψ) (d : BesDat A B ι) (h : EmbCo
     ((mem_afC G.add).1 (projC A φ).1.2) ((mem_cuspC G.add G.cuspInt).1 (projC A φ).2)
     ((mem_afC G.add).1 F.1.2) ((mem_cuspC G.add G.cuspInt).1 F.2)
 
+/- English proof (translation)
+Unfold `besC intC`. Distinguish the cases in `h : EmbCond B A ι ∧ ∃ p, NPair d p`. Simplify using `only [dif_pos h]`. Use `⟨fun F F' => ?_, fun c F => ?_⟩` and prove the remaining obligations. Rewrite using `[← mul_add, ← integral_add (bes_int G P d h φ F) (bes_int G P d h φ F')]`.
+
+Use `congr 2`. Use function extensionality and compare the values at `x`. Rewrite using `[← mul_add]`. Use `congr 1`. Unfold `besIn`.
+
+Rewrite using `[← integral_add (P.int1 A B ι d _ h.2.choose_spec _ ((mem_afC G.add).1 F.1.2).toIsAutFun _) (P.int1 A B ι d _ h.2.choose_spec _ ((mem_afC G.add).1 F'.1.2).toIsAutFun _)]`. Simplify using `only [Submodule.coe_add, Pi.add_apply, add_mul]`. Rewrite using `[smul_eq_mul, mul_left_comm, ← integral_const_mul c]`. Use `congr 2`. Use function extensionality and compare the values at `x`.
+
+Unfold `besIn`. Rewrite using `[mul_left_comm c, ← integral_const_mul c]`. Simplify using `only [Submodule.coe_smul, Pi.smul_apply, smul_eq_mul, mul_assoc]`. Simplify using `only [dif_neg h]`. Conclude with `⟨fun _ _ => by simp, fun _ _ => by simp⟩`.
+-/
 theorem besC_right (G : FormGaps D) (P : PerGaps ψ) (petF : HSp D → ℝ) (d : BesDat A B ι) (φ : afC D A) :
     IsLinearMap ℂ (besC ψ petF d φ) := by
   unfold besC intC
@@ -265,6 +339,11 @@ theorem besC_right (G : FormGaps D) (P : PerGaps ψ) (petF : HSp D → ℝ) (d :
   · simp only [dif_neg h]
     exact ⟨fun _ _ => by simp, fun _ _ => by simp⟩
 
+/- English proof (translation)
+Unfold `besC intC`. Distinguish the cases in `h : EmbCond B A ι ∧ ∃ p, NPair d p`. Simplify using `only [dif_pos h]`. Rewrite using `[← mul_add, ← integral_add (bes_int G P d h φ F) (bes_int G P d h φ' F)]`. Simplify using `only [map_add, Submodule.coe_add, Pi.add_apply, star_add, add_mul]`.
+
+Simplify using `only [dif_neg h, add_zero]`.
+-/
 theorem besC_add (G : FormGaps D) (P : PerGaps ψ) (petF : HSp D → ℝ) (d : BesDat A B ι) (φ φ' : afC D A) (F : cuspC D B) :
     besC ψ petF d (φ + φ') F = besC ψ petF d φ F + besC ψ petF d φ' F := by
   unfold besC intC
@@ -274,6 +353,11 @@ theorem besC_add (G : FormGaps D) (P : PerGaps ψ) (petF : HSp D → ℝ) (d : B
     simp only [map_add, Submodule.coe_add, Pi.add_apply, star_add, add_mul]
   · simp only [dif_neg h, add_zero]
 
+/- English proof (translation)
+Unfold `besC intC`. Distinguish the cases in `h : EmbCond B A ι ∧ ∃ p, NPair d p`. Simplify using `only [dif_pos h]`. Rewrite using `[mul_left_comm, ← integral_const_mul (star c)]`. Simplify using `only [map_smul, Submodule.coe_smul, Pi.smul_apply, smul_eq_mul, star_mul', mul_assoc]`.
+
+Simplify using `only [dif_neg h, mul_zero]`.
+-/
 theorem besC_smul (petF : HSp D → ℝ) (d : BesDat A B ι) (c : ℂ) (φ : afC D A) (F : cuspC D B) :
     besC ψ petF d (c • φ) F = star c * besC ψ petF d φ F := by
   unfold besC intC
@@ -283,11 +367,23 @@ theorem besC_smul (petF : HSp D → ℝ) (d : BesDat A B ι) (c : ℂ) (φ : afC
     simp only [map_smul, Submodule.coe_smul, Pi.smul_apply, smul_eq_mul, star_mul', mul_assoc]
   · simp only [dif_neg h, mul_zero]
 
+/- English proof (translation)
+Use `⟨?_, fun x _ => ?_⟩` and prove the remaining obligations. Rewrite using `[map_one, map_one, Units.val_one, Units.val_one, Matrix.one_mul, Matrix.mul_one]`. Rewrite using `[map_one, Units.val_one, Matrix.one_mulVec]`.
+-/
 theorem embRel_one (A B : HSp D) (ι : B.V →ₗ[D.host.E] A.V) : EmbRel A B ι 1 1 := by
   refine ⟨?_, fun x _ => ?_⟩
   · rw [map_one, map_one, Units.val_one, Units.val_one, Matrix.one_mul, Matrix.mul_one]
   · rw [map_one, Units.val_one, Matrix.one_mulVec]
 
+/- English proof (translation)
+Establish `h : EmbCond B A ι ∧ ∃ p, NPair d p` using `⟨⟨hι, s, hs⟩, p, hN⟩`. Establish `e : s = embC h.1` using `funext fun x => P.embU B A ι hι _ _ _ (hs x) (embC_spec h.1 x)`. Establish `hc : φ ∈ cuspC D A` using `hφ.elim (fun a => Submodule.subset_span fun r C hC => absurd hC (a r C)) id`. Establish `hF` using `((mem_afC G.add).1 F.1.2).toIsAutFun`. Unfold `besC`.
+
+Rewrite using `[dif_pos h, projC_eq A φ hc, intC_eq G.volEx G.volU hA hp]`. Use `congr 2`. Use function extensionality and compare the values at `x`. Establish `e1` using `P.inv A B ι d _ p h.2.choose_spec hN _ hF 1 (one_mem _) 1 (embRel_one B A ι) (embC h.1 x * (d.y : GA D B))`. Rewrite `e1` using `[one_mul]`.
+
+Rewrite using `[e1, e]`. Unfold `besIn`. Rewrite using `[← integral_const_mul]`. Simplify using `only [mul_assoc]`. Introduce `γ hγ x`.
+
+Take `⟨γ', a, a', b⟩` from `embC_left P.embU P.embRat h.1 hγ`. Rewrite using `[b, ((mem_afC G.add).1 φ.2).left γ hγ, mul_assoc γ', P.inv A B ι d _ _ h.2.choose_spec h.2.choose_spec _ hF γ' a γ a']`.
+-/
 theorem besC_eq (G : FormGaps D) (P : PerGaps ψ) (petF : HSp D → ℝ) (d : BesDat A B ι) (hA : A.SigOK)
     (hι : HSpace.IsIsomEmb A B ι) (μ : Measure (GA D A)) (𝓕 : Set (GA D A)) (hp : IsVolPair D A μ 𝓕)
     (p : Measure (NFlag B d.e) × Set (NFlag B d.e)) (hN : NPair d p) (s : GA D A → GA D B)

@@ -6,6 +6,21 @@ open Formalism.BasicNotions NumberField IsDedekindDomain Formalism.MainNotions F
 
 namespace GlobalTheory.TwV.Xc.Unif
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ w spl hsig π hπ hoff`. Use `set p : E ⊗[F] w.adicCompletion F := prV (E := E) w (π : AfE F E) with hp`. Establish `hπe : (π : AfE F E) = oneAt w p` using `ext_prV fun w' => by`. Distinguish the cases in `h : w' = w`. Substitute `h` using the available equality.
+
+Rewrite using `[prV_oneAt_self]`. Rewrite using `[prV_oneAt_ne w w' h]`. Conclude with `hoff w' h`. Establish `hU : (π : AfE F E) * sigR σ (FiniteAdeleRing (𝓞 F) F) (π : AfE F E) = 1`. Use `congrArg (fun u : (AfE F E)ˣ => (u : AfE F E)) ((MonoidHom.mem_ker).1 hπ)` as an intermediate fact.
+
+Simplify `this` using `[conjId]`. Establish `hp1 : p * sigR σ (w.adicCompletion F) p = 1`. Establish `h2` using `congrArg (prV (E := E) w) hU`. Rewrite `h2` using `[hπe, sigR_oneAt, oneAt_mul, prV_oneAt_self, map_one]`. Conclude with `h2`.
+
+Establish `hab : (spl p).1 * (spl p).2 = 1 ∧ (spl p).2 * (spl p).1 = 1`. Establish `h3` using `congrArg spl hp1`. Rewrite `h3` using `[map_mul, hsig, map_one]`. Conclude with `⟨congrArg Prod.fst h3, congrArg Prod.snd h3⟩`. Set `c : (E ⊗[F] w.adicCompletion F)ˣ` to `⟨spl.symm ((spl p).1, 1), spl.symm ((spl p).2, 1), by rw [← map_mul]; apply spl.injective; rw [RingEquiv.apply_symm_apply, map_one]; exact Prod.ext hab.1 (mul_one _), by rw [← map_mul]; apply spl.injective; rw [RingEquiv.apply_symm_apply, map_one]; exact Prod.ext hab.2 (mul_one _ …`.
+
+Use `⟨oneAtU w c, ?_, fun w' hw' => prV_oneAt_ne w w' hw' _⟩` and prove the remaining obligations. Apply `Units.ext` to reduce the goal to its premises. Establish `hval : ((h90 σ (oneAtU w c) : (AfE F E)ˣ) : AfE F E) = oneAt w (c : E ⊗[F] w.adicCompletion F) * sigR σ (FiniteAdeleRing (𝓞 F) F) (oneAt w ((c⁻¹ : (E ⊗[F] w.adicCompletion F)ˣ) : E ⊗[F] w.adicCompletion F))`. Simplify using `only [h90, MonoidHom.div_apply, MonoidHom.id_apply, div_eq_mul_inv, Units.val_mul, conjId, map_inv]`. Both sides reduce to the same expression.
+
+Rewrite using `[hval, sigR_oneAt, oneAt_mul, hπe]`. Use `congr 1`. Apply `spl.injective` to reduce the goal to its premises. Rewrite using `[map_mul, hsig]`. Use `show spl (spl.symm ((spl p).1, 1)) * swapR (w.adicCompletion F) (spl (spl.symm ((spl p).2, 1))) = spl p`.
+
+Rewrite using `[RingEquiv.apply_symm_apply, RingEquiv.apply_symm_apply]`. Use `show ((spl p).1 * 1, 1 * (spl p).2) = spl p`. Rewrite using `[mul_one, one_mul]`.
+-/
 theorem exists_h90_eq_oneOff_of_normOne_at_split_place : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (w : HeightOneSpectrum (𝓞 F)) (spl : E ⊗[F] w.adicCompletion F ≃+* w.adicCompletion F × w.adicCompletion F), (∀ x, spl (sigR σ (w.adicCompletion F) x) = swapR (w.adicCompletion F) (spl x)) → ∀ (π : (AfE F E)ˣ), π ∈ U1 σ → OneOff w π → ∃ x : (AfE F E)ˣ, h90 σ x = π ∧ OneOff w x := by
   intro F E _ _ _ _ _ σ w spl hsig π hπ hoff
   set p : E ⊗[F] w.adicCompletion F := prV (E := E) w (π : AfE F E) with hp

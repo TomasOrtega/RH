@@ -13,6 +13,37 @@ section Slot
 variable {M : Type*} [NormedAddCommGroup M] [InnerProductSpace ℂ M] {ε : Fin n → Bool}
   {E : Fin n → Fin n → Module.End ℂ M} {V : Submodule ℂ M} {lam : Fin n → ℝ}
 
+/- English proof (translation)
+Introduce `κ`. Rewrite using `[slice_eq_slt]`. Use `set r := (slRest i κ).2 with hr`. Establish `hx : slt i r P ∈ ncV ε V 1` using `slt_mem_ncV i r hP`. Take `⟨xm, hxm, xp, hxp, hdec⟩` from `ncV_one_decomp hE hU hV hmono hh hbig hx`.
+
+Establish `hkey : inner ℂ xm (slt i r P) = (‖xm‖ : ℂ) ^ 2`. Rewrite using `[hdec, inner_add_right, Wm_perp_Wp hU hxm hxp, add_zero]`. Conclude with `inner_self_eq_norm_sq_to_K xm`. It suffices to establish `hz : xm = 0 by`. Rewrite using `[hdec, hz, zero_add]`.
+
+Conclude with `hxp`. Establish `hxm1` using `slt_mem_ncV_iff.1 (Wm_le_ncV hxm)`. Establish `hbad : (∃ j : {j // j ≠ i}, ε (r j).1 = ε (r j).2) → xm = 0`. Introduce and unpack `⟨j, hj⟩`. Establish `hx0 : slt i r P = 0`.
+
+Use extensionality with `ι`. Establish `hPm` using `(slt_mem_ncV_iff.1 hP) ((slRest i).symm (ι 0, r))`. Establish `hcoord : ((slRest i).symm (ι 0, r)) j.1 = r j`. Simplify using `[slRest, Equiv.funSplitAt_symm_apply, j.2]`. Rewrite `hPm` using `[if_neg]`.
+
+Simplify `hPm` using `[slt]`. Introduce `hall`. Conclude with `hall j.1 (by rw [hcoord]; exact hj)`. Establish `h2` using `hkey`. Rewrite `h2` using `[hx0, inner_zero_right]`.
+
+Simplify using `using h2.symm`. Set `F : Big n k M` to `WithLp.toLp 2 (fun κ' => if (slRest i κ').2 = r then xm (fun _ => (slRest i κ').1) else 0)`. Establish `hFapp : ∀ κ', F κ' = if (slRest i κ').2 = r then xm (fun _ => (slRest i κ').1) else 0` using `fun κ' => rfl`. Establish `hsltF : ∀ r', slt i r' F = if r' = r then xm else 0`. Introduce `r'`.
+
+Use `split_ifs with h1`. Substitute `h1` using the available equality. Use extensionality with `ι`. Simplify using `only [slt, hFapp]`. Simplify using `only [Equiv.apply_symm_apply, if_true]`.
+
+Rewrite using `[show (fun _ : Fin 1 => ι 0) = ι from funext fun j => by rw [Fin.fin_one_eq_zero j]]`. Use extensionality with `ι`. Simplify using `[slt, hFapp, h1]`. Establish `hFmem : F ∈ ncV ε V k`. Rewrite using `[slt_mem_ncV_iff]`.
+
+Introduce `κ'`. Rewrite using `[hFapp]`. Distinguish the cases in `hrest : (slRest i κ').2 = r`. Rewrite using `[if_pos hrest]`. Establish `hι` using `hxm1 (fun _ => (slRest i κ').1)`.
+
+Distinguish the cases in `hc : ∀ j, ε (κ' j).1 ≠ ε (κ' j).2`. Rewrite `hι` using `[if_pos hc] split_ifs`. Conclude with `hι`. Rewrite using `[(Submodule.mem_bot ℂ).1 hι]`. Conclude with `zero_mem _`.
+
+Rewrite `hc` using `[if_neg hc] push_neg`. Take `⟨j, hj⟩` from `hc`. Distinguish the cases in `hji : j = i`. Substitute `hji` using the available equality. Rewrite `hι` using `[if_neg]`.
+
+Conclude with `hι`. Introduce `hall`. Conclude with `hall 0 (by simpa [slRest] using hj)`. Rewrite using `[hbad ⟨⟨j, hji⟩, by rw [← hrest]; simpa [slRest] using hj⟩]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[if_neg hrest]`. Conclude with `zero_mem _`. Establish `hinner : inner ℂ F P = inner ℂ xm (slt i r P)`. Rewrite using `[slt_inner_eq_sum i F P]`. Simplify using `only [hsltF]`.
+
+Rewrite using `[Finset.sum_eq_single r (fun b _ hb => by simp [hb]) (by simp)]`. Simplify using the standard rewrite rules. Establish `hF0` using `hperp F hFmem (fun κ' => by`. Rewrite using `[slice_eq_slt, hsltF]`. Use `split_ifs`.
+
+Conclude with `hxm`. Conclude with `zero_mem _)`. Rewrite `hF0` using `[hinner, hkey]`. Simplify using `using hF0`.
+-/
 theorem position_perp (hE : IsGlRep E) (hU : IsInfUnitary ε E) (hV : IsKIrrHW ε E (lowK ε lam) V)
     (hmono : StrictAnti lam) {h : ℝ} (hh : GapAtLeast ε lam h)
     (hbig : (n : ℝ) * (pOf ε : ℝ) * (qOf ε : ℝ) + 1 < h) {k : ℕ} (i : Fin k) {P : Big n k M} (hP : P ∈ ncV ε V k)
@@ -98,6 +129,15 @@ theorem position_perp (hE : IsGlRep E) (hU : IsInfUnitary ε E) (hV : IsKIrrHW �
   rw [hinner, hkey] at hF0
   simpa using hF0
 
+/- English proof (translation)
+Establish `hr : ∀ r, slt i r P ∈ Wp ε E V`. Introduce `r`. Distinguish the cases in `hne : IsEmpty (Fin n × Fin n)`. Rewrite using `[slt_big_one_eq_zero hne (slt i r P)]`. Conclude with `zero_mem _`.
+
+Rewrite `hne` using `[not_isEmpty_iff]`. Take `⟨p⟩` from `hne`. Rewrite using `[slt_eq_slice i r p]`. Conclude with `hP _`. Establish `hn : ‖P‖ ^ 2 = ∑ r, ‖slt i r P‖ ^ 2`.
+
+Establish `h1 : (inner ℂ P P : ℂ) = ∑ r, inner ℂ (slt i r P) (slt i r P)` using `slt_inner_eq_sum i P P`. Simplify using `only [inner_self_eq_norm_sq_to_K] at h1`. Conclude with `h1` after adjusting the coercions. Establish `hc : RCLike.re (inner ℂ (crossOp ε E k i P) P) = ∑ r, RCLike.re (inner ℂ (crossOp ε E 1 0 (slt i r P)) (slt i r P))`. Rewrite using `[slt_inner_eq_sum i, map_sum]`.
+
+Simplify using `only [slt_crossOp]`. Rewrite using `[hn, hc, Finset.mul_sum, Finset.mul_sum]`. Conclude with `Finset.sum_le_sum fun r _ => Wp_bound hE hU hV hmono hh hbig (hr r)`.
+-/
 theorem crossOp_position_bound (hE : IsGlRep E) (hU : IsInfUnitary ε E) (hV : IsKIrrHW ε E (lowK ε lam) V)
     (hmono : StrictAnti lam) {h : ℝ} (hh : GapAtLeast ε lam h)
     (hbig : (n : ℝ) * (pOf ε : ℝ) * (qOf ε : ℝ) + 1 < h) {k : ℕ} (i : Fin k) {P : Big n k M} (hP : ∀ κ, slice i κ P ∈ Wp ε E V) :

@@ -19,6 +19,15 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.CapCoeff
 
+/- English proof (translation)
+Introduce `k hk`. Rewrite using `[← Submodule.Quotient.mk_eq_zero W]`. Use `(Module.forall_dual_apply_eq_zero_iff ℂ _).1 fun f => ?_` and prove the remaining obligations. Set `p : ℂ[X]` to `∑ i ∈ Finset.range n, Polynomial.C (f (Submodule.Quotient.mk (c i))) * Polynomial.X ^ i`. Establish `hp : p = 0`.
+
+Use `Polynomial.funext fun u => ?_` and prove the remaining obligations. Establish `h0 : (Submodule.Quotient.mk (∑ i ∈ Finset.range n, u ^ i • c i) : A ⧸ W) = 0` using `(Submodule.Quotient.mk_eq_zero W).2 (h u)`. Establish `h1` using `congrArg f h0`. Rewrite `h1` using `[← Submodule.mkQ_apply, map_sum, map_sum, map_zero]`. Simplify using `only [p, Polynomial.eval_finset_sum, Polynomial.eval_mul, Polynomial.eval_C, Polynomial.eval_pow, Polynomial.eval_X, Polynomial.eval_zero]`.
+
+Rewrite using `[← h1]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, map_smul, smul_eq_mul, mul_comm]`. Both sides reduce to the same expression. Establish `hc` using `congrArg (fun q : ℂ[X] => q.coeff k) hp`.
+
+Simplify using `only [p, Polynomial.finset_sum_coeff, Polynomial.coeff_C_mul_X_pow, Polynomial.coeff_zero] at hc`. Rewrite `hc` using `[Finset.sum_ite_eq]`. Simplify `hc` using `[Finset.mem_range, hk]`.
+-/
 theorem coeff_mem_of_values {A : Type} [AddCommGroup A] [Module ℂ A] (W : Submodule ℂ A) (n : ℕ) (c : ℕ → A)
     (h : ∀ u : ℂ, ∑ k ∈ Finset.range n, u ^ k • c k ∈ W) : ∀ k < n, c k ∈ W := by
   intro k hk
@@ -42,6 +51,13 @@ theorem coeff_mem_of_values {A : Type} [AddCommGroup A] [Module ℂ A] (W : Subm
   rw [Finset.sum_ite_eq] at hc
   simpa [Finset.mem_range, hk] using hc
 
+/- English proof (translation)
+Take `⟨c, t, h1, h2, h3⟩` from `GlobalTheory.CapelliNext.qdet_shift_next_coeff A m X s`. Establish `hm : ∀ k < m + 1 + 1, c k ∈ Subalgebra.toSubmodule W` using `coeff_mem_of_values _ _ c fun u => by`. Rewrite using `[← h3 u]`. Conclude with `hW _`. Use `⟨fun k => if k < m + 1 + 1 then c k else 0, t, fun k => ?_, ?_, ?_, fun u => ?_⟩` and prove the remaining obligations.
+
+Distinguish the cases in `hk : k < m + 1 + 1`. Simplify using `only [if_pos hk]`. Conclude with `hm k hk`. Simplify using `only [if_neg hk]`. Conclude with `W.zero_mem`.
+
+Simplify `h1` using `only [if_pos (Nat.lt_succ_self (m + 1))]`. Simplify `h2` using `only [if_pos (show m < m + 1 + 1 by omega)]`. Rewrite using `[h3 u]`. Use `Finset.sum_congr rfl fun k hk => ?_` and prove the remaining obligations. Simplify using `only [if_pos (Finset.mem_range.1 hk)]`.
+-/
 theorem qdet_coeffs {A : Type} [Ring A] [Algebra ℂ A] (W : Subalgebra ℂ A) (m : ℕ)
     (X : Fin (m + 1) → Fin (m + 1) → A) (s : ℂ) (hW : ∀ u, Formalism.REAL.qdet X u ∈ W) :
     ∃ (c : ℕ → A) (t : ℂ), (∀ k, c k ∈ W) ∧ c (m + 1) = 1 ∧ c m = ∑ i, X i i + t • (1 : A) ∧
@@ -63,6 +79,13 @@ theorem qdet_coeffs {A : Type} [Ring A] [Algebra ℂ A] (W : Subalgebra ℂ A) (
     refine Finset.sum_congr rfl fun k hk => ?_
     simp only [if_pos (Finset.mem_range.1 hk)]
 
+/- English proof (translation)
+Establish `h1 : Formalism.REAL.qdet X u ∈ Subalgebra.centralizer ℂ (Set.range fun kl : Fin p × Fin p => Y kl.1 kl.2)`. Use `GlobalTheory.CompanionTheory.CTFin.CapFactor.qdet_mem _ _ (fun i j => ?_) _` and prove the remaining obligations. Rewrite using `[Subalgebra.mem_centralizer_iff]`. Introduce and unpack `_ ⟨kl, rfl⟩`. Conclude with `(h i j kl.1 kl.2).symm`.
+
+Establish `h2 : Formalism.REAL.qdet Y v ∈ Subalgebra.centralizer ℂ {Formalism.REAL.qdet X u}`. Use `GlobalTheory.CompanionTheory.CTFin.CapFactor.qdet_mem _ _ (fun k l => ?_) _` and prove the remaining obligations. Rewrite using `[Subalgebra.mem_centralizer_iff]`. Introduce and unpack `_ rfl`. Conclude with `((Subalgebra.mem_centralizer_iff ℂ).1 h1 _ ⟨(k, l), rfl⟩).symm`.
+
+Conclude with `(Subalgebra.mem_centralizer_iff ℂ).1 h2 _ rfl`.
+-/
 theorem qdet_commute_of {A : Type} [Ring A] [Algebra ℂ A] {n p : ℕ} (X : Fin n → Fin n → A) (Y : Fin p → Fin p → A)
     (h : ∀ i j k l, X i j * Y k l = Y k l * X i j) (u v : ℂ) :
     Formalism.REAL.qdet X u * Formalism.REAL.qdet Y v = Formalism.REAL.qdet Y v * Formalism.REAL.qdet X u := by
@@ -78,6 +101,11 @@ theorem qdet_commute_of {A : Type} [Ring A] [Algebra ℂ A] {n p : ℕ} (X : Fin
     exact ((Subalgebra.mem_centralizer_iff ℂ).1 h1 _ ⟨(k, l), rfl⟩).symm
   exact (Subalgebra.mem_centralizer_iff ℂ).1 h2 _ rfl
 
+/- English proof (translation)
+Establish `h : Formalism.REAL.qdet X v ∈ Subalgebra.centralizer ℂ {Formalism.REAL.qdet X u}`. Use `GlobalTheory.CompanionTheory.CTFin.CapFactor.qdet_mem _ _ (fun c d => ?_) _` and prove the remaining obligations. Rewrite using `[Subalgebra.mem_centralizer_iff]`. Introduce and unpack `_ rfl`. Conclude with `Formalism.REAL.qDetCentral A n X hX u c d`.
+
+Conclude with `(Subalgebra.mem_centralizer_iff ℂ).1 h _ rfl`.
+-/
 theorem qdet_commute_self {A : Type} [Ring A] [Algebra ℂ A] {n : ℕ} (X : Fin n → Fin n → A) (hX : Formalism.REAL.GlRel X)
     (u v : ℂ) : Formalism.REAL.qdet X u * Formalism.REAL.qdet X v = Formalism.REAL.qdet X v * Formalism.REAL.qdet X u := by
   have h : Formalism.REAL.qdet X v ∈ Subalgebra.centralizer ℂ {Formalism.REAL.qdet X u} := by
@@ -87,6 +115,9 @@ theorem qdet_commute_self {A : Type} [Ring A] [Algebra ℂ A] {n : ℕ} (X : Fin
     exact Formalism.REAL.qDetCentral A n X hX u c d
   exact (Subalgebra.mem_centralizer_iff ℂ).1 h _ rfl
 
+/- English proof (translation)
+Introduce `a b c d`. Establish `h` using `hX (f a) (f b) (f c) (f d)`. Simplify `h` using `only [hf.eq_iff]`.
+-/
 theorem glRel_comp {A : Type} [Ring A] {n p : ℕ} {X : Fin n → Fin n → A} (hX : Formalism.REAL.GlRel X) {f : Fin p → Fin n}
     (hf : Function.Injective f) : Formalism.REAL.GlRel fun i j => X (f i) (f j) := by
   intro a b c d
@@ -95,6 +126,9 @@ theorem glRel_comp {A : Type} [Ring A] {n p : ℕ} {X : Fin n → Fin n → A} (
 
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E]
 
+/- English proof (translation)
+The claim follows from `Subalgebra.smul_mem _ (Subalgebra.sub_mem _ (hL _) (Subalgebra.smul_mem _ (hL _) _)) _`.
+-/
 theorem Eop_mem_of_lie {N : ℕ} (S : Subalgebra ℂ (Module.End ℂ (Sm E N))) (hL : ∀ X, lie E N X ∈ S) (τ : E →+* ℂ)
     (p q : Fin N) : Eop τ p q ∈ S :=
   Subalgebra.smul_mem _ (Subalgebra.sub_mem _ (hL _) (Subalgebra.smul_mem _ (hL _) _)) _
@@ -107,12 +141,21 @@ def capAlg (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (r s : ℕ)
     Subalgebra ℂ (Module.End ℂ (Sm E (r + s))) :=
   Algebra.adjoin ℂ (gens E r s)
 
+/- English proof (translation)
+The claim follows from `Algebra.subset_adjoin (Or.inl ⟨(τ, u), rfl⟩)`.
+-/
 theorem capR_mem (r s : ℕ) (τ : E →+* ℂ) (u : ℂ) : GlobalTheory.CompanionTheory.CTFin.capR r s τ u ∈ capAlg E r s :=
   Algebra.subset_adjoin (Or.inl ⟨(τ, u), rfl⟩)
 
+/- English proof (translation)
+The claim follows from `Algebra.subset_adjoin (Or.inr ⟨(τ, u), rfl⟩)`.
+-/
 theorem capS_mem (r s : ℕ) (τ : E →+* ℂ) (u : ℂ) : GlobalTheory.CompanionTheory.CTFin.capS r s τ u ∈ capAlg E r s :=
   Algebra.subset_adjoin (Or.inr ⟨(τ, u), rfl⟩)
 
+/- English proof (translation)
+Distinguish the cases in `h : τ = τ'`. Substitute `h` using the available equality. Conclude with `(GlobalTheory.CompanionTheory.CTFin.CapFactor.capR_commute_capS r s τ u v).eq`. Unfold `GlobalTheory.CompanionTheory.CTFin.capR GlobalTheory.CompanionTheory.CTFin.capS`. Conclude with `qdet_commute_of _ _ (fun i j k l => Eop_comm h _ _ _ _) _ _`.
+-/
 theorem capR_mul_capS (r s : ℕ) (τ τ' : E →+* ℂ) (u v : ℂ) :
     GlobalTheory.CompanionTheory.CTFin.capR r s τ u * GlobalTheory.CompanionTheory.CTFin.capS r s τ' v =
       GlobalTheory.CompanionTheory.CTFin.capS r s τ' v * GlobalTheory.CompanionTheory.CTFin.capR r s τ u := by
@@ -122,6 +165,9 @@ theorem capR_mul_capS (r s : ℕ) (τ τ' : E →+* ℂ) (u v : ℂ) :
   · unfold GlobalTheory.CompanionTheory.CTFin.capR GlobalTheory.CompanionTheory.CTFin.capS
     exact qdet_commute_of _ _ (fun i j k l => Eop_comm h _ _ _ _) _ _
 
+/- English proof (translation)
+Unfold `GlobalTheory.CompanionTheory.CTFin.capR`. Distinguish the cases in `h : τ = τ'`. Substitute `h` using the available equality. Conclude with `qdet_commute_self _ (glRel_comp (glRel_Eop τ) (Fin.castAdd_injective r s)) _ _`. Conclude with `qdet_commute_of _ _ (fun i j k l => Eop_comm h _ _ _ _) _ _`.
+-/
 theorem capR_mul_capR (r s : ℕ) (τ τ' : E →+* ℂ) (u v : ℂ) :
     GlobalTheory.CompanionTheory.CTFin.capR r s τ u * GlobalTheory.CompanionTheory.CTFin.capR r s τ' v =
       GlobalTheory.CompanionTheory.CTFin.capR r s τ' v * GlobalTheory.CompanionTheory.CTFin.capR r s τ u := by
@@ -131,6 +177,9 @@ theorem capR_mul_capR (r s : ℕ) (τ τ' : E →+* ℂ) (u v : ℂ) :
     exact qdet_commute_self _ (glRel_comp (glRel_Eop τ) (Fin.castAdd_injective r s)) _ _
   · exact qdet_commute_of _ _ (fun i j k l => Eop_comm h _ _ _ _) _ _
 
+/- English proof (translation)
+Unfold `GlobalTheory.CompanionTheory.CTFin.capS`. Distinguish the cases in `h : τ = τ'`. Substitute `h` using the available equality. Conclude with `qdet_commute_self _ (glRel_comp (glRel_Eop τ) (Fin.natAdd_injective s r)) _ _`. Conclude with `qdet_commute_of _ _ (fun i j k l => Eop_comm h _ _ _ _) _ _`.
+-/
 theorem capS_mul_capS (r s : ℕ) (τ τ' : E →+* ℂ) (u v : ℂ) :
     GlobalTheory.CompanionTheory.CTFin.capS r s τ u * GlobalTheory.CompanionTheory.CTFin.capS r s τ' v =
       GlobalTheory.CompanionTheory.CTFin.capS r s τ' v * GlobalTheory.CompanionTheory.CTFin.capS r s τ u := by
@@ -140,6 +189,9 @@ theorem capS_mul_capS (r s : ℕ) (τ τ' : E →+* ℂ) (u v : ℂ) :
     exact qdet_commute_self _ (glRel_comp (glRel_Eop τ) (Fin.natAdd_injective s r)) _ _
   · exact qdet_commute_of _ _ (fun i j k l => Eop_comm h _ _ _ _) _ _
 
+/- English proof (translation)
+Introduce and unpack `a (⟨⟨τ, u⟩, rfl⟩ | ⟨⟨τ, u⟩, rfl⟩) b (⟨⟨τ', v⟩, rfl⟩ | ⟨⟨τ', v⟩, rfl⟩)`. Conclude with `capR_mul_capR r s _ _ _ _`. Conclude with `capR_mul_capS r s _ _ _ _`. Conclude with `(capR_mul_capS r s _ _ _ _).symm`. Conclude with `capS_mul_capS r s _ _ _ _`.
+-/
 theorem gens_comm (r s : ℕ) : ∀ a ∈ gens E r s, ∀ b ∈ gens E r s, a * b = b * a := by
   rintro a (⟨⟨τ, u⟩, rfl⟩ | ⟨⟨τ, u⟩, rfl⟩) b (⟨⟨τ', v⟩, rfl⟩ | ⟨⟨τ', v⟩, rfl⟩)
   · exact capR_mul_capR r s _ _ _ _
@@ -147,11 +199,17 @@ theorem gens_comm (r s : ℕ) : ∀ a ∈ gens E r s, ∀ b ∈ gens E r s, a * 
   · exact (capR_mul_capS r s _ _ _ _).symm
   · exact capS_mul_capS r s _ _ _ _
 
+/- English proof (translation)
+Introduce `x hx y hy`. Use `letI := Algebra.adjoinCommRingOfComm ℂ (gens_comm (E := E) r s)`. Conclude with `congrArg Subtype.val (mul_comm (⟨x, hx⟩ : Algebra.adjoin ℂ (gens E r s)) ⟨y, hy⟩)`.
+-/
 theorem capAlg_comm (r s : ℕ) : ∀ x ∈ capAlg E r s, ∀ y ∈ capAlg E r s, x * y = y * x := by
   intro x hx y hy
   letI := Algebra.adjoinCommRingOfComm ℂ (gens_comm (E := E) r s)
   exact congrArg Subtype.val (mul_comm (⟨x, hx⟩ : Algebra.adjoin ℂ (gens E r s)) ⟨y, hy⟩)
 
+/- English proof (translation)
+Use `Algebra.adjoin_le ?_` and prove the remaining obligations. Introduce and unpack `_ (⟨⟨τ, u⟩, rfl⟩ | ⟨⟨τ, u⟩, rfl⟩)`. Conclude with `GlobalTheory.CompanionTheory.CTFin.CapFactor.qdet_mem T _ (fun i j => hT τ _ _) _`. Conclude with `GlobalTheory.CompanionTheory.CTFin.CapFactor.qdet_mem T _ (fun i j => hT τ _ _) _`.
+-/
 theorem capAlg_le (r s : ℕ) (T : Subalgebra ℂ (Module.End ℂ (Sm E (r + s))))
     (hT : ∀ τ p q, Eop (a := r + s) τ p q ∈ T) : capAlg E r s ≤ T := by
   refine Algebra.adjoin_le ?_
@@ -159,6 +217,11 @@ theorem capAlg_le (r s : ℕ) (T : Subalgebra ℂ (Module.End ℂ (Sm E (r + s))
   · exact GlobalTheory.CompanionTheory.CTFin.CapFactor.qdet_mem T _ (fun i j => hT τ _ _) _
   · exact GlobalTheory.CompanionTheory.CTFin.CapFactor.qdet_mem T _ (fun i j => hT τ _ _) _
 
+/- English proof (translation)
+Establish `hc : capAlg E r s ≤ Subalgebra.centralizer ℂ {cap (a` using `r + s) τ u} := by`. Use `capAlg_le r s _ fun τ' p q => Eop_mem_of_lie _ (fun X => ?_) τ' p q` and prove the remaining obligations. Rewrite using `[Subalgebra.mem_centralizer_iff]`. Introduce and unpack `_ rfl`. Conclude with `(commute_cap_lie τ u X).eq`.
+
+Conclude with `(Subalgebra.mem_centralizer_iff ℂ).1 (hc hx) _ rfl`.
+-/
 theorem capAlg_commute_cap (r s : ℕ) {x : Module.End ℂ (Sm E (r + s))} (hx : x ∈ capAlg E r s) (τ : E →+* ℂ) (u : ℂ) :
     Commute (cap (a := r + s) τ u) x := by
   have hc : capAlg E r s ≤ Subalgebra.centralizer ℂ {cap (a := r + s) τ u} := by
@@ -168,6 +231,11 @@ theorem capAlg_commute_cap (r s : ℕ) {x : Module.End ℂ (Sm E (r + s))} (hx :
     exact (commute_cap_lie τ u X).eq
   exact (Subalgebra.mem_centralizer_iff ℂ).1 (hc hx) _ rfl
 
+/- English proof (translation)
+Take `⟨c, t, h0, h1, h2, h3⟩` from `qdet_coeffs (capAlg E (m + 1) s) m (fun i j : Fin (m + 1) => Eop (a := m + 1 + s) τ (Fin.castAdd s i) (Fin.castAdd s j)) ((s : ℂ) / 2 - (((m + 1 : ℕ) : ℂ) - 1) / 2) (fun u => by`. Use `capR_mem (E := E) (m + 1) s τ (u - (((m + 1 : ℕ) : ℂ) - 1) / 2)` as an intermediate fact. Rewrite using `[GlobalTheory.CompanionTheory.CTFin.capR, sub_add_cancel] at this)` and apply the resulting hypothesis. Use `⟨c, t, h0, h1, h2, fun u => ?_⟩` and prove the remaining obligations. Rewrite using `[← h3 u, GlobalTheory.CompanionTheory.CTFin.capR]`.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem capR_coeffs (m s : ℕ) (τ : E →+* ℂ) :
     ∃ (c : ℕ → Module.End ℂ (Sm E (m + 1 + s))) (t : ℂ),
       (∀ k, c k ∈ capAlg E (m + 1) s) ∧ c (m + 1) = 1 ∧
@@ -184,6 +252,11 @@ theorem capR_coeffs (m s : ℕ) (τ : E →+* ℂ) :
   congr 1
   ring
 
+/- English proof (translation)
+Take `⟨c, t, h0, h1, -, h3⟩` from `qdet_coeffs (capAlg E r (n + 1)) n (fun i j : Fin (n + 1) => Eop (a := r + (n + 1)) τ (Fin.natAdd r i) (Fin.natAdd r j)) (-((r : ℂ) / 2) - (((n + 1 : ℕ) : ℂ) - 1) / 2) (fun u => by`. Use `capS_mem (E := E) r (n + 1) τ (u - (((n + 1 : ℕ) : ℂ) - 1) / 2)` as an intermediate fact. Rewrite using `[GlobalTheory.CompanionTheory.CTFin.capS, sub_add_cancel] at this)` and apply the resulting hypothesis. Use `⟨c, h0, h1, fun u => ?_⟩` and prove the remaining obligations. Rewrite using `[← h3 u, GlobalTheory.CompanionTheory.CTFin.capS]`.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem capS_coeffs (r n : ℕ) (τ : E →+* ℂ) :
     ∃ c : ℕ → Module.End ℂ (Sm E (r + (n + 1))),
       (∀ k, c k ∈ capAlg E r (n + 1)) ∧ c (n + 1) = 1 ∧
@@ -199,6 +272,13 @@ theorem capS_coeffs (r n : ℕ) (τ : E →+* ℂ) :
   congr 1
   ring
 
+/- English proof (translation)
+Introduce `w hw`. Proceed by induction on `hw using Subgroup.closure_induction with`. Consider the case `mem x hx`. Take `⟨v, rfl⟩` from `hx`. Conclude with `hF v`.
+
+Consider the case `one => intro g`. Rewrite using `[one_mul]`. Consider the case `mul x y _ _ hx hy => intro g`. Rewrite using `[mul_assoc, hx, hy]`. Consider the case `inv x _ hx => intro g`.
+
+Rewrite using `[← hx (x⁻¹ * g), mul_inv_cancel_left]`.
+-/
 theorem leftInv_closure {N r : ℕ} (F : Sm E N)
     (hF : ∀ (v : BlockIx N r → Ad E) (g : GA E N), F.1 (unip v * g) = F.1 g) :
     ∀ w ∈ Subgroup.closure (Set.range (unip : (BlockIx N r → Ad E) → GA E N)), ∀ g, F.1 (w * g) = F.1 g := by
@@ -211,6 +291,9 @@ theorem leftInv_closure {N r : ℕ} (F : Sm E N)
   | mul x y _ _ hx hy => intro g; rw [mul_assoc, hx, hy]
   | inv x _ hx => intro g; rw [← hx (x⁻¹ * g), mul_inv_cancel_left]
 
+/- English proof (translation)
+Establish `hc` using `capAlg_le (E := E) r s (GlobalTheory.SpehInfChar.leftInvAlg (Subgroup.closure (Set.range (unip : (BlockIx (r + s) r → Ad E) → GA E (r + s))))) (fun τ p q => GlobalTheory.SpehInfChar.Eop_mem_leftInvAlg _ τ p q)`. Conclude with `hc hx F (leftInv_closure F hF) (unip v) (Subgroup.subset_closure ⟨v, rfl⟩) g`.
+-/
 theorem capAlg_leftInv (r s : ℕ) {x : Module.End ℂ (Sm E (r + s))} (hx : x ∈ capAlg E r s) (F : Sm E (r + s))
     (hF : ∀ (v : BlockIx (r + s) r → Ad E) (g : GA E (r + s)), F.1 (unip v * g) = F.1 g)
     (v : BlockIx (r + s) r → Ad E) (g : GA E (r + s)) : (x F).1 (unip v * g) = (x F).1 g := by
@@ -219,6 +302,11 @@ theorem capAlg_leftInv (r s : ℕ) {x : Module.End ℂ (Sm E (r + s))} (hx : x �
     (fun τ p q => GlobalTheory.SpehInfChar.Eop_mem_leftInvAlg _ τ p q)
   exact hc hx F (leftInv_closure F hF) (unip v) (Subgroup.subset_closure ⟨v, rfl⟩) g
 
+/- English proof (translation)
+Introduce `E _ _ _ r s hr hs`. Take `⟨m, rfl⟩ : ∃ m, r = m + 1` from `⟨r - 1, by omega⟩`. Take `⟨n, rfl⟩ : ∃ n, s = n + 1` from `⟨s - 1, by omega⟩`. Use `choose a t ha0 ha1 ha2 ha3 using capR_coeffs (E := E) m (n + 1)`. Use `choose b hb0 hb1 hb2 using capS_coeffs (E := E) (m + 1) n`.
+
+Conclude with `⟨capAlg E (m + 1) (n + 1), a, b, t, capAlg_comm _ _, fun x hx τ u => capAlg_commute_cap _ _ hx τ u, fun x hx F hF v g => capAlg_leftInv _ _ hx F hF v g, ha0, hb0, ha1, hb1, ha2, ha3, hb2⟩`.
+-/
 theorem exists_coeffs : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (r s : ℕ), 0 < r → 0 < s →
   ∃ (S : Subalgebra ℂ (Module.End ℂ (Sm E (r + s)))) (a b : (E →+* ℂ) → ℕ → Module.End ℂ (Sm E (r + s))) (t : (E →+* ℂ) → ℂ),
     (∀ x ∈ S, ∀ y ∈ S, x * y = y * x) ∧

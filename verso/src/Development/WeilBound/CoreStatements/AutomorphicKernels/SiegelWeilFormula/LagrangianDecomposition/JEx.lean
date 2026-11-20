@@ -8,6 +8,17 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 
 namespace PositivityTheory.SiegelWeilFormula.Ald
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ d n h Y b ε e1 e2`. Establish `: IsTopologicalRing (AE F E)` using `IsModuleTopology.isTopologicalRing (AF F) _`. Establish `: IsTopologicalGroup (G2 σ Y)` using `Subgroup.instIsTopologicalGroupSubtypeMem _`. Set `j : G2 σ Y →* d.G` to `(jHom d h b).codRestrict _ (jHom_mem d h b ε e1 e2)`. Establish `hfr : ∀ g, inFrame d.b (j g) = blk h (inFrame b g) 1` using `fun g => by`.
+
+Rewrite using `[inFrame_eq]`. Use `show incM F (d.b⁻¹).1 * (jHom d h b g).1 * incM F d.b.1 = _`. Rewrite using `[jHom_val]`. Simplify using `only [← Matrix.mul_assoc, incM_inv_mul, Matrix.one_mul]`. Rewrite using `[Matrix.mul_assoc, incM_inv_mul, Matrix.mul_one]`.
+
+Use `⟨j, ?_, fun g => by rw [hfr]; exact blk_sub h _ _, fun g => by rw [hfr]; exact blk_out h _⟩` and prove the remaining obligations. Establish `h1 : Continuous fun g : G2 σ Y => g.1.1` using `Units.continuous_val.comp continuous_subtype_val`. Establish `hv : Continuous fun g : G2 σ Y => (jHom d h b g).1`. Simplify using `only [jHom_val, inFrame_eq]`. Conclude with `(continuous_const.matrix_mul ((((continuous_const.matrix_mul h1).matrix_mul continuous_const).matrix_fromBlocks continuous_const continuous_const continuous_const).matrix_submatrix _ _)).matrix_mul continuous_const`.
+
+Establish `hc : Continuous (jHom d h (Y` using `Y) b) := by`. Use `Units.continuous_iff.2 ⟨hv, ?_⟩` and prove the remaining obligations. Establish `e : (fun g : G2 σ Y => ((jHom d h b g)⁻¹ : GL _ _).1) = fun g : G2 σ Y => (jHom d h b g⁻¹).1`. Use function extensionality and compare the values at `fun g => by rw [map_inv]`. Rewrite using `[e]`.
+
+Conclude with `hv.comp continuous_inv`. Conclude with `hc.subtype_mk _`.
+-/
 theorem jEx : JEx := by
   intro F E _ _ _ _ _ σ d n h Y b ε e1 e2
   have : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) _

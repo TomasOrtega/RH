@@ -19,6 +19,21 @@ section Twist
 variable {S : Type u} [CommRing S] {Ω : Type w} [Field Ω] [Algebra S Ω] {N : ℕ} {x : Fin (N + 1) → Ω}
   {E : Type v} [AddCommGroup E] [Module Ω E] [Module S E] [IsScalarTower S Ω E]
 
+/- English proof (translation)
+Use `SubSystem.ext_sub fun I => le_antisymm ?_ ?_` and prove the remaining obligations. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨q, hq, z, hz, rfl⟩`. Express the relevant statement in the definitionally equal form `z ∈ Submodule.span _ _ at hz`. Proceed by induction on `hz using Submodule.span_induction with`.
+
+Consider the case `mem z hz`. Take `⟨p, hp, y, hy, rfl⟩` from `hz`. Use `Submodule.subset_span ⟨q * p, Submodule.subset_span ⟨q, hq, p, hp, rfl⟩, y, hy, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_smul]`. Consider the case `zero => rw [smul_zero]`.
+
+Conclude with `Submodule.zero_mem _`. Consider the case `add a b _ _ ha hb => rw [smul_add]`. Conclude with `Submodule.add_mem _ ha hb`. Consider the case `smul a z _ hz`. Express the relevant statement in the definitionally equal form `q • ((a : Ω) • z) ∈ _`.
+
+Rewrite using `[smul_smul, mul_comm, ← smul_smul]`. Conclude with `Submodule.smul_mem _ a hz`. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨r, hr, y, hy, rfl⟩`. Express the relevant statement in the definitionally equal form `r ∈ Submodule.span _ _ at hr`.
+
+Proceed by induction on `hr using Submodule.span_induction with`. Consider the case `mem r hr`. Take `⟨q, hq, p, hp, rfl⟩` from `hr`. Use `Submodule.subset_span ⟨q, hq, p • y, Submodule.subset_span ⟨p, hp, y, hy, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_eq_mul, mul_smul]`.
+
+Consider the case `zero => rw [zero_smul]`. Conclude with `Submodule.zero_mem _`. Consider the case `add a b _ _ ha hb => rw [add_smul]`. Conclude with `Submodule.add_mem _ ha hb`. Consider the case `smul a r _ hr`.
+
+Express the relevant statement in the definitionally equal form `((a : Ω) * r) • y ∈ _`. Rewrite using `[mul_smul]`. Conclude with `Submodule.smul_mem _ a hr`.
+-/
 theorem twist_twist (F : SubSystem S x E) (P Q : SubSystem S x Ω) :
     (F.twist P).twist Q = F.twist (P.twist Q) := by
   refine SubSystem.ext_sub fun I => le_antisymm ?_ ?_
@@ -56,6 +71,9 @@ def powsBundle : (t : ℕ) → (Fin t → LineBundle S x) → (Fin t → ℕ) �
   | t + 1, L, n => (powsBundle t (fun j => L j.castSucc) (fun j => n j.castSucc)).tensorProd
       ((L (Fin.last t)).powBundle (n (Fin.last t)))
 
+/- English proof (translation)
+The claim follows from `| 0, _, _ => by change F = F.twist (twistSys S x 0) rw [SubSystem.twist_twistSys_zero] | t + 1, L, n => by change (F.twistPows t (fun j => (L j.castSucc).toSubSystem) (fun j => n j.castSucc)).twist (((L (Fin.last t)).toSubSystem).pow (n (Fin.last t))) = _ rw [twistPows_eq F t, tw …`.
+-/
 theorem twistPows_eq (F : SubSystem S x E) : ∀ (t : ℕ) (L : Fin t → LineBundle S x) (n : Fin t → ℕ),
     F.twistPows t (fun j => (L j).toSubSystem) n = F.twist (powsBundle t L n).toSubSystem
   | 0, _, _ => by
@@ -76,6 +94,9 @@ variable {S : Type u} [CommRing S] {Ω : Type w} [Field Ω] [Algebra S Ω] {N : 
 
 omit [IsScalarTower S Ω E] in
 
+/- English proof (translation)
+The claim follows from `Submodule.span_mono fun _ ⟨m, s, a, e, hs, hse, hm, hae, hy⟩ => ⟨m, s, a, e, hs, hse, h a hm, hae, hy⟩`.
+-/
 theorem tilde_mono {M M' : FinGradedSub (S := S) (x := x) E} (h : ∀ c, M.piece c ≤ M'.piece c) (c : ℤ)
     (I : Chart x) : M.tilde c I ≤ M'.tilde c I :=
   Submodule.span_mono fun _ ⟨m, s, a, e, hs, hse, hm, hae, hy⟩ => ⟨m, s, a, e, hs, hse, h a hm, hae, hy⟩
@@ -142,11 +163,25 @@ def tildeFam (M : FinGradedSub (S := S) (x := x) E) : SubFamily S x E where
       exact Submodule.smul_mem _ _ hJ
 
 omit [IsScalarTower S Ω E] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem tildeFam_toSubSystem (M : FinGradedSub (S := S) (x := x) E) :
     (tildeFam M).toSubSystem = M.tildeSys 0 := rfl
 
 omit [Module S E] [IsScalarTower S Ω E] in
 
+/- English proof (translation)
+Take `⟨T, hT⟩` from `hfg`. Establish `hsub : (singleChart hxi).1 ⊆ I.1` using `Finset.singleton_subset_iff.mpr hi`. Establish `key : ∀ z, z ∈ Submodule.span (chartRing S x (singleChart hxi)) (T : Set E) → z ∈ Submodule.span (chartRing S x I) (T : Set E)` using `fun z hz => by`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem z hz => exact Submodule.subset_span hz`.
+
+Consider the case `zero => exact Submodule.zero_mem _`. Consider the case `add a b _ _ ha hb => exact Submodule.add_mem _ ha hb`. Consider the case `smul b z _ hz => exact Submodule.smul_mem _ (chartIncl hsub b) hz`. Use `⟨T, le_antisymm ?_ ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.span_le]`.
+
+Introduce `y hy`. Conclude with `F.mono _ I hsub y (hT ▸ Submodule.subset_span hy)`. Introduce `y hy`. Take `⟨a, ⟨u, hu⟩, hay⟩` from `(F.mem_iff _ I hsub y).mp hy`. Rewrite `hay` using `[← hT]`.
+
+Establish `h2` using `key _ hay`. Establish `hinv : ((↑u⁻¹ : chartRing S x I) : Ω) * (a : Ω) = 1`. Use `congrArg Subtype.val (Units.inv_mul u)` as an intermediate fact. Rewrite `this` using `[hu]`. Conclude with `this`.
+
+Establish `hy' : y = (↑u⁻¹ : chartRing S x I) • ((a : Ω) • y)`. Express the relevant statement in the definitionally equal form `y = ((↑u⁻¹ : chartRing S x I) : Ω) • ((a : Ω) • y)`. Rewrite using `[smul_smul, hinv, one_smul]`. Rewrite using `[hy']`. Conclude with `Submodule.smul_mem _ _ h2`.
+-/
 theorem fg_of_single (F : SubFamily S x E) (I : Chart x) {i : Fin (N + 1)} (hi : i ∈ I.1) (hxi : x i ≠ 0)
     (hfg : (F.sub (singleChart hxi)).FG) : (F.sub I).FG := by
   obtain ⟨T, hT⟩ := hfg
@@ -178,6 +213,9 @@ theorem fg_of_single (F : SubFamily S x E) (I : Chart x) {i : Fin (N + 1)} (hi :
 
 omit [Module S E] [IsScalarTower S Ω E] in
 
+/- English proof (translation)
+Take `⟨i, hi⟩` from `I.2.1`. Establish `hxi : x i ≠ 0` using `(mem_support x).mp (I.2.2 hi)`. Use `Domination.isNoetherianRing_chartRing (S := S) hxi` as an intermediate fact. Establish `: IsNoetherian (chartRing S x (singleChart hxi)) (F.sub (singleChart hxi))` using `isNoetherian_of_fg_of_noetherian _ (hF _)`. Conclude with `fg_of_single G I hi hxi (Submodule.FG.of_le_of_isNoetherian (hle _))`.
+-/
 theorem fg_of_le [IsNoetherianRing S] (F G : SubFamily S x E) (hF : ∀ I, (F.sub I).FG)
     (hle : ∀ I, G.sub I ≤ F.sub I) (I : Chart x) : (G.sub I).FG := by
   obtain ⟨i, hi⟩ := I.2.1
@@ -215,6 +253,9 @@ def gsup (M M' : FinGradedSub (S := S) (x := x) E) : FinGradedSub (S := S) (x :=
 
 omit [IsScalarTower S Ω E] in
 
+/- English proof (translation)
+Use `le_antisymm (Submodule.span_le.mpr ?_) (sup_le (tilde_mono (fun _ => le_sup_left) c I) (tilde_mono (fun _ => le_sup_right) c I))` and prove the remaining obligations. Introduce and unpack `_ ⟨m, s, a, e, hs, hse, hm, hae, rfl⟩`. Take `⟨p, hp, q, hq, rfl⟩` from `Submodule.mem_sup.mp hm`. Rewrite using `[smul_add]`. Conclude with `Submodule.add_mem_sup (Submodule.subset_span ⟨p, s, a, e, hs, hse, hp, hae, rfl⟩) (Submodule.subset_span ⟨q, s, a, e, hs, hse, hq, hae, rfl⟩)`.
+-/
 theorem tilde_gsup (M M' : FinGradedSub (S := S) (x := x) E) (c : ℤ) (I : Chart x) :
     (gsup M M').tilde c I = M.tilde c I ⊔ M'.tilde c I := by
   refine le_antisymm (Submodule.span_le.mpr ?_)
@@ -261,6 +302,17 @@ def gmul (M : FinGradedSub (S := S) (x := x) E) {s : ℕ} (h : Fin s → Poly S 
       | smul r z _ hz => rw [smul_comm]; exact Submodule.smul_mem _ r hz
     exact key m (hspan b hm)
 
+/- English proof (translation)
+Use `conv_lhs => rw [← sum_homogeneousComponent c, Finset.sum_mul, map_sum]`. Establish `each : ∀ i, homogeneousComponent n (homogeneousComponent i c * h) = if i + d = n then homogeneousComponent i c * h else 0` using `fun i => by`. Rewrite using `[homogeneousComponent_of_mem ((homogeneousComponent_isHomogeneous i c).mul hh)]`. Distinguish the cases in `hi : i + d = n`. Rewrite using `[if_pos hi.symm, if_pos hi]`.
+
+Rewrite using `[if_neg (Ne.symm hi), if_neg hi]`. Repeatedly rewrite using `[each]`. Rewrite using `[Finset.sum_eq_single (n - d)]`. Distinguish the cases in `hdn : d ≤ n`. Rewrite using `[if_pos (by omega), if_pos hdn]`.
+
+Rewrite using `[if_neg hdn]`. Distinguish the cases in `h0 : n - d + d = n`. It suffices to derive a contradiction. Use linear arithmetic over natural numbers and integers. Rewrite using `[if_neg h0]`.
+
+Introduce `i _ hi`. Rewrite using `[if_neg (by omega)]`. Introduce `hn`. Distinguish the cases in `h0 : n - d + d = n`. Rewrite using `[if_pos h0, homogeneousComponent_eq_zero _ _ (by simp at hn; omega), zero_mul]`.
+
+Rewrite using `[if_neg h0]`.
+-/
 theorem homogeneousComponent_mul_form (c h : Poly S N) {d : ℕ} (hh : h.IsHomogeneous d) (n : ℕ) :
     homogeneousComponent n (c * h) = if d ≤ n then homogeneousComponent (n - d) c * h else 0 := by
   classical
@@ -286,6 +338,13 @@ theorem homogeneousComponent_mul_form (c h : Poly S N) {d : ℕ} (hh : h.IsHomog
     · rw [if_pos h0, homogeneousComponent_eq_zero _ _ (by simp at hn; omega), zero_mul]
     · rw [if_neg h0]
 
+/- English proof (translation)
+Rewrite `hfJ` using `[← hJ]`. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun _).mp hfJ`. Establish `hf' : f = ∑ l, (if d l ≤ e then homogeneousComponent (e - d l) (c l) * h l else 0)` using `by conv_lhs => rw [← homogeneousComponent_eq_self hf, ← hc, map_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[smul_eq_mul, homogeneousComponent_mul_form _ _ (hh l)]`.
+
+Rewrite using `[hf', map_sum, Finset.sum_smul]`. Use `Submodule.sum_mem _ fun l _ => ?_` and prove the remaining obligations. Distinguish the cases in `hle : d l ≤ e`. Rewrite using `[if_pos hle, map_mul, mul_comm, mul_smul]`. Use `Submodule.subset_span ⟨l, a + ((e - d l : ℕ) : ℤ), _, M.smul_mem _ _ _ _ (homogeneousComponent_isHomogeneous _ _) hz, ?_, rfl⟩` and prove the remaining obligations.
+
+Rewrite using `[Nat.cast_sub hle]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg hle, map_zero, zero_smul]`. Conclude with `Submodule.zero_mem _`.
+-/
 theorem smul_mem_gmul (M : FinGradedSub (S := S) (x := x) E) {s : ℕ} (h : Fin s → Poly S N) (d : Fin s → ℕ)
     (hh : ∀ l, (h l).IsHomogeneous (d l)) {J : Ideal (Poly S N)} (hJ : Ideal.span (Set.range h) = J)
     {f : Poly S N} {e : ℕ} (hfJ : f ∈ J) (hf : f.IsHomogeneous e) {a : ℤ} {z : E} (hz : z ∈ M.piece a) :
@@ -307,6 +366,19 @@ theorem smul_mem_gmul (M : FinGradedSub (S := S) (x := x) E) {s : ℕ} (h : Fin 
   · rw [if_neg hle, map_zero, zero_smul]
     exact Submodule.zero_mem _
 
+/- English proof (translation)
+Take `⟨i, hi⟩` from `I.2.1`. Establish `hxi : x i ≠ 0` using `(mem_support x).mp (I.2.2 hi)`. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨m, t, a, e, ht, hte, hm, hae, rfl⟩`. Establish `ht0` using `eval_ne_zero_of_mem_monos I ht`.
+
+Express the relevant statement in the definitionally equal form `m ∈ Submodule.span S _ at hm`. Proceed by induction on `hm using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨l, b, m, hm, hb, rfl⟩` from `hz`. Establish `hX0 : aeval x (X i ^ d l : Poly S N) ≠ 0`.
+
+Rewrite using `[map_pow, aeval_X]`. Conclude with `pow_ne_zero _ hxi`. Establish `hq : aeval x (h l) / aeval x (X i ^ d l : Poly S N) ∈ (idealSys x J).sub I` using `Submodule.subset_span ⟨h l, X i ^ d l, d l, hJ l, pow_mem (X_mem_monos hi) _, hh l, isHomogeneous_X_pow i _, rfl⟩`. Establish `hy : (aeval x t)⁻¹ • (aeval x (X i ^ d l : Poly S N) • m) ∈ F.sub I`. Use `hF I (Submodule.subset_span ⟨_, t, a, e, ht, hte, ?_, hae, rfl⟩)` and prove the remaining obligations.
+
+Use `M.smul_mem (d l) b (X i ^ d l) m (isHomogeneous_X_pow i _) hm` as an intermediate fact. Rewrite `this` using `[hb]`. Then use the resulting hypothesis. Use `Submodule.subset_span ⟨_, hq, _, hy, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_smul, smul_smul, smul_smul]`. Use `congr 1`.
+
+Clear the denominators using the available nonvanishing facts. Consider the case `zero => rw [smul_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add a b _ _ ha hb => rw [smul_add]`. Conclude with `Submodule.add_mem _ ha hb`.
+
+Consider the case `smul r z _ hz => rw [smul_comm]`. Conclude with `Submodule.smul_of_tower_mem _ r hz`.
+-/
 theorem tilde_gmul_le (M : FinGradedSub (S := S) (x := x) E) {s : ℕ} (h : Fin s → Poly S N) (d : Fin s → ℕ)
     (hh : ∀ l, (h l).IsHomogeneous (d l)) {J : Ideal (Poly S N)} (hJ : ∀ l, h l ∈ J) (F : SubSystem S x E)
     (hF : ∀ I, M.tilde 0 I ≤ F.sub I) (I : Chart x) :
@@ -337,6 +409,9 @@ theorem tilde_gmul_le (M : FinGradedSub (S := S) (x := x) E) {s : ℕ} (h : Fin 
   | add a b _ _ ha hb => rw [smul_add]; exact Submodule.add_mem _ ha hb
   | smul r z _ hz => rw [smul_comm]; exact Submodule.smul_of_tower_mem _ r hz
 
+/- English proof (translation)
+Introduce `f hf` and use `by rw [← sum_homogeneousComponent f] exact Ideal.sum_mem _ fun i _ => h _ i (hJ f hf i) (homogeneousComponent_isHomogeneous i f)`.
+-/
 theorem le_of_forms {J P : Ideal (Poly S N)} (hJ : ∀ f ∈ J, ∀ d : ℕ, homogeneousComponent d f ∈ J)
     (h : ∀ (f : Poly S N) (e : ℕ), f ∈ J → f.IsHomogeneous e → f ∈ P) : J ≤ P := fun f hf => by
   rw [← sum_homogeneousComponent f]

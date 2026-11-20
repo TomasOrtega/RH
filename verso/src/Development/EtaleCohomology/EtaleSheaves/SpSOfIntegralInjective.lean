@@ -6,6 +6,11 @@ open CategoryTheory Limits AlgebraicGeometry GlobalTheory.EtC
 namespace LateralTheory.E.ULAPf
 open LateralTheory.E.t_E3Cut
 
+/- English proof (translation)
+Introduce `r hr`. Use `letI := g.hom.toAlgebra`. Establish `: Algebra.IsIntegral C D` using `⟨hi⟩`. Establish `hk : RingHom.ker (algebraMap C D) ≤ r`. Rewrite using `[(RingHom.injective_iff_ker_eq_bot (algebraMap C D)).1 hj]`.
+
+Conclude with `bot_le`. Take `⟨Q, -, hQ, hQc⟩` from `Ideal.exists_ideal_over_prime_of_isIntegral r ⊥ (by rw [← RingHom.ker_eq_comap_bot (algebraMap C D)]; exact hk)`. Conclude with `⟨Q, hQ, hQc⟩`.
+-/
 theorem spS_of_integral_injective {C D : CommRingCat.{0}} (g : C ⟶ D) (hi : g.hom.IsIntegral)
     (hj : Function.Injective g.hom) : SpS g := by
   intro r hr
@@ -16,12 +21,28 @@ theorem spS_of_integral_injective {C D : CommRingCat.{0}} (g : C ⟶ D) (hi : g.
   obtain ⟨Q, -, hQ, hQc⟩ := Ideal.exists_ideal_over_prime_of_isIntegral r ⊥ (by rw [← RingHom.ker_eq_comap_bot (algebraMap C D)]; exact hk)
   exact ⟨Q, hQ, hQc⟩
 
+/- English proof (translation)
+Introduce `r hr`. Take `⟨Q0, hQ0, hQ0c⟩` from `hf r hr`. Take `⟨Q, hQ, hQc⟩` from `hg Q0 hQ0`. Conclude with `⟨Q, hQ, by rw [CommRingCat.hom_comp, ← Ideal.comap_comap, hQc, hQ0c]⟩`.
+-/
 theorem SpS.comp {C D E : CommRingCat.{0}} {f : C ⟶ D} {g : D ⟶ E} (hf : SpS f) (hg : SpS g) : SpS (f ≫ g) := by
   intro r hr
   obtain ⟨Q0, hQ0, hQ0c⟩ := hf r hr
   obtain ⟨Q, hQ, hQc⟩ := hg Q0 hQ0
   exact ⟨Q, hQ, by rw [CommRingCat.hom_comp, ← Ideal.comap_comap, hQc, hQ0c]⟩
 
+/- English proof (translation)
+Introduce `H q _ i A X h hq hA hX hIE hloc C c hc`. Take `⟨p1, p2, p3, p4, p5, p6⟩` from `hP`. Use `hS H q i (pC A ≫ h) hq (fun _ c => AlgRes c) ?_ ?_ ?_ C c hc` and prove the remaining obligations. Introduce `C D E Z c f g u v hpo _ hf hg`. Establish `hv : AlgRes v` using `p3 f g u v hpo (p2 c f hf)`.
+
+Use `p1 (c ≫ g) v hg hv` as an intermediate fact. Rewrite using `[hpo.w, ← Category.assoc]`. Conclude with `this`. Introduce `C D c f hc hf`. Conclude with `p1 c f hc (p4 f hf)`.
+
+Introduce `C c hc`. Take `⟨D0, g0, hg0i, hg0j, hg0a⟩` from `hE C`. Take `⟨D, g1, hg1i, hg1s, hg1d⟩` from `hD D0 hg0a`. Establish `hgi : (g0 ≫ g1).hom.IsIntegral`. Rewrite using `[CommRingCat.hom_comp]`.
+
+Conclude with `RingHom.IsIntegral.trans _ _ hg0i hg1i`. Use `⟨D, g0 ≫ g1, hgi, SpS.comp (spS_of_integral_injective g0 hg0i hg0j) hg1s, p1 c (g0 ≫ g1) hc (p5 _ hgi), ?_⟩` and prove the remaining obligations. Introduce `r hr`. Use `hr` as an intermediate fact. Take `⟨hdom, haic⟩` from `hg1d r`.
+
+Set `o : D ⟶ CommRingCat.of (Localization.AtPrime r)` to `CommRingCat.ofHom (algebraMap D _)`. Establish `ho : AlgRes o` using `p6 D (Localization.AtPrime r) r.primeCompl`. Use `⟨CommRingCat.of (Localization.AtPrime r), o, IsLocalRing.maximalIdeal _, hL D (Localization.AtPrime r) r.primeCompl, inferInstance, IsLocalization.AtPrime.comap_maximalIdeal _ r, ?_⟩` and prove the remaining obligations. Use `haveI : IsDomain (CommRingCat.of (Localization.AtPrime r)) := hdom`. Use `haveI : IsLocalRing (CommRingCat.of (Localization.AtPrime r)) := inferInstanceAs (IsLocalRing (Localization.AtPrime r))`.
+
+Conclude with `hU H q i h hq hA hX hIE hloc _ (c ≫ (g0 ≫ g1) ≫ o) haic (p1 c _ hc (p1 _ o (p5 _ hgi) ho))`.
+-/
 theorem ULA_of (hS : Stalk) (hP : AlgResProps) (hE : AICExt) (hD : DomCover) (hL : LocIE) (hU : ULAStalk) : ULA := by
   intro H q _ i A X h hq hA hX hIE hloc C c hc
   obtain ⟨p1, p2, p3, p4, p5, p6⟩ := hP

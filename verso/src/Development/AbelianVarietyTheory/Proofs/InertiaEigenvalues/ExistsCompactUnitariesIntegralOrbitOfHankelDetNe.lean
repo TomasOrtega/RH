@@ -5,6 +5,9 @@ open GlobalTheory.JR Matrix MeasureTheory Filter Topology
 
 namespace GlobalTheory.JR.SuppBdd
 
+/- English proof (translation)
+Establish `: ((Matrix.unitaryGroup (Fin n) E : Set (Matrix (Fin n) (Fin n) E))) = {U | star U * U = 1} ∩ {U | U * star U = 1}`. Use extensionality with `U`. Simplify using `[Matrix.unitaryGroup, Unitary.mem_iff]`. Rewrite using `[this]`. Conclude with `(isClosed_eq (continuous_star.mul continuous_id) continuous_const).inter (isClosed_eq (continuous_id.mul continuous_star) continuous_const)`.
+-/
 theorem isClosed_unitary_set {n : ℕ} {E : Type} [Field E] [TopologicalSpace E] [IsTopologicalRing E] [T2Space E]
     [StarRing E] [ContinuousStar E] :
     IsClosed ((Matrix.unitaryGroup (Fin n) E : Set (Matrix (Fin n) (Fin n) E))) := by
@@ -15,6 +18,11 @@ theorem isClosed_unitary_set {n : ℕ} {E : Type} [Field E] [TopologicalSpace E]
   exact (isClosed_eq (continuous_star.mul continuous_id) continuous_const).inter
     (isClosed_eq (continuous_id.mul continuous_star) continuous_const)
 
+/- English proof (translation)
+Establish `hg : star g.1 * g.1 = 1` using `Unitary.star_mul_self_of_mem g.2`. Establish `hg' : g.1 * star g.1 = 1` using `Unitary.mul_star_self_of_mem g.2`. Proceed by induction on `j with`. Consider the case `zero => simp [hg']`. Consider the case `succ j ih`.
+
+Rewrite using `[pow_succ, ih, pow_succ]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by rw [hg, Matrix.mul_one]; simp only [Matrix.mul_assoc]`.
+-/
 theorem pow_conj {n : ℕ} {E : Type} [CommRing E] [StarRing E] (g : Matrix.unitaryGroup (Fin n) E)
     (A : Matrix (Fin n) (Fin n) E) (j : ℕ) : (g.1 * A * star g.1) ^ j = g.1 * A ^ j * star g.1 := by
   have hg : star g.1 * g.1 = 1 := Unitary.star_mul_self_of_mem g.2
@@ -27,6 +35,13 @@ theorem pow_conj {n : ℕ} {E : Type} [CommRing E] [StarRing E] (g : Matrix.unit
           simp only [Matrix.mul_assoc]
       _ = _ := by rw [hg, Matrix.mul_one]; simp only [Matrix.mul_assoc]
 
+/- English proof (translation)
+Establish `hg : star g.1 * g.1 = 1` using `Unitary.star_mul_self_of_mem g.2`. Use extensionality with `i j`. Establish `h1 : ((g.1 * Y.1.1 * star g.1) ^ (j : ℕ)) *ᵥ (g.1 *ᵥ Y.2.1) = g.1 *ᵥ ((Y.1.1 ^ (j : ℕ)) *ᵥ Y.2.1)`. Rewrite using `[pow_conj, mulVec_mulVec, mulVec_mulVec]`. Use `congr 1`.
+
+Rewrite using `[Matrix.mul_assoc, hg, Matrix.mul_one]`. Establish `h2 : Bm (actU g Y).toGl i j = (g.1 *ᵥ ((Y.1.1 ^ (j : ℕ)) *ᵥ Y.2.1)) i`. Rewrite using `[← h1]`. Both sides reduce to the same expression. Rewrite using `[h2, Matrix.mul_apply]`.
+
+Simplify using `only [mulVec, dotProduct, Bm, Hn.toGl, of_apply]`.
+-/
 theorem Bm_actU {n : ℕ} {F E : Type} [CommRing F] [CommRing E] [StarRing E] [Algebra F E]
     (g : Matrix.unitaryGroup (Fin n) E) (Y : Hn n F E) :
     Bm (actU g Y).toGl = g.1 * Bm Y.toGl := by
@@ -41,6 +56,23 @@ theorem Bm_actU {n : ℕ} {F E : Type} [CommRing F] [CommRing E] [StarRing E] [A
   rw [h2, Matrix.mul_apply]
   simp only [mulVec, dotProduct, Bm, Hn.toGl, of_apply]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ n Y hD`. Use `haveI : LocallyCompactSpace E := Unram.lcE (F := F)`. Use `haveI : ProperSpace E := ProperSpace.of_locallyCompactSpace E`. Use `haveI : NormedStarGroup E := ⟨fun x => (Unram.norm_star (F := F) x).le⟩`. Use `set B := Bm Y.toGl with hBdef`.
+
+Establish `hB : IsUnit B.det`. Establish `h` using `GlobalTheory.JR.NormalFormL.hankel_eq Y.toGl`. Establish `: (Cm Y.toGl * B).det ≠ 0` using `by rw [h]; exact hD`. Rewrite `this` using `[det_mul]`. Conclude with `isUnit_iff_ne_zero.mpr (right_ne_zero_of_mul this)`.
+
+Set `Φ : Matrix (Fin n) (Fin n) E × (Fin n → E) → Matrix (Fin n) (Fin n) E` to `fun p => (Matrix.of fun i (j : Fin n) => ((p.1 ^ (j : ℕ)) *ᵥ p.2) i) * B⁻¹`. Set `S : Set (Matrix (Fin n) (Fin n) E × (Fin n → E))` to `{A | ∀ i j, ‖A i j‖ ≤ 1} ×ˢ {v | ∀ i, ‖v i‖ ≤ 1}`. Establish `hS : IsCompact S`. Apply `IsCompact.prod` to reduce the goal to its premises. Establish `: {A : Matrix (Fin n) (Fin n) E | ∀ i j, ‖A i j‖ ≤ 1} = Set.pi Set.univ (fun _ => Set.pi Set.univ fun _ => Metric.closedBall (0 : E) 1)`.
+
+Use extensionality with `A`. Simplify using `only [Set.mem_setOf_eq]`. Conclude with `⟨fun h i _ j _ => by simpa using h i j, fun h i j => by simpa using h i trivial j trivial⟩`. Rewrite using `[this]`. Conclude with `isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => isCompact_closedBall _ _`.
+
+Establish `: {v : Fin n → E | ∀ i, ‖v i‖ ≤ 1} = Set.pi Set.univ (fun _ => Metric.closedBall (0 : E) 1)`. Use extensionality with `v`. Simplify using the standard rewrite rules. Rewrite using `[this]`. Conclude with `isCompact_univ_pi fun _ => isCompact_closedBall _ _`.
+
+Establish `hΦ : Continuous Φ`. Use `Continuous.matrix_mul ?_ continuous_const` and prove the remaining obligations. Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Conclude with `(continuous_apply i).comp ((continuous_fst.pow (j : ℕ)).matrix_mulVec continuous_snd)`. Use `⟨Subtype.val ⁻¹' (Φ '' S), ?_, ?_⟩` and prove the remaining obligations.
+
+Conclude with `(isClosed_unitary_set (n := n) (E := E)).isClosedEmbedding_subtypeVal.isCompact_preimage (hS.image hΦ)`. Introduce `g hg`. Establish `hm` using `Set.mem_of_indicator_ne_zero hg`. Use `⟨((actU g Y).1.1, (actU g Y).2.1), ⟨hm.1, hm.2.1⟩, ?_⟩` and prove the remaining obligations. Use `show Bm (actU g Y).toGl * B⁻¹ = g.1`.
+
+Rewrite using `[Bm_actU, ← hBdef, Matrix.mul_nonsing_inv_cancel_right _ _ hB]`.
+-/
 theorem exists_compact_of_integral : ∀ {F E : Type} [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E]
     [StarRing E] [Unram F E] {n : ℕ} (Y : Hn n F E), Delta (inv Y.toGl) ≠ 0 →
     ∃ K : Set (Matrix.unitaryGroup (Fin n) E), IsCompact K ∧ ∀ g, unitU n F E (actU g Y) ≠ 0 → g ∈ K := by

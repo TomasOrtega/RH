@@ -20,16 +20,30 @@ def wedgeLin (k : Fin m) : Ext m →ₗ[ℂ] Ext m where
   map_add' := GlobalTheory.TorsionForm.Pullback.wedge_add k
   map_smul' := GlobalTheory.TorsionForm.Pullback.wedge_smul k
 
+/- English proof (translation)
+The claim follows from `map_sum (wedgeLin k) f s`.
+-/
 theorem wedge_sum {ι : Type} (k : Fin m) (s : Finset ι) (f : ι → Ext m) :
     wedge k (∑ i ∈ s, f i) = ∑ i ∈ s, wedge k (f i) := map_sum (wedgeLin k) f s
 
+/- English proof (translation)
+The claim follows from `map_neg (wedgeLin k) w`.
+-/
 theorem wedge_neg (k : Fin m) (w : Ext m) : wedge k (-w) = -wedge k w := map_neg (wedgeLin k) w
 
+/- English proof (translation)
+The claim follows from `map_sub (wedgeLin k) w w'`.
+-/
 theorem wedge_sub (k : Fin m) (w w' : Ext m) : wedge k (w - w') = wedge k w - wedge k w' :=
   map_sub (wedgeLin k) w w'
 
 variable {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {g n : ℕ}
 
+/- English proof (translation)
+Unfold `connForm`. Rewrite using `[wedge_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[wedge_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[GlobalTheory.TorsionForm.Pullback.wedge_smul, contr_wedge_of_ne (hk a).symm, wedge_neg, GlobalTheory.TorsionForm.Pullback.wedge_anticomm (dzb n c) k, neg_neg]`.
+-/
 theorem connForm_wedge (τ : E → Matrix (Fin g) (Fin g) ℂ) (b v : E) (k : Fin (n + n + g))
     (hk : ∀ a, k ≠ dzb n a) (w : Ext (n + n + g)) :
     connForm τ b v (wedge k w) = wedge k (connForm τ b v w) := by
@@ -41,6 +55,17 @@ theorem connForm_wedge (τ : E → Matrix (Fin g) (Fin g) ℂ) (b v : E) (k : Fi
   rw [GlobalTheory.TorsionForm.Pullback.wedge_smul, contr_wedge_of_ne (hk a).symm, wedge_neg,
     GlobalTheory.TorsionForm.Pullback.wedge_anticomm (dzb n c) k, neg_neg]
 
+/- English proof (translation)
+Establish `hL : HasFDerivAt (fun Q => wedge k (r Q)) ((LinearMap.toContinuousLinearMap (wedgeLin k)).restrictScalars ℝ |>.comp (fderiv ℝ r P)) P` using `((LinearMap.toContinuousLinearMap (wedgeLin k)).restrictScalars ℝ).hasFDerivAt.comp P hr.hasFDerivAt`. Establish `hfd : ∀ v, fderiv ℝ (fun Q => wedge k (r Q)) P v = wedge k (fderiv ℝ r P v)` using `fun v => by`. Rewrite using `[hL.fderiv]`. Both sides reduce to the same expression. Establish `hd10 : ∀ v, d10 (fun Q => wedge k (r Q)) P v = wedge k (d10 r P v)` using `fun v => by`.
+
+Rewrite using `[d10, d10, hfd, hfd, GlobalTheory.TorsionForm.Pullback.wedge_smul, wedge_sub, GlobalTheory.TorsionForm.Pullback.wedge_smul]`. Establish `hd01 : ∀ v, d01 (fun Q => wedge k (r Q)) P v = wedge k (d01 r P v)` using `fun v => by`. Rewrite using `[d01, d01, hfd, hfd, GlobalTheory.TorsionForm.Pullback.wedge_smul, GlobalTheory.TorsionForm.Pullback.wedge_add, GlobalTheory.TorsionForm.Pullback.wedge_smul]`. Establish `hnab : ∀ v, pointDifference h (fun Q => wedge k (r Q)) P v = wedge k (pointDifference h r P v)` using `fun v => by`. Rewrite using `[pointDifference, pointDifference, hd10, GlobalTheory.TorsionForm.Pullback.wedge_add, GlobalTheory.TorsionForm.Pullback.wedge_smul]`.
+
+Establish `hN : nablaE τ h β (fun Q => wedge k (r Q)) P = -wedge k (nablaE τ h β r P)`. Rewrite using `[nablaE, nablaE, wedge_sum, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hnab, hd01, connForm_wedge τ _ _ k hk, ← GlobalTheory.TorsionForm.Pullback.wedge_add, GlobalTheory.TorsionForm.Pullback.wedge_anticomm (dt g i) k, GlobalTheory.TorsionForm.Pullback.wedge_anticomm (dtb g i) k, ← neg_add, ← GlobalTheory.TorsionForm.Pullback.wedge_add]`. Establish `hV : dbarV (fun Q => wedge k (r Q)) P = -wedge k (dbarV r P)`.
+
+Rewrite using `[dbarV, dbarV, wedge_sum, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[hd01, GlobalTheory.TorsionForm.Pullback.wedge_anticomm (dzb n a) k]`. Establish `hA : dbarAdj τ h (fun Q => wedge k (r Q)) P = -wedge k (dbarAdj τ h r P)`. Rewrite using `[dbarAdj, dbarAdj, wedge_neg, wedge_sum, neg_neg, ← Finset.sum_neg_distrib]`.
+
+Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[wedge_sum, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[hnab, contr_wedge_of_ne (hk c).symm, GlobalTheory.TorsionForm.Pullback.wedge_smul, smul_neg, neg_neg]`. Rewrite using `[superconn, superconn, hN, hV, hA, GlobalTheory.TorsionForm.Pullback.wedge_add, GlobalTheory.TorsionForm.Pullback.wedge_smul, GlobalTheory.TorsionForm.Pullback.wedge_add, ← neg_add, smul_neg, neg_add]`.
+-/
 theorem superconn_wedge (τ : E → Matrix (Fin g) (Fin g) ℂ) (h : Pt E g → ℝ) (β : Fin n → E) (u : ℝ)
     (k : Fin (n + n + g)) (r : Pt E g → Ext (n + n + g)) (P : Pt E g) (hk : ∀ a, k ≠ dzb n a)
     (hr : DifferentiableAt ℝ r P) :

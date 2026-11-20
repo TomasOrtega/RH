@@ -8,6 +8,13 @@ attribute [local instance] MvPolynomial.gradedAlgebra
 
 namespace SchemeAppLEComposition.Cb
 
+/- English proof (translation)
+Apply `(Proj.stalkIso' 𝒜 y).injective` to reduce the goal to its premises. Use `(map_mul (Proj.stalkIso' 𝒜 y) _ _).trans ?_` and prove the remaining obligations. Use `(congrArg (Proj.stalkIso' 𝒜 y _ * ·) (map_pow (Proj.stalkIso' 𝒜 y) _ _)).trans ?_` and prove the remaining obligations. Use `erw [Proj.stalkIso'_germ, Proj.stalkIso'_germ, Proj.stalkIso'_germ]`. Apply `HomogeneousLocalization.val_injective` to reduce the goal to its premises.
+
+Rewrite using `[HomogeneousLocalization.val_mul, HomogeneousLocalization.val_pow]`. Use `erw [ProjectiveSpectrum.Proj.awayToSection_apply, ProjectiveSpectrum.Proj.awayToSection_apply, ProjectiveSpectrum.Proj.awayToSection_apply]`. Rewrite using `[HomogeneousLocalization.Away.val_mk, HomogeneousLocalization.Away.val_mk, HomogeneousLocalization.Away.val_mk]`. Simplify using `only [Localization.mk_eq_mk', IsLocalization.map_mk']`. Simplify using `only [RingHom.id_apply]`.
+
+Rewrite using `[← IsLocalization.mk'_pow, ← IsLocalization.mk'_mul]`. Apply `IsLocalization.mk'_eq_of_eq` to reduce the goal to its premises. Simplify using `only [Submonoid.coe_mul, SubmonoidClass.coe_pow, map_mul, map_pow]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private lemma proj_germ_id {A σ : Type} [CommRing A] [SetLike σ A] [AddSubgroupClass σ A] (𝒜 : ℕ → σ) [GradedRing 𝒜]
     {x f g : A} {n m : ℕ} (hx : x ∈ 𝒜 1) (hf : f ∈ 𝒜 n) (hf' : f ∈ 𝒜 (n • 1)) (hg : g ∈ 𝒜 (m • n))
     (hg' : g ∈ 𝒜 ((m * n) • 1))
@@ -31,17 +38,30 @@ private lemma proj_germ_id {A σ : Type} [CommRing A] [SetLike σ A] [AddSubgrou
   simp only [Submonoid.coe_mul, SubmonoidClass.coe_pow, map_mul, map_pow]
   ring
 
+/- English proof (translation)
+Rewrite using `[Scheme.Hom.appLE, Scheme.Opens.topIso_inv, Scheme.Opens.ι_app, Scheme.Opens.toScheme_presheaf_map]`. Use `erw [← Functor.map_comp]`. Both sides reduce to the same expression.
+-/
 private lemma ι_appLE {X : Scheme.{0}} (U : X.Opens) (h : ⊤ ≤ U.ι ⁻¹ᵁ U) : U.ι.appLE U ⊤ h = U.topIso.inv := by
   rw [Scheme.Hom.appLE, Scheme.Opens.topIso_inv, Scheme.Opens.ι_app, Scheme.Opens.toScheme_presheaf_map]
   erw [← Functor.map_comp]
   rfl
 
+/- English proof (translation)
+Substitute `hC` using the available equality. Rewrite using `[Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]`. Conclude with `(Scheme.Hom.appLE_comp_appLE T a W ⊤ ⊤ ha (fun _ _ => trivial)).symm`.
+-/
 private lemma appLE_eq_comp_appTop {X Y Z : Scheme.{0}} (T : X ⟶ Y) (a : Y ⟶ Z) (C : X ⟶ Z) (hC : T ≫ a = C) (W : Z.Opens)
     (ha : ⊤ ≤ a ⁻¹ᵁ W) (h : ⊤ ≤ C ⁻¹ᵁ W) : C.appLE W ⊤ h = a.appLE W ⊤ ha ≫ T.appTop := by
   subst hC
   rw [Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]
   exact (Scheme.Hom.appLE_comp_appLE T a W ⊤ ⊤ ha (fun _ _ => trivial)).symm
 
+/- English proof (translation)
+Establish `h1` using `congr($(Proj.basicOpenToSpec_app_top 𝒜 x) ((Scheme.ΓSpecIso _).inv c))`. Simplify using `only [ConcreteCategory.comp_apply, Iso.inv_hom_id_apply] at h1`. Establish `h2 : (Proj.awayι 𝒜 x hx hd).appLE _ ⊤ h = (Proj.basicOpen 𝒜 x).topIso.inv ≫ (Proj.basicOpenIsoSpec 𝒜 x hx hd).inv.appTop`. Rewrite using `[← ι_appLE (Proj.basicOpen 𝒜 x) (fun _ _ => by simp)]`. Conclude with `appLE_eq_comp_appTop _ _ _ rfl _ _ h`.
+
+Establish `h3 : (Proj.basicOpenIsoSpec 𝒜 x hx hd).hom.appTop ≫ (Proj.basicOpenIsoSpec 𝒜 x hx hd).inv.appTop = 𝟙 _`. Rewrite using `[← Scheme.Hom.comp_appTop]`. Simplify using the standard rewrite rules. Establish `h1' : (Proj.basicOpenIsoSpec 𝒜 x hx hd).hom.appTop ((Scheme.ΓSpecIso (.of (Away 𝒜 x))).inv c) = (Proj.basicOpen 𝒜 x).topIso.inv (Proj.awayToSection 𝒜 x c)` using `h1`. Rewrite using `[h2, ConcreteCategory.comp_apply, ← h1', ← ConcreteCategory.comp_apply, h3]`.
+
+Both sides reduce to the same expression.
+-/
 private lemma away_appLE {A σ : Type} [CommRing A] [SetLike σ A] [AddSubgroupClass σ A] (𝒜 : ℕ → σ) [GradedRing 𝒜]
     {x : A} {d : ℕ} (hx : x ∈ 𝒜 d) (hd : 0 < d) (c : Away 𝒜 x)
     (h : ⊤ ≤ Proj.awayι 𝒜 x hx hd ⁻¹ᵁ Proj.basicOpen 𝒜 x) :
@@ -61,6 +81,15 @@ private lemma away_appLE {A σ : Type} [CommRing A] [SetLike σ A] [AddSubgroupC
   rw [h2, ConcreteCategory.comp_apply, ← h1', ← ConcreteCategory.comp_apply, h3]
   rfl
 
+/- English proof (translation)
+Establish `ha : ⊤ ≤ Proj.awayι 𝒜 x hx hd ⁻¹ᵁ Proj.basicOpen 𝒜 x`. Introduce `z _`. Express the relevant statement in the definitionally equal form `Proj.awayι 𝒜 x hx hd z ∈ Proj.basicOpen 𝒜 x`. Rewrite using `[← Proj.opensRange_awayι 𝒜 x hx hd]`. Conclude with `⟨z, rfl⟩`.
+
+Establish `hC : ⊤ ≤ (V.toSpecΓ ≫ Spec.map (CommRingCat.ofHom ψ) ≫ Proj.awayι 𝒜 x hx hd) ⁻¹ᵁ Proj.basicOpen 𝒜 x`. Introduce `z _`. Conclude with `ha (show _ ∈ (⊤ : (Spec (CommRingCat.of (Away 𝒜 x))).Opens) from trivial)`. Establish `h5 : (Scheme.ΓSpecIso (.of (Away 𝒜 x))).inv ≫ (V.toSpecΓ ≫ Spec.map (CommRingCat.ofHom ψ)).appTop = CommRingCat.ofHom ψ`. Rewrite using `[Scheme.Hom.comp_appTop, Scheme.toSpecΓ_appTop, ← Scheme.ΓSpecIso_inv_naturality_assoc, Iso.inv_hom_id, Category.comp_id]`.
+
+Establish `h6` using `appLE_eq_comp_appTop (V.toSpecΓ ≫ Spec.map (CommRingCat.ofHom ψ)) (Proj.awayι 𝒜 x hx hd) _ (Category.assoc _ _ _) _ ha hC`. Establish `h7 : (V.toSpecΓ ≫ Spec.map (CommRingCat.ofHom ψ) ≫ Proj.awayι 𝒜 x hx hd).appLE _ ⊤ hC (Proj.awayToSection 𝒜 x c) = ψ c`. Rewrite using `[h6, ConcreteCategory.comp_apply, away_appLE, ← ConcreteCategory.comp_apply, h5]`. Both sides reduce to the same expression. Rewrite using `[← h7, Scheme.Hom.appLE, ConcreteCategory.comp_apply]`.
+
+Conclude with `(TopCat.Presheaf.germ_res_apply _ (homOfLE hC) y trivial _).symm`.
+-/
 private lemma chart_germ {A σ : Type} [CommRing A] [SetLike σ A] [AddSubgroupClass σ A] (𝒜 : ℕ → σ) [GradedRing 𝒜]
     {V : Scheme.{0}} {x : A} {d : ℕ} (hx : x ∈ 𝒜 d) (hd : 0 < d) (ψ : Away 𝒜 x →+* Γ(V, ⊤)) (c : Away 𝒜 x)
     (y : V) (hy : y ∈ (V.toSpecΓ ≫ Spec.map (CommRingCat.ofHom ψ) ≫ Proj.awayι 𝒜 x hx hd) ⁻¹ᵁ Proj.basicOpen 𝒜 x) :
@@ -87,6 +116,9 @@ private lemma chart_germ {A σ : Type} [CommRing A] [SetLike σ A] [AddSubgroupC
   rw [← h7, Scheme.Hom.appLE, ConcreteCategory.comp_apply]
   exact (TopCat.Presheaf.germ_res_apply _ (homOfLE hC) y trivial _).symm
 
+/- English proof (translation)
+Use `erw [Scheme.Hom.germ_stalkMap_apply]`. Rewrite using `[← ι_appLE U (fun _ _ => by simp), Scheme.Hom.appLE, ConcreteCategory.comp_apply]`. Conclude with `TopCat.Presheaf.germ_res_apply U.toScheme.presheaf (homOfLE (fun _ _ => by simp) : (⊤ : U.toScheme.Opens) ⟶ U.ι ⁻¹ᵁ U) y trivial _`.
+-/
 private lemma top_germ {X : Scheme.{0}} (U : X.Opens) (y : U) (s : Γ(X, U)) :
     U.toScheme.presheaf.germ ⊤ y trivial (U.topIso.inv s) =
       (U.ι.stalkMap y).hom (X.presheaf.germ U (U.ι y) y.2 s) := by
@@ -95,11 +127,17 @@ private lemma top_germ {X : Scheme.{0}} (U : X.Opens) (y : U) (s : Γ(X, U)) :
   exact TopCat.Presheaf.germ_res_apply U.toScheme.presheaf
     (homOfLE (fun _ _ => by simp) : (⊤ : U.toScheme.Opens) ⟶ U.ι ⁻¹ᵁ U) y trivial _
 
+/- English proof (translation)
+The claim follows from `congr($(X.presheaf.stalkSpecializes_refl (genericPoint X)) a)`.
+-/
 private lemma alg_generic (X : Scheme.{0}) [IsIntegral X] (a : X.presheaf.stalk (genericPoint X)) :
     (@algebraMap (X.presheaf.stalk (genericPoint X)) X.functionField CommRing.toCommSemiring _
       (stalkFunctionFieldAlgebra X (genericPoint X))) a = a :=
   congr($(X.presheaf.stalkSpecializes_refl (genericPoint X)) a)
 
+/- English proof (translation)
+Take `⟨a, rfl⟩ : ∃ a, F = a * W ^ n` from `⟨F / W ^ n, by field_simp⟩`. Take `⟨b, rfl⟩ : ∃ b, G = b * W ^ (m * n)` from `⟨G / W ^ (m * n), by field_simp⟩`. Rewrite `h` using `[mul_div_cancel_right₀ _ (pow_ne_zero _ hW), mul_div_cancel_right₀ _ (pow_ne_zero _ hW)]`. Rewrite using `[map_mul, map_mul, mul_pow, ← mul_assoc, h, map_pow, map_pow, ← pow_mul, mul_comm n m]`.
+-/
 private lemma alg_id {K R : Type*} [Field K] [CommRing R] (J : K →+* R) {W F G : K} (hW : W ≠ 0) {S : R} {n m : ℕ}
     (h : S * J (F / W ^ n) ^ m = J (G / W ^ (m * n))) : S * J F ^ m = J G := by
   obtain ⟨a, rfl⟩ : ∃ a, F = a * W ^ n := ⟨F / W ^ n, by field_simp⟩
@@ -107,11 +145,21 @@ private lemma alg_id {K R : Type*} [Field K] [CommRing R] (J : K →+* R) {W F G
   rw [mul_div_cancel_right₀ _ (pow_ne_zero _ hW), mul_div_cancel_right₀ _ (pow_ne_zero _ hW)] at h
   rw [map_mul, map_mul, mul_pow, ← mul_assoc, h, map_pow, map_pow, ← pow_mul, mul_comm n m]
 
+/- English proof (translation)
+Substitute `h1 h2 h3` using the available equality. Rewrite using `[← map_pow, ← map_mul, h]`.
+-/
 private lemma units_mul_relation_rearrange_commRing {R R' : Type*} [CommRing R] [CommRing R'] (J : R →+* R') {P Q T : R} {m : ℕ}
     (h : P * Q ^ m = T) {S q t : R'} (h1 : J P = S) (h2 : J Q = q) (h3 : J T = t) : S * q ^ m = t := by
   subst h1 h2 h3
   rw [← map_pow, ← map_mul, h]
 
+/- English proof (translation)
+Introduce `k _ X _ p N w i hi U hx φ hφ hη n hn f hf m g hg h`. Establish `hf' : f ∈ homogeneousSubmodule (Fin (N + 1)) k (n • 1)` using `by simpa using hf`. Establish `hg' : g ∈ homogeneousSubmodule (Fin (N + 1)) k ((m * n) • 1)` using `by simpa using hg`. Establish `hall : ∀ z : U.toScheme, z ∈ LateralTheory.EtaleTrace.Cov.chartMor i U hx φ ⁻¹ᵁ Proj.basicOpen (homogeneousSubmodule (Fin (N + 1)) k) (MvPolynomial.X i)`. Introduce `z`.
+
+Express the relevant statement in the definitionally equal form `Proj.awayι _ (MvPolynomial.X i) hx zero_lt_one _ ∈ Proj.basicOpen (homogeneousSubmodule (Fin (N + 1)) k) (MvPolynomial.X i)`. Rewrite using `[← Proj.opensRange_awayι _ _ hx zero_lt_one]`. Conclude with `⟨_, rfl⟩`. Establish `hc : ∀ c, U.toScheme.presheaf.germ _ ⟨genericPoint X, hη⟩ (hall _) ((LateralTheory.EtaleTrace.Cov.chartMor i U hx φ).app _ (Proj.awayToSection _ (MvPolynomial.X i) c)) = (U.ι.stalkMap ⟨genericPoint X, hη⟩).hom (X.presheaf.germ U (U.ι ⟨genericPoint X, hη⟩) hη (φ c))` using `fun c => (chart_germ _ hx zero_lt_one (U.topIso.inv.hom.comp φ) c _ (hall _)).trans (top_germ U _ _)`. Establish `hs : ∀ (W : (Proj (homogeneousSubmodule (Fin (N + 1)) k)).Opens) (hW : LateralTheory.EtaleTrace.Cov.chartMor i U hx φ ⟨genericPoint X, hη⟩ ∈ W) (s : Γ(Proj (homogeneousSubmodule (Fin (N + 1)) k), W)), (LateralTheory.EtaleTrace.Cov.chartMor i U hx φ |>.stalkMap ⟨genericPoint X, hη …` using `fun W hW s => Scheme.Hom.germ_stalkMap_apply _ W _ hW s`.
+
+Establish `hE` using `(alg_generic X _).symm.trans (hφ (genericPoint X) hη n f hf')`. Establish `hB` using `(alg_generic X _).symm.trans (hφ (genericPoint X) hη (m * n) g hg')`. Set `J : X.functionField →+* U.toScheme.presheaf.stalk ⟨genericPoint X, hη⟩` to `(U.ι.stalkMap ⟨genericPoint X, hη⟩).hom`. Use `alg_id J hi (n := n) (m := m) ?_` and prove the remaining obligations. Conclude with `units_mul_relation_rearrange_commRing (LateralTheory.EtaleTrace.Cov.chartMor i U hx φ |>.stalkMap ⟨genericPoint X, hη⟩).hom (proj_germ_id _ hx hf hf' hg hg' _ h (hall ⟨genericPoint X, hη⟩)) (hs _ h _) ((hs _ _ _).trans ((hc _).trans (congrArg J hE))) ((hs _ _ _).trans ((hc _).tra …`.
+-/
 theorem _root_.SchemeAppLEComposition.Cb.etale_projective_chart_generic_valuation_identity :
     LateralTheory.EtaleTrace.Cov.ChartGenVal := by
   intro k _ X _ p N w i hi U hx φ hφ hη n hn f hf m g hg h

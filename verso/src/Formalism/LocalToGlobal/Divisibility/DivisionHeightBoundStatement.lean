@@ -32,42 +32,76 @@ variable {J Pl : Type} [Fintype J] [Fintype Pl] [DecidableEq Pl] (R : RecNums J 
 
 namespace RecNums
 
+/- English proof (translation)
+The claim follows from `lt_trans zero_lt_one R.p1`.
+-/
 theorem x_pos : 0 < R.x := lt_trans zero_lt_one R.p1
+/- English proof (translation)
+Rewrite using `[R.p3]`. Conclude with `Real.rpow_nonneg (le_of_lt (lt_trans zero_lt_one R.p1)) _`.
+-/
 theorem L_nonneg : 0 ≤ R.L := by
   rw [R.p3]
   exact Real.rpow_nonneg (le_of_lt (lt_trans zero_lt_one R.p1)) _
+/- English proof (translation)
+Rewrite using `[R.p4]`. Conclude with `Real.one_le_exp R.L_nonneg`.
+-/
 theorem b_ge : 1 ≤ R.b := by
   rw [R.p4]
   exact Real.one_le_exp R.L_nonneg
+/- English proof (translation)
+Establish `h1` using `R.p1`. Establish `h2` using `R.b_ge`. Rewrite using `[R.p5]`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem a_ge : 1 ≤ R.a := by
   have h1 := R.p1
   have h2 := R.b_ge
   rw [R.p5]
   nlinarith
+/- English proof (translation)
+Establish `h1` using `R.a_ge`. Establish `h2` using `R.p6`. Rewrite using `[R.p9]`. Conclude with `Real.log_nonneg (by nlinarith)`.
+-/
 theorem La_nonneg : 0 ≤ R.La := by
   have h1 := R.a_ge
   have h2 := R.p6
   rw [R.p9]
   exact Real.log_nonneg (by nlinarith)
+/- English proof (translation)
+Combine the linear relations using `[R.p1, R.p2, R.p6, R.p11, R.p14, R.p15, R.p16, R.p17, R.p18, R.p19, R.p20, R.p24, R.p25, R.p26, R.p27, R.p28, R.p29, R.p30, R.p31, R.p32, R.p33, R.p34, R.p35, R.p36, R.p37, R.p38, R.c1, R.c3, R.c4, R.c5]`.
+-/
 theorem Nn_ge : 1 ≤ R.Nn := by
   linarith [R.p1, R.p2, R.p6, R.p11, R.p14, R.p15, R.p16, R.p17, R.p18, R.p19, R.p20, R.p24, R.p25, R.p26, R.p27, R.p28,
     R.p29, R.p30, R.p31, R.p32, R.p33, R.p34, R.p35, R.p36, R.p37, R.p38, R.c1, R.c3, R.c4, R.c5]
+/- English proof (translation)
+Rewrite using `[R.p3]`. Conclude with `Real.one_le_rpow (le_of_lt R.p1) (le_of_lt R.p2)`.
+-/
 theorem L_ge : 1 ≤ R.L := by
   rw [R.p3]
   exact Real.one_le_rpow (le_of_lt R.p1) (le_of_lt R.p2)
 
+/- English proof (translation)
+Establish `hx : 0 < R.x` using `R.x_pos`. Establish `hb : 0 < R.b` using `by rw [R.p4]; exact Real.exp_pos _`. Establish `hrd : 0 < R.rd` using `by linarith [R.p6]`. Rewrite using `[R.p9, R.p5, Real.log_mul (mul_pos hx hb).ne' hrd.ne', Real.log_mul hx.ne' hb.ne', R.p4, Real.log_exp]`.
+-/
 theorem La_eq : R.La = Real.log R.x + R.L + Real.log R.rd := by
   have hx : 0 < R.x := R.x_pos
   have hb : 0 < R.b := by rw [R.p4]; exact Real.exp_pos _
   have hrd : 0 < R.rd := by linarith [R.p6]
   rw [R.p9, R.p5, Real.log_mul (mul_pos hx hb).ne' hrd.ne', Real.log_mul hx.ne' hb.ne', R.p4, Real.log_exp]
 
+/- English proof (translation)
+Rewrite using `[R.La_eq]`. Establish `h1` using `Real.log_nonneg (le_of_lt R.p1)`. Establish `h2` using `Real.log_nonneg R.p6`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem L_le_La : R.L ≤ R.La := by
   rw [R.La_eq]
   have h1 := Real.log_nonneg (le_of_lt R.p1)
   have h2 := Real.log_nonneg R.p6
   linarith
 
+/- English proof (translation)
+Establish `ha` using `R.a_ge`. Establish `hx : 0 < R.x` using `R.x_pos`. Establish `hb : 0 < R.b` using `by rw [R.p4]; exact Real.exp_pos _`. Use `⟨Real.log_nonneg (by linarith), ?_⟩` and prove the remaining obligations. Establish `e1 : Real.log (2 * R.a) = Real.log 2 + (Real.log R.x + R.L)`.
+
+Rewrite using `[Real.log_mul (by norm_num) (by linarith : (0 : ℝ) < R.a).ne', R.p5, Real.log_mul hx.ne' hb.ne', R.p4, Real.log_exp]`. Rewrite using `[e1, R.La_eq]`. Establish `h2` using `Real.log_le_sub_one_of_pos (show (0 : ℝ) < 2 by norm_num)`. Establish `h3` using `Real.log_nonneg (le_of_lt R.p1)`. Establish `h4` using `Real.log_nonneg R.p6`.
+
+Establish `h5` using `R.L_ge`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem log2a : 0 ≤ Real.log (2 * R.a) ∧ Real.log (2 * R.a) ≤ 2 * R.La := by
   have ha := R.a_ge
   have hx : 0 < R.x := R.x_pos
@@ -82,6 +116,11 @@ theorem log2a : 0 ≤ Real.log (2 * R.a) ∧ Real.log (2 * R.a) ≤ 2 * R.La := 
   have h5 := R.L_ge
   linarith
 
+/- English proof (translation)
+Establish `hx : 0 ≤ R.x` using `le_of_lt R.x_pos`. Establish `hf : 0 ≤ R.f` using `le_trans (Nat.cast_nonneg _) R.p13`. Establish `hb : 0 ≤ R.b` using `by linarith [R.b_ge]`. Establish `hm : 0 ≤ R.m` using `by linarith [R.p14]`. Establish `hxe` using `Real.rpow_nonneg hx R.eps`.
+
+Apply `mul_nonneg hxe` to reduce the goal to its premises. Rewrite using `[R.p10]`. Conclude with `add_nonneg (mul_nonneg (mul_nonneg (mul_nonneg hf hm) hb) hxe) R.p11`.
+-/
 theorem unit_nonneg : 0 ≤ R.x ^ R.eps * (R.B0 + R.Nc) := by
   have hx : 0 ≤ R.x := le_of_lt R.x_pos
   have hf : 0 ≤ R.f := le_trans (Nat.cast_nonneg _) R.p13
@@ -92,6 +131,9 @@ theorem unit_nonneg : 0 ≤ R.x ^ R.eps * (R.B0 + R.Nc) := by
   rw [R.p10]
   exact add_nonneg (mul_nonneg (mul_nonneg (mul_nonneg hf hm) hb) hxe) R.p11
 
+/- English proof (translation)
+Use `show R.hA + ∑ j, (R.hB j - R.hX j) = _`. Rewrite using `[Finset.sum_sub_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hu_eq : R.hu = R.hA + ∑ j, R.hB j - ∑ j, R.hX j := by
   show R.hA + ∑ j, (R.hB j - R.hX j) = _
   rw [Finset.sum_sub_distrib]
@@ -99,10 +141,16 @@ theorem hu_eq : R.hu = R.hA + ∑ j, R.hB j - ∑ j, R.hX j := by
 
 def NcF : ℝ := R.x ^ R.eps * R.Nc / (Real.log R.x) ^ 2
 
+/- English proof (translation)
+Use `show 0 ≤ R.x ^ R.eps * R.Nc / (Real.log R.x) ^ 2`. Conclude with `div_nonneg (mul_nonneg (Real.rpow_nonneg (le_of_lt R.x_pos) _) R.p11) (sq_nonneg _)`.
+-/
 theorem NcF_nonneg : 0 ≤ R.NcF := by
   show 0 ≤ R.x ^ R.eps * R.Nc / (Real.log R.x) ^ 2
   exact div_nonneg (mul_nonneg (Real.rpow_nonneg (le_of_lt R.x_pos) _) R.p11) (sq_nonneg _)
 
+/- English proof (translation)
+Use `show (Real.log R.x) ^ 2 * (R.x ^ R.eps * R.Nc / (Real.log R.x) ^ 2) = R.x ^ R.eps * R.Nc`. Establish `hl : Real.log R.x ≠ 0` using `(Real.log_pos R.p1).ne'`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem NcF_spec : (Real.log R.x) ^ 2 * R.NcF = R.x ^ R.eps * R.Nc := by
   show (Real.log R.x) ^ 2 * (R.x ^ R.eps * R.Nc / (Real.log R.x) ^ 2) = R.x ^ R.eps * R.Nc
   have hl : Real.log R.x ≠ 0 := (Real.log_pos R.p1).ne'
@@ -110,6 +158,9 @@ theorem NcF_spec : (Real.log R.x) ^ 2 * R.NcF = R.x ^ R.eps * R.Nc := by
 
 end RecNums
 
+/- English proof (translation)
+The claim follows from `Formalism.DivisorInequality.height_bound_at_set J Pl Emb R.TT R.r R.hu H.hPn mlam R.logT (fun j => (∑ s, H.sz j s) / (Fintype.card Emb : ℝ)) R.aT R.logH R.Ch R.nV R.Lp R.ν R.x R.eps R.L R.b R.a R.rd R.La R.m R.f R.k R.Nn R.S R.η R.b' R.logOm H.g0 H.sz H.MainNotions H.logOmτ H.log …`.
+-/
 theorem HtNums.le_hu {R : RecNums J Pl} {Emb : Type} [Fintype Emb] [Nonempty Emb] (H : HtNums R Emb) (mlam : ℝ)
     (hm : ∑ j, R.hX j ≤ mlam) :
     H.hPn + ∑ j, (∑ s, H.sz j s) / (Fintype.card Emb : ℝ) - mlam ≤ R.hu :=
@@ -122,12 +173,30 @@ theorem HtNums.le_hu {R : RecNums J Pl} {Emb : Type} [Fintype Emb] [Nonempty Emb
     H.t1 H.t2 H.t3 H.t4 H.t5 H.t6 H.t7 H.t8 H.t9 H.t10.1 H.t10.2.1 H.t10.2.2 R.p34 H.t11.1 H.t11.2
     R.p1.le R.p2 R.p3 R.p4 R.p5 R.p6 R.p9 R.p13 R.p14 R.p15 R.p16 R.p17 R.p18 R.p20 H.k1 H.k2 H.k3
 
+/- English proof (translation)
+The claim follows from `Formalism.BranchingDeterminantCap.stepDiiiRecord Pl R.TT H.hPn R.logT H.ev R.aT H.bT H.nτ H.lam1 H.D0 H.D1 H.logc H.logxi R.a R.La R.L R.m R.f R.k R.Nn R.S R.η R.b' H.CT H.Cev R.Ch H.t1 H.t2 H.t3 H.t4 H.t5 H.t6 H.t7 H.t8 H.t9 H.t10.1 H.t10.2.1 H.t10.2.2 R.L_le_La R.La_nonneg R.lo …`.
+-/
 theorem HtNums.hPn_le_hA {R : RecNums J Pl} {Emb : Type} [Fintype Emb] (H : HtNums R Emb) : H.hPn ≤ R.hA :=
   Formalism.BranchingDeterminantCap.stepDiiiRecord Pl R.TT H.hPn R.logT H.ev R.aT H.bT H.nτ H.lam1 H.D0 H.D1 H.logc H.logxi
     R.a R.La R.L R.m R.f R.k R.Nn R.S R.η R.b' H.CT H.Cev R.Ch H.t1 H.t2 H.t3 H.t4 H.t5 H.t6 H.t7 H.t8 H.t9
     H.t10.1 H.t10.2.1 H.t10.2.2 R.L_le_La R.La_nonneg R.log2a.1 R.log2a.2 R.p14 (by linarith [R.p17, R.p16])
     (by linarith [R.p16]) R.p18 R.p20 R.p34 R.p13 H.t11.1 H.t11.2 H.k1
 
+/- English proof (translation)
+Establish `hf : 0 ≤ R.f` using `by linarith [R.p15]`. Establish `hm : 0 ≤ R.m` using `by linarith [R.p14]`. Establish `hN : 0 ≤ R.Nn` using `by linarith [R.Nn_ge]`. Establish `hL` using `R.L_nonneg`. Establish `hLa` using `R.La_nonneg`.
+
+Establish `hη` using `R.p20`. Establish `hS` using `R.p18`. Establish `hb'` using `R.p34`. Establish `hC0 : 0 ≤ R.C0` using `by linarith [R.c1]`. Establish `H` using `Formalism.DivisionValues.divIneqRecord J Pl R.TT muC mu0 Fo R.hu R.hA (∑ j, R.hX j) R.logT R.hB R.aT (fun j ρ => ∑ i, ph (R.ν j ρ i)) (fun j ρ => ∑ i, R.ν j ρ i) R.logH R.x R.eps R.L R.b R.a R.rd R.La R.B0 R.NcF R.m R.f R.k R.Nn R.S R.tt R.η R.w'' R.b' R.lam0 R.C0 R.ce Lpass Eb ( …`.
+
+Simplify using `only [RecNums.hX, Finset.sum_sub_distrib, Finset.sum_const, Finset.card_univ, nsmul_eq_mul, R.p12]`. Conclude with `le_refl _)`. Use the proof step `(le_refl _) R.weight_height_sum_le R.weight_sum_eq R.p1.le R.p2 R.p3 R.p4 R.p5 R.p6 R.p7 R.p8 R.p9 R.p10 R.NcF_nonneg`. Use the proof step `R.p12 R.p13 R.p14 R.p15 R.p16 R.Nn_ge R.p18 R.p19 R.p20 R.p21 R.p22 R.p23 R.p24 R.p25 R.p26 R.p27 R.p28 R.p29`. Use the proof step `R.p30 R.p31 R.p32 R.p33 R.c1 R.c2 hpass`.
+
+Use the proof step `(by rw [R.NcF_spec]; have := hEb; unfold RecNums.errB at this; linarith)`. Use the proof step `(fun _ => by`. Establish `hX : 0 ≤ R.f * R.Nn ^ 2 * R.La + R.f * R.m ^ 3 * R.Nn ^ 2 * R.L` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Use the proof step `(by`.
+
+Establish `h1 : R.nV ^ 2 ≤ R.Nn ^ 2` using `pow_le_pow_left₀ R.p36 R.p37 2`. Establish `h2 : 0 ≤ R.Ch * R.Lp` using `mul_nonneg R.c3 R.p38`. Establish `h3 : R.nV ^ 2 * (R.Ch * R.Lp) ≤ R.Nn ^ 2 * (R.C0 * R.La)` using `mul_le_mul h1 R.c5 h2 (by positivity)`. Establish `h4 : 0 ≤ R.m * R.f` using `mul_nonneg hm hf`. Combine the equalities or inequalities in the displayed calculation.
+
+Use the proof step `(by`. Establish `hY : 0 ≤ (R.TT.card : ℝ) * R.b' * R.Nn + R.f * (R.m * R.η + R.S) * R.Nn + R.f * R.Nn ^ 2` using `by positivity`. Conclude with `mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right R.c4 hY) hLa)`. Use the proof step `R.sE R.sδ`. Rewrite `H` using `[R.NcF_spec]`.
+
+Unfold `RecNums.rhs`. Establish `e : R.x ^ R.eps * R.B0 + R.x ^ R.eps * R.Nc = R.x ^ R.eps * (R.B0 + R.Nc)` using `by ring`. Rewrite `H` using `[e]`. Conclude with `H`.
+-/
 theorem RecNums.divIneq (muC mu0 Fo Lpass Eb : ℝ) (hC : muC ≤ mu0 + Lpass)
     (hM : mu0 ≤ (∑ j, ∑ ρ, R.pq j * R.w j ρ * R.logOm) + 2 * Fo + Eb)
     (hpass : Lpass ≤ 1 + R.C0 * (R.m * R.lam0)) (hEb : Eb ≤ R.errB) :
@@ -179,6 +248,11 @@ theorem RecNums.divIneq (muC mu0 Fo Lpass Eb : ℝ) (hC : muC ≤ mu0 + Lpass)
   rw [e] at H
   exact H
 
+/- English proof (translation)
+Establish `he : Real.exp (h / 2) ^ 2 = Real.exp h`. Rewrite using `[sq, ← Real.exp_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Assume the negation of the conclusion as `hc`.
+
+Use `push_neg at hc`. Establish `hp` using `Real.exp_pos (h / 2)`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem le_exp_half {t h : ℝ} (H : t ^ 2 ≤ Real.exp h) : t ≤ Real.exp (h / 2) := by
   have he : Real.exp (h / 2) ^ 2 = Real.exp h := by
     rw [sq, ← Real.exp_add]
@@ -189,10 +263,18 @@ theorem le_exp_half {t h : ℝ} (H : t ^ 2 ≤ Real.exp h) : t ≤ Real.exp (h /
   have hp := Real.exp_pos (h / 2)
   nlinarith
 
+/- English proof (translation)
+Rewrite using `[sq, ← Real.exp_add, Real.log_exp]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem log_exp_half_sq (h : ℝ) : Real.log (Real.exp (h / 2) ^ 2) = h := by
   rw [sq, ← Real.exp_add, Real.log_exp]
   ring
 
+/- English proof (translation)
+Substitute `hde` using the available equality. Establish `hfr : 0 ≤ f * r` using `mul_nonneg hf hr`. Establish `hq : 24 * f * r * 1 ≤ 24 * f * r * Q` using `mul_le_mul_of_nonneg_left hQ (by nlinarith)`. Use `⟨div_nonneg (by nlinarith) hg.le, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[div_le_iff₀ hg]`.
+
+Use the polynomial consequences of the given equalities and inequalities. Rewrite using `[show 3 * (8 * f * r / g) * Q = 24 * f * r * Q / g by ring, div_le_one hg]`. Conclude with `hgQ`.
+-/
 theorem passage_sizes {de f r g Q : ℝ} (hde : de = 8 * f * r / g) (hf : 0 ≤ f) (hr : 0 ≤ r) (hg : 0 < g) (hQ : 1 ≤ Q)
     (hgQ : 24 * f * r * Q ≤ g) : 0 ≤ de ∧ de ≤ 1 / 3 ∧ 3 * de * Q ≤ 1 := by
   subst hde
@@ -206,6 +288,11 @@ theorem passage_sizes {de f r g Q : ℝ} (hde : de = 8 * f * r / g) (hf : 0 ≤ 
 
 end Numbers
 
+/- English proof (translation)
+Substitute `c0 hd` using the available equality. Choose the witnesses or unpack the hypotheses as in `rfl : Xc 0 = Xa := by`. Use function extensionality and compare the values at `v`. Use extensionality with `i j`. Simplify using `using hXz v i j`.
+
+Conclude with `(hH K n dQ m c Xc hXc Kj H X0 hX0 P hP XQ hXQ XE hXE ι (isUnit_det_of_bij _ hι) Ix J Qp hQp κ lam lam hκ hlam (fun _ _ _ => le_rfl) hsc Pt B (by simpa using hB) hne pU kU hpU hkU).2`.
+-/
 theorem complex_height_cast (hH : HeightBoundConstant) {K : Type} [Field K] [NumberField K] [StarRing K] {a n dQ D m : ℕ}
     (c : Fin (m + 1) → ℕ) (c0 : c 0 = a) (hd : dQ = D)
     (Xa : InfinitePlace K → Matrix (Fin a) (Fin a) ℂ)
@@ -278,6 +365,9 @@ def step (j : ℕ) : (Q.F j).Forms →ₗ[K] (Q.F (j + 1)).Forms := Q.kk.step Q.
 def cpl : (Q.F Q.n).Forms →ₗ[K] Q.S₁.EqFun :=
   (∑ b : (Q.F Q.n).β, (((Q.cp b).comp Q.hS Q.S.outSec).opOf (Q.hF Q.n b) ((Q.F Q.n).mem b).outSec) ∘ₗ (LinearMap.proj b))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem col_eq : Q.col = Q.cpl ∘ₗ Q.kk.colTo Q.hF Q.n := rfl
 
 end KerChain
@@ -307,6 +397,9 @@ def KerChain.ofCol {P : LevFam X.E X.K R.r Pr.vGs} {u : Pr.Word} {m2 : ℕ} {b :
   Y := ybCpl W sel mu cst L u m2 b hY
   cp := A.cp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem KerChain.ofCol_col {P : LevFam X.E X.K R.r Pr.vGs} {u : Pr.Word} {m2 : ℕ} {b : L.β (m2 + 1)}
     {hY : YbHyp (R := R) sel mu cst L u m2 b} (A : ChKer W Ch sel mu cst L P u m2 b hY)
     (hF : ∀ j, (chF W sel mu L u j).Ok) (hE : (evGSD W Ch sel mu P u).Ok) :
@@ -341,6 +434,9 @@ structure ChainTie {Df : DefSide Bs} {Dc : DefCols Df} {u : Dc.Mem} (ch : ColCha
 
 variable {Df : DefSide Bs} {Dc : DefCols Df} {u : Dc.Mem} {ch : ColChain Dc u} {Q : KerChain K}
 
+/- English proof (translation)
+The claim follows from `| 0, h, x => by have h0 := (chainSpec.2 K ch.mm ch.c ch.Kj).1 show T.coF 0 h ((chainMat ch.Kj 0).mulVec x) = T.coF 0 (Nat.zero_le _) x rw [h0, Matrix.one_mulVec] | i + 1, h, x => by have hi : i < ch.mm := by have := T.hmm; omega have h1 := (chainSpec.2 K ch.mm ch.c ch.Kj).2 ⟨i, h …`.
+-/
 theorem ChainTie.chain_le (T : ChainTie ch Q) : ∀ i (h : i ≤ Q.n) (x : Fin (ch.c 0) → K),
     T.coF i h ((chainMat ch.Kj ⟨i, by have := T.hmm; omega⟩).mulVec x) = Q.kk.colTo Q.hF i (T.coF 0 (Nat.zero_le _) x)
   | 0, h, x => by
@@ -355,6 +451,9 @@ theorem ChainTie.chain_le (T : ChainTie ch Q) : ∀ i (h : i ≤ Q.n) (x : Fin (
     rw [h1, ← Matrix.mulVec_mulVec, ← ih]
     exact T.kerF i h _
 
+/- English proof (translation)
+Establish `e : (chainMat ch.Kj ⟨Q.n + 1, by have` using `T.hmm; omega⟩).mulVec x = (ch.Kj ⟨Q.n, by have := T.hmm; omega⟩).mulVec ((chainMat ch.Kj ⟨Q.n, by have := T.hmm; omega⟩).mulVec x) := (Matrix.mulVec_mulVec _ _ _).symm`. Rewrite using `[e, T.kerC, T.chain_le Q.n le_rfl x]`. Both sides reduce to the same expression.
+-/
 theorem ChainTie.chain (T : ChainTie ch Q) (x : Fin (ch.c 0) → K) :
     T.coL ((chainMat ch.Kj ⟨Q.n + 1, by have := T.hmm; omega⟩).mulVec x) = Q.col (T.coF 0 (Nat.zero_le _) x) := by
   have e : (chainMat ch.Kj ⟨Q.n + 1, by have := T.hmm; omega⟩).mulVec x =
@@ -363,12 +462,18 @@ theorem ChainTie.chain (T : ChainTie ch Q) (x : Fin (ch.c 0) → K) :
   rw [e, T.kerC, T.chain_le Q.n le_rfl x]
   rfl
 
+/- English proof (translation)
+Rewrite using `[T.metF (j + 1) h v, T.kerF j h x]`.
+-/
 theorem ChainTie.step_norm (T : ChainTie ch Q) (j : ℕ) (h : j < Q.n) (v : InfinitePlace K) (x : Fin (ch.c ⟨j, by have := T.hmm; omega⟩) → K) :
     ((Formalism.HermitianLatticesTheory.normAt (Pi.basisFun K (Fin (ch.c ⟨j + 1, by have := T.hmm; omega⟩))) (ch.X ⟨j + 1, by have := T.hmm; omega⟩) v
         ((ch.Kj ⟨j, by have := T.hmm; omega⟩).mulVec x) ^ 2 : ℝ) : ℂ) =
       famIpAt (Q.F (j + 1)) (Q.hF (j + 1)) v (Q.step j (T.coF j h.le x)) (Q.step j (T.coF j h.le x)) := by
   rw [T.metF (j + 1) h v, T.kerF j h x]
 
+/- English proof (translation)
+Rewrite using `[T.metL v, T.kerC x]`.
+-/
 theorem ChainTie.cpl_norm (T : ChainTie ch Q) (v : InfinitePlace K) (x : Fin (ch.c ⟨Q.n, by have := T.hmm; omega⟩) → K) :
     ((Formalism.HermitianLatticesTheory.normAt (Pi.basisFun K (Fin (ch.c ⟨Q.n + 1, by have := T.hmm; omega⟩))) (ch.X ⟨Q.n + 1, by have := T.hmm; omega⟩) v
         ((ch.Kj ⟨Q.n, by have := T.hmm; omega⟩).mulVec x) ^ 2 : ℝ) : ℂ) =
@@ -378,6 +483,9 @@ theorem ChainTie.cpl_norm (T : ChainTie ch Q) (v : InfinitePlace K) (x : Fin (ch
 def ChainTie.First (T : ChainTie ch Q) (f : (Fin (ch.c 0) → K) →ₗ[K] (Q.F 0).Forms) : Prop :=
   ∀ x, T.coF 0 (Nat.zero_le _) x = f x
 
+/- English proof (translation)
+The claim follows from `Fin.ext (by rw [Fin.val_last]; exact T.hmm)`.
+-/
 theorem ChainTie.last_eq (T : ChainTie ch Q) :
     (Fin.last ch.mm : Fin (ch.mm + 1)) = ⟨Q.n + 1, by have := T.hmm; omega⟩ := Fin.ext (by rw [Fin.val_last]; exact T.hmm)
 
@@ -387,12 +495,18 @@ def ChainTie.Last (T : ChainTie ch Q) (g : Q.S₁.EqFun →ₗ[K] Module.Dual K 
 
 omit [NumberField K] [StarRing K] in
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 theorem chainMat_mulVec_cast {m : ℕ} {c : Fin (m + 1) → ℕ} (Kj : ∀ j : Fin m, Matrix (Fin (c j.succ)) (Fin (c j.castSucc)) K)
     (i j : Fin (m + 1)) (h : j = i) (x : Fin (c 0) → K) :
     (chainMat Kj j).mulVec x = fun l => ((chainMat Kj i).mulVec x) (Fin.cast (congrArg c h) l) := by
   subst h
   rfl
 
+/- English proof (translation)
+Rewrite using `[ch.fact φ F, chainMat_mulVec_cast ch.Kj ⟨Q.n + 1, by have := T.hmm; omega⟩ (Fin.last ch.mm) T.last_eq]`. Rewrite using `[hL, T.chain]`. Conclude with `congrArg (fun z => g (Q.col z) F) (h0 _)`.
+-/
 theorem ChainTie.evidence (T : ChainTie ch Q) {f : (Fin (ch.c 0) → K) →ₗ[K] (Q.F 0).Forms}
     {g : Q.S₁.EqFun →ₗ[K] Module.Dual K (Fin (Df.nV Bs.μ0) → K)} (h0 : T.First f) (hL : T.Last g)
     (φ : Fin (Dc.a u) → K) (F : Fin (Df.nV Bs.μ0) → K) :
@@ -401,6 +515,9 @@ theorem ChainTie.evidence (T : ChainTie ch Q) {f : (Fin (ch.c 0) → K) →ₗ[K
   rw [hL, T.chain]
   exact congrArg (fun z => g (Q.col z) F) (h0 _)
 
+/- English proof (translation)
+Rewrite using `[← T.chain x, ← T.metL v, hN v x]`. Conclude with `T.metF 0 (Nat.zero_le _) v x`.
+-/
 theorem ChainTie.col_isom (T : ChainTie ch Q)
     (hN : ∀ (v : InfinitePlace K) (x : Fin (ch.c ⟨0, by omega⟩) → K),
       Formalism.HermitianLatticesTheory.normAt (Pi.basisFun K (Fin (ch.c ⟨Q.n + 1, by have := T.hmm; omega⟩))) (ch.X ⟨Q.n + 1, by have := T.hmm; omega⟩) v
@@ -449,6 +566,9 @@ def colPer {P : LevFam X.E X.K Rk.r Pr.vGs} (hP : (mtildeGSD W Ch sel mu P).Ok) 
     (Fin (ramDim W Ch hX u) → X.K) →ₗ[X.K] Module.Dual X.K (Fin n → X.K) :=
   ((BtOf W Ch sel mu P hP Xg u (colC A hF hL)).compl₂ ev) ∘ₗ (ramBas W Ch hX u).equivFun.symm.toLinearMap
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem colPer_eq {P : LevFam X.E X.K Rk.r Pr.vGs} (hP : (mtildeGSD W Ch sel mu P).Ok) (Xg : Finset (G0 X.E Pr.vGs Rk.r → X.K))
     {u : Pr.Word} {m2 : ℕ} {b : L.β (m2 + 1)} {hY : YbHyp (R := Rk) sel mu cst L u m2 b} (A : ChKer W Ch sel mu cst L P u m2 b hY)
     (hF : ∀ j, (chF W sel mu L u j).Ok) (hE : (evGSD W Ch sel mu P u).Ok) {G : ChGlob X Rk.m} (hL : L.Ok Ch sel mu cst G m2) {n : ℕ}
@@ -488,11 +608,20 @@ variable {hX : X.Ok} {Bs : DefBase X.K} {Df : DefSide Bs} {P : LevFam X.E X.K Rk
   {A : ∀ t x, ChKer W Ch sel (mu t) (cst t) (L t) P (wd x) m2 (b t x) (hY t x)}
   {hF : ∀ t x j, (chF W sel (mu t) (L t) (wd x) j).Ok} {ev : ∀ t, (Fin (Df.nV t) → X.K) →ₗ[X.K] V0X W Ch sel (mu t) Xg P}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem colFace_pt (x : Mem) (t : Bs.Tup) :
     (colFace hX Df Xg mu cst L hL hP Mem wd b hY A hF ev).Pt x t = colPer hX (hP t) Xg (A t x) (hF t x) (hL t) (ev t) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem colFace_a (x : Mem) : (colFace hX Df Xg mu cst L hL hP Mem wd b hY A hF ev).a x = ramDim W Ch hX (wd x) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem colFace_Xc (x : Mem) : (colFace hX Df Xg mu cst L hL hP Mem wd b hY A hF ev).Xc x = (MramH W Ch hX (wd x)).X := rfl
 
 variable (hE : ∀ x, (evGSD W Ch sel (mu Bs.μ0) P (wd x)).Ok) {x : Mem}
@@ -508,22 +637,34 @@ def FirstCols (T : ChainTie ch (memQ (A := A) (hF := hF) hE (x := x))) : Prop :=
 def LastPer (T : ChainTie ch (memQ (A := A) (hF := hF) hE (x := x))) : Prop :=
   T.Last (colPerL (hP Bs.μ0) Xg (wd x) (ev Bs.μ0))
 
+/- English proof (translation)
+Rewrite using `[T.chain y, h0 y]`. Both sides reduce to the same expression.
+-/
 theorem FirstCols.chain {T : ChainTie ch (memQ (A := A) (hF := hF) hE (x := x))} (h0 : FirstCols hE T) (y : Fin (ch.c 0) → X.K) :
     T.coL ((chainMat ch.Kj ⟨(memQ (A := A) (hF := hF) hE (x := x)).n + 1, by have := T.hmm; omega⟩).mulVec y) =
       colC (A Bs.μ0 x) (hF Bs.μ0 x) (hL Bs.μ0) (colOfCoord W Ch hX (wd x) fun i => y (Fin.cast ch.c0.symm i)) := by
   rw [T.chain y, h0 y]
   rfl
 
+/- English proof (translation)
+The claim follows from `(ch.fact φ F).symm`.
+-/
 theorem colFace_fact (φ : Fin (ramDim W Ch hX (wd x)) → X.K) (F : Fin (Df.nV Bs.μ0) → X.K) :
     ch.PtL ((chainMat ch.Kj (Fin.last ch.mm)).mulVec fun i => φ (Fin.cast ch.c0 i)) F =
       colPer hX (hP Bs.μ0) Xg (A Bs.μ0 x) (hF Bs.μ0 x) (hL Bs.μ0) (ev Bs.μ0) φ F := (ch.fact φ F).symm
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem LastPer.reading_tie {T : ChainTie ch (memQ (A := A) (hF := hF) hE (x := x))} (h0 : FirstCols hE T)
     (hL' : LastPer hE T) (φ : Fin (ramDim W Ch hX (wd x)) → X.K) (F : Fin (Df.nV Bs.μ0) → X.K) :
     (colFace hX Df Xg mu cst L hL hP Mem wd b hY A hF ev).Pt x Bs.μ0 φ F =
       colPerL (hP Bs.μ0) Xg (wd x) (ev Bs.μ0) (colC (A Bs.μ0 x) (hF Bs.μ0 x) (hL Bs.μ0) (colOfCoord W Ch hX (wd x) φ)) F := by
   rfl
 
+/- English proof (translation)
+Establish `h` using `T.col_isom hN v y`. Rewrite `h` using `[h0 y]`. Conclude with `h`.
+-/
 theorem FirstCols.isom {T : ChainTie ch (memQ (A := A) (hF := hF) hE (x := x))} (h0 : FirstCols hE T)
     (hN : ∀ (v : InfinitePlace X.K) (y : Fin (ch.c ⟨0, by omega⟩) → X.K),
       Formalism.HermitianLatticesTheory.normAt (Pi.basisFun X.K (Fin (ch.c ⟨(memQ (A := A) (hF := hF) hE (x := x)).n + 1, by have := T.hmm; omega⟩)))
@@ -562,6 +703,11 @@ def DivClauses {Pl : Type} [Fintype Pl] [DecidableEq Pl] (P : IndefCore Df0 Df1 
     Formalism.HN.muDef (Pi.basisFun K (Fin (Dc.a u))) (Dc.Xc u) Nu +
       2 * ∑ᶠ w : HeightOneSpectrum (𝓞 K), lw w * (shiftZ sg w : ℝ)
 
+/- English proof (translation)
+Establish `H` using `Formalism.DimensionVariation.chain_coupled_bound K m c Xc Kj D.AA D.Cl D.W D.γ D.Φ D.ε D.T D.hcl D.tmax D.hyp (fun j v => Real.sqrt (D.sq j v)) (fun _ _ => rfl)`. Establish `h1` using `H.1 j v`. Establish `h2 : Real.sqrt (D.sq j v) ^ 2 = D.sq j v` using `H.2.1 j v`. Establish `h0` using `OperatorNormFrames.opNormAt_nonneg (Pi.basisFun K (Fin (c j.castSucc))) (Xc j.castSucc) (Pi.basisFun K (Fin (c j.succ))) (Xc j.succ) v (Matrix.mulVecLin (Kj j))`. Establish `h3 : Formalism.HN.opNormAt (Pi.basisFun K (Fin (c j.castSucc))) (Xc j.castSucc) (Pi.basisFun K (Fin (c j.succ))) (Xc j.succ) v (Matrix.mulVecLin (Kj j)) ^ 2 ≤ D.sq j v`.
+
+Rewrite using `[← h2]`. Conclude with `pow_le_pow_left₀ h0 h1 2`. Break down `le_or_gt (D.sq j v) 0 with hs | hs` into its components or cases. Conclude with `h3.trans (hs.trans (Real.exp_pos _).le)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem nK_of_cb {m : ℕ} {c : Fin (m + 1) → ℕ} {Xc : ∀ i, InfinitePlace K → Matrix (Fin (c i)) (Fin (c i)) ℂ}
     {Kj : ∀ j : Fin m, Matrix (Fin (c j.succ)) (Fin (c j.castSucc)) K} (D : CBData Xc Kj) (B : Fin m → InfinitePlace K → ℝ)
     (hB : ∀ j v, Real.log (D.sq j v) ≤ B j v) (j : Fin m) (v : InfinitePlace K) :
@@ -582,6 +728,13 @@ theorem nK_of_cb {m : ℕ} {c : Fin (m + 1) → ℕ} {Xc : ∀ i, InfinitePlace 
       _ = Real.exp (Real.log (D.sq j v)) := (Real.exp_log hs).symm
       _ ≤ Real.exp (B j v) := Real.exp_le_exp.2 (hB j v)
 
+/- English proof (translation)
+Use `⟨fun v => Real.exp (a v + (t - (1 / (Fintype.card ι : ℝ)) * ∑ w, a w)), fun v => ⟨Real.exp_pos _, ?_⟩, ?_⟩` and prove the remaining obligations. Distinguish the cases in `h0 : x v = 0`. Rewrite using `[h0]`. Use polynomial arithmetic with `[Real.exp_pos (a v + (t - (1 / (Fintype.card ι : ℝ)) * ∑ w, a w))]`. Establish `hl` using `(ha v).resolve_left h0`.
+
+Establish `hpos : 0 < x v ^ 2` using `pow_pos (lt_of_le_of_ne (hx v) (Ne.symm h0)) 2`. Combine the equalities or inequalities in the displayed calculation. Establish `hc : (Fintype.card ι : ℝ) ≠ 0` using `by exact_mod_cast Fintype.card_ne_zero`. Simplify using `only [Real.log_exp]`. Rewrite using `[Finset.sum_add_distrib, Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`.
+
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_cu {ι : Type} [Fintype ι] [Nonempty ι] (x a : ι → ℝ) (t : ℝ) (hx : ∀ v, 0 ≤ x v)
     (ha : ∀ v, x v = 0 ∨ Real.log (x v ^ 2) ≤ a v) (hm : (1 / (Fintype.card ι : ℝ)) * ∑ v, a v ≤ t) :
     ∃ cu : ι → ℝ, (∀ v, 0 < cu v ∧ x v ^ 2 ≤ cu v) ∧ (1 / (Fintype.card ι : ℝ)) * ∑ v, Real.log (cu v) = t := by
@@ -599,6 +752,11 @@ theorem exists_cu {ι : Type} [Fintype ι] [Nonempty ι] (x a : ι → ℝ) (t :
     field_simp
     ring
 
+/- English proof (translation)
+Substitute `c0 hd` using the available equality. Choose the witnesses or unpack the hypotheses as in `rfl : Xc 0 = Xa := by`. Use function extensionality and compare the values at `v`. Use extensionality with `i j`. Simplify using `using hXz v i j`.
+
+Conclude with `(hH K n dQ m c Xc hXc Kj H X0 hX0 P hP XQ hXQ XE hXE ι (isUnit_det_of_bij _ hι) Ix J Qp hQp κ lam lam hκ hlam (fun _ _ _ => le_rfl) hsc Pt B (by simpa using hB) hne pU kU hpU hkU).1 v`.
+-/
 theorem complex_height_cast_at (hH : HeightBoundConstant) {K : Type} [Field K] [NumberField K] [StarRing K] {a n dQ D m : ℕ}
     (c : Fin (m + 1) → ℕ) (c0 : c 0 = a) (hd : dQ = D)
     (Xa : InfinitePlace K → Matrix (Fin a) (Fin a) ℂ)
@@ -630,6 +788,11 @@ theorem complex_height_cast_at (hH : HeightBoundConstant) {K : Type} [Field K] [
   exact (hH K n dQ m c Xc hXc Kj H X0 hX0 P hP XQ hXQ XE hXE ι (isUnit_det_of_bij _ hι) Ix J Qp hQp κ lam lam hκ hlam
     (fun _ _ _ => le_rfl) hsc Pt B (by simpa using hB) hne pU kU hpU hkU).1 v
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h`. Rewrite `h` using `[not_nonempty_iff]`. Establish `ht` using `wf.Qp_top`. Rewrite `ht` using `[iSup_of_empty]`. Establish `: Nonempty (Fin (Df.dQ Bs.μ0))` using `⟨⟨0, hpos⟩⟩`.
+
+Conclude with `bot_ne_top ht`.
+-/
 theorem nonempty_Ix {Df : DefSide Bs} (wf : Df.WF) (hpos : Df.Pos) : Nonempty Bs.Ix := by
   by_contra h
   rw [not_nonempty_iff] at h
@@ -638,6 +801,19 @@ theorem nonempty_Ix {Df : DefSide Bs} (wf : Df.WF) (hpos : Df.Pos) : Nonempty Bs
   have : Nonempty (Fin (Df.dQ Bs.μ0)) := ⟨⟨0, hpos⟩⟩
   exact bot_ne_top ht
 
+/- English proof (translation)
+Establish `hc` using `S.l1c`. Establish `hb` using `S.l1b`. Establish `hsc : ∀ v p, IsScalarOn (Df.XQ Bs.μ0) S.XE v (S.ι Bs.μ0) (Df.Qp Bs.μ0 p) (S.κ v * ∏ j, S.lam j Bs.μ0 p v)` using `fun v p => by`. Rewrite using `[← S.toIndefRows.Qpart_base p]`. Conclude with `hc.2.2.2.2.1 Bs.μ0 v (Or.inl rfl) p`.
+
+Establish `H` using `complex_height_cast height_constant_bound ch.c ch.c0 (S.toIndefRows.dQ_eq Bs.μ0) (Dc.Xc u) ch.X ch.X_unit ch.X_zero ch.Kj (Df.HV Bs.μ0) X0 hX0 (Df.Pq Bs.μ0) (wf.Pq_surj _) (Df.XQ Bs.μ0) (wf.XQ_quot _) S.XE S.frames.1 (S.ι Bs.μ0) (hc.1 _) Bs.Ix Bs.J (Df.Qp Bs.μ0) wf.Qp_top S.κ (fu …`. Establish `h1` using `hb.1 u Bs.μ0 φ F`. Rewrite `h1` using `[hb.2.1 u, one_mul]`. Rewrite using `[← h1]`. Conclude with `ch.fact φ F)`.
+
+Use `hne (fun _ => Real.exp (hP / 2)) (fun j v => Real.exp ((∑ l ∈ Finset.univ.filter (fun l => ch.lf l = j), hK l v) / 2))`. Use the proof step `(fun v => le_exp_half (nP v)) (fun j v => le_exp_half (nK j v))`. Simplify using `only [log_exp_half_sq] at H`. Establish `hn : (0 : ℝ) < (Fintype.card (InfinitePlace K) : ℝ)`. Establish `: 0 < Fintype.card (InfinitePlace K)` using `Fintype.card_pos`.
+
+Conclude with `this` after adjusting the coercions. Establish `h2 : ∑ j, N.l6 j ≤ (1 / (Formalism.HN.nPl K : ℝ)) * ∑ v, minOver (fun p => ∑ j, Real.log (S.lam j Bs.μ0 p v))`. Establish `h3 : ∑ _v : InfinitePlace K, ∑ j, N.l6 j ≤ ∑ v, minOver (fun p => ∑ j, Real.log (S.lam j Bs.μ0 p v))` using `Finset.sum_le_sum fun v _ => S.log_eigenvalue_sum_le_min v`. Rewrite `h3` using `[Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`. Rewrite using `[one_div, le_inv_mul_iff₀ (by exact hn)]`.
+
+Conclude with `h3`. Establish `h4 : (1 / (Formalism.HN.nPl K : ℝ)) * ∑ v, (hP + ∑ j, ∑ l ∈ Finset.univ.filter (fun l => ch.lf l = j), hK l v) = hP + ∑ j, (∑ v, hK j v) / (Fintype.card (InfinitePlace K) : ℝ)`. Establish `e1 : ∀ v, ∑ j, ∑ l ∈ Finset.univ.filter (fun l => ch.lf l = j), hK l v = ∑ j, hK j v` using `fun v => Finset.sum_fiberwise Finset.univ ch.lf (fun l => hK l v)`. Simplify using `only [e1]`. Rewrite using `[Finset.sum_add_distrib, Finset.sum_const, Finset.card_univ, nsmul_eq_mul, Finset.sum_comm, ← Finset.sum_div]`.
+
+Use `show (1 / (Fintype.card (InfinitePlace K) : ℝ)) * _ = _`. Clear the denominators using the available nonvanishing facts. Rewrite `H` using `[h4]`. Combine the linear relations using `[H, h2]`.
+-/
 theorem height_chain {Df : DefSide Bs} {Dc : DefCols Df} {Sp : SPer Dc} [Nonempty Bs.Ix] (wf : Df.WF)
     (S : IndefCols Df Dc Sp N) (u : Dc.Mem) (hne : S.col.B u ≠ 0)
     (X0 : InfinitePlace K → Matrix (Fin (Df.nV Bs.μ0)) (Fin (Df.nV Bs.μ0)) ℂ)
@@ -688,6 +864,21 @@ theorem height_chain {Df : DefSide Bs} {Dc : DefCols Df} {Sp : SPer Dc} [Nonempt
   rw [h4] at H
   linarith [H, h2]
 
+/- English proof (translation)
+Establish `hc` using `S.l1c`. Establish `hb` using `S.l1b`. Establish `hsc : ∀ v p, IsScalarOn (Df.XQ Bs.μ0) S.XE v (S.ι Bs.μ0) (Df.Qp Bs.μ0 p) (S.κ v * ∏ j, S.lam j Bs.μ0 p v)` using `fun v p => by`. Rewrite using `[← S.toIndefRows.Qpart_base p]`. Conclude with `hc.2.2.2.2.1 Bs.μ0 v (Or.inl rfl) p`.
+
+Establish `Hv` using `fun v => complex_height_cast_at height_constant_bound ch.c ch.c0 (S.toIndefRows.dQ_eq Bs.μ0) (Dc.Xc u) ch.X ch.X_unit ch.X_zero ch.Kj (Df.HV Bs.μ0) X0 hX0 (Df.Pq Bs.μ0) (wf.Pq_surj _) (Df.XQ Bs.μ0) (wf.XQ_quot _) S.XE S.frames.1 (S.ι Bs.μ0) (hc.1 _) Bs.Ix Bs.J (Df.Qp Bs.μ0) wf.Qp …`. Establish `h1` using `hb.1 u Bs.μ0 φ F`. Rewrite `h1` using `[hb.2.1 u, one_mul]`. Rewrite using `[← h1]`. Conclude with `ch.fact φ F)`.
+
+Use `hne (fun _ => Real.exp (hP / 2)) (fun j v => Real.exp ((∑ l ∈ Finset.univ.filter (fun l => ch.lf l = j), hK l v) / 2))`. Use the proof step `(fun v => le_exp_half (nP v)) (fun j v => le_exp_half (nK j v)) v`. Simplify using `only [log_exp_half_sq] at Hv`. Use `⟨Hv, ?_⟩` and prove the remaining obligations. Establish `hn : (0 : ℝ) < (Fintype.card (InfinitePlace K) : ℝ)`.
+
+Establish `: 0 < Fintype.card (InfinitePlace K)` using `Fintype.card_pos`. Conclude with `this` after adjusting the coercions. Establish `h2 : ∑ j, N.l6 j ≤ (1 / (Fintype.card (InfinitePlace K) : ℝ)) * ∑ v, minOver (fun p => ∑ j, Real.log (S.lam j Bs.μ0 p v))`. Establish `h3 : ∑ _v : InfinitePlace K, ∑ j, N.l6 j ≤ ∑ v, minOver (fun p => ∑ j, Real.log (S.lam j Bs.μ0 p v))` using `Finset.sum_le_sum fun v _ => S.log_eigenvalue_sum_le_min v`. Rewrite `h3` using `[Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`.
+
+Rewrite using `[one_div, le_inv_mul_iff₀ (by exact hn)]`. Conclude with `h3`. Establish `h4 : (1 / (Fintype.card (InfinitePlace K) : ℝ)) * ∑ v, (hP + ∑ j, ∑ l ∈ Finset.univ.filter (fun l => ch.lf l = j), hK l v) = hP + ∑ j, (∑ v, hK j v) / (Fintype.card (InfinitePlace K) : ℝ)`. Establish `e1 : ∀ v, ∑ j, ∑ l ∈ Finset.univ.filter (fun l => ch.lf l = j), hK l v = ∑ j, hK j v` using `fun v => Finset.sum_fiberwise Finset.univ ch.lf (fun l => hK l v)`. Simplify using `only [e1]`.
+
+Rewrite using `[Finset.sum_add_distrib, Finset.sum_const, Finset.card_univ, nsmul_eq_mul, Finset.sum_comm, ← Finset.sum_div]`. Clear the denominators using the available nonvanishing facts. Establish `e : (1 / (Fintype.card (InfinitePlace K) : ℝ)) * ∑ v, (hP + ∑ j, ∑ l ∈ Finset.univ.filter (fun l => ch.lf l = j), hK l v - Real.log (S.κ v) - minOver (fun p => ∑ j, Real.log (S.lam j Bs.μ0 p v))) = (1 / (Fintype.card (InfinitePlace K) : ℝ)) * ∑ v, (hP + ∑ j, ∑ l ∈ Finset.univ.fil …`. Simplify using `only [meanLog, Finset.sum_sub_distrib]`. Use `show _ = _ - _ - (1 / (Fintype.card (InfinitePlace K) : ℝ)) * _`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, h4]`. Combine the linear relations using `[h2]`.
+-/
 theorem height_chain_at {Df : DefSide Bs} {Dc : DefCols Df} {Sp : SPer Dc} [Nonempty Bs.Ix] (wf : Df.WF)
     (S : IndefCols Df Dc Sp N) (u : Dc.Mem) (hne : S.col.B u ≠ 0)
     (X0 : InfinitePlace K → Matrix (Fin (Df.nV Bs.μ0)) (Fin (Df.nV Bs.μ0)) ℂ)
@@ -749,6 +940,27 @@ theorem height_chain_at {Df : DefSide Bs} {Dc : DefCols Df} {Sp : SPer Dc} [None
   rw [e, h4]
   linarith [h2]
 
+/- English proof (translation)
+Establish `: Nonempty Bs.Ix` using `nonempty_Ix wf0 P.base.pos`. Establish `hsh` using `shiftEx K (Dc.a u) Nu I.Nu_lat (shiftZ sg) I.sg_fin`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `P.cols.intoDual divIntoDualShift latticeGlue wf1 u Nu (shiftLat Nu sg) sg (shiftZ sg) I.val2 (fun w => Int.floor_le_ceil _) hsh.1`. Establish `hX` using `fun v => OperatorNormFrames.opNormAt_nonneg (Pi.basisFun K (Fin (Dc.a u))) (Dc.Xc u) (Pi.basisFun K (Fin P.cols.D)).dualBasis (Formalism.HN.dualFrame P.cols.XE) v (P.cols.col.B u)`.
+
+Distinguish the cases in `hne : P.cols.col.B u = 0`. Use `exists_cu _ (fun _ => R.hu - meanLog P.cols.κ) _ hX (fun v => Or.inl ?_) (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[hne]`. Simplify using `[Formalism.HN.opNormAt]`. Establish `hn : (0 : ℝ) < (Fintype.card (InfinitePlace K) : ℝ)`.
+
+Establish `: 0 < Fintype.card (InfinitePlace K)` using `Fintype.card_pos`. Conclude with `this` after adjusting the coercions. Simplify using `only [Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`. Clear the denominators using the available nonvanishing facts. Establish `nK` using `nK_of_cb I.cb (fun j v => ∑ l ∈ Finset.univ.filter (fun l => I.ch.lf l = j), I.hn.sz l v) I.nKcb`.
+
+Take `⟨Hv, Hm⟩` from `height_chain_at wf1 P.cols u hne I.X0 I.base_matrix_det_unit I.ch I.hn.hPn I.hn.sz I.nP nK`. Establish `h1` using `I.hn.le_hu (∑ j, N.l6 j) I.eig6`. Use `exists_cu _ (fun v => I.hn.hPn + ∑ j, ∑ l ∈ Finset.univ.filter (fun l => I.ch.lf l = j), I.hn.sz l v - Real.log (P.cols.κ v) - minOver (fun p => ∑ j, Real.log (P.cols.lam j Bs.μ0 p v))) _ hX (fun v => Or.inr (Hv v)) ?_` and prove the remaining obligations. Combine the linear relations using `[Hm, h1]`. Establish `hB` using `P.base.boundsMu Formalism.DivisorInequality.boundsMu specDet reduction_lemma_zero latticeGlue ramBasic wf0 P.extra.untw I.eb I.heb I.Sy I.Sy_tw I.G0 I.LG I.E3 I.E2 I.gy I.ηy I.bi I.bLG I.biv I.borderedMinorImage I.twisted_third_sum_le`.
+
+Establish `de0 : 0 ≤ N.de` using `I.de0`. Establish `deQ : 3 * N.de * I.Q ≤ 1` using `I.deQ`. Establish `de3 : N.de ≤ 1 / 3` using `by nlinarith [I.Q1]`. Establish `hp` using `(P.extra.passage de0 de3 _ P.extra.fun0).2`. Establish `hκ : P.cols.κ = P.base.κ` using `P.extra.level.2.1.symm`.
+
+Use `set mu0 : ℝ := P.base.muCC - meanLog P.base.κ with hmu0def`. Establish `hmu0 : mu0 ≤ boundB P I.LG I.E3 I.E2`. Establish `: P.base.muCC ≤ meanLog P.base.κ + (∑ j, N.l3 j) + 2 * (∑ j, ∑ y ∈ P.base.Tw, lw y * ((ramw y : ℝ) * N.F0 y j)) + I.LG + (∑ j, (N.E1 j + I.E2 j)) + I.E3` using `hB`. Simplify using `only [boundB, FoOf, hmu0def]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hpass : 3 * N.de * (mu0 + N.hh + 28 * N.la) + 28 * N.la ≤ 1 + R.C0 * (R.m * R.lam0)`. Establish `h1 : 3 * N.de * (mu0 + N.hh + 28 * N.la) ≤ 3 * N.de * I.Q` using `mul_le_mul_of_nonneg_left (by linarith [I.Qb]) (by linarith)`. Establish `h2 : 28 * R.lam0 ≤ R.C0 * (R.m * R.lam0)`. Establish `h3 : R.lam0 ≤ R.m * R.lam0` using `by nlinarith [R.p14, R.p35]`. Use polynomial arithmetic with `[I.constant_ge_twenty_eight, R.p35, R.c1]`.
+
+Combine the linear relations using `[I.la_le]`. Establish `hC : P.cols.muCC - meanLog P.cols.κ ≤ mu0 + (3 * N.de * (mu0 + N.hh + 28 * N.la) + 28 * N.la)`. Rewrite using `[hκ, hmu0def]`. Establish `: P.cols.muCC ≤ P.base.muCC + 3 * N.de * (P.base.muCC + (N.hh - meanLog P.base.κ) + 28 * N.la) + 28 * N.la` using `hp`. Establish `e : P.base.muCC + (N.hh - meanLog P.base.κ) + 28 * N.la = P.base.muCC - meanLog P.base.κ + N.hh + 28 * N.la` using `by ring`.
+
+Rewrite `this` using `[e]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hM : mu0 ≤ (∑ j, ∑ ρ, R.pq j * R.w j ρ * R.logOm) + 2 * FoOf P + (I.El3 + I.LG + (∑ j, (N.E1 j + I.E2 j)) + I.E3)`. Establish `h1` using `I.L3main`. Establish `h2 : boundB P I.LG I.E3 I.E2 = (∑ j, N.l3 j) + 2 * FoOf P + I.LG + (∑ j, (N.E1 j + I.E2 j)) + I.E3` using `rfl`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `R.divIneq _ mu0 (FoOf P) _ _ hC hM hpass I.errB`. Conclude with `((shiftMu K (Dc.a u) (Dc.Xc u) I.Xc_unit Nu (shiftLat Nu sg) I.Nu_lat hsh.2.1 (shiftZ sg) hsh.1).2 I.a_pos).2`.
+-/
 theorem divClauses_of [IsTotallyComplex K] {Pl : Type} [Fintype Pl] [DecidableEq Pl] (wf0 : Df0.WF) (wf1 : Df1.WF)
     (P : IndefCore Df0 Df1 Dc Sp N) (R : RecNums Bs.J Pl) (u : Dc.Mem) (Nu : Submodule (𝓞 K) (Fin (Dc.a u) → K))
     (sg : HeightOneSpectrum (𝓞 K) → ℝ) (I : DivInputs P R u Nu sg) : DivClauses P R u Nu sg := by
@@ -814,6 +1026,11 @@ theorem divClauses_of [IsTotallyComplex K] {Pl : Type} [Fintype Pl] [DecidableEq
   ·
     exact ((shiftMu K (Dc.a u) (Dc.Xc u) I.Xc_unit Nu (shiftLat Nu sg) I.Nu_lat hsh.2.1 (shiftZ sg) hsh.1).2 I.a_pos).2
 
+/- English proof (translation)
+Take `⟨_, ⟨cu, hcu, hmean⟩, _⟩` from `h`. Unfold `Formalism.HN.htMap`. Rewrite using `[← hmean]`. Apply `mul_le_mul_of_nonneg_left _ (by positivity)` to reduce the goal to its premises. Apply `Finset.sum_le_sum` to reduce the goal to its premises.
+
+Introduce `v _`. Conclude with `Real.log_le_log (pow_pos (hpos v) 2) (hcu v).2`.
+-/
 theorem DivClauses.height [IsTotallyComplex K] {Pl : Type} [Fintype Pl] [DecidableEq Pl] {P : IndefCore Df0 Df1 Dc Sp N}
     {R : RecNums Bs.J Pl} {u : Dc.Mem} {Nu : Submodule (𝓞 K) (Fin (Dc.a u) → K)} {sg : HeightOneSpectrum (𝓞 K) → ℝ}
     (h : DivClauses P R u Nu sg)
@@ -829,12 +1046,18 @@ theorem DivClauses.height [IsTotallyComplex K] {Pl : Type} [Fintype Pl] [Decidab
   intro v _
   exact Real.log_le_log (pow_pos (hpos v) 2) (hcu v).2
 
+/- English proof (translation)
+The claim follows from `Finset.sum_le_sum fun j _ => by show (∑ ρ, R.logH j ρ) - R.Ch * R.f * R.nV ^ 2 * R.Lp ≤ Z.l6m j - C * Z.l6u linarith [h1 j]`.
+-/
 theorem eigen_sum_le_of_scale {Pl : Type} [Fintype Pl] [DecidableEq Pl] (Z : IndefScale Bs) (C CH : ℝ) (R : RecNums Bs.J Pl)
     (h1 : ∀ j, ∑ ρ, R.logH j ρ ≤ Z.l6m j) (h2 : C * Z.l6u ≤ R.Ch * R.f * R.nV ^ 2 * R.Lp) :
     ∑ j, R.hX j ≤ ∑ j, (Z.num C CH).l6 j := Finset.sum_le_sum fun j _ => by
     show (∑ ρ, R.logH j ρ) - R.Ch * R.f * R.nV ^ 2 * R.Lp ≤ Z.l6m j - C * Z.l6u
     linarith [h1 j]
 
+/- English proof (translation)
+Use `show ∑ j, (Z.l3m j + C * Z.l3u) ≤ _`. Rewrite using `[Finset.sum_add_distrib, Finset.sum_const, Finset.card_univ, nsmul_eq_mul, R.p12]`. Establish `hs` using `Finset.sum_le_sum fun j (_ : j ∈ Finset.univ) => h j`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem l3main_of_scale {Pl : Type} [Fintype Pl] [DecidableEq Pl] (Z : IndefScale Bs) (C CH : ℝ) (R : RecNums Bs.J Pl)
     (h : ∀ j, Z.l3m j ≤ ∑ ρ, R.pq j * R.w j ρ * R.logOm) :
     ∑ j, (Z.num C CH).l3 j ≤ (∑ j, ∑ ρ, R.pq j * R.w j ρ * R.logOm) + R.m * (C * Z.l3u) := by
@@ -843,6 +1066,13 @@ theorem l3main_of_scale {Pl : Type} [Fintype Pl] [DecidableEq Pl] (Z : IndefScal
   have hs := Finset.sum_le_sum fun j (_ : j ∈ Finset.univ) => h j
   linarith
 
+/- English proof (translation)
+Establish `hU` using `R.unit_nonneg`. Establish `hm : 0 ≤ R.m` using `by linarith [R.p14]`. Establish `hmU : 0 ≤ R.m * (R.x ^ R.eps * (R.B0 + R.Nc))` using `mul_nonneg hm hU`. Use `show R.m * (C * Z.l3u) + LG + (∑ j, (C * Z.E1u + E2 j)) + E3 ≤ R.ce * R.m * (R.x ^ R.eps * (R.B0 + R.Nc))`. Rewrite using `[Finset.sum_add_distrib, Finset.sum_const, Finset.card_univ, nsmul_eq_mul, R.p12]`.
+
+Establish `hE2s : ∑ j, E2 j ≤ ∑ _j : Bs.J, c2 * (R.x ^ R.eps * (R.B0 + R.Nc))` using `Finset.sum_le_sum fun j _ => hE2 j`. Rewrite `hE2s` using `[Finset.sum_const, Finset.card_univ, nsmul_eq_mul, R.p12]`. Establish `a1 : R.m * (C * Z.l3u) ≤ R.m * (c3 * (R.x ^ R.eps * (R.B0 + R.Nc)))` using `mul_le_mul_of_nonneg_left hl3 hm`. Establish `a2 : R.m * (C * Z.E1u) ≤ R.m * (C * (R.x ^ R.eps * (R.B0 + R.Nc)))` using `mul_le_mul_of_nonneg_left (mul_le_mul_of_nonneg_left hE1 hC) hm`. Establish `a3 : (c3 + cG + C + c2 + cE) * (R.m * (R.x ^ R.eps * (R.B0 + R.Nc))) ≤ R.ce * (R.m * (R.x ^ R.eps * (R.B0 + R.Nc)))` using `mul_le_mul_of_nonneg_right hce hmU`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem errB_of_units {Pl : Type} [Fintype Pl] [DecidableEq Pl] (Z : IndefScale Bs) (C CH : ℝ) (R : RecNums Bs.J Pl)
     (LG E3 : ℝ) (E2 : Bs.J → ℝ) (c3 cG c2 cE : ℝ) (hC : 0 ≤ C)
     (hE1 : Z.E1u ≤ R.x ^ R.eps * (R.B0 + R.Nc)) (hl3 : C * Z.l3u ≤ c3 * (R.x ^ R.eps * (R.B0 + R.Nc)))
@@ -864,6 +1094,9 @@ theorem errB_of_units {Pl : Type} [Fintype Pl] [DecidableEq Pl] (Z : IndefScale 
     mul_le_mul_of_nonneg_right hce hmU
   linarith
 
+/- English proof (translation)
+Establish `h` using `boundsIVal K Bs.K0 wf.cm Bs.v0 wf.conj n' (Df.nV t) (Df.dQ t) H' hH hH' E Pr hE (fun i j => hHV ▸ wf.HV_rat t i j) (fun v => hHV ▸ wf.HV_pos t v) (Df.Pq t) (wf.Pq_surj t) A B hA s hs hsA G hG hGB y (eb t y) (by rw [← hMt]; exact heb)`. Rewrite `h` using `[← hHV]`. Establish `h' : vw y (Df.Gm eb t y) ≤ (Df.dQ t : ℤ) * (vw y (G : K) + vw y (s : K))` using `h`. Conclude with `h'` after adjusting the coercions.
+-/
 theorem bi_of_cut [IsTotallyComplex K] {Df : DefSide Bs} (wf : Df.WF) (t : Bs.Tup) {n' : ℕ}
     (H' : Matrix (Fin n') (Fin n') K) (hH : H'ᴴ = H') (hH' : IsUnit H'.det)
     (E : Matrix (Fin n') (Fin (Df.nV t)) K) (Pr : Matrix (Fin (Df.nV t)) (Fin n') K) (hE : IsOrthProj H' E Pr)
@@ -891,6 +1124,9 @@ def faceOf (A : FamIn K G Pl0 T m) (P0 : Subgroup G) (ψ0 : P0 →* Kˣ) (P1 : S
     (Zsc : DefSub A.fam.amb → IndefScale A.fam.base) : DefSub A.fam.amb → DefFace A.fam.base :=
   fun Zs => ⟨A.side P0 ψ0 Zs, A.side P1 ψ1 Zs, Dc Zs, Sp Zs, Zsc Zs⟩
 
+/- English proof (translation)
+The claim follows from `divClauses_of (A.side_WF hOk P0 ψ0 Pk.Zs Pk.stable Pk.inBlock hsep) (A.side_WF hOk P1 ψ1 Pk.Zs Pk.stable Pk.inBlock hsep) Pk.core R u Nu sg I`.
+-/
 theorem division_height_bound_clauses [IsTotallyComplex K] (A : FamIn K G Pl0 T m) {s : ℕ} (hOk : A.fam.Ok s) (hsep : A.fam.TypesSep)
     (P0 : Subgroup G) (ψ0 : P0 →* Kˣ) (P1 : Subgroup G) (ψ1 : P1 →* Kˣ)
     (Dc : ∀ Zs : DefSub A.fam.amb, DefCols (A.side P1 ψ1 Zs)) (Sp : ∀ Zs : DefSub A.fam.amb, SPer (Dc Zs))
@@ -911,6 +1147,9 @@ variable {X : Fields} {Pr : Primes X} {Rk : Ranks} {W : Wts X Pr.Word Rk} {Ch : 
   {sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)} {Sg : Set ℕ}
   {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {m : ℕ}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨division_height_bound_clauses A hOk hsep P0 ψ0 P1 ψ1 _ Sp Zsc C CH Pk R x Nu sg I, fun y => FirstCols.chain hE h0 y, fun φ F => colFace_fact (ch := I.ch) φ F⟩`.
+-/
 theorem division_height_bound [IsTotallyComplex X.K] (A : FamIn X.K G Pl0 T m) {s : ℕ} (hOk : A.fam.Ok s) (hsep : A.fam.TypesSep)
     (P0 : Subgroup G) (ψ0 : P0 →* X.Kˣ) (P1 : Subgroup G) (ψ1 : P1 →* X.Kˣ) (hX : X.Ok)
     {P : LevFam X.E X.K Rk.r Pr.vGs} (Xg : Finset (G0 X.E Pr.vGs Rk.r → X.K)) {m2 : ℕ} {Gc : ChGlob X Rk.m}
@@ -947,6 +1186,9 @@ abbrev kerRec {Bs : DefBase X.K} {P : LevFam X.E X.K Rk.r Pr.vGs} {m2 : ℕ} (mu
     ∀ t x, ChKer W Ch sel (mu t) (cst t) (L t) P (wd x) m2 (b t x) (hY t x) :=
   fun t x => Formalism.L2.Ker.chKerC W Ch sel (mu t) (cst t) (L t) Am (wd x) m2 (b t x) (hY t x) P (hK t x)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem kerRec_colC {Bs : DefBase X.K} {P : LevFam X.E X.K Rk.r Pr.vGs} {m2 : ℕ} {Gc : ChGlob X Rk.m} (mu : Bs.Tup → Tup X.F X.E X.K Sg)
     (cst : ∀ t, LocCst X (rowSG Pr sel (mu t))) (L : ∀ t, ChIdx X Pr Rk (QE sel (mu t : Chr X.F X.E X.K)))
     (hL : ∀ t, (L t).Ok Ch sel (mu t) (cst t) Gc m2) {Mem : Type}
@@ -956,6 +1198,9 @@ theorem kerRec_colC {Bs : DefBase X.K} {P : LevFam X.E X.K Rk.r Pr.vGs} {m2 : �
     colC (kerRec mu cst L wd b hY Am hK t x) (hF t x) (hL t) =
       Formalism.L2.Ker.colMu W Ch sel (mu t) (cst t) (L t) Am (wd x) m2 (b t x) (hY t x) P (hK t x) (hF t x) (hL t) := rfl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨division_height_bound_clauses A hOk hsep P0 ψ0 P1 ψ1 _ Sp Zsc C CH Pk R x Nu sg I, fun y => FirstCols.chain hE h0 y, fun φ F => colFace_fact (ch := I.ch) φ F⟩`.
+-/
 theorem division_height_bound_at_sizeData [IsTotallyComplex X.K] (A : FamIn X.K G Pl0 T m) {s : ℕ} (hOk : A.fam.Ok s) (hsep : A.fam.TypesSep)
     (P0 : Subgroup G) (ψ0 : P0 →* X.Kˣ) (P1 : Subgroup G) (ψ1 : P1 →* X.Kˣ) (hX : X.Ok)
     {P : LevFam X.E X.K Rk.r Pr.vGs} (Xg : Finset (G0 X.E Pr.vGs Rk.r → X.K)) {m2 : ℕ} {Gc : ChGlob X Rk.m}
@@ -988,6 +1233,9 @@ theorem division_height_bound_at_sizeData [IsTotallyComplex X.K] (A : FamIn X.K 
 
 open Formalism.MainNotions in
 
+/- English proof (translation)
+The claim follows from `division_height_bound_at_sizeData A hOk hsep P0 ψ0 P1 ψ1 hX Xg mu cst L hL hP Mem wd b hY (Formalism.L2.Ker.ambOf sm B χ cD) hK hF hE ev Sp Zsc C CH Pk R x Nu sg I hQ h0`.
+-/
 theorem division_height_bound_statement [IsTotallyComplex X.K] (A : FamIn X.K G Pl0 T m) {s : ℕ} (hOk : A.fam.Ok s) (hsep : A.fam.TypesSep)
     (P0 : Subgroup G) (ψ0 : P0 →* X.Kˣ) (P1 : Subgroup G) (ψ1 : P1 →* X.Kˣ) (hX : X.Ok)
     {P : LevFam X.E X.K Rk.r Pr.vGs} (Xg : Finset (G0 X.E Pr.vGs Rk.r → X.K)) {m2 : ℕ} {Gc : ChGlob X Rk.m}
@@ -1034,6 +1282,11 @@ namespace Formalism.L2.DIV.Inst
 open Formalism.DivisionValues Formalism.EigenvalueLevelCeiling Formalism.L2.Indef Formalism.L2.Indef.Examples₂ Formalism.L2.DIV
 open Formalism.LatticeIndexTer (ph)
 
+/- English proof (translation)
+Establish `h2 : (3 : ℝ) ≤ Real.exp 2` using `by linarith [Real.add_one_le_exp (2 : ℝ)]`. Establish `h4 : Real.exp 4 = Real.exp 2 * Real.exp 2` using `by rw [← Real.exp_add]; norm_num`. Establish `h8 : Real.exp 8 = Real.exp 4 * Real.exp 4` using `by rw [← Real.exp_add]; norm_num`. Establish `h4' : (9 : ℝ) ≤ Real.exp 4` using `by rw [h4]; nlinarith`. Rewrite using `[h8]`.
+
+Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem e8 : (41 : ℝ) ≤ Real.exp 8 := by
   have h2 : (3 : ℝ) ≤ Real.exp 2 := by linarith [Real.add_one_le_exp (2 : ℝ)]
   have h4 : Real.exp 4 = Real.exp 2 * Real.exp 2 := by rw [← Real.exp_add]; norm_num
@@ -1042,20 +1295,35 @@ theorem e8 : (41 : ℝ) ≤ Real.exp 8 := by
   rw [h8]
   nlinarith
 
+/- English proof (translation)
+The claim follows from `Real.log_nonneg (by norm_num)`.
+-/
 theorem l8 : 0 ≤ Real.log 8 := Real.log_nonneg (by norm_num)
 
+/- English proof (translation)
+Establish `h` using `Real.log_le_sub_one_of_pos (show (0 : ℝ) < 8 by norm_num)`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem l8' : Real.log 8 ≤ 7 := by
   have h := Real.log_le_sub_one_of_pos (show (0 : ℝ) < 8 by norm_num)
   linarith
 
+/- English proof (translation)
+Rewrite using `[mul_one, Real.log_mul (by norm_num) (Real.exp_pos 8).ne', Real.log_exp]`.
+-/
 theorem La8 : Real.log (8 * Real.exp 8 * 1) = Real.log 8 + 8 := by
   rw [mul_one, Real.log_mul (by norm_num) (Real.exp_pos 8).ne', Real.log_exp]
 
+/- English proof (translation)
+Use `show -3 ≤ 3 * Real.log 3 - 3`. Establish `h3` using `Real.log_nonneg (show (1 : ℝ) ≤ 3 by norm_num)`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem neg_three_le_phi_three : -3 ≤ ph 3 := by
   show -3 ≤ 3 * Real.log 3 - 3
   have h3 := Real.log_nonneg (show (1 : ℝ) ≤ 3 by norm_num)
   linarith
 
+/- English proof (translation)
+Use `show (3 * Real.log 3 - 3) - (2 * Real.log 2 - 2) ≤ 36`. Establish `h3` using `Real.log_le_sub_one_of_pos (show (0 : ℝ) < 3 by norm_num)`. Establish `h2` using `Real.log_nonneg (show (1 : ℝ) ≤ 2 by norm_num)`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem ph32 : ph 3 - ph 2 ≤ 36 := by
   show (3 * Real.log 3 - 3) - (2 * Real.log 2 - 2) ≤ 36
   have h3 := Real.log_le_sub_one_of_pos (show (0 : ℝ) < 3 by norm_num)
@@ -1223,6 +1491,9 @@ def exampleHeightNumbers (J : Type) [Fintype J] [Unique J] (ce : ℝ) (hce : 36 
   k2 := by show (0 : ℝ) + 1 + 2 * 1 + 1 + 2 * 0 + 2 * 1 * 1 ≤ 36; norm_num
   k3 := by show 2 * ((1 : ℝ) + 0) * (1 + 1) ≤ 36; norm_num
 
+/- English proof (translation)
+Establish `: (exampleHeightNumbers J ce hce Emb).sz j s = ph 3 + 7 / 2` using `by show (∑ _τ : Fin 1, ((∑ _i : Fin 1, ph 3) - (∑ _i : Fin 1, (3 : ℝ)) * (1 / 2))) + (Fintype.card (Fin 1) : ℝ) * 0 * 0 + ((Fintype.card (Fin 1) : ℝ) * 0 * Real.log (8 + 32 * ((Fintype.card (Fin 1) : ℝ) * 0) * 0) + 2 * 2 + (∑ _τ : Fin 1, (1 + 2 * (0 : ℝ) * Real.log (2 * (∑ _i : F …`. Rewrite using `[this]`. Combine the linear relations using `[neg_three_le_phi_three]`.
+-/
 theorem exampleHeightNumbers_size_nonneg (J : Type) [Fintype J] [Unique J] (ce : ℝ) (hce : 36 ≤ ce) (Emb : Type) [Fintype Emb] [Nonempty Emb]
     (j : J) (s : Emb) : 0 ≤ (exampleHeightNumbers J ce hce Emb).sz j s := by
   have : (exampleHeightNumbers J ce hce Emb).sz j s = ph 3 + 7 / 2 := by
@@ -1232,11 +1503,19 @@ theorem exampleHeightNumbers_size_nonneg (J : Type) [Fintype J] [Unique J] (ce :
     simp; ring
   rw [this]; linarith [neg_three_le_phi_three]
 
+/- English proof (translation)
+Use `show (∑ _ρ : Fin 1, (ph 3 - ph 2)) - 36 * 1 * 1 ^ 2 * 1 ≤ 0`. Rewrite using `[Fin.sum_univ_one]`. Combine the linear relations using `[ph32]`.
+-/
 theorem recNumsExample_hX_nonpos (J : Type) [Fintype J] [Unique J] (ce : ℝ) (h : 36 ≤ ce) (j : J) : (recNumsExample J ce h).hX j ≤ 0 := by
   show (∑ _ρ : Fin 1, (ph 3 - ph 2)) - 36 * 1 * 1 ^ 2 * 1 ≤ 0
   rw [Fin.sum_univ_one]
   linarith [ph32]
 
+/- English proof (translation)
+Use `show t ≤ (36 + |t|) * 1 * ((8 : ℝ) ^ (1 : ℝ) * (1 * 1 * Real.exp 8 * (8 : ℝ) ^ (1 : ℝ) + 1))`. Rewrite using `[Real.rpow_one]`. Establish `he` using `Real.exp_pos 8`. Establish `ha` using `abs_nonneg t`. Establish `hle` using `le_abs_self t`.
+
+Establish `h1 : (1 : ℝ) ≤ 8 * (1 * 1 * Real.exp 8 * 8 + 1)` using `by nlinarith`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left h1 (by linarith : (0 : ℝ) ≤ 36 + |t|)]`.
+-/
 theorem le_recNumsExample_errB (J : Type) [Fintype J] [Unique J] (t : ℝ) :
     t ≤ (recNumsExample J (36 + |t|) (by linarith [abs_nonneg t])).errB := by
   show t ≤ (36 + |t|) * 1 * ((8 : ℝ) ^ (1 : ℝ) * (1 * 1 * Real.exp 8 * (8 : ℝ) ^ (1 : ℝ) + 1))
@@ -1247,6 +1526,9 @@ theorem le_recNumsExample_errB (J : Type) [Fintype J] [Unique J] (t : ℝ) :
   have h1 : (1 : ℝ) ≤ 8 * (1 * 1 * Real.exp 8 * 8 + 1) := by nlinarith
   nlinarith [mul_le_mul_of_nonneg_left h1 (by linarith : (0 : ℝ) ≤ 36 + |t|)]
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun (𝓞 K)).1 hx`. Use `⟨c 0, ?_⟩` and prove the remaining obligations. Rewrite using `[← hc]`. Simplify using `[sb, Algebra.smul_def]`.
+-/
 theorem sl_coord {K : Type} [Field K] [NumberField K] [StarRing K] (x : Fin 1 → K) (hx : x ∈ sl K 1) :
     ∃ r : 𝓞 K, x 0 = (r : K) := by
   obtain ⟨c, hc⟩ := (Submodule.mem_span_range_iff_exists_fun (𝓞 K)).1 hx
@@ -1254,6 +1536,11 @@ theorem sl_coord {K : Type} [Field K] [NumberField K] [StarRing K] (x : Fin 1 �
   rw [← hc]
   simp [sb, Algebra.smul_def]
 
+/- English proof (translation)
+Establish `hy : y = y 0 • (Pi.basisFun K (Fin 1)) 0`. Use extensionality with `i`. Use `fin_cases i`. Simplify using the standard rewrite rules. Use `conv_lhs => rw [hy]`.
+
+Rewrite using `[map_smul, Basis.toDual_apply_left, Pi.basisFun_repr, smul_eq_mul, mul_comm]`.
+-/
 theorem toDual_one {K : Type} [Field K] (x y : Fin 1 → K) : (Pi.basisFun K (Fin 1)).toDual x y = x 0 * y 0 := by
   have hy : y = y 0 • (Pi.basisFun K (Fin 1)) 0 := by
     ext i
@@ -1262,10 +1549,20 @@ theorem toDual_one {K : Type} [Field K] (x y : Fin 1 → K) : (Pi.basisFun K (Fi
   conv_lhs => rw [hy]
   rw [map_smul, Basis.toDual_apply_left, Pi.basisFun_repr, smul_eq_mul, mul_comm]
 
+/- English proof (translation)
+Use `show (1 : Matrix (Fin 1) (Fin 1) K3) * 1 = 1`. Conclude with `mul_one _`.
+-/
 theorem chain_one : chainMat (R := K3) (m := 1) (c := fun _ => 1) (fun _ => (1 : Matrix (Fin 1) (Fin 1) K3)) (Fin.last 1) = 1 := by
   show (1 : Matrix (Fin 1) (Fin 1) K3) * 1 = 1
   exact mul_one _
 
+/- English proof (translation)
+Establish `hM : (Formalism.HN.dualFrame (fun _ => (1 : Matrix (Fin 1) (Fin 1) ℂ)) v)⁻¹ * (LinearMap.toMatrix (Pi.basisFun K3 (Fin 1)) (Pi.basisFun K3 (Fin 1)).dualBasis (Pi.basisFun K3 (Fin 1)).toDual).map v.embedding * fr K3 1 v = 1`. Use extensionality with `i j`. Use `fin_cases i`. Use `fin_cases j`. Simplify using `[Formalism.HN.dualFrame, fr, LinearMap.toMatrix_apply, toDual_one]`.
+
+Establish `h1 : Formalism.HN.opNormAt (Pi.basisFun K3 (Fin 1)) (fr K3 1) (Pi.basisFun K3 (Fin 1)).dualBasis (Formalism.HN.dualFrame (fun _ => (1 : Matrix (Fin 1) (Fin 1) ℂ))) v (Pi.basisFun K3 (Fin 1)).toDual ≤ 1`. Rewrite using `[Formalism.HN.opNormAt, hM]`. Use `ContinuousLinearMap.opNorm_le_bound _ zero_le_one fun x => ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Establish `h0` using `OperatorNormFrames.opNormAt_nonneg (Pi.basisFun K3 (Fin 1)) (fr K3 1) (Pi.basisFun K3 (Fin 1)).dualBasis (Formalism.HN.dualFrame (fun _ => (1 : Matrix (Fin 1) (Fin 1) ℂ))) v (Pi.basisFun K3 (Fin 1)).toDual`.
+
+Rewrite using `[Real.exp_zero]`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem norm_toDual (v : InfinitePlace K3) :
     Formalism.HN.opNormAt (Pi.basisFun K3 (Fin 1)) (fr K3 1) (Pi.basisFun K3 (Fin 1)).dualBasis
       (Formalism.HN.dualFrame (fun _ => (1 : Matrix (Fin 1) (Fin 1) ℂ))) v (Pi.basisFun K3 (Fin 1)).toDual ^ 2 ≤ Real.exp 0 := by
@@ -1284,6 +1581,13 @@ theorem norm_toDual (v : InfinitePlace K3) :
   rw [Real.exp_zero]
   nlinarith
 
+/- English proof (translation)
+Establish `hM : (fr K3 1 v)⁻¹ * (LinearMap.toMatrix (Pi.basisFun K3 (Fin 1)) (Pi.basisFun K3 (Fin 1)) (Matrix.mulVecLin (1 : Matrix (Fin 1) (Fin 1) K3))).map v.embedding * fr K3 1 v = 1`. Use extensionality with `i j`. Use `fin_cases i`. Use `fin_cases j`. Simplify using `[fr]`.
+
+Establish `h1 : Formalism.HN.opNormAt (Pi.basisFun K3 (Fin 1)) (fr K3 1) (Pi.basisFun K3 (Fin 1)) (fr K3 1) v (Matrix.mulVecLin (1 : Matrix (Fin 1) (Fin 1) K3)) ≤ 1`. Rewrite using `[Formalism.HN.opNormAt, hM]`. Use `ContinuousLinearMap.opNorm_le_bound _ zero_le_one fun x => ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Establish `h0` using `OperatorNormFrames.opNormAt_nonneg (Pi.basisFun K3 (Fin 1)) (fr K3 1) (Pi.basisFun K3 (Fin 1)) (fr K3 1) v (Matrix.mulVecLin (1 : Matrix (Fin 1) (Fin 1) K3))`.
+
+Establish `h2` using `Real.one_le_exp ht`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem norm_one (v : InfinitePlace K3) {t : ℝ} (ht : 0 ≤ t) :
     Formalism.HN.opNormAt (Pi.basisFun K3 (Fin 1)) (fr K3 1) (Pi.basisFun K3 (Fin 1)) (fr K3 1) v
       (Matrix.mulVecLin (1 : Matrix (Fin 1) (Fin 1) K3)) ^ 2 ≤ Real.exp t := by
@@ -1345,6 +1649,9 @@ def cbStd {m : ℕ} (Kj : ∀ _ : Fin m, Matrix (Fin 1) (Fin 1) K3) (ht : ∀ j 
   hyp := Formalism.DimensionVariation.cbHyp_matrix K3 m (fun _ => 1) Kj (fun _ _ => 1) (fun _ _ => zero_le_one)
     (fun j v q p => by rw [Subsingleton.elim q 0, Subsingleton.elim p 0]; exact ht j v)
 
+/- English proof (translation)
+Establish `hc : ∀ inst : Fintype (Fin 1), @Fintype.card (Fin 1) inst = 1` using `fun inst => by convert Fintype.card_fin 1`. Use `show Formalism.DimensionVariation.cbSq (@Fintype.card (Fin 1) _) (@Fintype.card (Fin 1) _) 1 1 1 = 1`. Rewrite using `[hc]`. Evaluate the numerical expressions using `[Formalism.DimensionVariation.cbSq]`.
+-/
 theorem cbStd_sq {m : ℕ} (Kj : ∀ _ : Fin m, Matrix (Fin 1) (Fin 1) K3) (ht : ∀ j (v : InfinitePlace K3), ‖v.embedding (Kj j 0 0)‖ ^ 2 ≤ 1)
     (j : Fin m) (v : InfinitePlace K3) : (cbStd Kj ht).sq j v = 1 := by
   have hc : ∀ inst : Fintype (Fin 1), @Fintype.card (Fin 1) inst = 1 := fun inst => by convert Fintype.card_fin 1
@@ -1352,6 +1659,9 @@ theorem cbStd_sq {m : ℕ} (Kj : ∀ _ : Fin m, Matrix (Fin 1) (Fin 1) K3) (ht :
   rw [hc]
   norm_num [Formalism.DimensionVariation.cbSq]
 
+/- English proof (translation)
+Simplify using the standard rewrite rules.
+-/
 theorem one_entry (v : InfinitePlace K3) : ‖v.embedding ((1 : Matrix (Fin 1) (Fin 1) K3) 0 0)‖ ^ 2 ≤ 1 := by
   simp
 
@@ -1422,6 +1732,9 @@ def exampleDivisionInputs (v0 : InfinitePlace K3) : DivInputs (coreOne v0) recOn
   la_le := by show (0 : ℝ) ≤ 1; norm_num
   constant_ge_twenty_eight := by show (28 : ℝ) ≤ 36; norm_num
 
+/- English proof (translation)
+The claim follows from `divClauses_of (one.wf K3 v0 (conjAt v0)) (one.wf K3 v0 (conjAt v0)) (coreOne v0) _ () _ _ (exampleDivisionInputs v0)`.
+-/
 theorem toyCoreOne_divClauses (v0 : InfinitePlace K3) : DivClauses (coreOne v0) recOne () (sl K3 1) (fun _ => 0) :=
   divClauses_of (one.wf K3 v0 (conjAt v0)) (one.wf K3 v0 (conjAt v0)) (coreOne v0) _ () _ _ (exampleDivisionInputs v0)
 
@@ -1431,6 +1744,11 @@ def tTwo (w : HeightOneSpectrum (𝓞 K3)) : ℝ :=
 def recTwo (w : HeightOneSpectrum (𝓞 K3)) : RecNums Unit (Fin 1) :=
   recNumsExample Unit (36 + |tTwo w|) (by linarith [abs_nonneg (tTwo w)])
 
+/- English proof (translation)
+Take `⟨r, hr⟩` from `sl_coord φ hφ`. Take `⟨s, hs⟩` from `sl_coord F hF`. Consider the cases of `t`. Simplify using `only [cond_false]`. Rewrite using `[toDual_one, hr, hs, ← map_mul]`.
+
+Conclude with `ValuationRepresentative.vw_int_nonneg w (r * s)`. Simplify using `only [cond_true, LinearMap.smul_apply, toDual_one, hr, hs, smul_eq_mul]`. Establish `: (3 : K3) * ((r : K3) * (s : K3)) = ((r * s + r * s + r * s : 𝓞 K3) : K3)` using `by push_cast; ring`. Rewrite using `[this]`. Conclude with `ValuationRepresentative.vw_int_nonneg w (r * s + r * s + r * s)`.
+-/
 theorem two_val (w : HeightOneSpectrum (𝓞 K3)) (t : Bool) (φ F : Fin 1 → K3) (hφ : φ ∈ sl K3 1) (hF : F ∈ sl K3 1) :
     0 ≤ vw w ((cond t ((3 : K3) • (Pi.basisFun K3 (Fin 1)).toDual) (Pi.basisFun K3 (Fin 1)).toDual) φ F) := by
   obtain ⟨r, hr⟩ := sl_coord φ hφ
@@ -1530,6 +1848,9 @@ def inpTwo (v0 : InfinitePlace K3) (w : HeightOneSpectrum (𝓞 K3)) :
       have h := two_val y (decide (y ∈ pairSet w)) φ F hφ hF
       exact_mod_cast h)
 
+/- English proof (translation)
+The claim follows from `divClauses_of (two.wf K3 v0 (conjAt v0)) (two.wf K3 v0 (conjAt v0)) (coreTwo v0 w) _ () _ _ (inpTwo v0 w)`.
+-/
 theorem clauses_two (v0 : InfinitePlace K3) (w : HeightOneSpectrum (𝓞 K3)) :
     DivClauses (coreTwo v0 w) (recTwo w) () (sl K3 1) (fun _ => 0) :=
   divClauses_of (two.wf K3 v0 (conjAt v0)) (two.wf K3 v0 (conjAt v0)) (coreTwo v0 w) _ () _ _ (inpTwo v0 w)
@@ -1539,6 +1860,9 @@ open scoped Classical in
 def sgf (w : HeightOneSpectrum (𝓞 K3)) (y : HeightOneSpectrum (𝓞 K3)) : ℝ :=
   if y ∈ pairSet w then 1 else 0
 
+/- English proof (translation)
+Use `((Formalism.DivisionValues.lwSumPrime K3 3 Nat.prime_three).2.2.1 y).1 h` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem vw3 (y : HeightOneSpectrum (𝓞 K3)) (h : ((3 : ℕ) : 𝓞 K3) ∈ y.asIdeal) : 1 ≤ vw y ((3 : ℕ) : K3) := by
   have := ((Formalism.DivisionValues.lwSumPrime K3 3 Nat.prime_three).2.2.1 y).1 h
   omega
@@ -1576,6 +1900,11 @@ def inpShift (v0 : InfinitePlace K3) (w : HeightOneSpectrum (𝓞 K3))
         rw [show sgf w y = 0 by simp [sgf, hy]]
         exact_mod_cast h)
 
+/- English proof (translation)
+Introduce `y hy`. Simplify using `only [pairSet, Finset.mem_insert, Finset.mem_singleton] at hy`. Break down `hy with rfl | rfl` into its components or cases. Conclude with `h`. Use `show ((3 : ℕ) : 𝓞 K3) ∈ w.asIdeal.map (cO K3)`.
+
+Use `Ideal.mem_map_of_mem (cO K3) h` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis.
+-/
 theorem third_hypothesis_of_params (w : HeightOneSpectrum (𝓞 K3)) (h : ((3 : ℕ) : 𝓞 K3) ∈ w.asIdeal) :
     ∀ y ∈ pairSet w, ((3 : ℕ) : 𝓞 K3) ∈ y.asIdeal := by
   intro y hy
@@ -1586,6 +1915,9 @@ theorem third_hypothesis_of_params (w : HeightOneSpectrum (𝓞 K3)) (h : ((3 : 
     have := Ideal.mem_map_of_mem (cO K3) h
     rwa [map_natCast] at this
 
+/- English proof (translation)
+Take `⟨w, hw⟩` from `(Formalism.DivisionValues.lwSumPrime K3 3 Nat.prime_three).2.1`. Use `⟨w, divClauses_of (two.wf K3 v0 (conjAt v0)) (two.wf K3 v0 (conjAt v0)) (coreTwo v0 w) _ () _ _ (inpShift v0 w (third_hypothesis_of_params w hw)), fun y hy => ?_⟩` and prove the remaining obligations. Simplify using `[shiftZ, sgf, hy]`.
+-/
 theorem clauses_shift (v0 : InfinitePlace K3) : ∃ w : HeightOneSpectrum (𝓞 K3),
     DivClauses (coreTwo v0 w) (recTwo w) () (sl K3 1) (sgf w) ∧ ∀ y ∈ pairSet w, shiftZ (sgf w) y = 1 := by
   obtain ⟨w, hw⟩ := (Formalism.DivisionValues.lwSumPrime K3 3 Nat.prime_three).2.1
@@ -1593,6 +1925,9 @@ theorem clauses_shift (v0 : InfinitePlace K3) : ∃ w : HeightOneSpectrum (𝓞 
     (inpShift v0 w (third_hypothesis_of_params w hw)), fun y hy => ?_⟩
   simp [shiftZ, sgf, hy]
 
+/- English proof (translation)
+Introduce `h`. Use `congrArg (fun B : (Fin 1 → K3) →ₗ[K3] Module.Dual K3 (Fin 1 → K3) => B (fun _ => 1) (fun _ => 1)) h` as an intermediate fact. Express the relevant statement in the definitionally equal form `(Pi.basisFun K3 (Fin 1)).toDual (fun _ => 1) (fun _ => 1) = 0 at this`. Rewrite `this` using `[toDual_one]`. Simplify using `at this`.
+-/
 theorem coreTwo_B_ne_zero (v0 : InfinitePlace K3) (w : HeightOneSpectrum (𝓞 K3)) : (coreTwo v0 w).cols.col.B () ≠ 0 := by
   intro h
   have := congrArg (fun B : (Fin 1 → K3) →ₗ[K3] Module.Dual K3 (Fin 1 → K3) => B (fun _ => 1) (fun _ => 1)) h
@@ -1600,6 +1935,13 @@ theorem coreTwo_B_ne_zero (v0 : InfinitePlace K3) (w : HeightOneSpectrum (𝓞 K
   rw [toDual_one] at this
   simp at this
 
+/- English proof (translation)
+Establish `hM : (fr K3 1 v)⁻¹ * (LinearMap.toMatrix (Pi.basisFun K3 (Fin 1)) (Pi.basisFun K3 (Fin 1)) (Matrix.mulVecLin (a • (1 : Matrix (Fin 1) (Fin 1) K3)))).map v.embedding * fr K3 1 v = (v.embedding a) • (1 : Matrix (Fin 1) (Fin 1) ℂ)`. Use extensionality with `i j`. Use `fin_cases i`. Use `fin_cases j`. Simplify using `[fr]`.
+
+Establish `h1 : Formalism.HN.opNormAt (Pi.basisFun K3 (Fin 1)) (fr K3 1) (Pi.basisFun K3 (Fin 1)) (fr K3 1) v (Matrix.mulVecLin (a • (1 : Matrix (Fin 1) (Fin 1) K3))) ≤ ‖v.embedding a‖`. Rewrite using `[Formalism.HN.opNormAt, hM]`. Use `ContinuousLinearMap.opNorm_le_bound _ (norm_nonneg _) fun x => ?_` and prove the remaining obligations. Simplify using `[norm_smul]`. Establish `h0` using `OperatorNormFrames.opNormAt_nonneg (Pi.basisFun K3 (Fin 1)) (fr K3 1) (Pi.basisFun K3 (Fin 1)) (fr K3 1) v (Matrix.mulVecLin (a • (1 : Matrix (Fin 1) (Fin 1) K3)))`.
+
+Conclude with `(pow_le_pow_left₀ h0 h1 2).trans ht`.
+-/
 theorem norm_smul_one (v : InfinitePlace K3) (a : K3) {t : ℝ} (ht : ‖v.embedding a‖ ^ 2 ≤ Real.exp t) :
     Formalism.HN.opNormAt (Pi.basisFun K3 (Fin 1)) (fr K3 1) (Pi.basisFun K3 (Fin 1)) (fr K3 1) v
       (Matrix.mulVecLin (a • (1 : Matrix (Fin 1) (Fin 1) K3))) ^ 2 ≤ Real.exp t := by
@@ -1619,6 +1961,9 @@ theorem norm_smul_one (v : InfinitePlace K3) (a : K3) {t : ℝ} (ht : ‖v.embed
 
 def kk : Fin 2 → K3 := ![2, 2⁻¹]
 
+/- English proof (translation)
+Use `show (kk 1 • (1 : Matrix (Fin 1) (Fin 1) K3)) * ((kk 0 • (1 : Matrix (Fin 1) (Fin 1) K3)) * 1) = 1`. Establish `h : kk 1 * kk 0 = 1` using `by show (2 : K3)⁻¹ * 2 = 1`. Conclude with `inv_mul_cancel₀ two_ne_zero`. Rewrite using `[mul_one, Matrix.smul_mul, one_mul, smul_smul, h, one_smul]`.
+-/
 theorem chain_two : chainMat (R := K3) (m := 2) (c := fun _ => 1) (fun j => kk j • (1 : Matrix (Fin 1) (Fin 1) K3)) (Fin.last 2) = 1 := by
   show (kk 1 • (1 : Matrix (Fin 1) (Fin 1) K3)) * ((kk 0 • (1 : Matrix (Fin 1) (Fin 1) K3)) * 1) = 1
   have h : kk 1 * kk 0 = 1 := by
@@ -1641,9 +1986,23 @@ def chThree (v0 : InfinitePlace K3) : ColChain (three.dc K3 v0) () where
       ((chainMat (R := K3) (m := 2) (c := fun _ => 1) (fun j => kk j • (1 : Matrix (Fin 1) (Fin 1) K3)) (Fin.last 2)).mulVec φ) F
     rw [chain_two, Matrix.one_mulVec]
 
+/- English proof (translation)
+Simplify using `[Finset.filter_eq']`.
+-/
 theorem fiber_id {n : ℕ} (f : Fin n → ℝ) (j : Fin n) : ∑ l ∈ Finset.univ.filter (fun l => l = j), f l = f j := by
   simp [Finset.filter_eq']
 
+/- English proof (translation)
+Establish `: Nonempty (three.base K3 v0).Ix` using `⟨(0 : Fin 2)⟩`. Use `height_chain (three.wf1 K3 v0 (conjAt v0)) (three.core (K := K3) (v0 := v0) (kap := 3) (by norm_num) example_weights_pos).cols () ?_ (fun _ => 1) (fun v => ⟨by simp, by simp [Matrix.map_one]⟩) (chThree v0) 0 (fun j _ => (![2, -1] : Fin 2 → ℝ) j) (fun v => norm_toDual v) (fun j v …` and prove the remaining obligations. Introduce `h`. Use `congrArg (fun B : (Fin 1 → K3) →ₗ[K3] Module.Dual K3 (Fin 1 → K3) => B (fun _ => 1) (fun _ => 1)) h` as an intermediate fact. Express the relevant statement in the definitionally equal form `(Pi.basisFun K3 (Fin 1)).toDual (fun _ => 1) (fun _ => 1) = 0 at this`.
+
+Rewrite `this` using `[toDual_one]`. Simplify using `at this`. Use `le_of_le_of_eq (norm_smul_one v (kk j) (t := (![2, -1] : Fin 2 → ℝ) j) ?_) ?_ swap` and prove the remaining obligations. Use `congr 1`. Conclude with `(fiber_id (fun l => (![2, -1] : Fin 2 → ℝ) l) j).symm`.
+
+Use `fin_cases j`. Use `show ‖v.embedding (2 : K3)‖ ^ 2 ≤ Real.exp 2`. Use `Real.quadratic_le_exp_of_nonneg (show (0 : ℝ) ≤ 2 by norm_num)` as an intermediate fact. Simplify using `only [map_ofNat]`. Evaluate the numerical expressions.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Use `show ‖v.embedding ((2 : K3)⁻¹)‖ ^ 2 ≤ Real.exp (-1)`. Establish `h1` using `Real.exp_one_lt_d9`. Establish `h2 : Real.exp (-1) = (Real.exp 1)⁻¹` using `Real.exp_neg 1`. Establish `h3 : (1 / 4 : ℝ) ≤ (Real.exp 1)⁻¹`.
+
+Rewrite using `[one_div]; exact inv_anti₀ (Real.exp_pos 1) (by linarith)`. Rewrite using `[h2, map_inv₀, map_ofNat]`. Evaluate the numerical expressions. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem height_three (v0 : InfinitePlace K3) :
     Formalism.HN.htMap (Pi.basisFun K3 (Fin 1)) (fr K3 1) (Pi.basisFun K3 (Fin 1)).dualBasis
               (Formalism.HN.dualFrame (three.core (K := K3) (v0 := v0) (kap := 3) (by norm_num) example_weights_pos).cols.XE)
@@ -1680,12 +2039,18 @@ theorem height_three (v0 : InfinitePlace K3) :
 
 abbrev pt : Formalism.L2.Col.GSD K3 := Formalism.L2.Col.GSD.triv K3 Unit Unit
 
+/- English proof (translation)
+The claim follows from `Formalism.L2.Col.GSD.triv_ok K3 Unit Unit inferInstance (fun _ => inferInstance)`.
+-/
 theorem pt_ok : pt.Ok := Formalism.L2.Col.GSD.triv_ok K3 Unit Unit inferInstance (fun _ => inferInstance)
 
 instance cl_unique (S : Formalism.L2.Col.GSD K3) [Unique S.D] : Unique S.Cl where
   default := S.cls default
   uniq a := Quotient.inductionOn a fun x => by rw [Subsingleton.elim x default]; rfl
 
+/- English proof (translation)
+Use `show @Fintype.card _ ((S.toCSDOf h s).finGam c) = 1`. Conclude with `(@Fintype.card_eq_one_iff _ ((S.toCSDOf h s).finGam c)).2 ⟨1, fun x => Subtype.ext (Subsingleton.elim _ _)⟩`.
+-/
 theorem wt_one (S : Formalism.L2.Col.GSD K3) [Subsingleton S.G] (h : S.Ok) (s : S.Sec) (c : S.Cl) : (S.toCSDOf h s).wt c = 1 := by
   show @Fintype.card _ ((S.toCSDOf h s).finGam c) = 1
   exact (@Fintype.card_eq_one_iff _ ((S.toCSDOf h s).finGam c)).2 ⟨1, fun x => Subtype.ext (Subsingleton.elim _ _)⟩
@@ -1717,12 +2082,21 @@ abbrev ptQ (n : ℕ) (a : ℕ → K3) (b1 b2 : K3) : KerChain K3 where
 def ptIn : (Fin 1 → K3) →ₗ[K3] pt.EqFun :=
   LinearMap.codRestrict pt.EqFun (LinearMap.pi fun _ => LinearMap.proj 0) (fun _ _ _ => rfl)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ptIn_apply (x : Fin 1 → K3) (d : Unit) : (ptIn x : Unit → K3) d = x 0 := rfl
 
 def ptInF : (Fin 1 → K3) →ₗ[K3] pt.toFam.Forms := LinearMap.pi fun _ => ptIn
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ptInF_apply (x : Fin 1 → K3) (b : Unit) : ptInF x b = ptIn x := rfl
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `d`. Use `show (Formalism.L2.Col.ClsKer.appOf (sK a) h s (ptIn x : Unit → K3) d) = (ptIn (a • x) : Unit → K3) d`. Simplify using `only [Formalism.L2.Col.ClsKer.appOf, Finset.univ_unique, Finset.sum_singleton, wt_one, Nat.cast_one, inv_one, one_smul]`. Both sides reduce to the same expression.
+-/
 theorem sK_opOf (a : K3) (h : pt.Ok) (s : pt.Sec) (x : Fin 1 → K3) : (sK a).opOf h s (ptIn x) = ptIn (a • x) := by
   apply Subtype.ext
   funext d
@@ -1730,6 +2104,11 @@ theorem sK_opOf (a : K3) (h : pt.Ok) (s : pt.Sec) (x : Fin 1 → K3) : (sK a).op
   simp only [Formalism.L2.Col.ClsKer.appOf, Finset.univ_unique, Finset.sum_singleton, wt_one, Nat.cast_one, inv_one, one_smul]
   rfl
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `d`. Use `show (Formalism.L2.Col.ClsKer.appOf ((cK a b).comp pt_ok pt.outSec) h s (ptIn x : Unit → K3) d) = (ptIn ((b * a) • x) : Unit → K3) d`. Simplify using `only [Formalism.L2.Col.ClsKer.appOf, Formalism.L2.Col.CplKer.comp, Finset.univ_unique, Finset.sum_singleton, wt_one, Nat.cast_one, inv_one, one_smul]`. Rewrite using `[LinearMap.sum_apply, Finset.sum_eq_single_of_mem () (by simp) (fun y _ hy => absurd (Subsingleton.elim y ()) hy)]`.
+
+Simplify using `only [cK, LinearMap.comp_apply, LinearMap.smul_apply, LinearMap.id_apply]`. Use `show b • a • x 0 = ((b * a) • x) 0`. Rewrite using `[Pi.smul_apply, mul_smul]`.
+-/
 theorem cK_opOf (a b : K3) (h : pt.Ok) (s : pt.Sec) (x : Fin 1 → K3) :
     ((cK a b).comp pt_ok pt.outSec).opOf h s (ptIn x) = ptIn ((b * a) • x) := by
   apply Subtype.ext
@@ -1742,6 +2121,9 @@ theorem cK_opOf (a b : K3) (h : pt.Ok) (s : pt.Sec) (x : Fin 1 → K3) :
   show b • a • x 0 = ((b * a) • x) 0
   rw [Pi.smul_apply, mul_smul]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `b`. Simplify using `only [KerChain.step, Formalism.L2.Col.KerFam.step, Formalism.L2.Col.GFam.Mat.opOf, LinearMap.pi_apply, LinearMap.comp_apply, LinearMap.proj_apply, Finset.univ_unique, Finset.sum_singleton, ptInF_apply]`. Conclude with `sK_opOf (a j) pt_ok pt.outSec x`.
+-/
 theorem pt_step (n : ℕ) (a : ℕ → K3) (b1 b2 : K3) (j : ℕ) (x : Fin 1 → K3) :
     (ptQ n a b1 b2).step j (ptInF x) = ptInF (a j • x) := by
   funext b
@@ -1749,23 +2131,35 @@ theorem pt_step (n : ℕ) (a : ℕ → K3) (b1 b2 : K3) (j : ℕ) (x : Fin 1 →
     LinearMap.comp_apply, LinearMap.proj_apply, Finset.univ_unique, Finset.sum_singleton, ptInF_apply]
   exact sK_opOf (a j) pt_ok pt.outSec x
 
+/- English proof (translation)
+Simplify using `only [KerChain.cpl, LinearMap.comp_apply, LinearMap.proj_apply, Finset.univ_unique, Finset.sum_singleton, ptInF_apply]`. Conclude with `cK_opOf b1 b2 pt_ok pt.outSec x`.
+-/
 theorem pt_cpl (n : ℕ) (a : ℕ → K3) (b1 b2 : K3) (x : Fin 1 → K3) :
     (ptQ n a b1 b2).cpl (ptInF x) = ptIn ((b2 * b1) • x) := by
   simp only [KerChain.cpl, LinearMap.comp_apply, LinearMap.proj_apply, Finset.univ_unique,
     Finset.sum_singleton, ptInF_apply]
   exact cK_opOf b1 b2 pt_ok pt.outSec x
 
+/- English proof (translation)
+Simplify using `only [Formalism.L2.Col.GSD.ipAt, Formalism.L2.Col.GSD.pairAt, Finset.univ_unique, Finset.sum_singleton]`. Simplify using `[wt_one, Formalism.L2.Col.GSD.gramV, Formalism.L2.DIV.CSD.pairOne, Complex.conj_mul']`. Both sides reduce to the same expression.
+-/
 theorem pt_ipAt (h : pt.Ok) (v : InfinitePlace K3) (x : Fin 1 → K3) :
     pt.ipAt h v (ptIn x : Unit → K3) (ptIn x : Unit → K3) = ((‖v.embedding (x 0)‖ ^ 2 : ℝ) : ℂ) := by
   simp only [Formalism.L2.Col.GSD.ipAt, Formalism.L2.Col.GSD.pairAt, Finset.univ_unique, Finset.sum_singleton]
   simp [wt_one, Formalism.L2.Col.GSD.gramV, Formalism.L2.DIV.CSD.pairOne, Complex.conj_mul']
   rfl
 
+/- English proof (translation)
+Rewrite using `[Formalism.HermitianLatticesTheory.normAt, Formalism.HermitianLatticesTheory.cnorm, Real.sq_sqrt (Finset.sum_nonneg fun _ _ => sq_nonneg _)]`. Simplify using `[Formalism.HermitianLatticesTheory.fcoord, Formalism.HermitianLatticesTheory.vecAt, fr]`.
+-/
 theorem fr_normAt (v : InfinitePlace K3) (x : Fin 1 → K3) :
     ((Formalism.HermitianLatticesTheory.normAt (Pi.basisFun K3 (Fin 1)) (fr K3 1) v x ^ 2 : ℝ) : ℂ) = ((‖v.embedding (x 0)‖ ^ 2 : ℝ) : ℂ) := by
   rw [Formalism.HermitianLatticesTheory.normAt, Formalism.HermitianLatticesTheory.cnorm, Real.sq_sqrt (Finset.sum_nonneg fun _ _ => sq_nonneg _)]
   simp [Formalism.HermitianLatticesTheory.fcoord, Formalism.HermitianLatticesTheory.vecAt, fr]
 
+/- English proof (translation)
+Simplify using `only [famIpAt, Finset.univ_unique, Finset.sum_singleton, ptInF_apply]`. Conclude with `pt_ipAt pt_ok v x`.
+-/
 theorem pt_famIpAt (v : InfinitePlace K3) (x : Fin 1 → K3) :
     famIpAt pt.toFam (fun _ => pt_ok) v (ptInF x) (ptInF x) = ((‖v.embedding (x 0)‖ ^ 2 : ℝ) : ℂ) := by
   simp only [famIpAt, Finset.univ_unique, Finset.sum_singleton, ptInF_apply]
@@ -1804,15 +2198,32 @@ def tieThree (v0 : InfinitePlace K3) : ChainTie (chThree v0) (ptQ 1 (fun _ => 2)
       fun y => by rw [smul_one_mulVec, one_mul]; rfl
     exact (congrArg ptIn (h2 x)).trans h1.symm
 
+/- English proof (translation)
+The claim follows from `(tieThree v0).chain x`.
+-/
 theorem tieThree_chain (v0 : InfinitePlace K3) (x : Fin 1 → K3) :
     (tieThree v0).coL ((chainMat (chThree v0).Kj ⟨2, by show 2 < 2 + 1; omega⟩).mulVec x) =
       (ptQ 1 (fun _ => 2) 2⁻¹ 1).col (ptInF x) := (tieThree v0).chain x
 
+/- English proof (translation)
+Use function extensionality and compare the values at `b`. Consider the cases of `b`. Conclude with `Subtype.ext (funext fun d => by cases d; rfl)`.
+-/
 theorem ptInF_eta (φ : pt.toFam.Forms) : φ = ptInF (fun _ => (φ () : Unit → K3) ()) := by
   funext b
   cases b
   exact Subtype.ext (funext fun d => by cases d; rfl)
 
+/- English proof (translation)
+Use `⟨fun T => ?_⟩` and prove the remaining obligations. Set `one : Fin 1 → K3` to `fun _ => 1`. Set `y : Fin 1 → K3` to `fun _ => (T.coF 0 le_rfl one () : Unit → K3) ()`. Establish `e1 : T.coF 0 le_rfl one = ptInF y` using `ptInF_eta _`. Establish `hC : T.coL ((1 : Matrix (Fin 1) (Fin 1) K3).mulVec one) = ptIn (((1 : K3) * 2) • y)` using `(T.kerC one).trans ((congrArg (ptQ 0 (fun _ => 1) 2 1).cpl e1).trans (pt_cpl 0 (fun _ => 1) 2 1 y))`.
+
+Establish `hL : ((‖v0.embedding (((1 : Matrix (Fin 1) (Fin 1) K3).mulVec one) 0)‖ ^ 2 : ℝ) : ℂ) = ((‖v0.embedding ((((1 : K3) * 2) • y) 0)‖ ^ 2 : ℝ) : ℂ)`. Establish `h` using `T.metL v0 ((1 : Matrix (Fin 1) (Fin 1) K3).mulVec one)`. Rewrite `h` using `[hC]`. Conclude with `(fr_normAt v0 _).symm.trans (h.trans (pt_ipAt pt_ok v0 _))`. Establish `hF : ((‖v0.embedding (one 0)‖ ^ 2 : ℝ) : ℂ) = ((‖v0.embedding (y 0)‖ ^ 2 : ℝ) : ℂ)`.
+
+Establish `h` using `T.metF 0 le_rfl v0 one`. Rewrite `h` using `[e1]`. Conclude with `(fr_normAt v0 _).symm.trans (h.trans (pt_famIpAt v0 y))`. Establish `hL'` using `Complex.ofReal_injective hL`. Establish `hF'` using `Complex.ofReal_injective hF`.
+
+Establish `h1 : ‖v0.embedding (((1 : Matrix (Fin 1) (Fin 1) K3).mulVec one) 0)‖ = 1` using `by simp [Matrix.one_mulVec, one]`. Establish `h2 : ‖v0.embedding ((((1 : K3) * 2) • y) 0)‖ = 2 * ‖v0.embedding (y 0)‖`. Rewrite using `[Pi.smul_apply, smul_eq_mul, one_mul, map_mul, norm_mul, map_ofNat]`. Evaluate the numerical expressions. Establish `h3 : ‖v0.embedding (one 0)‖ = 1` using `by simp [one]`.
+
+Rewrite `hL'` using `[h1, h2]`. Rewrite `hF'` using `[h3]`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem not_tied_two (v0 : InfinitePlace K3) : IsEmpty (ChainTie (chOne v0) (ptQ 0 (fun _ => 1) 2 1)) := by
   refine ⟨fun T => ?_⟩
   let one : Fin 1 → K3 := fun _ => 1
@@ -1840,6 +2251,9 @@ theorem not_tied_two (v0 : InfinitePlace K3) : IsEmpty (ChainTie (chOne v0) (ptQ
   rw [h3] at hF'
   nlinarith
 
+/- English proof (translation)
+Introduce `v x`. Establish `h : (chainMat (chOne v0).Kj ⟨(ptQ 0 (fun _ => 1) 1 1).n + 1, by show 0 + 1 < 1 + 1; omega⟩).mulVec x = x` using `(congrArg (fun M => Matrix.mulVec M x) chain_one).trans (Matrix.one_mulVec x)`. Rewrite using `[h]`. Both sides reduce to the same expression.
+-/
 theorem chOne_isom (v0 : InfinitePlace K3) :
     ∀ (v : InfinitePlace K3) (x : Fin ((chOne v0).c ⟨0, by omega⟩) → K3),
       Formalism.HermitianLatticesTheory.normAt (Pi.basisFun K3 (Fin ((chOne v0).c ⟨(ptQ 0 (fun _ => 1) 1 1).n + 1, by show 0 + 1 < 1 + 1; omega⟩)))
@@ -1852,6 +2266,9 @@ theorem chOne_isom (v0 : InfinitePlace K3) :
   rw [h]
   rfl
 
+/- English proof (translation)
+The claim follows from `(tieOne v0).col_isom (chOne_isom v0) v x`.
+-/
 theorem tieOne_isom (v0 : InfinitePlace K3) (v : InfinitePlace K3) (x : Fin ((chOne v0).c 0) → K3) :
     (ptQ 0 (fun _ => 1) 1 1).S₁.ipAt (ptQ 0 (fun _ => 1) 1 1).hS₁ v
         ((ptQ 0 (fun _ => 1) 1 1).col ((tieOne v0).coF 0 (Nat.zero_le _) x))
@@ -1859,6 +2276,9 @@ theorem tieOne_isom (v0 : InfinitePlace K3) (v : InfinitePlace K3) (x : Fin ((ch
       famIpAt ((ptQ 0 (fun _ => 1) 1 1).F 0) ((ptQ 0 (fun _ => 1) 1 1).hF 0) v ((tieOne v0).coF 0 (Nat.zero_le _) x)
         ((tieOne v0).coF 0 (Nat.zero_le _) x) := (tieOne v0).col_isom (chOne_isom v0) v x
 
+/- English proof (translation)
+Introduce `_` and use `rfl`.
+-/
 theorem tieOne_first (v0 : InfinitePlace K3) : (tieOne v0).First ptInF := fun _ => rfl
 
 end Formalism.L2.DIV.Inst

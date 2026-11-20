@@ -31,6 +31,11 @@ def Lies {W : Type} [CommRing W] [IsDomain W] (φ : R →+* W) {D : DegPre R} {D
     [Algebra (FractionRing W) F'] (em : F →+* F') {k : ℕ} (p : QkPt D F k) (p' : QkPt D' F' k) : Prop :=
   ∃ p₁ : QkPt D F' k, QkExt em p p₁ ∧ p'.y = hD.xe.symm p₁.y ∧ IsPullGtF φ hD F' p₁.g p'.g
 
+/- English proof (translation)
+Establish `H : ∀ k : ℕ, ∃ f : QkPt D.toPre F k → (TFK (R` using `R) F ⟶ A.A), 1 ≤ k → GlobalTheory.UT.Tors U.toUnifPre F k f ∧ ∀ p, f p ^ k = 1 := fun k => by`. Distinguish the cases in `hk : 1 ≤ k`. Take `⟨f, hf⟩` from `GlobalTheory.TorsionIso.torsion_clause R _ hR D A G hG U F k hk`. Conclude with `⟨f, fun _ => hf⟩`. Conclude with `⟨fun _ => 1, fun h => absurd h hk⟩`.
+
+Use `choose f hf using H`. Use `⟨f, ⟨fun k hk => (hf k hk).2, fun k hk => (hf k hk).1.2.1, fun k hk => (hf k hk).1.2.2.1, fun k hk => (hf k hk).1.2.2.2.1, fun k hk p p' z => ((hf k hk).1.2.2.2.2 p p' z).1, ?_⟩, fun k hk => (hf k hk).1.1⟩` and prove the remaining obligations. Introduce `k m N hk hm hN p q hy hg`. Establish `hN1 : 1 ≤ N` using `hN ▸ Nat.mul_pos hk hm`. Conclude with `(((hf N hN1).1.1 q _).1 (((GlobalTheory.LevelCompat.qkToAkU_level GlobalTheory.firstFiveLaws R _ hR D A G hG U F k m N hk hm hN p q (f k p)).1 hy hg).1 (((hf k hk).1.1 p _).2 rfl))).symm`.
+-/
 theorem exists_goodLab [CharZero R] {I : Ideal R} (hR : AdmBase R I) {D : DegData R I} {A : PolAV (Sp (FractionRing R))}
     {G : Over (Sp R)} [GrpObj G] [IsCommMonObj G] (hG : IsSemiAbelian G) (U : Unif I D A G) (F : Type) [Field F]
     [IsAlgClosed F] [Algebra (FractionRing R) F] :

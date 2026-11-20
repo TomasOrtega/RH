@@ -24,6 +24,9 @@ def stepFam (j : ℕ) (q : LowEnt Ψ N ≃ Fin e) (w : Fin e → Ψ × Fin N) (i
 def IsReAn (z₀ : Fin e → ℂ) (h : (Fin e → ℂ) → ℝ) : Prop :=
   ∃ G : (Fin e → ℂ) → ℂ, AnalyticAt ℂ G z₀ ∧ h =ᶠ[𝓝 z₀] fun z => (G z).re
 
+/- English proof (translation)
+Take `⟨F, hF, h1⟩` from `hf`. Take `⟨G, hG, h2⟩` from `hg`. Use `⟨fun z => F z + G z, hF.add hG, ?_⟩` and prove the remaining obligations. Use `filter_upwards [h1, h2] with z a b`. Simplify using `[a, b]`.
+-/
 theorem IsReAn.add {z₀ : Fin e → ℂ} {f g : (Fin e → ℂ) → ℝ} (hf : IsReAn z₀ f) (hg : IsReAn z₀ g) :
     IsReAn z₀ (fun z => f z + g z) := by
   obtain ⟨F, hF, h1⟩ := hf
@@ -32,6 +35,9 @@ theorem IsReAn.add {z₀ : Fin e → ℂ} {f g : (Fin e → ℂ) → ℝ} (hf : 
   filter_upwards [h1, h2] with z a b
   simp [a, b]
 
+/- English proof (translation)
+Take `⟨F, hF, h1⟩` from `hf`. Take `⟨G, hG, h2⟩` from `hg`. Use `⟨fun z => F z - G z, hF.sub hG, ?_⟩` and prove the remaining obligations. Use `filter_upwards [h1, h2] with z a b`. Simplify using `[a, b]`.
+-/
 theorem IsReAn.sub {z₀ : Fin e → ℂ} {f g : (Fin e → ℂ) → ℝ} (hf : IsReAn z₀ f) (hg : IsReAn z₀ g) :
     IsReAn z₀ (fun z => f z - g z) := by
   obtain ⟨F, hF, h1⟩ := hf
@@ -40,9 +46,15 @@ theorem IsReAn.sub {z₀ : Fin e → ℂ} {f g : (Fin e → ℂ) → ℝ} (hf : 
   filter_upwards [h1, h2] with z a b
   simp [a, b]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ => 0, analyticAt_const, Eventually.of_forall fun _ => by simp⟩`.
+-/
 theorem IsReAn.zero (z₀ : Fin e → ℂ) : IsReAn z₀ (fun _ => 0) :=
   ⟨fun _ => 0, analyticAt_const, Eventually.of_forall fun _ => by simp⟩
 
+/- English proof (translation)
+Take `⟨F, hF, h1⟩` from `hf`. Conclude with `⟨F, hF, h.trans h1⟩`.
+-/
 theorem IsReAn.congr {z₀ : Fin e → ℂ} {f g : (Fin e → ℂ) → ℝ} (hf : IsReAn z₀ f) (h : g =ᶠ[𝓝 z₀] f) :
     IsReAn z₀ g := by
   obtain ⟨F, hF, h1⟩ := hf

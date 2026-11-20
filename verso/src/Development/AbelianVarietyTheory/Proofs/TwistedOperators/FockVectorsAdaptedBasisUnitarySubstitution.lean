@@ -27,6 +27,11 @@ section Pol
 
 variable {σ : Type}
 
+/- English proof (translation)
+Use `show fockIp P Q = star (Formalism.L2.DIV.fockS P Q)`. Unfold `fockIp Formalism.L2.DIV.fockS`. Rewrite using `[star_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[star_mul', star_mul', star_star, starRingEnd_apply, star_natCast]`.
+
+Simplify using `only [Formalism.L2.DIV.mfact, Finsupp.prod]`.
+-/
 theorem fockIp_eq (P Q : MvPolynomial σ ℂ) : fockIp P Q = star (Formalism.L2.DIV.fockL P Q) := by
   show fockIp P Q = star (Formalism.L2.DIV.fockS P Q)
   unfold fockIp Formalism.L2.DIV.fockS
@@ -37,6 +42,11 @@ theorem fockIp_eq (P Q : MvPolynomial σ ℂ) : fockIp P Q = star (Formalism.L2.
 
 variable [Fintype σ]
 
+/- English proof (translation)
+Establish `hg : ∀ v : σ, (∑ w, MvPolynomial.C (M w v) * MvPolynomial.X w : MvPolynomial σ ℂ).IsHomogeneous 1` using `fun v => MvPolynomial.IsHomogeneous.sum _ _ _ fun w _ => MvPolynomial.isHomogeneous_C_mul_X _ _`. Establish `key` using `h.eval₂ (algebraMap ℂ (MvPolynomial σ ℂ)) _ (fun r => MvPolynomial.isHomogeneous_C _ r) hg`. Rewrite `key` using `[one_mul]`. Unfold `lsub`. Rewrite using `[MvPolynomial.aeval_def]`.
+
+Conclude with `key`.
+-/
 theorem lsub_homog (M : Matrix σ σ ℂ) {d : ℕ} {P : MvPolynomial σ ℂ} (h : P.IsHomogeneous d) :
     (lsub M P).IsHomogeneous d := by
   have hg : ∀ v : σ, (∑ w, MvPolynomial.C (M w v) * MvPolynomial.X w : MvPolynomial σ ℂ).IsHomogeneous 1 :=
@@ -49,6 +59,13 @@ theorem lsub_homog (M : Matrix σ σ ℂ) {d : ℕ} {P : MvPolynomial σ ℂ} (h
 
 variable [DecidableEq σ]
 
+/- English proof (translation)
+Establish `h' : Mᴴ * M = 1` using `mul_eq_one_comm.mp h`. Establish `back : ∀ P, lsub M (lsub Mᴴ P) = P` using `fun P => by`. Rewrite using `[← AlgHom.comp_apply, ← lsub_mul, h, lsub_one]`. Both sides reduce to the same expression. Establish `forth : ∀ P, lsub Mᴴ (lsub M P) = P` using `fun P => by`.
+
+Rewrite using `[← AlgHom.comp_apply, ← lsub_mul, h', lsub_one]`. Both sides reduce to the same expression. Use `⟨{ (lsub M).toLinearMap with invFun := lsub Mᴴ, left_inv := forth, right_inv := back }, ?_, ?_, fun P => rfl⟩` and prove the remaining obligations. Introduce `d P`. Express the relevant statement in the definitionally equal form `(lsub M P).IsHomogeneous d ↔ P.IsHomogeneous d`.
+
+Use `⟨fun hP => ?_, fun hP => lsub_homog M hP⟩` and prove the remaining obligations. Simplify `lsub_homog Mᴴ hP` using `only [forth]`. Introduce `P Q`. Express the relevant statement in the definitionally equal form `fockIp (lsub M P) (lsub M Q) = fockIp P Q`. Rewrite using `[fockIp_eq, fockIp_eq, fockL_lsub_adj, forth]`.
+-/
 theorem exists_equiv {M : Matrix σ σ ℂ} (h : M * Mᴴ = 1) :
     ∃ ς : MvPolynomial σ ℂ ≃ₗ[ℂ] MvPolynomial σ ℂ, Graded ς ∧ (∀ P Q, fockIp (ς P) (ς Q) = fockIp P Q) ∧
       ∀ P, ς P = lsub M P := by
@@ -67,6 +84,19 @@ theorem exists_equiv {M : Matrix σ σ ℂ} (h : M * Mᴴ = 1) :
     change fockIp (lsub M P) (lsub M Q) = fockIp P Q
     rw [fockIp_eq, fockIp_eq, fockL_lsub_adj, forth]
 
+/- English proof (translation)
+Use extensionality with `w w'`. Establish `hww` using `congrFun (congrFun h w) w'`. Simplify using `only [Matrix.mul_apply, Matrix.conjTranspose_apply, Matrix.of_apply, Matrix.one_apply] at hww ⊢`. Distinguish the cases in `hw : e w = e w'`. Consider the cases of `hb : e w with`.
+
+Consider the case `true`. Establish `hb' : e w' = true` using `by rw [← hw]; exact hb`. Simplify using `only [hb', if_true]`. Conclude with `hww`. Consider the case `false`.
+
+Establish `hb' : e w' = false` using `by rw [← hw]; exact hb`. Simplify using `only [hb', Bool.false_eq_true, if_false, star_star]`. Establish `hs` using `congrArg star hww`. Rewrite `hs` using `[star_sum]`. Simplify using `only [star_mul', star_star] at hs`.
+
+Rewrite using `[hs]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `hne : w ≠ w'` using `fun hh => hw (by rw [hh])`. Rewrite using `[if_neg hne]`. Use `Finset.sum_eq_zero fun v _ => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `h1 : N w v = 0`. Simplify using `[h1]`. Establish `h3 : N w' v = 0`. Assume the negation of the conclusion as `h3`. Conclude with `hw ((he w v h1).trans (he w' v h3).symm)`.
+
+Simplify using `[h3]`.
+-/
 theorem unitary_mix {N : Matrix σ σ ℂ} (h : N * Nᴴ = 1) (e e' : σ → Bool) (he : ∀ w v, N w v ≠ 0 → e w = e' v) :
     (Matrix.of fun w v => if e w then N w v else star (N w v)) *
       (Matrix.of fun w v => if e w then N w v else star (N w v))ᴴ = 1 := by
@@ -103,6 +133,15 @@ section Mat
 
 variable {m n : ℕ}
 
+/- English proof (translation)
+Take `⟨hu, hG, hs⟩` from `h`. Establish `hd : IsUnit fr.det` using `(Matrix.isUnit_iff_isUnit_det fr).mp hu`. Establish `hJ : Formalism.REAL.Jm ε * Formalism.REAL.Jm ε = 1` using `Jm_mul_Jm ε`. Establish `hi : fr * fr⁻¹ = 1` using `Matrix.mul_nonsing_inv fr hd`. Establish `hi' : fr⁻¹ * fr = 1` using `Matrix.nonsing_inv_mul fr hd`.
+
+Establish `hGs : G * s = frᴴ * fr`. Rewrite using `[← hG, hs]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc fr fr⁻¹, hi, Matrix.one_mul, ← Matrix.mul_assoc (Formalism.REAL.Jm ε) (Formalism.REAL.Jm ε), hJ, Matrix.one_mul]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hs]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc fr fr⁻¹, hi, Matrix.one_mul, ← Matrix.mul_assoc (Formalism.REAL.Jm ε) (Formalism.REAL.Jm ε), hJ, Matrix.one_mul, hi']`. Establish `hc : (fr⁻¹)ᴴ * frᴴ = 1` using `by rw [← Matrix.conjTranspose_mul, hi, Matrix.conjTranspose_one]`. Rewrite using `[Matrix.mul_assoc, hGs, hs, Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, Jm_conj, ← hG]`.
+
+Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (fr⁻¹)ᴴ frᴴ, hc, Matrix.one_mul]`. Rewrite using `[hGs]`. Simplify using `using (Matrix.PosDef.one (n := Fin n) (R := ℂ)).conjTranspose_mul_mul_same (Matrix.mulVec_injective_iff_isUnit.mpr hu)`.
+-/
 theorem cartan_of_frame {G s fr : Mn n} {ε : Fin n → Bool} (h : IsFrameOf G s ε fr) : IsCartanInv G s := by
   obtain ⟨hu, hG, hs⟩ := h
   have hd : IsUnit fr.det := (Matrix.isUnit_iff_isUnit_det fr).mp hu
@@ -127,6 +166,9 @@ theorem cartan_of_frame {G s fr : Mn n} {ε : Fin n → Bool} (h : IsFrameOf G s
     simpa using (Matrix.PosDef.one (n := Fin n) (R := ℂ)).conjTranspose_mul_mul_same
       (Matrix.mulVec_injective_iff_isUnit.mpr hu)
 
+/- English proof (translation)
+Take `⟨hu, -, hs⟩` from `h`. Establish `hd : IsUnit fr.det` using `(Matrix.isUnit_iff_isUnit_det fr).mp hu`. Use `⟨Matrix.isUnit_nonsing_inv_iff.mpr hu, ?_⟩` and prove the remaining obligations. Rewrite using `[hs, Matrix.mul_assoc, Matrix.mul_nonsing_inv fr hd, Matrix.mul_one]`.
+-/
 theorem frame_eigen {G s fr : Mn n} {ε : Fin n → Bool} (h : IsFrameOf G s ε fr) :
     IsUnit fr⁻¹ ∧ s * fr⁻¹ = fr⁻¹ * Formalism.REAL.Jm ε := by
   obtain ⟨hu, -, hs⟩ := h
@@ -134,6 +176,19 @@ theorem frame_eigen {G s fr : Mn n} {ε : Fin n → Bool} (h : IsFrameOf G s ε 
   refine ⟨Matrix.isUnit_nonsing_inv_iff.mpr hu, ?_⟩
   rw [hs, Matrix.mul_assoc, Matrix.mul_nonsing_inv fr hd, Matrix.mul_one]
 
+/- English proof (translation)
+Take `⟨hu, hG, hs⟩` from `h`. Take `⟨ε', hBG, hsB⟩` from `hB`. Establish `hd : IsUnit fr.det` using `(Matrix.isUnit_iff_isUnit_det fr).mp hu`. Establish `hJu : Formalism.REAL.Jm ε * (fr * B) = fr * B * Formalism.REAL.Jm ε'`. Establish `key : fr * (s * B) = fr * (B * Formalism.REAL.Jm ε')` using `by rw [hsB]`.
+
+Rewrite `key` using `[hs]`. Simplify using `only [Matrix.mul_assoc] at key`. Rewrite `key` using `[← Matrix.mul_assoc fr fr⁻¹, Matrix.mul_nonsing_inv fr hd, Matrix.one_mul]`. Rewrite using `[key, Matrix.mul_assoc]`. Establish `hGu : (fr * B)ᴴ * Formalism.REAL.Jm ε * (fr * B) = Formalism.REAL.Jm ε'`.
+
+Rewrite using `[← hBG, ← hG, Matrix.conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc]`. Use `⟨fr * B, ε', ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← Matrix.mul_assoc, Matrix.nonsing_inv_mul fr hd, Matrix.one_mul]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[Jm_mul_Jm, Matrix.mul_one]`. Use `_ = (fr * B)ᴴ * Formalism.REAL.Jm ε * (Formalism.REAL.Jm ε * (fr * B)) := by simp only [Matrix.mul_assoc]`. Use `_ = (fr * B)ᴴ * Formalism.REAL.Jm ε * (fr * B) * Formalism.REAL.Jm ε' := by`. Rewrite using `[hJu]`. Simplify using `only [Matrix.mul_assoc]`.
+
+Use `_ = 1 := by rw [hGu, Jm_mul_Jm]`. Introduce `a i hai`. Establish `key` using `congrFun (congrFun hJu a) i`. Unfold `Formalism.REAL.Jm at key`. Rewrite `key` using `[Matrix.diagonal_mul, Matrix.mul_diagonal]`.
+
+Apply the tactic sequence `rcases h1 : ε a <;> rcases h2 : ε' i <;> simp only [h1, h2, Bool.false_eq_true, if_true, if_false] at key ⊢`. Apply the tactic sequence `all_goals first`. Consider the case `exact absurd (by linear_combination -key / 2) hai`. Consider the case `exact absurd (by linear_combination key / 2) hai`.
+-/
 theorem adapted_eq {G s fr B : Mn n} {ε : Fin n → Bool} (h : IsFrameOf G s ε fr) (hB : IsAdapted G s B) :
     ∃ (u : Mn n) (ε' : Fin n → Bool), B = fr⁻¹ * u ∧ uᴴ * u = 1 ∧ ∀ a i, u a i ≠ 0 → ε a = ε' i := by
   obtain ⟨hu, hG, hs⟩ := h
@@ -165,6 +220,17 @@ theorem adapted_eq {G s fr B : Mn n} {ε : Fin n → Bool} (h : IsFrameOf G s ε
       | exact absurd (by linear_combination -key / 2) hai
       | exact absurd (by linear_combination key / 2) hai
 
+/- English proof (translation)
+Establish `hd : IsUnit B.det` using `(Matrix.isUnit_iff_isUnit_det B).mp hu`. Establish `hs' : B⁻¹ * s = Formalism.REAL.Jm ε * B⁻¹`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc, Matrix.mul_nonsing_inv B hd, Matrix.mul_one]`. Use `_ = Formalism.REAL.Jm ε * B⁻¹ := by`.
+
+Rewrite using `[hs]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc B⁻¹ B, Matrix.nonsing_inv_mul B hd, Matrix.one_mul]`. Establish `hE : Formalism.REAL.Jm ε' * Matrix.single a b (1 : ℂ) * Formalism.REAL.Jm ε = (if (ε' a == ε b) then 1 else -1 : ℂ) • Matrix.single a b 1`. Use extensionality with `i j`.
+
+Unfold `Formalism.REAL.Jm`. Rewrite using `[Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.smul_apply, Matrix.single_apply, smul_eq_mul]`. Distinguish the cases in `hij : a = i ∧ b = j`. Take `⟨rfl, rfl⟩` from `hij`. Apply the tactic sequence `cases ε' a <;> cases ε b <;> simp`.
+
+Simplify using `[hij]`. Establish `hT : t * (B' * Matrix.single a b (1 : ℂ) * B⁻¹) * s = B' * (Formalism.REAL.Jm ε' * Matrix.single a b (1 : ℂ) * Formalism.REAL.Jm ε) * B⁻¹`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[hs', ← Matrix.mul_assoc t B', ht]`. Simplify using `only [Matrix.mul_assoc]`.
+
+Unfold `cplxO unitMap`. Rewrite using `[hT, hE, Matrix.mul_smul, Matrix.smul_mul, smul_smul]`.
+-/
 theorem cplxO_unitMap {s B : Mn n} {t B' : Mn m} {ε : Fin n → Bool} {ε' : Fin m → Bool} (hu : IsUnit B)
     (hs : s * B = B * Formalism.REAL.Jm ε) (ht : t * B' = B' * Formalism.REAL.Jm ε') (a : Fin m) (b : Fin n) :
     cplxO s t (unitMap B B' a b) = (Complex.I * if (ε' a == ε b) then 1 else -1) • unitMap B B' a b := by
@@ -201,6 +267,11 @@ variable {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {S T : HSp D}
   {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f)
 include hψ hθ hf
 
+/- English proof (translation)
+Establish `hc : cplxO sS sT (z + z') = cplxO sS sT z + cplxO sS sT z'`. Unfold `cplxO`. Rewrite using `[Matrix.mul_add, Matrix.add_mul, smul_add]`. Rewrite using `[GlobalTheory.FockSubst.aPlus_eq, GlobalTheory.FockSubst.aPlus_eq, GlobalTheory.FockSubst.aPlus_eq, hc, (GlobalTheory.FockSubst.dRho_laws hψ hθ hf τ z).2.2.1, (GlobalTheory.FockSubst.dRho_laws hψ hθ hf τ _).2.2.1]`. Simplify using `only [smul_add]`.
+
+Normalize the expressions using the abelian group laws.
+-/
 theorem aPlus_add_dir (z z' : Matrix (Fin T.rank) (Fin S.rank) ℂ) :
     Datum.aPlus (heisO ψ S T) θ τ (cplxO sS sT) (z + z') f =
       Datum.aPlus (heisO ψ S T) θ τ (cplxO sS sT) z f + Datum.aPlus (heisO ψ S T) θ τ (cplxO sS sT) z' f := by
@@ -212,6 +283,11 @@ theorem aPlus_add_dir (z z' : Matrix (Fin T.rank) (Fin S.rank) ℂ) :
   simp only [smul_add]
   abel
 
+/- English proof (translation)
+Establish `h0 : Datum.aPlus (heisO ψ S T) θ τ (cplxO sS sT) 0 f = 0`. Establish `key` using `aPlus_add_dir (sS := sS) (sT := sT) hψ hθ τ hf (0 : Matrix (Fin T.rank) (Fin S.rank) ℂ) 0`. Rewrite `key` using `[add_zero]`. Simplify using `using key`. Use `Finset.induction_on t (by simpa using h0) ?_` and prove the remaining obligations.
+
+Introduce `i t hi ih`. Rewrite using `[Finset.sum_insert hi, Finset.sum_insert hi, aPlus_add_dir (sS := sS) (sT := sT) hψ hθ τ hf, ih]`.
+-/
 theorem aPlus_sum_dir {ι : Type} (t : Finset ι) (z : ι → Matrix (Fin T.rank) (Fin S.rank) ℂ) :
     Datum.aPlus (heisO ψ S T) θ τ (cplxO sS sT) (∑ i ∈ t, z i) f =
       ∑ i ∈ t, Datum.aPlus (heisO ψ S T) θ τ (cplxO sS sT) (z i) f := by
@@ -224,6 +300,17 @@ theorem aPlus_sum_dir {ι : Type} (t : Finset ι) (z : ι → Matrix (Fin T.rank
   intro i t hi ih
   rw [Finset.sum_insert hi, Finset.sum_insert hi, aPlus_add_dir (sS := sS) (sT := sT) hψ hθ τ hf, ih]
 
+/- English proof (translation)
+Establish `hJc : cplxO sS sT (c • z) = c • cplxO sS sT z`. Unfold `cplxO`. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul, smul_comm]`. Establish `hre` using `Complex.re_add_im c`. Consider the cases of `e`.
+
+Simplify using `only [Bool.false_eq_true, if_false, mul_neg, mul_one] at hz ⊢`. Establish `hst : star c = (c.re : ℂ) - (c.im : ℂ) * Complex.I`. Apply the tactic sequence `apply Complex.ext <;> simp`. Rewrite using `[GlobalTheory.FockSubst.aPlus_eq, GlobalTheory.FockSubst.aPlus_eq, hJc, hz, smul_smul, GlobalTheory.FockBasis.dRho_smul_dir hψ hθ τ hf c z, GlobalTheory.FockBasis.dRho_smul_dir hψ hθ τ hf (c * -Complex.I) z, GlobalTheory.FockBasis.dRho_smul_dir hψ hθ τ hf (-Complex.I) z]`. Use function extensionality and compare the values at `x`.
+
+Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, Complex.mul_re, Complex.mul_im, Complex.I_re, Complex.I_im, Complex.neg_re, Complex.neg_im]`. Use `push_cast`. Generalize the expression as in `Datum.dRho (heisO ψ S T) θ τ z f x = A`. Generalize the expression as in `Datum.dRho (heisO ψ S T) θ τ (Complex.I • z) f x = B`. Generalize the expression as in `((fockScale D τ : ℂ))⁻¹ = k`.
+
+Take the linear combination `(k * (c.im : ℂ) * B) * Complex.I_sq - (k * (A + Complex.I * B)) * hst`. Simplify using `only [if_true, mul_one] at hz ⊢`. Rewrite using `[GlobalTheory.FockSubst.aPlus_eq, GlobalTheory.FockSubst.aPlus_eq, hJc, hz, smul_smul, GlobalTheory.FockBasis.dRho_smul_dir hψ hθ τ hf c z, GlobalTheory.FockBasis.dRho_smul_dir hψ hθ τ hf (c * Complex.I) z]`. Use function extensionality and compare the values at `x`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, Complex.mul_re, Complex.mul_im, Complex.I_re, Complex.I_im]`.
+
+Use `push_cast`. Generalize the expression as in `Datum.dRho (heisO ψ S T) θ τ z f x = A`. Generalize the expression as in `Datum.dRho (heisO ψ S T) θ τ (Complex.I • z) f x = B`. Generalize the expression as in `((fockScale D τ : ℂ))⁻¹ = k`. Take the linear combination `(k * (c.im : ℂ) * B) * Complex.I_sq + (k * (A - Complex.I * B)) * hre`.
+-/
 theorem aPlus_smul_dir (e : Bool) (c : ℂ) (z : Matrix (Fin T.rank) (Fin S.rank) ℂ)
     (hz : cplxO sS sT z = (Complex.I * if e then 1 else -1) • z) :
     Datum.aPlus (heisO ψ S T) θ τ (cplxO sS sT) (c • z) f =
@@ -261,6 +348,35 @@ theorem aPlus_smul_dir (e : Bool) (c : ℂ) (z : Matrix (Fin T.rank) (Fin S.rank
 
 open GlobalTheory.FockIndep GlobalTheory.OrientedHeis Complex in
 
+/- English proof (translation)
+Distinguish the cases in `hk : ((fockScale D τ : ℝ) : ℂ) = 0`. Simplify using `only [GlobalTheory.FockIndep.aPlus_eq, hk, _root_.inv_zero, zero_smul]`. Establish `th : ∀ w g, IsThetaFunO ψ S T g → IsThetaFunO ψ S T (Datum.dRho (heisO ψ S T) θ τ w g)` using `fun w g hg => by`. Establish `e : Datum.dRho (heisO ψ S T) θ τ w g = (1 / 2 : ℂ) • (Datum.annih (heisO ψ S T) θ τ (cplxO sS sT) w g + ((fockScale D τ : ℝ) : ℂ) • Datum.aPlus (heisO ψ S T) θ τ (cplxO sS sT) w g)`. Rewrite using `[GlobalTheory.FockIndep.aPlus_eq, smul_smul, mul_inv_cancel₀ hk, one_smul]`.
+
+Unfold `Datum.annih`. Use function extensionality and compare the values at `x`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+
+Conclude with `theta_smul _ (theta_add (GlobalTheory.FockIndep.annih_theta hψ hθ τ _ w hg) (theta_smul _ (GlobalTheory.FockIndep.aPlus_theta hψ hθ τ _ w hg)))`. Establish `L : ∀ w g g', IsThetaFunO ψ S T g → IsThetaFunO ψ S T g' → ∀ a b : ℂ, Datum.dRho (heisO ψ S T) θ τ w (a • (g + b • g')) = a • (Datum.dRho (heisO ψ S T) θ τ w g + b • Datum.dRho (heisO ψ S T) θ τ w g')`. Introduce `w g g' hg hg' a b`. Rewrite using `[GlobalTheory.FockIndep.dRho_smul hψ hθ τ w a (theta_add hg (theta_smul b hg')), GlobalTheory.FockIndep.dRho_add hψ hθ τ w hg (theta_smul b hg'), GlobalTheory.FockIndep.dRho_smul hψ hθ τ w b hg']`. Take `⟨hss, hsG, -⟩` from `id hS`.
+
+Take `⟨hts, hHt, -⟩` from `id hT`. Establish `h1 : sSᴴ * sSᴴ = 1` using `by rw [← Matrix.conjTranspose_mul, hss, Matrix.conjTranspose_one]`. Establish `hGi : sS * (gramAt D S τ)⁻¹ * sSᴴ = (gramAt D S τ)⁻¹`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_inv_rev, Matrix.mul_inv_rev, Matrix.inv_eq_left_inv hss, Matrix.inv_eq_left_inv h1, Matrix.mul_assoc]`.
+
+Use `_ = (gramAt D S τ)⁻¹ := by rw [hsG]`. Establish `hA : (gramAt D S τ)⁻¹ * sSᴴ = sS * (gramAt D S τ)⁻¹`. Combine the equalities or inequalities in the displayed calculation. Establish `hB : sTᴴ * (gramAt D T τ) = (gramAt D T τ) * sT`. Combine the equalities or inequalities in the displayed calculation.
+
+Apply the tactic sequence `have hI : I * star I = 1 := by apply Complex.ext <;> simp`. Apply the tactic sequence `have hsI : star I = -I := by apply Complex.ext <;> simp`. Establish `tr1 : ∀ y y' : Matrix (Fin T.rank) (Fin S.rank) ℂ, ((gramAt D S τ)⁻¹ * (cplxO sS sT y')ᴴ * (gramAt D T τ) * cplxO sS sT y).trace = ((gramAt D S τ)⁻¹ * y'ᴴ * (gramAt D T τ) * y).trace`. Introduce `y y'`. Unfold `cplxO`.
+
+Rewrite using `[Matrix.conjTranspose_smul, Matrix.conjTranspose_mul, Matrix.conjTranspose_mul]`. Simplify using `only [Matrix.mul_smul, Matrix.smul_mul, Matrix.trace_smul, smul_smul, smul_eq_mul, hI, one_mul]`. Establish `e : (gramAt D S τ)⁻¹ * (sSᴴ * (y'ᴴ * sTᴴ)) * (gramAt D T τ) * (sT * y * sS) = ((gramAt D S τ)⁻¹ * sSᴴ * y'ᴴ * (sTᴴ * (gramAt D T τ) * sT) * y) * sS`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[e, Matrix.trace_mul_comm]`.
+
+Establish `e2 : sS * ((gramAt D S τ)⁻¹ * sSᴴ * y'ᴴ * (sTᴴ * (gramAt D T τ) * sT) * y) = sS * (gramAt D S τ)⁻¹ * sSᴴ * y'ᴴ * (sTᴴ * (gramAt D T τ) * sT) * y`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[e2, hGi, hHt]`. Establish `tr2 : ∀ y y' : Matrix (Fin T.rank) (Fin S.rank) ℂ, ((gramAt D S τ)⁻¹ * (cplxO sS sT y')ᴴ * (gramAt D T τ) * y).trace = -I * ((gramAt D S τ)⁻¹ * y'ᴴ * (gramAt D T τ) * (sT * y * sS)).trace`. Introduce `y y'`.
+
+Unfold `cplxO`. Rewrite using `[Matrix.conjTranspose_smul, Matrix.conjTranspose_mul, Matrix.conjTranspose_mul]`. Simplify using `only [Matrix.mul_smul, Matrix.smul_mul, Matrix.trace_smul, smul_eq_mul, hsI]`. Use `congr 1`. Establish `e : (gramAt D S τ)⁻¹ * (sSᴴ * (y'ᴴ * sTᴴ)) * (gramAt D T τ) * y = sS * ((gramAt D S τ)⁻¹ * y'ᴴ * (gramAt D T τ) * (sT * y))`.
+
+Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = sS * ((gramAt D S τ)⁻¹ * y'ᴴ * (gramAt D T τ) * (sT * y)) := by rw [hA, hB]; simp only [Matrix.mul_assoc]`. Rewrite using `[e, Matrix.trace_mul_comm]`. Simplify using `only [Matrix.mul_assoc]`.
+
+Establish `tr3 : ∀ y y' : Matrix (Fin T.rank) (Fin S.rank) ℂ, ((gramAt D S τ)⁻¹ * y'ᴴ * (gramAt D T τ) * cplxO sS sT y).trace = I * ((gramAt D S τ)⁻¹ * y'ᴴ * (gramAt D T τ) * (sT * y * sS)).trace`. Introduce `y y'`. Unfold `cplxO`. Rewrite using `[Matrix.mul_smul, Matrix.trace_smul, smul_eq_mul]`. Establish `o1 : ((GlobalTheory.FockIndep.omDir S T τ (cplxO sS sT z) τ (cplxO sS sT z') : ℝ) : ℂ) = (GlobalTheory.FockIndep.omDir S T τ z τ z' : ℝ)`.
+
+Unfold `GlobalTheory.FockIndep.omDir`. Rewrite using `[if_pos rfl, if_pos rfl, tr1]`. Establish `o2 : ((GlobalTheory.FockIndep.omDir S T τ z τ (cplxO sS sT z') : ℝ) : ℂ) = -((GlobalTheory.FockIndep.omDir S T τ (cplxO sS sT z) τ z' : ℝ) : ℂ)`. Unfold `GlobalTheory.FockIndep.omDir`. Rewrite using `[if_pos rfl, if_pos rfl, tr2, tr3, neg_mul, mul_neg, Complex.neg_re]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [GlobalTheory.FockIndep.aPlus_eq]`. Rewrite using `[L z _ _ (th z' f hf) (th _ f hf), L (cplxO sS sT z) _ _ (th z' f hf) (th _ f hf), L z' _ _ (th z f hf) (th _ f hf), L (cplxO sS sT z') _ _ (th z f hf) (th _ f hf)]`. Rewrite using `[GlobalTheory.FockIndep.dRho_comm hψ hθ τ z τ z' hf, GlobalTheory.FockIndep.dRho_comm hψ hθ τ z τ (cplxO sS sT z') hf, GlobalTheory.FockIndep.dRho_comm hψ hθ τ (cplxO sS sT z) τ z' hf, GlobalTheory.FockIndep.dRho_comm hψ hθ τ (cplxO sS sT z) τ (cplxO sS sT z') hf]`.
+
+Use function extensionality and compare the values at `x`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Take the linear combination `(-((fockScale D τ : ℂ)⁻¹ * (fockScale D τ : ℂ)⁻¹) * (-(2 * Real.pi * I)) * f x) * o1 + (-I * ((fockScale D τ : ℂ)⁻¹ * (fockScale D τ : ℂ)⁻¹) * (-(2 * Real.pi * I)) * f x) * o2 + (((fockScale D τ : ℂ)⁻¹ * (fockScale D τ : ℂ)⁻¹) * (-(2 * Real.pi * I)) * f x * ((GlobalTheory.FockInd …`.
+-/
 theorem aPlus_comm_at (hS : IsCartanInv (gramAt D S τ) sS) (hT : IsCartanInv (gramAt D T τ) sT)
     (z z' : Matrix (Fin T.rank) (Fin S.rank) ℂ) :
     Datum.aPlus (heisO ψ S T) θ τ (cplxO sS sT) z (Datum.aPlus (heisO ψ S T) θ τ (cplxO sS sT) z' f) =
@@ -359,6 +475,39 @@ theorem aPlus_comm_at (hS : IsCartanInv (gramAt D S τ) sS) (hT : IsCartanInv (g
 
 end Theta
 
+/- English proof (translation)
+Introduce `D ψ θ S T τ hψ hθ sS frS εS sT frT εT hfS hfT BS BT hBS hBT`. Take `⟨uS, εS', rfl, huS, hsgS⟩` from `adapted_eq hfS hBS`. Take `⟨uT, εT', rfl, huT, hsgT⟩` from `adapted_eq hfT hBT`. Establish `hcS` using `cartan_of_frame hfS`. Establish `hcT` using `cartan_of_frame hfT`.
+
+Take `⟨hiS, heS⟩` from `frame_eigen hfS`. Take `⟨hiT, heT⟩` from `frame_eigen hfT`. Establish `hinv : uS⁻¹ = uSᴴ` using `Matrix.inv_eq_left_inv huS`. Establish `hT1 : ∀ a a', ∑ i, uT a i * star (uT a' i) = if a = a' then 1 else 0`. Introduce `a a'`.
+
+Establish `hTT : uT * uTᴴ = 1` using `mul_eq_one_comm.mp huT`. Establish `key` using `congrFun (congrFun hTT a) a'`. Simplify `key` using `[Matrix.mul_apply, Matrix.one_apply]`. Establish `hS1 : ∀ b b', ∑ j, uS⁻¹ j b * star (uS⁻¹ j b') = if b = b' then 1 else 0`. Introduce `b b'`.
+
+Rewrite using `[hinv]`. Establish `hSS : uS * uSᴴ = 1` using `mul_eq_one_comm.mp huS`. Establish `key` using `congrFun (congrFun hSS b') b`. Simplify using `only [Matrix.mul_apply, Matrix.one_apply, Matrix.conjTranspose_apply, star_star] at key ⊢`. Rewrite using `[Finset.sum_congr rfl fun j _ => mul_comm (star (uS b j)) (uS b' j), key]`.
+
+Break down `eq_or_ne b b' with h | h` into its components or cases. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h, h.symm]`. Set `N0 : Matrix (Fin T.rank × Fin S.rank) (Fin T.rank × Fin S.rank) ℂ` to `Matrix.of fun w v => uT w.1 v.1 * uS⁻¹ v.2 w.2`.
+
+Establish `hN0 : N0 * N0ᴴ = 1`. Use extensionality with `⟨a, b⟩ ⟨a', b'⟩`. Simplify using `only [N0, Matrix.mul_apply, Matrix.of_apply, Matrix.conjTranspose_apply, Fintype.sum_prod_type, star_mul']`. Establish `e : ∀ i j, uT a i * uS⁻¹ j b * (star (uT a' i) * star (uS⁻¹ j b')) = (uT a i * star (uT a' i)) * (uS⁻¹ j b * star (uS⁻¹ j b'))` using `fun i j => by ring`. Simplify using `only [e]`.
+
+Rewrite using `[← Finset.sum_mul_sum, hT1, hS1, Matrix.one_apply]`. Apply the tactic sequence `by_cases h1 : a = a' <;> by_cases h2 : b = b' <;> simp [h1, h2]`. Establish `he : ∀ w v, N0 w v ≠ 0 → (εT w.1 == εS w.2) = (εT' v.1 == εS' v.2)`. Introduce `w v hwv`. Simplify using `only [N0, hinv, Matrix.of_apply, Matrix.conjTranspose_apply] at hwv`.
+
+Establish `h1 : uT w.1 v.1 ≠ 0` using `left_ne_zero_of_mul hwv`. Establish `h2 : uS w.2 v.2 ≠ 0` using `fun h0 => right_ne_zero_of_mul hwv (by rw [h0, star_zero])`. Rewrite using `[hsgT _ _ h1, hsgS _ _ h2]`. Establish `hN` using `unitary_mix hN0 (fun w => εT w.1 == εS w.2) (fun v => εT' v.1 == εS' v.2) he`. Take `⟨ς, hgr, hip, hς⟩` from `exists_equiv hN`.
+
+Use `⟨ς, hgr, hip, fun f hf P => ?_⟩` and prove the remaining obligations. Establish `pls : ∀ (A A' : Fin T.rank × Fin S.rank → (WO S T → ℂ) → (WO S T → ℂ)), (∀ i g, IsThetaFunO ψ S T g → IsThetaFunO ψ S T (A i g)) → (∀ i g, IsThetaFunO ψ S T g → IsThetaFunO ψ S T (A' i g)) → (∀ i j g, IsThetaFunO ψ S T g → A i (A j g) = A j (A i g)) → (∀ i j g, IsThetaFunO ψ S T …`. Introduce `A A' hA hA' hc hc' Aadd Aadd' Asm Asm' N hN Q`. Establish `hadd : ∀ g g', IsThetaFunO ψ S T g → IsThetaFunO ψ S T g' → IsThetaFunO ψ S T (g + g')` using `fun g g' hg hg' => GlobalTheory.OrientedHeis.theta_add hg hg'`. Establish `hsm : ∀ (a : ℂ) g, IsThetaFunO ψ S T g → IsThetaFunO ψ S T (a • g)` using `fun a g hg => GlobalTheory.OrientedHeis.theta_smul a hg`.
+
+Establish `h0 : ∀ B : Fin T.rank × Fin S.rank → (WO S T → ℂ) → (WO S T → ℂ), ∀ a : ℂ, pureTensorL B f (MvPolynomial.C a) = a • f`. Introduce `B a`. Establish `e1 : MvPolynomial.C a = a • (1 : MvPolynomial (Fin T.rank × Fin S.rank) ℂ)`. Rewrite using `[MvPolynomial.smul_eq_C_mul, mul_one]`. Rewrite using `[e1, map_smul, GlobalTheory.FockIndep.pure_one]`.
+
+Proceed by induction on `Q using MvPolynomial.induction_on with`. Consider the case `C a`. Establish `e2 : lsub N (MvPolynomial.C a) = MvPolynomial.C a`. Unfold `lsub`. Rewrite using `[MvPolynomial.aeval_C, MvPolynomial.algebraMap_eq]`.
+
+Rewrite using `[e2, h0, h0]`. Consider the case `add Q R hQ hR => rw [map_add, map_add, map_add, hQ, hR]`. Consider the case `mul_X Q v hQ`. Rewrite using `[mul_comm, GlobalTheory.FockIndep.pure_X_mul hadd hsm hA' hc' Aadd' Asm' hf, hQ, hN v _ (GlobalTheory.FockIndep.pure_mem hadd hsm hA hf _), map_mul, lsub_X, Finset.sum_mul, map_sum]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[mul_assoc, ← MvPolynomial.smul_eq_C_mul, map_smul, GlobalTheory.FockIndep.pure_X_mul hadd hsm hA hc Aadd Asm hf]`. Rewrite using `[hς]`. Unfold `ptAt`. Establish `a0 : ∀ (w : Fin T.rank × Fin S.rank) (g : WO S T → ℂ), IsThetaFunO ψ S T g → IsThetaFunO ψ S T (Datum.aPlus (heisO ψ S T) θ τ (cplxO sS sT) (unitMap frS⁻¹ frT⁻¹ w.1 w.2) g)` using `fun w g hg => GlobalTheory.FockIndep.aPlus_theta hψ hθ τ (cplxO sS sT) (unitMap frS⁻¹ frT⁻¹ w.1 w.2) hg`. Establish `c0 : ∀ (w w' : Fin T.rank × Fin S.rank) (g : WO S T → ℂ), IsThetaFunO ψ S T g → Datum.aPlus (heisO ψ S T) θ τ (cplxO sS sT) (unitMap frS⁻¹ frT⁻¹ w.1 w.2) (Datum.aPlus (heisO ψ S T) θ τ (cplxO sS sT) (unitMap frS⁻¹ frT⁻¹ w'.1 w'.2) g) = Datum.aPlus (heisO ψ S T) θ τ (cplxO sS sT) …` using `fun w w' g hg => aPlus_comm_at hψ hθ τ hg hcS hcT _ _`.
+
+Establish `d0 : ∀ (w : Fin T.rank × Fin S.rank) (g g' : WO S T → ℂ), IsThetaFunO ψ S T g → IsThetaFunO ψ S T g' → Datum.aPlus (heisO ψ S T) θ τ (cplxO sS sT) (unitMap frS⁻¹ frT⁻¹ w.1 w.2) (g + g') = Datum.aPlus (heisO ψ S T) θ τ (cplxO sS sT) (unitMap frS⁻¹ frT⁻¹ w.1 w.2) g + Datum.aPlus (h …` using `fun w g g' hg hg' => GlobalTheory.FockIndep.aPlus_add hψ hθ τ (cplxO sS sT) (unitMap frS⁻¹ frT⁻¹ w.1 w.2) hg hg'`. Establish `m0 : ∀ (w : Fin T.rank × Fin S.rank) (a : ℂ) (g : WO S T → ℂ), IsThetaFunO ψ S T g → Datum.aPlus (heisO ψ S T) θ τ (cplxO sS sT) (unitMap frS⁻¹ frT⁻¹ w.1 w.2) (a • g) = a • Datum.aPlus (heisO ψ S T) θ τ (cplxO sS sT) (unitMap frS⁻¹ frT⁻¹ w.1 w.2) g` using `fun w a g hg => GlobalTheory.FockIndep.aPlus_smul hψ hθ τ (cplxO sS sT) (unitMap frS⁻¹ frT⁻¹ w.1 w.2) a hg`. Establish `a1 : ∀ (w : Fin T.rank × Fin S.rank) (g : WO S T → ℂ), IsThetaFunO ψ S T g → IsThetaFunO ψ S T (Datum.aPlus (heisO ψ S T) θ τ (cplxO sS sT) (unitMap (frS⁻¹ * uS) (frT⁻¹ * uT) w.1 w.2) g)` using `fun w g hg => GlobalTheory.FockIndep.aPlus_theta hψ hθ τ (cplxO sS sT) (unitMap (frS⁻¹ * uS) (frT⁻¹ * uT) w.1 w.2) hg`. Establish `c1 : ∀ (w w' : Fin T.rank × Fin S.rank) (g : WO S T → ℂ), IsThetaFunO ψ S T g → Datum.aPlus (heisO ψ S T) θ τ (cplxO sS sT) (unitMap (frS⁻¹ * uS) (frT⁻¹ * uT) w.1 w.2) (Datum.aPlus (heisO ψ S T) θ τ (cplxO sS sT) (unitMap (frS⁻¹ * uS) (frT⁻¹ * uT) w'.1 w'.2) g) = Datum.aPlus (hei …` using `fun w w' g hg => aPlus_comm_at hψ hθ τ hg hcS hcT _ _`. Establish `d1 : ∀ (w : Fin T.rank × Fin S.rank) (g g' : WO S T → ℂ), IsThetaFunO ψ S T g → IsThetaFunO ψ S T g' → Datum.aPlus (heisO ψ S T) θ τ (cplxO sS sT) (unitMap (frS⁻¹ * uS) (frT⁻¹ * uT) w.1 w.2) (g + g') = Datum.aPlus (heisO ψ S T) θ τ (cplxO sS sT) (unitMap (frS⁻¹ * uS) (frT⁻¹ * uT) …` using `fun w g g' hg hg' => GlobalTheory.FockIndep.aPlus_add hψ hθ τ (cplxO sS sT) (unitMap (frS⁻¹ * uS) (frT⁻¹ * uT) w.1 w.2) hg hg'`.
+
+Establish `m1 : ∀ (w : Fin T.rank × Fin S.rank) (a : ℂ) (g : WO S T → ℂ), IsThetaFunO ψ S T g → Datum.aPlus (heisO ψ S T) θ τ (cplxO sS sT) (unitMap (frS⁻¹ * uS) (frT⁻¹ * uT) w.1 w.2) (a • g) = a • Datum.aPlus (heisO ψ S T) θ τ (cplxO sS sT) (unitMap (frS⁻¹ * uS) (frT⁻¹ * uT) w.1 w.2) g` using `fun w a g hg => GlobalTheory.FockIndep.aPlus_smul hψ hθ τ (cplxO sS sT) (unitMap (frS⁻¹ * uS) (frT⁻¹ * uT) w.1 w.2) a hg`. Use `pls (fun (k : Fin T.rank × Fin S.rank) => Datum.aPlus (heisO ψ S T) θ τ (cplxO sS sT) (unitMap frS⁻¹ frT⁻¹ k.1 k.2)) (fun (k : Fin T.rank × Fin S.rank) => Datum.aPlus (heisO ψ S T) θ τ (cplxO sS sT) (unitMap (frS⁻¹ * uS) (frT⁻¹ * uT) k.1 k.2)) a0 a1 c0 c1 d0 d1 m0 m1 _ ?_ P` and prove the remaining obligations. Introduce `v g hg`. Rewrite using `[GlobalTheory.FockBasis.unitMap_mul, aPlus_sum_dir hψ hθ τ hg, Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[aPlus_sum_dir hψ hθ τ hg]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[aPlus_smul_dir hψ hθ τ hg _ _ _ (cplxO_unitMap hiS heS heT a b)]`. Simplify using `only [Matrix.of_apply, N0]`.
+-/
 theorem ptAt_basis : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D) (τ : D.what₂.Tau), IsStdChar D ψ (-1) → IsInfFam θ → ∀ (sS frS : Mn S.rank) (εS : Fin S.rank → Bool) (sT frT : Mn T.rank) (εT : Fin T.rank → Bool), IsFrameOf (gramAt D S τ) sS εS frS → IsFrameOf (gramAt D T τ) sT εT frT → ∀ BS BT, IsAdapted (gramAt D S τ) sS BS → IsAdapted (gramAt D T τ) sT BT → ∃ ς : LPol T.rank S.rank ≃ₗ[ℂ] LPol T.rank S.rank, Graded ς ∧ (∀ P Q, fockIp (ς P) (ς Q) = fockIp P Q) ∧ ∀ f, IsThetaFunO ψ S T f → ∀ P, ptAt ψ θ S T τ sS sT BS BT f P = ptAt ψ θ S T τ sS sT frS⁻¹ frT⁻¹ f (ς P) := by
   intro D ψ θ S T τ hψ hθ sS frS εS sT frT εT hfS hfT BS BT hBS hBT
   obtain ⟨uS, εS', rfl, huS, hsgS⟩ := adapted_eq hfS hBS

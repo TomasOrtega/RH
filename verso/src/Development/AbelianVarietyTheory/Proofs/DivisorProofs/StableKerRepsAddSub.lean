@@ -9,6 +9,11 @@ open scoped IntermediateField BigOperators Topology
 
 namespace GlobalTheory.CMModel
 
+/- English proof (translation)
+Introduce `ω hω`. Rewrite using `[add_mul]`. Use `add_mem ?_ (h ω hω)` and prove the remaining obligations. Establish `: ((a : ℂ) * ω) = a • ω` using `by rw [zsmul_eq_mul]`. Rewrite using `[this]`.
+
+Conclude with `zsmul_mem hω a`.
+-/
 theorem mulStable_intCast_add {L : PeriodPair} {w : ℂ} (a : ℤ) (h : MulStable L w) :
     MulStable L ((a : ℂ) + w) := by
   intro ω hω
@@ -18,6 +23,11 @@ theorem mulStable_intCast_add {L : PeriodPair} {w : ℂ} (a : ℤ) (h : MulStabl
   rw [this]
   exact zsmul_mem hω a
 
+/- English proof (translation)
+Introduce `ω hω`. Rewrite using `[sub_mul]`. Use `sub_mem ?_ (h ω hω)` and prove the remaining obligations. Establish `: ((a : ℂ) * ω) = a • ω` using `by rw [zsmul_eq_mul]`. Rewrite using `[this]`.
+
+Conclude with `zsmul_mem hω a`.
+-/
 theorem mulStable_intCast_sub {L : PeriodPair} {w : ℂ} (a : ℤ) (h : MulStable L w) :
     MulStable L ((a : ℂ) - w) := by
   intro ω hω
@@ -27,12 +37,26 @@ theorem mulStable_intCast_sub {L : PeriodPair} {w : ℂ} (a : ℤ) (h : MulStabl
   rw [this]
   exact zsmul_mem hω a
 
+/- English proof (translation)
+Establish `h : σ (sqrtNegNat p) ^ 2 = sqrtNegNat p ^ 2`. Rewrite using `[← map_pow, sqrtNegNat_sq, map_neg, map_natCast]`. Conclude with `sq_eq_sq_iff_eq_or_eq_neg.mp h`.
+-/
 theorem ringEquiv_sqrtNegNat (σ : ℂ ≃+* ℂ) (p : ℕ) :
     σ (sqrtNegNat p) = sqrtNegNat p ∨ σ (sqrtNegNat p) = -sqrtNegNat p := by
   have h : σ (sqrtNegNat p) ^ 2 = sqrtNegNat p ^ 2 := by
     rw [← map_pow, sqrtNegNat_sq, map_neg, map_natCast]
   exact sq_eq_sq_iff_eq_or_eq_neg.mp h
 
+/- English proof (translation)
+Introduce `p F L a S S' h2 h3 hm hS hS' σ hσ`. Establish `e2 : L.g₂ = σ L.g₂` using `(hσ _ h2).symm`. Establish `e3 : L.g₃ = σ L.g₃` using `(hσ _ h3).symm`. Establish `mp` using `mulStable_intCast_add a hm`. Establish `mm` using `mulStable_intCast_sub a hm`.
+
+Establish `hσa : σ (a : ℂ) = a` using `map_intCast σ a`. Break down `ringEquiv_sqrtNegNat σ p with hs | hs` into its components or cases. Establish `hp : σ ((a : ℂ) + sqrtNegNat p) = (a : ℂ) + sqrtNegNat p` using `by rw [map_add, hσa, hs]`. Establish `hm' : σ ((a : ℂ) - sqrtNegNat p) = (a : ℂ) - sqrtNegNat p` using `by rw [map_sub, hσa, hs]`. Take `⟨e, he⟩` from `GlobalTheory.T.exists_kernel_equiv_conjugate_points L σ _ S S e2 e3 mp hS (by rw [hp]; exact hS)`.
+
+Take `⟨e', he'⟩` from `GlobalTheory.T.exists_kernel_equiv_conjugate_points L σ _ S' S' e2 e3 mm hS' (by rw [hm']; exact hS')`. Use `⟨Equiv.sumCongr e e', ?_⟩` and prove the remaining obligations. Introduce and unpack `(t | t)`. Conclude with `he t`. Conclude with `he' t`.
+
+Establish `hp : σ ((a : ℂ) + sqrtNegNat p) = (a : ℂ) - sqrtNegNat p`. Rewrite using `[map_add, hσa, hs, sub_eq_add_neg]`. Establish `hm' : σ ((a : ℂ) - sqrtNegNat p) = (a : ℂ) + sqrtNegNat p`. Rewrite using `[map_sub, hσa, hs, sub_neg_eq_add]`. Take `⟨e, he⟩` from `GlobalTheory.T.exists_kernel_equiv_conjugate_points L σ _ S S' e2 e3 mp hS (by rw [hp]; exact hS')`.
+
+Take `⟨e', he'⟩` from `GlobalTheory.T.exists_kernel_equiv_conjugate_points L σ _ S' S e2 e3 mm hS' (by rw [hm']; exact hS)`. Use `⟨(Equiv.sumCongr e e').trans (Equiv.sumComm _ _), ?_⟩` and prove the remaining obligations. Introduce and unpack `(t | t)`. Conclude with `he t`. Conclude with `he' t`.
+-/
 theorem stable_kerReps_add_sub : ∀ (p : ℕ) (F : IntermediateField ℚ ℂ) (L : PeriodPair) (a : ℤ) (S S' : Finset ℂ), L.g₂ ∈ F → L.g₃ ∈ F → MulStable L (sqrtNegNat p) → IsKerReps L (a + sqrtNegNat p) S → IsKerReps L (a - sqrtNegNat p) S' → Stable L F (Sum.elim (fun t : S => (t : ℂ)) (fun t : S' => (t : ℂ))) := by
   intro p F L a S S' h2 h3 hm hS hS' σ hσ
   have e2 : L.g₂ = σ L.g₂ := (hσ _ h2).symm

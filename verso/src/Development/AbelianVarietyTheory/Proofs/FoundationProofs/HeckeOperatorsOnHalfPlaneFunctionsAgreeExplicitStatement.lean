@@ -5,6 +5,9 @@ import Development.AbelianVarietyTheory.Definitions.Foundations.PetEqRelIndexMul
 open GlobalTheory.HeckeFamilyMatrices Polynomial UpperHalfPlane
 open scoped MatrixGroups ModularForm
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.SlashUpperTriangularMatrices.bridge | exact GlobalTheory.SlashUpperTriangularMatrices.bridge | (intros; apply GlobalTheory.SlashUpperTriangularMatrices.bridge <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.heckeOperatorsOnHalfPlaneFunctions_agree_explicit : (∀ (k : ℤ) (l : ℕ) (f : ℍ → ℂ), 0 < l → UlF k l f = GlobalTheory.Hk.uOp l f) ∧
   (∀ (k : ℤ) (σ : SL(2, ℤ)) (f : ℍ → ℂ), DdF k σ f = GlobalTheory.Hk.dia k σ f) ∧
   (∀ (k : ℤ) (q : ℕ) (σ : SL(2, ℤ)) (f : ℍ → ℂ), 0 < q → TqF k q σ f = GlobalTheory.Hk.heckeT k q σ f) ∧

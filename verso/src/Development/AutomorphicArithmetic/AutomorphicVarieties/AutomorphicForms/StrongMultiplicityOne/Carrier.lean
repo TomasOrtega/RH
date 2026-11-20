@@ -10,6 +10,9 @@ open GlobalTheory.CuspRep (Cinf Lie chart infGL pInf sInf toL lmul invSet)
 open scoped SchwartzMap FourierTransform RealInnerProductSpace ContDiff Topology
 open UpperTheory.V UpperTheory.V.Af.StrongMultiplicityOne
 
+/- English proof (translation)
+Introduce `E _ _ _ n π`. Use `⟨Cm.carrier π, Cm.stab_carrier π, (Cm.stab_carrier π).isIrreducible_iff.1 (Cm.isIrreducible_toModule π), fun f => ⟨fun ⟨ψ, hψ, e⟩ => ⟨_, hψ, e⟩, fun ⟨φ, hφ, e⟩ => ?_⟩⟩` and prove the remaining obligations. Rewrite `hφ` using `[← Cm.map_carrier]`. Take `⟨ψ, hψ, rfl⟩` from `hφ`. Conclude with `⟨ψ, hψ, e⟩`.
+-/
 theorem UpperTheory.V.Af.StrongMultiplicityOne.carrier :
     UpperTheory.V.Af.StrongMultiplicityOne.Carrier := by
   intro E _ _ _ n π

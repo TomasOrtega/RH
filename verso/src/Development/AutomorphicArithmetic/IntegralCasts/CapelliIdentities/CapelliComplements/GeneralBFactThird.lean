@@ -2,6 +2,17 @@ import Mathlib
 
 namespace Bl.general_b_fact_third_alt
 
+/- English proof (translation)
+Introduce `K _ _ n R x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy => exact ⟨1, one_ne_zero, by rw [one_smul]; exact hy⟩`. Consider the case `zero => exact ⟨1, one_ne_zero, by rw [smul_zero]; exact R.zero_mem⟩`. Consider the case `add y z _ _ hy hz`.
+
+Take `⟨d1, hd1, h1⟩` from `hy`. Take `⟨d2, hd2, h2⟩` from `hz`. Use `⟨d1 * d2, mul_ne_zero hd1 hd2, ?_⟩` and prove the remaining obligations. Establish `e1 : (d1 * d2) • y = d2 • (d1 • y)` using `by rw [mul_comm, mul_smul]`. Establish `e2 : (d1 * d2) • z = d1 • (d2 • z)` using `by rw [mul_smul]`.
+
+Rewrite using `[smul_add, e1, e2]`. Conclude with `R.add_mem (R.smul_mem _ h1) (R.smul_mem _ h2)`. Consider the case `smul c y _ hy`. Take `⟨d, hd, h⟩` from `hy`. Take `⟨⟨a, b⟩, hab⟩` from `IsLocalization.surj (nonZeroDivisors (NumberField.RingOfIntegers K)) c`.
+
+Use `⟨(b : NumberField.RingOfIntegers K) * d, mul_ne_zero (nonZeroDivisors.coe_ne_zero b) hd, ?_⟩` and prove the remaining obligations. Establish `e : ((b : NumberField.RingOfIntegers K) * d) • (c • y) = a • (d • y)`. Rewrite using `[← algebraMap_smul K ((b : NumberField.RingOfIntegers K) * d), ← algebraMap_smul K a, ← algebraMap_smul K d, smul_smul, smul_smul]`. Use `congr 1`. Simplify using `only at hab`.
+
+Rewrite using `[map_mul, ← hab]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `R.smul_mem _ h`.
+-/
 theorem goal1 :
   ∀ {K : Type} [inst : Field.{0} K] [NumberField.{0} K] {n : Nat}
   (R : Submodule.{0, 0} (NumberField.RingOfIntegers.{0} K) (Fin n → K)) (x : Fin n → K),

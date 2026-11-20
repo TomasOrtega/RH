@@ -5,6 +5,13 @@ namespace UpperTheory.Reformulated.B.P6.LargePrimeDivisors
 open scoped Int LT OfNat Polynomial Dvd
 
 open Polynomial in
+/- English proof (translation)
+Establish `h1 : f ≠ 0`. Introduce and unpack `rfl`. Simplify using `at hf`. Establish `h2 : f - C c ≠ 0`. Introduce `h`.
+
+Establish `h' : f = C c` using `sub_eq_zero.mp h`. Rewrite `hf` using `[h', natDegree_C]`. Conclude with `lt_irrefl _ hf`. Establish `h3 : f + C c ≠ 0`. Introduce `h`.
+
+Establish `h' : f = -C c` using `eq_neg_of_add_eq_zero_left h`. Rewrite `hf` using `[h', natDegree_neg, natDegree_C]`. Conclude with `lt_irrefl _ hf`. Conclude with `mul_ne_zero (mul_ne_zero h1 h2) h3`.
+-/
 theorem mul_sub_mul_add_ne_zero (f : Polynomial ℤ) (hf : 0 < f.natDegree) (c : ℤ) :
     f * (f - C c) * (f + C c) ≠ 0 := by
   have h1 : f ≠ 0 := by
@@ -22,6 +29,11 @@ theorem mul_sub_mul_add_ne_zero (f : Polynomial ℤ) (hf : 0 < f.natDegree) (c :
     exact lt_irrefl _ hf
   exact mul_ne_zero (mul_ne_zero h1 h2) h3
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h`. Use `push_neg at h`. Apply `hP` to reduce the goal to its premises. Apply `Polynomial.eq_zero_of_infinite_isRoot` to reduce the goal to its premises. Apply `Set.infinite_of_injective_forall_mem (f := fun t : ℕ => a * (t : ℤ))` to reduce the goal to its premises.
+
+Introduce `x y hxy`. Establish `h2 : (x : ℤ) = (y : ℤ)` using `mul_left_cancel₀ ha hxy`. Conclude with `h2` after adjusting the coercions. Introduce `t`. Conclude with `h t`.
+-/
 theorem exists_nat_eval_mul_ne_zero (P : Polynomial ℤ) (hP : P ≠ 0) (a : ℤ) (ha : a ≠ 0) :
     ∃ t : ℕ, P.eval (a * (t : ℤ)) ≠ 0 := by
   by_contra h
@@ -35,6 +47,27 @@ theorem exists_nat_eval_mul_ne_zero (P : Polynomial ℤ) (hP : P ≠ 0) (a : ℤ
   · intro t
     exact h t
 
+/- English proof (translation)
+Distinguish the cases in `hc : f.eval 0 = 0`. Take `⟨p, hNp, hp⟩` from `Nat.exists_infinite_primes (N + 1)`. Use `⟨p, p, hp, by omega, ?_⟩` and prove the remaining obligations. Establish `h1` using `Polynomial.sub_dvd_eval_sub (p : ℤ) 0 f`. Rewrite `h1` using `[hc, sub_zero, sub_zero]`.
+
+Conclude with `h1`. Establish `hM0 : ((N.factorial : ℕ) : ℤ) ≠ 0` using `by exact_mod_cast (Nat.factorial_pos N).ne'`. Establish `hcM : f.eval 0 * (N.factorial : ℤ) ≠ 0` using `mul_ne_zero hc hM0`. Take `⟨t, ht⟩` from `exists_nat_eval_mul_ne_zero _ (mul_sub_mul_add_ne_zero f hf (f.eval 0)) _ hcM`. Simplify using `only [Polynomial.eval_mul, Polynomial.eval_sub, Polynomial.eval_add, Polynomial.eval_C] at ht`.
+
+Take `⟨k, hk⟩` from `Polynomial.sub_dvd_eval_sub (f.eval 0 * (N.factorial : ℤ) * (t : ℤ)) 0 f`. Establish `hw : f.eval (f.eval 0 * (N.factorial : ℤ) * (t : ℤ)) = f.eval 0 * (1 + (N.factorial : ℤ) * ((t : ℤ) * k))`. Take the linear combination `hk`. Rewrite `ht` using `[hw]`. Establish `hv0 : (1 + (N.factorial : ℤ) * ((t : ℤ) * k)) ≠ 0`.
+
+Introduce `h0`. Apply `ht` to reduce the goal to its premises. Rewrite using `[h0]`. Expand and normalize the polynomial expressions, which then agree. Establish `hv1 : (1 + (N.factorial : ℤ) * ((t : ℤ) * k)) ≠ 1`.
+
+Introduce `h0`. Apply `ht` to reduce the goal to its premises. Rewrite using `[h0]`. Expand and normalize the polynomial expressions, which then agree. Establish `hv2 : (1 + (N.factorial : ℤ) * ((t : ℤ) * k)) ≠ -1`.
+
+Introduce `h0`. Apply `ht` to reduce the goal to its premises. Rewrite using `[h0]`. Expand and normalize the polynomial expressions, which then agree. Establish `hna : (1 + (N.factorial : ℤ) * ((t : ℤ) * k)).natAbs ≠ 1`.
+
+Introduce `h0`. Break down `Int.natAbs_eq_iff.mp h0 with h | h` into its components or cases. Conclude with `hv1 (by exact_mod_cast h)`. Conclude with `hv2 (by rw [h]; norm_num)`. Establish `hp : Nat.Prime ((1 + (N.factorial : ℤ) * ((t : ℤ) * k)).natAbs.minFac)` using `Nat.minFac_prime hna`.
+
+Establish `hpv : ((((1 + (N.factorial : ℤ) * ((t : ℤ) * k)).natAbs.minFac : ℕ)) : ℤ) ∣ (1 + (N.factorial : ℤ) * ((t : ℤ) * k))` using `Int.ofNat_dvd_left.mpr (Nat.minFac_dvd _)`. Use `⟨_, f.eval 0 * (N.factorial : ℤ) * (t : ℤ), hp, ?_, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hle push_neg at hle`. Establish `hpN : ((1 + (N.factorial : ℤ) * ((t : ℤ) * k)).natAbs.minFac) ∣ N.factorial` using `Nat.dvd_factorial hp.pos hle`. Establish `hpN' : ((((1 + (N.factorial : ℤ) * ((t : ℤ) * k)).natAbs.minFac : ℕ)) : ℤ) ∣ (N.factorial : ℤ) * ((t : ℤ) * k)` using `Dvd.dvd.mul_right (Int.natCast_dvd_natCast.mpr hpN) _`.
+
+Establish `h1 : ((((1 + (N.factorial : ℤ) * ((t : ℤ) * k)).natAbs.minFac : ℕ)) : ℤ) ∣ 1` using `(dvd_add_left hpN').mp hpv`. Establish `h2 : (1 + (N.factorial : ℤ) * ((t : ℤ) * k)).natAbs.minFac ∣ 1`. Conclude with `h1` after adjusting the coercions. Conclude with `hp.one_lt.ne' (Nat.dvd_one.mp h2)`. Rewrite using `[hw]`.
+
+Conclude with `Dvd.dvd.mul_left hpv _`.
+-/
 theorem exists_prime_gt_dvd_eval_of_natDegree_pos (f : Polynomial ℤ) (hf : 0 < f.natDegree) (N : ℕ) :
     ∃ (p : ℕ) (m : ℤ), Nat.Prime p ∧ N < p ∧ (p : ℤ) ∣ Polynomial.eval m f := by
   by_cases hc : f.eval 0 = 0
@@ -94,6 +127,9 @@ theorem exists_prime_gt_dvd_eval_of_natDegree_pos (f : Polynomial ℤ) (hf : 0 <
     · rw [hw]
       exact Dvd.dvd.mul_left hpv _
 
+/- English proof (translation)
+Introduce `f hf N`. Conclude with `exists_prime_gt_dvd_eval_of_natDegree_pos f hf N`.
+-/
 theorem GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.exists_large_prime_dvd_eval :
     ∀ (f : Polynomial ℤ), OfNat.ofNat (nat_lit 0) < f.natDegree → ∀ (N : ℕ), ∃ (p : ℕ) (m : ℤ), Nat.Prime p ∧ N < p ∧ p.cast ∣ Polynomial.eval m f := by
   intro f hf N

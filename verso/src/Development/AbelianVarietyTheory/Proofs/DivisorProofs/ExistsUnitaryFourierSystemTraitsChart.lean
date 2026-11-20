@@ -22,6 +22,11 @@ open GlobalTheory.USep
 
 namespace GlobalTheory.GSep.UAssembly
 
+/- English proof (translation)
+Unfold `PosW`. Establish `: ((!![1] + (!![1] : Matrix (Fin 1) (Fin 1) ℤ).transpose).map (Int.cast : ℤ → ℝ)) = Matrix.diagonal fun _ => 2`. Use extensionality with `i j`. Use `fin_cases i`. Use `fin_cases j`.
+
+Simplify using the standard rewrite rules. Rewrite using `[this, Matrix.posDef_diagonal_iff]`. Introduce `_`. Evaluate the numerical expressions.
+-/
 theorem posW_one : PosW (!![(1 : ℤ)] : Matrix (Fin 1) (Fin 1) ℤ) := by
   unfold PosW
   have : ((!![1] + (!![1] : Matrix (Fin 1) (Fin 1) ℤ).transpose).map (Int.cast : ℤ → ℝ)) = Matrix.diagonal fun _ => 2 := by
@@ -30,6 +35,13 @@ theorem posW_one : PosW (!![(1 : ℤ)] : Matrix (Fin 1) (Fin 1) ℤ) := by
   rw [this, Matrix.posDef_diagonal_iff]
   intro _; norm_num
 
+/- English proof (translation)
+Establish `: Module.Finite (𝓞 E) X` using `Module.Finite.of_restrictScalars_finite ℤ _ _`. Establish `: Module.Flat (𝓞 E) X`. Rewrite using `[IsDedekindDomain.flat_iff_torsion_eq_bot, eq_bot_iff]`. Introduce and unpack `x ⟨c, hc⟩`. Assume the negation of the conclusion as `hx`.
+
+Establish `hc0 : (c : 𝓞 E) ≠ 0` using `nonZeroDivisors.coe_ne_zero c`. Take `⟨r, hr, α, hα⟩` from `(Algebra.IsAlgebraic.isAlgebraic (R := ℤ) (c : 𝓞 E)).exists_nonzero_dvd (mem_nonZeroDivisors_of_ne_zero hc0)`. Establish `h0 : r • x = 0`. Rewrite using `[← algebraMap_smul (𝓞 E) r x, hα, mul_comm, mul_smul]`. Rewrite using `[← Submonoid.smul_def, hc, smul_zero]`.
+
+Conclude with `hx ((smul_eq_zero.1 h0).resolve_left hr)`. Establish `: Module.FinitePresentation (𝓞 E) X` using `Module.finitePresentation_of_finite _ _`. Conclude with `Module.Flat.projective_of_finitePresentation`.
+-/
 theorem projective_of_free (E : Type) [Field E] [NumberField E] (X : Type) [AddCommGroup X] [Module (𝓞 E) X]
     [Module.Free ℤ X] [Module.Finite ℤ X] : Module.Projective (𝓞 E) X := by
   have : Module.Finite (𝓞 E) X := Module.Finite.of_restrictScalars_finite ℤ _ _
@@ -47,6 +59,9 @@ theorem projective_of_free (E : Type) [Field E] [NumberField E] (X : Type) [AddC
   have : Module.FinitePresentation (𝓞 E) X := Module.finitePresentation_of_finite _ _
   exact Module.Flat.projective_of_finitePresentation
 
+/- English proof (translation)
+Simplify using `only [jK, spMap, ← Spec.map_comp]`. Use `congr 1`. Use extensionality with `a`. Simplify using `[h]`.
+-/
 theorem jK_spMap {V V₁ : Type} [CommRing V] [IsDomain V] [CommRing V₁] [IsDomain V₁] (ρ : V →+* V₁)
     (fK : FractionRing V →+* FractionRing V₁) (h : ∀ a, fK (algebraMap V _ a) = algebraMap V₁ _ (ρ a)) :
     jK V₁ ≫ spMap ρ = spMap fK ≫ jK V := by
@@ -55,6 +70,9 @@ theorem jK_spMap {V V₁ : Type} [CommRing V] [IsDomain V] [CommRing V₁] [IsDo
   ext a
   simp [h]
 
+/- English proof (translation)
+Use `(isUnit_iff_ne_zero.2 (Nat.cast_ne_zero.2 hm : (m : K) ≠ 0)).map (Spec.preimage g).hom` as an intermediate fact. Simplify using `using this`.
+-/
 theorem isUnit_natCast_of_spec {A : Type} [CommRing A] [Nontrivial A] {K : Type} [Field K] [CharZero K] (g : Sp A ⟶ Sp K)
     (m : ℕ) (hm : m ≠ 0) : IsUnit (m : A) := by
   have := (isUnit_iff_ne_zero.2 (Nat.cast_ne_zero.2 hm : (m : K) ≠ 0)).map (Spec.preimage g).hom
@@ -68,6 +86,17 @@ open GlobalTheory.GSep
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Geo.Tor.Level H}
   {Xo : Moduli Dw l} {c : Coeff l}
 
+/- English proof (translation)
+Establish `hcnT : IsCN T.V` using `by haveI := T.cdvr.1`. Conclude with `⟨inferInstance, inferInstance, T.cdvr.2.1, T.cdvr.2.2⟩`. Set `fK : FractionRing T.V →+* FractionRing V'` to `IsLocalization.map (S := FractionRing T.V) (FractionRing V') f (nonZeroDivisors_le_comap_nonZeroDivisors_of_injective f hinj)`. Establish `hfK : ∀ a, fK (algebraMap T.V _ a) = algebraMap V' _ (f a)` using `fun a => IsLocalization.map_eq _ a`. Establish `hjk` using `jK_spMap f fK hfK`.
+
+Establish `key : jK V' ≫ spMap (f.comp e) ≫ X₁.M.Z.fromSpecStalk z₁ = spMap fK ≫ (jK T.V ≫ spMap e ≫ X₁.M.Z.fromSpecStalk z₁)`. Rewrite using `[show spMap (f.comp e) = spMap f ≫ spMap e from Spec.map_comp _ _]`. Simplify using `only [← Category.assoc]`. Rewrite using `[hjk]`. Establish `hloc : IsLocalHom (f.comp e)` using `RingHom.isLocalHom_comp f e`.
+
+Establish `hreg : RegAt X₁ z₁ (f.comp e)`. Introduce `a ha`. Rewrite using `[key]`. Conclude with `hU _ (hrg ⟨_, (Scheme.Hom.comp_apply _ _ _).symm⟩) ha`. Establish `hcmp : jK V' ≫ spMap (f.comp e) ≫ X₁.M.Z.fromSpecStalk z₁ ≫ π = spMap fK ≫ T.y ≫ C.i`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[key]`. Simplify using `only [Category.assoc, hcov₃]`. Use `_ = _ := by rw [hc]; simp only [Category.assoc]`. Establish `hr : ∀ k : Fin 1, ![t] k ^ 2 = f (![T.ϖ] k)` using `fun k => by`.
+
+Rewrite using `[Subsingleton.elim k 0]`. Conclude with `ht`. Take `⟨𝔪, -⟩` from `GlobalTheory.T.thetaMember_of_unitary_monomial_uniformisation E H Dw hpq l Xo c C X₁ act u π hlink z₁ T.V hcnT T.t T.y T.P T.gen 1 ![T.ϖ] ![T.be] T.mono V' f fK ![t] hcn hinj hf hfK hr (f.comp e) hloc hreg hcmp`. Conclude with `⟨𝔪⟩`.
+-/
 theorem nonempty_gMem_trait (hpq : 1 ≤ Dw.p + Dw.q) (C : UCompact Xo c) (X₁ : GSet) (act : 𝓞 E → (X₁.ρ.P.A ⟶ X₁.ρ.P.A))
     (u : Sp (ratHull X₁.S.R) ⟶ Xo.XF c) (π : X₁.M.Z ⟶ C.Z) (hlink : ULink C X₁ act u π) (z₁ : X₁.M.Z)
     (ζ : Sp (X₁.M.Z.presheaf.stalk z₁) ⟶ pullback C.z (spMap C.b))
@@ -110,6 +139,55 @@ end GlobalTheory.GSep.UAssembly
 
 open GlobalTheory.GSep.UAssembly in
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw hpq l Xo c C φ V _ _ _ Cm hB ξ hξ n hn hodd j₀`. Take `⟨j, X₁, act, u, π, z₁, ζ, V₁, _, _, _, ρ₁, ev₁, r, hj, hN, hlink, hcov, hcn₁, hinj, hfin, hloc, hreg, hcomp, hr⟩` from `GlobalTheory.T.exists_linked_thetaSystem_regular_monomialFamily E H Dw hpq l Xo c C φ V Cm hB ξ hξ n hn hodd j₀`. Take `⟨U, hUne, hU⟩` from `GlobalTheory.T.exists_nonempty_open_thetaRing_regular X₁`. Establish `hdom` using `(GlobalTheory.T.modelStalk_normal_noetherian_fractionRing X₁ z₁).1`. Establish `hact : GlobalTheory.GSep.IsAct X₁ act` using `hlink.1`.
+
+Establish `hdeep` using `GlobalTheory.T.thetaSystem_universalUnitary_deep_towers E H Dw hpq l Xo c C X₁ act u π hlink`. Take `⟨x₀, hx₀⟩` from `X₁.div z₁`. Establish `hunit : ∀ m : ℕ, m ≠ 0 → IsUnit (m : X₁.M.Z.presheaf.stalk z₁)` using `fun m hm => isUnit_natCast_of_spec (ζ ≫ pullback.snd C.z (spMap C.b)) m hm`. Establish `hρ : IsLocalHom ρ₁`. Use `letI := ρ₁.toAlgebra`.
+
+Use `haveI : Module.Finite V V₁ := hfin`. Use `haveI : FaithfulSMul V V₁ := (faithfulSMul_iff_algebraMap_injective V V₁).2 hinj`. Conclude with `(inferInstance : IsLocalHom (algebraMap V V₁))`. Establish `hcnV : IsCN V` using `⟨hB.1.1, hB.1.2.2.1, hB.1.2.2.2, hB.2⟩`. Set `fK₁ : FractionRing V →+* FractionRing V₁` to `IsLocalization.map (S := FractionRing V) (FractionRing V₁) ρ₁ (nonZeroDivisors_le_comap_nonZeroDivisors_of_injective ρ₁ hinj)`.
+
+Establish `hfK₁ : ∀ a, fK₁ (algebraMap V _ a) = algebraMap V₁ _ (ρ₁ a)` using `fun a => IsLocalization.map_eq _ a`. Establish `key₀` using `jK_spMap ρ₁ fK₁ hfK₁`. Establish `hcov₃ : ζ ≫ pullback.fst _ _ = X₁.M.Z.fromSpecStalk z₁ ≫ π` using `hcov.2.2.1`. Take `⟨𝔪₀, p₀, hp₀⟩` from `GlobalTheory.T.thetaMember_of_unitary_monomial_uniformisation E H Dw hpq l Xo c C X₁ act u π hlink z₁ V hcnV Cm.t Cm.y Cm.P Cm.gen Cm.m Cm.s (fun i => (l.M' : ℤ) • Cm.δ i) Cm.mono V₁ ρ₁ fK₁ r hcn₁ hinj hρ hfK₁ hr ev₁ hloc hreg (by`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hcnT : ∀ T : UTrait Xo c, IsCN T.V` using `fun T => by haveI := T.cdvr.1`. Conclude with `⟨inferInstance, inferInstance, T.cdvr.2.1, T.cdvr.2.2⟩`. Establish `hsq` using `fun T : UTrait Xo c => GlobalTheory.T.exists_finite_ext_sqrt_uniformiser_complete_dvr T.V (hcnT T) (by haveI := T.cdvr.1; infer_instance) T.ϖ T.irr`. Use `choose VT iRT iDT iLT fT tT hcnW hpirW hinjW hlocW hfinW htW using hsq`. Set `Tr : Type 1` to `Σ T : UTrait Xo c, {e : X₁.M.Z.presheaf.stalk z₁ →+* T.V // IsLocalHom e ∧ jK T.V ≫ spMap e ≫ ζ = T.y ≫ C.iF ∧ Set.range (jK T.V ≫ spMap e ≫ X₁.M.Z.fromSpecStalk z₁) ⊆ (U : Set X₁.M.Z)}`.
+
+Establish `hmT : ∀ T : Tr, Nonempty (GlobalTheory.GSep.GMem X₁ z₁ act (VT T.1) ((fT T.1).comp T.2.1) (Fin 1 → T.1.P.D.toPre.X) (mono !![(1 : ℤ)] ![tT T.1] ![T.1.be]) (fun a mu => a • mu))`. Introduce and unpack `⟨T, e, he, hc, hrg⟩`. Conclude with `nonempty_gMem_trait hpq C X₁ act u π hlink z₁ ζ hcov₃ U hU T (VT T) (fT T) (tT T) (hcnW T) (hinjW T) (hlocW T) (htW T) e he hc hrg`. Set `VV : Option Tr → Type` to `fun y => match y with | none => V₁ | some T => VT T.1`. Use `letI iR : ∀ y, CommRing (VV y) := fun y => match y with`.
+
+Consider the case `none => inferInstanceAs (CommRing V₁) | some T => iRT T.1`. Use `haveI iD : ∀ y, IsDomain (VV y) := fun y => match y with`. Consider the case `none => inferInstanceAs (IsDomain V₁) | some T => iDT T.1`. Use `haveI iL : ∀ y, IsLocalRing (VV y) := fun y => match y with`. Consider the case `none => inferInstanceAs (IsLocalRing V₁) | some T => iLT T.1`.
+
+Set `EV : ∀ y, X₁.M.Z.presheaf.stalk z₁ →+* VV y` to `fun y => match y with`. Consider the case `none => ev₁ | some T => (fT T.1).comp T.2.1`. Set `XX : Option Tr → Type` to `fun y => match y with | none => Cm.P.D.toPre.X | some T => T.1.P.D.toPre.X`. Use `letI iA : ∀ y, AddCommGroup (XX y) := fun y => match y with`. Consider the case `none => inferInstanceAs (AddCommGroup Cm.P.D.toPre.X) | some T => inferInstanceAs (AddCommGroup T.1.P.D.toPre.X)`.
+
+Use `letI iM : ∀ y, Module (𝓞 E) (XX y) := fun y => match y with`. Consider the case `none => inferInstanceAs (Module (𝓞 E) Cm.P.D.toPre.X) | some T => inferInstanceAs (Module (𝓞 E) T.1.P.D.toPre.X)`. Use `haveI iFZ : ∀ y, Module.Free ℤ (XX y) := fun y => match y with`. Consider the case `none => inferInstanceAs (Module.Free ℤ Cm.P.D.toPre.X) | some T => inferInstanceAs (Module.Free ℤ T.1.P.D.toPre.X)`. Use `haveI iGZ : ∀ y, Module.Finite ℤ (XX y) := fun y => match y with`.
+
+Consider the case `none => inferInstanceAs (Module.Finite ℤ Cm.P.D.toPre.X) | some T => inferInstanceAs (Module.Finite ℤ T.1.P.D.toPre.X)`. Use `haveI iFO : ∀ y, Module.Finite (𝓞 E) (XX y) := fun y => Module.Finite.of_restrictScalars_finite ℤ _ _`. Use `haveI iPO : ∀ y, Module.Projective (𝓞 E) (XX y) := fun y => projective_of_free E (XX y)`. Set `MM : Option Tr → ℕ` to `fun y => match y with | none => Cm.m | some _ => 1`. Set `tt : ∀ y, Fin (MM y) → VV y` to `fun y => match y with | none => r | some T => ![tT T.1]`.
+
+Set `dd : ∀ y, Fin (MM y) → LinearMap.BilinForm ℤ (XX y)` to `fun y => match y with`. Consider the case `none => fun k => (l.M' : ℤ) • Cm.δ k | some T => ![T.1.be]`. Set `𝔪 : ∀ y, GlobalTheory.GSep.GMem X₁ z₁ act (VV y) (EV y) (Fin 1 → XX y) (mono !![(1 : ℤ)] (tt y) (dd y)) (fun a mu => a • mu)` to `fun y => match y with`. Consider the case `none => 𝔪₀`. Consider the case `some T => (hmT T).some`.
+
+Establish `hlab : Set.range (Subtype.val : X₁.S.HH X₁.M z₁ → X₁.S.Gam) = X₁.S.HH X₁.M z₁` using `Subtype.range_val`. Use `choose uu hu₁ hu₂ hu₃ using fun y => GlobalTheory.T.thetaMember_exists_integral_terms_unit_shift (𝓞 E) X₁ z₁ act x₀ hx₀ (VV y) (EV y) (Fin 1 → XX y) _ _ (𝔪 y) (X₁.S.HH X₁.M z₁) Subtype.val hlab`. Establish `ht₀ : ∀ k, r k ∈ maximalIdeal V₁ ∧ r k ≠ 0` using `fun k => by`. Use `⟨(mem_maximalIdeal _).2 (mem_nonunits_iff.2 fun hu => ?_), fun h0 => ?_⟩` and prove the remaining obligations. Establish `h1 : IsUnit (ρ₁ (Cm.s k))` using `(hr k) ▸ hu.pow 2`.
+
+Conclude with `(mem_nonunits_iff.1 ((mem_maximalIdeal _).1 (Cm.s_mem k))) ((isUnit_map_iff ρ₁ _).1 h1)`. Apply `Cm.s_ne_zero k` to reduce the goal to its premises. Apply `hinj` to reduce the goal to its premises. Rewrite using `[map_zero, ← hr k, h0]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `htT : ∀ T : UTrait Xo c, tT T ∈ maximalIdeal (VT T) ∧ tT T ≠ 0` using `fun T => by haveI := hlocW T`. Use `⟨(mem_maximalIdeal _).2 (mem_nonunits_iff.2 fun hu => ?_), fun h0 => ?_⟩` and prove the remaining obligations. Establish `h1 : IsUnit (fT T T.ϖ)` using `(htW T) ▸ hu.pow 2`. Conclude with `T.irr.not_isUnit ((isUnit_map_iff (fT T) _).1 h1)`. Apply `T.irr.ne_zero` to reduce the goal to its premises.
+
+Apply `hinjW T` to reduce the goal to its premises. Rewrite using `[map_zero, ← htW T, h0]`. Expand and normalize the polynomial expressions, which then agree. Set `Φ : VPre (H.bar : 𝓞 E → 𝓞 E) (min Dw.p Dw.q) !![(1 : ℤ)] (X₁.M.Z.presheaf.stalk z₁)` to `{ posW := posW_one Y := Option Tr V := VV cn := fun y => (𝔪 y).cn ev := EV ev_loc := fun y => (𝔪 y).loc X := XX rank_le := fun y => match y with`. Consider the case `none => Cm.rank`.
+
+Consider the case `some T => UTrait.finrank_le_min E H Dw l Xo c T.1`. Use `m := MM`. Use `t := tt`. Use `t_mem := fun y => match y with`. Consider the case `none => ht₀`.
+
+Consider the case `some T => fun k => by rw [Subsingleton.elim k 0]; exact htT T.1`. Use `δ := dd`. Use `bal := fun y => match y with`. Consider the case `none => fun k => Submodule.smul_mem _ _ (Cm.cone.mem k)`. Consider the case `some T => fun k => by`.
+
+Rewrite using `[Subsingleton.elim k 0]`. Conclude with `⟨T.1.lev.1, T.1.lev.2.1⟩`. Use `nonneg := fun y => match y with`. Consider the case `none => fun k x => Cm.mono.nonneg k x`. Consider the case `some T => fun k x => T.1.mono.nonneg k x`.
+
+Use `pos := fun y => match y with`. Consider the case `none => fun x hx => Cm.mono.exists_pos (maximalIdeal.isMaximal V).ne_top (Dd := Cm.P.D) hx`. Consider the case `some T => fun x hx => T.1.mono.exists_pos (maximalIdeal.isMaximal T.1.V).ne_top (Dd := T.1.P.D) hx`. Use `Q := X₁.S.HH X₁.M z₁`. Use `u := uu`.
+
+Use `u_unit := hu₂ }`. Establish `hgeo : GlobalTheory.GSep.IsGeo X₁ z₁ act x₀ Φ Subtype.val` using `⟨hx₀, hlab, fun y => ⟨𝔪 y, hu₁ y⟩⟩`. Use `⟨j, X₁, π, z₁, ζ, hdom, U, Φ, none, ρ₁, LinearEquiv.refl _ _, Equiv.refl _, ⟨x₀, AddSubgroup.subset_closure hx₀⟩, hj, hcov, hUne, ?_, ?_, fun y => hu₃ y _ rfl, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `T e h₁ h₂ h₃`. Use `⟨some ⟨T, e, h₁, h₂, h₃⟩, fT T, LinearEquiv.refl _ _, rfl, hpirW T, hinjW T, hlocW T, rfl, fun k => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Subsingleton.elim k 0]`. Conclude with `⟨htW T, fun _ _ => rfl⟩`. Use `⟨hinj, hfin, hcomp, fun k => ⟨hr k, fun _ _ => rfl⟩, 𝔪₀.D.toPre, p₀, ?_⟩` and prove the remaining obligations. Establish `hth` using `GlobalTheory.T.thetaMember_terms_isThetaTerms_torsionFrames (𝓞 E) X₁ z₁ act x₀ hx₀ V₁ ev₁ (Fin 1 → Cm.P.D.toPre.X) _ _ 𝔪₀ _ Subtype.val hlab _ (hu₁ none)`. Rewrite using `[← hN]`.
+
+Take `⟨th, g, b, w, h1, h2, h3, h4, h5⟩` from `hth`. Use `⟨th, g, b, w, h1, h2, h3, h4, fun mu c => ?_⟩` and prove the remaining obligations. Establish `e1 : p₀.xe.symm mu = 𝔪₀.e₈ (fun _ => mu)` using `p₀.xe.symm_apply_eq.2 (hp₀ (fun _ => mu)).symm`. Rewrite using `[e1]`. Conclude with `h5 (fun _ => mu) c`.
+
+Introduce and unpack `(_ | T) h`. Both sides reduce to the same expression. Conclude with `absurd rfl h`. Rewrite using `[← hN]`. Conclude with `GlobalTheory.T.fourierTermSystem_exact_of_geometric_uniformisation (𝓞 E) _ _ _ _ X₁ z₁ act x₀ Φ _ hgeo`.
+
+Rewrite using `[← hN]`. Conclude with `GlobalTheory.T.fourierTermSystem_class_sums_unbounded_levels_one_index (𝓞 E) _ _ _ X₁ z₁ act hact hdeep hunit x₀ Φ _ hgeo`.
+-/
 theorem GlobalTheory.GSep.exists_vPre_traitsOn_chart : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H), 1 ≤ Dw.p + Dw.q → ∀ (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (C : UCompact Xo c), ∀ (φ : InvFun (𝓞 E)) (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V] (Cm : GlobalTheory.UChart.MonoFam Xo c φ V), GlobalTheory.Mum.Base V → ∀ ξ : Sp V ⟶ pullback C.z (spMap C.b), Cm.y ≫ C.iF = jK V ≫ ξ → ∀ n : ℕ, n.Prime → Odd n → ∀ j₀ : ℕ, ∃ (j : ℕ) (X₁ : GlobalTheory.GSep.GSet) (π : X₁.M.Z ⟶ C.Z) (z₁ : X₁.M.Z) (ζ : Sp (X₁.M.Z.presheaf.stalk z₁) ⟶ pullback C.z (spMap C.b)) (_ : IsDomain (X₁.M.Z.presheaf.stalk z₁)) (U : X₁.M.Z.Opens) (Φ : VPre (H.bar : 𝓞 E → 𝓞 E) (min Dw.p Dw.q) !![(1 : ℤ)] (X₁.M.Z.presheaf.stalk z₁)) (y : Φ.Y) (ρ : V →+* Φ.V y) (e : Φ.X y ≃ₗ[𝓞 E] Cm.P.D.toPre.X) (h : Fin (Φ.m y) ≃ Fin Cm.m) (c₀ : Φ.Q), j₀ ≤ j ∧ IsCov C π z₁ ζ ∧ (U : Set X₁.M.Z).Nonempty ∧ GlobalTheory.GSep.HasTraitsOn ζ Φ U ∧ GlobalTheory.GSep.IsMemberP ζ Φ ((n ^ j) ^ 2) Cm ξ y ρ e h ∧ (∀ y', IsUnit (Φ.u y' 0 c₀)) ∧ (∀ y', Φ.m y' ≠ 1 → y' = y) ∧ Φ.Exact ((n ^ j) ^ 2) ∧ Φ.ClassSums ((n ^ j) ^ 2) := by
   intro E _ _ _ H Dw hpq l Xo c C φ V _ _ _ Cm hB ξ hξ n hn hodd j₀
   obtain ⟨j, X₁, act, u, π, z₁, ζ, V₁, _, _, _, ρ₁, ev₁, r, hj, hN, hlink, hcov, hcn₁, hinj, hfin, hloc, hreg, hcomp, hr⟩ :=

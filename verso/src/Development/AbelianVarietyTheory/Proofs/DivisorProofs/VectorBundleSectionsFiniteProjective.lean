@@ -8,6 +8,9 @@ open CategoryTheory AlgebraicGeometry
 
 namespace GlobalTheory.ChainDesc
 
+/- English proof (translation)
+Introduce `X F r h U hU`. Take `⟨h₁, h₂⟩` from `GlobalTheory.ChainPts.SecPair.finitePresentation_projective h hU`. Conclude with `⟨inferInstance, h₂⟩`.
+-/
 theorem finite_projective_sections_of_isVB :
     ∀ (X : Scheme.{0}) (F : X.Modules) (r : ℕ), GlobalTheory.VB.IsVB F r → ∀ U : X.Opens, IsAffineOpen U →
       Module.Finite Γ(X, U) Γ(F, U) ∧ Module.Projective Γ(X, U) Γ(F, U) := by

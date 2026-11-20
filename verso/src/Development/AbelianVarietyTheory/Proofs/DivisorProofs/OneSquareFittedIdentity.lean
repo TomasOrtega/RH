@@ -15,11 +15,17 @@ namespace GlobalTheory.BigTop.Fun.OneSqTie
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨0, fun _ _ _ => ⟨0, fun _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ s _ hi _ => by show Formalism.L2.Theta.IsStdChar _ _ (-1) rw [hi.weil.ψ]; exact s.std⟩⟩`.
+-/
 theorem big_std : GlobalTheory.RowClaim.Big fun {D} _ _ _ _ _ _ _ _ _ _ _ ch => Formalism.L2.Theta.IsStdChar D ch.W.ψ (-1) :=
   ⟨0, fun _ _ _ => ⟨0, fun _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ s _ hi _ => by
     show Formalism.L2.Theta.IsStdChar _ _ (-1)
     rw [hi.weil.ψ]; exact s.std⟩⟩
 
+/- English proof (translation)
+Take `⟨CF0, h⟩` from `hS.atPt big_std`. Use `⟨CF0, fun CF hCF => (h CF hCF).imp fun Fm CH _ e _ => ⟨0, fun C _ => evPt_imp e fun x hx i p _ hq d hd => ?_⟩⟩` and prove the remaining obligations. Take `⟨a, ha⟩` from `hd.2`. Conclude with `hq d.G d.W d.n a ha.ok`.
+-/
 theorem lf_std (hS : SetAt) : Lf (Fitted @Comparison₂) fun _ _ d _ _ => Formalism.L2.Theta.IsStdChar _ d.W.ψ (-1) := by
   obtain ⟨CF0, h⟩ := hS.atPt big_std
   refine ⟨CF0, fun CF hCF => (h CF hCF).imp fun Fm CH _ e _ => ⟨0, fun C _ => evPt_imp e fun x hx i p _ hq d hd => ?_⟩⟩
@@ -30,6 +36,29 @@ end GlobalTheory.BigTop.Fun.OneSqTie
 
 open GlobalTheory.BigTop.Fun.OneSqTie in
 
+/- English proof (translation)
+Establish `hQ` using `GlobalTheory.T.fitted_ties_bound_eventual _ hS hdl hO`. Use `Lf.mono (Lf.and hQ (Lf.and hA (lf_std hS))) ?_` and prove the remaining obligations. Introduce `D L hT Gi Gl Kc Y cX ex Csz p CF d C CH _ hd`. Use `⟨hd, fun ⟨hq, hth, hstd⟩ => ?_⟩` and prove the remaining obligations. Take `⟨a, ha⟩` from `hd.2`.
+
+Establish `key` using `hq d.W a.S.toGridChoice a.rm hstd ha.ok.field CF p.R.mu d.rq d.zA d.zA' d.zT d.zTd d.gT d.ch d.N0 d.Sd d.Se d.dl d.Bw hth ha.sq`. Establish `e1 : (p.S false).μ = p.R.mu` using `rfl`. Establish `e2 : p.P.A3.fam3.base3.μ0 = p.P.A3.A.μ0` using `rfl`. Establish `hsq` using `ha.sq`. Establish `hm : d.O.m = D.R.m` using `rfl`.
+
+Establish `hr : D.R.r = D.R.k + D.R.m - 1` using `rfl`. Establish `hkm` using `D.R.m_add_three_le_k`. Take `⟨ka, hka⟩` from `D.R.k_even`. Take `⟨mb, hmb⟩` from `D.R.m_even`. Take `⟨tc, htc⟩` from `D.R.t_odd`.
+
+Establish `hs : GlobalTheory.ChiGrid.sLen D = D.R.k + D.R.m + 5` using `by unfold GlobalTheory.ChiGrid.sLen; rw [hr]; omega`. Establish `E : ∀ ij : Sq D, sqRank D ij = 2 * (D.R.r + (ij.2 : ℕ) * D.R.t + (ij.1 : ℕ) * GlobalTheory.ChiGrid.sLen D) + (D.R.t + GlobalTheory.ChiGrid.sLen D)`. Introduce `ij`. Unfold `sqRank GlobalTheory.ChiGrid.rankV`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `E' : ∀ ij : Sq D, GlobalTheory.FunObj.SqNum.halfRank D ij.1 ij.2 = d.O.hd ij`. Introduce `ij`. Use `show (GlobalTheory.ChiGrid.rankV D ((ij.1 : ℕ) + 1) ((ij.2 : ℕ) + 1) + GlobalTheory.ChiGrid.rankV D ij.1 ij.2) / 2 = sqRank D ij / 2`. Use `congr 1`. Unfold `sqRank GlobalTheory.ChiGrid.rankV`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hev : ∀ ij : Sq D, sqRank D ij = 2 * (sqRank D ij / 2)`. Introduce `ij`. Rewrite using `[E ij, hs]`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hN : d.O.N = D.R.k + D.R.m * D.R.t + D.R.m * GlobalTheory.ChiGrid.sLen D + D.R.m` using `by show D.R.k + D.R.m * (D.R.t + (D.R.k + D.R.m + 5) + 1) = _`. Rewrite using `[hs]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨fun ij => hsq.rq_base ij, fun w ij => (key w ij).1, fun l hl => ((hsq.err l).1 hl).1, fun ij => hev ij, fun ij => ?_, fun ij => ?_, fun q _ => ?_, fun w ij => ?_⟩` and prove the remaining obligations. Use `show sqRank D ij ≤ 2 * d.O.N`.
+
+Rewrite using `[hN, E ij]`. Establish `h1 : (ij.2 : ℕ) * D.R.t + D.R.t ≤ D.R.m * D.R.t`. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : (ij.1 : ℕ) * GlobalTheory.ChiGrid.sLen D + GlobalTheory.ChiGrid.sLen D ≤ D.R.m * GlobalTheory.ChiGrid.sLen D`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[hr]`. Use linear arithmetic over natural numbers and integers. Use `show D.R.m - 1 - (ij.2 : ℕ) + 1 ≤ D.R.m`. Use linear arithmetic over natural numbers and integers. Apply the tactic sequence `classical show (if q = d.G.pl.v0 then 1 else 2) ≤ (if q = d.G.pl.v0 then _ else 2) split_ifs <;> omega`.
+
+Establish `h` using `(key w ij).2`. Establish `hd2 : 2 * GlobalTheory.FunObj.SqNum.halfRank D ij.1 ij.2 = d.O.dd ij`. Rewrite using `[E' ij]`. Conclude with `(hev ij).symm`. Rewrite `h` using `[hd2, E' ij]`.
+
+Conclude with `h`.
+-/
 theorem GlobalTheory.BigTop.Fun.oneSq_tie (hS : SetAt)
     (hdl : Closed FamHyp fun Fm _ => EvPt Fm fun x _ i _ => |(Fm.L x i).logDerivativeAtOne| ≤ (Fm.L x i).sc.x ^ (Fm.L x i).sc.eps)
     (hA : Lf (Fitted @Comparison₂) fun p _ d _ _ => ThA d.G p.P.A3.A.μ0 p.R.mu) (hO : OneSqSt) : OneSq @Comparison₂ := by

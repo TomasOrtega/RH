@@ -3,6 +3,9 @@ import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.Archim
 
 namespace PositivityTheory.RgBcC
 
+/- English proof (translation)
+The claim follows from `lef_of_kChain LfSt.kChain_holds`.
+-/
 theorem lefschetz_holds : Lef := lef_of_kChain LfSt.kChain_holds
 
 end PositivityTheory.RgBcC

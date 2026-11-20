@@ -18,18 +18,30 @@ open Pb
 section Gen
 variable {R : Type} [CommRing R] {C : Type u} [Category.{v} C] {A : C ⥤ CommAlgCat.{0} R}
 
+/- English proof (translation)
+Take `⟨x, hx⟩` from `x`. Take `⟨y, hy, rfl⟩` from `(Ideal.mem_map_iff_of_surjective _ Ideal.Quotient.mk_surjective).1 hx`. Conclude with `⟨y, hy, rfl⟩`.
+-/
 theorem sq_surj (a b : IdF A) {T : C} (x : sqM a b T) : ∃ (y : A.obj T) (hy : y ∈ a.S T), sqMk a b y hy = x := by
   obtain ⟨x, hx⟩ := x
   obtain ⟨y, hy, rfl⟩ := (Ideal.mem_map_iff_of_surjective _ Ideal.Quotient.mk_surjective).1 hx
   exact ⟨y, hy, rfl⟩
 
+/- English proof (translation)
+The claim follows from `Subtype.ext_iff.trans Ideal.Quotient.eq`.
+-/
 theorem sq_eq (a b : IdF A) {T : C} {x y : A.obj T} (hx : x ∈ a.S T) (hy : y ∈ a.S T) :
     sqMk a b x hx = sqMk a b y hy ↔ x - y ∈ b.S T := Subtype.ext_iff.trans Ideal.Quotient.eq
 
 def out (a b : IdF A) {T : C} (x : sqM a b T) : A.obj T := (sq_surj a b x).choose
 
+/- English proof (translation)
+The claim follows from `(sq_surj a b x).choose_spec.choose`.
+-/
 theorem out_mem (a b : IdF A) {T : C} (x : sqM a b T) : out a b x ∈ a.S T := (sq_surj a b x).choose_spec.choose
 
+/- English proof (translation)
+The claim follows from `(sq_surj a b x).choose_spec.choose_spec`.
+-/
 theorem mk_out (a b : IdF A) {T : C} (x : sqM a b T) : sqMk a b (out a b x) (out_mem a b x) = x :=
   (sq_surj a b x).choose_spec.choose_spec
 
@@ -43,6 +55,11 @@ variable {a b a' b' a'' b'' : IdF A} (h : MulOk a b a' b' a'' b'')
 def MulOk.mul {T : C} (x : sqM a b T) (y : sqM a' b' T) : sqM a'' b'' T :=
   sqMk a'' b'' (out a b x * out a' b' y) (h.aa T (out_mem a b x) (out_mem a' b' y))
 
+/- English proof (translation)
+Use `(sq_eq _ _ _ _).2 ?_` and prove the remaining obligations. Establish `h1` using `(sq_eq _ _ _ _).1 (mk_out a b (sqMk a b x hx))`. Establish `h2` using `(sq_eq _ _ _ _).1 (mk_out a' b' (sqMk a' b' y hy))`. Use `add_mem (h.ba T h1 (out_mem a' b' (sqMk a' b' y hy))) (h.ab T hx h2)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem MulOk.mul_mk {T : C} (x y : A.obj T) (hx : x ∈ a.S T) (hy : y ∈ a'.S T) :
     h.mul (sqMk a b x hx) (sqMk a' b' y hy) = sqMk a'' b'' (x * y) (h.aa T hx hy) := by
   refine (sq_eq _ _ _ _).2 ?_
@@ -52,12 +69,21 @@ theorem MulOk.mul_mk {T : C} (x y : A.obj T) (hx : x ∈ a.S T) (hy : y ∈ a'.S
   convert this using 1
   ring
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mk_add (a b : IdF A) {T : C} {x y : A.obj T} (hx : x ∈ a.S T) (hy : y ∈ a.S T) :
     sqMk a b x hx + sqMk a b y hy = sqMk a b (x + y) (add_mem hx hy) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mk_smul (a b : IdF A) {T : C} (r : R) {x : A.obj T} (hx : x ∈ a.S T) :
     r • sqMk a b x hx = sqMk a b (r • x) (Submodule.smul_of_tower_mem _ r hx) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem map_mk (a b : IdF A) {T T' : C} (φ : T ⟶ T') {x : A.obj T} (hx : x ∈ a.S T) :
     sqMap a b φ (sqMk a b x hx) = sqMk a b ((A.map φ).hom x) (a.map_mem φ hx) := rfl
 
@@ -82,6 +108,11 @@ def MulOk.pair : CH.Pairing (sq a b) (sq a' b') (sq a'' b'') where
 
 end Gen
 
+/- English proof (translation)
+Establish `: pdP δ r * pdP δ s ≤ pdP δ (r + s)`. Unfold `pdP`. Rewrite using `[Ideal.span_mul_span']`. Use `Ideal.span_mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨l, hl, hr, rfl⟩, _, ⟨l', hl', hr', rfl⟩, rfl⟩`.
+
+Use `⟨l ++ l', fun q hq => (List.mem_append.1 hq).elim (hl q) (hl' q), ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [List.map_append, List.sum_append]`. Use linear arithmetic over natural numbers and integers. Simplify using `only [List.map_append, List.prod_append]`. Conclude with `this (Ideal.mul_mem_mul hx hy)`.
+-/
 theorem dividedPowerFiltration_mul {B : Type} [CommRing B] {J : Ideal B} (δ : DividedPowers J) (r s : ℕ) {x y : B} (hx : x ∈ pdP δ r)
     (hy : y ∈ pdP δ s) : x * y ∈ pdP δ (r + s) := by
   have : pdP δ r * pdP δ s ≤ pdP δ (r + s) := by
@@ -97,6 +128,9 @@ theorem dividedPowerFiltration_mul {B : Type} [CommRing B] {J : Ideal B} (δ : D
 section Thick
 variable {b : Base} (L : b.Fun)
 
+/- English proof (translation)
+The claim follows from `h ▸ dividedPowerFiltration_mul T.δ a a' hx hy ab T _ _ hx hy := h ▸ dividedPowerFiltration_mul T.δ a (a' + 1) hx hy ba T x y hx hy := by have := dividedPowerFiltration_mul T.δ (a + 1) a' hx hy rw [show a + 1 + a' = c + 1 by omega] at this exact this`.
+-/
 theorem grOk {a a' c : ℕ} (h : a + a' = c) :
     MulOk (thFil L a) (thFil L ((a : ℤ) + 1)) (thFil L a') (thFil L ((a' : ℤ) + 1)) (thFil L c) (thFil L ((c : ℤ) + 1)) where
   aa T _ _ hx hy := h ▸ dividedPowerFiltration_mul T.δ a a' hx hy

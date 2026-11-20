@@ -19,6 +19,9 @@ def transMap (n : ℕ) : (c : ℕ) → idealPow I F (n + c + 1) ⟶ idealPow I F
   | 0 => 𝟙 _
   | c + 1 => idealPowSucc I F (n + c + 1) ≫ transMap n c
 
+/- English proof (translation)
+The claim follows from `| 0 => Category.id_comp _ | c + 1 => by rw [transMap, Category.assoc, transMap_ι n c, idealPowSucc_ι] rfl`.
+-/
 lemma transMap_ι (n : ℕ) : ∀ c, transMap I F n c ≫ idealPowι I F (n + 1) = idealPowι I F (n + c + 1)
   | 0 => Category.id_comp _
   | c + 1 => by
@@ -27,10 +30,20 @@ lemma transMap_ι (n : ℕ) : ∀ c, transMap I F n c ≫ idealPowι I F (n + 1)
 
 variable {F} [F.IsQuasicoherent] (hF : IsCoherent F)
 
+/- English proof (translation)
+The claim follows from `Ideal.pow_le_pow_right h ((mem_reesAlgebra_iff I _).1 r.2 i)`.
+-/
 lemma coeff_mem_pow_of_le (r : reesAlgebra I) {n i : ℕ} (h : n ≤ i) :
     (r : Polynomial A).coeff i ∈ I ^ n :=
   Ideal.pow_le_pow_right h ((mem_reesAlgebra_iff I _).1 r.2 i)
 
+/- English proof (translation)
+Apply `idealPowι_app_injective I (n + 1)` to reduce the goal to its premises. Rewrite using `[← ConcreteCategory.comp_apply, ← Scheme.Modules.Hom.comp_app, transMap_ι, idealPowι_reesDeg, reesCoef_reesInr_smul, map_sum]`. Repeatedly rewrite using `[← ConcreteCategory.comp_apply, ← Scheme.Modules.Hom.comp_app, idealPowOfMem_ι]`. Rewrite using `[← Finset.Nat.sum_antidiagonal_swap]`. Simplify using `only [Prod.fst_swap, Prod.snd_swap]`.
+
+Rewrite using `[Finset.Nat.sum_antidiagonal_eq_sum_range_succ (fun k l => (r : Polynomial A).coeff l • reesCoef I hF hV k s)]`. Rewrite using `[Fin.sum_univ_eq_sum_range (fun j => (smulHom F (algebraMap A Γ(X, ⊤) ((r : Polynomial A).coeff (n + (d + 1) + 1 - j)))).app V (reesCoef I hF hV j s)) (d + 1)]`. Use `symm`. Apply `Finset.sum_subset` to reduce the goal to its premises. Introduce `k hk`.
+
+Simplify using `only [Finset.mem_range] at hk ⊢`. Use linear arithmetic over natural numbers and integers. Introduce `k hk hk'`. Simplify using `only [Finset.mem_range] at hk hk'`. Rewrite using `[hs k (by omega), map_zero]`.
+-/
 lemma transMap_reesDeg_smul {V : X.Opens} (hV : IsAffineOpen V) (n d : ℕ) (r : reesAlgebra I)
     (s : Γ(reesSheaf I F, reesPr I X ⁻¹ᵁ V)) (hs : ∀ j, d < j → reesCoef I hF hV j s = 0) :
     (transMap I F n (d + 1)).app V (reesDeg I hF hV (n + (d + 1) + 1) (reesInr I V r • s)) =
@@ -61,6 +74,25 @@ variable {ι : Type u} (𝔘 : ι → X.Opens)
 set_option maxHeartbeats 4000000 in
 include hF hU in
 
+/- English proof (translation)
+Use `finite_reesCech I 𝔘 p hF hUtop hU` as an intermediate fact. Establish `hnoeth : IsNoetherian (reesAlgebra I) (cechH (reesPre I F) 𝔘 p)` using `isNoetherian_of_isNoetherianRing_of_finite _ _`. Take `⟨S, hS⟩` from `hnoeth.noetherian (LinearMap.ker (reesΦ I hF 𝔘 hU p))`. Use `choose σ hσ Nb hcls hNb using fun g => exists_cls_coef_eq_zero I hF 𝔘 hU p g`. Take `⟨d, hd⟩ : ∃ d, d = S.sup Nb` from `⟨_, rfl⟩`.
+
+Use `⟨d + 1, fun n y hy => ?_⟩` and prove the remaining obligations. Establish `hκ : (reesIncFam I hF 𝔘 hU (n + (d + 1) + 1)).cechH p y ∈ LinearMap.ker (reesΦ I hF 𝔘 hU p)`. Rewrite using `[LinearMap.mem_ker]`. Apply `PolynomialModule.ext` to reduce the goal to its premises. Use extensionality with `k`.
+
+Rewrite using `[reesΦ_coeff, reesCoefFam_reesIncFam]`. Use `split_ifs with h`. Substitute `h` using the available equality. Conclude with `hy`. Both sides reduce to the same expression.
+
+Rewrite `hκ` using `[← hS, Submodule.mem_span_finset]`. Take `⟨f, -, hf⟩` from `hκ`. Establish `hy' : y = (reesDegFam I hF 𝔘 hU (n + (d + 1) + 1)).cechH p (∑ g ∈ S, f g • g)`. Rewrite using `[hf, reesDegFam_reesIncFam]`. Rewrite using `[hy', map_sum, map_sum]`.
+
+Use `Finset.sum_eq_zero fun g hg => ?_` and prove the remaining obligations. Establish `hgker : reesΦ I hF 𝔘 hU p g = 0` using `LinearMap.mem_ker.1 (hS ▸ Submodule.subset_span hg)`. Establish `hgd : Nb g ≤ d` using `hd ▸ Finset.le_sup (f := Nb) hg`. Establish `key : ∀ r : reesAlgebra I, cechHMap 𝔘 (modulesAbMap (transMap I F n (d + 1))).hom p ((reesDegFam I hF 𝔘 hU (n + (d + 1) + 1)).cechH p (r • g)) = 0`. Introduce `r`.
+
+Rewrite using `[← hcls g]`. Express the relevant statement in the definitionally equal form `cechHMap 𝔘 (modulesAbMap (transMap I F n (d + 1))).hom p ((reesDegFam I hF 𝔘 hU (n + (d + 1) + 1)).cechH p (cechHMap 𝔘 (modulesAbMap (reesMul I F r)).hom p (cls (σ g) (hσ g)))) = 0`. Rewrite using `[cechHMap_cls, CechFamily.cechH_cls, cechHMap_cls]`. Establish `hterm : ∀ j : Fin (d + 1), cechHMap 𝔘 (modulesAbMap (idealPowOfMem I F (k` using `n + 1) ((r : Polynomial A).coeff (n + (d + 1) + 1 - j)) (coeff_mem_pow_of_le I r (by omega)))).hom p ((reesCoefFam I hF 𝔘 hU j).cechH p (cls (σ g) (hσ g))) = 0 := by`. Introduce `j`.
+
+Rewrite using `[hcls g, ← reesΦ_coeff, hgker, PolynomialModule.coeff_zero, Finsupp.zero_apply, map_zero]`. Use `Eq.trans ?_ (Finset.sum_eq_zero (s := Finset.univ) fun j _ => hterm j)` and prove the remaining obligations. Repeatedly rewrite using `[CechFamily.cechH_cls, cechHMap_cls]`. Rewrite using `[← cls_sum]`. Use `cls_congr 𝔘 (funext fun t => ?_) _ _` and prove the remaining obligations.
+
+Rewrite using `[Finset.sum_apply]`. Conclude with `transMap_reesDeg_smul I hF (isAffineOpen_inter 𝔘 hU t) n d r (σ g t) (fun j hj => hNb g j (by omega) t)`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_eq_zero fun j _ => by`. Rewrite using `[← push_d, ← CechFamily.cochain_d, hσ g, map_zero, map_zero]`.
+
+Conclude with `key (f g)`.
+-/
 theorem exists_transMap_eq_zero [IsProper (X ↘ Spec (.of A))] (hUtop : iSup 𝔘 = ⊤) :
     ∃ c, ∀ n (y : cechH (modulesAb (idealPow I F (n + c + 1))).obj 𝔘 p),
       cechHMap 𝔘 (modulesAbMap (idealPowι I F (n + c + 1))).hom p y = 0 →

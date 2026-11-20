@@ -16,6 +16,21 @@ namespace GlobalTheory.ConjLatticeCore
 
 open NumberField Formalism.BasicNotions Formalism.MainNotions.TaylorLogMetric GlobalTheory.Glob.IntegralWittCoefficients GlobalTheory.IndefiniteRowSideFullHecke
 
+/- English proof (translation)
+Introduce `D cc δ M _ t hS ρ`. Take `⟨hcc, hδ, hM, -⟩` from `hS`. Establish `hC` using `GlobalTheory.ConjLattice.containsData hM`. Establish `hm : ∀ a : D.host.K, D.host.φ₀ (a : D.host.E) ∈ M` using `hC.1`. Establish `h1 : Formalism.MainNotions.TaylorLogMetric.discr (lamOf D cc δ) = 1` using `Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.B5.br_discr_lamOf D cc hcc δ hδ`.
+
+Establish `h2 : g2 (lamOf D cc δ) ∈ M` using `hM.2.1`. Establish `h3 : g3 (lamOf D cc δ) ∈ M` using `hM.2.2`. Establish `hsp` using `fun ρ' => GlobalTheory.ConjLattice.lamConj_spec GlobalTheory.ConjLattice.uniformization_holds M ρ' (lamOf D cc δ) h2 h3 h1`. Use `⟨(hsp ρ).2.2, ?_⟩` and prove the remaining obligations. Establish `hfix : ∀ ρ' : M →ₐ[ℚ] ℂ, EquidistributedConjugates.FixesK D M ρ' → ∃ c : Ideal (𝓞 D.host.K), c ≠ ⊥ ∧ ∃ x : ℂ, x ≠ 0 ∧ lamConj M ρ' (lamOf D cc δ) = lamOf D c x`.
+
+Introduce `ρ' hρ'`. Take `⟨cc', δ', hc', -, he⟩` from `GlobalTheory.ConjCurve.galCurve_holds D cc δ ⟨hcc, hδ⟩ M ρ' (GlobalTheory.ConjEquidistrib.fixK_of_fixesK D M ρ' hm hρ') h2 h3 1 one_pos`. Conclude with `⟨cc', hc'.1.1, δ', Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.B5.brcc_delta_ne D cc' hc'.1 δ' hc'.2, he⟩`. Distinguish the cases in `hρ : EquidistributedConjugates.FixesK D M ρ`. Conclude with `hfix ρ hρ`.
+
+Establish `hρ' : EquidistributedConjugates.FixesK D M (EquidistributedConjugates.conjEmb M ρ)` using `(GlobalTheory.ConjEquidistrib.fixesK_conjEmb_iff D M ρ hm).2 hρ`. Take `⟨c, hc, x, hx, hxe⟩` from `hfix _ hρ'`. Establish `hUI : Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.B5.UniqInv` using `Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.B5.uniqInv_of_lat Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.B5.latOfDiscr_holds GlobalTheory.ConjLattice.uniformization_holds`. Establish `hmap : (lamConj M ρ (lamOf D cc δ)).map GlobalTheory.ConjLattice.cj = lamConj M (EquidistributedConjugates.conjEmb M ρ) (lamOf D cc δ)`. Apply `hUI` to reduce the goal to its premises.
+
+Rewrite using `[GlobalTheory.ConjLattice.discr_map_cj, (hsp ρ).2.2, map_one]`. Conclude with `one_ne_zero`. Rewrite using `[GlobalTheory.ConjLattice.eisenstein_g_two_map_conj, (hsp ρ).1, (hsp _).1]`. Conclude with `(EquidistributedConjugates.conjEmb_apply _ _ _).symm`. Rewrite using `[GlobalTheory.ConjLattice.eisenstein_g_three_map_conj, (hsp ρ).2.1, (hsp _).2.1]`.
+
+Conclude with `(EquidistributedConjugates.conjEmb_apply _ _ _).symm`. Establish `hback : lamConj M ρ (lamOf D cc δ) = (lamConj M (EquidistributedConjugates.conjEmb M ρ) (lamOf D cc δ)).map GlobalTheory.ConjLattice.cj`. Rewrite using `[← hmap, GlobalTheory.ConjLattice.map_cj_map_cj]`. Use `⟨c.map (GlobalTheory.ConjLattice.conjO D), ?_, starRingEnd ℂ x, (map_ne_zero _).2 hx, by rw [hback, hxe, GlobalTheory.ConjLattice.lamOf_map_cj]⟩` and prove the remaining obligations. Introduce `hbot`.
+
+Rewrite `hbot` using `[Ideal.map_eq_bot_iff_of_injective (GlobalTheory.ConjLattice.conjO D).injective]`. Conclude with `hc hbot`.
+-/
 theorem conj_lattice_core :
     ∀ (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (M : IntermediateField ℚ ℂ) [FiniteDimensional ℚ M]
       (t : (M →ₐ[ℚ] ℂ) → ℂ), SignedLogMeans.HidaSetting D cc δ M t → ∀ ρ : M →ₐ[ℚ] ℂ,

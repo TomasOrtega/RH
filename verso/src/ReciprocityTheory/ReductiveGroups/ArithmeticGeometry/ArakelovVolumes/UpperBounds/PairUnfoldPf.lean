@@ -9,18 +9,27 @@ noncomputable section
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : Data E r)
 
+/- English proof (translation)
+Take `⟨n, hn, h⟩` from `X.χ_fin la`. Use `congrArg norm (h γ hγ)` as an intermediate fact. Rewrite `this` using `[norm_pow, norm_one]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) hn.ne').mp this`.
+-/
 theorem norm_chi {la : Wt X.Ψ r} {γ : GL (Fin r) E} (hγ : γ ∈ X.Γ) : ‖X.χ la γ‖ = 1 := by
   obtain ⟨n, hn, h⟩ := X.χ_fin la
   have := congrArg norm (h γ hγ)
   rw [norm_pow, norm_one] at this
   exact (pow_eq_one_iff_of_nonneg (norm_nonneg _) hn.ne').mp this
 
+/- English proof (translation)
+Establish `h` using `norm_chi X (la := la) hγ`. Establish `hn : Complex.normSq (X.χ la γ) = 1` using `by rw [Complex.normSq_eq_norm_sq, h, one_pow]`. Rewrite using `[Complex.inv_def, hn, inv_one, Complex.ofReal_one, mul_one]`.
+-/
 theorem conj_chi {la : Wt X.Ψ r} {γ : GL (Fin r) E} (hγ : γ ∈ X.Γ) :
     (starRingEnd ℂ) (X.χ la γ) = (X.χ la γ)⁻¹ := by
   have h := norm_chi X (la := la) hγ
   have hn : Complex.normSq (X.χ la γ) = 1 := by rw [Complex.normSq_eq_norm_sq, h, one_pow]
   rw [Complex.inv_def, hn, inv_one, Complex.ofReal_one, mul_one]
 
+/- English proof (translation)
+Rewrite using `[← Set.piecewise_eq_indicator]`. Conclude with `hf.measurable_piecewise continuousOn_const (FourierCoefficientDomain.isOpen_dom X).measurableSet`.
+-/
 theorem meas_indC {f : Frame X.Ψ r → ℂ} (hf : ContinuousOn f X.dom) : Measurable (X.dom.indicator f) := by
   classical
   rw [← Set.piecewise_eq_indicator]
@@ -32,23 +41,42 @@ def Gu (P f0 : Frame X.Ψ r → ℂ) (W : Frame X.Ψ r → ℝ≥0∞) (x : Fram
 def phi0 (f0 : Frame X.Ψ r → ℂ) (W : Frame X.Ψ r → ℝ≥0∞) (x : Frame X.Ψ r) : ℝ≥0∞ :=
   ENNReal.ofReal (‖X.dom.indicator f0 x‖ ^ 2) * W x
 
+/- English proof (translation)
+Simplify using `[Gu, Set.indicator_of_mem hx]`.
+-/
 theorem Gu_dom {P f0 : Frame X.Ψ r → ℂ} {W : Frame X.Ψ r → ℝ≥0∞} {x : Frame X.Ψ r} (hx : x ∈ X.dom) :
     Gu X P f0 W x = P x * (starRingEnd ℂ) (f0 x) * ((W x).toReal : ℂ) := by
   simp [Gu, Set.indicator_of_mem hx]
 
+/- English proof (translation)
+Simplify using `[phi0, Set.indicator_of_mem hx]`.
+-/
 theorem unfoldedDensity_on_dom {f0 : Frame X.Ψ r → ℂ} {W : Frame X.Ψ r → ℝ≥0∞} {x : Frame X.Ψ r} (hx : x ∈ X.dom) :
     phi0 X f0 W x = ENNReal.ofReal (‖f0 x‖ ^ 2) * W x := by
   simp [phi0, Set.indicator_of_mem hx]
 
+/- English proof (translation)
+The claim follows from `((meas_indC X hP).mul (Complex.continuous_conj.measurable.comp (meas_indC X hf))).mul (Complex.measurable_ofReal.comp hW.ennreal_toReal)`.
+-/
 theorem Gu_meas {P f0 : Frame X.Ψ r → ℂ} {W : Frame X.Ψ r → ℝ≥0∞} (hP : ContinuousOn P X.dom)
     (hf : ContinuousOn f0 X.dom) (hW : Measurable W) : Measurable (Gu X P f0 W) :=
   ((meas_indC X hP).mul (Complex.continuous_conj.measurable.comp (meas_indC X hf))).mul
     (Complex.measurable_ofReal.comp hW.ennreal_toReal)
 
+/- English proof (translation)
+The claim follows from `(ENNReal.measurable_ofReal.comp ((meas_indC X hf).norm.pow_const 2)).mul hW`.
+-/
 theorem measurable_unfoldedDensity {f0 : Frame X.Ψ r → ℂ} {W : Frame X.Ψ r → ℝ≥0∞} (hf : ContinuousOn f0 X.dom)
     (hW : Measurable W) : Measurable (phi0 X f0 W) :=
   (ENNReal.measurable_ofReal.comp ((meas_indC X hf).norm.pow_const 2)).mul hW
 
+/- English proof (translation)
+Rewrite using `[Gu_dom X (OrthogonalFrameDomain.rmul_mem_dom X hx hb), Gu_dom X hx, hP x hx b hb, hf x hx b hb, hW x hx b hb]`. Establish `hc : bchar la b ≠ 0` using `bchar_ne X hb la`. Establish `hn : (‖bchar la b‖ : ℂ) ≠ 0` using `by exact_mod_cast norm_ne_zero_iff.mpr hc`. Establish `hcc : bchar la b * (starRingEnd ℂ) (bchar la b) = (‖bchar la b‖ : ℂ) ^ 2`. Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[ENNReal.toReal_div, ENNReal.toReal_ofReal (by positivity), map_mul]`. Use `push_cast`. Rewrite using `[show bchar la b * P x * ((starRingEnd ℂ) (bchar la b) * (starRingEnd ℂ) (f0 x)) * (((W x).toReal : ℂ) / (‖bchar la b‖ : ℂ) ^ 2) = (bchar la b * (starRingEnd ℂ) (bchar la b)) * (P x * (starRingEnd ℂ) (f0 x) * ((W x).toReal : ℂ)) / (‖bchar la b‖ : ℂ) ^ 2 by ring, hcc]`.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem Gu_rmul {la : Wt X.Ψ r} {P f0 : Frame X.Ψ r → ℂ} {W : Frame X.Ψ r → ℝ≥0∞}
     (hP : ∀ x ∈ X.dom, ∀ b ∈ Bor X.Ψ r, P (rmul x b) = bchar la b * P x)
     (hf : ∀ x ∈ X.dom, ∀ b ∈ Bor X.Ψ r, f0 (rmul x b) = bchar la b * f0 x)
@@ -67,6 +95,11 @@ theorem Gu_rmul {la : Wt X.Ψ r} {P f0 : Frame X.Ψ r → ℂ} {W : Frame X.Ψ r
       (P x * (starRingEnd ℂ) (f0 x) * ((W x).toReal : ℂ)) / (‖bchar la b‖ : ℂ) ^ 2 by ring, hcc]
   field_simp
 
+/- English proof (translation)
+Rewrite using `[unfoldedDensity_on_dom X (OrthogonalFrameDomain.rmul_mem_dom X hx hb), unfoldedDensity_on_dom X hx, hf x hx b hb, hW x hx b hb]`. Establish `hc : bchar la b ≠ 0` using `bchar_ne X hb la`. Establish `h0 : ENNReal.ofReal (‖bchar la b‖ ^ 2) ≠ 0`. Rewrite using `[ENNReal.ofReal_ne_zero_iff]`. Conclude with `pow_pos (norm_pos_iff.mpr hc) 2`.
+
+Rewrite using `[norm_mul, mul_pow, ENNReal.ofReal_mul (by positivity)]`. Rewrite using `[show ENNReal.ofReal (‖bchar la b‖ ^ 2) * ENNReal.ofReal (‖f0 x‖ ^ 2) * (W x / ENNReal.ofReal (‖bchar la b‖ ^ 2)) = ENNReal.ofReal (‖f0 x‖ ^ 2) * (W x / ENNReal.ofReal (‖bchar la b‖ ^ 2) * ENNReal.ofReal (‖bchar la b‖ ^ 2)) by ring, ENNReal.div_mul_cancel h0 ENNReal.ofReal_ne_top …`.
+-/
 theorem unfoldedDensity_borel_invariant {la : Wt X.Ψ r} {f0 : Frame X.Ψ r → ℂ} {W : Frame X.Ψ r → ℝ≥0∞}
     (hf : ∀ x ∈ X.dom, ∀ b ∈ Bor X.Ψ r, f0 (rmul x b) = bchar la b * f0 x)
     (hW : ∀ x ∈ X.dom, ∀ b ∈ Bor X.Ψ r, W (rmul x b) = W x / ENNReal.ofReal (‖bchar la b‖ ^ 2))
@@ -83,6 +116,9 @@ theorem unfoldedDensity_borel_invariant {la : Wt X.Ψ r} {f0 : Frame X.Ψ r → 
       (W x / ENNReal.ofReal (‖bchar la b‖ ^ 2) * ENNReal.ofReal (‖bchar la b‖ ^ 2)) by ring,
     ENNReal.div_mul_cancel h0 ENNReal.ofReal_ne_top]
 
+/- English proof (translation)
+Rewrite using `[unfoldedDensity_on_dom X ((lact_mem_dom_iff X hγ x).mpr hx), unfoldedDensity_on_dom X hx, hf γ hγ x hx, hW γ hγ x hx, norm_mul, norm_chi X hγ, one_mul]`.
+-/
 theorem unfoldedDensity_gamma_invariant {la : Wt X.Ψ r} {f0 : Frame X.Ψ r → ℂ} {W : Frame X.Ψ r → ℝ≥0∞}
     (hf : ∀ γ ∈ X.Γ, ∀ x ∈ X.dom, f0 (lact γ x) = X.χ la γ * f0 x)
     (hW : ∀ γ ∈ X.Γ, ∀ x ∈ X.dom, W (lact γ x) = W x)
@@ -91,6 +127,13 @@ theorem unfoldedDensity_gamma_invariant {la : Wt X.Ψ r} {f0 : Frame X.Ψ r → 
   rw [unfoldedDensity_on_dom X ((lact_mem_dom_iff X hγ x).mpr hx), unfoldedDensity_on_dom X hx, hf γ hγ x hx, hW γ hγ x hx,
     norm_mul, norm_chi X hγ, one_mul]
 
+/- English proof (translation)
+Break down `eq_or_ne w ⊤ with rfl | hw` into its components or cases. Simplify using the standard rewrite rules. Establish `hw' : w = ENNReal.ofReal w.toReal` using `(ENNReal.ofReal_toReal hw).symm`. Establish `ht : 0 ≤ w.toReal` using `ENNReal.toReal_nonneg`. Rewrite using `[← ofReal_norm]`.
+
+Use `conv_rhs => rw [hw']`. Rewrite using `[← ENNReal.ofReal_mul (by positivity), ← ENNReal.ofReal_mul (by positivity), ← ENNReal.ofReal_mul hk.le, ← ENNReal.ofReal_add (by positivity) (by positivity)]`. Use `ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations. Rewrite using `[norm_mul, norm_mul, Complex.norm_conj, Complex.norm_real, Real.norm_of_nonneg ht]`. Establish `hA` using `norm_nonneg a`.
+
+Establish `hB` using `norm_nonneg b`. Establish `h1 : ‖a‖ ^ 2 / k + k * ‖b‖ ^ 2 - 2 * (‖a‖ * ‖b‖) = (‖a‖ - k * ‖b‖) ^ 2 / k` using `by field_simp; ring`. Establish `h2 : 0 ≤ (‖a‖ - k * ‖b‖) ^ 2 / k` using `div_nonneg (sq_nonneg _) hk.le`. Establish `h3 : 0 ≤ ‖a‖ ^ 2 / k + k * ‖b‖ ^ 2 - ‖a‖ * ‖b‖` using `by nlinarith [mul_nonneg hA hB]`. Use polynomial arithmetic with `[mul_nonneg ht h3]`.
+-/
 theorem ineq_pt (a b : ℂ) (w : ℝ≥0∞) {k : ℝ} (hk : 0 < k) :
     ‖a * (starRingEnd ℂ) b * ((w.toReal : ℝ) : ℂ)‖ₑ ≤
       ENNReal.ofReal (‖a‖ ^ 2 / k) * w + ENNReal.ofReal k * (ENNReal.ofReal (‖b‖ ^ 2) * w) := by
@@ -112,12 +155,18 @@ theorem ineq_pt (a b : ℂ) (w : ℝ≥0∞) {k : ℝ} (hk : 0 < k) :
     have h3 : 0 ≤ ‖a‖ ^ 2 / k + k * ‖b‖ ^ 2 - ‖a‖ * ‖b‖ := by nlinarith [mul_nonneg hA hB]
     nlinarith [mul_nonneg ht h3]
 
+/- English proof (translation)
+Distinguish the cases in `h : y ∈ M`. Simplify using `[Set.indicator, h]`. Simplify using `[Set.indicator, h]`.
+-/
 theorem enorm_ind_mul {M : Set (Frame X.Ψ r)} (y : Frame X.Ψ r) (c : ℂ) :
     ‖M.indicator (1 : Frame X.Ψ r → ℂ) y * c‖ₑ = M.indicator (1 : Frame X.Ψ r → ℝ≥0∞) y * ‖c‖ₑ := by
   by_cases h : y ∈ M
   · simp [Set.indicator, h]
   · simp [Set.indicator, h]
 
+/- English proof (translation)
+Establish `hd : ∀ τ : X.Ψ, Measurable fun z => dmin X.Gm (cpt X x0 z) τ ⟨X.p0, Nat.lt_succ_of_le X.p0_le⟩` using `fun τ => ((ExtFPf.cont_dmin X τ _).comp (cpt_cont X x0)).measurable`. Unfold `kaF rhF`. Conclude with `Real.measurable_exp.comp (measurable_const.mul (Finset.measurable_sum _ fun τ _ => Real.measurable_log.comp (hd τ).norm).neg)`.
+-/
 theorem ka_meas (x0 : Frame X.Ψ r) (bb : ℝ) : Measurable (kaF X x0 bb) := by
   have hd : ∀ τ : X.Ψ, Measurable fun z => dmin X.Gm (cpt X x0 z) τ ⟨X.p0, Nat.lt_succ_of_le X.p0_le⟩ :=
     fun τ => ((ExtFPf.cont_dmin X τ _).comp (cpt_cont X x0)).measurable
@@ -125,6 +174,31 @@ theorem ka_meas (x0 : Frame X.Ψ r) (bb : ℝ) : Measurable (kaF X x0 bb) := by
   exact Real.measurable_exp.comp (measurable_const.mul
     (Finset.measurable_sum _ fun τ _ => Real.measurable_log.comp (hd τ).norm).neg)
 
+/- English proof (translation)
+Introduce `r X x0 hx0 hPD la W bb hW hWl hbb F P hF hInAt hP hPF FF hFF f0 hf0 hf0FF`. Take `⟨D⟩` from `ExtFPf.luData_of hLU X x0 hx0`. Establish `hf0S : X.IsSec la f0` using `hf0.1.1`. Establish `hGm : Measurable (Gu X P f0 W)` using `Gu_meas X hP.1.continuousOn hf0S.1.continuousOn hW.1`. Establish `hGB : ∀ x ∈ X.dom, ∀ b ∈ Bor X.Ψ r, Gu X P f0 W (rmul x b) = Gu X P f0 W x` using `fun x hx b hb => Gu_rmul X hP.2 hf0S.2.1 hW.2.1 hx hb`.
+
+Establish `hnB : ∀ x ∈ X.dom, ∀ b ∈ Bor X.Ψ r, ‖Gu X P f0 W (rmul x b)‖ₑ = ‖Gu X P f0 W x‖ₑ` using `fun x hx b hb => by rw [hGB x hx b hb]`. Establish `hG_lact : ∀ γ ∈ X.Γ, ∀ x ∈ X.dom, Gu X P f0 W (lact γ x) = (X.χ la γ)⁻¹ * P (lact γ x) * (starRingEnd ℂ) (f0 x) * ((W x).toReal : ℂ)`. Introduce `γ hγ x hx`. Rewrite using `[Gu_dom X ((lact_mem_dom_iff X hγ x).mpr hx), hf0S.2.2 γ hγ x hx, hW.2.2 γ hγ x hx, map_mul, conj_chi X hγ]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hfin : ∫⁻ z, ‖Gu X P f0 W (cpt X x0 z)‖ₑ ∂muF X x0 < ⊤`. Take `⟨C, hC, hCle⟩` from `hK r X x0 hx0 hPD FF hFF bb hbb`. Establish `hI2 : ∫⁻ z, ENNReal.ofReal (kaF X x0 bb z) * phi0 X f0 W (cpt X x0 z) ∂muF X x0 < ⊤`. Use `lt_of_le_of_lt (hCle _ (measurable_unfoldedDensity X hf0S.1.continuousOn hW.1) (fun x hx b hb => unfoldedDensity_borel_invariant X hf0S.2.1 hW.2.1 hx hb) (fun γ hγ x hx => unfoldedDensity_gamma_invariant X hf0S.2.2 hW.2.2 hγ hx)) (ENNReal.mul_lt_top hC ?_)` and prove the remaining obligations. Establish `: ∫⁻ z in FF, phi0 X f0 W (cpt X x0 z) ∂muF X x0 = ∫⁻ z in FF, ENNReal.ofReal (‖f0 (cpt X x0 z)‖ ^ 2) * W (cpt X x0 z) ∂muF X x0` using `setLIntegral_congr_fun hFF.1 fun z hz => unfoldedDensity_on_dom X (hFF.2.1 hz)`.
+
+Rewrite using `[this]`. Conclude with `hf0FF`. Combine the equalities or inequalities in the displayed calculation. Use `lintegral_mono_ae ?_` and prove the remaining obligations. Use `filter_upwards [ExtFPf.ae_OmF] with z hz`.
+
+Rewrite using `[Gu_dom X hz, unfoldedDensity_on_dom X hz, hPF z hz]`. Conclude with `ineq_pt _ _ _ (Real.exp_pos _)`. Use `_ = ∫⁻ z, ENNReal.ofReal (‖F z‖ ^ 2 / kaF X x0 bb z) * W (cpt X x0 z) ∂muF X x0 + ∫⁻ z, ENNReal.ofReal (kaF X x0 bb z) * phi0 X f0 W (cpt X x0 z) ∂muF X x0 := lintegral_add_right _ ((ENNReal.measurable_ofReal.comp (ka_meas X x0 bb)).mul ((measurable_unfoldedDensity X hf0S.1.conti …`. Use `_ < ⊤ := ENNReal.add_lt_top.2 ⟨hInAt, hI2⟩`. Establish `hsum1 : ∑' γ : X.Γ, ∫⁻ z in FF, ‖Gu X P f0 W (lact γ.1 (cpt X x0 z))‖ₑ ∂muF X x0 < ⊤`.
+
+Rewrite using `[lunfold D FF hM hx0 hFF (fun x => ‖Gu X P f0 W x‖ₑ) hGm.enorm hnB]`. Conclude with `hfin`. Establish `hL : Set.EqOn (fun z => poin X la P (cpt X x0 z) * (starRingEnd ℂ) (f0 (cpt X x0 z)) * ((W (cpt X x0 z)).toReal : ℂ)) (fun z => ∑' γ : X.Γ, Gu X P f0 W (lact γ.1 (cpt X x0 z))) FF`. Introduce `z hz`. Establish `hzd : cpt X x0 z ∈ X.dom` using `hFF.2.1 hz`.
+
+Simplify using `only [poin]`. Rewrite using `[← tsum_mul_right, ← tsum_mul_right]`. Conclude with `tsum_congr fun γ => (hG_lact γ.1 γ.2 _ hzd).symm`. Rewrite using `[setIntegral_congr_fun hFF.1 hL]`. Establish `hmeas1 : ∀ γ : X.Γ, AEStronglyMeasurable (fun z => Gu X P f0 W (lact γ.1 (cpt X x0 z))) ((muF X x0).restrict FF)` using `fun γ => (hGm.comp ((lact_cont X γ.1).comp (cpt_cont X x0)).measurable).aestronglyMeasurable`.
+
+Rewrite using `[integral_tsum hmeas1 hsum1.ne]`. Establish `hcu : ∀ γ : X.Γ, ∫ z in FF, Gu X P f0 W (lact γ.1 (cpt X x0 z)) ∂muF X x0 = ∫ z, (T D FF).indicator (1 : Frame X.Ψ r → ℂ) (lact γ.1⁻¹ (cpt X x0 z)) * Gu X P f0 W (cpt X x0 z) ∂muF X x0` using `fun γ => cunfold_one D FF hM hx0 hFF _ hGm hGB γ.2`. Rewrite using `[tsum_congr hcu]`. Establish `hmeas2 : ∀ γ : X.Γ, AEStronglyMeasurable (fun z => (T D FF).indicator (1 : Frame X.Ψ r → ℂ) (lact γ.1⁻¹ (cpt X x0 z)) * Gu X P f0 W (cpt X x0 z)) (muF X x0)`. Introduce `γ`.
+
+Establish `h1 : Measurable ((T D FF).indicator (1 : Frame X.Ψ r → ℂ))` using `measurable_one.indicator (T_meas D FF hFF.1)`. Establish `h2 : Measurable fun z => lact γ.1⁻¹ (cpt X x0 z)` using `((lact_cont X γ.1⁻¹).comp (cpt_cont X x0)).measurable`. Conclude with `((h1.comp h2).mul (hGm.comp (cpt_cont X x0).measurable)).aestronglyMeasurable`. Establish `hsum2 : ∑' γ : X.Γ, ∫⁻ z, ‖(T D FF).indicator (1 : Frame X.Ψ r → ℂ) (lact γ.1⁻¹ (cpt X x0 z)) * Gu X P f0 W (cpt X x0 z)‖ₑ ∂muF X x0 ≠ ⊤`. Establish `: ∀ γ : X.Γ, ∫⁻ z, ‖(T D FF).indicator (1 : Frame X.Ψ r → ℂ) (lact γ.1⁻¹ (cpt X x0 z)) * Gu X P f0 W (cpt X x0 z)‖ₑ ∂muF X x0 = ∫⁻ z in FF, ‖Gu X P f0 W (lact γ.1 (cpt X x0 z))‖ₑ ∂muF X x0` using `fun γ => by`.
+
+Rewrite using `[lunfold_one D FF hM hx0 hFF (fun x => ‖Gu X P f0 W x‖ₑ) hGm.enorm hnB γ.2]`. Simplify using `only [enorm_ind_mul]`. Rewrite using `[tsum_congr this]`. Conclude with `hsum1.ne`. Rewrite using `[← integral_tsum hmeas2 hsum2]`.
+
+Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [ae_unique D FF hFF] with z ⟨hzO, γ0, hγ0, hu⟩`. Rewrite using `[tsum_eq_single ⟨γ0, hγ0⟩]`. Rewrite using `[Set.indicator_of_mem ((hu γ0 hγ0).mpr rfl), Pi.one_apply, one_mul, Gu_dom X hzO, hPF z hzO]`. Introduce `γ hne`.
+
+Rewrite using `[Set.indicator_of_notMem, zero_mul]`. Introduce `h`. Conclude with `hne (Subtype.ext ((hu γ.1 γ.2).mp h))`.
+-/
 theorem pairUnfold_of (hM : MeasInvStatement (E := E)) (hK : KaUnfoldStatement (E := E))
     (hLU : LUStatement (E := E)) : PairUnfoldStatement (E := E) := by
   intro r X x0 hx0 hPD la W bb hW hWl hbb F P hF hInAt hP hPF FF hFF f0 hf0 hf0FF

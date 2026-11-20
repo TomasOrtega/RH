@@ -19,6 +19,9 @@ def ConeIntegralPts.Statement : Prop :=
         ptsIntegral P (pot fun _ : Fin e => IndefiniteRowSideFullHecke.ArithBezout.hermLine S hS)
           (IndefiniteRowSideFullHecke.ArithBezout.logFormNorm S hS u)
 
+/- English proof (translation)
+Establish `h` using `Finsupp.support_onFinset_subset hW`. Rewrite `h` using `[Set.Finite.mem_toFinset]`. Then use the resulting hypothesis.
+-/
 theorem mem_minimalPrimes_of_mem_fundCycle_support {n : ℕ} {J W : Ideal (MvPolynomial (Fin n) ℂ)}
     (hW : W ∈ (fundCycle J).support) : W ∈ J.minimalPrimes := by
   have h := Finsupp.support_onFinset_subset hW

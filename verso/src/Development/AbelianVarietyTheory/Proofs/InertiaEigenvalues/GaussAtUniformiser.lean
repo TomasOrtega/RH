@@ -17,6 +17,11 @@ section Help
 open scoped Pointwise
 variable {F E : Type} [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E] [StarRing E]
 
+/- English proof (translation)
+Use `haveI : IsTopologicalAddGroup A.L := IsModuleTopology.topologicalAddGroup F A.L`. Take `⟨Λ₀, ho, hc, hG⟩` from `h`. Take `⟨Λ₁, ho', hc', hG'⟩` from `h'`. Establish `hs : ((Λ₀ ⊔ Λ₁ : AddSubgroup A.L) : Set A.L) = (Λ₀ : Set A.L) + (Λ₁ : Set A.L)` using `AddSubgroup.add_normal Λ₀ Λ₁`. Establish `hO : IsOpen ((Λ₀ ⊔ Λ₁ : AddSubgroup A.L) : Set A.L)` using `AddSubgroup.isOpen_mono le_sup_left ho`.
+
+Establish `hC : IsCompact ((Λ₀ ⊔ Λ₁ : AddSubgroup A.L) : Set A.L)` using `by rw [hs]; exact hc.add hc'`. Rewrite using `[← hG _ hO hC le_sup_left, ← hG' _ hO hC le_sup_right]`.
+-/
 theorem stable_unique (A : Et F E) (ψ : AddChar F ℂ) (x : A.K) (μ : Measure A.L) (u : A.K)
     {G G' : ℂ} (h : IsStableGauss A ψ x μ u G) (h' : IsStableGauss A ψ x μ u G') : G = G' := by
   haveI : IsTopologicalAddGroup A.L := IsModuleTopology.topologicalAddGroup F A.L
@@ -28,19 +33,33 @@ theorem stable_unique (A : Et F E) (ψ : AddChar F ℂ) (x : A.K) (μ : Measure 
   have hC : IsCompact ((Λ₀ ⊔ Λ₁ : AddSubgroup A.L) : Set A.L) := by rw [hs]; exact hc.add hc'
   rw [← hG _ hO hC le_sup_left, ← hG' _ hO hC le_sup_right]
 
+/- English proof (translation)
+Take `⟨-, hinj, hN, -, -⟩` from `GlobalTheory.JR.Et.quadratic_structure F E A`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[hN, A.star_K, map_pow, sq]`.
+-/
 theorem NL_algebraMap [Unram F E] (A : Et F E) (c : A.K) : A.NL (algebraMap A.K A.L c) = c ^ 2 := by
   obtain ⟨-, hinj, hN, -, -⟩ := GlobalTheory.JR.Et.quadratic_structure F E A
   apply hinj
   rw [hN, A.star_K, map_pow, sq]
 
+/- English proof (translation)
+Simplify using `[Et.absK, map_zpow]`.
+-/
 theorem absK_zpow (A : Et F E) (u : A.Kˣ) (n : ℤ) :
     A.absK ((u ^ n : A.Kˣ) : A.K) = A.absK (u : A.K) ^ n := by
   simp [Et.absK, map_zpow]
 
+/- English proof (translation)
+Simplify using `only [Et.absK, Units.isUnit, dite_true, IsUnit.unit_of_val_units]`. Conclude with `((Group.isUnit u).map (distribHaarChar A.K)).ne_zero.bot_lt` after adjusting the coercions.
+-/
 theorem absK_pos (A : Et F E) (u : A.Kˣ) : 0 < A.absK (u : A.K) := by
   simp only [Et.absK, Units.isUnit, dite_true, IsUnit.unit_of_val_units]
   exact_mod_cast ((Group.isUnit u).map (distribHaarChar A.K)).ne_zero.bot_lt
 
+/- English proof (translation)
+Use extensionality with `y`. Simplify using `only [Set.mem_setOf_eq, Et.kerL]`. Use `forall₂_congr fun m _ => ?_` and prove the remaining obligations. Establish `: Algebra.trace A.K A.L (star (algebraMap A.K A.L t * y) * m) = t * Algebra.trace A.K A.L (star y * m)`. Rewrite using `[star_mul', A.star_K, mul_assoc, ← Algebra.smul_def, map_smul, smul_eq_mul]`.
+
+Rewrite using `[this, mul_comm t a, mul_assoc]`.
+-/
 theorem dual_mul (A : Et F E) (ψ : AddChar F ℂ) (O : Subring A.L) (t a : A.K) :
     {y : A.L | ∀ m ∈ O, A.kerL ψ (t * a) y m = 1} =
       {y : A.L | ∀ m ∈ O, A.kerL ψ a (algebraMap A.K A.L t * y) m = 1} := by
@@ -52,6 +71,11 @@ theorem dual_mul (A : Et F E) (ψ : AddChar F ℂ) (O : Subring A.L) (t a : A.K)
     rw [star_mul', A.star_K, mul_assoc, ← Algebra.smul_def, map_smul, smul_eq_mul]
   rw [this, mul_comm t a, mul_assoc]
 
+/- English proof (translation)
+Use extensionality with `y`. Simplify using `only [Set.mem_setOf_eq, Units.val_mul, map_mul]`. Use `exists_congr fun z => and_congr_right fun _ => ?_` and prove the remaining obligations. Establish `h1 : algebraMap A.K A.L ((t⁻¹ : A.Kˣ) : A.K) * algebraMap A.K A.L (t : A.K) = 1`. Rewrite using `[← map_mul, Units.inv_mul, map_one]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[← one_mul y, ← h1, mul_assoc, h, ← mul_assoc]`. Introduce `h`. Rewrite using `[h, ← mul_assoc, ← mul_assoc, ← map_mul, Units.mul_inv, map_one, one_mul]`.
+-/
 theorem scaled_mul (A : Et F E) (O : Subring A.L) (t c : A.Kˣ) :
     {y : A.L | algebraMap A.K A.L (t : A.K) * y ∈ {y : A.L | ∃ z ∈ O, y = algebraMap A.K A.L (c : A.K) * z}} =
       {y : A.L | ∃ z ∈ O, y = algebraMap A.K A.L ((t⁻¹ * c : A.Kˣ) : A.K) * z} := by
@@ -69,20 +93,36 @@ end Help
 section Levels
 variable {F E : Type} [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E] [StarRing E]
 
+/- English proof (translation)
+Simplify using `only [Et.kerL]`. Rewrite using `[star_mul', A.star_K]`. Put the polynomial expressions in normal form.
+-/
 theorem kerL_mul_left (A : Et F E) (ψ : AddChar F ℂ) (a c : A.K) (y m : A.L) :
     A.kerL ψ a (algebraMap A.K A.L c * y) m = A.kerL ψ a y (algebraMap A.K A.L c * m) := by
   simp only [Et.kerL]
   rw [star_mul', A.star_K]
   ring_nf
 
+/- English proof (translation)
+Simplify using `[Et.kerL]`.
+-/
 theorem kerL_one (A : Et F E) (ψ : AddChar F ℂ) (a : A.K) (m : A.L) :
     A.kerL ψ a 1 m = A.psiK ψ (a * Algebra.trace A.K A.L m) := by
   simp [Et.kerL]
 
+/- English proof (translation)
+Rewrite using `[← Algebra.smul_def, map_smul, smul_eq_mul]`.
+-/
 theorem trace_algebraMap_mul (A : Et F E) (c : A.K) (w : A.L) :
     Algebra.trace A.K A.L (algebraMap A.K A.L c * w) = c * Algebra.trace A.K A.L w := by
   rw [← Algebra.smul_def, map_smul, smul_eq_mul]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ A ψ x μ hψ hμ O hOo hOc hOs htr t hD`. Take `⟨-, -, hN, htrL, -⟩` from `GlobalTheory.JR.Et.quadratic_structure F E A`. Establish `h1 : (1 : A.L) ∈ {y : A.L | ∀ m ∈ O, A.kerL ψ (t * x) y m = 1}` using `by rw [hD]; exact O.one_mem`. Establish `hM : ∀ m ∈ O, A.psiK ψ (t * x * A.NL m) = 1` using `fun m hm => by`. Take `⟨z, hz, hzs⟩` from `htr (A.NL m) (by rw [hN]; exact O.mul_mem hm (hOs m hm))`.
+
+Use `h1 z hz` as an intermediate fact. Rewrite `this` using `[kerL_one, hzs]`. Then use the resulting hypothesis. Establish `hDeq : ((O.toAddSubgroup : AddSubgroup A.L) : Set A.L) = {y : A.L | ∀ m ∈ O.toAddSubgroup, A.kerL ψ (t * x) y m = 1}`. Simplify using `using hD.symm`. Establish `hG` using `GlobalTheory.T.quadraticGaussIntegral_stable_of_dual_lattice F E A ψ x μ hψ hμ t O.toAddSubgroup O.toAddSubgroup hOo hOc hOo hOc (fun m hm => hM m hm) hDeq`.
+
+Use `hG using 1` and compare the differences between its conclusion and the goal. Simplify using `only [gaussInt, Subring.coe_toAddSubgroup]`. Rewrite using `[setIntegral_congr_fun hOo.measurableSet (g := fun _ => (1 : ℂ)) (fun y hy => hM y hy)]`. Simplify using `[Measure.real]`.
+-/
 theorem level0 : ∀ (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E] [StarRing E] [Unram F E] (A : Et F E) (ψ : AddChar F ℂ) (x : A.K) (μ : Measure A.L), IsStdChar ψ → μ.IsAddHaarMeasure → ∀ O : Subring A.L, IsOpen (O : Set A.L) → IsCompact (O : Set A.L) → (∀ y ∈ O, star y ∈ O) → (∀ s : A.K, algebraMap A.K A.L s ∈ O → ∃ z ∈ O, Algebra.trace A.K A.L z = s) → ∀ t : A.K, {y : A.L | ∀ m ∈ O, A.kerL ψ (t * x) y m = 1} = (O : Set A.L) → IsStableGauss A ψ x μ t (((μ (O : Set A.L)).toReal : ℝ) : ℂ) := by
   intro F E _ _ _ _ _ A ψ x μ hψ hμ O hOo hOc hOs htr t hD
   obtain ⟨-, -, hN, htrL, -⟩ := GlobalTheory.JR.Et.quadratic_structure F E A
@@ -128,6 +168,11 @@ def mulHomeo [Unram F E] (A : Et F E) (c : A.Kˣ) : A.L ≃ₜ A.L :=
     continuous_toFun := continuous_const.mul continuous_id
     continuous_invFun := continuous_const.mul continuous_id }
 
+/- English proof (translation)
+Use extensionality with `y`. Simplify using `only [scaledSub, AddSubgroup.coe_set_mk, AddSubmonoid.coe_set_mk, AddSubsemigroup.coe_set_mk, Set.mem_setOf_eq, Set.mem_image, SetLike.mem_coe]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz, rfl⟩`. Conclude with `⟨z, hz, rfl⟩`.
+
+Introduce and unpack `⟨z, hz, rfl⟩`. Conclude with `⟨z, hz, rfl⟩`.
+-/
 theorem scaledSub_eq_image [Unram F E] (A : Et F E) (O : Subring A.L) (c : A.Kˣ) :
     ((scaledSub A O c : AddSubgroup A.L) : Set A.L) = mulHomeo A c '' (O : Set A.L) := by
   ext y
@@ -137,6 +182,31 @@ theorem scaledSub_eq_image [Unram F E] (A : Et F E) (O : Subring A.L) (c : A.Kˣ
   · rintro ⟨z, hz, rfl⟩; exact ⟨z, hz, rfl⟩
   · rintro ⟨z, hz, rfl⟩; exact ⟨z, hz, rfl⟩
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ A ψ x μ hψ hμ hK hL O ϖ hOo hOc hOs hϖO hϖu hdich htr hnorm hsc t hD`. Take `⟨-, hinj, hN, htrL, -⟩` from `GlobalTheory.JR.Et.quadratic_structure F E A`. Establish `hmemD : ∀ y : A.L, (∀ m ∈ O, A.kerL ψ (t * x) y m = 1) ↔ ∃ z ∈ O, y = algebraMap A.K A.L ϖ * z` using `fun y => by`. Use `congrArg (y ∈ ·) hD` as an intermediate fact. Simplify using `using this`.
+
+Establish `hϖD : ∀ m ∈ O, A.kerL ψ (t * x) (algebraMap A.K A.L ϖ) m = 1` using `(hmemD _).2 ⟨1, O.one_mem, by simp⟩`. Establish `hψϖ : ∀ s : A.K, algebraMap A.K A.L s ∈ O → A.psiK ψ (t * x * ϖ * s) = 1` using `fun s hs => by`. Take `⟨w, hw, hws⟩` from `htr s hs`. Use `hϖD w hw` as an intermediate fact. Simplify using `only [Et.kerL, A.star_K, trace_algebraMap_mul, hws] at this`.
+
+Rewrite `this` using `[← mul_assoc]`. Then use the resulting hypothesis. Establish `hnt : ∃ s : A.K, algebraMap A.K A.L s ∈ O ∧ A.psiK ψ (t * x * s) ≠ 1`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Establish `h1 : ∀ m ∈ O, A.kerL ψ (t * x) 1 m = 1` using `fun m hm => by`.
+
+Rewrite using `[kerL_one]`. Conclude with `hcon _ (by rw [htrL]; exact O.add_mem hm (hOs m hm))`. Take `⟨z, hz, hz1⟩` from `(hmemD 1).1 h1`. Conclude with `hϖu ⟨z, hz, hz1.symm⟩`. Set `M` to `scaledSub A O ϖ`.
+
+Establish `hMo : IsOpen (M : Set A.L)`. Rewrite using `[scaledSub_eq_image]`. Conclude with `(mulHomeo A ϖ).isOpenMap _ hOo`. Establish `hMc : IsCompact (M : Set A.L)`. Rewrite using `[scaledSub_eq_image]`.
+
+Conclude with `hOc.image (mulHomeo A ϖ).continuous`. Establish `hM : ∀ m ∈ M, A.psiK ψ (t * x * A.NL m) = 1`. Introduce and unpack `_ ⟨z, hz, rfl⟩`. Establish `hs : algebraMap A.K A.L ((ϖ : A.K) * A.NL z) ∈ O`. Rewrite using `[map_mul, hN]`.
+
+Conclude with `O.mul_mem hϖO (O.mul_mem hz (hOs z hz))`. Use `hψϖ _ hs` as an intermediate fact. Establish `hmul : A.NL (algebraMap A.K A.L ϖ * z) = A.NL (algebraMap A.K A.L ϖ) * A.NL z` using `map_mul (Algebra.norm A.K) _ _`. Rewrite using `[hmul, NL_algebraMap, show (ϖ : A.K) ^ 2 * A.NL z = (ϖ : A.K) * ((ϖ : A.K) * A.NL z) by ring]`. Rewrite using `[← mul_assoc]` and apply the resulting hypothesis.
+
+Establish `hDeq : ((O.toAddSubgroup : AddSubgroup A.L) : Set A.L) = {y : A.L | ∀ m ∈ M, A.kerL ψ (t * x) y m = 1}`. Use extensionality with `y`. Simplify using `only [Subring.coe_toAddSubgroup, SetLike.mem_coe, Set.mem_setOf_eq]`. Establish `e1 : (∀ m ∈ M, A.kerL ψ (t * x) y m = 1) ↔ ∀ m ∈ O, A.kerL ψ (t * x) (algebraMap A.K A.L ϖ * y) m = 1`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h m hm`. Rewrite using `[kerL_mul_left]`. Conclude with `h _ ⟨m, hm, rfl⟩`. Introduce and unpack `h _ ⟨m, hm, rfl⟩`. Rewrite using `[← kerL_mul_left]`.
+
+Conclude with `h m hm`. Rewrite using `[e1, hmemD]`. Prove the components needed by the constructor for the conclusion. Introduce `hy`. Conclude with `⟨y, hy, rfl⟩`.
+
+Introduce and unpack `⟨z, hz, hzy⟩`. Establish `hc : y = z`. Use `congrArg (fun w => algebraMap A.K A.L ((ϖ⁻¹ : A.Kˣ) : A.K) * w) hzy` as an intermediate fact. Simplify `this` using `only [← mul_assoc, ← map_mul, Units.inv_mul, map_one, one_mul]`. Rewrite using `[hc]`.
+
+Conclude with `hz`. Establish `hG` using `GlobalTheory.T.quadraticGaussIntegral_stable_of_dual_lattice F E A ψ x μ hψ hμ t M O.toAddSubgroup hMo hMc hOo hOc hM hDeq`. Use `hG using 1` and compare the differences between its conclusion and the goal. Simplify using `only [gaussInt, Subring.coe_toAddSubgroup]`. Rewrite using `[GlobalTheory.T.residue_gauss_integral_norm_form F E A ψ μ hψ hμ hK hL O ϖ hOo hOc hOs hϖO hϖu hdich hnorm hsc (t * x) hψϖ hnt]`.
+-/
 theorem level1 : ∀ (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E] [StarRing E] [Unram F E] (A : Et F E) (ψ : AddChar F ℂ) (x : A.K) (μ : Measure A.L), IsStdChar ψ → μ.IsAddHaarMeasure → IsField A.K → IsField A.L → ∀ (O : Subring A.L) (ϖ : A.Kˣ), IsOpen (O : Set A.L) → IsCompact (O : Set A.L) → (∀ y ∈ O, star y ∈ O) → algebraMap A.K A.L (ϖ : A.K) ∈ O → (¬ ∃ z ∈ O, algebraMap A.K A.L (ϖ : A.K) * z = 1) → (∀ y ∈ O, (∃ z ∈ O, y = algebraMap A.K A.L (ϖ : A.K) * z) ∨ ∃ z ∈ O, y * z = 1) → (∀ s : A.K, algebraMap A.K A.L s ∈ O → ∃ z ∈ O, Algebra.trace A.K A.L z = s) → (∀ s : A.K, algebraMap A.K A.L s ∈ O → (∃ r ∈ O, algebraMap A.K A.L s * r = 1) → ∃ w ∈ O, A.NL w = s) → μ {y : A.L | ∃ z ∈ O, y = algebraMap A.K A.L (ϖ : A.K) * z} = ENNReal.ofReal (A.absK (ϖ : A.K) ^ 2) * μ (O : Set A.L) → ∀ t : A.K, {y : A.L | ∀ m ∈ O, A.kerL ψ (t * x) y m = 1} = {y : A.L | ∃ z ∈ O, y = algebraMap A.K A.L (ϖ : A.K) * z} → IsStableGauss A ψ x μ t (-((A.absK (ϖ : A.K) : ℝ) : ℂ) * (((μ (O : Set A.L)).toReal : ℝ) : ℂ)) := by
   intro F E _ _ _ _ _ A ψ x μ hψ hμ hK hL O ϖ hOo hOc hOs hϖO hϖu hdich htr hnorm hsc t hD
   obtain ⟨-, hinj, hN, htrL, -⟩ := GlobalTheory.JR.Et.quadratic_structure F E A
@@ -197,6 +267,27 @@ theorem level1 : ∀ (F E : Type) [NontriviallyNormedField F] [NontriviallyNorme
 
 end Level1
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ A ψ x μ ω hH G₁ hG₁`. Take `⟨hK, hL, hψ, hSD, hω⟩` from `hH`. Establish `hμ : μ.IsAddHaarMeasure` using `hSD.1`. Take `⟨ϖ, O, hOo, hOc, hOs, hϖn, hϖO, hϖu, hdich, htr, hnorm, hnb, hex⟩` from `GlobalTheory.T.unramifiedQuadratic_exists_integers_uniformiser F E A hK hL`. Take `⟨e, he⟩` from `GlobalTheory.T.hermitianTraceDual_integers_eq_uniformizer_pow F E A ψ hψ hK hL ϖ O hOo hOc hOs hϖO hϖu hdich hnb hex x`.
+
+Establish `hsc` using `GlobalTheory.T.haar_measure_L_unit_smul_absK_sq F E A μ hμ ϖ O`. Establish `hD : ∀ t : A.Kˣ, {y : A.L | ∀ m ∈ O, A.kerL ψ ((t : A.K) * x) y m = 1} = {y : A.L | ∃ z ∈ O, y = algebraMap A.K A.L ((t⁻¹ * ϖ ^ e : A.Kˣ) : A.K) * z}` using `fun t => by`. Rewrite using `[dual_mul A ψ O t x, ← scaled_mul A O t (ϖ ^ e), ← he]`. Both sides reduce to the same expression. Establish `hO1 : {y : A.L | ∃ z ∈ O, y = algebraMap A.K A.L ((1 : A.Kˣ) : A.K) * z} = (O : Set A.L)`.
+
+Use extensionality with `y`. Simplify using the standard rewrite rules. Establish `hnp : ∀ j : ℤ, ∃ ℓ : A.L, A.NL ℓ = ((ϖ ^ (2 * j) : A.Kˣ) : A.K)` using `fun j => ⟨algebraMap A.K A.L ((ϖ ^ j : A.Kˣ) : A.K), by`. Rewrite using `[NL_algebraMap, ← Units.val_pow_eq_pow_val, ← zpow_natCast, ← _root_.zpow_mul, mul_comm]`. Use the proof step `norm_num⟩`.
+
+Establish `hmove : ∀ (t : A.Kˣ) (j : ℤ) (G : ℂ), IsStableGauss A ψ x μ (t : A.K) G → IsStableGauss A ψ x μ ((t * ϖ ^ (2 * j) : A.Kˣ) : A.K) (G * ((A.absK (ϖ : A.K) : ℂ) ^ (2 * j))⁻¹)` using `fun t j G h => by`. Use `GlobalTheory.T.stableQuadraticGaussIntegral_mul_norm F E A ψ x μ ω ⟨hK, hL, hψ, hSD, hω⟩ t (ϖ ^ (2 * j)) (hnp j) G h` as an intermediate fact. Rewrite `this` using `[absK_zpow, Complex.ofReal_zpow]`. Then use the resulting hypothesis. Establish `hb : (A.absK (ϖ : A.K) : ℂ) ≠ 0` using `by exact_mod_cast (absK_pos A ϖ).ne'`. Take `⟨k, r, hr, hek⟩ : ∃ k r : ℤ, (r = 0 ∨ r = 1) ∧ e = 2 * k + r` from `⟨e / 2, e % 2, Int.emod_two_eq_zero_or_one e, by omega⟩`.
+
+Use `⟨ϖ, hϖn, ?_⟩` and prove the remaining obligations. Break down `hr with rfl | rfl` into its components or cases. Establish `h0` using `level0 F E A ψ x μ hψ hμ O hOo hOc hOs htr ((ϖ ^ (2 * k) : A.Kˣ) : A.K) (by`. Rewrite using `[hD, hek, show ((ϖ ^ (2 * k))⁻¹ * ϖ ^ (2 * k + 0) : A.Kˣ) = 1 by group]; exact hO1)`. Establish `h1` using `level1 F E A ψ x μ hψ hμ hK hL O ϖ hOo hOc hOs hϖO hϖu hdich htr hnorm hsc ((ϖ ^ (2 * k) * ϖ⁻¹ : A.Kˣ) : A.K) (by`.
+
+Rewrite using `[hD, hek, show ((ϖ ^ (2 * k) * ϖ⁻¹)⁻¹ * ϖ ^ (2 * k + 0) : A.Kˣ) = ϖ by group])`. Establish `g1` using `hmove _ (-k) _ h0`. Rewrite `g1` using `[show (ϖ ^ (2 * k) * ϖ ^ (2 * -k) : A.Kˣ) = 1 by group, Units.val_one]`. Establish `gϖ` using `hmove _ (1 - k) _ h1`. Rewrite `gϖ` using `[show (ϖ ^ (2 * k) * ϖ⁻¹ * ϖ ^ (2 * (1 - k)) : A.Kˣ) = ϖ by group]`.
+
+Rewrite using `[stable_unique A ψ x μ 1 hG₁ g1]`. Use `gϖ using 1` and compare the differences between its conclusion and the goal. Rewrite using `[show (2 : ℤ) * (1 - k) = 2 + 2 * -k by ring, zpow_add₀ hb]`. Establish `hP : (A.absK (ϖ : A.K) : ℂ) ^ (2 * -k) ≠ 0` using `zpow_ne_zero _ hb`. Clear the denominators using the available nonvanishing facts.
+
+Establish `h1` using `level1 F E A ψ x μ hψ hμ hK hL O ϖ hOo hOc hOs hϖO hϖu hdich htr hnorm hsc ((ϖ ^ (2 * k) : A.Kˣ) : A.K) (by`. Rewrite using `[hD, hek, show ((ϖ ^ (2 * k))⁻¹ * ϖ ^ (2 * k + 1) : A.Kˣ) = ϖ by group])`. Establish `h0` using `level0 F E A ψ x μ hψ hμ O hOo hOc hOs htr ((ϖ ^ (2 * k) * ϖ : A.Kˣ) : A.K) (by`. Rewrite using `[hD, hek, show ((ϖ ^ (2 * k) * ϖ)⁻¹ * ϖ ^ (2 * k + 1) : A.Kˣ) = 1 by group]; exact hO1)`. Establish `g1` using `hmove _ (-k) _ h1`.
+
+Rewrite `g1` using `[show (ϖ ^ (2 * k) * ϖ ^ (2 * -k) : A.Kˣ) = 1 by group, Units.val_one]`. Establish `gϖ` using `hmove _ (-k) _ h0`. Rewrite `gϖ` using `[show (ϖ ^ (2 * k) * ϖ * ϖ ^ (2 * -k) : A.Kˣ) = ϖ by group]`. Rewrite using `[stable_unique A ψ x μ 1 hG₁ g1]`. Use `gϖ using 1` and compare the differences between its conclusion and the goal.
+
+Establish `hP : (A.absK (ϖ : A.K) : ℂ) ^ (2 * -k) ≠ 0` using `zpow_ne_zero _ hb`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem gauss_at_uniformiser : ∀ (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E] [StarRing E] [Unram F E] (A : Et F E) (ψ : AddChar F ℂ) (x : A.Kˣ) (μ : Measure A.L) (ω : A.K → ℂ), Hyp A ψ x μ ω → ∀ G₁ : ℂ, IsStableGauss A ψ x μ 1 G₁ → ∃ ϖ : A.Kˣ, (¬ ∃ y, A.NL y = ϖ) ∧ IsStableGauss A ψ x μ ϖ (-(G₁ * ((A.absK ϖ : ℂ))⁻¹)) := by
   intro F E _ _ _ _ _ A ψ x μ ω hH G₁ hG₁
   obtain ⟨hK, hL, hψ, hSD, hω⟩ := hH

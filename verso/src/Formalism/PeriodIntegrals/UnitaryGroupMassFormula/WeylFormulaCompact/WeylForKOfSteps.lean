@@ -6,6 +6,21 @@ namespace PI.WeylForKWork
 
 open PI PI.UpqRep Matrix
 
+/- English proof (translation)
+Introduce `N ε Λ H _ _ σ S hσ hS`. Take `⟨hB1, hB2, hB3, hB4, hB5⟩` from `hB N ε`. Take `⟨hσP, hσM⟩` from `hB5 H σ hσ`. Take `⟨X, hXS, hX⟩` from `hTP N ε Λ H σ S hσ hS`. Take `⟨Y, hYS, hY⟩` from `hTM N ε Λ H σ S hσ hS`.
+
+Establish `hmul : ∀ g ∈ Kset ε, ∀ g' ∈ Kset ε, σ (g * g') = (σ g).comp (σ g')` using `hσ.1.2`. Establish `hSst : IsKStableOn ε σ S` using `hS.2.1`. Establish `hcomm : ∀ h ∈ Kset (allPos (nPl ε)), ∀ h' ∈ Kset (allPos (nMi ε)), (sPl ε σ h).comp (sMi ε σ h') = (sMi ε σ h').comp (sPl ε σ h)`. Introduce `h hh h' hh'`. Use `show (σ (iPl ε h)).comp (σ (iMi ε h')) = (σ (iMi ε h')).comp (σ (iPl ε h))`.
+
+Rewrite using `[← hmul _ (hB1 h hh) _ (hB2 h' hh'), ← hmul _ (hB2 h' hh') _ (hB1 h hh), hB3]`. Establish `hstP : IsKStableOn (allPos (nPl ε)) (sPl ε σ) S` using `fun h hh v hv => hSst _ (hB1 h hh) v hv`. Establish `hstM : IsKStableOn (allPos (nMi ε)) (sMi ε σ) S` using `fun h hh v hv => hSst _ (hB2 h hh) v hv`. Establish `hirr : ∀ S' : Submodule ℂ H, S' ≤ S → IsKStableOn (allPos (nPl ε)) (sPl ε σ) S' → IsKStableOn (allPos (nMi ε)) (sMi ε σ) S' → S' = ⊥ ∨ S' = S`. Introduce `S' hS' h1 h2`.
+
+Use `hS.2.2.1 S' hS' (fun g hg v hv => ?_)` and prove the remaining obligations. Take `⟨h, hh, h', hh', rfl⟩` from `hB4 g hg`. Rewrite using `[hmul _ (hB1 h hh) _ (hB2 h' hh')]`. Conclude with `h1 h hh _ (h2 h' hh' v hv)`. Establish `hX0 : X ≠ ⊥`.
+
+Take `⟨v, hv, hv0, _⟩` from `hX.2.2.2.1`. Introduce `hbot`. Rewrite `hv` using `[hbot]`. Conclude with `hv0 ((Submodule.mem_bot ℂ).1 hv)`. Establish `hY0 : Y ≠ ⊥`.
+
+Take `⟨v, hv, hv0, _⟩` from `hY.2.2.2.1`. Introduce `hbot`. Rewrite `hv` using `[hbot]`. Conclude with `hv0 ((Submodule.mem_bot ℂ).1 hv)`. Establish `hdim` using `hD (nPl ε) (nMi ε) H (sPl ε σ) (sMi ε σ) S X Y hσP hσM hcomm hS.1 hstP hstM hirr hXS hX0 hX.2.1 hX.2.2.1 hYS hY0 hY.2.1 hY.2.2.1`.
+
+Establish `hwX` using `hU (nPl ε) (fun i => Λ (ePl ε i)) H (sPl ε σ) X hσP hX`. Establish `hwY` using `hU (nMi ε) (fun j => Λ (eMi ε j)) H (sMi ε σ) Y hσM hY`. Rewrite using `[hF N ε Λ, hdim, Nat.cast_mul, hwX, hwY]`. Both sides reduce to the same expression.
+-/
 theorem weylForK_of_steps (hB : Blocks) (hTP : TypePl) (hTM : TypeMi) (hD : DimStep)
     (hF : FormulaStep) (hU : PI.WeylForU) : PI.WeylForK := by
   intro N ε Λ H _ _ σ S hσ hS

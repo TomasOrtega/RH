@@ -10,6 +10,13 @@ namespace GlobalTheory
 open NumberField IsDedekindDomain NumberField.mixedEmbedding MeasureTheory Complex Classical in
 open scoped ContDiff nonZeroDivisors in
 
+/- English proof (translation)
+Set `X : Ideal (𝓞 K) → ℂ` to `fun I => if I = ⊥ then 0 else 1`. Establish `hXbot : X ⊥ = 0` using `if_pos rfl`. Establish `hXne : ∀ I, I ≠ ⊥ → X I = 1` using `fun I hI => if_neg hI`. Establish `hXmul : ∀ I J, X (I * J) = X I * X J`. Introduce `I J`.
+
+Distinguish the cases in `hI : I = ⊥`. Simplify using `[X, hI]`. Distinguish the cases in `hJ : J = ⊥`. Simplify using `[X, hJ]`. Rewrite using `[hXne _ (Ideal.mul_eq_bot.not.mpr (not_or.mpr ⟨hI, hJ⟩)), hXne _ hI, hXne _ hJ, one_mul]`.
+
+Take `⟨Z, hZd, hZ, -⟩` from `_root_.GlobalTheory.idealCharacter_LSeries_continuation K ⊤ X (fun _ => 1) top_ne_bot hXbot hXmul (fun I hI _ => by rw [hXne I hI, norm_one]) (fun I hI => absurd (sup_top_eq I) hI) (fun _ _ => (mul_one 1).symm) (fun _ _ _ => rfl) contDiffOn_const (fun _ _ => norm_one) (fun β hβ _ …`. Use `⟨Z, hZd, fun s hs => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `rw [hZ s hs, _root_.GlobalTheory.tsum_ideal_mul_absNorm_cpow_eq_exp_tsum K X hXbot (hXne ⊤ top_ne_bot) hXmul (fun I => by by_cases hI : I = ⊥ <;> simp [X, hI]) s hs]`. Establish `h1 : ∀ P : HeightOneSpectrum (𝓞 K), X P.asIdeal = 1` using `fun P => hXne _ P.ne_bot`. Simplify using `only [h1]`.
+-/
 theorem _root_.GlobalTheory.dedekindZeta_eulerProduct_mul_sub_one_entire (K : Type) [Field K] [NumberField K] :
     ∃ Z : ℂ → ℂ, Differentiable ℂ Z ∧ ∀ s : ℂ, 1 < s.re → Z s = (s - 1) *
       Complex.exp (∑' P : HeightOneSpectrum (𝓞 K),

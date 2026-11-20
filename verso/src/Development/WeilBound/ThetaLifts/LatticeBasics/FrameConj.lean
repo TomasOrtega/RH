@@ -15,11 +15,17 @@ section Generic
 
 variable {S R β : Type} [CommRing S] [CommRing R] [Fintype β] [DecidableEq β]
 
+/- English proof (translation)
+Take `⟨u, hu⟩ : IsUnit (g.1ᵀ * J * g.1.map c)` from `(((Matrix.isUnit_transpose _).2 g.isUnit).mul hJ).mul (bc c g).isUnit`. Conclude with `⟨bc c u⁻¹, by rw [← hu, ← u.mul_inv]; congr 1; exact Matrix.ext fun i j => hc _⟩`.
+-/
 theorem exists_dual (c : S →+* S) (hc : ∀ z, c (c z) = z) {J : Matrix β β S} (hJ : IsUnit J) (g : GL β S) :
     ∃ T : GL β S, g.1ᵀ * J * g.1.map c * T.1.map c = 1 := by
   obtain ⟨u, hu⟩ : IsUnit (g.1ᵀ * J * g.1.map c) := (((Matrix.isUnit_transpose _).2 g.isUnit).mul hJ).mul (bc c g).isUnit
   exact ⟨bc c u⁻¹, by rw [← hu, ← u.mul_inv]; congr 1; exact Matrix.ext fun i j => hc _⟩
 
+/- English proof (translation)
+Establish `e1 : T.1.map c = G'` using `by rw [← Matrix.one_mul (T.1.map c), ← e, Matrix.mul_assoc, e', Matrix.mul_one]`. Establish `e2 : (T⁻¹).1.map c = G`. Rewrite using `[← Matrix.one_mul ((T⁻¹).1.map c), ← e', Matrix.mul_assoc, ← Matrix.map_mul, Units.mul_inv, Matrix.map_one _ (map_zero _) (map_one _), Matrix.mul_one]`. Conclude with `⟨fun i j => hc (T.1 i j) ▸ hA _ ((e1 ▸ h') i j), fun i j => hc ((T⁻¹).1 i j) ▸ hA _ ((e2 ▸ h) i j)⟩`.
+-/
 theorem int_dual {A : Subring S} {c : S →+* S} (hc : ∀ z, c (c z) = z) (hA : ∀ z ∈ A, c z ∈ A) {G G' : Matrix β β S} {T : GL β S}
     (h : Int A G) (h' : Int A G') (e : G' * G = 1) (e' : G * T.1.map c = 1) : Int A T.1 ∧ Int A (T⁻¹).1 := by
   have e1 : T.1.map c = G' := by rw [← Matrix.one_mul (T.1.map c), ← e, Matrix.mul_assoc, e', Matrix.mul_one]
@@ -28,16 +34,25 @@ theorem int_dual {A : Subring S} {c : S →+* S} (hc : ∀ z, c (c z) = z) (hA :
       Matrix.map_one _ (map_zero _) (map_one _), Matrix.mul_one]
   exact ⟨fun i j => hc (T.1 i j) ▸ hA _ ((e1 ▸ h') i j), fun i j => hc ((T⁻¹).1 i j) ▸ hA _ ((e2 ▸ h) i j)⟩
 
+/- English proof (translation)
+The claim follows from `Units.ext <| by change (Matrix.fromBlocks g.1 0 0 g.1).map f = _ rw [Matrix.fromBlocks_map, Matrix.map_zero _ (map_zero f)]; rfl`.
+-/
 theorem bc_two (f : S →+* R) (g : GL β S) : bc f (two g) = two (bc f g) := Units.ext <| by
   change (Matrix.fromBlocks g.1 0 0 g.1).map f = _
   rw [Matrix.fromBlocks_map, Matrix.map_zero _ (map_zero f)]; rfl
 
+/- English proof (translation)
+The claim follows from `Units.ext <| by change (Matrix.fromBlocks 1 (a • T.1) 1 ((a - 1) • T.1)).map f = Matrix.fromBlocks 1 (f a • T.1.map f) 1 ((f a - 1) • T.1.map f) rw [Matrix.fromBlocks_map, Matrix.map_one _ (map_zero _) (map_one _)] congr 1 <;> ext i j <;> simp`.
+-/
 theorem bc_wit (f : S →+* R) (a : S) (T : GL β S) : bc f (wit a T) = wit (f a) (bc f T) := Units.ext <| by
   change (Matrix.fromBlocks 1 (a • T.1) 1 ((a - 1) • T.1)).map f = Matrix.fromBlocks 1 (f a • T.1.map f) 1 ((f a - 1) • T.1.map f)
   rw [Matrix.fromBlocks_map, Matrix.map_one _ (map_zero _) (map_one _)]
   congr 1 <;> ext i j <;> simp
 
 omit [DecidableEq β] in
+/- English proof (translation)
+Rewrite using `[Matrix.map_mul, Matrix.map_mul]`. Use `congr 1`. Conclude with `Matrix.ext fun i j => h _`.
+-/
 theorem map_gram (f : S →+* R) {c : S → S} {c' : R → R} (h : ∀ z, f (c z) = c' (f z)) (X J : Matrix β β S) :
     (Xᵀ * J * X.map c).map f = (X.map f)ᵀ * J.map f * (X.map f).map c' := by
   rw [Matrix.map_mul, Matrix.map_mul]
@@ -45,9 +60,15 @@ theorem map_gram (f : S →+* R) {c : S → S} {c' : R → R} (h : ∀ z, f (c z
   exact Matrix.ext fun i j => h _
 
 omit [Fintype β] [DecidableEq β] in
+/- English proof (translation)
+Apply the tactic sequence `ext (i | i) (j | j) <;> simp [dbl]`.
+-/
 theorem map_dbl (f : S →+* R) (J : Matrix β β S) : (dbl J).map f = dbl (J.map f) := by
   ext (i | i) (j | j) <;> simp [dbl]
 
+/- English proof (translation)
+Establish `e : (bc f b).1 * (Matrix.fromRows 1 0 : Matrix (β ⊕ β) β R) = diagCols β`. Use `congrArg (·.map f) h` as an intermediate fact. Simplify using `only [Matrix.map_mul, diagCols, Matrix.fromRows_map, Matrix.map_one _ (map_zero f) (map_one f), Matrix.map_zero _ (map_zero f)] at this`. Conclude with `this`. Rewrite using `[← e, ← h', ← Matrix.mul_assoc, ← Units.val_mul, inv_mul_cancel_right]`.
+-/
 theorem par_of (f : S →+* R) {b : GL (β ⊕ β) S} {b' : GL (β ⊕ β) R} {X : Matrix (β ⊕ β) β R}
     (h : b.1 * (Matrix.fromRows 1 0 : Matrix (β ⊕ β) β S) = diagCols β) (h' : b'.1 * (Matrix.fromRows 1 0 : Matrix (β ⊕ β) β R) = X) :
     (b' * (bc f b)⁻¹).1 * (diagCols β : Matrix (β ⊕ β) β R) = X := by
@@ -67,10 +88,36 @@ variable (F) in
 def eF : AF F := LinearMap.inr F (Ainf F) (Af F) 1
 
 omit [NumberField E] in
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(a * 1) ⊗ₜ[F] x = _`. Rewrite using `[mul_one]`.
+-/
 theorem smul_incl (a : AF F) (x : E) : a • inclR (F := F) (AF F) x = a ⊗ₜ[F] x := by
   change (a * 1) ⊗ₜ[F] x = _
   rw [mul_one]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hz`. Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem y hy`. Take `⟨a, ha, ha', x, hx, rfl⟩` from `hy`.
+
+Use `⟨?_, fun v => ?_⟩` and prove the remaining obligations. Establish `: a.1 = 0` using `(InfiniteAdeleRing.ringEquiv_mixedSpace F).map_eq_zero_iff.1 ha`. Rewrite using `[smul_smul]`. Use `congr 1`. Conclude with `Prod.ext ((zero_mul _).trans this.symm) (one_mul _)`.
+
+Use `tmul_mem_latLoc (ha' v) hx using 1` and compare the differences between its conclusion and the goal. Conclude with `funext fun i => congrArg (compFin F E v) (smul_incl a (x i))`. Consider the case `zero => exact ⟨smul_zero _, fun v => by`. Use `zero_mem (latLoc F Y.L v) using 1` and compare the differences between its conclusion and the goal. Conclude with `funext fun i => map_zero _⟩`.
+
+Consider the case `add y z _ _ hy hz => exact ⟨by rw [smul_add, hy.1, hz.1], fun v => by`. Use `add_mem (hy.2 v) (hz.2 v) using 1` and compare the differences between its conclusion and the goal. Conclude with `funext fun i => map_add _ _ _⟩`. Consider the case `neg y _ hy => exact ⟨by rw [smul_neg, hy.1], fun v => by`. Use `neg_mem (hy.2 v) using 1` and compare the differences between its conclusion and the goal.
+
+Conclude with `funext fun i => map_neg _ _⟩`. Introduce and unpack `⟨h1, h2⟩`. Set `π` to `Algebra.TensorProduct.map (sndA F) (AlgHom.id F E)`. Set `ι : Af F ⊗[F] E →ₗ[F] AE F E` to `TensorProduct.map (LinearMap.inr F (Ainf F) (Af F)) LinearMap.id`. Establish `e1 : ∀ y, ι (π y) = eF F • y` using `fun y => by`.
+
+Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, smul_add, hx, hy]`. Consider the case `tmul a x => exact congrArg (· ⊗ₜ[F] x) (Prod.ext (zero_mul _).symm (one_mul _).symm)`. Establish `e2 : ∀ v y, Algebra.TensorProduct.map (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F v) (AlgHom.id F E) (π y) = compFin F E v y` using `fun v y => by`.
+
+Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul a x => rfl`. Establish `e3 : ∀ y ∈ Formalism.MainNotions.StandardLattice.latHat F E (Y.L : Set (Fin n → E)), ι ∘ y ∈ latHat Y` using `fun y hy => by`.
+
+Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem y hy`. Take `⟨a, ha, x, hx, rfl⟩` from `hy`. Conclude with `AddSubgroup.subset_closure ⟨LinearMap.inr F (Ainf F) (Af F) a, map_zero (InfiniteAdeleRing.ringEquiv_mixedSpace F), ha, x, hx, funext fun i => (smul_incl _ _).symm⟩`. Consider the case `zero`.
+
+Use `zero_mem (latHat Y) using 1` and compare the differences between its conclusion and the goal. Conclude with `funext fun i => map_zero _`. Consider the case `add y z _ _ hy hz`. Use `add_mem hy hz using 1` and compare the differences between its conclusion and the goal. Conclude with `funext fun i => map_add _ _ _`.
+
+Consider the case `neg y _ hy`. Use `neg_mem hy using 1` and compare the differences between its conclusion and the goal. Conclude with `funext fun i => map_neg _ _`. Use `e3 (π ∘ z) ((mem_latHat_iff hL _).2 fun v => by` and compare the differences between its conclusion and the goal. Use `h2 v using 1` and compare the differences between its conclusion and the goal.
+
+Conclude with `funext fun i => e2 v _) using 1`. Conclude with `funext fun i => (congrFun h1 i).symm.trans (e1 _).symm`.
+-/
 theorem mem_latHat (hL : Y.L.FG) (z : Fin n → AE F E) :
     z ∈ latHat Y ↔ eF F • z = z ∧ ∀ v, compFin F E v ∘ z ∈ latLoc F Y.L v := by
   constructor
@@ -128,6 +175,9 @@ theorem mem_latHat (hL : Y.L.FG) (z : Fin n → AE F E) :
     exact funext fun i => (congrFun h1 i).symm.trans (e1 _).symm
 
 omit [NumberField E] in
+/- English proof (translation)
+The claim follows from `funext fun z => by induction z using TensorProduct.induction_on with | zero => simp | add x y hx hy => simp only [map_add, hx, hy] | tmul a x => rfl`.
+-/
 theorem cA_eq : ⇑(cA (F := F) σ) = Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR (AF F) σ := funext fun z => by
   induction z using TensorProduct.induction_on with
   | zero => simp
@@ -137,12 +187,18 @@ theorem cA_eq : ⇑(cA (F := F) σ) = Formalism.MainNotions.GlobalTheoryTheory.G
 def Keeps (k : G2 σ Y) : Prop := ∀ z z', z ∈ latHat Y → z' ∈ latHat Y →
   (mat2 k *ᵥ Sum.elim z z') ∘ Sum.inl ∈ latHat Y ∧ (mat2 k *ᵥ Sum.elim z z') ∘ Sum.inr ∈ latHat Y
 
+/- English proof (translation)
+Use `Matrix.mulVec_injective_iff_isUnit.1 ((injective_iff_map_eq_zero M.mulVecLin).2 fun y hy => by_contra fun h0 => ?_)` and prove the remaining obligations. Use `h.2.2 (star y) (by simpa using h0)` as an intermediate fact. Rewrite `this` using `[star_star, show M *ᵥ y = 0 from hy]`. Simplify using `at this`.
+-/
 theorem isUnit_of_cartan {M θ : Matrix (Fin n) (Fin n) ℂ} (h : IsCartan M θ) : IsUnit M := by
   refine Matrix.mulVec_injective_iff_isUnit.1 ((injective_iff_map_eq_zero M.mulVecLin).2 fun y hy => by_contra fun h0 => ?_)
   have := h.2.2 (star y) (by simpa using h0)
   rw [star_star, show M *ᵥ y = 0 from hy] at this
   simp at this
 
+/- English proof (translation)
+Introduce `h0` and use `by obtain ⟨w⟩ : Nonempty (InfinitePlace F) := inferInstance have e : (Y.J.map (B.emb w).1).det = 0 := by rw [← RingHom.mapMatrix_apply, ← RingHom.map_det, h0, map_zero] rcases hY with h | h · exact ((Matrix.isUnit_iff_isUnit_det _).1 (isUnit_of_cartan (h.cartan w))).ne_zero e · e …`.
+-/
 theorem det_ne {B : Base F E} {r s : ℕ} (hY : Y.IsHerm σ B r s ∨ Y.IsSkew σ B r s) : Y.J.det ≠ 0 := fun h0 => by
   obtain ⟨w⟩ : Nonempty (InfinitePlace F) := inferInstance
   have e : (Y.J.map (B.emb w).1).det = 0 := by rw [← RingHom.mapMatrix_apply, ← RingHom.map_det, h0, map_zero]
@@ -151,16 +207,40 @@ theorem det_ne {B : Base F E} {r s : ℕ} (hY : Y.IsHerm σ B r s ∨ Y.IsSkew �
   · exact ((Matrix.isUnit_iff_isUnit_det _).1 (isUnit_of_cartan (h.cartan w))).ne_zero (by rw [Matrix.det_smul, e, mul_zero])
 
 omit [NumberField E] in
+/- English proof (translation)
+Rewrite using `[Algebra.smul_def, map_mul]`. Both sides reduce to the same expression.
+-/
 theorem comp_smul (v : Pl F) (a : AF F) (z : AE F E) : compFin F E v (a • z) = evFin F v a ⊗ₜ[F] 1 * compFin F E v z := by
   rw [Algebra.smul_def, map_mul]; rfl
 
 omit [NumberField E] in
+/- English proof (translation)
+Rewrite using `[comp_smul, show evFin F v (eF F) = 1 from map_one (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F v)]`. Conclude with `one_mul _`.
+-/
 theorem comp_eF (v : Pl F) (z : AE F E) : compFin F E v (eF F • z) = compFin F E v z := by
   rw [comp_smul, show evFin F v (eF F) = 1 from map_one (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F v)]
   exact one_mul _
 
+/- English proof (translation)
+The claim follows from `Prod.ext (zero_mul _) (one_mul _)`.
+-/
 theorem eF_sq : eF F * eF F = eF F := Prod.ext (zero_mul _) (one_mul _)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h v`. Rewrite using `[← comp_eF]`. Generalize the expression as in `eF F • z = y at h`. Proceed by induction on `h using AddSubgroup.closure_induction with`.
+
+Consider the case `mem y hy`. Take `⟨a, -, ha, o, rfl⟩` from `hy`. Rewrite using `[smul_incl]`. Conclude with `tmul_mem_intLoc (ha v) o`. Consider the case `zero => rw [map_zero]`.
+
+Conclude with `zero_mem _`. Consider the case `add y z _ _ hy hz => rw [map_add]`. Conclude with `add_mem hy hz`. Consider the case `neg y _ hy => rw [map_neg]`. Conclude with `neg_mem hy`.
+
+Introduce `h`. Set `X : Spc F E 1` to `⟨1, stdLattice E 1, fun _ => 1, fun _ => 1⟩`. Establish `key : ∀ y ∈ latHat X, y 0 ∈ intHat F E` using `fun y hy => by`. Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem y hy`.
+
+Take `⟨a, h1, h2, x, hx, rfl⟩` from `hy`. Take `⟨o, ho⟩` from `hx 0 trivial`. Conclude with `AddSubgroup.subset_closure ⟨a, h1, h2, o, congrArg (fun t => a • inclR (F := F) (AF F) t) ho.symm⟩`. Consider the case `zero => exact zero_mem _`. Consider the case `add y z _ _ hy hz => exact add_mem hy hz`.
+
+Consider the case `neg y _ hy => exact neg_mem hy`. Use `key (fun _ => eF F • z) ((mem_latHat (Submodule.fg_pi fun _ => ?_) _).2 ⟨funext fun _ => ?_, fun v => ?_⟩)` and prove the remaining obligations. Conclude with `Submodule.fg_range _`. Express the relevant statement in the definitionally equal form `eF F • eF F • z = _`. Rewrite using `[smul_smul, eF_sq]`.
+
+Use `mem_latLoc_stdLattice.2 fun _ => ?_` and prove the remaining obligations. Rewrite using `[Function.comp_apply, comp_eF]`. Conclude with `h v`.
+-/
 theorem mem_intHat (z : AE F E) : eF F • z ∈ intHat F E ↔ ∀ v, compFin F E v z ∈ intLoc F E v := by
   constructor
   · intro h v
@@ -193,6 +273,19 @@ theorem mem_intHat (z : AE F E) : eF F • z ∈ intHat F E ↔ ∀ v, compFin F
       rw [Function.comp_apply, comp_eF]
       exact h v
 
+/- English proof (translation)
+Set `P : (Fin n ⊕ Fin n → AE F E) → Prop` to `fun u => eF F • u = u ∧ ∀ v i, compFin F E v ((((two a)⁻¹).1 *ᵥ u) i) ∈ intLoc F E v`. Establish `h1 : ∀ z, z ∈ latHat Y ↔ eF F • z = z ∧ ∀ v i, compFin F E v (((a⁻¹).1 *ᵥ z) i) ∈ intLoc F E v` using `fun z => (mem_latHat hL z).trans (and_congr_right' (forall_congr' fun v => Iff.symm ((ha v _).trans (iff_of_eq (congrArg (· ∈ _) (funext fun i => (RingHom.map_mulVec _ _ _ i).symm.trans (by rw [Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec]; rfl)))))))`. Establish `h2 : ∀ u : Fin n ⊕ Fin n → AE F E, u ∘ Sum.inl ∈ latHat Y ∧ u ∘ Sum.inr ∈ latHat Y ↔ P u` using `fun u => by`. Establish `e : ((two a)⁻¹).1 *ᵥ u = Sum.elim ((a⁻¹).1 *ᵥ (u ∘ Sum.inl)) ((a⁻¹).1 *ᵥ (u ∘ Sum.inr))`. Express the relevant statement in the definitionally equal form `Matrix.fromBlocks _ _ _ _ *ᵥ u = _`.
+
+Rewrite using `[Matrix.fromBlocks_mulVec]`. Simplify using the standard rewrite rules. Simplify using `only [h1, P, e, funext_iff, Sum.forall, forall_and, Sum.elim_inl, Sum.elim_inr, Pi.smul_apply, Function.comp_apply]`. The claim follows by propositional logic. Establish `h3 : Keeps x ↔ ∀ u, P u → P (mat2 x *ᵥ u)` using `⟨fun h u hu => (h2 _).1 (by simpa only [Sum.elim_comp_inl_inr] using h _ _ ((h2 u).2 hu).1 ((h2 u).2 hu).2), fun h z z' hz hz' => (h2 _).2 (h _ ((h2 (Sum.elim z z')).1 ⟨hz, hz'⟩))⟩`.
+
+Rewrite using `[h3]`. Prove the components needed by the constructor for the conclusion. Introduce `h v i j`. Use `(h (eF F • (two a).1 *ᵥ Pi.single j 1) ⟨by rw [smul_smul, eF_sq], fun v i => ?_⟩).2 v i` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec_smul, Matrix.mulVec_smul, Pi.smul_apply, comp_eF, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_single_one]`.
+
+Conclude with `this`. Rewrite using `[Matrix.mulVec_smul, Pi.smul_apply, comp_eF, Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec, Pi.single_apply] split_ifs`. Rewrite using `[map_one]`. Conclude with `one_mem _`. Rewrite using `[map_zero]`.
+
+Conclude with `zero_mem _`. Use `fun h u hu => ⟨by rw [← Matrix.mulVec_smul, hu.1], fun v i => ?_⟩` and prove the remaining obligations. Establish `e : ((two a)⁻¹).1 *ᵥ mat2 x *ᵥ u = ((two a)⁻¹ * x.1 * two a).1 *ᵥ ((two a)⁻¹).1 *ᵥ u`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, ← Units.val_mul _ (two a)⁻¹, mul_inv_cancel_right]`. Both sides reduce to the same expression.
+
+Rewrite using `[e, RingHom.map_mulVec]`. Rewrite using `[Matrix.mulVec, dotProduct]`. Conclude with `Subring.sum_mem _ fun j _ => mul_mem (h v i j) (hu.2 v j)`.
+-/
 theorem keeps_iff (hL : Y.L.FG) {a : GL (Fin n) (AE F E)} (ha : IsLatticeFrame Y.L a) (x : G2 σ Y) :
     Keeps x ↔ ∀ v, Int (intLoc F E v) (bc (compFin F E v) ((two a)⁻¹ * x.1 * two a)).1 := by
   let P : (Fin n ⊕ Fin n → AE F E) → Prop := fun u => eF F • u = u ∧ ∀ v i, compFin F E v ((((two a)⁻¹).1 *ᵥ u) i) ∈ intLoc F E v
@@ -234,6 +327,59 @@ open scoped Matrix TensorProduct
 open NumberField IsDedekindDomain GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.Doubling GlobalTheory.ThK.Dbl.Frame
 open Formalism.UG (bc)
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n Y r s hB hY K hK`. Establish `hc` using `hB.cm`. Establish `hσ` using `cm_conj_conj hc`. Establish `hL : Y.L.IsLattice E` using `hY.elim (·.lat) (·.lat)`. Establish `hJ` using `Frame.det_ne hY`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨ε, hε, c, c1, c2⟩ : ∃ ε : ℤˣ, (Y.J.map σ)ᵀ = ((ε : ℤ) : E) • Y.J ∧ ∃ c : ℂ, star c * c = 1 ∧ ∀ w, (c • Y.J.map (B.emb w).1)ᴴ = c • Y.J.map (B.emb w).1 ∧ IsCartan (c • Y.J.map (B.emb w).1) (Y.θ w) := by`. Break down `hY with h | h` into its components or cases. Use `⟨1, Matrix.ext fun i j => by simpa using h.herm i j, 1, by simp, fun w => ?_⟩` and prove the remaining obligations. Rewrite using `[one_smul]`. Conclude with `⟨Matrix.ext fun i j => (hc.2.2.2 _ _).symm.trans (congrArg _ (h.herm i j)), h.cartan w⟩`.
+
+Use `⟨-1, Matrix.ext fun i j => by simpa using h.skew i j, Complex.I, by simp, fun w => ⟨Matrix.ext fun i j => ?_, h.cartan w⟩⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `star (Complex.I * (B.emb w).1 (Y.J j i)) = Complex.I * (B.emb w).1 (Y.J i j)`. Rewrite using `[star_mul', ← hc.2.2.2, h.skew]`. Simplify using the standard rewrite rules. Establish `ee : ∀ (S : Type) [CommRing S], ((ε : ℤ) : S) * (ε : ℤ) = 1` using `fun S _ => by`.
+
+Rewrite using `[← Int.cast_mul, ← Units.val_mul, Int.units_mul_self]`. Simplify using the standard rewrite rules. Use `choose gw hw using fun w => Frame.exists_arch c1 (c2 w).1 (Frame.isUnit_of_cartan (c2 w).2) (c2 w).2`. Take `⟨a, g, ha, hg, hg'⟩` from `exists_ad hB hY hJ gw`. Take `⟨t, ht⟩` from `GlobalTheory.exists_int_add_conj_eq_one_of_base_good B hB`.
+
+Set `ι` to `inclR (F := F) (E := E) (AF F)`. Set `cc : AE F E →+* AE F E` to `cA σ`. Establish `hι : ∀ z, ι (σ z) = cc (ι z)` using `fun z => rfl`. Establish `hcc : ∀ z, cc (cc z) = z` using `fun z => by`. Express the relevant statement in the definitionally equal form `cA σ (cA σ z) = z`.
+
+Rewrite using `[cA_eq]`. Conclude with `sigR_invol hσ z`. Establish `hf : ∀ v z, compFin F E v (cc z) = sigR _ σ (compFin F E v z)` using `fun v z => by`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`.
+
+Consider the case `tmul a x => rfl`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Establish `hi : ∀ w z, piInf (B.emb w) (cc z) = star (piInf (B.emb w) z)` using `fun w z => by`. Use `Eq.trans (congrArg (infEmb (B.emb w)) ?_) (infEmb_sigR hc (B.emb w) (compInf F E w z)).symm` and prove the remaining obligations. Proceed by induction on `z using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp only [map_zero]`. Consider the case `tmul a x => rfl`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Establish `jf : ∀ v, (incM F Y.J).map (compFin F E v) = Y.J.map (inclR (F` using `F) (Fv F v)) := fun v => Matrix.ext fun i j => congrArg (· ⊗ₜ[F] Y.J i j) (map_one (evFin F v))`. Establish `ii : ∀ w z, piInf (B.emb w) (ι z) = (B.emb w).1 z` using `fun w z => by`.
+
+Express the relevant statement in the definitionally equal form `InfinitePlace.Completion.extensionEmbedding w 1 * (B.emb w).1 z = _`. Rewrite using `[map_one, one_mul]`. Establish `ji : ∀ w, (incM F Y.J).map (piInf (B.emb w)) = Y.J.map (B.emb w).1` using `fun w => Matrix.ext fun i j => ii w _`. Establish `h2 : (2⁻¹ : E) + σ 2⁻¹ = 1` using `by rw [map_inv₀, map_ofNat]; norm_num`. Set `α : AE F E` to `ι 2⁻¹ + eF F • ι (t - 2⁻¹)`.
+
+Establish `α0 : α + cc α = 1`. Establish `: cc α = ι (σ 2⁻¹) + eF F • ι (σ (t - 2⁻¹))`. Rewrite using `[hι, hι, map_add]`. Conclude with `congrArg _ (map_smul (cA σ) _ _)`. Rewrite using `[this, add_add_add_comm, ← smul_add, ← map_add, ← map_add, h2, map_sub σ, sub_add_sub_comm, ht, h2, sub_self]`.
+
+Simplify using the standard rewrite rules. Establish `α1 : ∀ v, compFin F E v α ∈ intLoc F E v` using `fun v => by`. Rewrite using `[map_add, comp_eF, ← map_add, ← map_add, add_sub_cancel]`. Conclude with `tmul_mem_intLoc (a := evFin F v 1) (by rw [map_one]; exact one_mem _) t`. Establish `α2 : ∀ w, piInf (B.emb w) α = 2⁻¹` using `fun w => by`.
+
+Establish `: piInf (B.emb w) (algebraMap (AF F) (AE F E) (eF F)) = 0`. Express the relevant statement in the definitionally equal form `InfinitePlace.Completion.extensionEmbedding w 0 * (B.emb w).1 1 = _`. Rewrite using `[map_zero, zero_mul]`. Rewrite using `[map_add, Algebra.smul_def, map_mul, this, zero_mul, add_zero, ii, map_inv₀, map_ofNat]`. Establish `uJ : IsUnit Y.J` using `(Matrix.isUnit_iff_isUnit_det _).2 hJ.isUnit`.
+
+Take `⟨T₀, hT₀⟩` from `exists_dual (σ : E →+* E) hσ uJ 1`. Take `⟨T, hT⟩` from `exists_dual cc hcc (J := incM F Y.J) (uJ.map ι.mapMatrix) g`. Establish `g0` using `frame_gram (σ : E →+* E) hσ (ee E) h2 hε 1 T₀ hT₀`. Establish `g1` using `frame_gram cc hcc (ee _) α0 (J := incM F Y.J) (Matrix.ext fun i j => by`. Use `congrArg ι (congrFun (congrFun hε i) j)` as an intermediate fact.
+
+Rewrite `this` using `[Matrix.smul_apply, smul_eq_mul, map_mul, map_intCast]`. Conclude with `this) g T hT`. Establish `d0` using `frame_diag 1 T₀ (2⁻¹ : E)`. Use `set b := two 1 * wit (2⁻¹ : E) T₀`. Establish `d1` using `frame_diag g T α`.
+
+Use `set b' := two g * wit α T with hb'`. Establish `g2 : (bc ι b).1ᵀ * dbl (incM F Y.J) * (bc ι b).1.map cc = b'.1ᵀ * dbl (incM F Y.J) * b'.1.map cc`. Use `(map_gram ι hι b.1 (dbl Y.J)).symm.trans (congrArg (·.map ι) g0)` as an intermediate fact. Rewrite `this` using `[map_dbl]`. Rewrite using `[g1]`.
+
+Use `this.trans ?_` and prove the remaining obligations. Apply the tactic sequence `ext (i | i) (j | j) <;> simp [Matrix.one_apply, apply_ite ι]`. Set `p : G2 σ Y` to `⟨b' * (bc ι b)⁻¹, by`. Express the relevant statement in the definitionally equal form `(b'.1 * ((bc ι b)⁻¹).1)ᵀ * _ * (b'.1 * ((bc ι b)⁻¹).1).map cc = _`. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [Matrix.transpose_mul, Matrix.map_mul, Matrix.mul_assoc]`. Use `_ = ((bc ι b).1 * ((bc ι b)⁻¹).1)ᵀ * dbl (incM F Y.J) * ((bc ι b).1 * ((bc ι b)⁻¹).1).map cc := by`. Simplify using `only [← g2, Matrix.transpose_mul, Matrix.map_mul, Matrix.mul_assoc]`. Use `_ = _ := by rw [Units.mul_inv, Matrix.map_one _ (map_zero _) (map_one _), Matrix.transpose_one, Matrix.one_mul, Matrix.mul_one]⟩`. Establish `fr : ∀ k : G2 σ Y, inFrame b k = (b'⁻¹ * (p * k * p⁻¹).1 * b').1` using `fun k => by`.
+
+Rewrite using `[show b'⁻¹ * (p * k * p⁻¹).1 * b' = bc ι b⁻¹ * k.1 * bc ι b by`. Express the relevant statement in the definitionally equal form `b'⁻¹ * (b' * (bc ι b)⁻¹ * k.1 * (b' * (bc ι b)⁻¹)⁻¹) * b' = _`. Rewrite using `[map_inv]`. Use the proof step `group]`. Both sides reduce to the same expression.
+
+Establish `fin : ∀ k : G2 σ Y, Keeps (p * k * p⁻¹) ↔ ∀ i j, eF F • inFrame b k i j ∈ intHat F E` using `fun k => by`. Simplify using `only [keeps_iff hL.fg ha, mem_intHat, fr]`. Use `(forall_congr' fun v => ?_).trans (forall_comm.trans (forall_congr' fun i => forall_comm))` and prove the remaining obligations. Take `⟨⟨l, hl⟩, u1, G', u2, u3⟩` from `hg v`. Take `⟨q1, q2⟩` from `int_dual (T := bc (compFin F E v) T) (sigR_invol hσ) (fun z => sigR_mem_intLoc σ) u1 u2 u3 (by`.
+
+Use `congrArg (·.map (compFin F E v)) hT` as an intermediate fact. Simplify using `only [Matrix.map_mul (M := T.1.map cc), map_gram _ (hf v), jf, Matrix.map_one _ (map_zero _) (map_one _)] at this`. Rewrite using `[← this]`. Use `congr 1`. Conclude with `Matrix.ext fun i j => (hf v _).symm)`.
+
+Take `⟨q3, q4⟩` from `int_wit (α1 v) q1 q2`. Use `int_conj hl q3 q4 (bc (compFin F E v) (p * k * p⁻¹).1)` as an intermediate fact. Simplify using `only [← bc_wit, ← bc_two, ← map_mul (bc (compFin F E v)), ← map_inv (bc (compFin F E v))] at this`. Conclude with `this`. Use `⟨b, K.comap (MulAut.conj p).toMonoidHom, p, g, ⟨⟨ε, g0⟩, 1, ?_⟩, fun k => ?_, ?_, fun k => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← d0, ← Matrix.fromCols_toCols b.1, Matrix.fromCols_mul_fromRows]`. Simplify using the standard rewrite rules. Use `(hK (p * k * p⁻¹)).trans (and_congr (forall_congr' fun w => ?_) ?_)` and prove the remaining obligations. Use `hw w (bc (piInf (B.emb w)) T) (by` as an intermediate fact. Use `congrArg (·.map (piInf (B.emb w))) hT` as an intermediate fact.
+
+Simplify using `only [Matrix.map_mul (M := T.1.map cc), map_gram _ (hi w), ji, Matrix.map_one _ (map_zero _) (map_one _)] at this`. Rewrite using `[← this, ← hg']`. Use `congr 1`. Conclude with `Matrix.ext fun i j => (hi w _).symm) (bc (piInf (B.emb w)) (p * k * p⁻¹).1) (by`. Use `(map_gram _ (hi w) _ _).symm.trans (congrArg (·.map (piInf (B.emb w))) (show _ = _ from (p * k * p⁻¹).2))` as an intermediate fact.
+
+Simplify using `only [map_dbl, ji] at this`. Conclude with `this)`. Rewrite `this` using `[← hg', ← α2 w, ← bc_wit, ← bc_two, ← map_mul, ← map_inv, ← map_mul, ← map_mul]`. Rewrite using `[fr]`. Conclude with `this.symm`.
+
+Simplify using `only [Set.mem_insert_iff, Set.mem_singleton_iff, forall_eq_or_imp, forall_eq, forall_and]`. Use `Iff.trans ?_ (and_congr (fin k) (fin k⁻¹))` and prove the remaining obligations. Rewrite using `[show p * k⁻¹ * p⁻¹ = (p * k * p⁻¹)⁻¹ by group]`. Simplify using `only [Keeps, forall_and]`. Conclude with `and_and_and_comm`.
+
+Conclude with `par_of ι (d0.trans (Matrix.mul_one _)) d1`. Express the relevant statement in the definitionally equal form `_ ↔ p * (p⁻¹ * k * p) * p⁻¹ ∈ K`. Rewrite using `[show p * (p⁻¹ * k * p) * p⁻¹ = k by group]`.
+-/
 theorem frameConj : FrameConj := by
   intro F E _ _ _ _ _ σ B n Y r s hB hY K hK
   have hc := hB.cm

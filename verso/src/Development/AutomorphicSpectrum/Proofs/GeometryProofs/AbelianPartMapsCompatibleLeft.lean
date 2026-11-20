@@ -15,6 +15,9 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.Ar.TanCompare
 
+/- English proof (translation)
+Substitute `hb` using the available equality. Conclude with `h.2 (Over.mk a) x y x₀ y₀ hx hy`.
+-/
 theorem grp_mul {S S' : Scheme.{0}} {G' : Over S'} [GrpObj G'] {G : Over S} [GrpObj G] {f : S' ⟶ S}
     {φ : G'.left ⟶ G.left} (h : IsGrpPullback G' G f φ) {T : Scheme.{0}} (a : T ⟶ S') (b : T ⟶ S) (hb : b = a ≫ f)
     (x y : Over.mk a ⟶ G') (x₀ y₀ : Over.mk b ⟶ G) (hx : x₀.left = x.left ≫ φ) (hy : y₀.left = y.left ≫ φ) :
@@ -22,16 +25,25 @@ theorem grp_mul {S S' : Scheme.{0}} {G' : Over S'} [GrpObj G'] {G : Over S} [Grp
   subst hb
   exact h.2 (Over.mk a) x y x₀ y₀ hx hy
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Over.homMk (h.lift w a hw) (by simp), by simp⟩`.
+-/
 theorem exists_lift {S S' : Scheme.{0}} {G' : Over S'} {G : Over S} {f : S' ⟶ S} {φ : G'.left ⟶ G.left}
     (h : IsPullback φ G'.hom G.hom f) {T : Scheme.{0}} (a : T ⟶ S') (w : T ⟶ G.left) (hw : w ≫ G.hom = a ≫ f) :
     ∃ v : Over.mk a ⟶ G', v.left ≫ φ = w :=
   ⟨Over.homMk (h.lift w a hw) (by simp), by simp⟩
 
+/- English proof (translation)
+The claim follows from `Over.OverMorphism.ext (h.hom_ext e (by rw [Over.w, Over.w]))`.
+-/
 theorem lift_unique {S S' : Scheme.{0}} {G' : Over S'} {G : Over S} {f : S' ⟶ S} {φ : G'.left ⟶ G.left}
     (h : IsPullback φ G'.hom G.hom f) {T : Scheme.{0}} {a : T ⟶ S'} (v v' : Over.mk a ⟶ G')
     (e : v.left ≫ φ = v'.left ≫ φ) : v = v' :=
   Over.OverMorphism.ext (h.hom_ext e (by rw [Over.w, Over.w]))
 
+/- English proof (translation)
+Rewrite using `[← spMap_comp]`. Use `congr 1`. Use `RingHom.ext fun a => ?_` and prove the remaining obligations. Apply the tactic sequence `refine TrivSqZeroExt.ext ?_ ?_ <;> simp [LieTangent.dualMap_fst, LieTangent.dualMap_snd]`.
+-/
 theorem spMap_dual_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap (dualMap (g.comp f)) = spMap (dualMap g) ≫ spMap (dualMap f) := by
   rw [← spMap_comp]
@@ -45,11 +57,17 @@ def scale {S : Scheme.{0}} {Y : Over S} (a : Sp ℂ ⟶ S) (c : ℂ) (v : epsAt 
     simp only [Over.mk_left, Over.mk_hom, Category.assoc] at h ⊢
     rw [h, ← Category.assoc, LieTangent.spec_eps_alg])
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem scale_left {S : Scheme.{0}} {Y : Over S} (a : Sp ℂ ⟶ S) (c : ℂ) (v : epsAt a ⟶ Y) :
     (scale a c v).left = spMap (epsMul c) ≫ v.left := rfl
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
+/- English proof (translation)
+Use `letI := P.τ.grpB`. Use `haveI := P.τ.q_hom`. Use `haveI : IsMonHom P.e.hom := P.e_hom`. Rewrite using `[← Category.assoc, mul_comp, mul_comp, Category.assoc, Category.assoc]`.
+-/
 theorem abPart_mul {S : Scheme.{0}} {t : SAB H S} {K : Type} [Field K] {z : Sp K ⟶ S} (P : AbPart t z) {T : Over (Sp K)}
     (x y : T ⟶ P.tK.G) :
     (x * y) ≫ P.τ.q ≫ P.e.hom = (x ≫ P.τ.q ≫ P.e.hom) * (y ≫ P.τ.q ≫ P.e.hom) := by
@@ -62,6 +80,47 @@ end GlobalTheory.CompanionTheory.Ar.TanCompare
 
 namespace GlobalTheory.CompanionTheory.Ar.TanCompare
 
+/- English proof (translation)
+Introduce `E _ _ _ H X t L₁ L _ _ _ e₂ z₁ z hz P₁ P₂ mK2 mB2 c1 c2 t' tK m' mP w hw hw' V₁ V₂ _ _ _ _ MB MB' f hf σ Pσ mKσ mBσ d1 d2 Mσ hMσ Mσ' hMσ' x v u hv hu`. Establish `hbase : spMap (σ.comp (algebraMap (𝓞 L) L)) ≫ z = spMap (σ.comp e₂) ≫ z₁`. Rewrite using `[spMap_comp (algebraMap (𝓞 L) L) σ, spMap_comp e₂ σ, Category.assoc, Category.assoc, hz]`. Establish `hb1 : spMap (algebraMap ℂ (DualNumber ℂ)) ≫ spMap (σ.comp (algebraMap (𝓞 L) L)) ≫ z = (spMap (algebraMap ℂ (DualNumber ℂ)) ≫ 𝟙 _) ≫ spMap (σ.comp e₂) ≫ z₁`. Rewrite using `[hbase, Category.comp_id]`.
+
+Establish `hb2 : spMap (algebraMap ℂ (DualNumber ℂ)) ≫ spMap (σ.comp (algebraMap (𝓞 L) L)) ≫ 𝟙 _ = (spMap (algebraMap ℂ (DualNumber ℂ)) ≫ spMap σ) ≫ spMap (algebraMap (𝓞 L) L)`. Rewrite using `[spMap_comp (algebraMap (𝓞 L) L) σ, Category.comp_id, Category.assoc]`. Establish `hb3 : (spMap (algebraMap ℂ (DualNumber ℂ)) ≫ 𝟙 _) ≫ spMap (σ.comp e₂) = (spMap (algebraMap ℂ (DualNumber ℂ)) ≫ spMap σ) ≫ spMap e₂`. Rewrite using `[spMap_comp e₂ σ, Category.comp_id, Category.assoc]`. Establish `base : ∀ e : V₁, ∃ (v : epsAt (𝟙 (Sp ℂ)) ⟶ Pσ.tK.G) (u : epsAt (spMap σ) ⟶ tK.G), v.left ≫ Pσ.m.φ = (Mσ.pt ((1 : GroundTheory.Heights₂.Heights.ComplexAt σ) ⊗ₜ[𝓞 L] e)).left ∧ u.left ≫ m'.φ = (Mσ'.pt ((1 : GroundTheory.Heights₂.Heights.ComplexAt σ) ⊗ₜ[𝓞 L] f e)).left ∧ u.left ≫ mP …`.
+
+Introduce `e`. Take `⟨vL, hvL⟩` from `exists_lift P₂.m.cart.1 (spMap (algebraMap L (DualNumber L)) ≫ 𝟙 _) (spMap (dualMap (algebraMap (𝓞 L) L)) ≫ (MB.pt e).left) (by`. Establish `hMe : (MB.pt e).left ≫ t.G.hom = spMap (algebraMap (𝓞 L) (DualNumber (𝓞 L))) ≫ z` using `Over.w (MB.pt e)`. Rewrite using `[Category.assoc, hMe, ← Category.assoc, LieTangent.spec_dual_alg, Category.assoc, hz, Category.comp_id])`. Establish `hfe : (vL ≫ P₂.τ.q).left ≫ P₂.e.hom.left ≫ w ≫ m'.φ = spMap (dualMap (algebraMap (𝓞 L) L)) ≫ (MB'.pt (f e)).left` using `hf e vL hvL`.
+
+Take `⟨v, hv⟩` from `exists_lift Pσ.m.cart.1 (spMap (algebraMap ℂ (DualNumber ℂ)) ≫ 𝟙 _) (Mσ.pt ((1 : GroundTheory.Heights₂.Heights.ComplexAt σ) ⊗ₜ[𝓞 L] e)).left ((Over.w (Mσ.pt ((1 : GroundTheory.Heights₂.Heights.ComplexAt σ) ⊗ₜ[𝓞 L] e))).trans hb1)`. Take `⟨u, hu⟩` from `exists_lift m'.cart.1 (spMap (algebraMap ℂ (DualNumber ℂ)) ≫ spMap σ) (Mσ'.pt ((1 : GroundTheory.Heights₂.Heights.ComplexAt σ) ⊗ₜ[𝓞 L] f e)).left ((Over.w (Mσ'.pt ((1 : GroundTheory.Heights₂.Heights.ComplexAt σ) ⊗ₜ[𝓞 L] f e))).trans hb2)`. Use `⟨v, u, hv, hu, ?_⟩` and prove the remaining obligations. Establish `hde : spMap (dualMap (σ.comp (algebraMap (𝓞 L) L))) = spMap (dualMap σ) ≫ spMap (dualMap (algebraMap (𝓞 L) L))` using `spMap_dual_comp _ _`. Establish `hd : spMap (dualMap σ) ≫ spMap (algebraMap L (DualNumber L)) = spMap (algebraMap ℂ (DualNumber ℂ)) ≫ spMap σ` using `LieTangent.spec_dual_alg σ`.
+
+Establish `h1 : (Mσ.pt ((1 : GroundTheory.Heights₂.Heights.ComplexAt σ) ⊗ₜ[𝓞 L] e)).left = spMap (dualMap (σ.comp (algebraMap (𝓞 L) L))) ≫ (MB.pt e).left` using `(Category.comp_id _).symm.trans (hMσ e)`. Establish `h1' : (Mσ'.pt ((1 : GroundTheory.Heights₂.Heights.ComplexAt σ) ⊗ₜ[𝓞 L] f e)).left = spMap (dualMap (σ.comp (algebraMap (𝓞 L) L))) ≫ (MB'.pt (f e)).left` using `(Category.comp_id _).symm.trans (hMσ' (f e))`. Establish `hvd : v.left ≫ Pσ.m.φ = spMap (dualMap σ) ≫ vL.left ≫ P₂.m.φ`. Rewrite using `[hv, h1, hde, Category.assoc, hvL]`. Establish `wv : v.left ≫ Pσ.tK.G.hom = spMap (algebraMap ℂ (DualNumber ℂ)) ≫ 𝟙 _` using `Over.w v`.
+
+Establish `wvL : vL.left ≫ P₂.tK.G.hom = spMap (algebraMap L (DualNumber L)) ≫ 𝟙 _` using `Over.w vL`. Establish `star : v.left ≫ mKσ.φ = spMap (dualMap σ) ≫ vL.left ≫ mK2.φ`. Use `P₁.m.cart.1.hom_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, d1, hvd, Category.assoc, Category.assoc, c1]`. Rewrite using `[Category.assoc, mKσ.cart.1.w, ← Category.assoc, wv, hb3]`.
+
+Simplify using `only [Category.assoc]`. Rewrite using `[mK2.cart.1.w, ← Category.assoc vL.left, wvL, Category.comp_id]`. Establish `hd2 : spMap (algebraMap ℂ (DualNumber ℂ)) ≫ spMap σ ≫ spMap e₂ = spMap (dualMap σ) ≫ spMap (algebraMap L (DualNumber L)) ≫ spMap e₂`. Rewrite using `[← Category.assoc, ← hd, Category.assoc]`. Conclude with `hd2`.
+
+Establish `wu : u.left ≫ tK.G.hom = spMap (algebraMap ℂ (DualNumber ℂ)) ≫ spMap σ` using `Over.w u`. Establish `wq : (vL ≫ P₂.τ.q).left ≫ P₂.τ.B.hom = spMap (algebraMap L (DualNumber L)) ≫ 𝟙 _` using `Over.w (vL ≫ P₂.τ.q)`. Establish `we : P₂.e.hom.left ≫ P₂.tB.G.hom = P₂.τ.B.hom` using `Over.w P₂.e.hom`. Establish `hu2 : u.left = spMap (dualMap σ) ≫ (vL ≫ P₂.τ.q).left ≫ P₂.e.hom.left ≫ w`. Use `m'.cart.1.hom_ext ?_ ?_` and prove the remaining obligations.
+
+Rewrite using `[hu, h1', hde]`. Simplify using `only [Category.assoc]`. Rewrite using `[hfe]`. Rewrite using `[wu]`. Simplify using `only [Category.assoc]`.
+
+Rewrite using `[hw', we, wq, Category.comp_id, hd]`. Establish `e1 : (vL ≫ P₂.τ.q).left ≫ P₂.e.hom.left ≫ mB2.φ = vL.left ≫ (P₂.τ.q ≫ P₂.e.hom).left ≫ mB2.φ`. Simplify using `only [Over.comp_left, Category.assoc]`. Establish `e2 : (v ≫ Pσ.τ.q ≫ Pσ.e.hom).left ≫ mBσ.φ = v.left ≫ (Pσ.τ.q ≫ Pσ.e.hom).left ≫ mBσ.φ`. Rewrite using `[Over.comp_left, Category.assoc]`.
+
+Rewrite using `[hu2, e2, ← d2, ← Category.assoc v.left, star]`. Simplify using `only [Category.assoc]`. Rewrite using `[hw, e1, ← c2]`. Establish `tm : ∀ (c : GroundTheory.Heights₂.Heights.ComplexAt σ) (e : V₁), ∃ (v : epsAt (𝟙 (Sp ℂ)) ⟶ Pσ.tK.G) (u : epsAt (spMap σ) ⟶ tK.G), v.left ≫ Pσ.m.φ = (Mσ.pt (c ⊗ₜ[𝓞 L] e)).left ∧ u.left ≫ m'.φ = (Mσ'.pt (f.lTensor (GroundTheory.Heights₂.Heights.ComplexAt σ) (c ⊗ₜ[𝓞 L] e))).left ∧ u …`. Introduce `c e`.
+
+Take `⟨v, u, h, k, l⟩` from `base e`. Set `c' : ℂ` to `c`. Establish `hs : c' • (1 : GroundTheory.Heights₂.Heights.ComplexAt σ) = c`. Rewrite using `[GroundTheory.Heights₂.Heights.ComplexAt.complex_smul_def, _root_.mul_one]`. Both sides reduce to the same expression.
+
+Establish `hc : ∀ (W : Type) [AddCommGroup W] [Module (𝓞 L) W] (a : W), c ⊗ₜ[𝓞 L] a = c' • ((1 : GroundTheory.Heights₂.Heights.ComplexAt σ) ⊗ₜ[𝓞 L] a)`. Introduce `W _ _ a`. Rewrite using `[TensorProduct.smul_tmul', hs]`. Use `⟨scale _ c' v, scale _ c' u, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hc, Mσ.smul, scale_left, Category.assoc, h]`.
+
+Rewrite using `[LinearMap.lTensor_tmul, hc, Mσ'.smul, scale_left, Category.assoc, k]`. Rewrite using `[scale_left, Category.assoc, l]`. Simplify using `only [Over.comp_left, scale_left, Category.assoc]`. Establish `hx0 : ∀ u : epsAt (spMap σ) ⟶ tK.G, (u.left ≫ mP.φ) ≫ P₁.tB.G.hom = (spMap (algebraMap ℂ (DualNumber ℂ)) ≫ spMap σ) ≫ spMap e₂`. Introduce `u`.
+
+Establish `wu : u.left ≫ tK.G.hom = spMap (algebraMap ℂ (DualNumber ℂ)) ≫ spMap σ` using `Over.w u`. Rewrite using `[Category.assoc, mP.cart.1.w, ← Category.assoc, wu]`. Establish `key : ∀ x : GroundTheory.Heights₂.Heights.Fibre σ V₁, ∃ (v : epsAt (𝟙 (Sp ℂ)) ⟶ Pσ.tK.G) (u : epsAt (spMap σ) ⟶ tK.G), v.left ≫ Pσ.m.φ = (Mσ.pt x).left ∧ u.left ≫ m'.φ = (Mσ'.pt (f.lTensor (GroundTheory.Heights₂.Heights.ComplexAt σ) x)).left ∧ u.left ≫ mP.φ = (v ≫ Pσ.τ.q ≫ Pσ.e.h …`. Introduce `x`. Proceed by induction on `x using TensorProduct.induction_on with`.
+
+Consider the case `zero`. Establish `h0` using `tm 0 0`. Rewrite `h0` using `[TensorProduct.zero_tmul]`. Then use the resulting hypothesis. Consider the case `tmul c e => exact tm c e`. Consider the case `add x y hx hy`.
+
+Take `⟨v₁, u₁, h₁, k₁, l₁⟩` from `hx`. Take `⟨v₂, u₂, h₂, k₂, l₂⟩` from `hy`. Use `⟨v₁ * v₂, u₁ * u₂, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Mσ.add]`. Conclude with `(grp_mul Pσ.m.cart _ _ hb1 v₁ v₂ (Mσ.pt x) (Mσ.pt y) h₁.symm h₂.symm).symm`.
+
+Rewrite using `[map_add, Mσ'.add]`. Conclude with `(grp_mul m'.cart _ _ hb2 u₁ u₂ _ _ k₁.symm k₂.symm).symm`. Rewrite using `[abPart_mul]`. Set `x₀ : Over.mk ((spMap (algebraMap ℂ (DualNumber ℂ)) ≫ spMap σ) ≫ spMap e₂) ⟶ P₁.tB.G` to `Over.homMk (u₁.left ≫ mP.φ) (hx0 u₁)`. Set `y₀ : Over.mk ((spMap (algebraMap ℂ (DualNumber ℂ)) ≫ spMap σ) ≫ spMap e₂) ⟶ P₁.tB.G` to `Over.homMk (u₂.left ≫ mP.φ) (hx0 u₂)`.
+
+Rewrite using `[← grp_mul mP.cart _ _ rfl u₁ u₂ x₀ y₀ rfl rfl]`. Conclude with `grp_mul mBσ.cart _ _ hb3.symm _ _ x₀ y₀ l₁ l₂`. Take `⟨v₀, u₀, h₀, k₀, l₀⟩` from `key x`. Establish `hv' : v = v₀` using `lift_unique Pσ.m.cart.1 _ _ (hv.trans h₀.symm)`. Establish `hu' : u = u₀` using `lift_unique m'.cart.1 _ _ (hu.trans k₀.symm)`.
+
+Rewrite using `[hv', hu']`. Conclude with `l₀`.
+-/
 theorem tan_compare : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (X : Scheme.{0}) (t : SAB H X) (L₁ L : Type) [Field L₁] [Field L] [NumberField L] (e₂ : L₁ →+* L) (z₁ : Sp L₁ ⟶ X) (z : Sp (𝓞 L) ⟶ X) (hz : spMap (algebraMap (𝓞 L) L) ≫ z = spMap e₂ ≫ z₁) (P₁ : AbPart t z₁) (P₂ : AbPart t (spMap e₂ ≫ z₁)) (mK2 : SABMap P₂.tK P₁.tK (spMap e₂)) (mB2 : SABMap P₂.tB P₁.tB (spMap e₂)) (c1 : mK2.φ ≫ P₁.m.φ = P₂.m.φ) (c2 : mK2.φ ≫ (P₁.τ.q ≫ P₁.e.hom).left = (P₂.τ.q ≫ P₂.e.hom).left ≫ mB2.φ) (t' : SAB H (Sp (𝓞 L))) (tK : SAB H (Sp L)) (m' : SABMap tK t' (spMap (algebraMap (𝓞 L) L))) (mP : SABMap tK P₁.tB (spMap e₂)) (w : P₂.tB.G.left ⟶ tK.G.left) (hw : w ≫ mP.φ = mB2.φ) (hw' : w ≫ tK.G.hom = P₂.tB.G.hom) (V₁ V₂ : Type) [AddCommGroup V₁] [Module (𝓞 L) V₁] [AddCommGroup V₂] [Module (𝓞 L) V₂] (MB : LieModel t.G z V₁) (MB' : LieModel t'.G (𝟙 _) V₂) (f : V₁ →ₗ[𝓞 L] V₂) (hf : ∀ (e : V₁) (v : epsAt (𝟙 (Sp L)) ⟶ P₂.tK.G), MB.Lifts (algebraMap (𝓞 L) L) P₂.m.φ e v → MB'.Lifts (algebraMap (𝓞 L) L) (P₂.e.hom.left ≫ w ≫ m'.φ) (f e) (v ≫ P₂.τ.q)) (σ : L →+* ℂ) (Pσ : AbPart t (spMap (σ.comp e₂) ≫ z₁)) (mKσ : SABMap Pσ.tK P₁.tK (spMap (σ.comp e₂))) (mBσ : SABMap Pσ.tB P₁.tB (spMap (σ.comp e₂))) (d1 : mKσ.φ ≫ P₁.m.φ = Pσ.m.φ) (d2 : mKσ.φ ≫ (P₁.τ.q ≫ P₁.e.hom).left = (Pσ.τ.q ≫ Pσ.e.hom).left ≫ mBσ.φ) (Mσ : LieModel t.G (spMap (σ.comp (algebraMap (𝓞 L) L)) ≫ z) (GroundTheory.Heights₂.Heights.Fibre σ V₁)) (hMσ : ∀ e : V₁, MB.Lifts (σ.comp (algebraMap (𝓞 L) L)) (𝟙 t.G.left) e (Mσ.pt ((1 : GroundTheory.Heights₂.Heights.ComplexAt σ) ⊗ₜ[𝓞 L] e))) (Mσ' : LieModel t'.G (spMap (σ.comp (algebraMap (𝓞 L) L)) ≫ 𝟙 _) (GroundTheory.Heights₂.Heights.Fibre σ V₂)) (hMσ' : ∀ e : V₂, MB'.Lifts (σ.comp (algebraMap (𝓞 L) L)) (𝟙 t'.G.left) e (Mσ'.pt ((1 : GroundTheory.Heights₂.Heights.ComplexAt σ) ⊗ₜ[𝓞 L] e))) (x : GroundTheory.Heights₂.Heights.Fibre σ V₁) (v : epsAt (𝟙 (Sp ℂ)) ⟶ Pσ.tK.G) (u : epsAt (spMap σ) ⟶ tK.G), v.left ≫ Pσ.m.φ = (Mσ.pt x).left → u.left ≫ m'.φ = (Mσ'.pt (f.lTensor (GroundTheory.Heights₂.Heights.ComplexAt σ) x)).left → u.left ≫ mP.φ = (v ≫ Pσ.τ.q ≫ Pσ.e.hom).left ≫ mBσ.φ := by
   intro E _ _ _ H X t L₁ L _ _ _ e₂ z₁ z hz P₁ P₂ mK2 mB2 c1 c2 t' tK m' mP w hw hw' V₁ V₂ _ _ _ _ MB MB' f hf σ Pσ mKσ mBσ
     d1 d2 Mσ hMσ Mσ' hMσ' x v u hv hu

@@ -18,6 +18,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.TypeR
 
 namespace GlobalTheory.LiftRef
 
+/- English proof (translation)
+Introduce `hP hL`. Establish `h` using `overRows_and_mono (GlobalTheory.T.twist_character_unramified_inf hP hL) (GlobalTheory.T.isotypic_real_nonzero hP hL) (fun _ _ _ _ _ _ _ _ _ _ _ a b => And.intro a b)`. Establish `h'` using `overRows_and_mono h (GlobalTheory.T.spherical_inertia_of_isotypic hP hL) (fun _ _ _ _ _ _ _ _ _ _ _ a b => And.intro a b)`. Use `overRows_and_mono h' (GlobalTheory.T.infinity_type_of_lift hP hL) ?_` and prove the remaining obligations. Introduce and unpack `K B f T w Z Wt hX z p0 Y ⟨⟨hc, hl⟩, hs⟩ hi Rw a M tup Q hA hI j h1 h2 σ hσ`.
+
+Take `⟨S, hS, hm, hloc⟩` from `hl Rw a M tup Q hA hI j h1 h2 σ hσ`. Take `⟨μ, hμ, hcsd, hunr, heta⟩` from `hc Rw a M tup Q hA hI ⟨j - 1, by omega⟩`. Conclude with `⟨_, μ, ⟨hcsd, hunr, hs Rw a M tup Q hA hI j h1 h2 S hS hm, hloc μ hμ, heta, hi Rw a M tup Q hA hI j h1 h2 S hS μ hμ⟩⟩`.
+-/
 theorem liftAll_of_parIn : PrN → ∀ hL : GlobalTheory.Published.LocalLanglandsGL, OverRows fun _ _ _ _ w Z _ _ z _ Y => ∀ Rw, ParIn hL (w.st Z).toD7 (TC.cf w.I w.l Z) (repOf Y) Rw → ∀ (M : MtFam (w.st Z).toD7) tup Q, MtAd Y M → MtInput (w.st Z).toD7 M tup Q → LiftAll (w.st Z).toD7 Rw := by
   intro hP hL
   have h := overRows_and_mono (GlobalTheory.T.twist_character_unramified_inf hP hL) (GlobalTheory.T.isotypic_real_nonzero hP hL) (fun _ _ _ _ _ _ _ _ _ _ _ a b => And.intro a b)

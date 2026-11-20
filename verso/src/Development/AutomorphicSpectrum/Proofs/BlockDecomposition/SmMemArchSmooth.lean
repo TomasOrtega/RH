@@ -23,6 +23,9 @@ def cMap : mixedEmbedding.mixedSpace E →ₗ[ℝ] Cinf E where
   map_add' _ _ := rfl
   map_smul' _ _ := rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `w`. Express the relevant statement in the definitionally equal form `(InfiniteAdeleRing.ringEquiv_mixedSpace E x).2 ⟨w, IsTotallyComplex.isComplex w⟩ = _`. Rewrite using `[InfiniteAdeleRing.ringEquiv_mixedSpace_apply]`. Both sides reduce to the same expression.
+-/
 theorem cMap_ringEquiv (x : InfiniteAdeleRing E) :
     cMap E (InfiniteAdeleRing.ringEquiv_mixedSpace E x) = (infEq E).symm x := by
   funext w
@@ -42,6 +45,9 @@ def mMap : ArchMatrix E a →ₗ[ℝ] Lie E a where
 def toGL (u : archGroup E a) : GL (Fin a) (Cinf E) :=
   Matrix.GeneralLinearGroup.map (infEq E).symm.toRingHom ((archEquiv E a).symm u)
 
+/- English proof (translation)
+Take `⟨b, rfl⟩` from `(archEquiv E a).surjective u`. Use function extensionality and compare the values at `i j`. Simplify using `only [toGL, ContinuousMulEquiv.symm_apply_apply]`. Conclude with `(cMap_ringEquiv E (b i j)).symm`.
+-/
 theorem toL_toGL (u : archGroup E a) :
     toL (toGL E a u).val = mMap E a ((u : (ArchMatrix E a)ˣ) : ArchMatrix E a) := by
   obtain ⟨b, rfl⟩ := (archEquiv E a).surjective u
@@ -49,6 +55,11 @@ theorem toL_toGL (u : archGroup E a) :
   simp only [toGL, ContinuousMulEquiv.symm_apply_apply]
   exact (cMap_ringEquiv E (b i j)).symm
 
+/- English proof (translation)
+Apply `ga_ext` to reduce the goal to its premises. Rewrite using `[pInf_infGL]`. Use extensionality with `i j : 2`. Establish `h` using `congrArg (fun p => (p.1 : Matrix (Fin a) (Fin a) (InfiniteAdeleRing E)) i j) (prodEquiv_infEmb u)`. Conclude with `congrArg (infEq E).symm h`.
+
+Rewrite using `[pFin_infGL]`. Use extensionality with `i j : 2`. Conclude with `congrArg (fun p => (p.2 : Matrix (Fin a) (Fin a) (FiniteAdeleRing (𝓞 E) E)) i j) (prodEquiv_infEmb u)`.
+-/
 theorem infEmb_eq (u : archGroup E a) : infEmb E a u = infGL E a (toGL E a u) := by
   apply ga_ext
   · rw [pInf_infGL]
@@ -59,10 +70,22 @@ theorem infEmb_eq (u : archGroup E a) : infEmb E a u = infGL E a (toGL E a u) :=
     ext i j : 2
     exact congrArg (fun p => (p.2 : Matrix (Fin a) (Fin a) (FiniteAdeleRing (𝓞 E) E)) i j) (prodEquiv_infEmb u)
 
+/- English proof (translation)
+Rewrite using `[← toL_toGL, chart_val, archSlice_apply, infEmb_eq]`.
+-/
 theorem archSlice_eq (φ : GA E a → ℂ) (g : GA E a) (u : archGroup E a) :
     archSlice φ g u = chart φ g (mMap E a ((u : (ArchMatrix E a)ˣ) : ArchMatrix E a)) := by
   rw [← toL_toGL, chart_val, archSlice_apply, infEmb_eq]
 
+/- English proof (translation)
+Introduce `g`. Rewrite using `[IsExpLieAlgebra.isSmoothFun_iff]`. Introduce `g'`. Set `L : ArchMatrix E a →L[ℝ] Lie E a` to `LinearMap.toContinuousLinearMap (mMap E a)`. Set `c : ArchMatrix E a` to `((g' : (ArchMatrix E a)ˣ) : ArchMatrix E a)`.
+
+Set `F : archLie E a → ArchMatrix E a` to `fun Y => c * NormedSpace.exp (Y : ArchMatrix E a)`. Establish `hF : ContDiff ℝ ∞ F` using `contDiff_const.mul ((contDiff_exp ℝ (ArchMatrix E a)).comp (archLie E a).subtypeL.contDiff)`. Establish `hs : ContDiff ℝ ∞ fun Y => L (F Y)` using `L.contDiff.comp hF`. Establish `hmem : ∀ Y, L (F Y) ∈ invSet E a` using `fun Y => by`. Establish `: L (F Y) = toL (toGL E a (g' * (isExpLieAlgebra E a).expG Y)).val` using `(toL_toGL E a (g' * (isExpLieAlgebra E a).expG Y)).symm`.
+
+Rewrite using `[this]`. Conclude with `val_mem_invSet _`. Establish `hc` using `(φ.2 g).comp_contDiff hs hmem`. Establish `e : (fun Y : archLie E a => archSlice φ.1 g (g' * (isExpLieAlgebra E a).expG Y)) = chart φ.1 g ∘ fun Y => L (F Y)`. Use function extensionality and compare the values at `fun Y => archSlice_eq E a φ.1 g _`.
+
+Express the relevant statement in the definitionally equal form `ContDiff ℝ ∞ (fun Y : archLie E a => archSlice φ.1 g (g' * (isExpLieAlgebra E a).expG Y))`. Rewrite using `[e]`. Conclude with `hc`.
+-/
 theorem sm_mem_archSmooth (φ : Sm E a) : φ.1 ∈ AutomorphicForm.archSmooth E a := by
   intro g
   rw [IsExpLieAlgebra.isSmoothFun_iff]

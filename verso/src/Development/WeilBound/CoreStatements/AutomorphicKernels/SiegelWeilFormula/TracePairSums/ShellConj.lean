@@ -12,11 +12,17 @@ open scoped TensorProduct Matrix
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[hcm.2.2.2 τ, hcm.2.2.2 τ, star_star]`.
+-/
 theorem sig_sig_of_cm (σ : E →ₐ[F] E) (hcm : IsCMExt F E σ) (x : E) : σ (σ x) = x := by
   obtain ⟨τ⟩ : Nonempty (E →+* ℂ) := inferInstance
   apply τ.injective
   rw [hcm.2.2.2 τ, hcm.2.2.2 τ, star_star]
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul r e => simp [sigR, sig_sig_of_cm σ hcm e]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`.
+-/
 theorem sigR_sigR (R : Type) [CommRing R] [Algebra F R] (σ : E →ₐ[F] E) (hcm : IsCMExt F E σ)
     (z : R ⊗[F] E) : sigR R σ (sigR R σ z) = z := by
   induction z using TensorProduct.induction_on with
@@ -28,27 +34,44 @@ def rowMix {A : Type} [CommRing A] {n M : ℕ} (C : Matrix (Fin n) (Fin n) A) (Y
     Fin n → Fin M → A :=
   fun c i => ∑ k, C c k * Y k i
 
+/- English proof (translation)
+Use function extensionality and compare the values at `c i`. Simplify using `[rowMix, mul_add, Finset.sum_add_distrib]`.
+-/
 theorem rowMix_add {A : Type} [CommRing A] {n M : ℕ} (C : Matrix (Fin n) (Fin n) A) (Y Z : Fin n → Fin M → A) :
     rowMix C (Y + Z) = rowMix C Y + rowMix C Z := by
   funext c i
   simp [rowMix, mul_add, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `c i`. Simplify using `[rowMix, Matrix.one_apply]`.
+-/
 theorem rowMix_one {A : Type} [CommRing A] {n M : ℕ} (Y : Fin n → Fin M → A) :
     rowMix (1 : Matrix (Fin n) (Fin n) A) Y = Y := by
   funext c i
   simp [rowMix, Matrix.one_apply]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `c i`. Simplify using `only [rowMix, Matrix.mul_apply, Finset.mul_sum, Finset.sum_mul, mul_assoc]`. Conclude with `Finset.sum_comm`.
+-/
 theorem rowMix_mul {A : Type} [CommRing A] {n M : ℕ} (P Q : Matrix (Fin n) (Fin n) A) (Y : Fin n → Fin M → A) :
     rowMix P (rowMix Q Y) = rowMix (P * Q) Y := by
   funext c i
   simp only [rowMix, Matrix.mul_apply, Finset.mul_sum, Finset.sum_mul, mul_assoc]
   exact Finset.sum_comm
 
+/- English proof (translation)
+Use function extensionality and compare the values at `c i`. Simplify using `[rowMix, add_mul, Finset.sum_add_distrib, Matrix.one_apply]`.
+-/
 theorem rowMix_one_add {A : Type} [CommRing A] {n M : ℕ} (x : Matrix (Fin n) (Fin n) A) (Y : Fin n → Fin M → A) :
     rowMix (1 + x) Y = Y + rowMix x Y := by
   funext c i
   simp [rowMix, add_mul, Finset.sum_add_distrib, Matrix.one_apply]
 
+/- English proof (translation)
+Establish `h1 : (∑ i, ∑ j, ∑ k, ∑ l, f i j k l) = ∑ x : Fin M × Fin M × Fin n × Fin n, f x.1 x.2.1 x.2.2.1 x.2.2.2`. Simplify using `only [Fintype.sum_prod_type]`. Establish `h2 : (∑ k, ∑ l, ∑ i, ∑ j, f i j k l) = ∑ y : Fin n × Fin n × Fin M × Fin M, f y.2.2.1 y.2.2.2 y.1 y.2.1`. Simplify using `only [Fintype.sum_prod_type]`. Rewrite using `[h1, h2]`.
+
+Set `e : (Fin M × Fin M × Fin n × Fin n) ≃ (Fin n × Fin n × Fin M × Fin M)` to `{ toFun := fun x => (x.2.2.1, x.2.2.2, x.1, x.2.1) invFun := fun y => (y.2.2.1, y.2.2.2, y.1, y.2.1) left_inv := fun _ => rfl right_inv := fun _ => rfl }`. Conclude with `Fintype.sum_equiv e _ _ (fun _ => rfl)`.
+-/
 theorem sum_sum_sum_sum_comm {A : Type} [AddCommMonoid A] {n M : ℕ} (f : Fin M → Fin M → Fin n → Fin n → A) :
     (∑ i, ∑ j, ∑ k, ∑ l, f i j k l) = ∑ k, ∑ l, ∑ i, ∑ j, f i j k l := by
   have h1 : (∑ i, ∑ j, ∑ k, ∑ l, f i j k l) = ∑ x : Fin M × Fin M × Fin n × Fin n, f x.1 x.2.1 x.2.2.1 x.2.2.2 := by
@@ -66,6 +89,9 @@ theorem sum_sum_sum_sum_comm {A : Type} [AddCommMonoid A] {n M : ℕ} (f : Fin M
 section Mat
 variable (R : Type) [CommRing R] [Algebra F R] (σ : E →ₐ[F] E) {M n : ℕ}
 
+/- English proof (translation)
+Use extensionality with `c p`. Simplify using `only [gramR, hR, hform, rowMix, Matrix.mul_apply, Matrix.map_apply, Matrix.transpose_apply, map_sum, map_mul, sigR_sigR R σ hcm, Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[sum_sum_sum_sum_comm]`. Use `Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem gramR_rowMix (hcm : IsCMExt F E σ) (J : Matrix (Fin M) (Fin M) E) (a : Matrix (Fin n) (Fin n) (R ⊗[F] E))
     (Y : Fin n → Fin M → R ⊗[F] E) :
     gramR R σ J (rowMix (a.map (sigR R σ)) Y) = a * gramR R σ J Y * (a.map (sigR R σ))ᵀ := by
@@ -77,10 +103,16 @@ theorem gramR_rowMix (hcm : IsCMExt F E σ) (J : Matrix (Fin M) (Fin M) E) (a : 
     Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_
   ring
 
+/- English proof (translation)
+Simplify using `[Matrix.trace, Matrix.mul_apply]`.
+-/
 theorem sum_sum_eq_trace {A : Type} [CommRing A] (S T : Matrix (Fin n) (Fin n) A) :
     ∑ a, ∑ c, S a c * T c a = Matrix.trace (S * T) := by
   simp [Matrix.trace, Matrix.mul_apply]
 
+/- English proof (translation)
+Unfold `trPair`. Rewrite using `[sum_sum_eq_trace, sum_sum_eq_trace, gramR_rowMix R σ hcm]`. Use `congr 2`. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, Matrix.trace_mul_comm]`. Simplify using `only [Matrix.mul_assoc]`.
+-/
 theorem trPair_conj (hcm : IsCMExt F E σ) (J : Matrix (Fin M) (Fin M) E)
     (a b : Matrix (Fin n) (Fin n) (R ⊗[F] E)) (Y : Fin n → Fin M → R ⊗[F] E) :
     trPair R ((a.map (sigR R σ))ᵀ * b * a) (gramR R σ J Y) =
@@ -93,6 +125,11 @@ theorem trPair_conj (hcm : IsCMExt F E σ) (J : Matrix (Fin M) (Fin M) E)
 
 end Mat
 
+/- English proof (translation)
+Establish `h` using `hmul x (Matrix.of Y)`. Establish `e : (x * Matrix.of Y : Matrix (Fin n) (Fin M) (Fv F v ⊗[F] E)) = Matrix.of (rowMix x Y)`. Use extensionality with `c i`. Use `erw [Matrix.mul_apply]`. Both sides reduce to the same expression.
+
+Rewrite `h` using `[e]`. Conclude with `h`.
+-/
 theorem nM_rowMix_le (v : HeightOneSpectrum (𝓞 F)) {n M : ℕ} (C1 : ℝ)
     (hmul : ∀ (x : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)) (y : Matrix (Fin n) (Fin M) (Fv F v ⊗[F] E)),
       nM v (x * y) ≤ C1 * nM v x * nM v y)
@@ -106,6 +143,43 @@ theorem nM_rowMix_le (v : HeightOneSpectrum (𝓞 F)) {n M : ℕ} (C1 : ℝ)
   rw [e] at h
   exact h
 
+/- English proof (translation)
+Take `⟨C1, hC1, hmul⟩` from `exists_nM_mul v (E := E) n n M`. Take `⟨Cs, hCs, hsig⟩` from `exists_nM_sig v σ n n`. Take `⟨U, hU, hinvU⟩` from `PositivityTheory.SiegelWeilFormula.OswLocFin.exists_nhds_invariant hΦ`. Take `⟨ρ, hρ, hball⟩` from `exists_ballM_subset (v := v) (p := n) (q := M) hU`. Take `⟨R0, hR0⟩` from `exists_bound_nM (v := v) (p := n) (q := M) hΦ.2.isCompact`.
+
+Take `⟨r0, hr0, hdet⟩` from `exists_isUnit_det v (E := E) n`. Use `set R : ℝ := max R0 1 with hRdef`. Establish `hRpos : 0 < R` using `lt_of_lt_of_le one_pos (le_max_right _ _)`. Use `set K : ℝ := C1 * Cs + 1 with hKdef`. Establish `hKpos : 0 < K` using `by positivity`.
+
+Use `⟨min r0 (min (1 / (2 * K)) (ρ / (K * R))), lt_min hr0 (lt_min (by positivity) (by positivity)), ?_⟩` and prove the remaining obligations. Introduce `x hx b b' hb'`. Establish `hx0 : nM v x ≤ r0` using `hx.trans (min_le_left _ _)`. Establish `hx1 : nM v x ≤ 1 / (2 * K)` using `hx.trans ((min_le_right _ _).trans (min_le_left _ _))`. Establish `hx2 : nM v x ≤ ρ / (K * R)` using `hx.trans ((min_le_right _ _).trans (min_le_right _ _))`.
+
+Use `set x' : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E) := x.map (sigR (Fv F v) σ) with hx'def`. Use `set C : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E) := (1 + x).map (sigR (Fv F v) σ) with hCdef`. Establish `hC : C = 1 + x'`. Rewrite using `[hCdef, hx'def, Matrix.map_add _ (fun a b => map_add _ a b), Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `hnx' : nM v x' ≤ Cs * nM v x` using `hsig x`.
+
+Establish `hsmall : C1 * nM v x' ≤ 1 / 2`. Establish `h1 : C1 * nM v x' ≤ C1 * Cs * nM v x`. Rewrite using `[mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left hnx' hC1`. Establish `h2 : C1 * Cs * nM v x ≤ C1 * Cs * (1 / (2 * K))` using `mul_le_mul_of_nonneg_left hx1 (by positivity)`.
+
+Establish `h3 : C1 * Cs * (1 / (2 * K)) ≤ 1 / 2`. Rewrite using `[mul_one_div, div_le_div_iff₀ (by positivity) (by norm_num)]`. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hsmall2 : C1 * nM v x' * R ≤ ρ`.
+
+Establish `h1 : C1 * nM v x' ≤ C1 * Cs * nM v x`. Rewrite using `[mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left hnx' hC1`. Establish `h2 : C1 * Cs * nM v x ≤ C1 * Cs * (ρ / (K * R))` using `mul_le_mul_of_nonneg_left hx2 (by positivity)`. Establish `h3 : C1 * Cs * (ρ / (K * R)) * R ≤ ρ`.
+
+Rewrite using `[mul_div_assoc', div_mul_eq_mul_div, div_le_iff₀ (by positivity)]`. Establish `: C1 * Cs ≤ K` using `by rw [hKdef]; linarith`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right this (le_of_lt (mul_pos hρ hRpos))]`. Combine the equalities or inequalities in the displayed calculation. Establish `hnorm : ∀ Y : Fin n → Fin M → Fv F v ⊗[F] E, nM v (rowMix C Y) = nM v Y`.
+
+Introduce `Y`. Rewrite using `[hC, rowMix_one_add]`. Distinguish the cases in `hY : Y = 0`. Substitute `hY` using the available equality. Establish `: rowMix x' (0 : Fin n → Fin M → Fv F v ⊗[F] E) = 0` using `by funext c i; simp [rowMix]`.
+
+Rewrite using `[this, add_zero]`. Establish `hpos : 0 < nM v Y` using `lt_of_le_of_ne (nM_nonneg Y) (fun h => hY (nM_eq_zero.1 h.symm))`. Use `nM_add_eq_of_lt ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Establish `hΦC : ∀ Y, Φv (rowMix C Y) = Φv Y`.
+
+Introduce `Y`. Distinguish the cases in `hY : nM v Y ≤ R`. Rewrite using `[hC, rowMix_one_add]`. Use `hinvU Y _ (hball ?_)` and prove the remaining obligations. Use `show nM v (rowMix x' Y) ≤ ρ`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `h1 : Y ∉ tsupport Φv` using `fun h => hY ((hR0 Y h).trans (le_max_left _ _))`. Establish `h2 : rowMix C Y ∉ tsupport Φv` using `fun h => hY ((hnorm Y) ▸ ((hR0 _ h).trans (le_max_left _ _)))`. Rewrite using `[image_eq_zero_of_notMem_tsupport h1, image_eq_zero_of_notMem_tsupport h2]`. Establish `hCu : IsUnit C.det`.
+
+Use `hdet x hx0` as an intermediate fact. Rewrite using `[hCdef, ← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Conclude with `this.map _`. Set `e : (Fin n → Fin M → Fv F v ⊗[F] E) ≃+ (Fin n → Fin M → Fv F v ⊗[F] E)` to `{ toFun := rowMix C invFun := rowMix C⁻¹ left_inv := fun Y => by rw [rowMix_mul, Matrix.nonsing_inv_mul C hCu, rowMix_one] right_inv := fun Y => by rw [rowMix_mul, Matrix.mul_nonsing_inv C hCu, rowMix_one] map_add' := rowMix_add C }`. Establish `hcont : ∀ P : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E), Continuous (rowMix (M` using `M) P) := by`.
+
+Introduce `P`. Use `continuous_pi fun c => continuous_pi fun i => continuous_finsetSum _ fun k _ => ?_` and prove the remaining obligations. Conclude with `continuous_const.mul ((continuous_apply i).comp (continuous_apply k))`. Establish `hmp : MeasurePreserving e μv μv`. Use `PositivityTheory.SiegelWeilFormula.OswLocFin.measurePreserving_of_addEquiv μv e (hcont C) (hcont C⁻¹) {Y | nM v Y ≤ 1} (isCompact_ballM 1) ?_ ?_` and prove the remaining obligations.
+
+Use `⟨0, ?_⟩` and prove the remaining obligations. Rewrite using `[(isOpen_ballM (v := v) (p := n) (q := M) one_pos).interior_eq]`. Use `show nM v (0 : Fin n → Fin M → Fv F v ⊗[F] E) ≤ 1`. Rewrite using `[nM_zero]`. Conclude with `zero_le_one`.
+
+Use extensionality with `Y show nM v (rowMix C Y) ≤ 1 ↔ nM v Y ≤ 1`. Rewrite using `[hnorm]`. Establish `hemb : MeasurableEmbedding e` using `(Homeomorph.mk e.toEquiv (hcont C) (hcont C⁻¹)).measurableEmbedding`. Unfold `jtR`. Rewrite using `[hb']`.
+
+Establish `hint : ∀ Y, Φv Y * ψR (trPair (Fv F v) ((C)ᵀ * (b : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)) * (1 + x)) (gramR (Fv F v) σ J Y)) = (fun Z => Φv Z * ψR (trPair (Fv F v) (b : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)) (gramR (Fv F v) σ J Z))) (e Y)`. Introduce `Y`. Use `show _ = Φv (rowMix C Y) * _`. Rewrite using `[hΦC, hCdef, trPair_conj (Fv F v) σ hcm J (1 + x) b Y]`. Both sides reduce to the same expression.
+
+Repeatedly rewrite using `[hint]`. Conclude with `hmp.integral_comp hemb (fun Z => Φv Z * ψR (trPair (Fv F v) (b : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)) (gramR (Fv F v) σ J Z)))`.
+-/
 theorem jtR_conj_inv' (v : HeightOneSpectrum (𝓞 F)) (σ : E →ₐ[F] E) (hcm : IsCMExt F E σ) {M n : ℕ}
     (J : Matrix (Fin M) (Fin M) E) (ψR : Fv F v → ℂ) (μv : Measure (Fin n → Fin M → Fv F v ⊗[F] E))
     [μv.IsAddHaarMeasure] (Φv : (Fin n → Fin M → Fv F v ⊗[F] E) → ℂ) (hΦ : IsSB Φv) :

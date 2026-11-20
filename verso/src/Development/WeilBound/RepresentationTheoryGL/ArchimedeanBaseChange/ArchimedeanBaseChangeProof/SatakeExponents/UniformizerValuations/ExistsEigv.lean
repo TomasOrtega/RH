@@ -27,6 +27,9 @@ structure UFam (S : Set (Pl E)) (lam : InfinitePlace E → DomWeight n) (K' : �
 
 attribute [instance] UFam.ft
 
+/- English proof (translation)
+Take `⟨ι, _, π, σ, h1, h2, h3⟩` from `h E hE n hn S hS lam K' hK`. Conclude with `⟨⟨ι, π, σ, h1, h2, h3⟩⟩`.
+-/
 theorem uFam_of (h : USide) (hE : GlobalTheory.BCT.Unr E) (hn : 1 ≤ n) {S : Set (Pl E)} (hS : IsSection S)
     (lam : InfinitePlace E → DomWeight n) {K' : ∀ w : Pl E, Subgroup (UL n w)}
     (hK : IsLevelFam (fun w : Pl E => MonoidHom.id (UL n w)) (KL n) K') : Nonempty (UFam S lam K') := by
@@ -49,6 +52,9 @@ structure UMod {S : Set (Pl E)} {lam : InfinitePlace E → DomWeight n} {K' : �
 def LevelOff (S : Set (Pl E)) (B : Finset (Pl E)) (K' : ∀ w : Pl E, Subgroup (UL n w)) : Prop :=
   (↑B : Set (Pl E)) ⊆ S ∧ IsLevelFam (fun w : Pl E => MonoidHom.id (UL n w)) (KL n) K' ∧ ∀ w, w ∉ B → K' w = KL n w
 
+/- English proof (translation)
+Take `⟨-, h2, h3⟩` from `(F.comp i).2.2.2 w hw`. Establish `e` using `hB.2.2 w hwB`. Establish `ho` using `(hB.2.1.1 w).1`. Rewrite `h2`, `ho` using `[e]`. Conclude with `h1 E hE n w _ h2 (h3 _ ho)`.
+-/
 theorem sph_line (h1 : SphOne) (hE : GlobalTheory.BCT.Unr E) {S : Set (Pl E)} {lam : InfinitePlace E → DomWeight n}
     {K' : ∀ w : Pl E, Subgroup (UL n w)} (F : UFam S lam K') {B : Finset (Pl E)} (hB : LevelOff S B K') (i : F.ι)
     (w : Pl E) (hw : w ∈ S) (hwB : w ∉ B) : Module.finrank ℂ (fixed (F.σ i w).ρ (KL n w)) = 1 := by
@@ -58,6 +64,9 @@ theorem sph_line (h1 : SphOne) (hE : GlobalTheory.BCT.Unr E) {S : Set (Pl E)} {l
   rw [e] at h2 ho
   exact h1 E hE n w _ h2 (h3 _ ho)
 
+/- English proof (translation)
+Take `⟨d, blk, u, a, b, c⟩` from `h2 E n S B hB.1 K' hB.2.1 (fun w _ hw => hB.2.2 w hw) F.ι F.σ (fun i w hw => ((F.comp i).2.2.2 w hw).2.2 _ (hB.2.1.1 w).1) (sph_line h1 hE F hB) g`. Conclude with `⟨⟨d, blk, u, a, b, c⟩⟩`.
+-/
 theorem uMod_of (h1 : SphOne) (h2 : SpecTrace) (hE : GlobalTheory.BCT.Unr E) {S : Set (Pl E)} {lam : InfinitePlace E → DomWeight n}
     {K' : ∀ w : Pl E, Subgroup (UL n w)} (F : UFam S lam K') {B : Finset (Pl E)} (hB : LevelOff S B K')
     (g : ∀ w : Pl E, UL n w → ℂ) : Nonempty (UMod F B g) := by
@@ -103,6 +112,9 @@ variable {S : Set (Pl E)} {lam : InfinitePlace E → DomWeight n} {K' : ∀ w : 
 
 def op (x : UGen E n) : EuclideanSpace ℂ (Fin R.d) →L[ℂ] EuclideanSpace ℂ (Fin R.d) := diagOp R.blk (x.p F)
 
+/- English proof (translation)
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `((h _ _ R.blk _ _ 0).1.symm.trans (by rw [mul_comm])).trans (h _ _ R.blk _ _ 0).1`. Unfold `op`. Rewrite using `[(h _ _ R.blk (y.p F) 0 0).2.2.2]`. Conclude with `((h _ _ R.blk _ _ 0).1.symm.trans (by rw [mul_comm])).trans (h _ _ R.blk _ _ 0).1`.
+-/
 theorem op_comm (h : DiagAlg) (x y : UGen E n) : Commute (R.op x) (R.op y) ∧ Commute (R.op x) (star (R.op y)) := by
   refine ⟨?_, ?_⟩
   · exact ((h _ _ R.blk _ _ 0).1.symm.trans (by rw [mul_comm])).trans (h _ _ R.blk _ _ 0).1
@@ -110,12 +122,18 @@ theorem op_comm (h : DiagAlg) (x y : UGen E n) : Commute (R.op x) (R.op y) ∧ C
     rw [(h _ _ R.blk (y.p F) 0 0).2.2.2]
     exact ((h _ _ R.blk _ _ 0).1.symm.trans (by rw [mul_comm])).trans (h _ _ R.blk _ _ 0).1
 
+/- English proof (translation)
+Use `⟨R.comm _, ?_⟩` and prove the remaining obligations. Unfold `op`. Rewrite using `[(h _ _ R.blk (x.p F) 0 0).2.2.2]`. Conclude with `R.comm _`.
+-/
 theorem u_comm (h : DiagAlg) (x : UGen E n) : Commute R.u (R.op x) ∧ Commute R.u (star (R.op x)) := by
   refine ⟨R.comm _, ?_⟩
   unfold op
   rw [(h _ _ R.blk (x.p F) 0 0).2.2.2]
   exact R.comm _
 
+/- English proof (translation)
+Take `⟨v, h1, h2, h3⟩` from `R.eig i₀ hi`. Use `⟨v, h1, h2, fun x => ⟨h3 _, ?_⟩⟩` and prove the remaining obligations. Unfold `op`. Rewrite using `[(h _ _ R.blk (x.p F) 0 0).2.2.2, h3]`. Both sides reduce to the same expression.
+-/
 theorem exists_eigv (h : DiagAlg) (i₀ : F.ι) (hi : ∀ w ∈ B, ∃ y, y ≠ 0 ∧ locOp (F.σ i₀ w) (K' w) (g w) y = y) :
     ∃ v : EuclideanSpace ℂ (Fin R.d), v ≠ 0 ∧ R.u v = v ∧
       ∀ x : UGen E n, R.op x v = x.p F i₀ • v ∧ star (R.op x) v = starRingEnd ℂ (x.p F i₀) • v := by

@@ -18,15 +18,27 @@ section Corner
 
 variable {R : Type*} [CommRing R] {n : ℕ}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun a => (h a a).2 rfl, fun a b hab => (h a b).1 hab⟩`.
+-/
 theorem isLo_of_uni {L : Matrix (Fin n) (Fin n) R} (h : IsLoUni L) : IsLo L :=
   ⟨fun a => (h a a).2 rfl, fun a b hab => (h a b).1 hab⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun a => (h a a).2 rfl, fun a b hab => (h b a).1 hab⟩`.
+-/
 theorem isUp_of_uni {U : Matrix (Fin n) (Fin n) R} (h : IsUpUni U) : IsUp U :=
   ⟨fun a => (h a a).2 rfl, fun a b hab => (h b a).1 hab⟩
 
+/- English proof (translation)
+Introduce `a b` and use `⟨fun hab => h.2 a b hab, fun e => by subst e; exact h.1 a⟩`.
+-/
 theorem uni_of_isLo {L : Matrix (Fin n) (Fin n) R} (h : IsLo L) : IsLoUni L :=
   fun a b => ⟨fun hab => h.2 a b hab, fun e => by subst e; exact h.1 a⟩
 
+/- English proof (translation)
+Introduce `a b` and use `⟨fun hab => h.2 b a hab, fun e => by subst e; exact h.1 a⟩`.
+-/
 theorem uni_of_isUp {U : Matrix (Fin n) (Fin n) R} (h : IsUp U) : IsUpUni U :=
   fun a b => ⟨fun hab => h.2 b a hab, fun e => by subst e; exact h.1 a⟩
 
@@ -51,11 +63,17 @@ def glOfUp {U : MP p} (h : IsUp U) : GLp p :=
       rw [Matrix.det_of_upperTriangular (fun a b hab => h.2 b a hab)]
       simp [h.1])⟩
 
+/- English proof (translation)
+The claim follows from `mat_eq e (by rw [glue_map_fst, Matrix.map_one _ (map_zero _) (map_one _)]) (by rw [glue_map_snd, Matrix.map_one _ (map_zero _) (map_one _)])`.
+-/
 theorem glue_one_one {Fp K : Type} [Field Fp] [CommRing K] [Algebra Fp K] (e : K ≃ₐ[Fp] Fp × Fp) {n : ℕ} :
     glue e (1 : Matrix (Fin n) (Fin n) Fp) 1 = 1 :=
   mat_eq e (by rw [glue_map_fst, Matrix.map_one _ (map_zero _) (map_one _)])
     (by rw [glue_map_snd, Matrix.map_one _ (map_zero _) (map_one _)])
 
+/- English proof (translation)
+Apply `mat_eq e` to reduce the goal to its premises. Rewrite using `[Matrix.map_mul, Matrix.map_mul, h1, Matrix.mul_smul, Matrix.smul_mul, lo_corner_up (isLo_map _ (isLo_of_uni hl)) (isUp_map _ (isUp_of_uni hρ))]`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, h2, Matrix.mul_smul, Matrix.smul_mul, lo_corner_up (isLo_map _ (isLo_of_uni hl)) (isUp_map _ (isUp_of_uni hρ))]`.
+-/
 theorem corner_fix {Fp K : Type} [Field Fp] [CommRing K] [Algebra Fp K] (e : K ≃ₐ[Fp] Fp × Fp) {n : ℕ}
     {l ρ Δ : Matrix (Fin (n + 1)) (Fin (n + 1)) K} (hl : IsLoUni l) (hρ : IsUpUni ρ) (k1 k2 : Fp)
     (h1 : Δ.map (p1 e) = k1 • Ecorner n) (h2 : Δ.map (p2 e) = k2 • Ecorner n) : l * Δ * ρ = Δ := by
@@ -67,6 +85,29 @@ theorem corner_fix {Fp K : Type} [Field Fp] [CommRing K] [Algebra Fp K] (e : K �
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Establish `hAg` using `(hA p).2.2.2.2.2`. Rewrite `hAg` using `[hM]`. Choose the witnesses or unpack the hypotheses as in `⟨sg, hR, hge, hgq⟩ : ∃ sg, (D.s.atP p).split = some sg ∧ g.e = sg.e ∧ g.q = sg.q := by`. Break down `hs : (D.s.atP p).split with _ | sg` into its components or cases. Rewrite `hAg` using `[hs]`.
+
+Conclude with `hAg.elim`. Rewrite `hAg` using `[hs]`. Conclude with `⟨sg, rfl, hAg.1, hAg.2⟩`. Set `Zd : LocDat D` to `⟨δ, M, hA⟩`. Establish `hzz` using `Formalism.L2.SG.Pf.PCountEx.zz_fact Zd p sg hR g hM hge hgq u u' w (L := 1) (B := 1) Formalism.L2.SG.Pf.PCountEx.isLo_one' Formalism.L2.SG.Pf.PCountEx.isUp_one'`.
+
+Establish `e1 : Matrix.diagonal (cf Zd p) * (1 : PairVal.MatR D).map ((p1 sg.e).comp (D.s.atP p).ιE) * Matrix.diagonal (cfi Zd p) = 1`. Rewrite using `[Matrix.map_one _ (map_zero _) (map_one _), Matrix.mul_one, Matrix.diagonal_mul_diagonal, show (fun a => cf Zd p a * cfi Zd p a) = fun _ => (1 : (D.s.atP p).Fp) from funext (cf_cfi Zd p), Matrix.diagonal_one]`. Establish `e2 : Matrix.diagonal (cf Zd p) * (Sg (D.s.atP p).Fp D.R.rS * ((1 : PairVal.MatR D).map ((p2 sg.e).comp (D.s.atP p).ιE)).transpose * Sg (D.s.atP p).Fp D.R.rS) * Matrix.diagonal (cfi Zd p) = 1`. Rewrite using `[Matrix.map_one _ (map_zero _) (map_one _), Matrix.transpose_one, Matrix.mul_one, sg_sq, Matrix.mul_one, Matrix.diagonal_mul_diagonal, show (fun a => cf Zd p a * cfi Zd p a) = fun _ => (1 : (D.s.atP p).Fp) from funext (cf_cfi Zd p), Matrix.diagonal_one]`. Establish `e3 : Matrix.diagonal (cfi Zd p) * (1 : PairVal.MatR D).map ((p1 sg.e).comp (D.s.atP p).ιE) * Matrix.diagonal (cf Zd p) = 1`.
+
+Rewrite using `[Matrix.map_one _ (map_zero _) (map_one _), Matrix.mul_one, Matrix.diagonal_mul_diagonal, show (fun a => cfi Zd p a * cf Zd p a) = fun _ => (1 : (D.s.atP p).Fp) from funext (cfi_cf Zd p), Matrix.diagonal_one]`. Establish `e4 : Matrix.diagonal (cfi Zd p) * (Sg (D.s.atP p).Fp D.R.rS * ((1 : PairVal.MatR D).map ((p2 sg.e).comp (D.s.atP p).ιE)).transpose * Sg (D.s.atP p).Fp D.R.rS) * Matrix.diagonal (cf Zd p) = 1`. Rewrite using `[Matrix.map_one _ (map_zero _) (map_one _), Matrix.transpose_one, Matrix.mul_one, sg_sq, Matrix.mul_one, Matrix.diagonal_mul_diagonal, show (fun a => cfi Zd p a * cf Zd p a) = fun _ => (1 : (D.s.atP p).Fp) from funext (cfi_cf Zd p), Matrix.diagonal_one]`. Rewrite `hzz` using `[e1, e2, e3, e4, glue_one_one, Matrix.one_mul, Matrix.mul_one]`. Establish `hz : ZhatOM (ptMat w) = ptMat w * Sg D.host.E D.R.rS`.
+
+Establish `h` using `Formalism.L2.SG.Pf.CountBase.zhatOM_sg (ptMat w)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_assoc, sg_sq, Matrix.mul_one]`. Use `_ = ptMat w * Sg D.host.E D.R.rS := by rw [h]`. Rewrite `hzz` using `[Matrix.one_mul, Matrix.mul_one, ← hz]`.
+
+Establish `hYg : Y0 M δ u u' w p * Formalism.L2.SG.LsDatumB.sgnP p = _` using `hzz`. Take `⟨Gl, Gu, hGl, hGu, hT⟩` from `Formalism.L2.SG.Pf.PCountEx.target_fact Zd p sg hR g hM hge hgq u u' w`. Establish `hY0 : Y0 M δ u u' w p * Formalism.L2.SG.LsDatumB.sgnP p = Gl * modMat δ (D.mem u).A.T (D.mem u').A.T p w * Gu` using `hzz.trans hT`. Establish `hshE : Formalism.L2.SG.Pf.LocOrbSumPf.shM δ (D.mem u).A.T (D.mem u').A.T p w = Formalism.MainNotions.S.LocalSplitGroups.cornerSh δ (D.mem u).A.T (D.mem u').A.T p w • Ecorner D.R.rS`. Use extensionality with `i j`.
+
+Simplify using `only [Formalism.L2.SG.Pf.LocOrbSumPf.shM, Ecorner, Matrix.of_apply, Matrix.smul_apply, smul_eq_mul]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `hsh : Gl * Formalism.L2.SG.Pf.LocOrbSumPf.shM δ (D.mem u).A.T (D.mem u').A.T p w * Gu = Formalism.L2.SG.Pf.LocOrbSumPf.shM δ (D.mem u).A.T (D.mem u').A.T p w`. Rewrite using `[hshE, Matrix.mul_smul, Matrix.smul_mul, lo_corner_up hGl hGu]`. Establish `hmod` using `Formalism.L2.SG.Pf.LocOrbSumPf.modShift_holds δ (D.mem u).A.T (D.mem u').A.T p w a ha`.
+
+Use `⟨⟨(glOfLo p hGl, MulOpposite.op (glOfUp p hGu)), uni_of_isLo hGl, uni_of_isUp hGu⟩, ?_, ?_⟩` and prove the remaining obligations. Use `show Y0 M δ u u' w p * Formalism.L2.SG.LsDatumB.sgnP p + Formalism.L2.SG.Pf.LocOrbSumPf.shM δ (D.mem u).A.T (D.mem u').A.T p w = Gl * a.mat * Gu`. Rewrite using `[hmod, Matrix.mul_add, Matrix.add_mul, hsh, ← hY0]`. Introduce `x`. Establish `hd1 : (Y0 M δ u u' w p * Formalism.L2.SG.LsDatumB.sgnP p - modMat δ (D.mem u).A.T (D.mem u').A.T p w).map (p1 sg.e) = ((if sgF w (Fin.last D.R.rS) = Fin.last D.R.rS then -((D.mem u).A.T : (D.s.atP p).Fp) / (sg.q : (D.s.atP p).Fp) else 0) - (-(((D.mem u).A.T : ℕ) : (D.s.atP p).Fp) …`.
+
+Rewrite using `[Matrix.map_sub _ (map_sub _), hYg, glue_map_fst, Formalism.L2.SG.Pf.PCount.mm1' Zd p sg hR g hM hge hgq, sub_sub_sub_cancel_left, ← sub_smul]`. Establish `hd2 : (Y0 M δ u u' w p * Formalism.L2.SG.LsDatumB.sgnP p - modMat δ (D.mem u).A.T (D.mem u').A.T p w).map (p2 sg.e) = ((if sgF w (Fin.last D.R.rS) = Fin.last D.R.rS then ((D.mem u').A.T : (D.s.atP p).Fp) / (sg.q : (D.s.atP p).Fp) else 0) - ((((D.mem u').A.T : ℕ) : (D.s.atP p).Fp) …`. Rewrite using `[Matrix.map_sub _ (map_sub _), hYg, glue_map_snd, Formalism.L2.SG.Pf.PCount.mm2' Zd p sg hR g hM hge hgq, sub_sub_sub_cancel_left, ← sub_smul]`. Establish `hfix` using `corner_fix sg.e x.2.1 x.2.2 _ _ hd1 hd2`. Establish `hphi : phi p δ (D.mem u).A.T (D.mem u').A.T w (Y0 M δ u u' w p) = a.mat + (Y0 M δ u u' w p * Formalism.L2.SG.LsDatumB.sgnP p - modMat δ (D.mem u).A.T (D.mem u').A.T p w)` using `by show Y0 M δ u u' w p * Formalism.L2.SG.LsDatumB.sgnP p + Formalism.L2.SG.Pf.LocOrbSumPf.shM δ (D.mem u).A.T (D.mem u').A.T p w = _`.
+
+Rewrite using `[hmod]`. Normalize the expressions using the abelian group laws. Rewrite using `[hphi, smul_def, smul_def, Matrix.mul_add, Matrix.add_mul, hfix]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+
+Conclude with `add_right_cancel h`. Introduce `h`. Rewrite using `[h]`.
+-/
 theorem baseAt_typed (hA : ∀ p, Agree δ M p) (g : Loc.SplitG (M p).L) (hM : (M p).split = some g)
     (a : Loc.Pt (D.s.atP p).Ep (D.R.rS + 1)) (ha : modPt δ (D.mem u).A.T (D.mem u').A.T p w = some a) :
     BaseAt M δ u u' w p a := by
@@ -152,6 +193,11 @@ theorem baseAt_typed (hA : ∀ p, Agree δ M p) (g : Loc.SplitG (M p).L) (hM : (
     · intro h; exact add_right_cancel h
     · intro h; rw [h]
 
+/- English proof (translation)
+Break down `hM : (M p).split with _ | g` into its components or cases. Establish `h` using `Formalism.L2.SG.Pf.CountBase.baseConj_L hA u u' w p hM a ha`. Use `⟨1, ?_, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[OneMemClass.coe_one, one_smul]`. Conclude with `h`.
+
+Use `show _ ↔ _`. Rewrite using `[show phi p δ (D.mem u).A.T (D.mem u').A.T w (Y0 M δ u u' w p) = a.mat from h]`. Conclude with `baseAt_typed M δ u u' w p hA g hM a ha`.
+-/
 theorem baseAt_holds (hA : ∀ p, Agree δ M p) (a : Loc.Pt (D.s.atP p).Ep (D.R.rS + 1))
     (ha : modPt δ (D.mem u).A.T (D.mem u').A.T p w = some a) : BaseAt M δ u u' w p a := by
   rcases hM : (M p).split with _ | g

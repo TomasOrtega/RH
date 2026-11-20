@@ -17,28 +17,46 @@ namespace GlobalTheory.VacComb
 
 variable {D : D7}
 
+/- English proof (translation)
+Use extensionality with `i j`. Use `hx i j` as an intermediate fact. Simplify using `at this`. Simplify using `using this.symm`.
+-/
 theorem eq_zero_of_isHalf_zero {m n : ℕ} {x : Mx D m n} (hx : IsHalf (0 : AE D) x) : x = 0 := by
   ext i j
   have := hx i j
   simp at this
   simpa using this.symm
 
+/- English proof (translation)
+Introduce `i j`. Simplify using the standard rewrite rules.
+-/
 theorem isHalf_zero_zero {m n : ℕ} (e : AE D) : IsHalf e (0 : Mx D m n) := by
   intro i j
   simp
 
+/- English proof (translation)
+Simplify using `[symplO, hO]`.
+-/
 theorem heisenbergSymplecticForm_zero_right_eq_zero (S T : HSp D) (x : WO S T) : symplO S T x 0 = 0 := by
   simp [symplO, hO]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `w`. Simplify using `[heisO, symplOH, heisenbergSymplecticForm_zero_right_eq_zero]`.
+-/
 theorem heisO_zero_eq_self (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (f : WO S T → ℂ) : heisO ψ S T 0 f = f := by
   funext w
   simp [heisO, symplOH, heisenbergSymplecticForm_zero_right_eq_zero]
 
+/- English proof (translation)
+Unfold `GlobalTheory.SeeSaw.comb`. Rewrite using `[Finsupp.support_single_ne_zero _ one_ne_zero, Finset.sum_singleton, Finsupp.single_eq_same, one_smul]`.
+-/
 theorem heisenbergTranslationCombination_single_one_eq_translate (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (w : WO S T) (f : WO S T → ℂ) :
     GlobalTheory.SeeSaw.comb ψ S T (Finsupp.single w 1) f = heisO ψ S T w f := by
   unfold GlobalTheory.SeeSaw.comb
   rw [Finsupp.support_single_ne_zero _ one_ne_zero, Finset.sum_singleton, Finsupp.single_eq_same, one_smul]
 
+/- English proof (translation)
+Introduce `u hu`. Rewrite `hu` using `[Finsupp.support_single_ne_zero _ one_ne_zero, Finset.mem_singleton]`. Substitute `hu` using the available equality. Use extensionality with `i j`. Simplify using `[Matrix.map]`.
+-/
 theorem isFinComb_single_zero {S T : HSp D} : IsFinComb (Finsupp.single (0 : WO S T) (1 : ℂ)) := by
   intro u hu
   rw [Finsupp.support_single_ne_zero _ one_ne_zero, Finset.mem_singleton] at hu
@@ -46,6 +64,17 @@ theorem isFinComb_single_zero {S T : HSp D} : IsFinComb (Finsupp.single (0 : WO 
   ext i j
   simp [Matrix.map]
 
+/- English proof (translation)
+Use `⟨isFinComb_single_zero, ?_, ?_⟩` and prove the remaining obligations. Introduce `u hu`. Rewrite `hu` using `[Finsupp.support_single_ne_zero _ one_ne_zero, Finset.mem_singleton]`. Substitute `hu` using the available equality. Conclude with `isHalf_zero_zero _`.
+
+Establish `he : (FinDatum.vacuum G t p).e = 0` using `rfl`. Introduce `f₀ _ _`. Use `show AllSome _ _`. Rewrite using `[heisenbergTranslationCombination_single_one_eq_translate, heisO_zero_eq_self]`. Use `⟨⟨(LinearMap.proj (R := ℂ) (φ := fun _ : WO (G.pS p) (G.pT p) => ℂ) 0).smulRight f₀, ?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations.
+
+Introduce `Φ _ x hx`. Take `rfl` from `eq_zero_of_isHalf_zero hx`. Simplify using `[heisO_zero_eq_self]`. Introduce `Φ _ y hy`. Establish `hy0 : IsHalf (0 : AE D) y` using `by rw [he, map_zero] at hy; exact hy`.
+
+Take `rfl` from `eq_zero_of_isHalf_zero hy0`. Simplify using `[heisO_zero_eq_self, heisenbergSymplecticForm_zero_right_eq_zero]`. Establish `h0 : halfInd (0 : AE D) (latO (G.pS p) (G.pT p) ↑(G.latS p) ↑(G.latT p) fun _ => True) 0 = 1`. Rewrite using `[halfInd, if_pos ⟨zero_mem _, isHalf_zero_zero _⟩]`. Rewrite using `[he]`.
+
+Simplify using `[h0]`. Introduce `Tm hT`. Use `hT.vac` as an intermediate fact. Rewrite `this` using `[one_smul]`. Conclude with `this.symm`.
+-/
 theorem vacuum_isCombOf {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} (W : G.Weil) (t : T)
     (p : Pair T) : IsCombOf W (FinDatum.vacuum G t p) (Finsupp.single 0 1) := by
   refine ⟨isFinComb_single_zero, ?_, ?_⟩
@@ -78,6 +107,9 @@ end GlobalTheory.VacComb
 
 open GlobalTheory.VacComb in
 
+/- English proof (translation)
+Use `⟨0, fun _ _ _ => ⟨0, ?_⟩⟩` and prove the remaining obligations. Use `intros`. Conclude with `fun t j => vacuum_isCombOf _ t _`.
+-/
 theorem GlobalTheory.VacComb.main : Big fun {D} _ _ _ _ {T} _ _ _ _ _ _ ch => ∀ (t : T) (j : Fin D.R.m), IsCombOf ch.W (FinDatum.vacuum ch.G t (.top t j)) (Finsupp.single 0 1) := by
   refine ⟨0, fun _ _ _ => ⟨0, ?_⟩⟩
   intros

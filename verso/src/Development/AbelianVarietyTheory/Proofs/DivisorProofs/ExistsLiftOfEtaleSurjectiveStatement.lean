@@ -9,5 +9,8 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory GlobalTheory.HTLat GlobalTheory.Published.AbVarRed GlobalTheory.CechPic GlobalTheory.AV GlobalTheory.AV.AbVar
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.exists_lift_of_etale_surjective | exact GlobalTheory.exists_lift_of_etale_surjective | (intros; apply GlobalTheory.exists_lift_of_etale_surjective; all_goals assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_lift_of_etale_surjective' : ∀ (K : Type) [Field K] [IsAlgClosed K] (X Y : Scheme.{0}) (π : Y ⟶ X), Etale π → Surjective π → ∀ x : Sp K ⟶ X, ∃ y : Sp K ⟶ Y, y ≫ π = x := by
   first | exact @GlobalTheory.exists_lift_of_etale_surjective | exact GlobalTheory.exists_lift_of_etale_surjective | (intros; apply GlobalTheory.exists_lift_of_etale_surjective; all_goals assumption)

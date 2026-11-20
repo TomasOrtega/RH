@@ -8,11 +8,21 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.FrobeniusOrbi
 
 namespace GlobalTheory.Mem.StabDet
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.Ybf4.isIntegral_det L hfg hsp γ hγ`.
+-/
 theorem isIntegral_det {E : Type} [Field E] [NumberField E] {N : ℕ} (L : Submodule (𝓞 E) (Fin N → E))
     (hfg : L.FG) (hsp : Submodule.span E (L : Set (Fin N → E)) = ⊤) (γ : Matrix (Fin N) (Fin N) E)
     (hγ : ∀ v ∈ L, γ.mulVec v ∈ L) : IsIntegral ℤ γ.det :=
   _root_.UpperTheory.Reformulated.B.Ybf4.isIntegral_det L hfg hsp γ hγ
 
+/- English proof (translation)
+Use `letI := H.cmStar`. Introduce `z hu hz`. Use `H.isCMField_hostE` as an intermediate fact. Take `⟨n, hn, hp⟩` from `NumberField.Embeddings.pow_eq_one_of_norm_eq_one H.E ℂ hz (fun φ => by`. Establish `h1 : star z * z = 1` using `hu.1`.
+
+Establish `h2 : φ (star z) = starRingEnd ℂ (φ z)` using `IsCMField.complexEmbedding_complexConj H.E φ z`. Establish `h3` using `congrArg φ h1`. Rewrite `h3` using `[map_mul, h2, map_one, Complex.conj_mul']`. Establish `h4 : ‖φ z‖ ^ 2 = 1` using `by exact_mod_cast h3`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) two_ne_zero).1 h4)`.
+
+Conclude with `⟨n, hn, hp⟩`.
+-/
 theorem eq_pm_one_of_unitary {R : Ranks} (H : Formalism.BasicNotions.Host R) :
     letI := H.cmStar; ∀ z : H.E, z ∈ unitary H.E → IsIntegral ℤ z → ∃ m : ℕ, 0 < m ∧ z ^ m = 1 := by
   letI := H.cmStar

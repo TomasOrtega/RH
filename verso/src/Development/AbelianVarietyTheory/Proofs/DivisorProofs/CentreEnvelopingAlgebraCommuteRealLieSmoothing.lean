@@ -14,6 +14,11 @@ section Analytic
 
 variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V] {U : Set V}
 
+/- English proof (translation)
+Establish `hO : IsOpen (U ×ˢ U)` using `hU.prod hU`. Use `((hK.fderiv_of_isOpen hO (by simp)).clm_apply ((hw.comp contDiff_fst).prodMk (contDiff_const (c := (0 : V)))).contDiffOn).congr ?_` and prove the remaining obligations. Introduce and unpack `⟨x, y⟩ hp`. Establish `hd : DifferentiableAt ℝ K (x, y)` using `(hK.contDiffAt (hO.mem_nhds hp)).differentiableAt (by simp)`. Establish `h1 : HasFDerivAt (fun x' => K (x', y)) ((fderiv ℝ K (x, y)).comp ((ContinuousLinearMap.id ℝ V).prod 0)) x` using `hd.hasFDerivAt.comp x ((hasFDerivAt_id x).prodMk (hasFDerivAt_const y x))`.
+
+Rewrite using `[h1.fderiv]`. Simplify using the standard rewrite rules.
+-/
 theorem contDiffOn_partial (hU : IsOpen U) {K : V × V → ℂ} (hK : ContDiffOn ℝ ∞ K (U ×ˢ U))
     {w : V → V} (hw : ContDiff ℝ ∞ w) :
     ContDiffOn ℝ ∞ (fun p : V × V => fderiv ℝ (fun x => K (x, p.2)) p.1 (w p.1)) (U ×ˢ U) := by
@@ -30,6 +35,9 @@ theorem contDiffOn_partial (hU : IsOpen U) {K : V × V → ℂ} (hK : ContDiffOn
 
 variable [MeasurableSpace V] [BorelSpace V]
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.fderiv_integral_mul_kernel_apply' ν hU hα.1.continuous hα.2.1 hα.2.2 hK hx v`.
+-/
 theorem fderiv_integral_mul (ν : Measure V) [ν.IsAddHaarMeasure] (hU : IsOpen U) {α : V → ℂ}
     (hα : IsTest U α) {K : V × V → ℂ} (hK : ContDiffOn ℝ ∞ K (U ×ˢ U)) {x : V} (hx : x ∈ U) (v : V) :
     fderiv ℝ (fun x' => ∫ y, α y * K (x', y) ∂ν) x v =
@@ -53,12 +61,18 @@ open Classical in
 def lv (X : Lie E a) (h : Lie E a → ℂ) (x : Lie E a) : ℂ :=
   if x ∈ invSet E a then fderiv ℝ h x (rmul X x) else 0
 
+/- English proof (translation)
+Use `⟨((hh.1.fderiv_of_isOpen isOpen_invSet (by simp)).clm_apply (rmul X).contDiff.contDiffOn).congr fun x hx => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Simplify using `[lv, hx]`. Simplify using `[lv, hx]`.
+-/
 theorem lv_mem (X : Lie E a) {h : Lie E a → ℂ} (hh : h ∈ Cv E a) : lv X h ∈ Cv E a := by
   refine ⟨((hh.1.fderiv_of_isOpen isOpen_invSet (by simp)).clm_apply
     (rmul X).contDiff.contDiffOn).congr fun x hx => ?_, fun x hx => ?_⟩
   · simp [lv, hx]
   · simp [lv, hx]
 
+/- English proof (translation)
+The claim follows from `(hh.1.contDiffAt (isOpen_invSet.mem_nhds hx)).differentiableAt (by simp)`.
+-/
 theorem differentiableAt_of_mem {h : Lie E a → ℂ} (hh : h ∈ Cv E a) {x : Lie E a} (hx : x ∈ invSet E a) :
     DifferentiableAt ℝ h x := (hh.1.contDiffAt (isOpen_invSet.mem_nhds hx)).differentiableAt (by simp)
 
@@ -79,6 +93,9 @@ def chartL (g : GA E a) : Sm E a →ₗ[ℂ] Cv E a where
     by_cases h : IsUnit (Matrix.of x) <;> simp [chart, h]
   map_smul' c φ := Subtype.ext <| funext fun x => by simp [chart]
 
+/- English proof (translation)
+The claim follows from `Subtype.ext <| funext fun x => by by_cases hx : x ∈ invSet E a · change chart (lieD X φ.1) g x = lv X (chart φ.1 g) x rw [lv, if_pos hx] exact chart_lieD φ.2 X g hx · change chart (lieD X φ.1) g x = lv X (chart φ.1 g) x rw [lv, if_neg hx] simp [chart, show ¬ IsUnit (Matrix.of x) …`.
+-/
 theorem chartL_lie (g : GA E a) (X : Lie E a) (φ : Sm E a) :
     chartL g (lie E a X φ) = Lop X (chartL g φ) := Subtype.ext <| funext fun x => by
   by_cases hx : x ∈ invSet E a
@@ -105,6 +122,11 @@ def Good (ν : Measure (Lie E a)) (D : Module.End ℂ (Cv E a)) : Prop :=
 
 variable (ν : Measure (Lie E a)) [ν.IsAddHaarMeasure]
 
+/- English proof (translation)
+Distinguish the cases in `hx : x ∈ invSet E a`. Use `hα.integrable_mul ν isOpen_invSet ?_` and prove the remaining obligations. Conclude with `hG.continuousOn.comp (Continuous.prodMk_right x).continuousOn fun y hy => ⟨hx, hy⟩`. Establish `: (fun y => α y * (G y).1 x) = 0` using `funext fun y => by simp [(G y).2.2 x hx]`. Rewrite using `[this]`.
+
+Conclude with `integrable_zero _ _ _`.
+-/
 theorem integrable_fam {G : Lie E a → Cv E a} (hG : JS G) {α : Lie E a → ℂ} (hα : IsTest (invSet E a) α)
     (x : Lie E a) : Integrable (fun y => α y * (G y).1 x) ν := by
   by_cases hx : x ∈ invSet E a
@@ -113,6 +135,11 @@ theorem integrable_fam {G : Lie E a → Cv E a} (hG : JS G) {α : Lie E a → �
   · have : (fun y => α y * (G y).1 x) = 0 := funext fun y => by simp [(G y).2.2 x hx]
     rw [this]; exact integrable_zero _ _ _
 
+/- English proof (translation)
+Introduce `G hG`. Use `⟨?_, fun α hα hI => funext fun x => ?_⟩` and prove the remaining obligations. Use `(contDiffOn_partial isOpen_invSet hG (rmul X).contDiff).congr fun p hp => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `lv X (G p.2).1 p.1 = _`. Rewrite using `[lv, if_pos hp.1]`.
+
+Express the relevant statement in the definitionally equal form `lv X _ x = ∫ y, α y * lv X (G y).1 x ∂ν`. Distinguish the cases in `hx : x ∈ invSet E a`. Simplify using `only [lv, if_pos hx]`. Conclude with `fderiv_integral_mul ν isOpen_invSet hα hG hx _`. Simplify using `[lv, hx]`.
+-/
 theorem good_lop (X : Lie E a) : Good ν (Lop X) := by
   intro G hG
   refine ⟨?_, fun α hα hI => funext fun x => ?_⟩
@@ -125,6 +152,11 @@ theorem good_lop (X : Lie E a) : Good ν (Lop X) := by
       exact fderiv_integral_mul ν isOpen_invSet hα hG hx _
     · simp [lv, hx]
 
+/- English proof (translation)
+Introduce `G hG`. Use `⟨?_, fun α hα hI => funext fun x => ?_⟩` and prove the remaining obligations. Conclude with `(hG.const_smul c).congr fun p _ => rfl`. Simplify using `only [Module.algebraMap_end_apply, Submodule.coe_smul, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[← integral_const_mul]`.
+
+Conclude with `integral_congr_ae (.of_forall fun y => by simp only; ring)`.
+-/
 theorem good_algebraMap (c : ℂ) : Good ν (algebraMap ℂ (Module.End ℂ (Cv E a)) c) := by
   intro G hG
   refine ⟨?_, fun α hα hI => funext fun x => ?_⟩
@@ -133,6 +165,11 @@ theorem good_algebraMap (c : ℂ) : Good ν (algebraMap ℂ (Module.End ℂ (Cv 
     rw [← integral_const_mul]
     exact integral_congr_ae (.of_forall fun y => by simp only; ring)
 
+/- English proof (translation)
+Introduce `G hG`. Take `⟨j1, i1⟩` from `h G hG`. Take `⟨j2, i2⟩` from `h' G hG`. Use `⟨(j1.add j2).congr fun p _ => rfl, fun α hα hI => funext fun x => ?_⟩` and prove the remaining obligations. Establish `e1` using `congrFun (i1 α hα hI) x`.
+
+Establish `e2` using `congrFun (i2 α hα hI) x`. Simplify using `only [LinearMap.add_apply, Submodule.coe_add, Pi.add_apply, mul_add]`. Rewrite using `[e1, e2, integral_add (integrable_fam ν j1 hα x) (integrable_fam ν j2 hα x)]`.
+-/
 theorem good_add {D D' : Module.End ℂ (Cv E a)} (h : Good ν D) (h' : Good ν D') : Good ν (D + D') := by
   intro G hG
   obtain ⟨j1, i1⟩ := h G hG
@@ -143,6 +180,11 @@ theorem good_add {D D' : Module.End ℂ (Cv E a)} (h : Good ν D) (h' : Good ν 
   simp only [LinearMap.add_apply, Submodule.coe_add, Pi.add_apply, mul_add]
   rw [e1, e2, integral_add (integrable_fam ν j1 hα x) (integrable_fam ν j2 hα x)]
 
+/- English proof (translation)
+Introduce `G hG`. Take `⟨j2, i2⟩` from `h' G hG`. Take `⟨j1, i1⟩` from `h _ j2`. Use `⟨j1, fun α hα hI => ?_⟩` and prove the remaining obligations. Establish `e2` using `i2 α hα hI`.
+
+Establish `hI' : (fun x => ∫ y, α y * (D' (G y)).1 x ∂ν) ∈ Cv E a` using `e2 ▸ (D' ⟨_, hI⟩).2`. Establish `e3 : D' ⟨_, hI⟩ = ⟨_, hI'⟩` using `Subtype.ext e2`. Express the relevant statement in the definitionally equal form `(D (D' ⟨_, hI⟩)).1 = _`. Rewrite using `[e3]`. Conclude with `i1 α hα hI'`.
+-/
 theorem good_mul {D D' : Module.End ℂ (Cv E a)} (h : Good ν D) (h' : Good ν D') : Good ν (D * D') := by
   intro G hG
   obtain ⟨j2, i2⟩ := h' G hG
@@ -155,6 +197,13 @@ theorem good_mul {D D' : Module.End ℂ (Cv E a)} (h : Good ν D) (h' : Good ν 
   rw [e3]
   exact i1 α hα hI'
 
+/- English proof (translation)
+Proceed by induction on `hD using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Take `⟨X, rfl⟩` from `hx`. Conclude with `⟨Lop X, good_lop ν X, fun g φ => chartL_lie g X φ⟩`. Consider the case `algebraMap c`.
+
+Conclude with `⟨algebraMap ℂ _ c, good_algebraMap ν c, fun g φ => by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨D1, g1, c1⟩` from `hx`. Take `⟨D2, g2, c2⟩` from `hy`. Conclude with `⟨D1 + D2, good_add ν g1 g2, fun g φ => by simp [c1, c2]⟩`.
+
+Consider the case `mul x y _ _ hx hy`. Take `⟨D1, g1, c1⟩` from `hx`. Take `⟨D2, g2, c2⟩` from `hy`. Conclude with `⟨D1 * D2, good_mul ν g1 g2, fun g φ => by simp [Module.End.mul_apply, c1, c2]⟩`.
+-/
 theorem exists_good {D : Module.End ℂ (Sm E a)} (hD : D ∈ Algebra.adjoin ℂ (Set.range (lie E a))) :
     ∃ D', Good ν D' ∧ ∀ g φ, chartL g (D φ) = D' (chartL g φ) := by
   induction hD using Algebra.adjoin_induction with
@@ -172,11 +221,19 @@ theorem exists_good {D : Module.End ℂ (Sm E a)} (hD : D ∈ Algebra.adjoin ℂ
     obtain ⟨D2, g2, c2⟩ := hy
     exact ⟨D1 * D2, good_mul ν g1 g2, fun g φ => by simp [Module.End.mul_apply, c1, c2]⟩
 
+/- English proof (translation)
+Unfold `Eop`. Apply the tactic sequence `refine Subalgebra.smul_mem _ (Subalgebra.sub_mem _ ?_ (Subalgebra.smul_mem _ ?_ _)) _ <;>`. Rewrite using `[lieS_apply]`. Conclude with `Algebra.subset_adjoin ⟨_, rfl⟩`.
+-/
 theorem Eop_mem (τ : E →+* ℂ) (i j : Fin a) : Eop (a := a) τ i j ∈ Algebra.adjoin ℂ (Set.range (lie E a)) := by
   unfold Eop
   refine Subalgebra.smul_mem _ (Subalgebra.sub_mem _ ?_ (Subalgebra.smul_mem _ ?_ _)) _ <;>
     · rw [lieS_apply]; exact Algebra.subset_adjoin ⟨_, rfl⟩
 
+/- English proof (translation)
+Set `A` to `Algebra.adjoin ℂ (Set.range (lie E a))`. Set `X : Fin a → Fin a → A` to `fun i j => ⟨Eop τ i j, Eop_mem τ i j⟩`. Establish `e` using `map_qdet A.val X (u + ((a : ℂ) - 1) / 2)`. Rewrite `*` using `[cap, show (fun i j => A.val (X i j)) = Eop τ from rfl]`. Rewrite using `[← e]`.
+
+Conclude with `(Formalism.REAL.qdet X _).2`.
+-/
 theorem cap_mem (τ : E →+* ℂ) (u : ℂ) : cap (a := a) τ u ∈ Algebra.adjoin ℂ (Set.range (lie E a)) := by
   let A := Algebra.adjoin ℂ (Set.range (lie E a))
   let X : Fin a → Fin a → A := fun i j => ⟨Eop τ i j, Eop_mem τ i j⟩
@@ -192,6 +249,9 @@ namespace GlobalTheory.CentreSmooth
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 
 omit [IsTotallyComplex E] in
+/- English proof (translation)
+Introduce `h`. Establish `h' : IsUnit (Matrix.of x * Matrix.of y)` using `h`. Rewrite `h'` using `[Matrix.isUnit_iff_isUnit_det, Matrix.det_mul]`. Conclude with `hx ((Matrix.isUnit_iff_isUnit_det _).2 (isUnit_of_mul_isUnit_left h'))`.
+-/
 theorem not_isUnit_rmul_left {x : Lie E a} (hx : x ∉ invSet E a) (y : Lie E a) : rmul y x ∉ invSet E a := by
   intro h
   have h' : IsUnit (Matrix.of x * Matrix.of y) := h
@@ -199,6 +259,9 @@ theorem not_isUnit_rmul_left {x : Lie E a} (hx : x ∉ invSet E a) (y : Lie E a)
   exact hx ((Matrix.isUnit_iff_isUnit_det _).2 (isUnit_of_mul_isUnit_left h'))
 
 omit [IsTotallyComplex E] in
+/- English proof (translation)
+Introduce `h`. Establish `h' : IsUnit (Matrix.of x * Matrix.of y)` using `h`. Rewrite `h'` using `[Matrix.isUnit_iff_isUnit_det, Matrix.det_mul]`. Conclude with `hy ((Matrix.isUnit_iff_isUnit_det _).2 (isUnit_of_mul_isUnit_right h'))`.
+-/
 theorem not_isUnit_rmul_right (x : Lie E a) {y : Lie E a} (hy : y ∉ invSet E a) : rmul y x ∉ invSet E a := by
   intro h
   have h' : IsUnit (Matrix.of x * Matrix.of y) := h
@@ -206,10 +269,16 @@ theorem not_isUnit_rmul_right (x : Lie E a) {y : Lie E a} (hy : y ∉ invSet E a
   exact hy ((Matrix.isUnit_iff_isUnit_det _).2 (isUnit_of_mul_isUnit_right h'))
 
 omit [IsTotallyComplex E] in
+/- English proof (translation)
+The claim follows from `IsUnit.mul hx hy`.
+-/
 theorem isUnit_rmul {x y : Lie E a} (hx : x ∈ invSet E a) (hy : y ∈ invSet E a) : rmul y x ∈ invSet E a :=
   IsUnit.mul hx hy
 
 omit [IsTotallyComplex E] in
+/- English proof (translation)
+Use `contDiff_pi.2 fun i => contDiff_pi.2 fun j => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `ContDiff ℝ ∞ fun p : Lie E a × Lie E a => ∑ k, p.1 i k * p.2 k j`. Use `ContDiff.sum fun k _ => ContDiff.mul ?_ ?_` and prove the remaining obligations. Conclude with `(contDiff_apply ℝ _ k).comp ((contDiff_apply ℝ _ i).comp contDiff_fst)`. Conclude with `(contDiff_apply ℝ _ j).comp ((contDiff_apply ℝ _ k).comp contDiff_snd)`.
+-/
 theorem contDiff_mulL : ContDiff ℝ ∞ fun p : Lie E a × Lie E a => rmul p.2 p.1 := by
   refine contDiff_pi.2 fun i => contDiff_pi.2 fun j => ?_
   change ContDiff ℝ ∞ fun p : Lie E a × Lie E a => ∑ k, p.1 i k * p.2 k j
@@ -232,14 +301,23 @@ def transFam (φ : Sm E a) (g : GA E a) (y : Lie E a) : Cv E a :=
       rw [e]; exact contDiffOn_const,
     fun x hx => by simp [chart, show ¬ IsUnit (Matrix.of (rmul y x)) from not_isUnit_rmul_left hx y]⟩
 
+/- English proof (translation)
+The claim follows from `(φ.2 g).comp contDiff_mulL.contDiffOn fun p hp => isUnit_rmul hp.1 hp.2`.
+-/
 theorem js_transFam (φ : Sm E a) (g : GA E a) : JS (transFam φ g) :=
   (φ.2 g).comp contDiff_mulL.contDiffOn fun p hp => isUnit_rmul hp.1 hp.2
 
+/- English proof (translation)
+Establish `e` using `chart_val φ g 1`. Rewrite `e` using `[map_one, mul_one]`. Conclude with `e`.
+-/
 theorem chart_one (φ : GA E a → ℂ) (g : GA E a) : chart φ g (oneL E a) = φ g := by
   have e := chart_val φ g 1
   rw [map_one, mul_one] at e
   exact e
 
+/- English proof (translation)
+The claim follows from `funext fun x => by by_cases hx : x ∈ invSet E a · obtain ⟨u, hu⟩ := id hx obtain rfl : x = toL u.val := hu.symm rw [chart_val, smoothing, chart_mul] rfl · have h1 : ∀ y, (transFam φ g y).1 x = 0 := fun y => (transFam φ g y).2.2 x hx simp [chart, show ¬ IsUnit (Matrix.of x) from h …`.
+-/
 theorem chart_smoothing (ν : Measure (Lie E a)) (α : Lie E a → ℂ) (φ : Sm E a) (g : GA E a) :
     chart (smoothing ν α φ.1) g = fun x => ∫ y, α y * (transFam φ g y).1 x ∂ν := funext fun x => by
   by_cases hx : x ∈ invSet E a
@@ -250,6 +328,9 @@ theorem chart_smoothing (ν : Measure (Lie E a)) (α : Lie E a → ℂ) (φ : Sm
   · have h1 : ∀ y, (transFam φ g y).1 x = 0 := fun y => (transFam φ g y).2.2 x hx
     simp [chart, show ¬ IsUnit (Matrix.of x) from hx, h1]
 
+/- English proof (translation)
+The claim follows from `Subtype.ext <| by change (fun x => chart φ.1 g (rmul (toL w.val) x)) = chart (fun x => φ.1 (x * infGL E a w)) g rw [chart_rt_inf] rfl`.
+-/
 theorem transFam_unit (φ : Sm E a) (g : GA E a) (w : GL (Fin a) (Cinf E)) :
     transFam φ g (toL w.val) = chartL g (rt E a (infGL E a w) φ) := Subtype.ext <| by
   change (fun x => chart φ.1 g (rmul (toL w.val) x)) = chart (fun x => φ.1 (x * infGL E a w)) g
@@ -258,6 +339,17 @@ theorem transFam_unit (φ : Sm E a) (g : GA E a) (w : GL (Fin a) (Cinf E)) :
 
 variable (ν : Measure (Lie E a)) [ν.IsAddHaarMeasure]
 
+/- English proof (translation)
+Take `⟨D, hD, hc⟩` from `exists_good ν (cap_mem (a := a) τ u)`. Use function extensionality and compare the values at `g`. Take `⟨-, hi⟩` from `hD _ (js_transFam ψ g)`. Establish `hI : (fun x => ∫ y, α y * (transFam ψ g y).1 x ∂ν) ∈ Cv E a` using `chart_smoothing ν α ψ g ▸ (chartL g ⟨smoothing ν α ψ.1, h⟩).2`. Establish `e1 : chartL g ⟨smoothing ν α ψ.1, h⟩ = ⟨_, hI⟩` using `Subtype.ext (chart_smoothing ν α ψ g)`.
+
+Establish `e2` using `congrFun (hi α hα hI) (oneL E a)`. Rewrite `e2` using `[← e1, ← hc]`. Express the relevant statement in the definitionally equal form `chart (cap τ u ⟨smoothing ν α ψ.1, h⟩).1 g (oneL E a) = _ at e2`. Rewrite `e2` using `[chart_one]`. Rewrite using `[e2, smoothing]`.
+
+Use `integral_congr_ae (.of_forall fun y => ?_)` and prove the remaining obligations. Distinguish the cases in `hy : y ∈ invSet E a`. Take `⟨w, hw⟩` from `id hy`. Take `rfl : y = toL w.val` from `hw.symm`. Simplify using `only`.
+
+Establish `ec : cap τ u (rt E a (infGL E a w) ψ) = rt E a (infGL E a w) (cap τ u ψ)`. Rewrite using `[← Module.End.mul_apply, (GlobalTheory.CapAdInv.cap_commute_rt_infGL E a τ u w).eq, Module.End.mul_apply]`. Rewrite using `[transFam_unit, ← hc, ec]`. Express the relevant statement in the definitionally equal form `α _ * chart (rt E a (infGL E a w) (cap τ u ψ)).1 g (oneL E a) = _`. Rewrite using `[chart_one, rt_apply, chart_val]`.
+
+Establish `: α y = 0` using `image_eq_zero_of_notMem_tsupport fun h' => hy (hα.2.2 h')`. Simplify using `[this]`.
+-/
 theorem cap_smoothing {α : Lie E a → ℂ} (hα : IsTest (invSet E a) α) (ψ : Sm E a)
     (h : smoothing ν α ψ.1 ∈ Sm E a) (τ : E →+* ℂ) (u : ℂ) :
     (cap τ u ⟨smoothing ν α ψ.1, h⟩).1 = smoothing ν α (cap τ u ψ).1 := by
@@ -291,6 +383,9 @@ namespace GlobalTheory.CentreSmooth
 
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 
+/- English proof (translation)
+The claim follows from `funext fun x => by refine (integral_congr_ae (.of_forall fun y => ?_)).trans (integral_add (hα.integrable_mul ν isOpen_invSet (φ.2 x).continuousOn) (hα.integrable_mul ν isOpen_invSet (ψ.2 x).continuousOn)) by_cases h : IsUnit (Matrix.of y) <;> simp [chart, h, mul_add]`.
+-/
 theorem smoothing_add (ν : Measure (Lie E a)) [ν.IsAddHaarMeasure] {α : Lie E a → ℂ}
     (hα : IsTest (invSet E a) α) (φ ψ : Sm E a) :
     smoothing ν α (φ + ψ).1 = smoothing ν α φ.1 + smoothing ν α ψ.1 := funext fun x => by
@@ -298,11 +393,21 @@ theorem smoothing_add (ν : Measure (Lie E a)) [ν.IsAddHaarMeasure] {α : Lie E
     (hα.integrable_mul ν isOpen_invSet (φ.2 x).continuousOn) (hα.integrable_mul ν isOpen_invSet (ψ.2 x).continuousOn))
   by_cases h : IsUnit (Matrix.of y) <;> simp [chart, h, mul_add]
 
+/- English proof (translation)
+The claim follows from `funext fun x => by refine (integral_congr_ae (.of_forall fun y => ?_)).trans (integral_const_mul c _) by_cases h : IsUnit (Matrix.of y) <;> simp [chart, h, mul_left_comm]`.
+-/
 theorem smoothing_smul (ν : Measure (Lie E a)) (α : Lie E a → ℂ) (c : ℂ) (φ : Sm E a) :
     smoothing ν α (c • φ).1 = c • smoothing ν α φ.1 := funext fun x => by
   refine (integral_congr_ae (.of_forall fun y => ?_)).trans (integral_const_mul c _)
   by_cases h : IsUnit (Matrix.of y) <;> simp [chart, h, mul_left_comm]
 
+/- English proof (translation)
+Introduce `E _ _ _ a ν _ α hα ψ h z hz`. Proceed by induction on `hz using Algebra.adjoin_induction generalizing ψ with`. Consider the case `mem x hx`. Take `⟨τ, u, rfl⟩` from `hx`. Conclude with `cap_smoothing ν hα ψ h τ u`.
+
+Consider the case `algebraMap c`. Simplify using `only [Module.algebraMap_end_apply, Submodule.coe_smul]`. Conclude with `(smoothing_smul ν α c ψ).symm`. Consider the case `add x y _ _ hx hy`. Rewrite using `[LinearMap.add_apply, Submodule.coe_add, hx ψ h, hy ψ h, LinearMap.add_apply, smoothing_add ν hα]`.
+
+Consider the case `mul x y _ _ hx hy`. Establish `h' : smoothing ν α (y ψ).1 ∈ Sm E a` using `hy ψ h ▸ (y ⟨_, h⟩).2`. Establish `e : y ⟨_, h⟩ = ⟨_, h'⟩` using `Subtype.ext (hy ψ h)`. Rewrite using `[Module.End.mul_apply, e, hx _ h', Module.End.mul_apply]`.
+-/
 theorem zalg_smoothing : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (ν : Measure (Lie E a))
     [ν.IsAddHaarMeasure] (α : Lie E a → ℂ), IsTest (invSet E a) α → ∀ (ψ : Sm E a) (h : smoothing ν α ψ.1 ∈ Sm E a),
     ∀ z ∈ Zalg E a, (z ⟨smoothing ν α ψ.1, h⟩).1 = smoothing ν α (z ψ).1 := by

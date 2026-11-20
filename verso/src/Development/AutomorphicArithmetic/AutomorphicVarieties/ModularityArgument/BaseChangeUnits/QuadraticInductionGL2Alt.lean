@@ -52,6 +52,9 @@ def IndWeakQd : Prop :=
   ∀ (E : Type) [Field E] [NumberField E] [IsTotallyReal E], Module.finrank ℚ E = 2 → ∀ π : TR.CuspSub E 2, MixWt π → CentQ π →
     ∃ P : TR.CuspSub ℚ (2 * 2), IndFin P π
 
+/- English proof (translation)
+Introduce `E _ _ _ h2 π hm _` and use `h E h2 π hm`.
+-/
 theorem IndWeakQ.d (h : IndWeakQ) : IndWeakQd := fun E _ _ _ h2 π hm _ => h E h2 π hm
 
 def InfOfL : Prop :=

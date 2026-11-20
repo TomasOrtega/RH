@@ -24,18 +24,32 @@ variable {V V' : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] [FiniteD
 
 def cpiece (S : Set G) (n : ℕ) : Set G := CompactExhaustion.choice G n ∩ S
 
+/- English proof (translation)
+The claim follows from `((CompactExhaustion.choice G).isCompact n).inter_right hS`.
+-/
 theorem cpiece_compact {S : Set G} (hS : IsClosed S) (n : ℕ) : IsCompact (cpiece S n) :=
   ((CompactExhaustion.choice G).isCompact n).inter_right hS
 
+/- English proof (translation)
+Introduce `m n hmn`. Conclude with `Set.inter_subset_inter_left _ ((CompactExhaustion.choice G).subset hmn)`.
+-/
 theorem cpiece_mono (S : Set G) : Monotone (cpiece S) := by
   intro m n hmn
   exact Set.inter_subset_inter_left _ ((CompactExhaustion.choice G).subset hmn)
 
+/- English proof (translation)
+Introduce `x hx`. Take `⟨n, hn⟩` from `(CompactExhaustion.choice G).exists_mem x`. Conclude with `Set.mem_iUnion.2 ⟨n, hn, hx⟩`.
+-/
 theorem cpiece_cover (S : Set G) : S ⊆ ⋃ n, cpiece S n := by
   intro x hx
   obtain ⟨n, hn⟩ := (CompactExhaustion.choice G).exists_mem x
   exact Set.mem_iUnion.2 ⟨n, hn, hx⟩
 
+/- English proof (translation)
+Take `⟨-, -, hmul, hinv, -, -, -, -, -, hr, -⟩` from `hS`. Use `⟨hΩm.preimage (measurable_mul_const s⁻¹), fun v hv => ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : v * s⁻¹ * s ∈ S` using `hmul _ (@hΩS (v * s⁻¹) hv) _ hs`. Simplify using `using h1`. Rewrite using `[← Measure.map_apply (measurable_mul_const s⁻¹) hΩm, hr _ (hinv _ hs)]`.
+
+Conclude with `hΩt`.
+-/
 theorem translate_props {μS : Measure G} {S : Set G} (hS : IsHaarSub S μS) {Ω : Set G} (hΩm : MeasurableSet Ω)
     (hΩS : Ω ⊆ S) (hΩt : μS Ω < ⊤) {s : G} (hs : s ∈ S) :
     MeasurableSet ((fun v => v * s⁻¹) ⁻¹' Ω) ∧ (fun v => v * s⁻¹) ⁻¹' Ω ⊆ S ∧
@@ -47,10 +61,16 @@ theorem translate_props {μS : Measure G} {S : Set G} (hS : IsHaarSub S μS) {Ω
   · rw [← Measure.map_apply (measurable_mul_const s⁻¹) hΩm, hr _ (hinv _ hs)]
     exact hΩt
 
+/- English proof (translation)
+Unfold `Formalism.L2.SG.Pf.EnergyAbs.hsA`. Conclude with `Finset.sum_nonneg fun i _ => sq_nonneg _`.
+-/
 private theorem hilbertSchmidtSq_nonneg_aux_lemma (A : V' →L[ℂ] V) : 0 ≤ Formalism.L2.SG.Pf.EnergyAbs.hsA A := by
   unfold Formalism.L2.SG.Pf.EnergyAbs.hsA
   exact Finset.sum_nonneg fun i _ => sq_nonneg _
 
+/- English proof (translation)
+Establish `hB` using `hilbertSchmidtSq_nonneg_aux_lemma B`. Establish `htri` using `sqrt_hsA_le_add_sub A B`. Establish `hmax : max (Real.sqrt (Formalism.L2.SG.Pf.EnergyAbs.hsA A) - ε) 0 ≤ Real.sqrt (Formalism.L2.SG.Pf.EnergyAbs.hsA B)` using `max_le (by linarith) (Real.sqrt_nonneg _)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem sq_max_le_hilbertSchmidtSq_lemma_2 (A B : V' →L[ℂ] V) {ε : ℝ}
     (h : Real.sqrt (Formalism.L2.SG.Pf.EnergyAbs.hsA (A - B)) ≤ ε) :
     max (Real.sqrt (Formalism.L2.SG.Pf.EnergyAbs.hsA A) - ε) 0 ^ 2 ≤ Formalism.L2.SG.Pf.EnergyAbs.hsA B := by
@@ -62,6 +82,19 @@ private theorem sq_max_le_hilbertSchmidtSq_lemma_2 (A B : V' →L[ℂ] V) {ε : 
         pow_le_pow_left₀ (le_max_right _ _) hmax 2
     _ = Formalism.L2.SG.Pf.EnergyAbs.hsA B := Real.sq_sqrt hB
 
+/- English proof (translation)
+Establish `hS₀` using `hS`. Establish `hS'₀` using `hS'`. Take `⟨hSc, -, -, hinvS, hσS, -, h0S, -, -, -, hinvmS⟩` from `hS₀`. Take `⟨hSc', -, -, hinvS', hσS', -, h0S', -, -, -, hinvmS'⟩` from `hS'₀`. Establish `: SigmaFinite μS` using `hσS`.
+
+Establish `: SigmaFinite μS'` using `hσS'`. Establish `hm : μ = (ν.prod μS).map φinv` using `(quot_map_inv hq) hinvmS`. Establish `hm' : μ = (ν'.prod μS').map φinv` using `(quot_map_inv hq') hinvmS'`. Use `liminf_lower hinvmS hinvmS' Ω Ω' (fun n => (hΩ n).2.2.1) (fun n => (hΩ n).2.2.2) (fun n => (hΩ' n).2.2.1) (fun n => (hΩ' n).2.2.2) (fun n s s' => ENNReal.ofReal (Formalism.L2.SG.Pf.EnergyAbs.hsA (Xop μS ν μS' ν' σ d w W W' (Ω n) (Ω' n) (s * γ * s'⁻¹)))) (fun n => ?_) (Formalism.L …` and prove the remaining obligations. Conclude with `ENNReal.measurable_ofReal.comp ((hXc n).measurable.comp ((continuous_fst.mul continuous_const).mul continuous_snd.inv).measurable)`.
+
+Take `⟨n₀, hn₀⟩` from `approx_OO hσ hW hW' hinvS hinvS' h0S h0S' hm hm' γ hB (cpiece S) (cpiece S') (fun n => (cpiece_compact hSc n).isClosed.measurableSet) (fun n => (cpiece_compact hSc' n).isClosed.measurableSet) (cpiece_mono S) (cpiece_mono S') (cpiece_cover S) (cpiece_cover S') ε hε`. Use `⟨cpiece S n₀, cpiece S' n₀, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `tendsto_ratio_ennreal (fun n => (hΩ n).2.2.1) (fun n => (hΩ n).2.2.2) (fun n => measure_mono fun t ht => (show t ∈ Ω n ∧ _ from ht).1) ?_` and prove the remaining obligations. Conclude with `hF _ (cpiece_compact hSc n₀) Set.inter_subset_right`. Use `tendsto_ratio_ennreal (fun n => (hΩ' n).2.2.1) (fun n => (hΩ' n).2.2.2) (fun n => measure_mono fun t ht => (show t ∈ Ω' n ∧ _ from ht).1) ?_` and prove the remaining obligations.
+
+Conclude with `hF' _ (cpiece_compact hSc' n₀) Set.inter_subset_right`. Introduce `n s s' hs hs'`. Establish `hs2 : s⁻¹ ∈ Ω n ∧ ∀ k ∈ cpiece S n₀, k * s⁻¹ ∈ Ω n` using `hs`. Establish `hs2' : s'⁻¹ ∈ Ω' n ∧ ∀ k ∈ cpiece S' n₀, k * s'⁻¹ ∈ Ω' n` using `hs'`. Establish `hsS : s ∈ S` using `by simpa using hinvS _ ((hΩ n).2.1 hs2.1)`.
+
+Establish `hsS' : s' ∈ S'` using `by simpa using hinvS' _ ((hΩ' n).2.1 hs2'.1)`. Take `⟨hAm, hAS, hAt⟩` from `translate_props hS (hΩ n).1 (hΩ n).2.1 (hΩ n).2.2.2 hsS`. Take `⟨hAm', hAS', hAt'⟩` from `translate_props hS' (hΩ' n).1 (hΩ' n).2.1 (hΩ' n).2.2.2 hsS'`. Establish `happrox` using `hn₀ _ _ hAm hAS hAt hAm' hAS' hAt' (fun k hk => hs2.2 k hk) (fun k hk => hs2'.2 k hk)`. Rewrite using `[hsA_Xop_translate hσ hS hS' hW hW' (hΩ n).1 (hΩ n).2.1 (hΩ n).2.2.2 (hΩ' n).1 (hΩ' n).2.1 (hΩ' n).2.2.2 hsS hsS' γ]`.
+
+Conclude with `ENNReal.ofReal_le_ofReal (sq_max_le_hilbertSchmidtSq_lemma_2 _ _ happrox)`.
+-/
 theorem point_lower {μ : Measure G} [μ.IsHaarMeasure] {σ : G → (HH →L[ℂ] HH)} (hσ : IsUnitRep σ) {d : ℝ}
     {w : HH} {S S' : Set G} {μS μS' ν ν' : Measure G} {τ : G → (V →L[ℂ] V)} {τ' : G → (V' →L[ℂ] V')}
     {W : G → V} {W' : G → V'} [SFinite ν] [SFinite ν'] (hS : IsHaarSub S μS) (hS' : IsHaarSub S' μS')

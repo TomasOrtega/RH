@@ -1757,6 +1757,11 @@ def dualGL {H R : Type} [Group H] [CommRing R] {n : ℕ} (ρ : H →* GL (Fin n)
     ext1
     simp only [map_mul, _root_.mul_inv_rev, Units.val_mul, Matrix.transpose_mul]
 
+/- English proof (translation)
+Unfold `GeoMatch FrobMatch`. Establish `h : ∀ σ : G F Ω, ((dualGL ρ σ : GL (Fin n) (Qbar l)) : Matrix (Fin n) (Fin n) (Qbar l)).charpoly = ((ρ σ⁻¹ : GL (Fin n) (Qbar l)) : Matrix (Fin n) (Fin n) (Qbar l)).charpoly`. Introduce `σ`. Use `show (Matrix.transpose (((ρ σ)⁻¹ : GL (Fin n) (Qbar l)) : Matrix (Fin n) (Fin n) (Qbar l))).charpoly = _`. Rewrite using `[Matrix.charpoly_transpose, map_inv]`.
+
+Simplify using `only [h]`.
+-/
 theorem geoMatch_iff_frobMatch_dual {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω]
     {n l : ℕ} [Fact l.Prime] (ρ : G F Ω →* GL (Fin n) (Qbar l)) (ι : Qbar l →+* ℂ)
     (P : HeightOneSpectrum (𝓞 F) → ℂ[X]) : GeoMatch ρ ι P ↔ FrobMatch (dualGL ρ) ι P := by

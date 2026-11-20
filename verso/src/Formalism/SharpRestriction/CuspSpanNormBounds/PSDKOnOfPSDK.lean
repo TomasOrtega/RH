@@ -19,6 +19,9 @@ def FrameAx (D : D7) (δ : D.host.E) (L : LatticeDataWithDual D) (B : D.what₂.
 def PsiAx (D : D7) (δ : D.host.E) : Prop :=
   δ ≠ 0 ∧ ((∀ v, (plEmb D v δ).re = 0) ∨ ∀ v, (plEmb D v δ).im = 0)
 
+/- English proof (translation)
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem k_le_nS (D : D7) : D.R.k ≤ 2 * D.R.rS + D.R.k + 1 := by omega
 
 def Nlet (D : D7) (Kst : ℕ) : ℝ := 4 * (Kst : ℝ) * ((D.R.rS : ℝ) + 1)
@@ -40,6 +43,9 @@ def PSDKOn {α : Type*} (S : Set α) (K : α → α → ℂ) : Prop :=
 
 def KLEOn {α : Type*} (S : Set α) (K L : α → α → ℂ) : Prop := PSDKOn S (fun p q => L p q - K p q)
 
+/- English proof (translation)
+Introduce `X a _` and use `h X a`.
+-/
 theorem PSDKOn_of_PSDK {α : Type*} {K : α → α → ℂ} (h : PSDK K) (S : Set α) : PSDKOn S K := fun X a _ => h X a
 
 def ArithAxF (L : LatticeDataWithDual D) (Kd : KernelData D) : Prop :=
@@ -66,6 +72,9 @@ def ArithAxF (L : LatticeDataWithDual D) (Kd : KernelData D) : Prop :=
 
 variable {D}
 
+/- English proof (translation)
+Take `⟨h0, h1, h2, h3, h4⟩` from `h`. Use `⟨h0, h1, h2, h3, fun Sg => ⟨Kd.Th, fun j s hs hjs => ?_⟩⟩` and prove the remaining obligations. Take `⟨a, b, c, d⟩` from `h4 j s hs hjs`. Conclude with `⟨fun t ht _ => PSDKOn_of_PSDK (a t ht) _, fun t l hl _ _ _ _ => by rw [b t l hl], fun t => PSDKOn_of_PSDK (c t) _, fun X hX => PSDKOn_of_PSDK (d X hX) _⟩`.
+-/
 theorem _root_.Formalism.MainNotions.S.ArithAx.toF {L : LatticeDataWithDual D} {Kd : KernelData D} (h : ArithAx D L Kd) : ArithAxF D L Kd := by
   obtain ⟨h0, h1, h2, h3, h4⟩ := h
   refine ⟨h0, h1, h2, h3, fun Sg => ⟨Kd.Th, fun j s hs hjs => ?_⟩⟩

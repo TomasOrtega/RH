@@ -5,6 +5,31 @@ open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC
 
 namespace GlobalTheory.EtC
 
+/- English proof (translation)
+Introduce `B A' _ _ _ f s hA hs`. Take `⟨hEt, h2, h3⟩` from `hA`. Take `⟨σ, hσ⟩ : ∃ σ : A', σ = algebraMap B A' s` from `⟨_, rfl⟩`. Rewrite using `[← hσ]`. Choose the witnesses or unpack the hypotheses as in `⟨t, ht⟩ : ∃ t : B, s * t - 1 ∈ Ideal.span {f} := by`.
+
+Take `⟨v, hv⟩` from `hs.exists_right_inv`. Take `⟨t, rfl⟩` from `Ideal.Quotient.mk_surjective v`. Use `⟨t, ?_⟩` and prove the remaining obligations. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_sub, map_mul, hv, map_one, sub_self]`. Establish `hpow : ∀ n : ℕ, (s * t) ^ n - 1 ∈ Ideal.span {f}`.
+
+Introduce `n`. Take `⟨c, hc⟩` from `(sub_dvd_pow_sub_pow (s * t) 1 n)`. Rewrite `hc` using `[one_pow]`. Rewrite using `[hc]`. Conclude with `Ideal.mul_mem_right _ _ ht`.
+
+Use `haveI : Algebra.Etale A' (Localization.Away σ) := Algebra.Etale.of_isLocalizationAway σ`. Use `haveI : Algebra.Etale B (Localization.Away σ) := Algebra.Etale.comp B A' (Localization.Away σ)`. Use `⟨inferInstance, ?_, ?_⟩` and prove the remaining obligations. Introduce `x`. Take `⟨⟨a', m⟩, hx⟩` from `IsLocalization.mk'_surjective (Submonoid.powers σ) x`.
+
+Establish `hxs : x * algebraMap A' (Localization.Away σ) m = algebraMap A' _ a'`. Rewrite using `[← hx]`. Conclude with `IsLocalization.mk'_spec _ _ _`. Take `⟨n, hn⟩` from `m.2`. Rewrite `hxs` using `[← hn]`.
+
+Take `⟨b, hb⟩` from `h2 (a' * algebraMap B A' t ^ n)`. Use `⟨b, ?_⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.1 hb`. Take `⟨v, hv⟩` from `Ideal.mem_span_singleton'.1 (hpow n)`. Establish `hc'` using `congrArg (algebraMap A' (Localization.Away σ)) hc`.
+
+Establish `hv'` using `congrArg (algebraMap A' (Localization.Away σ)) (congrArg (algebraMap B A') hv)`. Rewrite using `[Ideal.mem_span_singleton']`. Use `⟨-(x * algebraMap A' _ (algebraMap B A' v)) + algebraMap A' _ c, ?_⟩` and prove the remaining obligations. Simplify using `only [IsScalarTower.algebraMap_apply B A' (Localization.Away σ), map_mul, map_sub, map_pow, map_one, ← hσ] at hxs hc' hv' ⊢`. Take the linear combination `hc' - x * hv' - (algebraMap A' (Localization.Away σ) (algebraMap B A' t)) ^ n * hxs`.
+
+Introduce `a ha`. Take `⟨y, hy⟩` from `Ideal.mem_span_singleton'.1 ha`. Take `⟨⟨c, _, n, rfl⟩, rfl⟩` from `IsLocalization.mk'_surjective (Submonoid.powers σ) y`. Establish `hys` using `IsLocalization.mk'_spec (Localization.Away σ) c (⟨σ ^ n, n, rfl⟩ : Submonoid.powers σ)`. Establish `key : algebraMap A' (Localization.Away σ) (algebraMap B A' a * σ ^ n) = algebraMap A' (Localization.Away σ) (c * algebraMap B A' f)`.
+
+Rewrite using `[map_mul, map_mul, ← IsScalarTower.algebraMap_apply, ← IsScalarTower.algebraMap_apply, ← hy]`. Simplify using `only at hys`. Rewrite using `[← hys]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨⟨_, k, rfl⟩, hk⟩` from `(IsLocalization.eq_iff_exists (Submonoid.powers σ) _).1 key`.
+
+Establish `hmem : algebraMap B A' (s ^ (k + n) * a) ∈ Ideal.span {algebraMap B A' f}`. Rewrite using `[Ideal.mem_span_singleton']`. Use `⟨σ ^ k * c, ?_⟩` and prove the remaining obligations. Simplify using `only at hk`. Rewrite using `[map_mul, map_pow, ← hσ, pow_add]`.
+
+Take the linear combination `-hk`. Establish `h1` using `h3 _ hmem`. Establish `h4` using `hpow (k + n)`. Take `⟨p, hp⟩` from `Ideal.mem_span_singleton'.1 h1`. Take `⟨q, hq⟩` from `Ideal.mem_span_singleton'.1 h4`.
+
+Rewrite using `[Ideal.mem_span_singleton']`. Use `⟨t ^ (k + n) * p - a * q, ?_⟩` and prove the remaining obligations. Take the linear combination `t ^ (k + n) * hp - a * hq`.
+-/
 theorem isExcisionNbhd_away_of_isUnit_mod : ∀ (B A' : Type) [CommRing B] [CommRing A'] [Algebra B A'] (f s : B),
     IsExcisionNbhd B A' f → IsUnit (Ideal.Quotient.mk (Ideal.span {f}) s) →
     IsExcisionNbhd B (Localization.Away (algebraMap B A' s)) f := by

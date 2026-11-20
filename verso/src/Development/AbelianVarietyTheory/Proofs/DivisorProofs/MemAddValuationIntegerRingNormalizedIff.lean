@@ -51,10 +51,22 @@ def toAddVal (w : Valuation C ℝ≥0) (ℓ : C) (h0 : 0 < w ℓ) (h1 : w ℓ < 
       rw [Real.log_mul hx'.ne' hy'.ne', add_div]
       rfl)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toAddVal_apply (w : Valuation C ℝ≥0) (ℓ : C) (h0 : 0 < w ℓ) (h1 : w ℓ < 1) (x : C) :
     toAddVal w ℓ h0 h1 x =
       if x = 0 then ⊤ else ((Real.log (w x : ℝ) / Real.log (w ℓ : ℝ) : ℝ) : WithTop ℝ) := rfl
 
+/- English proof (translation)
+Rewrite using `[mem_addValuationIntegerRing_iff, toAddVal_apply, Valuation.mem_valuationSubring_iff]`. Distinguish the cases in `hx : x = 0`. Simplify using `[hx]`. Establish `hL : Real.log (w ℓ : ℝ) < 0` using `Real.log_neg (by exact_mod_cast h0) (by exact_mod_cast h1)`. Establish `hx' : (0 : ℝ) < w x`.
+
+Use `(Valuation.ne_zero_iff w).2 hx` as an intermediate fact. Conclude with `pos_iff_ne_zero.2 this` after adjusting the coercions. Simplify using `only [hx, if_false]`. Rewrite using `[← WithTop.coe_zero, WithTop.coe_le_coe, div_nonneg_iff]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `(⟨-, h⟩ | ⟨h, -⟩)`. Conclude with `absurd h (not_le.2 hL)`. Use `(Real.log_nonpos_iff hx'.le).1 h` as an intermediate fact. Conclude with `this` after adjusting the coercions. Introduce `h right`.
+
+Conclude with `⟨Real.log_nonpos hx'.le (by exact_mod_cast h), hL.le⟩`.
+-/
 theorem mem_addValuationIntegerRing_normalized_iff (w : Valuation C ℝ≥0) (ℓ : C) (h0 : 0 < w ℓ) (h1 : w ℓ < 1) (x : C) :
     x ∈ Int0 (toAddVal w ℓ h0 h1) ↔ x ∈ w.valuationSubring := by
   rw [mem_addValuationIntegerRing_iff, toAddVal_apply, Valuation.mem_valuationSubring_iff]
@@ -75,6 +87,9 @@ theorem mem_addValuationIntegerRing_normalized_iff (w : Valuation C ℝ≥0) (�
     right
     exact ⟨Real.log_nonpos hx'.le (by exact_mod_cast h), hL.le⟩
 
+/- English proof (translation)
+Rewrite using `[toAddVal_apply, if_neg hx]`. Both sides reduce to the same expression.
+-/
 theorem toAddVal_of_ne (w : Valuation C ℝ≥0) (ℓ : C) (h0 : 0 < w ℓ) (h1 : w ℓ < 1) {x : C}
     (hx : x ≠ 0) : toAddVal w ℓ h0 h1 x = ((GlobalTheory.IndefiniteRowSideFullHecke.QuotientEigenDifference.addVal w ℓ x : ℝ) : WithTop ℝ) := by
   rw [toAddVal_apply, if_neg hx]; rfl
@@ -101,21 +116,33 @@ open GlobalTheory.IndefiniteRowSideFullHecke.QuotientEigenDifference (freeLattic
 
 variable {C : Type} [Field C] {S : Type} [Fintype S] [DecidableEq S]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `s i`. Simplify using `only [evalVec, Pi.smul_apply, map_smul, smul_eq_mul, Subring.coe_mul]`.
+-/
 theorem evalVec_smul {v : AddValuation C (WithTop ℝ)} (a : S → Int0 v) (N : ℕ) (c : Int0 v)
     (x : Fin N → RS a) : evalVec a N (c • x) = fun s i => (c : C) * evalVec a N x s i := by
   funext s i
   simp only [evalVec, Pi.smul_apply, map_smul, smul_eq_mul, Subring.coe_mul]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `s i`. Simplify using `only [evalVec, Pi.add_apply, map_add, Subring.coe_add]`.
+-/
 theorem evalVec_add {v : AddValuation C (WithTop ℝ)} (a : S → Int0 v) (N : ℕ)
     (x y : Fin N → RS a) : evalVec a N (x + y) = evalVec a N x + evalVec a N y := by
   funext s i
   simp only [evalVec, Pi.add_apply, map_add, Subring.coe_add]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `s i`. Simplify using `only [evalVec, Pi.sub_apply, map_sub]`. Both sides reduce to the same expression.
+-/
 theorem evalVec_sub {v : AddValuation C (WithTop ℝ)} (a : S → Int0 v) (N : ℕ)
     (x y : Fin N → RS a) : evalVec a N (x - y) = evalVec a N x - evalVec a N y := by
   funext s i
   simp only [evalVec, Pi.sub_apply, map_sub]; rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem comp_coe {v : AddValuation C (WithTop ℝ)} (a : S → Int0 v) (N : ℕ) (s : S)
     (x : Fin N → RS a) : (fun i => ((comp a N s x i : Int0 v) : C)) = evalVec a N x s := rfl
 

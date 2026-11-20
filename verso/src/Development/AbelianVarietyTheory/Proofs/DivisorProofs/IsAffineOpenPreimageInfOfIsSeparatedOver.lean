@@ -6,6 +6,13 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 
 namespace GlobalTheory.FinNear
 
+/- English proof (translation)
+Establish `: IsAffine V` using `hV`. Establish `: IsAffine T` using `hT`. Establish `: IsAffine D` using `hD`. Set `g' : V.toScheme ⟶ (s ⁻¹ᵁ T).toScheme` to `g.resLE (s ⁻¹ᵁ T) V hVT`. Establish `: IsAffineHom (g' ≫ (s ∣_ T))` using `isAffineHom_of_isAffine _`.
+
+Establish `: IsAffineHom g'` using `IsAffineHom.of_comp g' (s ∣_ T)`. Establish `hD' : IsAffineOpen ((s ⁻¹ᵁ T).ι ⁻¹ᵁ D)`. Establish `h` using `isAffineOpen_opensRange (X.homOfLE hDT)`. Rewrite `h` using `[Scheme.opensRange_homOfLE]`. Then use the resulting hypothesis. Establish `h` using `(hD'.preimage g').image_of_isOpenImmersion V.ι`.
+
+Rewrite `h` using `[← Scheme.Hom.comp_preimage, Scheme.Hom.resLE_comp_ι, Scheme.Hom.comp_preimage, Scheme.Hom.image_preimage_eq_opensRange_inf, Scheme.Opens.opensRange_ι, inf_comm]`. Then use the resulting hypothesis.
+-/
 theorem isAffineOpen_preimage_inf_of_isSeparated_over {Y X S : Scheme.{0}} (g : Y ⟶ X) (s : X ⟶ S)
     [IsSeparated s] {T : S.Opens} (hT : IsAffineOpen T) {D : X.Opens} (hD : IsAffineOpen D)
     (hDT : D ≤ s ⁻¹ᵁ T) {V : Y.Opens} (hV : IsAffineOpen V) (hVT : V ≤ g ⁻¹ᵁ (s ⁻¹ᵁ T)) :

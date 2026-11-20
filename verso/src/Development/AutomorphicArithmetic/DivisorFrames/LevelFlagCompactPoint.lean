@@ -10,12 +10,18 @@ open AlgebraicGeometry CategoryTheory Limits NumberField IsLocalRing
 open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj GlobalTheory.LocM GlobalTheory.Toroidal GlobalTheory.ShFam GlobalTheory.ShFam.Pad
 open GlobalTheory GlobalTheory.CechPic GlobalTheory.Cartier GlobalTheory.ConsGeo
 
+/- English proof (translation)
+Rewrite using `[ModelRelProbe.spMap_comp]`. Use `congr 1`. Apply the tactic sequence `ext s <;> simp [Formalism.L2.Pj.dualMap, TrivSqZeroExt.algebraMap_eq_inl]`.
+-/
 private theorem spMap_dualMap_comp_spMap_dualMap {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap (dualMap g) ≫ spMap (dualMap f) = spMap (dualMap (g.comp f)) := by
   rw [ModelRelProbe.spMap_comp]
   congr 1
   ext s <;> simp [Formalism.L2.Pj.dualMap, TrivSqZeroExt.algebraMap_eq_inl]
 
+/- English proof (translation)
+Rewrite using `[← Scheme.Hom.comp_apply, ← h, Scheme.Hom.comp_apply]`.
+-/
 private theorem analyticChartsRealization_comp_point_eq {A B B' D : Scheme.{0}} {a : A ⟶ B} {b : B ⟶ D} {a' : A ⟶ B'} {b' : B' ⟶ D}
     (h : a ≫ b = a' ≫ b') (z : A) : b' (a' z) = b (a z) := by
   rw [← Scheme.Hom.comp_apply, ← h, Scheme.Hom.comp_apply]
@@ -24,6 +30,9 @@ section SlopeTestRemainingChoices
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
 
+/- English proof (translation)
+Use `(GlobalTheory.TanBaseChange.tan_comb_baseChange E H X t k k' ψ x x' hx).2 m _ cf w h` as an intermediate fact. Simplify `this` using `only [← Category.assoc, spMap_dualMap_comp_spMap_dualMap]`.
+-/
 private theorem combination_base_change {X : Scheme.{0}} {t : SAB H X} {R k k' : Type} [CommRing R] [CommRing k] [CommRing k']
     (χ : R →+* k) (ψ : k →+* k') {x : Sp k ⟶ X} {x' : Sp k' ⟶ X} (hx : spMap ψ ≫ x = x') {m : ℕ}
     {v : Fin m → (Sp (DualNumber R) ⟶ t.G.left)} {cf : Fin m → k} {w : Sp (DualNumber k) ⟶ t.G.left}
@@ -32,6 +41,11 @@ private theorem combination_base_change {X : Scheme.{0}} {t : SAB H X} {R k k' :
   have := (GlobalTheory.TanBaseChange.tan_comb_baseChange E H X t k k' ψ x x' hx).2 m _ cf w h
   simpa only [← Category.assoc, spMap_dualMap_comp_spMap_dualMap] using this
 
+/- English proof (translation)
+Take `⟨a, φ, hw, hf, hs⟩` from `h`. Use `⟨a, ψ.comp φ, by rw [← hw, ← Category.assoc, ModelRelProbe.spMap_comp], ?_, fun τ n hn i hi => ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, RingHom.comp_assoc]`. Conclude with `GlobalTheory.LocM.isFrame_bc E H Dw _ _ _ _ _ _ _ ψ _ _ hf`. Take `⟨cf, h0, hc⟩` from `hs τ n hn i hi`.
+
+Conclude with `⟨fun j => ψ (cf j), fun j hj => by simp only [h0 j hj, map_zero], combination_base_change φ ψ (Category.assoc _ _ _).symm hc⟩`.
+-/
 private theorem flagAt_base_change {Xo : ∀ l : Level H, Moduli Dw l} {p : ℕ} {W : ValuationSubring ℂ}
     {Y : LocalSystem Xo p W} {i₀ : Idx H p} (Z : LocM.Pre Y i₀) {k k' : Type} [Field k] [Field k'] (ψ : k →+* k')
     {w : Sp k ⟶ Z.X} {u : Vecs Dw (Y Z.i).t k} (h : Z.FlagAt w u) : Z.FlagAt (spMap ψ ≫ w) (u.bc ψ) := by
@@ -43,6 +57,11 @@ private theorem flagAt_base_change {Xo : ∀ l : Level H, Moduli Dw l} {p : ℕ}
     exact ⟨fun j => ψ (cf j), fun j hj => by simp only [h0 j hj, map_zero],
       combination_base_change φ ψ (Category.assoc _ _ _).symm hc⟩
 
+/- English proof (translation)
+Establish `hF : GlobalTheory.LocM.IsFrame T.t (ψ.comp φ) x' (Vecs.bc (Dw` using `Dw) ψ g.v) := hx ▸ GlobalTheory.LocM.isFrame_bc E H Dw l c T.X T.t _ _ φ ψ x g.v ⟨fun τ i => ⟨g.tan τ i, g.eig τ i⟩, g.basis⟩`. Use `⟨⟨Vecs.bc (Dw := Dw) ψ g.v, fun τ i => (hF.1 τ i).1, fun τ i => (hF.1 τ i).2, hF.2⟩, ?_, fun _ _ => rfl⟩` and prove the remaining obligations. Take `⟨y, χ, φ₁, f, t, t', hq, h0, h1, h2, h3⟩` from `h`. Use `⟨y, ψ.comp χ, φ₁, f, t, fun τ i => Units.map ψ.toMonoidHom (t' τ i), by rw [hq, ← Category.assoc, ModelRelProbe.spMap_comp], h0, by rw [← hx, h1, ← Category.assoc (spMap ψ), ModelRelProbe.spMap_comp], by rw [h2, RingHom.comp_assoc], fun τ i => ?_⟩` and prove the remaining obligations. Take `⟨cf, c1, c2, c3⟩` from `h3 τ i`.
+
+Conclude with `⟨fun j => ψ (cf j), congrArg ψ c1, fun j hj => by simp only [c2 j hj, map_zero], combination_base_change χ ψ hx c3⟩`.
+-/
 private theorem carries_base_change {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F}
     {T : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c β} {F : Type} [Field F] {e : F ≃+* c.F} (C : FlagCpt T e)
     {k k' : Type} [Field k] [Field k'] (ψ : k →+* k') {φ : c.F →+* k} {x : Sp k ⟶ T.X} {x' : Sp k' ⟶ T.X}
@@ -61,6 +80,15 @@ private theorem carries_base_change {l : Level H} {Xo : Moduli Dw l} {c : Coeff 
 
 end SlopeTestRemainingChoices
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw Xo p W Y i₀ O _ β Z T F _ e L C k _ w q h`. Take `⟨y, v, φ, g, hw, hq, hv, hfl, hc, hg⟩` from `h`. Use `⟨⟨y (closedPoint k), ?_⟩, ⟨(y ≫ L.r) (closedPoint k), ?_⟩, ?_, fun k' _ ψ => ?_⟩` and prove the remaining obligations. Conclude with `analyticChartsRealization_comp_point_eq hw _`. Conclude with `analyticChartsRealization_comp_point_eq (hq.trans (Category.assoc _ _ _).symm) _`.
+
+Establish `hf : spMap (Spec.preimage (y ≫ pullback.snd _ _)).hom = y ≫ pullback.snd _ _` using `Spec.map_preimage _`. Use `⟨(Spec.preimage (y ≫ pullback.snd _ _)).hom, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hf, ← Z.π_s, ← Category.assoc, hw, Category.assoc, ModelRelProbe.j_over, Category.assoc]`. Establish `hj : T.jQ ≫ genStr T = pullback.snd _ _` using `T.jQ_over`. Rewrite using `[hf, ← Category.assoc, hq, Category.assoc, Category.assoc, hj, L.snd, Category.assoc]`.
+
+Take `⟨g', hc', hg'⟩` from `carries_base_change C ψ (x' := (spMap ψ ≫ q) ≫ C.π ≫ genι T) (Category.assoc _ _ _).symm hc`. Use `⟨spMap ψ ≫ y, v.bc ψ, ψ.comp φ, g', by rw [Category.assoc, hw, Category.assoc], by rw [Category.assoc, hq, Category.assoc], fun τ i => LieMet.isTan_map ψ rfl (hv τ i), ?_, hc', fun τ i => ?_⟩` and prove the remaining obligations. Establish `e₁ : (fun τ i => v.bc ψ τ i ≫ (Y Z.i).m.φ) = Vecs.bc (Dw` using `Dw) (t := (Y Z.i).t) ψ (fun τ i => v τ i ≫ (Y Z.i).m.φ) := by`. Use function extensionality and compare the values at `τ i`. Conclude with `Category.assoc _ _ _`.
+
+Rewrite using `[e₁]`. Conclude with `flagAt_base_change Z.toPre ψ hfl`. Rewrite using `[hg', hg]`. Conclude with `(Category.assoc _ _ _).symm`.
+-/
 theorem UpperTheory.level_flag_compact_point :
     ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H} {Xo : ∀ l : Level H, Moduli Dw l} {p : ℕ} {W : ValuationSubring ℂ} {Y : LocalSystem Xo p W} {i₀ : Idx H p} {O : Type} [CommRing O] {β : O →+* i₀.c.F} {Z : LocM.Mdl Y i₀} {T : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model (Xo i₀.l) i₀.c β} {F : Type} [Field F] {e : F ≃+* i₀.c.F} (L : Lev Z T) (C : FlagCpt T e) {k : Type} [Field k] (w : Sp k ⟶ Z.X) (q : Sp k ⟶ C.Y.X), Match L C w q → w (closedPoint k) ∈ Z.opn ∧ C.π (q (closedPoint k)) ∈ Set.range T.jQ ∧ (∃ f : Z.i.c.F →+* k, w ≫ Z.s = spMap f ≫ spMap (Z.i.c.V W).subtype ∧ q ≫ C.π ≫ genStr T = spMap f ≫ spMap (incl Z)) ∧ ∀ (k' : Type) [Field k'] (ψ : k →+* k'), Match L C (spMap ψ ≫ w) (spMap ψ ≫ q) := by
   intro E _ _ _ H Dw Xo p W Y i₀ O _ β Z T F _ e L C k _ w q h

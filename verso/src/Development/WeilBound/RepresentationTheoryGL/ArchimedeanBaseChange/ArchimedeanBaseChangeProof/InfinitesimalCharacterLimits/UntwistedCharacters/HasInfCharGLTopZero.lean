@@ -16,16 +16,25 @@ namespace PositivityTheory.Rg.BcB.SpectralAccumulation.Untw
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.1, fun u φ hφ => h.2 u φ (hle hφ)⟩`.
+-/
 theorem hasInfCharGL_mono {N : ℕ} {V W : Submodule ℂ (Sm E N)} {τ : E →+* ℂ} {m : Multiset ℂ}
     (h : HasInfCharGL V τ m) (hle : W ≤ V) : HasInfCharGL W τ m :=
   ⟨h.1, fun u φ hφ => h.2 u φ (hle hφ)⟩
 
+/- English proof (translation)
+Establish `hW` using `GlobalTheory.NormIndCap.hasInfCharGL_map_mulChi h (GlobalTheory.CuspRep.Model.absC E z)`. Rewrite `hW` using `[GlobalTheory.CuspRep.Model.expo_absC]`. Conclude with `hW`.
+-/
 theorem hasInfCharGL_tw {N : ℕ} {V : Submodule ℂ (Sm E N)} {τ : E →+* ℂ} {m : Multiset ℂ}
     (h : HasInfCharGL V τ m) (z : ℂ) : HasInfCharGL (tw V z) τ (m.map (· + z)) := by
   have hW := GlobalTheory.NormIndCap.hasInfCharGL_map_mulChi h (GlobalTheory.CuspRep.Model.absC E z)
   rw [GlobalTheory.CuspRep.Model.expo_absC] at hW
   exact hW
 
+/- English proof (translation)
+Rewrite using `[Multiset.map_add, Multiset.prod_add, Multiset.map_map, Multiset.map_map]`. Use `congr 2`. Conclude with `Multiset.map_congr rfl fun x _ => by simp only [Function.comp_apply]; ring`. Conclude with `Multiset.map_congr rfl fun x _ => by simp only [Function.comp_apply]; ring`.
+-/
 theorem prod_cancel (m₁ m₂ : Multiset ℂ) (u : ℂ) (r s : ℕ) :
     ((m₁.map (· + (s : ℂ) / 2)).map (u - (s : ℂ) / 2 + ·)).prod *
         ((m₂.map (· + -(r : ℂ) / 2)).map (u + (r : ℂ) / 2 + ·)).prod = ((m₁ + m₂).map (u + ·)).prod := by
@@ -34,6 +43,11 @@ theorem prod_cancel (m₁ m₂ : Multiset ℂ) (u : ℂ) (r s : ℕ) :
   · exact Multiset.map_congr rfl fun x _ => by simp only [Function.comp_apply]; ring
   · exact Multiset.map_congr rfl fun x _ => by simp only [Function.comp_apply]; ring
 
+/- English proof (translation)
+Use `⟨by rw [Multiset.card_add, h₁.1, h₂.1], fun u φ hφ => ?_⟩` and prove the remaining obligations. Proceed by induction on `hφ using Submodule.span_induction with`. Consider the case `mem F hF`. Establish `hc : cap τ u F = (((m₁.map (· + (s : ℂ) / 2)).map (u - (s : ℂ) / 2 + ·)).prod * ((m₂.map (· + -(r : ℂ) / 2)).map (u + (r : ℂ) / 2 + ·)).prod) • F` using `PositivityTheory.Rg.Rs.PInfInd2A.casimir_on_parabolic_induction (n := ![r, s]) (tw U₁ ((s : ℂ) / 2)) (tw U₂ (-(r : ℂ) / 2)) τ _ _ (hasInfCharGL_tw h₁ _) (hasInfCharGL_tw h₂ _) u F hF`. Rewrite using `[hc, prod_cancel]`.
+
+Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add, hx, hy, smul_add]`. Consider the case `smul a x _ hx => rw [map_smul, hx, smul_comm]`.
+-/
 theorem hasInfCharGL_node {r s : ℕ} {U₁ : Submodule ℂ (Sm E r)} {U₂ : Submodule ℂ (Sm E s)} {τ : E →+* ℂ}
     {m₁ m₂ : Multiset ℂ} (h₁ : HasInfCharGL U₁ τ m₁) (h₂ : HasInfCharGL U₂ τ m₂) :
     HasInfCharGL (Submodule.span ℂ {φ | MemInd2 (tw U₁ ((s : ℂ) / 2)) (tw U₂ (-(r : ℂ) / 2)) φ}) τ (m₁ + m₂) := by
@@ -49,6 +63,11 @@ theorem hasInfCharGL_node {r s : ℕ} {U₁ : Submodule ℂ (Sm E r)} {U₂ : Su
   | add x y _ _ hx hy => rw [map_add, hx, hy, smul_add]
   | smul a x _ hx => rw [map_smul, hx, smul_comm]
 
+/- English proof (translation)
+Proceed by induction on `t generalizing m with`. Consider the case `leaf V z`. Take `⟨m₀, h₀, rfl⟩` from `h`. Conclude with `hasInfCharGL_tw h₀ z`. Consider the case `@node r s t₁ t₂ ih₁ ih₂`.
+
+Take `⟨m₁, m₂, h₁, h₂, rfl⟩` from `h`. Use `hasInfCharGL_mono (hasInfCharGL_node (ih₁ m₁ h₁) (ih₂ m₂ h₂)) ?_` and prove the remaining obligations. Rewrite using `[Tr.space]`. Conclude with `Submodule.span_mono fun φ hφ => hφ.1`.
+-/
 theorem hasInfCharGL_space {N : ℕ} (t : Tr E N) (τ : E →+* ℂ) (m : Multiset ℂ) (h : t.InfOf τ m) :
     HasInfCharGL t.space τ m := by
   induction t generalizing m with
@@ -61,10 +80,18 @@ theorem hasInfCharGL_space {N : ℕ} (t : Tr E N) (τ : E →+* ℂ) (m : Multis
     rw [Tr.space]
     exact Submodule.span_mono fun φ hφ => hφ.1
 
+/- English proof (translation)
+Use `⟨rfl, fun u φ _ => ?_⟩` and prove the remaining obligations. Simplify using `[cap, Formalism.REAL.qdet, Formalism.REAL.qminor]`.
+-/
 theorem hasInfCharGL_top_zero (τ : E →+* ℂ) : HasInfCharGL (⊤ : Submodule ℂ (Sm E 0)) τ 0 := by
   refine ⟨rfl, fun u φ _ => ?_⟩
   simp [cap, Formalism.REAL.qdet, Formalism.REAL.qminor]
 
+/- English proof (translation)
+Proceed by induction on `t with`. Consider the case `leaf V z`. Break down `ht with ⟨rfl, rfl, rfl⟩ | ⟨_, hV, _⟩` into its components or cases. Conclude with `⟨0, 0, hasInfCharGL_top_zero τ, by simp⟩`. Take `⟨m₀, h₀⟩` from `GlobalTheory.ResW.IrrInfChar.exists_hasInfCharGL hV τ`.
+
+Conclude with `⟨_, m₀, h₀, rfl⟩`. Consider the case `node t₁ t₂ ih₁ ih₂`. Take `⟨m₁, h₁⟩` from `ih₁ ht.1`. Take `⟨m₂, h₂⟩` from `ih₂ ht.2`. Conclude with `⟨_, m₁, m₂, h₁, h₂, rfl⟩`.
+-/
 theorem exists_infOf {N : ℕ} (t : Tr E N) (ht : t.Good) (τ : E →+* ℂ) : ∃ m, t.InfOf τ m := by
   induction t with
   | leaf V z =>
@@ -77,6 +104,11 @@ theorem exists_infOf {N : ℕ} (t : Tr E N) (ht : t.Good) (τ : E →+* ℂ) : �
     obtain ⟨m₂, h₂⟩ := ih₂ ht.2
     exact ⟨_, m₁, m₂, h₁, h₂, rfl⟩
 
+/- English proof (translation)
+Introduce `φ hφ`. Take `⟨hc, hu⟩` from `hm`. Break down `N with _ | n` into its components or cases. Take `rfl : m = 0` from `Multiset.card_eq_zero.1 hc`. Simplify using the standard rewrite rules.
+
+Take `⟨l, rfl⟩` from `Quot.exists_rep m`. Use `GlobalTheory.CompanionTheory.CapelliTrace.trace_of_qdet (Eop τ) l (by simpa using hc) φ fun v => ?_` and prove the remaining obligations. Use `hu (v - (n : ℂ) / 2) φ hφ` as an intermediate fact. Rewrite `this` using `[cap, show v - (n : ℂ) / 2 + (((n + 1 : ℕ) : ℂ) - 1) / 2 = v by push_cast; ring]`. Simplify using `using this`.
+-/
 theorem trace_eq {N : ℕ} {V : Submodule ℂ (Sm E N)} {τ : E →+* ℂ} {m : Multiset ℂ} (hm : HasInfCharGL V τ m) :
     ∀ φ ∈ V, (∑ i : Fin N, Eop τ i i) φ = m.sum • φ := by
   intro φ hφ
@@ -90,6 +122,11 @@ theorem trace_eq {N : ℕ} {V : Submodule ℂ (Sm E N)} {τ : E →+* ℂ} {m : 
     rw [cap, show v - (n : ℂ) / 2 + (((n + 1 : ℕ) : ℂ) - 1) / 2 = v by push_cast; ring] at this
     simpa using this
 
+/- English proof (translation)
+Use `Subtype.ext (funext fun g => ?_)` and prove the remaining obligations. Establish `h1` using `GlobalTheory.CuspRep.SplitDeriv.hasDerivAt_splitCentre φ g 0`. Establish `h2 : (fun t : ℝ => φ.1 (g * splitCentre E N t)) = fun _ => φ.1 g`. Use function extensionality and compare the values at `t`. Rewrite using `[← GlobalTheory.CuspRep.CuspidalL2GL.splitCentre_comm, h]`.
+
+Rewrite `h1` using `[h2]`. Establish `h3` using `h1.unique (hasDerivAt_const (0 : ℝ) (φ.1 g))`. Rewrite `h3` using `[GlobalTheory.CuspRep.CuspidalL2GL.splitCentre_zero, mul_one]`. Conclude with `h3`.
+-/
 theorem lie_oneL_eq_zero {N : ℕ} (φ : Sm E N) (h : ∀ t g, φ.1 (splitCentre E N t * g) = φ.1 g) :
     lie E N (oneL E N) φ = 0 := by
   refine Subtype.ext (funext fun g => ?_)
@@ -102,6 +139,9 @@ theorem lie_oneL_eq_zero {N : ℕ} (φ : Sm E N) (h : ∀ t g, φ.1 (splitCentre
   rw [GlobalTheory.CuspRep.CuspidalL2GL.splitCentre_zero, mul_one] at h3
   exact h3
 
+/- English proof (translation)
+Take `⟨φ, hφ, h0⟩` from `(Submodule.ne_bot_iff _).1 hV.ne_bot`. Establish `h` using `lie_oneL_eq_zero φ (hV.sqInt φ hφ).1`. Rewrite `h` using `[GlobalTheory.CompanionTheory.ClozelLie.lie_oneL_eq_sum_Eop, LinearMap.sum_apply, Finset.sum_congr rfl fun τ _ => trace_eq (hm τ) φ hφ, ← Finset.sum_smul]`. Conclude with `(smul_eq_zero.1 h).resolve_right h0`.
+-/
 theorem sum_trace_eq_zero {N : ℕ} {V : Submodule ℂ (Sm E N)} (hV : IsDiscrete V) (m : (E →+* ℂ) → Multiset ℂ)
     (hm : ∀ τ, HasInfCharGL V τ (m τ)) : ∑ τ, (m τ).sum = 0 := by
   obtain ⟨φ, hφ, h0⟩ := (Submodule.ne_bot_iff _).1 hV.ne_bot
@@ -110,6 +150,11 @@ theorem sum_trace_eq_zero {N : ℕ} {V : Submodule ℂ (Sm E N)} (hV : IsDiscret
     Finset.sum_congr rfl fun τ _ => trace_eq (hm τ) φ hφ, ← Finset.sum_smul] at h
   exact (smul_eq_zero.1 h).resolve_right h0
 
+/- English proof (translation)
+Proceed by induction on `s using Multiset.induction_on with`. Consider the case `empty => simp`. Consider the case `cons a s ih`. Rewrite using `[Multiset.sum_cons, Complex.add_im, h a (by simp), ih fun x hx => h x (by simp [hx]), Multiset.card_cons]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem im_sum_of {s : Multiset ℂ} {c : ℝ} (h : ∀ x ∈ s, x.im = c) :
     s.sum.im = (Multiset.card s : ℝ) * c := by
   induction s using Multiset.induction_on with
@@ -119,6 +164,15 @@ theorem im_sum_of {s : Multiset ℂ} {c : ℝ} (h : ∀ x ∈ s, x.im = c) :
     push_cast
     ring
 
+/- English proof (translation)
+Establish `h` using `congrArg Complex.im (sum_trace_eq_zero hV m hm)`. Establish `hτ : ∀ τ, ((m τ).sum).im = (N : ℝ) * (-z.im)` using `fun τ => by`. Rewrite using `[im_sum_of (c := -z.im) fun x hx => by`. Use `hr τ x hx` as an intermediate fact. Simplify using `only [Complex.add_im] at this`.
+
+Use the proof step `linarith, (hm τ).1]`. Rewrite `h` using `[Complex.im_sum, Finset.sum_congr rfl fun τ _ => hτ τ, Finset.sum_const, Finset.card_univ, nsmul_eq_mul, Complex.zero_im]`. Establish `hc : (Fintype.card (E →+* ℂ) : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 Fintype.card_ne_zero`. Establish `hN' : (N : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 hN.ne'`. Establish `him : z.im = 0`.
+
+Use `mul_eq_zero.1 h` as an intermediate fact. Break down `this with h1 | h1` into its components or cases. Conclude with `absurd h1 hc`. Break down `mul_eq_zero.1 h1 with h2 | h2` into its components or cases. Conclude with `absurd h2 hN'`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `Complex.ext hz him`.
+-/
 theorem twist_eq_zero {N : ℕ} (hN : 0 < N) {V : Submodule ℂ (Sm E N)} (hV : IsDiscrete V) {z : ℂ} (hz : z.re = 0)
     (m : (E →+* ℂ) → Multiset ℂ) (hm : ∀ τ, HasInfCharGL V τ (m τ)) (hr : ∀ τ, ∀ x ∈ m τ, (x + z).im = 0) :
     z = 0 := by
@@ -141,6 +195,15 @@ theorem twist_eq_zero {N : ℕ} (hN : 0 < N) {V : Submodule ℂ (Sm E N)} (hV : 
       · linarith
   exact Complex.ext hz him
 
+/- English proof (translation)
+Proceed by induction on `t generalizing mf with`. Consider the case `leaf V z`. Introduce `w hw`. Simplify using `only [Tr.twists, List.mem_singleton] at hw`. Substitute `hw` using the available equality.
+
+Break down `ht with ⟨_, _, hz⟩ | ⟨hN, hV, hz⟩` into its components or cases. Conclude with `hz`. Use `choose m₀ h₀ he using h`. Use `twist_eq_zero hN hV hz m₀ h₀ fun τ x hx => ?_` and prove the remaining obligations. Conclude with `hr τ (x + w) (by rw [he τ]; exact Multiset.mem_map_of_mem _ hx)`.
+
+Consider the case `node t₁ t₂ ih₁ ih₂ => choose m₁ m₂ h₁ h₂ he using h`. Introduce `w hw`. Simplify using `only [Tr.twists, List.mem_append] at hw`. Break down `hw with hw | hw` into its components or cases. Conclude with `ih₁ ht.1 m₁ h₁ (fun τ x hx => hr τ x (by rw [he τ]; exact Multiset.mem_add.2 (Or.inl hx))) w hw`.
+
+Conclude with `ih₂ ht.2 m₂ h₂ (fun τ x hx => hr τ x (by rw [he τ]; exact Multiset.mem_add.2 (Or.inr hx))) w hw`.
+-/
 theorem untw_of_infOf {N : ℕ} (t : Tr E N) (ht : t.Good) (mf : (E →+* ℂ) → Multiset ℂ)
     (h : ∀ τ, t.InfOf τ (mf τ)) (hr : ∀ τ, ∀ x ∈ mf τ, x.im = 0) : t.Untw := by
   induction t generalizing mf with
@@ -161,6 +224,9 @@ theorem untw_of_infOf {N : ℕ} (t : Tr E N) (ht : t.Good) (mf : (E →+* ℂ) �
     · exact ih₁ ht.1 m₁ h₁ (fun τ x hx => hr τ x (by rw [he τ]; exact Multiset.mem_add.2 (Or.inl hx))) w hw
     · exact ih₂ ht.2 m₂ h₂ (fun τ x hx => hr τ x (by rw [he τ]; exact Multiset.mem_add.2 (Or.inr hx))) w hw
 
+/- English proof (translation)
+Introduce `E _ _ _ N t n ht hne hn hrs`. Use `choose mf hmf using exists_infOf t ht`. Establish `heq : ∀ τ, n τ = mf τ` using `fun τ => GlobalTheory.BcSpehProof.hasInfCharGL_unique hne (hn τ) (hasInfCharGL_space t τ (mf τ) (hmf τ))`. Conclude with `untw_of_infOf t ht mf hmf fun τ x hx => (hrs τ).1 x (heq τ ▸ hx)`.
+-/
 theorem untwOfReal_holds : UntwOfReal := by
   intro E _ _ _ N t n ht hne hn hrs
   choose mf hmf using exists_infOf t ht

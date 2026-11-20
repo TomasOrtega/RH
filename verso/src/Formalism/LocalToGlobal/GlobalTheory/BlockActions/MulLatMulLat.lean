@@ -24,11 +24,19 @@ section Unit
 
 variable {E : Type} [Field E] {n : ℕ}
 
+/- English proof (translation)
+Simplify using `only [hform, dotProduct, mulVec, Finset.mul_sum]`. Use `Finset.sum_congr rfl (fun i _ => Finset.sum_congr rfl (fun j _ => by ring))` and prove the remaining obligations.
+-/
 theorem hform_eq_dot (σ : E →+* E) (J : Matrix (Fin n) (Fin n) E) (x y : Fin n → E) :
     hform σ J x y = dotProduct (fun i => σ (x i)) (J *ᵥ y) := by
   simp only [hform, dotProduct, mulVec, Finset.mul_sum]
   refine Finset.sum_congr rfl (fun i _ => Finset.sum_congr rfl (fun j _ => by ring))
 
+/- English proof (translation)
+Establish `h1 : (fun i => σ ((g *ᵥ x) i)) = (g.map σ) *ᵥ (fun i => σ (x i))`. Use function extensionality and compare the values at `i`. Simplify using `[mulVec, dotProduct, map_sum]`. Establish `key : ∀ (A : Matrix (Fin n) (Fin n) E) (v w : Fin n → E), (A *ᵥ v) ⬝ᵥ w = v ⬝ᵥ (Aᵀ *ᵥ w)`. Introduce `A v w`.
+
+Rewrite using `[dotProduct_mulVec, vecMul_transpose]`. Rewrite using `[hform_eq_dot, hform_eq_dot, h1, key, mulVec_mulVec, mulVec_mulVec]`. Use `congr 2`.
+-/
 theorem hform_UJ (σ : E →+* E) (J : Matrix (Fin n) (Fin n) E) (g : Matrix (Fin n) (Fin n) E) (hg : cT σ g * J * g = J)
     (x y : Fin n → E) : hform σ J (g *ᵥ x) (g *ᵥ y) = hform σ J x y := by
   have h1 : (fun i => σ ((g *ᵥ x) i)) = (g.map σ) *ᵥ (fun i => σ (x i)) := by
@@ -42,6 +50,9 @@ end Unit
 
 variable {D : D7} {u : D.what₂.Word} {Ch : ℕ → Type} {chOf : ∀ i, (D.mem u).C.cls i → Ch i}
 
+/- English proof (translation)
+The claim follows from `hform_UJ _ _ _ (Tf.til.ga c).2 x y`.
+-/
 theorem ga_herm (Tf : FormsTiedSym D u Ch chOf) (c : (D.fm u).clsP) (x y : Fin (D.R.N D.R.m) → D.host.E) :
     hform (sigD D : D.host.E →+* D.host.E) (gramN D D.R.m le_rfl) ((Tf.til.ga c).1.1 *ᵥ x) ((Tf.til.ga c).1.1 *ᵥ y) =
       hform (sigD D : D.host.E →+* D.host.E) (gramN D D.R.m le_rfl) x y :=
@@ -51,6 +62,9 @@ section Glue
 
 variable {D : D7} {u : D.what₂.Word} {Ch : ℕ → Type} {chOf : ∀ i, (D.mem u).C.cls i → Ch i}
 
+/- English proof (translation)
+Unfold `mulLat`. Rewrite using `[← Submodule.map_comp]`. Use `congr 1`. Use extensionality with `x i`. Simplify using the standard rewrite rules.
+-/
 theorem mulLat_mulLat {E : Type} [Field E] [NumberField E] {n : ℕ} (A B : Matrix (Fin n) (Fin n) E)
     (L : Submodule (𝓞 E) (Fin n → E)) : mulLat A (mulLat B L) = mulLat (A * B) L := by
   unfold mulLat
@@ -59,12 +73,20 @@ theorem mulLat_mulLat {E : Type} [Field E] [NumberField E] {n : ℕ} (A B : Matr
   ext x i
   simp
 
+/- English proof (translation)
+Substitute `hab` using the available equality. Both sides reduce to the same expression.
+-/
 theorem fv_pr_congr (Tf : FormsTiedSym D u Ch chOf) (v : (D.mem u).A.vT) (a b : (D.mem u).C.cls D.R.m) (hab : a = b)
     (x : Fin (D.R.N D.R.m) → D.host.E) (hxa : x ∈ Ld D u D.R.m le_rfl a) (hxb : x ∈ Ld D u D.R.m le_rfl b) :
     (D.fm u).fv D.R.m v a ((Tf.lv D.R.m le_rfl).pr v a ⟨x, hxa⟩) =
       (D.fm u).fv D.R.m v b ((Tf.lv D.R.m le_rfl).pr v b ⟨x, hxb⟩) := by
   subst hab; rfl
 
+/- English proof (translation)
+Set `pb : 𝓞 D.host.E` to `⟨D.host.conj (Tf.atT.piU : D.host.E), (Tf.atT.piU.2).map (D.host.conj : D.host.E →+* D.host.E).toIntAlgHom⟩`. Establish `hT : (((D.mem u).A.T : ℕ) : 𝓞 D.host.E) = Tf.atT.piU * pb`. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Establish `e1 : ((Tf.atT.piU * pb : 𝓞 D.host.E) : D.host.E) = (Tf.atT.piU : D.host.E) * (pb : D.host.E)` using `rfl`. Establish `e2 : ((((D.mem u).A.T : ℕ) : 𝓞 D.host.E) : D.host.E) = (((D.mem u).A.T : ℕ) : D.host.E)` using `by simp`.
+
+Rewrite using `[e1, e2, ← Tf.atT.piU_norm]`. Both sides reduce to the same expression. Rewrite using `[hT]`. Use `show Tf.atT.res v (Tf.atT.piU * pb) = 0`. Rewrite using `[map_mul, Tf.atT.res_pi, zero_mul]`.
+-/
 theorem T_mem_Pv (Tf : FormsTiedSym D u Ch chOf) (v : (D.mem u).A.vT) :
     (((D.mem u).A.T : ℕ) : 𝓞 D.host.E) ∈ Tf.atT.Pv v := by
   let pb : 𝓞 D.host.E := ⟨D.host.conj (Tf.atT.piU : D.host.E), (Tf.atT.piU.2).map (D.host.conj : D.host.E →+* D.host.E).toIntAlgHom⟩
@@ -77,6 +99,31 @@ theorem T_mem_Pv (Tf : FormsTiedSym D u Ch chOf) (v : (D.mem u).A.vT) :
   show Tf.atT.res v (Tf.atT.piU * pb) = 0
   rw [map_mul, Tf.atT.res_pi, zero_mul]
 
+/- English proof (translation)
+Establish `hTp : ((D.mem u).A.T : ℕ).Prime` using `(D.mem u).A.T_prime`. Use `set σ : D.host.E →+* D.host.E := (sigD D : D.host.E →+* D.host.E) with hσdef`. Use `set J := gramN D D.R.m le_rfl with hJ`. Use `set z0 := Tf.til.z0 with hz0`. Use `set g1 := (Tf.til.ga c).1.1 with hg1`.
+
+Use `set g2 := (Tf.til.ga c').1.1 with hg2`. Use `set gi := ((Tf.til.ga c)⁻¹).1.1 with hgi`. Establish `hgi1 : gi * g1 = 1` using `by simp [hgi, hg1]`. Establish `hg1i : g1 * gi = 1` using `by simp [hgi, hg1]`. Take `⟨a, ha⟩` from `Tf.til.lastCoordinateUniformizerVector_spans_orthogonal_line`.
+
+Rewrite `ha` using `[← hz0]`. Establish `hzz : hform σ J z0 z0 = (((D.mem u).A.T : ℕ) : D.host.E)` using `Tf.til.hermitianForm_lastCoordinateUniformizerVector_self`. Establish `ha0 : a ≠ 0`. Introduce `h0`. Establish `hT0 : (((D.mem u).A.T : ℕ) : D.host.E) ≠ 0` using `by exact_mod_cast hTp.ne_zero`.
+
+Rewrite `hzz` using `[ha, h0, zero_smul]`. Apply `hT0` to reduce the goal to its premises. Rewrite using `[← hzz]`. Simplify using `[hform]`. Establish `horth : ∀ x, hform σ J (iXc D x) z0 = 0 ∧ hform σ J z0 (iXc D x) = 0` using `fun x => by`.
+
+Rewrite using `[ha, hform_smul_right, hform_smul_left, (hC.orth x).1, (hC.orth x).2]`. Simplify using the standard rewrite rules. Establish `hspan : ∀ y, ∃ (x : Fin (D.R.N D.R.m - 1) → D.host.E) (s : D.host.E), y = iXc D x + s • z0` using `fun y => by`. Take `⟨x, s, hy⟩` from `hC.span y`. Conclude with `⟨x, s / a, by rw [hy, ha, smul_smul, div_mul_cancel₀ s ha0]⟩`.
+
+Establish `hUgi : cT σ gi * J * gi = J` using `((Tf.til.ga c)⁻¹).2`. Establish `hγ : ∀ x y, hform σ J ((g2 * gi) *ᵥ x) ((g2 * gi) *ᵥ y) = hform σ J x y` using `fun x y => by`. Rewrite using `[← mulVec_mulVec, ← mulVec_mulVec, ga_herm Tf c', hform_UJ σ J gi hUgi]`. Establish `hlat : mulLat (g2 * gi) ((Tf.clsP.lat c).map ((iXc D).restrictScalars (𝓞 D.host.E)) ⊔ Submodule.span (𝓞 D.host.E) {z0}) = (Tf.clsP.lat c').map ((iXc D).restrictScalars (𝓞 D.host.E)) ⊔ Submodule.span (𝓞 D.host.E) {z0}`. Rewrite using `[← Tf.til.til_lat c, ← Tf.til.til_lat c', mulLat_mulLat, Matrix.mul_assoc, hgi1, Matrix.mul_one, h]`.
+
+Establish `hres : ∀ y : Fin (D.R.N D.R.m) → D.host.E, (∀ w ∈ (Tf.clsP.lat c).map ((iXc D).restrictScalars (𝓞 D.host.E)) ⊔ Submodule.span (𝓞 D.host.E) {z0}, hform σ J w y ∈ (algebraMap (𝓞 D.host.E) D.host.E).range) → ∀ r r' : 𝓞 D.host.E, (r : D.host.E) = hform σ J z0 y → (r' : D.host.E) = hf …`. Introduce `y hy r r' hr hr'`. Establish `hxy : g1 *ᵥ (gi *ᵥ y) = y` using `by rw [mulVec_mulVec, hg1i, one_mulVec]`. Establish `hxa : gi *ᵥ y ∈ Ld D u D.R.m le_rfl ((D.fm u).til c)`. Apply `Submodule.subset_span` to reduce the goal to its premises.
+
+Introduce `l hl`. Establish `hl' : g1 *ᵥ l ∈ (Tf.clsP.lat c).map ((iXc D).restrictScalars (𝓞 D.host.E)) ⊔ Submodule.span (𝓞 D.host.E) {z0}`. Rewrite using `[← Tf.til.til_lat c]`. Conclude with `Submodule.mem_map.2 ⟨l, hl, rfl⟩`. Use `hy _ hl'` as an intermediate fact.
+
+Rewrite `this` using `[← hxy, ga_herm Tf c]`. Conclude with `this`. Establish `hxb : gi *ᵥ y ∈ Ld D u D.R.m le_rfl ((D.fm u).til c')` using `h ▸ hxa`. Establish `e1` using `Tf.til.til_fv v c ⟨gi *ᵥ y, hxa⟩ r (by rw [hr]; show _ = hform σ J z0 (g1 *ᵥ (gi *ᵥ y)); rw [hxy])`. Establish `e2` using `Tf.til.til_fv v c' ⟨gi *ᵥ y, hxb⟩ r' (by rw [hr', ← mulVec_mulVec])`.
+
+Rewrite `e1` using `[fv_pr_congr Tf v _ _ h _ hxa hxb, e2]`. Use `show Tf.atT.res v (r - r') = 0`. Rewrite using `[map_sub, e1, sub_self]`. Conclude with `fix_orthogonal_vector σ hC.conj J (gramP D) hC.defN (iXc D) z0 hC.iso horth hspan _ hTp hdeg hzz (Tf.clsP.lat c) (Tf.clsP.lat c') ⟨fun y hy => by`. Establish `: y ∈ dualSet σ (gramP D) (Tf.clsP.lat c')` using `fun x hx => hy x hx`.
+
+Rewrite `this` using `[hSD c']`. Conclude with `this,`. Use `fun x hx y hy => by`. Establish `: y ∈ dualSet σ (gramP D) (Tf.clsP.lat c')` using `by rw [hSD c']; exact hy`. Conclude with `this x hx⟩`.
+
+Use the proof step `(g2 * gi) hγ hlat (Tf.atT.Pv v) inferInstance (T_mem_Pv Tf v) hres`.
+-/
 theorem til_eq_fix (Tf : FormsTiedSym D u Ch chOf) (hC : CrdFacts D)
     (hSD : ∀ c, dualSet (sigD D : D.host.E →+* D.host.E) (gramP D) (Tf.clsP.lat c) = (Tf.clsP.lat c : Set (Fin (D.R.N D.R.m - 1) → D.host.E)))
     (hdeg : Module.finrank ℚ D.host.E < (D.mem u).A.T - 1) (v : (D.mem u).A.vT)
@@ -141,6 +188,23 @@ theorem til_eq_fix (Tf : FormsTiedSym D u Ch chOf) (hC : CrdFacts D)
       exact this x hx⟩
     (g2 * gi) hγ hlat (Tf.atT.Pv v) inferInstance (T_mem_Pv Tf v) hres
 
+/- English proof (translation)
+Establish `hTp : ((D.mem u).A.T : ℕ).Prime` using `(D.mem u).A.T_prime`. Establish `hfix` using `til_eq_fix Tf hC hSD hdeg v c c' h`. Use `set σ : D.host.E →+* D.host.E := (sigD D : D.host.E →+* D.host.E) with hσdef`. Use `set J := gramN D D.R.m le_rfl with hJ`. Use `set z0 := Tf.til.z0 with hz0`.
+
+Use `set γ := (Tf.til.ga c').1.1 * ((Tf.til.ga c)⁻¹).1.1 with hγdef`. Take `⟨a, ha⟩` from `Tf.til.lastCoordinateUniformizerVector_spans_orthogonal_line`. Rewrite `ha` using `[← hz0]`. Establish `hzz : hform σ J z0 z0 = (((D.mem u).A.T : ℕ) : D.host.E)` using `Tf.til.hermitianForm_lastCoordinateUniformizerVector_self`. Establish `hT0 : (((D.mem u).A.T : ℕ) : D.host.E) ≠ 0` using `by exact_mod_cast hTp.ne_zero`.
+
+Establish `ha0 : a ≠ 0`. Introduce `h0`. Establish `hzz'` using `hzz`. Rewrite `hzz'` using `[ha, h0, zero_smul]`. Apply `hT0` to reduce the goal to its premises.
+
+Rewrite using `[← hzz']`. Simplify using `[hform]`. Establish `horth : ∀ x, hform σ J (iXc D x) z0 = 0 ∧ hform σ J z0 (iXc D x) = 0` using `fun x => by`. Rewrite using `[ha, hform_smul_right, hform_smul_left, (hC.orth x).1, (hC.orth x).2]`. Simplify using the standard rewrite rules.
+
+Establish `hspan : ∀ y, ∃ (x : Fin (D.R.N D.R.m - 1) → D.host.E) (s : D.host.E), y = iXc D x + s • z0` using `fun y => by`. Take `⟨x, s, hy⟩` from `hC.span y`. Conclude with `⟨x, s / a, by rw [hy, ha, smul_smul, div_mul_cancel₀ s ha0]⟩`. Establish `hUgi : cT σ ((Tf.til.ga c)⁻¹).1.1 * J * ((Tf.til.ga c)⁻¹).1.1 = J` using `((Tf.til.ga c)⁻¹).2`. Establish `hγ : ∀ x y, hform σ J (γ *ᵥ x) (γ *ᵥ y) = hform σ J x y` using `fun x y => by`.
+
+Rewrite using `[hγdef, ← mulVec_mulVec, ← mulVec_mulVec, ga_herm Tf c', hform_UJ σ J _ hUgi]`. Take `⟨δ, hδ, hδi⟩` from `fix_restrict σ J (gramP D) (iXc D) (iXc_injective D) z0 hC.iso horth hspan (by rw [hzz]; exact hT0) γ hγ hfix`. Use `⟨δ, ⟨?_, ?_⟩, hδi⟩` and prove the remaining obligations. Apply `Matrix.toLin'.injective` to reduce the goal to its premises. Apply `LinearMap.ext` to reduce the goal to its premises.
+
+Introduce `x`. Simplify using `only [Matrix.toLin'_apply, ← mulVec_mulVec]`. Use `show γ *ᵥ ((iXm D).map (RingHom.id D.host.E) *ᵥ x) = (iXm D).map (RingHom.id D.host.E) *ᵥ (δ *ᵥ x)`. Establish `hm : (iXm D).map (RingHom.id D.host.E) = iXm D` using `by ext i j; rfl`. Rewrite using `[hm, iXm, LinearMap.toMatrix'_mulVec, LinearMap.toMatrix'_mulVec, hδ]`.
+
+Establish `: (fun a => (RingHom.id D.host.E) (z0 a)) = z0` using `rfl`. Rewrite using `[this]`. Conclude with `hfix`.
+-/
 theorem til_eq_ext (Tf : FormsTiedSym D u Ch chOf) (hC : CrdFacts D)
     (hSD : ∀ c, dualSet (sigD D : D.host.E →+* D.host.E) (gramP D) (Tf.clsP.lat c) = (Tf.clsP.lat c : Set (Fin (D.R.N D.R.m - 1) → D.host.E)))
     (hdeg : Module.finrank ℚ D.host.E < (D.mem u).A.T - 1) (v : (D.mem u).A.vT)
@@ -185,6 +249,11 @@ theorem til_eq_ext (Tf : FormsTiedSym D u Ch chOf) (hC : CrdFacts D)
   · have : (fun a => (RingHom.id D.host.E) (z0 a)) = z0 := rfl
     rw [this]; exact hfix
 
+/- English proof (translation)
+Take `⟨G, h1, h2, h3⟩` from `ext_general φ (Formalism.MainNotions.product_first_zeroth_parts.Nm_succ D.R) (iXm D) (fun a => Tf.til.z0 a / ((D.mem u).A.T : D.host.E)) (by exact bZ_isUnitS Tf) g'`. Use `⟨G, ⟨h1, ?_⟩, h3⟩` and prove the remaining obligations. Establish `hT : ((D.mem u).A.T : D.host.E) ≠ 0` using `Nat.cast_ne_zero.mpr (D.mem u).A.T_prime.ne_zero`. Establish `hz : (fun a => φ (Tf.til.z0 a)) = φ ((D.mem u).A.T : D.host.E) • (fun a => φ (Tf.til.z0 a / ((D.mem u).A.T : D.host.E)))`. Use function extensionality and compare the values at `a`.
+
+Rewrite using `[Pi.smul_apply, smul_eq_mul, ← map_mul, mul_div_cancel₀ _ hT]`. Rewrite using `[hz, mulVec_smul, h2]`.
+-/
 theorem til_ext (Tf : FormsTiedSym D u Ch chOf) {R : Type} [CommRing R] (φ : D.host.E →+* R)
     (g' : Matrix (Fin (D.R.N D.R.m - 1)) (Fin (D.R.N D.R.m - 1)) R) :
     ∃ g : Matrix (Fin (D.R.N D.R.m)) (Fin (D.R.N D.R.m)) R, IsExt D Tf.til.z0 φ g' g ∧ (IsUnit g'.det → IsUnit g.det) := by

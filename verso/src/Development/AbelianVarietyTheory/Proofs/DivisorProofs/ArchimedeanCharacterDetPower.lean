@@ -9,6 +9,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.HolRead
 
+/- English proof (translation)
+Introduce `D θ V χ mu e hθ hmu he u hu`. Take `⟨x, hx, h⟩` from `GlobalTheory.VacuumCharacter.exists_root hθ V (fun τ => (GlobalTheory.SmoothForms.RealPts.gramAt_unit V τ).ne_zero) u hu`. Rewrite using `[hmu.2 u x hx, h χ (fun ρ => -(e ρ)) (fun ρ => by push_cast; exact he ρ)]`. Both sides reduce to the same expression.
+-/
 theorem mu_real_eq_prod_det : ∀ (D : D7) (θ : InfFam D) (V : HSp D) (χ : (AE D)ˣ →* Circle) (mu : GA D V → ℂ) (e : D.what₂.Tau → ℤ), IsInfFam θ → MuVal V χ mu → (∀ ρ, HasInfExp D χ ρ (-(e ρ : ℚ))) → ∀ u ∈ GinfC V, mu u = ∏ ρ, (archM V (θ ρ) u).det ^ (-(e ρ)) := by
   intro D θ V χ mu e hθ hmu he u hu
   obtain ⟨x, hx, h⟩ := GlobalTheory.VacuumCharacter.exists_root hθ V

@@ -29,6 +29,13 @@ def zeroOn (S : Submodule ℂ (SchwartzMap Y ℂ)) (P : Finset Y) : Submodule �
     intro c a ha y hy
     simp [ha y hy]
 
+/- English proof (translation)
+Take `⟨P, -, hmin⟩` from `(measure fun P : Finset Y => Module.finrank ℂ (zeroOn S P)).wf.has_min Set.univ ⟨∅, trivial⟩`. Use `⟨P, fun s hs h0 => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Choose the witnesses or unpack the hypotheses as in `⟨y, hy⟩ : ∃ y, s y ≠ 0 := by`. Assume the negation of the conclusion as `h`.
+
+Use `push_neg at h`. Conclude with `hne (SchwartzMap.ext h)`. Establish `hlt : zeroOn S (insert y P) < zeroOn S P`. Use `lt_of_le_of_ne (fun a ha z hz => ha z (Finset.mem_insert_of_mem hz)) fun heq => ?_` and prove the remaining obligations. Establish `hmem : (⟨s, hs⟩ : S) ∈ zeroOn S P` using `h0`.
+
+Rewrite `hmem` using `[← heq]`. Conclude with `hy (hmem y (Finset.mem_insert_self y P))`. Conclude with `hmin (insert y P) trivial (Submodule.finrank_lt_finrank_of_lt hlt)`.
+-/
 theorem exists_finset_sep (S : Submodule ℂ (SchwartzMap Y ℂ)) [FiniteDimensional ℂ S] :
     ∃ P : Finset Y, ∀ s ∈ S, (∀ y ∈ P, s y = 0) → s = 0 := by
   classical
@@ -47,6 +54,27 @@ theorem exists_finset_sep (S : Submodule ℂ (SchwartzMap Y ℂ)) [FiniteDimensi
     exact hy (hmem y (Finset.mem_insert_self y P))
   exact hmin (insert y P) trivial (Submodule.finrank_lt_finrank_of_lt hlt)
 
+/- English proof (translation)
+Take `⟨P, hP⟩` from `exists_finset_sep S`. Set `E : S →ₗ[ℂ] (P → ℂ)` to `{ toFun := fun s p => (s : SchwartzMap Y ℂ) p map_add' := by intro a b; funext p; simp map_smul' := by intro a b; funext p; simp }`. Establish `hE : LinearMap.ker E = ⊥`. Rewrite using `[LinearMap.ker_eq_bot']`. Introduce `s hs`.
+
+Conclude with `Subtype.ext (hP s s.2 fun y hy => congrFun hs ⟨y, hy⟩)`. Take `⟨L, hL⟩` from `LinearMap.exists_leftInverse_of_injective E hE`. Set `C : ℝ → (P → ℂ)` to `fun u p => c u p`. Establish `hCd : ∀ t, HasDerivAt C (fun p => d t p) t` using `fun t => hasDerivAt_pi.2 fun p => hder p t`. Establish `hLC : ∀ u, L (C u) = ⟨c u, hc u⟩` using `fun u => LinearMap.congr_fun hL ⟨c u, hc u⟩`.
+
+Set `ev : SchwartzMap Y ℂ → Y → ℂ` to `fun g y => g y`. Establish `hcomp : ∀ φ : (P → ℂ) →ₗ[ℂ] ℂ, ∀ t, HasDerivAt (fun u => φ (C u)) (φ (fun p => d t p)) t` using `fun φ t => by`. Establish `h` using `(((LinearMap.toContinuousLinearMap φ).restrictScalars ℝ).hasFDerivAt (x := C t)).comp_hasDerivAt t (hCd t)`. Simplify `h` using `[Function.comp_def]`. Establish `hdS : ∀ t, ((L (fun p => d t p) : S) : SchwartzMap Y ℂ) = d t`.
+
+Introduce `t`. Use extensionality with `y`. Set `evy : S →ₗ[ℂ] ℂ` to `{ toFun := fun s => (s : SchwartzMap Y ℂ) y map_add' := by intro a b; simp map_smul' := by intro a b; simp }`. Establish `h1` using `hcomp (evy ∘ₗ L) t`. Establish `h2 : (fun u => (evy ∘ₗ L) (C u)) = fun u => c u y`.
+
+Use function extensionality and compare the values at `u`. Simplify using `only [LinearMap.comp_apply, hLC u]`. Both sides reduce to the same expression. Rewrite `h1` using `[h2]`. Conclude with `(hder y t).unique h1 |>.symm`.
+
+Set `T' : Submodule ℂ S` to `T.comap S.subtype`. Establish `hdT : ∀ t, L (fun p => d t p) ∈ T'` using `fun t => by show ((L (fun p => d t p) : S) : SchwartzMap Y ℂ) ∈ T`. Rewrite using `[hdS t]`. Conclude with `hd t`. Establish `key : (⟨c 1, hc 1⟩ : S) - ⟨c 0, hc 0⟩ ∈ T'`.
+
+Rewrite using `[← Submodule.Quotient.mk_eq_zero, ← Module.forall_dual_apply_eq_zero_iff ℂ]`. Introduce `φ`. Set `ψ : (P → ℂ) →ₗ[ℂ] ℂ` to `φ ∘ₗ T'.mkQ ∘ₗ L`. Establish `hg : ∀ t, HasDerivAt (fun u => ψ (C u)) 0 t`. Introduce `t`.
+
+Use `hcomp ψ t` as an intermediate fact. Establish `h0 : ψ (fun p => d t p) = 0` using `by show φ (T'.mkQ (L (fun p => d t p))) = 0`. Rewrite using `[Submodule.mkQ_apply, (Submodule.Quotient.mk_eq_zero T').2 (hdT t), map_zero]`. Rewrite `this` using `[h0]`. Then use the resulting hypothesis. Establish `hconst` using `is_const_of_deriv_eq_zero (fun t => (hg t).differentiableAt) (fun t => (hg t).deriv) 1 0`.
+
+Establish `e1 : ∀ u, ψ (C u) = φ (Submodule.Quotient.mk ⟨c u, hc u⟩)` using `fun u => by show φ (T'.mkQ (L (C u))) = _`. Rewrite using `[hLC u]`. Both sides reduce to the same expression. Rewrite `hconst` using `[e1, e1]`. Rewrite using `[Submodule.Quotient.mk_sub, map_sub, hconst, sub_self]`.
+
+Conclude with `key`.
+-/
 theorem sub_mem_of_hasDerivAt (S T : Submodule ℂ (SchwartzMap Y ℂ)) [FiniteDimensional ℂ S]
     (c d : ℝ → SchwartzMap Y ℂ) (hc : ∀ u, c u ∈ S) (hd : ∀ t, d t ∈ T)
     (hder : ∀ y t, HasDerivAt (fun u => c u y) (d t y) t) : c 1 - c 0 ∈ T := by
@@ -117,6 +145,29 @@ namespace GlobalTheory.KExpLine
 open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 open scoped Classical
 
+/- English proof (translation)
+Introduce `hPr F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP k hk f hf f₁ hact`. Take `⟨hDer, hOp, -, -⟩` from `GlobalTheory.T.polynomial_datum_action_of_pair hPr F E σ B n d X W M χX χW om r s r' s' hP`. Take `⟨γ, hγL, hγ1, hγK⟩` from `GlobalTheory.T.exists_oneParameter_in_unitaryArchimedeanMaxCompact F E σ B n X r s hP.base hP.herm k hk`. Take `⟨S, hSfin, hS⟩` from `GlobalTheory.T.theta_pair_polynomial_compact hPr F E σ B n d X W M χX χW om r s r' s' hP f hf`. Use `haveI := hSfin`.
+
+Take `⟨Dg, hDgP, hDg⟩` from `hDer γ hγL`. Use `choose D hDP hD using fun t : ℝ => hOp (γ (Multiplicative.ofAdd t)) (hγK _)`. Set `c : ℝ → SInf F (Fin n × Fin d)` to `fun t => D t f`. Establish `hcP : ∀ t, c t ∈ M.Pol B.ψ B.emb` using `fun t => hDP t f hf`. Establish `hcA : ∀ t, Acts (evI F) (om (γ (Multiplicative.ofAdd t), 1)) f (c t)` using `fun t => (hD t f hf (c t)).2 rfl`.
+
+Establish `hc1 : c 1 = f₁` using `((hD 1 f hf f₁).1 (by rw [hγ1]; exact hact)).symm`. Establish `hc0 : c 0 = f`. Establish `h1 : γ (Multiplicative.ofAdd (0 : ℝ)) = 1`. Rewrite using `[ofAdd_zero, map_one]`. Establish `hA : Acts (evI F) (om (γ (Multiplicative.ofAdd (0 : ℝ)), 1)) f f`.
+
+Introduce `ρ _`. Rewrite using `[h1]`. Use `show om 1 _ = _`. Rewrite using `[map_one]`. Both sides reduce to the same expression.
+
+Conclude with `((hD 0 f hf f).1 hA).symm`. Establish `hder : ∀ y t, HasDerivAt (fun u => c u y) (Dg (c t) y) t`. Introduce `y t`. Set `ρ` to `GlobalTheory.ArchIsom.r0 F (Fin n × Fin d)`. Set `x` to `GlobalTheory.ArchIsom.splitEquiv F (Fin n × Fin d) (y, 0)`.
+
+Establish `hx : (fun i => evI F (x i)) = y` using `funext fun i => GlobalTheory.ArchIsom.evI_splitEquiv _ _ i`. Establish `hρ : ρ x = 1` using `by show GlobalTheory.ArchIsom.g0 F (Fin n × Fin d) (fun i => (x i).2) = 1`. Establish `: (fun i => (x i).2) = (0 : Fin n × Fin d → FiniteAdeleRing (𝓞 F) F)` using `rfl`. Rewrite using `[this]`. Conclude with `Set.indicator_of_mem (GlobalTheory.ArchIsom.zero_mem_intPts _) _`.
+
+Establish `htens : ∀ g : SInf F (Fin n × Fin d), tens (evI F) (⇑g) ρ x = g y`. Introduce `g`. Use `show g (fun i => evI F (x i)) * ρ x = g y`. Rewrite using `[hx, hρ, mul_one]`. Establish `hom : ∀ u, om (γ (Multiplicative.ofAdd u), 1) (tens (evI F) (⇑f) ρ) = tens (evI F) (⇑(c u)) ρ` using `fun u => hcA u ρ (GlobalTheory.ArchIsom.restriction_at_standard_point _ f)`.
+
+Establish `hsplit : ∀ s', om (γ (Multiplicative.ofAdd (s' + t)), 1) (tens (evI F) (⇑f) ρ) = om (γ (Multiplicative.ofAdd s'), 1) (tens (evI F) (⇑(c t)) ρ)`. Introduce `s'`. Establish `e : ((γ (Multiplicative.ofAdd (s' + t)), (1 : UA σ W.J)) : UA σ X.J × UA σ W.J) = (γ (Multiplicative.ofAdd s'), 1) * (γ (Multiplicative.ofAdd t), 1)`. Rewrite using `[ofAdd_add, map_mul, Prod.mk_mul_mk, mul_one]`. Rewrite using `[e, map_mul, Module.End.mul_apply, hom t]`.
+
+Establish `h0` using `(hDg (c t) (hcP t) (Dg (c t))).2 rfl ρ (GlobalTheory.ArchIsom.restriction_at_standard_point _ (c t)) x`. Establish `h0' : HasDerivAt (fun s' => c (s' + t) y) (Dg (c t) y) 0`. Establish `e1 : (fun s' : ℝ => om (γ (Multiplicative.ofAdd s'), 1) (tens (evI F) (⇑(c t)) ρ) x) = fun s' => c (s' + t) y`. Use function extensionality and compare the values at `s'`. Rewrite using `[← hsplit s', hom, htens]`.
+
+Rewrite `h0` using `[e1, htens]`. Conclude with `h0`. Establish `h2' : HasDerivAt (fun u => c (u - t + t) y) (Dg (c t) y) t`. Use `h0'` as an intermediate fact. Rewrite `this` using `[show (0 : ℝ) = t - t from (sub_self t).symm]`.
+
+Conclude with `this.comp_sub_const t t`. Simplify `h2'` using `only [sub_add_cancel]`. Rewrite using `[← hc1, ← hc0]`. Use `sub_mem_of_hasDerivAt S _ c (fun t => Dg (c t)) (fun u => hS _ (hγK _) (c u) (hcA u)) (fun t => ?_) hder` and prove the remaining obligations. Conclude with `Submodule.subset_span ⟨hDgP _ (hcP t), γ, hγL, c t, hcP t, (hDg (c t) (hcP t) _).2 rfl⟩`.
+-/
 theorem sub_mem_span_derivs : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E]
     [Algebra F E] (σ : E →ₐ[F] E)
     (B : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) (n d : ℕ) (X : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E n) (W : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E d)

@@ -20,14 +20,27 @@ open Matrix
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) {n : ℕ}
 
 omit [NumberField F] [NumberField E] in
+/- English proof (translation)
+Rewrite using `[hE_eq, hE_eq, hE_eq, mulVec_sub, dotProduct_sub]`.
+-/
 theorem hE_sub (J : Matrix (Fin n) (Fin n) E) (x y y' : Fin n → E) : hE σ J x (y - y') = hE σ J x y - hE σ J x y' := by
   rw [hE_eq, hE_eq, hE_eq, mulVec_sub, dotProduct_sub]
 
 omit [NumberField F] [NumberField E] in
+/- English proof (translation)
+Rewrite using `[hE_eq, mulVec_zero, dotProduct_zero]`.
+-/
 theorem hE_zero_right (J : Matrix (Fin n) (Fin n) E) (x : Fin n → E) : hE σ J x 0 = 0 := by
   rw [hE_eq, mulVec_zero, dotProduct_zero]
 
 omit [NumberField F] [NumberField E] in
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Use `h (Pi.single i 1)` as an intermediate fact. Rewrite `this` using `[hE_eq, one_mulVec]`. Establish `e : (fun j => σ ((Pi.single i (1 : E) : Fin k → E) j)) = Pi.single i 1`. Use function extensionality and compare the values at `j`.
+
+Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hj]`. Rewrite `this` using `[e, single_one_dotProduct]`.
+
+Conclude with `this`.
+-/
 theorem eq_zero_of_hE_one {k : ℕ} {w : Fin k → E} (h : ∀ u, hE σ (1 : Matrix (Fin k) (Fin k) E) u w = 0) : w = 0 := by
   funext i
   have := h (Pi.single i 1)
@@ -45,6 +58,35 @@ end
 
 open GlobalTheory.HypAdapt GlobalTheory.HypAdapt.Cmpl Matrix in
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ n m r J hJ L₀ hL hd hext X Y I Q XX XI QX QI hG hQ h1`. Use `set G := cT (σ : E →+* E) I * J * I with hGdef`. Use `set K : Submodule E (Fin n → E) := LinearMap.ker (cT (σ : E →+* E) X * J).mulVecLin with hK`. Establish `memK : ∀ z, z ∈ K ↔ (cT (σ : E →+* E) X * J) *ᵥ z = 0` using `fun z => LinearMap.mem_ker`. Use `set L₁ : Submodule (𝓞 E) (Fin n → E) := L₀ ⊓ K.restrictScalars (𝓞 E) with hL₁`.
+
+Use `⟨L₁.map (Q.mulVecLin.restrictScalars (𝓞 E)), ?_⟩` and prove the remaining obligations. Establish `eX` using `hE_mulVec σ J (Matrix.one_mul (cT (σ : E →+* E) X * J))`. Establish `eI` using `hE_mulVec σ J hQ.symm.symm`. Establish `hX0 : ∀ a, ∀ z ∈ K, hE σ J (X *ᵥ a) z = 0` using `fun a z hz => by`. Rewrite using `[eX, (memK z).1 hz, hE_zero_right]`.
+
+Establish `XK : ∀ a, X *ᵥ a ∈ K` using `fun a => (memK _).2 (by rw [mulVec_mulVec, XX, zero_mulVec])`. Establish `IK : ∀ a, I *ᵥ a ∈ K` using `fun a => (memK _).2 (by rw [mulVec_mulVec, XI, zero_mulVec])`. Establish `hz : ∀ z ∈ K, z = X *ᵥ ((cT (σ : E →+* E) Y * J) *ᵥ z) + I *ᵥ (Q *ᵥ z)` using `fun z hzK => by`. Establish `e3 : (Y * (cT (σ : E →+* E) X * J)) *ᵥ z = 0` using `by rw [← mulVec_mulVec, (memK z).1 hzK, mulVec_zero]`. Use `conv_lhs => rw [← one_mulVec z, ← h1]`.
+
+Rewrite using `[add_mulVec, add_mulVec, e3, add_zero]`. Simplify using `only [mulVec_mulVec]`. Establish `hJz : ∀ z ∈ K, ∀ y ∈ K, hE σ J z y = hE σ G (Q *ᵥ z) (Q *ᵥ y)` using `fun z hzK y hyK => by`. Rewrite using `[hz z hzK, hE_add, hX0 _ y hyK, zero_add, eI, ← hz z hzK]`. Establish `d0` using `(GlobalTheory.AdelicU.SelfDual.forall_isSelfDualAt_iff hJ hL).1 hd`.
+
+Establish `hl : Submodule.IsLattice E (L₁.map (Q.mulVecLin.restrictScalars (𝓞 E)))`. Establish `: IsNoetherian (𝓞 E) L₀` using `isNoetherian_of_fg_of_noetherian L₀ hL.fg`. Establish `hfg : L₁.FG`. Rewrite using `[hL₁, ← Submodule.map_comap_subtype]`. Conclude with `(IsNoetherian.noetherian _).map _`.
+
+Use `⟨hfg.map _, eq_top_iff.2 fun u _ => ?_⟩` and prove the remaining obligations. Establish `hIu : I *ᵥ u ∈ Submodule.span E (L₀ : Set (Fin n → E))` using `hL.span_eq_top ▸ Submodule.mem_top`. Take `⟨t, ht⟩` from `multiple_mem_span_of_mem_localization_span (nonZeroDivisors (𝓞 E)) E (L₀ : Set (Fin n → E)) _ hIu`. Rewrite `ht` using `[Submodule.span_eq]`. Establish `e1 : t • (I *ᵥ u) = algebraMap (𝓞 E) E (t : 𝓞 E) • (I *ᵥ u)`.
+
+Rewrite using `[Submonoid.smul_def, algebraMap_smul]`. Establish `hc : algebraMap (𝓞 E) E (t : 𝓞 E) ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective (𝓞 E) E)).2 (nonZeroDivisors.coe_ne_zero t)`. Establish `hm : algebraMap (𝓞 E) E (t : 𝓞 E) • u ∈ L₁.map (Q.mulVecLin.restrictScalars (𝓞 E))`. Use `⟨t • (I *ᵥ u), ⟨ht, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[e1]`.
+
+Conclude with `K.smul_mem _ (IK u)`. Express the relevant statement in the definitionally equal form `Q *ᵥ (t • (I *ᵥ u)) = _`. Rewrite using `[e1, mulVec_smul, mulVec_mulVec, QI, one_mulVec]`. Establish `: u = (algebraMap (𝓞 E) E (t : 𝓞 E))⁻¹ • (algebraMap (𝓞 E) E (t : 𝓞 E) • u)`. Rewrite using `[smul_smul, inv_mul_cancel₀ hc, one_smul]`.
+
+Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span hm)`. Use `⟨hl, (GlobalTheory.AdelicU.SelfDual.forall_isSelfDualAt_iff hG hl).2 fun y => ⟨?_, fun h => ?_⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨z, ⟨hz0, hzK⟩, rfl⟩ x ⟨z', ⟨hz0', hzK'⟩, rfl⟩`. Express the relevant statement in the definitionally equal form `hE σ G (Q *ᵥ z') (Q *ᵥ z) ∈ _`.
+
+Rewrite using `[← hJz z' hzK' z hzK]`. Conclude with `(d0 z).1 hz0 z' hz0'`. Take `⟨z'', hz'', he⟩` from `hext K (I *ᵥ y) fun z hz0 hzK => by`. Rewrite using `[hJz z hzK _ (IK y), mulVec_mulVec, QI, one_mulVec]`. Conclude with `h _ ⟨z, ⟨hz0, hzK⟩, rfl⟩`.
+
+Establish `hd0 : ∀ x ∈ K, hE σ J x (I *ᵥ y - z'') = 0` using `fun x hx => by rw [hE_sub, he x hx, sub_self]`. Establish `c1 : (cT (σ : E →+* E) X * J) *ᵥ (I *ᵥ y - z'') = 0` using `eq_zero_of_hE_one σ fun u => by rw [← eX]; exact hd0 _ (XK u)`. Establish `c2 : Q *ᵥ (I *ᵥ y - z'') = 0`. Establish `: G *ᵥ (Q *ᵥ (I *ᵥ y - z'')) = 0`. Use `eq_zero_of_hE_one σ fun u => ?_` and prove the remaining obligations.
+
+Rewrite using `[hE_eq, one_mulVec, ← hE_eq, ← eI]`. Conclude with `hd0 _ (IK u)`. Rewrite using `[← one_mulVec (Q *ᵥ _), ← nonsing_inv_mul G (Ne.isUnit hG), ← mulVec_mulVec, this, mulVec_zero]`. Establish `hz''K : z'' ∈ K`. Establish `: z'' = I *ᵥ y - (I *ᵥ y - z'')` using `by abel`.
+
+Rewrite using `[this]`. Conclude with `K.sub_mem (IK y) ((memK _).2 c1)`. Use `⟨z'', ⟨hz'', hz''K⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Q *ᵥ z'' = y`. Rewrite `c2` using `[mulVec_sub, mulVec_mulVec, QI, one_mulVec, sub_eq_zero]`.
+
+Conclude with `c2.symm`.
+-/
 theorem GlobalTheory.HypAdapt.Cmpl.exists_selfDual_complement : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (n m r : ℕ) (J : Matrix (Fin n) (Fin n) E), J.det ≠ 0 →
     ∀ L₀ : Submodule (𝓞 E) (Fin n → E), Submodule.IsLattice E L₀ → (∀ v, IsSelfDualAt σ J L₀ v) → (∀ (K : Submodule E (Fin n → E)) (y : Fin n → E), (∀ z ∈ L₀, z ∈ K → hE σ J z y ∈ (algebraMap (𝓞 E) E).range) →

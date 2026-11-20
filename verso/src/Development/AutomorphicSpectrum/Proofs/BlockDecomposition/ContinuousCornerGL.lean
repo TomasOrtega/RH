@@ -13,6 +13,13 @@ section Abstract
 
 variable {G H : Type} [Group G] [Group H]
 
+/- English proof (translation)
+Establish `key : ∀ g, g⁻¹ * δ * θ g = δ ↔ (e g).1⁻¹ * (e δ).1 * θ₁ (e g).1 = (e δ).1 ∧ (e g).2⁻¹ * (e δ).2 * θ₂ (e g).2 = (e δ).2`. Introduce `g`. Rewrite using `[← e.injective.eq_iff, map_mul, map_mul, map_inv, h, Prod.ext_iff]`. Simplify using the standard rewrite rules. Use extensionality with `⟨a, b⟩`.
+
+Simplify using `only [Subgroup.mem_map, Subgroup.mem_prod, mem_twCent]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, hg, hgab⟩`. Establish `hgab' : e g = (a, b)` using `hgab`. Use `(key g).1 hg` as an intermediate fact.
+
+Rewrite `this` using `[hgab']`. Conclude with `this`. Introduce and unpack `hab`. Use `⟨e.symm (a, b), (key _).2 (by simpa using hab), by simp⟩` and prove the remaining obligations.
+-/
 theorem map_twCent_prod {A B : Type} [Group A] [Group B] (e : G ≃* A × B) (θ : Monoid.End G) (θ₁ : Monoid.End A)
     (θ₂ : Monoid.End B) (h : ∀ g, e (θ g) = (θ₁ (e g).1, θ₂ (e g).2)) (δ : G) :
     (twCent θ δ).map e.toMonoidHom = (twCent θ₁ (e δ).1).prod (twCent θ₂ (e δ).2) := by
@@ -70,6 +77,9 @@ def endK (p : G →* H) (θ : Monoid.End G) (θ₁ : Monoid.End H) (h : ∀ g, p
   map_one' := Subtype.ext (by simp)
   map_mul' a b := Subtype.ext (by simp)
 
+/- English proof (translation)
+Use `Prod.ext (h g) (Subtype.ext ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `θ g * (s (p (θ g)))⁻¹ = θ (g * (s (p g))⁻¹)`. Rewrite using `[h, map_mul, map_inv, h']`.
+-/
 theorem splitE_theta (p : G →* H) (s : H →* G) (hps : ∀ y, p (s y) = y) (hc : ∀ y, ∀ k ∈ p.ker, s y * k = k * s y)
     (θ : Monoid.End G) (θ₁ : Monoid.End H) (h : ∀ g, p (θ g) = θ₁ (p g)) (h' : ∀ y, θ (s y) = s (θ₁ y)) (g : G) :
     splitE p s hps hc (θ g) = (θ₁ (splitE p s hps hc g).1, endK p θ θ₁ h (splitE p s hps hc g).2) := by
@@ -77,6 +87,11 @@ theorem splitE_theta (p : G →* H) (s : H →* G) (hps : ∀ y, p (s y) = y) (h
   change θ g * (s (p (θ g)))⁻¹ = θ (g * (s (p g))⁻¹)
   rw [h, map_mul, map_inv, h']
 
+/- English proof (translation)
+Establish `h0 : (μ.map e).IsHaarMeasure` using `e.isHaarMeasure_map μ`. Set `μ₁ : Measure A` to `Measure.haar`. Set `ν : Measure B` to `Measure.haar`. Establish `h1` using `Measure.isMulLeftInvariant_eq_smul (μ.map e) (μ₁.prod ν)`. Establish `hc : Measure.haarScalarFactor (μ.map e) (μ₁.prod ν) ≠ 0` using `(Measure.haarScalarFactor_pos_of_isHaarMeasure _ _).ne'`.
+
+Use `⟨μ₁, Measure.haarScalarFactor (μ.map e) (μ₁.prod ν) • ν, inferInstance, ?_, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `first | exact Measure.IsHaarMeasure.nnreal_smul _ hc | exact IsHaarMeasure.nnreal_smul _ hc | exact Measure.isHaarMeasure_nnreal_smul _ hc`. Rewrite using `[Measure.prod_smul_right]`. Conclude with `h1`.
+-/
 theorem haar_split {A B : Type} [TopologicalSpace G] [IsTopologicalGroup G] [MeasurableSpace G] [BorelSpace G]
     [Group A] [TopologicalSpace A] [IsTopologicalGroup A] [LocallyCompactSpace A] [SecondCountableTopology A]
     [MeasurableSpace A] [BorelSpace A]
@@ -102,6 +117,9 @@ open GlobalTheory.CuspRep GlobalTheory.UnitaryBC
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
+/- English proof (translation)
+Use `Units.ext ?_` and prove the remaining obligations. Use extensionality with `i j`. Rewrite using `[thetaR_val, ← map_inv]`. Express the relevant statement in the definitionally equal form `f (σ (((g⁻¹ : GL (Fin n) A) : Matrix (Fin n) (Fin n) A) j i)) = τ (f (((g⁻¹ : GL (Fin n) A) : Matrix (Fin n) (Fin n) A) j i))`. Conclude with `h _`.
+-/
 theorem map_thetaR {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) (σ : A →+* A) (τ : B →+* B)
     (h : ∀ x, f (σ x) = τ (f x)) (g : GL (Fin n) A) :
     GeneralLinearGroup.map f (thetaR σ n g) = thetaR τ n (GeneralLinearGroup.map f g) := by
@@ -112,11 +130,20 @@ theorem map_thetaR {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) (σ : 
     τ (f (((g⁻¹ : GL (Fin n) A) : Matrix (Fin n) (Fin n) A) j i))
   exact h _
 
+/- English proof (translation)
+The claim follows from `map_one _`.
+-/
 theorem thetaR_one' {A : Type} [CommRing A] (σ : A →+* A) : thetaR σ n 1 = 1 := map_one _
 
+/- English proof (translation)
+The claim follows from `congrFun ((infEq E).symm_apply_apply _) v`.
+-/
 theorem cV_conjAd (v : InfinitePlace E) (x : Ad E) : cV v (conjAd E x) = starRingEnd ℂ (cV v x) :=
   congrFun ((infEq E).symm_apply_apply _) v
 
+/- English proof (translation)
+Establish `h : Continuous fun x : InfiniteAdeleRing E => (infEq E).symm x` using `continuous_pi fun w => (InfinitePlace.Completion.isometryEquivComplexOfIsComplex (IsTotallyComplex.isComplex w)).continuous.comp (continuous_apply w)`. Conclude with `(continuous_apply v).comp (h.comp continuous_fst)`.
+-/
 theorem continuous_cV (v : InfinitePlace E) : Continuous (cV (E := E) v) := by
   have h : Continuous fun x : InfiniteAdeleRing E => (infEq E).symm x :=
     continuous_pi fun w =>
@@ -124,6 +151,9 @@ theorem continuous_cV (v : InfinitePlace E) : Continuous (cV (E := E) v) := by
         (continuous_apply w)
   exact (continuous_apply v).comp (h.comp continuous_fst)
 
+/- English proof (translation)
+Use `ga_ext ?_ h2` and prove the remaining obligations. Use extensionality with `i j w`. Conclude with `congrArg (fun x : GL (Fin n) ℂ => x i j) (h1 w)`.
+-/
 theorem ga_ext' {g h : GA E n} (h1 : ∀ w, GeneralLinearGroup.map (cV w) g = GeneralLinearGroup.map (cV w) h)
     (h2 : GeneralLinearGroup.map (pFin E) g = GeneralLinearGroup.map (pFin E) h) : g = h := by
   refine ga_ext ?_ h2
@@ -139,9 +169,17 @@ def sV (v : InfinitePlace E) : ℂ →ₙ+* Ad E where
   map_add' x y := by rw [Pi.single_add, map_add]
 
 open Classical in
+/- English proof (translation)
+The claim follows from `congrFun ((infEq E).symm_apply_apply _) w`.
+-/
 theorem cV_sV (v w : InfinitePlace E) (x : ℂ) : cV w (sV v x) = (Pi.single v x : InfinitePlace E → ℂ) w :=
   congrFun ((infEq E).symm_apply_apply _) w
 
+/- English proof (translation)
+Establish `h0 : Continuous fun x : ℂ => (Pi.single v x : InfinitePlace E → ℂ)` using `continuous_pi fun w => by`. Distinguish the cases in `h : w = v`. Substitute `h` using the available equality. Simplify using `using (continuous_id' : Continuous fun a : ℂ => a)`. Simplify `continuous_const` using `[Pi.single_eq_of_ne h]`.
+
+Establish `h : Continuous fun x : ℂ => infEq E (Pi.single v x)` using `(continuous_infEq E).comp h0`. Conclude with `h.prodMk continuous_const`.
+-/
 theorem continuous_sV (v : InfinitePlace E) : Continuous (sV (E := E) v) := by
   classical
   have h0 : Continuous fun x : ℂ => (Pi.single v x : InfinitePlace E → ℂ) := continuous_pi fun w => by
@@ -151,16 +189,27 @@ theorem continuous_sV (v : InfinitePlace E) : Continuous (sV (E := E) v) := by
   have h : Continuous fun x : ℂ => infEq E (Pi.single v x) := (continuous_infEq E).comp h0
   exact h.prodMk continuous_const
 
+/- English proof (translation)
+Use `Continuous.units_map _ ?_` and prove the remaining obligations. Conclude with `continuous_const.add (Continuous.matrix_map continuous_id hs)`.
+-/
 theorem continuous_cornerGL {R S : Type} [CommRing R] [CommRing S] [TopologicalSpace R] [TopologicalSpace S]
     [IsTopologicalRing S] (s : R →ₙ+* S) (hs : Continuous s) : Continuous (cornerGL n s) := by
   refine Continuous.units_map _ ?_
   exact continuous_const.add (Continuous.matrix_map continuous_id hs)
 
+/- English proof (translation)
+The claim follows from `Continuous.units_map _ (Continuous.matrix_map continuous_id hf)`.
+-/
 theorem continuous_mapGL {R S : Type} [CommRing R] [CommRing S] [TopologicalSpace R] [TopologicalSpace S]
     (f : R →+* S) (hf : Continuous f) : Continuous (GeneralLinearGroup.map (n := Fin n) f) :=
   Continuous.units_map _ (Continuous.matrix_map continuous_id hf)
 
 open Classical in
+/- English proof (translation)
+Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `(GeneralLinearGroup.map (pInf E) (embInf n v y)) i j w = _`. Unfold `embInf`. Rewrite using `[MonoidHom.comp_apply, pInf_infGL]`. Express the relevant statement in the definitionally equal form `(MonoidHom.mulSingle (fun _ : InfinitePlace E => GL (Fin n) ℂ) v y w).val i j = _`.
+
+Distinguish the cases in `h : w = v`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h, Pi.mulSingle_eq_of_ne h]`.
+-/
 theorem cV_embInf (v w : InfinitePlace E) (y : GL (Fin n) ℂ) :
     GeneralLinearGroup.map (cV w) (embInf n v y) = if w = v then y else 1 := by
   ext i j
@@ -173,11 +222,19 @@ theorem cV_embInf (v w : InfinitePlace E) (y : GL (Fin n) ℂ) :
     simp
   · simp [h, Pi.mulSingle_eq_of_ne h]
 
+/- English proof (translation)
+Unfold `embInf`. Conclude with `pFin_infGL _`.
+-/
 theorem pFin_embInf (v : InfinitePlace E) (y : GL (Fin n) ℂ) :
     GeneralLinearGroup.map (pFin E) (embInf n v y) = 1 := by
   unfold embInf
   exact pFin_infGL _
 
+/- English proof (translation)
+Use `ga_ext' (fun w => ?_) ?_` and prove the remaining obligations. Rewrite using `[cV_embInf]`. Distinguish the cases in `h : w = v`. Substitute `h` using the available equality. Rewrite using `[if_pos rfl, map_cornerGL_of_hom (sV w) (cV w) (RingHom.id ℂ) (fun x => by rw [cV_sV, Pi.single_eq_same]; rfl) y]`.
+
+Use extensionality with `i j`. Both sides reduce to the same expression. Rewrite using `[if_neg h, map_cornerGL_of_zero (sV v) (cV w) (fun x => by rw [cV_sV, Pi.single_eq_of_ne h]) y]`. Rewrite using `[pFin_embInf, map_cornerGL_of_zero (sV v) (pFin E) (fun x => rfl) y]`.
+-/
 theorem embInf_eq_cornerGL (v : InfinitePlace E) (y : GL (Fin n) ℂ) : embInf n v y = cornerGL n (sV v) y := by
   classical
   refine ga_ext' (fun w => ?_) ?_
@@ -190,16 +247,29 @@ theorem embInf_eq_cornerGL (v : InfinitePlace E) (y : GL (Fin n) ℂ) : embInf n
     · rw [if_neg h, map_cornerGL_of_zero (sV v) (cV w) (fun x => by rw [cV_sV, Pi.single_eq_of_ne h]) y]
   · rw [pFin_embInf, map_cornerGL_of_zero (sV v) (pFin E) (fun x => rfl) y]
 
+/- English proof (translation)
+Establish `h : (embInf (E` using `E) n v : GL (Fin n) ℂ → GA E n) = cornerGL n (sV v) := funext (embInf_eq_cornerGL v)`. Rewrite using `[h]`. Conclude with `continuous_cornerGL _ (continuous_sV v)`.
+-/
 theorem continuous_embInf (v : InfinitePlace E) : Continuous (embInf (E := E) n v) := by
   have h : (embInf (E := E) n v : GL (Fin n) ℂ → GA E n) = cornerGL n (sV v) := funext (embInf_eq_cornerGL v)
   rw [h]
   exact continuous_cornerGL _ (continuous_sV v)
 
+/- English proof (translation)
+Rewrite using `[cV_embInf, if_pos rfl]`.
+-/
 theorem cV_embInf_self (v : InfinitePlace E) (y : GL (Fin n) ℂ) :
     GeneralLinearGroup.map (cV v) (embInf n v y) = y := by
   classical
   rw [cV_embInf, if_pos rfl]
 
+/- English proof (translation)
+Establish `hk' : GeneralLinearGroup.map (cV v) k = 1` using `hk`. Use `ga_ext' (fun w => ?_) ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, cV_embInf]`. Distinguish the cases in `h : w = v`. Substitute `h` using the available equality.
+
+Rewrite using `[hk']`. Simplify using the standard rewrite rules. Rewrite using `[if_neg h]`. Simplify using the standard rewrite rules. Rewrite using `[map_mul, map_mul, pFin_embInf]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem embInf_comm (v : InfinitePlace E) (y : GL (Fin n) ℂ) (k : GA E n)
     (hk : k ∈ (GeneralLinearGroup.map (n := Fin n) (cV (E := E) v)).ker) : embInf n v y * k = k * embInf n v y := by
   classical
@@ -212,10 +282,18 @@ theorem embInf_comm (v : InfinitePlace E) (y : GL (Fin n) ℂ) (k : GA E n)
     · rw [if_neg h]; simp
   · rw [map_mul, map_mul, pFin_embInf]; simp
 
+/- English proof (translation)
+The claim follows from `map_thetaR _ _ _ (cV_conjAd v) g`.
+-/
 theorem cV_thetaA (v : InfinitePlace E) (g : GA E n) :
     GeneralLinearGroup.map (cV v) (thetaA E n g) = thetaR (starRingEnd ℂ) n (GeneralLinearGroup.map (cV v) g) :=
   map_thetaR _ _ _ (cV_conjAd v) g
 
+/- English proof (translation)
+Use `ga_ext' (fun w => ?_) ?_` and prove the remaining obligations. Rewrite using `[cV_thetaA, cV_embInf, cV_embInf]`. Distinguish the cases in `h : w = v`. Rewrite using `[if_pos h, if_pos h]`. Rewrite using `[if_neg h, if_neg h, thetaR_one']`.
+
+Rewrite using `[pFin_embInf, map_thetaR (pFin E) (conjAd E) (conjFin (IsCMField.complexConj E).toRingEquiv) (fun _ => rfl), pFin_embInf, thetaR_one']`.
+-/
 theorem thetaA_embInf (v : InfinitePlace E) (y : GL (Fin n) ℂ) :
     thetaA E n (embInf n v y) = embInf n v (thetaR (starRingEnd ℂ) n y) := by
   classical
@@ -227,11 +305,17 @@ theorem thetaA_embInf (v : InfinitePlace E) (y : GL (Fin n) ℂ) :
   · rw [pFin_embInf, map_thetaR (pFin E) (conjAd E) (conjFin (IsCMField.complexConj E).toRingEquiv) (fun _ => rfl),
       pFin_embInf, thetaR_one']
 
+/- English proof (translation)
+Use extensionality with `i j`. Conclude with `pInf_algebraMap (d i j) v`.
+-/
 theorem cV_ratGL (v : InfinitePlace E) (d : GL (Fin n) E) :
     GeneralLinearGroup.map (cV v) (ratGL E n d) = PositivityTheory.Rg.BcB.D4.locGL v d := by
   ext i j
   exact pInf_algebraMap (d i j) v
 
+/- English proof (translation)
+Use `haveI : LocallyCompactSpace (Matrix (Fin n) (Fin n) R) := inferInstanceAs (LocallyCompactSpace (Fin n → Fin n → R))`. Use `haveI : T2Space (Matrix (Fin n) (Fin n) R) := inferInstanceAs (T2Space (Fin n → Fin n → R))`. Conclude with `Units.isClosedEmbedding_embedProduct.locallyCompactSpace`.
+-/
 theorem locallyCompact_GL {R : Type} [CommRing R] [TopologicalSpace R] [IsTopologicalRing R] [T2Space R]
     [LocallyCompactSpace R] : LocallyCompactSpace (GL (Fin n) R) := by
   haveI : LocallyCompactSpace (Matrix (Fin n) (Fin n) R) :=
@@ -239,6 +323,9 @@ theorem locallyCompact_GL {R : Type} [CommRing R] [TopologicalSpace R] [IsTopolo
   haveI : T2Space (Matrix (Fin n) (Fin n) R) := inferInstanceAs (T2Space (Fin n → Fin n → R))
   exact Units.isClosedEmbedding_embedProduct.locallyCompactSpace
 
+/- English proof (translation)
+Use `haveI : SecondCountableTopology (Matrix (Fin n) (Fin n) R) := inferInstanceAs (SecondCountableTopology (Fin n → Fin n → R))`. Use `haveI : SecondCountableTopology (Matrix (Fin n) (Fin n) R)ᵐᵒᵖ := (MulOpposite.opHomeomorph (M := Matrix (Fin n) (Fin n) R)).symm.secondCountableTopology`. Conclude with `Units.isEmbedding_embedProduct.secondCountableTopology`.
+-/
 theorem secondCountable_GL {R : Type} [CommRing R] [TopologicalSpace R] [SecondCountableTopology R] :
     SecondCountableTopology (GL (Fin n) R) := by
   haveI : SecondCountableTopology (Matrix (Fin n) (Fin n) R) :=
@@ -247,6 +334,23 @@ theorem secondCountable_GL {R : Type} [CommRing R] [TopologicalSpace R] [SecondC
     (MulOpposite.opHomeomorph (M := Matrix (Fin n) (Fin n) R)).symm.secondCountableTopology
   exact Units.isEmbedding_embedProduct.secondCountableTopology
 
+/- English proof (translation)
+Introduce `E _ _ _ n v _ _ μ _`. Use `haveI : LocallyCompactSpace (Ad E) := GlobalTheory.AdelicUnitaryTop.locallyCompact_adele E`. Use `haveI : SecondCountableTopology (Ad E) := GlobalTheory.AdelicUnitaryTop.secondCountable_adele E`. Use `haveI : T2Space (Ad E) := GlobalTheory.AdelicUnitaryTop.t2Space_adeleRing_numberField E`. Use `haveI : LocallyCompactSpace (GA E n) := locallyCompact_GL`.
+
+Use `haveI : SecondCountableTopology (GA E n) := secondCountable_GL`. Use `haveI : LocallyCompactSpace (GL (Fin n) ℂ) := locallyCompact_GL`. Use `haveI : SecondCountableTopology (GL (Fin n) ℂ) := secondCountable_GL`. Use `letI mH : MeasurableSpace (GL (Fin n) ℂ) := borel _`. Use `haveI bH : BorelSpace (GL (Fin n) ℂ) := ⟨rfl⟩`.
+
+Set `p : GA E n →* GL (Fin n) ℂ` to `GeneralLinearGroup.map (cV v)`. Set `s : GL (Fin n) ℂ →* GA E n` to `embInf n v`. Establish `hp : Continuous p` using `continuous_mapGL _ (continuous_cV v)`. Establish `hs : Continuous s` using `continuous_embInf v`. Establish `hps : ∀ y, p (s y) = y` using `cV_embInf_self v`.
+
+Establish `hc : ∀ y, ∀ k ∈ p.ker, s y * k = k * s y` using `embInf_comm v`. Establish `hcl : IsClosed (p.ker : Set (GA E n))`. Establish `: (p.ker : Set (GA E n)) = p ⁻¹' {1}` using `rfl`. Rewrite using `[this]`. Conclude with `isClosed_singleton.preimage hp`.
+
+Use `haveI lK : LocallyCompactSpace p.ker := hcl.isClosedEmbedding_subtypeVal.locallyCompactSpace`. Use `haveI sK : SecondCountableTopology p.ker := TopologicalSpace.Subtype.secondCountableTopology _`. Use `letI mK : MeasurableSpace p.ker := borel _`. Use `haveI bK : BorelSpace p.ker := ⟨rfl⟩`. Establish `hθ : ∀ g, p (thetaA E n g) = thetaR (starRingEnd ℂ) n (p g)` using `cV_thetaA v`.
+
+Establish `hθ' : ∀ y, thetaA E n (s y) = s (thetaR (starRingEnd ℂ) n y)` using `thetaA_embInf v`. Take `⟨μ₁, μ₂, h1, h2, h3⟩` from `haar_split (splitC p s hps hc hp hs) μ`. Use `⟨p.ker, inferInstance, inferInstance, inferInstance, lK, sK, mK, bK, mH, bH, splitC p s hps hc hp hs, μ₁, μ₂, endK p (thetaA E n) (thetaR (starRingEnd ℂ) n) hθ, h1, h2, h3, fun _ => rfl, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `y`. Use `Prod.ext (hps y) (Subtype.ext ?_)` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `s y * (s (p (s y)))⁻¹ = 1`. Rewrite using `[hps, mul_inv_cancel]`. Conclude with `splitE_theta p s hps hc _ _ hθ hθ'`. Introduce `d`. Establish `h` using `map_twCent_prod (splitE p s hps hc) (thetaA E n) (thetaR (starRingEnd ℂ) n) (endK p (thetaA E n) (thetaR (starRingEnd ℂ) n) hθ) (splitE_theta p s hps hc _ _ hθ hθ') (ratGL E n d)`.
+
+Establish `h4 : (splitE p s hps hc (ratGL E n d)).1 = PositivityTheory.Rg.BcB.D4.locGL v d` using `cV_ratGL v d`. Rewrite `h` using `[h4]`. Conclude with `h`.
+-/
 theorem splitAt : PositivityTheory.Rg.BcB.D4.SplitAt := by
   intro E _ _ _ n v _ _ μ _
   haveI : LocallyCompactSpace (Ad E) := GlobalTheory.AdelicUnitaryTop.locallyCompact_adele E

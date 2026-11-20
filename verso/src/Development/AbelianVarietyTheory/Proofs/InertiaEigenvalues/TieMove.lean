@@ -16,6 +16,9 @@ local macro:max "kc% " e:term:max : term => `((by kexactB $e))
 
 namespace GlobalTheory.TwInputs.Move.TieUp
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i j b`. Use `LinearMap.ext fun f => ?_` and prove the remaining obligations. Establish `h1` using `hr ((i)) i ((HEq.refl i)) ((j)) b ((f))`. Use `eq_of_heq ?_` and prove the remaining obligations. Conclude with `(h1)`.
+-/
 theorem rds_eq {D : D7} {r : Rest D} {ι : D.what₂.LL →+* (overD D r).what₂.LL} {e : ↥(overD D r).LL0 ≃+* ↥D.LL0}
     (h : CopyTw D (overD D r) ι e) {ρ : Setup D.ntw} {rd : Rds D.nexp ρ} {rd' : Rds (overD D r).nexp (setupUp r ρ)}
     (hr : RdRel h rd rd') : rd' = (rd) := by
@@ -25,6 +28,11 @@ theorem rds_eq {D : D7} {r : Rest D} {ι : D.what₂.LL →+* (overD D r).what�
   refine eq_of_heq ?_
   exact (h1)
 
+/- English proof (translation)
+Introduce `D D' ι e h ρ ρ' hs hρ hρ' rd rd' hr T`. Take `⟨r, rfl⟩` from `h.exists_rest`. Consider the cases of `SameData.eq_up r hs`. Establish `hrd` using `rds_eq h hr`. Substitute `hrd` using the available equality.
+
+Use `⟨fun i j b => (cellUp r h hρ' (T i j b)), fun i i' hi j b => ?_⟩` and prove the remaining obligations. Consider the cases of `hi`. Conclude with `(cellUp_rdV r h hρ' (T i j b))`.
+-/
 theorem tie_move : ∀ {D D' : D7} {ι : D.what₂.LL →+* D'.what₂.LL} {e : ↥D'.LL0 ≃+* ↥D.LL0} (h : CopyTw D D' ι e) {ρ : Setup D.ntw} {ρ' : Setup D'.ntw}, SameSetup ρ ρ' → ∀ (hρ : ρ.Good) (hρ' : ρ'.Good)
     (rd : Rds D.nexp ρ) (rd' : Rds D'.nexp ρ'), RdRel h rd rd' → ∀ T : Comparison₂ hρ rd,
     ∃ T' : Comparison₂ hρ' rd', ∀ (i : D.ntw.Tw) (i' : D'.ntw.Tw), HEq i i' → ∀ (j : Fin D.R.m) b,

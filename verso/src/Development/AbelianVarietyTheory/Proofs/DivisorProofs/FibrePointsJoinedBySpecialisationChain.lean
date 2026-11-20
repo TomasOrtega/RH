@@ -16,6 +16,19 @@ open GlobalTheory.UT ReciprocityTheory.ChartRestriction.G.DVR
 
 namespace GlobalTheory.GSep
 
+/- English proof (translation)
+Introduce `X₁ z₁ Y πY hZH y y' hy hy'`. Take `⟨U₀, EE, -, -, -, hHom, hProp⟩` from `hZH`. Take `⟨U, hU, hiso⟩` from `GlobalTheory.ZH.RatModel.exists_isIso_morphismRestrict_of_isHom_id X₁.o₁ X₁.Ω₁ Y X₁.M πY hHom`. Use `haveI : IsDedekindDomain X₁.o₁ := X₁.ar.ded`. Use `haveI : IsLocallyNoetherian (Sp X₁.o₁) := inferInstanceAs (IsLocallyNoetherian (Spec (CommRingCat.of X₁.o₁)))`.
+
+Use `haveI := X₁.M.lft`. Use `haveI := Y.lft`. Use `haveI := Y.qc`. Use `haveI : IsLocallyNoetherian X₁.M.Z := LocallyOfFiniteType.isLocallyNoetherian X₁.M.s`. Use `haveI : IsLocallyNoetherian Y.Z := LocallyOfFiniteType.isLocallyNoetherian Y.s`.
+
+Use `haveI : CompactSpace Y.Z := by`. Prove the components needed by the constructor for the conclusion. Use `QuasiCompact.isCompact_preimage (f := Y.s) (U := Set.univ) isOpen_univ isCompact_univ` as an intermediate fact. Simplify using `using this`. Use `haveI : IsNoetherian Y.Z := {}`.
+
+Use `haveI : IsProper πY := hProp`. Establish `hN : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme X₁.M.Z` using `(GlobalTheory.isNormalScheme_iff_pred _).1 X₁.normal`. Establish `hc` using `GlobalTheory.ZariskiConn.fibre_preconnected Y.Z X₁.M.Z πY hN U hU hiso z₁`. Establish `hS : ∀ x s, s ∈ πY.base ⁻¹' {z₁} → x ⤳ s → x ∈ closure (πY.base ⁻¹' {z₁}) → x ∈ πY.base ⁻¹' {z₁}`. Introduce `x s hs hxs hx`.
+
+Establish `h1 : πY.base x ⤳ z₁`. Use `hxs.map πY.base.hom.continuous` as an intermediate fact. Rewrite `this` using `[show πY.base s = z₁ from hs]`. Then use the resulting hypothesis. Establish `h2 : z₁ ⤳ πY.base x`. Rewrite using `[specializes_iff_mem_closure]`.
+
+Establish `hcont` using `πY.base.hom.continuous`. Establish `: closure (πY.base ⁻¹' {z₁}) ⊆ πY.base ⁻¹' closure {z₁}` using `closure_minimal (Set.preimage_mono subset_closure) (isClosed_closure.preimage hcont)`. Conclude with `this hx`. Conclude with `(h1.antisymm h2).eq`. Conclude with `GlobalTheory.SpecChain.eqvGen_of_isPreconnected _ hc hS y hy y' hy'`.
+-/
 theorem fibre_chain : ∀ (X₁ : GlobalTheory.GSep.GSet) (z₁ : X₁.M.Z) (Y : RatModel X₁.o₁ X₁.Ω₁) (πY : Y.Z ⟶ X₁.M.Z), GlobalTheory.GSep.ZHAbove X₁ Y πY → ∀ y y' : Y.Z, πY y = z₁ → πY y' = z₁ → Relation.EqvGen (fun a b : Y.Z => πY a = z₁ ∧ πY b = z₁ ∧ a ⤳ b) y y' := by
   intro X₁ z₁ Y πY hZH y y' hy hy'
   obtain ⟨U₀, EE, -, -, -, hHom, hProp⟩ := hZH

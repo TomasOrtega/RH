@@ -14,11 +14,20 @@ section Sc
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
   (v : HeightOneSpectrum (𝓞 F))
 
+/- English proof (translation)
+Simplify using `only [sc, Algebra.TensorProduct.tmul_mul_tmul, mul_one]`.
+-/
 theorem sc_mul (a b : Fv F v) : sc (E := E) v (a * b) = sc (E := E) v a * sc (E := E) v b := by
   simp only [sc, Algebra.TensorProduct.tmul_mul_tmul, mul_one]
 
+/- English proof (translation)
+The claim follows from `(Algebra.TensorProduct.one_def).symm`.
+-/
 theorem sc_one : sc (E := E) v (1 : Fv F v) = 1 := (Algebra.TensorProduct.one_def).symm
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero => simp [sc]`. Consider the case `succ k ih`. Rewrite using `[Nat.cast_succ, Nat.cast_succ, ← ih]`. Simplify using `only [sc, TensorProduct.add_tmul, Algebra.TensorProduct.one_def]`.
+-/
 theorem sc_natCast (m : ℕ) : sc (E := E) v (m : Fv F v) = (m : Fv F v ⊗[F] E) := by
   induction m with
   | zero => simp [sc]
@@ -26,6 +35,9 @@ theorem sc_natCast (m : ℕ) : sc (E := E) v (m : Fv F v) = (m : Fv F v ⊗[F] E
     rw [Nat.cast_succ, Nat.cast_succ, ← ih]
     simp only [sc, TensorProduct.add_tmul, Algebra.TensorProduct.one_def]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Use `show (c : Fv F v) • y i = ((c : Fv F v) ⊗ₜ[F] (1 : E)) * y i`. Rewrite using `[Algebra.smul_def, Algebra.TensorProduct.algebraMap_apply]`. Both sides reduce to the same expression.
+-/
 theorem smul_eq_sc {n : ℕ} (c : v.adicCompletionIntegers F) (y : Fin n → Fv F v ⊗[F] E) :
     c • y = sc (E := E) v (c : Fv F v) • y := by
   funext i
@@ -33,12 +45,20 @@ theorem smul_eq_sc {n : ℕ} (c : v.adicCompletionIntegers F) (y : Fin n → Fv 
   rw [Algebra.smul_def, Algebra.TensorProduct.algebraMap_apply]
   rfl
 
+/- English proof (translation)
+Establish `h` using `Submodule.smul_mem (latLoc (E := E) v Λ) (⟨d, hd⟩ : v.adicCompletionIntegers F) hy`. Rewrite `h` using `[smul_eq_sc]`. Then use the resulting hypothesis.
+-/
 theorem sc_smul_mem {n : ℕ} (Λ : Set (Fin n → E)) (d : Fv F v) (hd : d ∈ v.adicCompletionIntegers F)
     (y : Fin n → Fv F v ⊗[F] E) (hy : y ∈ latLoc (E := E) v Λ) :
     sc (E := E) v d • y ∈ latLoc (E := E) v Λ := by
   have h := Submodule.smul_mem (latLoc (E := E) v Λ) (⟨d, hd⟩ : v.adicCompletionIntegers F) hy
   rwa [smul_eq_sc] at h
 
+/- English proof (translation)
+Introduce `hc`. Establish `hz` using `Nat.gcd_eq_gcd_ab c g`. Rewrite `hz` using `[Nat.Coprime.gcd_eq_one hcg]`. Establish `key` using `congrArg (Int.cast : ℤ → 𝓞 F) hz`. Move the coercions through the operations in `at key`.
+
+Establish `h1 : (1 : 𝓞 F) ∈ v.asIdeal`. Rewrite using `[key]`. Conclude with `add_mem (Ideal.mul_mem_right _ _ hc) (Ideal.mul_mem_right _ _ hg)`. Conclude with `v.isPrime.ne_top ((Ideal.eq_top_iff_one _).mpr h1)`.
+-/
 theorem natCast_not_mem (c g : ℕ) (hcg : Nat.Coprime c g) (hg : (g : 𝓞 F) ∈ v.asIdeal) :
     (c : 𝓞 F) ∉ v.asIdeal := by
   intro hc
@@ -51,6 +71,13 @@ theorem natCast_not_mem (c g : ℕ) (hcg : Nat.Coprime c g) (hg : (g : 𝓞 F) �
     exact add_mem (Ideal.mul_mem_right _ _ hc) (Ideal.mul_mem_right _ _ hg)
   exact v.isPrime.ne_top ((Ideal.eq_top_iff_one _).mpr h1)
 
+/- English proof (translation)
+Establish `hv : Valued.v (c : Fv F v) = 1`. Establish `h` using `HeightOneSpectrum.valuedAdicCompletion_eq_valuation (K := F) v (c : 𝓞 F)`. Rewrite `h` using `[HeightOneSpectrum.valuation_of_algebraMap]`. Establish `h1 : v.intValuation (c : 𝓞 F) = 1` using `le_antisymm (v.intValuation_le_one _) (not_lt.mp fun h' => hc ((v.intValuation_lt_one_iff_mem _).mp h'))`. Rewrite `h` using `[h1]`.
+
+Simplify using `using h`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers, map_inv₀, hv, inv_one]`. Introduce `h0`. Rewrite `hv` using `[h0, map_zero]`.
+
+Conclude with `zero_ne_one hv`.
+-/
 theorem inv_natCast_mem (c : ℕ) (hc : (c : 𝓞 F) ∉ v.asIdeal) :
     (c : Fv F v)⁻¹ ∈ v.adicCompletionIntegers F ∧ (c : Fv F v) ≠ 0 := by
   have hv : Valued.v (c : Fv F v) = 1 := by
@@ -67,6 +94,11 @@ theorem inv_natCast_mem (c : ℕ) (hc : (c : 𝓞 F) ∉ v.asIdeal) :
     rw [h0, map_zero] at hv
     exact zero_ne_one hv
 
+/- English proof (translation)
+Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers]`. Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[Nat.cast_succ]`.
+
+Conclude with `(Valuation.map_add _ _ _).trans (max_le ih (by simp))`.
+-/
 theorem natCast_mem_int (k : ℕ) : (k : Fv F v) ∈ v.adicCompletionIntegers F := by
   rw [HeightOneSpectrum.mem_adicCompletionIntegers]
   induction k with
@@ -85,13 +117,26 @@ def rhoE : I.E ⊗[I.F] Af I.F →+* Fv I.F v ⊗[I.F] I.E :=
   ((Algebra.TensorProduct.map (evalV I.F v) (AlgHom.id I.F I.E)).comp
     (Algebra.TensorProduct.comm I.F I.E (Af I.F)).toAlgHom).toRingHom
 
+/- English proof (translation)
+Simplify using `[rhoE]`.
+-/
 theorem rhoE_tmul (x : I.E) (a : Af I.F) : rhoE I v (x ⊗ₜ[I.F] a) = evalV I.F v a ⊗ₜ[I.F] x := by
   simp [rhoE]
 
+/- English proof (translation)
+Use `show rhoE I v (x ⊗ₜ[I.F] (1 : Af I.F)) = (1 : Fv I.F v) ⊗ₜ[I.F] x`. Rewrite using `[rhoE_tmul, map_one]`.
+-/
 theorem rhoE_inclE (x : I.E) : rhoE I v (Formalism.UG.inclE (F := I.F) (Af I.F) x) = inclR (Fv I.F v) x := by
   show rhoE I v (x ⊗ₜ[I.F] (1 : Af I.F)) = (1 : Fv I.F v) ⊗ₜ[I.F] x
   rw [rhoE_tmul, map_one]
 
+/- English proof (translation)
+Apply `RingHom.ext` to reduce the goal to its premises. Introduce `x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b`.
+
+Simplify using `only [RingHom.comp_apply]`. Rewrite using `[show Formalism.UG.sigR I.cm.sig (Af I.F) (a ⊗ₜ[I.F] b) = I.cm.sig a ⊗ₜ[I.F] b by`. Simplify using `[Formalism.UG.sigR], rhoE_tmul, rhoE_tmul]`. Simplify using `[sigR]`. Consider the case `add x y hx hy`.
+
+Simplify using `only [RingHom.comp_apply, map_add] at *`. Rewrite using `[hx, hy]`.
+-/
 theorem rhoE_sig : (rhoE I v).comp (Formalism.UG.sigR I.cm.sig (Af I.F)) =
     (sigR (Fv I.F v) I.cm.sig).comp (rhoE I v) := by
   apply RingHom.ext
@@ -107,6 +152,11 @@ theorem rhoE_sig : (rhoE I v).comp (Formalism.UG.sigR I.cm.sig (Af I.F)) =
     simp only [RingHom.comp_apply, map_add] at *
     rw [hx, hy]
 
+/- English proof (translation)
+Establish `h` using `Formalism.UG.P.bc_mem (Formalism.UG.sigR I.cm.sig (Af I.F)) (sigR (Fv I.F v) I.cm.sig) (rhoE I v) (rhoE_sig I v) (I.J.map (Formalism.UG.inclE (F := I.F) (Af I.F))) x (by exact x.2)`. Establish `hJ : (I.J.map (Formalism.UG.inclE (F` using `I.F) (Af I.F))).map (rhoE I v) = JR (Fv I.F v) I.J := by`. Use extensionality with `i j`. Simplify using `[JR, rhoE_inclE]`. Rewrite `h` using `[hJ]`.
+
+Conclude with `h`.
+-/
 theorem bc_rhoE_mem (x : I.Gf) :
     Formalism.UG.bc (rhoE I v) (x : GL (Fin I.n) (I.E ⊗[I.F] Af I.F)) ∈ HR (Fv I.F v) I.cm.sig I.J := by
   have h := Formalism.UG.P.bc_mem (Formalism.UG.sigR I.cm.sig (Af I.F)) (sigR (Fv I.F v) I.cm.sig) (rhoE I v)
@@ -123,19 +173,31 @@ def kap (x : I.Gf) : HA (Fv I.F v) I.cm.sig I.J :=
 
 def rhoV (w : Fin I.n → I.E ⊗[I.F] Af I.F) : Fin I.n → Fv I.F v ⊗[I.F] I.E := fun i => rhoE I v (w i)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Conclude with `rhoE_inclE I v (y i)`.
+-/
 theorem rhoV_incl (y : Fin I.n → I.E) : rhoV I v (incl I y) = ratV (F := I.F) (Fv I.F v) y := by
   funext i
   exact rhoE_inclE I v (y i)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[rhoV]`.
+-/
 theorem rhoV_sub (a b : Fin I.n → I.E ⊗[I.F] Af I.F) : rhoV I v (a - b) = rhoV I v a - rhoV I v b := by
   funext i
   simp [rhoV]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[rhoV]`.
+-/
 theorem rhoV_smul (t : I.E ⊗[I.F] Af I.F) (a : Fin I.n → I.E ⊗[I.F] Af I.F) :
     rhoV I v (t • a) = rhoE I v t • rhoV I v a := by
   funext i
   simp [rhoV]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `only [rhoV]`. Rewrite using `[RingHom.map_mulVec]`. Both sides reduce to the same expression.
+-/
 theorem map_mulVec_rhoV (M : Matrix (Fin I.n) (Fin I.n) (I.E ⊗[I.F] Af I.F)) (w : Fin I.n → I.E ⊗[I.F] Af I.F) :
     (M.map (rhoE I v)) *ᵥ rhoV I v w = rhoV I v (M *ᵥ w) := by
   funext i
@@ -143,22 +205,37 @@ theorem map_mulVec_rhoV (M : Matrix (Fin I.n) (Fin I.n) (I.E ⊗[I.F] Af I.F)) (
   rw [RingHom.map_mulVec]
   rfl
 
+/- English proof (translation)
+Rewrite using `[← map_mulVec_rhoV, rhoV_incl]`. Both sides reduce to the same expression.
+-/
 theorem kap_smul_ratTup {a : ℕ} (x : I.Gf) (Y : Fin a → Fin I.n → I.E) (b : Fin a) :
     ((kap I v x) • ratTup (F := I.F) (Fv I.F v) Y) b = rhoV I v (I.fmat x *ᵥ incl I (Y b)) := by
   rw [← map_mulVec_rhoV, rhoV_incl]
   rfl
 
+/- English proof (translation)
+Rewrite using `[rhoV_incl]`. Both sides reduce to the same expression.
+-/
 theorem ratTup_eq {a : ℕ} (Y : Fin a → Fin I.n → I.E) (b : Fin a) :
     ratTup (F := I.F) (Fv I.F v) Y b = rhoV I v (incl I (Y b)) := by
   rw [rhoV_incl]
   rfl
 
+/- English proof (translation)
+Simplify using `[Formalism.MainNotions.S.AutInst.fmat]`.
+-/
 theorem fmat_mul (x y : I.Gf) : I.fmat (x * y) = I.fmat x * I.fmat y := by
   simp [Formalism.MainNotions.S.AutInst.fmat]
 
+/- English proof (translation)
+Simplify using `[Formalism.MainNotions.S.AutInst.fmat]`.
+-/
 theorem fmat_inv_mul (x : I.Gf) : I.fmat x⁻¹ * I.fmat x = 1 := by
   simp [Formalism.MainNotions.S.AutInst.fmat]
 
+/- English proof (translation)
+Simplify using `[Formalism.MainNotions.S.AutInst.fmat]`.
+-/
 theorem fmat_mul_inv (x : I.Gf) : I.fmat x * I.fmat x⁻¹ = 1 := by
   simp [Formalism.MainNotions.S.AutInst.fmat]
 
@@ -168,6 +245,15 @@ section Lat
 
 variable (I : Formalism.MainNotions.S.AutInst) (v : HeightOneSpectrum (𝓞 I.F))
 
+/- English proof (translation)
+Establish `hy' : y ∈ Submodule.span (v.adicCompletionIntegers I.F) (ratV (F` using `I.F) (Fv I.F v) '' (I.L : Set (Fin I.n → I.E))) := hy`. Use `clear hy`. Proceed by induction on `hy' using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨l, hl, rfl⟩` from `hz`.
+
+Establish `hol : o • l ∈ I.L` using `I.L.smul_mem o hl`. Establish `e : inclR (F` using `I.F) (Fv I.F v) (o : I.E) • ratV (F := I.F) (Fv I.F v) l = ratV (F := I.F) (Fv I.F v) (o • l) := by`. Use function extensionality and compare the values at `i`. Use `show inclR (F := I.F) (Fv I.F v) (o : I.E) * inclR (F := I.F) (Fv I.F v) (l i) = inclR (F := I.F) (Fv I.F v) (o • l i)`. Rewrite using `[← map_mul, Algebra.smul_def (R := 𝓞 I.E)]`.
+
+Rewrite using `[e]`. Conclude with `Submodule.subset_span ⟨_, hol, rfl⟩`. Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb`. Rewrite using `[smul_add]`.
+
+Conclude with `add_mem ha hb`. Consider the case `smul c a _ ha`. Rewrite using `[smul_eq_sc, smul_smul, mul_comm, ← smul_smul, ← smul_eq_sc]`. Conclude with `Submodule.smul_mem _ c ha`.
+-/
 theorem inclR_smul_mem (o : 𝓞 I.E) (y : Fin I.n → Fv I.F v ⊗[I.F] I.E)
     (hy : y ∈ latLoc (E := I.E) v (I.L : Set (Fin I.n → I.E))) :
     inclR (F := I.F) (Fv I.F v) (o : I.E) • y ∈ latLoc (E := I.E) v (I.L : Set (Fin I.n → I.E)) := by
@@ -192,6 +278,21 @@ theorem inclR_smul_mem (o : 𝓞 I.E) (y : Fin I.n → Fv I.F v ⊗[I.F] I.E)
     rw [smul_eq_sc, smul_smul, mul_comm, ← smul_smul, ← smul_eq_sc]
     exact Submodule.smul_mem _ c ha
 
+/- English proof (translation)
+Establish `ht' : t ∈ Subring.closure (Set.range (fun x : Formalism.UG.intOE I.E => (x : I.E) ⊗ₜ[I.F] (1 : Af I.F)) ∪ Set.range (fun y : Formalism.UG.intAd I.F => (1 : I.E) ⊗ₜ[I.F] (y : Af I.F)))` using `ht`. Use `clear ht`. Proceed by induction on `ht' using Subring.closure_induction with`. Consider the case `mem x hx`. Break down `hx with ⟨⟨o, ho⟩, rfl⟩ | ⟨⟨a, ha⟩, rfl⟩` into its components or cases.
+
+Take `⟨o', rfl⟩` from `ho`. Introduce `y hy`. Establish `e : rhoE I v (((algebraMap (𝓞 I.E) I.E) o') ⊗ₜ[I.F] (1 : Af I.F)) = inclR (F` using `I.F) (Fv I.F v) (o' : I.E) := by`. Rewrite using `[rhoE_tmul, map_one]`. Both sides reduce to the same expression.
+
+Rewrite using `[e]`. Conclude with `inclR_smul_mem I v o' y hy`. Introduce `y hy`. Rewrite using `[rhoE_tmul]`. Conclude with `sc_smul_mem v _ (evalV I.F v a) (ha v) y hy`.
+
+Consider the case `zero`. Introduce `y _`. Simplify using the standard rewrite rules. Consider the case `one`. Introduce `y hy`.
+
+Simplify using `using hy`. Consider the case `add x z _ _ hx hz`. Introduce `y hy`. Rewrite using `[map_add, add_smul]`. Conclude with `add_mem (hx y hy) (hz y hy)`.
+
+Consider the case `neg x _ hx`. Introduce `y hy`. Rewrite using `[map_neg, neg_smul]`. Conclude with `neg_mem (hx y hy)`. Consider the case `mul x z _ _ hx hz`.
+
+Introduce `y hy`. Rewrite using `[map_mul, mul_smul]`. Conclude with `hx _ (hz y hy)`.
+-/
 theorem rhoE_int (t : I.E ⊗[I.F] Af I.F) (ht : t ∈ Formalism.MainNotions.S.IntAf I.F I.E) :
     ∀ y ∈ latLoc (E := I.E) v (I.L : Set (Fin I.n → I.E)),
       rhoE I v t • y ∈ latLoc (E := I.E) v (I.L : Set (Fin I.n → I.E)) := by
@@ -230,9 +331,25 @@ theorem rhoE_int (t : I.E ⊗[I.F] Af I.F) (ht : t ∈ Formalism.MainNotions.S.I
     rw [map_mul, mul_smul]
     exact hx _ (hz y hy)
 
+/- English proof (translation)
+The claim follows from `Submodule.subset_span ⟨⟨l, hl⟩, rfl⟩`.
+-/
 theorem incl_mem_Lf (l : Fin I.n → I.E) (hl : l ∈ I.L) : incl I l ∈ I.Lf :=
   Submodule.subset_span ⟨⟨l, hl⟩, rfl⟩
 
+/- English proof (translation)
+Establish `hw' : w ∈ Submodule.span (Formalism.MainNotions.S.IntAf I.F I.E) (Set.range fun x : I.L => fun i => Formalism.UG.inclE (F` using `I.F) (Af I.F) ((x : Fin I.n → I.E) i)) := hw`. Use `clear hw`. Proceed by induction on `hw' using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨⟨l, hl⟩, rfl⟩` from `hz`.
+
+Rewrite using `[show rhoV I v (fun i => Formalism.UG.inclE (F := I.F) (Af I.F) (l i)) = ratV (F := I.F) (Fv I.F v) l from rhoV_incl I v l]`. Conclude with `Submodule.subset_span ⟨l, hl, rfl⟩`. Consider the case `zero`. Establish `e : rhoV I v 0 = 0`. Use function extensionality and compare the values at `i`.
+
+Simplify using `[rhoV]`. Rewrite using `[e]`. Conclude with `zero_mem _`. Consider the case `add a b _ _ ha hb`. Establish `e : rhoV I v (a + b) = rhoV I v a + rhoV I v b`.
+
+Use function extensionality and compare the values at `i`. Simplify using `[rhoV]`. Rewrite using `[e]`. Conclude with `add_mem ha hb`. Consider the case `smul t a _ ha`.
+
+Establish `e : rhoV I v (t • a) = rhoE I v (t : I.E ⊗[I.F] Af I.F) • rhoV I v a`. Use function extensionality and compare the values at `i`. Use `show rhoE I v ((t : I.E ⊗[I.F] Af I.F) * a i) = rhoE I v t * rhoE I v (a i)`. Conclude with `map_mul _ _ _`. Rewrite using `[e]`.
+
+Conclude with `rhoE_int I v t t.2 _ ha`.
+-/
 theorem rhoV_Lf (w : Fin I.n → I.E ⊗[I.F] Af I.F) (hw : w ∈ I.Lf) :
     rhoV I v w ∈ latLoc (E := I.E) v (I.L : Set (Fin I.n → I.E)) := by
   have hw' : w ∈ Submodule.span (Formalism.MainNotions.S.IntAf I.F I.E)
@@ -270,6 +387,19 @@ section Lat2
 
 variable (I : Formalism.MainNotions.S.AutInst) (v : HeightOneSpectrum (𝓞 I.F))
 
+/- English proof (translation)
+Establish `hw' : w ∈ Submodule.span (Formalism.MainNotions.S.IntAf I.F I.E) {y | ∃ x ∈ I.Lf, y = (m : I.E ⊗[I.F] Af I.F) • x}` using `hw`. Use `clear hw`. Proceed by induction on `hw' using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨x, hx, rfl⟩` from `hz`.
+
+Use `⟨rhoV I v x, rhoV_Lf I v x hx, ?_⟩` and prove the remaining obligations. Rewrite using `[rhoV_smul, map_natCast, sc_natCast]`. Consider the case `zero`. Use `⟨0, zero_mem _, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_zero]`.
+
+Use function extensionality and compare the values at `i`. Simplify using `[rhoV]`. Consider the case `add a b _ _ ha hb`. Take `⟨ya, hya, ea⟩` from `ha`. Take `⟨yb, hyb, eb⟩` from `hb`.
+
+Use `⟨ya + yb, add_mem hya hyb, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add, ← ea, ← eb]`. Use function extensionality and compare the values at `i`. Simplify using `[rhoV]`. Consider the case `smul t a _ ha`.
+
+Take `⟨ya, hya, ea⟩` from `ha`. Use `⟨rhoE I v (t : I.E ⊗[I.F] Af I.F) • ya, rhoE_int I v t t.2 ya hya, ?_⟩` and prove the remaining obligations. Establish `e : rhoV I v (t • a) = rhoE I v (t : I.E ⊗[I.F] Af I.F) • rhoV I v a`. Use function extensionality and compare the values at `i`. Use `show rhoE I v ((t : I.E ⊗[I.F] Af I.F) * a i) = rhoE I v t * rhoE I v (a i)`.
+
+Conclude with `map_mul _ _ _`. Rewrite using `[e, ea, smul_smul, smul_smul, mul_comm]`.
+-/
 theorem rhoV_mL (m : ℕ) (w : Fin I.n → I.E ⊗[I.F] Af I.F) (hw : w ∈ mL I m) :
     ∃ y ∈ latLoc (E := I.E) v (I.L : Set (Fin I.n → I.E)), rhoV I v w = sc (E := I.E) v (m : Fv I.F v) • y := by
   have hw' : w ∈ Submodule.span (Formalism.MainNotions.S.IntAf I.F I.E)
@@ -301,21 +431,39 @@ theorem rhoV_mL (m : ℕ) (w : Fin I.n → I.E ⊗[I.F] Af I.F) (hw : w ∈ mL I
       exact map_mul _ _ _
     rw [e, ea, smul_smul, smul_smul, mul_comm]
 
+/- English proof (translation)
+Rewrite using `[Nat.cast_smul_eq_nsmul]`. Conclude with `nsmul_mem hw c`.
+-/
 theorem natCast_smul_mL (m c : ℕ) (w : Fin I.n → I.E ⊗[I.F] Af I.F) (hw : w ∈ mL I m) :
     (c : I.E ⊗[I.F] Af I.F) • w ∈ mL I m := by
   rw [Nat.cast_smul_eq_nsmul]
   exact nsmul_mem hw c
 
+/- English proof (translation)
+Use `show ((x⁻¹ : I.Gf) : GL (Fin I.n) (I.E ⊗[I.F] Af I.F)) ∈ Formalism.UG.stabGL I.Lf`. Rewrite using `[Subgroup.coe_inv]`. Conclude with `(Formalism.UG.stabGL I.Lf).inv_mem hx`.
+-/
 theorem kset_inv (x : I.Gf) (hx : x ∈ I.Kset) : x⁻¹ ∈ I.Kset := by
   show ((x⁻¹ : I.Gf) : GL (Fin I.n) (I.E ⊗[I.F] Af I.F)) ∈ Formalism.UG.stabGL I.Lf
   rw [Subgroup.coe_inv]
   exact (Formalism.UG.stabGL I.Lf).inv_mem hx
 
+/- English proof (translation)
+Use `show ((x * y : I.Gf) : GL (Fin I.n) (I.E ⊗[I.F] Af I.F)) ∈ Formalism.UG.stabGL I.Lf`. Rewrite using `[Subgroup.coe_mul]`. Conclude with `(Formalism.UG.stabGL I.Lf).mul_mem hx hy`.
+-/
 theorem kset_mul (x y : I.Gf) (hx : x ∈ I.Kset) (hy : y ∈ I.Kset) : x * y ∈ I.Kset := by
   show ((x * y : I.Gf) : GL (Fin I.n) (I.E ⊗[I.F] Af I.F)) ∈ Formalism.UG.stabGL I.Lf
   rw [Subgroup.coe_mul]
   exact (Formalism.UG.stabGL I.Lf).mul_mem hx hy
 
+/- English proof (translation)
+Establish `hy' : y ∈ Submodule.span (v.adicCompletionIntegers I.F) (ratV (F` using `I.F) (Fv I.F v) '' (I.L : Set (Fin I.n → I.E))) := hy`. Use `clear hy`. Proceed by induction on `hy' using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨l, hl, rfl⟩` from `hz`.
+
+Rewrite using `[← rhoV_incl, map_mulVec_rhoV]`. Conclude with `rhoV_Lf I v _ ((hx (incl I l)).mp (incl_mem_Lf I l hl))`. Consider the case `zero`. Rewrite using `[Matrix.mulVec_zero]`. Conclude with `zero_mem _`.
+
+Consider the case `add a b _ _ ha hb`. Rewrite using `[Matrix.mulVec_add]`. Conclude with `add_mem ha hb`. Consider the case `smul c a _ ha`. Rewrite using `[smul_eq_sc, Matrix.mulVec_smul, ← smul_eq_sc]`.
+
+Conclude with `Submodule.smul_mem _ c ha`.
+-/
 theorem kap_fwd (x : I.Gf) (hx : x ∈ I.Kset) (y : Fin I.n → Fv I.F v ⊗[I.F] I.E)
     (hy : y ∈ latLoc (E := I.E) v (I.L : Set (Fin I.n → I.E))) :
     (I.fmat x).map (rhoE I v) *ᵥ y ∈ latLoc (E := I.E) v (I.L : Set (Fin I.n → I.E)) := by
@@ -337,6 +485,9 @@ theorem kap_fwd (x : I.Gf) (hx : x ∈ I.Kset) (y : Fin I.n → Fv I.F v ⊗[I.F
     rw [smul_eq_sc, Matrix.mulVec_smul, ← smul_eq_sc]
     exact Submodule.smul_mem _ c ha
 
+/- English proof (translation)
+Use `show ∀ y, y ∈ latLoc (E := I.E) v (I.L : Set (Fin I.n → I.E)) ↔ (I.fmat x).map (rhoE I v) *ᵥ y ∈ latLoc (E := I.E) v (I.L : Set (Fin I.n → I.E))`. Introduce `y`. Use `⟨kap_fwd I v x hx y, fun h => ?_⟩` and prove the remaining obligations. Establish `h2` using `kap_fwd I v x⁻¹ (kset_inv I x hx) _ h`. Rewrite `h2` using `[Matrix.mulVec_mulVec, ← Matrix.map_mul, fmat_inv_mul, Matrix.map_one _ (map_zero _) (map_one _), Matrix.one_mulVec]`. Then use the resulting hypothesis.
+-/
 theorem kap_K (x : I.Gf) (hx : x ∈ I.Kset) :
     kap I v x ∈ Kv I.cm.sig I.J (I.L : Set (Fin I.n → I.E)) v := by
   show ∀ y, y ∈ latLoc (E := I.E) v (I.L : Set (Fin I.n → I.E)) ↔
@@ -355,6 +506,9 @@ open Formalism.BasicNotions
 
 variable {D : D7} (X : HidaSetting D)
 
+/- English proof (translation)
+Establish `h` using `p.2`. Unfold `typSet at h`. Use `split_ifs at h with hf`. Conclude with `(Set.Finite.mem_toFinset hf).mp h`. Simplify using `at h`.
+-/
 theorem typed_mem (p : TypX X) :
     ((D.host.g 0 : ℕ) : 𝓞 X.B.I.F) ∈ p.1.asIdeal ∨ ((D.host.g 1 : ℕ) : 𝓞 X.B.I.F) ∈ p.1.asIdeal := by
   have h := p.2
@@ -363,31 +517,63 @@ theorem typed_mem (p : TypX X) :
   · exact (Set.Finite.mem_toFinset hf).mp h
   · simp at h
 
+/- English proof (translation)
+Rewrite using `[X.g_eq, Nat.cast_mul]`. Break down `typed_mem X p with h | h` into its components or cases. Conclude with `Ideal.mul_mem_right _ _ h`. Conclude with `Ideal.mul_mem_left _ _ h`.
+-/
 theorem Bg_mem (p : TypX X) : ((X.B.g : ℕ) : 𝓞 X.B.I.F) ∈ p.1.asIdeal := by
   rw [X.g_eq, Nat.cast_mul]
   rcases typed_mem X p with h | h
   · exact Ideal.mul_mem_right _ _ h
   · exact Ideal.mul_mem_left _ _ h
 
+/- English proof (translation)
+Unfold `gAt`. Use `split_ifs`. Conclude with `⟨D.host.g 1, X.g_eq⟩`. Conclude with `⟨D.host.g 0, by rw [X.g_eq, mul_comm]⟩`.
+-/
 theorem gAt_dvd (v : PlX X) : ∃ k : ℕ, X.B.g = gAt X v * k := by
   unfold gAt
   split_ifs
   · exact ⟨D.host.g 1, X.g_eq⟩
   · exact ⟨D.host.g 0, by rw [X.g_eq, mul_comm]⟩
 
+/- English proof (translation)
+Simplify using `[alp]`.
+-/
 theorem alp_last (v : PlX X) (r : ℕ) : alp v r (Fin.last r) = 1 := by
   simp [alp]
 
+/- English proof (translation)
+Rewrite using `[locF, alp_last, sc_one, one_smul]`.
+-/
 theorem locF_last {v : PlX X} {r : ℕ} (Y : TupV (E := X.B.I.E) v X.B.I.n (r + 1)) :
     locF v Y (Fin.last r) = Y (Fin.last r) := by
   rw [locF, alp_last, sc_one, one_smul]
 
+/- English proof (translation)
+Simplify using `only [Matrix.mulVec_sub, Matrix.mulVec_mulVec, h, Matrix.one_mulVec]`. Normalize the expressions using the abelian group laws.
+-/
 theorem glob_diff {R : Type} [CommRing R] {n : ℕ} (A Ai A'i : Matrix (Fin n) (Fin n) R) (h : A * Ai = 1)
     (z z' z0 : Fin n → R) :
     (A * A'i) *ᵥ z' - z = A *ᵥ ((A'i *ᵥ z' - z0) - (Ai *ᵥ z - z0)) := by
   simp only [Matrix.mulVec_sub, Matrix.mulVec_mulVec, h, Matrix.one_mulVec]
   abel
 
+/- English proof (translation)
+Introduce `p`. Use `⟨kap X.B.I p.1 (X.xu u * (X.xu u')⁻¹), kap_K X.B.I p.1 _ (kset_mul X.B.I _ _ (X.xu_K u) (kset_inv X.B.I _ (X.xu_K u'))), ?_⟩` and prove the remaining obligations. Introduce `a`. Proceed by induction on `a using Fin.lastCases with`. Consider the case `cast b`.
+
+Use `⟨0, zero_mem _, ?_⟩` and prove the remaining obligations. Establish `hfix : X.B.I.fmat (X.xu u * (X.xu u')⁻¹) *ᵥ incl X.B.I (crdOf X.B.I X.ιE X.bas (X.eX b)) = incl X.B.I (crdOf X.B.I X.ιE X.bas (X.eX b))`. Establish `h1 : X.B.I.fmat (X.xu u')⁻¹ *ᵥ incl X.B.I (crdOf X.B.I X.ιE X.bas (X.eX b)) = incl X.B.I (crdOf X.B.I X.ιE X.bas (X.eX b))` using `by conv_lhs => rw [← (X.xu_fix u' b).1]`. Rewrite using `[Matrix.mulVec_mulVec, fmat_inv_mul, Matrix.one_mulVec]`. Rewrite using `[fmat_mul, ← Matrix.mulVec_mulVec, h1, (X.xu_fix u b).1]`.
+
+Establish `heq : (kap X.B.I p.1 (X.xu u * (X.xu u')⁻¹) • ratTup (F` using `X.B.I.F) (Fv X.B.I.F p.1) (F0 (frameOf X u'))) (Fin.castSucc b) = ratTup (F := X.B.I.F) (Fv X.B.I.F p.1) (F0 (frameOf X u)) (Fin.castSucc b) := by`. Rewrite using `[kap_smul_ratTup, ratTup_eq]`. Simplify using `only [F0, frameOf, Fin.snoc_castSucc]`. Rewrite using `[hfix]`. Simplify using `only [locF, heq, sub_self, smul_zero]`.
+
+Consider the case `last`. Take `⟨c1, hc1, hm1⟩` from `X.xu_z u`. Take `⟨c2, hc2, hm2⟩` from `X.xu_z u'`. Establish `hm : ((c1 * c2 : ℕ) : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • ((X.B.I.fmat (X.xu u')⁻¹ *ᵥ incl X.B.I (crdOf X.B.I X.ιE X.bas (X.zu u')) - X.z0) - (X.B.I.fmat (X.xu u)⁻¹ *ᵥ incl X.B.I (crdOf X.B.I X.ιE X.bas (X.zu u)) - X.z0)) ∈ mL X.B.I X.B.g`. Establish `h` using `sub_mem (natCast_smul_mL X.B.I _ c1 _ hm2) (natCast_smul_mL X.B.I _ c2 _ hm1)`.
+
+Use `h using 1` and compare the differences between its conclusion and the goal. Rewrite using `[smul_sub, Nat.cast_mul, mul_smul, mul_comm (c1 : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F), mul_smul]`. Take `⟨y0, hy0, hy0e⟩` from `rhoV_mL X.B.I p.1 _ _ hm`. Establish `hy1` using `kap_fwd X.B.I p.1 _ (X.xu_K u) y0 hy0`. Establish `hc : ((c1 * c2 : ℕ) : 𝓞 X.B.I.F) ∉ p.1.asIdeal` using `natCast_not_mem p.1 _ X.B.g (Nat.Coprime.mul_left hc1 hc2) (Bg_mem X p)`.
+
+Take `⟨hdi, hc0⟩` from `inv_natCast_mem p.1 _ hc`. Take `⟨k, hk⟩` from `gAt_dvd X p.1`. Use `⟨sc (E := X.B.I.E) p.1 (k : Fv X.B.I.F p.1) • sc (E := X.B.I.E) p.1 ((c1 * c2 : ℕ) : Fv X.B.I.F p.1)⁻¹ • ((X.B.I.fmat (X.xu u)).map (rhoE X.B.I p.1) *ᵥ y0), sc_smul_mem p.1 _ _ (natCast_mem_int p.1 k) _ (sc_smul_mem p.1 _ _ hdi _ hy1), ?_⟩` and prove the remaining obligations. Rewrite using `[locF_last, locF_last, kap_smul_ratTup, ratTup_eq, ← rhoV_sub]`. Simplify using `only [F0, frameOf, Fin.snoc_last]`.
+
+Rewrite using `[fmat_mul, glob_diff _ _ _ (fmat_mul_inv X.B.I (X.xu u)) _ _ X.z0]`. Establish `key : sc (E` using `X.B.I.E) p.1 ((c1 * c2 : ℕ) : Fv X.B.I.F p.1) • rhoV X.B.I p.1 (X.B.I.fmat (X.xu u) *ᵥ ((X.B.I.fmat (X.xu u')⁻¹ *ᵥ incl X.B.I (crdOf X.B.I X.ιE X.bas (X.zu u')) - X.z0) - (X.B.I.fmat (X.xu u)⁻¹ *ᵥ incl X.B.I (crdOf X.B.I X.ιE X.bas (X.zu u)) - X.z0))) = sc (E := X.B.I.E) p.1 (X.B …`. Rewrite using `[sc_natCast, ← map_natCast (rhoE X.B.I p.1), ← rhoV_smul, ← Matrix.mulVec_smul, ← map_mulVec_rhoV, hy0e, Matrix.mulVec_smul]`. Establish `hcc : sc (E` using `X.B.I.E) p.1 ((c1 * c2 : ℕ) : Fv X.B.I.F p.1)⁻¹ * sc (E := X.B.I.E) p.1 ((c1 * c2 : ℕ) : Fv X.B.I.F p.1) = 1 := by`. Rewrite using `[← sc_mul, inv_mul_cancel₀ hc0, sc_one]`.
+
+Rewrite using `[← one_smul (Fv X.B.I.F p.1 ⊗[X.B.I.F] X.B.I.E) (rhoV X.B.I p.1 _), ← hcc, mul_smul, key]`. Simplify using `only [smul_smul]`. Use `congr 1`. Rewrite using `[hk, Nat.cast_mul (gAt X p.1) k, sc_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem kapX (_hb : Formalism.L2.SG.AdBridge.AdBridgeIso X.B.I) (u u' : D.what₂.Word) : KapX X u u' := by
   intro p
   refine ⟨kap X.B.I p.1 (X.xu u * (X.xu u')⁻¹),

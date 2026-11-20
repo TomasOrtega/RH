@@ -10,6 +10,11 @@ noncomputable section
 
 namespace PI.UnitaryGroupMassFormula.UsCost
 
+/- English proof (translation)
+Use `continuous_matrix fun a b => ?_` and prove the remaining obligations. Unfold `blk3`. Use `show Continuous fun x => fromBlocks (fromBlocks (A11 x) (A12 x) (A21 x) (A22 x)) (fromRows (A13 x) (A23 x)) (fromCols (A31 x) (A32 x)) (A33 x) ((eB k j ρ).symm a) ((eB k j ρ).symm b)`. Apply the tactic sequence `rcases (eB k j ρ).symm a with (a' | a') | a' <;> rcases (eB k j ρ).symm b with (b' | b') | b' <;> first`. Consider the case `exact h11.matrix_elem a' b' | exact h12.matrix_elem a' b' | exact h13.matrix_elem a' b'`.
+
+Consider the case `exact h21.matrix_elem a' b' | exact h22.matrix_elem a' b' | exact h23.matrix_elem a' b'`. Consider the case `exact h31.matrix_elem a' b' | exact h32.matrix_elem a' b' | exact h33.matrix_elem a' b'`.
+-/
 theorem continuous_block_matrix_three {X : Type*} [TopologicalSpace X] {k j ρ : ℕ}
     {A11 : X → Matrix (Fin j) (Fin j) ℂ} {A12 : X → Matrix (Fin j) (Fin (2 * ρ + k + 1)) ℂ}
     {A13 : X → Matrix (Fin j) (Fin j) ℂ} {A21 : X → Matrix (Fin (2 * ρ + k + 1)) (Fin j) ℂ}
@@ -31,6 +36,11 @@ theorem continuous_block_matrix_three {X : Type*} [TopologicalSpace X] {k j ρ :
     | exact h21.matrix_elem a' b' | exact h22.matrix_elem a' b' | exact h23.matrix_elem a' b'
     | exact h31.matrix_elem a' b' | exact h32.matrix_elem a' b' | exact h33.matrix_elem a' b'
 
+/- English proof (translation)
+Unfold `ZjH Zj`. Use `(continuous_const.matrix_mul ?_).matrix_mul continuous_const` and prove the remaining obligations. Use `continuous_matrix fun a b => ?_` and prove the remaining obligations. Use `show Continuous fun Z' : G.Mat s => fromBlocks (headH σ d η.2.1 η.2.2) 0 0 (of Z') (finSumFinEquiv.symm a) (finSumFinEquiv.symm b)`. Apply the tactic sequence `rcases finSumFinEquiv.symm a with a' | a' <;> rcases finSumFinEquiv.symm b with b' | b'`.
+
+Conclude with `continuous_const`. Conclude with `continuous_const`. Conclude with `continuous_const`. Conclude with `continuous_apply_apply a' b'`.
+-/
 theorem continuous_zjH {p s : ℕ} (σ : Equiv.Perm (Fin p)) (d : Fin p → ℂ) (η : XiH p s σ) :
     Continuous fun Z' : G.Mat s => ZjH σ d η Z' := by
   unfold ZjH Zj
@@ -44,6 +54,17 @@ theorem continuous_zjH {p s : ℕ} (σ : Equiv.Perm (Fin p)) (d : Fin p → ℂ)
   · exact continuous_const
   · exact continuous_apply_apply a' b'
 
+/- English proof (translation)
+Unfold `ZjH Zj headH`. Simplify using `only [Matrix.det_mul, blk2, Matrix.det_reindex_self, Matrix.det_fromBlocks_zero₁₂, Matrix.det_fromBlocks_zero₂₁, Matrix.det_one, one_mul, mul_one]`. Unfold `wP lowW G.upper`. Use the proof step `repeat' apply mul_ne_zero`. Apply the tactic sequence `all_goals first`.
+
+Consider the case `exact hZ`. Consider the case `(rw [Matrix.det_diagonal]; exact Finset.prod_ne_zero_iff.2 fun i _ => hd i)`. Consider the case `(have hP : (of fun a b => if σ a = b then (1 : ℂ) else 0) = (1 : Matrix (Fin p) (Fin p) ℂ).submatrix σ id := by`. Use extensionality with `a b`. Simplify using `[Matrix.one_apply]`.
+
+Rewrite using `[hP, Matrix.det_permute]`. Use the proof step `simp)`. Consider the case `(first | rw [Matrix.det_of_lowerTriangular _ ?_] | rw [Matrix.det_of_lowerTriangular ?_]`. Simplify using the standard rewrite rules. Introduce `i j hij`.
+
+Establish `hij' : i < j` using `hij`. Simplify using `[Matrix.one_apply, hij'.ne, not_lt.2 hij'.le])`. Consider the case `(first | rw [Matrix.det_of_upperTriangular ?_] | rw [Matrix.det_of_upperTriangular _ ?_]`. Simplify using `[G.strictUpper]`. Introduce `i j hij`.
+
+Establish `hij' : j < i` using `hij`. Simplify using `[G.strictUpper, Matrix.one_apply, hij'.ne', not_lt.2 hij'.le])`.
+-/
 theorem det_zjH_ne {p s : ℕ} (σ : Equiv.Perm (Fin p)) (d : Fin p → ℂ) (hd : ∀ i, d i ≠ 0) (η : XiH p s σ)
     (Z : G.Mat s) (hZ : G.detM Z ≠ 0) : (ZjH σ d η Z).det ≠ 0 := by
   unfold ZjH Zj headH
@@ -71,12 +92,18 @@ theorem det_zjH_ne {p s : ℕ} (σ : Equiv.Perm (Fin p)) (d : Fin p → ℂ) (hd
          have hij' : j < i := hij
          simp [G.strictUpper, Matrix.one_apply, hij'.ne', not_lt.2 hij'.le])
 
+/- English proof (translation)
+Unfold `RadicalParam at hR`. Take `⟨-, hrange, hsub⟩` from `hR k j ρ`. Establish `hx : Rn k j ρ x ∈ Rset k j ρ` using `hrange ▸ Set.mem_range_self x`. Conclude with `(hsub hx).1`.
+-/
 theorem rn_mem_of (hR : RadicalParam) (k j ρ : ℕ) (x : RC k j ρ) : Rn k j ρ x ∈ B.GV k (j + ρ) := by
   unfold RadicalParam at hR
   obtain ⟨-, hrange, hsub⟩ := hR k j ρ
   have hx : Rn k j ρ x ∈ Rset k j ρ := hrange ▸ Set.mem_range_self x
   exact (hsub hx).1
 
+/- English proof (translation)
+Unfold `gaXi`. Conclude with `Formalism.FourierDecayAlt.P.BetaSesquilinearity.gv_mul (Formalism.FourierDecayAlt.P.BetaSesquilinearity.gv_mul (Formalism.FourierDecayAlt.P.BetaSesquilinearity.gv_inv (rn_mem_of hR _ _ _ _)) ((hM k (p + s) ρ).1 _ γ (det_zjH_ne σ d hd ξ.2 Z hZ) hγ)) (rn_mem_of hR _ _ _ _)`.
+-/
 theorem gaXi_mem_of (hM : SliceMem) (hR : RadicalParam) (k p s ρ : ℕ) (σ : Equiv.Perm (Fin p))
     (d : Fin p → ℂ) (hd : ∀ i, d i ≠ 0) (ξ : Xi k p s ρ σ) (Z : G.Mat s) (γ : B.Mat k ρ)
     (hZ : G.detM Z ≠ 0) (hγ : γ ∈ B.GV k ρ) : gaXi k ρ σ d ξ Z γ ∈ B.GV k (p + s + ρ) := by
@@ -85,6 +112,15 @@ theorem gaXi_mem_of (hM : SliceMem) (hR : RadicalParam) (k p s ρ : ℕ) (σ : E
     (Formalism.FourierDecayAlt.P.BetaSesquilinearity.gv_mul (Formalism.FourierDecayAlt.P.BetaSesquilinearity.gv_inv (rn_mem_of hR _ _ _ _))
       ((hM k (p + s) ρ).1 _ γ (det_zjH_ne σ d hd ξ.2 Z hZ) hγ)) (rn_mem_of hR _ _ _ _)
 
+/- English proof (translation)
+Establish `hZj` using `continuous_zjH σ d ξ.2 (s := s)`. Establish `hdet : ((ZjH σ d ξ.2 Z)ᴴ).det ≠ 0`. Rewrite using `[Matrix.det_conjTranspose]`. Conclude with `star_ne_zero.2 (det_zjH_ne σ d hd ξ.2 Z hZ)`. Establish `hinvC : ContinuousAt Ring.inverse ((ZjH σ d ξ.2 Z)ᴴ).det`.
+
+Simplify using `using NormedRing.inverse_continuousAt (Units.mk0 _ hdet)`. Establish `hinv : ContinuousAt (fun Z' : G.Mat s => (ZjH σ d ξ.2 Z')ᴴ⁻¹) Z` using `ContinuousAt.comp (g := (Inv.inv : Matrix (Fin (p + s)) (Fin (p + s)) ℂ → _)) (f := fun Z' : G.Mat s => (ZjH σ d ξ.2 Z')ᴴ) (continuousAt_matrix_inv _ hinvC) hZj.matrix_conjTranspose.continuousAt`. Set `F : Matrix (Fin (p + s)) (Fin (p + s)) ℂ × Matrix (Fin (p + s)) (Fin (p + s)) ℂ → B.Mat k (p + s + ρ)` to `fun P => (Rn k (p + s) ρ ξ.1.1)⁻¹ * blk3 0 0 (P.2 * G.wMat (p + s)) 0 γ 0 (G.wMat (p + s) * P.1) 0 0 * Rn k (p + s) ρ ξ.1.2`. Establish `hF : Continuous F`. Use `Continuous.matrix_mul (Continuous.matrix_mul continuous_const ?_) continuous_const` and prove the remaining obligations.
+
+Conclude with `continuous_block_matrix_three continuous_const continuous_const (continuous_snd.matrix_mul continuous_const) continuous_const continuous_const continuous_const (continuous_const.matrix_mul continuous_fst) continuous_const continuous_const`. Establish `: (fun Z' : G.Mat s => gaXi k ρ σ d ξ Z' γ) = F ∘ fun Z' => (ZjH σ d ξ.2 Z', (ZjH σ d ξ.2 Z')ᴴ⁻¹)`. Use function extensionality and compare the values at `Z'`. Both sides reduce to the same expression. Rewrite using `[this]`.
+
+Conclude with `hF.continuousAt.comp (hZj.continuousAt.prodMk hinv)`.
+-/
 theorem gaXi_contAt (k p s ρ : ℕ) (σ : Equiv.Perm (Fin p)) (d : Fin p → ℂ) (hd : ∀ i, d i ≠ 0)
     (ξ : Xi k p s ρ σ) (Z : G.Mat s) (γ : B.Mat k ρ) (hZ : G.detM Z ≠ 0) :
     ContinuousAt (fun Z' : G.Mat s => gaXi k ρ σ d ξ Z' γ) Z := by
@@ -111,6 +147,13 @@ theorem gaXi_contAt (k p s ρ : ℕ) (σ : Equiv.Perm (Fin p)) (d : Fin p → �
   rw [this]
   exact hF.continuousAt.comp (hZj.continuousAt.prodMk hinv)
 
+/- English proof (translation)
+Introduce `hM hR k p s ρ σ d hd E _ _ H O hO hH ξ Z γ hZ hγ hgO q`. Establish `hev : (fun Z' : G.Mat s => H (gaXi k ρ σ d ξ Z' γ)) =ᶠ[nhds Z] fun _ => (0 : E)`. Establish `h1 : ∀ᶠ Z' in nhds Z, gaXi k ρ σ d ξ Z' γ ∈ O` using `(gaXi_contAt k p s ρ σ d hd ξ Z γ hZ) (hO.mem_nhds hgO)`. Establish `hdc : Continuous fun Z' : G.Mat s => G.detM Z'`. Unfold `G.detM`.
+
+Conclude with `Continuous.matrix_det continuous_id`. Establish `h2 : ∀ᶠ Z' in nhds Z, G.detM Z' ≠ 0` using `hdc.continuousAt.eventually_ne hZ`. Use `filter_upwards [h1, h2] with Z' h1 h2`. Conclude with `hH _ (gaXi_mem_of hM hR k p s ρ σ d hd ξ Z' γ h2 hγ) h1`. Use `⟨contDiffAt_const.congr_of_eventuallyEq hev, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[(hev.iteratedFDeriv ℝ q).eq_of_nhds]`. Simplify using the standard rewrite rules.
+-/
 theorem offK : OffK := by
   intro hM hR k p s ρ σ d hd E _ _ H O hO hH ξ Z γ hZ hγ hgO q
   have hev : (fun Z' : G.Mat s => H (gaXi k ρ σ d ξ Z' γ)) =ᶠ[nhds Z] fun _ => (0 : E) := by

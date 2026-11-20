@@ -21,15 +21,26 @@ def trP {D D'' : PLat O bar} (M : Matrix (Fin g) (Fin g) ℂ) (P : D''.La →+ (
   map_zero' := by simp
   map_add' x y := by simp [Matrix.mulVec_add]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mixedTracePairing_apply {D D'' : PLat O bar} (M : Matrix (Fin g) (Fin g) ℂ) (P : D''.La →+ (Fin g → ℂ)) (w : D.La ≃ₗ[O] D''.La)
     (x : D.La) : trP M P w x = M *ᵥ P (w x) := rfl
 
+/- English proof (translation)
+Unfold `hermForm`. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec, Matrix.vecMul_transpose, Matrix.star_mulVec, Matrix.mulVec_transpose]`.
+-/
 theorem hermForm_conj (N Hm : Matrix (Fin g) (Fin g) ℂ) (u v : Fin g → ℂ) :
     hermForm (Nᵀ * Hm * Nᴴᵀ) u v = hermForm Hm (N *ᵥ u) (N *ᵥ v) := by
   unfold hermForm
   rw [← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec, Matrix.vecMul_transpose,
     Matrix.star_mulVec, Matrix.mulVec_transpose]
 
+/- English proof (translation)
+Establish `key : ((h.toLinearMap ∘ₗ Matrix.mulVecLin (ρ a)).restrictScalars ℝ) = ((Matrix.mulVecLin (ρ a) ∘ₗ h.toLinearMap).restrictScalars ℝ)`. Apply `LinearMap.ext_on_range hP.2.2.2.1` to reduce the goal to its premises. Introduce `x`. Simplify using `only [LinearMap.restrictScalars_apply, LinearMap.comp_apply, Matrix.mulVecLin_apply, LinearEquiv.coe_coe]`. Rewrite using `[← hP.1 a x, ← hw (a • x), ← hw x, map_smul, hP''.1]`.
+
+Conclude with `LinearMap.congr_fun key z`.
+-/
 theorem comm_of_rel {ρ : O →+* Matrix (Fin g) (Fin g) ℂ} {D D'' : PLat O bar} {P : D.La →+ (Fin g → ℂ)}
     {P'' : D''.La →+ (Fin g → ℂ)} (hP : IsPeriod D ρ P) (hP'' : IsPeriod D'' ρ P'') (w : D.La ≃ₗ[O] D''.La)
     (h : (Fin g → ℂ) ≃ₗ[ℂ] (Fin g → ℂ)) (hw : ∀ x, P'' (w x) = h (P x)) (a : O) (z : Fin g → ℂ) :
@@ -42,6 +53,11 @@ theorem comm_of_rel {ρ : O →+* Matrix (Fin g) (Fin g) ℂ} {D D'' : PLat O ba
     rw [← hP.1 a x, ← hw (a • x), ← hw x, map_smul, hP''.1]
   exact LinearMap.congr_fun key z
 
+/- English proof (translation)
+Set `b` to `Module.Free.chooseBasis ℤ D.La`. Set `b''` to `Module.Free.chooseBasis ℤ D''.La`. Use `haveI : Countable D''.La := Function.Injective.countable b''.equivFun.injective`. Apply `Function.Injective.countable (f := fun w : D.La ≃ₗ[O] D''.La => fun i => w (b i))` to reduce the goal to its premises. Introduce `w₁ w₂ hw`.
+
+Establish `: (w₁.toLinearMap.toAddMonoidHom.toIntLinearMap) = (w₂.toLinearMap.toAddMonoidHom.toIntLinearMap)` using `b.ext fun i => congrFun hw i`. Use extensionality with `x`. Conclude with `LinearMap.congr_fun this x`.
+-/
 theorem countable_equiv (D D'' : PLat O bar) : Countable (D.La ≃ₗ[O] D''.La) := by
   let b := Module.Free.chooseBasis ℤ D.La
   let b'' := Module.Free.chooseBasis ℤ D''.La
@@ -59,6 +75,31 @@ namespace GlobalTheory.DimEq
 
 variable {O : Type} [Ring O] {bar : O → O} {g : ℕ}
 
+/- English proof (translation)
+Take `⟨hlin, hinj, hdisc, hspan, Hm, hHm, hpos, him⟩` from `hP`. Establish `hNM : M⁻¹ * M = 1` using `Matrix.nonsing_inv_mul M hM`. Establish `hMN : M * M⁻¹ = 1` using `Matrix.mul_nonsing_inv M hM`. Establish `hNinj : Function.Injective (fun v : Fin g → ℂ => M⁻¹ *ᵥ v)`. Introduce `u v huv`.
+
+Use `congrArg (fun x => M *ᵥ x) huv` as an intermediate fact. Simplify `this` using `[Matrix.mulVec_mulVec, hMN]`. Establish `hMinj : Function.Injective (fun v : Fin g → ℂ => M *ᵥ v)`. Introduce `u v huv`. Use `congrArg (fun x => M⁻¹ *ᵥ x) huv` as an intermediate fact.
+
+Simplify `this` using `[Matrix.mulVec_mulVec, hNM]`. Set `φ : (Fin g → ℂ) ≃ₜ (Fin g → ℂ)` to `{ toFun := fun v => M⁻¹ *ᵥ v invFun := fun v => M *ᵥ v left_inv := fun v => by simp [Matrix.mulVec_mulVec, hMN] right_inv := fun v => by simp [Matrix.mulVec_mulVec, hNM] continuous_toFun := Continuous.matrix_mulVec continuous_const continuous_id continuous_invFun := Continuous.ma …`. Establish `hrange : Set.range (trP M P w) = (fun v => M *ᵥ v) '' Set.range P`. Use extensionality with `v`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨x, rfl⟩`. Conclude with `⟨P (w x), ⟨w x, rfl⟩, rfl⟩`. Introduce and unpack `⟨_, ⟨u, rfl⟩, rfl⟩`. Conclude with `⟨w.symm u, by simp [mixedTracePairing_apply]⟩`. Use `⟨?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `a x`. Rewrite using `[mixedTracePairing_apply, mixedTracePairing_apply, map_smul, hlin, Matrix.mulVec_mulVec, hMc, ← Matrix.mulVec_mulVec]`. Introduce `x y hxy`. Conclude with `w.injective (hinj (hMinj hxy))`. Establish `hmem : ∀ v, v ∈ (trP M P w).range ↔ φ v ∈ P.range`.
+
+Introduce `v`. Simplify using `only [AddMonoidHom.mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, rfl⟩`. Conclude with `⟨w x, by simp [φ, mixedTracePairing_apply, Matrix.mulVec_mulVec, hNM]⟩`.
+
+Introduce and unpack `⟨u, hu⟩`. Use `⟨w.symm u, ?_⟩` and prove the remaining obligations. Rewrite using `[mixedTracePairing_apply, LinearEquiv.apply_symm_apply, hu]`. Simplify using `[φ, Matrix.mulVec_mulVec, hMN]`. Set `e` to `φ.subtype hmem`.
+
+Conclude with `e.isEmbedding.discreteTopology`. Set `Lr : (Fin g → ℂ) →ₗ[ℝ] (Fin g → ℂ)` to `(Matrix.mulVecLin M).restrictScalars ℝ`. Establish `hLr : Set.range (trP M P w) = Lr '' Set.range P` using `hrange`. Rewrite using `[hLr, Submodule.span_image, hspan, Submodule.map_top, LinearMap.range_eq_top]`. Introduce `v`.
+
+Conclude with `⟨M⁻¹ *ᵥ v, by simp [Lr, Matrix.mulVec_mulVec, hMN]⟩`. Use `⟨(M⁻¹)ᵀ * Hm * (M⁻¹)ᴴᵀ, ?_, ?_, ?_⟩` and prove the remaining obligations. Unfold `Matrix.IsHermitian`. Establish `e1 : ((M⁻¹)ᴴᵀ)ᴴ = (M⁻¹)ᵀ` using `by ext i j; simp`. Establish `e2 : ((M⁻¹)ᵀ)ᴴ = (M⁻¹)ᴴᵀ` using `by ext i j; simp`.
+
+Rewrite using `[Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, hHm.eq, e1, e2, Matrix.mul_assoc]`. Introduce `z hz`. Rewrite using `[hermForm_conj]`. Apply `hpos` to reduce the goal to its premises. Introduce `h0`.
+
+Apply `hz` to reduce the goal to its premises. Apply `hNinj` to reduce the goal to its premises. Simplify using `using h0`. Introduce `x y`. Rewrite using `[hermForm_conj, mixedTracePairing_apply, mixedTracePairing_apply]`.
+
+Simplify using `only [Matrix.mulVec_mulVec, hNM, Matrix.one_mulVec]`. Rewrite using `[him, hw x y]`.
+-/
 theorem isPeriod_trP {ρ : O →+* Matrix (Fin g) (Fin g) ℂ} {D D'' : PLat O bar} {P : D''.La →+ (Fin g → ℂ)}
     (hP : IsPeriod D'' ρ P) (w : D.La ≃ₗ[O] D''.La) (hw : IsIsom D D'' w) (M : Matrix (Fin g) (Fin g) ℂ)
     (hM : IsUnit M.det) (hMc : ∀ a, M * ρ a = ρ a * M) : IsPeriod D ρ (trP M P w) := by
@@ -126,6 +167,11 @@ theorem isPeriod_trP {ρ : O →+* Matrix (Fin g) (Fin g) ℂ} {D D'' : PLat O b
       simp only [Matrix.mulVec_mulVec, hNM, Matrix.one_mulVec]
       rw [him, hw x y]
 
+/- English proof (translation)
+Establish `: {b | b ∈ B ∧ ∀ x ∈ s, ‖f b x - P₀ x‖ < ε} = B ∩ ⋂ x ∈ s, (B ∩ (fun b => f b x) ⁻¹' Metric.ball (P₀ x) ε)`. Use extensionality with `b`. Simplify using `only [Set.mem_setOf_eq, Set.mem_inter_iff, Set.mem_iInter, Set.mem_preimage, Metric.mem_ball, dist_eq_norm]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hb, h⟩`.
+
+Conclude with `⟨hb, fun x hx => ⟨hb, h x hx⟩⟩`. Introduce and unpack `⟨hb, h⟩`. Conclude with `⟨hb, fun x hx => (h x hx).2⟩`. Rewrite using `[this]`. Conclude with `hB.inter (isOpen_biInter_finset fun x _ => (hf x).isOpen_inter_preimage hB Metric.isOpen_ball)`.
+-/
 theorem isOpen_near {D : PLat O bar} {m : ℕ} (B : Set (Fin m → ℂ)) (hB : IsOpen B)
     (f : (Fin m → ℂ) → D.La → (Fin g → ℂ)) (hf : ∀ x, ContinuousOn (fun b => f b x) B) (s : Finset D.La)
     (P₀ : D.La → (Fin g → ℂ)) (ε : ℝ) : IsOpen {b | b ∈ B ∧ ∀ x ∈ s, ‖f b x - P₀ x‖ < ε} := by
@@ -145,6 +191,45 @@ end GlobalTheory.DimEq
 
 namespace GlobalTheory.DimEq
 
+/- English proof (translation)
+Introduce `O _ bar g ρ Λ F N C d d' D' t hN heta hd hqc hF hC hPex hPC`. Take `⟨P₀, hP₀⟩` from `hPex`. Establish `hlft : LocallyOfFiniteType F.s` using `by haveI := hd haveI : Smooth F.s := SmoothOfRelativeDimension.smooth d F.s infer_instance`. Set `Qc : Set (Fin d → ℂ) → ((Fin d → ℂ) → (Sp ℂ ⟶ F.X)) → Prop` to `fun B y => ∃ (D'' : PLat O bar) (t'' : Λ → D''.La) (P : (Fin d → ℂ) → (D''.La →+ (Fin g → ℂ))) (e : ∀ b, (Fin g → ℂ) → (Over.mk (y b) ⟶ F.A)), IsHolPeriods D'' ρ B P ∧ ∀ b ∈ B, UnifAt F (RingHom.id ℂ) ρ N D'' t'' (P b) (y b) (e b)`. Take `⟨K, hK, B, y, hch, hcov⟩` from `GlobalTheory.CountableCharts.exists_countable_charts F.X F.s d hd hqc Qc (by`.
+
+Introduce `B y b₀ hB hb₀ hys hyh`. Take `⟨D'', t'', P'', e'', -, hU⟩` from `hF.pts (y b₀) (hys b₀ hb₀)`. Take `⟨B', P, e, hB', hb₀', hsub, -, hhol, -, hU'⟩` from `GlobalTheory.T.holomorphicMap_lifts_locally_to_periodFamilies O bar g ρ Λ F N D'' t'' d B y b₀ P'' e'' hN heta hlft hB hb₀ hys hyh hU`. Conclude with `⟨B', hB', hb₀', hsub, D'', t'', P, e, hhol, hU'⟩)`. Use `choose Dl tl Pl el hPl hUl using fun i => (hch i).2.2.2.2`.
+
+Take `⟨BZ, Q, Z, s, ε, hBZ, hε, hQ, hZ0, hQZ0, hZQ, hnear, hinv, hZhol⟩` from `hPC P₀ hP₀`. Apply `le_antisymm` to reduce the goal to its premises. Take `⟨y₀, e₀, hU₀⟩` from `hF.occ D' t P₀ hC hP₀`. Take `⟨i, c₀, hc₀, hyc₀⟩` from `hcov y₀ hU₀.1`. Substitute `hyc₀` using the available equality.
+
+Take `⟨B', P, e, hB', hc₀', hsub, hPc₀, hhol, -, hU'⟩` from `GlobalTheory.T.holomorphicMap_lifts_locally_to_periodFamilies O bar g ρ Λ F N D' t d (B i) (y i) c₀ P₀ e₀ hN heta hlft (hch i).1 hc₀ (hch i).2.1 (hch i).2.2.1 hU₀`. Set `U` to `{b | b ∈ B' ∧ ∀ x ∈ s, ‖P b x - P₀ x‖ < ε}`. Establish `hUo : IsOpen U` using `isOpen_near B' hB' (fun b x => P b x) (fun x => (hhol.2 x).continuousOn) s P₀ ε`. Establish `hc₀U : c₀ ∈ U` using `⟨hc₀', fun x _ => by simp [hPc₀, hε]⟩`. Establish `hholU : IsHolPeriods D' ρ U P` using `⟨fun b hb => hhol.1 b hb.1, fun x => (hhol.2 x).mono fun b hb => hb.1⟩`.
+
+Use `GlobalTheory.T.le_of_injOn_differentiableOn_complex d d' U (fun b => Z (P b)) hUo ⟨c₀, hc₀U⟩ (hZhol d U P hUo hholU fun b hb => hb.2) ?_` and prove the remaining obligations. Introduce `b hb b' hb' heq`. Establish `heq' : Z (P b) = Z (P b')` using `heq`. Take `⟨-, h1, hh1⟩` from `hnear (P b) (hhol.1 b hb.1) hb.2`. Take `⟨-, h2, hh2⟩` from `hnear (P b') (hhol.1 b' hb'.1) hb'.2`.
+
+Establish `hyy` using `hF.sep D' D' t t (P b) (P b') (y i b) (y i b') (e b) (e b') (hU' b hb.1) (hU' b' hb'.1) (LinearEquiv.refl O D'.La) (h1.symm.trans h2) ⟨fun x y => rfl, fun a => ⟨0, by simp⟩⟩ (fun x => by`. Rewrite using `[LinearEquiv.refl_apply, hh2 x, ← heq', LinearEquiv.trans_apply, hh1 x, LinearEquiv.symm_apply_apply])`. Conclude with `(hch i).2.2.2.1 (hsub hb.1) (hsub hb'.1) hyy`. Use `haveI : SecondCountableTopology (Matrix (Fin g) (Fin g) ℂ) := inferInstanceAs (SecondCountableTopology (Fin g → Fin g → ℂ))`. Set `T : Set (Matrix (Fin g) (Fin g) ℂ)` to `{M | IsUnit M.det ∧ ∀ a, M * ρ a = ρ a * M}`.
+
+Take `⟨S, hSc, hSd⟩` from `TopologicalSpace.exists_countable_dense T`. Use `haveI : Countable S := hSc.to_subtype`. Use `haveI : ∀ i, Countable {w : D'.La ≃ₗ[O] (Dl i).La // IsIsom D' (Dl i) w} := fun i => haveI := countable_equiv D' (Dl i)`. Use `inferInstance`. Set `J` to `Σ i : K, {w : D'.La ≃ₗ[O] (Dl i).La // IsIsom D' (Dl i) w} × S`.
+
+Set `per : J → (Fin d → ℂ) → (D'.La →+ (Fin g → ℂ))` to `fun j c => trP (j.2.2 : T).1 (Pl j.1 c) j.2.1.1`. Set `U : J → Set (Fin d → ℂ)` to `fun j => {c | c ∈ B j.1 ∧ ∀ x ∈ s, ‖per j c x - P₀ x‖ < ε}`. Establish `hdiff : ∀ j x, DifferentiableOn ℂ (fun c => per j c x) (B j.1)`. Introduce `j x`. Establish `h1` using `(hPl j.1).2 (j.2.1.1 x)`.
+
+Conclude with `((LinearMap.toContinuousLinearMap (Matrix.mulVecLin (j.2.2 : T).1)).differentiable.comp_differentiableOn h1)`. Establish `hUo : ∀ j, IsOpen (U j)` using `fun j => isOpen_near (B j.1) (hch j.1).1 (fun c x => per j c x) (fun x => (hdiff j x).continuousOn) s P₀ ε`. Establish `hperU : ∀ j, IsHolPeriods D' ρ (U j) (per j)` using `fun j => ⟨fun c hc => isPeriod_trP ((hPl j.1).1 c hc.1) j.2.1.1 j.2.1.2 _ (j.2.2 : T).2.1 (j.2.2 : T).2.2, fun x => (hdiff j x).mono fun c hc => hc.1⟩`. Set `W` to `{b | b ∈ BZ ∧ ∀ x ∈ s, ‖Q b x - P₀ x‖ < ε}`. Establish `hWo : IsOpen W` using `isOpen_near BZ hBZ (fun b x => Q b x) (fun x => (hQ.2 x).continuousOn) s P₀ ε`.
+
+Establish `hWne : W.Nonempty` using `⟨Z P₀, hZ0, fun x _ => by simp [hQZ0, hε]⟩`. Use `GlobalTheory.T.le_of_countable_holomorphic_images_cover_open d d' J U (fun j c => Z (per j c)) W hUo (fun j => hZhol d (U j) (per j) (hUo j) (hperU j) fun c hc => hc.2) hWo hWne ?_` and prove the remaining obligations. Introduce `b hb`. Establish `hQb` using `hQ.1 b hb.1`. Take `⟨yb, eb, hUb⟩` from `hF.occ D' t (Q b) hC hQb`.
+
+Take `⟨i, c, hc, hyc⟩` from `hcov yb hUb.1`. Substitute `hyc` using the available equality. Apply the tactic sequence `obtain ⟨w, h, hw, hwP, -⟩ := GlobalTheory.T.complexUniformisations_same_point_differ_by_isometry O bar g ρ ℂ (RingHom.id ℂ) Λ F N D' (Dl i) t (tl i) (Q b) (Pl i c) (y i c) eb (el i c) hN hUb (hUl i c hc)`. Establish `hPic` using `(hPl i).1 c hc`. Set `M₀ : Matrix (Fin g) (Fin g) ℂ` to `LinearMap.toMatrix' (h.symm : (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ))`.
+
+Establish `hM₀v : ∀ v, M₀ *ᵥ v = h.symm v` using `fun v => by simp [M₀, LinearMap.toMatrix'_mulVec]`. Establish `hM₀T : M₀ ∈ T`. Use `⟨?_, fun a => ?_⟩` and prove the remaining obligations. Set `M₁ : Matrix (Fin g) (Fin g) ℂ` to `LinearMap.toMatrix' (h : (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ))`. Establish `: M₀ * M₁ = 1`.
+
+Apply `Matrix.toLin'.injective` to reduce the goal to its premises. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `v`. Simplify using `[M₀, M₁, Matrix.toLin'_mul, LinearMap.toMatrix'_mulVec]`. Conclude with `Matrix.isUnit_det_of_right_inverse this`.
+
+Apply `Matrix.toLin'.injective` to reduce the goal to its premises. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `v`. Simplify using `only [Matrix.toLin'_apply, ← Matrix.mulVec_mulVec, hM₀v]`. Apply `h.injective` to reduce the goal to its premises.
+
+Rewrite using `[LinearEquiv.apply_symm_apply, comm_of_rel hQb hPic w h hwP a, LinearEquiv.apply_symm_apply]`. Set `V : Set T` to `{M | ∀ x ∈ s, ‖(M : Matrix (Fin g) (Fin g) ℂ) *ᵥ Pl i c (w x) - P₀ x‖ < ε}`. Establish `hVo : IsOpen V`. Establish `: V = ⋂ x ∈ s, {M : T | ‖(M : Matrix (Fin g) (Fin g) ℂ) *ᵥ Pl i c (w x) - P₀ x‖ < ε}`. Use extensionality with `M`.
+
+Simplify using `[V]`. Rewrite using `[this]`. Conclude with `isOpen_biInter_finset fun x _ => isOpen_lt ((Continuous.matrix_mulVec continuous_subtype_val continuous_const).sub continuous_const).norm continuous_const`. Establish `hM₀V : (⟨M₀, hM₀T⟩ : T) ∈ V` using `fun x hx => by show ‖M₀ *ᵥ Pl i c (w x) - P₀ x‖ < ε`. Rewrite using `[hM₀v, hwP, LinearEquiv.symm_apply_apply]`.
+
+Conclude with `hb.2 x hx`. Take `⟨M, hMS, hMV⟩` from `hSd.exists_mem_open hVo ⟨_, hM₀V⟩`. Set `j : J` to `⟨i, ⟨w, hw.1⟩, ⟨M, hMS⟩⟩`. Use `Set.mem_iUnion.2 ⟨j, c, ⟨hc, hMV⟩, ?_⟩` and prove the remaining obligations. Establish `hperj : IsPeriod D' ρ (per j c)` using `(hperU j).1 c ⟨hc, hMV⟩`.
+
+Use `haveI : Invertible (M : Matrix (Fin g) (Fin g) ℂ) := Matrix.invertibleOfIsUnitDet _ M.2.1`. Set `hM : (Fin g → ℂ) ≃ₗ[ℂ] (Fin g → ℂ)` to `Matrix.toLinearEquiv' (M : Matrix (Fin g) (Fin g) ℂ) inferInstance`. Establish `hZ : Z (per j c) = Z (Q b)` using `hinv (Q b) (per j c) hQb hperj hb.2 hMV (h.trans hM) (fun x => by show (M : Matrix (Fin g) (Fin g) ℂ) *ᵥ Pl i c (w x) = _`. Rewrite using `[hwP]`. Use the proof step `rfl)`.
+
+Use `show Z (per j c) = b`. Rewrite using `[hZ, hZQ b hb.1 hb.2]`.
+-/
 theorem dim_eq : ∀ (O : Type) [Ring O] (bar : O → O) (g : ℕ) (ρ : O →+* Matrix (Fin g) (Fin g) ℂ) (Λ : Type) (F : Fam ℂ O Λ g) (N : ℕ) (C : ∀ D' : PLat O bar, (Λ → D'.La) → Prop) (d d' : ℕ) (D' : PLat O bar) (t : Λ → D'.La), 0 < N → (∀ a, F.eta a ^ N = 1) → SmoothOfRelativeDimension d F.s → QuasiCompact F.s → FineAt F (RingHom.id ℂ) ρ N C → C D' t → (∃ P, IsPeriod D' ρ P) → PerCoord D' ρ d' → d = d' := by
   intro O _ bar g ρ Λ F N C d d' D' t hN heta hd hqc hF hC hPex hPC
   obtain ⟨P₀, hP₀⟩ := hPex

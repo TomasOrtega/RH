@@ -20,6 +20,9 @@ variable {p q : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
 
 def coordP (ab : PIx p q) : Mat p q →ₗ[ℂ] ℂ := Matrix.entryLinearMap ℂ ℂ ab.1.1 ab.1.2
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h a b hab`. Conclude with `h ⟨(a, b), hab⟩`. Introduce `h j`. Conclude with `h j.1.1 j.1.2 j.2`.
+-/
 lemma isKC_iff (x : Mat p q) : (∀ j, coordP j x = 0) ↔ IsKC x := by
   constructor
   · intro h a b hab
@@ -27,10 +30,18 @@ lemma isKC_iff (x : Mat p q) : (∀ j, coordP j x = 0) ↔ IsKC x := by
   · intro h j
     exact h j.1.1 j.1.2 j.2
 
+/- English proof (translation)
+Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b <;> rcases c with c | c <;> simp_all [sameBlock]`.
+-/
 private lemma sameBlock_trans_twisted_operators {a b c : Ix p q} (h1 : sameBlock a b) (h2 : sameBlock b c) :
     sameBlock a c := by
   rcases a with a | a <;> rcases b with b | b <;> rcases c with c | c <;> simp_all [sameBlock]
 
+/- English proof (translation)
+Introduce `a b hab`. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun c _ => ?_` and prove the remaining obligations. Distinguish the cases in `hac : sameBlock a c`. Establish `hcb : ¬ sameBlock c b` using `fun hcb => hab (sameBlock_trans_twisted_operators hac hcb)`.
+
+Rewrite using `[hy c b hcb, mul_zero]`. Rewrite using `[hx a c hac, zero_mul]`.
+-/
 lemma isKC_mul {x y : Mat p q} (hx : IsKC x) (hy : IsKC y) : IsKC (x * y) := by
   intro a b hab
   rw [Matrix.mul_apply]
@@ -40,6 +51,9 @@ lemma isKC_mul {x y : Mat p q} (hx : IsKC x) (hy : IsKC y) : IsKC (x * y) := by
     rw [hy c b hcb, mul_zero]
   · rw [hx a c hac, zero_mul]
 
+/- English proof (translation)
+Rewrite using `[mulLin_apply]`. Simplify using `only [mulX, LinearMap.rTensor_tmul, LinearMap.mulLeft_apply, coordP, Matrix.entryLinearMap_apply]`. Rewrite using `[pLin, Finset.sum_mul, TensorProduct.sum_tmul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[TensorProduct.smul_tmul', MvPolynomial.smul_eq_C_mul, mul_assoc]`.
+-/
 lemma mulLin_tmul (x : Mat p q) (s : MvPolynomial (PIx p q) ℂ) (v : V) :
     mulLin coordP x (s ⊗ₜ[ℂ] v) = (pLin x * s) ⊗ₜ[ℂ] v := by
   rw [mulLin_apply]
@@ -49,6 +63,11 @@ lemma mulLin_tmul (x : Mat p q) (s : MvPolynomial (PIx p q) ℂ) (v : V) :
   refine Finset.sum_congr rfl fun i _ => ?_
   rw [TensorProduct.smul_tmul', MvPolynomial.smul_eq_C_mul, mul_assoc]
 
+/- English proof (translation)
+Unfold `pLin`. Rewrite using `[Finset.sum_eq_single ab]`. Simplify using `[Eab]`. Introduce `b _ hb`. Establish `: ¬ (ab.1.1 = b.1.1 ∧ ab.1.2 = b.1.2)` using `fun h => hb (Subtype.ext (Prod.ext h.1.symm h.2.symm))`.
+
+Simplify using `[Eab, Matrix.single_apply_of_ne (h := this)]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+-/
 lemma pLin_Eab (ab : PIx p q) : pLin (Eab ab.1.1 ab.1.2) = X ab := by
   unfold pLin
   rw [Finset.sum_eq_single ab]
@@ -60,6 +79,9 @@ lemma pLin_Eab (ab : PIx p q) : pLin (Eab ab.1.1 ab.1.2) = X ab := by
   · intro h
     exact absurd (Finset.mem_univ _) h
 
+/- English proof (translation)
+Proceed by induction on `L with`. Consider the case `nil => simp [Multiset.toFinsupp_zero, MvPolynomial.monomial_zero']`. Consider the case `cons a L ih`. Rewrite using `[List.map_cons, List.prod_cons, ih, ← Multiset.cons_coe, ← Multiset.singleton_add, Multiset.toFinsupp_add, Multiset.toFinsupp_singleton, MvPolynomial.X, MvPolynomial.monomial_mul, one_mul]`.
+-/
 private lemma prod_map_X_eq_monomial' (L : List (PIx p q)) :
     (L.map (X : PIx p q → MvPolynomial (PIx p q) ℂ)).prod =
       monomial (Multiset.toFinsupp (L : Multiset (PIx p q))) 1 := by
@@ -70,6 +92,11 @@ private lemma prod_map_X_eq_monomial' (L : List (PIx p q)) :
       Multiset.toFinsupp_add, Multiset.toFinsupp_singleton, MvPolynomial.X,
       MvPolynomial.monomial_mul, one_mul]
 
+/- English proof (translation)
+Use `⟨(Finsupp.toMultiset α).toList.map fun ab => Eab ab.1.1 ab.1.2, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[List.length_map, Multiset.length_toList, Finsupp.card_toMultiset, Finsupp.degree_apply]`. Both sides reduce to the same expression. Rewrite using `[List.map_map]`. Establish `hc : (pLin ∘ fun ab : PIx p q => Eab ab.1.1 ab.1.2) = X` using `funext pLin_Eab`.
+
+Rewrite using `[hc, prod_map_X_eq_monomial', Multiset.coe_toList, Finsupp.toMultiset_toFinsupp]`.
+-/
 lemma exists_list (α : PIx p q →₀ ℕ) : ∃ l : List (Mat p q), l.length = α.degree ∧
     (l.map pLin).prod = monomial α 1 := by
   refine ⟨(Finsupp.toMultiset α).toList.map fun ab => Eab ab.1.1 ab.1.2, ?_, ?_⟩
@@ -79,6 +106,9 @@ lemma exists_list (α : PIx p q →₀ ℕ) : ∃ l : List (Mat p q), l.length =
     have hc : (pLin ∘ fun ab : PIx p q => Eab ab.1.1 ab.1.2) = X := funext pLin_Eab
     rw [hc, prod_map_X_eq_monomial', Multiset.coe_toList, Finsupp.toMultiset_toFinsupp]
 
+/- English proof (translation)
+Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using `[coordP, Eab]`. Establish `hne : ¬ (j.1.1 = i.1.1 ∧ j.1.2 = i.1.2)` using `fun h' => h (Subtype.ext (Prod.ext h'.1.symm h'.2.symm))`. Simplify using `[coordP, Eab, h, Matrix.single_apply_of_ne (h := hne)]`.
+-/
 private lemma coordP_Eab (i j : PIx p q) :
     coordP i (Eab j.1.1 j.1.2) = if i = j then 1 else 0 := by
   by_cases h : i = j
@@ -88,10 +118,22 @@ private lemma coordP_Eab (i j : PIx p q) :
       h (Subtype.ext (Prod.ext h'.1.symm h'.2.symm))
     simp [coordP, Eab, h, Matrix.single_apply_of_ne (h := hne)]
 
+/- English proof (translation)
+Introduce `a b hab`. Rewrite using `[Matrix.sub_apply, hx a b hab, hy a b hab, sub_zero]`.
+-/
 private lemma isKC_sub' {x y : Mat p q} (hx : IsKC x) (hy : IsKC y) : IsKC (x - y) := by
   intro a b hab
   rw [Matrix.sub_apply, hx a b hab, hy a b hab, sub_zero]
 
+/- English proof (translation)
+Set `_ : LinearOrder (PIx p q)` to `LinearOrder.lift' (Fintype.equivFin (PIx p q)) (Fintype.equivFin (PIx p q)).injective`. Establish `hK : ∀ x y : Mat p q, (∀ j, coordP j x = 0) → (∀ j, coordP j y = 0) → ∀ j, coordP j ⁅x, y⁆ = 0`. Introduce `x y hx hy`. Rewrite using `[Ring.lie_def]`. Conclude with `(isKC_iff _).mpr (isKC_sub' (isKC_mul ((isKC_iff x).mp hx) ((isKC_iff y).mp hy)) (isKC_mul ((isKC_iff y).mp hy) ((isKC_iff x).mp hx)))`.
+
+Establish `hact : ∀ x y : Mat p q, (∀ j, coordP j x = 0) → (∀ j, coordP j y = 0) → act ⁅x, y⁆ = act x * act y - act y * act x`. Introduce `x y hx hy`. Rewrite using `[Ring.lie_def]`. Conclude with `h x y ((isKC_iff x).mp hx) ((isKC_iff y).mp hy)`. Apply the tactic sequence `obtain ⟨ρ, hbr, hk, hdeg⟩ := exists_rep (R := ℂ) (ι := PIx p q) (g := Mat p q) (V := V) (fun ab => Eab ab.1.1 ab.1.2) coordP act (fun i j => by rw [coordP_Eab]; split_ifs <;> rfl) hK hact`.
+
+Set `f : Mat p q →ₗ⁅ℂ⁆ Module.End ℂ (MvPolynomial (PIx p q) ℂ ⊗[ℂ] V)` to `{ ρ with map_lie' := fun {x y} => by show ρ ⁅x, y⁆ = ⁅ρ x, ρ y⁆`. Rewrite using `[hbr, Ring.lie_def] }`. Use `⟨UniversalEnvelopingAlgebra.lift ℂ f, fun x hx v => ?_, fun n x m hm => ?_⟩` and prove the remaining obligations. Rewrite using `[show ugι p q x = UniversalEnvelopingAlgebra.ι ℂ x from rfl, UniversalEnvelopingAlgebra.lift_ι_apply]`. Conclude with `hk x ((isKC_iff x).mpr hx) v`.
+
+Rewrite using `[show ugι p q x = UniversalEnvelopingAlgebra.ι ℂ x from rfl, UniversalEnvelopingAlgebra.lift_ι_apply]`. Conclude with `hdeg n x m hm`.
+-/
 lemma exists_rep_gl (act : Mat p q →ₗ[ℂ] Module.End ℂ V) (h : IsKLieAct act) :
     ∃ ρ : Ug p q →ₐ[ℂ] Module.End ℂ (MvPolynomial (PIx p q) ℂ ⊗[ℂ] V),
       (∀ x, IsKC x → ∀ v, ρ (ugι p q x) (zv 0 v) = zv 0 (act x v)) ∧
@@ -126,6 +168,11 @@ lemma exists_rep_gl (act : Mat p q →ₗ[ℂ] Module.End ℂ V) (h : IsKLieAct 
       UniversalEnvelopingAlgebra.lift_ι_apply]
     exact hdeg n x m hm
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil`. Establish `h1 : (1 : MvPolynomial (PIx p q) ℂ) ⊗ₜ[ℂ] v = zv 0 v`. Simplify using `[zv, MvPolynomial.monomial_zero']`. Rewrite using `[List.map_nil, List.prod_nil, h1]`.
+
+Conclude with `zv_mem (by simp) v`. Consider the case `cons x l ih`. Rewrite using `[List.map_cons, List.prod_cons, ← mulLin_tmul, List.length_cons]`. Conclude with `mulLin_mem coordP x _ ih`.
+-/
 lemma prod_tmul_mem (l : List (Mat p q)) (v : V) :
     (l.map pLin).prod ⊗ₜ[ℂ] v ∈ degLt ℂ (PIx p q) V (l.length + 1) := by
   induction l with
@@ -138,6 +185,17 @@ lemma prod_tmul_mem (l : List (Mat p q)) (v : V) :
     rw [List.map_cons, List.prod_cons, ← mulLin_tmul, List.length_cons]
     exact mulLin_mem coordP x _ ih
 
+/- English proof (translation)
+Take `⟨ρ, hk, hdeg⟩` from `exists_rep_gl act h`. Set `F : Ug p q →ₗ[ℂ] V →ₗ[ℂ] (MvPolynomial (PIx p q) ℂ ⊗[ℂ] V)` to `LinearMap.mk₂ ℂ (fun u v => ρ u (zv 0 v)) (fun u u' v => by simp) (fun c u v => by simp) (fun u v v' => by simp) (fun c u v => by simp)`. Establish `hΦ : ∀ u v, TensorProduct.lift F (u ⊗ₜ[ℂ] v) = ρ u (zv 0 v)` using `fun u v => by`. Simplify using `[F]`. Establish `hle : indRel act ≤ LinearMap.ker (TensorProduct.lift F)`.
+
+Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `z ⟨u, Y, v, hY, rfl⟩`. Simplify using `only [SetLike.mem_coe, LinearMap.mem_ker, map_sub, hΦ, map_mul, Module.End.mul_apply, hk Y hY v, sub_self]`. Use `⟨(indRel act).liftQ (TensorProduct.lift F) hle, fun l v => ?_⟩` and prove the remaining obligations. Simplify using `only [Submodule.mkQ_apply, Submodule.liftQ_apply, hΦ]`.
+
+Proceed by induction on `l with`. Consider the case `nil`. Simplify using `[zv, MvPolynomial.monomial_zero']`. Consider the case `cons x l ih`. Rewrite using `[List.map_cons, List.prod_cons, map_mul, Module.End.mul_apply, List.map_cons, List.prod_cons, List.length_cons]`.
+
+Establish `hA : ρ (l.map (ugι p q)).prod (zv 0 v) ∈ degLt ℂ (PIx p q) V (l.length + 1)`. Establish `h2` using `Submodule.add_mem _ (degLt_mono (Nat.le_succ _) ih) (prod_tmul_mem l v)`. Rewrite `h2` using `[sub_add_cancel]`. Then use the resulting hypothesis. Establish `e : ρ (ugι p q x) (ρ (l.map (ugι p q)).prod (zv 0 v)) - (pLin x * (l.map pLin).prod) ⊗ₜ[ℂ] v = (ρ (ugι p q x) (ρ (l.map (ugι p q)).prod (zv 0 v)) - mulLin coordP x (ρ (l.map (ugι p q)).prod (zv 0 v))) + mulLin coordP x (ρ (l.map (ugι p q)).prod (zv 0 v) - (l.map pLin).prod ⊗ₜ[ℂ] …`. Rewrite using `[map_sub, mulLin_tmul]`.
+
+Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Conclude with `Submodule.add_mem _ (hdeg _ x _ hA) (mulLin_mem coordP x _ ih)`.
+-/
 lemma exists_symbol (act : Mat p q →ₗ[ℂ] Module.End ℂ V) (h : IsKLieAct act) :
     ∃ φ : Ind act →ₗ[ℂ] (MvPolynomial (PIx p q) ℂ ⊗[ℂ] V), ∀ (l : List (Mat p q)) (v : V),
       φ ((indRel act).mkQ ((l.map (ugι p q)).prod ⊗ₜ[ℂ] v)) - (l.map pLin).prod ⊗ₜ[ℂ] v ∈
@@ -173,6 +231,13 @@ lemma exists_symbol (act : Mat p q →ₗ[ℂ] Module.End ℂ V) (h : IsKLieAct 
     rw [e]
     exact Submodule.add_mem _ (hdeg _ x _ hA) (mulLin_mem coordP x _ ih)
 
+/- English proof (translation)
+Establish `hfix : LinearMap.rTensor V (homogeneousComponent k) z = z`. Take `⟨w, rfl⟩` from `LinearMap.mem_range.mp h1`. Establish `hc : (homogeneousComponent k).comp (homog (PIx p q) k).subtype = (homog (PIx p q) k).subtype`. Use `LinearMap.ext fun P => ?_` and prove the remaining obligations. Simplify using `[homogeneousComponent_of_mem P.2]`.
+
+Rewrite using `[← LinearMap.comp_apply, ← LinearMap.rTensor_comp, hc]`. Establish `hkill : degLt ℂ (PIx p q) V k ≤ LinearMap.ker (LinearMap.rTensor V (homogeneousComponent (σ` using `PIx p q) (R := ℂ) k)) := by`. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `m ⟨α, v, hα, rfl⟩`. Establish `hm : (monomial α (1 : ℂ)) ∈ homogeneousSubmodule (PIx p q) ℂ α.degree` using `(mem_homogeneousSubmodule _ _).mpr (isHomogeneous_monomial 1 rfl)`.
+
+Simplify using `only [SetLike.mem_coe, LinearMap.mem_ker, zv, TensorProduct.mk_apply, LinearMap.rTensor_tmul, homogeneousComponent_of_mem hm, if_neg (Nat.ne_of_gt hα), TensorProduct.zero_tmul]`. Establish `h3` using `hkill h2`. Rewrite `h3` using `[LinearMap.mem_ker, hfix]`. Conclude with `h3`.
+-/
 lemma eq_zero_of_mem {k : ℕ} {z : MvPolynomial (PIx p q) ℂ ⊗[ℂ] V} (h1 : z ∈ symTens p q V k)
     (h2 : z ∈ degLt ℂ (PIx p q) V k) : z = 0 := by
   have hfix : LinearMap.rTensor V (homogeneousComponent k) z = z := by
@@ -195,6 +260,31 @@ lemma eq_zero_of_mem {k : ℕ} {z : MvPolynomial (PIx p q) ℂ ⊗[ℂ] V} (h1 :
   rw [LinearMap.mem_ker, hfix] at h3
   exact h3
 
+/- English proof (translation)
+Take `⟨φ, hφ⟩` from `exists_symbol act h`. Establish `hF : ∀ j < k, indF act j ≤ (degLt ℂ (PIx p q) V k).comap φ`. Introduce `j hj`. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨u, hu, v, rfl⟩`.
+
+Set `Lv : Ug p q →ₗ[ℂ] (MvPolynomial (PIx p q) ℂ ⊗[ℂ] V)` to `φ ∘ₗ (indRel act).mkQ ∘ₗ (TensorProduct.mk ℂ (Ug p q) V).flip v`. Establish `hU : UgF p q j ≤ (degLt ℂ (PIx p q) V k).comap Lv`. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨l, hl, rfl⟩`. Establish `h4` using `Submodule.add_mem _ (degLt_mono (show l.length ≤ k by omega) (hφ l v)) (degLt_mono (show l.length + 1 ≤ k by omega) (prod_tmul_mem l v))`.
+
+Rewrite `h4` using `[sub_add_cancel]`. Conclude with `h4`. Conclude with `hU hu`. Establish `hlow : indFlt act k ≤ (degLt ℂ (PIx p q) V k).comap φ`. Unfold `indFlt`.
+
+Conclude with `iSup_le fun j => iSup_le fun hj => hF j hj`. Establish `hsym : ∀ P : MvPolynomial (PIx p q) ℂ, P.IsHomogeneous k → ∀ v : V, φ ((indRel act).mkQ (symU p q P ⊗ₜ[ℂ] v)) - P ⊗ₜ[ℂ] v ∈ degLt ℂ (PIx p q) V k`. Introduce `P hP v`. Set `M : MvPolynomial (PIx p q) ℂ →ₗ[ℂ] (MvPolynomial (PIx p q) ℂ ⊗[ℂ] V)` to `φ ∘ₗ (indRel act).mkQ ∘ₗ (TensorProduct.mk ℂ (Ug p q) V).flip v ∘ₗ symU p q - (TensorProduct.mk ℂ (MvPolynomial (PIx p q) ℂ) V).flip v`. Establish `hM : ∀ Q, M Q = φ ((indRel act).mkQ (symU p q Q ⊗ₜ[ℂ] v)) - Q ⊗ₜ[ℂ] v` using `fun Q => rfl`.
+
+Rewrite using `[← hM, P.as_sum, map_sum]`. Use `Submodule.sum_mem _ fun α hα => ?_` and prove the remaining obligations. Establish `hdeg : α.degree = k`. Rewrite using `[Finsupp.degree_eq_weight_one]`. Conclude with `hP (mem_support_iff.mp hα)`.
+
+Establish `hmon : monomial α (coeff α P) = coeff α P • monomial α (1 : ℂ)`. Rewrite using `[smul_monomial, smul_eq_mul, mul_one]`. Rewrite using `[hmon, map_smul]`. Use `Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Rewrite using `[hM]`.
+
+Take `⟨l, hl, hprod⟩` from `exists_list α`. Establish `hc` using `hs l v`. Establish `h1` using `hφ l v`. Rewrite `hc`, `h1` using `[hprod, hl, hdeg]`. Establish `h8 : φ ((indRel act).mkQ ((l.map (ugι p q)).prod ⊗ₜ[ℂ] v) - (indRel act).mkQ (symU p q (monomial α 1) ⊗ₜ[ℂ] v)) ∈ degLt ℂ (PIx p q) V k` using `hlow hc`.
+
+Establish `key` using `Submodule.sub_mem _ h1 h8`. Rewrite `key` using `[map_sub, sub_sub_sub_cancel_left]`. Conclude with `key`. Establish `hzsym : φ ((indRel act).mkQ (LinearMap.rTensor V (symU p q) z)) - z ∈ degLt ℂ (PIx p q) V k`. Take `⟨w, rfl⟩` from `LinearMap.mem_range.mp hz`.
+
+Use `clear hz hz'`. Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul P v`. Simplify using `only [LinearMap.rTensor_tmul, Submodule.coe_subtype]`.
+
+Conclude with `hsym P.1 P.2 v`. Consider the case `add w w' hw hw'`. Establish `h5` using `Submodule.add_mem _ hw hw'`. Simplify using `only [map_add]`. Rewrite using `[add_sub_add_comm]`.
+
+Conclude with `h5`. Establish `hz0 : z ∈ degLt ℂ (PIx p q) V k`. Establish `h7 : φ ((indRel act).mkQ (LinearMap.rTensor V (symU p q) z)) ∈ degLt ℂ (PIx p q) V k` using `hlow hz'`. Establish `h6` using `Submodule.sub_mem _ h7 hzsym`. Rewrite `h6` using `[sub_sub_cancel]`. Then use the resulting hypothesis.
+
+Conclude with `eq_zero_of_mem hz hz0`.
+-/
 theorem symmetrisation_injective (act : Mat p q →ₗ[ℂ] Module.End ℂ V) (h : IsKLieAct act)
     (hs : SymbolCongr act) (k : ℕ) (z) (hz : z ∈ symTens p q V k)
     (hz' : (indRel act).mkQ (LinearMap.rTensor V (symU p q) z) ∈ indFlt act k) : z = 0 := by
@@ -267,6 +357,9 @@ end GlobalTheory.InducedPBW.Injective
 
 namespace GlobalTheory.InducedPBW
 
+/- English proof (translation)
+Unfold `admQ8`. Introduce `p q V _ _ act h`. Establish `hs` using `symbolCongr p q V act`. Use `⟨iSup_indF_eq_top p q V act, fun k => ⟨Onto.indF_eq_sup p q V act hs k, fun z hz hz' => Injective.symmetrisation_injective act h hs k z hz hz', fun Y hY z hz => symmetrisation_equivariant p q V act hs k Y hY z hz⟩⟩` and prove the remaining obligations.
+-/
 theorem pbw_induced : admQ8 := by
   unfold admQ8
   intro p q V _ _ act h

@@ -25,9 +25,15 @@ section Cuts
 variable {d : ℕ} (E : Frame Φ (d + 1)) (E' : Frame Φ' (d + 1)) (e : E.D ⟶ m.G.obj E'.D)
   (he : m.Fr E E' e) (hρ : ∀ T, Function.Injective (m.ρ T)) (Q : Poly Φ) (Q' : Poly Φ')
 
+/- English proof (translation)
+Introduce `T x hx` and use `h T.T x hx`.
+-/
 theorem le_cover_restrict_compat {c : R'} {a : IdF Φ.A} {a' : IdF Φ'.A} (h : m.LeC c a a') :
     (m1 m E E' e he hρ).LeC c (a.res (Cut.U E)) (a'.res (Cut.U E')) := fun T x hx => h T.T x hx
 
+/- English proof (translation)
+Set `μ₁ : CH.Mor (sq (a.res (Cut.U E)) (b.res (Cut.U E))) (Cut.P0 Q' ⋙ Cut.U E' ⋙ sq a' b') σ` to `(CH.Mor.restrict (sq (a.res (Cut.U E)) (b.res (Cut.U E))) (Cut.P0 Q)).comp (mP m E E' e he hρ Q Q' c ha hb)`. Set `μ₂ : CH.Mor (sq (a.res (Cut.U E)) (b.res (Cut.U E))) (Cut.P0 Q' ⋙ Cut.U E' ⋙ sq a' b') σ` to `((m1 m E E' e he hρ).sqC c (le_cover_restrict_compat m E E' e he hρ ha) (le_cover_restrict_compat m E E' e he hρ hb)).comp (CH.Mor.restrict (sq (a'.res (Cut.U E')) (b'.res (Cut.U E'))) (Cut.P0 Q'))`. Establish `h` using `CrystallineSemistableComparison.P.prism μ₁ μ₂ (eta m E E' e he hρ Q Q') (fun T x => rfl) j x`. Conclude with `(CrystallineSemistableComparison.P.pull_comp _ _ j x).1.symm.trans (h.trans (CrystallineSemistableComparison.P.pull_comp _ _ j x).1)`.
+-/
 theorem pull_restrict_first_piece_compat (c : R') {a b : IdF Φ.A} {a' b' : IdF Φ'.A} (ha : m.LeC c a a') (hb : m.LeC c b b') (j : ℕ)
     (x : CH.H (sq (a.res (Cut.U E)) (b.res (Cut.U E))) j) :
     (mP m E E' e he hρ Q Q' c ha hb).pull j
@@ -45,6 +51,11 @@ theorem pull_restrict_first_piece_compat (c : R') {a b : IdF Φ.A} {a' b' : IdF 
 def alpha {d : ℕ} {E : Frame Φ (d + 1)} (Q : Poly Φ) (a b : IdF Φ.A) : Pt.U E ⋙ sq a b ⟶ Cut.P0 Q ⋙ Cut.U E ⋙ sq a b :=
   Functor.whiskerRight (Cut.jNat (E := E) Q) (sq a b)
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(m.sqC c ha hb).τ (Q'.P X.T) (((sq a b).map (etaC m E E' e he hρ Q Q' X).1).hom (((sq a b).map (Q.j (m.G.obj X.T))).hom y)) = ((sq a' b').map (Q'.j X.T)).hom ((m.sqC c ha hb).τ X.T y)`. Rewrite using `[← (m.sqC c ha hb).nat]`. Use `congr 1`. Establish `h2` using `congrArg (fun t => ((sq a b).map t).hom y) (j_eta m E E' e he hρ Q Q' X)`. Simplify using `only [Functor.map_comp, ModuleCat.hom_comp, LinearMap.comp_apply] at h2`.
+
+Conclude with `h2`.
+-/
 theorem alpha_τ (c : R') {a b : IdF Φ.A} {a' b' : IdF Φ'.A} (ha : m.LeC c a a') (hb : m.LeC c b b') (X : Pt E')
     (y : sqM a b (m.G.obj X.T)) :
     (mP m E E' e he hρ Q Q' c ha hb).τ X (((alpha Q a b).app ((Gp m E E' e).obj X)).hom y) =
@@ -57,12 +68,20 @@ theorem alpha_τ (c : R') {a b : IdF Φ.A} {a' b' : IdF Φ'.A} (ha : m.LeC c a a
   simp only [Functor.map_comp, ModuleCat.hom_comp, LinearMap.comp_apply] at h2
   exact h2
 
+/- English proof (translation)
+The claim follows from `funext fun s => alpha_τ m E E' e he hρ Q Q' c ha hb _ _`.
+-/
 theorem alpha_hom (c : R') {a b : IdF Φ.A} {a' b' : IdF Φ'.A} (ha : m.LeC c a a') (hb : m.LeC c b b') (k : ℕ)
     (x : CH.Cn (Pt.U E ⋙ sq a b) k) :
     (mP m E E' e he hρ Q Q' c ha hb).hom.f k ((CH.Mor.ofNatTrans (alpha Q a b)).hom.f k x) =
       (CH.Mor.ofNatTrans (alpha Q' a' b')).hom.f k ((mPt m E E' e c ha hb).hom.f k x) :=
   funext fun s => alpha_τ m E E' e he hρ Q Q' c ha hb _ _
 
+/- English proof (translation)
+Rewrite using `[Finsupp.sum_mapRange_index (by intro k; simp), map_finsuppSum, map_finsuppSum, Finsupp.mul_sum]`. Use `Finsupp.sum_congr fun k _ => ?_` and prove the remaining obligations. Establish `hX` using `Q.X_mem (m.G.obj T)`. Establish `hX'` using `Φ.J.map_mem η hX`. Establish `h1 : (Φ.A.map η).hom ((Φ.A.map (Q.j (m.G.obj T))).hom (cc k)) = (Φ.A.map (m.G.map jj)).hom (cc k)`.
+
+Rewrite using `[← Cut.mapA_comp, hj]`. Rewrite using `[map_mul, map_mul, h1, m.nat, Φ.dp_map _ _ hX, m.dp _ _ hX', hx, map_mul, AlgHom.commutes, mul_assoc]`.
+-/
 theorem rho_finsupp_sum_dpow (c : R') {T P' : C'} (jj : T ⟶ P') (η : Q.P (m.G.obj T) ⟶ m.G.obj P') (X' : Φ'.A.obj P')
     (hj : Q.j (m.G.obj T) ≫ η = m.G.map jj) (hx : m.ρ P' ((Φ.A.map η).hom (Q.X (m.G.obj T))) = X')
     (cc : ℕ →₀ Φ.A.obj (m.G.obj T)) :
@@ -78,6 +97,9 @@ theorem rho_finsupp_sum_dpow (c : R') {T P' : C'} (jj : T ⟶ P') (η : Q.P (m.G
     rw [← Cut.mapA_comp, hj]
   rw [map_mul, map_mul, h1, m.nat, Φ.dp_map _ _ hX, m.dp _ _ hX', hx, map_mul, AlgHom.commutes, mul_assoc]
 
+/- English proof (translation)
+The claim follows from `rho_finsupp_sum_dpow m Q c (Q'.j X.T) (etaC m E E' e he hρ Q Q' X).1 (Q'.X X.T) (j_eta m E E' e he hρ Q Q' X) (rho_eta m E E' e he hρ Q Q' X) cc`.
+-/
 theorem rho_sum (c : R') (X : Pt E') (cc : ℕ →₀ Φ.A.obj (m.G.obj X.T)) :
     algebraMap R' (Φ'.A.obj (Q'.P X.T)) c * m.ρ (Q'.P X.T) ((Φ.A.map (etaC m E E' e he hρ Q Q' X).1).hom
         (cc.sum fun k y => (Φ.A.map (Q.j (m.G.obj X.T))).hom y * Φ.dp k (Q.X (m.G.obj X.T)))) =
@@ -86,6 +108,15 @@ theorem rho_sum (c : R') (X : Pt E') (cc : ℕ →₀ Φ.A.obj (m.G.obj X.T)) :
   rho_finsupp_sum_dpow m Q c (Q'.j X.T) (etaC m E E' e he hρ Q Q' X).1 (Q'.X X.T) (j_eta m E E' e he hρ Q Q' X)
     (rho_eta m E E' e he hρ Q Q' X) cc
 
+/- English proof (translation)
+Take `⟨y, hy⟩` from `y`. Take `⟨w, hw, rfl⟩` from `(Ideal.mem_map_iff_of_surjective _ Ideal.Quotient.mk_surjective).1 hy`. Take `⟨cc, rfl⟩` from `Q.span _ w`. Establish `hmem` using `(hca (m.G.obj X.T) cc).1 hw`. Set `c' : ℕ →₀ Φ.A.obj (m.G.obj X.T)` to `cc.comapDomain (· + 1) (fun _ _ _ _ h => Nat.add_right_cancel h)`.
+
+Establish `hc' : ∀ k, c' k = cc (k + 1)` using `fun k => Finsupp.comapDomain_apply _ _ _ _`. Establish `hw'` using `(hca1 (m.G.obj X.T) c').2 fun k => by`. Rewrite using `[hc']`. Establish `h` using `hmem (k + 1)`. Rewrite `h` using `[show r - ((k + 1 : ℕ) : ℤ) = r - 1 - (k : ℤ) by push_cast; ring]`. Then use the resulting hypothesis.
+
+Establish `hb1` using `hβ ((Gp m E E' e).obj X) cc c' ⟨_, hy⟩ ⟨_, Ideal.mem_map_of_mem _ hw'⟩ hc' rfl rfl`. Rewrite using `[hb1]`. Use `symm`. Use `hβ' X (cc.mapRange (fun x => algebraMap R' (Φ'.A.obj X.T) c * m.ρ X.T x) (by simp)) (c'.mapRange (fun x => algebraMap R' (Φ'.A.obj X.T) c * m.ρ X.T x) (by simp)) _ _ (fun k => ?_) ?_ ?_` and prove the remaining obligations. Rewrite using `[Finsupp.mapRange_apply, Finsupp.mapRange_apply, hc']`.
+
+Conclude with `congrArg (Ideal.Quotient.mk _) (rho_sum m E E' e he hρ Q Q' c X cc)`. Conclude with `congrArg (Ideal.Quotient.mk _) (rho_sum m E E' e he hρ Q Q' c X c')`.
+-/
 theorem beta_τ {a b : ℤ → IdF Φ.A} {a' b' : ℤ → IdF Φ'.A} {r : ℤ} (c : R')
     (ha : ∀ r', m.LeC c (a r') (a' r')) (hb : ∀ r', m.LeC c (b r') (b' r'))
     (hca : Q.Crit a r) (hca1 : Q.Crit a (r - 1))

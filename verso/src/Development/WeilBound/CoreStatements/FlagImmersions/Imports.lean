@@ -7,6 +7,15 @@ namespace RootFieldNumerics
 
 open CategoryTheory NumberField GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Cusp
 
+/- English proof (translation)
+Introduce `E _ _ _ H X t z g Λ _ _ R R' h A₀ x v hf hP hF`. Take `⟨A, _, φ, u, χ, hpb, hAH, hact, hinj, hmem, hvec⟩` from `hF`. Establish `hs` using `SheetDecomposition.Riem.span_top R`. Establish `hi` using `PeriodIso.isometry_of_periods R R' hs (LinearEquiv.refl _ _) h (fun a b => by rw [hf]; rfl) hP`. Establish `hc` using `PeriodIso.commutes_of_periods R R' hs (LinearEquiv.refl _ _) h hP`.
+
+Take `⟨u₂, χ₂, h1, h2, h3, h4⟩` from `FibreAtPeriod.exists_reparam_isAH u h R'.Hm R.Hm χ hAH R.herm fun a b => (hi b a).symm`. Use `⟨A, inferInstance, φ, u₂, χ₂, hpb, h3, fun a p => ?_, SheetDecomposition.Riem.inj R, fun p => ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[h1, h1, hc]`. Conclude with `hact a _`. Rewrite using `[h2, hmem]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha⟩`. Conclude with `⟨a, h.injective ((hP a).symm.trans ha)⟩`. Introduce and unpack `⟨a, rfl⟩`. Conclude with `⟨a, hP a⟩`.
+
+Take `⟨v', e, d⟩` from `hvec i`. Conclude with `⟨v', e, h4 _ _ (by rwa [h.apply_symm_apply])⟩`.
+-/
 theorem transport : Transport := by
   intro E _ _ _ H X t z g Λ _ _ R R' h A₀ x v hf hP hF
   obtain ⟨A, _, φ, u, χ, hpb, hAH, hact, hinj, hmem, hvec⟩ := hF

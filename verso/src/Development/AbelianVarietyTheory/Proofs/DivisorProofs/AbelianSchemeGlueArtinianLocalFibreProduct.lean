@@ -15,6 +15,11 @@ open scoped CategoryTheory.Obj
 
 namespace GlobalTheory.GlueAb
 
+/- English proof (translation)
+Establish `h : IsNilpotent (IsLocalRing.maximalIdeal P)`. Use `IsArtinianRing.isNilpotent_jacobson_bot (R := P)` as an intermediate fact. Rewrite `this` using `[IsLocalRing.jacobson_eq_maximalIdeal ⊥ bot_ne_top]`. Then use the resulting hypothesis. Take `⟨n, hn⟩` from `h`. Use `⟨n, ?_⟩` and prove the remaining obligations.
+
+Use `Ideal.pow_right_mono (IsLocalRing.le_maximalIdeal (RingHom.ker_ne_top f.hom)) n` as an intermediate fact. Rewrite `this` using `[hn]`. Conclude with `le_antisymm this bot_le`.
+-/
 theorem isNilpotent_ker {P R : CommRingCat.{0}} (f : P ⟶ R) [IsLocalRing P] [IsArtinianRing P]
     [Nontrivial R] : IsNilpotent (RingHom.ker f.hom) := by
   have h : IsNilpotent (IsLocalRing.maximalIdeal P) := by
@@ -26,6 +31,11 @@ theorem isNilpotent_ker {P R : CommRingCat.{0}} (f : P ⟶ R) [IsLocalRing P] [I
   rw [hn] at this
   exact le_antisymm this bot_le
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `x`. Take `⟨y⟩ : Nonempty (PrimeSpectrum R)` from `inferInstance`. Use `⟨y, ?_⟩` and prove the remaining obligations. Establish `: Subsingleton (PrimeSpectrum P)` using `⟨fun a b => PrimeSpectrum.ext <| by`.
+
+Establish `ha` using `IsArtinianRing.isMaximal_of_isPrime a.asIdeal`. Establish `hb` using `IsArtinianRing.isMaximal_of_isPrime b.asIdeal`. Rewrite using `[IsLocalRing.eq_maximalIdeal ha, IsLocalRing.eq_maximalIdeal hb]⟩`. Conclude with `Subsingleton.elim (α := PrimeSpectrum P) _ _`.
+-/
 theorem surjective_spec_map {P R : CommRingCat.{0}} (f : P ⟶ R) [IsLocalRing P] [IsArtinianRing P]
     [Nontrivial R] : Surjective (Spec.map f) := by
   constructor
@@ -38,6 +48,9 @@ theorem surjective_spec_map {P R : CommRingCat.{0}} (f : P ⟶ R) [IsLocalRing P
     rw [IsLocalRing.eq_maximalIdeal ha, IsLocalRing.eq_maximalIdeal hb]⟩
   exact Subsingleton.elim (α := PrimeSpectrum P) _ _
 
+/- English proof (translation)
+Establish `h'` using `(Types.isPullback_iff _ _ _ _).mp (h.map (forget CommRingCat))`. Use `⟨fun x y h1 h2 => h'.2.1 x y ⟨h1, h2⟩, fun hg r => ?_⟩` and prove the remaining obligations. Take `⟨s, hs⟩` from `hg (g₁ r)`. Take `⟨p, hp, -⟩` from `h'.2.2 r s hs.symm`. Conclude with `⟨p, hp⟩`.
+-/
 theorem pullback_elem {P R₁ R₂ R₀ : CommRingCat.{0}} {f₁ : P ⟶ R₁} {f₂ : P ⟶ R₂} {g₁ : R₁ ⟶ R₀}
     {g₂ : R₂ ⟶ R₀} (h : IsPullback f₁ f₂ g₁ g₂) :
     (∀ x y : P, f₁ x = f₁ y → f₂ x = f₂ y → x = y) ∧
@@ -52,6 +65,13 @@ end GlobalTheory.GlueAb
 
 namespace GlobalTheory.GlueAb
 
+/- English proof (translation)
+Use `haveI := h₁.smooth`. Use `haveI := h₂.smooth`. Take `⟨Y, j₁, j₂, hj₁, hj₂, hY, hpo⟩` from `GlobalTheory.T.ferrand_glue_flat_artinian_fibreProduct P R₁ R₂ R₀ f₁ f₂ g₁ g₂ hpb hl ha hg₁ hg₂ A₁ A₂ A₀ ψ₁ ψ₂ hψ₁.1 hψ₂.1 inferInstance inferInstance`. Take `⟨G, hc, hG₁, hG₂⟩` from `GlobalTheory.T.exists_glued_commGroupScheme_artinFibreProduct P R₁ R₂ R₀ f₁ f₂ g₁ g₂ hpb hl ha hg₁ hg₂ A₁ A₂ A₀ ψ₁ ψ₂ h₁.comm h₂.comm hψ₁ hψ₂ Y j₁ j₂ hj₁ hj₂ hY hpo`. Use `⟨Y, G, j₁, j₂, ?_, hG₁, hG₂, hpo.w⟩` and prove the remaining obligations.
+
+Establish `hf₁ : Function.Surjective f₁` using `(pullback_elem hpb).2 hg₂`. Establish `hN : IsNilpotent (RingHom.ker f₁.hom)` using `isNilpotent_ker f₁`. Establish `hlfp : LocallyOfFinitePresentation Y.hom` using `GlobalTheory.T.locallyOfFinitePresentation_of_nilpotent_thickening_noetherian P R₁ f₁ hf₁ hN inferInstance Y A₁ j₁ hj₁ inferInstance`. Establish `hsm : Smooth Y.hom` using `GlobalTheory.smooth_of_isPullback_of_surjective_of_flat _ _ _ _ (Spec.map f₁) j₁ A₁.hom Y.hom hj₁ (surjective_spec_map f₁) hY hlfp h₁.smooth`. Take `⟨hp, hgc⟩` from `GlobalTheory.NilLift.isProper_and_geometricallyConnected_of_smooth_lift P R₁ f₁.hom hf₁ hN Y A₁ j₁ hj₁ hsm h₁.proper h₁.geomConnected`.
+
+Conclude with `⟨hc, hsm, hp, hgc⟩`.
+-/
 theorem main_of_nontrivial (P R₁ R₂ R₀ : CommRingCat.{0}) (f₁ : P ⟶ R₁) (f₂ : P ⟶ R₂) (g₁ : R₁ ⟶ R₀)
     (g₂ : R₂ ⟶ R₀) (hpb : IsPullback f₁ f₂ g₁ g₂) (hl : IsLocalRing P) (ha : IsArtinianRing P)
     (hg₁ : Function.Surjective g₁) (hg₂ : Function.Surjective g₂) (hR : Nontrivial R₁)
@@ -79,6 +99,11 @@ theorem main_of_nontrivial (P R₁ R₂ R₀ : CommRingCat.{0}) (f₁ : P ⟶ R�
     Y A₁ j₁ hj₁ hsm h₁.proper h₁.geomConnected
   exact ⟨hc, hsm, hp, hgc⟩
 
+/- English proof (translation)
+Introduce `P R₁ R₂ R₀ f₁ f₂ g₁ g₂ hpb hl ha hg₁ hg₂ A₁ _ A₂ _ A₀ _ ψ₁ ψ₂ h₁ h₂ hψ₁ hψ₂`. Distinguish the cases in `hR : Nontrivial R₁`. Conclude with `main_of_nontrivial P R₁ R₂ R₀ f₁ f₂ g₁ g₂ hpb hl ha hg₁ hg₂ hR A₁ A₂ A₀ ψ₁ ψ₂ h₁ h₂ hψ₁ hψ₂`. Establish `hR₂ : Nontrivial R₂`. Assume the negation of the conclusion as `hR₂`.
+
+Rewrite `hR`, `hR₂` using `[not_nontrivial_iff_subsingleton]`. Conclude with `zero_ne_one ((pullback_elem hpb).1 0 1 (Subsingleton.elim _ _) (Subsingleton.elim _ _))`. Take `⟨A, G, φ₂, φ₁, hA, h₂', h₁', hw⟩` from `main_of_nontrivial P R₂ R₁ R₀ f₂ f₁ g₂ g₁ hpb.flip hl ha hg₂ hg₁ hR₂ A₂ A₁ A₀ ψ₂ ψ₁ h₂ h₁ hψ₂ hψ₁`. Conclude with `⟨A, G, φ₁, φ₂, hA, h₁', h₂', hw.symm⟩`.
+-/
 theorem main : ∀ (P R₁ R₂ R₀ : CommRingCat.{0}) (f₁ : P ⟶ R₁) (f₂ : P ⟶ R₂) (g₁ : R₁ ⟶ R₀) (g₂ : R₂ ⟶ R₀), IsPullback f₁ f₂ g₁ g₂ → IsLocalRing P → IsArtinianRing P → Function.Surjective g₁ → Function.Surjective g₂ → ∀ (A₁ : Over (Spec R₁)) [GrpObj A₁] (A₂ : Over (Spec R₂)) [GrpObj A₂] (A₀ : Over (Spec R₀)) [GrpObj A₀] (ψ₁ : A₀.left ⟶ A₁.left) (ψ₂ : A₀.left ⟶ A₂.left), IsAbelianScheme A₁ → IsAbelianScheme A₂ → IsGrpPullback A₀ A₁ (Spec.map g₁) ψ₁ → IsGrpPullback A₀ A₂ (Spec.map g₂) ψ₂ → ∃ (A : Over (Spec P)) (_ : GrpObj A) (φ₁ : A₁.left ⟶ A.left) (φ₂ : A₂.left ⟶ A.left), IsAbelianScheme A ∧ IsGrpPullback A₁ A (Spec.map f₁) φ₁ ∧ IsGrpPullback A₂ A (Spec.map f₂) φ₂ ∧ ψ₁ ≫ φ₁ = ψ₂ ≫ φ₂ := by
   intro P R₁ R₂ R₀ f₁ f₂ g₁ g₂ hpb hl ha hg₁ hg₂ A₁ _ A₂ _ A₀ _ ψ₁ ψ₂ h₁ h₂ hψ₁ hψ₂
   by_cases hR : Nontrivial R₁

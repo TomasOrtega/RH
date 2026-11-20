@@ -14,6 +14,19 @@ namespace GlobalTheory
 
 variable {R₀ : Type} [CommRing R₀]
 
+/- English proof (translation)
+Set `ψ : DualNum.DN O →ₐ[R₀] (R : Type)` to `Ideal.Quotient.liftₐ _ (Polynomial.aevalTower s.1 i) (fun a ha => by`. Take `⟨b, rfl⟩` from `Ideal.mem_span_singleton'.1 ha`. Simplify using `[pow_two, hi])`. Establish `hσ : ∀ r, ψ ((DualNum.dualPair O).σ.1 r) = s.1 r` using `fun r => by`. Express the relevant statement in the definitionally equal form `ψ (algebraMap (O : Type) (DualNum.DN O) r) = _`.
+
+Rewrite using `[← Ideal.Quotient.mk_algebraMap, Polynomial.algebraMap_apply]`. Conclude with `Polynomial.aevalTower_C s.1 i r`. Establish `hη : ψ (DualNum.dualPair O).η = i`. Express the relevant statement in the definitionally equal form `ψ (Ideal.Quotient.mk _ Polynomial.X) = _`. Conclude with `Polynomial.aevalTower_X s.1 i`.
+
+Use `⟨⟨ψ, ⟨fun d hd => ?_⟩⟩, ?_, hη⟩` and prove the remaining obligations. Establish `hk : d - (DualNum.dualPair O).σ.1 ((DualNum.dualPair O).π.1 d) ∈ RingHom.ker (DualNum.dualPair O).π.1`. Rewrite using `[RingHom.mem_ker, map_sub, (DualNum.dualPair O).sect, sub_self]`. Rewrite `hk` using `[(DualNum.dualPair O).ker_eq]`. Take `⟨y, hy⟩` from `Ideal.mem_span_singleton'.1 hk`.
+
+Establish `h1 : ψ y * i = ψ d - s.1 ((DualNum.dualPair O).π.1 d)`. Rewrite using `[← hσ, ← hη]`. Conclude with `(map_mul ψ _ _).symm.trans ((congrArg ψ hy).trans (map_sub ψ _ _))`. Establish `hn : IsNilpotent (-(ψ y * i))` using `⟨2, by`. Rewrite using `[show (-(ψ y * i)) ^ 2 = ψ y * ψ y * (i * i) by ring, hi, mul_zero]⟩`.
+
+Establish `hu : IsUnit (s.1 ((DualNum.dualPair O).π.1 d))`. Establish `h2` using `hn.isUnit_add_left_of_commute (u := ψ d) hd (Commute.all _ _)`. Rewrite `h2` using `[h1]`. Simplify using `using h2`. Conclude with `(DualNum.dualPair O).π.2.map_nonunit d (s.2.map_nonunit _ hu)`.
+
+Conclude with `Subtype.ext (AlgHom.ext hσ)`.
+-/
 private lemma endDiff_exists_lift {O R : LAlg R₀} (s : LHom O R) (i : (R : Type)) (hi : i * i = 0) :
     ∃ φ : LHom (DualNum.dualPair O).D R, φ.comp (DualNum.dualPair O).σ = s ∧
       φ.1 (DualNum.dualPair O).η = i := by
@@ -46,6 +59,13 @@ private lemma endDiff_exists_lift {O R : LAlg R₀} (s : LHom O R) (i : (R : Typ
     exact (DualNum.dualPair O).π.2.map_nonunit d (s.2.map_nonunit _ hu)
   · exact Subtype.ext (AlgHom.ext hσ)
 
+/- English proof (translation)
+Introduce and unpack `⟨x, hx⟩`. Establish `hx'` using `hx`. Rewrite `hx'` using `[Submodule.restrictScalars_mem, Dp.ker_eq]`. Take `⟨y, rfl⟩` from `Ideal.mem_span_singleton'.1 hx'`. Establish `hk : y - Dp.σ.1 (Dp.π.1 y) ∈ RingHom.ker Dp.π.1`.
+
+Rewrite using `[RingHom.mem_ker, map_sub, Dp.sect, sub_self]`. Rewrite `hk` using `[Dp.ker_eq]`. Take `⟨z, hz⟩` from `Ideal.mem_span_singleton'.1 hk`. Use `⟨Dp.π.1 y, Subtype.ext ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Dp.σ.1 (Dp.π.1 y) * Dp.η = y * Dp.η`.
+
+Use `Dp.η_sq` as an intermediate fact. Take the linear combination `(-Dp.η) * (-hz) - z * this`.
+-/
 private lemma endDiff_ηmap_surj {O : LAlg R₀} (Dp : DualPair O) :
     Function.Surjective Dp.ηmap := by
   rintro ⟨x, hx⟩
@@ -61,12 +81,18 @@ private lemma endDiff_ηmap_surj {O : LAlg R₀} (Dp : DualPair O) :
   have := Dp.η_sq
   linear_combination (-Dp.η) * (-hz) - z * this
 
+/- English proof (translation)
+Rewrite using `[injective_iff_map_eq_zero]`. Introduce `r hr`. Conclude with `Dp.free r (congrArg Subtype.val hr)`.
+-/
 private lemma endDiff_ηmap_inj {O : LAlg R₀} (Dp : DualPair O) :
     Function.Injective Dp.ηmap := by
   rw [injective_iff_map_eq_zero]
   intro r hr
   exact Dp.free r (congrArg Subtype.val hr)
 
+/- English proof (translation)
+Establish `: (fun m : Fin g → M => ∑ k, gb k ⊗ₜ[R₀] m k) = (TensorProduct.equivFinsuppOfBasisLeft gb).symm ∘ Finsupp.equivFunOnFinite.symm`. Use function extensionality and compare the values at `m`. Simplify using `[TensorProduct.equivFinsuppOfBasisLeft_symm_apply, Finsupp.sum_fintype]`. Rewrite using `[this]`. Conclude with `(TensorProduct.equivFinsuppOfBasisLeft gb).symm.bijective.comp Finsupp.equivFunOnFinite.symm.bijective`.
+-/
 private lemma endDiff_coord {g : ℕ} {V M : Type} [AddCommGroup V] [Module R₀ V] [AddCommGroup M]
     [Module R₀ M] (gb : Module.Basis (Fin g) R₀ V) :
     Function.Bijective (fun m : Fin g → M => ∑ k, gb k ⊗ₜ[R₀] m k) := by
@@ -84,6 +110,23 @@ private def endDiff_IsMat {g : ℕ} {B : BX R₀} {O : LAlg R₀} (gb : Module.B
     (m : Fin g → π.ker), (∀ k, (m k : (R : Type)) = s.1 (d k l) * i) →
       e.f s (B.tg π hπ (gb l ⊗ₜ[R₀] i)) = B.tg π hπ (∑ k, gb k ⊗ₜ[R₀] m k)
 
+/- English proof (translation)
+Set `Dp` to `DualNum.dualPair O`. Establish `h1 : ∀ l, ∃ c : Fin g → (O : Type), e.f Dp.σ (B.tg Dp.π Dp.sqZero (gb l ⊗ₜ[R₀] Dp.ηk)) = B.tg Dp.π Dp.sqZero (∑ k, gb k ⊗ₜ[R₀] Dp.ηmap (c k))` using `fun l => by`. Establish `h0 : B.map Dp.π (e.f Dp.σ (B.tg Dp.π Dp.sqZero (gb l ⊗ₜ[R₀] Dp.ηk))) = 0`. Rewrite using `[← e.nat, (B.tg_ker Dp.π Dp.sqZero _).2 ⟨_, rfl⟩, map_zero]`. Take `⟨v, hv⟩` from `(B.tg_ker Dp.π Dp.sqZero _).1 h0`.
+
+Take `⟨m, rfl⟩` from `(endDiff_coord (M := Dp.π.ker) gb).2 v`. Use `choose c hc using fun k => endDiff_ηmap_surj Dp (m k)`. Conclude with `⟨c, by rw [← hv]; simp only [hc]⟩`. Use `choose c hc using h1`. Use `⟨fun k l => c l k, ?_⟩` and prove the remaining obligations.
+
+Introduce `R S s π hπ l i m hm`. Establish `hi : (i : (R : Type)) * i = 0`. Establish `: (i : (R : Type)) * i ∈ RingHom.ker π.1 ^ 2`. Rewrite using `[pow_two]`. Conclude with `Ideal.mul_mem_mul i.2 i.2`.
+
+Rewrite `this` using `[hπ.2]`. Simplify using `using this`. Take `⟨φ, hφ, hη⟩` from `endDiff_exists_lift s (i : (R : Type)) hi`. Establish `hs : ∀ r, φ.1 (Dp.σ.1 r) = s.1 r` using `fun r => by rw [← hφ]; rfl`. Establish `hf : ∀ a ∈ Dp.π.ker, φ.1.toLinearMap a ∈ π.ker` using `fun a ha => by`.
+
+Take `⟨r, hr⟩` from `endDiff_ηmap_surj Dp ⟨a, ha⟩`. Establish `: a = Dp.σ.1 r * Dp.η` using `(congrArg Subtype.val hr).symm`. Rewrite using `[this]`. Express the relevant statement in the definitionally equal form `φ.1 (Dp.σ.1 r * Dp.η) ∈ RingHom.ker π.1`. Rewrite using `[map_mul, hη]`.
+
+Conclude with `Ideal.mul_mem_left _ _ i.2`. Establish `hA : gb l ⊗ₜ[R₀] i = LinearMap.lTensor B.gg (φ.1.toLinearMap.restrict hf) (gb l ⊗ₜ[R₀] Dp.ηk)`. Rewrite using `[LinearMap.lTensor_tmul]`. Use `congr 1`. Conclude with `Subtype.ext hη.symm`.
+
+Establish `hB : ∑ k, gb k ⊗ₜ[R₀] m k = LinearMap.lTensor B.gg (φ.1.toLinearMap.restrict hf) (∑ k, gb k ⊗ₜ[R₀] Dp.ηmap (c l k))`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.lTensor_tmul]`. Use `congr 1`.
+
+Use `Subtype.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = φ.1 (Dp.σ.1 (c l k) * Dp.η)`. Rewrite using `[hm k, map_mul, hη, hs]`. Rewrite using `[hA, hB, B.tg_nat Dp.π π Dp.sqZero hπ φ hf, B.tg_nat Dp.π π Dp.sqZero hπ φ hf, ← hc l, ← e.nat, hφ]`.
+-/
 private lemma endDiff_exists {g : ℕ} {B : BX R₀} {O : LAlg R₀} (gb : Module.Basis (Fin g) R₀ B.gg)
     (e : OEnd B O) : ∃ d, endDiff_IsMat gb e d := by
   let Dp := DualNum.dualPair O
@@ -129,6 +172,9 @@ private lemma endDiff_exists {g : ℕ} {B : BX R₀} {O : LAlg R₀} (gb : Modul
   rw [hA, hB, B.tg_nat Dp.π π Dp.sqZero hπ φ hf, B.tg_nat Dp.π π Dp.sqZero hπ φ hf, ← hc l,
     ← e.nat, hφ]
 
+/- English proof (translation)
+The claim follows from `h Dp.σ Dp.π Dp.sqZero l _ _ fun k => by change Dp.σ.1 (d k l * r) * Dp.η = Dp.σ.1 (d k l) * (Dp.σ.1 r * Dp.η) rw [map_mul, _root_.mul_assoc]`.
+-/
 private lemma endDiff_spec {g : ℕ} {B : BX R₀} {O : LAlg R₀} {gb : Module.Basis (Fin g) R₀ B.gg}
     {e : OEnd B O} {d : Matrix (Fin g) (Fin g) (O : Type)} (h : endDiff_IsMat gb e d)
     (Dp : DualPair O) (l : Fin g) (r : (O : Type)) :
@@ -138,6 +184,9 @@ private lemma endDiff_spec {g : ℕ} {B : BX R₀} {O : LAlg R₀} {gb : Module.
     change Dp.σ.1 (d k l * r) * Dp.η = Dp.σ.1 (d k l) * (Dp.σ.1 r * Dp.η)
     rw [map_mul, _root_.mul_assoc]
 
+/- English proof (translation)
+Use extensionality with `k l`. Establish `h1` using `B.tg_inj _ _ ((endDiff_spec h Dp l 1).symm.trans (h' l))`. Establish `h2` using `(endDiff_coord (M := Dp.π.ker) gb).1 h1`. Simplify using `using endDiff_ηmap_inj Dp (congrFun h2 k)`.
+-/
 private lemma endDiff_unique {g : ℕ} {B : BX R₀} {O : LAlg R₀} {gb : Module.Basis (Fin g) R₀ B.gg}
     {e : OEnd B O} {d : Matrix (Fin g) (Fin g) (O : Type)} (h : endDiff_IsMat gb e d)
     (Dp : DualPair O) (d' : Matrix (Fin g) (Fin g) (O : Type))
@@ -148,6 +197,17 @@ private lemma endDiff_unique {g : ℕ} {B : BX R₀} {O : LAlg R₀} {gb : Modul
   have h2 := (endDiff_coord (M := Dp.π.ker) gb).1 h1
   simpa using endDiff_ηmap_inj Dp (congrFun h2 k)
 
+/- English proof (translation)
+Introduce `R₀ _ g B O gb O₀ _ f hf`. Use `choose d hd using fun a => endDiff_exists gb (f a)`. Set `Dp` to `DualNum.dualPair O`. Establish `hadd : ∀ a b, d (a + b) = d a + d b` using `fun a b => endDiff_unique (hd _) Dp _ fun l => by`. Rewrite using `[((hf _ _).2 a b).1, endDiff_spec (hd a), endDiff_spec (hd b), ← map_add, ← Finset.sum_add_distrib]`.
+
+Simplify using `[TensorProduct.tmul_add]`. Establish `hone : d 1 = 1` using `endDiff_unique (hd _) Dp _ fun l => by`. Rewrite using `[(hf _ _).1, Finset.sum_eq_single l]`. Simplify using the standard rewrite rules. Introduce `k _ hk`.
+
+Simplify using `[Matrix.one_apply_ne hk]`. Simplify using the standard rewrite rules. Establish `hmul : ∀ a b, d (a * b) = d a * d b` using `fun a b => endDiff_unique (hd _) Dp _ fun l => by`. Rewrite using `[((hf _ _).2 a b).2, endDiff_spec (hd b), map_sum, map_sum]`. Simplify using `only [endDiff_spec (hd a)]`.
+
+Rewrite using `[← map_sum, Finset.sum_comm]`. Simplify using `[Matrix.mul_apply, TensorProduct.tmul_sum]`. Establish `hzero : d 0 = 0`. Use `hadd 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`.
+
+Conclude with `left_eq_add.1 this`. Conclude with `⟨⟨⟨⟨d, hone⟩, hmul⟩, hzero, hadd⟩, fun a => hd a⟩`.
+-/
 theorem exists_endDifferential_ringHom :
   (∀ {R₀ : Type} [CommRing R₀] {g : ℕ} (B : BX R₀) (O : LAlg R₀) (gb : Module.Basis (Fin g) R₀ B.gg) (O₀ : Type) [CommRing O₀] (f : O₀ → OEnd B O),
     (∀ {R : LAlg R₀} (s : LHom O R) (x : B.G R), (f 1).f s x = x ∧ ∀ a b, (f (a + b)).f s x = (f a).f s x + (f b).f s x ∧

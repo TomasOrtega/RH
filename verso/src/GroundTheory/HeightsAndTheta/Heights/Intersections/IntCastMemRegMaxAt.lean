@@ -16,6 +16,9 @@ noncomputable section
 
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
+/- English proof (translation)
+The claim follows from `x.2 W hW hPW`.
+-/
 theorem regRing_mem_locRing {P W : Ideal (MRing ι)} (hW : IsClosedPt W) (hPW : P ≤ W) (x : regRing P) :
     ((x : funField P) : FractionRing (MRing ι ⧸ P)) ∈ locRing P W :=
   x.2 W hW hPW
@@ -27,10 +30,16 @@ def regToLoc (P W : Ideal (MRing ι)) (hW : IsClosedPt W) (hPW : P ≤ W) : regR
   map_zero' := Subtype.ext (by simp)
   map_add' _ _ := Subtype.ext (by simp)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem regToLoc_apply {P W : Ideal (MRing ι)} (hW : IsClosedPt W) (hPW : P ≤ W) (x : regRing P) :
     regToLoc P W hW hPW x = ⟨((x : funField P) : FractionRing (MRing ι ⧸ P)), regRing_mem_locRing hW hPW x⟩ :=
   rfl
 
+/- English proof (translation)
+The claim follows from `(congrArg Subtype.val (regToLoc_apply hW hPW x)).trans (Subtype.coe_mk _ _)`.
+-/
 theorem regToLoc_coe {P W : Ideal (MRing ι)} (hW : IsClosedPt W) (hPW : P ≤ W) (x : regRing P) :
     ((regToLoc P W hW hPW x : locRing P W) : FractionRing (MRing ι ⧸ P)) =
       ((x : funField P) : FractionRing (MRing ι ⧸ P)) :=
@@ -40,6 +49,13 @@ def regMaxAt (P W : Ideal (MRing ι)) (hW : IsClosedPt W) (hPW : P ≤ W) (hloc 
     Ideal (regRing P) :=
   (IsLocalRing.maximalIdeal (locRing P W)).comap (regToLoc P W hW hPW)
 
+/- English proof (translation)
+Establish `hc : ∀ b : locRing P W, ((regToLoc P W hW hPW x * b : locRing P W) : FractionRing (MRing ι ⧸ P)) = ((x : funField P) : FractionRing (MRing ι ⧸ P)) * b` using `fun b => by`. Rewrite using `[Subring.coe_mul, regToLoc_coe]`. Simplify using `only [regMaxAt, Ideal.mem_comap, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, not_not]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+
+Take `⟨b, hb⟩` from `h.exists_right_inv`. Use `⟨b.1, b.2, ?_⟩` and prove the remaining obligations. Rewrite using `[← hc b, hb, Subring.coe_one]`. Introduce and unpack `⟨z, hz, h⟩`. Use `IsUnit.of_mul_eq_one (a := regToLoc P W hW hPW x) ⟨z, hz⟩ (Subtype.ext ?_)` and prove the remaining obligations.
+
+Rewrite using `[hc, Subring.coe_one]`. Conclude with `h`.
+-/
 theorem not_mem_regMaxAt_iff {P W : Ideal (MRing ι)} (hW : IsClosedPt W) (hPW : P ≤ W)
     (hloc : IsLocalRing (locRing P W)) (x : regRing P) :
     x ∉ regMaxAt P W hW hPW hloc ↔
@@ -58,6 +74,11 @@ theorem not_mem_regMaxAt_iff {P W : Ideal (MRing ι)} (hW : IsClosedPt W) (hPW :
     rw [hc, Subring.coe_one]
     exact h
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h`. Take `⟨z, hz, h⟩` from `(not_mem_regMaxAt_iff hW hPW hloc _).1 h`. Establish `h1W : (1 : MRing ι) ∉ W` using `fun h => hW.1.1.ne_top ((Ideal.eq_top_iff_one _).mpr h)`. Establish `hu` using `((hL K ι P W hPp hW.1.1 hPW).2 (n : locRing P W) (C n) 1 0 (RegularityDenominator.isMultiHomog_C n) AvoidRing.isMultiHomog_one h1W (by simp [eq_intCast C n])).1`. Use `hu (IsUnit.of_mul_eq_one (a := (n : locRing P W)) ⟨z, hz⟩ (Subtype.ext ?_)) hn` and prove the remaining obligations.
+
+Simplify using `using h`.
+-/
 theorem intCast_mem_regMaxAt (hL : LocRingLocal.Statement) {P W : Ideal (MRing ι)} (hPp : P.IsPrime)
     (hW : IsClosedPt W) (hPW : P ≤ W) (hloc : IsLocalRing (locRing P W)) {n : ℤ} (hn : C n ∈ W) :
     (n : regRing P) ∈ regMaxAt P W hW hPW hloc := by
@@ -69,6 +90,11 @@ theorem intCast_mem_regMaxAt (hL : LocRingLocal.Statement) {P W : Ideal (MRing �
   refine hu (IsUnit.of_mul_eq_one (a := (n : locRing P W)) ⟨z, hz⟩ (Subtype.ext ?_)) hn
   simpa using h
 
+/- English proof (translation)
+Establish `: (regMaxAt P W hW hPW hloc).IsPrime` using `by unfold regMaxAt; infer_instance`. Establish `: Module.Finite ℤ (regRing P)` using `(hO K ι P hP).2.1`. Establish `hvert : W.comap (C : ℤ →+* MRing ι) ≠ ⊥` using `fun hh => arithVarZero K ι W ⟨hP.1, hW.1, hh, by rw [zero_add]; exact hW.2⟩`. Take `⟨n, hnW, hn0⟩` from `(Submodule.ne_bot_iff _).mp hvert`. Establish `hn : n ∈ (regMaxAt P W hW hPW hloc).comap (algebraMap ℤ (regRing P))`.
+
+Rewrite using `[Ideal.mem_comap, algebraMap_int_eq, eq_intCast]`. Conclude with `intCast_mem_regMaxAt hL hP.2.1.1 hW hPW hloc hnW`. Conclude with `Ideal.isMaximal_of_isIntegral_of_isMaximal_comap (R := ℤ) _ (_root_.IsPrime.to_maximal_ideal fun h => hn0 (by rw [h] at hn; exact hn))`.
+-/
 theorem regMaxAt_isMaximal (hO : RegularityOrder.Statement) (hL : LocRingLocal.Statement) {P W : Ideal (MRing ι)}
     (hP : IsArithVar P 1) (hW : IsClosedPt W) (hPW : P ≤ W) (hloc : IsLocalRing (locRing P W)) :
     (regMaxAt P W hW hPW hloc).IsMaximal := by
@@ -83,6 +109,19 @@ theorem regMaxAt_isMaximal (hO : RegularityOrder.Statement) (hL : LocRingLocal.S
   exact Ideal.isMaximal_of_isIntegral_of_isMaximal_comap (R := ℤ) _
     (_root_.IsPrime.to_maximal_ideal fun h => hn0 (by rw [h] at hn; exact hn))
 
+/- English proof (translation)
+Establish `hL : LocRingLocal.Statement` using `LocRingLocal.proof LocRingFrac.proof`. Introduce `K _ ι _ P hP`. Establish `hPp : P.IsPrime` using `hP.2.1.1`. Establish `hloc : ∀ W : {W : Ideal (MRing ι) // IsClosedPt W ∧ P ≤ W}, IsLocalRing (locRing P W.1)` using `fun W => (hL K ι P W.1 hPp W.2.1.1.1 W.2.2).1`. Set `m : {W : Ideal (MRing ι) // IsClosedPt W ∧ P ≤ W} → Ideal (regRing P)` to `fun W => regMaxAt P W.1 W.2.1 W.2.2 (hloc W)`.
+
+Establish `hm : ∀ W (x : regRing P), x ∉ m W ↔ ∃ z ∈ locRing P W.1, ((x : funField P) : FractionRing (MRing ι ⧸ P)) * z = 1` using `fun W => not_mem_regMaxAt_iff W.2.1 W.2.2 (hloc W)`. Establish `hsub : ∀ W W', m W = m W' → locRing P W.1 ≤ locRing P W'.1`. Introduce `W W' hWW' y hy`. Take `⟨s, x, hsu, hys⟩` from `hZ K ι P W.1 y hP W.2.1 W.2.2 hy`. Take `⟨z, hz, hsz⟩` from `(hm W' s).1 (hWW' ▸ (hm W s).2 hsu)`.
+
+Rewrite using `[show y = ((x : funField P) : FractionRing (MRing ι ⧸ P)) * z by rw [← hys, mul_assoc, hsz, mul_one]]`. Conclude with `mul_mem (regRing_mem_locRing W'.2.1 W'.2.2 x) hz`. Set `f : {W : Ideal (MRing ι) // IsClosedPt W ∧ P ≤ W} → MaximalSpectrum (regRing P)` to `fun W => ⟨m W, regMaxAt_isMaximal hO hL hP W.2.1 W.2.2 (hloc W)⟩`. Establish `hbij : Function.Bijective f`. Use `⟨fun W W' h => Subtype.ext (hI K ι P W.1 W'.1 hPp W.2.1.1 W'.2.1.1 W.2.2 W'.2.2 (le_antisymm (hsub W W' (congrArg MaximalSpectrum.asIdeal h)) (hsub W' W (congrArg MaximalSpectrum.asIdeal h).symm))), ?_⟩` and prove the remaining obligations.
+
+Introduce and unpack `⟨M, hM⟩`. Take `⟨W, hWc, hPW, hW⟩` from `hS K ι P hP M hM`. Use `⟨⟨W, hWc, hPW⟩, ?_⟩` and prove the remaining obligations. Establish `hle : M ≤ m ⟨W, hWc, hPW⟩` using `fun x hx => by`. Assume the negation of the conclusion as `hc`.
+
+Take `⟨z, hz, h⟩` from `(hm _ x).1 hc`. Conclude with `hW x hx z hz h`. Conclude with `MaximalSpectrum.ext (hM.eq_of_le (regMaxAt_isMaximal hO hL hP hWc hPW _).ne_top hle).symm`. Use `⟨Equiv.ofBijective f hbij, fun W y => ⟨fun hy => ?_, ?_⟩⟩` and prove the remaining obligations. Take `⟨s, x, hsu, hys⟩` from `hZ K ι P W.1 y hP W.2.1 W.2.2 hy`.
+
+Conclude with `⟨x, s, (hm W s).2 hsu, hys⟩`. Introduce and unpack `⟨x, s, hs, hys⟩`. Take `⟨z, hz, hsz⟩` from `(hm W s).1 hs`. Rewrite using `[show y = ((x : funField P) : FractionRing (MRing ι ⧸ P)) * z by rw [← hys, mul_assoc, hsz, mul_one]]`. Conclude with `mul_mem (regRing_mem_locRing W.2.1 W.2.2 x) hz`.
+-/
 theorem RegularityMaximalSpectrum.proof (hO : RegularityOrder.Statement)
     (hZ : RegularityLocalize.Statement) (hI : LocRingInj.Statement) (hS : RegularityMaximalSurjective.Statement) :
     RegularityMaximalSpectrum.Statement := by

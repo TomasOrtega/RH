@@ -16,9 +16,15 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ConjugateRepresent
 
 namespace UpperTheory.V.Cj
 
+/- English proof (translation)
+The claim follows from `A.absTrans_of A.hdFacts A.zigFwd A.zigBwd A.bwdLast A.zigFormal A.pullOp A.pullAct A.zigMap A.coverEx A.satClosed A.satFacts`.
+-/
 theorem A.absTrans : A.AbsTrans :=
   A.absTrans_of A.hdFacts A.zigFwd A.zigBwd A.bwdLast A.zigFormal A.pullOp A.pullAct A.zigMap A.coverEx A.satClosed A.satFacts
 
+/- English proof (translation)
+The claim follows from `A.partA_of A.absTrans A.suppFwd A.suppBwd A.levCorr`.
+-/
 theorem partA : PartA := A.partA_of A.absTrans A.suppFwd A.suppBwd A.levCorr
 
 end UpperTheory.V.Cj

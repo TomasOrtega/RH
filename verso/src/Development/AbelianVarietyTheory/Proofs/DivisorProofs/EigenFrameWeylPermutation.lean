@@ -21,6 +21,11 @@ section Mat
 
 variable {R : Type} [CommRing R] {m : ℕ}
 
+/- English proof (translation)
+Use `⟨hN, fun i => ?_⟩` and prove the remaining obligations. Establish `e : (N * L) i i = N i i * L i i`. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_single i (fun k _ hk => ?_) (by simp)` and prove the remaining obligations. Break down `lt_or_gt_of_ne hk with h' | h'` into its components or cases.
+
+Rewrite using `[hL.1 k i h', mul_zero]`. Rewrite using `[hN i k h', zero_mul]`. Rewrite `e` using `[h, Matrix.one_apply_eq]`. Conclude with `⟨⟨N i i, L i i, e.symm, by rw [mul_comm]; exact e.symm⟩, rfl⟩`.
+-/
 theorem IsLowInv.of_mul_eq_one {N L : Matrix (Fin m) (Fin m) R} (hL : IsLowInv L) (hN : ∀ i j, i < j → N i j = 0)
     (h : N * L = 1) : IsLowInv N := by
   refine ⟨hN, fun i => ?_⟩
@@ -33,6 +38,13 @@ theorem IsLowInv.of_mul_eq_one {N L : Matrix (Fin m) (Fin m) R} (hL : IsLowInv L
   rw [h, Matrix.one_apply_eq] at e
   exact ⟨⟨N i i, L i i, e.symm, by rw [mul_comm]; exact e.symm⟩, rfl⟩
 
+/- English proof (translation)
+Take `⟨L, hL, e⟩` from `h`. Take `⟨L', hL', e'⟩` from `h'`. Establish `hd` using `isUnit_det_of_isLowInv hL`. Use `haveI := Matrix.invertibleOfIsUnitDet L hd`. Establish `hinv : L⁻¹ * L = 1` using `Matrix.nonsing_inv_mul _ hd`.
+
+Establish `hlow : ∀ i j, i < j → L⁻¹ i j = 0` using `fun i j hij => Matrix.blockTriangular_inv_of_blockTriangular hL.blockTriangular (OrderDual.toDual_lt_toDual.2 hij)`. Use `⟨L' * L⁻¹, hL'.mul (IsLowInv.of_mul_eq_one hL hlow hinv), ?_⟩` and prove the remaining obligations. Establish `hs : ∀ X : Matrix (Fin m) (Fin m) R, (X * A).submatrix id w = X * A.submatrix id w` using `fun X => by`. Use extensionality with `i j`. Simplify using `[Matrix.mul_apply]`.
+
+Establish `key : A'.submatrix id w = (L' * L⁻¹ * A).submatrix id w`. Rewrite using `[hs, e, e', Matrix.mul_assoc, ← Matrix.mul_assoc L⁻¹, hinv, Matrix.one_mul]`. Use extensionality with `i j`. Simplify using `using congrFun (congrFun key i) (w.symm j)`.
+-/
 theorem InCell.exists_lowInv {A A' : Matrix (Fin m) (Fin m) R} {w : Equiv.Perm (Fin m)} {a : Above m → R}
     (h : InCell A w a) (h' : InCell A' w a) : ∃ M, IsLowInv M ∧ A' = M * A := by
   obtain ⟨L, hL, e⟩ := h
@@ -55,6 +67,19 @@ end Mat
 
 section Pt
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c O _ β Z V hV φV f₀ w R R' _ _ ν ψ x hx x' hx' g g' a hg hg'`. Take `⟨A, hA, hAc⟩` from `hg`. Take `⟨A', hA', hAc'⟩` from `hg'`. Establish `hxx : x' = spMap ν ≫ x`. Rewrite using `[← hx', ← hx, ← Category.assoc, ReciprocityTheory.ChartRestriction.G.PullbackSections.spMap_comp_spMap]`.
+
+Establish `hxg : spMap ν ≫ (x ≫ genι Z) = x' ≫ genι Z` using `by rw [hxx, Category.assoc]`. Establish `hφ : (ν.comp ψ).comp φV = ν.comp (ψ.comp φV)` using `RingHom.comp_assoc _ _ _`. Take `⟨g₁, hg₁⟩` from `g.exists_isMap (x' := x' ≫ genι Z) ν hφ (by rw [hxx, Category.assoc])`. Establish `hv₁ : ∀ τ j, g₁.vec τ j = GlobalTheory.LieLocFrame.res ν hxg (g.vec τ j)` using `fun τ j => GlobalTheory.LieMet.tan_ext (hg₁ τ j)`. Establish `h0 : spMap ψ ≫ hV.fromSpec ≫ genι Z = x ≫ genι Z` using `by rw [← hx, Category.assoc]`.
+
+Establish `h1 : spMap (ν.comp ψ) ≫ hV.fromSpec ≫ genι Z = x' ≫ genι Z` using `by rw [← hx', Category.assoc]`. Establish `hr : ∀ τ k, GlobalTheory.LieLocFrame.res ν hxg (GlobalTheory.LieLocFrame.res ψ h0 (f₀.vec τ k)) = GlobalTheory.LieLocFrame.res (ν.comp ψ) h1 (f₀.vec τ k)` using `fun τ k => GlobalTheory.LieLocFrame.res_res ψ h0 ν hxg rfl h1 _`. Use `choose M hM hMA using fun τ => InCell.exists_lowInv ((hAc τ).map ν) (hAc' τ)`. Establish `hvec : ∀ τ i, g'.vec τ i = ∑ j, M τ i j • g₁.vec τ j`. Introduce `τ i`.
+
+Simplify using `only [hv₁, hA, GlobalTheory.LieLocFrame.res_sum, hr, hA', hMA τ, Matrix.mul_apply, Matrix.map_apply, Finset.smul_sum, smul_smul, Finset.sum_smul]`. Conclude with `Finset.sum_comm`. Establish `hco : ∀ τ, g₁.co g' τ = (M τ).transpose` using `fun τ => EigFrame.co_eq fun i => (GlobalTheory.LieMet.isComb_iff (g₁.vec τ) _ (g'.vec τ i)).2 (hvec τ i)`. Use `⟨fun τ i => ((hM τ).2 i).unit, ?_, hφ, fun τ i => ⟨fun k => g₁.co g' τ k i, ?_, fun k hk => ?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hxx, Category.assoc]`.
+
+Rewrite using `[hco]`. Conclude with `((hM τ).2 i).unit_spec.symm`. Rewrite using `[hco]`. Conclude with `(hM τ).1 i k hk`. Rewrite using `[← funext (hg₁ τ)]`.
+
+Conclude with `g₁.co_spec g' τ i`.
+-/
 theorem frameIn_tri : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F} {Z : Model Xo c β}, ∀ {V : (gen Z).Opens} (hV : IsAffineOpen V) {φV : c.F →+* Γ(gen Z, V)} (f₀ : EigFrame Z φV (hV.fromSpec ≫ genι Z)) (w : ∀ τ : E →+* ℂ, Equiv.Perm (Fin (Dw.mult τ))) {R R' : Type} [CommRing R] [CommRing R'] (ν : R →+* R') (ψ : Γ(gen Z, V) →+* R) {x : Sp R ⟶ gen Z} (hx : spMap ψ ≫ hV.fromSpec = x) {x' : Sp R' ⟶ gen Z} (hx' : spMap (ν.comp ψ) ≫ hV.fromSpec = x') (g : EigFrame Z (ψ.comp φV) (x ≫ genι Z)) (g' : EigFrame Z ((ν.comp ψ).comp φV) (x' ≫ genι Z)) (a : Cell.Coord Dw → R), Cell.FrameIn hV f₀ w ψ hx g a → Cell.FrameIn hV f₀ w (ν.comp ψ) hx' g' (ν ∘ a) → ∃ t : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → R'ˣ, g.Tri ν g' t := by
   intro E _ _ _ H Dw l Xo c O _ β Z V hV φV f₀ w R R' _ _ ν ψ x hx x' hx' g g' a hg hg'
   obtain ⟨A, hA, hAc⟩ := hg

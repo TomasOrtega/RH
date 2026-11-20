@@ -10,6 +10,13 @@ open Formalism.IndefR.DatumF MeasureTheory GlobalTheory.FinWeil GlobalTheory.Fin
 open PositivityTheory.ThKW PositivityTheory.ThKW.AutEtaA
 open UpperTheory.TP.W
 
+/- English proof (translation)
+Take `⟨π, hπ⟩` from `HeightOneSpectrum.valuation_exists_uniformizer E P`. Establish `hv : Valued.v (algebraMap E (P.adicCompletion E) π) = WithZero.exp (-1 : ℤ)` using `(HeightOneSpectrum.valuedAdicCompletion_eq_valuation' P π).trans hπ`. Establish `h0 : algebraMap E (P.adicCompletion E) π ≠ 0`. Introduce `h`. Rewrite `hv` using `[h, map_zero]`.
+
+Conclude with `WithZero.exp_ne_zero hv.symm`. Set `x : (P.adicCompletion E)ˣ` to `Units.mk0 _ h0`. Use `⟨Units.map (RingHom.snd _ _).toMonoidHom (Neutral.B1.localIdele E P x), ?_, fun Q hQ => ?_⟩` and prove the remaining obligations. Use `show Valued.v (((Neutral.B1.localIdele E P x : _) : AdeleRing (𝓞 E) E).2 P) = _`. Rewrite using `[Neutral.B1.localIdele_snd_self]`.
+
+Conclude with `hv`. Conclude with `(Neutral.B1.localIdele_isSupportedAt E P x).2 Q hQ`.
+-/
 private theorem exists_unit {E : Type} [Field E] [NumberField E] (P : HeightOneSpectrum (𝓞 E)) :
     ∃ u : (FiniteAdeleRing (𝓞 E) E)ˣ, Valued.v ((u : FiniteAdeleRing (𝓞 E) E) P) = WithZero.exp (-1 : ℤ) ∧
       ∀ Q, Q ≠ P → (u : FiniteAdeleRing (𝓞 E) E) Q = 1 := by
@@ -27,6 +34,9 @@ private theorem exists_unit {E : Type} [Field E] [NumberField E] (P : HeightOneS
     exact hv
   · exact (Neutral.B1.localIdele_isSupportedAt E P x).2 Q hQ
 
+/- English proof (translation)
+Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => rw [map_zero, map_zero]`. Consider the case `tmul a t => rfl`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`.
+-/
 private theorem fin_lift {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (y : Af F ⊗[F] E) : finPartF F E (PositivityTheory.ThKW.LatB.liftF F E y) = y := by
   induction y using TensorProduct.induction_on with
@@ -34,6 +44,9 @@ private theorem fin_lift {F E : Type} [Field F] [NumberField F] [Field E] [Numbe
   | tmul a t => rfl
   | add x y hx hy => rw [map_add, map_add, hx, hy]
 
+/- English proof (translation)
+Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => rw [map_zero, map_zero]`. Consider the case `tmul a t => exact TensorProduct.zero_tmul _ _`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy, add_zero]`.
+-/
 private theorem inf_lift {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (y : Af F ⊗[F] E) : infPartF F E (PositivityTheory.ThKW.LatB.liftF F E y) = 0 := by
   induction y using TensorProduct.induction_on with
@@ -41,6 +54,15 @@ private theorem inf_lift {F E : Type} [Field F] [NumberField F] [Field E] [Numbe
   | tmul a t => exact TensorProduct.zero_tmul _ _
   | add x y hx hy => rw [map_add, map_add, hx, hy, add_zero]
 
+/- English proof (translation)
+Take `⟨u, hu1, hu2⟩` from `exists_unit P`. Take `⟨a, ha⟩` from `(finAdEquiv F E).surjective (u : FiniteAdeleRing (𝓞 E) E)`. Take `⟨b, hb⟩` from `(finAdEquiv F E).surjective ((u⁻¹ : (FiniteAdeleRing (𝓞 E) E)ˣ) : FiniteAdeleRing (𝓞 E) E)`. Establish `hab : a * b = 1` using `(finAdEquiv F E).injective (by rw [map_mul, ha, hb, Units.mul_inv, map_one])`. Establish `key : (PositivityTheory.ThKW.LatB.liftF F E a + (1 - finIdem F E)) * (PositivityTheory.ThKW.LatB.liftF F E b + (1 - finIdem F E)) = 1`.
+
+Rewrite using `[← sub_eq_zero]`. Use `GlobalTheory.SplitDetCharF.adele_tensor_ext _ ?_ ?_` and prove the remaining obligations. Simplify using `only [map_sub, map_mul, map_add, map_one, inf_lift, infPartF_finIdem, zero_add, sub_zero, mul_one, sub_self, map_zero]`. Simplify using `only [map_sub, map_mul, map_add, map_one, fin_lift, PositivityTheory.ThKW.TauSpanIdentities.finPartF_finIdem, sub_self, add_zero, hab, map_zero]`. Set `z : (AEF F E)ˣ` to `⟨_, _, key, by rw [mul_comm]; exact key⟩`.
+
+Establish `hev : ∀ Q, ev F E Q (z : AEF F E) = (u : FiniteAdeleRing (𝓞 E) E) Q`. Introduce `Q`. Establish `h1 : finPartF F E (z : AEF F E) = a` using `by show finPartF F E (PositivityTheory.ThKW.LatB.liftF F E a + (1 - finIdem F E)) = a`. Rewrite using `[map_add, map_sub, map_one, fin_lift, PositivityTheory.ThKW.TauSpanIdentities.finPartF_finIdem, sub_self, add_zero]`. Use `show evalV E Q (finAdEquiv F E (finPartF F E (z : AEF F E))) = _`.
+
+Rewrite using `[h1, ha]`. Both sides reduce to the same expression. Use `⟨z, ?_, fun Q hQ => ?_⟩` and prove the remaining obligations. Rewrite using `[wv_apply, hev, hu1]`. Rewrite using `[wv_apply, hev, hu2 Q hQ, map_one]`.
+-/
 private theorem exists_idele (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (P : HeightOneSpectrum (𝓞 E)) :
     ∃ z : (AEF F E)ˣ, wv F E P z = WithZero.exp (-1 : ℤ) ∧ ∀ Q, Q ≠ P → wv F E Q z = 1 := by
@@ -66,6 +88,13 @@ private theorem exists_idele (F E : Type) [Field F] [NumberField F] [Field E] [N
   · rw [wv_apply, hev, hu1]
   · rw [wv_apply, hev, hu2 Q hQ, map_one]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ lam κ hκ P hP`. Take `⟨z, hz1, hz2⟩` from `exists_idele F E P`. Use `⟨κ z, hκ.sq z, hκ.gen P hP z hz1 hz2, fun x m hx1 hx2 => ?_⟩` and prove the remaining obligations. Establish `hpow : ∀ Q, wv F E Q (z ^ m) = wv F E Q z ^ m` using `fun Q => map_zpow' (wv F E Q) (fun y => eq_inv_of_mul_eq_one_left (by rw [← map_mul, inv_mul_cancel, map_one])) z m`. Establish `h1 : κ (x * z ^ m) = 1`.
+
+Use `hκ.ker _ fun Q _ => ?_` and prove the remaining obligations. Distinguish the cases in `hQ : Q = P`. Substitute `hQ` using the available equality. Rewrite using `[map_mul, hpow, hx2, hz1, ← WithZero.exp_zsmul, ← WithZero.exp_add]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[map_mul, hpow, hx1 Q hQ, hz2 Q hQ, _root_.one_zpow, one_mul]`. Rewrite `h1` using `[map_mul, map_zpow]`. Establish `h2 : κ z ^ m * κ z ^ m = 1`. Rewrite using `[← mul_zpow, hκ.sq z, _root_.one_zpow]`. Conclude with `mul_right_cancel (h1.trans h2.symm)`.
+-/
 theorem UpperTheory.exists_sign_heckeChar_at_nonfixed_place :
     ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (lam : ℕ →* ℂ)
         (κ : (AEF F E)ˣ →* Circle), IsKap σ lam κ → ∀ P : HeightOneSpectrum (𝓞 E), ¬ Fx σ P →

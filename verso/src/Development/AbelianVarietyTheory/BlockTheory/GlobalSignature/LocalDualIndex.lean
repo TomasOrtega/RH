@@ -13,6 +13,9 @@ section Characters
 
 variable (F : Type) [Field F] [NumberField F]
 
+/- English proof (translation)
+Establish `h : pairA F 0 (singleV F v 0) = 0`. Establish `: singleV F v 0 = 0` using `RestrictedProduct.single_zero _ v`. Rewrite using `[this]`. Both sides reduce to the same expression. Rewrite using `[psiV, h, AddChar.map_zero_eq_one]`.
+-/
 theorem psiV_zero (ψ : AddChar (AF F) ℂ) (v : HeightOneSpectrum (𝓞 F)) : psiV F ψ v 0 = 1 := by
   classical
   have h : pairA F 0 (singleV F v 0) = 0 := by
@@ -20,6 +23,11 @@ theorem psiV_zero (ψ : AddChar (AF F) ℂ) (v : HeightOneSpectrum (𝓞 F)) : p
     rw [this]; rfl
   rw [psiV, h, AddChar.map_zero_eq_one]
 
+/- English proof (translation)
+Establish `h : pairA F 0 (singleV F v (s + t)) = pairA F 0 (singleV F v s) + pairA F 0 (singleV F v t)`. Establish `: singleV F v (s + t) = singleV F v s + singleV F v t` using `RestrictedProduct.single_add _ v s t`. Rewrite using `[this]`. Conclude with `Prod.ext (add_zero (0 : Ainf F)).symm rfl`. Rewrite using `[psiV, h, AddChar.map_add_eq_mul]`.
+
+Both sides reduce to the same expression.
+-/
 theorem psiV_add (ψ : AddChar (AF F) ℂ) (v : HeightOneSpectrum (𝓞 F)) (s t : Fv F v) :
     psiV F ψ v (s + t) = psiV F ψ v s * psiV F ψ v t := by
   classical
@@ -57,6 +65,9 @@ def IsStdChar (ψ : AddChar (AF F) ℂ) : Prop :=
 def IsScalingInf (ψ : AddChar (AF F) ℂ) (a : F) : Prop :=
   ∀ x : Ainf F, psiInf F ψ x = stdInf F (algebraMap F (Ainf F) a * x)
 
+/- English proof (translation)
+Introduce `x`. Rewrite using `[← h₀.2, psiInf, psiInf, h]`. Use `congr 1`. Conclude with `Prod.ext rfl (mul_zero _)`.
+-/
 theorem isScalingInf_of_eq {ψ₀ ψ : AddChar (AF F) ℂ} (h₀ : IsStdChar F ψ₀) {a : F}
     (h : ∀ x, ψ x = ψ₀ (algebraMap F (AF F) a * x)) : IsScalingInf F ψ a := by
   intro x
@@ -64,6 +75,9 @@ theorem isScalingInf_of_eq {ψ₀ ψ : AddChar (AF F) ℂ} (h₀ : IsStdChar F �
   congr 1
   exact Prod.ext rfl (mul_zero _)
 
+/- English proof (translation)
+The claim follows from `isScalingInf_of_eq F h₀ fun x => by rw [map_one, one_mul]`.
+-/
 theorem IsStdChar.isScalingInf_one {ψ₀ : AddChar (AF F) ℂ} (h₀ : IsStdChar F ψ₀) :
     IsScalingInf F ψ₀ 1 :=
   isScalingInf_of_eq F h₀ fun x => by rw [map_one, one_mul]

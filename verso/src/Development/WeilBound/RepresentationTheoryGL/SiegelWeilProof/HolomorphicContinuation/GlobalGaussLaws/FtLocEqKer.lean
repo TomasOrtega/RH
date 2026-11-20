@@ -20,11 +20,19 @@ variable {D : D7} {n m : ℕ}
 def ker (ε : Fin m → Bool) (t : ℝ) (v u : Fin m → Fin n → ℂ) : ℂ :=
   Complex.exp (Complex.I * ((2 * t : ℝ) : ℂ) * (((Matrix.of v)ᴴ * Matrix.diagonal (sgn ε) * Matrix.of u).trace.re : ℂ))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ftLoc_eq_ker (ε : Fin m → Bool) (t : ℝ) (f : (Fin m → Fin n → ℂ) → ℂ) (v : Fin m → Fin n → ℂ) :
     ftLoc ε t f v = ∫ u, f u * ker ε t v u := rfl
 
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+Establish `hsplit : inner V x y = inner V x (y - sIns τ fr (piF θ τ fr y)) + inner V x (sIns τ fr (piF θ τ fr y))`. Rewrite using `[← GlobalTheory.CompanionTheory.EisCovar.Weyl.inner_add_right, sub_add_cancel]`. Establish `hψ2 : ψ (trA (Matrix.trace (inner V x y))) = ψ (trA (Matrix.trace (inner V x (y - sIns τ fr (piF θ τ fr y))))) * ψ (trA (Matrix.trace (inner V x (sIns τ fr (piF θ τ fr y)))))`. Rewrite using `[hsplit, Matrix.trace_add, GlobalTheory.CompanionTheory.EisCovar.Weyl.trA_add, AddChar.map_add_eq_mul]`. Rewrite using `[hψ2, psi_inner_sIns hθ hl hfr]`.
+
+Establish `hp : (fr⁻¹ * compAt θ τ y : Matrix (Fin V.rank) (Fin n) ℂ) = piF θ τ fr y` using `rfl`. Unfold `Bw tens ker`. Rewrite using `[hp]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem integrand_eq {θ : InfFam D} (hθ : IsInfFam θ) {ψ : AddChar (AF D.host.F) ℂ} {l : D.what₂.Tau → ℝ}
     (hl : HasRealPar ψ θ l) {V : HSp D} {τ : D.what₂.Tau} {s : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ}
     {ε : Fin V.rank → Bool} {fr : Matrix (Fin V.rank) (Fin V.rank) ℂ} (hfr : IsTauFrame V τ s ε fr)

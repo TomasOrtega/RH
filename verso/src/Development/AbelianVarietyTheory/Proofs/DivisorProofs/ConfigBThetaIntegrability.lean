@@ -16,10 +16,18 @@ namespace GlobalTheory.FrobInfLin
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.1.div' h'.1, fun x => by simp only [MonoidHom.div_apply, h.2 x, h'.2 x, div_self']⟩`.
+-/
 theorem isHecke_quot {χ χ' : Chr F E} (h : GlobalTheory.LFun.IsHecke F E χ) (h' : GlobalTheory.LFun.IsHecke F E χ') :
     GlobalTheory.LFun.IsHecke F E (χ / χ') :=
   ⟨h.1.div' h'.1, fun x => by simp only [MonoidHom.div_apply, h.2 x, h'.2 x, div_self']⟩
 
+/- English proof (translation)
+Substitute `hk` using the available equality. Introduce `a`. Establish `e` using `h a`. Establish `e'` using `h' a`. Rewrite using `[MonoidHom.div_apply, Circle.coe_div, e, e']`.
+
+Use `split_ifs`. Simplify using the standard rewrite rules. Rewrite using `[pow_add]`. Apply the tactic sequence `rcases neg_one_pow_eq_or ℂ m with hm | hm <;> rw [hm] <;> ring`.
+-/
 theorem resEtaPow_quot {R A : Type} [CommRing R] [CommRing A] [Algebra R A] {K : Subgroup Rˣ}
     {χ χ' : Aˣ →* Circle} {n m k : ℕ} (h : ResEtaPow K χ n) (h' : ResEtaPow K χ' m) (hk : k = n + m) :
     ResEtaPow K (χ / χ') k := by
@@ -33,12 +41,30 @@ theorem resEtaPow_quot {R A : Type} [CommRing R] [CommRing A] [Algebra R A] {K :
   · rw [pow_add]
     rcases neg_one_pow_eq_or ℂ m with hm | hm <;> rw [hm] <;> ring
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.base, h.geo.hV, h.geo.hW, h.geo.hM, h.chars.heckeβ, isHecke_quot h.chars.heckeβ h.chars.heckeα, h.chars.resβ, resEtaPow_quot h.chars.resβ h.chars.resα rfl, h.weil⟩`.
+-/
 theorem isPair_big {B : Base F E} {a a' : ℕ} {G : Geo σ a a'} {X : Chars F E} {om : Rep σ G.V G.W}
     {om' : Rep σ G.V' G.W} (h : IsTriple B G X om om') :
     IsPair B G.M X.β (X.β / X.α) om (a - G.p) G.p (a + a' - (G.p + G.q)) (G.p + G.q) :=
   ⟨h.base, h.geo.hV, h.geo.hW, h.geo.hM, h.chars.heckeβ, isHecke_quot h.chars.heckeβ h.chars.heckeα, h.chars.resβ,
     resEtaPow_quot h.chars.resβ h.chars.resα rfl, h.weil⟩
 
+/- English proof (translation)
+Introduce `hK F E _ _ _ _ _ σ B a b G G₁ H H' _ X om om' R Rf om₁ om₁' R₁ Rf₁ _ hM₁ φ φ' hφ hφ' c`. Establish `act` using `GlobalTheory.T.polynomial_datum_action_of_pair hK.base _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ (isPair_big hM₁.triple)`. Establish `onto : ∀ y : R₁.Pi, ∃ g ∈ G₁.M.Pol B.ψ B.emb, R₁.p g = y` using `fun y => by`. Establish `: y ∈ (G₁.M.Pol B.ψ B.emb).map R₁.p` using `hM₁.real.quot.onto ▸ Submodule.mem_top`. Take `⟨g, hg, e⟩` from `Submodule.mem_map.1 this`.
+
+Conclude with `⟨g, hg, e⟩`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `γ hγ hu f hf f₁ hf₁`. Simplify using `[hφ.unip γ hγ hu f hf f₁ hf₁, hφ'.unip γ hγ hu f hf f₁ hf₁]`. Introduce `γ hγ γ₁ hγ₁ t ht f hf f₁ hf₁ g hg g₁ hg₁ he c₀ hd`.
+
+Take `⟨D, hDm, hDi⟩` from `act.2.2.1 γ₁ hγ₁`. Take `⟨g', hg', e'⟩` from `onto (φ (R.p f))`. Establish `hgs : g + c • g' ∈ G₁.M.Pol B.ψ B.emb` using `Submodule.add_mem _ hg (Submodule.smul_mem _ c hg')`. Establish `he2 : φ' (R.p f) = R₁.p (g + c • g')`. Rewrite using `[map_add, map_smul, e', ← he]`.
+
+Simplify using the standard rewrite rules. Establish `h1` using `hφ'.lie γ hγ γ₁ hγ₁ t ht f hf f₁ hf₁ (g + c • g') hgs (D (g + c • g')) ((hDi _ hgs _).2 rfl) he2 c₀ hd`. Establish `h2` using `hφ.lie γ hγ γ₁ hγ₁ t ht f hf f₁ hf₁ g' hg' (D g') ((hDi _ hg' _).2 rfl) e'.symm c₀ hd`. Establish `h3 : g₁ = D g` using `(hDi g hg g₁).1 hg₁`. Simplify using `only [LinearMap.sub_apply, LinearMap.smul_apply, h1, h2, h3, map_add, map_smul]`.
+
+Use `module`. Introduce `k hk t k₁ ht hk₁ f hf f₁ hf₁ g hg g₁ hg₁ he`. Take `⟨D, hDm, hDi⟩` from `act.2.2.2 k₁ hk₁`. Take `⟨g', hg', e'⟩` from `onto (φ (R.p f))`. Establish `hgs : g + c • g' ∈ G₁.M.Pol B.ψ B.emb` using `Submodule.add_mem _ hg (Submodule.smul_mem _ c hg')`.
+
+Establish `he2 : φ' (R.p f) = R₁.p (g + c • g')`. Rewrite using `[map_add, map_smul, e', ← he]`. Simplify using the standard rewrite rules. Establish `h1` using `hφ'.cpt k hk t k₁ ht hk₁ f hf f₁ hf₁ (g + c • g') hgs (D (g + c • g')) ((hDi _ hgs _).2 rfl) he2`. Establish `h2` using `hφ.cpt k hk t k₁ ht hk₁ f hf f₁ hf₁ g' hg' (D g') ((hDi _ hg' _).2 rfl) e'.symm`.
+
+Establish `h3 : g₁ = D g` using `(hDi g hg g₁).1 hg₁`. Simplify using `only [LinearMap.sub_apply, LinearMap.smul_apply, h1, h2, h3, map_add, map_smul]`. Use `module`.
+-/
 theorem isFrobInf_sub_smul : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (a b : ℕ) (G : Geo σ a (b + 2)) (G₁ : Geo σ a b) (H : Plane E (b + 2) b)
     (H' : Plane E (a + (b + 2)) (a + b)), CfgB B G G₁ H H' →

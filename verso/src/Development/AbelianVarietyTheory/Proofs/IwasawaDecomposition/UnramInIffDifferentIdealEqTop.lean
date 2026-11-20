@@ -12,6 +12,9 @@ namespace GlobalTheory.UnramDiscr
 
 variable (K L : Type) [Field K] [NumberField K] [Field L] [NumberField L] [Algebra K L] [IsGalois K L]
 
+/- English proof (translation)
+Set `_ : Algebra (FractionRing (𝓞 K)) (FractionRing (𝓞 L))` to `FractionRing.liftAlgebra _ _`. Use `haveI : P.IsMaximal := Ideal.IsPrime.isMaximal inferInstance hP`. Rewrite using `[not_dvd_differentIdeal_iff, ← Ideal.ramificationIdx_eq_one_iff, ← Ideal.ramificationIdxIn_eq_ramificationIdx (P.under (𝓞 K)) P (L ≃ₐ[K] L), ← Ideal.card_inertia_eq_ramificationIdxIn (G := L ≃ₐ[K] L) (P.under (𝓞 K)) P, Subgroup.card_eq_one]`.
+-/
 theorem not_dvd_iff_inertia (P : Ideal (𝓞 L)) [P.IsPrime] (hP : P ≠ ⊥) :
     ¬ P ∣ differentIdeal (𝓞 K) (𝓞 L) ↔ P.inertia (L ≃ₐ[K] L) = ⊥ := by
   let _ : Algebra (FractionRing (𝓞 K)) (FractionRing (𝓞 L)) := FractionRing.liftAlgebra _ _
@@ -21,6 +24,19 @@ theorem not_dvd_iff_inertia (P : Ideal (𝓞 L)) [P.IsPrime] (hP : P ≠ ⊥) :
     ← Ideal.card_inertia_eq_ramificationIdxIn (G := L ≃ₐ[K] L) (P.under (𝓞 K)) P,
     Subgroup.card_eq_one]
 
+/- English proof (translation)
+Set `_ : Algebra (FractionRing (𝓞 K)) (FractionRing (𝓞 L))` to `FractionRing.liftAlgebra _ _`. Establish `hD0 : differentIdeal (𝓞 K) (𝓞 L) ≠ ⊥` using `differentIdeal_ne_bot`. Unfold `UnramIn InInertia`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+
+Assume the negation of the conclusion as `hD`. Take `⟨M, hM, hDM⟩` from `Ideal.exists_le_maximal _ hD`. Use `haveI := hM`. Establish `hMb : M ≠ ⊥`. Introduce and unpack `rfl`.
+
+Conclude with `hD0 (le_bot_iff.mp hDM)`. Establish `hMu : M.under (𝓞 K) ≠ ⊥` using `mt Ideal.eq_bot_of_comap_eq_bot hMb`. Establish `hb : M.inertia (L ≃ₐ[K] L) = ⊥`. Rewrite using `[Subgroup.eq_bot_iff_forall]`. Introduce `σ hσ`.
+
+Conclude with `h ⟨M.under (𝓞 K), inferInstance, hMu⟩ σ ⟨M, inferInstance, ⟨rfl⟩, fun x => hσ x⟩`. Conclude with `(not_dvd_iff_inertia K L M hMb).mpr hb (Ideal.dvd_iff_le.mpr hDM)`. Introduce and unpack `hD 𝔭 σ ⟨P, hP, hPo, hσ⟩ haveI := hP haveI := hPo`. Establish `hPb : P ≠ ⊥` using `Ideal.ne_bot_of_liesOver_of_ne_bot 𝔭.ne_bot P`. Establish `hnd : ¬ P ∣ differentIdeal (𝓞 K) (𝓞 L)`.
+
+Rewrite using `[hD]`. Conclude with `fun hd => hP.ne_top (top_le_iff.mp (Ideal.dvd_iff_le.mp hd))`. Establish `hb` using `(not_dvd_iff_inertia K L P hPb).mp hnd`. Establish `hmem : σ ∈ P.inertia (L ≃ₐ[K] L)` using `fun x => hσ x`. Rewrite `hmem` using `[hb]`.
+
+Conclude with `Subgroup.mem_bot.mp hmem`.
+-/
 theorem unramIn_iff_differentIdeal_eq_top :
     (∀ 𝔭 : HeightOneSpectrum (𝓞 K), UnramIn L 𝔭) ↔ differentIdeal (𝓞 K) (𝓞 L) = ⊤ := by
   let _ : Algebra (FractionRing (𝓞 K)) (FractionRing (𝓞 L)) := FractionRing.liftAlgebra _ _
@@ -54,6 +70,11 @@ theorem unramIn_iff_differentIdeal_eq_top :
 
 omit K L in
 
+/- English proof (translation)
+Introduce `K L _ _ _ _ _ _`. Rewrite using `[unramIn_iff_differentIdeal_eq_top K L, natAbs_discr_eq_absNorm_differentIdeal_mul_natAbs_discr_pow K (𝓞 K) L (𝓞 L)]`. Establish `h0 : 0 < (discr K).natAbs ^ Module.finrank K L` using `pow_pos (Int.natAbs_pos.mpr (discr_ne_zero K)) _`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+
+Rewrite using `[h, Ideal.absNorm_top, one_mul]`. Introduce `h`. Apply `Ideal.absNorm_eq_one_iff.mp` to reduce the goal to its premises. Apply `Nat.eq_of_mul_eq_mul_right h0` to reduce the goal to its premises. Rewrite using `[h, one_mul]`.
+-/
 theorem unramIn_iff_natAbs_discr :
     ∀ (K L : Type) [Field K] [NumberField K] [Field L] [NumberField L] [Algebra K L] [IsGalois K L],
       (∀ 𝔭 : HeightOneSpectrum (𝓞 K), UnramIn L 𝔭) ↔

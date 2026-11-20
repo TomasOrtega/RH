@@ -59,10 +59,16 @@ def resTo {K : Type} [Group K] {W : Type} [AddCommGroup W] [Module k W]
 def OrdersInvertible (k : Type) [CommRing k] (Γ K : Subgroup G) : Prop :=
   ∀ x : G, Finite (GamAt Γ K x) ∧ IsUnit ((Nat.card (GamAt Γ K x) : ℕ) : k)
 
+/- English proof (translation)
+Introduce `_ _` and use `rfl`.
+-/
 theorem isIntertw_subtype {K : Subgroup G} {W : Type} [AddCommGroup W] [Module k W]
     (ρ : Representation k K W) (U : Submodule k W) (hU : IsStable ρ U) :
     IsIntertw (resRep ρ U hU) ρ U.subtype := fun _ _ => rfl
 
+/- English proof (translation)
+Introduce `κ w`. Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a t => simp [hφ κ a]`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`.
+-/
 theorem isIntertw_rTensor {H : Type} [Monoid H] {W₁ W₂ Θ : Type} [AddCommGroup W₁] [Module k W₁]
     [AddCommGroup W₂] [Module k W₂] [AddCommGroup Θ] [Module k Θ]
     {ρ₁ : Representation k H W₁} {ρ₂ : Representation k H W₂} (θ : Representation k H Θ)
@@ -77,6 +83,9 @@ theorem isIntertw_rTensor {H : Type} [Monoid H] {W₁ W₂ Θ : Type} [AddCommGr
 def powSub {W : Type} [AddCommGroup W] [Module k W] (l : k) (c : ℕ) : Submodule k W :=
   LinearMap.range ((l ^ c) • (LinearMap.id : W →ₗ[k] W))
 
+/- English proof (translation)
+Introduce and unpack `κ _ ⟨w, rfl⟩`. Conclude with `⟨ρ κ w, by simp⟩`.
+-/
 theorem isStable_powSub {K : Subgroup G} {W : Type} [AddCommGroup W] [Module k W]
     (ρ : Representation k K W) (l : k) (c : ℕ) : IsStable ρ (powSub (W := W) l c) := by
   rintro κ _ ⟨w, rfl⟩

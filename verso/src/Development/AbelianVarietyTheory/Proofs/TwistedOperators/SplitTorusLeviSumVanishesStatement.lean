@@ -17,5 +17,8 @@ open PI.DSInfCharCap (actU Egl)
 open GlobalTheory.RealInd.Stages Finset GlobalTheory.FlagMeas Formalism.REAL
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.RealInd.BlockSum.blockSum_eq_zero | exact GlobalTheory.RealInd.BlockSum.blockSum_eq_zero | (intros; apply GlobalTheory.RealInd.BlockSum.blockSum_eq_zero <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.split_torus_levi_sum_vanishes : ∀ {n a b : ℕ} {ε : Fin n → Bool} {W : Flag n a} {W' : Flag n b} {β : Fin b → Fin a} {p : Fin (a + 1) → Fin (b + 1)}, IsIsoFlag ε (fun _ => 1) W' → (∀ i, W' (p i) = W i) → (∀ l i, β l = i ↔ p i.castSucc ≤ l.castSucc ∧ l.castSucc < p i.succ) → ∀ {x : Fin b → ℝ} {t : UJ ε}, IsSplit ε W' x t → t ∈ leviOne ε W → ∀ i, ∑ l with β l = i, x l = 0 := by
   first | exact @GlobalTheory.RealInd.BlockSum.blockSum_eq_zero | exact GlobalTheory.RealInd.BlockSum.blockSum_eq_zero | (intros; apply GlobalTheory.RealInd.BlockSum.blockSum_eq_zero <;> assumption)

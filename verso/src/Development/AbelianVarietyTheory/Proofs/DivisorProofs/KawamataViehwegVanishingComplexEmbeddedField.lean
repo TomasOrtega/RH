@@ -20,6 +20,17 @@ namespace GlobalTheory.VanishEmbedded
 
 open GlobalTheory.HSCore.VanishNumberField
 
+/- English proof (translation)
+Introduce `hNum hNad F _ ⟨σ⟩ X p D hsm hp hgc K N hnef hbig q hq`. Use `letI := σ.toAlgebra`. Set `X'` to `pullback p (spMap (algebraMap F ℂ))`. Set `π : X' ⟶ X` to `pullback.fst _ _`. Set `p' : X' ⟶ Sp ℂ` to `pullback.snd _ _`.
+
+Establish `H : IsPullback π p' p (spMap (algebraMap F ℂ))` using `IsPullback.of_hasPullback _ _`. Take `⟨hI, -, hsm', hp', -⟩` from `GlobalTheory.BaseChangeVariety.baseChange_props F ℂ X X' p p' π D H hp hgc`. Use `haveI : Nonempty X := ⟨π (Classical.arbitrary X')⟩`. Use `letI := algebraΓOfHom p`. Use `letI := algebraΓOfHom p'`.
+
+Take `⟨hprop, -⟩` from `(isProjOver_iff_isProper_and_exists_isAmpleLB p).1 hp`. Establish `hL` using `LB.isLB_pull hnef.isLB π`. Establish `hnef' : IsNef ℂ (N.pull π)` using `GlobalTheory.NefFieldExt.isNef_baseChange hNum F ℂ X X' p p' π H hp N hnef`. Establish `hbig' : IsBig ℂ (N.pull π)`. Take `⟨D₀, hD₀, c, hc, hm⟩` from `hbig.3`.
+
+Establish `hD : topologicalKrullDim X = D` using `topologicalKrullDim_eq_of_smooth p D hsm`. Take `rfl : D₀ = D` from `by exact_mod_cast hD₀.symm.trans hD`. Use `(isBig_iff (f := p') (fun _ => rfl) hp' (topologicalKrullDim_eq_of_smooth _ D₀ hsm')).2 ⟨hL, c, hc, hm.mono fun m hm => hm.trans_eq (congrArg _ ?_)⟩` and prove the remaining obligations. Rewrite using `[lineBundleGlobalSectionsDim_congr_picardClass (isLB_lbPow hL m) (LB.isLB_pull (isLB_lbPow hbig.1 m) π) (by rw [cls_lbPow hL, cls_pull hbig.1, cls_pull (isLB_lbPow hbig.1 m), cls_lbPow hbig.1, map_nsmul])]`. Conclude with `(FieldChangeInter.hdim_pull H (isLB_lbPow hbig.1 m) 0).symm`.
+
+Establish `hKV` using `GlobalTheory.T.kawamataViehweg_vanishing_of_nadel_pairs hNad X' p' D hp' hI (K.baseChange H) (N.pull π) hnef' hbig' q hq`. Establish `hM : (tens K.bundle N).IsLB` using `isLB_tens K.isLB hnef.isLB`. Establish `hK'` using `LB.isLB_pull K.isLB π`. Take `⟨i⟩` from `nonempty_twist_iso_of_cls_eq (structureModule X') (LB.isLB_pull hM π) (isLB_tens hK' hL) (by rw [cls_pull hM π, cls_tens K.isLB hnef.isLB, cls_tens hK' hL, cls_pull K.isLB π, cls_pull hnef.isLB π, map_add])`. Conclude with `subsingleton_coh_of_pull (f := p) (f' := p') H hM q ((cohOn.mapIso Γ(X', ⊤) ⊤ q i).toEquiv.subsingleton_congr.2 hKV)`.
+-/
 theorem subsingleton_coh_canon_tens : GlobalTheory.Published.NefNumerics → GlobalTheory.Published.NadelVanishingPair → ∀ (F : Type) [Field F], Nonempty (F →+* ℂ) → ∀ (X : Scheme.{0}) (p : X ⟶ Sp F) (D : ℕ) [SmoothOfRelativeDimension D p], IsProjOver p → GeometricallyConnected p → ∀ (K : CanonLB p D) (N : LB X), (letI := algebraΓOfHom p; IsNef F N) → (letI := algebraΓOfHom p; IsBig F N) → ∀ q : ℕ, 0 < q → Subsingleton (coh (twist (GlobalTheory.structureModule X) (tens K.bundle N)) q) := by
   intro hNum hNad F _ ⟨σ⟩ X p D hsm hp hgc K N hnef hbig q hq
   letI := σ.toAlgebra

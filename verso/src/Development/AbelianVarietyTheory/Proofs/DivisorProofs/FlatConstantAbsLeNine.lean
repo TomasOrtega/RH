@@ -31,6 +31,13 @@ namespace GlobalTheory.TwistDeg
 
 open GlobalTheory.FlatTw GlobalTheory.FlatLine GlobalTheory.IndefiniteRowSideFullHecke.DifferentConjugateDefects
 
+/- English proof (translation)
+Establish `hM : l.M' ≠ 0` using `Nat.lcm_ne_zero (by have := l.three_le; omega) l.A_pos.ne'`. Establish `hD : (discr E).natAbs ≠ 0` using `Int.natAbs_ne_zero.mpr (discr_ne_zero E)`. Establish `hd` using `H.d_prime.ne_zero`. Establish `hne : 2 * H.d * (discr E).natAbs * l.M' ≠ 0` using `mul_ne_zero (mul_ne_zero (mul_ne_zero two_ne_zero hd) hD) hM`. Establish `h0 : ∀ p ∈ (2 * H.d * (discr E).natAbs * l.M').primeFactors, (p : ℝ) ≠ 0` using `fun p hp => by`.
+
+Conclude with `(Nat.prime_of_mem_primeFactors hp).ne_zero` after adjusting the coercions. Establish `e : Real.log 2 + Real.log H.d + Real.log |(discr E : ℝ)| + Real.log l.M' = Real.log ((2 * H.d * (discr E).natAbs * l.M' : ℕ) : ℝ)`. Rewrite using `[Nat.cast_mul, Nat.cast_mul, Nat.cast_mul, Real.log_mul (by positivity) (by positivity), Real.log_mul (by positivity) (by positivity), Real.log_mul (by positivity) (by positivity), Nat.cast_natAbs, Int.cast_abs, Nat.cast_ofNat]`. Rewrite using `[e, logSum, GlobalTheory.FlatTw.badPrimes, ← Real.log_prod h0, ← Nat.cast_prod]`. Use `Real.log_le_log ?_ (by exact_mod_cast Nat.le_of_dvd (Nat.pos_of_ne_zero hne) (Nat.prod_primeFactors_dvd _))` and prove the remaining obligations.
+
+Conclude with `Finset.prod_pos fun p hp => (Nat.prime_of_mem_primeFactors hp).pos` after adjusting the coercions.
+-/
 theorem logSum_bad_le {E : Type} [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (l : Level H) :
     logSum (GlobalTheory.FlatTw.badPrimes H l) ≤ Real.log 2 + Real.log H.d + Real.log |(discr E : ℝ)| + Real.log l.M' := by
   have hM : l.M' ≠ 0 := Nat.lcm_ne_zero (by have := l.three_le; omega) l.A_pos.ne'
@@ -49,11 +56,21 @@ theorem logSum_bad_le {E : Type} [Field E] [NumberField E] [IsCMField E] (H : Re
   refine Real.log_le_log ?_ (by exact_mod_cast Nat.le_of_dvd (Nat.pos_of_ne_zero hne) (Nat.prod_primeFactors_dvd _))
   exact_mod_cast Finset.prod_pos fun p hp => (Nat.prime_of_mem_primeFactors hp).pos
 
+/- English proof (translation)
+Establish `h : (0 : ℝ) < |(discr E : ℝ)|` using `abs_pos.2 (by exact_mod_cast discr_ne_zero E)`. Rewrite using `[lrd, rootDiscr_def, Int.cast_abs, Real.log_rpow h, div_eq_inv_mul]`.
+-/
 theorem lrd_eq (E : Type) [Field E] [NumberField E] :
     lrd E = Real.log |(discr E : ℝ)| / (Module.finrank ℚ E : ℝ) := by
   have h : (0 : ℝ) < |(discr E : ℝ)| := abs_pos.2 (by exact_mod_cast discr_ne_zero E)
   rw [lrd, rootDiscr_def, Int.cast_abs, Real.log_rpow h, div_eq_inv_mul]
 
+/- English proof (translation)
+Establish `h1 : q * b * s ≤ r * (3 * L) * (6 * f * r)` using `by gcongr`. Establish `h2 : 9 * r * L * s ≤ 9 * r * L * (6 * f * r)` using `by gcongr`. Establish `h3 : f * b ≤ f * (3 * L)` using `by gcongr`. Establish `h4 : f * r ^ 2 * L ≤ (f * r * L) ^ 2`. Rewrite using `[show (f * r * L) ^ 2 = f * r ^ 2 * L * (f * L) by ring]`.
+
+Conclude with `le_mul_of_one_le_right (by positivity) (one_le_mul_of_one_le_of_one_le hf hL)`. Establish `h5 : f * L ≤ f * r ^ 2 * L`. Rewrite using `[show f * r ^ 2 * L = f * L * r ^ 2 by ring]`. Conclude with `le_mul_of_one_le_right (by positivity) (one_le_pow₀ hr)`. Establish `h6 : L ≤ f * L` using `le_mul_of_one_le_left (by positivity) hf`.
+
+Establish `h7` using `(abs_le.1 hc).1`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem numeric {f r L q a b s c : ℝ} (hf : 1 ≤ f) (hr : 1 ≤ r) (hL : 1 ≤ L) (hq : q ≤ r)
     (hb0 : 0 ≤ b) (hb : b ≤ 3 * L) (hs0 : 0 ≤ s) (hs : s ≤ 6 * f * r) (hc : |a| ≤ 9 * r * L * s)
     (hB : c ≤ 1 + 2 * b + 2 * f * b + 30 * L) : -(120 * (f * r * L) ^ 2) ≤ a - q * b * s - c := by
@@ -70,6 +87,25 @@ theorem numeric {f r L q a b s c : ℝ} (hf : 1 ≤ f) (hr : 1 ≤ r) (hL : 1 �
   have h7 := (abs_le.1 hc).1
   nlinarith
 
+/- English proof (translation)
+Introduce `hP`. Use `⟨120, by norm_num, fun D T hT j hp hq _ hj Y e o hY Lb hL hM hE _ _ c₁ hc hc₁ la w Z hw hG => ?_⟩` and prove the remaining obligations. Establish `hn : 1 ≤ D.R.n` using `D.R.toFrame.ord_pos`. Establish `h1` using `D.R.two_le_m`. Establish `hf : (1 : ℝ) ≤ D.R.f` using `by exact_mod_cast (by unfold Ranks.f; omega : 1 ≤ D.R.f)`.
+
+Establish `hr : (1 : ℝ) ≤ D.R.r` using `by exact_mod_cast (by unfold Ranks.r; omega : 1 ≤ D.R.r)`. Establish `hrk : (0 : ℝ) ≤ Y.rkC la Z` using `Nat.cast_nonneg _`. Break down `isEmpty_or_nonempty (Psi T.Q.H) with h0 | ⟨⟨τ₀⟩⟩` into its components or cases. Rewrite using `[show la + parWt (T.Q.Dw j) w = la from funext fun τ => h0.elim τ]`. Conclude with `sub_le_self _ (by positivity)`.
+
+Take `⟨hpq, -, -, -, -, g, ee, F, -⟩` from `hY.unf Y.d.c₂.F.val.toRingHom rfl`. Establish `hK` using `GlobalTheory.KeyCover.nonempty_keySec_of_family _ _ _ _ _ _ Y.d.c₂.F.val.toRingHom rfl ee F (by omega) hY.geo`. Take `⟨t, ht, -, hd⟩` from `(GlobalTheory.FlatTwisting.twSec_of_flat _ _ _ _ _ _ _ Y.U (xiR D) _ hK hY.unf (by omega) (GlobalTheory.T.unramified_points_deep_level hP D T j Y e o hT hj hY)).2 ⟨c₁, hc⟩ Z w (hc Z τ₀).1.some.hasPts`. Establish `key` using `GlobalTheory.FlatTw.degOn_add_rank_mul_degLo_le _ _ _ _ _ _ _ Y.U (xiR D) D (fun _ => D.sp.W j) Y.dict Z _ t _ _ hY.unf (AllWt.even_wtOf la 0) badPrimes_prime ht hG`. Rewrite `key` using `[← wtOf_add']`.
+
+Use `le_trans ?_ key` and prove the remaining obligations. Rewrite using `[sub_eq_add_neg, ← mul_neg]`. Use `add_le_add le_rfl (mul_le_mul_of_nonneg_left (le_trans ?_ (sub_le_sub_right hd _)) hrk)` and prove the remaining obligations. Establish `hdeg : Module.finrank ℚ D.host.E = 2 * D.R.f`. Rewrite using `[D.host.finrank_cmField]`.
+
+Unfold `Ranks.f Ranks.n`. Expand and normalize the polynomial expressions, which then agree. Establish `hd2` using `abs_le.1 (GlobalTheory.abs_lrd_sub_log_d_le_lrd _ T.Q.H)`. Establish `hcard : (Fintype.card (Psi T.Q.H) : ℝ) ≤ 2 * D.R.f`. Use `Fintype.card_subtype_le fun τ : D.host.E →+* ℂ => τ (T.Q.H.rt : D.host.E) = T.Q.H.rt0` as an intermediate fact.
+
+Rewrite `this` using `[Embeddings.card, hdeg]`. Conclude with `(Fintype.card_congr (Equiv.refl _)).le.trans this` after adjusting the coercions. Use `numeric hf hr hL (by exact_mod_cast (by omega : (T.Q.Dw j).q ≤ D.R.r)) (by linarith [hd2.1, hd2.2]) (by rw [lrd_eq]; exact (log_rd_le_fieldSz _).trans hE) (Finset.sum_nonneg fun _ _ => abs_nonneg _) ?_ ?_ ?_` and prove the remaining obligations. Use `(Finset.sum_le_card_nsmul _ _ (3 * (D.R.r : ℝ)) fun τ _ => by exact_mod_cast hw τ).trans ?_` and prove the remaining obligations. Rewrite using `[nsmul_eq_mul, Finset.card_univ]`.
+
+Use the polynomial consequences of the given equalities and inequalities. Simplify using `only [hc.c1_eq ⟨Z⟩]`. Rewrite using `[← Finset.sum_mul, abs_mul, mul_comm]`. Conclude with `mul_le_mul hc₁ (Finset.abs_sum_le_sum_abs _ _) (abs_nonneg _) (by positivity)`. Use `(logSum_bad_le _ _).trans ?_` and prove the remaining obligations.
+
+Establish `l2 : Real.log 2 ≤ 1` using `by linarith [Real.log_le_sub_one_of_pos (show (0 : ℝ) < 2 by norm_num)]`. Establish `hM' : Y.d.l₂.M' = Y.d.l₂.M` using `by rw [Level.M', hY.lev.2, Nat.lcm_one_right]`. Establish `hD : Real.log |(discr D.host.E : ℝ)| = 2 * D.R.f * lrd D.host.E`. Rewrite using `[lrd_eq, hdeg]`. Use `push_cast`.
+
+Clear the denominators using the available nonvanishing facts. Rewrite using `[hM', hD]`. Combine the linear relations using `[hd2.1]`.
+-/
 theorem deg_twist_ge : Hypotheses2 → ∃ C : ℝ, 0 ≤ C ∧ ∀ (D : D7) (T : CoreJ D), LawsJ T → ∀ j : ℕ, 1 ≤ (T.Q.Dw j).p → 1 ≤ (T.Q.Dw j).q → 2 < Module.finrank ℚ D.host.E / 2 → InR D j → ∀ (Y : Deep T.toCore j) (e : ℕ) (o : ℝ), Y.Good e o → ∀ Lb : ℝ, 1 ≤ Lb → Real.log Y.d.l₂.M ≤ 30 * Lb → fieldSz D.host.E ≤ 3 * Lb → Real.log (D.R.f * D.R.r) ≤ Lb → o ≤ 391 * (D.R.f * D.R.r * Lb) ^ 2 → ∀ c₁ : ℝ, GlobalTheory.FlatLine.FlatExistsAt Y.U (xiR D) c₁ → |c₁| ≤ 9 * D.R.r * Lb → ∀ (la : AllWt.Weight (T.Q.Dw j)) (w : Psi T.Q.H → ℤ) Z, (∀ τ, |w τ| ≤ 3 * (D.R.r : ℤ)) → GoodOn Y.U (xiR D) (fun _ => D.sp.W j) Y.dict Z (wtOf (T.Q.Dw j) la 0) → Y.degC la Z - Y.rkC la Z * (C * ((D.R.f : ℝ) * D.R.r * Lb) ^ 2) ≤ Y.degC (la + GlobalTheory.FlatLine.parWt (T.Q.Dw j) w) Z := by
   intro hP
   refine ⟨120, by norm_num, fun D T hT j hp hq _ hj Y e o hY Lb hL hM hE _ _ c₁ hc hc₁ la w Z hw hG => ?_⟩

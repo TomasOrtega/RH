@@ -18,6 +18,11 @@ namespace GraphChangeOfModel
 
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {K₂ : Type} {ι₂ : K₂ → Type}
 
+/- English proof (translation)
+Introduce `k₂`. Assume the negation of the conclusion as `hall`. Use `push Not at hall`. Take `⟨-, ⟨hprime, -, hrel⟩, -, -⟩` from `hP`. Use `choose i hi using hrel`.
+
+Take `⟨N, hN⟩` from `hBP k₂ i`. Establish `hle : Ideal.span (Set.range fun j : ι₂ k₂ => g ⟨k₂, j⟩) ≤ P` using `Ideal.span_le.mpr (Set.range_subset_iff.mpr hall)`. Rewrite `hN` using `[sup_eq_left.mpr hle]`. Take `⟨k, -, hk⟩` from `Ideal.IsPrime.prod_mem_iff.mp (hprime.mem_of_pow_mem N hN)`. Conclude with `hi k hk`.
+-/
 theorem exists_form_not_mem {P : Ideal (MRing ι)} {d : ℕ} {g : (Σ k, ι₂ k) → MRing ι} (hP : IsArithVar P d)
     (hBP : IsBasePtFree P g) : ∀ k₂, ∃ j, g ⟨k₂, j⟩ ∉ P := by
   intro k₂
@@ -36,6 +41,11 @@ end GraphChangeOfModel
 
 open GraphChangeOfModel IndefiniteRowSideFullHecke.Inter in
 
+/- English proof (translation)
+Introduce `I hI K _ ι _ K₂ _ ι₂ _ P d g δ G J L L₁ hP hg hBP hImg hJ hL hL₁ ha hh`. Take `⟨hΓ, himg, hdeg⟩` from `hGr K ι K₂ ι₂ P d g δ hP hg (exists_form_not_mem hP hBP)`. Take `⟨G'⟩` from `hGF K ι (K ⊕ K₂) (Sum.elim ι ι₂) Sum.inl inlV _ d isBlockMap_inl hΓ`. Take `⟨J', hJ', -⟩` from `hEU G'.Φ _ (fibreIdx (Sum.elim ι ι₂) (Sum.inl : K → K ⊕ K₂))`. Establish `e1` using `hAI3 I hI K ι (K ⊕ K₂) (Sum.elim ι ι₂) Sum.inl inlV _ d G' J' L₁ (fun j => pullHerm isBlockMap_inl (L₁ j)) isBlockMap_inl hΓ (by rw [himg]; exact hP) hJ' hL₁ (fun j => isPullHerm_pullHerm _ _)`.
+
+Establish `e2` using `hAI3 I hI K₂ ι₂ (K ⊕ K₂) (Sum.elim ι ι₂) Sum.inr inrV _ d G J L (fun j => pullHerm isBlockMap_inr (L j)) isBlockMap_inr hΓ hImg hJ hL (fun j => isPullHerm_pullHerm _ _)`. Establish `e3` using `hIso (K ⊕ K₂) (Sum.elim ι ι₂) (I (K ⊕ K₂) (Sum.elim ι ι₂)) (hI _ _) _ d (fun j => pullHerm isBlockMap_inl (L₁ j)) (fun j => pullHerm isBlockMap_inr (L j)) hΓ (fun j => Inter.IsPullHerm.isSmoothHerm isBlockMap_inl (isPullHerm_pullHerm _ _) (hL₁ j)) (fun j => Inter.IsPullHerm.isSmo …`. Rewrite `e1` using `[hdeg G' J' hJ', himg]`. Rewrite using `[← e2, ← e3, e1]`. Simplify using the standard rewrite rules.
+-/
 theorem GraphChangeOfModel.proof (hAI3 : Inter.PushforwardArithIntersection.Statement) (hGr : GraphStatement)
     (hGF : GenFibreExistsStatement)
     (hEU : ∀ (F : Type) [Field F] (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)],

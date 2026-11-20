@@ -100,6 +100,9 @@ section API
 variable {k : Type} [Field k] {K : Type} [Field K] [Algebra k K] {F : Type} [Field F] [Algebra k F] [Algebra F K]
   [IsScalarTower k F K] {d : ℕ} {x : Fin (d + 1) → F}
 
+/- English proof (translation)
+Use `fin` as an intermediate fact. Establish `: Algebra.IsSeparable F K` using `inferInstance`. Conclude with `⟨pd, fin, smooth⟩`.
+-/
 theorem IsFinCover.of_charZero [CharZero F] (pd : IsPd k x) (fin : FiniteDimensional F K)
     (smooth : ∀ i, Algebra.Smooth k (rB k K x {i})) : IsFinCover k K x := by
   have := fin
@@ -108,6 +111,21 @@ theorem IsFinCover.of_charZero [CharZero F] (pd : IsPd k x) (fin : FiniteDimensi
 
 open scoped IntermediateField.algebraAdjoinAdjoin in
 
+/- English proof (translation)
+Use `h.fin` as an intermediate fact. Use `h.sep` as an intermediate fact. Set `t : Fin d → F` to `fun j => x j.succ / x 0`. Set `A` to `MvPolynomial (Fin d) k`. Set `: Algebra A F` to `(MvPolynomial.aeval t).toRingHom.toAlgebra`.
+
+Establish `: IsScalarTower k A F` using `IsScalarTower.of_algebraMap_eq fun r => ((MvPolynomial.aeval t).commutes r).symm`. Establish `hinj : Function.Injective (algebraMap A F)` using `h.pd.indep`. Establish `: FaithfulSMul A F` using `(faithfulSMul_iff_algebraMap_injective A F).mpr hinj`. Establish `: IsFractionRing A F` using `IsFractionRing.of_field A F fun z => by`. Establish `hz : z ∈ IntermediateField.adjoin k (Set.range t)`.
+
+Rewrite using `[h.pd.gen]`. Conclude with `IntermediateField.mem_top`. Take `⟨r, hr, s, hs, rfl⟩` from `(IntermediateField.mem_adjoin_iff_div (F := k) (S := Set.range t)).mp hz`. Rewrite `hr`, `hs` using `[Algebra.adjoin_range_eq_range_aeval, AlgHom.mem_range]`. Take `⟨p, rfl⟩` from `hr`.
+
+Take `⟨q, rfl⟩` from `hs`. Conclude with `⟨p, q, rfl⟩`. Establish `: Algebra.FormallyEtale A F` using `Algebra.FormallyEtale.of_isLocalization (nonZeroDivisors A)`. Establish `: Algebra.FormallyEtale F K` using `Algebra.FormallyEtale.of_isSeparable F K`. Set `: Algebra A K` to `((algebraMap F K).comp (algebraMap A F)).toAlgebra`.
+
+Establish `: IsScalarTower A F K` using `IsScalarTower.of_algebraMap_eq fun _ => rfl`. Establish `: IsScalarTower k A K` using `IsScalarTower.of_algebraMap_eq fun r => by`. Express the relevant statement in the definitionally equal form `_ = algebraMap F K (algebraMap A F (algebraMap k A r))`. Rewrite using `[← IsScalarTower.algebraMap_apply k A F, ← IsScalarTower.algebraMap_apply k F K]`. Establish `: Algebra.FormallyEtale A K` using `Algebra.FormallyEtale.comp A F K`.
+
+Use `⟨((KaehlerDifferential.mvPolynomialBasis k (Fin d)).baseChange K).map (KaehlerDifferential.tensorKaehlerEquivOfFormallyEtale k A K), fun j => ?_⟩` and prove the remaining obligations. Establish `hb0 : KaehlerDifferential.mvPolynomialBasis k (Fin d) j = D k A (MvPolynomial.X j)` using `(KaehlerDifferential.mvPolynomialBasis k (Fin d)).repr.injective (by`. Rewrite using `[Module.Basis.repr_self, KaehlerDifferential.mvPolynomialBasis_repr_D_X])`. Rewrite using `[Module.Basis.map_apply, Module.Basis.baseChange_apply, hb0, KaehlerDifferential.tensorKaehlerEquivOfFormallyEtale_apply, KaehlerDifferential.mapBaseChange_tmul, one_smul, KaehlerDifferential.map_D]`. Express the relevant statement in the definitionally equal form `D k K (algebraMap F K (MvPolynomial.aeval t (MvPolynomial.X j))) = _`.
+
+Rewrite using `[MvPolynomial.aeval_X]`.
+-/
 theorem IsFinCover.exists_basis (h : IsFinCover k K x) :
     ∃ b : Module.Basis (Fin d) K Ω[K⁄k], ∀ j, b j = D k K (algebraMap F K (x j.succ / x 0)) := by
   have := h.fin
@@ -146,6 +164,17 @@ theorem IsFinCover.exists_basis (h : IsFinCover k K x) :
   change D k K (algebraMap F K (MvPolynomial.aeval t (MvPolynomial.X j))) = _
   rw [MvPolynomial.aeval_X]
 
+/- English proof (translation)
+Take `⟨b, hb⟩` from `h.exists_basis`. Establish `hne : ∀ j : Fin d, algebraMap F K (x j.succ / x 0) ≠ 0` using `fun j => (map_ne_zero _).mpr (div_ne_zero (h.pd.ne _) (h.pd.ne _))`. Set `b'` to `b.unitsSMul fun j => (Units.mk0 _ (hne j))⁻¹`. Establish `hb' : ∀ j, b' j = (algebraMap F K (x j.succ / x 0))⁻¹ • D k K (algebraMap F K (x j.succ / x 0))`. Introduce `j`.
+
+Simplify using `[b', Module.Basis.unitsSMul_apply, Units.smul_def, hb]`. Set `φ : ⋀[K]^d Ω[K⁄k] →ₗ[K] K` to `exteriorPower.alternatingMapLinearEquiv b'.det`. Set `τ : DR k K →ₗ[K] K` to `φ ∘ₗ DirectSum.component K ℕ (fun i => ⋀[K]^i Ω[K⁄k]) d ∘ₗ (DirectSum.decomposeLinearEquiv (fun i : ℕ => ⋀[K]^i Ω[K⁄k])).toLinearMap`. Establish `key : ∀ y : DR k K, τ y = φ (DirectSum.decompose (fun i : ℕ => ⋀[K]^i Ω[K⁄k]) y d)` using `fun y => rfl`. Use `⟨τ, ?_⟩` and prove the remaining obligations.
+
+Unfold `IsTop`. Prove the components needed by the constructor for the conclusion. Establish `hv : vol0 k K x = ExteriorAlgebra.ιMulti K d b'`. Unfold `vol0`. Use `congr 1`.
+
+Use function extensionality and compare the values at `j`. Conclude with `(hb' j).symm`. Rewrite using `[key, hv, ← exteriorPower.ιMulti_apply_coe, DirectSum.decompose_coe, DirectSum.of_eq_same, exteriorPower.alternatingMapLinearEquiv_apply_ιMulti, Module.Basis.det_self]`. Introduce `q hq y hy`. Establish `hz : DirectSum.decompose (fun i : ℕ => ⋀[K]^i Ω[K⁄k]) y d = 0` using `by ext1`.
+
+Conclude with `DirectSum.decompose_of_mem_ne _ hy hq`. Rewrite using `[key, hz, map_zero]`.
+-/
 theorem IsFinCover.exists_isTop (h : IsFinCover k K x) : ∃ τ : DR k K →ₗ[K] K, IsTop k K x τ := by
   obtain ⟨b, hb⟩ := h.exists_basis
   have hne : ∀ j : Fin d, algebraMap F K (x j.succ / x 0) ≠ 0 := fun j =>
@@ -176,6 +205,11 @@ theorem IsFinCover.exists_isTop (h : IsFinCover k K x) : ∃ τ : DR k K →ₗ[
       exact DirectSum.decompose_of_mem_ne _ hy hq
     rw [key, hz, map_zero]
 
+/- English proof (translation)
+Take `⟨τ, hτ⟩` from `h.exists_isTop`. Unfold `IsTop at hτ`. Introduce `h0`. Establish `h1` using `hτ.1`. Rewrite `h1` using `[h0, map_zero]`.
+
+Conclude with `zero_ne_one h1`.
+-/
 theorem IsFinCover.dlogRatioVolumeForm_ne_zero (h : IsFinCover k K x) : vol0 k K x ≠ 0 := by
   obtain ⟨τ, hτ⟩ := h.exists_isTop
   unfold IsTop at hτ
@@ -184,6 +218,9 @@ theorem IsFinCover.dlogRatioVolumeForm_ne_zero (h : IsFinCover k K x) : vol0 k K
   rw [h0, map_zero] at h1
   exact zero_ne_one h1
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.sep, h.dlogRatioVolumeForm_ne_zero⟩`.
+-/
 example (h : IsFinCover k K x) : Algebra.IsSeparable F K ∧ vol0 k K x ≠ 0 := ⟨h.sep, h.dlogRatioVolumeForm_ne_zero⟩
 
 end API

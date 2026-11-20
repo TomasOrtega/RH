@@ -12,10 +12,16 @@ section Alg
 
 variable {F E : Type} [Field F] [Field E] [Algebra F E]
 
+/- English proof (translation)
+Simplify using `[sigR, inclR]`.
+-/
 theorem sigR_inclR' (R : Type) [CommRing R] [Algebra F R] (σ : E →ₐ[F] E) (e : E) :
     sigR R σ (inclR R e) = inclR R (σ e) := by
   simp [sigR, inclR]
 
+/- English proof (translation)
+Simplify using `only [hE, Formalism.UG.hform, Pi.sub_apply, Pi.smul_apply, smul_eq_mul, map_sub, map_mul, AlgHom.coe_toRingHom, RingHom.coe_coe, sub_mul, Finset.sum_sub_distrib, Finset.mul_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hE_sub_smul_left (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E) (a b y : Fin M → E) (c : E) :
     hE σ J (a - c • b) y = hE σ J a y - σ c * hE σ J b y := by
   simp only [hE, Formalism.UG.hform, Pi.sub_apply, Pi.smul_apply, smul_eq_mul, map_sub, map_mul,
@@ -24,6 +30,9 @@ theorem hE_sub_smul_left (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin
   refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_
   ring
 
+/- English proof (translation)
+Simplify using `only [hE, Formalism.UG.hform, Pi.sub_apply, Pi.smul_apply, smul_eq_mul, mul_sub, Finset.sum_sub_distrib, Finset.mul_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hE_sub_smul_right (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E) (y a b : Fin M → E) (c : E) :
     hE σ J y (a - c • b) = hE σ J y a - c * hE σ J y b := by
   simp only [hE, Formalism.UG.hform, Pi.sub_apply, Pi.smul_apply, smul_eq_mul, mul_sub,
@@ -32,6 +41,9 @@ theorem hE_sub_smul_right (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fi
   refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_
   ring
 
+/- English proof (translation)
+Simplify using `only [hE, Formalism.UG.hform, map_sum, map_mul, AlgHom.coe_toRingHom, RingHom.coe_coe, hσ]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[hJ.1 b a]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hE_swap' (σ : E →ₐ[F] E) (hσ : ∀ x, σ (σ x) = x) {M : ℕ} (J : Matrix (Fin M) (Fin M) E)
     (hJ : IsHermND σ J) (x y : Fin M → E) : hE σ J y x = σ (hE σ J x y) := by
   simp only [hE, Formalism.UG.hform, map_sum, map_mul, AlgHom.coe_toRingHom, RingHom.coe_coe, hσ]
@@ -42,12 +54,34 @@ theorem hE_swap' (σ : E →ₐ[F] E) (hσ : ∀ x, σ (σ x) = x) {M : ℕ} (J 
 
 end Alg
 
+/- English proof (translation)
+Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[h.2.2.2, h.2.2.2, star_star]`.
+-/
 theorem sigma_sigma' {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (h : IsCMExt F E σ) (x : E) : σ (σ x) = x := by
   obtain ⟨τ⟩ : Nonempty (E →+* ℂ) := inferInstance
   apply τ.injective
   rw [h.2.2.2, h.2.2.2, star_star]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hCM K _ _ M J hJ x z hx hN`. Establish `hσ` using `sigma_sigma' σ hCM`. Use `set a := hE σ J x x with ha`. Use `set c := hE σ J x z / a with hc`. Use `set q := hE σ J (z - c • x) (z - c • x) with hq`.
+
+Establish `hsa : σ a = a` using `(hE_swap' σ hσ J hJ x x).symm`. Establish `hzx : hE σ J z x = σ (hE σ J x z)` using `hE_swap' σ hσ J hJ x z`. Establish `hsc : σ c = hE σ J z x / a` using `by rw [hc, map_div₀, hsa, hzx]`. Establish `hqa : q * a = gram2E σ J x z`. Rewrite using `[hq, hE_sub_smul_left, hE_sub_smul_right, hE_sub_smul_right, hsc, hc, gram2E]`.
+
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Take `⟨s, hs, hss⟩` from `hN`. Establish `hinj : Function.Injective (inclR (F` using `F) (E := E) K) := Algebra.TensorProduct.includeRight_injective (algebraMap F K).injective`. Establish `hG : gram2E σ J x z ≠ 0`.
+
+Introduce `h0`. Rewrite `hss` using `[h0, map_zero, neg_zero]`. Establish `hu : IsUnit (0 : K ⊗[F] E)`. Rewrite using `[← hss]`. Conclude with `hs.mul (hs.map (sigR K σ))`.
+
+Establish `h01 : (0 : K ⊗[F] E) = 1` using `isUnit_zero_iff.mp hu`. Establish `: inclR (F` using `F) K (0 : E) = inclR (F := F) K 1 := by rw [map_zero, map_one, h01]`. Conclude with `zero_ne_one (hinj this)`. Establish `hq0 : q ≠ 0`. Introduce `h0`.
+
+Apply `hG` to reduce the goal to its premises. Rewrite using `[← hqa, h0, zero_mul]`. Use `⟨hq0, ?_⟩` and prove the remaining obligations. Use `set v : K ⊗[F] E := ↑(hs.unit⁻¹) with hv`. Establish `h1 : v * s = 1` using `by rw [hv]; exact hs.val_inv_mul`.
+
+Establish `h2 : sigR K σ v * sigR K σ s = 1` using `by rw [← map_mul, h1, map_one]`. Use `⟨inclR K a * v, ?_⟩` and prove the remaining obligations. Establish `hw : IsUnit (s * sigR K σ s)` using `hs.mul (hs.map (sigR K σ))`. Apply `hw.mul_left_eq_zero.mp` to reduce the goal to its premises. Establish `e1 : inclR K a * v * sigR K σ (inclR K a * v) * (s * sigR K σ s) = inclR K (a * a)`.
+
+Rewrite using `[map_mul, sigR_inclR', hsa]`. Combine the equalities or inequalities in the displayed calculation. Establish `e2 : inclR K (a / q) * (s * sigR K σ s) = - inclR K (a * a)`. Rewrite using `[hss, mul_neg, ← map_mul, ← hqa]`. Use `congr 2`.
+
+Clear the denominators using the available nonvanishing facts. Rewrite using `[add_mul, e1, e2, add_neg_cancel]`.
+-/
 theorem reduce : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (K : Type) [Field K] [Algebra F K] (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → ∀ x z : Fin M → E, hE σ J x x ≠ 0 → IsUnitNorm K σ (-(inclR K (gram2E σ J x z))) → hE σ J (z - (hE σ J x z / hE σ J x x) • x) (z - (hE σ J x z / hE σ J x x) • x) ≠ 0 ∧ ∃ t : K ⊗[F] E, t * sigR K σ t + inclR K (hE σ J x x / hE σ J (z - (hE σ J x z / hE σ J x x) • x) (z - (hE σ J x z / hE σ J x x) • x)) = 0 := by
   intro F E _ _ _ _ _ σ hCM K _ _ M J hJ x z hx hN
   have hσ := sigma_sigma' σ hCM

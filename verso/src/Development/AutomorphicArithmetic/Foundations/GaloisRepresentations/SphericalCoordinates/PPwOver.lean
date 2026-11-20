@@ -7,6 +7,15 @@ open GlobalTheory.LKTrip GlobalTheory.LKRes GlobalTheory.LKMid GlobalTheory.LKGe
 open scoped Matrix TensorProduct Classical
 open UpperTheory.Gal.W2
 
+/- English proof (translation)
+Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => intro f i`. Conclude with `i.elim0`. Consider the case `succ m ih`.
+
+Introduce `f i hf`. Rewrite using `[List.ofFn_succ, List.prod_cons]`. Use `Fin.cases ?_ (fun i' => ?_) i hf` and prove the remaining obligations. Introduce `hf0`. Rewrite using `[List.prod_eq_one, _root_.mul_one]`.
+
+Introduce `x hx`. Take `⟨j, rfl⟩` from `List.mem_ofFn.mp hx`. Conclude with `hf0 _ (Fin.succ_ne_zero j)`. Introduce `hfs`. Rewrite using `[hfs 0 (Fin.succ_ne_zero i').symm, _root_.one_mul]`.
+
+Conclude with `ih (fun j => f j.succ) i' (fun j hj => hfs _ (fun h => hj (Fin.succ_injective _ h)))`.
+-/
 private theorem list_prod_ofFn_eq_of_eq_one_of_ne' {M : Type*} [Monoid M] :
     ∀ {m : ℕ} (f : Fin m → M) (i : Fin m), (∀ j, j ≠ i → f j = 1) → (List.ofFn f).prod = f i := by
   intro m
@@ -25,6 +34,11 @@ private theorem list_prod_ofFn_eq_of_eq_one_of_ne' {M : Type*} [Monoid M] :
       rw [hfs 0 (Fin.succ_ne_zero i').symm, _root_.one_mul]
       exact ih (fun j => f j.succ) i' (fun j hj => hfs _ (fun h => hj (Fin.succ_injective _ h)))
 
+/- English proof (translation)
+Unfold `GlobalTheory.KS.matEnd GlobalTheory.KS.pr`. Rewrite using `[Pi.lift_π]`. Rewrite using `[list_prod_ofFn_eq_of_eq_one_of_ne' _ i]`. Simplify using the standard rewrite rules. Introduce `j hj`.
+
+Simplify using `[Matrix.diagonal_apply_ne' d hj, GlobalTheory.KS.Model.act_zero, Hom.one_def]`.
+-/
 private theorem matEnd_diagonal_pr {S : Scheme.{0}} {O : Type} [Ring O] {A : Over S} [GrpObj A] (act : OActN O A) {m : ℕ}
     (d : Fin m → O) (i : Fin m) :
     GlobalTheory.KS.matEnd act (Matrix.diagonal d) ≫ GlobalTheory.KS.pr A i = GlobalTheory.KS.pr A i ≫ act.act (d i) := by
@@ -35,6 +49,15 @@ private theorem matEnd_diagonal_pr {S : Scheme.{0}} {O : Type} [Ring O] {A : Ove
   · intro j hj
     simp [Matrix.diagonal_apply_ne' d hj, GlobalTheory.KS.Model.act_zero, Hom.one_def]
 
+/- English proof (translation)
+Introduce `p _ D G L gb N N' h X X' c k`. Establish `hpw : c.pw k ≫ (KS.pow X.univ.A k).hom = (KS.pow X'.univ.A k).hom ≫ c.q` using `by delta Leg.pw`. Conclude with `KS.Model.powMap_over _ _ _ k`. Establish `hpr : ∀ i : Fin k, c.pw k ≫ Over.Hom.left (KS.pr X.univ.A i) = Over.Hom.left (KS.pr X'.univ.A i) ≫ c.tot`. Introduce `i`.
+
+Use `delta Leg.pw`. Conclude with `KS.Model.powMap_pr _ _ _ k i`. Use `⟨hpw, hpr, ?_, fun α => ⟨?_, fun i => ?_⟩⟩` and prove the remaining obligations. Introduce `b delta Leg.tot`. Establish `h1` using `congrArg Over.Hom.left (c.tr.2.1 b)`.
+
+Simplify using `only [Over.comp_left] at h1`. Rewrite using `[← Category.assoc, h1, Category.assoc, c.φ.act b, Category.assoc]`. Use `delta Leg.tw`. Rewrite using `[Category.assoc, Over.w, hpw]`. Establish `hm` using `congrArg Over.Hom.left (matEnd_diagonal_pr X.univ.act (fun s => (algebraMap (𝓞 D.F) D.O (α s) : D.toG.O)) i)`.
+
+Rewrite `hm` using `[Over.comp_left, Over.comp_left]`. Use `delta Leg.tw`. Use `(Category.assoc _ _ _).trans ((congrArg (c.pw k ≫ ·) hm).trans ?_)` and prove the remaining obligations. Rewrite using `[← Category.assoc, hpr, Category.assoc]`.
+-/
 theorem UpperTheory.Gal.W2.pwOver_of :
     UpperTheory.Gal.W2.PwOver := by
   intro p _ D G L gb N N' h X X' c k

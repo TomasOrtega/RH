@@ -39,6 +39,11 @@ end Alg
 section Herm
 variable {r : ℕ} {F E : Type} [CommRing F] [CommRing E] [StarRing E] [Algebra F E]
 
+/- English proof (translation)
+Establish `hA : X.1.1ᴴ = X.1.1` using `X.1.2`. Unfold `IsSelfAdjoint full Hn.toGl`. Simplify using `only [Matrix.star_eq_conjTranspose, Matrix.reindex_apply, Matrix.conjTranspose_submatrix, Matrix.fromBlocks_conjTranspose, hA]`. Use `congr 1`. Use `congr 1`.
+
+Apply the tactic sequence `all_goals (ext i j; simp [hl])`.
+-/
 theorem full_toGl_isSelfAdjoint (X : Hn r F E) (hl : star (algebraMap F E X.2.2) = algebraMap F E X.2.2) :
     IsSelfAdjoint (full X.toGl) := by
   have hA : X.1.1ᴴ = X.1.1 := X.1.2

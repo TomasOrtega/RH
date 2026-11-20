@@ -18,6 +18,11 @@ def colVar : Vm D.what₂.Tau N → MvPolynomial (Rt D.what₂.Tau N) ℚ
 
 def collapseQ : MvPolynomial (Vm D.what₂.Tau N) ℚ →ₐ[ℚ] MvPolynomial (Rt D.what₂.Tau N) ℚ := aeval (colVar D N)
 
+/- English proof (translation)
+Break down `v with ⟨_, x⟩ | ⟨_, k⟩` into its components or cases. Conclude with `isHomogeneous_X ℚ x`. Use `IsHomogeneous.C_mul (IsHomogeneous.sum _ _ _ fun τ _ => IsHomogeneous.sum _ _ _ fun i _ => ?_) _` and prove the remaining obligations. Establish `h : (X (τ, i) : MvPolynomial (Rt D.what₂.Tau N) ℚ).IsHomogeneous 1` using `isHomogeneous_X ℚ _`. Establish `h1` using `h.pow k`.
+
+Establish `h2` using `h.neg.pow k`. Rewrite `h1`, `h2` using `[one_mul]`. Conclude with `h1.add h2`.
+-/
 theorem isHomogeneous_colVar (v : Vm D.what₂.Tau N) : (colVar D N v).IsHomogeneous (wt D.what₂.Tau N v) := by
   rcases v with ⟨_, x⟩ | ⟨_, k⟩
   · exact isHomogeneous_X ℚ x
@@ -28,6 +33,11 @@ theorem isHomogeneous_colVar (v : Vm D.what₂.Tau N) : (colVar D N v).IsHomogen
     rw [one_mul] at h1 h2
     exact h1.add h2
 
+/- English proof (translation)
+Rewrite using `[G.as_sum, map_sum]`. Use `IsHomogeneous.sum _ _ _ fun m hm => ?_` and prove the remaining obligations. Establish `hw : Finsupp.weight (wt D.what₂.Tau N) m = d` using `hG (mem_support_iff.1 hm)`. Rewrite using `[collapseQ, aeval_monomial, Algebra.algebraMap_eq_smul_one, smul_mul_assoc, one_mul, smul_eq_C_mul]`. Use `IsHomogeneous.C_mul ?_ _` and prove the remaining obligations.
+
+Rewrite using `[Finsupp.prod]`. Establish `h` using `IsHomogeneous.prod m.support (fun v => colVar D N v ^ m v) (fun v => wt D.what₂.Tau N v * m v) fun v _ => (isHomogeneous_colVar D N v).pow (m v)`. Use `h using 1` and compare the differences between its conclusion and the goal. Rewrite using `[← hw, Finsupp.weight_apply, Finsupp.sum]`. Conclude with `Finset.sum_congr rfl fun v _ => by rw [smul_eq_mul, mul_comm]`.
+-/
 theorem isHomogeneous_collapseQ {d : ℕ} {G : MvPolynomial (Vm D.what₂.Tau N) ℚ}
     (hG : G.IsWeightedHomogeneous (wt D.what₂.Tau N) d) : (collapseQ D N G).IsHomogeneous d := by
   classical
@@ -43,6 +53,11 @@ theorem isHomogeneous_collapseQ {d : ℕ} {G : MvPolynomial (Vm D.what₂.Tau N)
   rw [← hw, Finsupp.weight_apply, Finsupp.sum]
   exact Finset.sum_congr rfl fun v _ => by rw [smul_eq_mul, mul_comm]
 
+/- English proof (translation)
+Establish `e : (MvPolynomial.map (algebraMap ℚ ℝ)).comp (collapseQ D N).toRingHom = (collapse D N).toRingHom.comp (MvPolynomial.map (algebraMap ℚ ℝ))`. Use `MvPolynomial.ringHom_ext (fun a => ?_) fun v => ?_` and prove the remaining obligations. Simplify using `[collapseQ]`. Break down `v with ⟨_, x⟩ | ⟨_, k⟩` into its components or cases. Simplify using `[collapseQ, colVar, collapse]`.
+
+Simplify using `[collapseQ, colVar, collapse, chTot, map_sum]`. Conclude with `RingHom.congr_fun e G`.
+-/
 theorem toR_collapseQ (G : MvPolynomial (Vm D.what₂.Tau N) ℚ) : toR (collapseQ D N G) = collapse D N (toR G) := by
   have e : (MvPolynomial.map (algebraMap ℚ ℝ)).comp (collapseQ D N).toRingHom =
       (collapse D N).toRingHom.comp (MvPolynomial.map (algebraMap ℚ ℝ)) := by

@@ -44,6 +44,13 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 open GlobalTheory.BaseChangeBridge in
 
+/- English proof (translation)
+Introduce `hBC E _ _ _ hun n hn π hπ`. Take `⟨c, N, h, V, σ, m, P, H⟩` from `hBC E hun n hn π hπ`. Use `⟨c, N, h, V, σ, m, ?_⟩` and prove the remaining obligations. Establish `hirr : ∀ w, (locProd h w (σ · w)).IsIrreducible` using `fun w => (UpperTheory.Lit.Mix.multiProd_at (@UpperTheory.Lit.Mix.twoAt_charZero _ _ _ _ _ (charZero_of_injective_algebraMap (algebraMap E _).injective)) (GlobalTheory.SmGL.stdBlocks N h) (fun i => (σ i w).smooth) (fun i => (σ i w).irred) (fun i => GlobalTheory.DiscreteUnit.isUnit …`. Conclude with `{ pos := H.pos discrete := H.discrete csd := H.csd loc := H.loc inf := H.inf unram := fun w hw => by`.
+
+Take `⟨e, he⟩` from `exists_equiv_of_isSubquotient (P w).irred (hirr w) (H.sub w)`. Conclude with `isSpherical_of_equiv e he (H.unram w hw)`. Use `inert := fun w s ϖ q hs hq α hα => by`. Take `⟨e, he⟩` from `exists_equiv_of_isSubquotient (P w).irred (hirr w) (H.sub w)`. Conclude with `hasSatGL_of_equiv e he (H.inert w s ϖ q hs hq α hα)`.
+
+Use `split := fun w hw => by`. Take `⟨e, he⟩` from `exists_equiv_of_isSubquotient (P w).irred (hirr w) (H.sub w)`. Conclude with `isCompAlong_of_equiv e he (hirr w) (H.split w hw)`. Use `weight := H.weight }`.
+-/
 theorem definiteN_of : BaseChangeIsobaricN → DefiniteN := by
   intro hBC E _ _ _ hun n hn π hπ
   obtain ⟨c, N, h, V, σ, m, P, H⟩ := hBC E hun n hn π hπ
@@ -70,6 +77,9 @@ theorem definiteN_of : BaseChangeIsobaricN → DefiniteN := by
         exact isCompAlong_of_equiv e he (hirr w) (H.split w hw)
       weight := H.weight }
 
+/- English proof (translation)
+Introduce `h _` and use `definiteN_of h`.
+-/
 theorem bridge : BaseChangeIsobaricN → GlobalTheory.Published.BernsteinUnitaryProductIrreducible → DefiniteN :=
   fun h _ => definiteN_of h
 

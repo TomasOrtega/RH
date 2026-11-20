@@ -22,6 +22,11 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 
 namespace PositivityTheory.Xgn.ModelSectionsTransport
 
+/- English proof (translation)
+Use `letI := g.toAlgebra`. Use `letI := h.toAlgebra`. Take `⟨m, hm⟩` from `Ideal.exists_maximal (K ⊗[F] L)`. Use `letI : Field ((K ⊗[F] L) ⧸ m) := Ideal.Quotient.field m`. Set `q : K ⊗[F] L →+* AlgebraicClosure ((K ⊗[F] L) ⧸ m)` to `(algebraMap ((K ⊗[F] L) ⧸ m) (AlgebraicClosure ((K ⊗[F] L) ⧸ m))).comp (Ideal.Quotient.mk m)`.
+
+Use `⟨AlgebraicClosure ((K ⊗[F] L) ⧸ m), inferInstance, inferInstance, q.comp Algebra.TensorProduct.includeLeftRingHom, q.comp (Algebra.TensorProduct.includeRight : L →ₐ[F] K ⊗[F] L).toRingHom, ?_⟩` and prove the remaining obligations. Establish `e` using `Algebra.TensorProduct.includeLeftRingHom_comp_algebraMap (R := F) (A := K) (B := L)`. Rewrite using `[RingHom.comp_assoc, RingHom.comp_assoc]`. Conclude with `congrArg (q.comp ·) e`.
+-/
 theorem exists_common {F K L : Type} [Field F] [Field K] [Field L] (g : F →+* K) (h : F →+* L) :
     ∃ (Ω : Type) (_ : Field Ω) (_ : IsAlgClosed Ω) (i : K →+* Ω) (j : L →+* Ω), i.comp g = j.comp h := by
   letI := g.toAlgebra
@@ -37,6 +42,13 @@ theorem exists_common {F K L : Type} [Field F] [Field K] [Field L] (g : F →+* 
   rw [RingHom.comp_assoc, RingHom.comp_assoc]
   exact congrArg (q.comp ·) e
 
+/- English proof (translation)
+Take `⟨Ω, _, _, i, j, hij⟩` from `exists_common g h`. Use `haveI : CharZero K := charZero_of_injective_ringHom g.injective`. Use `haveI : CharZero L := charZero_of_injective_ringHom h.injective`. Set `uK : Over.mk (spMap (i.comp g)) ⟶ Over.mk (spMap g)` to `Over.homMk (spMap i) (spMap_comp g i).symm`. Set `uL : Over.mk (spMap (i.comp g)) ⟶ Over.mk (spMap h)` to `Over.homMk (spMap j) (by rw [hij, spMap_comp]; rfl)`.
+
+Take `⟨I', -, hI'⟩` from `GlobalTheory.FullPoint.exists_tateIso_up (D := D) GlobalTheory.abelianSchemeLaws_all.1 (SabModel.pol t ht) t.act.act j uL rfl I`. Take `⟨J, hJ⟩` from `PositivityTheory.Xgn.tate_isomorphism_descends E H D (Sp F) (SabModel.pol t ht) t.act.act t.act.hom K Ω i _ _ uK rfl I'`. Use `⟨J, fun n hn v s hs => ?_⟩` and prove the remaining obligations. Apply `GlobalTheory.TorsionFieldExt.comp_injective uK t.G` to reduce the goal to its premises. Use `show uK ≫ (toUnit _ ≫ s) = uK ≫ J.ev n v`.
+
+Rewrite using `[← hJ n v hn, hI' n v, ← hs, ← Category.assoc, toUnit_unique (uK ≫ toUnit _) (uL ≫ toUnit _), Category.assoc]`. Both sides reduce to the same expression.
+-/
 theorem exists_transport {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} (D : Datum H)
     {F K L : Type} [Field F] [Field K] [Field L] [IsAlgClosed K] [IsAlgClosed L] [CharZero F]
     (t : SAB H (Sp F)) (ht : IsPrincipal t) (g : F →+* K) (h : F →+* L)
@@ -65,6 +77,23 @@ theorem exists_transport {E : Type} [Field E] [NumberField E] [IsCMField E] {H :
 
 end PositivityTheory.Xgn.ModelSectionsTransport
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l F hK t ht hA hLie I hsec`. Take `⟨hpr, ham, hkt⟩` from `id ht`. Establish `hM : 0 < l.M` using `by have := l.three_le; omega`. Take `⟨e, he, e', he', hee⟩` from `Submodule.mem_sup.mp ((Ideal.eq_top_iff_one _).mp l.coprime)`. Use `choose eta heta using fun a => hsec (e' • a)`.
+
+Establish `inj` using `GlobalTheory.TorsionFieldExt.comp_injective (x := 𝟙 (Sp F)) (toUnit (Over.mk (spMap (algebraMap F ℂ)))) t.G`. Use `⟨⟨t, hpr, ham, hkt, eta, fun a c => inj ?_, fun a ha => inj ?_, fun _ => 1, fun _ _ => (mul_one 1).symm, fun _ => rfl, ?_⟩, rfl⟩` and prove the remaining obligations. Use `show toUnit _ ≫ eta (a + c) = toUnit _ ≫ (eta a * eta c)`. Rewrite using `[comp_mul, heta, heta, heta, smul_add, I.add]`. Use `show toUnit _ ≫ eta a = toUnit _ ≫ 1`.
+
+Rewrite using `[MonObj.comp_one, heta]`. Take `⟨c, hc⟩` from `GlobalTheory.FullPoint.exists_eq_nsmul (D := D) l ((mul_comm _ _).trans l.prod) he' ha`. Conclude with `(I.ker _ hM _).mpr ⟨c, hc⟩`. Introduce `k _ _ x β hx`. Take `⟨g, rfl⟩ : ∃ g : F →+* k, x = spMap g` from `⟨(Spec.preimage x).hom, by simp [spMap, Spec.map_preimage]⟩`.
+
+Establish `hβ : β = g.comp (IntermediateField.inclusion hK).toRingHom` using `GlobalTheory.FullPoint.spMap_inj (by rw [spMap_comp]; exact hx.symm)`. Substitute `hβ` using the available equality. Take `⟨J, hJ⟩` from `PositivityTheory.Xgn.ModelSectionsTransport.exists_transport D t ht g (algebraMap F ℂ) I`. Use `⟨fun τ => hLie k g τ, J, ?_, fun a => ?_, fun a ha => ?_⟩` and prove the remaining obligations. Establish `a1 : J.ζ l.A = 1`.
+
+Establish `h` using `J.ζ_prim l.A l.A_pos`. Rewrite `h`, the goal using `[hA]`. Conclude with `IsPrimitiveRoot.one_right_iff.mp h`. Establish `b1 : (baseKA l).ζ = 1`. Establish `h` using `(baseKA l).ζ_prim`.
+
+Rewrite `h` using `[hA]`. Conclude with `IsPrimitiveRoot.one_right_iff.mp h`. Rewrite using `[a1, b1, map_one, Units.val_one]`. Simplify using `only [MonObj.comp_one]`. Use `symm`.
+
+Rewrite using `[hA]`. Conclude with `(J.ker 1 one_pos a).mpr ⟨a, (one_smul ℕ a).symm⟩`. Rewrite using `[hJ l.M hM (e' • a) (eta a) (heta a)]`. Take `⟨c, hc⟩` from `GlobalTheory.FullPoint.exists_eq_nsmul (D := D) l l.prod he ha`. Establish `h0 : J.ev l.M (e • a) = 1` using `(J.ker _ hM _).mpr ⟨c, hc⟩`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem PositivityTheory.Xgn.model_object_sections : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (F : IntermediateField ℚ ℂ) (hK : KA l ≤ F) (t : SAB H (Sp F)), IsPrincipal t → l.A = 1 → (∀ (k : Type) [Field k] [IsAlgClosed k] (g : F →+* k) (τ : 𝓞 E →+* k), (τ H.rt = g (IntermediateField.inclusion hK (baseKA l).ρ) → LieMult t.act (spMap g) τ D.p) ∧ (τ H.rt ≠ g (IntermediateField.inclusion hK (baseKA l).ρ) → LieMult t.act (spMap g) τ D.q)) → ∀ I : TateIso D ℂ (Over.mk (spMap (algebraMap F ℂ)) ⟶ t.G) (fun a g => g ≫ t.act.act a) (fun n g g' c => Out.WeilIs t.G t.PP.L n g g' (unitOn c)), (∀ a : D.La, ∃ s : 𝟙_ (Over (Sp F)) ⟶ t.G, toUnit _ ≫ s = I.ev l.M a) → ∃ o : Obj D l (baseKA l) (spMap (IntermediateField.inclusion hK).toRingHom), o.t = t := by
   intro E _ _ _ H D l F hK t ht hA hLie I hsec
   obtain ⟨hpr, ham, hkt⟩ := id ht

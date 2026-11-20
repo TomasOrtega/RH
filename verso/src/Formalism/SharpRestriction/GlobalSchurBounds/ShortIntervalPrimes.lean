@@ -160,11 +160,19 @@ def adm11 (_D : D7) (C : ℝ) : Prop :=
     (ZerosNear χ t).Finite ∧
     ∑ᶠ ρ ∈ ZerosNear χ t, (zOrd χ ρ : ℝ) ≤ C * Real.log (N * (|t| + 2))
 
+/- English proof (translation)
+Take `⟨hd, χ₀, hχ⟩` from `h`. Conclude with `⟨hd, χ₀⁻¹, by rw [hχ, map_inv]⟩`.
+-/
 theorem factorsThrough_inv {N : ℕ} {χ : DirichletCharacter ℂ N} {d : ℕ}
     (h : χ.FactorsThrough d) : χ⁻¹.FactorsThrough d := by
   obtain ⟨hd, χ₀, hχ⟩ := h
   exact ⟨hd, χ₀⁻¹, by rw [hχ, map_inv]⟩
 
+/- English proof (translation)
+Unfold `DirichletCharacter.IsPrimitive DirichletCharacter.conductor at *`. Establish `hs : χ⁻¹.conductorSet = χ.conductorSet`. Use extensionality with `d`. Rewrite using `[DirichletCharacter.mem_conductorSet_iff, DirichletCharacter.mem_conductorSet_iff]`. Conclude with `⟨fun h' => by simpa using factorsThrough_inv h', factorsThrough_inv⟩`.
+
+Rewrite using `[hs]`. Conclude with `h`.
+-/
 theorem isPrimitive_inv {N : ℕ} {χ : DirichletCharacter ℂ N} (h : χ.IsPrimitive) :
     χ⁻¹.IsPrimitive := by
   unfold DirichletCharacter.IsPrimitive DirichletCharacter.conductor at *
@@ -175,6 +183,15 @@ theorem isPrimitive_inv {N : ℕ} {χ : DirichletCharacter ℂ N} (h : χ.IsPrim
   rw [hs]
   exact h
 
+/- English proof (translation)
+Establish `hprim` using `isPrimitive_inv hχ`. Establish `hρ0 : ρ ≠ 0` using `fun h => by`. Rewrite `h0` using `[h]`. Simplify using `at h0`. Establish `h1ρ : (1 - ρ) ≠ 0` using `fun h => by`.
+
+Establish `e` using `congrArg Complex.re h`. Rewrite `e` using `[Complex.sub_re, Complex.one_re, Complex.zero_re]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hg : DirichletCharacter.gammaFactor χ ρ ≠ 0`. Unfold `DirichletCharacter.gammaFactor`.
+
+Use `split_ifs`. Conclude with `Complex.Gammaℝ_ne_zero_of_re_pos h0`. Conclude with `Complex.Gammaℝ_ne_zero_of_re_pos (by rw [Complex.add_re, Complex.one_re]; linarith)`. Establish `hc : DirichletCharacter.completedLFunction χ ρ = 0`. Establish `e` using `DirichletCharacter.LFunction_eq_completed_div_gammaFactor (χ := χ) ρ (Or.inl hρ0)`.
+
+Rewrite `e` using `[hz, eq_comm, div_eq_zero_iff]`. Conclude with `e.resolve_right hg`. Rewrite using `[DirichletCharacter.LFunction_eq_completed_div_gammaFactor (χ := χ⁻¹) (1 - ρ) (Or.inl h1ρ), hprim.completedLFunction_one_sub ρ, inv_inv, hc]`. Simplify using the standard rewrite rules.
+-/
 theorem zero_symm {N : ℕ} [NeZero N] {χ : DirichletCharacter ℂ N} (hχ : χ.IsPrimitive) {ρ : ℂ}
     (h0 : 0 < ρ.re) (h1 : ρ.re < 1) (hz : DirichletCharacter.LFunction χ ρ = 0) :
     DirichletCharacter.LFunction χ⁻¹ (1 - ρ) = 0 := by
@@ -305,6 +322,9 @@ def PropTwoSixThinScales (D : D7) (x eps c : ℝ) : Prop :=
   ∀ (N : ℕ) [NeZero N] (χ : DirichletCharacter ℂ N), IsCharED D χ →
     ∀ y : ℝ, Real.exp (x ^ (eps / 3)) / 3 ≤ y → ‖gChi χ y‖ ≤ y * Real.exp (-(c * x ^ (eps / 8)))
 
+/- English proof (translation)
+Introduce `⟨_, hr⟩` and use `h hr.2.1`.
+-/
 theorem prop_two_six_of_congruence_form (D : D7) (x eps c : ℝ) (h : PropTwoSixThinScales D x eps c) : Conclusion6 D x eps c :=
   fun ⟨_, hr⟩ => h hr.2.1
 
@@ -347,6 +367,11 @@ section Family
 
 variable {eps : ℝ}
 
+/- English proof (translation)
+Take `⟨hN, hM, hK, -⟩` from `Fm.sizes x hx i`. Establish `hxx` using `Fm.L_x x i hx`. Establish `he` using `Fm.L_eps x i`. Unfold `SizeN at hN`. Unfold `SizeM at hM`.
+
+Unfold `SizeK at hK`. Unfold `szTh at hN hM hK`. Unfold `Scale.delta1 at hM`. Rewrite `hN`, `hM`, `hK` using `[hxx, he]`. Conclude with `⟨hN, hM, hK⟩`.
+-/
 theorem fam_sizes (Fm : FamP eps) (x : ℝ) (hx : Fm.x1 < x) (i : Fm.Ix x) :
     (x ^ (2 + 8 * eps - eps / 100) ≤ ((Fm.D x i).R.n : ℝ) ∧
       ((Fm.D x i).R.n : ℝ) ≤ x ^ (2 + 8 * eps + eps / 100)) ∧
@@ -405,6 +430,9 @@ def Conclusion6Family (Fm : FamP eps) : Prop :=
   ∃ c : ℝ, 0 < c ∧ ∃ x0 : ℝ, 1 < x0 ∧ ∀ x ≥ x0, ∀ i : Fm.Ix x, Conclusion6 (Fm.D x i) x eps c
 def FamilyPropTwoSixCongruenceForm (Fm : FamP eps) : Prop :=
   ∃ c : ℝ, 0 < c ∧ ∃ x0 : ℝ, 1 < x0 ∧ ∀ x ≥ x0, ∀ i : Fm.Ix x, PropTwoSixThinScales (Fm.D x i) x eps c
+/- English proof (translation)
+Take `⟨c, hc, x0, hx0, hall⟩` from `h`. Conclude with `⟨c, hc, x0, hx0, fun x hx i => prop_two_six_of_congruence_form _ _ _ _ (hall x hx i)⟩`.
+-/
 theorem prop_two_six_family_of_congruence_form (Fm : FamP eps) (h : FamilyPropTwoSixCongruenceForm Fm) : Conclusion6Family Fm := by
   obtain ⟨c, hc, x0, hx0, hall⟩ := h
   exact ⟨c, hc, x0, hx0, fun x hx i => prop_two_six_of_congruence_form _ _ _ _ (hall x hx i)⟩

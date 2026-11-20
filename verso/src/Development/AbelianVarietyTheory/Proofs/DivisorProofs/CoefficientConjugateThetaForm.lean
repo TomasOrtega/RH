@@ -19,6 +19,9 @@ section Relabel
 
 variable {ι : Type} {n : ℕ} {P : Type} [AddCommGroup P] [Module ℂ P]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `ρ`. Distinguish the cases in `h : ρ = l τ`. Substitute `h` using the available equality. Rewrite using `[Equiv.symm_apply_apply, Pi.mulSingle_eq_same, Pi.mulSingle_eq_same]`. Rewrite using `[Pi.mulSingle_eq_of_ne h, Pi.mulSingle_eq_of_ne fun h' => h (by rw [← h', Equiv.apply_symm_apply])]`.
+-/
 theorem mulSingle_relabel (l : ι ≃ ι) (τ : ι) (g : Matrix (Fin n) (Fin n) ℂ) :
     (fun ρ => (Pi.mulSingle τ g : ι → Matrix (Fin n) (Fin n) ℂ) (l.symm ρ)) = Pi.mulSingle (l τ) g := by
   funext ρ
@@ -26,6 +29,9 @@ theorem mulSingle_relabel (l : ι ≃ ι) (τ : ι) (g : Matrix (Fin n) (Fin n) 
   · subst h; rw [Equiv.symm_apply_apply, Pi.mulSingle_eq_same, Pi.mulSingle_eq_same]
   · rw [Pi.mulSingle_eq_of_ne h, Pi.mulSingle_eq_of_ne fun h' => h (by rw [← h', Equiv.apply_symm_apply])]
 
+/- English proof (translation)
+Use `⟨h.1, h.2.1, fun a b ha hb => h.2.2.1 _ _ (fun _ => ha _) (fun _ => hb _), fun τ => ?_⟩` and prove the remaining obligations. Simplify using `only [mulSingle_relabel]`. Conclude with `h.2.2.2 (l τ)`.
+-/
 theorem isHolFam_relabel (l : ι ≃ ι) {ε : Fin n → Bool} {B : P →ₗ⋆[ℂ] P →ₗ[ℂ] ℂ}
     {ϖ : (ι → Matrix (Fin n) (Fin n) ℂ) → Module.End ℂ P} (h : IsHolFam (fun _ => ε) B ϖ) :
     IsHolFam (fun _ => ε) B fun u => ϖ fun ρ => u (l.symm ρ) := by
@@ -33,6 +39,9 @@ theorem isHolFam_relabel (l : ι ≃ ι) {ε : Fin n → Bool} {B : P →ₗ⋆[
   simp only [mulSingle_relabel]
   exact h.2.2.2 (l τ)
 
+/- English proof (translation)
+Introduce `τ`. Simplify using `only [mulSingle_relabel]`. Conclude with `h (l τ)`.
+-/
 theorem isBotFam_relabel (l : ι ≃ ι) {ε : Fin n → Bool} {ϖ : (ι → Matrix (Fin n) (Fin n) ℂ) → Module.End ℂ P}
     {μ : ι → Fin n → ℝ} {x : P} (h : IsBotFam (fun _ => ε) ϖ μ x) :
     IsBotFam (fun _ => ε) (fun u => ϖ fun ρ => u (l.symm ρ)) (fun τ => μ (l τ)) x := by
@@ -48,6 +57,25 @@ open GlobalTheory.CoefModel GlobalTheory.CoefReal
 
 variable {D : D7}
 
+/- English proof (translation)
+Take `⟨e, he⟩ : ∃ e : VV ℂ lam ≃ₗ[ℂ] c.W, ∀ v, e (mapVV σ lam v) = c0 v` from `exists_scalarExt σ lam c0 h2 h3`. Use `⟨e, fun u hu v => ?_⟩` and prove the remaining obligations. Use `haveI := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA D.sp.cm.sig V.gram`. Establish `hlab : ∀ τ x, σ (labLL D τ x) = tauE D (l.symm τ) x` using `fun τ x => by`. Use `DFunLike.congr_fun (hl (l.symm τ)) x` as an intermediate fact.
+
+Rewrite `this` using `[Equiv.apply_symm_apply]`. Then use the resulting hypothesis. Establish `hrat : ∀ (γ : GQ V) (v : VV ℂ lam), c.ρ γ.1 (e v) = e (rhoK lam (invTrK fun τ => realGL θ V γ.1 (l.symm τ)) v)`. Introduce `γ v`. Choose the witnesses or unpack the hypotheses as in `⟨γE, hγ⟩ : ∃ γE, Bridge.IsRatMat V γ γE := by`. Take `⟨γ, ⟨g, -, hg⟩⟩` from `γ`.
+
+Conclude with `⟨g, hg.symm⟩`. Establish `e1 : (fun τ => Formalism.UG.bc σ (invTrK (embGL (labLL D) γE) τ)) = invTrK fun τ => realGL θ V γ (l.symm τ)`. Use function extensionality and compare the values at `τ`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[bc_coe, invTrK_coe, invTrK_coe, realGL_rat hθ V γ γE hγ, embGL_inv, ← map_inv, embGL_coe, bc_coe]`.
+
+Use extensionality with `a b`. Conclude with `hlab _ _`. Establish `: (c.ρ γ).comp e.toLinearMap = e.toLinearMap.comp (rhoK lam (invTrK fun τ => realGL θ V γ (l.symm τ)))`. Use `LinearMap.ext_on_range (span_mapVV σ lam) fun i => ?_` and prove the remaining obligations. Use `show c.ρ γ (e _) = e (rhoK lam (invTrK fun τ => realGL θ V γ (l.symm τ)) _)`.
+
+Rewrite using `[← e1, ← mapVV_rhoK, he, he]`. Conclude with `(h1 γ γE hγ _).symm`. Conclude with `LinearMap.congr_fun this v`. Establish `hfin : ∀ k ∈ GfC V, realGL θ V k = 1` using `fun k hk => funext fun τ => by show Formalism.UG.bc (θ τ) (infHom V k) = 1`. Rewrite using `[show infHom V k = 1 from hk, map_one]`.
+
+Rewrite using `[← e.symm_apply_eq]`. Use `Subtype.ext (MvPolynomial.ext _ _ fun m => ?_)` and prove the remaining obligations. Set `L : c.W →ₗ[ℂ] ℂ` to `MvPolynomial.lcoeff ℂ m ∘ₗ (VV ℂ lam).subtype ∘ₗ e.symm.toLinearMap`. Establish `hf : Continuous fun h => L (c.ρ h (e v))` using `L.continuous_of_finiteDimensional.comp (hc.2.2.1 _)`. Establish `hg : Continuous fun h => MvPolynomial.coeff m (actP lam (invTrK fun τ => realGL θ V h (l.symm τ)) v.1)`.
+
+Use `continuous_coeff_actP lam _ (fun τ => ?_) _ m` and prove the remaining obligations. Use `(((realGL_laws hθ V).1 (l.symm τ)).comp continuous_inv).matrix_transpose.congr fun h => ?_` and prove the remaining obligations. Use `show (realGL θ V h⁻¹ (l.symm τ) : Matrix (Fin V.rank) (Fin V.rank) ℂ)ᵀ = _`. Rewrite using `[map_inv]`. Both sides reduce to the same expression.
+
+Assume the negation of the conclusion as `hne`. Take `⟨γ, hγ, k, hk, hU, -⟩` from `GlobalTheory.RealApprox.weak_approx_real V u hu _ (isOpen_ne_fun hf hg) hne`. Use `hU ?_` and prove the remaining obligations. Use `show L (c.ρ (γ * k) (e v)) = MvPolynomial.coeff m (actP lam (invTrK fun τ => realGL θ V (γ * k) (l.symm τ)) v.1)`. Rewrite using `[map_mul, map_mul (realGL θ V), hc.1 k hk, hfin k hk, mul_one, mul_one, hrat ⟨γ, hγ⟩ v]`.
+
+Simplify using `[L, rhoK_coe]`.
+-/
 theorem exists_real_model (V : HSp D) (θ : InfFam D) (c : CoefA V) (lam : D.what₂.Tau → DomWeight V.rank)
     (σ : D.what₂.LL →+* ℂ) (l : D.what₂.Tau ≃ D.what₂.Tau) (hl : ∀ ρ, labE σ (l ρ) = tauE D ρ)
     (c0 : VV D.what₂.LL lam →ₛₗ[σ] c.W) (hθ : IsInfFam θ) (hc : c.Is)
@@ -103,6 +131,13 @@ theorem exists_real_model (V : HSp D) (θ : InfFam D) (c : CoefA V) (lam : D.wha
   rw [map_mul, map_mul (realGL θ V), hc.1 k hk, hfin k hk, mul_one, mul_one, hrat ⟨γ, hγ⟩ v]
   simp [L, rhoK_coe]
 
+/- English proof (translation)
+Take `⟨e, he⟩` from `exists_real_model V θ c lam σ l hl c0 hθ hc h1 h2 h3`. Use `choose B hB using fun τ => hBS (l.symm τ)`. Use `⟨(VV ℂ lam).subtype ∘ₗ rhoK lam (invTrK B⁻¹) ∘ₗ e.symm.toLinearMap, ?_, fun u hu w => ?_⟩` and prove the remaining obligations. Establish `hs : Function.Surjective (rhoK lam (invTrK B⁻¹))` using `fun x => ⟨rhoK lam (invTrK B) x, by`. Rewrite using `[← Module.End.mul_apply, ← map_mul, ← map_mul, inv_mul_cancel, map_one, map_one, Module.End.one_apply]⟩`.
+
+Rewrite using `[LinearMap.range_comp, LinearMap.range_comp, LinearEquiv.range, Submodule.map_top, LinearMap.range_eq_top.2 hs, Submodule.map_top, Submodule.range_subtype]`. Take `⟨v, rfl⟩` from `e.surjective w`. Establish `e1 : (fun τ => (BS (l.symm τ))⁻¹ * compAt θ (l.symm τ) (Formalism.L2.Theta.mt V u) * BS (l.symm τ)) = fun τ => (((B⁻¹ * (fun τ => realGL θ V u (l.symm τ)) * B) τ : GL (Fin V.rank) ℂ) : Matrix (Fin V.rank) (Fin V.rank) ℂ)`. Use function extensionality and compare the values at `τ`. Rewrite using `[← hB τ, ← Matrix.coe_units_inv]`.
+
+Both sides reduce to the same expression. Rewrite using `[e1, vact_eq_actP, he u hu v]`. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.symm_apply_apply, Submodule.subtype_apply]`. Rewrite using `[← rhoK_coe, ← Module.End.mul_apply, ← Module.End.mul_apply, ← map_mul, ← map_mul, ← map_mul, ← map_mul, mul_inv_cancel_right]`.
+-/
 theorem exists_poly_model (V : HSp D) (θ : InfFam D) (c : CoefA V) (lam : D.what₂.Tau → DomWeight V.rank)
     (σ : D.what₂.LL →+* ℂ) (l : D.what₂.Tau ≃ D.what₂.Tau) (hl : ∀ ρ, labE σ (l ρ) = tauE D ρ)
     (c0 : VV D.what₂.LL lam →ₛₗ[σ] c.W) (hθ : IsInfFam θ) (hc : c.Is)
@@ -136,6 +171,41 @@ theorem exists_poly_model (V : HSp D) (θ : InfFam D) (c : CoefA V) (lam : D.wha
 
 end Coef
 
+/- English proof (translation)
+Take `⟨hhK, hhU⟩` from `GlobalTheory.T.fockActions_isHolomorphicProductKRepFamily D W.rank V.rank M.ε x₁ x₂ x₃`. Take `⟨κ, Δ', hκ, hΔ, hbK, hbU⟩` from `GlobalTheory.T.exists_minorProduct_translate_jointLowestWeight D W.rank V.rank M.ε p q ap am x₁ x₂ x₃ hr hpq hε hap ham`. Take `⟨m, hm1, hm2, hm3⟩` from `GlobalTheory.T.holomorphic_family_low_lie_action D W Sp M _ _ _ hhK`. Take `⟨hv1', hv2', hv3, hv4⟩` from `GlobalTheory.T.frameFunctionAction_holomorphic_extremal_lowest D.what₂.Tau V.rank lam`. Take `⟨ϖ, hϖ⟩ : ∃ ϖ : (D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ) → Module.End ℂ (Pol ℂ D.what₂.Tau V.rank), ϖ = fun u => vact lam fun ρ => u (l.symm ρ)` from `⟨_, rfl⟩`.
+
+Establish `hv1` using `isHolFam_relabel l hv1'`. Establish `hv2` using `isBotFam_relabel l hv2'`. Rewrite `hv1`, `hv2` using `[← hϖ]`. Establish `eK : (fun τ a => -(wtK (p τ) (ap τ) (am τ) (x₁ τ) (x₂ τ) a : ℝ)) = fun τ => -Formalism.QuantumDeterminants.lowK (M.ε τ) (M.lam τ)`. Use function extensionality and compare the values at `τ a`.
+
+Rewrite using `[Pi.neg_apply, hK]`. Establish `eU : (fun τ (j : Fin V.rank) => (wtU (p τ) (q τ) (ap τ) (am τ) (x₃ τ) j : ℝ)) = fun τ j => -((lam (l τ)).w j : ℝ)`. Use function extensionality and compare the values at `τ j`. Rewrite using `[hU]`. Use `push_cast`.
+
+Both sides reduce to the same expression. Rewrite `hbK` using `[eK]`. Rewrite `hbU` using `[eU]`. Take `⟨ψ, hψ⟩` from `GlobalTheory.T.lowest_weight_vector_transfer _ _ _ _ _ _ _ _ _ _ _ _ hhU hv1 hbU hv2 hv3`. Establish `key : ∀ F ∈ VV ℂ lam, ψ F ∈ botSub M.ε (factK V.rank M.ε x₁ x₂ x₃) (fun τ => -Formalism.QuantumDeterminants.lowK (M.ε τ) (M.lam τ)) ∧ ∀ u : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ, (∀ τ, u τ ∈ Formalism.REAL.Kset (allPos V.rank)) → ψ (ϖ u F) = factU M.ε x₁ x₂ x₃ u (ψ F)`.
+
+Introduce `F hF`. Establish `hF'` using `GlobalTheory.T.coefficientSpace_le_span_unitary_orbit_extremal D.what₂.Tau V.rank lam hF`. Use `clear hF`. Proceed by induction on `hF' using Submodule.span_induction with`. Consider the case `mem F h`.
+
+Take `⟨u₀, hu₀, rfl⟩` from `h`. Take `⟨u, hu, e⟩ : ∃ u : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ, (∀ τ, u τ ∈ Formalism.REAL.Kset (allPos V.rank)) ∧ vact lam u₀ = ϖ u` from `⟨fun τ => u₀ (l τ), fun τ => hu₀ _, by simp only [hϖ, Equiv.apply_symm_apply]⟩`. Rewrite using `[e]`. Use `⟨?_, fun u' hu' => ?_⟩` and prove the remaining obligations. Rewrite using `[hψ u hu]`.
+
+Conclude with `hbK.map_of_commute fun g hg => commute_factU_factK _ _ _ _ (fun τ => (mem_KC_of_K (hu τ)).1) hg`. Rewrite using `[← Module.End.mul_apply, ← hv1.2.2.1 u' u (fun τ => mem_KC_of_K (hu' τ)) (fun τ => mem_KC_of_K (hu τ)), hψ (u' * u) (fun τ => K_mul (hu' τ) (hu τ)), hψ u hu, hhU.2.2.1 u' u (fun τ => mem_KC_of_K (hu' τ)) (fun τ => mem_KC_of_K (hu τ)), Module.End.mul_apply]`. Consider the case `zero => exact ⟨by rw [map_zero]; exact zero_mem _, fun u _ => by simp only [map_zero]⟩`. Consider the case `add a b _ _ ha hb`. Conclude with `⟨by rw [map_add]; exact add_mem ha.1 hb.1, fun u hu => by simp only [map_add, ha.2 u hu, hb.2 u hu]⟩`.
+
+Consider the case `smul s a _ ha`. Conclude with `⟨by rw [map_smul]; exact Submodule.smul_mem _ _ ha.1, fun u hu => by simp only [map_smul, ha.2 u hu]⟩`. Establish `hjm : ∀ w, j w ∈ VV ℂ lam` using `fun w => hj1 ▸ LinearMap.mem_range_self j w`. Establish `hκ' : ∀ τ, (k₀ * κ) τ ∈ Formalism.REAL.Kset (M.ε τ)` using `fun τ => K_mul (hk₀ τ) (hκ τ)`. Take `⟨v0, hv0, hmv⟩` from `hm2 (k₀ * κ) hκ'`.
+
+Take `⟨w0, hw0⟩ : (ten fun τ => extremal ℂ V.rank (lam τ)) ∈ LinearMap.range j` from `hj1 ▸ hv4`. Establish `hw0' : w0 ≠ 0`. Introduce and unpack `rfl`. Conclude with `hv3 (by rw [← hw0, map_zero])`. Establish `hψ0 : ψ (j w0) = Δ'`.
+
+Use `hψ 1 fun _ => one_mem_K` as an intermediate fact. Rewrite `this` using `[hv1.2.1, hhU.2.1, Module.End.one_apply, Module.End.one_apply, ← hw0]`. Then use the resulting hypothesis. Set `N : D.what₂.Tau → ℂ` to `fun ρ => (‖((v0 ρ : M.sm ρ) : M.H ρ)‖ : ℂ)`. Establish `hN : ∀ ρ, ‖((v0 ρ : M.sm ρ) : M.H ρ)‖ ≠ 0` using `fun ρ h => hv0 ρ (Subtype.ext (Subtype.ext (norm_eq_zero.1 h)))`. Establish `hN' : ∀ ρ, N ρ ≠ 0` using `fun ρ => Complex.ofReal_ne_zero.2 (hN ρ)`.
+
+Establish `hw1 : ‖w0‖ ≠ 0` using `norm_ne_zero_iff.2 hw0'`. Establish `hw2 : (‖w0‖ : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 hw1`. Take `⟨io, hio⟩ : ∃ io : LowT M →ₗ[ℂ] c.W →ₗ[ℂ] PolF D W.rank V.rank, ∀ x w, io x w = ((∏ ρ, N ρ) * (‖w0‖ : ℂ)) • m x (ψ (j w))` from `⟨((∏ ρ, N ρ) * (‖w0‖ : ℂ)) • LinearMap.compl₂ m (ψ ∘ₗ j), fun _ _ => rfl⟩`. Use `⟨io, fun u hu hun x w => ?_, fun τ k hk v u hu w => ?_, fun ρ => (N ρ)⁻¹ • v0 ρ, (‖w0‖ : ℂ)⁻¹ • w0, fun ρ => ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hio, hio, map_smul]`.
+
+Use `congrArg (HSMul.hSMul _) ?_` and prove the remaining obligations. Establish `hcm` using `hm1 (factU M.ε x₁ x₂ x₃ fun τ => (BS τ)⁻¹ * compAt θ τ (Formalism.L2.Theta.mt V u) * BS τ) (fun k hk => commute_factU_factK _ _ _ _ (fun τ => (mem_KC_of_K (mem_K_allPos (hun τ))).1) fun τ => mem_KC_of_K (hk τ)) x`. Establish `h2 : j (c.ρ u w) = ϖ (fun τ => (BS τ)⁻¹ * compAt θ τ (Formalism.L2.Theta.mt V u) * BS τ) (j w)`. Rewrite using `[hϖ]`. Conclude with `hj2 u hu w`.
+
+Rewrite using `[h2, (key _ (hjm w)).2 _ fun τ => mem_K_allPos (hun τ)]`. Conclude with `LinearMap.congr_fun hcm.eq _`. Rewrite using `[hio, hio, map_smul]`. Use `congrArg (HSMul.hSMul _) ?_` and prove the remaining obligations. Rewrite using `[hm3 _ (key _ (hjm w)).1 τ k hk v u hu]`.
+
+Establish `: (fun ρ => (((Pi.mulSingle τ (k.map star) : D.what₂.Tau → Matrix (Fin W.rank) (Fin W.rank) ℂ) ρ)⁻¹)ᵀ) = Pi.mulSingle τ k`. Use function extensionality and compare the values at `ρ`. Distinguish the cases in `h : ρ = τ`. Substitute `h` using the available equality. Rewrite using `[Pi.mulSingle_eq_same, Pi.mulSingle_eq_same, invT_conj hk.1]`.
+
+Rewrite using `[Pi.mulSingle_eq_of_ne h, Pi.mulSingle_eq_of_ne h, inv_one, Matrix.transpose_one]`. Rewrite using `[factK, this]`. Use `show ‖(N ρ)⁻¹ • ((v0 ρ : M.sm ρ) : M.H ρ)‖ = 1`. Rewrite using `[norm_smul, norm_inv, Complex.norm_real, norm_norm, inv_mul_cancel₀ (hN ρ)]`. Rewrite using `[norm_smul, norm_inv, Complex.norm_real, norm_norm, inv_mul_cancel₀ hw1]`.
+
+Rewrite using `[MultilinearMap.map_smul_univ]`. Rewrite using `[map_smul, map_smul, LinearMap.smul_apply, hio, smul_smul, smul_smul, hψ0, hmv _ hbK, factK]`. Establish `: (fun τ => ((((k₀ * κ) τ).map star)⁻¹)ᵀ) = k₀ * κ` using `funext fun τ => invT_conj (hκ' τ).1`. Establish `hm` using `(GlobalTheory.T.fockPolynomialAction_one_mul_adjoint D W.rank V.rank M.ε x₁ x₂ x₃).2.1 k₀ κ 1 1 (fun τ => mem_KC_of_K (hk₀ τ)) (fun τ => mem_KC_of_K (hκ τ)) (fun _ => isUnit_one) (fun _ => isUnit_one)`. Rewrite `hm` using `[mul_one]`.
+
+Rewrite using `[this, hm, Module.End.mul_apply, hΔ, Finset.prod_inv_distrib]`. Establish `hP : (∏ ρ, N ρ) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun ρ _ => hN' ρ`. Use `one_smul ℂ _ using 2` and compare the differences between its conclusion and the goal. Clear the denominators using the available nonvanishing facts.
+-/
 theorem exists_io_poly (D : D7) (V W : HSp D) (θ : InfFam D) (Sp : D.what₂.Tau → SPar) (M : DSModel W Sp)
     (c : CoefA V) (lam : D.what₂.Tau → DomWeight V.rank) (l : D.what₂.Tau ≃ D.what₂.Tau)
     (BS : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ)
@@ -257,6 +327,39 @@ theorem exists_io_poly (D : D7) (V W : HSp D) (θ : InfFam D) (Sp : D.what₂.Ta
 
 open GlobalTheory.IndefiniteRowSideFullHecke.InfinityTypes in
 
+/- English proof (translation)
+Substitute `hp hq` using the available equality. Establish `hnr : ∃ s : ℕ, D.R.r + D.R.t = 2 * s`. Take `⟨a, ha⟩` from `Formalism.L2.NTheta.odd_r D.R`. Take `⟨b, hb⟩` from `D.R.t_odd`. Conclude with `⟨a + b + 1, by omega⟩`.
+
+Take `⟨s, hs⟩` from `hnr`. Establish `hsq : (D.R.r : ℚ) + D.R.t = 2 * s` using `by exact_mod_cast hs`. Take `⟨e, he⟩` from `(D.hc τ).e_int i`. Establish `A` using `GlobalTheory.PairWeightArith.arithAt D i τ`. Take `⟨d, hd⟩` from `A.d_int`.
+
+Take `⟨hpq, hV⟩` from `A.rank`. Establish `hVq : ((Vc D i).rank : ℚ) = 2 * s` using `by rw [hV, hs]; push_cast; rfl`. Establish `hok` using `Formalism.L2.NTheta.holOK_kapW (D.hc τ) _ _ hpq`. Take `⟨hn, hx⟩` from `GlobalTheory.HolDS.lowK_holPar hok hen`. Take `⟨hn', hy⟩` from `GlobalTheory.HolDS.enum_holPar hok hen`.
+
+Use `⟨-e + s, -e - s, -d, ?_, ?_, ?_, ?_, ?_, hn, ?_, A.aPlus_antitone, A.aM_anti⟩` and prove the remaining obligations. Rewrite using `[he, hVq]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[he, hVq]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `hd` as an intermediate fact. Unfold `dShift at this`. Use `push_cast`.
+
+Rewrite using `[← this]`. Expand and normalize the polynomial expressions, which then agree. Introduce `a`. Take `⟨x, rfl⟩ : ∃ x, a = Fin.cast hn (finSumFinEquiv x)` from `⟨finSumFinEquiv.symm (Fin.cast hn.symm a), by simp⟩`. Rewrite using `[hx x]`.
+
+Use `congr 1`. Break down `x with c | c` into its components or cases. Establish `h1` using `A.kap_plus c`. Rewrite `h1` using `[hsq, eS, he]`. Establish `h2 : Formalism.L2.NTheta.kapW (D.hc τ) (pS D i τ) (qS D i τ) (Sum.inl c) = (aP D i τ c : ℤ) + (-e + s)`.
+
+Establish `: ((Formalism.L2.NTheta.kapW (D.hc τ) (pS D i τ) (qS D i τ) (Sum.inl c) : ℤ) : ℚ) = (((aP D i τ c : ℤ) + (-e + s) : ℤ) : ℚ)` using `by rw [h1]; push_cast; ring`. Conclude with `this` after adjusting the coercions. Rewrite using `[h2]`. Unfold `wtK`. Rewrite using `[if_pos (by simp)]`.
+
+Simplify using the standard rewrite rules. Establish `h1` using `A.kap_minus c`. Rewrite `h1` using `[hsq, eS, he]`. Establish `h2 : Formalism.L2.NTheta.kapW (D.hc τ) (pS D i τ) (qS D i τ) (Sum.inr c) = -(aM D i τ (qS D i τ - 1 - c) : ℤ) + (-e - s)`. Establish `: ((Formalism.L2.NTheta.kapW (D.hc τ) (pS D i τ) (qS D i τ) (Sum.inr c) : ℤ) : ℚ) = ((-(aM D i τ (qS D i τ - 1 - c) : ℤ) + (-e - s) : ℤ) : ℚ)` using `by rw [h1]; push_cast; ring`.
+
+Conclude with `this` after adjusting the coercions. Rewrite using `[h2]`. Unfold `wtK`. Rewrite using `[if_neg (by simp)]`. Establish `h3 : (Wc D i).rank - 1 - ((Fin.cast hn (finSumFinEquiv (Sum.inr c)) : Fin (Wc D i).rank) : ℕ) = qS D i τ - 1 - c`.
+
+Simplify using `only [finSumFinEquiv_apply_right, Fin.val_cast, Fin.val_natAdd]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[h3]`. Introduce `j`. Establish `h1` using `A.coef_eq j`.
+
+Rewrite `h1` using `[hd]`. Establish `h2 : (Bridge.lamLdef (D` using `D) (Vc D i).rank ((i : ℕ) + 1) τ).w j = thetaWt D i τ j + d := by`. Conclude with `h1` after adjusting the coercions. Rewrite using `[h2]`. Establish `hj` using `j.2`.
+
+Unfold `wtU thetaWt`. Distinguish the cases in `c1 : (j : ℕ) < pS D i τ`. Establish `ht` using `D.R.three_m_lt_t`. Rewrite using `[if_pos c1, if_pos c1, if_neg (by omega)]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[if_neg c1, if_neg c1]`. Distinguish the cases in `c2 : (j : ℕ) < pS D i τ + D.R.t`. Rewrite using `[if_pos c2, if_neg (by omega)]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg c2, if_pos (by omega)]`.
+
+Establish `h3 : (Vc D i).rank - 1 - (j : ℕ) = qS D i τ - 1 - (j - (pS D i τ + D.R.t))`. Use linear arithmetic over natural numbers and integers. Rewrite using `[h3]`. Expand and normalize the polynomial expressions, which then agree. Introduce `a`.
+
+Take `⟨x, rfl⟩ : ∃ x, a = Fin.cast hn (finSumFinEquiv x)` from `⟨finSumFinEquiv.symm (Fin.cast hn.symm a), by simp⟩`. Rewrite using `[(hy x).2]`. Apply the tactic sequence `rcases x with c | c <;> simp`.
+-/
 theorem weights_label (D : D7) (i : Fin D.R.m) (τ : D.what₂.Tau) (p q : ℕ) (hp : p = pS D i τ) (hq : q = qS D i τ)
     (lam : Fin (Wc D i).rank → ℝ) (ε : Fin (Wc D i).rank → Bool)
     (hen : IsEnum (Formalism.L2.NTheta.holPar p q (Formalism.L2.NTheta.kapW (D.hc τ) p q)) lam ε) :
@@ -350,6 +453,17 @@ theorem weights_label (D : D7) (i : Fin D.R.m) (τ : D.what₂.Tau) (p q : ℕ) 
     rw [(hy x).2]
     rcases x with c | c <;> simp
 
+/- English proof (translation)
+Take `⟨_inst⟩` from `hF.nonempty_invertible`. Take `⟨e, he, h1, h2⟩` from `h`. Establish `hJ : (Matrix.diagonal fun a => (e a : ℂ)) = Formalism.REAL.Jm ε`. Unfold `Formalism.REAL.Jm`. Use `congr 1`.
+
+Use function extensionality and compare the values at `a`. Break down `he a with h | h` into its components or cases. Simplify using `[hε, h.1, h.2]`. Simplify using `[hε, h.1, not_lt.2 h.2]`. Rewrite `h1`, `h2` using `[hJ]`.
+
+Establish `hc : F * B * Formalism.REAL.Jm ε = Formalism.REAL.Jm ε * (F * B)`. Rewrite using `[Matrix.mul_assoc, ← h2, ← Matrix.mul_assoc, ← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.mul_inv_of_invertible, Matrix.one_mul, Matrix.mul_assoc]`. Use `⟨?_, hc⟩` and prove the remaining obligations. Establish `h3 : (F * B)ᴴ * (F * B) * Formalism.REAL.Jm ε = Formalism.REAL.Jm ε`. Rewrite using `[Matrix.mul_assoc, hc, Matrix.conjTranspose_mul]`.
+
+Use `Eq.trans ?_ h1` and prove the remaining obligations. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[Matrix.mem_unitaryGroup_iff', Matrix.star_eq_conjTranspose]`. Establish `h4` using `congrArg (· * Formalism.REAL.Jm ε) h3`. Simplify using `only [Matrix.mul_assoc _ (Formalism.REAL.Jm ε), GlobalTheory.JointHarm.FMul.Jm_mul_Jm, Matrix.mul_one] at h4`.
+
+Conclude with `h4`.
+-/
 theorem frame_mul_mem_K {m p : ℕ} {ε : Fin m → Bool} (hε : ∀ a, ε a = decide ((a : ℕ) < p))
     {F B : Matrix (Fin m) (Fin m) ℂ} (hF : IsUnit F)
     (h : IsONBasis (Fᴴ * Formalism.REAL.Jm ε * F) (F⁻¹ * Formalism.REAL.Jm ε * F) B p) : F * B ∈ Formalism.REAL.Kset ε := by
@@ -376,6 +490,9 @@ theorem frame_mul_mem_K {m p : ℕ} {ε : Fin m → Bool} (hε : ∀ a, ε a = d
   simp only [Matrix.mul_assoc _ (Formalism.REAL.Jm ε), GlobalTheory.JointHarm.FMul.Jm_mul_Jm, Matrix.mul_one] at h4
   exact h4
 
+/- English proof (translation)
+Use `⟨Unitary.star_mem hk.1, ?_⟩` and prove the remaining obligations. Establish `a` using `Unitary.star_mul_self_of_mem hk.1`. Establish `b` using `Unitary.mul_star_self_of_mem hk.1`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem star_mem_K {m : ℕ} {ε : Fin m → Bool} {k : Matrix (Fin m) (Fin m) ℂ} (hk : k ∈ Formalism.REAL.Kset ε) :
     star k ∈ Formalism.REAL.Kset ε := by
   refine ⟨Unitary.star_mem hk.1, ?_⟩
@@ -385,10 +502,16 @@ theorem star_mem_K {m : ℕ} {ε : Fin m → Bool} {k : Matrix (Fin m) (Fin m) �
     _ = star k * (k * Formalism.REAL.Jm ε) * star k := by rw [hk.2]; simp only [Matrix.mul_assoc]
     _ = _ := by rw [← Matrix.mul_assoc, a, Matrix.one_mul]
 
+/- English proof (translation)
+Simplify using `[fact, fchar]`.
+-/
 theorem fact_zero {D : D7} {m n : ℕ} (ε : D.what₂.Tau → Fin m → Bool) (k : D.what₂.Tau → Matrix (Fin m) (Fin m) ℂ)
     (u : D.what₂.Tau → Matrix (Fin n) (Fin n) ℂ) (P : PolF D m n) : fact ε 0 0 0 k u P = fsub ε k u P := by
   simp [fact, fchar]
 
+/- English proof (translation)
+Establish `H` using `GlobalTheory.T.fockPolynomialAction_one_mul_adjoint D m n ε x₁ x₂ x₃`. Establish `hm` using `H.2.1 k k' 1 1 (fun τ => mem_KC_of_K (hk τ)) (fun τ => mem_KC_of_K (hk' τ)) (fun _ => isUnit_one) (fun _ => isUnit_one)`. Rewrite `hm` using `[mul_one, h, H.1]`. Rewrite using `[← Module.End.mul_apply, ← hm, Module.End.one_apply]`.
+-/
 theorem fact_mul_cancel {D : D7} {m n : ℕ} (ε : D.what₂.Tau → Fin m → Bool) (x₁ x₂ x₃ : D.what₂.Tau → ℤ)
     {k k' : D.what₂.Tau → Matrix (Fin m) (Fin m) ℂ} (hk : ∀ τ, k τ ∈ Formalism.REAL.Kset (ε τ))
     (hk' : ∀ τ, k' τ ∈ Formalism.REAL.Kset (ε τ)) (h : k * k' = 1) (P : PolF D m n) :
@@ -399,6 +522,9 @@ theorem fact_mul_cancel {D : D7} {m n : ℕ} (ε : D.what₂.Tau → Fin m → B
   rw [mul_one, h, H.1] at hm
   rw [← Module.End.mul_apply, ← hm, Module.End.one_apply]
 
+/- English proof (translation)
+Take `⟨h1, h2, v, w, hv, hw, h3⟩` from `h`. Use `⟨fun u hu x w => ?_, fun τ k hk v u hu w => ?_, v, w, hv, hw, ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.compr₂_apply, LinearMap.compr₂_apply, hL, hL, map_smul, h1 u hu]`. Rewrite using `[LinearMap.compr₂_apply, LinearMap.compr₂_apply, hL, hL, map_smul, h2 τ k hk v u hu]`. Rewrite using `[LinearMap.compr₂_apply, h3, hΔ]`.
+-/
 theorem isIoW_comp {D : D7} {V W : HSp D} {S' : D.what₂.Tau → SPar} {θ : InfFam D} {M : DSModel W S'} {c : CoefA V}
     {ω : GA D V × GA D W →* Module.End ℂ (WO V W → ℂ)} {pt pt' : PolF D W.rank V.rank → (WO V W → ℂ)}
     {Δ Δ' : PolF D W.rank V.rank} {io : LowT M →ₗ[ℂ] c.W →ₗ[ℂ] PolF D W.rank V.rank}
@@ -410,6 +536,21 @@ theorem isIoW_comp {D : D7} {V W : HSp D} {S' : D.what₂.Tau → SPar} {θ : In
   · rw [LinearMap.compr₂_apply, LinearMap.compr₂_apply, hL, hL, map_smul, h2 τ k hk v u hu]
   · rw [LinearMap.compr₂_apply, h3, hΔ]
 
+/- English proof (translation)
+Establish `hfr : ∀ τ, M.fr τ * (M.fr τ)⁻¹ = 1` using `fun τ => Matrix.mul_nonsing_inv _ ((Matrix.isUnit_iff_isUnit_det _).1 (M.fr_unit τ))`. Use `⟨fun u hu x w => ?_, fun τ k hk v u hu w => ?_, h3⟩` and prove the remaining obligations. Establish `e : (fun τ => M.fr τ * compAt θ τ (Formalism.L2.Theta.mt W 1) * (M.fr τ)⁻¹) = 1`. Use function extensionality and compare the values at `τ`. Rewrite using `[compAt_mt_one', Matrix.mul_one, hfr]`.
+
+Both sides reduce to the same expression. Take `⟨a, b⟩` from `hact u hu 1 (one_mem _) fun τ => by rw [congrFun e τ]; exact one_mem_K`. Rewrite using `[← h1 u hu a x w]`. Use `b (io x w)` as an intermediate fact. Rewrite `this` using `[e]`.
+
+Conclude with `this`. Establish `hs` using `GlobalTheory.PointAtPlaceHom.atTau_spec hθ W τ (conj_mem_UH M τ hk)`. Establish `e : (fun ρ => M.fr ρ * compAt θ ρ (Formalism.L2.Theta.mt W (atTau θ W τ ((M.fr τ)⁻¹ * k * M.fr τ))) * (M.fr ρ)⁻¹) = Pi.mulSingle τ k`. Use function extensionality and compare the values at `ρ`. Rewrite using `[GlobalTheory.WeilDeriv.compAt_mt_eq_infMat]`.
+
+Distinguish the cases in `h : ρ = τ`. Substitute `h` using the available equality. Rewrite using `[hs.2.1, Pi.mulSingle_eq_same]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hs.2.2 ρ h, Pi.mulSingle_eq_of_ne h, Matrix.mul_one, hfr]`.
+
+Establish `e' : (fun ρ => (BS ρ)⁻¹ * compAt θ ρ (Formalism.L2.Theta.mt V 1) * BS ρ) = 1`. Use function extensionality and compare the values at `ρ`. Rewrite using `[compAt_mt_one', Matrix.mul_one, Matrix.nonsing_inv_mul _ ((Matrix.isUnit_iff_isUnit_det _).1 (hBu ρ))]`. Both sides reduce to the same expression. Take `⟨-, b⟩` from `hact 1 (one_mem _) _ hs.1 fun ρ => by`.
+
+Rewrite using `[congrFun e ρ]`. Distinguish the cases in `h : ρ = τ`. Substitute `h` using the available equality. Rewrite using `[Pi.mulSingle_eq_same]` and apply the resulting hypothesis. Rewrite using `[Pi.mulSingle_eq_of_ne h]`.
+
+Conclude with `one_mem_K`. Rewrite using `[← h2 τ k hk v u hu w]`. Use `b (io (PiTensorProduct.tprod ℂ v) w)` as an intermediate fact. Rewrite `this` using `[e, e']`. Conclude with `this`.
+-/
 theorem isIoW_of_fact {D : D7} {V W : HSp D} {S' : D.what₂.Tau → SPar} {θ : InfFam D} (hθ : IsInfFam θ)
     {M : DSModel W S'} {c : CoefA V} {ω : GA D V × GA D W →* Module.End ℂ (WO V W → ℂ)}
     {pt : PolF D W.rank V.rank → (WO V W → ℂ)} {Δ : PolF D W.rank V.rank}
@@ -464,6 +605,17 @@ theorem isIoW_of_fact {D : D7} {V W : HSp D} {S' : D.what₂.Tau → SPar} {θ :
     rw [e, e'] at this
     exact this
 
+/- English proof (translation)
+Establish `hBu : ∀ τ, IsUnit (BS τ)` using `fun τ => (IsUnit.of_mul_eq_one_right _ (hBS τ))`. Establish `hk : ∀ τ, M.fr τ * B τ ∈ Formalism.REAL.Kset (M.ε τ)` using `fun τ => frame_mul_mem_K (hε τ) (M.fr_unit τ) (by rw [M.fr_gram τ]; exact hB τ)`. Take `⟨k, hkd⟩ : ∃ k : D.what₂.Tau → Matrix (Fin W.rank) (Fin W.rank) ℂ, ∀ τ, k τ = M.fr τ * B τ` from `⟨_, fun _ => rfl⟩`. Simplify using `only [← hkd] at hk`. Establish `hBk : B = fun τ => onb M τ * k τ`.
+
+Use function extensionality and compare the values at `τ`. Rewrite using `[hkd, onb, ← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ ((Matrix.isUnit_iff_isUnit_det _).1 (M.fr_unit τ)), Matrix.one_mul]`. Establish `hk' : ∀ τ, (fun τ => star (k τ)) τ ∈ Formalism.REAL.Kset (M.ε τ)` using `fun τ => star_mem_K (hk τ)`. Establish `hkk : k * (fun τ => star (k τ)) = 1` using `funext fun τ => Unitary.mul_star_self_of_mem (hk τ).1`. Establish `hkk' : (fun τ => star (k τ)) * k = 1` using `funext fun τ => Unitary.star_mul_self_of_mem (hk τ).1`.
+
+Take `⟨io, h1, h2, h3⟩` from `exists_io_poly D V W θ _ M c lam l BS j hj1 hj2 _ _ _ _ x₁ x₂ x₃ hr hpq hε hap ham hK hU k hk`. Establish `hact` using `GlobalTheory.T.weil_maximalCompact_fock_substitution_character D ψ θ V W _ _ ω _ M BS hω hθ hV hW hBS _ _ hpq hε _ _ ha hb x₁ x₂ x₃ hx₁ hx₂ hx₃ f hth hvac`. Establish `hio` using `isIoW_of_fact hθ hBu hact h1 h2 h3`. Use `⟨_, isIoW_comp hio (fact M.ε x₁ x₂ x₃ (fun τ => star (k τ)) 1) (fchar (n := V.rank) M.ε x₁ x₂ x₃ (fun τ => star (k τ)) 1) (fun P => ?_) (fact_mul_cancel _ _ _ _ hk' hk hkk' _)⟩` and prove the remaining obligations. Establish `hb` using `GlobalTheory.FockBasis.pureTensorO_basis D ψ θ V W _ M BS hψ hθ hBS k 1 hk (fun _ => one_mem _) f hth (fsub M.ε (fun τ => star (k τ)) 1 P)`.
+
+Establish `hcan` using `fact_mul_cancel M.ε 0 0 0 hk hk' hkk P`. Rewrite `hcan` using `[fact_zero, fact_zero]`. Establish `e1 : (fun τ => BS τ * (1 : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ) τ) = BS`. Use function extensionality and compare the values at `fun τ => Matrix.mul_one _`. Rewrite `hb` using `[hcan, e1, ← hBk]`.
+
+Rewrite using `[← hb, ← map_smul]`. Both sides reduce to the same expression.
+-/
 theorem exists_isIoW (D : D7) (V W : HSp D) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (Sp : D.what₂.Tau → SPar)
     (M : DSModel W Sp) (c : CoefA V) (lam : D.what₂.Tau → DomWeight V.rank) (l : D.what₂.Tau ≃ D.what₂.Tau)
     (BS : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ) (B : D.what₂.Tau → Matrix (Fin W.rank) (Fin W.rank) ℂ)

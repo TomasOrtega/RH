@@ -18,6 +18,9 @@ open PositivityTheory.SiegelWeilFormula PositivityTheory.SiegelWeilFormula.KWhit
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 section Rat
 variable {d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ} {η : E} {hOf : nA σ d.Y d.b → HeckeCharacterZeroLocus.SiegelWeilU.HermR (AF F) σ d.n}
+/- English proof (translation)
+Simplify using `only [MeasP.ratHerm, AddSubgroup.mem_comap, AddMonoidHom.mem_range]`. Both sides reduce to the same expression.
+-/
 theorem mem_ratHerm_k {S : HeckeCharacterZeroLocus.SiegelWeilU.HermR (AF F) σ d.n} :
     S ∈ MeasP.ratHerm F E σ d.n ↔ ∃ M : Matrix (Fin d.n) (Fin d.n) E, incM F M = (S.1 : Mx F E d.n d.n) := by
   simp only [MeasP.ratHerm, AddSubgroup.mem_comap, AddMonoidHom.mem_range]
@@ -45,6 +48,15 @@ def ratE_k (hne : η ≠ 0)
   left_inv S := Subtype.ext ((_root_.PositivityTheory.SiegelWeilFormula.MeasD.hEq_k hOf hne hof herm).apply_symm_apply S.1)
   right_inv γ := Subtype.ext ((_root_.PositivityTheory.SiegelWeilFormula.MeasD.hEq_k hOf hne hof herm).symm_apply_apply γ.1)
 end Rat
+/- English proof (translation)
+Establish `hσ` using `_root_.PositivityTheory.SiegelWeilFormula.kfour.sigma_sigma_of_good_k d.ok.good`. Take `⟨-, -, -, hbo⟩` from `nA_top hσ d.ok.frame`. Use `haveI := hbo`. Use `haveI : BorelSpace (HeckeCharacterZeroLocus.SiegelWeilU.HermR (AF F) σ d.n) := ⟨rfl⟩`. Take `⟨-, hlam, hfd, h1⟩` from `hc`.
+
+Use `haveI := hlam`. Set `e` to `_root_.PositivityTheory.SiegelWeilFormula.MeasD.hEq_k hOf hR.ne hR.hof hR.herm`. Set `eM` to `e.toHomeomorph.toMeasurableEquiv`. Establish `hemb : MeasurableEmbedding hOf` using `eM.measurableEmbedding`. Use `⟨hemb, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Conclude with `e.toAddEquiv.isAddHaarMeasure_map lam e.continuous e.symm.continuous`. Use `hfd.image_of_equiv eM.toEquiv (eM.measurePreserving_symm lam).quasiMeasurePreserving (_root_.PositivityTheory.SiegelWeilFormula.MeasD.ratE_k hR.ne hR.hof hR.herm) ?_` and prove the remaining obligations. Introduce `S β`. Use `show e (e.symm S.1 + β) = S.1 + e β`. Rewrite using `[map_add, ContinuousAddEquiv.apply_symm_apply]`.
+
+Rewrite using `[hemb.map_apply, Set.preimage_image_eq _ hemb.injective, h1]`.
+-/
 theorem meas_hOf_k {d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ} {R : _root_.PositivityTheory.SiegelWeilFormula.RD_k d} {x : d.G} {t u : GL (Fin d.n) (AE F E)} {T : nF σ d.Y d.b} {η : E}
     {T₀ : Matrix (Fin d.n) (Fin d.n) E} {hOf : nA σ d.Y d.b → HeckeCharacterZeroLocus.SiegelWeilU.HermR (AF F) σ d.n}
     {θ : InfinitePlace F → (HeckeCharacterZeroLocus.SiegelWeilU.Ainf F ⊗[F] E →+* ℂ)} {fr : InfinitePlace F → GL (Fin d.m) ℂ}

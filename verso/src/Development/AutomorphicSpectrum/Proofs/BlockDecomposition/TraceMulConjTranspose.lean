@@ -12,21 +12,35 @@ variable {n : ℕ}
 
 def fr (N : Matrix (Fin n) (Fin n) ℂ) : ℝ := ∑ a, ∑ b, ‖N a b‖ ^ 2
 
+/- English proof (translation)
+Unfold `fr`. Check the signs of the components of the expression.
+-/
 theorem fr_nonneg (N : Matrix (Fin n) (Fin n) ℂ) : 0 ≤ fr N := by
   unfold fr
   positivity
 
+/- English proof (translation)
+Unfold `fr`. Rewrite using `[Finset.sum_comm]`. Simplify using `[conjTranspose_apply, norm_star]`.
+-/
 theorem fr_conjTranspose (N : Matrix (Fin n) (Fin n) ℂ) : fr Nᴴ = fr N := by
   unfold fr
   rw [Finset.sum_comm]
   simp [conjTranspose_apply, norm_star]
 
+/- English proof (translation)
+Simplify using `only [fr, Matrix.trace, Matrix.diag, Matrix.mul_apply, conjTranspose_apply, Complex.star_def, Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Use `push_cast`. Both sides reduce to the same expression.
+-/
 theorem trace_mul_conjTranspose (N : Matrix (Fin n) (Fin n) ℂ) : (N * Nᴴ).trace = (fr N : ℂ) := by
   simp only [fr, Matrix.trace, Matrix.diag, Matrix.mul_apply, conjTranspose_apply, Complex.star_def,
     Complex.mul_conj, Complex.normSq_eq_norm_sq]
   push_cast
   rfl
 
+/- English proof (translation)
+Establish `key : ∀ i, ‖(Nᴴ *ᵥ v) i‖ ^ 2 ≤ (∑ j, ‖N j i‖ ^ 2) * ∑ j, ‖v j‖ ^ 2`. Introduce `i`. Establish `h1 : ‖(Nᴴ *ᵥ v) i‖ ≤ ∑ j, ‖N j i‖ * ‖v j‖`. Simplify using `only [mulVec, dotProduct, conjTranspose_apply]`. Use `(norm_sum_le _ _).trans (le_of_eq ?_)` and prove the remaining obligations.
+
+Simplify using `[norm_star]`. Establish `h2` using `Finset.sum_mul_sq_le_sq_mul_sq Finset.univ (fun j => ‖N j i‖) (fun j => ‖v j‖)`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem sq_sum_le (N : Matrix (Fin n) (Fin n) ℂ) (v : Fin n → ℂ) :
     ∑ i, ‖(Nᴴ *ᵥ v) i‖ ^ 2 ≤ fr N * ∑ j, ‖v j‖ ^ 2 := by
   have key : ∀ i, ‖(Nᴴ *ᵥ v) i‖ ^ 2 ≤ (∑ j, ‖N j i‖ ^ 2) * ∑ j, ‖v j‖ ^ 2 := by
@@ -42,11 +56,21 @@ theorem sq_sum_le (N : Matrix (Fin n) (Fin n) ℂ) (v : Fin n → ℂ) :
         Finset.sum_le_sum fun i _ => key i
     _ = fr N * ∑ j, ‖v j‖ ^ 2 := by rw [← Finset.sum_mul, fr, Finset.sum_comm]
 
+/- English proof (translation)
+Simplify using `only [dotProduct, Pi.star_apply, Complex.star_def, Complex.conj_mul']`. Use `push_cast`. Both sides reduce to the same expression.
+-/
 theorem star_dot_self (w : Fin n → ℂ) : star w ⬝ᵥ w = ((∑ i, ‖w i‖ ^ 2 : ℝ) : ℂ) := by
   simp only [dotProduct, Pi.star_apply, Complex.star_def, Complex.conj_mul']
   push_cast
   rfl
 
+/- English proof (translation)
+Use `Matrix.PosSemidef.of_dotProduct_mulVec_nonneg ?_ fun x => ?_` and prove the remaining obligations. Use `IsHermitian.sub ?_ (isHermitian_mul_conjTranspose_self N)` and prove the remaining obligations. Simplify using `[IsHermitian, conjTranspose_smul]`. Establish `e1 : star x ⬝ᵥ ((N * Nᴴ) *ᵥ x) = ((∑ i, ‖(Nᴴ *ᵥ x) i‖ ^ 2 : ℝ) : ℂ)`. Rewrite using `[← mulVec_mulVec, dotProduct_mulVec, ← star_dot_self, star_mulVec, conjTranspose_conjTranspose]`.
+
+Establish `e2 : star x ⬝ᵥ ((fr N • (1 : Matrix (Fin n) (Fin n) ℂ)) *ᵥ x) = ((fr N * ∑ i, ‖x i‖ ^ 2 : ℝ) : ℂ)`. Rewrite using `[show (fr N • (1 : Matrix (Fin n) (Fin n) ℂ)) *ᵥ x = (fr N : ℂ) • x by`. Use extensionality with `i`. Simplify using `[mulVec, dotProduct, Matrix.one_apply, Complex.real_smul]]`. Rewrite using `[dotProduct_smul, star_dot_self, smul_eq_mul]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[sub_mulVec, dotProduct_sub, e1, e2, ← Complex.ofReal_sub, Complex.zero_le_real, sub_nonneg]`. Conclude with `sq_sum_le N x`.
+-/
 theorem psd_fr (N : Matrix (Fin n) (Fin n) ℂ) : (fr N • (1 : Matrix (Fin n) (Fin n) ℂ) - N * Nᴴ).PosSemidef := by
   refine Matrix.PosSemidef.of_dotProduct_mulVec_nonneg ?_ fun x => ?_
   · refine IsHermitian.sub ?_ (isHermitian_mul_conjTranspose_self N)
@@ -62,6 +86,9 @@ theorem psd_fr (N : Matrix (Fin n) (Fin n) ℂ) : (fr N • (1 : Matrix (Fin n) 
     rw [sub_mulVec, dotProduct_sub, e1, e2, ← Complex.ofReal_sub, Complex.zero_le_real, sub_nonneg]
     exact sq_sum_le N x
 
+/- English proof (translation)
+Establish `e : W * B * Wᴴ - W * A * Wᴴ = W * (B - A) * Wᴴ`. Rewrite using `[mul_sub, sub_mul]`. Rewrite using `[e]`. Conclude with `h.mul_mul_conjTranspose_same W`.
+-/
 theorem psd_conj {A B : Matrix (Fin n) (Fin n) ℂ} (h : (B - A).PosSemidef) (W : Matrix (Fin n) (Fin n) ℂ) :
     (W * B * Wᴴ - W * A * Wᴴ).PosSemidef := by
   have e : W * B * Wᴴ - W * A * Wᴴ = W * (B - A) * Wᴴ := by
@@ -69,6 +96,9 @@ theorem psd_conj {A B : Matrix (Fin n) (Fin n) ℂ} (h : (B - A).PosSemidef) (W 
   rw [e]
   exact h.mul_mul_conjTranspose_same W
 
+/- English proof (translation)
+Establish `h0` using `h.trace_nonneg`. Rewrite `h0` using `[trace_sub]`. Use `(Complex.le_def.1 h0).1` as an intermediate fact. Simplify using `only [Complex.zero_re, Complex.sub_re] at this`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem psd_trace {A B : Matrix (Fin n) (Fin n) ℂ} (h : (B - A).PosSemidef) : A.trace.re ≤ B.trace.re := by
   have h0 := h.trace_nonneg
   rw [trace_sub] at h0
@@ -76,9 +106,19 @@ theorem psd_trace {A B : Matrix (Fin n) (Fin n) ℂ} (h : (B - A).PosSemidef) : 
   simp only [Complex.zero_re, Complex.sub_re] at this
   linarith
 
+/- English proof (translation)
+Conclude with `h.smul ht`.
+-/
 theorem psd_rsmul {A : Matrix (Fin n) (Fin n) ℂ} (h : A.PosSemidef) {t : ℝ} (ht : 0 ≤ t) : (t • A).PosSemidef := by
   exact h.smul ht
 
+/- English proof (translation)
+Establish `h0 : ((M • (1 : Matrix (Fin n) (Fin n) ℂ)) - N * Nᴴ).PosSemidef`. Establish `e : (M • (1 : Matrix (Fin n) (Fin n) ℂ)) - N * Nᴴ = (M - fr N) • (1 : Matrix (Fin n) (Fin n) ℂ) + (fr N • (1 : Matrix (Fin n) (Fin n) ℂ) - N * Nᴴ)`. Rewrite using `[sub_smul]`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`.
+
+Conclude with `(psd_rsmul Matrix.PosSemidef.one (sub_nonneg.2 hM)).add (psd_fr N)`. Establish `h1` using `psd_conj h0 W`. Establish `e : M • (W * Wᴴ) - (W * N) * (W * N)ᴴ = W * (M • (1 : Matrix (Fin n) (Fin n) ℂ)) * Wᴴ - W * (N * Nᴴ) * Wᴴ`. Rewrite using `[conjTranspose_mul, Matrix.mul_smul, Matrix.mul_one, Matrix.smul_mul]`. Simplify using `only [mul_assoc]`.
+
+Rewrite using `[e]`. Conclude with `h1`.
+-/
 theorem psd_sandwich {N W : Matrix (Fin n) (Fin n) ℂ} {M : ℝ} (hM : fr N ≤ M) :
     (M • (W * Wᴴ) - (W * N) * (W * N)ᴴ).PosSemidef := by
   have h0 : ((M • (1 : Matrix (Fin n) (Fin n) ℂ)) - N * Nᴴ).PosSemidef := by
@@ -98,14 +138,23 @@ section Frobenius
 
 attribute [local instance] Matrix.frobeniusNormedRing Matrix.frobeniusNormedAlgebra
 
+/- English proof (translation)
+Rewrite using `[frobenius_norm_def, ← Real.sqrt_eq_rpow, Real.sq_sqrt (by positivity)]`. Simplify using `only [fr, Real.rpow_two]`.
+-/
 theorem norm_sq_eq (N : Matrix (Fin n) (Fin n) ℂ) : ‖N‖ ^ 2 = fr N := by
   rw [frobenius_norm_def, ← Real.sqrt_eq_rpow, Real.sq_sqrt (by positivity)]
   simp only [fr, Real.rpow_two]
 
+/- English proof (translation)
+Use `Real.abs_le_sqrt (x := ‖N‖) (y := B) (by rw [norm_sq_eq]; exact h)` as an intermediate fact. Rewrite `this` using `[abs_of_nonneg (norm_nonneg _)]`. Then use the resulting hypothesis.
+-/
 theorem norm_le_sqrt {N : Matrix (Fin n) (Fin n) ℂ} {B : ℝ} (h : fr N ≤ B) : ‖N‖ ≤ √B := by
   have := Real.abs_le_sqrt (x := ‖N‖) (y := B) (by rw [norm_sq_eq]; exact h)
   rwa [abs_of_nonneg (norm_nonneg _)] at this
 
+/- English proof (translation)
+Establish `h : ‖N a b‖ ^ 2 ≤ ‖N‖ ^ 2`. Rewrite using `[norm_sq_eq]`. Unfold `fr`. Combine the equalities or inequalities in the displayed calculation. Conclude with `(pow_le_pow_iff_left₀ (norm_nonneg _) (norm_nonneg _) two_ne_zero).1 h`.
+-/
 theorem entry_le (N : Matrix (Fin n) (Fin n) ℂ) (a b : Fin n) : ‖N a b‖ ≤ ‖N‖ := by
   have h : ‖N a b‖ ^ 2 ≤ ‖N‖ ^ 2 := by
     rw [norm_sq_eq]
@@ -116,6 +165,11 @@ theorem entry_le (N : Matrix (Fin n) (Fin n) ℂ) (a b : Fin n) : ‖N a b‖ �
           Finset.single_le_sum (f := fun a' => ∑ b', ‖N a' b'‖ ^ 2) (fun _ _ => by positivity) (Finset.mem_univ a)
   exact (pow_le_pow_iff_left₀ (norm_nonneg _) (norm_nonneg _) two_ne_zero).1 h
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => simp [h2]`. Consider the case `succ k ih`. Rewrite using `[pow_succ, ih, pow_succ]`. Simplify using `only [mul_assoc]`.
+
+Rewrite using `[← mul_assoc y yi, h1, one_mul]`.
+-/
 theorem pow_conj {y yi : Matrix (Fin n) (Fin n) ℂ} (h1 : y * yi = 1) (h2 : yi * y = 1)
     (D : Matrix (Fin n) (Fin n) ℂ) (k : ℕ) : (yi * D * y) ^ k = yi * D ^ k * y := by
   induction k with
@@ -125,6 +179,13 @@ theorem pow_conj {y yi : Matrix (Fin n) (Fin n) ℂ} (h1 : y * yi = 1) (h2 : yi 
     simp only [mul_assoc]
     rw [← mul_assoc y yi, h1, one_mul]
 
+/- English proof (translation)
+Establish `hd : diagonal (fun b => p.eval (w b)) = ∑ i ∈ range (p.natDegree + 1), p.coeff i • diagonal (w ^ i)`. Use extensionality with `a b`. Rewrite using `[Matrix.sum_apply]`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality.
+
+Simplify using `[Polynomial.eval_eq_sum_range]`. Simplify using `[hab]`. Repeatedly rewrite using `[pow_conj h1 h2, diagonal_pow]`. Rewrite using `[hd, Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Matrix.mul_smul, Matrix.smul_mul]`.
+-/
 theorem poly_conj {y yi : Matrix (Fin n) (Fin n) ℂ} (h1 : y * yi = 1) (h2 : yi * y = 1)
     (p : Polynomial ℂ) (w : Fin n → ℂ) :
     ∑ i ∈ range (p.natDegree + 1), p.coeff i • (yi * diagonal w * y) ^ i =
@@ -142,6 +203,9 @@ theorem poly_conj {y yi : Matrix (Fin n) (Fin n) ℂ} (h1 : y * yi = 1) (h2 : yi
   refine Finset.sum_congr rfl fun i _ => ?_
   rw [Matrix.mul_smul, Matrix.smul_mul]
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Establish `hb0 : 0 ≤ b` using `(norm_nonneg _).trans hb`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem norm_pow_bound {g : Matrix (Fin n) (Fin n) ℂ} {b : ℝ} (hb : ‖g‖ ≤ b) (k : ℕ) :
     ‖g ^ k‖ ≤ ‖(1 : Matrix (Fin n) (Fin n) ℂ)‖ * b ^ k := by
   induction k with
@@ -154,12 +218,22 @@ theorem norm_pow_bound {g : Matrix (Fin n) (Fin n) ℂ} {b : ℝ} (hb : ‖g‖ 
           mul_le_mul ih hb (norm_nonneg _) (by positivity)
       _ = _ := by rw [pow_succ, mul_assoc]
 
+/- English proof (translation)
+Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun i _ => ?_)` and prove the remaining obligations. Conclude with `(norm_smul_le _ _).trans (mul_le_mul_of_nonneg_left (norm_pow_bound hb i) (norm_nonneg _))`.
+-/
 theorem norm_poly_bound (p : Polynomial ℂ) {g : Matrix (Fin n) (Fin n) ℂ} {b : ℝ} (hb : ‖g‖ ≤ b) :
     ‖∑ i ∈ range (p.natDegree + 1), p.coeff i • g ^ i‖ ≤
       ∑ i ∈ range (p.natDegree + 1), ‖p.coeff i‖ * (‖(1 : Matrix (Fin n) (Fin n) ℂ)‖ * b ^ i) := by
   refine (norm_sum_le _ _).trans (Finset.sum_le_sum fun i _ => ?_)
   exact (norm_smul_le _ _).trans (mul_le_mul_of_nonneg_left (norm_pow_bound hb i) (norm_nonneg _))
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_apply]`. Simplify using `only [mul_diagonal, conjTranspose_apply]`. Rewrite using `[Finset.sum_eq_single a]`. Simplify using `only [if_pos rfl]`. Rewrite using `[if_pos trivial]`.
+
+Use `Complex.mul_conj (u i a)` as an intermediate fact. Rewrite `this` using `[Complex.normSq_eq_norm_sq]`. Rewrite using `[Complex.star_def]`. Take the linear combination `c * this`. Introduce `j _ hj`.
+
+Simplify using `[hj]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ a) h`.
+-/
 theorem entry_single (u : Matrix (Fin n) (Fin n) ℂ) (a i : Fin n) (c : ℂ) :
     (u * diagonal (fun b => if b = a then c else 0) * uᴴ) i i = c * (‖u i a‖ ^ 2 : ℝ) := by
   rw [Matrix.mul_apply]
@@ -176,10 +250,46 @@ theorem entry_single (u : Matrix (Fin n) (Fin n) ℂ) (a i : Fin n) (c : ℂ) :
   · intro h
     exact absurd (Finset.mem_univ a) h
 
+/- English proof (translation)
+Rewrite using `[← mul_assoc, h, one_mul]`.
+-/
 private theorem cancel_lemma {a b : Matrix (Fin n) (Fin n) ℂ} (h : a * b = 1) (X : Matrix (Fin n) (Fin n) ℂ) :
     a * (b * X) = X := by
   rw [← mul_assoc, h, one_mul]
 
+/- English proof (translation)
+Set `w : Fin n → ℂ` to `fun b => z b ^ 2`. Establish `hinjw : Set.InjOn w ((Finset.univ : Finset (Fin n)) : Set (Fin n))` using `fun a _ b _ h => hinj h`. Set `L : Fin n → Polynomial ℂ` to `fun a => Lagrange.basis Finset.univ w a`. Set `K : Fin n → ℝ` to `fun a => ∑ i ∈ range ((L a).natDegree + 1), ‖(L a).coeff i‖ * (‖(1 : Matrix (Fin n) (Fin n) ℂ)‖ * B ^ i)`. Use `⟨n * ∑ a, K a * √B, ?_⟩` and prove the remaining obligations.
+
+Introduce `y yi h1 h2 hA hN`. Establish `hB : 0 ≤ B` using `(fr_nonneg _).trans hA`. Establish `hy1' : yiᴴ * yᴴ = 1` using `by rw [← conjTranspose_mul, h1, conjTranspose_one]`. Establish `c7` using `cancel_lemma hy1'`. Establish `c3` using `cancel_lemma h1`.
+
+Establish `hnA : ‖yi * diagonal z * yiᴴ‖ ≤ √B` using `norm_le_sqrt hA`. Establish `hnN : ‖yᴴ * diagonal z * y‖ ≤ √B`. Use `norm_le_sqrt ?_` and prove the remaining obligations. Establish `e : yᴴ * diagonal z * y = (yᴴ * (diagonal z)ᴴ * y)ᴴ`. Simplify using `only [conjTranspose_mul, conjTranspose_conjTranspose, mul_assoc]`.
+
+Rewrite using `[e, fr_conjTranspose]`. Conclude with `hN`. Establish `hDD : diagonal z * diagonal z = diagonal w`. Rewrite using `[diagonal_mul_diagonal]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `b`. Simplify using `[w, sq]`. Establish `hg : (yi * diagonal z * yiᴴ) * (yᴴ * diagonal z * y) = yi * diagonal w * y`. Simplify using `only [mul_assoc, c7]`. Rewrite using `[← mul_assoc (diagonal z) (diagonal z) y, hDD]`.
+
+Establish `hng : ‖yi * diagonal w * y‖ ≤ B`. Rewrite using `[← hg]`. Combine the equalities or inequalities in the displayed calculation. Establish `hP : ∀ a, ‖yi * diagonal (fun b => if b = a then (1 : ℂ) else 0) * y‖ ≤ K a`. Introduce `a`.
+
+Establish `e` using `poly_conj h1 h2 (L a) w`. Establish `hev : (fun b => (L a).eval (w b)) = fun b => if b = a then (1 : ℂ) else 0`. Use function extensionality and compare the values at `b`. Distinguish the cases in `hb : b = a`. Substitute `hb` using the available equality.
+
+Rewrite using `[if_pos rfl]`. Conclude with `Lagrange.eval_basis_self hinjw (Finset.mem_univ _)`. Rewrite using `[if_neg hb]`. Conclude with `Lagrange.eval_basis_of_ne (Ne.symm hb) (Finset.mem_univ _)`. Rewrite `e` using `[hev]`.
+
+Rewrite using `[← e]`. Conclude with `norm_poly_bound (L a) hng`. Establish `hf1 : ∀ a, (fun b => (if b = a then (1 : ℂ) else 0) * z b) = fun b => if b = a then z a else 0`. Introduce `a`. Use function extensionality and compare the values at `b`.
+
+Distinguish the cases in `hb : b = a`. Substitute `hb` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hb]`. Establish `hf2 : ∀ a, (fun b => z b * (if b = a then (1 : ℂ) else 0)) = fun b => if b = a then z a else 0`.
+
+Introduce `a`. Use function extensionality and compare the values at `b`. Distinguish the cases in `hb : b = a`. Substitute `hb` using the available equality. Simplify using the standard rewrite rules.
+
+Simplify using `[hb]`. Establish `hyi : ∀ i a, ‖yi i a‖ ^ 2 ≤ K a * √B`. Introduce `i a`. Establish `e : (yi * diagonal (fun b => if b = a then (1 : ℂ) else 0) * y) * (yi * diagonal z * yiᴴ) = yi * diagonal (fun b => if b = a then z a else 0) * yiᴴ`. Simplify using `only [mul_assoc, c3]`.
+
+Rewrite using `[← mul_assoc (diagonal _) (diagonal z) yiᴴ, diagonal_mul_diagonal, hf1 a]`. Establish `h` using `entry_le (yi * diagonal (fun b => if b = a then z a else 0) * yiᴴ) i i`. Rewrite `h` using `[entry_single, norm_mul, hz a, one_mul, Complex.norm_of_nonneg (sq_nonneg _), ← e]`. Conclude with `h.trans ((norm_mul_le _ _).trans (mul_le_mul (hP a) hnA (norm_nonneg _) ((norm_nonneg _).trans (hP a))))`. Establish `hyy : ∀ a i, ‖y a i‖ ^ 2 ≤ √B * K a`.
+
+Introduce `a i`. Establish `e : (yᴴ * diagonal z * y) * (yi * diagonal (fun b => if b = a then (1 : ℂ) else 0) * y) = yᴴ * diagonal (fun b => if b = a then z a else 0) * yᴴᴴ`. Rewrite using `[conjTranspose_conjTranspose]`. Simplify using `only [mul_assoc, c3]`. Rewrite using `[← mul_assoc (diagonal z) (diagonal _) y, diagonal_mul_diagonal, hf2 a]`.
+
+Establish `h` using `entry_le (yᴴ * diagonal (fun b => if b = a then z a else 0) * yᴴᴴ) i i`. Rewrite `h` using `[entry_single, norm_mul, hz a, one_mul, Complex.norm_of_nonneg (sq_nonneg _), ← e, conjTranspose_apply, norm_star]`. Conclude with `h.trans ((norm_mul_le _ _).trans (mul_le_mul hnN (hP a) (norm_nonneg _) (Real.sqrt_nonneg _)))`. Prove the components needed by the constructor for the conclusion. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun a _ => by ring`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]`.
+-/
 theorem bounded_of_conj (z : Fin n → ℂ) (hz : ∀ a, ‖z a‖ = 1) (hinj : Function.Injective fun a => z a ^ 2) (B : ℝ) :
     ∃ C : ℝ, ∀ y yi : Matrix (Fin n) (Fin n) ℂ, y * yi = 1 → yi * y = 1 →
       fr (yi * diagonal z * yiᴴ) ≤ B → fr (yᴴ * (diagonal z)ᴴ * y) ≤ B → fr y ≤ C ∧ fr yi ≤ C := by
@@ -279,6 +389,11 @@ theorem bounded_of_conj (z : Fin n → ℂ) (hz : ∀ a, ‖z a‖ = 1) (hinj : 
 
 end Frobenius
 
+/- English proof (translation)
+Substitute `hc` using the available equality. Prove the components needed by the constructor for the conclusion. Establish `hA` using `(((psd_rsmul h1 (t := 2) (by norm_num)).add (psd_rsmul (psd_rsmul Matrix.PosSemidef.one (t := 1 - s) (by linarith)) (t := 2) (by norm_num))).add (psd_rsmul hP (t := 2 * s - 1) (by linarith))).add (psd_rsmul hQ (t := M * K₀) (by positivity))`. Use `hA using 1` and compare the differences between its conclusion and the goal. Use `module`.
+
+Establish `hB` using `(((h2.add (psd_rsmul hT (t := M * (1 - s)) (mul_nonneg (by linarith) (by linarith)))).add (psd_rsmul hP (t := M * (K₀ - (1 - s) * T')) (mul_nonneg (by linarith) (by linarith)))).add (psd_rsmul hP (t := M * (2 - s)) (mul_nonneg (by linarith) (by linarith))))`. Use `hB using 1` and compare the differences between its conclusion and the goal. Use `module`.
+-/
 theorem cone_step {P Q c : Matrix (Fin n) (Fin n) ℂ} (hP : P.PosSemidef) (hQ : Q.PosSemidef) {s M K₀ T' : ℝ}
     (hT : (T' • P - 1).PosSemidef) (hc : c = s • P + (1 - s) • (1 : Matrix (Fin n) (Fin n) ℂ))
     (h1 : (M • Q - c).PosSemidef) (h2 : (M • c - Q).PosSemidef) (h3 : (1 - s) * T' ≤ K₀)
@@ -301,6 +416,11 @@ def bnd (M : ℝ) (n : ℕ) : ℝ := M * (2 * M * n + n + 1) + 2 * M * n + 1
 
 def cmp (M : ℝ) (n : ℕ) : ℝ := M * (2 + M ^ 2 * (n : ℝ) ^ 2)
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[conjTranspose_mul]`. Simplify using `only [mul_assoc]`. Use `_ = (u * uᴴ * dᴴ * d).trace := by rw [trace_mul_comm]`. Use `_ = (u * uᴴ).trace := by rw [mul_assoc (u * uᴴ), hd, mul_one]`.
+
+Use `_ = (fr u : ℂ) := trace_mul_conjTranspose u`.
+-/
 theorem trace_conj_unitary {d : Matrix (Fin n) (Fin n) ℂ} (hd : dᴴ * d = 1) (u : Matrix (Fin n) (Fin n) ℂ) :
     ((d * u) * (d * u)ᴴ).trace = (fr u : ℂ) := by
   calc ((d * u) * (d * u)ᴴ).trace = (d * (u * uᴴ * dᴴ)).trace := by
@@ -309,6 +429,9 @@ theorem trace_conj_unitary {d : Matrix (Fin n) (Fin n) ℂ} (hd : dᴴ * d = 1) 
     _ = (u * uᴴ).trace := by rw [mul_assoc (u * uᴴ), hd, mul_one]
     _ = (fr u : ℂ) := trace_mul_conjTranspose u
 
+/- English proof (translation)
+Establish `e : (M • (1 : Matrix (Fin n) (Fin n) ℂ)) - N * Nᴴ = (M - fr N) • (1 : Matrix (Fin n) (Fin n) ℂ) + (fr N • (1 : Matrix (Fin n) (Fin n) ℂ) - N * Nᴴ)`. Rewrite using `[sub_smul]`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Conclude with `(psd_rsmul Matrix.PosSemidef.one (sub_nonneg.2 hM)).add (psd_fr N)`.
+-/
 private theorem psd_le_lemma_2 {N : Matrix (Fin n) (Fin n) ℂ} {M : ℝ} (hM : fr N ≤ M) :
     (M • (1 : Matrix (Fin n) (Fin n) ℂ) - N * Nᴴ).PosSemidef := by
   have e : (M • (1 : Matrix (Fin n) (Fin n) ℂ)) - N * Nᴴ =
@@ -317,6 +440,9 @@ private theorem psd_le_lemma_2 {N : Matrix (Fin n) (Fin n) ℂ} {M : ℝ} (hM : 
   rw [e]
   exact (psd_rsmul Matrix.PosSemidef.one (sub_nonneg.2 hM)).add (psd_fr N)
 
+/- English proof (translation)
+Establish `h1` using `psd_trace h`. Rewrite `h1` using `[trace_mul_conjTranspose, Complex.ofReal_re]`. Establish `h2 : ((t • (1 : Matrix (Fin n) (Fin n) ℂ)).trace).re = t * n`. Rewrite using `[trace_smul, trace_one, Fintype.card_fin, Complex.smul_re, smul_eq_mul, Complex.natCast_re]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 private theorem tr_push_algHom_eq_map_tr {X : Matrix (Fin n) (Fin n) ℂ} {t : ℝ}
     (h : (t • (1 : Matrix (Fin n) (Fin n) ℂ) - X * Xᴴ).PosSemidef) : fr X ≤ t * n := by
   have h1 := psd_trace h
@@ -325,6 +451,45 @@ private theorem tr_push_algHom_eq_map_tr {X : Matrix (Fin n) (Fin n) ℂ} {t : �
     rw [trace_smul, trace_one, Fintype.card_fin, Complex.smul_re, smul_eq_mul, Complex.natCast_re]
   linarith
 
+/- English proof (translation)
+Establish `c1` using `cancel_lemma hx1`. Establish `c3` using `cancel_lemma hy1`. Establish `c4` using `cancel_lemma hy2`. Establish `c5` using `cancel_lemma hd1`. Establish `c6` using `cancel_lemma hd2`.
+
+Establish `hy1' : yiᴴ * yᴴ = 1` using `by rw [← conjTranspose_mul, hy1, conjTranspose_one]`. Establish `hy2' : yᴴ * yiᴴ = 1` using `by rw [← conjTranspose_mul, hy2, conjTranspose_one]`. Establish `hx1' : xiᴴ * xᴴ = 1` using `by rw [← conjTranspose_mul, hx1, conjTranspose_one]`. Establish `c7` using `cancel_lemma hy1'`. Establish `c8` using `cancel_lemma hy2'`.
+
+Establish `hn1 : (1 : ℝ) ≤ n` using `by exact_mod_cast hn`. Establish `hfry` using `fr_nonneg y`. Establish `hfryi` using `fr_nonneg yi`. Establish `hM0 : (0 : ℝ) ≤ M` using `by linarith`. Establish `G1 : (1 - s) * fr y ≤ M`.
+
+Establish `e : (yᴴ * dᴴ * x) * (yᴴ * dᴴ * x)ᴴ = s • ((yᴴ * dᴴ * y) * (yᴴ * dᴴ * y)ᴴ) + (1 - s) • (yᴴ * yᴴᴴ)`. Establish `e0 : (yᴴ * dᴴ * x) * (yᴴ * dᴴ * x)ᴴ = yᴴ * dᴴ * (x * xᴴ) * d * y`. Simplify using `only [conjTranspose_mul, conjTranspose_conjTranspose, mul_assoc]`. Rewrite using `[e0, hc]`. Simplify using `only [conjTranspose_mul, conjTranspose_conjTranspose, Matrix.mul_add, Matrix.add_mul, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_one, Matrix.one_mul, mul_assoc, c6]`.
+
+Establish `t` using `congrArg Matrix.trace e`. Rewrite `t` using `[trace_mul_conjTranspose, trace_add, trace_smul, trace_smul, trace_mul_conjTranspose, trace_mul_conjTranspose, fr_conjTranspose]`. Establish `t'` using `congrArg Complex.re t`. Simplify using `only [Complex.ofReal_re, Complex.add_re, Complex.smul_re, smul_eq_mul] at t'`. Use polynomial arithmetic with `[mul_nonneg hs0 (fr_nonneg (yᴴ * dᴴ * y))]`.
+
+Establish `G2 : fr yi ≤ M * (s * fr y + (1 - s) * n)`. Establish `hdd : dᴴᴴ * dᴴ = 1` using `by rw [conjTranspose_conjTranspose]; exact hd1`. Establish `e1 : dᴴ * (x * (xi * d * yiᴴ)) = yiᴴ` using `by simp only [mul_assoc, c1, c6]`. Establish `e2 : fr yi = fr (x * (xi * d * yiᴴ))`. Establish `h` using `trace_conj_unitary hdd (x * (xi * d * yiᴴ))`.
+
+Rewrite `h` using `[e1, trace_mul_conjTranspose, fr_conjTranspose]`. Conclude with `h` after adjusting the coercions. Establish `h3` using `psd_trace (psd_sandwich (W := x) hA)`. Rewrite `h3` using `[trace_mul_conjTranspose, Complex.ofReal_re, hc]`. Establish `h4 : ((M • (s • (y * yᴴ) + (1 - s) • (1 : Matrix (Fin n) (Fin n) ℂ))).trace).re = M * (s * fr y + (1 - s) * n)`.
+
+Rewrite using `[trace_smul, trace_add, trace_smul, trace_smul, trace_mul_conjTranspose, trace_one, Fintype.card_fin]`. Simplify using `only [Complex.smul_re, Complex.add_re, Complex.ofReal_re, Complex.natCast_re, smul_eq_mul]`. Rewrite using `[e2]`. Combine the linear equalities and inequalities to obtain the conclusion. Distinguish the cases in `hcase : 1 ≤ 2 * n * (1 - s)`.
+
+Use `left`. Establish `hy : fr y ≤ 2 * M * n`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left hcase hfry, mul_le_mul_of_nonneg_left G1 (by positivity : (0 : ℝ) ≤ 2 * n)]`. Establish `hyi : fr yi ≤ M * (2 * M * n + n + 1)`. Establish `a1 : s * fr y ≤ fr y` using `by nlinarith`.
+
+Establish `a2 : (1 - s) * n ≤ n` using `by nlinarith`. Establish `a3 : M * (s * fr y + (1 - s) * n) ≤ M * (2 * M * n + n + 1)` using `mul_le_mul_of_nonneg_left (by linarith) hM0`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hMn : 0 ≤ M * n` using `mul_nonneg hM0 (by positivity)`. Establish `hb1 : 0 ≤ M * (2 * M * n + n + 1)` using `mul_nonneg hM0 (by nlinarith)`.
+
+Unfold `bnd`. Apply the tactic sequence `constructor <;> nlinarith`. Use `right`. Rewrite `hcase` using `[not_le]`. Establish `hs : 1 / 2 ≤ s` using `by nlinarith [mul_le_mul_of_nonneg_right hn1 (sub_nonneg.2 hs1)]`.
+
+Establish `hQ : (d * (yiᴴ * yi) * dᴴ).PosSemidef` using `(posSemidef_conjTranspose_mul_self yi).mul_mul_conjTranspose_same d`. Establish `hT : (fr yi • (y * yᴴ) - 1).PosSemidef`. Establish `h` using `psd_conj (psd_fr yi) y`. Use `h using 1` and compare the differences between its conclusion and the goal. Simplify using `only [Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_one, mul_assoc, c3, hy1']`.
+
+Establish `h1 : (M • (d * (yiᴴ * yi) * dᴴ) - x * xᴴ).PosSemidef`. Establish `h` using `psd_conj (psd_le_lemma_2 hN) (d * yiᴴ)`. Use `h using 1` and compare the differences between its conclusion and the goal. Simplify using `only [conjTranspose_mul, conjTranspose_conjTranspose, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_one, Matrix.one_mul, mul_assoc, c3, c5, c7, hd1]`. Establish `h2 : (M • (x * xᴴ) - d * (yiᴴ * yi) * dᴴ).PosSemidef`.
+
+Establish `h` using `psd_conj (psd_le_lemma_2 hA) x`. Use `h using 1` and compare the differences between its conclusion and the goal. Simplify using `only [conjTranspose_mul, conjTranspose_conjTranspose, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_one, Matrix.one_mul, mul_assoc, c1, hx1']`. Establish `h3 : (1 - s) * fr yi ≤ M ^ 2 * (n : ℝ) ^ 2`. Establish `a1 : (1 - s) * fr yi ≤ (1 - s) * (M * (s * fr y + (1 - s) * n))` using `mul_le_mul_of_nonneg_left G2 (by linarith)`.
+
+Establish `a3 : M * s * ((1 - s) * fr y) ≤ M * s * M` using `mul_le_mul_of_nonneg_left G1 (mul_nonneg hM0 hs0)`. Establish `a4 : (1 - s) * (1 - s) ≤ (1 - s) * M` using `mul_le_mul_of_nonneg_left (by linarith) (by linarith)`. Establish `a5 : M * ((1 - s) * (1 - s)) * n ≤ M * ((1 - s) * M) * n` using `mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left a4 hM0) (by positivity)`. Establish `b1 : 0 ≤ M ^ 2 * s * (n - 1)` using `mul_nonneg (mul_nonneg (sq_nonneg M) hs0) (by linarith)`. Establish `b2 : M ^ 2 * n ≤ M ^ 2 * (n : ℝ) ^ 2` using `mul_le_mul_of_nonneg_left (by nlinarith) (sq_nonneg M)`.
+
+Use polynomial arithmetic with `[a1, a3, a5, b1, b2]`. Take `⟨hq1, hq2⟩` from `cone_step (posSemidef_self_mul_conjTranspose y) hQ hT hc h1 h2 h3 hs hs1 hM (by positivity)`. Prove the components needed by the constructor for the conclusion. Establish `h` using `psd_conj hq2 yi`. Establish `e : yi * ((M * (2 + M ^ 2 * (n : ℝ) ^ 2)) • (y * yᴴ)) * yiᴴ - yi * (d * (yiᴴ * yi) * dᴴ) * yiᴴ = (M * (2 + M ^ 2 * (n : ℝ) ^ 2)) • (1 : Matrix (Fin n) (Fin n) ℂ) - (yi * d * yiᴴ) * (yi * d * yiᴴ)ᴴ`.
+
+Simplify using `only [conjTranspose_mul, conjTranspose_conjTranspose, Matrix.mul_smul, Matrix.smul_mul, mul_assoc, c4, hy2']`. Rewrite `h` using `[e]`. Use `tr_push_algHom_eq_map_tr h` as an intermediate fact. Unfold `cmp`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `h` using `psd_conj hq1 (yᴴ * dᴴ)`. Establish `e : yᴴ * dᴴ * ((M * (2 + M ^ 2 * (n : ℝ) ^ 2)) • (d * (yiᴴ * yi) * dᴴ)) * (yᴴ * dᴴ)ᴴ - yᴴ * dᴴ * (y * yᴴ) * (yᴴ * dᴴ)ᴴ = (M * (2 + M ^ 2 * (n : ℝ) ^ 2)) • (1 : Matrix (Fin n) (Fin n) ℂ) - (yᴴ * dᴴ * y) * (yᴴ * dᴴ * y)ᴴ`. Simplify using `only [conjTranspose_mul, conjTranspose_conjTranspose, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_one, mul_assoc, c6, c8, hy2, hy2']`. Rewrite `h` using `[e]`. Use `tr_push_algHom_eq_map_tr h` as an intermediate fact.
+
+Unfold `cmp`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem contraction_dichotomy (hn : 0 < n) {x xi y yi d : Matrix (Fin n) (Fin n) ℂ} (hx1 : x * xi = 1) (hx2 : xi * x = 1)
     (hy1 : y * yi = 1) (hy2 : yi * y = 1) (hd1 : d * dᴴ = 1) (hd2 : dᴴ * d = 1) {s M : ℝ} (hs0 : 0 ≤ s) (hs1 : s ≤ 1)
     (hM : 1 ≤ M) (hc : x * xᴴ = s • (y * yᴴ) + (1 - s) • (1 : Matrix (Fin n) (Fin n) ℂ))
@@ -440,6 +605,9 @@ theorem contraction_dichotomy (hn : 0 < n) {x xi y yi d : Matrix (Fin n) (Fin n)
       unfold cmp
       linarith
 
+/- English proof (translation)
+Unfold `PositivityTheory.RgBcC.lg fr`. Use `congr 2`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_add_distrib]`.
+-/
 theorem lg_eq (y : Matrix (Fin n) (Fin n) ℂ) : PositivityTheory.RgBcC.lg y = Real.log (1 + (fr y + fr y⁻¹)) := by
   unfold PositivityTheory.RgBcC.lg fr
   congr 2
@@ -447,10 +615,40 @@ theorem lg_eq (y : Matrix (Fin n) (Fin n) ℂ) : PositivityTheory.RgBcC.lg y = R
   refine Finset.sum_congr rfl fun a _ => ?_
   rw [Finset.sum_add_distrib]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[Complex.real_smul]`.
+-/
 theorem real_coe_smul (r : ℝ) (A : Matrix (Fin n) (Fin n) ℂ) : (r : ℂ) • A = r • A := by
   ext i j
   simp [Complex.real_smul]
 
+/- English proof (translation)
+Introduce `n z hz hinj R`. Take `⟨M, hMdef⟩ : ∃ M : ℝ, M = max (Real.exp R) 1` from `⟨_, rfl⟩`. Establish `hM : 1 ≤ M` using `by rw [hMdef]; exact le_max_right _ _`. Establish `hME : Real.exp R ≤ M` using `by rw [hMdef]; exact le_max_left _ _`. Take `⟨C, hC⟩` from `bounded_of_conj z hz hinj (n * cmp M n)`.
+
+Use `⟨Real.log (1 + 2 * max (bnd M n) C), ?_⟩` and prove the remaining obligations. Introduce `s hs x hx y hy hc hlg`. Take `⟨hs0, hs1⟩` from `hs`. Establish `hxd : Matrix.det (x : Matrix (Fin n) (Fin n) ℂ) ≠ 0` using `hx`. Establish `hyd : Matrix.det (y : Matrix (Fin n) (Fin n) ℂ) ≠ 0` using `hy`.
+
+Establish `hxu : IsUnit (Matrix.det (x : Matrix (Fin n) (Fin n) ℂ))` using `isUnit_iff_ne_zero.2 hxd`. Establish `hyu : IsUnit (Matrix.det (y : Matrix (Fin n) (Fin n) ℂ))` using `isUnit_iff_ne_zero.2 hyd`. Establish `hx1 : x * x⁻¹ = 1` using `Matrix.mul_nonsing_inv x hxu`. Establish `hx2 : x⁻¹ * x = 1` using `Matrix.nonsing_inv_mul x hxu`. Establish `hy1 : y * y⁻¹ = 1` using `Matrix.mul_nonsing_inv y hyu`.
+
+Establish `hy2 : y⁻¹ * y = 1` using `Matrix.nonsing_inv_mul y hyu`. Establish `hdd1 : diagonal z * (diagonal z)ᴴ = 1`. Rewrite using `[diagonal_conjTranspose, diagonal_mul_diagonal, ← diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `a`.
+
+Simplify using `only [Pi.star_apply, Complex.star_def, Complex.mul_conj, Complex.normSq_eq_norm_sq, hz a]`. Evaluate the numerical expressions. Establish `hdd2 : (diagonal z)ᴴ * diagonal z = 1`. Rewrite using `[diagonal_conjTranspose, diagonal_mul_diagonal, ← diagonal_one]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `a`. Simplify using `only [Pi.star_apply, Complex.star_def, Complex.conj_mul', hz a]`. Evaluate the numerical expressions. Establish `hinvA : (x⁻¹ * diagonal z * (yᴴ)⁻¹)⁻¹ = yᴴ * (diagonal z)ᴴ * x`. Apply `Matrix.inv_eq_right_inv` to reduce the goal to its premises.
+
+Rewrite using `[← Matrix.conjTranspose_nonsing_inv]`. Simplify using `only [mul_assoc]`. Rewrite using `[← mul_assoc (y⁻¹ᴴ) yᴴ, ← conjTranspose_mul, hy1, conjTranspose_one, Matrix.one_mul, ← mul_assoc (diagonal z), hdd1, Matrix.one_mul, hx2]`. Establish `hlg'` using `hlg`. Rewrite `hlg'` using `[lg_eq, hinvA, ← Matrix.conjTranspose_nonsing_inv]`.
+
+Establish `hf1` using `fr_nonneg (x⁻¹ * diagonal z * y⁻¹ᴴ)`. Establish `hf2` using `fr_nonneg (yᴴ * (diagonal z)ᴴ * x)`. Rewrite `hlg'` using `[Real.log_le_iff_le_exp (by linarith)]`. Establish `hA : fr (x⁻¹ * diagonal z * y⁻¹ᴴ) ≤ M` using `by linarith`. Establish `hN : fr (yᴴ * (diagonal z)ᴴ * x) ≤ M` using `by linarith`.
+
+Establish `hc' : x * xᴴ = s • (y * yᴴ) + (1 - s) • (1 : Matrix (Fin n) (Fin n) ℂ)`. Rewrite `hc` using `[real_coe_smul, real_coe_smul]`. Conclude with `hc`. Establish `hn0 : (0 : ℝ) ≤ n` using `Nat.cast_nonneg n`. Establish `hbnd0 : 0 ≤ bnd M n`.
+
+Unfold `bnd`. Establish `: 0 ≤ M * (2 * M * n + n + 1)` using `mul_nonneg (by linarith) (by nlinarith)`. Use the polynomial consequences of the given equalities and inequalities. Establish `key : fr y ≤ max (bnd M n) C ∧ fr y⁻¹ ≤ max (bnd M n) C`. Break down `Nat.eq_zero_or_pos n with hn | hn` into its components or cases.
+
+Substitute `hn` using the available equality. Establish `h0 : ∀ A : Matrix (Fin 0) (Fin 0) ℂ, fr A = 0` using `fun A => by simp [fr]`. Rewrite using `[h0, h0]`. Conclude with `⟨le_max_of_le_left hbnd0, le_max_of_le_left hbnd0⟩`. Break down `contraction_dichotomy hn hx1 hx2 hy1 hy2 hdd1 hdd2 hs0 hs1 hM hc' hA hN with h | h` into its components or cases.
+
+Conclude with `⟨le_max_of_le_left h.1, le_max_of_le_left h.2⟩`. Take `⟨h1, h2⟩` from `hC y y⁻¹ hy1 hy2 h.1 h.2`. Conclude with `⟨le_max_of_le_right h1, le_max_of_le_right h2⟩`. Rewrite using `[lg_eq]`. Apply `Real.log_le_log (by linarith [fr_nonneg y, fr_nonneg y⁻¹])` to reduce the goal to its premises.
+
+Combine the linear relations using `[key.1, key.2]`.
+-/
 theorem suppSt : PositivityTheory.RgBcC.SuppSt := by
   intro n z hz hinj R
   obtain ⟨M, hMdef⟩ : ∃ M : ℝ, M = max (Real.exp R) 1 := ⟨_, rfl⟩

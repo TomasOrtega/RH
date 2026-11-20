@@ -30,11 +30,21 @@ def homRes {S T : Type} [CommRing S] [Algebra c.F S] [Algebra c'.F S] [CommRing 
       show ψ (algebraMap c.F S a) = algebraMap c.F T a
       rw [← hS a, ψ.commutes, hT a] }
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem frMap_res_iff {S T : Type} [CommRing S] [Algebra c.F S] [Algebra c'.F S] [CommRing T] [Algebra c.F T]
     [Algebra c'.F T] (hS : AlgOver c c' hle S) (hT : AlgOver c c' hle T) (ψ : S →ₐ[c'.F] T)
     (y : FrPt Xo c' S) (z : FrPt Xo c' T) :
     FrMap (homRes hle hS hT ψ) (y.res hle hS) (z.res hle hT) ↔ FrMap ψ y z := Iff.rfl
 
+/- English proof (translation)
+Take `⟨p, φ, y₀, hy₀⟩` from `hy`. Set `: Algebra c.F c'.F` to `(incF c c' hle).toAlgebra`. Take `⟨q, α, hα, hlift, -⟩` from `exists_testRing_ext (K' := c'.F) p`. Take `⟨β, hβ⟩` from `hlift S φ.toRingHom fun a => (φ.commutes a).trans (h a).symm`. Set `: Algebra c.F q.R` to `((algebraMap c'.F q.R).comp (incF c c' hle)).toAlgebra`.
+
+Establish `hq : AlgOver c c' hle q.R` using `fun _ => rfl`. Set `α' : p.R →ₐ[c.F] q.R` to `{ α with commutes' := hα }`. Take `⟨y₁, hy₁⟩` from `hBC _ _ α' y₀`. Establish `e : (homRes hle hq h β).comp α' = φ` using `AlgHom.ext hβ`. Establish `h₂ : FrMap (homRes hle hq h β) y₁ (y.res hle h)` using `map_cancel hBC e hy₁ hy₀`.
+
+Conclude with `⟨q, β, y₁.ext hle hq, (frMap_res_iff hle hq h β (y₁.ext hle hq) y).1 h₂⟩`.
+-/
 theorem fromT_of_res (hBC : HasBC Xo c) {S : Type} [CommRing S] [Algebra c.F S] [Algebra c'.F S]
     (h : AlgOver c c' hle S) (y : FrPt Xo c' S) (hy : FromT (y.res hle h)) : FromT y := by
   obtain ⟨p, φ, y₀, hy₀⟩ := hy
@@ -49,12 +59,22 @@ theorem fromT_of_res (hBC : HasBC Xo c) {S : Type} [CommRing S] [Algebra c.F S] 
   have h₂ : FrMap (homRes hle hq h β) y₁ (y.res hle h) := map_cancel hBC e hy₁ hy₀
   exact ⟨q, β, y₁.ext hle hq, (frMap_res_iff hle hq h β (y₁.ext hle hq) y).1 h₂⟩
 
+/- English proof (translation)
+Introduce `p' _ hp y' p φ y hy`. Rewrite using `[← evR_test hf' p' y', h p'.R hp y']`. Conclude with `Finset.sum_congr rfl fun i _ => congrArg _ (evR_of_map hWD (hfs i) hy)`.
+-/
 theorem isBCTest_of_isBC (hWD : ValueWD Xo c) {m : ℕ} {f' : Rul Xo c'} {as : Fin m → c'.F} {fs : Fin m → Rul Xo c}
     (hf' : Natural c' f') (hfs : ∀ i, Natural c (fs i)) (h : IsBC hle f' as fs) : IsBCTest hle f' as fs := by
   intro p' _ hp y' p φ y hy
   rw [← evR_test hf' p' y', h p'.R hp y']
   exact Finset.sum_congr rfl fun i _ => congrArg _ (evR_of_map hWD (hfs i) hy)
 
+/- English proof (translation)
+Introduce `S _ _ _ hS y`. Distinguish the cases in `hy : FromT y`. Take `⟨q, ψ, y', hy', hev⟩` from `evR_spec hy`. Set `: Algebra c.F q.R` to `((algebraMap c'.F q.R).comp (incF c c' hle)).toAlgebra`. Establish `hq : AlgOver c c' hle q.R` using `fun _ => rfl`.
+
+Establish `: IsReduced q.R` using `(Ideal.isRadical_iff_quotient_reduced _).1 q.rad`. Take `⟨p, φ, y₀, hy₀⟩` from `hT q.R (y'.res hle hq)`. Establish `h₂` using `map_trans _ _ hy₀ ((frMap_res_iff hle hq hS ψ y' y).2 hy')`. Rewrite using `[hev, h q hq y' p φ y₀ hy₀, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_mul, ψ.commutes, evR_of_map hWD (hfs i) h₂]`. Both sides reduce to the same expression. Establish `hy' : ¬ FromT (y.res hle hS)` using `fun h' => hy (fromT_of_res hle hBC hS y h')`. Rewrite using `[evR_not hy]`. Conclude with `(Finset.sum_eq_zero fun i _ => by rw [evR_not hy', mul_zero]).symm`.
+-/
 theorem isBC_of_isBCTest (hWD : ValueWD Xo c) (hBC : HasBC Xo c) (hT : AllTest Xo c) {m : ℕ} {f' : Rul Xo c'}
     {as : Fin m → c'.F} {fs : Fin m → Rul Xo c} (hfs : ∀ i, Natural c (fs i)) (h : IsBCTest hle f' as fs) :
     IsBC hle f' as fs := by
@@ -74,6 +94,9 @@ theorem isBC_of_isBCTest (hWD : ValueWD Xo c) (hBC : HasBC Xo c) (hT : AllTest X
     rw [evR_not hy]
     exact (Finset.sum_eq_zero fun i _ => by rw [evR_not hy', mul_zero]).symm
 
+/- English proof (translation)
+The claim follows from `have hS := GlobalTheory.abelianSchemeLaws_all.1.secBaseChange have hWD : ValueWD Xo c := evalWD_fr (frChartF_of (GlobalTheory.Frames.chartCoverF_of_secBaseChange hS E H Dw l Xo c)) ⟨isBCTest_of_isBC hle hWD hf' hfs, isBC_of_isBCTest hle hWD (hasBC_of hS) (GlobalTheory.Frames.allT …`.
+-/
 theorem isBC_iff_isBCTest {m : ℕ} {f' : Rul Xo c'} {as : Fin m → c'.F} {fs : Fin m → Rul Xo c}
     (hf' : Natural c' f') (hfs : ∀ i, Natural c (fs i)) : IsBC hle f' as fs ↔ IsBCTest hle f' as fs :=
   have hS := GlobalTheory.abelianSchemeLaws_all.1.secBaseChange
@@ -83,13 +106,22 @@ theorem isBC_iff_isBCTest {m : ℕ} {f' : Rul Xo c'} {as : Fin m → c'.F} {fs :
 
 variable (Xo)
 
+/- English proof (translation)
+The claim follows from `forall₂_congr fun _ hf' => exists₃_congr fun _ _ _ => and_congr_right fun hfs => isBC_iff_isBCTest hle hf'.1 fun i => (hfs i).1`.
+-/
 theorem secBC_iff_secBCTest (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ) :
     GlobalTheory.IndefiniteRowSideFullHecke.SectionBaseChangeTests.SecBC Xo hle a n ↔ SecBCTest Xo hle a n :=
   forall₂_congr fun _ hf' => exists₃_congr fun _ _ _ => and_congr_right fun hfs =>
     isBC_iff_isBCTest hle hf'.1 fun i => (hfs i).1
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem secBC_iff_forall : Formalism.L2.Pj.SecBC Xo hle ↔ ∀ a n, GlobalTheory.IndefiniteRowSideFullHecke.SectionBaseChangeTests.SecBC Xo hle a n := Iff.rfl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Iff.rfl, Iff.rfl, fun _ _ _ _ _ _ hf' hfs => isBC_iff_isBCTest hle hf'.1 fun i => (hfs i).1, forall₂_congr fun a n => secBC_iff_secBCTest Xo hle a n⟩`.
+-/
 theorem secBC_typings_equiv :
     (Formalism.L2.Pj.SecBC Xo hle ↔ ∀ a n, GlobalTheory.IndefiniteRowSideFullHecke.SectionBaseChangeTests.SecBC Xo hle a n) ∧
     (Formalism.L2.Pj.SecBC Xo hle ↔ SecBCAll Xo hle) ∧

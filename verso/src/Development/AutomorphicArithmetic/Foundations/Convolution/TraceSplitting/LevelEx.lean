@@ -17,16 +17,36 @@ namespace UpperTheory.ConvolutionTheory.T
 
 variable {K : Type} [Field K] [NumberField K] {n : ℕ}
 
+/- English proof (translation)
+Simplify using `[fixL, fixF, rhoL, Submodule.mem_iInf, LinearMap.mem_eqLocus, Subgroup.mem_map]`.
+-/
 private lemma mem_fixL_iff (μ : Measure (normOneGL K n)) [μ.IsHaarMeasure] (w : Pl K) (J : Subgroup (Gw n w))
     (v : LL μ) : v ∈ fixL μ w J ↔ ∀ g ∈ J, rhoL μ w g v = v := by
   simp [fixL, fixF, rhoL, Submodule.mem_iInf, LinearMap.mem_eqLocus, Subgroup.mem_map]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨GLnLocal.isCompact_integralGL _ n, GLnLocal.isOpen_integralGL _ n⟩`.
+-/
 private lemma co_integral (w : Pl K) : CO (GLnLocal.integralGL (w.adicCompletion K) n) :=
   ⟨GLnLocal.isCompact_integralGL _ n, GLnLocal.isOpen_integralGL _ n⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨IsLocallyConstant.const (1 : ℂ), fun _ _ => by simp, fun _ _ _ _ => by simp⟩`.
+-/
 private lemma isChr_one {G : Type} [Group G] [TopologicalSpace G] (J : Subgroup G) : IsChr J (1 : G → ℂ) :=
   ⟨IsLocallyConstant.const (1 : ℂ), fun _ _ => by simp, fun _ _ _ _ => by simp⟩
 
+/- English proof (translation)
+Use `letI : MeasurableSpace (Gw n w) := borel _`. Use `haveI : BorelSpace (Gw n w) := ⟨rfl⟩`. Set `P : TopologicalSpace.PositiveCompacts (Gw n w)` to `{ carrier := GLnLocal.integralGL (w.adicCompletion K) n isCompact' := GLnLocal.isCompact_integralGL _ n interior_nonempty' := by`. Rewrite using `[(GLnLocal.isOpen_integralGL _ n).interior_eq]`. Conclude with `⟨1, Subgroup.one_mem _⟩ }`.
+
+Take `⟨⟨σ, f, hf0, hfV, hfe⟩, -, -⟩` from `occursBasics K n μ V w (Measure.haarMeasure P) hV`. Choose the witnesses or unpack the hypotheses as in `⟨x, hx⟩ : ∃ x, f x ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hf0 (LinearMap.ext h)`.
+
+Set `U : Subgroup (Gw n w)` to `stabilizerOf σ.ρ x ⊓ GLnLocal.integralGL (w.adicCompletion K) n`. Establish `hUo : IsOpen (U : Set (Gw n w))`. Rewrite using `[Subgroup.coe_inf]`. Conclude with `(σ.smooth x).inter (GLnLocal.isOpen_integralGL _ n)`. Establish `hUc : IsCompact (U : Set (Gw n w))` using `(GLnLocal.isCompact_integralGL _ n).of_isClosed_subset (Subgroup.isClosed_of_isOpen U hUo) (by rw [Subgroup.coe_inf]; exact Set.inter_subset_right)`.
+
+Use `⟨U, ⟨hUc, hUo⟩, inf_le_right, fun hb => hx ?_⟩` and prove the remaining obligations. Establish `hm : f x ∈ V ⊓ fixL μ w U`. Use `Submodule.mem_inf.2 ⟨hfV x, (mem_fixL_iff μ w U _).2 fun g hg => ?_⟩` and prove the remaining obligations. Rewrite using `[← hfe g x]`. Conclude with `congrArg f hg.1`.
+
+Rewrite `hm` using `[hb]`. Conclude with `(Submodule.mem_bot ℂ).1 hm`.
+-/
 private lemma exists_local_level (μ : Measure (normOneGL K n)) [μ.IsHaarMeasure] (V : Submodule ℂ (LL μ))
     (hV : IsSummand μ V) (w : Pl K) :
     ∃ U : Subgroup (Gw n w), CO U ∧ U ≤ GLnLocal.integralGL (w.adicCompletion K) n ∧ V ⊓ fixL μ w U ≠ ⊥ := by
@@ -60,6 +80,21 @@ private lemma exists_local_level (μ : Measure (normOneGL K n)) [μ.IsHaarMeasur
 
 end UpperTheory.ConvolutionTheory.T
 
+/- English proof (translation)
+Introduce `K _ _ n μ _ V hV S hS`. Use `choose U₀ hU₀ hU₀le hU₀ne using fun w : Pl K => exists_local_level μ V hV w`. Set `J : ∀ w : Pl K, Subgroup (Gw n w)` to `fun w => if w ∈ S then U₀ w else GLnLocal.integralGL (w.adicCompletion K) n`. Establish `hJin : ∀ w ∈ S, J w = U₀ w` using `fun w hw => if_pos hw`. Establish `hJout : ∀ w, w ∉ S → J w = GLnLocal.integralGL (w.adicCompletion K) n` using `fun w hw => if_neg hw`.
+
+Establish `hco : ∀ w, CO (J w)` using `fun w => by`. Distinguish the cases in `hw : w ∈ S`. Rewrite using `[hJin w hw]`. Conclude with `hU₀ w`. Rewrite using `[hJout w hw]`.
+
+Conclude with `co_integral w`. Establish `hle : ∀ w, J w ≤ GLnLocal.integralGL (w.adicCompletion K) n` using `fun w => by`. Distinguish the cases in `hw : w ∈ S`. Rewrite using `[hJin w hw]`. Conclude with `hU₀le w`.
+
+Rewrite using `[hJout w hw]`. Establish `heig : ∀ w, eigL μ w (J w) 1 = fixL μ w (J w)` using `fun w => (eigBasic K n μ w (J w) 1 (hco w) (isChr_one _)).2.1`. Establish `hloc : ∀ w, V ⊓ eigL μ w (J w) 1 ≠ ⊥` using `fun w => by`. Rewrite using `[heig w]`. Distinguish the cases in `hw : w ∈ S`.
+
+Rewrite using `[hJin w hw]`. Conclude with `hU₀ne w`. Rewrite using `[hJout w hw]`. Conclude with `hS w hw`. Establish `hall` using `typedEx K n μ V hV J (fun _ => 1) (fun w => ⟨hco w, isChr_one _⟩) ((S.finite_toSet.eventually_cofinite_notMem).mono fun w hw => ⟨hJout w hw, rfl⟩) hloc`.
+
+Use `⟨J, fun w => ⟨hco w, hle w⟩, fun hb => hall (eq_bot_iff.2 ?_)⟩` and prove the remaining obligations. Rewrite using `[← hb]`. Use `le_inf (le_inf inf_le_left ?_) ?_` and prove the remaining obligations. Use `inf_le_right.trans (le_iInf₂ fun w hw => (iInf_le _ w).trans ?_)` and prove the remaining obligations. Rewrite using `[heig w, hJout w hw]`.
+
+Use `inf_le_right.trans (le_iInf₂ fun w _ => (iInf_le _ w).trans ?_)` and prove the remaining obligations. Rewrite using `[heig w]`.
+-/
 theorem UpperTheory.ConvolutionTheory.T.levelEx :
     UpperTheory.ConvolutionTheory.T.LevelEx := by
   intro K _ _ n μ _ V hV S hS

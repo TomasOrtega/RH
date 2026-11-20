@@ -23,6 +23,9 @@ section Points
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l}
 
+/- English proof (translation)
+Apply `Limits.pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[ptF, ptF, Category.assoc, Limits.pullback.lift_fst, Limits.pullback.lift_fst, h]`. Rewrite using `[ptF, ptF, Category.assoc, Limits.pullback.lift_snd, Limits.pullback.lift_snd, ← AlgebraicGeometry.Spec.map_comp]`. Conclude with `congrArg spMap (φ.comp_algebraMap).symm`.
+-/
 theorem ptF_eq {S T : Type} [CommRing S] [Algebra c.F S] [CommRing T] [Algebra c.F T] (φ : S →ₐ[c.F] T)
     {y : FrPt Xo c S} {z : FrPt Xo c T} (h : z.x = spMap φ.toRingHom ≫ y.x) :
     ptF z = spMap φ.toRingHom ≫ ptF y := by
@@ -31,16 +34,25 @@ theorem ptF_eq {S T : Type} [CommRing S] [Algebra c.F S] [CommRing T] [Algebra c
   · rw [ptF, ptF, Category.assoc, Limits.pullback.lift_snd, Limits.pullback.lift_snd, ← AlgebraicGeometry.Spec.map_comp]
     exact congrArg spMap (φ.comp_algebraMap).symm
 
+/- English proof (translation)
+Introduce `s` and use `by rw [ptF_eq φ h] exact hy _`.
+-/
 theorem framedPointLiesOnComponent_of_specMap {S T : Type} [CommRing S] [Algebra c.F S] [CommRing T] [Algebra c.F T] (φ : S →ₐ[c.F] T)
     {y : FrPt Xo c S} {z : FrPt Xo c T} (h : z.x = spMap φ.toRingHom ≫ y.x) {Z : Comp Xo c} (hy : LiesOn Z y) :
     LiesOn Z z := fun s => by
   rw [ptF_eq φ h]
   exact hy _
 
+/- English proof (translation)
+The claim follows from `framedPointLiesOnComponent_of_specMap (AlgHom.id c.F S) (by rw [spMap_algHom_id, Category.id_comp, h]) hy`.
+-/
 theorem liesOn_congr {S : Type} [CommRing S] [Algebra c.F S] {y z : FrPt Xo c S} (h : z.x = y.x) {Z : Comp Xo c}
     (hy : LiesOn Z y) : LiesOn Z z :=
   framedPointLiesOnComponent_of_specMap (AlgHom.id c.F S) (by rw [spMap_algHom_id, Category.id_comp, h]) hy
 
+/- English proof (translation)
+Establish `hall : ptF y s₀ ∈ ⋃₀ irreducibleComponents (Xo.XF c)`. Rewrite using `[sUnion_irreducibleComponents]`. Discharge the goal by the elementary cases of `trivial`. Take `⟨W, hW, hq⟩` from `Set.mem_sUnion.1 hall`. Conclude with `⟨⟨W, hW⟩, fun s => hs s₀ s ▸ hq⟩`.
+-/
 theorem exists_liesOn' {S : Type} [CommRing S] {_ : Algebra c.F S} (hs : ∀ s s' : Sp S, s = s') (s₀ : Sp S)
     (y : FrPt Xo c S) : ∃ Z : Comp Xo c, LiesOn Z y := by
   have hall : ptF y s₀ ∈ ⋃₀ irreducibleComponents (Xo.XF c) := by
@@ -48,9 +60,15 @@ theorem exists_liesOn' {S : Type} [CommRing S] {_ : Algebra c.F S} (hs : ∀ s s
   obtain ⟨W, hW, hq⟩ := Set.mem_sUnion.1 hall
   exact ⟨⟨W, hW⟩, fun s => hs s₀ s ▸ hq⟩
 
+/- English proof (translation)
+The claim follows from `exists_liesOn' (fun s s' => Subsingleton.elim (α := PrimeSpectrum S) s s') (⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum S) y`.
+-/
 theorem exists_liesOn {S : Type} [Field S] [Algebra c.F S] (y : FrPt Xo c S) : ∃ Z : Comp Xo c, LiesOn Z y :=
   exists_liesOn' (fun s s' => Subsingleton.elim (α := PrimeSpectrum S) s s') (⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum S) y
 
+/- English proof (translation)
+Establish `s₀ : Sp S` using `(⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum S)`. Assume the negation of the conclusion as `hne`. Conclude with `Set.disjoint_left.1 (CompSplitPfD.cspD_comp_disj Xo c Z Z' hne) (h s₀) (h' s₀)`.
+-/
 theorem comp_unique {S : Type} [Field S] [Algebra c.F S] {y : FrPt Xo c S} {Z Z' : Comp Xo c} (h : LiesOn Z y)
     (h' : LiesOn Z' y) : Z = Z' := by
   have s₀ : Sp S := (⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum S)
@@ -64,6 +82,9 @@ section Act
 variable {D : D7} {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E} {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l}
   {G : Type} [Group G] {lev : G → (Dw.La →ₗ[𝓞 D.host.E] Dw.La) × (Dw.La →ₗ[𝓞 D.host.E] Dw.La)}
 
+/- English proof (translation)
+Take `⟨ρ, ν, hi, hν, hm⟩` from `hy`. Take `⟨w, hw⟩` from `(GlobalTheory.exists_unique_frMove _ H Dw l Xo c ρ ν hν.1 T z).1`. Establish `h` using `(hL.func g T z w z' ⟨ρ, ν, hi, hν, hw⟩ hz).1`. Rewrite `h` using `[spMap_algHom_id, Category.id_comp]`. Conclude with `⟨ρ, hi, hm.1, h.trans hw.1⟩`.
+-/
 theorem x_of_levR (hL : ActLev (Xo := Xo) c lev) (g : G) {S T : Type} [CommRing S] [Algebra c.F S] [CommRing T]
     [Algebra c.F T] {y y' : FrPt Xo c S} {z z' : FrPt Xo c T} (hy : levR (lev g) y y') (hz : levR (lev g) z z') :
     ∃ ρ : Xo.X ⟶ Xo.X, IsIso ρ ∧ y'.x = y.x ≫ ρ ∧ z'.x = z.x ≫ ρ := by
@@ -73,6 +94,17 @@ theorem x_of_levR (hL : ActLev (Xo := Xo) c lev) (g : G) {S T : Type} [CommRing 
   rw [spMap_algHom_id, Category.id_comp] at h
   exact ⟨ρ, hi, hm.1, h.trans hw.1⟩
 
+/- English proof (translation)
+Take `⟨y₀, h₀, h₁⟩` from `GlobalTheory.FlatLine.DefinitePoint.main _ H Dw l Xo c hq hF Z`. Take `⟨w, hw⟩` from `hL.total g⁻¹ c.F y₀`. Take `⟨w', hw'⟩` from `hL.total g c.F w`. Establish `h2` using `hL.mul g⁻¹ g c.F y₀ w w' hw hw'`. Rewrite `h2` using `[inv_mul_cancel]`.
+
+Establish `h3` using `(hL.func 1 c.F y₀ y₀ w' (hL.one c.F y₀) h2).1`. Rewrite `h3` using `[spMap_algHom_id, Category.id_comp]`. Take `⟨Z', hZ'⟩` from `exists_liesOn w`. Take `⟨y₁, -, h₄⟩` from `GlobalTheory.FlatLine.DefinitePoint.main _ H Dw l Xo c hq hF Z'`. Use `⟨Z', fun S _ _ y y' hy => ?_⟩` and prove the remaining obligations.
+
+Take `⟨ρ, hi, e₁, e₂⟩` from `x_of_levR hL g hy hw'`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `framedPointLiesOnComponent_of_specMap (Algebra.ofId c.F S) ?_ hZ'` and prove the remaining obligations. Rewrite using `[← cancel_mono ρ, ← e₁, Category.assoc, ← e₂, h3]`.
+
+Conclude with `h₁ S y' h`. Introduce `h`. Use `framedPointLiesOnComponent_of_specMap (Algebra.ofId c.F S) ?_ h₀` and prove the remaining obligations. Establish `e₃ : w.x = y₁.x` using `(h₄ c.F w hZ').trans (by`. Rewrite using `[show spMap (algebraMap c.F c.F) = 𝟙 _ from spMap_algHom_id c.F c.F, Category.id_comp])`.
+
+Rewrite using `[e₁, h₄ S y h, ← e₃, Category.assoc, ← e₂, h3]`. Both sides reduce to the same expression.
+-/
 theorem exists_comp (hL : ActLev (Xo := Xo) c lev) (hq : Dw.q = 0) (hF : FnAlgClosed Xo c) (g : G) (Z : Comp Xo c) :
     ∃ Z' : Comp Xo c, ∀ (S : Type) [CommRing S] [Algebra c.F S] (y y' : FrPt Xo c S), levR (lev g) y y' →
       (LiesOn Z y' ↔ LiesOn Z' y) := by
@@ -99,6 +131,11 @@ theorem exists_comp (hL : ActLev (Xo := Xo) c lev) (hq : Dw.q = 0) (hF : FnAlgCl
     rw [e₁, h₄ S y h, ← e₃, Category.assoc, ← e₂, h3]
     rfl
 
+/- English proof (translation)
+Use `choose m hm using exists_comp hL hq hF`. It suffices to establish `h : (∀ Z, m 1 Z = Z) ∧ ∀ g h Z, m (g * h) Z = m g (m h Z) from ⟨{ smul` using `m, one_smul := h.1, mul_smul := h.2 }, hm⟩`. Use `⟨fun Z => ?_, fun g h Z => ?_⟩` and prove the remaining obligations. Take `⟨y₀, h₀, -⟩` from `GlobalTheory.FlatLine.DefinitePoint.main _ H Dw l Xo c hq hF Z`. Conclude with `comp_unique ((hm 1 Z _ y₀ y₀ (hL.one c.F y₀)).1 h₀) h₀`.
+
+Take `⟨y, h₀, -⟩` from `GlobalTheory.FlatLine.DefinitePoint.main _ H Dw l Xo c hq hF (m (g * h) Z)`. Take `⟨y', hy'⟩` from `hL.total g c.F y`. Take `⟨y'', hy''⟩` from `hL.total h c.F y'`. Conclude with `comp_unique h₀ ((hm g _ _ y y' hy').1 ((hm h Z _ y' y'' hy'').1 ((hm (g * h) Z _ y y'' (hL.mul g h c.F y y' y'' hy' hy'')).2 h₀)))`.
+-/
 theorem exists_mulAction (hL : ActLev (Xo := Xo) c lev) (hq : Dw.q = 0) (hF : FnAlgClosed Xo c) :
     ∃ _ : MulAction G (Comp Xo c), ∀ (g : G) (Z : Comp Xo c) (S : Type) [CommRing S] [Algebra c.F S]
       (y y' : FrPt Xo c S), levR (lev g) y y' → (LiesOn Z y' ↔ LiesOn (g • Z) y) := by
@@ -114,6 +151,13 @@ theorem exists_mulAction (hL : ActLev (Xo := Xo) c lev) (hq : Dw.q = 0) (hF : Fn
     exact comp_unique h₀ ((hm g _ _ y y' hy').1 ((hm h Z _ y' y'' hy'').1
       ((hm (g * h) Z _ y y'' (hL.mul g h c.F y y' y'' hy' hy'')).2 h₀)))
 
+/- English proof (translation)
+Use function extensionality and compare the values at `p y`. Use `sub_eq_zero.1 (eq_zero_of_forall_prime fun q => ?_)` and prove the remaining obligations. Set `φ : p.R →ₐ[c.F] q.asIdeal.ResidueField` to `IsScalarTower.toAlgHom c.F p.R _`. Take `⟨z, hz⟩` from `GlobalTheory.TransferCompare.frBC_framed Xo c _ _ φ y`. Take `⟨z', hz'⟩` from `hL.total g _ z`.
+
+Establish `hm` using `hL.nat g _ _ φ y _ z z' hz (mvPt_spec hL.total g y) hz'`. Establish `e₁` using `evR_of_frMap_test (idem_mem_secZ Z).1 hm`. Establish `e₂` using `evR_of_frMap_test (idem_mem_secZ Z').1 hz`. Establish `e₃ : evR Xo c (idem Z) z' = evR Xo c (idem Z') z`. Distinguish the cases in `hc : LiesOn Z z'`.
+
+Rewrite using `[evR_idem hc ⟨p, φ, _, hm⟩, evR_idem ((h _ z z' hz').1 hc) ⟨p, φ, _, hz⟩]`. Rewrite using `[idem_mem_suppOn Z _ z' ((liesOff_iff Z z').2 hc), idem_mem_suppOn Z' _ z ((liesOff_iff Z' z).2 fun h' => hc ((h _ z z' hz').2 h'))]`. Rewrite using `[← Ideal.ker_algebraMap_residueField q.asIdeal, RingHom.mem_ker, map_sub, sub_eq_zero]`. Conclude with `e₁.symm.trans (e₃.trans e₂)`.
+-/
 theorem actLev_idem (hL : ActLev (Xo := Xo) c lev) (g : G) {Z Z' : Comp Xo c}
     (h : ∀ (S : Type) [CommRing S] [Algebra c.F S] (y y' : FrPt Xo c S), levR (lev g) y y' →
       (LiesOn Z y' ↔ LiesOn Z' y)) : actLev c lev g (idem Z) = idem Z' := by
@@ -133,6 +177,9 @@ theorem actLev_idem (hL : ActLev (Xo := Xo) c lev) (g : G) {Z Z' : Comp Xo c}
   rw [← Ideal.ker_algebraMap_residueField q.asIdeal, RingHom.mem_ker, map_sub, sub_eq_zero]
   exact e₁.symm.trans (e₃.trans e₂)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨_, mvPt_spec hL.total g y, fun _ hf => evalAt_actL hL (GlobalTheory.TransferCompare.evalWD_framed Xo c) frMap_trans_id g hf y⟩`.
+-/
 theorem exists_move (hL : ActLev (Xo := Xo) c lev) (g : G) {S : Type} [CommRing S] [Algebra c.F S] (y : FrPt Xo c S) :
     ∃ y' : FrPt Xo c S, levR (lev g) y y' ∧ ∀ f : Rul Xo c,
       IsNatural (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) f →
@@ -140,6 +187,11 @@ theorem exists_move (hL : ActLev (Xo := Xo) c lev) (g : G) {S : Type} [CommRing 
   ⟨_, mvPt_spec hL.total g y, fun _ hf =>
     evalAt_actL hL (GlobalTheory.TransferCompare.evalWD_framed Xo c) frMap_trans_id g hf y⟩
 
+/- English proof (translation)
+Introduce and unpack `la _ ⟨⟨q, S, io, e, ho, y, hy, η, hη, rfl⟩, rfl⟩`. Set `` to `io.toAlgebra`. Establish `hmv` using `mvPt_spec hL.total g y.1`. Set `y' : IntFr Xo c S io` to `⟨_, GlobalTheory.LevActInt.fromTest_moved hL g y.2.1, GlobalTheory.FormTies.LevelMove.integral_of_levR _ _ _ _ _ _ (lev g) S io y.1 _ hmv y.2.2⟩`. Establish `h0 : 0 ≤ nval S.V e (evI y' f)` using `h la _ ⟨PtV.mk la ho y' hy () trivial, rfl⟩`.
+
+Establish `e1 : evI y (actLev c lev g f) = evI y' f` using `evalAt_actL hL (GlobalTheory.TransferCompare.evalWD_framed Xo c) frMap_trans_id g hf y.1`. Use `show 0 ≤ nval S.V e (evI y (actLev c lev g f))`. Rewrite using `[e1]`. Conclude with `h0`.
+-/
 theorem actLev_int (hL : ActLev (Xo := Xo) c lev) (g : G) {f : Rul Xo c}
     (hf : IsNatural (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) f)
     (h : ∀ w, ∀ v ∈ valSet Xo c (algCls Xo c) w, 0 ≤ v f) :
@@ -159,9 +211,17 @@ theorem actLev_int (hL : ActLev (Xo := Xo) c lev) (g : G) {f : Rul Xo c}
 
 variable {r : ℕ} {U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r} {ξ : ℝ} {a : (D.host.E →+* ℂ) × ℕ → ℕ} {n : ℕ}
 
+/- English proof (translation)
+The claim follows from `actL_mem _ _ _ _ hL.total hL.nat hL.bor _ g hf`.
+-/
 theorem actLev_mem_sec (hL : ActLev (Xo := Xo) c lev) (g : G) {f : Rul Xo c} (hf : f ∈ sec Xo c a n) :
     actLev c lev g f ∈ sec Xo c a n := actL_mem _ _ _ _ hL.total hL.nat hL.bor _ g hf
 
+/- English proof (translation)
+Rewrite `hf`, the goal using `[cuspW_wtZ]`. Take `⟨hs, hc⟩` from `(mem_cusp _ _ _ _ _ _).1 hf`. Establish `hg` using `actLev_mem_sec hL g hs`. Use `(mem_cusp _ _ _ _ _ _).2 ⟨hg, fun σ hσ => holCusp_mem_holSub _ _ fun k => ?_⟩` and prove the remaining obligations. Establish `hU` using `hC.unf σ hσ`.
+
+Establish `hpq : 1 ≤ Dw.p + Dw.q` using `hC.p.trans (Nat.le_add_right _ _)`. Use `GlobalTheory.LevelCusp.rdU_mem_SS (U := Formalism.L2.PjFree.Unf.ofPj (U σ)) hσ hU (hU.1 ▸ hpq) (fun k k' τ => (hC.xi σ hσ k τ).trans (hC.xi σ hσ k' τ).symm) hD hs hg (fun k => GlobalTheory.CuspSecFin.mem_SS_of_mem_holSub _ _ (hc σ hσ) k) (fun y => ?_) k` and prove the remaining obligations. Take `⟨y', ⟨ρ, ν, -, -, hm⟩, hv⟩` from `exists_move hL g y`. Conclude with `⟨ρ, ν, y', hm, hv f hs.1⟩`.
+-/
 theorem actLev_mem_cuspW (hC : DefCase U ξ) (hL : ActLev (Xo := Xo) c lev) (hD : Dom a n) (g : G) {f : Rul Xo c}
     (hf : f ∈ cuspW Xo c U (wtZ a n)) : actLev c lev g f ∈ cuspW Xo c U (wtZ a n) := by
   rw [cuspW_wtZ] at hf ⊢
@@ -176,6 +236,19 @@ theorem actLev_mem_cuspW (hC : DefCase U ξ) (hL : ActLev (Xo := Xo) c lev) (hD 
   obtain ⟨y', ⟨ρ, ν, -, -, hm⟩, hv⟩ := exists_move hL g y
   exact ⟨ρ, ν, y', hm, hv f hs.1⟩
 
+/- English proof (translation)
+Take `⟨k, x⟩` from `z`. Take `⟨hx, hZ⟩` from `hz`. Establish `hU` using `hC.unf σ hσ`. Establish `hpq : 1 ≤ Dw.p + Dw.q` using `hC.p.trans (Nat.le_add_right _ _)`. Take `⟨hun1, hun2⟩` from `GlobalTheory.FrameNorm.exists_unitFr_frBor _ H Dw l Xo c σ r (Formalism.L2.PjFree.Unf.ofPj (U σ)) hσ hU`.
+
+Take `⟨x₀, hx₀, -, ⟨t₀, ht₀⟩, hn₀⟩` from `hun1 k ⟨x, hx⟩`. Take `⟨y', hy', hv⟩` from `exists_move hL g ((U σ).un k x₀)`. Take `⟨k', x', t, hx', hb⟩` from `hun2 y'`. Establish `hZ' : LiesOn Z ((U σ).un k' x')` using `liesOn_congr hb.1.symm ((h _ _ _ hy').2 (liesOn_congr ht₀.1.symm hZ))`. Take `⟨ρ, ν, -, -, hm⟩` from `hy'`.
+
+Take `⟨-, -, -, -, -, -, ht⟩` from `GlobalTheory.LevelCusp.exists_match (U := Formalism.L2.PjFree.Unf.ofPj (U σ)) hσ hU (hU.1 ▸ hpq) (fun k k' τ => (hC.xi σ hσ k τ).trans (hC.xi σ hσ k' τ).symm) hm hb hx₀ hx'`. Use `⟨⟨k', x'.1⟩, ⟨x'.2, hZ'⟩, ?_⟩` and prove the remaining obligations. Establish `hsec` using `hU.2.2.2.2.1 a n hD _ (actLev_mem_sec hL g hf) k`. Establish `v1 : rdU (U σ) (actLev c lev g f) k x₀.1 = toC (evR Xo c (actLev c lev g f) ((U σ).un k x₀))` using `dif_pos x₀.2`. Establish `v2 : rdU (U σ) f k' x'.1 = toC (evR Xo c f ((U σ).un k' x'))` using `dif_pos x'.2`.
+
+Establish `v3` using `(GlobalTheory.Frames.algebraic_laws GlobalTheory.lawsFieldsSeparately.2.1 _ H Dw l Xo c).2.2.2.2.2.2 (CAt σ) (inferInstanceAs (IsReduced ℂ)) a n f hf t _ y' hb`. Establish `v4 : ‖toC (wchar (ex Dw a n) t : CAt σ)‖ = 1`. Establish `: toC (wchar (ex Dw a n) t : CAt σ) = ∏ j, toC (t j : CAt σ) ^ ex Dw a n j` using `rfl`. Rewrite using `[this, norm_prod]`. Conclude with `Finset.prod_eq_one fun j _ => by`.
+
+Rewrite using `[norm_pow, show ‖toC (t j : CAt σ)‖ = 1 from ht j, one_pow]`. Establish `v5 : ‖rdU (U σ) (actLev c lev g f) k x₀.1‖ = ‖rdU (U σ) f k' x'.1‖`. Rewrite using `[v1, v2, hv f hf.1, v3]`. Conclude with `(norm_mul (toC (wchar (ex Dw a n) t : CAt σ)) _).trans (by rw [v4, one_mul]; rfl)`. Unfold `homN ptN`.
+
+Rewrite using `[modelWt_wtZ]`. Use `congr 1`. Conclude with `(hn₀ _ _ hsec).trans (v5.trans (pnorm_eq_of_unit _ _ _ _ hx').symm)`.
+-/
 theorem homN_actLev (hC : DefCase U ξ) (hL : ActLev (Xo := Xo) c lev) (hD : Dom a n) (g : G) {Z Z' : Comp Xo c}
     (h : ∀ (S : Type) [CommRing S] [Algebra c.F S] (y y' : FrPt Xo c S), levR (lev g) y y' →
       (LiesOn Z y' ↔ LiesOn Z' y)) {σ : c.F →+* ℂ} (hσ : GoodEmb c σ) {f : Rul Xo c} (hf : f ∈ sec Xo c a n)
@@ -217,6 +290,11 @@ end Act
 
 section Abstract
 
+/- English proof (translation)
+Establish `hn : 0 < Nat.card G` using `Nat.card_pos`. Establish `h : (χ g : K) ^ Nat.card G = 1`. Rewrite using `[← Units.val_pow_eq_pow_val, ← map_pow, pow_card_eq_one', map_one, Units.val_one]`. Use `⟨⟨⟨χ g, IsIntegral.of_pow hn (h ▸ isIntegral_one)⟩, rfl⟩, fun σ => ?_⟩` and prove the remaining obligations. Establish `h2 : ‖σ (χ g : K)‖ ^ Nat.card G = 1` using `by rw [← norm_pow, ← map_pow, h, map_one, norm_one]`.
+
+Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) hn.ne').1 h2`.
+-/
 theorem exists_int {K G : Type} [Field K] [NumberField K] [Group G] [Finite G] (χ : G →* Kˣ) (g : G) :
     (∃ b : 𝓞 K, (b : K) = (χ g : K)) ∧ ∀ σ : K →+* ℂ, ‖σ (χ g : K)‖ = 1 := by
   have hn : 0 < Nat.card G := Nat.card_pos
@@ -226,6 +304,35 @@ theorem exists_int {K G : Type} [Field K] [NumberField K] [Group G] [Finite G] (
   have h2 : ‖σ (χ g : K)‖ ^ Nat.card G = 1 := by rw [← norm_pow, ← map_pow, h, map_one, norm_one]
   exact (pow_eq_one_iff_of_nonneg (norm_nonneg _) hn.ne').1 h2
 
+/- English proof (translation)
+Take `⟨O, hO, hdec, hsum⟩` from `GlobalTheory.freeOrbit_projector_eigen K V G C e ρ χ hfree h₁ h₂ h₃ h₄`. Take `⟨-, o₀, ho₀, -⟩` from `hO (Classical.arbitrary C)`. Use `haveI : Nonempty O := ⟨⟨o₀, ho₀⟩⟩`. Set `Φ : (∀ o : O, ι o → K) →ₗ[K] V` to `∑ o : O, ∑ g : G, (((χ g)⁻¹ : Kˣ) : K) • (ρ g ∘ₗ φ o ∘ₗ LinearMap.proj o)`. Set `f : (∀ o : O, ι o → K) → C → V` to `fun x o => if h : o ∈ O then φ o (x ⟨o, h⟩) else 0`.
+
+Establish `hf : ∀ x (o : O), f x o = φ o (x o)` using `fun x o => dif_pos o.2`. Establish `hfe : ∀ x o, e o (f x o) = f x o` using `fun x o => by`. Distinguish the cases in `h : o ∈ O`. Rewrite using `[hf x ⟨o, h⟩]`. Conclude with `(hr _ _).1 ⟨_, rfl⟩`.
+
+Rewrite using `[show f x o = 0 from dif_neg h, map_zero]`. Establish `hΦ' : ∀ x, Φ x = ∑ o : O, ∑ g, ((χ g)⁻¹ : Kˣ) • ρ g (φ o (x o))` using `fun x => by`. Simplify using `only [Φ, LinearMap.sum_apply, LinearMap.smul_apply, LinearMap.comp_apply, LinearMap.proj_apply, Units.smul_def]`. Establish `hΦ : ∀ x, Φ x = ∑ o ∈ O, ∑ g, ((χ g)⁻¹ : Kˣ) • ρ g (f x o)` using `fun x => by`. Rewrite using `[hΦ', ← Finset.sum_coe_sort O]`.
+
+Simplify using `only [hf]`. Establish `hpart : ∀ x g (o : O), e (g • (o : C)) (Φ x) = ((χ g)⁻¹ : Kˣ) • ρ g (φ o (x o))` using `fun x g o => by`. Rewrite using `[hΦ, (hsum (f x) (hfe x)).2 g o o.2, hf]`. Establish `hinj : Function.Injective Φ` using `(injective_iff_map_eq_zero Φ).2 fun x hx => funext fun o => by`. Establish `h` using `hpart x 1 o`.
+
+Rewrite `h` using `[hx, map_zero, map_one, map_one, inv_one, one_smul]`. Conclude with `(injective_iff_map_eq_zero _).1 (hφ o) _ h.symm`. Establish `hmem : ∀ x : ∀ o : O, ι o → K, (∀ o : O, x o ∈ L o) → Φ x ∈ M` using `fun x hx => (hM _).2 ⟨by`. Rewrite using `[hΦ']`. Use `M₀.sum_mem fun o _ => M₀.sum_mem fun g _ => ?_` and prove the remaining obligations.
+
+Take `⟨b, hb⟩` from `(exists_int χ g⁻¹).1`. Rewrite using `[← map_inv, Units.smul_def, ← hb, show ((b : K)) = algebraMap (𝓞 K) K b from rfl, algebraMap_smul]`. Conclude with `M₀.smul_mem b (hρ g _ (hφL o _ (hx o))), fun g => by`. Rewrite using `[hΦ]`. Conclude with `(hsum (f x) (hfe x)).1 g⟩`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h0`. Establish `hx : ∃ x ∈ L o₀, x ≠ 0`. Assume the negation of the conclusion as `hc`. Establish `hb : L o₀ = ⊥` using `(Submodule.eq_bot_iff _).2 fun x hx => by_contra fun h => hc ⟨x, hx, h⟩`.
+
+Use `(hL o₀).span_eq_top` as an intermediate fact. Rewrite `this` using `[hb]`. Simplify using `at this`. Take `⟨x, hx, hx0⟩` from `hx`. Establish `h` using `hmem (Pi.single (M := fun o : O => ι o → K) ⟨o₀, ho₀⟩ x) fun o => by`.
+
+Distinguish the cases in `h : o = ⟨o₀, ho₀⟩`. Substitute `h` using the available equality. Rewrite using `[Pi.single_eq_same]`. Conclude with `hx`. Rewrite using `[Pi.single_eq_of_ne h]`.
+
+Conclude with `(L o).zero_mem`. Rewrite `h` using `[h0, Submodule.mem_bot]`. Use `congrFun ((injective_iff_map_eq_zero Φ).1 hinj _ h) ⟨o₀, ho₀⟩` as an intermediate fact. Rewrite `this` using `[Pi.single_eq_same]`. Conclude with `hx0 this`.
+
+Establish `hMle : M ≤ M₀` using `fun v hv => ((hM v).1 hv).1`. Establish `hMfg : M.FG` using `by haveI : IsNoetherian (𝓞 K) M₀ := isNoetherian_of_fg_of_noetherian M₀ hM₀`. Conclude with `isNoetherian_submodule.1 inferInstance M hMle`. Use `GlobalTheory.SumSlope.le_slope_sq_of_sum K V O (fun o => ι o) Nv M (fun o => Y o) (fun o => L o) Φ s hG hMfg (fun o => hY o) (fun o => hL o) hinj hmem (fun v hv => ?_) (fun σ x => ?_) fun o => hs o` and prove the remaining obligations. Use `choose x hx using fun o : O => (hr o (e o v)).2 (h₁ o v)`.
+
+Use `⟨x, ?_⟩` and prove the remaining obligations. Rewrite using `[hΦ']`. Simplify using `only [hx]`. Rewrite using `[Finset.sum_coe_sort O fun o => ∑ g, ((χ g)⁻¹ : Kˣ) • ρ g (e o v)]`. Conclude with `(hdec v ((hM v).1 hv).2).symm`.
+
+Establish `hB : 0 ≤ ∑ o : O, matNorm (Y o) σ (x o) ^ 2` using `Finset.sum_nonneg fun _ _ => sq_nonneg _`. Rewrite using `[← Real.sq_sqrt hB]`. Use `pow_le_pow_left₀ (hN₀ _ _) (hN σ _ _ fun Z => ?_) 2` and prove the remaining obligations. Take `⟨g, o, ho, rfl⟩` from `hO Z`. Use `⟨g, o, x ⟨o, ho⟩, ((χ g)⁻¹ : Kˣ), rfl, ?_, hpart x g ⟨o, ho⟩, Real.le_sqrt_of_sq_le ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← map_inv]`. Conclude with `(exists_int χ g⁻¹).2 σ`. Conclude with `Finset.single_le_sum (f := fun o : O => matNorm (Y o) σ (x o) ^ 2) (fun _ _ => sq_nonneg _) (Finset.mem_univ (⟨o, ho⟩ : O))`.
+-/
 theorem slope_eig {K V G C : Type} [Field K] [NumberField K] [IsTotallyComplex K] [AddCommGroup V] [Module K V]
     [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] [Group G] [Fintype G] [Fintype C] [Nonempty C] [MulAction G C]
     (e : C → V →ₗ[K] V) (ρ : Representation K G V) (χ : G →* Kˣ) (Nv : (K →+* ℂ) → V → ℝ)
@@ -318,6 +425,9 @@ variable {D : D7} {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.
   {G : Type} [Group G] {lev : G → (Dw.La →ₗ[𝓞 D.host.E] Dw.La) × (Dw.La →ₗ[𝓞 D.host.E] Dw.La)}
   {r : ℕ} {U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r} {ξ : ℝ} {a : (D.host.E →+* ℂ) × ℕ → ℕ} {n : ℕ}
 
+/- English proof (translation)
+Rewrite `hf` using `[cuspW_wtZ]`. Conclude with `((mem_cusp _ _ _ _ _ _).1 hf).1`.
+-/
 theorem mem_sec {f : Rul Xo c} (hf : f ∈ cuspW Xo c U (wtZ a n)) : f ∈ sec Xo c a n := by
   rw [cuspW_wtZ] at hf
   exact ((mem_cusp _ _ _ _ _ _).1 hf).1
@@ -329,12 +439,18 @@ def rep (hC : DefCase U ξ) (hL : ActLev (Xo := Xo) c lev) (hD : Dom a n) :
   map_mul' g h := LinearMap.ext fun f => Subtype.ext (actL_mul _ _ _ hL.total hL.func hL.mul g h (mem_sec f.2).1)
 
 set_option synthInstance.maxHeartbeats 400000 in
+/- English proof (translation)
+Rewrite using `[eigSub, Submodule.mem_iInf]`. Conclude with `forall_congr' fun g => LinearMap.mem_ker.trans sub_eq_zero`.
+-/
 theorem mem_eigSub (χ : G →* (c.F)ˣ) (f : Rul Xo c) :
     f ∈ eigSub lev χ ↔ ∀ g, actLev c lev g f = (χ g : c.F) • f := by
   rw [eigSub, Submodule.mem_iInf]
   exact forall_congr' fun g => LinearMap.mem_ker.trans sub_eq_zero
 
 set_option synthInstance.maxHeartbeats 400000 in
+/- English proof (translation)
+The claim follows from `and_congr_right fun _ => (mem_eigSub χ v.1).trans (forall_congr' fun _ => ⟨fun h => Subtype.ext h, fun h => congrArg Subtype.val h⟩)`.
+-/
 theorem mem_eigLat (hC : DefCase U ξ) (hL : ActLev (Xo := Xo) c lev) (hD : Dom a n) (χ : G →* (c.F)ˣ)
     (v : cuspW Xo c U (wtZ a n)) : v ∈ eigLat U lev χ (wtZ a n) ↔
       v ∈ latW U (wtZ a n) ∧ ∀ g, rep hC hL hD g v = (χ g : c.F) • v :=
@@ -346,6 +462,13 @@ def proj (hC : DefCase U ξ) (W : WTZ D.host.E) (Z : Comp Xo c) : cuspW Xo c U W
   map_add' f g := Subtype.ext (mul_add _ f.1 g.1)
   map_smul' b f := Subtype.ext (mul_smul_comm b _ f.1)
 
+/- English proof (translation)
+Take `⟨hx, hZ⟩` from `hz`. Establish `v1 : ∀ f : Rul Xo c, rdU U f z.1 z.2 = toC (evR Xo c f (U.un z.1 ⟨z.2, hx⟩))` using `fun f => dif_pos hx`. Establish `e : rdU U (idem Z * f) z.1 z.2 = rdU U f z.1 z.2`. Rewrite using `[v1, v1]`. Use `congr 1`.
+
+Distinguish the cases in `ht : Tested (U.un z.1 ⟨z.2, hx⟩)`. Establish `e : evR Xo c (idem Z * f) (U.un z.1 ⟨z.2, hx⟩) = evR Xo c (idem Z) _ * evR Xo c f _` using `evalAt_mul (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) (idem Z) f _`. Rewrite using `[e, evR_idem hZ ht, one_mul]`. Unfold `evR Formalism.L2.Pj.evalAt`. Rewrite using `[dif_neg ht, dif_neg ht]`.
+
+Unfold `homN ptN Data.pnorm`. Rewrite using `[e]`.
+-/
 theorem homN_idem_mul {σ : c.F →+* ℂ} (U : Unf Xo c σ r) (W : WTZ D.host.E) (f : Rul Xo c) {Z : Comp Xo c}
     {z : Σ k, Frame (U.X k).Ψ r} (hz : z ∈ framesOn U Z) : homN U ξ W (idem Z * f) z = homN U ξ W f z := by
   obtain ⟨hx, hZ⟩ := hz
@@ -362,12 +485,18 @@ theorem homN_idem_mul {σ : c.F →+* ℂ} (U : Unf Xo c σ r) (W : WTZ D.host.E
   unfold homN ptN Data.pnorm
   rw [e]
 
+/- English proof (translation)
+Unfold `homN`. Rewrite using `[map_smulₛₗ, mul_left_comm]`. Conclude with `congrArg _ (pnorm_smul _ _ (σ u) _ _)`.
+-/
 theorem homN_smul {σ : c.F →+* ℂ} (U : Unf Xo c σ r) (W : WTZ D.host.E) (u : c.F) (f : Rul Xo c)
     (z : Σ k, Frame (U.X k).Ψ r) : homN U ξ W (u • f) z = ‖σ u‖ * homN U ξ W f z := by
   unfold homN
   rw [map_smulₛₗ, mul_left_comm]
   exact congrArg _ (pnorm_smul _ _ (σ u) _ _)
 
+/- English proof (translation)
+Establish `hB : 0 ≤ B` using `(homN_nonneg U ξ W f _).trans (h 1)`. Rewrite using `[petAt_eq]`. Use `ENNReal.toReal_le_of_le_ofReal hB ((MeasureTheory.eLpNorm_le_of_ae_bound (C := B) (Filter.Eventually.of_forall fun q => ?_)).trans (by simp))` and prove the remaining obligations. Rewrite using `[Real.norm_of_nonneg (homN_nonneg U ξ W f _)]`. Conclude with `h _`.
+-/
 theorem petAt_le {σ : c.F →+* ℂ} (U : Unf Xo c σ r) (V : HSp D) (dict : GA D V → Σ k, Frame (U.X k).Ψ r)
     (W : WTZ D.host.E) (f : Rul Xo c) {B : ℝ} (h : ∀ g, homN U ξ W f (dict g) ≤ B) :
     petAt U ξ V dict (muQ1 V) W f ≤ B := by
@@ -382,6 +511,21 @@ end Main
 
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+Introduce `D H Dw l Xo c r U ξ V dict G _ _ lev χ a n s hC _ _ hd hL hfr hD hW hF`. Use `haveI := Fintype.ofFinite G`. Use `haveI := Fintype.ofFinite (Comp Xo c)`. Use `haveI : IsTotallyComplex c.F := ⟨fun v => by`. Rewrite using `[← InfinitePlace.not_isReal_iff_isComplex, InfinitePlace.isReal_iff]`.
+
+Conclude with `fun h => conj_comp_ne v.embedding h⟩`. Take `⟨_, hact⟩` from `exists_mulAction hL hC.q hC.geo`. Use `choose ι i₁ i₂ i₃ L Y φ hLat hY hs hφ hr hint hnorm using hF`. Establish `hφm : ∀ o x, φ o x ∈ cuspW Xo c U (wtZ a n)` using `fun o x => cuspOn_le U o _ (hr o ▸ LinearMap.mem_range_self _ x)`. Establish `key` using `slope_eig (proj hC (wtZ a n)) (rep hC hL hD) χ (normW U ξ V dict (wtZ a n)) (latW U (wtZ a n)) (eigLat U lev χ (wtZ a n)) ι Y L (fun o => (φ o).codRestrict _ (hφm o)) (2 * s) (fun g Z h => ?_) (fun Z v => Subtype.ext ?_) (fun Z Z' v h => Subtype.ext ?_) (fun v => Subtype.ext ?_) …`.
+
+Conclude with `⟨key.1, by linarith [key.2]⟩`. Take `⟨y, h₀, h₁⟩` from `GlobalTheory.FlatLine.DefinitePoint.main _ H Dw l Xo c hC.q hC.geo Z`. Take `⟨y', hy'⟩` from `hL.total g c.F y`. Use `hfr g c.F y y' hy' ((h₁ _ y' ((hact g Z _ y y' hy').2 (h.symm ▸ h₀))).trans (h₁ _ y h₀).symm)` and prove the remaining obligations. Use `show idem Z * (idem Z * v.1) = idem Z * v.1`.
+
+Rewrite using `[← mul_assoc, idem_mul_idem]`. Use `show idem Z * (idem Z' * v.1) = 0`. Rewrite using `[← mul_assoc, idem_mul_idem_of_ne h, zero_mul]`. Rewrite using `[Submodule.coe_sum]`. Conclude with `sum_idem_mul v.1`.
+
+Use `show actLev c lev g (idem Z) * actLev c lev g v.1 = idem (g • Z) * actLev c lev g v.1`. Rewrite using `[actLev_idem hL g (hact g Z)]`. Conclude with `mem_eigLat hC hL hD χ v`. Establish `h1 : v ∈ LinearMap.range ((φ o).codRestrict _ (hφm o)) ↔ v.1 ∈ LinearMap.range (φ o)` using `exists_congr fun x => Subtype.ext_iff`. Rewrite using `[h1, hr, Subtype.ext_iff]`.
+
+Conclude with `(and_iff_right v.2).trans (mem_suppOn_iff_idem_mul (cuspW_le_secZ _ v.2) o)`. Establish `hσ` using `goodEmb_goodOf c σ`. Use `petAt_le _ _ _ _ _ fun q => ?_` and prove the remaining obligations. Take `⟨Z, hZ⟩ : ∃ Z : Comp Xo c, LiesOn Z ((U (goodOf c σ)).un _ ⟨_, hd _ hσ q⟩)` from `exists_liesOn' (fun s s' => Subsingleton.elim (α := PrimeSpectrum ℂ) s s') (⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum ℂ) ((U (goodOf c σ)).un _ ⟨_, hd _ hσ q⟩)`. Establish `hz : dict _ q ∈ framesOn (U (goodOf c σ)) Z` using `⟨hd _ hσ q, hZ⟩`.
+
+Take `⟨g, o, x, u, rfl, hu, e, hB⟩` from `h Z`. Establish `e' : idem (g • o) * v.1 = u • actLev c lev g (φ o x)` using `congrArg Subtype.val e`. Take `⟨z', hz', e₂⟩` from `homN_actLev hC hL hD g (hact g o) hσ (mem_sec (hφm o x)) hz`. Rewrite using `[← homN_idem_mul _ _ _ hz, e', homN_smul, norm_goodOf, hu, one_mul, e₂]`. Conclude with `(hnorm o σ x z' hz').trans hB`.
+-/
 theorem eigLat_slope : ∀ (D : D7) (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (r : ℕ) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (ξ : ℝ) (V : (c.F →+* ℂ) → HSp D) (dict : ∀ σ, GA D (V σ) → Σ k, Frame ((U σ).X k).Ψ r) (G : Type) [Group G] [Finite G] (lev : G → (Dw.La →ₗ[𝓞 D.host.E] Dw.La) × (Dw.La →ₗ[𝓞 D.host.E] Dw.La)) (χ : G →* (c.F)ˣ) (a : (D.host.E →+* ℂ) × ℕ → ℕ) (n : ℕ) (s : ℝ), DefCase U ξ → Finite (Comp Xo c) → Nonempty (Comp Xo c) → (∀ σ, GoodEmb c σ → ∀ g, (dict σ g).2 ∈ ((U σ).X (dict σ g).1).dom) → ActLev (Xo := Xo) c lev → FreePt Xo c lev → Dom a n → GoodW U ξ V dict (wtZ a n) → (∀ Z : Comp Xo c, FibreAt U ξ Z (wtZ a n) s) → eigLat U lev χ (wtZ a n) ≠ ⊥ ∧ s ≤ slope_sq (normW U ξ V dict (wtZ a n)) (eigLat U lev χ (wtZ a n)) / 2 := by
   intro D H Dw l Xo c r U ξ V dict G _ _ lev χ a n s hC _ _ hd hL hfr hD hW hF
   haveI := Fintype.ofFinite G

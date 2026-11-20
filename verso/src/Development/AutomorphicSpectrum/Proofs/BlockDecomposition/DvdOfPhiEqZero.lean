@@ -17,12 +17,20 @@ def tensorLift {R A B T : Type} [CommRing R] [CommRing A] [CommRing B] [CommRing
   (Algebra.TensorProduct.lift (⟨a, fun _ => rfl⟩ : A →ₐ[R] T) (⟨b, fun x => (h x).symm⟩ : B →ₐ[R] T)
     (fun _ _ => Commute.all _ _)).toRingHom
 
+/- English proof (translation)
+Use `letI : Algebra R T := (a.comp (algebraMap R A)).toAlgebra`. Conclude with `Algebra.TensorProduct.lift_tmul _ _ _ x y`.
+-/
 theorem tensorLift_tmul {R A B T : Type} [CommRing R] [CommRing A] [CommRing B] [CommRing T] [Algebra R A]
     [Algebra R B] (a : A →+* T) (b : B →+* T) (h : ∀ x : R, a (algebraMap R A x) = b (algebraMap R B x))
     (x : A) (y : B) : tensorLift a b h (x ⊗ₜ y) = a x * b y := by
   letI : Algebra R T := (a.comp (algebraMap R A)).toAlgebra
   exact Algebra.TensorProduct.lift_tmul _ _ _ x y
 
+/- English proof (translation)
+Use `choose x hx using fun i => hs i (z i)`. Establish `hcop : Pairwise (Function.onFun IsCoprime fun i => Ideal.span {q i})`. Introduce `i i' hne`. Simplify using `only [Function.onFun]`. Rewrite using `[Ideal.isCoprime_span_singleton_iff]`.
+
+Conclude with `hc hne`. Take `⟨f, hf⟩` from `Ideal.exists_forall_sub_mem_ideal hcop x`. Use `⟨f, fun i => ?_⟩` and prove the remaining obligations. Take `⟨d, hd⟩` from `Ideal.mem_span_singleton.1 (hf i)`. Rewrite using `[← hx i, ← sub_eq_zero, ← map_sub, hd, map_mul, hq, zero_mul]`.
+-/
 theorem exists_common {ι A : Type} [Finite ι] [CommRing A] {R : ι → Type} [∀ i, CommRing (R i)]
     (φ : ∀ i, A →+* R i) (hs : ∀ i, Function.Surjective (φ i)) (q : ι → A) (hq : ∀ i, φ i (q i) = 0)
     (hc : Pairwise (Function.onFun IsCoprime q)) (z : ∀ i, R i) : ∃ f : A, ∀ i, φ i f = z i := by
@@ -37,6 +45,11 @@ theorem exists_common {ι A : Type} [Finite ι] [CommRing A] {R : ι → Type} [
   obtain ⟨d, hd⟩ := Ideal.mem_span_singleton.1 (hf i)
   rw [← hx i, ← sub_eq_zero, ← map_sub, hd, map_mul, hq, zero_mul]
 
+/- English proof (translation)
+Proceed by induction on `p using Polynomial.induction_on' with`. Consider the case `add p q hp hq => rw [map_add, map_add, add_mul, mul_add, hp, hq]`. Consider the case `monomial d a`. Establish `hpow : B ^ d * H = H * C ^ d`. Proceed by induction on `d with`.
+
+Consider the case `zero => simp`. Consider the case `succ d ih => rw [pow_succ, Matrix.mul_assoc, h, ← Matrix.mul_assoc, ih, Matrix.mul_assoc, ← pow_succ]`. Simplify using `only [aeval_monomial, Algebra.algebraMap_eq_smul_one, smul_mul_assoc, one_mul, Matrix.smul_mul, Matrix.mul_smul, hpow]`.
+-/
 theorem aeval_intertwine {K : Type} [Field K] {n : ℕ} (B C H : Matrix (Fin n) (Fin n) K) (h : B * H = H * C)
     (p : K[X]) : aeval B p * H = H * aeval C p := by
   induction p using Polynomial.induction_on' with
@@ -49,6 +62,9 @@ theorem aeval_intertwine {K : Type} [Field K] {n : ℕ} (B C H : Matrix (Fin n) 
     simp only [aeval_monomial, Algebra.algebraMap_eq_smul_one, smul_mul_assoc, one_mul, Matrix.smul_mul,
       Matrix.mul_smul, hpow]
 
+/- English proof (translation)
+Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]`.
+-/
 theorem tmul_split {R A B : Type} [CommRing R] [CommRing A] [CommRing B] [Algebra R A] [Algebra R B] (a : A) (y : B) :
     (a ⊗ₜ[R] (1 : B)) * ((1 : A) ⊗ₜ[R] y) = a ⊗ₜ[R] y := by
   rw [Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]
@@ -64,13 +80,26 @@ def phi (j : K ≃+* k ⊗[maximalRealSubfield E] E) {r : ℕ} (Q : SelfRecip E 
 section
 variable (j : K ≃+* k ⊗[maximalRealSubfield E] E) {r : ℕ} (Q : SelfRecip E r)
 
+/- English proof (translation)
+The claim follows from `eval₂_C _ _`.
+-/
 theorem phi_C (x : K) : phi j Q (C x) = inclBase Q k (j x) := eval₂_C _ _
 
+/- English proof (translation)
+The claim follows from `eval₂_X _ _`.
+-/
 theorem phi_X : phi j Q X = (1 : k) ⊗ₜ alpha Q := eval₂_X _ _
 
 variable (hj1 : ∀ e : E, j (algebraMap E K e) = (1 : k) ⊗ₜ e)
 include hj1
 
+/- English proof (translation)
+Set `g : Fld Q →+* k ⊗[maximalRealSubfield E] Fld Q` to `(Algebra.TensorProduct.includeRight : Fld Q →ₐ[maximalRealSubfield E] k ⊗[maximalRealSubfield E] Fld Q).toRingHom`. Establish `e : ((inclBase Q k).toRingHom.comp j.toRingHom).comp (algebraMap E K) = g.comp (algebraMap E (Fld Q))` using `RingHom.ext fun e => by`. Express the relevant statement in the definitionally equal form `inclBase Q k (j (algebraMap E K e)) = _`. Rewrite using `[hj1]`. Simplify using `[inclBase, g]`.
+
+Express the relevant statement in the definitionally equal form `eval₂ ((inclBase Q k).toRingHom.comp j.toRingHom) ((1 : k) ⊗ₜ alpha Q) (p.map (algebraMap E K)) = _`. Rewrite using `[eval₂_map, e]`. Use `(Polynomial.hom_eval₂ p (algebraMap E (Fld Q)) g (alpha Q)).symm.trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(1 : k) ⊗ₜ eval₂ (algebraMap E (Fld Q)) (alpha Q) p = _`. Rewrite using `[← aeval_def]`.
+
+Use `congr 1`. Conclude with `AdjoinRoot.aeval_eq p`.
+-/
 theorem phi_map (p : E[X]) : phi j Q (p.map (algebraMap E K)) = (1 : k) ⊗ₜ (AdjoinRoot.mk Q.1 p : Fld Q) := by
   let g : Fld Q →+* k ⊗[maximalRealSubfield E] Fld Q :=
     (Algebra.TensorProduct.includeRight : Fld Q →ₐ[maximalRealSubfield E] k ⊗[maximalRealSubfield E] Fld Q).toRingHom
@@ -87,6 +116,13 @@ theorem phi_map (p : E[X]) : phi j Q (p.map (algebraMap E K)) = (1 : k) ⊗ₜ (
   congr 1
   exact AdjoinRoot.aeval_eq p
 
+/- English proof (translation)
+Introduce `y`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, map_zero _⟩`. Consider the case `add a b ha hb`. Take `⟨x, rfl⟩` from `ha`.
+
+Take `⟨y, rfl⟩` from `hb`. Conclude with `⟨x + y, map_add _ _ _⟩`. Consider the case `tmul a y`. Take `⟨p, rfl⟩` from `AdjoinRoot.mk_surjective y`. Use `⟨C (j.symm (a ⊗ₜ 1)) * p.map (algebraMap E K), ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_mul, phi_C, phi_map j Q hj1, RingEquiv.apply_symm_apply]`. Establish `h1 : inclBase Q k (a ⊗ₜ (1 : E)) = a ⊗ₜ[maximalRealSubfield E] (1 : Fld Q)` using `by simp [inclBase]`. Rewrite using `[h1]`. Conclude with `tmul_split a _`.
+-/
 theorem phi_surjective : Function.Surjective (phi j Q) := by
   intro y
   induction y using TensorProduct.induction_on with
@@ -104,6 +140,9 @@ theorem phi_surjective : Function.Surjective (phi j Q) := by
     exact tmul_split a _
 
 omit hj1 in
+/- English proof (translation)
+Establish `h` using `AdjoinRoot.eval₂_root (Q.1.map (algebraMap E K))`. Rewrite `h` using `[eval₂_map]`. Then use the resulting hypothesis.
+-/
 theorem eval₂_root_map : eval₂ ((AdjoinRoot.of (Q.1.map (algebraMap E K))).comp (algebraMap E K))
     (AdjoinRoot.root (Q.1.map (algebraMap E K))) Q.1 = 0 := by
   have h := AdjoinRoot.eval₂_root (Q.1.map (algebraMap E K))
@@ -116,10 +155,16 @@ def psiB : Fld Q →+* AdjoinRoot (Q.1.map (algebraMap E K)) :=
     (AdjoinRoot.root (Q.1.map (algebraMap E K))) (eval₂_root_map Q)
 
 omit hj1 in
+/- English proof (translation)
+The claim follows from `AdjoinRoot.lift_of (eval₂_root_map Q)`.
+-/
 theorem psiB_algebraMap (e : E) : psiB (K := K) Q (algebraMap E (Fld Q) e) = AdjoinRoot.of _ (algebraMap E K e) :=
   AdjoinRoot.lift_of (eval₂_root_map Q)
 
 omit hj1 in
+/- English proof (translation)
+The claim follows from `AdjoinRoot.lift_root (eval₂_root_map Q)`.
+-/
 theorem psiB_alpha : psiB (K := K) Q (alpha Q) = AdjoinRoot.root _ :=
   AdjoinRoot.lift_root (eval₂_root_map Q)
 
@@ -140,10 +185,18 @@ def psi : k ⊗[maximalRealSubfield E] Fld Q →+* AdjoinRoot (Q.1.map (algebraM
       change AdjoinRoot.of _ (j.symm ((algebraMap (maximalRealSubfield E) k x) ⊗ₜ 1)) = psiB Q _
       rw [h1, h2, h3, psiB_algebraMap])
 
+/- English proof (translation)
+The claim follows from `tensorLift_tmul _ _ _ a y`.
+-/
 theorem psi_tmul (a : k) (y : Fld Q) : psi j Q hj1 (a ⊗ₜ[maximalRealSubfield E] y) =
     AdjoinRoot.of _ (j.symm (a ⊗ₜ 1)) * psiB Q y :=
   tensorLift_tmul _ _ _ a y
 
+/- English proof (translation)
+Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Consider the case `tmul a e`. Establish `h0 : inclBase Q k (a ⊗ₜ e) = a ⊗ₜ[maximalRealSubfield E] algebraMap E (Fld Q) e`.
+
+Simplify using `[inclBase]`. Establish `h2 : j.symm ((1 : k) ⊗ₜ e) = algebraMap E K e` using `by rw [RingEquiv.symm_apply_eq, hj1]`. Establish `h3 : j.symm (a ⊗ₜ e) = j.symm (a ⊗ₜ 1) * j.symm ((1 : k) ⊗ₜ e)`. Rewrite using `[← map_mul, tmul_split]`. Rewrite using `[h0, psi_tmul, psiB_algebraMap, h3, map_mul, h2]`.
+-/
 theorem psi_inclBase (y : k ⊗[maximalRealSubfield E] E) :
     psi j Q hj1 (inclBase Q k y) = AdjoinRoot.of _ (j.symm y) := by
   induction y using TensorProduct.induction_on with
@@ -157,6 +210,13 @@ theorem psi_inclBase (y : k ⊗[maximalRealSubfield E] E) :
       rw [← map_mul, tmul_split]
     rw [h0, psi_tmul, psiB_algebraMap, h3, map_mul, h2]
 
+/- English proof (translation)
+Establish `: (psi j Q hj1).comp (phi j Q) = AdjoinRoot.mk (Q.1.map (algebraMap E K))`. Use `Polynomial.ringHom_ext (fun x => ?_) ?_` and prove the remaining obligations. Rewrite using `[RingHom.comp_apply, phi_C, psi_inclBase, RingEquiv.symm_apply_apply]`. Both sides reduce to the same expression. Rewrite using `[RingHom.comp_apply, phi_X, psi_tmul, psiB_alpha]`.
+
+Establish `h2 : j.symm ((1 : k) ⊗ₜ[maximalRealSubfield E] (1 : E)) = 1`. Rewrite using `[RingEquiv.symm_apply_eq, map_one]`. Both sides reduce to the same expression. Rewrite using `[h2, map_one, one_mul]`. Conclude with `AdjoinRoot.mk_X.symm`.
+
+Conclude with `DFunLike.congr_fun this g`.
+-/
 theorem psi_phi (g : K[X]) : psi j Q hj1 (phi j Q g) = AdjoinRoot.mk _ g := by
   have : (psi j Q hj1).comp (phi j Q) = AdjoinRoot.mk (Q.1.map (algebraMap E K)) := by
     refine Polynomial.ringHom_ext (fun x => ?_) ?_
@@ -169,6 +229,9 @@ theorem psi_phi (g : K[X]) : psi j Q hj1 (phi j Q g) = AdjoinRoot.mk _ g := by
       exact AdjoinRoot.mk_X.symm
   exact DFunLike.congr_fun this g
 
+/- English proof (translation)
+Use `psi_phi j Q hj1 g` as an intermediate fact. Rewrite `this` using `[h, map_zero]`. Conclude with `AdjoinRoot.mk_eq_zero.1 this.symm`.
+-/
 theorem dvd_of_phi_eq_zero {g : K[X]} (h : phi j Q g = 0) : Q.1.map (algebraMap E K) ∣ g := by
   have := psi_phi j Q hj1 g
   rw [h, map_zero] at this
@@ -176,6 +239,15 @@ theorem dvd_of_phi_eq_zero {g : K[X]} (h : phi j Q g = 0) : Q.1.map (algebraMap 
 
 omit hj1 in
 
+/- English proof (translation)
+Set `ι : K →+* k ⊗[maximalRealSubfield E] Fld Q` to `(inclBase Q k).toRingHom.comp j.toRingHom`. Set `ib : k ⊗[maximalRealSubfield E] Fld Q →+* k ⊗[maximalRealSubfield E] Fld Q` to `(involBase Q k).toRingHom`. Establish `hιc : ∀ y, involBase Q k (ι y) = ι (cK y)`. Introduce `y`. Express the relevant statement in the definitionally equal form `involBase Q k (inclBase Q k (j y)) = inclBase Q k (j (cK y))`.
+
+Rewrite using `[hj2]`. Generalize the expression as in `j y = t`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a e => simp [inclBase, involBase, invol_algebraMap]`.
+
+Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Establish `e1 : ib.comp ι = ι.comp cK` using `RingHom.ext fun y => hιc y`. Establish `e2 : ib ((1 : k) ⊗ₜ alpha Q) = (1 : k) ⊗ₜ (alpha Q)⁻¹`. Express the relevant statement in the definitionally equal form `(1 : k) ⊗ₜ invol Q (alpha Q) = _`. Rewrite using `[invol_alpha]`.
+
+Express the relevant statement in the definitionally equal form `ib (eval₂ ι _ f) = eval₂ ι _ _`. Rewrite using `[Polynomial.hom_eval₂, e1, e2, eval₂_comp, eval₂_map]`. Conclude with `congrArg (fun x => eval₂ (ι.comp cK) x f) hR.symm`.
+-/
 theorem involBase_phi (cK : K →+* K)
     (hj2 : ∀ x, j (cK x) = Algebra.TensorProduct.map (AlgHom.id (maximalRealSubfield E) k)
       ((IsCMField.complexConj E : E ≃ₐ[maximalRealSubfield E] E) : E →ₐ[maximalRealSubfield E] E) (j x))
@@ -202,6 +274,9 @@ theorem involBase_phi (cK : K →+* K)
 
 end
 
+/- English proof (translation)
+Rewrite using `[aeval_map_algebraMap]`. Use `aeval_algHom_apply (AlgHom.mapMatrix (Algebra.ofId E K)) M p` as an intermediate fact. Establish `e : (⇑(Algebra.ofId E K) : E → _) = algebraMap E _` using `rfl`. Simplify `this` using `[AlgHom.mapMatrix_apply, e]`.
+-/
 theorem aeval_map_mat' {n : ℕ} (M : Matrix (Fin n) (Fin n) E) (p : E[X]) :
     aeval (M.map (algebraMap E K)) (p.map (algebraMap E K)) = (aeval M p).map (algebraMap E K) := by
   rw [aeval_map_algebraMap]
@@ -209,6 +284,9 @@ theorem aeval_map_mat' {n : ℕ} (M : Matrix (Fin n) (Fin n) E) (p : E[X]) :
   have e : (⇑(Algebra.ofId E K) : E → _) = algebraMap E _ := rfl
   simpa [AlgHom.mapMatrix_apply, e] using this
 
+/- English proof (translation)
+Establish `e` using `aeval_intertwine _ _ _ hint (f.map cK)`. Rewrite `e` using `[← aeval_comp]`. Rewrite using `[← hkey, GlobalTheory.NormInert.cT_aeval, ← Matrix.mul_assoc (aeval (cT cK A) _) H', e]`. Simplify using `only [Matrix.mul_assoc]`.
+-/
 theorem final_calc {K : Type} [Field K] {n : ℕ} (A H' : Matrix (Fin n) (Fin n) K) (cK : K →+* K) (f m R : K[X])
     (T : Matrix (Fin n) (Fin n) K) (hint : cT cK A * H' = H' * aeval A R)
     (hkey : aeval A ((f.map cK).comp R) * aeval A m * aeval A f = T) :
@@ -218,6 +296,49 @@ theorem final_calc {K : Type} [Field K] {n : ℕ} (A H' : Matrix (Fin n) (Fin n)
   rw [← hkey, GlobalTheory.NormInert.cT_aeval, ← Matrix.mul_assoc (aeval (cT cK A) _) H', e]
   simp only [Matrix.mul_assoc]
 
+/- English proof (translation)
+Establish `hcK : ∀ e : E, cK (algebraMap E K e) = algebraMap E K (IsCMField.complexConj E e)`. Introduce `e`. Apply `j.injective` to reduce the goal to its premises. Rewrite using `[hj2, hj1, hj1]`. Simplify using the standard rewrite rules.
+
+Use `set P := γ₀.val.charpoly with hPdef`. Establish `hPsep : P.Separable` using `hell.2.2.1`. Establish `hP0 : P ≠ 0` using `hell.1.ne_zero`. Establish `hself : ∀ Q : E[X], Q.Monic → Irreducible Q → Q ∣ P → IsSelfRecip E Q.natDegree Q` using `GlobalTheory.SelfRecipFactor.isSelfRecip_of_dvd_ell E n P hell`. Establish `hXP : IsCoprime X P`.
+
+Rewrite using `[Polynomial.irreducible_X.coprime_iff_not_dvd]`. Introduce `hX`. Conclude with `(hself X monic_X irreducible_X hX).2.2.2.1 (by simp)`. Take `⟨a, b, hab⟩` from `hXP`. Use `set S := (UniqueFactorizationMonoid.normalizedFactors P).toFinset with hS`.
+
+Establish `hmem : ∀ Q ∈ S, Q.Monic ∧ Irreducible Q ∧ Q ∣ P`. Introduce `Q hQ`. Rewrite `hQ` using `[hS, Multiset.mem_toFinset]`. Establish `hirr` using `UniqueFactorizationMonoid.irreducible_of_normalized_factor Q hQ`. Use `⟨?_, hirr, UniqueFactorizationMonoid.dvd_of_mem_normalizedFactors hQ⟩` and prove the remaining obligations.
+
+Establish `hn` using `UniqueFactorizationMonoid.normalize_normalized_factor Q hQ`. Rewrite using `[← hn]`. Conclude with `Polynomial.monic_normalize hirr.ne_zero`. Establish `hcopS : (S : Set E[X]).Pairwise (Function.onFun IsCoprime fun Q : E[X] => Q)`. Introduce `Q hQ Q' hQ' hne`.
+
+Simplify using `only [Function.onFun]`. Rewrite using `[(hmem Q hQ).2.1.coprime_iff_not_dvd]`. Introduce `hd`. Conclude with `hne (eq_of_monic_of_associated (hmem Q hQ).1 (hmem Q' hQ').1 ((hmem Q hQ).2.1.associated_of_dvd (hmem Q' hQ').2.1 hd))`. Establish `hcopK : (S : Set E[X]).Pairwise (Function.onFun IsCoprime fun Q : E[X] => Q.map (algebraMap E K))`.
+
+Introduce `Q hQ Q' hQ' hne`. Use `(hcopS hQ hQ' hne).map (mapRingHom (algebraMap E K))` as an intermediate fact. Simplify `this` using `[Function.onFun]`. Establish `hassoc : Associated (∏ Q ∈ S, Q) P`. Establish `hnd` using `(UniqueFactorizationMonoid.squarefree_iff_nodup_normalizedFactors hP0).1 hPsep.squarefree`.
+
+Rewrite using `[Finset.prod_eq_multiset_prod, hS, Multiset.toFinset_val, hnd.dedup, Multiset.map_id']`. Conclude with `UniqueFactorizationMonoid.prod_normalizedFactors hP0`. Set `Qs : ∀ Q : S, SelfRecip E Q.1.natDegree` to `fun Q => ⟨Q.1, hself Q.1 (hmem Q.1 Q.2).1 (hmem Q.1 Q.2).2.1 (hmem Q.1 Q.2).2.2⟩`. Establish `hQsP : ∀ Q : S, (Qs Q).1 ∣ P` using `fun Q => (hmem Q.1 Q.2).2.2`. Use `choose z hzQ using fun Q : S => hz _ (Qs Q) (hQsP Q)`.
+
+Establish `hcommon : ∀ y : ∀ Q : S, k ⊗[maximalRealSubfield E] Fld (Qs Q), ∃ f : K[X], ∀ Q : S, phi j (Qs Q) f = y Q`. Introduce `y`. Use `exists_common (fun Q : S => phi j (Qs Q)) (fun Q => phi_surjective j (Qs Q) hj1) (fun Q : S => Q.1.map (algebraMap E K)) (fun Q => ?_) (fun Q Q' hne => ?_) y` and prove the remaining obligations. Establish `h0 : (AdjoinRoot.mk (Qs Q).1 (Qs Q).1 : Fld (Qs Q)) = 0` using `AdjoinRoot.mk_self`. Use `phi_map j (Qs Q) hj1 (Qs Q).1` as an intermediate fact.
+
+Rewrite `this` using `[h0]`. Conclude with `this.trans (TensorProduct.tmul_zero _ _)`. Conclude with `hcopK Q.2 Q'.2 (fun h => hne (Subtype.ext h))`. Use `set A : Matrix (Fin n) (Fin n) K := γ₀.val.map (algebraMap E K) with hA`. Establish `hCH : aeval A (P.map (algebraMap E K)) = 0`.
+
+Rewrite using `[hPdef, hA, ← Matrix.charpoly_map]`. Conclude with `Matrix.aeval_self_charpoly _`. Establish `hvan : ∀ h : K[X], (∀ Q : S, phi j (Qs Q) h = 0) → aeval A h = 0`. Introduce `h hh`. Establish `h1 : (∏ Q ∈ S, Q.map (algebraMap E K)) ∣ h` using `Finset.prod_dvd_of_coprime hcopK fun Q hQ => dvd_of_phi_eq_zero j (Qs ⟨Q, hQ⟩) hj1 (hh ⟨Q, hQ⟩)`.
+
+Rewrite `h1` using `[← Polynomial.map_prod]`. Take `⟨d, hd⟩` from `(Polynomial.map_dvd (algebraMap E K) hassoc.symm.dvd).trans h1`. Rewrite using `[hd, map_mul, hCH, zero_mul]`. Take `⟨f, hf⟩` from `hcommon fun Q => (z Q : k ⊗[maximalRealSubfield E] Fld (Qs Q))`. Take `⟨g, hg⟩` from `hcommon fun Q => ((z Q)⁻¹ : (k ⊗[maximalRealSubfield E] Fld (Qs Q))ˣ)`.
+
+Establish `hfg : aeval A f * aeval A g = 1`. Use `hvan (f * g - 1) fun Q => by` as an intermediate fact. Rewrite using `[map_sub, map_mul, hf, hg, Units.mul_inv, map_one, sub_self]`. Rewrite `this` using `[map_sub, map_mul, map_one]`. Conclude with `sub_eq_zero.1 this`.
+
+Establish `hgf : aeval A g * aeval A f = 1` using `by rw [← map_mul, mul_comm, map_mul, hfg]`. Use `set R : K[X] := a.map (algebraMap E K) with hRdef`. Establish `hBA : aeval A R * A = 1`. Use `congrArg (fun p : E[X] => aeval A (p.map (algebraMap E K))) hab` as an intermediate fact. Simplify using `only [Polynomial.map_add, Polynomial.map_mul, map_add, map_mul, hCH, Polynomial.map_X, aeval_X, Polynomial.map_one, map_one, mul_zero, add_zero, zero_mul] at this`.
+
+Conclude with `this`. Establish `hAB : A * aeval A R = 1`. Rewrite using `[show A * aeval A R = aeval A (X * R) by simp, mul_comm, map_mul, aeval_X, hBA]`. Establish `hphiR : ∀ Q : S, phi j (Qs Q) R = (1 : k) ⊗ₜ (alpha (Qs Q))⁻¹`. Introduce `Q`.
+
+Rewrite using `[hRdef, phi_map j (Qs Q) hj1]`. Use `congr 1`. Use `congrArg (AdjoinRoot.mk (Qs Q).1) hab` as an intermediate fact. Rewrite `this` using `[map_add, map_mul, map_mul, map_one, AdjoinRoot.mk_X, AdjoinRoot.mk_eq_zero.2 (hQsP Q), mul_zero, add_zero]`. Conclude with `eq_inv_of_mul_eq_one_left this`.
+
+Use `set H' : Matrix (Fin n) (Fin n) K := H₀.map (algebraMap E K) with hH'`. Establish `hcTmap : (cT (IsCMField.complexConj E).toRingEquiv.toRingHom γ₀.val).map (algebraMap E K) = cT cK A`. Use extensionality with `x y`. Simplify using `[cT, hA, hcK]`. Establish `hmap : cT cK A * H' * A = H'`.
+
+Use `congrArg (Matrix.map · (algebraMap E K)) hinv` as an intermediate fact. Simplify using `only [Matrix.map_mul] at this`. Rewrite `this` using `[hcTmap]`. Conclude with `this`. Establish `hint : cT cK A * H' = H' * aeval A R`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hkey : aeval A ((f.map cK).comp R * m * f - t.map (algebraMap E K)) = 0`. Use `hvan _ fun Q => ?_` and prove the remaining obligations. Establish `h1` using `involBase_phi j (Qs Q) cK hj2 R (hphiR Q) f`. Rewrite using `[map_sub, map_mul, map_mul, ← h1, hf, ← hzQ Q]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite `hkey` using `[map_sub, map_mul, map_mul, sub_eq_zero]`. Use `⟨⟨aeval A f, aeval A g, hfg, hgf⟩, ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `aeval A f * A = A * aeval A f`. Rewrite using `[show A * aeval A f = aeval A (X * f) by simp, show aeval A f * A = aeval A (f * X) by simp, mul_comm]`.
+
+Express the relevant statement in the definitionally equal form `_ = cT cK (aeval A f) * (H' * aeval A m) * aeval A f`. Rewrite using `[Matrix.map_mul, ← aeval_map_mat']`. Conclude with `final_calc A H' cK f m R _ hint hkey`.
+-/
 theorem assembly (j : K ≃+* k ⊗[maximalRealSubfield E] E) (hj1 : ∀ e : E, j (algebraMap E K e) = (1 : k) ⊗ₜ e)
     (cK : K →+* K)
     (hj2 : ∀ x, j (cK x) = Algebra.TensorProduct.map (AlgHom.id (maximalRealSubfield E) k)
@@ -345,11 +466,19 @@ theorem assembly (j : K ≃+* k ⊗[maximalRealSubfield E] E) (hj1 : ∀ e : E, 
 
 section Concrete
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h`. Conclude with `hw ⟨u, h, hu.trans hv.symm⟩`.
+-/
 theorem unique_over (w : Pl E) (hw : ¬ IsSplitAt w) {v : HeightOneSpectrum (𝓞 (maximalRealSubfield E))}
     (hv : w.under (𝓞 (maximalRealSubfield E)) = v) (u : Pl E) (hu : u.under (𝓞 (maximalRealSubfield E)) = v) : u = w := by
   by_contra h
   exact hw ⟨u, h, hu.trans hv.symm⟩
 
+/- English proof (translation)
+Use `⟨(injective_iff_map_eq_zero _).2 fun y hy => ?_, GlobalTheory.LFun.InertChart.toCompl_surjective hv⟩` and prove the remaining obligations. Establish `h1` using `GlobalTheory.AutFunCompare.map_tensNU_self _ _ (GlobalTheory.AdelicU.singleFin_mul v) (GlobalTheory.AdelicU.evalV_singleFin_self v) y`. Establish `h2 : GlobalTheory.LFun.finAdEquiv (maximalRealSubfield E) E (GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.tensNU _ (GlobalTheory.AdelicU.singleFin_mul v) y) = 0` using `FiniteAdeleRing.ext _ fun u => by`. Distinguish the cases in `e : u.under (𝓞 (maximalRealSubfield E)) = v`. Rewrite using `[GlobalTheory.LFun.finAdEquiv_apply e, h1]`.
+
+Take `rfl` from `unique_over w hw hv u e`. Conclude with `hy`. Rewrite using `[GlobalTheory.LFun.finAdEquiv_apply rfl, GlobalTheory.AutFunCompare.map_tensNU_zero _ _ _ (GlobalTheory.AdelicU.evalV_singleFin_ne e), map_zero]`. Both sides reduce to the same expression. Rewrite using `[← h1, (map_eq_zero_iff _ (GlobalTheory.LFun.finAdEquiv (maximalRealSubfield E) E).injective).1 h2, map_zero]`.
+-/
 theorem toCompl_bijective (w : Pl E) (hw : ¬ IsSplitAt w) (v : HeightOneSpectrum (𝓞 (maximalRealSubfield E)))
     (hv : w.under (𝓞 (maximalRealSubfield E)) = v) : Function.Bijective (GlobalTheory.LFun.toCompl hv) := by
   refine ⟨(injective_iff_map_eq_zero _).2 fun y hy => ?_, GlobalTheory.LFun.InertChart.toCompl_surjective hv⟩
@@ -372,17 +501,26 @@ def locJ (_hU : Unr E) (w : Pl E) (hw : ¬ IsSplitAt w) (v : HeightOneSpectrum (
     w.adicCompletion E ≃+* v.adicCompletion (maximalRealSubfield E) ⊗[maximalRealSubfield E] E :=
   (RingEquiv.ofBijective (GlobalTheory.LFun.toCompl hv) (toCompl_bijective w hw v hv)).symm
 
+/- English proof (translation)
+The claim follows from `(RingEquiv.ofBijective (GlobalTheory.LFun.toCompl hv) (toCompl_bijective w hw v hv)).apply_symm_apply x`.
+-/
 theorem toCompl_locJ (hU : Unr E) (w : Pl E) (hw : ¬ IsSplitAt w)
     (v : HeightOneSpectrum (𝓞 (maximalRealSubfield E))) (hv : w.under (𝓞 (maximalRealSubfield E)) = v)
     (x : w.adicCompletion E) : GlobalTheory.LFun.toCompl hv (locJ hU w hw v hv x) = x :=
   (RingEquiv.ofBijective (GlobalTheory.LFun.toCompl hv) (toCompl_bijective w hw v hv)).apply_symm_apply x
 
+/- English proof (translation)
+The claim follows from `(RingEquiv.ofBijective (GlobalTheory.LFun.toCompl hv) (toCompl_bijective w hw v hv)).symm_apply_apply y`.
+-/
 theorem locJ_toCompl (hU : Unr E) (w : Pl E) (hw : ¬ IsSplitAt w)
     (v : HeightOneSpectrum (𝓞 (maximalRealSubfield E))) (hv : w.under (𝓞 (maximalRealSubfield E)) = v)
     (y : v.adicCompletion (maximalRealSubfield E) ⊗[maximalRealSubfield E] E) :
     locJ hU w hw v hv (GlobalTheory.LFun.toCompl hv y) = y :=
   (RingEquiv.ofBijective (GlobalTheory.LFun.toCompl hv) (toCompl_bijective w hw v hv)).symm_apply_apply y
 
+/- English proof (translation)
+Establish `h` using `GlobalTheory.LFun.toCompl_tmul hv 1 e`. Rewrite `h` using `[map_one, one_mul]`. Rewrite using `[← h, locJ_toCompl]`.
+-/
 theorem locJ_algebraMap (hU : Unr E) (w : Pl E) (hw : ¬ IsSplitAt w)
     (v : HeightOneSpectrum (𝓞 (maximalRealSubfield E))) (hv : w.under (𝓞 (maximalRealSubfield E)) = v) (e : E) :
     locJ hU w hw v hv (algebraMap E _ e) = (1 : v.adicCompletion (maximalRealSubfield E)) ⊗ₜ e := by
@@ -390,6 +528,13 @@ theorem locJ_algebraMap (hU : Unr E) (w : Pl E) (hw : ¬ IsSplitAt w)
   rw [map_one, one_mul] at h
   rw [← h, locJ_toCompl]
 
+/- English proof (translation)
+Establish `hmain` using `GlobalTheory.ConjAtPlace.main E hU w`. Establish `hσ` using `(hmain.2.2.2.1 hw).1`. Establish `hF : ∀ a, cj w (GlobalTheory.LFun.complMap hv a) = GlobalTheory.LFun.complMap hv a`. Use `(HeightOneSpectrum.denseRange_algebraMap (maximalRealSubfield E) v).equalizer (hmain.1.comp (GlobalTheory.LFun.InertChart.continuous_complMap hv)) (GlobalTheory.LFun.InertChart.continuous_complMap hv) (funext fun x => by` as an intermediate fact. Simplify using `only [Function.comp_apply, GlobalTheory.LFun.complMap_algebraMap, hσ]`.
+
+Conclude with `congrArg _ ((IsCMField.complexConj E).commutes x))`. Conclude with `fun a => congrFun this a`. Establish `hcomp : ∀ y, cj w (GlobalTheory.LFun.toCompl hv y) = GlobalTheory.LFun.toCompl hv (Algebra.TensorProduct.map (AlgHom.id (maximalRealSubfield E) (v.adicCompletion (maximalRealSubfield E))) ((IsCMField.complexConj E : E ≃ₐ[maximalRealSubfield E] E) : E →ₐ[maximalRealSubfield E] E) …`. Introduce `y`. Proceed by induction on `y using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp`. Consider the case `tmul a x => simp [GlobalTheory.LFun.toCompl_tmul, hF, hσ]`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Use `conv_lhs => rw [← toCompl_locJ hU w hw v hv x, hcomp, locJ_toCompl]`.
+-/
 theorem locJ_cj (hU : Unr E) (w : Pl E) (hw : ¬ IsSplitAt w)
     (v : HeightOneSpectrum (𝓞 (maximalRealSubfield E))) (hv : w.under (𝓞 (maximalRealSubfield E)) = v)
     (x : w.adicCompletion E) :

@@ -18,6 +18,9 @@ section Var
 
 variable {F : Type} [Field F] [NumberField F] {Y : Var F}
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using CartierDiv.isEqn_zero x`. Consider the case `insert i s hi ih`. Rewrite using `[Finset.sum_insert hi, Finset.prod_insert hi]`. Conclude with `(h i (Finset.mem_insert_self i s)).add (ih fun j hj => h j (Finset.mem_insert_of_mem hj))`.
+-/
 theorem isEqn_sum {ι : Type} (s : Finset ι) (D : ι → Y.Dv) (g : ι → Y.Fnˣ) (x : Y.X)
     (h : ∀ i ∈ s, (D i).IsEqn x (g i)) : (∑ i ∈ s, D i).IsEqn x (∏ i ∈ s, g i) := by
   classical
@@ -27,6 +30,9 @@ theorem isEqn_sum {ι : Type} (s : Finset ι) (D : ι → Y.Dv) (g : ι → Y.Fn
     rw [Finset.sum_insert hi, Finset.prod_insert hi]
     exact (h i (Finset.mem_insert_self i s)).add (ih fun j hj => h j (Finset.mem_insert_of_mem hj))
 
+/- English proof (translation)
+Establish `h1 : D'.IsEqn x (eqn D x)⁻¹` using `hD ▸ (Base.isEqn_eqn D x).neg`. Establish `h2` using `(Base.isEqn_eqn D' x).iff_unitAt.1 h1`. Use `h2 using 1` and compare the differences between its conclusion and the goal. Simplify using `only [genAt, Units.val_inv_eq_inv_val, div_eq_mul_inv]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem unitAt_genAt_mul (D D' : Y.Dv) (hD : D' = -D) (x : Y.X) : UnitAt x (genAt D' x * genAt D x) := by
   have h1 : D'.IsEqn x (eqn D x)⁻¹ := hD ▸ (Base.isEqn_eqn D x).neg
   have h2 := (Base.isEqn_eqn D' x).iff_unitAt.1 h1
@@ -34,6 +40,13 @@ theorem unitAt_genAt_mul (D D' : Y.Dv) (hD : D' = -D) (x : Y.X) : UnitAt x (genA
   simp only [genAt, Units.val_inv_eq_inv_val, div_eq_mul_inv]
   ring
 
+/- English proof (translation)
+Establish `hG` using `unitAt_genAt_mul D D' hD (below y.1)`. Establish `hU : UnitAt (below y.1) ((T * (eqn D (below y.1))⁻¹ : Y.Fnˣ) : Y.Fn)`. Establish `h` using `(Base.isEqn_eqn D (below y.1)).iff_unitAt.1 hT`. Simplify `h` using `only [Units.val_mul, Units.val_inv_eq_inv_val, div_eq_mul_inv]`. Establish `e : ((T⁻¹ * (eqn D' (below y.1))⁻¹ : Y.Fnˣ) : Y.Fn) = (genAt D' (below y.1) * genAt D (below y.1)) * ((T * (eqn D (below y.1))⁻¹ : Y.Fnˣ) : Y.Fn)⁻¹`.
+
+Establish `h0 : ((eqn D (below y.1) : Y.Fnˣ) : Y.Fn) ≠ 0` using `Units.ne_zero _`. Establish `h1 : ((eqn D' (below y.1) : Y.Fnˣ) : Y.Fn) ≠ 0` using `Units.ne_zero _`. Establish `h2 : ((T : Y.Fnˣ) : Y.Fn) ≠ 0` using `Units.ne_zero _`. Simplify using `only [genAt, Units.val_mul, Units.val_inv_eq_inv_val]`. Clear the denominators using the available nonvanishing facts.
+
+Establish `n1 : ε.w (valAt y.1 (genAt D' (below y.1) * genAt D (below y.1))) ≠ 0` using `(AbsoluteValue.ne_zero_iff ε.w).2 (SmallSec.valAt_ne_zero hG)`. Establish `n2 : ε.w (valAt y.1 ((T * (eqn D (below y.1))⁻¹ : Y.Fnˣ) : Y.Fn)) ≠ 0` using `(AbsoluteValue.ne_zero_iff ε.w).2 (SmallSec.valAt_ne_zero hU)`. Rewrite using `[e, SmallSec.valAt_mul hG.regAt hU.inv.regAt, GlobalTheory.LineNorm.Neg.valAt_inv hU, map_mul, map_inv₀, Real.log_mul n1 (inv_ne_zero n2), Real.log_inv]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem log_val_inv (D D' : Y.Dv) (hD : D' = -D) (y : AlgPt Y) (T : Y.Fnˣ) (hT : D.IsEqn (below y.1) T)
     {v : HeightOneSpectrum (𝓞 F)} (ε : TrueGeo.Ext v) :
     Real.log (ε.w (valAt y.1 ((T⁻¹ * (eqn D' (below y.1))⁻¹ : Y.Fnˣ) : Y.Fn))) =
@@ -66,20 +79,32 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F}
   {Z : Model Xo c β} {F : Type} [Field F] [NumberField F] {e : F ≃+* c.F} (Y : FlagCpt Z e)
 
+/- English proof (translation)
+Simplify using `[divOf, neg_smul, Finset.sum_neg_distrib]`.
+-/
 theorem divOf_neg (n : Letter Dw → ℤ) : divOf Y (-n) = -divOf Y n := by
   simp [divOf, neg_smul, Finset.sum_neg_distrib]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `only [expo_single, Pi.neg_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem expo_single_neg_one (a : Sym E) :
     expo Dw (Finsupp.single a (-1)) = -expo Dw (Finsupp.single a 1) := by
   funext x
   simp only [expo_single, Pi.neg_apply]
   split_ifs <;> simp
 
+/- English proof (translation)
+The claim follows from `isEqn_sum _ _ _ x fun z _ => ((Y.gr_spec x).choose_spec.choose_spec.choose_spec.2 z.1 z.2).zsmul (n z)`.
+-/
 theorem isEqn_prod (x : Y.Y.X) (n : Letter Dw → ℤ) :
     (divOf Y n).IsEqn x (∏ z : Letter Dw, (Y.gr_spec x).choose_spec.choose_spec.choose z.1 z.2 ^ n z) :=
   isEqn_sum _ _ _ x fun z _ =>
     ((Y.gr_spec x).choose_spec.choose_spec.choose_spec.2 z.1 z.2).zsmul (n z)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨_, _, fun _ => dif_pos (residueCharacteristic_prime v)⟩`.
+-/
 theorem exists_lgOf_eq_val (v : HeightOneSpectrum (𝓞 F)) (ε : TrueGeo.Ext v) (y : AlgPt Y.Y) :
     ∃ (κ : ℝ) (S : Sym E → ℝ), ∀ w : Sym E →₀ ℤ, lgOf Y w v ε y =
       Real.log (ε.w (valAt y.1 (((∏ z : Letter Dw,
@@ -87,6 +112,9 @@ theorem exists_lgOf_eq_val (v : HeightOneSpectrum (𝓞 F)) (ε : TrueGeo.Ext v)
           (eqn (divOf Y (expo Dw w)) (below y.1))⁻¹ : Y.Y.Fnˣ) : Y.Y.Fn))) + κ * w.sum fun a n => (n : ℝ) * S a :=
   ⟨_, _, fun _ => dif_pos (residueCharacteristic_prime v)⟩
 
+/- English proof (translation)
+Take `⟨κ, S, h⟩` from `exists_lgOf_eq_val Y v ε y`. Use `⟨κ * S a, fun n => ?_⟩` and prove the remaining obligations. Rewrite using `[h, Finsupp.sum_single_index (by simp)]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_lgOf_single (a : Sym E) (v : HeightOneSpectrum (𝓞 F)) (ε : TrueGeo.Ext v) (y : AlgPt Y.Y) :
     ∃ S : ℝ, ∀ n : ℤ, lgOf Y (Finsupp.single a n) v ε y =
       Real.log (ε.w (valAt y.1 (((∏ z : Letter Dw,
@@ -97,6 +125,13 @@ theorem exists_lgOf_single (a : Sym E) (v : HeightOneSpectrum (𝓞 F)) (ε : Tr
   rw [h, Finsupp.sum_single_index (by simp)]
   ring
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c O _ β Z F _ _ e Y a v ε y`. Take `⟨S, hS⟩` from `exists_lgOf_single Y a v ε y`. Establish `hex` using `expo_single_neg_one (Dw := Dw) a`. Establish `hD : divOf Y (expo Dw (Finsupp.single a (-1))) = -divOf Y (expo Dw (Finsupp.single a 1))`. Rewrite using `[hex, divOf_neg]`.
+
+Establish `hT` using `isEqn_prod Y (below y.1) (expo Dw (Finsupp.single a 1))`. Establish `key` using `log_val_inv _ _ hD y _ hT ε`. Establish `hinv : (∏ z : Letter Dw, (Y.gr_spec (below y.1)).choose_spec.choose_spec.choose z.1 z.2 ^ expo Dw (Finsupp.single a (-1)) z) = (∏ z : Letter Dw, (Y.gr_spec (below y.1)).choose_spec.choose_spec.choose z.1 z.2 ^ expo Dw (Finsupp.single a 1) z)⁻¹`. Rewrite using `[hex, ← Finset.prod_inv_distrib]`. Use `Finset.prod_congr rfl fun z _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Pi.neg_apply, zpow_neg]`. Rewrite using `[hS (-1), hS 1, hinv, key]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem lgOf_single_neg_one : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F} {Z : Model Xo c β} {F : Type} [Field F] [NumberField F] {e : F ≃+* c.F} (Y : FlagCpt Z e) (a : Sym E) (v : HeightOneSpectrum (𝓞 F)) (ε : TrueGeo.Ext v) (y : AlgPt Y.Y), lgOf Y (Finsupp.single a (-1)) v ε y = -lgOf Y (Finsupp.single a 1) v ε y + Real.log (ε.w (valAt y.1 (genAt (divOf Y (expo Dw (Finsupp.single a (-1)))) (below y.1) * genAt (divOf Y (expo Dw (Finsupp.single a 1))) (below y.1)))) := by
   intro E _ _ _ H Dw l Xo c O _ β Z F _ _ e Y a v ε y
   obtain ⟨S, hS⟩ := exists_lgOf_single Y a v ε y
@@ -127,6 +162,9 @@ section
 open CategoryTheory AlgebraicGeometry NumberField IsDedekindDomain ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M
 open Formalism.BasicNotions GlobalTheory GlobalTheory.Cartier GlobalTheory.ProjVar GlobalTheory.TrueGeo GlobalTheory.ArInt GlobalTheory.Mean4 GlobalTheory.Mean4O GlobalTheory.ShFam GlobalTheory.ShFam.Pad
 
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GradedLogInvariants.GlobalTheory.CompanionTheory.GradedInv.lgOf_single_neg_one | exact GradedLogInvariants.GlobalTheory.CompanionTheory.GradedInv.lgOf_single_neg_one | (intros; apply GradedLogInvariants.GlobalTheory.CompanionTheory.GradedInv.lgOf_single_neg_one <;> …`.
+-/
 theorem _root_.GlobalTheory.Adopt.lgOf_single_neg_one_eq_neg : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F} {Z : Model Xo c β} {F : Type} [Field F] [NumberField F] {e : F ≃+* c.F} (Y : FlagCpt Z e) (a : Sym E) (v : HeightOneSpectrum (𝓞 F)) (ε : TrueGeo.Ext v) (y : AlgPt Y.Y), lgOf Y (Finsupp.single a (-1)) v ε y = -lgOf Y (Finsupp.single a 1) v ε y + Real.log (ε.w (valAt y.1 (genAt (divOf Y (expo Dw (Finsupp.single a (-1)))) (below y.1) * genAt (divOf Y (expo Dw (Finsupp.single a 1))) (below y.1)))) := by
   first | exact @GradedLogInvariants.GlobalTheory.CompanionTheory.GradedInv.lgOf_single_neg_one | exact GradedLogInvariants.GlobalTheory.CompanionTheory.GradedInv.lgOf_single_neg_one | (intros; apply GradedLogInvariants.GlobalTheory.CompanionTheory.GradedInv.lgOf_single_neg_one <;> assumption)
 

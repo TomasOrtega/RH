@@ -21,6 +21,13 @@ section H41
 
 variable (W : LocWach PD LL O v n) (T : LocLat G Qp LL O)
 
+/- English proof (translation)
+Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨y, ⟨hyN, hyE, -⟩, rfl⟩` from `hx`. Simplify using `only [pow_one]`. Apply `hM` to reduce the goal to its premises.
+
+Unfold `Formalism.BasicNotions.LocWach.Nl`. Rewrite using `[Submodule.mem_map]`. Conclude with `⟨y, hyN, by simpa using hyE⟩`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [smul_add]`.
+
+Conclude with `(W.N T).add_mem hx hy`. Consider the case `smul a x _ hx => rw [smul_comm]`. Conclude with `(W.N T).smul_mem a hx`.
+-/
 theorem pullJ_Q {c : ZMod n} {Bn : ℕ} (hM : ∀ z ∈ W.Nl T (c - 1), W.Q ^ Bn • W.φD T z ∈ W.N T)
     {z : W.DD T} (hz : z ∈ Formalism.MainNotions.CrystallineLiftingInputs.pullJ W T (c - 1) 1) : W.Q ^ Bn • z ∈ W.N T := by
   induction hz using Submodule.span_induction with
@@ -35,6 +42,31 @@ theorem pullJ_Q {c : ZMod n} {Bn : ℕ} (hM : ∀ z ∈ W.Nl T (c - 1), W.Q ^ Bn
   | add x y _ _ hx hy => rw [smul_add]; exact (W.N T).add_mem hx hy
   | smul a x _ hx => rw [smul_comm]; exact (W.N T).smul_mem a hx
 
+/- English proof (translation)
+Establish `hDel : ∀ g h : W.Gam, g ∈ W.DelF → h ∈ W.DelF → g * h ∈ W.DelF`. Introduce `g h hg hh`. Rewrite `hg`, `hh`, the goal using `[W.DelF_def]`. Take `⟨k, hk, hgk⟩` from `hg`. Take `⟨m, hm, hhm⟩` from `hh`.
+
+Use `⟨k * m, Nat.mul_pos hk hm, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_pow, pow_mul, hgk, one_pow, mul_comm k m, pow_mul, hhm, one_pow, one_mul]`. Establish `hInv : ∀ g : W.Gam, g ∈ W.DelF → g⁻¹ ∈ W.DelF`. Introduce `g hg`. Rewrite `hg`, the goal using `[W.DelF_def]`.
+
+Take `⟨k, hk, hgk⟩` from `hg`. Conclude with `⟨k, hk, by rw [inv_pow, hgk, inv_one]⟩`. Establish `hπ₁ : W.γ₀ δ W.π₀₁ = W.π₀₁`. Unfold `Formalism.BasicNotions.LocWach.π₀₁`. Rewrite using `[map_add, map_sub, map_one, map_natCast, map_sum]`.
+
+Use `congr 1`. Use `Finset.sum_nbij' (δ * ·) (δ⁻¹ * ·) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `a ha`. Conclude with `hDel _ _ hδ ha`. Introduce `a ha`.
+
+Conclude with `hDel _ _ (hInv _ hδ) ha`. Introduce `a _`. Simplify using the standard rewrite rules. Introduce `a _`. Simplify using the standard rewrite rules.
+
+Introduce `a _`. Rewrite using `[map_mul, AlgHom.mul_apply]`. Establish `hπ : W.γA δ W.π₀ = W.π₀`. Unfold `Formalism.BasicNotions.LocWach.γA Formalism.BasicNotions.letγ Formalism.BasicNotions.LocWach.π₀`. Use function extensionality and compare the values at `i`.
+
+Conclude with `hπ₁`. Establish `hr' : W.γA δ r = r`. Take `⟨⟨a, rfl⟩, -⟩` from `hr`. Simplify using `only [map_sum, map_mul, map_pow, AlgHom.commutes, hπ]`. Establish `hp0 : ((PD.p : ℕ) : O) ≠ 0`.
+
+Introduce `h`. Establish `h1` using `W.v_l`. Establish `h2 : ((PD.p : ℕ) : LL) = 0`. Rewrite using `[← map_natCast (algebraMap O LL) PD.p, h, map_zero]`. Rewrite `h1` using `[h2, AddValuation.map_zero]`.
+
+Simplify using `at h1`. Establish `hpX : ((PD.p : ℕ) : PowerSeries O) ≠ 0`. Introduce `h`. Apply `hp0` to reduce the goal to its premises. Establish `h3` using `congrArg PowerSeries.constantCoeff h`.
+
+Simplify using `using h3`. Establish `hcan : ∀ (k : ℕ) (x x' : LetA O n), ((PD.p : ℕ) : LetA O n) ^ k * x = ((PD.p : ℕ) : LetA O n) ^ k * x' → x = x'`. Introduce `k x x' hxx`. Use function extensionality and compare the values at `i`. Establish `hi` using `congrFun hxx i`.
+
+Conclude with `mul_left_cancel₀ (pow_ne_zero k hpX) hi`. Establish `h2 : ((PD.p : ℕ) : LetA O n) ^ Formalism.MainNotions.CrystallineLiftingInputs.eY PD.p y * W.γA δ s = ((PD.p : ℕ) : LetA O n) ^ σ * r`. Establish `h4` using `congrArg (W.γA δ) hrs`. Simplify `h4` using `only [map_mul, map_pow, map_natCast, hr']`. Apply `hcan (Formalism.MainNotions.CrystallineLiftingInputs.eY PD.p y)` to reduce the goal to its premises.
+
+Rewrite using `[h2, hrs]`.
+-/
 theorem trunc_s_Δ [IsDomain O] {j M X σ y : ℕ} {r s : LetA O n} (hr : Formalism.MainNotions.CrystallineLiftingInputs.IsRem W j M X y r)
     (hrs : ((PD.p : ℕ) : LetA O n) ^ Formalism.MainNotions.CrystallineLiftingInputs.eY PD.p y * s = ((PD.p : ℕ) : LetA O n) ^ σ * r)
     (δ : W.Gam) (hδ : δ ∈ W.DelF) : W.γA δ s = s := by
@@ -97,6 +129,17 @@ theorem trunc_s_Δ [IsDomain O] {j M X σ y : ℕ} {r s : LetA O n} (hr : Formal
   apply hcan (Formalism.MainNotions.CrystallineLiftingInputs.eY PD.p y)
   rw [h2, hrs]
 
+/- English proof (translation)
+Take `⟨cs, r, s, ⟨-, hcDL, -⟩, hrs, rfl⟩` from `hz`. Establish `hφ : ∀ x, Formalism.MainNotions.CrystallineLiftingInputs.DL W T (c - 1) x → Formalism.MainNotions.CrystallineLiftingInputs.DL W T c (((W.φD T) ^ 1) x)`. Introduce `x hx`. Rewrite using `[pow_one]`. Conclude with `(Formalism.MainNotions.WachCoordinates.Br.φl (W := W) T c ⟨x, hx⟩).2`.
+
+Establish `hsub : ∀ x y, Formalism.MainNotions.CrystallineLiftingInputs.DL W T c x → Formalism.MainNotions.CrystallineLiftingInputs.DL W T c y → Formalism.MainNotions.CrystallineLiftingInputs.DL W T c (x - y)`. Introduce `x y hx hy`. Conclude with `(Formalism.MainNotions.WachCoordinates.Br.DDl W T c).sub_mem hx hy`. Establish `hosmul : ∀ (o : O) x, Formalism.MainNotions.CrystallineLiftingInputs.DL W T c x → Formalism.MainNotions.CrystallineLiftingInputs.DL W T c (o • x)`. Introduce and unpack `o x ⟨hx1, hx2⟩`.
+
+Use `show _ ∧ _`. Use `⟨?_, fun δ hδ => ?_⟩` and prove the remaining obligations. Rewrite using `[smul_comm, hx1]`. Rewrite using `[map_smul, hx2 δ hδ]`. Establish `hasmul : ∀ (a : LetA O n) x, (∀ δ ∈ W.DelF, W.γA δ a = a) → Formalism.MainNotions.CrystallineLiftingInputs.DL W T c x → Formalism.MainNotions.CrystallineLiftingInputs.DL W T c (a • x)`.
+
+Introduce and unpack `a x ha ⟨hx1, hx2⟩`. Use `show _ ∧ _`. Use `⟨?_, fun δ hδ => ?_⟩` and prove the remaining obligations. Rewrite using `[smul_comm, hx1]`. Rewrite using `[Formalism.MainNotions.UnusedSlot80.SatW.γD_smulA' W T δ a x, ha δ hδ, hx2 δ hδ]`.
+
+Apply `hsub` to reduce the goal to its premises. Conclude with `hosmul _ _ (hφ w hw)`. Conclude with `(Formalism.MainNotions.WachCoordinates.Br.DDl W T c).sum_mem (fun y _ => hasmul _ _ (fun δ hδ => trunc_s_Δ W (hrs y).1 (hrs y).2 δ hδ) (hφ _ (hcDL y).1))`.
+-/
 theorem trunc_DL [IsDomain O] {c : ZMod n} {M X σ : ℕ} {w z : W.DD T}
     (hz : Formalism.MainNotions.CrystallineLiftingInputs.IsTrunc W T (c - 1) 1 M X σ w z) (hw : Formalism.MainNotions.CrystallineLiftingInputs.DL W T (c - 1) w) :
     Formalism.MainNotions.CrystallineLiftingInputs.DL W T c z := by
@@ -135,6 +178,11 @@ variable (W : LocWach PD LL O v n)
 
 def del0 {V : Type} [Zero V] (C : V) : ℤ → V := fun k => if k = 0 then C else 0
 
+/- English proof (translation)
+Unfold `smulS`. Rewrite using `[finsum_eq_single _ r]`. Simplify using `[del0]`. Introduce `j hj`. Establish `hne : (r : ℤ) - (j : ℤ) ≠ 0`.
+
+Introduce `h`. Apply `hj` to reduce the goal to its premises. Conclude with `(sub_eq_zero.mp h).symm` after adjusting the coercions. Simplify using `[del0, hne]`.
+-/
 theorem smulSeries_delta_zero {V : Type} [AddCommGroup V] [Module LL V] (g : PowerSeries LL) (C : V) (r : ℕ) :
     smulS g (del0 C) (r : ℤ) = PowerSeries.coeff r g • C := by
   unfold smulS
@@ -147,10 +195,20 @@ theorem smulSeries_delta_zero {V : Type} [AddCommGroup V] [Module LL V] (g : Pow
       exact_mod_cast (sub_eq_zero.mp h).symm
     simp [del0, hne]
 
+/- English proof (translation)
+Introduce `k hk`. Simplify using `[del0, hk.ne]`.
+-/
 theorem lowerBound_delta_zero {V : Type} [AddCommGroup V] (C : V) : LB 0 (del0 C) := by
   intro k hk
   simp [del0, hk.ne]
 
+/- English proof (translation)
+Establish `hw : LB m (smulS (u ^ Bn) g)` using `LB_smulS hg _`. Establish `hcu : constantCoeff (u ^ Bn) ≠ 0`. Rewrite using `[map_pow]`. Conclude with `pow_ne_zero _ hu0`. Establish `hwB : LB Bn (smulS (u ^ Bn) g)`.
+
+Introduce `k hk`. Establish `hk2` using `h (k + Bn) (by omega)`. Rewrite `hk2` using `[mul_pow, smulS_mul hg, smulS_X_pow hw]`. Simplify using `using hk2`. Establish `hg' : g = smulS (u ^ Bn)⁻¹ (smulS (u ^ Bn) g)`.
+
+Rewrite using `[← smulS_mul hg, PowerSeries.inv_mul_cancel _ hcu, smulS_one hg]`. Rewrite using `[hg']`. Conclude with `LB_smulS hwB _`.
+-/
 theorem LB_of_mul {V : Type} [AddCommGroup V] [Module LL V] {m : ℤ} {g : ℤ → V} (hg : LB m g)
     (u : PowerSeries LL) (hu0 : constantCoeff u ≠ 0) (Bn : ℕ)
     (h : LB (2 * Bn) (smulS ((X * u) ^ Bn) g)) : LB Bn g := by
@@ -174,6 +232,21 @@ section L41b
 
 variable (W : LocWach PD LL O v n)
 
+/- English proof (translation)
+Establish `key : ∀ z ∈ Formalism.MainNotions.CrystallineLiftingInputs.pullJ W T (c - 1) 1, ∀ h : W.Q ^ Bn • z ∈ W.N T, LB Bn (W.levN T c ζ ⟨W.Q ^ Bn • z, h⟩)`. Introduce `z hz`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨y, ⟨hyN, -⟩, rfl⟩` from `hx`.
+
+Introduce `h`. Establish `h' : W.Q ^ Bn • W.φD T y ∈ W.N T` using `by rwa [pow_one] at h`. Establish `e : (⟨_, h⟩ : ↥(W.N T)) = ⟨_, h'⟩` using `Subtype.ext (by simp only [pow_one])`. Rewrite using `[e]`. Conclude with `hφN ⟨y, hyN⟩ Bn h'`.
+
+Consider the case `zero`. Introduce `h`. Establish `e : (⟨_, h⟩ : ↥(W.N T)) = 0` using `Subtype.ext (by simp)`. Rewrite using `[e, map_zero]`. Introduce `k _`.
+
+Both sides reduce to the same expression. Consider the case `add x y hx hy ihx ihy`. Introduce `h`. Establish `hx'` using `pullJ_Q W T hM hx`. Establish `hy'` using `pullJ_Q W T hM hy`.
+
+Establish `e : (⟨_, h⟩ : ↥(W.N T)) = ⟨_, hx'⟩ + ⟨_, hy'⟩` using `Subtype.ext (by simp only [Submodule.coe_add]; exact smul_add _ _ _)`. Rewrite using `[e, map_add]`. Conclude with `LB_add (ihx hx') (ihy hy')`. Consider the case `smul a x hx ihx`. Introduce `h`.
+
+Establish `hx'` using `pullJ_Q W T hM hx`. Establish `e : (⟨_, h⟩ : ↥(W.N T)) = a • ⟨_, hx'⟩` using `Subtype.ext (by simp only [Submodule.coe_smul]; exact smul_comm _ _ _)`. Rewrite using `[e]`. Establish `hs : W.levN T c ζ (a • ⟨_, hx'⟩) = smulS (W.lev c ζ a) (W.levN T c ζ ⟨_, hx'⟩)`. Use function extensionality and compare the values at `k`.
+
+Rewrite using `[W.levN_smul]`. Both sides reduce to the same expression. Rewrite using `[hs]`. Conclude with `LB_smulS (ihx hx') _`. Conclude with `key z hz hQz`.
+-/
 theorem pullJ_LB (T : LocLat G Qp LL O) {c : ZMod n} {Bn : ℕ} (ζ : LL)
     (hM : ∀ z ∈ W.Nl T (c - 1), W.Q ^ Bn • W.φD T z ∈ W.N T)
     (hφN : ∀ (x : ↥(W.N T)) (k : ℕ) (hk : W.Q ^ k • W.φD T x ∈ W.N T) (j : ℤ), j < k →
@@ -219,6 +292,13 @@ theorem pullJ_LB (T : LocLat G Qp LL O) {c : ZMod n} {Bn : ℕ} (ζ : LL)
       exact LB_smulS (ihx hx') _
   exact key z hz hQz
 
+/- English proof (translation)
+Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨y, ⟨hyN, hyE, hyΔ⟩, rfl⟩` from `hx`. Use `Submodule.subset_span ⟨W.map F y, ⟨W.map_N F hT₁ hT₂ _ hyN, ?_⟩, ?_⟩` and prove the remaining obligations. Use `show _ ∧ _`.
+
+Use `⟨?_, fun δ hδ => ?_⟩` and prove the remaining obligations. Rewrite using `[← LinearMap.map_smul_of_tower, hyE]`. Rewrite using `[← W.map_γ, hyΔ δ hδ]`. Simplify using `only [pow_one]`. Rewrite using `[W.map_φ]`.
+
+Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul a x _ hx => rw [LinearMap.map_smul_of_tower]`. Conclude with `Submodule.smul_mem _ a hx`.
+-/
 theorem map_pullJ {T₁ T₂ : LocLat G Qp LL O} (F : LatHom T₁.L T₂.L) (hT₁ : IsCrys PD T₁.ρ)
     (hT₂ : IsCrys PD T₂.ρ) {i : ZMod n} {z : W.DD T₁} (hz : z ∈ Formalism.MainNotions.CrystallineLiftingInputs.pullJ W T₁ i 1) :
     W.map F z ∈ Formalism.MainNotions.CrystallineLiftingInputs.pullJ W T₂ i 1 := by
@@ -242,6 +322,15 @@ section L41d
 
 variable {LL' : Type} [Field LL'] {V : Type} [AddCommGroup V] [Module LL' V]
 
+/- English proof (translation)
+Establish `hw : LB m (smulS (u ^ K) dd)` using `LB_smulS hdd _`. Establish `hcu : constantCoeff (u ^ K) ≠ 0`. Rewrite using `[map_pow]`. Conclude with `pow_ne_zero _ hu0`. Establish `hdd' : dd = smulS (u ^ K)⁻¹ (smulS (u ^ K) dd)`.
+
+Rewrite using `[← smulS_mul hdd, PowerSeries.inv_mul_cancel _ hcu, smulS_one hdd]`. Establish `hwZ : ∀ k, smulS (u ^ K) dd k ∈ Z`. Introduce `k`. Establish `hk` using `hZ (k + K)`. Rewrite `hk` using `[← he, mul_pow, smulS_mul hdd, smulS_X_pow hw]`.
+
+Simplify using `using hk`. Introduce `k`. Establish `hN : k - m < (((k - m).toNat + 1 : ℕ) : ℤ)`. Use `Int.self_le_toNat (k - m)` as an intermediate fact. Use `push_cast`.
+
+Use linear arithmetic over natural numbers and integers. Rewrite using `[hdd', smulS_eq_sum hw _ k _ hN]`. Conclude with `Z.sum_mem (fun j _ => Z.smul_mem _ (hwZ _))`.
+-/
 theorem vals_of_div {m : ℤ} {dd e : ℤ → V} (hdd : LB m dd) (u : PowerSeries LL')
     (hu0 : constantCoeff u ≠ 0) (K : ℕ) (he : smulS ((X * u) ^ K) dd = e) (Z : Submodule LL' V)
     (hZ : ∀ k, e k ∈ Z) : ∀ k, dd k ∈ Z := by
@@ -270,6 +359,85 @@ section L41c
 
 variable (W : LocWach PD LL O v n)
 
+/- English proof (translation)
+Introduce `d T₁ T₂ F b S η m hset c hc`. Establish `hset'` using `hset`. Take `⟨hCA, hl, hn, ⟨hDom, hDVR, hFrac⟩, -, hSur, -, -, -, -⟩` from `hset'`. Use `haveI := hDom`. Use `haveI := hDVR`.
+
+Use `haveI := hFrac`. Establish `hCA'` using `hCA`. Take `⟨hbij, hs, hp2⟩` from `hCA`. Establish `hK1 : Module.finrank K₀ K = 1` using `Formalism.MainNotions.UnusedSlot80.SatW.finrank_one_of_bij' hbij`. Take `⟨-, -, h9₁⟩` from `h9 T₁ hSur.1 hs hp2`.
+
+Take `⟨hR, hmod₁⟩` from `h9₁ hK1`. Take `⟨-, -, h9₂⟩` from `h9 T₂ hSur.2.1 hs hp2`. Take `⟨-, hmod₂⟩` from `h9₂ hK1`. Establish `hT₁` using `hSur.1`. Establish `hT₂` using `hSur.2.1`.
+
+Establish `h5₁` using `h5 T₁ (boxM d b S η) (boxH d b S η) hT₁ (rk_jumpsLet₁ W hset)`. Establish `h5₂` using `h5 T₂ (boxM d b S η) (boxH d b S η) hT₂ (rk_jumpsLet₂ W hE hC hQ hset)`. Establish `hcD : (c.val + d) % 2 = 0` using `(Finset.mem_filter.1 hc).2`. Establish `hc1 : ((c - 1).val + d) % 2 = 1`. Use `Formalism.MainNotions.RamifiedCoefficientChains.S9.parity_succ hn d (c - 1)` as an intermediate fact.
+
+Rewrite `this` using `[sub_add_cancel]`. Use linear arithmetic over natural numbers and integers. Establish `hMc : boxM d b S η c = b c + S` using `if_pos hcD`. Establish `hM₁ : ∀ z ∈ W.Nl T₁ (c - 1), W.Q ^ (b c + S) • W.φD T₁ z ∈ W.N T₁`. Rewrite using `[← hMc]`.
+
+Conclude with `h5₁.1 c`. Establish `hM₂ : ∀ z ∈ W.Nl T₂ (c - 1), W.Q ^ (b c + S) • W.φD T₂ z ∈ W.N T₂`. Rewrite using `[← hMc]`. Conclude with `h5₂.1 c`. Establish `hπU` using `Formalism.MainNotions.UnusedSlot35.DssRec.π₀_unit W h9 hCA' T₁ hT₁`.
+
+Take `⟨U, hU⟩` from `qp_eq_unit W hs hR`. Establish `hp : (PD.p : LL) ≠ 0` using `Formalism.MainNotions.UnusedSlot80.ArcF.p_ne_zero W`. Take `⟨E, hE', hGx⟩` from `hG d T₁ T₂ F b S η m hset (c - 1) hc1`. Establish `e12 : c - 1 - 2 = c - 1 - 1 - 1` using `by ring`. Rewrite `hGx` using `[e12]`.
+
+Use `set gG : ℤ := ⌈(E : ℝ) + Formalism.MainNotions.CrystallineLiftingInputs.sig2 PD.p (Formalism.MainNotions.RamifiedCoefficientChains.hpar n b S + η) + ((b (c - 1 - 1) + S : ℕ) : ℝ) - (b (c - 1) : ℝ)⌉ with hgG`. Use `set σ₁ : ℕ := ⌈(((1 : ℕ) : ℝ) + ((b c + S : ℕ) : ℝ)) / ((PD.p : ℝ) - 1) + 1⌉₊ with hσ₁`. Establish `hTC : Formalism.MainNotions.CrystallineLiftingInputs.TCase PD.p 1 1 (b c + S) σ₁` using `Or.inl ⟨rfl, le_rfl, rfl⟩`. Take `⟨hTT, hnat⟩` from `hT2 hCA' hl 1 1 (b c + S) σ₁ hTC`. Use `⟨(σ₁ : ℤ) + gG, ?_, fun ell hellD hellC => ?_⟩` and prove the remaining obligations.
+
+Establish `hl1 : (0 : ℝ) < (PD.p : ℝ) - 1`. Establish `: (11 : ℝ) ≤ PD.p` using `by exact_mod_cast hl`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1` using `Nat.ceil_lt_add_one (a := (((1 : ℕ) : ℝ) + ((b c + S : ℕ) : ℝ)) / ((PD.p : ℝ) - 1) + 1) (by positivity)`. Establish `h2` using `Int.ceil_lt_add_one ((E : ℝ) + Formalism.MainNotions.CrystallineLiftingInputs.sig2 PD.p (Formalism.MainNotions.RamifiedCoefficientChains.hpar n b S + η) + ((b (c - 1 - 1) + S : ℕ) : ℝ) - (b (c - 1) : ℝ))`.
+
+Establish `hEle : (E : ℝ) ≤ Formalism.MainNotions.RamifiedCoefficientChains.S9.EG PD.p (Formalism.MainNotions.RamifiedCoefficientChains.hpar n b S) η S`. Use `hE'.trans ?_` and prove the remaining obligations. Rewrite using `[Formalism.MainNotions.RamifiedCoefficientChains.S9.EG]`. Establish `: 3 * Formalism.MainNotions.RamifiedCoefficientChains.aR PD.p (Formalism.MainNotions.RamifiedCoefficientChains.hpar n b S + η) ≤ 3 * (Formalism.MainNotions.RamifiedCoefficientChains.S9.aN PD.p (Formalism.MainNotions.RamifiedCoefficientChains.hpar n b S + η) : ℝ)`. Use `Nat.le_ceil (Formalism.MainNotions.RamifiedCoefficientChains.aR PD.p (Formalism.MainNotions.RamifiedCoefficientChains.hpar n b S + η))` as an intermediate fact.
+
+Unfold `Formalism.MainNotions.RamifiedCoefficientChains.S9.aN`. Combine the linear equalities and inequalities to obtain the conclusion. Use `div_le_div_of_nonneg_right (a := 3 * Formalism.MainNotions.RamifiedCoefficientChains.aR PD.p (Formalism.MainNotions.RamifiedCoefficientChains.hpar n b S + η) + S + 2 * η) (b := 3 * (Formalism.MainNotions.RamifiedCoefficientChains.S9.aN PD.p (Formalism.MainNotions.RamifiedCoeffici …` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hs2 : Formalism.MainNotions.CrystallineLiftingInputs.sig2 PD.p (Formalism.MainNotions.RamifiedCoefficientChains.hpar n b S + η) = Formalism.TruncatedSeriesCounting.RamifiedCoefficientChains.sig₂ PD.p (Formalism.MainNotions.RamifiedCoefficientChains.hpar n b S + η)`.
+
+Simplify using `only [Formalism.MainNotions.CrystallineLiftingInputs.sig2, Formalism.TruncatedSeriesCounting.RamifiedCoefficientChains.sig₂]`. Rewrite using `[hσ₁, hgG]`. Move the coercions through the operations in `at h1 h2 ⊢`. Rewrite `h2` using `[hs2]`. Establish `hnum : (1 + ((b c : ℝ) + (S : ℝ))) / ((PD.p : ℝ) - 1) = ((b c : ℝ) + (S : ℝ) + 1) / ((PD.p : ℝ) - 1)` using `by ring`.
+
+Rewrite the goal using `[hs2]`. Combine the linear relations using `[hnum]`. Take `⟨n₁, hn₁N, hFN, hn₁D, hcmp⟩` from `hGx ell hellD hellC set Bn : ℕ := b c + S with hBn`. Establish `hn₁Δ : n₁ ∈ W.NΔ T₁` using `⟨hn₁N, hn₁D.2⟩`. Take `⟨x', hx'Δ, hx'e⟩` from `hmod₁.2 n₁ hn₁Δ`.
+
+Establish `hn₁I : Formalism.MainNotions.CrystallineLiftingInputs.InI W T₁ (c - 1) n₁` using `⟨hn₁D, ⟨0, 0, by simpa using hn₁N⟩, ⟨x', hx'Δ.1, hx'Δ.2, by rw [pow_one]; exact hx'e⟩⟩`. Take `⟨z₁, hz₁⟩` from `(hTT T₁ hT₁ (c - 1)).1 n₁ hn₁I`. Take `⟨hz₁P, p₁, hp₁, hγz⟩` from `(hTT T₁ hT₁ (c - 1)).2.1 n₁ z₁ hn₁I hz₁`. Establish `hQz : W.Q ^ Bn • z₁ ∈ W.N T₁`. Establish `e : z₁ = (z₁ - ((PD.p : ℕ) : O) ^ σ₁ • ((W.φD T₁) ^ 1) n₁) + ((PD.p : ℕ) : O) ^ σ₁ • ((W.φD T₁) ^ 1) n₁` using `by abel`.
+
+Rewrite using `[e, smul_add, osmul_comm W T₁]`. Use `(W.N T₁).add_mem (pullJ_Q W T₁ hM₁ hz₁P) ?_` and prove the remaining obligations. Rewrite using `[← algebraMap_smul (LetA O n), pow_one]`. Conclude with `(W.N T₁).smul_mem _ (hM₁ n₁ (mem_Nl W T₁ hn₁N hn₁D.1))`. Establish `hUQ : ∀ (T : LocLat G Qp LL O) (x : W.DD T), W.Q ^ Bn • x ∈ W.N T → Formalism.MainNotions.LiftingTheory.qp W ^ Bn • x ∈ W.N T` using `fun T x hx => by`.
+
+Rewrite using `[hU, mul_pow, mul_smul]`. Conclude with `(W.N T).smul_mem _ hx`. Establish `hz₁D` using `trunc_DL W T₁ hz₁ hn₁D`. Establish `hy'N : Formalism.MainNotions.LiftingTheory.qp W ^ Bn • p₁ ∈ W.N T₁` using `hUQ T₁ _ (pullJ_Q W T₁ hM₁ hp₁)`. Establish `hy'eq : W.π₀ • (Formalism.MainNotions.LiftingTheory.qp W ^ Bn • p₁) = W.γ T₁ z₁ - z₁`.
+
+Rewrite using `[hγz, Formalism.MainNotions.CrystallineLiftingInputs.fMX, pow_one, mul_smul]`. Establish `hz₁I : Formalism.MainNotions.CrystallineLiftingInputs.InI W T₁ c z₁`. Use `⟨hz₁D, ⟨1, Bn, ?_⟩, ⟨Formalism.MainNotions.LiftingTheory.qp W ^ Bn • p₁, hy'N, fun δ hδ => ?_, ?_⟩⟩` and prove the remaining obligations. Simplify `hUQ T₁ z₁ hQz` using `[Formalism.MainNotions.LiftingTheory.pk]`. Apply `Formalism.MainNotions.UnusedSlot80.SatW.smul_cancel W T₁ hπU` to reduce the goal to its premises.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Formalism.MainNotions.UnusedSlot80.SatW.γD_smulA' W T₁ δ W.π₀ (Formalism.MainNotions.LiftingTheory.qp W ^ Bn • p₁), Formalism.MainNotions.UnusedSlot80.UnivC.uniformizer_mem_delta_invariants W δ hδ]`. Use `_ = W.γD T₁ δ (W.γ T₁ z₁ - z₁) := by rw [hy'eq]`. Use `_ = W.γ T₁ z₁ - z₁ := by`. Rewrite using `[map_sub]`.
+
+Use `show W.γD T₁ δ (W.γD T₁ W.gam z₁) - W.γD T₁ δ z₁ = W.γD T₁ W.gam z₁ - z₁`. Rewrite using `[← W.γD_mul, mul_comm, W.γD_mul, hz₁D.2 δ hδ]`. Use `_ = W.π₀ • (Formalism.MainNotions.LiftingTheory.qp W ^ Bn • p₁) := hy'eq.symm`. Rewrite using `[pow_one, hy'eq]`. Establish `hFD : Formalism.MainNotions.CrystallineLiftingInputs.DL W T₂ (c - 1) (W.map F n₁)` using `⟨by rw [← Formalism.MainNotions.UnusedSlot80.ArcC.map_smulA, hn₁D.1], fun δ hδ => by rw [← W.map_γ, hn₁D.2 δ hδ]⟩`.
+
+Establish `hFI : Formalism.MainNotions.CrystallineLiftingInputs.InI W T₂ (c - 1) (W.map F n₁)`. Use `⟨hFD, ⟨0, 0, by simpa using hFN⟩, ⟨W.map F x', W.map_N F hT₁ hT₂ _ hx'Δ.1, fun δ hδ => by rw [← W.map_γ, hx'Δ.2 δ hδ], ?_⟩⟩` and prove the remaining obligations. Rewrite using `[pow_one, ← Formalism.MainNotions.UnusedSlot80.ArcC.map_smulA, ← hx'e, map_sub]`. Use `show W.γD T₂ W.gam (W.map F n₁) - W.map F n₁ = W.map F (W.γD T₁ W.gam n₁) - W.map F n₁`. Rewrite using `[W.map_γ]`.
+
+Establish `hFNl : W.map F n₁ ∈ W.Nl T₂ (c - 1)` using `mem_Nl W T₂ hFN hFD.1`. Establish `hB : W.Q ^ Bn • W.map F z₁ ∈ W.N T₂`. Establish `hP` using `map_pullJ W F hT₁ hT₂ hz₁P`. Rewrite `hP` using `[map_sub, Formalism.MainNotions.UnusedSlot80.ArcC.map_smulO, pow_one, W.map_φ]`. Establish `e : W.map F z₁ = (W.map F z₁ - ((PD.p : ℕ) : O) ^ σ₁ • W.φD T₂ (W.map F n₁)) + ((PD.p : ℕ) : O) ^ σ₁ • W.φD T₂ (W.map F n₁)` using `by abel`.
+
+Rewrite using `[e, smul_add, osmul_comm W T₂]`. Use `(W.N T₂).add_mem (pullJ_Q W T₂ hM₂ hP) ?_` and prove the remaining obligations. Rewrite using `[← algebraMap_smul (LetA O n)]`. Conclude with `(W.N T₂).smul_mem _ (hM₂ _ hFNl)`. Use `⟨z₁, hz₁I, hB, fun ζ hζ u hu hu0 dd hddLB hdde => ?_⟩` and prove the remaining obligations.
+
+Take `⟨z', hz'⟩` from `(hTT T₂ hT₂ (c - 1)).1 _ hFI`. Take `⟨hz'P, -⟩` from `(hTT T₂ hT₂ (c - 1)).2.1 _ z' hFI hz'`. Take `⟨p', hp', hnatE⟩` from `hnat T₁ T₂ F hT₁ hT₂ (c - 1) n₁ z₁ z' hn₁I hz₁ hz'`. Establish `hQz' : W.Q ^ Bn • z' ∈ W.N T₂`. Establish `e : z' = (z' - ((PD.p : ℕ) : O) ^ σ₁ • ((W.φD T₂) ^ 1) (W.map F n₁)) + ((PD.p : ℕ) : O) ^ σ₁ • ((W.φD T₂) ^ 1) (W.map F n₁)` using `by abel`.
+
+Rewrite using `[e, smul_add, osmul_comm W T₂]`. Use `(W.N T₂).add_mem (pullJ_Q W T₂ hM₂ hz'P) ?_` and prove the remaining obligations. Rewrite using `[← algebraMap_smul (LetA O n), pow_one]`. Conclude with `(W.N T₂).smul_mem _ (hM₂ _ hFNl)`. Establish `hk : (Formalism.MainNotions.LiftingTheory.qp W ^ Bn * 1) • z' ∈ W.N T₂` using `by rw [mul_one]; exact hUQ T₂ _ hQz'`.
+
+Take `⟨hTneg, hTpos⟩` from `hTH hCA' hl 1 1 Bn σ₁ hTC T₂ hT₂ (c - 1) (W.map F n₁) z' hFN hFI hz' ζ (Bn + Bn) Bn 1 hk (Or.inl ⟨hζ, rfl⟩)`. Establish `hlet : c - 1 + ((1 : ℕ) : ZMod n) = c` using `by push_cast; ring`. Rewrite `hTneg`, `hTpos` using `[hlet]`. Use `set C : T₂.V ⊗[Qp] BdR := (PD.p : LL) ^ σ₁ • ιV PD (LL := LL) (V := T₂.V) ((φVB PD (LL := LL) (V := T₂.V))^[1] (W.cmp T₂ ⟨W.map F n₁, hFN⟩)) with hCdef`. Establish `hC : C = (PD.p : LL) ^ ((σ₁ : ℤ) + gG) • ιV PD (LL` using `LL) (V := T₂.V) (φVB PD (LL := LL) (V := T₂.V) ell) := by`.
+
+Rewrite using `[hCdef, Function.iterate_one, ← hcmp, map_smul, map_smul, smul_smul, zpow_add₀ hp, zpow_natCast]`. Use `set v : PowerSeries LL := W.lev c ζ (U : LetA O n) * u with hv`. Establish `hv0 : constantCoeff v ≠ 0`. Rewrite using `[hv, map_mul]`. Use `mul_ne_zero ?_ hu0` and prove the remaining obligations.
+
+Conclude with `(PowerSeries.isUnit_iff_constantCoeff.1 ((Units.isUnit U).map (W.lev c ζ))).ne_zero`. Establish `hQq : W.Q = W.q` using `Q_eq_q W hs`. Establish `hltqp : W.lev c ζ (Formalism.MainNotions.LiftingTheory.qp W) = X * v`. Rewrite using `[hU, map_mul, hQq, hu, hv]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hqFN : Formalism.MainNotions.LiftingTheory.qp W ^ Bn • W.map F z₁ ∈ W.N T₂` using `hUQ T₂ _ hB`. Take `⟨mdd, hmdd⟩` from `hddLB`. Establish `hE1 : W.levN T₂ c ζ ⟨_, hqFN⟩ = smulS ((X * v) ^ Bn) dd`. Establish `e : (⟨Formalism.MainNotions.LiftingTheory.qp W ^ Bn • W.map F z₁, hqFN⟩ : ↥(W.N T₂)) = ((U : LetA O n) ^ Bn) • ⟨W.Q ^ Bn • W.map F z₁, hB⟩` using `Subtype.ext (by show Formalism.MainNotions.LiftingTheory.qp W ^ Bn • W.map F z₁ = ((U : LetA O n) ^ Bn) • (W.Q ^ Bn • W.map F z₁)`. Rewrite using `[hU, mul_pow, mul_smul])`.
+
+Rewrite using `[e]`. Establish `this : W.levN T₂ c ζ (((U : LetA O n) ^ Bn) • (⟨W.Q ^ Bn • W.map F z₁, hB⟩ : ↥(W.N T₂))) = smulS (W.lev c ζ ((U : LetA O n) ^ Bn)) (W.levN T₂ c ζ ⟨W.Q ^ Bn • W.map F z₁, hB⟩)`. Use function extensionality and compare the values at `fun k => W.levN_smul T₂ c ζ ((U : LetA O n) ^ Bn) ⟨W.Q ^ Bn • W.map F z₁, hB⟩ k`. Rewrite using `[this, hdde, ← smulS_mul hmdd, map_pow, ← mul_pow, hv]`. Use `congr 2`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hp'N : Formalism.MainNotions.LiftingTheory.qp W ^ Bn • p' ∈ W.N T₂` using `hUQ T₂ _ (pullJ_Q W T₂ hM₂ hp')`. Establish `hfp : Formalism.MainNotions.CrystallineLiftingInputs.fMX W 1 Bn • (Formalism.MainNotions.LiftingTheory.qp W ^ Bn • p') ∈ W.N T₂` using `(W.N T₂).smul_mem _ hp'N`. Establish `hsplit : (⟨Formalism.MainNotions.LiftingTheory.qp W ^ Bn • W.map F z₁, hqFN⟩ : ↥(W.N T₂)) = ⟨_, hk⟩ + ⟨_, hfp⟩`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Use `show Formalism.MainNotions.LiftingTheory.qp W ^ Bn • W.map F z₁ = (Formalism.MainNotions.LiftingTheory.qp W ^ Bn * 1) • z' + Formalism.MainNotions.CrystallineLiftingInputs.fMX W 1 Bn • (Formalism.MainNotions.LiftingTheory.qp W ^ Bn • p')`. Establish `e2 : W.map F z₁ = z' + Formalism.MainNotions.CrystallineLiftingInputs.fMX W 1 Bn • p'` using `by rw [← hnatE]; abel`. Rewrite using `[e2, smul_add, mul_one, smul_smul, smul_smul, mul_comm]`. Establish `hLBp : LB Bn (W.levN T₂ c ζ ⟨_, pullJ_Q W T₂ hM₂ hp'⟩)` using `pullJ_LB W T₂ ζ hM₂ (hφN T₂ hT₂ c ζ hζ) hp' _`. Establish `hR2 : LB (2 * Bn) (W.levN T₂ c ζ ⟨_, hfp⟩)`.
+
+Establish `e1 : (⟨Formalism.MainNotions.CrystallineLiftingInputs.fMX W 1 Bn • (Formalism.MainNotions.LiftingTheory.qp W ^ Bn • p'), hfp⟩ : ↥(W.N T₂)) = (Formalism.MainNotions.CrystallineLiftingInputs.fMX W 1 Bn * (U : LetA O n) ^ Bn) • ⟨_, pullJ_Q W T₂ hM₂ hp'⟩` using `Subtype.ext (by show Formalism.MainNotions.CrystallineLiftingInputs.fMX W 1 Bn • (Formalism.MainNotions.LiftingTheory.qp W ^ Bn • p') = (Formalism.MainNotions.CrystallineLiftingInputs.fMX W 1 Bn * (U : LetA O n) ^ Bn) • (W.Q ^ Bn • p')`. Simplify using `only [hU, mul_pow, mul_smul])`. Rewrite using `[e1]`. Establish `this : W.levN T₂ c ζ ((Formalism.MainNotions.CrystallineLiftingInputs.fMX W 1 Bn * (U : LetA O n) ^ Bn) • (⟨_, pullJ_Q W T₂ hM₂ hp'⟩ : ↥(W.N T₂))) = smulS (W.lev c ζ (Formalism.MainNotions.CrystallineLiftingInputs.fMX W 1 Bn * (U : LetA O n) ^ Bn)) (W.levN T₂ c ζ ⟨_, pullJ_Q W T₂ …`. Use function extensionality and compare the values at `fun k => W.levN_smul T₂ c ζ _ _ k`.
+
+Rewrite using `[this]`. Establish `hlf : W.lev c ζ (Formalism.MainNotions.CrystallineLiftingInputs.fMX W 1 Bn * (U : LetA O n) ^ Bn) = X ^ Bn * (W.lev c ζ W.π₀ * v ^ Bn * W.lev c ζ (U : LetA O n) ^ Bn)`. Rewrite using `[Formalism.MainNotions.CrystallineLiftingInputs.fMX, map_mul, map_mul, map_pow, map_pow, hltqp, pow_one, map_pow]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hlf, smulS_mul hLBp, smulS_X_pow (LB_smulS hLBp _)]`.
+
+Introduce `k hk'`. Conclude with `LB_smulS hLBp _ (k - Bn) (by omega)`. Establish `hR1 : LB (2 * Bn) (W.levN T₂ c ζ ⟨_, hk⟩ - smulS ((X * v) ^ Bn) (del0 C))`. Introduce `r hr`. Simplify using `only [Pi.sub_apply]`.
+
+Distinguish the cases in `hr0 : r < 0`. Rewrite using `[hTneg r hr0, LB_smulS (lowerBound_delta_zero C) _ r hr0, sub_self]`. Take `⟨r', rfl⟩ : ∃ r' : ℕ, r = r'` from `⟨r.toNat, by omega⟩`. Rewrite using `[hTpos r' (by omega), smulSeries_delta_zero, mul_one, map_pow, hltqp, sub_self]`. Establish `hkey : LB (2 * Bn) (smulS ((X * v) ^ Bn) (dd - del0 C))`.
+
+Rewrite using `[smulS_sub (LB_mono hmdd (min_le_left mdd 0)) (LB_mono (lowerBound_delta_zero C) (min_le_right mdd 0)), ← hE1, hsplit, map_add]`. Use `LB_add hR1 hR2` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Normalize the expressions using the abelian group laws. Establish `hdiff` using `LB_of_mul (LB_sub (LB_mono hmdd (min_le_left mdd 0)) (LB_mono (lowerBound_delta_zero C) (min_le_right mdd 0))) v hv0 Bn hkey`.
+
+Use `⟨fun i hi hi0 => ?_, ?_, ?_⟩` and prove the remaining obligations. Use `hdiff i hi` as an intermediate fact. Simplify using `only [Pi.sub_apply, del0, hi0, if_false, sub_zero] at this`. Conclude with `this`. Establish `hηb` using `rk_eta_lt W hset c`.
+
+Establish `hB1 : 1 ≤ Bn` using `by omega`. Use `hdiff 0 (by omega)` as an intermediate fact. Simplify using `only [Pi.sub_apply, del0, if_true, sub_eq_zero] at this`. Rewrite using `[this, hC]`. Establish `hζ' : IsPrimitiveRoot ζ (PD.p ^ (0 + 1))` using `by rwa [zero_add, pow_one]`.
+
+Establish `hLv` using `(hLev T₂ hT₂ c 0 ζ hζ').1`. Use `vals_of_div hmdd u hu0 Bn hdde.symm (Formalism.MainNotions.DeltaInvariantLattices.ιDi W T₂ c) fun k => ?_` and prove the remaining obligations. Establish `h` using `hLv ⟨W.Q ^ Bn • W.map F z₁, hB⟩ k`. Rewrite `h` using `[Formalism.MainNotions.UnusedSlot80.LevR.filLev_zero]`. Conclude with `(Submodule.mem_inf.1 h).1`.
+-/
 theorem contentBoundLevel_of [NeZero n] (h5 : Formalism.MainNotions.DeltaInvariantLattices.P5W W) (h9 : Formalism.MainNotions.DeltaInvariantLattices.P9W W)
     (hLev : Formalism.MainNotions.WachCoordinates.LevelMapHodgeFiltration W)
     (hφN : ∀ T : LocLat G Qp LL O, IsCrys PD T.ρ → ∀ (c : ZMod n) (ζ : LL), IsPrimitiveRoot ζ PD.p →

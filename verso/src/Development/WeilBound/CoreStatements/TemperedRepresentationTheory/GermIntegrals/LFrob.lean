@@ -16,6 +16,9 @@ abbrev lrep (t : ℕ) (μ : kˣ →* ℂˣ) (σ : Representation ℂ (GL (Fin r)
   (extTensor σ (detRep (Fin t) μ)).comp (leviTwo k (Fin r) (Fin t)).symm.toMonoidHom
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `σ (g false) v ⊗ₜ[ℂ] ((μ (Matrix.GeneralLinearGroup.det (g true : GL (Fin t) k)) : ℂ) • (1 : ℂ)) = _`. Rewrite using `[TensorProduct.tmul_smul]`.
+-/
 theorem lrep_tmul (g : Levi k (Two (Fin r) (Fin t))) (v : V) :
     lrep t μ σ g (v ⊗ₜ[ℂ] (1 : ℂ)) =
       (μ (Matrix.GeneralLinearGroup.det (g true : GL (Fin t) k)) : ℂ) •
@@ -27,6 +30,9 @@ def fn (π : Representation ℂ (GL (Fin (r + t)) k) W) (ev : W →ₗ[ℂ] V) (
     GL (Fin (r + t)) k → V ⊗[ℂ] ℂ :=
   fun h => ev (π h w) ⊗ₜ[ℂ] (1 : ℂ)
 
+/- English proof (translation)
+Rewrite using `[MonoidHom.comp_apply, GlobalTheory.SmGL.twist_apply]`. Simplify using `only [PositivityTheory.Tls2.Ming3.FrobX.fn]`. Rewrite using `[PositivityTheory.Tls2.Ming3.FrobX.lrep_tmul, smul_smul, TensorProduct.smul_tmul', map_mul, Module.End.mul_apply, hl p (π g w)]`.
+-/
 theorem fn_law {ev : W →ₗ[ℂ] V} (hl : ParLaw μ σ π ev) (w : W)
     (p : parab k (two (stdSum (rfl : r + t = r + t)))) (g : GL (Fin (r + t)) k) :
     fn π ev w (p * g) =
@@ -65,6 +71,11 @@ end PositivityTheory.Tls2.Ming3.FrobX
 
 namespace PositivityTheory.Tls2.Ming3
 
+/- English proof (translation)
+Introduce `k _ _ _ _ r t μ V _ _ W _ _ σ π ev hπ hev hl`. Use `⟨PositivityTheory.Tls2.Ming3.FrobX.frobMap hπ hl, fun h => hev ?_⟩` and prove the remaining obligations. Use `LinearMap.ext fun w => ?_` and prove the remaining obligations. Establish `h1 : ev (π 1 w) ⊗ₜ[ℂ] (1 : ℂ) = 0` using `congrArg (fun x => x.1.1 (1 : GL (Fin (r + t)) k)) (LinearMap.congr_fun h w)`. Rewrite `h1` using `[map_one, Module.End.one_apply]`.
+
+Establish `h2` using `congrArg (TensorProduct.rid ℂ V) h1`. Rewrite `h2` using `[TensorProduct.rid_tmul, one_smul, map_zero]`. Rewrite using `[LinearMap.zero_apply]`. Conclude with `h2`.
+-/
 theorem frob : FrobSt := by
   intro k _ _ _ _ r t μ V _ _ W _ _ σ π ev hπ hev hl
   refine ⟨PositivityTheory.Tls2.Ming3.FrobX.frobMap hπ hl, fun h => hev ?_⟩

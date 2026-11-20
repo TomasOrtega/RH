@@ -13,5 +13,8 @@ open GlobalTheory.DeRham (spOver spOver_comp)
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.PDivGroup.finrank_cot_add_finrank_cot_dual_le | exact GlobalTheory.PDivGroup.finrank_cot_add_finrank_cot_dual_le | (intros; apply GlobalTheory.PDivGroup.finrank_cot_add_finrank_cot_dual_le <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.cotangent_dims_le_height : ∀ (p : ℕ) [Fact p.Prime] (k : Type) [Field k] [IsAlgClosed k] [CharP k p] (Γ : PDivGroup p k), Module.finrank k (Cot k (Γ.A 1)) + Module.finrank k (Cot k (Γ.dual.A 1)) ≤ Γ.height := by
   first | exact @GlobalTheory.PDivGroup.finrank_cot_add_finrank_cot_dual_le | exact GlobalTheory.PDivGroup.finrank_cot_add_finrank_cot_dual_le | (intros; apply GlobalTheory.PDivGroup.finrank_cot_add_finrank_cot_dual_le <;> assumption)

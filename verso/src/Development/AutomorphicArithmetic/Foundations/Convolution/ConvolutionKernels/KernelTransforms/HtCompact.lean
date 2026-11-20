@@ -12,6 +12,17 @@ open GroundTheory.Automorphic GroundTheory.Automorphic.Reduction GroundTheory.Au
 open GroundTheory.Automorphic.AutomorphicForm GroundTheory.Automorphic.CuspidalSpectrum
 open scoped TensorProduct InnerProductSpace ComplexConjugate Pointwise
 
+/- English proof (translation)
+Introduce `K _ _ n S hS`. Take `⟨M, hM⟩` from `CuspidalSpectrum.exists_height_le_of_isCompact hS`. Establish `hC : 1 ≤ AutomorphicForm.heightConst K n` using `AutomorphicForm.one_le_heightConst`. Establish `hM1 : (1 : ℝ) ≤ max 1 M` using `le_max_left _ _`. Establish `hM' : ∀ g ∈ S, AutomorphicForm.height g ≤ max 1 M` using `fun g hg => (hM g hg).trans (le_max_right _ _)`.
+
+Establish `hY : 1 ≤ AutomorphicForm.heightConst K n * max 1 M` using `one_le_mul_of_one_le_of_one_le hC hM1`. Use `⟨AutomorphicForm.heightConst K n * max 1 M, hY, fun g hg => ?_, fun k => ?_⟩` and prove the remaining obligations. Conclude with `(hM' g hg).trans (le_mul_of_one_le_left (zero_le_one.trans hM1) hC)`. Proceed by induction on `k with`. Consider the case `zero`.
+
+Introduce `g hg`. Rewrite `hg` using `[pow_zero, Set.mem_one]`. Rewrite using `[hg, AutomorphicForm.height_one, pow_zero]`. Consider the case `succ k ih`. Introduce `g hg`.
+
+Rewrite `hg` using `[pow_succ]`. Take `⟨a, ha, b, hb, rfl⟩` from `Set.mem_mul.1 hg`. Establish `h1` using `ih a ha`. Establish `h2` using `hM' b hb`. Establish `hb0` using `(AutomorphicForm.height_pos b).le`.
+
+Establish `hC0 : 0 ≤ AutomorphicForm.heightConst K n` using `zero_le_one.trans hC`. Establish `hP0 : 0 ≤ (AutomorphicForm.heightConst K n * max 1 M) ^ k` using `pow_nonneg (zero_le_one.trans hY) k`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem UpperTheory.ConvolutionTheory.Tf.htCompact :
     ∀ (K : Type) [Field K] [NumberField K] (n : ℕ) (S : Set (AdelicGLn.AdelicGL K n)), IsCompact S → ∃ Y : ℝ, 1 ≤ Y ∧ (∀ g ∈ S, AutomorphicForm.height g ≤ Y) ∧
       ∀ (k : ℕ), ∀ g ∈ S ^ k, AutomorphicForm.height g ≤ Y ^ k := by

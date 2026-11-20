@@ -20,6 +20,13 @@ open GlobalTheory.RawLift
 
 namespace GlobalTheory.RawLift
 
+/- English proof (translation)
+Introduce `D hSW hEis hKer hMove hInv hKill θ ψ V W χV χW om hθ hω hsig hpos hbig νV 𝓗 νW 𝓖 μ 𝓕 hνV h𝓗 hνW h𝓖 hμ h𝓕 h1 f₁ f₂ φ₁ φ₂ hf₁ hf₂ hφ₁ hc₁ hφ₂ hc₂`. Establish `hS : SWSetup ψ V W χV χW om νV 𝓗 νW 𝓖 μ 𝓕 (lagFrame W)` using `{ weil := hω, sigOK := hsig, pos := hpos, big := hbig, haarV := hνV, fdV := h𝓗, haarW := hνW, fdW := h𝓖, covol := ⟨hμ, h𝓕, h1⟩, frame := lagFrame_isLagFrame W }`. Take `⟨K1, K2, K3⟩` from `GlobalTheory.T.rallis_inner_product_kernel_identity D hKer hSW ψ V W χV χW om νV 𝓗 νW 𝓖 μ 𝓕 _ hS θ hθ f₁ f₂ φ₁ φ₂ hf₁ hf₂ hφ₁ hc₁ hφ₂ hc₂`. Take `⟨-, E2, E3⟩` from `GlobalTheory.T.siegelWeilSum_doubleIntegral_exchange_cuspForms D hEis ψ V W χV χW om νV 𝓗 νW 𝓖 μ 𝓕 _ hS θ hθ f₁ f₂ φ₁ φ₂ hf₁ hf₂ hφ₁ hc₁ hφ₂ hc₂`. Take `⟨G1, G2⟩` from `GlobalTheory.T.lagrangianGraphs_sum_eq_matrixCoeff_integral D hEis hMove ψ V W χV χW om νV 𝓗 νW 𝓖 μ 𝓕 _ hS θ hθ f₁ f₂ φ₁ φ₂ hf₁ hf₂ hφ₁ hc₁ hφ₂ hc₂`.
+
+Establish `N` using `GlobalTheory.T.rallis_nonGraphLagrangian_sum_eq_zero_cuspidal D hEis hMove hInv hKill (GlobalTheory.RawLift.TermCont.continuous_lagTerm D) ψ V W χV χW om νV 𝓗 νW 𝓖 μ 𝓕 _ hS θ hθ f₁ f₂ φ₁ φ₂ hf₁ hf₂ hφ₁ hc₁ hφ₂ hc₂`. Use `⟨K1, K2, G1, ?_⟩` and prove the remaining obligations. Rewrite using `[K3, E3, ← E2.tsum_subtype_add_tsum_subtype_compl {Y : Lag W | Y.1.comap (LinearMap.inl D.host.E _ _) = ⊥}]`. Use `erw [N, add_zero]`. Rewrite using `[← G2]`.
+
+Both sides reduce to the same expression.
+-/
 theorem rallisConv_of_steps : ∀ D : D7, SWPair D → EisAbs D → KerAbs D → TermMove D → TermInv D → CuspKill D → RallisConv D := by
   intro D hSW hEis hKer hMove hInv hKill θ ψ V W χV χW om hθ hω hsig hpos hbig νV 𝓗 νW 𝓖 μ 𝓕 hνV h𝓗 hνW h𝓖
     hμ h𝓕 h1 f₁ f₂ φ₁ φ₂ hf₁ hf₂ hφ₁ hc₁ hφ₂ hc₂

@@ -41,6 +41,17 @@ section Lines
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+Establish `hw : ∀ w, ((γ (Multiplicative.ofAdd 1)).1 : Matrix β β (AE F E)).map (piInf (τ w)) = (k.1 : Matrix β β (AE F E)).map (piInf (τ w))`. Introduce `w`. Take `⟨A', hCA, -⟩` from `frame_inv (hfr w)`. Establish `h1` using `hgen 1 w`. Rewrite `h1` using `[one_smul, hY w]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_assoc, hCA, Matrix.mul_one]`. Use `_ = _ := by rw [h1, Matrix.mul_assoc, hCA, Matrix.mul_one]`. Establish `hA1` using `hγ.2 (Multiplicative.ofAdd 1)`. Establish `hmat : ((γ (Multiplicative.ofAdd 1)).1 : Matrix β β (AE F E)) = k.1`.
+
+Use extensionality with `i j`. Rewrite using `[← sub_eq_zero]`. Use `eq_zero_of_piInf hCM τ _ ?_ ?_` and prove the remaining obligations. Introduce `u hu0`. Establish `e1` using `congrFun (congrFun (hA1 u hu0) i) j`.
+
+Establish `e2` using `congrFun (congrFun (hk u hu0) i) j`. Simplify using `only [Matrix.smul_apply, Matrix.sub_apply, Matrix.zero_apply, smul_sub] at e1 e2 ⊢`. Rewrite using `[← sub_sub_sub_cancel_right _ _ (u • (1 : Matrix β β (AE F E)) i j), e1, e2, sub_zero]`. Introduce `w`. Use `congrFun (congrFun (hw w) i) j` as an intermediate fact.
+
+Simplify using `only [Matrix.map_apply] at this`. Rewrite using `[map_sub, this, sub_self]`. Conclude with `Subtype.ext (Units.ext hmat)`.
+-/
 theorem line_one_eq {β : Type} [Fintype β] [DecidableEq β] {R S : ℕ} (hCM : IsCMExt F E σ)
     (τ : ∀ w : InfinitePlace F, EmbOver E w) {J : Matrix β β (AE F E)} {b : ℂ} {C : InfinitePlace F → Matrix β (Ix R S) ℂ}
     (hfr : ∀ w, IsFrame (b • J.map (piInf (τ w))) (C w)) {γ : Multiplicative ℝ →* UG (cA σ) J} (hγ : γ ∈ RLines σ J)
@@ -73,6 +84,13 @@ theorem line_one_eq {β : Type} [Fintype β] [DecidableEq β] {R S : ℕ} (hCM :
       rw [map_sub, this, sub_self]
   exact Subtype.ext (Units.ext hmat)
 
+/- English proof (translation)
+Establish `hu : (k.1 : Matrix β β (AE F E))ᵀ * J * (k.1 : Matrix β β (AE F E)).map (cA σ) = J` using `k.2`. Establish `hloc : ∀ w, ∃ Y : Mat R S, Y ∈ upq R S ∧ IsKC Y ∧ C w * NormedSpace.exp Y = (k.1 : Matrix β β (AE F E)).map (piInf (τ w)) * C w`. Introduce `w`. Take `⟨A', hCA, hAC⟩` from `frame_inv (hfr w)`. Use `exists_gen_at (C w) A' hCA hAC (J.map (piInf (τ w))) b (hfr w).1 _ (θ w) ?_ (hθ w) (hkθ w)` and prove the remaining obligations.
+
+Use `congrArg (fun X => X.map (piInf (τ w))) hu` as an intermediate fact. Simplify using `only [Matrix.map_mul, map_cA_map hCM, Matrix.transpose_map] at this`. Conclude with `this`. Use `choose Y hY using hloc`. Take `⟨γ, hγ, hgen⟩` from `GlobalTheory.RealLift.exists_line_of_upq F E σ β R S τ J b C hCM hfr Y (fun w => (hY w).1)`.
+
+Conclude with `⟨Y, fun w => (hY w).1, fun w => (hY w).2.1, fun w => (hY w).2.2, γ, hγ, hgen, line_one_eq hCM τ hfr hγ hgen k hk fun w => (hY w).2.2⟩`.
+-/
 theorem kLine_upq {β : Type} [Fintype β] [DecidableEq β] {R S : ℕ} (hCM : IsCMExt F E σ)
     (τ : ∀ w : InfinitePlace F, EmbOver E w) (J : Matrix β β (AE F E)) (b : ℂ) (C : InfinitePlace F → Matrix β (Ix R S) ℂ)
     (θ : InfinitePlace F → Matrix β β ℂ) (hfr : ∀ w, IsFrame (b • J.map (piInf (τ w))) (C w))
@@ -95,6 +113,9 @@ theorem kLine_upq {β : Type} [Fintype β] [DecidableEq β] {R S : ℕ} (hCM : I
   exact ⟨Y, fun w => (hY w).1, fun w => (hY w).2.1, fun w => (hY w).2.2, γ, hγ, hgen,
     line_one_eq hCM τ hfr hγ hgen k hk fun w => (hY w).2.2⟩
 
+/- English proof (translation)
+Use `congrFun (congrFun (GlobalTheory.RealLift.Main.incM_map_piInf (Matrix.of fun (_ : Fin 1) (_ : Fin 1) => e) τ) 0) 0` as an intermediate fact. Simplify `this` using `[incM]`.
+-/
 theorem piInf_inclR {w : InfinitePlace F} (τ : EmbOver E w) (e : E) : piInf τ (inclR (F := F) (AF F) e) = τ.1 e := by
   have := congrFun (congrFun (GlobalTheory.RealLift.Main.incM_map_piInf (Matrix.of fun (_ : Fin 1) (_ : Fin 1) => e) τ) 0) 0
   simpa [incM] using this
@@ -106,6 +127,23 @@ end GlobalTheory.FockInclK
 open scoped Classical in
 open GlobalTheory.FockInclK in
 
+/- English proof (translation)
+Introduce `hKP F E _ _ _ _ _ σ B a b G G₁ H H' hcfg X om om' R Rf om₁ om₁' R₁ Rf₁ hM hM₁ P Q R₀ S₀ A C₁ C Φ₁ Φ r₀ s₀ hD₁ hD hAd hCo k₁ hk₁ k hk hL T T₁ hT`. Establish `hb` using `hM.triple.base`. Establish `hcm` using `hb.cm`. Establish `hvl` using `GlobalTheory.VacLn.vacLine_of_derEx GlobalTheory.HeisDer.derEx`. Establish `hsec` using `GlobalTheory.RealLift.LieSecondPf.lieSecond_of_lieScalar hKP.base GlobalTheory.HeisDer.derEx (GlobalTheory.FockMapEx.fockEx_of_derEx GlobalTheory.HeisDer.derEx) hvl (GlobalTheory.LieScal.lieScalar hKP.base GlobalTheory.HeisDer.derEx hvl)`.
+
+Establish `hwp : IsUWeilPair (cA σ) (adeleClass F) B.ψ (-1) (incM F G.V.J) (incM F G.W.J) G.M.co X.β (X.β / X.α) om` using `hM.triple.weil`. Establish `hwp₁ : IsUWeilPair (cA σ) (adeleClass F) B.ψ (-1) (incM F G₁.V.J) (incM F G₁.W.J) G₁.M.co X.β (X.β / X.α) om₁` using `hM₁.triple.weil`. Establish `hW2` using `hsec F E σ _ _ _ _ _ _ _ B.ψ B.emb _ _ G.M.co 1 Complex.I A C Φ _ X.β B.mβ hcm hb.std hD.1.1 hD.2 hwp.1 hM.triple.chars.expβ`. Establish `hW2₁` using `hsec F E σ _ _ _ _ _ _ _ B.ψ B.emb _ _ G₁.M.co 1 Complex.I A C₁ Φ₁ _ X.β B.mβ hcm hb.std hD₁.1.1 hD₁.2 hwp₁.1 hM₁.triple.chars.expβ`. Take `⟨Y₁, hY₁u, hY₁K, hY₁e, γ₁, hγ₁, hgen₁, hγ₁1⟩` from `kLine_upq hcm B.emb (incM F G₁.W.J) Complex.I C₁ G₁.W.θ (fun w => hD₁.1.1.2.2 w) (fun w => hD₁.1.2.2 w) k₁ hk₁.1 hk₁.2`.
+
+Take `⟨γ, hγ, hgen⟩` from `GlobalTheory.RealLift.exists_line_of_upq F E σ (Fin (a + (b + 2))) (R₀ + 1) (S₀ + 1) B.emb (incM F G.W.J) Complex.I C hcm (fun w => hD.1.1.2.2 w) (fun w => extMat r₀ s₀ (Y₁ w)) (fun w => extMat_mem_upq r₀ s₀ (hY₁u w))`. Establish `hγ1 : γ (Multiplicative.ofAdd 1) = k`. Use `line_one_eq hcm B.emb (fun w => hD.1.1.2.2 w) hγ hgen k hk.1 fun w => ?_` and prove the remaining obligations. Take `⟨c, hc, hx⟩` from `(hAd w).1`. Use `(GlobalTheory.T.eigenvector_fixed_by_compact_commuting _ _ _ _ r₀ s₀ _ (G.W.θ w) ((mat k₁).map (piInf (B.emb w))) (H'.ι.map (B.emb w).1) (C w) (C₁ w) (Y₁ w) (fun i => (B.emb w).1 (H'.x i)) c hc hx ?_ (hk.2 w) (hD.1.2.2 w) (hCo w) ?_ (hY₁e w)).symm` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `i`. Use `congrArg (fun v => piInf (B.emb w) (v i)) hL.1` as an intermediate fact. Simplify using `only [Units.val_one, one_smul] at this`. Simplify `this` using `[Matrix.mulVec, dotProduct, map_sum, map_mul, incV, piInf_inclR]`. Use `congrArg (fun M => M.map (piInf (B.emb w))) hL.2.2` as an intermediate fact.
+
+Simplify `this` using `only [Matrix.map_mul, GlobalTheory.RealLift.Main.incM_map_piInf]`. Establish `hloc₁` using `GlobalTheory.RealLift.locFin_sumPl _ _ _ (fun w => GlobalTheory.RealLift.Main.locFin_fock2 P Q R₀ S₀ (Y₁ w) (hY₁K w) (((B.mβ w : ℂ) / 2) * (Y₁ w).trace))`. Take `⟨U₁, hU₁, hSA₁⟩` from `GlobalTheory.ExpAct.expAct_fock F _ _ Φ₁ _ ((om₁.comp (MonoidHom.inr _ _)).comp γ₁) hloc₁ (fun t l hl => (hwp₁.isUSplitting).adm _ l hl) (fun T => hW2₁ γ₁ hγ₁ Y₁ hgen₁ T)`. Establish `hloc` using `GlobalTheory.RealLift.locFin_sumPl _ _ _ (fun w => GlobalTheory.RealLift.Main.locFin_fock2 P Q (R₀ + 1) (S₀ + 1) (extMat r₀ s₀ (Y₁ w)) (isKC_extMat r₀ s₀ (hY₁K w)) (((B.mβ w : ℂ) / 2) * (extMat r₀ s₀ (Y₁ w)).trace))`. Take `⟨U, hU, hSA⟩` from `GlobalTheory.ExpAct.expAct_fock F _ _ Φ _ ((om.comp (MonoidHom.inr _ _)).comp γ) hloc (fun t l hl => (hwp.isUSplitting).adm _ l hl) (fun T => hW2 γ hγ _ hgen T)`.
+
+Establish `hA₁` using `(GlobalTheory.RealLift.actsLaws F _ (Φ₁ T) (Φ₁ (U₁ T)) (Φ₁ T₁)).2.1 _ (map_zero _) (hSA₁ T)`. Rewrite `hA₁` using `[MonoidHom.comp_apply, hγ₁1]`. Establish `eT : U₁ T = T₁` using `hD₁.2.1 ((GlobalTheory.RealLift.actsLaws F _ (Φ₁ T) _ _).2.2.2.1 _ hA₁ hT)`. Establish `hA` using `(GlobalTheory.RealLift.actsLaws F _ (Φ (tensIncl F P Q r₀ s₀ T)) (Φ (U (tensIncl F P Q r₀ s₀ T))) (Φ (U (tensIncl F P Q r₀ s₀ T)))).2.1 _ (map_zero _) (hSA _)`. Rewrite `hA` using `[MonoidHom.comp_apply, hγ1]`.
+
+Establish `hLL` using `GlobalTheory.RealLift.Main.map_sumPl (fun _ : InfinitePlace F => (polIncl P Q r₀ s₀).toLinearMap) (fun w => fockAct2 P Q R₀ S₀ (Y₁ w) + (((B.mβ w : ℂ) / 2) * (Y₁ w).trace) • 1) (fun w => fockAct2 P Q (R₀ + 1) (S₀ + 1) (extMat r₀ s₀ (Y₁ w)) + (((B.mβ w : ℂ) / 2) * (extMat r₀ s₀ (Y …`. Rewrite using `[trace_extMat, LinearMap.comp_add, LinearMap.add_comp, GlobalTheory.T.polynomial_inclusion_fock_action_comm P Q R₀ S₀ r₀ s₀ (Y₁ w)]`. Use `congr 1`. Use `LinearMap.ext fun f => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, LinearMap.smul_apply, Module.End.one_apply, map_smul]`.
+
+Establish `hE` using `GlobalTheory.RealLift.Main.exp_equiv (q := tensIncl F P Q r₀ s₀) (q' := LinearMap.id) hU₁ hU hLL (by rw [LinearMap.id_comp, LinearMap.comp_id]) (v := T) (v' := tensIncl F P Q r₀ s₀ T) rfl`. Rewrite using `[← eT, hE, LinearMap.id_apply]`. Conclude with `hA`.
+-/
 theorem GlobalTheory.FockInclK.tensIncl_acts : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (a b : ℕ) (G : Geo σ a (b + 2)) (G₁ : Geo σ a b) (H : Plane E (b + 2) b)
     (H' : Plane E (a + (b + 2)) (a + b)), CfgB B G G₁ H H' →

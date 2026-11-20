@@ -7,6 +7,9 @@ open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.Weakl
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `D l _ _ K LL _ T _`. Use `haveI : FiniteDimensional ℚ_[l] ↥K.1 := K.2`. Conclude with `@GlobalTheory.T.h1f_generated_lattice l _ (D.loc l) (D.locA l) (D.locT l) K LL (Fintype.ofFinite _) T _`.
+-/
 theorem elementDenominator_adm7 : ∀ D : D7, Formalism.MainNotions.ElementDenominator.adm7 D := by
   intro D l _ _ K LL _ T _
   haveI : FiniteDimensional ℚ_[l] ↥K.1 := K.2

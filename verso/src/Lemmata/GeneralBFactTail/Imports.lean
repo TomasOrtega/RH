@@ -4,6 +4,13 @@ universe u_1 u_2 u_3
 
 namespace Bl.general_b_fact_tail
 
+/- English proof (translation)
+Introduce `R M _ _ _ _ _ ι _ _ b N h e`. Establish `ab_eq` using `Submodule.smithNormalFormBotBasis_def b h`. Set `b'` to `Submodule.smithNormalFormTopBasis b h`. Set `e' : M ≃ₗ[R] N` to `b'.equiv (Submodule.smithNormalFormBotBasis b h) (Equiv.refl _)`. Use `(LinearMap.associated_det_comp_equiv N.subtype e e').trans (Associated.of_eq ?_)` and prove the remaining obligations.
+
+Establish `h1` using `Module.Basis.det_comp b' (N.subtype ∘ₗ (e' : M →ₗ[R] N)) b'`. Rewrite `h1` using `[Module.Basis.det_self, mul_one]`. Rewrite using `[← h1]`. Establish `h2 : (⇑(N.subtype ∘ₗ (e' : M →ₗ[R] N)) ∘ ⇑b') = fun i => Submodule.smithNormalFormCoeffs b h i • b' i`. Use function extensionality and compare the values at `i`.
+
+Simplify using `only [Function.comp_apply, LinearMap.coe_comp, LinearEquiv.coe_coe, e', Module.Basis.equiv_apply, Equiv.refl_apply, Submodule.subtype_apply]`. Conclude with `ab_eq i`. Rewrite using `[h2, AlternatingMap.map_smul_univ, Module.Basis.det_self, smul_eq_mul, mul_one]`.
+-/
 theorem goal1 :
   ∀ {R : Type u_1} {M : Type u_2} [inst : CommRing.{u_1} R] [inst_1 : IsDomain.{u_1} R]
   [inst_2 : IsPrincipalIdealRing.{u_1} R] [inst_3 : AddCommGroup.{u_2} M] [inst_4 : Module.{u_1, u_2} R M]

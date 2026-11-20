@@ -14,6 +14,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.PtExt
 
+/- English proof (translation)
+Establish `e : spOver φ ≫ x = x'`. Establish `h0 : a.φ₀ = (φ : D →+* D')` using `RingHom.ext fun r ↦ (a.comm r).trans (h r)`. Establish `hp` using `a.pt`. Rewrite `hp` using `[h0]`. Conclude with `Over.OverMorphism.ext hp`.
+
+Substitute `e` using the available equality. Use `⟨rfl, ?_⟩` and prove the remaining obligations. Establish `: a = trivMap φ x` using `Thick.hom_ext h`. Rewrite using `[this]`. Both sides reduce to the same expression.
+-/
 theorem ev_eq_fv_of_triv {R : Type} [CommRing R] {X : Over (Sp R)} (f : Z1 (O (dp0 R) (X.hom ≫ 𝟙 _)))
     (D : Type) [CommRing D] [Algebra R D] (D' : Type) [CommRing D'] [Algebra R D'] (x : Pt X D) (x' : Pt X D')
     (φ : D →ₐ[R] D') (a : trivAt x ⟶ trivAt x') (h : ∀ r, a.φ r = φ r) :
@@ -29,6 +34,11 @@ theorem ev_eq_fv_of_triv {R : Type} [CommRing R] {X : Over (Sp R)} (f : Z1 (O (d
   rw [this]
   rfl
 
+/- English proof (translation)
+Introduce `R _ X f`. Use `⟨?_, fun D _ _ D' _ _ x x' φ a h ↦ ev_eq_fv_of_triv f D D' x x' φ a h⟩` and prove the remaining obligations. Introduce `D _ _ D' _ _ D'' _ _ φ ψ x _`. Use `(ev_eq_fv_of_triv f D D'' x _ (ψ.comp φ) (trivMap φ x ≫ trivMap ψ (spOver φ ≫ x)) (fun _ ↦ rfl)).2` as an intermediate fact. Rewrite using `[← this]`.
+
+Conclude with `ev_comp f _ _`.
+-/
 theorem fv_isCoc_and_ev_eq : ∀ (R : Type) [CommRing R] (X : Over (Sp R)) (f : Z1 (O (dp0 R) (X.hom ≫ 𝟙 _))), IsCoc (whole X) (fv f) ∧ ∀ (D : Type) [CommRing D] [Algebra R D] (D' : Type) [CommRing D'] [Algebra R D'] (x : Pt X D) (x' : Pt X D') (φ : D →ₐ[R] D') (a : trivAt x ⟶ trivAt x'), (∀ r, a.φ r = φ r) → spOver φ ≫ x = x' ∧ ev f a = fv f D D' φ x := by
   intro R _ X f
   refine ⟨?_, fun D _ _ D' _ _ x x' φ a h ↦ ev_eq_fv_of_triv f D D' x x' φ a h⟩

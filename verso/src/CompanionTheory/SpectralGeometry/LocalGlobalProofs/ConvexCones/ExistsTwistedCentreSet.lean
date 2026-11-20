@@ -12,6 +12,13 @@ open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Toroi
 
 namespace GlobalTheory.CompanionTheory.Ar.Fan.TwistedOrbitCentres
 
+/- English proof (translation)
+Introduce `τ hτ n B`. Rewrite using `[OrbMark.orbFun_toFun, OrbMark.orbFun_toFun]`. Use `congr 2`. Apply `propext` to reduce the goal to its premises. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨σ, hσ, s, hs, h⟩`. Conclude with `⟨σ.trans τ, by simp [hσ, hτ], s, hs, fun a b x y hx hy => h a b x y hx hy⟩`. Introduce and unpack `⟨σ, hσ, s, hs, h⟩`. Use `⟨σ.trans τ.symm, by simp [hσ, RingEquiv.symm_apply_eq, hτ], s, hs, fun a b x y hx hy => ?_⟩` and prove the remaining obligations. Use `h a b x y hx hy` as an intermediate fact.
+
+Use `show B (OrbMark.twv τ (OrbMark.twv (σ.trans τ.symm) a)) (OrbMark.twv τ (OrbMark.twv (σ.trans τ.symm) b)) = _`. Rewrite using `[OrbMark.twv_twv, OrbMark.twv_twv]`. Apply the tactic sequence `convert this using 3 <;> ext i <;> simp`.
+-/
 theorem isTwG_orbFun {O : Type} [CommRing O] {X₀ : Type} [AddCommGroup X₀] [Module O X₀] (w0 : O)
     (v : LinearMap.BilinForm ℤ X₀) : IsTwG w0 (OrbMark.orbFun O w0 v) := by
   intro τ hτ n B
@@ -28,6 +35,13 @@ theorem isTwG_orbFun {O : Type} [CommRing O] {X₀ : Type} [AddCommGroup X₀] [
     rw [OrbMark.twv_twv, OrbMark.twv_twv]
     convert this using 3 <;> ext i <;> simp
 
+/- English proof (translation)
+Introduce `O _ _ _ _ bar w0 hb q φ lab _hdom _hfan hφ hlab hsl M hM _hmax c`. Distinguish the cases in `hex : ∃ (X : Type) (_ : AddCommGroup X) (_ : Module O X) (_ : Module.Finite O X) (_ : Module.Projective O X), Module.finrank O X ≤ q ∧ ∃ (m : ℕ) (δ : Fin m → LinearMap.BilinForm ℤ X), IsMultCell bar φ M δ ∧ c.Carries δ`. Take `⟨X₀, _, _, _, _, -, m₀, δ₀, hM₀, hc₀⟩` from `hex`. Take `⟨v, hv, hvp, hvn, t, ht, htv⟩` from `GlobalTheory.T.exists_primitiveBalancedForm_fracCoords_of_cellMult bar φ M δ₀ hM₀ hM`. Take `⟨h₀, hli, hpr, -⟩` from `hM₀`.
+
+Establish `hv0 : v ≠ 0` using `fun h => by`. Establish `e : (⟨v, hv⟩ : balForms bar X₀) = 0` using `Subtype.ext h`. Rewrite `hvp` using `[e]`. Conclude with `not_isPrim_zero hvp`. Use `⟨OrbMark.orbFun O w0 v, isTwG_orbFun w0 v, fun X _ _ _ _ hX => ⟨fun β _ _ => OrbMark.orbFun_eval_eq_zero_or_one _ _ _, fun β _ _ h1 => GlobalTheory.T.markedOrbit_form_primitive bar w0 v hv hvp β h1, fun m γ hγ β hβ hβp β' hβ' hβp' h1 h1' hc hc' => GlobalTheory.T.eq_of_orbit_mark_ …` and prove the remaining obligations.
+
+Take `⟨β, hβ, hβp, h1, hin⟩` from `GlobalTheory.T.carries_exists_marked_form_in_cone bar w0 c δ₀ v t hv hv0 hvn hc₀ (fun i => (ht i).1) htv X m δ hδ`. Conclude with `⟨β, hβ, hβp, h1, hin⟩`. Use `⟨GlobalTheory.PolFan.zeroFun O, fun _ _ _ _ => rfl, fun X _ _ _ _ _ => ⟨fun β _ _ => Or.inl (zeroFun_evalZ β), fun β _ _ h => by simp at h, fun _ _ _ β _ _ _ _ _ h => by simp at h⟩, fun X _ _ _ _ hX m δ hδ hc => (hex ⟨X, inferInstance, inferInstance, inferInstance, inferInstance, …` and prove the remaining obligations.
+-/
 theorem centres_exists : ∀ (O : Type) [CommRing O] [IsDedekindDomain O] [CharZero O] [Module.Finite ℤ O] (bar : O → O) (w0 : O), CMOrd O bar → ∀ (q : ℕ) (φ lab : InvFun O),
     (∀ (X : Type) [AddCommGroup X] [Module O X] [Module.Finite O X] [Module.Projective O X], Dominates bar X) →
     IsPolyFan bar q φ → IsTwG w0 φ → IsTwG w0 lab → SimpLab bar q φ lab → ∀ M : ℕ, 2 ≤ M →

@@ -8,6 +8,11 @@ noncomputable section
 
 namespace GlobalTheory.ThetaIntegralInv
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B a a' G X om om' hK ht g _ Φ hΦ`. Establish `hp` using `GlobalTheory.ThK.Inhab.pairV' ht`. Establish `hPol : GlobalTheory.ThK.PolData B G.M' ≤ GlobalTheory.WeilM.schA F (Fin a' × Fin (a + a'))`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨f, -, φ, hSB, hev, rfl⟩`.
+
+Conclude with `GlobalTheory.TensUniq.pure_mem_schA f φ hSB ((hev.and hp.good.std).mono fun v hv => hv.1.trans hv.2)`. Conclude with `integral_translate hK.base hp g Φ (hPol hΦ.1)`.
+-/
 theorem thetaIntegral_small_translate_kinf : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E)
     (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), GlobalTheory.ThK.KP → IsTriple B G X om om' →

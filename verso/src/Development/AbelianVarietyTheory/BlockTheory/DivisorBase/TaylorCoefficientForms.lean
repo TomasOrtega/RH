@@ -121,11 +121,17 @@ def JetFrame : Prop :=
                 (∀ u, HasSum (fun e => c e * mono u e) (Θ (ofUnitCoord ξ b₀ b₁ u))) →
                 polyJet (letterUnit D b₀ b₁) Rc Θ = liftBlock c Rc lam
 
+/- English proof (translation)
+Establish `: lineForm ξ D D = ((2 * ‖ξ‖ * ‖D‖ ^ 2 : ℝ) : ℂ)`. Simplify using `[lineForm, Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Rewrite using `[period, this, Complex.ofReal_re]`.
+-/
 example (ξ D : ℂ) : period ξ D = 1 / (π * (2 * ‖ξ‖ * ‖D‖ ^ 2)) := by
   have : lineForm ξ D D = ((2 * ‖ξ‖ * ‖D‖ ^ 2 : ℝ) : ℂ) := by
     simp [lineForm, Complex.mul_conj, Complex.normSq_eq_norm_sq]
   rw [period, this, Complex.ofReal_re]
 
+/- English proof (translation)
+Unfold `monoDeriv`. Proceed by induction on `(univ : Finset κ).toList with`. Consider the case `nil => rfl`. Consider the case `cons a l ih => simpa using ih`.
+-/
 example {E κ : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] [Fintype κ] (v : κ → E) (F : E → ℂ) :
     monoDeriv v 0 F = F := by
   unfold monoDeriv

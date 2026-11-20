@@ -10,6 +10,9 @@ open PositivityTheory.RgUd.T PositivityTheory.RgUd.T.Nil PositivityTheory.RgUd.T
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n : ℕ}
 
+/- English proof (translation)
+Use `GlobalTheory.SplitWeil.t2Space k` as an intermediate fact. Establish `: NonarchimedeanAddGroup k` using `⟨fun V hV => by`. Take `⟨s, hs⟩` from `GlobalTheory.SplitWeil.exists_cball_subset hV`. Conclude with `⟨⟨⟨⟨⟨GlobalTheory.SplitWeil.cball s, GlobalTheory.SplitWeil.add_mem_cball⟩, by simp [GlobalTheory.SplitWeil.cball]⟩, GlobalTheory.SplitWeil.neg_mem_cball⟩, GlobalTheory.SplitWeil.isOpen_cball s⟩, hs⟩⟩`. Use `infer_instance`.
+-/
 theorem totDisc : TotallyDisconnectedSpace k := by
   have := GlobalTheory.SplitWeil.t2Space k
   have : NonarchimedeanAddGroup k := ⟨fun V hV => by
@@ -22,15 +25,24 @@ def SpT (k : Type) [Field k] (n : ℕ) : Type := Sp k n
 
 instance : TopologicalSpace (SpT k n) := inferInstanceAs (TopologicalSpace (Sp k n))
 
+/- English proof (translation)
+Use `GlobalTheory.SplitWeil.t2Space k` as an intermediate fact. Establish `: T2Space (Matrix (Fin n) (Fin n) k)` using `inferInstanceAs (T2Space (Fin n → Fin n → k))`. Conclude with `inferInstanceAs (T2Space (Matrix (Fin n) (Fin n) k × (Fin n → k)))`.
+-/
 theorem t2Sp : T2Space (SpT k n) := by
   have := GlobalTheory.SplitWeil.t2Space k
   have : T2Space (Matrix (Fin n) (Fin n) k) := inferInstanceAs (T2Space (Fin n → Fin n → k))
   exact inferInstanceAs (T2Space (Matrix (Fin n) (Fin n) k × (Fin n → k)))
 
+/- English proof (translation)
+Establish `: LocallyCompactSpace (Matrix (Fin n) (Fin n) k)` using `inferInstanceAs (LocallyCompactSpace (Fin n → Fin n → k))`. Conclude with `inferInstanceAs (LocallyCompactSpace (Matrix (Fin n) (Fin n) k × (Fin n → k)))`.
+-/
 theorem lcSp : LocallyCompactSpace (SpT k n) := by
   have : LocallyCompactSpace (Matrix (Fin n) (Fin n) k) := inferInstanceAs (LocallyCompactSpace (Fin n → Fin n → k))
   exact inferInstanceAs (LocallyCompactSpace (Matrix (Fin n) (Fin n) k × (Fin n → k)))
 
+/- English proof (translation)
+Establish `: TotallyDisconnectedSpace k` using `totDisc`. Establish `: TotallyDisconnectedSpace (Matrix (Fin n) (Fin n) k)` using `inferInstanceAs (TotallyDisconnectedSpace (Fin n → Fin n → k))`. Conclude with `inferInstanceAs (TotallyDisconnectedSpace (Matrix (Fin n) (Fin n) k × (Fin n → k)))`.
+-/
 theorem tdSp : TotallyDisconnectedSpace (SpT k n) := by
   have : TotallyDisconnectedSpace k := totDisc
   have : TotallyDisconnectedSpace (Matrix (Fin n) (Fin n) k) :=
@@ -42,6 +54,11 @@ instance actGL : MulAction (GL (Fin n) k) (SpT k n) where
   one_smul := act_one (k := k)
   mul_smul := act_mul (k := k)
 
+/- English proof (translation)
+Use `⟨?_⟩` and prove the remaining obligations. Use `show Continuous fun p : GL (Fin n) k × (Matrix (Fin n) (Fin n) k × (Fin n → k)) => act p.1 p.2`. Unfold `act`. Use `Continuous.prodMk ?_ ?_` and prove the remaining obligations. Conclude with `((Units.continuous_val.comp continuous_fst).matrix_mul (continuous_fst.comp continuous_snd)).matrix_mul (Units.continuous_coe_inv.comp continuous_fst)`.
+
+Conclude with `(Units.continuous_val.comp continuous_fst).matrix_mulVec (continuous_snd.comp continuous_snd)`.
+-/
 theorem contSMul : ContinuousSMul (GL (Fin n) k) (SpT k n) := by
   refine ⟨?_⟩
   show Continuous fun p : GL (Fin n) k × (Matrix (Fin n) (Fin n) k × (Fin n → k)) => act p.1 p.2
@@ -51,6 +68,11 @@ theorem contSMul : ContinuousSMul (GL (Fin n) k) (SpT k n) := by
       (continuous_fst.comp continuous_snd)).matrix_mul (Units.continuous_coe_inv.comp continuous_fst)
   · exact (Units.continuous_val.comp continuous_fst).matrix_mulVec (continuous_snd.comp continuous_snd)
 
+/- English proof (translation)
+Use `GlobalTheory.SplitWeil.t2Space k` as an intermediate fact. Establish `: T2Space (Matrix (Fin n) (Fin n) k)` using `inferInstanceAs (T2Space (Fin n → Fin n → k))`. Establish `e : (GzS Z : Set (GL (Fin n) k)) = ⋂ a ∈ (Z : Set (Matrix (Fin n) (Fin n) k)), {g : GL (Fin n) k | a * g.val = g.val * a}`. Use extensionality with `g`. Simplify using `[GzS, Gz]`.
+
+Rewrite using `[e]`. Conclude with `isClosed_biInter fun a _ => isClosed_eq (continuous_const.matrix_mul Units.continuous_val) (Units.continuous_val.matrix_mul continuous_const)`.
+-/
 theorem isClosed_GzS (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) : IsClosed (GzS Z : Set (GL (Fin n) k)) := by
   have := GlobalTheory.SplitWeil.t2Space k
   have : T2Space (Matrix (Fin n) (Fin n) k) := inferInstanceAs (T2Space (Fin n → Fin n → k))
@@ -62,9 +84,17 @@ theorem isClosed_GzS (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) : IsClosed (G
   exact isClosed_biInter fun a _ => isClosed_eq (continuous_const.matrix_mul Units.continuous_val)
     (Units.continuous_val.matrix_mul continuous_const)
 
+/- English proof (translation)
+The claim follows from `(isClosed_GzS Z).isClosedEmbedding_subtypeVal.locallyCompactSpace`.
+-/
 theorem lcH (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) : LocallyCompactSpace (GzS Z) :=
   (isClosed_GzS Z).isClosedEmbedding_subtypeVal.locallyCompactSpace
 
+/- English proof (translation)
+Establish `: TotallyDisconnectedSpace k` using `totDisc`. Establish `: TotallyDisconnectedSpace (Matrix (Fin n) (Fin n) k)` using `inferInstanceAs (TotallyDisconnectedSpace (Fin n → Fin n → k))`. Use `⟨fun t _ ht => ?_⟩` and prove the remaining obligations. Establish `h` using `isTotallyDisconnected_of_totallyDisconnectedSpace (Units.val '' t) (Units.val '' t) subset_rfl (ht.image _ Units.continuous_val.continuousOn)`. Introduce `x hx y hy`.
+
+Conclude with `Units.val_injective (h ⟨x, hx, rfl⟩ ⟨y, hy, rfl⟩)`.
+-/
 theorem tdGL : TotallyDisconnectedSpace (GL (Fin n) k) := by
   have : TotallyDisconnectedSpace k := totDisc
   have : TotallyDisconnectedSpace (Matrix (Fin n) (Fin n) k) :=
@@ -75,10 +105,18 @@ theorem tdGL : TotallyDisconnectedSpace (GL (Fin n) k) := by
   intro x hx y hy
   exact Units.val_injective (h ⟨x, hx, rfl⟩ ⟨y, hy, rfl⟩)
 
+/- English proof (translation)
+Use `tdGL (k := k) (n := n)` as an intermediate fact. Use `infer_instance`.
+-/
 theorem tdH (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) : TotallyDisconnectedSpace (GzS Z) := by
   have := tdGL (k := k) (n := n)
   infer_instance
 
+/- English proof (translation)
+Use `lcH Z` as an intermediate fact. Use `GlobalTheory.SplitWeil.secondCountable k` as an intermediate fact. Establish `: SecondCountableTopology (Matrix (Fin n) (Fin n) k)` using `inferInstanceAs (SecondCountableTopology (Fin n → Fin n → k))`. Establish `: SecondCountableTopology (Matrix (Fin n) (Fin n) k)ᵐᵒᵖ` using `MulOpposite.opHomeomorph.symm.isEmbedding.secondCountableTopology`. Establish `: SecondCountableTopology (GL (Fin n) k)` using `Units.isEmbedding_embedProduct.secondCountableTopology`.
+
+Establish `: SecondCountableTopology (GzS Z)` using `Topology.IsEmbedding.subtypeVal.secondCountableTopology`. Conclude with `sigmaCompactSpace_of_locallyCompact_secondCountable`.
+-/
 theorem scH (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) : SigmaCompactSpace (GzS Z) := by
   have := lcH Z
   have := GlobalTheory.SplitWeil.secondCountable k
@@ -91,18 +129,31 @@ theorem scH (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) : SigmaCompactSpace (G
   have : SecondCountableTopology (GzS Z) := Topology.IsEmbedding.subtypeVal.secondCountableTopology
   exact sigmaCompactSpace_of_locallyCompact_secondCountable
 
+/- English proof (translation)
+Use `contSMul (k := k) (n := n)` as an intermediate fact. Use `⟨?_⟩` and prove the remaining obligations. Use `show Continuous fun p : GzS Z × SpT k n => (p.1 : GL (Fin n) k) • p.2`. Conclude with `(continuous_subtype_val.comp continuous_fst).smul continuous_snd`.
+-/
 theorem contSMulH (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) : ContinuousSMul (GzS Z) (SpT k n) := by
   have := contSMul (k := k) (n := n)
   refine ⟨?_⟩
   show Continuous fun p : GzS Z × SpT k n => (p.1 : GL (Fin n) k) • p.2
   exact (continuous_subtype_val.comp continuous_fst).smul continuous_snd
 
+/- English proof (translation)
+Use `GlobalTheory.SplitWeil.t2Space k` as an intermediate fact. Conclude with `isOpen_compl_singleton.preimage continuous_snd`.
+-/
 theorem isOpen_UU : IsOpen (UU : Set (Sp k n)) := by
   have := GlobalTheory.SplitWeil.t2Space k
   exact isOpen_compl_singleton.preimage continuous_snd
 
 open scoped Pointwise in
 
+/- English proof (translation)
+Establish `: CompactSpace J` using `isCompact_iff_compactSpace.mp hJ`. Establish `hA' : IsOpen ((A.subgroupOf J : Subgroup J) : Set J)`. Rewrite using `[Subgroup.coe_subgroupOf]`. Conclude with `hA.preimage continuous_subtype_val`. Take `⟨t, ht⟩` from `isCompact_univ.elim_finite_subcover (fun g : J => g • ((A.subgroupOf J : Subgroup J) : Set J)) (fun g => by`.
+
+Rewrite using `[← Set.image_smul]`. Conclude with `(Homeomorph.mulLeft g).isOpenMap _ hA')`. Use the proof step `(fun x _ => Set.mem_iUnion.2 ⟨x, ⟨1, (A.subgroupOf J).one_mem, mul_one x⟩⟩)`. Establish `hc : ⋃ i ∈ t, (fun g : J => g) i • ((A.subgroupOf J : Subgroup J) : Set J) = Set.univ` using `Set.eq_univ_of_univ_subset ht`. Use `Subgroup.finiteIndex_of_leftCoset_cover_const hc` as an intermediate fact.
+
+Conclude with `Subgroup.finiteIndex_iff.mp this`.
+-/
 theorem relIndex_ne_zero {H : Type*} [Group H] [TopologicalSpace H] [IsTopologicalGroup H] {J A : Subgroup H}
     (hJ : IsCompact (J : Set H)) (hA : IsOpen (A : Set H)) : A.relIndex J ≠ 0 := by
   have : CompactSpace J := isCompact_iff_compactSpace.mp hJ

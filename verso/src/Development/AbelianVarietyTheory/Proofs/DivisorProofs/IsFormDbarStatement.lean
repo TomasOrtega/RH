@@ -6,5 +6,8 @@ open Set Matrix MeasureTheory
 open GlobalTheory.HermFrame
 open scoped ComplexOrder
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CxForm.isForm_dbar | exact GlobalTheory.CxForm.isForm_dbar | (intros; apply GlobalTheory.CxForm.isForm_dbar <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.isForm_dbar' : ∀ {M : Type} [TopologicalSpace M] {n : ℕ} (A : GlobalTheory.CxForm.HolAtlas M n) (α : A.Fld), A.IsForm α → A.IsForm (A.dbar α) := by
   first | exact @GlobalTheory.CxForm.isForm_dbar | exact GlobalTheory.CxForm.isForm_dbar | (intros; apply GlobalTheory.CxForm.isForm_dbar <;> assumption)

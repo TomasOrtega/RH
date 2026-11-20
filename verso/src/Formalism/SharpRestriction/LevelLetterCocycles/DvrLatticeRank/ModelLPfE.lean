@@ -6,6 +6,11 @@ namespace Formalism.MainNotions.N.Ln34.MLE
 
 open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.BasicNotions.Loc TensorProduct
 
+/- English proof (translation)
+Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, Fin.elim0, Fin.elim0, by simp⟩`. Consider the case `tmul a s => exact ⟨1, fun _ => a, fun _ => s, by simp⟩`. Consider the case `add t t' ht ht'`. Take `⟨m, a, s, rfl⟩` from `ht`.
+
+Take `⟨m', a', s', rfl⟩` from `ht'`. Use `⟨m + m', Fin.append a a', Fin.append s s', ?_⟩` and prove the remaining obligations. Rewrite using `[Fin.sum_univ_add]`. Simplify using `[Fin.append_left, Fin.append_right]`.
+-/
 theorem exists_fin_sum {O M N' : Type*} [CommRing O] [AddCommGroup M] [Module O M] [AddCommGroup N']
     [Module O N'] (t : M ⊗[O] N') : ∃ (m : ℕ) (a : Fin m → M) (s : Fin m → N'), t = ∑ j, a j ⊗ₜ s j := by
   induction t using TensorProduct.induction_on with
@@ -29,13 +34,22 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     [CommRing O] [Algebra O LL] {v : AddValuation LL (WithTop ℚ)} {n : ℕ}
     (W : LocWach PD LL O v n) (T : LocLat G Qp LL O) (π' Eπ : LetA O n) (h' : ℕ) (c : ZMod n)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toLA_tmul (S : Submodule O (LcQ W T π' c)) (a : ↥W.AΔ) (s : ↥S) :
     toLA W T π' c S (a ⊗ₜ s) = algebraMap (LetA O n) W.EE ((letE c : LetA O n) * a) ⊗ₜ (s : LcQ W T π' c) :=
   rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem smulLA_tmul (a : LetA O n) (e : W.EE) (s : LcQ W T π' c) :
     smulLA W T π' c a (e ⊗ₜ s) = (algebraMap (LetA O n) W.EE a * e) ⊗ₜ s := rfl
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul e s => simp only [smulLA_tmul, map_mul, mul_assoc]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+-/
 theorem smulLA_smulLA (a b : LetA O n) (x : LA W T π' c) :
     smulLA W T π' c a (smulLA W T π' c b x) = smulLA W T π' c (a * b) x := by
   induction x using TensorProduct.induction_on with
@@ -43,6 +57,9 @@ theorem smulLA_smulLA (a b : LetA O n) (x : LA W T π' c) :
   | tmul e s => simp only [smulLA_tmul, map_mul, mul_assoc]
   | add x y hx hy => simp only [map_add, hx, hy]
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul e s`. Rewrite using `[smulLA_tmul, TensorProduct.smul_tmul', Algebra.smul_def, IsScalarTower.algebraMap_apply O (LetA O n) W.EE]`. Consider the case `add x y hx hy => rw [smul_add, map_add, hx, hy]`.
+-/
 theorem smul_eq_smulLA (o : O) (x : LA W T π' c) :
     o • x = smulLA W T π' c (algebraMap O (LetA O n) o) x := by
   induction x using TensorProduct.induction_on with
@@ -52,6 +69,11 @@ theorem smul_eq_smulLA (o : O) (x : LA W T π' c) :
       IsScalarTower.algebraMap_apply O (LetA O n) W.EE]
   | add x y hx hy => rw [smul_add, map_add, hx, hy]
 
+/- English proof (translation)
+Take `⟨t, ht⟩` from `hx`. Take `⟨m, a, s, rfl⟩` from `exists_fin_sum t`. Establish `hs : ∀ j, ∃ yy : ↥(NcS W T (c - 1)), Submodule.Quotient.mk yy = ((s j : ↥(⊤ : Submodule O _)) : LcQ W T π' c)` using `fun j => Submodule.Quotient.mk_surjective _ _`. Use `choose yy hyy using hs`. Use `⟨m, a, fun j => (yy j : W.DD T), ⟨fun j => (yy j).2, ?_⟩⟩` and prove the remaining obligations.
+
+Rewrite using `[← ht, map_sum]`. Use `Finset.sum_congr rfl (fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[toLA_tmul, ← hyy j]`. Both sides reduce to the same expression.
+-/
 theorem rep_exists {x : LA W T π' c} (hx : x ∈ LamLA W T π' Eπ h' c ⊤) :
     ∃ (m : ℕ) (a : Fin m → ↥W.AΔ) (y : Fin m → W.DD T), IsRepL W T π' Eπ h' c x a y := by
   obtain ⟨t, ht⟩ := hx
@@ -65,6 +87,13 @@ theorem rep_exists {x : LA W T π' c} (hx : x ∈ LamLA W T π' Eπ h' c ⊤) :
   rw [toLA_tmul, ← hyy j]
   rfl
 
+/- English proof (translation)
+Take `⟨hy, hx⟩` from `h`. Take `⟨hy', hx'⟩` from `h₂`. Use `⟨fun j => ?_, ?_⟩` and prove the remaining obligations. Use `Fin.addCases (fun j => ?_) (fun j => ?_) j` and prove the remaining obligations. Rewrite using `[Fin.append_left]`.
+
+Conclude with `hy j`. Rewrite using `[Fin.append_right]`. Conclude with `hy' j`. Rewrite using `[map_add, hx, hx', Fin.sum_univ_add]`. Use `congr 1`.
+
+Use `Finset.sum_congr rfl (fun j _ => ?_)` and prove the remaining obligations. Simplify using `only [Fin.append_left]`. Use `Finset.sum_congr rfl (fun j _ => ?_)` and prove the remaining obligations. Simplify using `only [Fin.append_right]`.
+-/
 theorem rep_append {x x' : LA W T π' c} {m m' : ℕ} {a : Fin m → ↥W.AΔ} {y : Fin m → W.DD T}
     {a' : Fin m' → ↥W.AΔ} {y' : Fin m' → W.DD T} (h : IsRepL W T π' Eπ h' c x a y)
     (h₂ : IsRepL W T π' Eπ h' c x' a' y') :
@@ -82,6 +111,9 @@ theorem rep_append {x x' : LA W T π' c} {m m' : ℕ} {a : Fin m → ↥W.AΔ} {
     · refine Finset.sum_congr rfl (fun j _ => ?_)
       simp only [Fin.append_right]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `only [expS, Pi.add_apply, Fin.sum_univ_add, Fin.append_left, Fin.append_right]`.
+-/
 theorem expS_append (ζ : LL) {m m' : ℕ} (a : Fin m → ↥W.AΔ) (y : Fin m → W.DD T)
     (a' : Fin m' → ↥W.AΔ) (y' : Fin m' → W.DD T) :
     expS W T c ζ (fun j => ((Fin.append a a' j : ↥W.AΔ) : LetA O n)) (Fin.append y y') =
@@ -89,6 +121,11 @@ theorem expS_append (ζ : LL) {m m' : ℕ} (a : Fin m → ↥W.AΔ) (y : Fin m �
   funext i
   simp only [expS, Pi.add_apply, Fin.sum_univ_add, Fin.append_left, Fin.append_right]
 
+/- English proof (translation)
+Take `⟨hy, hx⟩` from `h`. Use `⟨hy, ?_⟩` and prove the remaining obligations. Rewrite using `[smulLA_smulLA, mul_comm, ← smulLA_smulLA, hx, map_sum]`. Use `Finset.sum_congr rfl (fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[smulLA_tmul, ← map_mul]`.
+
+Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem rep_smul {x : LA W T π' c} {m : ℕ} {a : Fin m → ↥W.AΔ} {y : Fin m → W.DD T}
     (h : IsRepL W T π' Eπ h' c x a y) {b : LetA O n} (hb : b ∈ W.AΔ) :
     IsRepL W T π' Eπ h' c (smulLA W T π' c b x) (fun j => ⟨b * a j, W.AΔ.mul_mem hb (a j).2⟩) y := by

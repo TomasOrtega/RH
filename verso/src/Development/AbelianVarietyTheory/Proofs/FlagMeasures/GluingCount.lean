@@ -16,6 +16,9 @@ namespace GlobalTheory.HL.Gluing
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
 variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E]
 
+/- English proof (translation)
+Unfold `resQ`. Rewrite using `[← (IsDiscreteValuationRing.irreducible_iff_uniformizer ϖ).1 h]`. Establish `: Finite (𝒪[F] ⧸ IsLocalRing.maximalIdeal 𝒪[F])` using `inferInstanceAs (Finite 𝓀[F])`. Conclude with `Nat.card_pos.ne'`.
+-/
 theorem resQ_ne_zero [IsNonarchimedeanLocalField F] (ϖ : 𝒪[F]) (h : Irreducible ϖ) :
     resQ ϖ ≠ 0 := by
   unfold resQ
@@ -23,6 +26,35 @@ theorem resQ_ne_zero [IsNonarchimedeanLocalField F] (ϖ : 𝒪[F]) (h : Irreduci
   have : Finite (𝒪[F] ⧸ IsLocalRing.maximalIdeal 𝒪[F]) := inferInstanceAs (Finite 𝓀[F])
   exact Nat.card_pos.ne'
 
+/- English proof (translation)
+Use `set T := {Λ : Submodule L.O (Fin n → E) | IsSD L Hm Λ ∧ Λ ⊓ Y.restrictScalars L.O = Mh ∧ Λ ⊓ (perp L Hm Y).restrictScalars L.O = Λ₀} with hT`. Break down `T.eq_empty_or_nonempty with h0 | ⟨Λ₁, hΛ₁⟩` into its components or cases. Simplify using `[h0]`. Establish `hsym : ∀ x v, hf L Hm x v ∈ L.O → hf L Hm v x ∈ L.O` using `fun x v hx => by`. Rewrite using `[← DualInter.cj_hf h]`.
+
+Conclude with `GlobalTheory.UnramOrder.cj_mem L hx`. Establish `hM : ∀ Λ ∈ T, ∀ x, x ∈ Mh ↔ x ∈ Λ ∧ x ∈ Y` using `fun Λ hΛ x => by`. Rewrite using `[← hΛ.2.1]`. Both sides reduce to the same expression. Establish `h0 : ∀ Λ ∈ T, ∀ x, x ∈ Λ₀ ↔ x ∈ Λ ∧ x ∈ perp L Hm Y` using `fun Λ hΛ x => by`.
+
+Rewrite using `[← hΛ.2.2]`. Both sides reduce to the same expression. Establish `hproj : ∀ Λ ∈ T, ∀ l ∈ Λ, ∀ w ∈ perp L Hm Y, l - w ∈ Y → l - w ∈ Md`. Introduce `Λ hΛ l hl w hw hlw`. Use `(hMd _).2 ⟨hlw, fun z hz => ?_⟩` and prove the remaining obligations.
+
+Establish `hz'` using `(hM Λ hΛ z).1 hz`. Rewrite using `[DualInter.sub_l, hw z hz'.2, sub_zero]`. Conclude with `(hΛ.1.2 z).2 hz'.1 l hl`. Establish `hbM : ∀ i, b i ∈ Md` using `fun i => hb ▸ Submodule.subset_span ⟨i, rfl⟩`. Establish `hlift : ∀ Λ : T, ∀ i, ∃ a ∈ Λ.1, a - b i ∈ perp L Hm Y ∧ ∃ c ∈ Λ₁, c - (a - b i) ∈ Y`.
+
+Introduce `Λ i`. Take `⟨-, -, h3, -⟩` from `DualInter.dual_inter L Hm h Λ.1 Λ.2.1 m y hy`. Take `⟨-, h2, -, -⟩` from `DualInter.dual_inter L Hm h Λ₁ hΛ₁.1 m y hy`. Rewrite `h2`, `h3` using `[hY]`. Take `⟨a, ha, hab⟩` from `(h3 (b i)).1 fun x hx hxY => hsym _ _ (((hMd _).1 (hbM i)).2 x ((hM _ Λ.2 x).2 ⟨hx, hxY⟩))`.
+
+Take `⟨c, hc, hca⟩` from `(h2 (a - b i)).1 fun x hx hxY => by`. Rewrite using `[DualInter.sub_r, hxY _ ((hMd _).1 (hbM i)).1, sub_zero]`. Conclude with `(Λ.2.1.2 a).2 ha x ((h0 _ Λ.2 x).1 ((h0 _ hΛ₁ x).2 ⟨hx, hxY⟩)).1`. Conclude with `⟨a, ha, by simpa using (perp L Hm Y).neg_mem hab, c, hc, by simpa using Y.neg_mem hca⟩`. Use `choose a ha hab c hc1 hca using hlift`.
+
+Establish `hle : ∀ Λ Λ' : T, (∀ i, a Λ i ∈ Λ'.1) → Λ.1 ≤ Λ'.1`. Introduce `Λ Λ' hi l hl`. Take `⟨u, hu, w, hw, huw⟩` from `Submodule.mem_sup.1 (hc ▸ Submodule.mem_top : l ∈ Y ⊔ perp L Hm Y)`. Establish `hu' : l - w = u` using `by rw [← huw]; simp`. Establish `h1` using `hproj _ Λ.2 l hl w hw (hu' ▸ hu)`.
+
+Rewrite `h1` using `[hb]`. Take `⟨s, hs⟩` from `(Submodule.mem_span_range_iff_exists_fun L.O).1 h1`. Establish `h2 : l - ∑ i, s i • a Λ i ∈ Λ₀`. Use `(h0 _ Λ.2 _).2 ⟨Λ.1.sub_mem hl (Λ.1.sum_mem fun i _ => Λ.1.smul_mem _ (ha Λ i)), ?_⟩` and prove the remaining obligations. Establish `: l - ∑ i, s i • a Λ i = w - ∑ i, s i • (a Λ i - b i)`.
+
+Simplify using `only [smul_sub, Finset.sum_sub_distrib, hs]`. Normalize the expressions using the abelian group laws. Rewrite using `[this]`. Conclude with `Submodule.sub_mem _ hw (Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ (s i : E) (hab Λ i))`. Establish `h3` using `Λ'.1.add_mem ((h0 _ Λ'.2 _).1 h2).1 (Λ'.1.sum_mem (t := Finset.univ) fun i _ => Λ'.1.smul_mem (s i) (hi i))`.
+
+Rewrite `h3` using `[sub_add_cancel]`. Then use the resulting hypothesis. Set `Q` to `Md.toAddSubgroup ⧸ Mh.toAddSubgroup.addSubgroupOf Md.toAddSubgroup`. Establish `hQ : Nat.card Q = Mh.toAddSubgroup.relIndex Md.toAddSubgroup` using `rfl`. Establish `: Finite Q` using `Nat.finite_of_card_ne_zero (hQ ▸ hN)`. Set `Φ : T → ι → Q` to `fun Λ i => QuotientAddGroup.mk ⟨c Λ i - (a Λ i - b i), hproj _ hΛ₁ _ (hc1 Λ i) _ (hab Λ i) (hca Λ i)⟩`.
+
+Establish `key : ∀ Λ Λ' : T, Φ Λ = Φ Λ' → ∀ i, a Λ i ∈ Λ'.1`. Introduce `Λ Λ' he i`. Establish `h1 : -(c Λ i - (a Λ i - b i)) + (c Λ' i - (a Λ' i - b i)) ∈ Mh` using `QuotientAddGroup.eq.1 (congrFun he i)`. Establish `h2 : a Λ i - a Λ' i ∈ Λ₀`. Use `(h0 _ hΛ₁ _).2 ⟨?_, ?_⟩` and prove the remaining obligations.
+
+Use `Λ₁.add_mem ((hM _ hΛ₁ _).1 h1).1 (Λ₁.sub_mem (hc1 Λ i) (hc1 Λ' i))` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Normalize the expressions using the abelian group laws. Use `(perp L Hm Y).sub_mem (hab Λ i) (hab Λ' i)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+
+Normalize the expressions using the abelian group laws. Establish `h3` using `Λ'.1.add_mem ((h0 _ Λ'.2 _).1 h2).1 (ha Λ' i)`. Rewrite `h3` using `[sub_add_cancel]`. Then use the resulting hypothesis. Establish `hinj : Function.Injective Φ` using `fun Λ Λ' he => Subtype.ext (le_antisymm (hle _ _ (key _ _ he)) (hle _ _ (key _ _ he.symm)))`. Establish `: Finite T` using `Finite.of_injective Φ hinj`.
+
+Establish `h4` using `Nat.card_le_card_of_injective Φ hinj`. Rewrite `h4` using `[Nat.card_fun, hQ, Nat.card_eq_fintype_card (α := ι)]`. Rewrite using `[← (Set.toFinite T).cast_ncard_eq, ← Nat.card_coe_set_eq]`. Conclude with `h4` after adjusting the coercions.
+-/
 theorem encard_le [IsNonarchimedeanLocalField F] [CharZero F] {L : LocE F E} {n : ℕ}
     {Hm : Matrix (Fin n) (Fin n) E} (h : IsHermND L Hm) {m : ℕ} {y : Fin m → Fin n → E}
     (hy : LinearIndependent E y) {Y : Submodule E (Fin n → E)}
@@ -107,6 +139,23 @@ theorem encard_le [IsNonarchimedeanLocalField F] [CharZero F] {L : LocE F E} {n 
   rw [← (Set.toFinite T).cast_ncard_eq, ← Nat.card_coe_set_eq]
   exact_mod_cast h4
 
+/- English proof (translation)
+Introduce `F _ _ _ _ _ E _ _ _ L r k S C hC p hp Mh Λ₀ hM`. Break down `{Λ : Submodule L.O S.V | IsSD L S.Hm Λ ∧ S.sat Λ = Mh ∧ Λ ⊓ S.W0.restrictScalars L.O = Λ₀}.eq_empty_or_nonempty with h0 | ⟨Λ₁, hΛ₁⟩` into its components or cases. Simplify using `[h0]`. Take `⟨n, hn, n', hn', rfl⟩` from `hC`. Rewrite `hM` using `[((GlobalTheory.HL.FrameClass.frame_classes L r k S _ _).2.1 p hp).2]`.
+
+Take `⟨⟨c, hc0, hca, hdet⟩, -, hsp⟩` from `GlobalTheory.T.frameLattice_gramDet_and_minors_orbit_invariant L r k S n hn n' hn'`. Take `⟨hli, hcompl, -⟩` from `GlobalTheory.FrameBasic.main L r k S`. Establish `hMh : ∀ x, x ∈ Mh ↔ x ∈ Λ₁ ∧ x ∈ S.ME` using `fun x => by rw [← hΛ₁.2.1]; rfl`. Set `Md : Submodule L.O S.V` to `{ carrier := {x | x ∈ S.ME ∧ ∀ z ∈ Mh, hf L S.Hm x z ∈ L.O} zero_mem' := ⟨S.ME.zero_mem, fun z _ => by simp [hf]⟩ add_mem' := by`. Introduce and unpack `u v ⟨hu, hu'⟩ ⟨hv, hv'⟩`.
+
+Use `⟨S.ME.add_mem hu hv, fun z hz => ?_⟩` and prove the remaining obligations. Establish `: hf L S.Hm (u + v) z = hf L S.Hm u z + hf L S.Hm v z` using `(DualInter.hfL L S.Hm z).map_add u v`. Rewrite using `[this]`. Conclude with `L.O.add_mem (hu' z hz) (hv' z hz)`. Use the proof step `smul_mem' := by`.
+
+Introduce and unpack `s u ⟨hu, hu'⟩`. Use `⟨S.ME.smul_mem (s : E) hu, fun z hz => ?_⟩` and prove the remaining obligations. Establish `: hf L S.Hm (s • u) z = s * hf L S.Hm u z` using `DualInter.smul_l L S.Hm s u z`. Rewrite using `[this]`. Conclude with `L.O.mul_mem s.2 (hu' z hz) }`.
+
+Take `⟨-, hidx, -, b, hb⟩` from `GlobalTheory.T.card_discriminantModule_integralOverlattice_span L S.Hm S.herm S.ϖ S.ϖ_irr _ c hc0 hdet Mh Md (by rw [Set.Sum.elim_range]; exact hM) (fun x hx => by rw [hsp]; exact ((hMh x).1 hx).2) (fun x hx z hz => (hΛ₁.1.2 z).2 ((hMh z).1 hz).1 x ((hMh x).1 hx).1) (fun x => by …`. Rewrite `hidx` using `[hca]`. Establish `hq : resQ S.ϖ ^ (2 * S.a.toNat) ≠ 0` using `pow_ne_zero _ (resQ_ne_zero _ S.ϖ_irr)`. Establish `hN : Mh.toAddSubgroup.relIndex Md.toAddSubgroup ≠ 0` using `fun h => hq (by rw [← hidx, h, zero_mul])`. Establish `hNle : Mh.toAddSubgroup.relIndex Md.toAddSubgroup ≤ S.q ^ (2 * S.a.toNat)` using `Nat.le_of_dvd (Nat.pos_of_ne_zero hq) (Dvd.intro _ hidx)`.
+
+Establish `hY : Submodule.span E (Set.range (Sum.elim S.f S.f' ∘ finSumFinEquiv.symm)) = S.ME`. Rewrite using `[finSumFinEquiv.symm.surjective.range_comp, Set.Sum.elim_range, Submodule.span_union]`. Establish `: {i : Fin (r + 1) | (i : ℕ) < r + 1} = Set.univ` using `Set.eq_univ_of_forall fun i => i.2`. Simplify using `only [Frames.ME, Frames.spanTo, this, Set.image_univ]`. Establish `h1` using `encard_le S.herm (hli.comp _ finSumFinEquiv.symm.injective) hY hcompl.sup_eq_top Mh Λ₀ Md (fun _ => Iff.rfl) b hb hN`.
+
+Establish `h2 : Mh.toAddSubgroup.relIndex Md.toAddSubgroup ^ Fintype.card (Fin (r + 1) ⊕ Fin (r + 1)) ≤ S.q ^ (2 * S.a.toNat * (2 * r + 2))`. Rewrite using `[pow_mul, show Fintype.card (Fin (r + 1) ⊕ Fin (r + 1)) = 2 * r + 2 by simp; ring]`. Conclude with `Nat.pow_le_pow_left hNle _`. Establish `h3` using `h1.trans (Nat.cast_le.2 h2)`. Establish `h4` using `ENat.toENNReal_le.2 h3`.
+
+Rewrite `h4` using `[ENat.toENNReal_coe, Nat.cast_pow]`. Conclude with `h4`.
+-/
 theorem gluing_count : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [CharZero F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] (L : LocE F E), ∀ (r k : ℕ) (S : Frames L r k), ∀ C, S.IsCls C → ∀ p ∈ C, ∀ Mh Λ₀ : Submodule L.O S.V, S.Mof p.1 p.2 ≤ Mh → (({Λ : Submodule L.O S.V | IsSD L S.Hm Λ ∧ S.sat Λ = Mh ∧ Λ ⊓ S.W0.restrictScalars L.O = Λ₀}.encard : ℕ∞) : ℝ≥0∞) ≤ (S.q : ℝ≥0∞) ^ (2 * S.a.toNat * (2 * r + 2)) := by
   intro F _ _ _ _ _ E _ _ _ L r k S C hC p hp Mh Λ₀ hM
   rcases {Λ : Submodule L.O S.V | IsSD L S.Hm Λ ∧ S.sat Λ = Mh ∧

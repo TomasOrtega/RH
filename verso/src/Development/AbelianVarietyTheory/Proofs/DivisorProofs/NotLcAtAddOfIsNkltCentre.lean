@@ -14,6 +14,21 @@ open GlobalTheory GlobalTheory.CechPic GlobalTheory.Cartier GlobalTheory.TopForm
 
 namespace GlobalTheory.PairStep
 
+/- English proof (translation)
+Introduce `X _ _ _ p n hp hn Γ A z x hN hA hoff hzx hlc`. Use `haveI : IsProper p := ((isProjOver_iff_isProper_and_exists_isAmpleLB p).1 hp).1`. Establish `hlcz` using `((GlobalTheory.T.kawamataLogTerminal_logCanonical_generisation X p n (Γ + A) x z hzx).2 hlc)`. Take `⟨E, η, m, g, hη, hm, hlog, hC, hd⟩` from `hN`. Take `⟨m₀, D₀, hm₀, hEff, rfl⟩` from `hA`.
+
+Take `⟨m', f, hm', hreg, heq⟩` from `GlobalTheory.T.exists_localEquation_effectiveQCartierDivisor X p (qWeil D₀ m₀) ⟨m₀, D₀, hm₀, hEff, rfl⟩ z`. Take `⟨m'', g'', hm'', hlog'', hdisc⟩` from `GlobalTheory.T.isLogCanonicalLocalEquation_add_smul_divisor X p n Γ (qWeil D₀ m₀) η z m m' g f 1 hm hm' hlog heq`. Rewrite `hlog''` using `[one_smul]`. Establish `h1` using `((GlobalTheory.T.logCanonicalAt_iff_of_isLogCanonicalLocalEquation X p n hp hn (Γ + qWeil D₀ m₀) η z m'' g'' hη hm'' hlog'').1 hlcz) E hC.1`. Rewrite `h1` using `[hdisc E, one_mul]`.
+
+Establish `hf0 : 0 ≤ E.ord f` using `(E.ord_nonneg_iff f).2 (hC.1 _ hreg)`. Establish `hm'q : (0 : ℚ) < m'` using `by exact_mod_cast hm'`. Establish `hfle : (E.ord f : ℚ) / m' ≤ 0` using `by linarith`. Establish `hfle' : (E.ord f : ℚ) ≤ 0`. Rewrite `hfle` using `[div_le_iff₀ hm'q, zero_mul]`. Then use the resulting hypothesis.
+
+Establish `hord : E.ord f = 0`. Establish `: E.ord f ≤ 0` using `by exact_mod_cast hfle'`. Use linear arithmetic over natural numbers and integers. Establish `hreg'` using `hC.2 f hreg hord`. Apply `hoff` to reduce the goal to its premises.
+
+Introduce `w hw`. Distinguish the cases in `hc : Order.coheight w = 1`. Take `⟨F, hF⟩` from `DivOver.exists_isAt_of_coheight_eq_one (p := p) hc`. Rewrite using `[heq w hw F hF]`. Establish `a : 0 ≤ F.ord f` using `(F.ord_nonneg_iff f).2 ((hF _).2 (regAt_of_specializes hw hreg))`.
+
+Establish `b : 0 ≤ F.ord f⁻¹` using `(F.ord_nonneg_iff _).2 ((hF _).2 (regAt_of_specializes hw hreg'))`. Rewrite `b` using `[F.ord_inv]`. Establish `: F.ord f = 0` using `by omega`. Simplify using `[this]`. Establish `: D₀.mult w = 0`.
+
+Assume the negation of the conclusion as `h`. Conclude with `hc (CartierDiv.coheight_eq_one_of_mult_ne_zero h)`. Simplify using `[qWeil, this]`.
+-/
 theorem not_lcAt_add_of_isNkltCentre : ∀ (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X] [GlobalTheory.IsNormalScheme X] (p : X ⟶ Sp ℂ) (n : ℕ), IsProjOver p → topologicalKrullDim X = n → ∀ (Γ A : X → ℚ) (z x : X), IsNkltCentre p n Γ z → IsQCart A → ¬ Off A z → z ⤳ x → ¬ LcAt p n (Γ + A) x := by
   intro X _ _ _ p n hp hn Γ A z x hN hA hoff hzx hlc
   haveI : IsProper p := ((isProjOver_iff_isProper_and_exists_isAmpleLB p).1 hp).1

@@ -18,16 +18,27 @@ namespace GlobalTheory.Core.Rk.Seesaw
 
 variable {D : D7}
 
+/- English proof (translation)
+The claim follows from `LeftInv.eq_of_mk_eq (Γ := GQ V) h ((Quotient.out_eq q).trans (mk_sec q).symm)`.
+-/
 theorem out_eq_sec {V : HSp D} {X : Type*} {φ : GA D V → X} (h : ∀ γ ∈ GQ V, ∀ g, φ (γ * g) = φ g) (q : AutQ V) :
     φ q.out = φ (sec (GQ V) q) :=
   LeftInv.eq_of_mk_eq (Γ := GQ V) h ((Quotient.out_eq q).trans (mk_sec q).symm)
 
+/- English proof (translation)
+Establish `e : (fun q : AutQ V => φ q.out) = φ ∘ sec (GQ V)` using `funext (out_eq_sec h)`. Rewrite using `[e]`. Conclude with `hc.measurable.comp measurableEmbedding_sec.measurable`.
+-/
 theorem measurable_out {V : HSp D} {φ : GA D V → ℂ} (h : ∀ γ ∈ GQ V, ∀ g, φ (γ * g) = φ g) (hc : Continuous φ) :
     Measurable fun q : AutQ V => φ q.out := by
   have e : (fun q : AutQ V => φ q.out) = φ ∘ sec (GQ V) := funext (out_eq_sec h)
   rw [e]
   exact hc.measurable.comp measurableEmbedding_sec.measurable
 
+/- English proof (translation)
+Establish `e : (Function.uncurry fun (q : AutQ A) (y : AutQ B) => K q.out y.out) = Function.uncurry K ∘ fun p => (sec (GQ A) p.1, sec (GQ B) p.2)`. Use function extensionality and compare the values at `p`. Use `show K p.1.out p.2.out = K (sec (GQ A) p.1) (sec (GQ B) p.2)`. Rewrite using `[out_eq_sec (φ := fun g => K g p.2.out) (fun γ hγ g => hl γ hγ g _) p.1, out_eq_sec (hr _) p.2]`. Rewrite using `[e]`.
+
+Conclude with `hc.measurable.comp ((measurableEmbedding_sec.measurable.comp measurable_fst).prodMk (measurableEmbedding_sec.measurable.comp measurable_snd))`.
+-/
 theorem measurable_kernel_out {A B : HSp D} {K : GA D A → GA D B → ℂ} (hc : Continuous (Function.uncurry K))
     (hl : ∀ γ ∈ GQ A, ∀ g h, K (γ * g) h = K g h) (hr : ∀ g, ∀ γ ∈ GQ B, ∀ h, K g (γ * h) = K g h) :
     Measurable (Function.uncurry fun (q : AutQ A) (y : AutQ B) => K q.out y.out) := by
@@ -40,6 +51,11 @@ theorem measurable_kernel_out {A B : HSp D} {K : GA D A → GA D B → ℂ} (hc 
   exact hc.measurable.comp ((measurableEmbedding_sec.measurable.comp measurable_fst).prodMk
     (measurableEmbedding_sec.measurable.comp measurable_snd))
 
+/- English proof (translation)
+Take `⟨C, a, hC⟩` from `hg h`. Establish `hb` using `GlobalTheory.Grow.norm_le_quotHeight_pow (f := fun g => K g h) (fun γ hγ g => hl γ hγ g h) hC`. Establish `hKc : Continuous fun g => K g h` using `hc.comp (continuous_id.prodMk continuous_const)`. Establish `hmeas : Measurable (descend (GQ A) fun g => K g h * u g)` using `measurable_out (φ := fun g => K g h * u g) (fun γ hγ g => by simp only [hl γ hγ, hu.1 γ hγ]) (hKc.mul hu.2.1)`. Use `((GlobalTheory.T.integrable_unitaryQuotientHeight_pow_mul_rapidlyDecreasing D A m hm u hu a).const_mul (C * 2 ^ a)).mono' hmeas.aestronglyMeasurable (ae_of_all _ fun q => ?_)` and prove the remaining obligations.
+
+Use `show ‖K q.out h * u q.out‖ ≤ C * 2 ^ a * (GlobalTheory.Grow.quotHeight A q.out ^ a * ‖u q.out‖)`. Rewrite using `[norm_mul, ← mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_right (hb _) (norm_nonneg _)`.
+-/
 theorem integrable_lift_integrand {A B : HSp D} (m : Measure (GA D A)) (hm : m.IsHaarMeasure)
     {K : GA D A → GA D B → ℂ} (hc : Continuous (Function.uncurry K)) (hl : ∀ γ ∈ GQ A, ∀ g h, K (γ * g) h = K g h)
     (hg : ∀ h, GlobalTheory.Grow.ModGrowth A fun g => K g h) {u : GA D A → ℂ} (hu : GlobalTheory.Grow.RapidDec A u) (h : GA D B) :
@@ -55,6 +71,15 @@ theorem integrable_lift_integrand {A B : HSp D} (m : Measure (GA D A)) (hm : m.I
   rw [norm_mul, ← mul_assoc]
   exact mul_le_mul_of_nonneg_right (hb _) (norm_nonneg _)
 
+/- English proof (translation)
+Take `⟨C, a, hC⟩` from `hP`. Establish `hinv : ∀ γ ∈ GQ A, ∀ g, petersson B mH (K (γ * g)) (K (γ * g)) = petersson B mH (K g) (K g)` using `fun γ hγ g => by rw [show K (γ * g) = K g from funext (hl γ hγ g)]`. Use `⟨C * 2 ^ a, a, mul_nonneg (GlobalTheory.Grow.nonneg_of_growth hC) (by positivity), fun g => ?_⟩` and prove the remaining obligations. Establish `hb` using `GlobalTheory.Grow.norm_le_quotHeight_pow hinv hC g`. Establish `hf` using `(hL2 g).2`.
+
+Establish `hf2 : Integrable (fun y : AutQ B => ‖K g y.out‖ ^ 2) (autMeasure B mH)` using `(memLp_two_iff_integrable_sq_norm hf.1).1 hf`. Establish `e1 : ∫⁻ y, ‖K g y.out‖ₑ ^ 2 ∂autMeasure B mH = ENNReal.ofReal (∫ y, ‖K g y.out‖ ^ 2 ∂autMeasure B mH)`. Rewrite using `[ofReal_integral_eq_lintegral_ofReal hf2 (ae_of_all _ fun _ => by positivity)]`. Use `lintegral_congr fun y => ?_` and prove the remaining obligations. Rewrite using `[ENNReal.ofReal_pow (norm_nonneg _), ofReal_norm]`.
+
+Establish `e2 : petersson B mH (K g) (K g) = ((∫ y, ‖K g y.out‖ ^ 2 ∂autMeasure B mH : ℝ) : ℂ)`. Rewrite using `[← integral_complex_ofReal]`. Use `show ∫ y, descend (GQ B) (K g) y * conj (descend (GQ B) (K g) y) ∂autMeasure B mH = _`. Use `integral_congr_ae (ae_of_all _ fun y => ?_)` and prove the remaining obligations. Use `show K g y.out * conj (K g y.out) = _`.
+
+Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Establish `e3 : ‖petersson B mH (K g) (K g)‖ = ∫ y, ‖K g y.out‖ ^ 2 ∂autMeasure B mH`. Rewrite using `[e2, Complex.norm_real, Real.norm_of_nonneg (integral_nonneg fun _ => by positivity)]`. Rewrite using `[e1]`. Conclude with `ENNReal.ofReal_le_ofReal (e3 ▸ hb)`.
+-/
 theorem lintegral_slice_le {A B : HSp D} (mH : Measure (GA D B)) {K : GA D A → GA D B → ℂ}
     (hl : ∀ γ ∈ GQ A, ∀ g h, K (γ * g) h = K g h) (hL2 : ∀ g, MemL2Quotient (GQ B) mH (K g))
     (hP : GlobalTheory.Grow.ModGrowth A fun g => petersson B mH (K g) (K g)) :
@@ -83,6 +108,13 @@ theorem lintegral_slice_le {A B : HSp D} (mH : Measure (GA D B)) {K : GA D A →
   rw [e1]
   exact ENNReal.ofReal_le_ofReal (e3 ▸ hb)
 
+/- English proof (translation)
+Establish `ht : ∀ q : AutQ A, 0 ≤ c * GlobalTheory.Grow.quotHeight A q.out ^ a` using `fun q => mul_nonneg hc (pow_nonneg (GlobalTheory.Grow.quotHeight_pos A _).le _)`. Use `⟨fun q => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← ENNReal.ofReal_pow (by linarith [ht q])]`. Conclude with `ENNReal.ofReal_le_ofReal (by nlinarith [ht q])`. Establish `hint : Integrable (fun q : AutQ A => (1 + c * GlobalTheory.Grow.quotHeight A q.out ^ a) * ‖u q.out‖) (autMeasure A m)`.
+
+Use `((GlobalTheory.T.integrable_unitaryQuotientHeight_pow_mul_rapidlyDecreasing D A m hm u hu 0).add ((GlobalTheory.T.integrable_unitaryQuotientHeight_pow_mul_rapidlyDecreasing D A m hm u hu a).const_mul c)).congr (ae_of_all _ fun q => ?_)` and prove the remaining obligations. Simplify using `only [Pi.add_apply, pow_zero, one_mul]`. Expand and normalize the polynomial expressions, which then agree. Use `ne_of_lt (lt_of_le_of_lt (le_of_eq ?_) hint.lintegral_lt_top)` and prove the remaining obligations. Use `lintegral_congr fun q => ?_` and prove the remaining obligations.
+
+Rewrite using `[← ofReal_norm, ← ENNReal.ofReal_mul (by linarith [ht q])]`.
+-/
 theorem weight_data {A : HSp D} (m : Measure (GA D A)) (hm : m.IsHaarMeasure) {u : GA D A → ℂ}
     (hu : GlobalTheory.Grow.RapidDec A u) {c : ℝ} (hc : 0 ≤ c) (a : ℕ) :
     (∀ q : AutQ A, ENNReal.ofReal (c * GlobalTheory.Grow.quotHeight A q.out ^ a) ≤
@@ -103,6 +135,17 @@ theorem weight_data {A : HSp D} (m : Measure (GA D A)) (hm : m.IsHaarMeasure) {u
     refine lintegral_congr fun q => ?_
     rw [← ofReal_norm, ← ENNReal.ofReal_mul (by linarith [ht q])]
 
+/- English proof (translation)
+Introduce `D A B m mH hm hmH K₁ K₂ hK u₁ u₂ hu₁ hu₂ θ₁ θ₂`. Take `⟨hc₁, hl₁, hL₁, hP₁, hg₁⟩` from `hK K₁ (Set.mem_insert _ _)`. Take `⟨hc₂, hl₂, hL₂, hP₂, hg₂⟩` from `hK K₂ (Set.mem_insert_of_mem _ rfl)`. Establish `hi₁` using `integrable_lift_integrand m hm hc₁ hl₁ hg₁ hu₁`. Establish `hi₂` using `integrable_lift_integrand m hm hc₂ hl₂ hg₂ hu₂`.
+
+Establish `hr₁ : ∀ g, ∀ γ ∈ GQ B, ∀ h, K₁ g (γ * h) = K₁ g h` using `fun g => (hL₁ g).1`. Establish `hr₂ : ∀ g, ∀ γ ∈ GQ B, ∀ h, K₂ g (γ * h) = K₂ g h` using `fun g => (hL₂ g).1`. Take `⟨c₁, a₁, hc₁0, hs₁⟩` from `lintegral_slice_le mH hl₁ hL₁ hP₁`. Take `⟨c₂, a₂, hc₂0, hs₂⟩` from `lintegral_slice_le mH hl₂ hL₂ hP₂`. Take `⟨hw₁, hf₁⟩` from `weight_data m hm hu₁ hc₁0 a₁`.
+
+Take `⟨hw₂, hf₂⟩` from `weight_data m hm hu₂ hc₂0 a₂`. Use `hm` as an intermediate fact. Use `hmH` as an intermediate fact. Establish `key` using `GlobalTheory.T.integral_kernel_lifts_fubini_sigmaFinite (autMeasure A m) (autMeasure A m) (autMeasure B mH) (fun q y => K₁ q.out y.out) (fun q y => K₂ q.out y.out) (fun q => u₁ q.out) (fun q => u₂ q.out) (measurable_kernel_out hc₁ hl₁ hr₁) (measurable_kernel_out hc₂ hl₂ hr₂) (mea …`. Establish `inv₁ : ∀ γ ∈ GQ B, ∀ h, θ₁ (γ * h) = θ₁ h` using `fun γ hγ h => by`.
+
+Establish `e : (fun g => K₁ g (γ * h) * u₁ g) = fun g => K₁ g h * u₁ g` using `funext fun g => by rw [hr₁ g γ hγ h]`. Use `show ∫ q, descend (GQ A) (fun g => K₁ g (γ * h) * u₁ g) q ∂autMeasure A m = _`. Rewrite using `[e]`. Establish `inv₂ : ∀ γ ∈ GQ B, ∀ h, θ₂ (γ * h) = θ₂ h` using `fun γ hγ h => by`. Establish `e : (fun g => K₂ g (γ * h) * u₂ g) = fun g => K₂ g h * u₂ g` using `funext fun g => by rw [hr₂ g γ hγ h]`.
+
+Use `show ∫ q, descend (GQ A) (fun g => K₂ g (γ * h) * u₂ g) q ∂autMeasure A m = _`. Rewrite using `[e]`. Conclude with `⟨hi₁, hi₂, ⟨inv₁, key.1⟩, ⟨inv₂, key.2.1⟩, key.2.2⟩`.
+-/
 theorem seesaw_fubini : ∀ (D : D7) (A B : HSp D) (m : Measure (GA D A)) (mH : Measure (GA D B)), m.IsHaarMeasure → mH.IsHaarMeasure → ∀ K₁ K₂ : GA D A → GA D B → ℂ, (∀ K ∈ ({K₁, K₂} : Set (GA D A → GA D B → ℂ)), Continuous (Function.uncurry K) ∧ (∀ γ ∈ GQ A, ∀ g h, K (γ * g) h = K g h) ∧ (∀ g, MemL2Quotient (GQ B) mH (K g)) ∧ (GlobalTheory.Grow.ModGrowth A fun g => petersson B mH (K g) (K g)) ∧ ∀ h, GlobalTheory.Grow.ModGrowth A fun g => K g h) → ∀ u₁ u₂ : GA D A → ℂ, GlobalTheory.Grow.RapidDec A u₁ → GlobalTheory.Grow.RapidDec A u₂ → let θ₁ : GA D B → ℂ := fun h => ∫ q, GlobalTheory.AutomorphicL2Unitary.descend (GQ A) (fun g => K₁ g h * u₁ g) q ∂autMeasure A m; let θ₂ : GA D B → ℂ := fun h => ∫ q, GlobalTheory.AutomorphicL2Unitary.descend (GQ A) (fun g => K₂ g h * u₂ g) q ∂autMeasure A m; (∀ h, Integrable (GlobalTheory.AutomorphicL2Unitary.descend (GQ A) fun g => K₁ g h * u₁ g) (autMeasure A m)) ∧ (∀ h, Integrable (GlobalTheory.AutomorphicL2Unitary.descend (GQ A) fun g => K₂ g h * u₂ g) (autMeasure A m)) ∧ MemL2Quotient (GQ B) mH θ₁ ∧ MemL2Quotient (GQ B) mH θ₂ ∧ petersson B mH θ₁ θ₂ = ∫ q : AutQ A × AutQ A, petersson B mH (K₁ q.1.out) (K₂ q.2.out) * u₁ q.1.out * conj (u₂ q.2.out) ∂(autMeasure A m).prod (autMeasure A m) := by
   intro D A B m mH hm hmH K₁ K₂ hK u₁ u₂ hu₁ hu₂ θ₁ θ₂
   obtain ⟨hc₁, hl₁, hL₁, hP₁, hg₁⟩ := hK K₁ (Set.mem_insert _ _)

@@ -17,6 +17,11 @@ noncomputable section
 
 namespace GlobalTheory.PrimUnif
 
+/- English proof (translation)
+Establish `hz : u.ex 0 = 1`. Establish `h` using `u.ex_add 0 0`. Rewrite `h` using `[add_zero]`. Conclude with `mul_left_cancel (h.symm.trans (_root_.mul_one _).symm)`. Proceed by induction on `n with`.
+
+Consider the case `zero => simpa using hz`. Consider the case `succ n ih => rw [Nat.cast_succ, add_smul, one_smul, u.ex_add, ih, pow_succ]`.
+-/
 theorem ex_nsmul {A : Over (Sp ℂ)} [GrpObj A] {L : LB A.left} {g : ℕ} (u : HolUnif A L g) (n : ℕ)
     (z : Fin g → ℂ) : u.ex ((n : ℂ) • z) = u.ex z ^ n := by
   have hz : u.ex 0 = 1 := by
@@ -27,12 +32,18 @@ theorem ex_nsmul {A : Over (Sp ℂ)} [GrpObj A] {L : LB A.left} {g : ℕ} (u : H
   | zero => simpa using hz
   | succ n ih => rw [Nat.cast_succ, add_smul, one_smul, u.ex_add, ih, pow_succ]
 
+/- English proof (translation)
+Introduce `a b h`. Use `ext`. Establish `h'` using `congrArg (fun x : Γ(Sp K, ⊤)ˣ => (Scheme.ΓSpecIso (CommRingCat.of K)).hom.hom (x : Γ(Sp K, ⊤))) h`. Simplify `h'` using `[unitOn]`.
+-/
 theorem unitOn_inj' {K : Type} [CommRing K] : Function.Injective (unitOn (R := K)) := by
   intro a b h
   ext
   have h' := congrArg (fun x : Γ(Sp K, ⊤)ˣ => (Scheme.ΓSpecIso (CommRingCat.of K)).hom.hom (x : Γ(Sp K, ⊤))) h
   simpa [unitOn] using h'
 
+/- English proof (translation)
+Use `ext`. Simplify using `only [unitS, unitOn, spMap, Units.coe_map]`. Establish `h` using `congrArg (fun φ => φ.hom (c : o)) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom em))`. Conclude with `h.symm`.
+-/
 theorem unitS_spMap {o K : Type} [CommRing o] [CommRing K] (em : o →+* K) (c : oˣ) :
     unitS (spMap em) c = unitOn (Units.map em.toMonoidHom c) := by
   ext
@@ -40,6 +51,31 @@ theorem unitS_spMap {o K : Type} [CommRing o] [CommRing K] (em : o →+* K) (c :
   have h := congrArg (fun φ => φ.hom (c : o)) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom em))
   exact h.symm
 
+/- English proof (translation)
+Introduce `hL _ _ hU o _ g k J b em w w' t hP`. Establish `hk : ((k : ℕ) : ℂ) ≠ 0`. Establish `h` using `b.unit.map em`. Rewrite `h` using `[map_natCast]`. Conclude with `h.ne_zero`.
+
+Take `⟨rig, hrig⟩` from `t.rigid`. Take `⟨u, Hm, χ, Ef, hAH, -, -, -, hEnd, -, hEf, hEfb, hWeil⟩` from `hU t.pol rig hrig`. Use `choose F hF using fun j => hEnd (t.act j) (t.hom j)`. Establish `hone : ∀ j, (1 : 𝟙_ (Over (Sp ℂ)) ⟶ t.A) ≫ t.act j = 1` using `fun j => by`. Use `t.hom j` as an intermediate fact.
+
+Simplify using `[Hom.one_def]`. Establish `hFm : ∀ j (l : u.Λ), F j l ∈ u.Λ` using `fun j l => by`. Rewrite using `[← u.ker, hF, (u.ker _).2 l.2]`. Conclude with `hone j`. Use `choose z hz using fun i => u.ex_onto (t.pt i)`.
+
+Establish `hlam : ∀ i, ((k : ℕ) : ℂ) • z i ∈ u.Λ` using `fun i => by`. Rewrite using `[← u.ker, ex_nsmul, hz]`. Conclude with `t.torsion i`. Establish `hlev : ∀ i, u.ex (((k : ℕ) : ℂ)⁻¹ • (((k : ℕ) : ℂ) • z i)) = t.pt i` using `fun i => by`. Rewrite using `[inv_smul_smul₀ hk, hz]`.
+
+Use `⟨u.Λ, inferInstance, Ef, fun i => ⟨_, hlam i⟩, fun j x => ⟨F j x, hFm j x⟩, u.Λ.subtype.toAddMonoidHom, Hm, hEfb, ⟨Subtype.val_injective, ?_, ?_, hAH.1, hAH.2.1, fun x y => (hEf x y).symm⟩, ?_, u, χ, hAH, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `key : ∀ S : AddSubgroup (Fin g → ℂ), (∀ x, x ∈ S ↔ x ∈ u.Λ) → DiscreteTopology S`. Introduce `S hS`. Take `rfl : S = u.Λ.toAddSubgroup` from `AddSubgroup.ext hS`. Conclude with `u.discrete`.
+
+Use `key _ (fun x => ⟨fun h => ?_, fun h => AddMonoidHom.mem_range.2 ⟨⟨x, h⟩, rfl⟩⟩)` and prove the remaining obligations. Take `⟨y, rfl⟩` from `AddMonoidHom.mem_range.1 h`. Conclude with `y.2`. Establish `hs : Set.range (fun x : u.Λ => (x : Fin t.pol.g → ℂ)) = (u.Λ : Set (Fin t.pol.g → ℂ))` using `Subtype.range_coe`. Establish `hfull` using `u.full`.
+
+Rewrite `hfull` using `[← hs]`. Conclude with `hfull`. Introduce `i₁ i₂`. Establish `hkpos : 0 < k` using `Nat.pos_of_ne_zero (fun h => hk (by simp [h]))`. Establish `hW` using `hWeil k ⟨_, hlam i₁⟩ ⟨_, hlam i₂⟩ (Units.mk0 _ (Complex.exp_ne_zero (-(2 * Real.pi * Complex.I) * (Ef ⟨_, hlam i₁⟩ ⟨_, hlam i₂⟩ : ℂ) / ((k : ℕ) : ℂ)))) hkpos rfl`.
+
+Simplify using `only [hlev] at hW`. Establish `hP2` using `t.pairing i₁ i₂`. Rewrite `hP2` using `[unitS_spMap]`. Establish `hu` using `((hL.weil (Sp ℂ) t.pol k (𝟙_ _)).1 (t.pt i₁) (t.pt i₂) (t.torsion i₁) (t.torsion i₂)).unique hW hP2`. Establish `hpow : ∀ (x : ℂˣ) (n : ℤ), unitOn x ^ n = unitOn (x ^ n)`.
+
+Introduce `x n`. Unfold `unitOn`. Rewrite using `[map_zpow]`. Rewrite `hu` using `[hpow]`. Establish `hc` using `congrArg Units.val (unitOn_inj' hu)`.
+
+Simplify `hc` using `[Units.val_zpow_eq_zpow_val]`. Introduce `x`. Use `⟨fun h => AddMonoidHom.mem_range.2 ⟨⟨x, h⟩, rfl⟩, fun h => ?_⟩` and prove the remaining obligations. Take `⟨y, rfl⟩` from `AddMonoidHom.mem_range.1 h`. Conclude with `y.2`.
+
+Introduce `x l hl`. Establish `hv : (∀ (X : Scheme.{0}) (x : Sp ℂ ⟶ X), (∀ (U : X.Opens), ⊤ ≤ x ⁻¹ᵁ U ↔ x (default : PrimeSpectrum ℂ) ∈ U) ∧ (∀ (U : X.Opens), ⊤ ≤ x ⁻¹ᵁ U → ∃ e : Γ(X, U) →+* ℂ, ∀ f, valAt' x U f = e f) ∧ (∀ (U V : X.Opens) (h : V ≤ U) (f : Γ(X, U)), ⊤ ≤ x ⁻¹ᵁ V → valAt' x V (resG X h f) = valA …` using `fun X x => valAt'_rules X x`. Establish `: IsCommMonObj t.pol.A` using `t.ab.comm`. Establish `hAHd` using `GlobalTheory.SelfCube.appellHumbert_data_of_iso_cube hv (GlobalTheory.holFamily_lift hv) t.pol u Hm χ Ef ⟨hAH.1, hAH.2.2.1, fun a c => hEf a c, hAH.2.2.2⟩ (t.act w) (F w) (fun m hm => hFm w ⟨m, hm⟩) (hF w) hP.2.2`. Take `rfl : l = x` from `Subtype.ext hl`.
+
+Conclude with `hAHd.2 l`. Introduce `i`. Conclude with `congrArg (fun p => p.left) (hlev i).symm`. Introduce `j`. Conclude with `⟨F j, fun x => rfl, hF j⟩`.
+-/
 theorem exists_unif_of_prim :
     Out.Laws → Out.Laws2 → (∀ (S : Scheme.{0}) (P : Out.PolAV S) (M : LB P.A.left), M.IsLB → ∃ t : LB.Gen (Theta P.A M), t.IsGen) → ThetaUnifAV → ∀ (o : Type) [CommRing o] (g k : ℕ) (J : Type) (b : TBase o k) (em : o →+* ℂ) (w w' : J) (t : TObj g k J b (spMap em)), t.Prim w w' → ∃ (La : Type) (_ : AddCommGroup La) (EF : LinearMap.BilinForm ℤ La) (lam : Fin (2 * g) → La) (ac : J → La → La) (Q : La →+ (Fin g → ℂ)) (Hm : Matrix (Fin g) (Fin g) ℂ), Function.Bijective EF ∧ (Function.Injective Q ∧ DiscreteTopology (Q).range ∧ Submodule.span ℝ (Set.range Q) = ⊤ ∧ (Hm).IsHermitian ∧ (∀ z : Fin g → ℂ, z ≠ 0 → 0 < (hermForm Hm z z).re) ∧ ∀ x y, (hermForm Hm (Q x) (Q y)).im = EF x y) ∧ (∀ i₁ i₂, Complex.exp (-(2 * Real.pi * Complex.I) * (EF (lam i₁) (lam i₂) : ℂ) / ((k : ℕ) : ℂ)) = em (b.ζ : o) ^ Out.stdSymp g i₁ i₂) ∧ (∃ (u : HolUnif t.A t.L g) (χ' : u.Λ → ℂ), u.IsAH Hm χ' ∧ (∀ z, z ∈ u.Λ ↔ z ∈ (Q).range) ∧ (∀ x (l : u.Λ), (l : Fin g → ℂ) = Q x → χ' l = (-1) ^ EF x (ac w x)) ∧ (∀ i₀, (t.pt i₀).left = (u.ex (((k : ℕ) : ℂ)⁻¹ • Q (lam i₀))).left) ∧ ∀ j₀, ∃ F : (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ), (∀ x, F (Q x) = Q (ac j₀ x)) ∧ ∀ z, u.ex (F z) = u.ex z ≫ t.act j₀) := by
   intro hL _ _ hU o _ g k J b em w w' t hP

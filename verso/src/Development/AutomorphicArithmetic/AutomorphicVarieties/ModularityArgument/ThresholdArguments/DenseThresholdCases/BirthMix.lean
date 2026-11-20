@@ -14,6 +14,41 @@ section
 open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Formalism.MainNotions.N Polynomial
 open GlobalTheory.CuspRep GlobalTheory.HeckeGal GlobalTheory.GalOfCusp UpperTheory.V UpperTheory.V.Af UpperTheory.V.Af.Bc UpperTheory.V.Sd
 open private attR_tw_cyc norm_of_cong U1 cong_iff cyc_mem ordAt_tw irrOpen_of cont_units from Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.BaseChangeUnits.BaseChangeNorms.MixSeed
+/- English proof (translation)
+Introduce and unpack `hP hM F Ω _ _ _ _ _ _ l _ hl hev hsp ι ξ hξ hodd hunr ⟨u, Au, hu2, hAu, hur⟩ hsq hdec P ⟨w₁, hw₁, hl₁⟩ ⟨w₂, hw₂, hl₂⟩`. Establish `: IsGalois F Ω` using `IsAlgClosure.isGalois F Ω`. Establish `hv : ∀ {w : Pl F} {A : ValuationSubring Ω}, ((l : ℕ) : 𝓞 F) ∈ w.asIdeal → IsPlaceOver A w → A.valuation (l : Ω) < 1` using `fun h hA => by simpa using (hA _).2 h`. Establish `hn : ∀ g, ‖(ξ g : Qbar l)‖ = 1` using `fun g => by`. Establish `: Finite (G F Ω ⧸ ξ.ker)` using `Subgroup.quotient_finite_of_isOpen _ hξ`.
+
+Establish `h0 : ξ.ker.index ≠ 0` using `Subgroup.index_ne_zero_of_finite`. Establish `h1 : ξ g ^ ξ.ker.index = 1` using `by rw [← map_pow]; exact ξ.ker.pow_index_mem g`. Establish `h2 : ‖(ξ g : Qbar l)‖ ^ ξ.ker.index = 1` using `by rw [← norm_pow, ← Units.val_pow_eq_pow_val, h1]; simp`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) h0).1 h2`. Take `⟨A₁, hA₁⟩` from `exists_isPlaceOver Ω w₁`.
+
+Take `⟨A₂, hA₂⟩` from `exists_isPlaceOver Ω w₂`. Establish `hF2 : 2 ≤ Module.finrank ℚ F`. Establish `h0 : 0 < Module.finrank ℚ F` using `Module.finrank_pos`. Take `⟨j, hj⟩` from `hev`. Use linear arithmetic over natural numbers and integers.
+
+Take `⟨k, t, hk2, ht2, hkl, htl, c, a, π₁, r₁, h₁, hres₁, ha⟩` from `hM F Ω l hl hF2 hsp ι ξ hξ hodd hunr ⟨u, Au, hu2, hAu, hur⟩ P ⟨w₁, hw₁, hl₁, A₁, hA₁, hdec A₁ (hv hl₁ hA₁)⟩ ⟨w₂, hw₂, hl₂, A₂, hA₂, hdec A₂ (hv hl₂ hA₂)⟩`. Establish `hkz : (l : ℤ) - 1 ∣ k`. Rewrite using `[← Nat.cast_pred (Fact.out : l.Prime).pos]`. Conclude with `Int.natCast_dvd_natCast.2 hkl`. Establish `htz : (l : ℤ) - 1 ∣ t`.
+
+Rewrite using `[← Nat.cast_pred (Fact.out : l.Prime).pos]`. Conclude with `Int.natCast_dvd_natCast.2 htl`. Set `m : Pl F → Fin 2 → ℤ` to `fun w => if w ∈ P then ![(t : ℤ), -(k : ℤ) - t] else ![0, -(k : ℤ)]`. Establish `hm₁ : ∀ w ∈ P, m w = ![(t : ℤ), -(k : ℤ) - t]` using `fun w h => if_pos h`. Establish `hm₂ : ∀ w ∉ P, m w = ![0, -(k : ℤ)]` using `fun w h => if_neg h`.
+
+Use `replace h₁ : OrdForm ι ξ (-(k : ℤ)) c m a π₁ r₁ := h₁`. Take `⟨π, hatt, hinf⟩` from `attR_tw_cyc h₁.att k`. Establish `SF` using `shapeFacts l (G F Ω) 2 r₁ (cycBar F Ω l ^ k)`. Establish `hU : ∀ g : G F Ω, cycBar F Ω l g ^ k ∈ U1 l` using `fun g => by simpa using cyc_mem g hkz`. Establish `hn' : ∀ i g, ‖(((![1, ξ] : Fin 2 → G F Ω →* (Qbar l)ˣ) i g : (Qbar l)ˣ) : Qbar l)‖ = 1` using `Fin.forall_fin_two.2 ⟨fun g => by simp, hn⟩`.
+
+Establish `hres : ResSum (tw r₁ (cycBar F Ω l ^ k)) ![1, ξ]`. Use `(shapeFacts l (G F Ω) 2 _ 1).2.2.2.2.1 _ _ 1 (fun i g => ?_) (SF.2.2.2.1 _ (fun g => norm_of_cong (hU g)) hres₁) fun i g => ?_` and prove the remaining obligations. Rewrite using `[MonoidHom.mul_apply, Units.val_mul, norm_mul, hn', one_mul]`. Conclude with `norm_of_cong (hU g)`. Rewrite using `[Cong, norm_sub_rev]`.
+
+Use `(cong_iff (hn' i g)).2 ?_` and prove the remaining obligations. Rewrite using `[MonoidHom.mul_apply, Equiv.Perm.one_apply, mul_inv_cancel_comm]`. Conclude with `hU g`. Establish `hO` using `_root_.UpperTheory.V.Z.Win.RR.ordAbove_of_printsH hP F Ω l hl hsp ι ξ _ c m a π₁ r₁ h₁`. Establish `hO₁ : ∀ w ∈ P, ((l : ℕ) : 𝓞 F) ∈ w.asIdeal → ∀ A, IsPlaceOver A w → OrdAt (tw r₁ (cycBar F Ω l ^ k)) ![(k : ℤ) + t, -(t : ℤ)] ![ξ, 1] A` using `fun w h hw A hA => by`.
+
+Take `⟨κ, h1, h2, h3⟩` from `hO w hw A hA`. Use `ordAt_tw (ψ₀ := ξ) (ψ₁ := 1) h₁.cont hkz.neg_right (by rw [mul_one]; exact h₁.det) (continuous_of_isOpen_ker' ξ hξ) hn (fun g => by simp) hA (hunr A (hv hw hA)) (by rw [hm₁ w h]; exact htz) h1 h2 (fun σ hσ => by rw [Cong, ← (ha w hw A hA σ hσ).1 h]; exact h3 σ hσ) hkz` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Rewrite using `[hm₁ w h]`. Use extensionality with `i`.
+
+Apply the tactic sequence `fin_cases i <;> simp <;> ring`. Establish `hO₂ : ∀ w ∉ P, ((l : ℕ) : 𝓞 F) ∈ w.asIdeal → ∀ A, IsPlaceOver A w → OrdAt (tw r₁ (cycBar F Ω l ^ k)) ![(k : ℤ), 0] ![1, ξ] A` using `fun w h hw A hA => by`. Take `⟨κ, h1, h2, h3⟩` from `hO w hw A hA`. Use `ordAt_tw (ψ₀ := 1) (ψ₁ := ξ) h₁.cont hkz.neg_right (by rw [one_mul]; exact h₁.det) continuous_const (fun g => by simp) hn hA (fun _ _ => rfl) (by rw [hm₂ w h]; exact dvd_zero _) h1 h2 (fun σ hσ => by` as an intermediate fact. Establish `h4` using `h3 σ hσ`.
+
+Rewrite `h4` using `[(ha w hw A hA σ hσ).2 h]`. Conclude with `h4) hkz`. Use `this using 1` and compare the differences between its conclusion and the goal. Rewrite using `[hm₂ w h]`. Use extensionality with `i`.
+
+Apply the tactic sequence `fin_cases i <;> simp`. Use `⟨k, t, π, tw r₁ (cycBar F Ω l ^ k), hk2, ht2, hkl, htl, ?_, ?_, hatt, ?_, hres, ⟨fun A hA => ?_, UpperTheory.V.Z.Win.Birth.prTw F Ω l ι r₁ _ (by` and prove the remaining obligations. Simplify using `using (_root_.UpperTheory.V.Sd.alg_cyclotomic_of_printed_results hP.toClassicalTheorems F Ω l ι).1 (k : ℤ) 1 (by simp)) (UpperTheory.V.Z.Win.Birth.prOrd F Ω l ι ξ _ c m a π₁ r₁ h₁)⟩,`. Use `fun w hw => ⟨fun h => ⟨hO₁ w h hw, fun τ hτ => ?_⟩, fun h => ⟨hO₂ w h hw, fun τ hτ => ?_⟩⟩⟩`. Establish `hz : Continuous fun s : G F Ω => ((cycZ F Ω l s : ℤ_[l]ˣ) : ℤ_[l])` using `Units.continuous_val.comp (continuous_cycZ F Ω l)`.
+
+Establish `hcyc : Continuous fun s : G F Ω => (cycBar F Ω l s : Qbar l)` using `(continuous_algebraMap ℚ_[l] (PadicAlgCl l)).comp (continuous_subtype_val.comp hz)`. Use `cont_units _ ?_` and prove the remaining obligations. Simplify using `only [tw_val, MonoidHom.pow_apply, Units.val_pow_eq_pow_val]`. Conclude with `(hcyc.pow k).smul (Units.continuous_val.comp h₁.cont)`. Establish `hk0 : (k : ℤ) ≠ 0` using `by omega`.
+
+Conclude with `irrOpen_of hl hn (SF.2.2.2.2.2 (_root_.UpperTheory.V.Sd.ordinary_irreducible_of_printed_hida hP F Ω l hl hsp ι ξ _ c m a π₁ r₁ h₁)) hres hsq (hv hl₂ hA₂) hk0 (hO₂ w₂ hw₂ hl₂ A₂ hA₂)`. Use `MonoidHom.ext fun g => Units.ext ?_` and prove the remaining obligations. Establish `h2 : Matrix.GeneralLinearGroup.det (r₁ g) = cycBar F Ω l g ^ (-(k : ℤ)) * ξ g` using `DFunLike.congr_fun h₁.det g`. Establish `h3` using `congrArg Units.val h2`. Rewrite `h3` using `[Matrix.GeneralLinearGroup.val_det_apply]`.
+
+Rewrite using `[MonoidHom.comp_apply, Matrix.GeneralLinearGroup.val_det_apply, tw_val, Matrix.det_smul, h3]`. Simplify using `only [zpow_neg, zpow_natCast, MonoidHom.mul_apply, MonoidHom.pow_apply, Units.val_mul, Units.val_inv_eq_inv_val, Fintype.card_fin]`. Clear the denominators using the available nonvanishing facts. Use `(shapeFacts l (G F Ω) 2 _ 1).2.1 _ _ _ 1 (SF.1 _ _ (_root_.UpperTheory.V.Z.Win.RR.ordAway_a_alt hP F Ω l ι ξ _ c m a π₁ r₁ h₁ A hA)) fun i s hs => ?_` and prove the remaining obligations. Establish `h1 : cycZ F Ω l s = 1` using `(UpperTheory.V.Base.places F Ω l A).2.2.2 hA hs`.
+
+Rewrite using `[MonoidHom.mul_apply, MonoidHom.pow_apply, cycBar, MonoidHom.comp_apply, h1, map_one, one_pow, mul_one]`. Both sides reduce to the same expression. Use `hinf _ _ ((h₁.above w hw).2.2.2.2.2 τ hτ) using 2` and compare the differences between its conclusion and the goal. Rewrite using `[hm₁ w h]`. Use extensionality with `i`.
+
+Apply the tactic sequence `fin_cases i <;> simp <;> ring`. Use `hinf _ _ ((h₁.above w hw).2.2.2.2.2 τ hτ) using 2` and compare the differences between its conclusion and the goal. Rewrite using `[hm₂ w h]`. Use extensionality with `i`. Apply the tactic sequence `fin_cases i <;> simp`.
+-/
 theorem UpperTheory.V.Z.Win.Birth.mix_birth_of_prints :
     _root_.UpperTheory.V.Af.HypothesesH' → UpperTheory.Esk.PropMV → UpperTheory.V.Z.Win.Birth.MixSeedP := by
   classical

@@ -11,6 +11,11 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 
 namespace GlobalTheory.ThKLiftVCusp
 
+/- English proof (translation)
+Introduce `hKP F E _ _ _ _ _ σ B a a' G X om om' R Rf hM hq hp d₁ W₁ H' i₀ i₁ hH' c hprop Φ Φ' hΦ' hPM hct hdec Φ₁ Φ₁' hΦ₁' hPM₁ μ 𝓕 hμ h𝓕 d₂ H hH`. Take `⟨V₁, M₁, e, hJ, hM₁, he⟩` from `GlobalTheory.T.triple_hyperbolic_plane_split hKP F E σ B a a' G X om om' hM.triple d₂ H hH`. Take `⟨C₀, hCT⟩` from `GlobalTheory.T.matched_adapted_plane_q_zero hKP F E σ B a a' G X om om' R Rf hM hq hp d₁ W₁ H' i₀ i₁ hH' c Φ Φ' hΦ' hPM hct hdec Φ₁ Φ₁' hΦ₁' hPM₁ μ 𝓕 hμ h𝓕 d₂ H hH V₁ M₁ e hJ hM₁ he`. Establish `h0` using `GlobalTheory.T.matched_adapted_plane_estimate hKP F E σ B a a' G X om om' R Rf hM hq hp d₁ W₁ H' i₀ i₁ hH' c Φ Φ' hΦ' hPM hct hdec Φ₁ Φ₁' hΦ₁' hPM₁ μ 𝓕 hμ h𝓕 d₂ H hH V₁ M₁ e hJ hM₁ he`. Introduce `ν 𝓖 hν h𝓖 hmass g`.
+
+Rewrite using `[← hCT ν 𝓖 hν h𝓖 hmass g]`. Simplify using `only [Pi.zero_apply, h0 g, mul_zero]`.
+-/
 theorem cusp : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E)
     (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W) (R : RealMaps F a a') (Rf : FinMaps F a a'), IsMatched B G X om om' R Rf → G.q = 0 → 1 ≤ G.p →
     ∀ (d₁ : ℕ) (W₁ : Spc F E d₁) (H' : Plane E (a + a') d₁) (i₀ i₁ : ℕ), H'.IsAdapted σ B G.W W₁ i₀ i₁ → ∀ c : ℂ,

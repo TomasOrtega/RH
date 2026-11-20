@@ -14,6 +14,13 @@ noncomputable section
 
 namespace GlobalTheory.StdLoc
 
+/- English proof (translation)
+Rewrite using `[blockIdx]`. Establish `e : c * (a + a') ^ 2 = c * a ^ 2 + c * a' ^ 2 + c * a * a' + c * a * a'` using `by ring`. Establish `e2 : (q ^ c) ^ (a * a') = q ^ (c * a * a')` using `by rw [← pow_mul, mul_assoc]`. Rewrite using `[e, pow_add, pow_add, pow_add, e2]`. Establish `h1 : q ^ (c * a ^ 2) ≠ 0` using `pow_ne_zero _ hq`.
+
+Establish `h2 : q ^ (c * a' ^ 2) ≠ 0` using `pow_ne_zero _ hq`. Establish `h3 : q ^ (c * a * a') ≠ 0` using `pow_ne_zero _ hq`. Distinguish the cases in `ha : glVol q a = 0`. Simplify using `[ha]`. Distinguish the cases in `hb : glVol q a' = 0`.
+
+Simplify using `[hb]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem idx_alg (q : ℝ) (hq : q ≠ 0) (c a a' : ℕ) :
     q ^ (c * (a + a') ^ 2) * glVol q (a + a') /
       (q ^ (c * a ^ 2) * glVol q a * (q ^ (c * a' ^ 2) * glVol q a') * (q ^ c) ^ (a * a')) = blockIdx q c a a' := by
@@ -34,6 +41,9 @@ end GlobalTheory.StdLoc
 
 namespace GlobalTheory.StdLoc
 
+/- English proof (translation)
+Proceed by induction on `a with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[← add_assoc, glVol, Finset.prod_Icc_succ_top (by omega), ← glVol, ih, Finset.prod_Icc_succ_top (by omega), mul_assoc, add_assoc]`.
+-/
 theorem glVol_add (q : ℝ) (a' a : ℕ) :
     glVol q (a' + a) = glVol q a' * ∏ i ∈ Finset.Icc 1 a, (1 - (q ^ (a' + i))⁻¹) := by
   induction a with
@@ -41,9 +51,19 @@ theorem glVol_add (q : ℝ) (a' a : ℕ) :
   | succ n ih =>
     rw [← add_assoc, glVol, Finset.prod_Icc_succ_top (by omega), ← glVol, ih, Finset.prod_Icc_succ_top (by omega), mul_assoc, add_assoc]
 
+/- English proof (translation)
+The claim follows from `Finset.prod_pos fun i hi => sub_pos.2 (inv_lt_one_of_one_lt₀ (one_lt_pow₀ hq (by simp at hi; omega)))`.
+-/
 theorem glVol_pos {q : ℝ} (hq : 1 < q) (n : ℕ) : 0 < glVol q n :=
   Finset.prod_pos fun i hi => sub_pos.2 (inv_lt_one_of_one_lt₀ (one_lt_pow₀ hq (by simp at hi; omega)))
 
+/- English proof (translation)
+Establish `h1` using `glVol_pos hq a`. Establish `h2` using `glVol_pos hq a'`. Establish `h3 : (0 : ℝ) < q ^ (c * a * a')` using `pow_pos (by linarith) _`. Establish `h4 : 0 < ∏ i ∈ Finset.Icc 1 a, (1 - (q ^ (a' + i))⁻¹)`. Use `glVol_add q a' a` as an intermediate fact.
+
+Establish `h5` using `glVol_pos hq (a' + a)`. Rewrite `h5` using `[this]`. Conclude with `pos_of_mul_pos_right h5 h2.le`. Rewrite using `[blockIdx, add_comm a a', glVol_add]`. Generalize the expression as in `∏ i ∈ Finset.Icc 1 a, (1 - (q ^ (a' + i))⁻¹) = P at h4 ⊢`.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem stdLoc_product {q : ℝ} (hq : 1 < q) (c a a' : ℕ) :
     (∏ i ∈ Finset.Icc 1 a, (1 - (q ^ (a' + i))⁻¹))⁻¹ * blockIdx q c a a' * ((q ^ (c * a * a'))⁻¹ * glVol q a) = 1 := by
   have h1 := glVol_pos hq a
@@ -64,6 +84,11 @@ namespace GlobalTheory.StdLoc
 
 open UniqueFactorizationMonoid
 
+/- English proof (translation)
+Establish `h1 : (normalizedFactors 𝔪).prod = 𝔪`. Use `prod_normalizedFactors h𝔪` as an intermediate fact. Conclude with `associated_iff_eq.1 this`. Use `conv_lhs => rw [← h1]`. Rewrite using `[map_multiset_prod, Nat.cast_multiset_prod, Multiset.map_map, Finset.prod_multiset_map_count]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem absNorm_eq_prod {E : Type} [Field E] [NumberField E] {𝔪 : Ideal (𝓞 E)} (h𝔪 : 𝔪 ≠ ⊥) :
     (Ideal.absNorm 𝔪 : ℝ) = ∏ w ∈ (normalizedFactors 𝔪).toFinset, (Ideal.absNorm w : ℝ) ^ (normalizedFactors 𝔪).count w := by
   have h1 : (normalizedFactors 𝔪).prod = 𝔪 := by
@@ -73,6 +98,27 @@ theorem absNorm_eq_prod {E : Type} [Field E] [NumberField E] {𝔪 : Ideal (𝓞
   rw [map_multiset_prod, Nat.cast_multiset_prod, Multiset.map_map, Finset.prod_multiset_map_count]
   simp
 
+/- English proof (translation)
+Take `⟨ρ, hρ⟩` from `GlobalTheory.T.exists_reduction_maxLevel_unitary_mod_ideal D 𝔪 h𝔪 P.d`. Establish `hsurj : Function.Surjective ρ`. Introduce `g'`. Use `choose g hg using fun i j => Ideal.Quotient.mk_surjective (I := 𝔪) (((g' : GL (Fin P.d) (𝓞 D.host.E ⧸ 𝔪)) : Matrix (Fin P.d) (Fin P.d) (𝓞 D.host.E ⧸ 𝔪)) i j)`. Establish `hgm : (Matrix.of g).map (Ideal.Quotient.mk 𝔪) = ((g' : GL (Fin P.d) (𝓞 D.host.E ⧸ 𝔪)) : Matrix (Fin P.d) (Fin P.d) (𝓞 D.host.E ⧸ 𝔪))`.
+
+Use extensionality with `i j`. Simplify using `[hg]`. Establish `h2` using `GlobalTheory.T.exists_maxLevel_unitary_congr_mod_ideal D 𝔪 h𝔪 hcop P.d (Matrix.of g) (by rw [hgm]; exact Matrix.isUnits_det_units g')`. Take `⟨k, hk, hk'⟩` from `h2`. Simplify using `only [Matrix.of_apply] at hk'`.
+
+Use `⟨⟨k, hk⟩, ?_⟩` and prove the remaining obligations. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Conclude with `((hρ ⟨k, hk⟩ i j (g i j)).2 (hk' i j)).trans (hg i j)`. Establish `hsub : P.J.subgroupOf (intG D P.d) = (blockPar (𝓞 D.host.E ⧸ 𝔪) a P.d).comap ρ`.
+
+Establish `h0 : ∀ x : AE D, x - inc D ((0 : 𝓞 D.host.E) : D.host.E) = x` using `fun x => by simp`. Use `Subgroup.ext fun k => ⟨fun h => ?_, fun h => ?_⟩` and prove the remaining obligations. Establish `h' : (k : GA D P.d) ∈ P.J` using `h show ρ k ∈ blockPar (𝓞 D.host.E ⧸ 𝔪) a P.d`. Use `(mem_blockPar _).2 fun i j hj hi => ?_` and prove the remaining obligations. Establish `h1` using `((hJ _).1 h').2 i j hj hi`.
+
+Rewrite `h1` using `[← h0 ((((k : GA D P.d) : GL (Fin P.d) (AE D)) : Matrix (Fin P.d) (Fin P.d) (AE D)) i j)]`. Conclude with `((hρ k i j 0).2 h1).trans (map_zero _)`. Establish `h' : ρ k ∈ blockPar (𝓞 D.host.E ⧸ 𝔪) a P.d` using `h show (k : GA D P.d) ∈ P.J`. Use `(hJ _).2 ⟨k.2, fun i j hj hi => ?_⟩` and prove the remaining obligations. Establish `h1` using `(hρ k i j 0).1 (((mem_blockPar _).1 h' i j hj hi).trans (map_zero _).symm)`.
+
+Rewrite `h1` using `[h0]`. Then use the resulting hypothesis. Establish `hR : Nat.card (𝓞 D.host.E ⧸ 𝔪) = Ideal.absNorm 𝔪`. Rewrite using `[Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Use `haveI : Finite (𝓞 D.host.E ⧸ 𝔪) := Nat.finite_of_card_ne_zero (by rw [hR]; simpa [Ideal.absNorm_eq_zero_iff] using h𝔪)`. Establish `hidx : P.J.relIndex (intG D P.d) = (blockPar (𝓞 D.host.E ⧸ 𝔪) a P.d).index` using `by show (P.J.subgroupOf (intG D P.d)).index = _`.
+
+Rewrite using `[hsub, Subgroup.index_comap_of_surjective _ hsurj]`. Establish `hcm` using `(blockPar (𝓞 D.host.E ⧸ 𝔪) a P.d).card_mul_index`. Establish `hP0 : (Nat.card (blockPar (𝓞 D.host.E ⧸ 𝔪) a P.d) : ℝ) ≠ 0`. Conclude with `Nat.card_pos.ne'` after adjusting the coercions. Establish `hI : ((blockPar (𝓞 D.host.E ⧸ 𝔪) a P.d).index : ℝ) = (Nat.card (GL (Fin P.d) (𝓞 D.host.E ⧸ 𝔪)) : ℝ) / (Nat.card (blockPar (𝓞 D.host.E ⧸ 𝔪) a P.d) : ℝ)`.
+
+Rewrite using `[eq_div_iff hP0, mul_comm]`. Conclude with `hcm` after adjusting the coercions. Rewrite using `[hidx, hI, GlobalTheory.T.card_blockParabolicSubgroupGL _ a P.d ha, hR]`. Use `push_cast`. Rewrite using `[GlobalTheory.T.card_GL_ringOfIntegers_quotient_prod_factors _ 𝔪 h𝔪, GlobalTheory.T.card_GL_ringOfIntegers_quotient_prod_factors _ 𝔪 h𝔪, GlobalTheory.T.card_GL_ringOfIntegers_quotient_prod_factors _ 𝔪 h𝔪, absNorm_eq_prod h𝔪, ← Finset.prod_pow, ← Finset.prod_mul_distrib, ← Finset. …`.
+
+Use `Finset.prod_congr rfl fun w hw => ?_` and prove the remaining obligations. Establish `hq : (Ideal.absNorm w : ℝ) ≠ 0`. Establish `hw0 : w ≠ ⊥` using `fun h => by`. Rewrite `hw` using `[h]`. Conclude with `zero_notMem_normalizedFactors _ (Multiset.mem_toFinset.1 hw)`.
+
+Conclude with `(Ideal.absNorm_eq_zero_iff.not.2 hw0)` after adjusting the coercions. Take `⟨a', ha'⟩` from `Nat.exists_eq_add_of_le ha`. Rewrite using `[ha', Nat.add_sub_cancel_left]`. Conclude with `idx_alg _ hq _ _ _`.
+-/
 theorem relIndex_blockLevel {D : D7} {δ t0 : ℂ} {Q : ℕ} (P : Pair D ⊤ δ t0 Q) (𝔪 : Ideal (𝓞 D.host.E)) (a : ℕ)
     (h𝔪 : 𝔪 ≠ ⊥) (hcop : 𝔪 ⊔ D.host.conj • 𝔪 = ⊤) (ha : a ≤ P.d) (hJ : IsBlockLevel P 𝔪 a) :
     ((P.J.relIndex (intG D P.d) : ℕ) : ℝ) = ∏ w ∈ (normalizedFactors 𝔪).toFinset,

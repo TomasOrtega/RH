@@ -13,8 +13,16 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.SWLagTerms
 variable {D : D7}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cA_incA_loc (e : D.host.E) : cA D (incA D e) = incA D (star e) := rfl
 
+/- English proof (translation)
+Establish `e : ((M.map (incA D)).map (cA D))ᵀ = ((M.map star)ᵀ).map (incA D)`. Use extensionality with `i j`. Simplify using `[cA_incA_loc]`. Rewrite using `[GlobalTheory.AdjLawPf.adjO_eq, GlobalTheory.AdjLawPf.adjO_eq, GlobalTheory.AdjLawPf.conjT_mul, e]`. Unfold `ratMul hAdj`.
+
+Rewrite using `[Matrix.map_mul, Matrix.map_mul]`. Establish `g1 : (HSpace.gram W).map (incA D) * (HSpace.gram W)⁻¹.map (incA D) = 1` using `mul_eq_one_comm.1 (GlobalTheory.AdjLawPf.inv_mul_gram W)`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc ((HSpace.gram W).map (incA D)), g1, Matrix.one_mul]`.
+-/
 theorem adjO_mul_rat (V W : HSp D) (y : Mx D V.rank W.rank) (M : Matrix (Fin W.rank) (Fin W.rank) D.host.E) :
     GlobalTheory.PairLift.adjO V W (HMul.hMul (y : Matrix (Fin V.rank) (Fin W.rank) (AE D)) (M.map (incA D))) =
       ratMul (hAdj W M) (GlobalTheory.PairLift.adjO V W y) := by
@@ -28,6 +36,9 @@ theorem adjO_mul_rat (V W : HSp D) (y : Mx D V.rank W.rank) (M : Matrix (Fin W.r
   simp only [Matrix.mul_assoc]
   rw [← Matrix.mul_assoc ((HSpace.gram W).map (incA D)), g1, Matrix.one_mul]
 
+/- English proof (translation)
+Unfold `actO`. Rewrite using `[inv_inv, hg, GlobalTheory.AdjLawPf.mt_one, Matrix.one_mul]`.
+-/
 theorem act_lagr (V W : HSp D) (γ : GA D (GlobalTheory.Doubling.dblSp W))
     (g₀ : Matrix (Fin (W.rank + W.rank)) (Fin (W.rank + W.rank)) D.host.E)
     (hg : Formalism.L2.Theta.mt (GlobalTheory.Doubling.dblSp W) γ = g₀.map (incA D)) (y : Mx D V.rank W.rank) :
@@ -36,6 +47,9 @@ theorem act_lagr (V W : HSp D) (γ : GA D (GlobalTheory.Doubling.dblSp W))
   unfold actO
   rw [inv_inv, hg, GlobalTheory.AdjLawPf.mt_one, Matrix.one_mul]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.SphericalZero.resL, Matrix.of_apply, Matrix.mul_apply, Matrix.map_apply]`. Rewrite using `[← finSumFinEquiv.sum_comp, Fintype.sum_sum_type]`. Simplify using `only [GlobalTheory.SiegelFormula.lagr, Matrix.of_apply, GlobalTheory.Doubling.pairVec_inl, GlobalTheory.Doubling.pairVec_inr, blk, Matrix.toBlocks₁₁, Matrix.toBlocks₂₁, Matrix.submatrix_apply, Matrix.sub_apply, map_sub, mul_sub, Finset.sum_sub_distrib, Pi.neg_apply, neg_mul, Fins …`. Normalize the expressions using the abelian group laws.
+-/
 theorem resL_lagr (V W : HSp D) (y : Mx D V.rank W.rank)
     (g₀ : Matrix (Fin (W.rank + W.rank)) (Fin (W.rank + W.rank)) D.host.E) :
     GlobalTheory.IndefiniteRowSideFullHecke.SphericalZero.resL W V (HMul.hMul (GlobalTheory.SiegelFormula.lagr W V y : Matrix (Fin V.rank) (Fin (W.rank + W.rank)) (AE D)) (g₀.map (incA D))) =
@@ -48,6 +62,9 @@ theorem resL_lagr (V W : HSp D) (y : Mx D V.rank W.rank)
     Finset.sum_sub_distrib, Pi.neg_apply, neg_mul, Finset.sum_neg_distrib]
   abel
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [Matrix.neg_apply, GlobalTheory.IndefiniteRowSideFullHecke.SphericalZero.resR, Matrix.of_apply, Matrix.mul_apply, Matrix.map_apply]`. Rewrite using `[← finSumFinEquiv.sum_comp, Fintype.sum_sum_type]`. Simplify using `only [GlobalTheory.SiegelFormula.lagr, Matrix.of_apply, GlobalTheory.Doubling.pairVec_inl, GlobalTheory.Doubling.pairVec_inr, blk, Matrix.toBlocks₂₂, Matrix.toBlocks₁₂, Matrix.submatrix_apply, Matrix.sub_apply, map_sub, mul_sub, Finset.sum_sub_distrib, Pi.neg_apply, neg_mul, Fins …`. Normalize the expressions using the abelian group laws.
+-/
 theorem resR_lagr (V W : HSp D) (y : Mx D V.rank W.rank)
     (g₀ : Matrix (Fin (W.rank + W.rank)) (Fin (W.rank + W.rank)) D.host.E) :
     -GlobalTheory.IndefiniteRowSideFullHecke.SphericalZero.resR W V (HMul.hMul (GlobalTheory.SiegelFormula.lagr W V y : Matrix (Fin V.rank) (Fin (W.rank + W.rank)) (AE D)) (g₀.map (incA D))) =
@@ -60,6 +77,9 @@ theorem resR_lagr (V W : HSp D) (y : Mx D V.rank W.rank)
     Finset.sum_sub_distrib, Pi.neg_apply, neg_mul, Finset.sum_neg_distrib]
   abel
 
+/- English proof (translation)
+Introduce `D V W f₁ f₂ γ g₀ hg y`. Rewrite using `[act_lagr V W γ g₀ hg y, GlobalTheory.SWPairProof.dbl_apply, resL_lagr, resR_lagr, adjO_mul_rat, adjO_mul_rat, frameOf_fst, frameOf_snd, starRingEnd_apply, mul_comm]`.
+-/
 theorem dbl_actO_lagr : ∀ (D : D7) (V W : HSp D) (f₁ f₂ : WO V W → ℂ) (γ : GA D (GlobalTheory.Doubling.dblSp W))
     (g₀ : Matrix (Fin (W.rank + W.rank)) (Fin (W.rank + W.rank)) D.host.E),
     Formalism.L2.Theta.mt (GlobalTheory.Doubling.dblSp W) γ = g₀.map (incA D) → ∀ (y : Mx D V.rank W.rank),

@@ -8,6 +8,29 @@ open Finset InnerProductSpace Matrix
 
 variable {d : ℕ}
 
+/- English proof (translation)
+Use `set v : Fin d → EuclideanSpace ℝ (Fin d) := fun i => fB 1 (e i) with hv_def`. Establish `hk : k.val + 1 ≤ d` using `k.isLt`. Take `⟨w, hw_def⟩ : ∃ w : Fin (k.val + 1) → EuclideanSpace ℝ (Fin d), w = fun i => v (Fin.castLE hk i)` from `⟨_, rfl⟩`. Establish `hwi : ∀ i, w i = v (Fin.castLE hk i)` using `fun i => by rw [hw_def]`. Establish `hw : LinearIndependent ℝ w`.
+
+Rewrite using `[hw_def]`. Conclude with `hU.comp _ (Fin.castLE_injective hk)`. Establish `hgs : ∀ i, gs w i = gs v (Fin.castLE hk i)`. Introduce `i`. Apply `gs_eq_of w i (gs v (Fin.castLE hk i))` to reduce the goal to its premises.
+
+Rewrite using `[hwi i]`. Use `Submodule.span_mono ?_ (b_sub_gs_mem v (Fin.castLE hk i))` and prove the remaining obligations. Introduce and unpack `_ ⟨j, hj, rfl⟩`. Establish `hj' : j.val < i.val` using `Set.mem_Iio.mp hj`. Use `⟨⟨j.val, by omega⟩, Fin.lt_iff_val_lt_val.mpr hj', ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hwi]`. Conclude with `congrArg v (Fin.ext rfl)`. Introduce `j hj`. Rewrite using `[hwi j]`. Conclude with `gs_inner_b_of_lt v (show Fin.castLE hk j < Fin.castLE hk i from hj)`.
+
+Establish `hprod : ∏ j ∈ univ.filter (fun j : Fin d => j ≤ k), ‖gs v j‖ ^ 2 = ∏ i, ‖gs w i‖ ^ 2`. Use `symm`. Use `Finset.prod_bij (fun i _ => Fin.castLE hk i) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `i _`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and]`.
+
+Rewrite using `[Fin.le_iff_val_le_val, Fin.coe_castLE]`. Use `i.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Introduce `a _ b _ h`. Conclude with `Fin.castLE_injective hk h`.
+
+Introduce `j hj`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hj`. Establish `hj' : j.val ≤ k.val` using `Fin.le_iff_val_le_val.mp hj`. Conclude with `⟨⟨j.val, by omega⟩, Finset.mem_univ _, Fin.ext rfl⟩`. Introduce `i _`.
+
+Rewrite using `[hgs i]`. Establish `hdet` using `det_gram_eq w hw`. Choose the witnesses or unpack the hypotheses as in `⟨G, hG⟩ : ∃ G : Matrix (Fin (k.val + 1)) (Fin (k.val + 1)) ℤ, Matrix.gram ℝ w = G.map (Int.cast) := by`. Use `⟨Matrix.of fun a b => ∑ l, e (Fin.castLE hk a) l * e (Fin.castLE hk b) l, ?_⟩` and prove the remaining obligations. Use extensionality with `a b`.
+
+Rewrite using `[Matrix.gram_apply, Matrix.map_apply, Matrix.of_apply, hwi, hwi]`. Simplify using `[hv_def, fB_apply, toReal, PiLp.inner_apply, Matrix.one_mulVec, mul_comm]`. Establish `hdetZ : (Matrix.gram ℝ w).det = ((G.det : ℤ) : ℝ)`. Rewrite using `[hG]`. Use `(Int.castRingHom ℝ).map_det G` as an intermediate fact.
+
+Simplify `this.symm` using `[RingHom.mapMatrix_apply]`. Establish `hpos : 0 < ∏ i, ‖gs w i‖ ^ 2`. Apply `Finset.prod_pos` to reduce the goal to its premises. Introduce `i _`. Conclude with `pow_pos (norm_pos_iff.mpr (gs_ne_zero w hw i)) 2`.
+
+Establish `h0 : (0 : ℝ) < (G.det : ℝ)` using `by rw [← hdetZ, hdet]; exact hpos`. Establish `h1 : (0 : ℤ) < G.det` using `by exact_mod_cast h0`. Establish `h2 : (1 : ℤ) ≤ G.det` using `by omega`. Rewrite using `[hprod, ← hdet, hdetZ]`. Conclude with `h2` after adjusting the coercions.
+-/
 lemma prefix_prod_ge_one (e : Module.Basis (Fin d) ℤ (Fin d → ℤ))
     (hU : LinearIndependent ℝ (fun i => fB 1 (e i))) (k : Fin d) :
     1 ≤ ∏ j ∈ univ.filter (fun j : Fin d => j ≤ k), ‖gs (fun i => fB 1 (e i)) j‖ ^ 2 := by
@@ -70,6 +93,19 @@ lemma prefix_prod_ge_one (e : Module.Basis (Fin d) ℤ (Fin d → ℤ))
   rw [hprod, ← hdet, hdetZ]
   exact_mod_cast h2
 
+/- English proof (translation)
+Take `⟨K, hKpos, hK⟩` from `(LinearMap.injective_iff_antilipschitz (TB B)).mp (TB_injective A B hA hAB)`. Establish `hbound : ∀ v, ‖v‖ ≤ (K : ℝ) * ‖TB B v‖`. Introduce `v`. Establish `h` using `hK.le_mul_dist v 0`. Simplify `h` using `[dist_zero_right]`.
+
+Establish `hK0 : (0 : ℝ) < K` using `by exact_mod_cast hKpos`. Use `set m : ℝ := min 1 (((K : ℝ)⁻¹) ^ 2) with hm`. Establish `hm0 : 0 < m` using `lt_min one_pos (pow_pos (inv_pos.mpr hK0) 2)`. Establish `hm1 : m ≤ 1` using `min_le_left _ _`. Use `⟨m ^ d, pow_pos hm0 d, ?_⟩` and prove the remaining obligations.
+
+Introduce `e k`. Take `⟨h1, -⟩` from `li_basis A B hA hAB e`. Establish `hone` using `prefix_prod_ge_one e h1 k`. Establish `hterm : ∀ j : Fin d, m * ‖gs (fun i => fB 1 (e i)) j‖ ^ 2 ≤ ‖gs (fun i => fB B (e i)) j‖ ^ 2`. Introduce `j`.
+
+Establish `h` using `gs_TB B hbound (fun i => fB 1 (e i)) j`. Establish `hw : (fun i => TB B (fB 1 (e i))) = (fun i => fB B (e i))`. Use function extensionality and compare the values at `i`. Conclude with `(fB_eq_TB B (e i)).symm`. Rewrite `h` using `[hw]`.
+
+Establish `h3 : (K : ℝ)⁻¹ * ‖gs (fun i => fB 1 (e i)) j‖ ≤ ‖gs (fun i => fB B (e i)) j‖`. Rewrite using `[inv_mul_le_iff₀ hK0]`. Conclude with `h`. Establish `h4 : 0 ≤ (K : ℝ)⁻¹ * ‖gs (fun i => fB 1 (e i)) j‖` using `by positivity`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `set S := univ.filter (fun j : Fin d => j ≤ k) with hS`. Establish `hcard : S.card ≤ d` using `(Finset.card_le_univ S).trans_eq (Fintype.card_fin d)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_const]`. Use `_ ≤ ∏ j ∈ S, ‖gs (fun i => fB B (e i)) j‖ ^ 2 := Finset.prod_le_prod (fun j _ => by positivity) (fun j _ => hterm j)`.
+-/
 lemma hlow_of (A B : Matrix (Fin d) (Fin d) ℝ) (hA : A.PosDef) (hAB : A = Bᴴ * B) :
     ∃ c : ℝ, 0 < c ∧ ∀ (e : Module.Basis (Fin d) ℤ (Fin d → ℤ)) (k : Fin d),
       c ≤ ∏ j ∈ univ.filter (fun j : Fin d => j ≤ k), ‖gs (fun i => fB B (e i)) j‖ ^ 2 := by

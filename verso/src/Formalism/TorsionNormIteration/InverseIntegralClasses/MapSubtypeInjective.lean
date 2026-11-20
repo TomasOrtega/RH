@@ -15,12 +15,18 @@ section Integral
 
 variable {K : Type u} [NormedField K] [IsUltrametricDist K]
 
+/- English proof (translation)
+Introduce `d`. Rewrite using `[map_add]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le (ha d) (hb d))`.
+-/
 theorem integralMv_add {ι : Type*} {a b : MvPowerSeries ι K} (ha : IntegralMv a)
     (hb : IntegralMv b) : IntegralMv (a + b) := by
   intro d
   rw [map_add]
   exact (IsUltrametricDist.norm_add_le_max _ _).trans (max_le (ha d) (hb d))
 
+/- English proof (translation)
+Introduce `d`. Rewrite using `[map_sub, sub_eq_add_neg]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le (ha d) ?_)` and prove the remaining obligations. Rewrite using `[norm_neg]`. Conclude with `hb d`.
+-/
 theorem integralMv_sub {ι : Type*} {a b : MvPowerSeries ι K} (ha : IntegralMv a)
     (hb : IntegralMv b) : IntegralMv (a - b) := by
   intro d
@@ -29,12 +35,18 @@ theorem integralMv_sub {ι : Type*} {a b : MvPowerSeries ι K} (ha : IntegralMv 
   rw [norm_neg]
   exact hb d
 
+/- English proof (translation)
+Introduce `d`. Rewrite using `[MvPowerSeries.coeff_X]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem integralMv_X {ι : Type*} (i : ι) : IntegralMv (MvPowerSeries.X i : MvPowerSeries ι K) := by
   classical
   intro d
   rw [MvPowerSeries.coeff_X]
   split_ifs <;> simp
 
+/- English proof (translation)
+Unfold `IsFunEqTypeMv at *`. Use `integralMv_add ha hb using 1` and compare the differences between its conclusion and the goal. Simplify using `only [map_add, smul_add]`. Normalize the expressions using the abelian group laws.
+-/
 theorem funEqMv_add {ι : Type*} {p q : ℕ} (hq : q ≠ 0) (σ : K →+* K) {a b : MvPowerSeries ι K}
     (ha : IsFunEqTypeMv p q hq σ a) (hb : IsFunEqTypeMv p q hq σ b) :
     IsFunEqTypeMv p q hq σ (a + b) := by
@@ -43,6 +55,9 @@ theorem funEqMv_add {ι : Type*} {p q : ℕ} (hq : q ≠ 0) (σ : K →+* K) {a 
   simp only [map_add, smul_add]
   abel
 
+/- English proof (translation)
+Unfold `IsFunEqTypeMv at *`. Use `integralMv_sub ha hb using 1` and compare the differences between its conclusion and the goal. Simplify using `only [map_sub, smul_sub]`. Normalize the expressions using the abelian group laws.
+-/
 theorem funEqMv_sub {ι : Type*} {p q : ℕ} (hq : q ≠ 0) (σ : K →+* K) {a b : MvPowerSeries ι K}
     (ha : IsFunEqTypeMv p q hq σ a) (hb : IsFunEqTypeMv p q hq σ b) :
     IsFunEqTypeMv p q hq σ (a - b) := by
@@ -53,16 +68,25 @@ theorem funEqMv_sub {ι : Type*} {p q : ℕ} (hq : q ≠ 0) (σ : K →+* K) {a 
 
 end Integral
 
+/- English proof (translation)
+Take `⟨hp, ⟨k, -, rfl⟩, -⟩` from `h`. Conclude with `pow_ne_zero _ hp.ne_zero`.
+-/
 theorem q_ne_zero {K : Type u} [NormedField K] {p q : ℕ} {σ : K →+* K}
     (h : FunctionalEquationSetting K p q σ) : q ≠ 0 := by
   obtain ⟨hp, ⟨k, -, rfl⟩, -⟩ := h
   exact pow_ne_zero _ hp.ne_zero
 
+/- English proof (translation)
+Take `⟨hp, ⟨k, hk, rfl⟩, -⟩` from `h`. Conclude with `hp.two_le.trans (Nat.le_self_pow (by omega) _)`.
+-/
 theorem two_le_q {K : Type u} [NormedField K] {p q : ℕ} {σ : K →+* K}
     (h : FunctionalEquationSetting K p q σ) : 2 ≤ q := by
   obtain ⟨hp, ⟨k, hk, rfl⟩, -⟩ := h
   exact hp.two_le.trans (Nat.le_self_pow (by omega) _)
 
+/- English proof (translation)
+The claim follows from `h2 K ι (IsFunEqTypeMv p q (q_ne_zero hS) σ) f hf0 hf1 (fun _ _ ha hb => funEqMv_sub _ _ ha hb) (fun P hP0 hPI => hk K p q (q_ne_zero hS) σ hS f hf0 hfE ι P hP0 hPI) (fun D hD N hN hlow d hd => h3 K ι p q (q_ne_zero hS) σ (two_le_q hS) D hD N hN hlow d hd) h hh0 hC`.
+-/
 theorem funEqInv (h2 : InvIntegralOfClass.{u, 0}) (h3 : FunEqLowCoeff.{u, 0})
     (hk : Formalism.G.FunEqSubst.{u, 0})
     {K : Type u} [NormedField K] [IsUltrametricDist K] [CharZero K] {p q : ℕ} {σ : K →+* K}
@@ -76,6 +100,11 @@ theorem funEqInv (h2 : InvIntegralOfClass.{u, 0}) (h3 : FunEqLowCoeff.{u, 0})
     (fun D hD N hN hlow d hd => h3 K ι p q (q_ne_zero hS) σ (two_le_q hS) D hD N hN hlow d hd)
     h hh0 hC
 
+/- English proof (translation)
+Introduce `K _ _ _ p q σ hS f hf0 hf1 hfE`. Establish `hq` using `q_ne_zero hS`. Establish `hG0 : MvPowerSeries.constantCoeff (atX f + atY f) = 0`. Rewrite using `[map_add, atX, atY, PowerSeries.constantCoeff_subst_eq_zero (by simp) f hf0, PowerSeries.constantCoeff_subst_eq_zero (by simp) f hf0, add_zero]`. Establish `hGE : IsFunEqTypeMv p q hq σ (atX f + atY f)` using `funEqMv_add hq σ (hk K p q hq σ hS f hf0 hfE (Fin 2) _ (by simp) (integralMv_X 0)) (hk K p q hq σ hS f hf0 hfE (Fin 2) _ (by simp) (integralMv_X 1))`.
+
+Take `⟨F, hF0, hF⟩` from `h1 K (Fin 2) f (atX f + atY f) hf0 hf1 hG0`. Use `⟨F, hF0, funEqInv h2 h3 hk hS hf0 hf1 hfE F hF0 ?_, hF⟩` and prove the remaining obligations. Rewrite using `[hF]`. Conclude with `hGE`.
+-/
 theorem FunEqGroup_of' (h1 : SolveExists.{u, 0}) (h2 : InvIntegralOfClass.{u, 0})
     (h3 : FunEqLowCoeff.{u, 0}) (hk : Formalism.G.FunEqSubst.{u, 0}) : Formalism.G.FunEqGroup.{u} := by
   intro K _ _ _ p q σ hS f hf0 hf1 hfE
@@ -91,6 +120,13 @@ theorem FunEqGroup_of' (h1 : SolveExists.{u, 0}) (h2 : InvIntegralOfClass.{u, 0}
   rw [hF]
   exact hGE
 
+/- English proof (translation)
+Establish `hx : (PowerSeries.map σ g).subst ((PowerSeries.X : PowerSeries K) ^ q) = MvPowerSeries.expand q hq (MvPowerSeries.map σ g)`. Rewrite using `[← PowerSeries.expand_apply q hq]`. Both sides reduce to the same expression. Introduce `d`. Use `hg (d ())` as an intermediate fact.
+
+Rewrite `this` using `[hx]`. Establish `hd : d = Finsupp.single () (d ())`. Use `ext`. Simplify using the standard rewrite rules. Rewrite using `[hd]`.
+
+Conclude with `this`.
+-/
 theorem funEqType_unit {K : Type u} [NormedField K] {p q : ℕ} (hq : q ≠ 0) {σ : K →+* K}
     {g : PowerSeries K} (hg : IsFunEqType p q σ g) :
     IsFunEqTypeMv (ι := Unit) p q hq σ (g : MvPowerSeries Unit K) := by
@@ -107,6 +143,11 @@ theorem funEqType_unit {K : Type u} [NormedField K] {p q : ℕ} (hq : q ≠ 0) {
   rw [hd]
   exact this
 
+/- English proof (translation)
+Introduce `K _ _ _ p q σ hS f g hf0 hf1 hfE hg0 hgE`. Take `⟨h, hh0, hh⟩` from `h1 K Unit f (g : MvPowerSeries Unit K) hf0 hf1 hg0`. Establish `hI : IntegralMv h` using `funEqInv h2 h3 hk hS hf0 hf1 hfE h hh0 (by`. Rewrite using `[hh]`. Conclude with `funEqType_unit (q_ne_zero hS) hgE)`.
+
+Conclude with `⟨h, hh0, fun n => hI _, hh⟩`.
+-/
 theorem FunEqHom_of' (h1 : SolveExists.{u, 0}) (h2 : InvIntegralOfClass.{u, 0})
     (h3 : FunEqLowCoeff.{u, 0}) (hk : Formalism.G.FunEqSubst.{u, 0}) : Formalism.G.FunEqHom.{u} := by
   intro K _ _ _ p q σ hS f g hf0 hf1 hfE hg0 hgE
@@ -120,6 +161,9 @@ section FG
 
 open Formalism.G.LogP
 
+/- English proof (translation)
+Establish `hb` using `hs2 hu hv`. Rewrite using `[← psubst_subst f hF0 hb, hF, MvPowerSeries.subst_add hb, atX, atY, psubst_subst f (by simp) hb, psubst_subst f (by simp) hb, MvPowerSeries.subst_X hb, MvPowerSeries.subst_X hb]`. Both sides reduce to the same expression.
+-/
 theorem log_subst2 {R : Type*} [CommRing R] {τ : Type*} (f : PowerSeries R)
     (F : MvPowerSeries (Fin 2) R) (hF0 : MvPowerSeries.constantCoeff F = 0)
     (hF : f.subst F = atX f + atY f) {u v : MvPowerSeries τ R}
@@ -131,6 +175,9 @@ theorem log_subst2 {R : Type*} [CommRing R] {τ : Type*} (f : PowerSeries R)
     MvPowerSeries.subst_X hb]
   rfl
 
+/- English proof (translation)
+Take `⟨g, rfl⟩` from `PowerSeries.X_dvd_iff.mpr hf0`. Establish `ha : PowerSeries.HasSubst (0 : MvPowerSeries τ R)` using `PowerSeries.HasSubst.of_constantCoeff_zero (by simp)`. Rewrite using `[PowerSeries.subst_mul ha, PowerSeries.subst_X ha, zero_mul]`.
+-/
 theorem psubst_zero {R : Type*} [CommRing R] {τ : Type*} (f : PowerSeries R)
     (hf0 : constantCoeff f = 0) : f.subst (0 : MvPowerSeries τ R) = 0 := by
   obtain ⟨g, rfl⟩ := PowerSeries.X_dvd_iff.mpr hf0
@@ -138,6 +185,9 @@ theorem psubst_zero {R : Type*} [CommRing R] {τ : Type*} (f : PowerSeries R)
     PowerSeries.HasSubst.of_constantCoeff_zero (by simp)
   rw [PowerSeries.subst_mul ha, PowerSeries.subst_X ha, zero_mul]
 
+/- English proof (translation)
+Rewrite using `[MvPowerSeries.rescale_eq_subst]`. Use `congr 1`. Use function extensionality and compare the values at `s`. Apply the tactic sequence `fin_cases s <;> simp`.
+-/
 theorem subst_zero_eq_rescale {R : Type*} [CommRing R] (Φ : MvPowerSeries (Fin 2) R) :
     Φ.subst ![0, (MvPowerSeries.X 1 : MvPowerSeries (Fin 2) R)] =
       MvPowerSeries.rescale ![0, 1] Φ := by
@@ -146,6 +196,9 @@ theorem subst_zero_eq_rescale {R : Type*} [CommRing R] (Φ : MvPowerSeries (Fin 
   funext s
   fin_cases s <;> simp
 
+/- English proof (translation)
+Establish `hc : ∀ s, MvPowerSeries.constantCoeff (![u, v] s) = 0`. Introduce `s`. Apply the tactic sequence `fin_cases s <;> simp [hu, hv]`. Conclude with `MvPowerSeries.constantCoeff_subst_eq_zero (MvPowerSeries.hasSubst_of_constantCoeff_zero hc) hc hF0`.
+-/
 theorem cc_subst2 {R : Type*} [CommRing R] {τ : Type*} [Finite τ] (F : MvPowerSeries (Fin 2) R)
     (hF0 : MvPowerSeries.constantCoeff F = 0) {u v : MvPowerSeries τ R}
     (hu : MvPowerSeries.constantCoeff u = 0) (hv : MvPowerSeries.constantCoeff v = 0) :
@@ -156,6 +209,11 @@ theorem cc_subst2 {R : Type*} [CommRing R] {τ : Type*} [Finite τ] (F : MvPower
   exact MvPowerSeries.constantCoeff_subst_eq_zero
     (MvPowerSeries.hasSubst_of_constantCoeff_zero hc) hc hF0
 
+/- English proof (translation)
+Establish `hc : ∀ s, MvPowerSeries.constantCoeff (![u, v] s) = 0`. Introduce `s`. Apply the tactic sequence `fin_cases s <;> simp [hu, hv]`. Rewrite using `[MvPowerSeries.map_subst (MvPowerSeries.hasSubst_of_constantCoeff_zero hc)]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `s`. Apply the tactic sequence `fin_cases s <;> rfl`.
+-/
 theorem map_subst2 {A B : Type*} [CommRing A] [CommRing B] (φ : A →+* B) {τ : Type*}
     (Φ : MvPowerSeries (Fin 2) A) {u v : MvPowerSeries τ A}
     (hu : MvPowerSeries.constantCoeff u = 0) (hv : MvPowerSeries.constantCoeff v = 0) :
@@ -175,15 +233,24 @@ def lift {τ : Type*} (F : MvPowerSeries τ K) (hF : IntegralMv F) :
     MvPowerSeries τ (unitBall K) :=
   fun d => ⟨MvPowerSeries.coeff d F, hF d⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coeff_lift {τ : Type*} (F : MvPowerSeries τ K) (hF : IntegralMv F) (d : τ →₀ ℕ) :
     ((MvPowerSeries.coeff d (lift F hF) : unitBall K) : K) = MvPowerSeries.coeff d F := rfl
 
+/- English proof (translation)
+Use extensionality with `d`. Rewrite using `[MvPowerSeries.coeff_map]`. Conclude with `coeff_lift F hF d`.
+-/
 theorem map_lift {τ : Type*} (F : MvPowerSeries τ K) (hF : IntegralMv F) :
     MvPowerSeries.map (unitBall K).subtype (lift F hF) = F := by
   ext d
   rw [MvPowerSeries.coeff_map]
   exact coeff_lift F hF d
 
+/- English proof (translation)
+Introduce `a b h`. Use extensionality with `d`. Establish `h'` using `congrArg (MvPowerSeries.coeff d) h`. Rewrite `h'` using `[MvPowerSeries.coeff_map, MvPowerSeries.coeff_map]`. Conclude with `h'`.
+-/
 theorem map_subtype_injective {τ : Type*} :
     Function.Injective
       (MvPowerSeries.map (unitBall K).subtype : MvPowerSeries τ (unitBall K) → MvPowerSeries τ K) := by
@@ -195,6 +262,23 @@ theorem map_subtype_injective {τ : Type*} :
 
 end FG
 
+/- English proof (translation)
+Introduce `K _ _ _ p q σ hS f hf0 hf1 hfE`. Take `⟨F, hF0, hFI, hF⟩` from `hg K p q σ hS f hf0 hf1 hfE`. Establish `hX : MvPowerSeries.coeff (Finsupp.single 0 1) F = 1`. Establish `e : F.subst ![(MvPowerSeries.X 0 : MvPowerSeries (Fin 2) K), 0] = MvPowerSeries.X 0`. Use `substInjective K (Fin 2) f _ _ hf0 hf1 (cc_subst2 F hF0 (by simp) (by simp)) (by simp) ?_` and prove the remaining obligations.
+
+Rewrite using `[log_subst2 f F hF0 hF (by simp) (by simp), psubst_zero f hf0, add_zero]`. Use `congrArg (MvPowerSeries.coeff (Finsupp.single 0 1)) e` as an intermediate fact. Rewrite `this` using `[Formalism.G.LogP.subst_X0_zero_eq_rescale, MvPowerSeries.coeff_rescale]`. Simplify `this` using `[Finsupp.prod_single_index, MvPowerSeries.coeff_X]`. Establish `hY : MvPowerSeries.coeff (Finsupp.single 1 1) F = 1`.
+
+Establish `e : F.subst ![0, (MvPowerSeries.X 1 : MvPowerSeries (Fin 2) K)] = MvPowerSeries.X 1`. Use `substInjective K (Fin 2) f _ _ hf0 hf1 (cc_subst2 F hF0 (by simp) (by simp)) (by simp) ?_` and prove the remaining obligations. Rewrite using `[log_subst2 f F hF0 hF (by simp) (by simp), psubst_zero f hf0, zero_add]`. Use `congrArg (MvPowerSeries.coeff (Finsupp.single 1 1)) e` as an intermediate fact. Rewrite `this` using `[subst_zero_eq_rescale, MvPowerSeries.coeff_rescale]`.
+
+Simplify `this` using `[Finsupp.prod_single_index, MvPowerSeries.coeff_X]`. Use `set F₀ := lift F hFI with hF₀`. Establish `hF₀0 : MvPowerSeries.constantCoeff F₀ = 0` using `Subtype.ext (by`. Rewrite using `[← MvPowerSeries.coeff_zero_eq_constantCoeff_apply, coeff_lift, MvPowerSeries.coeff_zero_eq_constantCoeff_apply, hF0]`. Use the proof step `rfl)`.
+
+Establish `hassK : F.subst ![F.subst ![(MvPowerSeries.X 0 : MvPowerSeries (Fin 3) K), MvPowerSeries.X 1], MvPowerSeries.X 2] = F.subst ![(MvPowerSeries.X 0 : MvPowerSeries (Fin 3) K), F.subst ![(MvPowerSeries.X 1 : MvPowerSeries (Fin 3) K), MvPowerSeries.X 2]]`. Establish `c01` using `cc_subst2 F hF0 (MvPowerSeries.constantCoeff_X (R := K) (0 : Fin 3)) (MvPowerSeries.constantCoeff_X (R := K) (1 : Fin 3))`. Establish `c12` using `cc_subst2 F hF0 (MvPowerSeries.constantCoeff_X (R := K) (1 : Fin 3)) (MvPowerSeries.constantCoeff_X (R := K) (2 : Fin 3))`. Use `substInjective K (Fin 3) f _ _ hf0 hf1 (cc_subst2 F hF0 c01 (by simp)) (cc_subst2 F hF0 (by simp) c12) ?_` and prove the remaining obligations. Rewrite using `[log_subst2 f F hF0 hF c01 (by simp), log_subst2 f F hF0 hF (by simp) c12, log_subst2 f F hF0 hF (by simp) (by simp), log_subst2 f F hF0 hF (by simp) (by simp)]`.
+
+Expand and normalize the polynomial expressions, which then agree. Set `G : FormalGroup (unitBall K)` to `{ toPowerSeries := F₀ zero_constantCoeff := hF₀0 lin_coeff_X := Subtype.ext (by rw [coeff_lift, hX]; rfl) lin_coeff_Y := Subtype.ext (by rw [coeff_lift, hY]; rfl) assoc := by`. Establish `c01` using `cc_subst2 F₀ hF₀0 (MvPowerSeries.constantCoeff_X (R := unitBall K) (0 : Fin 3)) (MvPowerSeries.constantCoeff_X (R := unitBall K) (1 : Fin 3))`. Establish `c12` using `cc_subst2 F₀ hF₀0 (MvPowerSeries.constantCoeff_X (R := unitBall K) (1 : Fin 3)) (MvPowerSeries.constantCoeff_X (R := unitBall K) (2 : Fin 3))`. Apply `map_subtype_injective` to reduce the goal to its premises.
+
+Rewrite using `[map_subst2 _ _ c01 (by simp), map_subst2 _ _ (by simp) c12, map_subst2 _ _ (by simp) (by simp), map_subst2 _ _ (by simp) (by simp)]`. Simplify using `only [MvPowerSeries.map_X, hF₀, map_lift]`. Conclude with `hassK }`. Use `⟨G, hf0, hf1, ?_⟩` and prove the remaining obligations. Use `show f.subst (MvPowerSeries.map (unitBall K).subtype F₀) = atX f + atY f`.
+
+Rewrite using `[hF₀, map_lift]`. Conclude with `hF`.
+-/
 theorem FunEqFormalGroup_of' (hg : Formalism.G.FunEqGroup.{u}) : Formalism.G.FunEqFormalGroup.{u} := by
   intro K _ _ _ p q σ hS f hf0 hf1 hfE
   obtain ⟨F, hF0, hFI, hF⟩ := hg K p q σ hS f hf0 hf1 hfE
@@ -259,13 +343,22 @@ end Formalism.LT.Asm
 
 namespace Formalism.LT
 
+/- English proof (translation)
+The claim follows from `Formalism.LT.Asm.FunEqGroup_of' h1 h2 h3 hk`.
+-/
 theorem FunEqGroup_of (h1 : Formalism.LT.SolveExists.{u, 0}) (h2 : Formalism.LT.InvIntegralOfClass.{u, 0})
     (h3 : Formalism.LT.FunEqLowCoeff.{u, 0}) (hk : Formalism.G.FunEqSubst.{u, 0}) : Formalism.G.FunEqGroup.{u} :=
   Formalism.LT.Asm.FunEqGroup_of' h1 h2 h3 hk
 
+/- English proof (translation)
+The claim follows from `Formalism.LT.Asm.FunEqFormalGroup_of' hg`.
+-/
 theorem FunEqFormalGroup_of (hg : Formalism.G.FunEqGroup.{u}) : Formalism.G.FunEqFormalGroup.{u} :=
   Formalism.LT.Asm.FunEqFormalGroup_of' hg
 
+/- English proof (translation)
+The claim follows from `Formalism.LT.Asm.FunEqHom_of' h1 h2 h3 hk`.
+-/
 theorem FunEqHom_of (h1 : Formalism.LT.SolveExists.{u, 0}) (h2 : Formalism.LT.InvIntegralOfClass.{u, 0})
     (h3 : Formalism.LT.FunEqLowCoeff.{u, 0}) (hk : Formalism.G.FunEqSubst.{u, 0}) : Formalism.G.FunEqHom.{u} :=
   Formalism.LT.Asm.FunEqHom_of' h1 h2 h3 hk

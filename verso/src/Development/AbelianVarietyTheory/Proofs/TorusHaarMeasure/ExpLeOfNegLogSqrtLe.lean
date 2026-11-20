@@ -11,6 +11,11 @@ namespace GlobalTheory.BigRec
 
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.WeightAlgebra Formalism.MainNotions.Gaps.EtaleWeightGaps Formalism.L2.Pj ReciprocityTheory.ChartRestriction.G.Geo.Tor
 
+/- English proof (translation)
+Establish `hd : ∀ τ i, ReciprocityTheory.ChartRestriction.G.FD.dmin X.Gm x τ i ≠ 0`. Introduce `τ i h0`. Use `(hx τ).2 i` as an intermediate fact. Rewrite `this` using `[h0]`. Simplify using `at this`.
+
+Use `mul_pos (norm_pos_iff.2 hP) (Finset.prod_pos fun τ _ => Finset.prod_pos fun i _ => ?_)` and prove the remaining obligations. Conclude with `Real.rpow_pos_of_pos (norm_pos_iff.2 (div_ne_zero (hd _ _) (hd _ _))) _`.
+-/
 theorem pnorm_pos_of_ne_zero {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
     (X : ReciprocityTheory.ChartRestriction.G.FD.Data E r) (la : ReciprocityTheory.ChartRestriction.G.FD.Wt X.Ψ r)
     (P : ReciprocityTheory.ChartRestriction.G.FD.Frame X.Ψ r → ℂ) {x : ReciprocityTheory.ChartRestriction.G.FD.Frame X.Ψ r} (hx : x ∈ X.dom)
@@ -23,6 +28,9 @@ theorem pnorm_pos_of_ne_zero {E : Type} [Field E] [NumberField E] [IsCMField E] 
   refine mul_pos (norm_pos_iff.2 hP) (Finset.prod_pos fun τ _ => Finset.prod_pos fun i _ => ?_)
   exact Real.rpow_pos_of_pos (norm_pos_iff.2 (div_ne_zero (hd _ _) (hd _ _))) _
 
+/- English proof (translation)
+Rewrite `h` using `[Real.log_sqrt hS.le]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem exp_le_of_neg_log_sqrt_le {S a b : ℝ} (hS : 0 < S) (h : -Real.log (Real.sqrt S) ≤ a + b) :
     Real.exp (-(2 * b)) ≤ Real.exp (2 * a) * S := by
   rw [Real.log_sqrt hS.le] at h
@@ -34,6 +42,11 @@ section Gen
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
   {Xo : Moduli Dw l} {c : Coeff l}
 
+/- English proof (translation)
+Use `letI : Field (CAt σ) := inferInstanceAs (Field ℂ)`. Use `haveI : IsAlgClosed (CAt σ) := inferInstanceAs (IsAlgClosed ℂ)`. Take `⟨m, hm⟩` from `hw (CAt σ) (U.un k ⟨x, hx⟩)`. Use `⟨m, ?_⟩` and prove the remaining obligations. Establish `e : rdU U (w m) k x = toC (evR Xo c (w m) (U.un k ⟨x, hx⟩))` using `dif_pos hx`.
+
+Rewrite using `[e]`. Conclude with `hm`.
+-/
 theorem exists_rdU_ne_zero {σ : c.F →+* ℂ} {r : ℕ} (U : Unf Xo c σ r) {N : ℕ} (w : Fin N → Rul Xo c)
     (hw : NoCommonZero Xo c w) (k : U.Comp) {x : ReciprocityTheory.ChartRestriction.G.FD.Frame (U.X k).Ψ r} (hx : x ∈ (U.X k).dom) :
     ∃ m, rdU U (w m) k x ≠ 0 := by
@@ -45,6 +58,15 @@ theorem exists_rdU_ne_zero {σ : c.F →+* ℂ} {r : ℕ} (U : Unf Xo c σ r) {N
   rw [e]
   exact hm
 
+/- English proof (translation)
+Use `⟨⟨Real.exp (2 * (tableLineDegreeFive * DF)) * lieFac Dw xR a ^ 2, fun x hx => ?_⟩, Real.exp (2 * (i * tableLineDegreeTwo)), fun x hx => ?_⟩` and prove the remaining obligations. Establish `h1` using `hI σ hσ k x hx`. Establish `hs : ∑ m, recNrm (U σ) xR a n (w (e m)) k x ^ 2 = lieFac Dw xR a ^ 2 * ∑ m, ((U σ).X k).pnorm (laU (U σ) a n k) (rdU (U σ) (w m) k) x ^ 2`. Rewrite using `[Finset.mul_sum, ← e.sum_comp]`. Conclude with `Finset.sum_congr rfl fun m _ => by rw [recNrm, mul_pow]`.
+
+Establish `hpos : 0 < ∑ m, ((U σ).X k).pnorm (laU (U σ) a n k) (rdU (U σ) (w m) k) x ^ 2`. Take `⟨m, hm⟩` from `exists_rdU_ne_zero (U σ) w hw k hx`. Conclude with `Finset.sum_pos' (fun _ _ => sq_nonneg _) ⟨m, Finset.mem_univ _, pow_pos (pnorm_pos_of_ne_zero _ _ _ hx hm) 2⟩`. Simplify using `only [hs] at h1`. Establish `h2` using `exp_le_of_neg_log_sqrt_le (mul_pos (pow_pos (lieFac_pos Dw xR a) 2) hpos) h1`.
+
+Rewrite `h2` using `[← mul_assoc, ← mul_assoc]`. Conclude with `h2`. Establish `h0 : 0 ≤ ((U σ).X k).pnorm eW et x` using `mul_nonneg (norm_nonneg _) (Finset.prod_nonneg fun _ _ => Finset.prod_nonneg fun _ _ => Real.rpow_nonneg (norm_nonneg _) _)`. Use `(pow_le_pow_left₀ h0 (het x hx) 2).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[← Real.exp_nat_mul, ← Real.exp_add]`.
+
+Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem model_ineq_of_log_bound {r : ℕ} (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (xR : ℝ) (σ : c.F →+* ℂ)
     {N N' : ℕ} (i : ℕ) (w : Fin N → Rul Xo c) (e : Fin (N' + 1) ≃ Fin N) (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ)
     (th tableLineDegreeFive DF tableLineDegreeTwo cc : ℝ) (hσ : GoodEmb c σ)
@@ -81,12 +103,22 @@ theorem model_ineq_of_log_bound {r : ℕ} (U : ∀ σ : c.F →+* ℂ, Unf Xo c 
 
 end Gen
 
+/- English proof (translation)
+Unfold `ReciprocityTheory.ChartRestriction.G.I2.phiFD`. Apply the tactic sequence `split_ifs <;> positivity`.
+-/
 theorem firstMin_fn_nonneg {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
     (X : ReciprocityTheory.ChartRestriction.G.FD.Data E r) (th : ℝ) (x : ReciprocityTheory.ChartRestriction.G.FD.Frame X.Ψ r) :
     0 ≤ ReciprocityTheory.ChartRestriction.G.I2.phiFD X th x := by
   unfold ReciprocityTheory.ChartRestriction.G.I2.phiFD
   split_ifs <;> positivity
 
+/- English proof (translation)
+Establish `hf : 0 < ReciprocityTheory.ChartRestriction.G.I2.PT.f E`. Unfold `ReciprocityTheory.ChartRestriction.G.I2.PT.f`. Establish `h1` using `IsTotallyComplex.finrank E`. Establish `h2 : 0 < Module.finrank ℚ E` using `Module.finrank_pos`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hrd : 0 < ReciprocityTheory.ChartRestriction.G.I2.PT.rd E`. Unfold `ReciprocityTheory.ChartRestriction.G.I2.PT.rd`. Conclude with `Real.rpow_pos_of_pos (abs_pos.2 (Int.cast_ne_zero.2 (NumberField.discr_ne_zero E))) _`. Use `⟨2 * ReciprocityTheory.ChartRestriction.G.I2.PT.f E / ReciprocityTheory.ChartRestriction.G.I2.PT.rd E ^ 2, th, by positivity, hth, fun x _ hlt => ?_⟩` and prove the remaining obligations. Unfold `ReciprocityTheory.ChartRestriction.G.I2.phiFD`.
+
+Rewrite using `[if_pos hlt, div_div]`.
+-/
 theorem firstMin_fn_lower {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
     (X : ReciprocityTheory.ChartRestriction.G.FD.Data E r) {th : ℝ} (hth : 0 < th) :
     ∃ ca ε0 : ℝ, 0 < ca ∧ 0 < ε0 ∧ ∀ x ∈ X.dom, X.la1 x < ε0 →
@@ -107,6 +139,9 @@ theorem firstMin_fn_lower {E : Type} [Field E] [NumberField E] [IsCMField E] {r 
 set_option maxHeartbeats 4000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+Introduce `D T h j hj σ wL N N' i w e et th tableLineDegreeFive DF tableLineDegreeTwo c hσ hth hI hw het k`. Conclude with `⟨ReciprocityTheory.ChartRestriction.G.I2.phiFD ((T.U j σ).X k) th, fun x _ => firstMin_fn_nonneg _ th x, firstMin_fn_lower _ hth, model_ineq_of_log_bound (T.U j) (xiR D) σ i (fun m => (w m).1) e (wtA wL) wL.n th tableLineDegreeFive DF tableLineDegreeTwo c hσ hI hw k _ _ (het k)⟩`.
+-/
 theorem phRec_of_firstMin : ∀ (D : D7) (T : Top D) (h : LawsP T) (j : ℕ) (hj : InR D j) (σ : T.Q.c.F →+* ℂ) (wL : WeightFamilies.Wt D j) (N N' i : ℕ) (w : Fin N → (recB h.toLawsCore).Cusp j wL) (e : Fin (N' + 1) ≃ Fin N) (et : (recB h.toLawsCore).Cusp j (etWt D j i)) (th tableLineDegreeFive DF tableLineDegreeTwo c : ℝ), GoodEmb T.Q.c σ → 0 < th → I2AtFramePoints (T.U j) (xiR D) (fun m => (w (e m)).1) (wtA wL, wL.n) th tableLineDegreeFive DF c → NoCommonZero (T.Q.Xo j) T.Q.c (fun m => (w m).1) → (∀ k : (T.U j σ).Comp, ∀ x ∈ ((T.U j σ).X k).dom, ((T.U j σ).X k).pnorm (laU (T.U j σ) (wtA (etWt D j i)) ((etWt D j i)).n k) (rdU (T.U j σ) et.1 k) x ≤ Real.exp (-(i : ℝ) * (ReciprocityTheory.ChartRestriction.G.I2.phiFD ((T.U j σ).X k) th x - tableLineDegreeTwo))) → PhRec h j σ w i et c := by
   intro D T h j hj σ wL N N' i w e et th tableLineDegreeFive DF tableLineDegreeTwo c hσ hth hI hw het k
   exact ⟨ReciprocityTheory.ChartRestriction.G.I2.phiFD ((T.U j σ).X k) th, fun x _ => firstMin_fn_nonneg _ th x,

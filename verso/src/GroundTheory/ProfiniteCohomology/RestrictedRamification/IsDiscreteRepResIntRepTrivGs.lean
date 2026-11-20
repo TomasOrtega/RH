@@ -27,6 +27,17 @@ variable (F E : Type) [Field F] [Field E] [Algebra F E] [IsGalois F E]
   (ψ : Gal(E/F) →* Γ) (hψ : Continuous ψ) [IsDiscreteRep (Rep.res ψ (intRepTriv Γ))] {m : ℕ} [NeZero m]
   [IsDiscreteRep (uliftIntToIntRep (galUnits.{0} F E))]
 
+/- English proof (translation)
+Take `⟨x₁, hx₁, hx₁v⟩` from `exists_cocycle_δ_bockSeq (NeZero.ne m) z`. Take `⟨z0, hz0, hz0c⟩` from `exists_cocycle_H0Iso_inv (galUnits.{0} F E) (unitsToInvariants F E (Additive.ofMul a))`. Take `⟨w, hw, hwv⟩` from `exists_cocycle_cupCharClassProf (galUnitsZ F E) χ' (unitsInvariant F E a)`. Rewrite using `[← hx₁, ← hz0, cohomologyMapAlong_cohomologyπ, cupPairing_cohomologyπ, cohomologyULiftIntAddEquiv_cohomologyπ', cohomologyMap_cohomologyπ]`. Express the relevant statement in the definitionally equal form `_ = (cupCharClassProf (galUnitsZ F E) χ').hom (unitsInvariant F E a)`.
+
+Rewrite using `[← hw]`. Use `congr 1`. Apply `cocycles_ext` to reduce the goal to its premises. Use function extensionality and compare the values at `s`. Rewrite using `[cochainOf_cocycleι_cyclesMap, cochainOf_cocycleι_cocyclesULiftInt]`.
+
+Use `beta_reduce`. Rewrite using `[cochainOf_cocycleι_cyclesMap_cupCocycles, hz0c, cochainOf_cocycleι_cocyclesMapAlong, hwv]`. Establish `hs : (⇑ψ ∘ fun j : Fin 2 => s ⟨0 + j, by omega⟩) = ![ψ (s 0), ψ (s 1)]`. Use function extensionality and compare the values at `j`. Apply the tactic sequence `fin_cases j <;> rfl`.
+
+Establish `hb` using `hx₁v (ψ (s 0)) (ψ (s 1))`. Establish `hχf : ∀ σ : Gal(E/F), charAdd χ' (Additive.ofMul σ) = QZ.toAddCircle (zmodToQZ m ((fun σ => zmodCocycleHom z (ψ σ)) σ))` using `fun σ => by`. Rewrite using `[charAdd_apply, hχ']`. Rewrite using `[charCocycle_eq_bockInt (fun σ => zmodCocycleHom z (ψ σ)) (charAdd χ') hχf]`. Express the relevant statement in the definitionally equal form `(mulIntRight ψ (galUnits.{0} F E)).hom ((unitsToInvariants F E (Additive.ofMul a) : galUnits.{0} F E) ⊗ₜ[ULift.{0} ℤ] (cochainOf (intRepTriv Γ) (cocycleι (intRepTriv Γ) 2 x₁) (⇑ψ ∘ fun j : Fin 2 => s ⟨0 + j, by omega⟩))) = _`.
+
+Rewrite using `[hs]`. Establish `hx : cochainOf (intRepTriv Γ) (cocycleι (intRepTriv Γ) 2 x₁) ![ψ (s 0), ψ (s 1)] = ULift.up (bockInt (zmodCocycleHom z) (ψ (s 0)) (ψ (s 1)))` using `ULift.ext _ _ hb`. Rewrite using `[hx]`. Conclude with `mulIntRight_tmul ψ (galUnits.{0} F E) _ _`.
+-/
 theorem cohomologyMap_galUnitsToZ_cupPairing_δ_bockSeq (z : cocycles (zmodRep.{0} Γ m) 1)
     (χ' : Additive Gal(E/F) →ₜ+ QZ)
     (hχ' : ∀ σ : Gal(E/F), χ' (Additive.ofMul σ) = zmodToQZ m (zmodCocycleHom z (ψ σ))) (a : Fˣ) :
@@ -68,6 +79,9 @@ theorem cohomologyMap_galUnitsToZ_cupPairing_δ_bockSeq (z : cocycles (zmodRep.{
 
 end General
 
+/- English proof (translation)
+Use `(DFunLike.congr_fun (localInvU_eq (v : HeightOneSpectrum (𝓞 K.1))) _).trans ?_` and prove the remaining obligations. Use `(AddMonoidHom.comp_apply _ _ _).trans ?_` and prove the remaining obligations. Use `(congrArg (brauerInvZOfIsSepClosure ((v : HeightOneSpectrum (𝓞 K.1)).adicCompletion K.1) (AlgebraicClosure ((v : HeightOneSpectrum (𝓞 K.1)).adicCompletion K.1))) ((AddMonoidHom.comp_apply _ _ _).trans (cohomologyMap_galUnitsToZ_cupPairing_δ_bockSeq _ _ (gsFinFamily S ιs v).toMono …` and prove the remaining obligations. Conclude with `brauerInvZ_galCupClass_decompHomS (Set.toFinite S) hodd χ (v : HeightOneSpectrum (𝓞 K.1)) (ιs v) a`.
+-/
 theorem localInvU_cupPairing_δ_bockSeq (v : S) (a : ((v : HeightOneSpectrum (𝓞 K.1)).adicCompletion K.1)ˣ)
     (z : cocycles (zmodRep.{0} (galUnramifiedOutside K.1 ℚ̄ S) n) 1)
     (χ : ContinuousMonoidHom (galUnramifiedOutside K.1 ℚ̄ S) (Multiplicative (ZMod n)))

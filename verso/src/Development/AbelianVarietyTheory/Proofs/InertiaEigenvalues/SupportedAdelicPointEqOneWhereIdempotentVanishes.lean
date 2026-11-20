@@ -24,6 +24,15 @@ open GlobalTheory.SingleDatum
 set_option synthInstance.maxHeartbeats 400000
 open GlobalTheory.StdAtPrime
 
+/- English proof (translation)
+Introduce `D ι V e g hS Q hQ i j`. Establish `hent : ∀ i j, ((finPt V g).1 : Matrix (Fin V.rank) (Fin V.rank) _) i j = finPart D (Formalism.L2.Theta.mt V g i j)` using `fun i j => rfl`. Establish `h1` using `congrArg (fun x => ι (finPart D x) Q) (hS i j)`. Simplify using `only [map_mul] at h1`. Establish `hm : (ι (finPart D (e + cA D e)) * ι (finPart D ((Formalism.L2.Theta.mt V g - 1) i j))) Q = ι (finPart D (e + cA D e)) Q * ι (finPart D ((Formalism.L2.Theta.mt V g - 1) i j)) Q` using `rfl`.
+
+Rewrite `h1` using `[hm, hQ, zero_mul]`. Establish `h2 : ι (finPart D (Formalism.L2.Theta.mt V g i j)) Q = ι (finPart D ((1 : Matrix (Fin V.rank) (Fin V.rank) (AE D)) i j)) Q`. Establish `hs : (Formalism.L2.Theta.mt V g - 1) i j = Formalism.L2.Theta.mt V g i j - (1 : Matrix (Fin V.rank) (Fin V.rank) (AE D)) i j` using `rfl`. Rewrite `h1` using `[hs, map_sub, map_sub]`. Establish `hsub : (ι (finPart D (Formalism.L2.Theta.mt V g i j)) - ι (finPart D ((1 : Matrix (Fin V.rank) (Fin V.rank) (AE D)) i j))) Q = ι (finPart D (Formalism.L2.Theta.mt V g i j)) Q - ι (finPart D ((1 : Matrix (Fin V.rank) (Fin V.rank) (AE D)) i j)) Q` using `rfl`.
+
+Rewrite `h1` using `[hsub]`. Conclude with `(sub_eq_zero.mp h1.symm)`. Use `show ι (((finPt V g).1 : Matrix (Fin V.rank) (Fin V.rank) _) i j) Q = _`. Rewrite using `[hent, h2]`. Distinguish the cases in `hij : i = j`.
+
+Substitute `hij` using the available equality. Simplify using `[Matrix.one_apply_eq]`. Simplify using `[Matrix.one_apply_ne hij]`.
+-/
 theorem GlobalTheory.SuppOneIdentity.finPt_entry_eq_one_of_idem_zero : ∀ (D : D7) (ι : (Af D.host.F ⊗[D.host.F] D.host.E) ≃+* FiniteAdeleRing (𝓞 D.host.E) D.host.E) (V : HSp D) (e : AE D) (g : GA D V), SuppAt e V g → ∀ Q : HeightOneSpectrum (𝓞 D.host.E), ι (finPart D (e + cA D e)) Q = 0 → ∀ i j, ((Matrix.GeneralLinearGroup.map ι.toRingHom (finPt V g).1).1 i j) Q = ((1 : Matrix (Fin V.rank) (Fin V.rank) (FiniteAdeleRing (𝓞 D.host.E) D.host.E)) i j) Q := by
   intro D ι V e g hS Q hQ i j
   have hent : ∀ i j, ((finPt V g).1 : Matrix (Fin V.rank) (Fin V.rank) _) i j

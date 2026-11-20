@@ -19,6 +19,19 @@ namespace GlobalTheory.Mum.LabTorsTrait
 
 open GlobalTheory.ArcPull GlobalTheory.Mum.Recog
 
+/- English proof (translation)
+Introduce `R _ _ _ hR D A lab hT k hk`. Take `⟨W, _, _, _, φ, G', _, _, D', A', U', hD, a, _, em, hW, iφ, _, hG, ha, c, H⟩` from `hT`. Use `hR.2` as an intermediate fact. Establish `: CharZero W` using `(RingHom.charZero_iff iφ).1 inferInstance`. Use `hW.1` as an intermediate fact.
+
+Use `hW.2.2` as an intermediate fact. Establish `bW : AdmBase W (maximalIdeal W)` using `⟨inferInstance, inferInstance, inferInstance, hW.2.1⟩`. Establish `hB'` using `D'.tau_bimult`. Establish `c' : Compat φ (Kb W)` using `c`. Take `⟨f', hf'⟩` from `GlobalTheory.TorsionIso.torsion_eq GlobalTheory.firstFiveLaws W (maximalIdeal W) bW D' A' G' hG U' (Kb W) k hk`.
+
+Take `⟨ε, hε, iε, oε, wε⟩` from `exists_ptHom ha c' em`. Establish `e : ∀ p, f' (tr hD c' em hB' p) = ε (lab k p)` using `fun p => by`. Take `⟨p₁, h₁, h₂, h₃⟩` from `(lies_iff hD c' em hB' p (tr hD c' em hB' p)).2 rfl`. Conclude with `((hf'.1 _ _).1 (H k hk p p₁ _ _ h₁ h₂ h₃ ((hε _ _).1 rfl))).symm`. Establish `pw : ∀ x : TFK (R` using `R) (Kb R) ⟶ A.A, ε x ^ k = 1 ↔ x ^ k = 1 := fun x => by`.
+
+Rewrite using `[← map_pow, ← map_one ε, iε.eq_iff]`. Establish `hp : ∀ p, lab k p ^ k = 1` using `fun p => by`. Take `⟨w, hw⟩` from `U'.ext`. Rewrite using `[← pw, ← e]`. Conclude with `(((hf'.1 _ _).2 rfl) w hw).1`.
+
+Use `⟨fun y hy => ?_, hp, fun p q => ?_, fun p q r h => ?_, fun p q z => ?_⟩` and prove the remaining obligations. Take `⟨p', hp'⟩` from `hf'.2.1 (ε y) ((pw y).2 hy)`. Take `⟨p, rfl⟩` from `(tr_bij hD c' em hB' hk).2 p'`. Conclude with `⟨p, iε (by rw [← e, hp'])⟩`. Rewrite using `[← iε.eq_iff, ← e, ← e, hf'.2.2.1, tr_equiv]`.
+
+Apply `iε` to reduce the goal to its premises. Rewrite using `[map_mul, ← e, ← e, ← e]`. Conclude with `hf'.2.2.2.1 _ _ _ ((tr_add hD c' em hB' p q r).2 h)`. Rewrite using `[← tr_weil hD c' em hB' hk p q z, wε k _ _ (hp p) (hp q) z, ← e, ← e]`. Conclude with `hf'.2.2.2.2 _ _ (Units.map em.toRingHom.toMonoidHom z)`.
+-/
 theorem labTors_of_oneTrait : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R →
     ∀ (D : DegData R (maximalIdeal R)) (A : PolAV (Sp (FractionRing R))) (lab : Labels D.toPre A),
     OneTrait D.toPre A lab → ∀ k : ℕ, 1 ≤ k → LabTors D.toPre A k (lab k) := by

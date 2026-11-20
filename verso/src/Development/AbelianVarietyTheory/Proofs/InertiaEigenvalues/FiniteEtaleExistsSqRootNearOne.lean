@@ -3,6 +3,25 @@ open GlobalTheory.JR Matrix MeasureTheory Filter Topology
 
 namespace GlobalTheory.JR.SqrtNearOne
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ hU A U hUm`. Use `haveI : CharZero F := hU.charZero`. Use `haveI : LocallyCompactSpace F := hU.lcF`. Use `haveI : ProperSpace F := ProperSpace.of_nontriviallyNormedField_of_weaklyLocallyCompactSpace F`. Set `V` to `Fin (Module.finrank F A.K) → F`.
+
+Set `b` to `Module.finBasis F A.K`. Set `eL : A.K ≃ₗ[F] V` to `b.equivFun`. Establish `hc : Continuous eL` using `IsModuleTopology.continuous_of_linearMap eL.toLinearMap`. Establish `hcs : Continuous eL.symm` using `IsModuleTopology.continuous_of_linearMap eL.symm.toLinearMap`. Set `L₂ : V →ₗ[F] V →ₗ[F] V` to `LinearMap.mk₂ F (fun x y => eL (eL.symm x * eL.symm y)) (by intros; simp [add_mul]) (by intros; simp [smul_mul_assoc]) (by intros; simp [mul_add]) (by intros; simp [mul_smul_comm])`.
+
+Set `B : V →L[F] V →L[F] V` to `LinearMap.toContinuousLinearMap ((LinearMap.toContinuousLinearMap : (V →ₗ[F] V) ≃ₗ[F] (V →L[F] V)).toLinearMap ∘ₗ L₂)`. Establish `hB : ∀ x y, B x y = eL (eL.symm x * eL.symm y)` using `fun x y => rfl`. Set `H : V × V → V × V` to `fun p => (B p.1 p.1, B p.1 p.2)`. Set `p0 : V × V` to `(eL 1, eL 1)`. Establish `h2 : (2 : F) ≠ 0` using `two_ne_zero`.
+
+Apply the tactic sequence `let D : (V × V) ≃L[F] (V × V) := ContinuousLinearEquiv.equivOfInverse (((2 : F) • ContinuousLinearMap.fst F V V).prod (ContinuousLinearMap.fst F V V + ContinuousLinearMap.snd F V V)) (((2 : F)⁻¹ • ContinuousLinearMap.fst F V V).prod (ContinuousLinearMap.snd F V V - (2 : F)⁻¹ • Co …`. Establish `hd1 : HasStrictFDerivAt (fun p : V × V => B p.1 p.1) ((B p0.1).comp (ContinuousLinearMap.fst F V V) + ((B.comp (ContinuousLinearMap.fst F V V))).flip p0.1) p0`. Use `((B.comp (ContinuousLinearMap.fst F V V))).hasStrictFDerivAt (x := p0)` as an intermediate fact. Conclude with `this.clm_apply (ContinuousLinearMap.fst F V V).hasStrictFDerivAt`. Establish `hd2 : HasStrictFDerivAt (fun p : V × V => B p.1 p.2) ((B p0.1).comp (ContinuousLinearMap.snd F V V) + ((B.comp (ContinuousLinearMap.fst F V V))).flip p0.2) p0`.
+
+Use `((B.comp (ContinuousLinearMap.fst F V V))).hasStrictFDerivAt (x := p0)` as an intermediate fact. Conclude with `this.clm_apply (ContinuousLinearMap.snd F V V).hasStrictFDerivAt`. Establish `hd : HasStrictFDerivAt H (D : V × V →L[F] V × V) p0`. Use `(hd1.prodMk hd2).congr_fderiv ?_` and prove the remaining obligations. Use `ContinuousLinearMap.ext fun q => Prod.ext ?_ ?_` and prove the remaining obligations.
+
+Simplify using `[D, p0, hB, two_smul]`. Simplify using `[D, p0, hB]`. Conclude with `add_comm _ _`. Establish `hmap` using `hd.map_nhds_eq_of_equiv`. Establish `hH0 : H p0 = p0` using `by simp [H, p0, hB]`.
+
+Rewrite `hmap` using `[hH0]`. Establish `hU' : eL.symm ⁻¹' U ∈ 𝓝 (eL 1)` using `hcs.continuousAt.preimage_mem_nhds (by simpa using hUm)`. Establish `himg : H '' ((eL.symm ⁻¹' U) ×ˢ (eL.symm ⁻¹' U)) ∈ 𝓝 p0`. Rewrite using `[← hmap]`. Conclude with `image_mem_map (prod_mem_nhds hU' hU')`.
+
+Establish `hg : Continuous fun v : A.K => ((eL v, eL 1) : V × V)` using `hc.prodMk continuous_const`. Establish `hev` using `hg.continuousAt (x := (1 : A.K)) |>.preimage_mem_nhds (t := H '' ((eL.symm ⁻¹' U) ×ˢ (eL.symm ⁻¹' U))) himg`. Use `filter_upwards [hev] with v hv`. Take `⟨⟨x, y⟩, ⟨hx, hy⟩, hxy⟩` from `hv`. Simplify using `only [H, hB, Prod.mk.injEq] at hxy`.
+
+Use `⟨eL.symm x, hx, eL.symm y, hy, eL.injective hxy.2, ?_⟩` and prove the remaining obligations. Rewrite using `[sq]`. Conclude with `eL.injective hxy.1`.
+-/
 theorem exists_sq_eq_inv_near_one : ∀ (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E] [StarRing E] [Unram F E] (A : Et F E), ∀ U ∈ 𝓝 (1 : A.K), ∀ᶠ v in 𝓝 (1 : A.K), ∃ s ∈ U, ∃ s' ∈ U, s * s' = 1 ∧ s ^ 2 = v := by
   intro F E _ _ _ _ hU A U hUm
   haveI : CharZero F := hU.charZero

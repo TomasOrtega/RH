@@ -5,6 +5,11 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor (hermForm)
 
 namespace GlobalTheory.PeriodCoord
 
+/- English proof (translation)
+Establish `hA' : IsUnit A.det` using `isUnit_iff_ne_zero.mpr hA`. Establish `hD' : IsUnit D.det` using `isUnit_iff_ne_zero.mpr hD`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_assoc A⁻¹, Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hD', Matrix.mul_one]`. Use `_ = A⁻¹ * A * B * D⁻¹ := by rw [h, Matrix.mul_assoc A⁻¹ A B]`.
+
+Use `_ = B * D⁻¹ := by rw [Matrix.nonsing_inv_mul _ hA', Matrix.one_mul]`.
+-/
 private theorem inv_mul_eq_mul_inv_of_intertwine {n : Type} [Fintype n] [DecidableEq n]
     (A B D : Matrix n n ℂ) (hA : A.det ≠ 0) (hD : D.det ≠ 0) (h : B * D = A * B) :
     A⁻¹ * B = B * D⁻¹ := by
@@ -15,26 +20,48 @@ private theorem inv_mul_eq_mul_inv_of_intertwine {n : Type} [Fintype n] [Decidab
     _ = A⁻¹ * A * B * D⁻¹ := by rw [h, Matrix.mul_assoc A⁻¹ A B]
     _ = B * D⁻¹ := by rw [Matrix.nonsing_inv_mul _ hA', Matrix.one_mul]
 
+/- English proof (translation)
+Simplify using `[dotProduct, mulVec, star_sum, Finset.mul_sum]`.
+-/
 private theorem star_dot_mulVec {g : ℕ} (A : Matrix (Fin g) (Fin g) ℂ) (x y : Fin g → ℂ) :
     star (x ⬝ᵥ A *ᵥ y) = star x ⬝ᵥ A.map star *ᵥ star y := by
   simp [dotProduct, mulVec, star_sum, Finset.mul_sum]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[mulVec, dotProduct, star_sum]`.
+-/
 private theorem star_mulVec' {g : ℕ} (A : Matrix (Fin g) (Fin g) ℂ) (y : Fin g → ℂ) :
     star (A *ᵥ y) = A.map star *ᵥ star y := by
   funext i
   simp [mulVec, dotProduct, star_sum]
 
+/- English proof (translation)
+Rewrite using `[Matrix.dotProduct_mulVec, Matrix.vecMul_transpose, dotProduct_comm]`.
+-/
 private theorem dot_left {g : ℕ} (A : Matrix (Fin g) (Fin g) ℂ) (x y : Fin g → ℂ) :
     (A *ᵥ x) ⬝ᵥ y = x ⬝ᵥ Aᵀ *ᵥ y := by
   rw [Matrix.dotProduct_mulVec, Matrix.vecMul_transpose, dotProduct_comm]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[Matrix.mul_apply, star_sum]`.
+-/
 private theorem map_star_mul' {g : ℕ} (A B : Matrix (Fin g) (Fin g) ℂ) :
     (A * B).map star = A.map star * B.map star := by
   ext i j; simp [Matrix.mul_apply, star_sum]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using the standard rewrite rules.
+-/
 private theorem map_star_map_star' {g : ℕ} (A : Matrix (Fin g) (Fin g) ℂ) : (A.map star).map star = A := by
   ext i j; simp
 
+/- English proof (translation)
+Establish `f0 : M₀.map star = M₀ᵀ`. Use extensionality with `i j`. Use `congrFun (congrFun hH j) i` as an intermediate fact. Simplify `this` using `[conjTranspose_apply]`. Establish `f1 : M₀ᵀ * C = Cᵀ * M₀` using `by rw [transpose_mul, transpose_transpose] at hS; exact hS`.
+
+Establish `f1' : M₀ * C.map star = (C.map star)ᵀ * M₀ᵀ`. Use `congrArg (fun A => A.map star) f1` as an intermediate fact. Simplify using `only [map_star_mul'] at this`. Establish `e1 : (M₀ᵀ).map star = M₀` using `by rw [transpose_map, f0, transpose_transpose]`. Establish `e2 : (Cᵀ).map star = (C.map star)ᵀ` using `by rw [transpose_map]`.
+
+Rewrite `this` using `[e1, e2, f0]`. Conclude with `this`. Rewrite using `[Matrix.mul_assoc, ← f1, ← Matrix.mul_assoc, ← f1']`.
+-/
 private theorem conj_transpose_intertwine {g : ℕ} (M₀ C : Matrix (Fin g) (Fin g) ℂ) (hH : M₀ᴴ = M₀)
     (hS : (Cᵀ * M₀)ᵀ = Cᵀ * M₀) : (C.map star)ᵀ * Cᵀ * M₀ = M₀ * C.map star * C := by
   have f0 : M₀.map star = M₀ᵀ := by
@@ -51,6 +78,27 @@ private theorem conj_transpose_intertwine {g : ℕ} (M₀ C : Matrix (Fin g) (Fi
     exact this
   rw [Matrix.mul_assoc, ← f1, ← Matrix.mul_assoc, ← f1']
 
+/- English proof (translation)
+Use `set Y := 1 - C.map star * C with hYdef`. Use `set M := M₀ * Y⁻¹ with hMdef`. Establish `f2` using `conj_transpose_intertwine M₀ C hH hS`. Establish `f1 : M₀ᵀ * C = Cᵀ * M₀` using `by rw [transpose_mul, transpose_transpose] at hS; exact hS`. Establish `hYh : Yᴴ = 1 - (C.map star)ᵀ * Cᵀ`.
+
+Rewrite using `[hYdef, conjTranspose_sub, conjTranspose_one, conjTranspose_mul]`. Use `congr 2`. Use extensionality with `i j`. Simplify using the standard rewrite rules. Establish `hYt : Yᵀ = 1 - Cᵀ * (C.map star)ᵀ`.
+
+Rewrite using `[hYdef, transpose_sub, transpose_one, transpose_mul]`. Establish `ha : Mᴴ = M`. Rewrite using `[hMdef, conjTranspose_mul, conjTranspose_nonsing_inv, hH]`. Apply `inv_mul_eq_mul_inv_of_intertwine _ _ _ _ hY` to reduce the goal to its premises. Rewrite using `[hYh, hYdef, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, Matrix.one_mul, f2, Matrix.mul_assoc]`.
+
+Rewrite using `[det_conjTranspose]`. Conclude with `star_ne_zero.mpr hY`. Establish `hMbar : M.map star = Mᵀ`. Use extensionality with `i j`. Use `congrFun (congrFun ha j) i` as an intermediate fact.
+
+Simplify `this` using `[conjTranspose_apply]`. Establish `hb : M.map star * C = Cᵀ * M`. Rewrite using `[hMbar, hMdef, transpose_mul, transpose_nonsing_inv, Matrix.mul_assoc, f1, ← Matrix.mul_assoc, ← Matrix.mul_assoc]`. Rewrite using `[Matrix.mul_assoc]`. Apply `inv_mul_eq_mul_inv_of_intertwine _ _ _ _ hY` to reduce the goal to its premises.
+
+Rewrite using `[hYt, hYdef, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, Matrix.one_mul, Matrix.mul_assoc Cᵀ (C.map star)ᵀ, ← Matrix.mul_assoc (C.map star)ᵀ, f2]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[det_transpose]`. Conclude with `hY`. Establish `hc : M = M₀ + (C.map star)ᵀ * M.map star * C`.
+
+Establish `hYu : IsUnit Y.det` using `isUnit_iff_ne_zero.mpr hY`. Rewrite using `[Matrix.mul_assoc, hb, ← Matrix.mul_assoc, hMdef, ← Matrix.mul_assoc, f2]`. Establish `h0 : M₀ = M₀ * Y * Y⁻¹` using `by rw [Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hYu, Matrix.mul_one]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_assoc M₀ (C.map star), ← Matrix.mul_add, hYdef, sub_add_cancel, Matrix.mul_one]`.
+
+Use `_ = M₀ * Y * Y⁻¹ + M₀ * C.map star * C * Y⁻¹ := Matrix.add_mul _ _ _`. Use `_ = _ := by rw [← h0]`. Use `⟨ha, fun z w => ?_⟩` and prove the remaining obligations. Establish `e : hermForm M (z + C *ᵥ star z) (w + C *ᵥ star w) = z ⬝ᵥ M *ᵥ star w + z ⬝ᵥ (M * C.map star) *ᵥ w + star z ⬝ᵥ (Cᵀ * M) *ᵥ star w + star z ⬝ᵥ (Cᵀ * M * C.map star) *ᵥ w`. Simplify using `only [hermForm, star_add, star_mulVec', star_star, add_dotProduct, mulVec_add, dotProduct_add, dot_left, mulVec_mulVec, Matrix.mul_assoc]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `e2 : star (z ⬝ᵥ (M * C.map star) *ᵥ w) = star z ⬝ᵥ (Cᵀ * M) *ᵥ star w`. Rewrite using `[star_dot_mulVec, map_star_mul', map_star_map_star', hb]`. Establish `e4 : star (star z ⬝ᵥ (Cᵀ * M * C.map star) *ᵥ w) = z ⬝ᵥ ((C.map star)ᵀ * M.map star * C) *ᵥ star w`. Rewrite using `[star_dot_mulVec, map_star_mul', map_star_mul', map_star_map_star', star_star, transpose_map]`.
+
+Establish `e1 : z ⬝ᵥ M *ᵥ star w = hermForm M₀ z w + z ⬝ᵥ ((C.map star)ᵀ * M.map star * C) *ᵥ star w` using `by conv_lhs => rw [hc]`. Rewrite using `[hermForm, add_mulVec, dotProduct_add]`. Rewrite using `[e, e1, ← e2, ← e4]`. Simplify using `only [Complex.add_im, Complex.star_def, Complex.conj_im]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem riemann_converse {g : ℕ} (M₀ C : Matrix (Fin g) (Fin g) ℂ) (hH : M₀ᴴ = M₀) (_hdet : M₀.det ≠ 0)
     (hS : (Cᵀ * M₀)ᵀ = Cᵀ * M₀) (hY : (1 - C.map star * C).det ≠ 0) :
     (M₀ * (1 - C.map star * C)⁻¹)ᴴ = M₀ * (1 - C.map star * C)⁻¹ ∧

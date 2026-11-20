@@ -16,6 +16,15 @@ set_option autoImplicit false
 
 namespace GlobalTheory.Katz
 
+/- English proof (translation)
+Introduce `γ hγ`. Establish `ha : ∀ s, constantCoeff (Sum.elim u v s) = 0`. Introduce and unpack `(i | i)`. Conclude with `hu i`. Conclude with `hv i`.
+
+Establish `hs : HasSubst (Sum.elim u v)` using `hasSubst_of_constantCoeff_zero ha`. Establish `h1 : (1 : ℕ∞) ≤ ⨅ s, (Sum.elim u v s).order` using `le_iInf fun s => by`. Apply `MvPowerSeries.le_order` to reduce the goal to its premises. Introduce `δ hδ`. Establish `h0 : δ.degree = 0` using `by exact_mod_cast ENat.lt_one_iff_eq_zero.mp hδ`.
+
+Rewrite `h0` using `[Finsupp.degree_eq_zero_iff]`. Substitute `h0` using the available equality. Rewrite using `[coeff_zero_eq_constantCoeff_apply]`. Conclude with `ha s`. Establish `h2 : (M : ℕ∞) ≤ c.order` using `MvPowerSeries.le_order fun δ hδ => hc δ (by exact_mod_cast hδ)`.
+
+Establish `h3` using `le_order_subst hs c`. Unfold `at2`. Apply `coeff_of_lt_order` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem coeff_powerSeriesEvalTwoGroups_eq_zero_of_degree_lt {R τ : Type} [CommRing R] {d : ℕ}
     (c : MvPowerSeries (Fin d ⊕ Fin d) R) (u v : Fin d → MvPowerSeries τ R)
     (hu : ∀ i, constantCoeff (u i) = 0) (hv : ∀ i, constantCoeff (v i) = 0) (M : ℕ)
@@ -44,6 +53,15 @@ theorem coeff_powerSeriesEvalTwoGroups_eq_zero_of_degree_lt {R τ : Type} [CommR
     _ ≤ (⨅ s, (Sum.elim u v s).order) * c.order := mul_le_mul_left h1 _
     _ ≤ _ := h3
 
+/- English proof (translation)
+Introduce `γ hγ`. Establish `hx1 : ∀ i, constantCoeff ((x1 : Fin d → MvPowerSeries _ R) i) = 0` using `fun i => constantCoeff_X _`. Establish `hx2 : ∀ i, constantCoeff ((x2 : Fin d → MvPowerSeries _ R) i) = 0` using `fun i => constantCoeff_X _`. Establish `hx3 : ∀ i, constantCoeff ((x3 : Fin d → MvPowerSeries _ R) i) = 0` using `fun i => constantCoeff_X _`. Establish `hop : ∀ (u v : Fin d → MvPowerSeries (Fin d ⊕ (Fin d ⊕ Fin d)) R), (∀ i, constantCoeff (u i) = 0) → (∀ i, constantCoeff (v i) = 0) → ∀ i, constantCoeff (op μ u v i) = 0`.
+
+Introduce `u v hu hv i`. Rewrite using `[← coeff_zero_eq_constantCoeff_apply]`. Use `coeff_powerSeriesEvalTwoGroups_eq_zero_of_degree_lt (μ i) u v hu hv 1 (fun α hα => ?_) 0 (by simp)` and prove the remaining obligations. Establish `h0 : α.degree = 0` using `by omega`. Rewrite `h0` using `[Finsupp.degree_eq_zero_iff]`.
+
+Substitute `h0` using the available equality. Rewrite using `[coeff_zero_eq_constantCoeff_apply]`. Conclude with `hμ i`. Unfold `cob2`. Simplify using `only [map_add, map_sub]`.
+
+Rewrite using `[coeff_powerSeriesEvalTwoGroups_eq_zero_of_degree_lt c _ _ hx2 hx3 M hc γ hγ, coeff_powerSeriesEvalTwoGroups_eq_zero_of_degree_lt c _ _ (hop _ _ hx1 hx2) hx3 M hc γ hγ, coeff_powerSeriesEvalTwoGroups_eq_zero_of_degree_lt c _ _ hx1 (hop _ _ hx2 hx3) M hc γ hγ, coeff_powerSeriesEva …`. Simplify using the standard rewrite rules.
+-/
 theorem coeff_formalGroupLawCoboundaryTwo_eq_zero_of_degree_lt {R : Type} [CommRing R] {d : ℕ}
     (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) R) (hμ : ∀ i, constantCoeff (μ i) = 0)
     (c : MvPowerSeries (Fin d ⊕ Fin d) R) (M : ℕ)
@@ -75,6 +93,9 @@ theorem coeff_formalGroupLawCoboundaryTwo_eq_zero_of_degree_lt {R : Type} [CommR
     coeff_powerSeriesEvalTwoGroups_eq_zero_of_degree_lt c _ _ hx1 hx2 M hc γ hγ]
   simp
 
+/- English proof (translation)
+Proceed by induction on `γ using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => rw [Finsupp.mapDomain_add, map_add, map_add, ha, hb]`. Consider the case `single a n => rw [Finsupp.mapDomain_single, Finsupp.degree_single, Finsupp.degree_single]`.
+-/
 theorem degree_mapDomain_swap_ord {d : ℕ} (γ : Fin d ⊕ Fin d →₀ ℕ) :
     (γ.mapDomain Sum.swap).degree = γ.degree := by
   induction γ using Finsupp.induction_linear with
@@ -84,6 +105,45 @@ theorem degree_mapDomain_swap_ord {d : ℕ} (γ : Fin d ⊕ Fin d →₀ ℕ) :
 
 end GlobalTheory.Katz
 
+/- English proof (translation)
+Introduce `p _ k _ _ _ d μ hμ c hc N f hN hf hlow`. Establish `hL0 : ∀ i, constantCoeff ((fun i => Katz.lift p (μ i)) i) = 0` using `fun i => constantCoeff_lift p (hμ.const i)`. Establish `CC` using `GlobalTheory.T.formalGroupLawCoboundaryTwo_coboundaryOne (Fr p k) d (fun i => Katz.lift p (μ i)) hL0 0`. Establish `Q` using `GlobalTheory.T.coboundaryOne_teichmullerLift_isCocycle_mod_p p k d μ hμ f hf`. Establish `RD` using `GlobalTheory.T.mvPowerSeries_reduction_mod_prime_rules p k (Fin d ⊕ Fin d)`.
+
+Establish `RD3` using `GlobalTheory.T.mvPowerSeries_reduction_mod_prime_rules p k (Fin d ⊕ (Fin d ⊕ Fin d))`. Establish `RC` using `GlobalTheory.T.reduction_commutes_formalGroupLawCoboundaries p k d μ hμ.const`. Establish `LIN` using `GlobalTheory.T.formal_group_law_linear_coeff_additive p k d μ hμ`. Establish `LEAD` using `GlobalTheory.T.coboundary_eq_additive_leading_terms (Fr p k) d (fun i => Katz.lift p (μ i)) N (fun i α hα => (LIN i α hα).2)`. Establish `HOM` using `GlobalTheory.T.additive_formal_group_coboundary_homogeneous (Fr p k) d N`.
+
+Take `⟨g, hg⟩ : ∃ g, g = cob1 (fun i => Katz.lift p (μ i)) f - Katz.lift p c` from `⟨_, rfl⟩`. Rewrite `hlow` using `[← hg]`. Establish `hg2 : cob2 (fun i => Katz.lift p (μ i)) g ∈ intBy p k _ (p : WittVector p k)`. Establish `h1 : Red p (cob2 (fun i => Katz.lift p (μ i)) (Katz.lift p c)) 0`. Use `(RC.1 (Katz.lift p c) c (RD.2.2.1 c)).1` as an intermediate fact.
+
+Rewrite `this` using `[hc.1]`. Then use the resulting hypothesis. Rewrite using `[hg, (CC.2.2.1 _ _).2.1]`. Conclude with `sub_mem Q.1 ((RD3.2.2.2.2.2.1 _).2 h1)`. Establish `hgs : swap g - g ∈ intBy p k _ (p : WittVector p k)`. Establish `h1 : Red p (swap (Katz.lift p c) - Katz.lift p c) 0`.
+
+Establish `a` using `(RC.1 (Katz.lift p c) c (RD.2.2.1 c)).2`. Rewrite `a` using `[hc.2]`. Use `(RD.2.2.2.1 _ _ _ _ a (RD.2.2.1 c)).2` as an intermediate fact. Rewrite `this` using `[sub_self]`. Then use the resulting hypothesis. Establish `: swap g - g = (swap (cob1 (fun i => Katz.lift p (μ i)) f) - cob1 (fun i => Katz.lift p (μ i)) f) - (swap (Katz.lift p c) - Katz.lift p c)`.
+
+Rewrite using `[hg, (CC.2.2.1 _ _).2.2]`. Normalize the expressions using the abelian group laws. Rewrite using `[this]`. Conclude with `sub_mem Q.2 ((RD.2.2.2.2.2.1 _).2 h1)`. Take `⟨e, he⟩ : ∃ e : MvPowerSeries (Fin d ⊕ Fin d) (Fr p k), ∀ γ, coeff γ e = if γ.degree = N then coeff γ g else 0` from `⟨fun γ => if γ.degree = N then coeff γ g else 0, fun γ => rfl⟩`.
+
+Take `⟨low, hlo⟩ : ∃ low : MvPowerSeries (Fin d ⊕ Fin d) (Fr p k), ∀ γ, coeff γ low = if γ.degree < N then coeff γ g else 0` from `⟨fun γ => if γ.degree < N then coeff γ g else 0, fun γ => rfl⟩`. Establish `hhigh : ∀ γ : Fin d ⊕ Fin d →₀ ℕ, γ.degree < N + 1 → coeff γ (g - low - e) = 0`. Introduce `γ hγ`. Rewrite using `[map_sub, map_sub, he, hlo]`. Distinguish the cases in `h1 : γ.degree < N`.
+
+Rewrite using `[if_pos h1, if_neg (by omega)]; ring`. Rewrite using `[if_neg h1, if_pos (by omega)]; ring`. Establish `hlowI : low ∈ intBy p k _ (p : WittVector p k)`. Introduce `γ`. Rewrite using `[hlo]`.
+
+Distinguish the cases in `h1 : γ.degree < N`. Rewrite using `[if_pos h1]`. Conclude with `hlow γ h1`. Rewrite using `[if_neg h1]; exact ⟨0, by simp⟩`. Establish `ehom : ∀ γ : Fin d ⊕ Fin d →₀ ℕ, γ.degree ≠ N → coeff γ e = 0`.
+
+Introduce `γ hγ`. Rewrite using `[he, if_neg hγ]`. Establish `eord : ∀ γ : Fin d ⊕ Fin d →₀ ℕ, γ.degree < N → coeff γ e = 0` using `fun γ hγ => ehom γ (by omega)`. Establish `hcob2e : cob2 (addLaw (Fr p k) d) e ∈ intBy p k _ (p : WittVector p k)`. Introduce `γ`.
+
+Distinguish the cases in `hγ : γ.degree = N`. Rewrite using `[← LEAD.2 e eord γ hγ.le]`. Establish `hsplit : e = g - low - (g - low - e)` using `by abel`. Establish `hz` using `coeff_formalGroupLawCoboundaryTwo_eq_zero_of_degree_lt (fun i => Katz.lift p (μ i)) hL0 (g - low - e) (N + 1) hhigh γ (by omega)`. Take `⟨w1, hw1⟩` from `hg2 γ`.
+
+Take `⟨w2, hw2⟩` from `(RC.2.2.2 _ low hlowI).1 γ`. Use `⟨w1 - w2, ?_⟩` and prove the remaining obligations. Rewrite using `[hsplit, (CC.2.2.1 _ _).2.1, (CC.2.2.1 _ _).2.1, map_sub, map_sub, hz, hw1, hw2, mul_sub, map_sub, sub_zero]`. Rewrite using `[HOM.2.1 e ehom γ hγ]; exact ⟨0, by simp⟩`. Establish `hswape : swap e - e ∈ intBy p k _ (p : WittVector p k)`.
+
+Introduce `γ`. Rewrite using `[map_sub, HOM.2.2.1, he, he, degree_mapDomain_swap_ord]`. Distinguish the cases in `hγ : γ.degree = N`. Rewrite using `[if_pos hγ, if_pos hγ]`. Take `⟨w, hw⟩` from `hgs γ`.
+
+Rewrite `hw` using `[map_sub, HOM.2.2.1]`. Conclude with `⟨w, hw⟩`. Rewrite using `[if_neg hγ, if_neg hγ]; exact ⟨0, by simp⟩`. Take `⟨h, hhom, hint⟩` from `GlobalTheory.T.lazard_additive_law_wittVectorFractionField_mod_p p k d N e hN ehom hcob2e hswape`. Establish `hord : ∀ α : Fin d →₀ ℕ, α.degree < N → coeff α h = 0` using `fun α hα => hhom α (by omega)`.
+
+Establish `hsub : cob1 (fun i => Katz.lift p (μ i)) (f - h) = cob1 (fun i => Katz.lift p (μ i)) f - cob1 (fun i => Katz.lift p (μ i)) h`. Rewrite using `[eq_sub_iff_add_eq, ← formalCoboundary_add hL0, sub_add_cancel]`. Establish `K : ∀ γ : Fin d ⊕ Fin d →₀ ℕ, γ.degree < N + 1 → ∃ w : WittVector p k, coeff γ (cob1 (fun i => Katz.lift p (μ i)) (f - h) - Katz.lift p c) = algebraMap (WittVector p k) (Fr p k) (p * w)`. Introduce `γ hγ`. Establish `e1 : cob1 (fun i => Katz.lift p (μ i)) (f - h) - Katz.lift p c = g - cob1 (fun i => Katz.lift p (μ i)) h` using `by rw [hsub, hg]; abel`.
+
+Rewrite using `[e1, map_sub]`. Take `⟨hL1, hL2⟩` from `LEAD.1 h hord γ`. Distinguish the cases in `h1 : γ.degree < N`. Rewrite using `[hL1 h1, sub_zero]`. Conclude with `hlow γ h1`.
+
+Establish `hN' : γ.degree = N` using `by omega`. Rewrite using `[hL2 hN'.le]`. Establish `: coeff γ g = coeff γ e` using `by rw [he, if_pos hN']`. Rewrite using `[this, ← map_sub]`. Conclude with `hint γ`.
+
+Establish `hnegq : -h ∈ quasiInt p k (Fin d)`. Introduce `α i`. Distinguish the cases in `hα : α.degree = N`. Use `GlobalTheory.T.degree_part_integralDifferential_of_coboundary p k d μ hμ N f (-h) hN hf (fun β hβ => by rw [map_neg, hord β hβ, neg_zero]) (fun γ hγ => ?_) α i hα` and prove the remaining obligations. Take `⟨w, hw⟩` from `K γ (by omega)`.
+
+Use `⟨p * w + WittVector.teichmuller p (coeff γ c), ?_⟩` and prove the remaining obligations. Rewrite using `[← sub_eq_add_neg, map_add, ← hw, map_sub, coeff_lift]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[map_neg, hhom α hα, neg_zero, mul_zero]; exact ⟨0, by simp⟩`. Use `⟨h, hhom, sub_mem hf ((neg_mem_iff).1 hnegq), K⟩` and prove the remaining obligations.
+-/
 theorem GlobalTheory.Katz.quasiLog_approx_step : ∀ (p : ℕ) [Fact p.Prime] (k : Type) [Field k] [CharP k p] [PerfectRing k p] (d : ℕ) (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) k), IsLaw μ → ∀ c, IsCoc μ c → ∀ (N : ℕ) (f : MvPowerSeries (Fin d) (Fr p k)), 2 ≤ N → f ∈ quasiInt p k (Fin d) → (∀ γ : Fin d ⊕ Fin d →₀ ℕ, γ.degree < N → ∃ w : WittVector p k, coeff γ (cob1 (fun i => Katz.lift p (μ i)) f - Katz.lift p c) = algebraMap (WittVector p k) (Fr p k) (p * w)) → ∃ h : MvPowerSeries (Fin d) (Fr p k), (∀ α : Fin d →₀ ℕ, α.degree ≠ N → coeff α h = 0) ∧ f - h ∈ quasiInt p k (Fin d) ∧ ∀ γ : Fin d ⊕ Fin d →₀ ℕ, γ.degree < N + 1 → ∃ w : WittVector p k, coeff γ (cob1 (fun i => Katz.lift p (μ i)) (f - h) - Katz.lift p c) = algebraMap (WittVector p k) (Fr p k) (p * w) := by
   intro p _ k _ _ _ d μ hμ c hc N f hN hf hlow
   have hL0 : ∀ i, constantCoeff ((fun i => Katz.lift p (μ i)) i) = 0 :=

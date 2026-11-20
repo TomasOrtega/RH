@@ -39,6 +39,9 @@ def reduceMod {h : ℕ} (M : ℕ) (a : Fin h ⊕ Fin h → ℤ) : Fin h ⊕ Fin 
 
 def liftMod {h : ℕ} {M : ℕ} (x : Fin h ⊕ Fin h → ZMod M) : Fin h ⊕ Fin h → ℤ := fun i => ((x i).val : ℤ)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[reduceMod, liftMod]`.
+-/
 theorem reduceMod_liftMod {h M : ℕ} [NeZero M] (x : Fin h ⊕ Fin h → ZMod M) : reduceMod M (liftMod x) = x := by
   funext i
   simp [reduceMod, liftMod]

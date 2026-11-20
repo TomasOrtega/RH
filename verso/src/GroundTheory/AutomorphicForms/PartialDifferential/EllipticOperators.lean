@@ -21,20 +21,34 @@ namespace HasOrder
 
 variable {T T₁ T₂ : 𝓢'(E, ℂ) →L[ℂ] 𝓢'(E, ℂ)} {k k₁ k₂ : ℝ}
 
+/- English proof (translation)
+Take `⟨C, -, hC⟩` from `h s`. Conclude with `memSobolev_of_sob_le ENNReal.ofReal_ne_top (hC u hu) hu`.
+-/
 theorem memSobolev (h : HasOrder T k) {s : ℝ} {u : 𝓢'(E, ℂ)} (hu : MemSobolev s 2 u) :
     MemSobolev (s - k) 2 (T u) := by
   obtain ⟨C, -, hC⟩ := h s
   exact memSobolev_of_sob_le ENNReal.ofReal_ne_top (hC u hu) hu
 
+/- English proof (translation)
+Substitute `hst` using the available equality. Conclude with `h.memSobolev hu`.
+-/
 theorem memSobolev' (h : HasOrder T k) {s t : ℝ} (hst : t = s - k) {u : 𝓢'(E, ℂ)}
     (hu : MemSobolev s 2 u) : MemSobolev t 2 (T u) := by
   subst hst; exact h.memSobolev hu
 
+/- English proof (translation)
+Introduce `s`. Take `⟨C, hC0, hC⟩` from `h s`. Conclude with `⟨C, hC0, fun u hu ↦ (sob_mono (by linarith) _).trans (hC u hu)⟩`.
+-/
 theorem mono (h : HasOrder T k) {k' : ℝ} (hk : k ≤ k') : HasOrder T k' := by
   intro s
   obtain ⟨C, hC0, hC⟩ := h s
   exact ⟨C, hC0, fun u hu ↦ (sob_mono (by linarith) _).trans (hC u hu)⟩
 
+/- English proof (translation)
+Introduce `s`. Take `⟨C₁, hC₁0, hC₁⟩` from `h₁ s`. Take `⟨C₂, hC₂0, hC₂⟩` from `h₂ s`. Use `⟨C₁ + C₂, by positivity, fun u hu ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[add_apply, ENNReal.ofReal_add hC₁0 hC₂0, add_mul]`.
+
+Conclude with `(sob_add_le _ _).trans (add_le_add (hC₁ u hu) (hC₂ u hu))`.
+-/
 theorem add (h₁ : HasOrder T₁ k) (h₂ : HasOrder T₂ k) : HasOrder (T₁ + T₂) k := by
   intro s
   obtain ⟨C₁, hC₁0, hC₁⟩ := h₁ s
@@ -43,6 +57,9 @@ theorem add (h₁ : HasOrder T₁ k) (h₂ : HasOrder T₂ k) : HasOrder (T₁ +
   rw [add_apply, ENNReal.ofReal_add hC₁0 hC₂0, add_mul]
   exact (sob_add_le _ _).trans (add_le_add (hC₁ u hu) (hC₂ u hu))
 
+/- English proof (translation)
+Introduce `s`. Take `⟨C, hC0, hC⟩` from `h s`. Use `⟨‖c‖ * C, by positivity, fun u hu ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[smul_apply, ENNReal.ofReal_mul (norm_nonneg c), ofReal_norm, mul_assoc]`. Conclude with `(sob_smul_le _ _).trans (mul_le_mul_right (hC u hu) _)`.
+-/
 theorem smul (h : HasOrder T k) (c : ℂ) : HasOrder (c • T) k := by
   intro s
   obtain ⟨C, hC0, hC⟩ := h s
@@ -50,18 +67,35 @@ theorem smul (h : HasOrder T k) (c : ℂ) : HasOrder (c • T) k := by
   rw [smul_apply, ENNReal.ofReal_mul (norm_nonneg c), ofReal_norm, mul_assoc]
   exact (sob_smul_le _ _).trans (mul_le_mul_right (hC u hu) _)
 
+/- English proof (translation)
+Simplify using `using h.smul (-1)`.
+-/
 theorem neg (h : HasOrder T k) : HasOrder (-T) k := by
   simpa using h.smul (-1)
 
+/- English proof (translation)
+Rewrite using `[sub_eq_add_neg]`. Conclude with `h₁.add h₂.neg`.
+-/
 theorem sub (h₁ : HasOrder T₁ k) (h₂ : HasOrder T₂ k) : HasOrder (T₁ - T₂) k := by
   rw [sub_eq_add_neg]; exact h₁.add h₂.neg
 
+/- English proof (translation)
+The claim follows from `fun _ ↦ ⟨0, le_rfl, fun u _ ↦ by simp [sob_zero]⟩`.
+-/
 theorem zero (k : ℝ) : HasOrder (0 : 𝓢'(E, ℂ) →L[ℂ] 𝓢'(E, ℂ)) k :=
   fun _ ↦ ⟨0, le_rfl, fun u _ ↦ by simp [sob_zero]⟩
 
+/- English proof (translation)
+The claim follows from `fun s ↦ ⟨1, zero_le_one, fun u _ ↦ by simp⟩`.
+-/
 theorem id : HasOrder (ContinuousLinearMap.id ℂ 𝓢'(E, ℂ)) 0 :=
   fun s ↦ ⟨1, zero_le_one, fun u _ ↦ by simp⟩
 
+/- English proof (translation)
+Introduce `s`. Take `⟨C₂, hC₂0, hC₂⟩` from `h₂ s`. Take `⟨C₁, hC₁0, hC₁⟩` from `h₁ (s - k₂)`. Use `⟨C₁ * C₂, by positivity, fun u hu ↦ ?_⟩` and prove the remaining obligations. Establish `hmem` using `h₂.memSobolev hu`.
+
+Rewrite using `[ContinuousLinearMap.comp_apply, sob_congr (show s - (k₁ + k₂) = s - k₂ - k₁ by ring), ENNReal.ofReal_mul hC₁0, mul_assoc]`. Conclude with `(hC₁ _ hmem).trans (mul_le_mul_right (hC₂ u hu) _)`.
+-/
 theorem comp (h₁ : HasOrder T₁ k₁) (h₂ : HasOrder T₂ k₂) : HasOrder (T₁ ∘L T₂) (k₁ + k₂) := by
   intro s
   obtain ⟨C₂, hC₂0, hC₂⟩ := h₂ s
@@ -72,6 +106,9 @@ theorem comp (h₁ : HasOrder T₁ k₁) (h₂ : HasOrder T₂ k₂) : HasOrder 
     ENNReal.ofReal_mul hC₁0, mul_assoc]
   exact (hC₁ _ hmem).trans (mul_le_mul_right (hC₂ u hu) _)
 
+/- English proof (translation)
+Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => simpa using zero k`. Consider the case `insert a S ha ih`. Rewrite using `[Finset.sum_insert ha]`. Conclude with `(h a (Finset.mem_insert_self a S)).add (ih fun i hi ↦ h i (Finset.mem_insert_of_mem hi))`.
+-/
 theorem sum {ι : Type*} (S : Finset ι) {T : ι → 𝓢'(E, ℂ) →L[ℂ] 𝓢'(E, ℂ)}
     (h : ∀ i ∈ S, HasOrder (T i) k) : HasOrder (∑ i ∈ S, T i) k := by
   classical
@@ -83,19 +120,33 @@ theorem sum {ι : Type*} (S : Finset ι) {T : ι → 𝓢'(E, ℂ) →L[ℂ] �
 
 end HasOrder
 
+/- English proof (translation)
+The claim follows from `fun s ↦ ⟨mulConst s χ, mulConst_nonneg s χ, fun u hu ↦ by rw [sub_zero]; exact sob_smulLeft_le χ s hu⟩`.
+-/
 theorem hasOrder_smulLeft (χ : 𝓢(E, ℂ)) : HasOrder (smulLeftCLM ℂ (χ : E → ℂ)) 0 := fun s ↦
   ⟨mulConst s χ, mulConst_nonneg s χ, fun u hu ↦ by
     rw [sub_zero]; exact sob_smulLeft_le χ s hu⟩
 
+/- English proof (translation)
+The claim follows from `fun s ↦ ⟨commConst r (s + 1 - r) * wInt ((|s + 1 - r| + |r - 1| + 1) / 2) (𝓕 χ), mul_nonneg (commConst_nonneg _ _) (wInt_nonneg _ _), fun u hu ↦ by have h := sob_mulRem_le χ r (s + 1 - r) (u := u) (by convert hu using 2; ring) rwa [show r + (s + 1 - r) = s - -1 by ring, show s - …`.
+-/
 theorem hasOrder_mulRem (χ : 𝓢(E, ℂ)) (r : ℝ) : HasOrder (mulRem χ r) (-1) := fun s ↦
   ⟨commConst r (s + 1 - r) * wInt ((|s + 1 - r| + |r - 1| + 1) / 2) (𝓕 χ),
     mul_nonneg (commConst_nonneg _ _) (wInt_nonneg _ _), fun u hu ↦ by
     have h := sob_mulRem_le χ r (s + 1 - r) (u := u) (by convert hu using 2; ring)
     rwa [show r + (s + 1 - r) = s - -1 by ring, show s - -1 - 1 = s by ring] at h⟩
 
+/- English proof (translation)
+The claim follows from `fun s ↦ ⟨2 * Real.pi * ‖v‖, by positivity, fun u hu ↦ sob_lineDeriv_le v hu⟩`.
+-/
 theorem hasOrder_lineDeriv (v : E) : HasOrder (lineDerivOpCLM ℂ 𝓢'(E, ℂ) v) 1 := fun s ↦
   ⟨2 * Real.pi * ‖v‖, by positivity, fun u hu ↦ sob_lineDeriv_le v hu⟩
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero`. Establish `: iteratedLineDerivOpCLM ℂ 𝓢'(E, ℂ) w = ContinuousLinearMap.id ℂ _` using `by ext1 u; simp`. Rewrite using `[this]`. Simplify using `using HasOrder.id`.
+
+Consider the case `succ k ih`. Establish `: iteratedLineDerivOpCLM ℂ 𝓢'(E, ℂ) w = lineDerivOpCLM ℂ 𝓢'(E, ℂ) (w 0) ∘L iteratedLineDerivOpCLM ℂ 𝓢'(E, ℂ) (Fin.tail w)` using `by ext1 u; simp [iteratedLineDerivOp_succ_left]`. Rewrite using `[this]`. Establish `h` using `(hasOrder_lineDeriv (w 0)).comp (ih (Fin.tail w))`. Rewrite `h` using `[show (1 : ℝ) + k = ((k + 1 : ℕ) : ℝ) by push_cast; ring]`. Then use the resulting hypothesis.
+-/
 theorem hasOrder_iteratedLineDeriv {k : ℕ} (w : Fin k → E) :
     HasOrder (iteratedLineDerivOpCLM ℂ 𝓢'(E, ℂ) w) k := by
   induction k with
@@ -115,22 +166,37 @@ def IsLocal (T : 𝓢'(E, ℂ) →L[ℂ] 𝓢'(E, ℂ)) : Prop :=
   ∀ U : Set E, IsOpen U → ∀ u : 𝓢'(E, ℂ), Distribution.IsVanishingOn u U →
     Distribution.IsVanishingOn (T u) U
 
+/- English proof (translation)
+The claim follows from `fun φ hφ ↦ by rw [add_apply, hu φ hφ, hv φ hφ, add_zero]`.
+-/
 theorem isVanishingOn_add {u v : 𝓢'(E, ℂ)} {U : Set E} (hu : Distribution.IsVanishingOn u U)
     (hv : Distribution.IsVanishingOn v U) : Distribution.IsVanishingOn (u + v) U := fun φ hφ ↦ by
   rw [add_apply, hu φ hφ, hv φ hφ, add_zero]
 
+/- English proof (translation)
+The claim follows from `fun φ hφ ↦ by rw [smul_apply, hu φ hφ, smul_zero]`.
+-/
 theorem isVanishingOn_smul {u : 𝓢'(E, ℂ)} {U : Set E} (c : ℂ) (hu : Distribution.IsVanishingOn u U) :
     Distribution.IsVanishingOn (c • u) U := fun φ hφ ↦ by
   rw [smul_apply, hu φ hφ, smul_zero]
 
+/- English proof (translation)
+The claim follows from `fun φ hφ ↦ by rw [neg_apply, hu φ hφ, neg_zero]`.
+-/
 theorem isVanishingOn_neg {u : 𝓢'(E, ℂ)} {U : Set E} (hu : Distribution.IsVanishingOn u U) :
     Distribution.IsVanishingOn (-u) U := fun φ hφ ↦ by
   rw [neg_apply, hu φ hφ, neg_zero]
 
+/- English proof (translation)
+Rewrite using `[sub_eq_add_neg]`. Conclude with `isVanishingOn_add hu (isVanishingOn_neg hv)`.
+-/
 theorem isVanishingOn_sub {u v : 𝓢'(E, ℂ)} {U : Set E} (hu : Distribution.IsVanishingOn u U)
     (hv : Distribution.IsVanishingOn v U) : Distribution.IsVanishingOn (u - v) U := by
   rw [sub_eq_add_neg]; exact isVanishingOn_add hu (isVanishingOn_neg hv)
 
+/- English proof (translation)
+The claim follows from `fun _ _ ↦ rfl`.
+-/
 theorem isVanishingOn_zero (U : Set E) : Distribution.IsVanishingOn (0 : 𝓢'(E, ℂ)) U :=
   fun _ _ ↦ rfl
 
@@ -138,22 +204,43 @@ namespace IsLocal
 
 variable {T T₁ T₂ : 𝓢'(E, ℂ) →L[ℂ] 𝓢'(E, ℂ)}
 
+/- English proof (translation)
+The claim follows from `fun U hU u hu ↦ by rw [add_apply]; exact isVanishingOn_add (h₁ U hU u hu) (h₂ U hU u hu)`.
+-/
 theorem add (h₁ : IsLocal T₁) (h₂ : IsLocal T₂) : IsLocal (T₁ + T₂) := fun U hU u hu ↦ by
   rw [add_apply]; exact isVanishingOn_add (h₁ U hU u hu) (h₂ U hU u hu)
 
+/- English proof (translation)
+The claim follows from `fun U hU u hu ↦ by rw [sub_apply]; exact isVanishingOn_sub (h₁ U hU u hu) (h₂ U hU u hu)`.
+-/
 theorem sub (h₁ : IsLocal T₁) (h₂ : IsLocal T₂) : IsLocal (T₁ - T₂) := fun U hU u hu ↦ by
   rw [sub_apply]; exact isVanishingOn_sub (h₁ U hU u hu) (h₂ U hU u hu)
 
+/- English proof (translation)
+The claim follows from `fun U hU u hu ↦ by rw [smul_apply]; exact isVanishingOn_smul c (h U hU u hu)`.
+-/
 theorem smul (h : IsLocal T) (c : ℂ) : IsLocal (c • T) := fun U hU u hu ↦ by
   rw [smul_apply]; exact isVanishingOn_smul c (h U hU u hu)
 
+/- English proof (translation)
+The claim follows from `fun U hU u hu ↦ h₁ U hU _ (h₂ U hU u hu)`.
+-/
 theorem comp (h₁ : IsLocal T₁) (h₂ : IsLocal T₂) : IsLocal (T₁ ∘L T₂) := fun U hU u hu ↦
   h₁ U hU _ (h₂ U hU u hu)
 
+/- English proof (translation)
+The claim follows from `fun U _ _ _ ↦ isVanishingOn_zero U`.
+-/
 theorem zero : IsLocal (0 : 𝓢'(E, ℂ) →L[ℂ] 𝓢'(E, ℂ)) := fun U _ _ _ ↦ isVanishingOn_zero U
 
+/- English proof (translation)
+The claim follows from `fun _ _ _ hu ↦ hu`.
+-/
 theorem id : IsLocal (ContinuousLinearMap.id ℂ 𝓢'(E, ℂ)) := fun _ _ _ hu ↦ hu
 
+/- English proof (translation)
+Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => simpa using zero`. Consider the case `insert a S ha ih`. Rewrite using `[Finset.sum_insert ha]`. Conclude with `(h a (Finset.mem_insert_self a S)).add (ih fun i hi ↦ h i (Finset.mem_insert_of_mem hi))`.
+-/
 theorem sum {ι : Type*} (S : Finset ι) {T : ι → 𝓢'(E, ℂ) →L[ℂ] 𝓢'(E, ℂ)}
     (h : ∀ i ∈ S, IsLocal (T i)) : IsLocal (∑ i ∈ S, T i) := by
   classical
@@ -165,14 +252,23 @@ theorem sum {ι : Type*} (S : Finset ι) {T : ι → 𝓢'(E, ℂ) →L[ℂ] �
 
 end IsLocal
 
+/- English proof (translation)
+The claim follows from `fun _ _ _ hu ↦ Distribution.TemperedDistribution.IsVanishingOn.smulLeftCLM hu hg`.
+-/
 theorem isLocal_smulLeft {g : E → ℂ} (hg : g.HasTemperateGrowth) :
     IsLocal (smulLeftCLM ℂ g) := fun _ _ _ hu ↦
   Distribution.TemperedDistribution.IsVanishingOn.smulLeftCLM hu hg
 
+/- English proof (translation)
+The claim follows from `fun _ _ _ hu ↦ Distribution.TemperedDistribution.IsVanishingOn.iteratedLineDerivOp hu w`.
+-/
 theorem isLocal_iteratedLineDeriv {k : ℕ} (w : Fin k → E) :
     IsLocal (iteratedLineDerivOpCLM ℂ 𝓢'(E, ℂ) w) := fun _ _ _ hu ↦
   Distribution.TemperedDistribution.IsVanishingOn.iteratedLineDerivOp hu w
 
+/- English proof (translation)
+Use extensionality with `φ`. Rewrite using `[smulLeftCLM_apply_apply, zero_apply]`. Apply `hu` to reduce the goal to its premises. Rewrite using `[SchwartzMap.smulLeftCLM_apply hg]`. Conclude with `(tsupport_smul_subset_left g φ).trans hgU`.
+-/
 theorem smulLeftCLM_eq_zero_of_isVanishingOn {g : E → ℂ} (hg : g.HasTemperateGrowth)
     {u : 𝓢'(E, ℂ)} {U : Set E} (hu : Distribution.IsVanishingOn u U) (hgU : tsupport g ⊆ U) :
     smulLeftCLM ℂ g u = 0 := by
@@ -182,6 +278,11 @@ theorem smulLeftCLM_eq_zero_of_isVanishingOn {g : E → ℂ} (hg : g.HasTemperat
   rw [SchwartzMap.smulLeftCLM_apply hg]
   exact (tsupport_smul_subset_left g φ).trans hgU
 
+/- English proof (translation)
+Introduce `φ hφ`. Rewrite using `[sub_apply, smulLeftCLM_apply_apply, sub_eq_zero]`. Use `congr 1`. Use extensionality with `x`. Rewrite using `[SchwartzMap.smulLeftCLM_apply_apply hg, smul_eq_mul]`.
+
+Distinguish the cases in `hx : φ x = 0`. Rewrite using `[hx, mul_zero]`. Rewrite using `[hgV x (hφ (subset_tsupport φ hx)), one_mul]`.
+-/
 theorem isVanishingOn_smulLeftCLM_sub {g : E → ℂ} (hg : g.HasTemperateGrowth) {V : Set E}
     (hgV : ∀ x ∈ V, g x = 1) (u : 𝓢'(E, ℂ)) :
     Distribution.IsVanishingOn (smulLeftCLM ℂ g u - u) V := by
@@ -194,6 +295,11 @@ theorem isVanishingOn_smulLeftCLM_sub {g : E → ℂ} (hg : g.HasTemperateGrowth
   · rw [hx, mul_zero]
   · rw [hgV x (hφ (subset_tsupport φ hx)), one_mul]
 
+/- English proof (translation)
+Introduce `φ hφ`. Rewrite using `[smulLeftCLM_apply_apply]`. Establish `: SchwartzMap.smulLeftCLM ℂ g φ = 0`. Use extensionality with `x`. Rewrite using `[SchwartzMap.smulLeftCLM_apply_apply hg, smul_eq_mul, zero_apply]`.
+
+Distinguish the cases in `hx : x ∈ tsupport g`. Rewrite using `[image_eq_zero_of_notMem_tsupport (fun h ↦ hφ h hx), mul_zero]`. Rewrite using `[image_eq_zero_of_notMem_tsupport hx, zero_mul]`. Rewrite using `[this, map_zero]`.
+-/
 theorem isVanishingOn_smulLeftCLM_compl {g : E → ℂ} (hg : g.HasTemperateGrowth) (u : 𝓢'(E, ℂ)) :
     Distribution.IsVanishingOn (smulLeftCLM ℂ g u) (tsupport g)ᶜ := by
   intro φ hφ
@@ -206,6 +312,11 @@ theorem isVanishingOn_smulLeftCLM_compl {g : E → ℂ} (hg : g.HasTemperateGrow
     · rw [image_eq_zero_of_notMem_tsupport hx, zero_mul]
   rw [this, map_zero]
 
+/- English proof (translation)
+Use extensionality with `x`. Establish `hψ` using `ψ.hasTemperateGrowth`. Establish `hψ'` using `(∂_{v} ψ : 𝓢(E, ℂ)).hasTemperateGrowth`. Rewrite using `[add_apply, SchwartzMap.lineDerivOp_apply_eq_fderiv, SchwartzMap.smulLeftCLM_apply_apply hψ', SchwartzMap.smulLeftCLM_apply_apply hψ, SchwartzMap.lineDerivOp_apply_eq_fderiv, SchwartzMap.lineDerivOp_apply_eq_fderiv]`. Establish `e : ⇑(SchwartzMap.smulLeftCLM ℂ (ψ : E → ℂ) φ) = fun y ↦ ψ y * φ y`.
+
+Use extensionality with `y`. Rewrite using `[SchwartzMap.smulLeftCLM_apply_apply hψ, smul_eq_mul]`. Rewrite using `[e, fderiv_fun_mul (ψ.differentiableAt) (φ.differentiableAt)]`. Simplify using `only [add_apply, smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem lineDerivOp_smulLeftCLM_schwartz (v : E) (ψ φ : 𝓢(E, ℂ)) :
     ∂_{v} (SchwartzMap.smulLeftCLM ℂ (ψ : E → ℂ) φ) =
       SchwartzMap.smulLeftCLM ℂ ((∂_{v} ψ : 𝓢(E, ℂ)) : E → ℂ) φ +
@@ -222,6 +333,9 @@ theorem lineDerivOp_smulLeftCLM_schwartz (v : E) (ψ φ : 𝓢(E, ℂ)) :
   simp only [add_apply, smul_apply, smul_eq_mul]
   ring
 
+/- English proof (translation)
+Use extensionality with `φ`. Simplify using `only [lineDerivOp_apply_apply, smulLeftCLM_apply_apply, add_apply, map_neg]`. Rewrite using `[lineDerivOp_smulLeftCLM_schwartz, map_add]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem lineDerivOp_smulLeftCLM (v : E) (ψ : 𝓢(E, ℂ)) (u : 𝓢'(E, ℂ)) :
     ∂_{v} (smulLeftCLM ℂ (ψ : E → ℂ) u) =
       smulLeftCLM ℂ ((∂_{v} ψ : 𝓢(E, ℂ)) : E → ℂ) u + smulLeftCLM ℂ (ψ : E → ℂ) (∂_{v} u) := by
@@ -233,21 +347,33 @@ theorem lineDerivOp_smulLeftCLM (v : E) (ψ : 𝓢(E, ℂ)) (u : 𝓢'(E, ℂ)) 
 def comm (T : 𝓢'(E, ℂ) →L[ℂ] 𝓢'(E, ℂ)) (ψ : 𝓢(E, ℂ)) : 𝓢'(E, ℂ) →L[ℂ] 𝓢'(E, ℂ) :=
   T ∘L smulLeftCLM ℂ (ψ : E → ℂ) - smulLeftCLM ℂ (ψ : E → ℂ) ∘L T
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem comm_apply (T : 𝓢'(E, ℂ) →L[ℂ] 𝓢'(E, ℂ)) (ψ : 𝓢(E, ℂ)) (u : 𝓢'(E, ℂ)) :
     comm T ψ u = T (smulLeftCLM ℂ (ψ : E → ℂ) u) - smulLeftCLM ℂ (ψ : E → ℂ) (T u) := rfl
 
+/- English proof (translation)
+Use `ext1 u`. Rewrite using `[comm_apply, lineDerivOpCLM_apply, lineDerivOpCLM_apply, lineDerivOp_smulLeftCLM]`. Normalize the expressions using the abelian group laws.
+-/
 theorem comm_lineDeriv (v : E) (ψ : 𝓢(E, ℂ)) :
     comm (lineDerivOpCLM ℂ 𝓢'(E, ℂ) v) ψ = smulLeftCLM ℂ ((∂_{v} ψ : 𝓢(E, ℂ)) : E → ℂ) := by
   ext1 u
   rw [comm_apply, lineDerivOpCLM_apply, lineDerivOpCLM_apply, lineDerivOp_smulLeftCLM]
   abel
 
+/- English proof (translation)
+Use `ext1 u`. Simplify using `only [comm_apply, ContinuousLinearMap.comp_apply, add_apply, map_sub]`. Normalize the expressions using the abelian group laws.
+-/
 theorem comm_comp (A B : 𝓢'(E, ℂ) →L[ℂ] 𝓢'(E, ℂ)) (ψ : 𝓢(E, ℂ)) :
     comm (A ∘L B) ψ = A ∘L comm B ψ + comm A ψ ∘L B := by
   ext1 u
   simp only [comm_apply, ContinuousLinearMap.comp_apply, add_apply, map_sub]
   abel
 
+/- English proof (translation)
+Use `ext1 u`. Simplify using `only [comm_apply, ContinuousLinearMap.comp_apply, map_sub]`. Rewrite using `[smulLeftCLM_smulLeftCLM_apply ψ.hasTemperateGrowth hg, smulLeftCLM_smulLeftCLM_apply hg ψ.hasTemperateGrowth, mul_comm]`.
+-/
 theorem comm_smulLeft_comp {g : E → ℂ} (hg : g.HasTemperateGrowth) (A : 𝓢'(E, ℂ) →L[ℂ] 𝓢'(E, ℂ))
     (ψ : 𝓢(E, ℂ)) : comm (smulLeftCLM ℂ g ∘L A) ψ = smulLeftCLM ℂ g ∘L comm A ψ := by
   ext1 u
@@ -255,10 +381,16 @@ theorem comm_smulLeft_comp {g : E → ℂ} (hg : g.HasTemperateGrowth) (A : 𝓢
   rw [smulLeftCLM_smulLeftCLM_apply ψ.hasTemperateGrowth hg,
     smulLeftCLM_smulLeftCLM_apply hg ψ.hasTemperateGrowth, mul_comm]
 
+/- English proof (translation)
+Use `ext1 u`. Simplify using `only [comm_apply, add_apply, map_add]`. Normalize the expressions using the abelian group laws.
+-/
 theorem comm_add (A B : 𝓢'(E, ℂ) →L[ℂ] 𝓢'(E, ℂ)) (ψ : 𝓢(E, ℂ)) :
     comm (A + B) ψ = comm A ψ + comm B ψ := by
   ext1 u; simp only [comm_apply, add_apply, map_add]; abel
 
+/- English proof (translation)
+Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => ext1 u`. Simplify using `[comm_apply]`. Consider the case `insert a S ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, comm_add, ih]`.
+-/
 theorem comm_sum {ι : Type*} (S : Finset ι) (A : ι → 𝓢'(E, ℂ) →L[ℂ] 𝓢'(E, ℂ)) (ψ : 𝓢(E, ℂ)) :
     comm (∑ i ∈ S, A i) ψ = ∑ i ∈ S, comm (A i) ψ := by
   classical
@@ -266,6 +398,13 @@ theorem comm_sum {ι : Type*} (S : Finset ι) (A : ι → 𝓢'(E, ℂ) →L[ℂ
   | empty => ext1 u; simp [comm_apply]
   | insert a S ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, comm_add, ih]
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero`. Establish `: comm (iteratedLineDerivOpCLM ℂ 𝓢'(E, ℂ) w) ψ = 0` using `by ext1 u; simp [comm_apply]`. Rewrite using `[this]`. Conclude with `HasOrder.zero _`.
+
+Consider the case `succ k ih`. Establish `e : iteratedLineDerivOpCLM ℂ 𝓢'(E, ℂ) w = lineDerivOpCLM ℂ 𝓢'(E, ℂ) (w 0) ∘L iteratedLineDerivOpCLM ℂ 𝓢'(E, ℂ) (Fin.tail w)` using `by ext1 u; simp [iteratedLineDerivOp_succ_left]`. Rewrite using `[e, comm_comp, comm_lineDeriv]`. Establish `h1` using `(hasOrder_lineDeriv (E := E) (w 0)).comp (ih (Fin.tail w))`. Establish `h2` using `(hasOrder_smulLeft (∂_{w 0} ψ : 𝓢(E, ℂ))).comp (hasOrder_iteratedLineDeriv (E := E) (Fin.tail w))`.
+
+Apply the tactic sequence `refine (h1.mono (le_of_eq ?_)).add (h2.mono (le_of_eq ?_)) <;> push_cast <;> ring`.
+-/
 theorem hasOrder_comm_iteratedLineDeriv {k : ℕ} (w : Fin k → E) (ψ : 𝓢(E, ℂ)) :
     HasOrder (comm (iteratedLineDerivOpCLM ℂ 𝓢'(E, ℂ) w) ψ) (k - 1) := by
   induction k with
@@ -286,10 +425,20 @@ theorem hasOrder_comm_iteratedLineDeriv {k : ℕ} (w : Fin k → E) (ψ : 𝓢(E
 def derivSymb {k : ℕ} (w : Fin k → E) (ξ : E) : ℂ :=
   ∏ j, (2 * Real.pi * Complex.I) * ((inner ℝ ξ (w j) : ℝ) : ℂ)
 
+/- English proof (translation)
+Rewrite using `[derivSymb, Fin.prod_univ_succ, mul_comm]`. Both sides reduce to the same expression.
+-/
 theorem derivSymb_succ {k : ℕ} (w : Fin (k + 1) → E) (ξ : E) :
     derivSymb w ξ = derivSymb (Fin.tail w) ξ * ((2 * Real.pi * Complex.I) * ((inner ℝ ξ (w 0) : ℝ) : ℂ)) := by
   rw [derivSymb, Fin.prod_univ_succ, mul_comm]; rfl
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero`. Establish `: derivSymb w = fun _ ↦ 1` using `by ext ξ; simp [derivSymb]`. Rewrite using `[this]`. Conclude with `Function.HasTemperateGrowth.const 1`.
+
+Consider the case `succ k ih`. Establish `: derivSymb w = fun ξ ↦ derivSymb (Fin.tail w) ξ * ((2 * Real.pi * Complex.I) * ((inner ℝ ξ (w 0) : ℝ) : ℂ))`. Use extensionality with `ξ`. Conclude with `derivSymb_succ w ξ`. Rewrite using `[this]`.
+
+Conclude with `(ih _).mul (by fun_prop)`.
+-/
 theorem derivSymb_hasTemperateGrowth {k : ℕ} (w : Fin k → E) : (derivSymb w).HasTemperateGrowth := by
   induction k with
   | zero =>
@@ -302,6 +451,9 @@ theorem derivSymb_hasTemperateGrowth {k : ℕ} (w : Fin k → E) : (derivSymb w)
     rw [this]
     exact (ih _).mul (by fun_prop)
 
+/- English proof (translation)
+Rewrite using `[derivSymb, norm_prod, ← Fin.prod_const k ‖ξ‖, ← Finset.prod_mul_distrib]`. Use `Finset.prod_le_prod (fun j _ ↦ norm_nonneg _) fun j _ ↦ ?_` and prove the remaining obligations. Establish `h2 : ‖(2 : ℂ)‖ = 2` using `by simp`. Rewrite using `[norm_mul, norm_mul, norm_mul, Complex.norm_real, Complex.norm_real, Real.norm_eq_abs, Complex.norm_I, mul_one, Real.norm_eq_abs, abs_of_pos Real.pi_pos, h2]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem norm_derivSymb_le {k : ℕ} (w : Fin k → E) (ξ : E) :
     ‖derivSymb w ξ‖ ≤ (∏ j, (2 * Real.pi * ‖w j‖)) * ‖ξ‖ ^ k := by
   rw [derivSymb, norm_prod, ← Fin.prod_const k ‖ξ‖, ← Finset.prod_mul_distrib]
@@ -313,6 +465,13 @@ theorem norm_derivSymb_le {k : ℕ} (w : Fin k → E) (ξ : E) :
         gcongr; exact abs_real_inner_le_norm ξ (w j)
     _ = _ := by ring
 
+/- English proof (translation)
+Proceed by induction on `k generalizing u with`. Consider the case `zero`. Establish `: derivSymb w = fun _ ↦ 1` using `by ext ξ; simp [derivSymb]`. Rewrite using `[this, fourierMultiplierCLM_const]`. Simplify using the standard rewrite rules.
+
+Consider the case `succ k ih`. Establish `hg : (fun x : E ↦ ((inner ℝ x (w 0) : ℝ) : ℂ)).HasTemperateGrowth` using `by fun_prop`. Rewrite using `[iteratedLineDerivOp_succ_left, ih, lineDeriv_eq_fourierMultiplierCLM, fourierMultiplierCLM_fourierMultiplierCLM_apply (derivSymb_hasTemperateGrowth _) hg, ← smul_apply, ← fourierMultiplierCLM_smul ((derivSymb_hasTemperateGrowth _).mul hg)]`. Use `congr 2`. Use extensionality with `ξ`.
+
+Simplify using `only [Pi.smul_apply, Pi.mul_apply, smul_eq_mul]`. Rewrite using `[derivSymb_succ]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem iteratedLineDeriv_eq_fourierMultiplier {k : ℕ} (w : Fin k → E) (u : 𝓢'(E, ℂ)) :
     ∂^{w} u = fourierMultiplierCLM ℂ (derivSymb w) u := by
   induction k generalizing u with
@@ -332,10 +491,16 @@ theorem iteratedLineDeriv_eq_fourierMultiplier {k : ℕ} (w : Fin k → E) (u : 
 def prinSymb {ι : Type*} [Fintype ι] {m : ℕ} (c : ι → ℂ) (w : ι → Fin m → E) (ξ : E) : ℂ :=
   ∑ i, c i * ∏ j, ((inner ℝ ξ (w i j) : ℝ) : ℂ)
 
+/- English proof (translation)
+Unfold `prinSymb`. Use `fun_prop`.
+-/
 theorem continuous_prinSymb {ι : Type*} [Fintype ι] {m : ℕ} (c : ι → ℂ) (w : ι → Fin m → E) :
     Continuous (prinSymb c w) := by
   unfold prinSymb; fun_prop
 
+/- English proof (translation)
+Simplify using `only [prinSymb, inner_smul_left, Finset.mul_sum]`. Use `congr 1`. Use extensionality with `i`. Simplify using `only [RCLike.conj_to_real, Complex.ofReal_mul, Finset.prod_mul_distrib, Fin.prod_const]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem prinSymb_smul {ι : Type*} [Fintype ι] {m : ℕ} (c : ι → ℂ) (w : ι → Fin m → E) (t : ℝ)
     (ξ : E) : prinSymb c w (t • ξ) = (t : ℂ) ^ m * prinSymb c w ξ := by
   simp only [prinSymb, inner_smul_left, Finset.mul_sum]
@@ -343,10 +508,18 @@ theorem prinSymb_smul {ι : Type*} [Fintype ι] {m : ℕ} (c : ι → ℂ) (w : 
   simp only [RCLike.conj_to_real, Complex.ofReal_mul, Finset.prod_mul_distrib, Fin.prod_const]
   ring
 
+/- English proof (translation)
+Rewrite using `[derivSymb, Finset.prod_mul_distrib, Fin.prod_const]`.
+-/
 theorem derivSymb_eq {k : ℕ} (w : Fin k → E) (ξ : E) :
     derivSymb w ξ = (2 * Real.pi * Complex.I) ^ k * ∏ j, ((inner ℝ ξ (w j) : ℝ) : ℂ) := by
   rw [derivSymb, Finset.prod_mul_distrib, Fin.prod_const]
 
+/- English proof (translation)
+Rewrite using `[prinSymb, Finset.sum_mul]`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun i _ ↦ ?_)` and prove the remaining obligations. Rewrite using `[norm_mul, norm_prod, mul_assoc, ← Fin.prod_const m ‖ξ‖, ← Finset.prod_mul_distrib]`. Use `gcongr with j`. Rewrite using `[Complex.norm_real, Real.norm_eq_abs, mul_comm]`.
+
+Conclude with `abs_real_inner_le_norm ξ (w i j)`.
+-/
 theorem norm_prinSymb_le {ι : Type*} [Fintype ι] {m : ℕ} (c : ι → ℂ) (w : ι → Fin m → E) (ξ : E) :
     ‖prinSymb c w ξ‖ ≤ (∑ i, ‖c i‖ * ∏ j, ‖w i j‖) * ‖ξ‖ ^ m := by
   rw [prinSymb, Finset.sum_mul]
@@ -356,6 +529,17 @@ theorem norm_prinSymb_le {ι : Type*} [Fintype ι] {m : ℕ} (c : ι → ℂ) (w
   rw [Complex.norm_real, Real.norm_eq_abs, mul_comm]
   exact abs_real_inner_le_norm ξ (w i j)
 
+/- English proof (translation)
+Distinguish the cases in `hE : ∃ ξ : E, ξ ≠ 0`. Take `⟨ξ₀, hξ₀⟩` from `hE`. Establish `hne : (Metric.sphere (0 : E) 1).Nonempty` using `⟨‖ξ₀‖⁻¹ • ξ₀, by`. Rewrite using `[mem_sphere_zero_iff_norm, norm_smul, norm_inv, norm_norm, inv_mul_cancel₀ (norm_ne_zero_iff.2 hξ₀)]⟩`. Take `⟨η, hη, hmin⟩` from `(isCompact_sphere (0 : E) 1).exists_isMinOn hne (continuous_prinSymb c w).norm.continuousOn`.
+
+Establish `hη0 : η ≠ 0`. Introduce `h`. Rewrite `hη` using `[h, mem_sphere_zero_iff_norm, norm_zero]`. Conclude with `zero_ne_one hη`. Use `⟨‖prinSymb c w η‖, norm_pos_iff.2 (hell η hη0), fun ξ ↦ ?_⟩` and prove the remaining obligations.
+
+Distinguish the cases in `hξ : ξ = 0`. Rewrite using `[hξ, norm_zero, zero_pow (by omega), mul_zero]; exact norm_nonneg _`. Establish `hn : 0 < ‖ξ‖` using `norm_pos_iff.2 hξ`. Establish `hmem : ‖ξ‖⁻¹ • ξ ∈ Metric.sphere (0 : E) 1`. Rewrite using `[mem_sphere_zero_iff_norm, norm_smul, norm_inv, norm_norm, inv_mul_cancel₀ hn.ne']`.
+
+Establish `h1` using `hmin hmem`. Simplify using `only at h1`. Establish `h2 : prinSymb c w ξ = ((‖ξ‖ : ℝ) : ℂ) ^ m * prinSymb c w (‖ξ‖⁻¹ • ξ)`. Rewrite using `[← prinSymb_smul, smul_smul, mul_inv_cancel₀ hn.ne', one_smul]`. Rewrite using `[h2, norm_mul, norm_pow, Complex.norm_real, Real.norm_eq_abs, abs_of_pos hn, mul_comm]`.
+
+Use `gcongr`. Conclude with `h1`. Simplify using `only [not_exists, not_not] at hE`. Use `⟨1, one_pos, fun ξ ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[hE ξ, norm_zero, zero_pow (by omega), mul_zero]; exact norm_nonneg _`.
+-/
 theorem exists_pos_le_norm_prinSymb {ι : Type*} [Fintype ι] {m : ℕ} (hm : 1 ≤ m) (c : ι → ℂ)
     (w : ι → Fin m → E) (hell : ∀ ξ : E, ξ ≠ 0 → prinSymb c w ξ ≠ 0) :
     ∃ c₀ : ℝ, 0 < c₀ ∧ ∀ ξ : E, c₀ * ‖ξ‖ ^ m ≤ ‖prinSymb c w ξ‖ := by
@@ -392,10 +576,16 @@ section prinOp
 
 variable {ι : Type*} [Fintype ι] {m : ℕ} (a : ι → 𝓢(E, ℂ)) (w : ι → Fin m → E)
 
+/- English proof (translation)
+The claim follows from `IsLocal.sum _ fun i _ ↦ (isLocal_smulLeft (a i).hasTemperateGrowth).comp (isLocal_iteratedLineDeriv (w i))`.
+-/
 theorem isLocal_prinOp : IsLocal (prinOp a w) :=
   IsLocal.sum _ fun i _ ↦ (isLocal_smulLeft (a i).hasTemperateGrowth).comp
     (isLocal_iteratedLineDeriv (w i))
 
+/- English proof (translation)
+Rewrite using `[prinOp, comm_sum]`. Use `HasOrder.sum _ fun i _ ↦ ?_` and prove the remaining obligations. Rewrite using `[comm_smulLeft_comp (a i).hasTemperateGrowth]`. Simplify using `using (hasOrder_smulLeft (a i)).comp (hasOrder_comm_iteratedLineDeriv (w i) ψ)`.
+-/
 theorem hasOrder_comm_prinOp (ψ : 𝓢(E, ℂ)) : HasOrder (comm (prinOp a w) ψ) ((m : ℝ) - 1) := by
   rw [prinOp, comm_sum]
   refine HasOrder.sum _ fun i _ ↦ ?_
@@ -405,6 +595,11 @@ theorem hasOrder_comm_prinOp (ψ : 𝓢(E, ℂ)) : HasOrder (comm (prinOp a w) �
 def constOp (c : ι → ℂ) : 𝓢'(E, ℂ) →L[ℂ] 𝓢'(E, ℂ) :=
   ∑ i, c i • iteratedLineDerivOpCLM ℂ 𝓢'(E, ℂ) (w i)
 
+/- English proof (translation)
+Establish `: (fun ξ ↦ (2 * Real.pi * Complex.I) ^ m * prinSymb c w ξ) = fun ξ ↦ ∑ i, c i * derivSymb (w i) ξ`. Use extensionality with `ξ`. Simplify using `only [prinSymb, derivSymb_eq, Finset.mul_sum]`. Use `congr 1`. Use extensionality with `i`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `Function.HasTemperateGrowth.sum fun i _ ↦ (Function.HasTemperateGrowth.const (c i)).mul (derivSymb_hasTemperateGrowth (w i))`.
+-/
 theorem constSymb_hasTemperateGrowth (c : ι → ℂ) :
     (fun ξ ↦ (2 * Real.pi * Complex.I) ^ m * prinSymb c w ξ).HasTemperateGrowth := by
   have : (fun ξ ↦ (2 * Real.pi * Complex.I) ^ m * prinSymb c w ξ) =
@@ -414,6 +609,13 @@ theorem constSymb_hasTemperateGrowth (c : ι → ℂ) :
   exact Function.HasTemperateGrowth.sum fun i _ ↦
     (Function.HasTemperateGrowth.const (c i)).mul (derivSymb_hasTemperateGrowth (w i))
 
+/- English proof (translation)
+Establish `this : (fun ξ ↦ (2 * Real.pi * Complex.I) ^ m * prinSymb c w ξ) = fun ξ ↦ ∑ i, c i * derivSymb (w i) ξ`. Use extensionality with `ξ`. Simplify using `only [prinSymb, derivSymb_eq, Finset.mul_sum]`. Use `congr 1`. Use extensionality with `i`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hsum` using `fourierMultiplierCLM_sum ℂ (E := E) (g := fun i η ↦ c i * derivSymb (w i) η) (s := Finset.univ) (fun i _ ↦ (Function.HasTemperateGrowth.const (c i)).mul (derivSymb_hasTemperateGrowth (w i)))`. Use `beta_reduce at hsum`. Rewrite using `[this, hsum]`. Unfold `constOp`.
+
+Use `congr 1`. Use `ext1 i`. Use `ext1 u`. Rewrite using `[smul_apply, iteratedLineDerivOpCLM_apply, iteratedLineDeriv_eq_fourierMultiplier, show (fun η ↦ c i * derivSymb (w i) η) = c i • derivSymb (w i) from rfl, fourierMultiplierCLM_smul (derivSymb_hasTemperateGrowth (w i)), smul_apply]`.
+-/
 theorem constOp_eq_fourierMultiplier (c : ι → ℂ) :
     constOp w c = fourierMultiplierCLM ℂ (fun ξ ↦ (2 * Real.pi * Complex.I) ^ m * prinSymb c w ξ) := by
   have this : (fun ξ ↦ (2 * Real.pi * Complex.I) ^ m * prinSymb c w ξ) =
@@ -443,10 +645,18 @@ namespace IsEllipticAt
 
 variable {T : 𝓢'(E, ℂ) →L[ℂ] 𝓢'(E, ℂ)} {m : ℕ} {x₀ : E}
 
+/- English proof (translation)
+Take `⟨n, a, w, N, rfl, -, hN, -⟩` from `h`. Conclude with `(isLocal_prinOp a w).add hN`.
+-/
 theorem isLocal (h : IsEllipticAt T m x₀) : IsLocal T := by
   obtain ⟨n, a, w, N, rfl, -, hN, -⟩ := h
   exact (isLocal_prinOp a w).add hN
 
+/- English proof (translation)
+Take `⟨n, a, w, N, rfl, hN, -, -⟩` from `h`. Rewrite using `[comm_add]`. Use `(hasOrder_comm_prinOp a w ψ).add ?_` and prove the remaining obligations. Establish `h1` using `(hN.comp (hasOrder_smulLeft ψ)).mono (le_of_eq (add_zero _))`. Establish `h2` using `((hasOrder_smulLeft ψ).comp hN).mono (le_of_eq (zero_add _))`.
+
+Conclude with `h1.sub h2`.
+-/
 theorem hasOrder_comm (h : IsEllipticAt T m x₀) (ψ : 𝓢(E, ℂ)) : HasOrder (comm T ψ) ((m : ℝ) - 1) := by
   obtain ⟨n, a, w, N, rfl, hN, -, -⟩ := h
   rw [comm_add]
@@ -455,6 +665,9 @@ theorem hasOrder_comm (h : IsEllipticAt T m x₀) (ψ : 𝓢(E, ℂ)) : HasOrder
   have h2 := ((hasOrder_smulLeft ψ).comp hN).mono (le_of_eq (zero_add _))
   exact h1.sub h2
 
+/- English proof (translation)
+Take `⟨n, a, w, N, rfl, hN, hNl, hell⟩` from `h`. Conclude with `⟨n, a, w, N + N', by rw [add_assoc], hN.add hN', hNl.add hL, hell⟩`.
+-/
 theorem add (h : IsEllipticAt T m x₀) {N' : 𝓢'(E, ℂ) →L[ℂ] 𝓢'(E, ℂ)}
     (hN' : HasOrder N' ((m : ℝ) - 1)) (hL : IsLocal N') : IsEllipticAt (T + N') m x₀ := by
   obtain ⟨n, a, w, N, rfl, hN, hNl, hell⟩ := h

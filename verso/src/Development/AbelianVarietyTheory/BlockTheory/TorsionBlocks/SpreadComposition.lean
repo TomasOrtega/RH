@@ -52,6 +52,11 @@ end Sum
 
 def IsDualFrame {N : ℕ} (G X' : Matrix (Fin N) (Fin N) ℂ) : Prop := X' * X'ᴴ = Gᵀ
 
+/- English proof (translation)
+Use `⟨fun a b => ?_, fun φ => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : a = b`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h, Ne.symm h]`.
+
+Rewrite using `[Matrix.map_one _ (map_zero φ) (map_one φ)]`. Conclude with `Matrix.PosDef.one`.
+-/
 example {E : Type} [Field E] [NumberField E] [IsCMField E] {ν : ℕ} :
     TotallyPosDef (1 : Matrix (Fin ν) (Fin ν) E) := by
   refine ⟨fun a b => ?_, fun φ => ?_⟩
@@ -61,6 +66,21 @@ example {E : Type} [Field E] [NumberField E] [IsCMField E] {ν : ℕ} :
   · rw [Matrix.map_one _ (map_zero φ) (map_one φ)]
     exact Matrix.PosDef.one
 
+/- English proof (translation)
+Establish `hs : ∀ a : Fin ν, (Pi.single a 1 : Fin ν → E) ∈ Submodule.pi Set.univ fun _ : Fin ν => (1 : Submodule (𝓞 E) E)`. Introduce `a b _`. Distinguish the cases in `h : b = a`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+
+Simplify using `[Pi.single_eq_of_ne h]`. Use `⟨Submodule.fg_pi fun _ => ?_, ?_, fun x => ⟨fun hx y hy => ?_, fun hx a _ => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[Submodule.one_eq_span]`. Conclude with `Submodule.fg_span_singleton _`. Rewrite using `[eq_top_iff, ← (Pi.basisFun E (Fin ν)).span_eq]`.
+
+Use `Submodule.span_mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨a, rfl⟩`. Simplify using `using hs a`. Unfold `form`. Rewrite using `[Matrix.one_mulVec]`.
+
+Use `Submodule.sum_mem _ fun a _ => ?_` and prove the remaining obligations. Take `⟨u, hu⟩` from `Submodule.mem_one.mp (hx a trivial)`. Take `⟨w, hw⟩` from `Submodule.mem_one.mp (hy a trivial)`. Use `Submodule.mem_one.mpr ⟨IsCMField.ringOfIntegersComplexConj E w * u, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, hu]`.
+
+Use `congr 1`. Use `show ((IsCMField.ringOfIntegersComplexConj E w : 𝓞 E) : E) = IsCMField.complexConj E (y a)`. Rewrite using `[IsCMField.coe_ringOfIntegersComplexConj, ← hw]`. Use `hx _ (hs a)` as an intermediate fact. Unfold `form at this`.
+
+Rewrite `this` using `[Matrix.one_mulVec]`. Establish `h2 : (fun b => IsCMField.complexConj E ((Pi.single a 1 : Fin ν → E) b)) = Pi.single a 1`. Use function extensionality and compare the values at `b`. Distinguish the cases in `h : b = a`. Substitute `h` using the available equality.
+
+Simplify using the standard rewrite rules. Simplify using `[Pi.single_eq_of_ne h]`. Rewrite `this` using `[h2]`. Simplify using `using this`.
+-/
 example {E : Type} [Field E] [NumberField E] [IsCMField E] {ν : ℕ} :
     IsSelfDualLattice (1 : Matrix (Fin ν) (Fin ν) E)
       (Submodule.pi Set.univ fun _ => (1 : Submodule (𝓞 E) E)) := by

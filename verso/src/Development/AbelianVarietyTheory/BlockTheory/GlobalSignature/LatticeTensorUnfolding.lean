@@ -16,6 +16,15 @@ def IsQuotMeasure {G G' : Type} [Group G] [Group G'] [MeasurableSpace G] [Measur
   ∀ f : G → ℝ≥0∞, Measurable f →
     ∫⁻ g, f g ∂μ = ∫⁻ c : RCosets j, ∫⁻ h, f (j h * c.out) ∂μ' ∂ν
 
+/- English proof (translation)
+Introduce `f hf`. Establish `hout : ∀ g : G, (Quotient.mk (QuotientGroup.rightRel (1 : PUnit →* G).range) g).out = g`. Introduce `g`. Establish `h` using `Quotient.mk_out (s := QuotientGroup.rightRel (1 : PUnit →* G).range) g`. Rewrite `h` using `[QuotientGroup.rightRel_apply]`.
+
+Take `⟨u, hu⟩` from `h`. Establish `h1 : (1 : G) = g * (Quotient.mk (QuotientGroup.rightRel (1 : PUnit →* G).range) g).out⁻¹`. Simplify using `using hu`. Conclude with `(mul_inv_eq_one.1 h1.symm).symm`. Establish `hm : Measurable fun c : RCosets (1 : PUnit →* G) => f c.out`.
+
+Rewrite using `[measurable_from_quotient]`. Establish `: ((fun c : RCosets (1 : PUnit →* G) => f c.out) ∘ Quotient.mk'') = f`. Use function extensionality and compare the values at `g`. Conclude with `congrArg f (hout g)`. Rewrite using `[this]`.
+
+Conclude with `hf`. Simplify using `only [MonoidHom.one_apply, one_mul, lintegral_const, measure_univ, mul_one]`. Rewrite using `[lintegral_map hm measurable_quotient_mk'']`. Conclude with `lintegral_congr fun g => (congrArg f (hout g)).symm`.
+-/
 example {G : Type} [Group G] [MeasurableSpace G] (μ : Measure G) :
     IsQuotMeasure (1 : PUnit →* G) μ (Measure.dirac PUnit.unit)
       (μ.map (Quotient.mk (QuotientGroup.rightRel (1 : PUnit →* G).range))) := by

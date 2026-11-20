@@ -15,6 +15,23 @@ open scoped ComplexOrder Classical
 noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.PB.CovMap.LocImg
 
+/- English proof (translation)
+Introduce `K _ ι _ Φ _ y Ψ _ _ N j M K' _ ι' _ Φ' _ y' M' Cv b F' F hb hF' hF hG' hG τ`. Establish `hT` using `hF.1 τ`. Establish `hT'` using `hF'.1 τ`. Establish `hdet : ((F.T τ).map Cv.φ).det ≠ 0`. Establish `e : ((F.T τ).map Cv.φ).det = Cv.φ (F.T τ).det`.
+
+Rewrite using `[RingHom.map_det]`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `(map_ne_zero Cv.φ).2 hT.2`. Establish `hu : IsUnit ((F.T τ).map Cv.φ).det` using `isUnit_iff_ne_zero.2 hdet`.
+
+Establish `hu' : IsUnit (F'.T τ).det` using `isUnit_iff_ne_zero.2 hT'.2`. Establish `hA : IsBlockDiag j (((F.T τ).map Cv.φ)⁻¹ * F'.T τ)` using `((hT.1.map Cv.φ).inv hu).mul hT'.1`. Establish `hreg` using `Cv.agree b hb F' F hF' hF hG' hG τ`. Establish `hz : valMat M'.x b (1 : Matrix (Fin N) (Fin N) M'.Ω) = 1`. Establish `hring` using `ValRing.regAt_valAt_ring _ _ _ M'.x b hb`.
+
+Use extensionality with `a c`. Distinguish the cases in `e : a = c`. Substitute `e show valAt M'.x ((1 : Matrix (Fin N) (Fin N) M'.Ω) a a) b = _` using the available equality. Rewrite using `[Matrix.one_apply_eq, Matrix.one_apply_eq]`. Conclude with `hring.2.2.2.1`.
+
+Use `show valAt M'.x ((1 : Matrix (Fin N) (Fin N) M'.Ω) a c) b = _`. Rewrite using `[Matrix.one_apply_ne e, Matrix.one_apply_ne e]`. Conclude with `hring.2.2.1`. Establish `hAB : (((F.T τ).map Cv.φ)⁻¹ * F'.T τ) * ((F'.T τ)⁻¹ * (F.T τ).map Cv.φ) = 1`. Rewrite using `[Matrix.mul_assoc, Matrix.mul_nonsing_inv_cancel_left _ _ hu', Matrix.nonsing_inv_mul _ hu]`.
+
+Establish `hmul` using `(regMat_mul hb (fun a c => (hreg a c).1) (fun a c => (hreg a c).2)).2`. Rewrite `hmul` using `[hAB, hz]`. Establish `htr : Cv.trans F' F b τ = valMat M'.x b (((F.T τ).map Cv.φ)⁻¹ * F'.T τ)` using `rfl`. Use `⟨fun a c h => ?_, ?_⟩` and prove the remaining obligations. Use `show valAt M'.x ((((F.T τ).map Cv.φ)⁻¹ * F'.T τ) a c) b = 0`.
+
+Rewrite using `[hA a c h]`. Conclude with `(ValRing.regAt_valAt_ring _ _ _ M'.x b hb).2.2.1`. Rewrite using `[htr]`. Introduce `h0`. Use `congrArg Matrix.det hmul` as an intermediate fact.
+
+Rewrite `this` using `[Matrix.det_mul, h0, zero_mul, Matrix.det_one]`. Conclude with `one_ne_zero this`.
+-/
 theorem trans_blockDiag_det : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Φ : Type) [Field Φ] (y : (Σ k, ι k) → Φ) (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N j : ℕ) (M : FlagModel y Ψ N j) (K' : Type) [Fintype K'] (ι' : K' → Type) [∀ k, Fintype (ι' k)] (Φ' : Type) [Field Φ'] (y' : (Σ k, ι' k) → Φ') (M' : FlagModel y' Ψ N j) (Cv : FlagCover M' M) (b : (Σ k, baseIdx ι' M'.blk k) → ℂ) (F' : FrameData ι' Ψ N M'.Ω M'.blk) (F : FrameData ι Ψ N M.Ω M.blk), b ∈ mcPts (mCoordIdeal M'.x) → M'.IsFrame F' → M.IsFrame F → M'.GoodAt F' (mCoordIdeal b) → M.GoodAt F (mCoordIdeal (b ∘ Cv.v)) → ∀ τ, IsBlockDiag j (Cv.trans F' F b τ) ∧ (Cv.trans F' F b τ).det ≠ 0 := by
   intro K _ ι _ Φ _ y Ψ _ _ N j M K' _ ι' _ Φ' _ y' M' Cv b F' F hb hF' hF hG' hG τ
   have hT := hF.1 τ

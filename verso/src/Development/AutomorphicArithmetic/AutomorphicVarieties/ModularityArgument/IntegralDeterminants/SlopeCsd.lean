@@ -7,6 +7,11 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsSubquotientIf
 open NumberField IsDedekindDomain Matrix Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual Formalism.BasicNotions Formalism.MainNotions.N GlobalTheory.CuspRep GlobalTheory.UnitaryBC GlobalTheory.GalOfCusp UpperTheory.V.Af
 open scoped Classical
 
+/- English proof (translation)
+Introduce `hD l _ ι E _ _ _ l' n hl' hn π χ hs w hw B hB`. Take `⟨h1, h2, h3, rfl⟩` from `hs`. Take `⟨T, -, -, U, hU⟩` from `hD E l' n hl' hn π ⟨h1, h2, h3, rfl⟩ ∅`. Use `choose lam hlam using GlobalTheory.CompanionTheory.WeightExist.weightEx E n U hU.aut`. Take `⟨σ, hσ, -⟩` from `GlobalTheory.CuspRep.LocEx.exists_isLocComp GlobalTheory.automorphicFormsFiniteGL E n π w`.
+
+Establish `hS` using `UpperTheory.V.Z.Int.coreU l ι E n hn U hU.aut lam hlam w hw σ B (hU.split w hw σ hσ) ((GlobalTheory.CompanionTheory.OnePart.hasSat_iff hσ B).1 hB)`. Establish `e : (CG.mk π).infChar = fun φ => infOfWeight (lam φ)` using `funext fun φ => hU.inf φ _ (hlam φ)`. Rewrite using `[e]`. Conclude with `hS`.
+-/
 theorem UpperTheory.V.Z.Int.slopeCsd :
     GlobalTheory.Cong.DescOffT → UpperTheory.V.Z.Int.SlopeOn .csd := by
   intro hD l _ ι E _ _ _ l' n hl' hn π χ hs w hw B hB

@@ -11,6 +11,17 @@ section Ring
 
 variable {B : Type} [CommRing B]
 
+/- English proof (translation)
+Introduce `n`. Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Introduce `hn x hx`. Distinguish the cases in `hpn : p ∣ n`.
+
+Take `⟨m, rfl⟩` from `hpn`. Establish `hm : 0 < m` using `Nat.pos_of_ne_zero (by rintro rfl; simp at hn)`. Establish `hmn : m < p * m`. Use `hp.two_le` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+
+Take `⟨y, hy, hxy⟩` from `hJ x hx`. Take `⟨y', hy', hyy⟩` from `ih m hmn hm y hy`. Use `⟨y', hy', ?_⟩` and prove the remaining obligations. Rewrite using `[Nat.factorization_factorial_mul hp, pow_mul, hxy, mul_pow, hyy, pow_add]`. Expand and normalize the polynomial expressions, which then agree.
+
+Take `⟨k, rfl⟩ : ∃ k, n = k + 1` from `⟨n - 1, by omega⟩`. Break down `Nat.eq_zero_or_pos k with rfl | hk` into its components or cases. Conclude with `⟨x, hx, by simp⟩`. Take `⟨y, hy, hxy⟩` from `ih k (by omega) hk x hx`. Use `⟨x * y, J.mul_mem_left x hy, ?_⟩` and prove the remaining obligations.
+
+Establish `h0 : (k + 1).factorization p = 0` using `Nat.factorization_eq_zero_of_not_dvd hpn`. Rewrite using `[Nat.factorial_succ, Nat.factorization_mul (by omega) (Nat.factorial_ne_zero k), Finsupp.coe_add, Pi.add_apply, h0, zero_add, pow_succ, hxy]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem pow_eq_pow_factorization_mul (p : ℕ) (hp : p.Prime) (J : Ideal B)
     (hJ : ∀ x ∈ J, ∃ y ∈ J, x ^ p = p * y) :
     ∀ n : ℕ, 0 < n → ∀ x ∈ J, ∃ y ∈ J, x ^ n = (p : B) ^ ((n)!.factorization p) * y := by
@@ -39,6 +50,11 @@ theorem pow_eq_pow_factorization_mul (p : ℕ) (hp : p.Prime) (J : Ideal B)
         Finsupp.coe_add, Pi.add_apply, h0, zero_add, pow_succ, hxy]
       ring
 
+/- English proof (translation)
+Take `⟨y, hy, hxy⟩` from `pow_eq_pow_factorization_mul p hp J hJ n hn x hx`. Take `⟨u, hu'⟩` from `hu (n ! / p ^ (n !).factorization p) (Nat.coprime_ordCompl hp (Nat.factorial_ne_zero n)).symm`. Use `⟨(↑u⁻¹ : B) * y, J.mul_mem_left _ hy, ?_⟩` and prove the remaining obligations. Establish `hfac : ((n ! : ℕ) : B) = (p : B) ^ (n !).factorization p * ((n ! / p ^ (n !).factorization p : ℕ) : B)`. Rewrite using `[← Nat.cast_pow, ← Nat.cast_mul, Nat.ordProj_mul_ordCompl_eq_self]`.
+
+Rewrite using `[hxy, hfac, ← hu', mul_assoc, ← mul_assoc (u : B), Units.mul_inv, one_mul]`.
+-/
 theorem pow_eq_factorial_mul (p : ℕ) (hp : p.Prime)
     (hu : ∀ n : ℕ, Nat.Coprime n p → IsUnit (n : B)) (J : Ideal B)
     (hJ : ∀ x ∈ J, ∃ y ∈ J, x ^ p = p * y) (n : ℕ) (hn : 0 < n) (x : B) (hx : x ∈ J) :
@@ -52,6 +68,11 @@ theorem pow_eq_factorial_mul (p : ℕ) (hp : p.Prime)
     rw [← Nat.cast_pow, ← Nat.cast_mul, Nat.ordProj_mul_ordCompl_eq_self]
   rw [hxy, hfac, ← hu', mul_assoc, ← mul_assoc (u : B), Units.mul_inv, one_mul]
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact ⟨0, J.zero_mem, by simp⟩`. Consider the case `insert i s hi ih`. Take `⟨y, hy, e⟩` from `h i (Finset.mem_insert_self i s)`. Take `⟨y', hy', e'⟩` from `ih (fun k hk => h k (Finset.mem_insert_of_mem hk))`.
+
+Conclude with `⟨y + y', J.add_mem hy hy', by rw [Finset.sum_insert hi, e, e', mul_add]⟩`.
+-/
 theorem sum_eq_mul_mem {ι : Type} (s : Finset ι) (c : B) (J : Ideal B) (f : ι → B)
     (h : ∀ i ∈ s, ∃ y ∈ J, f i = c * y) : ∃ y ∈ J, ∑ i ∈ s, f i = c * y := by
   classical
@@ -62,6 +83,13 @@ theorem sum_eq_mul_mem {ι : Type} (s : Finset ι) (c : B) (J : Ideal B) (f : ι
     obtain ⟨y', hy', e'⟩ := ih (fun k hk => h k (Finset.mem_insert_of_mem hk))
     exact ⟨y + y', J.add_mem hy hy', by rw [Finset.sum_insert hi, e, e', mul_add]⟩
 
+/- English proof (translation)
+Break down `n with _ | n` into its components or cases. Conclude with `⟨0, J.zero_mem, by simp⟩`. Rewrite using `[add_comm a j, add_pow, Finset.sum_range_succ']`. Simplify using `only [pow_zero, one_mul, Nat.choose_zero_right, Nat.cast_one, mul_one, Nat.sub_zero]`. Rewrite using `[add_sub_cancel_right]`.
+
+Apply `sum_eq_mul_mem` to reduce the goal to its premises. Introduce `k _`. Take `⟨y, hy, hjy⟩` from `pow_eq_factorial_mul p hp hu J hJ (k + 1) (Nat.succ_pos k) j hj`. Use `⟨((n.descFactorial k : ℕ) : B) * a ^ (n + 1 - (k + 1)) * y, J.mul_mem_left _ hy, ?_⟩` and prove the remaining obligations. Establish `h : (n + 1).choose (k + 1) * (k + 1)! = (n + 1) * n.descFactorial k`.
+
+Rewrite using `[mul_comm, ← Nat.descFactorial_eq_factorial_mul_choose, Nat.succ_descFactorial_succ]`. Establish `h' : (((n + 1).choose (k + 1) : ℕ) : B) * (((k + 1)! : ℕ) : B) = ((n + 1 : ℕ) : B) * ((n.descFactorial k : ℕ) : B)`. Rewrite using `[← Nat.cast_mul, ← Nat.cast_mul, h]`. Rewrite using `[hjy]`. Take the linear combination `(a ^ (n + 1 - (k + 1)) * y) * h'`.
+-/
 theorem add_pow_sub_pow (p : ℕ) (hp : p.Prime)
     (hu : ∀ n : ℕ, Nat.Coprime n p → IsUnit (n : B)) (J : Ideal B)
     (hJ : ∀ x ∈ J, ∃ y ∈ J, x ^ p = p * y) (a j : B) (hj : j ∈ J) (n : ℕ) :
@@ -89,6 +117,17 @@ section Monomial
 
 variable {B : Type} [CommRing B] {σ : Type}
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact ⟨0, fun _ => J.zero_mem, by simp⟩`. Consider the case `insert i s hi ih`. Take `⟨b, hb, e⟩` from `ih`. Take `⟨y, hy, ey⟩` from `add_pow_sub_pow p hp hu J hJ (z' i) (z i - z' i) (hz i) (α i)`.
+
+Establish `hzz : z' i + (z i - z' i) = z i` using `by ring`. Rewrite `ey` using `[hzz]`. Use `⟨Function.update (fun k => z' i ^ α i * b k) i (y * ∏ k ∈ s, z k ^ α k), ?_, ?_⟩` and prove the remaining obligations. Introduce `k`. Distinguish the cases in `hk : k = i`.
+
+Substitute `hk` using the available equality. Rewrite using `[Function.update_self]`. Conclude with `J.mul_mem_right _ hy`. Rewrite using `[Function.update_of_ne hk]`. Conclude with `J.mul_mem_left _ (hb k)`.
+
+Rewrite using `[Finset.prod_insert hi, Finset.prod_insert hi, Finset.sum_insert hi, Function.update_self]`. Establish `h1 : ∑ k ∈ s, (α k : B) * Function.update (fun k => z' i ^ α i * b k) i (y * ∏ k ∈ s, z k ^ α k) k = z' i ^ α i * ∑ k ∈ s, (α k : B) * b k`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k hk => ?_` and prove the remaining obligations. Rewrite using `[Function.update_of_ne (by rintro rfl; exact hi hk)]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h1]`. Take the linear combination `(∏ k ∈ s, z k ^ α k) * ey + z' i ^ α i * e`.
+-/
 theorem prod_pow_sub_prod_pow (p : ℕ) (hp : p.Prime)
     (hu : ∀ n : ℕ, Nat.Coprime n p → IsUnit (n : B)) (J : Ideal B)
     (hJ : ∀ x ∈ J, ∃ y ∈ J, x ^ p = p * y) (z z' : σ → B) (hz : ∀ i, z i - z' i ∈ J)
@@ -122,6 +161,11 @@ theorem prod_pow_sub_prod_pow (p : ℕ) (hp : p.Prime)
       rw [h1]
       linear_combination (∏ k ∈ s, z k ^ α k) * ey + z' i ^ α i * e
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact ⟨0, J.zero_mem, by simp⟩`. Consider the case `insert i s hi ih`. Take `⟨y, hy, e⟩` from `h i (Finset.mem_insert_self i s)`. Take `⟨y', hy', e'⟩` from `ih (fun k hk => h k (Finset.mem_insert_of_mem hk))`.
+
+Conclude with `⟨y + y', J.add_mem hy hy', by rw [Finset.sum_insert hi, e, e', map_add]⟩`.
+-/
 theorem sum_eq_map_mem {Q : Type} [CommRing Q] [Algebra B Q] {ι : Type} (s : Finset ι)
     (J : Ideal B) (f : ι → Q) (h : ∀ i ∈ s, ∃ b ∈ J, f i = algebraMap B Q b) :
     ∃ b ∈ J, ∑ i ∈ s, f i = algebraMap B Q b := by
@@ -135,6 +179,11 @@ theorem sum_eq_map_mem {Q : Type} [CommRing Q] [Algebra B Q] {ι : Type} (s : Fi
 
 variable [Fintype σ] {Q : Type} [CommRing Q] [Algebra B Q]
 
+/- English proof (translation)
+Use `choose c hc using ha`. Take `⟨b, hb, e⟩` from `prod_pow_sub_prod_pow p hp hu J hJ z z' hz α Finset.univ`. Use `⟨∑ i, b i * c i, J.sum_mem (fun i _ => J.mul_mem_right _ (hb i)), ?_⟩` and prove the remaining obligations. Establish `e'` using `congrArg (algebraMap B Q) e`. Simplify using `only [map_sub, map_prod, map_pow, map_sum, map_mul, map_natCast] at e'`.
+
+Rewrite using `[← mul_sub, e', Finset.mul_sum, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, ← hc i]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem monomial_val_sub (p : ℕ) (hp : p.Prime)
     (hu : ∀ n : ℕ, Nat.Coprime n p → IsUnit (n : B)) (J : Ideal B)
     (hJ : ∀ x ∈ J, ∃ y ∈ J, x ^ p = p * y) (z z' : σ → B) (hz : ∀ i, z i - z' i ∈ J)
@@ -151,6 +200,9 @@ theorem monomial_val_sub (p : ℕ) (hp : p.Prime)
   rw [map_mul, ← hc i]
   ring
 
+/- English proof (translation)
+Rewrite using `[P.as_sum, map_sum, map_sum, ← Finset.sum_sub_distrib]`. Apply `sum_eq_map_mem` to reduce the goal to its premises. Introduce `v _`. Rewrite using `[MvPolynomial.eval_monomial, MvPolynomial.eval_monomial, Finsupp.prod_fintype _ _ (fun _ => pow_zero _), Finsupp.prod_fintype _ _ (fun _ => pow_zero _)]`. Conclude with `monomial_val_sub p hp hu J hJ z z' hz v (P.coeff v) (hP v)`.
+-/
 theorem eval_sub_eval (p : ℕ) (hp : p.Prime)
     (hu : ∀ n : ℕ, Nat.Coprime n p → IsUnit (n : B)) (J : Ideal B)
     (hJ : ∀ x ∈ J, ∃ y ∈ J, x ^ p = p * y) (z z' : σ → B) (hz : ∀ i, z i - z' i ∈ J)
@@ -167,6 +219,15 @@ theorem eval_sub_eval (p : ℕ) (hp : p.Prime)
 
 end Monomial
 
+/- English proof (translation)
+Introduce `p hpf B O Q _ _ _ _ θ hF σ _ _ z _ J hJ z' f q q' hzz hD hv hv' m`. Establish `hp : p.Prime` using `hpf.out`. Take `⟨N1, h1⟩` from `hv m`. Take `⟨N2, h2⟩` from `hv' m`. Take `⟨b1, e1⟩` from `h1 (max N1 N2) (le_max_left _ _)`.
+
+Take `⟨b2, e2⟩` from `h2 (max N1 N2) (le_max_right _ _)`. Establish `hP : ∀ (α : σ →₀ ℕ) i, ∃ c : B, (α i : Q) * (trunc' Q (Finsupp.equivFunOnFinite.symm fun _ => max N1 N2) f).coeff α = algebraMap B Q c`. Introduce `α i`. Rewrite using `[coeff_trunc']`. Use `split_ifs`.
+
+Take `⟨c, -, hc⟩` from `hD α i`. Conclude with `⟨c, hc⟩`. Conclude with `⟨0, by simp⟩`. Take `⟨b, hb, e⟩` from `eval_sub_eval p hp hF.unit_coprime J hJ z z' hzz _ hP`. Use `⟨b, hb, b1 - b2, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [map_add, map_mul, map_sub, map_pow, map_natCast] at e1 e2 ⊢`. Take the linear combination `e1 - e2 + e`.
+-/
 theorem hasVal_sub_mem : ∀ (p : ℕ) [Fact p.Prime] (B O Q : Type) [CommRing B] [CommRing Q]
     [CommRing O] [Algebra B Q] (θ : B →+* O), IsFrame p Q θ → ∀ (σ : Type) [Fintype σ]
     [DecidableEq σ] (z : σ → B), (∀ i, ∃ N : ℕ, (p : B) ∣ z i ^ N) → ∀ J : Ideal B,

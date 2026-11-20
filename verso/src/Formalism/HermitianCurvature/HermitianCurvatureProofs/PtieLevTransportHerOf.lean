@@ -18,6 +18,9 @@ variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [Norm
   {π' : Mx P.k P.r → (Wq →L[ℂ] Wq)} {L : R.LevelData (Pr (RadSp P.k P.r z z' π π')) P.r}
   {st : Fr.Start (Pr (RadSp P.k P.r z z' π π'))} {l0 : ℕ} {Bs : B.RealPlaceData P.k P.r Wp Wq}
 
+/- English proof (translation)
+Establish `hle : herKc S P z z' π π' L st l0 Bs i ≤ K.comap U` using `Submodule.span_le.mpr fun Φ hΦ => h Φ hΦ`. Conclude with `fun Φ hΦ => hle hΦ`.
+-/
 theorem mem_of_gen {V' : Type} [AddCommGroup V'] [Module ℂ V'] {i : Fin (P.r + 1)}
     (U : RadSp P.k P.r z z' π π' →ₗ[ℂ] V') (K : Submodule ℂ V')
     (h : ∀ Φ, HerGenC S P z z' π π' L st l0 Bs i Φ → U Φ ∈ K) :
@@ -25,6 +28,9 @@ theorem mem_of_gen {V' : Type} [AddCommGroup V'] [Module ℂ V'] {i : Fin (P.r +
   have hle : herKc S P z z' π π' L st l0 Bs i ≤ K.comap U := Submodule.span_le.mpr fun Φ hΦ => h Φ hΦ
   exact fun Φ hΦ => hle hΦ
 
+/- English proof (translation)
+Establish `h0 : l.castSucc = 0` using `Fin.ext (by simp [hl])`. Use `mem_of_gen (Wd.Vw (mkP Wv Wv') s w a b).1 _ fun Φ hΦ => Submodule.subset_span ?_` and prove the remaining obligations. Use `HerGenC.waveC l w s Wv Wv' a b Φ hw hW hW' (by rw [h0]; exact hΦ)` as an intermediate fact. Rewrite `this` using `[h0]`. Conclude with `this`.
+-/
 theorem waveC_closed (l : Fin P.r) (hl : l.val = 0) {w : List (Wd.Letter ℂ S)} (hw : WordOK P z z' π π' st l0 w)
     {s : ℂ} {Wv Wv' : Module.End ℂ (RadSp P.k P.r z z' π π')} (hW : multiplicationOperator Wv (fun c' _ => fsv s (c' l)))
     (hW' : multiplicationOperator Wv' (fun c' _ => fsv (-s) (c' l))) (a b : Wd.Ix S) :
@@ -35,6 +41,9 @@ theorem waveC_closed (l : Fin P.r) (hl : l.val = 0) {w : List (Wd.Letter ℂ S)}
   rw [h0] at this
   exact this
 
+/- English proof (translation)
+Establish `h0 : Fin.last P.r = 0` using `Fin.ext (by simp [hr])`. Use `mem_of_gen (Wd.Vw (mkP Wv Wv') s w a b).1 _ fun Φ hΦ => Submodule.subset_span ?_` and prove the remaining obligations. Use `HerGenC.waveZ w s Wv Wv' a b Φ hw hW hW' (by rw [h0]; exact hΦ)` as an intermediate fact. Rewrite `this` using `[h0]`. Conclude with `this`.
+-/
 theorem waveZ_closed (hr : P.r = 0) {w : List (Wd.Letter ℂ S)} (hw : WordOK P z z' π π' st l0 w)
     {s : ℂ} {Wv Wv' : Module.End ℂ (RadSp P.k P.r z z' π π')}
     (hW : multiplicationOperator Wv (fun _ g => fsv s (P5.zeta P.k P.r z z' g)))
@@ -53,16 +62,25 @@ section wave
 variable {V V' : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup V'] [Module ℂ V'] {T : V →ₗ[ℂ] V'}
   {S : Type} [Fintype S] [DecidableEq S]
 
+/- English proof (translation)
+Introduce `a b` and use `by fin_cases a <;> fin_cases b <;> simp [Formalism.YangianSpanCharacter.T.Uinv] <;> first | exact rel_one | exact rel_zero | exact rel_algebraMap x`.
+-/
 theorem mrel_Uinv (x : ℂ) : MRel T (Formalism.YangianSpanCharacter.T.Uinv (A := Pr V) x) (Formalism.YangianSpanCharacter.T.Uinv (A := Pr V') x) := fun a b => by
   fin_cases a <;> fin_cases b <;> simp [Formalism.YangianSpanCharacter.T.Uinv] <;>
     first | exact rel_one | exact rel_zero | exact rel_algebraMap x
 
+/- English proof (translation)
+The claim follows from `| [] => by unfold Wd.UUiw; exact arel_one | l :: w => by unfold Wd.UUiw exact arel_mul (arel_ins _ (brel_lift0 (mrel_Uinv _))) (arel_UUiw s w)`.
+-/
 theorem arel_UUiw (s : ℂ) : ∀ w : List (Wd.Letter ℂ S), ARel T (Wd.UUiw (A := Pr V) s w) (Wd.UUiw (A := Pr V') s w)
   | [] => by unfold Wd.UUiw; exact arel_one
   | l :: w => by
     unfold Wd.UUiw
     exact arel_mul (arel_ins _ (brel_lift0 (mrel_Uinv _))) (arel_UUiw s w)
 
+/- English proof (translation)
+Unfold `Wd.Vw`. Conclude with `arel_mul (arel_io hf) (arel_UUiw s w)`.
+-/
 theorem arel_Vw {f : Pr V} {f' : Pr V'} (hf : Rel T f f') (s : ℂ) (w : List (Wd.Letter ℂ S)) :
     ARel T (Wd.Vw f s w) (Wd.Vw f' s w) := by
   unfold Wd.Vw
@@ -70,6 +88,9 @@ theorem arel_Vw {f : Pr V} {f' : Pr V'} (hf : Rel T f f') (s : ℂ) (w : List (W
 
 end wave
 
+/- English proof (translation)
+Unfold `P5.glue PTie.shiftCf`. Rewrite using `[dif_pos (by simp [hl])]`. Use `congr 1`. Use `ext`. Simplify using `[hl]`.
+-/
 theorem glue_at {r : ℕ} (i : ℕ) (hi : i < r) (c : Fin r → ℂ) (c'' : Fin (r - i) → ℂ) (l : Fin r) (hl : l.val = i) :
     P5.glue (⟨i, by omega⟩ : Fin (r + 1)) c (PTie.shiftCf ⟨i, by omega⟩ c'') l = c'' ⟨0, by omega⟩ := by
   unfold P5.glue PTie.shiftCf
@@ -78,6 +99,9 @@ theorem glue_at {r : ℕ} (i : ℕ) (hi : i < r) (c : Fin r → ℂ) (c'' : Fin 
   ext
   simp [hl]
 
+/- English proof (translation)
+Substitute `hn` using the available equality. Rewrite `hz`, `hz'` using `[P.JCTx5.castV_rfl]`. Substitute `hz hz'` using the available equality. Rewrite using `[P.JCTx5.castM_rfl]`. Conclude with `zeta_iota zs zs' g`.
+-/
 theorem zeta_step {k n ρ : ℕ} (hn : n = 1 + ρ) {z z' : Fin (2 * n + k + 1) → ℂ} {zs zs' : Fin (2 * ρ + k + 1) → ℂ}
     (hz : z = D.castV hn.symm (liftVec k 1 ρ zs)) (hz' : z' = D.castV hn.symm (liftVec k 1 ρ zs')) (g : Mx k ρ) :
     P5.zeta k n z z' (D.castM hn.symm (ιLev k 1 ρ g)) = P5.zeta k ρ zs zs' g := by
@@ -87,6 +111,11 @@ theorem zeta_step {k n ρ : ℕ} (hn : n = 1 + ρ) {z z' : Fin (2 * n + k + 1) �
   rw [P.JCTx5.castM_rfl]
   exact zeta_iota zs zs' g
 
+/- English proof (translation)
+Take `⟨⟨hA1, hA2, hA3, hA4⟩, hw2, hw3⟩` from `hw`. Establish `hq : stj.q = st.q` using `hDj.2.2.2.2.1.trans hD.2.2.2.2.1.symm`. Establish `hinv : stj.inv = st.inv` using `hDj.2.2.2.2.2.1.trans hD.2.2.2.2.2.1.symm`. Use `⟨⟨hA1, hA2, fun l hl => ?_, hA4⟩, hw2, hw3⟩` and prove the remaining obligations. Rewrite using `[hq, hinv]`.
+
+Conclude with `hA3 l hl`.
+-/
 theorem wordOK_tr {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
     [InnerProductSpace ℂ Wq] {P : M.Par} {z z' : Fin (2 * P.r + P.k + 1) → ℂ} {π : Mx P.k P.r → (Wp →L[ℂ] Wp)}
     {π' : Mx P.k P.r → (Wq →L[ℂ] Wq)} {X : ActualOps P.k P.r z z' π π'} {μ : Measure (Mt P.k P.r)}
@@ -112,6 +141,11 @@ variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [Norm
   {π' : Mx k r → (Wq →L[ℂ] Wq)} {zs zs' : Fin (2 * (r - i) + k + 1) → ℂ} {πs : Mx k (r - i) → (Wp →L[ℂ] Wp)}
   {πs' : Mx k (r - i) → (Wq →L[ℂ] Wq)}
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `c'' g`. Establish `e1` using `hWl (U v) c'' g`. Establish `e2` using `hU v c'' g`. Establish `e3` using `hU (Wv v) c'' g`.
+
+Establish `e4` using `hW v (P5.glue ⟨i, by omega⟩ c (PTie.shiftCf ⟨i, by omega⟩ c'')) (D.castM (by omega) (ιLev k i (r - i) g))`. Simplify using `only at e1 e4`. Rewrite `e4` using `[glue_at i hi c c'' l hl]`. Use `show (Wl (U v) : Fn k (r - i) (Wq →L[ℂ] Wp)) c'' g = (U (Wv v) : Fn k (r - i) (Wq →L[ℂ] Wp)) c'' g`. Rewrite using `[e1, e2, e3, e4]`.
+-/
 theorem mulC_tr (hi : i < r) (c : Fin r → ℂ) (U : RadSp k r z z' π π' →ₗ[ℂ] RadSp k (r - i) zs zs' πs πs')
     (hU : ∀ Φ c'' g, (U Φ : Fn k (r - i) (Wq →L[ℂ] Wp)) c'' g =
       (Φ : Fn k r (Wq →L[ℂ] Wp)) (P5.glue ⟨i, by omega⟩ c (PTie.shiftCf ⟨i, by omega⟩ c''))
@@ -131,6 +165,11 @@ theorem mulC_tr (hi : i < r) (c : Fin r → ℂ) (U : RadSp k r z z' π π' →�
   show (Wl (U v) : Fn k (r - i) (Wq →L[ℂ] Wp)) c'' g = (U (Wv v) : Fn k (r - i) (Wq →L[ℂ] Wp)) c'' g
   rw [e1, e2, e3, e4]
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `c'' g`. Establish `e1` using `hWl (U v) c'' g`. Establish `e2` using `hU v c'' g`. Establish `e3` using `hU (Wv v) c'' g`.
+
+Establish `e4` using `hW v (P5.glue ⟨i, by omega⟩ c (PTie.shiftCf ⟨i, by omega⟩ c'')) (D.castM (by omega) (ιLev k i (r - i) g))`. Simplify using `only at e1 e4`. Rewrite `e4` using `[hz g]`. Use `show (Wl (U v) : Fn k (r - i) (Wq →L[ℂ] Wp)) c'' g = (U (Wv v) : Fn k (r - i) (Wq →L[ℂ] Wp)) c'' g`. Rewrite using `[e1, e2, e3, e4]`.
+-/
 theorem mulZ_tr (c : Fin r → ℂ) (U : RadSp k r z z' π π' →ₗ[ℂ] RadSp k (r - i) zs zs' πs πs') (hir : i ≤ r)
     (hU : ∀ Φ c'' g, (U Φ : Fn k (r - i) (Wq →L[ℂ] Wp)) c'' g =
       (Φ : Fn k r (Wq →L[ℂ] Wp)) (P5.glue ⟨i, by omega⟩ c (PTie.shiftCf ⟨i, by omega⟩ c''))
@@ -153,12 +192,18 @@ theorem mulZ_tr (c : Fin r → ℂ) (U : RadSp k r z z' π π' →ₗ[ℂ] RadSp
 
 end mul
 
+/- English proof (translation)
+Unfold `resG`. Rewrite using `[Pi.smul_apply, smul_comm]`.
+-/
 theorem resG_smul {k r : ℕ} {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] (i : Fin (r + 1)) (κ : ℂ)
     (J : Mx k r → E) (c : Fin r → ℂ) (g : Mx k r) : resG k r i (κ • J) c g = κ • resG k r i J c g := by
   unfold resG
   rw [Pi.smul_apply, smul_comm]
 
 set_option maxHeartbeats 4000000 in
+/- English proof (translation)
+The claim follows from `| 0, _, _ => by obtain ⟨μ0, hμ0⟩ := Formalism.FourierDecayAlt.P.exists_zeta_normalized_haar P.k (P.r - 0) Wp Wq (T.bs 0) have h1 : B.IsHaarOn (Glev P.k P.r (Fin.last P.r)) μ := hD.2.1 obtain ⟨a, ha⟩ : ∃ a : ℝ≥0, μ = a • μ0 := by have hU := Formalism.FourierDecayAlt.P.opposite_wey …`.
+-/
 theorem lev_ind_her {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
     [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] (P : M.Par)
     (T : D.LevTower P.k P.r Wp Wq) (hT : D.TowerNormalised T) (hP : IsPlace P T.base.z T.base.z' T.base.π T.base.π')
@@ -359,6 +404,13 @@ theorem lev_ind_her {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace �
         rw [e]
         exact waveZ_closed (by simp [JC.parLev]; omega) (wordOK_tr hD hDs hw) hWl hWl' a b _ (ih he)
 
+/- English proof (translation)
+Introduce `Wp Wq _ _ _ _ _ _ P z z' π π' X μ L st l0 Bs hD hl1 hl2 hz hz' hπ hπ' i c hc`. Take `⟨T, h1, h2, h3, h4, hN⟩` from `Formalism.FourierDecayAlt.P.exists_normalized_tower P.k P.r Wp Wq Bs`. Take `⟨κ0, hκ0⟩` from `hJ P.k P.r Wp Wq Bs T.base h1.symm h2.symm h3.symm h4.symm`. Establish `e1 : T.base.z = z` using `h1.trans hz`. Establish `e2 : T.base.z' = z'` using `h2.trans hz'`.
+
+Establish `e3 : T.base.π = π` using `h3.trans hπ`. Establish `e4 : T.base.π' = π'` using `h4.trans hπ'`. Substitute `e1 e2 e3 e4` using the available equality. Take `⟨Xi, μi, Li, sti, Ti, hDi, -, hform, hpair, hsite, hqq, -, hher⟩` from `lev_ind_her P T hN hD.1 X μ L st l0 hD hl1 hl2 Bs κ0 hκ0 hS c i.val (by omega) hc`. Use `⟨T.bs i, Xi, μi, Li, sti, Ti, hDi, ⟨hform, hpair, fun n hn Y => hqq n hn Y, fun S _ _ w => ⟨fun l => ?_, fun n hn => ?_, fun hw => wordOK_tr hD hDi hw⟩⟩, fun S _ _ => hher S⟩` and prove the remaining obligations.
+
+Take `⟨a1, a2, a3⟩` from `hsite l`. Conclude with `arel_bT (σ := P5.site L ⟨l.val + i, by omega⟩) (σ' := P5.site Li l) a1 a2 a3 w`. Conclude with `arel_RRw (fun Y => hqq n hn Y) w`.
+-/
 theorem levTransportHer_of (hJ : PTie.JFScale) (hS : PTie.SliceStepHer) : PTie.LevTransportHer := by
   intro Wp Wq _ _ _ _ _ _ P z z' π π' X μ L st l0 Bs hD hl1 hl2 hz hz' hπ hπ' i c hc
   obtain ⟨T, h1, h2, h3, h4, hN⟩ := Formalism.FourierDecayAlt.P.exists_normalized_tower P.k P.r Wp Wq Bs
@@ -380,6 +432,9 @@ end Formalism.FourierDecayAlt.P.PTieH
 
 namespace Formalism.FourierDecayAlt.P
 
+/- English proof (translation)
+The claim follows from `PTieH.levTransportHer_of`.
+-/
 theorem ptie_levTransportHer_of : Formalism.FourierDecayAlt.P.PTie.JFScale → Formalism.FourierDecayAlt.P.PTie.SliceStepHer →
     Formalism.FourierDecayAlt.P.PTie.LevTransportHer := PTieH.levTransportHer_of
 

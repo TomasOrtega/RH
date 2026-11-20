@@ -12,6 +12,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {D : D7}
 
+/- English proof (translation)
+Take `⟨p1, σ1, m1, I1⟩` from `hΛ Λ₁ (Or.inl rfl)`. Take `⟨p2, σ2, m2, I2⟩` from `hΛ Λ₂ (Or.inr (Or.inl rfl))`. Take `⟨p3, σ3, m3, I3⟩` from `hΛ Λ₃ (Or.inr (Or.inr rfl))`. Establish `mn : ∀ {Λ : AddSubgroup (TaylorLogMetric.VC D N N')}, (∀ (r : 𝓞 D.host.E), ∀ x ∈ Λ, J.mulO N N' (r : D.host.E) x ∈ Λ) → ∀ x ∈ Λ, J.mulO N N' (-(l' : D.host.E)) x ∈ Λ` using `fun h x hx => by`. Use `h (-l') x hx` as an intermediate fact.
+
+Simplify using `using this`. Establish `mr : ∀ {Λ : AddSubgroup (TaylorLogMetric.VC D N N')}, (∀ (r : 𝓞 D.host.E), ∀ x ∈ Λ, J.mulO N N' (r : D.host.E) x ∈ Λ) → ∀ x ∈ Λ, J.mulO N N' (-4 * (s : D.host.E)) x ∈ Λ` using `fun h x hx => by`. Use `h (-(s + s + s + s)) x hx` as an intermediate fact. Rewrite `this` using `[show ((-(s + s + s + s) : 𝓞 D.host.E) : D.host.E) = -4 * (s : D.host.E) by push_cast; ring]`. Then use the resulting hypothesis. Use `exact`.
+
+Use the proof step `{ pp := pp, porth := porth, p1 := p1, p2 := p2, p3 := p3 σσ := σσ, σp := σp, σH := σH, σα := fun x => al_form T σ σH x σ1 := σ1, σ2 := σ2, σ3 := σ3 mp := fun x => hmp _ x, m'p := fun x => hmp _ x m1 := m1 l, m2 := m2 l, m3 := m3 l m'1 := mn m1, m'2 := mn m2, m'3 := mn m3 r2 := mr …`.
+-/
 theorem signData_of (T : TaylorLogMetric.Tor D) {N N' : ℕ} {Λ₁ Λ₂ Λ₃ : AddSubgroup (TaylorLogMetric.VC D N N')}
     (p σ : TaylorLogMetric.VC D N N' →+ TaylorLogMetric.VC D N N') (pp : ∀ x, p (p x) = p x)
     (porth : ∀ x y, Ker.formV (TaylorLogMetric.area T.abelian₂) D.what₂.Tau N N' (p x) (y - p y) = 0)
@@ -54,6 +61,15 @@ theorem signData_of (T : TaylorLogMetric.Tor D) {N N' : ℕ} {Λ₁ Λ₂ Λ₃ 
 
 variable {cc : Ideal (𝓞 D.host.K)} {δ : ℂ}
 
+/- English proof (translation)
+Introduce `N N' L L₁ hN hN' hL hL₁`. Establish `hLat` using `B.latAll hcc hδ h0`. Establish `hT` using `tripleData_of hLat (admissible_of_integral_conj_le hN hN' (sd0 N) (sd0 N')) (admissible_of_integral_conj_le hN hN' hL (sd0 N')) (admissible_of_integral_conj_le hN hN' hL₁ (sd0 N'))`. Take `⟨S₂, hS₂⟩` from `(repsExist _ _ _ hT.i₁₂).1`. Take `⟨S₃, hS₃⟩` from `(repsExist _ _ _ hT.i₂₃).1`.
+
+Use `⟨S₂, S₃, hS₂, hS₃, ?_⟩` and prove the remaining obligations. Take `⟨e, he, e21, e31, e32⟩` from `exists_e hT`. Take `⟨l, s, -, hl⟩` from `J.negOneNorm D (4 * e) (by omega)`. Take `⟨l', hl'⟩` from `J.star_int l`. Establish `hF : ∃ F ∈ fixedBy (Ker.formV (TaylorLogMetric.area (TaylorLogMetric.lamOf D cc δ)) D.what₂.Tau N N') (TaylorLogMetric.al D B.tor) (TaylorLogMetric.La D B.tor (StandardLatticesGL3.stdL D N) (StandardLatticesGL3.stdL D N')), F ≠ 0` using `⟨B.thZero N N', (B.thZeroMem hS N N').2, B.thZero_ne_zero hS N N'⟩`.
+
+Establish `hemb : ∀ τ x, (B.tor).emb τ x = TaylorLogMetric.embT D τ x` using `fun _ _ => rfl`. Use `tripleMu_eq_one hT hF (signData_of B.tor (rowP N N') (rowSw N N') rowProjection_rowProjection (rowProjection_orthogonal _) (rowSw_sw hN') (rowSw_p hN') (rowSw_form hN' _) mulO_rowP ?_ e e21 e31 e32 l s l' hl hl') hS₂ hS₃` and prove the remaining obligations. Introduce `Λ hΛ`. Break down `hΛ with rfl | rfl | rfl` into its components or cases. Conclude with `⟨fun x hx => rowProjection_mem_lattice B.tor hemb hx, fun x hx => rowSw_la B.tor hemb hx, fun r x hx => mulO_la B.tor hemb r hx, Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.hermitian_form_integral_values D cc hcc δ hδ h0 N N' _ _ (admissible_of_integral_conj_le hN hN' …`.
+
+Conclude with `⟨fun x hx => rowProjection_mem_lattice B.tor hemb hx, fun x hx => rowSw_la B.tor hemb hx, fun r x hx => mulO_la B.tor hemb r hx, Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.hermitian_form_integral_values D cc hcc δ hδ h0 N N' _ _ (admissible_of_integral_conj_le hN hN' …`. Conclude with `⟨fun x hx => rowProjection_mem_lattice B.tor hemb hx, fun x hx => rowSw_la B.tor hemb hx, fun r x hx => mulO_la B.tor hemb r hx, Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.hermitian_form_integral_values D cc hcc δ hδ h0 N N' _ _ (admissible_of_integral_conj_le hN hN' …`.
+-/
 theorem muOneL_of (hcc : TaylorLogMetric.IsCurveIdeal D cc) (hδ : TaylorLogMetric.IsDiscriminantTwelfthRootOfIdealLattice D cc δ) (h0 : δ ≠ 0) (B : Ker.Base D cc δ)
     (hS : B.StdOK) : MuOneL B := by
   intro N N' L L₁ hN hN' hL hL₁
@@ -84,6 +100,15 @@ theorem muOneL_of (hcc : TaylorLogMetric.IsCurveIdeal D cc) (hδ : TaylorLogMetr
       fun r x hx => mulO_la B.tor hemb r hx,
       Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.hermitian_form_integral_values D cc hcc δ hδ h0 N N' _ _ (admissible_of_integral_conj_le hN hN' hL₁ (sd0 N'))⟩
 
+/- English proof (translation)
+Introduce `N N' L' L'' hN hN' hL' hL''`. Establish `hLat` using `B.latAll hcc hδ h0`. Establish `hT` using `tripleData_of hLat (admissible_of_integral_conj_le hN hN' (sd0 N) (sd0 N')) (admissible_of_integral_conj_le hN hN' (sd0 N) hL') (admissible_of_integral_conj_le hN hN' (sd0 N) hL'')`. Take `⟨S₂, hS₂⟩` from `(repsExist _ _ _ hT.i₁₂).1`. Take `⟨S₃, hS₃⟩` from `(repsExist _ _ _ hT.i₂₃).1`.
+
+Use `⟨S₂, S₃, hS₂, hS₃, ?_⟩` and prove the remaining obligations. Take `⟨e, he, e21, e31, e32⟩` from `exists_e hT`. Take `⟨l, s, -, hl⟩` from `J.negOneNorm D (4 * e) (by omega)`. Take `⟨l', hl'⟩` from `J.star_int l`. Establish `hF : ∃ F ∈ fixedBy (Ker.formV (TaylorLogMetric.area (TaylorLogMetric.lamOf D cc δ)) D.what₂.Tau N N') (TaylorLogMetric.al D B.tor) (TaylorLogMetric.La D B.tor (StandardLatticesGL3.stdL D N) (StandardLatticesGL3.stdL D N')), F ≠ 0` using `⟨B.thZero N N', (B.thZeroMem hS N N').2, B.thZero_ne_zero hS N N'⟩`.
+
+Establish `hemb : ∀ τ x, (B.tor).emb τ x = TaylorLogMetric.embT D τ x` using `fun _ _ => rfl`. Use `tripleMu_eq_one hT hF (signData_of B.tor (colP N N') (colSw N N') colP_colP (colP_orth _) (colSw_sw hN) (colSw_p hN) (colSw_form hN _) mulO_colP ?_ e e21 e31 e32 l s l' hl hl') hS₂ hS₃` and prove the remaining obligations. Introduce `Λ hΛ`. Break down `hΛ with rfl | rfl | rfl` into its components or cases. Conclude with `⟨fun x hx => colP_mem_la B.tor hemb hx, fun x hx => colSw_la B.tor hemb hN hx, fun r x hx => mulO_la B.tor hemb r hx, Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.hermitian_form_integral_values D cc hcc δ hδ h0 N N' _ _ (admissible_of_integral_conj_le hN hN' (sd0 N) (sd …`.
+
+Conclude with `⟨fun x hx => colP_mem_la B.tor hemb hx, fun x hx => colSw_la B.tor hemb hN hx, fun r x hx => mulO_la B.tor hemb r hx, Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.hermitian_form_integral_values D cc hcc δ hδ h0 N N' _ _ (admissible_of_integral_conj_le hN hN' (sd0 N) hL' …`. Conclude with `⟨fun x hx => colP_mem_la B.tor hemb hx, fun x hx => colSw_la B.tor hemb hN hx, fun r x hx => mulO_la B.tor hemb r hx, Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.hermitian_form_integral_values D cc hcc δ hδ h0 N N' _ _ (admissible_of_integral_conj_le hN hN' (sd0 N) hL' …`.
+-/
 theorem muOneR_of (hcc : TaylorLogMetric.IsCurveIdeal D cc) (hδ : TaylorLogMetric.IsDiscriminantTwelfthRootOfIdealLattice D cc δ) (h0 : δ ≠ 0) (B : Ker.Base D cc δ)
     (hS : B.StdOK) : MuOneR B := by
   intro N N' L' L'' hN hN' hL' hL''
@@ -114,10 +139,16 @@ theorem muOneR_of (hcc : TaylorLogMetric.IsCurveIdeal D cc) (hδ : TaylorLogMetr
       fun r x hx => mulO_la B.tor hemb r hx,
       Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.hermitian_form_integral_values D cc hcc δ hδ h0 N N' _ _ (admissible_of_integral_conj_le hN hN' (sd0 N) hL'')⟩
 
+/- English proof (translation)
+The claim follows from `left_move_triangles_of_unit (B.latAll hcc hδ h0) (muOneL_of hcc hδ h0 B hS)`.
+-/
 theorem left_move_triangles_hold (hcc : TaylorLogMetric.IsCurveIdeal D cc) (hδ : TaylorLogMetric.IsDiscriminantTwelfthRootOfIdealLattice D cc δ) (h0 : δ ≠ 0) (B : Ker.Base D cc δ)
     (hS : B.StdOK) : Tr0L D B.tor :=
   left_move_triangles_of_unit (B.latAll hcc hδ h0) (muOneL_of hcc hδ h0 B hS)
 
+/- English proof (translation)
+The claim follows from `right_move_triangles_of_unit (B.latAll hcc hδ h0) (muOneR_of hcc hδ h0 B hS)`.
+-/
 theorem right_move_triangles_hold (hcc : TaylorLogMetric.IsCurveIdeal D cc) (hδ : TaylorLogMetric.IsDiscriminantTwelfthRootOfIdealLattice D cc δ) (h0 : δ ≠ 0) (B : Ker.Base D cc δ)
     (hS : B.StdOK) : Tr0R D B.tor :=
   right_move_triangles_of_unit (B.latAll hcc hδ h0) (muOneR_of hcc hδ h0 B hS)

@@ -22,6 +22,9 @@ def kills {G : Type} (A : Type) [Group G] [CommGroup A] (H : Subgroup G) : Subgr
     rw [MonoidHom.mem_ker] at h1 ⊢
     rw [MonoidHom.inv_apply, h1, inv_one]
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_kills {G A : Type} [Group G] [CommGroup A] {H : Subgroup G} {ξ : G →* A} :
     ξ ∈ kills A H ↔ H ≤ ξ.ker := Iff.rfl
 
@@ -68,6 +71,9 @@ def GoodPl (S : Set ℕ) (v : HeightOneSpectrum (𝓞 F)) : Prop := SplitAt E v 
 
 end Ideles
 
+/- English proof (translation)
+Rewrite using `[MonoidHom.mem_ker, Units.ext_iff, ← Ideal.Quotient.eq]`. Simplify using the standard rewrite rules.
+-/
 theorem mem_kerRed {R : Type} [CommRing R] (I : Ideal R) (u : Rˣ) :
     u ∈ (Units.map (Ideal.Quotient.mk I).toMonoidHom).ker ↔ (u : R) - 1 ∈ I := by
   rw [MonoidHom.mem_ker, Units.ext_iff, ← Ideal.Quotient.eq]
@@ -77,12 +83,18 @@ section Chars
 
 variable (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Apply `Subgroup.map_mono` to reduce the goal to its premises. Introduce `u hu`. Rewrite `hu`, the goal using `[mem_kerRed]`. Conclude with `h hu`.
+-/
 theorem congU_mono {I J : Ideal (RInt F E)} (h : I ≤ J) : congU F E I ≤ congU F E J := by
   apply Subgroup.map_mono
   intro u hu
   rw [mem_kerRed] at hu ⊢
   exact h hu
 
+/- English proof (translation)
+Apply `congU_mono` to reduce the goal to its premises. Rewrite using `[Ideal.span_singleton_le_span_singleton]`. Conclude with `(Nat.cast_dvd_cast (α := RInt F E) h)` after adjusting the coercions.
+-/
 theorem congN_dvd {M N : ℕ} (h : M ∣ N) : congN F E N ≤ congN F E M := by
   apply congU_mono
   rw [Ideal.span_singleton_le_span_singleton]

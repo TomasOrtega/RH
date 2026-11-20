@@ -10,5 +10,8 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.LocMod GlobalTheory.SplitWeil ValuativeRel
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.PlaceSumTheta.isThetaFunO_sum_placeModel | exact GlobalTheory.PlaceSumTheta.isThetaFunO_sum_placeModel | (intros; apply GlobalTheory.PlaceSumTheta.isThetaFunO_sum_placeModel <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.isThetaFunO_splitPlaces_schrodingerModel_sum : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (S T : HSp D) (M : Lat S) (M' : Lat T), IsSelfDualC S M → IsSelfDualC T M' → ∀ (n : ℕ) (L : Fin n → LocPl ψ S T M M'), (Function.Injective fun i => (L i).q.v) → ∀ (f₀ : WO S T → ℂ) (T' : (WO S T → ℂ) →ₗ[ℂ] (WO S T → ℂ)), Vac ψ S T M M' (fun _ => True) f₀ → IsPlaceModel ψ (symplO S T) (heisO ψ S T) (∑ i, (L i).q.e) (latO S T (M : Set _) (M' : Set _) fun _ => True) 1 f₀ T' → ∀ Φ, IsSBHalf (∑ i, (L i).q.e) (latO S T (M : Set _) (M' : Set _) fun _ => True) Φ → IsThetaFunO ψ S T (T' Φ) := by
   first | exact @GlobalTheory.PlaceSumTheta.isThetaFunO_sum_placeModel | exact GlobalTheory.PlaceSumTheta.isThetaFunO_sum_placeModel | (intros; apply GlobalTheory.PlaceSumTheta.isThetaFunO_sum_placeModel <;> assumption)

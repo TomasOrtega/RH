@@ -7,6 +7,17 @@ import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.VerticalNumberZ
 
 open MvPolynomial GroundTheory.Heights₂.Heights.NumbersDVR GlobalTheory.CompanionTheory.Ar.Num
 
+/- English proof (translation)
+Introduce `O _ _ _ ϖ hϖ K _ _ ι _ P d hP a f hf hfP b b' l hl`. Establish `hPp : P.IsPrime` using `hP.multiProj.isPrime`. Unfold `cycList`. Use `AdditivityInDivisor.cycEval_add_fn (DivCycleFiniteSupport.full O K ι P f) fun W hW => ?_` and prove the remaining obligations. Distinguish the cases in `hϖW : (C ϖ : MRing ι O) ∈ W`.
+
+Establish `hWmin : W ∈ (P ⊔ Ideal.span {f}).minimalPrimes`. Unfold `divCycle at hW`. Use `split_ifs at hW with h`. Conclude with `h.1`. Conclude with `absurd rfl hW`.
+
+Establish `hWp : W.IsPrime` using `hWmin.1.1`. Establish `hPW : P ≤ W` using `le_sup_left.trans hWmin.1.2`. Establish `hWh : IsMultiHomogIdeal W` using `MinimalPrimeMultiHomog.full O K ι _ W (SupSpanMultiHomog.full O K ι P f a hP.multiProj.multiHomog hf) hWmin`. Establish `hfW : f ∈ W` using `hWmin.1.2 (Ideal.mem_sup_right (Ideal.mem_span_singleton_self f))`. Establish `hlt : P < W` using `lt_of_le_of_ne hPW fun h => hfP (h ▸ hfW)`.
+
+Establish `hdim` using `DimStrictDrop.full (MRing ι O) P W hlt`. Rewrite `hdim` using `[hP.dim, ← SpecialQuotDim.full O ϖ hϖ K ι W hϖW, show d + 1 + Fintype.card K = l.length + 2 + Fintype.card K by omega]`. Establish `key` using `IntNumAddFirst.full _ K ι l.length (specialIdeal W) (SpecialIdealCorresp.full O ϖ hϖ K ι P W hWp hϖW).1 (SpecialIdealMultiHomog.full O K ι W hWh) (AdditivityInDivisor.withBot_lt_of_add_one_le hdim) b b' l.get`. Rewrite `key` using `[← BaseChangeColon.intNumL_cons, ← BaseChangeColon.intNumL_cons, ← BaseChangeColon.intNumL_cons]`. Conclude with `key`.
+
+Establish `h0` using `GlobalTheory.T.vertical_number_zero_of_horizontal O ϖ hϖ K ι P d hP a f hf hfP W hW hϖW show vNumL W _ = vNumL W _ + vNumL W _`. Rewrite using `[h0 _ (by simpa using hl), h0 _ (by simpa using hl), h0 _ (by simpa using hl), add_zero]`.
+-/
 theorem BaseChangeColon.cycList_additive_first_class : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (ϖ : O), Irreducible ϖ → ∀ (K : Type) [Fintype K] [DecidableEq K] (ι : K → Type) [∀ k, Fintype (ι k)] (P : Ideal (MRing ι O)) (d : ℕ), IsModelOver P d → ∀ (a : K → ℕ) (f : MRing ι O), IsMultiHomog f a → f ∉ P → ∀ (b b' : K → ℤ) (l : List (K → ℤ)), l.length + 1 = d → cycList (divCycle P f) ((b + b') :: l) = cycList (divCycle P f) (b :: l) + cycList (divCycle P f) (b' :: l) := by
   intro O _ _ _ ϖ hϖ K _ _ ι _ P d hP a f hf hfP b b' l hl
   have hPp : P.IsPrime := hP.multiProj.isPrime

@@ -14,6 +14,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.St.G
 
+/- English proof (translation)
+Introduce `D F X u wt ιA hW hA`. Take `⟨hT, -, -, hdeg, -, hH, hdet⟩` from `record_facts D u`. Establish `hM` using `(GlobalTheory.T.transported_column_lattice_has_level_and_dual_generator D X u wt hW).1`. Establish `hL` using `stepLevel_tLat (S := (F u).cls0.lev)`. Establish `hE` using `(GlobalTheory.T.adelicColumnLattice_eq_spanPart_transportedFrame D X u wt ιA hW hA).1`.
+
+Take `⟨h, hh⟩` from `GlobalTheory.T.hermitianLattices_level_one_genus D.host.F D.host.E D.sp.cm (D.R.N 0) _ hH hdet (D.mem u).A.T D.R.f (F u).cls0.lev.Lb (Mq wt) (D.mem u).A.T_prime hT hdeg hL hM`. Conclude with `⟨h, fun x => (hh x).trans (hE x)⟩`.
+-/
 theorem genusMatch_holds : ∀ (D : D7) (F : ∀ u, Formalism.L2.Forms.Forms0 D u), GenusMatch D F := by
   intro D F X u wt ιA hW hA
   obtain ⟨hT, -, -, hdeg, -, hH, hdet⟩ := record_facts D u

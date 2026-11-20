@@ -7,6 +7,17 @@ open Matrix Module
 variable {N : ℕ} [NeZero N] {M M' : Type*} [AddCommGroup M] [Module (ZMod N) M] [AddCommGroup M']
   [Module (ZMod N) M']
 
+/- English proof (translation)
+Take `⟨a, rfl⟩` from `ZMod.natCast_zmod_surjective d`. Take `⟨b, rfl⟩` from `ZMod.natCast_zmod_surjective y`. Take `⟨m, hm⟩` from `Nat.gcd_dvd_right a N`. Take `⟨a', ha'⟩` from `Nat.gcd_dvd_left a N`. Establish `hm0 : 0 < m`.
+
+Break down `Nat.eq_zero_or_pos m with h0 | h0` into its components or cases. Conclude with `absurd (by rw [hm, h0, mul_zero]) (NeZero.ne N)`. Conclude with `h0`. Establish `h1 : (m : ZMod N) * a = 0`. Rewrite using `[← Nat.cast_mul, ZMod.natCast_eq_zero_iff]`.
+
+Use `⟨a', ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Establish `h2` using `h _ h1`. Rewrite `h2` using `[← Nat.cast_mul, ZMod.natCast_eq_zero_iff]`. Establish `h3 : a.gcd N * m ∣ b * m` using `by rw [← hm, mul_comm]; exact h2`.
+
+Take `⟨k, hk⟩` from `Nat.dvd_of_mul_dvd_mul_right hm0 h3`. Establish `h4 : ((a.gcd N : ℕ) : ZMod N) = (a : ZMod N) * ((Nat.gcdA a N : ℤ) : ZMod N)`. Use `congrArg (fun t : ℤ => (t : ZMod N)) (Nat.gcd_eq_gcd_ab a N)` as an intermediate fact. Simplify using `using this`. Use `⟨((Nat.gcdA a N : ℤ) : ZMod N) * k, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hk, Nat.cast_mul, h4]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem zmod_dbl_ann (d y : ZMod N) (h : ∀ r : ZMod N, r * d = 0 → r * y = 0) :
     ∃ c : ZMod N, y = c * d := by
   obtain ⟨a, rfl⟩ := ZMod.natCast_zmod_surjective d
@@ -35,6 +46,11 @@ private theorem zmod_dbl_ann (d y : ZMod N) (h : ∀ r : ZMod N, r * d = 0 → r
   ring
 
 omit [NeZero N] in
+/- English proof (translation)
+Establish `: IsPrincipalIdealRing (ZMod N)` using `IsPrincipalIdealRing.of_surjective (Int.castRingHom (ZMod N)) (ZMod.ringHom_surjective _)`. Take `⟨d, hd⟩` from `(IsPrincipalIdealRing.principal I).principal`. Use `⟨d, hd ▸ Submodule.mem_span_singleton_self d, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite `hx` using `[hd, Submodule.mem_span_singleton]`. Take `⟨r, rfl⟩` from `hx`.
+
+Conclude with `⟨r, rfl⟩`.
+-/
 private theorem zmod_ideal_gen (I : Ideal (ZMod N)) :
     ∃ d ∈ I, ∀ x ∈ I, ∃ r : ZMod N, x = r * d := by
   have : IsPrincipalIdealRing (ZMod N) :=
@@ -45,6 +61,11 @@ private theorem zmod_ideal_gen (I : Ideal (ZMod N)) :
   obtain ⟨r, rfl⟩ := hx
   exact ⟨r, rfl⟩
 
+/- English proof (translation)
+Introduce `I g`. Take `⟨d, hd, hI⟩` from `zmod_ideal_gen I`. Take `⟨c, hc⟩` from `zmod_dbl_ann d (g ⟨d, hd⟩) (fun r hr => by`. Establish `: r • (⟨d, hd⟩ : I) = 0` using `Subtype.ext hr`. Rewrite using `[← smul_eq_mul, ← map_smul, this, map_zero])`.
+
+Use `⟨LinearMap.toSpanSingleton _ _ c, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨r, rfl⟩` from `hI x hx`. Establish `: (⟨r * d, hx⟩ : I) = r • (⟨d, hd⟩ : I)` using `rfl`. Rewrite using `[this, map_smul, hc, LinearMap.toSpanSingleton_apply, smul_eq_mul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem zmod_baer : Module.Baer (ZMod N) (ZMod N) := by
   intro I g
   obtain ⟨d, hd, hI⟩ := zmod_ideal_gen I
@@ -57,6 +78,9 @@ theorem zmod_baer : Module.Baer (ZMod N) (ZMod N) := by
   rw [this, map_smul, hc, LinearMap.toSpanSingleton_apply, smul_eq_mul, smul_eq_mul]
   ring
 
+/- English proof (translation)
+Take `⟨t, ht⟩` from `(zmod_baer (N := N)).extension_property ((LinearMap.ker φ).liftQ φ le_rfl) (LinearMap.ker_eq_bot.mp (Submodule.ker_liftQ_eq_bot _ _ _ le_rfl)) ((LinearMap.ker φ).liftQ c (fun a ha => h a ha))`. Use `⟨t, fun a => ?_⟩` and prove the remaining obligations. Conclude with `LinearMap.congr_fun ht (Submodule.Quotient.mk a)`.
+-/
 private theorem zmod_extend {A B : Type*} [AddCommGroup A] [Module (ZMod N) A] [AddCommGroup B]
     [Module (ZMod N) B] (φ : A →ₗ[ZMod N] B) (c : A →ₗ[ZMod N] ZMod N)
     (h : ∀ a, φ a = 0 → c a = 0) : ∃ t : B →ₗ[ZMod N] ZMod N, ∀ a, t (φ a) = c a := by
@@ -67,6 +91,15 @@ private theorem zmod_extend {A B : Type*} [AddCommGroup A] [Module (ZMod N) A] [
   refine ⟨t, fun a => ?_⟩
   exact LinearMap.congr_fun ht (Submodule.Quotient.mk a)
 
+/- English proof (translation)
+Take `⟨d, hd, hI⟩` from `zmod_ideal_gen (LinearMap.ker (LinearMap.toSpanSingleton (ZMod N) (M ⧸ I) (I.mkQ z)))`. Establish `hw : ∃ w : ZMod N, w * d = 0 ∧ w ≠ 0`. Assume the negation of the conclusion as `hne`. Use `push Not at hne`. Take `⟨c, hc⟩` from `zmod_dbl_ann d 1 (fun r hr => by rw [hne r hr, zero_mul])`.
+
+Establish `h0 : d • I.mkQ z = 0` using `hd`. Establish `h1 : I.mkQ z = 0`. Rewrite using `[← one_smul (ZMod N) (I.mkQ z), hc, mul_smul, h0, smul_zero]`. Conclude with `hz (by simpa using h1)`. Take `⟨w, hw, hw0⟩` from `hw`.
+
+Take `⟨t, ht⟩` from `zmod_extend (LinearMap.toSpanSingleton (ZMod N) (M ⧸ I) (I.mkQ z)) (LinearMap.toSpanSingleton (ZMod N) (ZMod N) w) (fun a ha => by`. Take `⟨r, rfl⟩` from `hI a ha`. Rewrite using `[LinearMap.toSpanSingleton_apply, smul_eq_mul, mul_assoc, mul_comm d w, hw, mul_zero])`. Use `⟨t ∘ₗ I.mkQ, fun x hx => ?_, ?_⟩` and prove the remaining obligations. Establish `: I.mkQ x = 0` using `by simpa using hx`.
+
+Rewrite using `[LinearMap.comp_apply, this, map_zero]`. Use `ht 1` as an intermediate fact. Rewrite `this` using `[LinearMap.toSpanSingleton_apply, LinearMap.toSpanSingleton_apply, one_smul, one_smul]`. Rewrite using `[LinearMap.comp_apply, this]`. Conclude with `hw0`.
+-/
 theorem exists_form_ne_zero (I : Submodule (ZMod N) M) {z : M} (hz : z ∉ I) :
     ∃ f : M →ₗ[ZMod N] ZMod N, (∀ x ∈ I, f x = 0) ∧ f z ≠ 0 := by
   obtain ⟨d, hd, hI⟩ :=

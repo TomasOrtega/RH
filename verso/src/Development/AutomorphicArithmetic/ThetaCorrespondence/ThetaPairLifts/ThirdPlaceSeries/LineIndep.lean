@@ -36,6 +36,35 @@ open Matrix
 open GlobalTheory.LocMod (ofSplit)
 variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts}
   {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX}
+/- English proof (translation)
+Take `⟨k, i1, i2, i3, i4, ι, v, o, n, G, pl, hc, hv, ht, -, -, hR, hb⟩` from `hP`. Take `⟨i, hi⟩` from `pl.surjective ⟨PP, hPP⟩`. Take `⟨hq, hqv⟩` from `hR.idem i`. Rewrite `hq`, `hqv` using `[hi]`. Express the relevant statement in the definitionally equal form `(G i).q.v = PP.under _ at hqv`.
+
+Express the relevant statement in the definitionally equal form `Formalism.L2.NTheta.IsIdemAt _ PP at hq`. Use `⟨_, hq, fun c hcv => ?_⟩` and prove the remaining obligations. Rewrite `hcv`, the goal using `[← hqv]`. Take `⟨μ, lam, n1, n2, n3⟩` from `hb.norm`. Establish `hξ : -D.host.xi0 ^ (D.R.m / 2) ≠ 0` using `neg_ne_zero.2 (pow_ne_zero _ (GlobalTheory.DualPairCompare.embedding_xi_zero_ne_zero D))`.
+
+Establish `hμ : μ ≠ 0` using `left_ne_zero_of_mul (n1 ▸ hξ)`. Establish `h₀ : 0 + 2 * D.R.rS + 2 = D.R.m`. Take `⟨c, hc⟩` from `D.R.m_even`. Use `D.R.two_le_m` as an intermediate fact. Unfold `Ranks.rS`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hg : ((W.S.X.B.g : ℕ) : D.host.E) ≠ 0` using `Nat.cast_ne_zero.2 (Formalism.L2.SG.Pf.modulus_g_ne_zero W.S.X)`. Take `⟨s, hs, he⟩` from `GlobalTheory.LineIdeal.first_vec (_root_.GlobalTheory.MiTop.formsAtZero W u) (W.S.tr u) hW.bot.idE hc.std B hμ n2 r hr`. Establish `hd : B.d.e = (f.c.bes 0 D.R.rS h₀).d.e` using `eq_of_heq (Sigma.mk.inj (congrArg (fun Z : BesLev D D.R.rS => (⟨Z.V.rank, Z.d.e⟩ : Σ n, Matrix (Fin n) (Fin D.R.rS) D.host.E)) (hb.lev h₀))).2`. Establish `hsc` using `sc_mul (G i) n1 n3 (hb.last i) h₀`.
+
+Establish `hT : ((D.mem u).A.T : 𝓞 D.host.E) ∉ PP.asIdeal` using `fun hT => by`. Use `Finset.disjoint_left.1 hv.disj ((ht.gP _).2 ⟨PP, hPP, rfl⟩) ((ht.tP _).2 ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `algebraMap (𝓞 D.host.F) (𝓞 D.host.E) _ ∈ PP.asIdeal`. Rewrite using `[map_natCast]` and apply the resulting hypothesis. Establish `hTv` using `val_nat (G i).q hq _ hT`.
+
+Establish `hz : star B.ζ ⬝ᵥ B.L.gram *ᵥ B.ζ = star μ * (μ * -((D.mem u).A.T : D.host.E))`. Establish `e : B.d.i₀ *ᵥ vecB B.o B.ζ = μ • GlobalTheory.Core.SBesEx.cY W.S.X W.Q.instEq (W.S.X.zu u)` using `funext n2`. Use `(norm_vec B.lev).trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `star (B.d.i₀ *ᵥ vecB B.o B.ζ) ⬝ᵥ (D.sp.Y 0).gram *ᵥ (B.d.i₀ *ᵥ vecB B.o B.ζ) = _`. Rewrite using `[e, star_smul, mulVec_smul, smul_dotProduct, dotProduct_smul, GlobalTheory.Core.SBesEx.cY_isom D _ _ hW.bot.idE, W.S.X.zu_norm]`.
+
+Both sides reduce to the same expression. Establish `hzu` using `(G i).hz_unit 0 _ h₀`. Establish `hzu'` using `hzu`. Rewrite `hzu'` using `[← hb.lev h₀]`. Express the relevant statement in the definitionally equal form `valuation _ ((G i).q.pr (incA D (star B.ζ ⬝ᵥ B.L.gram *ᵥ B.ζ))) = 1 at hzu'`.
+
+Establish `hμ1 : valuation _ ((G i).q.pr (incA D μ)) = 1`. Use `congrArg (valuation _) hsc` as an intermediate fact. Rewrite `this` using `[map_mul, (G i).sc_unit, one_mul, map_one]`. Then use the resulting hypothesis. Establish `hμ2 : valuation _ ((G i).q.pr (incA D (star μ))) = 1`. Simplify using `only [hz, RingHom.map_mul, RingHom.map_neg, map_natCast, Valuation.map_mul, Valuation.map_neg, hμ1, hTv, mul_one] at hzu'`.
+
+Conclude with `hzu'`. Establish `hxi : valuation _ (ofSplit (G i).q).xi = 1`. Use `congrArg (valuation _) ((G i).sc_step 0)` as an intermediate fact. Rewrite `this` using `[map_mul, (G i).sc_unit, (G i).sc_unit, one_mul]`. Conclude with `this.symm`.
+
+Take `⟨σ, -, hM⟩` from `hR.frame i 0 ((G i).s + 1) (Nat.zero_add _)`. Take `⟨hsd, hfr⟩` from `_root_.GlobalTheory.T.selfDual_and_frame_of_pkHyp W hW 0 (by omega)`. Apply the tactic sequence `have hs0 : s ≠ 0 := by rcases hs with rfl | rfl <;> simp`. Establish `H` using `line_bes (G i).q hq (f.c.B 0 _ h₀) ((_root_.GlobalTheory.Fam.pk_z W).ΛY 0) ((_root_.GlobalTheory.Fam.pk_z W).βY 0) hfr hsd (f.g.b 0) _ _ _ (fun h0 => by simpa [h0] using (G i).sc_unit 0) ((G i).bes 0 _ h₀ _ (Nat.zero_add _)) _ (G i).S.ϖ (Matrix.fromBlocks_diagonal _ _) (σ.symm.tr …`. Establish `e : (fun i => c * incA D (W.S.X.ιE (W.S.X.eR r (Fin.cast (rank_eq W.S.X W.Q.instEq) i)))) = fun l => incA D (s * μ)⁻¹ * (c * incA D ((W.S.X.B.g : D.host.E) ^ D.R.rS)⁻¹) * incA D (B.d.e l r)`.
+
+Use function extensionality and compare the values at `l`. Rewrite using `[he, mul_comm (incA D _), mul_assoc, mul_assoc, ← RingHom.map_mul, ← RingHom.map_mul]`. Use `congr 2`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e, hd]`.
+
+Use `H.trans ?_` and prove the remaining obligations. Rewrite using `[cond_iff (G i).q (G i).S.unif]`. Generalize the expression as in `c * incA D ((W.S.X.B.g : D.host.E) ^ D.R.rS)⁻¹ = a`. Establish `hs1 : valuation _ ((G i).q.pr (incA D (s * μ)⁻¹)) = 1`. Rewrite using `[← RingHom.comp_apply, map_inv₀, map_inv₀, RingHom.comp_apply]`.
+
+Apply the tactic sequence `rcases hs with rfl | rfl <;> simp [hμ1]`. Establish `hs2 : valuation _ ((G i).q.pr (incA D (star (s * μ)⁻¹))) = 1`. Rewrite using `[star_inv₀, ← RingHom.comp_apply, map_inv₀, map_inv₀, RingHom.comp_apply]`. Apply the tactic sequence `rcases hs with rfl | rfl <;> simp [hμ2]`. Establish `hϖ : 0 < valuation _ ((G i).S.ϖ : (G i).k)` using `by simp [zero_lt_iff]`.
+
+Simplify using `only [Valuation.mem_integer_iff, RingHom.map_mul, GlobalTheory.FinPl.FrameLat.cA_incA, Valuation.map_mul, map_div₀, Valuation.map_neg, Valuation.map_pow, Valuation.map_one, hs1, hs2, hxi, hzu, (G i).sc_unit, one_mul, one_pow, div_one, div_le_one₀ hϖ]`.
+-/
 theorem single_alt (W : _root_.GlobalTheory.MiS.RealPackAlt ex) (hW : _root_.GlobalTheory.Fam.PackageHypotheses W) (r : Fin D.R.rS) (hr : r.1 = 0) {u : D.what₂.Word} (f : _root_.GlobalTheory.Fam.FamilyCharacter W u)
     (B : SBes W.S.X W.Q.instEq u W.Q.Rl.ψ (D.sp.X 0)) (hP : _root_.GlobalTheory.MiTop.PlacedAlt f B) (PP : Formalism.L2.DIV.Pl D.host.E) (hPP : PP ∈ (_root_.GlobalTheory.Fam.pk_z W).Pg) :
     ∃ e, Formalism.L2.NTheta.IsIdemAt e PP ∧ ∀ c ∈ idAt D (· = PP.under (𝓞 D.host.F)),
@@ -116,6 +145,11 @@ theorem single_alt (W : _root_.GlobalTheory.MiS.RealPackAlt ex) (hW : _root_.Glo
   have hϖ : 0 < valuation _ ((G i).S.ϖ : (G i).k) := by simp [zero_lt_iff]
   simp only [Valuation.mem_integer_iff, RingHom.map_mul, GlobalTheory.FinPl.FrameLat.cA_incA, Valuation.map_mul, map_div₀, Valuation.map_neg,
     Valuation.map_pow, Valuation.map_one, hs1, hs2, hxi, hzu, (G i).sc_unit, one_mul, one_pow, div_one, div_le_one₀ hϖ]
+/- English proof (translation)
+Introduce `D L hT Gi Gl Kc Yd cX ex W hW hr u u' f f' B B' hP hP' a₀ a a₀' a' _ _ v ⟨PP, hPP, hv⟩ c hc`. Substitute `hv` using the available equality. Take `⟨e, he, h⟩` from `_root_.GlobalTheory.LevelLine.single_alt W hW ⟨0, hr⟩ rfl f B hP PP hPP`. Take `⟨e', he', h'⟩` from `_root_.GlobalTheory.LevelLine.single_alt W hW ⟨0, hr⟩ rfl f' B' hP' PP hPP`. Take `rfl` from `(GlobalTheory.PlaceIdemUniq.idemAt_unique_orth D e e' PP PP he he').1 rfl`.
+
+Conclude with `(h c hc).trans (h' c hc).symm`.
+-/
 theorem line_indep_alt : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} (W : _root_.GlobalTheory.MiS.RealPackAlt ex), _root_.GlobalTheory.Fam.PackageHypotheses W → ∀ (hr : 1 ≤ D.R.rS) u u' (f : _root_.GlobalTheory.Fam.FamilyCharacter W u) (f' : _root_.GlobalTheory.Fam.FamilyCharacter W u') (B : SBes W.S.X W.Q.instEq u W.Q.Rl.ψ (D.sp.X 0)) (B' : SBes W.S.X W.Q.instEq u' W.Q.Rl.ψ (D.sp.X 0)), _root_.GlobalTheory.MiTop.PlacedAlt f B → _root_.GlobalTheory.MiTop.PlacedAlt f' B' → ∀ a₀ a a₀' a', _root_.GlobalTheory.MiTop.IsTranslate' f B a₀ a → _root_.GlobalTheory.MiTop.IsTranslate' f' B' a₀' a' → ∀ v : IsDedekindDomain.HeightOneSpectrum (𝓞 D.host.F), (∃ PP ∈ (_root_.GlobalTheory.Fam.pk_z W).Pg, PP.under (𝓞 D.host.F) = v) → ∀ c ∈ GlobalTheory.FinPl.idAt D (· = v), (Matrix.mulVec (Formalism.L2.Theta.mt (D.sp.Y 0) (show GA D (D.sp.Y 0) from f.g.b 0)⁻¹) ((fun i => c * Formalism.L2.Theta.incA D (W.S.X.ιE (W.S.X.eR ⟨0, hr⟩ (Fin.cast (GlobalTheory.Core.Mi.rank_eq W.S.X W.Q.instEq) i))))) ∈ GlobalTheory.FinPl.latV (D.sp.Y 0) ((_root_.GlobalTheory.Fam.pk_z W).ΛY 0) (· = v) ↔ Matrix.mulVec (Formalism.L2.Theta.mt (D.sp.Y 0) (show GA D (D.sp.Y 0) from f'.g.b 0)⁻¹) ((fun i => c * Formalism.L2.Theta.incA D (W.S.X.ιE (W.S.X.eR ⟨0, hr⟩ (Fin.cast (GlobalTheory.Core.Mi.rank_eq W.S.X W.Q.instEq) i))))) ∈ GlobalTheory.FinPl.latV (D.sp.Y 0) ((_root_.GlobalTheory.Fam.pk_z W).ΛY 0) (· = v)) := by
   intro D L hT Gi Gl Kc Yd cX ex W hW hr u u' f f' B B' hP hP' a₀ a a₀' a' _ _ v ⟨PP, hPP, hv⟩ c hc
   subst hv

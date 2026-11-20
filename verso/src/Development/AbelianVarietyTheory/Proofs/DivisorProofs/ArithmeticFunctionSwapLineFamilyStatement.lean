@@ -11,6 +11,9 @@ open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G Recip
 open GlobalTheory.Cartier GlobalTheory.CovTest.SwapLine
 open scoped Classical
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CovTest.SwapLine.mix_dualTaut_tens_quotBase | exact GlobalTheory.CovTest.SwapLine.mix_dualTaut_tens_quotBase | (intros; apply GlobalTheory.CovTest.SwapLine.mix_dualTaut_tens_quotBase <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.arithmetic_function_swap_line_family : ArCalc → ∀ (k : Type) [CommRing k] (B Y : Scheme.{0}) [IsIntegral B] [IsIntegral Y] (q : B ⟶ Sp k)
     (p : Y ⟶ Sp k) (d : ℕ), IsArithVar q d → IsArithVar p (d + 1) → ∀ (π : Y ⟶ B) (w : π ≫ q = p) (E : B.Modules)
     (h : VMetric q E 2) (H : h.IsCInf) (flB : Vert.Flag E 2) (fl : Vert.Flag ((Scheme.Modules.pullback π).obj E) 2)

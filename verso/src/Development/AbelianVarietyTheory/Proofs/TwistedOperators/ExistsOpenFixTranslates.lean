@@ -25,6 +25,13 @@ namespace GlobalTheory.VacTranslate
 
 variable {D : D7}
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Use `choose k hk hkc hkne using hne`. Establish `ht` using `GlobalTheory.SplitCharTrivial.tendsto_one_of_finCong (k := k) hk hkc`. Establish `ht2 : Filter.Tendsto (fun n => ((k n, (1 : GA D W)) : GA D V × GA D W)) Filter.atTop (𝓝 1)`.
+
+Use `ht.prodMk_nhds (tendsto_const_nhds : Filter.Tendsto (fun _ : ℕ => (1 : GA D W)) Filter.atTop (𝓝 1))` as an intermediate fact. Rewrite `this` using `[Prod.mk_one_one]`. Then use the resulting hypothesis. Take `⟨n, hn⟩` from `(ht2.eventually (GlobalTheory.Mem.CoefInv.eventually_mod ΛV ΛW hV hW N hN)).exists`. Take `⟨x, hx, hxne⟩` from `hkne n`. Take `⟨l, hl, e⟩` from `hn x hx`.
+
+Conclude with `hxne l hl e`.
+-/
 theorem exists_finCong_mod (V W : HSp D) (ΛV : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E))
     (ΛW : Submodule (𝓞 D.host.E) (Fin W.rank → D.host.E)) (hV : IsSelfDualC V ΛV) (hW : IsSelfDualC W ΛW)
     (N : ℕ) (hN : 0 < N) :
@@ -44,6 +51,11 @@ theorem exists_finCong_mod (V W : HSp D) (ΛV : Submodule (𝓞 D.host.E) (Fin V
   obtain ⟨l, hl, e⟩ := hn x hx
   exact hxne l hl e
 
+/- English proof (translation)
+Establish `h` using `GlobalTheory.SplitScalar.heisO_comm ψ S T (2 • a) (2 • b) f`. Rewrite `h` using `[hlat b hb, hlat a ha, hlat b hb]`. Establish `h3` using `congrFun h w₀`. Rewrite `h3` using `[Pi.smul_apply, smul_eq_mul]`. Establish `h4 : ψ (symplO S T (2 • a) (2 • b)) = 1` using `mul_right_cancel₀ hw₀ (h3.symm.trans (one_mul _).symm)`.
+
+Rewrite `h4` using `[← GlobalTheory.Mem.CoefInv.symplO_nsmul, smul_smul]`. Then use the resulting hypothesis.
+-/
 theorem psi_four_eq_one {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {Λ : AddSubgroup (WO S T)} {f : WO S T → ℂ}
     (hlat : ∀ u ∈ Λ, heisO ψ S T (2 • u) f = f) {w₀ : WO S T} (hw₀ : f w₀ ≠ 0) {a b : WO S T} (ha : a ∈ Λ)
     (hb : b ∈ Λ) : ψ (symplO S T ((2 * 2) • a) b) = 1 := by
@@ -55,6 +67,13 @@ theorem psi_four_eq_one {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {Λ : Add
     mul_right_cancel₀ hw₀ (h3.symm.trans (one_mul _).symm)
   rwa [← GlobalTheory.Mem.CoefInv.symplO_nsmul, smul_smul] at h4
 
+/- English proof (translation)
+Establish `hki` using `inv_mem hk`. Introduce `u`. Prove the components needed by the constructor for the conclusion. Introduce `hu`. Take `⟨l, hl, e⟩` from `hn k⁻¹ hki.1 hki.2 u hu`.
+
+Use `⟨actO V W k⁻¹ 1 u, by rw [e, one_nsmul]; exact L.add_mem hu hl, ?_⟩` and prove the remaining obligations. Use `GlobalTheory.WeilVacMove.actO_inv_actO k⁻¹ (1 : GA D W) u` as an intermediate fact. Rewrite `this` using `[inv_inv, inv_one]`. Conclude with `this.symm`. Introduce and unpack `⟨u₀, hu₀, rfl⟩`.
+
+Take `⟨l, hl, e⟩` from `hn k hk.1 hk.2 u₀ hu₀`. Rewrite using `[e, one_nsmul]`. Conclude with `L.add_mem hu₀ hl`.
+-/
 theorem lat_iff_of_mod {V W : HSp D} {L : AddSubgroup (WO V W)} {n : ℕ}
     (hn : ∀ k ∈ GfC V, GlobalTheory.Member.FinCong V n.factorial k → ∀ x ∈ L, ∃ l ∈ L, actO V W k 1 x = x + 1 • l)
     {k : GA D V} (hk : k ∈ GlobalTheory.Member.PrincLevel.levelGroup V n.factorial) :

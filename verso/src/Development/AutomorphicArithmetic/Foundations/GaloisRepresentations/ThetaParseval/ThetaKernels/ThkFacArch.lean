@@ -18,6 +18,15 @@ end Gen
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
   {n d : ℕ} {X : Spc F E n} {W : Spc F E d}
 variable {B : Base F E} {M : Model σ X W} {χX χW : Chr F E} {om : Rep σ X W} {r s r' s' : ℕ}
+/- English proof (translation)
+Establish `hs` using `IsUWeilPair.isUSplitting hP.weil`. Take `⟨g₀, h₀, h₁⟩` from `exists_sb_one (F := F) (κ := Fin n × Fin d)`. Use `⟨fun f => ?_, fun w f g hg => ?_⟩` and prove the remaining obligations. Take `⟨f, rfl⟩` from `C.S.surjective f`. Use `C.norm_eq (lintegral_eq (fun μ hμ => hs.unit μ hμ x) (h f))` as an intermediate fact.
+
+Simplify using `using this`. Take `⟨f, rfl⟩` from `C.S.surjective f`. Take `⟨g, rfl⟩` from `C.S.surjective g`. Rewrite `hg` using `[C.rho_iff hP.base.std]`. Establish `: ⇑(T g) = schrInf F B.ψ (C.P (C.P.symm (phL M x (C.P w)))) (T f)`.
+
+Use `pureA_inj h₁ ?_` and prove the remaining obligations. Rewrite using `[← h g _ h₀, hg, pureA_schrInf, pureA_schrInf, ← h f _ h₀, LinearEquiv.apply_symm_apply, ← phL_spec]`. Take `⟨u, hu⟩` from `M.co.e.surjective (mixedSpaceVecPairAsAdeles F (C.P w))`. Rewrite using `[← hu, phB_e]`. Conclude with `hs.impl x u _ (pureA_mem f h₀)`.
+
+Simplify using `using (C.rho_iff hP.base.std _ _ _).2 this`.
+-/
 theorem impl_of_k (hP : _root_.GlobalTheory.ThK.IsPair_k B M χX χW om r s r' s') (C : Coord F (Fin n × Fin d)) {x}
     {T : SInf F (Fin n × Fin d) →ₗ[ℂ] SInf F (Fin n × Fin d)}
     (h : ∀ f : SInf F _, ∀ g ∈ SB (Fin n × Fin d → Af F), om x (pureA F f g) = pureA F (T f) g) :
@@ -38,6 +47,11 @@ theorem impl_of_k (hP : _root_.GlobalTheory.ThK.IsPair_k B M χX χW om r s r' s
       rw [← hu, phB_e]
       exact hs.impl x u _ (pureA_mem f h₀)
     simpa using (C.rho_iff hP.base.std _ _ _).2 this
+/- English proof (translation)
+Establish `hs` using `IsUWeilPair.isUSplitting hP.weil`. Use `exists_lin hP.base.std _ (hs.pres _) fun m Φ hΦ => ?_` and prove the remaining obligations. Take `⟨u, hu⟩` from `M.co.e.surjective (finE2 F m)`. Use `hs.impl (g, h) u Φ hΦ` as an intermediate fact. Simplify using `only [Darboux.rho] at this`.
+
+Rewrite `this` using `[← phB_e, hu, phB_fin M hg hh]`. Conclude with `this`.
+-/
 theorem exists_T_k (hP : _root_.GlobalTheory.ThK.IsPair_k B M χX χW om r s r' s') {g h} (hg : g ∈ UAt σ X (evI F)) (hh : h ∈ UAt σ W (evI F)) :
     ∃ T : SInf F (Fin n × Fin d) →ₗ[ℂ] SInf F (Fin n × Fin d),
       ∀ f : SInf F _, ∀ φ ∈ SB (Fin n × Fin d → Af F), om (g, h) (pureA F f φ) = pureA F (T f) φ := by
@@ -48,6 +62,9 @@ theorem exists_T_k (hP : _root_.GlobalTheory.ThK.IsPair_k B M χX χW om r s r' 
   simp only [Darboux.rho] at this
   rw [← phB_e, hu, phB_fin M hg hh] at this
   exact this
+/- English proof (translation)
+Introduce `f` and use `by obtain ⟨T', hT'⟩ := _root_.PositivityTheory.ThKF.A.exists_T_k hP (inv_mem_UAt hg) (inv_mem_UAt hh) obtain ⟨g₀, h₀, h₁⟩ := exists_sb_one (F := F) (κ := Fin n × Fin d) refine ⟨T' f, DFunLike.coe_injective (pureA_inj h₁ ?_)⟩ rw [← hT _ _ h₀, ← hT' _ _ h₀, ← Module.End.mul_apply, …`.
+-/
 theorem surj_of_k (hP : _root_.GlobalTheory.ThK.IsPair_k B M χX χW om r s r' s') {g h} (hg : g ∈ UAt σ X (evI F)) (hh : h ∈ UAt σ W (evI F))
     {T : SInf F (Fin n × Fin d) →ₗ[ℂ] SInf F (Fin n × Fin d)}
     (hT : ∀ f : SInf F _, ∀ φ ∈ SB (Fin n × Fin d → Af F), om (g, h) (pureA F f φ) = pureA F (T f) φ) :
@@ -57,6 +74,9 @@ theorem surj_of_k (hP : _root_.GlobalTheory.ThK.IsPair_k B M χX χW om r s r' s
   refine ⟨T' f, DFunLike.coe_injective (pureA_inj h₁ ?_)⟩
   rw [← hT _ _ h₀, ← hT' _ _ h₀, ← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, mul_inv_cancel, mul_inv_cancel]
   exact LinearMap.congr_fun om.map_one _
+/- English proof (translation)
+Use `PositivityTheory.ThKF.E.Impl.dRho (s := (C.P ≪≫ₗ phL M (g, h) ≪≫ₗ C.P.symm).toLinearMap) (_root_.PositivityTheory.ThKF.A.impl_of_k hP C hT) (C.S.surjective.comp ((_root_.PositivityTheory.ThKF.A.surj_of_k hP hg hh hT).comp C.S.symm.surjective)) (C.P.symm v) (C.S f)` as an intermediate fact. Apply `C.S.injective` to reduce the goal to its premises. Simplify `this` using `[Coord.D]`.
+-/
 theorem T_D_k (hP : _root_.GlobalTheory.ThK.IsPair_k B M χX χW om r s r' s') (C : Coord F (Fin n × Fin d)) {g h} (hg : g ∈ UAt σ X (evI F))
     (hh : h ∈ UAt σ W (evI F)) {T : SInf F (Fin n × Fin d) →ₗ[ℂ] SInf F (Fin n × Fin d)}
     (hT : ∀ f : SInf F _, ∀ φ ∈ SB (Fin n × Fin d → Af F), om (g, h) (pureA F f φ) = pureA F (T f) φ) (v) (f) :
@@ -65,6 +85,11 @@ theorem T_D_k (hP : _root_.GlobalTheory.ThK.IsPair_k B M χX χW om r s r' s') (
     (C.S.surjective.comp ((_root_.PositivityTheory.ThKF.A.surj_of_k hP hg hh hT).comp C.S.symm.surjective)) (C.P.symm v) (C.S f)
   apply C.S.injective
   simpa [Coord.D] using this
+/- English proof (translation)
+Take `⟨T, hT⟩` from `_root_.PositivityTheory.ThKF.A.exists_T_k hP hg hh`. Take `⟨C⟩` from `nonempty_coord (F := F) (κ := Fin n × Fin d)`. Establish `hc` using `(_root_.PositivityTheory.ThKF.A.impl_of_k hP C hT).continuous (C.S.surjective.comp ((_root_.PositivityTheory.ThKF.A.surj_of_k hP hg hh hT).comp C.S.symm.surjective))`. Establish `hc' : Continuous T`. Use `C.S.symm.continuous.comp (hc.comp C.S.continuous)` as an intermediate fact.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `f`. Simplify using the standard rewrite rules. Conclude with `⟨⟨T, hc'⟩, hT, acts_of hT⟩`.
+-/
 theorem exists_op_k (hP : _root_.GlobalTheory.ThK.IsPair_k B M χX χW om r s r' s') {g h} (hg : g ∈ UAt σ X (evI F)) (hh : h ∈ UAt σ W (evI F)) :
     ∃ T, IsArchOp om (g, h) T := by
   obtain ⟨T, hT⟩ := _root_.PositivityTheory.ThKF.A.exists_T_k hP hg hh
@@ -76,6 +101,25 @@ theorem exists_op_k (hP : _root_.GlobalTheory.ThK.IsPair_k B M χX χW om r s r'
     funext f
     simp
   exact ⟨⟨T, hc'⟩, hT, acts_of hT⟩
+/- English proof (translation)
+Take `⟨C⟩` from `nonempty_coord (F := F) (κ := Fin n × Fin d)`. Establish `hψ` using `hP.base.std`. Establish `hl : ∀ u, M₂.heisLine B.ψ u = M.heisLine B.ψ u` using `fun u => funext fun t => by`. Unfold `Model.heisLine`. Rewrite using `[hco]`.
+
+Both sides reduce to the same expression. Establish `uq` using `fun f f₁ f₂ => (archUniq F (Fin n × Fin d) f f₁ f₂).2`. Establish `hD` using `_root_.PositivityTheory.ThKF.A.T_D_k hP C hg hh (T := T.toLinearMap) hT.1`. Introduce `f hf`. Use `Submodule.mem_sInf.1 hf ((M.Pol B.ψ B.emb).comap T.toLinearMap) ⟨fun f₀ ⟨ε, hε⟩ => ?_, fun u hu f hf f₁ h₁ => ?_⟩` and prove the remaining obligations.
+
+Use `Submodule.mem_sInf.2 fun N hN => hN.1 _ ⟨ε, fun u u' hu hu' e f f' h1 h2 => ?_⟩` and prove the remaining obligations. Establish `k : ∀ z, actAB (cA σ) (g, h) (actAB (cA σ) (g⁻¹, h⁻¹) z) = z` using `fun z => (actLin (R := AF F) (cA σ) (g, h)).right_inv z`. Establish `a1` using `at_act (g⁻¹, h⁻¹) hu`. Establish `a2` using `at_act (g⁻¹, h⁻¹) hu'`. Establish `hA : ∀ z, At (evI F) z → ActsD (evI F) (M₂.heisLine B.ψ z) f₀ (C.D (vec M z) f₀)` using `fun z hz => by`.
+
+Rewrite using `[hl]`. Conclude with `actsD_heis hψ M C hz f₀`. Establish `hD' : ∀ z, At (evI F) z → C.D (vec M (actAB (cA σ) (g, h) z)) (T f₀) = T (C.D (vec M z) f₀)` using `fun z hz => by`. Rewrite using `[← phL_vec M _ hz]`. Conclude with `(hD _ _).symm`.
+
+Establish `b1` using `hD' _ a1`. Establish `b2` using `hD' _ a2`. Rewrite `b1`, `b2` using `[k]`. Establish `key` using `hε _ _ a1 a2 (fun w => ?_) _ _ (hA _ a1) (hA _ a2)`. Establish `c1 : f = C.D (vec M u) (T f₀)` using `uq _ _ _ _ h1 (actsD_heis hψ M C hu (T f₀))`.
+
+Establish `c2 : f' = C.D (vec M u') (T f₀)` using `uq _ _ _ _ h2 (actsD_heis hψ M C hu' (T f₀))`. Rewrite using `[c1, c2, b1, b2, key, map_smul]`. Establish `inv : ∀ {m : ℕ} (a b θ θ' : Matrix (Fin m) (Fin m) ℂ), b * a = 1 → a * θ' = θ * a → b * θ = θ' * b` using `fun a b θ θ' h1 h2 => by`. Establish `h3` using `mul_eq_one_comm.1 h1`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `i1` using `inv _ ((mat g⁻¹).map (piInf (B.emb w))) _ _ (by`. Rewrite using `[← Matrix.map_mul, show mat g⁻¹ * mat g = 1 from Units.inv_mul g.1, Matrix.map_one _ (map_zero _) (map_one _)]) (eg w)`. Establish `i2` using `inv _ ((mat h⁻¹).map (piInf (B.emb w))) _ _ (by`. Rewrite using `[← Matrix.map_mul, show mat h⁻¹ * mat h = 1 from Units.inv_mul h.1, Matrix.map_one _ (map_zero _) (map_one _)]) (eh w)`. Establish `i3` using `congrArg Matrix.transpose i2`.
+
+Rewrite `i3` using `[Matrix.transpose_mul, Matrix.transpose_mul]`. Use `show (mat g⁻¹ * u' * (mat h⁻¹)ᵀ).map _ = _ • (X₂.θ w * (mat g⁻¹ * u * (mat h⁻¹)ᵀ).map _ * (W₂.θ w)ᵀ)`. Simplify using `only [Matrix.map_mul, e w, Matrix.transpose_map, Matrix.mul_smul, Matrix.smul_mul]`. Use `congr 1`. Simplify using `only [← Matrix.mul_assoc, i1]`.
+
+Simplify using `only [Matrix.mul_assoc, i3]`. Rewrite `h₁` using `[hl]`. Rewrite using `[uq _ _ _ _ h₁ (actsD_heis hψ M C hu _), Submodule.mem_comap, hD]`. Conclude with `D_mem_Pol hψ M C _ _ hf`.
+-/
 theorem map_Pol_k (hP : _root_.GlobalTheory.ThK.IsPair_k B M χX χW om r s r' s') {X₂ : Spc F E n} {W₂ : Spc F E d} (M₂ : Model σ (reS X X₂) (reS W W₂))
     (hco : M₂.co = M.co) {g h} (hg : g ∈ UAt σ X (evI F)) (hh : h ∈ UAt σ W (evI F))
     (eg : ∀ w, (mat g).map (piInf (B.emb w)) * X₂.θ w = X.θ w * (mat g).map (piInf (B.emb w)))
@@ -127,6 +171,9 @@ theorem map_Pol_k (hP : _root_.GlobalTheory.ThK.IsPair_k B M χX χW om r s r' s
   · rw [hl] at h₁
     rw [uq _ _ _ _ h₁ (actsD_heis hψ M C hu _), Submodule.mem_comap, hD]
     exact D_mem_Pol hψ M C _ _ hf
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP g hg h hh`. Take `⟨T, hT⟩` from `_root_.PositivityTheory.ThKF.A.exists_op_k hP hg hh`. Conclude with `⟨T, hT, fun kg kh => _root_.PositivityTheory.ThKF.A.map_Pol_k hP (X₂ := X) (W₂ := W) M rfl hg hh (fun w => (kg.2 w).eq) (fun w => (kh.2 w).eq) hT⟩`.
+-/
 theorem archOp_k : _root_.PositivityTheory.ThKF.ArchOp_k := by
   intro F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP g hg h hh
   obtain ⟨T, hT⟩ := _root_.PositivityTheory.ThKF.A.exists_op_k hP hg hh

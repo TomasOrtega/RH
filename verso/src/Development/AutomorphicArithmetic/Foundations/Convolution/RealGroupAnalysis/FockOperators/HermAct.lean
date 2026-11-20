@@ -12,21 +12,38 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 
 private noncomputable def st (X : Matrix (Fin 2) (Fin 2) (A E)) : Matrix (Fin 2) (Fin 2) (A E) := (X.map D.bar)ᵀ
 
+/- English proof (translation)
+Simplify using `only [st, Matrix.map_mul, Matrix.transpose_mul]`.
+-/
 private theorem st_mul (X Y : Matrix (Fin 2) (Fin 2) (A E)) : st D (X * Y) = st D Y * st D X := by
   simp only [st, Matrix.map_mul, Matrix.transpose_mul]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[st]`.
+-/
 private theorem st_st (X : Matrix (Fin 2) (Fin 2) (A E)) : st D (st D X) = X := by
   ext i j
   simp [st]
 
+/- English proof (translation)
+Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [st, Dat.herm, Dat.bar_mkE]`.
+-/
 private theorem st_herm (v : V4 F) : st D (D.herm v) = D.herm v := by
   ext i j
   fin_cases i <;> fin_cases j <;> simp [st, Dat.herm, Dat.bar_mkE]
 
+/- English proof (translation)
+Rewrite using `[D.mkE_base]`. Conclude with `(D.eq_am_of_bar_eq h).symm`.
+-/
 private theorem mkE_of_fixed {z : A E} (h : D.bar z = z) : D.mkE (D.co z 0) 0 = z := by
   rw [D.mkE_base]
   exact (D.eq_am_of_bar_eq h).symm
 
+/- English proof (translation)
+Establish `e : ∀ i j, D.bar (X j i) = X i j` using `fun i j => congrFun (congrFun h i) j`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j`. Simplify `mkE_of_fixed D (e 0 0)` using `[Dat.herm, Dat.unherm]`. Simplify `D.mkE_co (X 0 1)` using `[Dat.herm, Dat.unherm]`.
+
+Use `D.bar_mkE (D.co (X 0 1) 0) (D.co (X 0 1) 1)` as an intermediate fact. Rewrite `this` using `[D.mkE_co, e]`. Simplify `this.symm` using `[Dat.herm, Dat.unherm]`. Simplify `mkE_of_fixed D (e 1 1)` using `[Dat.herm, Dat.unherm]`.
+-/
 private theorem herm_unherm {X : Matrix (Fin 2) (Fin 2) (A E)} (h : st D X = X) :
     D.herm (D.unherm X) = X := by
   have e : ∀ i j, D.bar (X j i) = X i j := fun i j => congrFun (congrFun h i) j
@@ -41,8 +58,14 @@ private theorem herm_unherm {X : Matrix (Fin 2) (Fin 2) (A E)} (h : st D X = X) 
 
 private noncomputable def eps (K : Type) [Field K] [NumberField K] : A K := (0, 1)
 
+/- English proof (translation)
+The claim follows from `one_mul _`.
+-/
 private theorem eps_mul_snd (a : A F) : (eps F * a).2 = a.2 := one_mul _
 
+/- English proof (translation)
+Use `Prod.ext ?_ ?_` and prove the remaining obligations. Conclude with `map_zero (GroundTheory.Global.InfinitePlace.infiniteAdeleRingMap (K := F) (L := E))`. Conclude with `map_one (AdeleBaseChange.finiteAdeleMap F E)`.
+-/
 private theorem am_eps : am E (eps F) = eps E := by
   refine Prod.ext ?_ ?_
   · exact map_zero (GroundTheory.Global.InfinitePlace.infiniteAdeleRingMap (K := F) (L := E))
@@ -51,6 +74,13 @@ private theorem am_eps : am E (eps F) = eps E := by
 end UpperTheory.ConvolutionTheory.R2.Fo.HermitianActionFixed
 
 open UpperTheory.ConvolutionTheory.R2.Fo.HermitianActionFixed in
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ _ D`. Use `⟨fun h v => ?_, D.bar_mkE, D.mkE_co, fun u t h0 => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `D.herm (D.unherm (h.val * D.herm v * st D h.val)) = h.val * D.herm v * st D h.val`. Apply `herm_unherm` to reduce the goal to its premises. Rewrite using `[st_mul, st_mul, st_st, st_herm, mul_assoc]`.
+
+Establish `h1 : D.mkE (eps F * u) (eps F * t) = D.mkE 0 0`. Rewrite using `[← D.am_mul_mkE, am_eps, D.mkE_zero]`. Use `Prod.ext (zero_mul _) ?_` and prove the remaining obligations. Rewrite using `[eps_mul_snd, h0]`. Both sides reduce to the same expression.
+
+Take `⟨hu, ht⟩` from `D.mkE_inj h1`. Conclude with `⟨(eps_mul_snd u).symm.trans (congrArg Prod.snd hu), (eps_mul_snd t).symm.trans (congrArg Prod.snd ht)⟩`.
+-/
 theorem UpperTheory.ConvolutionTheory.R2.Fo.hermAct :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E] (D : Dat F E), (∀ h v, D.herm (D.act h v) = h.val * D.herm v * (h.val.map D.bar)ᵀ) ∧ (∀ u t, D.bar (D.mkE u t) = D.mkE u (-t)) ∧
     (∀ z, D.mkE (D.co z 0) (D.co z 1) = z) ∧ ∀ u t : A F, (D.mkE u t).2 = 0 → u.2 = 0 ∧ t.2 = 0 := by

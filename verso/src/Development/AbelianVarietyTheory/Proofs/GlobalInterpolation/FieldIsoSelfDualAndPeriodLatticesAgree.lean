@@ -19,14 +19,23 @@ variable {E E' : Type} [Field E] [NumberField E] [Field E'] [NumberField E'] (e 
 
 def vecT (n : ℕ) : (Fin n → E) ≃+ (Fin n → E') := AddEquiv.piCongrRight fun _ : Fin n => e.toAddEquiv
 
+/- English proof (translation)
+The claim follows from `funext fun i => map_smul_int e r (x i)`.
+-/
 theorem vecT_smul (r : 𝓞 E) (x : Fin n → E) : vecT e n (r • x) = RingOfIntegers.mapRingEquiv e r • vecT e n x :=
   funext fun i => map_smul_int e r (x i)
 
+/- English proof (translation)
+Take `⟨S, hS, rfl⟩` from `Submodule.fg_def.1 h`. Conclude with `Submodule.fg_def.2 ⟨_, hS.image (vecT e n), (span_image_span (RingOfIntegers.mapRingEquiv e) (vecT e n) (vecT_smul e) S).symm⟩`.
+-/
 theorem trL_fg {N : Submodule (𝓞 E) (Fin n → E)} (h : N.FG) : (trL e N).FG := by
   obtain ⟨S, hS, rfl⟩ := Submodule.fg_def.1 h
   exact Submodule.fg_def.2 ⟨_, hS.image (vecT e n),
     (span_image_span (RingOfIntegers.mapRingEquiv e) (vecT e n) (vecT_smul e) S).symm⟩
 
+/- English proof (translation)
+Establish `h1` using `span_image_span e (vecT e n) (fun r x => funext fun i => map_mul e r (x i)) (N : Set (Fin n → E))`. Rewrite `h1` using `[h, Submodule.top_coe, Set.image_univ, (vecT e n).surjective.range_eq, Submodule.span_univ]`. Use `top_le_iff.1 (h1.le.trans (Submodule.span_mono ?_))` and prove the remaining obligations. Conclude with `Submodule.subset_span`.
+-/
 theorem trL_span {N : Submodule (𝓞 E) (Fin n → E)} (h : Submodule.span E (N : Set (Fin n → E)) = ⊤) :
     Submodule.span E' (trL e N : Set (Fin n → E')) = ⊤ := by
   have h1 := span_image_span e (vecT e n) (fun r x => funext fun i => map_mul e r (x i)) (N : Set (Fin n → E))
@@ -37,26 +46,41 @@ theorem trL_span {N : Submodule (𝓞 E) (Fin n → E)} (h : Submodule.span E (N
 def matT (a b : ℕ) : HomE E a b ≃+ Matrix (Fin b) (Fin a) E' :=
   (LinearMap.toMatrix' (R := E) (m := Fin b) (n := Fin a)).toAddEquiv.trans e.toAddEquiv.mapMatrix
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `e (LinearMap.toMatrix' x i j) = _`. Rewrite using `[LinearMap.toMatrix'_apply]`.
+-/
 theorem matT_apply (x : HomE E a b) (i : Fin b) (j : Fin a) : matT e a b x i j = e (x (Pi.single j 1) i) := by
   change e (LinearMap.toMatrix' x i j) = _
   rw [LinearMap.toMatrix'_apply]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[matT_apply]`.
+-/
 theorem matT_smul (r : E) (x : HomE E a b) : matT e a b (r • x) = e r • matT e a b x := by
   ext i j
   simp [matT_apply]
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[Matrix.smul_apply, matT_apply, matT_apply, ← map_smul_int]`. Both sides reduce to the same expression.
+-/
 theorem matT_smul_int (r : 𝓞 E) (x : HomE E a b) :
     matT e a b (r • x) = RingOfIntegers.mapRingEquiv e r • matT e a b x := by
   ext i j
   rw [Matrix.smul_apply, matT_apply, matT_apply, ← map_smul_int]
   rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Rewrite using `[← LinearMap.toMatrix'_mulVec]`. Simplify using `[Matrix.mulVec, dotProduct, matT_apply]`.
+-/
 theorem matT_mulVec (x : HomE E a b) (v : Fin a → E') :
     (fun i => e.symm ((matT e a b x).mulVec v i)) = x fun j => e.symm (v j) := by
   funext i
   rw [← LinearMap.toMatrix'_mulVec]
   simp [Matrix.mulVec, dotProduct, matT_apply]
 
+/- English proof (translation)
+Simplify using `only [mem_trL, matT_mulVec]`. Use `⟨fun H y hy => ?_, fun H v hv => H _ hv⟩` and prove the remaining obligations. Simplify `hy)` using `using H (fun i => e (y i)) (by simpa`.
+-/
 theorem matT_carries (N : Submodule (𝓞 E) (Fin a → E)) (N' : Submodule (𝓞 E) (Fin b → E)) (x : HomE E a b) :
     (∀ v ∈ trL e N, (matT e a b x).mulVec v ∈ trL e N') ↔ ∀ y ∈ N, x y ∈ N' := by
   simp only [mem_trL, matT_mulVec]
@@ -67,6 +91,13 @@ end Fields
 
 variable {X : Fields} {D : D7} (s : Seam D X)
 
+/- English proof (translation)
+Use `(sd_iff D _).2 ⟨trL_fg s.iE h.1.fg, trL_span s.iE h.1.span_eq_top, fun y => ?_⟩` and prove the remaining obligations. Establish `key : ∀ x : Fin n → D.host.E, IntE D (hE D y x) ↔ hStd X.E n (fun i => s.iE.symm (x i)) (fun i => s.iE.symm (y i)) ∈ (1 : Submodule (𝓞 X.E) X.E)`. Introduce `x`. Establish `e1 : hStd X.E n (fun i => s.iE.symm (x i)) (fun i => s.iE.symm (y i)) = s.iE.symm (hE D y x)`. Apply `s.iE.injective` to reduce the goal to its premises.
+
+Express the relevant statement in the definitionally equal form `s.iE (∑ i, star (s.iE.symm (x i)) * s.iE.symm (y i)) = _`. Simplify using `only [map_sum, map_mul, hs.2, RingEquiv.apply_symm_apply, hE, mul_comm]`. Rewrite using `[e1, ← mem_one_iff, Submodule.mem_one]`. Both sides reduce to the same expression. Establish `hm : ∀ x, x ∈ s.lat N ↔ (fun i => s.iE.symm (x i)) ∈ N` using `mem_trL s.iE N`.
+
+Simplify using `only [key, hm]`. Use `conv_lhs => rw [← h.2, Formalism.L2.Col.mem_dual]`. Use `⟨fun H x hx => H _ hx, fun H x hx => ?_⟩` and prove the remaining obligations. Simplify `hx)` using `using H (fun i => s.iE (x i)) (by simpa`.
+-/
 theorem sd_lat (hs : s.Ok) {n : ℕ} {N : Submodule (𝓞 X.E) (Sp X.E n)} (h : IsSdLat N) : StandardLatticesGL3.SD D (s.lat N) := by
   refine (sd_iff D _).2 ⟨trL_fg s.iE h.1.fg, trL_span s.iE h.1.span_eq_top, fun y => ?_⟩
   have key : ∀ x : Fin n → D.host.E, IntE D (hE D y x) ↔
@@ -84,6 +115,11 @@ theorem sd_lat (hs : s.Ok) {n : ℕ} {N : Submodule (𝓞 X.E) (Sp X.E n)} (h : 
   refine ⟨fun H x hx => H _ hx, fun H x hx => ?_⟩
   simpa using H (fun i => s.iE (x i)) (by simpa using hx)
 
+/- English proof (translation)
+Rewrite using `[← mem_trI]`. Express the relevant statement in the definitionally equal form `_ ↔ t ∈ trI s.iE (Submodule.span _ _)`. Rewrite using `[trI_span, Iid]`. Use `congr! 2`. Use extensionality with `u`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, hc, a, ha, rfl⟩`. Conclude with `⟨_, ⟨c, hc, a, ha, rfl⟩, s.iE.apply_symm_apply _⟩`. Introduce and unpack `⟨_, ⟨c, hc, a, ha, rfl⟩, rfl⟩`. Conclude with `⟨c, hc, a, ha, s.iE.apply_symm_apply _⟩`.
+-/
 theorem mem_AA_iff {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (B : Base D cc δ) (χ : TaylorLogMetric.IdE D → ℂ) (cD : D.what₂.Tau → ℂ)
     (t : D.host.E) : t ∈ Iid D cc ↔ s.iE.symm t ∈ (ambOf s B χ cD).AA := by
   rw [← mem_trI]
@@ -97,6 +133,11 @@ theorem mem_AA_iff {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (B : Base D cc δ) (�
   · rintro ⟨_, ⟨c, hc, a, ha, rfl⟩, rfl⟩
     exact ⟨c, hc, a, ha, s.iE.apply_symm_apply _⟩
 
+/- English proof (translation)
+Rewrite using `[← mem_span_image (RingOfIntegers.mapRingEquiv s.iE) (matT s.iE a b) (matT_smul_int s.iE), perO, span_image_span (RingOfIntegers.mapRingEquiv s.iE) (matT s.iE a b) (matT_smul_int s.iE), RL]`. Use `congr! 2`. Use extensionality with `u`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨t, ht, A, hA, rfl⟩`.
+
+Take `⟨x, rfl⟩` from `(matT s.iE a b).surjective A`. Use `⟨_, ⟨_, (mem_AA_iff s B χ cD t).1 ht, x, (matT_carries s.iE N N' x).1 (mem_homL.1 hA), rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[matT_smul, RingEquiv.apply_symm_apply]`. Introduce and unpack `⟨_, ⟨r, hr, x, hx, rfl⟩, rfl⟩`. Conclude with `⟨s.iE r, (mem_AA_iff s B χ cD _).2 (by simpa using hr), _, mem_homL.2 ((matT_carries s.iE N N' x).2 hx), matT_smul _ _ _⟩`.
+-/
 theorem mem_RL_iff {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (B : Base D cc δ) (χ : TaylorLogMetric.IdE D → ℂ) (cD : D.what₂.Tau → ℂ)
     {a b : ℕ} (N : Submodule (𝓞 X.E) (Sp X.E a)) (N' : Submodule (𝓞 X.E) (Sp X.E b))
     (z : Matrix (Fin b) (Fin a) D.host.E) :
@@ -114,6 +155,15 @@ theorem mem_RL_iff {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (B : Base D cc δ) (�
     exact ⟨s.iE r, (mem_AA_iff s B χ cD _).2 (by simpa using hr), _,
       mem_homL.2 ((matT_carries s.iE N N' x).2 hx), matT_smul _ _ _⟩
 
+/- English proof (translation)
+Introduce `X D s cc δ B χ cD hs`. Use `⟨fun n N h => sd_lat s hs h, fun a b N N' z => ?_⟩` and prove the remaining obligations. Establish `hpt : ∀ (x : HomE X.E a b) (τ : X.Tau), embH (X.embC s.σ₀) δ x τ = StandardLatticesGL3.pt D (TaylorLogMetric.tor0 D cc δ) δ (matT s.iE a b x) (s.iT τ)`. Introduce `x τ`. Use function extensionality and compare the values at `i j`.
+
+Rewrite using `[pt_apply, matT_apply, ← hs.1]`. Both sides reduce to the same expression. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Establish `h1` using `pt_mem_La (δ := δ) ((mem_RL_iff s B χ cD N N' (matT s.iE a b x)).2 (by simpa using hx)) 1`.
+
+Rewrite `h1` using `[one_smul]`. Use `h1 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `τ`. Conclude with `(hpt x _).trans (by rw [Equiv.apply_symm_apply])`. Introduce `h`.
+
+Take `⟨w, hw, e⟩` from `La_sub h`. Use `⟨_, (mem_RL_iff s B χ cD N N' w).1 hw, funext fun τ => (hpt _ τ).trans ?_⟩` and prove the remaining obligations. Rewrite using `[AddEquiv.apply_symm_apply, ← e]`. Conclude with `congrArg z (s.iT.symm_apply_apply τ)`.
+-/
 theorem seam_lattices : ∀ (X : Fields) (D : D7) (s : Seam D X) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (B : Base D cc δ) (χ : TaylorLogMetric.IdE D → ℂ) (cD : D.what₂.Tau → ℂ), s.Ok → (∀ (n : ℕ) (N : Submodule (𝓞 X.E) (Sp X.E n)), IsSdLat N → StandardLatticesGL3.SD D (s.lat N)) ∧ ∀ (a b : ℕ) (N : Submodule (𝓞 X.E) (Sp X.E a)) (N' : Submodule (𝓞 X.E) (Sp X.E b)) (z : VCx X.Tau a b), z ∈ lam (ambOf s B χ cD) N N' ↔ (fun τ => z (s.iT.symm τ)) ∈ TaylorLogMetric.La D B.tor (s.lat N) (s.lat N') := by
   intro X D s cc δ B χ cD hs
   refine ⟨fun n N h => sd_lat s hs h, fun a b N N' z => ?_⟩

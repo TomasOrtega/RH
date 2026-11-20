@@ -14,10 +14,18 @@ namespace GlobalTheory.CartierHomotopy
 
 variable {K : Type} [Field K]
 
+/- English proof (translation)
+Rewrite using `[extD_apply, extD_apply]`. Conclude with `CechDR.dDR_dDR (x := η)`.
+-/
 theorem extD_extD (η : abelian₂ K) : extD K (extD K η) = 0 := by
   rw [extD_apply, extD_apply]
   exact CechDR.dDR_dDR (x := η)
 
+/- English proof (translation)
+Proceed by induction on `k generalizing c with`. Consider the case `zero => rfl`. Consider the case `succ k ih`. Rewrite using `[pow_succ', pow_succ']`. Use `show A ((A ^ k) (c • w)) = B ((B ^ k) c) • w`.
+
+Rewrite using `[ih, h]`.
+-/
 theorem pow_act (A : AddMonoid.End (abelian₂ K)) (B : AddMonoid.End K) (w : abelian₂ K)
     (h : ∀ c, A (c • w) = B c • w) (k : ℕ) (c : K) : (A ^ k) (c • w) = (B ^ k) c • w := by
   induction k generalizing c with
@@ -27,12 +35,20 @@ theorem pow_act (A : AddMonoid.End (abelian₂ K)) (B : AddMonoid.End K) (w : ab
     show A ((A ^ k) (c • w)) = B ((B ^ k) c) • w
     rw [ih, h]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `c • w - (A ^ k) (c • w) = (c - (B ^ k) c) • w`. Rewrite using `[pow_act A B w h, sub_smul]`.
+-/
 theorem one_sub_pow_act (A : AddMonoid.End (abelian₂ K)) (B : AddMonoid.End K) (w : abelian₂ K)
     (h : ∀ c, A (c • w) = B c • w) (k : ℕ) (c : K) :
     (1 - A ^ k) (c • w) = (1 - B ^ k) c • w := by
   change c • w - (A ^ k) (c • w) = (c - (B ^ k) c) • w
   rw [pow_act A B w h, sub_smul]
 
+/- English proof (translation)
+Proceed by induction on `L generalizing c with`. Consider the case `nil => rfl`. Consider the case `cons i L ih`. Simplify using `only [List.map_cons, List.prod_cons]`. Express the relevant statement in the definitionally equal form `A i ((L.map A).prod (c • w)) = B i ((L.map B).prod c) • w`.
+
+Rewrite using `[ih, hAB]`.
+-/
 theorem prod_act {n : ℕ} (A : Fin n → AddMonoid.End (abelian₂ K)) (B : Fin n → AddMonoid.End K) (w : abelian₂ K)
     (hAB : ∀ i c, A i (c • w) = B i c • w) (L : List (Fin n)) (c : K) :
     (L.map A).prod (c • w) = (L.map B).prod c • w := by
@@ -43,6 +59,9 @@ theorem prod_act {n : ℕ} (A : Fin n → AddMonoid.End (abelian₂ K)) (B : Fin
     change A i ((L.map A).prod (c • w)) = B i ((L.map B).prod c) • w
     rw [ih, hAB]
 
+/- English proof (translation)
+Unfold `dK`. Rewrite using `[Derivation.leibniz_pow, ← Nat.cast_smul_eq_nsmul K, CharP.cast_eq_zero, zero_smul]`.
+-/
 theorem dK_pow_char (p : ℕ) [CharP K p] (g : K) : dK (g ^ p) = 0 := by
   unfold dK
   rw [Derivation.leibniz_pow, ← Nat.cast_smul_eq_nsmul K, CharP.cast_eq_zero, zero_smul]
@@ -51,6 +70,9 @@ end GlobalTheory.CartierHomotopy
 
 namespace GlobalTheory.CartierHomotopy
 
+/- English proof (translation)
+Establish `h1 : (ExteriorAlgebra.ι K (dlog u) : CechDR.DR ℤ K) = ((u : K)⁻¹) • CechDR.ι1 (KaehlerDifferential.D ℤ K (u : K))` using `by show ExteriorAlgebra.ι K (((u⁻¹ : Kˣ) : K) • KaehlerDifferential.D ℤ K (u : K)) = _`. Rewrite using `[map_smul, Units.val_inv_eq_inv_val]`. Rewrite using `[h1, CechDR.dDR_smul, CechDR.dDR_D, smul_zero, add_zero, Derivation.leibniz_inv, map_smul, smul_mul_assoc]`. Establish `h2 : (CechDR.ι1 (KaehlerDifferential.D ℤ K (u : K)) : CechDR.DR ℤ K) * CechDR.ι1 (KaehlerDifferential.D ℤ K (u : K)) = 0` using `ExteriorAlgebra.ι_sq_zero _`. Rewrite using `[h2, smul_zero]`.
+-/
 private theorem dDR_iota_dlog_eq_zero (K : Type) [Field K] (u : Kˣ) :
     CechDR.dDR ℤ K (ExteriorAlgebra.ι K (dlog u)) = 0 := by
   have h1 : (ExteriorAlgebra.ι K (dlog u) : CechDR.DR ℤ K) =
@@ -63,6 +85,13 @@ private theorem dDR_iota_dlog_eq_zero (K : Type) [Field K] (u : Kˣ) :
       CechDR.ι1 (KaehlerDifferential.D ℤ K (u : K)) = 0 := ExteriorAlgebra.ι_sq_zero _
   rw [h2, smul_zero]
 
+/- English proof (translation)
+Rewrite using `[extD_apply]`. Use `show CechDR.dDR ℤ K (((I.sort (· ≤ ·)).map (fun j => ExteriorAlgebra.ι K (dlog (x j)))).prod) = 0`. Generalize the expression as in `I.sort (· ≤ ·) = l`. Proceed by induction on `l with`. Consider the case `nil`.
+
+Establish `h` using `CechDR.dDR_algebraMap (R := ℤ) (B := K) 1`. Rewrite `h` using `[map_one, Derivation.map_one_eq_zero, map_zero]`. Conclude with `h`. Consider the case `cons a l ih`. Simplify using `only [List.map_cons, List.prod_cons]`.
+
+Rewrite using `[CechDR.dDR_mul, ih, dDR_iota_dlog_eq_zero, mul_zero, zero_mul, add_zero]`.
+-/
 private theorem dDR_prod_dlog_eq_zero_and_euler_contraction (K : Type) [Field K] {n : ℕ} (x : Fin n → Kˣ) (I : Finset (Fin n)) :
     extD K (logWedge x I) = 0 := by
   rw [extD_apply]
@@ -77,6 +106,11 @@ private theorem dDR_prod_dlog_eq_zero_and_euler_contraction (K : Type) [Field K]
     simp only [List.map_cons, List.prod_cons]
     rw [CechDR.dDR_mul, ih, dDR_iota_dlog_eq_zero, mul_zero, zero_mul, add_zero]
 
+/- English proof (translation)
+Use `⟨fun i => (dlogBasis x hx).coord i, ?_, ?_⟩` and prove the remaining obligations. Introduce `i j show (dlogBasis x hx).coord i (dlog (x j)) = _`. Rewrite using `[← dlogBasis_apply x hx j, Module.Basis.coord_apply, Module.Basis.repr_self, Finsupp.single_apply]`. Distinguish the cases in `h : i = j`. Rewrite using `[if_pos h.symm, if_pos h]`.
+
+Rewrite using `[if_neg (Ne.symm h), if_neg h]`. Introduce `v conv_rhs => rw [← (dlogBasis x hx).sum_repr v]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[dlogBasis_apply]`. Both sides reduce to the same expression.
+-/
 private theorem exists_dual_basis_dlog_of_isCoord (K : Type) [Field K] {n : ℕ} (x : Fin n → Kˣ) (hx : IsCoord x) :
     ∃ φ : Fin n → Module.Dual K Ω[K⁄ℤ], (∀ i j, φ i (dlog (x j)) = if i = j then 1 else 0) ∧
       ∀ v, ∑ i, φ i v • dlog (x i) = v := by
@@ -94,6 +128,11 @@ private theorem exists_dual_basis_dlog_of_isCoord (K : Type) [Field K] {n : ℕ}
     rw [dlogBasis_apply]
     rfl
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => exact fun η hη => hη`. Consider the case `succ k ih`. Introduce `η hη`. Rewrite using `[pow_succ']`.
+
+Conclude with `hf _ (ih η hη)`.
+-/
 private theorem addMonoidEnd_pow_mem_of_mapsTo {M : Type} [AddCommGroup M] (f : AddMonoid.End M) (S : AddSubgroup M)
     (hf : ∀ η ∈ S, f η ∈ S) (k : ℕ) : ∀ η ∈ S, (f ^ k) η ∈ S := by
   induction k with
@@ -103,6 +142,19 @@ private theorem addMonoidEnd_pow_mem_of_mapsTo {M : Type} [AddCommGroup M] (f : 
     rw [pow_succ']
     exact hf _ (ih η hη)
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil`. Use `⟨0, by simp, fun T _ => ⟨fun q η _ => zero_mem _, fun _ _ => rfl, fun q η hη => hη⟩⟩` and prove the remaining obligations. Consider the case `cons a l ih`. Take `⟨h', hh', hT'⟩` from `ih (fun b hb => hX b (List.mem_cons_of_mem _ hb)) (fun b hb => hc b (List.mem_cons_of_mem _ hb))`.
+
+Establish `hPc : Commute d (l.map (fun a => 1 - a.1)).prod`. Apply `Commute.list_prod_right` to reduce the goal to its premises. Introduce `y hy`. Rewrite `hy` using `[List.mem_map]`. Take `⟨b, hb, rfl⟩` from `hy`.
+
+Conclude with `(Commute.one_right d).sub_right (hc b (List.mem_cons_of_mem _ hb))`. Generalize the expression as in `hP : (l.map (fun a => 1 - a.1)).prod = P at hh' hT' hPc`. Establish `hXa` using `hX a List.mem_cons_self`. Use `⟨h' + a.2 * P, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [List.map_cons, List.prod_cons, hP]`.
+
+Establish `e1 : a.2 * d * P = a.2 * P * d` using `by rw [mul_assoc, hPc.eq, ← mul_assoc]`. Combine the equalities or inequalities in the displayed calculation. Introduce `T hT`. Take `⟨h1, h2, h3⟩` from `hT' T (fun b hb => hT b (List.mem_cons_of_mem _ hb))`. Take `⟨a1, a2, a3⟩` from `hT a List.mem_cons_self`.
+
+Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `q η hη show h' η + a.2 (P η) ∈ T q`. Conclude with `add_mem (h1 q η hη) (a1 q _ (h3 (q + 1) η hη))`. Introduce `η hη show h' η + a.2 (P η) = 0`. Rewrite using `[h2 η hη, a2 _ (h3 0 η hη), add_zero]`.
+
+Introduce `q η hη`. Simplify using `only [List.map_cons, List.prod_cons, hP]`. Use `show P η - a.1 (P η) ∈ T q`. Conclude with `sub_mem (h3 q η hη) (a3 q _ (h3 q η hη))`.
+-/
 private theorem homotopy_maps_filtration_of_list_maps {M : Type} [AddCommGroup M] (d : AddMonoid.End M)
     (l : List (AddMonoid.End M × AddMonoid.End M))
     (hX : ∀ a ∈ l, a.1 = d * a.2 + a.2 * d) (hc : ∀ a ∈ l, Commute d a.1) :
@@ -146,6 +198,51 @@ private theorem homotopy_maps_filtration_of_list_maps {M : Type} [AddCommGroup M
         show P η - a.1 (P η) ∈ T q
         exact sub_mem (h3 q η hη) (a3 q _ (h3 q η hη))
 
+/- English proof (translation)
+Introduce `K _ p _ _ n x hx`. Establish `hpr : p.Prime` using `Fact.out`. Take `⟨m, hm⟩ : ∃ m, p - 1 = m + 1` from `⟨p - 2, by have := hpr.two_le; omega⟩`. Take `⟨φ, hφ, hsum⟩` from `exists_dual_basis_dlog_of_isCoord K x hx`. Set `D : Fin n → Derivation ℤ K K` to `fun i => (φ i).compDer (KaehlerDifferential.D ℤ K)`.
+
+Establish `hDapp : ∀ i c, D i c = φ i (KaehlerDifferential.D ℤ K c)` using `fun _ _ => rfl`. Establish `hd : ∀ c, dK c = ∑ j, D j c • dlog (x j)` using `fun c => (hsum _).symm`. Establish `hD : ∀ i j, D i (x j : K) = if i = j then (x j : K) else 0`. Introduce `i j`. Rewrite using `[hDapp]`.
+
+Establish `e : KaehlerDifferential.D ℤ K (x j : K) = (x j : K) • dlog (x j)` using `by show _ = (x j : K) • (((x j)⁻¹ : Kˣ) : K) • KaehlerDifferential.D ℤ K (x j : K)`. Rewrite using `[smul_smul, Units.mul_inv, one_smul]`. Rewrite using `[e, map_smul, hφ, smul_eq_mul]`. Apply the tactic sequence `split_ifs <;> simp`. Set `θ : Fin n → (abelian₂ K →ₗ[K] abelian₂ K)` to `fun i => CliffordAlgebra.contractLeft (Q := (0 : QuadraticForm K Ω[K⁄ℤ])) (φ i)`.
+
+Establish `hθ : ∀ i, IsEulerContraction x i (θ i)`. Introduce `i`. Use `⟨CliffordAlgebra.contractLeft_one _ _, ?_, ?_⟩` and prove the remaining obligations. Introduce `v η show CliffordAlgebra.contractLeft (φ i) (CliffordAlgebra.ι 0 v * η) = CliffordAlgebra.contractLeft (φ i) (CliffordAlgebra.ι 0 v) * η - CliffordAlgebra.ι 0 v * CliffordAlgebra.contractLeft (φ i) η`. Rewrite using `[CliffordAlgebra.contractLeft_ι_mul, CliffordAlgebra.contractLeft_ι, Algebra.smul_def]`.
+
+Introduce `j show CliffordAlgebra.contractLeft (φ i) (CliffordAlgebra.ι 0 (dlog (x j))) = _`. Rewrite using `[CliffordAlgebra.contractLeft_ι, hφ]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using the standard rewrite rules.
+
+Rewrite using `[if_neg hij, if_neg (Ne.symm hij), map_zero]`. Set `dE : AddMonoid.End (abelian₂ K)` to `extD K`. Set `θE : Fin n → AddMonoid.End (abelian₂ K)` to `fun i => (θ i).toAddMonoidHom`. Set `LE : Fin n → AddMonoid.End (abelian₂ K)` to `fun i => dE * θE i + θE i * dE`. Establish `hdd : dE * dE = 0` using `AddMonoidHom.ext fun η => extD_extD η`.
+
+Establish `hcomm : ∀ i, Commute dE (LE i)`. Introduce `i`. Use `show dE * (dE * θE i + θE i * dE) = (dE * θE i + θE i * dE) * dE`. Rewrite using `[mul_add, add_mul, ← mul_assoc, hdd, zero_mul, mul_assoc (θE i), hdd, mul_zero, zero_add, add_zero, mul_assoc]`. Set `pairs : List (AddMonoid.End (abelian₂ K) × AddMonoid.End (abelian₂ K))` to `List.ofFn fun i => (LE i ^ (p - 1), θE i * LE i ^ m)`.
+
+Establish `hX : ∀ a ∈ pairs, a.1 = dE * a.2 + a.2 * dE`. Introduce `a ha`. Rewrite `ha` using `[List.mem_ofFn]`. Take `⟨i, rfl⟩` from `ha`. Use `show LE i ^ (p - 1) = dE * (θE i * LE i ^ m) + θE i * LE i ^ m * dE`.
+
+Rewrite using `[hm, pow_succ', mul_assoc (θE i), ((hcomm i).pow_right m).eq.symm]`. Use `show (dE * θE i + θE i * dE) * LE i ^ m = _`. Use `noncomm_ring`. Establish `hc : ∀ a ∈ pairs, Commute dE a.1`. Introduce `a ha`.
+
+Rewrite `ha` using `[List.mem_ofFn]`. Take `⟨i, rfl⟩` from `ha`. Conclude with `(hcomm i).pow_right _`. Take `⟨h, hh, hT⟩` from `homotopy_maps_filtration_of_list_maps dE pairs hX hc`. Set `Q : AddMonoid.End (abelian₂ K)` to `(pairs.map (fun a => 1 - a.1)).prod`.
+
+Set `Dend : Fin n → AddMonoid.End K` to `fun i => (D i).toLinearMap.toAddMonoidHom`. Set `π : AddMonoid.End K` to `(List.ofFn fun i => 1 - Dend i ^ (p - 1)).prod`. Take `⟨hπ1, hπ2⟩` from `ProjFn.projector_pthPow K p n x D hx hd hD π rfl`. Establish `hQeq : Q = ((List.finRange n).map fun i => 1 - LE i ^ (p - 1)).prod` using `by show ((List.ofFn fun i => (LE i ^ (p - 1), θE i * LE i ^ m)).map (fun a => 1 - a.1)).prod = _`. Rewrite using `[List.map_ofFn, List.ofFn_eq_map]`.
+
+Both sides reduce to the same expression. Establish `hπeq : π = ((List.finRange n).map fun i => 1 - Dend i ^ (p - 1)).prod` using `by show (List.ofFn fun i => 1 - Dend i ^ (p - 1)).prod = _`. Rewrite using `[List.ofFn_eq_map]`. Establish `hLact : ∀ I i c, LE i (c • logWedge x I) = Dend i c • logWedge x I`. Introduce `I i c`.
+
+Conclude with `euler_cartan_logWedge K n x i (θ i) (hθ i) c (fun j => D j c) I (hd c)`. Establish `hQact : ∀ c I, Q (c • logWedge x I) = π c • logWedge x I`. Introduce `c I`. Rewrite using `[hQeq, hπeq]`. Conclude with `prod_act (fun i => 1 - LE i ^ (p - 1)) (fun i => 1 - Dend i ^ (p - 1)) (logWedge x I) (fun i c => one_sub_pow_act (LE i) (Dend i) _ (hLact I i) (p - 1) c) (List.finRange n) c`.
+
+Use `⟨h, Q, π, ?_, hQact, hπ1, hπ2, ?_, ?_⟩` and prove the remaining obligations. Introduce `η`. Conclude with `congrArg (fun f : AddMonoid.End (abelian₂ K) => f η) hh`. Introduce `η`. Establish `hQc : Commute dE Q`.
+
+Apply `Commute.list_prod_right` to reduce the goal to its premises. Introduce `y hy`. Rewrite `hy` using `[List.mem_map]`. Take `⟨b, hb, rfl⟩` from `hy`. Conclude with `(Commute.one_right dE).sub_right (hc b hb)`.
+
+Establish `e1 : Q (extD K η) = dE (Q η)` using `(congrArg (fun f : AddMonoid.End (abelian₂ K) => f η) hQc.eq).symm`. Use `e1.trans ?_` and prove the remaining obligations. Establish `hb` using `logWedge_basis K n x hx`. Set `b` to `Module.Basis.mk hb.1 (by rw [hb.2])`. Rewrite using `[← b.sum_repr η, map_sum, map_sum]`.
+
+Use `Finset.sum_eq_zero fun I _ => ?_` and prove the remaining obligations. Rewrite using `[Module.Basis.mk_apply, hQact]`. Take `⟨g, hg⟩` from `hπ1 (b.repr η I)`. Use `show extD K (π (b.repr η I) • logWedge x I) = 0`. Rewrite using `[hg, extD_apply, CechDR.dDR_smul, ← extD_apply, dDR_prod_dlog_eq_zero_and_euler_contraction, smul_zero, add_zero]`.
+
+Establish `hz : KaehlerDifferential.D ℤ K (g ^ p) = 0` using `dK_pow_char p g`. Rewrite using `[hz, map_zero, zero_mul]`. Introduce `T hdT hθT`. Apply `hT T` to reduce the goal to its premises. Introduce `a ha`.
+
+Rewrite `ha` using `[List.mem_ofFn]`. Take `⟨i, rfl⟩` from `ha`. Take `⟨hθ1, hθ0⟩` from `hθT i (θ i) (hθ i)`. Establish `hLT : ∀ q, ∀ η ∈ T q, LE i η ∈ T q`. Introduce `q η hη`.
+
+Use `show extD K (θ i η) + θ i (extD K η) ∈ T q`. Use `add_mem ?_ (hθ1 q _ (hdT q η hη))` and prove the remaining obligations. Consider the cases of `q with`. Consider the case `zero => rw [hθ0 η hη, map_zero]`. Conclude with `zero_mem _`.
+
+Consider the case `succ q => exact hdT q _ (hθ1 q η hη)`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `q η hη show θ i ((LE i ^ m) η) ∈ T q`. Conclude with `hθ1 q _ (addMonoidEnd_pow_mem_of_mapsTo (LE i) (T (q + 1)) (hLT (q + 1)) m η hη)`. Introduce `η hη show θ i ((LE i ^ m) η) = 0`.
+
+Conclude with `hθ0 _ (addMonoidEnd_pow_mem_of_mapsTo (LE i) (T 0) (hLT 0) m η hη)`. Introduce `q η hη`. Conclude with `addMonoidEnd_pow_mem_of_mapsTo (LE i) (T q) (hLT q) (p - 1) η hη`.
+-/
 theorem cartier_projector_homotopic : ∀ (K : Type) [Field K] (p : ℕ) [Fact p.Prime] [CharP K p] (n : ℕ) (x : Fin n → Kˣ), IsCoord x → ∃ (h Q : abelian₂ K →+ abelian₂ K) (π : K →+ K), (∀ η, η - Q η = extD K (h η) + h (extD K η)) ∧ (∀ c I, Q (c • logWedge x I) = π c • logWedge x I) ∧ (∀ c, ∃ g : K, π c = g ^ p) ∧ (∀ g : K, π (g ^ p) = g ^ p) ∧ (∀ η, Q (extD K η) = 0) ∧ ∀ T : ℕ → AddSubgroup (abelian₂ K), (∀ q, ∀ η ∈ T q, extD K η ∈ T (q + 1)) → (∀ i θ, IsEulerContraction x i θ → (∀ q, ∀ η ∈ T (q + 1), θ η ∈ T q) ∧ ∀ η ∈ T 0, θ η = 0) → (∀ q, ∀ η ∈ T (q + 1), h η ∈ T q) ∧ (∀ η ∈ T 0, h η = 0) ∧ ∀ q, ∀ η ∈ T q, Q η ∈ T q := by
   intro K _ p _ _ n x hx
   have hpr : p.Prime := Fact.out

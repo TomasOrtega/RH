@@ -13,6 +13,11 @@ section Subst
 
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
 
+/- English proof (translation)
+Establish `h1 : modulus (-1 : F) = 1`. Establish `h : modulus (-1 : F) * modulus (-1 : F) = 1`. Rewrite using `[← modulus_mul]`. Simplify using `[modulus_one]`. Establish `h2 : modulus (-1 : F) ^ 2 = 1` using `by rw [sq]; exact h`.
+
+Conclude with `(pow_eq_one_iff_of_nonneg (by positivity) two_ne_zero).mp h2`. Rewrite using `[← neg_one_mul, modulus_mul, h1, one_mul]`.
+-/
 theorem modulus_neg_eq (x : F) : modulus (-x) = modulus x := by
   have h1 : modulus (-1 : F) = 1 := by
     have h : modulus (-1 : F) * modulus (-1 : F) = 1 := by
@@ -23,6 +28,15 @@ theorem modulus_neg_eq (x : F) : modulus (-x) = modulus x := by
 
 variable [MeasurableSpace F] [BorelSpace F]
 
+/- English proof (translation)
+Use `haveI : (multHaar F).IsInvInvariant := Measure.IsHaarMeasure.isInvInvariant_of_regular (multHaar F)`. Establish `hC : (multHaarConst F).toReal ≠ 0` using `ENNReal.toReal_ne_zero.mpr ⟨multHaarConst_ne_zero, multHaarConst_ne_top⟩`. Establish `hres : (haarIntegers F).restrict ({0}ᶜ : Set F) = haarIntegers F` using `Measure.restrict_eq_self_of_ae_mem (compl_mem_ae_iff.mpr haarIntegers_singleton_zero)`. Establish `h1` using `integral_multHaar (K := F) (fun x => (modulus x : ℝ) • f x)`. Establish `h2` using `integral_multHaar (K := F) (fun x => ((modulus x : ℝ))⁻¹ • f (-x⁻¹))`.
+
+Rewrite `h1`, `h2` using `[hres]`. Establish `h3 : ∫ u : Fˣ, (modulus (u : F) : ℝ) • f (u : F) ∂multHaar F = ∫ u : Fˣ, ((modulus (u : F) : ℝ))⁻¹ • f (-(u : F)⁻¹) ∂multHaar F`. Establish `e1` using `integral_inv_eq_self (fun u : Fˣ => (modulus (((-1 : Fˣ) * u : Fˣ) : F) : ℝ) • f (((-1 : Fˣ) * u : Fˣ) : F)) (multHaar F)`. Establish `e2` using `integral_mul_left_eq_self (μ := multHaar F) (fun u : Fˣ => (modulus (u : F) : ℝ) • f (u : F)) (-1 : Fˣ)`. Rewrite using `[← e2, ← e1]`.
+
+Use `integral_congr_ae (Filter.Eventually.of_forall fun u => ?_)` and prove the remaining obligations. Simplify using `[modulus_neg_eq, modulus_inv]`. Rewrite `h3` using `[h1, h2]`. Establish `h4` using `smul_right_injective ℂ hC h3`. Rewrite using `[← h4]`.
+
+Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [compl_mem_ae_iff.mpr (haarIntegers_singleton_zero (K := F))] with x hx`. Establish `hm : (modulus x : ℝ) ≠ 0` using `by exact_mod_cast modulus_ne_zero hx`. Rewrite using `[smul_smul, inv_mul_cancel₀ hm, one_smul]`.
+-/
 theorem integral_haar_neg_inv (f : F → ℂ) :
     ∫ x, f x ∂haarIntegers F =
       ∫ a, ((modulus a : ℝ))⁻¹ • ((modulus a : ℝ))⁻¹ • f (-a⁻¹) ∂haarIntegers F := by
@@ -57,6 +71,19 @@ end GlobalTheory.CompanionTheory.GaussLam
 
 open GlobalTheory.CompanionTheory.GaussLam in
 
+/- English proof (translation)
+Introduce `F _ _ _ _ _ _ E _ _ _ _ _ _ _ _ _ _ _ χ _ η _ hη g _ _ t`. Establish `hsq : ∀ a : F, a ≠ 0 → nsg E a⁻¹ = nsg E a`. Introduce `a ha`. Establish `h1` using `hη (Units.mk0 a ha)`. Establish `h2` using `hη (Units.mk0 a ha)⁻¹`.
+
+Simplify using `only [Units.val_inv_eq_inv_val, Units.val_mk0, map_inv] at h1 h2`. Rewrite using `[← h2, ← h1]`. Establish `h3 : nsg E a = 1 ∨ nsg E a = -1`. Apply the tactic sequence `unfold nsg; split_ifs <;> simp`. Rewrite `h3` using `[← h1]`.
+
+Apply the tactic sequence `rcases h3 with h3 | h3 <;> simp [h3]`. Use `show ∫ x, gTil E g x * (χ (x * t) : ℂ) ∂selfDualMeasure χ = _`. Rewrite using `[hAvg, selfDualMeasure, integral_smul_nnreal_measure, integral_smul_nnreal_measure, integral_haar_neg_inv]`. Use `congr 1`. Use `integral_congr_ae (Filter.Eventually.of_forall fun a => ?_)` and prove the remaining obligations.
+
+Distinguish the cases in `ha : a = 0`. Substitute `ha` using the available equality. Simplify using `[modulus_zero]`. Establish `hm : (modulus a : ℝ) ≠ 0` using `by exact_mod_cast modulus_ne_zero ha`. Establish `e1 : -(-a⁻¹)⁻¹ = a` using `by simp`.
+
+Establish `e2 : - -a⁻¹ = a⁻¹` using `by simp`. Establish `e3 : -a⁻¹ * t = -t / a` using `by field_simp`. Simplify using `only [gTil, e1, e2, e3, modulus_neg_eq, modulus_inv, hsq a ha, NNReal.coe_inv, inv_inv, Complex.real_smul]`. Use `push_cast`. Establish `hmc : ((modulus a : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast hm`.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem GlobalTheory.CompanionTheory.GaussLam.localFourier_gTil : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] (E : Type) [Field E] [ValuativeRel E] [TopologicalSpace E] [IsNonarchimedeanLocalField E] [MeasurableSpace E] [BorelSpace E] [Algebra F E] [ValuativeExtension F E] [FiniteDimensional F E] [Algebra.IsSeparable F E] [Fact (Module.finrank F E = 2)] (χ : AddChar F Circle), Continuous χ → ∀ η : Fˣ →* ℂˣ, Continuous η → (∀ a : Fˣ, ((η a : ℂˣ) : ℂ) = nsg E (a : F)) → ∀ g : F → ℂ, g ∈ schwartzBruhat F → g 0 = 0 → ∀ t : F, localFourier (selfDualMeasure χ) χ (GlobalTheory.CompanionTheory.GaussLam.gTil E g) t = GlobalTheory.CompanionTheory.GaussLam.hAvg E χ g t := by
   intro F _ _ _ _ _ _ E _ _ _ _ _ _ _ _ _ _ _ χ _ η _ hη g _ _ t
   have hsq : ∀ a : F, a ≠ 0 → nsg E a⁻¹ = nsg E a := by

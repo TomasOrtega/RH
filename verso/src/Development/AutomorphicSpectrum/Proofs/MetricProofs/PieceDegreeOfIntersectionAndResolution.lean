@@ -24,13 +24,22 @@ noncomputable section
 def fsOfDegree {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] (A : HermLine ι) : HermLine ι :=
   HermLine.ofMetrics (fun k => fsMetric (ι k)) A.a
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem fsOfDegree_a {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] (A : HermLine ι) :
     (fsOfDegree A).a = A.a := rfl
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.Inter.isSmoothHerm_ofMetrics_fs A.a`.
+-/
 theorem isSmoothHerm_fsOfDegree {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] (A : HermLine ι) :
     IsSmoothHerm (fsOfDegree A) :=
   GroundTheory.Heights₂.Heights.Inter.isSmoothHerm_ofMetrics_fs A.a
 
+/- English proof (translation)
+Introduce `z`. Simplify using `only [fsOfDegree, HermLine.ofMetrics]`. Conclude with `Finset.prod_congr rfl fun k _ => by`. Rewrite using `[GroundTheory.Heights₂.Heights.FubiniStudyConjugationInvariant.fsMetric_conj (fun i => z ⟨k, i⟩)]`.
+-/
 theorem isConjInvariantH_fsOfDegree {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] (A : HermLine ι) :
     IsConjInvariantH (fsOfDegree A) := by
   intro z
@@ -38,6 +47,11 @@ theorem isConjInvariantH_fsOfDegree {K : Type} [Fintype K] {ι : K → Type} [�
   exact Finset.prod_congr rfl fun k _ => by
     rw [GroundTheory.Heights₂.Heights.FubiniStudyConjugationInvariant.fsMetric_conj (fun i => z ⟨k, i⟩)]
 
+/- English proof (translation)
+Introduce `hAr hRes hPts K _ ι _ Ω _ F _ _ _ y D L sg sg' har hbir hsm hone`. Establish `hsm₀ : ∀ j, IsSmoothHerm (fsOfDegree (L j))` using `fun j => isSmoothHerm_fsOfDegree _`. Establish `hcj₀ : ∀ j, IsConjInvariantH (fsOfDegree (L j))` using `fun j => isConjInvariantH_fsOfDegree _`. Establish `hind : ∀ s : F →+* ℂ, ptsIntegral (mCoordIdeal y) (pot L) ({z | LiesOver y s z}.indicator fun _ => (1 : ℝ)) = ptsIntegral (mCoordIdeal y) (pot fun j => fsOfDegree (L j)) ({z | LiesOver y s z}.indicator fun _ => (1 : ℝ))` using `fun s => GlobalTheory.T.points_integral_independent_of_metric hAr hPts K ι Ω F y D L (fun j => fsOfDegree (L j)) s har hsm hsm₀ (fun j => (fsOfDegree_a (L j)).symm) hone`. Rewrite using `[hind sg, hind sg']`.
+
+Conclude with `GlobalTheory.T.unit_log_orthogonal_weight_constant F (fun s => ptsIntegral (mCoordIdeal y) (pot fun j => fsOfDegree (L j)) ({z | LiesOver y s z}.indicator fun _ => (1 : ℝ))) (fun s => GlobalTheory.T.points_integral_unique_embedding hRes K ι Ω F y D _ s har hsm₀ hcj₀ hone) (fun θ …`.
+-/
 theorem pieceDegree : ArithIntersectionSystemStatement → ResExistsStatement → PtsIntegrableStatement →
     GroundTheory.Heights₂.Heights.HilbertSamuel.PieceDegree.Statement := by
   intro hAr hRes hPts K _ ι _ Ω _ F _ _ _ y D L sg sg' har hbir hsm hone

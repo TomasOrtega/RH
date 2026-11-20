@@ -8,6 +8,19 @@ open scoped BigOperators
 
 namespace GlobalTheory.LocalComponent
 
+/- English proof (translation)
+Take `⟨hsep, hcpl⟩` from `GlobalTheory.IntAdeleComplete.integral_separated_complete D`. Take `⟨f, hf, hff, ⟨w, hw, hfw⟩, h3⟩` from `GlobalTheory.IdealIdele.exists_idem (OhE D) hsep hcpl q hq.pos`. Establish `h2 : ∀ k : ℕ, ∃ w ∈ OhE D, f = (q : AE D) ^ k * w`. Introduce `k`. Proceed by induction on `k with`.
+
+Consider the case `zero => exact ⟨f, hf, by simp⟩`. Consider the case `succ k ih`. Take `⟨v, hv, h⟩` from `ih`. Use `⟨v * w, mul_mem hv hw, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `h4 : ∀ n : ℕ, n.Coprime q → ∃ w ∈ OhE D, 1 - f = (n : AE D) * w` using `fun n hn => h3 n (Nat.pos_of_ne_zero (by rintro rfl; exact hq.ne_one (by simpa using hn))) hn.symm`. Use `⟨f, hf, hff, ?_, h2, h4⟩` and prove the remaining obligations. Establish `key : f * (1 - sgA D f) = 0`. Use `hsep _ fun N hN => ?_` and prove the remaining obligations. Take `⟨a, n', hn', rfl⟩` from `Nat.exists_eq_pow_mul_and_not_dvd hN.ne' q hq.ne_one`.
+
+Take `⟨u, hu, e1⟩` from `h2 a`. Take `⟨v, hv, e2⟩` from `h4 n' ((Nat.Prime.coprime_iff_not_dvd hq).2 hn').symm`. Establish `e3` using `congrArg (sgA D) e2`. Rewrite `e3` using `[map_sub, map_one, map_mul, map_natCast]`. Use `⟨u * sgA D v, mul_mem hu (VacMove.sgA_mem D hv), ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[e3]`. Use `push_cast`. Take the linear combination `((n' : AE D) * sgA D v) * e1`. Establish `key'` using `congrArg (sgA D) key`. Rewrite `key'` using `[map_mul, map_sub, map_one, VacMove.sgA_sgA, map_zero]`.
+
+Take the linear combination `key' - key`.
+-/
 theorem exists_idem_away (D : D7) {q : ℕ} (hq : q.Prime) :
     ∃ f ∈ OhE D, f * f = f ∧ sgA D f = f ∧ (∀ k : ℕ, ∃ w ∈ OhE D, f = (q : AE D) ^ k * w) ∧
       ∀ n : ℕ, n.Coprime q → ∃ w ∈ OhE D, 1 - f = (n : AE D) * w := by
@@ -41,6 +54,13 @@ theorem exists_idem_away (D : D7) {q : ℕ} (hq : q.Prime) :
   rw [map_mul, map_sub, map_one, VacMove.sgA_sgA, map_zero] at key'
   linear_combination key' - key
 
+/- English proof (translation)
+Use `choose N hN hy using fun i => VacMove.exists_nat_denom D (y i)`. Establish `hP : (∏ i, N i) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun i _ => (hN i).ne'`. Take `⟨a, m, hm, e⟩` from `Nat.exists_eq_pow_mul_and_not_dvd hP q hq.ne_one`. Use `⟨a, m, ((Nat.Prime.coprime_iff_not_dvd hq).2 hm).symm, fun i => ?_⟩` and prove the remaining obligations. Take `⟨c, hc⟩ : N i ∣ ∏ i, N i` from `Finset.dvd_prod_of_mem _ (Finset.mem_univ i)`.
+
+Establish `e' : (q : AE D) ^ a * (m : AE D) = (c : AE D) * (N i : AE D)`. Use `congrArg (Nat.cast : ℕ → AE D) (e.symm.trans hc)` as an intermediate fact. Move the coercions through the operations in `at this`. Rewrite using `[this, mul_comm]`. Rewrite using `[e', mul_assoc]`.
+
+Conclude with `mul_mem (natCast_mem _ c) (hy i)`.
+-/
 theorem exists_common_denom (D : D7) {q : ℕ} (hq : q.Prime) {n : ℕ} (y : Fin n → AE D) :
     ∃ a m : ℕ, m.Coprime q ∧ ∀ i, (q : AE D) ^ a * (m : AE D) * y i ∈ OhE D := by
   choose N hN hy using fun i => VacMove.exists_nat_denom D (y i)
@@ -55,6 +75,9 @@ theorem exists_common_denom (D : D7) {q : ℕ} (hq : q.Prime) {n : ℕ} (y : Fin
   rw [e', mul_assoc]
   exact mul_mem (natCast_mem _ c) (hy i)
 
+/- English proof (translation)
+Establish `h1 : (1 - f) * (1 - f) = 1 - f` using `by linear_combination hf`. Establish `h2 : (1 - f) * f = 0` using `by linear_combination -hf`. Establish `h3 : f * (1 - f) = 0` using `by linear_combination -hf`. Simplify using `only [add_mul, mul_add, Matrix.smul_mul, Matrix.mul_smul, smul_add, smul_smul, h, h1, h2, h3, hf, zero_smul, Matrix.mul_one, add_zero, zero_add]`. Rewrite using `[← add_smul, sub_add_cancel, one_smul]`.
+-/
 theorem glue_mul {A : Type} [CommRing A] {n : ℕ} {f : A} (hf : f * f = f) {σ τ : Matrix (Fin n) (Fin n) A}
     (h : σ * τ = 1) : ((1 - f) • σ + f • (1 : Matrix (Fin n) (Fin n) A)) * ((1 - f) • τ + f • 1) = 1 := by
   have h1 : (1 - f) * (1 - f) = 1 - f := by linear_combination hf
@@ -64,6 +87,9 @@ theorem glue_mul {A : Type} [CommRing A] {n : ℕ} {f : A} (hf : f * f = f) {σ 
     Matrix.mul_one, add_zero, zero_add]
   rw [← add_smul, sub_add_cancel, one_smul]
 
+/- English proof (translation)
+Simplify using `only [Matrix.mulVec, dotProduct, Pi.smul_apply, smul_eq_mul, map_mul, map_natCast, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => by ring`.
+-/
 theorem mulVec_inc_smul (D : D7) {n : ℕ} (H : Matrix (Fin n) (Fin n) (AE D)) (c : ℕ) (x : Fin n → D.host.E)
     (i : Fin n) : H.mulVec (fun j => inc D (((c : D.host.E) • x) j)) i =
       (c : AE D) * H.mulVec (fun j => inc D (x j)) i := by
@@ -72,6 +98,39 @@ theorem mulVec_inc_smul (D : D7) {n : ℕ} (H : Matrix (Fin n) (Fin n) (AE D)) (
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `D n q hq s hs`. Take `⟨f, hf, hff, hsg, h2, h3⟩` from `exists_idem_away D hq`. Establish `hs' : cT D s * s = 1` using `mul_eq_one_comm.1 hs`. Establish `a : s.map (inc D) * (cT D s).map (inc D) = 1`. Rewrite using `[← Matrix.map_mul, hs, Matrix.map_one _ (map_zero _) (map_one _)]`.
+
+Establish `b : (cT D s).map (inc D) * s.map (inc D) = 1`. Rewrite using `[← Matrix.map_mul, hs', Matrix.map_one _ (map_zero _) (map_one _)]`. Set `g : GL (Fin n) (AE D)` to `⟨_, _, glue_mul hff a, glue_mul hff b⟩`. Establish `hg : g ∈ GA D n`. Rewrite using `[PtsMem.mem_GA]`.
+
+Establish `e : ((g : Matrix (Fin n) (Fin n) (AE D)).map (sgA D)).transpose = (1 - f) • (cT D s).map (inc D) + f • (1 : Matrix (Fin n) (Fin n) (AE D))`. Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `sgA D ((1 - f) * inc D (s j i) + f * (1 : Matrix (Fin n) (Fin n) (AE D)) j i) = (1 - f) * inc D (D.host.conj (s j i)) + f * (1 : Matrix (Fin n) (Fin n) (AE D)) i j`. Rewrite using `[map_add, map_mul, map_mul, map_sub, map_one, hsg, PtsMem.sgA_inc]`. Distinguish the cases in `hij : i = j`.
+
+Substitute `hij` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Matrix.one_apply_ne hij, Matrix.one_apply_ne (Ne.symm hij)]`. Rewrite using `[e]`. Conclude with `glue_mul hff b`.
+
+Use `⟨⟨g, hg⟩, fun p hp hpq i j => ?_, ?_⟩` and prove the remaining obligations. Establish `hz : ZeroAt D p (1 - f)` using `fun k => by`. Take `⟨w, hw, e⟩` from `h3 (p ^ k) (Nat.Coprime.pow_left k ((Nat.coprime_primes hp hq).2 hpq))`. Conclude with `⟨1, one_pos, by simp, w, hw, by rw [e]; push_cast; ring⟩`. Use `VacMove.zeroAt_mul D hp hz (inc D (s i j) - (1 : Matrix (Fin n) (Fin n) (AE D)) i j)` as an intermediate fact.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Express the relevant statement in the definitionally equal form `(1 - f) * inc D (s i j) + f * (1 : Matrix (Fin n) (Fin n) (AE D)) i j - _ = _`. Expand and normalize the polynomial expressions, which then agree. Introduce and unpack `h B C hB ⟨k, hBC, hCB⟩ ⟨m, hm, hsB, hsC⟩ x set H : Matrix (Fin n) (Fin n) (AE D) := (((h : GL (Fin n) (AE D))⁻¹ : GL (Fin n) (AE D)) : Matrix (Fin n) (Fin n) (AE D)) with hH`. Establish `hB' : ∀ (c : ℕ) (y : Fin n → D.host.E), (c : D.host.E) • y ∈ B ↔ ∀ i, (c : AE D) * H.mulVec (fun j => inc D (y j)) i ∈ OhE D` using `fun c y => by`.
+
+Rewrite using `[hB]`. Conclude with `forall_congr' fun i => by rw [mulVec_inc_smul]`. Establish `e : ∀ i, ((((((⟨g, hg⟩ : GA D n) * h : GA D n) : GL (Fin n) (AE D))⁻¹ : GL (Fin n) (AE D)) : Matrix (Fin n) (Fin n) (AE D)).mulVec (fun j => inc D (x j))) i = (1 - f) * H.mulVec (fun j => inc D ((cT D s).mulVec x j)) i + f * H.mulVec (fun j => inc D (x j)) i`. Introduce `i`. Rewrite using `[Subgroup.coe_mul, mul_inv_rev, Units.val_mul, ← Matrix.mulVec_mulVec]`.
+
+Express the relevant statement in the definitionally equal form `H.mulVec (((1 - f) • (cT D s).map (inc D) + f • (1 : Matrix (Fin n) (Fin n) (AE D))).mulVec _) i = _`. Establish `e1 : ((cT D s).map (inc D)).mulVec (fun j => inc D (x j)) = fun j => inc D ((cT D s).mulVec x j)`. Use function extensionality and compare the values at `fun j => (RingHom.map_mulVec (inc D) (cT D s) x j).symm`. Rewrite using `[Matrix.add_mulVec, Matrix.smul_mulVec, Matrix.smul_mulVec, Matrix.one_mulVec, e1, Matrix.mulVec_add, Matrix.mulVec_smul, Matrix.mulVec_smul]`. Both sides reduce to the same expression.
+
+Simplify using `only [e]`. Prove the components needed by the constructor for the conclusion. Introduce `hx i`. Take `⟨w, hw, e1⟩` from `h3 m hm`. Take `⟨v, hv, e2⟩` from `h2 k`.
+
+Establish `m1` using `(hB' m _).1 (hsC x hx) i`. Establish `m2` using `(hB' (q ^ k) x).1 (by simpa using hCB x hx) i`. Use `add_mem (mul_mem hw m1) (mul_mem hv m2)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use `push_cast`.
+
+Rewrite using `[e1]`. Take the linear combination `H.mulVec (fun j => inc D (x j)) i * e2`. Introduce `hx`. Take `⟨a1, n1, hn1, d1⟩` from `exists_common_denom D hq (H.mulVec (fun j => inc D ((cT D s).mulVec x j)))`. Take `⟨a2, n2, hn2, d2⟩` from `exists_common_denom D hq (H.mulVec (fun j => inc D (x j)))`.
+
+Establish `m1 : (n1 : D.host.E) • (cT D s).mulVec x ∈ B` using `(hB' n1 _).2 fun i => by`. Take `⟨v, hv, e2⟩` from `h2 a1`. Use `add_mem (mul_mem (mul_mem (natCast_mem _ n1) (sub_mem (one_mem _) hf)) (hx i)) (mul_mem hv (d1 i))` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Take the linear combination `((n1 : AE D) * H.mulVec (fun j => inc D ((cT D s).mulVec x j)) i) * e2 - (n1 : AE D) * (H.mulVec (fun j => inc D ((cT D s).mulVec x j)) i - H.mulVec (fun j => inc D (x j)) i) * hff`.
+
+Establish `m2 : ((q ^ a2 : ℕ) : D.host.E) • x ∈ B` using `(hB' (q ^ a2) _).2 fun i => by`. Take `⟨w, hw, e1⟩` from `h3 n2 hn2`. Use `add_mem (mul_mem (mul_mem (pow_mem (natCast_mem _ q) a2) hf) (hx i)) (mul_mem hw (d2 i))` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use `push_cast`.
+
+Take the linear combination `((q : AE D) ^ a2 * H.mulVec (fun j => inc D (x j)) i) * e1 + (q : AE D) ^ a2 * (H.mulVec (fun j => inc D ((cT D s).mulVec x j)) i - H.mulVec (fun j => inc D (x j)) i) * hff`. Establish `c1` using `hsB _ m1`. Rewrite `c1` using `[Matrix.mulVec_smul, Matrix.mulVec_mulVec, hs, Matrix.one_mulVec, smul_smul]`. Establish `c2` using `hBC _ m2`. Rewrite `c2` using `[smul_smul]`.
+
+Establish `hcop : IsCoprime ((m * n1 : ℕ) : ℤ) ((q ^ (k + a2) : ℕ) : ℤ)` using `Nat.isCoprime_iff_coprime.2 (Nat.Coprime.pow_right _ (Nat.Coprime.mul_left hm hn1))`. Take `⟨u, v, huv⟩` from `hcop`. Establish `huv'` using `congrArg (Int.cast : ℤ → D.host.E) huv`. Move the coercions through the operations in `at huv' c2`. Use `add_mem (zsmul_mem c1 u) (zsmul_mem c2 v)` as an intermediate fact.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `j`. Simplify using `only [Pi.add_apply, Pi.smul_apply]`. Simplify using `only [zsmul_eq_mul, smul_eq_mul]`. Take the linear combination `(-x j) * huv'`.
+-/
 theorem exists_local_component : ∀ (D : D7) (n q : ℕ), q.Prime → ∀ s : Matrix (Fin n) (Fin n) D.host.E, s * cT D s = 1 → ∃ g : GA D n, (∀ p : ℕ, p.Prime → p ≠ q → TrivAt D p (g : GL (Fin n) (AE D))) ∧ ∀ (h : GA D n) (B C : Lat D n), Moves D (h : GL (Fin n) (AE D)) B → EqAway D q B C → SAt D q s B C → Moves D ((g * h : GA D n) : GL (Fin n) (AE D)) C := by
   intro D n q hq s hs
   obtain ⟨f, hf, hff, hsg, h2, h3⟩ := exists_idem_away D hq

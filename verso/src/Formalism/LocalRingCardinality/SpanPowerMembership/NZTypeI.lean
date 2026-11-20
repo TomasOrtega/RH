@@ -8,6 +8,9 @@ namespace Formalism.BasicNotions.Examples₂
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal
 open scoped TensorProduct
 
+/- English proof (translation)
+Establish `h1 : CharZero (FractionRing (C.O0 i))` using `charZero_of_injective_ringHom (C.emb0 i).injective`. Conclude with `charZero_of_injective_ringHom (IsFractionRing.map (A := C.O0 i) (B := C.O i) (K := FractionRing (C.O0 i)) (L := FractionRing (C.O i)) (C.O_inj i)).injective`.
+-/
 theorem TwCore.charZeroK {R : Ranks} {H : Host R} {what₂ : Rows.Data R} [NumberField what₂.LL] [StarRing what₂.LL]
     {LL0 : IntermediateField ℚ what₂.LL} {N : NData R H what₂} (C : TwCore R H what₂ LL0 N) (i : C.Tw) :
     CharZero (FractionRing (C.O i)) := by
@@ -28,14 +31,23 @@ def eAlgL (i : C.Tw) : MonoidAlgebra (FractionRing (C.O i)) (G0g (ndG H Lb what�
   haveI := C.charZeroK i
   e0L H Lb what₂ h (FractionRing (C.O i))
 
+/- English proof (translation)
+The claim follows from `haveI := C.charZeroK i labelIdempotent_idem H Lb what₂ h _`.
+-/
 theorem eAlgL_idem (i : C.Tw) : eAlgL H Lb what₂ h C i * eAlgL H Lb what₂ h C i = eAlgL H Lb what₂ h C i :=
   haveI := C.charZeroK i
   labelIdempotent_idem H Lb what₂ h _
 
+/- English proof (translation)
+The claim follows from `haveI := C.charZeroK i labelIdempotent_central H Lb what₂ h _ x`.
+-/
 theorem eAlgL_central (i : C.Tw) (x) : eAlgL H Lb what₂ h C i * x = x * eAlgL H Lb what₂ h C i :=
   haveI := C.charZeroK i
   labelIdempotent_central H Lb what₂ h _ x
 
+/- English proof (translation)
+Use `haveI := C.charZeroK i`. Unfold `eAlgL`. Rewrite using `[labelIdempotent_coeff]`. Apply the tactic sequence `cases b <;> simp only [Bool.false_eq_true, if_false, if_true, map_ratCast]`.
+-/
 theorem eAlgL_def (i : C.Tw) (b : Bool) (g) : (eAlgL H Lb what₂ h C i).coeff g =
     IsFractionRing.map (A := C.O0 i) (B := C.O i) (K := FractionRing (C.O0 i))
       (L := FractionRing (C.O i)) (C.O_inj i)

@@ -20,6 +20,11 @@ namespace GlobalTheory.RowKer
 
 variable {D : D7}
 
+/- English proof (translation)
+Unfold `unitMap`. Establish `h : (B.submatrix id σ)⁻¹ = B⁻¹.submatrix σ id`. Simplify using `using Matrix.inv_submatrix_equiv B (Equiv.refl _) σ`. Rewrite using `[h]`. Use extensionality with `a b`.
+
+Simplify using `[Matrix.mul_apply, Matrix.single_apply, ite_and, Finset.sum_ite_eq, Finset.sum_ite_eq', ite_mul]`.
+-/
 theorem unitMap_perm {m n : ℕ} (B : Matrix (Fin n) (Fin n) ℂ) (B' : Matrix (Fin m) (Fin m) ℂ) (σ : Equiv.Perm (Fin n))
     (σ' : Equiv.Perm (Fin m)) (i : Fin m) (j : Fin n) :
     unitMap (B.submatrix id σ) (B'.submatrix id σ') i j = unitMap B B' (σ' i) (σ j) := by
@@ -30,6 +35,13 @@ theorem unitMap_perm {m n : ℕ} (B : Matrix (Fin n) (Fin n) ℂ) (B' : Matrix (
   ext a b
   simp [Matrix.mul_apply, Matrix.single_apply, ite_and, Finset.sum_ite_eq, Finset.sum_ite_eq', ite_mul]
 
+/- English proof (translation)
+Unfold `pureTensorO`. Use `GlobalTheory.ArchRec.LieAtPlace.pure_rename (fun v Q => ?_) (fun v Q => ?_) _ (fun k => ?_) Q` and prove the remaining obligations. Use `GlobalTheory.FockIndep.pure_X_mul (P := IsThetaFunO ψ S T) (fun _ _ => GlobalTheory.OrientedHeis.theta_add) (fun a _ => GlobalTheory.OrientedHeis.theta_smul a) (fun _ _ h => GlobalTheory.FockIndep.aPlus_theta hψ hθ _ _ _ h) ?_ ?_ ?_ hf Q v` and prove the remaining obligations. Conclude with `fun i j _ h => GlobalTheory.FockIndep.aPlus_comm' hψ hθ i.1 _ hS hT j.1 _ h`. Conclude with `fun _ _ _ h h' => GlobalTheory.FockIndep.aPlus_add hψ hθ _ _ _ h h'`.
+
+Conclude with `fun _ a _ h => GlobalTheory.FockIndep.aPlus_smul hψ hθ _ _ _ a h`. Use `GlobalTheory.FockIndep.pure_X_mul (P := IsThetaFunO ψ S T) (fun _ _ => GlobalTheory.OrientedHeis.theta_add) (fun a _ => GlobalTheory.OrientedHeis.theta_smul a) (fun _ _ h => GlobalTheory.FockIndep.aPlus_theta hψ hθ _ _ _ h) ?_ ?_ ?_ hf Q v` and prove the remaining obligations. Conclude with `fun i j _ h => GlobalTheory.FockIndep.aPlus_comm' hψ hθ i.1 _ hS hT j.1 _ h`. Conclude with `fun _ _ _ h h' => GlobalTheory.FockIndep.aPlus_add hψ hθ _ _ _ h h'`. Conclude with `fun _ a _ h => GlobalTheory.FockIndep.aPlus_smul hψ hθ _ _ _ a h`.
+
+Take `⟨τ, i, j⟩` from `k`. Simplify using `only [aPlusAll, unitMap_perm, Equiv.apply_symm_apply]`.
+-/
 theorem pureTensorO_perm {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ)
     {S T : HSp D} {sS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ} {sT : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ}
     (hS : ∀ τ, IsCartanInv (gramAt D S τ) (sS τ)) (hT : ∀ τ, IsCartanInv (gramAt D T τ) (sT τ))
@@ -56,6 +68,9 @@ theorem pureTensorO_perm {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} (hψ :
 
 open GlobalTheory.GridJoin
 
+/- English proof (translation)
+Take `⟨L, a, b, rfl⟩` from `h1`. Take `⟨L', a', b', rfl⟩` from `h0`. Consider the cases of `hom`. Consider the cases of `hF`. Both sides reduce to the same expression.
+-/
 theorem heq_ker {V1 V0 U1 U0 : HSp D} (h1 : SameSp V1 U1) (h0 : SameSp V0 U0) (ω : GlobalTheory.Grid.WRep U1 U0)
     (om : GA D (negSp V1) × GA D V0 →* Module.End ℂ (WO (negSp V1) V0 → ℂ)) (hom : HEq (ω.toSgn true) om)
     (F : WO U1 U0 → ℂ) (F' : WO (negSp V1) V0 → ℂ) (hF : HEq F F') :
@@ -67,6 +82,11 @@ theorem heq_ker {V1 V0 U1 U0 : HSp D} (h1 : SameSp V1 U1) (h0 : SameSp V0 U0) (�
   cases hF
   rfl
 
+/- English proof (translation)
+Take `⟨L, a, b, rfl⟩` from `h1`. Take `⟨L', a', b', rfl⟩` from `h0`. Substitute `eψ eθ` using the available equality. Consider the cases of `ht1`. Consider the cases of `ht0`.
+
+Consider the cases of `hc1`. Consider the cases of `hc0`. Consider the cases of `hf`. Establish `hth' : IsThetaFunO _ (negSp V1) V0 _` using `⟨hth.1, hth.2, hth.3, hth.4⟩`. Conclude with `⟨_, heq_of_eq (pureTensorO_perm (S := negSp V1) (T := V0) hψ hθ (fun τ => isCartanInv_neg (hs1 τ)) hs0 b1 b0 σ1 σ0 hth' q)⟩`.
+-/
 theorem heq_fock {V1 V0 U1 U0 : HSp D} (h1 : SameSp V1 U1) (h0 : SameSp V0 U0) {ψ ψ' : AddChar (AF D.host.F) ℂ}
     {θ θ' : InfFam D} (eψ : ψ' = ψ) (eθ : θ' = θ) (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ)
     {s1 b1 : D.what₂.Tau → Matrix (Fin V1.rank) (Fin V1.rank) ℂ} {s0 b0 : D.what₂.Tau → Matrix (Fin V0.rank) (Fin V0.rank) ℂ}
@@ -92,6 +112,15 @@ namespace GlobalTheory.RowKer
 
 open GlobalTheory.GridJoin
 
+/- English proof (translation)
+Introduce `D Γ _ _ Pl0 T A Ks _ _ _ R ch hY hO G hG hM ρ Φ i`. Take `⟨hsp, harr⟩` from `hM`. Establish `hi : (i : ℕ) < D.R.m` using `i.2`. Take `⟨c, hc⟩` from `(harr.cos i hi).2 (Φ i)`. Establish `sd : ∀ k, k ≤ D.R.m → IsSelfDualC (G.V k 0).V (G.V k 0).Λ`.
+
+Introduce and unpack `(_ | k) hk`. Conclude with `hY`. Conclude with `GlobalTheory.SDFrameLattice.isSelfDualC_of_isSDFrame D _ _ _ 1 (hG.spaces.vert k 0 hk (Nat.zero_le _)).frame`. Establish `hfin : GlobalTheory.Grid.IsFinVec R.ψ R.θ true (G.V ((i : ℕ) + 1) 0) (G.V i 0) (G.vC i c)` using `GlobalTheory.T.isFiniteDatum_of_homLatticeCoset_selfDual c (hG.arrows.X i 0 hi (Nat.zero_le _)).vac (sd _ hi) (sd _ hi.le) hG.chars.places.idem (G.toPlaceDat.ideal_ne_bot _) (hG.data i hi c)`. Use `⟨G.vC i c, hfin, ?_⟩` and prove the remaining obligations.
+
+Establish `n1` using `hsp.vert ((i : ℕ) + 1) 0 hi (Nat.zero_le _)`. Establish `n0` using `hsp.vert i 0 hi.le (Nat.zero_le _)`. Take `⟨σ1, hσ1⟩` from `n1.onb (by simp)`. Take `⟨σ0, hσ0⟩` from `n0.onb (by simp)`. Take `⟨p, hp⟩` from `heq_fock n1.sp n0.sp hO.ψ hO.θ (hO.ψ ▸ ch.W.ψ_std) (hO.θ ▸ ch.W.θ_is) n1.cart n0.cart σ1 σ0 hσ1 hσ0 (fun τ => ch.W.cart_is _ (by simp only [GlobalTheory.ChiGrid.Node.InRange]; omega) τ) (fun τ => ch.W.cart_is _ (by simp only [GlobalTheory.ChiGrid.Node.InRange]; omega) τ) hc hfin. …`.
+
+Conclude with `⟨p, heq_ker n1.sp n0.sp (G.X i 0).ω (ch.W.om (.chi i 0)) (harr.omX i 0 hi (Nat.zero_le _)) _ _ hp⟩`.
+-/
 theorem kernel_row : ∀ {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type} {A : FamIn D.what₂.LL Γ Pl0 T D.R.m}
     {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks} (ch : Choice R),
     IsSelfDualC (Yc D 0) (R.ΛY 0) → ch.W.Over R → ∀ (G : GlobalTheory.Grid.GridPre R), G.Is → GlobalTheory.GridJoin.Match G ch.W →

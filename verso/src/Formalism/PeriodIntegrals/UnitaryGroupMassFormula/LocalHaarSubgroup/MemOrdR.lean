@@ -13,6 +13,9 @@ section Some
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
   {sig : E →ₐ[F] E} {p : HeightOneSpectrum (𝓞 F)} {A : Formalism.MainNotions.S.Loc.LocAt F E sig p}
 
+/- English proof (translation)
+Simplify using `only [PI.LocHaarRR.ordR]`. Rewrite using `[Subring.mem_comap, Subring.mem_map]`. Conclude with `⟨(⟨_, h1⟩, ⟨_, h2⟩), h12, rfl⟩`.
+-/
 theorem mem_ordR (sg : Formalism.MainNotions.S.Loc.SplitAt A.Fp A.Ep A.cj (Formalism.MainNotions.S.Loc.resChar p)) {x : A.Ep}
     (h1 : (sg.e x).1 ∈ 𝒪[A.Fp]) (h2 : (sg.e x).2 ∈ 𝒪[A.Fp])
     (h12 : Ideal.Quotient.mk (Ideal.span {sg.q}) ⟨(sg.e x).1, h1⟩ =
@@ -22,6 +25,11 @@ theorem mem_ordR (sg : Formalism.MainNotions.S.Loc.SplitAt A.Fp A.Ep A.cj (Forma
   rw [Subring.mem_comap, Subring.mem_map]
   exact ⟨(⟨_, h1⟩, ⟨_, h2⟩), h12, rfl⟩
 
+/- English proof (translation)
+Simplify using `only [PI.LocHaarRR.ordR] at hx`. Rewrite `hx` using `[Subring.mem_comap, Subring.mem_map]`. Take `⟨y, -, hy⟩` from `hx`. Establish `hy' : sg.e x = ((y.1 : A.Fp), (y.2 : A.Fp))` using `hy.symm`. Rewrite using `[hy']`.
+
+Conclude with `⟨y.1.2, y.2.2⟩`.
+-/
 theorem ordR_sub (sg : Formalism.MainNotions.S.Loc.SplitAt A.Fp A.Ep A.cj (Formalism.MainNotions.S.Loc.resChar p)) {x : A.Ep}
     (hx : x ∈ PI.LocHaarRR.ordR sg) : (sg.e x).1 ∈ 𝒪[A.Fp] ∧ (sg.e x).2 ∈ 𝒪[A.Fp] := by
   simp only [PI.LocHaarRR.ordR] at hx
@@ -33,6 +41,25 @@ theorem ordR_sub (sg : Formalism.MainNotions.S.Loc.SplitAt A.Fp A.Ep A.cj (Forma
 
 end Some
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ sig p A hred`. Use `haveI := A.lf`. Use `haveI := A.top`. Use `haveI := A.borel`. Use `haveI := A.char0`.
+
+Use `haveI := A.free`. Use `haveI : IsTopologicalAddGroup A.Ep := IsModuleTopology.topologicalAddGroup A.Fp A.Ep`. Use `haveI := sigmaCompactSpace_lf A.Fp`. Break down `hs : A.split with _ | sg` into its components or cases. Take `⟨H, h0, C, hC, hOC⟩` from `integral_mem_nhds_and_subset_compact_of_finrank_two A.rank A.O A.O_def haveI : SigmaCompactSpace A.Ep := H.symm.isClosedEmbedding.sigmaCompactSpace`.
+
+Establish `hR : PI.LocHaarRR.RR A = (A.O : Set A.Ep)` using `by simp [PI.LocHaarRR.RR, hs]`. Rewrite using `[hR]`. Conclude with `exists_haar_of_subgroup A.O.toAddSubgroup h0 hC hOC`. Establish `hR : PI.LocHaarRR.RR A = (PI.LocHaarRR.ordR sg : Set A.Ep)`. Simplify using `[PI.LocHaarRR.RR, hs]`.
+
+Rewrite using `[hR]`. Set `H : A.Fp × A.Fp ≃ₜ A.Ep` to `homeoOfLin sg.e.symm.toLinearEquiv`. Establish `hH : ∀ y, sg.e (H y) = y` using `fun y => sg.e.apply_symm_apply y`. Establish `hH' : ∀ x, H (sg.e x) = x` using `fun x => sg.e.symm_apply_apply x`. Use `haveI : SigmaCompactSpace A.Ep := H.symm.isClosedEmbedding.sigmaCompactSpace`.
+
+Establish `hq0 : (sg.q : A.Fp) ≠ 0` using `fun h => sg.q_irr.ne_zero (Subtype.ext h)`. Set `Q : Set A.Fp` to `(fun y : A.Fp => (sg.q : A.Fp) * y) '' (𝒪[A.Fp] : Set A.Fp)`. Establish `hQ : IsOpen Q` using `(Homeomorph.mulLeft₀ (sg.q : A.Fp) hq0).isOpenMap _ (isOpen_integer' _)`. Use `exists_haar_of_subgroup (PI.LocHaarRR.ordR sg).toAddSubgroup ?_ (((isCompact_integer _).prod (isCompact_integer _)).image H.continuous) ?_` and prove the remaining obligations. Rewrite using `[mem_nhds_iff]`.
+
+Use `⟨H '' (Q ×ˢ Q), ?_, H.isOpenMap _ (hQ.prod hQ), ⟨(0, 0), ⟨⟨0, zero_mem _, by simp⟩, ⟨0, zero_mem _, by simp⟩⟩, by have h00 := hH' 0; rw [map_zero] at h00; exact h00⟩⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨⟨_, _⟩, ⟨⟨u, hu, rfl⟩, ⟨v, hv, rfl⟩⟩, rfl⟩`. Establish `h1 : (sg.e (H ((sg.q : A.Fp) * u, (sg.q : A.Fp) * v))).1 ∈ 𝒪[A.Fp]`. Rewrite using `[hH]`. Conclude with `mul_mem sg.q.2 hu`.
+
+Establish `h2 : (sg.e (H ((sg.q : A.Fp) * u, (sg.q : A.Fp) * v))).2 ∈ 𝒪[A.Fp]`. Rewrite using `[hH]`. Conclude with `mul_mem sg.q.2 hv`. Use `mem_ordR sg h1 h2 ?_` and prove the remaining obligations. Rewrite using `[Ideal.Quotient.eq, Ideal.mem_span_singleton]`.
+
+Use `⟨⟨u, hu⟩ - ⟨v, hv⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Simplify using `only [hH, AddSubgroupClass.coe_sub, MulMemClass.coe_mul]`. Expand and normalize the polynomial expressions, which then agree. Introduce `x hx`. Take `⟨h1, h2⟩` from `ordR_sub sg hx`.
+
+Conclude with `⟨sg.e x, ⟨h1, h2⟩, hH' x⟩`.
+-/
 theorem target : PI.LocHaarRR.Target := by
   intro F E _ _ _ _ _ sig p A hred
   haveI := A.lf

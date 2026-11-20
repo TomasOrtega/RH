@@ -11,6 +11,15 @@ open scoped NumberField.AdeleRing
 
 namespace GlobalTheory.CompanionTheory.RgEisSo.Hd
 
+/- English proof (translation)
+Introduce `hD F E _ _ _ _ _ σ χ c hσ _ _ _`. Take `⟨-, -, -, -, h5⟩` from `hD F E`. Establish `key : ∀ x : (IndefiniteRowSideFullHecke.WeilTensorModels.AE F E)ˣ, (adCM σ χ).lg x = Real.log (GlobalTheory.Doubling.absE F E x : ℝ)` using `fun x => by show Real.log (GroundTheory.Global.IdeleGroup.ideleModule E (Units.map (eqv F E).toRingHom.toMonoidHom x) : ℝ) = _`. Rewrite using `[h5]`. Use `⟨fun x => ?_, fun x => ?_⟩` and prove the remaining obligations.
+
+Establish `e : Units.map (eqv F E).toRingHom.toMonoidHom (Units.map (nuCM F E).toMonoidHom x) = GroundTheory.Global.ideleEmbedding F E x`. Apply `Units.ext` to reduce the goal to its premises. Conclude with `GroundTheory.BlockD.ThmBHecke.adeleEquiv_algebraMap (x : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF F)`. Use `show Real.log (GroundTheory.Global.IdeleGroup.ideleModule E (Units.map (eqv F E).toRingHom.toMonoidHom (Units.map (nuCM F E).toMonoidHom x)) : ℝ) = 2 * Real.log (GroundTheory.Global.IdeleGroup.ideleModule F x : ℝ)`. Rewrite using `[e, ← GroundTheory.Automorphic.EllipticTorus.ideleModule_ideleNorm (K := F), GroundTheory.Global.ideleNorm_ideleEmbedding, hσ.2.2.1, map_pow]`.
+
+Establish `: (((GroundTheory.Global.IdeleGroup.ideleModule F x) ^ 2 : {r : ℝ // 0 < r}) : ℝ) = (GroundTheory.Global.IdeleGroup.ideleModule F x : ℝ) ^ 2` using `rfl`. Rewrite using `[this, Real.log_pow]`. Evaluate the numerical expressions. Rewrite using `[key, key]`. Establish `e : Units.map (adCM σ χ).σ.toMonoidHom x = GlobalTheory.Doubling.conjUnit σ x`.
+
+Apply `Units.ext` to reduce the goal to its premises. Both sides reduce to the same expression. Rewrite using `[e, GlobalTheory.Doubling.absE_conjUnit]`.
+-/
 theorem blg_of_dict : Dict → BLg := by
   intro hD F E _ _ _ _ _ σ χ c hσ _ _ _
   obtain ⟨-, -, -, -, h5⟩ := hD F E

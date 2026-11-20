@@ -8,6 +8,11 @@ noncomputable def UpperTheory.Reformulated.B.HermitianFormImEqSum.hv :
     {n : ℕ} → Matrix (Fin n) (Fin n) ℂ → (Fin n → ℂ) → (Fin n → ℂ) → ℂ :=
     fun {n : ℕ} (M : Matrix (Fin n) (Fin n) ℂ) (x y : Fin n → ℂ) ↦ Star.star y ⬝ᵥ M.mulVec x
 
+/- English proof (translation)
+Establish `hx : x ∈ Submodule.span ℝ S` using `hS ▸ Submodule.mem_top`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem a ha => exact H a ha`. Consider the case `zero`. Establish `h1` using `fs 0 0`.
+
+Establish `h2` using `hs 0 0`. Simplify using `only [zero_smul, zero_mul] at h1 h2`. Rewrite using `[h1, h2]`. Consider the case `add a b _ _ h1 h2 => rw [fa, ha, h1, h2]`. Consider the case `smul c a _ h1 => rw [fs, hs, h1]`.
+-/
 private theorem UpperTheory.Reformulated.B.HermitianFormImEqSum.ext_span {V : Type} [AddCommGroup V] [Module ℝ V]
     (f h : V → ℝ) (S : Set V) (hS : Submodule.span ℝ S = ⊤)
     (fa : ∀ x y, f (x + y) = f x + f y) (fs : ∀ (c : ℝ) x, f (c • x) = c * f x)
@@ -24,9 +29,23 @@ private theorem UpperTheory.Reformulated.B.HermitianFormImEqSum.ext_span {V : Ty
   | add a b _ _ h1 h2 => rw [fa, ha, h1, h2]
   | smul c a _ h1 => rw [fs, hs, h1]
 
+/- English proof (translation)
+Rewrite using `[mul_smul_comm, Complex.smul_re, smul_eq_mul]`.
+-/
 private theorem UpperTheory.Reformulated.B.HermitianFormImEqSum.re_hermitian_combination_nonpos (c : ℝ) (a b : ℂ) : (a * (c • b)).re = c * (a * b).re := by
   rw [mul_smul_comm, Complex.smul_re, smul_eq_mul]
 
+/- English proof (translation)
+Introduce `P _ _ n g R Hm M s r S hS H x y`. Establish `step : ∀ a ∈ S, ∀ y : P → Fin n → ℂ, (UpperTheory.Reformulated.B.HermitianFormImEqSum.hermForm Hm (R a) (R y)).im = ∑ v : P, r v * (-s v * Complex.I * UpperTheory.Reformulated.B.HermitianFormImEqSum.hv (M v) (a v) (y v)).re`. Introduce `a ha y`. Use `UpperTheory.Reformulated.B.HermitianFormImEqSum.ext_span (fun y => (UpperTheory.Reformulated.B.HermitianFormImEqSum.hermForm Hm (R a) (R y)).im) (fun y => ∑ v : P, r v * (-s v * Complex.I * UpperTheory.Reformulated.B.HermitianFormImEqSum.hv (M v) (a v) (y v)).re) S hS ?_ ?_ ?_ ?_ …` and prove the remaining obligations. Introduce `u w`.
+
+Simplify using `only [UpperTheory.Reformulated.B.HermitianFormImEqSum.hermForm, map_add, star_add, Matrix.mulVec_add, dotProduct_add, Complex.add_im]`. Introduce `c u`. Simplify using `only [UpperTheory.Reformulated.B.HermitianFormImEqSum.hermForm, map_smul, star_smul, star_trivial, Matrix.mulVec_smul, dotProduct_smul, Complex.smul_im, smul_eq_mul]`. Introduce `u w`. Simplify using `only [UpperTheory.Reformulated.B.HermitianFormImEqSum.hv, Pi.add_apply, star_add, add_dotProduct, mul_add, Complex.add_re, Finset.sum_add_distrib]`.
+
+Introduce `c u`. Simplify using `only [UpperTheory.Reformulated.B.HermitianFormImEqSum.hv, Pi.smul_apply, star_smul, star_trivial, smul_dotProduct, UpperTheory.Reformulated.B.HermitianFormImEqSum.re_hermitian_combination_nonpos, Finset.mul_sum, mul_left_comm c]`. Use `UpperTheory.Reformulated.B.HermitianFormImEqSum.ext_span (fun x => (UpperTheory.Reformulated.B.HermitianFormImEqSum.hermForm Hm (R x) (R y)).im) (fun x => ∑ v : P, r v * (-s v * Complex.I * UpperTheory.Reformulated.B.HermitianFormImEqSum.hv (M v) (x v) (y v)).re) S hS ?_ ?_ ?_ ?_ …` and prove the remaining obligations. Introduce `u w`. Simplify using `only [UpperTheory.Reformulated.B.HermitianFormImEqSum.hermForm, map_add, add_dotProduct, Complex.add_im]`.
+
+Introduce `c u`. Simplify using `only [UpperTheory.Reformulated.B.HermitianFormImEqSum.hermForm, map_smul, smul_dotProduct, Complex.smul_im, smul_eq_mul]`. Introduce `u w`. Simplify using `only [UpperTheory.Reformulated.B.HermitianFormImEqSum.hv, Pi.add_apply, Matrix.mulVec_add, dotProduct_add, mul_add, Complex.add_re, Finset.sum_add_distrib]`. Introduce `c u`.
+
+Simplify using `only [UpperTheory.Reformulated.B.HermitianFormImEqSum.hv, Pi.smul_apply, Matrix.mulVec_smul, dotProduct_smul, UpperTheory.Reformulated.B.HermitianFormImEqSum.re_hermitian_combination_nonpos, Finset.mul_sum, mul_left_comm c]`.
+-/
 theorem UpperTheory.Reformulated.B.HermitianFormImEqSum.bil_eq :
     ∀ {P : Type} [inst : Fintype P] [DecidableEq P] {n g : ℕ} (R : (P → Fin n → ℂ) ≃ₗ[ℝ] Fin g → ℂ)
       (Hm : Matrix (Fin g) (Fin g) ℂ) (M : P → Matrix (Fin n) (Fin n) ℂ) (s : P → ℂ) (r : P → ℝ) (S : Set (P → Fin n → ℂ)),

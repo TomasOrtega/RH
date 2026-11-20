@@ -18,6 +18,39 @@ namespace Data
 
 variable (d : Data K ι Ω WT A)
 
+/- English proof (translation)
+Use `set e := hd.a4.choose with hedef`. Establish `he` using `hd.a4.choose_spec.1`. Take `⟨hb0, hab', m, hm0, hma, hmb⟩` from `hab`. Establish `hDe : d.De hd h ≠ 0` using `(d.disc_lattice hd h).1`. Establish `hinj` using `IsFractionRing.injective (KTp K d.D d.N) (KTf K d.D d.N)`.
+
+Establish `ha0 : a ≠ 0`. Introduce and unpack `rfl`. Rewrite `hab'` using `[map_zero]`. Conclude with `mul_ne_zero hDe ((map_ne_zero_iff _ hinj).2 hb0) hab'.symm`. Establish `hn : (0 : ℝ) < Module.finrank ℚ K` using `by exact_mod_cast Module.finrank_pos`.
+
+Establish `hcard : (Fintype.card (K →+* ℂ) : ℝ) = Module.finrank ℚ K`. Conclude with `NumberField.Embeddings.card K ℂ` after adjusting the coercions. Establish `hla : ∀ la, Real.log (ReciprocityTheory.MultiplicativeHeights.gaussAbs (FinitePlace.mk la) a) - Real.log (ReciprocityTheory.MultiplicativeHeights.gaussAbs (FinitePlace.mk la) b) = -((d.gOrd la (d.De hd h) : ℝ) * logNorm la)` using `fun la => d.log_gaussAbs_sub_of_fraction la a b ha0 hb0 _ hab'`. Establish `hlog : ∀ la : IsDedekindDomain.HeightOneSpectrum (𝓞 K), logNorm la ≠ 0` using `fun la => by`. Establish `h1` using `NumberField.HeightOneSpectrum.one_lt_absNorm la`.
+
+Conclude with `(Real.log_pos (by exact_mod_cast h1)).ne'`. Establish `hgfin : (Function.support fun la => d.gOrd la (d.De hd h)).Finite`. Use `(((ReciprocityTheory.MultiplicativeHeights.gauss_abs_log_support_finite a ha0).union (ReciprocityTheory.MultiplicativeHeights.gauss_abs_log_support_finite b hb0)).preimage (FinitePlace.equivHeightOneSpectrum (K := K)).symm.injective.injOn).subset ?_` and prove the remaining obligations. Introduce `la hla0`. Establish `h1 : Real.log (ReciprocityTheory.MultiplicativeHeights.gaussAbs (FinitePlace.mk la) a) - Real.log (ReciprocityTheory.MultiplicativeHeights.gaussAbs (FinitePlace.mk la) b) ≠ 0`.
+
+Rewrite using `[hla]`. Conclude with `neg_ne_zero.2 (mul_ne_zero (by exact_mod_cast hla0) (hlog la))`. Assume the negation of the conclusion as `hn'`. Apply `h1` to reduce the goal to its premises. Simplify using `only [Set.mem_preimage, Set.mem_union, Function.mem_support, not_or, not_not] at hn'`.
+
+Express the relevant statement in the definitionally equal form `Real.log (ReciprocityTheory.MultiplicativeHeights.gaussAbs (FinitePlace.mk la) a) = 0 ∧ Real.log (ReciprocityTheory.MultiplicativeHeights.gaussAbs (FinitePlace.mk la) b) = 0 at hn'`. Rewrite using `[hn'.1, hn'.2, sub_zero]`. Establish `hNfin : (Function.support fun la => d.NlaG h d.wF e la).Finite` using `(Set.finite_iUnion fun c => d.la_fin hd h c (fun v => d.ord c v d.wF (e c)) (hd.a3' c (he c).1 (he c).2)).subset (d.aNla_supp hd h (fun c v f => d.ord c v d.wF f) e)`. Use `⟨hgfin, hNfin, ?_⟩` and prove the remaining obligations. Take `⟨U, V, hU0, hV0, ⟨eU, hUm⟩, ⟨eV, hVm⟩, hpres, hh0f⟩` from `d.finite_height_fraction_repr hd h`.
+
+Establish `hpoly : Om * (b * V ^ 2) = a * U ^ 2`. Apply `hinj` to reduce the goal to its premises. Simplify using `only [map_mul, map_pow]`. Rewrite using `[hOm, omE, hab', ← hpres]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hOm0 : Om ≠ 0`. Introduce and unpack `rfl`. Rewrite `hpoly` using `[zero_mul]`. Conclude with `mul_ne_zero ha0 (pow_ne_zero _ hU0) hpoly.symm`. Establish `hnp : 0 < d.N + 1` using `Nat.succ_pos _`.
+
+Establish `E1 : ReciprocityTheory.MultiplicativeHeights.h0 Om = ReciprocityTheory.MultiplicativeHeights.h0 a + 2 * ReciprocityTheory.MultiplicativeHeights.h0 U - (ReciprocityTheory.MultiplicativeHeights.h0 b + 2 * ReciprocityTheory.MultiplicativeHeights.h0 V)`. Rewrite using `[logHeight_div_multihomogeneous _ _ hOm0 (mul_ne_zero hb0 (pow_ne_zero _ hV0)) (multi_mul hmb (multi_pow hVm 2)) (multi_mul hma (multi_pow hUm 2)) hpoly, (ReciprocityTheory.MultiplicativeHeights.Closed.gauss_height_additivity K (d.D + 1) (d.N + 1) _ _ a (U ^ 2) hnp ha0 (pow_ne_ze …`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `E2 : ReciprocityTheory.MultiplicativeHeights.h0 a - ReciprocityTheory.MultiplicativeHeights.h0 b = (-(∑ᶠ la, (d.gOrd la (d.De hd h) : ℝ) * logNorm la) + ∑ sg, d.mSgP sg a b) / (Module.finrank ℚ K : ℝ)`.
+
+Establish `hfinp : (∑ᶠ w : FinitePlace K, Real.log (ReciprocityTheory.MultiplicativeHeights.gaussAbs w a)) - ∑ᶠ w : FinitePlace K, Real.log (ReciprocityTheory.MultiplicativeHeights.gaussAbs w b) = -(∑ᶠ la, (d.gOrd la (d.De hd h) : ℝ) * logNorm la)`. Rewrite using `[← finsum_sub_distrib (ReciprocityTheory.MultiplicativeHeights.gauss_abs_log_support_finite a ha0) (ReciprocityTheory.MultiplicativeHeights.gauss_abs_log_support_finite b hb0)]`. Use `finsum_comp_equiv (FinitePlace.equivHeightOneSpectrum (K := K)).symm (f := fun w => Real.log (ReciprocityTheory.MultiplicativeHeights.gaussAbs w a) - Real.log (ReciprocityTheory.MultiplicativeHeights.gaussAbs w b))` as an intermediate fact. Rewrite using `[← this, ← finsum_neg_distrib]`. Conclude with `finsum_congr fun la => hla la`.
+
+Establish `harch : ∑ sg : K →+* ℂ, ReciprocityTheory.MultiplicativeHeights.blockSphereMean (d.D + 1) (d.N + 1) (MvPolynomial.map sg a) - ∑ sg : K →+* ℂ, ReciprocityTheory.MultiplicativeHeights.blockSphereMean (d.D + 1) (d.N + 1) (MvPolynomial.map sg b) = ∑ sg, d.mSgP sg a b`. Rewrite using `[← Finset.sum_sub_distrib]`. Conclude with `Finset.sum_congr rfl fun sg _ => d.sphereMean_sub_archimedean a b m hm0 ha0 hb0 hma hmb sg`. Unfold `ReciprocityTheory.MultiplicativeHeights.h0`. Rewrite using `[← hfinp, ← harch]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `E4 : meanK (fun sg => d.mSgP sg a b - 2 * d.Nsg d.wF e sg) = (∑ sg, d.mSgP sg a b) / (Module.finrank ℚ K : ℝ) - 2 * meanK (d.Nsg d.wF e)`. Unfold `meanK`. Rewrite using `[Finset.sum_sub_distrib, ← Finset.mul_sum, hcard]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hsG : (Function.support fun la => (d.gOrd la (d.De hd h) : ℝ) * logNorm la).Finite` using `hgfin.subset fun la hla0 => by`. Introduce `h0`. Apply `hla0` to reduce the goal to its premises. Simplify using `[h0]`. Establish `hsN : (Function.support fun la => d.NlaG h d.wF e la * logNorm la).Finite` using `hNfin.subset fun la hla0 => by`.
+
+Introduce `h0`. Apply `hla0` to reduce the goal to its premises. Simplify using `[h0]`. Establish `E5 : (∑ᶠ la, ((d.gOrd la (d.De hd h) : ℝ) + 2 * d.NlaG h d.wF e la) * logNorm la) = (∑ᶠ la, (d.gOrd la (d.De hd h) : ℝ) * logNorm la) + 2 * ∑ᶠ la, d.NlaG h d.wF e la * logNorm la`. Rewrite using `[mul_finsum, ← finsum_add_distrib hsG (hsN.subset fun la hla0 => by`.
+
+Introduce `h0`. Apply `hla0` to reduce the goal to its premises. Simplify using `[h0])]`. Conclude with `finsum_congr fun la => by ring`. Rewrite using `[E5, E4, Hgt, hh0f]`.
+
+Establish `hn0 : (Module.finrank ℚ K : ℝ) ≠ 0` using `hn.ne'`. Take the linear combination `E1 + E2`.
+-/
 theorem disc_product (hd : d.AxH 𝒜) (h : d.S1) (hI2be : d.HeightIntegralBoundEstimate) (a b : KTp K d.D d.N)
     (hab : d.IsPres hd h a b) (Om : KTp K d.D d.N)
     (hOm : algebraMap (KTp K d.D d.N) (KTf K d.D d.N) Om = d.omE hd h) :

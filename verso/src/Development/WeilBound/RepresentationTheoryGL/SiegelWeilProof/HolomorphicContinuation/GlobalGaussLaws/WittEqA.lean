@@ -25,6 +25,9 @@ local notation "ccF" => ReciprocityTheory.ChartRestriction.G.FD.cc
 
 def dSgn (r k : ℕ) : Matrix (Fin r) (Fin r) E := Matrix.diagonal fun a => if (a : ℕ) < k then 1 else -1
 
+/- English proof (translation)
+Distinguish the cases in `h : a = b`. Substitute `h` using the available equality. Simplify using `only [dSgn, Matrix.diagonal_apply_eq, ReciprocityTheory.ChartRestriction.G.FD.cc]`. Apply the tactic sequence `split_ifs <;> simp`. Simplify using `[dSgn, Matrix.diagonal_apply_ne _ h, Matrix.diagonal_apply_ne _ (Ne.symm h), ReciprocityTheory.ChartRestriction.G.FD.cc]`.
+-/
 theorem dSgn_hermF (r k : ℕ) (a b : Fin r) : ccF (dSgn (E := E) r k a b) = dSgn r k b a := by
   by_cases h : a = b
   · subst h
@@ -32,22 +35,37 @@ theorem dSgn_hermF (r k : ℕ) (a b : Fin r) : ccF (dSgn (E := E) r k a b) = dSg
     split_ifs <;> simp
   · simp [dSgn, Matrix.diagonal_apply_ne _ h, Matrix.diagonal_apply_ne _ (Ne.symm h), ReciprocityTheory.ChartRestriction.G.FD.cc]
 
+/- English proof (translation)
+Rewrite using `[dSgn, Matrix.det_diagonal, Finset.prod_ne_zero_iff]`. Introduce `a _`. Apply the tactic sequence `split_ifs <;> norm_num`.
+-/
 theorem dSgn_det (k : ℕ) : (dSgn (E := E) r k).det ≠ 0 := by
   rw [dSgn, Matrix.det_diagonal, Finset.prod_ne_zero_iff]
   intro a _
   split_ifs <;> norm_num
 
+/- English proof (translation)
+Rewrite using `[FractionalIdeal.mem_one_iff, IsIntegralClosure.isIntegral_iff (A := 𝓞 E)]`.
+-/
 theorem mem_one_iff_isIntegral (z : E) : z ∈ (1 : FractionalIdeal (𝓞 E)⁰ E) ↔ IsIntegral ℤ z := by
   rw [FractionalIdeal.mem_one_iff, IsIntegralClosure.isIntegral_iff (A := 𝓞 E)]
 
+/- English proof (translation)
+The claim follows from `h.map (IsCMField.complexConj E : E →+* E).toIntAlgHom`.
+-/
 theorem cc_isIntegral {z : E} (h : IsIntegral ℤ z) : IsIntegral ℤ (cc z) :=
   h.map (IsCMField.complexConj E : E →+* E).toIntAlgHom
 
+/- English proof (translation)
+Simplify using `only [ReciprocityTheory.ChartRestriction.G.FD.herm, Matrix.diagonal_apply, mul_ite, ite_mul, mul_zero, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true]`.
+-/
 theorem herm_diag (d : Fin r → E) (x y : Fin r → E) :
     hermF (Matrix.diagonal d) x y = ∑ a, x a * d a * ccF (y a) := by
   simp only [ReciprocityTheory.ChartRestriction.G.FD.herm, Matrix.diagonal_apply, mul_ite, ite_mul, mul_zero, zero_mul,
     Finset.sum_ite_eq, Finset.mem_univ, if_true]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, rfl⟩ i`. Conclude with `(IsIntegralClosure.isIntegral_iff (A := 𝓞 E)).mpr ⟨w i, rfl⟩`. Introduce `h choose w hw using fun i => (IsIntegralClosure.isIntegral_iff (A := 𝓞 E)).mp (h i)`. Conclude with `⟨w, funext fun i => hw i⟩`.
+-/
 private theorem mem_stdLat_iff_forall_isIntegral (n : ℕ) (x : Fin n → E) :
     x ∈ GlobalTheory.InertWitt.stdLat E n ↔ ∀ i, IsIntegral ℤ (x i) := by
   constructor
@@ -57,11 +75,27 @@ private theorem mem_stdLat_iff_forall_isIntegral (n : ℕ) (x : Fin n → E) :
     choose w hw using fun i => (IsIntegralClosure.isIntegral_iff (A := 𝓞 E)).mp (h i)
     exact ⟨w, funext fun i => hw i⟩
 
+/- English proof (translation)
+Use `split_ifs`. Conclude with `isIntegral_one`. Conclude with `isIntegral_one.neg`.
+-/
 private theorem isIntegral_ite_one_neg_one (k : ℕ) (a : Fin r) : IsIntegral ℤ (if (a : ℕ) < k then (1 : E) else -1) := by
   split_ifs
   · exact isIntegral_one
   · exact isIntegral_one.neg
 
+/- English proof (translation)
+Rewrite using `[mem_stdLat_iff_forall_isIntegral]`. Prove the components needed by the constructor for the conclusion. Introduce `hx y hy`. Rewrite `hy` using `[mem_stdLat_iff_forall_isIntegral]`. Rewrite using `[mem_one_iff_isIntegral, dSgn, herm_diag]`.
+
+Conclude with `IsIntegral.sum _ fun a _ => ((hx a).mul (isIntegral_ite_one_neg_one k a)).mul (cc_isIntegral (hy a))`. Introduce `h i`. Establish `hy : (Pi.single i 1 : Fin r → E) ∈ GlobalTheory.InertWitt.stdLat E r`. Rewrite using `[mem_stdLat_iff_forall_isIntegral]`. Introduce `j`.
+
+Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Simplify using `using isIntegral_one`. Simplify `isIntegral_zero` using `[Pi.single_apply, hj]`. Establish `h1` using `h _ hy`.
+
+Rewrite `h1` using `[mem_one_iff_isIntegral, dSgn, herm_diag]`. Establish `h2 : IsIntegral ℤ (x i * (if (i : ℕ) < k then (1 : E) else -1))`. Use `h1 using 1` and compare the differences between its conclusion and the goal. Rewrite using `[Finset.sum_eq_single i]`. Simplify using `[ReciprocityTheory.ChartRestriction.G.FD.cc]`.
+
+Introduce `b _ hb`. Simplify using `[Pi.single_apply, hb]`. Simplify using the standard rewrite rules. Establish `h3` using `h2.mul (isIntegral_ite_one_neg_one k i)`. Apply the tactic sequence `have h4 : x i * (if (i : ℕ) < k then (1 : E) else -1) * (if (i : ℕ) < k then (1 : E) else -1) = x i := by split_ifs <;> ring`.
+
+Rewrite `h3` using `[h4]`. Then use the resulting hypothesis.
+-/
 theorem mod_std (k : ℕ) (x : Fin r → E) : x ∈ GlobalTheory.InertWitt.stdLat E r ↔
     ∀ y ∈ GlobalTheory.InertWitt.stdLat E r, hermF (dSgn r k) x y ∈ (1 : FractionalIdeal (𝓞 E)⁰ E) := by
   rw [mem_stdLat_iff_forall_isIntegral]
@@ -99,12 +133,18 @@ def extL {k : ℕ} (hr : 2 * k = r) : (Fin k → E) →ₗ[E] (Fin r → E) wher
   map_add' u v := by funext a; simp only [ext, Pi.add_apply]; split_ifs <;> rfl
   map_smul' c u := by funext a; simp only [ext, Pi.smul_apply, RingHom.id_apply]; split_ifs <;> rfl
 
+/- English proof (translation)
+Introduce `u v h`. Use function extensionality and compare the values at `i`. Use `congrFun h ⟨i, by omega⟩` as an intermediate fact. Simplify `this` using `[extL, ext, i.isLt]`.
+-/
 theorem extL_injective {k : ℕ} (hr : 2 * k = r) : Function.Injective (extL (E := E) hr) := by
   intro u v h
   funext i
   have := congrFun h ⟨i, by omega⟩
   simpa [extL, ext, i.isLt] using this
 
+/- English proof (translation)
+Rewrite using `[dSgn, herm_diag]`. Substitute `hr` using the available equality. Rewrite using `[← Equiv.sum_comp (finCongr (two_mul k).symm), Fin.sum_univ_add]`. Simplify using `[ext, Matrix.diagonal_apply_eq]`.
+-/
 theorem herm_ext {k : ℕ} (hr : 2 * k = r) (u v : Fin k → E) :
     hermF (dSgn r k) (ext hr u) (ext hr v) = 0 := by
   rw [dSgn, herm_diag]

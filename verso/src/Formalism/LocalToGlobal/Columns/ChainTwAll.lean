@@ -17,6 +17,9 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} {Ch : Chars X Pr R.m}
   {sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)} {S : Set ℕ}
   {mu : Tup X.F X.E X.K S} {m2 : ℕ}
 
+/- English proof (translation)
+The claim follows from `twIdx_ok hX hPr hCh h4 G hT hW hval hm hQG hd hK hF hN hC (twZeroQ_of (twCst_ok hPr hCh h4 hK)) hAn`.
+-/
 theorem twIdx_ok' (hX : X.Ok) (hPr : Pr.Ok) (hCh : Ch.Ok) (h4 : ∀ w ∈ Pr.vGs, qOf w % 4 = 1) (G : ChGlob X R.m)
     {e : Fin R.m → X.Tau → ℚ} {eta : Formalism.L2.Host.HChar X.E} (hT : Ch.Tied G.σ₀ e G.mu0 eta) (hW : Ch.WeilTied G.σ₀ G.xi0)
     (hval : ∀ (j : Fin R.m) (w : HeightOneSpectrum (𝓞 X.E)), w ∈ Pr.vGs →
@@ -27,6 +30,9 @@ theorem twIdx_ok' (hX : X.Ok) (hPr : Pr.Ok) (hCh : Ch.Ok) (h4 : ∀ w ∈ Pr.vGs
     (twIdx Ch sel mu (twCst Ch sel mu G) m2).Ok Ch sel mu (twCst Ch sel mu G) G m2 :=
   twIdx_ok hX hPr hCh h4 G hT hW hval hm hQG hd hK hF hN hC (twZeroQ_of (twCst_ok hPr hCh h4 hK)) hAn
 
+/- English proof (translation)
+The claim follows from `twIdx_ok' hX hPr hCh h4 G hT hW hval hm hQG hd (twCstQ_of hd hz hs hxi) (finiteness_bounded_holds true) hN hC hAn`.
+-/
 theorem twIdx_ok'' (hX : X.Ok) (hPr : Pr.Ok) (hCh : Ch.Ok) (h4 : ∀ w ∈ Pr.vGs, qOf w % 4 = 1) (G : ChGlob X R.m)
     {e : Fin R.m → X.Tau → ℚ} {eta : Formalism.L2.Host.HChar X.E} (hT : Ch.Tied G.σ₀ e G.mu0 eta) (hW : Ch.WeilTied G.σ₀ G.xi0)
     (hval : ∀ (j : Fin R.m) (w : HeightOneSpectrum (𝓞 X.E)), w ∈ Pr.vGs →
@@ -41,6 +47,9 @@ theorem twIdx_ok'' (hX : X.Ok) (hPr : Pr.Ok) (hCh : Ch.Ok) (h4 : ∀ w ∈ Pr.vG
     (twIdx Ch sel mu (twCst Ch sel mu G) m2).Ok Ch sel mu (twCst Ch sel mu G) G m2 :=
   twIdx_ok' hX hPr hCh h4 G hT hW hval hm hQG hd (twCstQ_of hd hz hs hxi) (finiteness_bounded_holds true) hN hC hAn
 
+/- English proof (translation)
+The claim follows from `twIdx_ok'' hX hPr hCh h4 G hT hW hval hm hQG hd hz hs hxi hN hC (twAnQ_twCst hm hPr hCh h4 (twCstQ_of hd hz hs hxi) hd)`.
+-/
 theorem twIdx_ok_full (hX : X.Ok) (hPr : Pr.Ok) (hCh : Ch.Ok) (h4 : ∀ w ∈ Pr.vGs, qOf w % 4 = 1) (G : ChGlob X R.m)
     {e : Fin R.m → X.Tau → ℚ} {eta : Formalism.L2.Host.HChar X.E} (hT : Ch.Tied G.σ₀ e G.mu0 eta) (hW : Ch.WeilTied G.σ₀ G.xi0)
     (hval : ∀ (j : Fin R.m) (w : HeightOneSpectrum (𝓞 X.E)), w ∈ Pr.vGs →

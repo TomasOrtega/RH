@@ -13,6 +13,9 @@ attribute [local instance] MvPolynomial.gradedAlgebra
 
 variable (d : ℕ)
 
+/- English proof (translation)
+The claim follows from `isHomogeneous_X ℂ i`.
+-/
 theorem X_mem_one (i : Fin (d + 1)) : (X i : MvPolynomial (Fin (d + 1)) ℂ) ∈ homogeneousSubmodule (Fin (d + 1)) ℂ 1 :=
   isHomogeneous_X ℂ i
 
@@ -38,6 +41,9 @@ def fld (φ : Z ⟶ PSpace ℂ d) : IntermediateField ℂ Z.functionField := Int
 def crd (φ : Z ⟶ PSpace ℂ d) : Fin (d + 1) → fld φ := fun j =>
   ⟨rat φ 0 j, IntermediateField.subset_adjoin ℂ _ ⟨j, rfl⟩⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem crd_val (φ : Z ⟶ PSpace ℂ d) (j : Fin (d + 1)) : ((crd φ j : fld φ) : Z.functionField) = rat φ 0 j := rfl
 
 end GlobalTheory.PD.XCover

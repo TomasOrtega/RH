@@ -7,6 +7,25 @@ namespace ConditionalKappaBounds.KapD
 
 open Formalism.BasicNotions Formalism.MainNotions
 
+/- English proof (translation)
+Take `⟨C, hC⟩` from `hc`. Use `⟨C, fun D L hK j hj => ?_⟩` and prove the remaining obligations. Take `⟨hj1, hj2⟩` from `Finset.mem_Icc.mp hj`. Establish `hjm : j - 1 < D.R.m` using `by omega`. Establish `key : ∀ τ : D.what₂.Tau, |((((∑ a, D.what₂.kaBig j τ a) - ∑ a, D.what₂.kaSmall j τ a : ℤ)) : ℝ) - ((D.R.k : ℝ) - 1) * wj D j τ| ≤ C * ((D.R.k : ℝ) * L.Sc + (D.R.m : ℝ) * L.etaSz + (D.R.k : ℝ) * (((D.R.k + D.R.m * (D.R.t + 1) : ℕ) : ℝ) + D.R.t))`.
+
+Introduce `τ`. Establish `h` using `hC D.R.k D.R.m D.R.t j D.R.m_add_three_le_k hj1 hj2 (D.hc τ).v (D.hc τ).b ((D.hc τ).e ⟨j - 1, hjm⟩) L.Sc L.etaSz (fun i => L.cloud_v τ i) (fun i => L.be_close τ i ⟨j - 1, hjm⟩)`. Establish `hK'` using `hK j hj1 hj2 τ`. Establish `e1 : (((∑ a, D.what₂.kaBig j τ a : ℤ)) : ℚ) = ∑ i : Fin (D.R.k + j - 1), aPlusC D.R.k D.R.m D.R.t j (D.hc τ).v (D.hc τ).b ((D.hc τ).e ⟨j - 1, hjm⟩) i`. Use `push_cast`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hK'.1 i]`. Unfold `DV.aPlusQ DV.eQ aPlusC`. Rewrite using `[dif_pos (show 1 ≤ j ∧ j ≤ D.R.m from ⟨hj1, hj2⟩)]`. Both sides reduce to the same expression.
+
+Establish `e2 : (((∑ a, D.what₂.kaSmall j τ a : ℤ)) : ℚ) = -∑ c : Fin (D.R.m - j), aMinusC D.R.m D.R.t j (D.hc τ).b ((D.hc τ).e ⟨j - 1, hjm⟩) c`. Use `push_cast`. Rewrite using `[← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[hK'.2 c]`.
+
+Unfold `DV.aMinusQ DV.eQ aMinusC`. Rewrite using `[dif_pos (show 1 ≤ j ∧ j ≤ D.R.m from ⟨hj1, hj2⟩)]`. Establish `ew : wj D j τ = (((D.hc τ).e ⟨j - 1, hjm⟩ : ℚ) : ℝ)`. Unfold `wj`. Rewrite using `[dif_pos hjm]`.
+
+Establish `eZ : (((((∑ a, D.what₂.kaBig j τ a) - ∑ a, D.what₂.kaSmall j τ a : ℤ)) : ℝ)) = ((((∑ i : Fin (D.R.k + j - 1), aPlusC D.R.k D.R.m D.R.t j (D.hc τ).v (D.hc τ).b ((D.hc τ).e ⟨j - 1, hjm⟩) i) + ∑ c : Fin (D.R.m - j), aMinusC D.R.m D.R.t j (D.hc τ).b ((D.hc τ).e ⟨j - 1, hjm⟩) c : ℚ)) …`. Establish `: ((((∑ a, D.what₂.kaBig j τ a) - ∑ a, D.what₂.kaSmall j τ a : ℤ)) : ℚ) = (∑ i : Fin (D.R.k + j - 1), aPlusC D.R.k D.R.m D.R.t j (D.hc τ).v (D.hc τ).b ((D.hc τ).e ⟨j - 1, hjm⟩) i) + ∑ c : Fin (D.R.m - j), aMinusC D.R.m D.R.t j (D.hc τ).b ((D.hc τ).e ⟨j - 1, hjm⟩) c`. Move the coercions through the operations in `at e1 e2 ⊢`. Rewrite using `[e1, e2]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[← this]`. Use `push_cast`. Both sides reduce to the same expression. Rewrite using `[eZ, ew]`. Conclude with `h`.
+
+Establish `hsum` using `Finset.abs_sum_le_sum_abs (fun τ : D.what₂.Tau => ((((∑ a, D.what₂.kaBig j τ a) - ∑ a, D.what₂.kaSmall j τ a : ℤ)) : ℝ) - ((D.R.k : ℝ) - 1) * wj D j τ) Finset.univ`. Establish `hle` using `Finset.sum_le_sum (fun τ (_ : τ ∈ Finset.univ) => key τ)`. Rewrite `hle` using `[Finset.sum_const, Finset.card_univ, D.what₂.card_Tau, nsmul_eq_mul]`. Unfold `LiftErrorLocal.Dpm`. Rewrite using `[Int.cast_sum, ← Finset.sum_sub_distrib]`.
+
+Use `(hsum.trans hle).trans (le_of_eq ?_)` and prove the remaining obligations. Simplify using `only [Ranks.N]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem kappa_bound_of_prop (hc : DProp) : ∃ C : ℝ, ∀ (D : D7) (L : SizeData₂ D), LiftErrorLocal.ThetaAdjointPositiveScalar D L C := by
   obtain ⟨C, hC⟩ := hc
   refine ⟨C, fun D L hK j hj => ?_⟩

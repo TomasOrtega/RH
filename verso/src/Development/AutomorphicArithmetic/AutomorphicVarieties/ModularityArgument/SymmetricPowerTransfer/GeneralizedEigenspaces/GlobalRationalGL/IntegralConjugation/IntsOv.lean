@@ -6,12 +6,20 @@ open UpperTheory.V.W (Plc Lp)
 
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
+/- English proof (translation)
+Rewrite using `[← (valuation (Kv v)).vle_one_iff, HeightOneSpectrum.mem_adicCompletionIntegers]`. Express the relevant statement in the definitionally equal form `_ ↔ Valued.v x ≤ Valued.v (1 : Kv v)`. Rewrite using `[map_one]`.
+-/
 private theorem mem_adicCompletionIntegers_iff_valuation_le_one (F : Type) [Field F] [NumberField F] (v : Pl F) (x : Kv v) :
     x ∈ v.adicCompletionIntegers F ↔ valuation (Kv v) x ≤ 1 := by
   rw [← (valuation (Kv v)).vle_one_iff, HeightOneSpectrum.mem_adicCompletionIntegers]
   change _ ↔ Valued.v x ≤ Valued.v (1 : Kv v)
   rw [map_one]
 
+/- English proof (translation)
+Introduce `F _ _ v`. Use `⟨⟨Subtype.val_injective, fun x => ?_⟩, mem_adicCompletionIntegers_iff_valuation_le_one F v⟩` and prove the remaining obligations. Rewrite using `[← mem_adicCompletionIntegers_iff_valuation_le_one F v x]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩`.
+
+Conclude with `y.2`. Introduce `hx`. Conclude with `⟨⟨x, hx⟩, rfl⟩`.
+-/
 theorem UpperTheory.V.Z.Sym.Dict.Br.intsOv :
     ∀ (F : Type) [Field F] [NumberField F] (v : Pl F), Sig.IsInts (Kv v) (Ov v) ∧ ∀ x : Kv v, x ∈ v.adicCompletionIntegers F ↔ valuation (Kv v) x ≤ 1 := by
   intro F _ _ v

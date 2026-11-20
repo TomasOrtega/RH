@@ -10,11 +10,17 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.GlobalApprox
 
+/- English proof (translation)
+Rewrite using `[← IsScalarTower.algebraMap_smul D.host.E a m]`. Conclude with `baseChange_smul₂ (D := D) q _ m`.
+-/
 theorem bcP_osmul (D : D7) (q : PlF D) (a : 𝓞 D.host.E) (m : (VS D).V) :
     baseChange₂ D q (a • m) = (D.s.atP q).ιE (a : D.host.E) • baseChange₂ D q m := by
   rw [← IsScalarTower.algebraMap_smul D.host.E a m]
   exact baseChange_smul₂ (D := D) q _ m
 
+/- English proof (translation)
+Establish `hO : (Z.M q).L.O = (D.s.atP q).O` using `(Z.agree q).2.2.2.1`. Establish `ho' : o ∈ (Z.M q).L.O` using `by rw [hO]; exact ho`. Establish `hgen : baseChange₂ D q m ∈ lattice₂ D Z.M q M` using `Submodule.subset_span ⟨m, hm, rfl⟩`. Conclude with `(lattice₂ D Z.M q M).smul_mem (⟨o, ho'⟩ : (Z.M q).L.O) hgen`.
+-/
 theorem osmul_mem (D : D7) (Z : LocDat D) (q : PlF D) (M : LV D) (m : (VS D).V) (hm : m ∈ M)
     (o : (D.s.atP q).Ep) (ho : o ∈ (D.s.atP q).O) : o • baseChange₂ D q m ∈ lattice₂ D Z.M q M := by
   have hO : (Z.M q).L.O = (D.s.atP q).O := (Z.agree q).2.2.2.1
@@ -22,6 +28,11 @@ theorem osmul_mem (D : D7) (Z : LocDat D) (q : PlF D) (M : LV D) (m : (VS D).V) 
   have hgen : baseChange₂ D q m ∈ lattice₂ D Z.M q M := Submodule.subset_span ⟨m, hm, rfl⟩
   exact (lattice₂ D Z.M q M).smul_mem (⟨o, ho'⟩ : (Z.M q).L.O) hgen
 
+/- English proof (translation)
+Take `⟨a, ⟨o, ho, hao⟩, hfar⟩` from `GlobalTheory.T.exists_integer_congruent_local_mod_g_one_place D p c hc`. Use `⟨a • m, M.smul_mem a hm, ⟨o • baseChange₂ D p m, osmul_mem D Z p M m hm o ho, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[bcP_osmul, ← sub_smul, hao, mul_smul]`. Introduce `p' hp'`. Take `⟨o', ho', hao'⟩` from `hfar p' hp'`.
+
+Conclude with `⟨o' • baseChange₂ D p' m, osmul_mem D Z p' M m hm o' ho', by rw [bcP_osmul, hao', mul_smul]⟩`.
+-/
 theorem approx_gen (D : D7) (Z : LocDat D) (p : PlF D) (M : LV D) (m : (VS D).V) (hm : m ∈ M)
     (c : (D.s.atP p).Ep) (hc : c ∈ (D.s.atP p).O) :
     ∃ l ∈ M, (∃ w ∈ lattice₂ D Z.M p M, baseChange₂ D p l - c • baseChange₂ D p m = (D.s.atP p).ιE ((gS D : ℕ) : D.host.E) • w) ∧
@@ -33,11 +44,27 @@ theorem approx_gen (D : D7) (Z : LocDat D) (p : PlF D) (M : LV D) (m : (VS D).V)
     obtain ⟨o', ho', hao'⟩ := hfar p' hp'
     exact ⟨o' • baseChange₂ D p' m, osmul_mem D Z p' M m hm o' ho', by rw [bcP_osmul, hao', mul_smul]⟩
 
+/- English proof (translation)
+Rewrite using `[smul_add, ← h', smul_comm g c w, ← h, smul_sub]`. Normalize the expressions using the abelian group laws.
+-/
 theorem smul_step {R V : Type*} [CommRing R] [AddCommGroup V] [Module R V] (g c : R) (b b' x w w' : V)
     (h : b - x = g • w) (h' : b' - c • b = g • w') : b' - c • x = g • (w' + c • w) := by
   rw [smul_add, ← h', smul_comm g c w, ← h, smul_sub]
   abel
 
+/- English proof (translation)
+Introduce `D Z p M x hx`. Establish `hO : (Z.M p).L.O = (D.s.atP p).O` using `(Z.agree p).2.2.2.1`. Establish `hx' : x ∈ Submodule.span (Z.M p).L.O (baseChange₂ D p '' (M : Set (VS D).V))` using `hx`. Use `clear hx`. Proceed by induction on `hx' using Submodule.span_induction with`.
+
+Consider the case `mem y hy`. Take `⟨m, hm, rfl⟩` from `hy`. Take `⟨l, hl, ⟨w, hw, hlw⟩, hfar⟩` from `approx_gen D Z p M m hm 1 (Subring.one_mem _)`. Rewrite `hlw` using `[one_smul]`. Conclude with `⟨l, hl, ⟨w, hw, hlw⟩, hfar⟩`.
+
+Consider the case `zero`. Use `⟨0, M.zero_mem, ⟨0, (lattice₂ D Z.M p M).zero_mem, by simp⟩, fun p' _ => ?_⟩` and prove the remaining obligations. Conclude with `⟨0, (lattice₂ D Z.M p' M).zero_mem, by simp⟩`. Consider the case `add y z _ _ hy hz`. Take `⟨l₁, hl₁, ⟨w₁, hw₁, e₁⟩, f₁⟩` from `hy`.
+
+Take `⟨l₂, hl₂, ⟨w₂, hw₂, e₂⟩, f₂⟩` from `hz`. Use `⟨l₁ + l₂, M.add_mem hl₁ hl₂, ⟨w₁ + w₂, (lattice₂ D Z.M p M).add_mem hw₁ hw₂, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, smul_add, ← e₁, ← e₂]`. Normalize the expressions using the abelian group laws. Introduce `p' hp'`.
+
+Take `⟨v₁, hv₁, g₁⟩` from `f₁ p' hp'`. Take `⟨v₂, hv₂, g₂⟩` from `f₂ p' hp'`. Conclude with `⟨v₁ + v₂, (lattice₂ D Z.M p' M).add_mem hv₁ hv₂, by rw [map_add, g₁, g₂, smul_add]⟩`. Consider the case `smul r y _ hy`. Take `⟨l, hl, ⟨w, hw, e⟩, _⟩` from `hy`.
+
+Establish `hr : (r : (D.s.atP p).Ep) ∈ (D.s.atP p).O` using `by rw [← hO]; exact r.2`. Take `⟨l', hl', ⟨w', hw', e'⟩, hfar'⟩` from `approx_gen D Z p M l hl (r : (D.s.atP p).Ep) hr`. Use `⟨l', hl', ⟨w' + r • w, (lattice₂ D Z.M p M).add_mem hw' ((lattice₂ D Z.M p M).smul_mem r hw), ?_⟩, hfar'⟩` and prove the remaining obligations. Conclude with `smul_step _ (r : (D.s.atP p).Ep) (baseChange₂ D p l) (baseChange₂ D p l') y w w' e e'`.
+-/
 theorem approx : ∀ (D : D7) (Z : LocDat D) (p : PlF D) (M : LV D) (x : Vp D p), x ∈ lattice₂ D Z.M p M → ∃ l ∈ M, (∃ w ∈ lattice₂ D Z.M p M, baseChange₂ D p l - x = (D.s.atP p).ιE ((gS D : ℕ) : D.host.E) • w) ∧ ∀ p' : PlF D, p' ≠ p → ∃ w ∈ lattice₂ D Z.M p' M, baseChange₂ D p' l = (D.s.atP p').ιE ((gS D : ℕ) : D.host.E) • w := by
   intro D Z p M x hx
   have hO : (Z.M p).L.O = (D.s.atP p).O := (Z.agree p).2.2.2.1

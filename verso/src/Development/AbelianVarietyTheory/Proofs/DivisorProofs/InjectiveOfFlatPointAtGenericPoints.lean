@@ -13,6 +13,15 @@ open scoped CategoryTheory.Obj
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `R K _ _ _ X s x β hs hx hxs`. Use `set pt : Sp K := IsLocalRing.closedPoint K with hpt`. Establish `hp : x pt ∈ genericPoints X` using `hx ⟨_, rfl⟩`. Set `g₀ : Sp R` to `(⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum R)`. Establish `hg₀ : g₀ ⤳ s (x pt)` using `(PrimeSpectrum.le_iff_specializes _ _).mp bot_le`.
+
+Take `⟨y, hy, e⟩` from `Flat.generalizingMap s hg₀`. Establish `h₁ : closure ({x pt} : Set X) ⊆ closure {y}` using `specializes_iff_closure_subset.mp hy`. Establish `h₂ : closure ({y} : Set X) ⊆ closure {x pt}` using `hp.2 isIrreducible_singleton.closure h₁`. Establish `hyx : y = x pt` using `(hy.antisymm (specializes_iff_closure_subset.mpr h₂)).eq`. Establish `h₃ : (x ≫ s) pt = g₀`.
+
+Rewrite using `[Scheme.Hom.comp_apply, ← hyx, e]`. Rewrite `h₃` using `[hxs]`. Establish `h₄ : (spMap β pt).asIdeal = RingHom.ker β` using `by show Ideal.comap β (IsLocalRing.maximalIdeal K) = _`. Rewrite using `[IsLocalRing.maximalIdeal_eq_bot]`. Both sides reduce to the same expression.
+
+Rewrite `h₄` using `[h₃]`. Conclude with `(RingHom.injective_iff_ker_eq_bot β).mpr h₄.symm`.
+-/
 theorem injective_of_flat_of_range_subset_genericPoints :
     ∀ (R K : Type) [CommRing R] [IsDomain R] [Field K] (X : Scheme.{0}) (s : X ⟶ Sp R) (x : Sp K ⟶ X) (β : R →+* K), Flat s → Set.range x ⊆ genericPoints X → x ≫ s = spMap β → Function.Injective β := by
   intro R K _ _ _ X s x β hs hx hxs

@@ -5,6 +5,11 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 
 namespace GlobalTheory.EtC
 
+/- English proof (translation)
+Introduce `A B _ _ _ _ b hb`. Establish `h` using `Algebra.IsEffective.of_faithfullyFlat A B`. Establish `h0 : Algebra.TensorProduct.includeLeftSubRight A B b = 0`. Rewrite using `[Algebra.TensorProduct.includeLeftSubRight_apply, sub_eq_zero]`. Simplify using `using hb`.
+
+Take `⟨a, ha⟩` from `(h b).mp h0`. Conclude with `⟨a, by simpa using ha⟩`.
+-/
 theorem exists_algebraMap_eq_of_includeLeft_eq_includeRight :
     ∀ (A B : Type) [CommRing A] [CommRing B] [Algebra A B] [Module.FaithfullyFlat A B] (b : B),
       (Algebra.TensorProduct.includeLeft : B →ₐ[A] B ⊗[A] B) b =

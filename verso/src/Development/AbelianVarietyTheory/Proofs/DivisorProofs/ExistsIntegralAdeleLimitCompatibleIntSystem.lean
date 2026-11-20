@@ -12,6 +12,11 @@ noncomputable section
 open IsDedekindDomain
 namespace GlobalTheory.CompatLim
 
+/- English proof (translation)
+Rewrite using `[PadicInt.norm_le_pow_iff_mem_span_pow, Ideal.mem_span_singleton]`. Take `⟨c, hc⟩` from `h`. Use `⟨(c : ℤ_[ℓ]), ?_⟩` and prove the remaining obligations. Use `congrArg (fun z : ℤ => (z : ℤ_[ℓ])) hc` as an intermediate fact. Move the coercions through the operations in `at this`.
+
+Rewrite using `[← this]`.
+-/
 theorem norm_sub_le_of_dvd (ℓ : ℕ) [Fact ℓ.Prime] (k : ℕ) (x y : ℤ) (h : ((ℓ ^ k : ℕ) : ℤ) ∣ x - y) :
     ‖((x : ℤ_[ℓ]) - (y : ℤ_[ℓ]))‖ ≤ (ℓ : ℝ) ^ (-(k : ℤ)) := by
   rw [PadicInt.norm_le_pow_iff_mem_span_pow, Ideal.mem_span_singleton]
@@ -21,6 +26,27 @@ theorem norm_sub_le_of_dvd (ℓ : ℕ) [Fact ℓ.Prime] (k : ℕ) (x y : ℤ) (h
   push_cast at this
   rw [← this]
 
+/- English proof (translation)
+Establish `hℓ : ℓ.Prime` using `Fact.out`. Establish `hcop : ∀ k, (ℓ ^ k).Coprime p` using `fun k => Nat.Coprime.pow_left k ((Nat.coprime_primes hℓ hp).2 hne)`. Establish `hpos : ∀ k, 0 < ℓ ^ k` using `fun k => pow_pos hℓ.pos k`. Establish `key : ∀ k m, k ≤ m → ((ℓ ^ k : ℕ) : ℤ) ∣ a (ℓ ^ m) - a (ℓ ^ k)`. Introduce `k m hkm`.
+
+Establish `h` using `ha (ℓ ^ k) (ℓ ^ (m - k)) (hpos k) (hpos _) (by rw [← pow_add, Nat.add_sub_cancel' hkm]; exact hcop m)`. Rewrite `h` using `[← pow_add, Nat.add_sub_cancel' hkm]`. Then use the resulting hypothesis. Use `set s : ℕ → ℤ_[ℓ] := fun k => (a (ℓ ^ k) : ℤ_[ℓ]) with hs`. Establish `hdist : ∀ k m, k ≤ m → dist (s m) (s k) ≤ (ℓ : ℝ) ^ (-(k : ℤ))`. Introduce `k m hkm`.
+
+Rewrite using `[dist_eq_norm]`. Conclude with `norm_sub_le_of_dvd ℓ k _ _ (key k m hkm)`. Establish `hℓ1 : (1 : ℝ) < ℓ` using `by exact_mod_cast hℓ.one_lt`. Establish `hcs : CauchySeq s`. Use `cauchySeq_of_le_geometric ((ℓ : ℝ)⁻¹) 1 (inv_lt_one_of_one_lt₀ hℓ1) fun k => ?_` and prove the remaining obligations.
+
+Rewrite using `[dist_comm, _root_.one_mul, inv_pow, ← zpow_natCast, ← zpow_neg]`. Conclude with `hdist k (k + 1) (Nat.le_succ k)`. Take `⟨L, hL⟩` from `cauchySeq_tendsto_of_complete hcs`. Establish `hLk : ∀ k, ‖L - s k‖ ≤ (ℓ : ℝ) ^ (-(k : ℤ))`. Introduce `k`.
+
+Establish `hmem : L ∈ Metric.closedBall (s k) ((ℓ : ℝ) ^ (-(k : ℤ)))` using `Metric.isClosed_closedBall.mem_of_tendsto hL (Filter.eventually_atTop.2 ⟨k, fun m hm => Metric.mem_closedBall.2 (hdist k m hm)⟩)`. Rewrite `hmem` using `[Metric.mem_closedBall, dist_eq_norm]`. Then use the resulting hypothesis. Use `⟨L, fun n hn hnp => ?_⟩` and prove the remaining obligations. Use `set e := n.factorization ℓ`. Use `set m := n / ℓ ^ e`.
+
+Establish `hnm : ℓ ^ e * m = n` using `Nat.ordProj_mul_ordCompl_eq_self n ℓ`. Establish `hm : ℓ.Coprime m` using `Nat.coprime_ordCompl hℓ hn.ne'`. Establish `hmpos : 0 < m` using `Nat.pos_of_ne_zero fun h => by rw [h, mul_zero] at hnm; omega`. Establish `h1 : L - s e ∈ Ideal.span {(ℓ : ℤ_[ℓ]) ^ e}` using `(PadicInt.norm_le_pow_iff_mem_span_pow _ _).1 (hLk e)`. Establish `h2` using `ha (ℓ ^ e) m (hpos e) hmpos (by rw [hnm]; exact hnp)`.
+
+Rewrite `h2` using `[hnm]`. Take `⟨c, hc⟩` from `Ideal.mem_span_singleton.1 h1`. Take `⟨d, hd⟩` from `h2`. Establish `hu : IsUnit (m : ℤ_[ℓ])` using `PadicInt.isUnit_iff.2 (PadicInt.norm_natCast_eq_one_iff.2 hm)`. Take `⟨u, hu⟩` from `hu`.
+
+Use `⟨(u⁻¹ : ℤ_[ℓ]ˣ) * (c - (d : ℤ_[ℓ])), ?_⟩` and prove the remaining obligations. Establish `hd' : (a n : ℤ_[ℓ]) - s e = (ℓ : ℤ_[ℓ]) ^ e * d`. Use `congrArg (fun z : ℤ => (z : ℤ_[ℓ])) hd` as an intermediate fact. Move the coercions through the operations in `at this`. Simplify `this` using `[hs]`.
+
+Establish `hn' : (n : ℤ_[ℓ]) = (ℓ : ℤ_[ℓ]) ^ e * u`. Rewrite using `[hu, ← hnm]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hn']`.
+
+Establish `: (ℓ : ℤ_[ℓ]) ^ e * (u : ℤ_[ℓ]) * ((u⁻¹ : ℤ_[ℓ]ˣ) * (c - d)) = (ℓ : ℤ_[ℓ]) ^ e * (c - d)`. Rewrite using `[_root_.mul_assoc, ← _root_.mul_assoc (u : ℤ_[ℓ]), Units.mul_inv, _root_.one_mul]`. Rewrite using `[this]`. Take the linear combination `hc - hd'`.
+-/
 theorem exists_padicInt_lim (p ℓ : ℕ) [Fact ℓ.Prime] (hp : p.Prime) (hne : ℓ ≠ p) (a : ℕ → ℤ)
     (ha : ∀ n m : ℕ, 0 < n → 0 < m → (n * m).Coprime p → (n : ℤ) ∣ a (n * m) - a n) :
     ∃ L : ℤ_[ℓ], ∀ n : ℕ, 0 < n → n.Coprime p → ∃ b : ℤ_[ℓ], L = (a n : ℤ_[ℓ]) + (n : ℤ_[ℓ]) * b := by
@@ -78,6 +104,11 @@ theorem exists_padicInt_lim (p ℓ : ℕ) [Fact ℓ.Prime] (hp : p.Prime) (hne :
   linear_combination hc - hd'
 
 open Rat.HeightOneSpectrum in
+/- English proof (translation)
+Take `⟨w, hw⟩` from `v`. Introduce `h`. Apply `hw` to reduce the goal to its premises. Establish `hs` using `span_natGenerator (R := ℤ) w`. Express the relevant statement in the definitionally equal form `natGenerator w = p at h`.
+
+Rewrite `hs` using `[h]`. Rewrite using `[hs]`. Use extensionality with `x`. Rewrite using `[Ideal.mem_map_of_equiv]`. Simplify using `[eq_intCast]`.
+-/
 theorem natGenerator_ne (p : ℕ) (v : AwayP p) : (primesEquiv v.1 : ℕ) ≠ p := by
   obtain ⟨w, hw⟩ := v
   intro h
@@ -92,6 +123,11 @@ theorem natGenerator_ne (p : ℕ) (v : AwayP p) : (primesEquiv v.1 : ℕ) ≠ p 
 
 open Rat.HeightOneSpectrum in
 
+/- English proof (translation)
+Use `haveI : Fact (primesEquiv v.1 : ℕ).Prime := ⟨(primesEquiv v.1).2⟩`. Take `⟨L, hL⟩` from `exists_padicInt_lim p (primesEquiv v.1 : ℕ) hp.out (natGenerator_ne p v) a ha`. Set `e` to `(RingEquivClass.toRingEquiv (adicCompletionIntegers.padicIntEquiv (R := ℤ) v.1)).symm`. Use `⟨e L, fun n hn hnp => ?_⟩` and prove the remaining obligations. Take `⟨b, hb⟩` from `hL n hn hnp`.
+
+Use `⟨e b, ?_⟩` and prove the remaining obligations. Rewrite using `[hb, map_add, map_mul, map_intCast, map_natCast]`.
+-/
 theorem exists_integer_lim (p : ℕ) [hp : Fact p.Prime] (a : ℕ → ℤ)
     (ha : ∀ n m : ℕ, 0 < n → 0 < m → (n * m).Coprime p → (n : ℤ) ∣ a (n * m) - a n) (v : AwayP p) :
     ∃ x : v.1.adicCompletionIntegers ℚ, ∀ n : ℕ, 0 < n → n.Coprime p →
@@ -104,6 +140,15 @@ theorem exists_integer_lim (p : ℕ) [hp : Fact p.Prime] (a : ℕ → ℤ)
   refine ⟨e b, ?_⟩
   rw [hb, map_add, map_mul, map_intCast, map_natCast]
 
+/- English proof (translation)
+Introduce `p _ a ha`. Use `choose x hx using exists_integer_lim p a ha`. Set `α : AfP p` to `RestrictedProduct.mk (fun v => (x v : v.1.adicCompletion ℚ)) (Filter.Eventually.of_forall fun v => (x v).2)`. Use `⟨α, fun v => (x v).2, fun n hn hnp => ?_⟩` and prove the remaining obligations. Use `choose b hb using fun v => hx v n hn hnp`.
+
+Set `β : AfP p` to `RestrictedProduct.mk (fun v => (b v : v.1.adicCompletion ℚ)) (Filter.Eventually.of_forall fun v => (b v).2)`. Use `⟨β, fun v => (b v).2, ?_⟩` and prove the remaining obligations. Apply `RestrictedProduct.ext` to reduce the goal to its premises. Introduce `v`. Establish `h1 : AfP.eval v α = x v` using `rfl`.
+
+Establish `h2 : AfP.eval v β = b v` using `rfl`. Establish `h3 : AfP.eval v ((a n : AfP p) + n • β) = (a n : v.1.adicCompletion ℚ) + (n : v.1.adicCompletion ℚ) * b v`. Rewrite using `[map_add, map_intCast, map_nsmul, h2, nsmul_eq_mul]`. Express the relevant statement in the definitionally equal form `AfP.eval v α = AfP.eval v ((a n : AfP p) + n • β)`. Rewrite using `[h3, h1, hb v]`.
+
+Use `push_cast`. Both sides reduce to the same expression.
+-/
 theorem exists_lim : ∀ (p : ℕ) [Fact p.Prime] (a : ℕ → ℤ), (∀ n m : ℕ, 0 < n → 0 < m → (n * m).Coprime p → (n : ℤ) ∣ a (n * m) - a n) → ∃ α : AfP p, IsIntAf α ∧ ∀ n : ℕ, 0 < n → n.Coprime p → ∃ β : AfP p, IsIntAf β ∧ α = (a n : AfP p) + n • β := by
   intro p _ a ha
   choose x hx using exists_integer_lim p a ha

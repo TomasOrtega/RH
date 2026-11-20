@@ -12,6 +12,9 @@ open NumberField MeasureTheory Formalism.MainNotions.GlobalTheoryTheory.GenusMas
 
 namespace GlobalTheory.ThKAutV
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hσ B a a' G X om om' hK hT c hc hcc Φ hΦ`. Take `⟨K, hKm, hKf⟩` from `GlobalTheory.T.theta_lift_finite_K_types F E σ hσ B a a' G X om om' hK hT c hc hcc Φ hΦ`. Conclude with `⟨K, hKm, ⟨⟨GlobalTheory.T.theta_lift_invariant_rational F E σ hσ B a a' G X om om' hK hT c hc hcc Φ hΦ, GlobalTheory.T.exists_open_subgroup_invariant F E σ hσ B a a' G X om om' hK hT c hc hcc Φ hΦ, GlobalTheory.T.continuous_theta_lift_transfer F E σ hσ B a a' G X om om' hK hT c h …`.
+-/
 theorem isAut_thetaIntegral : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (hσ : ∀ x, σ (σ x) = x) (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E)
     (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), GlobalTheory.ThK.KP → IsTriple B G X om om' →

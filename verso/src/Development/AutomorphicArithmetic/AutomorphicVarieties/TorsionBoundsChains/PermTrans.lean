@@ -5,6 +5,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.TorsionBoundsChain
 
 open CategoryTheory UpperTheory.V.KH
 
+/- English proof (translation)
+Introduce `G X _ _ _ _ s j hs`. Take `⟨x⟩` from `‹Nonempty X›`. Take `⟨hfin, hcard⟩` from `hs x`. Use `haveI := hfin`. Take `⟨e⟩` from `shapiro G X x (j + 1)`.
+
+Establish `h1` using `finGroup (MulAction.stabilizer G x) j`. Establish `hpos : 0 < Nat.card (MulAction.stabilizer G x)` using `Nat.card_pos`. Establish `hle : Nat.card (MulAction.stabilizer G x) ^ Nat.card (MulAction.stabilizer G x) ^ (j + 1) ≤ s ^ s ^ (j + 1)`. Establish `hs1 : 0 < s` using `lt_of_lt_of_le hpos hcard`. Combine the equalities or inequalities in the displayed calculation.
+
+Conclude with `transport.2.1 _ _ e.symm.toEquiv _ (transport.2.2.2 _ _ _ hle h1)`.
+-/
 theorem UpperTheory.V.KH.permTrans :
     ∀ (G X : Type) [Group G] [MulAction G X] [MulAction.IsPretransitive G X] [Nonempty X] (s j : ℕ),
       StabLe G X s → CardLe (groupHomology (permRep G X) (j + 1)) (s ^ (s ^ (j + 1))) := by

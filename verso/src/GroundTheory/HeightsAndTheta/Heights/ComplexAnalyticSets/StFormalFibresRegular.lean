@@ -12,6 +12,9 @@ def FormalFibresRegular.Statement : Prop :=
 noncomputable def polyOriginIdeal : Ideal (MvPolynomial (Fin 1) ℂ) :=
   RingHom.ker (MvPolynomial.eval (0 : Fin 1 → ℂ))
 
+/- English proof (translation)
+The claim follows from `RingHom.ker_isMaximal_of_surjective _ fun z => ⟨MvPolynomial.C z, by simp⟩`.
+-/
 theorem polyOriginIdeal_isMaximal : polyOriginIdeal.IsMaximal :=
   RingHom.ker_isMaximal_of_surjective _ fun z => ⟨MvPolynomial.C z, by simp⟩
 

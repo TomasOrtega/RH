@@ -6,10 +6,24 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.IwHkN
 import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.IwHeckePairIwC
 open ValuativeRel Matrix GlobalTheory.SmGL GlobalTheory.SplitWeil UpperTheory.V.Hi UpperTheory.V.AlgebraTools
 
+/- English proof (translation)
+The claim follows from `(hkNorm A G M ρ I 1 hI (one_mem _)).2.1`.
+-/
 private theorem hk_one {A G M : Type} [CommRing A] [Group G] [AddCommGroup M] [Module A M]
     (ρ : Representation A G M) (I : Subgroup G) (hI : HeckePair I) : hk ρ I 1 = 1 :=
   (hkNorm A G M ρ I 1 hI (one_mem _)).2.1
 
+/- English proof (translation)
+Introduce `k _ _ _ _ n C A M _ _ _ ρ w hq`. Establish `hI : HeckePair (iwC k n C)` using `(heckePairIwC k n C).1`. Proceed by induction on `h : invLen w generalizing w with`. Consider the case `zero`. Rewrite using `[(lenStep n w).2.1 h, map_one, hk_one ρ _ hI]`.
+
+Conclude with `isUnit_one`. Consider the case `succ m ih`. Establish `hw : w ≠ 1`. Introduce and unpack `rfl`. Establish `h0 : invLen (1 : Equiv.Perm (Fin n)) = 0`.
+
+Unfold `invLen`. Rewrite using `[Finset.card_eq_zero, Finset.filter_eq_empty_iff]`. Introduce and unpack `p _ ⟨h1, h2⟩`. Conclude with `lt_asymm h1 h2`. Use linear arithmetic over natural numbers and integers.
+
+Take `⟨i, j, hij, hlt⟩` from `(lenStep n w).2.2 hw`. Establish `hlen` using `((lenStep n w).1 i j hij).2 hlt`. Establish `hlt' : (Equiv.swap i j * w)⁻¹ i < (Equiv.swap i j * w)⁻¹ j`. Simplify `hlt` using `[_root_.mul_inv_rev, Equiv.swap_inv]`. Establish `hm` using `permMul k n C A M ρ (Equiv.swap i j * w) i j hij hlt'`.
+
+Rewrite `hm` using `[← mul_assoc, Equiv.swap_mul_self, one_mul]`. Rewrite using `[← hm]`. Conclude with `((simpleQuad k n C A M ρ i j hij).1 hq).mul (ih _ (by omega))`.
+-/
 theorem UpperTheory.V.AlgebraTools.permUnit :
     ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : ℕ) (C : Subgroup 𝓀[k]ˣ) (A M : Type) [CommRing A] [AddCommGroup M] [Module A M] (ρ : Representation A (GL (Fin n) k) M) (w : Equiv.Perm (Fin n)), IsUnit (resCard k : A) → IsUnit (hk ρ (iwC k n C) (pm k n w)) := by
   intro k _ _ _ _ n C A M _ _ _ ρ w hq

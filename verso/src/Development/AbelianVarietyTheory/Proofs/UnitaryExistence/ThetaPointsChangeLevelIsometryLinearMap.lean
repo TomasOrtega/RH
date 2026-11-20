@@ -24,6 +24,11 @@ noncomputable section
 
 namespace GlobalTheory.ThetaPtChg
 
+/- English proof (translation)
+Set `q : Sp ℂ` to `IsLocalRing.closedPoint ℂ`. Establish `hq : p q ∈ (⨆ i, L.U i : X.Opens)` using `by rw [hL.cover]; trivial`. Take `⟨j, hj⟩` from `TopologicalSpace.Opens.mem_iSup.1 hq`. Use `⟨j, fun q' _ => ?_⟩` and prove the remaining obligations. Establish `: q' = q` using `Subsingleton.elim (α := PrimeSpectrum ℂ) _ _`.
+
+Rewrite using `[this]`. Conclude with `hj`.
+-/
 theorem exists_chart_point {X : Scheme.{0}} {L : LB X} (hL : L.IsLB) (p : Sp ℂ ⟶ X) :
     ∃ j, ⊤ ≤ p ⁻¹ᵁ L.U j := by
   let q : Sp ℂ := IsLocalRing.closedPoint ℂ
@@ -34,6 +39,13 @@ theorem exists_chart_point {X : Scheme.{0}} {L : LB X} (hL : L.IsLB) (p : Sp ℂ
   rw [this]
   exact hj
 
+/- English proof (translation)
+Substitute `hx` using the available equality. Establish `hid : x' = spMap (RingHom.id ℂ) ≫ x'`. Simplify using `[spMap]`. Establish `h2` using `((GlobalTheory.Frames.SecCalc.sec_calc E H Dw l Xo ℂ ℂ ℂ (RingHom.id ℂ) (RingHom.id ℂ) x' x' x' hid hid).2.1 a s s').1 h`. Set `pt : Sp ℂ ⟶ Gx x'` to `(CartesianMonoidalCategory.lift (𝟙 (Over.mk x')) p).left`.
+
+Establish `e1 : pt ≫ gxFst x' = p.left`. Use `congrArg CommaMorphism.left (CartesianMonoidalCategory.lift_snd (𝟙 (Over.mk x')) p)` as an intermediate fact. Conclude with `this`. Establish `e2 : pt ≫ gxSnd x' = 𝟙 (Sp ℂ)`. Use `congrArg CommaMorphism.left (CartesianMonoidalCategory.lift_fst (𝟙 (Over.mk x')) p)` as an intermediate fact.
+
+Conclude with `this`. Rewrite using `[← hv pt e1 e2, ← hv' pt e1 e2]`. Conclude with `(congrArg (valAt' pt ((PPx x').U (fun _ => j))) (h2 (fun _ => j))).trans ((GlobalTheory.sec_values_complex_fibre hS E H Dw l Xo x' s).1 a _ pt e2)`.
+-/
 theorem val_of_secBC (hS : Out.SecTwistSt) {E : Type} [Field E] [NumberField E] [IsCMField E]
     {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l}
     (x x' : Sp ℂ ⟶ Xo.X) (hx : x' = x) (s : LB.Sec (PPx x)) (s' : LB.Sec (PPx x')) (a : ℂ)
@@ -58,6 +70,17 @@ theorem val_of_secBC (hS : Out.SecTwistSt) {E : Type} [Field E] [NumberField E] 
   exact (congrArg (valAt' pt ((PPx x').U (fun _ => j))) (h2 (fun _ => j))).trans
     ((GlobalTheory.sec_values_complex_fibre hS E H Dw l Xo x' s).1 a _ pt e2)
 
+/- English proof (translation)
+Introduce `hS E _ _ _ H Dw l Xo c σ g e F r M k T b hb b' hb' κ κ' y y' gam h₀ hy hy' hgam hP`. Take `⟨hg1, hg2, hg3⟩` from `hgam`. Establish `hp` using `T.isPer _ hb`. Establish `hp'` using `T.isPer _ hb'`. Take `⟨hdet, hu, hex⟩` from `GlobalTheory.FamRigid.ex_eq_of_level_group GlobalTheory.latMinkowski E H Dw l Xo _ g _ F k (T.Pf (T.co b)) (T.Pf (T.co b')) gam h₀ hp hp' hg1 hg2 hg3 hP`.
+
+Establish `hx : y'.x = y.x` using `hy'.1.trans (hu.symm.trans hy.1.symm)`. Use `⟨hx, fun τ i => ?_, ?_⟩` and prove the remaining obligations. Use `(GlobalTheory.ExpChain.isDerivAt0_ex_iff E H Dw l Xo _ g _ F k (T.Pf (T.co b)) hp k (T.Pf (T.co b')) (Matrix.mulVecLin h₀) hp' hex _ _).2 ?_` and prove the remaining obligations. Rewrite using `[Matrix.mulVecLin_apply, Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ hdet, Matrix.one_mulVec]`. Conclude with `hy'.2.1 τ i`.
+
+Take `⟨gm, a, -, -, -, hbc⟩` from `(GlobalTheory.Frames.frChg_exists_unique E H Dw l Xo c (CAt σ) y y').1 hx`. Use `⟨a, hbc, ?_⟩` and prove the remaining obligations. Take `⟨hhd, hsym, hpos, -⟩` from `T.norm b hb`. Take `⟨-, w, hw⟩` from `(GlobalTheory.ThetaHalf.thetaChar_holomorphic_ne_zero g T.c₁ T.c₂ T.half₁ T.half₂).1 _ hsym hpos`. Take `⟨z, hz⟩ : ∃ z, T.h b *ᵥ z = w` from `⟨(T.h b)⁻¹ *ᵥ w, by rw [Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ hhd, Matrix.one_mulVec]⟩`.
+
+Take `⟨j, hj⟩` from `exists_chart_point Xo.univ.t.PP.isLB (F.ex k (T.Pf (T.co b)) z).left`. Establish `hmult` using `GlobalTheory.thetaFrame_det_mul_sq_invariant_uncond E H Dw l Xo _ g _ F k T.m (T.co ⁻¹' (M.X k).dom) (fun b => T.Pf (T.co b)) T.bas T.h T.ta T.c₁ T.c₂ T.fr (fun b hb => T.isPer _ hb) T.sympl T.adapt (fun b hb => (T.norm b hb).2.2.2) T.half₁ T.half₂ T.fr_hol T.fr_ne T.fr_coc T.fr_ …`. Establish `hne : thetaChar (T.ta b) T.c₁ T.c₂ (T.h b *ᵥ z) * T.fr j (b, z) ≠ 0` using `mul_ne_zero (by rw [hz]; exact hw) (T.fr_ne j b z hb hj)`. Establish `hw0 : (F.ex k (T.Pf (T.co b)) z).left ≫ Xo.univ.t.G.hom = (y.x : Sp ℂ ⟶ Xo.X)` using `(Over.w (F.ex k (T.Pf (T.co b)) z)).trans hy.1.symm`. Establish `hval` using `val_of_secBC hS (Xo := Xo) y.x y'.x hx y.s y'.s (toC (a : CAt σ)) hbc (Over.homMk (F.ex k (T.Pf (T.co b)) z).left hw0) j _ _ (fun pt h1 h2 => hy.2.2 j z pt h1 h2 hj) (fun pt h1 h2 => hy'.2.2 j (h₀ *ᵥ z) pt (h1.trans (hex z).symm) h2 (by rw [hex z]; exact hj))`.
+
+Apply `mul_right_cancel₀ (pow_ne_zero 2 hne)` to reduce the goal to its premises. Rewrite `hval` using `[mul_assoc κ', mul_assoc κ]`. Generalize the expression as in `thetaChar (T.ta b) T.c₁ T.c₂ (T.h b *ᵥ z) * T.fr j (b, z) = S at *`. Generalize the expression as in `thetaChar (T.ta b') T.c₁ T.c₂ (T.h b' *ᵥ (h₀ *ᵥ z)) * T.fr j (b', h₀ *ᵥ z) = S' at *`. Take the linear combination `(-κ' ^ 2) * hmult - (T.h b').det * h₀.det * (κ' * S' + toC (a : CAt σ) * (κ * S)) * hval`.
+-/
 theorem thetaPt_change : Out.SecTwistSt → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (g : ℕ) (e : Fin g ≃ Σ τ : E →+* ℂ, Fin (Dw.mult τ)) (F : FamilyUnif Xo (σ.comp (IntermediateField.inclusion c.le).toRingHom) (fun j => relab c σ (e j).1)) (r : ℕ) (M : ModelsOf F r) (k : Fin F.n) (T : ThetaData e F M k), ∀ b ∈ T.co ⁻¹' (M.X k).dom, ∀ b' ∈ T.co ⁻¹' (M.X k).dom, ∀ (κ κ' : ℂ) (y y' : FrPt Xo c (CAt σ)) (gam : (F.Di k).La ≃ₗ[𝓞 E] (F.Di k).La) (h₀ : Matrix (Fin g) (Fin g) ℂ), IsThetaPt T b κ y → IsThetaPt T b' κ' y' → ((∀ a b, (F.Di k).EF (gam a) (gam b) = (F.Di k).EF a b) ∧ (∀ a ∈ l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E) • (⊤ : Submodule (𝓞 E) (F.Di k).La), ∃ v, gam a = a + l.M • v) ∧ (∀ a, ∃ v, gam a = a + l.A • v)) → (∀ a, T.Pf (T.co b') (gam a) = h₀ *ᵥ T.Pf (T.co b) a) → y'.x = y.x ∧ (∀ τ i, IsDerivAt0 (fun z => (F.ex k (T.Pf (T.co b)) z).left) (h₀⁻¹ *ᵥ Pi.single (e.symm ⟨τ, i⟩) 1) (y'.u τ i)) ∧ ∃ t₀ : (CAt σ)ˣ, SecBC (RingHom.id (CAt σ)) (t₀ : CAt σ) y.x y'.x y.s y'.s ∧ toC (t₀ : CAt σ) ^ 2 * (κ ^ 2 * (T.h b').det * h₀.det) = κ' ^ 2 * (T.h b).det := by
   intro hS E _ _ _ H Dw l Xo c σ g e F r M k T b hb b' hb' κ κ' y y' gam h₀ hy hy' hgam hP
   obtain ⟨hg1, hg2, hg3⟩ := hgam

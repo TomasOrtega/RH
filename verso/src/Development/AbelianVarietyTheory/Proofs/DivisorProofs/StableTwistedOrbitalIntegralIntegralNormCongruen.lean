@@ -10,6 +10,11 @@ noncomputable section
 
 namespace GlobalTheory.BCT.StTwLevel
 
+/- English proof (translation)
+Distinguish the cases in `hc : c = 0`. Simplify using `[hc]`. Distinguish the cases in `h : (Function.support g).Finite`. Conclude with `(mul_finsum _ _).symm`. Establish `hs : Function.support (fun i => c * g i) = Function.support g`.
+
+Use extensionality with `i`. Simplify using `[hc]`. Rewrite using `[finsum_of_infinite_support h, mul_zero, finsum_of_infinite_support (by rwa [hs])]`.
+-/
 theorem finsum_const_mul {ι : Type} (c : ℂ) (g : ι → ℂ) : ∑ᶠ i, c * g i = c * ∑ᶠ i, g i := by
   by_cases hc : c = 0
   · simp [hc]
@@ -19,6 +24,11 @@ theorem finsum_const_mul {ι : Type} (c : ℂ) (g : ι → ℂ) : ∑ᶠ i, c * 
       ext i; simp [hc]
     rw [finsum_of_infinite_support h, mul_zero, finsum_of_infinite_support (by rwa [hs])]
 
+/- English proof (translation)
+Distinguish the cases in `hc : c = 0`. Simplify using `[hc, avg]`. Establish `hR : rStab (fun h => c * u h) = rStab u`. Use extensionality with `k`. Simplify using `only [GlobalTheory.TwOrbConj.mem_rStab, mul_right_inj' hc]`.
+
+Unfold `avg`. Rewrite using `[hR, finsum_const_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem avg_const_mul {H : Type} [Group H] (c : ℂ) (u : H → ℂ) : avg (fun h => c * u h) = c * avg u := by
   by_cases hc : c = 0
   · simp [hc, avg]
@@ -29,6 +39,9 @@ theorem avg_const_mul {H : Type} [Group H] (c : ℂ) (u : H → ℂ) : avg (fun 
   rw [hR, finsum_const_mul]
   ring
 
+/- English proof (translation)
+Unfold `twOrb`. Repeatedly rewrite using `[avg_const_mul]`. Rewrite using `[← finsum_const_mul]`. Use `finsum_congr fun q => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem twOrb_const_mul {G : Type} [Group G] [TopologicalSpace G] (θ : G →* G) (K : Subgroup G) (δ : G) (c : ℂ)
     (f : G → ℂ) : twOrb θ K δ (fun x => c * f x) = c * twOrb θ K δ f := by
   unfold twOrb
@@ -37,6 +50,11 @@ theorem twOrb_const_mul {G : Type} [Group G] [TopologicalSpace G] (θ : G →* G
   refine finsum_congr fun q => ?_
   ring
 
+/- English proof (translation)
+Unfold `clSum`. Rewrite using `[← finsum_const_mul]`. Use `finsum_congr fun d => ?_` and prove the remaining obligations. Use `split_ifs`. Rewrite using `[twOrb_const_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
+-/
 theorem clSum_const_mul {G : Type} [Group G] [TopologicalSpace G] (θ : G →* G) (K : Subgroup G) (S : Set G)
     (wt : G → ℂ) (c : ℂ) (f : G → ℂ) : clSum θ K S wt (fun x => c * f x) = c * clSum θ K S wt f := by
   unfold clSum
@@ -48,6 +66,9 @@ theorem clSum_const_mul {G : Type} [Group G] [TopologicalSpace G] (θ : G →* G
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
+/- English proof (translation)
+Unfold `stTw2`. Conclude with `clSum_const_mul _ _ _ _ _ _`.
+-/
 theorem stTw2_const_mul (a b : ℕ) (w : Pl E) (Q₁ Q₂ : (w.adicCompletion E)[X]) (c : ℂ)
     (φ : GLw a w × GLw b w → ℂ) : stTw2 a b w Q₁ Q₂ (fun y => c * φ y) = c * stTw2 a b w Q₁ Q₂ φ := by
   unfold stTw2
@@ -56,10 +77,16 @@ theorem stTw2_const_mul (a b : ℕ) (w : Pl E) (Q₁ Q₂ : (w.adicCompletion E)
 def lev (n : ℕ) (w : Pl E) (k : ℕ) (y : GLw n w) : ℂ :=
   if y ∈ GlobalTheory.LFun.KGL w n ∧ nrmL n w y ∈ GlobalTheory.PrincCong.congSub w n k then 1 else 0
 
+/- English proof (translation)
+Unfold `nrmL thL`. Rewrite using `[if_neg hw, if_neg hw]`.
+-/
 theorem nrm_eq {w : Pl E} (hw : ¬ IsSplitAt w) (n : ℕ) (y : GLw n w) : nrmL n w y = y * thL n w y := by
   unfold nrmL thL
   rw [if_neg hw, if_neg hw]
 
+/- English proof (translation)
+Establish `ht : thL n w = thetaGL n (cj w)` using `by unfold thL; rw [if_neg hw]`. Rewrite using `[ht]`. Take `⟨h, rfl⟩` from `hg`. Set `c' : Ov E w →+* Ov E w` to `(cj w).restrict (Ov E w) (Ov E w) (GlobalTheory.PrincCong.cj_mem_Ov w)`. Conclude with `⟨thetaGL n c' h, GlobalTheory.ThetaPull.map_thetaGL (Ov E w).subtype c' (cj w) (fun x => rfl) h⟩`.
+-/
 theorem thL_KGL {w : Pl E} (hw : ¬ IsSplitAt w) (n : ℕ) {g : GLw n w} (hg : g ∈ GlobalTheory.LFun.KGL w n) :
     thL n w g ∈ GlobalTheory.LFun.KGL w n := by
   have ht : thL n w = thetaGL n (cj w) := by unfold thL; rw [if_neg hw]
@@ -68,6 +95,9 @@ theorem thL_KGL {w : Pl E} (hw : ¬ IsSplitAt w) (n : ℕ) {g : GLw n w} (hg : g
   let c' : Ov E w →+* Ov E w := (cj w).restrict (Ov E w) (Ov E w) (GlobalTheory.PrincCong.cj_mem_Ov w)
   exact ⟨thetaGL n c' h, GlobalTheory.ThetaPull.map_thetaGL (Ov E w).subtype c' (cj w) (fun x => rfl) h⟩
 
+/- English proof (translation)
+Take `⟨h', rfl⟩` from `hh`. Take `⟨g', hg', rfl⟩` from `hg`. Conclude with `⟨h' * g' * h'⁻¹, (MonoidHom.normal_ker _).conj_mem g' hg' h', by simp only [map_mul, map_inv]⟩`.
+-/
 theorem conj_mem_congSub {w : Pl E} {n k : ℕ} {h g : GLw n w} (hh : h ∈ GlobalTheory.LFun.KGL w n)
     (hg : g ∈ GlobalTheory.PrincCong.congSub w n k) : h * g * h⁻¹ ∈ GlobalTheory.PrincCong.congSub w n k := by
   obtain ⟨h', rfl⟩ := hh
@@ -80,13 +110,36 @@ namespace GlobalTheory.BCT.StTwLevel
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
+/- English proof (translation)
+The claim follows from `((GlobalTheory.PrincCong.mem_congSub_iff w n k g).1 hg).1`.
+-/
 theorem congSub_le {w : Pl E} {n k : ℕ} {g : GLw n w} (hg : g ∈ GlobalTheory.PrincCong.congSub w n k) :
     g ∈ GlobalTheory.LFun.KGL w n := ((GlobalTheory.PrincCong.mem_congSub_iff w n k g).1 hg).1
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨GlobalTheory.PrincCong.isOpen_congSub w n k, fun _ hg => congSub_le hg, GlobalTheory.PrincCong.thL_mem_congSub w hw n k⟩`.
+-/
 theorem lev_level {w : Pl E} (hw : ¬ IsSplitAt w) (n k : ℕ) :
     IsLevel (thL n w) (GlobalTheory.LFun.KGL w n) (GlobalTheory.PrincCong.congSub w n k) :=
   ⟨GlobalTheory.PrincCong.isOpen_congSub w n k, fun _ hg => congSub_le hg, GlobalTheory.PrincCong.thL_mem_congSub w hw n k⟩
 
+/- English proof (translation)
+Use `⟨?_, fun x hx y => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Establish `hc` using `GlobalTheory.LFun.SatCompare.isOpen_isCompact_KGL w n`. Use `HasCompactSupport.intro' hc.2 (Subgroup.isClosed_of_isOpen _ hc.1) fun y hy => ?_` and prove the remaining obligations. Unfold `lev`. Conclude with `if_neg fun h => hy h.1`.
+
+Establish `hxK` using `congSub_le hx`. Establish `hθx` using `GlobalTheory.PrincCong.thL_mem_congSub w hw n k x hx`. Unfold `lev`. Use `if_congr ?_ rfl rfl` and prove the remaining obligations. Distinguish the cases in `hy : y ∈ GlobalTheory.LFun.KGL w n`.
+
+Establish `hxy : x * y ∈ GlobalTheory.LFun.KGL w n` using `mul_mem hxK hy`. Establish `hθy` using `thL_KGL hw n hy`. Establish `hm : (thL n w y)⁻¹ * thL n w x * thL n w y ∈ GlobalTheory.PrincCong.congSub w n k`. Simplify using `using conj_mem_congSub (inv_mem hθy) hθx`. Establish `e : nrmL n w (x * y) = x * nrmL n w y * ((thL n w y)⁻¹ * thL n w x * thL n w y)`.
+
+Rewrite using `[nrm_eq hw, nrm_eq hw, map_mul]`. Use `group`. Rewrite using `[e, Subgroup.mul_mem_cancel_right _ hm, Subgroup.mul_mem_cancel_left _ hx]`. Conclude with `⟨fun h => ⟨hy, h.2⟩, fun h => ⟨hxy, h.2⟩⟩`. Establish `hxy : x * y ∉ GlobalTheory.LFun.KGL w n` using `fun h => hy (by simpa using mul_mem (inv_mem hxK) h)`.
+
+Conclude with `⟨fun h => absurd h.1 hxy, fun h => absurd h.1 hy⟩`. Establish `hxK` using `congSub_le hx`. Establish `hθx` using `GlobalTheory.PrincCong.thL_mem_congSub w hw n k x hx`. Unfold `lev`. Use `if_congr ?_ rfl rfl` and prove the remaining obligations.
+
+Distinguish the cases in `hy : y ∈ GlobalTheory.LFun.KGL w n`. Establish `hxy : y * x ∈ GlobalTheory.LFun.KGL w n` using `mul_mem hy hxK`. Establish `hθy` using `thL_KGL hw n hy`. Establish `hm : (thL n w y)⁻¹ * x * thL n w y ∈ GlobalTheory.PrincCong.congSub w n k`. Simplify using `using conj_mem_congSub (inv_mem hθy) hx`.
+
+Establish `e : nrmL n w (y * x) = nrmL n w y * ((thL n w y)⁻¹ * x * thL n w y) * thL n w x`. Rewrite using `[nrm_eq hw, nrm_eq hw, map_mul]`. Use `group`. Rewrite using `[e, Subgroup.mul_mem_cancel_right _ hθx, Subgroup.mul_mem_cancel_right _ hm]`. Conclude with `⟨fun h => ⟨hy, h.2⟩, fun h => ⟨hxy, h.2⟩⟩`.
+
+Establish `hxy : y * x ∉ GlobalTheory.LFun.KGL w n` using `fun h => hy (by simpa using mul_mem h (inv_mem hxK))`. Conclude with `⟨fun h => absurd h.1 hxy, fun h => absurd h.1 hy⟩`.
+-/
 theorem lev_hecke {w : Pl E} (hw : ¬ IsSplitAt w) (n k : ℕ) :
     IsHecke (GlobalTheory.PrincCong.congSub w n k) (lev n w k) := by
   refine ⟨?_, fun x hx y => ⟨?_, ?_⟩⟩
@@ -125,6 +178,9 @@ theorem lev_hecke {w : Pl E} (hw : ¬ IsSplitAt w) (n k : ℕ) :
     · have hxy : y * x ∉ GlobalTheory.LFun.KGL w n := fun h => hy (by simpa using mul_mem h (inv_mem hxK))
       exact ⟨fun h => absurd h.1 hxy, fun h => absurd h.1 hy⟩
 
+/- English proof (translation)
+Use function extensionality and compare the values at `y`. Unfold `lev`. Conclude with `if_congr (and_congr Iff.rfl (GlobalTheory.PrincCong.mem_congSub_iff w n k _).symm) rfl rfl`.
+-/
 theorem lev_eq {w : Pl E} (n k : ℕ) :
     (fun y : GLw n w => if y ∈ GlobalTheory.LFun.KGL w n ∧ nrmL n w y ∈ {g : GLw n w | g ∈ GlobalTheory.LFun.KGL w n ∧ ∀ i j,
       Valued.v (g.val i j - (1 : Matrix (Fin n) (Fin n) (w.adicCompletion E)) i j) ≤ WithZero.exp (-(k : ℤ))}
@@ -133,6 +189,11 @@ theorem lev_eq {w : Pl E} (n k : ℕ) :
   unfold lev
   exact if_congr (and_congr Iff.rfl (GlobalTheory.PrincCong.mem_congSub_iff w n k _).symm) rfl rfl
 
+/- English proof (translation)
+Introduce `E _ _ _ w hw a b k Q₁ Q₂ c _ _ _ _ _`. Rewrite using `[lev_eq a k, lev_eq b k]`. Establish `e : (fun y : GLw a w × GLw b w => c * (if y.1 ∈ GlobalTheory.LFun.KGL w a ∧ nrmL a w y.1 ∈ {g : GLw a w | g ∈ GlobalTheory.LFun.KGL w a ∧ ∀ i j, Valued.v (g.val i j - (1 : Matrix (Fin a) (Fin a) (w.adicCompletion E)) i j) ≤ WithZero.exp (-(k : ℤ))} ∧ y.2 ∈ GlobalTheory.LFun.KGL w …`. Use function extensionality and compare the values at `y`. Use `congr 1`.
+
+Establish `h1` using `congrFun (lev_eq (w := w) a k) y.1`. Establish `h2` using `congrFun (lev_eq (w := w) b k) y.2`. Rewrite using `[GlobalTheory.BCT.tens, ← h1, ← h2, ite_zero_mul_ite_zero, mul_one]`. Conclude with `if_congr and_assoc.symm rfl rfl`. Rewrite using `[e, stTw2_const_mul, GlobalTheory.BCT.StTwTens.stTw2_tens E a b w Q₁ Q₂ _ _ _ _ (lev_level hw a k) (lev_level hw b k) (lev_hecke hw a k) (lev_hecke hw b k)]`.
+-/
 theorem stTw2_lev : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (w : Pl E), ¬ IsSplitAt w → ∀ (a b k : ℕ) (Q₁ Q₂ : (w.adicCompletion E)[X]) (c : ℂ), Q₁.Monic → Q₂.Monic → Q₁.natDegree = a → Q₂.natDegree = b → (Q₁ * Q₂).Separable → stTw2 a b w Q₁ Q₂ (fun y : GLw a w × GLw b w => c * (if y.1 ∈ GlobalTheory.LFun.KGL w a ∧ nrmL a w y.1 ∈ {g : GLw a w | g ∈ GlobalTheory.LFun.KGL w a ∧ ∀ i j, Valued.v (g.val i j - (1 : Matrix (Fin a) (Fin a) (w.adicCompletion E)) i j) ≤ WithZero.exp (-(k : ℤ))} ∧ y.2 ∈ GlobalTheory.LFun.KGL w b ∧ nrmL b w y.2 ∈ {g : GLw b w | g ∈ GlobalTheory.LFun.KGL w b ∧ ∀ i j, Valued.v (g.val i j - (1 : Matrix (Fin b) (Fin b) (w.adicCompletion E)) i j) ≤ WithZero.exp (-(k : ℤ))} then 1 else 0)) = c * (stTw a w Q₁ (fun y : GLw a w => if y ∈ GlobalTheory.LFun.KGL w a ∧ nrmL a w y ∈ {g : GLw a w | g ∈ GlobalTheory.LFun.KGL w a ∧ ∀ i j, Valued.v (g.val i j - (1 : Matrix (Fin a) (Fin a) (w.adicCompletion E)) i j) ≤ WithZero.exp (-(k : ℤ))} then 1 else 0) * stTw b w Q₂ (fun y : GLw b w => if y ∈ GlobalTheory.LFun.KGL w b ∧ nrmL b w y ∈ {g : GLw b w | g ∈ GlobalTheory.LFun.KGL w b ∧ ∀ i j, Valued.v (g.val i j - (1 : Matrix (Fin b) (Fin b) (w.adicCompletion E)) i j) ≤ WithZero.exp (-(k : ℤ))} then 1 else 0)) := by
   intro E _ _ _ w hw a b k Q₁ Q₂ c _ _ _ _ _
   rw [lev_eq a k, lev_eq b k]

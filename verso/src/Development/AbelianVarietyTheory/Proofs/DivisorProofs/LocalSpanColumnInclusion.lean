@@ -18,6 +18,9 @@ open Matrix
 
 namespace GlobalTheory.UnipEmb.PlaceSpan
 
+/- English proof (translation)
+Proceed by induction on `a using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => rw [add_mul, map_add, map_add, hx, hy, add_mul]`. Consider the case `tmul b e'`. Simplify using `[GlobalTheory.UnipEmb.locInc, inclR, Algebra.TensorProduct.tmul_mul_tmul]`.
+-/
 theorem locInc_mul_inclR {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E]
     (v : HeightOneSpectrum (𝓞 F)) (a : Fv F v ⊗[F] E) (e : E) :
     GlobalTheory.UnipEmb.locInc F E v (a * inclR (Fv F v) e) = GlobalTheory.UnipEmb.locInc F E v a * inclR (AF F) e := by
@@ -27,6 +30,21 @@ theorem locInc_mul_inclR {F E : Type} [Field F] [NumberField F] [Field E] [Algeb
   | tmul b e' =>
     simp [GlobalTheory.UnipEmb.locInc, inclR, Algebra.TensorProduct.tmul_mul_tmul]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ h v τ n r X I u hu`. Proceed by induction on `hu using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨i, hi, rfl⟩` from `hx`. Establish `e : (fun k => GlobalTheory.UnipEmb.locInc F E v (splitIncl h τ (fun k => τ (X k i)) k)) = GlobalTheory.UnipEmb.locInc F E v (splitIdem h τ) • (adMat F X)ᵀ i`.
+
+Use function extensionality and compare the values at `k`. Establish `: splitIncl h τ (fun k => τ (X k i)) k = splitIdem h τ * inclR (Fv F v) (X k i)`. Rewrite using `[splitIdem_mul, splitProj_inclR]`. Both sides reduce to the same expression. Rewrite using `[this, locInc_mul_inclR]`.
+
+Simplify using `[adMat]`. Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, hi, rfl⟩)`. Consider the case `zero`. Establish `e : (fun k => GlobalTheory.UnipEmb.locInc F E v (splitIncl h τ (0 : Fin n → Fv F v) k)) = 0`.
+
+Use function extensionality and compare the values at `k`. Simplify using `[splitIncl]`. Rewrite using `[e]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy`.
+
+Establish `e : (fun k => GlobalTheory.UnipEmb.locInc F E v (splitIncl h τ (x + y) k)) = (fun k => GlobalTheory.UnipEmb.locInc F E v (splitIncl h τ x k)) + (fun k => GlobalTheory.UnipEmb.locInc F E v (splitIncl h τ y k))`. Use function extensionality and compare the values at `k`. Simplify using `[splitIncl, add_smul]`. Rewrite using `[e]`. Conclude with `add_mem hx hy`.
+
+Consider the case `smul c x _ hx`. Establish `e : (fun k => GlobalTheory.UnipEmb.locInc F E v (splitIncl h τ (c • x) k)) = GlobalTheory.UnipEmb.locInc F E v (c ⊗ₜ[F] (1 : E)) • (fun k => GlobalTheory.UnipEmb.locInc F E v (splitIncl h τ x k))`. Use function extensionality and compare the values at `k`. Simplify using `only [Pi.smul_apply, smul_eq_mul, splitIncl]`. Rewrite using `[← map_mul, mul_smul, Algebra.smul_def, Algebra.TensorProduct.algebraMap_apply]`.
+
+Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ _ hx`.
+-/
 theorem locInc_splitIncl_mem_colSpan : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} (h : IsCMExt F E σ) {v : HeightOneSpectrum (𝓞 F)} (τ : E →ₐ[F] Fv F v) {n r : ℕ}
     (X : Matrix (Fin n) (Fin r) E) (I : Set (Fin r)) (u : Fin n → Fv F v),

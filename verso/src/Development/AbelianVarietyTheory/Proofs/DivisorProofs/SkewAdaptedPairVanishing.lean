@@ -12,6 +12,13 @@ noncomputable section
 
 namespace GlobalTheory.UnipEv
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP d₁ W₁ H' i₀ i₁ M₁ om₁ r₁ s₁ hA hP₁ e he g hg u hu Φ hΦ`. Establish `hs` using `IsUWeilPair.isUSplitting hP.weil`. Take `⟨y, rfl⟩` from `hu`. Take `⟨⟨t, ht⟩, -⟩` from `hg`. Rewrite using `[hs.impl (1, g) _ Φ hΦ]`.
+
+Establish `key : actAB (cA σ) ((1, g) : UA σ X.J × UA σ W.J) (Matrix.vecMulVec y (incV F H'.x)) = Matrix.vecMulVec (fun i => y i * (t : AE F E)) (incV F H'.x)`. Establish `h1 : actAB (cA σ) ((1, g) : UA σ X.J × UA σ W.J) (Matrix.vecMulVec y (incV F H'.x)) = Matrix.vecMulVec y (incV F H'.x) * (mat g)ᵀ`. Simplify using `[actAB, mat]`. Rewrite using `[h1, Matrix.vecMulVec_mul, Matrix.vecMul_transpose, ht]`. Use extensionality with `i j`.
+
+Simplify using `[Matrix.vecMulVec_apply, mul_assoc, mul_comm, mul_left_comm]`. Rewrite using `[key, he.inv _ ⟨_, rfl⟩ _ (hs.pres _ _ hΦ)]`.
+-/
 theorem evalZero_inv_after_stab : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d)
     (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' →
     ∀ (d₁ : ℕ) (W₁ : Spc F E d₁) (H' : Plane E d d₁) (i₀ i₁ : ℕ) (M₁ : Model σ X W₁) (om₁ : Rep σ X W₁) (r₁ s₁ : ℕ),

@@ -10,6 +10,15 @@ namespace GlobalTheory.CompanionTheory.TotPairing
 
 variable {R : Type} [CommRing R] {K : DCx.{w} R} {L : DCx.{w'} R} {M : DCx.{w''} R}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `r s`. Rewrite using `[Finset.sum_apply, Finset.sum_apply]`. Distinguish the cases in `h : r + s = n`. Rewrite using `[Finset.sum_eq_single (r, s)]`. Conclude with `(K.sgl_self r s _).symm`.
+
+Introduce and unpack `⟨a, b⟩ _ hne`. Use `K.sgl_ne _ ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Conclude with `hne (by rw [hc.1, hc.2])`.
+
+Introduce `hh`. Conclude with `absurd (Finset.HasAntidiagonal.mem_antidiagonal.2 h) hh`. Rewrite using `[hx r s h, Finset.sum_eq_zero]`. Introduce and unpack `⟨a, b⟩ hab`. Establish `hab' : a + b = n` using `Finset.HasAntidiagonal.mem_antidiagonal.1 hab`.
+
+Conclude with `K.sgl_ne _ (by omega)`.
+-/
 theorem eq_sum_sgl (K : DCx.{w} R) {n : ℕ} {x : ∀ p q, K.X p q} (hx : x ∈ K.T n) :
     x = ∑ c ∈ Finset.HasAntidiagonal.antidiagonal n, K.sgl c.1 c.2 (x c.1 c.2) := by
   funext r s
@@ -33,11 +42,17 @@ def cmp (K : DCx.{w} R) (p q : ℕ) : (∀ a b, K.X a b) →ₗ[R] K.X p q :=
   (LinearMap.proj (R := R) (φ := fun b => K.X p b) q).comp
     (LinearMap.proj (R := R) (φ := fun a => ∀ b, K.X a b) p)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cmp_apply (K : DCx.{w} R) (p q : ℕ) (x : ∀ a b, K.X a b) : cmp K p q x = x p q := rfl
 
 def gen (P : DPairing K L M) (p q p' q' : ℕ) : K.X p q →ₗ[R] L.X p' q' →ₗ[R] (∀ a b, M.X a b) :=
   (-1 : ℤ) ^ (q * p') • (P.μ (p := p) (q := q) (p' := p') (q' := q') rfl rfl).compr₂ (M.sgl (p + p') (q + q'))
 
+/- English proof (translation)
+Simplify using `[gen, LinearMap.smul_apply, LinearMap.compr₂_apply]`.
+-/
 theorem gen_apply (P : DPairing K L M) (p q p' q' : ℕ) (x : K.X p q) (y : L.X p' q') :
     gen P p q p' q' x y = (-1 : ℤ) ^ (q * p') • M.sgl (p + p') (q + q') (P.μ rfl rfl x y) := by
   simp [gen, LinearMap.smul_apply, LinearMap.compr₂_apply]
@@ -47,11 +62,23 @@ def fam (P : DPairing K L M) (a b : ℕ) :
   ∑ c ∈ Finset.HasAntidiagonal.antidiagonal a, ∑ c' ∈ Finset.HasAntidiagonal.antidiagonal b,
     (gen P c.1 c.2 c'.1 c'.2).compl₁₂ (cmp K c.1 c.2) (cmp L c'.1 c'.2)
 
+/- English proof (translation)
+Simplify using `only [fam, LinearMap.sum_apply, LinearMap.compl₁₂_apply, cmp_apply]`.
+-/
 theorem fam_apply (P : DPairing K L M) (a b : ℕ) (x : ∀ p q, K.X p q) (y : ∀ p q, L.X p q) :
     fam P a b x y = ∑ c ∈ Finset.HasAntidiagonal.antidiagonal a, ∑ c' ∈ Finset.HasAntidiagonal.antidiagonal b,
       gen P c.1 c.2 c'.1 c'.2 (x c.1 c.2) (y c'.1 c'.2) := by
   simp only [fam, LinearMap.sum_apply, LinearMap.compl₁₂_apply, cmp_apply]
 
+/- English proof (translation)
+Rewrite using `[fam_apply, Finset.sum_eq_single (p, q), Finset.sum_eq_single (p', q')]`. Simplify using `only [DCx.sgl_self]`. Introduce and unpack `⟨r, s⟩ _ hne`. Establish `: L.sgl p' q' y r s = 0` using `L.sgl_ne _ (by`. Assume the negation of the conclusion as `hc`.
+
+Use `push_neg at hc`. Conclude with `hne (by rw [hc.1, hc.2]))`. Simplify using `only [this, map_zero]`. Introduce `hh`. Conclude with `absurd (Finset.HasAntidiagonal.mem_antidiagonal.2 h') hh`.
+
+Introduce and unpack `⟨r, s⟩ _ hne`. Establish `: K.sgl p q x r s = 0` using `K.sgl_ne _ (by`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Conclude with `hne (by rw [hc.1, hc.2]))`.
+
+Simplify using `only [this, map_zero, LinearMap.zero_apply, Finset.sum_const_zero]`. Introduce `hh`. Conclude with `absurd (Finset.HasAntidiagonal.mem_antidiagonal.2 h) hh`.
+-/
 theorem fam_sgl (P : DPairing K L M) {p q p' q' a b : ℕ} (h : p + q = a) (h' : p' + q' = b)
     (x : K.X p q) (y : L.X p' q') :
     fam P a b (K.sgl p q x) (L.sgl p' q' y) = gen P p q p' q' x y := by
@@ -74,6 +101,11 @@ theorem fam_sgl (P : DPairing K L M) {p q p' q' a b : ℕ} (h : p + q = a) (h' :
   · intro hh
     exact absurd (Finset.HasAntidiagonal.mem_antidiagonal.2 h) hh
 
+/- English proof (translation)
+Rewrite using `[fam_apply]`. Use `Submodule.sum_mem _ fun c hc => Submodule.sum_mem _ fun c' hc' => ?_` and prove the remaining obligations. Establish `e` using `Finset.HasAntidiagonal.mem_antidiagonal.1 hc`. Establish `e'` using `Finset.HasAntidiagonal.mem_antidiagonal.1 hc'`. Rewrite using `[gen_apply]`.
+
+Use `Submodule.smul_of_tower_mem _ _ ?_` and prove the remaining obligations. Introduce `r s hrs`. Conclude with `M.sgl_ne _ (by omega)`.
+-/
 theorem fam_mem (P : DPairing K L M) {a b n : ℕ} (h : a + b = n) (x : ∀ p q, K.X p q) (y : ∀ p q, L.X p q) :
     fam P a b x y ∈ M.T n := by
   rw [fam_apply]
@@ -85,12 +117,18 @@ theorem fam_mem (P : DPairing K L M) {a b n : ℕ} (h : a + b = n) (x : ∀ p q,
   intro r s hrs
   exact M.sgl_ne _ (by omega)
 
+/- English proof (translation)
+Substitute `h h'` using the available equality. Both sides reduce to the same expression.
+-/
 theorem sgl_mu (P : DPairing K L M) {p q p' q' a b : ℕ} (h : p + p' = a) (h' : q + q' = b)
     (x : K.X p q) (y : L.X p' q') :
     M.sgl a b (P.μ h h' x y) = M.sgl (p + p') (q + q') (P.μ rfl rfl x y) := by
   subst h h'
   rfl
 
+/- English proof (translation)
+Use `match_scalars`. Expand and normalize the polynomial expressions, which then agree. Take the linear combination `(-e * s) * ht`. Expand and normalize the polynomial expressions, which then agree. Take the linear combination `(-e * s * r) * ht + (e * s * r) * ht`.
+-/
 theorem sign_id {A : Type*} [AddCommGroup A] (e s t r : ℤ) (ht : t * t = 1) (A₁ A₂ A₃ A₄ : A) :
     e • (A₁ + s • A₂ + (s * r) • (A₃ + t • A₄)) =
       e • A₁ + (s * (e * r)) • A₃ + (s * t) • ((e * t) • A₂ + (r * e) • A₄) := by
@@ -100,6 +138,13 @@ theorem sign_id {A : Type*} [AddCommGroup A] (e s t r : ℤ) (ht : t * t = 1) (A
   · ring
   · linear_combination (-e * s * r) * ht + (e * s * r) * ht
 
+/- English proof (translation)
+Establish `e₁` using `sgl_mu P (p := p + 1) (p' := p') (a := p + p' + 1) (by omega) (rfl : q + q' = q + q') (K.dh p q x) y`. Establish `e₂` using `sgl_mu P (p := p) (p' := p' + 1) (a := p + p' + 1) (by omega) (rfl : q + q' = q + q') x (L.dh p' q' y)`. Establish `e₃` using `sgl_mu P (q := q + 1) (q' := q') (b := q + q' + 1) (rfl : p + p' = p + p') (by omega) (K.dv p q x) y`. Establish `e₄` using `sgl_mu P (q := q) (q' := q' + 1) (b := q + q' + 1) (rfl : p + p' = p + p') (by omega) x (L.dv p' q' y)`. Simplify using `only [gen_apply, map_zsmul, DCx.D_sgl, P.lh rfl rfl, P.lv rfl rfl, map_add, e₁, e₂, e₃, e₄]`.
+
+Establish `ht : ((-1 : ℤ) ^ q) * ((-1 : ℤ) ^ q) = 1`. Rewrite using `[← mul_pow]`. Simplify using the standard rewrite rules. Establish `s₁ : (-1 : ℤ) ^ (p + p') = (-1) ^ p * (-1) ^ p'` using `pow_add _ _ _`. Establish `s₂ : (-1 : ℤ) ^ (p + q) = (-1) ^ p * (-1) ^ q` using `pow_add _ _ _`.
+
+Establish `s₃ : (-1 : ℤ) ^ ((q + 1) * p') = (-1) ^ (q * p') * (-1) ^ p'` using `by rw [add_mul, one_mul, pow_add]`. Establish `s₄ : (-1 : ℤ) ^ (q * (p' + 1)) = (-1) ^ (q * p') * (-1) ^ q` using `by rw [mul_add, mul_one, pow_add]`. Rewrite using `[s₁, s₂, s₃, s₄, smul_smul, smul_smul]`. Conclude with `sign_id _ _ _ _ ht _ _ _ _`.
+-/
 theorem leib_gen (P : DPairing K L M) (p q p' q' : ℕ) (x : K.X p q) (y : L.X p' q') :
     M.D (gen P p q p' q' x y) =
       gen P (p + 1) q p' q' (K.dh p q x) y + (-1 : ℤ) ^ p • gen P p (q + 1) p' q' (K.dv p q x) y +
@@ -119,6 +164,13 @@ theorem leib_gen (P : DPairing K L M) (p q p' q' : ℕ) (x : K.X p q) (y : L.X p
   rw [s₁, s₂, s₃, s₄, smul_smul, smul_smul]
   exact sign_id _ _ _ _ ht _ _ _ _
 
+/- English proof (translation)
+Rewrite using `[eq_sum_sgl K hx, eq_sum_sgl L hy]`. Simplify using `only [map_sum, LinearMap.sum_apply, Finset.smul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun c hc => Finset.sum_congr rfl fun c' hc' => ?_` and prove the remaining obligations. Establish `e'` using `Finset.HasAntidiagonal.mem_antidiagonal.1 hc`. Establish `e` using `Finset.HasAntidiagonal.mem_antidiagonal.1 hc'`.
+
+Take `⟨p', q'⟩` from `c`. Take `⟨p, q⟩` from `c'`. Simplify using `only at e e' ⊢`. Rewrite using `[fam_sgl P e e', leib_gen, DCx.D_sgl, DCx.D_sgl]`. Simplify using `only [map_add, map_zsmul, LinearMap.add_apply, LinearMap.smul_apply]`.
+
+Rewrite using `[fam_sgl P (by omega) e', fam_sgl P (by omega) e', fam_sgl P e (by omega), fam_sgl P e (by omega), e]`.
+-/
 theorem leib_fam (P : DPairing K L M) {a b : ℕ} {x : ∀ p q, K.X p q} {y : ∀ p q, L.X p q}
     (hx : x ∈ K.T a) (hy : y ∈ L.T b) :
     M.D (fam P a b x y) = fam P (a + 1) b (K.D x) y + (-1 : ℤ) ^ a • fam P a (b + 1) x (L.D y) := by

@@ -20,6 +20,39 @@ namespace CoverDenseAlt
 
 open Met GlobalTheory.CompanionTheory.Ar.RootHt
 
+/- English proof (translation)
+Introduce `X Ω _ K _ J _ y ξ _ hall tie G _ _ _ Li _ _ M`. Establish `hξ` using `tie.gen`. Establish `key` using `GlobalTheory.T.local_ring_points_existsUnique X Ω ξ K J y tie ℂ`. Use `choose n P B hB hcov using fun c => chart_cover tie (lieLat_isVB_of_smooth X Ω ξ G Li M hξ inferInstance).1 c`. Use `choose wz hwz using fun z : Sp ℂ ⟶ X => key.2.1 z (hall _)`.
+
+Set `Λ` to `Σ c : (k : K) → J k, Fin (n c)`. Set `f : Λ → ((Σ k, J k) → ℂ) → ℝ` to `fun l => wt l.1 (P l.1 l.2)`. Establish `hf : ∀ w l, 0 ≤ f l w` using `fun w l => wt_nonneg _ _ _`. Establish `hne : ∀ {z : Sp ℂ ⟶ X} {w}, CoordsAt ξ y z w → ∀ k, ∃ i, w ⟨k, i⟩ ≠ 0` using `fun h k => (h.1 k).imp fun _ hi => hi.ne_zero`. Establish `frame : ∀ {z : Sp ℂ ⟶ X} {w}, CoordsAt ξ y z w → ∀ l, f l w ≠ 0 → M.lat.IsFrameAt (B l.1 l.2) ⟨centre z, hall _⟩`.
+
+Introduce `z w h l hl`. Take `⟨h1, h2⟩` from `wt_ne hl`. Conclude with `hB _ _ _ (ArchB.in_chart (hall _) h h1) ((unitAt_iff hξ _ (val_evp (hall _) h l.1 h1 _)).2 h2)`. Establish `pos : ∀ {z : Sp ℂ ⟶ X} {w}, CoordsAt ξ y z w → ∃ l, 0 < f l w`. Introduce `z w h`.
+
+Take `⟨c, hc, hc'⟩` from `exists_chi (hne h)`. Take `⟨l, hl⟩` from `hcov c _ (ArchB.in_chart (hall _) h hc)`. Use `⟨⟨c, l⟩, mul_pos (lt_max_of_lt_right (by rw [hc']; norm_num)) (norm_pos_iff.2 ?_)⟩` and prove the remaining obligations. Conclude with `(unitAt_iff hξ _ (val_evp (hall _) h c hc _)).1 hl`. Establish `indep : ∀ {z : Sp ℂ ⟶ X} {w}, CoordsAt ξ y z w → ∀ l, rho f l (wz z) = rho f l w`.
+
+Introduce `z w h l`. Take `⟨a, ha⟩` from `((key.2.2 z w (hall _) h).2 _).1 (hwz z)`. Establish `: ∀ m, f m (wz z) = f m w` using `fun m => by`. Simplify using `only [f, wt]`. Rewrite using `[ha, chi_smul _ w (fun k => (a k : ℂ)) fun k => (a k).ne_zero, evp_smul _ _ w (fun k => (a k : ℂ)) fun k => (a k).ne_zero]`.
+
+Simplify using `only [rho, this]`. Establish `hcj : ∀ (z : Sp ℂ ⟶ X) l, rho f l (wz (spMap (starRingEnd ℂ) ≫ z)) = rho f l (wz z)`. Introduce `z l`. Rewrite using `[indep (PullCoords.coordsAt_field (starRingEnd ℂ) (hwz z))]`. Establish `: ∀ m, f m (fun p => starRingEnd ℂ (wz z p)) = f m (wz z)` using `fun m => by`.
+
+Simplify using `only [f, wt]`. Rewrite using `[chi_conj, evp_conj, RCLike.norm_conj]`. Simplify using `only [rho, this]`. Use `⟨{ ip := fun z v v' => ∑ l : Λ, (rho f l (wz z) : ℂ) * ∑ i, starRingEnd ℂ (co M (B l.1 l.2) z v i) * co M (B l.1 l.2) z v' i herm := fun z V _ _ Mz => ?_ conj := fun z v w v' w' hv hw => ?_ cont := fun a b => ?_ }⟩` and prove the remaining obligations. Establish `h : ∀ l : Λ, ∃ g : V →ₗ[ℂ] (Fin (Module.finrank Ω Li) → ℂ), rho f l (wz z) ≠ 0 → Function.Injective g ∧ ∀ u, co M (B l.1 l.2) z (Mz.pt u) = g u`.
+
+Introduce `l`. Distinguish the cases in `hl : rho f l (wz z) = 0`. Conclude with `⟨0, fun h => (h hl).elim⟩`. Take `⟨β, hβ, -⟩` from `frame_basis hξ M _ z _ (frame (hwz z) l (rho_ne f (hf _) hl)) Mz`. Conclude with `⟨β.equivFun.toLinearMap, fun _ => ⟨β.equivFun.injective, fun u => co_eq M _ z Mz β hβ u⟩⟩`.
+
+Use `choose g hg using h`. Take `⟨l₀, h₀⟩` from `exists_rho_pos f (pos (hwz z))`. Take `⟨core, hcore⟩` from `exists_core (fun l => rho f l (wz z)) (fun l => rho_nonneg f l _) g l₀ h₀ (hg l₀ h₀.ne').1`. Use `⟨core, fun a b => (hcore a b).trans (Finset.sum_congr rfl fun l _ => ?_)⟩` and prove the remaining obligations. Distinguish the cases in `hl : rho f l (wz z) = 0`.
+
+Simplify using `only [hl, Complex.ofReal_zero, zero_mul]`. Rewrite using `[(hg l hl).2, (hg l hl).2]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Distinguish the cases in `hl : rho f l (wz (spMap (starRingEnd ℂ) ≫ z)) = 0`.
+
+Rewrite using `[← hcj z l]`. Simplify using `only [hl, Complex.ofReal_zero, zero_mul, map_zero]`. Establish `hfr` using `frame (hwz _) l (rho_ne f (hf _) hl)`. Rewrite using `[map_mul, Complex.conj_ofReal, hcj, map_sum]`. Use `congr 1`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[co_conj hξ M _ z _ hfr v v' hv, co_conj hξ M _ z _ hfr w w' hw, map_mul]`. Use `⟨fun w => ∑ l : Λ, (rho f l w : ℂ) * ∑ i, starRingEnd ℂ (vl ξ y ((B l.1 l.2).repr a i) w) * vl ξ y ((B l.1 l.2).repr b i) w, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `w₀ ⟨z₀, va, vb, h₀, ha, hb⟩`. Establish `hc : ∀ l, ContinuousAt (f l) w₀` using `fun l => wt_cont _ _ (hne h₀)`.
+
+Use `ContinuousWithinAt.mono (t := {w | ∃ z : Sp ℂ ⟶ X, CoordsAt ξ y z w}) ?_ fun w ⟨z, _, _, h, _⟩ => ⟨z, h⟩` and prove the remaining obligations. Use `tendsto_finset_sum _ fun l _ => ?_` and prove the remaining obligations. Distinguish the cases in `hl : f l w₀ = 0`. Establish `h1` using `rho_eventually f hc (hf _) (pos h₀) hl`. Use `(ContinuousAt.continuousWithinAt ((continuousAt_const (y := (0 : ℂ))).congr (h1.mono fun v hv => ?_)))` and prove the remaining obligations.
+
+Simplify using `only [hv, Complex.ofReal_zero, zero_mul]`. Establish `hfr` using `frame h₀ l hl`. Use `ContinuousWithinAt.mul (Complex.continuous_ofReal.continuousAt.comp (rho_cont f hc l)).continuousWithinAt (tendsto_finset_sum _ fun i _ => ContinuousWithinAt.mul ?_ ?_)` and prove the remaining obligations. Conclude with `Complex.continuous_conj.continuousAt.comp_continuousWithinAt (vl_cont hall tie h₀ (co_val hξ M _ z₀ _ hfr ha i))`. Conclude with `vl_cont hall tie h₀ (co_val hξ M _ z₀ _ hfr hb i)`.
+
+Introduce `z w va vb h ha hb`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[indep h]`. Distinguish the cases in `hl : rho f l w = 0`. Simplify using `only [hl, Complex.ofReal_zero, zero_mul]`.
+
+Establish `hfr` using `frame h l (rho_ne f (hf _) hl)`. Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[vl_eq hall tie h (co_val hξ M _ z _ hfr ha i), vl_eq hall tie h (co_val hξ M _ z _ hfr hb i)]`.
+-/
 theorem nonempty_lie_metric_of_coordinates : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (y : (Σ k, J k) → Ω) (ξ : Sp Ω ⟶ X), CharZero Ω → (∀ q : X, genPt ξ ⤳ q) → CoordTie ℤ ξ (fun c' : (k : K) → J k => ∏ k, y ⟨k, c' k⟩) → ∀ (G : Over X) [GrpObj G] [IsCommMonObj G] [Smooth G.hom] (Li : Type) [AddCommGroup Li] [Module Ω Li] (M : LieModel G ξ Li), Nonempty (LieMetric M y) := by
   classical
   intro X Ω _ K _ J _ y ξ _ hall tie G _ _ _ Li _ _ M

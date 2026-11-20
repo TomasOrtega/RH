@@ -14,6 +14,23 @@ open GlobalTheory.IndefiniteRowSideFullHecke.TwistedLevelValues GlobalTheory.Ade
 
 namespace GlobalTheory.LowRow
 
+/- English proof (translation)
+Introduce `hp D G _ _ Pl0 T A Ks _ _ _ R F`. Introduce `i t σ s P cμ cη m ω BW f₀ f c io hL`. Take `⟨hcore, -, hσ, -⟩` from `hL`. Establish `h5 : GlobalTheory.Core5 R F` using `⟨hcore.lev, hcore.grp, hcore.fam, hcore.models, hcore.thP⟩`. Introduce `Fr hFr ρ mR hmR e he`.
+
+Simplify using `only`. Take `⟨hanti, hhalf, hwid⟩` from `GlobalTheory.T.liftModelParameter_decreasing_halfIntegral_width R F h5 i σ s hσ ρ`. Establish `hsig : ∀ ρ', ((Wc D i).sig (tauE D ρ')).1 + ((Wc D i).sig (tauE D ρ')).2 = (Wc D i).rank` using `fun ρ' => (GlobalTheory.T.liftRows_antitone_signature_rank D i σ ρ').2.2.1`. Establish `hrk : (Wc D i).rank = D.R.r` using `D.sp.W_rank _ (Nat.le_add_left _ _) i.2`. Establish `h1 : 1 ≤ (Wc D i).rank`.
+
+Rewrite using `[hrk]`. Use `D.R.m_add_three_le_k` as an intermediate fact. Use `D.R.two_le_m` as an intermediate fact. Simplify using `only [Formalism.BasicNotions.Ranks.r]`. Use linear arithmetic over natural numbers and integers.
+
+Establish `h3 : 3 ≤ D.R.nV`. Use `D.R.m_add_three_le_k` as an intermediate fact. Use `D.R.two_le_m` as an intermediate fact. Use `D.R.three_m_lt_t` as an intermediate fact. Simplify using `only [Formalism.BasicNotions.Ranks.nV, Formalism.BasicNotions.Ranks.r]`.
+
+Use linear arithmetic over natural numbers and integers. Take `⟨hint, hinv⟩` from `GlobalTheory.T.inv_integral_sq_discreteSeries_coefficient_compactDual hp D.cd (Wc D i) _ (R.MW i σ) Fr hFr hsig ρ hanti hhalf _ he`. Establish `hm` using `GlobalTheory.T.standardMeasure_unitaryPQ_eq_volume_smul_compactDual D.cd _ _ mR hmR`. Rewrite `hm` using `[hsig ρ]`. Take `⟨hvol, hQpos, hlog⟩` from `GlobalTheory.T.formalDegree_div_volume_unitaryGroup_log_bound (Wc D i).rank D.R.nV (degAt D i σ ρ) ((R.MW i σ).lam ρ) h1 h3 (by positivity) hanti hwid`.
+
+Establish `e1 : (((Wc D i).rank : ℕ) : ℝ) = (D.R.r : ℝ)` using `by exact_mod_cast hrk`. Rewrite `hlog` using `[e1]`. Substitute `hm` using the available equality. Use `⟨hint.smul_measure ENNReal.ofReal_ne_top, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[integral_smul_measure, ENNReal.toReal_ofReal hvol.le, smul_eq_mul]`.
+
+Use `mul_pos hvol ?_` and prove the remaining obligations. Establish `: 0 < (∫ b : Upq (Wc D i) ρ, ‖⟪((e : (R.MW i σ).sm ρ) : (R.MW i σ).H ρ), (R.MW i σ).rep ρ (realMat (Wc D i) Fr ρ b) ((e : (R.MW i σ).sm ρ) : (R.MW i σ).H ρ)⟫_ℂ‖ ^ 2 ∂(D.cd.cd _ _))⁻¹`. Rewrite using `[hinv]`. Conclude with `hQpos`. Conclude with `inv_pos.mp this`.
+
+Rewrite using `[integral_smul_measure, ENNReal.toReal_ofReal hvol.le, smul_eq_mul, mul_inv, hinv, mul_comm, ← div_eq_mul_inv]`. Conclude with `hlog`.
+-/
 theorem formalDegreeUpperC_of_hypotheses : GlobalTheory.Published.FormalDegreeCompactDual → ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), FormalDegreeUpperC R F := by
   intro hp D G _ _ Pl0 T A Ks _ _ _ R F
   intro i t σ s P cμ cη m ω BW f₀ f c io hL

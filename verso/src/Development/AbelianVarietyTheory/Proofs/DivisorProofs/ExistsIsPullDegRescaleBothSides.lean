@@ -14,11 +14,19 @@ namespace GlobalTheory.RescaleBoth
 open GlobalTheory.ArcPull GlobalTheory.ArcQ GlobalTheory.RescaleLift
 open GlobalTheory.PsiEvenPull (proj)
 
+/- English proof (translation)
+The claim follows from `isUnit_of_basicOpen_top _ (by have e := Scheme.preimage_basicOpen W.ι (fnSp R r) refine Eq.trans e.symm (top_le_iff.1 fun x _ => h x.2))`.
+-/
 theorem isUnit_fnOn_of_le {R : Type} [CommRing R] {W : (Sp R).Opens} (r : R) (h : W ≤ (Sp R).basicOpen (fnSp R r)) :
     IsUnit (fnOn W r) := isUnit_of_basicOpen_top _ (by
   have e := Scheme.preimage_basicOpen W.ι (fnSp R r)
   refine Eq.trans e.symm (top_le_iff.1 fun x _ => h x.2))
 
+/- English proof (translation)
+Establish `hpre : (s ≫ spMap α) ⁻¹ᵁ (Sp R).basicOpen (fnSp R r) = ⊤`. Rewrite using `[Scheme.preimage_basicOpen]`. Use `Scheme.basicOpen_of_isUnit _ ?_` and prove the remaining obligations. Use `(congrArg IsUnit (appTop_comp_spMap α s r)).mpr ?_` and prove the remaining obligations. Conclude with `((IsUnit.mk0 _ h).map (fnSp _)).map s.appTop.hom`.
+
+Conclude with `(show z ∈ (s ≫ spMap α) ⁻¹ᵁ (Sp R).basicOpen (fnSp R r) from hpre.ge trivial)`.
+-/
 theorem mem_basicOpen_of_ne {R F : Type} [CommRing R] [Field F] (α : R →+* F) {r : R} (h : α r ≠ 0) {Z : Scheme.{0}}
     (s : Z ⟶ Sp F) (z : Z) : (s ≫ spMap α) z ∈ (Sp R).basicOpen (fnSp R r) := by
   have hpre : (s ≫ spMap α) ⁻¹ᵁ (Sp R).basicOpen (fnSp R r) = ⊤ := by
@@ -28,6 +36,21 @@ theorem mem_basicOpen_of_ne {R F : Type} [CommRing R] [Field F] (α : R →+* F)
     exact ((IsUnit.mk0 _ h).map (fnSp _)).map s.appTop.hom
   exact (show z ∈ (s ≫ spMap α) ⁻¹ᵁ (Sp R).basicOpen (fnSp R r) from hpre.ge trivial)
 
+/- English proof (translation)
+Establish `ha : α a ≠ 0` using `hv ▸ mul_ne_zero v.ne_zero hb`. Establish `ha' : algebraMap R (FractionRing R) a ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective R (FractionRing R))).2 fun h => ha (by rw [h, map_zero])`. Establish `hb' : algebraMap R (FractionRing R) b ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective R (FractionRing R))).2 fun h => hb (by rw [h, map_zero])`. Take `⟨W', l, l₀, la, lb, hm⟩ : ∃ W' : (Sp R).Opens, W' ≤ W ∧ W' ≤ W₀ ∧ W' ≤ (Sp R).basicOpen (fnSp R a) ∧ W' ≤ (Sp R).basicOpen (fnSp R b) ∧ ∀ x, (s ≫ spMap α) x ∈ W'` from `⟨(W ⊓ W₀) ⊓ ((Sp R).basicOpen (fnSp R a) ⊓ (Sp R).basicOpen (fnSp R b)), inf_le_left.trans inf_le_left, inf_le_left.trans inf_le_right, inf_le_right.trans inf_le_left, inf_le_right.trans inf_le_right, fun x => ⟨⟨(congrArg (fun q => q x ∈ W) hr).mp (r x).2, (congrArg (fun q => q x …`. Take `⟨ρ, hρ⟩ : ∃ ρ : Z ⟶ W'.toScheme, ρ ≫ W'.ι = s ≫ spMap α` from `⟨IsOpenImmersion.lift _ _ (by`.
+
+Introduce and unpack `_ ⟨x, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι]`. Conclude with `hm x), IsOpenImmersion.lift_fac _ _ _⟩`. Set `m : W'.toScheme ⟶ W.toScheme` to `(Sp R).homOfLE l`. Set `m₀ : W'.toScheme ⟶ W₀.toScheme` to `(Sp R).homOfLE l₀`.
+
+Establish `f : m ≫ W.ι = W'.ι` using `Scheme.homOfLE_ι _ _`. Establish `f₀ : m₀ ≫ W₀.ι = W'.ι` using `Scheme.homOfLE_ι _ _`. Establish `ua` using `isUnit_fnOn_of_le a la`. Establish `ub` using `isUnit_fnOn_of_le b lb`. Establish `hφ : m ≫ (toUnit (TW W) ≫ Q.c y).left = m₀ ≫ (toUnit (TW W₀) ≫ Q.c y).left` using `by show m ≫ W.ι ≫ (Q.c y).left = m₀ ≫ W₀.ι ≫ (Q.c y).left`.
+
+Rewrite using `[← Category.assoc, f, ← Category.assoc, f₀]`. Establish `key` using `GlobalTheory.PsiEvenPull.val_eq_of_app_injective Q.P.isLB (u := GlobalTheory.UU.scaleGen ub.unit (LB.pullGen Q.P.L _ _ (ψ₀.psi y) m₀)) (u' := GlobalTheory.UU.scaleGen ua.unit (LB.pullGen Q.P.L _ _ (ψ.psi y) m)) (fun U _ k => Finset.prod_congr rfl fun _ _ => congrArg (fun q => k q …`. Establish `e : (jK R ∣_ W') ≫ W'.ι = (jK R ⁻¹ᵁ W').ι ≫ jK R` using `morphismRestrict_ι _ _`. Establish `p` using `GlobalTheory.ArcSpecialise.psiOn_generic ψ y ((jK R ∣_ W') ≫ m) (jK R ⁻¹ᵁ W').ι (by rw [Category.assoc, f, e]) hI`. Establish `p₀` using `GlobalTheory.ArcSpecialise.psiOn_generic ψ₀ y ((jK R ∣_ W') ≫ m₀) (jK R ⁻¹ᵁ W').ι (by rw [Category.assoc, f₀, e]) hI`.
+
+Establish `q : val ((GlobalTheory.PolDeg.rescale Q g).psi y) (jK R ⁻¹ᵁ W').ι x I = gm (jK R ⁻¹ᵁ W').ι x ⊤ (unitOn (g y)) * val (Q.psi y) (jK R ⁻¹ᵁ W').ι x I` using `GlobalTheory.UU.val_scaleGen (unitOn (g y)) (Q.psi y) _ hI`. Establish `ga` using `gm_fnOn W' (algebraMap R (FractionRing R)) _ _ e a ua.unit (Units.mk0 _ ha') ua.unit_spec rfl x`. Establish `gb` using `gm_fnOn W' (algebraMap R (FractionRing R)) _ _ e b ub.unit (Units.mk0 _ hb') ub.unit_spec rfl x`. Establish `w : unitOn (Units.mk0 _ ha') = unitOn (Units.mk0 _ hb') * unitOn (g y)` using `(congrArg unitOn (Units.ext (hab.symm.trans (_root_.mul_comm _ _)))).trans (map_mul _ _ _)`. Use `(GlobalTheory.UU.val_scaleGen _ _ _ hI).trans (Eq.trans ?_ (GlobalTheory.UU.val_scaleGen _ _ _ hI).symm)` and prove the remaining obligations.
+
+Use `(congrArg₂ (· * ·) gb ((val_pull hI _ _ _).trans (p₀.trans q))).trans (Eq.trans ?_ (congrArg₂ (· * ·) ga ((val_pull hI _ _ _).trans p)).symm)` and prove the remaining obligations. Rewrite using `[w, map_mul, _root_.mul_assoc]) Z ρ z J hJ`. Establish `ga` using `gm_fnOn W' α _ _ hρ a ua.unit (Units.mk0 _ ha) ua.unit_spec rfl z`. Establish `gb` using `gm_fnOn W' α _ _ hρ b ub.unit (Units.mk0 _ hb) ub.unit_spec rfl z`. Establish `w : unitOn (Units.mk0 _ ha) = unitOn (Units.mk0 _ hb) * unitOn v` using `(congrArg unitOn (Units.ext (hv.symm.trans (_root_.mul_comm _ _)))).trans (map_mul _ _ _)`.
+
+Establish `c : ρ ≫ m = r` using `by rw [← cancel_mono W.ι, Category.assoc, f, hρ, hr]`. Establish `c₀ : ρ ≫ m₀ = r₀` using `by rw [← cancel_mono W₀.ι, Category.assoc, f₀, hρ, hr₀]`. Establish `k₂` using `(congrArg₂ (· * ·) gb (val_pull hJ _ _ _)).symm.trans ((GlobalTheory.UU.val_scaleGen _ _ _ hJ).symm.trans (key.trans ((GlobalTheory.UU.val_scaleGen _ _ _ hJ).trans (congrArg₂ (· * ·) ga (val_pull hJ _ _ _)))))`. Rewrite `k₂` using `[w, map_mul, _root_.mul_assoc, c, c₀]`. Conclude with `mul_left_cancel k₂`.
+-/
 theorem val_psiOn_rescale {R F : Type} [CommRing R] [IsDomain R] [Field F] (Q : DegPre R) (g : Q.X → (FractionRing R)ˣ)
     {W W₀ : (Sp R).Opens} (ψ : PsiOn Q W) (ψ₀ : PsiOn (GlobalTheory.PolDeg.rescale Q g) W₀) (y : Q.X) (a b : R)
     (hab : (g y : FractionRing R) * algebraMap R (FractionRing R) b = algebraMap R (FractionRing R) a)
@@ -94,6 +117,17 @@ theorem val_psiOn_rescale {R F : Type} [CommRing R] [IsDomain R] [Field F] (Q : 
   rw [w, map_mul, _root_.mul_assoc, c, c₀] at k₂
   exact mul_left_cancel k₂
 
+/- English proof (translation)
+Introduce `R V _ _ _ _ θ Q Q' h g g' ⟨ψ₀⟩ H`. Establish `hsq : jK V ≫ specOf θ = 𝟙 (TK V).left ≫ spMap ((algebraMap V (FractionRing V)).comp θ)`. Rewrite using `[Category.id_comp]`. Conclude with `(Spec.map_comp (CommRingCat.ofHom θ) (CommRingCat.ofHom (algebraMap V (FractionRing V)))).symm`. Take `⟨t, ht⟩ : ∃ t : (TK V).left ⟶ (TW (⊤ : (Sp R).Opens)).left, t ≫ (⊤ : (Sp R).Opens).ι = jK V ≫ specOf θ` from `⟨IsOpenImmersion.lift (⊤ : (Sp R).Opens).ι (jK V ≫ specOf θ) (by`.
+
+Introduce and unpack `_ ⟨y, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι]`. Use the proof step `trivial), IsOpenImmersion.lift_fac _ _ _⟩`. Establish `gp : IsGrpPullback Q'.P.A Q.P.A (spMap θ) (proj h)` using `pull_grp h`. Establish `hr : PMaps (K` using `PUnit) h.w (fun _ => eSec Q'.P.A) (fun _ => eSec Q.P.A) (fun _ => 1) Q'.rig Q.rig (spMap θ) := GlobalTheory.FieldPull.pmaps_rig h`.
+
+Establish `hc : ∀ x : Q'.X, (Q'.c x).left ≫ proj h = spMap θ ≫ (Q.c (h.xe x)).left` using `h.c_pr`. Establish `hv : ∀ (x : Q'.X) (z : (TK V).left) J J', Good Q.P.L z J → Good Q'.P.L z J' → val (ψ₀.psi (h.xe x)) t z J = (om h.w z J J' (Q'.xK x))⁻¹ * val ((GlobalTheory.PolDeg.rescale Q' g').psi x) (𝟙 _) z J'` using `fun x z J J' hJ hJ' => by`. Take `⟨a, b, hb, hab, hab'⟩` from `H x`. Establish `e0` using `val_psiOn_rescale Q g h.psiW ψ₀ (h.xe x) a b hab ((algebraMap V (FractionRing V)).comp θ) ((map_ne_zero_iff _ (IsFractionRing.injective V (FractionRing V))).2 hb) (g' x) hab' h.g t (𝟙 _) (h.g_comm.trans hsq) (ht.trans hsq) z J hJ`. Establish `e1` using `GlobalTheory.PsiEvenPull.psi_pull h x (𝟙 _) z hJ hJ'`.
+
+Rewrite `e1` using `[Category.id_comp]`. Establish `e2 : val ((GlobalTheory.PolDeg.rescale Q' g').psi x) (𝟙 _) z J' = gm (𝟙 (TK V).left) z ⊤ (unitOn (g' x)) * val (Q'.psi x) (𝟙 _) z J'` using `GlobalTheory.UU.val_scaleGen (unitOn (g' x)) (Q'.psi x) (𝟙 _) hJ'`. Use `e0.trans ?_` and prove the remaining obligations. Rewrite using `[e1, e2, mul_left_comm]`. Simplify using `only [om, Category.id_comp]`.
+
+Take `⟨hD, h₁, h₂, -⟩` from `GlobalTheory.PullDegCompData.exists_isPullDeg_of_valW (GlobalTheory.PolDeg.rescale Q g) (GlobalTheory.PolDeg.rescale Q' g') ψ₀ t ht gp h.w ((isGen_iff h.w).1 h.w_gen) hr h.xe hc hv`. Conclude with `⟨hD, h₁, h₂⟩`.
+-/
 theorem exists_isPullDeg_rescale : ∀ {R V : Type} [CommRing R] [IsDomain R] [CommRing V] [IsDomain V] {θ : R →+* V} {Q : DegPre R} {Q' : DegPre V} (hD : IsPullDeg θ Q Q') (g : Q.X → (FractionRing R)ˣ) (g' : Q'.X → (FractionRing V)ˣ), Nonempty (PsiOn (GlobalTheory.PolDeg.rescale Q g) ⊤) → (∀ y, ∃ a b : R, θ b ≠ 0 ∧ (g (hD.xe y) : FractionRing R) * algebraMap R (FractionRing R) b = algebraMap R (FractionRing R) a ∧ (g' y : FractionRing V) * algebraMap V (FractionRing V) (θ b) = algebraMap V (FractionRing V) (θ a)) → ∃ h : IsPullDeg θ (GlobalTheory.PolDeg.rescale Q g) (GlobalTheory.PolDeg.rescale Q' g'), h.e.hom.left ≫ pullback.fst Q.P.A.hom (specOf θ) = hD.e.hom.left ≫ pullback.fst Q.P.A.hom (specOf θ) ∧ ∀ y, h.xe y = hD.xe y := by
   intro R V _ _ _ _ θ Q Q' h g g' ⟨ψ₀⟩ H
   have hsq : jK V ≫ specOf θ = 𝟙 (TK V).left ≫ spMap ((algebraMap V (FractionRing V)).comp θ) := by

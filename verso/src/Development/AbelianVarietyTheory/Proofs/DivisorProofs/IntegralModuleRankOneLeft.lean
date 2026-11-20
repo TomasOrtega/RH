@@ -9,17 +9,62 @@ open Matrix GlobalTheory.TorFin
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Unfold `Formalism.REAL.Tm`. Apply the tactic sequence `split_ifs <;> simp [Algebra.smul_def, sub_eq_add_neg, map_add, add_assoc]`.
+-/
 theorem capelli_tm_sub_eq {A : Type} [Ring A] [Algebra ℂ A] {n : ℕ} (E : Fin n → Fin n → A) (w x : ℂ)
     (a b : Fin n) :
     Formalism.REAL.Tm E (w - x) a b = w • (if a = b then (1 : A) else 0) + Formalism.REAL.Tm E (-x) a b := by
   unfold Formalism.REAL.Tm
   split_ifs <;> simp [Algebra.smul_def, sub_eq_add_neg, map_add, add_assoc]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[Matrix.mul_apply, Matrix.single_apply, vecMulVec_apply, Finset.sum_ite_eq, ite_and]`.
+-/
 theorem mul_single_mul_eq_vecMulVec {n : ℕ} (P P' : Matrix (Fin n) (Fin n) ℂ) (a b : Fin n) :
     P * Matrix.single a b 1 * P' = vecMulVec (fun i => P i a) (fun j => P' b j) := by
   ext i j
   simp [Matrix.mul_apply, Matrix.single_apply, vecMulVec_apply, Finset.sum_ite_eq, ite_and]
 
+/- English proof (translation)
+Introduce `n A _ _ ρ hρ v φ hφv`. Consider the cases of `n with`. Consider the case `zero => simp [dotProduct] at hφv`. Consider the case `succ m`. Take `⟨P, P', hPP', hPv, hP'φ⟩` from `GlobalTheory.T.matrix_completion_first_column m v φ hφv`.
+
+Establish `hP'P : P' * P = 1` using `mul_eq_one_comm.mp hPP'`. Take `⟨c, hcN, hcZ, hc⟩` from `GlobalTheory.T.quantum_det_central_coeffs_conj (m+1) A ρ hρ P P' hPP'`. Establish `hadj : ∀ X, ρ X ∈ Algebra.adjoin ℂ (Set.range ρ)` using `fun X => Algebra.subset_adjoin ⟨X, rfl⟩`. Establish `hTm : ∀ w a b, Formalism.REAL.Tm (fun a b => ρ (P * Matrix.single a b 1 * P')) w a b ∈ Algebra.adjoin ℂ (Set.range ρ)`. Introduce `w a b`.
+
+Use `add_mem ?_ (hadj _)` and prove the remaining obligations. Use `split_ifs`. Conclude with `Subalgebra.algebraMap_mem _ _`. Conclude with `zero_mem _`. Establish `hE0 : ∀ a, ρ (P * Matrix.single a 0 1 * P') = ρ (vecMulVec (fun i => P i a) φ)`.
+
+Introduce `a`. Rewrite using `[mul_single_mul_eq_vecMulVec]`. Use `congr 2`. Use function extensionality and compare the values at `j`. Conclude with `hP'φ j`.
+
+Establish `hEH : ρ (P * Matrix.single 0 0 1 * P') = ρ (vecMulVec v φ)`. Rewrite using `[hE0]`. Use `congr 2`. Use function extensionality and compare the values at `i`. Conclude with `hPv i`.
+
+Establish `hcol : ∀ a : Fin (m+1), a ≠ 0 → φ ⬝ᵥ (fun i => P i a) = 0`. Introduce `a ha`. Use `congrFun (congrFun hP'P 0) a` as an intermediate fact. Rewrite `this` using `[Matrix.mul_apply, Matrix.one_apply_ne (Ne.symm ha)]`. Simplify `this` using `[dotProduct, hP'φ]`.
+
+Establish `hHI : ∀ x ∈ leftIdl ρ {Y | ∃ u, φ ⬝ᵥ u = 0 ∧ Y = vecMulVec u φ}, ρ (vecMulVec v φ) * x ∈ leftIdl ρ {Y | ∃ u, φ ⬝ᵥ u = 0 ∧ Y = vecMulVec u φ}`. Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨Y, ⟨u, hu, rfl⟩, w, hw, rfl⟩` from `hx`.
+
+Establish `h1 : ρ (vecMulVec v φ) * ρ (vecMulVec u φ) = ρ (vecMulVec u φ) * ρ (vecMulVec v φ) - ρ (vecMulVec u φ)`. Use `hρ (vecMulVec v φ) (vecMulVec u φ)` as an intermediate fact. Rewrite `this` using `[vecMulVec_mul_vecMulVec, vecMulVec_mul_vecMulVec, hu, hφv, zero_smul, one_smul]`. Establish `h0 : vecMulVec v (0 : Fin (m+1) → ℂ) = 0` using `by ext i j; simp [vecMulVec_apply]`. Rewrite `this` using `[h0, zero_sub, map_neg]`.
+
+Rewrite using `[eq_sub_iff_add_eq, ← sub_neg_eq_add, this]`. Normalize the expressions using the abelian group laws. Rewrite using `[← mul_assoc, h1, sub_mul, mul_assoc]`. Conclude with `sub_mem (Submodule.subset_span ⟨_, ⟨u, hu, rfl⟩, _, mul_mem (hadj _) hw, rfl⟩) (Submodule.subset_span ⟨_, ⟨u, hu, rfl⟩, w, hw, rfl⟩)`. Consider the case `zero => simp`.
+
+Consider the case `add x y _ _ hx hy => rw [mul_add]`. Conclude with `add_mem hx hy`. Consider the case `smul a x _ hx => rw [mul_smul_comm]`. Conclude with `Submodule.smul_mem _ _ hx`. Establish `hR : ∀ σ : Equiv.Perm (Fin (m+1)), ∃ d : ℕ → A, ∀ u : ℂ, (List.ofFn fun k : Fin m => Formalism.REAL.Tm (fun a b => ρ (P * Matrix.single a b 1 * P')) (u - ((k.succ : Fin (m+1)) : ℂ)) (σ k.succ) k.succ).prod = ∑ i ∈ Finset.range (m+1), u ^ i • d i`.
+
+Introduce `σ`. Take `⟨d, -, hd⟩` from `GlobalTheory.prod_affine_polyMap_top m (fun k => if σ k.succ = k.succ then (1 : A) else 0) (fun k => Formalism.REAL.Tm (fun a b => ρ (P * Matrix.single a b 1 * P')) (-((k.succ : Fin (m+1)) : ℂ)) (σ k.succ) k.succ)`. Conclude with `⟨d, fun u => by rw [← hd u]; congr 2; funext k; exact capelli_tm_sub_eq _ u _ _ _⟩`. Use `choose d hd using hR`. Use `GlobalTheory.T.integral_module_of_char_poly A (invAlg ρ) _ _ hHI (m+1) c (fun i => ∑ σ : Equiv.Perm (Fin (m+1)), if σ 0 = 0 then ((Equiv.Perm.sign σ : ℤ) : A) * d σ i else 0) hcN hcZ ?_` and prove the remaining obligations.
+
+Introduce `u`. Rewrite using `[← hc u]`. Establish `hQ : ∑ k ∈ Finset.range (m+1), u ^ k • (∑ σ : Equiv.Perm (Fin (m+1)), if σ 0 = 0 then ((Equiv.Perm.sign σ : ℤ) : A) * d σ k else 0) = ∑ σ : Equiv.Perm (Fin (m+1)), if σ 0 = 0 then ((Equiv.Perm.sign σ : ℤ) : A) * (List.ofFn fun k : Fin m => Formalism.REAL.Tm (fun a b => ρ (P * Mat …`. Simplify using `only [Finset.smul_sum]`. Rewrite using `[Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Use `split_ifs`. Rewrite using `[hd σ u, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[mul_smul_comm]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[hQ]`. Unfold `Formalism.REAL.qdet Formalism.REAL.qminor`. Rewrite using `[Finset.mul_sum, ← Finset.sum_sub_distrib]`. Use `Submodule.sum_mem _ fun σ _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[List.ofFn_succ, List.prod_cons]`. Simplify using `only [id]`. Distinguish the cases in `h0 : σ 0 = 0`. Rewrite using `[if_pos h0]`. Establish `hT : Formalism.REAL.Tm (fun a b => ρ (P * Matrix.single a b 1 * P')) (u - ((0 : Fin (m+1)) : ℂ)) (σ 0) 0 = u • (1 : A) + ρ (vecMulVec v φ)`.
+
+Unfold `Formalism.REAL.Tm`. Use `beta_reduce`. Rewrite using `[if_pos h0, h0, hEH]`. Simplify using `[Algebra.smul_def]`. Rewrite using `[hT, ← mul_assoc, ← mul_assoc, ← (Int.cast_commute _ _).eq, sub_self]`.
+
+Conclude with `zero_mem _`. Rewrite using `[if_neg h0, mul_zero, sub_zero]`. Establish `hT : Formalism.REAL.Tm (fun a b => ρ (P * Matrix.single a b 1 * P')) (u - ((0 : Fin (m+1)) : ℂ)) (σ 0) 0 = ρ (vecMulVec (fun i => P i (σ 0)) φ)`. Unfold `Formalism.REAL.Tm`. Use `beta_reduce`.
+
+Rewrite using `[if_neg h0, zero_add, hE0]`. Rewrite using `[hT, ← zsmul_eq_mul]`. Use `zsmul_mem ?_ _` and prove the remaining obligations. Use `Submodule.subset_span ?_` and prove the remaining obligations. Use `⟨_, ⟨_, hcol _ h0, rfl⟩, _, Subalgebra.list_prod_mem _ ?_, rfl⟩` and prove the remaining obligations.
+
+Introduce `x hx`. Take `⟨k, rfl⟩` from `List.mem_ofFn.mp hx`. Conclude with `hTm _ _ _`.
+-/
 theorem rho_vecMulVec_isIntMod_invAlg : ∀ (n : ℕ) (A : Type) [Ring A] [Algebra ℂ A]
     (ρ : Matrix (Fin n) (Fin n) ℂ →ₗ[ℂ] A), IsLieRep ρ → ∀ v φ : Fin n → ℂ, φ ⬝ᵥ v = 1 →
     IsIntMod (invAlg ρ) (leftIdl ρ {Y | ∃ u, φ ⬝ᵥ u = 0 ∧ Y = vecMulVec u φ}) (ρ (vecMulVec v φ)) := by

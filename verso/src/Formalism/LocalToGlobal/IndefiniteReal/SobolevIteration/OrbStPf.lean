@@ -11,6 +11,9 @@ namespace Formalism.IndefR.Tow.OrbStPf
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Establish `hd : IsUnit fr.det` using `(Matrix.isUnit_iff_isUnit_det fr).mp hfr`. Establish `h1 : fr * fr⁻¹ = 1` using `Matrix.mul_nonsing_inv fr hd`. Establish `h2 : (fr⁻¹)ᴴ * frᴴ = 1` using `by rw [← Matrix.conjTranspose_mul, h1, Matrix.conjTranspose_one]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem conj_mem {n : ℕ} (J G fr g : Matrix (Fin n) (Fin n) ℂ) (hfr : IsUnit fr) (hJ : frᴴ * J * fr = G)
     (hg : gᴴ * G * g = G) : (fr * g * fr⁻¹)ᴴ * J * (fr * g * fr⁻¹) = J := by
   have hd : IsUnit fr.det := (Matrix.isUnit_iff_isUnit_det fr).mp hfr
@@ -22,6 +25,13 @@ theorem conj_mem {n : ℕ} (J G fr g : Matrix (Fin n) (Fin n) ℂ) (hfr : IsUnit
     _ = ((fr⁻¹)ᴴ * frᴴ) * J * (fr * fr⁻¹) := by simp only [Matrix.mul_assoc]
     _ = J := by rw [h1, h2, Matrix.one_mul, Matrix.mul_one]
 
+/- English proof (translation)
+Establish `hGd : IsUnit G.det` using `(Matrix.isUnit_iff_isUnit_det G).1 hG`. Establish `hGG : G⁻¹ * G = 1` using `Matrix.nonsing_inv_mul G hGd`. Establish `hGG' : G * G⁻¹ = 1` using `Matrix.mul_nonsing_inv G hGd`. Establish `hXc : G * (-X) * G⁻¹ = Xᴴ`. Establish `h1 : Xᴴ * G = -(G * X)` using `eq_neg_of_add_eq_zero_left hX`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hexpH : (NormedSpace.exp X)ᴴ = G * NormedSpace.exp (-X) * G⁻¹`. Rewrite using `[← Matrix.exp_conjTranspose, ← hXc, Matrix.exp_conj G (-X) hG]`. Establish `hneg : NormedSpace.exp (-X) * NormedSpace.exp X = 1`. Rewrite using `[← Matrix.exp_add_of_commute (-X) X (Commute.neg_left (Commute.refl X)), neg_add_cancel, NormedSpace.exp_zero]`.
+
+Rewrite using `[hexpH]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc G⁻¹ G, hGG, Matrix.one_mul]`. Use `_ = G := by rw [hneg, Matrix.mul_one]`.
+-/
 theorem exp_form {n : ℕ} (G X : Matrix (Fin n) (Fin n) ℂ) (hG : IsUnit G)
     (hX : Xᴴ * G + G * X = 0) : (NormedSpace.exp X)ᴴ * G * NormedSpace.exp X = G := by
 
@@ -44,6 +54,9 @@ theorem exp_form {n : ℕ} (G X : Matrix (Fin n) (Fin n) ℂ) (hG : IsUnit G)
         simp only [Matrix.mul_assoc]; rw [← Matrix.mul_assoc G⁻¹ G, hGG, Matrix.one_mul]
     _ = G := by rw [hneg, Matrix.mul_one]
 
+/- English proof (translation)
+Establish `h1 : gᴴ * G * g = G` using `hg`. Establish `h2 : hᴴ * G * h = G` using `hh`. Use `show (g * h)ᴴ * G * (g * h) = G`. Rewrite using `[Matrix.conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem uh_mul {n : ℕ} (G g h : Matrix (Fin n) (Fin n) ℂ) (hg : g ∈ Formalism.QuantumDeterminants.UH G) (hh : h ∈ Formalism.QuantumDeterminants.UH G) :
     g * h ∈ Formalism.QuantumDeterminants.UH G := by
 
@@ -56,6 +69,13 @@ theorem uh_mul {n : ℕ} (G g h : Matrix (Fin n) (Fin n) ℂ) (hg : g ∈ Formal
 
 variable {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar}
 
+/- English proof (translation)
+Establish `hJ : Formalism.REAL.Jm (M.ε τ) * Formalism.REAL.Jm (M.ε τ) = 1`. Simplify using `only [Formalism.REAL.Jm, Matrix.diagonal_mul_diagonal]`. Rewrite using `[← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `a`.
+
+Apply the tactic sequence `split_ifs <;> norm_num`. Establish `hJu : IsUnit (Formalism.REAL.Jm (M.ε τ))` using `(Matrix.isUnit_iff_isUnit_det _).2 (Matrix.isUnit_det_of_right_inverse hJ)`. Establish `hfr` using `M.fr_unit τ`. Establish `hfrH : IsUnit (M.fr τ)ᴴ` using `(Matrix.isUnit_iff_isUnit_det _).2 (by`. Rewrite using `[Matrix.det_conjTranspose]`.
+
+Conclude with `((Matrix.isUnit_iff_isUnit_det _).1 hfr).star)`. Rewrite using `[← M.fr_gram τ]`. Conclude with `(hfrH.mul hJu).mul hfr`.
+-/
 theorem gram_unit (M : DSModel V S) (τ : D.what₂.Tau) : IsUnit (gramAt D V τ) := by
 
   have hJ : Formalism.REAL.Jm (M.ε τ) * Formalism.REAL.Jm (M.ε τ) = 1 := by
@@ -72,6 +92,9 @@ theorem gram_unit (M : DSModel V S) (τ : D.what₂.Tau) : IsUnit (gramAt D V τ
   rw [← M.fr_gram τ]
   exact (hfrH.mul hJu).mul hfr
 
+/- English proof (translation)
+Establish `hG` using `gram_unit M τ`. Establish `h1 : Xᴴ * gramAt D V τ + gramAt D V τ * X = 0` using `hX`. Use `show (NormedSpace.exp (t • X))ᴴ * gramAt D V τ * NormedSpace.exp (t • X) = gramAt D V τ`. Use `exp_form _ _ hG ?_` and prove the remaining obligations. Rewrite using `[Matrix.conjTranspose_smul, star_trivial, Matrix.smul_mul, Matrix.mul_smul, ← smul_add, h1, smul_zero]`.
+-/
 theorem exp_mem_UH (M : DSModel V S) (τ : D.what₂.Tau) (X : Matrix (Fin V.rank) (Fin V.rank) ℂ)
     (hX : X ∈ lieAt V τ) (t : ℝ) : NormedSpace.exp (t • X) ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ) := by
 
@@ -82,6 +105,13 @@ theorem exp_mem_UH (M : DSModel V S) (τ : D.what₂.Tau) (X : Matrix (Fin V.ran
   rw [Matrix.conjTranspose_smul, star_trivial, Matrix.smul_mul, Matrix.mul_smul, ← smul_add, h1,
     smul_zero]
 
+/- English proof (translation)
+Establish `hd : IsUnit (M.fr τ).det` using `(Matrix.isUnit_iff_isUnit_det _).1 (M.fr_unit τ)`. Establish `hfr' : (M.fr τ)⁻¹ * M.fr τ = 1` using `Matrix.nonsing_inv_mul _ hd`. Use `show M.σ τ (M.fr τ * (g * h) * (M.fr τ)⁻¹) = (M.σ τ (M.fr τ * g * (M.fr τ)⁻¹)).comp (M.σ τ (M.fr τ * h * (M.fr τ)⁻¹))`. Establish `e : M.fr τ * (g * h) * (M.fr τ)⁻¹ = (M.fr τ * g * (M.fr τ)⁻¹) * (M.fr τ * h * (M.fr τ)⁻¹)`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[hfr', Matrix.mul_one]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by simp only [Matrix.mul_assoc]`. Rewrite using `[e]`. Establish `hmem : ∀ x ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ), M.fr τ * x * (M.fr τ)⁻¹ ∈ Formalism.MainNotions.S.UJset (M.ε τ)` using `fun x hx => conj_mem (Formalism.REAL.Jm (M.ε τ)) (gramAt D V τ) (M.fr τ) x (M.fr_unit τ) (M.fr_gram τ) hx`.
+
+Conclude with `(M.ds τ).2.2.1.1.2 _ (hmem g hg) _ (hmem h hh)`.
+-/
 theorem rep_mul (M : DSModel V S) (τ : D.what₂.Tau) (g h : Matrix (Fin V.rank) (Fin V.rank) ℂ)
     (hg : g ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ)) (hh : h ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ)) :
     M.rep τ (g * h) = (M.rep τ g).comp (M.rep τ h) := by
@@ -102,6 +132,9 @@ theorem rep_mul (M : DSModel V S) (τ : D.what₂.Tau) (g h : Matrix (Fin V.rank
     conj_mem (Formalism.REAL.Jm (M.ε τ)) (gramAt D V τ) (M.fr τ) x (M.fr_unit τ) (M.fr_gram τ) hx
   exact (M.ds τ).2.2.1.1.2 _ (hmem g hg) _ (hmem h hh)
 
+/- English proof (translation)
+Establish `hd : IsUnit (M.fr τ).det` using `(Matrix.isUnit_iff_isUnit_det _).1 (M.fr_unit τ)`. Use `show M.σ τ (M.fr τ * 1 * (M.fr τ)⁻¹) = 1`. Rewrite using `[Matrix.mul_one, Matrix.mul_nonsing_inv _ hd]`. Conclude with `(M.ds τ).2.2.1.1.1`.
+-/
 theorem rep_one (M : DSModel V S) (τ : D.what₂.Tau) : M.rep τ 1 = 1 := by
 
   have hd : IsUnit (M.fr τ).det := (Matrix.isUnit_iff_isUnit_det _).1 (M.fr_unit τ)
@@ -111,6 +144,9 @@ theorem rep_one (M : DSModel V S) (τ : D.what₂.Tau) : M.rep τ 1 = 1 := by
 
 open Classical in
 
+/- English proof (translation)
+Establish `h` using `hT.equiv τ _ (exp_mem_UH M τ X hX t) v ⟨_, hs⟩ rfl`. Use `first`. Consider the case `(rw [h]; rfl)`. Consider the case `(refine Eq.trans ?_ (congrFun h x).symm; rfl)`. Consider the case `(convert (congrFun h x).symm using 1)`.
+-/
 theorem orbit_eq (θ : InfFam D) (M : DSModel V S) (J : Set (GA D V)) (χ : GA D V → ℂ) (T : MMap M)
     (hT : IsMultMap θ M J χ T) (τ : D.what₂.Tau) (X : Matrix (Fin V.rank) (Fin V.rank) ℂ) (hX : X ∈ lieAt V τ)
     (v : M.Vec) (t : ℝ) (hs : M.rep τ (NormedSpace.exp (t • X)) (v τ) ∈ M.sm τ) (x : GA D V) :
@@ -122,6 +158,11 @@ theorem orbit_eq (θ : InfFam D) (M : DSModel V S) (J : Set (GA D V)) (χ : GA D
     | (refine Eq.trans ?_ (congrFun h x).symm; rfl)
     | (convert (congrFun h x).symm using 1)
 
+/- English proof (translation)
+Proceed by induction on `L with`. Consider the case `nil`. Simplify using `only [List.map_nil, List.sum_nil]`. Conclude with `isLittleO_zero _ _`. Consider the case `cons a L ih`.
+
+Simplify using `only [List.map_cons, List.sum_cons]`. Conclude with `((h a (by simp)).norm_left).add (ih fun l hl => h l (by simp [hl]))`.
+-/
 lemma sum_isLittleO {ι F : Type*} [NormedAddCommGroup F] (L : List ι) (g : ι → ℝ → F)
     (h : ∀ l ∈ L, g l =o[𝓝 0] (fun t : ℝ => t - 0)) :
     (fun t => (L.map fun l => ‖g l t‖).sum) =o[𝓝 0] (fun t : ℝ => t - 0) := by
@@ -142,6 +183,27 @@ open OrbStPf
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Introduce `θ _ V Ss M J χ T hT τ X hX v w hd x`. Establish `hU1 : (1 : Matrix (Fin V.rank) (Fin V.rank) ℂ) ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ)`. Express the relevant statement in the definitionally equal form `(1 : Matrix (Fin V.rank) (Fin V.rank) ℂ)ᴴ * gramAt D V τ * 1 = gramAt D V τ`. Simplify using the standard rewrite rules. Establish `hUm : ∀ a ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ), ∀ b ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ), a * b ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ)` using `fun a ha b hb => uh_mul _ a b ha hb`.
+
+Establish `hρ : ∀ a ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ), ∀ b ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ), M.rep τ (a * b) = (M.rep τ a).comp (M.rep τ b)` using `fun a ha b hb => rep_mul M τ a b ha hb`. Establish `hexp : ∀ Y ∈ lieAt V τ, ∀ t : ℝ, NormedSpace.exp (t • Y) ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ)` using `fun Y hY t => exp_mem_UH M τ Y hY t`. Establish `hρ1 : M.rep τ 1 = 1` using `rep_one M τ`. Establish `hsm : ∀ a, a ∈ M.sm τ ↔ SmoothVec (lieAt V τ) (M.rep τ) a` using `fun a => by`. Unfold `DSModel.sm`.
+
+Conclude with `mem_span_smoothVec`. Establish `hu : SmoothVec (lieAt V τ) (M.rep τ) (v τ)` using `(hsm _).1 (v τ).2`. Establish `hw : SmoothVec (lieAt V τ) (M.rep τ) (w : M.H τ)` using `(hsm _).1 w.2`. Take `⟨ℓ, hℓS, hℓ⟩` from `hT.cont τ v x`. Take `⟨SS, C, hSL, hC⟩` from `hℓS`.
+
+Establish `hut : ∀ t : ℝ, SmoothVec (lieAt V τ) (M.rep τ) (M.rep τ (NormedSpace.exp (t • X)) (v τ))` using `fun t => smoothVec_rep_exp hU1 hUm hρ hexp hX t hu`. Establish `hf : ∀ t : ℝ, T v (x * oneP θ V τ X t) = ℓ (M.rep τ (NormedSpace.exp (t • X)) (v τ))`. Introduce `t`. Establish `hs` using `(hsm _).2 (hut t)`. Rewrite using `[orbit_eq θ M J χ T hT τ X hX v t hs x]`.
+
+Conclude with `(hℓ ⟨_, hs⟩).symm`. Establish `hut0 : M.rep τ (NormedSpace.exp ((0 : ℝ) • X)) (v τ) = v τ`. Simplify using `[hρ1]`. Set `Dt : ℝ → M.H τ` to `fun t => M.rep τ (NormedSpace.exp (t • X)) (v τ) + (-1 : ℝ) • (v τ : M.H τ) + (-t) • (w : M.H τ)`. Establish `hDs : ∀ t, SmoothVec (lieAt V τ) (M.rep τ) (Dt t)` using `fun t => smoothVec_add (smoothVec_add (hut t) (smoothVec_rsmul _ hu)) (smoothVec_rsmul _ hw)`.
+
+Establish `hg : ∀ l ∈ SS, (fun t : ℝ => l.foldr (dRep (M.rep τ)) (Dt t)) =o[𝓝 0] (fun t : ℝ => t - 0)`. Introduce `l hl`. Establish `hL` using `hSL l hl`. Establish `hder` using `word_deriv hU1 hUm hρ hexp hρ1 l hL hX hu hw hd`. Use `(hasDerivAt_iff_isLittleO.1 hder).congr_left (fun t => ?_)` and prove the remaining obligations.
+
+Simplify using `only [Dt]`. Rewrite using `[word_lin hU1 hUm hρ hexp hρ1 l hL hX (smoothVec_add (hut t) (smoothVec_rsmul _ hu)) hw, word_lin hU1 hUm hρ hexp hρ1 l hL hX (hut t) hu, hut0]`. Simplify using `only [neg_smul, one_smul, sub_eq_add_neg, neg_zero, add_zero]`. Establish `hbig : (fun t => ℓ (Dt t)) =O[𝓝 0] (fun t => (SS.map fun l => ‖l.foldr (dRep (M.rep τ)) (Dt t)‖).sum)`. Use `IsBigO.of_bound |C| (Filter.Eventually.of_forall fun t => ?_)` and prove the remaining obligations.
+
+Establish `h1` using `hC (Dt t) (hDs t)`. Establish `hnn : 0 ≤ (SS.map fun l => ‖l.foldr (dRep (M.rep τ)) (Dt t)‖).sum` using `List.sum_nonneg (fun a ha => by obtain ⟨l, -, rfl⟩ := List.mem_map.1 ha; exact norm_nonneg _)`. Rewrite using `[Real.norm_of_nonneg hnn]`. Conclude with `h1.trans (mul_le_mul_of_nonneg_right (le_abs_self C) hnn)`. Establish `ho` using `hbig.trans_isLittleO (sum_isLittleO SS _ hg)`.
+
+Rewrite using `[← hℓ w, hasDerivAt_iff_isLittleO]`. Use `ho.congr_left (fun t => ?_)` and prove the remaining obligations. Rewrite using `[hf t, hf 0, hut0]`. Simplify using `only [Dt, map_add, LinearMap.map_smul_of_tower, Complex.real_smul, sub_zero]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem orbitDerMult_holds (D : D7) : OrbitDerMult D := by
   classical
   intro θ _ V Ss M J χ T hT τ X hX v w hd x

@@ -3,6 +3,9 @@ import Formalism.SharpRestriction.GrowthBounds.BinomialPolynomialIdentities.LieP
 
 namespace Formalism.MainNotions.G.ColumnFamilies
 
+/- English proof (translation)
+The claim follows from `saturatedLowerSetSpan_of_lowerSetTypesSpan D (lower_set_types_span D)`.
+-/
 theorem admissible_lowerSet_span (D : Formalism.BasicNotions.D7) : Formalism.MainNotions.CovariantDegrees.SaturatedLowerSetSpan D := saturatedLowerSetSpan_of_lowerSetTypesSpan D (lower_set_types_span D)
 
 end Formalism.MainNotions.G.ColumnFamilies

@@ -19,6 +19,9 @@ def thetaR {A : Type} [CommRing A] (σ : A →+* A) (n : ℕ) : Monoid.End (GL (
   map_mul' := fun a b => Units.ext (by
     simp only [_root_.mul_inv_rev, Units.val_mul, Matrix.map_mul, Matrix.transpose_mul])
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem thetaR_val {A : Type} [CommRing A] (σ : A →+* A) (n : ℕ) (g : GL (Fin n) A) :
     (thetaR σ n g).val = (((g⁻¹ : GL (Fin n) A) : Matrix (Fin n) (Fin n) A).map σ)ᵀ := rfl
 
@@ -29,6 +32,9 @@ def perp {K : Type} [Field K] (σ : K →+* K) {n : ℕ} (W : Submodule K (Fin n
   smul_mem' := fun c y hy x hx => by
     simp only [Pi.smul_apply, smul_eq_mul, mul_left_comm _ c, ← Finset.mul_sum, hy x hx, mul_zero]
 
+/- English proof (translation)
+The claim follows from `eq_top_iff.2 fun _ _ x hx => by simp [(Submodule.mem_bot K).1 hx]`.
+-/
 theorem perp_bot {K : Type} [Field K] (σ : K →+* K) {n : ℕ} : perp σ (⊥ : Submodule K (Fin n → K)) = ⊤ :=
   eq_top_iff.2 fun _ _ x hx => by simp [(Submodule.mem_bot K).1 hx]
 
@@ -80,6 +86,9 @@ def basisMat (W : Submodule E (Fin n → E)) : Matrix (Fin n) (Fin (Module.finra
 
 def deg (x : GA E n) (W : Submodule E (Fin n → E)) : ℝ := degM x (basisMat W)
 
+/- English proof (translation)
+Simplify using `[degM, lognInf, lognFin]`.
+-/
 theorem degM_zero (x : GA E n) (M : Matrix (Fin n) (Fin 0) E) : degM x M = 0 := by
   simp [degM, lognInf, lognFin]
 
@@ -104,6 +113,9 @@ structure IsTest (φ : GA E n → ℂ) : Prop where
   level : ∃ U : Subgroup (GL (Fin n) (Af E)), IsOpen (U : Set (GL (Fin n) (Af E))) ∧
     ∀ u ∈ U, ∀ g, φ (finGL E n u * g) = φ g ∧ φ (g * finGL E n u) = φ g
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨continuous_const, HasCompactSupport.zero, ⊤, isOpen_univ, fun _ _ _ => ⟨rfl, rfl⟩⟩`.
+-/
 theorem isTest_zero : IsTest (0 : GA E n → ℂ) :=
   ⟨continuous_const, HasCompactSupport.zero, ⊤, isOpen_univ, fun _ _ _ => ⟨rfl, rfl⟩⟩
 
@@ -167,9 +179,15 @@ def VeryCusp (f : GL (Fin n) ℂ → ℂ) : Prop :=
 def VCAt (v : InfinitePlace E) (φ : GA E n → ℂ) : Prop :=
   ∀ g : GA E n, GeneralLinearGroup.map (cV v) g = 1 → VeryCusp fun d => φ (embInf n v d * g)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ _ _ => rfl, fun _ _ _ _ _ _ _ _ _ _ _ _ _ => by simp⟩`.
+-/
 theorem veryCusp_zero : VeryCusp (0 : GL (Fin n) ℂ → ℂ) :=
   ⟨fun _ _ _ => rfl, fun _ _ _ _ _ _ _ _ _ _ _ _ _ => by simp⟩
 
+/- English proof (translation)
+Introduce `_ _ h` and use `absurd rfl h`.
+-/
 theorem regSupp_zero : RegSupp (0 : GA E n → ℂ) := fun _ _ h => absurd rfl h
 
 end CM

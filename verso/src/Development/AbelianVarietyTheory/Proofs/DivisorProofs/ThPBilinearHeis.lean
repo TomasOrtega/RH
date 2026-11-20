@@ -14,6 +14,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.AdTh
 
+/- English proof (translation)
+Introduce `E _ _ _ r g n X bas idx hs hn q0 hq x hd φ hφ P`. Take `⟨h1, h2, h3⟩` from `thA_heis_entire_linear_injective E r g n X bas idx hs hn x hd φ hφ`. Use `⟨fun ψ hψ a b => ?_, fun Q a b => ?_, fun y => ?_⟩` and prove the remaining obligations. Establish `h4` using `(thA_heis_entire_linear_injective E r g n X bas idx hs hn x hd ψ hψ).2.1`. Establish `e1` using `GlobalTheory.Jet.polyDeriv_smul_fun P (letterDir X hq idx) h2 a 0`.
+
+Establish `e2` using `GlobalTheory.Jet.polyDeriv_smul_fun P (letterDir X hq idx) h4 b 0`. Establish `e3` using `GlobalTheory.Jet.polyDeriv_add_fun P (letterDir X hq idx) (h2.const_smul a) (h4.const_smul b) 0`. Unfold `thP`. Rewrite using `[((h3 ψ hψ).1 a b).2, ← e1, ← e2]`. Conclude with `e3`.
+
+Unfold `thP`. Rewrite using `[ReciprocityTheory.ChartRestriction.G.I2.polyDeriv_add, ReciprocityTheory.ChartRestriction.G.I2.polyDeriv_smul, ReciprocityTheory.ChartRestriction.G.I2.polyDeriv_smul]`. Unfold `thP`. Rewrite using `[funext fun z => (h1 y z).2]`.
+-/
 theorem theta_bilinear_heisenberg : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r g n : ℕ) (X : Data E r) (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ) (idx : Fin g ≃ X.Ψ × Fin r), IsSympl X bas → Even n → ∀ (q0 : ℕ) (hq : X.p0 + q0 = r), ∀ x ∈ X.dom, ∀ φ : TF n g, GlobalTheory.SW.IsSB φ → ∀ P : Harm.Poly ℂ X.Ψ q0 X.p0 (Fin n), (∀ φ' : TF n g, GlobalTheory.SW.IsSB φ' → ∀ a b : ℂ, thP X hq bas idx (a • φ + b • φ') P x = a * thP X hq bas idx φ P x + b * thP X hq bas idx φ' P x) ∧ (∀ (P' : Harm.Poly ℂ X.Ψ q0 X.p0 (Fin n)) (a b : ℂ), thP X hq bas idx φ (a • P + b • P') x = a * thP X hq bas idx φ P x + b * thP X hq bas idx φ P' x) ∧ ∀ y : Matrix (Fin n) (Fin r) E, thP X hq bas idx (heisG X bas y φ) P x = ReciprocityTheory.ChartRestriction.G.I2.polyDeriv P (letterDir X hq idx) (fun z => cexp (-(Real.pi * ∑ b, hx X bas idx x (z b + (1 / 2 : ℂ) • pv X idx x (y b)) (pv X idx x (y b)))) * thA X bas idx φ x (fun b => z b + pv X idx x (y b))) 0 := by
   intro E _ _ _ r g n X bas idx hs hn q0 hq x hd φ hφ P
   obtain ⟨h1, h2, h3⟩ := thA_heis_entire_linear_injective E r g n X bas idx hs hn x hd φ hφ

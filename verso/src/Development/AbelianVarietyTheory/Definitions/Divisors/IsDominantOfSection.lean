@@ -39,6 +39,9 @@ structure Dbl (Y : Var F) where
 
 attribute [instance] Dbl.integral Dbl.closed
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Function.Surjective.denseRange fun y => ⟨s y, by rw [← Scheme.Hom.comp_apply, h]; rfl⟩⟩`.
+-/
 theorem isDominant_of_section {Z W : Scheme.{0}} {p : Z ⟶ W} {s : W ⟶ Z} (h : s ≫ p = 𝟙 _) : IsDominant p :=
   ⟨Function.Surjective.denseRange fun y => ⟨s y, by rw [← Scheme.Hom.comp_apply, h]; rfl⟩⟩
 
@@ -97,6 +100,11 @@ def Dbl.prod (Y : Var F) : Dbl Y where
     exact (Scheme.Hom.comp_apply _ _ _).symm.trans
       (congrArg (fun u : Sp K ⟶ _ => u (IsLocalRing.closedPoint K)) e)⟩
 
+/- English proof (translation)
+Establish `h1` using `smoothOfRelativeDimension_isStableUnderBaseChange.{0} Y.dim`. Establish `: SmoothOfRelativeDimension Y.dim (pullback.fst Y.str Y.str)` using `MorphismProperty.of_isPullback (P := @SmoothOfRelativeDimension Y.dim) (IsPullback.of_hasPullback Y.str Y.str).flip Y.smooth`. Establish `: SmoothOfRelativeDimension (Y.dim + Y.dim) (pullback.fst Y.str Y.str ≫ Y.str)` using `inferInstance`. Use `SmoothOfRelativeDimension.smooth Y.dim (pullback.fst Y.str Y.str)` as an intermediate fact. Establish `: GeometricallyConnected (pullback.fst Y.str Y.str ≫ Y.str)` using `GeometricallyConnected.comp _ _`.
+
+Take `⟨V, e, hd, -⟩` from `Var.exists_iso (pullback.fst Y.str Y.str ≫ Y.str) (Y.dim + Y.dim) (Dbl.prod Y).proj`. Rewrite using `[← hd, ← V.topologicalKrullDim_eq]`. Conclude with `IsHomeomorph.topologicalKrullDim_eq _ e.hom.homeomorph.isHomeomorph`.
+-/
 theorem Dbl.prod_dim (Y : Var F) : topologicalKrullDim (Dbl.prod Y).Z = (Y.dim + Y.dim : ℕ) := by
   have h1 := smoothOfRelativeDimension_isStableUnderBaseChange.{0} Y.dim
   have : SmoothOfRelativeDimension Y.dim (pullback.fst Y.str Y.str) :=
@@ -109,11 +117,17 @@ theorem Dbl.prod_dim (Y : Var F) : topologicalKrullDim (Dbl.prod Y).Z = (Y.dim +
   rw [← hd, ← V.topologicalKrullDim_eq]
   exact IsHomeomorph.topologicalKrullDim_eq _ e.hom.homeomorph.isHomeomorph
 
+/- English proof (translation)
+Unfold `Dbl.Small`. Rewrite using `[Dbl.prod_dim]`. Conclude with `(by omega : Y.dim + Y.dim ≤ Y.dim + 1)` after adjusting the coercions.
+-/
 theorem Dbl.prod_small (Y : Var F) (h : Y.dim ≤ 1) : (Dbl.prod Y).Small := by
   unfold Dbl.Small
   rw [Dbl.prod_dim]
   exact_mod_cast (by omega : Y.dim + Y.dim ≤ Y.dim + 1)
 
+/- English proof (translation)
+Introduce `e` and use `by have e' : pullback.fst Y.str Y.str = pullback.snd Y.str Y.str := e let i : pullback Y.str Y.str ≅ Y.X := ⟨pullback.fst _ _, pullback.diagonal Y.str, by apply pullback.hom_ext <;> simp [← e'], pullback.diagonal_fst _⟩ have h2 := (IsHomeomorph.topologicalKrullDim_eq _ (Scheme.ho …`.
+-/
 theorem Dbl.prod_ne (Y : Var F) (h : 0 < Y.dim) : (Dbl.prod Y).p₁ ≠ (Dbl.prod Y).p₂ := fun e => by
   have e' : pullback.fst Y.str Y.str = pullback.snd Y.str Y.str := e
   let i : pullback Y.str Y.str ≅ Y.X := ⟨pullback.fst _ _, pullback.diagonal Y.str,
@@ -123,9 +137,15 @@ theorem Dbl.prod_ne (Y : Var F) (h : 0 < Y.dim) : (Dbl.prod Y).p₁ ≠ (Dbl.pro
   have : Y.dim + Y.dim = Y.dim := by exact_mod_cast h3
   omega
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Dbl.prod_small _ le_rfl, Dbl.prod_ne _ one_pos⟩`.
+-/
 example : (Dbl.prod (proj F 1)).Small ∧ (Dbl.prod (proj F 1)).p₁ ≠ (Dbl.prod (proj F 1)).p₂ :=
   ⟨Dbl.prod_small _ le_rfl, Dbl.prod_ne _ one_pos⟩
 
+/- English proof (translation)
+Introduce `h` and use `by unfold Dbl.Small at h rw [Dbl.prod_dim, proj_dim] at h norm_cast at h`.
+-/
 example : ¬ (Dbl.prod (proj F 2)).Small := fun h => by
   unfold Dbl.Small at h
   rw [Dbl.prod_dim, proj_dim] at h
@@ -154,6 +174,13 @@ def shear (τ : ι) (a b : Fin (m τ)) {K : Type} [CommRing K] (t : K) : Mat m K
 def minor (τ : ι) (a b : Fin (m τ)) {K : Type} [CommRing K] (C : Mat m K) : K :=
   C τ a a * C τ b b - C τ a b * C τ b a
 
+/- English proof (translation)
+Establish `e : ∀ σ : Unit, shear (m` using `fun _ : Unit => 2) () 0 1 t σ = !![1, t; 0, 1] := fun σ => by`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [shear]`. Use `⟨⟨fun σ => ?_, ?_, fun σ i j hij h => ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[e]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[e]`. Simplify using `using ht`. Apply the tactic sequence `rw [e]; fin_cases i <;> fin_cases j <;> simp_all`. Rewrite using `[minor, e]`.
+
+Simplify using the standard rewrite rules.
+-/
 example {K : Type} [Field K] (t : K) (ht : t ≠ 0) :
     AlmostLow (m := fun _ : Unit => 2) () 0 1 (shear () 0 1 t) ∧
       minor (m := fun _ : Unit => 2) () 0 1 (shear () 0 1 t) = 1 := by

@@ -6,5 +6,8 @@ import Formalism.HarderNarasimhan.ShiftInvariance
 open MeasureTheory NumberField Matrix Finset Formalism.MainNotions.S Formalism.REAL Formalism.QuantumDeterminants GlobalTheory.Count GlobalTheory.Dec
 open scoped InnerProductSpace ComplexOrder ContDiff
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.GlobProj.globalProj_holds | exact GlobalTheory.GlobProj.globalProj_holds | (intros; apply GlobalTheory.GlobProj.globalProj_holds <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.globalConvolutionOrthogonalProjector_proof : GlobalProj := by
   first | exact @GlobalTheory.GlobProj.globalProj_holds | exact GlobalTheory.GlobProj.globalProj_holds | (intros; apply GlobalTheory.GlobProj.globalProj_holds <;> assumption)

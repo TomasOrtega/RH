@@ -5,6 +5,9 @@ open MeasureTheory
 namespace UpperTheory.Esk.CentralTermsContribution
 
 open Classical in
+/- English proof (translation)
+Apply the tactic sequence `have h1 : Summable fun g => if P g then f g else 0 := Summable.of_norm_bounded hf (fun g => by split_ifs <;> simp)`. Apply the tactic sequence `have h2 : Summable fun g => if P g then 0 else f g := Summable.of_norm_bounded hf (fun g => by split_ifs <;> simp)`. Rewrite using `[← Summable.tsum_add h1 h2]`. Apply the tactic sequence `congr 1; funext g; split_ifs <;> simp`.
+-/
 theorem split_tsum {G : Type} (P : G → Prop) (f : G → ℂ) (hf : Summable fun g => ‖f g‖) :
     ∑' g, f g = (∑' g, if P g then f g else 0) + ∑' g, if P g then 0 else f g := by
   have h1 : Summable fun g => if P g then f g else 0 :=
@@ -18,6 +21,15 @@ end UpperTheory.Esk.CentralTermsContribution
 
 open UpperTheory.Esk in
 open Classical in
+/- English proof (translation)
+Introduce `hE2 hcut hE6 hFell hFhyp F I Gf _ _ _ D hAx ι _ a`. Take `⟨S, hFam, hS⟩` from `hFell F I Gf D hAx ι a`. Use `⟨S, hFam, fun k hH hfd h => ?_⟩` and prove the remaining obligations. Take `⟨⟨b, hb⟩, -⟩` from `hcut F I Gf D hAx`. Take `⟨hi, htr⟩` from `hE6 F I Gf ι D k a hH hfd h b hb`.
+
+Take `⟨hie, hge⟩` from `hS k hH b hb`. Establish `hsplit : ∀ y, (∑' γ : PG F, D.kk k a γ y) = (∑' γ : PG F, if IsEll γ then D.kk k a γ y else 0) + ∑' γ : PG F, if IsEll γ then 0 else D.kk k a γ y` using `fun y => CentralTermsContribution.split_tsum _ _ ((hE2 F I Gf ι D k a hH).1 y)`. Establish `hfun : (fun y => b y • ∑' γ : PG F, D.kk k a γ y) = fun y => b y • (∑' γ : PG F, if IsEll γ then D.kk k a γ y else 0) + b y • ∑' γ : PG F, if IsEll γ then 0 else D.kk k a γ y`. Use function extensionality and compare the values at `y`. Rewrite using `[hsplit y, smul_add]`.
+
+Establish `hih : Integrable (fun y => b y • ∑' γ : PG F, if IsEll γ then 0 else D.kk k a γ y) D.μY`. Use `hi.sub hie` as an intermediate fact. Use `this.congr (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Simplify using `only [Pi.sub_apply]`. Rewrite using `[hsplit y, smul_add, add_sub_cancel_left]`.
+
+Establish `h0` using `hFhyp F I Gf ι D k a hH b hb hih`. Rewrite using `[htr, ← hge, hfun, integral_add hie hih, h0, add_zero]`.
+-/
 theorem UpperTheory.Esk.pf_TF : UpperTheory.Esk.E2 → UpperTheory.Esk.Ecut → UpperTheory.Esk.E6 → UpperTheory.Esk.Fell → UpperTheory.Esk.Fhyp → UpperTheory.Esk.TF := by
   intro hE2 hcut hE6 hFell hFhyp F I Gf _ _ _ D hAx ι _ a
   obtain ⟨S, hFam, hS⟩ := hFell F I Gf D hAx ι a

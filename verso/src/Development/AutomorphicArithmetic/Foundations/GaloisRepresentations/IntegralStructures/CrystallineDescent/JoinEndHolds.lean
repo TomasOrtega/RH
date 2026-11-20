@@ -16,6 +16,23 @@ open UpperTheory.Gal.TP
 
 namespace UpperTheory.Gal.Int.Core
 
+/- English proof (translation)
+Introduce `hL m hm E Ω _ _ _ _ _ _ l _ ι hF d hd hsq U hU lam hl`. Take `⟨T, hT, hAT⟩` from `h4 E m U hU`. Establish `hsp` using `hF.2.2.2.1`. Establish `hFO : FieldOK E l d` using `⟨hd, hsq, hF.2.1, fun w hw => ⟨fun h => hw (hsp w h), hF.2.2.1 w⟩⟩`. Establish `key : ∀ u v : HeightOneSpectrum (𝓞 E), ((l : ℕ) : 𝓞 E) ∈ u.asIdeal → ((l : ℕ) : 𝓞 E) ∈ v.asIdeal → Apart v u → ∃ r : G E Ω →* GL (Fin m) (Qbar l), Continuous r ∧ IsSSRep r ∧ (∀ w, UsPl d w → ((l : ℕ) : 𝓞 E) ∉ w.asIdeal → ∀ B, SatU U w B → FrobEig ι r w (algSat m (normV w) B)) ∧ ∀ …`.
+
+Introduce `u v hu hv huv`. Take `⟨r, hc, hs, f1, f2, f3⟩` from `hL E Ω l ι m hm d hFO T hT U hAT u v hu (hsp u hu) hv (hsp v hv) huv`. Use `⟨r, hc, hs, f1, fun w hw a1 a2 B hB => (sphG_iff_cl hS ι r w B lam).1 fun c => ?_⟩` and prove the remaining obligations. Establish `hD` using `f2 w hw a1 a2 ⟨B, hB⟩`. Consider the cases of `c with`.
+
+Consider the case `unr => exact fun h => absurd hw h`. Consider the case `dR`. Introduce `P AI ht A hA O _ _ _ Bw hj`. Conclude with `⟨(hD P AI ht A hA O Bw hj).2.1, fun τ LL' τ' hi J hJ => (hD P AI ht A hA O Bw hj).2.2 τ LL' τ' hi (lam _) J (hl _) hJ⟩`. Consider the case `crys => exact fun P AI ht A hA O _ _ _ Bw hj => (hD P AI ht A hA O Bw hj).1`.
+
+Consider the case `phi`. Introduce `P AI ht A hA O _ _ _ Bw hj g`. Conclude with `h3 E Ω A w hA _ _ g (f3 w hw a1 a2 B hB P AI ht A hA O Bw hj g)`. Take `⟨w₁, w₂, w₃, l1, l2, l3, a12, a13, a23⟩` from `hF.2.2.2.2`. Take `⟨r, hc, hs, f1, -⟩` from `key w₂ w₁ l2 l1 a12`.
+
+Use `⟨r, hc, hs, fun w B hw hB => (sphG_iff_cl hS ι r w B lam).2 ?_⟩` and prove the remaining obligations. Distinguish the cases in `hwl : ((l : ℕ) : 𝓞 E) ∈ w.asIdeal`. Establish `pick : ∃ u v : HeightOneSpectrum (𝓞 E), ((l : ℕ) : 𝓞 E) ∈ u.asIdeal ∧ ((l : ℕ) : 𝓞 E) ∈ v.asIdeal ∧ Apart v u ∧ Apart w u ∧ Apart w v`. Unfold `Apart at a12 a13 a23 ⊢`. Distinguish the cases in `e1 : w.under (𝓞 (maximalRealSubfield E)) = w₁.under (𝓞 (maximalRealSubfield E))`.
+
+Conclude with `⟨w₃, w₂, l3, l2, a23, e1 ▸ a13, e1 ▸ a12⟩`. Distinguish the cases in `e2 : w.under (𝓞 (maximalRealSubfield E)) = w₂.under (𝓞 (maximalRealSubfield E))`. Conclude with `⟨w₃, w₁, l3, l1, a13, e2 ▸ a23, e1⟩`. Conclude with `⟨w₂, w₁, l2, l1, a12, e2, e1⟩`. Take `⟨u, v, hu, hv, huv, hwu, hwv⟩` from `pick`.
+
+Take `⟨s, sc, ss, g1, g2⟩` from `key u v hu hv huv`. Use `hC E Ω l ι m s r sc (h2 E Ω l ι m s r sc hc ss hs ?_) w _ _ (g2 w hwl hwu hwv B hB.2)` and prove the remaining obligations. Use `filter_upwards [h1 E d hd, hA E m U hU, GlobalTheory.CongEx.eventually_not_mem_l E l] with x x1 x2 x3 hp`. Take `⟨B', hB'⟩` from `x2 (x1 hp).1`. Conclude with `⟨_, g1 x (x1 hp) x3 B' hB', f1 x (x1 hp) x3 B' hB'⟩`.
+
+Conclude with `(hW E Ω l ι m r w hwl _ _).2 (f1 w hw hwl B hB.2)`.
+-/
 theorem joinU_of (h1 : OneUs) (h2 : IsoOne) (h3 : PhiPol) (h4 : AutT) (hA : Sub.SatAE) (hC : Sub.ClConj) (hS : Sub.SatPol)
     (hW : Sub.ClAway) : JoinU := by
   intro hL m hm E Ω _ _ _ _ _ _ l _ ι hF d hd hsq U hU lam hl
@@ -61,6 +78,15 @@ theorem joinU_of (h1 : OneUs) (h2 : IsoOne) (h3 : PhiPol) (h4 : AutT) (hA : Sub.
     exact ⟨_, g1 x (x1 hp) x3 B' hB', f1 x (x1 hp) x3 B' hB'⟩
   · exact (hW E Ω l ι m r w hwl _ _).2 (f1 w hw hwl B hB.2)
 
+/- English proof (translation)
+Introduce `hD hU E Ω _ _ _ _ _ _ l _ ι hF hI d hd hsq a ha π hπ`. Take `⟨T, hT, -, U, hM⟩` from `hD E l a (Fact.out) ha π hπ ∅`. Take `⟨lam, hlam⟩` from `GlobalTheory.Cong.exists_weight_of_isAutRepU E a U hM.aut`. Take `⟨r, hc, hs, hr⟩` from `hU E Ω l ι hF hI d hd hsq a ha U hM.aut lam hlam`. Use `⟨r, hc, hs, fun w B hw hB c => ?_⟩` and prove the remaining obligations.
+
+Take `⟨σ, hσ, -⟩` from `GlobalTheory.CuspRep.LocEx.exists_isLocComp GlobalTheory.automorphicFormsFiniteGL E a π w`. Establish `h` using `hr w B hw ⟨hw.1, σ, hM.split w hw.1 σ hσ, ((GlobalTheory.Cong.satake_locComp E a π w σ hσ).1 B).1 hB⟩ c`. Consider the cases of `c with`. Consider the case `unr => exact h`. Consider the case `dR`.
+
+Introduce `P AI ht A hA O _ _ _ Bw hj`. Use `⟨(h P AI ht A hA O Bw hj).1, fun τ LL' τ' hi J hJ => (h P AI ht A hA O Bw hj).2 τ LL' τ' hi J ?_⟩` and prove the remaining obligations. Rewrite `hJ` using `[hM.inf _ _ (hlam _)]`. Conclude with `hJ`. Consider the case `crys => exact fun P AI ht A hA O _ _ _ Bw hj _ _ _ => h P AI ht A hA O Bw hj`.
+
+Consider the case `phi => exact h`.
+-/
 theorem joinGL_holds : JoinGL := by
   intro hD hU E Ω _ _ _ _ _ _ l _ ι hF hI d hd hsq a ha π hπ
   obtain ⟨T, hT, -, U, hM⟩ := hD E l a (Fact.out) ha π hπ ∅
@@ -79,6 +105,11 @@ theorem joinGL_holds : JoinGL := by
   | crys => exact fun P AI ht A hA O _ _ _ Bw hj _ _ _ => h P AI ht A hA O Bw hj
   | phi => exact h
 
+/- English proof (translation)
+Introduce `h E Ω _ _ _ _ _ _ l _ ι a ha π hπ`. Take `⟨r, hc, hs, hr⟩` from `h E Ω l ι a ha π hπ.all`. Use `⟨r, ⟨hc, hs, ?_⟩, fun w B hB => ⟨hr w B trivial hB .unr, hr w B trivial hB .dR, hr w B trivial hB .crys, hr w B trivial hB .phi⟩⟩` and prove the remaining obligations. Use `filter_upwards [GlobalTheory.CongEx.eventually_not_mem_l E l, GlobalTheory.CuspRep.UnrSat.eventually_hasSatGL_locRep GlobalTheory.automorphicFormsFiniteGL E a π] with w hl hB`. Take `⟨B, hB⟩` from `hB`.
+
+Conclude with `⟨B, hB, hr w B trivial hB .unr hl⟩`.
+-/
 theorem joinEnd_holds : JoinEnd := by
   intro h E Ω _ _ _ _ _ _ l _ ι a ha π hπ
   obtain ⟨r, hc, hs, hr⟩ := h E Ω l ι a ha π hπ.all
@@ -89,6 +120,23 @@ theorem joinEnd_holds : JoinEnd := by
   obtain ⟨B, hB⟩ := hB
   exact ⟨B, hB, hr w B trivial hB .unr hl⟩
 
+/- English proof (translation)
+Introduce `hQL E Ω _ _ _ _ _ _ l _ ι a ha π fam`. Establish `hsat` using `GlobalTheory.CuspRep.UnrSat.eventually_hasSatGL_locRep GlobalTheory.automorphicFormsFiniteGL E a π`. Set `S : Set (QCM E Ω)` to `{Q | ∃ r : G ↥Q.K Ω →* GL (Fin a) (Qbar l), Continuous r ∧ IsSSRep r ∧ AttOne (CG.mk π).HasSat ι ↥Q.K r}`. Establish `serve : ∀ w₀ (Q : QCM E Ω), Serves π ι w₀ Q → ∃ (P : CuspSub ↥Q.K a) (r : G ↥Q.K Ω →* GL (Fin a) (Qbar l)), IsLift π P ∧ Continuous r ∧ IsSSRep r ∧ AttOne (CG.mk π).HasSat ι ↥Q.K r ∧ ∀ w B, w.under (𝓞 E) = w₀ → (CG.mk P).HasSat w B → ∀ c, GlobalTheory.RoadU.SphAt c P ι r w B`. Introduce `w₀ Q hQ`.
+
+Take `⟨P, hPl⟩` from `hQL E ↥Q.K Q.two a ha π hQ.2.1`. Take `⟨p, ⟨r, hc, hs, hr⟩, hp1, hp2⟩` from `hQ.2.2 P hPl`. Use `⟨P, r, hPl, hc, hs, ?_, fun w B hw => hr w B (hp2 w hw)⟩` and prove the remaining obligations. Unfold `AttOne`. Use `filter_upwards [hp1, GlobalTheory.CongEx.eventually_not_mem_l (↥Q.K) l, (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.tendsto_under (K := E) (L := ↥Q.K)).eventually hsat] with w x1 x2 x3 hp`.
+
+Take `⟨B, hB⟩` from `x3`. Establish `hq` using `GlobalTheory.RealGal.AttRes.normV_eq_pow (F := E) w`. Establish `hf : w.asIdeal.inertiaDeg (𝓞 E) = 1` using `Nat.Prime.eq_one_of_pow (hq ▸ hp)`. Establish `hB' : (CG.mk P).HasSat w B` using `by simpa [hf] using hPl.sat w _ B hq hB`. Conclude with `⟨B, hB, hr w B (x1 hp) hB' .unr x2⟩`.
+
+Establish `famS : ∀ w₀ Q, Serves π ι w₀ Q → Q ∈ S` using `fun w₀ Q hQ => by`. Take `⟨_, r, -, a1, a2, a3, -⟩` from `serve w₀ Q hQ`. Conclude with `⟨r, a1, a2, a3⟩`. Take `⟨v0, -⟩` from `GlobalTheory.CongEx.exists_place_over E l`. Establish `hS : S.Infinite` using `(fam v0).mono fun Q hQ => famS v0 Q hQ`.
+
+Use `choose r hr using fun Q : ↥S => Q.2`. Take `⟨ρ, hρc, hρs, hev⟩` from `hP E Ω l ι a (CG.mk π).HasSat (fun v B B' h h' => h.unique h') S hS r hr`. Use `⟨ρ, hρc, hρs, fun w B _ hB c => ?_⟩` and prove the remaining obligations. Establish `hfin` using `(Filter.eventually_cofinite.1 hev).image Subtype.val`. Take `⟨Q, hQ, hQn⟩` from `((fam w).diff hfin).nonempty`.
+
+Establish `hiso : RepIso (r ⟨Q, famS w Q hQ⟩) (ρ.comp (res E Ω ↥Q.K))`. Assume the negation of the conclusion as `hc`. Conclude with `hQn ⟨⟨Q, famS w Q hQ⟩, hc, rfl⟩`. Take `⟨P, s, hPl, sc, ss, sa, hs⟩` from `serve w Q hQ`. Take `⟨rc, rs, ra⟩` from `hr ⟨Q, famS w Q hQ⟩`.
+
+Establish `e : RepIso s (r ⟨Q, famS w Q hQ⟩)`. Use `h2 (↥Q.K) Ω l ι a s _ sc rc ss rs ?_` and prove the remaining obligations. Use `filter_upwards [sa, ra] with x x1 x2 hp`. Take `⟨B1, b1, c1⟩` from `x1 hp`. Take `⟨B2, b2, c2⟩` from `x2 hp`.
+
+Take `rfl` from `b1.unique b2`. Conclude with `⟨_, c1, c2⟩`. Use `hD c E Ω l ι a π Q P hPl ρ w B hB hQ.1 fun w' hw' hB' => ?_` and prove the remaining obligations. Conclude with `GlobalTheory.RoadW.sphAt_of_repIso ι P rc hiso c w' B (GlobalTheory.RoadW.sphAt_of_repIso ι P sc e c w' B (hs w' B hw' hB' c))`.
+-/
 theorem stepDown_of (h2 : IsoOne) (hP : PatchOne) (hD : ∀ c, SphDown c) : StepDown := by
   intro hQL E Ω _ _ _ _ _ _ l _ ι a ha π fam
   have hsat := GlobalTheory.CuspRep.UnrSat.eventually_hasSatGL_locRep GlobalTheory.automorphicFormsFiniteGL E a π

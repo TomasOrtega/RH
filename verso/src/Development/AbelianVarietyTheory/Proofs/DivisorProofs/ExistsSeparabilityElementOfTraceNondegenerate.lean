@@ -8,12 +8,21 @@ variable {A : Type} [Ring A] [Module.Free ℤ A] [Module.Finite ℤ A]
 
 noncomputable def trL : A →ₗ[ℤ] ℤ := LinearMap.trace ℤ A ∘ₗ LinearMap.mul ℤ A
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma trL_apply (z : A) : trL z = LinearMap.trace ℤ A (LinearMap.mulLeft ℤ z) := rfl
 
+/- English proof (translation)
+Rewrite using `[trL_apply, trL_apply, LinearMap.mulLeft_mul, LinearMap.mulLeft_mul]`. Conclude with `LinearMap.trace_mul_comm ℤ _ _`.
+-/
 lemma trL_comm (x y : A) : trL (x * y) = trL (y * x) := by
   rw [trL_apply, trL_apply, LinearMap.mulLeft_mul, LinearMap.mulLeft_mul]
   exact LinearMap.trace_mul_comm ℤ _ _
 
+/- English proof (translation)
+Rewrite using `[trL_apply, LinearMap.trace_eq_matrix_trace ℤ b, Matrix.trace]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.diag, LinearMap.toMatrix_apply, LinearMap.mulLeft_apply]`.
+-/
 lemma trL_eq_sum {n : ℕ} (b : Module.Basis (Fin n) ℤ A) (z : A) :
     trL z = ∑ k, b.repr (z * b k) k := by
   rw [trL_apply, LinearMap.trace_eq_matrix_trace ℤ b, Matrix.trace]
@@ -26,10 +35,16 @@ noncomputable def gram : Matrix (Fin n) (Fin n) ℤ := Matrix.of fun k l => trL 
 
 noncomputable def dualD (l : Fin n) : A := ∑ m, (gram b).adjugate m l • b m
 
+/- English proof (translation)
+Simplify using `only [dualD, Finset.mul_sum, mul_smul_comm, map_sum, map_zsmul, smul_eq_mul]`.
+-/
 lemma trL_mul_dualD (u : A) (l : Fin n) :
     trL (u * dualD b l) = ∑ m, (gram b).adjugate m l * trL (u * b m) := by
   simp only [dualD, Finset.mul_sum, mul_smul_comm, map_sum, map_zsmul, smul_eq_mul]
 
+/- English proof (translation)
+Rewrite using `[trL_mul_dualD]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 lemma trL_basis_mul_dualD (k l : Fin n) :
     trL (b k * dualD b l) = if k = l then (gram b).det else 0 := by
   rw [trL_mul_dualD]
@@ -39,12 +54,18 @@ lemma trL_basis_mul_dualD (k l : Fin n) :
     _ = (gram b * (gram b).adjugate) k l := (Matrix.mul_apply).symm
     _ = _ := by rw [Matrix.mul_adjugate, Matrix.smul_apply, Matrix.one_apply]; split_ifs <;> simp
 
+/- English proof (translation)
+Use `conv_rhs => rw [← b.sum_repr u]`. Simplify using `only [Finset.sum_mul, smul_mul_assoc, map_sum, map_zsmul, trL_basis_mul_dualD, smul_eq_mul]`. Simplify using `[mul_comm]`.
+-/
 lemma det_mul_repr (u : A) (k : Fin n) :
     (gram b).det * b.repr u k = trL (u * dualD b k) := by
   conv_rhs => rw [← b.sum_repr u]
   simp only [Finset.sum_mul, smul_mul_assoc, map_sum, map_zsmul, trL_basis_mul_dualD, smul_eq_mul]
   simp [mul_comm]
 
+/- English proof (translation)
+Use `conv_lhs => rw [← b.sum_repr u]`. Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul, det_mul_repr]`.
+-/
 lemma det_smul_eq (u : A) : (gram b).det • u = ∑ l, trL (u * dualD b l) • b l := by
   conv_lhs => rw [← b.sum_repr u]
   rw [Finset.smul_sum]
@@ -56,6 +77,9 @@ section Nondeg
 variable (hnd : ∀ x : A, (∀ y : A, LinearMap.trace ℤ A (LinearMap.mulLeft ℤ (x * y)) = 0) → x = 0)
 include hnd
 
+/- English proof (translation)
+Apply `hnd v` to reduce the goal to its premises. Introduce `y`. Rewrite using `[← trL_apply]`. Use `conv_lhs => rw [← b.sum_repr y]`. Simplify using `only [Finset.mul_sum, mul_smul_comm, map_sum, map_zsmul, hv, smul_zero, Finset.sum_const_zero]`.
+-/
 lemma eq_zero_of_trL_mul_basis (v : A) (hv : ∀ k, trL (v * b k) = 0) : v = 0 := by
   apply hnd v
   intro y
@@ -64,9 +88,15 @@ lemma eq_zero_of_trL_mul_basis (v : A) (hv : ∀ k, trL (v * b k) = 0) : v = 0 :
   simp only [Finset.mul_sum, mul_smul_comm, map_sum, map_zsmul, hv, smul_zero,
     Finset.sum_const_zero]
 
+/- English proof (translation)
+The claim follows from `eq_zero_of_trL_mul_basis b hnd v fun k => by rw [trL_comm]; exact hv k`.
+-/
 lemma eq_zero_of_trL_basis_mul (v : A) (hv : ∀ k, trL (b k * v) = 0) : v = 0 :=
   eq_zero_of_trL_mul_basis b hnd v fun k => by rw [trL_comm]; exact hv k
 
+/- English proof (translation)
+Rewrite using `[← sub_eq_zero]`. Apply `eq_zero_of_trL_basis_mul b hnd` to reduce the goal to its premises. Introduce `k`. Simplify using `only [mul_sub, Finset.mul_sum, mul_smul_comm, map_sub, map_sum, map_zsmul, smul_eq_mul, trL_basis_mul_dualD, mul_ite, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma det_smul_eq' (u : A) : (gram b).det • u = ∑ l, trL (b l * u) • dualD b l := by
   rw [← sub_eq_zero]
   apply eq_zero_of_trL_basis_mul b hnd
@@ -75,6 +105,13 @@ lemma det_smul_eq' (u : A) : (gram b).det • u = ∑ l, trL (b l * u) • dualD
     trL_basis_mul_dualD, mul_ite, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true]
   ring
 
+/- English proof (translation)
+Introduce `h`. Take `⟨v, hv0, hv⟩` from `Matrix.exists_vecMul_eq_zero_iff.mpr h`. Apply `hv0` to reduce the goal to its premises. Establish `hx : ∑ k, v k • b k = 0`. Apply `eq_zero_of_trL_mul_basis b hnd` to reduce the goal to its premises.
+
+Introduce `l`. Use `congrFun hv l` as an intermediate fact. Simplify using `only [Matrix.vecMul, dotProduct, gram, Matrix.of_apply, Pi.zero_apply] at this`. Simplify using `only [Finset.sum_mul, smul_mul_assoc, map_sum, map_zsmul, smul_eq_mul]`. Conclude with `this`.
+
+Use function extensionality and compare the values at `k`. Conclude with `Fintype.linearIndependent_iff.mp b.linearIndependent v hx k`.
+-/
 lemma det_ne_zero : (gram b).det ≠ 0 := by
   intro h
   obtain ⟨v, hv0, hv⟩ := Matrix.exists_vecMul_eq_zero_iff.mpr h
@@ -89,6 +126,11 @@ lemma det_ne_zero : (gram b).det ≠ 0 := by
   funext k
   exact Fintype.linearIndependent_iff.mp b.linearIndependent v hx k
 
+/- English proof (translation)
+Rewrite using `[← sub_eq_zero]`. Apply `eq_zero_of_trL_mul_basis b hnd` to reduce the goal to its premises. Introduce `j`. Rewrite using `[sub_mul, map_sub, Finset.sum_mul, map_sum]`. Establish `h1 : ∀ k, trL (b k * dualD b k * b j) = (gram b).det * b.repr (b j * b k) k`.
+
+Introduce `k`. Rewrite using `[trL_comm, ← mul_assoc, ← det_mul_repr]`. Rewrite using `[Finset.sum_congr rfl fun k _ => h1 k, ← Finset.mul_sum, ← trL_eq_sum b, ← zsmul_eq_mul, map_zsmul, smul_eq_mul, sub_self]`.
+-/
 lemma sum_mul_dualD : ∑ k, b k * dualD b k = ((gram b).det : A) := by
   rw [← sub_eq_zero]
   apply eq_zero_of_trL_mul_basis b hnd
@@ -100,6 +142,15 @@ lemma sum_mul_dualD : ∑ k, b k * dualD b k = ((gram b).det : A) := by
   rw [Finset.sum_congr rfl fun k _ => h1 k, ← Finset.mul_sum, ← trL_eq_sum b, ← zsmul_eq_mul,
     map_zsmul, smul_eq_mul, sub_self]
 
+/- English proof (translation)
+Use `haveI : Module.Free ℤ (A ⊗[ℤ] A) := Module.Free.of_basis (b.tensorProduct b)`. Apply `smul_right_injective (A ⊗[ℤ] A) (det_ne_zero b hnd)` to reduce the goal to its premises. Simplify using `only`. Simplify using `only [Finset.smul_sum]`. Establish `hL : ∀ k, (gram b).det • ((c * b k) ⊗ₜ[ℤ] dualD b k) = ∑ l, trL (c * b k * dualD b l) • (b l ⊗ₜ[ℤ] dualD b k)`.
+
+Introduce `k`. Rewrite using `[TensorProduct.smul_tmul', det_smul_eq, TensorProduct.sum_tmul]`. Simplify using `only [TensorProduct.smul_tmul']`. Establish `hR : ∀ k, (gram b).det • (b k ⊗ₜ[ℤ] (dualD b k * c)) = ∑ l, trL (b l * (dualD b k * c)) • (b k ⊗ₜ[ℤ] dualD b l)`. Introduce `k`.
+
+Rewrite using `[← TensorProduct.tmul_smul, det_smul_eq' b hnd, TensorProduct.tmul_sum]`. Simplify using `only [TensorProduct.tmul_smul]`. Simplify using `only [hL, hR]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations.
+
+Use `congr 1`. Rewrite using `[mul_assoc, trL_comm, mul_assoc]`.
+-/
 lemma balanced (c : A) :
     ∑ k, (c * b k) ⊗ₜ[ℤ] dualD b k = ∑ k, b k ⊗ₜ[ℤ] (dualD b k * c) := by
   haveI : Module.Free ℤ (A ⊗[ℤ] A) := Module.Free.of_basis (b.tensorProduct b)
@@ -128,6 +179,9 @@ end GlobalTheory.TraceCasimir
 
 open GlobalTheory.TraceCasimir in
 
+/- English proof (translation)
+Introduce `A _ _ _ hnd`. Set `b` to `Module.finBasis ℤ A`. Conclude with `⟨(gram b).det, _, b, dualD b, det_ne_zero b hnd, sum_mul_dualD b hnd, balanced b hnd⟩`.
+-/
 theorem GlobalTheory.exists_separability_element_of_trace_nondegenerate :
     ∀ (A : Type) [Ring A] [Module.Free ℤ A] [Module.Finite ℤ A],
       (∀ x : A, (∀ y : A, LinearMap.trace ℤ A (LinearMap.mulLeft ℤ (x * y)) = 0) → x = 0) →

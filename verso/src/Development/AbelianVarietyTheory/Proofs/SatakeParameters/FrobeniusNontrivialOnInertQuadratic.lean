@@ -4,6 +4,27 @@ open NumberField IsDedekindDomain Formalism.MainNotions.G Formalism.L2.Col Forma
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `E _ _ M p Q φ hp hM hP hQ hφ`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Use `haveI : FiniteDimensional ℚ M := Module.finite_of_finrank_pos (by omega)`. Use `haveI : NumberField M := {}`.
+
+Set `f : 𝓞 M →+* 𝓞 E` to `RingOfIntegers.mapRingHom M.subtype`. Establish `hp0 : ((p : ℕ) : 𝓞 M) ≠ 0` using `Nat.cast_ne_zero.mpr hp.ne_zero`. Establish `hcard : Ideal.absNorm (Ideal.span {((p : ℕ) : 𝓞 M)}) = p ^ 2`. Rewrite using `[Ideal.absNorm_span_natCast, RingOfIntegers.rank, hM]`. Use `set P : Ideal (𝓞 M) := Ideal.span {((p : ℕ) : 𝓞 M)} with hPdef`.
+
+Establish `hne : P ≠ ⊥`. Rewrite using `[hPdef, Ne, Ideal.span_singleton_eq_bot]`. Conclude with `hp0`. Establish `hmax : P.IsMaximal` using `hP.isMaximal hne`. Establish `hcom : P = Q.asIdeal.comap f`.
+
+Use `hmax.eq_of_le (Ideal.comap_ne_top f Q.isPrime.ne_top) ?_` and prove the remaining obligations. Rewrite using `[hPdef, Ideal.span_singleton_le_iff_mem, Ideal.mem_comap, map_natCast]`. Conclude with `hQ`. Establish `key : ∀ x : 𝓞 M ⧸ P, x ^ p = x`. Introduce `x`.
+
+Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Rewrite using `[← map_pow, eq_comm, Ideal.Quotient.eq, hcom, Ideal.mem_comap, map_sub, map_pow]`. Establish `h1 : φ • f y = f y`. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `h _ (y : M).2`.
+
+Establish `h2` using `hφ (f y)`. Rewrite `h2` using `[h1]`. Then use the resulting hypothesis. Use `haveI : Finite (𝓞 M ⧸ P) := Ideal.finiteQuotientOfFreeOfNeBot P hne`. Use `letI : Fintype (𝓞 M ⧸ P) := Fintype.ofFinite _`. Use `haveI : IsDomain (𝓞 M ⧸ P) := Ideal.Quotient.isDomain P`.
+
+Establish `hc : Fintype.card (𝓞 M ⧸ P) = p ^ 2`. Rewrite using `[← hcard, Ideal.absNorm_apply, Submodule.cardQuot_apply, Nat.card_eq_fintype_card]`. Establish `h1 : 1 < p` using `hp.one_lt`. Establish `hdeg : (Polynomial.X ^ p - Polynomial.X : Polynomial (𝓞 M ⧸ P)).natDegree = p`. Apply the tactic sequence `rw [Polynomial.natDegree_sub_eq_left_of_natDegree_lt] <;> simp [h1]`.
+
+Establish `hnz : (Polynomial.X ^ p - Polynomial.X : Polynomial (𝓞 M ⧸ P)) ≠ 0`. Introduce `h0`. Rewrite `hdeg` using `[h0]`. Simplify using `at hdeg`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hle : (Finset.univ : Finset (𝓞 M ⧸ P)).card ≤ p`. Use `le_trans ?_ hdeg.le` and prove the remaining obligations. Apply `Polynomial.card_le_degree_of_subset_roots` to reduce the goal to its premises. Introduce `x _`. Rewrite using `[Polynomial.mem_roots hnz]`.
+
+Simplify using `[key x]`. Rewrite `hle` using `[Finset.card_univ, hc]`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem frobenius_moves_quadratic_subfield_of_inert :
     ∀ (E : Type) [Field E] [NumberField E] (M : Subfield E) (p : ℕ) (Q : HeightOneSpectrum (𝓞 E)) (φ : E ≃ₐ[ℚ] E), p.Prime → Module.finrank ℚ M = 2 → (Ideal.span {((p : ℕ) : 𝓞 M)}).IsPrime → ((p : ℕ) : 𝓞 E) ∈ Q.asIdeal → (∀ x : 𝓞 E, φ • x - x ^ p ∈ Q.asIdeal) → ∃ x ∈ M, φ x ≠ x := by
   intro E _ _ M p Q φ hp hM hP hQ hφ

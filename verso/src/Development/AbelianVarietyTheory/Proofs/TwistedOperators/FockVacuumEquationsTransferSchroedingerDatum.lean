@@ -25,6 +25,19 @@ namespace GlobalTheory.VacTransfer
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Introduce `D ψ θ _ ε S X A B d e Bs _ _ Vs Ws r s r' s' hJ hJW hV _ _ M hM cS hc`. Take `⟨G, hGdef⟩ : ∃ G : Matrix (Fin S.rank) (Fin S.rank) D.host.E, (if ε then -1 else 1 : D.host.E) • S.gram = G` from `⟨_, rfl⟩`. Rewrite `hc` using `[hGdef]`. Establish `hs : (sgn ε S).gram = G`. Rewrite using `[← hGdef]`.
+
+Consider the cases of `ε`. Simplify using `[sgn]`. Use extensionality with `i j`. Simplify using `[HSpace.gram]`. Establish `hVJ : Vs.J = -G`.
+
+Apply the tactic sequence `rw [hJ, ← hGdef]; cases ε <;> simp`. Establish `hdet : IsUnit G.det` using `by rw [← hs]; exact (Formalism.L2.Theta.gram_det_ne (sgn ε S)).isUnit`. Establish `hHG : (G⁻¹).map (incA D) * G.map (incA D) = 1`. Rewrite using `[← Matrix.map_mul, Matrix.nonsing_inv_mul _ hdet, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `hG : (G.map (incA D)).map (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA D.sp.cm.sig) = (G.map (incA D))ᵀ`.
+
+Use extensionality with `i j`. Establish `h` using `hV.herm j i`. Rewrite `h` using `[hVJ, Matrix.neg_apply, Matrix.neg_apply, map_neg, neg_inj]`. Use `show GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA D.sp.cm.sig (incA D (G i j)) = incA D (G j i)`. Rewrite using `[← h]`.
+
+Both sides reduce to the same expression. Take `⟨co, hco⟩` from `exists_darboux_transpose_mul (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA D.sp.cm.sig) e (X.gram.map (incA D)) (incA D D.host.xi0) hHG hG (JV := GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM D.host.F Vs.J) (JW := GlobalTheory.IndefiniteRowSideFullH …`. Use `⟨1, D.host.xi0 • (sgn ε S).gram⁻¹, co, one_smul _ _, fun x => ?_, hco⟩` and prove the remaining obligations. Take `⟨y, z, h⟩` from `hM.rat ((x * G⁻¹)ᵀ.submatrix id e.symm)`. Use `⟨y, z, Eq.trans ?_ h⟩` and prove the remaining obligations.
+
+Rewrite using `[← hco, hc]`. Use `congr 1`. Conclude with `(map_transpose_inv_mul (incA D) e x hdet).symm`.
+-/
 theorem exists_darboux_cS : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsInfFam θ →
     ∀ (ε : Bool) (S X : HSp D) (A : Fr S) (B : Fr X) {d : ℕ} (e : Fin X.rank ≃ Fin d)
       (Bs : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base D.host.F D.host.E), Bs.IsGood D.sp.cm.sig → Bs.ψ = ψ →
@@ -78,6 +91,19 @@ theorem exists_darboux_cS : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : 
   congr 1
   exact (map_transpose_inv_mul (incA D) e x hdet).symm
 
+/- English proof (translation)
+Introduce `D ψ θ hθ ε S X A B d e Bs hBs hψ Vs Ws r s r' s' hJ hJW hV hW hcart M hM cS hcS f Φ hf hD`. Substitute `hψ` using the available equality. Establish `hstd : IsStdChar D Bs.ψ (-1)` using `GlobalTheory.StdCharFromIsStd.isStdChar_of_isStd D Bs.ψ hBs.std`. Take `⟨ξ, JB, co, hJB, hrat, hco⟩` from `exists_darboux_cS D Bs.ψ θ hθ ε S X A B e Bs hBs rfl Vs Ws r s r' s' hJ hJW hV hW hcart M hM cS hcS`. Establish `hΦf : GlobalTheory.WeilSchrodinger.thetaTr D.host.F co Bs.ψ Φ = f`.
+
+Use function extensionality and compare the values at `w`. Take `⟨u, rfl⟩` from `cS.surjective w`. Use `Eq.trans ?_ (hD.2 u)` and prove the remaining obligations. Simplify using `only [GlobalTheory.WeilSchrodinger.thetaTr, GlobalTheory.WeilM.Darboux.rho, hco]`. Establish `hvac : ∀ τ z, dRho (heisO Bs.ψ (sgn ε S) X) θ τ (cplxO ((frSgn ε A).cart τ) (B.cart τ) z) f = Complex.I • dRho (heisO Bs.ψ (sgn ε S) X) θ τ z f`.
+
+Introduce `τ z`. Use function extensionality and compare the values at `w`. Establish `h0` using `congrFun (hf.2 τ z) w`. Simplify using `only [annih, Pi.add_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply] at h0`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`.
+
+Take the linear combination `(-Complex.I) * h0 + dRho (heisO Bs.ψ (sgn ε S) X) θ τ (cplxO ((frSgn ε A).cart τ) (B.cart τ) z) f w * Complex.I_sq`. Use `⟨fun _ => 1, fun u u' _ _ hrel x => ?_⟩` and prove the remaining obligations. Establish `hrel' : ∀ w, u'.map (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.piInf (Bs.emb w)) = Complex.I • (Vs.θ w * u.map (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.piInf (Bs.emb w)) * (Ws.θ w)ᵀ)` using `fun w => by`. Simplify using `using hrel w`. Take `⟨hc, hc0⟩` from `GlobalTheory.T.archimedeanHeisenbergLine_continuous_finite_zero D S X e _ cS hcS u`.
+
+Take `⟨hc', hc0'⟩` from `GlobalTheory.T.archimedeanHeisenbergLine_continuous_finite_zero D S X e _ cS hcS u'`. Establish `key : (fun w => deriv (fun t : ℝ => heisO Bs.ψ (sgn ε S) X (archLine cS u' t) f w) 0) = Complex.I • (fun w => deriv (fun t : ℝ => heisO Bs.ψ (sgn ε S) X (archLine cS u t) f w) 0)`. Use `(GlobalTheory.T.heisenbergDeriv_realLine_eq_sum_realPlaces D Bs.ψ hstd θ hθ (sgn ε S) X f hf.1 (archLine cS u') hc' hc0').trans (Eq.trans ?_ (congrArg (Complex.I • ·) (GlobalTheory.T.heisenbergDeriv_realLine_eq_sum_realPlaces D Bs.ψ hstd θ hθ (sgn ε S) X f hf.1 (archLine cS u) hc …` and prove the remaining obligations. Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations.
+
+Conclude with `(congrArg (fun z => dRho (heisO Bs.ψ (sgn ε S) X) θ τ z f) (GlobalTheory.T.realPlaceComponent_archLine_complexStructure D θ hθ ε S X A B e Bs Vs Ws hcart cS hcS u u' hrel' τ)).trans (hvac τ _)`. Rewrite `key` using `[← hΦf]`. Establish `h1` using `GlobalTheory.T.schrodingerDeriv_relation_of_heisenbergDeriv D Bs.ψ hstd (sgn ε S) X JB ξ hJB (Fin S.rank × Fin d) co hrat Φ hD.1 (archLine cS u) (archLine cS u') hc hc0 hc' hc0' Complex.I key x`. Simplify `h1` using `only [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Model.heisLine, GlobalTheory.WeilM.Darboux.rho, archLine_apply, hco]`.
+-/
 theorem vacDatum_transfer : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsInfFam θ →
     ∀ (ε : Bool) (S X : HSp D) (A : Fr S) (B : Fr X) {d : ℕ} (e : Fin X.rank ≃ Fin d)
       (Bs : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base D.host.F D.host.E), Bs.IsGood D.sp.cm.sig → Bs.ψ = ψ →

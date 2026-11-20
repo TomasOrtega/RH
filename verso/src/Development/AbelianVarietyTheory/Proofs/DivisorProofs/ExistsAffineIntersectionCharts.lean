@@ -17,6 +17,15 @@ open GlobalTheory.UnitGlue
 
 namespace GlobalTheory.UnitGlue
 
+/- English proof (translation)
+Introduce `R _ X s hP R1 R2 _ _ ξ1 ξ2 h1 h2`. Take `⟨N, i, hi, hs⟩` from `hP`. Establish `: IsProper (PSpace.str R N)` using `isProper_str R N`. Establish `: IsProper s` using `by rw [← hs]; infer_instance`. Establish `: X.IsSeparated` using `⟨by rw [← terminal.comp_from s]; infer_instance⟩`.
+
+Establish `hU : IsAffineOpen (ξ1.opensRange ⊓ ξ2.opensRange)` using `(isAffineOpen_opensRange ξ1).inf (isAffineOpen_opensRange ξ2)`. Establish `hr1 : Set.range hU.fromSpec.base ⊆ Set.range ξ1.base`. Rewrite using `[hU.range_fromSpec]`. Introduce `x hx`. Conclude with `hx.1`.
+
+Establish `hr2 : Set.range hU.fromSpec.base ⊆ Set.range ξ2.base`. Rewrite using `[hU.range_fromSpec]`. Introduce `x hx`. Conclude with `hx.2`. Use `⟨Γ(X, ξ1.opensRange ⊓ ξ2.opensRange), inferInstance, hU.fromSpec, (Spec.preimage (IsOpenImmersion.lift ξ1 hU.fromSpec hr1)).hom, (Spec.preimage (IsOpenImmersion.lift ξ2 hU.fromSpec hr2)).hom, inferInstance, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [spMap, CommRingCat.ofHom_hom, Spec.map_preimage, IsOpenImmersion.lift_fac]`. Simplify using `only [spMap, CommRingCat.ofHom_hom, Spec.map_preimage, IsOpenImmersion.lift_fac]`. Use `show Set.range hU.fromSpec.base = _`. Rewrite using `[hU.range_fromSpec]`. Both sides reduce to the same expression.
+-/
 theorem chart_inter_factor : ∀ (R : Type) [CommRing R] (X : Scheme.{0}) (s : X ⟶ Sp R), IsProjOver s → ∀ (R1 R2 : Type) [CommRing R1] [CommRing R2] (ξ1 : Sp R1 ⟶ X) (ξ2 : Sp R2 ⟶ X), IsOpenImmersion ξ1 → IsOpenImmersion ξ2 → ∃ (A : Type) (_ : CommRing A) (w : Sp A ⟶ X) (a1 : R1 →+* A) (a2 : R2 →+* A), IsOpenImmersion w ∧ spMap a1 ≫ ξ1 = w ∧ spMap a2 ≫ ξ2 = w ∧ Set.range w = Set.range ξ1 ∩ Set.range ξ2 := by
   intro R _ X s hP R1 R2 _ _ ξ1 ξ2 h1 h2
   obtain ⟨N, i, hi, hs⟩ := hP

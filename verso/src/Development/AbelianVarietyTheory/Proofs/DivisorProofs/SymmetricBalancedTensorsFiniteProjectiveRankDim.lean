@@ -20,6 +20,17 @@ open GlobalTheory.Toroidal GlobalTheory.LogKS GlobalTheory.LogKSChart GlobalTheo
 attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.BalProj
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c Y h1 hsm hsnc U n v A hv hb hA`. Take `⟨h1A, haddA, hmulA⟩` from `GlobalTheory.T.tangentBasis_actionMatrices_ringHom H Y.t Γ(Y.X, U.1) (chart U) n v A hv hb hA`. Take `⟨hfin, hproj, hrk⟩` from `GlobalTheory.T.balancedSymmetricLieTensors_finite_projective_rank H c.F c.conj Γ(Y.X, U.1) (GlobalTheory.BalProj.fnHom Y.s U.1) n A h1A haddA hmulA`. Use `⟨hfin, hproj, fun m hm => ?_⟩` and prove the remaining obligations. Establish `key : ∀ τ : E →+* ℂ, GlobalTheory.BalProj.eigRank (algebraMap Γ(Y.X, U.1) m.ResidueField) A (GlobalTheory.BalProj.embR c.F c.conj (GlobalTheory.BalProj.fnHom Y.s U.1) τ) = if τ (H.rt : E) = H.rt0 then Dw.p else Dw.q`.
+
+Introduce `τ`. Use `set e : ℕ := if τ (H.rt : E) = H.rt0 then Dw.p else Dw.q with he`. Set `f : PrimeSpectrum Γ(Y.X, U.1) → ℕ` to `fun 𝔭 => GlobalTheory.BalProj.eigRank (algebraMap Γ(Y.X, U.1) 𝔭.asIdeal.ResidueField) A (GlobalTheory.BalProj.embR c.F c.conj (GlobalTheory.BalProj.fnHom Y.s U.1) τ)`. Establish `hop : ∀ N, IsOpen {𝔭 | f 𝔭 = N}` using `fun N => GlobalTheory.T.isOpen_eigenRank_levelSet_integersAction c.F c.conj Γ(Y.X, U.1) (GlobalTheory.BalProj.fnHom Y.s U.1) n A h1A haddA hmulA τ N`. Establish `hcl : IsClosed {𝔭 | f 𝔭 = e}`.
+
+Rewrite using `[← isOpen_compl_iff]`. Establish `: {𝔭 | f 𝔭 = e}ᶜ = ⋃ N ∈ {N : ℕ | N ≠ e}, {𝔭 | f 𝔭 = N}`. Use extensionality with `𝔭`. Simplify using the standard rewrite rules. Rewrite using `[this]`.
+
+Conclude with `isOpen_biUnion fun N _ => hop N`. Establish `hsub : (chart U).base ⁻¹' (interior Y : Set Y.X) ⊆ {𝔭 | f 𝔭 = e}` using `fun 𝔭 h𝔭 => GlobalTheory.T.eigenRank_interior_eq_signature E H Dw l Xo c Y h1 hsm hsnc U n v A hv hb hA 𝔭 h𝔭 τ`. Establish `hall : {𝔭 | f 𝔭 = e} = Set.univ` using `Set.eq_univ_of_univ_subset ((GlobalTheory.T.dense_affineChart_preimage_interior E H Dw l Xo c Y U).closure_eq ▸ (closure_mono hsub).trans hcl.closure_subset)`. Use `hall ▸ Set.mem_univ (⟨m, hm.isPrime⟩ : PrimeSpectrum Γ(Y.X, U.1))` as an intermediate fact. Conclude with `this`.
+
+Establish `h2` using `hrk m`. Rewrite `h2` using `[key]`. Rewrite `h2` using `[GlobalTheory.T.cmType_signature_sum_eq_twice_dimension E H Dw.p Dw.q]`. Unfold `Datum.dim`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem balanced_finite_projective_rank : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (Y : Model Xo c (RingHom.id c.F)), 1 ≤ Dw.p + Dw.q → SmoothOfRelativeDimension Dw.dim (genStr Y) → ReciprocityTheory.AnForm.R.FinalTheorems.Snc (genBdIdeal Y) → ∀ (U : Y.X.affineOpens) (n : ℕ) (v : Fin n → (Sp (DualNumber Γ(Y.X, U.1)) ⟶ Y.t.G.left)) (A : 𝓞 E → Matrix (Fin n) (Fin n) Γ(Y.X, U.1)), (∀ i, IsTanAtG Y.t (chart U) (v i)) → (∀ w, IsTanAtG Y.t (chart U) w → ∃! cf : Fin n → Γ(Y.X, U.1), IsCombAtG Y.t (chart U) v cf w) → (∀ a i, IsCombAtG Y.t (chart U) v (A a i) (v i ≫ (Y.t.act.act a).left)) → Module.Finite Γ(Y.X, U.1) (balanced H.bar A) ∧ Module.Projective Γ(Y.X, U.1) (balanced H.bar A) ∧ ∀ m : Ideal Γ(Y.X, U.1), m.IsMaximal → Module.finrank (Γ(Y.X, U.1) ⧸ m) ((Γ(Y.X, U.1) ⧸ m) ⊗[Γ(Y.X, U.1)] (balanced H.bar A)) = Dw.dim := by
   intro E _ _ _ H Dw l Xo c Y h1 hsm hsnc U n v A hv hb hA
   obtain ⟨h1A, haddA, hmulA⟩ := GlobalTheory.T.tangentBasis_actionMatrices_ringHom H Y.t Γ(Y.X, U.1) (chart U) n v A hv hb hA

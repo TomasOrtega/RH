@@ -15,6 +15,13 @@ namespace GlobalTheory.RowBoundB
 
 open Module
 
+/- English proof (translation)
+Take `⟨hs, -, -, hτ⟩` from `h`. Use `⟨le_rfl, fun h2 => absurd h2 hl, hK, fun τ x => ?_⟩` and prove the remaining obligations. Establish `hle : Ks K 1 ≤ Ks K s`. Use `sup_le_sup_left (IntermediateField.adjoin.mono _ _ _ ?_) _` and prove the remaining obligations. Introduce `y hy`.
+
+Take `⟨k, rfl⟩` from `Nat.exists_eq_add_of_le hs`. Simplify using `only [Set.mem_setOf_eq] at hy ⊢`. Rewrite using `[pow_add, pow_mul, hy, one_pow]`. Take `⟨φ, hφ⟩` from `IsAlgClosed.surjective_restrictDomain_of_isAlgebraic (K := ℚ_[l]) (L := ↥(Ks K 1)) (M := Om l) (E := Om l) τ`. Use `hτ (φ.comp (Ks K s).val) ⟨x.1, hle x.2⟩` as an intermediate fact.
+
+Rewrite using `[← hφ]`. Conclude with `this`.
+-/
 theorem good_one {l : ℕ} [Fact l.Prime] {K LL : FinExt l} {s : ℕ} (hl : l ≠ 2) (h : Good K s LL)
     (hK : K.1 ≤ Ks K 1) : Good K 1 LL := by
   obtain ⟨hs, -, -, hτ⟩ := h
@@ -31,6 +38,33 @@ theorem good_one {l : ℕ} [Fact l.Prime] {K LL : FinExt l} {s : ℕ} (hl : l �
   rw [← hφ]
   exact this
 
+/- English proof (translation)
+Establish `key : ∀ (x : ℝ) (n : ℤ), 0 ≤ x → (n : ℝ) ≤ x → n ≤ ((⌊x⌋₊ : ℕ) : ℤ)`. Introduce `x n hx hn`. Rewrite using `[Int.natCast_floor_eq_floor hx]`. Conclude with `Int.le_floor.2 hn`. Establish `e1 : ((⌊η⌋₊ : ℕ) : ℝ) ≤ η` using `Nat.floor_le hη.le`.
+
+Establish `e2 : ((⌊Sc⌋₊ : ℕ) : ℝ) ≤ Sc` using `Nat.floor_le hS.le`. Establish `ht' : (1 : ℤ) ≤ t` using `by exact_mod_cast ht`. Establish `hs1 : ((⌊η⌋₊ : ℕ) : ℤ) + t + 1 < s`. Establish `: (((⌊η⌋₊ : ℕ) : ℤ) : ℝ) + ((t : ℤ) : ℝ) + 1 < (s : ℝ)` using `by push_cast; linarith`. Conclude with `this` after adjusting the coercions.
+
+Establish `hb : s + 1 + ((⌊Sc⌋₊ : ℕ) : ℤ) ≤ ((⌊2 * b⌋₊ : ℕ) : ℤ)`. Apply `key _ _ (by linarith)` to reduce the goal to its premises. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hlow : ∀ a : ℤ, -a - 1 ∈ Jl → -(((⌊η⌋₊ : ℕ) : ℤ) + t) ≤ a ∧ a ≤ ((⌊η⌋₊ : ℕ) : ℤ) + t`.
+
+Introduce `a ha`. Break down `hl _ ha with ⟨p, q⟩ | ⟨p, q⟩` into its components or cases. Establish `: a ≤ ((⌊η⌋₊ : ℕ) : ℤ)`. Apply `key _ _ hη.le` to reduce the goal to its premises. Move the coercions through the operations in `at p`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Use linear arithmetic over natural numbers and integers. Establish `: -a - t ≤ ((⌊η⌋₊ : ℕ) : ℤ)`. Apply `key _ _ hη.le` to reduce the goal to its premises. Move the coercions through the operations in `at q ⊢`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Use linear arithmetic over natural numbers and integers. Break down `hc with hc | hc` into its components or cases. Establish `hc' : ∀ a : ℤ, -a - 1 ∈ Jc → s ≤ -a - 1 ∧ -a - 1 - s ≤ ((⌊Sc⌋₊ : ℕ) : ℤ)`. Introduce `a ha`.
+
+Take `⟨p, q⟩` from `hc _ ha`. Use `⟨p, key _ _ hS.le ?_⟩` and prove the remaining obligations. Move the coercions through the operations in `at q ⊢`. Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨false, (s + 1).toNat, by omega, fun a ha => ?_, fun a ha hj => ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [ElementDenominator.deep, Bool.false_eq_true, if_false, Set.mem_union, Set.mem_Icc]`. Break down `ha with ha | ha | ha` into its components or cases. Use `hc' a ha` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `hlow a ha` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers. Use `hc' a hj` as an intermediate fact. Rewrite `ha` using `[Finset.mem_Icc]`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hc' : ∀ a : ℤ, -a - 1 ∈ Jc → -a - 1 ≤ -s ∧ a + 1 - s ≤ ((⌊Sc⌋₊ : ℕ) : ℤ)`. Introduce `a ha`. Take `⟨p, q⟩` from `hc _ ha`. Use `⟨q, key _ _ hS.le ?_⟩` and prove the remaining obligations. Move the coercions through the operations in `at p ⊢`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨true, (s - 1).toNat, by omega, fun a ha => ?_, fun a ha hj => ?_⟩` and prove the remaining obligations. Simplify using `only [ElementDenominator.deep, if_true, Set.mem_union, Set.mem_Icc]`. Break down `ha with ha | ha | ha` into its components or cases. Use `hc' a ha` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Use `hlow a ha` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers. Use `hc' a hj` as an intermediate fact.
+
+Rewrite `ha` using `[Finset.mem_Icc]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem jump_windows (η Sc b : ℝ) (t : ℕ) (hη : 0 < η) (hS : 0 < Sc) (ht : 1 ≤ (t : ℝ))
     (hpar : Sc + η + t + 2 ≤ b) (s : ℤ) (Jc Jl : Finset ℤ)
     (h1 : η + t + 1 < (s : ℝ)) (h2 : (s : ℝ) ≤ b + η + t + 1)
@@ -100,6 +134,13 @@ theorem jump_windows (η Sc b : ℝ) (t : ℕ) (hη : 0 < η) (hS : 0 < Sc) (ht 
       rw [Finset.mem_Icc] at ha
       omega
 
+/- English proof (translation)
+Establish `e : ∑ a ∈ I, f a ≤ ∑ a ∈ I, (if -a - 1 ∈ Jl then (1 : ℤ) else 0)`. Use `Finset.sum_le_sum fun a ha => ?_` and prove the remaining obligations. Use `split_ifs with h`. Conclude with `h1 a ha`. Conclude with `(h0 a ha h).le`.
+
+Use `e.trans ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_boole]`. Establish `: (I.filter fun a => -a - 1 ∈ Jl).card ≤ Jl.card`. Use `Finset.card_le_card_of_injOn (fun a => -a - 1) (fun a ha => (Finset.mem_filter.1 ha).2) ?_` and prove the remaining obligations. Introduce `a _ b _ hab`.
+
+Simplify using `only at hab`. Use linear arithmetic over natural numbers and integers. Conclude with `this` after adjusting the coercions.
+-/
 theorem sum_le_card (I Jl : Finset ℤ) (f : ℤ → ℤ) (h1 : ∀ a ∈ I, f a ≤ 1)
     (h0 : ∀ a ∈ I, -a - 1 ∉ Jl → f a = 0) : ∑ a ∈ I, f a ≤ Jl.card := by
   classical
@@ -117,6 +158,15 @@ theorem sum_le_card (I Jl : Finset ℤ) (f : ℤ → ℤ) (h1 : ∀ a ∈ I, f a
     omega
   exact_mod_cast this
 
+/- English proof (translation)
+Establish `e1 : ((⌊η⌋₊ : ℕ) : ℝ) ≤ η` using `Nat.floor_le hη.le`. Establish `e2 : ((⌊Sc⌋₊ : ℕ) : ℝ) ≤ Sc` using `Nat.floor_le hS.le`. Establish `e3 : ((⌊2 * b⌋₊ : ℕ) : ℝ) ≤ 2 * b` using `Nat.floor_le (by linarith)`. Establish `e4 : (1 : ℝ) ≤ ((⌊2 * b⌋₊ : ℕ) : ℝ)`. Establish `: 1 ≤ ⌊2 * b⌋₊` using `Nat.le_floor (by push_cast; linarith)`.
+
+Conclude with `this` after adjusting the coercions. Establish `hl' : (1 : ℝ) < l` using `by exact_mod_cast (by omega : 1 < l)`. Establish `e5 : 0 ≤ Real.logb (l : ℝ) ((⌊2 * b⌋₊ : ℕ) : ℝ)` using `Real.logb_nonneg hl' e4`. Establish `e6 : Real.logb (l : ℝ) ((⌊2 * b⌋₊ : ℕ) : ℝ) ≤ Real.logb (l : ℝ) (2 * b)` using `Real.logb_le_logb_of_le hl' (by linarith) e3`. Establish `e7 : 2 * ((⌊2 * b⌋₊ : ℕ) : ℝ) / (l : ℝ) ≤ 4 * b / (l : ℝ)` using `div_le_div_of_nonneg_right (by linarith) (by linarith)`.
+
+Establish `hQ : ElementDenominator.boundA CA l n 2 r ⌊Sc⌋₊ (⌊η⌋₊ + t) m ⌊2 * b⌋₊ = CA * (((f : ℕ) + 1 : ℝ) * (r : ℝ) * (2 * ((⌊2 * b⌋₊ : ℕ) : ℝ) / (l : ℝ) + 2 * ((⌊Sc⌋₊ : ℕ) : ℝ) + 2 * Real.logb (l : ℝ) ((⌊2 * b⌋₊ : ℕ) : ℝ) + 1 + ((⌊η⌋₊ : ℕ) : ℝ) + (t : ℝ)) + 3 * ((f : ℕ) : ℝ) * (m : ℝ) * ( …`. Simplify using `only [ElementDenominator.boundA, hf]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hQ]`.
+
+Use `(mul_le_mul_of_nonneg_right (le_max_left CA 0) (by positivity)).trans ?_` and prove the remaining obligations. Use `gcongr`.
+-/
 theorem boundA_le (CA η Sc b : ℝ) (l n r t m f : ℕ) (hl : 2 ≤ l) (hη : 0 < η) (hS : 0 < Sc) (hb : 1 ≤ b)
     (hf : f = n * 2) :
     ElementDenominator.boundA CA l n 2 r ⌊Sc⌋₊ (⌊η⌋₊ + t) m ⌊2 * b⌋₊ ≤
@@ -144,6 +194,15 @@ theorem boundA_le (CA η Sc b : ℝ) (l n r t m f : ℕ) (hl : 2 ≤ l) (hη : 0
   refine (mul_le_mul_of_nonneg_right (le_max_left CA 0) (by positivity)).trans ?_
   gcongr
 
+/- English proof (translation)
+Introduce `V2 _ _ _ _ _ _ _ _ _ _ _ ρ2 T2 hc2 hmat V1 _ _ _ _ _ _ _ _ _ _ _ ρ1 T1 hc1 hsub F hFo`. Take `⟨c1, c2⟩` from `h1 V1 ρ1 hsub`. Take `⟨e, heg, -⟩` from `hmat`. Establish `he' : ∀ g v, e (ρ2 g v) = matRep M2 g (e v)`. Introduce `g v`.
+
+Rewrite using `[heg]`. Simplify using `[matRep, Matrix.toLinAlgEquiv'_apply]`. Establish `hr : finrank ↥LL.1 V2 = r` using `by simpa using e.finrank_eq`. Establish `hs2 : ∀ τ, ∑ a ∈ Finset.Icc (-(η : ℤ)) η, multV (P.PD K) ρ2 τ a ≤ m`. Introduce `τ`.
+
+Simplify using `only [GlobalTheory.HTW.Rec.multV_eq_of_equiv _ e he']`. Conclude with `hsum τ`. Take `⟨mm, k, hm, hk, hle⟩` from `hT { V := V1, ρ := ρ1, cont := hc1, L := T1 } { V := V2, ρ := ρ2, cont := hc2, L := T2 } F r S η m h up b c1 (GlobalTheory.HTW.Rec.isCrys_of_equiv _ e he' h2) hFo hr (fun τ a ha => (c2 τ a ha).1) hb hs2 (fun τ a ha => (c2 τ a ha).2) (Or.inl he)`. Use `⟨mm, k, hm, hk, ?_⟩` and prove the remaining obligations. Rewrite `hle` using `[he]`.
+
+Establish `h3` using `hle.trans (mul_le_mul_of_nonneg_right hq (Nat.cast_nonneg k))`. Conclude with `h3` after adjusting the coercions.
+-/
 theorem rowAt_of_thmA {l : ℕ} [Fact l.Prime] (P : LocPrime l) (K LL : FinExt l) (CA : ℝ)
     (hT : ElementDenominator.thmA P K LL CA) (he : finrank ↥(K0 K) ↥K.1 = 2) {ι : Type} {k r : ℕ}
     (Ms : ι → ↥(GK K) → Matrix (Fin k) (Fin k) ↥LL.1) (M2 : ↥(GK K) →* Matrix (Fin r) (Fin r) ↥LL.1)
@@ -178,6 +237,27 @@ theorem rowAt_of_thmA {l : ℕ} [Fact l.Prime] (P : LocPrime l) (K LL : FinExt l
   have h3 := hle.trans (mul_le_mul_of_nonneg_right hq (Nat.cast_nonneg k))
   exact_mod_cast h3
 
+/- English proof (translation)
+Introduce `D r ρ large₂ ep CA h0 h1 hA hJ hF _ _ hLit hPar i hi π hπ dc`. Use `⟨fun w => ((⌈max CA 0 * (((locDeg D.host.E w : ℕ) + 1 : ℝ) * (D.R.r : ℝ) * (4 * large₂.sc.b / (D.nd.l i : ℝ) + 2 * large₂.Sc + 2 * Real.logb (D.nd.l i : ℝ) (2 * large₂.sc.b) + 1 + large₂.etaSz + (D.R.t : ℝ)) + 3 * ((locDeg D.host.E w : ℕ) : ℝ) * (D.R.m : ℝ) * (2 * large₂.sc.b + 1 …` and prove the remaining obligations. Use `swap`. Rewrite using `[Rat.cast_intCast]`. Conclude with `(Int.ceil_lt_add_one _).le`.
+
+Introduce `w hw _ C hC`. Establish `hl4 : D.nd.l i % 4 = 3` using `(h1 (D.nd.l i) (by simpa using hi.1.1)).1`. Establish `hl2 : D.nd.l i ≠ 2` using `by omega`. Take `⟨-, hK1, he, -⟩` from `h0 i hi.1.1 w hw`. Establish `hG : Good (D.nbr i w hw).Kw 1 C.LL` using `hC.good_one hl2 hK1`.
+
+Establish `hdeg : locDeg D.host.E w = finrank ℚ_[D.nd.l i] ↥(K0 (D.nbr i w hw).Kw) * 2`. Establish `h` using `((hLit i hi).2.2.1 w hw).2.2`. Unfold `Br.DegW at h`. Rewrite using `[← h, ← he]`. Conclude with `(Module.finrank_mul_finrank _ _ _).symm`.
+
+Establish `hT` using `hA (D.nd.l i) hl2 _ _ hG`. Establish `hη` using `large₂.etaSz_pos`. Establish `hS` using `large₂.Sc_pos`. Establish `ht` using `large₂.t_win.1`. Establish `hb : 1 ≤ large₂.sc.b` using `by unfold EmbeddingTypeJumps.ParametersPolynomiallyBounded at hPar; linarith`.
+
+Use `choose s Jc Jl j1 j2 _ j4 j5 j6 _ _ j9 using hJ i hi w hw C`. Use `choose up bτ w1 w2 w3 using fun τ => jump_windows large₂.etaSz large₂.Sc large₂.sc.b D.R.t hη hS ht hPar (s τ) (Jc τ) (Jl τ) (j1 τ) (j2 τ) (fun a ha => (j5 τ a ha).1) (j6 τ)`. Take `⟨f1, f2⟩` from `hF i hi w hw C`. Take `⟨g1, g2⟩` from `f2 π hπ`. Establish `hbd` using `boundA_le CA large₂.etaSz large₂.Sc large₂.sc.b (D.nd.l i) _ D.R.r D.R.t D.R.m _ (by omega) hη hS hb hdeg`.
+
+Use `rowAt_of_thmA (D.loc (D.nd.l i)) (D.nbr i w hw).Kw C.LL CA hT he _ _ ⌊large₂.Sc⌋₊ (⌊large₂.etaSz⌋₊ + D.R.t) D.R.m ⌊2 * large₂.sc.b⌋₊ up bτ _ ?_ g1 w1 ?_ ?_` and prove the remaining obligations. Introduce `V1 _ _ _ _ _ ρ1 hsub`. Take `⟨c1, c2⟩` from `f1 V1 ρ1 hsub`. Use `⟨c1, fun τ a ha => ?_⟩` and prove the remaining obligations. Take `⟨x, hx⟩` from `c2 τ a ha`.
+
+Conclude with `w2 τ a ((j9 τ x _).1 hx)`. Introduce `τ`. Rewrite using `[← j4 τ]`. Apply `sum_le_card` to reduce the goal to its premises. Introduce `a _`.
+
+Distinguish the cases in `hh : (IsJumpV (Br.PD D.loc D.nbr i w hw) (matRep (Formalism.MainNotions.TruncatedSeriesCountingIdentities.locC C (rTwO D.nd i (r i) π))) τ (-a - 1) ∧ ¬ (0 ≤ -a - 1 ∧ -a - 1 < (D.R.t : ℤ)))`. Conclude with `((g2 τ a).1 hh).le`. Conclude with `((g2 τ a).2 hh).le.trans zero_le_one`. Introduce `a ha hn`. Use `(g2 τ a).2 ?_` and prove the remaining obligations.
+
+Introduce and unpack `⟨p, q⟩`. Break down `(j9 τ π _).1 p with h | h | h` into its components or cases. Conclude with `w3 τ a ha h`. Conclude with `hn h`. Conclude with `q h`.
+
+Rewrite using `[Rat.cast_intCast]`. Conclude with `hbd.trans (Int.le_ceil _)`.
+-/
 theorem row_bound : ∀ (D : D7) (r : ∀ i : D.nd.Loc, D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i))) (ρ : ∀ i : D.nd.Loc, D.nd.X i → (GE D.nd →* GL (Fin D.R.r) (D.nd.O i))) (large₂ : SizeData₂ D) (ep : Bool) (CA : ℝ), EmbeddingTypeJumps.Conclusion0 D → EmbeddingTypeJumps.Conclusion1 D → EmbeddingTypeJumps.admA (D := D) CA → EmbeddingTypeJumps.HodgeJumpWindowsAtDistinguishedPrimes r ep large₂ → EmbeddingTypeJumps.FontaineSubOfSumsAtDistinguishedPrimes r ρ → EmbeddingTypeJumps.admG2 r ρ → EmbeddingTypeJumps.iwahoriAdmissibleSet r ρ → EmbeddingTypeJumps.LiteratureHypotheses (D := D) → EmbeddingTypeJumps.ParametersPolynomiallyBounded large₂ → ∀ i : D.nd.Loc, EmbeddingTypeJumps.AtQD i → ∀ π ∈ D.nd.Zgood i, ∀ dc : TruncatedSeriesCountingIdentities.Decl D i, ∃ lenRow : HeightOneSpectrum (𝓞 D.host.E) → ℚ, TruncatedSeriesCountingIdentities.LengthBoundAtPlaces i (r i) (ρ i) π dc lenRow ∧ ∀ w ∈ dc.row, (lenRow w : ℝ) ≤ max CA 0 * (((locDeg D.host.E w : ℕ) + 1 : ℝ) * (D.R.r : ℝ) * (4 * large₂.sc.b / (D.nd.l i : ℝ) + 2 * large₂.Sc + 2 * Real.logb (D.nd.l i : ℝ) (2 * large₂.sc.b) + 1 + large₂.etaSz + (D.R.t : ℝ)) + 3 * ((locDeg D.host.E w : ℕ) : ℝ) * (D.R.m : ℝ) * (2 * large₂.sc.b + 1)) + 1 := by
   intro D r ρ large₂ ep CA h0 h1 hA hJ hF _ _ hLit hPar i hi π hπ dc
   refine ⟨fun w => ((⌈max CA 0 * (((locDeg D.host.E w : ℕ) + 1 : ℝ) * (D.R.r : ℝ) * (4 * large₂.sc.b / (D.nd.l i : ℝ) + 2 * large₂.Sc + 2 * Real.logb (D.nd.l i : ℝ) (2 * large₂.sc.b) + 1 + large₂.etaSz + (D.R.t : ℝ)) + 3 * ((locDeg D.host.E w : ℕ) : ℝ) * (D.R.m : ℝ) * (2 * large₂.sc.b + 1))⌉ : ℤ) : ℚ), ?_, fun w _ => ?_⟩

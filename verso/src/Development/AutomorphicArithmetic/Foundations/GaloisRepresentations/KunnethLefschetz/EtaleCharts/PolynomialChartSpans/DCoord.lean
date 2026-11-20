@@ -16,13 +16,36 @@ private def shear (u : Fin D → B) : MvPolynomial (Fin D) B ≃ₐ[B] MvPolynom
     (MvPolynomial.aeval fun k => MvPolynomial.X k + MvPolynomial.C (u k))
     (by ext k; simp) (by ext k; simp)
 
+/- English proof (translation)
+Simplify using `[shear]`.
+-/
 private theorem shear_X (u : Fin D → B) (k : Fin D) :
     shear u (MvPolynomial.X k) = MvPolynomial.X k - MvPolynomial.C (u k) := by
   simp [shear]
 
+/- English proof (translation)
+The claim follows from `(shear u).commutes b`.
+-/
 private theorem shear_C (u : Fin D → B) (b : B) : shear u (MvPolynomial.C b) = MvPolynomial.C b :=
   (shear u).commutes b
 
+/- English proof (translation)
+Use `letI algA : Algebra (MvPolynomial (Fin D) R) B := (MvPolynomial.aeval u).toRingHom.toAlgebra`. Use `letI algP : Algebra (MvPolynomial (Fin D) R) (MvPolynomial (Fin D) B) := MvPolynomial.algebraMvPolynomial`. Use `letI smP : SMul (MvPolynomial (Fin D) R) (MvPolynomial (Fin D) B) := algP.toSMul`. Use `letI modP : Module (MvPolynomial (Fin D) R) (MvPolynomial (Fin D) B) := algP.toModule`. Establish `t1 : IsScalarTower R (MvPolynomial (Fin D) R) B` using `IsScalarTower.of_algebraMap_eq fun r => by`.
+
+Simplify using `[RingHom.algebraMap_toAlgebra, MvPolynomial.algebraMap_eq]`. Set `hm : MvPolynomial (Fin D) B →+* B ⊗[R] B` to `MvPolynomial.eval₂Hom (Algebra.TensorProduct.includeRight : B →ₐ[R] B ⊗[R] B).toRingHom (fun k => u k ⊗ₜ[R] (1 : B))`. Use `letI algPT : Algebra (MvPolynomial (Fin D) B) (B ⊗[R] B) := hm.toAlgebra`. Establish `t2 : IsScalarTower (MvPolynomial (Fin D) R) B (B ⊗[R] B)` using `inferInstance`. Establish `hcomp : (algebraMap (MvPolynomial (Fin D) R) (B ⊗[R] B)) = hm.comp (MvPolynomial.map (algebraMap R B))`.
+
+Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `r`. Simplify using `[hm, Algebra.TensorProduct.algebraMap_apply, RingHom.algebraMap_toAlgebra, Algebra.TensorProduct.tmul_one_eq_one_tmul]`. Introduce `i`. Simplify using `[hm, Algebra.TensorProduct.algebraMap_apply, RingHom.algebraMap_toAlgebra]`.
+
+Establish `t3 : IsScalarTower (MvPolynomial (Fin D) R) (MvPolynomial (Fin D) B) (B ⊗[R] B)` using `IsScalarTower.of_algebraMap_eq fun p => by`. Use `congrArg (fun f => f p) hcomp` as an intermediate fact. Simplify `this` using `[RingHom.algebraMap_toAlgebra]`. Establish `t4 : IsScalarTower R (MvPolynomial (Fin D) R) (B ⊗[R] B)` using `inferInstance`. Establish `hf : IsBaseChange (MvPolynomial (Fin D) R) (IsScalarTower.toAlgHom R B (MvPolynomial (Fin D) B)).toLinearMap` using `(inferInstance : Algebra.IsPushout R (MvPolynomial (Fin D) R) B (MvPolynomial (Fin D) B)).out`.
+
+Establish `hpush : Algebra.IsPushout (MvPolynomial (Fin D) R) B (MvPolynomial (Fin D) B) (B ⊗[R] B)`. Prove the components needed by the constructor for the conclusion. Use `IsBaseChange.of_comp (T := B) hf ?_` and prove the remaining obligations. Use `TensorProduct.isBaseChange R B B using 1` and compare the differences between its conclusion and the goal. Apply the tactic sequence `all_goals try rfl`.
+
+Apply the tactic sequence `all_goals try (apply LinearMap.ext; intro b; simp [hm, RingHom.algebraMap_toAlgebra])`. Establish `hE : hm.Etale` using `RingHom.Etale.isStableUnderBaseChange (MvPolynomial (Fin D) R) B (MvPolynomial (Fin D) B) (B ⊗[R] B) h`. Establish `heq : MvPolynomial.eval₂Hom (Algebra.TensorProduct.includeLeftRingHom : B →+* B ⊗[R] B) (fun k => (1 : B) ⊗ₜ[R] u k - u k ⊗ₜ[R] (1 : B)) = (Algebra.TensorProduct.comm R B B).toAlgHom.toRingHom.comp (hm.comp (shear u).toAlgHom.toRingHom)`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `b`.
+
+Simplify using `[hm, shear_C]`. Introduce `i`. Simplify using `[hm, shear_X]`. Rewrite using `[heq]`. Use `RingHom.Etale.stableUnderComposition _ _ ?_ (RingHom.Etale.of_bijective (Algebra.TensorProduct.comm R B B).bijective)` and prove the remaining obligations.
+
+Conclude with `RingHom.Etale.stableUnderComposition _ _ (RingHom.Etale.of_bijective (shear u).bijective) hE`.
+-/
 private theorem etale_diff (u : Fin D → B)
     (h : (MvPolynomial.aeval u : MvPolynomial (Fin D) R →ₐ[R] B).toRingHom.Etale) :
     (MvPolynomial.eval₂Hom (Algebra.TensorProduct.includeLeftRingHom : B →+* B ⊗[R] B)
@@ -85,6 +108,9 @@ end Alg
 section Geo
 variable {R : Type} [CommRing R]
 
+/- English proof (translation)
+Establish `e` using `IsAffineOpen.SpecMap_appLE_fromSpec Z.hom (isAffineOpen_top (Spec (CommRingCat.of R))) hU (by simp)`. Rewrite `e` using `[IsAffineOpen.fromSpec_top, Scheme.isoSpec_Spec_inv, ← Spec.map_comp]`. Use `show hU.fromSpec ≫ Z.hom = _`. Rewrite using `[← e]`. Both sides reduce to the same expression.
+-/
 private theorem fromSpec_hom (Z : Sch R) {U : Z.left.Opens} (hU : IsAffineOpen U) :
     (show Spec (CommRingCat.of (Sec Z U)) ⟶ Z.left from hU.fromSpec) ≫ Z.hom =
       Spec.map (CommRingCat.ofHom (algebraMap R (Sec Z U))) := by
@@ -95,6 +121,25 @@ private theorem fromSpec_hom (Z : Sch R) {U : Z.left.Opens} (hU : IsAffineOpen U
   rw [← e]
   rfl
 
+/- English proof (translation)
+Set `sA : Spec (CommRingCat.of (Sec Z U)) ⟶ Spec (CommRingCat.of R)` to `Spec.map (CommRingCat.ofHom (algebraMap R (Sec Z U)))`. Set `a : Spec (CommRingCat.of (Sec Z U)) ⟶ Z.left` to `hU.fromSpec`. Establish `ha : a ≫ Z.hom = sA` using `fromSpec_hom Z hU`. Use `haveI : IsOpenImmersion a := IsAffineOpen.isOpenImmersion_fromSpec hU`. Set `m : pullback sA sA ⟶ pullback Z.hom Z.hom` to `pullback.map sA sA Z.hom Z.hom a a (𝟙 _) (by rw [Category.comp_id, ha]) (by rw [Category.comp_id, ha])`.
+
+Set `fN : Spec Γ((XX Z).left, N) ⟶ pullback Z.hom Z.hom` to `hN.fromSpec`. Set `g1 : Spec Γ((XX Z).left, N) ⟶ Spec (CommRingCat.of (Sec Z U))` to `Spec.map ((p1 Z).left.appLE U N h1)`. Set `g2 : Spec Γ((XX Z).left, N) ⟶ Spec (CommRingCat.of (Sec Z U))` to `Spec.map ((p2 Z).left.appLE U N h2)`. Establish `e1 : g1 ≫ a = fN ≫ pullback.fst Z.hom Z.hom` using `IsAffineOpen.SpecMap_appLE_fromSpec (p1 Z).left hU hN h1`. Establish `e2 : g2 ≫ a = fN ≫ pullback.snd Z.hom Z.hom` using `IsAffineOpen.SpecMap_appLE_fromSpec (p2 Z).left hU hN h2`.
+
+Establish `w : g1 ≫ sA = g2 ≫ sA`. Rewrite using `[← ha, ← Category.assoc, e1, ← Category.assoc, e2, Category.assoc, Category.assoc, pullback.condition]`. Set `g : Spec Γ((XX Z).left, N) ⟶ pullback sA sA` to `pullback.lift g1 g2 w`. Establish `hgm : g ≫ m = fN`. Apply `pullback.hom_ext` to reduce the goal to its premises.
+
+Simplify using `only [g, m, Category.assoc, pullback.lift_fst, pullback.lift_fst_assoc, e1]`. Simplify using `only [g, m, Category.assoc, pullback.lift_snd, pullback.lift_snd_assoc, e2]`. Use `haveI : IsOpenImmersion fN := IsAffineOpen.isOpenImmersion_fromSpec hN`. Use `haveI : Etale (g ≫ m) := by rw [hgm]; infer_instance`. Use `haveI : Etale g := Etale.of_comp g m`.
+
+Set `φ : Sec Z U ⊗[R] Sec Z U →+* Sec (XX Z) N` to `(Algebra.TensorProduct.productMap (secMap (p1 Z) h1) (secMap (p2 Z) h2)).toRingHom`. Set `g' : Spec (CommRingCat.of (Sec (XX Z) N)) ⟶ pullback sA sA` to `g`. Use `haveI : Etale g' := inferInstanceAs (Etale g)`. Establish `key : Spec.map (CommRingCat.ofHom φ) ≫ (pullbackSpecIso R (Sec Z U) (Sec Z U)).inv = g'`. Apply `pullback.hom_ext` to reduce the goal to its premises.
+
+Rewrite using `[Category.assoc, pullbackSpecIso_inv_fst, ← Spec.map_comp]`. Use `Eq.trans ?_ (pullback.lift_fst g1 g2 w).symm` and prove the remaining obligations. Use `congr 1`. Use extensionality with `x`. Simplify using `[φ, secMap]`.
+
+Both sides reduce to the same expression. Rewrite using `[Category.assoc, pullbackSpecIso_inv_snd, ← Spec.map_comp]`. Use `Eq.trans ?_ (pullback.lift_snd g1 g2 w).symm` and prove the remaining obligations. Use `congr 1`. Use extensionality with `x`.
+
+Simplify using `[φ, secMap]`. Both sides reduce to the same expression. Establish `key' : Spec.map (CommRingCat.ofHom φ) = g' ≫ (pullbackSpecIso R (Sec Z U) (Sec Z U)).hom`. Rewrite using `[← key, Category.assoc, Iso.inv_hom_id, Category.comp_id]`. Establish `hE : Etale (Spec.map (CommRingCat.ofHom φ))` using `by rw [key']; infer_instance`.
+
+Conclude with `(HasRingHomProperty.Spec_iff (P := @Etale)).mp hE`.
+-/
 private theorem etale_prod (Z : Sch R) {U : Z.left.Opens} (hU : IsAffineOpen U) {N : (XX Z).left.Opens}
     (hN : IsAffineOpen N) (h1 : N ≤ (p1 Z).left ⁻¹ᵁ U) (h2 : N ≤ (p2 Z).left ⁻¹ᵁ U) :
     (Algebra.TensorProduct.productMap (secMap (p1 Z) h1) (secMap (p2 Z) h2)).toRingHom.Etale := by
@@ -150,6 +195,11 @@ private theorem etale_prod (Z : Sch R) {U : Z.left.Opens} (hU : IsAffineOpen U) 
   exact (HasRingHomProperty.Spec_iff (P := @Etale)).mp hE
 end Geo
 
+/- English proof (translation)
+Introduce `R _ Z D c`. Establish `h` using `etale_diff (R := R) c.u c.coord.2`. Establish `h'` using `etale_prod Z c.coord.1 c.aff c.h1 c.h2`. Establish `h3` using `RingHom.Etale.stableUnderComposition _ _ h h'`. Use `h3 using 1` and compare the differences between its conclusion and the goal.
+
+Use `MvPolynomial.ringHom_ext (fun b => ?_) fun k => ?_` and prove the remaining obligations. Simplify using `[MvPolynomial.coe_eval₂Hom]`. Simplify using `[DChart.s, MvPolynomial.coe_eval₂Hom]`.
+-/
 theorem dCoord : DCoord := by
   intro R _ Z D c
   have h := etale_diff (R := R) c.u c.coord.2

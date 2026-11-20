@@ -16,11 +16,19 @@ open Formalism.MainNotions.S.Lat
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Simplify using `only [Gflag, star_sub, star_mul', star_star, star_natCast]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem star_Gflag {E : Type} [Field E] [NumberField E] [StarRing E] {S : HSpace E} {r : ℕ} (n m : ℕ)
     (F : FlagG S r (n : E)) (F' : FlagG S r (m : E)) : star (Gflag F F') = Gflag F F' := by
   simp only [Gflag, star_sub, star_mul', star_star, star_natCast]
   ring
 
+/- English proof (translation)
+Introduce `hR D X Y hW hI`. Use `Formalism.L2.SG.Pf.finX_of_neat Y (fun u => Formalism.L2.SG.Closed.NeatKu_holds X u Y.hK) (fun u => ?_) (GlobalTheory.RowsFiniteDim.finiteDimensional_HHX hR D X hI) (fun u u' t => Formalism.L2.SG.Pf.FinXP.fibFin_holds D X Y u u' t) (fun u u' s₁ s₂ s₁' s₂' => Formalism.L2.SG.Pf.Fi …` and prove the remaining obligations. Establish `hL : X.LevelSubgroupNormalized` using `Formalism.L2.SG.Closed.level_subgroup_properties X`. Conclude with `Formalism.L2.SG.Closed.InHHC_holds D X Y u hI (Formalism.L2.SG.Closed.FoldOKC_holds Formalism.L2.SG.Pf.FinLeviPf.finLeviC_holds D X Y u hL hW)`. Rewrite using `[← NumberField.IsCMField.complexConj_eq_self_iff]`.
+
+Conclude with `star_Gflag _ _ _ _`.
+-/
 theorem finX_of_decay : Formalism.L2.SG.RowsDef.RowsFinDim → ∀ (D : D7) (X : HidaSetting D) (Y : Formalism.L2.SG.Full.Full X),
     Formalism.L2.SG.WuDecay.WuDecay X → Integrable X.ph (Formalism.L2.SG.ProjRows.muInf X.B.I) → FinX Y := by
   intro hR D X Y hW hI

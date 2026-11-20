@@ -53,14 +53,23 @@ variable {D : Formalism.BasicNotions.D7} {V : Formalism.BasicNotions.TH.HSp D} {
 variable {θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)}
 variable {P : RowPsi V n} {M : Mult.DSModel V Sp}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.aut, h.cusp, fun v k hk g => by rw [h.lev v k (hJ hk) g, hχ k hk], h.equiv, h.cont⟩`.
+-/
 theorem isMultMap_mono {J J' : Set (GA D V)} {χ χ' : GA D V → ℂ} (hJ : J' ⊆ J) (hχ : ∀ k ∈ J', χ' k = χ k)
     {T : Mult.MMap M} (h : Mult.IsMultMap θ M J χ T) : Mult.IsMultMap θ M J' χ' T :=
   ⟨h.aut, h.cusp, fun v k hk g => by rw [h.lev v k (hJ hk) g, hχ k hk], h.equiv, h.cont⟩
 
+/- English proof (translation)
+The claim follows from `Submodule.span_mono fun _ hT => isMultMap_mono hJ hχ hT`.
+-/
 theorem mult_mono {J J' : Set (GA D V)} {χ χ' : GA D V → ℂ} (hJ : J' ⊆ J) (hχ : ∀ k ∈ J', χ' k = χ k) :
     Mult.Mult θ M J χ ≤ Mult.Mult θ M J' χ' :=
   Submodule.span_mono fun _ hT => isMultMap_mono hJ hχ hT
 
+/- English proof (translation)
+Introduce and unpack `_ ⟨κ, hκ, rfl⟩`. Conclude with `⟨κ, Formalism.L2.NG.Cong.of_mul_left D.host.E n hκ, rfl⟩`.
+-/
 theorem levN_mono (N m : ℕ) : levN P (N * m) ⊆ levN P N := by
   rintro _ ⟨κ, hκ, rfl⟩
   exact ⟨κ, Formalism.L2.NG.Cong.of_mul_left D.host.E n hκ, rfl⟩
@@ -69,6 +78,13 @@ abbrev LN (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* �
     Submodule ℂ (Mult.MMap M) :=
   Mult.Mult θ M (levN P (N + 1)) (fun _ => 1)
 
+/- English proof (translation)
+Introduce `i j`. Establish `hpos : 1 ≤ (i + 1) * (j + 1)` using `Nat.one_le_iff_ne_zero.2 (by positivity)`. Establish `e : (i + 1) * (j + 1) - 1 + 1 = (i + 1) * (j + 1)` using `Nat.sub_add_cancel hpos`. Use `⟨(i + 1) * (j + 1) - 1, ?_, ?_⟩` and prove the remaining obligations. Apply `mult_mono` to reduce the goal to its premises.
+
+Rewrite using `[e]`. Conclude with `levN_mono _ _`. Use `intros`. Both sides reduce to the same expression. Apply `mult_mono` to reduce the goal to its premises.
+
+Rewrite using `[e, mul_comm]`. Conclude with `levN_mono _ _`. Use `intros`. Both sides reduce to the same expression.
+-/
 theorem LN_directed : Directed (· ≤ ·) (LN θ P M) := by
   intro i j
   have hpos : 1 ≤ (i + 1) * (j + 1) := Nat.one_le_iff_ne_zero.2 (by positivity)
@@ -85,11 +101,22 @@ theorem LN_directed : Directed (· ≤ ·) (LN θ P M) := by
     · intros
       rfl
 
+/- English proof (translation)
+The claim follows from `Submodule.mem_iSup_of_directed _ LN_directed`.
+-/
 theorem mem_Minf {T : Mult.MMap M} : T ∈ Minf θ P M ↔ ∃ N, T ∈ LN θ P M N :=
   Submodule.mem_iSup_of_directed _ LN_directed
 
+/- English proof (translation)
+The claim follows from `le_iSup (LN θ P M) N`.
+-/
 theorem LN_le_Minf (N : ℕ) : LN θ P M N ≤ Minf θ P M := le_iSup (LN θ P M) N
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `mem_Minf.1 hx`. Take `⟨b, hb⟩` from `mem_Minf.1 hy`. Take `⟨c, hc⟩` from `mem_Minf.1 hz`. Take `⟨d, had, hbd⟩` from `LN_directed (θ := θ) (P := P) (M := M) a b`. Take `⟨k, hdk, hck⟩` from `LN_directed (θ := θ) (P := P) (M := M) d c`.
+
+Conclude with `⟨k, hdk (had ha), hdk (hbd hb), hck hc⟩`.
+-/
 theorem common3 {x y z : Mult.MMap M} (hx : x ∈ Minf θ P M) (hy : y ∈ Minf θ P M) (hz : z ∈ Minf θ P M) :
     ∃ N, x ∈ LN θ P M N ∧ y ∈ LN θ P M N ∧ z ∈ LN θ P M N := by
   obtain ⟨a, ha⟩ := mem_Minf.1 hx
@@ -99,6 +126,11 @@ theorem common3 {x y z : Mult.MMap M} (hx : x ∈ Minf θ P M) (hy : y ∈ Minf 
   obtain ⟨k, hdk, hck⟩ := LN_directed (θ := θ) (P := P) (M := M) d c
   exact ⟨k, hdk (had ha), hdk (hbd hb), hck hc⟩
 
+/- English proof (translation)
+Take `⟨N0, hN0, h0⟩` from `hl`. Establish `e : N0 - 1 + 1 = N0` using `Nat.sub_add_cancel hN0`. Use `le_trans ?_ (LN_le_Minf (N0 - 1))` and prove the remaining obligations. Apply `mult_mono` to reduce the goal to its premises. Introduce and unpack `_ ⟨κ, hκ, rfl⟩`.
+
+Rewrite `hκ` using `[e]`. Conclude with `(h0 κ hκ).1`. Introduce and unpack `_ ⟨κ, hκ, rfl⟩`. Rewrite `hκ` using `[e]`. Conclude with `(h0 κ hκ).2.symm`.
+-/
 theorem mult_le_Minf {J : Set (GA D V)} {χ : GA D V → ℂ} (hl : LevOK P J χ) : Mult.Mult θ M J χ ≤ Minf θ P M := by
   obtain ⟨N0, hN0, h0⟩ := hl
   have e : N0 - 1 + 1 = N0 := Nat.sub_add_cancel hN0
@@ -126,6 +158,9 @@ def rhoA (hAS : ActStable θ P M) : Formalism.AUTREP.GAf D.host.E n →* Module.
 
 variable (μ : Measure (GA D V)) (𝓕 : Set (GA D V))
 
+/- English proof (translation)
+Take `⟨N, hx, hy, hz⟩` from `common3 x.2 y.2 z.2`. Conclude with `⟨N, hHP (N + 1) (Nat.succ_pos N), hx, hy, hz⟩`.
+-/
 theorem hp3 (hHP : HermPosLev θ P M μ 𝓕) (x y z : Minf θ P M) :
     ∃ N, PeterssonHilbertSpace.IsHermPos (LN θ P M N) (Mult.ipM M μ 𝓕) ∧ (x : Mult.MMap M) ∈ LN θ P M N ∧
       (y : Mult.MMap M) ∈ LN θ P M N ∧ (z : Mult.MMap M) ∈ LN θ P M N := by

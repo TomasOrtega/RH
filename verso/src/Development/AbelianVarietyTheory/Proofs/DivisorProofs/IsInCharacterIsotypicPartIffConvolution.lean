@@ -8,11 +8,19 @@ noncomputable section
 
 namespace GlobalTheory.Shin
 
+/- English proof (translation)
+Take `⟨n, ρ, h⟩` from `hY`. Rewrite using `[h, h, Representation.char_conj]`.
+-/
 theorem isChar_conj_eq {G : Type} [Group G] {Y : G → ℂ} (hY : IsChar ℂ ℂ Y) (g z : G) :
     Y (z * g * z⁻¹) = Y g := by
   obtain ⟨n, ρ, h⟩ := hY
   rw [h, h, Representation.char_conj]
 
+/- English proof (translation)
+Rewrite using `[Finset.sum_mul_sum]`. Repeatedly rewrite using `[star_sum, star_mul', Finset.sum_smul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Rewrite using `[← Equiv.sum_comp (Equiv.mulLeft y)]`.
+
+Use `Finset.sum_congr rfl fun z _ => ?_` and prove the remaining obligations. Simplify using `[map_mul, smul_mul_smul_comm, smul_smul, mul_comm]`.
+-/
 theorem conv_op_eq {G V : Type} [Group G] [Fintype G] [AddCommGroup V] [Module ℂ V]
     (ρ : Representation ℂ G V) (Y h : G → ℂ) :
     ∑ x, star (∑ y, Y y * h (y⁻¹ * x)) • ρ x =
@@ -28,6 +36,9 @@ theorem conv_op_eq {G V : Type} [Group G] [Fintype G] [AddCommGroup V] [Module �
 def convL {G : Type} [Group G] [Fintype G] (Y : G → ℂ) : (G → ℂ) →ₗ[ℂ] (G → ℂ) :=
   ∑ g, star (Y g) • LinearMap.funLeft ℂ ℂ (fun z => g * z)
 
+/- English proof (translation)
+Simplify using `[convL, LinearMap.funLeft, Finset.sum_apply]`.
+-/
 theorem convL_apply {G : Type} [Group G] [Fintype G] (Y : G → ℂ) (a : G → ℂ) (z : G) :
     convL Y a z = ∑ g, star (Y g) * a (g * z) := by
   simp [convL, LinearMap.funLeft, Finset.sum_apply]
@@ -45,9 +56,35 @@ def regKer {G : Type} [Group G] [Fintype G] (Y : G → ℂ) :
   map_one' := by ext a z; simp [LinearMap.funLeft]
   map_mul' g h := by ext a z; simp [LinearMap.funLeft, mul_assoc]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem regKer_apply {G : Type} [Group G] [Fintype G] (Y : G → ℂ) (g : G) (a : LinearMap.ker (convL Y))
     (z : G) : ((regKer Y g a : LinearMap.ker (convL Y)) : G → ℂ) z = (a : G → ℂ) (z * g) := rfl
 
+/- English proof (translation)
+Introduce `G _ _ φ Y hY`. Use `Fintype.ofFinite G` as an intermediate fact. Prove the components needed by the constructor for the conclusion. Introduce `hK set K := LinearMap.ker (convL Y)`. Establish `hT : ∑ g, star (Y g) • regKer Y g = 0`.
+
+Use extensionality with `a z`. Establish `ha` using `congrFun (LinearMap.mem_ker.1 a.2) z`. Rewrite `ha` using `[convL_apply, Pi.zero_apply]`. Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply, Submodule.coe_sum, Submodule.coe_smul, Finset.sum_apply, Pi.smul_apply, regKer_apply, smul_eq_mul, LinearMap.zero_apply, Submodule.coe_zero, Pi.zero_apply]`. Rewrite using `[← ha, ← Equiv.sum_comp (MulAut.conj z⁻¹).toEquiv]`.
+
+Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Establish `hc` using `isChar_conj_eq hY g z⁻¹`. Simplify using `only [MulEquiv.toEquiv_eq_coe, MulEquiv.coe_toEquiv, MulAut.conj_apply, inv_inv] at hc ⊢`. Rewrite using `[hc]`. Use `congr 2`.
+
+Use `group`. Establish `hK'` using `hK K (regKer Y) (by`. Rewrite using `[finsum_eq_sum_of_fintype]`. Use `congrArg (LinearMap.trace ℂ K) hT` as an intermediate fact. Simplify `this)` using `[map_sum, smul_eq_mul]`.
+
+Rewrite `hK'` using `[finsum_eq_sum_of_fintype]`. Set `ℓ : Module.Dual ℂ (G → ℂ)` to `∑ x, star (φ x) • (LinearMap.proj x : (G → ℂ) →ₗ[ℂ] ℂ)`. Establish `hℓ : ∀ a, ℓ a = ∑ x, star (φ x) * a x` using `fun a => by simp [ℓ]`. Establish `hmem : ℓ ∈ K.dualAnnihilator`. Rewrite using `[Submodule.mem_dualAnnihilator]`.
+
+Introduce `a ha`. Use `congrFun (congrArg Subtype.val (LinearMap.congr_fun hK' ⟨a, ha⟩)) 1` as an intermediate fact. Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply, Submodule.coe_sum, Submodule.coe_smul, Finset.sum_apply, Pi.smul_apply, regKer_apply, smul_eq_mul, LinearMap.zero_apply, Submodule.coe_zero, Pi.zero_apply] at this`. Establish `e : ∀ x, ((regKer Y x ⟨a, ha⟩ : LinearMap.ker (convL Y)) : G → ℂ) 1 = a x` using `fun x => by show a (1 * x) = a x`. Rewrite using `[one_mul]`.
+
+Simplify using `only [e] at this`. Rewrite using `[hℓ, this]`. Rewrite `hmem` using `[← LinearMap.range_dualMap_eq_dualAnnihilator_ker]`. Take `⟨μ, hμ⟩` from `hmem`. Use `⟨fun w => star (μ (Pi.single w 1)), fun x => ?_⟩` and prove the remaining obligations.
+
+Establish `hδ : convL Y (Pi.single x 1) = ∑ g, star (Y g) • Pi.single (g⁻¹ * x) 1`. Use function extensionality and compare the values at `z`. Rewrite using `[convL_apply, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Simplify using `only [Pi.smul_apply, smul_eq_mul]`.
+
+Use `congr 1`. Simplify using `only [Pi.single_apply, eq_inv_mul_iff_mul_eq]`. Establish `h1` using `LinearMap.congr_fun hμ (Pi.single x 1)`. Rewrite `h1` using `[LinearMap.dualMap_apply, hδ, map_sum, hℓ]`. Simplify using `only [map_smul, smul_eq_mul, Pi.single_apply, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true] at h1`.
+
+Rewrite using `[finsum_eq_sum_of_fintype]`. Establish `h2` using `congrArg star h1`. Simplify using `only [star_sum, star_mul', star_star] at h2`. Rewrite using `[← h2]`. Introduce and unpack `⟨h, hφ⟩ V _ _ _ ρ hV`.
+
+Establish `hY0` using `GlobalTheory.T.isInCharacterIsotypicPart_self G Y hY V ρ hV`. Rewrite `hY0`, the goal using `[finsum_eq_sum_of_fintype]`. Repeatedly rewrite using `[hφ, finsum_eq_sum_of_fintype]`. Rewrite using `[conv_op_eq, hY0, zero_mul]`.
+-/
 theorem kills_iff_conv : ∀ (G : Type) [Group G] [Finite G] (φ Y : G → ℂ), IsChar ℂ ℂ Y →
     (Kills φ Y ↔ ∃ h : G → ℂ, ∀ x, φ x = ∑ᶠ y, Y y * h (y⁻¹ * x)) := by
   intro G _ _ φ Y hY

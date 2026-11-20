@@ -11,6 +11,19 @@ open GlobalTheory.RealWeil.UnitaryOsc
 
 open scoped MatrixOrder in
 
+/- English proof (translation)
+Introduce `ι _ _ H s hH hs hpos`. Establish `hP0 : (0 : Matrix ι ι ℂ) ≤ H * s` using `hpos.posSemidef.nonneg`. Use `set R : Matrix ι ι ℂ := CFC.sqrt (H * s)`. Establish `hR0 : (0 : Matrix ι ι ℂ) ≤ R` using `CFC.sqrt_nonneg _`. Establish `hRh : Rᴴ = R` using `hR0.posSemidef.isHermitian.eq`.
+
+Establish `hRR : R * R = H * s` using `CFC.sqrt_mul_sqrt_self _ hP0`. Establish `hdet : R.det ≠ 0`. Introduce `h0`. Establish `e` using `congrArg Matrix.det hRR`. Rewrite `e` using `[det_mul, h0, zero_mul]`.
+
+Conclude with `(hpos.det_pos.ne') (by rw [← e])`. Take `⟨u, hu⟩` from `(Matrix.isUnit_iff_isUnit_det R).2 hdet.isUnit`. Use `set s₀ : Matrix ι ι ℂ := u.1 * s * (u⁻¹).1 with hs₀`. Establish `hs₀2 : s₀ * s₀ = 1`. Simplify using `only [hs₀, mul_assoc, Units.inv_mul_cancel_left]`.
+
+Rewrite using `[← mul_assoc s, hs, one_mul, Units.mul_inv]`. Establish `hRRs : u.1ᴴ * u.1 * s = H`. Rewrite using `[hu, hRh, hRR, mul_assoc, hs, mul_one]`. Establish `hform : (u⁻¹).1ᴴ * H * (u⁻¹).1 = s₀`. Rewrite using `[← hRRs]`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hs₀h : s₀ᴴ = s₀`. Rewrite using `[← hform, conjTranspose_mul, conjTranspose_mul, conjTranspose_conjTranspose, hH, mul_assoc]`. Set `E : EuclideanSpace ℂ ι ≃L[ℝ] (ι → ℂ)` to `(crd ι).trans (ContinuousLinearEquiv.equivOfInverse (mvL (u⁻¹).1) (mvL u.1) (fun v => by simp) fun v => by simp)`. Establish `hE : ∀ x, E x = (u⁻¹).1 *ᵥ crd ι x` using `fun _ => rfl`.
+
+Use `⟨E, cplx s₀ hs₀h hs₀2, cplx_cplx s₀ hs₀h hs₀2, fun x => ?_, fun x y => ?_⟩` and prove the remaining obligations. Rewrite using `[hE, hE, crd_cplx, mulVec_smul, mulVec_mulVec, mulVec_mulVec]`. Use `congr 2`. Rewrite using `[hs₀, ← mul_assoc, ← mul_assoc, Units.inv_mul, one_mul]`. Rewrite using `[omJ_cplx, hE, hE, form_mulVec, hform]`.
+-/
 theorem exists_coord : ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (H s : Matrix ι ι ℂ), Hᴴ = H → s * s = 1 → (H * s).PosDef → ∃ (E : EuclideanSpace ℂ ι ≃L[ℝ] (ι → ℂ)) (J : EuclideanSpace ℂ ι ≃ₗᵢ[ℝ] EuclideanSpace ℂ ι), (∀ x, J (J x) = -x) ∧ (∀ x, E (J x) = I • s *ᵥ E x) ∧ ∀ x y, (star (E y) ⬝ᵥ H *ᵥ E x).im = omJ J x y := by
   intro ι _ _ H s hH hs hpos
   have hP0 : (0 : Matrix ι ι ℂ) ≤ H * s := hpos.posSemidef.nonneg

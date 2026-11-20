@@ -5,6 +5,11 @@ attribute [local instance] MvPolynomial.gradedAlgebra
 
 namespace GlobalTheory.CompanionTheory.Geo
 
+/- English proof (translation)
+Introduce `f hf n`. Establish `hI : (homIdeal i).IsHomogeneous (grK K N)`. Use `Ideal.homogeneous_span (grK K N) _ ?_` and prove the remaining obligations. Introduce and unpack `g ⟨d, hg, -⟩`. Conclude with `⟨d • 1, hg⟩`.
+
+Establish `h` using `hI n hf`. Establish `e : ((DirectSum.decompose (grK K N) f n : grK K N n) : MvPolynomial (Fin (N + 1)) K) = MvPolynomial.homogeneousComponent n f` using `MvPolynomial.decomposition.decompose'_apply f n`. Conclude with `e ▸ h`.
+-/
 theorem homIdeal_homog {K : Type} [Field K] {X : Scheme.{0}} {N : ℕ} (i : X ⟶ PSpace K N) :
     ∀ f ∈ homIdeal i, ∀ n : ℕ, MvPolynomial.homogeneousComponent n f ∈ homIdeal i := by
   intro f hf n

@@ -16,6 +16,9 @@ namespace GlobalTheory.CompanionTheory.WSum
 
 variable {D : D7}
 
+/- English proof (translation)
+Establish `h : incA D (algebraMap D.host.F D.host.E β) = algebraMap (AF D.host.F) (AE D) (algebraMap D.host.F (AF D.host.F) β)` using `by show (1 : AF D.host.F) ⊗ₜ[D.host.F] (algebraMap D.host.F D.host.E β) = (algebraMap D.host.F (AF D.host.F) β) ⊗ₜ[D.host.F] (1 : D.host.E)`. Rewrite using `[Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul]`. Rewrite using `[h, ← Algebra.smul_def, map_smul, smul_eq_mul]`.
+-/
 theorem trace_incA_algebraMap_mul (D : D7) (β : D.host.F) (z : AE D) :
     Algebra.trace (AF D.host.F) (AE D) (incA D (algebraMap D.host.F D.host.E β) * z) =
       algebraMap D.host.F (AF D.host.F) β * Algebra.trace (AF D.host.F) (AE D) z := by
@@ -26,6 +29,11 @@ theorem trace_incA_algebraMap_mul (D : D7) (β : D.host.F) (z : AE D) :
     rw [Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul]
   rw [h, ← Algebra.smul_def, map_smul, smul_eq_mul]
 
+/- English proof (translation)
+Establish `hi : ∀ e, θ ρ (infPart D (incA D e)) = tauE D ρ e` using `fun e => (hσ.inf ρ).1 e`. Establish `hs : θ ρ (infPart D (rs σ s)) = (s : ℂ)` using `hσ.comp _ ρ`. Establish `hb : tauE D ρ (algebraMap D.host.F D.host.E α) = tauE D ρ (algebraMap D.host.F D.host.E β) + tauE D ρ (algebraMap D.host.F D.host.E β)`. Rewrite using `[← map_add, ← map_add, hβ]`. Rewrite using `[map_mul (infPart D), map_mul (θ ρ), hi, map_mul (infPart D), map_mul (θ ρ), hs, map_mul (infPart D), map_mul (θ ρ), hi, hb]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem theta_half_rs {θ : InfFam D} {σ : (D.what₂.Tau → ℂ) →+ AE D} (hσ : GlobalTheory.FockCompare.Chart θ σ)
     {α β : D.host.F} (hβ : β + β = α) (s : ℝ) (t : AE D) (ρ : D.what₂.Tau) :
     θ ρ (infPart D (incA D (algebraMap D.host.F D.host.E β) * (rs σ s * t))) =
@@ -40,6 +48,19 @@ theorem theta_half_rs {θ : InfFam D} {σ : (D.what₂.Tau → ℂ) →+ AE D} (
   push_cast
   ring
 
+/- English proof (translation)
+Introduce `D ψ ψ₀ h₀ α hψ θ σ hσ t s`. Take `⟨β, hβ', hβ⟩ : ∃ β : D.host.F, β = α * (1 / 2) ∧ β + β = α` from `⟨_, rfl, by ring⟩`. Use `set z' : AE D := incA D (algebraMap D.host.F D.host.E β) * (rs σ s * t) with hz'`. Establish `hR : algebraMap D.host.F (AF D.host.F) α * halfTr (rs σ s * t) = Algebra.trace (AF D.host.F) (AE D) z'`. Rewrite using `[hz', trace_incA_algebraMap_mul, hβ', map_mul, mul_assoc]`.
+
+Both sides reduce to the same expression. Establish `hfin : finPart D z' = 0`. Establish `h0 : finPart D (rs σ s) = 0` using `hσ.fin _`. Rewrite using `[hz', map_mul (finPart D), map_mul (finPart D) (rs σ s), h0, zero_mul, mul_zero]`. Establish `hT` using `GlobalTheory.PhaseReal.trace_real hfin`.
+
+Use `set R := Algebra.trace (AF D.host.F) (AE D) z' with hRdef`. Establish `h1 : ψ₀ R = psiInf D.host.F ψ₀ (fstA D.host.F R)`. Unfold `psiInf`. Rewrite using `[← hT]`. Establish `h2` using `h₀.2.2 θ hσ.inf (fstA D.host.F R)`.
+
+Establish `h3 : ∀ ρ, θ ρ (fstA D.host.F R ⊗ₜ[D.host.F] (1 : D.host.E)) = ((s * (θ ρ (infPart D (incA D (algebraMap D.host.F D.host.E α) * t))).re : ℝ) : ℂ)`. Introduce `ρ`. Rewrite using `[hRdef, GlobalTheory.PhaseReal.theta_trace θ hσ.inf ρ z', hz', theta_half_rs hσ hβ, Complex.re_ofReal_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[hψ, hR, h1, h2]`. Use `congr 1`. Simplify using `only [h3]`. Rewrite using `[← Complex.ofReal_sum, ← Finset.mul_sum]`. Unfold `lam`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem psi_halfTr_rs : ∀ (D : D7) (ψ ψ₀ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ₀ (-1) → ∀ α : D.host.F,
     (∀ x, ψ x = ψ₀ (algebraMap D.host.F (AF D.host.F) α * x)) → ∀ (θ : InfFam D)
     (σ : (D.what₂.Tau → ℂ) →+ AE D), GlobalTheory.FockCompare.Chart θ σ → ∀ (t : AE D) (s : ℝ),

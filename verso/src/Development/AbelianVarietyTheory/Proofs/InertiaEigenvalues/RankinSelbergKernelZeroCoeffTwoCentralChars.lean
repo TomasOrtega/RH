@@ -17,6 +17,19 @@ noncomputable section
 
 namespace GlobalTheory.RSResidue
 
+/- English proof (translation)
+Introduce `E _ _ _ a ω ω' hω hω' φ φ' h h' ℓ Φ hΦ J η`. Take `⟨c, hc⟩` from `rsHat_zero_eq J η φ φ' hΦ`. Establish `hc' : ∀ g, rsHat ℓ φ.1 φ'.1 Φ J η g 0 = (∫ u, rsInf ℓ φ.1 φ'.1 Φ g u ∂infMeasure E a) * c` using `hc`. Establish `hj : Continuous fun p : GA E a × (Fin a → Cinf E) => rsInf ℓ φ.1 φ'.1 Φ p.1 p.2` using `continuous_rsInf h.1 h'.1 hΦ.1.continuous hΦ.2.2`. Establish `h0 : ∀ g, ∀ u ∉ tsupport Φ, rsInf ℓ φ.1 φ'.1 Φ g u = 0` using `fun g u hu => by`.
+
+Rewrite using `[rsInf, image_eq_zero_of_notMem_tsupport hu, mul_zero]`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [hc']`. Conclude with `(continuous_integral_of_compact (infMeasure E a) hΦ.2.1 hj h0).mul continuous_const`. Take `⟨C, hC⟩` from `h.2.2.2`.
+
+Take `⟨C', hC'⟩` from `h'.2.2.2`. Establish `hC0 : 0 ≤ C` using `(norm_nonneg _).trans (hC 1)`. Establish `hi : Integrable (fun u => C * C' * ‖Φ u‖) (infMeasure E a)` using `(integrable_infMeasure hΦ.1.continuous hΦ.2.1).norm.const_mul _`. Use `⟨(∫ u, C * C' * ‖Φ u‖ ∂infMeasure E a) * ‖c‖, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[hc', norm_mul]`.
+
+Use `mul_le_mul_of_nonneg_right (norm_integral_le_of_norm_le hi (.of_forall fun u => ?_)) (norm_nonneg _)` and prove the remaining obligations. Rewrite using `[rsInf, norm_mul, norm_mul, Complex.norm_conj]`. Conclude with `mul_le_mul_of_nonneg_right (mul_le_mul (hC _) (hC' _) (norm_nonneg _) hC0) (norm_nonneg _)`. Introduce `γ g`. Establish `e : rsPsi ℓ φ.1 φ'.1 Φ J η (ratGL E a γ * g) = rsPsi ℓ φ.1 φ'.1 Φ J η g` using `funext fun y => rsPsi_ratGL_mul ℓ h.2.1 h'.2.1 Φ J η γ g y`.
+
+Simplify using `only [rsHat, e]`. Introduce `z g`. Establish `e : ∀ u, rsInf ℓ φ.1 φ'.1 Φ (GeneralLinearGroup.scalar (Fin a) z * g) u = ((ω.1 z : ℂˣ) : ℂ) * starRingEnd ℂ ((ω'.1 z : ℂˣ) : ℂ) * rsInf ℓ φ.1 φ'.1 Φ g u` using `fun u => by`. Simplify using `only [rsInf, mul_assoc (GeneralLinearGroup.scalar (Fin a) z) g, h.2.2.1, h'.2.2.1, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[hc', hc', funext e, integral_const_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem rsHat_zero_props_two : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (ω ω' : HChar E), ω.IsUnitary → ω'.IsUnitary → ∀ (φ φ' : Sm E a), φ.1 ∈ GlobalTheory.Petersson.bddForms E a ω → φ'.1 ∈ GlobalTheory.Petersson.bddForms E a ω' → ∀ (ℓ : Fin a) (Φ : (Fin a → Cinf E) → ℂ), GlobalTheory.CuspQuot.IsTest (GlobalTheory.RSTheta.rowSet E ℓ) Φ → ∀ (J : (FractionalIdeal (𝓞 E)⁰ E)ˣ) (η : Fin a → Af E), Continuous (fun g => GlobalTheory.RSThetaLow.rsHat ℓ φ.1 φ'.1 Φ J η g 0) ∧ (∃ C : ℝ, ∀ g, ‖GlobalTheory.RSThetaLow.rsHat ℓ φ.1 φ'.1 Φ J η g 0‖ ≤ C) ∧ (∀ (γ : GL (Fin a) E) (g : GA E a), GlobalTheory.RSThetaLow.rsHat ℓ φ.1 φ'.1 Φ J η (ratGL E a γ * g) 0 = GlobalTheory.RSThetaLow.rsHat ℓ φ.1 φ'.1 Φ J η g 0) ∧ ∀ (z : Neutral.B1.Ideles E) (g : GA E a), GlobalTheory.RSThetaLow.rsHat ℓ φ.1 φ'.1 Φ J η (GeneralLinearGroup.scalar (Fin a) z * g) 0 = ((ω.1 z : ℂˣ) : ℂ) * starRingEnd ℂ ((ω'.1 z : ℂˣ) : ℂ) * GlobalTheory.RSThetaLow.rsHat ℓ φ.1 φ'.1 Φ J η g 0 := by
   intro E _ _ _ a ω ω' hω hω' φ φ' h h' ℓ Φ hΦ J η
   obtain ⟨c, hc⟩ := rsHat_zero_eq J η φ φ' hΦ

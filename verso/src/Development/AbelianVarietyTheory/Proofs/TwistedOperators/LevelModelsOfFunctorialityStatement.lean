@@ -8,5 +8,8 @@ open GlobalTheory.IndefiniteRowSideFullHecke.LevelPlusSubgroup (coefPlus Cols Si
 open GlobalTheory.SepRows
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.SepRows.rowModels_of_functoriality | exact GlobalTheory.SepRows.rowModels_of_functoriality | (intros; apply GlobalTheory.SepRows.rowModels_of_functoriality <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.level_models_of_functoriality : GlobalTheory.FunPr.Hypotheses₂ → RowModels := by
   first | exact @GlobalTheory.SepRows.rowModels_of_functoriality | exact GlobalTheory.SepRows.rowModels_of_functoriality | (intros; apply GlobalTheory.SepRows.rowModels_of_functoriality <;> assumption)

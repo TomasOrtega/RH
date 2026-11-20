@@ -13,6 +13,11 @@ def IntFib : Prop := ∀ (A : Type) [CommRing A] [IsLocalRing A] {X : Scheme.{0}
     Eqv _ (spMap (Ideal.Quotient.mk ((IsLocalRing.maximalIdeal A).map φ))) (tw q i) →
     Eqv _ (sch.map (pullback.fst p (LateralTheory.E.t_E2Cut.cpt A))) (tw q i)
 
+/- English proof (translation)
+Introduce `hyp q i A _ _ hSH hq X p hp`. Take `⟨hA, -⟩` from `hSH`. Take `⟨B, _, φ, hφ, hE⟩` from `hF A p hp`. Establish `: HenselianRing B ((IsLocalRing.maximalIdeal A).map φ)` using `hH A B φ hφ`. Establish `hqB : IsUnit ((q : ℕ) : B)` using `by simpa using hq.map φ`.
+
+Conclude with `hE q i (hyp.e1 q B _ hqB i)`.
+-/
 theorem IntPB_of (hH : IntHens) (hF : IntFib) : LateralTheory.E.t_E2Cut.IntPB := by
   intro hyp q i A _ _ hSH hq X p hp
   obtain ⟨hA, -⟩ := hSH

@@ -14,6 +14,13 @@ noncomputable section
 
 namespace GlobalTheory.CM
 
+/- English proof (translation)
+Establish `inj : ∀ {T : Over S'} {x y : T ⟶ G'}, pushPt hg.1.w x = pushPt hg.1.w y → x = y` using `fun {T x y} h => Over.OverMorphism.ext (hg.1.hom_ext (congrArg (fun q => q.left) h) (by rw [Over.w, Over.w]))`. Set `act : O → (G' ⟶ G')` to `fun a => Over.homMk (hg.1.lift (g ≫ (o.act a).left) G'.hom (by rw [Category.assoc, Over.w, hg.1.w])) (hg.1.lift_snd _ _ _)`. Establish `ha : ∀ a, (act a).left ≫ g = g ≫ (o.act a).left` using `fun a => hg.1.lift_fst _ _ _`. Establish `pa : ∀ {T : Over S'} (x : T ⟶ G') a, pushPt hg.1.w (x ≫ act a) = pushPt hg.1.w x ≫ o.act a` using `fun x a => Over.OverMorphism.ext (by show (x.left ≫ _) ≫ _ = (x.left ≫ _) ≫ _`. Rewrite using `[Category.assoc, ha, Category.assoc])`.
+
+Establish `pm : ∀ {T : Over S'} (x y : T ⟶ G'), pushPt hg.1.w (x * y) = pushPt hg.1.w x * pushPt hg.1.w y` using `fun x y => map_mul (pushHom hg _) x y`. Use `⟨⟨act, fun a => isMonHom_of_mul _ fun T x y => inj ?_, inj ?_, fun a b => inj ?_, fun a b => inj ?_⟩, ha⟩` and prove the remaining obligations. Use `o.hom a` as an intermediate fact. Rewrite using `[pa, pm, pm, pa, pa, MonObj.mul_comp]`. Rewrite using `[← Category.id_comp (act 1), pa, o.one, Category.comp_id]`.
+
+Rewrite using `[← Category.id_comp (act (a * b)), pa, pa, ← Category.id_comp (act a), pa, o.mul, Category.assoc]`. Use `Eq.trans ?_ (pm (act a) (act b)).symm` and prove the remaining obligations. Rewrite using `[← Category.id_comp (act (a + b)), ← Category.id_comp (act a), ← Category.id_comp (act b), pa, pa, pa, o.add]`. Conclude with `MonObj.comp_mul _ _ _`.
+-/
 theorem ellPull_exists_oAct {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj G] [GrpObj G'] {f : S' ⟶ S}
     {g : G'.left ⟶ G.left} (hg : IsGrpPullback G' G f g) {O : Type} [CommRing O] (o : OAct O G) :
     ∃ o' : OAct O G', ∀ a, (o'.act a).left ≫ g = g ≫ (o.act a).left := by
@@ -37,6 +44,11 @@ theorem ellPull_exists_oAct {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [Grp
     rw [← Category.id_comp (act (a + b)), ← Category.id_comp (act a), ← Category.id_comp (act b), pa, pa, pa, o.add]
     exact MonObj.comp_mul _ _ _
 
+/- English proof (translation)
+Set `U : Over.mk (G'.hom ≫ f) ⟶ G` to `Over.homMk g hg.1.w`. Establish `H₁ : LBIso (L.pull g) (cubeLB G' ![𝟙 G', w'] (L.pull g))`. Use `LBIso.chartPull (chartPullPull L g U.left rfl) (chartPullLinComb L g _ _ _ U.left fun I => lamBC_psum_push hg _ _ U (fun k => ?_) I.down) h` and prove the remaining obligations. Use `fin_cases k`. Use `Over.OverMorphism.ext ?_ show 𝟙 _ ≫ g = g ≫ 𝟙 _` and prove the remaining obligations.
+
+Rewrite using `[Category.id_comp, Category.comp_id]`. Conclude with `Over.OverMorphism.ext hw`. Establish `hLg : (L.pull g).IsLB` using `DVR.linComb_isLB _ hL _ _`. Conclude with `LBIso.trans hL' hLg (DVR.linComb_isLB _ hL' _ _) i.symm (LBIso.trans hLg (DVR.linComb_isLB _ hLg _ _) (DVR.linComb_isLB _ hL' _ _) H₁ (PowPrimitive.lbIso_linComb i _ _))`.
+-/
 theorem ellPull_prim {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj G] [GrpObj G'] {f : S' ⟶ S}
     {g : G'.left ⟶ G.left} (hg : IsGrpPullback G' G f g) {L : LB G.left} {L' : LB G'.left} (hL : L.IsLB)
     (hL' : L'.IsLB) (i : LBIso (L.pull g) L') {w : G ⟶ G} {w' : G' ⟶ G'} (hw : w'.left ≫ g = g ≫ w.left)
@@ -55,6 +67,17 @@ theorem ellPull_prim {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj G] 
     (LBIso.trans hLg (DVR.linComb_isLB _ hLg _ _) (DVR.linComb_isLB _ hL' _ _) H₁
       (PowPrimitive.lbIso_linComb i _ _))
 
+/- English proof (translation)
+Introduce `hB E _ _ _ H R _ ω C R' _ f`. Take `⟨P', φ, hP⟩` from `exists_isPolFibre hB f C.P`. Take `⟨hdim, hg, hi⟩` from `id hP`. Take `⟨o', ho⟩` from `ellPull_exists_oAct hg C.act`. Establish `: IsCommMonObj P'.A` using `P'.isAb.comm`.
+
+Use `C.P.smoothDim` as an intermediate fact. Take `⟨v', hv', hv⟩` from `exists_isLieBasis_baseChange R R' f C.P.A P'.A φ hg (SmoothOfRelativeDimension.smooth C.P.g C.P.A.hom) 1 ![C.v] C.basis`. Establish `ev : ![v' 0] = v'`. Use function extensionality and compare the values at `i`. Use `fin_cases i`.
+
+Both sides reduce to the same expression. Establish `hv0 : (v' 0).left ≫ φ = spMap (Chart.dualMapR f) ≫ C.v.left` using `hv 0`. Use `⟨⟨P', hdim.trans C.dim, o', v' 0, ev ▸ hv', ?_, fun a b hab => ?_, ellPull_prim hg C.P.isLB P'.isLB hi (ho _) C.prim⟩, φ, rfl, hP, hv0, ho⟩` and prove the remaining obligations. Establish `e : (fun i => f (![ω] i)) = ![f ω]`. Use function extensionality and compare the values at `i`.
+
+Use `fin_cases i`. Both sides reduce to the same expression. Rewrite using `[ev, ← e]`. Use `(lieComb_baseChange R R' f C.P.A P'.A φ hg 1 ![C.v] _ ![ω] v' _ hv C.eig).1 ?_` and prove the remaining obligations. Use `show ((v' 0).left ≫ (o'.act (wK H)).left) ≫ φ = _ ≫ C.v.left ≫ (C.act.act (wK H)).left`.
+
+Rewrite using `[Category.assoc, ho, ← Category.assoc, hv0, Category.assoc]`. Establish `e1 : (𝟙 P'.A : P'.A ⟶ P'.A).left ≫ φ = φ ≫ (𝟙 C.P.A : C.P.A ⟶ C.P.A).left` using `by show 𝟙 _ ≫ φ = φ ≫ 𝟙 _`. Rewrite using `[Category.id_comp, Category.comp_id]`. Conclude with `lamEq_baseChange _ _ (spMap f) _ _ _ _ _ _ _ _ φ φ φ φ hg.1.w hg.1.w hg hg _ _ _ _ C.P.isLB C.P.isLB P'.isLB P'.isLB hi hi _ _ _ _ _ _ _ _ (ho a) e1 e1 (ho b) (C.adj a b hab)`.
+-/
 theorem exists_ellMap : Out.PolBaseChangeSt → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (R : Type) [CommRing R] (ω : R) (C : Ell H R ω) (R' : Type) [CommRing R'] (f : R →+* R'), ∃ (C' : Ell H R' (f ω)) (φ : C'.P.A.left ⟶ C.P.A.left), EllMap C' C f φ := by
   intro hB E _ _ _ H R _ ω C R' _ f
   obtain ⟨P', φ, hP⟩ := exists_isPolFibre hB f C.P

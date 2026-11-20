@@ -8,6 +8,9 @@ open PositivityTheory.Lit1.GEN.W_killed_a
 
 local notation "ℚ̄" => AlgebraicClosure ℚ
 
+/- English proof (translation)
+Rewrite using `[mem_gsOpenSubgroup_iff, mem_gsOpenSubgroup_iff]`. Use `forall_congr' fun x => ?_` and prove the remaining obligations. Rewrite using `[Subtype.ext_iff, Subtype.ext_iff, coe_gsBaseChange_symm_apply]`. Conclude with `Iff.rfl`.
+-/
 theorem mem_gsOpenSubgroup_placesOver_iff {K : FiniteSubfield} (S : Set (HeightOneSpectrum (𝓞 K.1)))
     (K' L : FiniteSubfield) [Fact (K ≤ K')] [Fact (K ≤ L)] [Fact (K' ≤ L)]
     (hK' : ∀ x : K'.1, algebraMap K'.1 ℚ̄ x ∈ maxUnramifiedOutside K.1 ℚ̄ S)
@@ -22,6 +25,17 @@ theorem mem_gsOpenSubgroup_placesOver_iff {K : FiniteSubfield} (S : Set (HeightO
   rw [Subtype.ext_iff, Subtype.ext_iff, coe_gsBaseChange_symm_apply]
   exact Iff.rfl
 
+/- English proof (translation)
+Introduce `K' _ hK' hle _ hcop ιr'`. Establish `hKL : K' ≤ L`. Introduce `x hx`. Use `mem_of_forall_gsOpenSubgroup_fixes S hL ⟨x, hK' ⟨x, hx⟩⟩ fun σ hσ => ?_` and prove the remaining obligations. Establish `h1` using `(mem_gsOpenSubgroup_iff S hK' σ).1 (hle hσ) ⟨x, hx⟩`.
+
+Conclude with `h1`. Establish `: Fact (K' ≤ L)` using `⟨hKL⟩`. Establish `hL'' : ∀ x : L.1, algebraMap L.1 ℚ̄ x ∈ maxUnramifiedOutside K'.1 ℚ̄ (placesOver S)` using `fun x => mem_of_restrictScalars_eq' (restrictScalars_maxUnramifiedOutside_eq S hK') (hL x)`. Establish `hcomap : (gsOpenSubgroup (placesOver S) hL'' : Subgroup (galUnramifiedOutside K'.1 ℚ̄ (placesOver S))) = ((gsOpenSubgroup S hL : Subgroup (galUnramifiedOutside K.1 ℚ̄ S)).subgroupOf (gsOpenSubgroup S hK' : Subgroup (galUnramifiedOutside K.1 ℚ̄ S))).comap (gsBaseChange S hK').symm …`. Use extensionality with `τ`.
+
+Rewrite using `[Subgroup.mem_comap, Subgroup.mem_subgroupOf]`. Conclude with `mem_gsOpenSubgroup_placesOver_iff S K' L hK' hL hL'' τ`. Use `haveI hfin : Finite (resTo S K' hK' M) := (inferInstanceAs (Finite M))`. Use `hX K' (placesOver S) (placesOver_finite hS) ℓ (natCast_not_mem_of_not_mem_placesOver hSℓ) L hL'' ?_ ?_ hζ hc ιr' (resTo S K' hK' M) ?_ ?_` and prove the remaining obligations. Rewrite using `[hcomap]`.
+
+Conclude with `(hN.subgroupOf _).comap _`. Rewrite using `[hcomap, Subgroup.index_comap_of_surjective _ (MulEquiv.surjective _)]`. Conclude with `hcop`. Introduce `m`. Conclude with `hℓ m`.
+
+Introduce `g hg`. Conclude with `htriv _ ((mem_gsOpenSubgroup_placesOver_iff S K' L hK' hL hL'' g).1 hg)`.
+-/
 theorem ending_lemmaX (hX : GlobalEulerCharCoprime) (ℓ : ℕ) [Fact ℓ.Prime] (K : FiniteSubfield) (S : Set (HeightOneSpectrum (𝓞 K.1))) (hS : S.Finite)
     (hSℓ : ∀ v : HeightOneSpectrum (𝓞 K.1), ((ℓ : ℕ) : 𝓞 K.1) ∈ v.asIdeal → v ∈ S)
     (ιr : ∀ v : {v : InfinitePlace K.1 // v.IsReal}, ℚ̄ →ₐ[K.1] AlgebraicClosure v.1.Completion)

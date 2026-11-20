@@ -7,6 +7,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory
 
+/- English proof (translation)
+The claim follows from `Formalism.MainNotions.ModuliIntegralCharts.H1.chartIndep2_of_glob GlobalTheory.lawsFieldsSeparately.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.1`.
+-/
 theorem chartIndependence_unconditional : Formalism.MainNotions.ModuliIntegralCharts.H1.ChartIndepSt2 :=
   Formalism.MainNotions.ModuliIntegralCharts.H1.chartIndep2_of_glob
     GlobalTheory.lawsFieldsSeparately.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.1

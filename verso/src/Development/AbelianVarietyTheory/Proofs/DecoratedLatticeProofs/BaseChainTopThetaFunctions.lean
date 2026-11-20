@@ -26,6 +26,11 @@ namespace GlobalTheory.BaseChainTop
 
 variable {D : D7}
 
+/- English proof (translation)
+Set `q` to `e.support.equivFin`. Establish `key` using `(GlobalTheory.FockFiniteHeis.heis_comb_pureTensorO D ψ θ S T hψ hθ sS sT BS BT f₀ hf₀ e.support.card (fun i => e (q.symm i).1) (fun i => (q.symm i).1) (fun i => he _ (q.symm i).2) P).1`. Establish `h1 : ∀ g : WO S T → (WO S T → ℂ), ∑ u ∈ e.support, e u • g u = ∑ i, e (q.symm i).1 • g (q.symm i).1`. Introduce `g`. Rewrite using `[← Finset.sum_coe_sort e.support]`.
+
+Conclude with `(Equiv.sum_comp q.symm (fun u : e.support => e u.1 • g u.1)).symm`. Simplify using `only [comb]`. Rewrite using `[h1, h1]`. Conclude with `key`.
+-/
 theorem comb_pureTensorO {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {S T : HSp D} (hψ : IsStdChar D ψ (-1))
     (hθ : IsInfFam θ) (sS sT BS BT) {e : WO S T →₀ ℂ} (he : IsFinComb e) {f₀ : WO S T → ℂ}
     (hf₀ : IsThetaFunO ψ S T f₀) (P) :
@@ -41,6 +46,17 @@ theorem comb_pureTensorO {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {S T :
   rw [h1, h1]
   exact key
 
+/- English proof (translation)
+Establish `hψ : IsStdChar D ψ (-1)` using `hω.std`. Establish `hpt : ∀ φ, IsThetaFunO ψ V W (pureTensorO ψ θ V W (cart M) (cart M') (onb M) (onb M') f φ)` using `fun φ => GlobalTheory.Chain.InnerSteps.theta_pureTensorO hψ hθ _ _ _ _ hf φ`. Establish `hrel : ∀ φ, comb ψ V W b (pureTensorO ψ θ V W (cart M) (cart M') (onb M) (onb M') f φ) = pureTensorO ψ θ V W (cart M) (cart M') (onb M) (onb M') g φ` using `fun φ => by`. Rewrite using `[← hg]`. Conclude with `comb_pureTensorO hψ hθ _ _ _ _ hb hf φ`.
+
+Establish `hcomm : ∀ a ∈ GinfC V, ∀ a' ∈ GinfC W, ∀ φ, ω (a, a') (pureTensorO ψ θ V W (cart M) (cart M') (onb M) (onb M') g φ) = comb ψ V W b (ω (a, a') (pureTensorO ψ θ V W (cart M) (cart M') (onb M) (onb M') f φ))` using `fun a ha a' ha' φ => by`. Rewrite using `[← hrel, GlobalTheory.FrComb.om_comb hω ha ha' hb (hpt φ)]`. Use `⟨hI.ne, hI.bdd, fun τ x hx φ φ' h v => ?_, fun τ X hX φ φ' hd v => ?_, fun τ y hy φ φ' v v' h hv => ?_, fun τ X hX φ φ' v v' hd hD => ?_⟩` and prove the remaining obligations. Use `hI.eqK τ x hx φ φ' ?_ v` and prove the remaining obligations. Rewrite using `[hcomm _ (Formalism.IndefR.Eqv.Act.atTau_mem θ τ x) 1 (one_mem _) φ, ← h, hrel]`.
+
+Use `hI.eqg τ X hX φ φ' (fun z => ?_) v` and prove the remaining obligations. Establish `e1 : (fun t : ℝ => ω (oneP θ V τ X t, 1) (pureTensorO ψ θ V W (cart M) (cart M') (onb M) (onb M') g φ) z) = fun t => ∑ x ∈ b.support, b x * (ψ (symplOH V W z x) * ω (oneP θ V τ X t, 1) (pureTensorO ψ θ V W (cart M) (cart M') (onb M) (onb M') f φ) (z + x))` using `funext fun t => by`. Rewrite using `[hcomm _ (Formalism.IndefR.Eqv.Act.oneP_mem θ τ X t) 1 (one_mem _) φ, GlobalTheory.FrComb.comb_apply]`. Rewrite using `[e1, ← hrel φ', GlobalTheory.FrComb.comb_apply]`. Conclude with `HasDerivAt.fun_sum fun x _ => ((hd (z + x)).const_mul _).const_mul _`.
+
+Use `hI.invK τ y hy φ φ' v v' ?_ hv` and prove the remaining obligations. Rewrite using `[hcomm 1 (one_mem _) _ (Formalism.IndefR.Eqv.Act.atTau_mem θ τ y) φ, ← h, hrel]`. Use `hI.invg τ X hX φ φ' v v' (fun z => ?_) hD` and prove the remaining obligations. Establish `e1 : (fun t : ℝ => ω (1, oneP θ W τ X t) (pureTensorO ψ θ V W (cart M) (cart M') (onb M) (onb M') g φ) z) = fun t => ∑ x ∈ b.support, b x * (ψ (symplOH V W z x) * ω (1, oneP θ W τ X t) (pureTensorO ψ θ V W (cart M) (cart M') (onb M) (onb M') f φ) (z + x))` using `funext fun t => by`. Rewrite using `[hcomm 1 (one_mem _) _ (Formalism.IndefR.Eqv.Act.oneP_mem θ τ X t) φ, GlobalTheory.FrComb.comb_apply]`.
+
+Rewrite using `[e1, ← hrel φ', GlobalTheory.FrComb.comb_apply]`. Conclude with `HasDerivAt.fun_sum fun x _ => ((hd (z + x)).const_mul _).const_mul _`.
+-/
 theorem isItW_of_comb {V W : HSp D} {S S' : D.what₂.Tau → SPar} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D}
     {M : DSModel V S} {M' : DSModel W S'} {χS χT : (AE D)ˣ →* Circle}
     {ω : GA D V × GA D W →* Module.End ℂ (WO V W → ℂ)} (hω : IsWeilDatumO ψ V W χS χT ω) (hθ : IsInfFam θ)
@@ -84,6 +100,13 @@ end GlobalTheory.BaseChainTop
 
 namespace GlobalTheory.BaseChainTop
 
+/- English proof (translation)
+Introduce `D L hT Gi Gl Kc Yd cX ex W u f hP hR j h`. Establish `hC` using `Formalism.IndefR.Links.RealDat3.characterisation_of_weak W.Q.charW hP.ex`. Establish `hvT` using `(hR.row W.P.A3.A.μ0).vT j h`. Establish `hθ : IsInfFam (pk W).θ` using `hvT.1.2.inf`. Establish `hth : IsThetaFunO (pk W).ψ (Yc D (j + 1)) D.sp.X' ((f.row W.P.A3.A.μ0).vT j h)` using `GlobalTheory.VecTheta.isThetaFunO_stepVec hvT`.
+
+Establish `key : ∀ n (e : D.R.m - 1 = n), IsWeilDatumO (pk W).ψ (Yc D n) D.sp.X' (Lift.chrStep ((pk W).toLevCh.mu W.P.A3.A.μ0) (pk W).eta D.R.m).1 (Lift.chrStep ((pk W).toLevCh.mu W.P.A3.A.μ0) (pk W).eta D.R.m).2 (Eq.rec (motive` using `fun n _ => Om (Yc D n) D.sp.X') ((pk W).ωX W.P.A3.A.μ0) e) ∧ IsItW (pk W).θ ((pk W).MY n) (pk W).MX (Eq.rec (motive := fun n _ => Om (Yc D n) D.sp.X') ((pk W).ωX W.P.A3.A.μ0) e) (pureTensorO (pk W).ψ (pk W).θ (Yc D n) D.sp.X' (cart ((pk W).MY n)) (cart (pk W).MX) (onb ((pk W).MY …`. Introduce `n e`. Substitute `e` using the available equality. Conclude with `⟨hC.chain.ωX _, hC.chain.ItX _⟩`. Take `⟨hW', hI'⟩` from `key (j + 1) (idx_top h)`.
+
+Take `⟨b, hb, hbv⟩` from `GlobalTheory.T.top_step_vector_theta W hP j h _ hvT`. Conclude with `⟨fun φ => GlobalTheory.Chain.InnerSteps.theta_pureTensorO hW'.std hθ _ _ _ _ hth φ, isItW_of_comb hW' hθ hth hb hbv hI'⟩`.
+-/
 theorem theta_and_it : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} (W : RealPack ex) (u : D.what₂.Word) (f : FamCh W u), PkHyp W → f.RowOK → ∀ j (h : j + 2 * 0 + 2 = D.R.m), (∀ φ, IsThetaFunO (GlobalTheory.BaseChain.com W).ψ (GlobalTheory.BaseChain.stageY W (j + 1)).V (GlobalTheory.BaseChain.stageX W).V ((GlobalTheory.BaseChain.stepX f j h).pt φ)) ∧ IsItW (GlobalTheory.BaseChain.com W).θ (GlobalTheory.BaseChain.stageY W (j + 1)).M (GlobalTheory.BaseChain.stageX W).M (GlobalTheory.BaseChain.stepX f j h).ω (GlobalTheory.BaseChain.stepX f j h).pt (GlobalTheory.BaseChain.stepX f j h).It := by
   intro D L hT Gi Gl Kc Yd cX ex W u f hP hR j h
   have hC := Formalism.IndefR.Links.RealDat3.characterisation_of_weak W.Q.charW hP.ex

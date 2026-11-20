@@ -20,6 +20,37 @@ open scoped TensorProduct
 set_option autoImplicit false
 namespace GlobalTheory.ShortGenComp
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Introduce `hP`. Take `⟨C2, hC2, h2⟩` from `_root_.GlobalTheory.T.short_span_composition_closed hP`. Take `⟨Cb, hCb, hb⟩` from `_root_.UpperTheory.Lit.Tam.tamagawa_number_formula hP`. Use `⟨2000 + Cb + C2, by positivity, ?_⟩` and prove the remaining obligations. Introduce `D T hT j hp hq hE hj Y e o hY Lb hLb hM hfs hfr ho c₁ hc₁ hc₁b la hla hgap hsz Z`.
+
+Establish `hgood` using `(_root_.GlobalTheory.T.covering_domain_lattice_regularity hP D T hT j hp hq hE hj Y e o hY la hla fun τ => le_trans (by exact_mod_cast (by omega : 1 ≤ 8 * D.R.f * D.R.r + 10)) (hgap τ)).2 Z`. Take `⟨s, hsL, hsp, hsn⟩` from `h2 D T hT j hp hq hE hj Y e o hY Lb hLb hM hfs hfr ho c₁ hc₁ hc₁b la hla hgap hsz Z`. Use `haveI : FiniteDimensional Y.d.c₂.F (cuspOn Y.U Z (wtOf (T.Q.Dw j) la 0)) := hgood.1.some.2.1.1.finiteDimensional_of_finite`. Take `⟨n, w, abelian₂, hsg, hLam, hn⟩` from `GlobalTheory.T.exists_short_generators_of_short_spanning_family Y.d.c₂.F _ (normOn Y.U (xiR D) (fun _ => D.sp.W j) Y.dict Z (wtOf (T.Q.Dw j) la 0)) (latOn Y.U Z (wtOf (T.Q.Dw j) la 0)) s _ hgood.2.1 (fun σ f => AllWt.petAt_nonneg _ _ _ _ _ _ _) (fun σ a f => AllWt.petOn_smul _ _ …`. Use `⟨n, w, abelian₂, hsg, ?_⟩` and prove the remaining obligations.
+
+Establish `hf1 : 1 ≤ D.R.f ∧ 1 ≤ D.R.r`. Establish `hn : 1 ≤ D.R.ord` using `D.R.ord_pos`. Establish `hf : D.R.f = 2 * D.R.ord` using `rfl`. Establish `hk` using `D.R.f_le_k`. Establish `ht` using `D.R.rank_add_five_le`.
+
+Conclude with `⟨by omega, by unfold Ranks.r; omega⟩`. Establish `hfR : (1 : ℝ) ≤ D.R.f` using `by exact_mod_cast hf1.1`. Establish `hrR : (1 : ℝ) ≤ D.R.r` using `by exact_mod_cast hf1.2`. Use `set X : ℝ := (D.R.f : ℝ) * D.R.r * Lb with hXdef`. Use `set S : ℝ := ∑ τ, ∑ k, |(la τ k : ℝ)| with hSdef`.
+
+Establish `hX : 1 ≤ X` using `one_le_mul_of_one_le_of_one_le (one_le_mul_of_one_le_of_one_le hfR hrR) hLb`. Establish `hS : 0 ≤ S` using `Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => abs_nonneg _`. Establish `hX2 : X ^ 2 ≤ X ^ 5` using `pow_le_pow_right₀ hX (by norm_num)`. Establish `hX3 : X ^ 3 ≤ X ^ 5` using `pow_le_pow_right₀ hX (by norm_num)`. Establish `hX23 : X ^ 2 ≤ X ^ 3` using `pow_le_pow_right₀ hX (by norm_num)`.
+
+Establish `hX1 : 1 ≤ X ^ 3` using `one_le_pow₀ hX`. Establish `hXS : 0 ≤ X ^ 3 * S` using `mul_nonneg (by positivity) hS`. Establish `hrhs : 0 ≤ (2000 + Cb + C2) * (X ^ 3 * S + X ^ 5)` using `by positivity`. Establish `hlogd : Real.log (Module.finrank ℚ Y.d.c₂.F : ℝ) ≤ o` using `hY.deg`. Establish `hdpos : (0 : ℝ) < Module.finrank ℚ Y.d.c₂.F` using `by exact_mod_cast Module.finrank_pos`.
+
+Establish `hdisc : (0 : ℝ) < |((NumberField.discr Y.d.c₂.F : ℤ) : ℝ)|` using `abs_pos.2 (by exact_mod_cast NumberField.discr_ne_zero Y.d.c₂.F)`. Establish `hlrd : Real.log (|((NumberField.discr Y.d.c₂.F : ℤ) : ℝ)| ^ (1 / (Module.finrank ℚ Y.d.c₂.F : ℝ))) ≤ o`. Rewrite using `[Real.log_rpow hdisc, one_div, inv_mul_le_iff₀ hdpos, mul_comm]`. Conclude with `hY.rd`. Establish `hberg` using `(hb D T hT j hp hq hE hj Y e o hY Lb hLb hM hfs hfr ho la hla (by linarith) Z).2.2`.
+
+Establish `hm : Real.log (Formalism.HN.rkK (latOn Y.U Z (wtOf (T.Q.Dw j) la 0)) : ℝ) ≤ Cb * X ^ 3` using `hberg`. Establish `ho' : o ≤ 391 * X ^ 2` using `ho`. Establish `hCbX : Cb * X ^ 3 ≤ Cb * X ^ 5` using `mul_le_mul_of_nonneg_left hX3 hCb`. Prove the components needed by the constructor for the conclusion. Establish `hL1 : 1 ≤ abelian₂` using `hsg.one_le`.
+
+Break down `le_or_gt ((Module.finrank ℚ Y.d.c₂.F : ℝ) ^ 4 * (Formalism.HN.rkK (latOn Y.U Z (wtOf (T.Q.Dw j) la 0)) : ℝ) * |((NumberField.discr Y.d.c₂.F : ℤ) : ℝ)| ^ (1 / (Module.finrank ℚ Y.d.c₂.F : ℝ)) * Real.exp (C2 * (X ^ 3 * S + X ^ 5))) 1 with hB | hB` into its components or cases. Establish `: abelian₂ = 1` using `le_antisymm (hLam.trans (max_le le_rfl hB)) hL1`. Rewrite using `[this, Real.log_one]`. Conclude with `hrhs`. Establish `hLB` using `hLam.trans (le_of_eq (max_eq_right hB.le))`.
+
+Establish `hmpos : (0 : ℝ) < (Formalism.HN.rkK (latOn Y.U Z (wtOf (T.Q.Dw j) la 0)) : ℝ)`. Break down `(Nat.cast_nonneg (α := ℝ) (Formalism.HN.rkK (latOn Y.U Z (wtOf (T.Q.Dw j) la 0)))).lt_or_eq with h | h` into its components or cases. Conclude with `h`. Rewrite `hB` using `[← h]`. Simplify using `at hB`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hrd : 0 < |((NumberField.discr Y.d.c₂.F : ℤ) : ℝ)| ^ (1 / (Module.finrank ℚ Y.d.c₂.F : ℝ))` using `Real.rpow_pos_of_pos hdisc _`. Establish `hlog` using `Real.log_le_log (by linarith) hLB`. Rewrite `hlog` using `[Real.log_mul (by positivity) (Real.exp_pos _).ne', Real.log_mul (by positivity) hrd.ne', Real.log_mul (by positivity) hmpos.ne', Real.log_pow, Real.log_exp]`. Establish `hC2X : C2 * (X ^ 3 * S + X ^ 5) ≤ C2 * (X ^ 3 * S + X ^ 5)` using `le_rfl`.
+
+Use the polynomial consequences of the given equalities and inequalities. Break down `Nat.eq_zero_or_pos n with h0 | hpos` into its components or cases. Rewrite using `[h0, Nat.cast_zero, Real.log_zero]`. Check the signs of the components of the expression. Establish `hnR : (n : ℝ) ≤ 2 * (Module.finrank ℚ Y.d.c₂.F : ℝ) * (Formalism.HN.rkK (latOn Y.U Z (wtOf (T.Q.Dw j) la 0)) : ℝ)`.
+
+Conclude with `hn` after adjusting the coercions. Establish `hmpos : (0 : ℝ) < (Formalism.HN.rkK (latOn Y.U Z (wtOf (T.Q.Dw j) la 0)) : ℝ)`. Establish `: 0 < Formalism.HN.rkK (latOn Y.U Z (wtOf (T.Q.Dw j) la 0))`. Break down `Nat.eq_zero_or_pos (Formalism.HN.rkK (latOn Y.U Z (wtOf (T.Q.Dw j) la 0))) with h | h` into its components or cases. Rewrite `hn` using `[h]`.
+
+Use linear arithmetic over natural numbers and integers. Conclude with `h`. Conclude with `this` after adjusting the coercions. Establish `hlog` using `Real.log_le_log (by exact_mod_cast hpos) hnR`. Rewrite `hlog` using `[Real.log_mul (by positivity) hmpos.ne', Real.log_mul (by norm_num) hdpos.ne']`.
+
+Establish `h2 : Real.log 2 ≤ 1`. Use `Real.log_two_lt_d9` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hC2X3 : 0 ≤ C2 * X ^ 3` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem short_generator_comparison : _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → ∃ C : ℝ, 0 ≤ C ∧ ∀ (D : D7) (T : CoreJ D), LawsJ T → ∀ j : ℕ, 1 ≤ (T.Q.Dw j).p → 1 ≤ (T.Q.Dw j).q → 2 < Module.finrank ℚ D.host.E / 2 → InR D j → ∀ (Y : Deep T.toCore j) (e : ℕ) (o : ℝ), Y.Good e o → ∀ Lb : ℝ, 1 ≤ Lb → Real.log Y.d.l₂.M ≤ 30 * Lb → fieldSz D.host.E ≤ 3 * Lb → Real.log (D.R.f * D.R.r) ≤ Lb → o ≤ 391 * (D.R.f * D.R.r * Lb) ^ 2 → ∀ c₁ : ℝ, GlobalTheory.FlatLine.FlatExistsAt Y.U (xiR D) c₁ → |c₁| ≤ 9 * D.R.r * Lb → ∀ la : AllWt.Weight (T.Q.Dw j), (∀ τ, Antitone (la τ)) → (∀ τ, ((8 * D.R.f * D.R.r + 10 : ℕ) : ℤ) ≤ gap (la τ) ((T.Q.Dw j).p - 1)) → Real.log (∑ τ, ∑ k, |(la τ k : ℝ)|) ≤ 10 * Lb → ∀ Z, ∃ (n : ℕ) (w : Fin n → cuspOn Y.U Z (wtOf (T.Q.Dw j) la 0)) (abelian₂ : ℝ), CompHt.IsShortGen (normOn Y.U (xiR D) (fun _ => D.sp.W j) Y.dict Z (wtOf (T.Q.Dw j) la 0)) (latOn Y.U Z (wtOf (T.Q.Dw j) la 0)) w abelian₂ ∧ Real.log abelian₂ ≤ C * (((D.R.f : ℝ) * D.R.r * Lb) ^ 3 * (∑ τ, ∑ k, |(la τ k : ℝ)|) + ((D.R.f : ℝ) * D.R.r * Lb) ^ 5) ∧ Real.log n ≤ C * ((D.R.f : ℝ) * D.R.r * Lb) ^ 3 := by
   intro hP
   obtain ⟨C2, hC2, h2⟩ := _root_.GlobalTheory.T.short_span_composition_closed hP
@@ -114,6 +145,9 @@ open GlobalTheory.IndefiniteRowSideFullHecke.LevelStructureAutomorphisms (LevelA
 open GlobalTheory.BadCount
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.ShortGenComp.short_generator_comparison | exact _root_.GlobalTheory.ShortGenComp.short_generator_comparison | (intros; apply _root_.GlobalTheory.ShortGenComp.short_generator_comparison <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.short_generator_norm_comparison : _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → ∃ C : ℝ, 0 ≤ C ∧ ∀ (D : D7) (T : CoreJ D), LawsJ T → ∀ j : ℕ, 1 ≤ (T.Q.Dw j).p → 1 ≤ (T.Q.Dw j).q → 2 < Module.finrank ℚ D.host.E / 2 → InR D j → ∀ (Y : Deep T.toCore j) (e : ℕ) (o : ℝ), Y.Good e o → ∀ Lb : ℝ, 1 ≤ Lb → Real.log Y.d.l₂.M ≤ 30 * Lb → fieldSz D.host.E ≤ 3 * Lb → Real.log (D.R.f * D.R.r) ≤ Lb → o ≤ 391 * (D.R.f * D.R.r * Lb) ^ 2 → ∀ c₁ : ℝ, GlobalTheory.FlatLine.FlatExistsAt Y.U (xiR D) c₁ → |c₁| ≤ 9 * D.R.r * Lb → ∀ la : AllWt.Weight (T.Q.Dw j), (∀ τ, Antitone (la τ)) → (∀ τ, ((8 * D.R.f * D.R.r + 10 : ℕ) : ℤ) ≤ gap (la τ) ((T.Q.Dw j).p - 1)) → Real.log (∑ τ, ∑ k, |(la τ k : ℝ)|) ≤ 10 * Lb → ∀ Z, ∃ (n : ℕ) (w : Fin n → cuspOn Y.U Z (wtOf (T.Q.Dw j) la 0)) (abelian₂ : ℝ), CompHt.IsShortGen (normOn Y.U (xiR D) (fun _ => D.sp.W j) Y.dict Z (wtOf (T.Q.Dw j) la 0)) (latOn Y.U Z (wtOf (T.Q.Dw j) la 0)) w abelian₂ ∧ Real.log abelian₂ ≤ C * (((D.R.f : ℝ) * D.R.r * Lb) ^ 3 * (∑ τ, ∑ k, |(la τ k : ℝ)|) + ((D.R.f : ℝ) * D.R.r * Lb) ^ 5) ∧ Real.log n ≤ C * ((D.R.f : ℝ) * D.R.r * Lb) ^ 3 := by
   first | exact @_root_.GlobalTheory.ShortGenComp.short_generator_comparison | exact _root_.GlobalTheory.ShortGenComp.short_generator_comparison | (intros; apply _root_.GlobalTheory.ShortGenComp.short_generator_comparison <;> assumption)
 end

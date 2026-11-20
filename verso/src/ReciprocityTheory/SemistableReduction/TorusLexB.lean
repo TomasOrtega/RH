@@ -4,6 +4,9 @@ namespace ReciprocityTheory.MultiplicativeHeights.TorusLexOrder
 
 open MeasureTheory ComplexConjugate
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Rewrite using `[torusProb, Measure.pi_univ]`. Simplify using `[Real.volume_Ioc]`.
+-/
 theorem torusProb_isProb (ι : Type) [Fintype ι] : IsProbabilityMeasure (torusProb ι) := by
   constructor
   rw [torusProb, Measure.pi_univ]
@@ -13,6 +16,17 @@ noncomputable def torusFactor (a b : ℕ) (x : ℝ) : ℂ :=
   Complex.exp (2 * Real.pi * Complex.I * (x : ℂ)) ^ a *
     conj (Complex.exp (2 * Real.pi * Complex.I * (x : ℂ))) ^ b
 
+/- English proof (translation)
+Establish `key : ∀ x : ℝ, torusFactor a b x = Complex.exp ((2 * Real.pi * Complex.I * ((a : ℂ) - b)) * x)`. Introduce `x`. Simplify using `only [torusFactor, ← Complex.exp_conj, ← Complex.exp_nat_mul, ← Complex.exp_add]`. Use `congr 1`. Simplify using `only [map_mul, map_ofNat, Complex.conj_ofReal, Complex.conj_I]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← intervalIntegral.integral_of_le zero_le_one]`. Repeatedly rewrite using `[key]`. Use `split_ifs with h`. Substitute `h` using the available equality.
+
+Simplify using the standard rewrite rules. Establish `hab : ((a : ℂ) - b) ≠ 0` using `sub_ne_zero.mpr (by exact_mod_cast h)`. Establish `hc : (2 * Real.pi * Complex.I * ((a : ℂ) - b)) ≠ 0`. Use `mul_ne_zero (mul_ne_zero (mul_ne_zero two_ne_zero ?_) Complex.I_ne_zero) hab` and prove the remaining obligations. Conclude with `Real.pi_ne_zero` after adjusting the coercions.
+
+Rewrite using `[integral_exp_mul_complex hc]`. Establish `h1 : Complex.exp (2 * Real.pi * Complex.I * ((a : ℂ) - b) * ((1 : ℝ) : ℂ)) = 1`. Rewrite using `[Complex.exp_eq_one_iff]`. Conclude with `⟨(a : ℤ) - b, by push_cast; ring⟩`. Rewrite using `[h1]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem torus_one_dim (a b : ℕ) :
     ∫ x in Set.Ioc (0 : ℝ) 1, torusFactor a b x = if a = b then 1 else 0 := by
   have key : ∀ x : ℝ, torusFactor a b x =
@@ -39,24 +53,43 @@ theorem torus_one_dim (a b : ℕ) :
 noncomputable def torusMono {ι : Type} [Fintype ι] (θ : ι → ℝ) (s : ι →₀ ℕ) : ℂ :=
   ∏ i, torusPoint θ i ^ s i
 
+/- English proof (translation)
+Simplify using `only [torusPoint]`. Establish `h : 2 * (Real.pi : ℂ) * Complex.I * (θ i : ℂ) = ((2 * Real.pi * θ i : ℝ) : ℂ) * Complex.I` using `by push_cast; ring`. Rewrite using `[h, Complex.norm_exp_ofReal_mul_I]`.
+-/
 theorem norm_torusPoint {ι : Type} (θ : ι → ℝ) (i : ι) : ‖torusPoint θ i‖ = 1 := by
   simp only [torusPoint]
   have h : 2 * (Real.pi : ℂ) * Complex.I * (θ i : ℂ) = ((2 * Real.pi * θ i : ℝ) : ℂ) * Complex.I := by
     push_cast; ring
   rw [h, Complex.norm_exp_ofReal_mul_I]
 
+/- English proof (translation)
+Simplify using `[torusMono, norm_prod, norm_pow, norm_torusPoint]`.
+-/
 theorem norm_torusMono {ι : Type} [Fintype ι] (θ : ι → ℝ) (s : ι →₀ ℕ) :
     ‖torusMono θ s‖ = 1 := by
   simp [torusMono, norm_prod, norm_pow, norm_torusPoint]
 
+/- English proof (translation)
+Conclude with `continuous_pi fun i => by simp only [torusPoint]; fun_prop`.
+-/
 theorem continuous_torusPoint {ι : Type} : Continuous (fun θ : ι → ℝ => torusPoint θ) := by
   exact continuous_pi fun i => by simp only [torusPoint]; fun_prop
 
+/- English proof (translation)
+Unfold `torusMono`. Conclude with `continuous_finset_prod _ fun i _ => ((continuous_apply i).comp continuous_torusPoint).pow _`.
+-/
 theorem continuous_torusMono {ι : Type} [Fintype ι] (s : ι →₀ ℕ) :
     Continuous (fun θ : ι → ℝ => torusMono θ s) := by
   unfold torusMono
   exact continuous_finset_prod _ fun i _ => ((continuous_apply i).comp continuous_torusPoint).pow _
 
+/- English proof (translation)
+Establish `h : ∀ θ : ι → ℝ, torusMono θ t * conj (torusMono θ s) = ∏ i, torusFactor (t i) (s i) (θ i)`. Introduce `θ`. Simplify using `only [torusMono, torusFactor, torusPoint, map_prod, map_pow, ← Finset.prod_mul_distrib]`. Repeatedly rewrite using `[h]`. Rewrite using `[torusProb, integral_fintype_prod_eq_prod (f := fun i x => torusFactor (t i) (s i) x)]`.
+
+Repeatedly rewrite using `[torus_one_dim]`. Use `split_ifs with hts`. Substitute `hts` using the available equality. Simplify using the standard rewrite rules. Establish `: ∃ i, t i ≠ s i`.
+
+Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Conclude with `hts (Finsupp.ext hc)`. Take `⟨i, hi⟩` from `this`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ i) (if_neg hi)`.
+-/
 theorem torus_orth {ι : Type} [Fintype ι] (s t : ι →₀ ℕ) :
     ∫ θ, torusMono θ t * conj (torusMono θ s) ∂(torusProb ι) = if t = s then 1 else 0 := by
   classical
@@ -74,16 +107,25 @@ theorem torus_orth {ι : Type} [Fintype ι] (s t : ι →₀ ℕ) :
     obtain ⟨i, hi⟩ := this
     exact Finset.prod_eq_zero (Finset.mem_univ i) (if_neg hi)
 
+/- English proof (translation)
+Use `haveI := torusProb_isProb ι`. Conclude with `Integrable.of_bound hg.aestronglyMeasurable C (Filter.Eventually.of_forall hC)`.
+-/
 theorem integrable_of_bdd {ι : Type} [Fintype ι] {E : Type*} [NormedAddCommGroup E]
     {g : (ι → ℝ) → E} (hg : Continuous g) (C : ℝ) (hC : ∀ θ, ‖g θ‖ ≤ C) :
     Integrable g (torusProb ι) := by
   haveI := torusProb_isProb ι
   exact Integrable.of_bound hg.aestronglyMeasurable C (Filter.Eventually.of_forall hC)
 
+/- English proof (translation)
+Rewrite using `[MvPolynomial.eval_eq']`. Both sides reduce to the same expression.
+-/
 theorem eval_torus {ι : Type} [Fintype ι] (f : MvPolynomial ι ℂ) (θ : ι → ℝ) :
     MvPolynomial.eval (torusPoint θ) f = ∑ s ∈ f.support, f.coeff s * torusMono θ s := by
   rw [MvPolynomial.eval_eq']; rfl
 
+/- English proof (translation)
+Rewrite using `[eval_torus]`. Use `(norm_sum_le _ _).trans (le_of_eq ?_)` and prove the remaining obligations. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul, norm_torusMono, mul_one]`.
+-/
 theorem norm_eval_torus_le {ι : Type} [Fintype ι] (f : MvPolynomial ι ℂ) (θ : ι → ℝ) :
     ‖MvPolynomial.eval (torusPoint θ) f‖ ≤ ∑ s ∈ f.support, ‖f.coeff s‖ := by
   rw [eval_torus]
@@ -91,6 +133,9 @@ theorem norm_eval_torus_le {ι : Type} [Fintype ι] (f : MvPolynomial ι ℂ) (�
   refine Finset.sum_congr rfl fun s _ => ?_
   rw [norm_mul, norm_torusMono, mul_one]
 
+/- English proof (translation)
+Conclude with `(MvPolynomial.continuous_eval f).comp continuous_torusPoint`.
+-/
 theorem continuous_eval_torus {ι : Type} [Fintype ι] (f : MvPolynomial ι ℂ) :
     Continuous (fun θ : ι → ℝ => MvPolynomial.eval (torusPoint θ) f) := by
   exact (MvPolynomial.continuous_eval f).comp continuous_torusPoint

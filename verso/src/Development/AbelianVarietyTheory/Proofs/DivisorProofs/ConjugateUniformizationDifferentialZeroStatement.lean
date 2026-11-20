@@ -17,6 +17,9 @@ open GlobalTheory.IndefiniteRowSideFullHecke.LatticeNormTransport (upIdele IsLat
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option autoImplicit false
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ConjTangent.isDiff_zero_of_isGrpPullback | exact GlobalTheory.ConjTangent.isDiff_zero_of_isGrpPullback | (intros; apply GlobalTheory.ConjTangent.isDiff_zero_of_isGrpPullback <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.conjugate_uniformization_differential_zero : ∀ (A A' : Over (Sp ℂ)) [GrpObj A] [GrpObj A'] (p : A'.left ⟶ A.left) (g : ℂ ≃+* ℂ),
     IsGrpPullback A' A (spMap (g : ℂ →+* ℂ)) p → ∀ (L : LB A.left) (L' : LB A'.left) (n n' : ℕ) (u : HolUnif A L n)
     (u' : HolUnif A' L' n') (v : epsR ℂ ⟶ A) (v' : epsR ℂ ⟶ A'),

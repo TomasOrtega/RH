@@ -14,6 +14,23 @@ open scoped Classical
 
 noncomputable section
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ _hcm n d X W M ψ χX χW om hψ _ _ _ _ _ _ _ _ hWeil γ hγ T hTact`. Take `⟨R, hR0, hR⟩` from `GlobalTheory.ArchRest.exists_rest_arch (F := F) (Fin n × Fin d)`. Establish `hW` using `GlobalTheory.WeilM.IsUWeilPair.isUSplitting hWeil`. Establish `hRsh : ∀ x z, At (evI F) z → R (x + z) = R x` using `(hR 0).1`. Set `L : ℝ → Matrix (Fin n) (Fin d) (AE F E) →ₗ[AF F] Matrix (Fin n) (Fin d) (AE F E)` to `fun t => GlobalTheory.ArchLineAct.rmulT (mat (γ (Multiplicative.ofAdd t)))`.
+
+Establish `hmat : ∀ g h : UA σ W.J, mat (g * h) = mat g * mat h` using `fun _ _ => rfl`. Establish `hmat1 : mat (1 : UA σ W.J) = 1` using `rfl`. Use `⟨fun t => GlobalTheory.ArchLineAct.archMap M.co (L t), fun w => ?_, fun s t => ?_, ?_, fun t p q f g hg => ?_⟩` and prove the remaining obligations. Establish `hm : Continuous fun t : ℝ => (mat (γ (Multiplicative.ofAdd t)))ᵀ` using `(Units.continuous_val.comp (continuous_subtype_val.comp (hγ.1.comp continuous_ofAdd))).matrix_transpose set u := M.co.e.symm (GlobalTheory.ArchLineAct.archLift w.1, GlobalTheory.ArchLineAct.archLift w.2) with hu`. Set `K` to `M.co.e.toLinearMap ∘ₗ (GlobalTheory.ArchLineAct.lmulL (k := d) u)`.
+
+Use `haveI : IsModuleTopology (AF F) (Matrix (Fin d) (Fin d) (AE F E)) := inferInstanceAs (IsModuleTopology (AF F) (Fin d → Fin d → AE F E))`. Establish `hK : Continuous K` using `IsModuleTopology.continuous_of_linearMap K`. Establish `hc : Continuous fun t : ℝ => M.co.e (L t u)` using `hK.comp hm`. Use `show Continuous fun t : ℝ => (GlobalTheory.ArchLineAct.archPart (M.co.e (L t u)).1, GlobalTheory.ArchLineAct.archPart (M.co.e (L t u)).2)`. Conclude with `Continuous.prodMk (continuous_pi fun i => GlobalTheory.ArchLineAct.continuous_evI.comp ((continuous_apply i).comp (continuous_fst.comp hc))) (continuous_pi fun i => GlobalTheory.ArchLineAct.continuous_evI.comp ((continuous_apply i).comp (continuous_snd.comp hc)))`.
+
+Use `show GlobalTheory.ArchLineAct.archMap M.co (L (s + t)) = (GlobalTheory.ArchLineAct.archMap M.co (L s)).comp (GlobalTheory.ArchLineAct.archMap M.co (L t))`. Rewrite using `[GlobalTheory.ArchLineAct.archMap_comp]`. Use `congr 1`. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Use `show x * (mat (γ (Multiplicative.ofAdd (s + t))))ᵀ = (x * (mat (γ (Multiplicative.ofAdd t)))ᵀ) * (mat (γ (Multiplicative.ofAdd s)))ᵀ`.
+
+Rewrite using `[ofAdd_add, map_mul, hmat, Matrix.transpose_mul, Matrix.mul_assoc]`. Use `show GlobalTheory.ArchLineAct.archMap M.co (L 0) = LinearMap.id`. Establish `hL : L 0 = LinearMap.id`. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Use `show x * (mat (γ (Multiplicative.ofAdd 0)))ᵀ = x`.
+
+Rewrite using `[ofAdd_zero, map_one, hmat1, Matrix.transpose_one, Matrix.mul_one]`. Rewrite using `[hL, GlobalTheory.ArchLineAct.archMap_id]`. Use `set u := M.co.e.symm (GlobalTheory.ArchLineAct.archLift p, GlobalTheory.ArchLineAct.archLift q) with hu`. Establish `hue : M.co.e u = (GlobalTheory.ArchLineAct.archLift p, GlobalTheory.ArchLineAct.archLift q)` using `LinearEquiv.apply_symm_apply _ _`. Establish `hu' : At (evI F) (L t u)` using `GlobalTheory.ArchLineAct.at_lin _ (GlobalTheory.ArchLineAct.at_symm _ p q)`.
+
+Establish `hue'` using `GlobalTheory.ArchLineAct.coord_eq M.co hu'`. Establish `himpl` using `hW.impl (1, γ (Multiplicative.ofAdd t)) u (tens (evI F) (⇑f) R) (hR f).2`. Establish `hact : GlobalTheory.WeilM.actAB (cA σ) ((1 : UA σ X.J), γ (Multiplicative.ofAdd t)) u = L t u` using `by show ((1 : UA σ X.J) : GL (Fin n) (AE F E)).1 * u * (mat (γ (Multiplicative.ofAdd t)))ᵀ = u * (mat (γ (Multiplicative.ofAdd t)))ᵀ`. Rewrite using `[show ((1 : UA σ X.J) : GL (Fin n) (AE F E)).1 = 1 from rfl, Matrix.one_mul]`. Rewrite `himpl` using `[hact, GlobalTheory.ArchLineAct.rho_tens hψ M.co u p q hue (⇑f) R hRsh, ← hg, hTact t g R (hR g), hTact t f R (hR f), GlobalTheory.ArchLineAct.rho_tens hψ M.co (L t u) _ _ hue' _ R hRsh]`.
+
+Use function extensionality and compare the values at `x`. Establish `h` using `congrFun himpl (GlobalTheory.ArchLineAct.archLift x)`. Rewrite `h` using `[GlobalTheory.ArchLineAct.tens_archLift _ R hRsh, GlobalTheory.ArchLineAct.tens_archLift _ R hRsh]`. Conclude with `mul_right_cancel₀ hR0 h`.
+-/
 theorem GlobalTheory.ArchLineAct.intertwine_pair : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ →
     ∀ (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (ψ : AddChar (AF F) ℂ) (χX χW : Chr F E) (om : Rep σ X W),
       IsStd ψ → (∀ i j, σ (X.J j i) = X.J i j) → X.J.det ≠ 0 → (∀ i j, σ (W.J j i) = -W.J i j) → W.J.det ≠ 0 →

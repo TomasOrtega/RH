@@ -3,6 +3,33 @@ open NumberField
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Use `set x : E := ((u : 𝓞 E) : E) with hx`. Establish `hnorm : ∏ w : InfinitePlace E, ‖w.embedding x‖ = 1`. Establish `h1` using `InfinitePlace.prod_eq_abs_norm x`. Establish `hN : |Algebra.norm ℚ x| = 1` using `Units.norm E u`. Rewrite `h1` using `[hN]`.
+
+Establish `h2 : ∏ w : InfinitePlace E, w x ^ w.mult = (∏ w : InfinitePlace E, ‖w.embedding x‖) ^ 2`. Rewrite using `[← Finset.prod_pow]`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[IsTotallyComplex.mult_eq, InfinitePlace.norm_embedding_eq]`. Rewrite `h1` using `[h2]`.
+
+Establish `h0 : 0 ≤ ∏ w : InfinitePlace E, ‖w.embedding x‖` using `Finset.prod_nonneg fun _ _ => norm_nonneg _`. Conclude with `(pow_eq_one_iff_of_nonneg h0 two_ne_zero).mp (by exact_mod_cast h1)`. Rewrite using `[Finset.prod_div_distrib, ← Complex.ofReal_prod, hnorm, Complex.ofReal_one, div_one]`. Use `set P : ℂ := ∏ w : InfinitePlace E, w.embedding x with hP`. Establish `hPreal : starRingEnd ℂ P = P`.
+
+Rewrite using `[hP, map_prod]`. Conclude with `Finset.prod_congr rfl fun w _ => hreal w.embedding`. Establish `hPnorm : ‖P‖ = 1` using `by rw [hP, norm_prod, hnorm]`. Take `⟨y, hy⟩` from `Ideal.mem_span_singleton'.mp hu`. Establish `hxy : x = 1 + ((y : 𝓞 E) : E) * (q : E)`.
+
+Establish `: (u : 𝓞 E) = 1 + y * (q : 𝓞 E)` using `by rw [hy]; ring`. Rewrite using `[hx, this]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hcong : ∃ s ∈ integralClosure ℤ ℂ, P = 1 + s * (q : ℂ)`.
+
+Rewrite using `[hP]`. Use `Finset.prod_induction _ (fun z => ∃ s ∈ integralClosure ℤ ℂ, z = 1 + s * (q : ℂ)) ?_ ⟨0, zero_mem _, by ring⟩ ?_` and prove the remaining obligations. Introduce and unpack `a b ⟨s, hs, rfl⟩ ⟨t, ht, rfl⟩`. Use `⟨s + t + s * t * q, ?_, by ring⟩` and prove the remaining obligations. Conclude with `add_mem (add_mem hs ht) (mul_mem (mul_mem hs ht) (Subalgebra.natCast_mem _ q))`.
+
+Introduce `w _`. Use `⟨w.embedding ((y : 𝓞 E) : E), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_integralClosure_iff]`. Conclude with `(RingOfIntegers.isIntegral_coe y).map w.embedding.toIntAlgHom`. Rewrite using `[hxy]`.
+
+Simplify using the standard rewrite rules. Take `⟨s, hs, hPs⟩` from `hcong`. Establish `hre : P = (P.re : ℂ)` using `((Complex.conj_eq_iff_re).mp hPreal).symm`. Establish `habs : |P.re| = 1`. Rewrite using `[← hPnorm, hre, Complex.norm_real, Real.norm_eq_abs, Complex.ofReal_re]`.
+
+Break down `(abs_eq zero_le_one).mp habs with h | h` into its components or cases. Rewrite using `[hre, h, Complex.ofReal_one]`. It suffices to derive a contradiction. Establish `hPm : P = -1` using `by rw [hre, h]; simp`. Establish `hqC : (q : ℂ) ≠ 0` using `by exact_mod_cast hq.ne_zero`.
+
+Establish `hs' : s = algebraMap ℚ ℂ (-2 / q)`. Rewrite `hPs` using `[hPm]`. Rewrite using `[map_div₀, map_neg, map_ofNat, map_natCast]`. Clear the denominators using the available nonvanishing facts. Take the linear combination `-hPs`.
+
+Rewrite `hs` using `[mem_integralClosure_iff, hs']`. Establish `hint : IsIntegral ℤ ((-2 / q : ℚ))` using `(isIntegral_algebraMap_iff (algebraMap ℚ ℂ).injective).mp hs`. Take `⟨n, hn⟩` from `IsIntegrallyClosed.isIntegral_iff.mp hint`. Establish `hqQ : (q : ℚ) ≠ 0` using `by exact_mod_cast hq.ne_zero`. Establish `h2 : (n : ℚ) * q = -2`.
+
+Rewrite `hn` using `[show (algebraMap ℤ ℚ n) = (n : ℚ) from rfl]`. Rewrite using `[hn]`. Clear the denominators using the available nonvanishing facts. Establish `h3 : n * (q : ℤ) = -2` using `by exact_mod_cast h2`. Establish `h4 : (q : ℤ) ∣ 2` using `⟨-n, by linarith⟩`.
+
+Establish `h5 : q ∣ 2` using `by exact_mod_cast h4`. Use `Nat.le_of_dvd two_pos h5` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem prod_arg_real_unit_eq_one (E : Type) [Field E] [NumberField E] [IsCMField E] (q : ℕ)
     (hq : q.Prime) (hq2 : 2 < q)
     (u : (𝓞 E)ˣ) (hu : (u : 𝓞 E) - 1 ∈ Ideal.span {((q : ℕ) : 𝓞 E)})

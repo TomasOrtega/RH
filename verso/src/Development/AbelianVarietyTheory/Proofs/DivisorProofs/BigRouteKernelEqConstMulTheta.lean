@@ -21,20 +21,34 @@ noncomputable section
 
 namespace GlobalTheory.BigKernel
 
+/- English proof (translation)
+Simplify using `only [Finsupp.sum, map_sum, map_smul]`.
+-/
 theorem end_finsupp_sum {α β : Type} (A : Module.End ℂ (β → ℂ)) (Θ : α →₀ ℂ) (f : α → β → ℂ) :
     A (Θ.sum fun d c => c • f d) = Θ.sum fun d c => c • A (f d) := by
   simp only [Finsupp.sum, map_sum, map_smul]
 
+/- English proof (translation)
+Simplify using `only [Finsupp.sum, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`.
+-/
 theorem finsupp_sum_apply {α β : Type} (Θ : α →₀ ℂ) (f : α → β → ℂ) (w : β) :
     (Θ.sum fun d c => c • f d) w = Θ.sum fun d c => c * f d w := by
   simp only [Finsupp.sum, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]
 
+/- English proof (translation)
+Use `⟨h.1.div' h'.1, fun x => ?_⟩` and prove the remaining obligations. Simplify using `only [MonoidHom.div_apply, h.2 x, h'.2 x, div_one]`.
+-/
 theorem isHecke_div {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E]
     {χ χ' : (AF F ⊗[F] E)ˣ →* Circle} (h : GlobalTheory.LFun.IsHecke F E χ) (h' : GlobalTheory.LFun.IsHecke F E χ') :
     GlobalTheory.LFun.IsHecke F E (χ / χ') := by
   refine ⟨h.1.div' h'.1, fun x => ?_⟩
   simp only [MonoidHom.div_apply, h.2 x, h'.2 x, div_one]
 
+/- English proof (translation)
+Introduce `a`. Establish `e1` using `h a`. Establish `e2` using `h' a`. Simplify using `only [MonoidHom.div_apply, Circle.coe_div] at *`. Rewrite using `[e1, e2]`.
+
+Use `split_ifs`. Simplify using the standard rewrite rules. Establish `hm : ((-1 : ℂ) ^ m) * ((-1 : ℂ) ^ m) = 1` using `by rw [← pow_add, ← two_mul, pow_mul]; simp`. Rewrite using `[div_eq_iff (by simp), pow_add, mul_assoc, hm, mul_one]`.
+-/
 theorem resEtaPow_div {R E : Type} [CommRing R] [CommRing E] [Algebra R E] {K : Subgroup Rˣ}
     {χ χ' : Eˣ →* Circle} {n m : ℕ} (h : GlobalTheory.WeilM.ResEtaPow K χ n) (h' : GlobalTheory.WeilM.ResEtaPow K χ' m) :
     GlobalTheory.WeilM.ResEtaPow K (χ / χ') (n + m) := by
@@ -50,6 +64,23 @@ theorem resEtaPow_div {R E : Type} [CommRing R] [CommRing E] [Algebra R E] {K : 
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `D T L sc G μ₀ hL W B ρ t i j M Θ Θ' hΘ e Bs Γ X om om' h hTr Φ hΦ g g₁`. Take `⟨h1, h2, h3⟩` from `GlobalTheory.T.hermitianSelfDualLatticeSpace_form_hermitian_nondeg_unimodular D Bs hTr.base _ Γ.V _ _ hTr.geo.hV`. Take `⟨hJ, LS, hLS, h4, h5, h6⟩` from `GlobalTheory.T.skewHermitian_neg_traceZero_inv_hermitian_unimodular D Bs hTr.base _ Γ.W _ _ hTr.geo.hW`. Establish `hξ0 : D.host.xi0 ≠ 0` using `GlobalTheory.DualPairCompare.embedding_xi_zero_ne_zero D`. Establish `eA : Γ.V.J = (GlobalTheory.WeilSchrodinger.hspOf D Γ.V.Jᵀ h1 h2 Γ.V.L hTr.geo.hV.lat h3 (fun _ => (0, 0))).gramᵀ`.
+
+Rewrite using `[GlobalTheory.WeilSchrodinger.gram_hspOf]`. Conclude with `(Matrix.transpose_transpose _).symm`. Establish `eB : (-1 : AF D.host.F ⊗[D.host.F] D.host.E) • GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM D.host.F Γ.W.J = GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM D.host.F (D.host.xi0 • (GlobalTheory.WeilSchrodinger.hspOf D (-D.host.xi0 • Γ.W.J⁻¹) h4 h5 L …`. Rewrite using `[GlobalTheory.WeilSchrodinger.gram_hspOf]`. Establish `e1 : (-D.host.xi0 • Γ.W.J⁻¹)⁻¹ = (-D.host.xi0)⁻¹ • Γ.W.J` using `Matrix.inv_eq_left_inv (by`.
+
+Rewrite using `[Matrix.smul_mul, Matrix.mul_smul, smul_smul, Matrix.mul_nonsing_inv _ hJ, inv_mul_cancel₀ (neg_ne_zero.2 hξ0), one_smul])`. Establish `e2 : D.host.xi0 • (-D.host.xi0)⁻¹ • Γ.W.J = -Γ.W.J`. Rewrite using `[smul_smul, inv_neg, mul_neg, mul_inv_cancel₀ hξ0, neg_one_smul]`. Use `show (-1 : AF D.host.F ⊗[D.host.F] D.host.E) • GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM D.host.F Γ.W.J = GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM D.host.F (D.host.xi0 • (-D.host.xi0 • Γ.W.J⁻¹)⁻¹)`. Rewrite using `[e1, e2]`.
+
+Use function extensionality and compare the values at `a b`. Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM]`. Take `⟨ω, hω, -, hth⟩` from `GlobalTheory.WeilBridge.exists_theta_eq D Bs hTr.base (GlobalTheory.WeilSchrodinger.hspOf D (-D.host.xi0 • Γ.W.J⁻¹) h4 h5 LS hLS h6 (fun _ => (0, 0))) (GlobalTheory.WeilSchrodinger.hspOf D Γ.V.Jᵀ h1 h2 Γ.V.L hTr.geo.hV.lat h3 (fun _ => (0, 0))) Γ.V Γ.W _ _ _ _ hTr.geo.hV hTr.geo. …`. Rewrite `hω` using `[h.ψ]`. Take `⟨ξ, hξ, hss⟩` from `GlobalTheory.T.bigRoute_seesaw_arrow_kernels_product W t i j M e Bs Γ X om om' h hTr h1 h2 _ hTr.geo.hV.lat h3 _ h4 h5 LS hLS h6 _ ω hω g g₁`.
+
+Use `⟨ξ, hξ, fun u => ?_⟩` and prove the remaining obligations. Take `⟨g', h', hh', hg'⟩` from `GlobalTheory.WeilSchrodinger.match_pair D (GlobalTheory.WeilSchrodinger.hspOf D (-D.host.xi0 • Γ.W.J⁻¹) h4 h5 LS hLS h6 (fun _ => (0, 0))) (GlobalTheory.WeilSchrodinger.hspOf D Γ.V.Jᵀ h1 h2 Γ.V.L hTr.geo.hV.lat h3 (fun _ => (0, 0))) Γ.V.J Γ.W.J (-1) eA eB (conjU (spW G i j) 1 h.J …`. Establish `key` using `hth _ _ g' h' hh' hg' Φ hΦ.1`. Use `Eq.trans ?_ (congrArg (fun z => ξ * z) key.symm)` and prove the remaining obligations. Establish `htr : GlobalTheory.WeilSchrodinger.thetaTr D.host.F Γ.M.co Bs.ψ Φ = Θ.sum fun d c => c • GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.boxA e d`.
+
+Use function extensionality and compare the values at `w`. Use `show GlobalTheory.WeilM.thetaSum D.host.F (Γ.M.co.rho Bs.ψ w Φ) = _`. Rewrite using `[h.ψ, hΦ.2 w]`. Conclude with `(finsupp_sum_apply _ _ w).symm`. Use `Eq.trans ?_ (congrArg (fun f => ξ * ω (g', h') f 0) htr.symm)` and prove the remaining obligations.
+
+Use `Eq.trans ?_ (congrArg (fun z => ξ * z) (congrFun (end_finsupp_sum (ω (g', h')) Θ (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.boxA e)) 0).symm)` and prove the remaining obligations. Rewrite using `[finsupp_sum_apply, kerBig, Finsupp.sum, Finsupp.sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun d hd => ?_` and prove the remaining obligations. Take `⟨t1, t2⟩` from `GlobalTheory.RouteSeesaw.data_theta W B ρ t i j hΘ d hd`. Rewrite using `[hss d.1.2 d.2 t1 t2 u g' h' hh' hg', mul_left_comm]`.
+
+Both sides reduce to the same expression.
+-/
 theorem kerBig_eq_theta : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {μ₀ : T} (hL : L.Is μ₀) (W : G.Weil) (B : Frames G) (ρ : RealMatch W) (t : T) (i j : Fin D.R.m) (M : Vol G)
     (Θ : TotT G (routeBig t i j)) (Θ' : TotT G (routeSmall t i j)) (hΘ : IsMatched B t ρ i j Θ Θ')
     (e : Num G i j) (Bs : Base D.host.F D.host.E) (Γ : GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.Geo G i j) (X : Chars D.host.F D.host.E)

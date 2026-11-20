@@ -27,6 +27,9 @@ def graphMorphismToAffineSpace (k : Type u) [Field k] (M n q : ℕ)
         (fun j : Fin q => (ConcreteCategory.hom (Scheme.Hom.appTop D.ι)) (F j))
         i.down)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem graphMorphismToAffineSpace_eq_homOfVector (k : Type u) [Field k] (M n q : ℕ)
     (F : Fin q →
       ↑((affineSpaceIndexedBy k (ULift.{u, 0} (Fin M ⊕ Fin n))).presheaf.obj (Opposite.op ⊤)))
@@ -44,6 +47,9 @@ theorem graphMorphismToAffineSpace_eq_homOfVector (k : Type u) [Field k] (M n q 
             i.down) :=
   rfl
 
+/- English proof (translation)
+Simplify using `[graphMorphismToAffineSpace]`.
+-/
 theorem graphMorphismToAffineSpace_comp_affineSpaceIndexedByToSpec (k : Type u) [Field k] (M n q : ℕ)
     (F : Fin q →
       ↑((affineSpaceIndexedBy k (ULift.{u, 0} (Fin M ⊕ Fin n))).presheaf.obj (Opposite.op ⊤)))
@@ -52,6 +58,9 @@ theorem graphMorphismToAffineSpace_comp_affineSpaceIndexedByToSpec (k : Type u) 
       D.ι ≫ affineSpaceIndexedByToSpec k (ULift.{u, 0} (Fin M ⊕ Fin n)) := by
   simp [graphMorphismToAffineSpace]
 
+/- English proof (translation)
+Simplify using `[graphMorphismToAffineSpace]`.
+-/
 theorem graphMorphismToAffineSpace_appTop_coord_inl (k : Type u) [Field k] (M n q : ℕ)
     (F : Fin q →
       ↑((affineSpaceIndexedBy k (ULift.{u, 0} (Fin M ⊕ Fin n))).presheaf.obj (Opposite.op ⊤)))
@@ -64,6 +73,9 @@ theorem graphMorphismToAffineSpace_appTop_coord_inl (k : Type u) [Field k] (M n 
           (ULift.up (Sum.inl a) : ULift.{u, 0} (Fin M ⊕ Fin n))) := by
   simp [graphMorphismToAffineSpace]
 
+/- English proof (translation)
+Simplify using `[graphMorphismToAffineSpace]`.
+-/
 theorem graphMorphismToAffineSpace_appTop_coord_inr (k : Type u) [Field k] (M n q : ℕ)
     (F : Fin q →
       ↑((affineSpaceIndexedBy k (ULift.{u, 0} (Fin M ⊕ Fin n))).presheaf.obj (Opposite.op ⊤)))

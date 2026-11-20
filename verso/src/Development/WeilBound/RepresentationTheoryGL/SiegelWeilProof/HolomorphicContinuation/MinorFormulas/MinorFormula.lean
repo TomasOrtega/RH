@@ -18,10 +18,26 @@ def cMn (s : ℂ) (b : Bool) : ℂ := if b then Complex.I * s else -(Complex.I *
 def phi (b : Bool) {ρ : ℕ} (I J : Fin ρ ↪ Fin n) : Pm (Polynomial ℂ) ρ →ₐ[Polynomial ℂ] Fm n :=
   rename fun pq => (b, J pq.1, I pq.2)
 
+/- English proof (translation)
+Simplify using `[phi, yv, rename_X]`.
+-/
 theorem phi_X (b : Bool) {ρ : ℕ} (I J : Fin ρ ↪ Fin n) (p q : Fin ρ) : phi b I J (X (p, q)) = yv b (J p) (I q) := by
   simp [phi, yv, rename_X]
 
 set_option maxHeartbeats 2000000 in
+/- English proof (translation)
+Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C r`. Simplify using `[phi, del]`. Consider the case `add f g hf hg`. Simplify using `only [map_add, Derivation.leibniz, mul_add, Finset.sum_add_distrib, hf, hg]`.
+
+Consider the case `mul_X f pq hf`. Establish `e : phi b I J (f * X pq) = phi b I J f * yv b (J pq.1) (I pq.2)` using `by rw [map_mul, phi_X]`. Establish `hdx : del p q (X pq : Pm (Polynomial ℂ) ρ) = X (pq.1, p) * X (q, pq.2)` using `by simp [del, mkDerivation_X]`. Rewrite using `[e, Derivation.leibniz (del p q), smul_eq_mul, smul_eq_mul, map_add, map_mul, map_mul, ← hf, hdx, map_mul, phi_X, phi_X, phi_X]`. Establish `hsplit : ∀ a d : Fin n, yv b a (I p) * yv b (J q) d * pderiv (b, a, d) (phi b I J f * yv b (J pq.1) (I pq.2)) = yv b (J pq.1) (I pq.2) * (yv b a (I p) * yv b (J q) d * pderiv (b, a, d) (phi b I J f)) + phi b I J f * (yv b a (I p) * yv b (J q) d * pderiv (b, a, d) (yv b (J pq.1) ( …`.
+
+Introduce `a d`. Rewrite using `[Derivation.leibniz, smul_eq_mul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [hsplit, Finset.sum_add_distrib, ← Finset.mul_sum]`. Establish `hpart : (∑ a : Fin n, ∑ d : Fin n, yv b a (I p) * yv b (J q) d * pderiv (b, a, d) (yv b (J pq.1) (I pq.2))) = yv b (J pq.1) (I p) * yv b (J q) (I pq.2)`.
+
+Rewrite using `[Finset.sum_eq_single (J pq.1), Finset.sum_eq_single (I pq.2)]`. Simplify using `only [yv, pderiv_X, Pi.single_eq_same, mul_one]`. Introduce `d _ hd`. Simplify using `only [yv, pderiv_X]`. Rewrite using `[Pi.single_eq_of_ne (fun h => hd (congrArg (fun x : Bool × Fin n × Fin n => x.2.2) h).symm), mul_zero]`.
+
+Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Introduce `a _ ha`. Use `Finset.sum_eq_zero fun d _ => ?_` and prove the remaining obligations. Simplify using `only [yv, pderiv_X]`.
+
+Rewrite using `[Pi.single_eq_of_ne (fun h => ha (congrArg (fun x : Bool × Fin n × Fin n => x.2.1) h).symm), mul_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Rewrite using `[hpart, add_comm]`.
+-/
 theorem deriv_part (s : ℂ) (m : ℕ) (b : Bool) {ρ : ℕ} (I J : Fin ρ ↪ Fin n) (p q : Fin ρ) (f : Pm (Polynomial ℂ) ρ) :
     (∑ a : Fin n, ∑ d : Fin n, yv b a (I p) * yv b (J q) d * pderiv (b, a, d) (phi b I J f)) = phi b I J (del p q f) := by
   induction f using MvPolynomial.induction_on with
@@ -57,6 +73,11 @@ theorem deriv_part (s : ℂ) (m : ℕ) (b : Bool) {ρ : ℕ} (I J : Fin ρ ↪ F
     rw [hpart, add_comm]
 
 set_option maxHeartbeats 2000000 in
+/- English proof (translation)
+Establish `h` using `deriv_part s m b I J p q f`. Simplify using `only [opH, LinearMap.add_apply, LinearMap.smul_apply, LinearMap.restrictScalars_apply, LinearMap.mulLeft_apply, LinearMap.sum_apply, LinearMap.comp_apply, LinearMap.coe_restrictScalars, Derivation.coeFn_coe, opE, map_add, map_mul]`. Establish `hs : (∑ a : Fin n, ∑ d : Fin n, (-(if b = true then Complex.I * s else -(Complex.I * s))) • (yv b a (I p) * yv b (J q) d * (pderiv (b, a, d)) (phi b I J f))) = (-(if b = true then Complex.I * s else -(Complex.I * s))) • ∑ a : Fin n, ∑ d : Fin n, yv b a (I p) * yv b (J q) d * (pde …`. Simplify using `only [Finset.smul_sum]`. Establish `h1 : phi b I J (C (alMn m b)) = C (if b = true then Polynomial.X else Polynomial.C (m : ℂ) + Polynomial.X)`.
+
+Simplify using `only [phi, rename_C, alMn]`. Rewrite using `[hs, h, ← smul_add, h1, phi_X]`. Both sides reduce to the same expression.
+-/
 theorem opH_phi (s : ℂ) (m : ℕ) (b : Bool) {ρ : ℕ} (I J : Fin ρ ↪ Fin n) (p q : Fin ρ) (f : Pm (Polynomial ℂ) ρ) :
     opH s m b (I p) (J q) (phi b I J f) = (-(cMn s b)) • phi b I J (opE (alMn m b) p q f) := by
   have h := deriv_part s m b I J p q f
@@ -72,6 +93,9 @@ theorem opH_phi (s : ℂ) (m : ℕ) (b : Bool) {ρ : ℕ} (I J : Fin ρ ↪ Fin 
   rw [hs, h, ← smul_add, h1, phi_X]
   rfl
 
+/- English proof (translation)
+Proceed by induction on `L with`. Consider the case `nil => simp`. Consider the case `cons a L ih`. Simplify using `only [List.foldr_cons, LinearMap.comp_apply, ih, map_smul, opH_phi, smul_smul, List.length_cons, pow_succ]`.
+-/
 theorem foldr_phi (s : ℂ) (m : ℕ) (b : Bool) {ρ : ℕ} (I J : Fin ρ ↪ Fin n) (σ : Equiv.Perm (Fin ρ)) (L : List (Fin ρ))
     (f : Pm (Polynomial ℂ) ρ) :
     (L.foldr (fun k g => opH s m b (I k) (J (σ k)) ∘ₗ g) LinearMap.id) (phi b I J f) =
@@ -81,6 +105,9 @@ theorem foldr_phi (s : ℂ) (m : ℕ) (b : Bool) {ρ : ℕ} (I J : Fin ρ ↪ Fi
   | cons a L ih =>
     simp only [List.foldr_cons, LinearMap.comp_apply, ih, map_smul, opH_phi, smul_smul, List.length_cons, pow_succ]
 
+/- English proof (translation)
+Simplify using `only [minorOp, detE, LinearMap.sum_apply, LinearMap.smul_apply, foldr_phi, List.length_finRange, map_sum, map_smul, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[Int.cast_smul_eq_zsmul, Int.cast_smul_eq_zsmul, smul_comm]`.
+-/
 theorem minorOp_phi (s : ℂ) (m : ℕ) (b : Bool) {ρ : ℕ} (I J : Fin ρ ↪ Fin n) (f : Pm (Polynomial ℂ) ρ) :
     minorOp s m b I J (phi b I J f) = (-(cMn s b)) ^ ρ • phi b I J (detE (alMn m b) f) := by
   simp only [minorOp, detE, LinearMap.sum_apply, LinearMap.smul_apply, foldr_phi, List.length_finRange, map_sum,
@@ -88,6 +115,9 @@ theorem minorOp_phi (s : ℂ) (m : ℕ) (b : Bool) {ρ : ℕ} (I J : Fin ρ ↪ 
   refine Finset.sum_congr rfl fun σ _ => ?_
   rw [Int.cast_smul_eq_zsmul, Int.cast_smul_eq_zsmul, smul_comm]
 
+/- English proof (translation)
+Proceed by induction on `N with`. Consider the case `zero => simp`. Consider the case `succ N ih`. Rewrite using `[Function.iterate_succ_apply', ih, map_smul, minorOp_phi, smul_smul, Function.iterate_succ_apply', pow_succ, mul_comm]`.
+-/
 theorem iter_phi (s : ℂ) (m : ℕ) (b : Bool) {ρ : ℕ} (I J : Fin ρ ↪ Fin n) (N : ℕ) (f : Pm (Polynomial ℂ) ρ) :
     (minorOp s m b I J)^[N] (phi b I J f) = ((-(cMn s b)) ^ ρ) ^ N • phi b I J ((detE (alMn m b))^[N] f) := by
   induction N with
@@ -96,6 +126,11 @@ theorem iter_phi (s : ℂ) (m : ℕ) (b : Bool) {ρ : ℕ} (I J : Fin ρ ↪ Fin
     rw [Function.iterate_succ_apply', ih, map_smul, minorOp_phi, smul_smul, Function.iterate_succ_apply', pow_succ,
       mul_comm]
 
+/- English proof (translation)
+Establish `e : ∀ l i : ℕ, (-a - Polynomial.C ((l : ℂ) - i)) = (-1) * (a + (l : Polynomial ℂ) - (i : Polynomial ℂ))`. Introduce `l i`. Simplify using `only [map_sub, map_natCast]`. Expand and normalize the polynomial expressions, which then agree. Repeatedly rewrite using `[e, Finset.prod_mul_distrib, Finset.prod_const, Finset.card_range]`.
+
+Simplify using `only [map_pow, map_neg]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem prodId (a : Polynomial ℂ) (c : ℂ) (ρ N : ℕ) :
     Polynomial.C (((-c) ^ ρ) ^ N) * ∏ l ∈ Finset.range N, ∏ i ∈ Finset.range ρ, (a + (l : Polynomial ℂ) - (i : Polynomial ℂ)) =
       Polynomial.C ((c ^ ρ) ^ N) * ∏ l ∈ Finset.range N, ∏ i ∈ Finset.range ρ, (-a - Polynomial.C ((l : ℂ) - i)) := by
@@ -107,6 +142,15 @@ theorem prodId (a : Polynomial ℂ) (c : ℂ) (ρ N : ℕ) :
   simp only [map_pow, map_neg]
   ring
 
+/- English proof (translation)
+Introduce `n s hs m b ρ N I J`. Establish `h1 : (1 : Fm n) = phi b I J 1` using `(map_one _).symm`. Rewrite using `[h1, iter_phi, iter]`. Establish `hc : (∏ l ∈ Finset.range N, ∏ i ∈ Finset.range ρ, (MvPolynomial.C (alMn m b) + (l : Pm (Polynomial ℂ) ρ) - (i : Pm (Polynomial ℂ) ρ))) = MvPolynomial.C (∏ l ∈ Finset.range N, ∏ i ∈ Finset.range ρ, (alMn m b + (l : Polynomial ℂ) - (i : Polynomial ℂ)))`. Simplify using `[map_prod]`.
+
+Establish `hdet : phi b I J ((Xm (Polynomial ℂ) ρ).det) = Matrix.det (fun p q : Fin ρ => yv b (J p) (I q))`. Rewrite using `[AlgHom.map_det]`. Use `congr 1`. Use extensionality with `p q`. Simplify using `[Xm, phi_X]`.
+
+Rewrite using `[hc, map_mul, map_pow, hdet]`. Simplify using `only [phi, rename_C]`. Rewrite using `[Algebra.smul_def, ← mul_assoc]`. Use `congr 1`. Rewrite using `[MvPolynomial.algebraMap_apply, Polynomial.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply, ← map_mul]`.
+
+Use `congr 1`. Conclude with `prodId _ _ ρ N`.
+-/
 theorem minorFormula : MinorFormula := by
   intro n s hs m b ρ N I J
   have h1 : (1 : Fm n) = phi b I J 1 := (map_one _).symm

@@ -8,6 +8,9 @@ noncomputable section
 
 namespace GlobalTheory.FrameRead
 
+/- English proof (translation)
+Unfold `Formalism.HermitianLatticesTheory.normAt Formalism.HermitianLatticesTheory.majAt Formalism.HermitianLatticesTheory.cnorm`. Use `congr 1`. Rewrite using `[Complex.re_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[show star (Formalism.HermitianLatticesTheory.fcoord (Pi.basisFun K (Fin n)) X v x i) = (starRingEnd ℂ) (Formalism.HermitianLatticesTheory.fcoord (Pi.basisFun K (Fin n)) X v x i) from rfl, Complex.conj_mul', ← Complex.ofReal_pow, Complex.ofReal_re]`.
+-/
 theorem normAt_eq_sqrt {K : Type} [Field K] [NumberField K] {n : ℕ} (X : InfinitePlace K → Matrix (Fin n) (Fin n) ℂ)
     (v : InfinitePlace K) (x : Fin n → K) :
     Formalism.HermitianLatticesTheory.normAt (Pi.basisFun K (Fin n)) X v x = Real.sqrt (Formalism.HermitianLatticesTheory.majAt (Pi.basisFun K (Fin n)) X v x x).re := by
@@ -18,6 +21,21 @@ theorem normAt_eq_sqrt {K : Type} [Field K] [NumberField K] {n : ℕ} (X : Infin
   rw [show star (Formalism.HermitianLatticesTheory.fcoord (Pi.basisFun K (Fin n)) X v x i) = (starRingEnd ℂ) (Formalism.HermitianLatticesTheory.fcoord (Pi.basisFun K (Fin n)) X v x i) from rfl,
     Complex.conj_mul', ← Complex.ofReal_pow, Complex.ofReal_re]
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 I0 T A3 Ks _ _ _ R F b i hK`. Use `⟨fun v => frame_gram_unit _ (hK i v).1, fun v c => ?_⟩` and prove the remaining obligations. Establish `h1` using `normAt_eq_sqrt (n := (R.toCx3 F).dW b i) ((R.toCx3 F).XW b i) v c`. Establish `h2` using `majAt_gram ((R.toCx3 F).XW b i) v ((R.toCx3 F).bW b i v) (hK i v).1 rfl c c`. Use `h1.trans ?_` and prove the remaining obligations.
+
+Establish `h3 : ∀ {E : Type} [NormedAddCommGroup E] [InnerProductSpace ℂ E] (z : E), Real.sqrt (inner ℂ z z).re = ‖z‖`. Introduce `E _ _ z`. Rewrite using `[show (inner ℂ z z).re = ‖z‖ ^ 2 from inner_self_eq_norm_sq (𝕜 := ℂ) z, Real.sqrt_sq (norm_nonneg _)]`. Rewrite using `[h2, h3]`. Use `set s := twAt D.what₂.embLL v`.
+
+Use `set σ := sgAt D.what₂.embLL v`. Establish `hl : lin ((R.toCx3 F).bW b i v) (cpt v.embedding c) = Tw.mk s (∑ k, σ (c k) • (⟨R.toRealDat.bC F.lv2 b i σ k, Submodule.subset_span ⟨k, rfl⟩⟩ : R.toRealDat.WS F.lv2 b i σ))`. Rewrite using `[lin_apply]`. Establish `e : ∀ x : ↥(R.toRealDat.WS F.lv2 b i σ), Tw.mk s x = Tw.mkL s ↥(R.toRealDat.WS F.lv2 b i σ) x` using `fun _ => rfl`. Rewrite using `[e, map_sum]`.
+
+Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_smulₛₗ]`. Use `show v.embedding (c k) • _ = _`. Rewrite using `[emb_eq D.what₂.embLL v (c k)]`. Both sides reduce to the same expression.
+
+Rewrite using `[hl]`. Establish `hc : (((∑ k, σ (c k) • (⟨R.toRealDat.bC F.lv2 b i σ k, Submodule.subset_span ⟨k, rfl⟩⟩ : R.toRealDat.WS F.lv2 b i σ)) : R.toRealDat.WS F.lv2 b i σ) : (R.HW i σ).H) = (((Real.sqrt (RealDat.nP F.lv2 b))⁻¹ : ℝ) : ℂ) • (R.FW i).j σ (∑ k, c k • R.toRealDat.bL F.lv2 b i k)`. Rewrite using `[Submodule.coe_sum]`. Simplify using `only [Submodule.coe_smul, RealDat.bC]`. Rewrite using `[map_sum, Finset.smul_sum]`.
+
+Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_smulₛₗ, smul_comm]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hc, norm_smul, Complex.norm_real, Real.norm_of_nonneg (inv_nonneg.2 (Real.sqrt_nonneg _))]`. Unfold `nrmR`.
+
+Rewrite using `[InfinitePlace.mk_embedding]`.
+-/
 theorem frames_read : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type} {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m}
     {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3) (b : Bool)
     (i : Fin D.R.m), (R.toCx3 F).KForm b →

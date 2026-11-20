@@ -22,12 +22,18 @@ section Gen
 
 variable {G : Type} [Group G] [Fintype G]
 
+/- English proof (translation)
+Take `⟨n, ρ, hρ, rfl⟩` from `h`. Introduce `e`. Rewrite `e` using `[Representation.char_one, Nat.cast_eq_zero, Module.finrank_zero_iff]`. Conclude with `(bot_ne_top (α := Subrepresentation ρ)) (Subrepresentation.toSubmodule_injective (Subsingleton.elim _ _))`.
+-/
 theorem one_ne_zero_of_mem (ψ : G → ℂ) (h : ψ ∈ Formalism.L2.Col.gxIrrSet (G := G) ℂ) : ψ 1 ≠ 0 := by
   obtain ⟨n, ρ, hρ, rfl⟩ := h
   intro e
   rw [Representation.char_one, Nat.cast_eq_zero, Module.finrank_zero_iff] at e
   exact (bot_ne_top (α := Subrepresentation ρ)) (Subrepresentation.toSubmodule_injective (Subsingleton.elim _ _))
 
+/- English proof (translation)
+Establish `h` using `congrArg (fun a : MonoidAlgebra ℂ G => a.coeff (y * x)) ((Subalgebra.mem_center_iff.1 he (MonoidAlgebra.single y 1)).symm)`. Simplify using `only [MonoidAlgebra.coeff_mul_single_apply, MonoidAlgebra.coeff_single_mul_apply, mul_one, one_mul, inv_mul_cancel_left] at h`. Conclude with `h`.
+-/
 theorem coeff_conj_of_center {e : MonoidAlgebra ℂ G} (he : e ∈ Subalgebra.center ℂ (MonoidAlgebra ℂ G)) (x y : G) :
     e.coeff (y * x * y⁻¹) = e.coeff x := by
   have h := congrArg (fun a : MonoidAlgebra ℂ G => a.coeff (y * x))
@@ -42,6 +48,29 @@ section Record
 
 variable (X : Stages) (px : PreX X.B.toPre)
 
+/- English proof (translation)
+Set `σ` to `X.B.embLL`. Set `f` to `MonoidAlgebra.domCongr ℂ ℂ eR.symm`. Set `e : MonoidAlgebra ℂ (Gc X.B px)` to `f X.toD7.ntypes.e0`. Establish `hcoeff : ∀ g, e.coeff g = X.toD7.ntypes.e0.coeff (eR g)` using `fun g => by`. Simplify using `[e, f, MonoidAlgebra.domCongr_apply]`.
+
+Take `⟨hcen0, hid0⟩` from `GlobalTheory.GoodLatCompare.goodSeriesIdempotent_central_idempotent X.toD7`. Establish `hid : e * e = e` using `by simp only [e, ← map_mul, hid0]`. Establish `hcen : e ∈ Subalgebra.center ℂ (MonoidAlgebra ℂ (Gc X.B px))`. Use `Subalgebra.mem_center_iff.2 fun b => ?_` and prove the remaining obligations. Take `⟨c, rfl⟩` from `f.surjective b`.
+
+Simplify using `only [e, ← map_mul, (Subalgebra.mem_center_iff.1 hcen0 c)]`. Establish `hcard : Fintype.card (Gc X.B px) = X.B.restRowsFiniteGroupCard`. Rewrite using `[← Nat.card_eq_fintype_card, Nat.card_congr eR.toEquiv]`. Establish `: ∀ k, NeZero (X.toD7.host.g k)` using `fun k => ⟨(X.toD7.host.g_prime k).ne_zero⟩`. Rewrite using `[Nat.card_pi, Fintype.prod_sigma]`.
+
+Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `∏ _y : X.toD7.nd.PlG k, Nat.card (GL (Fin X.toD7.R.r) (ZMod (X.toD7.host.g k))) = _`. Rewrite using `[Finset.prod_const, Finset.card_univ, X.toD7.nd.card_PlG k]`. Both sides reduce to the same expression. Take `⟨z, hzK, hz⟩` from `X.B.roots_Ks X.B.restRowsFiniteGroupCard (by simp)`.
+
+Establish `hzp : IsPrimitiveRoot z (Fintype.card (Gc X.B px))`. Rewrite using `[hcard, ← IsPrimitiveRoot.map_iff_of_injective σ.injective]`. Rewrite using `[show σ z = _ from hz]`. Conclude with `Complex.isPrimitiveRoot_exp _ X.B.restRowsFiniteGroupCard_pos.ne'`. Use `⟨Formalism.L2.Col.XgE σ e, Model.goodSet_of_idem X eR _ Formalism.L2.Col.XgE_irr fun g => ?_, fun g => ?_⟩` and prove the remaining obligations.
+
+Set `A` to `(Formalism.L2.Col.gxIrrSet_finite (G := Gc X.B px) (k := ℂ)).toFinset`. Establish `hA : ∀ ψ, ψ ∈ A ↔ ψ ∈ Formalism.L2.Col.gxIrrSet (G` using `Gc X.B px) ℂ := fun ψ => Set.Finite.mem_toFinset _`. Establish `hexp` using `GlobalTheory.T.centralIdempotent_eq_sum_character_idempotents A e (fun ψ hψ => one_ne_zero_of_mem ψ ((hA ψ).1 hψ)) (GlobalTheory.T.sum_irrChar_one_mul_irrChar_column_orthogonality A hA) (fun ψ hψ x => GlobalTheory.T.classFunction_acts_by_scalar_on_irrChar e (coeff_conj_of_center …`. Establish `himg : (A.filter fun ψ => ∑ g, e.coeff g * ψ g = ψ 1) = (Formalism.L2.Col.XgE σ e).image (fun χ g => σ (χ g))`. Use extensionality with `ψ`.
+
+Simplify using `only [Finset.mem_filter, Finset.mem_image, hA, Formalism.L2.Col.mem_XgE]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hψ, hs⟩`. Take `⟨χ, hχ, hχψ⟩` from `GlobalTheory.T.absIrrChar_realise_of_primitiveRoot_card σ z hzp ψ hψ`. Use `⟨χ, ⟨hχ, ?_⟩, funext hχψ⟩` and prove the remaining obligations.
+
+Simplify using `only [hχψ]`. Conclude with `hs`. Introduce and unpack `⟨χ, ⟨hχ, hs⟩, rfl⟩`. Conclude with `⟨GlobalTheory.T.absIrrChar_comp_mem_complexIrrCharSet σ χ hχ, hs⟩`. Establish `hinj : Set.InjOn (fun (χ : Gc X.B px → X.B.LL) g => σ (χ g)) (Formalism.L2.Col.XgE σ e : Set _)` using `fun χ _ χ' _ h => funext fun g => σ.injective (congrFun h g)`.
+
+Rewrite using `[← hcoeff g]`. Use `conv_rhs => rw [hexp]`. Rewrite using `[himg, coeff_idemOf, coeff_idemOf, Finset.sum_image hinj, map_sum]`. Use `Finset.sum_congr rfl fun χ _ => ?_` and prove the remaining obligations. Simplify using `[σ, map_div₀, map_mul, map_natCast]`.
+
+Rewrite using `[coeff_idemOf]`. Establish `hcl : ∀ y ∈ Subring.closure ({z} : Set X.B.LL), y ∈ X.B.Ks` using `fun y hy => by`. Establish `: Subring.closure ({z} : Set X.B.LL) ≤ X.B.Ks.toSubfield.toSubring`. Rewrite using `[Subring.closure_le, Set.singleton_subset_iff]`. Conclude with `hzK`.
+
+Conclude with `this hy`. Use `IntermediateField.sum_mem _ fun χ hχ => ?_` and prove the remaining obligations. Establish `hχ'` using `Formalism.L2.Col.XgE_irr χ hχ`. Conclude with `IntermediateField.mul_mem _ (IntermediateField.div_mem _ (hcl _ (GlobalTheory.T.absIrrChar_mem_closure_primitiveRoot_card z hzp χ hχ' 1)) (IntermediateField.natCast_mem _ _)) (hcl _ (GlobalTheory.T.absIrrChar_mem_closure_primitiveRoot_card z hzp χ hχ' _))`.
+-/
 theorem exists_goodSet_Ks (eR : Gc X.B px ≃* G0g X.toD7.nd) :
     ∃ Xg : Finset (Gc X.B px → X.B.LL), GoodSet X (px := px) eR Xg ∧ ∀ g, (idemOf Xg).coeff g ∈ X.B.Ks := by
   classical

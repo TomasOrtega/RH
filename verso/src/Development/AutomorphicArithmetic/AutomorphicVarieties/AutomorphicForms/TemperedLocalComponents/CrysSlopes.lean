@@ -29,6 +29,9 @@ section Sat
 variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
   {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w}
 
+/- English proof (translation)
+Rewrite using `[Complex.ofReal_cpow (Nat.cast_nonneg _), zpow_neg_one, Units.val_mul, mul_inv, Units.val_inv_eq_inv_val, inv_inv, coe_qPow, ← Complex.cpow_neg, mul_comm]`. Use `congr 2`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem val_inv_eq' (n : ℕ) (a : ℂˣ) :
     (((a⁻¹ * qPow w ((1 - (n : ℝ)) / 2) : ℂˣ) : ℂ)) ^ (-1 : ℤ) =
       ((((normV w : ℕ) : ℝ) ^ (((n : ℝ) - 1) / 2) : ℝ) : ℂ) * (a : ℂ) := by
@@ -38,6 +41,13 @@ private theorem val_inv_eq' (n : ℕ) (a : ℂˣ) :
   push_cast
   ring
 
+/- English proof (translation)
+Take `⟨hu, -⟩` from `GlobalTheory.RecLaws.rec_hasSatGL H σ B hB`. Take `⟨α, hα⟩` from `ParLaws.exists_hasSatake_of_unr H hu`. Establish `hBα : B = Finset.univ.val.map α` using `hB.unique (GlobalTheory.T.hasSatakeGL_of_hasSatakeParameters_principalSeries E w n _ σ.ρ α hα)`. Establish `e : rc (IrrGL.of σ.ρ σ.smooth σ.irred) = WD.mk (WDRep.diag h fun i => (α i)⁻¹)` using `ParLaws.rec_eq_diag H hα`. Establish `e' : rc (algNorm σ) = WD.mk (WDRep.diag h fun i => (α i)⁻¹ * qPow w ((1 - (n : ℝ)) / 2))`.
+
+Rewrite using `[rec_algNorm H, e, WD.lpTw_mk]`. Use `WD.sound ⟨.refl _ _, fun g v => funext fun i => ?_, fun v => rfl⟩` and prove the remaining obligations. Simplify using `[mul_zpow, mul_comm, mul_left_comm, mul_assoc]`. Simplify using `only [hBα, algSat, Multiset.map_map, Multiset.pure_def, Multiset.bind_def, Multiset.bind_singleton, Multiset.mem_map] at hb`. Take `⟨i, -, rfl⟩` from `hb`.
+
+Rewrite using `[e', WD.eig_mk, WDRep.diag_ρ, charpoly_diagEnd, hg, mem_roots (monic_prod_of_monic _ _ fun _ _ => monic_X_sub_C _).ne_zero, IsRoot, eval_prod]`. Use `Finset.prod_eq_zero (Finset.mem_univ i) ?_` and prove the remaining obligations. Rewrite using `[val_inv_eq']`. Simplify using the standard rewrite rules.
+-/
 private theorem mem_eig {rc : IrrGL (w.adicCompletion E) → WD h} (H : IsRec h rc) {n : ℕ}
     (σ : SmIrr (GL (Fin n) (w.adicCompletion E))) (B : Multiset ℂˣ) (hB : GlobalTheory.LFun.HasSatGL w σ.ρ B)
     (g : Weil h) (hg : deg g = -1) (b : ℂ) (hb : b ∈ algSat n (normV w) B) : b ∈ (rc (algNorm σ)).eig g := by
@@ -61,12 +71,20 @@ private theorem mem_eig {rc : IrrGL (w.adicCompletion E) → WD h} (H : IsRec h 
 
 end Sat
 
+/- English proof (translation)
+Establish `hx : IsIntegral ℚ_[l] x` using `Algebra.IsIntegral.isIntegral x`. Establish `e : minpoly ℚ_[l] x = minpoly ℚ_[l] y` using `minpoly.eq_of_irreducible_of_monic (minpoly.irreducible hx) hy (minpoly.monic hx)`. Rewrite using `[← PadicAlgCl.spectralNorm_eq, ← PadicAlgCl.spectralNorm_eq, spectralNorm, spectralNorm, e]`.
+-/
 private theorem norm_root {l : ℕ} [Fact l.Prime] {x y : Om l} (hy : aeval y (minpoly ℚ_[l] x) = 0) : ‖y‖ = ‖x‖ := by
   have hx : IsIntegral ℚ_[l] x := Algebra.IsIntegral.isIntegral x
   have e : minpoly ℚ_[l] x = minpoly ℚ_[l] y :=
     minpoly.eq_of_irreducible_of_monic (minpoly.irreducible hx) hy (minpoly.monic hx)
   rw [← PadicAlgCl.spectralNorm_eq, ← PadicAlgCl.spectralNorm_eq, spectralNorm, spectralNorm, e]
 
+/- English proof (translation)
+Set `e` to `Module.finBasis ℚ_[l] V`. Take `⟨M, M', A, hM, hA, hφ, hρ⟩` from `UpperTheory.exists_crystalline_period_matrix_bcris_of_isCrys K ρ e hc`. Take `⟨F, -, hF⟩` from `UpperTheory.frobenius_iterate_matrix_form K M A hA hφ f`. Take `⟨γ, hγ, hr⟩` from `UpperTheory.crystalline_period_matrix_relation K f hσ ρ e M M' hM hρ F hF x hx h0 _ (minpoly.ne_zero (Algebra.IsIntegral.isIntegral β)) hq`. Establish `hn` using `norm_root hr`.
+
+Use `⟨fun a ha => ?_, fun b hb => ?_⟩` and prove the remaining obligations. Use `UpperTheory.filtration_entries_of_frobenius_matrix K f hf hσ M M' A F hM hA hφ hF a (UpperTheory.de_rham_le_filtration_shift K ρ e M M' hM hρ a ha) γ hγ` as an intermediate fact. Rewrite `this` using `[norm_mul, hn, ← norm_mul]`. Then use the resulting hypothesis. Use `UpperTheory.filtration_inverse_frobenius_matrix K f hf hσ M M' A F hM hA hφ hF b (UpperTheory.de_rham_inf_filtration K ρ e M M' hM hρ b hb) γ hγ` as an intermediate fact. Rewrite `this` using `[norm_mul, norm_inv, hn, ← norm_inv, ← norm_mul]`. Then use the resulting hypothesis.
+-/
 private theorem rep_slope {l : ℕ} [Fact l.Prime] (K : FinExt l) (f : ℕ) (hf : 0 < f)
     (hσ : ∀ x : ↥(K0 K), (((PP l).PD K).σ)^[f] x = x) {V : Type} [AddCommGroup V] [Module ℚ_[l] V]
     [FiniteDimensional ℚ_[l] V] (ρ : Representation ℚ_[l] ↥(GK K) V) (hc : IsCrys ((PP l).PD K) ρ) (β : Om l)
@@ -92,6 +110,23 @@ private theorem rep_slope {l : ℕ} [Fact l.Prime] (K : FinExt l) (f : ℕ) (hf 
 end UpperTheory.V.Af
 
 open UpperTheory.V.Af in
+/- English proof (translation)
+Introduce `_ F Ω _ _ _ _ _ p _ _ ι n m r _ w A h O _ _ _ Bw hj hcr hJ σ B hB rc hrc hwd b hb`. Take `⟨T⟩` from `tiedP p`. Establish `hp : IsPstAt (PP p) Bw (r.comp (Dec (F` using `F) A).subtype) := by`. Take `⟨L, r', h1, h2⟩` from `hcr`. Conclude with `⟨L, r', h1, GlobalTheory.PstOfCrys.isPst_of_isCrys T _ h2⟩`.
+
+Take `⟨L, r', hm, hpst, hw⟩` from `wdAt_of_isPstAt ι Bw h hj hp`. Establish `hc : IsCrys ((PP p).PD Bw.Kw) (Bw.repE L r')` using `(hm.isCrysAt_iff (PP p)).1 hcr`. Take `⟨g, hg⟩` from `deg_surjective (h := h) (-1)`. Establish `he` using `mem_eig hrc σ B hB g hg b hb`. Rewrite `he` using `[← hwd, hw]`.
+
+Take `⟨x, hx, h0, hq⟩` from `UpperTheory.crystalline_of_place_over (PP p) ι Bw h hj (Bw.repE L r') hpst hc g hg b he _ (minpoly.aeval ℚ_[p] (ι.symm b))`. Take `⟨hf, hσ⟩` from `UpperTheory.frobenius_residue_degree_fixes (PP p) Bw h hj`. Use `haveI := L.2`. Use `haveI : FiniteDimensional ℚ_[p] (Fin n → ↥L.1) := Module.Finite.trans ↥L.1 _`. Take `⟨hlo, hhi⟩` from `rep_slope Bw.Kw _ hf hσ (resQ (Bw.repE L r')) ((GlobalTheory.BSCoeff.isCrys_resQ_iff (PP p) _).2 hc) (ι.symm b) x (by rw [GlobalTheory.BSCoeff.Dcris_resQ]; exact hx) h0 hq`.
+
+Establish `hsplit : ∀ (τ : ↥Bw.Kw.1 →ₐ[ℚ_[p]] Om p) (y : ↥Bw.Kw.1), τ y ∈ L.1` using `fun τ y => hm.1 (Bw.LL_split τ y)`. Establish `hJ' : ∀ τ' : ↥Bw.Kw.1 →ₐ[ℚ_[p]] ↥L.1, ∃ τ : F →+* Om p, IsInduced Bw τ τ'` using `fun τ' => ⟨(L.1.val.comp τ').toRingHom.comp ((Bw.j.comp (algebraMap F Ω)).codRestrict Bw.Kw.1 Bw.j_E), fun _ => rfl⟩`. Establish `hmult : ∀ (τ' : ↥Bw.Kw.1 →ₐ[ℚ_[p]] ↥L.1) (c : ℤ), (∀ i, -m i ≠ c) → multV ((PP p).PD Bw.Kw) (Bw.repE L r') τ' c = 0` using `fun τ' c hc' => by`. Take `⟨τ, hτ⟩` from `hJ' τ'`. Establish `h1` using `IsJumpsAt.count_eq (PP p) hm hτ (hJ τ L τ' hτ) c`.
+
+Rewrite `h1` using `[Multiset.count_eq_zero.2 (by simpa using hc')]`. Conclude with `h1.symm`. Establish `hdR : Bw.IsdRE (PP p) L r'`. Take `⟨τ, hτ⟩` from `hJ' (Bw.Kw.1.val.codRestrict L.1.toSubalgebra (hsplit _))`. Take `⟨L₁, r₁, h1, h2, -⟩` from `hJ τ L _ hτ`.
+
+Conclude with `(hm.isdRAt_iff (PP p)).1 ⟨L₁, r₁, h1, h2⟩`. Take `⟨k1, k2⟩` from `UpperTheory.ddR_le_fil_and_inf_fil_eq_bot_of_hodgeTate_mult (PP p) hsplit (Bw.repE L r') (finiteDimensional_DdR _ _ hdR)`. Establish `hq' : ι.symm ((normV w : ℕ) : ℂ) = (p : Om p) ^ resDeg p w`. Rewrite using `[map_natCast, normV_eq_pow (hj.mem_placesOver h), Nat.cast_pow]`. Use `⟨fun a ha => ?_, fun a ha => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_mul, map_zpow₀, map_inv₀, hq']`. Use `hhi a (eq_bot_iff.2 fun y hy => ?_)` and prove the remaining obligations. Use `k2 a fun τ c hc' => hmult τ c fun i => by have := ha i; omega` as an intermediate fact. Establish `hy1` using `hy.1`. Rewrite `hy1` using `[DdR_resQ]`.
+
+Conclude with `this.le ⟨hy1, hy.2⟩`. Rewrite using `[map_mul, map_zpow₀, hq', ← neg_neg a]`. Use `hlo (-a) fun y hy => ?_` and prove the remaining obligations. Rewrite `hy` using `[DdR_resQ]`. Conclude with `k1 (-a) (fun τ c hc' => hmult τ c fun i => by have := ha i; omega) hy`.
+-/
 theorem UpperTheory.V.Af.crysSlopes :
     UpperTheory.V.Af.Hypotheses₂ → UpperTheory.V.Af.CrysSlopes := by
   intro _ F Ω _ _ _ _ _ p _ _ ι n m r _ w A h O _ _ _ Bw hj hcr hJ σ B hB rc hrc hwd b hb

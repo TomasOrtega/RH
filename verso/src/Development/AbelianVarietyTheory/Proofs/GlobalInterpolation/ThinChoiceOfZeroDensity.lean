@@ -27,6 +27,9 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.Inhab Fo
 
 namespace GlobalTheory.EX
 
+/- English proof (translation)
+Introduce `_ _ _ _ _` and use `thinChoice_host`.
+-/
 theorem thinChoice_of_explicit : GlobalTheory.Mem.An.ExplZeta → GlobalTheory.Mem.An.ExplChi → GlobalTheory.Mem.An.LogDerOne → GlobalTheory.Mem.An.ZeroCount →
     Formalism.ZeroFreeDirichlet.ZFRDirichlet → ThinChoice :=
   fun _ _ _ _ _ => thinChoice_host

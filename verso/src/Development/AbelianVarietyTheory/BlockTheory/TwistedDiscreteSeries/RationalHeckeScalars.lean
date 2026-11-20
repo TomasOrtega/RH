@@ -38,11 +38,17 @@ def RationalHeckeAt (i : Fin D.R.m) (P : Pl D.host.E) (k : ℕ) : Prop :=
 def RationalHecke (i : Fin D.R.m) : Prop :=
   ∀ P : Pl D.host.E, GoodPlace R P → ∀ k : ℕ, k ≤ D.R.r → RationalHeckeAt R i P k
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem readAs_iff (i : Fin D.R.m) (P : Pl D.host.E) (k : ℕ) (Rc : Finset (GA D (Wc D i)))
     (hL : (Fin (R.nW i) → D.what₂.LL) →ₗ[D.what₂.LL] (Fin (R.nW i) → D.what₂.LL)) :
     ReadAs R i P k Rc hL ↔ ∀ x, (R.HW i (sg0 D A)).e ((R.FW i).j (sg0 D A) (hL x)) =
       heckeScalar R i P k • heckeOn (R.MW i (sg0 D A)) Rc ((R.HW i (sg0 D A)).e ((R.FW i).j (sg0 D A) x)) := Iff.rfl
 
+/- English proof (translation)
+Take `⟨hL, h1, h2⟩` from `h`. Conclude with `⟨hL, h1 Rc ⟨α, hα, hR⟩, h2⟩`.
+-/
 theorem RationalHeckeAt.row {i : Fin D.R.m} {P : Pl D.host.E} {k : ℕ} (h : RationalHeckeAt R i P k)
     {α : GA D (Wc D i)} (hα : IsHeckeAt (Wc D i) P k α) {Rc : Finset (GA D (Wc D i))}
     (hR : Bridge.IsDC (levG (Wc D i) (R.βW i) (R.datWp i R.triv)) α Rc) :
@@ -51,9 +57,15 @@ theorem RationalHeckeAt.row {i : Fin D.R.m} {P : Pl D.host.E} {k : ℕ} (h : Rat
   obtain ⟨hL, h1, h2⟩ := h
   exact ⟨hL, h1 Rc ⟨α, hα, hR⟩, h2⟩
 
+/- English proof (translation)
+Simplify using `[heckeScalar]`.
+-/
 theorem heckeScalar_zero (i : Fin D.R.m) (P : Pl D.host.E) : heckeScalar R i P 0 = 1 := by
   simp [heckeScalar]
 
+/- English proof (translation)
+Introduce `x`. Rewrite using `[heckeScalar_zero, one_smul]`. Use extensionality with `v g`. Simplify using `[heckeOn, postOn, heckeLin]`.
+-/
 theorem readAs_id (i : Fin D.R.m) (P : Pl D.host.E) : ReadAs R i P 0 {1} LinearMap.id := by
   intro x
   rw [heckeScalar_zero, one_smul]
@@ -76,6 +88,9 @@ def FramePinned (i : Fin D.R.m) : Prop :=
 def RationalHeckeTie : Prop :=
   R.Char F → Nonempty (FWTie T R κ v₀) → ∀ i : Fin D.R.m, FramePinned T R κ v₀ i → RationalHecke R i
 
+/- English proof (translation)
+Introduce `hc ht i _` and use `h hc ht i`.
+-/
 theorem RationalHeckeUnpinned.tie (h : RationalHeckeUnpinned T R F κ v₀) : RationalHeckeTie T R F κ v₀ :=
   fun hc ht i _ => h hc ht i
 

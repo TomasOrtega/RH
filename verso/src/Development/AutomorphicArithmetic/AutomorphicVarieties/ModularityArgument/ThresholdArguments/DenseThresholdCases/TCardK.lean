@@ -7,6 +7,9 @@ set_option maxHeartbeats 800000
 set_option synthInstance.maxHeartbeats 200000
 
 section
+/- English proof (translation)
+Use `Subgroup.map_mono fun k hk => ?_` and prove the remaining obligations. Establish `hle : Ideal.span {((3 * M : ℕ) : ↥(UpperTheory.V.Af.Ohat K))} ≤ Ideal.span {(M : ↥(UpperTheory.V.Af.Ohat K))}` using `Ideal.span_singleton_le_span_singleton.2 (Nat.cast_dvd_cast (Dvd.intro_left 3 rfl))`. Establish `e` using `congrArg (Matrix.GeneralLinearGroup.map (n := Fin n) (Ideal.Quotient.factor hle)) (MonoidHom.mem_ker.1 hk)`. Rewrite `e` using `[map_one]`. Conclude with `e`.
+-/
 private theorem klev_three (K : Type) [Field K] [NumberField K] (n M : ℕ) :
     UpperTheory.V.Af.KLev K n (3 * M) ≤ UpperTheory.V.Af.KLev K n M := by
   refine Subgroup.map_mono fun k hk => ?_
@@ -15,6 +18,13 @@ private theorem klev_three (K : Type) [Field K] [NumberField K] (n M : ℕ) :
   have e := congrArg (Matrix.GeneralLinearGroup.map (n := Fin n) (Ideal.Quotient.factor hle)) (MonoidHom.mem_ker.1 hk)
   rw [map_one] at e
   exact e
+/- English proof (translation)
+Introduce `P K _ _ _ n hn`. Take `⟨c₁, A₁, hW⟩` from `_root_.UpperTheory.V.Af.weyl_complex_of_printed_results P K n`. Take `⟨c₂, A₂, hC⟩` from `UpperTheory.V.Af.cohBoundFree K (Or.inl inferInstance) n ⊤ inferInstance`. Use `⟨c₂ * c₁, A₁ + A₂, fun m hm H hH M hM S hS hiso => ?_⟩` and prove the remaining obligations. Take `⟨Ξ, hΞ, hd⟩` from `hW m hm H hH`.
+
+Establish `h3 : 1 ≤ 3 * M` using `by omega`. Establish `hB` using `P.borelC K n (by omega) (UpperTheory.V.Af.KLev K n (3 * M)) (by apply UpperTheory.V.Af.isOpen_KLev; exact h3) (by apply UpperTheory.V.Af.isCompact_KLev; exact h3) Ξ S hiso fun π hπ => ⟨P.cohC K n (by omega) π Ξ fun τ => ⟨_, (hS π hπ).1 τ, hΞ τ⟩, (hS π hπ).2.2.imp fun _ hv => ⟨hv. …`. Establish `h1 : S.card ≤ c₂ * M ^ A₂ * Ξ.d` using `Nat.cast_le.1 (hB.trans (hC M hM _ _))`. Establish `h2 : M ^ A₂ ≤ M ^ (A₁ + A₂)` using `Nat.pow_le_pow_right hM (by omega)`. Establish `h4 : (H + 1) ^ A₁ ≤ (H + 1) ^ (A₁ + A₂)` using `Nat.pow_le_pow_right (by omega) (by omega)`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem UpperTheory.V.Af.card_k_of_printed_results :
     _root_.UpperTheory.V.Af.Hypotheses' → UpperTheory.V.Af.CardK := by
   intro P K _ _ _ n hn

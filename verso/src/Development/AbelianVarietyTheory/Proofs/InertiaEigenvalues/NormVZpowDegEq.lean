@@ -9,6 +9,21 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace GlobalTheory.LocLanglands
 
+/- English proof (translation)
+Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed K`. Take `⟨a, b, ha⟩` from `σ'.2`. Take `⟨c, d, hc⟩` from `σ.2`. Rewrite using `[deg_eq ha, deg_eq hc]`. Use `set q' := normV v' with hq'`.
+
+Use `set q := normV v with hq`. Establish `hq'0 : 0 < q'` using `(zero_lt_one.trans (one_lt_normV v'))`. Establish `hq0 : 0 < q` using `(zero_lt_one.trans (one_lt_normV v))`. Establish `key : ∀ x : Ω, A.valuation x ≤ 1 → A.valuation (x ^ (q' ^ a * q ^ d) - x ^ (q ^ c * q' ^ b)) < 1`. Introduce `x hx`.
+
+Establish `hy : A.valuation ((σ' : G L Ω) x) ≤ 1` using `val_apply_le_one ha.1 hx`. Establish `h1` using `cong_pow (val_pow_le_one hy _) (val_pow_le_one hx _) (ha.2 x hx) (q ^ d)`. Establish `h2'` using `hc.2 x hx`. Rewrite `h2'` using `[hσ]`. Establish `h2` using `cong_pow (val_pow_le_one hy _) (val_pow_le_one hx _) h2' (q' ^ b)`.
+
+Rewrite `h1`, `h2` using `[← pow_mul, ← pow_mul]`. Rewrite `h2` using `[mul_comm (q ^ d) (q' ^ b)]`. Conclude with `cong_trans (cong_symm h1) h2`. Establish `hN : q' ^ a * q ^ d = q ^ c * q' ^ b`. Break down `lt_trichotomy (q' ^ a * q ^ d) (q ^ c * q' ^ b) with hlt | heq | hgt` into its components or cases.
+
+Take `⟨x, hx, hx'⟩` from `exists_not_cong_pow (A := A) (Nat.mul_pos (pow_pos hq'0 a) (pow_pos hq0 d)) hlt`. Conclude with `absurd (cong_symm (key x hx)) hx'`. Conclude with `heq`. Take `⟨x, hx, hx'⟩` from `exists_not_cong_pow (A := A) (Nat.mul_pos (pow_pos hq0 c) (pow_pos hq'0 b)) hgt`. Conclude with `absurd (key x hx) hx'`.
+
+Establish `hR : ((q' : ℕ) : ℝ) ^ a * ((q : ℕ) : ℝ) ^ d = ((q : ℕ) : ℝ) ^ c * ((q' : ℕ) : ℝ) ^ b`. Conclude with `hN` after adjusting the coercions. Establish `h1 : ((q' : ℕ) : ℝ) ≠ 0` using `by positivity`. Establish `h2 : ((q : ℕ) : ℝ) ≠ 0` using `by positivity`. Rewrite using `[zpow_sub₀ h1, zpow_sub₀ h2, zpow_natCast, zpow_natCast, zpow_natCast, zpow_natCast, div_eq_div_iff (pow_ne_zero _ h1) (pow_ne_zero _ h2)]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem normV_zpow_deg_eq {K L Ω : Type} [Field Ω] [Field K] [NumberField K] [Algebra K Ω] [IsAlgClosure K Ω]
     [Field L] [NumberField L] [Algebra L Ω] [IsAlgClosure L Ω] {A : ValuationSubring Ω}
     {v : HeightOneSpectrum (𝓞 K)} {v' : HeightOneSpectrum (𝓞 L)} {h : IsPlaceOver A v} {h' : IsPlaceOver A v'}

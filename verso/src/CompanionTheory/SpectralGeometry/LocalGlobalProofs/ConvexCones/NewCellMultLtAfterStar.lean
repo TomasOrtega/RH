@@ -13,6 +13,53 @@ namespace GlobalTheory.CompanionTheory.Ar.Fan.NewCellsStarMultiplicity
 
 open GlobalTheory.PolFan.StarNewCell in
 
+/- English proof (translation)
+Introduce `O _ _ _ _ bar _hb q φ lab w ψ' hSL hCS hcoord M hM X _ _ _ _ hX n γ' hγ' hliγ' hprimγ' m γ β₀ m' s h hγ hβ₀ hβ₀p hw hβ₀γ hcut hpos hτ hγ'τ`. Take `⟨m₀, δ, hδ, hliδ, -, hγδ⟩` from `hSL.2 X hX m γ hγ`. Take `⟨δt, hδt, hliδt, hprimδt, hδδt⟩` from `GlobalTheory.T.exists_rescale_primitive_linearIndependent_cell bar φ δ hδ hliδ`. Establish `hγδt : ∀ k, InRCone δt (γ k)` using `fun k => hδδt _ (hγδ k)`. Take `⟨h₂, h₂0, h₂γ, h₂cut⟩` from `GlobalTheory.T.exists_linForm_cut_face_of_cell_in_cone bar φ δt γ hδt hγ hγδt`.
+
+Establish `hcutγ : ∀ β ∈ balForms bar X, (∀ y, 0 ≤ β y y) → InRCone γ β → h β = 0 → InRCone (fun k => γ (s k)) β` using `fun β _ _ hβ hβ0 => GlobalTheory.T.inRealCone_generators_of_linForm_eq_zero γ h s β hcut.1 (fun i hi => (hcut.2 i).1 hi) hβ hβ0`. Establish `hhs : ∀ k, h (γ (s k)) = 0` using `fun k => (hcut.2 (s k)).2 ⟨k, rfl⟩`. Take `⟨h₃, h₃0, h₃γs, h₃cut⟩` from `GlobalTheory.T.exists_linForm_cut_face_of_face_of_cone bar δt γ (fun k => γ (s k)) h₂ h hδt.mem hδt.nonneg (fun k => inRCone_self γ (s k)) h₂0 h₂γ h₂cut hcut.1 hhs hcutγ`. Use `set I : Finset (Fin m₀) := Finset.univ.filter (fun i => h₃ (δt i) = 0) with hI`. Use `set eI : Fin I.card ↪ Fin m₀ := (I.orderEmbOfFin rfl).toEmbedding with heIdef`.
+
+Establish `heI : ∀ i, i ∈ Set.range eI ↔ h₃ (δt i) = 0`. Introduce `i`. Use `show i ∈ Set.range (I.orderEmbOfFin rfl) ↔ _`. Rewrite using `[Finset.range_orderEmbOfFin]`. Simplify using `[I]`.
+
+Establish `hsupp : ∀ β, InRCone δt β → h₃ β = 0 → InRCone (fun k => δt (eI k)) β` using `fun β hβ h0 => GlobalTheory.T.inRealCone_generators_of_linForm_eq_zero δt h₃ eI β h₃0 (fun i hi => (heI i).2 hi) hβ h0`. Take `⟨c, hc0, hcβ⟩ : InRCone δt β₀` from `StarNewCell.inRCone_trans hγδt hβ₀γ`. Establish `hclt : ∀ i, c i < 1` using `hcoord X hX m₀ δt hδt hliδt hprimδt β₀ hβ₀ hβ₀p hw c hc0 hcβ`. Choose the witnesses or unpack the hypotheses as in `⟨j, hcj, hjI⟩ : ∃ j, 0 < c j ∧ h₃ (δt j) ≠ 0 := by`. Assume the negation of the conclusion as `hno`.
+
+Use `push Not at hno`. Establish `h30 : h₃ β₀ = 0`. Establish `: (h₃ β₀ : ℝ) = 0`. Rewrite using `[val_eq h₃ hcβ]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations.
+
+Break down `(hc0 i).eq_or_lt with hi | hi` into its components or cases. Rewrite using `[← hi, zero_mul]`. Rewrite using `[hno i hi]`. Simplify using the standard rewrite rules. Conclude with `this` after adjusting the coercions.
+
+Use `val_zero h hhs (h₃cut β₀ hβ₀ hβ₀p ⟨c, hc0, hcβ⟩ h30)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hprimβ₀ : ∀ hx : β₀ ∈ balForms bar X, IsPrim bar (⟨β₀, hx⟩ : balForms bar X)`. Introduce `hx k β' hk`. Use `(hCS X hX).2.1 β₀ hβ₀ hβ₀p hw k β' ?_` and prove the remaining obligations.
+
+Establish `h' : β₀ = ((k • β' : balForms bar X) : LinearMap.BilinForm ℤ X)` using `congrArg Subtype.val hk`. Rewrite using `[h', Submodule.coe_smul_of_tower, natCast_zsmul]`. Use `set δs : Fin m₀ → balForms bar X := fun i => ⟨δt i, hδt.mem i⟩ with hδs`. Use `set βs : balForms bar X := ⟨β₀, hβ₀⟩ with hβs`. Establish `hliδs : LinearIndependent ℤ δs` using `LinearIndependent.of_comp (balForms bar X).subtype hliδt`.
+
+Use `set ρs : Fin (I.card + 1) → balForms bar X := Fin.cons βs (fun k => δs (eI k)) with hρsdef`. Take `⟨ρ, hρ0, hρs, hρv⟩ : ∃ ρ : Fin (I.card + 1) → LinearMap.BilinForm ℤ X, ρ 0 = β₀ ∧ (∀ k, ρ k.succ = δt (eI k)) ∧ ∀ i, ρ i = (ρs i : LinearMap.BilinForm ℤ X)` from `⟨fun i => (ρs i : LinearMap.BilinForm ℤ X), by simp [ρs, βs], fun k => by simp [ρs, δs], fun i => rfl⟩`. Establish `hjeI : j ∉ Set.range eI` using `fun hh => hjI ((heI j).1 hh)`. Establish `hliρ : LinearIndependent ℤ ρ`. Establish `h1` using `GlobalTheory.T.linearIndependent_cons_balancedForm_of_coord_ne_zero bar δs βs c j eI hliδs hcβ hcj.ne' hjeI`.
+
+Establish `h2` using `h1.map' (balForms bar X).subtype (Submodule.ker_subtype _)`. Establish `: ρ = (balForms bar X).subtype ∘ ρs` using `funext hρv`. Rewrite using `[this]`. Conclude with `h2`. Establish `hρmem : ∀ i, ρ i ∈ balForms bar X` using `fun i => by rw [hρv]; exact (ρs i).2`.
+
+Establish `hρnn : ∀ i y, 0 ≤ ρ i y y`. Introduce `i`. Use `Fin.cases ?_ (fun k => ?_) i` and prove the remaining obligations. Rewrite using `[hρ0]`. Conclude with `hβ₀p`.
+
+Rewrite using `[hρs]`. Conclude with `hδt.nonneg _`. Establish `hρprim : ∀ i, IsPrim bar (⟨ρ i, hρmem i⟩ : balForms bar X)`. Establish `key : ∀ (x y : LinearMap.BilinForm ℤ X) (hx : x ∈ balForms bar X) (hy : y ∈ balForms bar X), x = y → IsPrim bar (⟨y, hy⟩ : balForms bar X) → IsPrim bar (⟨x, hx⟩ : balForms bar X)`. Introduce and unpack `x y hx hy rfl hp`.
+
+Conclude with `hp`. Introduce `i`. Use `Fin.cases ?_ (fun k => ?_) i` and prove the remaining obligations. Conclude with `key _ _ _ hβ₀ hρ0 (hprimβ₀ hβ₀)`. Conclude with `key _ _ _ (hδt.mem _) (hρs k) (hprimδt _)`.
+
+Establish `hτρ : ∀ i, InRCone ρ ((Fin.cons β₀ fun j => γ (s j) : Fin (m' + 1) → LinearMap.BilinForm ℤ X) i)`. Introduce `i`. Use `Fin.cases ?_ (fun k => ?_) i` and prove the remaining obligations. Rewrite using `[Fin.cons_zero, ← hρ0]`. Conclude with `inRCone_self ρ 0`.
+
+Rewrite using `[Fin.cons_succ]`. Conclude with `StarNewCell.inRCone_trans (fun l => hρs l ▸ inRCone_self ρ l.succ) (hsupp _ (hγδt (s k)) (h₃γs k))`. Establish `hρτ : ∀ i, InRCone (Fin.cons β₀ fun j => γ (s j) : Fin (m' + 1) → LinearMap.BilinForm ℤ X) (ρ i)`. Introduce `i`. Use `Fin.cases ?_ (fun k => ?_) i` and prove the remaining obligations.
+
+Rewrite using `[hρ0]`. Conclude with `inRCone_cons_zero _ _`. Rewrite using `[hρs]`. Conclude with `StarNewCell.inRCone_trans (fun l => inRCone_cons_succ β₀ (fun j => γ (s j)) l) (h₃cut _ (hδt.mem _) (hδt.nonneg _) (inRCone_self δt _) ((heI _).1 ⟨k, rfl⟩))`. Take `⟨h₁, h₁0, h₁γ', h₁cut⟩` from `GlobalTheory.T.exists_linForm_cut_face_of_cell_in_cone bar ψ' _ γ' hτ hγ' hγ'τ`.
+
+Take `⟨s', hs', -⟩` from `GlobalTheory.T.eq_subfamily_of_face_simplicialCone_primitive bar ρ γ' hρmem hγ'.mem h₁ hliρ hliγ' hρprim hprimγ' (fun k => StarNewCell.inRCone_trans hτρ (hγ'τ k)) (fun i => val_nonneg h₁ h₁0 (hρτ i)) h₁γ' (fun i hi => h₁cut (ρ i) (hρmem i) (hρnn i) (hρτ i) hi)`. Use `set J : Finset (Fin m₀) := Finset.univ.erase j with hJ`. Establish `hJc : J.card = m₀ - 1` using `by simp [J]`. Use `set eJ : Fin (m₀ - 1) ↪ Fin m₀ := (J.orderEmbOfFin hJc).toEmbedding with heJdef`. Establish `heJ : ∀ i, i ∈ Set.range eJ ↔ i ≠ j`.
+
+Introduce `i`. Use `show i ∈ Set.range (J.orderEmbOfFin hJc) ↔ _`. Rewrite using `[Finset.range_orderEmbOfFin]`. Simplify using `[J]`. Use `set ρ's : Fin (m₀ - 1 + 1) → balForms bar X := Fin.cons βs (fun k => δs (eJ k)) with hρ'sdef`.
+
+Establish `hliρ' : LinearIndependent ℤ ρ's` using `GlobalTheory.T.linearIndependent_cons_balancedForm_of_coord_ne_zero bar δs βs c j eJ hliδs hcβ hcj.ne' (fun hh => (heJ j).1 hh rfl)`. Establish `hmultρ' : (cellMult bar ρ's : ℝ) = c j * cellMult bar δs` using `GlobalTheory.T.cell_multiplicity_positive_cone bar δs βs c j eJ hliδs hcβ hcj heJ (GlobalTheory.T.balancedFormCellMultiplicity_pos bar δs)`. Establish `hrange : Set.range (fun i => (⟨γ' i, hγ'.mem i⟩ : balForms bar X)) ⊆ Set.range ρ's`. Introduce and unpack `_ ⟨k, rfl⟩`. Establish `e` using `hs' k`.
+
+Break down `Fin.eq_zero_or_eq_succ (s' k) with h0 | ⟨l, hl⟩` into its components or cases. Use `⟨0, Subtype.ext ?_⟩` and prove the remaining obligations. Simplify using `[ρ's, βs]`. Rewrite using `[e, h0, hρ0]`. Establish `hne : eI l ≠ j` using `fun hh => hjI (hh ▸ (heI (eI l)).1 ⟨l, rfl⟩)`.
+
+Take `⟨r, hr⟩` from `(heJ (eI l)).2 hne`. Use `⟨r.succ, Subtype.ext ?_⟩` and prove the remaining obligations. Simplify using `[ρ's, δs]`. Rewrite using `[e, hl, hρs, hr]`. Establish `hdvd : cellMult bar (fun i => (⟨γ' i, hγ'.mem i⟩ : balForms bar X)) ∣ cellMult bar ρ's` using `GlobalTheory.T.natCard_torsion_quot_span_dvd_of_range_subset' (balForms bar X) ρ's _ hliρ' hrange`.
+
+Establish `hle` using `Nat.le_of_dvd (GlobalTheory.T.balancedFormCellMultiplicity_pos bar ρ's) hdvd`. Establish `hδpos` using `GlobalTheory.T.balancedFormCellMultiplicity_pos bar δs`. Establish `hlt : (cellMult bar ρ's : ℝ) < cellMult bar δs`. Rewrite using `[hmultρ']; exact mul_lt_of_lt_one_left (by exact_mod_cast hδpos) (hclt j)`. Establish `hlt' : cellMult bar ρ's < cellMult bar δs` using `by exact_mod_cast hlt`.
+
+Establish `hδsM : cellMult bar δs ≤ M`. Use `(SmoothEnd.cellMult_le_maxMult hX hδt hliδt hprimδt).trans hM` as an intermediate fact. Conclude with `this` after adjusting the coercions. Use linear arithmetic over natural numbers and integers.
+-/
 theorem cellMult_lt_of_star_new : ∀ (O : Type) [CommRing O] [IsDedekindDomain O] [CharZero O] [Module.Finite ℤ O] (bar : O → O), CMOrd O bar → ∀ (q : ℕ) (φ lab w ψ' : InvFun O),
     SimpLab bar q φ lab → IsCentreSet bar q φ w →
     (∀ (X : Type) [AddCommGroup X] [Module O X] [Module.Finite O X] [Module.Projective O X],

@@ -26,6 +26,21 @@ end Loc
 section Pack
 variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts}
   {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} {W : _root_.GlobalTheory.MiS.RealPackAlt ex}
+/- English proof (translation)
+Introduce `heq`. Establish `hL` using `hP.bot.hyp.2.2.2.1.lev`. Take `⟨k, hk⟩` from `(hL.Pg PP).1 hPg`. Take `⟨⟨q, hq, hcard, -, hne⟩, -⟩` from `hL.Q_pl t P' hQ`. Establish `hmemK : ((D.host.g k : ℕ) : 𝓞 D.host.K) ∈ (PP.under (𝓞 D.host.K)).asIdeal`.
+
+Establish `h` using `(_root_.GlobalTheory.Fam.pk_z W).C.P.pb_over k`. Establish `hk' : PP.under (𝓞 D.host.K) = (_root_.GlobalTheory.Fam.pk_z W).C.P.pb k` using `hk`. Rewrite using `[hk']`. Conclude with `h`. Establish `hmemE : ((D.host.g k : ℕ) : 𝓞 D.host.E) ∈ PP.asIdeal`.
+
+Establish `h2 : algebraMap (𝓞 D.host.K) (𝓞 D.host.E) ((D.host.g k : ℕ) : 𝓞 D.host.K) ∈ PP.asIdeal` using `hmemK`. Simplify using `using h2`. Establish `hmemF : ((D.host.g k : ℕ) : 𝓞 D.host.F) ∈ (PP.under (𝓞 D.host.F)).asIdeal` using `by show algebraMap (𝓞 D.host.F) (𝓞 D.host.E) ((D.host.g k : ℕ) : 𝓞 D.host.F) ∈ PP.asIdeal`. Simplify using `using hmemE`. Rewrite `hmemF` using `[← heq]`.
+
+Establish `hmemE' : ((D.host.g k : ℕ) : 𝓞 D.host.E) ∈ P'.asIdeal`. Establish `h2 : algebraMap (𝓞 D.host.F) (𝓞 D.host.E) ((D.host.g k : ℕ) : 𝓞 D.host.F) ∈ P'.asIdeal` using `hmemF`. Simplify using `using h2`. Use `haveI : Finite (kP P') := Nat.finite_of_card_ne_zero (by rw [hcard]; exact hq.ne_zero)`. Establish `: P'.asIdeal.IsPrime` using `P'.isPrime`.
+
+Use `haveI : Nontrivial (kP P') := inferInstance`. Use `haveI : Fintype (kP P') := Fintype.ofFinite _`. Establish `h0g : ((D.host.g k : ℕ) : kP P') = 0`. Use `(Ideal.Quotient.eq_zero_iff_mem (I := P'.asIdeal)).2 hmemE'` as an intermediate fact. Simplify using `using this`.
+
+Establish `h0q : ((q : ℕ) : kP P') = 0`. Rewrite using `[← hcard, Nat.card_eq_fintype_card]`. Conclude with `Nat.cast_card_eq_zero (kP P')`. Establish `hd1 : ringChar (kP P') ∣ D.host.g k` using `ringChar.dvd h0g`. Establish `hd2 : ringChar (kP P') ∣ q` using `ringChar.dvd h0q`.
+
+Establish `hcop : Nat.Coprime q (D.host.g k)` using `(Nat.coprime_primes hq (D.host.g_prime k)).2 (hne k)`. Establish `h1 : ringChar (kP P') = 1` using `Nat.eq_one_of_dvd_coprimes hcop hd2 hd1`. Conclude with `CharP.ringChar_ne_one h1`.
+-/
 theorem under_ne_alt (hP : _root_.GlobalTheory.Fam.PackageHypotheses W) (t : W.P.T) {PP P' : Formalism.L2.DIV.Pl D.host.E} (hPg : PP ∈ (_root_.GlobalTheory.Fam.pk_z W).Pg) (hQ : P' ∈ (_root_.GlobalTheory.Fam.pk_z W).Q t) :
     P'.under (𝓞 D.host.F) ≠ PP.under (𝓞 D.host.F) := by
   intro heq
@@ -60,6 +75,11 @@ theorem under_ne_alt (hP : _root_.GlobalTheory.Fam.PackageHypotheses W) (t : W.P
   have hcop : Nat.Coprime q (D.host.g k) := (Nat.coprime_primes hq (D.host.g_prime k)).2 (hne k)
   have h1 : ringChar (kP P') = 1 := Nat.eq_one_of_dvd_coprimes hcop hd2 hd1
   exact CharP.ringChar_ne_one h1
+/- English proof (translation)
+Establish `hL` using `hP.bot.hyp.2.2.2.1.lev`. Use `GlobalTheory.SeeSaw.LevelTest.charUnramAt_of fun w hw => ?_` and prove the remaining obligations. Use `(GlobalTheory.LFun.unrAt_iff_of_chrEq (hL.xi t) w).2 ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hu`. Break down `(hL.Q_ram t w).1 hu with h | ⟨P', hP', hc⟩` into its components or cases.
+
+Conclude with `_root_.GlobalTheory.TupChars.under_ne_alt hP t hPg h hw`. Conclude with `_root_.GlobalTheory.TupChars.under_ne_alt hP t hPg hP' ((GlobalTheory.LevelPlaces.under_eq_of_isConjPl hc).trans hw)`.
+-/
 theorem charUnramAt_xi_under (hP : _root_.GlobalTheory.Fam.PackageHypotheses W) (t : W.P.T) {PP : Formalism.L2.DIV.Pl D.host.E} (hPg : PP ∈ (_root_.GlobalTheory.Fam.pk_z W).Pg) :
     GlobalTheory.IndefiniteRowSideFullHecke.UnramifiedCharacter.CharUnramAt D ((_root_.GlobalTheory.Fam.pk_z W).toLevCh.xi t) (PP.under (𝓞 D.host.F)) := by
   have hL := hP.bot.hyp.2.2.2.1.lev
@@ -69,11 +89,39 @@ theorem charUnramAt_xi_under (hP : _root_.GlobalTheory.Fam.PackageHypotheses W) 
   rcases (hL.Q_ram t w).1 hu with h | ⟨P', hP', hc⟩
   · exact _root_.GlobalTheory.TupChars.under_ne_alt hP t hPg h hw
   · exact _root_.GlobalTheory.TupChars.under_ne_alt hP t hPg hP' ((GlobalTheory.LevelPlaces.under_eq_of_isConjPl hc).trans hw)
+/- English proof (translation)
+Establish `hL` using `hP.bot.hyp.2.2.2.1.lev`. Conclude with `GlobalTheory.SeeSaw.LevelTest.charUnramAt_of fun w _ => (GlobalTheory.LFun.unrAt_iff_of_chrEq hL.eta w).2 ((_root_.GlobalTheory.Fam.pk_z W).C.isEta.unr w)`.
+-/
 theorem charUnramAt_eta (hP : _root_.GlobalTheory.Fam.PackageHypotheses W) (v : HeightOneSpectrum (𝓞 D.host.F)) :
     GlobalTheory.IndefiniteRowSideFullHecke.UnramifiedCharacter.CharUnramAt D (_root_.GlobalTheory.Fam.pk_z W).eta v := by
   have hL := hP.bot.hyp.2.2.2.1.lev
   exact GlobalTheory.SeeSaw.LevelTest.charUnramAt_of fun w _ => (GlobalTheory.LFun.unrAt_iff_of_chrEq hL.eta w).2 ((_root_.GlobalTheory.Fam.pk_z W).C.isEta.unr w)
 end Pack
+/- English proof (translation)
+Introduce `D L hT Gi Gl Kc Yd cX ex W u hP f v hR _ t n G pl hG i`. Establish `hq : (G i).q.v = (pl i).1.under (𝓞 D.host.F)` using `(hG.idem i).2`. Establish `hxi : GlobalTheory.IndefiniteRowSideFullHecke.UnramifiedCharacter.CharUnramAt D ((_root_.GlobalTheory.Fam.pk_z W).toLevCh.xi t) (G i).q.v` using `hq ▸ _root_.GlobalTheory.TupChars.charUnramAt_xi_under hP t (pl i).2`. Establish `heta : GlobalTheory.IndefiniteRowSideFullHecke.UnramifiedCharacter.CharUnramAt D (_root_.GlobalTheory.Fam.pk_z W).eta (G i).q.v` using `_root_.GlobalTheory.TupChars.charUnramAt_eta hP _`. Set `M : ℕ → (AE D)ˣ →* Circle` to `(_root_.GlobalTheory.Fam.pk_z W).toLevCh.mu t`.
+
+Set `μ : ℕ → (G i).kˣ →* ℂˣ` to `fun m => if 1 ≤ m ∧ m ≤ D.R.m then cmp (G i).q ((Lift.chrStep M (_root_.GlobalTheory.Fam.pk_z W).eta m).1⁻¹) else (G i).S.μ m`. Establish `hμ : ∀ m, 1 ≤ m → m ≤ D.R.m → μ m = cmp (G i).q ((Lift.chrStep M (_root_.GlobalTheory.Fam.pk_z W).eta m).1⁻¹)` using `fun m h1 h2 => if_pos ⟨h1, h2⟩`. Establish `hunit : ∀ m (x : (G i).kˣ), valuation (G i).k (x : (G i).k) = 1 → μ m x = (G i).S.μ m x`. Introduce `m x hx`. Distinguish the cases in `hm : 1 ≤ m ∧ m ≤ D.R.m`.
+
+Rewrite using `[hμ m hm.1 hm.2]`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[cmp_apply, hG.mu i m hm.1 hm.2 x (GlobalTheory.LocChar.unitsHom (ofSplit (G i).q) x) rfl]`. Establish `hx1` using `unit_trivial (G i).q hxi x hx`. Establish `e : (Lift.chrStep M (_root_.GlobalTheory.Fam.pk_z W).eta m).1 = (Lift.chrStep (_root_.GlobalTheory.Fam.pk_z W).mu0 (_root_.GlobalTheory.Fam.pk_z W).eta m).1 * (_root_.GlobalTheory.Fam.pk_z W).toLevCh.xi t`.
+
+Simplify using `only [Lift.chrStep, M, LevCh.mu, Lift.tup]`. Use `split_ifs`. Conclude with `mul_right_comm _ _ _`. Both sides reduce to the same expression. Rewrite using `[MonoidHom.inv_apply, MonoidHom.inv_apply, e, MonoidHom.mul_apply, hx1, mul_one]`.
+
+Simplify using `only [μ, if_neg hm]`. Establish `htame : ∀ m, GlobalTheory.SplitWeil.IsTame (μ m)`. Introduce `m x hx`. Rewrite using `[hunit m x (val_eq_one_of_sub x hx)]`. Conclude with `(G i).S.tame m x hx`.
+
+Establish `hm2 : Even D.R.m` using `D.R.m_even`. Use `⟨μ, htame, hunit, fun j ρ h => ?_, fun j σ h => ?_⟩` and prove the remaining obligations. Take `⟨-, -, hV, hW⟩` from `(hR.row t).sBF j ρ h`. Establish `hV' : ((f.t t).sBF j ρ h).χV = M (j + 1) * (_root_.GlobalTheory.Fam.pk_z W).eta⁻¹` using `hV`. Establish `hW' : ((f.t t).sBF j ρ h).χW = M (j + 1)` using `hW`.
+
+Establish `hodd : Odd (j + 1)`. Take `⟨r, hr⟩` from `hm2`. Conclude with `⟨j / 2, by omega⟩`. Establish `hμj : μ (j + 1) = cmp (G i).q ((M (j + 1) * (_root_.GlobalTheory.Fam.pk_z W).eta⁻¹)⁻¹)`. Rewrite using `[hμ (j + 1) (by omega) (by omega)]`.
+
+Simplify using `only [Lift.chrStep, if_pos hodd]`. Rewrite using `[hV', hW', hμj]`. Use `⟨isComp_cmp _ _, cmp (G i).q (M (j + 1)), isComp_cmp _ _, fun x hx => ?_⟩` and prove the remaining obligations. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_mul, cmp_apply, cmp_apply, Units.val_one, ← Circle.coe_mul, ← MonoidHom.mul_apply]`.
+
+Establish `e : M (j + 1) * (M (j + 1) * (_root_.GlobalTheory.Fam.pk_z W).eta⁻¹)⁻¹ = (_root_.GlobalTheory.Fam.pk_z W).eta`. Rewrite using `[_root_.mul_inv_rev, inv_inv, mul_comm, mul_assoc, inv_mul_cancel, mul_one]`. Rewrite using `[e, unit_trivial (G i).q heta x hx, Circle.coe_one]`. Take `⟨-, -, hV, hW⟩` from `(hR.row t).sFB j σ h`. Establish `hV' : ((f.t t).sFB j σ h).χV = M (j + 1 + 1)` using `hV`.
+
+Establish `hW' : ((f.t t).sFB j σ h).χW = M (j + 1 + 1) * (_root_.GlobalTheory.Fam.pk_z W).eta⁻¹` using `hW`. Establish `heven : ¬ Odd (j + 1 + 1)`. Take `⟨r, hr⟩` from `hm2`. Rewrite using `[Nat.not_odd_iff_even]`. Conclude with `⟨j / 2 + 1, by omega⟩`.
+
+Establish `hμj : μ (j + 1 + 1) = cmp (G i).q (M (j + 1 + 1))⁻¹`. Rewrite using `[hμ (j + 1 + 1) (by omega) (by omega)]`. Simplify using `only [Lift.chrStep, if_neg heven]`. Rewrite using `[hV', hW', hμj]`. Use `⟨isComp_cmp _ _, cmp (G i).q (M (j + 1 + 1) * (_root_.GlobalTheory.Fam.pk_z W).eta⁻¹), isComp_cmp _ _, fun x hx => ?_⟩` and prove the remaining obligations.
+
+Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_mul, cmp_apply, cmp_apply, Units.val_one, ← Circle.coe_mul, ← MonoidHom.mul_apply]`. Establish `e : M (j + 1 + 1) * (_root_.GlobalTheory.Fam.pk_z W).eta⁻¹ * (M (j + 1 + 1))⁻¹ = (_root_.GlobalTheory.Fam.pk_z W).eta⁻¹`. Rewrite using `[mul_right_comm, mul_inv_cancel, one_mul]`. Rewrite using `[e, MonoidHom.inv_apply, unit_trivial (G i).q heta x hx, inv_one, Circle.coe_one]`.
+-/
 theorem gLoc_chars_of_gRead : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} (W : _root_.GlobalTheory.MiS.RealPackAlt ex) (u : D.what₂.Word), _root_.GlobalTheory.Fam.PackageHypotheses W → ∀ (f : _root_.GlobalTheory.Fam.FamilyCharacter W u) (v : VCom f.c), f.RowOK → _root_.GlobalTheory.Fam.CommutingVectorTie f v → ∀ t (n : ℕ) (G : Fin n → GLoc v) pl, _root_.GlobalTheory.Fam.LocalGroupReading f G pl → ∀ i, (G i).Chars (f.t t) := by
   intro D L hT Gi Gl Kc Yd cX ex W u hP f v hR _ t n G pl hG i
   have hq : (G i).q.v = (pl i).1.under (𝓞 D.host.F) := (hG.idem i).2

@@ -17,6 +17,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.FinZeta.AbsZeta
 
+/- English proof (translation)
+Use `⟨LinearMap.mk₂'ₛₗ (RingHom.id ℂ) (starRingEnd ℂ) (fun a b => a * starRingEnd ℂ b) (fun a a' b => add_mul a a' _) (fun c a b => by simp [smul_eq_mul, mul_assoc]) (fun a b b' => by simp [mul_add]) (fun c a b => by simp [smul_eq_mul]; ring), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `a b`. Simplify using `[mul_comm]`. Introduce `a ha`. Simplify `ha` using `[Complex.mul_conj, Complex.normSq_pos]`.
+
+Introduce `g a b`. Simplify using the standard rewrite rules.
+-/
 theorem trivial_isUnitarisable (G : Type) [Group G] : IsUnitarisable (Representation.trivial ℂ G ℂ) := by
   refine ⟨LinearMap.mk₂'ₛₗ (RingHom.id ℂ) (starRingEnd ℂ) (fun a b => a * starRingEnd ℂ b)
     (fun a a' b => add_mul a a' _) (fun c a b => by simp [smul_eq_mul, mul_assoc])
@@ -28,6 +33,13 @@ theorem trivial_isUnitarisable (G : Type) [Group G] : IsUnitarisable (Representa
   · intro g a b
     simp
 
+/- English proof (translation)
+Introduce `ϖ hϖ d t ht k₁ hk₁ k₂ hk₂`. Establish `hq : ∀ m : ℤ, (qV E w : ℂ) ^ (-((N : ℂ) / 2) * (m : ℂ)) = (((qV E w : ℝ) ^ (-((N : ℝ) / 2) * (m : ℝ)) : ℝ) : ℂ)`. Introduce `m`. Rewrite using `[Complex.ofReal_cpow (by positivity)]`. Use `push_cast`.
+
+Put the polynomial expressions in normal form. Establish `hpos : 0 ≤ (qV E w : ℝ) ^ (-((N : ℝ) / 2) * ((∑ i, |d i| : ℤ) : ℝ))` using `by positivity`. Use `beta_reduce`. Rewrite using `[hφ ϖ hϖ d t ht k₁ hk₁ k₂ hk₂, hq]`. Simplify using `[norm_zpow, hz, Complex.norm_real, Real.norm_of_nonneg hpos]`.
+
+Check the signs of the components of the expression.
+-/
 theorem kerGL_norm {E : Type} [Field E] [NumberField E] {w : HeightOneSpectrum (𝓞 E)} {r N : ℕ} {z : ℂˣ}
     {φ : GL (Fin r) (w.adicCompletion E) → ℂ} (hz : ‖(z : ℂ)‖ = 1) (hφ : KerGL w N z φ) :
     KerGL w N 1 (fun g => ((‖φ g‖ : ℝ) : ℂ)) := by
@@ -48,6 +60,11 @@ end GlobalTheory.FinZeta.AbsZeta
 
 open GlobalTheory.FinZeta.AbsZeta in
 
+/- English proof (translation)
+Introduce `H E _ _ w r t hrt z φ hz hφ`. Take `⟨B, hB, hbd⟩` from `GlobalTheory.T.exists_satakeParam_trivialBound_unitaryGL E w r ℂ (Representation.trivial ℂ _ ℂ) (trivial_isUnitarisable _) 1 one_ne_zero (GlobalTheory.LGrp.mem_fixed.2 fun _ _ => rfl) (fun h _ => ⟨_, (mul_one _).symm⟩)`. Establish `hs` using `GlobalTheory.T.unramified_zeta_sum_GL_cosets H E w r t hrt 1 (fun g => ((‖φ g‖ : ℝ) : ℂ)) (by simp) (kerGL_norm hz hφ) ℂ (Representation.trivial ℂ _ ℂ) 1 B hB hbd LinearMap.id ⟨1, fun g => by simp⟩`. Use `⟨B, ?_, hbd, ?_⟩` and prove the remaining obligations. Establish `hB'` using `hB`.
+
+Unfold `IsSatVecGL at hB'`. Conclude with `hB'.2.2.1`. Simplify using `using hs`.
+-/
 theorem GlobalTheory.FinZeta.AbsZeta.hasSum_norm_kerGL : GlobalTheory.Published.UnramifiedDoublingGL → ∀ (E : Type) [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E)) (r t : ℕ), r ≤ t → ∀ (z : ℂˣ) (φ : GL (Fin r) (w.adicCompletion E) → ℂ), ‖(z : ℂ)‖ = 1 → KerGL w (r + t) z φ → ∃ B : Multiset ℂˣ, B.card = r ∧ (∀ β ∈ B, ‖(β : ℂ)‖ ≤ (qV E w : ℝ) ^ (((r : ℝ) - 1) / 2) ∧ ‖((β⁻¹ : ℂˣ) : ℂ)‖ ≤ (qV E w : ℝ) ^ (((r : ℝ) - 1) / 2)) ∧ HasSum (fun a : GL (Fin r) (w.adicCompletion E) ⧸ KGL w r => ((‖φ a.out‖ : ℝ) : ℂ)) (eulerFac B (npow w (-((1 + (t : ℂ)) / 2))) * eulerFac (B.map fun β => β⁻¹) (npow w (-((1 + (t : ℂ)) / 2))) * ∏ i ∈ Finset.Ioc t (r + t), (1 - ((qV E w : ℂ) ^ i)⁻¹)) := by
   intro H E _ _ w r t hrt z φ hz hφ
   obtain ⟨B, hB, hbd⟩ := GlobalTheory.T.exists_satakeParam_trivialBound_unitaryGL E w r ℂ (Representation.trivial ℂ _ ℂ) (trivial_isUnitarisable _) 1 one_ne_zero

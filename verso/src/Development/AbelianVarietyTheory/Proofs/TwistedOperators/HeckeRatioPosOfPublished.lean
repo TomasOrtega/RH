@@ -25,6 +25,19 @@ open Formalism.L2.Host (HChar)
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+Take `⟨c, hcc, hN, hmem, hund, hinv, hint, hidem⟩` from `GlobalTheory.cmConjugation_on_primes_adeles_idempotents F E σ hσ`. Establish `hsd` using `GlobalTheory.ideleChar_conj_eq_inv_of_trivial_on_base F E σ hσ χ hF`. Establish `hun` using `GlobalTheory.HeckeUnif.unifIdele_exists_chiAt F E σ hσ χ`. Establish `hram : ∀ P, IsUnramAt σ χ P → IsUnramAt σ χ (c P)`. Introduce and unpack `P ⟨e, f, he, hz⟩`.
+
+Use `⟨cA σ e, f, hidem P e f he, fun z h1 h2 h3 => ?_⟩` and prove the remaining obligations. Establish `h4 : χ (Units.map (cA σ).toMonoidHom z) = 1`. Apply `hz` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `cA σ (z : AE F E) = e * cA σ (z : AE F E) + (1 - e)`. Use `congrArg (cA σ) h1` as an intermediate fact.
+
+Rewrite `this` using `[map_add, map_mul, map_sub, map_one, hinv]`. Then use the resulting hypothesis. Conclude with `(hint _).2 h2`. Conclude with `(hint _).2 h3`. Rewrite `h4` using `[hsd z (Units.map (cA σ).toMonoidHom z) rfl]`. Conclude with `inv_eq_one.1 h4`.
+
+Establish `hunif : ∀ P x, IsUnifIdele σ P x → IsUnifIdele σ (c P) (Units.map (cA σ).toMonoidHom x)`. Introduce and unpack `P x ⟨e, f, ϖ, he, h1, h2, h3⟩`. Establish `hy : ((RingOfIntegers.mapRingHom σ.toRingHom ϖ : 𝓞 E) : E) = σ ϖ` using `rfl`. Use `⟨cA σ e, f, RingOfIntegers.mapRingHom σ.toRingHom ϖ, hidem P e f he, ((hmem P _ _ hy).1).2 h1, fun h => h2 (((hmem P _ _ hy).2).1 h), ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `cA σ (x : AE F E) = _`.
+
+Rewrite using `[h3, map_add, map_mul, map_sub, map_one, GlobalTheory.cA_incA_apply, hy]`. Use `⟨c, hN, fun P => ((hund P (c P)).2 (Or.inr rfl)).symm, fun P => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hP : IsUnramAt σ χ P`. Take `⟨x, hx⟩` from `(hun P).1`. Rewrite using `[(hun P).2.1 hP x hx, (hun (c P)).2.1 (hram P hP) _ (hunif P x hx), hsd x (Units.map (cA σ).toMonoidHom x) rfl, Circle.coe_inv_eq_conj]`.
+
+Establish `hP' : ¬ IsUnramAt σ χ (c P)` using `fun h => hP (by simpa [hcc] using hram _ h)`. Simplify using `[chiAt, hP, hP']`.
+-/
 theorem exists_conj_prime (hσ : IsCMExt F E σ) (χ : (AE F E)ˣ →* Circle)
     (hF : ∀ a : (AF F)ˣ, χ (idF F E a) = 1) :
     ∃ c : HeightOneSpectrum (𝓞 E) ≃ HeightOneSpectrum (𝓞 E), (∀ P, normP (c P) = normP P) ∧
@@ -61,15 +74,24 @@ theorem exists_conj_prime (hσ : IsCMExt F E σ) (χ : (AE F E)ˣ →* Circle)
 
 def toH (χ : UnitaryHeckeChar E) : HChar E := toHChar χ.toHom ⟨χ.continuous_toHom, χ.map_principal⟩
 
+/- English proof (translation)
+The claim follows from `forall₂_congr fun _ _ => ⟨fun h => Circle.ext (congrArg Units.val h), fun h => (congrArg Circle.toUnits h).trans (map_one _)⟩`.
+-/
 theorem unrAt_toH (χ : UnitaryHeckeChar E) (P : HeightOneSpectrum (𝓞 E)) :
     (toH χ).UnrAt P ↔ χ.IsUnramifiedAt P :=
   forall₂_congr fun _ _ => ⟨fun h => Circle.ext (congrArg Units.val h),
     fun h => (congrArg Circle.toUnits h).trans (map_one _)⟩
 
+/- English proof (translation)
+The claim follows from `(χ.valueAt_eq h (Formalism.L2.Host.unif_spec P)).symm`.
+-/
 theorem val_toH (χ : UnitaryHeckeChar E) {P : HeightOneSpectrum (𝓞 E)} (h : χ.IsUnramifiedAt P) :
     (((toH χ).val P : ℂˣ) : ℂ) = χ.valueAt P :=
   (χ.valueAt_eq h (Formalism.L2.Host.unif_spec P)).symm
 
+/- English proof (translation)
+Unfold `GlobalTheory.CMVal.eulerFactor UnitaryHeckeChar.eulerFactor`. Use `split_ifs with h`. Rewrite using `[val_toH χ ((unrAt_toH χ P).1 h)]`. Rewrite using `[χ.valueAt_of_ramified fun h' => h ((unrAt_toH χ P).2 h'), zero_mul, sub_zero, inv_one]`.
+-/
 theorem eulerFactor_toH (χ : UnitaryHeckeChar E) (s : ℂ) (P : HeightOneSpectrum (𝓞 E)) :
     GlobalTheory.CMVal.eulerFactor (toH χ) s P = χ.eulerFactor P s := by
   unfold GlobalTheory.CMVal.eulerFactor UnitaryHeckeChar.eulerFactor
@@ -77,6 +99,11 @@ theorem eulerFactor_toH (χ : UnitaryHeckeChar E) (s : ℂ) (P : HeightOneSpectr
   · rw [val_toH χ ((unrAt_toH χ P).1 h)]
   · rw [χ.valueAt_of_ramified fun h' => h ((unrAt_toH χ P).2 h'), zero_mul, sub_zero, inv_one]
 
+/- English proof (translation)
+Take `⟨Z, hZ, h1, h2⟩` from `(H E ∅ Set.finite_empty).2`. Establish `e : ∀ s : ℂ, zetaOff (K` using `E) ∅ (s + z) = zetaOff (K := E) ∅ s := fun s => by`. Simplify using `only [zetaOff, eulerProd, locL, neg_add, LFun.npow_add, h, mul_one]`. Establish `k` using `GlobalTheory.IndefiniteRowSideFullHecke.PartialLFunctionCharacter.eq_of_eqOn_re (f := fun s => Z s * (s + z - 1)) (g := fun s => Z (s + z) * (s - 1)) (hZ.mul (by fun_prop)) ((hZ.comp (by fun_prop)).mul (by fun_prop)) fun s hs => by`. Rewrite using `[h1 s hs, h1 (s + z) (by simpa [hz] using hs), e]; ring`.
+
+Establish `k1` using `congrFun k 1`. Simplify using `only [sub_self, mul_zero, add_sub_cancel_left] at k1`. Conclude with `(mul_eq_zero.1 k1).resolve_left (h2 1 (by simp))`.
+-/
 theorem eq_zero_of_npow (H : GlobalTheory.Published.HeckeLPartialContinuation) {z : ℂ} (hz : z.re = 0)
     (h : ∀ P : HeightOneSpectrum (𝓞 E), npow P (-z) = 1) : z = 0 := by
   obtain ⟨Z, hZ, h1, h2⟩ := (H E ∅ Set.finite_empty).2
@@ -89,6 +116,23 @@ theorem eq_zero_of_npow (H : GlobalTheory.Published.HeckeLPartialContinuation) {
   simp only [sub_self, mul_zero, add_sub_cancel_left] at k1
   exact (mul_eq_zero.1 k1).resolve_left (h2 1 (by simp))
 
+/- English proof (translation)
+Take `⟨c, hN, hU, hc⟩` from `exists_conj_prime hσ χ hF`. Take `⟨χ, rfl, -⟩` from `(GlobalTheory.UnitaryHeckeBaseChange.isHeckeChar_iff hσ χ).1 hχ`. Establish `hu : (toH χ).IsUnitary` using `isUnitary_toHChar _ _`. Establish `hnp : ¬ ∃ t : ℝ, IsNormPow (toH χ) t`. Introduce and unpack `⟨t, ht⟩`.
+
+Rewrite `ht` using `[isNormPow_iff]`. Establish `hv : ∀ P, chiAt σ (pull F χ) P = npow P (-((t : ℂ) * Complex.I))` using `fun P => by`. Rewrite using `[chiAt_eq hσ, ← val_toH χ ((unrAt_toH χ P).1 (ht ▸ unrAt_normChar t P)), ht, val_normChar]`. Both sides reduce to the same expression. Establish `h0 : (t : ℂ) * Complex.I + (t : ℂ) * Complex.I = 0` using `eq_zero_of_npow (E := E) H (by simp) fun P => by`.
+
+Establish `e1 : npow (c P) (-((t : ℂ) * Complex.I)) = npow P (-((t : ℂ) * Complex.I))` using `congrArg (fun n : ℕ => (n : ℂ) ^ (-((t : ℂ) * Complex.I))) (hN P)`. Establish `e2` using `hc P`. Rewrite `e2` using `[hv, hv, e1]`. Rewrite using `[neg_add, LFun.npow_add]`. Use `nth_rewrite 2 [e2]`.
+
+Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq, norm_npow]`. Simplify using the standard rewrite rules. Establish `ht0 : t = 0` using `by simpa using congrArg Complex.im h0`. Rewrite `ht` using `[ht0, normChar_zero]`. Use `hne ((pull_eq_one_iff hσ χ).2 (UnitaryHeckeChar.ext (MonoidHom.ext fun x => Circle.ext ?_)))` and prove the remaining obligations.
+
+Conclude with `congrArg (fun ψ : HChar E => ((ψ.1 x : ℂˣ) : ℂ)) ht`. Choose the witnesses or unpack the hypotheses as in `rfl : p = fun P => P ∉ {P : HeightOneSpectrum (𝓞 E) | P.under (𝓞 F) ∈ S} :=`. Use function extensionality and compare the values at `fun P => propext (hp P)`. Establish `hT : {P : HeightOneSpectrum (𝓞 E) | P.under (𝓞 F) ∈ S}.Finite`. Use `Filter.mem_cofinite.1 (tendsto_under F E S.finite_toSet.compl_mem_cofinite)` as an intermediate fact.
+
+Conclude with `this.subset fun P hP h => h hP`. Take `⟨Λ, hΛ, h1, h2⟩` from `(H E _ hT).1 _ hu hnp`. Establish `hprod : ∀ s : ℂ, 1 < s.re → HasProd (fun P : {P // P ∉ {P : HeightOneSpectrum (𝓞 E) | P.under (𝓞 F) ∈ S}} => lfac σ (pull F χ) P.1 s) (Λ s)` using `fun s hs => by`. Establish `k` using `(converges_heckeFam {P : HeightOneSpectrum (𝓞 E) | P.under (𝓞 F) ∈ S} hu hs).hasProd`. Simplify using `only [locL_heckeFam, eulerFactor_toH, ← lfac_eq hσ] at k`.
+
+Rewrite using `[h1 s hs]`. Conclude with `k`. Take `⟨k1, k2⟩` from `eulerProduct_eq_exp_and_pos {P // P ∉ {P : HeightOneSpectrum (𝓞 E) | P.under (𝓞 F) ∈ S}} (fun P => normP P.1) (fun P => chiAt σ (pull F χ) P.1) (fun P => GlobalTheory.LFun.one_lt_absNorm P.1) (fun P => (GlobalTheory.HeckeUnif.unifIdele_exists_chiAt F E σ hσ _ P.1).2.2) (fun t ht …`. Establish `hpos : ∀ s : ℂ, 1 < s.re → s.im = 0 → (Λ s).im = 0 ∧ 0 < (Λ s).re` using `fun s hs hs0 => by`. Rewrite using `[(hprod s hs).unique (k1 s hs).2]`.
+
+Conclude with `k2 (c.subtypeEquiv fun P => by simp only [Set.mem_ofPred_eq, hU]) (fun P => hN P.1) (fun P => hc P.1) s hs hs0`. Use `⟨Λ, hΛ, hprod, fun n hn => ?_⟩` and prove the remaining obligations. Break down `hn.eq_or_lt with rfl | hlt` into its components or cases. Simplify using `using real_pos_at_one_of_right Λ hΛ.continuous.continuousAt (h2 1 (by simp)) hpos`. Conclude with `hpos n (by simpa using hlt) (by simp)`.
+-/
 theorem exists_entire_pos (H : GlobalTheory.Published.HeckeLPartialContinuation) (hσ : IsCMExt F E σ)
     (χ : (AE F E)ˣ →* Circle) (hχ : IsHeckeChar F E χ) (hF : ∀ a : (AF F)ˣ, χ (idF F E a) = 1) (hne : χ ≠ 1)
     (S : Finset (HeightOneSpectrum (𝓞 F))) (p : HeightOneSpectrum (𝓞 E) → Prop)
@@ -148,6 +192,11 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.Glob
 
 variable {D : D7}
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h hw`. Take `⟨x, hx, hy⟩` from `h _ hw`. Conclude with `hy (algebraMap _ _ x) rfl hx`. Introduce `h u hu`.
+
+Establish `: ¬ u.asIdeal ≤ (w.under (𝓞 D.host.F)).asIdeal` using `fun hle => h (HeightOneSpectrum.ext (u.isMaximal.eq_of_le (w.under _).isPrime.ne_top hle) ▸ hu)`. Take `⟨x, hx, hx'⟩` from `SetLike.not_le_iff_exists.1 this`. Use `⟨x, hx, fun y hy hw => hx' ?_⟩` and prove the remaining obligations. Take `rfl : y = algebraMap _ _ x` from `RingOfIntegers.ext hy`. Conclude with `hw`.
+-/
 theorem offS_iff (S : Finset (HeightOneSpectrum (𝓞 D.host.F))) (w : HeightOneSpectrum (𝓞 D.host.E)) :
     OffS D S w ↔ w.under (𝓞 D.host.F) ∉ S := by
   constructor
@@ -162,20 +211,36 @@ theorem offS_iff (S : Finset (HeightOneSpectrum (𝓞 D.host.F))) (w : HeightOne
     obtain rfl : y = algebraMap _ _ x := RingOfIntegers.ext hy
     exact hw
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem isPrimeIdem_eq : IsPrimeIdem (D := D) = HeckeCharacterZeroLocus.ThmBIn.IsPrimeIdem D.sp.cm.sig := rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `P x`. Unfold `Mi.IsUnifIdele HeckeCharacterZeroLocus.ThmBIn.IsUnifIdele`. Rewrite using `[isPrimeIdem_eq]`. Both sides reduce to the same expression.
+-/
 theorem isUnifIdele_eq : Mi.IsUnifIdele (D := D) = HeckeCharacterZeroLocus.ThmBIn.IsUnifIdele D.sp.cm.sig := by
   funext P x
   unfold Mi.IsUnifIdele HeckeCharacterZeroLocus.ThmBIn.IsUnifIdele
   rw [isPrimeIdem_eq]
   rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `χ P`. Unfold `Mi.IsUnramAt HeckeCharacterZeroLocus.ThmBIn.IsUnramAt`. Rewrite using `[isPrimeIdem_eq]`. Both sides reduce to the same expression.
+-/
 theorem isUnramAt_eq : Mi.IsUnramAt (D := D) = HeckeCharacterZeroLocus.ThmBIn.IsUnramAt D.sp.cm.sig := by
   funext χ P
   unfold Mi.IsUnramAt HeckeCharacterZeroLocus.ThmBIn.IsUnramAt
   rw [isPrimeIdem_eq]
   rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `P s`. Establish `key : ∀ (A A' : Prop) (U U' : (AE D)ˣ → Prop), A = A' → U = U' → (open Classical in if h : A ∧ ∃ x, U x then ((χ h.2.choose : Circle) : ℂ) else 0) = (open Classical in if h : A' ∧ ∃ x, U' x then ((χ h.2.choose : Circle) : ℂ) else 0)`. Introduce and unpack `_ _ _ _ rfl rfl`. Both sides reduce to the same expression. Establish `e0` using `key (Mi.IsUnramAt χ P) (HeckeCharacterZeroLocus.ThmBIn.IsUnramAt D.sp.cm.sig χ P) (Mi.IsUnifIdele P) (HeckeCharacterZeroLocus.ThmBIn.IsUnifIdele D.sp.cm.sig P) (by rw [isUnramAt_eq]) (by rw [isUnifIdele_eq])`.
+
+Establish `e : Mi.chiAt χ P = HeckeCharacterZeroLocus.ThmBIn.chiAt D.sp.cm.sig χ P`. Unfold `Mi.chiAt HeckeCharacterZeroLocus.ThmBIn.chiAt`. Conclude with `e0`. Unfold `Mi.lfac HeckeCharacterZeroLocus.ThmBIn.lfac`. Rewrite using `[e]`.
+
+Both sides reduce to the same expression.
+-/
 theorem lfac_eq (χ : (AE D)ˣ →* Circle) : Mi.lfac χ = HeckeCharacterZeroLocus.ThmBIn.lfac D.sp.cm.sig χ := by
   funext P s
   have key : ∀ (A A' : Prop) (U U' : (AE D)ˣ → Prop), A = A' → U = U' →
@@ -192,6 +257,15 @@ theorem lfac_eq (χ : (AE D)ˣ →* Circle) : Mi.lfac χ = HeckeCharacterZeroLoc
   rw [e]
   rfl
 
+/- English proof (translation)
+Introduce and unpack `μ μ' hμ hμ' hF hF' ⟨τ, e, e', h1, h2, hne⟩ t`. Establish `hχ : IsHeckeChar D (μ * μ'⁻¹)` using `⟨hμ.1.mul hμ'.1.inv, fun x => by`. Rewrite using `[MonoidHom.mul_apply, MonoidHom.inv_apply, hμ.2 x, hμ'.2 x, inv_one, mul_one]⟩`. Establish `hχF : ∀ a, (μ * μ'⁻¹) (idF D a) = 1` using `fun a => by`. Rewrite using `[MonoidHom.mul_apply, MonoidHom.inv_apply, hF a, hF' a, inv_one, mul_one]`.
+
+Establish `hχ1 : μ * μ'⁻¹ ≠ 1` using `fun h => by`. Take `rfl` from `mul_inv_eq_one.1 h`. Conclude with `hne (neg_injective (GlobalTheory.Mem.HeckeExp.hasInfExp_unique h1 h2))`. Establish `key` using `exists_entire_pos H (Formalism.IndefR.ThmB.InputsHecke.isCMExt D) (μ * μ'⁻¹) hχ hχF hχ1`. Use `⟨?_, fun S => ?_⟩` and prove the remaining obligations.
+
+Take `⟨Λ, a1, a2, a3⟩` from `key ∅ (fun _ => True) fun P => by simp`. Use `⟨Λ, ⟨a1, fun s hs => ?_⟩, fun n hn _ => a3 n hn⟩` and prove the remaining obligations. Rewrite using `[lfac_eq]`. Conclude with `(Equiv.subtypeUnivEquiv (p := fun _ => True) fun _ => trivial).hasProd_iff.1 (a2 s hs)`. Take `⟨Λ, a1, a2, a3⟩` from `key S (OffS D S) (offS_iff S)`.
+
+Use `⟨Λ, ⟨a1, fun s hs => ?_⟩, fun n hn _ => a3 n hn⟩` and prove the remaining obligations. Rewrite using `[lfac_eq]`. Conclude with `a2 s hs`.
+-/
 theorem heckeRatioPos_of_partialContinuation (H : GlobalTheory.Published.HeckeLPartialContinuation) (D : D7) : HeckeRatioPos D := by
   rintro μ μ' hμ hμ' hF hF' ⟨τ, e, e', h1, h2, hne⟩ t
   have hχ : IsHeckeChar D (μ * μ'⁻¹) := ⟨hμ.1.mul hμ'.1.inv, fun x => by
@@ -212,6 +286,9 @@ theorem heckeRatioPos_of_partialContinuation (H : GlobalTheory.Published.HeckeLP
     rw [lfac_eq]
     exact a2 s hs
 
+/- English proof (translation)
+The claim follows from `heckeRatioPos_of_partialContinuation GlobalTheory.Published.HeckeLPartialContinuation_holds D`.
+-/
 theorem heckeRatioPos (D : D7) : HeckeRatioPos D :=
   heckeRatioPos_of_partialContinuation GlobalTheory.Published.HeckeLPartialContinuation_holds D
 

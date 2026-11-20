@@ -22,9 +22,17 @@ open CategoryTheory AlgebraicGeometry TopologicalSpace NumberField IsDedekindDom
 
 namespace GlobalTheory.TrueGeo.NefFibUniq
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem nefFib_shift {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} (L : HermLB p) (t : (k →+* ℂ) → ℝ)
     (ht : ∀ σ, t ((starRingEnd ℂ).comp σ) = t σ) : ArInt.NefFib (L.shift t ht) ↔ ArInt.NefFib L := Iff.rfl
 
+/- English proof (translation)
+Take `⟨w, hw, -⟩` from `h`. Establish `e : cls L.B L.isLB = cls L'.B L'.isLB` using `(cls_eq_iff _ _).2 ⟨w, hw⟩`. Establish `key : ∀ (Z : Scheme.{0}) (i : Z ⟶ X) (κ : Type) [Field κ] [Algebra κ Γ(Z, ⊤)], topSelfIntersection κ (L.B.pull i) 1 = topSelfIntersection κ (L'.B.pull i) 1` using `fun Z i κ _ _ => interNum_congr_cls κ _ (fun _ => LB.isLB_pull L.isLB i) (fun _ => LB.isLB_pull L'.isLB i) fun _ => by`. Rewrite using `[cls_pull L.isLB, cls_pull L'.isLB, e]`. Apply the tactic sequence `constructor <;> intro H Z i _ _ κ _ _ _ hd`.
+
+Rewrite using `[← key]`. Conclude with `H Z i κ hd`. Rewrite using `[key]`. Conclude with `H Z i κ hd`.
+-/
 theorem nefFib_iff_of_isometric {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} {L L' : HermLB p}
     (h : L.Isometric L') : ArInt.NefFib L ↔ ArInt.NefFib L' := by
   obtain ⟨w, hw, -⟩ := h
@@ -39,6 +47,11 @@ theorem nefFib_iff_of_isometric {k : Type} [CommRing k] {X : Scheme.{0}} {p : X 
 
 variable {F : Type} [Field F] [NumberField F] {C : CxSt F} {Y : Var F} {A : Adl C Y}
 
+/- English proof (translation)
+Take `⟨U, hne, hi⟩` from `hU`. Use `M.ar.isIntegral` as an intermediate fact. Use `N.ar.isIntegral` as an intermediate fact. Establish `: IsProper M.p` using `CommonModel.isProper_of_isProjOver M.ar.isProjOver`. Establish `: IsProper N.p` using `CommonModel.isProper_of_isProjOver N.ar.isProjOver`.
+
+Establish `: IsProper (π ≫ M.p)` using `by rw [hπ]; infer_instance`. Establish `: IsProper π` using `IsProper.of_comp π M.p`. Take `⟨_, _⟩` from `birational_of_isIso_morphismRestrict π U hne.to_subtype`. Conclude with `(surjective_of_isDominant_of_isClosed_range π π.isClosedMap.isClosed_range).surj`.
+-/
 theorem surjective_of_models (M N : TrueGeo.Model Y) (π : N.X ⟶ M.X) (hπ : π ≫ M.p = N.p)
     (hU : ∃ U : M.X.Opens, (U : Set M.X).Nonempty ∧ IsIso (π ∣_ U)) : Function.Surjective π := by
   obtain ⟨U, hne, hi⟩ := hU
@@ -51,6 +64,17 @@ theorem surjective_of_models (M N : TrueGeo.Model Y) (π : N.X ⟶ M.X) (hπ : �
   obtain ⟨_, _⟩ := birational_of_isIso_morphismRestrict π U hne.to_subtype
   exact (surjective_of_isDominant_of_isClosed_range π π.isClosedMap.isClosed_range).surj
 
+/- English proof (translation)
+Establish `hint` using `N.ar.isIntegral`. Establish `hproj` using `N.ar.isProjOver`. Take `⟨m, b, b', hb, hb', e⟩` from `GlobalTheory.exists_mul_eq_log_adicAbv_sub F (fun v => ((k : ℕ) : ℝ) * (A.n : ℕ) * (cf' v - cf v)) ((h.1.union h'.1).subset fun v hv => by`. Assume the negation of the conclusion as `h0`. Simplify using `only [Set.mem_union, Function.mem_support, not_or, not_not] at h0`.
+
+Simplify using `[h0.1, h0.2] at hv) fun v => by`. Take `⟨e, α, hα, h₁⟩` from `GlobalTheory.TrueGeo.ValGroup.main F C Y A N L L' k cf cf' h h' v`. Rewrite using `[h₁]`. Conclude with `GlobalTheory.ExtValueGroup.log_w_rat F v e α hα`. Establish `hc : ∀ σ : 𝓞 F →+* ℂ, Real.log ‖((starRingEnd ℂ).comp σ) b‖ = Real.log ‖σ b‖` using `fun σ => by simp`.
+
+Establish `hc' : ∀ σ : 𝓞 F →+* ℂ, Real.log ‖((starRingEnd ℂ).comp σ) b'‖ = Real.log ‖σ b'‖` using `fun σ => by simp`. Establish `h₁` using `GlobalTheory.TrueGeo.IndScale.induced_shift F C Y A N (L.pow m) (k * m) cf b hb hc (GlobalTheory.TrueGeo.InducedPow.induced_pow F C Y A N L k m cf h)`. Establish `h₂` using `GlobalTheory.TrueGeo.IndScale.induced_shift F C Y A N (L'.pow m) (k * m) cf' b' hb' hc' (GlobalTheory.TrueGeo.InducedPow.induced_pow F C Y A N L' k m cf' h')`. Establish `hm : ((m : ℕ) : ℝ) ≠ 0` using `by exact_mod_cast m.ne_zero`. Establish `hk : ((k : ℕ) : ℝ) ≠ 0` using `by exact_mod_cast k.ne_zero`.
+
+Establish `hn : ((A.n : ℕ) : ℝ) ≠ 0` using `by exact_mod_cast A.n.ne_zero`. Establish `h₂' : A.Induced N ((L'.pow m).shift (fun σ => Real.log ‖σ b'‖) hc') (k * m) fun v => cf v + Real.log (NumberField.HeightOneSpectrum.adicAbv F v (algebraMap (𝓞 F) F b)) / ((((k * m : ℕ+) : ℕ) : ℝ) * (A.n : ℕ))`. Use `h₂ using 2 with v` and compare the differences between its conclusion and the goal. Rewrite using `[sub_eq_iff_eq_add.1 (e v).symm, PNat.mul_coe, Nat.cast_mul]`. Clear the denominators using the available nonvanishing facts.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hR` using `GlobalTheory.TrueGeo.InducedIsom.ratIsom_of_induced F C Y A N hN _ _ (k * m) _ h₁ h₂'`. Establish `hIso` using `GlobalTheory.HermIsom.isometric_of_ratIsom _ N.X N.p _ _ hR`. Establish `hL'm : ArInt.NefFib ((L'.pow m).shift (fun σ => Real.log ‖σ b'‖) hc')` using `(nefFib_shift _ _ _).2 ((GlobalTheory.T.nefFib_pow_iff' _ N.X N.p hproj L' m m.pos).2 hL')`. Conclude with `(GlobalTheory.T.nefFib_pow_iff' _ N.X N.p hproj L m m.pos).1 ((nefFib_shift _ _ _).1 ((nefFib_iff_of_isometric hIso).2 hL'm))`.
+-/
 theorem nefFib_of_induced_of_induced (N : TrueGeo.Model Y) (hN : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme N.X)
     {L L' : HermLB N.p} {k : ℕ+} {cf cf' : HeightOneSpectrum (𝓞 F) → ℝ}
     (h : A.Induced N L k cf) (h' : A.Induced N L' k cf') (hL' : ArInt.NefFib L') : ArInt.NefFib L := by
@@ -83,6 +107,13 @@ theorem nefFib_of_induced_of_induced (N : TrueGeo.Model Y) (hN : ReciprocityTheo
     (nefFib_shift _ _ _).2 ((GlobalTheory.T.nefFib_pow_iff' _ N.X N.p hproj L' m m.pos).2 hL')
   exact (GlobalTheory.T.nefFib_pow_iff' _ N.X N.p hproj L m m.pos).1 ((nefFib_shift _ _ _).1 ((nefFib_iff_of_isometric hIso).2 hL'm))
 
+/- English proof (translation)
+Introduce and unpack `F _ _ C Y A M L k cf hI ⟨M', L', k', cf', hI', hN'⟩`. Take `⟨N, π, π', hN, hπ, hπ', hj, hj', hU, hU'⟩` from `GlobalTheory.ModelDom.exists_normal_dominating F Y M M'`. Use `M.ar.isIntegral` as an intermediate fact. Use `M'.ar.isIntegral` as an intermediate fact. Use `N.ar.isIntegral` as an intermediate fact.
+
+Establish `h₁` using `GlobalTheory.TrueGeo.InducedPow.induced_pow F C Y A N _ k k' cf (GlobalTheory.TrueGeo.InducedPull.induced_pull F C Y A M N π hπ hj L k cf hI)`. Establish `h₂` using `GlobalTheory.TrueGeo.InducedPow.induced_pow F C Y A N _ k' k cf' (GlobalTheory.TrueGeo.InducedPull.induced_pull F C Y A M' N π' hπ' hj' L' k' cf' hI')`. Rewrite `h₂` using `[mul_comm k' k]`. Establish `hN₂ : ArInt.NefFib ((L'.pull π' hπ').pow k)` using `(GlobalTheory.T.nefFib_pow_iff' _ N.X N.p N.ar.isProjOver _ k k.pos).2 (GlobalTheory.T.nefFib_pullback _ M'.X N.X M'.p N.p M'.ar.isProjOver N.ar.isProjOver π' hπ' L' hN')`. Establish `hN₁` using `nefFib_of_induced_of_induced N hN h₁ h₂ hN₂`.
+
+Conclude with `GlobalTheory.T.nefFib_of_surjective_pullback _ M.X N.X M.p N.p M.ar.isProjOver N.ar.isProjOver π hπ (surjective_of_models M N π hπ hU) L ((GlobalTheory.T.nefFib_pow_iff' _ N.X N.p N.ar.isProjOver _ k' k'.pos).1 hN₁)`.
+-/
 theorem nefFib_of_induced : ∀ (F : Type) [Field F] [NumberField F] (C : CxSt F) (Y : Var F) (A : Adl C Y)
     (M : TrueGeo.Model Y) (L : HermLB M.p) (k : ℕ+) (cf : HeightOneSpectrum (𝓞 F) → ℝ),
     A.Induced M L k cf → A.NefFib → ArInt.NefFib L := by

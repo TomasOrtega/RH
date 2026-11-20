@@ -21,6 +21,9 @@ open ReciprocityTheory.ChartRestriction.DS.S7
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Unfold `thrStar at hh`. Establish `h1` using `le_max_left ((n : ℝ) * (pOf ε : ℝ) * (qOf ε : ℝ) + 1) (16 * (n : ℝ) * (S7.q0 ε : ℝ) + 8 * Real.sqrt (2 * (S7.q0 ε : ℝ)))`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem fdc_big {ε : Fin n → Bool} {h : ℝ} (hh : thrStar ε + 1 < h) :
     (n : ℝ) * (pOf ε : ℝ) * (qOf ε : ℝ) + 1 < h := by
   unfold thrStar at hh
@@ -28,10 +31,16 @@ theorem fdc_big {ε : Fin n → Bool} {h : ℝ} (hh : thrStar ε + 1 < h) :
     (16 * (n : ℝ) * (S7.q0 ε : ℝ) + 8 * Real.sqrt (2 * (S7.q0 ε : ℝ)))
   linarith
 
+/- English proof (translation)
+Use `show 1 ≤ min (pOf ε) (qOf ε)`. Conclude with `le_min hp hq`.
+-/
 theorem one_le_q0_of_p_q_pos {ε : Fin n → Bool} (hp : 1 ≤ pOf ε) (hq : 1 ≤ qOf ε) : 1 ≤ S7.q0 ε := by
   show 1 ≤ min (pOf ε) (qOf ε)
   exact le_min hp hq
 
+/- English proof (translation)
+Unfold `thrStar at hh`. Establish `h1` using `le_max_right ((n : ℝ) * (pOf ε : ℝ) * (qOf ε : ℝ) + 1) (16 * (n : ℝ) * (S7.q0 ε : ℝ) + 8 * Real.sqrt (2 * (S7.q0 ε : ℝ)))`. Establish `h2 : 0 ≤ (n : ℝ) * (S7.q0 ε : ℝ)` using `by positivity`. Establish `h3 : 0 ≤ Real.sqrt (2 * (S7.q0 ε : ℝ))` using `Real.sqrt_nonneg _`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem fdc_eight {ε : Fin n → Bool} {h : ℝ} (hh : thrStar ε + 1 < h) :
     8 * (n : ℝ) * (S7.q0 ε : ℝ) < h := by
   unfold thrStar at hh
@@ -41,10 +50,20 @@ theorem fdc_eight {ε : Fin n → Bool} {h : ℝ} (hh : thrStar ε + 1 < h) :
   have h3 : 0 ≤ Real.sqrt (2 * (S7.q0 ε : ℝ)) := Real.sqrt_nonneg _
   nlinarith
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hμ.1, h, hg, fdc_big hh⟩`.
+-/
 theorem fdc_stdGap {ε : Fin n → Bool} {μ : Fin n → ℝ} {h : ℝ} (hμ : IsHCParam μ) (hg : GapAtLeast ε μ h)
     (hh : thrStar ε + 1 < h) : StdGap ε μ :=
   ⟨hμ.1, h, hg, fdc_big hh⟩
 
+/- English proof (translation)
+Use `⟨hs, fun a => ?_⟩` and prove the remaining obligations. Take `⟨m, hm⟩` from `hμ.2 a`. Distinguish the cases in `has : a = s`. Substitute `has` using the available equality. Use `⟨m + 1, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Pi.add_apply, Pi.single_eq_same]`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨m, ?_⟩` and prove the remaining obligations. Rewrite using `[Pi.add_apply, Pi.single_eq_of_ne has, add_zero]`.
+
+Conclude with `hm`.
+-/
 theorem fdc_hc_add {μ : Fin n → ℝ} {s : Fin n} (hμ : IsHCParam μ) (hs : StrictAnti (μ + Pi.single s 1)) :
     IsHCParam (μ + Pi.single s 1) := by
   refine ⟨hs, fun a => ?_⟩
@@ -59,6 +78,9 @@ theorem fdc_hc_add {μ : Fin n → ℝ} {s : Fin n} (hμ : IsHCParam μ) (hs : S
     rw [Pi.add_apply, Pi.single_eq_of_ne has, add_zero]
     exact hm
 
+/- English proof (translation)
+Use `letI := T.instNACG`. Introduce `h`. Establish `h1` using `T.w_norm`. Rewrite `h1` using `[h, norm_zero]`. Conclude with `zero_ne_one h1`.
+-/
 theorem fdc_w_ne {ε : Fin n → Bool} {Λ : Fin n → ℝ} (T : KType ε Λ) : T.w ≠ 0 := by
   letI := T.instNACG
   intro h
@@ -66,6 +88,9 @@ theorem fdc_w_ne {ε : Fin n → Bool} {Λ : Fin n → ℝ} (T : KType ε Λ) : 
   rw [h, norm_zero] at h1
   exact zero_ne_one h1
 
+/- English proof (translation)
+Take `⟨m, hm⟩` from `Lap.LemK.exists_isMu hμ`. Conclude with `⟨m, hm, (Lap.Base.psiFor n ε μ h T m hμ hm hg (one_le_q0_of_p_q_pos hp hq) (fdc_eight hh)).1⟩`.
+-/
 theorem fdc_model {ε : Fin n → Bool} (hp : 1 ≤ pOf ε) (hq : 1 ≤ qOf ε) {μ : Fin n → ℝ} {h : ℝ}
     (hμ : IsHCParam μ) (hg : GapAtLeast ε μ h) (hh : thrStar ε + 1 < h) (T : KType ε (lowK ε μ)) :
     ∃ m : Fin n → ℤ, IsMu μ m ∧ IsPsiFor ε μ T (PsiM T m) := by
@@ -80,6 +105,9 @@ def fdcD (ε : Fin n → Bool) (μ : Fin n → ℝ) : ℝ := by
   classical
   exact if h : ∃ d, FdcGood ε μ d then h.choose else 0
 
+/- English proof (translation)
+Establish `hfun : (fun g : Formalism.REAL.UJ ε => ‖⟪U v, σ' (Formalism.MainNotions.S.umat g) (U v)⟫_ℂ‖ ^ 2) = fun g => ‖⟪v, σ (Formalism.MainNotions.S.umat g) v⟫_ℂ‖ ^ 2`. Use function extensionality and compare the values at `g`. Rewrite using `[← hU (Formalism.MainNotions.S.umat g) g.2 v, LinearIsometryEquiv.inner_map_map]`. Simplify using `only [Formalism.MainNotions.S.fdegOf, Formalism.MainNotions.S.coefOn]`. Rewrite using `[LinearIsometryEquiv.norm_map, hfun]`.
+-/
 theorem fdc_fdegOf_eq {ε : Fin n → Bool} {H H' : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     [NormedAddCommGroup H'] [InnerProductSpace ℂ H'] {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)}
     {σ' : Matrix (Fin n) (Fin n) ℂ → (H' →L[ℂ] H')} (U : H ≃ₗᵢ[ℂ] H')
@@ -92,6 +120,11 @@ theorem fdc_fdegOf_eq {ε : Fin n → Bool} {H H' : Type} [NormedAddCommGroup H]
   simp only [Formalism.MainNotions.S.fdegOf, Formalism.MainNotions.S.coefOn]
   rw [LinearIsometryEquiv.norm_map, hfun]
 
+/- English proof (translation)
+Take `⟨H, _, _, σ, hσ, hd⟩` from `h1`. Take `⟨H', _, _, σ', hσ', hd'⟩` from `h2`. Use `hσ.1` as an intermediate fact. Use `hσ'.1` as an intermediate fact. Use `hσ.2.1` as an intermediate fact.
+
+Take `⟨v, hv⟩` from `exists_ne (0 : H)`. Take `⟨U, hU⟩` from `(isDS_props_of_gap n ε μ hμ h hg (fdc_big hh) H σ hσ).2.2.2.2 H' σ' hσ'`. Establish `hUv : U v ≠ 0` using `by simpa using hv`. Rewrite using `[← fdegOf_of_isFdeg' hd hv, ← fdegOf_of_isFdeg' hd' hUv, fdc_fdegOf_eq U hU]`.
+-/
 theorem fdcGood_unique {ε : Fin n → Bool} {μ : Fin n → ℝ} {h : ℝ} (hμ : IsHCParam μ) (hg : GapAtLeast ε μ h)
     (hh : thrStar ε + 1 < h) {d d' : ℝ} (h1 : FdcGood ε μ d) (h2 : FdcGood ε μ d') : d = d' := by
   obtain ⟨H, _, _, σ, hσ, hd⟩ := h1
@@ -104,12 +137,18 @@ theorem fdcGood_unique {ε : Fin n → Bool} {μ : Fin n → ℝ} {h : ℝ} (hμ
   have hUv : U v ≠ 0 := by simpa using hv
   rw [← fdegOf_of_isFdeg' hd hv, ← fdegOf_of_isFdeg' hd' hUv, fdc_fdegOf_eq U hU]
 
+/- English proof (translation)
+Establish `hex : ∃ d, FdcGood ε μ d` using `⟨d, hd⟩`. Rewrite using `[fdcD, dif_pos hex]`. Conclude with `fdcGood_unique hμ hg hh hex.choose_spec hd`.
+-/
 theorem fdcD_eq {ε : Fin n → Bool} {μ : Fin n → ℝ} {h : ℝ} (hμ : IsHCParam μ) (hg : GapAtLeast ε μ h)
     (hh : thrStar ε + 1 < h) {d : ℝ} (hd : FdcGood ε μ d) : fdcD ε μ = d := by
   have hex : ∃ d, FdcGood ε μ d := ⟨d, hd⟩
   rw [fdcD, dif_pos hex]
   exact fdcGood_unique hμ hg hh hex.choose_spec hd
 
+/- English proof (translation)
+Use `haveI : CompleteSpace H := hσ.1`. Take `⟨d, hd⟩` from `Formalism.MainNotions.BridgeCSchur.fdeg_of_DS μ σ hσ`. Conclude with `isFdeg_muCD hd`.
+-/
 theorem fdcGood_of_isDS {ε : Fin n → Bool} {μ : Fin n → ℝ} {H : Type} [NormedAddCommGroup H]
     [InnerProductSpace ℂ H] {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} (hσ : Formalism.MainNotions.S.IsDS ε μ σ) :
     ∃ d, Formalism.MainNotions.S.IsFdeg (muCD ε) σ d := by
@@ -117,6 +156,9 @@ theorem fdcGood_of_isDS {ε : Fin n → Bool} {μ : Fin n → ℝ} {H : Type} [N
   obtain ⟨d, hd⟩ := Formalism.MainNotions.BridgeCSchur.fdeg_of_DS μ σ hσ
   exact isFdeg_muCD hd
 
+/- English proof (translation)
+Take `⟨T⟩` from `HW.kType_exists ε μ hμ`. Take `⟨m, -, hP⟩` from `fdc_model hp hq hμ hg hh T`. Establish `hDS` using `isDS_sigLam (fdc_stdGap hμ hg hh) hP (fdc_w_ne T)`. Take `⟨d, hd⟩` from `fdcGood_of_isDS hDS`. Conclude with `⟨d, _, inferInstance, inferInstance, _, hDS, hd⟩`.
+-/
 theorem fdc_ds_exists {ε : Fin n → Bool} (hp : 1 ≤ pOf ε) (hq : 1 ≤ qOf ε) {μ : Fin n → ℝ} {h : ℝ}
     (hμ : IsHCParam μ) (hg : GapAtLeast ε μ h) (hh : thrStar ε + 1 < h) : ∃ d, FdcGood ε μ d := by
   obtain ⟨T⟩ := HW.kType_exists ε μ hμ
@@ -125,6 +167,11 @@ theorem fdc_ds_exists {ε : Fin n → Bool} (hp : 1 ≤ pOf ε) (hq : 1 ≤ qOf 
   obtain ⟨d, hd⟩ := fdcGood_of_isDS hDS
   exact ⟨d, _, inferInstance, inferInstance, _, hDS, hd⟩
 
+/- English proof (translation)
+Introduce `μ s hμ hg hg' hs`. Establish `hμ'` using `fdc_hc_add hμ hs`. Take `⟨d, hd⟩` from `fdc_ds_exists hp hq hμ hg hh`. Take `⟨H, i1, i2, σ, hσ, hfd⟩` from `hd`. Take `⟨d', hd'⟩` from `fdc_ds_exists hp hq hμ' hg' hh`.
+
+Take `⟨H', j1, j2, σ', hσ', hfd'⟩` from `hd'`. Establish `h3` using `fdeg_ratio_V hp hq hμ hg hh s hs hσ hσ' (muCD ε) (muCD_isHaar ε) hfd`. Establish `hu : d' = d * ratioV μ s` using `fdcGood_unique hμ' hg' hh ⟨H', j1, j2, σ', hσ', hfd'⟩ ⟨H', j1, j2, σ', hσ', h3⟩`. Rewrite using `[fdcD_eq hμ hg hh ⟨H, i1, i2, σ, hσ, hfd⟩, fdcD_eq hμ' hg' hh ⟨H', j1, j2, σ', hσ', hfd'⟩, hu]`.
+-/
 theorem fdc_step {ε : Fin n → Bool} (hp : 1 ≤ pOf ε) (hq : 1 ≤ qOf ε) {h : ℝ} (hh : thrStar ε + 1 < h) :
     ∀ (μ : Fin n → ℝ) (s : Fin n), IsHCParam μ → GapAtLeast ε μ h →
       GapAtLeast ε (μ + Pi.single s 1) h → StrictAnti (μ + Pi.single s 1) →

@@ -6,6 +6,13 @@ open NumberField Module ReciprocityTheory.ChartRestriction.G.FD ReciprocityTheor
 
 namespace GlobalTheory.UpperStab
 
+/- English proof (translation)
+Introduce and unpack `β ⟨u, hu, γ, hγ, rfl⟩`. Establish `hs` using `(M.comp c).Γ_stab γ hγ`. Establish `hh : ∀ x y, herm (M.comp c).Gm (Matrix.mulVec ((γ * M.tr u c : GL (Fin r) E) : Matrix (Fin r) (Fin r) E) x) (Matrix.mulVec ((γ * M.tr u c : GL (Fin r) E) : Matrix (Fin r) (Fin r) E) y) = herm (M.comp c).Gm x y`. Introduce `x y`. Rewrite using `[Units.val_mul, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hs.1, M.comp_Gm c, M.tr_herm]`.
+
+Use `⟨⟨hh, fun v => ?_⟩, ⟨hh, fun v => ?_⟩⟩` and prove the remaining obligations. Establish `h1` using `M.tr_L' u c v`. Rewrite `h1` using `[hu]`. Rewrite using `[Units.val_mul, ← Matrix.mulVec_mulVec, h1]`. Conclude with `M.Γ_L' c γ hγ _`.
+
+Establish `h1` using `M.tr_Λ u c v`. Rewrite `h1` using `[hu]`. Rewrite using `[Units.val_mul, ← Matrix.mulVec_mulVec, h1]`. Conclude with `hs.2 _`.
+-/
 theorem upper_isUStab (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (U C : Type) [Group U] [MulAction U C]
     (M : TwoLevels E r U C) (c : C) :
     ∀ β ∈ M.upper c, IsUStab (M.comp c).Gm (M.comp c).L' β ∧ IsUStab (M.comp c).Gm (M.comp c).Λ β := by

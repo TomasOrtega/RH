@@ -15,6 +15,13 @@ namespace GlobalTheory.Mum.AnySec
 
 open MvPolynomial
 
+/- English proof (translation)
+Proceed by induction on `F using MvPolynomial.induction_on with`. Consider the case `C a => exact ⟨C a, 0, by simp⟩`. Consider the case `add p q hp hq`. Take `⟨p', dp, ep⟩` from `hp`. Take `⟨q', dq, eq⟩` from `hq`.
+
+Use `⟨p' * X j ^ dq + q' * X j ^ dp, dp + dq, ?_⟩` and prove the remaining obligations. Simplify using `only [eval₂_add, eval₂_mul, eval₂_pow, eval₂_X]`. Rewrite using `[← ep, ← eq]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `mul_X p l hp`.
+
+Take `⟨p', dp, ep⟩` from `hp`. Use `⟨p' * X l, dp + 1, ?_⟩` and prove the remaining obligations. Simplify using `only [eval₂_mul, eval₂_X]`. Take the linear combination `(x l * v * x j) * ep + (x l * eval₂ f x p') * hv`.
+-/
 theorem exists_homog {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) {n : ℕ} (x : Fin n → S) (j : Fin n) (v : S)
     (hv : x j * v = 1) (F : MvPolynomial (Fin n) R) :
     ∃ (F' : MvPolynomial (Fin n) R) (d : ℕ), eval₂ f (fun l => x l * v) F * x j ^ d = eval₂ f x F' := by
@@ -34,19 +41,31 @@ theorem exists_homog {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) {n :
 
 variable {X Y : Scheme.{0}}
 
+/- English proof (translation)
+Rewrite using `[gs_eq _ _ _ hy, map_one, map_one]`.
+-/
 theorem gs_one {N : X.Opens} {y : X} (hy : y ∈ N) : gs (𝟙 X) y N 1 = 1 := by
   rw [gs_eq _ _ _ hy, map_one, map_one]
 
+/- English proof (translation)
+The claim follows from `X.toRingedSpace.isUnit_of_isUnit_germ _ _ fun y hy => by have := h y hy rw [gs_eq (𝟙 X) y N hy] at this exact this`.
+-/
 theorem isUnit_of_gs {N : X.Opens} (a : Γ(X, N)) (h : ∀ y ∈ N, IsUnit (gs (𝟙 X) y N a)) : IsUnit a :=
   X.toRingedSpace.isUnit_of_isUnit_germ _ _ fun y hy => by
     have := h y hy
     rw [gs_eq (𝟙 X) y N hy] at this
     exact this
 
+/- English proof (translation)
+Rewrite using `[gs_res (𝟙 X) y hle hy, gs_pull (𝟙 X) p y U (hle hy) a, Category.id_comp]`.
+-/
 theorem gs_rs_app (p : X ⟶ Y) {U : Y.Opens} {N : X.Opens} (hle : N ≤ p ⁻¹ᵁ U) {y : X} (hy : y ∈ N) (a : Γ(Y, U)) :
     gs (𝟙 X) y N (GlobalTheory.AbLaw.rs X hle ((p.app U).hom a)) = gs p y U a := by
   rw [gs_res (𝟙 X) y hle hy, gs_pull (𝟙 X) p y U (hle hy) a, Category.id_comp]
 
+/- English proof (translation)
+Use extensionality with `c`. Simplify using `only [GlobalTheory.AbLaw.cst, GlobalTheory.AbLaw.rs, RingHom.comp_apply]`. Rewrite using `[← CommRingCat.comp_apply, ← Functor.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem rs_comp_cst {R : Type} [CommRing R] (q : X ⟶ Spec (CommRingCat.of R)) {N N₁ : X.Opens} (hle : N ≤ N₁) :
     (GlobalTheory.AbLaw.rs X hle).comp (GlobalTheory.AbLaw.cst q N₁) = GlobalTheory.AbLaw.cst q N := by
   ext c
@@ -54,6 +73,9 @@ theorem rs_comp_cst {R : Type} [CommRing R] (q : X ⟶ Spec (CommRingCat.of R)) 
   rw [← CommRingCat.comp_apply, ← Functor.map_comp]
   rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example {U : X.Opens} (f : Γ(X, U)) (a : Γ(X, U)) :
     algebraMap Γ(X, U) Γ(X, X.basicOpen f) a = GlobalTheory.AbLaw.rs X (X.basicOpen_le f) a := rfl
 
@@ -63,6 +85,39 @@ namespace GlobalTheory.Mum.AnySec
 open MvPolynomial
 variable {X Y : Scheme.{0}}
 
+/- English proof (translation)
+Take `⟨j, i', N₁, ρ, hwN, hN₁, hN₁le, hgerm, hgen⟩` from `H w`. Set `V : X.Opens` to `p ⁻¹ᵁ secChart L i ⊓ X.basicOpen ((p.app (secChart L i)).hom (s₀.f i))`. Establish `hwV : w ∈ V`. Use `⟨hw, (Scheme.mem_basicOpen X _ w hw).2 ?_⟩` and prove the remaining obligations. Establish `e : secGerm p w s₀ i = _` using `gs_eq p w (secChart L i) hw (s₀.f i)`.
+
+Rewrite `hs` using `[e]`. Conclude with `hs`. Take `⟨h, hhV, hwh⟩` from `hN₁.exists_basicOpen_le ⟨w, hwV⟩ hwN`. Establish `hNN₁ : X.basicOpen h ≤ N₁` using `X.basicOpen_le h`. Establish `hNi : X.basicOpen h ≤ p ⁻¹ᵁ secChart L i` using `hhV.trans inf_le_left`.
+
+Establish `hNs : X.basicOpen h ≤ X.basicOpen ((p.app (secChart L i)).hom (s₀.f i))` using `hhV.trans inf_le_right`. Establish `hsN : ∀ y ∈ X.basicOpen h, IsUnit (secGerm p y s₀ i)` using `fun y hy => by`. Use `(Scheme.mem_basicOpen _ _ _ (hNi hy)).1 (hNs hy)` as an intermediate fact. Establish `e : secGerm p y s₀ i = _` using `gs_eq p y (secChart L i) (hNi hy) (s₀.f i)`. Rewrite using `[e]`.
+
+Conclude with `this`. Establish `hu₀ : IsUnit (GlobalTheory.AbLaw.rs X hNi ((p.app (secChart L i)).hom (s₀.f i)))` using `isUnit_of_gs _ fun y hy => by rw [gs_rs_app p hNi hy (s₀.f i)]; exact hsN y hy`. Take `⟨r, hr_def⟩ : ∃ r : Fin n → Γ(X, X.basicOpen h), r = fun l => GlobalTheory.AbLaw.rs X hNi ((p.app (secChart L i)).hom ((τ l).f i)) * (hu₀.unit⁻¹ : (Γ(X, X.basicOpen h))ˣ).val` from `⟨_, rfl⟩`. Establish `hr : ∀ y ∈ X.basicOpen h, ∀ l, secGerm p y (τ l) i = gs (𝟙 X) y _ (r l) * secGerm p y s₀ i`. Introduce `y hy l`.
+
+Rewrite using `[secGerm, secGerm, ← gs_rs_app p hNi hy ((τ l).f i), ← gs_rs_app p hNi hy (s₀.f i), ← gs_mul _ _ _ hy]`. Use `congr 1`. Simplify using `only [hr_def, _root_.mul_assoc, IsUnit.val_inv_mul, _root_.mul_one]`. Use `⟨X.basicOpen h, r, hwh, hN₁.basicOpen h, hNi, fun y hy => ⟨hsN y hy, hr y hy⟩, fun g => ?_⟩` and prove the remaining obligations. Establish `key : ∀ y ∈ X.basicOpen h, ∀ l, gs (𝟙 X) y _ (r l) = gs (𝟙 X) y _ (GlobalTheory.AbLaw.rs X hNN₁ (ρ l) * r j) ∧ IsUnit (gs (𝟙 X) y _ (r j))`.
+
+Introduce `y hy l`. Establish `hy₁` using `hNN₁ hy`. Take `⟨c, hc⟩` from `exists_unit_secGerm k p y (hNi hy) (hN₁le hy₁)`. Establish `gρ : gs (𝟙 X) y _ (GlobalTheory.AbLaw.rs X hNN₁ (ρ l)) = gs (𝟙 X) y N₁ (ρ l)` using `gs_res _ _ hNN₁ hy _`. Establish `e1` using `hr y hy l`.
+
+Establish `e2` using `hr y hy j`. Establish `e3` using `(hgerm y hy₁).2 l`. Establish `hcl` using `hc (τ l)`. Establish `hcj` using `hc (τ j)`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[gs_mul _ _ _ hy, gρ]`. Apply `(hsN y hy).mul_right_cancel` to reduce the goal to its premises. Take the linear combination `(-1 : _) * e1 + gs (𝟙 X) y N₁ (ρ l) * e2 + hcl - gs (𝟙 X) y N₁ (ρ l) * hcj + c.val * e3`. Establish `: IsUnit (gs (𝟙 X) y _ (r j) * secGerm p y s₀ i)`. Rewrite using `[← e2, hcj]`.
+
+Conclude with `c.isUnit.mul (hgerm y hy₁).1`. Conclude with `isUnit_of_mul_isUnit_left this`. Establish `hrel : ∀ l, r l = GlobalTheory.AbLaw.rs X hNN₁ (ρ l) * r j` using `fun l => fn_ext fun y hy => (key y hy l).1`. Establish `huj : IsUnit (r j)` using `isUnit_of_gs _ fun y hy => (key y hy j).2`. Set `v : Γ(X, X.basicOpen h)` to `(huj.unit⁻¹ : (Γ(X, X.basicOpen h))ˣ).val`.
+
+Establish `hv : r j * v = 1` using `IsUnit.mul_val_inv huj`. Establish `hρ : (fun l => GlobalTheory.AbLaw.rs X hNN₁ (ρ l)) = fun l => r l * v`. Use function extensionality and compare the values at `l`. Rewrite using `[hrel l, _root_.mul_assoc, hv, _root_.mul_one]`. Establish `hev : ∀ F : MvPolynomial (Fin n) R, GlobalTheory.AbLaw.rs X hNN₁ (eval₂ (GlobalTheory.AbLaw.cst q N₁) ρ F) = eval₂ (GlobalTheory.AbLaw.cst q (X.basicOpen h)) (fun l => r l * v) F` using `fun F => by`.
+
+Rewrite using `[eval₂_comp_left, rs_comp_cst, ← hρ]`. Both sides reduce to the same expression. Use `haveI := hN₁.isLocalization_basicOpen h`. Take `⟨⟨a, ⟨_, t, rfl⟩⟩, hga⟩` from `IsLocalization.surj (Submonoid.powers h) g`. Establish `hhu : IsUnit (GlobalTheory.AbLaw.rs X hNN₁ h)` using `IsLocalization.Away.algebraMap_isUnit h`.
+
+Take `⟨Pa, Qa, hQa, ea⟩` from `hgen a`. Take `⟨Ph, Qh, hQh, eh⟩` from `hgen h`. Establish `ea'` using `congrArg (GlobalTheory.AbLaw.rs X hNN₁) ea`. Establish `eh'` using `congrArg (GlobalTheory.AbLaw.rs X hNN₁) eh`. Rewrite `ea'`, `eh'` using `[map_mul, hev, hev]`.
+
+Establish `hQh'` using `hQh.map (GlobalTheory.AbLaw.rs X hNN₁)`. Rewrite `hQh'` using `[hev]`. Establish `hga' : g * GlobalTheory.AbLaw.rs X hNN₁ h ^ t = GlobalTheory.AbLaw.rs X hNN₁ a`. Rewrite using `[← map_pow]`. Conclude with `hga`.
+
+Take `⟨A', d3, eA⟩` from `exists_homog (GlobalTheory.AbLaw.cst q (X.basicOpen h)) r j v hv Pa`. Take `⟨B', d2, eB⟩` from `exists_homog (GlobalTheory.AbLaw.cst q (X.basicOpen h)) r j v hv Qa`. Take `⟨C', d1, eC⟩` from `exists_homog (GlobalTheory.AbLaw.cst q (X.basicOpen h)) r j v hv Ph`. Take `⟨D', d4, eD⟩` from `exists_homog (GlobalTheory.AbLaw.cst q (X.basicOpen h)) r j v hv Qh`. Use `⟨A' * D' ^ t * MvPolynomial.X j ^ (d1 * t + d2), C' ^ t * B' * MvPolynomial.X j ^ (d3 + d4 * t), ?_, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [eval₂_mul, eval₂_pow, eval₂_X]`. Rewrite using `[← eB, ← eC, ← eh']`. Establish `hQa'` using `hQa.map (GlobalTheory.AbLaw.rs X hNN₁)`. Rewrite `hQa'` using `[hev]`. Conclude with `((((hhu.mul hQh').mul (huj.pow _)).pow _).mul (hQa'.mul (huj.pow _))).mul (huj.pow _)`.
+
+Simplify using `only [eval₂_mul, eval₂_pow, eval₂_X]`. Rewrite using `[← eA, ← eB, ← eC, ← eD, ← eh', ← ea']`. Take the linear combination `(eval₂ (GlobalTheory.AbLaw.cst q (X.basicOpen h)) (fun l => r l * v) Qa * eval₂ (GlobalTheory.AbLaw.cst q (X.basicOpen h)) (fun l => r l * v) Qh ^ t * r j ^ (d1 * t + d2 + d3 + d4 * t)) * hga'`.
+-/
 theorem locGen_anySec_gen {R : Type} [CommRing R] (q : X ⟶ Spec (CommRingCat.of R)) (p : X ⟶ Y) (L : LB Y)
     (k n : ℕ) (τ : Fin n → H0 L k)
     (H : ∀ w : X, ∃ (j : Fin n) (i : Fin 1 → L.ι) (N : X.Opens) (r : Fin n → Γ(X, N)), w ∈ N ∧ IsAffineOpen N ∧
@@ -160,6 +215,9 @@ theorem locGen_anySec_gen {R : Type} [CommRing R] (q : X ⟶ Spec (CommRingCat.o
 
 end GlobalTheory.Mum.AnySec
 
+/- English proof (translation)
+Introduce `R _ _ _ G L k n τ H s₀ i w hw hs`. Take `⟨N, r, h1, h2, h3, h4, h5⟩` from `GlobalTheory.Mum.AnySec.locGen_anySec_gen ((fstG (maximalIdeal R) 0 G).left ≫ G.hom) _ L k n τ H s₀ i w hw hs`. Conclude with `⟨N, n, τ, r, h1, h2, h3, h4, h5⟩`.
+-/
 theorem GlobalTheory.Mum.locGen_ratio_anySec : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (G : Over (Sp R)) (L : LB G.left) (k n : ℕ) (τ : Fin n → H0 L k), (∀ w : (thickObj R (maximalIdeal R) 0 G).left, ∃ (j : Fin n) (i : Fin 1 → L.ι) (N : (thickObj R (maximalIdeal R) 0 G).left.Opens) (r : Fin n → Γ((thickObj R (maximalIdeal R) 0 G).left, N)), w ∈ N ∧ IsAffineOpen N ∧ N ≤ (fstG (maximalIdeal R) 0 G).left ⁻¹ᵁ secChart L i ∧ (∀ y ∈ N, IsUnit (secGerm (Y := (thickObj R (maximalIdeal R) 0 G).left) (fstG (maximalIdeal R) 0 G).left y (τ j) i) ∧ ∀ l, secGerm (Y := (thickObj R (maximalIdeal R) 0 G).left) (fstG (maximalIdeal R) 0 G).left y (τ l) i = gs (𝟙 _) y N (r l) * secGerm (Y := (thickObj R (maximalIdeal R) 0 G).left) (fstG (maximalIdeal R) 0 G).left y (τ j) i) ∧ ∀ g : Γ((thickObj R (maximalIdeal R) 0 G).left, N), ∃ P Q : MvPolynomial (Fin n) R, IsUnit (MvPolynomial.eval₂ (GlobalTheory.AbLaw.cst (X := (thickObj R (maximalIdeal R) 0 G).left) ((fstG (maximalIdeal R) 0 G).left ≫ G.hom) N) r Q) ∧ g * MvPolynomial.eval₂ (GlobalTheory.AbLaw.cst (X := (thickObj R (maximalIdeal R) 0 G).left) ((fstG (maximalIdeal R) 0 G).left ≫ G.hom) N) r Q = MvPolynomial.eval₂ (GlobalTheory.AbLaw.cst (X := (thickObj R (maximalIdeal R) 0 G).left) ((fstG (maximalIdeal R) 0 G).left ≫ G.hom) N) r P) → ∀ (s₀ : H0 L k) (i : Fin 1 → L.ι) (w : (thickObj R (maximalIdeal R) 0 G).left), (fstG (maximalIdeal R) 0 G).left w ∈ secChart L i → IsUnit (secGerm (Y := (thickObj R (maximalIdeal R) 0 G).left) (fstG (maximalIdeal R) 0 G).left w s₀ i) → ∃ (N : (thickObj R (maximalIdeal R) 0 G).left.Opens) (m : ℕ) (σ : Fin m → H0 L k) (r : Fin m → Γ((thickObj R (maximalIdeal R) 0 G).left, N)), w ∈ N ∧ IsAffineOpen N ∧ N ≤ (fstG (maximalIdeal R) 0 G).left ⁻¹ᵁ secChart L i ∧ (∀ y ∈ N, IsUnit (secGerm (Y := (thickObj R (maximalIdeal R) 0 G).left) (fstG (maximalIdeal R) 0 G).left y s₀ i) ∧ ∀ l, secGerm (Y := (thickObj R (maximalIdeal R) 0 G).left) (fstG (maximalIdeal R) 0 G).left y (σ l) i = gs (𝟙 _) y N (r l) * secGerm (Y := (thickObj R (maximalIdeal R) 0 G).left) (fstG (maximalIdeal R) 0 G).left y s₀ i) ∧ ∀ g : Γ((thickObj R (maximalIdeal R) 0 G).left, N), ∃ P Q : MvPolynomial (Fin m) R, IsUnit (MvPolynomial.eval₂ (GlobalTheory.AbLaw.cst (X := (thickObj R (maximalIdeal R) 0 G).left) ((fstG (maximalIdeal R) 0 G).left ≫ G.hom) N) r Q) ∧ g * MvPolynomial.eval₂ (GlobalTheory.AbLaw.cst (X := (thickObj R (maximalIdeal R) 0 G).left) ((fstG (maximalIdeal R) 0 G).left ≫ G.hom) N) r Q = MvPolynomial.eval₂ (GlobalTheory.AbLaw.cst (X := (thickObj R (maximalIdeal R) 0 G).left) ((fstG (maximalIdeal R) 0 G).left ≫ G.hom) N) r P := by
   intro R _ _ _ G L k n τ H s₀ i w hw hs
   obtain ⟨N, r, h1, h2, h3, h4, h5⟩ :=

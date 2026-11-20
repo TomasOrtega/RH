@@ -19,6 +19,35 @@ namespace GlobalTheory.SplitLinear
 
 open GlobalTheory.IndefiniteRowSideFullHecke.SplitLinearModelNorm
 
+/- English proof (translation)
+Set `f : M →ₗ[O] M` to `(B.restrictScalars O).restrict hM`. Establish `hinj : Function.Injective f` using `fun x y hxy => Subtype.ext (hB.1 (congrArg Subtype.val hxy))`. Set `N : Submodule O M` to `LinearMap.range f`. Establish `hrank : Module.finrank O N = Module.finrank O M` using `LinearMap.finrank_range_of_inj hinj`. Set `b` to `Module.Free.chooseBasis O M`.
+
+Use `set a := Submodule.smithNormalFormCoeffs b hrank with ha_def`. Use `set b' := Submodule.smithNormalFormTopBasis b hrank with hb'_def`. Use `set ab := Submodule.smithNormalFormBotBasis b hrank with hab_def`. Establish `hab : ∀ i, (ab i : M) = a i • b' i` using `Submodule.smithNormalFormBotBasis_def b hrank`. Establish `ha0 : ∀ i, a i ≠ 0` using `Submodule.smithNormalFormCoeffs_ne_zero b hrank`.
+
+Use `choose k u hku using fun i => IsDiscreteValuationRing.eq_unit_mul_pow_irreducible (ha0 i) hp`. Establish `hassoc : ∀ i, Associated (a i) (p ^ k i)` using `fun i => by`. Rewrite using `[hku i]`. Conclude with `associated_unit_mul_left _ _ (Units.isUnit _)`. Establish `hdiag : LinearMap.det (N.subtype ∘ₗ (b'.equiv ab (Equiv.refl _) : M →ₗ[O] N)) = ∏ i, a i`.
+
+Rewrite using `[← LinearMap.det_toMatrix b', ← Matrix.det_diagonal]`. Use `congr 1`. Use extensionality with `i j`. Rewrite using `[LinearMap.toMatrix_apply]`. Simplify using `only [LinearMap.coe_comp, Function.comp_apply, LinearEquiv.coe_coe, Module.Basis.equiv_apply, Equiv.refl_apply, Submodule.subtype_apply]`.
+
+Rewrite using `[hab, map_smul, Module.Basis.repr_self, Matrix.diagonal_apply]`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h]`.
+
+Establish `hf_eq : f = N.subtype ∘ₗ (LinearEquiv.ofInjective f hinj : M →ₗ[O] N)`. Use extensionality with `x`. Both sides reduce to the same expression. Establish `hdet_assoc : Associated (LinearMap.det f) (p ^ ∑ i, k i)`. Establish `h1` using `LinearMap.associated_det_comp_equiv N.subtype (LinearEquiv.ofInjective f hinj) (b'.equiv ab (Equiv.refl _))`.
+
+Rewrite `h1` using `[← hf_eq, hdiag]`. Use `h1.trans ?_` and prove the remaining obligations. Rewrite using `[← Finset.prod_pow_eq_pow_sum]`. Conclude with `Associated.prod _ _ _ fun i _ => hassoc i`. Establish `hdet : LinearMap.det B = algebraMap O K (LinearMap.det f)`.
+
+Set `bK` to `b'.extendOfIsLattice K`. Rewrite using `[← LinearMap.det_toMatrix bK, ← LinearMap.det_toMatrix b', RingHom.map_det]`. Use `congr 1`. Use extensionality with `i j`. Rewrite using `[RingHom.mapMatrix_apply, Matrix.map_apply, LinearMap.toMatrix_apply, LinearMap.toMatrix_apply]`.
+
+Establish `h1 : B (bK j) = ((f (b' j) : M) : W)`. Rewrite using `[Module.Basis.extendOfIsLattice_apply]`. Both sides reduce to the same expression. Establish `h2 : ((f (b' j) : M) : W) = ∑ x, algebraMap O K (b'.repr (f (b' j)) x) • bK x` using `by conv_lhs => rw [← b'.sum_repr (f (b' j))]`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul_of_tower, bK, Module.Basis.extendOfIsLattice_apply, algebraMap_smul]`.
+
+Rewrite using `[h1, h2]`. Conclude with `congrFun (bK.repr_sum_self _) i`. Take `⟨w, hw⟩` from `hdet_assoc`. Use `⟨∑ i, k i, w, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hdet, ← map_mul, hw, map_pow]`.
+
+Establish `hidx : M.toAddSubgroup.relIndex (M.toAddSubgroup.comap B.toAddMonoidHom) = Nat.card (M ⧸ N)`. Rewrite using `[← AddSubgroup.relIndex_map_map_of_injective (f := B.toAddMonoidHom) _ _ hB.1, AddSubgroup.map_comap_eq_self_of_surjective hB.2]`. Establish `hH : (M.toAddSubgroup.map B.toAddMonoidHom).addSubgroupOf M.toAddSubgroup = N.toAddSubgroup`. Use extensionality with `x`. Simplify using `only [AddSubgroup.mem_addSubgroupOf, AddSubgroup.mem_map, Submodule.mem_toAddSubgroup, N, LinearMap.mem_range]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, hyx⟩`. Conclude with `⟨⟨y, hy⟩, Subtype.ext hyx⟩`. Introduce and unpack `⟨y, rfl⟩`. Conclude with `⟨y, y.2, rfl⟩`.
+
+Rewrite using `[AddSubgroup.relIndex, hH]`. Both sides reduce to the same expression. Establish `hP0 : Ideal.span {p} ≠ ⊥`. Rewrite using `[Ne, Ideal.span_singleton_eq_bot]`. Conclude with `hp.ne_zero`.
+
+Establish `: (Ideal.span {p}).IsPrime` using `(Ideal.span_singleton_prime hp.ne_zero).2 hp.prime`. Rewrite using `[hidx, Nat.card_congr (Submodule.quotientEquivPiSpan N b hrank).toEquiv, Nat.card_pi, ← Finset.prod_pow_eq_pow_sum]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← ha_def, Ideal.span_singleton_eq_span_singleton.2 (hassoc i), ← Ideal.span_singleton_pow, ← Submodule.cardQuot_apply, ← Submodule.cardQuot_apply, cardQuot_pow_of_prime hP0]`.
+-/
 theorem relIndex_comap_lattice {O K W : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field K]
     [Algebra O K] [IsFractionRing O K] [AddCommGroup W] [Module K W] [Module O W] [IsScalarTower O K W]
     (M : Submodule O W) [Submodule.IsLattice K M] (B : W →ₗ[K] W) (hB : Function.Bijective B) (hM : ∀ m ∈ M, B m ∈ M)
@@ -110,11 +139,17 @@ variable {K : Type} [Field K] {a b : ℕ}
 def mulR (b : ℕ) (G : Matrix (Fin a) (Fin a) K) : Matrix (Fin b) (Fin a) K →ₗ[K] Matrix (Fin b) (Fin a) K :=
   LinearMap.pi fun i : Fin b => (Matrix.toLin' Gᵀ).comp (LinearMap.proj i)
 
+/- English proof (translation)
+Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `(Matrix.toLin' Gᵀ (w i)) j = (w * G) i j`. Simplify using `[Matrix.mulVec, dotProduct, Matrix.mul_apply, mul_comm]`.
+-/
 theorem mulR_apply (G : Matrix (Fin a) (Fin a) K) (w : Matrix (Fin b) (Fin a) K) : mulR b G w = w * G := by
   ext i j
   change (Matrix.toLin' Gᵀ (w i)) j = (w * G) i j
   simp [Matrix.mulVec, dotProduct, Matrix.mul_apply, mul_comm]
 
+/- English proof (translation)
+Establish `h : LinearMap.det (mulR b G) = LinearMap.det (M` using `Fin b → Fin a → K) (LinearMap.pi fun i : Fin b => (Matrix.toLin' Gᵀ).comp (LinearMap.proj i)) := rfl`. Rewrite using `[h, LinearMap.det_pi]`. Simplify using `[LinearMap.det_toLin', Matrix.det_transpose]`.
+-/
 theorem det_mulR (G : Matrix (Fin a) (Fin a) K) : LinearMap.det (mulR b G) = G.det ^ b := by
 
   have h : LinearMap.det (mulR b G) = LinearMap.det (M := Fin b → Fin a → K)
@@ -122,6 +157,11 @@ theorem det_mulR (G : Matrix (Fin a) (Fin a) K) : LinearMap.det (mulR b G) = G.d
   rw [h, LinearMap.det_pi]
   simp [LinearMap.det_toLin', Matrix.det_transpose]
 
+/- English proof (translation)
+Set `L` to `(Matrix.transposeLinearEquiv (Fin b) (Fin a) K K).symm`. Use `⟨((L : Matrix (Fin a) (Fin b) K →ₗ[K] Matrix (Fin b) (Fin a) K) ∘ₗ mulR a Hᵀ ∘ₗ (L.symm : Matrix (Fin b) (Fin a) K →ₗ[K] Matrix (Fin a) (Fin b) K)) ∘ₗ mulR b G, fun w => ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.coe_comp, Function.comp_apply, mulR_apply, LinearEquiv.coe_coe, L, LinearEquiv.symm_symm, Matrix.transposeLinearEquiv_apply, Matrix.mul_assoc]`. Express the relevant statement in the definitionally equal form `((w * G)ᵀ * Hᵀ)ᵀ = H * (w * G)`. Rewrite using `[Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.transpose_transpose]`.
+
+Rewrite using `[LinearMap.det_comp, LinearMap.det_conj, det_mulR, det_mulR, Matrix.det_transpose, mul_comm]`.
+-/
 theorem exists_mul_map (H : Matrix (Fin b) (Fin b) K) (G : Matrix (Fin a) (Fin a) K) :
     ∃ B : Matrix (Fin b) (Fin a) K →ₗ[K] Matrix (Fin b) (Fin a) K, (∀ w, B w = H * w * G) ∧
       LinearMap.det B = G.det ^ b * H.det ^ a := by
@@ -137,12 +177,54 @@ theorem exists_mul_map (H : Matrix (Fin b) (Fin b) K) (G : Matrix (Fin a) (Fin a
 
 end Det
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simp [absV]`. Consider the case `succ n ih => rw [pow_succ, absV_mul, ih, pow_succ]`.
+-/
 theorem absV_pow {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) (x : (Fv F v)ˣ) (n : ℕ) :
     absV F v (x ^ n) = absV F v x ^ n := by
   induction n with
   | zero => simp [absV]
   | succ n ih => rw [pow_succ, absV_mul, ih, pow_succ]
 
+/- English proof (translation)
+Introduce `F _ _ v a b M M' hsm hbd hsp H G x y hG hH hst hM'`. Establish `hq : ∀ n : ℕ, 0 < n → (n : Fv F v) ≠ 0`. Introduce `n hn`. Rewrite using `[← map_natCast (algebraMap F (Fv F v)) n]`. Conclude with `(map_ne_zero (algebraMap F (Fv F v))).2 (Nat.cast_ne_zero.2 hn.ne')`.
+
+Set `MO : Submodule (v.adicCompletionIntegers F) (Matrix (Fin b) (Fin a) (Fv F v))` to `{ toAddSubmonoid := M.toAddSubmonoid smul_mem' := fun c m hm => hsm c c.2 m hm }`. Take `⟨N0, hN0, hbdN⟩` from `hbd`. Set `φ : (Fin b → Fin a → v.adicCompletionIntegers F) →ₗ[v.adicCompletionIntegers F] Matrix (Fin b) (Fin a) (Fv F v)` to `{ toFun := fun c => Matrix.of fun i j => (N0 : Fv F v)⁻¹ * (c i j : Fv F v) map_add' := fun c d => by`. Use extensionality with `i j`. Simplify using `[mul_add]`.
+
+Use the proof step `map_smul' := fun r c => by`. Use extensionality with `i j`. Simplify using `[Algebra.smul_def]`. Use `ring }`. Establish `hle : MO ≤ LinearMap.range φ`.
+
+Introduce `m hm`. Use `⟨fun i j => ⟨(N0 : Fv F v) * m i j, hbdN m hm i j⟩, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Simplify using `[φ, inv_mul_cancel_left₀ (hq N0 hN0)]`. Establish `hfg : MO.FG`.
+
+Establish `: IsNoetherian (v.adicCompletionIntegers F) MO` using `isNoetherian_of_le hle`. Rewrite using `[← Module.Finite.iff_fg]`. Use `infer_instance`. Establish `htop : Submodule.span (Fv F v) (MO : Set (Matrix (Fin b) (Fin a) (Fv F v))) = ⊤`. Use `eq_top_iff.2 fun w _ => ?_` and prove the remaining obligations.
+
+Take `⟨n, hn, hnw⟩` from `hsp w`. Establish `h1 : w = (n : Fv F v)⁻¹ • (n • w)`. Rewrite using `[← Nat.cast_smul_eq_nsmul (Fv F v), inv_smul_smul₀ (hq n hn)]`. Rewrite using `[h1]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span hnw)`.
+
+Establish `hlat : Submodule.IsLattice (Fv F v) MO` using `⟨hfg, htop⟩`. Take `⟨B, hBw, hBdet⟩` from `exists_mul_map H G`. Establish `hdetB : LinearMap.det B ≠ 0`. Rewrite using `[hBdet, hG, hH]`. Conclude with `mul_ne_zero (pow_ne_zero _ x.ne_zero) (pow_ne_zero _ y.ne_zero)`.
+
+Establish `hBbij : Function.Bijective B`. Take `⟨U, hU⟩` from `(LinearMap.isUnit_iff_isUnit_det B).2 (Ne.isUnit hdetB)`. Establish `h1 : ∀ w, U.inv (B w) = w` using `fun w => by`. Rewrite using `[← hU]`. Conclude with `LinearMap.congr_fun U.inv_val w`.
+
+Establish `h2 : ∀ w, B (U.inv w) = w` using `fun w => by`. Rewrite using `[← hU]`. Conclude with `LinearMap.congr_fun U.val_inv w`. Conclude with `⟨Function.LeftInverse.injective h1, Function.RightInverse.surjective h2⟩`. Take `⟨π0, hπ0⟩` from `v.valuation_exists_uniformizer' F`.
+
+Use `set pK : Fv F v := algebraMap F (Fv F v) (π0 : F) with hpK`. Establish `hpv : Valued.v pK = WithZero.exp (-1)`. Establish `h1 : Valued.v pK = v.valuation F (π0 : F)` using `v.valuedAdicCompletion_eq_valuation' (π0 : F)`. Rewrite using `[h1]`. Conclude with `hπ0`.
+
+Establish `hpmem : pK ∈ v.adicCompletionIntegers F`. Rewrite using `[IsDedekindDomain.HeightOneSpectrum.mem_adicCompletionIntegers, hpv]`. Conclude with `le_of_lt (by decide)`. Use `set p : v.adicCompletionIntegers F := ⟨pK, hpmem⟩ with hp_def`. Establish `hirr : Irreducible p` using `GlobalTheory.SplitUnif.irreducible_of_valued v p hpv`.
+
+Establish `hpK0 : pK ≠ 0`. Introduce `h0`. Rewrite `hpv` using `[h0, map_zero]`. Conclude with `WithZero.zero_ne_coe hpv`. Establish `hP : ∀ z : 𝓞 F, z ∈ v.asIdeal ↔ Valued.v (algebraMap F (Fv F v) (z : F)) < 1`.
+
+Introduce `z`. Establish `h1 : Valued.v (algebraMap F (Fv F v) (z : F)) = v.valuation F (z : F)` using `v.valuedAdicCompletion_eq_valuation' (z : F)`. Rewrite using `[h1]`. Conclude with `(v.valuation_lt_one_iff_mem (K := F) z).symm`. Establish `hcard : Nat.card (v.adicCompletionIntegers F ⧸ Ideal.span {p}) = Ideal.absNorm v.asIdeal`.
+
+Rewrite using `[← (IsDiscreteValuationRing.irreducible_iff_uniformizer p).1 hirr]`. Conclude with `GlobalTheory.SplitUnif.card_residueField v (algebraMap F (Fv F v)) v (fun _ => rfl) hP`. Take `⟨m, u, hdu, hidx⟩` from `relIndex_comap_lattice MO B hBbij (fun w hw => by rw [hBw]; exact hst w hw) hirr`. Establish `e2 : MO.toAddSubgroup.comap B.toAddMonoidHom = M'` using `AddSubgroup.ext fun w => by`. Rewrite using `[AddSubgroup.mem_comap, hM']`.
+
+Express the relevant statement in the definitionally equal form `B w ∈ M ↔ _`. Rewrite using `[hBw]`. Establish `e1 : MO.toAddSubgroup = M` using `AddSubgroup.ext fun _ => Iff.rfl`. Rewrite `hidx` using `[e2, e1, hcard]`. Establish `hu0 : algebraMap (v.adicCompletionIntegers F) (Fv F v) (u : v.adicCompletionIntegers F) ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective _ _)).2 u.ne_zero`.
+
+Use `set U : (Fv F v)ˣ := Units.mk0 _ hu0 with hU`. Use `set Pu : (Fv F v)ˣ := Units.mk0 pK hpK0 with hPu`. Establish `hunits : x ^ b * y ^ a * U = Pu ^ m`. Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [Units.val_mul, Units.val_pow_eq_pow_val, U, Pu, Units.val_mk0]`.
+
+Rewrite using `[← hG, ← hH, ← hBdet]`. Conclude with `hdu`. Establish `hU1 : absV F v U = 1`. Establish `hle1 : Valued.v ((U : Fv F v)) ≤ 1` using `(u : v.adicCompletionIntegers F).2`. Establish `hnot : ¬ Valued.v ((U : Fv F v)) < 1` using `fun hlt => (IsLocalRing.notMem_maximalIdeal.2 u.isUnit) ((GlobalTheory.SplitUnif.mem_max v _).2 hlt)`.
+
+Establish `hv1 : Valued.v ((U : Fv F v)) = 1` using `le_antisymm hle1 (not_lt.1 hnot)`. Rewrite using `[absV, hv1, WithZero.log_one, zpow_zero]`. Establish `hP1 : absV F v Pu = ((Ideal.absNorm v.asIdeal : ℕ) : ℝ)⁻¹`. Rewrite using `[absV, hPu, Units.val_mk0, hpv, WithZero.log_exp, _root_.zpow_neg_one]`. Establish `hkey : absV F v x ^ b * absV F v y ^ a = ((Ideal.absNorm v.asIdeal : ℕ) : ℝ)⁻¹ ^ m`.
+
+Establish `h1` using `congrArg (absV F v) hunits`. Rewrite `h1` using `[absV_mul, absV_mul, absV_pow, absV_pow, absV_pow, hU1, mul_one, hP1]`. Conclude with `h1`. Rewrite using `[hidx, hkey, inv_pow, inv_inv, Nat.cast_pow]`.
+-/
 theorem relIndex_matrix_lattice : ∀ (F : Type) [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) (a b : ℕ) (M M' : AddSubgroup (Matrix (Fin b) (Fin a) (Fv F v))), (∀ o ∈ v.adicCompletionIntegers F, ∀ m ∈ M, (o : Fv F v) • m ∈ M) → (∃ N : ℕ, 0 < N ∧ ∀ m ∈ M, ∀ i j, (N : Fv F v) * m i j ∈ v.adicCompletionIntegers F) → (∀ w : Matrix (Fin b) (Fin a) (Fv F v), ∃ N : ℕ, 0 < N ∧ N • w ∈ M) → ∀ (H : Matrix (Fin b) (Fin b) (Fv F v)) (G : Matrix (Fin a) (Fin a) (Fv F v)) (x y : (Fv F v)ˣ), G.det = x → H.det = y → (∀ m ∈ M, H * m * G ∈ M) → (∀ w, w ∈ M' ↔ H * w * G ∈ M) → ((M.relIndex M' : ℕ) : ℝ) = (GlobalTheory.IndefiniteRowSideFullHecke.SplitLinearModelNorm.absV F v x ^ b * GlobalTheory.IndefiniteRowSideFullHecke.SplitLinearModelNorm.absV F v y ^ a)⁻¹ := by
   intro F _ _ v a b M M' hsm hbd hsp H G x y hG hH hst hM'
   have hq : ∀ n : ℕ, 0 < n → (n : Fv F v) ≠ 0 := by
@@ -252,16 +334,25 @@ theorem relIndex_matrix_lattice : ∀ (F : Type) [Field F] [NumberField F] (v : 
     exact h1
   rw [hidx, hkey, inv_pow, inv_inv, Nat.cast_pow]
 
+/- English proof (translation)
+Take the linear combination `((1 - c) * y) * hx + (1 - e) * hy + (1 - x * y) * h`.
+-/
 theorem off_norm {R : Type} [CommRing R] {e c x y : R} (hx : (1 - e) * x = 1 - e) (hy : (1 - c) * y = 1 - c)
     (h : e * c = 0) : (1 - (e + c)) * (x * y) = 1 - (e + c) := by
   linear_combination ((1 - c) * y) * hx + (1 - e) * hy + (1 - x * y) * h
 
+/- English proof (translation)
+Apply `hf` to reduce the goal to its premises. Rewrite using `[map_mul, map_sub, map_one, h2, ← h1]`. Conclude with `h`.
+-/
 theorem off_norm' {A R : Type} [CommRing A] [CommRing R] (f : A →+* R) (hf : Function.Injective f) {ε n : A} {b z : R}
     (h1 : b = f ε) (h2 : f n = z) (h : (1 - b) * z = 1 - b) : (1 - ε) * n = 1 - ε := by
   apply hf
   rw [map_mul, map_sub, map_one, h2, ← h1]
   exact h
 
+/- English proof (translation)
+Establish `h'` using `congrArg f h`. Simplify `h'` using `[map_mul, map_sub, map_one, h1]`.
+-/
 theorem off_norm'' {A R : Type} [CommRing A] [CommRing R] (f : A →+* R) {ε n : A} (h1 : f ε = 0)
     (h : (1 - ε) * n = 1 - ε) : f n = 1 := by
   have h' := congrArg f h
@@ -271,16 +362,27 @@ section Chart
 
 variable {D : D7} {e : AE D} {v : HeightOneSpectrum (𝓞 D.host.F)} {π : AE D →+* Fv D.host.F v}
 
+/- English proof (translation)
+Take `⟨-, hz, -, -⟩` from `hπ`. Establish `h0 : π (1 - e) = 0` using `(hz _).2 (by rw [mul_sub, mul_one, he, sub_self])`. Rewrite `h0` using `[map_sub, map_one, sub_eq_zero]`. Conclude with `h0.symm`.
+-/
 theorem chart_e (he : e * e = e) (hπ : GlobalTheory.SplitHecke.Chart e v π) : π e = 1 := by
   obtain ⟨-, hz, -, -⟩ := hπ
   have h0 : π (1 - e) = 0 := (hz _).2 (by rw [mul_sub, mul_one, he, sub_self])
   rw [map_sub, map_one, sub_eq_zero] at h0
   exact h0.symm
 
+/- English proof (translation)
+Establish `h'` using `congrArg (cA D) hx`. Simplify `h'` using `only [map_mul, map_sub, map_one]`.
+-/
 theorem conj_off {x : AE D} (hx : (1 - e) * x = 1 - e) : (1 - cA D e) * cA D x = 1 - cA D e := by
   have h' := congrArg (cA D) hx
   simpa only [map_mul, map_sub, map_one] using h'
 
+/- English proof (translation)
+Take `⟨-, hz, halg, -⟩` from `hπ`. Establish `hc : π (cA D e) = 0` using `(hz _).2 h2`. Establish `hcx : π (cA D x) = 1`. Establish `h'` using `congrArg π (conj_off hx)`. Simplify `h'` using `[map_mul, map_sub, map_one, hc]`.
+
+Rewrite using `[← halg, GlobalTheory.SplitDetCharacter.algebraMap_norm, map_mul, hcx, mul_one]`.
+-/
 theorem norm_at (h2 : e * cA D e = 0) (hπ : GlobalTheory.SplitHecke.Chart e v π) {x : AE D} (hx : (1 - e) * x = 1 - e) :
     evalV D.host.F v (sndA D.host.F (Algebra.norm (AF D.host.F) x)) = π x := by
   obtain ⟨-, hz, halg, -⟩ := hπ
@@ -290,6 +392,13 @@ theorem norm_at (h2 : e * cA D e = 0) (hπ : GlobalTheory.SplitHecke.Chart e v �
     simpa [map_mul, map_sub, map_one, hc] using h'
   rw [← halg, GlobalTheory.SplitDetCharacter.algebraMap_norm, map_mul, hcx, mul_one]
 
+/- English proof (translation)
+Take `⟨hee, hec, v', ε, ⟨α, rfl, -, hα0⟩, hsum⟩` from `he`. Establish `hv : v' = v`. Assume the negation of the conclusion as `hne`. Establish `h1` using `hπ.2.2.1 (pairA D.host.F 0 α)`. Rewrite `h1` using `[← hsum, map_add, chart_e hee hπ, (hπ.2.1 _).2 hec, add_zero]`.
+
+Establish `h2 : evalV D.host.F v (sndA D.host.F (pairA D.host.F 0 α)) = 0` using `hα0 v (Ne.symm hne)`. Rewrite `h1` using `[h2]`. Conclude with `one_ne_zero h1`. Establish `hinj : Function.Injective (algebraMap (AF D.host.F) (AE D))` using `fun a b hab => GlobalTheory.IdemModTwo.tmul_one_inj hab`. Establish `key : (1 - pairA D.host.F 0 α) * Algebra.norm (AF D.host.F) x = 1 - pairA D.host.F 0 α` using `off_norm' (algebraMap (AF D.host.F) (AE D)) hinj hsum (GlobalTheory.SplitDetCharacter.algebraMap_norm x) (off_norm hx (conj_off hx) hec)`.
+
+Establish `hw' : w ≠ v'` using `by rw [hv]; exact hw`. Conclude with `off_norm'' ((evalV D.host.F w).toRingHom.comp (sndA D.host.F).toRingHom) (hα0 w hw') key`.
+-/
 theorem norm_off (he : IsSplitIdem D e) (hπ : GlobalTheory.SplitHecke.Chart e v π) {x : AE D} (hx : (1 - e) * x = 1 - e)
     {w : HeightOneSpectrum (𝓞 D.host.F)} (hw : w ≠ v) :
     evalV D.host.F w (sndA D.host.F (Algebra.norm (AF D.host.F) x)) = 1 := by
@@ -312,6 +421,11 @@ theorem norm_off (he : IsSplitIdem D e) (hπ : GlobalTheory.SplitHecke.Chart e v
 
 end Chart
 
+/- English proof (translation)
+Introduce `D e v π he hπ x hx`. Establish `hec : e * cA D e = 0` using `he.2.1`. Unfold `absFin`. Rewrite using `[finprod_eq_single _ v]`. Use `congr 1`.
+
+Conclude with `Units.ext (norm_at hec hπ hx)`. Introduce `w hw`. Establish `h1 : normV D w x = 1` using `Units.ext (norm_off he hπ hx hw)`. Rewrite using `[h1]`. Simplify using `[absV]`.
+-/
 theorem absFin_split : ∀ (D : D7) (e : AE D) (v : HeightOneSpectrum (𝓞 D.host.F)) (π : AE D →+* Fv D.host.F v), IsSplitIdem D e → GlobalTheory.SplitHecke.Chart e v π → ∀ x : (AE D)ˣ, (1 - e) * (x : AE D) = 1 - e → GlobalTheory.IndefiniteRowSideFullHecke.SplitLinearModelNorm.absFin D x = GlobalTheory.IndefiniteRowSideFullHecke.SplitLinearModelNorm.absV D.host.F v (Units.map π.toMonoidHom x) := by
   intro D e v π he hπ x hx
   have hec : e * cA D e = 0 := he.2.1

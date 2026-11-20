@@ -14,6 +14,9 @@ open Formalism.L2.Host (aboveF)
 open scoped Classical
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.VacFixStab.vac_fixed_both | exact GlobalTheory.VacFixStab.vac_fixed_both | (intros; apply GlobalTheory.VacFixStab.vac_fixed_both <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.unramified_vacuum_fixed_by_stabilizer : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     (B : Base F E) {a a' : ℕ} (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W),
     IsTriple B G X om om' → ∀ v : Pl F, v ∉ X.T →

@@ -20,11 +20,17 @@ section Alg
 
 variable {A : Type*} [CommRing A] (a1 a2 a3 a4 a6 U Ui r s t u w v : A)
 
+/- English proof (translation)
+Take the linear combination `(U^3*v^3*(1)) * hw + (U^3*(v^3*((-a1*r*s*u*w^2 + a1*s*u^2*w + a1*t*u*w^2 - a2*u^2*w - a3*r*s*w^3 + a3*s*u*w^2 + a3*t*w^3 - a4*u*w^2 - a6*w^3 + r^2*s^2*w^3 - 2*r*s^2*u*w^2 - 2*r*s*t*w^3 + s^2*u^2*w + 2*s*t*u*w^2 + t^2*w^3 - u^3)*(1 + s*u + (t - s*r)*w)^0*((v*(1 + s*u + (t - s*r)*w …`.
+-/
 theorem weq_vc (hw : w = u^3 + a1*u*w + a2*u^2*w + a3*w^2 + a4*u*w^2 + a6*w^3)
     (hv : v * (1 + s*u + (t - s*r)*w) = 1) (hU : U * Ui = 1) :
     (U^3*w*v) = (U*(u - r*w)*v)^3 + (Ui*(a1+2*s))*(U*(u - r*w)*v)*(U^3*w*v) + (Ui^2*(a2 - s*a1 + 3*r - s^2))*(U*(u - r*w)*v)^2*(U^3*w*v) + (Ui^3*(a3 + r*a1 + 2*t))*(U^3*w*v)^2 + (Ui^4*(a4 - s*a3 + 2*r*a2 - (t + r*s)*a1 + 3*r^2 - 2*s*t))*(U*(u - r*w)*v)*(U^3*w*v)^2 + (Ui^6*(a6 + r*a4 + r^2*a2 + r^3 - t*a3 - t^2 - r*t*a1))*(U^3*w*v)^3 := by
   linear_combination (U^3*v^3*(1)) * hw + (U^3*(v^3*((-a1*r*s*u*w^2 + a1*s*u^2*w + a1*t*u*w^2 - a2*u^2*w - a3*r*s*w^3 + a3*s*u*w^2 + a3*t*w^3 - a4*u*w^2 - a6*w^3 + r^2*s^2*w^3 - 2*r*s^2*u*w^2 - 2*r*s*t*w^3 + s^2*u^2*w + 2*s*t*u*w^2 + t^2*w^3 - u^3)*(1 + s*u + (t - s*r)*w)^0*((v*(1 + s*u + (t - s*r)*w))^0 + (v*(1 + s*u + (t - s*r)*w))^1 + (v*(1 + s*u + (t - s*r)*w))^2) + (-a1*u*w - a3*w^2 + 2*r*s*w^2 - 2*s*u*w - 2*t*w^2)*(1 + s*u + (t - s*r)*w)^1*((v*(1 + s*u + (t - s*r)*w))^0 + (v*(1 + s*u + (t - s*r)*w))^1) + (w)*(1 + s*u + (t - s*r)*w)^2*((v*(1 + s*u + (t - s*r)*w))^0)) - (-a1*r*s*u*v^3*w^2 + a1*s*u^2*v^3*w + a1*t*u*v^3*w^2 - a1*u*v^2*w - a2*u^2*v^3*w - a3*r*s*v^3*w^3 + a3*s*u*v^3*w^2 + a3*t*v^3*w^3 - a3*v^2*w^2 - a4*u*v^3*w^2 - a6*v^3*w^3 + r^2*s^2*v^3*w^3 - 2*r*s^2*u*v^3*w^2 - 2*r*s*t*v^3*w^3 + 2*r*s*v^2*w^2 + s^2*u^2*v^3*w + 2*s*t*u*v^3*w^2 - 2*s*u*v^2*w + t^2*v^3*w^3 - 2*t*v^2*w^2 - u^3*v^3 + v*w)*((v*(1 + s*u + (t - s*r)*w))^0 + (v*(1 + s*u + (t - s*r)*w))^1 + (v*(1 + s*u + (t - s*r)*w))^2))) * hv + (U^3*(a1*r*t*v^3*w^3 - a2*r^2*v^3*w^3 + a3*t*v^3*w^3 - a4*r*v^3*w^3 - a6*v^3*w^3 - r^3*v^3*w^3 + t^2*v^3*w^3)*((U*Ui)^0 + (U*Ui)^1 + (U*Ui)^2 + (U*Ui)^3 + (U*Ui)^4 + (U*Ui)^5) + U^3*(-a1*r^2*s*v^3*w^3 + a1*r*s*u*v^3*w^2 - a1*r*t*v^3*w^3 + a1*t*u*v^3*w^2 + 2*a2*r^2*v^3*w^3 - 2*a2*r*u*v^3*w^2 - a3*r*s*v^3*w^3 + a3*s*u*v^3*w^2 + a4*r*v^3*w^3 - a4*u*v^3*w^2 + 3*r^3*v^3*w^3 - 3*r^2*u*v^3*w^2 - 2*r*s*t*v^3*w^3 + 2*s*t*u*v^3*w^2)*((U*Ui)^0 + (U*Ui)^1 + (U*Ui)^2 + (U*Ui)^3) + U^3*(-a1*r*v^2*w^2 - a3*v^2*w^2 - 2*t*v^2*w^2)*((U*Ui)^0 + (U*Ui)^1 + (U*Ui)^2) + U^3*(a1*r^2*s*v^3*w^3 - 2*a1*r*s*u*v^3*w^2 + a1*s*u^2*v^3*w - a2*r^2*v^3*w^3 + 2*a2*r*u*v^3*w^2 - a2*u^2*v^3*w - 3*r^3*v^3*w^3 + r^2*s^2*v^3*w^3 + 6*r^2*u*v^3*w^2 - 2*r*s^2*u*v^3*w^2 - 3*r*u^2*v^3*w + s^2*u^2*v^3*w)*((U*Ui)^0 + (U*Ui)^1) + U^3*(a1*r*v^2*w^2 - a1*u*v^2*w + 2*r*s*v^2*w^2 - 2*s*u*v^2*w)*((U*Ui)^0)) * hU
 
+/- English proof (translation)
+Take the linear combination `(U^1*v^2*(3*t)) * hw + (U^1*(v^2*((-3*a1*t*u*w - 2*a2*r^2*s*u*w^2 + a2*r*s*u^2*w + 2*a2*r*t*u*w^2 + 2*a2*r*u*w + a2*s*u^3 - 2*a2*t*u^2*w + a2*u^2 - 3*a3*t*w^2 - a4*r^2*s*w^3 - a4*r*s*u*w^2 + a4*r*t*w^3 + a4*r*w^2 + 2*a4*s*u^2*w - a4*t*u*w^2 + 2*a4*u*w - 3*a6*r*s*w^3 + 3*a6*s*u*w^ …`.
+-/
 theorem flow_vc (hw : w = u^3 + a1*u*w + a2*u^2*w + a3*w^2 + a4*u*w^2 + a6*w^3)
     (hv : v * (1 + s*u + (t - s*r)*w) = 1) (hU : U * Ui = 1) :
     U*(((1 - a1*u - a2*u^2 - 2*a3*w - 2*a4*u*w - 3*a6*w^2) - r*(3*u^2 + a1*w + 2*a2*u*w + a4*w^2))*v + (u - r*w)*(-v^2*(s*(1 - a1*u - a2*u^2 - 2*a3*w - 2*a4*u*w - 3*a6*w^2) + (t - s*r)*(3*u^2 + a1*w + 2*a2*u*w + a4*w^2)))) =
@@ -47,34 +53,64 @@ def phi : R⟦X⟧ := PowerSeries.C (C.u : R) * (X - PowerSeries.C C.r * wSer W)
 
 def psi : R⟦X⟧ := PowerSeries.C ((C.u : R) ^ 3) * wSer W * vv W C
 
+/- English proof (translation)
+Simplify using `[den, CurveSer.wSer_cc]`.
+-/
 theorem den_cc : constantCoeff (den W C) = 1 := by
   simp [den, CurveSer.wSer_cc]
 
+/- English proof (translation)
+The claim follows from `mul_invOfUnit _ _ (by rw [den_cc]; simp)`.
+-/
 theorem den_mul_vv : den W C * vv W C = 1 :=
   mul_invOfUnit _ _ (by rw [den_cc]; simp)
 
+/- English proof (translation)
+Simplify using `[vv]`.
+-/
 theorem vv_cc : constantCoeff (vv W C) = 1 := by
   simp [vv]
 
+/- English proof (translation)
+Simplify using `[phi, CurveSer.wSer_cc]`.
+-/
 theorem phi_cc : constantCoeff (phi W C) = 0 := by
   simp [phi, CurveSer.wSer_cc]
 
+/- English proof (translation)
+Simplify using `[psi, CurveSer.wSer_cc]`.
+-/
 theorem psi_cc : constantCoeff (psi W C) = 0 := by
   simp [psi, CurveSer.wSer_cc]
 
+/- English proof (translation)
+Rewrite using `[phi, CurveSer.wSer_eq]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem phi_eq : phi W C = X * (PowerSeries.C (C.u : R) * (1 - PowerSeries.C C.r * X ^ 2 * wU W) * vv W C) := by
   rw [phi, CurveSer.wSer_eq]; ring
 
+/- English proof (translation)
+Rewrite using `[phi_eq, show (1 : ℕ) = 0 + 1 from rfl, coeff_succ_X_mul, coeff_zero_eq_constantCoeff_apply]`. Simplify using `[vv_cc]`.
+-/
 theorem phi_coeff_one : coeff 1 (phi W C) = (C.u : R) := by
   rw [phi_eq, show (1 : ℕ) = 0 + 1 from rfl, coeff_succ_X_mul, coeff_zero_eq_constantCoeff_apply]
   simp [vv_cc]
 
+/- English proof (translation)
+Rewrite using `[← map_mul, Units.mul_inv, map_one]`.
+-/
 theorem hU_C : PowerSeries.C (C.u : R) * PowerSeries.C ((C.u⁻¹ : Rˣ) : R) = 1 := by
   rw [← map_mul, Units.mul_inv, map_one]
 
+/- English proof (translation)
+Rewrite using `[mul_comm, ← map_mul, ← map_sub]`. Conclude with `den_mul_vv W C`.
+-/
 theorem hv_C : vv W C * (1 + PowerSeries.C C.s * X + (PowerSeries.C C.t - PowerSeries.C C.s * PowerSeries.C C.r) * wSer W) = 1 := by
   rw [mul_comm, ← map_mul, ← map_sub]; exact den_mul_vv W C
 
+/- English proof (translation)
+Establish `hw` using `(CurveSer.wSer_fixed W).2`. Establish `h` using `weq_vc (PowerSeries.C W.a₁) (PowerSeries.C W.a₂) (PowerSeries.C W.a₃) (PowerSeries.C W.a₄) (PowerSeries.C W.a₆) (PowerSeries.C (C.u : R)) (PowerSeries.C ((C.u⁻¹ : Rˣ) : R)) (PowerSeries.C C.r) (PowerSeries.C C.s) (PowerSeries.C C.t) X (wSer W) (vv W C) hw (hv_C W C) (hU_C C)`. Simplify using `only [phi, psi, WeierstrassCurve.variableChange_a₁, WeierstrassCurve.variableChange_a₂, WeierstrassCurve.variableChange_a₃, WeierstrassCurve.variableChange_a₄, WeierstrassCurve.variableChange_a₆, map_mul, map_add, map_sub, map_pow, map_ofNat]`. Take the linear combination `h`.
+-/
 theorem weq_phi : psi W C = phi W C ^ 3 + PowerSeries.C (C • W).a₁ * phi W C * psi W C
     + PowerSeries.C (C • W).a₂ * phi W C ^ 2 * psi W C + PowerSeries.C (C • W).a₃ * psi W C ^ 2
     + PowerSeries.C (C • W).a₄ * phi W C * psi W C ^ 2 + PowerSeries.C (C • W).a₆ * psi W C ^ 3 := by
@@ -87,14 +123,34 @@ theorem weq_phi : psi W C = phi W C ^ 3 + PowerSeries.C (C • W).a₁ * phi W C
     map_mul, map_add, map_sub, map_pow, map_ofNat]
   linear_combination h
 
+/- English proof (translation)
+The claim follows from `(ISer.eq_wSer_subst wSerSpec (C • W) _ _ (phi_cc W C) (psi_cc W C) (weq_phi W C)).symm`.
+-/
 theorem wSer_phi : (wSer (C • W)).subst (phi W C) = psi W C :=
   (ISer.eq_wSer_subst wSerSpec (C • W) _ _ (phi_cc W C) (psi_cc W C) (weq_phi W C)).symm
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem C_eq_algebraMap (a : R) : (PowerSeries.C a : R⟦X⟧) = algebraMap R R⟦X⟧ a := rfl
 
+/- English proof (translation)
+Rewrite using `[C_eq_algebraMap, Derivation.map_algebraMap]`.
+-/
 theorem D_C (a : R) : D W (PowerSeries.C a) = 0 := by
   rw [C_eq_algebraMap, Derivation.map_algebraMap]
 
+/- English proof (translation)
+Take `⟨-, -, hFl, hfwAt, hfuAt, -⟩` from `flowU R W`. Take `⟨-, hDX, hDw⟩` from `hFl`. Rewrite `hDX` using `[hfwAt]`. Rewrite `hDw` using `[hfuAt]`. Establish `hs : HasSubst (phi W C)` using `HasSubst.of_constantCoeff_zero' (phi_cc W C)`.
+
+Establish `hfwsub : (fw (C • W)).subst (phi W C) = 1 - PowerSeries.C (C • W).a₁ * phi W C - PowerSeries.C (C • W).a₂ * phi W C ^ 2 - 2 * PowerSeries.C (C • W).a₃ * psi W C - 2 * PowerSeries.C (C • W).a₄ * phi W C * psi W C - 3 * PowerSeries.C (C • W).a₆ * psi W C ^ 2`. Rewrite using `[← ISer.subHom_apply _ (phi_cc W C)]`. Simplify using `only [fw, map_sub, map_mul, map_pow, map_one, map_ofNat, ISer.subHom_X, ISer.subHom_C]`. Rewrite using `[ISer.subHom_apply, wSer_phi]`. Establish `hvD : D W (vv W C) = -(vv W C) ^ 2 * D W (den W C)`.
+
+Establish `h1 : D W (den W C * vv W C) = 0` using `by rw [den_mul_vv, Derivation.map_one_eq_zero]`. Rewrite `h1` using `[Derivation.leibniz, smul_eq_mul, smul_eq_mul]`. Establish `h2` using `den_mul_vv W C`. Take the linear combination `(vv W C) * h1 - (D W (vv W C)) * h2`. Establish `hdenD : D W (den W C) = PowerSeries.C C.s * D W X + PowerSeries.C (C.t - C.s * C.r) * D W (wSer W)`.
+
+Simplify using `only [den, map_add, Derivation.leibniz, smul_eq_mul, D_C, Derivation.map_one_eq_zero]`. Expand and normalize the polynomial expressions, which then agree. Establish `hphiD : D W (phi W C) = PowerSeries.C (C.u : R) * ((D W X - PowerSeries.C C.r * D W (wSer W)) * vv W C + (X - PowerSeries.C C.r * wSer W) * D W (vv W C))`. Simplify using `only [phi, map_sub, Derivation.leibniz, smul_eq_mul, D_C]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[hphiD, hvD, hdenD, hDX, hDw, hfwsub]`. Establish `hw` using `(CurveSer.wSer_fixed W).2`. Establish `h` using `flow_vc (PowerSeries.C W.a₁) (PowerSeries.C W.a₂) (PowerSeries.C W.a₃) (PowerSeries.C W.a₄) (PowerSeries.C W.a₆) (PowerSeries.C (C.u : R)) (PowerSeries.C ((C.u⁻¹ : Rˣ) : R)) (PowerSeries.C C.r) (PowerSeries.C C.s) (PowerSeries.C C.t) X (wSer W) (vv W C) hw (hv_C W C) (hU_C C)`. Simplify using `only [phi, psi, fw, fu, WeierstrassCurve.variableChange_a₁, WeierstrassCurve.variableChange_a₂, WeierstrassCurve.variableChange_a₃, WeierstrassCurve.variableChange_a₄, WeierstrassCurve.variableChange_a₆, map_mul, map_add, map_sub, map_pow, map_ofNat] at h ⊢`. Take the linear combination `h`.
+-/
 theorem D_phi : D W (phi W C) = PowerSeries.C (C.u : R) * (fw (C • W)).subst (phi W C) := by
   obtain ⟨-, -, hFl, hfwAt, hfuAt, -⟩ := flowU R W
   obtain ⟨-, hDX, hDw⟩ := hFl
@@ -135,10 +191,16 @@ section Subst
 
 variable {R : Type} [CommRing R]
 
+/- English proof (translation)
+The claim follows from `constantCoeff_subst_eq_zero ha f hf`.
+-/
 theorem cc_subst0 {f a : R⟦X⟧} (ha : constantCoeff a = 0) (hf : constantCoeff f = 0) :
     constantCoeff (f.subst a) = 0 :=
   constantCoeff_subst_eq_zero ha f hf
 
+/- English proof (translation)
+Rewrite using `[← ISer.subHom_apply _ hs0, ISer.subHom_C]`.
+-/
 theorem subst_C' {s : R⟦X⟧} (hs0 : constantCoeff s = 0) (a : R) : (PowerSeries.C a).subst s = PowerSeries.C a := by
   rw [← ISer.subHom_apply _ hs0, ISer.subHom_C]
 
@@ -148,10 +210,20 @@ section Field
 
 variable {K : Type} [Field K] [CharZero K] (W : WeierstrassCurve K) (C : WeierstrassCurve.VariableChange K)
 
+/- English proof (translation)
+Rewrite using `[Derivation.leibniz, derivative_C, smul_eq_mul, smul_eq_mul, mul_zero, add_zero]`.
+-/
 theorem derivative_C_mul' (a : K) (f : K⟦X⟧) :
     derivative K (PowerSeries.C a * f) = PowerSeries.C a * derivative K f := by
   rw [Derivation.leibniz, derivative_C, smul_eq_mul, smul_eq_mul, mul_zero, add_zero]
 
+/- English proof (translation)
+Establish `hs : HasSubst (phi W C)` using `HasSubst.of_constantCoeff_zero' (phi_cc W C)`. Establish `h1 : derivative K (phi W C) * fw W = PowerSeries.C (C.u : K) * (fw (C • W)).subst (phi W C)`. Rewrite using `[← D_phi, CurveSer.D_apply, mul_comm]`. Establish `h2 : (fw (C • W)).subst (phi W C) * (om (C • W)).subst (phi W C) = 1`. Rewrite using `[← subst_mul hs, CurveSer.fw_mul_om, ← coe_substAlgHom hs, map_one]`.
+
+Establish `h3` using `CurveSer.fw_mul_om W`. Establish `hd : derivative K ((logSer (C • W)).subst (phi W C)) = PowerSeries.C (C.u : K) * om W`. Rewrite using `[derivative_subst hs, (logSpec K (C • W)).2.2.1]`. Take the linear combination `(-((om (C • W)).subst (phi W C) * derivative K (phi W C))) * h3 + ((om (C • W)).subst (phi W C) * om W) * h1 + (PowerSeries.C (C.u : K) * om W) * h2`. Establish `hc : constantCoeff ((logSer (C • W)).subst (phi W C)) = 0` using `cc_subst0 (phi_cc W C) (logSpec K (C • W)).1`.
+
+Establish `hd2 : derivative K (PowerSeries.C (C.u : K) * logSer W) = PowerSeries.C (C.u : K) * om W`. Rewrite using `[derivative_C_mul', (logSpec K W).2.2.1]`. Establish `hc2 : constantCoeff (PowerSeries.C (C.u : K) * logSer W) = 0`. Simplify using `[(logSpec K W).1]`. Rewrite using `[(integSpec K _).2.2 _ hc hd, (integSpec K _).2.2 _ hc2 hd2]`.
+-/
 theorem log_phi : (logSer (C • W)).subst (phi W C) = PowerSeries.C (C.u : K) * logSer W := by
   have hs : HasSubst (phi W C) := HasSubst.of_constantCoeff_zero' (phi_cc W C)
   have h1 : derivative K (phi W C) * fw W = PowerSeries.C (C.u : K) * (fw (C • W)).subst (phi W C) := by
@@ -171,8 +243,18 @@ theorem log_phi : (logSer (C • W)).subst (phi W C) = PowerSeries.C (C.u : K) *
     simp [(logSpec K W).1]
   rw [(integSpec K _).2.2 _ hc hd, (integSpec K _).2.2 _ hc2 hd2]
 
+/- English proof (translation)
+Simplify using the standard rewrite rules.
+-/
 theorem cUi_cc : constantCoeff (PowerSeries.C ((C.u⁻¹ : Kˣ) : K) * X) = 0 := by simp
 
+/- English proof (translation)
+Establish `hm0` using `cUi_cc C`. Establish `hmS : HasSubst (PowerSeries.C ((C.u⁻¹ : Kˣ) : K) * X)` using `HasSubst.of_constantCoeff_zero' hm0`. Establish `he` using `expSpec K W`. Establish `heS : HasSubst (expSer W)` using `HasSubst.of_constantCoeff_zero' he.1`. Establish `hh0 : constantCoeff ((expSer W).subst (PowerSeries.C ((C.u⁻¹ : Kˣ) : K) * X)) = 0` using `cc_subst0 hm0 he.1`.
+
+Establish `hhS` using `HasSubst.of_constantCoeff_zero' hh0`. Establish `hs : HasSubst (phi W C)` using `HasSubst.of_constantCoeff_zero' (phi_cc W C)`. Establish `hlog : (logSer (C • W)).subst ((phi W C).subst ((expSer W).subst (PowerSeries.C ((C.u⁻¹ : Kˣ) : K) * X))) = X`. Rewrite using `[← subst_comp_subst_apply hs hhS, log_phi, subst_mul hhS, subst_C' hh0, ← subst_comp_subst_apply heS hmS, he.2.2.1, subst_X hmS, ← mul_assoc, ← map_mul, Units.mul_inv, map_one, one_mul]`. Establish `hl` using `logSpec K (C • W)`.
+
+Establish `hsp` using `compInvSpec K (logSer (C • W)) hl.1 (by rw [hl.2.1]; exact isUnit_one)`. Conclude with `(hsp.2.2.2.2.1 _ (cc_subst0 hh0 (phi_cc W C)) hlog).symm`.
+-/
 theorem exp_eq : expSer (C • W) =
     (phi W C).subst ((expSer W).subst (PowerSeries.C ((C.u⁻¹ : Kˣ) : K) * X)) := by
   have hm0 := cUi_cc C
@@ -189,6 +271,17 @@ theorem exp_eq : expSer (C • W) =
   have hsp := compInvSpec K (logSer (C • W)) hl.1 (by rw [hl.2.1]; exact isUnit_one)
   exact (hsp.2.2.2.2.1 _ (cc_subst0 hh0 (phi_cc W C)) hlog).symm
 
+/- English proof (translation)
+Establish `hs : HasSubst (phi W C)` using `HasSubst.of_constantCoeff_zero' (phi_cc W C)`. Establish `hci` using `compInvSpec K (phi W C) (phi_cc W C) (by rw [phi_coeff_one]; exact Units.isUnit _)`. Establish `hp0 : constantCoeff (compInv (phi W C)) = 0` using `hci.1`. Establish `hpS : HasSubst (compInv (phi W C))` using `HasSubst.of_constantCoeff_zero' hp0`. Establish `hl` using `logSpec K W`.
+
+Establish `he` using `expSpec K W`. Establish `heS : HasSubst (expSer W)` using `HasSubst.of_constantCoeff_zero' he.1`. Establish `hl' : logSer (C • W) = PowerSeries.C (C.u : K) * (logSer W).subst (compInv (phi W C))`. Establish `h` using `congrArg (fun f : K⟦X⟧ => f.subst (compInv (phi W C))) (log_phi W C)`. Rewrite `h` using `[subst_comp_subst_apply hs hpS, hci.2.1, X_subst, subst_mul hpS, subst_C' hp0]`.
+
+Conclude with `h`. Establish `hq0 : constantCoeff (PowerSeries.C c * logSer (C • W)) = 0`. Simplify using `[(logSpec K (C • W)).1]`. Establish `hqS : HasSubst (PowerSeries.C c * logSer (C • W))` using `HasSubst.of_constantCoeff_zero' hq0`. Establish `hm0` using `cUi_cc C`.
+
+Establish `hmS : HasSubst (PowerSeries.C ((C.u⁻¹ : Kˣ) : K) * X)` using `HasSubst.of_constantCoeff_zero' hm0`. Establish `hh0 : constantCoeff ((expSer W).subst (PowerSeries.C ((C.u⁻¹ : Kˣ) : K) * X)) = 0` using `cc_subst0 hm0 he.1`. Establish `hhS` using `HasSubst.of_constantCoeff_zero' hh0`. Establish `hr0 : constantCoeff (PowerSeries.C c * logSer W) = 0` using `by simp [hl.1]`. Establish `hrS : HasSubst (PowerSeries.C c * logSer W)` using `HasSubst.of_constantCoeff_zero' hr0`.
+
+Unfold `Formalism.L2.Th1.C.mulBy`. Rewrite using `[exp_eq, subst_comp_subst_apply hhS hqS, subst_comp_subst_apply hmS hqS, subst_mul hqS, subst_C' hq0, subst_X hqS, subst_comp_subst_apply hrS hpS, subst_mul hpS, subst_C' hp0, hl']`. Use `congr 2`. Rewrite using `[← mul_assoc, ← mul_assoc, ← map_mul, ← map_mul, mul_comm (((C.u⁻¹ : Kˣ) : K)) c, mul_assoc c, Units.inv_mul, mul_one]`.
+-/
 theorem mulBy_eq (c : K) : Formalism.L2.Th1.C.mulBy (logSer (C • W)) (expSer (C • W)) c =
     (phi W C).subst ((Formalism.L2.Th1.C.mulBy (logSer W) (expSer W) c).subst (compInv (phi W C))) := by
   have hs : HasSubst (phi W C) := HasSubst.of_constantCoeff_zero' (phi_cc W C)
@@ -226,21 +319,41 @@ open Formalism.L2.Th1.C
 
 variable {K : Type} [Field K] [CharZero K] (R' : Subring K)
 
+/- English proof (translation)
+Introduce `n`. Rewrite using `[coeff_C]`. Use `split_ifs`. Use `exacts [ha, R'.zero_mem]`.
+-/
 theorem intPS_C' {a : K} (ha : a ∈ R') : IntPS R' (PowerSeries.C a) := by
   intro n; rw [coeff_C]; split_ifs; exacts [ha, R'.zero_mem]
 
+/- English proof (translation)
+Introduce `n`. Rewrite using `[coeff_X]`. Use `split_ifs`. Use `exacts [R'.one_mem, R'.zero_mem]`.
+-/
 theorem intPS_X' : IntPS R' (X : K⟦X⟧) := by
   intro n; rw [coeff_X]; split_ifs; exacts [R'.one_mem, R'.zero_mem]
 
+/- English proof (translation)
+Introduce `n`. Rewrite using `[map_add]`. Conclude with `R'.add_mem (hf n) (hg n)`.
+-/
 theorem intPS_add' {f g : K⟦X⟧} (hf : IntPS R' f) (hg : IntPS R' g) : IntPS R' (f + g) := by
   intro n; rw [map_add]; exact R'.add_mem (hf n) (hg n)
 
+/- English proof (translation)
+Introduce `n`. Rewrite using `[map_sub]`. Conclude with `R'.sub_mem (hf n) (hg n)`.
+-/
 theorem intPS_sub' {f g : K⟦X⟧} (hf : IntPS R' f) (hg : IntPS R' g) : IntPS R' (f - g) := by
   intro n; rw [map_sub]; exact R'.sub_mem (hf n) (hg n)
 
+/- English proof (translation)
+Introduce `n`. Rewrite using `[coeff_mul]`. Conclude with `R'.sum_mem fun p _ => R'.mul_mem (hf _) (hg _)`.
+-/
 theorem intPS_mul' {f g : K⟦X⟧} (hf : IntPS R' f) (hg : IntPS R' g) : IntPS R' (f * g) := by
   intro n; rw [coeff_mul]; exact R'.sum_mem fun p _ => R'.mul_mem (hf _) (hg _)
 
+/- English proof (translation)
+Take `⟨h1, h2, h3, h4, h6⟩` from `hW`. Set `WS : WeierstrassCurve R'` to `⟨⟨_, h1⟩, ⟨_, h2⟩, ⟨_, h3⟩, ⟨_, h4⟩, ⟨_, h6⟩⟩`. Apply the tactic sequence `have e : WS.map R'.subtype = W := by ext <;> rfl`. Introduce `n`. Rewrite using `[← e, ← (seriesMap R' K R'.subtype WS).1, coeff_map]`.
+
+Conclude with `SetLike.coe_mem _`.
+-/
 theorem intPS_wSer {W : WeierstrassCurve K} (hW : CoeffIn R' W) : IntPS R' (wSer W) := by
   obtain ⟨h1, h2, h3, h4, h6⟩ := hW
   let WS : WeierstrassCurve R' := ⟨⟨_, h1⟩, ⟨_, h2⟩, ⟨_, h3⟩, ⟨_, h4⟩, ⟨_, h6⟩⟩
@@ -249,10 +362,20 @@ theorem intPS_wSer {W : WeierstrassCurve K} (hW : CoeffIn R' W) : IntPS R' (wSer
   rw [← e, ← (seriesMap R' K R'.subtype WS).1, coeff_map]
   exact SetLike.coe_mem _
 
+/- English proof (translation)
+The claim follows from `Pts.intPS_of_intMv (IntegralMvPolynomialLemmas.intMv_subst hf ⟨ha0, Pts.intMv_of_intPS ha⟩)`.
+-/
 theorem intPS_subst' {f a : K⟦X⟧} (hf : IntPS R' f) (ha : IntPS R' a) (ha0 : constantCoeff a = 0) :
     IntPS R' (f.subst a) :=
   Pts.intPS_of_intMv (IntegralMvPolynomialLemmas.intMv_subst hf ⟨ha0, Pts.intMv_of_intPS ha⟩)
 
+/- English proof (translation)
+Set `fS : R'⟦X⟧` to `PowerSeries.mk fun n => ⟨coeff n f, hf n⟩`. Establish `e : PowerSeries.map R'.subtype fS = f`. Use extensionality with `n`. Simplify using `[fS]`. Establish `h0S : constantCoeff fS = 0`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[← coeff_zero_eq_constantCoeff_apply]`. Simplify using `[fS, h0]`. Establish `hm : coeff 1 fS * ⟨ui, hui⟩ = 1` using `Subtype.ext (by simp [fS, h1, huu])`. Establish `h1S : IsUnit (coeff 1 fS)` using `⟨⟨_, ⟨ui, hui⟩, hm, by rw [mul_comm]; exact hm⟩, rfl⟩`.
+
+Introduce `n`. Rewrite using `[← e, ← compInvMap R' K R'.subtype fS h0S h1S, coeff_map]`. Conclude with `SetLike.coe_mem _`.
+-/
 theorem intPS_compInv {f : K⟦X⟧} (hf : IntPS R' f) (h0 : constantCoeff f = 0) {u ui : K} (hui : ui ∈ R')
     (h1 : coeff 1 f = u) (huu : u * ui = 1) : IntPS R' (compInv f) := by
   let fS : R'⟦X⟧ := PowerSeries.mk fun n => ⟨coeff n f, hf n⟩
@@ -270,6 +393,9 @@ theorem intPS_compInv {f : K⟦X⟧} (hf : IntPS R' f) (h0 : constantCoeff f = 0
 
 variable {R'}
 
+/- English proof (translation)
+Establish `hw` using `intPS_wSer R' hW`. Establish `hden : IntPS R' (den W C)` using `intPS_add' R' (intPS_add' R' (intPS_C' R' R'.one_mem) (intPS_mul' R' (intPS_C' R' hs) (intPS_X' R'))) (intPS_mul' R' (intPS_C' R' (R'.sub_mem ht (R'.mul_mem hs hr))) hw)`. Establish `hv : IntPS R' (vv W C)` using `Pts.intPS_of_intMv (IntegralMvPolynomialLemmas.intMv_of_mul_eq_one (Pts.intMv_of_intPS hden) (den_cc W C) (den_mul_vv W C))`. Conclude with `intPS_mul' R' (intPS_mul' R' (intPS_C' R' hu) (intPS_sub' R' (intPS_X' R') (intPS_mul' R' (intPS_C' R' hr) hw))) hv`.
+-/
 theorem intPS_phi (W : WeierstrassCurve K) (hW : CoeffIn R' W) (C : WeierstrassCurve.VariableChange K)
     (hu : ((C.u : Kˣ) : K) ∈ R') (hr : C.r ∈ R') (hs : C.s ∈ R') (ht : C.t ∈ R') : IntPS R' (phi W C) := by
   have hw := intPS_wSer R' hW
@@ -280,6 +406,11 @@ theorem intPS_phi (W : WeierstrassCurve K) (hW : CoeffIn R' W) (C : WeierstrassC
     Pts.intPS_of_intMv (IntegralMvPolynomialLemmas.intMv_of_mul_eq_one (Pts.intMv_of_intPS hden) (den_cc W C) (den_mul_vv W C))
   exact intPS_mul' R' (intPS_mul' R' (intPS_C' R' hu) (intPS_sub' R' (intPS_X' R') (intPS_mul' R' (intPS_C' R' hr) hw))) hv
 
+/- English proof (translation)
+Unfold `EndInt at h ⊢`. Rewrite using `[mulBy_eq]`. Establish `hphi` using `intPS_phi W hW C hu hr hs ht`. Establish `hci` using `compInvSpec K (phi W C) (phi_cc W C) (by rw [phi_coeff_one]; exact Units.isUnit _)`. Establish `hpinv` using `intPS_compInv R' hphi (phi_cc W C) hu' (phi_coeff_one W C) (Units.mul_inv C.u)`.
+
+Establish `hm0 : constantCoeff (Formalism.L2.Th1.C.mulBy (logSer W) (expSer W) c) = 0` using `cc_subst0 (by simp [(logSpec K W).1]) (expSpec K W).1`. Conclude with `intPS_subst' R' hphi (intPS_subst' R' h hpinv hci.1) (cc_subst0 hci.1 hm0)`.
+-/
 theorem endInt_varChange (W : WeierstrassCurve K) (hW : CoeffIn R' W) (C : WeierstrassCurve.VariableChange K)
     (hu : ((C.u : Kˣ) : K) ∈ R') (hu' : ((C.u⁻¹ : Kˣ) : K) ∈ R') (hr : C.r ∈ R') (hs : C.s ∈ R') (ht : C.t ∈ R')
     (c : K) (h : EndInt R' (logSer W) (expSer W) c) : EndInt R' (logSer (C • W)) (expSer (C • W)) c := by
@@ -306,6 +437,11 @@ variable {p : ℕ} [Fact p.Prime]
 
 abbrev RB (p : ℕ) [Fact p.Prime] : Subring ℂ_[p] := Formalism.G.unitBall ℂ_[p]
 
+/- English proof (translation)
+Establish `n2 : ¬ (p : ℤ) ∣ 2` using `fun h => by have := Int.le_of_dvd (by norm_num) h; omega`. Establish `n3 : ¬ (p : ℤ) ∣ 3` using `fun h => by have := Int.le_of_dvd (by norm_num) h; omega`. Establish `e2` using `Formalism.MainNotions.Ext.CutA.norm_int_cp_eq_one (p := p) 2 n2`. Establish `e3` using `Formalism.MainNotions.Ext.CutA.norm_int_cp_eq_one (p := p) 3 n3`. Move the coercions through the operations in `at e2 e3`.
+
+Conclude with `⟨e2, e3⟩`.
+-/
 theorem norm_two_three (h5 : 5 ≤ p) : ‖(2 : ℂ_[p])‖ = 1 ∧ ‖(3 : ℂ_[p])‖ = 1 := by
   have n2 : ¬ (p : ℤ) ∣ 2 := fun h => by have := Int.le_of_dvd (by norm_num) h; omega
   have n3 : ¬ (p : ℤ) ∣ 3 := fun h => by have := Int.le_of_dvd (by norm_num) h; omega
@@ -314,14 +450,40 @@ theorem norm_two_three (h5 : 5 ≤ p) : ‖(2 : ℂ_[p])‖ = 1 ∧ ‖(3 : ℂ_
   push_cast at e2 e3
   exact ⟨e2, e3⟩
 
+/- English proof (translation)
+The claim follows from `(IsUltrametricDist.norm_add_le_max x y).trans (max_le hx hy)`.
+-/
 theorem nadd {x y : ℂ_[p]} (hx : ‖x‖ ≤ 1) (hy : ‖y‖ ≤ 1) : ‖x + y‖ ≤ 1 :=
   (IsUltrametricDist.norm_add_le_max x y).trans (max_le hx hy)
 
+/- English proof (translation)
+Rewrite using `[norm_neg]` and apply the resulting hypothesis.
+-/
 theorem nneg {x : ℂ_[p]} (hx : ‖x‖ ≤ 1) : ‖-x‖ ≤ 1 := by rwa [norm_neg]
 
+/- English proof (translation)
+Rewrite using `[norm_mul]`. Conclude with `mul_le_one₀ hx (norm_nonneg _) hy`.
+-/
 theorem nmul {x y : ℂ_[p]} (hx : ‖x‖ ≤ 1) (hy : ‖y‖ ≤ 1) : ‖x * y‖ ≤ 1 := by
   rw [norm_mul]; exact mul_le_one₀ hx (norm_nonneg _) hy
 
+/- English proof (translation)
+Take `⟨t2, t3⟩` from `norm_two_three (p := p) h5`. Rewrite `hΔ` using `[WeierstrassCurve.variableChange_Δ, norm_mul, norm_pow, hΔ0, mul_one]`. Establish `hui : ‖((C.u⁻¹ : ℂ_[p]ˣ) : ℂ_[p])‖ = 1` using `(pow_eq_one_iff_of_nonneg (norm_nonneg _) (by norm_num)).1 hΔ`. Establish `e : ((C.u : ℂ_[p]ˣ) : ℂ_[p]) * ((C.u⁻¹ : ℂ_[p]ˣ) : ℂ_[p]) = 1` using `Units.mul_inv C.u`. Establish `hu : ‖((C.u : ℂ_[p]ˣ) : ℂ_[p])‖ = 1`.
+
+Use `congrArg norm e` as an intermediate fact. Rewrite `this` using `[norm_mul, hui, mul_one, norm_one]`. Then use the resulting hypothesis. Establish `h2 : (2 : ℂ_[p]) ≠ 0` using `by intro h; rw [h, norm_zero] at t2; exact zero_ne_one t2`. Establish `h3 : (3 : ℂ_[p]) ≠ 0` using `by intro h; rw [h, norm_zero] at t3; exact zero_ne_one t3`. Use `set U : ℂ_[p] := ((C.u : ℂ_[p]ˣ) : ℂ_[p]) with hU`.
+
+Use `set Ui : ℂ_[p] := ((C.u⁻¹ : ℂ_[p]ˣ) : ℂ_[p]) with hUi`. Establish `es' : U * (C • W).a₁ - W.a₁ = 2 * C.s`. Rewrite using `[WeierstrassCurve.variableChange_a₁]`. Take the linear combination `(W.a₁ + 2 * C.s) * e`. Establish `hs : ‖C.s‖ ≤ 1`.
+
+Establish `es : C.s = (U * (C • W).a₁ - W.a₁) / 2` using `by rw [eq_div_iff h2, es']; ring`. Rewrite using `[es, norm_div, t2, div_one, sub_eq_add_neg]`. Conclude with `nadd (nmul hu.le i1) (nneg j1)`. Establish `et' : U ^ 3 * (C • W).a₃ - W.a₃ - C.r * W.a₁ = 2 * C.t`. Rewrite using `[WeierstrassCurve.variableChange_a₃]`.
+
+Take the linear combination `((W.a₃ + C.r * W.a₁ + 2 * C.t) * ((U * Ui) ^ 2 + U * Ui + 1)) * e`. Establish `er' : U ^ 2 * (C • W).a₂ - W.a₂ + C.s * W.a₁ + C.s ^ 2 = 3 * C.r`. Rewrite using `[WeierstrassCurve.variableChange_a₂]`. Take the linear combination `((W.a₂ - C.s * W.a₁ + 3 * C.r - C.s ^ 2) * (U * Ui + 1)) * e`. Establish `hr : ‖C.r‖ ≤ 1`.
+
+Establish `er : C.r = (U ^ 2 * (C • W).a₂ - W.a₂ + C.s * W.a₁ + C.s ^ 2) / 3` using `by rw [eq_div_iff h3, er']; ring`. Rewrite using `[er, norm_div, t3, div_one, sub_eq_add_neg]`. Use `nadd (nadd (nadd (nmul ?_ i2) (nneg j2)) (nmul hs j1)) ?_` and prove the remaining obligations. Rewrite using `[norm_pow, hu, one_pow]`. Rewrite using `[norm_pow]`.
+
+Conclude with `pow_le_one₀ (norm_nonneg _) hs`. Establish `ht : ‖C.t‖ ≤ 1`. Establish `et : C.t = (U ^ 3 * (C • W).a₃ - W.a₃ - C.r * W.a₁) / 2` using `by rw [eq_div_iff h2, et']; ring`. Rewrite using `[et, norm_div, t2, div_one, sub_eq_add_neg, sub_eq_add_neg]`. Use `nadd (nadd (nmul ?_ i3) (nneg j3)) (nneg (nmul hr j1))` and prove the remaining obligations.
+
+Rewrite using `[norm_pow, hu, one_pow]`. Conclude with `⟨hu, hui, hr, hs, ht⟩`.
+-/
 theorem vc_gen (h5 : 5 ≤ p) (W : WeierstrassCurve ℂ_[p]) (j1 : ‖W.a₁‖ ≤ 1) (j2 : ‖W.a₂‖ ≤ 1) (j3 : ‖W.a₃‖ ≤ 1)
     (hΔ0 : ‖W.Δ‖ = 1) (C : WeierstrassCurve.VariableChange ℂ_[p]) (i1 : ‖(C • W).a₁‖ ≤ 1)
     (i2 : ‖(C • W).a₂‖ ≤ 1) (i3 : ‖(C • W).a₃‖ ≤ 1) (hΔ : ‖(C • W).Δ‖ = 1) :
@@ -370,6 +532,11 @@ section G
 
 variable {p : ℕ} [Fact p.Prime]
 
+/- English proof (translation)
+Establish `hl : g.l = Formalism.L2.Th1.A.logSer g.W` using `Formalism.L2.KerInert.Dict.formal_logarithm_agree p g.W g.wq hOk.2.1`. Establish `he : g.ex = Formalism.L2.Th1.A.expSer g.W` using `Formalism.L2.KerInert.Dict.formal_exponential_agree p g hOk`. Unfold `G1.mulBy G1.pt G1.lg Formalism.L2.Th1.C.mulBy`. Rewrite using `[← hl, ← he]`. Establish `hx : (PowerSeries.subst (Xv () : MvPowerSeries Unit ℂ_[p]) g.l : MvPowerSeries Unit ℂ_[p]) = g.l` using `PowerSeries.X_subst g.l`.
+
+Rewrite using `[hx]`. Both sides reduce to the same expression.
+-/
 theorem mulBy_g (g : G1 p) (hOk : g.Ok) (c : ℂ_[p]) :
     (g.mulBy c (Xv ()) : MvPowerSeries Unit ℂ_[p]) =
       Formalism.L2.Th1.C.mulBy (Formalism.L2.Th1.A.logSer g.W) (Formalism.L2.Th1.A.expSer g.W) c := by
@@ -382,14 +549,29 @@ theorem mulBy_g (g : G1 p) (hOk : g.Ok) (c : ℂ_[p]) :
   rw [hx]
   rfl
 
+/- English proof (translation)
+Take `⟨⟨h1, h2, h3, h4, h6, -⟩, -⟩` from `hOk`. Conclude with `⟨h1, h2, h3, h4, h6⟩`.
+-/
 theorem coeffIn_g (g : G1 p) (hOk : g.Ok) : Formalism.L2.Th1.C.CoeffIn (RB p) g.W := by
   obtain ⟨⟨h1, h2, h3, h4, h6, -⟩, -⟩ := hOk
   exact ⟨h1, h2, h3, h4, h6⟩
 
+/- English proof (translation)
+Unfold `G1.W`. Rewrite using `[hl, hL, mul_smul, inv_smul_smul]`.
+-/
 theorem g_W_eq (g g' : G1 p) (hl : g.lam = g'.lam) (hL : g.abelian₂ = g'.abelian₂) :
     g.W = (g.C * g'.C⁻¹) • g'.W := by
   unfold G1.W; rw [hl, hL, mul_smul, inv_smul_smul]
 
+/- English proof (translation)
+Introduce `C`. Establish `hW` using `g_W_eq g g' hl hL`. Take `⟨i1, i2, i3, -, -, hΔ⟩` from `hOk.1`. Take `⟨j1, j2, j3, -, -, hΔ'⟩` from `hOk'.1`. Use `vc_gen h5 g'.W j1 j2 j3 hΔ' C ?_ ?_ ?_ ?_` and prove the remaining obligations.
+
+Use `show ‖(C • g'.W).a₁‖ ≤ 1`. Rewrite using `[← hW]`. Conclude with `i1`. Use `show ‖(C • g'.W).a₂‖ ≤ 1`. Rewrite using `[← hW]`.
+
+Conclude with `i2`. Use `show ‖(C • g'.W).a₃‖ ≤ 1`. Rewrite using `[← hW]`. Conclude with `i3`. Use `show ‖(C • g'.W).Δ‖ = 1`.
+
+Rewrite using `[← hW]`. Conclude with `hΔ`.
+-/
 theorem vc_pair (h5 : 5 ≤ p) (g g' : G1 p) (hOk : g.Ok) (hOk' : g'.Ok) (hl : g.lam = g'.lam) (hL : g.abelian₂ = g'.abelian₂) :
     let C := g.C * g'.C⁻¹
     ‖((C.u : ℂ_[p]ˣ) : ℂ_[p])‖ = 1 ∧ ‖((C.u⁻¹ : ℂ_[p]ˣ) : ℂ_[p])‖ = 1 ∧ ‖C.r‖ ≤ 1 ∧ ‖C.s‖ ≤ 1 ∧ ‖C.t‖ ≤ 1 := by
@@ -413,6 +595,15 @@ section EndInt
 
 variable {p : ℕ} [Fact p.Prime]
 
+/- English proof (translation)
+Introduce `D p _ cc δ g hA h5 hIn α hα`. Take `⟨hcurve, hcop, hδ, hLam, hOk⟩` from `hA`. Take `⟨g', hl, hA', hW'⟩` from `hG D cc δ hcurve hδ p hcop h5 hIn g.lam`. Establish `hOk' : g'.Ok` using `hA'.2.2.2.2`. Establish `hL : g.abelian₂ = g'.abelian₂` using `hLam.trans hA'.2.2.2.1.symm`.
+
+Establish `hα' : α ∈ OKp D g'.lam` using `by rw [hl]; exact hα`. Establish `h1` using `hE D p cc δ g' hA' h5 hIn hW' α hα'`. Establish `hE' : Formalism.L2.Th1.C.EndInt (RB p) (Formalism.L2.Th1.A.logSer g'.W) (Formalism.L2.Th1.A.expSer g'.W) α.1`. Unfold `Formalism.L2.Th1.C.EndInt`. Rewrite using `[← mulBy_g g' hOk']`.
+
+Introduce `n`. Conclude with `h1 (Finsupp.single () n)`. Take `⟨hu, hui, hr, hs, ht⟩` from `vc_pair h5 g g' hOk hOk' hl.symm hL`. Establish `hEg : Formalism.L2.Th1.C.EndInt (RB p) (Formalism.L2.Th1.A.logSer g.W) (Formalism.L2.Th1.A.expSer g.W) α.1`. Rewrite using `[g_W_eq g g' hl.symm hL]`.
+
+Conclude with `Formalism.L2.KerInert.MC.endInt_varChange _ (coeffIn_g g' hOk') _ hu.le hui.le hr hs ht _ hE'`. Rewrite using `[mulBy_g g hOk α.1]`. Introduce `n`. Conclude with `Formalism.L2.Th1.C.Pts.intMv_of_intPS hEg n`.
+-/
 theorem endIntInertAll_of (hE : EndIntInert) (hG : GenusOneWittExists) : EndIntInertAll := by
   intro D p _ cc δ g hA h5 hIn α hα
   obtain ⟨hcurve, hcop, hδ, hLam, hOk⟩ := hA
@@ -446,6 +637,11 @@ section Ph
 
 variable {p : ℕ} [Fact p.Prime]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨fun e => ⟨MvPowerSeries.coeff e F, h e⟩, ?_⟩` and prove the remaining obligations. Use extensionality with `e`. Both sides reduce to the same expression.
+
+Introduce and unpack `⟨G, rfl⟩ e`. Rewrite using `[MvPowerSeries.coeff_map]`. Conclude with `(MvPowerSeries.coeff e G).2`.
+-/
 theorem integral_iff' {σ : Type*} (F : MvPowerSeries σ ℂ_[p]) :
     IntegralMv F ↔ ∃ G : MvPowerSeries σ (RB p), MvPowerSeries.map (RB p).subtype G = F := by
   constructor
@@ -457,6 +653,13 @@ theorem integral_iff' {σ : Type*} (F : MvPowerSeries σ ℂ_[p]) :
     rw [MvPowerSeries.coeff_map]
     exact (MvPowerSeries.coeff e G).2
 
+/- English proof (translation)
+Use `choose a' ha' using fun i => (integral_iff' (a i)).1 (haI i)`. Take `⟨f', rfl⟩` from `(integral_iff' f).1 hf`. Establish `h0 : ∀ i, MvPowerSeries.constantCoeff (a' i) = 0`. Introduce `i`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Establish `e : ((MvPowerSeries.constantCoeff (a' i) : RB p) : ℂ_[p]) = MvPowerSeries.constantCoeff (MvPowerSeries.map (RB p).subtype (a' i))`. Rewrite using `[MvPowerSeries.constantCoeff_map]`. Both sides reduce to the same expression. Rewrite using `[e, ha', ha0]`. Both sides reduce to the same expression.
+
+Establish `hs : MvPowerSeries.HasSubst a'` using `MvPowerSeries.hasSubst_of_constantCoeff_zero h0`. Use `(integral_iff' _).2 ⟨MvPowerSeries.subst a' f', ?_⟩` and prove the remaining obligations. Rewrite using `[MvPowerSeries.map_subst hs]`. Simplify using `only [ha']`.
+-/
 theorem integral_subst' {σ τ : Type*} [Finite σ] (a : σ → MvPowerSeries τ ℂ_[p])
     (ha0 : ∀ i, MvPowerSeries.constantCoeff (a i) = 0) (haI : ∀ i, IntegralMv (a i))
     {f : MvPowerSeries σ ℂ_[p]} (hf : IntegralMv f) : IntegralMv (MvPowerSeries.subst a f) := by
@@ -475,17 +678,26 @@ theorem integral_subst' {σ τ : Type*} [Finite σ] (a : σ → MvPowerSeries τ
   rw [MvPowerSeries.map_subst hs]
   simp only [ha']
 
+/- English proof (translation)
+The claim follows from `integral_subst' (fun _ : Unit => y) (fun _ => hy0) (fun _ => hyI) hf`.
+-/
 theorem integral_psubst {σ : Type*} {y : MvPowerSeries σ ℂ_[p]} (hy0 : MvPowerSeries.constantCoeff y = 0)
     (hyI : IntegralMv y) {f : PowerSeries ℂ_[p]} (hf : IntegralMv (f : MvPowerSeries Unit ℂ_[p])) :
     IntegralMv (PowerSeries.subst y f) :=
   integral_subst' (fun _ : Unit => y) (fun _ => hy0) (fun _ => hyI) hf
 
+/- English proof (translation)
+Use `conv_lhs => rw [PowerSeries.eq_X_mul_shift_add_const f]`. Rewrite using `[← ISer.subHom_apply _ ha, map_add, map_mul, ISer.subHom_X, ISer.subHom_C]`. Simplify using `[ha]`.
+-/
 theorem cc_subst_keep {a f : PowerSeries ℂ_[p]} (ha : constantCoeff a = 0) :
     constantCoeff (PowerSeries.subst a f) = constantCoeff f := by
   conv_lhs => rw [PowerSeries.eq_X_mul_shift_add_const f]
   rw [← ISer.subHom_apply _ ha, map_add, map_mul, ISer.subHom_X, ISer.subHom_C]
   simp [ha]
 
+/- English proof (translation)
+Use extensionality with `n`. Break down `n with _ | n` into its components or cases. Simplify using the standard rewrite rules. Rewrite using `[coeff_succ_X_mul, coeff_mk, coeff_C_mul, map_sub, coeff_C]`. Simplify using the standard rewrite rules.
+-/
 theorem X_mul_shift (F : PowerSeries ℂ_[p]) (ep : ℂ_[p]) :
     (X : PowerSeries ℂ_[p]) * PowerSeries.mk (fun n => ep⁻¹ * coeff (n + 1) F) =
       PowerSeries.C (ep⁻¹) * (F - PowerSeries.C (constantCoeff F)) := by
@@ -498,6 +710,9 @@ theorem X_mul_shift (F : PowerSeries ℂ_[p]) (ep : ℂ_[p]) :
 abbrev Fg (g : G1 p) : PowerSeries ℂ_[p] :=
   PowerSeries.subst (PowerSeries.C (((g.C.u⁻¹ : ℂ_[p]ˣ) : ℂ_[p])) * logSer g.W) (sgSer g.lam g.abelian₂)
 
+/- English proof (translation)
+Establish `hl : flog (g.C • wModel g.lam g.abelian₂) g.wq = logSer g.W` using `Formalism.L2.KerInert.Dict.formal_logarithm_agree p _ g.wq hOk.2.1`. Rewrite using `[← X_mul_shift]`. Use `congrArg (fun E : PowerSeries ℂ_[p] => (X : PowerSeries ℂ_[p]) * E) ?_` and prove the remaining obligations. Use extensionality with `n`. Simplify using `only [ePhi1, coeff_mk, PowerSeries.algebraMap_eq, hl]`.
+-/
 theorem ePhi1_X (g : G1 p) (hOk : g.Ok) :
     (X : PowerSeries ℂ_[p]) * ePhi1 g.lam g.abelian₂ g.C g.wq =
       PowerSeries.C ((((g.C.u⁻¹ : ℂ_[p]ˣ) : ℂ_[p]))⁻¹) * (Fg g - PowerSeries.C (constantCoeff (Fg g))) := by
@@ -508,23 +723,95 @@ theorem ePhi1_X (g : G1 p) (hOk : g.Ok) :
   ext n
   simp only [ePhi1, coeff_mk, PowerSeries.algebraMap_eq, hl]
 
+/- English proof (translation)
+Rewrite using `[PowerSeries.subst_mul (HasSubst.of_constantCoeff_zero hs), PowerSeries.subst_C]`.
+-/
 theorem sCf {σ : Type*} (s : MvPowerSeries σ ℂ_[p]) (hs : MvPowerSeries.constantCoeff s = 0) (u : ℂ_[p])
     (f : PowerSeries ℂ_[p]) :
     PowerSeries.subst s (PowerSeries.C u * f) = MvPowerSeries.C u * PowerSeries.subst s f := by
   rw [PowerSeries.subst_mul (HasSubst.of_constantCoeff_zero hs), PowerSeries.subst_C]
 
+/- English proof (translation)
+Rewrite using `[sCf s hs, PowerSeries.subst_X (HasSubst.of_constantCoeff_zero hs)]`.
+-/
 theorem sCX {σ : Type*} (s : MvPowerSeries σ ℂ_[p]) (hs : MvPowerSeries.constantCoeff s = 0) (u : ℂ_[p]) :
     PowerSeries.subst s (PowerSeries.C u * X) = MvPowerSeries.C u * s := by
   rw [sCf s hs, PowerSeries.subst_X (HasSubst.of_constantCoeff_zero hs)]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mvC_eq (a : ℂ_[p]) : (MvPowerSeries.C a : MvPowerSeries Unit ℂ_[p]) = PowerSeries.C a := rfl
 
+/- English proof (translation)
+The claim follows from `HasSubst.of_constantCoeff_zero hs`.
+-/
 theorem hs0 {σ : Type*} {s : MvPowerSeries σ ℂ_[p]} (hs : MvPowerSeries.constantCoeff s = 0) : HasSubst s :=
   HasSubst.of_constantCoeff_zero hs
 
+/- English proof (translation)
+The claim follows from `HasSubst.of_constantCoeff_zero' hs`.
+-/
 theorem hs1 {s : PowerSeries ℂ_[p]} (hs : constantCoeff s = 0) : HasSubst s :=
   HasSubst.of_constantCoeff_zero' hs
 
+/- English proof (translation)
+Use `set C21 := g'.C * g.C⁻¹ with hC21`. Establish `hW : g'.W = C21 • g.W` using `g_W_eq g' g hl hL`. Take `⟨hu, hui, hr, hs, ht⟩` from `vc_pair h5 g' g hOk' hOk hl hL`. Use `set u : ℂ_[p] := ((C21.u : ℂ_[p]ˣ) : ℂ_[p]) with hu_def`. Use `set φ : PowerSeries ℂ_[p] := Formalism.L2.KerInert.MC.phi g.W C21 with hφ_def`.
+
+Establish `hφ0 : constantCoeff φ = 0` using `Formalism.L2.KerInert.MC.phi_cc g.W C21`. Establish `hφ1 : coeff 1 φ = u` using `Formalism.L2.KerInert.MC.phi_coeff_one g.W C21`. Establish `hφI' : Formalism.L2.Th1.C.IntPS (RB p) φ` using `Formalism.L2.KerInert.MC.intPS_phi g.W (coeffIn_g g hOk) C21 hu.le hr hs ht`. Establish `hφI : IntegralMv (φ : MvPowerSeries Unit ℂ_[p])` using `fun n => Formalism.L2.Th1.C.Pts.intMv_of_intPS hφI' n`. Establish `hlg : g.l = logSer g.W` using `Formalism.L2.KerInert.Dict.formal_logarithm_agree p g.W g.wq hOk.2.1`.
+
+Establish `hlg' : g'.l = logSer g'.W` using `Formalism.L2.KerInert.Dict.formal_logarithm_agree p g'.W g'.wq hOk'.2.1`. Establish `hexg : g.ex = expSer g.W` using `Formalism.L2.KerInert.Dict.formal_exponential_agree p g hOk`. Establish `hexg' : g'.ex = expSer g'.W` using `Formalism.L2.KerInert.Dict.formal_exponential_agree p g' hOk'`. Establish `hl0 : constantCoeff (logSer g.W) = 0` using `(logSpec ℂ_[p] g.W).1`. Establish `hl0' : constantCoeff (logSer g'.W) = 0` using `(logSpec ℂ_[p] g'.W).1`.
+
+Establish `he0 : constantCoeff (expSer g.W) = 0` using `(expSpec ℂ_[p] g.W).1`. Establish `he0' : constantCoeff (expSer g'.W) = 0` using `(expSpec ℂ_[p] g'.W).1`. Establish `hlog : PowerSeries.subst φ (logSer g'.W) = PowerSeries.C u * logSer g.W`. Rewrite using `[hW]`. Conclude with `Formalism.L2.KerInert.MC.log_phi g.W C21`.
+
+Establish `hCX : constantCoeff (PowerSeries.C u * X : PowerSeries ℂ_[p]) = 0` using `by simp`. Establish `hCXi : constantCoeff (PowerSeries.C (((C21.u⁻¹ : ℂ_[p]ˣ) : ℂ_[p])) * X : PowerSeries ℂ_[p]) = 0` using `by simp`. Establish `hinner : PowerSeries.subst (PowerSeries.C u * X : PowerSeries ℂ_[p]) (PowerSeries.C (((C21.u⁻¹ : ℂ_[p]ˣ) : ℂ_[p])) * X : PowerSeries ℂ_[p]) = X`. Rewrite using `[sCX _ hCX, mvC_eq, ← mul_assoc, ← map_mul]`. Rewrite using `[show (((C21.u⁻¹ : ℂ_[p]ˣ) : ℂ_[p])) * u = 1 from Units.inv_mul C21.u]`.
+
+Simplify using the standard rewrite rules. Establish `hexp : PowerSeries.subst (expSer g.W) φ = PowerSeries.subst (PowerSeries.C u * X : PowerSeries ℂ_[p]) (expSer g'.W)`. Establish `he` using `Formalism.L2.KerInert.MC.exp_eq g.W C21`. Rewrite `he` using `[← hW]`. Establish `h1 : constantCoeff (PowerSeries.subst (PowerSeries.C (((C21.u⁻¹ : ℂ_[p]ˣ) : ℂ_[p])) * X : PowerSeries ℂ_[p]) (expSer g.W)) = 0` using `PowerSeries.constantCoeff_subst_eq_zero hCXi _ he0`.
+
+Rewrite using `[he, PowerSeries.subst_comp_subst_apply (hs1 h1) (hs1 hCX), PowerSeries.subst_comp_subst_apply (hs1 hCXi) (hs1 hCX), hinner, PowerSeries.X_subst]`. Establish `hpt : ∀ (σ : Type) (s : MvPowerSeries σ ℂ_[p]), MvPowerSeries.constantCoeff s = 0 → PowerSeries.subst (PowerSeries.subst s g.ex) φ = PowerSeries.subst (MvPowerSeries.C u * s) g'.ex`. Introduce `σ s hs`. Rewrite using `[hexg, hexg', ← PowerSeries.subst_comp_subst_apply (hs1 he0) (hs0 hs), hexp, PowerSeries.subst_comp_subst_apply (hs1 hCX) (hs0 hs), sCX s hs]`. Establish `hlgs : ∀ (σ : Type) (y : MvPowerSeries σ ℂ_[p]), MvPowerSeries.constantCoeff y = 0 → PowerSeries.subst (PowerSeries.subst y φ) g'.l = MvPowerSeries.C u * PowerSeries.subst y g.l`.
+
+Introduce `σ y hy`. Rewrite using `[hlg', hlg, ← PowerSeries.subst_comp_subst_apply (hs1 hφ0) (hs0 hy), hlog, sCf y hy]`. Establish `hlgcc : ∀ (σ : Type) (y : MvPowerSeries σ ℂ_[p]), MvPowerSeries.constantCoeff y = 0 → MvPowerSeries.constantCoeff (PowerSeries.subst y g.l) = 0`. Introduce `σ y hy`. Rewrite using `[hlg]`.
+
+Conclude with `PowerSeries.constantCoeff_subst_eq_zero hy _ hl0`. Establish `hφy : ∀ (σ : Type) (y : MvPowerSeries σ ℂ_[p]), MvPowerSeries.constantCoeff y = 0 → MvPowerSeries.constantCoeff (PowerSeries.subst y φ) = 0` using `fun σ y hy => PowerSeries.constantCoeff_subst_eq_zero hy _ hφ0`. Use `⟨φ, hφ0, hφI, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `σ y hy c`. Establish `hs : MvPowerSeries.constantCoeff (MvPowerSeries.C c * PowerSeries.subst y g.l) = 0`.
+
+Rewrite using `[map_mul, hlgcc σ y hy, mul_zero]`. Unfold `G1.mulBy G1.pt G1.lg`. Rewrite using `[hpt σ _ hs, hlgs σ y hy]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+
+Introduce `σ a b ha hb`. Establish `hs : MvPowerSeries.constantCoeff (PowerSeries.subst a g.l + PowerSeries.subst b g.l) = 0`. Rewrite using `[map_add, hlgcc σ a ha, hlgcc σ b hb, add_zero]`. Unfold `G1.add G1.pt G1.lg`. Rewrite using `[hpt σ _ hs, hlgs σ a ha, hlgs σ b hb]`.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Use `set ε : ℂ_[p] := ((g.C.u⁻¹ : ℂ_[p]ˣ) : ℂ_[p]) with hε set ε' : ℂ_[p] := ((g'.C.u⁻¹ : ℂ_[p]ˣ) : ℂ_[p]) with hε'`. Establish `hu0 : u ≠ 0` using `Units.ne_zero _`. Establish `hε0 : ε ≠ 0` using `Units.ne_zero _`.
+
+Establish `hε0' : ε' ≠ 0` using `Units.ne_zero _`. Establish `hCC : g'.C = C21 * g.C` using `by rw [hC21, inv_mul_cancel_right]`. Establish `hεε : ε' * u = ε`. Establish `e : ((g'.C.u⁻¹ : ℂ_[p]ˣ) : ℂ_[p]) = ((g.C.u⁻¹ : ℂ_[p]ˣ) : ℂ_[p]) * ((C21.u⁻¹ : ℂ_[p]ˣ) : ℂ_[p])`. Rewrite using `[hCC]`.
+
+Use `show (((C21.u * g.C.u)⁻¹ : ℂ_[p]ˣ) : ℂ_[p]) = _`. Rewrite using `[mul_inv_rev, Units.val_mul]`. Rewrite using `[hε', e, mul_assoc, hu_def, Units.inv_mul, mul_one]`. Establish `hεi : u * ε⁻¹ = ε'⁻¹`. Rewrite using `[← hεε]`.
+
+Clear the denominators using the available nonvanishing facts. Establish `hA0 : constantCoeff (PowerSeries.C ε' * logSer g'.W) = 0` using `by simp [hl0']`. Establish `hin : PowerSeries.subst φ (PowerSeries.C ε' * logSer g'.W) = PowerSeries.C ε * logSer g.W`. Rewrite using `[sCf φ hφ0, hlog, mvC_eq, ← mul_assoc, ← map_mul, hεε]`. Establish `hFgg : PowerSeries.subst φ (Fg g') = Fg g` using `by show PowerSeries.subst φ (PowerSeries.subst (PowerSeries.C ε' * logSer g'.W) (sgSer g'.lam g'.abelian₂)) = PowerSeries.subst (PowerSeries.C ε * logSer g.W) (sgSer g.lam g.abelian₂)`.
+
+Rewrite using `[hl, hL, PowerSeries.subst_comp_subst_apply (hs1 hA0) (hs1 hφ0), hin]`. Establish `hcc : constantCoeff (Fg g') = constantCoeff (Fg g)` using `by rw [← hFgg, cc_subst_keep hφ0]`. Use `set E := ePhi1 g.lam g.abelian₂ g.C g.wq with hE`. Use `set E' := ePhi1 g'.lam g'.abelian₂ g'.C g'.wq with hE'`. Establish `hX : (X : PowerSeries ℂ_[p]) * E = PowerSeries.C (ε⁻¹) * (Fg g - PowerSeries.C (constantCoeff (Fg g)))` using `ePhi1_X g hOk`.
+
+Establish `hX' : (X : PowerSeries ℂ_[p]) * E' = PowerSeries.C (ε'⁻¹) * (Fg g' - PowerSeries.C (constantCoeff (Fg g')))` using `ePhi1_X g' hOk'`. Use `set Es : PowerSeries ℂ_[p] := PowerSeries.subst φ E' with hEs`. Establish `hkey : φ * Es = PowerSeries.C u * ((X : PowerSeries ℂ_[p]) * E)`. Establish `e1 : PowerSeries.subst φ ((X : PowerSeries ℂ_[p]) * E') = φ * Es`. Rewrite using `[PowerSeries.subst_mul (hs1 hφ0), PowerSeries.subst_X (hs1 hφ0)]`.
+
+Rewrite using `[← e1, hX', PowerSeries.subst_mul (hs1 hφ0), Formalism.L2.KerInert.MC.subst_C' hφ0, PowerSeries.subst_sub (hs1 hφ0), hFgg, Formalism.L2.KerInert.MC.subst_C' hφ0, hcc, hX, ← mul_assoc, ← map_mul, hεi]`. Use `set q : PowerSeries ℂ_[p] := PowerSeries.mk fun n => coeff (n + 1) φ with hq`. Establish `hφq : φ = (X : PowerSeries ℂ_[p]) * q`. Establish `e` using `PowerSeries.eq_X_mul_shift_add_const φ`. Rewrite `e` using `[hφ0, map_zero, add_zero]`.
+
+Conclude with `e`. Establish `hqE : q * Es = PowerSeries.C u * E`. Establish `e : (X : PowerSeries ℂ_[p]) * (q * Es) = X * (PowerSeries.C u * E)`. Rewrite using `[← mul_assoc, ← hφq, hkey]`. Expand and normalize the polynomial expressions, which then agree.
+
+Conclude with `mul_left_cancel₀ PowerSeries.X_ne_zero e`. Use `set Q : PowerSeries ℂ_[p] := PowerSeries.C (((C21.u⁻¹ : ℂ_[p]ˣ) : ℂ_[p])) * q with hQ`. Establish `hQE : Q * Es = E`. Rewrite using `[hQ, mul_assoc, hqE, ← mul_assoc, ← map_mul, show (((C21.u⁻¹ : ℂ_[p]ˣ) : ℂ_[p])) * u = 1 from Units.inv_mul C21.u, map_one, one_mul]`. Establish `hQI' : Formalism.L2.Th1.C.IntPS (RB p) Q`.
+
+Introduce `n`. Rewrite using `[hQ, coeff_C_mul, hq, coeff_mk]`. Conclude with `nmul hui.le (hφI' (n + 1))`. Establish `hQI : IntegralMv (Q : MvPowerSeries Unit ℂ_[p])` using `fun n => Formalism.L2.Th1.C.Pts.intMv_of_intPS hQI' n`. Establish `hEs1 : constantCoeff Es = 1` using `by rw [hEs, cc_subst_keep hφ0, hE1']`.
+
+Establish `hsub1 : PowerSeries.subst φ (E' - 1) = Es - 1`. Rewrite using `[← PowerSeries.coe_substAlgHom (hs1 hφ0), map_sub, map_one, PowerSeries.coe_substAlgHom (hs1 hφ0)]`. Establish `hE'0 : MvPowerSeries.constantCoeff (E' - 1 : MvPowerSeries Unit ℂ_[p]) = 0`. Rewrite using `[map_sub, map_one]`. Conclude with `sub_eq_zero.2 hE1'`.
+
+Establish `hlogs : PowerSeries.subst φ (logMv E') = logMv Es` using `by show PowerSeries.subst φ (PI.FglShared.logS (E' : MvPowerSeries Unit ℂ_[p])) = PI.FglShared.logS (Es : MvPowerSeries Unit ℂ_[p])`. Rewrite using `[PI.FglShared.logS_eq_subst (by exact hE1'), PI.FglShared.logS_eq_subst (by exact hEs1), PowerSeries.subst_comp_subst_apply (hs0 hE'0) (hs1 hφ0), hsub1]`. Use `set h : PowerSeries ℂ_[p] := PowerSeries.subst φ g'.ph - g.ph with hh_def`. Establish `hh : h = logMv E - logMv Es`. Rewrite using `[hh_def]`.
+
+Unfold `G1.ph`. Rewrite using `[← hE, ← hE', ← PowerSeries.coe_substAlgHom (hs1 hφ0), map_neg, PowerSeries.coe_substAlgHom (hs1 hφ0), hlogs]`. Expand and normalize the polynomial expressions, which then agree. Establish `hcch : constantCoeff h = 0`. Rewrite using `[hh, map_sub]`.
+
+Establish `a1` using `PI.FglShared.constantCoeff_logS (E : MvPowerSeries Unit ℂ_[p])`. Establish `a2` using `PI.FglShared.constantCoeff_logS (Es : MvPowerSeries Unit ℂ_[p])`. Rewrite using `[show constantCoeff (logMv E) = 0 from a1, show constantCoeff (logMv Es) = 0 from a2, sub_zero]`. Establish `hEs0 : Es ≠ 0`. Introduce `h0`.
+
+Rewrite `hEs1` using `[h0, map_zero]`. Conclude with `zero_ne_one hEs1`. Establish `hexph : (PI.FglPhSplit.expMv (h : MvPowerSeries Unit ℂ_[p]) : PowerSeries ℂ_[p]) = Q`. Establish `e1` using `PI.FglShared.expMv_add' (f := (h : MvPowerSeries Unit ℂ_[p])) (g := PI.FglShared.logS (Es : MvPowerSeries Unit ℂ_[p])) (by exact hcch) (PI.FglShared.constantCoeff_logS _)`. Rewrite `e1` using `[show (h : MvPowerSeries Unit ℂ_[p]) + PI.FglShared.logS (Es : MvPowerSeries Unit ℂ_[p]) = PI.FglShared.logS (E : MvPowerSeries Unit ℂ_[p]) by rw [hh]; show logMv E - logMv Es + logMv Es = logMv E; ring, PI.FglShared.expMv_logS (by exact hE1), PI.FglShared.expMv_logS (by exact hE …`.
+
+Establish `e2 : (PI.FglPhSplit.expMv (h : MvPowerSeries Unit ℂ_[p]) : PowerSeries ℂ_[p]) * Es = Q * Es`. Rewrite using `[hQE]`. Conclude with `e1.symm`. Conclude with `mul_right_cancel₀ hEs0 e2`. Use `⟨h, hcch, ?_, ?_⟩` and prove the remaining obligations.
+
+Use `show IntegralMv (PI.FglPhSplit.expMv (h : MvPowerSeries Unit ℂ_[p]))`. Rewrite using `[hexph]`. Conclude with `hQI`. Rewrite using `[hh_def]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem change (h5 : 5 ≤ p) (g g' : G1 p) (hOk : g.Ok) (hOk' : g'.Ok) (hl : g'.lam = g.lam) (hL : g'.abelian₂ = g.abelian₂)
     (hE1 : constantCoeff (ePhi1 g.lam g.abelian₂ g.C g.wq) = 1)
     (hE1' : constantCoeff (ePhi1 g'.lam g'.abelian₂ g'.C g'.wq) = 1) :
@@ -700,37 +987,69 @@ section Simeq
 
 variable {p : ℕ} [Fact p.Prime]
 
+/- English proof (translation)
+The claim follows from `Formalism.L2.KerInert.Dict.formal_equivalence_agree p σ f g`.
+-/
 theorem S_iff {σ : Type} (f g : MvPowerSeries σ ℂ_[p]) : Simeq f g ↔ Formalism.InvariantFactorPaths.G7.Simeq f g :=
   Formalism.L2.KerInert.Dict.formal_equivalence_agree p σ f g
 
+/- English proof (translation)
+The claim follows from `(S_iff _ _).2 ((Formalism.InvariantFactorPaths.G7.Top.simeqRules ℂ_[p] σ).1 f)`.
+-/
 theorem S_refl {σ : Type} (f : MvPowerSeries σ ℂ_[p]) : Simeq f f :=
   (S_iff _ _).2 ((Formalism.InvariantFactorPaths.G7.Top.simeqRules ℂ_[p] σ).1 f)
 
+/- English proof (translation)
+The claim follows from `(S_iff _ _).2 ((Formalism.InvariantFactorPaths.G7.Top.simeqRules ℂ_[p] σ).2.1 f g ((S_iff _ _).1 h))`.
+-/
 theorem S_symm {σ : Type} {f g : MvPowerSeries σ ℂ_[p]} (h : Simeq f g) : Simeq g f :=
   (S_iff _ _).2 ((Formalism.InvariantFactorPaths.G7.Top.simeqRules ℂ_[p] σ).2.1 f g ((S_iff _ _).1 h))
 
+/- English proof (translation)
+The claim follows from `(S_iff _ _).2 ((Formalism.InvariantFactorPaths.G7.Top.simeqRules ℂ_[p] σ).2.2.1 f g k ((S_iff _ _).1 h1) ((S_iff _ _).1 h2))`.
+-/
 theorem S_trans {σ : Type} {f g k : MvPowerSeries σ ℂ_[p]} (h1 : Simeq f g) (h2 : Simeq g k) : Simeq f k :=
   (S_iff _ _).2 ((Formalism.InvariantFactorPaths.G7.Top.simeqRules ℂ_[p] σ).2.2.1 f g k ((S_iff _ _).1 h1) ((S_iff _ _).1 h2))
 
+/- English proof (translation)
+The claim follows from `(S_iff _ _).2 ((Formalism.InvariantFactorPaths.G7.Top.simeqRules ℂ_[p] σ).2.2.2.1 f g f' g' ((S_iff _ _).1 h1) ((S_iff _ _).1 h2))`.
+-/
 theorem S_add {σ : Type} {f g f' g' : MvPowerSeries σ ℂ_[p]} (h1 : Simeq f g) (h2 : Simeq f' g') :
     Simeq (f + f') (g + g') :=
   (S_iff _ _).2 ((Formalism.InvariantFactorPaths.G7.Top.simeqRules ℂ_[p] σ).2.2.2.1 f g f' g' ((S_iff _ _).1 h1) ((S_iff _ _).1 h2))
 
+/- English proof (translation)
+The claim follows from `(S_iff _ _).2 ((Formalism.InvariantFactorPaths.G7.Top.simeqRules ℂ_[p] σ).2.2.2.2 κ f g s hs0 (fun i n => hsI i n) ((S_iff _ _).1 h))`.
+-/
 theorem S_subst {σ κ : Type} [Finite σ] (s : σ → MvPowerSeries κ ℂ_[p])
     (hs0 : ∀ i, MvPowerSeries.constantCoeff (s i) = 0) (hsI : ∀ i, IntegralMv (s i))
     {f g : MvPowerSeries σ ℂ_[p]} (h : Simeq f g) : Simeq (MvPowerSeries.subst s f) (MvPowerSeries.subst s g) :=
   (S_iff _ _).2 ((Formalism.InvariantFactorPaths.G7.Top.simeqRules ℂ_[p] σ).2.2.2.2 κ f g s hs0 (fun i n => hsI i n) ((S_iff _ _).1 h))
 
+/- English proof (translation)
+The claim follows from `h ▸ S_refl f`.
+-/
 theorem S_of_eq {σ : Type} {f g : MvPowerSeries σ ℂ_[p]} (h : f = g) : Simeq f g := h ▸ S_refl f
 
+/- English proof (translation)
+Use `S_add (S_symm hH) (S_refl (-H))` as an intermediate fact. Rewrite `this` using `[zero_add, add_neg_cancel]`. Then use the resulting hypothesis.
+-/
 theorem simeq_zero_neg {σ : Type} {H : MvPowerSeries σ ℂ_[p]} (hH : Simeq H 0) : Simeq (-H) 0 := by
   have := S_add (S_symm hH) (S_refl (-H))
   rwa [zero_add, add_neg_cancel] at this
 
+/- English proof (translation)
+Use `S_add h h'` as an intermediate fact. Rewrite `this` using `[add_zero]`. Then use the resulting hypothesis.
+-/
 theorem simeq_zero_add {σ : Type} {H H' : MvPowerSeries σ ℂ_[p]} (h : Simeq H 0) (h' : Simeq H' 0) : Simeq (H + H') 0 := by
   have := S_add h h'
   rwa [add_zero] at this
 
+/- English proof (translation)
+Proceed by induction on `n using Int.induction_on with`. Consider the case `zero => exact S_of_eq (by simp)`. Consider the case `succ i ih`. Establish `e : MvPowerSeries.C (((i : ℤ) + 1 : ℤ) : ℂ_[p]) * H = MvPowerSeries.C ((i : ℤ) : ℂ_[p]) * H + H` using `by push_cast; rw [map_add, map_one]; ring`. Rewrite using `[e]`.
+
+Conclude with `simeq_zero_add ih hH`. Consider the case `pred i ih`. Establish `e : MvPowerSeries.C ((-(i : ℤ) - 1 : ℤ) : ℂ_[p]) * H = MvPowerSeries.C ((-(i : ℤ) : ℤ) : ℂ_[p]) * H + -H` using `by push_cast; rw [map_sub, map_one]; ring`. Rewrite using `[e]`. Conclude with `simeq_zero_add ih (simeq_zero_neg hH)`.
+-/
 theorem S_int {σ : Type} {H : MvPowerSeries σ ℂ_[p]} (hH : Simeq H 0) (n : ℤ) :
     Simeq (MvPowerSeries.C (n : ℂ_[p]) * H) 0 := by
   induction n using Int.induction_on with
@@ -744,6 +1063,11 @@ theorem S_int {σ : Type} {H : MvPowerSeries σ ℂ_[p]} (hH : Simeq H 0) (n : �
       push_cast; rw [map_sub, map_one]; ring
     rw [e]; exact simeq_zero_add ih (simeq_zero_neg hH)
 
+/- English proof (translation)
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[sub_zero]`. Conclude with `PowerSeries.constantCoeff_subst_eq_zero hy0 _ hh0`. Rewrite using `[sub_zero] show IntegralMv (PI.FglPhSplit.expMv (PowerSeries.subst y h))`. Rewrite using `[PI.FglShared.expMv_subst' hy0 hh0]`.
+
+Conclude with `integral_psubst hy0 hyI hhI`.
+-/
 theorem S_small {σ : Type} {y : MvPowerSeries σ ℂ_[p]} (hy0 : MvPowerSeries.constantCoeff y = 0) (hyI : IntegralMv y)
     {h : PowerSeries ℂ_[p]} (hh0 : constantCoeff h = 0) (hhI : IntegralMv (expMv (h : MvPowerSeries Unit ℂ_[p]))) :
     Simeq (PowerSeries.subst y h) 0 := by
@@ -760,25 +1084,40 @@ section Ops
 
 variable {p : ℕ} [Fact p.Prime]
 
+/- English proof (translation)
+Unfold `G1.lg G1.l`. Rewrite using `[Formalism.L2.KerInert.Dict.formal_logarithm_agree p g.W g.wq hOk.2.1]`. Conclude with `PowerSeries.constantCoeff_subst_eq_zero hy _ (logSpec ℂ_[p] g.W).1`.
+-/
 theorem lg_cc (g : G1 p) (hOk : g.Ok) {σ : Type*} {y : MvPowerSeries σ ℂ_[p]} (hy : MvPowerSeries.constantCoeff y = 0) :
     MvPowerSeries.constantCoeff (g.lg y) = 0 := by
   unfold G1.lg G1.l
   rw [Formalism.L2.KerInert.Dict.formal_logarithm_agree p g.W g.wq hOk.2.1]
   exact PowerSeries.constantCoeff_subst_eq_zero hy _ (logSpec ℂ_[p] g.W).1
 
+/- English proof (translation)
+The claim follows from `PowerSeries.constantCoeff_subst_eq_zero hx _ hOk.2.2.1`.
+-/
 theorem pt_cc (g : G1 p) (hOk : g.Ok) {σ : Type*} {x : MvPowerSeries σ ℂ_[p]} (hx : MvPowerSeries.constantCoeff x = 0) :
     MvPowerSeries.constantCoeff (g.pt x) = 0 :=
   PowerSeries.constantCoeff_subst_eq_zero hx _ hOk.2.2.1
 
+/- English proof (translation)
+The claim follows from `pt_cc g hOk (by rw [map_mul, lg_cc g hOk hy, mul_zero])`.
+-/
 theorem mulBy_cc (g : G1 p) (hOk : g.Ok) {σ : Type*} (c : ℂ_[p]) {y : MvPowerSeries σ ℂ_[p]}
     (hy : MvPowerSeries.constantCoeff y = 0) : MvPowerSeries.constantCoeff (g.mulBy c y) = 0 :=
   pt_cc g hOk (by rw [map_mul, lg_cc g hOk hy, mul_zero])
 
+/- English proof (translation)
+The claim follows from `pt_cc g hOk (by rw [map_add, lg_cc g hOk ha, lg_cc g hOk hb, add_zero])`.
+-/
 theorem add_cc (g : G1 p) (hOk : g.Ok) {σ : Type*} {a b : MvPowerSeries σ ℂ_[p]}
     (ha : MvPowerSeries.constantCoeff a = 0) (hb : MvPowerSeries.constantCoeff b = 0) :
     MvPowerSeries.constantCoeff (g.add a b) = 0 :=
   pt_cc g hOk (by rw [map_add, lg_cc g hOk ha, lg_cc g hOk hb, add_zero])
 
+/- English proof (translation)
+Establish `hS : MvPowerSeries.HasSubst s` using `MvPowerSeries.hasSubst_of_constantCoeff_zero hs`. Establish `hA' : PowerSeries.HasSubst A` using `HasSubst.of_constantCoeff_zero hA`. Unfold `PowerSeries.subst`. Rewrite using `[MvPowerSeries.subst_comp_subst_apply hA'.const hS]`.
+-/
 theorem msubst_psubst {σ κ : Type} [Finite σ] (s : σ → MvPowerSeries κ ℂ_[p])
     (hs : ∀ i, MvPowerSeries.constantCoeff (s i) = 0) {A : MvPowerSeries σ ℂ_[p]}
     (hA : MvPowerSeries.constantCoeff A = 0) (f : PowerSeries ℂ_[p]) :
@@ -791,15 +1130,27 @@ theorem msubst_psubst {σ κ : Type} [Finite σ] (s : σ → MvPowerSeries κ �
 variable {σ κ : Type} [Finite σ] (s : σ → MvPowerSeries κ ℂ_[p]) (hs : ∀ i, MvPowerSeries.constantCoeff (s i) = 0)
 include hs
 
+/- English proof (translation)
+The claim follows from `msubst_psubst s hs ha _`.
+-/
 theorem msubst_lg (g : G1 p) (hOk : g.Ok) {a : MvPowerSeries σ ℂ_[p]} (ha : MvPowerSeries.constantCoeff a = 0) :
     MvPowerSeries.subst s (g.lg a) = g.lg (MvPowerSeries.subst s a) := msubst_psubst s hs ha _
 
+/- English proof (translation)
+The claim follows from `msubst_psubst s hs hx _`.
+-/
 theorem msubst_pt (g : G1 p) (hOk : g.Ok) {x : MvPowerSeries σ ℂ_[p]} (hx : MvPowerSeries.constantCoeff x = 0) :
     MvPowerSeries.subst s (g.pt x) = g.pt (MvPowerSeries.subst s x) := msubst_psubst s hs hx _
 
+/- English proof (translation)
+The claim follows from `msubst_psubst s hs hx _`.
+-/
 theorem msubst_phAt (g : G1 p) (hOk : g.Ok) {x : MvPowerSeries σ ℂ_[p]} (hx : MvPowerSeries.constantCoeff x = 0) :
     MvPowerSeries.subst s (g.phAt x) = g.phAt (MvPowerSeries.subst s x) := msubst_psubst s hs hx _
 
+/- English proof (translation)
+Establish `hS : MvPowerSeries.HasSubst s` using `MvPowerSeries.hasSubst_of_constantCoeff_zero hs`. Unfold `G1.add`. Rewrite using `[msubst_pt s hs g hOk (by rw [map_add, lg_cc g hOk ha, lg_cc g hOk hb, add_zero]), ← MvPowerSeries.coe_substAlgHom hS, map_add, MvPowerSeries.coe_substAlgHom hS, msubst_lg s hs g hOk ha, msubst_lg s hs g hOk hb]`.
+-/
 theorem msubst_add (g : G1 p) (hOk : g.Ok) {a b : MvPowerSeries σ ℂ_[p]} (ha : MvPowerSeries.constantCoeff a = 0)
     (hb : MvPowerSeries.constantCoeff b = 0) :
     MvPowerSeries.subst s (g.add a b) = g.add (MvPowerSeries.subst s a) (MvPowerSeries.subst s b) := by
@@ -809,6 +1160,9 @@ theorem msubst_add (g : G1 p) (hOk : g.Ok) {a b : MvPowerSeries σ ℂ_[p]} (ha 
     ← MvPowerSeries.coe_substAlgHom hS, map_add, MvPowerSeries.coe_substAlgHom hS,
     msubst_lg s hs g hOk ha, msubst_lg s hs g hOk hb]
 
+/- English proof (translation)
+Establish `hS : MvPowerSeries.HasSubst s` using `MvPowerSeries.hasSubst_of_constantCoeff_zero hs`. Unfold `G1.be`. Rewrite using `[← MvPowerSeries.coe_substAlgHom hS, map_sub, map_sub, MvPowerSeries.coe_substAlgHom hS, msubst_phAt s hs g hOk (add_cc g hOk ha hb), msubst_phAt s hs g hOk ha, msubst_phAt s hs g hOk hb, msubst_add s hs g hOk ha hb]`.
+-/
 theorem msubst_be (g : G1 p) (hOk : g.Ok) {a b : MvPowerSeries σ ℂ_[p]} (ha : MvPowerSeries.constantCoeff a = 0)
     (hb : MvPowerSeries.constantCoeff b = 0) :
     MvPowerSeries.subst s (g.be a b) = g.be (MvPowerSeries.subst s a) (MvPowerSeries.subst s b) := by
@@ -824,6 +1178,9 @@ section Assembly
 
 variable {p : ℕ} [Fact p.Prime]
 
+/- English proof (translation)
+Introduce `n`. Use `show ‖MvPowerSeries.coeff n (MvPowerSeries.X i)‖ ≤ 1`. Rewrite using `[MvPowerSeries.coeff_X]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem integral_Xv {σ : Type*} (i : σ) : IntegralMv (Xv i : MvPowerSeries σ ℂ_[p]) := by
   classical
   intro n
@@ -831,6 +1188,11 @@ theorem integral_Xv {σ : Type*} (i : σ) : IntegralMv (Xv i : MvPowerSeries σ 
   rw [MvPowerSeries.coeff_X]
   split_ifs <;> simp
 
+/- English proof (translation)
+Establish `hOk : g.Ok` using `hA.2.2.2.2`. Establish `hI` using `(Formalism.MainNotions.Ext.addInt_holds D p cc δ g hA).1`. Apply the tactic sequence `have e := msubst_add ![a, b] (by intro i; fin_cases i <;> simpa) g hOk (MvPowerSeries.constantCoeff_X (0 : Fin 2)) (MvPowerSeries.constantCoeff_X (1 : Fin 2))`. Apply the tactic sequence `have hS : MvPowerSeries.HasSubst (![a, b] : Fin 2 → MvPowerSeries σ ℂ_[p]) := MvPowerSeries.hasSubst_of_constantCoeff_zero (by intro i; fin_cases i <;> simpa)`. Rewrite `e` using `[MvPowerSeries.subst_X hS, MvPowerSeries.subst_X hS]`.
+
+Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_fin_one] at e`. Rewrite using `[← e]`. Apply the tactic sequence `exact integral_subst' _ (by intro i; fin_cases i <;> simpa) (by intro i; fin_cases i <;> simpa) hI`.
+-/
 theorem integral_add (g : G1 p) {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (hA : At D cc δ g) {σ : Type}
     {a b : MvPowerSeries σ ℂ_[p]} (ha0 : MvPowerSeries.constantCoeff a = 0) (hb0 : MvPowerSeries.constantCoeff b = 0)
     (haI : IntegralMv a) (hbI : IntegralMv b) : IntegralMv (g.add a b) := by
@@ -845,6 +1207,29 @@ theorem integral_add (g : G1 p) {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ}
   rw [← e]
   exact integral_subst' _ (by intro i; fin_cases i <;> simpa) (by intro i; fin_cases i <;> simpa) hI
 
+/- English proof (translation)
+Introduce `D p _ cc δ g hA h5 hIn a ha`. Establish `hA0` using `hA`. Take `⟨hcurve, hcop, hδ, hLam, hOk⟩` from `hA`. Take `⟨g', hl, hA', hW'⟩` from `hG D cc δ hcurve hδ p hcop h5 hIn g.lam`. Establish `hOk' : g'.Ok` using `hA'.2.2.2.2`.
+
+Establish `hL : g'.abelian₂ = g.abelian₂` using `hA'.2.2.2.1.trans hLam.symm`. Take `⟨φ, hφ0, hφI, hmul, -, h, hh0, hhI, hph⟩` from `change h5 g g' hOk hOk' hl hL (Formalism.MainNotions.Ext.CutA.ePhiOne_holds D p cc δ g hA0) (Formalism.MainNotions.Ext.CutA.ePhiOne_holds D p cc δ g' hA')`. Establish `hN'` using `hN D p cc δ g' hA' h5 hIn hW' a ha`. Rewrite `hN'` using `[hl]`. Establish `hNint : tauK D g.lam (a : D.host.K) * tauKc D g.lam (a : D.host.K) = ((Algebra.norm ℤ a : ℤ) : ℂ_[p])` using `Formalism.MainNotions.Ext.CutA.tau_norm D g.lam a`.
+
+Rewrite `hN'`, the goal using `[hNint]`. Use `set τ := tauK D g.lam (a : D.host.K) with hτ`. Use `set N : ℤ := Algebra.norm ℤ a with hNdef`. Establish `hX0 : MvPowerSeries.constantCoeff (Xv () : MvPowerSeries Unit ℂ_[p]) = 0` using `MvPowerSeries.constantCoeff_X _`. Establish `hXs : ∀ f : PowerSeries ℂ_[p], PowerSeries.subst (Xv () : MvPowerSeries Unit ℂ_[p]) f = f` using `fun f => PowerSeries.X_subst f`.
+
+Use `set M := (g.mulBy τ (Xv ()) : MvPowerSeries Unit ℂ_[p]) with hM`. Establish `hM0 : MvPowerSeries.constantCoeff M = 0` using `mulBy_cc g hOk τ hX0`. Establish `hMI : IntegralMv M` using `endIntInertAll_of hE hG D p cc δ g hA0 h5 hIn (τ, tauKc D g.lam (a : D.host.K)) (subset_closure ⟨a, rfl⟩)`. Use `set M' := (g'.mulBy τ (Xv ()) : MvPowerSeries Unit ℂ_[p]) with hM'`. Establish `hM'0 : MvPowerSeries.constantCoeff M' = 0` using `mulBy_cc g' hOk' τ hX0`.
+
+Establish `hS` using `S_subst (fun _ : Unit => (φ : MvPowerSeries Unit ℂ_[p])) (fun _ => hφ0) (fun _ => hφI) hN'`. Establish `hsM' : MvPowerSeries.subst (fun _ : Unit => (φ : MvPowerSeries Unit ℂ_[p])) (g'.phAt M') = g.phAt M + PowerSeries.subst M h`. Rewrite using `[msubst_phAt (fun _ : Unit => (φ : MvPowerSeries Unit ℂ_[p])) (fun _ => hφ0) g' hOk' hM'0]`. Establish `e1 : MvPowerSeries.subst (fun _ : Unit => (φ : MvPowerSeries Unit ℂ_[p])) M' = PowerSeries.subst M φ`. Establish `hS' : MvPowerSeries.HasSubst (fun _ : Unit => (φ : MvPowerSeries Unit ℂ_[p]))` using `MvPowerSeries.hasSubst_of_constantCoeff_zero (fun _ => hφ0)`.
+
+Rewrite using `[hM', hM, hmul Unit (Xv ()) hX0 τ, hXs]`. Unfold `G1.mulBy`. Rewrite using `[msubst_pt (fun _ : Unit => (φ : MvPowerSeries Unit ℂ_[p])) (fun _ => hφ0) g' hOk' (by rw [map_mul, lg_cc g' hOk' hX0, mul_zero])]`. Use `congrArg g'.pt ?_` and prove the remaining obligations. Rewrite using `[← MvPowerSeries.coe_substAlgHom hS', map_mul, MvPowerSeries.coe_substAlgHom hS', MvPowerSeries.subst_C, msubst_lg (fun _ : Unit => (φ : MvPowerSeries Unit ℂ_[p])) (fun _ => hφ0) g' hOk' hX0, MvPowerSeries.subst_X hS']`.
+
+Rewrite using `[e1]`. Use `show PowerSeries.subst (PowerSeries.subst M φ) g'.ph = PowerSeries.subst M g.ph + PowerSeries.subst M h`. Rewrite using `[← PowerSeries.subst_comp_subst_apply (hs1 hφ0) (hs0 hM0), hph, PowerSeries.subst_add (hs0 hM0)]`. Establish `hsR : MvPowerSeries.subst (fun _ : Unit => (φ : MvPowerSeries Unit ℂ_[p])) (MvPowerSeries.C ((N : ℤ) : ℂ_[p]) * g'.phAt (Xv ())) = MvPowerSeries.C ((N : ℤ) : ℂ_[p]) * g.phAt (Xv ()) + MvPowerSeries.C ((N : ℤ) : ℂ_[p]) * h`. Establish `hS' : MvPowerSeries.HasSubst (fun _ : Unit => (φ : MvPowerSeries Unit ℂ_[p]))` using `MvPowerSeries.hasSubst_of_constantCoeff_zero (fun _ => hφ0)`.
+
+Rewrite using `[← MvPowerSeries.coe_substAlgHom hS', map_mul, MvPowerSeries.coe_substAlgHom hS', MvPowerSeries.subst_C, msubst_phAt (fun _ : Unit => (φ : MvPowerSeries Unit ℂ_[p])) (fun _ => hφ0) g' hOk' hX0, MvPowerSeries.subst_X hS']`. Use `show MvPowerSeries.C ((N : ℤ) : ℂ_[p]) * PowerSeries.subst φ g'.ph = _`. Rewrite using `[hph]`. Unfold `G1.phAt`. Rewrite using `[hXs]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite `hS` using `[hsM', hsR]`. Establish `hHM : Simeq (PowerSeries.subst M h) 0` using `S_small hM0 hMI hh0 hhI`. Establish `hH : Simeq (h : MvPowerSeries Unit ℂ_[p]) 0` using `⟨by rw [sub_zero]; exact hh0, by rw [sub_zero]; exact hhI⟩`. Establish `hsmall : Simeq (MvPowerSeries.C ((N : ℤ) : ℂ_[p]) * h + -PowerSeries.subst M h) 0` using `simeq_zero_add (S_int hH N) (simeq_zero_neg hHM)`.
+
+Establish `B` using `S_add hS (S_refl (-PowerSeries.subst M h))`. Establish `D2` using `S_add (S_refl (MvPowerSeries.C ((N : ℤ) : ℂ_[p]) * g.phAt (Xv ()))) hsmall`. Use `S_trans (S_of_eq ?_) (S_trans B (S_trans (S_of_eq ?_) (S_trans D2 (S_of_eq ?_))))` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Expand and normalize the polynomial expressions, which then agree.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem phNormOKInertAll_of (hN : PhNormOKInert) (hE : EndIntInert) (hG : GenusOneWittExists) : PhNormOKInertAll := by
   intro D p _ cc δ g hA h5 hIn a ha
   have hA0 := hA
@@ -914,6 +1299,9 @@ theorem phNormOKInertAll_of (hN : PhNormOKInert) (hE : EndIntInert) (hG : GenusO
   · ring
   · ring
 
+/- English proof (translation)
+Establish `a` using `S_add h (S_refl (-J))`. Establish `b : Simeq (K + -J) 0` using `simeq_zero_add hK (simeq_zero_neg hJ)`. Establish `c` using `S_add (S_refl y) b`. Conclude with `S_trans (S_of_eq (by ring)) (S_trans a (S_trans (S_of_eq (by ring)) (S_trans c (S_of_eq (by ring)))))`.
+-/
 theorem S_shift {σ : Type} {x y J K : MvPowerSeries σ ℂ_[p]} (h : Simeq (x + J) (y + K)) (hJ : Simeq J 0)
     (hK : Simeq K 0) : Simeq x y := by
   have a := S_add h (S_refl (-J))
@@ -921,6 +1309,25 @@ theorem S_shift {σ : Type} {x y J K : MvPowerSeries σ ℂ_[p]} (h : Simeq (x +
   have c := S_add (S_refl y) b
   exact S_trans (S_of_eq (by ring)) (S_trans a (S_trans (S_of_eq (by ring)) (S_trans c (S_of_eq (by ring)))))
 
+/- English proof (translation)
+Introduce `D p _ cc δ g hA h5 hIn`. Establish `hA0` using `hA`. Take `⟨hcurve, hcop, hδ, hLam, hOk⟩` from `hA`. Take `⟨g', hl, hA', hW'⟩` from `hG D cc δ hcurve hδ p hcop h5 hIn g.lam`. Establish `hOk' : g'.Ok` using `hA'.2.2.2.2`.
+
+Establish `hL : g'.abelian₂ = g.abelian₂` using `hA'.2.2.2.1.trans hLam.symm`. Take `⟨φ, hφ0, hφI, -, hadd, h, hh0, hhI, hph⟩` from `change h5 g g' hOk hOk' hl hL (Formalism.MainNotions.Ext.CutA.ePhiOne_holds D p cc δ g hA0) (Formalism.MainNotions.Ext.CutA.ePhiOne_holds D p cc δ g' hA')`. Take `⟨hB1, hB2⟩` from `hB D p cc δ g' hA' h5 hIn hW'`. Establish `hX0 : ∀ i : Fin 3, MvPowerSeries.constantCoeff (Xv i : MvPowerSeries (Fin 3) ℂ_[p]) = 0` using `fun i => MvPowerSeries.constantCoeff_X i`. Use `set s : Fin 3 → MvPowerSeries (Fin 3) ℂ_[p] := fun i => PowerSeries.subst (Xv i : MvPowerSeries (Fin 3) ℂ_[p]) φ with hs_def`.
+
+Establish `hsc : ∀ i, MvPowerSeries.constantCoeff (s i) = 0` using `fun i => PowerSeries.constantCoeff_subst_eq_zero (hX0 i) _ hφ0`. Establish `hsI : ∀ i, IntegralMv (s i)` using `fun i => integral_psubst (hX0 i) (integral_Xv i) hφI`. Establish `hS : MvPowerSeries.HasSubst s` using `MvPowerSeries.hasSubst_of_constantCoeff_zero hsc`. Establish `hsX : ∀ i, MvPowerSeries.subst s (Xv i : MvPowerSeries (Fin 3) ℂ_[p]) = PowerSeries.subst (Xv i : MvPowerSeries (Fin 3) ℂ_[p]) φ` using `fun i => MvPowerSeries.subst_X hS i`. Establish `hphA : ∀ A : MvPowerSeries (Fin 3) ℂ_[p], MvPowerSeries.constantCoeff A = 0 → g'.phAt (PowerSeries.subst A φ) = g.phAt A + PowerSeries.subst A h`.
+
+Introduce `A hA1`. Use `show PowerSeries.subst (PowerSeries.subst A φ) g'.ph = PowerSeries.subst A g.ph + PowerSeries.subst A h`. Rewrite using `[← PowerSeries.subst_comp_subst_apply (hs1 hφ0) (hs0 hA1), hph, PowerSeries.subst_add (hs0 hA1)]`. Establish `hbe : ∀ a b : MvPowerSeries (Fin 3) ℂ_[p], MvPowerSeries.constantCoeff a = 0 → MvPowerSeries.constantCoeff b = 0 → g'.be (PowerSeries.subst a φ) (PowerSeries.subst b φ) = g.be a b + (PowerSeries.subst (g.add a b) h - PowerSeries.subst a h - PowerSeries.subst b h)`. Introduce `a b ha hb`.
+
+Unfold `G1.be`. Rewrite using `[← hadd (Fin 3) a b ha hb, hphA _ (add_cc g hOk ha hb), hphA a ha, hphA b hb]`. Expand and normalize the polynomial expressions, which then agree. Establish `hH : ∀ y : MvPowerSeries (Fin 3) ℂ_[p], MvPowerSeries.constantCoeff y = 0 → IntegralMv y → Simeq (PowerSeries.subst y h) 0` using `fun y hy hyI => S_small hy hyI hh0 hhI`. Establish `hJ : ∀ a b : MvPowerSeries (Fin 3) ℂ_[p], MvPowerSeries.constantCoeff a = 0 → MvPowerSeries.constantCoeff b = 0 → IntegralMv a → IntegralMv b → Simeq (PowerSeries.subst (g.add a b) h - PowerSeries.subst a h - PowerSeries.subst b h) 0`.
+
+Introduce `a b ha hb haI hbI`. Establish `e : PowerSeries.subst (g.add a b) h - PowerSeries.subst a h - PowerSeries.subst b h = PowerSeries.subst (g.add a b) h + (-PowerSeries.subst a h + -PowerSeries.subst b h)` using `by ring`. Rewrite using `[e]`. Conclude with `simeq_zero_add (hH _ (add_cc g hOk ha hb) (integral_add g hA0 ha hb haI hbI)) (simeq_zero_add (simeq_zero_neg (hH a ha haI)) (simeq_zero_neg (hH b hb hbI)))`. Establish `hI : ∀ i : Fin 3, IntegralMv (Xv i : MvPowerSeries (Fin 3) ℂ_[p])` using `fun i => integral_Xv i`.
+
+Establish `a01c` using `add_cc g hOk (hX0 0) (hX0 1)`. Establish `a12c` using `add_cc g hOk (hX0 1) (hX0 2)`. Establish `a01I` using `integral_add g hA0 (hX0 0) (hX0 1) (hI 0) (hI 1)`. Establish `a12I` using `integral_add g hA0 (hX0 1) (hX0 2) (hI 1) (hI 2)`. Prove the components needed by the constructor for the conclusion.
+
+Establish `T` using `S_subst s hsc hsI hB1`. Rewrite `T` using `[msubst_be s hsc g' hOk' (add_cc g' hOk' (hX0 0) (hX0 1)) (hX0 2), msubst_add s hsc g' hOk' (hX0 0) (hX0 1), hsX, hsX, hsX, ← hadd (Fin 3) (Xv 0) (Xv 1) (hX0 0) (hX0 1), hbe _ _ a01c (hX0 2)]`. Rewrite `T` using `[← MvPowerSeries.coe_substAlgHom hS, map_add, MvPowerSeries.coe_substAlgHom hS, msubst_be s hsc g' hOk' (hX0 0) (hX0 2), msubst_be s hsc g' hOk' (hX0 1) (hX0 2), hsX, hsX, hsX, hbe _ _ (hX0 0) (hX0 2), hbe _ _ (hX0 1) (hX0 2)]`. Establish `T'` using `S_trans T (S_of_eq (show g.be (Xv 0) (Xv 2) + (PowerSeries.subst (g.add (Xv 0) (Xv 2)) h - PowerSeries.subst (Xv 0 : MvPowerSeries (Fin 3) ℂ_[p]) h - PowerSeries.subst (Xv 2 : MvPowerSeries (Fin 3) ℂ_[p]) h) + (g.be (Xv 1) (Xv 2) + (PowerSeries.subst (g.add (Xv 1) (Xv 2)) h - Pow …`. Conclude with `S_shift T' (hJ _ _ a01c (hX0 2) a01I (hI 2)) (simeq_zero_add (hJ _ _ (hX0 0) (hX0 2) (hI 0) (hI 2)) (hJ _ _ (hX0 1) (hX0 2) (hI 1) (hI 2)))`.
+
+Establish `T` using `S_subst s hsc hsI hB2`. Rewrite `T` using `[msubst_be s hsc g' hOk' (hX0 0) (add_cc g' hOk' (hX0 1) (hX0 2)), msubst_add s hsc g' hOk' (hX0 1) (hX0 2), hsX, hsX, hsX, ← hadd (Fin 3) (Xv 1) (Xv 2) (hX0 1) (hX0 2), hbe _ _ (hX0 0) a12c]`. Rewrite `T` using `[← MvPowerSeries.coe_substAlgHom hS, map_add, MvPowerSeries.coe_substAlgHom hS, msubst_be s hsc g' hOk' (hX0 0) (hX0 1), msubst_be s hsc g' hOk' (hX0 0) (hX0 2), hsX, hsX, hsX, hbe _ _ (hX0 0) (hX0 1), hbe _ _ (hX0 0) (hX0 2)]`. Establish `T'` using `S_trans T (S_of_eq (show g.be (Xv 0) (Xv 1) + (PowerSeries.subst (g.add (Xv 0) (Xv 1)) h - PowerSeries.subst (Xv 0 : MvPowerSeries (Fin 3) ℂ_[p]) h - PowerSeries.subst (Xv 1 : MvPowerSeries (Fin 3) ℂ_[p]) h) + (g.be (Xv 0) (Xv 2) + (PowerSeries.subst (g.add (Xv 0) (Xv 2)) h - Pow …`. Conclude with `S_shift T' (hJ _ _ (hX0 0) a12c (hI 0) a12I) (simeq_zero_add (hJ _ _ (hX0 0) (hX0 1) (hI 0) (hI 1)) (hJ _ _ (hX0 0) (hX0 2) (hI 0) (hI 2)))`.
+-/
 theorem biaddInertAll_of (hB : BiaddInert) (hG : GenusOneWittExists) : BiaddInertAll := by
   intro D p _ cc δ g hA h5 hIn
   have hA0 := hA
@@ -1003,6 +1410,9 @@ theorem biaddInertAll_of (hB : BiaddInert) (hG : GenusOneWittExists) : BiaddIner
     exact S_shift T' (hJ _ _ (hX0 0) a12c (hI 0) a12I)
       (simeq_zero_add (hJ _ _ (hX0 0) (hX0 1) (hI 0) (hI 1)) (hJ _ _ (hX0 0) (hX0 2) (hI 0) (hI 2)))
 
+/- English proof (translation)
+Introduce `D cc δ hcc hδ p _ hcop h5 hIn lam`. Take `⟨g, hl, hA, hW, -⟩` from `h D cc δ hcc hδ p hcop h5 hIn lam`. Conclude with `⟨g, hl, hA, hW⟩`.
+-/
 theorem genus_one_witt_exists_of (h : GenusOneModelExists) : GenusOneWittExists := by
   intro D cc δ hcc hδ p _ hcop h5 hIn lam
   obtain ⟨g, hl, hA, hW, -⟩ := h D cc δ hcc hδ p hcop h5 hIn lam

@@ -3,6 +3,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Selm
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.LDataCardLeFinrank UpperTheory.V.Base UpperTheory.V.Kum UpperTheory.V.Bern UpperTheory.V.B4 UpperTheory.V.B5 UpperTheory.V.Odd
 
+/- English proof (translation)
+Proceed by induction on `r with`. Consider the case `zero`. Simplify using `only [Nat.cast_zero, zero_mul, nonpos_iff_eq_zero]`. Rewrite using `[Module.length_eq_zero_iff]`. Use `⟨fun x y => Subtype.ext ?_⟩` and prove the remaining obligations.
+
+Establish `hx` using `LinearMap.mem_ker.mp x.2`. Establish `hy` using `LinearMap.mem_ker.mp y.2`. Simplify using `only [pow_zero, Module.End.one_apply] at hx hy`. Rewrite using `[hx, hy]`. Consider the case `succ n ih`.
+
+Rewrite using `[pow_succ]`. Use `((UpperTheory.V.Base.lenComp R X (f ^ n) f).1).trans ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem length_ker_pow_le (R X : Type) [CommRing R] [AddCommGroup X] [Module R X]
     (f : Module.End R X) (r : ℕ) :
     Module.length R (LinearMap.ker (f ^ r)) ≤ r * Module.length R (LinearMap.ker f) := by
@@ -24,6 +31,13 @@ private theorem length_ker_pow_le (R X : Type) [CommRing R] [AddCommGroup X] [Mo
       _ = ((n + 1 : ℕ) : ℕ∞) * Module.length R (LinearMap.ker f) := by
           push_cast; rw [add_mul, one_mul]
 
+/- English proof (translation)
+Introduce `R X _ _ _ P a r hP`. Set `f : Module.End R X` to `a • (1 : Module.End R X)`. Establish `hker : LinearMap.ker f = Submodule.torsionBy R X a`. Use extensionality with `x`. Simplify using `[f, Submodule.mem_torsionBy_iff]`.
+
+Establish `hpow : ∀ x : X, (f ^ r) x = a ^ r • x`. Introduce `x`. Simplify using `[f, smul_pow]`. Establish `hle : P ≤ LinearMap.ker (f ^ r)`. Introduce `x hx`.
+
+Rewrite using `[LinearMap.mem_ker, hpow]`. Conclude with `hP x hx`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem UpperTheory.V.Odd.lenPow :
     ∀ (R X : Type) [CommRing R] [AddCommGroup X] [Module R X] (P : Submodule R X) (a : R) (r : ℕ), (∀ x ∈ P, a ^ r • x = 0) → Module.length R P ≤ r * Module.length R (Submodule.torsionBy R X a) := by
   intro R X _ _ _ P a r hP

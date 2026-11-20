@@ -2,6 +2,11 @@ import Mathlib
 
 open IsLocalRing Polynomial
 
+/- English proof (translation)
+Introduce `O σ _ _ th k`. Use `⟨th.toLinearMap ∘ₗ (MvPowerSeries.pderiv O k).toLinearMap, ?_, ?_⟩` and prove the remaining obligations. Introduce `a b show th (MvPowerSeries.pderiv O k (a * b)) = th a • th (MvPowerSeries.pderiv O k b) + th b • th (MvPowerSeries.pderiv O k a)`. Rewrite using `[Derivation.leibniz, map_add, smul_eq_mul, smul_eq_mul, map_mul, map_mul, smul_eq_mul, smul_eq_mul]`. Introduce `k' show th (MvPowerSeries.pderiv O k (MvPowerSeries.X k')) = if k = k' then 1 else 0`.
+
+Distinguish the cases in `h : k = k'`. Substitute `h` using the available equality. Rewrite using `[MvPowerSeries.pderiv_X_self, map_one, if_pos rfl]`. Rewrite using `[MvPowerSeries.pderiv_X_of_ne (Ne.symm h), map_zero, if_neg h]`.
+-/
 theorem UpperTheory.V.Th.Sp.dlam :
     ∀ (O σ : Type) [CommRing O] [DecidableEq σ] (th : MvPowerSeries σ O →ₐ[O] O) (k : σ), ∃ d : MvPowerSeries σ O →ₗ[O] O, (∀ a b, d (a * b) = th a • d b + th b • d a) ∧ ∀ k', d (MvPowerSeries.X k') = if k = k' then 1 else 0 := by
   intro O σ _ _ th k

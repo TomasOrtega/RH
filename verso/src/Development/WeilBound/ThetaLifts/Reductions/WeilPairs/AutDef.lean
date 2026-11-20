@@ -31,10 +31,16 @@ variable (F E) in
 
 def finIdem : AEF F E := algebraMap (AF F) (AEF F E) (pairA F 0 1)
 
+/- English proof (translation)
+Use `show Algebra.TensorProduct.map (fstA F) (AlgHom.id F E) (pairA F 0 1 ⊗ₜ 1) = 0`. Rewrite using `[Algebra.TensorProduct.map_tmul, show fstA F (pairA F 0 1) = 0 from rfl, TensorProduct.zero_tmul]`.
+-/
 theorem infPartF_finIdem : infPartF F E (finIdem F E) = 0 := by
   show Algebra.TensorProduct.map (fstA F) (AlgHom.id F E) (pairA F 0 1 ⊗ₜ 1) = 0
   rw [Algebra.TensorProduct.map_tmul, show fstA F (pairA F 0 1) = 0 from rfl, TensorProduct.zero_tmul]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i j`. Use `show infPartF F E (finIdem F E * x i j) = 0`. Rewrite using `[map_mul, infPartF_finIdem, zero_mul]`.
+-/
 theorem finIdem_smul_fin {nS nT : ℕ} (x : WOF F E nS nT) : (finIdem F E • x).map (infPartF F E) = 0 := by
   funext i j
   show infPartF F E (finIdem F E * x i j) = 0
@@ -83,6 +89,9 @@ def omV (H : Matrix κ κ ℂ) : (κ → ℂ) →ₗ[ℝ] (κ → ℂ) →ₗ[�
     (fun x y y' => by rw [star_add, add_dotProduct, Complex.add_im]; ring)
     (fun c x y => by rw [star_smul, star_trivial, smul_dotProduct, Complex.smul_im, smul_eq_mul, smul_eq_mul]; ring)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem omV_apply (H : Matrix κ κ ℂ) (x y : κ → ℂ) : omV H x y = -(star y ⬝ᵥ H *ᵥ x).im := rfl
 
 def jV (s : Matrix κ κ ℂ) : (κ → ℂ) →ₗ[ℝ] (κ → ℂ) where
@@ -90,6 +99,9 @@ def jV (s : Matrix κ κ ℂ) : (κ → ℂ) →ₗ[ℝ] (κ → ℂ) where
   map_add' x y := by rw [mulVec_add, smul_add]
   map_smul' c x := by rw [mulVec_smul, smul_comm]; rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem jV_apply (s : Matrix κ κ ℂ) (v : κ → ℂ) : jV s v = Complex.I • s *ᵥ v := rfl
 
 def gaussV (H s g : Matrix κ κ ℂ) (v : κ → ℂ) : ℂ :=

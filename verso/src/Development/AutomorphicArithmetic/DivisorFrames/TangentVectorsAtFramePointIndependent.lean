@@ -13,6 +13,15 @@ open AlgebraicGeometry CategoryTheory ReciprocityTheory.ChartRestriction.G.Semi 
 
 open Limits MonoidalCategory CartesianMonoidalCategory MonObj in
 
+/- English proof (translation)
+Establish `hw : w.left ≫ t'.G.hom = spMap (algebraMap S (DualNumber S))` using `Over.w w`. Establish `one : η[t'.G].left ≫ m.φ = (1 : Over.mk x ⟶ Xo.univ.t.G).left`. Establish `e1 : (1 : Over.mk x ⟶ Xo.univ.t.G).left = x ≫ η[Xo.univ.t.G].left` using `by show (toUnit _ ≫ η[Xo.univ.t.G]).left = _`. Simplify using the standard rewrite rules. Rewrite using `[e1]`.
+
+Use `m.cm.e_comm` as an intermediate fact. Rewrite `this` using `[m.base]`. Conclude with `this`. Apply `m.cart.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc]`.
+
+Conclude with `h.2.trans one.symm`. Establish `a : η[t'.G].left ≫ t'.G.hom = 𝟙 _` using `Over.w η[t'.G]`. Rewrite using `[Category.assoc, hw, a, GlobalTheory.spMap_comp_spMap]`. Establish `: (TrivSqZeroExt.fstHom S S S).toRingHom.comp (algebraMap S (DualNumber S)) = RingHom.id S`. Use extensionality with `r`.
+
+Simplify using `[TrivSqZeroExt.algebraMap_eq_inl]`. Rewrite using `[this]`. Conclude with `Spec.map_id _`.
+-/
 private theorem isTangent_of_isTanAt_sab {E : Type} [Field E] [NumberField E] [IsCMField E]
     {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H} {l : Level H}
     {Xo : Moduli Dw l} {S : Type} [CommRing S] {x : Sp S ⟶ Xo.X} {t' : SAB H (Sp S)} (m : SABMap t' Xo.univ.t x)
@@ -35,6 +44,27 @@ private theorem isTangent_of_isTanAt_sab {E : Type} [Field E] [NumberField E] [I
     rw [this]
     exact Spec.map_id _
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c r U hpos K _ _ _ y t₀ m1 ρ v hv σ N hN φ hφ z hz k w W Wu hzx C hC`. Take `⟨A, _, ψ, g, u, Hm, χ, v', Wc, hψ, hAH, hvec, -, hN⟩` from `hN`. Take `⟨T, m, u', χ', hA', hw'⟩` from `GlobalTheory.T.exists_fibre_uniformisation_appellHumbert_unit E H Dw l Xo c r _ _ hpos k w W Wu ρ z hzx C hC`. Use `choose w' hw'1 hw'2 using hw'`. Establish `hφσ : (φ.toRingHom : K →+* ℂ) = σ` using `RingHom.ext hφ`.
+
+Establish `hbase : z.x = spMap σ ≫ y.x` using `by rw [hz.1, hφσ]; rfl`. Establish `hχ` using `(hψ.comp m1.cart).congr hbase.symm rfl`. Take `⟨e, he, hfl⟩` from `grpPullback_iso hχ m.cart`. Set `f : A ⟶ T.pol.A` to `e.hom`. Use `haveI hf : IsMonHom f := he`.
+
+Establish `hfl' : f.left ≫ m.φ = ψ ≫ m1.φ` using `hfl`. Establish `hLA` using `pull_isLB t₀.PP.isLB ψ`. Establish `hLB : LBIso (T.pol.L.pull f.left) (t₀.PP.L.pull ψ)`. Take `⟨wT, hwT, -⟩` from `m.lin`. Take `⟨w1', hw1', -⟩` from `m1.lin`.
+
+Establish `hT : LBIso T.t.PP.L (Xo.univ.t.PP.L.pull m.φ)` using `⟨wT, hwT⟩`. Establish `h1 : LBIso t₀.PP.L (Xo.univ.t.PP.L.pull m1.φ)` using `⟨w1', hw1'⟩`. Establish `hT2` using `GlobalTheory.CM.EllComp.lbIso_pull_comp hT.symm f.left`. Rewrite `hT2` using `[hfl']`. Establish `h3` using `GlobalTheory.CM.EllComp.lbIso_pull_comp h1.symm ψ`.
+
+Conclude with `LBIso.trans (pull_isLB T.t.PP.isLB f.left) (pull_isLB Xo.univ.t.PP.isLB _) hLA hT2.symm h3`. Establish `htan : ∀ i, IsTangent (v' i)` using `fun i => GlobalTheory.IsVecOver.isTangent hψ (hvec i).1 (isTangent_of_isTanAt_sab m1 (v i) (by rw [hv i]; exact y.tan ρ i))`. Establish `hvw : ∀ i, v' i ≫ f = w' i` using `fun i => by`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `m.cart.1.hom_ext` to reduce the goal to its premises.
+
+Rewrite using `[hw'1, hz.2.1, ← hv i, hφσ]`. Express the relevant statement in the definitionally equal form `((v' i).left ≫ f.left) ≫ m.φ = _`. Rewrite using `[Category.assoc, hfl', ← Category.assoc, (hvec i).1, Category.assoc]`. Both sides reduce to the same expression. Conclude with `(Over.w (v' i ≫ f)).trans (Over.w (w' i)).symm`.
+
+Take `⟨-, -, -, -, h1, h2, -⟩` from `GlobalTheory.AHWeil.tangent_and_weil_of_isAH GlobalTheory.thetaUnifAV_all T.pol W.g u' Wu.Hm χ' hA'`. Take `⟨F, hF, -⟩` from `GlobalTheory.T.existsUnique_linearLift_of_holomorphic_abelianVariety T.pol.A T.pol.isAb T.pol.L W.g g u' h1 h2 (fun z => u.ex z ≫ f) (fun z w => by simp only [u.ex_add]; exact MonObj.mul_comp _ _ f) (GlobalTheory.HomLinear.isHolTo_ex_comp u f)`. Establish `hH : ∀ x x', hermForm Wu.Hm (F x) (F x') = hermForm Hm x x'` using `fun x x' => by`. Use `GlobalTheory.hermForm_pull_eq_of_lbIso_pow A T.pol.A _ T.pol.L hLA T.pol.isLB g W.g u u' Hm χ Wu.Hm χ' hAH hA' f F hF 1 1 (GlobalTheory.lbIso_lbPow hLB 1) x x'` as an intermediate fact. Simplify using `using this`.
+
+Establish `hFW : ∀ i, F (Wc i) = ∑ l, toC (C i l) • Pi.single (W.e.symm ⟨ρ, l⟩) (1 : ℂ)` using `fun i => by`. Establish `hd` using `GlobalTheory.HomLinear.isDiff_comp u u' f F hF (htan i) (hvec i).2`. Establish `ht` using `GlobalTheory.HomLinear.isTangent_comp f (htan i)`. Rewrite `hd`, `ht` using `[hvw i]`. Take `⟨_, -, hw⟩` from `h1 (w' i) ht`.
+
+Conclude with `(hw _ hd).trans (hw _ (hw'2 i)).symm`. Establish `hre` using `congrArg Complex.re hN`. Rewrite `hre` using `[Complex.ofReal_re, ← Matrix.det_transpose]`. Rewrite using `[hre]`. Use `congr 2`.
+
+Use extensionality with `i j`. Simplify using `only [Matrix.transpose_apply, Matrix.of_apply]`. Rewrite using `[← hFW, ← hFW, hH]`. Both sides reduce to the same expression.
+-/
 theorem UpperTheory.tangent_vectors_at_frame_point_independent :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (r : ℕ) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r), 1 ≤ Dw.p + Dw.q → ∀ (K : Type) [Field K] [NumberField K] [Algebra c.F K] (y : FrPt Xo c K) (t₀ : SAB H (Sp K)) (m1 : SABMap t₀ Xo.univ.t y.x) (ρ : E →+* ℂ) (v : Fin (Dw.mult ρ) → (epsR K ⟶ t₀.G)), (∀ i, (v i).left ≫ m1.φ = y.u ρ i) → ∀ (σ : K →+* ℂ) (N : ℝ), EigenvectorLieDegree.IsArchSq t₀.G t₀.PP.L v σ N → ∀ (φ : K →ₐ[c.F] CAt (σ.comp (algebraMap c.F K))), (∀ a, toC (φ a) = σ a) → ∀ (z : FrPt Xo c (CAt (σ.comp (algebraMap c.F K)))), FrMap φ y z → ∀ (k : (U (σ.comp (algebraMap c.F K))).Comp) (w : ((U (σ.comp (algebraMap c.F K))).X k).dom) (W : ReciprocityTheory.ChartRestriction.G.PullbackSections.UnfAt (U (σ.comp (algebraMap c.F K))) k w) (Wu : ReciprocityTheory.ChartRestriction.G.PullbackSections.UnitAt W), z.x = ((U (σ.comp (algebraMap c.F K))).un k w).x → ∀ (C : Fin (Dw.mult ρ) → Fin (Dw.mult ρ) → CAt (σ.comp (algebraMap c.F K))), (∀ i, IsCombAt ((U (σ.comp (algebraMap c.F K))).un k w).x (((U (σ.comp (algebraMap c.F K))).un k w).u ρ) (C i) (z.u ρ i)) → N = (Matrix.of fun i j : Fin (Dw.mult ρ) => (Real.pi : ℂ) * hermForm Wu.Hm (∑ l, toC (C j l) • Pi.single (W.e.symm ⟨ρ, l⟩) (1 : ℂ)) (∑ l, toC (C i l) • Pi.single (W.e.symm ⟨ρ, l⟩) (1 : ℂ))).det.re := by
   intro E _ _ _ H Dw l Xo c r U hpos K _ _ _ y t₀ m1 ρ v hv σ N hN φ hφ z hz k w W Wu hzx C hC

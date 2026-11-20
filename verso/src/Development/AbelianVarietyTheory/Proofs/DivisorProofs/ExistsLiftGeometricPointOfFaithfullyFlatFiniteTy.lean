@@ -5,6 +5,9 @@ open scoped TensorProduct
 noncomputable section
 namespace GlobalTheory.GeomPointLift
 
+/- English proof (translation)
+Take `⟨M, hM⟩` from `Ideal.exists_maximal C`. Use `letI := Ideal.Quotient.field M`. Use `haveI : Module.Finite K (C ⧸ M) := finite_of_finite_type_of_isJacobsonRing K (C ⧸ M)`. Conclude with `⟨(IsAlgClosed.lift : (C ⧸ M) →ₐ[K] K).comp (Ideal.Quotient.mkₐ K M)⟩`.
+-/
 theorem nonempty_algHom_of_isAlgClosed (K C : Type) [Field K] [IsAlgClosed K] [CommRing C] [Nontrivial C]
     [Algebra K C] [Algebra.FiniteType K C] : Nonempty (C →ₐ[K] K) := by
   obtain ⟨M, hM⟩ := Ideal.exists_maximal C
@@ -12,6 +15,11 @@ theorem nonempty_algHom_of_isAlgClosed (K C : Type) [Field K] [IsAlgClosed K] [C
   haveI : Module.Finite K (C ⧸ M) := finite_of_finite_type_of_isJacobsonRing K (C ⧸ M)
   exact ⟨(IsAlgClosed.lift : (C ⧸ M) →ₐ[K] K).comp (Ideal.Quotient.mkₐ K M)⟩
 
+/- English proof (translation)
+Use `letI : Algebra A k := φ.toAlgebra`. Use `haveI : Nontrivial (k ⊗[A] B) := Module.FaithfullyFlat.rTensor_nontrivial A B k`. Use `haveI : Algebra.FiniteType k (k ⊗[A] B) := inferInstance`. Take `⟨f⟩` from `nonempty_algHom_of_isAlgClosed k (k ⊗[A] B)`. Use `⟨f.toRingHom.comp (Algebra.TensorProduct.includeRight : B →ₐ[A] k ⊗[A] B).toRingHom, ?_⟩` and prove the remaining obligations.
+
+Use extensionality with `a`. Simplify using `only [RingHom.coe_comp, Function.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, AlgHom.commutes]`. Rewrite using `[IsScalarTower.algebraMap_apply A k (k ⊗[A] B), AlgHom.commutes]`. Both sides reduce to the same expression.
+-/
 theorem exists_lift (A B : Type) [CommRing A] [CommRing B] [Algebra A B] (hff : Module.FaithfullyFlat A B)
     (hft : Algebra.FiniteType A B) (k : Type) [Field k] [IsAlgClosed k] (φ : A →+* k) :
     ∃ φ' : B →+* k, φ'.comp (algebraMap A B) = φ := by
@@ -27,6 +35,9 @@ theorem exists_lift (A B : Type) [CommRing A] [CommRing B] [Algebra A B] (hff : 
 
 end GlobalTheory.GeomPointLift
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.GeomPointLift.exists_lift`.
+-/
 example : ∀ (A B : Type) [CommRing A] [CommRing B] [Algebra A B], Module.FaithfullyFlat A B →
     Algebra.FiniteType A B → ∀ (k : Type) [Field k] [IsAlgClosed k] (φ : A →+* k),
     ∃ φ' : B →+* k, φ'.comp (algebraMap A B) = φ := GlobalTheory.GeomPointLift.exists_lift

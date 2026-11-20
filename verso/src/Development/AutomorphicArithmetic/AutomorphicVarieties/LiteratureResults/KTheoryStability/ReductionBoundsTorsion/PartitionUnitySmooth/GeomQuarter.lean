@@ -4,11 +4,23 @@ noncomputable section
 
 namespace PositivityTheory.KB.SmoothPartitionUnityBasic.GeometricWindowBounds
 
+/- English proof (translation)
+Establish `hp : 0 ≤ (1 / 4 : ℝ) ^ m` using `by positivity`. Rewrite using `[geom_sum_eq (by norm_num : (1 / 4 : ℝ) ≠ 1), div_le_iff_of_neg (by norm_num)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem geom_quarter (m : ℕ) : ∑ i ∈ Finset.range m, (1 / 4 : ℝ) ^ i ≤ 4 / 3 := by
   have hp : 0 ≤ (1 / 4 : ℝ) ^ m := by positivity
   rw [geom_sum_eq (by norm_num : (1 / 4 : ℝ) ≠ 1), div_le_iff_of_neg (by norm_num)]
   linarith
 
+/- English proof (translation)
+Establish `key : ∀ n ∈ S, ((4 : ℝ) ^ n)⁻¹ = ((4 : ℝ) ^ n0)⁻¹ * (1 / 4 : ℝ) ^ (n - n0).toNat`. Introduce `n hn`. Establish `e : n = n0 + ((n - n0).toNat : ℤ)`. Rewrite using `[Int.toNat_of_nonneg (sub_nonneg.2 (hS n hn))]`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `conv_lhs => rw [e]`. Rewrite using `[zpow_add₀ (by norm_num), zpow_natCast, mul_inv, one_div, inv_pow]`. Rewrite using `[Finset.sum_congr rfl key, ← Finset.mul_sum, mul_comm]`. Use `mul_le_mul_of_nonneg_right ?_ (by positivity)` and prove the remaining obligations. Establish `hinj : Set.InjOn (fun n : ℤ => (n - n0).toNat) S`.
+
+Introduce `x hx y hy hxy`. Establish `hxy' : (x - n0).toNat = (y - n0).toNat` using `hxy`. Establish `h1` using `Int.toNat_of_nonneg (sub_nonneg.2 (hS x hx))`. Establish `h2` using `Int.toNat_of_nonneg (sub_nonneg.2 (hS y hy))`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hsum : ∑ i ∈ S.image (fun n : ℤ => (n - n0).toNat), (1 / 4 : ℝ) ^ i = ∑ n ∈ S, (1 / 4 : ℝ) ^ (n - n0).toNat` using `Finset.sum_image hinj`. Rewrite using `[← hsum]`. Conclude with `(Finset.sum_le_sum_of_subset_of_nonneg (Finset.subset_range_sup_succ _) fun _ _ _ => by positivity).trans (geom_quarter _)`.
+-/
 theorem geo_sum (S : Finset ℤ) (n0 : ℤ) (hS : ∀ n ∈ S, n0 ≤ n) :
     ∑ n ∈ S, ((4 : ℝ) ^ n)⁻¹ ≤ 4 / 3 * ((4 : ℝ) ^ n0)⁻¹ := by
   have key : ∀ n ∈ S, ((4 : ℝ) ^ n)⁻¹ = ((4 : ℝ) ^ n0)⁻¹ * (1 / 4 : ℝ) ^ (n - n0).toNat := by
@@ -31,6 +43,9 @@ theorem geo_sum (S : Finset ℤ) (n0 : ℤ) (hS : ∀ n ∈ S, n0 ≤ n) :
   exact (Finset.sum_le_sum_of_subset_of_nonneg (Finset.subset_range_sup_succ _)
     fun _ _ _ => by positivity).trans (geom_quarter _)
 
+/- English proof (translation)
+The claim follows from `|∑ n ∈ T, f n| ≤ 4 / 3 * B / x0 := by rw [← Finset.sum_filter_of_ne hz] refine (Finset.abs_sum_le_sum_abs _ _).trans ?_ have hb : ∀ n ∈ T.filter (fun n => x0 < (4 : ℝ) ^ n), |f n| ≤ B * ((4 : ℝ) ^ n)⁻¹ := fun n hn => hf n (Finset.mem_filter.1 hn).1 refine (Finset.sum_le_sum hb).t …`.
+-/
 theorem geo_rel (T : Finset ℤ) {x0 B : ℝ} (hx0 : 0 < x0) (hB : 0 ≤ B) (f : ℤ → ℝ)
     (hf : ∀ n ∈ T, |f n| ≤ B * ((4 : ℝ) ^ n)⁻¹) (hz : ∀ n ∈ T, f n ≠ 0 → x0 < (4 : ℝ) ^ n) :
     |∑ n ∈ T, f n| ≤ 4 / 3 * B / x0 := by
@@ -51,6 +66,11 @@ theorem geo_rel (T : Finset ℤ) {x0 B : ℝ} (hx0 : 0 < x0) (hB : 0 ≤ B) (f :
           mul_le_mul_of_nonneg_left (h1.trans (mul_le_mul_of_nonneg_left h2 (by norm_num))) hB
       _ = 4 / 3 * B / x0 := by ring
 
+/- English proof (translation)
+Take `⟨a, ha, -⟩` from `exists_mem_Ioc_zpow hx (by norm_num : (1 : ℝ) < 4)`. Take `⟨b, -, hb⟩` from `exists_mem_Ioc_zpow hy (by norm_num : (1 : ℝ) < 4)`. Use `⟨a, b, fun n h1 h2 => Finset.mem_Icc.2 ⟨?_, ?_⟩⟩` and prove the remaining obligations. Conclude with `((zpow_lt_zpow_iff_right₀ (by norm_num : (1 : ℝ) < 4)).1 (ha.trans h1)).le`. Use `(zpow_lt_zpow_iff_right₀ (by norm_num : (1 : ℝ) < 4)).1 (h2.trans_le hb)` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem zpow_window {x0 y0 : ℝ} (hx : 0 < x0) (hy : 0 < y0) :
     ∃ a b : ℤ, ∀ n : ℤ, x0 < (4 : ℝ) ^ n → (4 : ℝ) ^ n < y0 → n ∈ Finset.Icc a b := by
   obtain ⟨a, ha, -⟩ := exists_mem_Ioc_zpow hx (by norm_num : (1 : ℝ) < 4)
@@ -60,6 +80,9 @@ theorem zpow_window {x0 y0 : ℝ} (hx : 0 < x0) (hy : 0 < y0) :
   · have := (zpow_lt_zpow_iff_right₀ (by norm_num : (1 : ℝ) < 4)).1 (h2.trans_le hb)
     omega
 
+/- English proof (translation)
+The claim follows from `|D1 + D2| ≤ ((5 / 4 * Cm + 1) + 64 / 9 * E / c) * (1 + (lh * ld)⁻¹) * δ * R := by have hμ0 : 0 ≤ μh := (mul_pos hc hld).le.trans hμ have hR0 : 0 ≤ R := (mul_nonneg hμ0 hA).trans hR have hAR : A ≤ R / (c * ld) := by rw [le_div_iff₀ (mul_pos hc hld)] calc A * (c * ld) = (c * ld) * …`.
+-/
 theorem fin_alg {δ A R μh lh ld c Cm E D1 D2 : ℝ} (hδ : 0 ≤ δ) (hA : 0 ≤ A) (hc : 0 < c)
     (hlh : 0 < lh) (hld : 0 < ld) (hCm : 0 ≤ Cm) (hE : 0 ≤ E) (hR : μh * A ≤ R) (hμ : c * ld ≤ μh)
     (h1 : |D1| ≤ (5 / 4 * Cm + 1) * δ * (μh * A)) (h2 : |D2| ≤ 4 / 3 * (E * δ * A) / (3 / 16 * lh)) :

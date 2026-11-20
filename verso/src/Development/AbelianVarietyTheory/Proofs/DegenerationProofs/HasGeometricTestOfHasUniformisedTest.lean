@@ -18,6 +18,11 @@ attribute [local instance] SplitExt.free SplitExt.finite MvPolynomial.gradedAlge
 
 namespace GlobalTheory.ZH.GeoExist
 
+/- English proof (translation)
+Introduce `a v hv`. Establish `hc' : algebraMap (FractionRing u.V) (PadicAlgCl p) c ≠ 0` using `(map_ne_zero _).2 hc`. Establish `h₁` using `CrdCalc.crd_smul (Units.mk0 _ hc') (h a v hv)`. Use `h₁ using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `j`.
+
+Simplify using `only [Matrix.mulVec, dotProduct, Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, map_mul, Units.val_mk0, Finset.mul_sum, _root_.mul_assoc]`.
+-/
 theorem link_smul {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] {S : ThetaSys o Ω} {ρ : S.Real} {p : ℕ}
     [Fact p.Prime] {y₀ : S.R →+* PadicAlgCl p} (u : ρ.UTest p y₀) (σ : S.J → (u.H S.N).Sec)
     (b : Matrix S.J S.J (FractionRing u.V)) (h : u.Link σ b) (c : FractionRing u.V) (hc : c ≠ 0) :
@@ -30,6 +35,11 @@ theorem link_smul {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] {S : Thet
   simp only [Matrix.mulVec, dotProduct, Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, map_mul,
     Units.val_mk0, Finset.mul_sum, _root_.mul_assoc]
 
+/- English proof (translation)
+Introduce `hL hT o Ω _ _ _ _ S ρ hB hU p _ y₀ hy Fs`. Take `⟨u, l, τ, hm, hF⟩` from `hU p y₀ hy Fs`. Take `⟨σ, cls, f, hb⟩` from `GlobalTheory.T.exists_adapted_basis_sections_mod_k hL o Ω S ρ p y₀ u l S.N (le_trans one_le_two S.N_ge) S.J ρ.card`. Take `⟨md⟩` from `GlobalTheory.T.uniformisedModel_adaptedBasis_is_modelWithSeries hL hT o Ω S ρ p y₀ u l σ cls f hb`. Take `⟨b, hd, hl⟩` from `GlobalTheory.T.exists_invertible_adaptedBasis_link_matrix hL o Ω S ρ p y₀ u l σ cls f hb`.
+
+Take `⟨c, hc, hs⟩` from `GlobalTheory.T.testLattice_eq_span_model_sections hL o Ω S ρ p y₀ u l τ σ cls md b hB hy hm hl hd`. Establish `hl'` using `link_smul u σ b hl c hc`. Conclude with `⟨⟨u, l, τ, hm, σ, cls, md, c • b, hl', hs, GlobalTheory.T.adaptedBasis_rows_have_class_weight hL hT o Ω S ρ p y₀ u l σ cls f hb (c • b) hl'⟩, hF⟩`.
+-/
 theorem hasGeo_of_hasU : GlobalTheory.UT.LL → UTorsSt → ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω] (S : ThetaSys o Ω) (ρ : S.Real), S.Big → ρ.HasU → ρ.HasGeo := by
   intro hL hT o Ω _ _ _ _ S ρ hB hU p _ y₀ hy Fs
   obtain ⟨u, l, τ, hm, hF⟩ := hU p y₀ hy Fs

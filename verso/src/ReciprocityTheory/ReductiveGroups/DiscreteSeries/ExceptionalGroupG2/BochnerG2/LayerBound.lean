@@ -19,6 +19,13 @@ section LayerBound
 variable {M : Type*} [NormedAddCommGroup M] [InnerProductSpace ℂ M] {ε : Fin n → Bool}
   {E : Fin n → Fin n → Module.End ℂ M} {V : Submodule ℂ M} {lam : Fin n → ℝ}
 
+/- English proof (translation)
+Take `⟨hVfd, hVk, -, -⟩` from `id hV`. Take `⟨P, hP, hP0, hPμ, hPperp⟩` from `lift_layer hE hU hVfd hVk hw hperp hμ hw0`. Use `⟨khw_big_weight hE hV hP hP0 hPμ, ?_⟩` and prove the remaining obligations. Establish `hposition : ∀ i κ, slice i κ P ∈ Wp ε E V` using `fun i => position_perp hE hU hV hmono hh hbig i hP (fun F hF hFs => hPperp F hF (phi_Wm_position hE hU hV hc hmono hh hbig i hF hFs))`. Establish `hb` using `bochner_ineq hE hU hV hmono hh hbig hP hposition`.
+
+Establish `hcas` using `casimirK_khwVec ε (bAct_isGlRep hE (k + 1)) hPμ`. Rewrite `hb` using `[hcas, inner_smul_left, inner_self_eq_norm_sq_to_K, Complex.conj_ofReal, ← RCLike.ofReal_pow, RCLike.re_mul_ofReal]`. Simplify using `only [RCLike.re_to_complex, Complex.ofReal_re] at hb`. Express the relevant statement in the definitionally equal form `_ ≤ casValK ε μ * ‖P‖ ^ 2 at hb`. Establish `hpos : 0 < ‖P‖ ^ 2` using `pow_pos (norm_pos_iff.2 hP0) 2`.
+
+Move the coercions through the operations in `at hb`. Conclude with `le_of_mul_le_mul_right hb hpos`.
+-/
 theorem khw_layer_succ_bound (hE : IsGlRep E) (hU : IsInfUnitary ε E)
     (hV : IsKIrrHW ε E (lowK ε lam) V) (hc : ∀ v ∈ V, casimir E v = (casVal lam : ℂ) • v)
     (hmono : StrictAnti lam) {h : ℝ} (hh : GapAtLeast ε lam h)

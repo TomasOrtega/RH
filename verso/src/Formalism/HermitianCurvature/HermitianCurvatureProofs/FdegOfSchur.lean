@@ -11,12 +11,25 @@ open Formalism.QuantumDeterminants Formalism.FourierDecayAlt Formalism.FourierDe
 
 variable {k r : ℕ}
 
+/- English proof (translation)
+Simplify using `[UH]`.
+-/
 theorem one_mem_uh : (1 : Mx k r) ∈ UH (Hpk k r) := by
   simp [UH]
 
+/- English proof (translation)
+The claim follows from `Submodule.subset_span ⟨t, ht, rfl⟩`.
+-/
 theorem mem_DD {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] (σ : Mx k r → (H →L[ℂ] H)) (w0 : H)
     {t : Mx k r} (ht : t ∈ UH (Hpk k r)) : σ t w0 ∈ DDsp σ w0 := Submodule.subset_span ⟨t, ht, rfl⟩
 
+/- English proof (translation)
+Establish `hpt : ∀ x, ⟪w0, σ (Matrix.of x) w0⟫_ℂ * star ⟪w0, σ (Matrix.of x) w0⟫_ℂ = ((‖⟪w0, σ (Matrix.of x) w0⟫_ℂ‖ ^ 2 : ℝ) : ℂ)`. Introduce `x`. Rewrite using `[show star ⟪w0, σ (Matrix.of x) w0⟫_ℂ = (starRingEnd ℂ) ⟪w0, σ (Matrix.of x) w0⟫_ℂ from rfl, RCLike.mul_conj]`. Use `norm_cast`. Rewrite `hS` using `[hpt]`.
+
+Rewrite `hS` using `[integral_complex_ofReal, inner_self_eq_norm_sq_to_K]`. Establish `hI : (∫ x, ‖⟪w0, σ (Matrix.of x) w0⟫_ℂ‖ ^ 2 ∂μG) = ‖w0‖ ^ 4 / d`. Establish `h2 : ((‖w0‖ ^ 4 / d : ℝ) : ℂ) = (‖w0‖ : ℂ) ^ 2 * (‖w0‖ : ℂ) ^ 2 / (d : ℂ)` using `by push_cast; ring`. Conclude with `hS.trans h2.symm` after adjusting the coercions. Establish `hw' : ‖w0‖ ≠ 0` using `norm_ne_zero_iff.2 hw`.
+
+Simplify using `only [PI.BesselPeriodGGP.fdegH]`. Rewrite using `[hI]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem fdeg_of_schur {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] {σ : Mx k r → (H →L[ℂ] H)}
     {μG : Measure (Mt k r)} {w0 : H} (hw : w0 ≠ 0) {d : ℝ} (hd : 0 < d)
     (hS : ∫ x, ⟪w0, σ (Matrix.of x) w0⟫_ℂ * star ⟪w0, σ (Matrix.of x) w0⟫_ℂ ∂μG =

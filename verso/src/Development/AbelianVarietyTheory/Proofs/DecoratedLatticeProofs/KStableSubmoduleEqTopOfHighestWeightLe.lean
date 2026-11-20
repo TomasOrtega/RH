@@ -14,6 +14,11 @@ open scoped InnerProductSpace
 
 namespace GlobalTheory.HwSpan
 
+/- English proof (translation)
+Introduce `p q M N hN hhw`. Establish `hL : Formalism.MainNotions.SchurIrreducible.IsKLieAct M.act` using `fun X Y _ _ => M.lie X Y`. Use `eq_top_iff.2 fun v _ => ?_` and prove the remaining obligations. Take `⟨W, hfd, hvW, hW⟩` from `M.kfin v`. Establish `hle : W ≤ N` using `GlobalTheory.BlockReps.le_of_hw hL hW (fun x _ => M.wts x) hN (fun μ x _ hx => hhw μ hx.2)`.
+
+Conclude with `hle hvW`.
+-/
 theorem eq_top_of_hwSub_le : ∀ (p q : ℕ) (M : GKMod p q) (N : Submodule ℂ M.V), KStable M.act N →
     (∀ μ, hwSub M.act μ ≤ N) → N = ⊤ := by
   intro p q M N hN hhw

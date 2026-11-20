@@ -6,6 +6,11 @@ open scoped Topology
 
 namespace GlobalTheory.CompanionTheory.MirFourier
 
+/- English proof (translation)
+Rewrite `hU` using `[nhds_pi, Filter.mem_pi]`. Take `⟨I, -, t, ht, hsub⟩` from `hU`. Establish `hball : ∀ i, ∃ N : ℤ, (valBall k N : Set k) ⊆ t i` using `fun i => by`. Take `⟨N, -, hN⟩` from `(hasBasis_nhds_zero_valBall (K := k)).mem_iff.mp (ht i)`. Conclude with `⟨N, hN⟩`.
+
+Use `choose Nf hNf using hball`. Use `⟨((Finset.univ.sup fun i => (Nf i).toNat : ℕ) : ℤ), fun x hx => hsub fun i _ => ?_⟩` and prove the remaining obligations. Establish `hle : Nf i ≤ ((Finset.univ.sup fun i => (Nf i).toNat : ℕ) : ℤ)` using `(Int.self_le_toNat (Nf i)).trans (by exact_mod_cast Finset.le_sup (f := fun i => (Nf i).toNat) (Finset.mem_univ i))`. Conclude with `hNf i (valBall_antitone hle ((mem_box k).mp hx i))`.
+-/
 theorem exists_box_subset_of_mem_nhds (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (n : ℕ) {U : Set (Fin n → k)} (hU : U ∈ 𝓝 (0 : Fin n → k)) :
     ∃ N : ℤ, ∀ x ∈ box k n N, Multiplicative.toAdd x ∈ U := by
@@ -20,6 +25,9 @@ theorem exists_box_subset_of_mem_nhds (k : Type) [Field k] [ValuativeRel k] [Top
     (Int.self_le_toNat (Nf i)).trans (by exact_mod_cast Finset.le_sup (f := fun i => (Nf i).toNat) (Finset.mem_univ i))
   exact hNf i (valBall_antitone hle ((mem_box k).mp hx i))
 
+/- English proof (translation)
+Introduce `k _ _ _ _ n V _ _ ρ hρ v`. Establish `hopen : IsOpen {y : Fin n → k | ρ (Multiplicative.ofAdd y) v = v}` using `hρ v`. Establish `hU : {y : Fin n → k | ρ (Multiplicative.ofAdd y) v = v} ∈ 𝓝 (0 : Fin n → k)` using `hopen.mem_nhds (by simp)`. Take `⟨N, hN⟩` from `exists_box_subset_of_mem_nhds k n hU`. Conclude with `⟨N, fun x hx => by simpa using hN x hx⟩`.
+-/
 theorem exists_box_fixed : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (n : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V]
     (ρ : Representation ℂ (Multiplicative (Fin n → k)) V), IsSmooth ρ →

@@ -45,6 +45,9 @@ def GTSSLMat : Prop :=
 
 def GTSSLocalOfCut : Prop := GTCLRadT → GTSSLSliceDZ → GTSSLSliceSS → GTSSLMat → GTSSLocal
 
+/- English proof (translation)
+Introduce `hRT hDZ hSS hMat Wp Wq _ _ _ _ _ _ P Bs X d hH e he _`. Establish `hT` using `hRT Wp Wq P Bs hH.1 hH.2.1 hH.2.2.1 X`. Establish `hSl : ∀ (Y : ℂ) (a b : Fin 2), SliceLoc P Bs (X.t Y a b)` using `fun Y a b => hDZ Wp Wq P Bs hH.1 _ (hT Y a b)`. Conclude with `hMat Wp Wq P Bs X d hH e he (hSS Wp Wq P Bs X d hH hSl)`.
+-/
 theorem gTSSLocal_of_cut : GTSSLocalOfCut := by
   intro hRT hDZ hSS hMat Wp Wq _ _ _ _ _ _ P Bs X d hH e he _
   have hT := hRT Wp Wq P Bs hH.1 hH.2.1 hH.2.2.1 X

@@ -11,10 +11,26 @@ open GroundTheory.Heights₂.Heights.LowerBoundFree (valAt)
 
 variable {p q : ℕ}
 
+/- English proof (translation)
+Unfold `SquareStatements.Sing.col`. Apply the tactic sequence `split_ifs <;> rfl`.
+-/
 theorem col_val (a : Fin (p + q)) : (SquareStatements.Sing.col p q a : ℕ) = if (a : ℕ) < p then q + a else a - p := by
   unfold SquareStatements.Sing.col
   split_ifs <;> rfl
 
+/- English proof (translation)
+Rewrite using `[← Finset.prod_union (Finset.disjoint_filter.2 fun c _ h h' => by omega)]`. Use `Finset.prod_bij (fun a _ => SquareStatements.Sing.col p q a) ?_ ?_ ?_ (fun _ _ => rfl)` and prove the remaining obligations. Introduce `a ha`. Establish `h1 : (a : ℕ) ≤ i` using `Fin.le_def.1 (Finset.mem_Iic.1 ha)`. Establish `h2` using `a.2`.
+
+Simplify using `only [Finset.mem_union, Finset.mem_filter, Finset.mem_univ, true_and, col_val]`. Apply the tactic sequence `split_ifs <;> omega`. Introduce `a _ b _ h`. Establish `h1` using `congrArg Fin.val h`. Establish `h2` using `a.2`.
+
+Establish `h3` using `b.2`. Rewrite `h1` using `[col_val, col_val]`. Use `Fin.ext ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs at h1 <;> omega`. Introduce `c hc`.
+
+Establish `h2` using `c.2`. Simplify using `only [Finset.mem_union, Finset.mem_filter, Finset.mem_univ, true_and] at hc`. Break down `hc with hc | hc` into its components or cases. Use `⟨⟨c - q, by omega⟩, Finset.mem_Iic.2 (show c - q ≤ (i : ℕ) by omega), Fin.ext ?_⟩` and prove the remaining obligations. Rewrite using `[col_val, if_pos (show c - q < p by omega)]`.
+
+Use `show q + (c - q) = c`. Use linear arithmetic over natural numbers and integers. Use `⟨⟨c + p, by omega⟩, Finset.mem_Iic.2 (show c + p ≤ (i : ℕ) by omega), Fin.ext ?_⟩` and prove the remaining obligations. Rewrite using `[col_val, if_neg (show ¬ c + p < p by omega)]`. Use `show c + p - p = c`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem prod_col {R : Type} [CommRing R] (f : Fin (p + q) → R) (i : Fin (p + q)) :
     ∏ a ∈ Finset.Iic i, f (SquareStatements.Sing.col p q a) = (∏ c ∈ Finset.univ.filter fun c : Fin (p + q) => q ≤ c ∧ (c : ℕ) ≤ q + i, f c) *
       ∏ c ∈ Finset.univ.filter fun c : Fin (p + q) => (c : ℕ) < q ∧ (c : ℕ) + p ≤ i, f c := by
@@ -46,6 +62,17 @@ theorem prod_col {R : Type} [CommRing R] (f : Fin (p + q) → R) (i : Fin (p + q
       omega
 
 open Classical in
+/- English proof (translation)
+Establish `hi` using `i.2`. Rewrite using `[prod_col (fun c => B c c), detFac, MinorCalc.minorIJ_self_of_triangular B hB, MinorCalc.minorIJ_self_of_triangular B hB]`. Unfold `IsProperStep stepCols wIdx omIdx`. Establish `key : ∀ {P Q : Fin (p + q) → Prop} [DecidablePred P] [DecidablePred Q], (∀ c, P c ↔ Q c) → ∏ c ∈ Finset.univ.filter P, B c c = ∏ c ∈ Finset.univ.filter Q, B c c` using `fun h => by`. Rewrite using `[Finset.filter_congr fun c _ => h c]`.
+
+Establish `key0 : ∀ {P : Fin (p + q) → Prop} [DecidablePred P], (∀ c, ¬ P c) → ∏ c ∈ Finset.univ.filter P, B c c = 1` using `fun h => by`. Rewrite using `[Finset.filter_eq_empty_iff.2 fun c _ => h c, Finset.prod_empty]`. Distinguish the cases in `hN : (i : ℕ) + 1 = p + q`. Rewrite using `[if_pos (by omega), if_pos hN, if_neg (fun h => h.2 hN), mul_one]`. Use `congr 1`.
+
+Conclude with `key fun c => by have := c.2; omega`. Conclude with `key fun c => by have := c.2; omega`. Rewrite using `[if_neg hN, mul_one]`. Break down `lt_trichotomy ((i : ℕ) + 1) p with h | h | h` into its components or cases. Rewrite using `[if_neg (by omega), if_pos ⟨h.ne, hN⟩, one_mul, key0 (P := fun c => (c : ℕ) < q ∧ (c : ℕ) + p ≤ i) (fun c => by omega), mul_one]`.
+
+Conclude with `key fun c => by rw [if_pos h.le]; omega`. Rewrite using `[if_pos h.ge, if_neg (fun h' => h'.1 h), key0 (P := fun c => (c : ℕ) < q ∧ (c : ℕ) + p ≤ i) (fun c => by omega)]`. Use `congr 1`. Conclude with `key fun c => by have := c.2; omega`. Rewrite using `[if_pos h.le, if_pos ⟨h.ne', hN⟩]`.
+
+Use `congr 1`. Conclude with `key fun c => by have := c.2; omega`. Conclude with `key fun c => by rw [if_neg (by omega)]; omega`.
+-/
 theorem prod_diag {R : Type} [CommRing R] {B : Matrix (Fin (p + q)) (Fin (p + q)) R} (hB : B.BlockTriangular id)
     (i : Fin (p + q)) : ∏ a ∈ Finset.Iic i, B (SquareStatements.Sing.col p q a) (SquareStatements.Sing.col p q a) =
       detFac p i B * if IsProperStep (p + q) p i then ∏ c ∈ stepCols (p + q) p i, B c c else 1 := by
@@ -83,6 +110,9 @@ section Val
 variable {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) ⟶ X} {z : Spec (CommRingCat.of ℂ) ⟶ X}
   {N : ℕ}
 
+/- English proof (translation)
+Use `choose _ s hs hs' using hv`. Establish `e1 : A = (Matrix.of s).map (genMap ξ ⟨centre z, hz⟩)` using `Matrix.ext fun a b => (hs a b).symm`. Establish `e2 : h = (Matrix.of s).map (Scheme.stalkClosedPointTo z).hom` using `Matrix.ext fun a b => (hs' a b).symm`. Conclude with `⟨hz, detFac j i (Matrix.of s), by rw [e1, PositivityTheory.Xgp.c_bm_exists_hom.detFac_map], e2 ▸ (PositivityTheory.Xgp.c_bm_exists_hom.detFac_map (Scheme.stalkClosedPointTo z).hom i (Matrix.of s)).symm⟩`.
+-/
 theorem val_detFac (hz : genPt ξ ⤳ centre z) {A : Matrix (Fin N) (Fin N) Ω} {h : Matrix (Fin N) (Fin N) ℂ}
     (hv : ∀ a b, ValAt ξ z (A a b) (h a b)) (j : ℕ) (i : Fin N) : ValAt ξ z (detFac j i A) (detFac j i h) := by
   choose _ s hs hs' using hv
@@ -91,6 +121,11 @@ theorem val_detFac (hz : genPt ξ ⤳ centre z) {A : Matrix (Fin N) (Fin N) Ω} 
   exact ⟨hz, detFac j i (Matrix.of s), by rw [e1, PositivityTheory.Xgp.c_bm_exists_hom.detFac_map],
     e2 ▸ (PositivityTheory.Xgp.c_bm_exists_hom.detFac_map (Scheme.stalkClosedPointTo z).hom i (Matrix.of s)).symm⟩
 
+/- English proof (translation)
+Use `choose _ s hs hs' using hv`. Use `choose _ t ht ht' using hu`. Establish `e1 : A = (Matrix.of s).map (genMap ξ ⟨centre z, hz⟩)` using `Matrix.ext fun a b => (hs a b).symm`. Establish `e2 : h = (Matrix.of s).map (Scheme.stalkClosedPointTo z).hom` using `Matrix.ext fun a b => (hs' a b).symm`. Use `⟨hz, ∑ I, t I * minorIJ (Matrix.of s) I C, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[e1, map_sum]`. Conclude with `Finset.sum_congr rfl fun I _ => by rw [map_mul, CPts.minorIJ_map, ht]`. Rewrite using `[e2]`. Use `(map_sum (Scheme.stalkClosedPointTo z).hom _ _).trans (Finset.sum_congr rfl fun I _ => ?_)` and prove the remaining obligations. Conclude with `(map_mul (Scheme.stalkClosedPointTo z).hom _ _).trans (congrArg₂ (· * ·) (ht' I) (CPts.minorIJ_map (Scheme.stalkClosedPointTo z).hom (Matrix.of s) I C).symm)`.
+-/
 theorem val_pl (hz : genPt ξ ⤳ centre z) {A : Matrix (Fin N) (Fin N) Ω} {h : Matrix (Fin N) (Fin N) ℂ}
     (hv : ∀ a b, ValAt ξ z (A a b) (h a b)) {u : Finset (Fin N) → Ω} {v : Finset (Fin N) → ℂ}
     (hu : ∀ I, ValAt ξ z (u I) (v I)) (C : Finset (Fin N)) :
@@ -112,6 +147,23 @@ end Val
 end HeightCancellation.C2
 
 open AlgebraicGeometry Matrix GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.PB HeightCancellation.C2 SquareStatements.Sing in
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo c Y S K _ ι _ Φ _ y M 𝔐' z wb F τ B h hF gd hval hx ⟨bB, tB, _, _, _, hv⟩ i`. Establish `hz` using `𝔐'.all (centre z)`. Establish `hT : ((F.T τ).map (algebraMap M.Ω Φ)).det ≠ 0`. Rewrite using `[← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Conclude with `(map_ne_zero _).2 (hF.1 τ).2`.
+
+Establish `bT : IsBlockDiag D.p ((F.T τ).map (algebraMap M.Ω Φ))` using `(hF.1 τ).1.map _`. Establish `bX : IsBlockDiag D.p (inFrame M F τ B)` using `((bT.inv hT.isUnit).mul (M.g_block τ)).mul bB`. Establish `e : (F.T τ).map (algebraMap M.Ω Φ) * inFrame M F τ B = M.g τ * B`. Rewrite using `[inFrame, Matrix.mul_assoc, Matrix.mul_nonsing_inv_cancel_left _ _ hT.isUnit]`. Establish `e1 : algebraMap M.Ω Φ (detFac D.p i (F.T τ)) * detFac D.p i (inFrame M F τ B) = detFac D.p i (M.g τ) * detFac D.p i B`.
+
+Rewrite using `[← MinorCalc.detFac_mul i bB, ← e, MinorCalc.detFac_mul i bX, PositivityTheory.Xgp.c_bm_exists_hom.detFac_map]`. Establish `e2 : algebraMap M.Ω Φ (∏ k', M.x ⟨k', F.c k'⟩ ^ M.b (τ, i) k') * ∏ k', algebraMap M.Ω Φ (M.x ⟨k', F.c k'⟩) ^ (-M.b (τ, i) k') = 1`. Rewrite using `[map_prod, ← Finset.prod_mul_distrib]`. Use `Finset.prod_eq_one fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_zpow₀, _root_.zpow_neg, mul_inv_cancel₀ (zpow_ne_zero _ ((map_ne_zero _).2 (hx k)))]`.
+
+Establish `vd` using `val_detFac hz hv D.p i`. Use `⟨fun k hk m => ?_, fun hk => ?_⟩` and prove the remaining obligations. Establish `hp : IsProperStep (D.p + D.q) D.p i`. Assume the negation of the conclusion as `hn`. Rewrite `hk` using `[(M.blk_none (τ, i)).2 hn]`.
+
+Consider the cases of `hk`. Establish `e3` using `CPts.frame_gen M hF (RingHom.id Φ) (p := (τ, i)) hk m bX bB tB e`. Simplify using `only [RingHom.id_apply] at e3`. Establish `v2` using `val_pl hz hv (fun I => hval _ (gd.2.1 ⟨k, m⟩ I).1) (stepCols (D.p + D.q) D.p i)`. Use `CxVal.mul vd v2 using 1` and compare the differences between its conclusion and the goal.
+
+Rewrite using `[prod_diag tB, if_pos hp]`. Take the linear combination `(-(∏ c ∈ stepCols (D.p + D.q) D.p i, B c c) * y ⟨k, m⟩ * ∏ k', algebraMap M.Ω Φ (M.x ⟨k', F.c k'⟩) ^ (-M.b (τ, i) k')) * e1 + (detFac D.p i (inFrame M F τ B) * ∏ k', algebraMap M.Ω Φ (M.x ⟨k', F.c k'⟩) ^ (-M.b (τ, i) k')) * e3 + (detFac D.p i (inFrame M F τ B) * ∑ I, algebraMap M …`. Establish `hp : ¬ IsProperStep (D.p + D.q) D.p i` using `(M.blk_none (τ, i)).1 hk`. Take `⟨h0, r1, r2⟩` from `gd.2.2 (τ, i) hk`. Establish `v1` using `hval _ r1`.
+
+Establish `v2` using `hval _ r2`. Use `⟨fun hv0 => ?_, ?_⟩` and prove the remaining obligations. Establish `v3` using `CxVal.mul v1 v2`. Rewrite `v3` using `[← map_mul, mul_inv_cancel₀ h0, map_one, hv0, zero_mul]`. Conclude with `zero_ne_one (CxVal.unique v3 (CxVal.one hz))`.
+
+Establish `e3` using `congrArg (algebraMap M.Ω Φ) (hF.2.2.2 (τ, i) hk)`. Rewrite `e3` using `[map_mul, map_mul]`. Use `CxVal.mul vd v1 using 1` and compare the differences between its conclusion and the goal. Rewrite using `[prod_diag tB, if_neg hp]`. Take the linear combination `(-algebraMap M.Ω Φ (M.lam (τ, i)) * ∏ k', algebraMap M.Ω Φ (M.x ⟨k', F.c k'⟩) ^ (-M.b (τ, i) k')) * e1 + (detFac D.p i (inFrame M F τ B) * ∏ k', algebraMap M.Ω Φ (M.x ⟨k', F.c k'⟩) ^ (-M.b (τ, i) k')) * e3 + (detFac D.p i (inFrame M F τ B) * algebraMap M.Ω Φ (F.υ (τ, i))) * e2`.
+-/
 theorem HeightCancellation.c2 : SquareStatements.Sing.C2 := by
   intro E _ _ _ H D l Xo c Y S K _ ι _ Φ _ y M 𝔐' z wb F τ B h hF gd hval hx ⟨bB, tB, _, _, _, hv⟩ i
   classical

@@ -1,5 +1,20 @@
 import Development.AutomorphicArithmetic.AutomorphicVarieties.IdeleGenerators.ShortLatticeUnitarize.Unitarize
 
+/- English proof (translation)
+Introduce `G Z _ _ K ζ ω hc hK`. Establish `hcomm : ∀ (z : Z) (g : G), g * ζ z = ζ z * g` using `fun z g => Subgroup.mem_center_iff.mp (hc z) g`. Establish `hN : ζ.range.Normal`. Use `⟨?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨z, rfl⟩ g`.
+
+Use `⟨z, ?_⟩` and prove the remaining obligations. Rewrite using `[hcomm z g, mul_assoc, mul_inv_cancel, mul_one]`. Establish `hrep : ∀ x ∈ K ⊔ ζ.range, ∃ k ∈ K, ∃ z : Z, x = k * ζ z`. Introduce `x hx`. Take `⟨k, hk, y, ⟨z, rfl⟩, rfl⟩` from `Subgroup.mem_sup_of_normal_right.mp hx`.
+
+Conclude with `⟨k, hk, z, rfl⟩`. Establish `hwd : ∀ k ∈ K, ∀ k' ∈ K, ∀ z z' : Z, k * ζ z = k' * ζ z' → ω z = ω z'`. Introduce `k hk k' hk' z z' h`. Establish `h1 : ζ (z' * z⁻¹) = k'⁻¹ * k`. Rewrite using `[map_mul, map_inv]`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `h2 : ω (z' * z⁻¹) = 1` using `hK _ (by rw [h1]; exact K.mul_mem (K.inv_mem hk') hk)`. Rewrite `h2` using `[map_mul, map_inv]`. Conclude with `(mul_inv_eq_one.mp h2).symm`. Use `choose kf hkf zf hzf using fun h : ↥(K ⊔ ζ.range) => hrep h.1 h.2`.
+
+Establish `hval : ∀ (h : ↥(K ⊔ ζ.range)) (k : G), k ∈ K → ∀ z : Z, (h : G) = k * ζ z → ω (zf h) = ω z`. Introduce `h k hk z hz`. Conclude with `hwd _ (hkf h) _ hk _ _ ((hzf h).symm.trans hz)`. Use `⟨{ toFun := fun h => ω (zf h), map_one' := ?_, map_mul' := ?_ }, ?_⟩` and prove the remaining obligations. Conclude with `(hval 1 1 K.one_mem 1 (by simp)).trans (map_one ω)`.
+
+Introduce `a b show ω (zf (a * b)) = ω (zf a) * ω (zf b)`. Rewrite using `[← map_mul]`. Use `hval _ (kf a * kf b) (K.mul_mem (hkf a) (hkf b)) _ ?_` and prove the remaining obligations. Rewrite using `[Subgroup.coe_mul, hzf a, hzf b, map_mul]`. Simplify using `only [mul_assoc]`.
+
+Rewrite using `[← mul_assoc (ζ (zf a)), ← hcomm (zf a) (kf b), mul_assoc]`. Introduce `h`. Conclude with `⟨⟨kf h, hkf h, zf h, hzf h⟩, fun k hk z hz => hval h k hk z hz⟩`.
+-/
 theorem UpperTheory.V.Sd.Wc.exChi :
     UpperTheory.V.Sd.Wc.ExChi := by
   intro G Z _ _ K ζ ω hc hK

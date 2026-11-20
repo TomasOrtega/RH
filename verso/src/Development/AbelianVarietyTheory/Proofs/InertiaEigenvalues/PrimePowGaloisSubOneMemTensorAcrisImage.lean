@@ -18,6 +18,9 @@ variable {l : ℕ} [hl : Fact l.Prime] {a : ℕ} [NeZero a] {e : ℕ} [NeZero e]
   [NormedField K] [IsUltrametricDist K] [Algebra O K] [IsUnitBall O K] [NormedAlgebra ℚ_[l] K]
   {ι : Type} [Fintype ι] [DecidableEq ι]
 
+/- English proof (translation)
+Proceed by induction on `v using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x y`. Simplify using `only [actB, TWact, TensorProduct.smul_tmul', TensorProduct.map_tmul, AlgHom.toLinearMap_apply, smul_eq_mul, map_mul]`. Consider the case `add x y hx hy => rw [smul_add, map_add, hx, hy, map_add, smul_add]`.
+-/
 theorem actB_smul {G : Type} [Group G] [TopologicalSpace G] (s : G →* GQ l)
     (T : LocLat G ℚ_[l] K O) (g : G) (β : OB l O) (v : TW (OB l O) T) :
     actB s T g (β • v) = galOB O (s g) β • actB s T g v := by
@@ -28,6 +31,11 @@ theorem actB_smul {G : Type} [Group G] [TopologicalSpace G] (s : G →* GQ l)
       smul_eq_mul, map_mul]
   | add x y hx hy => rw [smul_add, map_add, hx, hy, map_add, smul_add]
 
+/- English proof (translation)
+Use `choose N hN using fun τ => ϖ.taylor_S a O K g (f τ) r`. Use `⟨Finset.univ.sup N, fun M hM => ?_⟩` and prove the remaining obligations. Use `choose z hz using fun τ => hN τ M ((Finset.le_sup (Finset.mem_univ τ)).trans hM)`. Use `⟨∑ τ, idem (constC t) τ * z τ, ?_⟩` and prove the remaining obligations. Simplify using `only [PiSys.iC, glue_apply, map_sum, map_mul, galOCr_idem, Finset.mul_sum]`.
+
+Rewrite using `[Finset.sum_comm, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[mul_left_comm, ← hz τ, mul_sub, Finset.mul_sum]`. Simplify using `only [mul_left_comm (idem (constC t) τ)]`.
+-/
 theorem taylor_iC (t : Wq l a →ₐ[ℤ_[l]] O) (ϖ : PiSys l e) (g : ↥(GK (ϖ.field a))) (f : ZMod a → S O K e)
     (r : ℕ) : ∃ M₀, ∀ M ≥ M₀, (l : OCr l O) ^ r ∣ galOCr O g (ϖ.iC t K f) -
       ∑ i ∈ Finset.range M, ϖ.muDiv a O g i *
@@ -42,12 +50,20 @@ theorem taylor_iC (t : Wq l a →ₐ[ℤ_[l]] O) (ϖ : PiSys l e) (g : ↥(GK (�
   rw [mul_left_comm, ← hz τ, mul_sub, Finset.mul_sum]
   simp only [mul_left_comm (idem (constC t) τ)]
 
+/- English proof (translation)
+Rewrite using `[toBcris_apply, toCris_apply, ← ϖ.iB_of_mem t K]`. Both sides reduce to the same expression.
+-/
 theorem toBcris_of_mem (t : Wq l a →ₐ[ℤ_[l]] O) (ϖ : PiSys l e) (P : PhiMod O K l e a ι) {m : Vec K a ι}
     (h : m ∈ P.MM) (h' : m ∈ P.MMl) (k : ι) :
     toBcris t ϖ P ⟨m, h'⟩ k = toOB l O (toCris t ϖ P ⟨m, h⟩ k) := by
   rw [toBcris_apply, toCris_apply, ← ϖ.iB_of_mem t K]
   rfl
 
+/- English proof (translation)
+Proceed by induction on `i generalizing w with`. Consider the case `zero => simp [descN]`. Consider the case `succ i ih`. Rewrite using `[descPochhammer_succ_right, map_mul, Module.End.mul_apply, map_sub, Polynomial.aeval_X, map_natCast, LinearMap.sub_apply, Module.End.natCast_apply, PhiMod.conn_xiExt, ← map_nsmul, ← map_sub, ih]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `τ j`. Simplify using `only [descN, descPochhammer_succ_right, map_mul, Module.End.mul_apply, map_sub, Polynomial.aeval_X, map_natCast, LinearMap.sub_apply, Module.End.natCast_apply, Pi.sub_apply, Pi.smul_apply]`. Both sides reduce to the same expression.
+-/
 theorem descConn_xiExt (P : PhiMod O K l e a ι) (i : ℕ) (w : Vec K a ι) :
     Polynomial.aeval P.conn (descPochhammer K i) (P.xiExt w) =
       P.xiExt (fun τ j => descN K i (w τ j)) := by
@@ -62,6 +78,11 @@ theorem descConn_xiExt (P : PhiMod O K l e a ι) (i : ℕ) (w : Vec K a ι) :
       map_natCast, LinearMap.sub_apply, Module.End.natCast_apply, Pi.sub_apply, Pi.smul_apply]
     rfl
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => intro m hm`. Simplify using `using hm`. Consider the case `succ n ih`. Introduce `m hm`.
+
+Rewrite using `[descPochhammer_succ_right, map_mul, Module.End.mul_apply, map_sub, Polynomial.aeval_X, map_natCast, LinearMap.sub_apply, Module.End.natCast_apply]`. Conclude with `ih _ (sub_mem (hφ m hm) (nsmul_mem hm n))`.
+-/
 theorem aeval_descPochhammer_mem {V R : Type} [AddCommGroup V] [Module K V] [CommRing R] [Module R V]
     (W : Submodule R V) (φ : Module.End K V) (hφ : ∀ m ∈ W, φ m ∈ W) (n : ℕ) :
     ∀ m ∈ W, Polynomial.aeval φ (descPochhammer K n) m ∈ W := by
@@ -73,6 +94,9 @@ theorem aeval_descPochhammer_mem {V R : Type} [AddCommGroup V] [Module K V] [Com
       LinearMap.sub_apply, Module.End.natCast_apply]
     exact ih _ (sub_mem (hφ m hm) (nsmul_mem hm n))
 
+/- English proof (translation)
+Rewrite using `[descPochhammer_succ_left, mul_comm, map_mul, Module.End.mul_apply, Polynomial.aeval_X, ← LinearMap.map_smul, Polynomial.aeval_comp, map_sub, Polynomial.aeval_X, map_one]`. Conclude with `aeval_descPochhammer_mem P.MM (P.conn - 1) (fun m hm => sub_mem (hP m hm) hm) i _ hv`.
+-/
 theorem descConn_mem (P : PhiMod O K l e a ι) (hP : ∀ m ∈ P.MM, P.conn m ∈ P.MM) {v : Vec K a ι} {c : ℕ}
     (hv : (l : K) ^ c • P.conn v ∈ P.MM) (i : ℕ) :
     (l : K) ^ c • Polynomial.aeval P.conn (descPochhammer K (i + 1)) v ∈ P.MM := by
@@ -80,6 +104,11 @@ theorem descConn_mem (P : PhiMod O K l e a ι) (hP : ∀ m ∈ P.MM, P.conn m �
     Polynomial.aeval_comp, map_sub, Polynomial.aeval_X, map_one]
   exact aeval_descPochhammer_mem P.MM (P.conn - 1) (fun m hm => sub_mem (hP m hm) hm) i _ hv
 
+/- English proof (translation)
+Take `⟨m, hm⟩` from `mem_away.1 hf`. Use `⟨m, fun n hn => ?_⟩` and prove the remaining obligations. Establish `e1 : (l : K) ^ n • f = (l : K⟦X⟧) ^ (n - m) * ((l : K⟦X⟧) ^ m * f)`. Rewrite using `[← mul_assoc, ← pow_add, Nat.sub_add_cancel hn, smul_eq_C_mul, map_pow, map_natCast]`. Rewrite using `[e1]`.
+
+Conclude with `mul_mem (pow_mem (natCast_mem _ l) _) (by simpa using hm)`.
+-/
 theorem pow_smul_mem_S {f : K⟦X⟧} (hf : f ∈ invL l (S O K e)) :
     ∃ n₀ : ℕ, ∀ n ≥ n₀, (l : K) ^ n • f ∈ S O K e := by
   obtain ⟨m, hm⟩ := mem_away.1 hf
@@ -89,11 +118,17 @@ theorem pow_smul_mem_S {f : K⟦X⟧} (hf : f ∈ invL l (S O K e)) :
   rw [e1]
   exact mul_mem (pow_mem (natCast_mem _ l) _) (by simpa using hm)
 
+/- English proof (translation)
+Use `choose N hN using fun p => pow_smul_mem_S (hf p)`. Conclude with `⟨Finset.univ.sup N, fun n hn p => hN p n ((Finset.le_sup (Finset.mem_univ p)).trans hn)⟩`.
+-/
 theorem pow_smul_mem_S_fin {κ : Type} [Fintype κ] {f : κ → K⟦X⟧} (hf : ∀ p, f p ∈ invL l (S O K e)) :
     ∃ n₀ : ℕ, ∀ n ≥ n₀, ∀ p, (l : K) ^ n • f p ∈ S O K e := by
   choose N hN using fun p => pow_smul_mem_S (hf p)
   exact ⟨Finset.univ.sup N, fun n hn p => hN p n ((Finset.le_sup (Finset.mem_univ p)).trans hn)⟩
 
+/- English proof (translation)
+Take `⟨n₀, h⟩` from `pow_smul_mem_S_fin (κ := ZMod a × ι) (f := fun p => (P.mxInv p.1 *ᵥ x p.1) p.2) (fun p => mem_vecs.1 (P.mem_extc_iff.1 (mem_tot.1 hx p.1)) p.2)`. Use `⟨n₀, fun n hn => mem_tot.2 fun τ => P.mem_extc_iff.2 (mem_vecs.2 fun j => ?_)⟩` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, Matrix.mulVec_smul, Pi.smul_apply]`. Conclude with `h n hn (τ, j)`.
+-/
 theorem exists_pow_smul_mem_MM (P : PhiMod O K l e a ι) {x : Vec K a ι} (hx : x ∈ P.MMl) :
     ∃ n₀ : ℕ, ∀ n ≥ n₀, (l : K) ^ n • x ∈ P.MM := by
   obtain ⟨n₀, h⟩ := pow_smul_mem_S_fin (κ := ZMod a × ι) (f := fun p => (P.mxInv p.1 *ᵥ x p.1) p.2)
@@ -102,12 +137,22 @@ theorem exists_pow_smul_mem_MM (P : PhiMod O K l e a ι) {x : Vec K a ι} (hx : 
   rw [Pi.smul_apply, Matrix.mulVec_smul, Pi.smul_apply]
   exact h n hn (τ, j)
 
+/- English proof (translation)
+Take `⟨n₀, h⟩` from `pow_smul_mem_S_fin (κ := ZMod a × ι) (f := fun p => w p.1 p.2) (fun p => mem_vecs.1 (mem_tot.1 hw p.1) p.2)`. Conclude with `⟨n₀, fun n hn τ j => h n hn (τ, j)⟩`.
+-/
 theorem exists_pow_smul_mem_Mext (P : PhiMod O K l e a ι) {w : Vec K a ι}
     (hw : w ∈ P.Mext (invL l (S O K e))) : ∃ n₀ : ℕ, ∀ n ≥ n₀, ∀ τ j, (l : K) ^ n • w τ j ∈ S O K e := by
   obtain ⟨n₀, h⟩ := pow_smul_mem_S_fin (κ := ZMod a × ι) (f := fun p => w p.1 p.2)
     (fun p => mem_vecs.1 (mem_tot.1 hw p.1) p.2)
   exact ⟨n₀, fun n hn τ j => h n hn (τ, j)⟩
 
+/- English proof (translation)
+Establish `hsum : (⟨P.xiExt W, h⟩ : P.MMl) = ∑ j, (⟨(fun τ => W τ j) • P.xi (fun _ => Pi.single j 1), P.smul_tot_mem_ext (fun τ => le_away _ _ (hW τ j)) (hx j)⟩ : P.MMl)`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show P.xiExt W = _`. Rewrite using `[Submodule.coe_sum]`. Use `conv_lhs => rw [eq_sum_bas W, map_sum]`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `show _ = (fun τ => W τ j) • P.xi (fun _ => Pi.single j 1)`. Rewrite using `[PhiMod.xiExt_smul_tot, PhiMod.xi_apply, cst_single]`. Rewrite using `[hsum, map_sum, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[toBcris_apply, toBcris_apply, ← ϖ.iB_of_mem t K, ← map_mul]`. Use `congr 1`. Use function extensionality and compare the values at `τ`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[coordL, Matrix.mulVec_smul]`.
+-/
 theorem toBcris_xiExt (t : Wq l a →ₐ[ℤ_[l]] O) (ϖ : PiSys l e) (P : PhiMod O K l e a ι) {W : Vec K a ι}
     (hW : ∀ τ j, W τ j ∈ S O K e) (h : P.xiExt W ∈ P.MMl)
     (hx : ∀ j, P.xi (fun _ => Pi.single j 1) ∈ P.MMl) (k : ι) :
@@ -132,6 +177,59 @@ theorem toBcris_xiExt (t : Wq l a →ₐ[ℤ_[l]] O) (ϖ : PiSys l e) (P : PhiMo
 
 end Lemmas
 
+/- English proof (translation)
+Introduce `l _ a e _ _ O K _ _ _ _ _ _ _ _ _ _ t ϖ _ ι _ _ η H D T R σ c hc g hg`. Use `haveI : FiniteDimensional ℚ_[l] K := TameDescentExponentData.finite (K := K) (l := l) (e := e) (a := a)`. Use `haveI : CompleteSpace K := FiniteDimensional.complete ℚ_[l] K`. Set `g' : ↥(GK (ϖ.field a))` to `⟨sQ l g, hg⟩`. Establish `hxi` using `(GlobalTheory.T.breuilKisin_section_trivialises_invertPrime_tensor O K l e a ι D.toPhiMod).2`.
+
+Establish `nsm : ∀ (n : ℕ) (v : Vec K a ι), (l : K) ^ n • v = (l ^ n) • v` using `fun n v => by`. Rewrite using `[← Nat.cast_smul_eq_nsmul K, Nat.cast_pow]`. Establish `hxj : ∀ j : ι, D.toPhiMod.xi (fun _ => Pi.single j 1) ∈ D.toPhiMod.MMl` using `fun j => by`. Rewrite using `[PhiMod.xi_apply, cst_single, hxi]`. Conclude with `mem_tot.2 fun τ => mem_vecs.2 fun i => by`.
+
+Simplify using `only [bas, Pi.single_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Set `X : ι → ι → OB l O` to `fun j => toBcris t ϖ D.toPhiMod ⟨_, hxj j⟩`. Establish `hv : ∀ j, actB (sQ l) T g (R.jB (X j)) = R.jB (X j)` using `fun j => R.horiz g hg _ (hxj j)`. Take `⟨w, hw⟩` from `D.toPhiMod.xiExt.surjective σ.1`.
+
+Establish `hwM : w ∈ D.toPhiMod.Mext (invL l (S O K e))` using `(hxi w).1 (hw ▸ σ.2)`. Take `⟨n₁, hn₁⟩` from `exists_pow_smul_mem_Mext D.toPhiMod hwM`. Use `choose m₀ hm₀ using fun j => exists_pow_smul_mem_MM D.toPhiMod (hxj j)`. Use `set n₂ := Finset.univ.sup m₀ with hn₂`. Establish `hX2 : ∀ j, (l : K) ^ n₂ • D.toPhiMod.xi (fun _ => Pi.single j 1) ∈ D.toPhiMod.MM` using `fun j => hm₀ j n₂ (Finset.le_sup (Finset.mem_univ j))`.
+
+Use `set W : Vec K a ι := (l : K) ^ n₁ • w with hWdef`. Establish `hWS : ∀ τ j, W τ j ∈ S O K e` using `hn₁ n₁ le_rfl`. Establish `hWσ : D.toPhiMod.xiExt W = (l : K) ^ n₁ • σ.1` using `by rw [hWdef, map_smul, hw]`. Establish `hWM : D.toPhiMod.xiExt W ∈ D.toPhiMod.MMl` using `by rw [hWσ, nsm]; exact nsmul_mem σ.2 _`. Set `Wi : ℕ → Vec K a ι` to `fun i τ j => descN K (i + 1) (W τ j)`.
+
+Establish `hWi : ∀ i τ j, Wi i τ j ∈ S O K e` using `fun i τ j => descN_mem_S e (i + 1) (hWS τ j)`. Establish `hWiM : ∀ i, D.toPhiMod.xiExt (Wi i) ∈ D.toPhiMod.MMl` using `fun i => (hxi _).2 (mem_tot.2 fun τ => mem_vecs.2 fun j => le_away _ _ (hWi i τ j))`. Set `Pi' : ℕ → Vec K a ι` to `fun i => Polynomial.aeval D.toPhiMod.conn (descPochhammer K (i + 1)) σ.1`. Establish `hPi : ∀ i, (l : K) ^ c • Pi' i ∈ D.toPhiMod.MM` using `fun i => descConn_mem D.toPhiMod (fun m hm => D.conn_mem_MM hm) hc i`. Establish `hxiWi : ∀ i, D.toPhiMod.xiExt (Wi i) = (l : K) ^ n₁ • Pi' i` using `fun i => by`.
+
+Rewrite using `[← descConn_xiExt, hWσ, map_smul]`. Set `y : ℕ → ι → OCr l O` to `fun i => toCris t ϖ D.toPhiMod ⟨_, hPi i⟩`. Set `u : ι → ι → OCr l O` to `fun j => toCris t ϖ D.toPhiMod ⟨_, hX2 j⟩`. Set `Y : ℕ → ι → OB l O` to `fun i => toBcris t ϖ D.toPhiMod ⟨_, hWiM i⟩`. Establish `hF : ∀ i k, (l : OB l O) ^ c * Y i k = (l : OB l O) ^ n₁ * toOB l O (y i k)` using `fun i k => by`.
+
+Establish `hsub : (l ^ c) • (⟨D.toPhiMod.xiExt (Wi i), hWiM i⟩ : D.toPhiMod.MMl) = (l ^ n₁) • (⟨(l : K) ^ c • Pi' i, D.toPhiMod.ext_mono (le_away _ _) (hPi i)⟩ : D.toPhiMod.MMl)`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [AddSubmonoidClass.coe_nsmul, hxiWi]`. Rewrite using `[← nsm, ← nsm, smul_smul, smul_smul, mul_comm]`. Use `congrArg (fun x => toBcris t ϖ D.toPhiMod x k) hsub` as an intermediate fact.
+
+Simplify using `only [map_nsmul, Pi.smul_apply, nsmul_eq_mul, Nat.cast_pow] at this`. Rewrite using `[this, toBcris_of_mem t ϖ D.toPhiMod (hPi i)]`. Establish `hG : ∀ j k, (l : OB l O) ^ n₂ * X j k = toOB l O (u j k)` using `fun j k => by`. Establish `hsub : (l ^ n₂) • (⟨_, hxj j⟩ : D.toPhiMod.MMl) = (⟨(l : K) ^ n₂ • D.toPhiMod.xi (fun _ => Pi.single j 1), D.toPhiMod.ext_mono (le_away _ _) (hX2 j)⟩ : D.toPhiMod.MMl)`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Simplify using `only [AddSubmonoidClass.coe_nsmul]`. Rewrite using `[← nsm]`. Use `congrArg (fun x => toBcris t ϖ D.toPhiMod x k) hsub` as an intermediate fact. Simplify using `only [map_nsmul, Pi.smul_apply, nsmul_eq_mul, Nat.cast_pow] at this`. Rewrite using `[this, toBcris_of_mem t ϖ D.toPhiMod (hX2 j)]`.
+
+Set `β : ι → OCr l O` to `fun j => ϖ.iC t K fun τ => ⟨W τ j, hWS τ j⟩`. Establish `hA : ∀ k, toBcris t ϖ D.toPhiMod σ k * (l : OB l O) ^ n₁ = ∑ j, toOB l O (β j) * X j k` using `fun k => by`. Establish `hsub : (l ^ n₁) • σ = (⟨D.toPhiMod.xiExt W, hWM⟩ : D.toPhiMod.MMl)`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [AddSubmonoidClass.coe_nsmul, hWσ]`.
+
+Rewrite using `[← nsm]`. Use `congrArg (fun x => toBcris t ϖ D.toPhiMod x k) hsub` as an intermediate fact. Simplify using `only [map_nsmul, Pi.smul_apply, nsmul_eq_mul, Nat.cast_pow] at this`. Rewrite using `[mul_comm, this, toBcris_xiExt t ϖ D.toPhiMod hWS hWM hxj k]`. Establish `hb : (l ^ n₁) • R.jB (toBcris t ϖ D.toPhiMod σ) = ∑ j, toOB l O (β j) • R.jB (X j)`.
+
+Rewrite using `[← map_nsmul]`. Simplify using `only [← LinearEquiv.map_smul, ← map_sum]`. Use `congr 1`. Use function extensionality and compare the values at `k`. Simplify using `only [Pi.smul_apply, nsmul_eq_mul, Nat.cast_pow, Finset.sum_apply, smul_eq_mul]`.
+
+Rewrite using `[mul_comm, hA k]`. Establish `hgb : (l ^ n₁) • (actB (sQ l) T g (R.jB (toBcris t ϖ D.toPhiMod σ)) - R.jB (toBcris t ϖ D.toPhiMod σ)) = ∑ j, toOB l O (galOCr O (sQ l g) (β j) - β j) • R.jB (X j)`. Rewrite using `[nsmul_sub, ← map_nsmul, hb, map_sum, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[actB_smul, hv, galOB_toOB, map_sub, sub_smul]`.
+
+Use `choose M₀ hM₀ using fun j => taylor_iC t ϖ g' (fun τ => ⟨W τ j, hWS τ j⟩) (n₁ + n₂)`. Use `set M := Finset.univ.sup M₀ with hM`. Establish `hε : ∀ j, ∃ ε : OCr l O, galOCr O (sQ l g) (β j) - β j = ∑ i ∈ Finset.range M, ϖ.muDiv a O g' (i + 1) * ϖ.iC t K (fun τ => ⟨Wi i τ j, hWi i τ j⟩) + (l : OCr l O) ^ (n₁ + n₂) * ε`. Introduce `j`. Take `⟨ε, hε⟩` from `hM₀ j (M + 1) ((Finset.le_sup (Finset.mem_univ j)).trans (Nat.le_succ _))`.
+
+Use `⟨ε, ?_⟩` and prove the remaining obligations. Rewrite `hε` using `[Finset.sum_range_succ']`. Establish `h0 : ϖ.muDiv a O g' 0 * ϖ.iC t K (fun τ => ⟨descN K 0 (W τ j), descN_mem_S e 0 (hWS τ j)⟩) = β j`. Establish `h1 : ϖ.muDiv a O g' 0 = 1`. Simplify using `[PiSys.muDiv, dpow_zero, Algebra.TensorProduct.one_def]`.
+
+Rewrite using `[h1, one_mul]`. Use `congr 1`. Use function extensionality and compare the values at `τ`. Conclude with `Subtype.ext (by simp [descN])`. Rewrite `hε` using `[h0]`.
+
+Take the linear combination `hε`. Use `choose ε hε using hε`. Set `z : ι → OCr l O` to `fun k => ∑ i ∈ Finset.range M, ϖ.muDiv a O g' (i + 1) * y i k + (l : OCr l O) ^ c * ∑ j, ε j * u j k`. Use `⟨z, ?_⟩` and prove the remaining obligations. Establish `cancel : ∀ (N : ℕ) (A B : TW (OB l O) T), (l ^ N) • A = (l ^ N) • B → A = B`.
+
+Introduce `N A B h`. Rewrite `h` using `[← Nat.cast_smul_eq_nsmul (OB l O), ← Nat.cast_smul_eq_nsmul (OB l O), Nat.cast_pow]`. Conclude with `((isUnit_l_OB (l := l) (O := O)).pow N).smul_left_cancel.1 h`. Establish `key : ∀ k, (l : OB l O) ^ n₂ * (l : OB l O) ^ c * ∑ j, toOB l O (galOCr O (sQ l g) (β j) - β j) * X j k = (l : OB l O) ^ (n₁ + n₂) * toOB l O (z k)` using `fun k => by`. Establish `hstar : ∑ j, toOB l O (galOCr O (sQ l g) (β j) - β j) * X j k = ∑ i ∈ Finset.range M, toOB l O (ϖ.muDiv a O g' (i + 1)) * Y i k + (l : OB l O) ^ (n₁ + n₂) * ∑ j, toOB l O (ε j) * X j k`.
+
+Simplify using `only [hε, map_add, map_sum, map_mul, map_pow, map_natCast, add_mul, Finset.sum_add_distrib, Finset.sum_mul]`. Use `congr 1`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[show Y i k = _ from toBcris_xiExt t ϖ D.toPhiMod (hWi i) (hWiM i) hxj k, Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hF' : (∑ i ∈ Finset.range M, toOB l O (ϖ.muDiv a O g' (i + 1)) * Y i k) * (l : OB l O) ^ c = (l : OB l O) ^ n₁ * ∑ i ∈ Finset.range M, toOB l O (ϖ.muDiv a O g' (i + 1)) * toOB l O (y i k)`. Rewrite using `[Finset.sum_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Take the linear combination `toOB l O (ϖ.muDiv a O g' (i + 1)) * hF i k`. Establish `hG' : (∑ j, toOB l O (ε j) * X j k) * (l : OB l O) ^ n₂ = ∑ j, toOB l O (ε j) * toOB l O (u j k)`.
+
+Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Take the linear combination `toOB l O (ε j) * hG j k`. Establish `hz : toOB l O (z k) = ∑ i ∈ Finset.range M, toOB l O (ϖ.muDiv a O g' (i + 1)) * toOB l O (y i k) + (l : OB l O) ^ c * ∑ j, toOB l O (ε j) * toOB l O (u j k)`. Simplify using `only [z, map_add, map_sum, map_mul, map_pow, map_natCast]`.
+
+Rewrite using `[hstar, hz]`. Take the linear combination `(l : OB l O) ^ n₂ * hF' + (l : OB l O) ^ (n₁ + n₂) * (l : OB l O) ^ c * hG'`. Apply `cancel (n₁ + n₂)` to reduce the goal to its premises. Establish `e1 : (l : O) ^ c • (actB (sQ l) T g (R.jB (toBcris t ϖ D.toPhiMod σ)) - R.jB (toBcris t ϖ D.toPhiMod σ)) = (l ^ c) • (actB (sQ l) T g (R.jB (toBcris t ϖ D.toPhiMod σ)) - R.jB (toBcris t ϖ D.toPhiMod σ))`. Rewrite using `[← Nat.cast_smul_eq_nsmul O, Nat.cast_pow]`.
+
+Rewrite using `[e1, smul_smul, show l ^ (n₁ + n₂) * l ^ c = (l ^ n₂ * l ^ c) * l ^ n₁ by ring, ← smul_smul, hgb]`. Establish `eL : (l ^ n₂ * l ^ c) • ∑ j, toOB l O (galOCr O (sQ l g) (β j) - β j) • R.jB (X j) = R.jB ((l ^ n₂ * l ^ c) • ∑ j, toOB l O (galOCr O (sQ l g) (β j) - β j) • X j)`. Rewrite using `[map_nsmul, map_sum]`. Simplify using `only [LinearEquiv.map_smul]`. Establish `eR : (l ^ (n₁ + n₂)) • R.jB (fun i => toOB l O (z i)) = R.jB ((l ^ (n₁ + n₂)) • fun i => toOB l O (z i))` using `(map_nsmul _ _ _).symm`.
+
+Rewrite using `[eL, eR]`. Use `congr 1`. Use function extensionality and compare the values at `k`. Simplify using `only [Pi.smul_apply, nsmul_eq_mul, Nat.cast_pow, Nat.cast_mul, Finset.sum_apply, smul_eq_mul]`. Take the linear combination `key k`.
+-/
 theorem lpow_galDiff_eq_jB_toOB : ∀ (l : ℕ) [Fact l.Prime] (a e : ℕ) [NeZero a] [NeZero e] (O K : Type) [CommRing O] [Algebra ℤ_[l] O] [Module.Free ℤ_[l] O] [Module.Finite ℤ_[l] O] [NormedField K] [IsUltrametricDist K] [Algebra O K] [IsUnitBall O K] [NormedAlgebra ℚ_[l] K] [TameDescentExponentData K l e a] (t : Wq l a →ₐ[ℤ_[l]] O) (ϖ : PiSys l e), l ≠ 2 → ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (η H : ℕ) (D : BKDat O K l e a ι η H) (T : LocLat (Gl l) ℚ_[l] K O) (R : GalDat t ϖ (sQ l) D T) (σ : D.MMl) (c : ℕ), (l : K) ^ c • D.conn σ.1 ∈ D.MM → ∀ g : Gl l, sQ l g ∈ GK (ϖ.field a) → ∃ z : ι → OCr l O, (l : O) ^ c • (actB (sQ l) T g (R.jB (toBcris t ϖ D.toPhiMod σ)) - R.jB (toBcris t ϖ D.toPhiMod σ)) = R.jB fun i => toOB l O (z i) := by
   intro l _ a e _ _ O K _ _ _ _ _ _ _ _ _ _ t ϖ _ ι _ _ η H D T R σ c hc g hg
   haveI : FiniteDimensional ℚ_[l] K := TameDescentExponentData.finite (K := K) (l := l) (e := e) (a := a)

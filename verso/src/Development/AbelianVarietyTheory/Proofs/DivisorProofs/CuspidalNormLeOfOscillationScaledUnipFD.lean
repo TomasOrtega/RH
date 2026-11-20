@@ -7,6 +7,15 @@ open scoped NumberField.AdeleRing
 
 namespace GlobalTheory.CuspTail
 
+/- English proof (translation)
+Introduce `E _ _ _ a r hr hra φ _ hcusp hφ M hM x B hB`. Use `set D := GroundTheory.Automorphic.scaledUnipFD E a r M with hDdef`. Use `set ν := GroundTheory.Automorphic.AutomorphicForm.unipMeasure E a r`. Establish `hD : IsAddFundamentalDomain (ratN E a r) D ν` using `GroundTheory.Automorphic.isAddFundamentalDomain_scaledUnipFD hM`. Establish `hD1 : ν D = 1` using `GroundTheory.Automorphic.unipMeasure_scaledUnipFD hM`.
+
+Establish `hunip : (unip : (BlockIx a r → Ad E) → GA E a) = (GroundTheory.Automorphic.AutomorphicForm.unipGL (n` using `a) (r := r) (R := Ad E)) :=`. Use function extensionality and compare the values at `fun X => Units.ext rfl`. Establish `hcont : Continuous fun X : BlockIx a r → Ad E => φ (unip X * x)`. Use `hφ.comp (Continuous.mul ?_ continuous_const)` and prove the remaining obligations. Rewrite using `[hunip]`.
+
+Conclude with `GroundTheory.Automorphic.AutomorphicForm.continuous_unipGL`. Take `⟨C, hC, hDC⟩` from `GroundTheory.Automorphic.CuspidalSpectrum.exists_isCompact_superset_scaledUnipFD (K := E) (n := a) r hM`. Establish `hint : IntegrableOn (fun X => φ (unip X * x)) D ν` using `(hcont.continuousOn.integrableOn_compact hC).mono_set hDC`. Establish `hmean : ∫ X in D, φ (unip X * x) ∂ν = 0` using `hcusp r hr hra ν D inferInstance hD x`. Establish `hfin : ν D < ⊤` using `by rw [hD1]; exact ENNReal.one_lt_top`.
+
+Establish `hkey : ∫ X in D, (φ (unip X * x) - φ x) ∂ν = -φ x`. Rewrite using `[integral_sub hint (integrableOn_const hfin.ne)]`. Simplify using `only [hmean, setIntegral_const, measureReal_def, hD1, ENNReal.toReal_one, one_smul, zero_sub]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem norm_le_of_osc_scaledUnipFD : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a r : ℕ), 0 < r → r < a →
     ∀ φ : GA E a → ℂ, (∀ γ g, φ (ratGL E a γ * g) = φ g) → IsCuspidal φ → Continuous φ →
     ∀ M : ℕ, 0 < M → ∀ (x : GA E a) (B : ℝ),

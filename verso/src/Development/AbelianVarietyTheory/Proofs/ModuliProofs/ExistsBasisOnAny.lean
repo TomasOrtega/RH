@@ -18,6 +18,29 @@ namespace GlobalTheory.PushInv
 
 open LBGerm
 
+/- English proof (translation)
+Take `⟨V, hV, b, hb⟩` from `hS S P 1 le_rfl x`. Establish `hq : Unique (Fin (1 ^ P.g))` using `by rw [one_pow]; infer_instance`. Set `T : Over S` to `overRes (T := baseOver S) V`. Establish `hT : T.hom = V.ι` using `Category.comp_id _`. Use `haveI : IsOpenImmersion T.hom := by rw [hT]; exact inferInstanceAs (IsOpenImmersion V.ι)`.
+
+Use `haveI : IsOpenImmersion (snd T P.A).left := inferInstanceAs (IsOpenImmersion (pullback.snd T.hom P.A.hom))`. Establish `hr : ∀ g : P.A.left, P.A.hom g ∈ V → g ∈ Set.range (snd T P.A).left` using `fun g hg => by`. Rewrite using `[range_snd, hT]`. Conclude with `⟨⟨_, hg⟩, rfl⟩`. Use `choose θ hθ using fun i => exists_lift (snd T P.A).left (P.A.hom ⁻¹ᵁ V ⊓ P.L.U i) (fun g hg => hr g hg.1) ((LPow P.A P.L (1 : ℕ) T).U (fun _ => i)) (fun z hz => (mem_chart _ _ _ _ _ _).2 hz.2) ((b hq.default).f (fun _ => i))`.
+
+Use `⟨V, hV, θ, mem_secOn_of_germ θ fun g i j hg hi hj => ?_, fun R _ q hqV => ?_⟩` and prove the remaining obligations. Take `⟨z, rfl⟩` from `hr g hg`. Apply `stalk_inj (snd T P.A).left z` to reduce the goal to its premises. Establish `hi'` using `(mem_chart P.A P.L T (1 : ℕ) z (fun _ => i)).2 hi`. Establish `hj'` using `(mem_chart P.A P.L T (1 : ℕ) z (fun _ => j)).2 hj`.
+
+Rewrite using `[map_mul, ← gs_stalkMap _ z (P.A.hom ⁻¹ᵁ V ⊓ P.L.U i) ⟨hg, hi⟩, ← gs_stalkMap _ z (P.A.hom ⁻¹ᵁ V ⊓ P.L.U j) ⟨hg, hj⟩, ← gm_comp _ (𝟙 _) z (P.L.U i ⊓ P.L.U j) ⟨hi, hj⟩, Category.comp_id]`. Establish `e₁` using `hθ i _ (𝟙 _) z ⟨hg, hi⟩`. Establish `e₂` using `hθ j _ (𝟙 _) z ⟨hg, hj⟩`. Establish `e₃` using `gm_lpow P.A P.L T (𝟙 _) z _ _ hi' hj'`. Rewrite `e₁`, `e₂`, `e₃` using `[Category.id_comp]`.
+
+Rewrite using `[e₁, e₂, gs_compat (b hq.default) (𝟙 _) z hi' hj', e₃]`. Take `⟨t, rfl⟩ : ∃ t : Spec (CommRingCat.of R) ⟶ T.left, t ≫ T.hom = q` from `⟨IsOpenImmersion.lift T.hom q (by rw [hT]; exact hqV.trans (Scheme.Opens.range_ι V).ge), IsOpenImmersion.lift_fac _ _ _⟩ choose b' hb' using fun i => exists_pull P.A P.L (1 : ℕ) (homAt t ▷ P.A) (whiskerRight_snd (homAt t) P.A) (b i)`. Take `⟨hli, hsp⟩` from `hb R t b' hb'`. Establish `e : (homAt t ▷ P.A).left ≫ (snd T P.A).left = (snd (baseAt t) P.A).left` using `congrArg CommaMorphism.left (whiskerRight_snd (homAt t) P.A)`. Establish `val : ∀ (z : (baseAt t ⊗ P.A).left) i, (snd (baseAt t) P.A).left z ∈ P.L.U i → gs (𝟙 _) z _ ((b' hq.default).f (fun _ => i)) = gs (snd (baseAt t) P.A).left z _ (θ i)` using `fun z i hi => by`.
+
+Establish `hi'` using `(mem_chart P.A P.L (baseAt t) (1 : ℕ) z (fun _ => i)).2 hi`. Establish `hV' : P.A.hom ((snd (baseAt t) P.A).left z) ∈ V`. Rewrite using `[← Scheme.Hom.comp_apply, w_snd, Scheme.Hom.comp_apply]`. Conclude with `hqV ⟨_, rfl⟩`. Establish `hm : (snd T P.A).left ((homAt t ▷ P.A).left z) ∈ P.A.hom ⁻¹ᵁ V ⊓ P.L.U i`.
+
+Rewrite using `[← Scheme.Hom.comp_apply, e]`. Conclude with `⟨hV', hi⟩`. Establish `e₁` using `hθ i _ (homAt t ▷ P.A).left z hm`. Rewrite `e₁` using `[e]`. Rewrite using `[e₁, hb' hq.default (fun _ => i)]`.
+
+Conclude with `(gs_appLE (homAt t ▷ P.A).left _ _ _ (𝟙 _) z hi' _).trans (by rw [Category.id_comp])`. Use `⟨fun s => ?_, fun r h0 => ?_⟩` and prove the remaining obligations. Rewrite `hsp` using `[Set.range_unique]`. Take `⟨r, hr⟩` from `Submodule.mem_span_singleton.1 (hsp.ge (Submodule.mem_top (x := SecM.ofSec P.A s)))`. Use `⟨r, fun z i hi => ?_⟩` and prove the remaining obligations.
+
+Establish `hi'` using `(mem_chart P.A P.L (baseAt t) (1 : ℕ) z (fun _ => i)).2 hi`. Use `gs_smul P.A P.L (baseAt t) _ r (SecM.ofSec P.A (b' hq.default)) (fun _ => i) z hi'` as an intermediate fact. Rewrite `this` using `[hr]`. Conclude with `this.trans (congrArg _ (val z i hi))`. Use `Fintype.linearIndependent_iff.1 hli (fun _ => r) ?_ hq.default` and prove the remaining obligations.
+
+Rewrite using `[Fintype.sum_unique]`. Use `Subtype.ext (funext fun j => fn_ext fun z hz => ?_)` and prove the remaining obligations. Take `⟨i, rfl⟩ : ∃ i, j = fun _ => i` from `⟨j 0, funext fun k => by rw [Subsingleton.elim k 0]⟩`. Establish `hi` using `(mem_chart P.A P.L (baseAt t) (1 : ℕ) z (fun _ => i)).1 hz`. Use `(gs_smul P.A P.L (baseAt t) _ r (SecM.ofSec P.A (b' hq.default)) (fun _ => i) z hz).trans ?_` and prove the remaining obligations.
+
+Conclude with `((congrArg _ (val z i hi)).trans (h0 z i hi)).trans (gs_zero _ z _ hz).symm`.
+-/
 theorem exists_basisOn_any {S : Scheme.{0}} (hS : SecBaseChangeAnySt) (P : PolAV S) (x : S) :
     ∃ V : S.Opens, x ∈ V ∧ ∃ θ ∈ secOn P.L (P.A.hom ⁻¹ᵁ V), IsBasisOn P.A P.L V θ := by
   obtain ⟨V, hV, b, hb⟩ := hS S P 1 le_rfl x
@@ -78,6 +101,13 @@ theorem exists_basisOn_any {S : Scheme.{0}} (hS : SecBaseChangeAnySt) (P : PolAV
       refine (gs_smul P.A P.L (baseAt t) _ r (SecM.ofSec P.A (b' hq.default)) (fun _ => i) z hz).trans ?_
       exact ((congrArg _ (val z i hi)).trans (h0 z i hi)).trans (gs_zero _ z _ hz).symm
 
+/- English proof (translation)
+Introduce `hS _ S P x`. Take `⟨V, hV, θ, hθ, H⟩` from `exists_basisOn_any hS P x`. Use `haveI := P.smoothDim`. Use `haveI : Smooth P.A.hom := SmoothOfRelativeDimension.smooth P.g _`. Use `⟨V, hV, θ, hθ, fun W hW s hs => ?_, exists_nonvanishing H⟩` and prove the remaining obligations.
+
+Establish `e : ∀ (a : Γ(S, W)) (g : P.A.left) i, P.A.hom g ∈ W → g ∈ P.L.U i → gs (𝟙 _) g _ ((P.A.hom.appLE W (P.A.hom ⁻¹ᵁ W ⊓ P.L.U i) inf_le_left).hom a * resG P.A.left (inf_le_inf_right _ (P.A.hom.preimage_mono hW)) (θ i)) = gs P.A.hom g W a * gs (𝟙 _) g _ (θ i)` using `fun a g i hg hi => by`. Establish `hm : g ∈ P.A.hom ⁻¹ᵁ W ⊓ P.L.U i` using `⟨hg, hi⟩`. Rewrite using `[gs_mul (𝟙 _) g _ hm, gs_res (𝟙 _) g _ hm, gs_appLE _ _ _ _ (𝟙 _) g hm, Category.id_comp]`. Take `⟨a, ha⟩` from `exists_coeff H hW hs`. Use `⟨a, fun i => fn_ext fun g hg => (ha g i hg.1 hg.2).trans (e a g i hg.1 hg.2).symm, fun a' ha' => ?_⟩` and prove the remaining obligations.
+
+Conclude with `eq_of_mul H hW _ _ fun g i hg hi => ((e a' g i hg hi).symm.trans (congrArg _ (ha' i).symm)).trans (ha g i hg hi)`.
+-/
 theorem pushInvertible_any : Out.SecBaseChangeAnySt → Out.GlobalSectionsRankAlgClosed →
     ∀ (S : Scheme.{0}) (Q : Out.PolAV S), PushInvertible Q.A Q.L := by
   intro hS _ S P x

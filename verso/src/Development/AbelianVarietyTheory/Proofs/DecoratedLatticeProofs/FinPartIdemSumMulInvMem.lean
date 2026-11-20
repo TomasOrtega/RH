@@ -18,6 +18,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.IdemSumInt
 
+/- English proof (translation)
+Introduce `D e SS hS t ht`. Take `⟨⟨es, hes, rfl⟩, -⟩` from `hS`. Distinguish the cases in `h0 : t = 0`. Substitute `h0` using the available equality. Simplify using the standard rewrite rules.
+
+Rewrite using `[Finset.sum_mul, map_sum]`. Use `AddSubgroup.sum_mem _ fun PP hPP => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hn`. Conclude with `ht PP hPP (((hes PP hPP).2 t h0).2 hn)`.
+-/
 theorem finPart_idemSum_mul_inv_mem : ∀ (D : D7) (e : AE D) (SS : Finset (Formalism.L2.DIV.Pl D.host.E)), IsIdemSum e SS → ∀ t : 𝓞 D.host.E, (∀ Q ∈ SS, t ∉ Q.asIdeal) → finPart D (e * incA D ((t : D.host.E))⁻¹) ∈ intAE D := by
   intro D e SS hS t ht
   obtain ⟨⟨es, hes, rfl⟩, -⟩ := hS

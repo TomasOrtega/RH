@@ -20,6 +20,13 @@ abbrev starShape (ι : Type*) : MulticospanShape where
 
 variable {C : Type*} [Category C] {ι : Type*}
 
+/- English proof (translation)
+Set `k : ∀ a, I.left none ⟶ I.left a` to `fun a => match a with`. Consider the case `none => 𝟙 _`. Consider the case `some j => haveI := h j`. Use the proof step `I.fst j ≫ inv (I.snd j)`. Establish `hk : ∀ b, k ((starShape ι).fst b) ≫ I.fst b = k ((starShape ι).snd b) ≫ I.snd b`.
+
+Introduce `b`. Simplify using `[k]`. Use `⟨⟨Multifork.IsLimit.lift hK k hk, ?_, ?_⟩⟩` and prove the remaining obligations. Apply `Multifork.IsLimit.hom_ext hK` to reduce the goal to its premises. Introduce and unpack `(_ | j)`.
+
+Simplify using `[k]`. Establish `hc` using `K.condition j dsimp at hc`. Simplify using `[k, reassoc_of% hc]`. Simplify using `[k]`.
+-/
 lemma isIso_ι_none {I : MulticospanIndex (starShape ι) C} {K : Multifork I} (hK : IsLimit K)
     (h : ∀ j, IsIso (I.snd j)) : IsIso (K.ι none) := by
   let k : ∀ a, I.left none ⟶ I.left a := fun a => match a with
@@ -36,6 +43,19 @@ lemma isIso_ι_none {I : MulticospanIndex (starShape ι) C} {K : Multifork I} (h
       simp [k, reassoc_of% hc]
   · simp [k]
 
+/- English proof (translation)
+Set `s₀ : I.left (some i) ⟶ I.left none` to `I.snd i ≫ @inv _ _ _ _ (I.fst i) hi`. Set `k : ∀ a, I.left (some i) ⟶ I.left a` to `fun a => match a with`. Consider the case `none => s₀`. Consider the case `some j => if hj : j = i then eqToHom (by rw [hj]) else haveI := h j hj; s₀ ≫ I.fst j ≫ inv (I.snd j)`. Establish `hk : ∀ b, k ((starShape ι).fst b) ≫ I.fst b = k ((starShape ι).snd b) ≫ I.snd b`.
+
+Introduce `b`. Distinguish the cases in `hb : b = i`. Substitute `hb` using the available equality. Simplify using `[k, s₀]`. Simplify using `[k, hb]`.
+
+Establish `h0 : K.ι (some i) ≫ s₀ = K.ι none`. Establish `hc` using `K.condition i`. Simplify using `at hc`. Simplify using `[s₀, ← reassoc_of% hc]`. Use `⟨⟨Multifork.IsLimit.lift hK k hk, ?_, ?_⟩⟩` and prove the remaining obligations.
+
+Apply `Multifork.IsLimit.hom_ext hK` to reduce the goal to its premises. Introduce and unpack `(_ | j)`. Simplify `h0` using `[k]`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality.
+
+Simplify using `[k]`. Use `h j hj` as an intermediate fact. Establish `hc` using `K.condition j`. Simplify using `at hc`. Simplify using `only [Category.assoc, Multifork.IsLimit.fac, Category.id_comp, k, dif_neg hj]`.
+
+Rewrite using `[reassoc_of% h0, reassoc_of% hc, IsIso.hom_inv_id, Category.comp_id]`. Simplify using `[k]`.
+-/
 lemma isIso_ι_some [DecidableEq ι] {I : MulticospanIndex (starShape ι) C} {K : Multifork I}
     (hK : IsLimit K) (i : ι) (hi : IsIso (I.fst i)) (h : ∀ j, j ≠ i → IsIso (I.snd j)) :
     IsIso (K.ι (some i)) := by
@@ -75,6 +95,11 @@ universe u
 set_option backward.isDefEq.respectTransparency false in
 open Scheme.Modules in
 
+/- English proof (translation)
+Rewrite using `[← Adjunction.unit_leftAdjointUniq_hom_app (restrictAdjunction f) (pullbackPushforwardAdjunction f) M, Hom.comp_app, restrictAdjunction_unit_app_app, pushforward_map_app]`. Establish `h1 : f ''ᵁ f ⁻¹ᵁ O = O`. Rewrite using `[f.image_preimage_eq_opensRange_inf]`. Conclude with `inf_eq_right.mpr hO`. Establish `: IsIso (homOfLE (f.image_preimage_le O))` using `⟨⟨homOfLE h1.ge, Subsingleton.elim _ _, Subsingleton.elim _ _⟩⟩`.
+
+Establish `: IsIso (((restrictAdjunction f).leftAdjointUniq (pullbackPushforwardAdjunction f)).hom.app M)` using `inferInstance`. Conclude with `IsIso.comp_isIso' inferInstance inferInstance`.
+-/
 lemma isIso_unit_app {Y Z : Scheme.{u}} (f : Y ⟶ Z) [IsOpenImmersion f] (M : Z.Modules)
     (O : Z.Opens) (hO : O ≤ f.opensRange) :
     IsIso (((pullbackPushforwardAdjunction f).unit.app M).app O) := by
@@ -91,6 +116,11 @@ lemma isIso_unit_app {Y Z : Scheme.{u}} (f : Y ⟶ Z) [IsOpenImmersion f] (M : Z
 
 open Scheme.Modules in
 
+/- English proof (translation)
+Establish `key : ((pullbackPushforwardAdjunction f).homEquiv _ _).symm φ = (restrictFunctorIsoPullback f).inv.app E ≫ (restrictFunctor f).map φ ≫ (restrictAdjunction f).counit.app M`. Rewrite using `[Adjunction.homEquiv_counit, ← Adjunction.leftAdjointUniq_hom_app_counit (restrictAdjunction f) (pullbackPushforwardAdjunction f) M, restrictFunctorIsoPullback]`. Simplify using `only [NatTrans.naturality_assoc, Iso.inv_hom_id_app_assoc]`. Establish `: IsIso ((restrictFunctor f).map φ)`. Rewrite using `[Hom.isIso_iff_isIso_app]`.
+
+Introduce `O`. Conclude with `h O`. Rewrite using `[key]`. Use `infer_instance`.
+-/
 lemma isIso_homEquiv_symm {Y Z : Scheme.{u}} (f : Y ⟶ Z) [IsOpenImmersion f] {E : Z.Modules}
     {M : Y.Modules} (φ : E ⟶ (pushforward f).obj M) (h : ∀ O : Y.Opens, IsIso (φ.app (f ''ᵁ O))) :
     IsIso (((pullbackPushforwardAdjunction f).homEquiv _ _).symm φ) := by
@@ -118,6 +148,9 @@ def transMap {A B Z : Scheme.{u}} (f : A ⟶ B) (h : B ⟶ Z) {k : A ⟶ Z} (e :
 set_option backward.isDefEq.respectTransparency false in
 open Scheme.Modules in
 
+/- English proof (translation)
+Simplify using `only [transMap, Hom.comp_app, pushforward_map_app, Adjunction.homEquiv_unit, pushforwardComp_hom_app_app, pushforwardCongr_hom_app_app]`. Use `isIso_unit_app f M (h ⁻¹ᵁ O) hO` as an intermediate fact. Conclude with `IsIso.comp_isIso' (IsIso.comp_isIso' this inferInstance) (IsIso.comp_isIso' (IsIso.id _) inferInstance)`.
+-/
 lemma isIso_transMap_app {A B Z : Scheme.{u}} (f : A ⟶ B) [IsOpenImmersion f] (h : B ⟶ Z)
     {k : A ⟶ Z} (e : f ≫ h = k) {M : B.Modules} {N : A.Modules} (χ : (Scheme.Modules.pullback f).obj M ⟶ N)
     [IsIso χ] (O : Z.Opens) (hO : h ⁻¹ᵁ O ≤ f.opensRange) :
@@ -130,6 +163,13 @@ lemma isIso_transMap_app {A B Z : Scheme.{u}} (f : A ⟶ B) [IsOpenImmersion f] 
 
 open Scheme.Modules in
 
+/- English proof (translation)
+Substitute `e` using the available equality. Establish `hc1 : (pullbackCongr (rfl : g ≫ h = g ≫ h)).inv.app E = 𝟙 _`. Simplify using `[pullbackCongr]`. Establish `hc2 : (pushforwardCongr (rfl : g ≫ h = g ≫ h)).hom.app M = 𝟙 _`. Use extensionality with `O : 1`.
+
+Conclude with `M.presheaf.map_id _`. Establish `key : ∀ (φ : (Scheme.Modules.pullback g).obj ((Scheme.Modules.pullback h).obj E) ⟶ M), (pullbackPushforwardAdjunction (g ≫ h)).homEquiv _ _ ((pullbackComp g h).inv.app E ≫ φ) = ((pullbackPushforwardAdjunction h).comp (pullbackPushforwardAdjunction g)).homEquiv _ _ φ ≫ (pushforwar …`. Introduce `φ`. Establish `hu` using `unit_conjugateEquiv ((pullbackPushforwardAdjunction h).comp (pullbackPushforwardAdjunction g)) (pullbackPushforwardAdjunction (g ≫ h)) (pullbackComp g h).inv E`. Rewrite `hu` using `[conjugateEquiv_pullbackComp_inv]`.
+
+Rewrite using `[Adjunction.homEquiv_unit, Adjunction.homEquiv_unit, Functor.map_comp, ← Category.assoc, ← hu, Category.assoc, Category.assoc]`. Use `congr 1`. Simplify using `only [pullbackCompIso, Iso.trans_hom, Iso.symm_hom, Iso.app_inv, Functor.mapIso_hom, Category.assoc, hc1, Category.id_comp, key, transMap, hc2, Category.comp_id, Adjunction.comp_homEquiv, Equiv.trans_apply]`. Rewrite using `[Adjunction.homEquiv_naturality_left, Adjunction.homEquiv_naturality_right, Category.assoc]`.
+-/
 lemma homEquiv_pullbackCompIso {T Y Z : Scheme.{u}} {g : T ⟶ Y} {h : Y ⟶ Z} {k : T ⟶ Z}
     (e : g ≫ h = k) {E : Z.Modules} {F : Y.Modules} (γ : (Scheme.Modules.pullback h).obj E ≅ F) {M : T.Modules}
     (χ : (Scheme.Modules.pullback g).obj F ⟶ M) :
@@ -180,6 +220,11 @@ def index : MulticospanIndex (starShape ι) X.Modules where
 
 set_option backward.isDefEq.respectTransparency false in
 
+/- English proof (translation)
+Set `Fw : X.Modules ⥤ AddCommGrpCat.{u}` to `Scheme.Modules.toPresheaf X ⋙ (evaluation (X.Opens)ᵒᵖ AddCommGrpCat.{u}).obj (op W)`. Establish `: PreservesLimitsOfShape (WalkingMulticospan (starShape ι)) ((evaluation (X.Opens)ᵒᵖ AddCommGrpCat.{u}).obj (op W))` using `evaluation_preservesLimitsOfShape _`. Establish `: PreservesLimitsOfShape (WalkingMulticospan (starShape ι)) Fw` using `comp_preservesLimitsOfShape _ _`. Establish `hK` using `Multifork.isLimitMapOfPreserves (Multiequalizer.multifork (index V U G F ψ)) Fw (limit.isLimit (index V U G F ψ).multicospan)`. Use `isIso_ι_none hK (fun j => isIso_transMap_app _ _ _ _ W ?_)` and prove the remaining obligations.
+
+Rewrite using `[Scheme.opensRange_homOfLE]`. Introduce `x hx`. Conclude with `⟨by simp, hW hx⟩`.
+-/
 lemma isIso_ι_none_app (W : X.Opens) (hW : W ≤ V) :
     IsIso ((Multiequalizer.ι (index V U G F ψ) none).app W) := by
   let Fw : X.Modules ⥤ AddCommGrpCat.{u} := Scheme.Modules.toPresheaf X ⋙ (evaluation (X.Opens)ᵒᵖ AddCommGrpCat.{u}).obj (op W)
@@ -197,6 +242,13 @@ lemma isIso_ι_none_app (W : X.Opens) (hW : W ≤ V) :
 
 set_option backward.isDefEq.respectTransparency false in
 
+/- English proof (translation)
+Set `Fw : X.Modules ⥤ AddCommGrpCat.{u}` to `Scheme.Modules.toPresheaf X ⋙ (evaluation (X.Opens)ᵒᵖ AddCommGrpCat.{u}).obj (op W)`. Establish `: PreservesLimitsOfShape (WalkingMulticospan (starShape ι)) ((evaluation (X.Opens)ᵒᵖ AddCommGrpCat.{u}).obj (op W))` using `evaluation_preservesLimitsOfShape _`. Establish `: PreservesLimitsOfShape (WalkingMulticospan (starShape ι)) Fw` using `comp_preservesLimitsOfShape _ _`. Establish `hK` using `Multifork.isLimitMapOfPreserves (Multiequalizer.multifork (index V U G F ψ)) Fw (limit.isLimit (index V U G F ψ).multicospan)`. Use `isIso_ι_some hK i (isIso_transMap_app _ _ _ _ W ?_) (fun j hj => isIso_transMap_app _ _ _ _ W ?_)` and prove the remaining obligations.
+
+Rewrite using `[Scheme.opensRange_homOfLE]`. Introduce `x hx`. Conclude with `⟨hW hx, by simp⟩`. Rewrite using `[Scheme.opensRange_homOfLE]`. Introduce `x hx`.
+
+Conclude with `⟨by simp, hUU i j (Ne.symm hj) ⟨hW hx, by simp⟩⟩`.
+-/
 lemma isIso_ι_some_app (hUU : ∀ i j, i ≠ j → U i ⊓ U j ≤ V) (i : ι) (W : X.Opens)
     (hW : W ≤ U i) : IsIso ((Multiequalizer.ι (index V U G F ψ) (some i)).app W) := by
   classical
@@ -221,6 +273,13 @@ end Glue
 
 set_option backward.isDefEq.respectTransparency false in
 
+/- English proof (translation)
+Introduce `X V ι U _ hUU G F ψ`. Set `I` to `index V U G F ψ`. Establish `h0 : IsIso (((Scheme.Modules.pullbackPushforwardAdjunction V.ι).homEquiv _ _).symm (Multiequalizer.ι I none))` using `isIso_homEquiv_symm V.ι _ (fun O => isIso_ι_none_app V U G F ψ _ (V.ι_image_le O))`. Establish `hi : ∀ i, IsIso (((Scheme.Modules.pullbackPushforwardAdjunction (U i).ι).homEquiv _ _).symm (Multiequalizer.ι I (some i)))` using `fun i => isIso_homEquiv_symm (U i).ι _ (fun O => isIso_ι_some_app V U G F ψ hUU i _ ((U i).ι_image_le O))`. Use `⟨multiequalizer I, asIso (((Scheme.Modules.pullbackPushforwardAdjunction V.ι).homEquiv _ _).symm (Multiequalizer.ι I none)), fun i => asIso (((Scheme.Modules.pullbackPushforwardAdjunction (U i).ι).homEquiv _ _).symm (Multiequalizer.ι I (some i))), fun i => ?_⟩` and prove the remaining obligations.
+
+Use `ext1`. Apply `((Scheme.Modules.pullbackPushforwardAdjunction (U i ⊓ V).ι).homEquiv _ _).injective` to reduce the goal to its premises. Establish `h1` using `homEquiv_pullbackCompIso (X.homOfLE_ι (inf_le_right : U i ⊓ V ≤ V)) (asIso (((Scheme.Modules.pullbackPushforwardAdjunction V.ι).homEquiv _ _).symm (Multiequalizer.ι I none))) (𝟙 _)`. Establish `h2` using `homEquiv_pullbackCompIso (X.homOfLE_ι (inf_le_left : U i ⊓ V ≤ U i)) (asIso (((Scheme.Modules.pullbackPushforwardAdjunction (U i).ι).homEquiv _ _).symm (Multiequalizer.ι I (some i)))) (ψ i).hom`. Rewrite `h1` using `[Category.comp_id]`.
+
+Rewrite using `[Iso.trans_hom, h1, h2]`. Simplify using `only [asIso_hom, Equiv.apply_symm_apply]`. Conclude with `Multiequalizer.condition I i`.
+-/
 theorem proof : GlueModulesStar.Statement := by
   intro X V ι U _ hUU G F ψ
   let I := index V U G F ψ

@@ -22,6 +22,9 @@ instance borelSpace_tensP : BorelSpace (R ⊗[F] E) := ⟨rfl⟩
 instance isTopologicalRing_tensP : IsTopologicalRing (R ⊗[F] E) :=
   IsModuleTopology.isTopologicalRing R (R ⊗[F] E)
 
+/- English proof (translation)
+Set `b` to `Module.Free.chooseBasis R (R ⊗[F] E)`. Set `e : (R ⊗[F] E) ≃ₗ[R] (Module.Free.ChooseBasisIndex R (R ⊗[F] E) → R)` to `b.equivFun`. Use `⟨Module.Free.ChooseBasisIndex R (R ⊗[F] E), inferInstance, ⟨?_⟩⟩` and prove the remaining obligations. Conclude with `{ toEquiv := e.toEquiv continuous_toFun := IsModuleTopology.continuous_of_linearMap e.toLinearMap continuous_invFun := IsModuleTopology.continuous_of_linearMap e.symm.toLinearMap }`.
+-/
 theorem exists_homeomorph_tensP :
     ∃ (ι : Type) (_ : Fintype ι), Nonempty (R ⊗[F] E ≃ₜ (ι → R)) := by
   classical
@@ -47,8 +50,14 @@ instance secondCountable_completionP (F : Type) [Field F] [NumberField F] (v : I
 instance secondCountable_AinfP (F : Type) [Field F] [NumberField F] : SecondCountableTopology (InfiniteAdeleRing F) :=
   inferInstanceAs (SecondCountableTopology ((v : InfinitePlace F) → v.Completion))
 
+/- English proof (translation)
+The claim follows from `inferInstance`.
+-/
 theorem fd_of {D : D7} (X : HidaSetting D) : FiniteDimensional X.B.I.F X.B.I.E := inferInstance
 
+/- English proof (translation)
+Use `haveI : FiniteDimensional X.B.I.F X.B.I.E := fd_of X`. Use `continuous_pi fun a => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Continuous fun y : TupI X => ((HA.mat (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J g : GL (Fin X.B.I.n) (Ainf X.B.I.F ⊗[X.B.I.F] X.B.I.E)) : Matrix (Fin X.B.I.n) (Fin X.B.I.n) _).mulVec (y a)`. Conclude with `continuous_const.matrix_mulVec (continuous_apply a)`.
+-/
 theorem continuous_smul_tupI {D : D7} (X : HidaSetting D) (g : HA (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J) :
     Continuous (fun y : TupI X => g • y) := by
   haveI : FiniteDimensional X.B.I.F X.B.I.E := fd_of X
@@ -58,6 +67,9 @@ theorem continuous_smul_tupI {D : D7} (X : HidaSetting D) (g : HA (Ainf X.B.I.F)
       Matrix (Fin X.B.I.n) (Fin X.B.I.n) _).mulVec (y a)
   exact continuous_const.matrix_mulVec (continuous_apply a)
 
+/- English proof (translation)
+Use `haveI : FiniteDimensional X.B.I.F X.B.I.E := fd_of X`. Use `continuous_pi fun a => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Continuous fun h : HA (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J => ((HA.mat (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J h : GL (Fin X.B.I.n) (Ainf X.B.I.F ⊗[X.B.I.F] X.B.I.E)) : Matrix (Fin X.B.I.n) (Fin X.B.I.n) (Ainf X.B.I.F ⊗[X.B.I.F] X.B.I.E)).mulVec (ratTup (Ainf X.B.I.F) (tupH (frameOf X …`. Conclude with `(MassDataMassesW.SplitW.continuous_matHA X.B.I.cm.sig X.B.I.J (Ainf X.B.I.F)).matrix_mulVec continuous_const`.
+-/
 theorem continuous_orbM {D : D7} (X : HidaSetting D) (u' : D.what₂.Word) : Continuous (orbM X u') := by
   haveI : FiniteDimensional X.B.I.F X.B.I.E := fd_of X
   refine continuous_pi fun a => ?_
@@ -68,16 +80,25 @@ theorem continuous_orbM {D : D7} (X : HidaSetting D) (u' : D.what₂.Word) : Con
   exact (MassDataMassesW.SplitW.continuous_matHA X.B.I.cm.sig X.B.I.J (Ainf X.B.I.F)).matrix_mulVec
     continuous_const
 
+/- English proof (translation)
+Use `haveI : FiniteDimensional X.B.I.F X.B.I.E := fd_of X`. Conclude with `(continuous_smul_tupI X g).measurable`.
+-/
 theorem measurable_smul_tupI {D : D7} (X : HidaSetting D) (g : HA (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J) :
     Measurable (fun y : TupI X => g • y) := by
   haveI : FiniteDimensional X.B.I.F X.B.I.E := fd_of X
   exact (continuous_smul_tupI X g).measurable
 
+/- English proof (translation)
+Use `haveI : FiniteDimensional X.B.I.F X.B.I.E := fd_of X`. Establish `: BorelSpace (HA (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J)` using `⟨rfl⟩`. Conclude with `(continuous_orbM X u').measurable`.
+-/
 theorem measurable_orbM {D : D7} (X : HidaSetting D) (u' : D.what₂.Word) : Measurable (orbM X u') := by
   haveI : FiniteDimensional X.B.I.F X.B.I.E := fd_of X
   have : BorelSpace (HA (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J) := ⟨rfl⟩
   exact (continuous_orbM X u').measurable
 
+/- English proof (translation)
+Use `haveI : FiniteDimensional X.B.I.F X.B.I.E := fd_of X`. Establish `: BorelSpace (HA (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J)` using `⟨rfl⟩`. Use `haveI : ContinuousMul (HA (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J) := inferInstanceAs (ContinuousMul (HR (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J))`. Conclude with `(continuous_const_mul g).measurable`.
+-/
 theorem measurable_mul_leftHA {D : D7} (X : HidaSetting D) (g : HA (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J) :
     Measurable (fun h : HA (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J => g * h) := by
   haveI : FiniteDimensional X.B.I.F X.B.I.E := fd_of X
@@ -86,6 +107,11 @@ theorem measurable_mul_leftHA {D : D7} (X : HidaSetting D) (g : HA (Ainf X.B.I.F
     inferInstanceAs (ContinuousMul (HR (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J))
   exact (continuous_const_mul g).measurable
 
+/- English proof (translation)
+Introduce `D X u' ψ hT μinf νinf fibInf _ g`. Establish `: X.measG.μGinf.IsHaarMeasure` using `X.measG_norm.2.1`. Rewrite using `[Measure.map_map (measurable_smul_tupI X g) (measurable_orbM X u')]`. Establish `e : (fun y : TupI X => g • y) ∘ orbM X u' = orbM X u' ∘ (fun h => g * h)`. Use function extensionality and compare the values at `h`.
+
+Simplify using `only [Function.comp, orbM, mul_smul]`. Rewrite using `[e, ← Measure.map_map (measurable_orbM X u') (measurable_mul_leftHA X g), map_mul_left_eq_self]`.
+-/
 theorem invPush_holds : InvPush := by
   intro D X u' ψ hT μinf νinf fibInf _ g
   have : X.measG.μGinf.IsHaarMeasure := X.measG_norm.2.1

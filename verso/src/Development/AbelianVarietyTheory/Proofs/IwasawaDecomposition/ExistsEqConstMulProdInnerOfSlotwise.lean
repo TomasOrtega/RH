@@ -6,6 +6,23 @@ open scoped InnerProductSpace
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Distinguish the cases in `h0 : ∃ i, ∀ w : Hs i, w = 0`. Take `⟨i, hi⟩` from `h0`. Use `⟨0, fun v v' => ?_⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `h i v v'`. Establish `h1` using `hc (v i) (v' i)`.
+
+Rewrite `h1` using `[Function.update_eq_self, Function.update_eq_self, hi (v i)]`. Simplify using `using h1`. Establish `h1 : ∀ i, ∃ e : Hs i, ⟪e, e⟫_ℂ = 1`. Introduce `i`. Establish `: ∃ w : Hs i, w ≠ 0`.
+
+Assume the negation of the conclusion as `hn`. Conclude with `h0 ⟨i, fun w => by_contra fun hw => hn ⟨w, hw⟩⟩`. Take `⟨w, hw⟩` from `this`. Use `⟨((‖w‖ : ℂ))⁻¹ • w, ?_⟩` and prove the remaining obligations. Establish `hn : (‖w‖ : ℂ) ≠ 0` using `by exact_mod_cast norm_ne_zero_iff.mpr hw`.
+
+Rewrite using `[inner_smul_left, inner_smul_right, inner_self_eq_norm_sq_to_K]`. Simplify using `only [map_inv₀, Complex.conj_ofReal]`. Express the relevant statement in the definitionally equal form `((‖w‖ : ℂ))⁻¹ * (((‖w‖ : ℂ))⁻¹ * (‖w‖ : ℂ) ^ 2) = 1`. Clear the denominators using the available nonvanishing facts. Use `choose e he using h1`.
+
+Establish `step : ∀ i v v', B v v' = B (Function.update v i (e i)) (Function.update v' i (e i)) * ⟪v i, v' i⟫_ℂ`. Introduce `i v v'`. Take `⟨c, hc⟩` from `h i v v'`. Establish `h2` using `hc (v i) (v' i)`. Rewrite `h2` using `[Function.update_eq_self, Function.update_eq_self]`.
+
+Rewrite using `[h2, hc, he, mul_one]`. Establish `key : ∀ (s : Finset ι) v v', B v v' = B (s.piecewise e v) (s.piecewise e v') * ∏ i ∈ s, ⟪v i, v' i⟫_ℂ`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => intro v v'`.
+
+Simplify using the standard rewrite rules. Consider the case `insert a s ha ih`. Introduce `v v'`. Rewrite using `[ih v v', step a (s.piecewise e v) (s.piecewise e v'), Finset.prod_insert ha, Finset.piecewise_insert, Finset.piecewise_insert, Finset.piecewise_eq_of_notMem _ _ _ ha, Finset.piecewise_eq_of_notMem _ _ _ ha, mul_assoc]`. Use `⟨B e e, fun v v' => ?_⟩` and prove the remaining obligations.
+
+Use `key Finset.univ v v'` as an intermediate fact. Rewrite `this` using `[Finset.piecewise_univ, Finset.piecewise_univ]`. Then use the resulting hypothesis.
+-/
 theorem exists_eq_const_mul_prod_inner_of_positionwise (ι : Type) [Fintype ι] [DecidableEq ι]
     (Hs : ι → Type) [∀ i, NormedAddCommGroup (Hs i)] [∀ i, InnerProductSpace ℂ (Hs i)]
     (B : (∀ i, Hs i) → (∀ i, Hs i) → ℂ)

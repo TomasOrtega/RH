@@ -26,14 +26,23 @@ def ofNat (m : ℕ) (hm : m ≠ 0) : Modulus K where
     exact_mod_cast hm
   real := ∅
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ofNat_ideal (m : ℕ) (hm : m ≠ 0) :
     (ofNat (K := K) m hm).ideal = Ideal.span {(m : 𝓞 K)} :=
   rfl
 
+/- English proof (translation)
+Rewrite using `[ofNat_ideal, Ideal.dvd_span_singleton]`.
+-/
 theorem asIdeal_dvd_ofNat_iff (m : ℕ) (hm : m ≠ 0) (v : HeightOneSpectrum (𝓞 K)) :
     v.asIdeal ∣ (ofNat (K := K) m hm).ideal ↔ (m : 𝓞 K) ∈ v.asIdeal := by
   rw [ofNat_ideal, Ideal.dvd_span_singleton]
 
+/- English proof (translation)
+Establish `hm' : (m : 𝓞 K) ≠ 0` using `by exact_mod_cast hm`. Rewrite using `[valuedAdicCompletion_eq_valuation', show (m : K) = algebraMap (𝓞 K) K (m : 𝓞 K) by simp, valuation_of_algebraMap, intValuation_eq_exp_neg_multiplicity _ hm']`. Both sides reduce to the same expression.
+-/
 theorem valued_natCast (m : ℕ) (hm : m ≠ 0) (v : HeightOneSpectrum (𝓞 K)) :
     Valued.v ((m : K) : v.adicCompletion K) = exp (-((ofNat (K := K) m hm).exponent v : ℤ)) := by
   have hm' : (m : 𝓞 K) ≠ 0 := by exact_mod_cast hm
@@ -47,6 +56,11 @@ section Symbol
 
 variable [Algebra K ℂ]
 
+/- English proof (translation)
+Establish `hM : M ≤ algebraicClosure K ℂ` using `le_algebraicClosure K ℂ M`. Set `e : M ≃ₐ[K] restrict hM` to `restrictAlgEquiv hM`. Establish `: FiniteDimensional K (restrict hM)` using `LinearEquiv.finiteDimensional e.toLinearEquiv`. Establish `: IsAbelianGalois K (restrict hM)` using `IsAbelianGalois.of_algHom e.symm.toAlgHom`. Establish `he : ∀ w : M, (((e w : restrict hM) : algebraicClosure K ℂ) : ℂ) = (w : ℂ)` using `fun w ↦ rfl`.
+
+Establish `h1` using `artinMap_apply (restrict hM) (IdeleClassGroup.mk K s) (e z)`. Rewrite `h1` using `[reciprocityMap_mk, ideleSymbol_apply_algEquiv e]`. Establish `h2` using `hs ⟨((e z : restrict hM) : algebraicClosure K ℂ), le_maximalAbelianExtension _ (e z).2⟩`. Rewrite `h2` using `[h1]`. Rewrite using `[← he, h2, he]`.
+-/
 theorem ideleSymbol_apply_eq_of_artinMap (σ : ℂ ≃ₐ[K] ℂ) (s : IdeleGroup K)
     (hs : ∀ x : maximalAbelianExtension K (algebraicClosure K ℂ),
       ((artinMap K (algebraicClosure K ℂ) (IdeleClassGroup.mk K s) x : algebraicClosure K ℂ) : ℂ) =
@@ -70,6 +84,17 @@ section Decomposition
 
 variable [Algebra K ℂ]
 
+/- English proof (translation)
+Use `set 𝔪 := Modulus.ofNat (K := K) m hm`. Use `set M := 𝔪.rayClassField ℂ`. Establish `hv : ¬ 𝔭.asIdeal ∣ 𝔪.ideal` using `by rwa [Modulus.asIdeal_dvd_ofNat_iff]`. Use `set τ : L ≃ₐ[K] L := σ.restrictNormal L`. Take `⟨w, hw, hfrob⟩` from `Elliptic.exists_isArithFrobAt_galRestrict hL 𝔭 𝔓 τ h𝔓`.
+
+Establish `: w.asIdeal.LiesOver 𝔭.asIdeal` using `hw`. Establish `hram` using `𝔪.ramificationIdx_rayClassField_eq_one ℂ hv w`. Establish `hI : w.asIdeal.inertia (M ≃ₐ[K] M) = ⊥`. Rewrite using `[← Subgroup.card_eq_one, natCard_inertia 𝔭 w, hram]`. Take `⟨π, hπ, -, hπI⟩` from `𝔪.exists_uniformizer_finiteEmbedding_mem_idelesOneMod hv`.
+
+Establish `hsym : ideleSymbol K M s = ideleSymbol K M (finiteEmbedding 𝔭 π)`. Rewrite using `[ideleSymbol_finiteEmbedding_eq_arithFrobAt 𝔭 w hram hπ]`. Use `IsArithFrobAt.eq_of_inertia_eq_bot hI ?_ (IsArithFrobAt.arithFrobAt _ _ _)` and prove the remaining obligations. Use `hfrob using 1` and compare the differences between its conclusion and the goal. Use `AlgEquiv.ext fun z ↦ Subtype.ext ?_` and prove the remaining obligations.
+
+Rewrite using `[ideleSymbol_apply_eq_of_artinMap σ s hs M z, Elliptic.galRestrict_apply]`. Conclude with `(AlgEquiv.restrictNormal_commutes σ L (inclusion hL z)).symm`. Establish `hker : IdeleClassGroup.mk K (s * (finiteEmbedding 𝔭 π)⁻¹) ∈ (ideleClassNorm K M).range`. Rewrite using `[← ker_reciprocityMap, MonoidHom.mem_ker, reciprocityMap_mk, map_mul, map_inv, hsym, mul_inv_cancel]`. Rewrite `hker` using `[𝔪.range_ideleClassNorm_rayClassField ℂ]`.
+
+Take `⟨u, hu, huq⟩` from `hker`. Take `⟨x, hx⟩ : u⁻¹ * (s * (finiteEmbedding 𝔭 π)⁻¹) ∈ (diagonal K).range` from `QuotientGroup.eq.1 huq`. Use `⟨x, u, π, hu, hπI, ?_⟩` and prove the remaining obligations. Rewrite using `[hx, mul_comm (u⁻¹ * _) u, ← mul_assoc u u⁻¹, mul_inv_cancel, one_mul, mul_assoc, inv_mul_cancel, mul_one]`.
+-/
 theorem exists_eq_diagonal_mul_mul_finiteEmbedding (m : ℕ) (hm : m ≠ 0) (σ : ℂ ≃ₐ[K] ℂ)
     (s : IdeleGroup K)
     (hs : ∀ x : maximalAbelianExtension K (algebraicClosure K ℂ),
@@ -118,6 +143,9 @@ variable {m : ℕ} {hm : m ≠ 0} {s : IdeleGroup K} {x : Kˣ} {u : IdeleGroup K
 
 omit [Algebra K ℂ] in
 
+/- English proof (translation)
+Establish `hu' : u⁻¹ • ((primeIdealUnit 𝔭)⁻¹ * 𝔞) = (primeIdealUnit 𝔭)⁻¹ * 𝔞` using `smul_eq_self_iff.2 (inv_mem (Modulus.congruenceSubgroup_le_standardOpenSubgroup _ hu))`. Establish `hπ' : (finiteEmbedding 𝔭 π)⁻¹ • 𝔞 = (primeIdealUnit 𝔭)⁻¹ * 𝔞`. Rewrite using `[IdeleGroup.smul_def, map_inv, hπ]`. Rewrite using `[hs, mul_inv, mul_inv, mul_smul, mul_smul, hπ', hu', map_inv]`.
+-/
 theorem inv_smul_eq_of_eq (hu : u ∈ (Modulus.ofNat m hm).congruenceSubgroup)
     (hπ : toFractionalIdeal (finiteEmbedding 𝔭 π) = primeIdealUnit 𝔭)
     (hs : s = diagonal K x * u * finiteEmbedding 𝔭 π) (𝔞 : 𝓘) :
@@ -130,6 +158,27 @@ theorem inv_smul_eq_of_eq (hu : u ∈ (Modulus.ofNat m hm).congruenceSubgroup)
 
 omit [Algebra K ℂ] in
 
+/- English proof (translation)
+Rewrite using `[smulQuotient_mk_eq_mk_iff]`. Introduce `v`. Rewrite using `[localIdeal_smul]`. Use `set S : v.adicCompletion K := (finiteProj v s : v.adicCompletion K) with hSdef`. Use `set W : v.adicCompletion K := (finiteProj v (u * finiteEmbedding 𝔭 π) : v.adicCompletion K) with hWdef`.
+
+Use `set X : v.adicCompletion K := ((x : K) : v.adicCompletion K) with hXdef`. Establish `hX0 : X ≠ 0`. Use `(Valuation.ne_zero_iff (Valued.v (R := v.adicCompletion K))).1 ?_` and prove the remaining obligations. Rewrite using `[hXdef, valuedAdicCompletion_eq_valuation']`. Conclude with `(Valuation.ne_zero_iff _).2 x.ne_zero`.
+
+Establish `hW0 : W ≠ 0` using `(finiteProj v (u * finiteEmbedding 𝔭 π)).ne_zero`. Establish `hSXW : S = X * W`. Rewrite using `[hSdef, hs, mul_assoc, map_mul, Units.val_mul, coe_finiteProj_diagonal]`. Establish `hc : ((s⁻¹ : IdeleGroup K) : 𝔸[K]).2 v = S⁻¹`. Rewrite using `[← coe_finiteProj, map_inv, Units.val_inv_eq_inv_val]`.
+
+Use `⟨(t : v.adicCompletion K) * (1 - W), ?_, ?_⟩` and prove the remaining obligations. Establish `hmv` using `Modulus.valued_natCast (K := K) m hm v`. Establish `huv` using `(Modulus.mem_congruenceSubgroup _).1 hu`. Establish `hW : Valued.v (1 - W) ≤ Valued.v ((m : K) : v.adicCompletion K)`. Rewrite using `[hmv]`.
+
+Distinguish the cases in `hv : v = 𝔭`. Substitute `hv` using the available equality. Establish `he : (Modulus.ofNat (K` using `K) m hm).exponent v = 0 := ((Modulus.ofNat m hm).exponent_eq_zero_iff v).2 (by rwa [Modulus.asIdeal_dvd_ofNat_iff])`. Rewrite using `[he, Nat.cast_zero, neg_zero, exp_zero]`. Establish `hu1 : Valued.v ((finiteProj v u : (v.adicCompletion K)ˣ) : v.adicCompletion K) = 1` using `(huv.1 v).1`.
+
+Establish `hπ1 : Valued.v (π : v.adicCompletion K) ≤ 1`. Establish `hord : ord v (finiteEmbedding v π) = 1`. Rewrite using `[← count_toFractionalIdeal, hπ, count_primeIdealUnit, if_pos rfl]`. Use `valued_eq_exp_neg_ord v (finiteEmbedding v π)` as an intermediate fact. Rewrite `this` using `[hord, ← coe_finiteProj, finiteProj_finiteEmbedding]`.
+
+Rewrite using `[this]`. Conclude with `exp_le_exp.2 (by norm_num)`. Use `(Valuation.map_sub _ _ _).trans (max_le (by rw [map_one]) ?_)` and prove the remaining obligations. Rewrite using `[hWdef, map_mul, Units.val_mul, map_mul, hu1, one_mul, finiteProj_finiteEmbedding]`. Conclude with `hπ1`.
+
+Rewrite using `[hWdef, map_mul, finiteProj_finiteEmbedding_of_ne hv, mul_one, Valuation.map_sub_swap]`. Conclude with `(huv.1 v).2`. Rewrite using `[SetLike.mem_coe, mem_localIdeal_iff 𝔞.ne_zero, map_mul]`. Establish `hmt : Valued.v (((m : K) * t : K) : v.adicCompletion K) ≤ exp (-FractionalIdeal.count K v (𝔞 : FractionalIdeal (𝓞 K)⁰ K))` using `(mem_localIdeal_iff 𝔞.ne_zero v).1 (coe_mem_localIdeal v ht)`. Rewrite `hmt` using `[adicCompletion.coe_mul, map_mul]`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hc' : ((finiteProj v s⁻¹ : (v.adicCompletion K)ˣ) : v.adicCompletion K) = S⁻¹`. Rewrite using `[map_inv, Units.val_inv_eq_inv_val]`. Establish `hXi : ((((x : K)⁻¹ : K)) : v.adicCompletion K) = X⁻¹`. Use `eq_inv_of_mul_eq_one_left ?_` and prove the remaining obligations.
+
+Rewrite using `[hXdef, ← adicCompletion.coe_mul, inv_mul_cancel₀ x.ne_zero, adicCompletion.coe_one]`. Rewrite using `[LinearMap.mulLeft_apply, hc, hc', adicCompletion.coe_mul, hXi, hSXW]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem smulQuotient_inv_mk_of_eq (h𝔭 : (m : 𝓞 K) ∉ 𝔭.asIdeal)
     (hu : u ∈ (Modulus.ofNat m hm).congruenceSubgroup)
     (hπ : toFractionalIdeal (finiteEmbedding 𝔭 π) = primeIdealUnit 𝔭)
@@ -201,6 +250,9 @@ section Main
 
 variable [Algebra K ℂ]
 
+/- English proof (translation)
+Take `⟨x, u, π, hu, hπ, hsx⟩` from `exists_eq_diagonal_mul_mul_finiteEmbedding m hm σ s hs 𝔭 h𝔭 L hL 𝔓 h𝔓`. Conclude with `⟨x, fun 𝔞 ↦ ⟨inv_smul_eq_of_eq hu hπ hsx 𝔞, fun t ht ↦ smulQuotient_inv_mk_of_eq h𝔭 hu hπ hsx 𝔞 ht⟩⟩`.
+-/
 theorem exists_diagonal_of_isArithFrobAt (m : ℕ) (hm : m ≠ 0) (σ : ℂ ≃ₐ[K] ℂ) (s : IdeleGroup K)
     (hs : ∀ x : maximalAbelianExtension K (algebraicClosure K ℂ),
       ((artinMap K (algebraicClosure K ℂ) (IdeleClassGroup.mk K s) x : algebraicClosure K ℂ) : ℂ) =
@@ -220,6 +272,11 @@ theorem exists_diagonal_of_isArithFrobAt (m : ℕ) (hm : m ≠ 0) (σ : ℂ ≃�
 
 end Main
 
+/- English proof (translation)
+Rewrite using `[coe_diagonal_smul, FractionalIdeal.mem_singleton_mul]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Rewrite using `[← mul_assoc, inv_mul_cancel₀ a.ne_zero, one_mul]` and apply the resulting hypothesis. Introduce `h`.
+
+Conclude with `⟨_, h, by rw [← mul_assoc, mul_inv_cancel₀ a.ne_zero, one_mul]⟩`. Use the proof step `@[simp]`.
+-/
 theorem mem_diagonal_smul_iff (a : Kˣ) (J : 𝓘) (k : K) :
     k ∈ ((diagonal K a • J : 𝓘) : FractionalIdeal (𝓞 K)⁰ K) ↔
       (a⁻¹ : K) * k ∈ (J : FractionalIdeal (𝓞 K)⁰ K) := by
@@ -231,6 +288,9 @@ theorem mem_diagonal_smul_iff (a : Kˣ) (J : 𝓘) (k : K) :
     exact ⟨_, h, by rw [← mul_assoc, mul_inv_cancel₀ a.ne_zero, one_mul]⟩
 
 @[simp]
+/- English proof (translation)
+Rewrite using `[Units.val_mul, Units.val_inv_eq_inv_val, coe_primeIdealUnit]`.
+-/
 theorem coe_primeIdealUnit_inv_mul (𝔭 : HeightOneSpectrum (𝓞 K)) (𝔞 : 𝓘) :
     (((primeIdealUnit 𝔭)⁻¹ * 𝔞 : 𝓘) : FractionalIdeal (𝓞 K)⁰ K) =
       (𝔭.asIdeal : FractionalIdeal (𝓞 K)⁰ K)⁻¹ * 𝔞 := by

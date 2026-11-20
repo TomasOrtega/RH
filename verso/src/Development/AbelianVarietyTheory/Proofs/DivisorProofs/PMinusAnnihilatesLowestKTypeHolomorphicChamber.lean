@@ -13,6 +13,31 @@ open CompanionTheory.D.DSIC (KRel KUnit KStab IsSmMod)
 open CompanionTheory.D.LK (IsKMod IsMin)
 open scoped InnerProductSpace
 
+/- English proof (translation)
+Introduce `n ε V _ _ E lam hgl hu hanti hhol hmin L hL hLs hLh a b ha hb x hx`. Assume the negation of the conclusion as `hne`. Establish `hkrel : KRel ε E` using `fun a b c d _ _ => hgl a b c d`. Establish `hkunit : KUnit ε E` using `fun a b hab x y => by`. Rewrite using `[hu a b x y]`.
+
+Simplify using `[Formalism.REAL.sgn, hab]`. Set `N : Submodule ℂ V` to `⨆ p : {p : Fin n × Fin n // ε p.1 = true ∧ ε p.2 = false}, L.map (E p.1.2 p.1.1)`. Establish `hNfd : FiniteDimensional ℂ N` using `by infer_instance`. Establish `hgen : ∀ p : {p : Fin n × Fin n // ε p.1 = true ∧ ε p.2 = false}, ∀ y ∈ L, E p.1.2 p.1.1 y ∈ N` using `fun p y hy => (le_iSup (fun p : {p : Fin n × Fin n // ε p.1 = true ∧ ε p.2 = false} => L.map (E p.1.2 p.1.1)) p) (Submodule.mem_map_of_mem hy)`. Establish `hNs : KStab ε E N`.
+
+Introduce `c d hcd v hv`. Use `Submodule.iSup_induction _ (motive := fun v => E c d v ∈ N) hv ?_ ?_ ?_` and prove the remaining obligations. Introduce `p v hv`. Take `⟨y, hy, rfl⟩` from `Submodule.mem_map.1 hv`. Establish `hc` using `hgl c d p.1.2 p.1.1`.
+
+Establish `key : E c d (E p.1.2 p.1.1 y) = E p.1.2 p.1.1 (E c d y) + ((if d = p.1.2 then E c p.1.1 else 0) - (if p.1.1 = c then E p.1.2 d else 0)) y`. Rewrite using `[← hc]`. Simplify using `[Module.End.mul_apply]`. Rewrite using `[key]`. Use `N.add_mem (hgen p _ (hLs c d hcd y hy)) ?_` and prove the remaining obligations.
+
+Rewrite using `[LinearMap.sub_apply]`. Use `N.sub_mem ?_ ?_` and prove the remaining obligations. Use `split_ifs with h`. Conclude with `hgen ⟨(p.1.1, c), p.2.1, by rw [hcd, h]; exact p.2.2⟩ y hy`. Simplify using the standard rewrite rules.
+
+Use `split_ifs with h`. Conclude with `hgen ⟨(d, p.1.2), by rw [← hcd, ← h]; exact p.2.1, p.2.2⟩ y hy`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Introduce `u v hu hv`.
+
+Rewrite using `[map_add]`. Conclude with `N.add_mem hu hv`. Establish `hxN : E b a x ∈ N` using `hgen ⟨(a, b), ha, hb⟩ x hx`. Establish `hN0 : N ≠ ⊥` using `fun h => hne (by rw [h, Submodule.mem_bot] at hxN; exact hxN)`. Take `⟨μ, w, hwN, hw0, hwh⟩` from `GlobalTheory.T.exists_highest_vector_real_weight_unitary_compact n ε V E hkrel hkunit N hNfd hNs hN0`.
+
+Establish `hex : ∃ p : {p : Fin n × Fin n // ε p.1 = true ∧ ε p.2 = false}, ∃ y ∈ L, ⟪E p.1.2 p.1.1 y, w⟫_ℂ ≠ 0`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Establish `horth : ∀ v ∈ N, ⟪v, w⟫_ℂ = 0` using `fun v hv => Submodule.iSup_induction _ (motive := fun v => ⟪v, w⟫_ℂ = 0) hv (fun p v hv => by obtain ⟨y, hy, rfl⟩ := Submodule.mem_map.1 hv; exact hcon p y hy) (by simp) (fun u v hu hv => by rw [inner_add_left, hu, hv, add_zero])`. Conclude with `hw0 (inner_self_eq_zero.1 (horth w hwN))`.
+
+Take `⟨p, y, hy, hyw⟩` from `hex`. Establish `hyw' : ⟪y, ([(p.1.1, p.1.2)].map fun q : Fin n × Fin n => E q.1 q.2).prod w⟫_ℂ ≠ 0`. Establish `h1` using `hu p.1.2 p.1.1 y w`. Establish `hs : Formalism.REAL.sgn ε p.1.2 p.1.1 = -1` using `by simp [Formalism.REAL.sgn, p.2.1, p.2.2]`. Rewrite `h1` using `[hs]`.
+
+Simplify using `only [List.map_cons, List.map_nil, List.prod_cons, List.prod_nil, mul_one]`. Introduce `h0`. Apply `hyw` to reduce the goal to its premises. Rewrite using `[h1, h0]`. Simplify using the standard rewrite rules.
+
+Take `⟨l', hl'len, hl'ε, hl'sum⟩` from `GlobalTheory.T.word_reaching_irreducible_k_module_reaches_highest_weight n ε V E hgl hkunit L hL hLs (lowK ε lam) hLh μ w hwh true false [(p.1.1, p.1.2)] (by simp [p.2.1, p.2.2]) y hy hyw'`. Take `⟨q, rfl⟩` from `List.length_eq_one_iff.1 hl'len`. Establish `hq` using `hl'ε q (by simp)`. Simplify using `only [List.map_cons, List.map_nil, List.sum_cons, List.sum_nil, add_zero] at hl'sum`. Establish `hμ : μ = lowK ε lam - root q.1 q.2` using `eq_sub_of_add_eq hl'sum`.
+
+Establish `hlt` using `GlobalTheory.T.voganNormSq_lt_of_remove_noncompactRoot n ε lam hanti hhol q.1 q.2 hq.1 hq.2`. Establish `hle` using `hmin μ w hw0 hwh`. Rewrite `hle` using `[hμ]`. Conclude with `absurd (lt_of_lt_of_le hlt hle) (lt_irrefl _)`.
+-/
 theorem GlobalTheory.HolDS.pMinus_kills_lowest : ∀ (n : ℕ) (ε : Fin n → Bool) (V : Type) [NormedAddCommGroup V] [InnerProductSpace ℂ V] (E : Fin n → Fin n → Module.End ℂ V) (lam : Fin n → ℝ), GlRel E → IsUnitary ε E → StrictAnti lam → IsHolChamber ε lam → IsMin ε E lam → ∀ L : Submodule ℂ V, FiniteDimensional ℂ L → KStab ε E L → (∀ ν : Fin n → ℝ, ∀ x ∈ L, x ≠ 0 → KHighest ε E ν x → ν = lowK ε lam) → ∀ a b : Fin n, ε a = true → ε b = false → ∀ x ∈ L, E b a x = 0 := by
   intro n ε V _ _ E lam hgl hu hanti hhol hmin L hL hLs hLh a b ha hb x hx
   by_contra hne

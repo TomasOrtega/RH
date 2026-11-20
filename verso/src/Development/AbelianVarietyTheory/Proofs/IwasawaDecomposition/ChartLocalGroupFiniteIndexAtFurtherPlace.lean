@@ -31,6 +31,9 @@ def actL (L : Submodule S (n → R)) (x : GL n R) (hx : x ∈ stabGL L) : L →+
   map_zero' := by ext1; simp
   map_add' a b := by ext1; simp [Matrix.mulVec_add]
 
+/- English proof (translation)
+Introduce and unpack `y ⟨z, hz⟩`. Use `⟨actL L x hx z, ?_⟩` and prove the remaining obligations. Simplify using `only [actL, AddMonoidHom.coe_mk, ZeroHom.coe_mk]`. Rewrite using `[hz, Matrix.mulVec_smul]`.
+-/
 theorem mulSub_le_comap (L : Submodule S (n → R)) (g : ℕ) (x : GL n R) (hx : x ∈ stabGL L) :
     mulSub L g ≤ (mulSub L g).comap (actL L x hx) := by
   rintro y ⟨z, hz⟩
@@ -42,6 +45,9 @@ def actQ (L : Submodule S (n → R)) (g : ℕ) (x : GL n R) (hx : x ∈ stabGL L
     (L ⧸ mulSub L g) →+ (L ⧸ mulSub L g) :=
   QuotientAddGroup.map _ _ (actL L x hx) (mulSub_le_comap L g x hx)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem actQ_mk (L : Submodule S (n → R)) (g : ℕ) (x : GL n R) (hx : x ∈ stabGL L) (y : L) :
     actQ L g x hx (y : L ⧸ mulSub L g) = ((actL L x hx y : L) : L ⧸ mulSub L g) := rfl
 
@@ -67,6 +73,15 @@ def rho (L : Submodule S (n → R)) (g : ℕ) (W : Subgroup (GL n R)) (hW : W �
       ext1
       simp [actL, Matrix.mulVec_mulVec]
 
+/- English proof (translation)
+Establish `hE : Finite (AddMonoid.End (L ⧸ mulSub L g))` using `Finite.of_injective (fun f : AddMonoid.End (L ⧸ mulSub L g) => (f : (L ⧸ mulSub L g) → (L ⧸ mulSub L g))) (fun a b h => AddMonoidHom.ext (congrFun h))`. Establish `hU : Finite (AddMonoid.End (L ⧸ mulSub L g))ˣ` using `Finite.of_injective _ Units.val_injective`. Establish `h1 : (rho L g W hW).toHomUnits.ker.FiniteIndex` using `Subgroup.finiteIndex_ker _`. Use `Subgroup.finiteIndex_of_le (H := (rho L g W hW).toHomUnits.ker) ?_` and prove the remaining obligations. Introduce `x hx`.
+
+Rewrite `hx` using `[MonoidHom.mem_ker]`. Establish `hx' : rho L g W hW x = 1` using `congrArg Units.val hx`. Rewrite using `[Subgroup.mem_subgroupOf]`. Use `hH x x.2 fun y hy => ?_` and prove the remaining obligations. Establish `h2 : actQ L g x (hW x.2) ((⟨y, hy⟩ : L) : L ⧸ mulSub L g) = ((⟨y, hy⟩ : L) : L ⧸ mulSub L g)` using `DFunLike.congr_fun hx' _`.
+
+Rewrite `h2` using `[actQ_mk, QuotientAddGroup.eq]`. Take `⟨z, hz⟩` from `h2`. Use `⟨-(z : n → R), (-z).2, ?_⟩` and prove the remaining obligations. Establish `hz' : -(((x : GL n R) : Matrix n n R) *ᵥ y) + y = g • (z : n → R)`. Simplify `hz` using `[actL]`.
+
+Rewrite using `[smul_neg, ← hz', neg_add, neg_neg, sub_eq_add_neg, add_comm]`.
+-/
 theorem finiteIndex_of_trivOn (L : Submodule S (n → R)) (g : ℕ) (hQ : Finite (L ⧸ mulSub L g))
     (H W : Subgroup (GL n R)) (hW : W ≤ stabGL L)
     (hH : ∀ x ∈ W, (∀ y ∈ L, ∃ z ∈ L, (x : Matrix n n R) *ᵥ y - y = g • z) → x ∈ H) :
@@ -97,6 +112,27 @@ section Fin
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Use `set L := latS (F := F) (v.adicCompletion F) (tensInt (F := F) (v.adicCompletion F) (intOE E) (v.adicCompletionIntegers F).toSubring) Λ with hL`. Use `haveI : Module.Finite ℤ Λ := Module.Finite.trans (𝓞 E) Λ`. Take `⟨k, s, hs⟩` from `Module.Finite.exists_fin (R := ℤ) (M := Λ)`. Set `m : Fin k → Fin n → E` to `fun i => (s i : Fin n → E)`. Establish `hm : ∀ i, m i ∈ Λ` using `fun i => (s i).2`.
+
+Establish `hgen : ∀ l ∈ Λ, ∃ z : Fin k → ℤ, l = ∑ i, z i • m i`. Introduce `l hl`. Establish `h0 : (⟨l, hl⟩ : Λ) ∈ Submodule.span ℤ (Set.range s)` using `hs ▸ Submodule.mem_top`. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun ℤ).1 h0`. Use `⟨c, ?_⟩` and prove the remaining obligations.
+
+Establish `h1` using `congrArg Subtype.val hc`. Rewrite `h1` using `[Submodule.coe_sum]`. Simplify `h1.symm` using `[m]`. Establish `key` using `fun y => PI.LPI.plGen F E (v.adicCompletion F) (v.adicCompletionIntegers F).toSubring n k Λ m hm hgen y`. Set `c : v.adicCompletionIntegers F` to `(g : v.adicCompletionIntegers F)`.
+
+Establish `hcz : CharZero (v.adicCompletion F)` using `charZero_of_injective_algebraMap (algebraMap F (v.adicCompletion F)).injective`. Establish `hc : c ≠ 0`. Introduce `h0`. Establish `h1 : ((c : v.adicCompletionIntegers F) : v.adicCompletion F) = 0` using `by rw [h0]; rfl`. Simplify using `[c, hg] at h1`.
+
+Use `haveI : Finite (v.adicCompletionIntegers F ⧸ Ideal.span {c}) := Formalism.UG.P.glint_finite_quotient_of_dvr (Formalism.UG.P.glint_finite_residueField v) _ (by rwa [Ne, Ideal.span_singleton_eq_bot])`. Set `sec : v.adicCompletionIntegers F ⧸ Ideal.span {c} → v.adicCompletionIntegers F` to `Function.surjInv Ideal.Quotient.mk_surjective`. Establish `hmemf : ∀ a : Fin k → v.adicCompletionIntegers F ⧸ Ideal.span {c}, (fun j => ∑ i, m i j ⊗ₜ[F] ((sec (a i) : v.adicCompletionIntegers F) : v.adicCompletion F)) ∈ L` using `fun a => (key _).2 ⟨fun i => (sec (a i) : v.adicCompletion F), fun i => (sec (a i)).2, rfl⟩`. Set `f : (Fin k → v.adicCompletionIntegers F ⧸ Ideal.span {c}) → L ⧸ mulSub L g` to `fun a => ((⟨_, hmemf a⟩ : L) : L ⧸ mulSub L g)`. Use `Finite.of_surjective f ?_` and prove the remaining obligations.
+
+Introduce `q`. Proceed by induction on `q using QuotientAddGroup.induction_on with`. Consider the case `H y`. Take `⟨a, ha, hy⟩` from `(key y).1 y.2`. Use `⟨fun i => Ideal.Quotient.mk _ ⟨a i, ha i⟩, ?_⟩` and prove the remaining obligations.
+
+Establish `hd : ∀ i, ∃ b : v.adicCompletionIntegers F, (sec (Ideal.Quotient.mk _ ⟨a i, ha i⟩) : v.adicCompletionIntegers F) = ⟨a i, ha i⟩ + b * c`. Introduce `i`. Establish `h` using `Function.surjInv_eq (f := Ideal.Quotient.mk (Ideal.span {c})) Ideal.Quotient.mk_surjective (Ideal.Quotient.mk _ ⟨a i, ha i⟩)`. Rewrite `h` using `[Ideal.Quotient.eq]`. Take `⟨b, hb⟩` from `Ideal.mem_span_singleton'.1 h`.
+
+Conclude with `⟨b, by rw [hb]; ring⟩`. Use `choose b hb using hd`. Use `show ((⟨_, hmemf _⟩ : L) : L ⧸ mulSub L g) = (y : L ⧸ mulSub L g)`. Rewrite using `[QuotientAddGroup.eq]`. Use `⟨⟨fun j => ∑ i, m i j ⊗ₜ[F] (((-(b i)) : v.adicCompletionIntegers F) : v.adicCompletion F), (key _).2 ⟨_, fun i => (-(b i)).2, rfl⟩⟩, ?_⟩` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `j`. Establish `e1 : ∀ i, ((sec (Ideal.Quotient.mk _ ⟨a i, ha i⟩) : v.adicCompletionIntegers F) : v.adicCompletion F) = a i + g • (b i : v.adicCompletion F)`. Introduce `i`. Rewrite using `[hb i]`. Simplify using `[c, nsmul_eq_mul, mul_comm]`.
+
+Establish `hneg : ∀ i, (((-(b i)) : v.adicCompletionIntegers F) : v.adicCompletion F) = -((b i : v.adicCompletionIntegers F) : v.adicCompletion F)` using `fun i => rfl`. Rewrite using `[Submodule.coe_add, Submodule.coe_neg, Pi.add_apply, Pi.neg_apply, Pi.smul_apply, hy]`. Simplify using `only [e1, hneg, TensorProduct.tmul_add, Finset.sum_add_distrib, TensorProduct.tmul_smul, TensorProduct.tmul_neg, Finset.sum_neg_distrib, Finset.smul_sum, smul_neg]`. Normalize the expressions using the abelian group laws.
+-/
 theorem finite_quot (v : HeightOneSpectrum (𝓞 F)) {n : ℕ} (Λ : Submodule (𝓞 E) (Fin n → E))
     (hΛ : Module.Finite (𝓞 E) Λ) (g : ℕ) (hg : g ≠ 0) :
     Finite (latS (F := F) (v.adicCompletion F)
@@ -175,6 +211,11 @@ open Formalism.L2.Herm
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E]
 
+/- English proof (translation)
+Use `finiteIndex_of_trivOn _ N (finite_quot v Λ hΛ N hN.ne') H W (hW.trans inf_le_right) ?_` and prove the remaining obligations. Introduce `x hx htriv`. Apply `hH` to reduce the goal to its premises. Use `⟨hW hx, ?_⟩` and prove the remaining obligations. Introduce `y hy`.
+
+Take `⟨z, hz, e⟩` from `htriv y hy`. Conclude with `⟨z, hz, by rw [e, Nat.cast_smul_eq_nsmul]⟩`.
+-/
 theorem finiteIndex_of_princ (hc : CMData F E) (S : HSpace E) (v : HeightOneSpectrum (𝓞 F))
     (Λ : Submodule (𝓞 E) (Fin S.rank → E)) (hΛ : Module.Finite (𝓞 E) Λ) (N : ℕ) (hN : 0 < N)
     (H W : Subgroup (GL (Fin S.rank) (E ⊗[F] v.adicCompletion F)))
@@ -192,6 +233,11 @@ end Gen
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Introduce `B X I hOk hPins l Z Ch0 chOf0 F u a Q h1 Ch hCh chOf K g hQ hStd hfr hRd hUl hchi Lb0 hLb β v hv`. Establish `hle` using `GlobalTheory.T.chart_localGroup_le_baseLattice_level I hOk hPins l Z Ch0 chOf0 F u a Q h1 Ch hCh chOf K g hQ hStd hfr hRd hUl hchi Lb0 hLb`. Take `⟨N, hN, hpr⟩` from `GlobalTheory.T.chart_local_group_contains_principal_congruence I hOk hPins l Z Ch0 chOf0 F u a Q h1 Ch hCh chOf K g hQ hStd hfr hRd hUl hchi Lb0 hLb β v hv`. Establish `hfin : Module.Finite (𝓞 (I.rec7 l Z).host.E) Lb0`. Establish `h0` using `(F u).levJ.Lb_fin`.
+
+Rewrite `h0` using `[hLb]`. Unfold `reL at h0`. Use `(Module.Finite.equiv_iff (Submodule.equivMapOfInjective ((reV (rankN (I.rec7 l Z) (B.R.m - 1) (Nat.sub_le _ _)) (I.rec7 l Z).host.E).toLinearMap.restrictScalars (𝓞 (I.rec7 l Z).host.E)) (reV (rankN (I.rec7 l Z) (B.R.m - 1) (Nat.sub_le _ _)) (I.rec7 l Z).host.E).injective Lb0)).mp …` and prove the remaining obligations. Conclude with `h0`. Conclude with `finiteIndex_of_princ _ _ v Lb0 hfin N hN _ _ (iSup_le fun β' => hle β' v hv) hpr`.
+-/
 theorem chartLoc_finiteIndex : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)) (Ch0 : B.Word → ℕ → Type) (chOf0 : ∀ u i, ((I.rec7 l Z).mem u).C.cls i → Ch0 u i) (F : ∀ u, FormsTiedSym (I.rec7 l Z) u (Ch0 u) (chOf0 u)) (u : B.Word) (a : I.ι) (Q : Finset (HeightOneSpectrum (𝓞 (I.rec7 l Z).host.F))) (h1 : 1 ≤ B.R.m - 1) (Ch : Type) (_ : Finite Ch) (chOf : (I.stp u a (B.R.m - 1)).Cl → Ch) (K : ∀ β : Ch, LevelChart (I.rec7 l Z) (B.T u) (badQ (I.rec7 l Z) Q) (B.R.m - 1) (Nat.sub_le _ _) (fun c : {c // chOf c = β} => (I.chain l u a).stab (B.R.m - 1) c.1) (fun c => latCrd (I.rec7 l Z) (B.R.m - 1) (Nat.sub_le _ _) (I.latAt u a (B.R.m - 1) c.1))) (g : Ch → Ch0 u (B.R.m - 1)), (∀ v, v ∈ Q ↔ I.UnderQ a v) → (∀ u, I.StdF l Z u (F u)) → (∀ u j v h, (F u).glevJ.fr j v h = 1) → (∃ k : Ch → GA B (B.R.N (B.R.m - 1)), I.Reads u a (B.R.m - 1) chOf (fun β => (K β).lev.Lb) (fun β => (K β).lev.U) (fun β => (K β).lev.chi) (fun c => ((K (chOf c)).y ⟨c, rfl⟩).1) (fun c s => ((K (chOf c)).stabI ⟨c, rfl⟩ s).1) k ∧ ∀ β (v : HeightOneSpectrum (𝓞 B.host.F)), I.UnderQ a v → bc (prV (E := B.host.E) v) (k β) = 1) → (∀ β, ∀ v, v ∉ Q → (K β).lev.Uloc v = ((F u).ch (B.R.m - 1) h1 (succ_pred_m B.R) (g β)).lev.Uloc v) → (∀ β (κ : (K β).lev.U) (κ' : ((F u).ch (B.R.m - 1) h1 (succ_pred_m B.R) (g β)).lev.U), κ.1 = κ'.1 → (∀ v ∈ Q, bc (prV (E := (I.rec7 l Z).host.E) v) κ.1 = 1) → (K β).lev.chi κ = ((F u).ch (B.R.m - 1) h1 (succ_pred_m B.R) (g β)).lev.chi κ') → ∀ (Lb0 : Submodule (𝓞 (I.rec7 l Z).host.E) (Fin ((I.rec7 l Z).sp.X (B.R.m - 1)).rank → (I.rec7 l Z).host.E)), (F u).levJ.Lb = reL (rankN (I.rec7 l Z) (B.R.m - 1) (Nat.sub_le _ _)) Lb0 → ∀ β v, v ∈ Q → ((((K β).lev.Uloc v).comap (reGL (rankN (I.rec7 l Z) (B.R.m - 1) (Nat.sub_le _ _)) _).toMonoidHom).subgroupOf (⨆ β', ((K β').lev.Uloc v).comap (reGL (rankN (I.rec7 l Z) (B.R.m - 1) (Nat.sub_le _ _)) _).toMonoidHom)).FiniteIndex := by
   intro B X I hOk hPins l Z Ch0 chOf0 F u a Q h1 Ch hCh chOf K g hQ hStd hfr hRd hUl hchi Lb0 hLb β v hv
   have hle := GlobalTheory.T.chart_localGroup_le_baseLattice_level I hOk hPins l Z Ch0 chOf0 F u a Q h1 Ch hCh chOf K g hQ hStd hfr hRd hUl hchi Lb0 hLb

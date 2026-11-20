@@ -20,21 +20,40 @@ local instance  {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] : 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 def cmap_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) {κ : Type} (τ : κ ≃ _root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.Ix d) (X : Mx F E d.m d.n) : κ → AF F := fun k => d.crd X (τ k)
 def cinv_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) {κ : Type} (τ : κ ≃ _root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.Ix d) (c : κ → AF F) : Mx F E d.m d.n := d.cmb fun k => c (τ.symm k)
+/- English proof (translation)
+Establish `: (fun k => _root_.PositivityTheory.SiegelWeilFormula.KTunit.cmap_k d τ X (τ.symm k)) = d.crd X` using `funext fun k => by simp [_root_.PositivityTheory.SiegelWeilFormula.KTunit.cmap_k]`. Rewrite using `[_root_.PositivityTheory.SiegelWeilFormula.KTunit.cinv_k, this, _root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.cmb_crd]`.
+-/
 theorem cinv_cmap_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) {κ : Type} (τ : κ ≃ _root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.Ix d) (X : Mx F E d.m d.n) : _root_.PositivityTheory.SiegelWeilFormula.KTunit.cinv_k d τ (_root_.PositivityTheory.SiegelWeilFormula.KTunit.cmap_k d τ X) = X := by
   have : (fun k => _root_.PositivityTheory.SiegelWeilFormula.KTunit.cmap_k d τ X (τ.symm k)) = d.crd X := funext fun k => by simp [_root_.PositivityTheory.SiegelWeilFormula.KTunit.cmap_k]
   rw [_root_.PositivityTheory.SiegelWeilFormula.KTunit.cinv_k, this, _root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.cmb_crd]
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Simplify using `[_root_.PositivityTheory.SiegelWeilFormula.KTunit.cmap_k, _root_.PositivityTheory.SiegelWeilFormula.KTunit.cinv_k, _root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.crd_cmb]`.
+-/
 theorem cmap_cinv_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) {κ : Type} (τ : κ ≃ _root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.Ix d) (c : κ → AF F) : _root_.PositivityTheory.SiegelWeilFormula.KTunit.cmap_k d τ (_root_.PositivityTheory.SiegelWeilFormula.KTunit.cinv_k d τ c) = c := by
   funext k
   simp [_root_.PositivityTheory.SiegelWeilFormula.KTunit.cmap_k, _root_.PositivityTheory.SiegelWeilFormula.KTunit.cinv_k, _root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.crd_cmb]
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Simplify using `[_root_.PositivityTheory.SiegelWeilFormula.KTunit.cmap_k, _root_.PositivityTheory.SiegelWeilFormula.SD_k.crd, map_add]`.
+-/
 theorem cmap_add_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) {κ : Type} (τ : κ ≃ _root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.Ix d) (X Y : Mx F E d.m d.n) :
     _root_.PositivityTheory.SiegelWeilFormula.KTunit.cmap_k d τ (X + Y) = _root_.PositivityTheory.SiegelWeilFormula.KTunit.cmap_k d τ X + _root_.PositivityTheory.SiegelWeilFormula.KTunit.cmap_k d τ Y := by
   funext k
   simp [_root_.PositivityTheory.SiegelWeilFormula.KTunit.cmap_k, _root_.PositivityTheory.SiegelWeilFormula.SD_k.crd, map_add]
+/- English proof (translation)
+Use `haveI := GlobalTheory.AdelicUnitaryTop.secondCountable_adele F`. Establish `hr` using `(GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ d.ok.good.cm (AF F)).2.2.2.2.2.2.1 2 d.bs`. Use `continuous_pi fun k => ?_` and prove the remaining obligations. Conclude with `(continuous_apply (τ k).2.2).comp (hr.continuous.comp (continuous_id.matrix_elem (τ k).1 (τ k).2.1))`.
+-/
 theorem cont_cmap_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) {κ : Type} (τ : κ ≃ _root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.Ix d) : Continuous (_root_.PositivityTheory.SiegelWeilFormula.KTunit.cmap_k d τ) := by
   haveI := GlobalTheory.AdelicUnitaryTop.secondCountable_adele F
   have hr := (GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ d.ok.good.cm (AF F)).2.2.2.2.2.2.1 2 d.bs
   refine continuous_pi fun k => ?_
   exact (continuous_apply (τ k).2.2).comp (hr.continuous.comp (continuous_id.matrix_elem (τ k).1 (τ k).2.1))
+/- English proof (translation)
+Use `haveI := GlobalTheory.AdelicUnitaryTop.secondCountable_adele F`. Establish `hr` using `(GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ d.ok.good.cm (AF F)).2.2.2.2.2.2.1 2 d.bs`. Use `set h := hr.homeomorph with hh`. Establish `e : ∀ c i j, _root_.PositivityTheory.SiegelWeilFormula.KTunit.cinv_k d τ c i j = h.symm (fun l => c (τ.symm (i, j, l)))` using `fun c i j => by`. Apply `h.injective` to reduce the goal to its premises.
+
+Rewrite using `[Homeomorph.apply_symm_apply]`. Use function extensionality and compare the values at `l`. Conclude with `congrFun (_root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.crd_cmb d (fun k => c (τ.symm k))) (i, j, l)`. Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Simplify using `only [e]`.
+
+Conclude with `h.symm.continuous.comp (continuous_pi fun l => continuous_apply _)`.
+-/
 theorem cont_cinv_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) {κ : Type} (τ : κ ≃ _root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.Ix d) : Continuous (_root_.PositivityTheory.SiegelWeilFormula.KTunit.cinv_k d τ) := by
   haveI := GlobalTheory.AdelicUnitaryTop.secondCountable_adele F
   have hr := (GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ d.ok.good.cm (AF F)).2.2.2.2.2.2.1 2 d.bs
@@ -55,6 +74,11 @@ def cEquiv_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) {κ : Type}
   map_add' := _root_.PositivityTheory.SiegelWeilFormula.KTunit.cmap_add_k d τ
   continuous_toFun := _root_.PositivityTheory.SiegelWeilFormula.KTunit.cont_cmap_k d τ
   continuous_invFun := _root_.PositivityTheory.SiegelWeilFormula.KTunit.cont_cinv_k d τ
+/- English proof (translation)
+Use `haveI := GlobalTheory.AdelicUnitaryTop.secondCountable_adele F`. Establish `P` using `GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ d.ok.good.cm (AF F)`. Use `haveI : IsTopologicalRing (AE F E) := P.1`. Use `haveI : BorelSpace (Mx F E d.m d.n) := P.2.2.2.2.2.2.2.1 d.m d.n`. Use `haveI : IsTopologicalAddGroup (Mx F E d.m d.n) := inferInstance`.
+
+Use `⟨?_, fun f => ?_⟩` and prove the remaining obligations. Conclude with `ContinuousAddEquiv.isAddHaarMeasure_map ν (_root_.PositivityTheory.SiegelWeilFormula.KTunit.cEquiv_k d τ)`. Establish `h` using `integral_map_equiv (μ := ν) (_root_.PositivityTheory.SiegelWeilFormula.KTunit.cEquiv_k d τ).toHomeomorph.toMeasurableEquiv f`. Conclude with `h.symm`.
+-/
 theorem map_haar_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) {κ : Type} [Fintype κ] (τ : κ ≃ _root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.Ix d) (ν : Measure (Mx F E d.m d.n))
     (hν : ν.IsAddHaarMeasure) :
     (ν.map (_root_.PositivityTheory.SiegelWeilFormula.KTunit.cmap_k d τ)).IsAddHaarMeasure ∧

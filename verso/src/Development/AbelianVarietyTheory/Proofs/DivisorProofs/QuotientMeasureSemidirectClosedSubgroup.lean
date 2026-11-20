@@ -6,6 +6,39 @@ open scoped Pointwise NNReal ENNReal
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `G H _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ N R s hN hs hnorm hR hp Γ _ Λ _ hrat K hK hcov μ _ 𝓕 h𝓕 h𝓕1 ν _ 𝓐 h𝓐 h𝓐1`. Substitute `hR` using the available equality. Use `haveI : LocallyCompactSpace N := hN.locallyCompactSpace`. Use `haveI : SecondCountableTopology N := TopologicalSpace.Subtype.secondCountableTopology _`. Use `haveI : SecondCountableTopology (N ⊔ s.range : Subgroup G) := TopologicalSpace.Subtype.secondCountableTopology _`.
+
+Use `haveI := countable_subgroupOf Γ N`. Use `haveI := countable_subgroupOf Γ (N ⊔ s.range)`. Take `⟨p, hp1, hp2⟩` from `hp`. Establish `hp' : ∃ p : (N ⊔ s.range : Subgroup G) → H, Continuous p ∧ ∀ (h : H) (n : N), p (mk N s (h, n)) = h` using `⟨p, hp1, fun h n => hp2 h n _⟩`. Take `⟨e, he⟩` from `exists_homeo N s hnorm hs hp'`.
+
+Establish `hΛ : ∀ δ ∈ Λ, s δ ∈ Γ` using `fun δ hδ => by simpa using (hrat 1 (one_mem _) δ).2 ⟨one_mem _, hδ⟩`. Establish `hfin : ν 𝓐 ≠ ⊤` using `by rw [h𝓐1]; exact ENNReal.one_ne_top`. Take `⟨hhaar, -⟩` from `semiMeas_haar_inv N s hN hs hnorm hp' Γ Λ hΛ hK hcov μ h𝓕 ν h𝓐 hfin`. Establish `hsm : semiMeas N s μ ν = (μ.prod ν).map e` using `by rw [he]; rfl`. Establish `hmp : MeasurePreserving e.toMeasurableEquiv (μ.prod ν) (semiMeas N s μ ν)` using `⟨e.toMeasurableEquiv.measurable, hsm.symm⟩`.
+
+Establish `happ : ∀ S, semiMeas N s μ ν S = μ.prod ν (e ⁻¹' S)` using `fun S => by`. Rewrite using `[hsm]`. Conclude with `MeasurableEquiv.map_apply e.toMeasurableEquiv S`. Use `set A : Set (N ⊔ s.range : Subgroup G) := e.symm ⁻¹' (𝓕 ×ˢ 𝓐) with hA`. Establish `hmemA : ∀ q, e q ∈ A ↔ q.1 ∈ 𝓕 ∧ q.2 ∈ 𝓐` using `fun q => by simp [hA]`.
+
+Establish `hpre : e ⁻¹' A = 𝓕 ×ˢ 𝓐` using `Set.ext hmemA`. Establish `hA1 : semiMeas N s μ ν A = 1`. Rewrite using `[happ, hpre, Measure.prod_prod, h𝓕1, h𝓐1, mul_one]`. Establish `hfd : IsFundamentalDomain (Γ.subgroupOf (N ⊔ s.range)) A (semiMeas N s μ ν)`. Use `IsFundamentalDomain.mk'' ?_ ?_ ?_ ?_` and prove the remaining obligations.
+
+Conclude with `(h𝓕.nullMeasurableSet.prod h𝓐.nullMeasurableSet).preimage hmp.symm.quasiMeasurePreserving`. Rewrite using `[hsm]`. Use `(e.toMeasurableEquiv.measurableEmbedding.ae_map_iff).2 ?_` and prove the remaining obligations. Establish `h1 : ∀ᵐ n ∂ν, ∀ δ : Λ, ∃ g : Γ.subgroupOf N, g • cj N s hnorm δ n ∈ 𝓐` using `ae_all_iff.2 fun δ => (MeasurePreserving.quasiMeasurePreserving ⟨(map_continuous (cj N s hnorm δ)).measurable, map_cj_of_mem N s hN hnorm Γ ν h𝓐 hfin (hΛ δ δ.2)⟩).ae h𝓐.ae_covers`. Use `filter_upwards [(Measure.quasiMeasurePreserving_fst (μ := μ) (ν := ν)).ae h𝓕.ae_covers, (Measure.quasiMeasurePreserving_snd (μ := μ) (ν := ν)).ae h1] with q ⟨δ, hδ⟩ h2`.
+
+Take `⟨g, hg⟩` from `h2 δ`. Use `⟨⟨mk N s (δ.1, g.1), (hrat _ g.1.2 _).2 ⟨g.2, δ.2⟩⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `mk N s (δ.1, g.1) * e q ∈ A`. Rewrite using `[he, mk_mul N s hnorm, ← he, hmemA]`. Conclude with `⟨hδ, hg⟩`.
+
+Introduce and unpack `⟨g, hg⟩ hne`. Take `⟨⟨δ, n'⟩, rfl⟩` from `mk_surjective N s hnorm g`. Take `⟨hn', hδ⟩` from `(hrat _ n'.2 _).1 hg`. Establish `key : ∀ q ∈ e ⁻¹' (((⟨mk N s (δ, n'), hg⟩ : Γ.subgroupOf (N ⊔ s.range)) • A) ∩ A), (q.1 ∈ 𝓕 ∧ q.2 ∈ 𝓐) ∧ ∃ h₁ ∈ 𝓕, ∃ n₁ ∈ 𝓐, q = (δ * h₁, n' * cj N s hnorm δ n₁)`. Introduce and unpack `q ⟨⟨a, ha, hq⟩, h2⟩`.
+
+Take `⟨q₁, rfl⟩` from `e.surjective a`. Use `⟨(hmemA q).1 h2, q₁.1, ((hmemA q₁).1 ha).1, q₁.2, ((hmemA q₁).1 ha).2, e.injective ?_⟩` and prove the remaining obligations. Rewrite using `[← hq]`. Express the relevant statement in the definitionally equal form `mk N s (δ, n') * e q₁ = _`. Rewrite using `[he, mk_mul N s hnorm]`.
+
+Rewrite using `[AEDisjoint, happ]`. Distinguish the cases in `h1 : δ = 1`. Substitute `h1` using the available equality. Establish `hn1 : (⟨n', hn'⟩ : Γ.subgroupOf N) ≠ 1` using `fun h => hne (by`. Establish `: n' = 1` using `congrArg Subtype.val h`.
+
+Substitute `this` using the available equality. Conclude with `Subtype.ext (Subtype.ext (by simp [mk])))`. Establish `h0` using `h𝓐.aedisjoint hn1`. Use `measure_mono_null (t := Set.univ ×ˢ (((⟨n', hn'⟩ : Γ.subgroupOf N) • 𝓐) ∩ (1 : Γ.subgroupOf N) • 𝓐)) (fun q hq => ?_) (by rw [Measure.prod_prod, show ν _ = 0 from h0, mul_zero])` and prove the remaining obligations. Take `⟨h2, h₁, -, n₁, hn₁, rfl⟩` from `key q hq`.
+
+Use `⟨trivial, ⟨n₁, hn₁, ?_⟩, by rw [one_smul]; exact h2.2⟩` and prove the remaining obligations. Conclude with `Subtype.ext (by change n'.1 * n₁.1 = n'.1 * (s 1 * n₁.1 * (s 1)⁻¹); simp)`. Establish `h0` using `h𝓕.aedisjoint (show (⟨δ, hδ⟩ : Λ) ≠ 1 from fun h => h1 (congrArg Subtype.val h))`. Use `measure_mono_null (t := (((⟨δ, hδ⟩ : Λ) • 𝓕) ∩ (1 : Λ) • 𝓕) ×ˢ Set.univ) (fun q hq => ?_) (by rw [Measure.prod_prod, show μ _ = 0 from h0, zero_mul])` and prove the remaining obligations. Take `⟨h2, h₁, hh₁, n₁, -, rfl⟩` from `key q hq`.
+
+Conclude with `⟨⟨⟨h₁, hh₁, rfl⟩, by rw [one_smul]; exact h2.1⟩, trivial⟩`. Introduce `g`. Conclude with `(measurePreserving_mul_left (semiMeas N s μ ν) g.1).quasiMeasurePreserving`. Use `⟨semiMeas N s μ ν, A, hhaar, hfd, hA1, fun φ hφ hC => ?_⟩` and prove the remaining obligations. Take `⟨C, hC⟩` from `hC`.
+
+Establish `hcont : Continuous fun q : H × N => φ (q.2.1 * s q.1)` using `hφ.comp ((continuous_subtype_val.comp continuous_snd).mul (hs.comp continuous_fst))`. Establish `h1 : ∫ x in A, φ x ∂(semiMeas N s μ ν) = ∫ q in 𝓕 ×ˢ 𝓐, φ (q.2.1 * s q.1) ∂(μ.prod ν)`. Rewrite using `[← hpre, ← hmp.setIntegral_preimage_emb e.toMeasurableEquiv.measurableEmbedding]`. Express the relevant statement in the definitionally equal form `∫ x in e ⁻¹' A, φ ((e x : (N ⊔ s.range : Subgroup G)) : G) ∂(μ.prod ν) = _`. Rewrite using `[he]`.
+
+Both sides reduce to the same expression. Rewrite using `[h1]`. Establish `hint : IntegrableOn (fun q : H × N => φ (q.2.1 * s q.1)) (𝓕 ×ˢ 𝓐) (μ.prod ν)`. Use `Measure.integrableOn_of_bounded (M := C) ?_ hcont.aestronglyMeasurable ?_` and prove the remaining obligations. Rewrite using `[Measure.prod_prod, h𝓕1, h𝓐1, mul_one]`.
+
+Conclude with `ENNReal.one_ne_top`. Conclude with `Filter.Eventually.of_forall fun q => hC _ (mk N s q).2`. Conclude with `setIntegral_prod _ hint`.
+-/
 theorem semiHaar_exists_fd_setIntegral : ∀ (G H : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [LocallyCompactSpace G] [T2Space G]
     [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G] [Group H] [TopologicalSpace H] [IsTopologicalGroup H]
     [LocallyCompactSpace H] [T2Space H] [SecondCountableTopology H] [MeasurableSpace H] [BorelSpace H]

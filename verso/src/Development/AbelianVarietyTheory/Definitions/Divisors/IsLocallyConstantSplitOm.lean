@@ -9,6 +9,9 @@ open scoped NNReal Topology Kronecker
 
 namespace GlobalTheory.WeilM
 
+/- English proof (translation)
+Use `(IsLocallyConstant.iff_eventually_eq _).mpr fun g₀ => ?_` and prove the remaining obligations. Establish `: Tendsto (fun g => g₀⁻¹ * g) (𝓝 g₀) (𝓝 1)` using `Continuous.tendsto' (by fun_prop) _ _ (inv_mul_cancel _)`. Use `filter_upwards [this.eventually h] with g hg`. Use `conv_rhs => rw [← hg, ← Module.End.mul_apply, ← map_mul, mul_inv_cancel_left]`.
+-/
 theorem isLocallyConstant_orbit {G V : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [AddCommGroup V]
     [Module ℂ V] (om : G →* Module.End ℂ V) {v : V} (h : ∀ᶠ g in 𝓝 (1 : G), om g v = v) :
     IsLocallyConstant fun g => om g v := by
@@ -17,6 +20,13 @@ theorem isLocallyConstant_orbit {G V : Type} [Group G] [TopologicalSpace G] [IsT
   filter_upwards [this.eventually h] with g hg
   conv_rhs => rw [← hg, ← Module.End.mul_apply, ← map_mul, mul_inv_cancel_left]
 
+/- English proof (translation)
+Establish `key : ∀ f : P → V → V, (Continuous fun q : P × V => f q.1 q.2) → (∀ v, f p₀ v = v) → ∀ᶠ p in 𝓝 p₀, ∀ v ∈ tsupport φ, φ (f p v) = φ v` using `fun f hf f0 => by`. Use `IsCompact.eventually_forall_of_forall_eventually hφ.2 fun v _ => ?_` and prove the remaining obligations. Use `filter_upwards [(hφ.1.comp_continuous hf).eventually_eq (p₀, v), (hφ.1.comp_continuous continuous_snd).eventually_eq (p₀, v)] with q h1 h2`. Simplify using `only [Function.comp, f0] at h1 h2`. Rewrite using `[h1, h2]`.
+
+Use `filter_upwards [key f hf f0, key g hg g0] with p h1 h2 v`. Distinguish the cases in `hv : v ∈ tsupport φ`. Conclude with `h1 v hv`. Distinguish the cases in `hw : f p v ∈ tsupport φ`. Rewrite using `[← h2 _ hw, hgf]`.
+
+Rewrite using `[image_eq_zero_of_notMem_tsupport hv, image_eq_zero_of_notMem_tsupport hw]`.
+-/
 theorem eventually_comp_eq {P V : Type} [TopologicalSpace P] [TopologicalSpace V] {p₀ : P} (f g : P → V → V)
     (hf : Continuous fun q : P × V => f q.1 q.2) (hg : Continuous fun q : P × V => g q.1 q.2)
     (f0 : ∀ v, f p₀ v = v) (g0 : ∀ v, g p₀ v = v) (hgf : ∀ p v, g p (f p v) = v) {φ : V → ℂ} (hφ : φ ∈ SB V) :
@@ -37,6 +47,17 @@ theorem eventually_comp_eq {P V : Type} [TopologicalSpace P] [TopologicalSpace V
 
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
 
+/- English proof (translation)
+Establish `h0 : {t : Fˣ | ‖(μ t : ℂ) - 1‖ < 1 / 2} ∈ 𝓝 (1 : Fˣ)` using `(isOpen_lt (by fun_prop) continuous_const).mem_nhds (by simp)`. Rewrite `h0` using `[Units.isEmbedding_val₀.nhds_eq_comap, mem_comap]`. Take `⟨U, hU, hUV⟩` from `h0`. Establish `h1 : (fun x : F => 1 + x) ⁻¹' U ∈ 𝓝 (0 : F)` using `(Continuous.tendsto' (by fun_prop) _ _ (by simp) : Tendsto (fun x : F => 1 + x) (𝓝 0) (𝓝 ((1 : Fˣ) : F))) hU`. Establish `h2 : {x : F | valuation F x < 1} ∈ 𝓝 (0 : F)` using `(IsValuativeTopology.mem_nhds_zero_iff _).mpr ⟨1, fun _ h => h⟩`.
+
+Take `⟨s, hs⟩` from `SplitWeil.exists_cball_subset (inter_mem h1 h2)`. Establish `h3 : Tendsto (fun t : Fˣ => (t : F) - 1) (𝓝 1) (𝓝 0)` using `Continuous.tendsto' (by fun_prop) _ _ (by simp)`. Use `filter_upwards [h3.eventually (SplitWeil.cball_mem_nhds s)] with t ht`. Establish `hv : valuation F (t : F) = 1` using `by simpa using (valuation F).map_one_add_of_lt (hs ht).2`. Establish `hn : ∀ n : ℕ, (t : F) ^ n - 1 ∈ SplitWeil.cball s` using `fun n => by`.
+
+Proceed by induction on `n with`. Consider the case `zero => simp [SplitWeil.cball]`. Consider the case `succ n ih`. Rewrite using `[show (t : F) ^ (n + 1) - 1 = t * (t ^ n - 1) + (t - 1) by ring]`. Use `SplitWeil.add_mem_cball ?_ ht` and prove the remaining obligations.
+
+Use `show valuation F ((t : F) * ((t : F) ^ n - 1)) ≤ valuation F (s : F)`. Rewrite using `[map_mul, hv, one_mul]`. Conclude with `ih`. Use `⟨Circle.coe_eq_one.mp (eq_one_of_forall_pow_near fun n => ?_), NNReal.coe_injective (SplitWeil.nabs_eq_one_of_valuation_eq_one hv)⟩` and prove the remaining obligations. Establish `: t ^ n ∈ Units.val ⁻¹' U` using `by simpa using (hs (hn n)).1`.
+
+Simplify using `using hUV this`.
+-/
 theorem eventually_char_eq_one (μ : Fˣ →* Circle) (hμ : Continuous μ) :
     ∀ᶠ t in 𝓝 (1 : Fˣ), μ t = 1 ∧ distribHaarChar F t = 1 := by
   have h0 : {t : Fˣ | ‖(μ t : ℂ) - 1‖ < 1 / 2} ∈ 𝓝 (1 : Fˣ) :=
@@ -68,6 +89,15 @@ variable {α β κ : Type} [Fintype α] [DecidableEq α] [Fintype β] [Decidable
 
 omit [DecidableEq α] [Fintype κ] in
 
+/- English proof (translation)
+Use `isLocallyConstant_orbit _ ?_` and prove the remaining obligations. Establish `c0 : Continuous (ugFst J)` using `(Units.continuous_map (f := ((RingHom.fst F F).mapMatrix : Matrix β β (F × F) →+* Matrix β β F).toMonoidHom) (continuous_id.matrix_map (f := Prod.fst) continuous_fst)).comp continuous_subtype_val`. Establish `c1 : Continuous fun h => GeneralLinearGroup.det (ugFst J h)` using `Units.continuous_iff.mpr ⟨(Units.continuous_val.comp c0).matrix_det, (Units.continuous_val.comp c0.inv).matrix_det⟩`. Establish `c2 : Continuous (χ.comp (Units.map (MonoidHom.inl F F)))` using `hχ.comp (Units.continuous_map (continuous_id.prodMk continuous_const))`. Establish `hc : ∀ M : UG (swapA F) J → Matrix β β F, Continuous M → Continuous fun q : UG (swapA F) J × (κ → F) => flat σ ((flat σ).symm q.2 * (M q.1)ᵀ)` using `fun M hM => by`.
+
+Use `continuous_pi fun k => ?_` and prove the remaining obligations. Simplify using `only [flat_apply, mul_apply, flat_symm_apply, transpose_apply]`. Use `fun_prop`. Use `filter_upwards [(c1.tendsto' 1 1 (by simp)).eventually (eventually_char_eq_one _ c2), eventually_comp_eq (p₀ := 1) (fun p v => flat σ ((flat σ).symm v * ((ugFst J p)⁻¹).valᵀ)) (fun p v => flat σ ((flat σ).symm v * (ugFst J p).valᵀ)) (hc _ (Units.continuous_val.comp c0.inv)) (hc _ …`. Simplify using `only [Function.comp, LinearEquiv.symm_apply_apply, Matrix.mul_assoc, ← transpose_mul, Units.mul_inv, transpose_one, Matrix.mul_one, LinearEquiv.apply_symm_apply]) hφ] with h h1 h2`.
+
+Use function extensionality and compare the values at `u`. Establish `h3 : splitChar (distribHaarChar F) χ (Fintype.card α) (GeneralLinearGroup.det (ugFst J h)) = 1`. Use `h1.1` as an intermediate fact. Simplify using `only [MonoidHom.comp_apply] at this`. Simplify using `[splitChar, this, h1.2]`.
+
+Rewrite using `[splitOm_apply, h3, one_mul]`. Conclude with `h2 u`.
+-/
 theorem isLocallyConstant_splitOm (χ : (F × F)ˣ →* Circle) (hχ : Continuous χ) (J : Matrix β β (F × F)) (σ : κ ≃ α × β)
     {φ : (κ → F) → ℂ} (hφ : φ ∈ SB (κ → F)) : IsLocallyConstant fun h => splitOm (distribHaarChar F) χ J σ h φ := by
   refine isLocallyConstant_orbit _ ?_
@@ -97,6 +127,21 @@ theorem isLocallyConstant_splitOm (χ : (F × F)ˣ →* Circle) (hχ : Continuou
   rw [splitOm_apply, h3, one_mul]
   exact h2 u
 
+/- English proof (translation)
+Use `borelize F`. Use `SplitWeil.secondCountable F` as an intermediate fact. Use `SplitWeil.t2Space F` as an intermediate fact. Unfold `IsUnitaryOn`. Rewrite using `[← (BorelSpace.measurable_eq : (MeasurableSpace.pi : MeasurableSpace (κ → F)) = borel _)]`.
+
+Introduce `μ hμ h φ hφ`. Use `set t := ugFst J h`. Set `G : Matrix κ κ F` to `((1 : Matrix α α F) ⊗ₖ (t⁻¹).val).submatrix σ σ`. Establish `hG : (((GeneralLinearGroup.det t)⁻¹ ^ Fintype.card α : Fˣ) : F) = G.det`. Rewrite using `[det_submatrix_equiv_self, det_kronecker, det_one, one_pow, one_mul, ← map_inv, Units.val_pow_eq_pow_val]`.
+
+Both sides reduce to the same expression. Establish `hgx : ∀ u, flat σ ((flat σ).symm u * (t⁻¹).valᵀ) = G.mulVec u`. Introduce `u`. Take `⟨X, rfl⟩` from `(flat σ).surjective u`. Use function extensionality and compare the values at `k`.
+
+Use `show _ = ∑ k', ((1 : Matrix α α F) ⊗ₖ (t⁻¹).val) (σ k) (σ k') * X (σ k').1 (σ k').2`. Rewrite using `[Fintype.sum_equiv σ _ (fun q => ((1 : Matrix α α F) ⊗ₖ (t⁻¹).val) (σ k) q * X q.1 q.2) fun _ => rfl, Fintype.sum_prod_type, LinearEquiv.symm_apply_apply, flat_apply, mul_apply]`. Simplify using `[kroneckerMap_apply, one_apply, mul_comm]`. Establish `hs : ‖splitChar (distribHaarChar F) χ (Fintype.card α) (GeneralLinearGroup.det t)‖ₑ ^ 2 = distribHaarChar F ((GeneralLinearGroup.det t)⁻¹ ^ Fintype.card α)`. Rewrite using `[enorm_eq_nnnorm, ← ENNReal.coe_pow, ENNReal.coe_inj, ← NNReal.coe_inj]`.
+
+Establish `p : (0 : ℝ) ≤ distribHaarChar F (GeneralLinearGroup.det t)` using `NNReal.coe_nonneg _`. Simplify using `only [splitChar, MonoidHom.coe_mk, OneHom.coe_mk, NNReal.coe_pow, coe_nnnorm, norm_mul, Circle.norm_coe, one_mul, Complex.norm_real, Real.norm_of_nonneg (Real.rpow_nonneg p _), map_pow, map_inv, NNReal.coe_inv]`. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul p, inv_pow, ← Real.rpow_natCast, ← Real.rpow_neg p]`. Use `congr 1`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hm : Measurable fun x => ‖φ x‖ₑ ^ 2` using `(hφ.1.continuous.measurable.enorm).pow_const 2`. Rewrite using `[Measure.isAddLeftInvariant_eq_smul μ (Measure.pi fun _ : κ => (Measure.addHaar : Measure F)), lintegral_smul_measure, lintegral_smul_measure]`. Use `congr 1`. Use `conv_rhs => rw [← smul_map_mulVec_pi Measure.addHaar G _ hG, lintegral_smul_measure, lintegral_map hm (show Measurable G.mulVec from (continuous_const.matrix_mulVec continuous_id).measurable)]`.
+
+Simplify using `only [splitOm_apply, enorm_mul, mul_pow]`. Rewrite using `[lintegral_const_mul' _ _ (by simp [enorm_eq_nnnorm]), hs]`. Simplify using `only [← hgx]`. Both sides reduce to the same expression.
+-/
 theorem isUnitaryOn_splitOm (χ : (F × F)ˣ →* Circle) (J : Matrix β β (F × F)) (σ : κ ≃ α × β) :
     IsUnitaryOn (sbClass F) (splitOm (distribHaarChar F) χ J σ) := by
   classical
@@ -142,12 +187,18 @@ theorem isUnitaryOn_splitOm (χ : (F × F)ˣ →* Circle) (J : Matrix β β (F �
 
 variable [Invertible (2 : F)] {JA : Matrix α α (F × F)} {JB : Matrix β β (F × F)}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨isSplitting_splitOm _ χ hA hB σ ψ, isUnitaryOn_splitOm χ JB σ, .of_isLocallyConstant fun _ hφ => isLocallyConstant_splitOm χ hχ JB σ hφ⟩`.
+-/
 theorem isUSplitting_splitOm (ψ : AddChar F ℂ) (hA : IsHerm (swapA F) JA) (hB : IsHerm (swapA F) JB) (σ : κ ≃ α × β)
     (χ : (F × F)ˣ →* Circle) (hχ : Continuous χ) :
     IsUSplitting (sbClass F) ψ (splitDarboux hA hB σ) (actB (swapA F)) (splitOm (distribHaarChar F) χ JB σ) :=
   ⟨isSplitting_splitOm _ χ hA hB σ ψ, isUnitaryOn_splitOm χ JB σ,
     .of_isLocallyConstant fun _ hφ => isLocallyConstant_splitOm χ hχ JB σ hφ⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨isLagr_diagCols _ JB, isUSplitting_splitOm ψ hA hB.dbl _ χ hc, siegelRule_split ψ hψ hψ1 hA hB σ χ ((resEtaPow_split_iff _ _).mp hχ)⟩`.
+-/
 theorem isUWeilSplit_split (ψ : AddChar F ℂ) (hψ : Continuous ψ) (hψ1 : ψ ≠ 1) (hA : IsHerm (swapA F) JA)
     (hB : IsHerm (swapA F) JB) (σ : κ ≃ α × β) (χ : (F × F)ˣ →* Circle) (hc : Continuous χ)
     (hχ : ResEtaPow (⊥ : Subgroup Fˣ) χ (Fintype.card α)) :

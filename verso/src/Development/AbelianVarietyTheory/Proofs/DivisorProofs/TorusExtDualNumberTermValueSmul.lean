@@ -14,6 +14,13 @@ noncomputable section
 
 namespace GlobalTheory.JcSmul
 
+/- English proof (translation)
+Unfold `valR`. Distinguish the cases in `hU : ⊤ ≤ r ⁻¹ᵁ U`. Rewrite using `[dif_pos hU, dif_pos hU, map_mul, map_mul]`. Use `congr 1`. Establish `e : (r.appLE U ⊤ hU).hom (resTop U (π.appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of F)).inv.hom z))) = (r ≫ π).appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of F)).inv.hom z)`.
+
+Simplify using `only [resTop]`. Rewrite using `[← RingHom.comp_apply, ← CommRingCat.hom_comp, Scheme.Hom.map_appLE, Scheme.Hom.comp_appTop, CommRingCat.hom_comp, RingHom.comp_apply]`. Conclude with `congrArg (fun g : Γ(Y, ⊤) ⟶ Γ(Sp A, ⊤) => g.hom (π.appTop.hom _)) (Scheme.Hom.appLE_eq_app r (U := ⊤))`. Rewrite using `[e, h]`. Establish `n` using `Scheme.ΓSpecIso_naturality (CommRingCat.ofHom (algebraMap F A))`.
+
+Use `congrArg (fun g => g.hom ((Scheme.ΓSpecIso (CommRingCat.of F)).inv.hom z)) n` as an intermediate fact. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply] at this`. Rewrite using `[this]`. Simplify using the standard rewrite rules. Rewrite using `[dif_neg hU, dif_neg hU, mul_zero]`.
+-/
 theorem valR_const_mul {F A : Type} [Field F] [CommRing A] [Algebra F A] {Y : Scheme.{0}} (r : Sp A ⟶ Y)
     (π : Y ⟶ Sp F) (h : r ≫ π = spMap (algebraMap F A)) (U : Y.Opens) (z : F) (f : Γ(Y, U)) :
     valR r U (resTop U (π.appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of F)).inv.hom z)) * f) =
@@ -36,6 +43,11 @@ theorem valR_const_mul {F A : Type} [Field F] [CommRing A] [Algebra F A] {Y : Sc
     simp
   · rw [dif_neg hU, dif_neg hU, mul_zero]
 
+/- English proof (translation)
+Introduce `R _ _ D F _ _ N ν k s a gm α`. Establish `e : (lift (Over.homMk (spMap (algebraMap F (DualNumber F))) rfl : TE R F ⟶ TF (R` using `R) F) gm.b).left ≫ (fst (TF (R := R) F) D.P.A).left = spMap (algebraMap F (DualNumber F)) := by`. Rewrite using `[← Over.comp_left, lift_fst]`. Both sides reduce to the same expression. Unfold `jc sE`.
+
+Rewrite using `[← _root_.mul_assoc]`. Use `congr 1`. Establish `h2 : (TrivSqZeroExt.inl a : DualNumber F) = algebraMap F (DualNumber F) a` using `rfl`. Rewrite using `[h2]`. Conclude with `valR_const_mul _ _ e _ a _`.
+-/
 theorem jc_smul : ∀ {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {F : Type} [Field F] [Algebra (FractionRing R) F]
     {N : NumD F} (ν : NumOf D F N) {k : ℕ} (s : Fam D F k) (a : F) (gm : GtPt D (TE R F)) (α : N.X),
     jc ν (a • s) gm α = TrivSqZeroExt.inl a * jc ν s gm α := by

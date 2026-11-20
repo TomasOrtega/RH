@@ -52,22 +52,37 @@ end GlobalTheory.CompanionTheory.ColumnSplitting
 namespace GlobalTheory.CompanionTheory.ColumnSplitting
 variable {D : D7} {n t : ℕ} {B W : HSp D}
 
+/- English proof (translation)
+Take `⟨i1, i2, i3, i4, -, -⟩` from `lattice_Mx D a b`. Conclude with `⟨i1, i2, i3, i4, ⟨rfl⟩⟩`.
+-/
 theorem top_mx (a b : ℕ) : IsTopologicalAddGroup (Mx D a b) ∧ LocallyCompactSpace (Mx D a b) ∧ SecondCountableTopology (Mx D a b) ∧
     T2Space (Mx D a b) ∧ BorelSpace (Mx D a b) := by
   obtain ⟨i1, i2, i3, i4, -, -⟩ := lattice_Mx D a b
   exact ⟨i1, i2, i3, i4, ⟨rfl⟩⟩
 
+/- English proof (translation)
+The claim follows from `continuous_id.matrix_submatrix _ _`.
+-/
 theorem continuous_first_column_block (hn : W.rank + t = n) {a : ℕ} : Continuous (c1 (D := D) (W := W) hn (a := a)) :=
   continuous_id.matrix_submatrix _ _
 
+/- English proof (translation)
+The claim follows from `continuous_id.matrix_submatrix _ _`.
+-/
 theorem continuous_second_column_block (hn : W.rank + t = n) {a : ℕ} : Continuous (c2 (D := D) (W := W) hn (a := a)) :=
   continuous_id.matrix_submatrix _ _
 
+/- English proof (translation)
+Use `isTopologicalRing_tens (F := D.host.F) (E := D.host.E) (R := AF D.host.F)` as an intermediate fact. Take `⟨-, -, -, -, h5, -⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D W`. Conclude with `((continuous_mt W).comp continuous_inv).matrix_mul continuous_const`.
+-/
 theorem continuous_ww (x₀ : Matrix (Fin W.rank) (Fin W.rank) D.host.E) : Continuous (ww W x₀) := by
   have := isTopologicalRing_tens (F := D.host.F) (E := D.host.E) (R := AF D.host.F)
   obtain ⟨-, -, -, -, h5, -⟩ := GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D W
   exact ((continuous_mt W).comp continuous_inv).matrix_mul continuous_const
 
+/- English proof (translation)
+Use `isTopologicalRing_tens (F := D.host.F) (E := D.host.E) (R := AF D.host.F)` as an intermediate fact. Establish `hT` using `(top_mx (D := D) B.rank W.rank).1`. Establish `hT2` using `(top_mx (D := D) B.rank t).1`. Establish `h1 : Continuous fun p : Par D n t W => mm d.jX (c1 hn p.2.1) + mm d.j0 (ww W x₀ p.1)` using `(continuous_const.matrix_mul ((continuous_first_column_block hn).comp (continuous_fst.comp continuous_snd))).add (continuous_const.matrix_mul ((continuous_ww x₀).comp continuous_fst))`. Conclude with `h1.prodMk ((h1.matrix_mul (continuous_snd.comp continuous_snd)).add (continuous_const.matrix_mul ((continuous_second_column_block hn).comp (continuous_fst.comp continuous_snd))))`.
+-/
 theorem continuous_zp (d : HypDec B W t) (hn : W.rank + t = n) (x₀ : Matrix (Fin W.rank) (Fin W.rank) D.host.E) :
     Continuous (zp d hn x₀) := by
   have := isTopologicalRing_tens (F := D.host.F) (E := D.host.E) (R := AF D.host.F)
@@ -79,17 +94,26 @@ theorem continuous_zp (d : HypDec B W t) (hn : W.rank + t = n) (x₀ : Matrix (F
   exact h1.prodMk ((h1.matrix_mul (continuous_snd.comp continuous_snd)).add
     (continuous_const.matrix_mul ((continuous_second_column_block hn).comp (continuous_fst.comp continuous_snd))))
 
+/- English proof (translation)
+Use `isTopologicalRing_tens (F := D.host.F) (E := D.host.E) (R := AF D.host.F)` as an intermediate fact. Conclude with `(((continuous_mt V).comp continuous_fst).matrix_mul (continuous_fst.comp continuous_snd)).prodMk (((continuous_mt V).comp continuous_fst).matrix_mul (continuous_snd.comp continuous_snd))`.
+-/
 theorem continuous_ac (V : HSp D) {a b : ℕ} :
     Continuous fun u : GA D V × (Mx D V.rank a × Mx D V.rank b) => ac V u.1 u.2 := by
   have := isTopologicalRing_tens (F := D.host.F) (E := D.host.E) (R := AF D.host.F)
   exact (((continuous_mt V).comp continuous_fst).matrix_mul (continuous_fst.comp continuous_snd)).prodMk
     (((continuous_mt V).comp continuous_fst).matrix_mul (continuous_snd.comp continuous_snd))
 
+/- English proof (translation)
+Take `⟨-, -, h3, -, h5⟩` from `top_mx (D := D) a b`. Take `⟨-, -, h3', -, h5'⟩` from `top_mx (D := D) a c`. Conclude with `⟨inferInstance, inferInstance⟩`.
+-/
 theorem top_pair (a b c : ℕ) : BorelSpace (Mx D a b × Mx D a c) ∧ SecondCountableTopology (Mx D a b × Mx D a c) := by
   obtain ⟨-, -, h3, -, h5⟩ := top_mx (D := D) a b
   obtain ⟨-, -, h3', -, h5'⟩ := top_mx (D := D) a c
   exact ⟨inferInstance, inferInstance⟩
 
+/- English proof (translation)
+Take `⟨-, -, h3, -, h5⟩` from `top_mx (D := D) t n`. Take `⟨-, -, h3', -, h5'⟩` from `top_mx (D := D) W.rank t`. Take `⟨-, g2, -, g4, -, -⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D W`. Establish `: BorelSpace (GA D W)` using `⟨rfl⟩`. Conclude with `⟨inferInstance, inferInstance⟩`.
+-/
 theorem top_par (n t : ℕ) (W : HSp D) : BorelSpace (Par D n t W) ∧ SecondCountableTopology (Par D n t W) := by
   obtain ⟨-, -, h3, -, h5⟩ := top_mx (D := D) t n
   obtain ⟨-, -, h3', -, h5'⟩ := top_mx (D := D) W.rank t
@@ -97,6 +121,9 @@ theorem top_par (n t : ℕ) (W : HSp D) : BorelSpace (Par D n t W) ∧ SecondCou
   have : BorelSpace (GA D W) := ⟨rfl⟩
   exact ⟨inferInstance, inferInstance⟩
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `top_par (D := D) n t W`. Take `⟨g1, g2⟩` from `top_pair (D := D) B.rank W.rank t`. Establish `o1 : OpensMeasurableSpace (Par D n t W)` using `h1.opensMeasurable`. Conclude with `(continuous_zp d hn x₀).measurable`.
+-/
 theorem measurable_zp (d : HypDec B W t) (hn : W.rank + t = n) (x₀ : Matrix (Fin W.rank) (Fin W.rank) D.host.E) :
     Measurable (zp d hn x₀) := by
   obtain ⟨h1, h2⟩ := top_par (D := D) n t W
@@ -104,6 +131,11 @@ theorem measurable_zp (d : HypDec B W t) (hn : W.rank + t = n) (x₀ : Matrix (F
   have o1 : OpensMeasurableSpace (Par D n t W) := h1.opensMeasurable
   exact (continuous_zp d hn x₀).measurable
 
+/- English proof (translation)
+Take `⟨-, i2, i3, i4, i5⟩` from `top_mx (D := D) t n`. Take `⟨-, j2, j3, j4, j5⟩` from `top_mx (D := D) W.rank t`. Take `⟨-, g2, g3, -, -, -⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D W`. Establish `: BorelSpace (GA D W)` using `⟨rfl⟩`. Take `⟨hc, 𝓕, hf⟩` from `I.cov₁`.
+
+Use `hf.1` as an intermediate fact. Use `I.haar` as an intermediate fact. Unfold `Q0`. Use `infer_instance`.
+-/
 theorem sigmaFinite_parameter_product_measure {d : HypDec B W t} (I : IkD d n) (μ : Measure (Mx D W.rank t)) (hμ : μ.IsAddHaarMeasure) :
     SigmaFinite (Q0 I μ) := by
   obtain ⟨-, i2, i3, i4, i5⟩ := top_mx (D := D) t n
@@ -125,6 +157,13 @@ def XU (d : HypDec B W t) (hn : W.rank + t = n) (x₀ : Matrix (Fin W.rank) (Fin
     Mx D B.rank n :=
   mm d.jX U + mm d.j0 (jn hn (ww W x₀ h) 0)
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `top_par (D := D) n t W`. Take `⟨g1, g2⟩` from `top_pair (D := D) B.rank W.rank t`. Take `⟨-, k2, -, -, k5, -⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D B`. Establish `hB : BorelSpace (GA D B)` using `⟨rfl⟩`. Establish `hK : BorelSpace I.l.K` using `Subtype.borelSpace _`.
+
+Establish `o0 : OpensMeasurableSpace (Par D n t W)` using `h1.opensMeasurable`. Establish `oK : OpensMeasurableSpace I.l.K` using `hK.opensMeasurable`. Establish `e1 : SecondCountableTopologyEither I.l.K (Par D n t W)` using `⟨Or.inr h2⟩`. Establish `o1 : OpensMeasurableSpace (I.l.K × Par D n t W)` using `Prod.opensMeasurableSpace`. Establish `hc : Continuous fun p : I.l.K × Par D n t W => ac B ((p.1 : GA D B)⁻¹) (zp d hn x₀ p.2)` using `(continuous_ac B).comp (((continuous_subtype_val.comp continuous_fst).inv).prodMk ((continuous_zp d hn x₀).comp continuous_snd))`.
+
+Conclude with `hc.measurable`.
+-/
 theorem measurable_pi {d : HypDec B W t} (hn : W.rank + t = n) (I : IkD d n)
     (x₀ : Matrix (Fin W.rank) (Fin W.rank) D.host.E) :
     Measurable fun p : I.l.K × Par D n t W => ac B ((p.1 : GA D B)⁻¹) (zp d hn x₀ p.2) := by

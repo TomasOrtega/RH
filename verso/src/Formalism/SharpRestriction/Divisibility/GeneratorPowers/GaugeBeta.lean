@@ -22,6 +22,9 @@ def BetaUniqSt : Prop :=
 
 namespace GaugeBeta
 
+/- English proof (translation)
+Set `rig1 : LB.Gen (LB.LinComb L (K` to `PUnit) (fun _ => ψ) fun _ => 1) := ⟨rig.s⟩`. Conclude with `pull_unit_eq_one L hL φ ε h ψ rig1 t t' u hu hc hc'`.
+-/
 theorem pull_unit_eq_one_k {X Y S0 : Scheme.{0}} (L : LB X) (hL : L.IsLB) {K : Type} [Fintype K]
     (φ : K → (Y ⟶ X)) (ε : K → ℤ) (h : S0 ⟶ Y) (ψ : S0 ⟶ X) (k : ℤ)
     (rig : LB.Gen (LB.LinComb L (K := PUnit) (fun _ => ψ) fun _ => k))
@@ -36,6 +39,17 @@ theorem pull_unit_eq_one_k {X Y S0 : Scheme.{0}} (L : LB X) (hL : L.IsLB) {K : T
 
 end GaugeBeta
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo a β β' hβ hβ' hc hc'`. Establish `hL : Xo.univ.t.PP.L.IsLB` using `Xo.univ.t.PP.isLB`. Take `⟨u, hu⟩` from `gen_ratio _ (wchart_cover Xo.univ.t.PP.L hL _) β β' hβ hβ'`. Establish `h1` using `GaugeBeta.pull_unit_eq_one_k Xo.univ.t.PP.L hL _ _ (eSec Xo.univ.t.G) (eSec Xo.univ.t.G) (-3) (rigPow Xo.univ.t.G Xo.univ.t.PP.L Xo.univ.t.PP.rig (-3)) β β' u hu hc hc'`. Establish `hu1 : u = 1`.
+
+Take `⟨v, hv⟩` from `(hglob _ Xo.univ.t.G (isAbelianScheme_univ Xo)).2 (u : Γ(Xo.univ.t.G.left, ⊤))`. Establish `hw : eSec Xo.univ.t.G ≫ Xo.univ.t.G.hom = 𝟙 _`. Unfold `eSec`. Conclude with `Over.w _`. Establish `e1 : (Scheme.Hom.app (eSec Xo.univ.t.G) ⊤).hom ((Scheme.Hom.appTop Xo.univ.t.G.hom).hom v) = v`.
+
+Use `congrArg (fun f => (Scheme.Hom.appTop f).hom v) hw` as an intermediate fact. Simplify using `at this`. Conclude with `this`. Rewrite `e1` using `[hv]`. Establish `hv1 : v = 1` using `e1.symm.trans h1`.
+
+Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[← hv, hv1, map_one]`. Both sides reduce to the same expression. Consider the cases of `β`. Consider the cases of `β'`.
+
+Use `congr 1`. Use function extensionality and compare the values at `j`. Establish `hj` using `hu j`. Rewrite `hj` using `[hu1, map_one, one_mul]`. Conclude with `hj`.
+-/
 theorem betaUniq_of_global (hglob : GlobalFnsSt) : BetaUniqSt := by
   intro E _ _ _ H Dw l Xo a β β' hβ hβ' hc hc'
   have hL : Xo.univ.t.PP.L.IsLB := Xo.univ.t.PP.isLB

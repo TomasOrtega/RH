@@ -9,6 +9,11 @@ open scoped Formalism.Per NNReal
 
 namespace GlobalTheory.BSP
 
+/- English proof (translation)
+Establish `hy' : (y : ℂ_[l]) ≠ 0` using `fun h => hy (Subtype.ext h)`. Establish `hpos : 0 < ‖(y : ℂ_[l])‖` using `norm_pos_iff.2 hy'`. Take `⟨n, hn⟩` from `exists_pow_lt_of_lt_one hpos (GlobalTheory.RingBasics.norm_p_lt (p := l))`. Use `⟨n, ⟨(l : ℂ_[l]) ^ n / y, (GlobalTheory.RingBasics.mem_OC _).2 ?_⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[norm_div, norm_pow, div_le_one hpos]`.
+
+Conclude with `hn.le`. Use `push_cast`. Conclude with `(mul_div_cancel₀ _ hy').symm`.
+-/
 theorem dvd_pow_of_ne_zero_untilt (l : ℕ) [Fact l.Prime] (y : Formalism.Per.OC l) (hy : y ≠ 0) :
     ∃ n : ℕ, y ∣ (l : Formalism.Per.OC l) ^ n := by
   have hy' : (y : ℂ_[l]) ≠ 0 := fun h => hy (Subtype.ext h)
@@ -20,10 +25,24 @@ theorem dvd_pow_of_ne_zero_untilt (l : ℕ) [Fact l.Prime] (y : Formalism.Per.OC
   · push_cast
     exact (mul_div_cancel₀ _ hy').symm
 
+/- English proof (translation)
+Rewrite using `[map_natCast, CharP.cast_eq_zero]`.
+-/
 theorem constantCoeff_natCast_untilt (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [CharP O l] :
     WittVector.constantCoeff ((l : ℕ) : WittVector l O) = 0 := by
   rw [map_natCast, CharP.cast_eq_zero]
 
+/- English proof (translation)
+Introduce `l _ K bk O _ _ _ _ _ ψ h0 hu hc`. Take `⟨w, hw, hE⟩` from `GlobalTheory.T.breuilKisin_eisenstein_image_teichmuller_pow l K bk O ψ hu`. Take `⟨hp, hl⟩` from `GlobalTheory.T.teichmullerDistinguished_span_isPrime_and_not_mem l O _ h0 hu hc _ w _ bk.deg_pos hw hE`. Establish `hdom : IsDomain (WittVector l O ⧸ Ideal.span {WittVector.map ψ (bk.ev bk.E)})` using `Ideal.Quotient.isDomain _`. Establish `hker : RingHom.ker (Per.θ l) ≤ RingHom.ker ((Ideal.Quotient.mk (Ideal.span {WittVector.map ψ (bk.ev bk.E)})).comp (WittVector.map ψ))`.
+
+Rewrite using `[← bk.span_ev, Ideal.span_le, Set.singleton_subset_iff]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_span_singleton_self _)`. Use `⟨(Per.θ l).liftOfSurjective (theta_onto l) ⟨_, hker⟩, fun a => ?_, ?_, hdom, ?_⟩` and prove the remaining obligations. Conclude with `RingHom.liftOfRightInverse_comp_apply _ _ _ _ a`. Rewrite using `[injective_iff_map_eq_zero]`.
+
+Introduce `y hy`. Assume the negation of the conclusion as `hne`. Take `⟨n, z, hz⟩` from `dvd_pow_of_ne_zero_untilt l y hne`. Establish `h` using `congrArg ((Per.θ l).liftOfSurjective (theta_onto l) ⟨_, hker⟩) hz`. Rewrite `h` using `[map_mul, hy, zero_mul, map_pow, map_natCast]`.
+
+Establish `h2` using `eq_zero_of_pow_eq_zero h`. Rewrite `h2` using `[← map_natCast (Ideal.Quotient.mk _), Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hl h2`. Introduce and unpack `a ⟨b, hb⟩`. Take `⟨b, rfl⟩` from `Ideal.Quotient.mk_surjective b`.
+
+Rewrite `hb` using `[← map_natCast (Ideal.Quotient.mk _), ← map_mul, Ideal.Quotient.eq, Ideal.mem_span_singleton']`. Take `⟨c, hc⟩` from `hb`. Establish `h` using `congrArg WittVector.constantCoeff hc`. Rewrite `h` using `[hE, map_mul, map_add, map_mul, map_sub, map_mul, constantCoeff_natCast_untilt, zero_mul, zero_mul, add_zero, sub_zero, map_pow, WittVector.constantCoeff_apply (WittVector.teichmuller _ _), WittVector.teichmuller_coeff_zero]`. Conclude with `⟨_, h.symm.trans (mul_comm _ _)⟩`.
+-/
 theorem exists_untilt_map : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (O : Type) [CommRing O] [IsDomain O] [ValuationRing O] [CharP O l] [PerfectRing O l] (ψ : OCb l →+* O), ψ bk.flat ≠ 0 → ¬ IsUnit (ψ bk.flat) → IsAdicComplete (Ideal.span {ψ bk.flat}) O → ∃ θ' : OC l →+* (WittVector l O ⧸ Ideal.span {WittVector.map ψ (bk.ev bk.E)}), (∀ a : Ainf l, θ' (Per.θ l a) = Ideal.Quotient.mk _ (WittVector.map ψ a)) ∧ Function.Injective θ' ∧ IsDomain (WittVector l O ⧸ Ideal.span {WittVector.map ψ (bk.ev bk.E)}) ∧ ∀ a : WittVector l O, ((l : ℕ) : WittVector l O ⧸ Ideal.span {WittVector.map ψ (bk.ev bk.E)}) ∣ Ideal.Quotient.mk _ a → ψ bk.flat ^ bk.Ep.natDegree ∣ a.coeff 0 := by
   intro l _ K bk O _ _ _ _ _ ψ h0 hu hc
   obtain ⟨w, hw, hE⟩ := GlobalTheory.T.breuilKisin_eisenstein_image_teichmuller_pow l K bk O ψ hu

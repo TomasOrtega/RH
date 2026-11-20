@@ -19,17 +19,36 @@ namespace GlobalTheory.IdeleSinglePlace
 
 open GlobalTheory.EmbChart
 
+/- English proof (translation)
+Rewrite using `[add_mul, one_mul, atPlace_mul_right, map_add, map_one, evFin_atPlace, add_assoc, ← map_add]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem one_add_atPlace_mul {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) (x y : Fv F v) :
     (1 + atPlace v (x - 1)) * (1 + atPlace v (y - 1)) = 1 + atPlace v (x * y - 1) := by
   rw [add_mul, one_mul, atPlace_mul_right, map_add, map_one, evFin_atPlace, add_assoc, ← map_add]
   congr 2; ring
 
+/- English proof (translation)
+Proceed by induction on `N with`. Consider the case `zero => simp`. Consider the case `succ n ih => rw [pow_succ, ih, one_add_atPlace_mul, pow_succ]`.
+-/
 theorem one_add_atPlace_pow {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) (x : Fv F v) (N : ℕ) :
     (1 + atPlace v (x - 1)) ^ N = 1 + atPlace v (x ^ N - 1) := by
   induction N with
   | zero => simp
   | succ n ih => rw [pow_succ, ih, one_add_atPlace_mul, pow_succ]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ v`. Choose the witnesses or unpack the hypotheses as in `⟨ϖ, h0, h1, hT⟩ : ∃ ϖ : Fv F v, ϖ ≠ 0 ∧ ϖ ≠ 0 ∧ Tendsto (fun N : ℕ => ϖ ^ N) atTop (𝓝 0) := by`. Use `letI : NontriviallyNormedField (v.adicCompletion F) := Valued.toNontriviallyNormedField _ _`. Take `⟨ϖ, hp, hl⟩` from `NormedField.exists_norm_lt_one (v.adicCompletion F)`. Conclude with `⟨ϖ, norm_pos_iff.1 hp, norm_pos_iff.1 hp, tendsto_pow_atTop_nhds_zero_of_norm_lt_one hl⟩`.
+
+Set `s : (AF F)ˣ` to `⟨1 + atPlace v (ϖ - 1), 1 + atPlace v (ϖ⁻¹ - 1), by rw [one_add_atPlace_mul, mul_inv_cancel₀ h0, sub_self, map_zero, add_zero], by rw [one_add_atPlace_mul, inv_mul_cancel₀ h0, sub_self, map_zero, add_zero]⟩`. Use `⟨s, 1 - atPlace v 1, fun u hu => ?_, ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `u * (1 + atPlace v (ϖ - 1)) = u`. Rewrite using `[mul_add, mul_one, mul_comm, atPlace_mul_right, hu, mul_zero, map_zero, add_zero]`. Express the relevant statement in the definitionally equal form `Tendsto (fun N : ℕ => (1 + atPlace v (ϖ - 1)) ^ N) atTop _`.
+
+Repeatedly rewrite using `[one_add_atPlace_pow]`. Establish `hc : Continuous (fun x : Fv F v => (1 : AF F) + atPlace v (x - 1))` using `continuous_const.add (GlobalTheory.SkewLeviNear.continuous_atPlace.comp (continuous_id.sub continuous_const))`. Use `(hc.tendsto 0).comp hT` as an intermediate fact. Simplify `this` using `[Function.comp_def, zero_sub, map_neg, sub_eq_add_neg]`. Introduce `hu`.
+
+Establish `hinj : Function.Injective (algebraMap (AF F) (AE F E))` using `Algebra.TensorProduct.includeLeft_injective (S := AF F) (algebraMap F E).injective`. Establish `hmul : (1 - atPlace v (1 : Fv F v)) * atPlace v 1 = 0`. Rewrite using `[sub_mul, one_mul, mul_comm, atPlace_mul_right, evFin_atPlace, one_mul, sub_self]`. Establish `h2 : algebraMap (AF F) (AE F E) (atPlace v 1) = 0`. Use `congrArg (algebraMap (AF F) (AE F E)) hmul` as an intermediate fact.
+
+Rewrite `this` using `[map_mul, map_zero]`. Conclude with `(hu.mul_right_eq_zero).1 this`. Establish `h3 : atPlace v (1 : Fv F v) = 0` using `hinj (by rw [h2, map_zero])`. Establish `h4` using `congrArg (evFin F v) h3`. Rewrite `h4` using `[evFin_atPlace, map_zero]`.
+
+Conclude with `one_ne_zero h4`.
+-/
 theorem main : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (v : Pl F), ∃ (s : (AF F)ˣ) (ε : AF F),
     (∀ u : AF F, evFin F v u = 0 → u * (s : AF F) = u) ∧ Tendsto (fun N : ℕ => (s : AF F) ^ N) atTop (𝓝 ε) ∧
     ¬ IsUnit (algebraMap (AF F) (AE F E) ε) := by

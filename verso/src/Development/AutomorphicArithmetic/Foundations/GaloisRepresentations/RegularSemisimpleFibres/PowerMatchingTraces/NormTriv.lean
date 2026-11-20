@@ -8,6 +8,11 @@ open Formalism.L2.Host UpperTheory.V.Published UpperTheory.CBC Formalism.Conjuga
 open scoped Classical
 open UpperTheory.Gal.InertialTypesAlt.G
 
+/- English proof (translation)
+Use `GlobalTheory.FrobDense.eq_one_of_unif (ψ.loc w) (fun y hy => ?_) x` and prove the remaining obligations. Establish `h2` using `unif_spec w`. Establish `h3` using `hu (y * (atFin w (unif w))⁻¹) (by`. Unfold `IsUnitAt`. Unfold `IsUnifAt at hy h2`.
+
+Rewrite using `[Units.val_mul, Units.val_inv_eq_inv_val, map_mul, map_inv₀, hy, h2]`. Conclude with `mul_inv_cancel₀ WithZero.exp_ne_zero)`. Rewrite `h3` using `[map_mul, map_inv, mul_inv_eq_one]`. Conclude with `h3.trans hv`.
+-/
 private theorem loc_one_of' {L : Type} [Field L] [NumberField L] (ψ : HChar L) (w : HeightOneSpectrum (𝓞 L))
     (hu : ψ.UnrAt w) (hv : ψ.val w = 1) (x : (w.adicCompletion L)ˣ) : ψ.loc w x = 1 := by
   refine GlobalTheory.FrobDense.eq_one_of_unif (ψ.loc w) (fun y hy => ?_) x
@@ -20,6 +25,13 @@ private theorem loc_one_of' {L : Type} [Field L] [NumberField L] (ψ : HChar L) 
   rw [map_mul, map_inv, mul_inv_eq_one] at h3
   exact h3.trans hv
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ η hη x`. Set `ψ : HChar E` to `⟨η.1.comp (GroundTheory.Global.ideleNorm F E), η.2.1.comp GroundTheory.Global.continuous_ideleNorm, fun k => (congrArg η.1 (GroundTheory.Global.ideleNorm_diagonal (K := F) k)).trans (η.2.2 _)⟩`. Establish `hψ : ∀ x, ψ.1 x = η.1 (GroundTheory.Global.ideleNorm F E x)` using `fun _ => rfl`. Establish `hev : ∀ᶠ w : HeightOneSpectrum (𝓞 E) in Filter.cofinite, ψ.UnrAt w ∧ ψ.val w = 1` using `by filter_upwards [hη.2.2, (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.tendsto_under F E).eventually (Filter.eventually_cofinite.2 (GlobalTheory.Mem.UnrAe.finite_ramified η))] with w h1 h2`. Establish `hf` using `GlobalTheory.ArtinTransport.normV_eq_pow (E := F) (E' := E) (v := w.under (𝓞 F)) (w := w) rfl`.
+
+Take `⟨a, b⟩` from `GlobalTheory.NormValGen.unrAt_val_of_comp_norm F E η ψ hψ w _ hf h2`. Conclude with `⟨a, b.trans (h1 _ hf)⟩`. Establish `h1 : ψ.1 = 1` using `GlobalTheory.FrobDense.eq_one_of_away ψ.1 ψ.2.1 ψ.2.2 (Filter.eventually_cofinite.1 hev).toFinset fun w hw y => by`. Use `not_not.1 (fun h => hw ((Set.Finite.mem_toFinset _).2 h))` as an intermediate fact. Conclude with `loc_one_of' ψ w this.1 this.2 y`.
+
+Rewrite using `[← hψ, h1]`. Both sides reduce to the same expression.
+-/
 theorem UpperTheory.Gal.InertialTypesAlt.G.normTriv :
     UpperTheory.Gal.InertialTypesAlt.G.NormTriv := by
   intro F E _ _ _ _ _ η hη x

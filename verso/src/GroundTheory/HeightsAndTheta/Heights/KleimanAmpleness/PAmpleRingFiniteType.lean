@@ -16,6 +16,11 @@ namespace AmpleRingFiniteType
 variable {S : Type u} [CommRing S] {Ω : Type w} [Field Ω] [Algebra S Ω] {N : ℕ}
   {x : Fin (N + 1) → Ω}
 
+/- English proof (translation)
+Use `conv_lhs => rw [← f.support_sum_monomial_coeff]`. Use `conv_rhs => rw [← f.support_sum_monomial_coeff]`. Simplify using `only [map_sum, Finset.sum_div]`. Use `Finset.sum_congr rfl fun μ hμ => ?_` and prove the remaining obligations. Establish `hdeg` using `hf (mem_support_iff.mp hμ)`.
+
+Simplify using `only [Finsupp.weight_apply, Pi.one_apply, smul_eq_mul, mul_one, Finsupp.sum] at hdeg`. Simplify using `only [aeval_monomial, Finsupp.prod, div_pow, Finset.prod_div_distrib, Finset.prod_pow_eq_pow_sum, hdeg, mul_div_assoc]`.
+-/
 theorem aeval_div_pow {f : Poly S N} {e : ℕ} (hf : f.IsHomogeneous e) (c : Ω) :
     aeval (fun i => x i / c) f = aeval x f / c ^ e := by
   conv_lhs => rw [← f.support_sum_monomial_coeff]
@@ -30,12 +35,18 @@ theorem aeval_div_pow {f : Poly S N} {e : ℕ} (hf : f.IsHomogeneous e) (c : Ω)
 def chartGens (J : Chart x) : Finset Ω := by
   classical exact (Finset.univ ×ˢ J.1).image fun p => x p.1 / x p.2
 
+/- English proof (translation)
+Unfold `chartGens`. Use `Finset.mem_image.mpr ⟨(i, l), Finset.mem_product.mpr ⟨Finset.mem_univ _, hl⟩, rfl⟩` and compare the differences between its conclusion and the goal.
+-/
 theorem mem_chartGens {J : Chart x} (i : Fin (N + 1)) {l : Fin (N + 1)} (hl : l ∈ J.1) :
     x i / x l ∈ chartGens J := by
   classical
   unfold chartGens
   convert Finset.mem_image.mpr ⟨(i, l), Finset.mem_product.mpr ⟨Finset.mem_univ _, hl⟩, rfl⟩
 
+/- English proof (translation)
+Introduce `y hy`. Unfold `chartGens at hy`. Take `⟨⟨i, l⟩, hp, rfl⟩` from `Finset.mem_image.mp (by convert hy)`. Conclude with `⟨X i, X l, 1, X_mem_monos (Finset.mem_product.mp hp).2, isHomogeneous_X S i, isHomogeneous_X S l, by simp⟩`.
+-/
 theorem chartGens_mem (J : Chart x) : ∀ y ∈ chartGens J, y ∈ chartRing S x J := by
   classical
   intro y hy
@@ -44,6 +55,21 @@ theorem chartGens_mem (J : Chart x) : ∀ y ∈ chartGens J, y ∈ chartRing S x
   exact ⟨X i, X l, 1, X_mem_monos (Finset.mem_product.mp hp).2, isHomogeneous_X S i,
     isHomogeneous_X S l, by simp⟩
 
+/- English proof (translation)
+Introduce and unpack `_ ⟨f, s, e, hs, hf, hse, rfl⟩`. Take `⟨l, hl⟩` from `J.2.1`. Establish `hxl : x l ≠ 0` using `(mem_support x).mp (J.2.2 hl)`. Establish `hmon : ∀ s ∈ monos (S` using `S) J.1, ∃ e, s.IsHomogeneous e ∧ x l ^ e / aeval x s ∈ Algebra.adjoin S (chartGens J : Set Ω) := by`. Introduce `s hs`.
+
+Proceed by induction on `hs using Submonoid.closure_induction with`. Consider the case `mem s hs`. Take `⟨i, hi, rfl⟩` from `hs`. Use `⟨1, isHomogeneous_X S i, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_one, aeval_X]`.
+
+Conclude with `Algebra.subset_adjoin (Finset.mem_coe.mpr (mem_chartGens l hi))`. Consider the case `one => exact ⟨0, isHomogeneous_one _ _, by rw [pow_zero, map_one, div_one]; exact one_mem _⟩`. Consider the case `mul s s' _ _ h h'`. Take `⟨e, he, hW⟩` from `h`. Take `⟨e', he', hW'⟩` from `h'`.
+
+Use `⟨e + e', he.mul he', ?_⟩` and prove the remaining obligations. Rewrite using `[pow_add, map_mul, mul_div_mul_comm]`. Conclude with `mul_mem hW hW'`. Take `⟨e', he', hW⟩` from `hmon s hs`. Establish `hs0 : aeval x s ≠ 0` using `eval_ne_zero_of_mem_monos J hs`.
+
+Establish `hee : e' = e` using `he'.inj_right hse (fun h => hs0 (by rw [h, map_zero]))`. Substitute `hee` using the available equality. Establish `hf' : aeval x f / x l ^ e' ∈ Algebra.adjoin S (chartGens J : Set Ω)`. Rewrite using `[← aeval_div_pow hf (x l)]`. Establish `h1 : aeval (fun i => x i / x l) f ∈ Algebra.adjoin S (Set.range fun i => x i / x l)`.
+
+Rewrite using `[Algebra.adjoin_range_eq_range_aeval]`. Conclude with `⟨f, rfl⟩`. Conclude with `Algebra.adjoin_le (Set.range_subset_iff.mpr fun i => Algebra.subset_adjoin (Finset.mem_coe.mpr (mem_chartGens i hl))) h1`. Establish `e1 : aeval x f / aeval x s = (aeval x f / x l ^ e') * (x l ^ e' / aeval x s)`. Rewrite using `[div_mul_div_cancel₀ (pow_ne_zero _ hxl)]`.
+
+Rewrite using `[e1]`. Conclude with `mul_mem hf' hW`.
+-/
 theorem chartRing_le (J : Chart x) :
     chartRing S x J ≤ Algebra.adjoin S (chartGens J : Set Ω) := by
   rintro _ ⟨f, s, e, hs, hf, hse, rfl⟩
@@ -81,6 +107,23 @@ theorem chartRing_le (J : Chart x) :
   rw [e1]
   exact mul_mem hf' hW
 
+/- English proof (translation)
+Use `set L := Algebra.adjoin S (Set.range (fun l => D.h l / D.h j) ∪ (chartGens J : Set Ω))`. Establish `hA : ∀ c ∈ chartRing S x J, c ∈ L` using `fun c hc => Algebra.adjoin_mono Set.subset_union_right (chartRing_le J hc)`. Establish `hP : ∀ q ∈ (H.pow D.m).sub J, q / D.h j ∈ L`. Introduce `q hq`. Rewrite `hq` using `[← D.generates J]`.
+
+Proceed by induction on `hq using Submodule.span_induction with`. Consider the case `mem q hq`. Take `⟨l, rfl⟩` from `hq`. Conclude with `Algebra.subset_adjoin (Or.inl ⟨l, rfl⟩)`. Consider the case `zero => rw [zero_div]`.
+
+Conclude with `zero_mem _`. Consider the case `add q q' _ _ h1 h2 => rw [add_div]`. Conclude with `add_mem h1 h2`. Consider the case `smul c q _ h1`. Rewrite using `[chartRing_smul_def, mul_div_assoc]`.
+
+Conclude with `mul_mem (hA _ c.2) h1`. Establish `hPn : ∀ n, ∀ y ∈ ((H.pow D.m).sub J) ^ n, y / D.h j ^ n ∈ L`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`.
+
+Introduce `y hy`. Take `⟨c, rfl⟩` from `Submodule.mem_one.mp hy`. Rewrite using `[pow_zero, div_one]`. Conclude with `hA _ c.2`. Consider the case `succ n ih`.
+
+Introduce `y hy`. Rewrite `hy` using `[pow_succ]`. Use `Submodule.mul_induction_on hy (fun p hp q hq => ?_) (fun y y' h1 h2 => ?_)` and prove the remaining obligations. Rewrite using `[pow_succ, mul_div_mul_comm]`. Conclude with `mul_mem (ih p hp) (hP q hq)`.
+
+Rewrite using `[add_div]`. Conclude with `add_mem h1 h2`. Take `⟨n, hn⟩` from `ha`. Establish `hn' : a * D.h j ^ n ∈ ((H.pow D.m).sub J) ^ n`. Rewrite using `[SubSystem.pow_sub, ← pow_mul, ← SubSystem.pow_sub]`.
+
+Conclude with `hn`. Use `hPn n _ hn'` as an intermediate fact. Rewrite `this` using `[mul_div_cancel_right₀ _ (pow_ne_zero _ h0)]`. Then use the resulting hypothesis.
+-/
 theorem ampleChart_le (H : LineBundle S x) (D : AmpleData S x H) (j : Fin (D.r + 1))
     (h0 : D.h j ≠ 0) (J : Chart x) {a : Ω} (ha : a ∈ ampleChart H.toSubSystem D.m (D.h j) J) :
     a ∈ Algebra.adjoin S (Set.range (fun l => D.h l / D.h j) ∪ (chartGens J : Set Ω)) := by
@@ -121,6 +164,13 @@ theorem ampleChart_le (H : LineBundle S x) (D : AmpleData S x H) (j : Fin (D.r +
   have := hPn n _ hn'
   rwa [mul_div_cancel_right₀ _ (pow_ne_zero _ h0)] at this
 
+/- English proof (translation)
+Establish `hI : ∀ I : Chart x, ∃ M, c ^ M * y ∈ ampleChart H.toSubSystem m h I`. Introduce `I`. Establish `h1 : y ∈ ampleChart H.toSubSystem m h (AmpleAffineGen.unionChart I J)` using `AmpleAffineGen.ampleChart_mono (AmpleAffineGen.subset_unionChart_right I J) (AmpleAffineGen.mem_ampleSubalg_of_mem_chartRing (hh J) hy)`. Take `⟨D, hD⟩` from `AmpleAffineGen.ampleChart_loc H I J h1`. Take `⟨e, he⟩` from `hrat I`.
+
+Use `⟨e * D, ?_⟩` and prove the remaining obligations. Use `mul_mem (pow_mem (show _ ∈ AmpleAffineGen.ampleSubalg H.toSubSystem m h I (hh I) from he) D) (show _ ∈ AmpleAffineGen.ampleSubalg H.toSubSystem m h I (hh I) from hD)` as an intermediate fact. Rewrite `this` using `[show c ^ e * (xProd I ^ J.1.card / xProd J ^ I.1.card) = c ^ e * AmpleAffineGen.chartRatio J I from rfl, AmpleAffineGen.pow_mul_cancel (AmpleAffineGen.chartRatio_mul_chartRatio I J)]`. Then use the resulting hypothesis. Use `choose M hM using hI`. Use `⟨Finset.univ.sup M, Set.mem_iInter.mpr fun I => ?_⟩` and prove the remaining obligations.
+
+Establish `hle : M I ≤ Finset.univ.sup M` using `Finset.le_sup (Finset.mem_univ I)`. Establish `e1 : c ^ Finset.univ.sup M * y = c ^ (Finset.univ.sup M - M I) * (c ^ M I * y)`. Rewrite using `[← mul_assoc, ← pow_add, Nat.sub_add_cancel hle]`. Rewrite using `[e1]`. Conclude with `mul_mem (pow_mem (show c ∈ AmpleAffineGen.ampleSubalg H.toSubSystem m h I (hh I) from Set.mem_iInter.mp hc I) _) (show _ ∈ AmpleAffineGen.ampleSubalg H.toSubSystem m h I (hh I) from hM I)`.
+-/
 theorem exists_pow_mul_mem_ampleRing (H : LineBundle S x) {m : ℕ} {h : Ω}
     (hh : ∀ I, h ∈ (H.pow m).sub I) {c : Ω} (hc : c ∈ ampleRing H.toSubSystem m h) (J : Chart x)
     (hrat : ∀ I : Chart x, ∃ e : ℕ,
@@ -156,6 +206,47 @@ end AmpleRingFiniteType
 
 open AmpleRingFiniteType in
 
+/- English proof (translation)
+Introduce `S _ N Ω _ _ x H D j h0`. Establish `hh : ∀ I : Chart x, D.h j ∈ (H.pow D.m).sub I` using `fun I => (Submodule.mem_iInf _).mp (D.mem_secs j) I`. Take `⟨n, a, c, J, ha, hc, hsum, hrat⟩` from `D.affine j h0`. Establish `hgen : ∀ k, ∀ y ∈ chartGens (J k), ∃ M : ℕ, c k ^ M * y ∈ ampleRing H.toSubSystem D.m (D.h j)` using `fun k y hy => exists_pow_mul_mem_ampleRing H hh (hc k) (J k) (hrat k) (chartGens_mem (J k) y hy)`. Use `choose! M hM using hgen`.
+
+Use `set T : Finset Ω := Finset.univ.image a ∪ Finset.univ.image c ∪ Finset.univ.biUnion (fun k => (chartGens (J k)).image fun y => c k ^ M k y * y) with hTdef`. Establish `haT : ∀ k, a k ∈ T` using `fun k => Finset.mem_union_left _ (Finset.mem_union_left _ (Finset.mem_image_of_mem _ (Finset.mem_univ k)))`. Establish `hcT : ∀ k, c k ∈ T` using `fun k => Finset.mem_union_left _ (Finset.mem_union_right _ (Finset.mem_image_of_mem _ (Finset.mem_univ k)))`. Establish `hyT : ∀ k, ∀ y ∈ chartGens (J k), c k ^ M k y * y ∈ T` using `fun k y hy => Finset.mem_union_right _ (Finset.mem_biUnion.mpr ⟨k, Finset.mem_univ _, Finset.mem_image_of_mem _ hy⟩)`. Establish `hTR : ∀ t ∈ T, t ∈ ampleRing H.toSubSystem D.m (D.h j)`.
+
+Introduce `t ht`. Break down `Finset.mem_union.mp ht with ht | ht` into its components or cases. Break down `Finset.mem_union.mp ht with ht | ht` into its components or cases. Take `⟨k, -, rfl⟩` from `Finset.mem_image.mp ht`. Conclude with `ha k`.
+
+Take `⟨k, -, rfl⟩` from `Finset.mem_image.mp ht`. Conclude with `hc k`. Take `⟨k, -, ht⟩` from `Finset.mem_biUnion.mp ht`. Take `⟨y, hy, rfl⟩` from `Finset.mem_image.mp ht`. Conclude with `hM k y hy`.
+
+Use `⟨T.card, fun t => (T.equivFin.symm t : Ω), fun t => hTR _ (T.equivFin.symm t).2, ?_⟩` and prove the remaining obligations. Use `set K := Algebra.adjoin S (Set.range (fun l => D.h l / D.h j) ∪ (T : Set Ω)) with hKdef`. Establish `hrange : Set.range (fun t => (T.equivFin.symm t : Ω)) = (T : Set Ω)`. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨t, rfl⟩`. Conclude with `(T.equivFin.symm t).2`. Introduce `hz`. Conclude with `⟨T.equivFin ⟨z, hz⟩, by simp⟩`. Establish `hK : K ≤ (Algebra.adjoin (ampleBase (S` using `S) D.h j) (Set.range fun t => (T.equivFin.symm t : Ω))).restrictScalars S := by`.
+
+Rewrite using `[hrange, Algebra.adjoin_le_iff]`. Introduce and unpack `z (⟨l, rfl⟩ | hz)`. Conclude with `(Subalgebra.mem_restrictScalars _).mpr (Subalgebra.algebraMap_mem _ (⟨_, Algebra.subset_adjoin ⟨l, rfl⟩⟩ : ampleBase (S := S) D.h j))`. Conclude with `(Subalgebra.mem_restrictScalars _).mpr (Algebra.subset_adjoin hz)`. Establish `hTK : ∀ t ∈ T, t ∈ K` using `fun t ht => Algebra.subset_adjoin (Or.inr (Finset.mem_coe.mpr ht))`.
+
+Introduce `f hf`. Apply `hK` to reduce the goal to its premises. Establish `hk : ∀ k, ∃ E : ℕ, c k ^ E * f ∈ K`. Introduce `k`. Establish `hcK : c k ∈ K` using `hTK _ (hcT k)`.
+
+Establish `hfJ` using `ampleChart_le H D j h0 (J k) (Set.mem_iInter.mp hf (J k))`. Use `clear hf`. Proceed by induction on `hfJ using Algebra.adjoin_induction with`. Consider the case `mem z hz`. Break down `hz with ⟨l, rfl⟩ | hz` into its components or cases.
+
+Conclude with `⟨0, by rw [pow_zero, one_mul]; exact Algebra.subset_adjoin (Or.inl ⟨l, rfl⟩)⟩`. Conclude with `⟨M k z, hTK _ (hyT k z (Finset.mem_coe.mp hz))⟩`. Consider the case `algebraMap r => exact ⟨0, by rw [pow_zero, one_mul]; exact Subalgebra.algebraMap_mem K r⟩`. Consider the case `add z z' _ _ h1 h2`. Take `⟨E, hE⟩` from `h1`.
+
+Take `⟨E', hE'⟩` from `h2`. Use `⟨E + E', ?_⟩` and prove the remaining obligations. Establish `e1 : c k ^ (E + E') * (z + z') = c k ^ E' * (c k ^ E * z) + c k ^ E * (c k ^ E' * z')`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1]`.
+
+Conclude with `add_mem (mul_mem (pow_mem hcK _) hE) (mul_mem (pow_mem hcK _) hE')`. Consider the case `mul z z' _ _ h1 h2`. Take `⟨E, hE⟩` from `h1`. Take `⟨E', hE'⟩` from `h2`. Use `⟨E + E', ?_⟩` and prove the remaining obligations.
+
+Establish `e1 : c k ^ (E + E') * (z * z') = (c k ^ E * z) * (c k ^ E' * z')` using `by ring`. Rewrite using `[e1]`. Conclude with `mul_mem hE hE'`. Use `choose E hE using hk`. Use `set E₀ := Finset.univ.sup E with hE₀`.
+
+Establish `hbig : ∀ k, c k ^ E₀ * f ∈ K`. Introduce `k`. Establish `hle : E k ≤ E₀` using `Finset.le_sup (Finset.mem_univ k)`. Establish `e1 : c k ^ E₀ * f = c k ^ (E₀ - E k) * (c k ^ E k * f)`. Rewrite using `[← mul_assoc, ← pow_add, Nat.sub_add_cancel hle]`.
+
+Rewrite using `[e1]`. Conclude with `mul_mem (pow_mem (hTK _ (hcT k)) _) (hE k)`. Set `cK : Fin n → K` to `fun k => ⟨c k, hTK _ (hcT k)⟩`. Set `aK : Fin n → K` to `fun k => ⟨a k, hTK _ (haT k)⟩`. Establish `hspan : Ideal.span (Set.range cK) = ⊤`.
+
+Rewrite using `[Ideal.eq_top_iff_one]`. Establish `e1 : (1 : K) = ∑ k, aK k * cK k` using `Subtype.ext (by simp [aK, cK, hsum])`. Rewrite using `[e1]`. Conclude with `Ideal.sum_mem _ fun k _ => Ideal.mul_mem_left _ _ (Ideal.subset_span ⟨k, rfl⟩)`. Set `Iid : Ideal K` to `{ carrier := {y | (y : Ω) * f ∈ K} add_mem' := fun {y y'} hy hy' => by`.
+
+Simplify using `only [Set.mem_ofPred_eq, Subalgebra.coe_add, add_mul] at *`. Conclude with `add_mem hy hy'`. Use the proof step `zero_mem' := by`. Simplify using `only [Set.mem_ofPred_eq, ZeroMemClass.coe_zero, zero_mul]`. Conclude with `zero_mem K`.
+
+Use the proof step `smul_mem' := fun b y hy => by`. Simplify using `only [Set.mem_ofPred_eq, smul_eq_mul, Subalgebra.coe_mul, mul_assoc] at *`. Conclude with `mul_mem b.2 hy }`. Establish `hle : Ideal.span ((fun y : K => y ^ E₀) '' Set.range cK) ≤ Iid`. Rewrite using `[Ideal.span_le]`.
+
+Introduce and unpack `_ ⟨_, ⟨k, rfl⟩, rfl⟩`. Use `show ((cK k ^ E₀ : K) : Ω) * f ∈ K`. Simplify `hbig k` using `[cK]`. Rewrite `hle` using `[Ideal.span_pow_eq_top _ hspan E₀, top_le_iff]`. Establish `h1 : (1 : K) ∈ Iid` using `hle ▸ Submodule.mem_top`.
+
+Simplify `h1` using `[Iid]`.
+-/
 theorem AmpleRingFiniteType.proof : AmpleRingFiniteType.Statement := by
   intro S _ N Ω _ _ x H D j h0
   classical

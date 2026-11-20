@@ -48,11 +48,17 @@ def CycPerfd.ofIntegers (p : ℕ) [Fact p.Prime] {C : Type} [Field C] [IsAlgClos
 
 open scoped Formalism.Per in
 
+/- English proof (translation)
+Take `⟨e, he⟩` from `GlobalTheory.MemLoc.Model.exists_isEps p`. Conclude with `⟨CycPerfd.ofIntegers p (Formalism.Per.OC p) (PadicComplexInt.integers p) e he.isPrimitiveRoot_untilt, he.isPrimitiveRoot_untilt⟩`.
+-/
 theorem CycPerfd.nonempty (p : ℕ) [Fact p.Prime] : ∃ S : CycPerfd p, IsPrimitiveRoot (zeta S.ε 1) p := by
   obtain ⟨e, he⟩ := GlobalTheory.MemLoc.Model.exists_isEps p
   exact ⟨CycPerfd.ofIntegers p (Formalism.Per.OC p) (PadicComplexInt.integers p) e he.isPrimitiveRoot_untilt,
     he.isPrimitiveRoot_untilt⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ => rfl, fun _ => rfl, rfl⟩`.
+-/
 theorem CycPerfd.over_refl {p : ℕ} [Fact p.Prime] (S : CycPerfd p) : S.Over S (RingHom.id _) :=
   ⟨fun _ => rfl, fun _ => rfl, rfl⟩
 

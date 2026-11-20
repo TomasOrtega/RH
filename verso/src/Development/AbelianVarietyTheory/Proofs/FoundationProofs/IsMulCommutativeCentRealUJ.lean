@@ -20,6 +20,13 @@ variable {A : Type} [CommRing A] {r : ℕ}
 def companionMat (r : ℕ) (P : A[X]) : Matrix (Fin r) (Fin r) A :=
   Matrix.of fun i j => (X ^ ((j : ℕ) + 1) %ₘ P).coeff i
 
+/- English proof (translation)
+Use `nontriviality A`. Use extensionality with `i j`. Establish `hr : 0 < r` using `j.pos`. Establish `hd : (X ^ ((j : ℕ) + 1) %ₘ h.charpoly).natDegree < r`. Use `natDegree_modByMonic_lt (X ^ ((j : ℕ) + 1)) h.charpoly_monic (fun e => by` as an intermediate fact.
+
+Use `h.charpoly_natDegree_eq_dim` as an intermediate fact. Rewrite `this` using `[e, natDegree_one, Fintype.card_fin]`. Use the proof step `omega)`. Rewrite `this` using `[h.charpoly_natDegree_eq_dim, Fintype.card_fin]`. Then use the resulting hypothesis. Establish `e1 : (h * krylov h v) i j = ((h ^ ((j : ℕ) + 1)) *ᵥ v) i`.
+
+Rewrite using `[pow_succ', ← mulVec_mulVec]`. Both sides reduce to the same expression. Rewrite using `[e1, Matrix.pow_eq_aeval_mod_charpoly, aeval_eq_sum_range' hd, Finset.sum_range, Matrix.sum_mulVec, Finset.sum_apply, Matrix.mul_apply]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Simplify using `[krylov, companionMat, Matrix.smul_mulVec, mul_comm]`.
+-/
 theorem mul_krylov_eq (h : Matrix (Fin r) (Fin r) A) (v : Fin r → A) :
     h * krylov h v = krylov h v * companionMat r h.charpoly := by
   nontriviality A
@@ -38,12 +45,22 @@ theorem mul_krylov_eq (h : Matrix (Fin r) (Fin r) A) (v : Fin r → A) :
   refine Finset.sum_congr rfl fun a _ => ?_
   simp [krylov, companionMat, Matrix.smul_mulVec, mul_comm]
 
+/- English proof (translation)
+Use extensionality with `i j`. Establish `: (N * krylov M v) i j = (N *ᵥ ((M ^ (j : ℕ)) *ᵥ v)) i` using `rfl`. Rewrite using `[this, mulVec_mulVec, (h.pow_right j).eq, ← mulVec_mulVec]`. Both sides reduce to the same expression.
+-/
 theorem mul_krylov_of_commute {M N : Matrix (Fin r) (Fin r) A} (h : Commute N M) (v : Fin r → A) :
     N * krylov M v = krylov M (N *ᵥ v) := by
   ext i j
   have : (N * krylov M v) i j = (N *ᵥ ((M ^ (j : ℕ)) *ᵥ v)) i := rfl
   rw [this, mulVec_mulVec, (h.pow_right j).eq, ← mulVec_mulVec]; rfl
 
+/- English proof (translation)
+Take `⟨v, hv⟩` from `exists_cyclic M hM`. Set `c` to `(krylov M v)⁻¹ *ᵥ (N *ᵥ v)`. Set `p : A[X]` to `∑ j : Fin r, monomial (j : ℕ) (c j)`. Establish `hp : aeval M p *ᵥ v = N *ᵥ v`. Establish `: krylov M v *ᵥ c = N *ᵥ v` using `by rw [mulVec_mulVec, mul_nonsing_inv _ hv, one_mulVec]`.
+
+Rewrite using `[← this]`. Use extensionality with `i`. Simplify using `[p, krylov, map_sum, aeval_monomial, Matrix.sum_mulVec, Algebra.algebraMap_eq_smul_one, Matrix.smul_mulVec, Matrix.mulVec.eq_def (Matrix.of _), dotProduct, mul_comm]`. Establish `hc : Commute (aeval M p) M`. Use `congrArg (aeval M) (mul_comm p X)` as an intermediate fact.
+
+Rewrite `this` using `[map_mul, map_mul, aeval_X]`. Then use the resulting hypothesis. Use `⟨p, ((isUnit_iff_isUnit_det _).2 hv).mul_right_cancel ?_⟩` and prove the remaining obligations. Rewrite using `[mul_krylov_of_commute h, mul_krylov_of_commute hc, hp]`.
+-/
 theorem exists_aeval_of_commute_fin [IsArtinianRing A] {M N : Matrix (Fin r) (Fin r) A} (hM : IsRegSS M)
     (h : Commute N M) : ∃ p : A[X], N = aeval M p := by
   obtain ⟨v, hv⟩ := exists_cyclic M hM
@@ -61,32 +78,54 @@ theorem exists_aeval_of_commute_fin [IsArtinianRing A] {M N : Matrix (Fin r) (Fi
   refine ⟨p, ((isUnit_iff_isUnit_det _).2 hv).mul_right_cancel ?_⟩
   rw [mul_krylov_of_commute h, mul_krylov_of_commute hc, hp]
 
+/- English proof (translation)
+The claim follows from `continuous_matrix fun i j => (continuous_apply i).comp ((continuous_pow (j : ℕ)).matrix_mulVec continuous_const)`.
+-/
 theorem continuous_krylov [TopologicalSpace A] [IsTopologicalRing A] (v : Fin r → A) :
     Continuous fun h : Matrix (Fin r) (Fin r) A => krylov h v :=
   continuous_matrix fun i j => (continuous_apply i).comp ((continuous_pow (j : ℕ)).matrix_mulVec continuous_const)
 
 variable {n : Type} [Fintype n] [DecidableEq n]
 
+/- English proof (translation)
+Rewrite using `[IsRegSS, reindexAlgEquiv_apply, charpoly_reindex]` and apply the resulting hypothesis.
+-/
 theorem IsRegSS.reindex {m : Type} [Fintype m] [DecidableEq m] {M : Matrix n n A} (hM : IsRegSS M) (e : n ≃ m) :
     IsRegSS (reindexAlgEquiv A A e M) := by
   rwa [IsRegSS, reindexAlgEquiv_apply, charpoly_reindex]
 
+/- English proof (translation)
+Rewrite using `[IsRegSS, charpoly_map]`. Conclude with `Separable.map hM`.
+-/
 theorem IsRegSS.map {B : Type} [CommRing B] {M : Matrix n n A} (hM : IsRegSS M) (f : A →+* B) :
     IsRegSS (M.map f) := by
   rw [IsRegSS, charpoly_map]; exact Separable.map hM
 
+/- English proof (translation)
+Set `φ` to `reindexAlgEquiv A A (Fintype.equivFin n)`. Take `⟨p, hp⟩` from `exists_aeval_of_commute_fin (N := φ N) (hM.reindex _) (Commute.map h φ)`. Conclude with `⟨p, φ.injective (hp.trans (aeval_algHom_apply φ M p))⟩`.
+-/
 theorem IsRegSS.exists_aeval [IsArtinianRing A] {M N : Matrix n n A} (hM : IsRegSS M) (h : N * M = M * N) :
     ∃ p : A[X], N = aeval M p := by
   let φ := reindexAlgEquiv A A (Fintype.equivFin n)
   obtain ⟨p, hp⟩ := exists_aeval_of_commute_fin (N := φ N) (hM.reindex _) (Commute.map h φ)
   exact ⟨p, φ.injective (hp.trans (aeval_algHom_apply φ M p))⟩
 
+/- English proof (translation)
+Take `⟨p, rfl⟩` from `hM.exists_aeval h`. Take `⟨q, rfl⟩` from `hM.exists_aeval h'`. Rewrite using `[← map_mul, ← map_mul, mul_comm]`.
+-/
 theorem IsRegSS.commute [IsArtinianRing A] {M N N' : Matrix n n A} (hM : IsRegSS M) (h : N * M = M * N)
     (h' : N' * M = M * N') : N * N' = N' * N := by
   obtain ⟨p, rfl⟩ := hM.exists_aeval h
   obtain ⟨q, rfl⟩ := hM.exists_aeval h'
   rw [← map_mul, ← map_mul, mul_comm]
 
+/- English proof (translation)
+Set `φ` to `reindexAlgEquiv A A (Fintype.equivFin n)`. Establish `hN : IsRegSS N` using `by rwa [IsRegSS, h]`. Take `⟨v, hv⟩` from `exists_cyclic _ (hM.reindex (Fintype.equivFin n))`. Take `⟨w, hw⟩` from `exists_cyclic _ (hN.reindex (Fintype.equivFin n))`. Establish `e : (φ N).charpoly = (φ M).charpoly` using `by simp only [φ, reindexAlgEquiv_apply, charpoly_reindex, h]`.
+
+Take `⟨a, ha⟩` from `(isUnit_iff_isUnit_det _).2 hv`. Take `⟨b, hb⟩` from `(isUnit_iff_isUnit_det _).2 hw`. Establish `h1` using `mul_krylov_eq (φ M) v`. Establish `h2` using `mul_krylov_eq (φ N) w`. Rewrite `h1` using `[← ha]`.
+
+Rewrite `h2` using `[← hb, e]`. Take `⟨x, e2⟩ : ∃ x : GL n A, φ x = b * a⁻¹` from `⟨Units.map φ.symm.toMonoidHom (b * a⁻¹), φ.apply_symm_apply _⟩`. Use `⟨x, φ.injective ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, e2, ← mul_assoc, h2, Units.mul_inv_eq_iff_eq_mul, mul_assoc, mul_assoc, h1, Units.inv_mul_cancel_left]`.
+-/
 theorem IsRegSS.exists_conj [IsArtinianRing A] {M N : Matrix n n A} (hM : IsRegSS M) (h : N.charpoly = M.charpoly) :
     ∃ x : GL n A, N * x = x * M := by
   let φ := reindexAlgEquiv A A (Fintype.equivFin n)
@@ -106,6 +145,13 @@ theorem IsRegSS.exists_conj [IsArtinianRing A] {M N : Matrix n n A} (hM : IsRegS
   rw [map_mul, map_mul, e2, ← mul_assoc, h2, Units.mul_inv_eq_iff_eq_mul, mul_assoc, mul_assoc, h1,
     Units.inv_mul_cancel_left]
 
+/- English proof (translation)
+Set `φ` to `reindexAlgEquiv A A (Fintype.equivFin n)`. Take `⟨v, hv⟩` from `exists_cyclic _ (hM.reindex (Fintype.equivFin n))`. Take `⟨a, ha⟩` from `(isUnit_iff_isUnit_det _).2 hv`. Use `⟨fun N => φ.symm (krylov (φ N) v * a⁻¹), ?_, ?_, fun N h => φ.injective ?_⟩` and prove the remaining obligations. Establish `h1 : Continuous φ` using `continuous_id.matrix_reindex _ _`.
+
+Establish `h2 : Continuous φ.symm` using `continuous_id.matrix_reindex (Fintype.equivFin n).symm (Fintype.equivFin n).symm`. Conclude with `h2.comp (((continuous_krylov v).comp h1).mul continuous_const)`. Simplify using `only [φ, ← ha, Units.mul_inv, map_one]`. Establish `e : (φ N).charpoly = (φ M).charpoly` using `by simp only [φ, reindexAlgEquiv_apply, charpoly_reindex, h]`. Establish `h1` using `mul_krylov_eq (φ M) v`.
+
+Establish `h2` using `mul_krylov_eq (φ N) v`. Rewrite `h1` using `[← ha]`. Rewrite `h2` using `[e]`. Rewrite using `[map_mul, map_mul, φ.apply_symm_apply, ← mul_assoc, h2, Units.mul_inv_eq_iff_eq_mul, mul_assoc, mul_assoc, h1, Units.inv_mul_cancel_left]`.
+-/
 theorem IsRegSS.exists_intertwiner [IsArtinianRing A] [TopologicalSpace A] [IsTopologicalRing A]
     {M : Matrix n n A} (hM : IsRegSS M) : ∃ Y : Matrix n n A → Matrix n n A, Continuous Y ∧ Y M = 1 ∧
       ∀ N, N.charpoly = M.charpoly → N * Y N = Y N * M := by
@@ -126,6 +172,11 @@ theorem IsRegSS.exists_intertwiner [IsArtinianRing A] [TopologicalSpace A] [IsTo
     rw [map_mul, map_mul, φ.apply_symm_apply, ← mul_assoc, h2, Units.mul_inv_eq_iff_eq_mul, mul_assoc, mul_assoc, h1,
       Units.inv_mul_cancel_left]
 
+/- English proof (translation)
+Simplify using `only [Polynomial.ext_iff, setOf_forall]`. Use `isClosed_iInter fun i => isClosed_eq ?_ continuous_const` and prove the remaining obligations. Establish `: (fun N : Matrix n n A => N.charpoly.coeff i) = fun N => MvPolynomial.eval (fun p : n × n => N p.1 p.2) ((Matrix.charpoly.univ A n).coeff i)`. Use function extensionality and compare the values at `fun N => (Matrix.charpoly.univ_coeff_eval₂Hom n (RingHom.id A) (fun p : n × n => N p.1 p.2) i).symm`. Rewrite using `[this]`.
+
+Conclude with `(MvPolynomial.continuous_eval _).comp (by fun_prop)`.
+-/
 theorem isClosed_charpoly_eq [TopologicalSpace A] [IsTopologicalRing A] [T2Space A] (P : A[X]) :
     IsClosed {N : Matrix n n A | N.charpoly = P} := by
   simp only [Polynomial.ext_iff, setOf_forall]
@@ -142,6 +193,13 @@ section Sqrt
 
 variable {k : Type} [NontriviallyNormedField k] [CompleteSpace k]
 
+/- English proof (translation)
+Use `FiniteDimensional.complete k V` as an intermediate fact. Set `B' : V →L[k] V →L[k] V` to `LinearMap.toContinuousLinearMap ((LinearMap.toContinuousLinearMap : (V →ₗ[k] V) ≃ₗ[k] _).toLinearMap ∘ₗ B)`. Set `D : V ≃L[k] V` to `(LinearEquiv.smulOfNeZero k V 2 h2).toContinuousLinearEquiv`. Establish `hd : HasStrictFDerivAt (fun z => B' z z) (D : V →L[k] V) e`. Use `(B'.hasStrictFDerivAt_of_bilinear (hasStrictFDerivAt_id e) (hasStrictFDerivAt_id e)).congr_fderiv ?_` and prove the remaining obligations.
+
+Use extensionality with `v`. Simplify using `[B', D, hl, hr, two_smul]`. Establish `h` using `hd.map_nhds_eq_of_equiv`. Rewrite `h` using `[show B' e e = e from hl e]`. Rewrite using `[← h]`.
+
+Conclude with `range_mem_map`.
+-/
 theorem eventually_exists_sq_normed {V : Type} [NormedAddCommGroup V] [NormedSpace k V] [FiniteDimensional k V]
     (h2 : (2 : k) ≠ 0) (B : V →ₗ[k] V →ₗ[k] V) {e : V} (hl : ∀ v, B e v = v) (hr : ∀ v, B v e = v) :
     ∀ᶠ l in 𝓝 e, ∃ z, B z z = l := by
@@ -158,6 +216,9 @@ theorem eventually_exists_sq_normed {V : Type} [NormedAddCommGroup V] [NormedSpa
   rw [← h]
   exact range_mem_map
 
+/- English proof (translation)
+Set `φ : V ≃L[k] (Fin (Module.finrank k V) → k)` to `ContinuousLinearEquiv.ofFinrankEq (by simp)`. Use `eventually_exists_sq_normed h2 ((B.compl₁₂ φ.symm.toLinearMap φ.symm.toLinearMap).compr₂ φ.toLinearMap) (e := φ e) (fun v => by simp [hl]) (fun v => by simp [hr])` as an intermediate fact. Use `filter_upwards [φ.continuous.continuousAt.eventually this] with l ⟨z, hz⟩`. Conclude with `⟨φ.symm z, φ.injective hz⟩`.
+-/
 theorem eventually_exists_sq {V : Type} [AddCommGroup V] [Module k V] [TopologicalSpace V] [IsTopologicalAddGroup V]
     [ContinuousSMul k V] [T2Space V] [FiniteDimensional k V]
     (h2 : (2 : k) ≠ 0) (B : V →ₗ[k] V →ₗ[k] V) {e : V} (hl : ∀ v, B e v = v) (hr : ∀ v, B v e = v) :
@@ -173,6 +234,9 @@ variable (k) {R : Type} [Ring R] [Algebra k R] [TopologicalSpace R] [IsTopologic
 
 include k in
 
+/- English proof (translation)
+Set `b` to `Module.finBasis k R`. Establish `hc : Continuous fun x : R => (Algebra.leftMulMatrix b x).det` using `(Algebra.leftMulMatrix b).toLinearMap.continuous_of_finiteDimensional.matrix_det`. Use `filter_upwards [hc.continuousAt.eventually_ne (y := 0) (by simp)] with x hx`. Rewrite using `[← Algebra.lmul_isUnit_iff (R := k), LinearMap.isUnit_iff_isUnit_det, ← LinearMap.det_toMatrix b]`. Conclude with `hx.isUnit`.
+-/
 theorem eventually_isUnit : ∀ᶠ x in 𝓝 (1 : R), IsUnit x := by
   let b := Module.finBasis k R
   have hc : Continuous fun x : R => (Algebra.leftMulMatrix b x).det :=
@@ -183,6 +247,17 @@ theorem eventually_isUnit : ∀ᶠ x in 𝓝 (1 : R), IsUnit x := by
 
 variable {k} in
 
+/- English proof (translation)
+Establish `h1 : s 1 = 1` using `by simpa [hs] using (hm (s 1) 1).symm`. Set `V : Submodule k R` to `{ carrier := {l | s l = l ∧ l * g = g * l} add_mem' := fun ha hb => ⟨by rw [map_add, ha.1, hb.1], by rw [add_mul, mul_add, ha.2, hb.2]⟩ zero_mem' := ⟨map_zero _, by simp⟩ smul_mem' := fun c _ ha => ⟨by rw [map_smul, ha.1], by rw [smul_mul_assoc, mul_smul_comm, ha.2]⟩ }`. Set `f : V → V → V` to `fun a b => (2 : k)⁻¹ • ⟨a.1 * b.1 + b.1 * a.1, by rw [map_add, hm, hm, a.2.1, b.2.1, add_comm], (Commute.add_left (Commute.mul_left a.2.2 b.2.2) (Commute.mul_left b.2.2 a.2.2)).eq⟩`. Set `B : V →ₗ[k] V →ₗ[k] V` to `LinearMap.mk₂ k f (fun a b c => Subtype.ext (by simp [f, add_mul, mul_add]; abel)) (fun a b c => Subtype.ext (by simp [f, smul_comm a])) (fun a b c => Subtype.ext (by simp [f, add_mul, mul_add]; abel)) (fun a b c => Subtype.ext (by simp [f, smul_comm a]))`. Establish `hB : ∀ a b : V, (B a b).1 = (2 : k)⁻¹ • (a.1 * b.1 + b.1 * a.1)` using `fun _ _ => rfl`.
+
+Establish `half : ∀ a : R, (2 : k)⁻¹ • (a + a) = a` using `fun a => by rw [← two_smul k a, inv_smul_smul₀ h2]`. Use `eventually_exists_sq h2 B (e := ⟨1, h1, by simp⟩) (fun v => Subtype.ext (by simp only [hB, one_mul, mul_one, half])) (fun v => Subtype.ext (by simp only [hB, one_mul, mul_one, half]))` as an intermediate fact. Rewrite `this` using `[nhds_subtype, eventually_comap]`. Establish `hc : Tendsto (fun y => s y * y) (𝓝 1) (𝓝 (1 : R))` using `(s.continuous_of_finiteDimensional.mul continuous_id).tendsto' _ _ (by simp [h1])`. Use `filter_upwards [hc.eventually this, hc.eventually (eventually_isUnit k), eventually_isUnit k] with y hy hl ⟨y', hy'⟩ h hh e`.
+
+Establish `e' : s g * (s y * y) * g = s y * y`. Rewrite using `[← mul_assoc, ← hm, mul_assoc, ← e, hm, mul_assoc, ← mul_assoc (s h), hh, one_mul]`. Take `⟨z, hz⟩` from `hy ⟨s y * y, by rw [hm, hs], by conv_rhs => rw [← e', ← mul_assoc, ← mul_assoc, hg, one_mul]⟩ rfl`. Establish `hz' : z.1 * z.1 = s y * y` using `by simpa only [hB, half] using congrArg Subtype.val hz`. Take `⟨z', hz''⟩ : IsUnit z.1` from `isUnit_mul_self_iff.1 (hz' ▸ hl)`.
+
+Establish `hsz : s (z'⁻¹ : Rˣ) = (z'⁻¹ : Rˣ)`. Use `Units.eq_inv_of_mul_eq_one_right ?_` and prove the remaining obligations. Rewrite using `[hz'', ← z.2.1, ← hm, ← hz'', Units.mul_inv, h1]`. Use `⟨y' * z'⁻¹, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_mul, hm, hsz, hy', mul_assoc, ← mul_assoc (s y), ← hz', ← hz'', Units.mul_inv_cancel_right, Units.inv_mul]`.
+
+Establish `: Commute (z'⁻¹ : Rˣ).1 g` using `Commute.units_inv_left (hz''.symm ▸ z.2.2)`. Rewrite using `[Units.val_mul, hy', ← mul_assoc, e, mul_assoc, mul_assoc, this.eq]`.
+-/
 theorem eventually_exists_unitary (h2 : (2 : k) ≠ 0) (s : R →ₗ[k] R) (hm : ∀ a b, s (a * b) = s b * s a)
     (hs : ∀ a, s (s a) = a) {g : R} (hg : g * s g = 1) :
     ∀ᶠ y in 𝓝 (1 : R), ∀ h, s h * h = 1 → h * y = y * g → ∃ u : Rˣ, s u * u = 1 ∧ h * u = u * g := by
@@ -229,6 +304,9 @@ section Cent
 
 variable {A n H : Type} [CommRing A] [IsArtinianRing A] [Fintype n] [DecidableEq n] [Group H]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨fun a b => Subtype.ext (hι (by have ha := congrArg ι (mem_cent.1 a.2) have hb := congrArg ι (mem_cent.1 b.2) rw [map_mul, map_mul] at ha hb simpa only [Subgroup.coe_mul, map_mul] using hs.commute ha hb))⟩⟩`.
+-/
 theorem isMulCommutative_cent {ι : H →* Matrix n n A} (hι : Function.Injective ι) {s : H} (hs : IsRegSS (ι s)) :
     IsMulCommutative (cent s) :=
   ⟨⟨fun a b => Subtype.ext (hι (by
@@ -237,15 +315,24 @@ theorem isMulCommutative_cent {ι : H →* Matrix n n A} (hι : Function.Injecti
     rw [map_mul, map_mul] at ha hb
     simpa only [Subgroup.coe_mul, map_mul] using hs.commute ha hb))⟩⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun g => by rw [show (fun x => x * g) = fun x => g * x from funext fun x => h.1.1 x g] exact map_mul_left_eq_self dt g⟩`.
+-/
 theorem isMulRightInvariant_cent [MeasurableSpace H] {s : H} (h : IsMulCommutative (cent s)) (dt : Measure (cent s))
     [dt.IsMulLeftInvariant] : dt.IsMulRightInvariant :=
   ⟨fun g => by
     rw [show (fun x => x * g) = fun x => g * x from funext fun x => h.1.1 x g]
     exact map_mul_left_eq_self dt g⟩
 
+/- English proof (translation)
+The claim follows from `isMulCommutative_cent (ι := Units.coeHom (Matrix n n A)) (s := g) Units.val_injective hg`.
+-/
 theorem isMulCommutative_cent_GL {g : GL n A} (hg : IsRegSS g.1) : IsMulCommutative (cent g) :=
   isMulCommutative_cent (ι := Units.coeHom (Matrix n n A)) (s := g) Units.val_injective hg
 
+/- English proof (translation)
+The claim follows from `haveI : IsArtinianRing (k ⊗[F] E) := IsArtinianRing.of_finite k _ isMulCommutative_cent (ι := (Units.coeHom _).comp (matHom k σ J)) (Units.val_injective.comp (matHom_injective k σ J)) hg`.
+-/
 theorem isMulCommutative_cent_HA {F E : Type} [Field F] [Field E] [Algebra F E] [FiniteDimensional F E]
     {k : Type} [Field k] [Algebra F k] {σ : E →ₐ[F] E} {m : ℕ} {J : Matrix (Fin m) (Fin m) E} {g : HA k σ J}
     (hg : IsRegSS (matHom k σ J g).1) : IsMulCommutative (cent g) :=
@@ -261,9 +348,15 @@ variable {A n : Type} [CommRing A] [IsArtinianRing A] [Fintype n] [DecidableEq n
 
 omit [IsArtinianRing A] in
 
+/- English proof (translation)
+Rewrite using `[Units.val_mul, Units.val_mul, Matrix.charpoly_mul_comm, ← mul_assoc, Units.mul_inv, one_mul]`.
+-/
 theorem charpoly_conj_GL (g x : GL n A) : (x⁻¹ * g * x).1.charpoly = g.1.charpoly := by
   rw [Units.val_mul, Units.val_mul, Matrix.charpoly_mul_comm, ← mul_assoc, Units.mul_inv, one_mul]
 
+/- English proof (translation)
+Use `Set.ext fun h => ⟨fun ⟨x, hx⟩ => hx ▸ charpoly_conj_GL g x, fun hh => ?_⟩` and prove the remaining obligations. Take `⟨x, hx⟩` from `hg.exists_conj hh`. Use `⟨x⁻¹, ?_⟩` and prove the remaining obligations. Simplify using `only [inv_inv, mul_inv_eq_iff_eq_mul]`. Conclude with `Units.ext hx.symm`.
+-/
 theorem range_conj_GL {g : GL n A} (hg : IsRegSS g.1) :
     (range fun x : GL n A => x⁻¹ * g * x) = {h | h.1.charpoly = g.1.charpoly} := by
   refine Set.ext fun h => ⟨fun ⟨x, hx⟩ => hx ▸ charpoly_conj_GL g x, fun hh => ?_⟩
@@ -274,9 +367,17 @@ theorem range_conj_GL {g : GL n A} (hg : IsRegSS g.1) :
 
 variable [TopologicalSpace A] [IsTopologicalRing A] [T2Space A]
 
+/- English proof (translation)
+The claim follows from `range_conj_GL hg ▸ (isClosed_charpoly_eq _).preimage Units.continuous_val`.
+-/
 theorem isClosed_class_GL {g : GL n A} (hg : IsRegSS g.1) : IsClosed (range fun x : GL n A => x⁻¹ * g * x) :=
   range_conj_GL hg ▸ (isClosed_charpoly_eq _).preimage Units.continuous_val
 
+/- English proof (translation)
+Establish `: LocallyCompactSpace (Matrix n n A)` using `inferInstanceAs (LocallyCompactSpace (n → n → A))`. Establish `: SecondCountableTopology (Matrix n n A)` using `inferInstanceAs (SecondCountableTopology (n → n → A))`. Establish `: LocallyCompactSpace (Matrix n n A)ᵐᵒᵖ` using `MulOpposite.opHomeomorph.symm.isClosedEmbedding.locallyCompactSpace`. Establish `: SecondCountableTopology (Matrix n n A)ᵐᵒᵖ` using `MulOpposite.opHomeomorph.symm.isEmbedding.secondCountableTopology`. Establish `: LocallyCompactSpace (GL n A)` using `Units.isClosedEmbedding_embedProduct.locallyCompactSpace`.
+
+Establish `: SecondCountableTopology (GL n A)` using `Units.isEmbedding_embedProduct.secondCountableTopology`. Conclude with `isProperOrbit_of_isClosed (isClosed_class_GL hg)`.
+-/
 theorem isProperOrbit_GL [LocallyCompactSpace A] [SecondCountableTopology A] {g : GL n A} (hg : IsRegSS g.1) :
     IsProperOrbit (cent g) g := by
   have : LocallyCompactSpace (Matrix n n A) := inferInstanceAs (LocallyCompactSpace (n → n → A))
@@ -295,6 +396,17 @@ variable (k : Type) [NontriviallyNormedField k] [CompleteSpace k] {A n : Type} [
   [FiniteDimensional k A] [TopologicalSpace A] [IsTopologicalRing A] [ContinuousSMul k A] [T2Space A]
   [Fintype n] [DecidableEq n] {σ : A →+* A} {J : Matrix n n A}
 
+/- English proof (translation)
+Establish `: IsArtinianRing A` using `IsArtinianRing.of_finite k _`. Set `s : Matrix n n A →ₗ[k] Matrix n n A` to `{ toFun := fun a => J⁻¹ * cT σ a * J map_add' := fun a b => by`. Rewrite using `[show cT σ (a + b) = cT σ a + cT σ b from Matrix.ext fun i j => map_add σ _ _, mul_add, add_mul]`. Use the proof step `map_smul' := fun c a => by`. Rewrite using `[show cT σ (c • a) = c • cT σ a from Matrix.ext fun i j => hk _ _, mul_smul_comm, smul_mul_assoc]`.
+
+Use `rfl }`. Establish `hs : ∀ a, J * s a = cT σ a * J` using `fun a => by`. Express the relevant statement in the definitionally equal form `J * (J⁻¹ * cT σ a * J) = _`. Rewrite using `[mul_assoc, mul_nonsing_inv_cancel_left _ _ hd]`. Establish `hu` using `(isUnit_iff_isUnit_det _).2 hd`.
+
+Establish `hm : ∀ a b, s (a * b) = s b * s a` using `fun a b => hu.mul_left_cancel (by`. Rewrite using `[hs, ← mul_assoc, hs, mul_assoc, hs, cT_mul, mul_assoc])`. Establish `hcc : ∀ a : Matrix n n A, cT σ (cT σ a) = a` using `fun a => Matrix.ext fun i j => hσ _`. Establish `hss : ∀ a, s (s a) = a` using `fun a => hu.mul_left_cancel (by`. Use `congrArg (cT σ) (hs a)` as an intermediate fact.
+
+Rewrite using `[cT_mul, cT_mul, hcc, show cT σ J = J from hJ, ← hs] at this)` and apply the resulting hypothesis. Establish `hU : ∀ u : GL n A, u ∈ Formalism.UG.UJ σ J ↔ s u * u = 1` using `fun u => by`. Express the relevant statement in the definitionally equal form `cT σ u.1 * J * u.1 = J ↔ _`. Rewrite using `[← hs, mul_assoc, ← hu.mul_right_inj (b := s u * u), mul_one]`. Take `⟨Y, hY, h1, hi⟩` from `hg.exists_intertwiner`.
+
+Establish `hc : Tendsto (fun h : Formalism.UG.UJ σ J => Y h.1.1) (𝓝 g) (𝓝 1)` using `(hY.comp (Units.continuous_val.comp continuous_subtype_val)).tendsto' _ _ h1`. Use `filter_upwards [hc.eventually (eventually_exists_unitary h2 s hm hss (mul_eq_one_comm.1 ((hU _).1 g.2)))] with h hh e`. Take `⟨u, hu1, hu2⟩` from `hh _ ((hU _).1 h.2) (hi _ e)`. Conclude with `isConj_iff.2 ⟨⟨u, (hU u).2 hu1⟩, mul_inv_eq_iff_eq_mul.2 (Subtype.ext (Units.ext hu2.symm))⟩`.
+-/
 theorem eventually_isConj_UJ (h2 : (2 : k) ≠ 0) (hk : ∀ (c : k) a, σ (c • a) = c • σ a) (hσ : ∀ a, σ (σ a) = a)
     (hJ : IsHerm σ J) (hd : IsUnit J.det) {g : Formalism.UG.UJ σ J} (hg : IsRegSS g.1.1) :
     ∀ᶠ h : Formalism.UG.UJ σ J in 𝓝 g, h.1.1.charpoly = g.1.1.charpoly → IsConj g h := by
@@ -326,6 +438,11 @@ theorem eventually_isConj_UJ (h2 : (2 : k) ≠ 0) (hk : ∀ (c : k) a, σ (c •
   obtain ⟨u, hu1, hu2⟩ := hh _ ((hU _).1 h.2) (hi _ e)
   exact isConj_iff.2 ⟨⟨u, (hU u).2 hu1⟩, mul_inv_eq_iff_eq_mul.2 (Subtype.ext (Units.ext hu2.symm))⟩
 
+/- English proof (translation)
+Use `isClosed_of_closure_subset fun g' hg' => ?_` and prove the remaining obligations. Establish `hsub : (range fun x : Formalism.UG.UJ σ J => x⁻¹ * g * x) ⊆ {h | h.1.1.charpoly = g.1.1.charpoly}` using `fun h ⟨x, hx⟩ => hx ▸ charpoly_conj_GL g.1 x.1`. Establish `e : g'.1.1.charpoly = g.1.1.charpoly` using `closure_minimal hsub ((isClosed_charpoly_eq _).preimage (Units.continuous_val.comp continuous_subtype_val)) hg'`. Take `⟨_, ⟨x, rfl⟩, hx⟩` from `((mem_closure_iff_frequently.1 hg').and_eventually (eventually_isConj_UJ k h2 hk hσ hJ hd (g := g') (by rwa [IsRegSS, e]))).exists`. Take `⟨c, hc⟩` from `isConj_iff.1 (hx ((hsub ⟨x, rfl⟩).trans e.symm))`.
+
+Use `⟨x * c, ?_⟩` and prove the remaining obligations. Simplify using `only at hc ⊢`. Rewrite using `[_root_.mul_inv_rev, mul_assoc c⁻¹, ← mul_assoc, mul_assoc c⁻¹, ← hc]`. Use `group`.
+-/
 theorem isClosed_class_UJ (h2 : (2 : k) ≠ 0) (hk : ∀ (c : k) a, σ (c • a) = c • σ a) (hσ : ∀ a, σ (σ a) = a)
     (hJ : IsHerm σ J) (hd : IsUnit J.det) {g : Formalism.UG.UJ σ J} (hg : IsRegSS g.1.1) :
     IsClosed (range fun x : Formalism.UG.UJ σ J => x⁻¹ * g * x) := by
@@ -349,6 +466,15 @@ section Points
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
   {σ : E →ₐ[F] E} {m : ℕ} {J : Matrix (Fin m) (Fin m) E}
 
+/- English proof (translation)
+Establish `: CharZero k` using `charZero_of_injective_algebraMap (algebraMap F k).injective`. Establish `: IsModuleTopology k (k ⊗[F] E)` using `⟨rfl⟩`. Establish `: IsTopologicalRing (k ⊗[F] E)` using `IsModuleTopology.isTopologicalRing k _`. Take `⟨e⟩` from `GlobalTheory.AdelicUnitaryTop.nonempty_homeomorph (F := F) (E := E) k`. Establish `: T2Space (k ⊗[F] E)` using `e.isEmbedding.t2Space`.
+
+Establish `hσ : ∀ x, σ (σ x) = x` using `fun x => by`. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Conclude with `τ.injective (by rw [h.2.2.2, h.2.2.2, star_star])`. Use `isClosed_class_UJ k (σ := sigR k σ) (J := JR k J) two_ne_zero (fun c a => ?_) (fun a => ?_) ?_ ?_ hg` and prove the remaining obligations. Conclude with `map_smul (Algebra.TensorProduct.map (AlgHom.id k k) σ) c a`.
+
+Proceed by induction on `a with`. Consider the case `zero => simp`. Consider the case `tmul a b => simp [sigR, hσ]`. Consider the case `add a b ha hb => rw [map_add, map_add, ha, hb]`. Use extensionality with `i j`.
+
+Simplify using `[cT, JR, sigR, inclR, hJ.1]`. Rewrite using `[JR, ← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Conclude with `hJ.2.isUnit.map _`.
+-/
 theorem isClosed_class_HA (h : IsCMExt F E σ) (hJ : IsHermND σ J) (k : Type) [NontriviallyNormedField k] [CompleteSpace k]
     [Algebra F k] {g : HA k σ J} (hg : IsRegSS (matHom k σ J g).1) :
     IsClosed (range fun x : HA k σ J => x⁻¹ * g * x) := by
@@ -371,11 +497,17 @@ theorem isClosed_class_HA (h : IsCMExt F E σ) (hJ : IsHermND σ J) (k : Type) [
   · rw [JR, ← RingHom.mapMatrix_apply, ← RingHom.map_det]
     exact hJ.2.isUnit.map _
 
+/- English proof (translation)
+The claim follows from `letI : NontriviallyNormedField (Fv F v) := Valued.toNontriviallyNormedField _ _ isClosed_class_HA h hJ (Fv F v) hg`.
+-/
 theorem isClosed_class_GLoc (h : IsCMExt F E σ) (hJ : IsHermND σ J) {v : HeightOneSpectrum (𝓞 F)} {g : GLoc σ J v}
     (hg : IsRegSS (matHom _ σ J g).1) : IsClosed (range fun x : GLoc σ J v => x⁻¹ * g * x) :=
   letI : NontriviallyNormedField (Fv F v) := Valued.toNontriviallyNormedField _ _
   isClosed_class_HA h hJ (Fv F v) hg
 
+/- English proof (translation)
+The claim follows from `letI : NontriviallyNormedField w.Completion := { (inferInstance : NormedField w.Completion) with non_trivial := ⟨2, by rw [← (InfinitePlace.Completion.isometry_extensionEmbedding w).norm_map_of_map_zero (map_zero _), map_ofNat] simp⟩ } isClosed_class_HA h hJ w.Completion hg`.
+-/
 theorem isClosed_class_GArch (h : IsCMExt F E σ) (hJ : IsHermND σ J) {w : InfinitePlace F} {g : GArch σ J w}
     (hg : IsRegSS (matHom _ σ J g).1) : IsClosed (range fun x : GArch σ J w => x⁻¹ * g * x) :=
   letI : NontriviallyNormedField w.Completion :=
@@ -385,28 +517,46 @@ theorem isClosed_class_GArch (h : IsCMExt F E σ) (hJ : IsHermND σ J) {w : Infi
         simp⟩ }
   isClosed_class_HA h hJ w.Completion hg
 
+/- English proof (translation)
+The claim follows from `isClosed_class_UJ ℝ (σ := starRingEnd ℂ) (J := Formalism.REAL.Jm ε) two_ne_zero (fun c a => by simp) (fun a => star_star a) (Formalism.REAL.Jm_conjTranspose ε) (Matrix.isUnit_det_of_left_inverse (Formalism.REAL.Jm_mul_self ε)) (g := g) hg`.
+-/
 theorem isClosed_class_realUJ {ε : Fin m → Bool} {g : Formalism.REAL.UJ ε} (hg : IsRegSS (ujMat ε g)) :
     IsClosed (range fun x : Formalism.REAL.UJ ε => x⁻¹ * g * x) :=
   isClosed_class_UJ ℝ (σ := starRingEnd ℂ) (J := Formalism.REAL.Jm ε) two_ne_zero (fun c a => by simp)
     (fun a => star_star a) (Formalism.REAL.Jm_conjTranspose ε)
     (Matrix.isUnit_det_of_left_inverse (Formalism.REAL.Jm_mul_self ε)) (g := g) hg
 
+/- English proof (translation)
+The claim follows from `isProperOrbit_of_isClosed (isClosed_class_GLoc h hJ hg)`.
+-/
 theorem isProperOrbit_GLoc (h : IsCMExt F E σ) (hJ : IsHermND σ J) {v : HeightOneSpectrum (𝓞 F)} {g : GLoc σ J v}
     (hg : IsRegSS (matHom _ σ J g).1) : IsProperOrbit (cent g) g :=
   isProperOrbit_of_isClosed (isClosed_class_GLoc h hJ hg)
 
+/- English proof (translation)
+The claim follows from `isProperOrbit_of_isClosed (isClosed_class_GArch h hJ hg)`.
+-/
 theorem isProperOrbit_GArch (h : IsCMExt F E σ) (hJ : IsHermND σ J) {w : InfinitePlace F} {g : GArch σ J w}
     (hg : IsRegSS (matHom _ σ J g).1) : IsProperOrbit (cent g) g :=
   isProperOrbit_of_isClosed (isClosed_class_GArch h hJ hg)
 
+/- English proof (translation)
+The claim follows from `isProperOrbit_of_isClosed (isClosed_class_realUJ hg)`.
+-/
 theorem isProperOrbit_realUJ {ε : Fin m → Bool} {g : Formalism.REAL.UJ ε} (hg : IsRegSS (ujMat ε g)) :
     IsProperOrbit (cent g) g :=
   isProperOrbit_of_isClosed (isClosed_class_realUJ hg)
 
+/- English proof (translation)
+The claim follows from `isMulCommutative_cent (ι := ujMat ε) (Units.val_injective.comp Subtype.val_injective) hg`.
+-/
 theorem isMulCommutative_cent_realUJ {ε : Fin m → Bool} {g : Formalism.REAL.UJ ε} (hg : IsRegSS (ujMat ε g)) :
     IsMulCommutative (cent g) :=
   isMulCommutative_cent (ι := ujMat ε) (Units.val_injective.comp Subtype.val_injective) hg
 
+/- English proof (translation)
+Use `⟨fun hg => ?_, fun hg => (archMat_apply σ J τ g).symm ▸ hg.map (infEmb τ)⟩` and prove the remaining obligations. Set `e` to `RingEquiv.ofBijective _ (infEmb_bijective h τ)`. Use `hg.map e.symm.toRingHom using 1` and compare the differences between its conclusion and the goal. Conclude with `Matrix.ext fun i j => (e.symm_apply_apply _).symm`.
+-/
 theorem isRegSS_archMat_iff (h : IsCMExt F E σ) {w : InfinitePlace F} (τ : EmbOver E w) {g : GArch σ J w} :
     IsRegSS (archMat σ J τ g) ↔ IsRegSS (matHom _ σ J g).1 := by
   refine ⟨fun hg => ?_, fun hg => (archMat_apply σ J τ g).symm ▸ hg.map (infEmb τ)⟩
@@ -421,6 +571,9 @@ def IsRegClosed {H : Type} [Group H] [TopologicalSpace H] (g : H) : Prop :=
     (∀ [MeasurableSpace H] (dt : Measure (cent g)) [dt.IsMulLeftInvariant], dt.IsMulRightInvariant) ∧
     IsClosed (range fun x : H => x⁻¹ * g * x) ∧ IsProperOrbit (cent g) g
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h1, fun dt _ => isMulRightInvariant_cent h1 dt, h2, h3⟩`.
+-/
 theorem IsRegClosed.of {H : Type} [Group H] [TopologicalSpace H] {g : H} (h1 : IsMulCommutative (cent g))
     (h2 : IsClosed (range fun x : H => x⁻¹ * g * x)) (h3 : IsProperOrbit (cent g) g) : IsRegClosed g :=
   ⟨h1, fun dt _ => isMulRightInvariant_cent h1 dt, h2, h3⟩

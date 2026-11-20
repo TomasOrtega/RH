@@ -10,6 +10,11 @@ namespace Formalism.IndefR.LatticeTransfer
 
 open Formalism.IndefR.TransferLatticeStatement Formalism.HN _root_.Formalism.IndefR.LatticeTransfer.Lat
 
+/- English proof (translation)
+Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Use `Real.log_natCast_nonneg N` as an intermediate fact. Simplify using `only [Nat.cast_zero, Real.log_zero]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1 : Real.log ((n : ℝ) ^ 2) ≤ Real.log N` using `Real.log_le_log (by positivity) (by exact_mod_cast h)`.
+
+Rewrite `h1` using `[Real.log_pow]`. Move the coercions through the operations in `at h1`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem Lat.log_le_half {n N : ℕ} (h : n ^ 2 ≤ N) :
     Real.log n ≤ Real.log N / 2 := by
   rcases Nat.eq_zero_or_pos n with rfl | hn
@@ -22,6 +27,9 @@ theorem Lat.log_le_half {n N : ℕ} (h : n ^ 2 ≤ N) :
     push_cast at h1
     linarith
 
+/- English proof (translation)
+Establish `: N ^ 3 • z = N ^ 2 • N • z` using `by rw [smul_smul]; ring_nf`. Rewrite using `[this]`. Conclude with `B.smul_mem _ h`.
+-/
 theorem Lat.cube_mem {K : Type} [Field K] {V : Type} [AddCommGroup V] [Module (𝓞 K) V]
     {B : Submodule (𝓞 K) V} {N : 𝓞 K} {z : V} (h : N • z ∈ B) : N ^ 3 • z ∈ B := by
   have : N ^ 3 • z = N ^ 2 • N • z := by rw [smul_smul]; ring_nf
@@ -29,6 +37,33 @@ theorem Lat.cube_mem {K : Type} [Field K] {V : Type} [AddCommGroup V] [Module (�
   exact B.smul_mem _ h
 
 set_option maxHeartbeats 400000 in
+/- English proof (translation)
+Introduce `K _ _ _ _ G _ _ S _ T _ _ _ τ H₀ χ₀ H χ hτ hM1 V _ _ _ _ ι _ _ b X ρ hX hU A hA`. Take `⟨hfg, hspan, hst⟩` from `hA`. Establish `: FiniteDimensional K V` using `Module.Finite.of_basis b`. Use `choose γ δ c Γ hcore using hC K G S T τ H₀ χ₀ H χ hτ hM1`. Take `⟨he, ho⟩` from `hE K G S T τ hτ V ρ`.
+
+Establish `tr` using `fun s => tr_of_core hP (hcore s) ρ (he s)`. Take `⟨hsa, hnorm⟩` from `hM K G V ι b X ρ hX hU`. Establish `hN : 0 < Fintype.card G` using `Fintype.card_pos`. Establish `hla : 0 ≤ Real.log (Fintype.card G : ℝ)` using `Real.log_natCast_nonneg _`. Establish `horth : ∀ (H : Subgroup G) (χ : H →* (𝓞 K)ˣ) s t, s ≠ t → Formalism.BranchingDeterminantCap.OrthAt b X (cut A (epP H χ ρ ∘ₗ eS (τ s) ρ)) (cut A (epP H χ ρ ∘ₗ eS (τ t) ρ))`.
+
+Introduce `H χ s t hst' v x hx y hy`. Establish `sw` using `(sandwich hE hP hτ ρ hst H χ).2.2`. Rewrite using `[← sw s x hx, hsa, ← sw t y hy]`. Establish `: eS (τ s) ρ (eS (τ t) ρ y) = 0` using `LinearMap.congr_fun (ho s t hst') y`. Rewrite using `[this]`.
+
+Conclude with `Formalism.BranchingDeterminantCap.OrthogonalSumAlt.majAt_zero_right b X v x`. Establish `sw1` using `sandwich hE hP hτ ρ hst H χ`. Establish `sw0` using `sandwich hE hP hτ ρ hst H₀ χ₀`. Establish `os1` using `Formalism.BranchingDeterminantCap.orthSandwich K V ι b X hX S (fun s => cut A (epP H χ ρ ∘ₗ eS (τ s) ρ)) (cut A (epP H χ ρ ∘ₗ eGood τ ρ)) (Fintype.card G) (fg_cut hfg _) hN (horth H χ) sw1.1 sw1.2.1`. Establish `os0` using `Formalism.BranchingDeterminantCap.orthSandwich K V ι b X hX S (fun s => cut A (epP H₀ χ₀ ρ ∘ₗ eS (τ s) ρ)) (cut A (epP H₀ χ₀ ρ ∘ₗ eGood τ ρ)) (Fintype.card G) (fg_cut hfg _) hN (horth H₀ χ₀) sw0.1 sw0.2.1`.
+
+Establish `hrk : ∀ s, rkK (cut A (epP H χ ρ ∘ₗ eS (τ s) ρ)) = nS (τ s) H χ * rkK (cut A (epP H₀ χ₀ ρ ∘ₗ eS (τ s) ρ))` using `fun s => by`. Rewrite using `[rkK_cut hspan, rkK_cut hspan]`. Conclude with `(tr s).rank`. Establish `hxm : ∀ s j, ∀ a ∈ cut A (epP H₀ χ₀ ρ ∘ₗ eS (τ s) ρ), ((Fintype.card G : 𝓞 K) ^ 3) • (epP H χ ρ ∘ₗ ρ (γ s j)) a ∈ cut A (epP H χ ρ ∘ₗ eS (τ s) ρ)` using `fun s j a ha => cube_mem (smul_mem_cut hP ρ hst H χ _ (tr s).2.1 ha.1 ((tr s).2.2.1 j a ((mem_cut (tr s).1).1 ha).2))`. Establish `hym : ∀ s i, ∀ a ∈ cut A (epP H χ ρ ∘ₗ eS (τ s) ρ), ((Fintype.card G : 𝓞 K) ^ 3) • (epP H₀ χ₀ ρ ∘ₗ ρ (δ s i)) a ∈ cut A (epP H₀ χ₀ ρ ∘ₗ eS (τ s) ρ)` using `fun s i a ha => cube_mem (smul_mem_cut hP ρ hst H₀ χ₀ _ (tr s).1 ha.1 ((tr s).2.2.2.1 i a ((mem_cut (tr s).2.1).1 ha).2))`.
+
+Establish `hyi : ∀ s, ∀ a ∈ cut A (epP H χ ρ ∘ₗ eS (τ s) ρ), (∀ i, (epP H₀ χ₀ ρ ∘ₗ ρ (δ s i)) a = 0) → a = 0` using `fun s a ha h0 => (tr s).inj_y a ((mem_cut (tr s).2.1).1 ha).2 h0`. Establish `hrk0 : rkK (cut A (epP H χ ρ ∘ₗ eGood τ ρ)) = ∑ s, nS (τ s) H χ * rkK (cut A (epP H₀ χ₀ ρ ∘ₗ eS (τ s) ρ))`. Rewrite using `[os1.1]`. Conclude with `Finset.sum_congr rfl fun s _ => hrk s`. Establish `h3a : ∀ s, |degT b X (cut A (epP H χ ρ ∘ₗ eS (τ s) ρ)) - (nS (τ s) H χ : ℝ) * degT b X (cut A (epP H₀ χ₀ ρ ∘ₗ eS (τ s) ρ))| ≤ (6 * Real.log (Fintype.card G) + Real.log (nS (τ s) H χ)) * ((nS (τ s) H χ : ℝ) * rkK (cut A (epP H₀ χ₀ ρ ∘ₗ eS (τ s) ρ)))`.
+
+Introduce `s`. Distinguish the cases in `hn : nS (τ s) H χ = 0`. Simplify using `[degT, hrk s, hn]`. Distinguish the cases in `hr : cut A (epP H₀ χ₀ ρ ∘ₗ eS (τ s) ρ) = ⊥`. Establish `h0 : rkK (cut A (epP H₀ χ₀ ρ ∘ₗ eS (τ s) ρ)) = 0`.
+
+Rewrite using `[hr]`. Simplify using `[rkK]`. Simplify using `[degT, hrk s, h0]`. Conclude with `Formalism.BranchingDeterminantCap.transferPart K V ι b X hX _ _ _ (Fintype.card G) (fun j => epP H χ ρ ∘ₗ ρ (γ s j)) (fun i => epP H₀ χ₀ ρ ∘ₗ ρ (δ s i)) (fg_cut hfg _) (fg_cut hfg _) hr (Nat.pos_of_ne_zero hn) hN (hxm s) (hym s) (fun i v => hnorm H χ _ v) (fun i v => hnorm H₀ χ₀ …`. Establish `h3b : ∀ s, (6 * Real.log (Fintype.card G) + Real.log (nS (τ s) H χ)) * ((nS (τ s) H χ : ℝ) * rkK (cut A (epP H₀ χ₀ ρ ∘ₗ eS (τ s) ρ))) ≤ 6.5 * Real.log (Fintype.card G) * ((nS (τ s) H χ : ℝ) * rkK (cut A (epP H₀ χ₀ ρ ∘ₗ eS (τ s) ρ)))`.
+
+Introduce `s`. Use `log_le_half ((hD K G S T τ hτ s).2 H χ)` as an intermediate fact. Conclude with `mul_le_mul_of_nonneg_right (by linarith) (by positivity)`. Establish `hcast : ((∑ s, nS (τ s) H χ * rkK (cut A (epP H₀ χ₀ ρ ∘ₗ eS (τ s) ρ)) : ℕ) : ℝ) = ∑ s, (nS (τ s) H χ : ℝ) * rkK (cut A (epP H₀ χ₀ ρ ∘ₗ eS (τ s) ρ))` using `by push_cast; rfl`. Establish `o12 : ∑ s, degT b X (cut A (epP H χ ρ ∘ₗ eS (τ s) ρ)) ≤ degT b X (cut A (epP H χ ρ ∘ₗ eGood τ ρ))` using `os1.2.1`.
+
+Establish `o13 : degT b X (cut A (epP H χ ρ ∘ₗ eGood τ ρ)) ≤ ∑ s, degT b X (cut A (epP H χ ρ ∘ₗ eS (τ s) ρ)) + 2 * Real.log (Fintype.card G) * (rkK (cut A (epP H χ ρ ∘ₗ eGood τ ρ)) : ℝ)` using `os1.2.2`. Establish `o02 : ∑ s, degT b X (cut A (epP H₀ χ₀ ρ ∘ₗ eS (τ s) ρ)) ≤ degT b X (cut A (epP H₀ χ₀ ρ ∘ₗ eGood τ ρ))` using `os0.2.1`. Establish `o03 : degT b X (cut A (epP H₀ χ₀ ρ ∘ₗ eGood τ ρ)) ≤ ∑ s, degT b X (cut A (epP H₀ χ₀ ρ ∘ₗ eS (τ s) ρ)) + 2 * Real.log (Fintype.card G) * (rkK (cut A (epP H₀ χ₀ ρ ∘ₗ eGood τ ρ)) : ℝ)` using `os0.2.2`. Rewrite `o13` using `[hrk0]`. Rewrite `o03` using `[os0.1, Nat.cast_sum]`.
+
+Establish `h4` using `Formalism.BranchingDeterminantCap.transferDeg S (fun s => (rkK (cut A (epP H₀ χ₀ ρ ∘ₗ eS (τ s) ρ)) : ℝ)) (fun s => (nS (τ s) H χ : ℝ)) (fun s => degT b X (cut A (epP H₀ χ₀ ρ ∘ₗ eS (τ s) ρ))) (fun s => degT b X (cut A (epP H χ ρ ∘ₗ eS (τ s) ρ))) (Real.log (Fintype.card G)) (degT b …`. Establish `h810 : 8.5 * Real.log (Fintype.card G : ℝ) ≤ 10 * Real.log (Fintype.card G : ℝ)`. Combine the linear relations using `only [hla]`. Establish `h85 : (17 / 2 : ℝ) = 8.5` using `by norm_num`. Rewrite `h4` using `[h85, ← hcast]`.
+
+Use `⟨⟨hrk, hrk0⟩, ⟨iSup_le sw1.1, sw1.2.1, fun s t hst' x hx y hy v => horth H χ s t hst' v x hx y hy, sub_nonneg.2 o12, sub_le_iff_le_add'.2 o13, sub_nonneg.2 o02, sub_le_iff_le_add'.2 o03⟩, fun s => ⟨h3a s, h3b s⟩, ⟨?_, ?_⟩, fun h0 => ⟨?_, add_le_add_right h810 _⟩⟩` and prove the remaining obligations. Conclude with `h4`. Conclude with `mul_le_mul_of_nonneg_right h810 (Nat.cast_nonneg _)`. Use `Formalism.BranchingDeterminantCap.transferMuMax K V ι b X hX S (fun s => cut A (epP H₀ χ₀ ρ ∘ₗ eS (τ s) ρ)) (fun s => cut A (epP H χ ρ ∘ₗ eS (τ s) ρ)) (cut A (epP H χ ρ ∘ₗ eGood τ ρ)) (cut A (epP H₀ χ₀ ρ ∘ₗ eGood τ ρ)) (Fintype.card G) (fun s => nS (τ s) H χ) (fun s i => epP H₀ χ …` as an intermediate fact. Rewrite `this` using `[h85]`.
+
+Conclude with `this`.
+-/
 theorem all_parts_transfer_of_facts (hE : IdemE) (hP : IdemP) (hC : Core) (hD : DimSq) (hM : Metric) :
     AllPartsTransfer := by
   intro K _ _ _ _ G _ _ S _ T _ _ _ τ H₀ χ₀ H χ hτ hM1 V _ _ _ _ ι _ _ b X ρ hX hU A hA

@@ -37,6 +37,13 @@ variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAl
   {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w}
   {rc : IrrGL (w.adicCompletion E) → WD h}
 
+/- English proof (translation)
+Establish `hsph : IsSpherical (ParLaws.toRep σ).ρ`. Use `hS.1` as an intermediate fact. Unfold `IsSpherical IsSphericalFor`. Rewrite using `[GlobalTheory.SmGL.SphCompletion.KO_completion w n]`. Conclude with `this`.
+
+Establish `hu : (rc (clsOf σ)).unr` using `(ParLaws.unr_iff H _).2 hsph`. Take `⟨α, hα⟩` from `ParLaws.exists_hasSatake_of_unr H hu`. Establish `e : S = Finset.univ.val.map α` using `hS.unique (GlobalTheory.T.hasSatakeGL_of_hasSatakeParameters_principalSeries E w n _ σ.ρ α hα)`. Use `⟨hu, ?_⟩` and prove the remaining obligations. Rewrite using `[clsOf, ParLaws.rec_eq_diag H hα, WD.frobEig_diag, e, Multiset.map_map]`.
+
+Both sides reduce to the same expression.
+-/
 theorem rec_hasSatGL (H : IsRec h rc) {n : ℕ} (σ : SmIrr (GL (Fin n) (w.adicCompletion E))) (S : Multiset ℂˣ)
     (hS : GlobalTheory.LFun.HasSatGL w σ.ρ S) :
     (rc (clsOf σ)).unr ∧ (rc (clsOf σ)).frobEig = S.map fun z => ((z⁻¹ : ℂˣ) : ℂ) := by

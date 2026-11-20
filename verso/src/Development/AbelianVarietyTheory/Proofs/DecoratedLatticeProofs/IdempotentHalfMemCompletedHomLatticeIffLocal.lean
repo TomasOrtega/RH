@@ -25,6 +25,17 @@ open GlobalTheory.LatVac
 variable {D : D7} {S T : HSp D} {N : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)}
   {N' : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)}
 
+/- English proof (translation)
+Break down `(P.valuation D.host.E).val_le_one_or_val_inv_lt_one r with h | h` into its components or cases. Take `⟨n, d, hd⟩` from `P.exists_primeCompl_mul_eq_of_integer r h`. Conclude with `⟨d, d.2, n, by rw [mul_comm]; exact hd.symm⟩`. Distinguish the cases in `hr0 : r = 0`. Conclude with `⟨1, P.asIdeal.primeCompl.one_mem, 0, by simp [hr0]⟩`.
+
+Take `⟨n, d, hd⟩` from `P.exists_primeCompl_mul_eq_of_integer r⁻¹ h.le`. Establish `hdP : (d : 𝓞 D.host.E) ∉ P.asIdeal` using `d.2`. Establish `hd0 : (d : 𝓞 D.host.E) ≠ 0` using `fun h => hdP (h ▸ zero_mem _)`. Establish `hd0' : ((d : 𝓞 D.host.E) : D.host.E) ≠ 0` using `fun h => hd0 (RingOfIntegers.ext h)`. Establish `hd' : r⁻¹ * ((d : 𝓞 D.host.E) : D.host.E) = (n : D.host.E)` using `hd`.
+
+Establish `hn0 : n ≠ 0`. Introduce and unpack `rfl`. Conclude with `mul_ne_zero (inv_ne_zero hr0) hd0' hd'`. Establish `hnP : n ∈ P.asIdeal`. Use `(P.valuation_lt_one_iff_mem (K := D.host.E) n).1 ?_` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `P.valuation D.host.E (algebraMap (𝓞 D.host.E) D.host.E n) < 1`. Rewrite using `[← hd, Valuation.map_mul]`. Conclude with `mul_lt_one_of_lt_of_le h (P.valuation_le_one _)`. Establish `h1 : finPart D (e * incA D (((d : 𝓞 D.host.E) : D.host.E)⁻¹)) ∈ intAE D`. Assume the negation of the conclusion as `h`.
+
+Conclude with `hdP ((he.2 _ hd0).2 h)`. Use `absurd ?_ ((he.2 _ hn0).1 hnP)` and prove the remaining obligations. Establish `h2` using `GlobalTheory.HeckeConj.mul_mem_intAE D hr h1`. Rewrite `h2` using `[← RingHom.map_mul, mul_mul_mul_comm, he.1.1, ← RingHom.map_mul, ← inv_inv r, ← mul_inv, hd']`. Then use the resulting hypothesis.
+-/
 theorem exists_den {e : AE D} {P : HeightOneSpectrum (𝓞 D.host.E)} (he : Formalism.L2.NTheta.IsIdemAt e P) {r : D.host.E}
     (hr : finPart D (e * incA D r) ∈ intAE D) :
     ∃ s : 𝓞 D.host.E, s ∉ P.asIdeal ∧ ∃ o : 𝓞 D.host.E, (o : D.host.E) = s * r := by
@@ -56,9 +67,17 @@ theorem exists_den {e : AE D} {P : HeightOneSpectrum (𝓞 D.host.E)} (he : Form
 noncomputable def form (S : HSp D) (s : Fin S.rank → D.host.E) : (Fin S.rank → D.host.E) →ₗ[D.host.E] D.host.E :=
   ∑ i, ∑ j, (star (s i) * S.gram i j) • LinearMap.proj j
 
+/- English proof (translation)
+Simplify using `[form, LinearMap.sum_apply]`.
+-/
 theorem form_apply (s v : Fin S.rank → D.host.E) : form S s v = ∑ i, ∑ j, star (s i) * S.gram i j * v j := by
   simp [form, LinearMap.sum_apply]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a`. Establish `h1 : v a = ∑ j, (∑ i, s i a * ∑ k, star (s' i k) * S.gram k j) * v j` using `by simp [h]`. Rewrite using `[h1, Finset.sum_apply]`. Simplify using `only [form_apply, Pi.smul_apply, smul_eq_mul, Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`.
+-/
 theorem expand {n : ℕ} {s s' : Fin n → Fin S.rank → D.host.E}
     (h : ∀ a j, ∑ i, s i a * ∑ k, star (s' i k) * S.gram k j = if a = j then 1 else 0) (v : Fin S.rank → D.host.E) :
     v = ∑ k, form S (s' k) v • s k := by
@@ -76,9 +95,27 @@ noncomputable def coefA (S T : HSp D) (b : D.host.E) (s : Fin S.rank → D.host.
   AddMonoidHom.mk' (fun u => ∑ i, ∑ j, ∑ m, incA D (b * (star (t i) * T.gram i j) * s m) * u j m) fun x y => by
     simp only [Matrix.add_apply, mul_add, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coefA_apply (b : D.host.E) (s : Fin S.rank → D.host.E) (t : Fin T.rank → D.host.E) (u : WO S T) :
     coefA S T b s t u = ∑ i, ∑ j, ∑ m, incA D (b * (star (t i) * T.gram i j) * s m) * u j m := rfl
 
+/- English proof (translation)
+Proceed by induction on `hu using AddSubgroup.closure_induction with`. Consider the case `mem w hw`. Take `⟨α, hα, -, a, ha, s0, hs0, t0, ht0, rfl⟩` from `hw`. Take `⟨c, hc'⟩` from `hb a ha`. Take `⟨o, ho⟩` from `(hN.2 s).1 hs s0 hs0`.
+
+Take `⟨o', ho'⟩` from `(hN'.2 t0).1 ht0 t ht`. Use `AddSubgroup.subset_closure ⟨α, hα, c * o' * o, ?_⟩` and prove the remaining obligations. Establish `h1 : ∀ x y : D.host.E, incA D x * (pairA D.host.F 0 α ⊗ₜ[D.host.F] y) = pairA D.host.F 0 α ⊗ₜ[D.host.F] (x * y)` using `fun x y => by`. Express the relevant statement in the definitionally equal form `((1 : AF D.host.F) ⊗ₜ[D.host.F] x) * _ = _`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul]`.
+
+Establish `h2 : ((c * o' * o : 𝓞 D.host.E) : D.host.E) = ∑ i, ∑ j, ∑ m, (b * (star (t i) * T.gram i j) * s m) * (a * t0 j * ∑ k, star (s0 k) * S.gram k m)`. Establish `h3 : ((c * o' * o : 𝓞 D.host.E) : D.host.E) = (c : D.host.E) * o' * o`. Simplify using `only [map_mul]`. Rewrite using `[h3, hc', ho, ho', Finset.sum_comm (f := fun i j => star (s0 i) * S.gram i j * s j), Finset.mul_sum (a := a * b), Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Finset.mul_sum (a := a * b), Finset.sum_mul]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[coefA_apply]`. Simplify using `only [Matrix.of_apply, h1, ← TensorProduct.tmul_sum]`. Rewrite using `[h2]`. Both sides reduce to the same expression.
+
+Consider the case `zero => rw [map_zero, map_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [map_add, RingHom.map_add]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [map_neg, RingHom.map_neg]`.
+
+Conclude with `neg_mem hx`.
+-/
 theorem coefA_int (hN : IsSelfDualC S N) (hN' : IsSelfDualC T N') {b : D.host.E}
     (hb : ∀ a ∈ D.host.AA, ∃ c : 𝓞 D.host.E, (c : D.host.E) = a * b)
     {s : Fin S.rank → D.host.E} (hs : s ∈ N) {t : Fin T.rank → D.host.E} (ht : t ∈ N') {u : WO S T}
@@ -116,6 +153,11 @@ theorem coefA_int (hN : IsSelfDualC S N) (hN' : IsSelfDualC T N') {b : D.host.E}
   | add x y _ _ hx hy => rw [map_add, RingHom.map_add]; exact add_mem hx hy
   | neg x _ hx => rw [map_neg, RingHom.map_neg]; exact neg_mem hx
 
+/- English proof (translation)
+Rewrite using `[coefA_apply, form_apply, ← LinearMap.toMatrix'_mulVec x s]`. Simplify using `only [Matrix.mulVec, dotProduct, Finset.mul_sum, map_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.map_apply, mul_left_comm, ← RingHom.map_mul]`. Use `congr 2`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem coefA_rat (e : AE D) (b : D.host.E) (s : Fin S.rank → D.host.E) (t : Fin T.rank → D.host.E)
     (x : Formalism.L2.Col.HomE D.host.E S.rank T.rank) :
     coefA S T b s t ((LinearMap.toMatrix' x).map fun r => e * incA D r) = e * incA D (b * form T t (x s)) := by
@@ -128,6 +170,25 @@ theorem coefA_rat (e : AE D) (b : D.host.E) (s : Fin S.rank → D.host.E) (t : F
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Take `⟨n, s, s', hs, hss⟩` from `GlobalTheory.LatVacDual.dualFamily D S N hN`. Take `⟨m, t, t', ht, htt⟩` from `GlobalTheory.LatVacDual.dualFamily D T N' hN'`. Establish `hxe : x = ∑ k, ∑ i, form T (t' i) (x (s k)) • (form S (s' k)).smulRight (t i)`. Use `LinearMap.ext fun v => ?_` and prove the remaining obligations. Use `conv_lhs => rw [expand hss v, map_sum]`.
+
+Rewrite using `[LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Use `conv_lhs => rw [map_smul, expand htt (x (s k)), Finset.smul_sum]`. Rewrite using `[LinearMap.sum_apply]`. Conclude with `Finset.sum_congr rfl fun i _ => smul_comm _ _ _`.
+
+Establish `hb0 : ((D.host.𝔟 : Ideal (𝓞 D.host.E)) : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E) ≠ 0` using `FractionalIdeal.coeIdeal_ne_zero.2 (ReciprocityTheory.ChartRestriction.G.PullbackSections.MLI.bb_ne_bot D)`. Establish `h1 : (1 : D.host.E) ∈ D.host.AA0 * (D.host.𝔟 : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E)`. Rewrite using `[Formalism.BasicNotions.Host.AA0, inv_mul_cancel₀ hb0]`. Conclude with `FractionalIdeal.one_mem_one _`. Rewrite using `[← one_smul D.host.E x]`.
+
+Use `FractionalIdeal.mul_induction_on (C := fun c => c • x ∈ Formalism.HermitianLatticesTheory.localization₂ P.asIdeal (perO (D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E) N N')) h1 (fun a ha b hb => ?_) fun a b ha hb => by rw [add_smul]; exact add_mem ha hb` and prove the remaining obligations. Establish `hb' : ∀ a ∈ D.host.AA, ∃ c : 𝓞 D.host.E, (c : D.host.E) = a * b` using `fun a ha => by`. Rewrite `ha` using `[Formalism.BasicNotions.Host.AA, Formalism.BasicNotions.Host.ccE, hc, Ideal.map_top, FractionalIdeal.coeIdeal_top, one_mul]`. Establish `h` using `FractionalIdeal.mul_mem_mul ha hb`. Rewrite `h` using `[Formalism.BasicNotions.Host.AA0, inv_mul_cancel₀ hb0]`.
+
+Conclude with `(FractionalIdeal.mem_one_iff _).1 h`. Establish `hi : finPart D e' ∈ intAE D`. Assume the negation of the conclusion as `h`. Use `P.asIdeal.primeCompl.one_mem ((he.2 1 one_ne_zero).2 ?_)` and prove the remaining obligations. Rewrite using `[show ((1 : 𝓞 D.host.E) : D.host.E) = 1 from rfl, inv_one, RingHom.map_one, mul_one]` and apply the resulting hypothesis.
+
+Rewrite using `[hxe, Finset.smul_sum]`. Use `sum_mem fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.smul_sum]`. Use `sum_mem fun i _ => ?_` and prove the remaining obligations. Establish `h2` using `GlobalTheory.HeckeConj.mul_mem_intAE D hi (coefA_int hN hN' hb' (hs k).1 (ht i).2 hx)`.
+
+Rewrite `h2` using `[coefA_rat, ← RingHom.map_mul, ← mul_assoc, hee]`. Take `⟨d, hd, o, ho⟩` from `exists_den he h2`. Use `⟨d, hd, ?_⟩` and prove the remaining obligations. Establish `h3 : a • (form S (s' k)).smulRight (t i) ∈ perO (D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E) N N'`. Use `Submodule.subset_span ⟨a, ha, _, fun v hv => ?_, rfl⟩` and prove the remaining obligations.
+
+Take `⟨c, hc⟩` from `(hN.2 v).1 hv _ (hs k).2`. Rewrite using `[LinearMap.smulRight_apply, form_apply, ← hc]`. Conclude with `N'.smul_mem c (ht i).1`. Use `Submodule.smul_mem _ o h3 using 1` and compare the differences between its conclusion and the goal. Rewrite using `[← IsScalarTower.algebraMap_smul D.host.E d, ← IsScalarTower.algebraMap_smul D.host.E o, show algebraMap _ D.host.E o = _ from ho, smul_smul, smul_smul, smul_smul]`.
+
+Use `congr 1`. Express the relevant statement in the definitionally equal form `(d : D.host.E) * _ * _ = _`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem mem_localization_of_component (hc : D.host.ccK = ⊤) (hN : IsSelfDualC S N) (hN' : IsSelfDualC T N') {e e' : AE D}
     {P : HeightOneSpectrum (𝓞 D.host.E)} (he : Formalism.L2.NTheta.IsIdemAt e' P) (hee : e' * e = e')
     {x : Formalism.L2.Col.HomE D.host.E S.rank T.rank}
@@ -182,6 +243,13 @@ theorem mem_localization_of_component (hc : D.host.ccK = ⊤) (hN : IsSelfDualC 
   change (d : D.host.E) * _ * _ = _
   ring
 
+/- English proof (translation)
+Take `⟨s, hs, hsx⟩` from `hx`. Establish `hs' : s ∉ P.asIdeal` using `hs`. Establish `hne : s ≠ 0` using `fun h => hs' (h ▸ zero_mem _)`. Establish `hs0 : (s : D.host.E) ≠ 0` using `fun h => hne (RingOfIntegers.ext h)`. Establish `h1 : finPart D (e * incA D ((s : D.host.E)⁻¹)) ∈ intAE D`.
+
+Assume the negation of the conclusion as `h`. Conclude with `hs' ((he.2 _ hne).2 h)`. Establish `h4` using `GlobalTheory.LatticeStable.smul_mem_latO D S T _ _ _ _ h1 _ (finTens_mem_latO (one_mem_intAf _) (HalfPairing.toMatrix_mem_latRat hc hN hsx))`. Use `h4 using 1` and compare the differences between its conclusion and the goal. Use extensionality with `i j`.
+
+Establish `h5` using `GlobalTheory.SplitScalar.infPart_splitIdem he.1`. Rewrite using `[Matrix.map_apply, Matrix.smul_apply, smul_eq_mul]`. Use `GlobalTheory.SplitScalar.adele_ext (by simp only [RingHom.map_mul, h5, zero_mul]) ?_` and prove the remaining obligations. Establish `h6 : finPart D (finTens 1 (LinearMap.toMatrix' (s • x)) i j) = finPart D (incA D ((s : D.host.E) * LinearMap.toMatrix' x i j))` using `rfl`. Rewrite using `[RingHom.map_mul (finPart D) (_ * _), h6, ← RingHom.map_mul, mul_assoc, ← RingHom.map_mul (incA D), inv_mul_cancel_left₀ hs0]`.
+-/
 theorem comp_mem (hc : D.host.ccK = ⊤) (hN : IsSelfDualC S N) {e : AE D} {P : HeightOneSpectrum (𝓞 D.host.E)}
     (he : Formalism.L2.NTheta.IsIdemAt e P) {x : Formalism.L2.Col.HomE D.host.E S.rank T.rank}
     (hx : x ∈ Formalism.HermitianLatticesTheory.localization₂ P.asIdeal (perO (D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E) N N')) :
@@ -206,6 +274,13 @@ theorem comp_mem (hc : D.host.ccK = ⊤) (hN : IsSelfDualC S N) {e : AE D} {P : 
   rw [RingHom.map_mul (finPart D) (_ * _), h6, ← RingHom.map_mul, mul_assoc, ← RingHom.map_mul (incA D),
     inv_mul_cancel_left₀ hs0]
 
+/- English proof (translation)
+Introduce `D S T hc e SS he N N' hN hN' x`. Prove the components needed by the constructor for the conclusion. Introduce `hx P hP`. Take `⟨a, ha, hae⟩` from `GlobalTheory.OffIdem.idemSum_mul_idemAt he hP`. Conclude with `mem_localization_of_component hc hN hN' ha hae hx`.
+
+Introduce `hx`. Take `⟨⟨es, hes, rfl⟩, -⟩` from `he`. Establish `e1 : ((LinearMap.toMatrix' x).map fun r => (∑ PP ∈ SS, es PP) * incA D r : WO S T) = ∑ PP ∈ SS, ((LinearMap.toMatrix' x).map fun r => es PP * incA D r : WO S T)`. Use extensionality with `i j`. Rewrite using `[Matrix.map_apply, Matrix.sum_apply, Finset.sum_mul]`.
+
+Both sides reduce to the same expression. Rewrite using `[e1]`. Conclude with `sum_mem fun PP hPP => comp_mem hc hN (hes PP hPP) (hx PP hPP)`.
+-/
 theorem half_mem_latO_iff : ∀ (D : D7) (S T : HSp D), D.host.ccK = ⊤ → ∀ (e : AE D) (SS : Finset (Formalism.L2.DIV.Pl D.host.E)), IsIdemSum e SS → ∀ (N : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)) (N' : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)), IsSelfDualC S N → IsSelfDualC T N' → ∀ x : Formalism.L2.Col.HomE D.host.E S.rank T.rank, (((LinearMap.toMatrix' x).map fun r => e * incA D r : WO S T) ∈ (latO S T (N : Set (Fin S.rank → D.host.E)) (N' : Set (Fin T.rank → D.host.E)) fun _ => True) ↔ ∀ P ∈ SS, x ∈ Formalism.HermitianLatticesTheory.localization₂ P.asIdeal (perO (D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E) N N')) := by
   intro D S T hc e SS he N N' hN hN' x
   constructor

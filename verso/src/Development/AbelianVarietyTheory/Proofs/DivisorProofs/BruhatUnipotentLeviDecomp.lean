@@ -17,6 +17,13 @@ open Matrix GlobalTheory.LeviIdeleHom
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+Introduce `hdet`. Take `⟨w⟩ : Nonempty (InfinitePlace F)` from `inferInstance`. Establish `hd : (Y.J.map (B.emb w).1).det = 0`. Use `RingHom.map_det (B.emb w).1 Y.J` as an intermediate fact. Rewrite `this` using `[hdet, map_zero]`.
+
+Conclude with `this.symm`. Take `⟨v, hv0, hv⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 hd`. Establish `hx : star v ≠ 0`. Introduce `h0`. Apply `hv0` to reduce the goal to its premises.
+
+Rewrite using `[← star_star v, h0, star_zero]`. Use `(h w).2.2 (star v) hx` as an intermediate fact. Rewrite `this` using `[star_star, Matrix.smul_mulVec, hv, smul_zero, dotProduct_zero, Complex.zero_re]`. Conclude with `lt_irrefl _ this`.
+-/
 theorem det_ne_zero_of_cartan (B : Base F E) {n : ℕ} (Y : Spc F E n)
     (h : ∀ w, IsCartan (Complex.I • Y.J.map (B.emb w).1) (Y.θ w)) : Y.J.det ≠ 0 := by
   intro hdet
@@ -32,6 +39,29 @@ theorem det_ne_zero_of_cartan (B : Base F E) {n : ℕ} (Y : Spc F E n)
   rw [star_star, Matrix.smul_mulVec, hv, smul_zero, dotProduct_zero, Complex.zero_re] at this
   exact lt_irrefl _ this
 
+/- English proof (translation)
+Establish `hσ : ∀ e, σ (σ e) = e` using `sigma_sigma hcm`. Take `⟨hax, hay, hbx, hby, hxJ, hyJ, haι, hbι⟩` from `dual_facts hσ hsk hxx hyy hxy horth`. Use `set aE := Y.J *ᵥ (⇑σ ∘ H.y) with haE`. Use `set bE := -(Y.J *ᵥ (⇑σ ∘ H.x)) with hbE`. Use `set f : E →+* AE F E := inclR (F := F) (AF F) with hf`.
+
+Establish `hcf : ∀ {k : ℕ} (v : Fin k → E), ⇑(cA σ) ∘ (f ∘ v) = f ∘ (⇑σ ∘ v)` using `fun v => funext fun i => cA_inclR σ (v i)`. Establish `hdot : ∀ v w : Fin n → E, (f ∘ v) ⬝ᵥ (f ∘ w) = f (v ⬝ᵥ w)` using `fun v w => (RingHom.map_dotProduct f v w).symm`. Establish `hneg : ∀ v : Fin n → E, f ∘ (-v) = -(f ∘ v)` using `fun v => funext fun i => map_neg f (v i)`. Establish `hax' : (f ∘ aE) ⬝ᵥ (f ∘ H.x) = 1` using `by rw [hdot, hax, map_one]`. Establish `hay' : (f ∘ aE) ⬝ᵥ (f ∘ H.y) = 0` using `by rw [hdot, hay, map_zero]`.
+
+Establish `hbx' : (f ∘ bE) ⬝ᵥ (f ∘ H.x) = 0` using `by rw [hdot, hbx, map_zero]`. Establish `hby' : (f ∘ bE) ⬝ᵥ (f ∘ H.y) = 1` using `by rw [hdot, hby, map_one]`. Establish `haι' : (f ∘ aE) ᵥ* incM F H.ι = 0`. Express the relevant statement in the definitionally equal form `(f ∘ aE) ᵥ* H.ι.map f = 0`. Rewrite using `[map_comp_vecMul, haι]`.
+
+Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Establish `hbι' : (f ∘ bE) ᵥ* incM F H.ι = 0`. Express the relevant statement in the definitionally equal form `(f ∘ bE) ᵥ* H.ι.map f = 0`. Rewrite using `[map_comp_vecMul, hbι]`.
+
+Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Set `M : (AE F E)ˣ → Matrix (Fin n) (Fin n) (AE F E)` to `fun t => levM (f ∘ H.x) (f ∘ H.y) (f ∘ aE) (f ∘ bE) t.1 (cA σ (t⁻¹).1)`. Establish `hone : M 1 = 1` using `by simp only [M, inv_one, Units.val_one, map_one]; exact levM_one`. Establish `hmul : ∀ t t', M (t * t') = M t * M t'`.
+
+Introduce `t t'`. Simplify using `only [M]`. Rewrite using `[levM_mul hax' hay' hbx' hby', _root_.mul_inv_rev, Units.val_mul, Units.val_mul, map_mul, mul_comm (cA σ _)]`. Establish `hunit : ∀ t, (M t)ᵀ * incM F Y.J * (M t).map (cA σ) = incM F Y.J`. Introduce `t`.
+
+Establish `ha' : Y.J.map f *ᵥ ((cA σ).toRingHom ∘ (f ∘ H.y)) = f ∘ aE`. Express the relevant statement in the definitionally equal form `_ *ᵥ (⇑(cA σ) ∘ (f ∘ H.y)) = _`. Rewrite using `[hcf, map_comp_mulVec]`. Establish `hb' : Y.J.map f *ᵥ ((cA σ).toRingHom ∘ (f ∘ H.x)) = -(f ∘ bE)`. Express the relevant statement in the definitionally equal form `_ *ᵥ (⇑(cA σ) ∘ (f ∘ H.x)) = _`.
+
+Rewrite using `[hcf, map_comp_mulVec, hbE, hneg, neg_neg]`. Establish `hxJ' : (f ∘ H.x) ᵥ* Y.J.map f = (cA σ).toRingHom ∘ (f ∘ bE)`. Express the relevant statement in the definitionally equal form `_ = ⇑(cA σ) ∘ (f ∘ bE)`. Rewrite using `[map_comp_vecMul, hxJ, hcf]`. Establish `hyJ' : (f ∘ H.y) ᵥ* Y.J.map f = -((cA σ).toRingHom ∘ (f ∘ aE))`.
+
+Express the relevant statement in the definitionally equal form `_ = -(⇑(cA σ) ∘ (f ∘ aE))`. Rewrite using `[map_comp_vecMul, hyJ, hcf, hneg]`. Establish `h1 : t.1 * (cA σ).toRingHom (cA σ (t⁻¹).1) = 1`. Express the relevant statement in the definitionally equal form `t.1 * cA σ (cA σ (t⁻¹).1) = 1`. Rewrite using `[cA_cA hσ, Units.mul_inv]`.
+
+Establish `h2 : cA σ (t⁻¹).1 * (cA σ).toRingHom t.1 = 1`. Express the relevant statement in the definitionally equal form `cA σ (t⁻¹).1 * cA σ t.1 = 1`. Rewrite using `[← map_mul, Units.inv_mul, map_one]`. Conclude with `levM_unitary (cA σ).toRingHom (cA_cA hσ) ha' hb' hxJ' hyJ' hax' hay' hbx' hby' h1 h2`. Use `⟨homOf σ Y.J M hone hmul hunit t, levi_matrix_mulVec_first_vector hax' hbx' _ _, levM_mulVec_y hay' hby' _ _, ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `M t * incM F H.ι = incM F H.ι * 1`. Rewrite using `[Matrix.mul_one]`. Conclude with `levM_mul_fix haι' hbι' _ _`.
+-/
 theorem exists_isLevi_of_hyperbolic_pair (hcm : IsCMExt F E σ) {n n₁ : ℕ} (Y : Spc F E n) (Y₁ : Spc F E n₁) (H : Plane E n n₁)
     (hsk : ∀ i j, σ (Y.J j i) = -Y.J i j) (hxx : form σ Y.J H.x H.x = 0) (hyy : form σ Y.J H.y H.y = 0)
     (hxy : form σ Y.J H.x H.y = 1) (horth : ∀ u, form σ Y.J (H.ι *ᵥ u) H.x = 0 ∧ form σ Y.J (H.ι *ᵥ u) H.y = 0)
@@ -87,16 +117,31 @@ theorem exists_isLevi_of_hyperbolic_pair (hcm : IsCMExt F E σ) {n n₁ : ℕ} (
   rw [Matrix.mul_one]
   exact levM_mul_fix haι' hbι' _ _
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mat_mul'' {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (a b : UA σ J) : mat (a * b) = mat a * mat b := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mat_one'' {n : ℕ} {J : Matrix (Fin n) (Fin n) E} : mat (1 : UA σ J) = 1 := rfl
 
+/- English proof (translation)
+Rewrite using `[← mat_mul'', inv_mul_cancel]`. Both sides reduce to the same expression.
+-/
 theorem mat_inv_mul'' {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (a : UA σ J) : mat a⁻¹ * mat a = 1 := by
   rw [← mat_mul'', inv_mul_cancel]; rfl
 
+/- English proof (translation)
+Rewrite using `[← mat_mul'', mul_inv_cancel]`. Both sides reduce to the same expression.
+-/
 theorem mat_mul_inv'' {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (a : UA σ J) : mat a * mat a⁻¹ = 1 := by
   rw [← mat_mul'', mul_inv_cancel]; rfl
 
+/- English proof (translation)
+Establish `: w = hc.unit⁻¹.1 • (mat a *ᵥ v)`. Rewrite using `[h, smul_smul]`. Simplify using the standard rewrite rules. Rewrite using `[this, Matrix.mulVec_smul, Matrix.mulVec_mulVec, mat_inv_mul'', Matrix.one_mulVec]`.
+-/
 theorem inv_mulVec_of' {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (a : UA σ J) (c : AE F E) (hc : IsUnit c)
     (v w : Fin n → AE F E) (h : mat a *ᵥ v = c • w) : mat a⁻¹ *ᵥ w = hc.unit⁻¹.1 • v := by
   have : w = hc.unit⁻¹.1 • (mat a *ᵥ v) := by

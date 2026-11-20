@@ -2,6 +2,37 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws GlobalTheory.GalOfCusp
 
+/- English proof (translation)
+Introduce `Ω _ _ _ l _ c D T c' h K X n`. Establish `hmem : ∀ (v : W.Vl l T.L) (g : Dec (F` using `T.L) (K.s.A v)), resLe (Tower.F_le T) (g : G T.L Ω) ∈ (T.fr ∅).Gv (K.e v) := by`. Introduce `v g`. Use `show _ ∈ Dec (T.pl (K.e v))`. Establish `hg : (g : G T.L Ω) ∈ Dec (F` using `T.L) (T.pl (K.e v)) := K.hA v ▸ g.2`.
+
+Conclude with `hg`. Establish `hup : ∀ (M N : GradeZeroInterpolatingElement.M4 X.A), IsUp M → IsUp N → ∀ i, (M * N) i i = M i i * N i i`. Introduce `M N hM hN i`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single i]`. Introduce `k _ hk`.
+
+Break down `lt_or_gt_of_ne hk with hlt | hlt` into its components or cases. Rewrite using `[hM i k hlt, zero_mul]`. Rewrite using `[hN k i hlt, mul_zero]`. Introduce `hi`. Conclude with `absurd (Finset.mem_univ i) hi`.
+
+Establish `hleft : ∀ w, adj (X.P.n w) * X.P.n w = 1`. Introduce `w`. Establish `h1` using `(X.pair.low w).1`. Simplify `h1` using `[IsGSp]`. Establish `hright : ∀ w, X.P.n w * adj (X.P.n w) = 1` using `fun w => mul_eq_one_comm.mp (hleft w)`.
+
+Establish `hPmul : ∀ w i, ∀ s ∈ (T.fr ∅).Gv w, ∀ t ∈ (T.fr ∅).Gv w, X.P.ψ w i (s * t) = X.P.ψ w i s * X.P.ψ w i t`. Introduce `w i s hs t ht`. Establish `key : adj (X.P.n w) * X.P.r (s * t) * X.P.n w = (adj (X.P.n w) * X.P.r s * X.P.n w) * (adj (X.P.n w) * X.P.r t * X.P.n w)`. Rewrite using `[map_mul]`. Simplify using `only [Matrix.mul_assoc]`.
+
+Rewrite using `[← Matrix.mul_assoc (X.P.n w) (adj (X.P.n w)), hright w, Matrix.one_mul]`. Unfold `PD.ψ`. Rewrite using `[key]`. Conclude with `hup _ _ (X.pair.flag w s hs) (X.pair.flag w t ht) i`. Establish `hψmul : ∀ w i, ∀ s ∈ (T.fr ∅).Gv w, ∀ t ∈ (T.fr ∅).Gv w, X.ψ w i (s * t) = X.ψ w i s * X.ψ w i t`.
+
+Introduce `w i s hs t ht`. Apply `X.inj` to reduce the goal to its premises. Rewrite using `[map_mul, X.ψ_map w i _ (mul_mem hs ht), X.ψ_map w i s hs, X.ψ_map w i t ht]`. Conclude with `hPmul w i s hs t ht`. Establish `hψone : ∀ w i, X.ψ w i 1 = 1`.
+
+Introduce `w i`. Apply `X.inj` to reduce the goal to its premises. Rewrite using `[map_one, X.ψ_map w i 1 (one_mem _)]`. Unfold `PD.ψ`. Rewrite using `[map_one, Matrix.mul_one, hleft w, Matrix.one_apply_eq]`.
+
+Establish `hψunit : ∀ w i, ∀ s ∈ (T.fr ∅).Gv w, IsUnit (X.ψ w i s)`. Introduce `w i s hs`. Assume the negation of the conclusion as `hne`. Establish `h0 : IsLocalRing.residue X.B (X.ψ w i s) = 0` using `(IsLocalRing.residue_eq_zero_iff _).mpr ((IsLocalRing.mem_maximalIdeal _).mpr hne)`. Establish `hr` using `X.ψ_red w i s hs`.
+
+Establish `hu` using `((((T.fr ∅).χ i s).isUnit.map (inc h)).map (IsLocalRing.residue c'.O))`. Rewrite `hu` using `[← hr]`. Simplify using `only [res, h0] at hu`. Simplify using `at hu`. Conclude with `hne hu`.
+
+Establish `hsc : ∀ g g' : G T.L Ω, K.sc n (g * g') = K.sc n g * K.sc n g'`. Introduce `g g'`. Unfold `Link.sc`. Simplify using `only [map_mul, Units.val_mul, mul_pow]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hsc1 : K.sc n 1 = 1`. Unfold `Link.sc`. Simplify using the standard rewrite rules. Establish `hscu : ∀ g : G T.L Ω, IsUnit (K.sc n g)`. Introduce `g`.
+
+Conclude with `(K.κ g).isUnit.mul ((K.β g).isUnit.pow n)`. Use `⟨fun v i => IsUnit.liftRight { toFun := fun g => algebraMap c'.O X.B (K.sc n (g : G T.L Ω)) * X.ψ (K.e v) i (resLe (Tower.F_le T) (g : G T.L Ω)) map_one' := by` and prove the remaining obligations. Simplify using `only [OneMemClass.coe_one, map_one, hsc1]`. Rewrite using `[one_mul]`. Conclude with `hψone (K.e v) i`.
+
+Use the proof step `map_mul' := by`. Introduce `g g'`. Simplify using `only [Subgroup.coe_mul]`. Rewrite using `[map_mul (resLe (Tower.F_le T)), hψmul _ _ _ (hmem v g) _ (hmem v g'), hsc, map_mul]`. Use `ring }`.
+
+Use the proof step `(fun g => ((hscu (g : G T.L Ω)).map (algebraMap c'.O X.B)).mul (hψunit _ _ _ (hmem v g))), ?_⟩`. Introduce `v i g`. Both sides reduce to the same expression.
+-/
 theorem UpperTheory.V.Ws.phiPsiEx :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} {D : Raw Ω c} {T : Tower D} {c' : Coef l} {h : c.O ≤ c'.O} (K : Link T c' h) (X : Space (T.fr ∅) (inc h)) (n : ℕ), ∃ (ψ : ∀ v : W.Vl l T.L, Fin 4 → Dec (F := T.L) (K.s.A v) →* X.Bˣ), K.IsPsiT X n ψ := by
   intro Ω _ _ _ l _ c D T c' h K X n

@@ -24,10 +24,16 @@ variable {K : Type} [Field K] [NumberField K] {E : Type} [Field E] [NumberField 
 
 omit [NumberField K] in
 
+/- English proof (translation)
+The claim follows from `Submodule.span_mono fun _ ⟨u, hu, _⟩ => ⟨u, hu⟩`.
+-/
 theorem eigLat_le {P : Out.PolAV (Sp (𝓞 K))} (F : GenFib P) {O : Type} [CommRing O] (act : OAct O P.A)
     (τ : O →+* 𝓞 K) : F.eigLat act τ ≤ F.lieLat :=
   Submodule.span_mono fun _ ⟨u, hu, _⟩ => ⟨u, hu⟩
 
+/- English proof (translation)
+Use `isNoetherian_of_fg_of_noetherian _ (LieLattice.lieLat_fg_and_span_eq_top K P F).1` as an intermediate fact. Conclude with `Submodule.FG.of_le_of_isNoetherian (eigLat_le F act τ)`.
+-/
 theorem eigLat_fg {P : Out.PolAV (Sp (𝓞 K))} (F : GenFib P) {O : Type} [CommRing O] (act : OAct O P.A)
     (τ : O →+* 𝓞 K) : (F.eigLat act τ).FG := by
   have := isNoetherian_of_fg_of_noetherian _ (LieLattice.lieLat_fg_and_span_eq_top K P F).1

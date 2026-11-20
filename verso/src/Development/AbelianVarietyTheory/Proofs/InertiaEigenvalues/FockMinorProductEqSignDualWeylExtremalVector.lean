@@ -11,12 +11,25 @@ namespace GlobalTheory.ExportSeries.DeltaExtremal
 noncomputable def lead {n : ℕ} (y : Matrix (Fin n) (Fin n) ℂ) (k : ℕ) : ℂ :=
   if h : k ≤ n then (y.submatrix (Fin.castLE h) (Fin.castLE h)).det else 1
 
+/- English proof (translation)
+Simplify using `[lead]`.
+-/
 theorem lead_zero {n : ℕ} (y : Matrix (Fin n) (Fin n) ℂ) : lead y 0 = 1 := by
   simp [lead]
 
+/- English proof (translation)
+Simplify using `[lead]`.
+-/
 theorem lead_self {n : ℕ} (y : Matrix (Fin n) (Fin n) ℂ) : lead y n = y.det := by
   simp [lead]
 
+/- English proof (translation)
+Take `⟨e, hl, hr⟩` from `GlobalTheory.ValCmp.exists_equiv_castLE_rev hk`. Establish `hj` using `GlobalTheory.ValCmp.jacobi_blocks_of_mul (y.val.submatrix e e) ((y⁻¹).val.submatrix e e) 1 (by`. Rewrite using `[Matrix.submatrix_mul_equiv, Units.mul_inv, one_smul, Matrix.submatrix_one_equiv])`. Establish `e1 : (y.val.submatrix e e).toBlocks₁₁ = y.val.submatrix (Fin.castLE (Nat.sub_le n k)) (Fin.castLE (Nat.sub_le n k))`. Use extensionality with `a b`.
+
+Simplify using `[Matrix.toBlocks₁₁, hl]`. Establish `e2 : ((y⁻¹).val.submatrix e e).toBlocks₂₂ = Matrix.of fun a b : Fin k => (y⁻¹).val (Fin.rev (Fin.castLE hk a)) (Fin.rev (Fin.castLE hk b))`. Use extensionality with `a b`. Simplify using `only [Matrix.toBlocks₂₂, hr, Matrix.of_apply, Matrix.submatrix_apply]`. Rewrite `hj` using `[e1, e2, one_pow, one_mul, Matrix.det_submatrix_equiv_self]`.
+
+Rewrite using `[← hj, lead, dif_pos (Nat.sub_le n k), Matrix.coe_units_inv, Matrix.det_nonsing_inv, Ring.inverse_eq_inv']`.
+-/
 theorem det_inv_rev {n k : ℕ} (hk : k ≤ n) (y : GL (Fin n) ℂ) :
     (Matrix.of fun a b : Fin k => (y⁻¹).val (Fin.rev (Fin.castLE hk a)) (Fin.rev (Fin.castLE hk b))).det =
       lead y.val (n - k) * (y.val.det)⁻¹ := by
@@ -36,6 +49,11 @@ theorem det_inv_rev {n k : ℕ} (hk : k ≤ n) (y : GL (Fin n) ℂ) :
 
 variable {D : D7} {m n : ℕ}
 
+/- English proof (translation)
+Rewrite using `[minorPlus, AlgHom.map_det, lead, dif_pos hn]`. Use `congr 1`. Use extensionality with `a b`. Establish `ha` using `a.isLt`. Establish `hb` using `b.isLt`.
+
+Establish `h1 : b.val < m ∧ a.val < n` using `⟨by omega, by omega⟩`. Establish `h2 : b.val < p τ` using `by omega`. Establish `h3 : b.val < n` using `by omega`. Simplify using `only [AlgHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply, varF, dif_pos h1, MvPolynomial.aeval_X, fockPt, if_pos h2, dif_pos h3, Matrix.submatrix_apply]`. Both sides reduce to the same expression.
+-/
 theorem aeval_minorPlus (p : D.what₂.Tau → ℕ) (y : GLR D n) (τ : D.what₂.Tau) {k : ℕ} (hk : k ≤ p τ) (hm : k ≤ m) (hn : k ≤ n) :
     MvPolynomial.aeval (fockPt p y) (minorPlus τ k : PolF D m n) = lead (y τ).val k := by
   rw [minorPlus, AlgHom.map_det, lead, dif_pos hn]
@@ -50,6 +68,13 @@ theorem aeval_minorPlus (p : D.what₂.Tau → ℕ) (y : GLR D n) (τ : D.what�
     if_pos h2, dif_pos h3, Matrix.submatrix_apply]
   rfl
 
+/- English proof (translation)
+Rewrite using `[minorMinus, AlgHom.map_det, ← det_inv_rev hn, ← Matrix.det_permute', ← Matrix.det_transpose]`. Use `congr 1`. Use extensionality with `b a`. Establish `ha` using `a.isLt`. Establish `hb` using `b.isLt`.
+
+Establish `h1 : p τ + b.val < m ∧ n - k + a.val < n` using `⟨by omega, by omega⟩`. Establish `h2 : ¬ p τ + b.val < p τ` using `by omega`. Establish `h3 : p τ + b.val - p τ < n` using `by omega`. Simplify using `only [AlgHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply, varF, dif_pos h1, MvPolynomial.aeval_X, fockPt, if_neg h2, dif_pos h3, Matrix.submatrix_apply, Matrix.transpose_apply, id]`. Use `congrArg₂ _ (congrArg Fin.rev (Fin.ext ?_)) (Fin.ext ?_)` and prove the remaining obligations.
+
+Simplify using the standard rewrite rules. Simplify using `only [Fin.revPerm_apply, Fin.val_rev, Fin.val_castLE]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem aeval_minorMinus (p : D.what₂.Tau → ℕ) (y : GLR D n) (τ : D.what₂.Tau) {k : ℕ} (hm : p τ + k ≤ m) (hn : k ≤ n) :
     MvPolynomial.aeval (fockPt p y) (minorMinus τ (p τ) k : PolF D m n) =
       ((Equiv.Perm.sign (Fin.revPerm : Equiv.Perm (Fin k)) : ℤ) : ℂ) * (lead (y τ).val (n - k) * ((y τ).val.det)⁻¹) := by
@@ -68,6 +93,11 @@ theorem aeval_minorMinus (p : D.what₂.Tau → ℕ) (y : GLR D n) (τ : D.what�
   · simp only [Fin.revPerm_apply, Fin.val_rev, Fin.val_castLE]
     omega
 
+/- English proof (translation)
+Use `Finset.sum_range_sub' (fun i => if i < q then (a i : ℤ) else 0) q` as an intermediate fact. Simplify using `only [lt_irrefl, if_false, sub_zero] at this`. Use `Nat.cast_injective (R := ℤ) ?_` and prove the remaining obligations. Rewrite using `[Nat.cast_sum, Nat.cast_ite, Nat.cast_zero, ← this]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations.
+
+Use `Finset.mem_range.1 hi` as an intermediate fact. Use `h i` as an intermediate fact. Apply the tactic sequence `split_ifs <;> omega`.
+-/
 theorem sum_drops (q : ℕ) (a : ℕ → ℕ) (h : ∀ i, i + 1 < q → a (i + 1) ≤ a i) :
     ∑ i ∈ Finset.range q, (a i - if i + 1 < q then a (i + 1) else 0) = if 0 < q then a 0 else 0 := by
   have := Finset.sum_range_sub' (fun i => if i < q then (a i : ℤ) else 0) q
@@ -79,6 +109,33 @@ theorem sum_drops (q : ℕ) (a : ℕ → ℕ) (h : ∀ i, i + 1 < q → a (i + 1
   have := h i
   split_ifs <;> omega
 
+/- English proof (translation)
+Break down `n with _ | k` into its components or cases. Take `rfl : p = 0` from `by omega`. Take `rfl : q = 0` from `by omega`. Simplify using `[h0]`. Establish `hanti : ∀ i j (hi : i < k + 1) (hj : j < k + 1), i ≤ j → lam.w ⟨j, hj⟩ ≤ lam.w ⟨i, hi⟩` using `fun i j hi hj h => lam.anti (show (⟨i, hi⟩ : Fin (k + 1)) ≤ ⟨j, hj⟩ from h)`.
+
+Establish `ham : ∀ i, i + 1 < q → am (i + 1) ≤ am i`. Introduce `i hi`. Use `hanti (k - (i + 1)) (k - i) (by omega) (by omega) (by omega)` as an intermediate fact. Rewrite `this` using `[hl, hl]`. Simplify using `only at this`.
+
+Rewrite `this` using `[show k + 1 - 1 - (k - i) = i by omega, show k + 1 - 1 - (k - (i + 1)) = i + 1 by omega]`. Apply the tactic sequence `split_ifs at this <;> omega`. Establish `hshift : lam.detShift = lam.w ⟨k, Nat.lt_succ_self k⟩`. Simplify using `[DomWeight.detShift]`. Use `set A : ℕ → ℕ := fun i => if i < p then ap i - if i + 1 < p then ap (i + 1) else 0 else 0 with hA`.
+
+Use `set B : ℕ → ℕ := fun i => if i < q then am i - if i + 1 < q then am (i + 1) else 0 else 0 with hB`. Establish `eA : (∏ i ∈ Finset.range p, L (i + 1) ^ (ap i - if i + 1 < p then ap (i + 1) else 0)) = (∏ i ∈ Finset.range k, L (i + 1) ^ A i) * L (k + 1) ^ A k`. Rewrite using `[← Finset.prod_range_succ (fun i => L (i + 1) ^ A i), ← Finset.prod_subset (Finset.range_subset_range.2 (show p ≤ k + 1 by omega)) (fun i _ hi => by rw [hA]; dsimp only; rw [if_neg (fun h => hi (Finset.mem_range.2 h)), pow_zero])]`. Use `Finset.prod_congr rfl fun i hi => ?_` and prove the remaining obligations. Rewrite using `[hA]`.
+
+Simplify using `only`. Rewrite using `[if_pos (Finset.mem_range.1 hi)]`. Establish `eB : (∏ i ∈ Finset.range q, L (k + 1 - (i + 1)) ^ (am i - if i + 1 < q then am (i + 1) else 0)) = ∏ i ∈ Finset.range k, L (i + 1) ^ B (k - 1 - i)`. Establish `: ∏ i ∈ Finset.range (k + 1), L (k + 1 - (i + 1)) ^ B i = ∏ i ∈ Finset.range k, L (i + 1) ^ B (k - 1 - i)`. Rewrite using `[Finset.prod_range_succ, Nat.sub_self, h0, one_pow, mul_one, ← Finset.prod_range_reflect]`.
+
+Use `Finset.prod_congr rfl fun i hi => ?_` and prove the remaining obligations. Use `Finset.mem_range.1 hi` as an intermediate fact. Rewrite using `[show k + 1 - (k - 1 - i + 1) = i + 1 by omega]`. Rewrite using `[← this, ← Finset.prod_subset (Finset.range_subset_range.2 (show q ≤ k + 1 by omega)) (fun i _ hi => by rw [hB]; dsimp only; rw [if_neg (fun h => hi (Finset.mem_range.2 h)), pow_zero])]`. Use `Finset.prod_congr rfl fun i hi => ?_` and prove the remaining obligations.
+
+Rewrite using `[hB]`. Simplify using `only`. Rewrite using `[if_pos (Finset.mem_range.1 hi)]`. Establish `eR : ∏ s : Fin (k + 1), L (s + 1) ^ (lam.natW s - Formalism.GradedWeylDivisibility.nuNext lam.natW s) = ∏ i ∈ Finset.range k, L (i + 1) ^ (A i + B (k - 1 - i))`. Rewrite using `[Fin.prod_univ_castSucc, show lam.natW (Fin.last k) = 0 by`.
+
+Rewrite using `[DomWeight.natW, hshift]`. Simplify using `[Fin.last], Nat.zero_sub, pow_zero, mul_one,`. Use the proof step `← Fin.prod_univ_eq_prod_range (fun i => L (i + 1) ^ (A i + B (k - 1 - i)))]`. Use `Finset.prod_congr rfl fun s _ => ?_` and prove the remaining obligations. Take `⟨s, hs⟩` from `s`.
+
+Establish `hs' : s + 1 < k + 1` using `by omega`. Simplify using `only [Fin.castSucc_mk, Formalism.GradedWeylDivisibility.nuNext, dif_pos hs', DomWeight.natW, hshift]`. Use `congr 1`. Establish `a1` using `hanti s (s + 1) (by omega) hs' (by omega)`. Establish `a2` using `hanti (s + 1) k hs' (by omega) (by omega)`.
+
+Establish `b1` using `hl ⟨s, by omega⟩`. Establish `b2` using `hl ⟨s + 1, hs'⟩`. Simplify using `only at b1 b2`. Rewrite `b1` using `[show k + 1 - 1 - s = k - 1 - s + 1 by omega]`. Rewrite `b2` using `[show k + 1 - 1 - (s + 1) = k - 1 - s by omega]`.
+
+Rewrite using `[hA, hB]`. Simplify using `only`. Apply the tactic sequence `split_ifs at b1 b2 ⊢ <;> omega`. Establish `eS : lam.detShift = c + (A k : ℤ) - ((if 0 < q then am 0 else 0 : ℕ) : ℤ)`. Rewrite using `[hshift, hl, hA]`.
+
+Simplify using `only`. Rewrite using `[show k + 1 - 1 - k = 0 by omega]`. Apply the tactic sequence `split_ifs <;> omega`. Simplify using `only [mul_pow, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum]`. Rewrite using `[eA, eB, eR, eS, sum_drops q am ham, zpow_sub₀ hd, zpow_add₀ hd, zpow_natCast, zpow_natCast]`.
+
+Simplify using `only [pow_add, Finset.prod_mul_distrib, inv_pow]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem prod_exponents {n p q : ℕ} (ap am : ℕ → ℕ) (c : ℤ) (lam : DomWeight n) (hle : p + q ≤ n)
     (hl : ∀ i : Fin n, lam.w i = (if i.val < p then (ap i : ℤ) else if n - q ≤ i.val then -(am (n - 1 - i) : ℤ) else 0) + c)
     (L : ℕ → ℂ) (h0 : L 0 = 1) (hd : L n ≠ 0) :
@@ -150,6 +207,11 @@ theorem prod_exponents {n p q : ℕ} (ap am : ℕ → ℕ) (c : ℤ) (lam : DomW
   simp only [pow_add, Finset.prod_mul_distrib, inv_pow]
   ring
 
+/- English proof (translation)
+Rewrite using `[extremal, Formalism.GradedWeylDivisibility.hw, map_prod, map_prod]`. Use `Finset.prod_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[map_pow, map_pow, Formalism.GradedWeylDivisibility.lpMinor, AlgHom.map_det, RingHom.map_det, lead, dif_pos (Nat.succ_le_of_lt s.isLt)]`. Use `congr 2`. Use extensionality with `a b`.
+
+Simplify using `[Formalism.GradedWeylDivisibility.blockEmb]`.
+-/
 theorem eval_extremal (lam : D.what₂.Tau → DomWeight n) (y : GLR D n) (τ : D.what₂.Tau) :
     MvPolynomial.eval₂Hom (RingHom.id ℂ) (fun v : D.what₂.Tau × Fin n × Fin n => (y v.1).val v.2.1 v.2.2)
       (Formalism.GradedWeylDivisibility.blockEmb ℂ τ (extremal ℂ n (lam τ))) =
@@ -161,6 +223,15 @@ theorem eval_extremal (lam : D.what₂.Tau → DomWeight n) (y : GLR D n) (τ : 
   ext a b
   simp [Formalism.GradedWeylDivisibility.blockEmb]
 
+/- English proof (translation)
+Introduce `D m n w B hw hm`. Use `⟨∏ τ, ∏ i ∈ Finset.range (w.q τ), Equiv.Perm.sign (Fin.revPerm : Equiv.Perm (Fin (i + 1))) ^ (w.am τ i - if i + 1 < w.q τ then w.am τ (i + 1) else 0), fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[harmFn_apply, coefFn, ten]`. Generalize the expression as in `B⁻¹ * x = y`. Rewrite using `[Weight.delta, Datum.delta, map_prod, map_prod]`.
+
+Simplify using `only [detFam, MonoidHom.coe_mk, OneHom.coe_mk, Units.coe_prod, Units.val_zpow_eq_zpow_val, GeneralLinearGroup.val_det_apply, Int.cast_prod, Units.val_pow_eq_pow_val, Int.cast_pow, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Establish `h1` using `hw.le τ`. Establish `h2` using `hm τ`. Establish `hd : lead (y τ).val n ≠ 0`.
+
+Rewrite using `[lead_self]`. Conclude with `(GeneralLinearGroup.det (y τ)).ne_zero`. Rewrite using `[eval_extremal, ← lead_self, ← prod_exponents (w.ap τ) (w.am τ) (w.c τ) (w.lam τ) h1 (hw.lam_eq τ) _ (lead_zero _) hd, deltaAt, map_mul, map_prod, map_prod, Finset.prod_congr rfl fun i hi => by`. Use `Finset.mem_range.1 hi` as an intermediate fact. Rewrite using `[map_pow, aeval_minorPlus w.p y τ (by omega) (by omega) (by omega)],`.
+
+Use the proof step `Finset.prod_congr (s₁ := Finset.range (w.q τ)) rfl fun i hi => by`. Use `Finset.mem_range.1 hi` as an intermediate fact. Rewrite using `[map_pow, aeval_minorMinus w.p y τ (by omega) (by omega), mul_pow, ← lead_self],`. Use the proof step `Finset.prod_mul_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem harmFn_delta : ∀ (D : D7) (m n : ℕ) (w : Weight D n) (B : GLR D n), w.Good → (∀ τ, w.p τ + w.q τ ≤ m) → ∃ s : ℤˣ, ∀ x, harmFn m w B (w.delta m) x = ((s : ℤ) : ℂ) * coefFn (RingHom.id ℂ) w.lam (ten fun τ => extremal ℂ n (w.lam τ)) (B⁻¹ * x) := by
   intro D m n w B hw hm
   refine ⟨∏ τ, ∏ i ∈ Finset.range (w.q τ), Equiv.Perm.sign (Fin.revPerm : Equiv.Perm (Fin (i + 1))) ^

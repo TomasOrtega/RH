@@ -12,6 +12,11 @@ section Coeff
 
 variable {R : Type*} [CommRing R] {A : Type*} [CommRing A] [Algebra R A] {τ : Type*}
 
+/- English proof (translation)
+Rewrite using `[MvPolynomial.eval_eq]`. Use `Submodule.sum_mem _ fun d _ => ?_` and prove the remaining obligations. Establish `: (∏ i ∈ d.support, algebraMap R A (p i) ^ d i) = algebraMap R A (∏ i ∈ d.support, p i ^ d i)`. Simplify using `only [map_prod, map_pow]`. Rewrite using `[this, mul_comm, ← Algebra.smul_def]`.
+
+Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨d, rfl⟩)`.
+-/
 theorem eval_mem_span (F : MvPolynomial τ A) (p : τ → R) :
     eval (fun t => algebraMap R A (p t)) F ∈ Submodule.span R (Set.range fun m => coeff m F) := by
   classical
@@ -22,6 +27,11 @@ theorem eval_mem_span (F : MvPolynomial τ A) (p : τ → R) :
   rw [this, mul_comm, ← Algebra.smul_def]
   exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨d, rfl⟩)
 
+/- English proof (translation)
+Use `set g : τ → MvPolynomial τ (Polynomial A) := fun t => map (Polynomial.mapRingHom (algebraMap R A)) (ψ t) with hg`. Use `set f := (C : Polynomial A →+* MvPolynomial τ (Polynomial A)).comp Polynomial.C with hf`. Establish `e1 : eval₂ f g H = ∑ d ∈ H.support, eval₂ f g (monomial d (coeff d H))` using `by conv_lhs => rw [H.as_sum]`. Conclude with `map_sum (eval₂Hom f g) _ _`. Rewrite using `[← coeff_map, hH, e1, coeff_sum, Polynomial.finsetSum_coeff]`.
+
+Use `Submodule.sum_mem _ fun d _ => ?_` and prove the remaining obligations. Establish `e2 : (d.prod fun n e => g n ^ e) = map (Polynomial.mapRingHom (algebraMap R A)) (d.prod fun n e => ψ n ^ e)`. Simplify using `only [Finsupp.prod, map_prod, map_pow, hg]`. Rewrite using `[eval₂_monomial, e2, hf, RingHom.comp_apply, coeff_C_mul, coeff_map, Polynomial.coeff_C_mul, Polynomial.coe_mapRingHom, Polynomial.coeff_map, mul_comm, ← Algebra.smul_def]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨d, rfl⟩)`.
+-/
 theorem coeff_twist_mem (ρ : A →+* Polynomial A) (ψ : τ → MvPolynomial τ (Polynomial R)) (H : MvPolynomial τ A)
     (hH : map ρ H = eval₂ ((C : Polynomial A →+* MvPolynomial τ (Polynomial A)).comp Polynomial.C)
         (fun t => map (Polynomial.mapRingHom (algebraMap R A)) (ψ t)) H) (m : τ →₀ ℕ) (k : ℕ) :
@@ -53,6 +63,9 @@ def rowDivL {n : ℕ} (a b : Fin n) (k : ℕ) :
   map_add' f g := by simp only [rowDiv, map_add, Polynomial.coeff_add]
   map_smul' c f := by simp only [rowDiv, map_smul, Polynomial.coeff_smul, RingHom.id_apply]
 
+/- English proof (translation)
+Establish `: Submodule.span R S ≤ (Submodule.span R S).comap (rowDivL a b k)` using `Submodule.span_le.mpr fun f hf => hS f hf`. Conclude with `fun f hf => this hf`.
+-/
 theorem rowDiv_span {n : ℕ} (a b : Fin n) (k : ℕ) (S : Set (MvPolynomial (Fin n × Fin n) R))
     (hS : ∀ f ∈ S, rowDiv R a b k f ∈ Submodule.span R S) :
     ∀ f ∈ Submodule.span R S, rowDiv R a b k f ∈ Submodule.span R S := by
@@ -60,6 +73,15 @@ theorem rowDiv_span {n : ℕ} (a b : Fin n) (k : ℕ) (S : Set (MvPolynomial (Fi
     Submodule.span_le.mpr fun f hf => hS f hf
   exact fun f hf => this hf
 
+/- English proof (translation)
+Establish `hg : ∀ v : Fin n × Fin n, (Polynomial.C (X v) + (if v.1 = a then Polynomial.X * Polynomial.C (X (a, v.2)) else 0) : Polynomial (MvPolynomial (Fin n × Fin n) R)) = Polynomial.C (X v) * (if v.1 = a then Polynomial.X + 1 else 1)`. Introduce `v`. Use `split_ifs with h`. Establish `: (a, v.2) = v` using `by rw [← h]`. Rewrite using `[this]`.
+
+Expand and normalize the polynomial expressions, which then agree. Expand and normalize the polynomial expressions, which then agree. Unfold `rowGen`. Rewrite using `[aeval_monomial]`. Simplify using `only [hg, mul_pow]`.
+
+Rewrite using `[Finsupp.prod_mul]`. Establish `h1 : (d.prod fun v e => (Polynomial.C (X v) : Polynomial (MvPolynomial (Fin n × Fin n) R)) ^ e) = Polynomial.C (monomial d 1)`. Rewrite using `[monomial_eq, C_1, one_mul]`. Simplify using `only [Finsupp.prod, map_prod, map_pow]`. Establish `h2 : (d.prod fun v e => ((if v.1 = a then Polynomial.X + 1 else 1 : Polynomial (MvPolynomial (Fin n × Fin n) R))) ^ e) = (Polynomial.X + 1) ^ (∑ v ∈ d.support, if v.1 = a then d v else 0)`.
+
+Rewrite using `[Finsupp.prod, ← Finset.prod_pow_eq_pow_sum]`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[h1, h2, Polynomial.algebraMap_apply, MvPolynomial.algebraMap_eq, ← mul_assoc, ← Polynomial.C_mul, C_mul_monomial, mul_one]`.
+-/
 theorem rowGen_diag_monomial {n : ℕ} (a : Fin n) (d : Fin n × Fin n →₀ ℕ) (c : R) :
     rowGen R a a (monomial d c) = Polynomial.C (monomial d c) *
       (Polynomial.X + 1) ^ (∑ v ∈ d.support, if v.1 = a then d v else 0) := by
@@ -90,6 +112,9 @@ theorem rowGen_diag_monomial {n : ℕ} (a : Fin n) (d : Fin n × Fin n →₀ �
 
 def rowInd {n : ℕ} (a : Fin n) : Fin n × Fin n → ℤ := fun v => if v.1 = a then 1 else 0
 
+/- English proof (translation)
+Rewrite using `[Finsupp.weight_apply, Finsupp.sum, Nat.cast_sum]`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Unfold `rowInd`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem weight_rowInd {n : ℕ} (a : Fin n) (d : Fin n × Fin n →₀ ℕ) :
     Finsupp.weight (rowInd a) d = ((∑ v ∈ d.support, if v.1 = a then d v else 0 : ℕ) : ℤ) := by
   rw [Finsupp.weight_apply, Finsupp.sum, Nat.cast_sum]
@@ -97,6 +122,11 @@ theorem weight_rowInd {n : ℕ} (a : Fin n) (d : Fin n × Fin n →₀ ℕ) :
   unfold rowInd
   split_ifs <;> simp
 
+/- English proof (translation)
+Establish `e : ∀ d ∈ f.support, rowDiv R a a k (monomial d (coeff d f)) = (z.toNat.choose k) • monomial d (coeff d f)`. Introduce `d hd`. Establish `hw` using `hf (mem_support_iff.mp hd)`. Rewrite `hw` using `[weight_rowInd]`. Rewrite using `[rowDiv, rowGen_diag_monomial, Polynomial.coeff_C_mul, Polynomial.coeff_X_add_one_pow, ← hw, Int.toNat_natCast, mul_comm, ← nsmul_eq_mul]`.
+
+Use `conv_lhs => rw [f.as_sum]`. Rewrite using `[show rowDiv R a a k (∑ d ∈ f.support, monomial d (coeff d f)) = rowDivL a a k (∑ d ∈ f.support, monomial d (coeff d f)) from rfl, map_sum]`. Use `conv_rhs => rw [f.as_sum, Finset.smul_sum]`. Conclude with `Finset.sum_congr rfl e`.
+-/
 theorem rowDiv_diag {n : ℕ} (a : Fin n) (k : ℕ) (f : MvPolynomial (Fin n × Fin n) R) (z : ℤ)
     (hf : IsWeightedHomogeneous (rowInd a) f z) : rowDiv R a a k f = (z.toNat.choose k) • f := by
   classical
@@ -125,6 +155,11 @@ def GShift {R : Type*} [CommRing R] {n : ℕ} (P : Polynomial (MvPolynomial (Fin
 
 variable {ht}
 
+/- English proof (translation)
+Introduce `k`. Rewrite using `[Polynomial.coeff_mul]`. Use `IsWeightedHomogeneous.sum _ _ _ fun x hx => ?_` and prove the remaining obligations. Establish `hx'` using `Finset.HasAntidiagonal.mem_antidiagonal.mp hx`. Establish `e : μ + μ' + (k : ℤ) * δ = (μ + (x.1 : ℤ) * δ) + (μ' + (x.2 : ℤ) * δ)`.
+
+Rewrite using `[← hx']`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `(hP x.1).mul (hQ x.2)`.
+-/
 theorem gShift_mul {R : Type*} [CommRing R] {n : ℕ}
     {P Q : Polynomial (MvPolynomial (Fin r × Fin n) R)} {μ μ' δ : ℤ}
     (hP : GShift ht P μ δ) (hQ : GShift ht Q μ' δ) : GShift ht (P * Q) (μ + μ') δ := by
@@ -137,6 +172,11 @@ theorem gShift_mul {R : Type*} [CommRing R] {n : ℕ}
   rw [e]
   exact (hP x.1).mul (hQ x.2)
 
+/- English proof (translation)
+Introduce `k`. Rewrite using `[Polynomial.coeff_one]`. Use `split_ifs with h`. Establish `hk : k = 0` using `by omega`. Substitute `hk` using the available equality.
+
+Simplify using `using isWeightedHomogeneous_one R (htW ht n)`. Conclude with `isWeightedHomogeneous_zero R _ _`.
+-/
 theorem gShift_one {R : Type*} [CommRing R] {n : ℕ} (δ : ℤ) :
     GShift ht (1 : Polynomial (MvPolynomial (Fin r × Fin n) R)) 0 δ := by
   intro k
@@ -147,6 +187,9 @@ theorem gShift_one {R : Type*} [CommRing R] {n : ℕ} (δ : ℤ) :
     simpa using isWeightedHomogeneous_one R (htW ht n)
   · exact isWeightedHomogeneous_zero R _ _
 
+/- English proof (translation)
+Proceed by induction on `e with`. Consider the case `zero => rw [pow_zero, zero_smul]`. Conclude with `gShift_one δ`. Consider the case `succ e ih => rw [pow_succ, succ_nsmul]`. Conclude with `gShift_mul ih hP`.
+-/
 theorem gShift_pow {R : Type*} [CommRing R] {n : ℕ}
     {P : Polynomial (MvPolynomial (Fin r × Fin n) R)} {μ δ : ℤ}
     (hP : GShift ht P μ δ) (e : ℕ) : GShift ht (P ^ e) (e • μ) δ := by
@@ -154,6 +197,9 @@ theorem gShift_pow {R : Type*} [CommRing R] {n : ℕ}
   | zero => rw [pow_zero, zero_smul]; exact gShift_one δ
   | succ e ih => rw [pow_succ, succ_nsmul]; exact gShift_mul ih hP
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using (gShift_one (ht := ht) (R := R) (n := n) δ)`. Consider the case `insert i s his IH`. Rewrite using `[Finset.prod_insert his, Finset.sum_insert his]`. Conclude with `gShift_mul (h i (Finset.mem_insert_self _ _)) (IH fun j hj => h j (Finset.mem_insert_of_mem hj))`.
+-/
 theorem gShift_prod {R : Type*} [CommRing R] {n : ℕ} {ι : Type*} (s : Finset ι)
     (P : ι → Polynomial (MvPolynomial (Fin r × Fin n) R)) (μ : ι → ℤ) (δ : ℤ)
     (h : ∀ i ∈ s, GShift ht (P i) (μ i) δ) : GShift ht (∏ i ∈ s, P i) (∑ i ∈ s, μ i) δ := by
@@ -165,6 +211,11 @@ theorem gShift_prod {R : Type*} [CommRing R] {n : ℕ} {ι : Type*} (s : Finset 
     exact gShift_mul (h i (Finset.mem_insert_self _ _))
       (IH fun j hj => h j (Finset.mem_insert_of_mem hj))
 
+/- English proof (translation)
+Introduce `k`. Rewrite using `[Polynomial.algebraMap_apply, Polynomial.coeff_C]`. Use `split_ifs with h`. Substitute `h` using the available equality. Rewrite using `[MvPolynomial.algebraMap_eq]`.
+
+Simplify using `using isWeightedHomogeneous_C (htW ht n) c`. Conclude with `isWeightedHomogeneous_zero R _ _`.
+-/
 theorem gShift_algebraMap {R : Type*} [CommRing R] {n : ℕ} (c : R) (δ : ℤ) :
     GShift ht (algebraMap R (Polynomial (MvPolynomial (Fin r × Fin n) R)) c) 0 δ := by
   intro k
@@ -175,6 +226,15 @@ theorem gShift_algebraMap {R : Type*} [CommRing R] {n : ℕ} (c : R) (δ : ℤ) 
     simpa using isWeightedHomogeneous_C (htW ht n) c
   · exact isWeightedHomogeneous_zero R _ _
 
+/- English proof (translation)
+Introduce `k`. Establish `hX : IsWeightedHomogeneous (htW ht n) (X v : MvPolynomial (Fin r × Fin n) R) (htW ht n v)` using `isWeightedHomogeneous_X R _ v`. Establish `hXa : IsWeightedHomogeneous (htW ht n) (X (a, v.2) : MvPolynomial (Fin r × Fin n) R) (htW ht n (a, v.2))` using `isWeightedHomogeneous_X R _ (a, v.2)`. Rewrite using `[Polynomial.coeff_add]`. Use `IsWeightedHomogeneous.add ?_ ?_` and prove the remaining obligations.
+
+Rewrite using `[Polynomial.coeff_C] split_ifs with h`. Substitute `h` using the available equality. Simplify using `using hX`. Conclude with `isWeightedHomogeneous_zero R _ _`. Use `split_ifs with hb`.
+
+Rewrite using `[mul_comm, Polynomial.coeff_C_mul_X] split_ifs with h`. Substitute `h` using the available equality. Establish `e : htW ht n v + ((1 : ℕ) : ℤ) * (ht a - ht b) = htW ht n (a, v.2)`. Simplify using `[htW, hb]`. Rewrite using `[e]`.
+
+Conclude with `hXa`. Conclude with `isWeightedHomogeneous_zero R _ _`. Rewrite using `[Polynomial.coeff_zero]`. Conclude with `isWeightedHomogeneous_zero R _ _`.
+-/
 theorem gShift_gen {R : Type*} [CommRing R] {n : ℕ} (a b : Fin r) (v : Fin r × Fin n) :
     GShift ht (Polynomial.C (X v) +
       (if v.1 = b then Polynomial.X * Polynomial.C (X (a, v.2)) else 0) :
@@ -201,6 +261,9 @@ theorem gShift_gen {R : Type*} [CommRing R] {n : ℕ} (a b : Fin r) (v : Fin r �
     · rw [Polynomial.coeff_zero]
       exact isWeightedHomogeneous_zero R _ _
 
+/- English proof (translation)
+Unfold `rowGen`. Rewrite using `[aeval_monomial, Finsupp.weight_apply, ← zero_add (Finsupp.sum d _)]`. Use `gShift_mul (gShift_algebraMap c _) ?_` and prove the remaining obligations. Unfold `Finsupp.prod Finsupp.sum`. Conclude with `gShift_prod _ _ _ _ fun v _ => gShift_pow (gShift_gen a b v) _`.
+-/
 theorem gShift_rowGen_monomial (R : Type*) [CommRing R] {n : ℕ} (a b : Fin r)
     (d : Fin r × Fin n →₀ ℕ) (c : R) :
     GShift ht (rowGen R a b (monomial d c)) (Finsupp.weight (htW ht n) d) (ht a - ht b) := by
@@ -210,6 +273,11 @@ theorem gShift_rowGen_monomial (R : Type*) [CommRing R] {n : ℕ} (a b : Fin r)
   unfold Finsupp.prod Finsupp.sum
   exact gShift_prod _ _ _ _ fun v _ => gShift_pow (gShift_gen a b v) _
 
+/- English proof (translation)
+Unfold `rowDiv`. Use `conv => enter [2, 1, 2]`. Rewrite using `[f.as_sum]`. Rewrite using `[map_sum, Polynomial.finsetSum_coeff]`. Use `IsWeightedHomogeneous.sum _ _ _ fun d hd => ?_` and prove the remaining obligations.
+
+Use `gShift_rowGen_monomial (ht := ht) R a b d (coeff d f) k` as an intermediate fact. Rewrite `this` using `[hf (mem_support_iff.mp hd)]`. Then use the resulting hypothesis.
+-/
 theorem g_rowDiv_shift (R : Type*) [CommRing R] {n : ℕ} (H : ℤ) (a b : Fin r) (k : ℕ)
     (f : MvPolynomial (Fin r × Fin n) R) (hf : IsWeightedHomogeneous (htW ht n) f H) :
     IsWeightedHomogeneous (htW ht n) (rowDiv R a b k f) (H + k * (ht a - ht b)) := by
@@ -220,6 +288,11 @@ theorem g_rowDiv_shift (R : Type*) [CommRing R] {n : ℕ} (H : ℤ) (a b : Fin r
   have := gShift_rowGen_monomial (ht := ht) R a b d (coeff d f) k
   rwa [hf (mem_support_iff.mp hd)] at this
 
+/- English proof (translation)
+Proceed by induction on `d using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add f g hf hg`. Simplify using `only [map_add, Pi.add_apply, Nat.cast_add, mul_add, Finset.sum_add_distrib, hf, hg]`. Consider the case `single v c`.
+
+Simplify using `[Finsupp.weight_apply, htW, rowW, Pi.single_apply, Finsupp.sum_single_index, mul_comm]`.
+-/
 theorem g_weight {n : ℕ} (d : Fin r × Fin n →₀ ℕ) :
     Finsupp.weight (htW ht n) d = ∑ a : Fin r, ht a * ((Finsupp.weight (rowW r n) d a : ℕ) : ℤ) := by
   classical
@@ -230,12 +303,18 @@ theorem g_weight {n : ℕ} (d : Fin r × Fin n →₀ ℕ) :
   | single v c =>
     simp [Finsupp.weight_apply, htW, rowW, Pi.single_apply, Finsupp.sum_single_index, mul_comm]
 
+/- English proof (translation)
+Introduce `d hd`. Rewrite using `[g_weight, hf hd]`.
+-/
 theorem g_of_rowW {R : Type*} [CommRing R] {n : ℕ} {f : MvPolynomial (Fin r × Fin n) R} {μ : Fin r → ℕ}
     (hf : IsWeightedHomogeneous (rowW r n) f μ) :
     IsWeightedHomogeneous (htW ht n) f (∑ a : Fin r, ht a * (μ a : ℤ)) := by
   intro d hd
   rw [g_weight, hf hd]
 
+/- English proof (translation)
+Proceed by induction on `w with`. Consider the case `nil => exact ⟨_, g_of_rowW (hwRowWeight R r n hn ν hν)⟩`. Consider the case `cons x w ih`. Take `⟨z, hz⟩` from `ih`. Conclude with `⟨_, g_rowDiv_shift R z x.1 x.2.1 x.2.2 _ hz⟩`.
+-/
 theorem g_applyWord (R : Type) [CommRing R] {n : ℕ} (hn : n ≤ r) (ν : Fin n → ℕ) (hν : Antitone ν)
     (w : List (Fin r × Fin r × ℕ)) :
     ∃ z : ℤ, IsWeightedHomogeneous (htW ht n) (applyWord R w (hw R hn ν)) z := by
@@ -247,6 +326,13 @@ theorem g_applyWord (R : Type) [CommRing R] {n : ℕ} (hn : n ≤ r) (ν : Fin n
 
 end Grade
 
+/- English proof (translation)
+Establish `hw' : ∀ w : List (Fin n × Fin n × ℕ), applyWord R w (hw R le_rfl ν) ∈ Submodule.span R S`. Introduce `w`. Proceed by induction on `w with`. Consider the case `nil => exact h0`. Consider the case `cons x w ih => show rowDiv R x.1 x.2.1 x.2.2 (applyWord R w (hw R le_rfl ν)) ∈ _`.
+
+Distinguish the cases in `hab : x.1 = x.2.1`. Take `⟨z, hz⟩` from `g_applyWord (ht := fun b => if b = x.1 then (1 : ℤ) else 0) R le_rfl ν hν w`. Rewrite using `[← hab, rowDiv_diag x.1 x.2.2 _ z hz]`. Conclude with `Submodule.smul_of_tower_mem _ _ ih`. Conclude with `rowDiv_span x.1 x.2.1 x.2.2 S (hS _ _ hab _) _ ih`.
+
+Conclude with `Submodule.span_le.mpr (by rintro _ ⟨w, rfl⟩; exact hw' w)`.
+-/
 theorem weyl_le_of {R : Type} [CommRing R] {n : ℕ} (ν : Fin n → ℕ) (hν : Antitone ν)
     (S : Set (MvPolynomial (Fin n × Fin n) R)) (h0 : hw R le_rfl ν ∈ Submodule.span R S)
     (hS : ∀ a b : Fin n, a ≠ b → ∀ k, ∀ f ∈ S, rowDiv R a b k f ∈ Submodule.span R S) :
@@ -266,6 +352,17 @@ theorem weyl_le_of {R : Type} [CommRing R] {n : ℕ} (ν : Fin n → ℕ) (hν :
 
 section Count
 
+/- English proof (translation)
+Unfold `colH`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Assume the negation of the conclusion as `hk`. Use `push Not at hk`.
+
+Establish `hsub : (Finset.univ.filter fun t : Fin n => k < ν t) ⊆ Finset.univ.filter fun t : Fin n => t.val < s.val`. Introduce `t ht`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at ht ⊢`. Assume the negation of the conclusion as `hts`. Use `push Not at hts`.
+
+Use `hν (show s ≤ t from Fin.le_iff_val_le_val.mpr hts)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `Finset.card_le_card hsub` as an intermediate fact. Rewrite `this` using `[Fin.card_filter_val_lt]`. Use linear arithmetic over natural numbers and integers.
+
+Introduce `hk`. Establish `hsub : (Finset.univ.filter fun t : Fin n => t.val < s.val + 1) ⊆ Finset.univ.filter fun t : Fin n => k < ν t`. Introduce `t ht`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at ht ⊢`. Use `hν (show t ≤ s from Fin.le_iff_val_le_val.mpr (by omega))` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Use `Finset.card_le_card hsub` as an intermediate fact. Rewrite `this` using `[Fin.card_filter_val_lt]`. Use `s.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem colH_ge_iff {n : ℕ} (ν : Fin n → ℕ) (hν : Antitone ν) (k : ℕ) (s : Fin n) :
     s.val + 1 ≤ colH ν k ↔ k < ν s := by
   unfold colH
@@ -294,6 +391,17 @@ theorem colH_ge_iff {n : ℕ} (ν : Fin n → ℕ) (hν : Antitone ν) (k : ℕ)
     have := s.isLt
     omega
 
+/- English proof (translation)
+Establish `h1` using `colH_ge_iff ν hν k s`. Establish `hle` using `colH_le ν k`. Unfold `nuNext`. Use `split_ifs with hs`. Establish `h2` using `colH_ge_iff ν hν k ⟨s.val + 1, hs⟩`.
+
+Simplify using `only at h2`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨?_, h1.mp (by omega)⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hc`.
+
+Use `push Not at hc`. Use `h2.mpr hc` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Introduce and unpack `⟨ha, hb⟩`. Use `h1.mpr hb` as an intermediate fact.
+
+Establish `: ¬ (s.val + 1 + 1 ≤ colH ν k)` using `fun hh => by have := h2.mp hh; omega`. Use linear arithmetic over natural numbers and integers. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `⟨Nat.zero_le _, h1.mp (by omega)⟩`.
+
+Introduce and unpack `⟨_, hb⟩`. Use `h1.mpr hb` as an intermediate fact. Use `s.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem colH_eq_iff {n : ℕ} (ν : Fin n → ℕ) (hν : Antitone ν) (k : ℕ) (s : Fin n) :
     colH ν k = s.val + 1 ↔ nuNext ν s ≤ k ∧ k < ν s := by
   have h1 := colH_ge_iff ν hν k s
@@ -321,6 +429,13 @@ theorem colH_eq_iff {n : ℕ} (ν : Fin n → ℕ) (hν : Antitone ν) (k : ℕ)
       have := s.isLt
       omega
 
+/- English proof (translation)
+Establish `h` using `Finset.card_filter_add_card_filter_not (s := Finset.univ.filter fun k : Fin c => k.val < b) (fun k : Fin c => k.val < a)`. Rewrite `h` using `[Finset.filter_filter, Finset.filter_filter, Fin.card_filter_val_lt]`. Establish `e1 : (Finset.univ.filter fun k : Fin c => k.val < b ∧ k.val < a) = Finset.univ.filter fun k : Fin c => k.val < min a b`. Use extensionality with `k`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and]`.
+
+Use linear arithmetic over natural numbers and integers. Establish `e2 : (Finset.univ.filter fun k : Fin c => k.val < b ∧ ¬ k.val < a) = Finset.univ.filter fun k : Fin c => a ≤ k.val ∧ k.val < b`. Use extensionality with `k`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and]`. Use linear arithmetic over natural numbers and integers.
+
+Rewrite `h` using `[e1, e2, Fin.card_filter_val_lt]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem card_Ico_fin (c a b : ℕ) (hb : b ≤ c) :
     (Finset.univ.filter fun k : Fin c => a ≤ k.val ∧ k.val < b).card = b - a := by
   have h := Finset.card_filter_add_card_filter_not (s := Finset.univ.filter fun k : Fin c => k.val < b)
@@ -335,6 +450,9 @@ theorem card_Ico_fin (c a b : ℕ) (hb : b ≤ c) :
   rw [e1, e2, Fin.card_filter_val_lt] at h
   omega
 
+/- English proof (translation)
+Rewrite using `[← Finset.prod_fiberwise_of_maps_to (s := Finset.univ) (t := Finset.range (n + 1)) (g := g) (fun k _ => Finset.mem_range.mpr (Nat.lt_succ_of_le (hg k)))]`. Establish `inner : ∀ j, ∏ i ∈ Finset.univ.filter (fun i => g i = j), F (g i) = F j ^ (Finset.univ.filter fun i => g i = j).card` using `fun j => by`. Rewrite using `[Finset.prod_congr rfl (fun i hi => congrArg F (Finset.mem_filter.mp hi).2), Finset.prod_const]`. Simplify using `only [inner]`. Rewrite using `[Finset.prod_range_succ', hF, one_pow, mul_one, Fin.prod_univ_eq_prod_range (fun s => F (s + 1) ^ (Finset.univ.filter fun k : Fin c => g k = s + 1).card) n]`.
+-/
 theorem prod_fin_count {M : Type*} [CommMonoid M] {c n : ℕ} (g : Fin c → ℕ) (hg : ∀ k, g k ≤ n) (F : ℕ → M)
     (hF : F 0 = 1) :
     ∏ k : Fin c, F (g k) =
@@ -349,6 +467,9 @@ theorem prod_fin_count {M : Type*} [CommMonoid M] {c n : ℕ} (g : Fin c → ℕ
   rw [Finset.prod_range_succ', hF, one_pow, mul_one,
     Fin.prod_univ_eq_prod_range (fun s => F (s + 1) ^ (Finset.univ.filter fun k : Fin c => g k = s + 1).card) n]
 
+/- English proof (translation)
+Establish `e : (Finset.univ.filter fun k : Fin c => colH ν k.val = s.val + 1) = Finset.univ.filter fun k : Fin c => nuNext ν s ≤ k.val ∧ k.val < ν s`. Use extensionality with `k`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and]`. Conclude with `colH_eq_iff ν hν k.val s`. Rewrite using `[e, card_Ico_fin c _ _ (hc s)]`.
+-/
 theorem count_even {n c : ℕ} (ν : Fin n → ℕ) (hν : Antitone ν) (hc : ∀ t, ν t ≤ c) (s : Fin n) :
     (Finset.univ.filter fun k : Fin c => colH ν k.val = s.val + 1).card = ν s - nuNext ν s := by
   have e : (Finset.univ.filter fun k : Fin c => colH ν k.val = s.val + 1) =
@@ -356,6 +477,25 @@ theorem count_even {n c : ℕ} (ν : Fin n → ℕ) (hν : Antitone ν) (hc : �
     ext k; simp only [Finset.mem_filter, Finset.mem_univ, true_and]; exact colH_eq_iff ν hν k.val s
   rw [e, card_Ico_fin c _ _ (hc s)]
 
+/- English proof (translation)
+Establish `hs` using `s.isLt`. Distinguish the cases in `hl : s.val + 1 < n`. Use `set s' : Fin n := ⟨n - 2 - s.val, by omega⟩ with hs'`. Establish `e : (Finset.univ.filter fun k : Fin c => n - colH μ k.val = s.val + 1) = Finset.univ.filter fun k : Fin c => nuNext μ s' ≤ k.val ∧ k.val < μ s'`. Use extensionality with `k`.
+
+Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and]`. Rewrite using `[← colH_eq_iff μ hμ k.val s']`. Use `colH_le μ k.val` as an intermediate fact. Simplify using `only [hs']`. Use linear arithmetic over natural numbers and integers.
+
+Rewrite using `[e, card_Ico_fin c _ _ (hc s')]`. Unfold `nuNext`. Rewrite using `[dif_pos hl, dif_pos (show s'.val + 1 < n by simp only [hs']; omega)]`. Establish `r1 : (⟨s.val + 1, hl⟩ : Fin n).rev = s'` using `Fin.ext (by simp only [Fin.val_rev, hs']; omega)`. Establish `r2 : s.rev = ⟨s'.val + 1, by simp only [hs']; omega⟩` using `Fin.ext (by simp only [Fin.val_rev, hs']; omega)`.
+
+Simplify using `only [r1, r2]`. Use `hμ (show s' ≤ ⟨s'.val + 1, by simp only [hs']; omega⟩ from Fin.le_iff_val_le_val.mpr (by simp))` as an intermediate fact. Use `hc s'` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hn : s.val + 1 = n` using `by omega`.
+
+Establish `e : (Finset.univ.filter fun k : Fin c => n - colH μ k.val = s.val + 1) = Finset.univ.filter fun k : Fin c => μ ⟨0, by omega⟩ ≤ k.val ∧ k.val < c`. Use extensionality with `k`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and]`. Establish `h1` using `colH_ge_iff μ hμ k.val ⟨0, by omega⟩`. Use `colH_le μ k.val` as an intermediate fact.
+
+Use `k.isLt` as an intermediate fact. Simplify using `only [zero_add] at h1`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨?_, k.isLt⟩` and prove the remaining obligations.
+
+Assume the negation of the conclusion as `hh`. Use `push Not at hh`. Use `h1.mpr hh` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Introduce and unpack `⟨h, _⟩`.
+
+Establish `: ¬ 1 ≤ colH μ k.val` using `fun hh => by have := h1.mp hh; omega`. Use linear arithmetic over natural numbers and integers. Rewrite using `[e, card_Ico_fin c _ _ le_rfl]`. Unfold `nuNext`. Rewrite using `[dif_neg hl]`.
+
+Establish `r2 : s.rev = ⟨0, by omega⟩` using `Fin.ext (by simp only [Fin.val_rev]; omega)`. Simplify using `only [r2]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem count_odd {n c : ℕ} (μ : Fin n → ℕ) (hμ : Antitone μ) (hc : ∀ t, μ t ≤ c) (s : Fin n) :
     (Finset.univ.filter fun k : Fin c => n - colH μ k.val = s.val + 1).card =
       (fun t : Fin n => c - μ t.rev) s - nuNext (fun t : Fin n => c - μ t.rev) s := by
@@ -414,10 +554,16 @@ variable {R : Type} [CommRing R] {n : ℕ}
 def lpF (R : Type) [CommRing R] (n s : ℕ) : MvPolynomial (Fin n × Fin n) R :=
   if h : s ≤ n then lpMinor R s h h else 1
 
+/- English proof (translation)
+Unfold `lpF lpMinor`. Rewrite using `[dif_pos (Nat.zero_le n), Matrix.det_isEmpty]`.
+-/
 theorem lpF_zero : lpF R n 0 = 1 := by
   unfold lpF lpMinor
   rw [dif_pos (Nat.zero_le n), Matrix.det_isEmpty]
 
+/- English proof (translation)
+Rewrite using `[prod_fin_count g hg (lpF R n) lpF_zero]`. Unfold `hw`. Use `Finset.prod_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[hcount s, lpF, dif_pos (show s.val + 1 ≤ n from s.isLt)]`.
+-/
 theorem prod_lpF_eq_hw (ν : Fin n → ℕ) (c : ℕ) (g : Fin c → ℕ) (hg : ∀ k, g k ≤ n)
     (hcount : ∀ s : Fin n, (Finset.univ.filter fun k : Fin c => g k = s.val + 1).card = ν s - nuNext ν s) :
     ∏ k : Fin c, lpF R n (g k) = hw R le_rfl ν := by
@@ -428,6 +574,11 @@ theorem prod_lpF_eq_hw (ν : Fin n → ℕ) (c : ℕ) (g : Fin c → ℕ) (hg : 
 
 def ptE (R : Type) [CommRing R] (n : ℕ) : ℕ × Fin n → R := fun v => if v.1 = v.2.val then 1 else 0
 
+/- English proof (translation)
+Rewrite using `[map_pow, RingHom.map_det]`. Establish `: (eval fun v => algebraMap R (MvPolynomial (Fin n × Fin n) R) (ptE R n v)).mapMatrix (Matrix.of fun a i : Fin n => gX R n a i.val) = 1`. Use extensionality with `a i`. Simplify using `only [RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply, gX, eval_X, ptE, Matrix.one_apply]`. Distinguish the cases in `h : a = i`.
+
+Substitute `h` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[if_neg h, if_neg (fun h' => h (Fin.ext h'.symm)), map_zero]`. Rewrite using `[this, Matrix.det_one, one_pow]`.
+-/
 theorem eval_detX (e : ℕ) :
     eval (fun v => algebraMap R (MvPolynomial (Fin n × Fin n) R) (ptE R n v))
       ((Matrix.of fun a i : Fin n => gX R n a i.val).det ^ e) = 1 := by
@@ -441,6 +592,13 @@ theorem eval_detX (e : ℕ) :
     · rw [if_neg h, if_neg (fun h' => h (Fin.ext h'.symm)), map_zero]
   rw [this, Matrix.det_one, one_pow]
 
+/- English proof (translation)
+Unfold `hvE`. Rewrite using `[map_prod]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[RingHom.map_det, lpF, dif_pos (hh k)]`. Unfold `lpMinor`.
+
+Use `congr 1`. Use extensionality with `i t`. Simplify using `only [RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply, gX, gY, map_sum, map_mul, eval_X, eval_C, ptE]`. Rewrite using `[Finset.sum_eq_single (Fin.castLE (hh k) i)]`. Simplify using the standard rewrite rules.
+
+Introduce `b _ hb`. Rewrite using `[if_neg (fun h' => hb (Fin.ext (by simp [h']))), map_zero, zero_mul]`. Simplify using the standard rewrite rules.
+-/
 theorem eval_hvE (c : ℕ) (h : Fin c → ℕ) (hh : ∀ k, h k ≤ n) :
     eval (fun v => algebraMap R (MvPolynomial (Fin n × Fin n) R) (ptE R n v)) (hvE (gX R n) (gY R n) c h hh) =
       ∏ k, lpF R n (h k) := by
@@ -461,10 +619,20 @@ theorem eval_hvE (c : ℕ) (h : Fin c → ℕ) (hh : ∀ k, h k ≤ n) :
 def psiE (R : Type) [CommRing R] (a b : Fin n) : ℕ × Fin n → MvPolynomial (ℕ × Fin n) (Polynomial R) :=
   fun v => X v + if v.2 = a then C Polynomial.X * X (v.1, b) else 0
 
+/- English proof (translation)
+Unfold `rowGen`. Rewrite using `[aeval_X]`.
+-/
 theorem rowGen_X (a b : Fin n) (v : Fin n × Fin n) :
     rowGen R a b (X v) = Polynomial.C (X v) + (if v.1 = b then Polynomial.X * Polynomial.C (X (a, v.2)) else 0) := by
   unfold rowGen; rw [aeval_X]
 
+/- English proof (translation)
+Simplify using `only [map_sum, map_mul, map_X, map_C, eval₂Hom_X', eval₂Hom_C, RingHom.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, rowGen_X, psiE, map_add, map_X]`. Establish `hL : ∀ a' : Fin n, (X (i, a') : MvPolynomial (ℕ × Fin n) (Polynomial (MvPolynomial (Fin n × Fin n) R))) * (C (Polynomial.C (X (a', t))) + C (if a' = b then Polynomial.X * Polynomial.C (X (a, t)) else 0)) = X (i, a') * C (Polynomial.C (X (a', t))) + if a' = b then X (i, b) * C (Po …`. Introduce `a'`. Use `split_ifs with h`. Substitute `h` using the available equality.
+
+Rewrite using `[mul_add]`. Simplify using the standard rewrite rules. Establish `hR : ∀ a' : Fin n, ((X (i, a') : MvPolynomial (ℕ × Fin n) (Polynomial (MvPolynomial (Fin n × Fin n) R))) + map (Polynomial.mapRingHom (algebraMap R (MvPolynomial (Fin n × Fin n) R))) (if a' = a then C Polynomial.X * X (i, b) else 0)) * C (Polynomial.C (X (a', t))) = X (i, a') * C …`. Introduce `a'`. Use `split_ifs with h`.
+
+Substitute `h` using the available equality. Rewrite using `[map_mul, map_C, map_X, Polynomial.coe_mapRingHom, Polynomial.map_X, add_mul]`. Rewrite using `[map_zero, add_zero, add_zero]`. Rewrite using `[Finset.sum_congr rfl fun a' _ => hL a', Finset.sum_congr rfl fun a' _ => hR a', Finset.sum_add_distrib, Finset.sum_add_distrib, Finset.sum_ite_eq', Finset.sum_ite_eq', if_pos (Finset.mem_univ _), if_pos (Finset.mem_univ _), C_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem entry_even (a b : Fin n) (i : ℕ) (t : Fin n) :
     map (rowGen R (n := n) a b).toRingHom
         (∑ a' : Fin n, (X (i, a') : GenR R n) * C (X (a', t))) =
@@ -495,6 +663,13 @@ theorem entry_even (a b : Fin n) (i : ℕ) (t : Fin n) :
     C_mul]
   ring
 
+/- English proof (translation)
+Rewrite using `[RingHom.map_det, RingHom.map_det]`. Use `set Xm : Matrix (Fin n) (Fin n) (MvPolynomial (ℕ × Fin n) (Polynomial (MvPolynomial (Fin n × Fin n) R))) := Matrix.of fun a i : Fin n => X (i.val, a) with hXm`. Establish `h1 : (map (rowGen R (n` using `n) a b).toRingHom).mapMatrix (Matrix.of fun a i : Fin n => gX R n a i.val) = Xm := by`. Use `Matrix.ext fun a' i => ?_` and prove the remaining obligations. Simplify using `only [RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply, gX, map_X, hXm]`.
+
+Establish `h2 : (eval₂Hom ((C : Polynomial (MvPolynomial (Fin n × Fin n) R) →+* MvPolynomial (ℕ × Fin n) _).comp Polynomial.C) (fun v => map (Polynomial.mapRingHom (algebraMap R (MvPolynomial (Fin n × Fin n) R))) (psiE R a b v))).mapMatrix (Matrix.of fun a i : Fin n => gX R n a i.val) = Xm. …`. Use `Matrix.ext fun a' i => ?_` and prove the remaining obligations. Simplify using `only [RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply, gX, eval₂Hom_X', psiE, map_add, map_X, hXm]`. Distinguish the cases in `h : a' = a`. Substitute `h` using the available equality.
+
+Rewrite using `[Matrix.updateRow_self, if_pos rfl, map_mul, map_C, map_X, Polynomial.coe_mapRingHom, Polynomial.map_X]`. Simplify using `only [Pi.add_apply, Pi.smul_apply, Matrix.of_apply, smul_eq_mul]`. Rewrite using `[Matrix.updateRow_ne h, if_neg h, map_zero, add_zero]`. Both sides reduce to the same expression. Rewrite using `[h1, h2, Matrix.det_updateRow_add_smul_self _ hab]`.
+-/
 theorem detX_even (a b : Fin n) (hab : a ≠ b) :
     map (rowGen R (n := n) a b).toRingHom (Matrix.of fun a i : Fin n => gX R n a i.val).det =
       eval₂Hom ((C : Polynomial (MvPolynomial (Fin n × Fin n) R) →+* MvPolynomial (ℕ × Fin n) _).comp Polynomial.C)
@@ -520,6 +695,11 @@ theorem detX_even (a b : Fin n) (hab : a ≠ b) :
       rfl
   rw [h1, h2, Matrix.det_updateRow_add_smul_self _ hab]
 
+/- English proof (translation)
+Unfold `hvE`. Rewrite using `[map_prod, map_prod]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[RingHom.map_det, RingHom.map_det]`. Use `congr 1`.
+
+Use `Matrix.ext fun i t => ?_` and prove the remaining obligations. Simplify using `only [RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply, gX, gY]`. Conclude with `entry_even (R := R) a b i.val (Fin.castLE (hh k) t)`.
+-/
 theorem hvE_even (a b : Fin n) (c : ℕ) (h : Fin c → ℕ) (hh : ∀ k, h k ≤ n) :
     map (rowGen R (n := n) a b).toRingHom (hvE (gX R n) (gY R n) c h hh) =
       eval₂Hom ((C : Polynomial (MvPolynomial (Fin n × Fin n) R) →+* MvPolynomial (ℕ × Fin n) _).comp Polynomial.C)
@@ -534,6 +714,9 @@ theorem hvE_even (a b : Fin n) (c : ℕ) (h : Fin c → ℕ) (hh : ∀ k, h k �
   simp only [RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply, gX, gY]
   exact entry_even (R := R) a b i.val (Fin.castLE (hh k) t)
 
+/- English proof (translation)
+Rewrite using `[← coe_eval₂Hom, map_mul, map_mul, map_pow, map_pow, detX_even a b hab, hvE_even a b c h hh]`.
+-/
 theorem twist_even (a b : Fin n) (hab : a ≠ b) (c e : ℕ) (h : Fin c → ℕ) (hh : ∀ k, h k ≤ n) :
     map (rowGen R (n := n) a b).toRingHom
         ((Matrix.of fun a i : Fin n => gX R n a i.val).det ^ e * hvE (gX R n) (gY R n) c h hh) =
@@ -544,6 +727,11 @@ theorem twist_even (a b : Fin n) (hab : a ≠ b) (c e : ℕ) (h : Fin c → ℕ)
 
 end Even
 
+/- English proof (translation)
+Introduce `R _ n ν hν c e hc`. Use `weyl_le_of ν hν _ ?_ ?_` and prove the remaining obligations. Use `eval_mem_span (R := R) ((Matrix.of fun a i : Fin n => gX R n a i.val).det ^ e * hvE (gX R n) (gY R n) c (fun k => colH ν k.val) (fun k => colH_le ν k.val)) (ptE R n)` as an intermediate fact. Rewrite `this` using `[map_mul, eval_detX, eval_hvE, one_mul, prod_lpF_eq_hw ν c (fun k => colH ν k.val) (fun k => colH_le ν k.val) (count_even ν hν hc)]`. Then use the resulting hypothesis. Introduce and unpack `a b hab k _ ⟨m, rfl⟩`.
+
+Conclude with `coeff_twist_mem (rowGen R (n := n) a b).toRingHom (psiE R a b) _ (twist_even a b hab c e _ _) m k`.
+-/
 theorem weyl_lattice_det_coeff_span : WeylLatticeInDetCoeffSpan := by
   intro R _ n ν hν c e hc
   refine weyl_le_of ν hν _ ?_ ?_
@@ -559,6 +747,13 @@ section MatO
 
 variable {S : Type*} [CommRing S] {n : ℕ}
 
+/- English proof (translation)
+Rewrite using `[Matrix.transvection, Matrix.add_mul, Matrix.one_mul, Matrix.add_apply, Matrix.mul_apply]`. Use `congr 1`. Distinguish the cases in `h : a = i`. Substitute `h` using the available equality. Rewrite using `[if_pos rfl, Finset.sum_eq_single j]`.
+
+Simplify using the standard rewrite rules. Introduce `b _ hb`. Simplify using `[Ne.symm hb]`. Simplify using the standard rewrite rules. Rewrite using `[if_neg h]`.
+
+Use `Finset.sum_eq_zero fun b _ => ?_` and prove the remaining obligations. Simplify using `[Ne.symm h]`.
+-/
 theorem tv_mul_apply (i j : Fin n) (c : S) (M : Matrix (Fin n) (Fin n) S) (a t : Fin n) :
     (Matrix.transvection i j c * M) a t = M a t + if a = i then c * M j t else 0 := by
   rw [Matrix.transvection, Matrix.add_mul, Matrix.one_mul, Matrix.add_apply, Matrix.mul_apply]
@@ -573,6 +768,13 @@ theorem tv_mul_apply (i j : Fin n) (c : S) (M : Matrix (Fin n) (Fin n) S) (a t :
     refine Finset.sum_eq_zero fun b _ => ?_
     simp [Ne.symm h]
 
+/- English proof (translation)
+Unfold `mulC`. Simplify using `only [Matrix.transvection, Matrix.add_apply, add_mul, Finset.sum_add_distrib, Matrix.one_apply, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Use `congr 1`. Distinguish the cases in `h : a = i`. Substitute `h` using the available equality.
+
+Rewrite using `[if_pos rfl, Finset.sum_eq_single j]`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Simplify using `[Ne.symm hb]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[if_neg h]`. Use `Finset.sum_eq_zero fun b _ => ?_` and prove the remaining obligations. Simplify using `[Ne.symm h]`.
+-/
 theorem mulC_tv_apply (i j : Fin n) (c : S) (x : Fin n → ℕ → S) (a : Fin n) (k : ℕ) :
     mulC (Matrix.transvection i j c) x a k = x a k + if a = i then c * x j k else 0 := by
   unfold mulC
@@ -589,10 +791,16 @@ theorem mulC_tv_apply (i j : Fin n) (c : S) (x : Fin n → ℕ → S) (a : Fin n
     refine Finset.sum_eq_zero fun b _ => ?_
     simp [Ne.symm h]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a k`. Simplify using `[mulC, Matrix.one_apply]`.
+-/
 theorem mulC_one' (x : Fin n → ℕ → S) : mulC (1 : Matrix (Fin n) (Fin n) S) x = x := by
   funext a k
   simp [mulC, Matrix.one_apply]
 
+/- English proof (translation)
+Establish `h1 : x = mulC (Matrix.transvection i j c) (mulC (Matrix.transvection i j (-c)) x)`. Rewrite using `[← mulC_mul, Matrix.transvection_mul_transvection_same i j hij, add_neg_cancel, Matrix.transvection_zero, mulC_one']`. Use `conv_lhs => rw [h1]`. Rewrite using `[← mul_catM, Matrix.det_mul, Matrix.det_transvection_of_ne i j hij, one_mul]`.
+-/
 theorem det_catM_tv (l : ℕ) (i j : Fin n) (hij : i ≠ j) (c : S) (y : Matrix (Fin n) (Fin n) S) (x : Fin n → ℕ → S) :
     (catM l (Matrix.transvection i j c * y) x).det = (catM l y (mulC (Matrix.transvection i j (-c)) x)).det := by
   have h1 : x = mulC (Matrix.transvection i j c) (mulC (Matrix.transvection i j (-c)) x) := by
@@ -612,17 +820,30 @@ def revTail (n h : ℕ) (hh : h ≤ n) : Equiv.Perm (Fin n) :=
         simp only [dif_neg ht, dif_neg h2]
         exact Fin.ext (by simp only []; omega))
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(fun t : Fin n => if ht : t.val < n - h then t else (⟨2 * n - h - 1 - t.val, by have := t.isLt; omega⟩ : Fin n)) t = t`. Simplify using `only [dif_pos ht]`.
+-/
 theorem revTail_apply_lt (n h : ℕ) (hh : h ≤ n) (t : Fin n) (ht : t.val < n - h) : revTail n h hh t = t := by
   change (fun t : Fin n => if ht : t.val < n - h then t else
     (⟨2 * n - h - 1 - t.val, by have := t.isLt; omega⟩ : Fin n)) t = t
   simp only [dif_pos ht]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `((fun t : Fin n => if ht : t.val < n - h then t else (⟨2 * n - h - 1 - t.val, by have := t.isLt; omega⟩ : Fin n)) t).val = _`. Simplify using `only [dif_neg ht]`.
+-/
 theorem revTail_apply_ge (n h : ℕ) (hh : h ≤ n) (t : Fin n) (ht : ¬ t.val < n - h) :
     (revTail n h hh t).val = 2 * n - h - 1 - t.val := by
   change ((fun t : Fin n => if ht : t.val < n - h then t else
     (⟨2 * n - h - 1 - t.val, by have := t.isLt; omega⟩ : Fin n)) t).val = _
   simp only [dif_neg ht]
 
+/- English proof (translation)
+Rewrite using `[← Matrix.det_permute', det_unit_cols (Nat.sub_le n h)]`. Use `congr 1`. Use `Matrix.ext fun p q => ?_` and prove the remaining obligations. Establish `hq : (Fin.castLE (Nat.sub_le n h) q).val < n - h` using `by simp`. Simplify using `only [Matrix.of_apply, Matrix.submatrix_apply, id, revTail_apply_lt n h hh _ hq, catM, hq, if_true]`.
+
+Introduce `a t ht`. Establish `hnt : ¬ t.val < n - h` using `by omega`. Establish `hv` using `revTail_apply_ge n h hh t hnt`. Use `t.isLt` as an intermediate fact. Establish `h3 : ¬ (revTail n h hh t).val < n - h` using `by omega`.
+
+Simplify using `only [Matrix.submatrix_apply, id, catM, h3, if_false, hx]`. Rewrite using `[hv]`. Distinguish the cases in `hat : a = t`. Substitute `hat; rw [if_pos (by omega), if_pos rfl]` using the available equality. Rewrite using `[if_neg (fun h' => hat (Fin.ext (by omega))), if_neg hat]`.
+-/
 theorem det_catM_rev (h : ℕ) (hh : h ≤ n) (y : Matrix (Fin n) (Fin n) S) (x : Fin n → ℕ → S)
     (hx : ∀ a i, x a i = if i + a.val + 1 = n then 1 else 0) :
     ((Equiv.Perm.sign (revTail n h hh) : ℤ) : S) * (catM h y x).det =
@@ -651,6 +872,13 @@ variable {R : Type} [CommRing R] {n : ℕ}
 
 def ptO (R : Type) [CommRing R] (n : ℕ) : ℕ × Fin n → R := fun v => if v.1 + v.2.val + 1 = n then 1 else 0
 
+/- English proof (translation)
+Unfold `hvO`. Rewrite using `[map_prod, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[RingHom.map_det, RingHom.mapMatrix_apply, map_catM, det_catM_rev (h k) (hh k), lpF, dif_pos (Nat.sub_le _ _)]`. Unfold `lpMinor`.
+
+Use `congr 1`. Use `Matrix.ext fun p q => ?_` and prove the remaining obligations. Simplify using `[gY]`. Introduce `a i`. Simplify using `only [gX, eval_X, ptO]`.
+
+Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem eval_hvO (c : ℕ) (h : Fin c → ℕ) (hh : ∀ k, h k ≤ n) :
     (∏ k, ((Equiv.Perm.sign (revTail n (h k) (hh k)) : ℤ) : MvPolynomial (Fin n × Fin n) R)) *
       eval (fun v => algebraMap R (MvPolynomial (Fin n × Fin n) R) (ptO R n v)) (hvO (gX R n) (gY R n) c h) =
@@ -670,6 +898,19 @@ theorem eval_hvO (c : ℕ) (h : Fin c → ℕ) (hh : ∀ k, h k ≤ n) :
 def psiO (R : Type) [CommRing R] (a b : Fin n) : ℕ × Fin n → MvPolynomial (ℕ × Fin n) (Polynomial R) :=
   fun v => X v + if v.2 = b then (-C Polynomial.X) * X (v.1, a) else 0
 
+/- English proof (translation)
+Rewrite using `[RingHom.map_det, RingHom.map_det, RingHom.mapMatrix_apply, RingHom.mapMatrix_apply, map_catM, map_catM]`. Use `set Y' : Matrix (Fin n) (Fin n) (MvPolynomial (ℕ × Fin n) (Polynomial (MvPolynomial (Fin n × Fin n) R))) := fun a t => C (Polynomial.C (X (a, t))) with hY'`. Use `set X' : Fin n → ℕ → MvPolynomial (ℕ × Fin n) (Polynomial (MvPolynomial (Fin n × Fin n) R)) := fun a i => X (i, a) with hX'`. Establish `e1 : (gY R n).map (map (rowGen R (n` using `n) a b).toRingHom) = Matrix.transvection b a (C Polynomial.X) * Y' := by`. Use `Matrix.ext fun a' t => ?_` and prove the remaining obligations.
+
+Rewrite using `[tv_mul_apply]`. Simplify using `only [Matrix.map_apply, gY, map_C, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, rowGen_X, hY']`. Distinguish the cases in `h : a' = b`. Substitute `h` using the available equality. Rewrite using `[if_pos rfl, if_pos rfl, C_add, C_mul]`.
+
+Rewrite using `[if_neg h, if_neg h, add_zero, add_zero]`. Establish `e2 : (fun a₁ i => map (rowGen R (n` using `n) a b).toRingHom (gX R n a₁ i)) = X' := by`. Use function extensionality and compare the values at `a' i`. Simplify using `only [gX, map_X, hX']`. Establish `e3 : (gY R n).map (eval₂Hom ((C : Polynomial (MvPolynomial (Fin n × Fin n) R) →+* MvPolynomial (ℕ × Fin n) _).comp Polynomial.C) (fun v => map (Polynomial.mapRingHom (algebraMap R (MvPolynomial (Fin n × Fin n) R))) (psiO R a b v))) = Y'`.
+
+Use `Matrix.ext fun a' t => ?_` and prove the remaining obligations. Simplify using `only [Matrix.map_apply, gY, eval₂Hom_C, RingHom.comp_apply, hY']`. Establish `e4 : (fun a₁ i => eval₂Hom ((C : Polynomial (MvPolynomial (Fin n × Fin n) R) →+* MvPolynomial (ℕ × Fin n) _).comp Polynomial.C) (fun v => map (Polynomial.mapRingHom (algebraMap R (MvPolynomial (Fin n × Fin n) R))) (psiO R a b v)) (gX R n a₁ i)) = mulC (Matrix.transvection b a (-( …`. Use function extensionality and compare the values at `a' i`. Rewrite using `[mulC_tv_apply]`.
+
+Simplify using `only [gX, eval₂Hom_X', psiO, map_add, map_X, hX']`. Distinguish the cases in `h : a' = b`. Substitute `h` using the available equality. Rewrite using `[if_pos rfl, if_pos rfl, map_mul, map_neg, map_C, map_X, Polynomial.coe_mapRingHom, Polynomial.map_X]`. Rewrite using `[if_neg h, if_neg h, map_zero]`.
+
+Rewrite using `[e1, e2, e3, e4, det_catM_tv l b a (Ne.symm hab)]`.
+-/
 theorem catM_odd (a b : Fin n) (hab : a ≠ b) (l : ℕ) :
     map (rowGen R (n := n) a b).toRingHom (catM l (gY R n) (gX R n)).det =
       eval₂Hom ((C : Polynomial (MvPolynomial (Fin n × Fin n) R) →+* MvPolynomial (ℕ × Fin n) _).comp Polynomial.C)
@@ -706,6 +947,9 @@ theorem catM_odd (a b : Fin n) (hab : a ≠ b) (l : ℕ) :
     · rw [if_neg h, if_neg h, map_zero]
   rw [e1, e2, e3, e4, det_catM_tv l b a (Ne.symm hab)]
 
+/- English proof (translation)
+Unfold `hvO`. Rewrite using `[← coe_eval₂Hom, map_prod, map_prod]`. Conclude with `Finset.prod_congr rfl fun k _ => catM_odd a b hab (h k)`.
+-/
 theorem twist_odd (a b : Fin n) (hab : a ≠ b) (c : ℕ) (h : Fin c → ℕ) :
     map (rowGen R (n := n) a b).toRingHom (hvO (gX R n) (gY R n) c h) =
       eval₂ ((C : Polynomial (MvPolynomial (Fin n × Fin n) R) →+* MvPolynomial (ℕ × Fin n) _).comp Polynomial.C)
@@ -717,6 +961,13 @@ theorem twist_odd (a b : Fin n) (hab : a ≠ b) (c : ℕ) (h : Fin c → ℕ) :
 
 end Odd
 
+/- English proof (translation)
+Introduce `R _ n μ hμ c hc`. Establish `hκ : Antitone (fun t : Fin n => c - μ t.rev)` using `fun s t hst => by`. Use `hμ (Fin.rev_le_rev.mpr hst)` as an intermediate fact. Simplify using `only`. Use linear arithmetic over natural numbers and integers.
+
+Use `weyl_le_of _ hκ _ ?_ ?_` and prove the remaining obligations. Establish `hm` using `eval_mem_span (R := R) (hvO (gX R n) (gY R n) c (fun k => colH μ k.val)) (ptO R n)`. Establish `e` using `eval_hvO (R := R) c (fun k => colH μ k.val) (fun k => colH_le μ k.val)`. Rewrite `e` using `[prod_lpF_eq_hw _ c (fun k => n - colH μ k.val) (fun k => Nat.sub_le _ _) (count_odd μ hμ hc)]`. Rewrite using `[← e, ← Int.cast_prod, ← zsmul_eq_mul]`.
+
+Conclude with `Submodule.smul_of_tower_mem _ _ hm`. Introduce and unpack `a b hab k _ ⟨m, rfl⟩`. Conclude with `coeff_twist_mem (rowGen R (n := n) a b).toRingHom (psiO R a b) _ (twist_odd a b hab c _) m k`.
+-/
 theorem weyl_complement_det_coeff_span : WeylComplementInDetCoeffSpan := by
   intro R _ n μ hμ c hc
   have hκ : Antitone (fun t : Fin n => c - μ t.rev) := fun s t hst => by

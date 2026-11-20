@@ -12,6 +12,9 @@ open GlobalTheory.FunObj.FiniteSupport
 
 namespace GlobalTheory.FlatStepVertex
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [reindex_apply, submatrix_apply, mul_apply, frameGL_val]`. Conclude with `(Fintype.sum_equiv (frame h) _ _ (fun x => by simp)).symm`.
+-/
 theorem mul_reindex_gen {k : Type} [Field k] {a c b : ℕ} {ι' ι : Type} (h : a + c = b) (f : ι' ≃ ι) (g : GL (Fin b) k)
     (D : Matrix (Fin a ⊕ Fin c) ι' k) :
     g.val * D.reindex (frame h) f = ((frameGL h g).val * D).reindex (frame h) f := by
@@ -19,6 +22,9 @@ theorem mul_reindex_gen {k : Type} [Field k] {a c b : ℕ} {ι' ι : Type} (h : 
   simp only [reindex_apply, submatrix_apply, mul_apply, frameGL_val]
   exact (Fintype.sum_equiv (frame h) _ _ (fun x => by simp)).symm
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [reindex_apply, submatrix_apply, mul_apply, frameGL_val]`. Conclude with `(Fintype.sum_equiv (frame h) _ _ (fun x => by simp)).symm`.
+-/
 theorem reindex_mul_gen {k : Type} [Field k] {a c b : ℕ} {ι' ι : Type} (h : a + c = b) (f : ι' ≃ ι) (g : GL (Fin b) k)
     (D : Matrix ι' (Fin a ⊕ Fin c) k) :
     D.reindex f (frame h) * g.val = (D * (frameGL h g).val).reindex f (frame h) := by
@@ -28,6 +34,13 @@ theorem reindex_mul_gen {k : Type} [Field k] {a c b : ℕ} {ι' ι : Type} (h : 
 
 end GlobalTheory.FlatStepVertex
 
+/- English proof (translation)
+Introduce `k _ _ _ _ _ _ a₀ a₁ a₂ b c c₀ c' ν _ hc₀ hc' h₁ h₂ h' g κ hκ v hv hg x₀ x₁`. Substitute `hc₀ hc'` using the available equality. Take `⟨φ₀, hφ₀, H₀⟩` from `GlobalTheory.T.fourierJacobiStep_leftChange_measurePreserving (n := Fin a₁) (n' := Fin a₀) (c := c + 1) ν v hv κ hκ x₀`. Take `⟨φ₁, hφ₁, H₁⟩` from `GlobalTheory.T.stepPoint_mul_periodUnipotent_GL_measurePreserving (n := Fin a₂) (n' := Fin a₁) (c := c) ν v hv κ hκ x₁`. Use `⟨φ₀, hφ₀, φ₁, hφ₁, fun e₀ e₁ => ?_⟩` and prove the remaining obligations.
+
+Establish `hg₁ : frameGL h₁ g = v * embX (c + 1) κ` using `hg`. Establish `hg₂ : frameGL h₂ g = v * embX (c + 1) κ` using `hg`. Take `⟨A, B⟩` from `GlobalTheory.T.fourierJacobiPhase_adjacentSteps_invariant_vertex (n₀ := Fin a₀) (n := Fin a₁) (n₂ := Fin a₂) (c := c) v hv κ x₀ e₀ x₁ e₁ (stepPt ((κ⁻¹).val * x₀) (φ₀ e₀)) (stepPt (x₁ * κ.val) (φ₁ e₁)) (H₀ e₀).symm (H₁ e₁).symm`. Use `⟨fun f => ?_, fun f => ?_, A, fun ho l s hl => ?_, fun ho r i hi => ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.FlatStepVertex.mul_reindex_gen, map_inv, hg₁, H₀]`.
+
+Rewrite using `[GlobalTheory.FlatStepVertex.reindex_mul_gen, hg₂, H₁]`. Rewrite using `[show l = ⟨(c + 1) / 2, by omega⟩ from Fin.ext hl]`. Conclude with `(B ho).1 s`. Rewrite using `[show i = ⟨c / 2, by omega⟩ from Fin.ext hi]`. Conclude with `(B ho).2 r`.
+-/
 theorem GlobalTheory.flatStep_vertex : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] {a₀ a₁ a₂ b c c₀ c' : ℕ} (ν : Measure k) [ν.IsAddHaarMeasure] (hc₀ : c₀ = c + 1) (hc' : c' = c + 1)
     (h₁ : a₁ + c₀ = b) (h₂ : a₁ + (c + 1) = b) (h' : a₁ + c' = b) (g : GL (Fin b) k) (κ : GL (Fin a₁) k),
     valuation k (gdet κ : k) = 1 → ∀ v ∈ symN k (Fin a₁) c', frameGL h' g = v * embX c' κ →

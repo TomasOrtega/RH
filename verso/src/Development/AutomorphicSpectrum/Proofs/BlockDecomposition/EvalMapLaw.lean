@@ -19,6 +19,15 @@ def evalMap {π : Representation ℂ (GL (Fin (a + b)) k) V} {σ : Representatio
     V →ₗ[ℂ] TensorProduct ℂ W W' :=
   φ.toLinearMap ∘ₗ (twKer π (unipRad k (two (stdSum (rfl : a + b = a + b)))) 1).mkQ
 
+/- English proof (translation)
+Use `set xy := (leviTwo k (Fin a) (Fin b)).symm (leviProj k _ q) with hxy`. Establish `hL : leviProj k (two (stdSum (rfl : a + b = a + b))) q = leviTwo k _ _ xy` using `(MulEquiv.apply_symm_apply _ _).symm`. Take `⟨u, hu, hpu⟩` from `exists_levi_mul_unip k (two (stdSum (rfl : a + b = a + b))) q`. Rewrite `hpu`, the goal using `[hL]`. Establish `hpu' : (q : GL (Fin (a + b)) k) = leviEmb k (two (stdSum (rfl : a + b = a + b))) (leviTwo k _ _ xy) * u` using `hpu`.
+
+Establish `hmk : (Submodule.Quotient.mk (π u w) : Jacquet π (unipRad k (two (stdSum (rfl : a + b = a + b))))) = Submodule.Quotient.mk w`. Rewrite using `[Submodule.Quotient.eq]`. Use `Submodule.subset_span ⟨⟨u, hu⟩, w, ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules. Establish `key : ∀ (M : Levi k (Two (Fin a) (Fin b))) (x : V), (Submodule.Quotient.mk (π (leviEmb k (two (stdSum (rfl : a + b = a + b))) M) x) : Jacquet π (unipRad k (two (stdSum (rfl : a + b = a + b))))) = (deltaHalf k (Two (Fin a) (Fin b)) M : ℂ) • jac (two (stdSum (rfl : a + b = a + b))) …`.
+
+Introduce `M x`. Rewrite using `[jac_mk, smul_smul, ← Units.val_mul, mul_inv_cancel, Units.val_one, one_smul]`. Establish `hint` using `Representation.IntertwiningMap.isIntertwining _ _ φ xy (Submodule.Quotient.mk w : Jacquet π (unipRad k (two (stdSum (rfl : a + b = a + b)))))`. Simplify using `only [evalMap, LinearMap.coe_comp, Function.comp_apply, Submodule.mkQ_apply]`. Rewrite using `[hpu', map_mul, Module.End.mul_apply, key, hmk, map_smul]`.
+
+Express the relevant statement in the definitionally equal form `_ • φ (jac₂ (stdSum (rfl : a + b = a + b)) π xy (Submodule.Quotient.mk w)) = _`. Rewrite using `[hint]`. Both sides reduce to the same expression.
+-/
 theorem evalMap_law {π : Representation ℂ (GL (Fin (a + b)) k) V}
     {σ : Representation ℂ (GL (Fin a) k) W} {ρ : Representation ℂ (GL (Fin b) k) W'}
     (φ : (jac₂ (stdSum (rfl : a + b = a + b)) π).IntertwiningMap (extTensor σ ρ))
@@ -76,6 +85,9 @@ def frobMap {π : Representation ℂ (GL (Fin (a + b)) k) V} (hs : IsSmooth π)
       show evalMap φ (π x (π h v)) = evalMap φ (π (x * h) v)
       rw [map_mul, Module.End.mul_apply])) }
 
+/- English proof (translation)
+Use `show evalMap φ (π 1 v) = _`. Rewrite using `[map_one]`. Both sides reduce to the same expression.
+-/
 theorem frobMap_one {π : Representation ℂ (GL (Fin (a + b)) k) V} (hs : IsSmooth π)
     {σ : Representation ℂ (GL (Fin a) k) W} {ρ : Representation ℂ (GL (Fin b) k) W'}
     (φ : (jac₂ (stdSum (rfl : a + b = a + b)) π).IntertwiningMap (extTensor σ ρ)) (v : V) :
@@ -84,6 +96,11 @@ theorem frobMap_one {π : Representation ℂ (GL (Fin (a + b)) k) V} (hs : IsSmo
   rw [map_one]
   rfl
 
+/- English proof (translation)
+Introduce `k _ _ _ _ a b V W W' _ _ _ _ _ _ π σ ρ hs hπ φ hφ`. Use `⟨frobMap hs φ, ?_⟩` and prove the remaining obligations. Use `haveI := hπ`. Use `(Representation.IsIrreducible.injective_or_eq_zero (frobMap hs φ)).resolve_right fun h0 => hφ ?_` and prove the remaining obligations. Use extensionality with `v`.
+
+Use `show φ (Submodule.Quotient.mk v) = 0`. Rewrite using `[← frobMap_one hs φ v, h0]`. Both sides reduce to the same expression.
+-/
 theorem exists_injective_of_jac₂ : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (a b : ℕ) (V W W' : Type) [AddCommGroup V] [Module ℂ V]
     [AddCommGroup W] [Module ℂ W] [AddCommGroup W'] [Module ℂ W']

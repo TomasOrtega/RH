@@ -17,11 +17,45 @@ noncomputable section
 
 namespace GlobalTheory.ShFam.CoordField
 
+/- English proof (translation)
+Rewrite using `[mul_right_comm, ← Units.val_mul, ← Finset.prod_mul_distrib]`. Simplify using the standard rewrite rules.
+-/
 theorem unit_prod_cancel' {K ι : Type} [CommRing K] [Fintype ι] (t : ι → Kˣ) (n : ι → ℤ) (a : K) :
     ((∏ z, t z ^ n z : Kˣ) : K) * a * ((∏ z, t z ^ (-n z) : Kˣ) : K) = a := by
   rw [mul_right_comm, ← Units.val_mul, ← Finset.prod_mul_distrib]
   simp
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c O _ β Z F _ _ e C ex g hex hsec K _ _ yC xg gf hu x hxπ hC`. Take `⟨y, ψ, φ₁, f, t, t', hp, a1, b1⟩` from `hC`. Establish `hs : x (IsLocalRing.closedPoint K) ⤳ y`. Establish `: x (IsLocalRing.closedPoint K) ∈ Set.range (C.Y.X.fromSpecStalk y)` using `by rw [hp]; exact ⟨_, rfl⟩`. Rewrite `this` using `[Scheme.range_fromSpecStalk]`. Then use the resulting hypothesis.
+
+Set `ρ : C.Y.X.presheaf.stalk y →+* C.Y.X.presheaf.stalk (x (IsLocalRing.closedPoint K))` to `(C.Y.X.presheaf.stalkSpecializes hs).hom`. Establish `h1 : spMap ρ ≫ stalkPt C.Y y = stalkPt C.Y (x (IsLocalRing.closedPoint K))` using `Scheme.SpecMap_stalkSpecializes_fromSpecStalk hs`. Set `χ : C.Y.X.presheaf.stalk (x (IsLocalRing.closedPoint K)) →+* K` to `(Scheme.stalkClosedPointTo x).hom`. Establish `hχx : spMap χ ≫ stalkPt C.Y (x (IsLocalRing.closedPoint K)) = x` using `Scheme.Spec_stalkClosedPointTo_fromSpecStalk x`. Establish `h2 : χ.comp ρ = ψ` using `EigLoc.spMap_inj ((cancel_mono (C.Y.X.fromSpecStalk y)).1 (by`.
+
+Use `Eq.trans ?_ (hχx.trans hp)` and prove the remaining obligations. Rewrite using `[← h1, ← Category.assoc, ← Spec.map_comp]`. Use the proof step `rfl))`. Establish `h3 : (algebraMap _ C.Y.X.functionField).comp ρ = algebraMap (C.Y.X.presheaf.stalk y) C.Y.X.functionField` using `congrArg CommRingCat.Hom.hom (C.Y.X.presheaf.stalkSpecializes_comp _ hs)`. Take `⟨f', hf⟩` from `f.exists_isMap ρ (x' := stalkPt C.Y (x (IsLocalRing.closedPoint K)) ≫ C.π ≫ genι Z) rfl (by rw [← h1, Category.assoc])`.
+
+Establish `key : ∀ {k : Type} [CommRing k] (χ : C.Y.X.presheaf.stalk (x (IsLocalRing.closedPoint K)) →+* k) {φ' : c.F →+* k} {x' : Sp k ⟶ Z.X} {g : EigFrame Z φ' x'} {t : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → kˣ}, f.Tri (χ.comp ρ) g t → f'.Tri χ g t` using `fun χ _ _ g t h => ⟨by rw [h.1, ← h1, Category.assoc, ← Category.assoc (spMap χ), ← Spec.map_comp]; rfl, h.2.1, fun τ i => by simpa only [hf τ, GlobalTheory.GradedPieces.dual_comp] using h.2.2 τ i⟩`. Establish `a1'` using `key _ (h3.symm ▸ a1)`. Establish `b1'` using `key _ (h2.symm ▸ b1)`. Use `letI : Algebra c.F (C.Y.X.presheaf.stalk (x (IsLocalRing.closedPoint K))) := (ρ.comp φ₁).toAlgebra`. Use `letI : Algebra c.F C.Y.Fn := (constF e C.Y).toAlgebra`.
+
+Use `haveI := Z.jQ_open`. Set `ι : C.Y.X.presheaf.stalk (x (IsLocalRing.closedPoint K)) →+* C.Y.Fn` to `algebraMap _ C.Y.X.functionField`. Establish `hι : Function.Injective ι` using `IsFractionRing.injective (C.Y.X.presheaf.stalk (x (IsLocalRing.closedPoint K))) C.Y.X.functionField`. Use `haveI : IsLocalHom χ := inferInstanceAs (IsLocalHom (Scheme.stalkClosedPointTo x).hom)`. Set `x' : Sp (C.Y.X.presheaf.stalk (x (IsLocalRing.closedPoint K))) ⟶ gen Z` to `stalkPt C.Y (x (IsLocalRing.closedPoint K)) ≫ C.π`.
+
+Establish `hy : AllWt.ptF yC ≫ Z.jQ = spMap χ ≫ x'`. Rewrite using `[← hxπ]`. Use `show _ = spMap χ ≫ stalkPt C.Y (x (IsLocalRing.closedPoint K)) ≫ C.π`. Rewrite using `[← Category.assoc, hχx]`. Establish `hr : Set.range x' ⊆ Set.range Z.jQ`.
+
+Introduce and unpack `_ ⟨q, rfl⟩`. Establish `hq : q ⤳ spMap χ (IsLocalRing.closedPoint K)`. Establish `: spMap χ (IsLocalRing.closedPoint K) = IsLocalRing.closedPoint _` using `IsLocalRing.comap_closedPoint χ`. Rewrite using `[this]`. Conclude with `IsLocalRing.specializes_closedPoint q`.
+
+Use `(hq.map x'.continuous).mem_open Z.jQ.isOpenEmbedding.isOpen_range ⟨AllWt.ptF yC (IsLocalRing.closedPoint K), ?_⟩` and prove the remaining obligations. Conclude with `congrArg (fun m : Sp K ⟶ gen Z => m (IsLocalRing.closedPoint K)) hy`. Set `xF` to `IsOpenImmersion.lift Z.jQ x' hr`. Establish `hxF : xF ≫ Z.jQ = x'` using `IsOpenImmersion.lift_fac _ _ _`. Establish `hpt : AllWt.ptF yC = spMap χ ≫ xF`.
+
+Rewrite using `[← cancel_mono Z.jQ, Category.assoc, hxF, hy]`. Establish `hgen : genericPt C.Y = spMap ι ≫ stalkPt C.Y (x (IsLocalRing.closedPoint K))` using `(Scheme.SpecMap_stalkSpecializes_fromSpecStalk (genericPoint_specializes _)).symm`. Establish `hpt0 : AllWt.ptF C.y0 = spMap ι ≫ xF`. Rewrite using `[← cancel_mono Z.jQ, Category.assoc, hxF, C.y0_x, hgen, Category.assoc]`. Establish `hs' : xF ≫ pullback.snd _ _ = spMap (algebraMap c.F (C.Y.X.presheaf.stalk (x (IsLocalRing.closedPoint K))))`.
+
+Take `⟨φ₂, h⟩` from `Spec.map_surjective (xF ≫ pullback.snd _ _)`. Establish `h1 : spMap ι ≫ spMap φ₂.hom = spMap (algebraMap c.F C.Y.Fn)`. Establish `h0 : AllWt.ptF C.y0 ≫ pullback.snd _ _ = spMap (algebraMap c.F C.Y.Fn)` using `pullback.lift_snd _ _ _`. Rewrite using `[← h0, hpt0, Category.assoc, ← h]`. Both sides reduce to the same expression.
+
+Rewrite `h1` using `[OpenReg.spMap_comp]`. Establish `h2 : ι.comp φ₂.hom = algebraMap c.F C.Y.Fn` using `congrArg CommRingCat.Hom.hom (Spec.map_injective h1)`. Establish `h3 : φ₂.hom = ρ.comp φ₁` using `RingHom.ext fun r => hι ((RingHom.congr_fun h2 r).trans (RingHom.congr_fun a1'.2.1 r))`. Rewrite using `[← h]`. Use `show Spec.map φ₂ = Spec.map (CommRingCat.ofHom (ρ.comp φ₁))`.
+
+Conclude with `congrArg Spec.map (CommRingCat.hom_ext h3)`. Take `⟨a, ha⟩` from `ChartValue.exists_evR_eq_of_tri (Z := Z) xF hs' (x := stalkPt C.Y (x (IsLocalRing.closedPoint K)) ≫ C.π ≫ genι Z) (by rw [← Category.assoc, hxF]; rfl) f' hex hsec`. Set `ι' : C.Y.X.presheaf.stalk (x (IsLocalRing.closedPoint K)) →ₐ[c.F] C.Y.Fn` to `{ ι with commutes' := fun r => (RingHom.congr_fun a1'.2.1 r).symm }`. Establish `hv1` using `ha C.Y.Fn ι' C.f0.v t C.y0 (fun τ i => by`. Take `⟨cf, c1, c2, c3⟩` from `a1'.2.2 τ i`.
+
+Conclude with `⟨cf, c1, c2, (congrArg (fun X => IsCombAtG Z.t X (fun k => spMap (dualMap ι) ≫ f'.v τ k) cf (C.f0.v τ i)) a1'.1).mp c3⟩) hpt0 C.flagComponentFramedPoint_frame`. Set `χ' : C.Y.X.presheaf.stalk (x (IsLocalRing.closedPoint K)) →ₐ[c.F] K` to `{ χ with commutes' := fun r => (RingHom.congr_fun b1'.2.1 r).symm }`. Establish `hv2` using `ha K χ' gf.v t' yC (fun τ i => by`. Take `⟨cf, c1, c2, c3⟩` from `b1'.2.2 τ i`. Conclude with `⟨cf, c1, c2, (congrArg (fun X => IsCombAtG Z.t X (fun k => spMap (dualMap χ) ≫ f'.v τ k) cf (gf.v τ i)) b1'.1).mp c3⟩) hpt hu`.
+
+Use `⟨x (IsLocalRing.closedPoint K), χ, ρ.comp φ₁, f', t, t', a, hχx.symm, a1', b1', ?_, ?_⟩` and prove the remaining obligations. Use `show ι a = evR Xo c g C.y0 * _`. Rewrite using `[hv1]`. Conclude with `(unit_prod_cancel' (fun z : (Σ τ : E →+* ℂ, Fin (Dw.mult τ)) => t z.1 z.2) (fun z => ex (some z)) (ι a)).symm`. Rewrite using `[hv2] show _ = χ a * _`.
+
+Simplify using `only [neg_neg]`. Conclude with `mul_comm _ _`.
+-/
 theorem isCoord_val_field : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c β) (F : Type) [Field F] [NumberField F] (e : F ≃+* c.F) (C : FlagCpt Z e) (ex : Ix Dw → ℤ) (g : Rul Xo c), ex none = 0 → g ∈ AllWt.secZ Xo c ex → ∀ (K : Type) [Field K] [Algebra c.F K] (yC : FrPt Xo c K) (xg : Sp K ⟶ Z.X) (gf : EigFrame Z (algebraMap c.F K) xg), (∀ τ i, ∃ w : Sp (DualNumber K) ⟶ Z.oF.t.G.left, w ≫ Z.oF.t.G.hom = spMap (algebraMap K (DualNumber K)) ≫ AllWt.ptF yC ∧ w ≫ Z.m0.toSABMap.φ = yC.u τ i ∧ w ≫ Z.m.φ = gf.v τ i) → ∀ x : Sp K ⟶ C.Y.X, x ≫ C.π = AllWt.ptF yC ≫ Z.jQ → C.Carries x gf → IsCoord C x gf (fun z => -ex (some z)) (C.val g) (evR Xo c g yC) := by
   intro E _ _ _ H Dw l Xo c O _ β Z F _ _ e C ex g hex hsec K _ _ yC xg gf hu x hxπ hC
   obtain ⟨y, ψ, φ₁, f, t, t', hp, a1, b1⟩ := hC

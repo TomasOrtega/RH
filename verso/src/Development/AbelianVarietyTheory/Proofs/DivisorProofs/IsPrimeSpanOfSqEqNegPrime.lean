@@ -4,6 +4,13 @@ open NumberField
 
 namespace GlobalTheory.CMModel
 
+/- English proof (translation)
+Introduce `p K _ _ y hp hK hy`. Establish `hr : Module.finrank ℤ (𝓞 K) = 2` using `by rw [RingOfIntegers.rank, hK]`. Establish `h1 : Ideal.absNorm (Ideal.span {y}) ^ 2 = p ^ 2`. Rewrite using `[← map_pow, Ideal.span_singleton_pow, hy, Ideal.span_singleton_neg, Ideal.absNorm_span_singleton]`. Establish `: (p : 𝓞 K) = algebraMap ℤ (𝓞 K) (p : ℤ)` using `by simp`.
+
+Rewrite using `[this, Algebra.norm_algebraMap, hr]`. Simplify using `[Int.natAbs_pow]`. Establish `h2 : Ideal.absNorm (Ideal.span {y}) = p` using `Nat.pow_left_injective (by norm_num : (2 : ℕ) ≠ 0) h1`. Apply `Ideal.isPrime_of_irreducible_absNorm` to reduce the goal to its premises. Rewrite using `[h2]`.
+
+Conclude with `(Nat.irreducible_iff_nat_prime p).2 hp`.
+-/
 theorem isPrime_span_of_sq_eq_neg_prime :
     ∀ (p : ℕ) (K : Type) [Field K] [NumberField K] (y : 𝓞 K), p.Prime → Module.finrank ℚ K = 2 →
       y ^ 2 = -(p : 𝓞 K) → (Ideal.span {y}).IsPrime := by

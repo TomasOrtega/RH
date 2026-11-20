@@ -10,6 +10,21 @@ namespace GlobalTheory.IsoTriv
 open MvPowerSeries ReciprocityTheory.PGsh ReciprocityTheory.ChartRestriction.G.TB ReciprocityTheory.ChartRestriction.G.Sh
 open GlobalTheory.FGDepth GlobalTheory.CharDepth GlobalTheory.FactorDepth GlobalTheory.LawLog
 
+/- English proof (translation)
+Introduce `hAdd hAct hCont`. Introduce `C _ _ v d R _ _ O _ _ B hB σ _ κ _ w hw A a hA`. Establish `hdI : ∀ c e e', IsIntV v (dAct C B c e e')` using `fun c e _ => hB.2.1 c e _`. Establish `hAI : ∀ b e e', IsIntV v (A b e e')`. Introduce `b e e'`.
+
+Establish `h0 : IsIntV v (A b e e' - dAct C B (a 0 b) e e')`. Use `hA 0 b e e'` as an intermediate fact. Simplify `this` using `[IsIntV]`. Establish `: A b e e' = (A b e e' - dAct C B (a 0 b) e e') + dAct C B (a 0 b) e e'` using `by ring`. Rewrite using `[this]`.
+
+Conclude with `(ptIsIntV_iff _).2 (Subring.add_mem _ ((ptIsIntV_iff _).1 h0) ((ptIsIntV_iff _).1 (hdI _ _ _)))`. Establish `hN : ∀ N, IntLog (fglOf hB) (∑ b, mv (dAct C B (a N b)) (w b))` using `fun N => Finset.sum_induction _ (IntLog (fglOf hB)) (fun x y hx hy => (hAdd C v d (fglOf hB) σ).2.2 x y hx hy) (hAdd C v d (fglOf hB) σ).1 (fun b _ => (hAct C v d R O B hB σ (a N b)).2 _ (hw b))`. Establish `hw0 : ∀ b i, constantCoeff (w b i) = 0` using `fun b => (hw b).1`. Establish `key : ∀ (M : κ → Matrix (Fin d) (Fin d) C) (i : Fin d), expPt (fglOf hB) (∑ b, mv (M b) (w b)) i =`. Substitute `(fun q => ∑ x : κ × Fin d, M x.1 q x.2 • w x.1 x.2) (expOf (fglOf hB) i) := by` using the available equality.
+
+Introduce `M i`. Unfold `expPt`. Use `congr 1`. Use function extensionality and compare the values at `q`. Rewrite using `[Finset.sum_apply, Fintype.sum_prod_type]`.
+
+Both sides reduce to the same expression. Use `⟨fun i => ?_, fun i α => ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.sum_apply, map_sum]`. Conclude with `Finset.sum_eq_zero fun b _ => cc_mv (A b) (hw0 b) i`. Take `⟨N₀, hN₀⟩` from `hCont C v (Fin d) σ (κ × Fin d) (expOf (fglOf hB) i) (fun x => w x.1 x.2) (fun x => hw0 x.1 x.2) α`.
+
+Establish `h1` using `hN₀ (fun q x => A x.1 q x.2) (fun q x => dAct C B (a N₀ x.1) q x.2) (fun q x => hAI _ _ _) (fun q x => hdI _ _ _) (fun q x => hA N₀ x.1 q x.2)`. Establish `h2` using `(hN N₀).2 i α`. Rewrite `h2` using `[key]`. Rewrite using `[key]`. Rewrite using `[← sub_add_cancel (coeff α (subst (fun q => ∑ x : κ × Fin d, A x.1 q x.2 • w x.1 x.2) (expOf (fglOf hB) i) : MvPowerSeries σ C)) (coeff α (subst (fun q => ∑ x : κ × Fin d, dAct C B (a N₀ x.1) q x.2 • w x.1 x.2) (expOf (fglOf hB) i) : MvPowerSeries σ C))]`.
+
+Conclude with `(ptIsIntV_iff _).2 (Subring.add_mem _ ((ptIsIntV_iff _).1 h1) ((ptIsIntV_iff _).1 h2))`.
+-/
 theorem limPt_of_steps : AddSt → ActSt → ContSt → LimPtSt := by
   intro hAdd hAct hCont
   intro C _ _ v d R _ _ O _ _ B hB σ _ κ _ w hw A a hA

@@ -5,6 +5,21 @@ open scoped ENNReal NNReal
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `h1 : Tendsto (fun ε : ℝ => (1 + ε)⁻¹ ^ d) (𝓝 0) (𝓝 1)`. Establish `: ContinuousAt (fun ε : ℝ => (1 + ε)⁻¹ ^ d) 0` using `((continuous_const.add continuous_id).continuousAt.inv₀ (by norm_num)).pow d`. Simplify using `using this.tendsto`. Establish `h2 : Tendsto (fun ε : ℝ => ((1 + ε) / (1 - ε)) ^ d) (𝓝 0) (𝓝 1)`. Establish `: ContinuousAt (fun ε : ℝ => ((1 + ε) / (1 - ε)) ^ d) 0` using `((continuous_const.add continuous_id).continuousAt.div (continuous_const.sub continuous_id).continuousAt (by norm_num)).pow d`.
+
+Simplify using `using this.tendsto`. Establish `hL : Tendsto (fun ε : ℝ => ENNReal.ofReal ((1 + ε)⁻¹ ^ d) * c) (𝓝 0) (𝓝 c)`. Use `ENNReal.Tendsto.mul_const (ENNReal.tendsto_ofReal h1) (Or.inr hc)` as an intermediate fact. Simplify using `using this`. Establish `hU : Tendsto (fun ε : ℝ => ENNReal.ofReal (((1 + ε) / (1 - ε)) ^ d) * c) (𝓝 0) (𝓝 c)`.
+
+Use `ENNReal.Tendsto.mul_const (ENNReal.tendsto_ofReal h2) (Or.inr hc)` as an intermediate fact. Simplify using `using this`. Establish `hI : Set.Ioo (0 : ℝ) 1 ∈ 𝓝[>] (0 : ℝ)` using `Ioo_mem_nhdsGT zero_lt_one`. Establish `hf : Tendsto f (𝓝 0) (𝓝 c)`. Rewrite using `[tendsto_order]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `a ha`. Establish `e1 : ∀ᶠ ε in 𝓝[>] (0 : ℝ), a < ENNReal.ofReal ((1 + ε)⁻¹ ^ d) * c` using `nhdsWithin_le_nhds (hL.eventually (lt_mem_nhds ha))`. Take `⟨ε, hε, hεI⟩` from `(e1.and hI).exists`. Take `⟨η, hη, hx⟩` from `h ε hεI.1 hεI.2`.
+
+Use `filter_upwards [Metric.ball_mem_nhds (0 : V) hη] with x hxb`. Rewrite `hxb` using `[mem_ball_zero_iff]`. Conclude with `lt_of_lt_of_le hε (hx x hxb).1`. Introduce `a ha`. Establish `e1 : ∀ᶠ ε in 𝓝[>] (0 : ℝ), ENNReal.ofReal (((1 + ε) / (1 - ε)) ^ d) * c < a` using `nhdsWithin_le_nhds (hU.eventually (gt_mem_nhds ha))`.
+
+Take `⟨ε, hε, hεI⟩` from `(e1.and hI).exists`. Take `⟨η, hη, hx⟩` from `h ε hεI.1 hεI.2`. Use `filter_upwards [Metric.ball_mem_nhds (0 : V) hη] with x hxb`. Rewrite `hxb` using `[mem_ball_zero_iff]`. Conclude with `lt_of_le_of_lt (hx x hxb).2 hε`.
+
+Establish `h0 : f 0 = c` using `tendsto_nhds_unique (tendsto_pure_nhds f 0) (hf.mono_left (pure_le_nhds 0))`. Use `⟨h0, ?_⟩` and prove the remaining obligations. Unfold `ContinuousAt`. Rewrite using `[h0]`. Conclude with `hf`.
+-/
 theorem squeeze_continuousAt_zero (V : Type) [NormedAddCommGroup V] [NormedSpace ℝ V] (d : ℕ)
     (f : V → ℝ≥0∞) (c : ℝ≥0∞) (hc : c ≠ ⊤)
     (h : ∀ ε : ℝ, 0 < ε → ε < 1 → ∃ η : ℝ, 0 < η ∧ ∀ x : V, ‖x‖ < η →
@@ -51,6 +66,9 @@ theorem squeeze_continuousAt_zero (V : Type) [NormedAddCommGroup V] [NormedSpace
   rw [h0]
   exact hf
 
+/- English proof (translation)
+The claim follows from `squeeze_continuousAt_zero`.
+-/
 example : ∀ (V : Type) [NormedAddCommGroup V] [NormedSpace ℝ V] (d : ℕ) (f : V → ℝ≥0∞) (c : ℝ≥0∞), c ≠ ⊤ → (∀ ε : ℝ, 0 < ε → ε < 1 → ∃ η : ℝ, 0 < η ∧ ∀ x : V, ‖x‖ < η → ENNReal.ofReal ((1 + ε)⁻¹ ^ d) * c ≤ f x ∧ f x ≤ ENNReal.ofReal (((1 + ε) / (1 - ε)) ^ d) * c) → f 0 = c ∧ ContinuousAt f 0 :=
   squeeze_continuousAt_zero
 

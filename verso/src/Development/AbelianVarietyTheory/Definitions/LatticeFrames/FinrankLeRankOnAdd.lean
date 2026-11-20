@@ -49,6 +49,13 @@ def HypInh : Prop :=
   ∃ Cg cb Cu cT CT : ℝ, 0 < cb ∧ 0 < cT ∧ ∀ C C'₀ Cl₀ : ℝ, ∃ (C' Cl L : ℝ) (D : D7), C'₀ ≤ C' ∧ Cl₀ ≤ Cl ∧
     TrueS D ∧ HD D L C' Cl Cg cb Cu cT CT ∧ ∀ u, GlobalTheory.Core.Rk.Small D u L C
 
+/- English proof (translation)
+Unfold `corankP GlobalTheory.Core.Rk.hsDev`. Use `set N := LinearMap.ker (D.s.Pu u : D.s.Cu u →ₗ[ℂ] D.s.HH)`. Set `b` to `stdOrthonormalBasis ℂ N`. Set `v : Fin (Module.finrank ℂ N) → D.s.Cu u` to `fun i => (b i : D.s.Cu u)`. Apply the tactic sequence `have hv : Orthonormal ℂ v := b.orthonormal.comp_linearIsometry N.subtypeₗᵢ`.
+
+Establish `h` using `GlobalTheory.sum_norm_sq_le_hsNormSq (Kmat D.s u u - ContinuousLinearMap.id ℂ (D.s.Cu u)) v hv`. Establish `hterm : ∀ i, ‖(Kmat D.s u u - ContinuousLinearMap.id ℂ (D.s.Cu u)) (v i)‖ ^ 2 = 1`. Introduce `i`. Establish `hP : D.s.Pu u (v i) = 0` using `LinearMap.mem_ker.1 (b i).2`. Establish `hn : ‖v i‖ = 1` using `hv.1 i`.
+
+Simplify using `[Kmat, hP, hn]`. Rewrite `h` using `[Finset.sum_congr rfl (fun i _ => hterm i)]`. Simplify using `using h`.
+-/
 theorem corankP_le_hsDev (D : D7) (u : D.what₂.Word) : (corankP D u : ℝ) ≤ GlobalTheory.Core.Rk.hsDev D u := by
   unfold corankP GlobalTheory.Core.Rk.hsDev
   set N := LinearMap.ker (D.s.Pu u : D.s.Cu u →ₗ[ℂ] D.s.HH)
@@ -64,6 +71,11 @@ theorem corankP_le_hsDev (D : D7) (u : D.what₂.Word) : (corankP D u : ℝ) ≤
   rw [Finset.sum_congr rfl (fun i _ => hterm i)] at h
   simpa using h
 
+/- English proof (translation)
+Unfold `rankOn corankP`. Use `set P := (D.s.Pu u : D.s.Cu u →ₗ[ℂ] D.s.HH)`. Establish `h` using `LinearMap.finrank_range_add_finrank_ker (P.domRestrict M)`. Rewrite `h` using `[LinearMap.range_domRestrict]`. Establish `h2 : Module.finrank ℂ (LinearMap.ker (P.domRestrict M)) ≤ Module.finrank ℂ (LinearMap.ker P)`.
+
+Rewrite using `[← Submodule.finrank_map_subtype_eq M]`. Use `Submodule.finrank_mono ?_` and prove the remaining obligations. Introduce and unpack `x ⟨y, hy, rfl⟩`. Conclude with `hy`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem finrank_le_rankOn_add (D : D7) (u : D.what₂.Word) (M : Submodule ℂ (D.s.Cu u)) :
     Module.finrank ℂ M ≤ rankOn D u M + corankP D u := by
   unfold rankOn corankP
@@ -77,6 +89,11 @@ theorem finrank_le_rankOn_add (D : D7) (u : D.what₂.Word) (M : Submodule ℂ (
     exact hy
   omega
 
+/- English proof (translation)
+Unfold `ShareAt GlobalTheory.Core.Rk.DiagS`. Rewrite using `[GlobalTheory.Core.Rk.d0_eq]`. Use `⟨fun h => h.1, fun h => ⟨h, (corankP_le_hsDev D u).trans h, fun M => ?_⟩⟩` and prove the remaining obligations. Establish `h1 : (Module.finrank ℂ M : ℝ) ≤ (rankOn D u M : ℝ) + (corankP D u : ℝ)`. Conclude with `finrank_le_rankOn_add D u M` after adjusting the coercions.
+
+Establish `h2` using `(corankP_le_hsDev D u).trans h`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem shareAt_iff {D : D7} {u : D.what₂.Word} {e : ℝ} : ShareAt D u e ↔ GlobalTheory.Core.Rk.DiagS D u e := by
   unfold ShareAt GlobalTheory.Core.Rk.DiagS
   rw [GlobalTheory.Core.Rk.d0_eq]
@@ -86,6 +103,15 @@ theorem shareAt_iff {D : D7} {u : D.what₂.Word} {e : ℝ} : ShareAt D u e ↔ 
   have h2 := (corankP_le_hsDev D u).trans h
   linarith
 
+/- English proof (translation)
+Use `⟨h, fun hf => shareAt_iff.2 ?_⟩` and prove the remaining obligations. Establish `hG : 1 ≤ gamL D L C` using `Real.one_le_exp (by positivity)`. Establish `e1 : 8 / gamL D L C = 8 * Real.exp (-(C * (D.R.m : ℝ) ^ 5 * D.R.f * L))`. Unfold `gamL`. Rewrite using `[Real.exp_neg, div_eq_mul_inv]`.
+
+Unfold `GlobalTheory.Core.Rk.Small at hf`. Rewrite `hf` using `[GlobalTheory.Core.Rk.d0_eq]`. Establish `e2 : Real.exp (-(2 * C * GlobalTheory.Core.Rk.mfL D L)) * gamL D L C ^ 2 = 1`. Unfold `gamL GlobalTheory.Core.Rk.mfL`. Rewrite using `[← Real.exp_nat_mul, ← Real.exp_add, Real.exp_eq_one_iff]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `GlobalTheory.Core.Rk.diagS_of_sDiagAt D u _ c hG hc h (by` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation. Rewrite `this` using `[e1]`.
+
+Conclude with `this`.
+-/
 theorem fullAt_of {D : D7} {u : D.what₂.Word} {L C c : ℝ} (hL : 0 ≤ L) (hC : 0 ≤ C) (hc : c ≤ 1)
     (h : SDiagAt D u (gamL D L C) c) : FullAt D u L C c := by
   refine ⟨h, fun hf => shareAt_iff.2 ?_⟩
@@ -104,6 +130,11 @@ theorem fullAt_of {D : D7} {u : D.what₂.Word} {L C c : ℝ} (hL : 0 ≤ L) (hC
   rw [e1] at this
   exact this
 
+/- English proof (translation)
+Introduce `h0`. Establish `h1` using `h.2.2 ⊤`. Establish `h2 : rankOn D u ⊤ = 0` using `by unfold rankOn; rw [h0]; simp`. Establish `h3 : Module.finrank ℂ (⊤ : Submodule ℂ (D.s.Cu u)) = D.duS u`. Rewrite using `[finrank_top, ← GlobalTheory.Core.Rk.d0_eq]`.
+
+Both sides reduce to the same expression. Rewrite `h1` using `[h2, h3]`. Establish `: (0 : ℝ) < D.duS u` using `by exact_mod_cast hd`. Move the coercions through the operations in `at h1`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem ShareAt.pu_ne_zero {D : D7} {u : D.what₂.Word} {e : ℝ} (h : ShareAt D u e) (he : e < 1) (hd : 0 < D.duS u) :
     D.s.Pu u ≠ 0 := by
   intro h0
@@ -116,6 +147,17 @@ theorem ShareAt.pu_ne_zero {D : D7} {u : D.what₂.Word} {e : ℝ} (h : ShareAt 
   push_cast at h1
   nlinarith
 
+/- English proof (translation)
+Take `⟨hL, hk, hmf, -⟩` from `h`. Establish `hm2 : 2 ≤ D.R.m` using `D.R.two_le_m`. Establish `hm : (2 : ℝ) ≤ D.R.m` using `by exact_mod_cast hm2`. Establish `hf : (1 : ℝ) ≤ D.R.f` using `by exact_mod_cast le_trans (Nat.one_le_pow _ _ (by omega)) hmf`. Establish `h5 : (32 : ℝ) ≤ (D.R.m : ℝ) ^ 5` using `le_trans (by norm_num) (pow_le_pow_left₀ (by norm_num) hm 5)`.
+
+Establish `hy : (32 : ℝ) ≤ (D.R.m : ℝ) ^ 5 * D.R.f * L`. Establish `: (32 : ℝ) * 1 * 1 ≤ (D.R.m : ℝ) ^ 5 * D.R.f * L` using `by gcongr`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hk' : (256 : ℝ) ≤ D.R.k` using `by nlinarith`. Establish `hlog : 1 ≤ Real.log (D.R.k : ℝ)`.
+
+Rewrite using `[Real.le_log_iff_exp_le (by linarith)]; linarith [Real.exp_one_lt_d9]`. Establish `a1 : 32 ≤ C * (D.R.m : ℝ) ^ 5 * D.R.f * L` using `by nlinarith`. Establish `a2 : 32 ≤ c * D.R.k * D.R.f * Real.log D.R.k`. Establish `: (1 / 2 : ℝ) * 256 * 1 * 1 ≤ c * D.R.k * D.R.f * Real.log D.R.k` using `by gcongr`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `b : Real.exp (-32) ≤ 1 / 33`. Rewrite using `[Real.exp_neg, ← one_div]`. Conclude with `one_div_le_one_div_of_le (by norm_num) (by linarith [Real.add_one_le_exp (32 : ℝ)])`. Establish `b1` using `Real.exp_le_exp.2 (neg_le_neg a1)`. Establish `b2` using `Real.exp_le_exp.2 (neg_le_neg a2)`.
+
+Unfold `shareL`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem shareL_lt_one {D : D7} {L C' Cl Cg cb Cu cT CT C c : ℝ} (h : GlobalTheory.Core.Deg.HypL D L C' Cl Cg cb Cu cT CT)
     (h8 : 8 ≤ C') (hC : 1 ≤ C) (hc : 1 / 2 ≤ c) : shareL D L C c < 1 := by
   obtain ⟨hL, hk, hmf, -⟩ := h
@@ -141,10 +183,18 @@ theorem shareL_lt_one {D : D7} {L C' Cl Cg cb Cu cT CT C c : ℝ} (h : GlobalThe
   unfold shareL
   linarith
 
+/- English proof (translation)
+Introduce `H` and use `(H.2 hf).pu_ne_zero (shareL_lt_one h.1 h8 hC le_rfl) (h.2.1.2.2.2.2.2.2.2.2.2.1 u) h0`.
+-/
 example {D : D7} {u : D.what₂.Word} {L C' Cl Cg cb Cu cT CT C : ℝ} (h : HD D L C' Cl Cg cb Cu cT CT) (h8 : 8 ≤ C')
     (hC : 1 ≤ C) (hf : GlobalTheory.Core.Rk.Small D u L C) (h0 : D.s.Pu u = 0) : ¬ FullAt D u L C (1 / 2) := fun H =>
   (H.2 hf).pu_ne_zero (shareL_lt_one h.1 h8 hC le_rfl) (h.2.1.2.2.2.2.2.2.2.2.2.1 u) h0
 
+/- English proof (translation)
+Use `fullAt_of hL hC (by norm_num) ?_` and prove the remaining obligations. Establish `hD : 0 < D.what₂.Dstar` using `by rw [← D.Dstar_eq u]; exact (D.mem u).A.Dstar_pos`. Establish `hG : 0 < gamL D L C` using `Real.exp_pos _`. Unfold `SDiagAt GlobalTheory.Core.Rk.hsDev`. Rewrite using `[hK, sub_self, GlobalTheory.hsNormSq_eq_sum_stdBasis]`.
+
+Simplify using `only [zero_apply, norm_zero, ne_eq, OfNat.ofNat_ne_zero, not_false_eq_true, zero_pow, Finset.sum_const_zero]`. Check the signs of the components of the expression.
+-/
 example {D : D7} {u : D.what₂.Word} {L C : ℝ} (hL : 0 ≤ L) (hC : 0 ≤ C)
     (hK : Kmat D.s u u = ContinuousLinearMap.id ℂ (D.s.Cu u)) : FullAt D u L C (1 / 2) := by
   refine fullAt_of hL hC (by norm_num) ?_
@@ -156,8 +206,14 @@ example {D : D7} {u : D.what₂.Word} {L C : ℝ} (hL : 0 ≤ L) (hC : 0 ≤ C)
     Finset.sum_const_zero]
   positivity
 
+/- English proof (translation)
+Simplify using `[shareL]`. Evaluate the numerical expressions.
+-/
 example (D : D7) (L : ℝ) : shareL D L 0 0 = 14 := by simp [shareL]; norm_num
 
+/- English proof (translation)
+Simplify using `[rankOn]`.
+-/
 example (D : D7) (u : D.what₂.Word) : rankOn D u ⊥ = 0 := by simp [rankOn]
 
 end GlobalTheory.Core.Diag

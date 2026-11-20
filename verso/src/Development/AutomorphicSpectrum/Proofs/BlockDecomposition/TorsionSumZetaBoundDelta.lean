@@ -22,6 +22,21 @@ namespace GlobalTheory.CompanionTheory.SiegelND.Integ.Hua.HS.SumU
 
 variable {E : Type} [Field E] [NumberField E] {m : ℕ}
 
+/- English proof (translation)
+Take `⟨hne, hidx⟩` from `GlobalTheory.T.delta_eq_lattice_index E m c`. Use `set H := (intVec E m).toAddSubgroup with hH`. Use `set Kg := (lam c).toAddSubgroup with hK`. Establish `hidx' : delta c = (H.addSubgroupOf Kg).index` using `hidx`. Establish `hcard : Nat.card (Kg ⧸ H.addSubgroupOf Kg) = delta c`.
+
+Rewrite using `[hidx']`. Both sides reduce to the same expression. Use `haveI : Finite (Kg ⧸ H.addSubgroupOf Kg) := Nat.finite_of_card_ne_zero (by rw [hcard]; exact hne)`. Establish `hw : (Submodule.Quotient.mk (Quotient.out b) : (Fin m → E) ⧸ lam c) = b` using `Quotient.out_eq' b`. Establish `hmem : ∀ a : {U : (Fin m → E) ⧸ intVec E m // (Submodule.Quotient.mk (Quotient.out U) : (Fin m → E) ⧸ lam c) = b}, Quotient.out a.1 - Quotient.out b ∈ Kg`.
+
+Introduce `a`. Establish `: (Submodule.Quotient.mk (Quotient.out a.1) : (Fin m → E) ⧸ lam c) = Submodule.Quotient.mk (Quotient.out b)` using `a.2.trans hw.symm`. Conclude with `(Submodule.Quotient.eq _).1 this`. Set `φ : {U : (Fin m → E) ⧸ intVec E m // (Submodule.Quotient.mk (Quotient.out U) : (Fin m → E) ⧸ lam c) = b} → Kg ⧸ H.addSubgroupOf Kg` to `fun a => QuotientAddGroup.mk ⟨_, hmem a⟩`. Establish `hφ : Function.Injective φ`.
+
+Introduce `a a' h`. Establish `h1` using `QuotientAddGroup.eq.1 h`. Establish `h2 : -(Quotient.out a.1 - Quotient.out b) + (Quotient.out a'.1 - Quotient.out b) ∈ H` using `AddSubgroup.mem_addSubgroupOf.1 h1`. Establish `h3 : Quotient.out a.1 - Quotient.out a'.1 ∈ intVec E m`. Establish `h4` using `neg_mem h2`.
+
+Establish `h5 : -(-(Quotient.out a.1 - Quotient.out b) + (Quotient.out a'.1 - Quotient.out b)) = Quotient.out a.1 - Quotient.out a'.1` using `by abel`. Rewrite `h4` using `[h5]`. Conclude with `h4`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `h6 : (Submodule.Quotient.mk (Quotient.out a.1) : (Fin m → E) ⧸ intVec E m) = Submodule.Quotient.mk (Quotient.out a'.1)` using `(Submodule.Quotient.eq _).2 h3`.
+
+Establish `e1 : (Submodule.Quotient.mk (Quotient.out a.1) : (Fin m → E) ⧸ intVec E m) = a.1` using `Quotient.out_eq' _`. Establish `e2 : (Submodule.Quotient.mk (Quotient.out a'.1) : (Fin m → E) ⧸ intVec E m) = a'.1` using `Quotient.out_eq' _`. Rewrite using `[← e1, ← e2, h6]`. Use `⟨Finite.of_injective φ hφ, ?_⟩` and prove the remaining obligations. Rewrite using `[← hcard]`.
+
+Conclude with `Nat.card_le_card_of_injective φ hφ`.
+-/
 theorem fibre_bound (c : Matrix (Fin m) (Fin m) E) (b : (Fin m → E) ⧸ lam c) :
     Finite {U : (Fin m → E) ⧸ intVec E m //
         (Submodule.Quotient.mk (Quotient.out U) : (Fin m → E) ⧸ lam c) = b} ∧
@@ -70,6 +85,11 @@ theorem fibre_bound (c : Matrix (Fin m) (Fin m) E) (b : (Fin m → E) ⧸ lam c)
   rw [← hcard]
   exact Nat.card_le_card_of_injective φ hφ
 
+/- English proof (translation)
+Introduce `E _ _ m c r hr`. Take `⟨hs, hle⟩` from `GlobalTheory.T.torsion_norm_zeta_bound E m (lam c) (GlobalTheory.T.lam_is_lattice E m c) r hr`. Establish `hg : ∀ x : (Fin m → E) ⧸ lam c, 0 ≤ (Ideal.absNorm (Ideal.torsionOf (𝓞 E) ((Fin m → E) ⧸ lam c) x) : ℝ) ^ (-((m : ℝ) + r))` using `fun x => Real.rpow_nonneg (Nat.cast_nonneg _) _`. Take `⟨h1, h2⟩` from `GlobalTheory.T.tsum_comp_bounded_fibres_le ((Fin m → E) ⧸ intVec E m) ((Fin m → E) ⧸ lam c) (fun U => Submodule.Quotient.mk (Quotient.out U)) (delta c) (fibre_bound c) (fun x => (Ideal.absNorm (Ideal.torsionOf (𝓞 E) ((Fin m → E) ⧸ lam c) x) : ℝ) ^ (-((m : ℝ) + r))) hg hs`. Use `⟨h1, h2.trans ?_⟩` and prove the remaining obligations.
+
+Conclude with `mul_le_mul_of_nonneg_left hle (Nat.cast_nonneg _)`.
+-/
 theorem sum_tor : ∀ (E : Type) [Field E] [NumberField E] (m : ℕ) (c : Matrix (Fin m) (Fin m) E) (r : ℝ), 1 < r → Summable (fun U : (Fin m → E) ⧸ intVec E m => (Ideal.absNorm (tor c (Quotient.out U)) : ℝ) ^ (-((m : ℝ) + r))) ∧ ∑' U : (Fin m → E) ⧸ intVec E m, (Ideal.absNorm (tor c (Quotient.out U)) : ℝ) ^ (-((m : ℝ) + r)) ≤ delta c * zetaR E r := by
   intro E _ _ m c r hr
   obtain ⟨hs, hle⟩ := GlobalTheory.T.torsion_norm_zeta_bound E m (lam c) (GlobalTheory.T.lam_is_lattice E m c) r hr

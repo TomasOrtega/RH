@@ -6,6 +6,9 @@ open scoped ENNReal NNReal MatrixGroups
 
 namespace GlobalTheory.CompanionTheory.SW.FouSB
 
+/- English proof (translation)
+The claim follows from `CompanionTheory.PlacePermOperatorBicommutantSpan.Tgt.c_fou_sb`.
+-/
 theorem fou_sb : ∀ (V : Type) [AddCommGroup V] [TopologicalSpace V] [MeasurableSpace V] (χ : V → V → ℂ) (μ : Measure V), NADual V χ μ → ∀ φ : V → ℂ, SB φ → SB (fou χ μ φ) ∧ ∀ x, fou χ μ (fou χ μ φ) x = φ (-x) :=
   CompanionTheory.PlacePermOperatorBicommutantSpan.Tgt.c_fou_sb
 

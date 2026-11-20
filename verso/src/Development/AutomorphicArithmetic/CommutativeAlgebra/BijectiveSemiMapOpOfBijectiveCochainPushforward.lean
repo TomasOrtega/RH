@@ -11,6 +11,15 @@ private noncomputable def UpperTheory.bijective_semiMap_op_of_bijective_cochain_
   comm U s t a := ((idSemi (Int.castRingHom R) B).comm U s t _).trans
     (congrArg ((idSemi (Int.castRingHom R) B).app U t) (ρ.comm U s t a))
 
+/- English proof (translation)
+Introduce `R _ L B ρ E n hb`. Establish `idBij : ∀ (K : Cx R) (U : Scheme.{0}) (s : ℤ), Function.Bijective ((idSemi (Int.castRingHom R) K).app U s)` using `fun _ _ _ => ⟨fun _ _ h => h, fun b => ⟨b, rfl⟩⟩`. Establish `bL` using `(GlobalTheory.T.sheafComplexSemilinearMap_comp_bijective R ℤ (idSemi (Int.castRingHom R) L) (idSemi (Int.castRingHom R) L) (𝟙 _) (fun _ _ _ => rfl)).2 (idBij L) E n`. Establish `bB` using `(GlobalTheory.T.sheafComplexSemilinearMap_comp_bijective R ℤ (idSemi (Int.castRingHom R) B) (idSemi (Int.castRingHom R) B) (𝟙 _) (fun _ _ _ => rfl)).2 (idBij B) E n`. Establish `key : ∀ x, (idSemi (Int.castRingHom R) B).op.app E n (ρ.op.app E n x) = cpush ((chains ℤ).obj E) ρ.toZ n ((idSemi (Int.castRingHom R) L).op.app E n x)`.
+
+Introduce `x`. Take `⟨α, rfl⟩` from `x.mk_surjective`. Take `⟨β, hβ⟩` from `(GlobalTheory.T.exists_image_cocycle_semilinearSheafComplexMap R R ρ).1 E n α`. Take `⟨γ, hγ⟩` from `(GlobalTheory.T.exists_image_cocycle_semilinearSheafComplexMap R ℤ (idSemi (Int.castRingHom R) B)).1 E n β`. Establish `h1` using `(GlobalTheory.T.exists_image_cocycle_semilinearSheafComplexMap R R ρ).2 E n α β hβ`.
+
+Establish `h2` using `(GlobalTheory.T.exists_image_cocycle_semilinearSheafComplexMap R ℤ (idSemi (Int.castRingHom R) B)).2 E n β γ hγ`. Establish `h3` using `(GlobalTheory.T.exists_image_cocycle_semilinearSheafComplexMap R ℤ (UpperTheory.bijective_semiMap_op_of_bijective_cochain_pushforward.toRcx ρ)).2 E n α γ (fun p s h U y => (hγ p s h U y).trans (congrArg _ (hβ p s h U y)))`. Rewrite using `[h1, h2, ← h3]`. Conclude with `(GlobalTheory.T.sheafComplexSemilinearMap_comp_bijective R ℤ (idSemi (Int.castRingHom R) L) (UpperTheory.bijective_semiMap_op_of_bijective_cochain_pushforward.toRcx ρ) ρ.toZ (fun _ _ _ => rfl)).1 E n _`. Establish `comp : Function.Bijective ((idSemi (Int.castRingHom R) B).op.app E n ∘ ρ.op.app E n)`.
+
+Establish `: ((idSemi (Int.castRingHom R) B).op.app E n ∘ ρ.op.app E n) = (cpush ((chains ℤ).obj E) ρ.toZ n ∘ (idSemi (Int.castRingHom R) L).op.app E n)` using `funext key`. Rewrite using `[this]`. Conclude with `hb.comp bL`. Conclude with `(Function.Bijective.of_comp_iff' bB _).1 comp`.
+-/
 theorem UpperTheory.bijective_semiMap_op_of_bijective_cochain_pushforward :
     ∀ (R : Type) [CommRing R] (L B : Cx R) (ρ : SemiMap L B) (E : Spc) (n : ℤ), Function.Bijective (cpush ((chains ℤ).obj E) ρ.toZ n) → Function.Bijective (ρ.op.app E n) := by
   intro R _ L B ρ E n hb

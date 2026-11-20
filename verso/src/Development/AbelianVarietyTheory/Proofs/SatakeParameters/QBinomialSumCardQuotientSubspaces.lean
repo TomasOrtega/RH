@@ -3,6 +3,9 @@ import Development.AbelianVarietyTheory.Proofs.TwistedOperators.GaussBinomMulPro
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `k V _ _ _ _ _ X`. Simplify using `only [GlobalTheory.GaussCount.card_codim]`. Conclude with `GlobalTheory.GaussCount.gauss_formula (Nat.card k) ℂ X (Module.finrank k V)`.
+-/
 theorem qBinomial_subspaces : ∀ (k V : Type) [Field k] [Finite k] [AddCommGroup V] [Module k V]
     [FiniteDimensional k V] (X : ℂ),
     ∑ j ∈ Finset.range (Module.finrank k V + 1),

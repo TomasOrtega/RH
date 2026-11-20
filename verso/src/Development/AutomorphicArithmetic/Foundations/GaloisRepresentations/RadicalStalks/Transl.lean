@@ -6,6 +6,27 @@ open CategoryTheory AlgebraicGeometry Limits MonoidalCategory CartesianMonoidalC
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Cris GlobalTheory.DeRham GlobalTheory.ConjSeq GlobalTheory.UPel.HT GlobalTheory.UPel.HT.ES UpperTheory.Gal.Ord
 open scoped TensorProduct
 
+/- English proof (translation)
+Introduce `k _ A _ σ ψ m hT v`. Set `z : Sp k ⟶ Sp (DualNumber k)` to `spMap (TrivSqZeroExt.fstHom k k k).toRingHom`. Set `r : Sp (DualNumber k) ⟶ Sp k` to `spMap (algebraMap k (DualNumber k))`. Establish `hq : spMap ((algebraMap k (DualNumber k)).comp (TrivSqZeroExt.fstHom k k k).toRingHom) = r ≫ z`. Simplify using `only [r, z, spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`.
+
+Establish `hzr : z ≫ r = 𝟙 _`. Establish `e : (TrivSqZeroExt.fstHom k k k).toRingHom.comp (algebraMap k (DualNumber k)) = RingHom.id k`. Use extensionality with `x`. Simplify using the standard rewrite rules. Simplify using `only [r, z, spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp, e]`.
+
+Simplify using the standard rewrite rules. Establish `hqq : (r ≫ z) ≫ r ≫ z = r ≫ z`. Rewrite using `[Category.assoc, reassoc_of% hzr]`. Set `c : epsR k ⟶ epsR k` to `Over.homMk (r ≫ z) (by show (r ≫ z) ≫ r = r`. Rewrite using `[Category.assoc, hzr, Category.comp_id])`.
+
+Set `zz : 𝟙_ (Over (Sp k)) ⟶ epsR k` to `Over.homMk z hzr`. Establish `hzc : zz ≫ c = zz` using `Over.OverMorphism.ext (by show z ≫ r ≫ z = z`. Rewrite using `[reassoc_of% hzr])`. Set `v0 : epsR k ⟶ A` to `c ≫ v`. Set `t : epsR k ⟶ A` to `v0⁻¹ * v`.
+
+Establish `hvt : v = v0 * t` using `by simp [t]`. Establish `hzt : zz ≫ t = 1`. Establish `a : zz ≫ v0 = zz ≫ v` using `by simp only [v0, ← Category.assoc, hzc]`. Combine the equalities or inequalities in the displayed calculation. Establish `htan : IsTangent t`.
+
+Establish `e1 : (1 : 𝟙_ (Over (Sp k)) ⟶ A) = η[A]` using `by show toUnit _ ≫ η[A] = _`. Rewrite using `[toUnit_unique (toUnit _) (𝟙 _), Category.id_comp]`. Use `show z ≫ t.left = η[A].left`. Rewrite using `[← e1, ← hzt]`. Both sides reduce to the same expression.
+
+Set `Y : Over (Sp k)` to `Over.mk ((epsR k).hom ≫ spMap σ)`. Set `Q : Y ⟶ Y` to `Over.homMk (r ≫ z) (by show (r ≫ z) ≫ r ≫ spMap σ = r ≫ spMap σ`. Rewrite using `[Category.assoc, reassoc_of% hzr])`. Establish `h0 : Q ≫ GlobalTheory.FrobAdjoint.down m v0 = GlobalTheory.FrobAdjoint.down m v0` using `Over.OverMorphism.ext (by show (r ≫ z) ≫ ((r ≫ z) ≫ v.left) ≫ ψ = ((r ≫ z) ≫ v.left) ≫ ψ`. Simplify using `only [← Category.assoc]`.
+
+Rewrite using `[show ((r ≫ z) ≫ r) ≫ z = r ≫ z by simpa using hqq])`. Establish `h1 : Q ≫ GlobalTheory.FrobAdjoint.down m t = GlobalTheory.FrobAdjoint.down m t` using `Over.OverMorphism.ext (by`. Use `hT t htan` as an intermediate fact. Unfold `IsConst at this`. Rewrite `this` using `[hq]`.
+
+Conclude with `this)`. Establish `key : Q ≫ GlobalTheory.FrobAdjoint.down m v = GlobalTheory.FrobAdjoint.down m v`. Rewrite using `[hvt, GlobalTheory.FrobAdjoint.down_mul, MonObj.comp_mul, h0, h1]`. Unfold `IsConst`. Rewrite using `[hq]`.
+
+Conclude with `congrArg (fun u => u.left) key`.
+-/
 theorem UpperTheory.Gal.Ord.transl :
     ∀ (k : Type) [Field k] (A : Over (Sp k)) [GrpObj A] (σ : k →+* k) (ψ : A.left ⟶ A.left), SMor A σ ψ →
       (∀ v : epsR k ⟶ A, IsTangent v → IsConst (v.left ≫ ψ)) → ∀ v : epsR k ⟶ A, IsConst (v.left ≫ ψ) := by

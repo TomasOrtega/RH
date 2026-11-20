@@ -16,6 +16,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.DualOpen
 
+/- English proof (translation)
+Introduce `S A _ hA g hg U M hU hM hI K _ _ s T t N hN`. Take `⟨B, b, P, hP, hgood⟩` from `GlobalTheory.T.hasProperSmoothDualRepresentative_fieldPoint S A hA g hg K s`. Take `⟨φ, hφb, hφS, hφm⟩` from `GlobalTheory.T.exists_mono_classifying_of_injective_family S A B (Over.mk s) U b P M hP hM hI`. Establish `hpb : IsPullback (fst U (Over.mk s)).left (snd U (Over.mk s)).left U.hom (Over.mk s).hom` using `.of_hasPullback _ _`. Establish `hsnd : SmoothOfRelativeDimension g (snd U (Over.mk s)).left` using `(smoothOfRelativeDimension_isStableUnderBaseChange g).of_isPullback hpb hU`.
+
+Establish `hcomp : SmoothOfRelativeDimension g (φ.left ≫ b.left)`. Rewrite using `[← Over.comp_left, hφb]`. Conclude with `hsnd`. Establish `hopen : IsOpenImmersion φ.left` using `GlobalTheory.T.isOpenImmersion_of_mono_of_smoothOfRelativeDimension' _ _ _ φ.left b.left g hgood.smooth hcomp hφm`. Conclude with `GlobalTheory.T.openImmersion_classifying_family_chart S A B (Over.mk s) U b P M hP hM φ hφb hφS hopen T t N hN`.
+-/
 theorem fieldChart_of_inj : ∀ (S : Scheme.{0}) (A : Over S) [GrpObj A], IsAbelianScheme A → ∀ g : ℕ,
     SmoothOfRelativeDimension g A.hom → ∀ (U : Over S) (M : LB (A ⊗ U).left), SmoothOfRelativeDimension g U.hom →
     Fam A M → Inj A M → FieldChart A M := by

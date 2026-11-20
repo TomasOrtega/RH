@@ -6,6 +6,21 @@ open scoped TensorProduct
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `hdet`. Establish `h' : ∀ i, ∃ c : Fin g → T, ∑ j, c j * a.mulVec x j = x i ^ (N + 1)` using `fun i => Ideal.mem_span_range_iff_exists_fun.mp (h i)`. Use `choose b hb using h'`. Set `B : Matrix (Fin g) (Fin g) T` to `Matrix.of b`. Establish `hB : B.mulVec (a.mulVec x) = fun i => x i ^ (N + 1)`.
+
+Use function extensionality and compare the values at `i`. Conclude with `hb i`. Use `set J : Ideal T := Ideal.span (Set.range fun i => x i ^ (N + 1)) with hJ`. Establish `hf : ∀ i, B.det * a.mulVec x i ∈ J`. Introduce `i`.
+
+Establish `e : B.adjugate.mulVec (B.mulVec (a.mulVec x)) = B.det • a.mulVec x`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.adjugate_mul, Matrix.smul_mulVec, Matrix.one_mulVec]`. Establish `e'` using `congrFun e i`. Rewrite `e'` using `[hB, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[← e']`.
+
+Conclude with `Ideal.mem_span_range_iff_exists_fun.mpr ⟨fun j => B.adjugate i j, rfl⟩`. Establish `hBa : (B * a).det ∈ J`. Take `⟨c, hc⟩` from `Ideal.mem_span_range_iff_exists_fun.mp hdet`. Rewrite using `[Matrix.det_mul, ← hc, Finset.mul_sum]`. Use `Ideal.sum_mem _ fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[mul_left_comm]`. Conclude with `Ideal.mul_mem_left _ _ (hf j)`. Establish `hBx : (B * a).mulVec x = fun i => x i ^ (N + 1)`. Rewrite using `[← Matrix.mulVec_mulVec, hB]`. Establish `hD : (Matrix.diagonal fun i => x i ^ N).mulVec x = fun i => x i ^ (N + 1)`.
+
+Use function extensionality and compare the values at `i`. Rewrite using `[Matrix.mulVec_diagonal, pow_succ]`. Establish `key` using `GlobalTheory.det_sub_det_mem_span_of_mulVec_eq T g x hsyz (B * a) (Matrix.diagonal fun i => x i ^ N) (hBx.trans hD.symm)`. Rewrite `key` using `[hBx, Matrix.det_diagonal]`. Use `J.sub_mem hBa key` as an intermediate fact.
+
+Rewrite `this` using `[sub_sub_cancel]`. Conclude with `hsoc this`.
+-/
 theorem det_notMem_span_mulVec_of_socle {T : Type} [CommRing T] {g N : ℕ} (x : Fin g → T)
     (hsyz : ∀ r : Fin g → T, ∑ i, r i * x i = 0 → ∃ s : Matrix (Fin g) (Fin g) T,
       s.transpose = -s ∧ (∀ i, s i i = 0) ∧ r = s.mulVec x)
@@ -48,6 +63,9 @@ theorem det_notMem_span_mulVec_of_socle {T : Type} [CommRing T] {g N : ℕ} (x :
   rw [sub_sub_cancel] at this
   exact hsoc this
 
+/- English proof (translation)
+Introduce `k _ g N a h`. Take `⟨hsyz, hsoc⟩` from `GlobalTheory.mvPowerSeries_variables_syzygy_socle k g MvPowerSeries.X (fun _ => rfl)`. Use `det_notMem_span_mulVec_of_socle MvPowerSeries.X hsyz (hsoc N) a fun i => ?_` and prove the remaining obligations. Rewrite using `[pow_succ]`. Conclude with `Ideal.mul_mem_right _ _ (h i)`.
+-/
 theorem det_notMem_span_mulVec_X : ∀ (k : Type) [Field k] (g N : ℕ) (a : Matrix (Fin g) (Fin g) (MvPowerSeries (Fin g) k)), (∀ i, (MvPowerSeries.X i : MvPowerSeries (Fin g) k) ^ N ∈ Ideal.span (Set.range (a.mulVec MvPowerSeries.X))) → a.det ∉ Ideal.span (Set.range (a.mulVec MvPowerSeries.X)) := by
   intro k _ g N a h
   obtain ⟨hsyz, hsoc⟩ := GlobalTheory.mvPowerSeries_variables_syzygy_socle k g MvPowerSeries.X (fun _ => rfl)

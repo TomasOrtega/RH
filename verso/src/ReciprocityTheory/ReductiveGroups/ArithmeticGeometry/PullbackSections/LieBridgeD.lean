@@ -14,6 +14,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
   {Xo : Moduli Dw l} (c : Coeff l) {S : Type} [CommRing S] [Algebra c.F S] {x : Sp S ⟶ Xo.X}
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => first | rfl | simp [tv]`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.prod_insert ha, tv_add, ih]`.
+-/
 theorem tv_sum {κ : Type} (s : Finset κ) (f : κ → TanM x Xo.univ.t.G) : tv (∑ i ∈ s, f i) = ∏ i ∈ s, tv (f i) := by
   classical
   induction s using Finset.induction_on with
@@ -25,9 +28,19 @@ variable {c}
 def tvOf {v : Sp (DualNumber S) ⟶ Xo.univ.t.G.left} (hv : IsTanAt x v) : TanM x Xo.univ.t.G :=
   mkT (ovT (t := Xo.univ.t) hv) (smT_zero_ovT hv)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem tv_tvOf {v : Sp (DualNumber S) ⟶ Xo.univ.t.G.left} (hv : IsTanAt x v) : tv (tvOf hv) = ovT (t := Xo.univ.t) hv := rfl
 
 variable (c) in
+/- English proof (translation)
+Use `(isEigAt_iff (c := c) τ (ovT (t := Xo.univ.t) hv)).trans ?_` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce `h a`. Apply `tanM_ext` to reduce the goal to its premises. Use `show tv (tvOf hv) ≫ Xo.univ.t.act.act a = _`.
+
+Rewrite using `[tv_smul, tv_tvOf]`. Conclude with `h a`. Introduce `h a`. Establish `h2` using `congrArg tv (h a)`. Express the relevant statement in the definitionally equal form `tv (tvOf hv) ≫ Xo.univ.t.act.act a = _ at h2`.
+
+Rewrite `h2` using `[tv_smul, tv_tvOf]`. Conclude with `h2`.
+-/
 theorem eigAt_iff {v : Sp (DualNumber S) ⟶ Xo.univ.t.G.left} (hv : IsTanAt x v) (τ : E →+* ℂ) :
     IsEigAt c τ v ↔ IsEigV (actR (x0 := x) (S := S) Xo.univ.t.act) (embK c τ) (tvOf hv) := by
   refine (isEigAt_iff (c := c) τ (ovT (t := Xo.univ.t) hv)).trans ?_
@@ -43,6 +56,13 @@ theorem eigAt_iff {v : Sp (DualNumber S) ⟶ Xo.univ.t.G.left} (hv : IsTanAt x v
     rw [tv_smul, tv_tvOf] at h2
     exact h2
 
+/- English proof (translation)
+Establish `e1 : tv (∑ i, cf i • tvOf (hu i)) = combT x (fun j => ovT (t` using `Xo.univ.t) (hu j)) cf := by`. Rewrite using `[tv_sum]`. Simplify using `only [tv_smul, tv_tvOf]`. Both sides reduce to the same expression. Establish `key` using `isCombAtG_iff Xo.univ.t x (fun j => ovT (t := Xo.univ.t) (hu j)) cf w`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Apply `tanM_ext` to reduce the goal to its premises. Rewrite using `[e1, tv_tvOf]`. Conclude with `Over.OverMorphism.ext (key.1 h).symm`.
+
+Introduce `h`. Establish `h2` using `congrArg tv h`. Rewrite `h2` using `[e1, tv_tvOf]`. Conclude with `key.2 (by rw [← h2]; rfl)`.
+-/
 theorem combAt_iff {m : ℕ} (u : Fin m → (Sp (DualNumber S) ⟶ Xo.univ.t.G.left)) (hu : ∀ i, IsTanAt x (u i))
     (cf : Fin m → S) {w : Sp (DualNumber S) ⟶ Xo.univ.t.G.left} (hw : IsTanAt x w) :
     IsCombAt x u cf w ↔ tvOf hw = ∑ i, cf i • tvOf (hu i) := by

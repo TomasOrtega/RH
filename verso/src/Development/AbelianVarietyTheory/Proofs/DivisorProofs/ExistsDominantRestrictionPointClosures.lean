@@ -7,6 +7,19 @@ open GlobalTheory GlobalTheory.CechPic GlobalTheory.CxPts GlobalTheory.Cartier G
 
 namespace GlobalTheory.MixHt
 
+/- English proof (translation)
+Introduce `X Y π y`. Use `set i := cloι (π y)`. Use `set j := cloι y`. Establish `hi : i (genericPoint (clo (π y))) = π y` using `cloι_genericPoint _`. Establish `hj : j (genericPoint (clo y)) = y` using `cloι_genericPoint _`.
+
+Establish `hr : Set.range i = closure {π y}`. Establish `h₁` using `(genericPoint_spec (clo (π y))).image i.continuous`. Rewrite `h₁` using `[Set.image_univ, i.isClosedEmbedding.isClosed_range.closure_eq, hi]`. Conclude with `h₁.def.symm`. Establish `: Surjective (Limits.pullback.snd i (j ≫ π))` using `⟨by`.
+
+Rewrite using `[← Set.range_eq_univ, Scheme.Pullback.range_snd, hr]`. Use `Set.eq_univ_of_forall fun w => ?_` and prove the remaining obligations. Use `((genericPoint_specializes w).map (j ≫ π).continuous)` as an intermediate fact. Rewrite using `[Set.mem_preimage]`. Establish `e : (j ≫ π) (genericPoint (clo y)) = π y`.
+
+Rewrite using `[Scheme.Hom.comp_apply, hj]`. Rewrite `this` using `[e]`. Conclude with `this.mem_closure⟩`. Use `isIso_of_isClosedImmersion_of_surjective (Limits.pullback.snd i (j ≫ π))` as an intermediate fact. Use `⟨inv (Limits.pullback.snd i (j ≫ π)) ≫ Limits.pullback.fst i (j ≫ π), ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Category.assoc, Limits.pullback.condition, IsIso.inv_hom_id_assoc]`. Apply `i.isClosedEmbedding.injective` to reduce the goal to its premises. Rewrite using `[← Scheme.Hom.comp_apply, Category.assoc, Limits.pullback.condition, IsIso.inv_hom_id_assoc, Scheme.Hom.comp_apply, hj, hi]`. Introduce `w`. Establish `e₁` using `GlobalTheory.CurveDegreesCompare.residueDegree_comp (inv (Limits.pullback.snd i (j ≫ π)) ≫ Limits.pullback.fst i (j ≫ π)) i w`.
+
+Establish `e₂` using `GlobalTheory.CurveDegreesCompare.residueDegree_comp j π w`. Rewrite `e₁` using `[Category.assoc, Limits.pullback.condition, IsIso.inv_hom_id_assoc, GlobalTheory.Published.residueDegree_of_isClosedImmersion i, one_mul]`. Rewrite `e₂` using `[GlobalTheory.Published.residueDegree_of_isClosedImmersion j, mul_one]`. Rewrite using `[← e₁, e₂]`.
+-/
 theorem clo_restrict_dominant : ∀ (X Y : Scheme.{0}) (π : Y ⟶ X) (y : Y), ∃ g : clo y ⟶ clo (π y), g ≫ cloι (π y) = cloι y ≫ π ∧ g (genericPoint _) = genericPoint _ ∧ ∀ w : clo y, g.residueDegree w = π.residueDegree (cloι y w) := by
   intro X Y π y
   set i := cloι (π y)

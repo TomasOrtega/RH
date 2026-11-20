@@ -14,6 +14,9 @@ variable {F G B : Type} [Field F] [Group G] [AddCommGroup B] [Module F B] (σ : 
 def Dinv (ρ : Representation L G V) : Submodule L (V ⊗[F] B) :=
   ⨅ g, LinearMap.ker (AlgebraTensorModule.map (ρ g) (σ g) - LinearMap.id)
 
+/- English proof (translation)
+Simplify using `[Dinv, Submodule.mem_iInf, sub_eq_zero]`.
+-/
 theorem mem_Dinv {ρ : Representation L G V} {x : V ⊗[F] B} :
     x ∈ Dinv σ ρ ↔ ∀ g, AlgebraTensorModule.map (ρ g) (σ g) x = x := by
   simp [Dinv, Submodule.mem_iInf, sub_eq_zero]
@@ -47,6 +50,9 @@ def Subq {L G V W : Type} [Field L] [Group G] [AddCommGroup V] [Module L V] [Add
   ∃ (U : Type) (_ : AddCommGroup U) (_ : Module L U) (ρU : Representation L G U) (i : U →ₗ[L] V) (p : U →ₗ[L] W),
     Inter ρU ρ i ∧ Function.Injective i ∧ Inter ρU ρ' p ∧ Function.Surjective p
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨V, inferInstance, inferInstance, ρ, LinearMap.id, LinearMap.id, fun _ _ => rfl, Function.injective_id, fun _ _ => rfl, Function.surjective_id⟩`.
+-/
 theorem Subq.refl {L G V : Type} [Field L] [Group G] [AddCommGroup V] [Module L V] (ρ : Representation L G V) : Subq ρ ρ :=
   ⟨V, inferInstance, inferInstance, ρ, LinearMap.id, LinearMap.id, fun _ _ => rfl, Function.injective_id, fun _ _ => rfl,
     Function.surjective_id⟩

@@ -22,6 +22,13 @@ namespace GlobalTheory.Mem.R3.Rw.Bare
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Break down `Nat.eq_zero_or_pos p.Dall with h0 | hpos` into its components or cases. Establish `h` using `p.D_eq`. Rewrite `h` using `[h0, Nat.cast_zero, mul_zero]`. Establish `h' : (p.ch true).n = 0` using `by exact_mod_cast h`. Use linear arithmetic over natural numbers and integers.
+
+Rewrite `hpos`, the goal using `[t.dall]`. Establish `hF` using `Module.finite_of_finrank_pos hpos`. Establish `h1` using `LinearMap.finrank_range_of_inj (t.ch true).jE_inj`. Establish `h2` using `Module.finrank_eq_card_basis (p.ch true).bs.toBasis`. Rewrite `h2` using `[Fintype.card_fin]`.
+
+Rewrite using `[← h2, ← h1, (t.ch true).jE_range]`. Establish `hle` using `Mult.goodPart_le R.θ (R.MY 0) (levS _ (R.βY 0) (R.dat0 (R.toRealDat.levR F.lv2 true))) (levChi _ (R.βY 0) (R.dat0 (R.toRealDat.levR F.lv2 true))) R.e0`. Establish `hf` using `Submodule.finiteDimensional_of_le hle`. Use `le_trans ?_ (Submodule.finrank_mono hle)` and prove the remaining obligations. Conclude with `Submodule.finrank_map_le (PiTensorProduct.lift : Mult.MMap (R.MY 0) ≃ₗ[ℂ] _).toLinearMap (Mult.goodPart R.θ (R.MY 0) (levS _ (R.βY 0) (R.dat0 (R.toRealDat.levR F.lv2 true))) (levChi _ (R.βY 0) (R.dat0 (R.toRealDat.levR F.lv2 true))) R.e0)`.
+-/
 theorem rows_le {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type} {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m}
     {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat3 D A3 Ks} {F : Face3 D A3} {y : Hd R.toRealDat}
     {mA : Bool → D.what₂.Tup → Mat1 D.what₂.LL G} {p : PkD D G} (t : PkT F y mA p) : (p.ch true).n ≤ p.Dall := by
@@ -46,6 +53,9 @@ theorem rows_le {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type} {A3 
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Take `⟨_, -, h⟩` from `t.rr`. Conclude with `(h v).2`.
+-/
 theorem frames_unit {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type} {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m}
     {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat3 D A3 Ks} {F : Face3 D A3} {y : Hd R.toRealDat}
     {mA : Bool → D.what₂.Tup → Mat1 D.what₂.LL G} {p : PkD D G} (t : PkT F y mA p) (v) : IsUnit (p.Xo v).det := by

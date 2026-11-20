@@ -16,6 +16,13 @@ variable {K : Type} [Field K] [NumberField K] {R : Type} [CommRing R] [Algebra K
 
 def supIn : Submodule (𝓞 K) R := (latOf C Vs hV).map (C.subtype.restrictScalars (𝓞 K))
 
+/- English proof (translation)
+Establish `h1 : (supIn C Vs hV).FG ↔ (latOf C Vs hV).FG` using `⟨Submodule.fg_of_fg_map_injective (C.subtype.restrictScalars (𝓞 K)) C.injective_subtype, fun h => h.map _⟩`. Establish `h2 : Submodule.span K (supIn C Vs hV : Set R) = (Submodule.span K (latOf C Vs hV : Set C)).map C.subtype`. Rewrite using `[← Submodule.span_image]`. Both sides reduce to the same expression. Rewrite using `[h1, h2]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, b⟩`. Use `⟨a, Submodule.map_injective_of_injective C.injective_subtype ?_⟩` and prove the remaining obligations. Rewrite using `[b, Submodule.map_subtype_top]`. Introduce `h`.
+
+Conclude with `⟨h.fg, by rw [h.span_eq_top, Submodule.map_subtype_top]⟩`.
+-/
 theorem supIn_full_iff :
     ((supIn C Vs hV).FG ∧ Submodule.span K (supIn C Vs hV : Set R) = C) ↔
       Submodule.IsLattice K (latOf C Vs hV) := by
@@ -49,6 +56,9 @@ def IntegralCuspFormsFullLattice : Prop :=
   ∀ (D : D7) (hK : DV.KapDef D) (hn : Even D.R.nV) (T : Core D), LawsM T → ∀ j, InR D j →
     SupLatticeFullAt T j (kappaExp D hK hn j) D.R.nV
 
+/- English proof (translation)
+Take `⟨V, io, e, ho, y, hy⟩` from `h.ptNe j hj la`. Conclude with `⟨⟨_, PtV.mk la ho y hy () trivial, rfl⟩⟩`.
+-/
 example (T : Core D) (h : LawsM T) (j : ℕ) (hj : InR D j) (la : HeightOneSpectrum (𝓞 T.Q.c.F)) :
     Nonempty (T.PtM j la) := by
   obtain ⟨V, io, e, ho, y, hy⟩ := h.ptNe j hj la

@@ -12,6 +12,23 @@ open scoped ENNReal
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Establish `hα₁0 : ∀ x ∈ S.image c₁, 0 ≤ α₁ x`. Introduce `x hx`. Take `⟨p, hp, rfl⟩` from `Finset.mem_image.mp hx`. Conclude with `(h1 p hp).trans (hα₁ p hp)`. Establish `hα₂0 : ∀ y ∈ S.image c₂, 0 ≤ α₂ y`.
+
+Introduce `y hy`. Take `⟨p, hp, rfl⟩` from `Finset.mem_image.mp hy`. Conclude with `(h2 p hp).trans (hα₂ p hp)`. Establish `hmaps : ∀ p ∈ S, (fun p => (c₁ p, c₂ p)) p ∈ S.image c₁ ×ˢ S.image c₂` using `fun p hp => Finset.mem_product.mpr ⟨Finset.mem_image_of_mem _ hp, Finset.mem_image_of_mem _ hp⟩`. Combine the equalities or inequalities in the displayed calculation.
+
+Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `p hp`. Apply `mul_le_mul_of_nonneg_left _ (hw p hp)` to reduce the goal to its premises. Conclude with `mul_le_mul (hα₁ p hp) (hα₂ p hp) (h2 p hp) ((h1 p hp).trans (hα₁ p hp))`. Use `_ = ∑ q ∈ S.image c₁ ×ˢ S.image c₂, ∑ p ∈ S.filter (fun p => (c₁ p, c₂ p) = q), w p * (α₁ (c₁ p) * α₂ (c₂ p)) := (Finset.sum_fiberwise_of_maps_to hmaps _).symm`.
+
+Use `_ = ∑ x ∈ S.image c₁, ∑ y ∈ S.image c₂, ∑ p ∈ S.filter (fun p => c₁ p = x ∧ c₂ p = y), w p * (α₁ x * α₂ y) := by`. Rewrite using `[Finset.sum_product]`. Use `Finset.sum_congr rfl (fun x _ => Finset.sum_congr rfl (fun y _ => ?_))` and prove the remaining obligations. Establish `hfe : S.filter (fun p => (c₁ p, c₂ p) = (x, y)) = S.filter (fun p => c₁ p = x ∧ c₂ p = y)`. Use extensionality with `p`.
+
+Simplify using `only [Finset.mem_filter, Prod.mk.injEq]`. Rewrite using `[hfe]`. Use `Finset.sum_congr rfl (fun p hp => ?_)` and prove the remaining obligations. Take `⟨-, hx, hy⟩` from `Finset.mem_filter.mp hp`. Rewrite using `[hx, hy]`.
+
+Use `_ = ∑ x ∈ S.image c₁, ∑ y ∈ S.image c₂, (∑ p ∈ S.filter (fun p => c₁ p = x ∧ c₂ p = y), w p) * (α₁ x * α₂ y) := by`. Simplify using `only [Finset.sum_mul]`. Use `_ ≤ ∑ x ∈ S.image c₁, ∑ y ∈ S.image c₂, (M * N x y) * (α₁ x * α₂ y) := by`. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `x hx`.
+
+Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `y hy`. Conclude with `mul_le_mul_of_nonneg_right (hN x y) (mul_nonneg (hα₁0 x hx) (hα₂0 y hy))`. Use `_ = M * ∑ x ∈ S.image c₁, ∑ y ∈ S.image c₂, N x y * (α₁ x * α₂ y) := by`. Rewrite using `[Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl (fun x _ => ?_)` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl (fun y _ => ?_)` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem rows_skeleton {P κ : Type*} [DecidableEq κ] (S : Finset P) (w a₁ a₂ : P → ℝ) (c₁ c₂ : P → κ) (M : ℝ) (N : κ → κ → ℝ)
     (α₁ α₂ : κ → ℝ) (hw : ∀ p ∈ S, 0 ≤ w p) (h1 : ∀ p ∈ S, 0 ≤ a₁ p) (h2 : ∀ p ∈ S, 0 ≤ a₂ p)
     (hα₁ : ∀ p ∈ S, a₁ p ≤ α₁ (c₁ p)) (hα₂ : ∀ p ∈ S, a₂ p ≤ α₂ (c₂ p))
@@ -72,6 +89,13 @@ def pairToTriple (p : D.s.Pair u u') : Trip D ((Tu D u' : ℕ) : D.host.E) :=
 
 variable {X}
 
+/- English proof (translation)
+Establish `hfl` using `Y.fl_eq t`. Unfold `IsTermF IsTerm`. Use `⟨⟨X.lift' t, ?_, ?_⟩, Y.frame_ok t⟩` and prove the remaining obligations. Rewrite using `[← hfl]`. Conclude with `X.adm t`.
+
+Rewrite using `[← hfl]`. Introduce `h0`. Apply `hG` to reduce the goal to its premises. Establish `h` using `X.10 t`. Rewrite `h` using `[h0]`.
+
+Conclude with `(algebraMap _ _).injective (h.trans (map_zero _).symm)`.
+-/
 theorem rows_isTermF (t : D.s.Term u u') (hG : D.s.Gterm t ≠ 0) : IsTermF D (X.abelian₂ t) (lf D Y.F0) (X.fl' t) := by
   have hfl := Y.fl_eq t
   unfold IsTermF IsTerm
@@ -90,6 +114,21 @@ def wordSublatticeTripleBound (D : D7) (large₂ : SizeData₂ D) (u : D.what₂
     (HHZ D large₂.sc.b C Z' * HHZ D large₂.sc.b C Z'') ^ (C * ((s : ℝ) + D.R.m) * D.R.m + C * cF D.R.f) *
     (C * s * D.R.f) ^ (6 * s * D.R.f)
 
+/- English proof (translation)
+Establish `hmem : ∀ p ∈ S, pairToTriple X p ∈ PairSet D Λ ((Tu D u' : ℕ) : D.host.E) (lf D Y.F0) Z' Z'' s De`. Introduce `p hp`. Take `⟨hΛ, hG1, hG2, hZ1, hZ2, hs, hDe⟩` from `hS p hp`. Establish `hΛ2 : X.abelian₂ (D.s.psnd p) = Λ` using `(X.16 p).symm.trans hΛ`. Establish `hfl : X.fl (D.s.pfst p) = lf D Y.F0` using `Y.fl_eq _`.
+
+Establish `hfl2 : X.fl (D.s.psnd p) = lf D Y.F0` using `Y.fl_eq _`. Simplify using `only [PairSet, pairToTriple, Set.mem_setOf_eq]`. Use `⟨?_, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hΛ]`. Conclude with `rows_isTermF Y _ hG1`.
+
+Rewrite using `[← hΛ2]`. Conclude with `rows_isTermF Y _ hG2`. Rewrite using `[← hΛ, ← hfl]`. Conclude with `X.19 p`. Rewrite using `[← hfl]`.
+
+Conclude with `hZ1`. Rewrite using `[← hfl2]`. Conclude with `hZ2`. Rewrite using `[← hΛ, ← hfl, ← X.20 p]`. Conclude with `hs`.
+
+Rewrite using `[← hΛ, ← hfl]`. Conclude with `hDe`. Establish `hinj : ∀ i j : S, PEqv D Λ (lf D Y.F0) (pairToTriple X i.1) (pairToTriple X j.1) → i = j`. Introduce `i j h`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Use `Y.pair_inj _ _ ?_ ?_` and prove the remaining obligations. Rewrite using `[(hS i.1 i.2).1, (hS j.1 j.2).1]`. Rewrite using `[(hS i.1 i.2).1]`. Conclude with `h`. Establish `key` using `Formalism.MainNotions.S.Lem.Cnt.card_le_cntCl (PairSet D Λ ((Tu D u' : ℕ) : D.host.E) (lf D Y.F0) Z' Z'' s De) (PEqv D Λ (lf D Y.F0)) (fun a _ => Formalism.MainNotions.S.Lem.Cnt.PEqv_refl D Λ _ a) (fun i : S => pairToTriple X i.1) (fun i => hmem i.1 i.2) hinj`.
+
+Rewrite `key` using `[ENat.card_eq_coe_fintype_card, Fintype.card_coe]`. Conclude with `key`.
+-/
 theorem rows_fibre_le (Z' Z'' : GramM D) (s : ℕ) (De : ℝ) (Λ : LatV D) (S : Finset (D.s.Pair u u'))
     (hS : ∀ p ∈ S, X.abelian₂ (D.s.pfst p) = Λ ∧ D.s.Gterm (D.s.pfst p) ≠ 0 ∧ D.s.Gterm (D.s.psnd p) ≠ 0 ∧
       ZEquiv (termGramMatrix X (D.s.pfst p)) Z' ∧ ZEquiv (termGramMatrix X (D.s.psnd p)) Z'' ∧ D.s.s0 p = s ∧ pairDeterminant X p ≤ De) :
@@ -130,6 +169,13 @@ theorem rows_fibre_le (Z' Z'' : GramM D) (s : ℕ) (De : ℝ) (Λ : LatV D) (S :
   rw [ENat.card_eq_coe_fintype_card, Fintype.card_coe] at key
   exact key
 
+/- English proof (translation)
+Establish `hw : ∀ Λ, 0 ≤ wRow D F0 Λ` using `fun Λ => by unfold wRow; positivity`. Establish `hmass : 0 ≤ massRows D F0 what₂` using `Finset.sum_nonneg (fun Λ _ => hw Λ)`. Unfold `MeanLe at hM`. Rewrite using `[← ENNReal.ofReal_le_ofReal_iff (mul_nonneg hmass hB)]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[ENNReal.ofReal_sum_of_nonneg (fun Λ _ => mul_nonneg (hw Λ) (Nat.cast_nonneg _))]`. Use `Finset.sum_congr rfl (fun Λ _ => ?_)` and prove the remaining obligations. Rewrite using `[ENNReal.ofReal_mul (hw Λ), ENNReal.ofReal_natCast]`. Use `_ ≤ ∑ Λ ∈ what₂, ENNReal.ofReal (wRow D F0 Λ) * (N Λ : ℝ≥0∞) := by gcongr with Λ hΛ`. Establish `h` using `ENat.toENNReal_le.mpr (hn Λ hΛ)`.
+
+Rewrite `h` using `[ENat.toENNReal_coe]`. Then use the resulting hypothesis. Use `_ ≤ (∑ Λ ∈ what₂, ENNReal.ofReal (wRow D F0 Λ)) * ENNReal.ofReal B := hM`. Use `_ = ENNReal.ofReal (massRows D F0 what₂ * B) := by show _ = ENNReal.ofReal ((∑ Λ ∈ what₂, wRow D F0 Λ) * B)`. Rewrite using `[ENNReal.ofReal_mul (Finset.sum_nonneg fun Λ _ => hw Λ), ENNReal.ofReal_sum_of_nonneg (fun Λ _ => hw Λ)]`.
+-/
 theorem rows_mean_real {T : D.host.E} (F0 : FlagG (VS D) D.R.rS T) (what₂ : Finset (LatV D)) (N : LatV D → ℕ∞) (B : ℝ)
     (hB : 0 ≤ B) (hM : MeanLe D F0 what₂ N B) (n : LatV D → ℕ) (hn : ∀ Λ ∈ what₂, (n Λ : ℕ∞) ≤ N Λ) :
     ∑ Λ ∈ what₂, wRow D F0 Λ * n Λ ≤ massRows D F0 what₂ * B := by
@@ -154,6 +200,9 @@ theorem rows_mean_real {T : D.host.E} (F0 : FlagG (VS D) D.R.rS T) (what₂ : Fi
 
 open Classical in
 
+/- English proof (translation)
+Rewrite using `[Finset.sum_congr rfl (fun p _ => Y.wRow_eq p)]`. Rewrite using `[← Finset.sum_fiberwise_of_maps_to (g := fun p => X.abelian₂ (D.s.pfst p)) (t := Y.what₂) (fun p _ => Y.Lam_mem _)]`. Use `Finset.sum_congr rfl (fun Λ _ => ?_)` and prove the remaining obligations. Establish `hc : ∀ p ∈ S.filter (fun p => X.abelian₂ (D.s.pfst p) = Λ), wRow D Y.F0 (X.abelian₂ (D.s.pfst p)) = wRow D Y.F0 Λ` using `fun p hp => by rw [(Finset.mem_filter.mp hp).2]`. Rewrite using `[Finset.sum_congr rfl hc, Finset.sum_const, nsmul_eq_mul, mul_comm]`.
+-/
 theorem rows_sum_wRow (S : Finset (D.s.Pair u u')) :
     ∑ p ∈ S, X.wRow p =
       ∑ Λ ∈ Y.what₂, wRow D Y.F0 Λ * ((S.filter (fun p => X.abelian₂ (D.s.pfst p) = Λ)).card : ℕ) := by
@@ -168,6 +217,11 @@ theorem rows_sum_wRow (S : Finset (D.s.Pair u u')) :
 
 open Classical in
 
+/- English proof (translation)
+Establish `hM` using `hC3 hH Y.F0 Y.flag_e_eq_hyperbolic Y.formsAtZero Y.what₂ Y.isRows Z' Z'' hZ' hZ'' s hs hsk De hDe1 hDe2`. Rewrite using `[rows_sum_wRow Y S]`. Use `rows_mean_real Y.F0 Y.what₂ _ _ hB hM (fun Λ => (S.filter (fun p => X.abelian₂ (D.s.pfst p) = Λ)).card) (fun Λ _ => ?_)` and prove the remaining obligations. Use `rows_fibre_le Y Z' Z'' s De Λ _ (fun p hp => ?_)` and prove the remaining obligations. Take `⟨hpS, hpΛ⟩` from `Finset.mem_filter.mp hp`.
+
+Take `⟨h1, h2, h3, h4, h5, h6⟩` from `hS p hpS`. Conclude with `⟨hpΛ, h1, h2, h3, h4, h5, h6⟩`.
+-/
 theorem rows_count {C' Cl Cg cb Cu cT CT C0 A Ad C : ℝ} (hH : Cnt.Hyp D large₂ u u' C' Cl Cg cb Cu cT CT C0 A)
     (hC3 : UnitaryVolumeMass.MeanFlagPairCount D large₂ u u' C' Cl Cg cb Cu cT CT C0 A Ad C) (Z' Z'' : GramM D) (hZ' : RelZ D Z') (hZ'' : RelZ D Z'')
     (s : ℕ) (hs : 2 ≤ s) (hsk : s ≤ D.R.k) (De : ℝ) (hDe1 : 1 ≤ De)
@@ -191,6 +245,19 @@ section One
 
 open Classical in
 
+/- English proof (translation)
+Set `cls : ι → Set α` to `fun i => {b | b ∈ Xs ∧ R (f i) b}`. Establish `hfib' : ∀ O ∈ S.image cls, (((S.filter (fun i => cls i = O)).card : ℕ) : ℝ≥0∞) ≤ P`. Introduce `O hO`. Take `⟨i₀, hi₀, rfl⟩` from `Finset.mem_image.mp hO`. Apply `hfib i₀ hi₀ _ (Finset.filter_subset _ _)` to reduce the goal to its premises.
+
+Introduce `i hi`. Establish `hi'` using `Finset.mem_filter.mp hi`. Establish `hmem : f i ∈ cls i` using `⟨hf i hi'.1, hR _ (hf i hi'.1)⟩`. Rewrite `hmem` using `[hi'.2]`. Conclude with `hmem.2`.
+
+Establish `hcl : (((S.image cls).card : ℕ) : ℕ∞) ≤ cntCl Xs R`. Unfold `cntCl`. Rewrite using `[← Set.encard_coe_eq_coe_finsetCard]`. Apply `Set.encard_le_encard` to reduce the goal to its premises. Introduce `O hO`.
+
+Take `⟨i, hi, rfl⟩` from `Finset.mem_image.mp (Finset.mem_coe.mp hO)`. Conclude with `⟨f i, hf i hi, rfl⟩`. Establish `hcl' : (((S.image cls).card : ℕ) : ℝ≥0∞) ≤ ((cntCl Xs R : ℕ∞) : ℝ≥0∞)`. Establish `h` using `ENat.toENNReal_le.mpr hcl`. Rewrite `h` using `[ENat.toENNReal_coe]`. Then use the resulting hypothesis.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.card_eq_sum_card_image cls S, Nat.cast_sum]`. Use `_ ≤ ∑ O ∈ S.image cls, P := Finset.sum_le_sum hfib'`. Use `_ = (((S.image cls).card : ℕ) : ℝ≥0∞) * P := by`. Rewrite using `[Finset.sum_const, nsmul_eq_mul]`.
+
+Use `_ ≤ ((cntCl Xs R : ℕ∞) : ℝ≥0∞) * P := by gcongr`.
+-/
 theorem rows_card_le_mul {α ι : Type} (Xs : Set α) (R : α → α → Prop) (hR : ∀ a ∈ Xs, R a a) (S : Finset ι) (f : ι → α)
     (hf : ∀ i ∈ S, f i ∈ Xs) (P : ℝ≥0∞)
     (hfib : ∀ i₀ ∈ S, ∀ S' : Finset ι, S' ⊆ S → (∀ i ∈ S', R (f i₀) (f i)) → ((S'.card : ℕ) : ℝ≥0∞) ≤ P) :
@@ -235,6 +302,15 @@ def rowsSingleFibre : Prop :=
 
 variable {X}
 
+/- English proof (translation)
+Establish `hw : ∀ Λ, 0 ≤ wRow D F0 Λ` using `fun Λ => by unfold wRow; positivity`. Establish `hmass : 0 ≤ massRows D F0 what₂` using `Finset.sum_nonneg (fun Λ _ => hw Λ)`. Unfold `MeanLe at hM`. Rewrite using `[← ENNReal.ofReal_le_ofReal_iff (mul_nonneg hmass (mul_nonneg hB hP))]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[ENNReal.ofReal_sum_of_nonneg (fun Λ _ => mul_nonneg (hw Λ) (Nat.cast_nonneg _))]`. Use `Finset.sum_congr rfl (fun Λ _ => ?_)` and prove the remaining obligations. Rewrite using `[ENNReal.ofReal_mul (hw Λ), ENNReal.ofReal_natCast]`. Use `_ ≤ ∑ Λ ∈ what₂, ENNReal.ofReal (wRow D F0 Λ) * ((N Λ : ℝ≥0∞) * ENNReal.ofReal P) := by gcongr with Λ hΛ`. Conclude with `hn Λ hΛ`.
+
+Use `_ = (∑ Λ ∈ what₂, ENNReal.ofReal (wRow D F0 Λ) * (N Λ : ℝ≥0∞)) * ENNReal.ofReal P := by`. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl (fun Λ _ => ?_)` and prove the remaining obligations. Rewrite using `[mul_assoc]`. Use `_ ≤ ((∑ Λ ∈ what₂, ENNReal.ofReal (wRow D F0 Λ)) * ENNReal.ofReal B) * ENNReal.ofReal P := mul_le_mul_of_nonneg_right hM (by positivity)`.
+
+Use `_ = ENNReal.ofReal (massRows D F0 what₂ * (B * P)) := by show _ = ENNReal.ofReal ((∑ Λ ∈ what₂, wRow D F0 Λ) * (B * P))`. Rewrite using `[ENNReal.ofReal_mul (Finset.sum_nonneg fun Λ _ => hw Λ), ENNReal.ofReal_mul hB, ENNReal.ofReal_sum_of_nonneg (fun Λ _ => hw Λ), mul_assoc]`.
+-/
 theorem rows_mean_real_mul {T : D.host.E} (F0 : FlagG (VS D) D.R.rS T) (what₂ : Finset (LatV D)) (N : LatV D → ℕ∞) (B P : ℝ)
     (hB : 0 ≤ B) (hP : 0 ≤ P) (hM : MeanLe D F0 what₂ N B) (n : LatV D → ℕ)
     (hn : ∀ Λ ∈ what₂, ((n Λ : ℕ) : ℝ≥0∞) ≤ (N Λ : ℝ≥0∞) * ENNReal.ofReal P) :
@@ -270,6 +346,25 @@ def gramPairQuadrupleBound (D : D7) (large₂ : SizeData₂ D) (C : ℝ) (Z' Z''
 
 open Classical in
 
+/- English proof (translation)
+Establish `hM` using `hSW hH Y.F0 Y.flag_e_eq_hyperbolic Y.formsAtZero Y.what₂ Y.isRows Z' hZ'`. Rewrite using `[rows_sum_wRow Y S]`. Use `rows_mean_real_mul Y.F0 Y.what₂ _ _ _ hB hP hM (fun Λ => (S.filter (fun p => X.abelian₂ (D.s.pfst p) = Λ)).card) (fun Λ hΛ => ?_)` and prove the remaining obligations. Simplify using `only [Formalism.MainNotions.S.Lem.Cnt.cntSW_eq]`. Use `rows_card_le_mul _ (TEqv D Λ (lf D Y.F0)) (fun a _ => Formalism.MainNotions.S.Lem.Cnt.TEqv_refl D _ _ a) _ (fun p => X.fl' (D.s.pfst p)) ?_ _ ?_` and prove the remaining obligations.
+
+Introduce `p hp`. Take `⟨hpS, hpΛ⟩` from `Finset.mem_filter.mp hp`. Take `⟨hG1, -, hg1, -, -, hZ1, -, -, -⟩` from `hS p hpS`. Establish `hT` using `rows_isTermF Y _ hG1`. Rewrite `hT` using `[hpΛ]`.
+
+Simplify using `only [Set.mem_setOf_eq]`. Use `⟨hT.1, hT.2, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hpΛ, ← Y.fl_eq (D.s.pfst p)]`. Conclude with `(X.14 _).mp hg1`. Rewrite using `[← Y.fl_eq (D.s.pfst p)]`.
+
+Conclude with `hZ1`. Introduce `i₀ hi₀ S' hS' hR`. Take `⟨hi₀S, hi₀Λ⟩` from `Finset.mem_filter.mp hi₀`. Take `⟨hG1₀, -, hg1₀, -, -, -, -, hRel₀, hHH₀⟩` from `hS i₀ hi₀S`. Establish `hcnt` using `hF Z'' i₀ S' (fun p hp => by`.
+
+Take `⟨hpS, hpΛ⟩` from `Finset.mem_filter.mp (hS' hp)`. Take `⟨hG1, hG2, hg1, hg2, hs0, -, hZ2, -, -⟩` from `hS p hpS`. Use `⟨hpΛ.trans hi₀Λ.symm, hG1, hG2, hg1, hg2, hs0, hZ2, ?_⟩` and prove the remaining obligations. Establish `h` using `hR p hp`. Rewrite `h` using `[← hi₀Λ]`.
+
+Conclude with `h)`. Establish `hT₀` using `rows_isTermF Y _ hG1₀`. Establish `hgen₀ : IsGeneric (X.abelian₂ (D.s.pfst i₀)) (gS D) (lf D Y.F0) (X.fl' (D.s.pfst i₀))`. Rewrite using `[← Y.fl_eq (D.s.pfst i₀)]`. Conclude with `(X.14 _).mp hg1₀`.
+
+Establish `hRel : RelZ D (ZhatL (lf D Y.F0) (X.fl' (D.s.pfst i₀)))`. Rewrite using `[← Y.fl_eq (D.s.pfst i₀)]`. Conclude with `hRel₀`. Establish `hrow : IsRowLat D Y.F0 (X.abelian₂ (D.s.pfst i₀))` using `Y.isRows.1 _ (Y.Lam_mem _)`. Establish `h4` using `hC4 hH Y.F0 Y.flag_e_eq_hyperbolic Y.formsAtZero _ hrow _ hT₀ hgen₀ hRel Z'' hZ''`.
+
+Establish `hHH : HHZ D large₂.sc.b C4 (ZhatL (lf D Y.F0) (X.fl' (D.s.pfst i₀))) = HHZ D large₂.sc.b C4 Z'`. Rewrite using `[← Y.fl_eq (D.s.pfst i₀)]`. Conclude with `hHH₀`. Rewrite `h4` using `[hHH]`. Establish `hc` using `ENat.toENNReal_le.mpr hcnt`.
+
+Rewrite `hc` using `[ENat.toENNReal_coe]`. Conclude with `hc.trans h4`.
+-/
 theorem rows_countOne {C' Cl Cg cb Cu cT CT C0 A CSW C4 : ℝ} (hH : Cnt.Hyp D large₂ u u' C' Cl Cg cb Cu cT CT C0 A)
     (hSW : UnitaryVolumeMass.stSW D large₂ u u' C' Cl Cg cb Cu cT CT C0 A CSW) (hC4 : UnitaryVolumeMass.PartnerCountBound D large₂ u u' C' Cl Cg cb Cu cT CT C0 A C4)
     (hF : rowsSingleFibre X Y) (Z' Z'' : GramM D) (hZ' : RelZ D Z') (hZ'' : RelZ D Z'')
@@ -333,6 +428,25 @@ def wordPairTermSingleFibre (X : TermTie D) (Y : LoopTie D large₂ X u u' C1) :
 
 open Classical in
 
+/- English proof (translation)
+Establish `hM` using `hSW hH Y.F0 Y.flag_e_eq_hyperbolic Y.formsAtZero Y.what₂ Y.isRows Z'' hZ''`. Rewrite using `[rows_sum_wRow Y S]`. Use `rows_mean_real_mul Y.F0 Y.what₂ _ _ _ hB hP hM (fun Λ => (S.filter (fun p => X.abelian₂ (D.s.pfst p) = Λ)).card) (fun Λ hΛ => ?_)` and prove the remaining obligations. Simplify using `only [Formalism.MainNotions.S.Lem.Cnt.cntSW_eq]`. Use `rows_card_le_mul _ (TEqv D Λ (lf D Y.F0)) (fun a _ => Formalism.MainNotions.S.Lem.Cnt.TEqv_refl D _ _ a) _ (fun p => X.fl' (D.s.psnd p)) ?_ _ ?_` and prove the remaining obligations.
+
+Introduce `p hp`. Take `⟨hpS, hpΛ⟩` from `Finset.mem_filter.mp hp`. Take `⟨-, hG2, -, hg2, -, -, hZ2, -, -⟩` from `hS p hpS`. Establish `hT` using `rows_isTermF Y _ hG2`. Rewrite `hT` using `[← X.16 p, hpΛ]`.
+
+Simplify using `only [Set.mem_setOf_eq]`. Use `⟨hT.1, hT.2, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hpΛ, X.16 p, ← Y.fl_eq (D.s.psnd p)]`. Conclude with `(X.14 _).mp hg2`. Rewrite using `[← Y.fl_eq (D.s.psnd p)]`.
+
+Conclude with `hZ2`. Introduce `i₀ hi₀ S' hS' hR`. Take `⟨hi₀S, hi₀Λ⟩` from `Finset.mem_filter.mp hi₀`. Take `⟨-, hG2₀, -, hg2₀, -, -, -, hRel₀, hHH₀⟩` from `hS i₀ hi₀S`. Establish `hcnt` using `hF Z' i₀ S' (fun p hp => by`.
+
+Take `⟨hpS, hpΛ⟩` from `Finset.mem_filter.mp (hS' hp)`. Take `⟨hG1, hG2, hg1, hg2, hs0, hZ1, -, -, -⟩` from `hS p hpS`. Use `⟨hpΛ.trans hi₀Λ.symm, hG1, hG2, hg1, hg2, hs0, hZ1, ?_⟩` and prove the remaining obligations. Establish `h` using `hR p hp`. Rewrite `h` using `[← hi₀Λ]`.
+
+Conclude with `h)`. Establish `hT₀` using `rows_isTermF Y _ hG2₀`. Rewrite `hT₀` using `[← X.16 i₀]`. Establish `hgen₀ : IsGeneric (X.abelian₂ (D.s.pfst i₀)) (gS D) (lf D Y.F0) (X.fl' (D.s.psnd i₀))`. Rewrite using `[X.16 i₀, ← Y.fl_eq (D.s.psnd i₀)]`.
+
+Conclude with `(X.14 _).mp hg2₀`. Establish `hRel : RelZ D (ZhatL (lf D Y.F0) (X.fl' (D.s.psnd i₀)))`. Rewrite using `[← Y.fl_eq (D.s.psnd i₀)]`. Conclude with `hRel₀`. Establish `hrow : IsRowLat D Y.F0 (X.abelian₂ (D.s.pfst i₀))` using `Y.isRows.1 _ (Y.Lam_mem _)`.
+
+Establish `h4` using `hC4 hH Y.F0 Y.flag_e_eq_hyperbolic Y.formsAtZero _ hrow _ hT₀ hgen₀ hRel Z' hZ'`. Establish `hHH : HHZ D large₂.sc.b C4 (ZhatL (lf D Y.F0) (X.fl' (D.s.psnd i₀))) = HHZ D large₂.sc.b C4 Z''`. Rewrite using `[← Y.fl_eq (D.s.psnd i₀)]`. Conclude with `hHH₀`. Rewrite `h4` using `[hHH]`.
+
+Establish `hc` using `ENat.toENNReal_le.mpr hcnt`. Rewrite `hc` using `[ENat.toENNReal_coe]`. Conclude with `hc.trans h4`.
+-/
 theorem rows_countOne' {C' Cl Cg cb Cu cT CT C0 A CSW C4 : ℝ} (hH : Cnt.Hyp D large₂ u u' C' Cl Cg cb Cu cT CT C0 A)
     (hSW : UnitaryVolumeMass.stSW D large₂ u u' C' Cl Cg cb Cu cT CT C0 A CSW) (hC4 : UnitaryVolumeMass.PartnerCountBound D large₂ u u' C' Cl Cg cb Cu cT CT C0 A C4)
     (hF : wordPairTermSingleFibre X Y) (Z' Z'' : GramM D) (hZ' : RelZ D Z') (hZ'' : RelZ D Z'')
@@ -400,6 +514,21 @@ def wordPairSymmetric (X : TermTie D) (u u' : D.what₂.Word) : Prop :=
     IsPair (X.abelian₂ (D.s.pfst p)) (X.fl (D.s.pfst p)) (X.fl' (D.s.psnd p)) (X.fl' (D.s.pfst p)) β (gS D) ∧
       Lat.s0 (X.abelian₂ (D.s.pfst p)) (X.fl (D.s.pfst p)) (X.fl' (D.s.psnd p)) (X.fl' (D.s.pfst p)) β D.R.k = 1
 
+/- English proof (translation)
+Introduce `Z'' p₀ S hS`. Establish `hf : ∀ p ∈ S, D.s.pfst p = D.s.pfst p₀`. Introduce `p hp`. Take `⟨hΛ, -, -, -, -, -, -, hE⟩` from `hS p hp`. Conclude with `(hT _ _ hΛ.symm hE).symm`.
+
+Establish `hmem : ∀ i : S, X.fl' (D.s.psnd i.1) ∈ Partners D (X.abelian₂ (D.s.pfst p₀)) (lf D Y.F0) (X.fl' (D.s.pfst p₀)) Z''`. Introduce `i`. Take `⟨-, hG1, hG2, -, hg2, hs0, hZ, -⟩` from `hS i.1 i.2`. Establish `hfi` using `hf i.1 i.2`. Rewrite using `[← hfi]`.
+
+Simplify using `only [Partners, Set.mem_setOf_eq]`. Use `⟨?_, ?_, ?_, X.beta i.1, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[X.16 i.1]`. Conclude with `rows_isTermF Y _ hG2`. Rewrite using `[X.16 i.1, ← Y.fl_eq (D.s.psnd i.1)]`.
+
+Conclude with `(X.14 _).mp hg2`. Rewrite using `[← Y.fl_eq (D.s.psnd i.1)]`. Conclude with `hZ`. Rewrite using `[← Y.fl_eq (D.s.pfst i.1)]`. Conclude with `X.19 i.1`.
+
+Rewrite using `[← Y.fl_eq (D.s.pfst i.1), ← X.20 i.1]`. Conclude with `hs0`. Establish `hinj : ∀ i j : S, TEqv D (X.abelian₂ (D.s.pfst p₀)) (lf D Y.F0) (X.fl' (D.s.psnd i.1)) (X.fl' (D.s.psnd j.1)) → i = j`. Introduce `i j h`. Take `⟨hΛi, hG1i, hG2i, hg1i, hg2i, hs0i, -, -⟩` from `hS i.1 i.2`.
+
+Take `⟨hΛj, -, -, -, -, hs0j, -, -⟩` from `hS j.1 j.2`. Establish `hLi : X.abelian₂ (D.s.psnd i.1) = X.abelian₂ (D.s.pfst p₀)` using `(X.16 i.1).symm.trans hΛi`. Establish `hLj : X.abelian₂ (D.s.psnd j.1) = X.abelian₂ (D.s.pfst p₀)` using `(X.16 j.1).symm.trans hΛj`. Establish `hsnd : D.s.psnd i.1 = D.s.psnd j.1` using `hT _ _ (hLi.trans hLj.symm) (by rw [hLi]; exact h)`. Conclude with `Subtype.ext (hU _ _ ((hf i.1 i.2).trans (hf j.1 j.2).symm) hsnd hs0i hs0j hg1i hg2i hG1i hG2i)`.
+
+Establish `key` using `Formalism.MainNotions.S.Lem.Cnt.card_le_cntCl _ (TEqv D (X.abelian₂ (D.s.pfst p₀)) (lf D Y.F0)) (fun a _ => Formalism.MainNotions.S.Lem.Cnt.TEqv_refl D _ _ a) (fun i : S => X.fl' (D.s.psnd i.1)) hmem hinj`. Rewrite `key` using `[ENat.card_eq_coe_fintype_card, Fintype.card_coe]`. Conclude with `key`.
+-/
 theorem rows_OneFibre_of (hT : wordPairTermInjective X Y) (hU : wordPairBetaUnique D u u') : rowsSingleFibre X Y := by
   intro Z'' p₀ S hS
   have hf : ∀ p ∈ S, D.s.pfst p = D.s.pfst p₀ := by
@@ -438,6 +567,21 @@ theorem rows_OneFibre_of (hT : wordPairTermInjective X Y) (hU : wordPairBetaUniq
   rw [ENat.card_eq_coe_fintype_card, Fintype.card_coe] at key
   exact key
 
+/- English proof (translation)
+Introduce `Z' p₀ S hS`. Establish `hL0 : X.abelian₂ (D.s.psnd p₀) = X.abelian₂ (D.s.pfst p₀)` using `(X.16 p₀).symm`. Establish `hf : ∀ p ∈ S, D.s.psnd p = D.s.psnd p₀`. Introduce `p hp`. Take `⟨hΛ, -, -, -, -, -, -, hE⟩` from `hS p hp`.
+
+Use `(hT _ _ (hL0.trans (hΛ.symm.trans (X.16 p))) ?_).symm` and prove the remaining obligations. Rewrite using `[hL0]`. Conclude with `hE`. Establish `hmem : ∀ i : S, X.fl' (D.s.pfst i.1) ∈ Partners D (X.abelian₂ (D.s.pfst p₀)) (lf D Y.F0) (X.fl' (D.s.psnd p₀)) Z'`. Introduce `i`.
+
+Take `⟨hΛ, hG1, hG2, hg1, -, hs0, hZ, -⟩` from `hS i.1 i.2`. Take `⟨β, hβ, hβs⟩` from `hP i.1 hG1 hG2 hs0`. Rewrite using `[← hf i.1 i.2, ← hΛ]`. Simplify using `only [Partners, Set.mem_setOf_eq]`. Use `⟨rows_isTermF Y _ hG1, ?_, ?_, β, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← Y.fl_eq (D.s.pfst i.1)]`. Conclude with `(X.14 _).mp hg1`. Rewrite using `[← Y.fl_eq (D.s.pfst i.1)]`. Conclude with `hZ`. Rewrite using `[← Y.fl_eq (D.s.pfst i.1)]`.
+
+Conclude with `hβ`. Rewrite using `[← Y.fl_eq (D.s.pfst i.1)]`. Conclude with `hβs`. Establish `hinj : ∀ i j : S, TEqv D (X.abelian₂ (D.s.pfst p₀)) (lf D Y.F0) (X.fl' (D.s.pfst i.1)) (X.fl' (D.s.pfst j.1)) → i = j`. Introduce `i j h`.
+
+Take `⟨hΛi, hG1i, hG2i, hg1i, hg2i, hs0i, -, -⟩` from `hS i.1 i.2`. Take `⟨hΛj, -, -, -, -, hs0j, -, -⟩` from `hS j.1 j.2`. Establish `hfst : D.s.pfst i.1 = D.s.pfst j.1` using `hT _ _ (hΛi.trans hΛj.symm) (by rw [hΛi]; exact h)`. Conclude with `Subtype.ext (hU _ _ hfst ((hf i.1 i.2).trans (hf j.1 j.2).symm) hs0i hs0j hg1i hg2i hG1i hG2i)`. Establish `key` using `Formalism.MainNotions.S.Lem.Cnt.card_le_cntCl _ (TEqv D (X.abelian₂ (D.s.pfst p₀)) (lf D Y.F0)) (fun a _ => Formalism.MainNotions.S.Lem.Cnt.TEqv_refl D _ _ a) (fun i : S => X.fl' (D.s.pfst i.1)) hmem hinj`.
+
+Rewrite `key` using `[ENat.card_eq_coe_fintype_card, Fintype.card_coe]`. Conclude with `key`.
+-/
 theorem rows_OneFibre'_of (hT : wordPairTermInjective X Y) (hU : wordPairBetaUnique D u u') (hP : wordPairSymmetric X u u') :
     wordPairTermSingleFibre X Y := by
   intro Z' p₀ S hS
@@ -484,6 +628,17 @@ open NumberField
 
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {S : HSpace E}
 
+/- English proof (translation)
+Establish `hle : M ≤ dualIn S M`. Introduce `x hx`. Establish `hd : x ∈ Formalism.E.hdual S.hT M`. Unfold `Formalism.E.hdual`. Simplify using `only [Submodule.mem_iInf, Submodule.mem_comap]`.
+
+Introduce `y hy`. Take `⟨o, ho⟩` from `hM x hx y hy`. Conclude with `Submodule.mem_one.2 ⟨o, ho⟩`. Conclude with `⟨hd, Submodule.subset_span hx⟩`. Unfold `latDet latDetH`.
+
+Rewrite using `[Real.one_le_sqrt]`. Unfold `genIdxH`. Use `finprod_induction (fun x : ℝ => 1 ≤ x) le_rfl (fun _ _ => one_le_mul_of_one_le_of_one_le) fun P => ?_` and prove the remaining obligations. Establish `hN : (1 : ℝ) ≤ ((Ideal.absNorm P.asIdeal : ℕ) : ℝ)`. Establish `: Ideal.absNorm P.asIdeal ≠ 0`.
+
+Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff]`. Conclude with `P.ne_bot`. Conclude with `Nat.one_le_iff_ne_zero.2 this` after adjusting the coercions. Use `P.isPrime` as an intermediate fact. Rewrite using `[Formalism.MainNotions.LatticeGluingRadicals.i_lidx_of_le (S := S) P.asIdeal hle, zpow_natCast]`.
+
+Conclude with `one_le_pow₀ hN`.
+-/
 theorem rows_one_le_latDet (M : Submodule (𝓞 E) S.V) (hM : ∀ x ∈ M, ∀ y ∈ M, ∃ o : 𝓞 E, (o : E) = S.hT y x) :
     1 ≤ latDet S M := by
   have hle : M ≤ dualIn S M := by
@@ -509,6 +664,17 @@ theorem rows_one_le_latDet (M : Submodule (𝓞 E) S.V) (hM : ∀ x ∈ M, ∀ y
 
 variable {r : ℕ} {T : E}
 
+/- English proof (translation)
+Introduce `x hx y hy`. Establish `horth : ∀ v, v ∈ orth S (Xsp F) → ∀ a ∈ Xsp F, S.hT a v = 0`. Introduce `v hv a ha`. Simplify using `only [orth, Submodule.mem_iInf, LinearMap.mem_ker] at hv`. Conclude with `hv a ha`.
+
+Take `⟨l, hl, a, ha, rfl⟩` from `Submodule.mem_sup.1 hx.1`. Take `⟨l', hl', a', ha', rfl⟩` from `Submodule.mem_sup.1 hy.1`. Establish `h1 : S.hT a' (l + a) = 0` using `horth _ hx.2 a' ha'`. Establish `h2 : S.hT l' a = 0`. Use `S.herm.eq a l'` as an intermediate fact.
+
+Rewrite `this` using `[horth l' hl'.2 a ha]`. Simplify using `using this.symm`. Establish `h3 : l ∈ Formalism.HermitianLatticesTheory.dual S.hT Λ` using `by rw [hΛ]; exact hl.1`. Unfold `Formalism.HermitianLatticesTheory.dual Formalism.E.hdual at h3`. Simplify using `only [Submodule.mem_iInf, Submodule.mem_comap] at h3`.
+
+Take `⟨o, ho⟩` from `Submodule.mem_one.1 (h3 l' hl'.1)`. Use `⟨o, ?_⟩` and prove the remaining obligations. Establish `e1 : S.hT (l' + a') (l + a) = S.hT l' (l + a) + S.hT a' (l + a)`. Rewrite using `[map_add (S.hT) l' a', LinearMap.add_apply]`. Establish `e2 : S.hT l' (l + a) = S.hT l' l + S.hT l' a` using `map_add _ _ _`.
+
+Rewrite using `[e1, h1, add_zero, e2, h2, add_zero]`. Conclude with `ho`.
+-/
 theorem rows_Lsub_integral (Λ : Submodule (𝓞 E) S.V) (hΛ : Formalism.HermitianLatticesTheory.IsUnimodular S.hT Λ) (F : LFlag S r T) :
     ∀ x ∈ Lsub Λ F, ∀ y ∈ Lsub Λ F, ∃ o : 𝓞 E, (o : E) = S.hT y x := by
   intro x hx y hy
@@ -540,6 +706,11 @@ section Det2
 
 variable {D : D7} {X : TermTie D} {u u' : D.what₂.Word}
 
+/- English proof (translation)
+Take `⟨hfin, _, _, _, φ, hφ, _⟩` from `Formalism.MainNotions.LatticeGluingRadicals.lemma_one_section D u (Tu D u') Λ F F' hF hP hT`. Use `hfin` as an intermediate fact. Establish `: Finite (La Λ (gS D) F F' ⧸ (Thp Λ F F').comap (La Λ (gS D) F F').subtype)` using `Finite.of_injective φ hφ`. Establish `: 0 < iIdx Λ (gS D) F F'`. Unfold `iIdx idx`.
+
+Conclude with `Nat.card_pos`. Conclude with `this` after adjusting the coercions.
+-/
 theorem rows_one_le_iIdx (hP : PrimeHyp D u (Tu D u')) (Λ : UnitaryVolumeMass.Lt D) (F : UnitaryVolumeMass.Fl D (Tu D u)) (F' : UnitaryVolumeMass.Fl D (Tu D u'))
     (hF : FixedHyp D Λ F) (hT : IsTerm Λ (gS D) F F') : (1 : ℝ) ≤ (iIdx Λ (gS D) F F' : ℝ) := by
   obtain ⟨hfin, _, _, _, φ, hφ, _⟩ := Formalism.MainNotions.LatticeGluingRadicals.lemma_one_section D u (Tu D u') Λ F F' hF hP hT
@@ -550,6 +721,17 @@ theorem rows_one_le_iIdx (hP : PrimeHyp D u (Tu D u')) (Λ : UnitaryVolumeMass.L
     exact Nat.card_pos
   exact_mod_cast this
 
+/- English proof (translation)
+Introduce `p hG1 hG2`. Establish `hP` using `Formalism.MainNotions.VanishingOnXAndXPlus.primeHyp_of_stand D u u' hSt`. Establish `hF` using `X.fixed (D.s.pfst p)`. Establish `hne : ∀ t : D.s.Term u u', D.s.Gterm t ≠ 0 → Gval (X.fl t) (X.fl' t) ≠ 0`. Introduce `t hG`.
+
+Rewrite using `[← X.G_eq t]`. Conclude with `(map_ne_zero_iff _ (algebraMap D.host.F D.host.E).injective).2 hG`. Establish `hT1 : IsTerm (X.abelian₂ (D.s.pfst p)) (gS D) (X.fl (D.s.pfst p)) (X.fl' (D.s.pfst p))` using `⟨X.lift' _, X.adm _, hne _ hG1⟩`. Establish `hT2 : IsTerm (X.abelian₂ (D.s.pfst p)) (gS D) (X.fl (D.s.pfst p)) (X.fl' (D.s.psnd p))`. Rewrite using `[X.pLam p, X.pfl p]`.
+
+Conclude with `⟨X.lift' _, X.adm _, hne _ hG2⟩`. Establish `h1` using `rows_one_le_iIdx hP _ _ _ hF hT1`. Establish `h2` using `rows_one_le_iIdx hP _ _ _ hF hT2`. Establish `hLa : La (X.abelian₂ (D.s.pfst p)) (gS D) (X.fl (D.s.pfst p)) (X.fl' (D.s.pfst p)) ≤ Lsub (X.abelian₂ (D.s.pfst p)) (X.fl (D.s.pfst p))`. Unfold `La`.
+
+Rewrite using `[Submodule.span_le]`. Introduce `x hx`. Conclude with `hx.2.1.1`. Establish `h3 : 1 ≤ latDet (hS D) (Mlat (X.abelian₂ (D.s.pfst p)) (X.fl (D.s.pfst p)) (X.fl' (D.s.pfst p)) (X.fl' (D.s.psnd p)) (X.beta p) (gS D))` using `rows_one_le_latDet _ fun x hx y hy => rows_Lsub_integral _ hF.2.1 _ x (hLa hx.1) y (hLa hy.1)`. Unfold `pairDeterminant`.
+
+Conclude with `one_le_mul_of_one_le_of_one_le (one_le_mul_of_one_le_of_one_le h3 h1) h2`.
+-/
 theorem rows_DetGeOne_of (hSt : Cnt.Stand D u u') : wordPairDeterminantGeOne X u u' := by
   intro p hG1 hG2
   have hP := Formalism.MainNotions.VanishingOnXAndXPlus.primeHyp_of_stand D u u' hSt
@@ -578,6 +760,15 @@ theorem rows_DetGeOne_of (hSt : Cnt.Stand D u u') : wordPairDeterminantGeOne X u
   unfold pairDeterminant
   exact one_le_mul_of_one_le_of_one_le (one_le_mul_of_one_le_of_one_le h3 h1) h2
 
+/- English proof (translation)
+Introduce `p hG1 hG2 hs`. Establish `hP` using `X.isPair p`. Establish `hF` using `X.fixed (D.s.pfst p)`. Establish `hne : ∀ t : D.s.Term u u', D.s.Gterm t ≠ 0 → Gval (X.fl t) (X.fl' t) ≠ 0`. Introduce `t hG`.
+
+Rewrite using `[← X.G_eq t]`. Conclude with `(map_ne_zero_iff _ (algebraMap D.host.F D.host.E).injective).2 hG`. Establish `hU'` using `Formalism.MainNotions.LatticeGluingRadicals.a_HU (X.abelian₂ (D.s.pfst p)) hF.1 (X.fl (D.s.pfst p)) (X.fl' (D.s.pfst p)) hF.2.2.1.2 (X.lift' (D.s.pfst p)).2`. Establish `hU''` using `Formalism.MainNotions.LatticeGluingRadicals.a_HU (X.abelian₂ (D.s.pfst p)) hF.1 (X.fl (D.s.pfst p)) (X.fl' (D.s.psnd p)) hF.2.2.1.2 (X.lift' (D.s.psnd p)).2`. Establish `hN'` using `Formalism.MainNotions.LatticeGluingRadicals.a_HNd (X.fl (D.s.pfst p)) (X.fl' (D.s.pfst p)) (hne _ hG1)`.
+
+Establish `hN'' : Formalism.MainNotions.LatticeGluingRadicals.HNd (X.fl (D.s.pfst p)) (X.fl' (D.s.psnd p))`. Rewrite using `[X.pfl p]`. Conclude with `Formalism.MainNotions.LatticeGluingRadicals.a_HNd _ _ (hne _ hG2)`. Use `⟨(X.beta p).symm, Formalism.MainNotions.LatticeGluingRadicals.k_pair_symm hP, ?_⟩` and prove the remaining obligations. Establish `h0` using `X.s0_eq p`.
+
+Rewrite `h0` using `[hs]`. Unfold `Lat.s0 at h0 ⊢`. Rewrite using `[Formalism.MainNotions.LatticeGluingRadicals.k_Th_swap hP, Formalism.MainNotions.LatticeGluingRadicals.c_finrank_Th'' hU' hN', ← Formalism.MainNotions.LatticeGluingRadicals.c_finrank_Th hU'' hN'']`. Conclude with `h0.symm`.
+-/
 theorem rows_PairSymm_holds (X : TermTie D) (u u' : D.what₂.Word) : wordPairSymmetric X u u' := by
   intro p hG1 hG2 hs
   have hP := X.isPair p
@@ -601,6 +792,9 @@ theorem rows_PairSymm_holds (X : TermTie D) (u u' : D.what₂.Word) : wordPairSy
   rw [Formalism.MainNotions.LatticeGluingRadicals.k_Th_swap hP, Formalism.MainNotions.LatticeGluingRadicals.c_finrank_Th'' hU' hN', ← Formalism.MainNotions.LatticeGluingRadicals.c_finrank_Th hU'' hN'']
   exact h0.symm
 
+/- English proof (translation)
+The claim follows from `rows_OneFibre'_of Y hT hU (rows_PairSymm_holds X u u')`.
+-/
 theorem rows_OneFibre'_of' {large₂ : SizeData₂ D} {C1 : ℝ} (Y : LoopTie D large₂ X u u' C1) (hT : wordPairTermInjective X Y)
     (hU : wordPairBetaUnique D u u') : wordPairTermSingleFibre X Y := rows_OneFibre'_of Y hT hU (rows_PairSymm_holds X u u')
 
@@ -611,6 +805,19 @@ def wordPairBetaLattice (D : D7) (u u' : D.what₂.Word) : Prop :=
     Lat.s0 Λ F F' F'' β₁ D.R.k = 1 → Lat.s0 Λ F F' F'' β₂ D.R.k = 1 →
       ∀ x ∈ orth (hS D) (Xsp F'), β₂ x - β₁ x ∈ Xsp F''
 
+/- English proof (translation)
+Introduce `p q h1 h2 hs1 hs2 hg1 hg2 hG1 hG2`. Establish `hΛ : X.abelian₂ (D.s.pfst p) = X.abelian₂ (D.s.pfst q)` using `by rw [h1]`. Use `Y.pair_inj p q hΛ ?_` and prove the remaining obligations. Take `⟨n', hn', n'', hn'', hf1, hf2, hx⟩` from `Formalism.MainNotions.S.Lem.Cnt.PEqv_refl D (X.abelian₂ (D.s.pfst p)) (lf D Y.F0) (pairToTriple X p)`. Simplify using `only [pairToTriple] at hf1 hf2 hx`.
+
+Establish `hT1` using `(rows_isTermF Y _ hG1).1`. Rewrite `hT1` using `[← Y.fl_eq (D.s.pfst p)]`. Establish `hT2` using `(rows_isTermF Y _ hG2).1`. Rewrite `hT2` using `[← X.16 p, ← Y.fl_eq (D.s.pfst p)]`. Establish `hGen1` using `(X.14 _).mp hg1`.
+
+Establish `hGen2` using `(X.14 _).mp hg2`. Rewrite `hGen2` using `[← X.16 p, ← X.17 p]`. Establish `hPq` using `X.19 q`. Rewrite `hPq` using `[← h1, ← h2]`. Establish `hs0p` using `(X.20 p).symm.trans hs1`.
+
+Establish `hs0q` using `(X.20 q).symm.trans hs2`. Rewrite `hs0q` using `[← h1, ← h2]`. Use `⟨n', hn', n'', hn'', ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← h1]`. Conclude with `hf1`.
+
+Rewrite using `[← h2]`. Conclude with `hf2`. Introduce `x hx'`. Rewrite `hx'` using `[← h1]`. Establish `hb` using `hB (X.abelian₂ (D.s.pfst p)) (X.fl (D.s.pfst p)) (X.fl' (D.s.pfst p)) (X.fl' (D.s.psnd p)) (X.beta p) (X.beta q) (X.fixed _) hT1 hT2 hGen1 hGen2 (X.19 p) hPq hs0p hs0q x hx'`.
+
+Establish `hsub` using `Submodule.add_mem _ hb (hx x hx')`. Rewrite using `[← h2]`. Use `hsub using 1` and compare the differences between its conclusion and the goal. Normalize the expressions using the abelian group laws.
+-/
 theorem rows_BetaUnique_of {large₂ : SizeData₂ D} {C1 : ℝ} (Y : LoopTie D large₂ X u u' C1) (hB : wordPairBetaLattice D u u') :
     wordPairBetaUnique D u u' := by
   intro p q h1 h2 hs1 hs2 hg1 hg2 hG1 hG2

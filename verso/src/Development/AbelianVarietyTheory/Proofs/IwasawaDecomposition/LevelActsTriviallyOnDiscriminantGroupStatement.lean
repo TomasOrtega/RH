@@ -6,6 +6,9 @@ import Formalism.LocalToGlobal.Columns.RecLevelLocT
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.L2.Col Formalism.UG Formalism.L2.Forms Matrix
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.uloc_acts_trivially_on_dual_quotient | exact GlobalTheory.uloc_acts_trivially_on_dual_quotient | (intros; apply GlobalTheory.uloc_acts_trivially_on_dual_quotient <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.level_acts_trivially_on_discriminant_group : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (_ : ∀ x, σ (σ x) = x) {n : ℕ} [NeZero n] {T f : ℕ} {bad : Set (HeightOneSpectrum (𝓞 F))}
     (S : Formalism.L2.Forms.StepLevel F E σ (1 : Matrix (Fin n) (Fin n) E) T f bad) (p q : 𝓞 E) (_ : (q : E) = σ (p : E)) (_ : (p : E) * (q : E) = (T : E)) (_ : T ≠ 0)
     (_ : S.Lb = rll_dLat n ((p : E)⁻¹))

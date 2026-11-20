@@ -12,6 +12,15 @@ open GroundTheory.Automorphic.AutomorphicForm GroundTheory.Automorphic.CuspidalS
 open GlobalTheory.CuspRep (CuspSub GA Af Ad finGL locGL)
 open UpperTheory.ConvolutionTheory.C UpperTheory.ConvolutionTheory.Dp UpperTheory.V
 
+/- English proof (translation)
+Introduce `E _ _ _ n μ _ θ σ s hs he π V hV`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨P', hsp, hiso⟩` from `h s hs`. Consider the cases of `P' with`.
+
+Consider the case `cx π'`. Establish `e : π' = π` using `(UpperTheory.ConvolutionTheory.Dp.isoEq E n π' π).1 hiso`. Substitute `e` using the available equality. Establish `h1` using `(UpperTheory.ConvolutionTheory.Dp.conjCarries E n μ θ σ s hs he π' π' V hsp).1 hV`. Conclude with `((UpperTheory.ConvolutionTheory.Dp.exSummand E n μ π' _).1 h1).2.trans ((UpperTheory.ConvolutionTheory.Dp.exSummand E n μ π' _).1 hV).2.symm`.
+
+Consider the case `re π' => exact hiso.elim`. Introduce `h s' hs'`. Take `rfl : s' = s` from `(UpperTheory.ConvolutionTheory.Dp.galCentral E n σ s hs).1 s' hs'`. Take `⟨π', hsp⟩` from `UpperTheory.CBC.SConjSpaceC_holds E σ s' hs n π`. Establish `h1 : Carries μ π' V` using `(UpperTheory.ConvolutionTheory.Dp.conjCarries E n μ θ σ s' hs he π π' V hsp).2 (by rw [h]; exact hV)`.
+
+Establish `e : π' = π` using `(UpperTheory.ConvolutionTheory.Dp.exCusp E n μ V hV.summand).unique h1 hV`. Conclude with `⟨.cx π', hsp, (UpperTheory.ConvolutionTheory.Dp.isoEq E n π' π).2 e⟩`.
+-/
 theorem UpperTheory.ConvolutionTheory.Dp.conjIff :
     UpperTheory.ConvolutionTheory.Dp.ConjIff := by
   intro E _ _ _ n μ _ θ σ s hs he π V hV

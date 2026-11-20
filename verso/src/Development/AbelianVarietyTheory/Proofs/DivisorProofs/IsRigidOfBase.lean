@@ -30,11 +30,17 @@ def dlog (k : Type) [Field k] : (DualNumber k)ˣ →* Multiplicative k where
     field_simp
     ring
 
+/- English proof (translation)
+Introduce `h` and use `by have := congrArg TrivSqZeroExt.fst x.mul_inv rw [TrivSqZeroExt.fst_mul, h, zero_mul, TrivSqZeroExt.fst_one] at this exact zero_ne_one this`.
+-/
 theorem fst_ne_zero {k : Type} [Field k] (x : (DualNumber k)ˣ) : (x : DualNumber k).fst ≠ 0 := fun h => by
   have := congrArg TrivSqZeroExt.fst x.mul_inv
   rw [TrivSqZeroExt.fst_mul, h, zero_mul, TrivSqZeroExt.fst_one] at this
   exact zero_ne_one this
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem dlog_apply {k : Type} [Field k] (x : (DualNumber k)ˣ) :
     Multiplicative.toAdd (dlog k x) = (x : DualNumber k).snd / (x : DualNumber k).fst := rfl
 
@@ -44,6 +50,9 @@ def onePlus {k : Type} [Field k] (s : k) : (DualNumber k)ˣ where
   val_inv := by ext <;> simp
   inv_val := by ext <;> simp
 
+/- English proof (translation)
+Rewrite using `[dlog_apply]`. Simplify using `[onePlus]`.
+-/
 theorem dlog_onePlus {k : Type} [Field k] (s : k) : Multiplicative.toAdd (dlog k (onePlus s)) = s := by
   rw [dlog_apply]; simp [onePlus]
 

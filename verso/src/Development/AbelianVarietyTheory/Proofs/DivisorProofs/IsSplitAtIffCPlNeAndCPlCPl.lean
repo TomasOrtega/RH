@@ -6,6 +6,9 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace GlobalTheory.EulerTw
 
+/- English proof (translation)
+Introduce `E _ _ _ w`. Use `⟨⟨fun h => (GlobalTheory.SplitPts.over_split h).1, fun h => ?_⟩, GlobalTheory.SplitPts.conjSrc_conjSrc_cm w⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hs`. Conclude with `h (GlobalTheory.LocInj.conjSrc_eq_of_not_split hs)`.
+-/
 theorem isSplitAt_iff_cPl_ne_and_cPl_cPl :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (w : Pl E),
       (IsSplitAt w ↔ GlobalTheory.EulerTw.cPl E w ≠ w) ∧ GlobalTheory.EulerTw.cPl E (GlobalTheory.EulerTw.cPl E w) = w := by

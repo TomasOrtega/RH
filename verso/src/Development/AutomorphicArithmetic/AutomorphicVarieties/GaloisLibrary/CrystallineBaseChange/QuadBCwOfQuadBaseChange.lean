@@ -31,6 +31,9 @@ def SplitIso (π : TR.CuspSub F a) (P : CuspSub E a) : Prop :=
 structure IsBCw (π : TR.CuspSub F a) (P : CuspSub E a) : Prop extends IsBC0 π P where
   split : π.IsRegAlg → (∃ χ : HChar F, π.Polarized χ) → SplitIso π P
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨h.inf, h.unr⟩, fun _ _ => h.split⟩`.
+-/
 theorem IsBCw.of_isBC {π : TR.CuspSub F a} {P : CuspSub E a} (h : IsBC π P) : IsBCw π P := ⟨⟨h.inf, h.unr⟩, fun _ _ => h.split⟩
 
 end BC

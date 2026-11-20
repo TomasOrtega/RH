@@ -14,6 +14,13 @@ open GlobalTheory.CuspRep GlobalTheory.WeilDeligne GlobalTheory.LocLanglands Glo
 open UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.Hi UpperTheory.V.AlgebraTools UpperTheory.V.Pa UpperTheory.V.Pa.Lev
 open scoped TensorProduct
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
+/- English proof (translation)
+Set `σ : MonoidAlgebra Λ Q ≃+* MonoidAlgebra Λ Γ` to `(MonoidAlgebra.domCongr Λ Λ e.symm).toRingEquiv`. Set `ρ' : Representation Λ Γ M` to `ρ.comp e.toMonoidHom`. Establish `key : ∀ a : MonoidAlgebra Λ Q, ρ'.asAlgebraHom (σ a) = ρ.asAlgebraHom a` using `fun a => by`. Proceed by induction on `a using MonoidAlgebra.induction_linear with`. Consider the case `zero => simp`.
+
+Consider the case `add a b ha hb => rw [map_add, map_add, map_add, ha, hb]`. Consider the case `single g c => simp [σ, ρ']`. Use `haveI := RingHomInvPair.of_ringEquiv σ`. Use `haveI := RingHomInvPair.of_ringEquiv_symm σ`. Set `f : ρ.asModule ≃ₛₗ[(σ : MonoidAlgebra Λ Q →+* MonoidAlgebra Λ Γ)] ρ'.asModule` to `{ ρ.asModuleEquiv.toAddEquiv.trans ρ'.asModuleEquiv.symm.toAddEquiv with map_smul' := fun a m => by`.
+
+Apply `ρ'.asModuleEquiv.injective` to reduce the goal to its premises. Rewrite using `[Representation.asModuleEquiv_map_smul]`. Simplify using `[Representation.asModuleEquiv_map_smul, key] }`. Conclude with `Module.Projective.of_equiv f`.
+-/
 private theorem opOf_proj {Λ Γ Q M : Type} [CommRing Λ] [Group Γ] [Group Q] [AddCommGroup M] [Module Λ M]
     (ρ : Representation Λ Q M) (e : Γ ≃* Q) (hP : Module.Projective (MonoidAlgebra Λ Q) ρ.asModule) :
     Module.Projective (MonoidAlgebra Λ Γ) (Representation.asModule (ρ.comp e.toMonoidHom : Representation Λ Γ M)) := by
@@ -33,6 +40,15 @@ private theorem opOf_proj {Λ Γ Q M : Type} [CommRing Λ] [Group Γ] [Group Q] 
         rw [Representation.asModuleEquiv_map_smul]
         simp [Representation.asModuleEquiv_map_smul, key] }
   exact Module.Projective.of_equiv f
+/- English proof (translation)
+Set `f : K ⧸ K1.subgroupOf K → MulAction.orbit K ((1 : G) : G ⧸ K1)` to `fun g => ⟨((g.out : K) : G), g.out, congrArg QuotientGroup.mk (mul_one _)⟩`. Establish `hf : Function.Bijective f`. Use `⟨fun a b hab => ?_, ?_⟩` and prove the remaining obligations. Establish `h1` using `QuotientGroup.eq.1 (congrArg Subtype.val hab)`. Rewrite using `[← a.out_eq', ← b.out_eq']`.
+
+Conclude with `QuotientGroup.eq.2 h1`. Introduce and unpack `⟨_, k, rfl⟩`. Use `⟨(k : K ⧸ K1.subgroupOf K), Subtype.ext ?_⟩` and prove the remaining obligations. Establish `h1` using `QuotientGroup.eq.1 (QuotientGroup.out_eq' (k : K ⧸ K1.subgroupOf K))`. Establish `h2 : (((k : K ⧸ K1.subgroupOf K).out : K) : G ⧸ K1) = ((k : G) : G ⧸ K1)` using `QuotientGroup.eq.2 h1`.
+
+Conclude with `h2.trans (congrArg (QuotientGroup.mk (s := K1)) (mul_one (k : G)).symm)`. Unfold `dc`. Rewrite using `[← finsum_comp f hf, finsum_eq_sum_of_fintype, LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Take `⟨u, hu⟩` from `QuotientGroup.mk_out_eq_mul K1 ((g.out : K) : G)`.
+
+Use `show ρ (((g.out : K) : G) : G ⧸ K1).out m = _`. Rewrite using `[hu, map_mul, Module.End.mul_apply, hm u u.2]`.
+-/
 private theorem opOf_dc {R G P : Type} [CommRing R] [Group G] [AddCommGroup P] [Module R P] (ρ : Representation R G P)
     (K K1 : Subgroup G) [Fintype (K ⧸ K1.subgroupOf K)] (m : P) (hm : m ∈ fixd ρ K1) :
     dc ρ K K1 1 m = ∑ g : K ⧸ K1.subgroupOf K, ρ (g.out : K) m := by
@@ -54,6 +70,21 @@ private theorem opOf_dc {R G P : Type} [CommRing R] [Group G] [AddCommGroup P] [
   obtain ⟨u, hu⟩ := QuotientGroup.mk_out_eq_mul K1 ((g.out : K) : G)
   show ρ (((g.out : K) : G) : G ⧸ K1).out m = _
   rw [hu, map_mul, Module.End.mul_apply, hm u u.2]
+/- English proof (translation)
+Use `haveI : Finite (K ⧸ K1.subgroupOf K) := Finite.of_equiv Γ e.toEquiv`. Use `letI := Fintype.ofFinite (K ⧸ K1.subgroupOf K)`. Take `⟨h1, h2⟩` from `projNorm Λ _ _ ρ' hP`. Establish `hs : ∀ m, (tr m : P) = (∑ g, ρ' g m : fixd ρ K1)` using `fun m => by`. Rewrite using `[htr, opOf_dc ρ K K1 m m.2, AddSubmonoidClass.coe_finset_sum]`.
+
+Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Rewrite using `[← hρ', QuotientGroup.out_eq']`. Use `⟨fun v => ?_, le_antisymm (fun m hm => ?_) (iSup_le fun p => ?_)⟩` and prove the remaining obligations. Take `⟨m, hm⟩` from `h1 ⟨v, fixd_anti ρ hle v.2⟩ fun g => by`. Take `⟨u, rfl⟩` from `QuotientGroup.mk_surjective g`.
+
+Conclude with `Subtype.ext ((hρ' u _).trans (v.2 u u.2))`. Conclude with `⟨m, Subtype.ext (by rw [hs, hm])⟩`. Establish `h0 : ∑ g, ρ' g m = 0` using `Subtype.ext (by rw [← hs, LinearMap.mem_ker.1 hm]; rfl)`. Establish `hc : Subgroup.closure (Set.range fun p => e (γ p)) = ⊤`. Use `congrArg (Subgroup.map e.toMonoidHom) hγ` as an intermediate fact.
+
+Rewrite `this` using `[MonoidHom.map_closure, ← Set.range_comp, Subgroup.map_top_of_surjective _ e.surjective]`. Conclude with `this`. Establish `h3 : (⨆ g ∈ Set.range fun p => e (γ p), LinearMap.range (ρ' g - 1)) ≤ (⨆ p, LinearMap.range (Y p)).restrictScalars Λ`. Use `iSup₂_le ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨p, rfl⟩ _ ⟨v, rfl⟩`.
+
+Use `Submodule.mem_iSup_of_mem (p := fun p => LinearMap.range (Y p)) p ⟨v, ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.sub_apply, hY, Module.End.one_apply, add_sub_cancel_left]`. Conclude with `h3 (h2 _ hc m h0)`. Introduce and unpack `_ ⟨m, rfl⟩`. Establish `h4 : tr (ρ' (e (γ p)) m) = tr m` using `Subtype.ext (by`.
+
+Rewrite using `[hs, hs]`. Use `congr 1`. Use `Fintype.sum_equiv (Equiv.mulRight (e (γ p))) _ _ fun g => ?_` and prove the remaining obligations. Rewrite using `[Equiv.coe_mulRight, map_mul, Module.End.mul_apply])`. Rewrite `h4` using `[hY, map_add]`.
+
+Conclude with `add_eq_left.1 h4`.
+-/
 private theorem opOf_tr {Λ R G P Γ σ : Type} [CommRing Λ] [CommRing R] [Algebra Λ R] [Group G] [AddCommGroup P]
     [Module R P] [Module Λ P] [IsScalarTower Λ R P] [Group Γ] [Finite Γ] (ρ : Representation R G P)
     (K K1 : Subgroup G) (hle : K1 ≤ K) [(K1.subgroupOf K).Normal]
@@ -96,6 +127,11 @@ private theorem opOf_tr {Λ R G P Γ σ : Type} [CommRing Λ] [CommRing R] [Alge
       rw [Equiv.coe_mulRight, map_mul, Module.End.mul_apply])
     rw [hY, map_add] at h4
     exact add_eq_left.1 h4
+/- English proof (translation)
+Use `haveI : ∀ p : Fin q × Fin n, NeZero (l ^ a p.1) := fun s => ⟨pow_ne_zero _ hl.ne_zero⟩`. Use `eq_top_iff.2 fun g _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.univ_prod_mulSingle g]`. Use `Subgroup.prod_mem _ fun s _ => ?_` and prove the remaining obligations. Establish `h1 : g s = Multiplicative.ofAdd (1 : ZMod (l ^ a s.1)) ^ (Multiplicative.toAdd (g s)).val`.
+
+Rewrite using `[← ofAdd_nsmul, nsmul_one, ZMod.natCast_zmod_val, ofAdd_toAdd]`. Rewrite using `[h1, Pi.mulSingle_pow]`. Conclude with `Subgroup.pow_mem _ (Subgroup.subset_closure (Set.mem_range_self s)) _`.
+-/
 private theorem opOf_gen {l q n : ℕ} (hl : l.Prime) (a : Fin q → ℕ) :
     Subgroup.closure (Set.range fun p : Fin q × Fin n => (Pi.mulSingle p (Multiplicative.ofAdd 1) : Del l n a)) = ⊤ := by
   haveI : ∀ p : Fin q × Fin n, NeZero (l ^ a p.1) := fun s => ⟨pow_ne_zero _ hl.ne_zero⟩
@@ -106,6 +142,15 @@ private theorem opOf_gen {l q n : ℕ} (hl : l.Prime) (a : Fin q → ℕ) :
     rw [← ofAdd_nsmul, nsmul_one, ZMod.natCast_zmod_val, ofAdd_toAdd]
   rw [h1, Pi.mulSingle_pow]
   exact Subgroup.pow_mem _ (Subgroup.subset_closure (Set.mem_range_self s)) _
+/- English proof (translation)
+Establish `h1 : Valued.v (l : w.adicCompletion L) = 1`. Establish `e : (l : w.adicCompletion L) = algebraMap L _ (algebraMap (𝓞 L) L l)` using `by simp`. Rewrite using `[e]`. Use `(HeightOneSpectrum.valuedAdicCompletion_eq_valuation' w _).trans ?_` and prove the remaining obligations. Conclude with `(HeightOneSpectrum.valuation_of_algebraMap w _).trans (HeightOneSpectrum.intValuation_eq_one_iff.2 hw)`.
+
+Establish `h2 : valuation (w.adicCompletion L) (l : w.adicCompletion L) = 1` using `by haveI : (Valued.v : Valuation (w.adicCompletion L) _).Compatible := Valuation.Compatible.ofValuation _`. Conclude with `(ValuativeRel.isEquiv (valuation (w.adicCompletion L)) Valued.v).eq_one_iff_eq_one.2 h1`. Establish `h3 : IsUnit (l : 𝒪[w.adicCompletion L])` using `(Valuation.integer.integers _).isUnit_iff_valuation_eq_one.2 (by simpa using h2)`. Establish `h4 : (l : 𝓀[w.adicCompletion L]) ≠ 0`. Simplify using `using (h3.map (residue 𝒪[w.adicCompletion L])).ne_zero`.
+
+Rewrite using `[hl.coprime_iff_not_dvd]`. Introduce `hd`. Use `letI := Fintype.ofFinite 𝓀[w.adicCompletion L]`. Use `haveI := Fact.mk hl`. Rewrite `hd` using `[resCard, Nat.card_eq_fintype_card]`.
+
+Conclude with `h4 ((ringChar.spec _ _).2 (by`. Establish `h5` using `(prime_dvd_char_iff_dvd_card l).2 hd`. Establish `h6` using `CharP.char_is_prime 𝓀[w.adicCompletion L] (ringChar 𝓀[w.adicCompletion L])`. Rewrite using `[(Nat.prime_dvd_prime_iff_eq hl h6).1 h5]))`.
+-/
 private theorem opOf_cop {L : Type} [Field L] [NumberField L] (w : Plc L) {l : ℕ} (hl : l.Prime)
     (hw : ((l : ℕ) : 𝓞 L) ∉ w.asIdeal) : l.Coprime (resCard (w.adicCompletion L)) := by
   have h1 : Valued.v (l : w.adicCompletion L) = 1 := by
@@ -129,13 +174,30 @@ private theorem opOf_cop {L : Type} [Field L] [NumberField L] (w : Plc L) {l : �
     have h5 := (prime_dvd_char_iff_dvd_card l).2 hd
     have h6 := CharP.char_is_prime 𝓀[w.adicCompletion L] (ringChar 𝓀[w.adicCompletion L])
     rw [(Nat.prime_dvd_prime_iff_eq hl h6).1 h5]))
+/- English proof (translation)
+Establish `h1 : unitsC k C ≤ unitsC k ⊤` using `Subgroup.map_mono (Subgroup.comap_mono le_top)`. Establish `h2 : torC k n C ≤ torC k n ⊤` using `fun t ht i hi => h1 (ht i hi)`. Conclude with `sup_le_sup_left (Subgroup.map_mono h2) _`.
+-/
 private theorem opOf_le {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n : ℕ}
     (C : Subgroup 𝓀[k]ˣ) : iwC k n C ≤ iwC k n ⊤ := by
   have h1 : unitsC k C ≤ unitsC k ⊤ := Subgroup.map_mono (Subgroup.comap_mono le_top)
   have h2 : torC k n C ≤ torC k n ⊤ := fun t ht i hi => h1 (ht i hi)
   exact sup_le_sup_left (Subgroup.map_mono h2) _
+/- English proof (translation)
+The claim follows from `inferInstance`.
+-/
 private theorem opOf_tow {Λ R P : Type} [CommRing Λ] [CommRing R] [Algebra Λ R] [AddCommGroup P]
     [Module R P] [Module Λ P] [IsScalarTower Λ R P] (S : Submodule R P) : IsScalarTower Λ R S := inferInstance
+/- English proof (translation)
+Introduce `hP l hl L Ω _ _ _ _ _ _ s V0 O _ _ _ hO _ n r B J D b V h q w A x δ hw hx hδ ph ta N hok hN`. Establish `hq : ∀ j, IsUnit (qj w j : A.R)` using `fun j => by haveI := hO.char`. Establish `h1 : IsUnit (qj w j : ResidueField O)` using `(CharP.isUnit_natCast_iff hl.out).2 (hl.out.coprime_iff_not_dvd.1 (opOf_cop (w j) hl.out (hw j)))`. Establish `h2 : IsUnit (qj w j : O)`. Rewrite `h1` using `[← map_natCast (residue O)]`.
+
+Conclude with `(isUnit_map_iff _ _).1 h1`. Simplify using `using h2.map (algebraMap O A.R)`. Take `⟨T⟩` from `thEx L n q w l A.R A.P A.ρ x δ hq`. Take `⟨hn, ρ', hρ', hpr⟩` from `A.proj`. Take `⟨e, he⟩` from `delIso L n q w l δ hδ`.
+
+Take `⟨hy, tr, htr, hu⟩` from `trOf L n q w l A.R A.P A.ρ x δ T hδ`. Take `⟨h1, h2⟩` from `_root_.UpperTheory.V.Z.Win.T2.level_relation_one_two hP l L Ω s V0 O n r B J D b V h q w A x δ hw hx hδ T ph ta hok`. Establish `h3` using `_root_.UpperTheory.V.Pa.Lev.twoOf_alt hP l L Ω s V0 O n r B J D b V h q w A x δ hw hx hδ T ph ta hok`. Establish `hg : ∀ j i m, ρ' (e (Pi.mulSingle (j, i) (Multiplicative.ofAdd 1))) m = T.act1 (1 + yV A.R j i) m` using `fun j i m => by`. Take `⟨g, hg1, hg2⟩` from `he j i`.
+
+Conclude with `Subtype.ext (by rw [hg2, hρ', hg1]; exact (hy j i m).symm)`. Establish `hle : UIw1 l n w ≤ UIw n w` using `fun g hg j hj => opOf_le _ (hg j hj)`. Use `haveI : ∀ p : Fin q × Fin n, NeZero (l ^ padicValNat l (qj w p.1 - 1)) := fun s => ⟨pow_ne_zero _ hl.out.ne_zero⟩`. Take `⟨hs, hk⟩` from `opOf_tr A.ρ (UIw n w) (UIw1 l n w) hle ρ' hρ' hpr e (fun p : Fin q × Fin n => Pi.mulSingle p (Multiplicative.ofAdd 1)) (opOf_gen hl.out fun j => padicValNat l (qj w j - 1)) (fun p : Fin q × Fin n => T.act1 (yV A.R p.1 p.2)) (fun p m => (hg p.1 p.2 m).trans (by rw [map_add, map_on …`. Establish `ha : ∀ j, N ≤ padicValNat l (qj w j - 1)` using `fun j => by`.
+
+Establish `h4 : 1 < qj w j` using `Finite.one_lt_card`. Conclude with `(padicValNat_dvd_iff_le (by omega)).1 ((Nat.modEq_iff_dvd' h4.le).1 (hN j).symm)`. Conclude with `⟨{ rN := A.rN, compat := A.compat, R := A.R, p := A.p, segmentWeightExponent := A.segmentWeightExponent, β := A.β, β_pair := A.β_pair M1 := fixd A.ρ (UC n w fun _ => ellC l _), tow1 := opOf_tow _, fin1 := A.fin, Mw := fixd A.ρ (UC n w fun _ => ⊤) act1 := T.act1, actw := T.actw, a …`.
+-/
 theorem UpperTheory.V.Pa.Lev.opOf_alt :
     _root_.UpperTheory.V.Pa.LocPAlt → ∀ (l : ℕ) [Fact l.Prime] (L Ω : Type) [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] (s : HidaSetting l L Ω) (V0 : s.Lev) (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsCoef l O] [Algebra ℤ_[l] O] (n : ℕ) (r : Resid V0.frame O n) (B : UniversalOrdinaryDeterminantRing r) (J : Ideal B.B) (D : ℕ) (b : TWBase (pairOf B.u) J Empty D) (V : s.Lev) (h : (globOf r V).Hom (globOf r V0)) (q : ℕ) (w : Fin q → Plc L) (A : LevMod b h w) (x δ : ∀ j, ((w j).adicCompletion L)ˣ), (∀ j, ((l : ℕ) : 𝓞 L) ∉ (w j).asIdeal) → (∀ j, IsUnif (x j)) → (∀ j, IsGenMod _ (ellC l _) (δ j)) → ∀ (ph ta : Fin q → (globOf r V).G₀) (N : ℕ), _root_.UpperTheory.V.Pa.Lev.LocalLevelConditions A x δ ph ta → (∀ j, qj w j ≡ 1 [MOD l ^ N]) → ∃ A' : OpMod b h q N, OpRel A' (qj w) ph ta n.factorial := by
   intro hP l hl L Ω _ _ _ _ _ _ s V0 O _ _ _ hO _ n r B J D b V h q w A x δ hw hx hδ ph ta N hok hN

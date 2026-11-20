@@ -12,6 +12,13 @@ namespace GlobalTheory.HilbFam
 set_option autoImplicit false in
 open NumberField UpperHalfPlane in
 open scoped Classical MatrixGroups nonZeroDivisors in
+/- English proof (translation)
+Unfold `_root_.GlobalTheory.HilbFam.mulMat`. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Unfold `_root_.GlobalTheory.HilbFam.stdLat at hy ⊢`. Simplify using `only [Submodule.mem_pi, Set.mem_univ, true_implies] at hy ⊢`. Introduce `i`.
+
+Simplify using `only [LinearMap.coe_restrictScalars, Matrix.vecMulLinear_apply, Matrix.vecMul, dotProduct]`. Use `Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Establish `hj : y j * (A.map Int.cast) j i = ((A j i : 𝓞 F)) • y j`. Simplify using `[Algebra.smul_def, mul_comm]`. Rewrite using `[hj]`.
+
+Conclude with `Submodule.smul_mem _ _ (hy j (Set.mem_univ j))`.
+-/
 private theorem mulMat_stdLat_le {F : Type} [Field F] [NumberField F]
     (A : Matrix (Fin 2) (Fin 2) ℤ) :
     _root_.GlobalTheory.HilbFam.mulMat (_root_.GlobalTheory.HilbFam.stdLat F) A ≤
@@ -32,6 +39,13 @@ set_option autoImplicit false in
 open NumberField UpperHalfPlane in
 open scoped Classical MatrixGroups nonZeroDivisors in
 
+/- English proof (translation)
+Introduce `F _ _ _ N L α hL`. Take `⟨_, hle⟩` from `hL`. Unfold `_root_.GlobalTheory.HilbFam.HasLevel _root_.GlobalTheory.HilbFam.twist`. Use `⟨fun x hx => Submodule.mem_sup_right ?_, sup_le ?_ (mulMat_stdLat_le _)⟩` and prove the remaining obligations. Unfold `_root_.GlobalTheory.HilbFam.mulMat`.
+
+Use `Submodule.mem_map_of_mem hx using 1` and compare the differences between its conclusion and the goal. Use extensionality with `i`. Apply the tactic sequence `fin_cases i <;> simp [Matrix.vecMul, dotProduct, Matrix.natCast_apply] <;>`. Rewrite using `[Algebra.smul_def, map_natCast, mul_comm]`. Unfold `_root_.GlobalTheory.HilbFam.mulMat`.
+
+Conclude with `(Submodule.map_mono hle).trans (mulMat_stdLat_le _)`.
+-/
 theorem _root_.GlobalTheory.HilbFam.hasLevel_twist_of_hasLevel : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (N : ℕ)
     (L : _root_.GlobalTheory.HilbFam.Lat F) (α : Matrix (Fin 2) (Fin 2) (ZMod N)),
     _root_.GlobalTheory.HilbFam.HasLevel N L → _root_.GlobalTheory.HilbFam.HasLevel N (_root_.GlobalTheory.HilbFam.twist N L α) := by

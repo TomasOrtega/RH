@@ -25,6 +25,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.ChF
 
+/- English proof (translation)
+Introduce `R _ G _ _ M Q hG hM hA hQ`. Establish `hL : Out.Laws` using `GlobalTheory.firstFiveLaws.1`. Establish `hp` using `(GlobalTheory.AmpleBaseChange.isProjBy_smooth_isProper_geometricallyIntegral _ G M hG hM hA R (𝟙 _) G.left (𝟙 _) G.hom (IsPullback.of_horiz_isIso ⟨by simp⟩)).1`. Conclude with `⟨GlobalTheory.AbLaw.CubeAffine.triv_theta_of_isProjBy hL R (G ⊗ G) (ReciprocityTheory.ChartRestriction.G.Geo.Tor.AbelianSchemeGerms.isAbelianScheme_tensor G G hG hG) (GlobalTheory.AbLaw.isProjBy_tensor R G G hp hp) Q hQ, GlobalTheory.MulAmple.finite_flat_surjective_pow hL R G hG …`.
+-/
 theorem exists_gen_theta_tensor_and_finite_flat_surjective_pow :
     ∀ (R : Type) [CommRing R] (G : Over (Spec (CommRingCat.of R))) [GrpObj G] [IsCommMonObj G] (M : LB G.left) (Q : LB (G ⊗ G).left), IsAbelianScheme G → M.IsLB → Out.RelAmple G M → Q.IsLB → (∃ θ : LB.Gen (Theta (G ⊗ G) Q), θ.IsGen) ∧ ∀ n : ℕ, 1 ≤ n → IsFinite ((𝟙 G) ^ n : G ⟶ G).left ∧ Flat ((𝟙 G) ^ n : G ⟶ G).left ∧ Surjective ((𝟙 G) ^ n : G ⟶ G).left := by
   intro R _ G _ _ M Q hG hM hA hQ

@@ -12,6 +12,19 @@ namespace Formalism.FourierDecayAlt.P.LevelPointCoordinates
 
 open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt Formalism.FourierDecayAlt.Q Formalism.FourierDecayAlt.P.PBQ
 
+/- English proof (translation)
+Introduce `Wp Wq _ _ _ _ _ _ P p F j hj w h hh γ hj1 hF hw hγ hΩ t ht e`. Establish `ht0 : t ≠ 0` using `(ht.1 (1, t) (List.mem_append_right _ (List.mem_singleton_self _))).2`. Take `⟨Fc, hFc, hag⟩` from `hE Wp Wq P p F j hj w h hh hF hw t ht e`. Rewrite using `[hC Wp Wq P p F j hj w h hh γ hF hw hγ hΩ t ht e Fc hFc hag]`. Rewrite using `[h0 Wp Wq P p Fc j hj [] h hh γ hj1 hFc ⟨fun a => a.elim0, fun a => a.elim0⟩ hγ hΩ (fun a => a.elim0) t ht0]`.
+
+Use `integral_congr_ae (Filter.Eventually.of_forall fun v => ?_)` and prove the remaining obligations. Use `show ellH h v (CutHB.phf p Fc j hj [] h hh.2 γ v (fun a => a.elim0) t) = ellH h v _`. Use `congr 1`. Establish `hpt` using `CutHB.pts Wp Wq P p j hj h hh γ hγ hΩ v`. Establish `hyD` using `hpt.2 t ht0`.
+
+Establish `hyG` using `x0_GV hj hpt.1 ht0 hγ`. Take `⟨R, hR⟩` from `hF.2.1`. Use `set Cs : Set (B.Mat P.k P.r) := {g | B.gN g ≤ R} with hCs`. Establish `hCc : IsCompact Cs` using `Formalism.FourierDecayAlt.P.PBE.isCompact_gN_le P.k P.r R`. Establish `e' : j + (P.r - j) = P.r` using `by omega`.
+
+Establish `hz : p.T.base.z = D.castV e' (liftVec P.k j (P.r - j) (p.T.bs j).z)` using `(p.T.z_lev j (by omega)).symm`. Establish `hPW` using `hW P.k j (P.r - j) P.r Wp Wq (p.T.bs j) p.T.base e' hz (j + 1) hj F Cs (fun g hg _ => hF.1 g hg) hCc (fun g hg hgC => by`. Assume the negation of the conclusion as `hne`. Conclude with `hgC (hR g hg hne))`. Use the proof step `(domP P.k P.r j p.T.base.z p.T.base.z') (isOpen_domP _ _ _ _ _)`.
+
+Use the proof step `(fun g hg => hg.1 ⟨j + 1, by omega⟩ (show j ≤ j + 1 by omega) (show j + 1 ≤ P.r by omega))`. Use the proof step `(hPr Wp Wq P p j (by omega) Cs hCc) w e _ hyD hyG`. Use `show pbT p j (by omega) Fc (x0 P.k P.r j hj (zxH h j hh.2 v) t γ) = D.uwG P.k P.r p.T.base.z p.T.base.z' (pbT p j (by omega) F) (j + 1) hj w e (x0 P.k P.r j hj (zxH h j hh.2 v) t γ)`. Unfold `pbT`. Rewrite using `[hPW]`.
+
+Establish `hDv : Dmin P.k P.r p.T.base.z p.T.base.z' (x0 P.k P.r j hj (zxH h j hh.2 v) t γ) ⟨j + 1, by omega⟩ = aVal h t`. Rewrite using `[(CutHL.leading_minors_at_base_point P.k P.r j hj p.T.base.z p.T.base.z' (zxH h j hh.2 v) t γ hpt.1 ht0 hγ).2, zxH_det h j hh v]`. Both sides reduce to the same expression. Conclude with `pbT_agree P p j hj (aVal h t) Fc _ (fun g _ hg => hag g hg) _ hyG hDv`.
+-/
 theorem side1Zero_of (hC : CutOffStep) (hE : CutOffExists) (h0 : CutHB.Side0Zero) (hW : PartialBesselProperness.PbWords)
     (hPr : PBQ.ProperDomP) : CutHB.Side1Zero := by
   intro Wp Wq _ _ _ _ _ _ P p F j hj w h hh γ hj1 hF hw hγ hΩ t ht e
@@ -51,18 +64,33 @@ end Formalism.FourierDecayAlt.P.LevelPointCoordinates
 
 namespace Formalism.FourierDecayAlt.P
 
+/- English proof (translation)
+The claim follows from `LevelPointCoordinates.side1Zero_of smooth_truncation_induction smooth_truncation_exists (SliceIntegralLemmas.side0Zero_of letters_pass_partial_bessel proper_left_variables_domain CutHB.pts) letters_pass_partial_bessel proper_left_variables_domain`.
+-/
 theorem side_one_zero : CutHB.Side1Zero :=
   LevelPointCoordinates.side1Zero_of smooth_truncation_induction smooth_truncation_exists
     (SliceIntegralLemmas.side0Zero_of letters_pass_partial_bessel proper_left_variables_domain CutHB.pts) letters_pass_partial_bessel proper_left_variables_domain
 
+/- English proof (translation)
+The claim follows from `CutHB.headBridge_of_rest proper_left_variables_domain word_smooth_partial_bessel (CutHB.side_one_of_positive_and_zero side_one_positive side_one_zero)`.
+-/
 theorem head_germ_smooth_extension : LevelPointCoordinates.HeadBridge :=
   CutHB.headBridge_of_rest proper_left_variables_domain word_smooth_partial_bessel
     (CutHB.side_one_of_positive_and_zero side_one_positive side_one_zero)
 
+/- English proof (translation)
+The claim follows from `head_jacquet_of_letter_and_head head_letter_identity head_germ_smooth_extension`.
+-/
 theorem head_jacquet : LevelPointCoordinates.HeadJ := head_jacquet_of_letter_and_head head_letter_identity head_germ_smooth_extension
 
+/- English proof (translation)
+The claim follows from `PBP.headPic_of head_jacquet`.
+-/
 theorem head_picture : PBP.HeadPic := PBP.headPic_of head_jacquet
 
+/- English proof (translation)
+The claim follows from `radial_head_of_letter_and_head head_letter_identity head_germ_smooth_extension`.
+-/
 theorem radial_head : KB.RadHead := radial_head_of_letter_and_head head_letter_identity head_germ_smooth_extension
 
 end Formalism.FourierDecayAlt.P

@@ -17,6 +17,25 @@ noncomputable section
 
 namespace GlobalTheory.UT.CoefInt
 
+/- English proof (translation)
+Introduce `V _ _ D θ lam th hlam hrig χ g b hb w x hx z J hJ`. Establish `hG : GlobalFnsSt` using `GlobalTheory.abelianSchemeLaws_all.1.globalFns`. Establish `h1` using `hx z J hJ`. Rewrite `h1` using `[pow_one]`. Take `⟨u, hu, hc, hrel⟩` from `fe_from_zero hG D (FractionRing V) th χ`.
+
+Establish `e1` using `(secRel_iff D.P.isLB _ _ _ _ _ _ _ _ _ u).1 hrel _ (lift (𝟙 (TF (R := V) (FractionRing V))) g.b).left z J hJ`. Establish `e2` using `(gen_fe (D := D) (F := FractionRing V) hG 1 χ 0).2 u hu hc _ (lift (𝟙 (TF (R := V) (FractionRing V))) g.b) z J hJ`. Rewrite `e2` using `[GlobalTheory.UU.uVal_one D _ _ _ _ hJ, _root_.one_mul, lift_fst, Over.id_left]`. Establish `e3` using `GlobalTheory.UU.val_famMult_one D (FractionRing V) (𝟙 (TF (R := V) (FractionRing V))) hJ χ 0`. Establish `hps : val (D.psi (χ + 0)) (jFK (R` using `V) (FractionRing V)) z J = val (D.psi χ) (jFK (R := V) (FractionRing V)) z J := by`.
+
+Rewrite using `[add_zero]`. Rewrite `e3` using `[Over.id_left, Category.id_comp, hps]`. Establish `e4` using `hrig _ (jFK (R := V) (FractionRing V)) z J hJ`. Establish `hrK : val D.rigK (jFK (R` using `V) (FractionRing V)) z J = rigV D (TF (R := V) (FractionRing V)).hom z J := by`. Rewrite using `[DegPre.rigK, val_pull hJ]`.
+
+Both sides reduce to the same expression. Establish `hfm : val (DegPre.famMult D (FractionRing V) 1 χ 0) (𝟙 (TF (R` using `V) (FractionRing V)).left) z J = val (D.psi χ) (jFK (R := V) (FractionRing V)) z J * val D.rigK (jFK (R := V) (FractionRing V)) z J := by`. Establish `h0 : val (D.psi 0) (jFK (R` using `V) (FractionRing V)) z J = (val D.rigK (jFK (R := V) (FractionRing V)) z J)⁻¹ := eq_inv_of_mul_eq_one_left e4`. Rewrite `e3` using `[h0]`. Conclude with `eq_mul_of_mul_inv_eq e3`.
+
+Establish `hsχ : sval (th.s χ) (lift (𝟙 (TF (R` using `V) (FractionRing V))) g.b).left z J = sval (th.s (0 + 1 • χ)) (lift (𝟙 (TF (R := V) (FractionRing V))) g.b).left z J := by`. Rewrite using `[zero_add, one_smul]`. Establish `hfst : ((lift (𝟙 (TF (R` using `V) (FractionRing V))) g.b).left ≫ (DegPre.trF D (FractionRing V) χ).left) ≫ famBase D (FractionRing V) = 𝟙 _ := by show _ ≫ (fst (TF (R := V) (FractionRing V)) D.P.A).left = _`. Rewrite using `[Category.assoc, ← Over.comp_left, ← Over.comp_left, DegPre.trF, lift_fst, lift_fst]`. Both sides reduce to the same expression.
+
+Establish `hsndO : lift (𝟙 (TF (R` using `V) (FractionRing V))) g.b ≫ DegPre.trF D (FractionRing V) χ ≫ DegPre.prB D (FractionRing V) = toUnit _ ≫ (b * D.c χ) := by`. Rewrite using `[ReciprocityTheory.ChartRestriction.G.DVR.trF_eq, ReciprocityTheory.ChartRestriction.G.DVR.tr_pr, MonObj.comp_mul, ← Category.assoc, lift_fst, Category.id_comp, lift_snd, hb, MonObj.comp_mul]`. Both sides reduce to the same expression. Establish `hsnd : ((lift (𝟙 (TF (R` using `V) (FractionRing V))) g.b).left ≫ (DegPre.trF D (FractionRing V) χ).left) ≫ (DegPre.prB D (FractionRing V)).left = (toUnit (TF (R := V) (FractionRing V))).left ≫ (b * D.c χ).left := by`. Rewrite using `[Category.assoc, ← Over.comp_left, ← Over.comp_left, ← Over.comp_left, hsndO]`.
+
+Establish `hs0 : sval (th.s 0) ((lift (𝟙 (TF (R` using `V) (FractionRing V))) g.b).left ≫ (DegPre.trF D (FractionRing V) χ).left) z J = sval (famProj D (FractionRing V) 1 0 th) ((lift (𝟙 (TF (R := V) (FractionRing V))) g.b).left ≫ (DegPre.trF D (FractionRing V) χ).left) z J := rfl`. Establish `t1` using `sval_smul' (π := famBase D (FractionRing V)) hJ ((lift (𝟙 (TF (R := V) (FractionRing V))) g.b).left ≫ (DegPre.trF D (FractionRing V) χ).left) lam (termF D (FractionRing V) 1 0 θ)`. Establish `t2` using `sval_pullOver (L := D.P.L) (ε := DegPre.famε 1) (prB_hom' D (FractionRing V)) (famφ_prB D (FractionRing V) 0) θ ((lift (𝟙 (TF (R := V) (FractionRing V))) g.b).left ≫ (DegPre.trF D (FractionRing V) χ).left) hJ`. Establish `hc0 : constVal (𝟙 (TF (R` using `V) (FractionRing V)).left) z lam = cst (FractionRing V) z lam := rfl`. Rewrite `e1` using `[hs0, hlam, t1, hfst, hc0]`.
+
+Use `erw [t2] at e1`. Rewrite `e1` using `[hsnd]`. Rewrite `h1` using `[hsχ, e1, e2, hfm, hrK]`. Use `(Units.mul_left_inj (rigV D (TF (R := V) (FractionRing V)).hom z J)).1 (h1.trans ?_)` and prove the remaining obligations. Simplify using `only [Units.val_mul, id]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem coef_int : ∀ (V : Type) [CommRing V] [IsDomain V] (D : DegPre V)
     (θ : SecOver D.P.A.hom (LB.LinComb D.P.L (D.famφB 0) (DegPre.famε 1)))
     (lam : FractionRing V) (th : Fam D (FractionRing V) 1),

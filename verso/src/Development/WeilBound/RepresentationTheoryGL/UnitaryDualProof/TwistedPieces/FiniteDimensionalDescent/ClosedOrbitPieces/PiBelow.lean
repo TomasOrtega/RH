@@ -12,6 +12,13 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 
 variable {A : Subalgebra k (Matrix (Fin N) (Fin N) k)}
 
+/- English proof (translation)
+Take `⟨heA, hei, -, hep⟩` from `he`. Take `⟨heA', hei', -, hep'⟩` from `he'`. Establish `hc : e * e' = e' * e` using `hA.1 _ heA _ heA'`. Establish `hm : e * e' ∈ A` using `A.mul_mem heA heA'`. Establish `hi : IsIdempotentElem (e * e')`.
+
+Unfold `IsIdempotentElem`. Combine the equalities or inequalities in the displayed calculation. Establish `h1 : e * e' * e = e * e'` using `by rw [mul_assoc, ← hc, ← mul_assoc, hei.eq]`. Establish `h2 : e * e' * e' = e * e'` using `by rw [mul_assoc, hei'.eq]`. Break down `hep _ hm hi h1 with h3 | h3` into its components or cases.
+
+Conclude with `h3`. Break down `hep' _ hm hi h2 with h4 | h4` into its components or cases. Conclude with `h4`. Conclude with `absurd (h3.symm.trans h4) h`.
+-/
 theorem pi_orth (hA : CR A) {e e' : Matrix (Fin N) (Fin N) k}
     (he : e ∈ primIdem A) (he' : e' ∈ primIdem A) (h : e ≠ e') : e * e' = 0 := by
   obtain ⟨heA, hei, -, hep⟩ := he
@@ -31,6 +38,27 @@ theorem pi_orth (hA : CR A) {e e' : Matrix (Fin N) (Fin N) k}
   · exact h4
   exact absurd (h3.symm.trans h4) h
 
+/- English proof (translation)
+Take `⟨heA, hei, -, hep⟩` from `he`. Establish `hrA : e * a ∈ A` using `A.mul_mem heA ha`. Use `letI iC : CommRing A := { (inferInstance : Ring A) with mul_comm := fun x y => Subtype.ext (hA.1 _ x.2 _ y.2) }`. Establish `: IsArtinianRing A` using `IsArtinianRing.of_finite k A`. Take `⟨n, z, hz⟩` from `IsArtinian.exists_pow_succ_smul_dvd (⟨e * a, hrA⟩ : A) (1 : A)`.
+
+Simplify using `only [smul_eq_mul, mul_one] at hz`. Use `set r := e * a with hr`. Use `set w : Matrix (Fin N) (Fin N) k := (z : Matrix (Fin N) (Fin N) k) with hw`. Establish `hwA : w ∈ A` using `z.2`. Establish `hz' : r ^ (n + 1) * w = r ^ n`.
+
+Use `congrArg Subtype.val hz` as an intermediate fact. Simplify using `using this`. Establish `hcomm : ∀ x ∈ A, ∀ y ∈ A, x * y = y * x` using `hA.1`. Establish `hrw : r * w = w * r` using `hcomm _ hrA _ hwA`. Establish `key : ∀ j, r ^ (n + 1) * (r * w) ^ j = r ^ (n + 1)`.
+
+Introduce `j`. Proceed by induction on `j with`. Consider the case `zero => simp`. Consider the case `succ j ih`. Rewrite using `[pow_succ (r * w) j, ← mul_assoc, ih, ← mul_assoc, ← pow_succ, pow_succ' r (n + 1), mul_assoc, hz', ← pow_succ']`.
+
+Use `set m := n + 1`. Establish `hm : r ^ m = r ^ m * (r * w) ^ m` using `(key m).symm`. Establish `hpow : (r * w) ^ m = r ^ m * w ^ m` using `(Commute.mul_pow hrw m)`. Use `set f := r ^ m * w ^ m with hf`. Establish `hfA : f ∈ A` using `A.mul_mem (A.pow_mem hrA _) (A.pow_mem hwA _)`.
+
+Establish `hrm : r ^ m = r ^ m * f` using `by rw [← hpow]; exact hm`. Establish `hfi : IsIdempotentElem f`. Unfold `IsIdempotentElem`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hf]`.
+
+Establish `: w ^ m * (r ^ m * w ^ m) = r ^ m * w ^ m * w ^ m`. Rewrite using `[← mul_assoc, hcomm _ (A.pow_mem hwA _) _ (A.pow_mem hrA _)]`. Rewrite using `[mul_assoc, this]`. Simplify using `only [mul_assoc]`. Use `_ = f := by rw [← hrm]`.
+
+Establish `hre : r * e = r` using `by rw [hr, mul_assoc, hcomm a ha e heA, ← mul_assoc, hei.eq]`. Establish `hfe : f * e = f`. Establish `: r ^ m * e = r ^ m`. Rewrite using `[show m = n + 1 from rfl, pow_succ, mul_assoc, hre]`. Rewrite using `[hf, mul_assoc, hcomm _ (A.pow_mem hwA _) e heA, ← mul_assoc, this]`.
+
+Break down `hep f hfA hfi hfe with h0 | h1` into its components or cases. Use `left`. Establish `: r ^ m = 0` using `by rw [hrm, h0, mul_zero]`. Establish `hnil : IsNilpotent (⟨r, hrA⟩ : A)` using `⟨m, by ext1; simpa using this⟩`. Use `hA.2.eq_zero _ hnil` as an intermediate fact.
+
+Simplify using `using congrArg Subtype.val this`. Use `right`. Use `⟨r ^ n * w ^ m, A.mul_mem (A.pow_mem hrA _) (A.pow_mem hwA _), ?_⟩` and prove the remaining obligations. Rewrite using `[← h1, hf, ← mul_assoc, ← pow_succ']`.
+-/
 theorem pi_field (hA : CR A) {e : Matrix (Fin N) (Fin N) k}
     (he : e ∈ primIdem A) {a : Matrix (Fin N) (Fin N) k} (ha : a ∈ A) : e * a = 0 ∨ ∃ b ∈ A, e * a * b = e := by
   obtain ⟨heA, hei, -, hep⟩ := he
@@ -84,6 +112,13 @@ theorem pi_field (hA : CR A) {e : Matrix (Fin N) (Fin N) k}
     refine ⟨r ^ n * w ^ m, A.mul_mem (A.pow_mem hrA _) (A.pow_mem hwA _), ?_⟩
     rw [← h1, hf, ← mul_assoc, ← pow_succ']
 
+/- English proof (translation)
+Rewrite using `[linearIndependent_iff']`. Introduce `s g hs i hi`. Establish `hmul : (i : Matrix (Fin N) (Fin N) k) * ∑ j ∈ s, g j • (j : Matrix (Fin N) (Fin N) k) = g i • (i : Matrix (Fin N) (Fin N) k)`. Rewrite using `[Finset.mul_sum, Finset.sum_eq_single i]`. Rewrite using `[mul_smul_comm, i.2.2.1.eq]`.
+
+Introduce `j _ hji`. Rewrite using `[mul_smul_comm, pi_orth hA i.2 j.2 (fun h => hji (Subtype.ext h.symm)), smul_zero]`. Introduce `h`. Conclude with `absurd hi h`. Rewrite `hmul` using `[hs, mul_zero]`.
+
+Break down `smul_eq_zero.mp hmul.symm with h | h` into its components or cases. Conclude with `h`. Conclude with `absurd h i.2.2.2.1`.
+-/
 theorem pi_lin (hA : CR A) :
     LinearIndependent k (fun e : primIdem A => (e : Matrix (Fin N) (Fin N) k)) := by
   rw [linearIndependent_iff']
@@ -99,10 +134,28 @@ theorem pi_lin (hA : CR A) :
   · exact h
   · exact absurd h i.2.2.2.1
 
+/- English proof (translation)
+Use `(pi_lin hA).finite` as an intermediate fact. Conclude with `Set.finite_coe_iff.mp this`.
+-/
 theorem pi_fin (hA : CR A) : (primIdem A).Finite := by
   have := (pi_lin hA).finite
   exact Set.finite_coe_iff.mp this
 
+/- English proof (translation)
+Introduce `n`. Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Introduce `g hn hgA hgi hg0`. Distinguish the cases in `hprim : ∀ f ∈ A, IsIdempotentElem f → f * g = f → f = 0 ∨ f = g`.
+
+Conclude with `⟨g, ⟨hgA, hgi, hg0, hprim⟩, hgi.eq⟩`. Use `push Not at hprim`. Take `⟨h, hhA, hhi, hhg, hh0, hhg'⟩` from `hprim`. Establish `hgh : g * h = h` using `by rw [hA.1 _ hgA _ hhA, hhg]`. Establish `hlt : h.rank < g.rank`.
+
+Unfold `Matrix.rank`. Apply `Submodule.finrank_lt_finrank_of_lt` to reduce the goal to its premises. Use `lt_of_le_of_ne ?_ ?_` and prove the remaining obligations. Rewrite using `[← hgh, Matrix.mulVecLin_mul]`. Conclude with `LinearMap.range_comp_le_range _ _`.
+
+Introduce `heq`. Apply `hhg'` to reduce the goal to its premises. Establish `: ∀ v, h *ᵥ (g *ᵥ v) = g *ᵥ v`. Introduce `v`. Establish `hv : g *ᵥ v ∈ LinearMap.range h.mulVecLin` using `heq ▸ ⟨v, rfl⟩`.
+
+Take `⟨u, hu⟩` from `hv`. Simplify using `only [Matrix.mulVecLin_apply] at hu`. Rewrite using `[← hu, Matrix.mulVec_mulVec, hhi.eq]`. Establish `hhg2 : h * g = g`. Apply `Matrix.toLin'.injective` to reduce the goal to its premises.
+
+Use `LinearMap.ext fun v => ?_` and prove the remaining obligations. Rewrite using `[Matrix.toLin'_apply, Matrix.toLin'_apply, ← Matrix.mulVec_mulVec, this v]`. Rewrite using `[← hhg2, hhg]`. Take `⟨p, hp, hph⟩` from `ih _ (hn ▸ hlt) h rfl hhA hhi hh0`. Use `⟨p, hp, ?_⟩` and prove the remaining obligations.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem pi_below (hA : CR A) : ∀ (n : ℕ) (g : Matrix (Fin N) (Fin N) k), g.rank = n → g ∈ A → IsIdempotentElem g → g ≠ 0 →
     ∃ p ∈ primIdem A, p * g = p := by
   intro n
@@ -138,6 +191,17 @@ theorem pi_below (hA : CR A) : ∀ (n : ℕ) (g : Matrix (Fin N) (Fin N) k), g.r
     _ = p * h := by rw [mul_assoc, hhg]
     _ = p := hph
 
+/- English proof (translation)
+Use `set s := ∑ e ∈ (pi_fin hA).toFinset, e with hs`. Establish `hsA : s ∈ A` using `A.sum_mem fun e he => ((pi_fin hA).mem_toFinset.mp he).1`. Establish `hps : ∀ p ∈ primIdem A, p * s = p`. Introduce `p hp`. Rewrite using `[hs, Finset.mul_sum, Finset.sum_eq_single p]`.
+
+Conclude with `hp.2.1.eq`. Introduce `j hj hjp`. Conclude with `pi_orth hA hp ((pi_fin hA).mem_toFinset.mp hj) (Ne.symm hjp)`. Introduce `h`. Conclude with `absurd ((pi_fin hA).mem_toFinset.mpr hp) h`.
+
+Establish `hss : s * s = s`. Rewrite using `[hs, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun e he => ?_` and prove the remaining obligations. Conclude with `hps e ((pi_fin hA).mem_toFinset.mp he)`. Assume the negation of the conclusion as `hne`.
+
+Establish `hu0 : 1 - s ≠ 0` using `fun h => hne (sub_eq_zero.mp h).symm`. Establish `hui : IsIdempotentElem (1 - s)`. Unfold `IsIdempotentElem`. Rewrite using `[sub_mul, one_mul, mul_sub, mul_one, hss, sub_self, sub_zero]`. Take `⟨p, hp, hpu⟩` from `pi_below hA _ (1 - s) rfl (A.sub_mem A.one_mem hsA) hui hu0`.
+
+Rewrite `hpu` using `[mul_sub, mul_one, hps p hp, sub_self]`. Conclude with `hp.2.2.1 hpu.symm`.
+-/
 theorem pi_sum (hA : CR A) : ∑ e ∈ (pi_fin hA).toFinset, e = 1 := by
   set s := ∑ e ∈ (pi_fin hA).toFinset, e with hs
   have hsA : s ∈ A := A.sum_mem fun e he => ((pi_fin hA).mem_toFinset.mp he).1

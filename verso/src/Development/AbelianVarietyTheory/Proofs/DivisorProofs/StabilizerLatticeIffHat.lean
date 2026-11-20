@@ -8,17 +8,38 @@ namespace GlobalTheory.KMStab
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] {n : ℕ}
 
+/- English proof (translation)
+Unfold `hat latHat`. Use `congr 2`.
+-/
 theorem hat_eq_latHat (L : Set (Fin n → E)) :
     ((hat F L : AddSubgroup (Fin n → RA F E)) : Set (Fin n → RA F E)) = (latHat F E L : Set _) := by
   unfold hat latHat
   congr 2
 
+/- English proof (translation)
+Establish `h` using `hat_eq_latHat (F := F) L`. Prove the components needed by the constructor for the conclusion. Introduce `hy`. Establish `: y ∈ ((hat F L : AddSubgroup _) : Set _)` using `hy`. Rewrite `this` using `[h]`.
+
+Conclude with `this`. Introduce `hy`. Establish `: y ∈ ((latHat F E L : AddSubgroup _) : Set _)` using `hy`. Rewrite `this` using `[← h]`. Conclude with `this`.
+-/
 theorem mem_hat_iff (L : Set (Fin n → E)) (y : Fin n → RA F E) : y ∈ hat F L ↔ y ∈ latHat F E L := by
   have h := hat_eq_latHat (F := F) L
   constructor
   · intro hy; have : y ∈ ((hat F L : AddSubgroup _) : Set _) := hy; rw [h] at this; exact this
   · intro hy; have : y ∈ ((latHat F E L : AddSubgroup _) : Set _) := hy; rw [← h] at this; exact this
 
+/- English proof (translation)
+Establish `hdet : IsUnit k.det` using `hk.1`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, h2, h3⟩ y`. Rewrite using `[← mem_hat_iff, ← mem_hat_iff]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hy`. Take `⟨z, hz, hzk⟩` from `h2 y hy`. Establish `: k *ᵥ y = z + y` using `by rw [one_smul] at hzk; rw [← hzk]; abel`. Rewrite using `[this]`. Conclude with `add_mem hz hy`.
+
+Introduce `hy`. Take `⟨z, hz, hzk⟩` from `h3 _ hy`. Establish `hinj : z = y`. Establish `e1 : k⁻¹ *ᵥ (k *ᵥ z) = z` using `by rw [Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ hdet, Matrix.one_mulVec]`. Establish `e2 : k⁻¹ *ᵥ (k *ᵥ y) = y` using `by rw [Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ hdet, Matrix.one_mulVec]`.
+
+Rewrite using `[← e1, ← e2, hzk]`. Rewrite using `[← hinj]`. Conclude with `hz`. Introduce `hS`. Use `⟨hk, fun x hx => ?_, fun x hx => ?_⟩` and prove the remaining obligations.
+
+Establish `hkx : k *ᵥ x ∈ hat F L` using `(mem_hat_iff L _).2 ((hS x).1 ((mem_hat_iff L x).1 hx))`. Conclude with `⟨k *ᵥ x - x, sub_mem hkx hx, by rw [one_smul]⟩`. Establish `e : k *ᵥ (k⁻¹ *ᵥ x) = x`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ hdet, Matrix.one_mulVec]`. Use `⟨k⁻¹ *ᵥ x, (mem_hat_iff L _).2 ((hS _).2 ?_), e⟩` and prove the remaining obligations.
+
+Rewrite using `[e]`. Conclude with `(mem_hat_iff L x).1 hx`.
+-/
 theorem isKM_one_iff_stabHat (c : E ≃ₐ[F] E) (G : Matrix (Fin n) (Fin n) E) (L : Set (Fin n → E))
     (k : Matrix (Fin n) (Fin n) (RA F E)) (hk : IsUA c G k) :
     IsKM c G L 1 k ↔ GlobalTheory.Mem.Vol.StabHat F L k := by
@@ -47,6 +68,9 @@ theorem isKM_one_iff_stabHat (c : E ≃ₐ[F] E) (G : Matrix (Fin n) (Fin n) E) 
       refine ⟨k⁻¹ *ᵥ x, (mem_hat_iff L _).2 ((hS _).2 ?_), e⟩
       rw [e]; exact (mem_hat_iff L x).1 hx
 
+/- English proof (translation)
+Introduce `E _ _ _ r G L k hk`. Conclude with `isKM_one_iff_stabHat _ G L k hk.1`.
+-/
 theorem isKM_one_iff_stabHat_of_isSA : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ)
     (G : Matrix (Fin r) (Fin r) E)
     (L : Set (Fin r → E)) (k : Matrix (Fin r) (Fin r) (RA (maximalRealSubfield E) E)), IsSA G k →

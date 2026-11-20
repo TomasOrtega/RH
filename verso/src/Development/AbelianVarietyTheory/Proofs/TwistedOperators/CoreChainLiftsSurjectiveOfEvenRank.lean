@@ -25,6 +25,17 @@ noncomputable section
 
 namespace GlobalTheory.CoreOnto
 
+/- English proof (translation)
+Introduce `D hq hsz T L μ0 hL sc hgap G W M hM v MP _hcart y hy x hx`. Establish `hRL` using `GlobalTheory.T.selfDualLattice_changeOfLattice_laws D`. Take `⟨⟨r₀, hr₀⟩, hst₀⟩` from `hS D hq T L μ0 hL sc G W M hM 0 (Nat.zero_le _)`. Take `⟨r, Mm, _hr, Θ, hR, hB⟩` from `hE D hq hsz T L μ0 hL sc hgap G W M hM v r₀ MP hr₀ D.R.m le_rfl`. Establish `hcom : (gridCom W).Is` using `hC D hq hsz T L μ0 hL sc hgap G W M hM`.
+
+Establish `hs0 : (gridStage G v 0 r₀ MP).Is (gridCom W) 0` using `hst₀ r₀ hr₀ v MP`. Establish `hsurj` using `hO D (gridCom W) hcom (gridStage G v 0 r₀ MP) hs0 D.R.m le_rfl _ Θ hR`. Establish `hyCC : y ∈ (gridStage G v 0 r₀ MP).CC (gridCom W)`. Establish `h` using `(hRL.2.1 (G.V (.core 0)) r₀ W.θ _ MP (lev G (.core 0) : Set _)).1`. Conclude with `(SetLike.ext_iff.mp h y).mpr hy`.
+
+Take `⟨y', hy'⟩` from `hsurj ⟨y, hyCC⟩`. Establish `hx' : x ∈ (gridStage G v 0 r₀ MP).KF`. Establish `h` using `(hRL.2.1 (G.V (.core 0)) r₀ W.θ _ MP (lev G (.core 0) : Set _)).2.1`. Rewrite `hx` using `[← h]`. Conclude with `hx`.
+
+Establish `key` using `hB y' x hx'`. Rewrite `key` using `[hy']`. Use `Submodule.span_mono ?_ key` and prove the remaining obligations. Introduce and unpack `F₀ ⟨w, Ψ, hrap, hstep, h0, hm⟩`. Use `⟨Ψ, ⟨hrap, hstep⟩, h0, ?_⟩` and prove the remaining obligations.
+
+Establish `htop : y'.1 ∈ CoreForms G W.θ D.R.m Mm`. Establish `h` using `(hRL.2.1 (G.V (.core D.R.m)) r W.θ _ Mm (lev G (.core D.R.m) : Set _)).1`. Conclude with `(SetLike.ext_iff.mp h y'.1).mp y'.2`. Take `⟨c, hc, ξ, hξ⟩` from `hT D hq T L μ0 hL sc G W M hM Mm _ htop w`. Conclude with `⟨c, hc, ξ, hm.trans hξ⟩`.
+-/
 theorem coreOnto_of_chain (hO : ∀ D : D7, GlobalTheory.EvenOnto.OntoAll D) (hC : ComOK) (hS : StageOK) (hE : ChainEx) (hT : TopCols) :
     CoreOnto := by
   intro D hq hsz T L μ0 hL sc hgap G W M hM v MP _hcart y hy x hx

@@ -13,5 +13,8 @@ attribute [local instance high] GlobalTheory.SplitWeil.matrixMeasurableSpace
 open GlobalTheory.HaarR
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.HaarR.finite_r | exact GlobalTheory.HaarR.finite_r | (intros; apply GlobalTheory.HaarR.finite_r <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.levyProductMap_haar_finiteOnCompacts : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] (n : Type) [Fintype n] [DecidableEq n] (c p : ℕ), 1 ≤ p → p ≤ c → ∀ (ν : Measure k), ν.IsAddHaarMeasure → ∀ m : Measure (GL n k), m.IsHaarMeasure → IsFiniteMeasureOnCompacts ((m.prod (volN ν n c p)).map (prodR p)) := by
   first | exact @GlobalTheory.HaarR.finite_r | exact GlobalTheory.HaarR.finite_r | (intros; apply GlobalTheory.HaarR.finite_r <;> assumption)

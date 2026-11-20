@@ -48,14 +48,33 @@ def swapIdx (r m : ℕ) : Idx r m ≃ Idx r m where
   left_inv u := by rcases u with i | k | i <;> rfl
   right_inv u := by rcases u with i | k | i <;> rfl
 
+/- English proof (translation)
+Apply the tactic sequence `rcases u with i | k | i <;> simp [lev, swapIdx]`.
+-/
 theorem lev_swapIdx {r m : ℕ} (S : Finset (Fin r)) (u : Idx r m) : lev m S (swapIdx r m u) = - lev m S u := by
   rcases u with i | k | i <;> simp [lev, swapIdx]
 
+/- English proof (translation)
+Use extensionality with `a u`. Apply the tactic sequence `rcases u with i | k | i <;> rfl`.
+-/
 theorem frm_swap {A : Type} {n r m : ℕ} (X : Matrix (Fin n) (Fin r) A) (Z : Matrix (Fin n) (Fin m) A)
     (Y : Matrix (Fin n) (Fin r) A) : frm Y Z X = (frm X Z Y).submatrix id (swapIdx r m) := by
   ext a u
   rcases u with i | k | i <;> rfl
 
+/- English proof (translation)
+Establish `yx : cT s Y * J * X = 1`. Establish `cc : ∀ W : Matrix (Fin n) (Fin r) L, cT s (cT s W) = W` using `fun W => Matrix.ext fun i j => hs _`. Use `congrArg (cT s) xy` as an intermediate fact. Rewrite `this` using `[Formalism.UG.cT_mul, Formalism.UG.cT_mul, cc, hJ, Formalism.UG.cT_one, ← Matrix.mul_assoc]`. Then use the resulting hypothesis. Set `sw` to `swapIdx r m`.
+
+Establish `a1 : (Qi.submatrix sw id) * frm Y Z X = 1`. Rewrite using `[frm_swap, ← Matrix.submatrix_mul _ _ sw id sw Function.bijective_id, hl, Matrix.submatrix_one_equiv]`. Establish `a2 : frm Y Z X * (Qi.submatrix sw id) = 1`. Rewrite using `[frm_swap, Matrix.submatrix_mul_equiv, hr]`. Both sides reduce to the same expression.
+
+Establish `b1` using `GlobalTheory.T.frame_stabilizer_flag_criterion L s hs n r m J X Y Z Qi hJ xx yy xy xz yz hl hr S g hg hu h1`. Establish `b2` using `GlobalTheory.T.frame_stabilizer_flag_criterion L s hs n r m J Y X Z (Qi.submatrix sw id) hJ yy xx yx yz xz a1 a2 S g hg hu h2`. Use extensionality with `u v`. Simplify using `only [bd, Matrix.of_apply]`. Use `split_ifs with h`.
+
+Both sides reduce to the same expression. Break down `lt_or_gt_of_ne h with h3 | h3` into its components or cases. Establish `h4 : lev m S (sw v) < lev m S (sw u)`. Rewrite using `[lev_swapIdx, lev_swapIdx]`. Use linear arithmetic over natural numbers and integers.
+
+Use `b2 (i := sw u) (j := sw v) h4` as an intermediate fact. Rewrite `this` using `[frm_swap]`. Establish `e : (Qi.submatrix sw id * g * (frm X Z Y).submatrix id sw) (sw u) (sw v) = (Qi * g * frm X Z Y) (sw (sw u)) (sw (sw v))`. Simplify using `[Matrix.mul_apply, Matrix.submatrix_apply]`. Establish `e2 : ∀ w, sw (sw w) = w` using `fun w => (swapIdx r m).symm_apply_apply w`.
+
+Rewrite `this` using `[e, e2, e2]`. Conclude with `this.symm`. Conclude with `(b1 h3).symm`.
+-/
 theorem bd_eq_self {L : Type} [Field L] (s : L →+* L) (hs : ∀ x, s (s x) = x) {n r m : ℕ}
     {J : Matrix (Fin n) (Fin n) L} {X Y : Matrix (Fin n) (Fin r) L} {Z : Matrix (Fin n) (Fin m) L}
     {Qi : Matrix (Idx r m) (Fin n) L} (hJ : cT s J = J) (xx : cT s X * J * X = 0) (yy : cT s Y * J * Y = 0)
@@ -95,16 +114,42 @@ section Levi
 variable {σ : E →ₐ[F] E} {n r m : ℕ} {J : Matrix (Fin n) (Fin n) E} {X Y : Matrix (Fin n) (Fin r) E}
   {Z : Matrix (Fin n) (Fin m) E} {Qi : Matrix (Idx r m) (Fin n) E}
 
+/- English proof (translation)
+Use `group`.
+-/
 theorem block_frame_conjugation_identity {G : Type} [Group G] (a b c : G) : (a * b⁻¹) * c * (a * b⁻¹)⁻¹ = a * (b⁻¹ * c * b) * a⁻¹ := by group
 
+/- English proof (translation)
+Use `group`.
+-/
 theorem mul_eq_mul_conj_alt {G : Type} [Group G] (a b : G) : a * b = b * (b⁻¹ * a * b) := by group
 
 omit [NumberField F] [NumberField E] in
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem coord_mul (hr : frm X Z Y * Qi = 1) (a b : Matrix (Fin n) (Fin n) E) :
     Qi * (a * b) * frm X Z Y = (Qi * a * frm X Z Y) * (Qi * b * frm X Z Y) := by
   calc Qi * (a * b) * frm X Z Y = Qi * (a * (frm X Z Y * Qi) * b) * frm X Z Y := by rw [hr, Matrix.mul_one]
     _ = _ := by simp only [Matrix.mul_assoc]
 
+/- English proof (translation)
+Establish `hs : ∀ x, (σ : E →+* E) ((σ : E →+* E) x) = x` using `sigma_sigma h`. Establish `hJ' : cT (σ : E →+* E) J = J` using `Matrix.ext fun i j => hJ.1 _ _`. Establish `tri` using `fun (g : GRat σ J) (hg : ∀ j ∈ S, StabUpTo X g.1.1 j) => GlobalTheory.T.frame_stabilizer_flag_criterion E (σ : E →+* E) hs n r m J X Y Z Qi hJ' hW.xx hW.yy hW.xy xz yz hl hr S g.1.1 g.1.isUnit g.2 hg`. Take `⟨g, hg, hμ⟩` from `GlobalTheory.T.regular_semisimple_flag_stabilizer F E σ h n J hJ r X Y hW S δ hδ hst`. Take `⟨μ, hμdef⟩ : ∃ μ : GRat σ J, μ = g⁻¹ * δ * g` from `⟨_, rfl⟩`.
+
+Rewrite `hμ` using `[← hμdef]`. Establish `hμb : bd (lev m S) (Qi * μ.1.1 * frm X Z Y) = Qi * μ.1.1 * frm X Z Y` using `bd_eq_self (σ : E →+* E) hs hJ' hW.xx hW.yy hW.xy xz yz hl hr S μ.1.isUnit μ.2 (fun j hj => (hμ j hj).1) (fun j hj => (hμ j hj).2)`. Establish `tg` using `tri g hg`. Establish `tδ` using `tri δ hst`. Establish `tμ : (Qi * μ.1.1 * frm X Z Y).BlockTriangular (lev m S)` using `tri μ fun j hj => (hμ j hj).1`.
+
+Establish `rel : δ * g = g * μ` using `by rw [hμdef]; exact mul_eq_mul_conj_alt δ g`. Establish `cm : ∀ a b : GRat σ J, Qi * (a * b).1.1 * frm X Z Y = (Qi * a.1.1 * frm X Z Y) * (Qi * b.1.1 * frm X Z Y)` using `fun a b => coord_mul hr a.1.1 b.1.1`. Establish `rel' : (Qi * δ.1.1 * frm X Z Y) * (Qi * g.1.1 * frm X Z Y) = (Qi * g.1.1 * frm X Z Y) * (Qi * μ.1.1 * frm X Z Y)`. Rewrite using `[← cm, ← cm, rel]`. Establish `rel2` using `congrArg (bd (lev m S)) rel'`.
+
+Rewrite `rel2` using `[bd_mul tδ tg, bd_mul tg tμ, hμb]`. Take `⟨hU, hUJ⟩` from `GlobalTheory.T.frame_stabilizer_flag_converse E (σ : E →+* E) hs n r m J X Y Z Qi hJ' hW.xx hW.yy hW.xy xz yz hl hr S g.1.1 g.1.isUnit g.2 tg`. Take `⟨g', hg'def⟩ : ∃ g' : GRat σ J, g'.1.1 = frm X Z Y * bd (lev m S) (Qi * g.1.1 * frm X Z Y) * Qi` from `⟨⟨hU.unit, hUJ⟩, rfl⟩`. Use `set B := bd (lev m S) (Qi * g.1.1 * frm X Z Y) with hB`. Establish `hg' : Qi * g'.1.1 * frm X Z Y = B`.
+
+Rewrite using `[hg'def]`. Combine the equalities or inequalities in the displayed calculation. Establish `e3 : B * (Qi * (g'⁻¹).1.1 * frm X Z Y) = 1`. Rewrite using `[← hg', ← cm, mul_inv_cancel]`. Express the relevant statement in the definitionally equal form `Qi * 1 * frm X Z Y = 1`.
+
+Rewrite using `[Matrix.mul_one, hl]`. Establish `conj : (g' * g⁻¹) * δ * (g' * g⁻¹)⁻¹ = g' * μ * g'⁻¹` using `by rw [hμdef]; exact block_frame_conjugation_identity g' g δ`. Use `⟨g' * μ * g'⁻¹, isConj_iff.2 ⟨g' * g⁻¹, conj⟩, ?_⟩` and prove the remaining obligations. Establish `e1 : (g' * μ * g'⁻¹) * g' = g' * μ` using `inv_mul_cancel_right _ _`. Establish `e2 : (Qi * (g' * μ * g'⁻¹).1.1 * frm X Z Y) * B = B * (Qi * μ.1.1 * frm X Z Y)`.
+
+Rewrite using `[← hg', ← cm, ← cm, e1]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_assoc _ B, e3, Matrix.mul_one]`. Use `_ = bd (lev m S) (Qi * δ.1.1 * frm X Z Y) * B * (Qi * (g'⁻¹).1.1 * frm X Z Y) := by`. Rewrite using `[e2, rel2]`.
+
+Use `_ = _ := by rw [Matrix.mul_assoc, e3, Matrix.mul_one]`.
+-/
 theorem exists_conj_levi (h : IsCMExt F E σ) (hJ : IsHermND σ J) (hW : IsWittFrame σ J X Y)
     (xz : cT (σ : E →+* E) X * J * Z = 0) (yz : cT (σ : E →+* E) Y * J * Z = 0)
     (hl : Qi * frm X Z Y = 1) (hr : frm X Z Y * Qi = 1) (S : Finset (Fin r)) (δ : GRat σ J)
@@ -164,6 +209,9 @@ variable {σ : E →ₐ[F] E} {n r m : ℕ} {J : Matrix (Fin n) (Fin n) E} {X Y 
 
 omit [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] in
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.Yla6.main A M B hA hM hB i j`.
+-/
 theorem norm_matrix_triple_product_le {a b c d : Type} [Fintype b] [Fintype c] (A : Matrix a b ℂ) (M : Matrix b c ℂ)
     (B : Matrix c d ℂ) {α μ β : ℝ} (hA : ∀ i j, ‖A i j‖ ≤ α) (hM : ∀ i j, ‖M i j‖ ≤ μ) (hB : ∀ i j, ‖B i j‖ ≤ β)
     (i : a) (j : d) : ‖(A * M * B) i j‖ ≤ Fintype.card b * Fintype.card c * (α * μ * β) :=
@@ -171,6 +219,9 @@ theorem norm_matrix_triple_product_le {a b c d : Type} [Fintype b] [Fintype c] (
 
 omit [Field F] [NumberField F] [Algebra F E] in
 
+/- English proof (translation)
+The claim follows from `((Finset.single_le_sum (f := fun v => ‖φ (M i v)‖) (fun _ _ => norm_nonneg _) (Finset.mem_univ j)).trans (Finset.single_le_sum (f := fun u => ∑ v, ‖φ (M u v)‖) (fun _ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _) (Finset.mem_univ i))).trans (Finset.single_le_sum (f := fun ψ : …`.
+-/
 theorem entry_le_sum {a b : Type} [Fintype a] [Fintype b] (M : Matrix a b E) (φ : E →+* ℂ) (i : a) (j : b) :
     ‖φ (M i j)‖ ≤ ∑ ψ : E →+* ℂ, ∑ u, ∑ v, ‖ψ (M u v)‖ :=
   ((Finset.single_le_sum (f := fun v => ‖φ (M i v)‖) (fun _ _ => norm_nonneg _) (Finset.mem_univ j)).trans
@@ -179,6 +230,27 @@ theorem entry_le_sum {a b : Type} [Fintype a] [Fintype b] (M : Matrix a b E) (φ
     (Finset.single_le_sum (f := fun ψ : E →+* ℂ => ∑ u, ∑ v, ‖ψ (M u v)‖)
       (fun _ _ => Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _) (Finset.mem_univ φ))
 
+/- English proof (translation)
+Introduce `ι _ _ b P P' M w B R hw hPP hP hN hBP hBP' hBM hR u v`. Use `set T := diagonal (fun u => (w u : ℂ)) * M * diagonal (fun u => (((w u)⁻¹ : ℝ) : ℂ)) with hTd`. Establish `hdet : IsUnit P.det` using `Matrix.isUnit_det_of_right_inverse hPP`. Establish `hinv : P⁻¹ = P'` using `Matrix.inv_eq_right_inv hPP`. Establish `hP'P : P' * P = 1` using `by rw [← hinv]; exact Matrix.nonsing_inv_mul P hdet`.
+
+Establish `hP' : P'.BlockTriangular b` using `by haveI := P.invertibleOfIsUnitDet hdet`. Rewrite using `[← hinv]`. Conclude with `Matrix.blockTriangular_inv_of_blockTriangular hP`. Establish `e : P * diagonal (fun u => (w u : ℂ)) * M * diagonal (fun u => (((w u)⁻¹ : ℝ) : ℂ)) * P' = P * T * P'`. Simplify using `only [hTd, Matrix.mul_assoc]`.
+
+Rewrite `hN`, the goal using `[e]`. Establish `hT : T.BlockTriangular b`. Establish `e2 : T = P' * (P * T * P') * P`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e2]`.
+
+Conclude with `(hP'.mul hN).mul hP`. Establish `hB0 : 0 ≤ B` using `(norm_nonneg _).trans (hBM u u)`. Establish `hR0 : 0 ≤ R`. Establish `h1` using `hR u u rfl`. Assume the negation of the conclusion as `hneg`.
+
+Use `push_neg at hneg`. Use polynomial arithmetic with `[hw u]`. Rewrite using `[bd_mul (hP.mul hT) hP', bd_mul hP hT]`. Establish `hbP : ∀ x y, ‖bd b P x y‖ ≤ B` using `fun x y => by`. Simplify using `only [bd, Matrix.of_apply]`.
+
+Use `split_ifs`. Conclude with `hBP x y`. Simplify using `using hB0`. Establish `hbP' : ∀ x y, ‖bd b P' x y‖ ≤ B` using `fun x y => by`. Simplify using `only [bd, Matrix.of_apply]`.
+
+Use `split_ifs`. Conclude with `hBP' x y`. Simplify using `using hB0`. Establish `hbT : ∀ x y, ‖bd b T x y‖ ≤ B * R` using `fun x y => by`. Simplify using `only [bd, Matrix.of_apply]`.
+
+Use `split_ifs with hxy`. Establish `eT : T x y = (w x : ℂ) * M x y * (((w y)⁻¹ : ℝ) : ℂ)`. Simplify using `only [hTd, Matrix.mul_diagonal, Matrix.diagonal_mul]`. Rewrite using `[eT, norm_mul, norm_mul, Complex.norm_real, Complex.norm_real, Real.norm_of_nonneg (hw x).le, Real.norm_of_nonneg (inv_nonneg.2 (hw y).le)]`. Establish `h1` using `hR x y hxy`.
+
+Establish `hwy` using `hw y`. Combine the equalities or inequalities in the displayed calculation. Simplify using `using mul_nonneg hB0 hR0`. Use `norm_matrix_triple_product_le (bd b P) (bd b T) (bd b P') hbP hbT hbP' u v` as an intermediate fact. Use `this.trans (le_of_eq ?_)` and prove the remaining obligations.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem block_diagonal_bound_weighted : ∀ {ι : Type} [Fintype ι] [DecidableEq ι] (b : ι → ℤ) (P P' M : Matrix ι ι ℂ) (w : ι → ℝ) (B R : ℝ), (∀ u, 0 < w u) → P * P' = 1 → P.BlockTriangular b → (P * diagonal (fun u => (w u : ℂ)) * M * diagonal (fun u => (((w u)⁻¹ : ℝ) : ℂ)) * P').BlockTriangular b → (∀ u v, ‖P u v‖ ≤ B) → (∀ u v, ‖P' u v‖ ≤ B) → (∀ u v, ‖M u v‖ ≤ B) → (∀ u v, b u = b v → w u ≤ R * w v) → ∀ u v, ‖bd b (P * diagonal (fun u => (w u : ℂ)) * M * diagonal (fun u => (((w u)⁻¹ : ℝ) : ℂ)) * P') u v‖ ≤ (Fintype.card ι : ℝ) ^ 2 * B ^ 3 * R := by
   intro ι _ _ b P P' M w B R hw hPP hP hN hBP hBP' hBM hR u v
   set T := diagonal (fun u => (w u : ℂ)) * M * diagonal (fun u => (((w u)⁻¹ : ℝ) : ℂ)) with hTd
@@ -233,6 +305,15 @@ theorem block_diagonal_bound_weighted : ∀ {ι : Type} [Fintype ι] [DecidableE
   refine this.trans (le_of_eq ?_)
   ring
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ h n r m J X Y Z Qi hJ hW xz yz hl hr p hp w τ S`. Establish `cTm : ∀ {a b : ℕ} (A : Matrix (Fin a) (Fin b) E), cT (starRingEnd ℂ) (A.map τ.1) = (cT (σ : E →+* E) A).map τ.1` using `fun A => Matrix.ext fun i j => (h.2.2.2 τ.1 (A j i)).symm`. Establish `rel : ∀ {a b : ℕ} (A : Matrix (Fin n) (Fin a) E) (B : Matrix (Fin n) (Fin b) E) (M : Matrix (Fin a) (Fin b) E), cT (σ : E →+* E) A * J * B = M → cT (starRingEnd ℂ) (A.map τ.1) * J.map τ.1 * B.map τ.1 = M.map τ.1` using `fun A B M e => by rw [cTm, ← Matrix.map_mul, ← Matrix.map_mul, e]`. Establish `hfrm : frm (X.map τ.1) (Z.map τ.1) (Y.map τ.1) = (frm X Z Y).map τ.1`. Use extensionality with `a u`.
+
+Apply the tactic sequence `rcases u with i | k | i <;> rfl`. Establish `one_map : ∀ {ι : Type} [Fintype ι] [DecidableEq ι], ((1 : Matrix ι ι E).map τ.1) = 1` using `Matrix.map_one _ (map_zero _) (map_one _)`. Establish `zero_map : ∀ {a b : Type}, ((0 : Matrix a b E).map τ.1) = 0` using `Matrix.map_zero _ (map_zero _)`. Establish `hJc : cT (starRingEnd ℂ) (J.map τ.1) = J.map τ.1`. Rewrite using `[cTm]`.
+
+Conclude with `congrArg (Matrix.map · τ.1) (Matrix.ext fun i j => hJ.1 _ _)`. Establish `hl' : Qi.map τ.1 * frm (X.map τ.1) (Z.map τ.1) (Y.map τ.1) = 1`. Rewrite using `[hfrm, ← Matrix.map_mul, hl, one_map]`. Establish `hr' : frm (X.map τ.1) (Z.map τ.1) (Y.map τ.1) * Qi.map τ.1 = 1`. Rewrite using `[hfrm, ← Matrix.map_mul, hr, one_map]`.
+
+Establish `t` using `GlobalTheory.T.frame_stabilizer_flag_criterion ℂ (starRingEnd ℂ) (fun x => star_star x) n r m (J.map τ.1) (X.map τ.1) (Y.map τ.1) (Z.map τ.1) (Qi.map τ.1) hJc ((rel X X 0 hW.xx).trans zero_map) ((rel Y Y 0 hW.yy).trans zero_map) ((rel X Y 1 hW.xy).trans one_map) ((rel X Z 0 xz).t …`. Rewrite `t` using `[hfrm]`. Then use the resulting hypothesis.
+-/
 theorem parabolic_triangular_frame : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (n r m : ℕ) (J : Matrix (Fin n) (Fin n) E) (X Y : Matrix (Fin n) (Fin r) E) (Z : Matrix (Fin n) (Fin m) E) (Qi : Matrix (Idx r m) (Fin n) E), IsHermND σ J → IsWittFrame σ J X Y → cT (σ : E →+* E) X * J * Z = 0 → cT (σ : E →+* E) Y * J * Z = 0 → Qi * frm X Z Y = 1 → frm X Z Y * Qi = 1 → ∀ p ∈ minParOne σ J X, ∀ (w : InfinitePlace F) (τ : EmbOver E w) (S : Finset (Fin r)), (Qi.map τ.1 * archMat σ J τ (projArch σ J w p) * (frm X Z Y).map τ.1).BlockTriangular (lev m S) := by
   intro F E _ _ _ _ _ σ h n r m J X Y Z Qi hJ hW xz yz hl hr p hp w τ S
   have cTm : ∀ {a b : ℕ} (A : Matrix (Fin a) (Fin b) E),
@@ -260,6 +341,35 @@ theorem parabolic_triangular_frame : ∀ (F E : Type) [Field F] [NumberField F] 
     (GlobalTheory.T.archimedean_matrix_preserves_form F E σ h n J p w τ) (fun j _ => GlobalTheory.T.minimal_parabolic_archimedean_stabilizes F E σ h n r J X p hp w τ j)
   rwa [hfrm] at t
 
+/- English proof (translation)
+Take `⟨Bp, -, hBp⟩` from `GlobalTheory.T.compact_archimedean_entries_bounded F E σ n J Ω hΩ`. Take `⟨Bpi, -, hBpi⟩` from `GlobalTheory.T.compact_archimedean_entries_bounded F E σ n J (Inv.inv '' Ω) (hΩ.image continuous_inv)`. Take `⟨By, -, hBy⟩` from `GlobalTheory.T.compact_archimedean_entries_bounded F E σ n J C₁ hC₁`. Establish `hs : ∀ x, (σ : E →+* E) ((σ : E →+* E) x) = x` using `sigma_sigma h`. Establish `hJ' : cT (σ : E →+* E) J = J` using `Matrix.ext fun i j => hJ.1 _ _`.
+
+Use `set q1 := ∑ ψ : E →+* ℂ, ∑ u, ∑ v, ‖ψ (Qi u v)‖ with hq1`. Use `set q2 := ∑ ψ : E →+* ℂ, ∑ u, ∑ v, ‖ψ (frm X Z Y u v)‖ with hq2`. Establish `q1n : 0 ≤ q1` using `Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _`. Establish `q2n : 0 ≤ q2` using `Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _`. Use `set b0 := (n : ℝ) * n * (q1 * max Bp (max Bpi By) * q2) with hb0`.
+
+Use `⟨(Fintype.card (Idx r m) : ℝ) ^ 2 * b0 ^ 3 * R, ?_⟩` and prove the remaining obligations. Introduce `p hp t ht a ha y hy S hR δ hδ hst w τ u v`. Use `set φ : E →+* ℂ := τ.1 with hφ`. Use `set Qc := (frm X Z Y).map φ with hQc`. Use `set Qic := Qi.map φ with hQic`.
+
+Establish `hlc : Qic * Qc = 1` using `by rw [hQic, hQc, ← Matrix.map_mul, hl, Matrix.map_one _ (map_zero φ) (map_one φ)]`. Establish `hrc : Qc * Qic = 1` using `by rw [hQic, hQc, ← Matrix.map_mul, hr, Matrix.map_one _ (map_zero φ) (map_one φ)]`. Use `set am : GAd σ J → Matrix (Fin n) (Fin n) ℂ := fun g => archMat σ J τ (projArch σ J w g) with ham`. Establish `amul : ∀ g g', am (g * g') = am g * am g'` using `fun g g' => by simp only [ham, map_mul]`. Establish `aone : am 1 = 1` using `by simp only [ham, map_one]`.
+
+Establish `ainv : ∀ g, am g * am g⁻¹ = 1` using `fun g => by rw [← amul, mul_inv_cancel, aone]`. Establish `ainv' : ∀ g, am g⁻¹ * am g = 1` using `fun g => by rw [← amul, inv_mul_cancel, aone]`. Use `set cd : Matrix (Fin n) (Fin n) ℂ → Matrix (Idx r m) (Idx r m) ℂ := fun M => Qic * M * Qc with hcd`. Establish `cmul : ∀ M M', cd (M * M') = cd M * cd M'` using `fun M M' => by`. Simplify using `only [hcd]`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `cone' : cd 1 = 1` using `by simp only [hcd, Matrix.mul_one, hlc]`. Establish `hD : (Qi * δ.1.1 * frm X Z Y).map φ = cd (am p) * cd (am a) * cd (am y) * cd (am a⁻¹) * cd (am p⁻¹)`. Establish `e : δ.1.1.map φ = am (ratEmb σ J δ)` using `(GlobalTheory.T.archimedean_rational_embedding_map F E σ n J δ w τ).symm`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, e, hδ, amul, amul, amul, amul, ← hQic, ← hQc]`.
+
+Express the relevant statement in the definitionally equal form `cd _ = _`. Rewrite using `[cmul, cmul, cmul, cmul]`. Establish `htor : am a * Qc = Qc * diagonal (fun u => ((wt m t u : ℝ) : ℂ))` using `GlobalTheory.T.torus_archimedean_frame_conjugation F E σ n r m J X Y Z xz yz t a ha w τ`. Apply the tactic sequence `have wpos : ∀ u, 0 < wt m t u := fun u => by rcases u with i | k | i <;> simp [wt, ht]`. Establish `dd : diagonal (fun u => ((wt m t u : ℝ) : ℂ)) * diagonal (fun u => (((wt m t u)⁻¹ : ℝ) : ℂ)) = 1`.
+
+Rewrite using `[diagonal_mul_diagonal, ← diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `u`. Rewrite using `[← Complex.ofReal_mul, mul_inv_cancel₀ (wpos u).ne', Complex.ofReal_one]`. Establish `ca : cd (am a) = diagonal (fun u => ((wt m t u : ℝ) : ℂ))`.
+
+Simplify using `only [hcd]`. Rewrite using `[Matrix.mul_assoc, htor, ← Matrix.mul_assoc, hlc, Matrix.one_mul]`. Establish `cai : cd (am a⁻¹) = diagonal (fun u => (((wt m t u)⁻¹ : ℝ) : ℂ))`. Establish `e : cd (am a⁻¹) * cd (am a) = 1` using `by rw [← cmul, ainv', cone']`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[dd, Matrix.mul_one]`. Use `_ = _ := by rw [← Matrix.mul_assoc, ← ca, e, Matrix.one_mul]`. Rewrite `hD` using `[ca, cai]`. Establish `bM : ∀ (g : GAd σ J) (β : ℝ), (∀ i j, ‖am g i j‖ ≤ β) → β ≤ max Bp (max Bpi By) → ∀ i j, ‖cd (am g) i j‖ ≤ b0` using `fun g β hg hβ i j => by`. Use `norm_matrix_triple_product_le Qic (am g) Qc (fun i j => entry_le_sum Qi φ i j) hg (fun i j => entry_le_sum (frm X Z Y) φ i j) i j` as an intermediate fact.
+
+Simplify using `only [Fintype.card_fin] at this`. Use `this.trans ?_` and prove the remaining obligations. Rewrite using `[hb0]`. Use `gcongr`. Establish `b1` using `bM p Bp (fun i j => hBp p hp w τ i j) (le_max_left _ _)`.
+
+Establish `b2` using `bM p⁻¹ Bpi (fun i j => hBpi p⁻¹ ⟨p, hp, rfl⟩ w τ i j) ((le_max_left _ _).trans (le_max_right _ _))`. Establish `b3` using `bM y By (fun i j => hBy y hy w τ i j) ((le_max_right _ _).trans (le_max_right _ _))`. Establish `tP` using `parabolic_triangular_frame F E σ h n r m J X Y Z Qi hJ hW xz yz hl hr p (hΩP hp) w τ S`. Establish `tN : ((Qi * δ.1.1 * frm X Z Y).map φ).BlockTriangular (lev m S)`. Establish `t0` using `GlobalTheory.T.frame_stabilizer_flag_criterion E (σ : E →+* E) hs n r m J X Y Z Qi hJ' hW.xx hW.yy hW.xy xz yz hl hr S δ.1.1 δ.1.isUnit δ.2 hst`.
+
+Introduce `i j hij`. Simplify using `only [Matrix.map_apply, t0 hij, map_zero]`. Establish `hPP : cd (am p) * cd (am p⁻¹) = 1` using `by rw [← cmul, ainv, cone']`. Rewrite `tN` using `[hD]`. Use `block_diagonal_bound_weighted (lev m S) (cd (am p)) (cd (am p⁻¹)) (cd (am y)) (wt m t) b0 R wpos hPP tP tN b1 b2 b3 hR u v` as an intermediate fact.
+
+Rewrite `this` using `[← hD, ← bd_map _ _ (map_zero φ)]`. Conclude with `this`.
+-/
 theorem arch_bound (h : IsCMExt F E σ) (hJ : IsHermND σ J) (hW : IsWittFrame σ J X Y)
     (xz : cT (σ : E →+* E) X * J * Z = 0) (yz : cT (σ : E →+* E) Y * J * Z = 0)
     (hl : Qi * frm X Z Y = 1) (hr : frm X Z Y * Qi = 1) {Ω C₁ : Set (GAd σ J)} (hΩ : IsCompact Ω)
@@ -347,6 +457,9 @@ variable {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E}
 
 omit [NumberField F] [NumberField E] in
 
+/- English proof (translation)
+Take `⟨c, rfl⟩` from `isConj_iff.1 hc`. Establish `e : (c * γ * c⁻¹).1.1 = (c.1 : GL (Fin n) E).1 * γ.1.1 * ((c.1)⁻¹ : GL (Fin n) E).1` using `rfl`. Unfold `GlobalTheory.Orb.IsRegSS at *`. Rewrite using `[e, Matrix.coe_units_inv, Matrix.charpoly_units_conj]`. Conclude with `hγ`.
+-/
 theorem isRegSS_of_isConj {γ δ : GRat σ J} (hc : IsConj γ δ) (hγ : GlobalTheory.Orb.IsRegSS γ.1.1) :
     GlobalTheory.Orb.IsRegSS δ.1.1 := by
   obtain ⟨c, rfl⟩ := isConj_iff.1 hc
@@ -355,6 +468,29 @@ theorem isRegSS_of_isConj {γ δ : GRat σ J} (hc : IsConj γ δ) (hγ : GlobalT
   rw [e, Matrix.coe_units_inv, Matrix.charpoly_units_conj]
   exact hγ
 
+/- English proof (translation)
+Take `⟨r, X, Y, hW⟩` from `exists_isWittFrame h hJ`. Take `⟨m, Z, Qi, xz, yz, hl, hr⟩` from `GlobalTheory.T.exists_witt_complement_frame F E σ h n J hJ r X Y hW`. Take `⟨K, Ω, c, hK, hΩ, hΩP, hc, -, -, hcov, -, -, -⟩` from `hS F E σ h n J hJ r X Y hW`. Establish `hcont : Continuous fun q : GAd σ J × GAd σ J => q.1 * q.2 * q.1⁻¹` using `(continuous_fst.mul continuous_snd).mul continuous_fst.inv`. Use `set C₁ : Set (GAd σ J) := (fun q : GAd σ J × GAd σ J => q.1 * q.2 * q.1⁻¹) '' ((K : Set (GAd σ J)) ×ˢ C) with hC₁d`.
+
+Establish `hC₁ : IsCompact C₁` using `(hK.prod hC).image hcont`. Take `⟨t0, ht0⟩` from `GlobalTheory.T.siegel_compact_translate_bound F E σ h n J hJ r X Y hW Ω hΩ hΩP K hK c hc C hC`. Take `⟨R, -, hR⟩` from `GlobalTheory.T.deep_cone_weight_ratio_bound r m c (max t0 1) hc (le_max_right _ _)`. Take `⟨B, hB⟩` from `arch_bound (Z := Z) h hJ hW xz yz hl hr hΩ hΩP hC₁ R`. Use `set 𝒞 : Set (GFin σ J) := projFin σ J '' ((fun q : GAd σ J × GAd σ J => q.1 * q.2 * q.1⁻¹) '' (Ω ×ˢ C₁)) with h𝒞d`.
+
+Establish `h𝒞 : IsCompact 𝒞` using `((hΩ.prod hC₁).image hcont).image (continuous_projFin σ J)`. Take `⟨dd, hdd, hint⟩` from `GlobalTheory.T.compact_finite_rational_denominator F E σ n J 𝒞 h𝒞 Qi (frm X Z Y)`. Establish `hfin` using `GlobalTheory.T.bounded_integral_matrices_finite F E h.1 (ι := Idx r m) dd B hdd`. Establish `recon : ∀ M : Matrix (Fin n) (Fin n) E, frm X Z Y * (Qi * M * frm X Z Y) * Qi = M` using `fun M => by`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hinj : Set.InjOn (fun δ : GRat σ J => Qi * δ.1.1 * frm X Z Y) ((fun δ : GRat σ J => Qi * δ.1.1 * frm X Z Y) ⁻¹' {N : Matrix (Idx r m) (Idx r m) E | (∀ u v, IsIntegral ℤ ((dd : E) * N u v)) ∧ ∀ (w : InfinitePlace F) (τ : EmbOver E w) (u v : Idx r m), ‖τ.1 (N u v)‖ ≤ B})`. Introduce `δ _ δ' _ e`. Establish `e' : δ.1.1 = δ'.1.1` using `by rw [← recon δ.1.1, ← recon δ'.1.1]; exact congrArg (fun M => frm X Z Y * M * Qi) e`. Conclude with `Subtype.ext (Units.ext e')`. Use `((hfin.preimage hinj).image fun δ' => {δ | IsConj δ' δ}).subset ?_` and prove the remaining obligations.
+
+Introduce and unpack `𝔬 ⟨⟨γ, hγ, rfl⟩, x, δ, hδ, hx⟩`. Take `⟨η, hη, s, hs, rfl⟩` from `hcov x`. Take `⟨η', rfl⟩` from `GlobalTheory.T.rational_points_eq_embedding F E σ n J η hη`. Take `⟨p, hp, t, ht, a, ha, k, hk, rfl⟩` from `hs`. Take `⟨δ₁, hδ₁d⟩ : ∃ δ₁ : GRat σ J, δ₁ = η'⁻¹ * δ * η'` from `⟨_, rfl⟩`.
+
+Establish `hδ₁ : (p * a * k)⁻¹ * ratEmb σ J δ₁ * (p * a * k) ∈ C`. Use `hx using 1` and compare the differences between its conclusion and the goal. Rewrite using `[hδ₁d, map_mul, map_mul, map_inv]`. Use `group`. Establish `hst : ∀ j ∈ deep (max t0 1) t, StabUpTo X δ₁.1.1 j`.
+
+Introduce `j hj`. Simplify using `only [deep, Finset.mem_filter, Finset.mem_univ, true_and] at hj`. Conclude with `ht0 p hp t ht a ha k hk δ₁ hδ₁ j (lt_of_le_of_lt (le_max_left _ _) hj.1) (fun j' e => lt_of_le_of_lt (mul_le_mul_of_nonneg_right (le_max_left _ _) (ht.1 j').le) (hj.2 j' e))`. Establish `c1 : IsConj γ δ₁` using `(show IsConj γ δ from hδ).trans (isConj_iff.2 ⟨η'⁻¹, by rw [hδ₁d, inv_inv]⟩)`. Take `⟨δ', hc', hδ'⟩` from `exists_conj_levi h hJ hW xz yz hl hr (deep (max t0 1) t) δ₁ (isRegSS_of_isConj c1 hγ) hst`.
+
+Use `set δ₀ := (p * a * k)⁻¹ * ratEmb σ J δ₁ * (p * a * k) with hδ₀`. Establish `hy : k * δ₀ * k⁻¹ ∈ C₁` using `⟨(k, δ₀), ⟨hk, hδ₁⟩, rfl⟩`. Establish `hid : ratEmb σ J δ₁ = p * a * (k * δ₀ * k⁻¹) * a⁻¹ * p⁻¹` using `by rw [hδ₀]; group`. Establish `hpa : projFin σ J a = 1` using `mem_infPts.1 ha.1`. Establish `hf𝒞 : projFin σ J (ratEmb σ J δ₁) ∈ 𝒞` using `⟨p * (k * δ₀ * k⁻¹) * p⁻¹, ⟨(p, k * δ₀ * k⁻¹), ⟨hp, hy⟩, rfl⟩, by`.
+
+Rewrite using `[hid]`. Simplify using `only [map_mul, map_inv, hpa, mul_one, inv_one]⟩`. Use `⟨δ', ⟨fun u v => ?_, fun w τ u v => ?_⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [hδ', bd, Matrix.of_apply] split_ifs`. Conclude with `hint δ₁ hf𝒞 u v`.
+
+Rewrite using `[mul_zero]`. Conclude with `isIntegral_zero`. Simplify using `only`. Rewrite using `[hδ']`. Conclude with `hB p hp t ht.1 a ha _ hy _ (hR t ht) δ₁ hid hst w τ u v`.
+
+Establish `c2 : IsConj γ δ'` using `c1.trans hc'`. Use extensionality with `z`. Conclude with `⟨fun hz => c2.trans hz, fun hz => c2.symm.trans hz⟩`.
+-/
 theorem classes_finite (hS : PositivityTheory.ThKR.SiegelCore) (h : IsCMExt F E σ) (hJ : IsHermND σ J) {C : Set (GAd σ J)}
     (hC : IsCompact C) :
     {𝔬 : Set (GRat σ J) | (∃ γ : GRat σ J, GlobalTheory.Orb.IsRegSS γ.1.1 ∧ 𝔬 = {δ | IsConj γ δ}) ∧
@@ -420,6 +556,11 @@ theorem classes_finite (hS : PositivityTheory.ThKR.SiegelCore) (h : IsCMExt F E 
 
 end Classes
 
+/- English proof (translation)
+Introduce `hS D V f hf`. Take `⟨h, hJ⟩` from `GlobalTheory.Mem.Vol.cmData_isCMExt_and_gram_isHermND _ _ D.sp.cm`. Establish `hc` using `(GlobalTheory.Orb.continuous_of_mem_ccAd hf).2`. Use `(classes_finite hS h (hJ V) hc.isCompact).subset ?_` and prove the remaining obligations. Introduce and unpack `𝔬 ⟨h1, x, δ, hδ, hx⟩`.
+
+Conclude with `⟨h1, x, δ, hδ, subset_tsupport f (Function.mem_support.2 hx)⟩`.
+-/
 theorem regClassFin : PositivityTheory.ThKR.SiegelCore → MainStatements.RegularCuspidalTrace.RegClassFin := by
   intro hS D V f hf
   obtain ⟨h, hJ⟩ := GlobalTheory.Mem.Vol.cmData_isCMExt_and_gram_isHermND _ _ D.sp.cm

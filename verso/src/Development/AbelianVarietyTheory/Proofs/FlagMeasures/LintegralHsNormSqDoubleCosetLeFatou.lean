@@ -15,6 +15,9 @@ open scoped InnerProductSpace
 
 namespace GlobalTheory.SgInf.FatouI
 
+/- English proof (translation)
+Use `(lintegral_mono_ae hF).trans ((lintegral_liminf_le hg).trans ?_)` and prove the remaining obligations. Repeatedly rewrite using `[hb]`. Conclude with `(ENNReal.tendsto_ofReal hL).liminf_eq.le`.
+-/
 theorem lintegral_le_of_liminf {X : Type*} [MeasurableSpace X] (ν : Measure X) (F : X → ENNReal)
     (g : ℕ → X → ENNReal) (hg : ∀ j, Measurable (g j))
     (hF : ∀ᵐ γ ∂ν, F γ ≤ Filter.liminf (fun j => g j γ) Filter.atTop) (b : ℕ → ℝ) (L : ℝ)
@@ -26,6 +29,11 @@ theorem lintegral_le_of_liminf {X : Type*} [MeasurableSpace X] (ν : Measure X) 
 
 variable {k r : ℕ}
 
+/- English proof (translation)
+Set `m : Mt k r × Mt k r → Mt k r` to `fun q => lmulM (Matrix.of q.1) q.2`. Establish `hmul : Continuous m` using `Continuous.matrix_mul (X := Mt k r × Mt k r) continuous_fst continuous_snd`. Establish `hm : Measurable m` using `hmul.measurable`. Establish `h1 : Measurable fun q : Mt k r × (Mt k r × Mt k r) => m (q.2.1, q.1)` using `hm.comp (measurable_snd.fst.prodMk measurable_fst)`. Establish `h2 : Measurable fun q : Mt k r × (Mt k r × Mt k r) => invM q.2.2` using `measurable_invM.comp measurable_snd.snd`.
+
+Establish `h3 : Measurable fun q : Mt k r × (Mt k r × Mt k r) => m (m (q.2.1, q.1), invM q.2.2)` using `hm.comp (h1.prodMk h2)`. Conclude with `h3`.
+-/
 theorem measurable_besselTwoSidedAction_joint :
     Measurable fun q : Mt k r × (Mt k r × Mt k r) => act2 (Matrix.of q.1) q.2 := by
   let m : Mt k r × Mt k r → Mt k r := fun q => lmulM (Matrix.of q.1) q.2
@@ -40,6 +48,9 @@ theorem measurable_besselTwoSidedAction_joint :
     hm.comp (h1.prodMk h2)
   exact h3
 
+/- English proof (translation)
+Unfold `hsNormSq hsInner`. Rewrite using `[Complex.re_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Conclude with `inner_self_eq_norm_sq (𝕜 := ℂ) _`.
+-/
 theorem hsNormSq_eq_sum {Wp Wq : Type*} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq] (A : Wq →L[ℂ] Wp) :
     hsNormSq A = ∑ i, ‖A (stdOrthonormalBasis ℂ Wq i)‖ ^ 2 := by
@@ -48,6 +59,13 @@ theorem hsNormSq_eq_sum {Wp Wq : Type*} [NormedAddCommGroup Wp] [InnerProductSpa
   refine Finset.sum_congr rfl fun i _ => ?_
   exact inner_self_eq_norm_sq (𝕜 := ℂ) _
 
+/- English proof (translation)
+Introduce `g hg v hv`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem v hv`. Take `⟨h, hh, rfl⟩` from `hv`. Use `mem_DD σ w (hG.2.2.2.1 g hg h hh)` as an intermediate fact.
+
+Rewrite `this` using `[hσ.1.2 g hg h hh]`. Conclude with `this`. Consider the case `zero => simp`. Consider the case `add u v _ _ hu hv => rw [map_add]`. Conclude with `(DD σ w).add_mem hu hv`.
+
+Consider the case `smul a v _ hv => rw [map_smul]`. Conclude with `(DD σ w).smul_mem a hv`.
+-/
 theorem DD_stable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     (σ : Mat k r → (H →L[ℂ] H)) (w : H) (hσ : IsURepOn (GG k r) σ) (hG : IsClosedSub k r (GG k r)) :
     ∀ g ∈ GG k r, ∀ v ∈ (DD σ w : Set H), σ g v ∈ (DD σ w : Set H) := by
@@ -62,6 +80,13 @@ theorem DD_stable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
   | add u v _ _ hu hv => rw [map_add]; exact (DD σ w).add_mem hu hv
   | smul a v _ hv => rw [map_smul]; exact (DD σ w).smul_mem a hv
 
+/- English proof (translation)
+Establish `hae : ∀ᵐ p ∂μ, (Matrix.of p : Mat k r) ∈ S` using `hμ.2.2.1`. Establish `hSm : MeasurableSet {p : Mt k r | (Matrix.of p : Mat k r) ∈ S}` using `IsClosed.measurableSet (α := Mt k r) hS.2.1`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `hc : ContinuousOn (fun p : Mt k r => coef σ u v (Matrix.of p)) {p : Mt k r | (Matrix.of p : Mat k r) ∈ S}` using `ContinuousOn.inner (𝕜 := ℂ) continuousOn_const ((hσ.2.2 u).mono hS.1)`. Use `hc.aestronglyMeasurable (μ := μ) hSm` as an intermediate fact.
+
+Rewrite `this` using `[Measure.restrict_eq_self_of_ae_mem (s := {p : Mt k r | (Matrix.of p : Mat k r) ∈ S}) hae]`. Then use the resulting hypothesis. Use `lt_of_le_of_lt (b := ∫⁻ x, ENNReal.ofReal C * ENNReal.ofReal (opn (Matrix.of x) ^ (-a)) ∂μ) (lintegral_mono_ae ?_) ?_` and prove the remaining obligations. Use `filter_upwards [hae] with p hp`. Rewrite using `[← ENNReal.ofReal_mul' (Real.rpow_nonneg (opn_nonneg _) _), ← ofReal_norm_eq_enorm]`. Conclude with `ENNReal.ofReal_le_ofReal (hC _ (hS.1 hp))`.
+
+Rewrite using `[lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`. Conclude with `ENNReal.mul_lt_top ENNReal.ofReal_lt_top hfin`.
+-/
 theorem integrable_coef {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     (σ : Mat k r → (H →L[ℂ] H)) (hσ : IsURepOn (GG k r) σ) {S : Set (Mat k r)} (hS : IsClosedSub k r S)
     {μ : Measure (Mt k r)} (hμ : IsHaarOn S μ) {a C : ℝ} (hfin : normInt μ a < ⊤) (u v : H)
@@ -84,6 +109,17 @@ theorem integrable_coef {H : Type*} [NormedAddCommGroup H] [InnerProductSpace �
     · rw [lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]
       exact ENNReal.mul_lt_top ENNReal.ofReal_lt_top hfin
 
+/- English proof (translation)
+Use `haveI := hμ.1`. Use `haveI := hμ'.1`. Establish `hGm : MeasurableSet {p : Mt k r | (Matrix.of p : Mat k r) ∈ GG k r}` using `IsClosed.measurableSet (α := Mt k r) hG.2.1`. Set `f0 : Mt k r → ℝ` to `{p : Mt k r | (Matrix.of p : Mat k r) ∈ GG k r}.piecewise (fun p => f (Matrix.of p)) (fun _ => 0)`. Establish `hf0m : Measurable f0` using `ContinuousOn.measurable_piecewise (f := fun p : Mt k r => f (Matrix.of p)) hf continuousOn_const hGm`.
+
+Establish `hf0e : ∀ p : Mt k r, Matrix.of p ∈ GG k r → f0 p = f (Matrix.of p)` using `fun p hp => Set.piecewise_eq_of_mem _ _ _ hp`. Establish `hF : Measurable fun p => ENNReal.ofReal (f0 p)` using `hf0m.ennreal_ofReal`. Use `⟨fun γ => ∫⁻ p, ENNReal.ofReal (f0 (act2 (Matrix.of γ) p)) ∂(μS.prod μS'), ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(hF.comp measurable_besselTwoSidedAction_joint).lintegral_prod_right'`. Introduce `γ hγ`.
+
+Establish `h1 : ∀ᵐ p ∂μS, (Matrix.of p : Mat k r) ∈ S` using `hμ.2.2.1`. Establish `h2 : ∀ᵐ p ∂μS', (Matrix.of p : Mat k r) ∈ S'` using `hμ'.2.2.1`. Establish `h1'` using `Measure.quasiMeasurePreserving_fst (μ := μS) (ν := μS') |>.ae h1`. Establish `h2'` using `Measure.quasiMeasurePreserving_snd (μ := μS) (ν := μS') |>.ae h2`. Use `lintegral_congr_ae ?_` and prove the remaining obligations.
+
+Use `filter_upwards [h1', h2'] with p hp hp'`. Rewrite using `[hf0e]`. Conclude with `hG.2.2.2.1 _ (hG.2.2.2.1 _ (hS.1 hp) _ (hΩ hγ)) _ (hG.2.2.2.2 _ (hS'.1 hp'))`. Rewrite using `[← hν.2.2 _ hF, ofReal_integral_eq_lintegral_ofReal hfi (Filter.Eventually.of_forall fun g => hf0 _)]`. Establish `h1 : ∀ᵐ p ∂μG, (Matrix.of p : Mat k r) ∈ GG k r` using `hμG.2.2.1`.
+
+Use `lintegral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [h1] with p hp`. Rewrite using `[hf0e p hp]`.
+-/
 theorem dis_of_continuousOn {Ω S S' : Set (Mat k r)} {μG μS μS' ν : Measure (Mt k r)}
     (hG : IsClosedSub k r (GG k r)) (hS : IsClosedSub k r S) (hS' : IsClosedSub k r S')
     (hμG : IsHaarOn (GG k r) μG) (hμ : IsHaarOn S μS) (hμ' : IsHaarOn S' μS') (hΩ : Ω ⊆ GG k r)
@@ -126,6 +162,29 @@ end GlobalTheory.SgInf.FatouI
 
 open GlobalTheory.SgInf.FatouI in
 
+/- English proof (translation)
+Introduce `k r H _ _ _ Wp _ _ _ _ Wq _ _ _ _ σ w a μG d z c π μS z' c' π' μS' hStd hSd hSd' ν hν x hx y hy ξ ξ'`. Take `⟨hG, -, -, hS, -⟩` from `GlobalTheory.T.bessel_subgroups_closed_unitaryW_compact k r z hSd.1 hSd.2.1`. Take `⟨-, -, -, hS', -⟩` from `GlobalTheory.T.bessel_subgroups_closed_unitaryW_compact k r z' hSd'.1 hSd'.2.1`. Take `⟨Om, hOm⟩` from `GlobalTheory.T.exists_isFolnerSequenceBessel k r z μS hSd.1 hSd.2.1 hSd.2.2.2.1`. Take `⟨Om', hOm'⟩` from `GlobalTheory.T.exists_isFolnerSequenceBessel k r z' μS' hSd'.1 hSd'.2.1 hSd'.2.2.2.1`.
+
+Establish `hdec` using `hStd.2.2.2.2.2.2.2.1`. Establish `ha : 2 * ((2 * r + k + 1 : ℕ) : ℝ) ^ 2 < a`. Establish `h1 : (2 : ℝ) ≤ ((2 * r + k + 1 : ℕ) : ℝ)`. Use `hStd.1` as an intermediate fact. Conclude with `(by omega : 2 ≤ 2 * r + k + 1)` after adjusting the coercions.
+
+Establish `h2 : ((2 * r + k + 1 : ℕ) : ℝ) ^ 2 < ((2 * r + k + 1 : ℕ) : ℝ) ^ 5` using `pow_lt_pow_right₀ (by linarith) (by norm_num)`. Use `hStd.2.2.2.2.2.2.1` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hiy : Integrable (fun p : Mt k r => coef σ y y (Matrix.of p)) μS`. Take `⟨C, hC⟩` from `hdec y hy y hy`.
+
+Conclude with `integrable_coef σ hStd.2.1 hS hSd.2.2.2.1 (GlobalTheory.T.besselOpNormPowerIntegral_lt_top_closedSubgroup k r _ μS a hS hSd.2.2.2.1 ha) y y hC`. Establish `hix : Integrable (fun p : Mt k r => coef σ x x (Matrix.of p)) μS'`. Take `⟨C, hC⟩` from `hdec x hx x hx`. Conclude with `integrable_coef σ hStd.2.1 hS' hSd'.2.2.2.1 (GlobalTheory.T.besselOpNormPowerIntegral_lt_top_closedSubgroup k r _ μS' a hS' hSd'.2.2.2.1 ha) x x hC`. Establish `h62` using `fun j => GlobalTheory.T.bessel_functional_two_sided k r σ w a μG d z c π μS z' c' π' μS' hStd hSd hSd' x y ξ ξ' (Om j) (Om' j) (hOm.1 j).1 (hOm'.1 j).1 (hOm.1 j).2.2.2.2 (hOm'.1 j).2.2.2.2 hiy hix`.
+
+Establish `h63` using `GlobalTheory.T.besselFolner_overlap_average_tendsto_form k r σ w a μG d z c π μS hStd hSd Om hOm y hy ξ`. Establish `h63'` using `GlobalTheory.T.besselFolner_overlap_average_tendsto_form k r σ w a μG d z' c' π' μS' hStd hSd' Om' hOm' x hx ξ'`. Establish `h64` using `GlobalTheory.T.hsNormSq_Iint_le_liminf_alt k r σ w a μG d z c π μS z' c' π' μS' hStd hSd hSd' Om Om' hOm hOm' x hx y hy ξ ξ'`. Establish `hadj` using `(GlobalTheory.T.besselForm_converges_equivariant_hermitian k r σ w a μG d z c π μS hStd hSd (DD σ w) (DD_stable σ w hStd.2.1 hG) hdec y hy y hy).2.2.1`. Establish `him : (⟪ξ, be (psiGen k r z c) π μS σ y y ξ⟫_ℂ).im = 0`.
+
+Rewrite using `[← Complex.conj_eq_iff_im, inner_conj_symm, ← ContinuousLinearMap.adjoint_inner_right, hadj]`. Establish `hcont : Continuous (hsNormSq : (Wq →L[ℂ] Wp) → ℝ)`. Establish `: (hsNormSq : (Wq →L[ℂ] Wp) → ℝ) = fun A => ∑ i, ‖A (stdOrthonormalBasis ℂ Wq i)‖ ^ 2`. Use function extensionality and compare the values at `hsNormSq_eq_sum`. Rewrite using `[this]`.
+
+Use `fun_prop`. Establish `hnn : ∀ A : Wq →L[ℂ] Wp, 0 ≤ hsNormSq A` using `fun A => by`. Rewrite using `[hsNormSq_eq_sum]`. Check the signs of the components of the expression. Establish `hdis` using `fun j => dis_of_continuousOn hG hS hS' hStd.2.2.2.2.1 hSd.2.2.2.1 hSd'.2.2.2.1 (Greg_subset z z') hν (fun g => hsNormSq (Iint (psiGen k r z c) (psiGen k r z' c') π π' (μS.restrict (Om j)) (μS'.restrict (Om' j)) σ x y ξ ξ' g)) (fun g => hnn _) (hcont.comp_continuousOn (h62 j).1) ( …`.
+
+Use `choose g hgm hge hgi using hdis`. Establish `hpos : ∀ j, 0 < (μS (Om j)).toReal` using `fun j => ENNReal.toReal_pos (hOm.1 j).2.2.2.1.ne' (hOm.1 j).2.2.2.2.ne`. Establish `hpos' : ∀ j, 0 < (μS' (Om' j)).toReal` using `fun j => ENNReal.toReal_pos (hOm'.1 j).2.2.2.1.ne' (hOm'.1 j).2.2.2.2.ne`. Use `lintegral_le_of_liminf ν _ (fun j γ => g j γ / (μS (Om j) * μS' (Om' j))) (fun j => (hgm j).div_const _) ?_ (fun j => (∫ g, hsNormSq (Iint (psiGen k r z c) (psiGen k r z' c') π π' (μS.restrict (Om j)) (μS'.restrict (Om' j)) σ x y ξ ξ' (Matrix.of g)) ∂μG) / ((μS (Om j)).toReal * ( …` and prove the remaining obligations. Establish `h1 : ∀ᵐ γ ∂ν, (Matrix.of γ : Mat k r) ∈ Greg k r z z'` using `hν.2.1 filter_upwards [h1] with γ hγ`.
+
+Repeatedly rewrite using `[fun j => hge j γ hγ]`. Conclude with `h64 _ hγ`. Introduce `j`. Repeatedly rewrite using `[div_eq_mul_inv (g j _)]`. Rewrite using `[lintegral_mul_const _ (hgm j), hgi j, ENNReal.ofReal_div_of_pos (mul_pos (hpos j) (hpos' j)), ENNReal.ofReal_mul (hpos j).le, ENNReal.ofReal_toReal (hOm.1 j).2.2.2.2.ne, ENNReal.ofReal_toReal (hOm'.1 j).2.2.2.2.ne, div_eq_mul_inv]`.
+
+Establish `hT` using `(Complex.continuous_re.tendsto _).comp ((h63.const_mul ((d : ℂ)⁻¹)).mul h63')`. Use `hT using 2 with j` and compare the differences between its conclusion and the goal. Establish `e` using `(h62 j).2.2`. Rewrite using `[Function.comp_apply, ← mul_div_assoc (d : ℂ)⁻¹, div_mul_div_comm, ← e]`. Use `norm_cast`.
+
+Rewrite using `[← Complex.ofReal_inv, mul_assoc (_ : ℂ), Complex.re_ofReal_mul, Complex.mul_re, him]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem GlobalTheory.SgInf.lintegral_hsNormSq_Iint_le : ∀ (k r : ℕ) {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] {Wp : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [FiniteDimensional ℂ Wp] [CompleteSpace Wp] {Wq : Type} [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq] [CompleteSpace Wq] (σ : Mat k r → (H →L[ℂ] H)) (w : H) (a : ℝ) (μG : Measure (Mt k r)) (d : ℝ) (z : Fin (2 * r + k + 1) → ℂ) (c : Fin r → ℂ) (π : Mat k r → (Wp →L[ℂ] Wp)) (μS : Measure (Mt k r)) (z' : Fin (2 * r + k + 1) → ℂ) (c' : Fin r → ℂ) (π' : Mat k r → (Wq →L[ℂ] Wq)) (μS' : Measure (Mt k r)) , Std σ w a μG d → Side z π μS → Side z' π' μS' → ∀ ν : Measure (Mt k r), IsDis (Greg k r z z') μG μS μS' ν → ∀ x ∈ DD σ w, ∀ y ∈ DD σ w, ∀ (ξ : Wp) (ξ' : Wq), ∫⁻ γ, ENNReal.ofReal (hsNormSq (Iint (psiGen k r z c) (psiGen k r z' c') π π' μS μS' σ x y ξ ξ' (Matrix.of γ))) ∂ν ≤ ENNReal.ofReal (d⁻¹ * (⟪ξ, be (psiGen k r z c) π μS σ y y ξ⟫_ℂ).re * (⟪ξ', be (psiGen k r z' c') π' μS' σ x x ξ'⟫_ℂ).re) := by
   intro k r H _ _ _ Wp _ _ _ _ Wq _ _ _ _ σ w a μG d z c π μS z' c' π' μS' hStd hSd hSd' ν hν x hx y hy ξ ξ'
   obtain ⟨hG, -, -, hS, -⟩ := GlobalTheory.T.bessel_subgroups_closed_unitaryW_compact k r z hSd.1 hSd.2.1

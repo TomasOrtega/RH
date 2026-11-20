@@ -29,6 +29,9 @@ def vecFixGroup (h : HermitianForm F E W) (v : Basis ι E W) (x₀ : W) :
       _ = vecAt v x₀ w := by rw [Matrix.mulVec_mulVec, e, Matrix.one_mulVec]
 
 omit [NumberField E] in
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_vecFixGroup {h : HermitianForm F E W} {v : Basis ι E W} {x₀ : W}
     {g : archUnitary h v} : g ∈ vecFixGroup h v x₀ ↔
       ∀ w, ((g : InfinitePlace E → GL ι ℂ) w : Matrix ι ι ℂ) *ᵥ vecAt v x₀ w = vecAt v x₀ w :=
@@ -36,6 +39,11 @@ theorem mem_vecFixGroup {h : HermitianForm F E W} {v : Basis ι E W} {x₀ : W}
 
 omit [NumberField E] in
 
+/- English proof (translation)
+Establish `: (vecFixGroup h v x₀ : Set (archUnitary h v)) = ⋂ w, {g : archUnitary h v | ((g : InfinitePlace E → GL ι ℂ) w : Matrix ι ι ℂ) *ᵥ vecAt v x₀ w = vecAt v x₀ w}`. Use extensionality with `g`. Simplify using `[mem_vecFixGroup]`. Rewrite using `[this]`. Use `isClosed_iInter fun w => isClosed_eq ?_ continuous_const` and prove the remaining obligations.
+
+Conclude with `(Units.continuous_val.comp ((continuous_apply w).comp continuous_subtype_val)).matrix_mulVec continuous_const`.
+-/
 theorem isClosed_vecFixGroup (h : HermitianForm F E W) (v : Basis ι E W) (x₀ : W) :
     IsClosed (vecFixGroup h v x₀ : Set (archUnitary h v)) := by
   have : (vecFixGroup h v x₀ : Set (archUnitary h v)) = ⋂ w, {g : archUnitary h v |

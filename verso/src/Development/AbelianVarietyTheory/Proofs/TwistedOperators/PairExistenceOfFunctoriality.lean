@@ -20,6 +20,11 @@ namespace GlobalTheory.PairIt
 
 open GlobalTheory.Chain GlobalTheory.Chain.RealIt
 
+/- English proof (translation)
+Take `⟨t, P, P', hS, hS', hc⟩` from `hP`. Break down `hc with ⟨⟨al, be, ga, de, e1, ⟨hd, e2⟩ | ⟨hd, e2⟩⟩, -⟩ | ⟨al, be, ga, de, e1, ⟨hd, e2⟩ | ⟨hd, e2⟩⟩` into its components or cases. Conclude with `exists_locIt hX h1 h2 hB M M' τ hd (hS.trans (congrArg dualPar e1)) (hS'.trans (congrArg dualPar e2))`. Take `⟨hr, A, hA⟩` from `GlobalTheory.Chain.RealItLarge.exists_locIt_large hX h1 h2 hB M' M τ hd (hS'.trans (congrArg dualPar e2)) (hS.trans (congrArg dualPar e1))`. Take `⟨A', hA'⟩` from `GlobalTheory.T.localFockIntertwiner_adjoint_exchangedPair D W V _ _ M' M τ _ _ A hA`.
+
+Conclude with `⟨⟨hr.2, hr.1⟩, A', hA'⟩`. Take `⟨hr, A, hA⟩` from `exists_locIt hX h1 h2 hB M' M τ hd (hS'.trans (congrArg dualPar e1)) (hS.trans (congrArg dualPar e2))`. Take `⟨A', hA'⟩` from `GlobalTheory.T.localFockIntertwiner_adjoint_exchangedPair D W V _ _ M' M τ _ _ A hA`. Conclude with `⟨⟨hr.2, hr.1⟩, A', hA'⟩`. Conclude with `GlobalTheory.Chain.RealItLarge.exists_locIt_large hX h1 h2 hB M M' τ hd (hS.trans (congrArg dualPar e2)) (hS'.trans (congrArg dualPar e1))`.
+-/
 theorem exists_locIt_pair {D : D7} {V W : HSp D} {S S' : D.what₂.Tau → SPar} {X : ProvA} (hX : ChosenSeries X)
     (h1 : Formalism.MainNotions.SchurIrreducible.ArchimedeanRallisFirst X) (h2 : Formalism.MainNotions.SchurIrreducible.ArchimedeanRallisSecond X) (hB : GlobalTheory.IndefiniteRowSideFullHecke.BarMatrix.ModelsAreCoverSeries D)
     (M : DSModel V S) (M' : DSModel W S') (τ : D.what₂.Tau) {aS aT : ℚ}
@@ -39,6 +44,13 @@ theorem exists_locIt_pair {D : D7} {V W : HSp D} {S S' : D.what₂.Tau → SPar}
   · exact GlobalTheory.Chain.RealItLarge.exists_locIt_large hX h1 h2 hB M M' τ hd
       (hS.trans (congrArg dualPar e2)) (hS'.trans (congrArg dualPar e1))
 
+/- English proof (translation)
+Introduce `hPr D S S' aS aT hP V W M M' θ ψ hθ`. Establish `hD` using `hPr.discreteSeriesCover`. Establish `hH` using `hPr.harishChandraModules`. Take `⟨X, hX, h1, h2⟩` from `GlobalTheory.Chain.ItPairObj.exists_record hD hH`. Establish `hB` using `GlobalTheory.T.thetaModels_eq_coverDiscreteSeries hD hH D`.
+
+Establish `key : ∀ τ, (0 < V.rank ∧ 0 < W.rank) ∧ ∃ A, LocIt M M' τ (aS τ) (aT τ) A` using `fun τ => exists_locIt_pair hX h1 h2 hB M M' τ (hP τ)`. Use `choose hr A hA using key`. Take `⟨It, I, hI⟩` from `GlobalTheory.T.exists_globalFockIntertwiner_tensor_realPlaces D V W _ _ M M' aS aT A GlobalTheory.Contr.contraction.2 (GlobalTheory.T.gluing_law_holds D _ _) hA`. Use `⟨It, fun ω ⟨χS, χT, hω, he⟩ f hf => ?_⟩` and prove the remaining obligations. Establish `hc` using `fun τ => GlobalTheory.T.thetaVacuumCharacters_atRealPlaces D V W _ _ M M' θ ψ χS χT ω f τ _ _ hθ hω (he τ).1 (he τ).2 hf`.
+
+Conclude with `isItW_of_globIt hθ hI hr (GlobalTheory.T.fockVectorsOverVacuumIsometry_of_skeletonDatum D V W _ _ M M' ψ θ hω.std hθ f hf).2.2.2.2 (fun τ => (hc τ).2.1) fun τ => (hc τ).2.2`.
+-/
 theorem pairEx : GlobalTheory.FunPr.Hypotheses₂ → PairEx := by
   intro hPr D S S' aS aT hP V W M M' θ ψ hθ
   have hD := hPr.discreteSeriesCover

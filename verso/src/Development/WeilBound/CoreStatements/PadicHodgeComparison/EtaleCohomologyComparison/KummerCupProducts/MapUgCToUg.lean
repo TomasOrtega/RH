@@ -20,12 +20,20 @@ abbrev SU (A : PAlg l) : Scheme.{0} := Spec (CommRingCat.of A.Ug)
 
 def toΓ (B : Type) [CommRing B] : B →+* Γ(Spec (CommRingCat.of B), ⊤) := (Scheme.ΓSpecIso (CommRingCat.of B)).inv.hom
 
+/- English proof (translation)
+The claim follows from `(ConcreteCategory.congr_hom (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom g)) x).symm`.
+-/
 theorem toΓ_nat {B B' : Type} [CommRing B] [CommRing B'] (g : B →+* B') (x : B) :
     (Spec.map (CommRingCat.ofHom g)).appTop.hom (toΓ B x) = toΓ B' (g x) :=
   (ConcreteCategory.congr_hom (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom g)) x).symm
 
 def kb (A : PAlg l) : PadicAlgCl l →+* A.Ug := A.cToUg.comp (clToC l)
 
+/- English proof (translation)
+Establish `h : ((PAlg.mapUg f).comp A.cToUg).comp ((IsPerfectoidField.awayEquiv (K` using `ℂ_[l]) l : Localization.Away (l : OC l) →+* ℂ_[l])) = B.cToUg.comp ((IsPerfectoidField.awayEquiv (K := ℂ_[l]) l : Localization.Away (l : OC l) →+* ℂ_[l])) := by`. Use `IsLocalization.ringHom_ext (Submonoid.powers (l : OC l)) (RingHom.ext fun y => ?_)` and prove the remaining obligations. Establish `e : (IsPerfectoidField.awayEquiv (K` using `ℂ_[l]) l) (algebraMap _ _ y) = (y : ℂ_[l]) := (IsPerfectoidField.awayEquiv (K := ℂ_[l]) l).commutes y`. Express the relevant statement in the definitionally equal form `PAlg.mapUg f (A.cToUg ((IsPerfectoidField.awayEquiv (K := ℂ_[l]) l) (algebraMap _ _ y))) = B.cToUg ((IsPerfectoidField.awayEquiv (K := ℂ_[l]) l) (algebraMap _ _ y))`. Rewrite using `[e, PAlg.cToUg_coe, PAlg.cToUg_coe, PAlg.mapUg_algebraMap, PAlg.mapU_oC]`.
+
+Take `⟨y, rfl⟩` from `(IsPerfectoidField.awayEquiv (K := ℂ_[l]) l).surjective x`. Conclude with `RingHom.congr_fun h y`.
+-/
 theorem mapUg_cToUg {A B : PAlg l} (f : A ⟶ B) (x : ℂ_[l]) : PAlg.mapUg f (A.cToUg x) = B.cToUg x := by
   have h : ((PAlg.mapUg f).comp A.cToUg).comp
         ((IsPerfectoidField.awayEquiv (K := ℂ_[l]) l : Localization.Away (l : OC l) →+* ℂ_[l])) =
@@ -39,6 +47,9 @@ theorem mapUg_cToUg {A B : PAlg l} (f : A ⟶ B) (x : ℂ_[l]) : PAlg.mapUg f (A
   obtain ⟨y, rfl⟩ := (IsPerfectoidField.awayEquiv (K := ℂ_[l]) l).surjective x
   exact RingHom.congr_fun h y
 
+/- English proof (translation)
+The claim follows from `RingHom.ext fun x => mapUg_cToUg f _`.
+-/
 theorem mapUg_kb {A B : PAlg l} (f : A ⟶ B) : (PAlg.mapUg f).comp (kb A) = kb B := RingHom.ext fun x => mapUg_cToUg f _
 
 variable (l) in
@@ -67,6 +78,9 @@ def probe (H : RIn l) (r : Roots l) (G : C ⥤ Test l) (n : ℕ) : Probe C (l ^ 
 
 variable {K : IntermediateField ℚ_[l] (PadicAlgCl l)}
 
+/- English proof (translation)
+The claim follows from `RingHom.ext fun x => A.cToUg_coe (okToOC l K x)`.
+-/
 theorem kb_ok (A : PAlg l) : ((kb A).comp (algebraMap K (PadicAlgCl l))).comp (OK l K).subtype =
     (algebraMap A.U A.Ug).comp (A.oC.comp (okToOC l K)) := RingHom.ext fun x => A.cToUg_coe (okToOC l K x)
 
@@ -78,13 +92,22 @@ def geomPt (M : Model l K) (A : PAlg l) (y : M.P.obj A) : SU A ⟶ gb M :=
     (Spec.map (CommRingCat.ofHom (kb A))) (by
       rw [pullback.lift_snd, ← Spec.map_comp, ← CommRingCat.ofHom_comp])
 
+/- English proof (translation)
+Rewrite using `[geomPt, pullback.lift_fst_assoc, pullback.lift_fst]`.
+-/
 theorem geomPt_fst (M : Model l K) (A : PAlg l) (y : M.P.obj A) : geomPt M A y ≫ pullback.fst _ _ ≫ pullback.fst _ _ =
     Spec.map (CommRingCat.ofHom (algebraMap A.U A.Ug)) ≫ y.1 := by
   rw [geomPt, pullback.lift_fst_assoc, pullback.lift_fst]
 
+/- English proof (translation)
+The claim follows from `pullback.lift_snd _ _ _`.
+-/
 theorem geomPt_snd (M : Model l K) (A : PAlg l) (y : M.P.obj A) : geomPt M A y ≫ pullback.snd _ _ =
     Spec.map (CommRingCat.ofHom (kb A)) := pullback.lift_snd _ _ _
 
+/- English proof (translation)
+Use `pullback.hom_ext (pullback.hom_ext (by simpa only [Category.assoc] using h₁) ?_) h₂` and prove the remaining obligations. Establish `e` using `pullback.condition (f := M.q) (g := Spec.map (CommRingCat.ofHom (algebraMap K (PadicAlgCl l))))`. Rewrite using `[Category.assoc, Category.assoc]`. Express the relevant statement in the definitionally equal form `a ≫ pullback.fst _ _ ≫ M.q = b ≫ pullback.fst _ _ ≫ M.q`. Rewrite using `[e, ← Category.assoc, h₂, Category.assoc]`.
+-/
 theorem gb_ext (M : Model l K) {V : Scheme.{0}} {a b : V ⟶ gb M}
     (h₁ : a ≫ pullback.fst _ _ ≫ pullback.fst _ _ = b ≫ pullback.fst _ _ ≫ pullback.fst _ _)
     (h₂ : a ≫ pullback.snd _ _ = b ≫ pullback.snd _ _) : a = b := by
@@ -94,6 +117,11 @@ theorem gb_ext (M : Model l K) {V : Scheme.{0}} {a b : V ⟶ gb M}
   change a ≫ pullback.fst _ _ ≫ M.q = b ≫ pullback.fst _ _ ≫ M.q
   rw [e, ← Category.assoc, h₂, Category.assoc]
 
+/- English proof (translation)
+Use `gb_ext M ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, geomPt_fst, geomPt_fst]`. Express the relevant statement in the definitionally equal form `_ = _ ≫ Spec.map (CommRingCat.ofHom (PAlg.mapU f)) ≫ y.1`. Rewrite using `[← Category.assoc, ← Category.assoc, ← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp]`. Use `congr 3`.
+
+Conclude with `RingHom.ext fun x => PAlg.mapUg_algebraMap f x`. Rewrite using `[Category.assoc, geomPt_snd, geomPt_snd, ← Spec.map_comp, ← CommRingCat.ofHom_comp, mapUg_kb]`.
+-/
 theorem geomPt_nat (M : Model l K) {A B : PAlg l} (f : A ⟶ B) (y : M.P.obj A) :
     Spec.map (CommRingCat.ofHom (PAlg.mapUg f)) ≫ geomPt M A y = geomPt M B (M.P.map f y) := by
   refine gb_ext M ?_ ?_

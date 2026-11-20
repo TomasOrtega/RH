@@ -3,6 +3,9 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Local
 open KaehlerDifferential GlobalTheory.CechDR GlobalTheory.PD GlobalTheory.WH GlobalTheory.W1 UpperTheory.Gal.productCup_of_system
 open scoped TensorProduct
 
+/- English proof (translation)
+Introduce `a ha`. Simplify using `only [lft, Finset.mem_toLeft, Finset.mem_map] at ha ⊢`. Take `⟨u, hu, e⟩` from `ha`. Conclude with `⟨u, h hu, e⟩`.
+-/
 private lemma lft_mono' {ι κ : Type} [LinearOrder ι] [LinearOrder κ] {s t : Finset (ι ⊕ₗ κ)} (h : s ⊆ t) :
     lft s ⊆ lft t := by
   intro a ha
@@ -10,6 +13,9 @@ private lemma lft_mono' {ι κ : Type} [LinearOrder ι] [LinearOrder κ] {s t : 
   obtain ⟨u, hu, e⟩ := ha
   exact ⟨u, h hu, e⟩
 
+/- English proof (translation)
+Introduce `a ha`. Simplify using `only [rgt, Finset.mem_toRight, Finset.mem_map] at ha ⊢`. Take `⟨u, hu, e⟩` from `ha`. Conclude with `⟨u, h hu, e⟩`.
+-/
 private lemma rgt_mono' {ι κ : Type} [LinearOrder ι] [LinearOrder κ] {s t : Finset (ι ⊕ₗ κ)} (h : s ⊆ t) :
     rgt s ⊆ rgt t := by
   intro a ha
@@ -17,26 +23,85 @@ private lemma rgt_mono' {ι κ : Type} [LinearOrder ι] [LinearOrder κ] {s t : 
   obtain ⟨u, hu, e⟩ := ha
   exact ⟨u, h hu, e⟩
 
+/- English proof (translation)
+Use `Submodule.span_mono ?_` and prove the remaining obligations. Introduce and unpack `y ⟨b, hb, v, hv, rfl⟩`. Conclude with `⟨b, h hb, v, fun j => h (hv j), rfl⟩`.
+-/
 private lemma omB_mono' {L : Type} [Field L] [Algebra ℂ L] {B B' : Subalgebra ℂ L} (h : B ≤ B') (q : ℕ) :
     omB ℂ L B q ≤ omB ℂ L B' q := by
   refine Submodule.span_mono ?_
   rintro y ⟨b, hb, v, hv, rfl⟩
   exact ⟨b, h hb, v, fun j => h (hv j), rfl⟩
 
+/- English proof (translation)
+Simplify using `[wd]`.
+-/
 private lemma wd_empty' {ι E : Type} [LinearOrder ι] [AddCommGroup E] [Module ℂ E] (w : ι → Module.End ℂ E)
     (c : Finset ι → E) : wd w c ∅ = 0 := by
   simp [wd]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h s => h s trivial, fun h s _ => h s⟩`.
+-/
 private lemma acx_C' {ι E : Type} [LinearOrder ι] [AddCommGroup E] [Module ℂ E] {A : Finset ι → Submodule ℂ E}
     {w : ι → Module.End ℂ E} {n : ℤ} {c : Finset ι → E} :
     c ∈ (acx A w).C n ↔ ∀ s, c s ∈ (if (s.card : ℤ) = n then A s else ⊥ : Submodule ℂ E) :=
   ⟨fun h s => h s trivial, fun h s _ => h s⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h s => h s trivial, fun h s _ => h s⟩`.
+-/
 private lemma cech_C' {ι E : Type} [LinearOrder ι] [AddCommGroup E] [Module ℂ E] {A : Finset ι → Submodule ℂ E}
     {n : ℤ} {c : Finset ι → E} :
     c ∈ (cech A).C n ↔ ∀ s, c s ∈ (if s.Nonempty ∧ (s.card : ℤ) = n + 1 then A s else ⊥ : Submodule ℂ E) :=
   ⟨fun h s => h s trivial, fun h s _ => h s⟩
 
+/- English proof (translation)
+Introduce `hEI hRow hL1 hRY hU hW`. Introduce `F K K' _ _ _ _ _ _ _ _ _ _ _ _ _ d x j2 h0 y hy hB`. Take `⟨hRI, hGood, hRmono, -, -⟩` from `hRY F K K' d x j2 h0`. Establish `lu : ∀ I J : Finset (Fin (d + 1)), lft (uni I J) = I` using `fun I J => (hU _ _ (DR ℂ K') (fun _ => 1) (fun _ => 0) I J).2.1`. Establish `ru : ∀ I J : Finset (Fin (d + 1)), rgt (uni I J) = J` using `fun I J => (hU _ _ (DR ℂ K') (fun _ => 1) (fun _ => 0) I J).2.2.1`.
+
+Establish `cu : ∀ I J : Finset (Fin (d + 1)), (uni I J).card = I.card + J.card` using `fun I J => (hU _ _ (DR ℂ K') (fun _ => 1) (fun _ => 0) I J).2.2.2.1`. Set `G : Finset (Two d) → Submodule ℂ (DR ℂ K')` to `fun s => omB ℂ K' (RY (xv x) j2 (lft s) (rgt s)) d`. Establish `hGm : ∀ I J, G (uni I J) = omB ℂ K' (RY (xv x) j2 I J) d`. Introduce `I J`. Simplify using `only [G, lu, ru]`.
+
+Establish `hG0 : ∀ I, G (uni I ∅) = omB ℂ K' (rB ℂ K' (xv x) I) d`. Introduce `I`. Rewrite using `[hGm, hRI]`. Establish `hcech : (fun I => G (uni I ∅)) = fun I => omB ℂ K' (rB ℂ K' (xv x) I) d` using `funext hG0`. Establish `hmix : (fun I J => G (uni I J)) = fun I J => omB ℂ K' (RY (xv x) j2 I J) d`.
+
+Use function extensionality and compare the values at `fun I => funext fun J => hGm I J`. Take `⟨γ, hγ, hγ0, hγI⟩` from `hEI (Fin (d + 1)) (DR ℂ K') G d y (by rw [hcech]; exact hy) (by rw [hmix]; exact hB)`. Set `A : Finset (Two d) → Submodule ℂ (DR ℂ K')` to `fun s => if (lft s).Nonempty then G s else ⊥`. Establish `hAn : ∀ s, (lft s).Nonempty → A s = G s` using `fun s hs => if_pos hs`. Establish `hAe : ∀ s, ¬ (lft s).Nonempty → A s = ⊥` using `fun s hs => if_neg hs`.
+
+Establish `hWOk : WOk A (fun _ => 1)`. Use `⟨fun _ _ => Commute.one_left _, ?_⟩` and prove the remaining obligations. Introduce `s i _ m hm`. Distinguish the cases in `hs : (lft s).Nonempty`. Establish `hsub : s ⊆ insert i s` using `Finset.subset_insert _ _`.
+
+Establish `hs' : (lft (insert i s)).Nonempty` using `hs.mono (lft_mono' hsub)`. Rewrite `hm` using `[hAn _ hs]`. Use `show m ∈ A (insert i s)`. Rewrite using `[hAn _ hs']`. Conclude with `omB_mono' (hRmono _ _ _ _ (lft_mono' hsub) (rgt_mono' hsub)) d hm`.
+
+Rewrite using `[hAe _ hs, Submodule.mem_bot] at hm show m ∈ A (insert i s)`. Rewrite using `[hm]`. Conclude with `Submodule.zero_mem _`. Establish `hKE : ∀ b, KE (colA A (fun _ => 1) b) ((d : ℤ) + 2)`. Introduce `b m _`.
+
+Distinguish the cases in `hb : b.Nonempty`. Establish `e : (fun L => A (uni b L)) = fun J => omB ℂ K' (RY (xv x) j2 b J) d`. Use function extensionality and compare the values at `L`. Rewrite using `[hAn _ (by rw [lu]; exact hb), hGm]`. Use `show (acx (fun L => A (uni b L)) fun _ => 1).Z m ≤ (acx (fun L => A (uni b L)) fun _ => 1).B m`.
+
+Rewrite using `[e]`. Conclude with `hRow F K K' d x j2 h0 d b hb m`. Introduce `c hc`. Establish `hc0 : c = 0`. Use function extensionality and compare the values at `L`.
+
+Establish `h1` using `acx_C'.1 hc.1 L`. Establish `hA : A (uni b L) = ⊥` using `hAe _ (by rw [lu]; exact hb)`. Establish `h2 : c L ∈ (⊥ : Submodule ℂ (DR ℂ K'))`. Simplify using `only [hA, ite_self] at h1`. Conclude with `h1`.
+
+Conclude with `(Submodule.mem_bot ℂ).1 h2`. Rewrite using `[hc0]`. Conclude with `Submodule.zero_mem _`. Establish `hdelta : ∀ c : Finset (Two d) → DR ℂ K', wd (fun _ => (1 : Module.End ℂ (DR ℂ K'))) c = deltaL ℂ _ _ c` using `(hW (Two d) (DR ℂ K') A (fun _ => 1)).2.2.2.2.1`. Establish `hdelta' : ∀ c : Finset (Fin (d + 1)) → DR ℂ K', wd (fun _ => (1 : Module.End ℂ (DR ℂ K'))) c = deltaL ℂ _ _ c` using `(hW (Fin (d + 1)) (DR ℂ K') (fun _ => ⊥) (fun _ => 1)).2.2.2.2.1`.
+
+Establish `hγZ : γ ∈ (acx A fun _ => 1).Z ((d : ℤ) + 1)`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `acx_C'.2 fun s => ?_` and prove the remaining obligations. Establish `h1` using `cech_C'.1 hγ.1 s`. Distinguish the cases in `hc : (s.card : ℤ) = (d : ℤ) + 1`.
+
+Rewrite using `[if_pos hc]`. Distinguish the cases in `hs : (lft s).Nonempty`. Rewrite using `[hAn _ hs]`. Establish `hne : s.Nonempty`. Rewrite using `[← Finset.card_pos]`.
+
+Use linear arithmetic over natural numbers and integers. Rewrite `h1` using `[if_pos ⟨hne, hc⟩]`. Conclude with `h1`. Rewrite using `[hAe _ hs, Submodule.mem_bot]`. Establish `hl : lft s = ∅` using `Finset.not_nonempty_iff_eq_empty.1 hs`.
+
+Use `hγ0 (rgt s)` as an intermediate fact. Rewrite `this` using `[← hl, (hU _ _ (DR ℂ K') (fun _ => 1) (fun _ => 0) ∅ ∅).2.2.2.2 s]`. Then use the resulting hypothesis. Rewrite using `[if_neg hc]`. Rewrite `h1` using `[if_neg (fun h => hc h.2)]`. Conclude with `h1`.
+
+Use `show wd _ γ = 0`. Rewrite using `[hdelta]`. Conclude with `hγ.2`. Establish `hBγ : γ ∈ (acx A fun _ => 1).B ((d : ℤ) + 1)`. Use `hL1 (Fin (d + 1)) (Fin (d + 1)) (DR ℂ K') A (fun _ => 1) ((d : ℤ) + 2) ((d : ℤ) + 1) hWOk hKE γ hγZ ?_ ?_` and prove the remaining obligations.
+
+Introduce `b L hL`. It suffices to derive a contradiction. Establish `: L.card ≤ d + 1` using `by simpa using Finset.card_le_univ L`. Use linear arithmetic over natural numbers and integers. Introduce `b hb`.
+
+It suffices to derive a contradiction. Establish `: (0 : ℤ) ≤ b.card` using `by positivity`. Use linear arithmetic over natural numbers and integers. Take `⟨η, hη, he⟩` from `hBγ`. Use `Submodule.mem_map.2 ⟨fun b => η (uni b ∅), ?_, ?_⟩` and prove the remaining obligations.
+
+Use `cech_C'.2 fun b => ?_` and prove the remaining obligations. Establish `h1` using `acx_C'.1 hη (uni b ∅)`. Rewrite `h1` using `[cu]`. Simplify using `only [Finset.card_empty, add_zero] at h1`. Distinguish the cases in `hb : b.Nonempty ∧ (b.card : ℤ) = (d : ℤ) - 1 + 1`.
+
+Rewrite using `[if_pos hb]`. Establish `hc : (b.card : ℤ) = (d : ℤ) + 1 - 1` using `by omega`. Rewrite `h1` using `[if_pos hc, hAn _ (by rw [lu]; exact hb.1), hG0]`. Conclude with `h1`. Rewrite using `[if_neg hb]`.
+
+Distinguish the cases in `hc : (b.card : ℤ) = (d : ℤ) + 1 - 1`. Establish `hne : ¬ b.Nonempty` using `fun h => hb ⟨h, by omega⟩`. Rewrite `h1` using `[if_pos hc, hAe _ (by rw [lu]; exact hne)]`. Conclude with `h1`. Rewrite `h1` using `[if_neg hc]`.
+
+Conclude with `h1`. Use function extensionality and compare the values at `I`. Establish `e1` using `(hU _ _ (DR ℂ K') (fun _ => 1) η I ∅).1`. Rewrite `e1` using `[wd_empty', smul_zero, add_zero]`. Establish `e2 : wd (fun _ => (1 : Module.End ℂ (DR ℂ K'))) η = γ` using `he`.
+
+Rewrite `e1` using `[e2, hγI]`. Rewrite using `[e1]`. Conclude with `(congrFun (hdelta' _) I).symm`.
+-/
 theorem UpperTheory.Gal.productCup_of_system.edgeB_of :
     EdgeInj → RowEx → L1 → RYBasic → WdUni → WdBasic → EdgeB := by
   intro hEI hRow hL1 hRY hU hW

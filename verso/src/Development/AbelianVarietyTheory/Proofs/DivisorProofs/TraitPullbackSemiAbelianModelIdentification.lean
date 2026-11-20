@@ -14,6 +14,15 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.VB GlobalTheory.LieVB GlobalTheory.HodgeFrameGen
 open GlobalTheory.QCoh (pullbackSections)
 
+/- English proof (translation)
+Introduce `S' G _ _ hG R _ _ G₁ _ _ hG₁ y α hα W _ _ _ _ φ gam hgam χ' hχ`. Establish `hsq : spMap gam ≫ jK R = jK W ≫ spMap φ`. Simplify using `only [jK, spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Use `congr 2`. Use extensionality with `r`.
+
+Conclude with `hgam r`. Set `A` to `(Over.pullback (spMap gam)).obj ((Over.pullback (jK R)).obj G₁)`. Set `G₁W` to `(Over.pullback (spMap φ)).obj G₁`. Establish `hA : IsGrpPullback A ((Over.pullback (jK R)).obj G₁) (spMap gam) (pullback.fst _ _)` using `isGrpPullback_pullback _ _`. Establish `hAG₁ : IsGrpPullback A G₁ (jK W ≫ spMap φ) ((pullback.fst _ _ ≫ pullback.fst G₁.hom (jK R)))` using `(hA.comp (isGrpPullback_pullback G₁ (jK R))).congr hsq rfl`.
+
+Establish `hw : (pullback.fst _ _ ≫ pullback.fst G₁.hom (jK R)) ≫ G₁.hom = (A.hom ≫ jK W) ≫ spMap φ`. Rewrite using `[hAG₁.1.w]`. Simplify using `[Category.assoc]`. Set `ρ' : A.left ⟶ G₁W.left` to `pullback.lift (pullback.fst _ _ ≫ pullback.fst G₁.hom (jK R)) (A.hom ≫ jK W) hw`. Establish `hρfst : ρ' ≫ pullback.fst G₁.hom (spMap φ) = pullback.fst _ _ ≫ pullback.fst G₁.hom (jK R)` using `pullback.lift_fst _ _ _`.
+
+Establish `hρ : IsGrpPullback A G₁W (jK W) ρ'` using `(isGrpPullback_pullback G₁ (spMap φ)).cancel (hAG₁.congr rfl hρfst.symm) (pullback.lift_snd _ _ _)`. Establish `hG₁W : IsSemiAbelian G₁W` using `IsSemiAbelian.pullback (spMap φ) G₁ hG₁`. Take `⟨ψ', hψ, hc⟩` from `GlobalTheory.SemiAbDesc.exists_grpPullback_map W y ((Over.pullback (jK R)).obj G₁) G α hG hα G₁W hG₁W χ' (spMap gam) hχ A ρ' (pullback.fst _ _) hρ hA`. Conclude with `⟨ρ', ψ', hρ, hψ, hc, hρfst⟩`.
+-/
 theorem GlobalTheory.HodgeFrameGen.traitPullback_identification : ∀ {S' : Scheme.{0}} {G : Over S'} [GrpObj G] [IsCommMonObj G], IsSemiAbelian G →
     ∀ {R : Type} [CommRing R] [IsDomain R] {G₁ : Over (Sp R)} [GrpObj G₁] [IsCommMonObj G₁], IsSemiAbelian G₁ →
     ∀ {y : Sp (FractionRing R) ⟶ S'} {α : pullback G₁.hom (jK R) ⟶ G.left},

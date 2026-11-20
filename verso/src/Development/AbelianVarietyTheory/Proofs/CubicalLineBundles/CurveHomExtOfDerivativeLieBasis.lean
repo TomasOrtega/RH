@@ -13,6 +13,19 @@ open scoped CategoryTheory.Obj UpperHalfPlane
 
 namespace GlobalTheory.HomUnique
 
+/- English proof (translation)
+Introduce `hU hB k _ s P Q v f f' hv hf hf' h`. Take `⟨P', φ, hP⟩` from `exists_isPolFibre hB s P`. Take `⟨Q', ψ, hQ⟩` from `exists_isPolFibre hB s Q`. Take `⟨v', hv', -⟩` from `existsUnique_isVecOver hP.2.1.1 v`. Take `⟨g, hg, eg⟩` from `HomDescent.exists_isMonHom_pull hP.2.1 hQ.2.1 f`.
+
+Take `⟨g', hg', eg'⟩` from `HomDescent.exists_isMonHom_pull hP.2.1 hQ.2.1 f'`. Establish `hb` using `hv ℂ s P' φ v' hP hv'`. Establish `e₁ : v' ≫ g = v' ≫ g'`. Use `Over.OverMorphism.ext (hQ.2.1.1.hom_ext ?_ ((Over.w _).trans (Over.w _).symm))` and prove the remaining obligations. Establish `hl : v.left ≫ f.left = v.left ≫ f'.left` using `congrArg (fun z => z.left) h`.
+
+Unfold `IsVecOver at hv'`. Rewrite using `[Over.comp_left, Over.comp_left, Category.assoc, Category.assoc, eg, eg', ← Category.assoc, ← Category.assoc, hv', Category.assoc, Category.assoc, hl]`. Establish `e₂ : g = g'`. Use `(HomDescent.pol_countable_and_tangent_ext hU P' Q').2 g g' hg hg' fun x hx => ?_` and prove the remaining obligations. Take `⟨c, hc, -⟩` from `hb.2 x hx`.
+
+Establish `ec : c = ![c 0]`. Use extensionality with `i`. Use `fin_cases i`. Both sides reduce to the same expression. Rewrite `hc` using `[ec, LieMultiple.isLieComb_one_iff_comp]`.
+
+Rewrite using `[hc, Category.assoc, Category.assoc]`. Conclude with `congrArg (_ ≫ ·) e₁`. Use `P.isAb.smooth` as an intermediate fact. Use `Q.isAb.proper` as an intermediate fact. Establish `: IsSchemeTheoreticallyDominant (spMap s)` using `ExtUnique.isSchemeTheoreticallyDominant_spec_of_injective (CommRingCat.ofHom s) s.injective`.
+
+Conclude with `ExtUnique.over_hom_ext_of_isPullback hP.2.1.1 (by rw [← eg, ← eg', e₂])`.
+-/
 theorem hom_ext_of_lieBasis : ThetaUnifAV → Out.PolBaseChangeSt → ∀ (k : Type) [Field k] (s : k →+* ℂ) (P Q : Out.PolAV (Sp k)) (v : epsR k ⟶ P.A) (f f' : P.A ⟶ Q.A), (∀ (R' : Type) [CommRing R'] (f' : k →+* R') (P' : Out.PolAV (Sp R')) (φ' : P'.A.left ⟶ P.A.left) (v' : epsR R' ⟶ P'.A), IsPolFibre f' P P' φ' → IsVecOver f' φ' v v' → IsLieBasis ![v']) → IsMonHom f → IsMonHom f' → v ≫ f = v ≫ f' → f = f' := by
   intro hU hB k _ s P Q v f f' hv hf hf' h
   obtain ⟨P', φ, hP⟩ := exists_isPolFibre hB s P

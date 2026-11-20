@@ -7,6 +7,9 @@ open NumberField ReciprocityTheory.GeometryOfNumbersTheory Formalism.L2.LamCM
 
 namespace GlobalTheory.LamF
 
+/- English proof (translation)
+Introduce `K _ _ V _ _ _ _ h Λ v ℓ hv hℓ hΛ hn`. Rewrite using `[GlobalTheory.CM.deg_ideal_smul h Λ hv (m := fun s => ℓ.n s ^ 2) (fun s => pow_pos (hℓ.2 s) 2) (fun s => (hn s).symm) hℓ.1 (fun z => (hΛ z).trans ⟨fun ⟨c, a, b⟩ => ⟨c, b, a⟩, fun ⟨c, a, b⟩ => ⟨c, b, a⟩⟩), MLine.ndeg, MLine.deg, meanLog]`. Simplify using `only [Real.log_pow, ← Finset.mul_sum, Nat.cast_ofNat]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem deg_eq_ndeg_of_line : ∀ (K : Type) [Field K] [NumberField K] (V : Type) [AddCommGroup V] [Module K V]
     [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] (h : HermFam K V) (Λ : Submodule (𝓞 K) V) (v : V) (ℓ : MLine K),
     v ≠ 0 → ℓ.Good → (∀ z, z ∈ Λ ↔ ∃ c ∈ ℓ.I, z = c • v) → (∀ s, ℓ.n s ^ 2 = (h.form s v v).re) →

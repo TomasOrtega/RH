@@ -4,6 +4,9 @@ open GlobalTheory.JR Matrix MeasureTheory Filter Topology
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Rewrite using `[Algebra.trace_eq_matrix_trace (Pi.basisFun F (Fin r)), Matrix.trace]`. Use `congr 1`. Use extensionality with `i`. Simplify using `[Algebra.leftMulMatrix_eq_repr_mul, Pi.basisFun_apply]`.
+-/
 theorem trace_pi_fin_self {F : Type} [Field F] (r : ℕ) (x : Fin r → F) :
     Algebra.trace F (Fin r → F) x = ∑ i, x i := by
   rw [Algebra.trace_eq_matrix_trace (Pi.basisFun F (Fin r)), Matrix.trace]
@@ -11,6 +14,9 @@ theorem trace_pi_fin_self {F : Type} [Field F] (r : ℕ) (x : Fin r → F) :
   ext i
   simp [Algebra.leftMulMatrix_eq_repr_mul, Pi.basisFun_apply]
 
+/- English proof (translation)
+Rewrite using `[← Algebra.trace_eq_of_algEquiv e k, trace_pi_fin_self]`.
+-/
 theorem trace_eq_sum_coords_of_algEquiv {F K : Type} [Field F] [CommRing K] [Algebra F K] (r : ℕ)
     (e : K ≃ₐ[F] (Fin r → F)) (k : K) : Algebra.trace F K k = ∑ i, e k i := by
   rw [← Algebra.trace_eq_of_algEquiv e k, trace_pi_fin_self]

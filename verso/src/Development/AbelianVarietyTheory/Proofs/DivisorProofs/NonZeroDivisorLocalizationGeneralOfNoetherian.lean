@@ -7,6 +7,13 @@ namespace GlobalTheory.NzdDescent
 
 open TensorProduct GlobalTheory.SmoothDescent
 
+/- English proof (translation)
+Take `⟨A₀, B₀, _, _, h₀, hB, ⟨β⟩⟩` from `Algebra.Smooth.exists_subalgebra_fg ℤ A B`. Use `haveI : IsNoetherianRing A₀ := isNoetherianRing_of_fg h₀`. Take `⟨S, hS, hsub⟩` from `exists_fg_subset_range_incl (C₁ := B₀) ({β b, β g} : Finset _)`. Take `⟨b₁, hb₁⟩` from `hsub (by simp : β b ∈ _)`. Take `⟨g₁, hg₁⟩` from `hsub (by simp : β g ∈ _)`.
+
+Use `⟨S, S ⊗[A₀] B₀, inferInstance, isNoetherianRing_of_fg hS, inferInstance, inferInstance, inferInstance, inferInstance, (Algebra.TensorProduct.cancelBaseChange A₀ S A A B₀).trans β.symm, b₁, g₁, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x y h`. Simplify using `only [AlgEquiv.trans_apply, cancel_one_tmul] at h`. Conclude with `incl_injective S (β.symm.injective h)`. Simplify using `only [AlgEquiv.trans_apply, cancel_one_tmul]`.
+
+Conclude with `(congrArg β.symm hb₁).trans (β.symm_apply_apply b)`. Simplify using `only [AlgEquiv.trans_apply, cancel_one_tmul]`. Conclude with `(congrArg β.symm hg₁).trans (β.symm_apply_apply g)`.
+-/
 theorem model_data (A B : Type) [CommRing A] [CommRing B] [Algebra A B] [Algebra.Smooth A B] (b g : B) :
     ∃ (S B₁ : Type) (_ : CommRing S) (_ : IsNoetherianRing S) (_ : Algebra S A) (_ : CommRing B₁)
       (_ : Algebra S B₁) (_ : Algebra.Smooth S B₁) (e : A ⊗[S] B₁ ≃ₐ[A] B) (b₁ g₁ : B₁),
@@ -28,6 +35,37 @@ theorem model_data (A B : Type) [CommRing A] [CommRing B] [Algebra A B] [Algebra
   · simp only [AlgEquiv.trans_apply, cancel_one_tmul]
     exact (congrArg β.symm hg₁).trans (β.symm_apply_apply g)
 
+/- English proof (translation)
+Set `ι : B₁ →+* B` to `e.toAlgHom.toRingHom.comp (Algebra.TensorProduct.includeRight : B₁ →ₐ[S] A ⊗[S] B₁).toRingHom`. Establish `hι : ∀ x, ι x = e (1 ⊗ₜ x)` using `fun x => rfl`. Establish `hιS : ∀ s : S, ι (algebraMap S B₁ s) = algebraMap A B (algebraMap S A s)`. Introduce `s`. Rewrite using `[hι, ← Algebra.TensorProduct.tmul_one_eq_one_tmul, ← Algebra.TensorProduct.algebraMap_apply, IsScalarTower.algebraMap_apply S A (A ⊗[S] B₁), AlgEquiv.commutes]`.
+
+Establish `hgb₁ : g₁ * b₁ = 0`. Apply `hinj` to reduce the goal to its premises. Use `show ι (g₁ * b₁) = ι 0`. Rewrite using `[map_mul, hι, hι, hg, hb, hgb, map_zero]`. Set `u₁ : PrimeSpectrum B₁` to `⟨u.asIdeal.comap ι, Ideal.comap_isPrime _ _⟩`.
+
+Establish `key` using `hN S B₁ b₁ g₁ u₁ hgb₁ ?_`. Take `⟨⟨t, ht⟩, htb⟩` from `(IsLocalization.map_eq_zero_iff u₁.asIdeal.primeCompl _ b₁).mp key`. Use `(IsLocalization.map_eq_zero_iff u.asIdeal.primeCompl _ b).mpr ⟨⟨ι t, ht⟩, ?_⟩` and prove the remaining obligations. Use `show ι t * b = 0`. Rewrite using `[← hb, ← hι, ← map_mul]`.
+
+Simplify using `only at htb`. Rewrite using `[htb, map_zero]`. Introduce `Q₁ hQ₁ hQ₁u hgQ₁`. Use `haveI : Q₁.IsPrime := hQ₁.1.1`. Set `uT : Ideal (A ⊗[S] B₁)` to `u.asIdeal.comap e.toAlgHom.toRingHom`.
+
+Use `haveI : uT.IsPrime := Ideal.comap_isPrime _ _`. Take `⟨QT, hQTp, hQTu, hQT1, hQTA⟩` from `GlobalTheory.T.exists_prime_le_comap_of_goingDown_tensor S A B₁ uT Q₁ (fun x hx => hQ₁u hx) (by`. Apply `le_antisymm` to reduce the goal to its premises. Introduce `s hs`. Establish `: algebraMap S B₁ s ∈ u₁.asIdeal` using `hQ₁u hs`.
+
+Use `show e (algebraMap S (A ⊗[S] B₁) s) ∈ u.asIdeal`. Rewrite using `[← (Algebra.TensorProduct.includeRight : B₁ →ₐ[S] A ⊗[S] B₁).commutes]`. Conclude with `this`. Introduce `s hs`. Apply `hQ₁.1.2` to reduce the goal to its premises.
+
+Apply `Ideal.mem_map_of_mem` to reduce the goal to its premises. Use `show ι (algebraMap S B₁ s) ∈ u.asIdeal`. Establish `: e (algebraMap S (A ⊗[S] B₁) s) ∈ u.asIdeal` using `hs`. Rewrite using `[← (Algebra.TensorProduct.includeRight : B₁ →ₐ[S] A ⊗[S] B₁).commutes] at this)` and apply the resulting hypothesis. Set `Q' : Ideal B` to `QT.comap e.symm.toAlgHom.toRingHom`.
+
+Use `haveI : Q'.IsPrime := Ideal.comap_isPrime _ _`. Establish `hQ'u : Q' ≤ u.asIdeal`. Introduce `x hx`. Use `hQTu hx` as an intermediate fact. Simplify `this` using `[uT]`.
+
+Establish `hmap : (u.asIdeal.comap (algebraMap A B)).map (algebraMap A B) ≤ Q'`. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `a ha`. Establish `h1 : a ∈ uT.comap (algebraMap A (A ⊗[S] B₁))` using `by show e (algebraMap A _ a) ∈ u.asIdeal`. Rewrite using `[AlgEquiv.commutes]`.
+
+Conclude with `ha`. Rewrite `h1` using `[← hQTA]`. Use `show e.symm (algebraMap A B a) ∈ QT`. Rewrite using `[AlgEquiv.commutes]`. Conclude with `h1`.
+
+Take `⟨Q, hQmin, hQQ'⟩` from `Ideal.exists_minimalPrimes_le hmap`. Apply `hmin Q hQmin (hQQ'.trans hQ'u)` to reduce the goal to its premises. Use `haveI : Q.IsPrime := hQmin.1.1`. Establish `hJ : Q₁ ≤ Q.comap ι`. Use `hQ₁.2 ⟨Ideal.comap_isPrime _ _, ?_⟩ ?_` and prove the remaining obligations.
+
+Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `s hs`. Use `show ι (algebraMap S B₁ s) ∈ Q`. Rewrite using `[hιS]`. Apply `hQmin.1.2` to reduce the goal to its premises.
+
+Apply `Ideal.mem_map_of_mem` to reduce the goal to its premises. Use `show algebraMap A B (algebraMap S A s) ∈ u.asIdeal`. Rewrite using `[← hιS]`. Conclude with `hs`. Introduce `x hx`.
+
+Rewrite using `[← hQT1]`. Use `hQQ' hx` as an intermediate fact. Establish `h2 : e.symm (e (1 ⊗ₜ x)) ∈ QT` using `this`. Rewrite `h2` using `[AlgEquiv.symm_apply_apply]`. Conclude with `h2`.
+
+Use `hJ hgQ₁` as an intermediate fact. Rewrite using `[← hg]`. Conclude with `this`.
+-/
 theorem of_model (hN : (∀ (A B : Type) [CommRing A] [IsNoetherianRing A] [CommRing B] [Algebra A B] [Algebra.Smooth A B]
     (b g : B) (u : PrimeSpectrum B), g * b = 0 →
     (∀ Q ∈ ((u.asIdeal.comap (algebraMap A B)).map (algebraMap A B)).minimalPrimes, Q ≤ u.asIdeal → g ∉ Q) →
@@ -112,6 +150,9 @@ theorem of_model (hN : (∀ (A B : Type) [CommRing A] [IsNoetherianRing A] [Comm
   have := hJ hgQ₁
   rw [← hg]; exact this
 
+/- English proof (translation)
+Introduce `hN A B _ _ _ _ b g u hgb hmin`. Take `⟨S, B₁, _, _, _, _, _, _, e, b₁, g₁, hinj, hb, hg⟩` from `model_data A B b g`. Conclude with `of_model hN A B S B₁ b g e b₁ g₁ hinj hb hg u hgb hmin`.
+-/
 theorem of_noetherian : (∀ (A B : Type) [CommRing A] [IsNoetherianRing A] [CommRing B] [Algebra A B] [Algebra.Smooth A B]
     (b g : B) (u : PrimeSpectrum B), g * b = 0 →
     (∀ Q ∈ ((u.asIdeal.comap (algebraMap A B)).map (algebraMap A B)).minimalPrimes, Q ≤ u.asIdeal → g ∉ Q) →

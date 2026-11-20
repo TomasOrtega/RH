@@ -20,6 +20,47 @@ noncomputable section
 
 namespace GlobalTheory.CompHS.Modif
 
+/- English proof (translation)
+Introduce `F _ Y _ p U d M hp hU y hR`. Establish `hprop : ∀ {Z : Scheme.{0}} {s : Z ⟶ Sp F}, IsProjOver s → IsProper s`. Introduce `Z s hs`. Take `⟨N, c, hc, rfl⟩` from `hs`. Use `isProper_str F N` as an intermediate fact.
+
+Use `infer_instance`. Use `haveI : IsProper p := hprop hp`. Use `haveI : IsProper (M.σ ≫ p) := hprop M.proj`. Use `haveI : IsProper M.σ := IsProper.of_comp M.σ p`. Use `haveI : Nonempty M.X := by haveI := M.iso`.
+
+Take `⟨u, hu⟩` from `hU`. Take `⟨z, -⟩` from `(M.σ ∣_ U).surjective ⟨u, hu⟩`. Conclude with `⟨z.1⟩`. Use `haveI : IsIntegral M.X := HSApp.ValCrit.isIntegral_X M`. Set `R` to `Y.presheaf.stalk y`.
+
+Use `haveI : IsDomain R := inferInstanceAs (IsDomain (Y.presheaf.stalk y))`. Use `haveI : IsDiscreteValuationRing R := hR`. Set `η` to `genericPoint Y`. Establish `hηU : η ∈ U` using `((genericPoint_spec Y).mem_open_set_iff U.isOpen).2 (by simpa using hU)`. Set `i₂ : Spec R ⟶ Y` to `Y.fromSpecStalk y`.
+
+Establish `hgen : ∀ w : Spec R, (∀ u, w ⤳ u) → i₂ w = η`. Introduce `w hw`. Establish `hq : η ∈ Set.range i₂`. Rewrite using `[Scheme.range_fromSpecStalk]`. Conclude with `(genericPoint_spec Y).specializes (Set.mem_univ y)`.
+
+Take `⟨q, hq⟩` from `hq`. Establish `h1 : i₂ w ⤳ η` using `hq ▸ (hw q).map i₂.continuous`. Conclude with `(h1.antisymm ((genericPoint_spec Y).specializes (Set.mem_univ _))).eq`. Set `K` to `FractionRing R`. Set `j : Spec (.of K) ⟶ Spec R` to `Spec.map (CommRingCat.ofHom (algebraMap R K))`.
+
+Establish `hj : ∀ s : Spec (.of K), ∀ u : Spec R, j s ⤳ u`. Introduce `s u`. Use `(PrimeSpectrum.le_iff_specializes _ _).1 ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Ideal.comap (algebraMap R K) s.asIdeal ≤ u.asIdeal`. Use `haveI : s.asIdeal.IsPrime := s.isPrime`.
+
+Rewrite using `[Ideal.eq_bot_of_prime s.asIdeal, ← RingHom.ker_eq_comap_bot, (RingHom.injective_iff_ker_eq_bot _).1 (IsFractionRing.injective R K)]`. Conclude with `bot_le`. Establish `hKU : ⊤ ≤ (j ≫ i₂) ⁻¹ᵁ U` using `fun s _ => by show i₂ (j s) ∈ U`. Rewrite using `[hgen (j s) (hj s)]`. Conclude with `hηU`.
+
+Take `⟨i₁, hi₁, -⟩` from `M.existsUnique_lift (j ≫ i₂) hKU`. Establish `hE : ValuativeCriterion.Existence M.σ`. Establish `h : UniversallyClosed M.σ` using `inferInstance`. Rewrite `h` using `[UniversallyClosed.eq_valuativeCriterion]`. Conclude with `h.1`.
+
+Take `⟨⟨L⟩⟩` from `hE (@ValuativeCommSq.mk _ _ M.σ R inferInstance ‹IsDomain R› inferInstance K inferInstance inferInstance inferInstance i₁ i₂ ⟨hi₁⟩)`. Set `c` to `IsLocalRing.closedPoint R`. Establish `hfr : L.l ≫ M.σ = i₂` using `L.fac_right`. Use `⟨L.l c, ?_, ?_⟩` and prove the remaining obligations. Use `show (L.l ≫ M.σ) c = y`.
+
+Rewrite using `[hfr]`. Conclude with `Scheme.fromSpecStalk_closedPoint`. Establish `key : ∀ g : Spec R ⟶ Y, g = i₂ → Function.Bijective (g.stalkMap c).hom`. Introduce and unpack `_ rfl`. Establish `e : i₂.stalkMap c ≫ (stalkClosedPointIso R).hom = (Y.presheaf.stalkCongr _).hom` using `Scheme.stalkClosedPointTo_fromSpecStalk y`.
+
+Use `haveI : IsIso (i₂.stalkMap c ≫ (stalkClosedPointIso R).hom) := by rw [e]; infer_instance`. Use `haveI : IsIso (i₂.stalkMap c) := IsIso.of_isIso_comp_right _ (stalkClosedPointIso R).hom`. Conclude with `ConcreteCategory.bijective_of_isIso _`. Establish `hb` using `key _ hfr`. Establish `e₀` using `Scheme.Hom.stalkMap_comp L.l M.σ c`.
+
+Establish `hb2 : Function.Bijective (M.σ.stalkMap (L.l c) ≫ L.l.stalkMap c).hom` using `by rw [← e₀]; exact hb`. Use `replace hb : Function.Bijective ((L.l.stalkMap c).hom ∘ (M.σ.stalkMap (L.l c)).hom) := hb2`. Set `t` to `genericPoint (Spec R)`. Establish `ht : ∀ u : Spec R, t ⤳ u` using `fun u => (genericPoint_spec (Spec R)).specializes (Set.mem_univ u)`. Establish `hσt : M.σ (L.l t) = η` using `by show (L.l ≫ M.σ) t = η`.
+
+Rewrite using `[hfr]`. Conclude with `hgen t ht`. Establish `hσg : M.σ (genericPoint M.X) = η`. Establish `h1 : M.σ (genericPoint M.X) ⤳ η` using `hσt ▸ ((genericPoint_spec M.X).specializes (Set.mem_univ (L.l t))).map M.σ.continuous`. Conclude with `(h1.antisymm ((genericPoint_spec Y).specializes (Set.mem_univ _))).eq`.
+
+Establish `hlt : L.l t = genericPoint M.X` using `by haveI := M.iso`. Establish `m1 : L.l t ∈ M.opn` using `show M.σ (L.l t) ∈ U from hσt ▸ hηU`. Establish `m2 : genericPoint M.X ∈ M.opn` using `show M.σ (genericPoint M.X) ∈ U from hσg ▸ hηU`. Establish `e : (M.σ ∣_ U) ⟨L.l t, m1⟩ = (M.σ ∣_ U) ⟨genericPoint M.X, m2⟩` using `Subtype.ext ((morphismRestrict_base_coe M.σ U ⟨L.l t, m1⟩).trans ((hσt.trans hσg.symm).trans (morphismRestrict_base_coe M.σ U ⟨genericPoint M.X, m2⟩).symm))`. Conclude with `congrArg Subtype.val ((M.σ ∣_ U).isOpenEmbedding.injective e)`.
+
+Establish `hBinj : Function.Injective (L.l.stalkMap c).hom`. Establish `hsp : t ⤳ c` using `ht c`. Establish `nat` using `Scheme.Hom.stalkSpecializes_stalkMap L.l t c hsp`. Establish `hf : IsField (M.X.presheaf.stalk (L.l t))`. Rewrite using `[hlt]`.
+
+Conclude with `Field.toIsField M.X.functionField`. Establish `i1 : Function.Injective (L.l.stalkMap t).hom`. Use `letI := hf.toField`. Conclude with `RingHom.injective _`. Establish `i2 : Function.Injective (M.X.presheaf.stalkSpecializes (hsp.map L.l.continuous)).hom`.
+
+Use `(injective_iff_map_eq_zero _).2 fun a ha => ?_` and prove the remaining obligations. Take `⟨V, hV, f, rfl⟩` from `M.X.presheaf.germ_exist a`. Establish `e` using `congrArg (fun φ => φ.hom f) (M.X.presheaf.germ_stalkSpecializes hV (hsp.map L.l.continuous))`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply] at e`. Rewrite `ha` using `[e]`.
+
+Rewrite using `[germ_injective_of_isIntegral M.X _ _ (ha.trans (map_zero _).symm), map_zero]`. Establish `i3 : Function.Injective (((Spec R).presheaf.stalkSpecializes hsp).hom ∘ (L.l.stalkMap c).hom)`. Establish `h4 : Function.Injective (M.X.presheaf.stalkSpecializes (hsp.map L.l.continuous) ≫ L.l.stalkMap t).hom` using `i1.comp i2`. Rewrite `h4` using `[nat]`. Conclude with `h4`.
+
+Conclude with `i3.of_comp`. Use `⟨hb.1.of_comp, fun a => ?_⟩` and prove the remaining obligations. Take `⟨b, hb'⟩` from `hb.2 ((L.l.stalkMap c).hom a)`. Conclude with `⟨b, hBinj hb'⟩`.
+-/
 theorem exists_bijective_stalkMap_of_dvr : ∀ (F : Type) [Field F] (Y : Scheme.{0}) [IsIntegral Y] (p : Y ⟶ Sp F)
     (U : Y.Opens) (d : ℕ) (M : Modif p U d), IsProjOver p → (U : Set Y).Nonempty → ∀ y : Y,
       IsDiscreteValuationRing (Y.presheaf.stalk y) →

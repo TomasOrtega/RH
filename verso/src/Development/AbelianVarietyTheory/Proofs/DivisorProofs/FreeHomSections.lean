@@ -9,6 +9,9 @@ namespace GlobalTheory.EtC
 
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex in
 
+/- English proof (translation)
+Introduce `R _ P F`. Conclude with `⟨fun a ha => _root_.GlobalTheory.EtC.CupSpec.free_exists P F a ha, fun φ ψ h => _root_.GlobalTheory.EtC.CupSpec.free_ext φ ψ h, fun V U g x => _root_.GlobalTheory.EtC.CupSpec.freeGen_res P g x, fun Q f U x => _root_.GlobalTheory.EtC.CupSpec.freeGen_map f U x⟩`.
+-/
 theorem _root_.GlobalTheory.EtC.free_hom_sections : ∀ (R : Type) [CommRing R] (P : _root_.GlobalTheory.EtC.PSh)
     (F : _root_.GlobalTheory.EtC.Shv R),
     (∀ a : ∀ U : Scheme.{0}, P.obj (op U) → _root_.GlobalTheory.EtC.Sec F U,

@@ -5,12 +5,18 @@ open NumberField IsDedekindDomain ReciprocityTheory.Gal Formalism.ConjugateSelfD
 
 namespace GlobalTheory.LamTie
 
+/- English proof (translation)
+Unfold `CharFrame.delAt`. Use `split_ifs`. Conclude with `⟨C.isDel'.unitary, C.isDel'.triv⟩`. Conclude with `⟨C.isDel.unitary, C.isDel.triv⟩`.
+-/
 theorem delAt_unitary_triv {D : D7} (C : CharFrame D) (l : ℕ) : (C.delAt l).IsUnitary ∧ (C.delAt l).TrivOn D.host.F := by
   unfold CharFrame.delAt
   split_ifs
   · exact ⟨C.isDel'.unitary, C.isDel'.triv⟩
   · exact ⟨C.isDel.unitary, C.isDel.triv⟩
 
+/- English proof (translation)
+Introduce `D Z h l j a`. Establish `hd` using `delAt_unitary_triv Z.C l`. Conclude with `⟨((Z.C.isMu0 j).unitary.mul hd.1).mul (h.aux a).unitary.inv, ((Z.C.isMu0 j).triv.mul hd.2).mul (h.aux a).triv.inv⟩`.
+-/
 theorem toricLam0_unitary_trivOnMaxRealSubfield : ∀ (D : D7) (Z : LamDat D), Z.Ok → ∀ (l : ℕ) (j a : Fin D.R.m),
     (Z.lam0 l j a).IsUnitary ∧ TrivOnF (Z.lam0 l j a) := by
   intro D Z h l j a

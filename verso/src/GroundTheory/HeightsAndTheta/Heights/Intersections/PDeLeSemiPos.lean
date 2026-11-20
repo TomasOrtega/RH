@@ -21,15 +21,26 @@ set_option linter.unusedSectionVars false
 
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j z`. Apply the tactic sequence `refine Fin.cases ?_ (fun i => ?_) j <;> simp [pot]`.
+-/
 theorem pot_cons {e : ℕ} (M : HermLine ι) (L : Fin e → HermLine ι) :
     pot (Fin.cons M L : Fin (e + 1) → HermLine ι) = Fin.cons (fun z => Real.log (M.h z)) (pot L) := by
   funext j z
   refine Fin.cases ?_ (fun i => ?_) j <;> simp [pot]
 
+/- English proof (translation)
+Introduce `j` and use `Fin.cases (by simpa using hM) (fun i => by simpa using hN i) j`.
+-/
 theorem forall_cons {m : ℕ} {p : HermLine ι → Prop} {M : HermLine ι} {N : Fin m → HermLine ι}
     (hM : p M) (hN : ∀ j, p (N j)) : ∀ j, p ((Fin.cons M N : Fin (m + 1) → HermLine ι) j) :=
   fun j => Fin.cases (by simpa using hM) (fun i => by simpa using hN i) j
 
+/- English proof (translation)
+Establish `key : ∀ (Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ)) y w, sheetDensity Q Ψ φ (fun z => -f z) y w = -sheetDensity Q Ψ φ f y w`. Introduce `Ψ y w`. Unfold `sheetDensity`. Apply the tactic sequence `split_ifs <;> simp`. Unfold `ptsIntegral ptsIntegralAt`.
+
+Use `split_ifs`. Simplify using `only [key, finsum_neg_distrib, MeasureTheory.integral_neg]`. Simplify using the standard rewrite rules.
+-/
 theorem ptsIntegral_neg {e : ℕ} (Q : Ideal (MRing ι)) (φ : Fin e → ((Σ k, ι k) → ℂ) → ℝ)
     (f : ((Σ k, ι k) → ℂ) → ℝ) : ptsIntegral Q φ (fun z => -f z) = -ptsIntegral Q φ f := by
   have key : ∀ (Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ)) y w,
@@ -42,11 +53,17 @@ theorem ptsIntegral_neg {e : ℕ} (Q : Ideal (MRing ι)) (φ : Fin e → ((Σ k,
   · simp only [key, finsum_neg_distrib, MeasureTheory.integral_neg]
   · simp
 
+/- English proof (translation)
+Use function extensionality and compare the values at `z`. Simplify using `[logNorm, Real.log_inv]`.
+-/
 theorem log_h_eq_neg_logNorm_one (D : HermLine ι) :
     (fun z => Real.log (D.h z)) = fun z => -logNorm D 1 z := by
   funext z
   simp [logNorm, Real.log_inv]
 
+/- English proof (translation)
+Use `⟨0, fun k => by simp [hDa], fun m hm k => ?_, fun h => hQ.2.1.1.ne_top ((Ideal.eq_top_iff_one Q).2 h)⟩` and prove the remaining obligations. Rewrite `hm` using `[MvPolynomial.support_one, Finset.mem_singleton]`. Substitute `hm` using the available equality. Simplify using the standard rewrite rules.
+-/
 theorem isSectionOn_one {Q : Ideal (MRing ι)} {d : ℕ} (hQ : IsArithVar Q d) {D : HermLine ι}
     (hDa : D.a = 0) : IsSectionOn Q D 1 := by
   refine ⟨0, fun k => by simp [hDa], fun m hm k => ?_,
@@ -55,6 +72,9 @@ theorem isSectionOn_one {Q : Ideal (MRing ι)} {d : ℕ} (hQ : IsArithVar Q d) {
   subst hm
   simp
 
+/- English proof (translation)
+Rewrite using `[log_h_eq_neg_logNorm_one D, ptsIntegral_neg, ptsIntegral_neg, ptsIntegral_neg, hAdd K ι Q e L M N D 1 hQ hL hM hN hD (isSectionOn_one hQ hDa)]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem ptsIntegral_add_first_log (hAdd : PtsAddFirst.Statement) {Q : Ideal (MRing ι)} {e : ℕ}
     {L : Fin e → HermLine ι} {M N D : HermLine ι} (hQ : IsArithVar Q (e + 2))
     (hL : ∀ j, IsSmoothHerm (L j)) (hM : IsSmoothHerm M) (hN : IsSmoothHerm N) (hD : IsSmoothHerm D)
@@ -66,6 +86,9 @@ theorem ptsIntegral_add_first_log (hAdd : PtsAddFirst.Statement) {Q : Ideal (MRi
     hAdd K ι Q e L M N D 1 hQ hL hM hN hD (isSectionOn_one hQ hDa)]
   ring
 
+/- English proof (translation)
+Establish `e : ∀ u : α → ℝ, ∑ᶠ (W) (_ : p W), u W = ∑ W ∈ hp.toFinset, u W` using `fun u => finsum_mem_eq_finite_toFinset_sum u hp`. Establish `e1 : (fun ε => ∑ᶠ (W) (_ : p W), f ε W) = fun ε => ∑ W ∈ hp.toFinset, f ε W`. Use function extensionality and compare the values at `fun ε => e (f ε)`. Rewrite using `[e1, e g]`. Conclude with `tendsto_finsetSum _ fun W hW => h W (hp.mem_toFinset.mp hW)`.
+-/
 theorem tendsto_finsum_of_finite {α : Type*} {p : α → Prop} (hp : {W | p W}.Finite) {f : ℝ → α → ℝ}
     {g : α → ℝ} {l : Filter ℝ} (h : ∀ W, p W → Tendsto (fun ε => f ε W) l (𝓝 (g W))) :
     Tendsto (fun ε => ∑ᶠ (W) (_ : p W), f ε W) l (𝓝 (∑ᶠ (W) (_ : p W), g W)) := by
@@ -76,6 +99,25 @@ theorem tendsto_finsum_of_finite {α : Type*} {p : α → Prop} (hp : {W | p W}.
   rw [e1, e g]
   exact tendsto_finsetSum _ fun W hW => h W (hp.mem_toFinset.mp hW)
 
+/- English proof (translation)
+Introduce `K _ ι _ P n L A A' s s' hP hL hLp hA hA' hs hs' hnc`. Take `⟨a, haA, hsa, hsP⟩` from `id hs`. Take `⟨a', haA', hsa', hs'P⟩` from `id hs'`. Establish `ht : ∃ b : K → ℕ, (∀ k, A.a k = b k) ∧ IsMultiHomog s b` using `⟨a, haA, hsa⟩`. Establish `ht' : ∃ b : K → ℕ, (∀ k, A'.a k = b k) ∧ IsMultiHomog s' b` using `⟨a', haA', hsa'⟩`.
+
+Take `⟨C, hC⟩` from `hCurv K ι A' s' ht' hA'`. Establish `hT` using `isSmoothHerm_ofMetrics_fs (ι := ι) (fun _ => (C : ℤ))`. Generalize the expression as in `HermLine.ofMetrics (fun k => fsMetric (ι k)) (fun _ => (C : ℤ)) = T at hC hT`. Establish `hfin : ∀ t : MRing ι, {W | W ∈ divSupp P t ∧ IsHorizontal W}.Finite` using `fun t => (divSupp_finite P t).subset fun W h => h.1`. Establish `e1 : ∀ ε : ℝ, 0 < ε → ptsIntegral P (pot (Fin.cons ((A'.tensor (regLine A' s' ht' ε)).tensor T) L)) (logNorm A s) = ptsIntegral P (Fin.cons (fun z => Real.log (A'.h z)) (pot L)) (logNorm A s) + ((∑ᶠ (W) (_ : W ∈ divSupp P s ∧ IsHorizontal W), (multAt (P ⊔ Ideal.span {s}) W : ℝ) * …`.
+
+Introduce `ε hε`. Establish `hB : IsSmoothHerm (regLine A' s' ht' ε)` using `isSmoothHerm_regLine hA' hε`. Rewrite using `[pot_cons, hAdd K ι P n L _ T A s hP hL (isSmoothHerm_tensor hA' hB) hT hA hs, hAdd K ι P n L A' _ A s hP hL hA' hB hA hs, hPL1 K ι P n L A _ s hP hL hA hB rfl hs]`. Establish `h1 : Tendsto (fun ε => ptsIntegral P (pot (Fin.cons ((A'.tensor (regLine A' s' ht' ε)).tensor T) L)) (logNorm A s)) (𝓝[>] 0) (𝓝 (ptsIntegral P (Fin.cons (fun z => Real.log (A'.h z)) (pot L)) (logNorm A s) + ((∑ᶠ (W) (_ : W ∈ divSupp P s ∧ IsHorizontal W), (multAt (P ⊔ Ideal.span …`. Establish `ev : ∀ᶠ ε in 𝓝[>] (0 : ℝ), _` using `eventually_mem_nhdsWithin.mono fun ε hε => (e1 ε hε).symm`.
+
+Use `Tendsto.congr' ev ((tendsto_const_nhds.add ((tendsto_finsum_of_finite (hfin s) fun W hW => ?_).sub ?_)).add tendsto_const_nhds)` and prove the remaining obligations. Conclude with `(hLim K ι W n L A' s' ht' ((divSuppArith K ι P (n + 1) A s W hP hs hW.1).1 hW.2) hL hA' (hNot K ι P (n + 2) s s' W hP hsP hs'P hnc hW.1 hW.2)).const_mul _`. Establish `h` using `hLim K ι P (n + 1) (Fin.cons A L) A' s' ht' hP (forall_cons hA hL) hA' hs'P`. Rewrite `h` using `[pot_cons]`. Then use the resulting hypothesis. Establish `h2 : ∀ δ : ℝ, 0 < δ → ptsIntegral P (Fin.cons (fun z => Real.log (A'.h z)) (pot L)) (logNorm A s) + ((∑ᶠ (W) (_ : W ∈ divSupp P s ∧ IsHorizontal W), (multAt (P ⊔ Ideal.span {s}) W : ℝ) * ptsIntegral W (pot L) (logNorm A' s')) - ptsIntegral P (Fin.cons (fun z => Real.log (A.h z)) …`.
+
+Introduce `δ hδ`. Establish `hD : IsSmoothHerm (regLine A s ht δ)` using `isSmoothHerm_regLine hA hδ`. Establish `hlimD` using `hLim K ι P (n + 1) (Fin.cons (regLine A s ht δ) L) A' s' ht' hP (forall_cons hD hL) hA' hs'P`. Rewrite `hlimD` using `[pot_cons, hPL1 K ι P n L A' _ s' hP hL hA' hD rfl hs']`. Establish `hR : Tendsto (fun ε => ptsIntegral P (pot (Fin.cons ((A'.tensor (regLine A' s' ht' ε)).tensor T) L)) (fun z => Real.log ((regLine A s ht δ).h z))) (𝓝[>] 0) (𝓝 (ptsIntegral P (Fin.cons (fun z => Real.log (A'.h z)) (pot L)) (fun z => Real.log ((regLine A s ht δ).h z)) + ((∑ᶠ (W) (_ …`.
+
+Establish `eR : ∀ ε : ℝ, 0 < ε → ptsIntegral P (Fin.cons (fun z => Real.log (A'.h z)) (pot L)) (fun z => Real.log ((regLine A s ht δ).h z)) + ptsIntegral P (Fin.cons (fun z => Real.log ((regLine A s ht δ).h z)) (pot L)) (fun z => Real.log ((regLine A' s' ht' ε).h z)) + ptsIntegral P (Fin.co …`. Introduce `ε hε`. Establish `hB : IsSmoothHerm (regLine A' s' ht' ε)` using `isSmoothHerm_regLine hA' hε`. Rewrite using `[pot_cons, ptsIntegral_add_first_log hAdd hP hL (isSmoothHerm_tensor hA' hB) hT hD rfl, ptsIntegral_add_first_log hAdd hP hL hA' hB hD rfl, hSt K ι P n L (regLine A s ht δ) (regLine A' s' ht' ε) hP hL hD hB rfl rfl]`. Establish `ev : ∀ᶠ ε in 𝓝[>] (0 : ℝ), _` using `eventually_mem_nhdsWithin.mono fun ε hε => eR ε hε`.
+
+Conclude with `Tendsto.congr' ev ((tendsto_const_nhds.add hlimD).add tendsto_const_nhds)`. Establish `hle` using `le_of_tendsto_of_tendsto h1 hR (by filter_upwards [self_mem_nhdsWithin] with ε hε`. Conclude with `hMono K ι P (n + 1) _ A (regLine A s ht δ) s hP (forall_cons (isSmoothHerm_tensor (isSmoothHerm_tensor hA' (isSmoothHerm_regLine hA' hε)) hT) hL) (forall_cons (hC ε hε) hLp) hA hs hD rfl (fun z hz h0 => logNorm_le_log_regLine_h hδ.le hz.1 h0))`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h3 : Tendsto (fun δ => (∑ᶠ (W) (_ : W ∈ divSupp P s' ∧ IsHorizontal W), (multAt (P ⊔ Ideal.span {s'}) W : ℝ) * ptsIntegral W (pot L) (fun z => Real.log ((regLine A s ht δ).h z))) + ptsIntegral P (Fin.cons (fun z => Real.log (T.h z)) (pot L)) (fun z => Real.log ((regLine A s ht δ) …`.
+
+Use `(tendsto_finsum_of_finite (hfin s') fun W hW => ?_).add ?_` and prove the remaining obligations. Conclude with `(hLim K ι W n L A s ht ((divSuppArith K ι P (n + 1) A' s' W hP hs' hW.1).1 hW.2) hL hA (hNot K ι P (n + 2) s' s W hP hs'P hsP (fun W h h' => hnc W h' h) hW.1 hW.2)).const_mul _`. Establish `h` using `hLim K ι P (n + 1) (Fin.cons T L) A s ht hP (forall_cons hT hL) hA hsP`. Rewrite `h` using `[pot_cons]`. Then use the resulting hypothesis. Establish `h4` using `ge_of_tendsto h3 (by filter_upwards [self_mem_nhdsWithin] with δ hδ`.
+
+Conclude with `h2 δ hδ)`. Unfold `De`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem DeLeSemiPos.proof (hPL1 : ArithmeticPoincareLelongFormula) (hSt : StokesStatement) (hAdd : PtsAddFirst.Statement)
     (hLim : PtsRegLimit.Statement) (hMono : PtsMonoSemiPos.Statement) (hCurv : RegCurvBound.Statement)
     (hNot : HorizNotMem.Statement) : DeLeSemiPos.Statement := by

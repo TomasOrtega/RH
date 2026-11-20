@@ -10,10 +10,16 @@ namespace RapidFourier
 noncomputable def linForm {n : ℕ} (ν : Fin n → ℤ) : (Fin n → ℝ) →L[ℝ] ℝ :=
   ∑ k, (ν k : ℝ) • ContinuousLinearMap.proj (R := ℝ) (φ := fun _ : Fin n => ℝ) k
 
+/- English proof (translation)
+Simplify using `[linForm]`.
+-/
 theorem linForm_apply {n : ℕ} (ν : Fin n → ℤ) (x : Fin n → ℝ) :
     linForm ν x = ∑ k, (ν k : ℝ) * x k := by
   simp [linForm]
 
+/- English proof (translation)
+Use `ContinuousLinearMap.opNorm_le_bound _ (Finset.sum_nonneg fun k _ => abs_nonneg _) fun x => ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[abs_mul]`. Conclude with `mul_le_mul_of_nonneg_left (by simpa [Real.norm_eq_abs] using norm_le_pi_norm x k) (abs_nonneg _)`. Use `_ = (∑ k, |(ν k : ℝ)|) * ‖x‖ := by rw [Finset.sum_mul]`.
+-/
 theorem norm_linForm_le {n : ℕ} (ν : Fin n → ℤ) : ‖linForm ν‖ ≤ ∑ k, |(ν k : ℝ)| := by
   refine ContinuousLinearMap.opNorm_le_bound _ (Finset.sum_nonneg fun k _ => abs_nonneg _) fun x => ?_
   calc ‖linForm ν x‖ = |∑ k, (ν k : ℝ) * x k| := by rw [linForm_apply, Real.norm_eq_abs]
@@ -26,6 +32,11 @@ theorem norm_linForm_le {n : ℕ} (ν : Fin n → ℤ) : ‖linForm ν‖ ≤ �
 
 noncomputable def wave (a : ℂ) (t : ℝ) : ℂ := a * cexp (2 * π * I * t)
 
+/- English proof (translation)
+Establish `h` using `(((hasDerivAt_id (t : ℂ)).const_mul (2 * π * I)).cexp.const_mul a).comp_ofReal`. Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `y`. Simplify using `[wave]`. Simplify using `only [wave, id]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hasDerivAt_wave (a : ℂ) (t : ℝ) :
     HasDerivAt (wave a) (wave (2 * π * I * a) t) t := by
   have h := (((hasDerivAt_id (t : ℂ)).const_mul (2 * π * I)).cexp.const_mul a).comp_ofReal
@@ -35,10 +46,18 @@ theorem hasDerivAt_wave (a : ℂ) (t : ℝ) :
   · simp only [wave, id]
     ring
 
+/- English proof (translation)
+Establish `h : ContDiff ℝ ∞ fun t : ℝ => ((t : ℝ) : ℂ)` using `Complex.ofRealCLM.contDiff`. Conclude with `contDiff_const.mul ((contDiff_const.mul h).cexp)`.
+-/
 theorem contDiff_wave (a : ℂ) : ContDiff ℝ ∞ (wave a) := by
   have h : ContDiff ℝ ∞ fun t : ℝ => ((t : ℝ) : ℂ) := Complex.ofRealCLM.contDiff
   exact contDiff_const.mul ((contDiff_const.mul h).cexp)
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ m ih`. Rewrite using `[iteratedDeriv_succ, ih]`. Use function extensionality and compare the values at `t`.
+
+Rewrite using `[(hasDerivAt_wave _ t).deriv, pow_succ]`. Put the polynomial expressions in normal form.
+-/
 theorem iteratedDeriv_wave (m : ℕ) (a : ℂ) :
     iteratedDeriv m (wave a) = wave ((2 * π * I) ^ m * a) := by
   induction m with
@@ -49,21 +68,35 @@ theorem iteratedDeriv_wave (m : ℕ) (a : ℂ) :
     rw [(hasDerivAt_wave _ t).deriv, pow_succ]
     ring_nf
 
+/- English proof (translation)
+Establish `h : (2 * π * I * t : ℂ) = ((2 * π * t : ℝ) : ℂ) * I` using `by push_cast; ring`. Rewrite using `[wave, norm_mul, h, Complex.norm_exp_ofReal_mul_I, mul_one]`.
+-/
 theorem norm_wave (a : ℂ) (t : ℝ) : ‖wave a t‖ = ‖a‖ := by
   have h : (2 * π * I * t : ℂ) = ((2 * π * t : ℝ) : ℂ) * I := by push_cast; ring
   rw [wave, norm_mul, h, Complex.norm_exp_ofReal_mul_I, mul_one]
 
+/- English proof (translation)
+Rewrite using `[norm_mul, norm_mul, Complex.norm_I, Complex.norm_real, Real.norm_of_nonneg Real.pi_pos.le, mul_one]`. Evaluate the numerical expressions.
+-/
 theorem norm_two_pi_I : ‖(2 * π * I : ℂ)‖ = 2 * π := by
   rw [norm_mul, norm_mul, Complex.norm_I, Complex.norm_real, Real.norm_of_nonneg Real.pi_pos.le,
     mul_one]
   norm_num
 
+/- English proof (translation)
+Rewrite using `[wave, linForm_apply]`. Use `push_cast`. Both sides reduce to the same expression.
+-/
 theorem term_eq {n : ℕ} (a : ℂ) (ν : Fin n → ℤ) (x : Fin n → ℝ) :
     a * cexp (2 * π * I * ∑ k, (ν k : ℂ) * (x k : ℂ)) = wave a (linForm ν x) := by
   rw [wave, linForm_apply]
   push_cast
   rfl
 
+/- English proof (translation)
+Rewrite using `[ContinuousLinearMap.iteratedFDeriv_comp_right _ (contDiff_wave a) x (by exact_mod_cast le_top)]`. Use `(ContinuousMultilinearMap.norm_compContinuousLinearMap_le _ _).trans ?_` and prove the remaining obligations. Rewrite using `[norm_iteratedFDeriv_eq_norm_iteratedDeriv, iteratedDeriv_wave, norm_wave, norm_mul, norm_pow, norm_two_pi_I, Finset.prod_const, Finset.card_univ, Fintype.card_fin]`. Establish `hL : ‖linForm ν‖ ≤ 1 + ∑ k, |(ν k : ℝ)|` using `(norm_linForm_le ν).trans (le_add_of_nonneg_left zero_le_one)`. Establish `hpow : ‖linForm ν‖ ^ m ≤ (1 + ∑ k, |(ν k : ℝ)|) ^ m` using `pow_le_pow_left₀ (norm_nonneg _) hL m`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem norm_iteratedFDeriv_term_le {n : ℕ} (a : ℂ) (ν : Fin n → ℤ) (m : ℕ) (x : Fin n → ℝ) :
     ‖iteratedFDeriv ℝ m (wave a ∘ linForm ν) x‖
       ≤ (2 * π) ^ m * (‖a‖ * (1 + ∑ k, |(ν k : ℝ)|) ^ m) := by
@@ -78,6 +111,11 @@ theorem norm_iteratedFDeriv_term_le {n : ℕ} (a : ℂ) (ν : Fin n → ℤ) (m 
         mul_le_mul_of_nonneg_left hpow (by positivity)
     _ = (2 * π) ^ m * (‖a‖ * (1 + ∑ k, |(ν k : ℝ)|) ^ m) := by ring
 
+/- English proof (translation)
+Establish `hN : Summable fun k : ℕ => ((1 + (k : ℝ)) ^ 2)⁻¹`. Establish `h` using `(summable_nat_add_iff 1).mpr (Real.summable_nat_pow_inv.mpr one_lt_two)`. Use `h.congr fun k => ?_` and prove the remaining obligations. Use `push_cast`. Put the polynomial expressions in normal form.
+
+Use `Summable.of_nat_of_neg ?_ ?_` and prove the remaining obligations. Use `hN.congr fun k => ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Use `hN.congr fun k => ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+-/
 theorem summable_inv_one_add_abs_sq : Summable fun m : ℤ => ((1 + |(m : ℝ)|) ^ 2)⁻¹ := by
   have hN : Summable fun k : ℕ => ((1 + (k : ℝ)) ^ 2)⁻¹ := by
     have h := (summable_nat_add_iff 1).mpr (Real.summable_nat_pow_inv.mpr one_lt_two)
@@ -90,6 +128,11 @@ theorem summable_inv_one_add_abs_sq : Summable fun m : ℤ => ((1 + |(m : ℝ)|)
   · refine hN.congr fun k => ?_
     simp
 
+/- English proof (translation)
+Establish `hprod : Summable fun ν : Fin n → ℤ => ∏ k, ((1 + |(ν k : ℝ)|) ^ 2)⁻¹` using `GlobalTheory.summable_pi_prod_of_nonneg (f := fun _ (m : ℤ) => ((1 + |(m : ℝ)|) ^ 2)⁻¹) (fun _ _ => by positivity) fun _ => summable_inv_one_add_abs_sq`. Use `Summable.of_nonneg_of_le (fun ν => by positivity) (fun ν => ?_) hprod` and prove the remaining obligations. Rewrite using `[Finset.prod_inv_distrib]`. Apply `inv_anti₀ (Finset.prod_pos fun k _ => by positivity)` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[Finset.prod_const, Finset.card_univ, Fintype.card_fin, ← pow_mul, mul_comm]`.
+-/
 theorem summable_inv_pow (n : ℕ) :
     Summable fun ν : Fin n → ℤ => ((1 + ∑ k, |(ν k : ℝ)|) ^ (2 * n))⁻¹ := by
   have hprod : Summable fun ν : Fin n → ℤ => ∏ k, ((1 + |(ν k : ℝ)|) ^ 2)⁻¹ :=
@@ -106,6 +149,9 @@ theorem summable_inv_pow (n : ℕ) :
     _ = (1 + ∑ k, |(ν k : ℝ)|) ^ (2 * n) := by
         rw [Finset.prod_const, Finset.card_univ, Fintype.card_fin, ← pow_mul, mul_comm]
 
+/- English proof (translation)
+Take `⟨C, hC⟩` from `hc (m + 2 * n)`. Use `Summable.of_nonneg_of_le (fun ν => by positivity) (fun ν => ?_) ((summable_inv_pow n).mul_left C)` and prove the remaining obligations. Establish `hpos : 0 < (1 + ∑ k, |(ν k : ℝ)|) ^ (2 * n)` using `by positivity`. Rewrite using `[← div_eq_mul_inv, le_div_iff₀ hpos, mul_assoc, ← pow_add]`. Conclude with `hC ν`.
+-/
 theorem summable_weighted {n : ℕ} {c : (Fin n → ℤ) → ℂ}
     (hc : ∀ N : ℕ, ∃ C : ℝ, ∀ ν, ‖c ν‖ * (1 + ∑ k, |(ν k : ℝ)|) ^ N ≤ C) (m : ℕ) :
     Summable fun ν => ‖c ν‖ * (1 + ∑ k, |(ν k : ℝ)|) ^ m := by
@@ -116,6 +162,9 @@ theorem summable_weighted {n : ℕ} {c : (Fin n → ℤ) → ℂ}
   rw [← div_eq_mul_inv, le_div_iff₀ hpos, mul_assoc, ← pow_add]
   exact hC ν
 
+/- English proof (translation)
+Establish `h` using `(hasDerivAt_wave a (linForm ν x)).hasFDerivAt.comp x (linForm ν).hasFDerivAt`. Use `h.congr_fderiv (ContinuousLinearMap.ext fun v => ?_)` and prove the remaining obligations. Simplify using the standard rewrite rules.
+-/
 theorem hasFDerivAt_term {n : ℕ} (a : ℂ) (ν : Fin n → ℤ) (x : Fin n → ℝ) :
     HasFDerivAt (wave a ∘ linForm ν)
       ((linForm ν).smulRight (wave (2 * π * I * a) (linForm ν x))) x := by
@@ -127,6 +176,17 @@ end RapidFourier
 
 open RapidFourier in
 
+/- English proof (translation)
+Introduce `n c hc`. Establish `hfun : (fun x : Fin n → ℝ => ∑' ν, c ν * cexp (2 * π * I * ∑ k, (ν k : ℂ) * (x k : ℂ))) = fun x => ∑' ν, (wave (c ν) ∘ linForm ν) x`. Use function extensionality and compare the values at `x`. Conclude with `tsum_congr fun ν => term_eq (c ν) ν x`. Establish `hL : ∀ ν : Fin n → ℤ, ‖linForm ν‖ ≤ 1 + ∑ k, |(ν k : ℝ)|` using `fun ν => (norm_linForm_le ν).trans (le_add_of_nonneg_left zero_le_one)`.
+
+Establish `hsum : ∀ m : ℕ, Summable fun ν : Fin n → ℤ => (2 * π) ^ m * (‖c ν‖ * (1 + ∑ k, |(ν k : ℝ)|) ^ m)` using `fun m => (summable_weighted hc m).mul_left _`. Establish `hD : ∀ (ν : Fin n → ℤ) (y : Fin n → ℝ), ‖(linForm ν).smulRight (wave (2 * π * I * c ν) (linForm ν y))‖ ≤ (2 * π) ^ 1 * (‖c ν‖ * (1 + ∑ k, |(ν k : ℝ)|) ^ 1)`. Introduce `ν y`. Rewrite using `[ContinuousLinearMap.norm_smulRight_apply, norm_wave, norm_mul, norm_two_pi_I, pow_one, pow_one]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[hfun]`. Use `⟨contDiff_tsum (fun ν => (contDiff_wave (c ν)).comp (linForm ν).contDiff) (fun m _ => hsum m) (fun m ν x _ => norm_iteratedFDeriv_term_le (c ν) ν m x), fun x j => ?_⟩` and prove the remaining obligations. Establish `h0 : Summable fun ν : Fin n → ℤ => (wave (c ν) ∘ linForm ν) x`. Use `Summable.of_norm_bounded (hsum 0) fun ν => ?_` and prove the remaining obligations. Simplify using `[norm_wave]`.
+
+Establish `hder` using `hasFDerivAt_tsum (hsum 1) (fun ν y => hasFDerivAt_term (c ν) ν y) hD h0 x`. Establish `hs : Summable fun ν : Fin n → ℤ => (linForm ν).smulRight (wave (2 * π * I * c ν) (linForm ν x))` using `Summable.of_norm_bounded (hsum 1) fun ν => hD ν x`. Establish `hap` using `(ContinuousLinearMap.apply ℝ ℂ (Pi.single j (1 : ℝ))).map_tsum hs`. Simplify using `only [ContinuousLinearMap.apply_apply] at hap`. Rewrite using `[hder.fderiv, hap]`.
+
+Use `tsum_congr fun ν => ?_` and prove the remaining obligations. Rewrite using `[ContinuousLinearMap.smulRight_apply, ← term_eq, linForm_apply]`. Simplify using `[Pi.single_apply, Complex.real_smul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem contDiff_and_fderiv_tsum_fourier_of_rapid :
     ∀ (n : ℕ) (c : (Fin n → ℤ) → ℂ), (∀ N : ℕ, ∃ C : ℝ, ∀ ν, ‖c ν‖ * (1 + ∑ k, |(ν k : ℝ)|) ^ N ≤ C) → ContDiff ℝ ∞ (fun x : Fin n → ℝ => ∑' ν, c ν * cexp (2 * π * I * ∑ k, (ν k : ℂ) * (x k : ℂ))) ∧ ∀ (x : Fin n → ℝ) (j : Fin n), fderiv ℝ (fun x : Fin n → ℝ => ∑' ν, c ν * cexp (2 * π * I * ∑ k, (ν k : ℂ) * (x k : ℂ))) x (Pi.single j 1) = ∑' ν, 2 * π * I * (ν j : ℂ) * c ν * cexp (2 * π * I * ∑ k, (ν k : ℂ) * (x k : ℂ)) := by
   intro n c hc

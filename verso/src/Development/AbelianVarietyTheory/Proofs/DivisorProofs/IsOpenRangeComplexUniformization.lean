@@ -22,6 +22,15 @@ noncomputable section
 
 namespace GlobalTheory.CompClopen
 
+/- English proof (translation)
+Establish `hsm` using `O.s.T.smooth`. Take `⟨X, j, hoi, hj, hr⟩` from `GlobalTheory.CompOfVar.exists_var_comp _ _ _ _ _ _ _ _ O.s.T.Z _ O.κ.e hsm (O.Φ.C c).Y (O.Φ.C c).π (O.Φ.C c).π_str`. Set `f : (O.Φ.C c).Y.X ⟶ X.X` to `IsOpenImmersion.lift j (O.Φ.C c).π hr`. Establish `hf : f ≫ j = (O.Φ.C c).π` using `IsOpenImmersion.lift_fac _ _ _`. Establish `hrange : Set.range j = Set.range (O.Φ.C c).π`.
+
+Use `Set.Subset.antisymm ?_ hr` and prove the remaining obligations. Introduce and unpack `_ ⟨z, rfl⟩`. Take `⟨K, _, _, x, t, rfl⟩` from `GlobalTheory.FlagCptBase.exists_geomPt _ z`. Set `χ : O.κ.c.F →+* K` to `(Spec.preimage (x ≫ j ≫ genStr O.s.T.Z)).hom`. Establish `hχ : x ≫ j ≫ genStr O.s.T.Z = spMap χ` using `(Spec.map_preimage _).symm`.
+
+Take `⟨g⟩` from `GlobalTheory.ShFam.EigLoc.exists_eigFrame _ _ _ _ _ _ _ _ O.s.T.Z K χ (x ≫ j) (by rw [Category.assoc, hχ])`. Rewrite `g` using `[Category.assoc]`. Take `⟨p, ⟨hp, -⟩, -⟩` from `GlobalTheory.CarryAll.carries_everywhere _ _ _ _ _ _ _ _ O.s.T.Z _ O.κ.e _ _ _ O.Φ c X j hoi hj f hf K χ x hχ g`. Use `⟨p t, ?_⟩` and prove the remaining obligations. Rewrite using `[← hf, ← hp]`.
+
+Simplify using `only [Scheme.Hom.comp_apply]`. Rewrite using `[← hrange]`. Conclude with `j.isOpenEmbedding.isOpen_range`.
+-/
 theorem isOpen_range_π {D : D7} (O : Setup D) (c : O.s.Comp) : IsOpen (Set.range (O.Φ.C c).π) := by
   have hsm := O.s.T.smooth
   obtain ⟨X, j, hoi, hj, hr⟩ := GlobalTheory.CompOfVar.exists_var_comp _ _ _ _ _ _ _ _ O.s.T.Z _ O.κ.e hsm (O.Φ.C c).Y
@@ -44,6 +53,9 @@ theorem isOpen_range_π {D : D7} (O : Setup D) (c : O.s.Comp) : IsOpen (Set.rang
   rw [← hrange]
   exact j.isOpenEmbedding.isOpen_range
 
+/- English proof (translation)
+Establish `: FiniteDimensional ℚ O.κ.c.F` using `O.κ.c.fin`. Establish `: NumberField O.κ.c.F` using `{}`. Establish `: IsPreimmersion (spMap (algebraMap (𝓞 O.κ.c.F) O.κ.c.F))` using `IsPreimmersion.of_isLocalization (nonZeroDivisors (𝓞 O.κ.c.F)) (S := O.κ.c.F)`. Conclude with `inferInstanceAs (IsPreimmersion (Limits.pullback.fst O.s.T.Z.s (spMap (algebraMap (𝓞 O.κ.c.F) O.κ.c.F))))`.
+-/
 theorem isPreimmersion_gen {D : D7} (O : Setup D) : IsPreimmersion (genι O.s.T.Z) := by
   have : FiniteDimensional ℚ O.κ.c.F := O.κ.c.fin
   have : NumberField O.κ.c.F := {}
@@ -51,6 +63,11 @@ theorem isPreimmersion_gen {D : D7} (O : Setup D) : IsPreimmersion (genι O.s.T.
     IsPreimmersion.of_isLocalization (nonZeroDivisors (𝓞 O.κ.c.F)) (S := O.κ.c.F)
   exact inferInstanceAs (IsPreimmersion (Limits.pullback.fst O.s.T.Z.s (spMap (algebraMap (𝓞 O.κ.c.F) O.κ.c.F))))
 
+/- English proof (translation)
+Use `isPreimmersion_gen O` as an intermediate fact. Establish `hw : closure {(O.Φ.C c).π (genericPoint (O.Φ.C c).Y.X)} = Set.range (O.Φ.C c).π`. Establish `h` using `(genericPoint_spec (O.Φ.C c).Y.X).image (O.Φ.C c).π.continuous`. Rewrite `h` using `[Set.image_univ, (GlobalTheory.FlagCptBase.isClosed_range_π (O.Φ.C c)).closure_eq]`. Then use the resulting hypothesis. Establish `hb : closure {M.b (genericPoint M.B)} = Set.range M.b`.
+
+Establish `h` using `(genericPoint_spec M.B).image M.b.continuous`. Rewrite `h` using `[Set.image_univ, M.b.isClosedEmbedding.isClosed_range.closure_eq]`. Then use the resulting hypothesis. Rewrite using `[← hw, ← hb, (genι O.s.T.Z).isEmbedding.isInducing.closure_eq_preimage_closure_image, Set.image_singleton, M.gen]`.
+-/
 theorem preimage_range_eq {D : D7} {O : Setup D} {c : O.s.Comp} (M : DRBase O c) :
     genι O.s.T.Z ⁻¹' Set.range M.b = Set.range (O.Φ.C c).π := by
   have := isPreimmersion_gen O
@@ -62,6 +79,17 @@ theorem preimage_range_eq {D : D7} {O : Setup D} {c : O.s.Comp} (M : DRBase O c)
     rwa [Set.image_univ, M.b.isClosedEmbedding.isClosed_range.closure_eq] at h
   rw [← hw, ← hb, (genι O.s.T.Z).isEmbedding.isInducing.closure_eq_preimage_closure_image, Set.image_singleton, M.gen]
 
+/- English proof (translation)
+Introduce `D O c M σ`. Use `isPreimmersion_gen O` as an intermediate fact. Establish `e : Set.range (up M.b rfl σ) = ptsIn (genStr O.s.T.Z) σ ⟨_, isOpen_range_π O c⟩`. Use extensionality with `z`. Rewrite using `[CxPts.mem_ptsIn]`.
+
+Express the relevant statement in the definitionally equal form `_ ↔ z.1 (IsLocalRing.closedPoint ℂ) ∈ Set.range (O.Φ.C c).π`. Rewrite using `[← preimage_range_eq M]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩`. Conclude with `⟨y.1 (IsLocalRing.closedPoint ℂ), (congrArg (fun g : Sp ℂ ⟶ O.s.T.Z.X => g (IsLocalRing.closedPoint ℂ)) (up_ι M.b rfl σ y)).symm⟩`.
+
+Introduce `hz`. Establish `hr : Set.range (z.1 ≫ genι O.s.T.Z) ⊆ Set.range M.b`. Introduce and unpack `_ ⟨t, rfl⟩`. Rewrite using `[Subsingleton.elim t (IsLocalRing.closedPoint ℂ)]`. Conclude with `hz`.
+
+Take `⟨y, hy⟩ : ∃ y : Sp ℂ ⟶ M.B, y ≫ M.b = z.1 ≫ genι O.s.T.Z` from `exists_lift_of_isReduced_of_range_subset M.b _ hr`. Use `⟨⟨y, ?_⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Establish `h₁ : genι O.s.T.Z ≫ O.s.T.Z.s = genStr O.s.T.Z ≫ spMap _` using `Limits.pullback.condition`. Express the relevant statement in the definitionally equal form `y ≫ M.b ≫ O.s.T.Z.s = _`. Rewrite using `[reassoc_of% hy, h₁, ← Category.assoc, z.2, ← Spec.map_comp]`.
+
+Both sides reduce to the same expression. Rewrite using `[← cancel_mono (genι O.s.T.Z), up_ι, hy]`. Rewrite using `[e]`. Conclude with `CxPts.isOpen_ptsIn _`.
+-/
 theorem isOpen_range_up : ∀ (D : D7) (O : Setup D) (c : O.s.Comp) (M : DRBase O c) (σ : O.κ.c.F →+* ℂ), IsOpen (Set.range (up M.b rfl σ)) := by
   intro D O c M σ
   have := isPreimmersion_gen O

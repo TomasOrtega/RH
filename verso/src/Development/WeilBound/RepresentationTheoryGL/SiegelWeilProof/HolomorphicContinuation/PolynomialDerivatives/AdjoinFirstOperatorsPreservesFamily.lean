@@ -10,12 +10,24 @@ open PositivityTheory.Rg.Sw PositivityTheory.Rg.Sw.LC
 
 variable {m n : ℕ}
 
+/- English proof (translation)
+Apply `pderiv_eq_zero_of_notMem_vars` to reduce the goal to its premises. Introduce `h`. Conclude with `hk ((mem_supported.mp hg) h)`.
+-/
 theorem pderiv_eq_zero_of_supported {S : Set (Fin m × Fin n × Bool)} {g : PX m n} (hg : g ∈ supported ℂ S)
     {k : Fin m × Fin n × Bool} (hk : k ∉ S) : pderiv k g = 0 := by
   apply pderiv_eq_zero_of_notMem_vars
   intro h
   exact hk ((mem_supported.mp hg) h)
 
+/- English proof (translation)
+Rewrite `hg` using `[supported_eq_adjoin_X]`. Proceed by induction on `hg using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Take `⟨i, -, rfl⟩` from `hx`. Rewrite using `[pderiv_X]`.
+
+Break down `eq_or_ne i k with rfl | h` into its components or cases. Simplify using `only [Pi.single_eq_same]`. Conclude with `Subalgebra.one_mem _`. Rewrite using `[Pi.single_eq_of_ne h]`. Conclude with `Subalgebra.zero_mem _`.
+
+Consider the case `algebraMap r => simp [Subalgebra.zero_mem]`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `Subalgebra.add_mem _ hx hy`. Consider the case `mul x y hx' hy' hx hy`. Rewrite using `[Derivation.leibniz, smul_eq_mul, smul_eq_mul]`.
+
+Establish `hx'' : x ∈ supported ℂ S` using `by rw [supported_eq_adjoin_X]; exact hx'`. Establish `hy'' : y ∈ supported ℂ S` using `by rw [supported_eq_adjoin_X]; exact hy'`. Conclude with `Subalgebra.add_mem _ (Subalgebra.mul_mem _ hx'' hy) (Subalgebra.mul_mem _ hy'' hx)`.
+-/
 theorem pderiv_mem_supported {S : Set (Fin m × Fin n × Bool)} {g : PX m n} (hg : g ∈ supported ℂ S)
     (k : Fin m × Fin n × Bool) : pderiv k g ∈ supported ℂ S := by
   rw [supported_eq_adjoin_X] at hg
@@ -34,11 +46,24 @@ theorem pderiv_mem_supported {S : Set (Fin m × Fin n × Bool)} {g : PX m n} (hg
     have hy'' : y ∈ supported ℂ S := by rw [supported_eq_adjoin_X]; exact hy'
     exact Subalgebra.add_mem _ (Subalgebra.mul_mem _ hx'' hy) (Subalgebra.mul_mem _ hy'' hx)
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_F1_iff_supported (ε : Fin m → Bool) (f : PX m n) : f ∈ F1 ε ↔ f ∈ supported ℂ {k | inF1 ε k} := Iff.rfl
 
+/- English proof (translation)
+The claim follows from `(mem_F1_iff_supported ε _).2 (X_mem_supported.2 hk)`.
+-/
 theorem variable_mem_first_family (ε : Fin m → Bool) {k : Fin m × Fin n × Bool} (hk : inF1 ε k) : (X k : PX m n) ∈ F1 ε :=
   (mem_F1_iff_supported ε _).2 (X_mem_supported.2 hk)
 
+/- English proof (translation)
+Establish `h0 : ∀ k : Fin m × Fin n × Bool, inF1 ε k → pderiv k g = 0` using `fun k hk => pderiv_eq_zero_of_supported hg (by simpa using hk)`. Establish `hK : ∀ h : PX m n, KopL ε i j h = ∑ a ∈ Finset.univ.filter (fun a => ε a = true), X (a, i, false) * pderiv (a, j, false) h - ∑ a ∈ Finset.univ.filter (fun a => ε a = false), X (a, j, true) * pderiv (a, i, true) h`. Introduce `h`. Simplify using `[KopL, LinearMap.sum_apply]`. Rewrite using `[hK, hK]`.
+
+Simplify using `only [Derivation.leibniz, smul_eq_mul]`. Establish `e1 : ∀ a ∈ Finset.univ.filter (fun a => ε a = true), X (a, i, false) * (f * pderiv (a, j, false) g + g * pderiv (a, j, false) f) = X (a, i, false) * pderiv (a, j, false) f * g`. Introduce `a ha`. Rewrite using `[h0 (a, j, false) (by simp [inF1, (Finset.mem_filter.mp ha).2])]; ring`. Establish `e2 : ∀ a ∈ Finset.univ.filter (fun a => ε a = false), X (a, j, true) * (f * pderiv (a, i, true) g + g * pderiv (a, i, true) f) = X (a, j, true) * pderiv (a, i, true) f * g`.
+
+Introduce `a ha`. Rewrite using `[h0 (a, i, true) (by simp [inF1, (Finset.mem_filter.mp ha).2])]; ring`. Rewrite using `[Finset.sum_congr rfl e1, Finset.sum_congr rfl e2, ← Finset.sum_mul, ← Finset.sum_mul, sub_mul]`.
+-/
 theorem compact_operator_mul_second_family (ε : Fin m → Bool) (i j : Fin n) (f g : PX m n) (hg : g ∈ F2 ε) :
     KopL ε i j (f * g) = KopL ε i j f * g := by
   have h0 : ∀ k : Fin m × Fin n × Bool, inF1 ε k → pderiv k g = 0 := fun k hk =>
@@ -60,6 +85,11 @@ theorem compact_operator_mul_second_family (ε : Fin m → Bool) (i j : Fin n) (
     rw [h0 (a, i, true) (by simp [inF1, (Finset.mem_filter.mp ha).2])]; ring
   rw [Finset.sum_congr rfl e1, Finset.sum_congr rfl e2, ← Finset.sum_mul, ← Finset.sum_mul, sub_mul]
 
+/- English proof (translation)
+Proceed by induction on `hw using Algebra.adjoin_induction generalizing f with`. Consider the case `mem x hx`. Take `⟨ij, rfl⟩` from `hx`. Conclude with `compact_operator_mul_second_family ε ij.1 ij.2 f g hg`. Consider the case `algebraMap r => simp [Algebra.algebraMap_eq_smul_one, smul_mul_assoc]`.
+
+Consider the case `add x y _ _ hx hy => simp [hx, hy, add_mul]`. Consider the case `mul x y _ _ hx hy => simp only [Module.End.mul_apply, hy, hx]`.
+-/
 theorem compact_algebra_mul_second_family (ε : Fin m → Bool) (w : Module.End ℂ (PX m n)) (hw : w ∈ kAlg ε) (f g : PX m n) (hg : g ∈ F2 ε) :
     w (f * g) = w f * g := by
   induction hw using Algebra.adjoin_induction generalizing f with
@@ -70,6 +100,13 @@ theorem compact_algebra_mul_second_family (ε : Fin m → Bool) (w : Module.End 
   | add x y _ _ hx hy => simp [hx, hy, add_mul]
   | mul x y _ _ hx hy => simp only [Module.End.mul_apply, hy, hx]
 
+/- English proof (translation)
+Establish `hp : ∀ k (g : PX m n), g ∈ F1 ε → pderiv k g ∈ F1 ε` using `fun k g hg => pderiv_mem_supported hg k`. Establish `hm : ∀ g h : PX m n, g ∈ F1 ε → h ∈ F1 ε → g * h ∈ F1 ε` using `fun g h hg hh => Subalgebra.mul_mem _ hg hh`. Unfold `D1`. Use `split_ifs with h1 h2 h2`. Use `Submodule.neg_mem _ (Submodule.sum_mem _ fun i _ => hm _ _ (variable_mem_first_family ε ?_) (hp _ _ hf))` and prove the remaining obligations.
+
+Simplify using `[inF1, h2]`. Use `Submodule.sum_mem _ fun i _ => hm _ _ (variable_mem_first_family ε ?_) (hp _ _ hf)` and prove the remaining obligations. Simplify using `[inF1, ← h1]`. Simplify using `using h2`. Use `Submodule.smul_mem _ _ (Submodule.sum_mem _ fun i _ => hm _ _ (hm _ _ (variable_mem_first_family ε ?_) (variable_mem_first_family ε ?_)) hf)` and prove the remaining obligations.
+
+Simplify using `[inF1, h2]`. Apply the tactic sequence `simp [inF1]; cases hb : ε b <;> simp_all`. Use `Submodule.smul_mem _ _ (Submodule.sum_mem _ fun i _ => hp _ _ (hp _ _ hf))` and prove the remaining obligations.
+-/
 theorem first_operator_preserves_first_family (ε : Fin m → Bool) (c : ℝ) (a b : Fin m) (f : PX m n) (hf : f ∈ F1 ε) : D1 ε c a b f ∈ F1 ε := by
   have hp : ∀ k (g : PX m n), g ∈ F1 ε → pderiv k g ∈ F1 ε := fun k g hg => pderiv_mem_supported hg k
   have hm : ∀ g h : PX m n, g ∈ F1 ε → h ∈ F1 ε → g * h ∈ F1 ε := fun g h hg hh => Subalgebra.mul_mem _ hg hh
@@ -85,6 +122,13 @@ theorem first_operator_preserves_first_family (ε : Fin m → Bool) (c : ℝ) (a
     · simp [inF1]; cases hb : ε b <;> simp_all
   · refine Submodule.smul_mem _ _ (Submodule.sum_mem _ fun i _ => hp _ _ (hp _ _ hf))
 
+/- English proof (translation)
+Proceed by induction on `hw using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Take `⟨ab, rfl⟩` from `hx`. Conclude with `⟨fun f hf => first_operator_preserves_first_family ε c ab.1 ab.2 f hf, fun f hf => hB ab.1 ab.2 f hf⟩`. Consider the case `algebraMap r`.
+
+Use `⟨fun f hf => by simpa [Algebra.algebraMap_eq_smul_one] using Submodule.smul_mem _ r hf, fun f _ => ?_⟩` and prove the remaining obligations. Simplify using `[Algebra.algebraMap_eq_smul_one]`. Consider the case `add x y _ _ hx hy`. Conclude with `⟨fun f hf => by simpa using Submodule.add_mem _ (hx.1 f hf) (hy.1 f hf), fun f hf => by simp [hx.2 f hf, hy.2 f hf]⟩`. Consider the case `mul x y _ _ hx hy`.
+
+Conclude with `⟨fun f hf => hx.1 _ (hy.1 f hf), fun f hf => by`. Simplify using `only [Module.End.mul_apply]`. Rewrite using `[hx.2 _ (hy.1 f hf), hy.2 f hf]⟩`.
+-/
 theorem adjoin_first_operators_preserves_family (ε : Fin m → Bool) (c : ℝ) (B : Module.End ℂ (PX m n)) (hBF : ∀ f ∈ F1 ε, B f ∈ F1 ε)
     (hB : ∀ a b, ∀ f ∈ F1 ε, B (D1 ε c a b f) = D1 ε c a b (B f)) (w : Module.End ℂ (PX m n))
     (hw : w ∈ Algebra.adjoin ℂ (Set.range fun ab : Fin m × Fin m => firstFamilyOperatorEnd (n := n) ε c ab.1 ab.2)) :

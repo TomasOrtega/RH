@@ -14,6 +14,13 @@ open Formalism.QuantumDeterminants Formalism.MainNotions.S Formalism.MainNotions
 variable {k r : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
   {Wp : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
 
+/- English proof (translation)
+Take `⟨h1, h2, h3, C, Ws, hWs, hbd⟩` from `hB`. Use `⟨fun v hv w hw => ?_, fun a v hv => ?_, fun h hh m hm v hv => ?_, ‖α‖ * C, Ws, hWs, fun v hv => ?_⟩` and prove the remaining obligations. Use `show α • B (v + w) = α • B v + α • B w`. Rewrite using `[h1 v hv w hw, smul_add]`. Use `show α • B (a • v) = a • (α • B v)`.
+
+Rewrite using `[h2 a v hv, smul_comm]`. Use `show α • B (σ (h * m) v) = ψ m • π h (α • B v)`. Rewrite using `[h3 h hh m hm v hv, map_smul, smul_comm]`. Use `show ‖α • B v‖ ≤ ‖α‖ * C * _`. Rewrite using `[norm_smul, mul_assoc]`.
+
+Conclude with `mul_le_mul_of_nonneg_left (hbd v hv) (norm_nonneg _)`.
+-/
 theorem bessel_smul {σ : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ → (H →L[ℂ] H)}
     {z : Fin (2 * r + k + 1) → ℂ} {ψ : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ → ℂ}
     {π : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ → (Wp →L[ℂ] Wp)} {B : H → Wp}
@@ -30,6 +37,17 @@ theorem bessel_smul {σ : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ
     rw [norm_smul, mul_assoc]
     exact mul_le_mul_of_nonneg_left (hbd v hv) (norm_nonneg _)
 
+/- English proof (translation)
+Establish `hconc` using `Formalism.MainNotions.BesselShellMomentBounds.quot_conc z μG _ ν hG hS hq`. Establish `hae : ∀ᵐ x ∂ν, Matrix.of x ∈ UH (Hpk k r)` using `by rw [ae_iff]; exact hconc`. Establish `hFm` using `Fu_meas hσ hB hu hΦ0`. Establish `hmap` using `map_muS_cjM (z := z) κN hW`. Establish `key : ∫⁻ x, Fu σ z B Φ0 u (fun i j => (twT k r * Matrix.of x) i j) ∂ν = ∫⁻ x, Fu σ z B Φ0 u x ∂ν` using `hLN k r z μG (muS μW (haarLie (Nset k r) κN)) ν hz hT hG hS hq (twT k r) twT_mem_UH (fun s hs => twT_conj_S hs) hmap (Fu σ z B Φ0 u) hFm (Fu_leftS laLeftS_proved hσ hz c hπ hB Φ0 hu)`.
+
+Establish `E1 : ∫⁻ x, Φ0 (fun a => lA k r z (Matrix.of x) a) * (‖B (σ (twT k r) (σ (Matrix.of x) u))‖₊ : ℝ≥0∞) ^ 2 ∂ν = ∫⁻ x, Fu σ z B Φ0 u (fun i j => (twT k r * Matrix.of x) i j) ∂ν`. Use `lintegral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hae] with x hx`. Establish `hx' : Matrix.of (fun i j => (twT k r * Matrix.of x) i j) ∈ UH (Hpk k r)` using `WeylGroupFacts.uh_mul twT_mem_UH hx`. Rewrite using `[Fu_on z B Φ0 u _ hx']`.
+
+Establish `e0 : (Matrix.of (fun i j => (twT k r * Matrix.of x) i j) : Matrix _ _ ℂ) = twT k r * Matrix.of x` using `rfl`. Establish `e1 : σ (twT k r * Matrix.of x) u = σ (twT k r) (σ (Matrix.of x) u)`. Rewrite using `[hσ.1.2 _ twT_mem_UH _ hx]`. Both sides reduce to the same expression. Establish `e2 : (fun a => lA k r z (twT k r * Matrix.of x) a) = (fun a => lA k r z (Matrix.of x) a)`.
+
+Use function extensionality and compare the values at `fun a => lA_twT hz _ a`. Rewrite using `[e0, e1, e2, Formalism.MainNotions.BesselShellMomentBounds.ofReal_norm_sq]`. Establish `E2 : ∫⁻ x, Φ0 (fun a => lA k r z (Matrix.of x) a) * (‖B (σ (Matrix.of x) u)‖₊ : ℝ≥0∞) ^ 2 ∂ν = ∫⁻ x, Fu σ z B Φ0 u x ∂ν`. Use `lintegral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hae] with x hx`.
+
+Rewrite using `[Fu_on z B Φ0 u x hx, Formalism.MainNotions.BesselShellMomentBounds.ofReal_norm_sq]`. Rewrite using `[E1, E2, key]`.
+-/
 theorem twist_lintegral (hLN : Formalism.MainNotions.S.Pv.QuotUniq.QuotLeftNorm)
     {σ : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ → (H →L[ℂ] H)} (hσ : IsURepOn (UH (Hpk k r)) σ)
     {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (hT : 0 < Tz k r z) (c : ℂ)

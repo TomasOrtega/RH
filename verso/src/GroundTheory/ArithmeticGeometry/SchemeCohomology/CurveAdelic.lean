@@ -26,6 +26,9 @@ noncomputable def toRepartition (a : repartitions k X) : Repartition k X.functio
     exact (Z.mem_toPlace_ring _).mpr h)
 
 omit [IsFunctionField k X.functionField] in
+/- English proof (translation)
+Rewrite using `[toRepartition, Repartition.mk_apply, ← placeEquiv_apply hX, Equiv.symm_apply_apply]`.
+-/
 lemma toRepartition_apply_toPlace (a : repartitions k X) (Z : PrimeDivisor X) :
     toRepartition (k := k) hX a Z.toPlace = a.1 Z := by
   rw [toRepartition, Repartition.mk_apply, ← placeEquiv_apply hX, Equiv.symm_apply_apply]
@@ -49,6 +52,13 @@ noncomputable def repartitionEquiv : repartitions k X ≃ₗ[k] Repartition k X.
     obtain ⟨Z, rfl⟩ := PrimeDivisor.toPlace_surjective (k := k) hX v
     exact toRepartition_apply_toPlace hX _ Z
 
+/- English proof (translation)
+Use extensionality with `b`. Rewrite using `[Submodule.mem_map_equiv, mem_boundedRepartitions, Divisor.mem_A]`. Prove the components needed by the constructor for the conclusion. Introduce `h v`. Take `⟨Z, rfl⟩` from `PrimeDivisor.toPlace_surjective (k := k) hX v`.
+
+Use `(Z.mem_divisorSubgroup D _).mp (h Z)` as an intermediate fact. Rewrite using `[PrimeDivisor.toPlace_valuation, divisorEquiv_apply_toPlace]`. Conclude with `this`. Introduce `h Z`. Rewrite using `[PrimeDivisor.mem_divisorSubgroup]`.
+
+Use `h Z.toPlace` as an intermediate fact. Rewrite `this` using `[PrimeDivisor.toPlace_valuation, divisorEquiv_apply_toPlace]`. Then use the resulting hypothesis.
+-/
 lemma map_boundedRepartitions (D : WeilDivisor X) :
     (boundedRepartitions k D).map (repartitionEquiv (k := k) hX).toLinearMap =
       Divisor.A (divisorEquiv (k := k) hX D) := by
@@ -65,6 +75,9 @@ lemma map_boundedRepartitions (D : WeilDivisor X) :
     have := h Z.toPlace
     rwa [PrimeDivisor.toPlace_valuation, divisorEquiv_apply_toPlace] at this
 
+/- English proof (translation)
+Rewrite using `[← LinearMap.range_comp]`. Use `congr 1`.
+-/
 lemma map_range_diagRepartition :
     (LinearMap.range (diagRepartition k X)).map (repartitionEquiv (k := k) hX).toLinearMap =
       Repartition.principal k X.functionField := by
@@ -78,6 +91,9 @@ noncomputable def repartitionQuotientEquiv (D : WeilDivisor X) :
   Submodule.Quotient.equiv _ _ (repartitionEquiv (k := k) hX) (by
     rw [Submodule.map_sup, map_boundedRepartitions, map_range_diagRepartition])
 
+/- English proof (translation)
+Use extensionality with `f`. Rewrite using `[mem_globalL, mem_L_divisorEquiv]`.
+-/
 lemma globalL_eq (D : WeilDivisor X) :
     globalL k D = Divisor.L (divisorEquiv (k := k) hX D) := by
   ext f

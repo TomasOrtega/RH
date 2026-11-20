@@ -29,6 +29,11 @@ private noncomputable def cmp (P : C ⥤ Type) (F : C ⥤ ModuleCat.{0} R) :
         rw [ULift.smul_down, Int.cast_smul_eq_zsmul] }
   nat _ _ := rfl
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `a b hab`. Use function extensionality and compare the values at `s`. Conclude with `ULift.down_injective (congrFun hab s)`. Introduce `b`.
+
+Conclude with `⟨fun s => ULift.up (b s), rfl⟩`.
+-/
 private theorem cmp_bij (P : C ⥤ Type) (F : C ⥤ ModuleCat.{0} R) (n : ℕ) :
     Function.Bijective ((cmp P F).hom.f n) := by
   constructor
@@ -38,6 +43,9 @@ private theorem cmp_bij (P : C ⥤ Type) (F : C ⥤ ModuleCat.{0} R) (n : ℕ) :
   · intro b
     exact ⟨fun s => ULift.up (b s), rfl⟩
 
+/- English proof (translation)
+The claim follows from `CrystallineSemistableComparison.P.mapH_bij _ (cmp_bij P F) j`.
+-/
 private theorem cmpH_bij (P : C ⥤ Type) (F : C ⥤ ModuleCat.{0} R) (j : ℕ) :
     Function.Bijective ((cmp P F).hom.mapH j) :=
   CrystallineSemistableComparison.P.mapH_bij _ (cmp_bij P F) j
@@ -46,6 +54,9 @@ private noncomputable def cmpE (P : C ⥤ Type) (F : C ⥤ ModuleCat.{0} R) (j :
     TH P (ulF F) j ≃+ CH.H (CategoryOfElements.π P ⋙ F) j :=
   AddEquiv.ofBijective ((cmp P F).hom.mapH j).toAddMonoidHom (cmpH_bij P F j)
 
+/- English proof (translation)
+Take `⟨a, ha, rfl⟩` from `(CrystallineSemistableComparison.P.cls_surj (cx (elF P (zm (ulF F)))) j).1 y`. Both sides reduce to the same expression.
+-/
 private theorem cmp_pull {Q P : C ⥤ Type} (u : Q ⟶ P) (F : C ⥤ ModuleCat.{0} R) (j : ℕ)
     (y : TH P (ulF F) j) :
     (elMor u F).pull j ((cmp P F).hom.mapH j y) = (cmp Q F).hom.mapH j (tPull u (ulF F) j y) := by
@@ -55,6 +66,13 @@ private theorem cmp_pull {Q P : C ⥤ Type} (u : Q ⟶ P) (F : C ⥤ ModuleCat.{
 end UpperTheory.CmpR
 
 open UpperTheory.CmpR in
+/- English proof (translation)
+Introduce `C _ R _ F`. Use `⟨ulF F, fun A => AddEquiv.ulift.symm, fun P j => (cmpE P F j).symm, fun φ x => rfl, ?_⟩` and prove the remaining obligations. Introduce `Q P u m h hτ j x`. Take `⟨G, τ, nat⟩` from `m`. Simplify using `only at h hτ`.
+
+Substitute `h` using the available equality. Establish `hτ' : τ = (elMor u F).τ`. Use function extensionality and compare the values at `T`. Use extensionality with `x`. Conclude with `eq_of_heq (hτ T x)`.
+
+Substitute `hτ'` using the available equality. Apply `(cmpE Q F j).symm.symm.injective` to reduce the goal to its premises. Take `⟨y, rfl⟩` from `(cmpE P F j).surjective x`. Simplify using `only [AddEquiv.symm_symm, AddEquiv.apply_symm_apply, AddEquiv.symm_apply_apply]`. Conclude with `cmp_pull u F j y`.
+-/
 theorem UpperTheory.exists_coefficient_equiv_cohomology_of_elements :
     ∀ (C : Type 1) [Category.{0} C] (R : Type) [CommRing R] (F : C ⥤ ModuleCat.{0} R),
         ∃ (F' : Coef C) (c : ∀ A, F.obj A ≃+ F'.obj A) (e : ∀ (P : C ⥤ Type) (j : ℕ), CH.H (CategoryOfElements.π P ⋙ F) j ≃+ TH P F' j),

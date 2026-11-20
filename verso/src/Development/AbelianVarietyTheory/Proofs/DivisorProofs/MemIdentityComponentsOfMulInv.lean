@@ -6,12 +6,24 @@ open scoped CategoryTheory.Obj
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `h1 : lift (fst G G ≫ ι[G]) μ[G] ≫ μ[G] = (fst G G)⁻¹ * (fst G G * snd G G)`. Rewrite using `[Hom.mul_def, Hom.mul_def, lift_fst_snd, Category.id_comp, Hom.inv_def]`. Rewrite using `[h1, inv_mul_cancel_left]`.
+-/
 theorem identityComponent_shear_mul {S : Scheme.{0}} (G : Over S) [GrpObj G] :
     lift (fst G G ≫ ι[G]) μ[G] ≫ μ[G] = snd G G := by
   have h1 : lift (fst G G ≫ ι[G]) μ[G] ≫ μ[G] = (fst G G)⁻¹ * (fst G G * snd G G) := by
     rw [Hom.mul_def, Hom.mul_def, lift_fst_snd, Category.id_comp, Hom.inv_def]
   rw [h1, inv_mul_cancel_left]
 
+/- English proof (translation)
+Introduce `S G _ hs U y hU hy`. Take `⟨w, hf, hm, rfl⟩` from `hy`. Establish `hbf : G.hom ((fst G G).left w) = G.hom ((snd G G).left w)`. Rewrite using `[← Scheme.Hom.comp_apply, ← Scheme.Hom.comp_apply, Over.w, Over.w]`. Establish `hbm : G.hom ((μ[G]).left w) = G.hom ((snd G G).left w)`.
+
+Rewrite using `[← Scheme.Hom.comp_apply, ← Scheme.Hom.comp_apply, Over.w, Over.w]`. Establish `zf` using `hU _ hf hbf`. Establish `zm` using `hU _ hm hbm`. Establish `zi` using `GlobalTheory.T.inv_mem_identity_component_fibre S G _ zf`. Use `set φ : G ⊗ G ⟶ G ⊗ G := lift (fst G G ≫ ι[G]) μ[G] with hφ`.
+
+Establish `e1 : (fst G G).left (φ.left w) = (ι[G]).left ((fst G G).left w)`. Rewrite using `[← Scheme.Hom.comp_apply, ← Scheme.Hom.comp_apply, ← Over.comp_left, ← Over.comp_left, hφ, lift_fst]`. Establish `e2 : (snd G G).left (φ.left w) = (μ[G]).left w`. Rewrite using `[← Scheme.Hom.comp_apply, ← Over.comp_left, hφ, lift_snd]`. Establish `key` using `GlobalTheory.T.identityComponents_smooth_groupScheme_mul_mem S G hs (φ.left w) (e1 ▸ zi) (e2 ▸ zm)`.
+
+Establish `e3 : (μ[G]).left (φ.left w) = (snd G G).left w`. Rewrite using `[← Scheme.Hom.comp_apply, ← Over.comp_left, hφ, identityComponent_shear_mul]`. Rewrite `key` using `[e3]`. Then use the resulting hypothesis.
+-/
 theorem mem_identityComponents_of_mul_inv :
     ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G], Smooth G.hom → ∀ (U : G.left.Opens) (y : G.left), (∀ z ∈ U, G.hom z = G.hom y → z ∈ {x : G.left | x ∈ connectedComponentIn (G.hom ⁻¹' {G.hom x}) ((η[G]).left (G.hom x))}) → y ∈ {y : G.left | ∃ w : (G ⊗ G).left, (fst G G).left w ∈ U ∧ (μ[G]).left w ∈ U ∧ (snd G G).left w = y} → y ∈ {x : G.left | x ∈ connectedComponentIn (G.hom ⁻¹' {G.hom x}) ((η[G]).left (G.hom x))} := by
   intro S G _ hs U y hU hy

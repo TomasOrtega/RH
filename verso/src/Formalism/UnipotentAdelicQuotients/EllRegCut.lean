@@ -53,6 +53,15 @@ def LocalSobolev : Prop :=
     ∀ x0 ∈ U, ∃ r > 0, ball x0 r ⊆ U ∧ ∀ χ : E d → ℝ, ContDiff ℝ ∞ χ → HasCompactSupport χ →
       tsupport χ ⊆ ball x0 r → ∀ s : ℕ, Hs (s : ℝ) (cut χ u)
 
+/- English proof (translation)
+Introduce `d ι _ P U u hH x0 hx0`. Take `⟨r, hr, hrU, hstep⟩` from `hS d ι P U u hH x0 hx0`. Use `⟨r, hr, hrU, ?_⟩` and prove the remaining obligations. Establish `key : ∀ n : ℕ, ∀ χ : E d → ℝ, ContDiff ℝ ∞ χ → HasCompactSupport χ → tsupport χ ⊆ ball x0 r → Hs ((-(d : ℝ) - 1) + n) (cut χ u)`. Introduce `n`.
+
+Proceed by induction on `n with`. Consider the case `zero`. Introduce `χ hχ hχc hχs`. Establish `h` using `(hC d U u χ hH.1 hH.2.2.2.1 hχ hχc (hχs.trans hrU))`. Simplify using `using hB d (cut χ u) h.1 h.2`.
+
+Consider the case `succ n ih`. Introduce `χ hχ hχc hχs`. Use `hstep ((-(d : ℝ) - 1) + n) ih χ hχ hχc hχs` as an intermediate fact. Simplify `this` using `[Nat.cast_succ, add_assoc]`. Introduce `χ hχ hχc hχs s`.
+
+Establish `h` using `key (s + d + 1) χ hχ hχc hχs`. Establish `e : (-(d : ℝ) - 1) + ((s + d + 1 : ℕ) : ℝ) = (s : ℝ)` using `by push_cast; ring`. Rewrite `h` using `[e]`. Conclude with `h`.
+-/
 theorem localSobolev_of (hB : BaseLevel) (hC : CutCont) (hS : Step) : LocalSobolev := by
   intro d ι _ P U u hH x0 hx0
   obtain ⟨r, hr, hrU, hstep⟩ := hS d ι P U u hH x0 hx0
@@ -75,6 +84,11 @@ theorem localSobolev_of (hB : BaseLevel) (hC : CutCont) (hS : Step) : LocalSobol
   rw [e] at h
   exact h
 
+/- English proof (translation)
+Introduce `d ι _ P U u hH`. Apply `hL d U u hH.1` to reduce the goal to its premises. Introduce `x0 hx0`. Take `⟨r, hr, hrU, hsob⟩` from `localSobolev_of hB hC hS d ι P U u hH x0 hx0`. Take `⟨χ, hχ, hχc, hχs, hχ1⟩` from `hBu d x0 r hr`.
+
+Use `⟨χ, hχ1, ?_⟩` and prove the remaining obligations. Establish `hcc` using `hC d U u χ hH.1 hH.2.2.2.1 hχ hχc (hχs.trans hrU)`. Conclude with `hM d (cut χ u) hcc.1 hcc.2 (hsob χ hχ hχc hχs)`.
+-/
 theorem internal_of_leaves (hM : MomentsSmooth) (hBu : Bump) (hC : CutCont) (hL : LocalGlobal)
     (hB : BaseLevel) (hS : Step) : Internal := by
   intro d ι _ P U u hH
@@ -144,6 +158,9 @@ def StepOfParts : Prop :=
   SymbLower → WeightDiff → ConvBound → KernelSmall → PairingFourier → DwExp → FourierPair → PairingLocal →
     WeakFourier → Bump → CutCont → Step
 
+/- English proof (translation)
+The claim follows from `internal_of_leaves hM hBu hC hL hB (hSP hSL hW hCB hK hPF hDE hFP hPL hWF hBu hC)`.
+-/
 theorem internal_of_all (hM : MomentsSmooth) (hBu : Bump) (hC : CutCont) (hL : LocalGlobal)
     (hB : BaseLevel) (hSL : SymbLower) (hW : WeightDiff) (hCB : ConvBound) (hK : KernelSmall)
     (hPF : PairingFourier) (hDE : DwExp) (hFP : FourierPair) (hPL : PairingLocal) (hWF : WeakFourier)

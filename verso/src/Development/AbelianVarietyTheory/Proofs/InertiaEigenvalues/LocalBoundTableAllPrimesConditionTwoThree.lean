@@ -6,6 +6,13 @@ noncomputable section
 
 namespace GlobalTheory.NLinkAdmF
 
+/- English proof (translation)
+Establish `hl : Nat.Prime 3` using `Nat.prime_three`. Establish `hne : ((3 : ℕ) : 𝓞 D.host.E) ≠ 0` using `Nat.cast_ne_zero.2 hl.ne_zero`. Establish `hnu : ¬ IsUnit ((3 : ℕ) : 𝓞 D.host.E)`. Introduce `h`. Establish `h1` using `h.map (Algebra.norm ℤ)`.
+
+Establish `h2 : Algebra.norm ℤ ((3 : ℕ) : 𝓞 D.host.E) = ((3 : ℕ) : ℤ) ^ Module.finrank ℤ (𝓞 D.host.E)`. Rewrite using `[← Algebra.norm_algebraMap (R := ℤ) (S := 𝓞 D.host.E) ((3 : ℕ) : ℤ)]`. Simplify using the standard rewrite rules. Rewrite `h1` using `[h2, isUnit_pow_iff Module.finrank_pos.ne', Int.isUnit_iff_natAbs_eq, Int.natAbs_natCast]`. Conclude with `hl.one_lt.ne' h1`.
+
+Take `⟨M, hM, hlM⟩` from `exists_max_ideal_of_mem_nonunits (mem_nonunits_iff.2 hnu)`. Conclude with `⟨⟨M, hM.isPrime, fun h => hne (by simp [h] at hlM)⟩, hlM⟩`.
+-/
 theorem placesOver_three_nonempty (D : D7) : (placesOver D.host.E 3).Nonempty := by
   have hl : Nat.Prime 3 := Nat.prime_three
   have hne : ((3 : ℕ) : 𝓞 D.host.E) ≠ 0 := Nat.cast_ne_zero.2 hl.ne_zero
@@ -19,6 +26,11 @@ theorem placesOver_three_nonempty (D : D7) : (placesOver D.host.E 3).Nonempty :=
   obtain ⟨M, hM, hlM⟩ := exists_max_ideal_of_mem_nonunits (mem_nonunits_iff.2 hnu)
   exact ⟨⟨M, hM.isPrime, fun h => hne (by simp [h] at hlM)⟩, hlM⟩
 
+/- English proof (translation)
+Establish `hfin : (placesOver D.host.E 3).Finite` using `FamilyRepresentationConstants.placesOver_finite D.host.E 3 (by norm_num)`. Establish `hpos : 0 < (placesOver D.host.E 3).ncard` using `(Set.ncard_pos hfin).2 (placesOver_three_nonempty D)`. Unfold `TwistedPlaces.sumOver`. Rewrite using `[finsum_mem_eq_finite_toFinset_sum _ hfin, Finset.sum_const, nsmul_eq_mul, ← Set.ncard_eq_toFinset_card _ hfin]`. Establish `: ((placesOver D.host.E 3).ncard : ℝ) ≠ 0` using `by exact_mod_cast hpos.ne'`.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem sumOver_three_even (D : D7) (c : ℝ) :
     TwistedPlaces.sumOver D 3 (fun _ => c / ((placesOver D.host.E 3).ncard : ℝ)) = c := by
   have hfin : (placesOver D.host.E 3).Finite := FamilyRepresentationConstants.placesOver_finite D.host.E 3 (by norm_num)
@@ -30,6 +42,19 @@ theorem sumOver_three_even (D : D7) (c : ℝ) :
   have : ((placesOver D.host.E 3).ncard : ℝ) ≠ 0 := by exact_mod_cast hpos.ne'
   field_simp
 
+/- English proof (translation)
+Introduce `D L P X C tf _ hF i hi hl`. Establish `hFi` using `hF i hi hl`. Distinguish the cases in `h2 : D.nd.l i ∈ D.host.small`. Establish `hlen : (tab L X tf C).len i = fun _ => 0`. Use function extensionality and compare the values at `lam`.
+
+Simplify using `only [tab, if_pos h2]`. Establish `hBB : (tab L X tf C).BB i = TwistedPlaces.sumOver D (D.nd.l i) (tf.len i) + tf.BB i`. Simplify using `only [tab, if_pos h2]`. Use `show TwistedPlaces.sumOver D _ ((tab L X tf C).len i) + (tab L X tf C).BB i ≤ _`. Rewrite using `[hlen, hBB]`.
+
+Establish `h0 : TwistedPlaces.sumOver D (D.nd.l i) (fun _ => (0 : ℝ)) = 0` using `by simp [TwistedPlaces.sumOver]`. Rewrite using `[h0, zero_add]`. Conclude with `hFi`. Establish `h3 : D.nd.l i = 3` using `hl.resolve_left h2`. Establish `hq : D.host.q ≠ 3` using `D.host.q_ne_three`.
+
+Establish `hd : D.host.d ≠ 3`. Use `D.host.hyp.2.2.2.1` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hlen : (tab L X tf C).len i = fun _ => (TwistedPlaces.sumOver D 3 (tf.len i) + tf.BB i) / ((placesOver D.host.E 3).ncard : ℝ)`. Use function extensionality and compare the values at `lam`.
+
+Simplify using `only [tab, if_neg h2, if_pos h3]`. Establish `hBB : (tab L X tf C).BB i = 0`. Establish `h1 : ¬ (D.nd.l i = D.host.q ∨ D.nd.l i = D.host.d)` using `by omega`. Establish `hR : ¬ KillingConditions.RangeAD L X.exc (D.nd.l i)` using `fun hr => hr.1 (Or.inr h3)`. Simplify using `only [tab, if_neg h2, if_neg h1, if_neg hR]`.
+
+Use `show TwistedPlaces.sumOver D (D.nd.l i) ((tab L X tf C).len i) + (tab L X tf C).BB i ≤ _`. Establish `hFi' : TwistedPlaces.sumOver D (D.nd.l i) (tf.len i) + tf.BB i ≤ _` using `hFi`. Rewrite `hFi'` using `[h3]`. Rewrite using `[hlen, hBB, h3, sumOver_three_even, add_zero]`. Conclude with `hFi'`.
+-/
 theorem localBoundTableAllPrimes_conditionTwoThree : ∀ (D : D7) (L : SizeData₂ D) (P : ParameterChoice' D L) (X : KillingConditions.HubData D) (C : ℝ) (tf : TwistedPlaces.Tab L), Concl L P X C → TwistedPlaces.SmallPrimeLengthBound L tf C → TwistedPlaces.SmallPrimeLengthBound L (tab L X tf C) C := by
   intro D L P X C tf _ hF i hi hl
   have hFi := hF i hi hl

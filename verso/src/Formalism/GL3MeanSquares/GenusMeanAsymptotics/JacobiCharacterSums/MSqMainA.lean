@@ -6,6 +6,19 @@ noncomputable section
 
 namespace Formalism.HermitianLattices.Ext.LogarithmicIntegralBounds
 
+/- English proof (translation)
+Establish `key : ((∑ q ∈ PP, ‖∑ n ∈ I, ((c n : ℝ) : ℂ) * κ n * ((J n q : ℤ) : ℂ)‖ ^ 2 : ℝ) : ℂ) = ∑ n ∈ I, ∑ n' ∈ I, ((c n : ℝ) : ℂ) * ((c n' : ℝ) : ℂ) * (κ n * (starRingEnd ℂ) (κ n')) * ((∑ q ∈ PP, ((J n q * J n' q : ℤ) : ℝ) : ℝ) : ℂ)`. Establish `h1 : ∀ q, ((‖∑ n ∈ I, ((c n : ℝ) : ℂ) * κ n * ((J n q : ℤ) : ℂ)‖ ^ 2 : ℝ) : ℂ) = ∑ n ∈ I, ∑ n' ∈ I, ((c n : ℝ) : ℂ) * ((c n' : ℝ) : ℂ) * (κ n * (starRingEnd ℂ) (κ n')) * (((J n q * J n' q : ℤ) : ℝ) : ℂ)`. Introduce `q`. Rewrite using `[Complex.ofReal_pow, ← Complex.mul_conj', map_sum, Finset.sum_mul_sum]`. Use `Finset.sum_congr rfl fun n _ => Finset.sum_congr rfl fun n' _ => ?_` and prove the remaining obligations.
+
+Simplify using `only [map_mul, Complex.conj_ofReal, map_intCast]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Complex.ofReal_sum, Finset.sum_congr rfl (fun q _ => h1 q), Finset.sum_comm]`. Use `Finset.sum_congr rfl fun n _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun n' _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.ofReal_sum, Finset.mul_sum]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Complex.norm_real]`.
+
+Conclude with `le_abs_self _`. Use `_ ≤ ∑ n ∈ I, ∑ n' ∈ I, c n * c n' * |∑ q ∈ PP, ((J n q * J n' q : ℤ) : ℝ)| := by`. Rewrite using `[key]`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun n _ => ?_)` and prove the remaining obligations. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun n' _ => ?_)` and prove the remaining obligations.
+
+Rewrite using `[norm_mul, norm_mul, norm_mul, norm_mul, Complex.norm_real, Complex.norm_real, Complex.norm_real, RCLike.norm_conj, Real.norm_eq_abs, Real.norm_eq_abs, Real.norm_eq_abs, abs_of_nonneg (hc n), abs_of_nonneg (hc n')]`. Establish `h2 : ‖κ n‖ * ‖κ n'‖ ≤ 1`. Use `mul_le_mul (hκ n) (hκ n') (norm_nonneg _) zero_le_one` as an intermediate fact. Simplify using `using this`. Establish `h3 : 0 ≤ c n * c n'` using `mul_nonneg (hc n) (hc n')`.
+
+Establish `h4 : c n * c n' * (‖κ n‖ * ‖κ n'‖) ≤ c n * c n'`. Simplify using `using mul_le_mul_of_nonneg_left h2 h3`. Conclude with `mul_le_mul_of_nonneg_right h4 (abs_nonneg _)`.
+-/
 theorem meansq_expand (PP I : Finset ℕ) (c : ℕ → ℝ) (hc : ∀ n, 0 ≤ c n) (κ : ℕ → ℂ)
     (hκ : ∀ n, ‖κ n‖ ≤ 1) (J : ℕ → ℕ → ℤ) :
     (∑ q ∈ PP, ‖∑ n ∈ I, ((c n : ℝ) : ℂ) * κ n * ((J n q : ℤ) : ℂ)‖ ^ 2) ≤

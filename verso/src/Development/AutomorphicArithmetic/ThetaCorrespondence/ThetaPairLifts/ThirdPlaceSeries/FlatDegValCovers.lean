@@ -25,6 +25,9 @@ variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotio
   {Y0 : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y0 cX} {Csz : ℝ}
 end GlobalTheory.CovTop.FlatSz
 namespace GlobalTheory.CovTop.FlatSz
+/- English proof (translation)
+The claim follows from `|GlobalTheory.FlatLine.flatDegVal (dat p i) (Formalism.L2.DIV.ofRecord (Fm.D x ι) (Fm.L x ι) p.Del p.h0).logOm| ≤ 9 * (Fm.D x ι).R.r * (Fm.L x ι).sc.L := by intro _ have h1 := _root_.GlobalTheory.CovTop.CovSz.covers_of_lifts_alt (Q := fun Fm x _ ι _ _ _ PP => ∃ A, HostNum (Fm.D x …`.
+-/
 theorem flatDegVal_covers_alt : _root_.GlobalTheory.CovTop.SizeCondition → _root_.GlobalTheory.CovTop.CoversCondition fun Fm x _ ι p i Y PP _ =>
     |GlobalTheory.FlatLine.flatDegVal (dat p i) (Formalism.L2.DIV.ofRecord (Fm.D x ι) (Fm.L x ι) p.Del p.h0).logOm| ≤
       9 * (Fm.D x ι).R.r * (Fm.L x ι).sc.L := by

@@ -9,5 +9,8 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open Formalism.IndefR.RecTie Formalism.IndefR.Lev Formalism.L2.Rows GlobalTheory.Mem GlobalTheory.Mem.R3 GlobalTheory.Mem.Col2
 open GlobalTheory.Mem.R3.LiftBrg
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.SplitEtaIdem.exists_isIdemAt_conjP | exact GlobalTheory.SplitEtaIdem.exists_isIdemAt_conjP | (intros; apply GlobalTheory.SplitEtaIdem.exists_isIdemAt_conjP <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_splitIdempotent_at_conjugatePrime : ∀ {D : D7} (Pb : Formalism.L2.DIV.Pl D.host.E) (Ut : Formalism.L2.Col.MhlUnif Pb), ∃ e : Formalism.L2.Theta.AE D, Formalism.L2.NTheta.IsIdemAt e (Formalism.L2.Col.conjPrime₂ Pb) := by
   first | exact @GlobalTheory.SplitEtaIdem.exists_isIdemAt_conjP | exact GlobalTheory.SplitEtaIdem.exists_isIdemAt_conjP | (intros; apply GlobalTheory.SplitEtaIdem.exists_isIdemAt_conjP <;> assumption)

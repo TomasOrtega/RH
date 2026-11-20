@@ -113,6 +113,19 @@ variable {G : Type} [Group G] [MeasurableSpace G] [MeasurableMul G] {μ : Measur
 
 open scoped Pointwise in
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Use `iSup_le fun D => iSup_le fun hD => iSup_le fun hi => ?_` and prove the remaining obligations. Rewrite using `[h𝓕.setLIntegral_eq_tsum' Φ D]`. Simplify using `only [hΦ]`. Rewrite using `[← lintegral_iUnion₀ (fun s => ((hD.const_smul s).nullMeasurableSet).inter h𝓕.nullMeasurableSet)]`.
+
+Conclude with `lintegral_mono_set (Set.iUnion_subset fun _ => Set.inter_subset_right)`. Introduce `s t hst`. Use `Disjoint.aedisjoint (Set.disjoint_left.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨⟨g, hg, rfl⟩, -⟩ ⟨ht, -⟩`. Rewrite `ht` using `[Set.mem_smul_set_iff_inv_smul_mem, ← mul_smul]`.
+
+Conclude with `hst (inv_mul_eq_one.1 (hi _ g hg ht)).symm`. Use `set A := toMeasurable μ 𝓕`. Establish `hA : MeasurableSet A` using `measurableSet_toMeasurable _ _`. Establish `hAe : A =ᵐ[μ] 𝓕` using `h𝓕.nullMeasurableSet.toMeasurable_ae_eq`. Use `set B : Set G := ⋃ s : {s : Λ // s ≠ 1}, s.1 • A`.
+
+Establish `hB : MeasurableSet B` using `MeasurableSet.iUnion fun s => hA.const_smul _`. Establish `h0 : μ (A ∩ B) = 0`. Rewrite using `[Set.inter_iUnion]`. Use `measure_iUnion_null fun s => ?_` and prove the remaining obligations. Establish `h1 : AEDisjoint μ ((1 : Λ) • 𝓕) (s.1 • 𝓕)` using `h𝓕.aedisjoint s.2.symm`.
+
+Rewrite `h1` using `[one_smul]`. Conclude with `(measure_congr (hAe.inter ((smul_set_ae_eq s.1).2 hAe))).trans h1`. Establish `hD : (A \ B : Set G) =ᵐ[μ] 𝓕` using `(diff_ae_eq_self.2 h0).trans hAe`. Use `le_iSup_of_le (A \ B) (le_iSup_of_le (hA.diff hB) (le_iSup_of_le ?_ (setLIntegral_congr hD).ge))` and prove the remaining obligations. Introduce `s g hg hs`.
+
+Assume the negation of the conclusion as `hne`. Conclude with `hs.2 (Set.mem_iUnion.2 ⟨⟨s, hne⟩, Set.smul_mem_smul_set hg.1⟩)`.
+-/
 theorem iSup_inj_eq (h𝓕 : IsFundamentalDomain Λ 𝓕 μ) {Φ : G → ℝ≥0∞} (hΦ : ∀ (s : Λ) g, Φ (s • g) = Φ g) :
     ⨆ (D : Set G) (_ : MeasurableSet D) (_ : ∀ s : Λ, ∀ g ∈ D, s • g ∈ D → s = 1), ∫⁻ g in D, Φ g ∂μ =
       ∫⁻ g in 𝓕, Φ g ∂μ := by
@@ -161,11 +174,22 @@ instance haarU_haar (r p : ℕ) : (haarU r p).IsHaarMeasure := by unfold haarU; 
 
 instance haarR_left : (haarR X).IsMulLeftInvariant := by unfold haarR; infer_instance
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mat_frameOf (g : RealGrp X) (τ : X.Ψ) :
     mat (frameOf X g) τ = mat (baseFr X) τ * ((g τ : GL (Fin r) ℂ) : Matrix (Fin r) (Fin r) ℂ) := rfl
 
+/- English proof (translation)
+The claim follows from `(X.signature τ).choose_spec.1`.
+-/
 theorem det_baseFr (τ : X.Ψ) : (mat (baseFr X) τ).det ≠ 0 := (X.signature τ).choose_spec.1
 
+/- English proof (translation)
+Establish `h : gram τ.1 X.Gm (mat (frameOf X g) τ) = sgnMat r X.p0`. Rewrite using `[mat_frameOf, FrameDegreeData.gram_mul, baseFr_mem X τ]`. Conclude with `(g τ).2`. Unfold `dmin lminor`. Rewrite using `[h, sgnMat, Matrix.submatrix_diagonal _ _ (Fin.castLE_injective _), Matrix.det_diagonal, psgn, Finset.prod_range]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem dmin_frameOf (g : RealGrp X) (τ : X.Ψ) (i : Fin (r + 1)) :
     dmin X.Gm (frameOf X g) τ i = (psgn X.p0 i : ℂ) := by
   have h : gram τ.1 X.Gm (mat (frameOf X g) τ) = sgnMat r X.p0 := by
@@ -176,6 +200,9 @@ theorem dmin_frameOf (g : RealGrp X) (τ : X.Ψ) (i : Fin (r + 1)) :
     Finset.prod_range]
   simp
 
+/- English proof (translation)
+Unfold `psgn`. Rewrite using `[Finset.abs_prod]`. Use `Finset.prod_eq_one fun a _ => ?_` and prove the remaining obligations. Unfold `sgn`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem abs_psgn (p i : ℕ) : |psgn p i| = 1 := by
   unfold psgn
   rw [Finset.abs_prod]
@@ -183,6 +210,11 @@ theorem abs_psgn (p i : ℕ) : |psgn p i| = 1 := by
   unfold sgn
   split_ifs <;> simp
 
+/- English proof (translation)
+Introduce `τ`. Use `⟨?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[mat_frameOf, Matrix.det_mul]`. Conclude with `mul_ne_zero (det_baseFr X τ) (g τ).1.det_ne_zero`. Rewrite using `[dmin_frameOf, Complex.ofReal_re, ← sq, ← sq_abs, abs_psgn]`.
+
+Evaluate the numerical expressions.
+-/
 theorem frameOf_mem_dom (g : RealGrp X) : frameOf X g ∈ X.dom := by
   intro τ
   refine ⟨?_, fun i => ?_⟩
@@ -191,6 +223,11 @@ theorem frameOf_mem_dom (g : RealGrp X) : frameOf X g ∈ X.dom := by
   · rw [dmin_frameOf, Complex.ofReal_re, ← sq, ← sq_abs, abs_psgn]
     norm_num
 
+/- English proof (translation)
+Introduce `g g' h`. Use function extensionality and compare the values at `τ`. Establish `h1` using `congrArg (fun x => mat x τ) h`. Simplify using `only [mat_frameOf] at h1`. Establish `hu : IsUnit (mat (baseFr X) τ)` using `(Matrix.isUnit_iff_isUnit_det _).2 (det_baseFr X τ).isUnit`.
+
+Conclude with `Subtype.ext (Units.ext (hu.mul_left_cancel h1))`.
+-/
 theorem frameOf_injective : Function.Injective (frameOf X) := by
   intro g g' h
   funext τ
@@ -199,6 +236,9 @@ theorem frameOf_injective : Function.Injective (frameOf X) := by
   have hu : IsUnit (mat (baseFr X) τ) := (Matrix.isUnit_iff_isUnit_det _).2 (det_baseFr X τ).isUnit
   exact Subtype.ext (Units.ext (hu.mul_left_cancel h1))
 
+/- English proof (translation)
+Use `measurable_pi_lambda _ fun τ => ?_` and prove the remaining obligations. Establish `h : Continuous fun u : Upq r X.p0 => mat (baseFr X) τ * ((u : GL (Fin r) ℂ) : Matrix (Fin r) (Fin r) ℂ)` using `continuous_const.matrix_mul (Units.continuous_val.comp continuous_subtype_val)`. Conclude with `measurable_pi_lambda _ fun a => measurable_pi_lambda _ fun b => (h.matrix_elem a b).measurable.comp (measurable_pi_apply τ)`.
+-/
 theorem measurable_frameOf : Measurable (frameOf X) := by
   refine measurable_pi_lambda _ fun τ => ?_
   have h : Continuous fun u : Upq r X.p0 =>
@@ -207,6 +247,9 @@ theorem measurable_frameOf : Measurable (frameOf X) := by
   exact measurable_pi_lambda _ fun a => measurable_pi_lambda _ fun b =>
     (h.matrix_elem a b).measurable.comp (measurable_pi_apply τ)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ`. Establish `h1 : (γ : Matrix (Fin r) (Fin r) E).map τ.1 * mat (baseFr X) τ = mat (frameOf X s) τ` using `congrFun h τ`. Use `show (γ : Matrix (Fin r) (Fin r) E).map τ.1 * mat (frameOf X g) τ = mat (frameOf X (s * g)) τ`. Rewrite using `[mat_frameOf, ← Matrix.mul_assoc, h1, mat_frameOf, mat_frameOf, Matrix.mul_assoc]`. Both sides reduce to the same expression.
+-/
 theorem lact_frameOf {γ : GL (Fin r) E} {s : RealGrp X} (h : lact γ (baseFr X) = frameOf X s) (g : RealGrp X) :
     lact γ (frameOf X g) = frameOf X (s * g) := by
   funext τ
@@ -215,6 +258,13 @@ theorem lact_frameOf {γ : GL (Fin r) E} {s : RealGrp X} (h : lact γ (baseFr X)
   rw [mat_frameOf, ← Matrix.mul_assoc, h1, mat_frameOf, mat_frameOf, Matrix.mul_assoc]
   rfl
 
+/- English proof (translation)
+Establish `key : ∀ τ : X.Ψ, ∃ u : Upq r X.p0, mat (lact γ (baseFr X)) τ = mat (baseFr X) τ * ((u : GL (Fin r) ℂ) : Matrix (Fin r) (Fin r) ℂ)`. Introduce `τ`. Establish `hb` using `det_baseFr X τ`. Establish `hd : ((mat (baseFr X) τ)⁻¹ * mat (lact γ (baseFr X)) τ).det ≠ 0`. Establish `e : mat (lact γ (baseFr X)) τ = τ.1.mapMatrix (γ : Matrix (Fin r) (Fin r) E) * mat (baseFr X) τ` using `rfl`.
+
+Rewrite using `[e, Matrix.det_mul, Matrix.det_mul, ← RingHom.map_det, Matrix.det_nonsing_inv, Ring.inverse_eq_inv']`. Conclude with `mul_ne_zero (inv_ne_zero hb) (mul_ne_zero ((map_ne_zero _).2 γ.det_ne_zero) hb)`. Establish `e : mat (lact γ (baseFr X)) τ = mat (baseFr X) τ * ((mat (baseFr X) τ)⁻¹ * mat (lact γ (baseFr X)) τ)` using `(Matrix.mul_nonsing_inv_cancel_left _ _ hb.isUnit).symm`. Use `⟨⟨Matrix.GeneralLinearGroup.mkOfDetNeZero _ hd, ?_⟩, e⟩` and prove the remaining obligations. Establish `h1` using `MajInv.gram_lact X (X.Γ_stab γ hγ) (baseFr X) τ`.
+
+Rewrite `h1` using `[e, FrameDegreeData.gram_mul, baseFr_mem X τ]`. Conclude with `h1`. Use `choose s hs using key`. Conclude with `⟨s, funext hs⟩`.
+-/
 theorem exists_translation {γ : GL (Fin r) E} (hγ : γ ∈ X.Γ) : ∃ s, lact γ (baseFr X) = frameOf X s := by
   have key : ∀ τ : X.Ψ, ∃ u : Upq r X.p0, mat (lact γ (baseFr X)) τ =
       mat (baseFr X) τ * ((u : GL (Fin r) ℂ) : Matrix (Fin r) (Fin r) ℂ) := by
@@ -233,6 +283,19 @@ theorem exists_translation {γ : GL (Fin r) E} (hγ : γ ∈ X.Γ) : ∃ s, lact
   choose s hs using key
   exact ⟨s, funext hs⟩
 
+/- English proof (translation)
+Rewrite using `[← iSup_inj_eq h𝓕 (Φ := fun g => F (frameOf X g))]`. Unfold `quotInt`. Use `iSup_congr fun D => iSup_congr fun _ => iSup_congr_Prop ⟨fun h s g hg hs => ?_, fun h γ hγ g hg g' hg' e => ?_⟩ fun _ => rfl` and prove the remaining obligations. Take `⟨γ, hγ, e⟩` from `(hΛ s).1 s.2`. Establish `h1` using `h γ hγ g hg _ hs (lact_frameOf X e g)`.
+
+Establish `h2 : frameOf X s = frameOf X 1`. Rewrite using `[← e, h1]`. Use function extensionality and compare the values at `τ`. Use `show ((1 : GL (Fin r) E) : Matrix (Fin r) (Fin r) E).map τ.1 * mat (baseFr X) τ = mat (frameOf X 1) τ`. Rewrite using `[mat_frameOf]`.
+
+Simplify using the standard rewrite rules. Conclude with `Subtype.ext (frameOf_injective X h2)`. Take `⟨s, hs⟩` from `exists_translation X hγ`. Establish `h1 : s * g = g'` using `frameOf_injective X ((lact_frameOf X hs g).symm.trans e)`. Establish `h2 : s = 1` using `congrArg Subtype.val (h ⟨s, (hΛ s).2 ⟨γ, hγ, hs⟩⟩ g hg (by show s * g ∈ D`.
+
+Rewrite using `[h1]`. Conclude with `hg'))`. Use `X.Γ_free γ hγ _ (frameOf_mem_dom X g) (fun _ => (1 : Matrix (Fin r) (Fin r) ℂ)) (fun τ => ⟨?_, fun a b hab => Matrix.one_apply_ne hab.ne'⟩) ?_` and prove the remaining obligations. Use `show (1 : Matrix (Fin r) (Fin r) ℂ).det ≠ 0`. Simplify using the standard rewrite rules.
+
+Rewrite using `[lact_frameOf X hs, h2, one_mul]`. Use function extensionality and compare the values at `τ`. Conclude with `(Matrix.mul_one (mat (frameOf X g) τ)).symm`. Introduce `s g`. Take `⟨γ, hγ, e⟩` from `(hΛ s).1 s.2`.
+
+Use `show F (frameOf X (s * g)) = _`. Rewrite using `[← lact_frameOf X e, hF γ hγ _ (frameOf_mem_dom X g)]`.
+-/
 theorem quotInt_eq {Λ : Subgroup (RealGrp X)} [Countable Λ]
     (hΛ : ∀ s, s ∈ Λ ↔ ∃ γ ∈ X.Γ, lact γ (baseFr X) = frameOf X s) {𝓕 : Set (RealGrp X)}
     (h𝓕 : IsFundamentalDomain Λ 𝓕 (haarR X)) {F : Frame X.Ψ r → ℝ≥0∞}
@@ -270,6 +333,11 @@ theorem quotInt_eq {Λ : Subgroup (RealGrp X)} [Countable Λ]
 
 end Model
 
+/- English proof (translation)
+Proceed by induction on `h using Submodule.span_induction with`. Consider the case `mem P hP => exact (hP k).1.1`. Consider the case `zero => exact ⟨differentiableOn_const _, fun _ _ _ _ => by simp, fun _ _ _ _ => by simp⟩`. Consider the case `add P Q _ _ hP hQ`. Conclude with `⟨hP.1.add hQ.1, fun x hx b hb => by simp only [Pi.add_apply, hP.2.1 x hx b hb, hQ.2.1 x hx b hb]; ring, fun γ hγ x hx => by simp only [Pi.add_apply, hP.2.2 γ hγ x hx, hQ.2.2 γ hγ x hx]; ring⟩`.
+
+Consider the case `smul a P _ hP`. Conclude with `⟨hP.1.const_smul a, fun x hx b hb => by simp only [Pi.smul_apply, smul_eq_mul, hP.2.1 x hx b hb]; ring, fun γ hγ x hx => by simp only [Pi.smul_apply, smul_eq_mul, hP.2.2 γ hγ x hx]; ring⟩`.
+-/
 theorem isSec_of_mem_holSub {Comp : Type} (X : Comp → Data E r) (la : ∀ k, Wt (X k).Ψ r) {P : FDSec X}
     (h : P ∈ holSub X la) (k : Comp) : (X k).IsSec (la k) (P k) := by
   induction h using Submodule.span_induction with
@@ -283,6 +351,11 @@ theorem isSec_of_mem_holSub {Comp : Type} (X : Comp → Data E r) (la : ∀ k, W
       fun x hx b hb => by simp only [Pi.smul_apply, smul_eq_mul, hP.2.1 x hx b hb]; ring,
       fun γ hγ x hx => by simp only [Pi.smul_apply, smul_eq_mul, hP.2.2 γ hγ x hx]; ring⟩
 
+/- English proof (translation)
+Establish `hχ : ‖X.χ la γ‖ = 1`. Take `⟨n, hn, h⟩` from `X.χ_fin la`. Use `congrArg norm (h γ hγ)` as an intermediate fact. Rewrite `this` using `[norm_pow, norm_one]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) hn.ne').1 this`.
+
+Unfold `Data.pnorm dmin`. Simplify using `only [MajInv.gram_lact X (X.Γ_stab γ hγ)]`. Rewrite using `[hP.2.2 γ hγ _ hx, norm_mul, hχ, one_mul]`.
+-/
 theorem pnorm_lact (X : Data E r) {la : Wt X.Ψ r} {P : Frame X.Ψ r → ℂ} (hP : X.IsSec la P)
     {γ : GL (Fin r) E} (hγ : γ ∈ X.Γ) {x : Frame X.Ψ r} (hx : x ∈ X.dom) :
     X.pnorm la P (lact γ x) = X.pnorm la P x := by
@@ -295,6 +368,9 @@ theorem pnorm_lact (X : Data E r) {la : Wt X.Ψ r} {P : Frame X.Ψ r → ℂ} (h
   simp only [MajInv.gram_lact X (X.Γ_stab γ hγ)]
   rw [hP.2.2 γ hγ _ hx, norm_mul, hχ, one_mul]
 
+/- English proof (translation)
+Unfold `dmin lminor`. Use `Continuous.matrix_det (Continuous.matrix_submatrix ?_ _ _)` and prove the remaining obligations. Use `continuous_pi fun a => continuous_pi fun c => ?_` and prove the remaining obligations. Simplify using `only [gram, hermC, ReciprocityTheory.ChartRestriction.G.FD.col, mat, Matrix.of_apply]`. Use `fun_prop`.
+-/
 theorem continuous_dmin (X : Data E r) (τ : X.Ψ) (i : Fin (r + 1)) :
     Continuous fun x : Frame X.Ψ r => dmin X.Gm x τ i := by
   unfold dmin lminor
@@ -303,6 +379,13 @@ theorem continuous_dmin (X : Data E r) (τ : X.Ψ) (i : Fin (r + 1)) :
   simp only [gram, hermC, ReciprocityTheory.ChartRestriction.G.FD.col, mat, Matrix.of_apply]
   fun_prop
 
+/- English proof (translation)
+Establish `hm : Measurable P`. Establish `: P = X.dom.piecewise P fun _ => 0`. Use function extensionality and compare the values at `x`. Distinguish the cases in `hx : x ∈ X.dom`. Rewrite using `[Set.piecewise_eq_of_mem _ _ _ hx]`.
+
+Rewrite using `[Set.piecewise_eq_of_notMem _ _ _ hx, h0 x hx]`. Rewrite using `[this]`. Conclude with `hP.measurable_piecewise continuousOn_const (FourierCoefficientDomain.isOpen_dom X).measurableSet`. Unfold `Data.pnorm`. Use `hm.norm.mul (Finset.measurable_prod _ fun τ _ => Finset.measurable_prod _ fun i _ => ?_)` and prove the remaining obligations.
+
+Conclude with `((continuous_dmin X τ _).measurable.div (continuous_dmin X τ _).measurable).norm.pow_const _`.
+-/
 theorem measurable_pnorm (X : Data E r) (la : Wt X.Ψ r) {P : Frame X.Ψ r → ℂ} (hP : ContinuousOn P X.dom)
     (h0 : ∀ x ∉ X.dom, P x = 0) : Measurable (X.pnorm la P) := by
   classical

@@ -6,6 +6,13 @@ open scoped CategoryTheory.Obj
 
 namespace GlobalTheory.PoincareDescent
 
+/- English proof (translation)
+Establish `hiq : i ≫ q = 1`. Rewrite using `[h.w]`. Both sides reduce to the same expression. Establish `hdiff : ∀ {W : C} (x y : W ⟶ A), x ≫ q = y ≫ q → (x⁻¹ * y) ≫ q = toUnit W ≫ η[A']`. Introduce `W x y e`.
+
+Rewrite using `[MonObj.mul_comp, GrpObj.inv_comp, e, inv_mul_cancel]`. Both sides reduce to the same expression. Use `⟨⟨?_⟩, ⟨PullbackCone.IsLimit.mk _ (fun s ↦ lift s.fst (h.lift (s.fst⁻¹ * s.snd) (toUnit _) (hdiff _ _ s.condition))) (fun s ↦ lift_fst _ _) (fun s ↦ ?_) (fun s m h₁ h₂ ↦ ?_)⟩⟩` and prove the remaining obligations. Rewrite using `[MonObj.mul_comp, Category.assoc, hiq, MonObj.comp_one, _root_.mul_one]`. Rewrite using `[MonObj.comp_mul, lift_fst, lift_snd_assoc, h.lift_fst, mul_inv_cancel_left]`.
+
+Establish `e₁ : m ≫ fst A N = s.fst` using `h₁`. Use `CartesianMonoidalCategory.hom_ext _ _ (by rw [e₁, lift_fst]) ?_` and prove the remaining obligations. Rewrite using `[lift_snd]`. Use `h.hom_ext ?_ (toUnit_unique _ _)` and prove the remaining obligations. Rewrite using `[h.lift_fst, ← h₂, MonObj.comp_mul, e₁, Category.assoc, inv_mul_cancel_left]`.
+-/
 theorem torsor_square {C : Type*} [Category C] [CartesianMonoidalCategory C] {A A' N : C} [GrpObj A] [GrpObj A']
     [GrpObj N] (i : N ⟶ A) (q : A ⟶ A') [IsMonHom q] (h : IsPullback i (toUnit N) q η[A']) :
     IsPullback (fst A N) (fst A N * (snd A N ≫ i)) q q := by

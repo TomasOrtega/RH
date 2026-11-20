@@ -16,18 +16,30 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     [CommRing O] [Algebra O LL] [TopologicalSpace LL] {v : AddValuation LL (WithTop ℚ)} {n₀ : ℕ}
     (W : LocWach PD LL O v n₀) {k : Type} [Field k] [Algebra O k]
 
+/- English proof (translation)
+Introduce `δ hδ` and use `by rw [← W.φγ_comm, x.2 δ hδ]`.
+-/
 theorem φ_mem (T : LocLat G Qp LL O) (x : ↥(DΔ W T)) : W.φD T x ∈ DΔ W T :=
   fun δ hδ => by rw [← W.φγ_comm, x.2 δ hδ]
 
+/- English proof (translation)
+Introduce `δ hδ` and use `by rw [← W.γD_mul, mul_comm, W.γD_mul, x.2 δ hδ]`.
+-/
 theorem γ_mem (T : LocLat G Qp LL O) (g : W.Gam) (x : ↥(DΔ W T)) : W.γD T g x ∈ DΔ W T :=
   fun δ hδ => by rw [← W.γD_mul, mul_comm, W.γD_mul, x.2 δ hδ]
 
 variable {W} {l n : ℕ} {R : RingPG k l} {F : DFun R n G} {ι : k⸨X⸩ →ₐ[k] k⸨X⸩} {τ : ZMod n → ZMod n₀} {γ : W.Gam}
 
+/- English proof (translation)
+The claim follows from `p.j_φ T A q h i x _ rfl`.
+-/
 theorem Pres.j_φ' (p : Pres W F ι τ γ) {T A q} (h : Onto T A q) (i : ZMod n) (x : ↥(DΔ W T)) :
     p.j T A q i ⟨W.φD T x, φ_mem W T x⟩ = (F.D A).φ i (p.j T A q (i - 1) x) :=
   p.j_φ T A q h i x _ rfl
 
+/- English proof (translation)
+The claim follows from `p.j_γ T A q h i x _ rfl`.
+-/
 theorem Pres.j_γ' (p : Pres W F ι τ γ) {T A q} (h : Onto T A q) (i : ZMod n) (x : ↥(DΔ W T)) :
     p.j T A q i ⟨W.γD T γ x, γ_mem W T γ x⟩ = (F.D A).γ i (p.j T A q i x) :=
   p.j_γ T A q h i x _ rfl

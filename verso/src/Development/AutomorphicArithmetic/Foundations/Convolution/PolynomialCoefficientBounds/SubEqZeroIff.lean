@@ -5,6 +5,11 @@ import Development.AutomorphicArithmetic.Foundations.Convolution.PolynomialCoeff
 
 open MvPolynomial Filter Topology PositivityTheory.Rg.Fx
 
+/- English proof (translation)
+Introduce `ι κ _ b F`. Establish `key : ∀ lam : Fin b.r → ℂ, ev lam (b.sub F) = evK (fun i => b.Λ i + ∑ j, (b.emb i j : ℂ) * lam j) (fun k => ev lam (b.h k)) F` using `fun lam => by`. Establish `: (ev lam).comp b.sub = evK (fun i => b.Λ i + ∑ j, (b.emb i j : ℂ) * lam j) (fun k => ev lam (b.h k))` using `MvPolynomial.ringHom_ext (fun f => by`. Simplify `(UpperTheory.ConvolutionTheory.FX.subst ι _ b.Λ b.emb f).1 lam) (fun k => by simp [Fam.sub, evK])` using `[Fam.sub, evK]`. Conclude with `RingHom.congr_fun this F`.
+
+Use `⟨fun h0 Λ h ⟨lam, h1, h2⟩ => ?_, fun h => UpperTheory.ConvolutionTheory.FX.ev_inj _ _ fun lam => ?_⟩` and prove the remaining obligations. Rewrite using `[funext h1, funext h2, ← key, h0, map_zero]`. Rewrite using `[key]`. Conclude with `h _ _ ⟨lam, fun _ => rfl, fun _ => rfl⟩`.
+-/
 theorem UpperTheory.ConvolutionTheory.FX.sub_eq_zero_iff :
     ∀ (ι κ : Type) [Fintype ι] (b : Fam ι κ) (F : KF ι κ), b.sub F = 0 ↔ ∀ Λ h, b.Mem Λ h → evK Λ h F = 0 := by
   intro ι κ _ b F

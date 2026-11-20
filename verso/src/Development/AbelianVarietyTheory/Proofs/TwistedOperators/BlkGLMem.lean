@@ -18,6 +18,11 @@ namespace GlobalTheory.SquareComm
 
 variable {D : D7}
 
+/- English proof (translation)
+Establish `hJ : JR (F` using `D.host.F) (AF D.host.F) (hsum V V₁).gram = blkMat finSumFinEquiv (JR (F := D.host.F) (AF D.host.F) V.gram) (JR (F := D.host.F) (AF D.host.F) V₁.gram) := by`. Unfold `JR`. Rewrite using `[gram_hsum]`. Conclude with `blkMat_map _ _ (map_zero _) _ _`. Unfold `HR`.
+
+Rewrite using `[hJ]`. Conclude with `(blkGL_mem_UJ finSumFinEquiv).2 ⟨g.1.2, g.2.2⟩`.
+-/
 theorem blkGL_mem (V V₁ : HSp D) (g : GA D V × GA D V₁) :
     blkGL finSumFinEquiv (g.1.1, g.2.1) ∈ HR (AF D.host.F) D.sp.cm.sig (hsum V V₁).gram := by
   have hJ : JR (F := D.host.F) (AF D.host.F) (hsum V V₁).gram =
@@ -34,10 +39,16 @@ def blk (V V₁ : HSp D) : GA D V × GA D V₁ →* GA D (hsum V V₁) where
   map_one' := Subtype.ext (map_one (blkGL finSumFinEquiv))
   map_mul' g h := Subtype.ext (map_mul (blkGL finSumFinEquiv) (g.1.1, g.2.1) (h.1.1, h.2.1))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mt_blk (V V₁ : HSp D) (g : GA D V) (g₁ : GA D V₁) :
     Formalism.L2.Theta.mt (hsum V V₁) (blk V V₁ (g, g₁)) =
       blkMat finSumFinEquiv (Formalism.L2.Theta.mt V g) (Formalism.L2.Theta.mt V₁ g₁) := rfl
 
+/- English proof (translation)
+Apply `Continuous.subtype_mk` to reduce the goal to its premises. Conclude with `(continuous_blkGL finSumFinEquiv).comp (continuous_subtype_val.prodMap continuous_subtype_val)`.
+-/
 theorem continuous_blk (V V₁ : HSp D) : Continuous (blk V V₁) := by
   apply Continuous.subtype_mk
   exact (continuous_blkGL finSumFinEquiv).comp (continuous_subtype_val.prodMap continuous_subtype_val)

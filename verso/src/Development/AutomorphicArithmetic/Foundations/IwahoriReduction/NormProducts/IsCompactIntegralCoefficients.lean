@@ -5,6 +5,11 @@ import Development.AbelianVarietyTheory.Definitions.Foundations.AdmissibleNewfor
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.MainNotions.N GlobalTheory.GalOfCusp UpperTheory.V UpperTheory.V.Af UpperTheory.V.HV GlobalTheory.Ord2 GlobalTheory.KZ GlobalTheory.K4 GlobalTheory.KA UpperTheory.Kd.K4 UpperTheory.V.Z.Kato.Sym UpperTheory.V.Z.Kato.Nb
 open scoped Matrix MatrixGroups Topology
 
+/- English proof (translation)
+Use `haveI : ContinuousSMul ℤ_[l] (PadicAlgCl l) := by`. Use `⟨?_⟩` and prove the remaining obligations. Establish `: (fun q : ℤ_[l] × PadicAlgCl l => q.1 • q.2) = fun q => (q.1 : ℚ_[l]) • q.2`. Use function extensionality and compare the values at `q`. Both sides reduce to the same expression.
+
+Rewrite using `[this]`. Conclude with `(continuous_subtype_val.comp continuous_fst).smul continuous_snd`. Establish `hfg : (Subalgebra.toSubmodule c.O).FG` using `Module.Finite.iff_fg.1 c.fin`. Conclude with `Submodule.isCompact_of_fg hfg`.
+-/
 private theorem UpperTheory.Kd.K4.isCompact_integralCoefficients {l : ℕ} [Fact l.Prime] (c : Coef l) : IsCompact (c.O : Set (Qbar l)) := by
   haveI : ContinuousSMul ℤ_[l] (PadicAlgCl l) := by
     refine ⟨?_⟩
@@ -15,6 +20,11 @@ private theorem UpperTheory.Kd.K4.isCompact_integralCoefficients {l : ℕ} [Fact
   have hfg : (Subalgebra.toSubmodule c.O).FG := Module.Finite.iff_fg.1 c.fin
   exact Submodule.isCompact_of_fg hfg
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h`. Use `push Not at h`. Take `⟨M, hM⟩` from `(UpperTheory.Kd.K4.isCompact_integralCoefficients c).isBounded.exists_norm_le`. Take `⟨n, hn⟩` from `pow_unbounded_of_one_lt M h`. Use `hM _ (c.O.pow_mem ha n)` as an intermediate fact.
+
+Rewrite `this` using `[norm_pow]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 private theorem UpperTheory.Kd.K4.norm_le_one_of_mem_coefficient_ring {l : ℕ} [Fact l.Prime] (c : Coef l) {a : Qbar l} (ha : a ∈ c.O) : ‖a‖ ≤ 1 := by
   by_contra h
   push Not at h
@@ -24,11 +34,19 @@ private theorem UpperTheory.Kd.K4.norm_le_one_of_mem_coefficient_ring {l : ℕ} 
   rw [norm_pow] at this
   linarith
 
+/- English proof (translation)
+Establish `h : ((l : ℕ) : Qbar l) = algebraMap ℚ_[l] (PadicAlgCl l) (l : ℚ_[l])` using `by simp`. Rewrite using `[h, PadicAlgCl.norm_extends]`. Conclude with `Padic.norm_p_lt_one`.
+-/
 private theorem UpperTheory.Kd.K4.norm_nat_cast_prime_lt_one_padic_closure (l : ℕ) [Fact l.Prime] : ‖((l : ℕ) : Qbar l)‖ < 1 := by
   have h : ((l : ℕ) : Qbar l) = algebraMap ℚ_[l] (PadicAlgCl l) (l : ℚ_[l]) := by simp
   rw [h, PadicAlgCl.norm_extends]
   exact Padic.norm_p_lt_one
 
+/- English proof (translation)
+Establish `hsum` using `(hA Ω ε X l n).2.2.2.1`. Use `⟨fun σ hσ => ?_, fun σ hσ τ hτ => ?_, ?_⟩` and prove the remaining obligations. Conclude with `(hI Ω ε X l N w n).2.2.2.2.1 ι S _ fun i hi => (h i hi).inv σ hσ`. Establish `e : (∑ i ∈ S, z i σ) + X.galB l σ (∑ i ∈ S, z i τ) = ∑ i ∈ S, (z i σ + X.galB l σ (z i τ))`. Rewrite using `[map_sum, Finset.sum_add_distrib]`.
+
+Rewrite using `[e]`. Conclude with `hsum ι S _ _ fun i hi => (h i hi).coc σ hσ τ hτ`. Use `choose! T hT using fun i hi => (h i hi).loc`. Use `⟨S.biUnion T, fun σ hσ τ hτ hst => ?_⟩` and prove the remaining obligations. Conclude with `hsum ι S _ _ fun i hi => hT i hi σ hσ τ hτ fun a ha => hst a (Finset.mem_biUnion.2 ⟨i, hi, ha⟩)`.
+-/
 private theorem UpperTheory.Kd.K4.topCocycle_finsetSum (hA : SApi) (hI : SInvApi) {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω]
     {ε : Ω →+* ℂ} (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (N w n M : ℕ) {ι : Type} (S : Finset ι)
     (z : ι → (Ω ≃ₐ[ℚ] Ω) → X.Fn l) (h : ∀ i ∈ S, TopCoc X l N w n M (z i)) :
@@ -45,6 +63,11 @@ private theorem UpperTheory.Kd.K4.topCocycle_finsetSum (hA : SApi) (hI : SInvApi
     refine ⟨S.biUnion T, fun σ hσ τ hτ hst => ?_⟩
     exact hsum ι S _ _ fun i hi => hT i hi σ hσ τ hτ fun a ha => hst a (Finset.mem_biUnion.2 ⟨i, hi, ha⟩)
 
+/- English proof (translation)
+Establish `hc` using `hC Ω ε X l N w n hN A κ`. Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => simpa using hc.1.refl 0`. Consider the case `insert a S ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha]`.
+
+Conclude with `(hc.2.2.1 _ _ _ _ (h a (by simp)) (ih fun i hi => h i (by simp [hi]))).1`.
+-/
 private theorem UpperTheory.Kd.K4.cocycleBound_finsetSum (hC : SCohApi) {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω]
     {ε : Ω →+* ℂ} (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (N w n : ℕ) (hN : 0 < N) {A : Type} [CommGroup A]
     (κ : (Ω ≃ₐ[ℚ] Ω) → A) {ι : Type} (S : Finset ι) (z z' : ι → (Ω ≃ₐ[ℚ] Ω) → A → X.Fn l)
@@ -57,12 +80,18 @@ private theorem UpperTheory.Kd.K4.cocycleBound_finsetSum (hC : SCohApi) {Ω : Ty
     rw [Finset.sum_insert ha, Finset.sum_insert ha]
     exact (hc.2.2.1 _ _ _ _ (h a (by simp)) (ih fun i hi => h i (by simp [hi]))).1
 
+/- English proof (translation)
+Use function extensionality and compare the values at `s y`. Simplify using `[shB, Finset.sum_apply, map_sum]`.
+-/
 private theorem UpperTheory.Kd.K4.shiftedBound_finsetSum {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ} (X : Tower Ω ε) (l : ℕ) [Fact l.Prime]
     (M : ℕ) {ι : Type} (S : Finset ι) (z : ι → (Ω ≃ₐ[ℚ] Ω) → X.Fn l) :
     shB X l M (fun σ => ∑ i ∈ S, z i σ) = ∑ i ∈ S, shB X l M (z i) := by
   funext s y
   simp [shB, Finset.sum_apply, map_sum]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `s y`. Simplify using `only [GlobalTheory.KA.push, Finset.sum_apply]`. Conclude with `Finset.sum_comm`.
+-/
 private theorem UpperTheory.Kd.K4.pushforward_finsetSum {Γ : Type} [Group Γ] {B A M ι : Type} [Fintype B] [DecidableEq A] [AddCommMonoid M]
     (π : B → A) (S : Finset ι) (f : ι → Γ → B → M) :
     GlobalTheory.KA.push π (∑ i ∈ S, f i) = ∑ i ∈ S, GlobalTheory.KA.push π (f i) := by
@@ -73,8 +102,14 @@ private theorem UpperTheory.Kd.K4.pushforward_finsetSum {Γ : Type} [Group Γ] {
 private def UpperTheory.Kd.K4.unitsPowPrimeReduction (l r : ℕ) : (ZMod (l ^ (r + 1)))ˣ →* (ZMod (l ^ r))ˣ :=
   Units.map (ZMod.castHom (pow_dvd_pow l (Nat.le_succ r)) (ZMod (l ^ r))).toMonoidHom
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem UpperTheory.Kd.K4.unitsReduction_coe (l r : ℕ) : (⇑(unitsPowPrimeReduction l r)) = redL l r := rfl
 
+/- English proof (translation)
+The claim follows from `ZMod.unitsMap_surjective (pow_dvd_pow l (Nat.le_succ r))`.
+-/
 private theorem UpperTheory.Kd.K4.unitsReduction_surjective (l r : ℕ) [Fact l.Prime] : Function.Surjective (unitsPowPrimeReduction l r) :=
   ZMod.unitsMap_surjective (pow_dvd_pow l (Nat.le_succ r))
 
@@ -83,6 +118,47 @@ private def UpperTheory.Kd.K4.unitsLevelToPrimePowReduction (l n r N : ℕ) : (Z
 
 attribute [-instance] GlobalTheory.KZ.ClsMod.neZero_pow
 
+/- English proof (translation)
+Introduce `hSym hA hI hBS hS hC hZc hT hNr hNn l _ Ω _ _ _ ε X N _ e hlN hl2 he`. Establish `hN : 0 < N` using `Nat.pos_of_ne_zero (NeZero.ne N)`. Take `⟨c₁, hc₁⟩` from `UpperTheory.Kd.K4.mlB hA hI hBS hS ε X l N (2 * e - 1) hN`. Use `⟨c₁, fun c₀ hc₀ ι gN A W pr x c d gm ψ cf hAd => ?_⟩` and prove the remaining obligations. Take `⟨hc1, hd1, hcc, hdc, hadd, hsm, hint, heq, -, -, hg0, -⟩` from `hAd`.
+
+Establish `hk : 2 * e + 1 - 2 = 2 * e - 1` using `by omega`. Establish `hcy` using `(hS Ω ε X N hN).2.2.2.2.2.2.2`. Establish `hHyp : ∀ r₀, Hyp l N c d (gm r₀)` using `fun r₀ => ⟨hl2, hlN, hc1, hd1, hcc, hdc, hg0 r₀⟩`. Establish `hLaws : ∃ ws, UpperTheory.V.Z.Kato.Sym.Laws X l c d ws` using `hSym Ω ε X l c d Fact.out hc1 hd1 (Nat.Coprime.coprime_dvd_right ⟨l * N, by ring⟩ hcc) (Nat.Coprime.coprime_dvd_right ⟨l * N, by ring⟩ hdc)`. Establish `hL : LiftsWith X l N (2 * e - 1) (cL X l N (2 * e - 1))` using `Classical.epsilon_spec (UpperTheory.Kd.K4.liftH ε X l N (2 * e - 1) hl2 hN hlN ⟨e - 1, by omega⟩)`.
+
+Set `κ : ∀ r, (Ω ≃ₐ[ℚ] Ω) →* (ZMod (l ^ r))ˣ` to `fun r => (cycMod (F := ℚ) (Ω := Ω) l r)⁻¹`. Establish `hκ : ∀ r s, κ r s = (cycMod (F` using `ℚ) (Ω := Ω) l r s)⁻¹ := fun _ _ => rfl`. Set `zz : ℕ → ℕ → (Ω ≃ₐ[ℚ] Ω) → X.Fn l` to `fun n r σ => ∑ r₀, cls0 X l n r N x c d (2 * e - 1) (gm r₀) σ`. Set `Z : ∀ (_ r : ℕ), (Ω ≃ₐ[ℚ] Ω) → (ZMod (l ^ r))ˣ → X.Fn l` to `fun n r s y => GlobalTheory.KA.push (unitsLevelToPrimePowReduction l n r (N * N)) (shB X l (topM l n r (N * N)) (zz n r)) s (y * 1)`. Establish `hZeq : ∀ n r, Z n r = ∑ r₀, Y0 X l n r N x c d (2 * e - 1) (gm r₀)`.
+
+Introduce `n r`. Use function extensionality and compare the values at `s y`. Establish `e1 : shB X l (topM l n r (N * N)) (zz n r) = ∑ r₀, shB X l (topM l n r (N * N)) (cls0 X l n r N x c d (2 * e - 1) (gm r₀))` using `shiftedBound_finsetSum X l _ _ _`. Simplify using `only [Z, e1, pushforward_finsetSum, Finset.sum_apply, mul_one]`. Both sides reduce to the same expression.
+
+Establish `hπκ : ∀ r s, unitsPowPrimeReduction l r (κ (r + 1) s) = κ r s`. Introduce `r s`. Rewrite using `[hκ, hκ, map_inv, (hZc Ω l (r + 1) s).1, (hZc Ω l r s).1]`. Conclude with `congrArg (·⁻¹) ((hcy (l ^ (r + 1)) s).2.2.2.2 (l ^ r) (pow_dvd_pow l (Nat.le_succ r)))`. Establish `hred : ∀ n r s, unitsLevelToPrimePowReduction l n r (N * N) (cycM (topM l n r (N * N)) s)⁻¹ = κ r s`.
+
+Introduce `n r s`. Rewrite using `[map_inv, hκ, (hZc Ω l r s).1]`. Conclude with `congrArg (·⁻¹) ((hcy (topM l n r (N * N)) s).2.2.2.2 (l ^ r) (Dvd.dvd.mul_right (pow_dvd_pow l (Nat.le_add_right r n)) (N * N)))`. Establish `htop : ∀ n r, TopCoc X l N (2 * e - 1) n (topM l n r (N * N)) (zz n r)` using `fun n r => topCocycle_finsetSum hA hI X l N _ n _ Finset.univ _ fun r₀ _ => hT Ω ε X l N x c d _ (gm r₀) (hHyp r₀) hLaws hL n r`. Establish `hcr : ∀ n r, CohB X l N (2 * e - 1) n (κ r) (GlobalTheory.KA.push (unitsPowPrimeReduction l r) (Z n (r + 1))) (Z n r)`.
+
+Introduce `n r`. Rewrite using `[hZeq, hZeq, unitsReduction_coe, pushforward_finsetSum]`. Conclude with `cocycleBound_finsetSum hC X l N _ n hN _ Finset.univ _ _ fun r₀ _ => hNr Ω ε X l N x c d _ (gm r₀) (hHyp r₀) hLaws hL n r`. Establish `hcn : ∀ n r, CohB X l N (2 * e - 1) n (κ r) (Z (n + 1) r) (Z n r)`. Introduce `n r`.
+
+Rewrite using `[hZeq, hZeq]`. Conclude with `cocycleBound_finsetSum hC X l N _ n hN _ Finset.univ _ _ fun r₀ _ => hNn Ω ε X l N x c d _ (gm r₀) (hHyp r₀) hLaws hL n r`. Take `⟨YB, hYB, hcoc, hcont, hcomp, hlast⟩` from `hc₁ c₀ hc₀ (fun r => (ZMod (l ^ r))ˣ) (fun r => unitsPowPrimeReduction l r) κ (fun n r => topM l n r (N * N)) (fun n r => unitsLevelToPrimePowReduction l n r (N * N)) (fun _ _ => 1) zz Z (fun r => unitsReduction_surjective l r) hπκ hred (fun _ _ _ _ => rfl) htop hcr hcn`. Set `prA : X.Fn l →+ (Fin 2 → Qbar l)` to `AddMonoidHom.mk' pr hadd`. Establish `hprA : ∀ b, prA b = pr b` using `fun _ => rfl`.
+
+Establish `hpush : ∀ {B A' : Type} [Fintype B] [DecidableEq A'] (π : B → A') (f : (Ω ≃ₐ[ℚ] Ω) → B → X.Fn l) s y, pr (GlobalTheory.KA.push π f s y) = GlobalTheory.KA.push π (fun s y => pr (f s y)) s y`. Introduce `B A' _ _ π f s y`. Conclude with `map_sum prA _ _`. Establish `hln : ∀ n d, d ∈ X.B N l (2 * e - 1) → ∀ i, ‖pr ((l : ℤ_[l]) ^ n • d) i‖ ≤ ‖((l : ℕ) : Qbar l) ^ n‖`. Introduce `n d hd i`.
+
+Establish `e1 : algebraMap ℚ_[l] (Qbar l) (((l : ℤ_[l]) ^ n : ℤ_[l]) : ℚ_[l]) = ((l : ℕ) : Qbar l) ^ n` using `by simp`. Rewrite using `[hsm, e1, Pi.smul_apply, smul_eq_mul, norm_mul]`. Conclude with `mul_le_of_le_one_right (norm_nonneg _) (norm_le_one_of_mem_coefficient_ring cf (hint d hd i))`. Establish `hfix : ∀ (M : ℕ) [NeZero M] (s : Ω ≃ₐ[ℚ] Ω) (y : (ZMod M)ˣ), (repM M y : Ω ≃ₐ[ℚ] Ω)⁻¹ * s * repM M (y * (cycM M s)⁻¹) ∈ fixMu Ω M`. Introduce `M _ s y`.
+
+Establish `h1 : cycM M (1 : Ω ≃ₐ[ℚ] Ω) = 1` using `((hcy M 1).2.2.2.1).1 (one_mem _)`. Establish `h2 : cycM M (repM M y : Ω ≃ₐ[ℚ] Ω)⁻¹ * y = 1`. Use `(hcy M (repM M y : Ω ≃ₐ[ℚ] Ω)⁻¹).2.1 (repM M y)` as an intermediate fact. Rewrite `this` using `[inv_mul_cancel, h1, (hcy M s).2.2.1 y, eq_comm]`. Then use the resulting hypothesis. Rewrite using `[(hcy M _).2.2.2.1, (hcy M _).2.1, (hcy M _).2.1, (hcy M s).2.2.1]`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `⟨fun r s y => pr (YB r s y), fun r n => ?_, fun r s s' y => ?_, fun r => ?_, fun r y i => ?_, fun r s u i => hint _ (hYB r s u) i⟩` and prove the remaining obligations. Take `⟨bB, hbB, b, hb, h⟩` from `hlast r n`. Use `⟨bB, fun σ hσ => ?_, fun y => pr (b y), fun y i => hint _ (hb y) i, fun s y i => ?_⟩` and prove the remaining obligations. Rewrite using `[clsBmu_eq, hk]`.
+
+Conclude with `hbB σ hσ`. Take `⟨dd, hdd, hde⟩` from `h s y`. Rewrite `hde` using `[mul_one]`. Establish `hf : (fun s y => pr (shB X l (topM l n r (N * N)) bB s y)) = fun s y => rhoK W e ψ (repM (topM l n r (N * N)) y) *ᵥ pr (bB ((repM (topM l n r (N * N)) y)⁻¹ * s * repM (topM l n r (N * N)) (y * (cycM (topM l n r (N * N)) s)⁻¹)))`. Use function extensionality and compare the values at `s y`.
+
+Conclude with `heq _ _ (hbB _ (hfix _ s y)).1`. Establish `hsh : pr (GlobalTheory.KA.push (unitsLevelToPrimePowReduction l n r (N * N)) (shB X l (topM l n r (N * N)) bB) s y) = YfB X l pr W e ψ n r N bB s y`. Rewrite using `[hpush, hf]`. Both sides reduce to the same expression. Establish `hdec : YB r s y = GlobalTheory.KA.push (unitsLevelToPrimePowReduction l n r (N * N)) (shB X l (topM l n r (N * N)) bB) s y + (X.galB l s (b (y * κ r s)) - b y) + (l : ℤ_[l]) ^ n • dd`.
+
+Rewrite using `[← hde]`. Normalize the expressions using the abelian group laws. Establish `hprY : pr (YB r s y) = YfB X l pr W e ψ n r N bB s y + (rhoK W e ψ s *ᵥ pr (b (y * (cycMod (F` using `ℚ) (Ω := Ω) l r s)⁻¹)) - pr (b y)) + pr ((l : ℤ_[l]) ^ n • dd) := by`. Rewrite using `[hdec, hadd, hadd, ← hprA (_ - _), map_sub, hprA, hprA, heq _ _ (hb _), hsh]`. Both sides reduce to the same expression.
+
+Express the relevant statement in the definitionally equal form `‖pr (YB r s y) i - (YfB X l pr W e ψ n r N bB s y + (rhoK W e ψ s *ᵥ pr (b (y * (cycMod (F := ℚ) (Ω := Ω) l r s)⁻¹)) - pr (b y))) i‖ ≤ _`. Establish `e3 : ∀ a b : Fin 2 → Qbar l, (a + b) i - a i = b i` using `fun a b => by simp`. Rewrite using `[hprY, e3]`. Conclude with `hln n dd hdd i`. Express the relevant statement in the definitionally equal form `pr (YB r (s * s') y) = pr (YB r s y) + rhoK W e ψ s *ᵥ pr (YB r s' (y * κ r s))`.
+
+Rewrite using `[hcoc, hadd, heq _ _ (hYB _ _ _)]`. Use function extensionality and compare the values at `s y`. Express the relevant statement in the definitionally equal form `pr (YB r s y) = GlobalTheory.KA.push (redL l r) (fun s y => pr (YB (r + 1) s y)) s y`. Rewrite using `[hcomp r]`. Conclude with `hpush _ _ s y`.
+
+Rewrite using `[continuous_iff_continuousAt]`. Introduce `s`. Rewrite using `[ContinuousAt, Metric.tendsto_nhds]`. Introduce `ε' hε`. Take `⟨n, hn⟩` from `exists_pow_lt_of_lt_one hε (norm_nat_cast_prime_lt_one_padic_closure l)`.
+
+Rewrite `hn` using `[← norm_pow]`. Use `filter_upwards [hcont r n s y] with t ht`. Take `⟨dd, hdd, hde⟩` from `ht`. Rewrite using `[dist_eq_norm]`. Establish `e1 : pr (YB r t y) i - pr (YB r s y) i = pr ((l : ℤ_[l]) ^ n • dd) i`.
+
+Rewrite using `[← hde, ← hprA (_ - _), map_sub, hprA, hprA]`. Both sides reduce to the same expression. Rewrite using `[e1]`. Conclude with `lt_of_le_of_lt (hln n dd hdd i) hn`.
+-/
 theorem UpperTheory.Kd.K4.mlOf2 :
     SymEx → SApi → SInvApi → SBStab → SSlD → SCohApi → SCycZ → STop0 → KatoClassNormCompatibleCyclotomic → KatoClassCompatibleModPowers → ∀ (l : ℕ) [Fact l.Prime] (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (ε : Ω →+* ℂ) (X : Tower Ω ε) (N : ℕ) [NeZero N] (e : ℕ),
       Nat.Coprime l N → l ≠ 2 → 1 ≤ e → ∃ c₁ : ℕ, ∀ c₀ : ℕ, c₁ ≤ c₀ → ∀ (ι : Qbar l ≃+* ℂ) (gN : Newform (2 * e + 1)) (A : ValuationSubring Ω) (W : R2 Ω l)

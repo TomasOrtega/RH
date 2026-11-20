@@ -18,6 +18,9 @@ open GlobalTheory.KFourier MeasureTheory
 
 namespace GlobalTheory.KFourier
 
+/- English proof (translation)
+Unfold `mono`. Rewrite using `[Finset.prod_list_map_count]`. Establish `h` using `Finset.prod_subset (M := ℂ) (f := fun c => coord ε c k ^ s.count c) (Finset.subset_univ (s.toFinset)) (fun c _ hc => by rw [List.count_eq_zero_of_not_mem (by simpa using hc), pow_zero])`. Use `h using 4` and compare the differences between its conclusion and the goal. Apply the tactic sequence `all_goals exact lawful_beq_subsingleton _ _`.
+-/
 theorem mono_eq_prod_pow {n : ℕ} (ε : Fin n → Bool) (s : List (Fin n × Fin n × Bool)) (k : KG ε) :
     mono ε s k = ∏ c : Fin n × Fin n × Bool, coord ε c k ^ s.count c := by
   classical
@@ -28,6 +31,13 @@ theorem mono_eq_prod_pow {n : ℕ} (ε : Fin n → Bool) (s : List (Fin n × Fin
   convert h using 4
   all_goals exact lawful_beq_subsingleton _ _
 
+/- English proof (translation)
+Set `b : ((Fin n × Fin n × Bool) → Fin (d + 1)) → (KG ε → ℂ)` to `fun f k => ∏ c : Fin n × Fin n × Bool, coord ε c k ^ (f c : ℕ)`. Establish `hle : polyV ε d ≤ Submodule.span ℂ (Set.range b)`. Rewrite using `[polyV_eq]`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `φ ⟨s, hs, rfl⟩`.
+
+Use `Submodule.subset_span ⟨fun c => ⟨s.count c, Nat.lt_succ_of_le ((List.count_le_length).trans hs)⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `k`. Rewrite using `[mono_eq_prod_pow]`. Use `haveI : FiniteDimensional ℂ (Submodule.span ℂ (Set.range b)) := FiniteDimensional.span_of_finite ℂ (Set.finite_range b)`. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `[Fintype.card_fun, Fintype.card_prod, Fintype.card_fin, Fintype.card_bool]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem finrank_polyV_le {n : ℕ} (ε : Fin n → Bool) (d : ℕ) :
     Module.finrank ℂ (polyV ε d) ≤ (d + 1) ^ (2 * n ^ 2) := by
   classical

@@ -5,6 +5,9 @@ open scoped InnerProductSpace
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Use `⟨Nat.cast_nonneg _, ?_⟩` and prove the remaining obligations. Establish `h : (univ.filter p).card ≤ n` using `le_trans (Finset.card_filter_le _ _) (by simp)`. Conclude with `h` after adjusting the coercions.
+-/
 theorem card_filter_fin_bounds {n : ℕ} (p : Fin n → Prop) [DecidablePred p] :
     (0 : ℝ) ≤ ((univ.filter p).card : ℝ) ∧ ((univ.filter p).card : ℝ) ≤ n := by
   refine ⟨Nat.cast_nonneg _, ?_⟩
@@ -12,6 +15,11 @@ theorem card_filter_fin_bounds {n : ℕ} (p : Fin n → Prop) [DecidablePred p] 
     le_trans (Finset.card_filter_le _ _) (by simp)
   exact_mod_cast h
 
+/- English proof (translation)
+Establish `e : lowK ε μ a - μ a = rhoN ε a - rhoC ε a`. Simplify using `only [lowK, Pi.add_apply, Pi.sub_apply]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Simplify using `only [rhoN, rhoC]`.
+
+Take `⟨h1, h2⟩` from `card_filter_fin_bounds (fun b : Fin n => a < b ∧ ε b ≠ ε a)`. Take `⟨h3, h4⟩` from `card_filter_fin_bounds (fun b : Fin n => b < a ∧ ε b ≠ ε a)`. Take `⟨h5, h6⟩` from `card_filter_fin_bounds (fun b : Fin n => a < b ∧ ε b = ε a)`. Take `⟨h7, h8⟩` from `card_filter_fin_bounds (fun b : Fin n => b < a ∧ ε b = ε a)`. Apply the tactic sequence `constructor <;> linarith`.
+-/
 theorem abs_lowK_sub_le {n : ℕ} (ε : Fin n → Bool) (μ : Fin n → ℝ) (a : Fin n) :
     -(n : ℝ) ≤ lowK ε μ a - μ a ∧ lowK ε μ a - μ a ≤ n := by
   have e : lowK ε μ a - μ a = rhoN ε a - rhoC ε a := by
@@ -25,6 +33,9 @@ theorem abs_lowK_sub_le {n : ℕ} (ε : Fin n → Bool) (μ : Fin n → ℝ) (a 
   obtain ⟨h7, h8⟩ := card_filter_fin_bounds (fun b : Fin n => b < a ∧ ε b = ε a)
   constructor <;> linarith
 
+/- English proof (translation)
+Establish `h2 : (2 : ℝ) ≤ n` using `by exact_mod_cast hn`. Establish `h7 : (n : ℝ) ^ 2 ≤ (n : ℝ) ^ 7` using `pow_le_pow_right₀ (by linarith) (by norm_num)`. Establish `hsq : 4 * (n : ℝ) ^ 2 + 2 + n ≤ 6 * (n : ℝ) ^ 2` using `by nlinarith`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 private lemma four_sq_add_le_of_large_bv {n : ℕ} {bv : ℝ} (hn : 2 ≤ n) (hb : 10 ^ 6 * (n : ℝ) ^ 7 ≤ bv) :
     4 * (n : ℝ) ^ 2 + 2 + n ≤ bv / 32 - bv / 100 := by
   have h2 : (2 : ℝ) ≤ n := by exact_mod_cast hn
@@ -32,6 +43,19 @@ private lemma four_sq_add_le_of_large_bv {n : ℕ} {bv : ℝ} (hn : 2 ≤ n) (hb
   have hsq : 4 * (n : ℝ) ^ 2 + 2 + n ≤ 6 * (n : ℝ) ^ 2 := by nlinarith
   linarith
 
+/- English proof (translation)
+Introduce `n kk j ε μ bv hS hj`. Take `⟨hk1, hkn, -, hcl, hnd, hb⟩` from `hS`. Establish `hn : 2 ≤ n` using `by omega`. Establish `hm` using `four_sq_add_le_of_large_bv hn hb`. Establish `hn2 : (2 : ℝ) ≤ n` using `by exact_mod_cast hn`.
+
+Establish `hbpos : 0 < bv`. Establish `: (0 : ℝ) < (n : ℝ) ^ 7` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hjr : (j : ℝ) ≤ 4 * (n : ℝ) ^ 2 + 2` using `by exact_mod_cast hj`. Use `⟨hbpos, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `ω hω a`. Establish `hle : |ω a - lowK ε μ a| ≤ j` using `le_trans (Finset.single_le_sum (f := fun b => |ω b - lowK ε μ b|) (fun b _ => abs_nonneg _) (Finset.mem_univ a)) hω`. Take `⟨hl1, hl2⟩` from `abs_lowK_sub_le ε μ a`. Take `⟨ha1, ha2⟩` from `abs_le.mp hle`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `ha`. Take `⟨-, h1, h2⟩` from `hcl a ha`. Apply the tactic sequence `constructor <;> linarith`. Introduce `ha`. Take `⟨h1, h2⟩` from `hnd a ha`.
+
+Apply the tactic sequence `constructor <;> linarith`. Introduce `a`. Prove the components needed by the constructor for the conclusion. Introduce `ha`. Take `⟨-, h1, h2⟩` from `hcl a ha`.
+
+Apply the tactic sequence `constructor <;> linarith`. Introduce `ha`. Take `⟨h1, h2⟩` from `hnd a ha`. Apply the tactic sequence `constructor <;> linarith`.
+-/
 theorem shape_position : ∀ (n kk j : ℕ) (ε : Fin n → Bool) (μ : Fin n → ℝ) (bv : ℝ), Shape ε kk μ bv → j ≤ 4 * n ^ 2 + 2 → 0 < bv ∧ (∀ ω : Fin n → ℝ, ∑ a, |ω a - lowK ε μ a| ≤ j → ∀ a : Fin n, (a.val + 1 < kk → -bv / 8 - bv / 32 ≤ -ω a ∧ -ω a ≤ bv / 32) ∧ (kk ≤ a.val + 1 → bv - bv / 32 ≤ -ω a ∧ -ω a ≤ 2 * bv + bv / 32)) ∧ ∀ a : Fin n, (a.val + 1 < kk → -bv / 8 - bv / 32 ≤ -μ a + (1 - (n : ℝ)) / 2 ∧ -μ a + (1 - (n : ℝ)) / 2 ≤ bv / 32) ∧ (kk ≤ a.val + 1 → bv - bv / 32 ≤ -μ a + (1 - (n : ℝ)) / 2 ∧ -μ a + (1 - (n : ℝ)) / 2 ≤ 2 * bv + bv / 32) := by
   intro n kk j ε μ bv hS hj
   obtain ⟨hk1, hkn, -, hcl, hnd, hb⟩ := hS

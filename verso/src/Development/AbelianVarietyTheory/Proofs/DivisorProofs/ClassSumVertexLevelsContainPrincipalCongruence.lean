@@ -15,6 +15,9 @@ namespace GlobalTheory.RowLevelCong
 
 variable {D : D7} {T : Type}
 
+/- English proof (translation)
+Take `⟨v, hv, rfl⟩` from `Finset.mem_image.1 h`. Combine the equalities or inequalities in the displayed calculation. Conclude with `Ideal.le_of_dvd (Finset.dvd_prod_of_mem _ hv)`. Use `_ ≤ _ := Ideal.pow_le_self (G.pl.depth_pos sc v).ne'`.
+-/
 theorem gridModulus_le_of_mem_chosenPlaces {L : LevCh D T} {sc : Consts} (G : GridData L sc) {PP : Pl D.host.E} (h : PP ∈ G.pl.W0) :
     G.modul ≤ PP.asIdeal := by
   classical
@@ -27,6 +30,17 @@ theorem gridModulus_le_of_mem_chosenPlaces {L : LevCh D T} {sc : Consts} (G : Gr
 set_option synthInstance.maxHeartbeats 200000 in
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `x hx`. Take `⟨c, hc⟩` from `hL.βX`. Rewrite `hc` using `[one_pow]`. Establish `hβ : IsFrame L.βX L.ΛX` using `hc.1`. Establish `hS : x ∈ St L.βX` using `(GlobalTheory.LevSplit.mem_St_iff _ _ hβ x).2 (GlobalTheory.CongMember.stab_of_mem_congLev hx)`.
+
+Use `GlobalTheory.LevSplit.mem_lev_of_red _ _ _ _ x hx.1 hS fun PP hP => ?_` and prove the remaining obligations. Establish `hPg : PP ∈ L.Pg`. Break down `hP with h | h` into its components or cases. Conclude with `h`. It suffices to derive a contradiction.
+
+Use `(hL.Q_ram μ₀ PP).2 (Or.inl h) ?_` and prove the remaining obligations. Rewrite using `[hL.xi_base]`. Conclude with `fun _ _ => rfl`. Establish `hle : G.modul ≤ PP.asIdeal` using `gridModulus_le_of_mem_chosenPlaces G (levelChainTypePlaces_subset_chosenPlaces G hL μ₀ hPg)`. Use `GlobalTheory.LevRedTriv.redFn_eq_one_of_cols hβ PP x hS 1 ((Ideal.ne_top_iff_one _).1 PP.isPrime.ne_top) fun j => ?_` and prove the remaining obligations.
+
+Establish `hz` using `(hβ (L.βX.1 *ᵥ Pi.single j 1)).2 fun k => by`. Rewrite using `[Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec, Pi.single_apply]`. Use `split_ifs`. Conclude with `Subring.one_mem _`. Conclude with `Subring.zero_mem _`.
+
+Establish `h1` using `hx.2.2 _ hz`. Rewrite using `[map_one, Subring.coe_one, one_smul, Matrix.sub_mulVec, Matrix.one_mulVec]`. Conclude with `Submodule.span_mono (Set.image_mono (Submodule.smul_mono_left hle)) h1`.
+-/
 theorem congLev_le_lev {L : LevCh D T} {sc : Consts} (G : GridData L sc) {μ₀ : T} (hL : L.Is μ₀) :
     congLev D.sp.cm D.sp.X'.gram L.ΛX G.modul ≤ lev D.sp.cm D.sp.X'.gram L.βX (L.datXt μ₀) := by
   intro x hx
@@ -62,6 +76,13 @@ open GlobalTheory.RowLevelCong
 set_option synthInstance.maxHeartbeats 200000 in
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Use `⟨0, fun CF _ ε => ⟨0, fun D large₂ _ _ Γ _ _ Pl0 T A Ks _ _ _ R F hS ch _ _ _ i => ?_⟩⟩` and prove the remaining obligations. Establish `hL` using `hS.core.lev`. Break down `i with ⟨_ | i, hi⟩` into its components or cases. Use `show congLev D.sp.cm (ch.G.V (.grid 0 D.R.m)).gram (ch.G.Λ (.grid 0 D.R.m)) ch.G.modul ≤ ch.S.toGridChoice.levRow A.μ0 0 (Nat.zero_le _)`. Establish `e` using `GlobalTheory.FunObj.levRow_zero_eq_lev ch.W ch.S.toGridChoice hL A.μ0 (Nat.zero_le _)`.
+
+Establish `key : ∀ (Y : LSp D) (K : Subgroup (GL (Fin Y.sp.rank) (Lev.EAf D))), Y = ⟨D.sp.X', R.toLevCh.ΛX⟩ → HEq K (lev D.sp.cm D.sp.X'.gram R.toLevCh.βX (R.toLevCh.datXt A.μ0)) → congLev D.sp.cm Y.sp.gram Y.lat ch.G.modul ≤ K`. Introduce and unpack `_ K rfl e'`. Take `rfl` from `eq_of_heq e'`. Conclude with `congLev_le_lev ch.G hL`. Conclude with `(key (ch.G.node (.grid 0 D.R.m)) _ (colY_m _) e).trans inf_le_left`.
+
+Use `show congLev D.sp.cm (ch.G.V (.grid (i + 1) D.R.m)).gram (ch.G.Λ (.grid (i + 1) D.R.m)) ch.G.modul ≤ ch.S.toGridChoice.levRow A.μ0 (i + 1) (Nat.le_of_lt_succ hi)`. Establish `e` using `GlobalTheory.FunObj.GridChoice.levRow_succ_inf_UA ch.W ch.S.toGridChoice A.μ0 i (Nat.le_of_lt_succ hi)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem levRow_congLev_le : ∃ CF0 : ℝ, ∀ CF : ℝ, CF0 ≤ CF → ∀ ε : ℝ, ∃ x₀ : ℝ, ∀ (D : D7) (large₂ : SizeData₂ D), large₂.sc.eps = ε →
     x₀ ≤ large₂.sc.x → ∀ (Γ : Type) [Group Γ] [Fintype Γ] (Pl0 T : Type) (A : FamIn D.what₂.LL Γ Pl0 T D.R.m) (Ks : Type) [Field Ks]
     [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), HidaSetting large₂ R F → ∀ ch : Choice R, ch.Is →

@@ -6,11 +6,17 @@ open GlobalTheory.CompanionTheory.Ar.Crv
 
 namespace PositivityTheory.HtPt.Ch
 
+/- English proof (translation)
+Simplify using `only [eig, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, sub_eq_zero]`.
+-/
 theorem mem_eig {K O V : Type} [Field K] [AddCommGroup V] [Module K V] (ρ : O → V →ₗ[K] V)
     (χ : O → K) (x : V) : x ∈ eig ρ χ ↔ ∀ a, ρ a x = χ a • x := by
   simp only [eig, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply,
     LinearMap.id_apply, sub_eq_zero]
 
+/- English proof (translation)
+Establish `h` using `(mem_eig ρ _ x).1 hx`. Simplify using `only [h, smul_smul, ← map_mul, ← Finset.sum_smul, ← map_sum]`.
+-/
 theorem comb_eig {K O V k : Type} [Field K] [Field k] [Algebra k K] [AddCommGroup V] [Module K V]
     (ρ : O → V →ₗ[K] V) (χ : O → k) {x : V} (hx : x ∈ eig ρ fun a => algebraMap k K (χ a))
     {m : ℕ} (c : Fin m → k) (a : Fin m → O) :
@@ -18,6 +24,25 @@ theorem comb_eig {K O V k : Type} [Field K] [Field k] [Algebra k K] [AddCommGrou
   have h := (mem_eig ρ _ x).1 hx
   simp only [h, smul_smul, ← map_mul, ← Finset.sum_smul, ← map_sum]
 
+/- English proof (translation)
+Introduce `K _ C V _ _ _ V' _ _ _ V'' _ _ _ L L' L'' f g O k S _ _ _ _ _ χ hχ hv ρ ρ' ρ'' hL' hρ' hS hf hg s`. Take `⟨e, he_hom, he_mem, -, -, he_comb⟩` from `SplitProj.split_proj K C V' L' O k S χ hχ hv ρ' hL' hρ'`. Take `⟨m, c, a, hc, hes⟩` from `he_comb s`. Establish `key : ∀ y, g y ∈ eig ρ'' (fun a => algebraMap k K (χ s a)) → g (e s y) = g y`. Introduce `y hy`.
+
+Establish `h1` using `comb_eig ρ'' (fun a => χ s a) hy c a`. Rewrite using `[hes, LinearMap.sum_apply, map_sum]`. Simplify using `only [LinearMap.smul_apply, map_smul, hg]`. Rewrite using `[h1, hc s, if_pos rfl, map_one, one_smul]`. Establish `hA : ∀ x, x ∈ eig ρ (fun a => algebraMap k K (χ s a)) ↔ f x ∈ eig (fun a => ρ' a) (fun a => algebraMap k K (χ s a))`.
+
+Introduce `x`. Rewrite using `[mem_eig, mem_eig]`. Prove the components needed by the constructor for the conclusion. Introduce `h b`. Rewrite using `[← hf, h b, map_smul]`.
+
+Introduce `h b`. Apply `hS.1` to reduce the goal to its premises. Rewrite using `[hf, h b, map_smul]`. Establish `hB : ∀ z, z ∈ eig ρ'' (fun a => algebraMap k K (χ s a)) ↔ ∃ y ∈ eig (fun a => ρ' a) (fun a => algebraMap k K (χ s a)), g y = z`. Introduce `z`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hz`. Take `⟨y, rfl⟩` from `hS.2.2.1 z`. Conclude with `⟨e s y, he_mem s y, key y hz⟩`. Introduce and unpack `⟨y, hy, rfl⟩`.
+
+Rewrite `hy`, the goal using `[mem_eig]`. Introduce `b`. Rewrite using `[← hg, hy b, map_smul]`. Take `⟨I, -, hdeg, hImem⟩` from `ses_restrict hL' hS _ _ _ hA hB`. Establish `hIeq : I = sub C L'' (eig ρ'' (fun a => algebraMap k K (χ s a)))`.
+
+Use function extensionality and compare the values at `i`. Use extensionality with `z`. Rewrite using `[hImem]`. Express the relevant statement in the definitionally equal form `_ ↔ (z : V'') ∈ L'' i`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨y, hy, -, hyz⟩`. Conclude with `(hS.2.2.2.2 i _).2 ⟨y, hy, hyz⟩`. Introduce `hz`. Take `⟨y, hy, hyz⟩` from `(hS.2.2.2.2 i _).1 hz`. Use `⟨e s y, he_hom s i y hy, he_mem s y, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[key y (hyz ▸ z.2)]`. Conclude with `hyz`. Rewrite using `[hdeg, hIeq]`. Both sides reduce to the same expression.
+-/
 theorem split_ses : ∀ (K : Type) [Field K] (C : ACurve K) (V : Type) [AddCommGroup V] [Module K V] [FiniteDimensional K V] (V' : Type) [AddCommGroup V'] [Module K V'] [FiniteDimensional K V'] (V'' : Type) [AddCommGroup V''] [Module K V''] [FiniteDimensional K V''] (L : C.I → AddSubgroup V) (L' : C.I → AddSubgroup V') (L'' : C.I → AddSubgroup V'') (f : V →ₗ[K] V') (g : V' →ₗ[K] V'') (O k S : Type) [CommRing O] [Field k] [Algebra k K] [Fintype S] [DecidableEq S] (χ : S → (O →+* k)), IsSplit χ → (∀ i (c : k), C.v i (algebraMap k K c) ≤ 1) → ∀ (ρ : O → V →ₗ[K] V) (ρ' : O →+* Module.End K V') (ρ'' : O → V'' →ₗ[K] V''), IsBun C L' → (∀ a, IsHom C L' L' (ρ' a)) → ShortExact C L L' L'' f g → (∀ a x, f (ρ a x) = ρ' a (f x)) → (∀ a y, g (ρ' a y) = ρ'' a (g y)) → ∀ s, subDeg C L' (eig (fun a => ρ' a) (fun a => algebraMap k K (χ s a))) = subDeg C L (eig (fun a => ρ a) (fun a => algebraMap k K (χ s a))) + subDeg C L'' (eig (fun a => ρ'' a) (fun a => algebraMap k K (χ s a))) := by
   intro K _ C V _ _ _ V' _ _ _ V'' _ _ _ L L' L'' f g O k S _ _ _ _ _ χ hχ hv ρ ρ' ρ'' hL' hρ' hS hf hg s
   obtain ⟨e, he_hom, he_mem, -, -, he_comb⟩ :=
@@ -67,6 +92,13 @@ theorem split_ses : ∀ (K : Type) [Field K] (C : ACurve K) (V : Type) [AddCommG
   rw [hdeg, hIeq]
   rfl
 
+/- English proof (translation)
+Establish `hr : Module.finrank K V' = Module.finrank K V` using `e.finrank_eq.symm`. Establish `key : ∀ i (b : Module.Basis (Fin (Module.finrank K V')) K V'), IsLatOf C i b (L' i) → IsLatOf C i ((b.map e.symm).reindex (finCongr hr)) (L i)`. Introduce `i b hb x`. Rewrite using `[h i x, hb (e x)]`. Simplify using `only [Module.Basis.repr_reindex_apply, Module.Basis.map_repr, LinearEquiv.trans_apply, LinearEquiv.symm_symm]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `H q`. Conclude with `H _`. Introduce `H q`. Simplify using `using H (finCongr hr q)`.
+
+Take `⟨h1, b, hb⟩` from `hL'`. Use `⟨fun i => ?_, (b.map e.symm).reindex (finCongr hr), hb.subset fun i hi hl => hi (key i b hl)⟩` and prove the remaining obligations. Take `⟨b', hb'⟩` from `h1 i`. Conclude with `⟨_, key i b' hb'⟩`.
+-/
 private theorem isBun_of_linearEquiv {K : Type} [Field K] {C : ACurve K} {V V' : Type} [AddCommGroup V]
     [Module K V] [FiniteDimensional K V] [AddCommGroup V'] [Module K V'] [FiniteDimensional K V']
     {L : C.I → AddSubgroup V} {L' : C.I → AddSubgroup V'} (e : V ≃ₗ[K] V') (hL' : IsBun C L')
@@ -88,6 +120,9 @@ private theorem isBun_of_linearEquiv {K : Type} [Field K] {C : ACurve K} {V V' :
   obtain ⟨b', hb'⟩ := h1 i
   exact ⟨_, key i b' hb'⟩
 
+/- English proof (translation)
+The claim follows from `le_antisymm (deg_le_of_equiv e hL hL' fun i x hx => (h i x).1 hx) (deg_le_of_equiv e.symm hL' hL fun i x hx => (h i _).2 (by simpa using hx))`.
+-/
 private theorem deg_eq_of_linearEquiv' {K : Type} [Field K] {C : ACurve K} {V V' : Type} [AddCommGroup V]
     [Module K V] [FiniteDimensional K V] [AddCommGroup V'] [Module K V'] [FiniteDimensional K V']
     {L : C.I → AddSubgroup V} {L' : C.I → AddSubgroup V'} (e : V ≃ₗ[K] V') (hL : IsBun C L)
@@ -95,6 +130,9 @@ private theorem deg_eq_of_linearEquiv' {K : Type} [Field K] {C : ACurve K} {V V'
   le_antisymm (deg_le_of_equiv e hL hL' fun i x hx => (h i x).1 hx)
     (deg_le_of_equiv e.symm hL' hL fun i x hx => (h i _).2 (by simpa using hx))
 
+/- English proof (translation)
+Establish `: IsEmpty (Fin (Module.finrank K V))`. Rewrite using `[h]`. Use `infer_instance`. Unfold `deg`. Simplify using `[Module.Basis.det_apply, Matrix.det_isEmpty]`.
+-/
 private theorem deg_eq_zero_of_finrank_eq_zero {K : Type} [Field K] (C : ACurve K) {V : Type} [AddCommGroup V]
     [Module K V] [FiniteDimensional K V] (L : C.I → AddSubgroup V) (h : Module.finrank K V = 0) :
     deg C L = 0 := by
@@ -104,6 +142,11 @@ private theorem deg_eq_zero_of_finrank_eq_zero {K : Type} [Field K] (C : ACurve 
   unfold deg
   simp [Module.Basis.det_apply, Matrix.det_isEmpty]
 
+/- English proof (translation)
+Establish `hbot : subDeg C L ⊥ = 0` using `deg_eq_zero_of_finrank_eq_zero C _ (by simp)`. Establish `htop : (⊤ : Submodule K V) = ⊥`. Rewrite using `[eq_bot_iff]`. Introduce `x _`. Rewrite using `[Submodule.mem_bot, ← hsum x]`.
+
+Conclude with `Finset.sum_eq_zero fun s _ => by simpa [hall s] using he s x`. Simplify using `only [hall, htop, hbot, Finset.sum_const_zero]`.
+-/
 private theorem subDeg_top_eq_sum_subDeg_of_all_eq_bot {K : Type} [Field K] (C : ACurve K) {V : Type} [AddCommGroup V]
     [Module K V] [FiniteDimensional K V] (L : C.I → AddSubgroup V) {S : Type} [Fintype S]
     (W : S → Submodule K V) (e : S → Module.End K V) (he : ∀ s x, e s x ∈ W s)
@@ -117,6 +160,79 @@ private theorem subDeg_top_eq_sum_subDeg_of_all_eq_bot {K : Type} [Field K] (C :
     exact Finset.sum_eq_zero fun s _ => by simpa [hall s] using he s x
   simp only [hall, htop, hbot, Finset.sum_const_zero]
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero`. Introduce `V _ _ _ L ρ hL hρ hn`. Take `⟨e, -, he_mem, -, he_sum, -⟩` from `SplitProj.split_proj K C V L O k S χ hχ hv ρ hL hρ`. Use `subDeg_top_eq_sum_subDeg_of_all_eq_bot C L (fun s => eig (fun a => ρ a) (fun a => algebraMap k K (χ s a))) e he_mem he_sum fun s => ?_` and prove the remaining obligations.
+
+Assume the negation of the conclusion as `hs`. Establish `h0` using `(Set.ncard_eq_zero (Set.toFinite _)).1 (Nat.le_zero.1 hn)`. Establish `hmem : s ∈ ({s | eig (fun a => ρ a) (fun a => algebraMap k K (χ s a)) ≠ ⊥} : Set S)` using `hs`. Rewrite `hmem` using `[h0]`. Conclude with `hmem`.
+
+Consider the case `succ n ih`. Introduce `V _ _ _ L ρ hL hρ hn`. Take `⟨e, he_hom, he_mem, he_id, he_sum, he_comb⟩` from `SplitProj.split_proj K C V L O k S χ hχ hv ρ hL hρ`. Distinguish the cases in `hall : ∀ s, eig (fun a => ρ a) (fun a => algebraMap k K (χ s a)) = ⊥`. Conclude with `subDeg_top_eq_sum_subDeg_of_all_eq_bot C L (fun s => eig (fun a => ρ a) (fun a => algebraMap k K (χ s a))) e he_mem he_sum hall`.
+
+Use `push_neg at hall`. Take `⟨s0, hs0⟩` from `hall`. Establish `hcomm : ∀ s a x, e s (ρ a x) = ρ a (e s x)`. Introduce `s a x`. Take `⟨m, c, b, -, hes⟩` from `he_comb s`.
+
+Rewrite using `[hes, LinearMap.sum_apply, LinearMap.sum_apply, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `hab : ρ (b j) (ρ a x) = ρ a (ρ (b j) x)` using `by show (ρ (b j) * ρ a) x = (ρ a * ρ (b j)) x`. Rewrite using `[← map_mul, ← map_mul, mul_comm]`. Rewrite using `[LinearMap.smul_apply, LinearMap.smul_apply, map_smul, hab]`.
+
+Establish `hkill : ∀ s t, t ≠ s → ∀ x ∈ eig (fun a => ρ a) (fun a => algebraMap k K (χ t a)), e s x = 0`. Introduce `s t hts x hx`. Take `⟨m, c, b, hc, hes⟩` from `he_comb s`. Establish `h1 : ∑ j, algebraMap k K (c j) • ρ (b j) x = algebraMap k K (∑ j, c j * χ t (b j)) • x` using `comb_eig (fun a => ρ a) (fun a => χ t a) hx c b`. Rewrite using `[hes, LinearMap.sum_apply]`.
+
+Simplify using `only [LinearMap.smul_apply]`. Rewrite using `[h1, hc t, if_neg hts, map_zero, zero_smul]`. Use `set W0 := eig (fun a => ρ a) (fun a => algebraMap k K (χ s0 a)) with hW0`. Use `set K0 := LinearMap.ker (e s0) with hK0`. Establish `hidem : ∀ x, e s0 (e s0 x) = e s0 x` using `fun x => he_id s0 _ (he_mem s0 x)`.
+
+Establish `hgmem : ∀ y, ((LinearMap.id : V →ₗ[K] V) - e s0) y ∈ K0`. Introduce `y`. Rewrite using `[hK0, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, map_sub, hidem, sub_self]`. Set `g : V →ₗ[K] K0` to `((LinearMap.id : V →ₗ[K] V) - e s0).codRestrict K0 hgmem`. Establish `hK0mem : ∀ z : K0, e s0 (z : V) = 0` using `fun z => z.2`.
+
+Establish `hS : ShortExact C (sub C L W0) L (sub C L K0) W0.subtype g`. Use `⟨Submodule.injective_subtype _, ?_, ?_, fun i x => Iff.rfl, ?_⟩` and prove the remaining obligations. Introduce `y`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+
+Establish `h' : y - e s0 y = 0` using `congrArg Subtype.val h`. Establish `h'' : y = e s0 y` using `sub_eq_zero.1 h'`. Conclude with `⟨⟨y, by rw [h'']; exact he_mem s0 y⟩, rfl⟩`. Introduce and unpack `⟨w, rfl⟩`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Use `show (w : V) - e s0 w = 0`. Rewrite using `[he_id s0 _ w.2, sub_self]`. Introduce `z`. Use `⟨z, Subtype.ext ?_⟩` and prove the remaining obligations. Use `show (z : V) - e s0 z = z`.
+
+Rewrite using `[hK0mem z, sub_zero]`. Introduce `i z`. Prove the components needed by the constructor for the conclusion. Introduce `hz`. Use `⟨z, hz, Subtype.ext ?_⟩` and prove the remaining obligations.
+
+Use `show (z : V) - e s0 z = z`. Rewrite using `[hK0mem z, sub_zero]`. Introduce and unpack `⟨y, hy, rfl⟩ show y - e s0 y ∈ L i`. Conclude with `(L i).sub_mem hy (he_hom s0 i y hy)`. Take `⟨I, hI, hdegT, hImem⟩` from `ses_restrict hL hS ⊤ ⊤ ⊤ (fun x => by simp) (fun z => by simpa using hS.2.2.1 z)`.
+
+Establish `hIeq : I = sub C (sub C L K0) ⊤`. Use function extensionality and compare the values at `i`. Use extensionality with `z`. Rewrite using `[hImem]`. Express the relevant statement in the definitionally equal form `_ ↔ (z : K0) ∈ sub C L K0 i`.
+
+Rewrite using `[hS.2.2.2.2 i]`. Simplify using the standard rewrite rules. Establish `hadd : subDeg C L ⊤ = subDeg C (sub C L W0) ⊤ + subDeg C (sub C L K0) ⊤`. Rewrite using `[hdegT, hIeq]`. Both sides reduce to the same expression.
+
+Establish `hLK : IsBun C (sub C L K0)`. Rewrite `hI` using `[hIeq]`. Conclude with `isBun_of_linearEquiv (Submodule.topEquiv.symm) hI fun i x => Iff.rfl`. Establish `hpresK : ∀ a (x : V), x ∈ K0 → ρ a x ∈ K0`. Introduce `a x hx`.
+
+Use `show e s0 (ρ a x) = 0`. Rewrite using `[hcomm, show e s0 x = 0 from hx, map_zero]`. Establish `hpresW : ∀ a (x : V), x ∈ W0 → ρ a x ∈ W0`. Introduce `a x hx`. Rewrite using `[← he_id s0 x hx, ← hcomm]`.
+
+Conclude with `he_mem s0 _`. Set `ρK : O →+* Module.End K K0` to `{ toFun := fun a => ((ρ a).comp K0.subtype).codRestrict K0 fun x => hpresK a x x.2 map_one' := by`. Use extensionality with `x`. Simplify using the standard rewrite rules. Use the proof step `map_mul' := by`.
+
+Introduce `a b`. Use `LinearMap.ext fun x => Subtype.ext ?_` and prove the remaining obligations. Use `show ρ (a * b) (x : V) = ρ a (ρ b x)`. Rewrite using `[map_mul]`. Both sides reduce to the same expression.
+
+Use the proof step `map_zero' := by`. Use extensionality with `x`. Simplify using the standard rewrite rules. Use the proof step `map_add' := by`. Introduce `a b`.
+
+Use `LinearMap.ext fun x => Subtype.ext ?_` and prove the remaining obligations. Use `show ρ (a + b) (x : V) = ρ a x + ρ b x`. Rewrite using `[map_add]`. Use `rfl }`. Set `ρW : O → Module.End K W0` to `fun a => ((ρ a).comp W0.subtype).codRestrict W0 fun x => hpresW a x x.2`.
+
+Establish `hρK : ∀ a, IsHom C (sub C L K0) (sub C L K0) (ρK a)`. Introduce `a i z hz`. Use `show ρ a (z : V) ∈ L i`. Conclude with `hρ a i _ hz`. Establish `hf : ∀ a (x : W0), W0.subtype (ρW a x) = ρ a (W0.subtype x)` using `fun a x => rfl`.
+
+Establish `hg : ∀ a y, g (ρ a y) = ρK a (g y)`. Introduce `a y`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show ρ a y - e s0 (ρ a y) = ρ a (y - e s0 y)`. Rewrite using `[map_sub, hcomm]`.
+
+Establish `H3s` using `fun s => split_ses K C W0 V K0 (sub C L W0) L (sub C L K0) W0.subtype g O k S χ hχ hv ρW ρ (fun a => ρK a) hL hρ hS hf hg s`. Establish `hWtop : eig ρW (fun a => algebraMap k K (χ s0 a)) = ⊤`. Rewrite using `[eq_top_iff]`. Introduce `w _`. Rewrite using `[mem_eig]`.
+
+Introduce `a`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show ρ a (w : V) = algebraMap k K (χ s0 a) • (w : V)`. Conclude with `(mem_eig _ _ _).1 w.2 a`. Establish `hWbot : ∀ s, s ≠ s0 → eig ρW (fun a => algebraMap k K (χ s a)) = ⊥`.
+
+Introduce `s hs`. Rewrite using `[eq_bot_iff]`. Introduce `w hw`. Rewrite using `[Submodule.mem_bot]`. Establish `hw' : (w : V) ∈ eig (fun a => ρ a) (fun a => algebraMap k K (χ s a))`.
+
+Rewrite using `[mem_eig]`. Introduce `a`. Conclude with `congrArg Subtype.val ((mem_eig _ _ _).1 hw a)`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show (w : V) = 0`.
+
+Rewrite using `[← he_id s0 _ w.2]`. Conclude with `hkill s0 s hs _ hw'`. Establish `hKbot : eig (fun a => ρK a) (fun a => algebraMap k K (χ s0 a)) = ⊥`. Rewrite using `[eq_bot_iff]`. Introduce `z hz`.
+
+Rewrite using `[Submodule.mem_bot]`. Establish `hz' : (z : V) ∈ W0`. Rewrite using `[hW0, mem_eig]`. Introduce `a`. Conclude with `congrArg Subtype.val ((mem_eig _ _ _).1 hz a)`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Use `show (z : V) = 0`. Rewrite using `[← he_id s0 _ hz']`. Conclude with `hK0mem z`. Establish `hKsub : ∀ s, eig (fun a => ρK a) (fun a => algebraMap k K (χ s a)) ≠ ⊥ → eig (fun a => ρ a) (fun a => algebraMap k K (χ s a)) ≠ ⊥`.
+
+Introduce `s hs hbot`. Apply `hs` to reduce the goal to its premises. Rewrite using `[eq_bot_iff]`. Introduce `z hz`. Rewrite using `[Submodule.mem_bot]`.
+
+Establish `hz' : (z : V) ∈ eig (fun a => ρ a) (fun a => algebraMap k K (χ s a))`. Rewrite using `[mem_eig]`. Introduce `a`. Conclude with `congrArg Subtype.val ((mem_eig _ _ _).1 hz a)`. Rewrite `hz'` using `[hbot, Submodule.mem_bot]`.
+
+Conclude with `Subtype.ext hz'`. Establish `hcount : {s | eig (fun a => ρK a) (fun a => algebraMap k K (χ s a)) ≠ ⊥}.ncard ≤ n`. Establish `hss : {s | eig (fun a => ρK a) (fun a => algebraMap k K (χ s a)) ≠ ⊥} ⊂ {s | eig (fun a => ρ a) (fun a => algebraMap k K (χ s a)) ≠ ⊥}`. Use `⟨fun s hs => hKsub s hs, fun h => ?_⟩` and prove the remaining obligations. Establish `hm : s0 ∈ {s | eig (fun a => ρK a) (fun a => algebraMap k K (χ s a)) ≠ ⊥}` using `h hs0`.
+
+Conclude with `hm hKbot`. Use `Set.ncard_lt_ncard hss` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hIH` using `ih K0 (sub C L K0) ρK hLK hρK hcount`. Rewrite using `[hadd, hIH]`.
+
+Simplify using `only [H3s]`. Rewrite using `[Finset.sum_add_distrib]`. Use `congr 1`. Rewrite using `[Finset.sum_eq_single s0]`. Rewrite using `[hWtop]`.
+
+Introduce `s _ hs`. Rewrite using `[hWbot s hs]`. Conclude with `deg_eq_zero_of_finrank_eq_zero C _ (by simp)`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+-/
 private theorem subDeg_top_eq_sum_subDeg_eig_of_ncard_le (K : Type) [Field K] (C : ACurve K) (O k S : Type) [CommRing O]
     [Field k] [Algebra k K] [Fintype S] [DecidableEq S] (χ : S → (O →+* k)) (hχ : IsSplit χ)
     (hv : ∀ i (c : k), C.v i (algebraMap k K c) ≤ 1) (n : ℕ) :
@@ -319,6 +435,9 @@ private theorem subDeg_top_eq_sum_subDeg_eig_of_ncard_le (K : Type) [Field K] (C
     · intro h
       exact absurd (Finset.mem_univ _) h
 
+/- English proof (translation)
+Introduce `K _ C V _ _ _ L O k S _ _ _ _ _ χ hχ hv ρ hL hρ`. Establish `htop : subDeg C L ⊤ = deg C L` using `deg_eq_of_linearEquiv' Submodule.topEquiv (isBun_of_linearEquiv Submodule.topEquiv hL fun _ _ => Iff.rfl) hL fun _ _ => Iff.rfl`. Rewrite using `[← htop]`. Conclude with `subDeg_top_eq_sum_subDeg_eig_of_ncard_le K C O k S χ hχ hv _ V L ρ hL hρ le_rfl`.
+-/
 theorem split_deg : ∀ (K : Type) [Field K] (C : ACurve K) (V : Type) [AddCommGroup V] [Module K V] [FiniteDimensional K V] (L : C.I → AddSubgroup V) (O k S : Type) [CommRing O] [Field k] [Algebra k K] [Fintype S] [DecidableEq S] (χ : S → (O →+* k)), IsSplit χ → (∀ i (c : k), C.v i (algebraMap k K c) ≤ 1) → ∀ ρ : O →+* Module.End K V, IsBun C L → (∀ a, IsHom C L L (ρ a)) → deg C L = ∑ s, subDeg C L (eig (fun a => ρ a) (fun a => algebraMap k K (χ s a))) := by
   intro K _ C V _ _ _ L O k S _ _ _ _ _ χ hχ hv ρ hL hρ
   have htop : subDeg C L ⊤ = deg C L :=

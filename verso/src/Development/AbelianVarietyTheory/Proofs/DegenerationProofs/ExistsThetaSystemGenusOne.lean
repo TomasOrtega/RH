@@ -23,13 +23,28 @@ namespace GlobalTheory.ZH.RealDimOne
 
 open GlobalTheory.TorsionGenerators GlobalTheory.ZH.DimZero NumberField
 
+/- English proof (translation)
+The claim follows from `h.map_of_injective (f := Units.map (Scheme.ΓSpecIso (CommRingCat.of k)).inv.hom.toMonoidHom) unitOn_injective`.
+-/
 theorem isPrimitiveRoot_unitOn {k : Type} [CommRing k] {u : kˣ} {M : ℕ} (h : IsPrimitiveRoot u M) :
     IsPrimitiveRoot (unitOn u) M :=
   h.map_of_injective (f := Units.map (Scheme.ΓSpecIso (CommRingCat.of k)).inv.hom.toMonoidHom) unitOn_injective
 
+/- English proof (translation)
+The claim follows from `map_zpow (Units.map (Scheme.ΓSpecIso (CommRingCat.of k)).inv.hom.toMonoidHom) u n`.
+-/
 theorem unitOn_zpow {k : Type} [CommRing k] (u : kˣ) (n : ℤ) : unitOn (u ^ n) = unitOn u ^ n :=
   map_zpow (Units.map (Scheme.ΓSpecIso (CommRingCat.of k)).inv.hom.toMonoidHom) u n
 
+/- English proof (translation)
+Take `⟨P, φ, β, h, -, H⟩` from `exists_fibre hL P₀ j`. Use `⟨P, φ, h, ?_⟩` and prove the remaining obligations. Establish `hg` using `h.1`. Generalize the expression as in `P₀.g = g at b hb hw hg`. Substitute `hg` using the available equality.
+
+Establish `hx : ∀ i, β.symm (b i) ^ M = 1` using `fun i => by rw [← map_pow, hb, map_one]`. Set `e` to `(Scheme.ΓSpecIso (CommRingCat.of K)).commRingCatIsoToRingEquiv.symm`. Take `⟨lev, -⟩` from `exists_level_of_pairing hL.globalFns hL.weil hL.mulN _ P M (unitOn ζ) (isPrimitiveRoot_unitOn hζ) (fun F _ s => by`. Establish `: Nontrivial Γ(Sp F, ⊤)` using `(Scheme.ΓSpecIso (CommRingCat.of F)).commRingCatIsoToRingEquiv.symm.injective.nontrivial`. Use `⟨fun e₀ => hM ?_, (isPrimitiveRoot_unitOn hζ).map_of_injective (Units.map_injective fun a b hab => e.symm.injective ((s.appTop.hom.comp e.toRingHom).injective (by simpa using hab)))⟩` and prove the remaining obligations.
+
+Use `(s.appTop.hom.comp e.toRingHom).injective ?_` and prove the remaining obligations. Use `(Scheme.ΓSpecIso (CommRingCat.of F)).commRingCatIsoToRingEquiv.injective ?_` and prove the remaining obligations. Rewrite using `[map_natCast, map_natCast, map_zero, map_zero]`. Conclude with `e₀) (fun i => β.symm (b i)) hx (fun i l => by`. Take `⟨c, hc, -⟩` from `(hL.weil _ P M _).1 _ _ (hx i) (hx l)`.
+
+Establish `H'` using `H M _ _ c hc`. Rewrite `H'` using `[β.apply_symm_apply, β.apply_symm_apply]`. Rewrite using `[← unitOn_zpow, ← CommutatorPairing.weilIs_unique hL.globalFns P₀.isAb P₀.isLB H' (hw i l)]`. Conclude with `hc)`. Conclude with `⟨lev⟩`.
+-/
 theorem exists_level_of_points (hL : Laws) {R K : Type} [CommRing R] [Field K] (P₀ : PolAV (Sp R))
     [IsCommMonObj P₀.A] (j : R →+* K) {M : ℕ} (hM : (M : K) ≠ 0) {ζ : Kˣ} (hζ : IsPrimitiveRoot ζ M)
     (b : Fin (2 * P₀.g) → (Over.mk (spMap j) ⟶ P₀.A)) (hb : ∀ i, b i ^ M = 1)
@@ -60,6 +75,23 @@ theorem exists_level_of_points (hL : Laws) {R K : Type} [CommRing R] [Field K] (
       exact hc)
   exact ⟨lev⟩
 
+/- English proof (translation)
+Use `P₀.isAb.comm` as an intermediate fact. Use `P₀.isAb.smooth` as an intermediate fact. Set `Q` to `AlgebraicClosure K₀`. Set `t : K₀ →+* Q` to `algebraMap K₀ Q`. Establish `: NeZero M` using `⟨hM⟩`.
+
+Take `⟨z₀, hz₀⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot Q M`. Establish `hz` using `hz₀.isUnit_unit hM`. Generalize the expression as in `(hz₀.isUnit hM).unit = z at hz`. Take `⟨P', φ', β, h, -, H⟩` from `exists_fibre hL P₀ t`. Take `⟨x, hx, hw⟩` from `ConstThetaLevel.exists_symplectic_points hL Q P' h.1.symm M (Nat.cast_ne_zero.2 hM) _ (isPrimitiveRoot_unitOn hz)`.
+
+Use `choose s hs hb using fun i => exists_finite_coordinates P₀.A.hom t (β (x i)).left (Over.w _)`. Set `s' : Set Q` to `insert (z : Q) (⋃ i, s i)`. Establish `: Finite s'` using `((Set.finite_iUnion hs).insert _).to_subtype`. Set `K` to `IntermediateField.adjoin K₀ s'`. Establish `: FiniteDimensional K₀ K` using `IntermediateField.finiteDimensional_adjoin fun y _ => (Algebra.IsAlgebraic.isAlgebraic y).isIntegral`.
+
+Establish `: NumberField K` using `NumberField.of_module_finite K₀ K`. Set `io : K →+* Q` to `algebraMap K Q`. Set `j : K₀ →+* K` to `algebraMap K₀ K`. Establish `hj : io.comp j = t` using `rfl`. Use `choose b hb' using fun i => hb i K io io.injective (fun c => ⟨j c, rfl⟩) (fun y hy => ⟨⟨y, IntermediateField.subset_adjoin K₀ s' (Set.mem_insert_of_mem _ (Set.mem_iUnion.2 ⟨i, hy⟩))⟩, rfl⟩)`.
+
+Establish `hbw : ∀ i, b i ≫ P₀.A.hom = spMap j` using `fun i => by`. Use `TorsionSeparable.epi_specMap io` as an intermediate fact. Rewrite using `[← cancel_epi (spMap io), ← Category.assoc, hb', spMap_comp_spMap]`. Conclude with `Over.w (β (x i))`. Set `y : Fin (2 * P₀.g) → (Over.mk (spMap j) ⟶ P₀.A)` to `fun i => Over.homMk (b i) (hbw i)`.
+
+Establish `hy : ∀ i, extPt hj ≫ y i = β (x i)` using `fun i => Over.OverMorphism.ext (hb' i)`. Establish `hyM : ∀ i, y i ^ M = 1` using `fun i => by`. Rewrite using `[← extPt_eq_one_iff hj, comp_pow, hy, ← map_pow]`. Conclude with `(congrArg β (hx i)).trans (map_one β)`. Set `ζ : Kˣ` to `Units.mk0 ⟨z, IntermediateField.subset_adjoin K₀ s' (Set.mem_insert _ _)⟩ fun e => z.ne_zero (congrArg Subtype.val e)`.
+
+Establish `hζ : Units.map io.toMonoidHom ζ = z` using `Units.ext rfl`. Establish `hp : IsPrimitiveRoot ζ M` using `IsPrimitiveRoot.of_map_of_injective (hζ ▸ hz) (unitsMap_injective io)`. Take `⟨P, φ, h₁, h₂⟩` from `exists_level_of_points hL P₀ j (Nat.cast_ne_zero.2 hM) hp y hyM fun i l => by`. Take `⟨u, hu⟩` from `exists_weilIs hL P₀ j (hyM i) (hyM l)`. Establish `H₁` using `weilIs_extPt hL P₀ hj hu`.
+
+Rewrite `H₁` using `[hy, hy]`. Establish `e` using `CommutatorPairing.weilIs_unique hL.globalFns P₀.isAb P₀.isLB H₁ (H _ _ _ _ (hw i l))`. Rewrite `e` using `[← unitOn_zpow, ← hζ, ← map_zpow]`. Rewrite using `[← unitsMap_injective io (unitOn_injective e)]` and apply the resulting hypothesis. Conclude with `⟨K, _, this, j, P, φ, ζ, hp, h₁, h₂⟩`.
+-/
 theorem exists_level_numberField (hL : Laws) {K₀ : Type} [Field K₀] [NumberField K₀] (P₀ : PolAV (Sp K₀)) {M : ℕ}
     (hM : M ≠ 0) : ∃ (K : Type) (_ : Field K) (_ : NumberField K) (j : K₀ →+* K) (P : PolAV (Sp K))
       (φ : P.A.left ⟶ P₀.A.left) (ζ : Kˣ), IsPrimitiveRoot ζ M ∧ IsPolFibre j P₀ P φ ∧
@@ -109,6 +141,25 @@ theorem exists_level_numberField (hL : Laws) {K₀ : Type} [Field K₀] [NumberF
     rwa [← unitsMap_injective io (unitOn_injective e)]
   exact ⟨K, _, this, j, P, φ, ζ, hp, h₁, h₂⟩
 
+/- English proof (translation)
+Introduce `hL hL2`. Take `⟨K₀, _, _, _⟩ : ∃ (K : Type) (_ : Field K) (_ : NumberField K), IsCyclotomicExtension {3} ℚ K` from `⟨CyclotomicField 3 ℚ, inferInstance, inferInstance, by`. Apply the tactic sequence `convert CyclotomicField.isCyclotomicExtension 3 ℚ <;> first | rfl | exact Subsingleton.elim _ _⟩`. Establish `hω` using `(IsCyclotomicExtension.zeta_spec 3 ℚ K₀).geom_sum_eq_zero (by norm_num)`. Take `⟨P₀, hg, hS⟩` from `CubeRootAut.exists_hypS hL K₀ (IsCyclotomicExtension.zeta 3 ℚ K₀) (by`.
+
+Rewrite using `[← hω]`. Simplify using `only [Finset.sum_range_succ, Finset.sum_range_zero]`. Use the proof step `ring)`. Take `⟨M, hM⟩ : ∃ M : ℕ, M = (3 ^ 5 * (3 ^ 2) ^ 2) ^ 2` from `⟨_, rfl⟩`. Establish `hM₀ : M ≠ 0` using `by rw [hM]; positivity`.
+
+Take `⟨K, _, _, j, P, φ, ζ, hζ, h, ⟨lev⟩⟩` from `exists_level_numberField hL P₀ hM₀`. Use `arithBase_intAway K` as an intermediate fact. Establish `hS' : HypS P.A P.L` using `SymBaseChange.hypS_baseChange _ _ _ _ _ φ _ _ P₀.isLB P.isLB h.2.1 h.2.2.symm hS`. Establish `hζ' : IsPrimitiveRoot (ζ : K) M` using `IsPrimitiveRoot.coe_units_iff.2 hζ`. Establish `: NeZero M` using `⟨hM₀⟩`.
+
+Set `ze : (intAway K)ˣ` to `Units.map (algebraMap (𝓞 K) (intAway K)).toMonoidHom (hζ'.toInteger_isPrimitiveRoot.isUnit hM₀).unit`. Establish `hze : ζ = Units.map (algebraMap (intAway K) K).toMonoidHom ze` using `Units.ext rfl`. Establish `h3 : IsUnit ((3 : ℕ) : intAway K)` using `by simpa using isUnit_three_intAway K`. Establish `hu : IsUnit (M : intAway K)`. Rewrite using `[hM]`.
+
+Simplify using `only [Nat.cast_pow, Nat.cast_mul]`. Conclude with `((h3.pow _).mul ((h3.pow _).pow _)).pow _`. Establish `frac : ∀ x : K, ∃ a ∈ (⊥ : Subalgebra (intAway K) K), ∃ b ∈ (⊥ : Subalgebra (intAway K) K), x = a / b` using `fun x => by`. Take `⟨a, b, -, h⟩` from `IsFractionRing.div_surjective (A := intAway K) x`. Conclude with `⟨_, Subalgebra.algebraMap_mem _ a, _, Subalgebra.algebraMap_mem _ b, h.symm⟩`.
+
+Take `⟨R, P', -, lev', hR, fg, hg', hS'', -⟩` from `GenSpread.polAV_spreads_out (intAway K) K ⊥ Subalgebra.fg_bot frac P M ze hu hS' (hze ▸ lev) hL`. Take `⟨S, ρ, -, -, -, hN, hr, hSg, -⟩` from `ThetaReal.exists_thetaSys_real hL hL2 (intAway K) K R fg (fun x => by`. Take `⟨a, ha, b, hb, e⟩` from `frac x`. Conclude with `⟨a, hR ha, b, hR hb, e⟩) P' 3 2 5 ze Nat.prime_three (by decide) le_rfl (by norm_num) h3 hS'' (hM ▸ lev')`. Establish `g1 : S.g = 1` using `hSg.trans (hg'.trans (h.1.trans hg))`.
+
+Use `⟨_, K, _, _, _, arithBase_intAway K, S, g1, ?_, ⟨ρ⟩⟩` and prove the remaining obligations. Establish `a₁ : (2 : ℝ) ^ ((1 : ℝ) / 2) ≤ 2`. Simplify using `using Real.rpow_le_rpow_of_exponent_le (x := 2) one_le_two (show (1 : ℝ) / 2 ≤ 1 by norm_num)`. Establish `a₂ : (2 : ℝ) ^ ((1 : ℝ) / 2 - 1) ≤ 1` using `Real.rpow_le_one_of_one_le_of_nonpos one_le_two (by norm_num)`. Establish `a₃ : (0 : ℝ) < (2 : ℝ) ^ ((1 : ℝ) / 2 - 1)` using `by positivity`.
+
+Establish `a₄ : (2 : ℝ) ^ ((1 : ℝ) / 2 - 1) < 1` using `Real.rpow_lt_one_of_one_lt_of_neg one_lt_two (by norm_num)`. Unfold `ThetaSys.Big`. Rewrite using `[g1, hN, hr]`. Simplify using `only [Nat.cast_one, Nat.factorial_one, pow_one]`. Use `⟨?_, ?_, by norm_num⟩` and prove the remaining obligations.
+
+Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem exists_real_dim_one : Laws → Laws2 → ∃ (o Ω : Type) (_ : CommRing o) (_ : Field Ω) (_ : Algebra o Ω) (_ : ArithBase o Ω) (S : ThetaSys o Ω), S.g = 1 ∧ S.Big ∧ Nonempty S.Real := by
   intro hL hL2
   obtain ⟨K₀, _, _, _⟩ : ∃ (K : Type) (_ : Field K) (_ : NumberField K), IsCyclotomicExtension {3} ℚ K :=

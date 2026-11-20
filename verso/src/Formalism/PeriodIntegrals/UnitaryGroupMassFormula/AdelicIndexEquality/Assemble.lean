@@ -9,6 +9,15 @@ open NumberField IsDedekindDomain
 open scoped TensorProduct
 open Formalism.MainNotions.S
 
+/- English proof (translation)
+Unfold `ModQHom`. Introduce `G _ K hK`. Establish `hk1 : ∀ k ∈ K, dIdx K k = 1`. Introduce `k hk`. Unfold `dIdx`.
+
+Rewrite using `[Subgroup.relIndex_eq_one]`. Introduce `y hy`. Use `Subgroup.mem_map.2 ⟨k⁻¹ * y * k, K.mul_mem (K.mul_mem (K.inv_mem hk) hy) hk, ?_⟩` and prove the remaining obligations. Simplify using `[MulAut.conj_apply, mul_assoc]`. Use `⟨fun x y => modQ_mul K hK x y, fun k hk => ?_, fun x hx => ?_⟩` and prove the remaining obligations.
+
+Unfold `modQ`. Rewrite using `[hk1 k hk, hk1 k⁻¹ (K.inv_mem hk)]`. Evaluate the numerical expressions. Unfold `modQ at hx`. Establish `hne : (dIdx K x⁻¹ : ℚ) ≠ 0` using `by exact_mod_cast hK x⁻¹`.
+
+Rewrite `hx` using `[div_eq_one_iff_eq hne]`. Conclude with `hx` after adjusting the coercions.
+-/
 theorem mod_q_hom : ModQHom := by
   unfold ModQHom
   intro G _ K hK
@@ -34,10 +43,16 @@ variable (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F))
 
 def liftFn (hL : LiftU) (g : Uv I v) : I.Gf := Classical.choose (hL I v g g.2)
 
+/- English proof (translation)
+The claim follows from `Classical.choose_spec (hL I v g g.2)`.
+-/
 theorem liftFn_spec (hL : LiftU) (g : Uv I v) :
     matV I v ((liftFn I v hL g : I.Gf) : GL (Fin I.n) (I.E ⊗[I.F] Af I.F)) = g ∧ SuppAt I v (liftFn I v hL g) :=
   Classical.choose_spec (hL I v g g.2)
 
+/- English proof (translation)
+Apply `hJ I` to reduce the goal to its premises. Introduce `w`. Distinguish the cases in `hw : w = v`. Rewrite using `[hw, hy, (liftFn_spec I v hL g).1]`. Rewrite using `[hs w hw, (liftFn_spec I v hL g).2 w hw]`.
+-/
 theorem eq_liftFn (hL : LiftU) (hJ : MatVInj) (g : Uv I v) (y : I.Gf)
     (hy : matV I v (y : GL (Fin I.n) (I.E ⊗[I.F] Af I.F)) = g) (hs : SuppAt I v y) :
     y = liftFn I v hL g := by
@@ -65,6 +80,9 @@ def liftHom (hL : LiftU) (hJ : MatVInj) : Uv I v →* I.Gf where
       simp only [Subgroup.coe_mul, map_mul]
       rw [(liftFn_spec I v hL g).2 w hw, (liftFn_spec I v hL h).2 w hw, one_mul]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem liftHom_apply (hL : LiftU) (hJ : MatVInj) (g : Uv I v) :
     liftHom I v hL hJ g = liftFn I v hL g := rfl
 
@@ -73,6 +91,13 @@ def chiV (hC : KComm) (hL : LiftU) (hJ : MatVInj) : Uv I v →* ℚ where
   map_one' := by simp [modQ_one]
   map_mul' g h := by simp only [map_mul]; exact modQ_mul _ (hC I) _ _
 
+/- English proof (translation)
+Establish `h1 : ∀ z : G, (∀ x : G, z * x * z⁻¹ = x) → dIdx K z = 1`. Introduce `z hz`. Unfold `dIdx`. Rewrite using `[Subgroup.relIndex_eq_one]`. Introduce `k hk`.
+
+Conclude with `Subgroup.mem_map.2 ⟨k, hk, by simp [MulAut.conj_apply, hz k]⟩`. Establish `h2 : ∀ x : G, y⁻¹ * x * y⁻¹⁻¹ = x`. Introduce `x`. Establish `hx` using `hy x`. Rewrite using `[inv_inv]`.
+
+Combine the equalities or inequalities in the displayed calculation. Unfold `modQ`. Rewrite using `[h1 y hy, h1 y⁻¹ h2]`. Evaluate the numerical expressions.
+-/
 private theorem modQ_eq_one_of_central {G : Type} [Group G] (K : Subgroup G) (y : G)
     (hy : ∀ x : G, y * x * y⁻¹ = x) : modQ K y = 1 := by
   have h1 : ∀ z : G, (∀ x : G, z * x * z⁻¹ = x) → dIdx K z = 1 := by
@@ -91,6 +116,23 @@ private theorem modQ_eq_one_of_central {G : Type} [Group G] (K : Subgroup G) (y 
   rw [h1 y hy, h1 y⁻¹ h2]
   norm_num
 
+/- English proof (translation)
+Establish `hM` using `mod_q_hom I.Gf (PI.AdIndexEq.Ksub I) (hC I)`. Establish `hpos : ∀ g, 0 < chiV I v hC hL hJ g`. Introduce `g`. Use `show 0 < modQ (PI.AdIndexEq.Ksub I) (liftHom I v hL hJ g)`. Unfold `modQ`.
+
+Apply `div_pos` to reduce the goal to its premises. Conclude with `Nat.pos_of_ne_zero (hC I _)` after adjusting the coercions. Conclude with `Nat.pos_of_ne_zero (hC I _)` after adjusting the coercions. Use `⟨hpos, fun s hs => ?_, fun s hs => ?_⟩` and prove the remaining obligations. Use `show modQ (PI.AdIndexEq.Ksub I) (liftHom I v hL hJ s) = 1`.
+
+Establish `hyv : matV I v ((liftHom I v hL hJ s : I.Gf) : GL (Fin I.n) (I.E ⊗[I.F] Af I.F)) = s`. Rewrite using `[liftHom_apply]`. Conclude with `(liftFn_spec I v hL s).1`. Establish `hys : SuppAt I v (liftHom I v hL hJ s)`. Rewrite using `[liftHom_apply]`.
+
+Conclude with `(liftFn_spec I v hL s).2`. Apply `modQ_eq_one_of_central` to reduce the goal to its premises. Introduce `x`. Apply `hJ I` to reduce the goal to its premises. Introduce `w`.
+
+Simplify using `only [Subgroup.coe_mul, Subgroup.coe_inv, map_mul, map_inv]`. Distinguish the cases in `hw : w = v`. Rewrite using `[hw]`. Establish `hc` using `congrArg Subtype.val (hs ⟨_, hU I v x⟩)`. Simplify using `only [Subgroup.coe_mul, Subgroup.coe_mk] at hc`.
+
+Rewrite using `[hyv, hc, mul_inv_cancel_right]`. Rewrite using `[hys w hw, one_mul, inv_one, mul_one]`. Take `⟨m, hm, hsm⟩` from `hs`. Establish `hpow : chiV I v hC hL hJ (s ^ m) = 1` using `by show modQ (PI.AdIndexEq.Ksub I) (liftHom I v hL hJ (s ^ m)) = 1`. Apply `hM.2.1` to reduce the goal to its premises.
+
+Use `(hK I _).2 fun w => ?_` and prove the remaining obligations. Rewrite using `[liftHom_apply]`. Distinguish the cases in `hw : w = v`. Rewrite using `[hw, (liftFn_spec I v hL (s ^ m)).1]`. Conclude with `hsm`.
+
+Rewrite using `[(liftFn_spec I v hL (s ^ m)).2 w hw]`. Conclude with `(Kv I w).one_mem`. Rewrite `hpow` using `[map_pow]`. Conclude with `(pow_eq_one_iff_of_nonneg (hpos s).le (by omega)).1 hpow`.
+-/
 theorem chiV_props (hC : KComm) (hL : LiftU) (hJ : MatVInj) (hU : MatVU) (hK : KLocGlob) :
     (∀ g, 0 < chiV I v hC hL hJ g) ∧
     (∀ s : Uv I v, (∀ t : Uv I v, s * t = t * s) → chiV I v hC hL hJ s = 1) ∧
@@ -138,6 +180,9 @@ theorem chiV_props (hC : KComm) (hL : LiftU) (hJ : MatVInj) (hU : MatVU) (hK : K
     rw [map_pow] at hpow
     exact (pow_eq_one_iff_of_nonneg (hpos s).le (by omega)).1 hpow
 
+/- English proof (translation)
+Use `show modQ (PI.AdIndexEq.Ksub I) y = modQ (PI.AdIndexEq.Ksub I) (liftHom I v hL hJ ⟨_, hU I v y⟩)`. Rewrite using `[liftHom_apply, ← eq_liftFn I v hL hJ ⟨_, hU I v y⟩ y rfl hy]`.
+-/
 theorem modQ_of_supp (hC : KComm) (hL : LiftU) (hJ : MatVInj) (hU : MatVU) (y : I.Gf) (hy : SuppAt I v y) :
     modQ (PI.AdIndexEq.Ksub I) y = chiV I v hC hL hJ ⟨_, hU I v y⟩ := by
   show modQ (PI.AdIndexEq.Ksub I) y = modQ (PI.AdIndexEq.Ksub I) (liftHom I v hL hJ ⟨_, hU I v y⟩)
@@ -145,6 +190,9 @@ theorem modQ_of_supp (hC : KComm) (hL : LiftU) (hJ : MatVInj) (hU : MatVU) (y : 
 
 end Lift
 
+/- English proof (translation)
+Unfold `LocInert`. Introduce `I v hv y hy`. Take `⟨h1, h2, h3⟩` from `chiV_props I v hC hL hJ hU hK`. Rewrite using `[modQ_of_supp I v hC hL hJ hU y hy]`. Conclude with `h I v hv _ h1 h2 h3 _`.
+-/
 theorem locInert_of (hC : KComm) (hL : LiftU) (hJ : MatVInj) (hU : MatVU) (hK : KLocGlob)
     (h : LocInertChi) : LocInert := by
   unfold LocInert
@@ -153,6 +201,9 @@ theorem locInert_of (hC : KComm) (hL : LiftU) (hJ : MatVInj) (hU : MatVU) (hK : 
   rw [modQ_of_supp I v hC hL hJ hU y hy]
   exact h I v hv _ h1 h2 h3 _
 
+/- English proof (translation)
+Unfold `LocSplit`. Introduce `I v hv y hy`. Take `⟨h1, h2, h3⟩` from `chiV_props I v hC hL hJ hU hK`. Rewrite using `[modQ_of_supp I v hC hL hJ hU y hy]`. Conclude with `h I v hv _ h1 h2 h3 _`.
+-/
 theorem locSplit_of (hC : KComm) (hL : LiftU) (hJ : MatVInj) (hU : MatVU) (hK : KLocGlob)
     (h : LocSplitChi) : LocSplit := by
   unfold LocSplit
@@ -161,6 +212,17 @@ theorem locSplit_of (hC : KComm) (hL : LiftU) (hJ : MatVInj) (hU : MatVU) (hK : 
   rw [modQ_of_supp I v hC hL hJ hU y hy]
   exact h I v hv _ h1 h2 h3 _
 
+/- English proof (translation)
+Unfold `PI.AdIndexEq.IndexEq`. Introduce `I x`. Establish `hM` using `mod_q_hom I.Gf (PI.AdIndexEq.Ksub I) (hC I)`. Establish `hloc : ∀ v (y : I.Gf), SuppAt I v y → modQ (PI.AdIndexEq.Ksub I) y = 1`. Introduce `v y hy`.
+
+Distinguish the cases in `hv : IsFieldAt I v`. Conclude with `locInert_of hC hL hJ hU hK hI I v hv y hy`. Conclude with `locSplit_of hC hL hJ hU hK hS I v hv y hy`. Establish `hxm` using `hR I x`. Establish `hx : modQ (PI.AdIndexEq.Ksub I) x = 1`.
+
+Proceed by induction on `hxm using Subgroup.closure_induction with`. Consider the case `mem y hy`. Break down `hy with ⟨v, hv⟩ | hy` into its components or cases. Conclude with `hloc v y hv`. Conclude with `hM.2.1 y hy`.
+
+Consider the case `one => exact modQ_one _`. Consider the case `mul a b _ _ ha hb => rw [hM.1, ha, hb, one_mul]`. Consider the case `inv a _ ha`. Establish `h1` using `hM.1 a a⁻¹`. Rewrite `h1` using `[mul_inv_cancel, modQ_one, ha, one_mul]`.
+
+Conclude with `h1.symm`. Conclude with `hM.2.2 x hx`.
+-/
 theorem indexEq_of_loc (hC : KComm) (hL : LiftU) (hJ : MatVInj) (hU : MatVU) (hK : KLocGlob)
     (hR : ReduceLoc) (hS : LocSplitChi) (hI : LocInertChi) : PI.AdIndexEq.IndexEq := by
   unfold PI.AdIndexEq.IndexEq

@@ -14,6 +14,11 @@ open Formalism.L2.FormalSeriesBounds Formalism.IncomingBounds GlobalTheory.MainT
 
 namespace GlobalTheory.MainTerm
 
+/- English proof (translation)
+Rewrite using `[MvPowerSeries.coeff_rename]`. Apply `VF.Ge.sum` to reduce the goal to its premises. Introduce `ν hν`. Rewrite `hν` using `[Set.Finite.mem_toFinset, Set.mem_preimage, Set.mem_singleton_iff]`. Apply `h` to reduce the goal to its premises.
+
+Rewrite using `[Finsupp.degree_eq_sum, ← hν]`. Simplify using `[Finsupp.mapDomain_apply Sum.inl_injective]`.
+-/
 private theorem ge_coeff_rename_inl {C : Type} [Field C] (V : VF C) {ι ι' : Type} [Fintype ι]
     [Fintype ι'] (F : MvPowerSeries ι C) (μ : ι ⊕ ι' →₀ ℕ)
     (h : ∀ ν : ι →₀ ℕ, ν.degree = ∑ c, μ (Sum.inl c) → V.Ge 0 (MvPowerSeries.coeff ν F)) :
@@ -26,6 +31,11 @@ private theorem ge_coeff_rename_inl {C : Type} [Field C] (V : VF C) {ι ι' : Ty
   rw [Finsupp.degree_eq_sum, ← hν]
   simp [Finsupp.mapDomain_apply Sum.inl_injective]
 
+/- English proof (translation)
+Rewrite using `[MvPowerSeries.coeff_rename]`. Apply `VF.Ge.sum` to reduce the goal to its premises. Introduce `ν hν`. Rewrite `hν` using `[Set.Finite.mem_toFinset, Set.mem_preimage, Set.mem_singleton_iff]`. Apply `h` to reduce the goal to its premises.
+
+Rewrite using `[Finsupp.degree_eq_sum, ← hν]`. Simplify using `[Finsupp.mapDomain_apply Sum.inr_injective]`.
+-/
 private theorem ge_coeff_rename_inr {C : Type} [Field C] (V : VF C) {ι ι' : Type} [Fintype ι]
     [Fintype ι'] (F : MvPowerSeries ι' C) (μ : ι ⊕ ι' →₀ ℕ)
     (h : ∀ ν : ι' →₀ ℕ, ν.degree = ∑ c, μ (Sum.inr c) → V.Ge 0 (MvPowerSeries.coeff ν F)) :
@@ -38,6 +48,11 @@ private theorem ge_coeff_rename_inr {C : Type} [Field C] (V : VF C) {ι ι' : Ty
   rw [Finsupp.degree_eq_sum, ← hν]
   simp [Finsupp.mapDomain_apply Sum.inr_injective]
 
+/- English proof (translation)
+Unfold `linPull`. Apply `MvPowerSeries.constantCoeff_subst_eq_zero` to reduce the goal to its premises. Conclude with `MvPowerSeries.hasSubst_of_constantCoeff_zero (fun x => by simp)`. Introduce `x`. Simplify using the standard rewrite rules.
+
+Conclude with `h`.
+-/
 private theorem constantCoeff_linPull_eq_zero {C : Type} [Field C] {σ ι : Type} [Fintype σ]
     [Fintype ι] (e : ι → σ → C) (F : MvPowerSeries σ C)
     (h : MvPowerSeries.constantCoeff F = 0) :
@@ -49,6 +64,13 @@ private theorem constantCoeff_linPull_eq_zero {C : Type} [Field C] {σ ι : Type
     simp
   · exact h
 
+/- English proof (translation)
+Establish `hE : expE V.l 1 = 1` using `by simp [expE]`. Unfold `mainM`. Rewrite using `[hE, pow_one, pow_one]`. Simplify using `only [map_smul, map_sum, MvPowerSeries.rename_X, map_pow, Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl (fun c _ => ?_)` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single b]`. Rewrite using `[Derivation.map_smul, Derivation.leibniz, MvPowerSeries.pderiv_X_self, Derivation.leibniz_pow, MvPowerSeries.pderiv_X_of_ne Sum.inl_ne_inr]`. Simplify using `[mul_comm]`. Introduce `x _ hx`.
+
+Rewrite using `[Derivation.map_smul, Derivation.leibniz, Derivation.leibniz_pow, MvPowerSeries.pderiv_X_of_ne Sum.inl_ne_inr, MvPowerSeries.pderiv_X_of_ne (fun h => hx (Sum.inr_injective h))]`. Simplify using the standard rewrite rules. Introduce `hb`. Conclude with `absurd (Finset.mem_univ b) hb`.
+-/
 private theorem pderiv_inr_mainM_one {C : Type} [Field C] (V : VF C) {ι ι' : Type} [Fintype ι]
     [Fintype ι'] (Φ : ι' → ι → C) (b : ι') :
     MvPowerSeries.pderiv C (Sum.inr b) (mainM V 1 Φ) =
@@ -72,6 +94,43 @@ private theorem pderiv_inr_mainM_one {C : Type} [Field C] (V : VF C) {ι ι' : T
   · intro hb
     exact absurd (Finset.mem_univ b) hb
 
+/- English proof (translation)
+Introduce `C _ V d _ I J _ _ X hAlt hd g a S t hT N em v' hty hal hint hpure μ hμl hμr`. Distinguish the cases in `h0 : ∀ b, μ (Sum.inr b) = 0`. Rewrite using `[GlobalTheory.T.coeff_leafGauge_sub_mainTerm_eq_zero_on_first_axis _ _ _ _ _ X g a 1 _ _ _ v' _ μ h0]`. Conclude with `VF.Ge.zero 0`. Simplify using `only [not_forall] at h0`.
+
+Take `⟨b, hb⟩` from `h0`. Establish `he_pure : ∀ (c : Fin N) (x : I g), (X.G g).ty (Sum.inl x) ≠ a → (fun δ => (S g).tan (em δ)) c x = 0`. Introduce `c x hx`. Conclude with `tan_pure (S g) (em c) x (by rw [hty c]; exact hx)`. Take `⟨γ, hγ, hγeq⟩` from `GlobalTheory.T.pderiv_leafGauge_eq_pairing_add_integral C V d I J X hAlt g a 1 odd_one hd S t hT (Fin N) (Fin X.n) (fun δ => (S g).tan (em δ)) v' he_pure hint hpure b`.
+
+Establish `h91` using `GlobalTheory.T.hPullW_upG_twoGroupEmbedding_eq_rename C I g (Fin N) (Fin X.n) (fun δ => (S g).tan (em δ)) v'`. Establish `hsingle : Finsupp.single (Sum.inr b) 1 ≤ μ` using `Finsupp.single_le_iff.2 (Nat.one_le_iff_ne_zero.2 hb)`. Take `⟨μ', rfl⟩ : ∃ μ', μ = μ' + Finsupp.single (Sum.inr b) 1` from `⟨μ - Finsupp.single (Sum.inr b) 1, (tsub_add_cancel_of_le hsingle).symm⟩`. Establish `hl' : ∑ c, μ' (Sum.inl c) < V.l ^ 2` using `lt_of_le_of_lt (Finset.sum_le_sum fun c _ => by rw [Finsupp.add_apply]; exact Nat.le_add_right _ _) hμl`. Establish `hr' : ∑ b', μ' (Sum.inr b') < V.l` using `lt_of_le_of_lt (Finset.sum_le_sum fun c _ => by rw [Finsupp.add_apply]; exact Nat.le_add_right _ _) hμr`.
+
+Establish `hbl : μ' (Sum.inr b) + 1 < V.l`. Use `lt_of_le_of_lt ?_ hμr` and prove the remaining obligations. Use `Finset.single_le_sum (f := fun b' => (μ' + Finsupp.single (Sum.inr b) 1 : Fin N ⊕ Fin X.n →₀ ℕ) (Sum.inr b')) (fun _ _ => Nat.zero_le _) (Finset.mem_univ b)` as an intermediate fact. Simplify `this` using `only [Finsupp.add_apply, Finsupp.single_eq_same]`. Establish `hunit : V.v ((μ' (Sum.inr b) : C) + 1) = 0`.
+
+Establish `hc : ((μ' (Sum.inr b) : C) + 1) = ((μ' (Sum.inr b) + 1 : ℕ) : C)` using `by push_cast; ring`. Rewrite using `[hc]`. Conclude with `ReciprocityTheory.ChartRestriction.G.Sh.PowerSeriesCoeffGaps.natCast_eq_zero_of_coprime V.v V.v_l (Nat.coprime_of_lt_prime (by omega) hbl V.l_prime)`. Establish `hne : ((μ' (Sum.inr b) : C) + 1) ≠ 0`. Introduce `h`.
+
+Rewrite `hunit` using `[h]`. Simplify using `at hunit`. Use `set Φ : Fin X.n → Fin N → C := fun b c => ∑ κ : J g, ∑ k : I (1 - g), -((V.l : C) * (S g).be (em c) 1 κ) * X.pair g κ k * v' b k with hΦ`. Use `set F := X.hM g a 1 (fun δ => (S g).tan (em δ)) v' - mainM V 1 Φ with hF`. Establish `hcoeff : MvPowerSeries.coeff (μ' + Finsupp.single (Sum.inr b) 1) F = ((μ' (Sum.inr b) : C) + 1)⁻¹ * MvPowerSeries.coeff μ' (MvPowerSeries.pderiv C (Sum.inr b) F)`.
+
+Rewrite using `[MvPowerSeries.coeff_pderiv]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[hcoeff]`. Use `VF.Ge.mul_int (inv_unit_int hunit) ?_` and prove the remaining obligations. Use `set G : MvPowerSeries (Fin N) C := (∑ κ : J g, (∑ k, X.pair g κ k * v' b k) • linPull (fun δ => (S g).tan (em δ)) ((S g).ze (t g) κ)) - (V.l : C)⁻¹ • ∑ c : Fin N, Φ b c • (MvPowerSeries.X c : MvPowerSeries (Fin N) C) ^ V.l with hG`.
+
+Establish `hsplit : MvPowerSeries.pderiv C (Sum.inr b) F = MvPowerSeries.subst (fun w : WV I => hPullW (upG w.1 (t w.1 w.2)) (fun c => toW g ((fun δ => (S g).tan (em δ)) c)) (fun b => toW (1 - g) (v' b))) γ + MvPowerSeries.rename Sum.inl G`. Rewrite using `[hF, map_sub, hγeq, pderiv_inr_mainM_one V Φ b]`. Simplify using `only [h91.1, hG, map_sub, map_sum, map_smul]`. Normalize the expressions using the abelian group laws. Rewrite using `[hsplit, map_add]`.
+
+Use `VF.Ge.add ?_ ?_` and prove the remaining obligations. Establish `h2 : ∀ j g : Fin 2, j = g ∨ j = 1 - g` using `by decide`. Use `GlobalTheory.T.coeffIntegralOnExponents_subst_of_lower_set C V (Fin N ⊕ Fin X.n) (WV I) (fun ν => ∑ c, ν (Sum.inl c) < V.l ^ 2 ∧ ∑ b', ν (Sum.inr b') < V.l) ?_ γ _ hγ ?_ ?_ μ' ⟨hl', hr'⟩` and prove the remaining obligations. Introduce `ν ν' hle hP`. Conclude with `⟨lt_of_le_of_lt (Finset.sum_le_sum fun c _ => hle (Sum.inl c)) hP.1, lt_of_le_of_lt (Finset.sum_le_sum fun c _ => hle (Sum.inr c)) hP.2⟩`.
+
+Introduce and unpack `⟨j, x⟩`. Break down `h2 j g with rfl | rfl` into its components or cases. Simplify using `only`. Rewrite using `[h91.1, MvPowerSeries.constantCoeff_rename]`. Conclude with `constantCoeff_linPull_eq_zero _ _ ((hT j).1 x)`.
+
+Simplify using `only`. Rewrite using `[h91.2, MvPowerSeries.constantCoeff_rename]`. Conclude with `constantCoeff_linPull_eq_zero _ _ ((hT (1 - g)).1 x)`. Introduce and unpack `⟨j, x⟩ ν hP`. Break down `h2 j g with rfl | rfl` into its components or cases.
+
+Simplify using `only`. Rewrite using `[h91.1]`. Apply `ge_coeff_rename_inl V` to reduce the goal to its premises. Introduce `ν' hν'`. Rewrite using `[(GlobalTheory.T.coeff_coordinates_good_tangents_lt_sq C V d (I j) (J j) (X.G j) (S j) (t j) (hT j) N em hal ν' (by rw [hν']; exact hP.1)).1 x, map_sum]`.
+
+Apply `VF.Ge.sum` to reduce the goal to its premises. Introduce `δ _`. Use `split_ifs`. Rewrite using `[MvPowerSeries.coeff_X] split_ifs exacts [VF.Ge.one, VF.Ge.zero 0]`. Rewrite using `[map_zero]`.
+
+Conclude with `VF.Ge.zero 0`. Simplify using `only`. Rewrite using `[h91.2]`. Apply `ge_coeff_rename_inr V` to reduce the goal to its premises. Introduce `ν' hν'`.
+
+Conclude with `GlobalTheory.T.linearSubst_coordinate_integral_of_degree_lt C V d (I (1 - g)) (J (1 - g)) (X.G (1 - g)) (S (1 - g)) (t (1 - g)) (hT (1 - g)) X.n v' hint ν' (by rw [hν']; exact hP.2) x`. Apply `ge_coeff_rename_inl V` to reduce the goal to its premises. Introduce `ν hν`. Establish `hdeg : ν.degree < V.l ^ 2` using `by rw [hν]; exact hl'`. Establish `h19` using `(GlobalTheory.T.coeff_coordinates_good_tangents_lt_sq C V d (I g) (J g) (X.G g) (S g) (t g) (hT g) N em hal ν hdeg).2`.
+
+Establish `hz : MvPowerSeries.coeff ν G = 0`. Rewrite using `[hG, map_sub, map_sum]`. Simplify using `only [MvPowerSeries.coeff_smul, h19, map_neg, map_sum, hΦ]`. Establish `hL : (V.l : C) ≠ 0` using `VF.l_ne_zero`. Rewrite using `[sub_eq_zero]`.
+
+Simplify using `only [Finset.mul_sum, Finset.sum_mul, mul_neg, Finset.sum_neg_distrib, neg_mul]`. Rewrite using `[neg_inj, Finset.sum_comm]`. Use `Finset.sum_congr rfl fun δ _ => Finset.sum_congr rfl fun κ _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts. Rewrite using `[hz]`.
+
+Conclude with `VF.Ge.zero 0`.
+-/
 theorem mPlus_of_good_tangents : ∀ (C : Type) [Field C] (V : VF C) (d : ℕ) [NeZero d] (I J : Fin 2 → Type) [∀ g, Fintype (I g)] [∀ g, Fintype (J g)] (X : RowData C V d I J), X.Alt → 1 < d → ∀ (g : Fin 2) (a : ZMod d) (S : ∀ g, Sys (X.G g)) (t : ∀ g, I g → MvPowerSeries (I g) C), (∀ g, (S g).IsT (t g)) → ∀ (N : ℕ) (em : Fin N ↪ I g) (v' : Fin X.n → I (1 - g) → C), (∀ δ, (X.G g).ty (Sum.inl (em δ)) = a) → (∀ δ x, (S g).al (em δ) 1 x = 0) → (∀ b k, V.Ge 0 (v' b k)) → (∀ b k, (X.G (1 - g)).ty (Sum.inl k) ≠ a + ((1 : ℕ) : ZMod d) → v' b k = 0) → X.MPlusConcl g a N (fun δ => (S g).tan (em δ)) v' (fun b c => ∑ κ : J g, ∑ k : I (1 - g), -((V.l : C) * (S g).be (em c) 1 κ) * X.pair g κ k * v' b k) := by
   intro C _ V d _ I J _ _ X hAlt hd g a S t hT N em v' hty hal hint hpure μ hμl hμr
   by_cases h0 : ∀ b, μ (Sum.inr b) = 0

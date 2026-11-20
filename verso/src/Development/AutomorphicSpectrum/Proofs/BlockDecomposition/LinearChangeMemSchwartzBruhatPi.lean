@@ -26,6 +26,9 @@ def mulVecCLE (M : GL ι (mixedSpace k)) : (ι → mixedSpace k) ≃L[ℝ] (ι �
       right_inv := fun u ↦ by
         simp only [mulVec_mulVec, Units.mul_inv, one_mulVec] }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mulVecCLE_apply (M : GL ι (mixedSpace k)) (u : ι → mixedSpace k) :
     mulVecCLE M u = (M : Matrix ι ι (mixedSpace k)) *ᵥ u := rfl
 
@@ -37,6 +40,9 @@ def mulVecHomeo (M : GL ι 𝔸ᶠ[k]) : (ι → 𝔸ᶠ[k]) ≃ₜ (ι → 𝔸
   continuous_toFun := Continuous.matrix_mulVec continuous_const continuous_id
   continuous_invFun := Continuous.matrix_mulVec continuous_const continuous_id
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `(mem_finiteSchwartzBruhatPi k).1 hg`. Conclude with `(mem_finiteSchwartzBruhatPi k).2 ⟨h1.comp_continuous (mulVecHomeo M).continuous, h2.comp_isClosedEmbedding (mulVecHomeo M).isClosedEmbedding⟩`.
+-/
 theorem comp_mulVec_mem_finiteSchwartzBruhatPi (M : GL ι 𝔸ᶠ[k]) {g : (ι → 𝔸ᶠ[k]) → ℂ}
     (hg : g ∈ finiteSchwartzBruhatPi k) :
     (fun z ↦ g ((M : Matrix ι ι 𝔸ᶠ[k]) *ᵥ z)) ∈ finiteSchwartzBruhatPi k := by
@@ -45,16 +51,27 @@ theorem comp_mulVec_mem_finiteSchwartzBruhatPi (M : GL ι 𝔸ᶠ[k]) {g : (ι �
     ⟨h1.comp_continuous (mulVecHomeo M).continuous,
       h2.comp_isClosedEmbedding (mulVecHomeo M).isClosedEmbedding⟩
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Conclude with `RingHom.map_mulVec infRingHom A x i`.
+-/
 theorem infPartPi_mulVec (A : Matrix ι ι 𝔸[k]) (x : ι → 𝔸[k]) :
     infPartPi (A *ᵥ x) = A.map infRingHom *ᵥ infPartPi x := by
   funext i
   exact RingHom.map_mulVec infRingHom A x i
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Conclude with `RingHom.map_mulVec finRingHom A x i`.
+-/
 theorem finPartPi_mulVec (A : Matrix ι ι 𝔸[k]) (x : ι → 𝔸[k]) :
     finPartPi (A *ᵥ x) = A.map finRingHom *ᵥ finPartPi x := by
   funext i
   exact RingHom.map_mulVec finRingHom A x i
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Establish `h1 : ((Matrix.GeneralLinearGroup.map infRingHom A : GL ι (mixedSpace k)) : Matrix ι ι (mixedSpace k)) = (A : Matrix ι ι 𝔸[k]).map infRingHom`. Use `Matrix.ext fun i j ↦ ?_` and prove the remaining obligations. Rewrite using `[Matrix.GeneralLinearGroup.map_apply, Matrix.map_apply]`. Establish `h2 : ((Matrix.GeneralLinearGroup.map finRingHom A : GL ι 𝔸ᶠ[k]) : Matrix ι ι 𝔸ᶠ[k]) = (A : Matrix ι ι 𝔸[k]).map finRingHom`.
+
+Use `Matrix.ext fun i j ↦ ?_` and prove the remaining obligations. Rewrite using `[Matrix.GeneralLinearGroup.map_apply, Matrix.map_apply]`. Simplify using `only [ltr, schwartzBruhatTensorPi, SchwartzMap.compCLMOfContinuousLinearEquiv_apply, Function.comp_apply, mulVecCLE_apply, h1, h2, infPartPi_mulVec, finPartPi_mulVec]`.
+-/
 theorem ltr_schwartzBruhatTensorPi (A : GL ι 𝔸[k]) (φ : 𝓢(ι → mixedSpace k, ℂ))
     (g : (ι → 𝔸ᶠ[k]) → ℂ) :
     ltr A (schwartzBruhatTensorPi φ g) =
@@ -74,6 +91,11 @@ theorem ltr_schwartzBruhatTensorPi (A : GL ι 𝔸[k]) (φ : 𝓢(ι → mixedSp
   simp only [ltr, schwartzBruhatTensorPi, SchwartzMap.compCLMOfContinuousLinearEquiv_apply,
     Function.comp_apply, mulVecCLE_apply, h1, h2, infPartPi_mulVec, finPartPi_mulVec]
 
+/- English proof (translation)
+Proceed by induction on `hF using Submodule.span_induction with`. Consider the case `mem G hG`. Take `⟨φ, g, hg, rfl⟩` from `hG`. Rewrite using `[ltr_schwartzBruhatTensorPi]`. Conclude with `schwartzBruhatTensorPi_mem _ (comp_mulVec_mem_finiteSchwartzBruhatPi _ hg)`.
+
+Consider the case `zero => exact zero_mem _`. Consider the case `add G H _ _ ihG ihH => exact add_mem ihG ihH`. Consider the case `smul a G _ ih => exact Submodule.smul_mem _ a ih`.
+-/
 theorem ltr_mem {F : (ι → 𝔸[k]) → ℂ} (hF : F ∈ schwartzBruhatPi k ι) (A : GL ι 𝔸[k]) :
     ltr A F ∈ schwartzBruhatPi k ι := by
   induction hF using Submodule.span_induction with

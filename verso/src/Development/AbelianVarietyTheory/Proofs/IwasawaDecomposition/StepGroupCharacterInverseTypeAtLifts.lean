@@ -18,11 +18,17 @@ def compVal (Λ : LevFam E K n S) (Θ : LevQFam E K n Q) (k1 : ↥Λ.grp) (k2 : 
   if h : p ∈ S then (Λ ⟨p, h⟩).lam ⟨k1.1 ⟨p, h⟩, k1.2 _ (Set.mem_univ _)⟩
   else if h' : p ∈ Q then (Θ ⟨p, h'⟩).lam ⟨k2.1 ⟨p, h'⟩, k2.2 _ (Set.mem_univ _)⟩ else 1
 
+/- English proof (translation)
+Unfold `compVal`. Rewrite using `[dif_pos h]`.
+-/
 theorem compVal_left (Λ : LevFam E K n S) (Θ : LevQFam E K n Q) (k1 : ↥Λ.grp) (k2 : ↥Θ.grp) {p : HeightOneSpectrum (𝓞 E)} (h : p ∈ S) :
     compVal Λ Θ k1 k2 p = (Λ ⟨p, h⟩).lam ⟨k1.1 ⟨p, h⟩, k1.2 _ (Set.mem_univ _)⟩ := by
   unfold compVal
   rw [dif_pos h]
 
+/- English proof (translation)
+Unfold `compVal`. Rewrite using `[dif_neg h, dif_pos h']`.
+-/
 theorem compVal_right (Λ : LevFam E K n S) (Θ : LevQFam E K n Q) (k1 : ↥Λ.grp) (k2 : ↥Θ.grp) {p : HeightOneSpectrum (𝓞 E)} (h : p ∉ S)
     (h' : p ∈ Q) : compVal Λ Θ k1 k2 p = (Θ ⟨p, h'⟩).lam ⟨k2.1 ⟨p, h'⟩, k2.2 _ (Set.mem_univ _)⟩ := by
   unfold compVal
@@ -30,6 +36,11 @@ theorem compVal_right (Λ : LevFam E K n S) (Θ : LevQFam E K n Q) (k1 : ↥Λ.g
 
 open Classical in
 
+/- English proof (translation)
+Establish `e1 : Λ.chr k1 = _` using `piChar_apply (fun w => (Λ w).H) (fun w => (Λ w).lam) k1`. Establish `e2 : Θ.chr k2 = _` using `piChar_apply (fun w => (Θ w).H) (fun w => (Θ w).lam) k2`. Rewrite using `[e1, e2, Finset.prod_union hd, ← Finset.prod_coe_sort S, ← Finset.prod_coe_sort Q]`. Use `congrArg₂ (· * ·) (Finset.prod_congr rfl fun w _ => ?_) (Finset.prod_congr rfl fun w _ => ?_)` and prove the remaining obligations. Conclude with `dif_pos w.2`.
+
+Conclude with `(dif_neg (Finset.disjoint_right.1 hd w.2)).trans (dif_pos w.2)`.
+-/
 theorem prod_compVal (hd : Disjoint S Q) (Λ : LevFam E K n S) (Θ : LevQFam E K n Q) (k1 : ↥Λ.grp) (k2 : ↥Θ.grp) :
     ∏ p ∈ S ∪ Q, compVal Λ Θ k1 k2 p = Λ.chr k1 * Θ.chr k2 := by
   have e1 : Λ.chr k1 = _ := piChar_apply (fun w => (Λ w).H) (fun w => (Λ w).lam) k1
@@ -48,6 +59,11 @@ section Cong
 
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {n : ℕ}
 
+/- English proof (translation)
+Introduce `x hx`. Establish `e1 : (k * g) x - (1 : Sp E n ≃ₗ[E] Sp E n) x = k (g x - g' x)`. Rewrite using `[map_sub, ← LinearEquiv.mul_apply k g', hkg]`. Both sides reduce to the same expression. Rewrite using `[e1, ← map_smul]`.
+
+Conclude with `(hk _).2 (h x hx)`.
+-/
 theorem congE_mul_one {P : HeightOneSpectrum (𝓞 E)} {c : ℕ} {k g g' : Sp E n ≃ₗ[E] Sp E n}
     (hk : k ∈ GLint E n P) (hkg : k * g' = 1) (h : CongE P c g g') : CongE P c (k * g) 1 := by
   intro x hx
@@ -64,6 +80,15 @@ namespace GlobalTheory.Mem.Col2.AdT
 
 variable {B : Base} {X : PreX B.toPre}
 
+/- English proof (translation)
+Establish `hL` using `hOk.idx_ok a`. Establish `hD : (I.cst a).D P = 1` using `hL.depthG P hP`. Establish `hred : ∀ x ∈ stdAt B.fields.E (B.R.N i) P.1, redV P.1 (gP x) = (κw⁻¹).1.mulVec (redV P.1 x)`. Introduce `x hx`. Rewrite using `[← hred' x hx]`.
+
+Establish `h1` using `(mem_localization_standardLattice _ _).1 (hcong x hx)`. Rewrite `h1` using `[hD, pow_one]`. Establish `hq0 : ((qOf P.1 : ℕ) : B.fields.E) ≠ 0` using `GlobalTheory.Proof.NormalFormAtPrime.qOf_ne_zero P.1`. Use function extensionality and compare the values at `l`. Establish `e1 : gP x l = g'P x l + (qOf P.1 : B.fields.E) * (((qOf P.1 : ℕ) : B.fields.E)⁻¹ • (gP x - g'P x)) l`.
+
+Rewrite using `[Pi.smul_apply, smul_eq_mul, Pi.sub_apply]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Use `show redP P.1 (gP x l) = redP P.1 (g'P x l)`. Rewrite using `[e1]`.
+
+Conclude with `GlobalTheory.LastSteps.redP_add_q (h1 l)`. Establish `hc` using `hL.chrG i al ⟨P.1, hP⟩ (⟨κw, hκw⟩)⁻¹ gP r hr hrx hred`. Conclude with `hc.symm.trans ((congrArg Units.val (map_inv (((I.idx a).levG i al) ⟨P.1, hP⟩).lam _)).trans (Units.val_inv_eq_inv_val _))`.
+-/
 theorem chiInv_at_type (I : TC B X) (hOk : I.Ok) (a : I.ι) (i : ℕ) (al : (I.idx a).β i) (P : SBof I a)
     (hP : P.1 ∈ (B.primes X).vGs) (gP g'P : Sp B.fields.E (B.R.N i) ≃ₗ[B.fields.E] Sp B.fields.E (B.R.N i)) (r : AutY B.fields B.R i)
     (hr : r ∈ Loc.Cbe (Jat (Pr := B.primes X) (I.cst a).sharp i P.1) ((I.idx a).h i al P))
@@ -98,6 +123,13 @@ namespace GlobalTheory.Mem.Col2.AdT
 
 variable {B : Base} {X : PreX B.toPre}
 
+/- English proof (translation)
+Establish `hL` using `hOk.idx_ok a`. Establish `hg : gP ∈ prCat (Pr` using `B.primes X) (R := B.R) (I.cst a).sharp i P.1 ((I.idx a).h i al P) := ⟨r, hr, hrx⟩`. Set `gI : ↥(GLint B.fields.E (B.R.N i) P.1)` to `⟨gP, hL.int i al P hg⟩`. Establish `hH : gI ∈ (((I.idx a).levQ i al) ⟨P.1, hQ⟩).H`. Rewrite using `[hL.grpQ i al ⟨P.1, hQ⟩]`.
+
+Conclude with `Subgroup.mem_subgroupOf.2 hg`. Establish `hc` using `hL.chrQ i al ⟨P.1, hQ⟩ ⟨gI, hH⟩ r hr hrx`. Establish `hkg : κQ.1 * g'P = 1`. Rewrite using `[hg']`. Conclude with `congrArg Subtype.val (mul_inv_cancel κQ)`.
+
+Establish `hcd : CongE P.1 ((I.cst a).D P) (κQ * gI).1 1` using `congE_mul_one (g := gP) κQ.2 hkg hcong`. Take `⟨hdH, hdl⟩` from `levQ_deep I hOk a i hi al P hQ (κQ * gI) hcd`. Establish `e2 : (⟨gI, hH⟩ : ↥(((I.idx a).levQ i al) ⟨P.1, hQ⟩).H) = (⟨κQ, hκQ⟩)⁻¹ * ⟨κQ * gI, hdH⟩` using `Subtype.ext (by show gI = κQ⁻¹ * (κQ * gI); group)`. Establish `h4 : (((I.idx a).levQ i al) ⟨P.1, hQ⟩).lam ((⟨κQ, hκQ⟩)⁻¹ * ⟨κQ * gI, hdH⟩) = ((((I.idx a).levQ i al) ⟨P.1, hQ⟩).lam ⟨κQ, hκQ⟩)⁻¹` using `((map_mul (((I.idx a).levQ i al) ⟨P.1, hQ⟩).lam _ _).trans ((congrArg _ hdl).trans (mul_one _))).trans (map_inv (((I.idx a).levQ i al) ⟨P.1, hQ⟩).lam _)`. Conclude with `hc.symm.trans ((congrArg Units.val ((congrArg (((I.idx a).levQ i al) ⟨P.1, hQ⟩).lam e2).trans h4)).trans (Units.val_inv_eq_inv_val _))`.
+-/
 theorem chiInv_at_twist (I : TC B X) (hOk : I.Ok) (a : I.ι) (i : ℕ) (hi : i < B.R.m) (al : (I.idx a).β i) (P : SBof I a)
     (hQ : P.1 ∈ I.Q a) (gP g'P : Sp B.fields.E (B.R.N i) ≃ₗ[B.fields.E] Sp B.fields.E (B.R.N i)) (r : AutY B.fields B.R i)
     (hr : r ∈ Loc.Cbe (Jat (Pr := B.primes X) (I.cst a).sharp i P.1) ((I.idx a).h i al P))
@@ -130,6 +162,17 @@ namespace GlobalTheory.Mem.Col2.AdT
 
 open Classical in
 
+/- English proof (translation)
+Introduce `B X I hOk u a i hi b κ g g' z H`. Take `⟨al, rfl⟩ : ∃ al, b = Idx.of al hi` from `⟨_, (Idx.of_get b hi hi).symm⟩`. Set `k1 : ↥((I.idx a).levG i al).grp` to `κ.2.1`. Set `k2 : ↥((I.idx a).levQ i al).grp` to `κ.2.2`. Establish `e : (((I.stp u a i).chr (Idx.of al hi) κ : B.fields.Kˣ) : B.fields.K) = ((((I.idx a).levG i al).chr k1 * ((I.idx a).levQ i al).chr k2 : B.fields.Kˣ) : B.fields.K)` using `rfl`.
+
+Rewrite using `[e]`. Establish `hd : Disjoint (B.primes X).vGs (I.Q a)` using `Finset.disjoint_right.2 fun {P} hP => GlobalTheory.Mem.Col2.TC.Q_notMem_of_ok hOk a P hP`. Establish `hprod : ∏ P : SBof I a, compVal ((I.idx a).levG i al) ((I.idx a).levQ i al) k1 k2 P.1 = ((I.idx a).levG i al).chr k1 * ((I.idx a).levQ i al).chr k2`. Rewrite using `[Finset.prod_coe_sort (SBof I a) (compVal ((I.idx a).levG i al) ((I.idx a).levQ i al) k1 k2)]`. Conclude with `prod_compVal hd _ _ k1 k2`.
+
+Establish `hz : ∀ P : SBof I a, z P = ((compVal ((I.idx a).levG i al) ((I.idx a).levQ i al) k1 k2 P.1 : B.fields.Kˣ) : B.fields.K)⁻¹`. Introduce `P`. Take `⟨⟨r, hr, hrx, hzr⟩, hlift, hcong⟩` from `H P`. Rewrite using `[hzr]`. Distinguish the cases in `hP : P.1 ∈ (B.primes X).vGs`.
+
+Use `(chiInv_at_type I hOk a i al P hP (g P) (g' P) r hr hrx (k1.1 ⟨P.1, hP⟩) (k1.2 _ (Set.mem_univ _)) (hlift.2.1 hP) hcong).trans ?_` and prove the remaining obligations. Rewrite using `[compVal_left _ _ k1 k2 hP]`. Establish `hQ : P.1 ∈ I.Q a` using `(Finset.mem_union.mp P.2).resolve_left hP`. Use `(chiInv_at_twist I hOk a i hi al P hQ (g P) (g' P) r hr hrx (k2.1 ⟨P.1, hQ⟩) (k2.2 _ (Set.mem_univ _)) (hlift.2.2 hQ) hcong).trans ?_` and prove the remaining obligations. Conclude with `congrArg (fun x : B.fields.Kˣ => (x : B.fields.K)⁻¹) (compVal_right _ _ k1 k2 hP hQ).symm`.
+
+Rewrite using `[← hprod, Finset.prod_congr rfl fun P _ => hz P, Units.coe_prod, Finset.prod_inv_distrib]`. Conclude with `mul_inv_cancel₀ (Finset.prod_ne_zero_iff.2 fun P _ => Units.ne_zero _)`.
+-/
 theorem chr_mul_prod_midAt : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → ∀ (u : B.Word) (a : I.ι) (i : ℕ) (hi : i < B.R.m) (b : (I.stp u a i).β) (κ : (I.stp u a i).G b) (g g' : SBof I a → Sp B.fields.E (B.R.N i) ≃ₗ[B.fields.E] Sp B.fields.E (B.R.N i)) (z : SBof I a → B.fields.K), (∀ P, MidAt I hi b P (g P) (z P) ∧ LiftsInv I κ P (g' P) ∧ CongE P.1 ((I.cst a).D P) (g P) (g' P)) → (((I.stp u a i).chr b κ : B.fields.Kˣ) : B.fields.K) * ∏ P, z P = 1 := by
   intro B X I hOk u a i hi b κ g g' z H
   obtain ⟨al, rfl⟩ : ∃ al, b = Idx.of al hi := ⟨_, (Idx.of_get b hi hi).symm⟩

@@ -4,6 +4,35 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PrimitiveFrobenius
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology IsLocalRing UpperTheory.V UpperTheory.V.Base UpperTheory.V.X
 
+/- English proof (translation)
+Introduce `l _ O _ _ _ _ _ a ha r M _ _ _ hM`. Use `haveI : NeZero (l ^ r) := ⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩`. Take `⟨φ₀, hker, hsurj⟩` from `UpperTheory.V.X.So.dualGen l O a ha r M hM`. Take `⟨w, hw⟩` from `(UpperTheory.V.ML.qoCyc l O).2.1 a ha`. Use `choose c hc using hsurj`.
+
+Establish `key : ∀ x x' : O, (∀ m : M, φ₀ (x • m) = φ₀ (x' • m)) → x • w = x' • w`. Introduce `x x' h`. Establish `hd : a ∣ x - x'` using `(hker _).1 (fun m => by rw [sub_smul, map_sub, h, sub_self])`. Establish `h0` using `(hw (x - x')).2 hd`. Rewrite `h0` using `[sub_smul, sub_eq_zero]`. Then use the resulting hypothesis.
+
+Establish `kill : ∀ (s : O) (n : M), ((l : O) ^ r * s) • n = 0`. Introduce `s n`. Rewrite using `[mul_smul, ← Nat.cast_pow, Nat.cast_smul_eq_nsmul O, ← Nat.cast_smul_eq_nsmul (ZMod (l ^ r)), ZMod.natCast_self, zero_smul]`. Establish `scal : ∀ (y : ℤ_[l]) (n : M), φ₀ (algebraMap ℤ_[l] O y • n) = PadicInt.toZModPow r y * φ₀ n`. Introduce `y n`.
+
+Establish `hmem : y - ((PadicInt.toZModPow r y).val : ℤ_[l]) ∈ RingHom.ker (PadicInt.toZModPow (p` using `l) r) := by`. Rewrite using `[RingHom.mem_ker, map_sub, map_natCast, ZMod.natCast_zmod_val, sub_self]`. Rewrite `hmem` using `[PadicInt.ker_toZModPow, Ideal.mem_span_singleton]`. Take `⟨t, ht⟩` from `hmem`. Establish `hy : y = ((PadicInt.toZModPow r y).val : ℤ_[l]) + (l : ℤ_[l]) ^ r * t`.
+
+Rewrite using `[← ht]`. Expand and normalize the polynomial expressions, which then agree. Use `conv_lhs => rw [hy]`. Rewrite using `[map_add, map_mul, map_pow, map_natCast, map_natCast, add_smul, kill, add_zero, Nat.cast_smul_eq_nsmul O, map_nsmul, nsmul_eq_mul, ZMod.natCast_zmod_val]`. Use `⟨{ toFun := fun φ => c φ • w, map_zero' := ?_, map_add' := ?_ }, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Use `show c 0 • w = 0`. Rewrite using `[← zero_smul O w]`. Apply `key` to reduce the goal to its premises. Introduce `m`. Rewrite using `[← hc, zero_smul, map_zero]`.
+
+Both sides reduce to the same expression. Introduce `φ ψ show c (φ + ψ) • w = c φ • w + c ψ • w`. Rewrite using `[← add_smul]`. Apply `key` to reduce the goal to its premises. Introduce `m`.
+
+Establish `e1` using `hc (φ + ψ) m`. Establish `e2` using `hc φ m`. Establish `e3` using `hc ψ m`. Rewrite using `[add_smul, map_add, ← e1, ← e2, ← e3]`. Conclude with `TDual.add_apply φ ψ m`.
+
+Rewrite using `[injective_iff_map_eq_zero]`. Introduce `φ hφ`. Express the relevant statement in the definitionally equal form `c φ • w = 0 at hφ`. Establish `hd` using `(hw _).1 hφ`. Apply `LinearMap.ext` to reduce the goal to its premises.
+
+Introduce `m`. Rewrite using `[hc φ m, (hker _).2 hd m]`. Both sides reduce to the same expression. Introduce `v`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hv`. Take `⟨y, rfl⟩` from `(UpperTheory.V.ML.qoCyc l O).2.2.1 a w ha hw v hv`. Use `⟨(φ₀.toAddMonoidHom.comp (DistribMulAction.toAddMonoidHom M y)).toZModLinearMap (l ^ r), ?_⟩` and prove the remaining obligations. Use `show c _ • w = y • w`. Apply `key` to reduce the goal to its premises.
+
+Introduce `m`. Rewrite using `[← hc]`. Both sides reduce to the same expression. Introduce and unpack `⟨φ, rfl⟩ show a • (c φ • w) = 0`. Rewrite using `[smul_smul]`.
+
+Conclude with `(hw _).2 (dvd_mul_right a _)`. Introduce `y x φ φ' h show c φ' • w = (algebraMap ℤ_[l] O y * x) • (c φ • w)`. Rewrite using `[smul_smul]`. Apply `key` to reduce the goal to its premises. Introduce `m`.
+
+Establish `e1` using `hc φ' m`. Establish `e2` using `hc φ (x • m)`. Rewrite using `[← e1]`. Use `(h m).trans ((congrArg (fun z => PadicInt.toZModPow r y * z) e2).trans ?_)` and prove the remaining obligations. Rewrite using `[smul_smul, show algebraMap ℤ_[l] O y * x * c φ = algebraMap ℤ_[l] O y * (c φ * x) by ring, mul_smul (algebraMap ℤ_[l] O y), scal]`.
+-/
 theorem UpperTheory.V.X.So.dualEmb :
     ∀ (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Algebra ℤ_[l] O] [Module.Finite ℤ_[l] O] (a : O), a ≠ 0 → ∀ (r : ℕ) (M : Type) [AddCommGroup M] [Module O M] [Module (ZMod (l ^ r)) M], Nonempty (M ≃ₗ[O] (O ⧸ Ideal.span {a})) → ∃ ι : TDual (ZMod (l ^ r)) M →+ QO l O, Function.Injective ι ∧ (∀ w, a • w = 0 ↔ w ∈ Set.range ι) ∧ ∀ (y : ℤ_[l]) (x : O) (φ φ' : TDual (ZMod (l ^ r)) M), (∀ m, φ' m = PadicInt.toZModPow r y * φ (x • m)) → ι φ' = (algebraMap ℤ_[l] O y * x) • ι φ := by
   intro l _ O _ _ _ _ _ a ha r M _ _ _ hM

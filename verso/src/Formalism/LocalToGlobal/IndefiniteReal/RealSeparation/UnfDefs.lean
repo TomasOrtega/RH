@@ -92,6 +92,9 @@ def BSharpAbs (ψ : AddChar (AF D.host.F) ℂ) (S T0 : HSp D) {ρ : ℕ} (CS CS'
       bIntd ψ S T0 CS CS' S0 BS A lev ιH om00 My φ Ξ G' q.1 q.2.1 q.2.2.1 q.2.2.2)
     ((μ0.restrict 𝓕0).prod ((μN.restrict 𝓕N).prod ((μU.restrict 𝓕U).prod (μH.restrict 𝓕H))))
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ => zero_le_one, measurable_const, fun _ => ⟨integrable_const _, by simp⟩⟩`.
+-/
 example (S S0 : HSp D) {ρ : ℕ} (CS : Matrix (Fin S.rank) (Fin ρ) D.host.E) (lev : GA D S0 →* GA D S)
     (μN : Measure (NI S CS)) (μ0 : Measure (GA D S0)) [IsProbabilityMeasure (μN.prod μ0)] :
     IsCutoff S S0 CS lev μN μ0 (fun _ => 1) :=

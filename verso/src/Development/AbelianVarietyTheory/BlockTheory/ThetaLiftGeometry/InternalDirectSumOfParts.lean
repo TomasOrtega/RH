@@ -14,15 +14,26 @@ def PartsSumIn (R : Ranks) {FT : Type u} (A : ℕ → Type v) [∀ j, AddCommGro
     (M : ∀ j, Submodule ℂ (A j)) (part : ∀ j, FT → Submodule ℂ (A j)) : Prop :=
   ∀ j : ℕ, 1 ≤ j → j ≤ R.m → iSupIndep (part j) ∧ ⨆ π, part j π = M j
 
+/- English proof (translation)
+Simplify using `only [PartsSum, DirectSum.isInternal_submodule_iff_iSupIndep_and_iSup_eq_top]`.
+-/
 theorem partsSum_iff_isInternal (R : Ranks) {FT : Type u} [DecidableEq FT] (M : ℕ → Type v)
     [∀ j, AddCommGroup (M j)] [∀ j, Module ℂ (M j)] (part : ∀ j, FT → Submodule ℂ (M j)) :
     PartsSum R M part ↔ ∀ j : ℕ, 1 ≤ j → j ≤ R.m → DirectSum.IsInternal (part j) := by
   simp only [PartsSum, DirectSum.isInternal_submodule_iff_iSupIndep_and_iSup_eq_top]
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem partsSum_iff_partsSumIn_top (R : Ranks) {FT : Type u} (M : ℕ → Type v)
     [∀ j, AddCommGroup (M j)] [∀ j, Module ℂ (M j)] (part : ∀ j, FT → Submodule ℂ (M j)) :
     PartsSum R M part ↔ PartsSumIn R M (fun _ => ⊤) part := Iff.rfl
 
+/- English proof (translation)
+Introduce `j _ _`. Establish `h` using `LinearMap.isCompl_range_inl_inr (R := ℂ) (M := ℂ) (M₂ := ℂ)`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `rw [iSupIndep_pair (i := true) (j := false) (by simp) (by intro k; cases k <;> simp)]`. Conclude with `h.disjoint`.
+
+Rewrite using `[iSup_bool_eq]`. Conclude with `h.sup_eq_top`.
+-/
 theorem partsSum_plane (R : Ranks) :
     PartsSum R (fun _ => ℂ × ℂ)
       (fun _ (b : Bool) => cond b (LinearMap.range (LinearMap.inl ℂ ℂ ℂ)) (LinearMap.range (LinearMap.inr ℂ ℂ ℂ))) := by
@@ -34,6 +45,9 @@ theorem partsSum_plane (R : Ranks) :
   · rw [iSup_bool_eq]
     exact h.sup_eq_top
 
+/- English proof (translation)
+Introduce `h`. Establish `h1` using `(h 1 le_rfl (by have := R.two_le_m; omega)).1`. Apply the tactic sequence `rw [iSupIndep_pair (i := true) (j := false) (by simp) (by intro k; cases k <;> simp)] at h1`. Simplify using `at h1`.
+-/
 theorem not_partsSum_repeated (R : Ranks) :
     ¬ PartsSum R (fun _ => ℂ) (fun _ (_ : Bool) => (⊤ : Submodule ℂ ℂ)) := by
   intro h
@@ -41,6 +55,9 @@ theorem not_partsSum_repeated (R : Ranks) :
   rw [iSupIndep_pair (i := true) (j := false) (by simp) (by intro k; cases k <;> simp)] at h1
   simp at h1
 
+/- English proof (translation)
+Introduce `h`. Establish `h1` using `(h 1 le_rfl (by have := R.two_le_m; omega)).2`. Simplify using `at h1`.
+-/
 theorem not_partsSum_zero (R : Ranks) :
     ¬ PartsSum R (fun _ => ℂ) (fun _ (_ : Unit) => (⊥ : Submodule ℂ ℂ)) := by
   intro h

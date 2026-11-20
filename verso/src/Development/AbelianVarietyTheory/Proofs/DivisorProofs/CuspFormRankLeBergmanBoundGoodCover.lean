@@ -46,6 +46,53 @@ open scoped ENNReal
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `D T j Y e o hY la Z β hβ hB`. Take `⟨G, hG⟩ : ∃ G : WTZ D.host.E, G = wtOf (T.Q.Dw j) la 0` from `⟨_, rfl⟩`. Use `set σ : Y.d.c₂.F →+* ℂ := goodOf Y.d.c₂ Y.d.c₂.F.val.toRingHom with hσdef`. Establish `hσ : GoodEmb Y.d.c₂ σ` using `goodEmb_goodOf _ _`. Take `⟨th, hr, hth, hdU⟩` from `hY.dictU σ hσ`.
+
+Establish `hd : ∀ g, (Y.dict σ g).2 ∈ ((Y.U σ).X (Y.dict σ g).1).dom` using `hdU.2.2.2.1`. Establish `hu` using `hY.unit σ hσ`. Use `set Cw := cuspOn Y.U Z G with hCw`. Use `set S : Submodule ℂ (FDSec (Y.U σ).X) := Submodule.span ℂ (rdU (Y.U σ) '' (Cw : Set (Rul Y.d.Xo₂ Y.d.c₂))) with hS`. Use `set μ := muOn (Y.U σ) (D.sp.W j) (Y.dict σ) Z with hμdef`.
+
+Use `set lw := modelWt (Y.U σ) G with hlw`. Establish `hSsub : S ≤ holSub (Y.U σ).X lw` using `Submodule.span_le.2 (by rintro _ ⟨f, hf, rfl⟩; exact (mem_cuspW.1 hf.1).2 σ hσ)`. Establish `hoff : ∀ P ∈ S, ∀ z, z ∉ framesOn (Y.U σ) Z → P z.1 z.2 = 0` using `fun P hP z hz => eq_zero_of_mem_span_cuspOn hP hz`. Establish `hμ1 : μ Set.univ ≤ 1` using `muPart_univ_le _ _ _`. Establish `hfin : ∀ P ∈ holSub (Y.U σ).X lw, petE (D.sp.W j) (Y.dict σ) μ lw P ≠ ⊤` using `fun P hP => petE_ne_top _ _ μ hμ1 hd hP`.
+
+Establish `hpt : ∀ P ∈ S, ∀ z, ptN lw P z ^ 2 ≤ β * (petE (D.sp.W j) (Y.dict σ) μ lw P).toReal ^ 2`. Introduce `P hP z`. Distinguish the cases in `hz : z ∈ framesOn (Y.U σ) Z`. Establish `hzd` using `hz.1`. Establish `hb` using `hB σ hσ ⟨z.1, z.2, hzd⟩ hz`.
+
+Establish `hb' : bergE (D.sp.W j) (Y.dict σ) μ lw ⟨z.1, z.2, hzd⟩ ≤ ENNReal.ofReal β`. Rewrite using `[hlw, hG]`. Conclude with `hb`. Establish `h` using `(bergE_le_iff (D.sp.W j) (Y.dict σ) μ hfin ⟨z.1, z.2, hzd⟩ ENNReal.ofReal_ne_top).1 hb' P (hSsub hP)`. Establish `hf` using `hfin P (hSsub hP)`.
+
+Establish `h2` using `ENNReal.toReal_mono (ENNReal.mul_ne_top ENNReal.ofReal_ne_top (ENNReal.pow_ne_top hf)) h`. Rewrite `h2` using `[ENNReal.toReal_pow, ENNReal.toReal_ofReal (GlobalTheory.AllWt.ptN_nonneg _ _ _), ENNReal.toReal_mul, ENNReal.toReal_ofReal hβ, ENNReal.toReal_pow]`. Conclude with `h2`. Establish `h0 : ptN lw P z = 0`. Simplify using `only [ptN, Data.pnorm, hoff P hP z hz, norm_zero, zero_mul]`.
+
+Rewrite using `[h0]`. Use polynomial arithmetic with `[sq_nonneg (petE (D.sp.W j) (Y.dict σ) μ lw P).toReal]`. Establish `hzero : ∀ P ∈ S, petE (D.sp.W j) (Y.dict σ) μ lw P = 0 → P = 0`. Introduce `P hP h0`. Use function extensionality and compare the values at `k x`.
+
+Distinguish the cases in `hz : (⟨k, x⟩ : Σ k, Frame ((Y.U σ).X k).Ψ D.R.r) ∈ framesOn (Y.U σ) Z`. Establish `h1` using `hpt P hP ⟨k, x⟩`. Rewrite `h1` using `[h0, ENNReal.toReal_zero]`. Establish `h2 : ptN lw P ⟨k, x⟩ = 0` using `by nlinarith [GlobalTheory.AllWt.ptN_nonneg lw P ⟨k, x⟩]`. Establish `h3` using `GlobalTheory.LevGeo.RankBd.pnorm_fac_pos ((Y.U σ).X k) (lw k) hz.1`.
+
+Establish `h4 : ‖P k x‖ * _ = 0` using `h2`. Break down `mul_eq_zero.1 h4 with h5 | h5` into its components or cases. Simplify using `using h5`. Conclude with `absurd h5 h3.ne'`. Conclude with `hoff P hP ⟨k, x⟩ hz`.
+
+Establish `hptd : ∀ (P : FDSec (Y.U σ).X) g, ptN lw P (Y.dict σ g) = ‖P (Y.dict σ g).1 (Y.dict σ g).2‖` using `fun P g => pnorm_eq_of_unit _ _ _ _ (hu g)`. Establish `hmeasQ : ∀ P ∈ S, AEStronglyMeasurable (fun q : AutQ (D.sp.W j) => ‖P (Y.dict σ q.out).1 (Y.dict σ q.out).2‖) (muQ1 (D.sp.W j))`. Introduce `P hP`. Establish `h` using `aesm_of_holSub (adelMeas_of_aut Y.d.Xo₂ Y.d.c₂ (U := Y.U) (σ := σ) (GlobalTheory.PetDef.adelAut_good Y hY σ hσ)) _ (hSsub hP)`. Establish `e : (fun q : AutQ (D.sp.W j) => ‖P (Y.dict σ q.out).1 (Y.dict σ q.out).2‖) = fun q => ‖onQ (D.sp.W j) (adel (D.sp.W j) (Y.dict σ) (fun _ => (1 : ℂ)) P) q‖`.
+
+Use function extensionality and compare the values at `q`. Simplify using `[onQ, adel]`. Rewrite using `[e]`. Conclude with `h.norm`. Establish `hmeas : ∀ P ∈ S, AEStronglyMeasurable (fun q : AutQ (D.sp.W j) => ‖P (Y.dict σ q.out).1 (Y.dict σ q.out).2‖) μ`.
+
+Introduce `P hP`. Rewrite using `[hμdef]`. Unfold `GlobalTheory.AllWt.muOn GlobalTheory.AllWt.muPart ProbabilityTheory.cond`. Conclude with `((hmeasQ P hP).restrict).smul_measure _`. Establish `hSfin : FiniteDimensional ℂ S ∧ (Module.finrank ℂ S : ℝ) ≤ β`.
+
+Distinguish the cases in `hA : muQ1 (D.sp.W j) (classesOver (D.sp.W j) (Y.dict σ) (framesOn (Y.U σ) Z)) = 0`. Establish `hμ0 : μ = 0` using `ProbabilityTheory.cond_eq_zero_of_meas_eq_zero hA`. Establish `hsub : Subsingleton S` using `⟨fun a b => by`. Establish `ha` using `hzero a a.2 (by rw [hμ0]; unfold GlobalTheory.AllWt.petE; exact eLpNorm_measure_zero)`. Establish `hb` using `hzero b b.2 (by rw [hμ0]; unfold GlobalTheory.AllWt.petE; exact eLpNorm_measure_zero)`.
+
+Conclude with `Subtype.ext (ha.trans hb.symm)⟩`. Use `⟨inferInstance, ?_⟩` and prove the remaining obligations. Rewrite using `[Module.finrank_zero_of_subsingleton]`. Simplify using `using hβ`. Use `haveI : IsProbabilityMeasure μ := isProbabilityMeasure_muPart _ _ hA`.
+
+Establish `hpet : ∀ P ∈ S, (petE (D.sp.W j) (Y.dict σ) μ lw P).toReal ^ 2 = ∫ q, ‖P (Y.dict σ q.out).1 (Y.dict σ q.out).2‖ ^ 2 ∂μ`. Introduce `P hP`. Take `⟨M, -, hM⟩` from `exists_ptN_le (hSsub hP)`. Establish `e : petE (D.sp.W j) (Y.dict σ) μ lw P = eLpNorm (fun q : AutQ (D.sp.W j) => ‖P (Y.dict σ q.out).1 (Y.dict σ q.out).2‖) 2 μ`. Unfold `GlobalTheory.AllWt.petE`.
+
+Use `congr 1`. Use function extensionality and compare the values at `q`. Conclude with `hptd P _`. Establish `h2` using `GlobalTheory.LevGeo.RankBd.eLpNorm_sq_eq (μ := μ) (fun _ => norm_nonneg _) (hmeas P hP) (B := M) fun q => by rw [← hptd]; exact hM ⟨_, _, hd q.out⟩`. Rewrite `h2` using `[← e]`.
+
+Rewrite using `[← ENNReal.toReal_pow, h2, ENNReal.toReal_ofReal (integral_nonneg fun _ => by positivity)]`. Use `GlobalTheory.Bergman.finite_and_finrank_le_of_pointwise (μ := μ) (fun q (P : S) => ‖(P : FDSec (Y.U σ).X) (Y.dict σ q.out).1 (Y.dict σ q.out).2‖) (fun q => ⟨(LinearMap.proj (R := ℂ) (φ := fun _ : Frame ((Y.U σ).X (Y.dict σ q.out).1).Ψ D.R.r => ℂ) (Y.dict σ q.out).2 ∘ₗ LinearMap.p …` and prove the remaining obligations. Introduce `P hP0`. Use `Subtype.ext (hzero P P.2 ?_)` and prove the remaining obligations. Unfold `GlobalTheory.AllWt.petE`.
+
+Establish `e : (fun q : AutQ (D.sp.W j) => ptN lw (P : FDSec (Y.U σ).X) (Y.dict σ q.out)) = fun _ => 0`. Use function extensionality and compare the values at `q`. Rewrite using `[hptd]`. Conclude with `hP0 q`. Rewrite using `[e]`.
+
+Conclude with `eLpNorm_zero`. Introduce `P q`. Establish `h1` using `hpt P P.2 (Y.dict σ q.out)`. Rewrite `h1` using `[hptd, hpet P P.2]`. Conclude with `h1`.
+
+Take `⟨hSf, hSle⟩` from `hSfin`. Establish `hcard : ∀ s : Finset Cw, LinearIndependent Y.d.c₂.F (fun i : s => (i : Cw)) → s.card ≤ Module.finrank ℂ S`. Introduce `s hs`. Set `eq : Fin s.card ≃ s` to `s.equivFin.symm`. Set `b : Fin s.card → Rul Y.d.Xo₂ Y.d.c₂` to `fun i => ((eq i : Cw) : Rul Y.d.Xo₂ Y.d.c₂)`.
+
+Establish `hb : LinearIndependent Y.d.c₂.F b` using `(hs.comp eq eq.injective).map' Cw.subtype (Submodule.ker_subtype _)`. Establish `hrd` using `GlobalTheory.reading_linearIndependent_secZ GlobalTheory.abelianSchemeLaws_all.1.secBaseChange (Y.U σ) (hY.unf σ hσ) (exZ _ G) s.card b (fun i => cuspW_le_secZ G (cuspOn_le Y.U Z G (eq i : Cw).2)) hb`. Set `v : Fin s.card → S` to `fun i => ⟨rdU (Y.U σ) (b i), Submodule.subset_span ⟨b i, (eq i : Cw).2, rfl⟩⟩`. Establish `hv : LinearIndependent ℂ v` using `LinearIndependent.of_comp S.subtype hrd`. Simplify using `using hv.fintype_card_le_finrank`.
+
+Use `haveI : Module.Free Y.d.c₂.F Cw := Module.Free.of_divisionRing Y.d.c₂.F Cw`. Establish `hrank : Module.rank Y.d.c₂.F Cw ≤ ((Module.finrank ℂ S : ℕ) : Cardinal)` using `rank_le hcard`. Use `haveI hCf : FiniteDimensional Y.d.c₂.F Cw := Module.rank_lt_aleph0_iff.1 (lt_of_le_of_lt hrank (Cardinal.nat_lt_aleph0 _))`. Establish `h2 : Module.finrank Y.d.c₂.F Cw ≤ Module.finrank ℂ S` using `Module.finrank_le_of_rank_le hrank`. Establish `h3 : GlobalTheory.AllWt.rankOn Y.U Z G ≤ Module.finrank Y.d.c₂.F Cw`.
+
+Unfold `GlobalTheory.AllWt.rankOn Formalism.HN.rkK`. Conclude with `Submodule.finrank_le _`. Use `show (GlobalTheory.AllWt.rankOn Y.U Z (wtOf (T.Q.Dw j) la 0) : ℝ) ≤ β`. Rewrite using `[← hG]`. Conclude with `le_trans (Nat.cast_le.2 (h3.trans h2)) hSle`.
+-/
 theorem rkC_le_of_bergLe : ∀ (D : D7) (T : Core D) (j : ℕ) (Y : Deep T j) (e : ℕ) (o : ℝ), Y.Good e o →
     ∀ (la : AllWt.Weight (T.Q.Dw j)) (Z : Comp Y.d.Xo₂ Y.d.c₂) (β : ℝ), 0 ≤ β →
     BergLe Z Y.U (fun _ => D.sp.W j) Y.dict la β → (Y.rkC la Z : ℝ) ≤ β := by

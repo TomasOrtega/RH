@@ -5,6 +5,11 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 open UpperTheory.V.Z.Kato.Joint
 open scoped Pointwise
 
+/- English proof (translation)
+Establish `hn : Ideal.absNorm (Ideal.span {((q : ℕ) : 𝓞 ℚ)}) = q`. Rewrite using `[Ideal.absNorm_span_natCast, RingOfIntegers.rank, Module.finrank_self, pow_one]`. Establish `hne : Ideal.span {((q : ℕ) : 𝓞 ℚ)} ≠ ⊤` using `fun h => by`. Rewrite `hn` using `[h, Ideal.absNorm_top]`. Conclude with `hq.one_lt.ne hn`.
+
+Take `⟨M, hM, hle⟩` from `Ideal.exists_le_maximal _ hne`. Establish `hmem : ((q : ℕ) : 𝓞 ℚ) ∈ M` using `(Ideal.span_singleton_le_iff_mem M).1 hle`. Use `⟨⟨M, hM.isPrime, fun h => ?_⟩, hmem⟩` and prove the remaining obligations. Rewrite `hmem` using `[h, Ideal.mem_bot]`. Conclude with `hq.ne_zero (Nat.cast_eq_zero.1 hmem)`.
+-/
 private theorem aqBd_place {q : ℕ} (hq : q.Prime) : ∃ w : Pl, ((q : ℕ) : 𝓞 ℚ) ∈ w.asIdeal := by
   have hn : Ideal.absNorm (Ideal.span {((q : ℕ) : 𝓞 ℚ)}) = q := by
     rw [Ideal.absNorm_span_natCast, RingOfIntegers.rank, Module.finrank_self, pow_one]
@@ -17,6 +22,11 @@ private theorem aqBd_place {q : ℕ} (hq : q.Prime) : ∃ w : Pl, ((q : ℕ) : �
   rw [h, Ideal.mem_bot] at hmem
   exact hq.ne_zero (Nat.cast_eq_zero.1 hmem)
 
+/- English proof (translation)
+Take `⟨w, hw⟩` from `aqBd_place hq`. Take `⟨V, hV⟩` from `exists_isPlaceOver (F := ℚ) Ω w`. Take `⟨σ, hσ⟩` from `exists_isFrob (F := ℚ) hV`. Rewrite `hσ` using `[GlobalTheory.RhoAdm.normV_ratPrime hq w hw]`. Use `⟨σ, V, ?_, fun x hx => ⟨?_, hσ.2 x ((V.valuation_le_one_iff x).2 hx)⟩⟩` and prove the remaining obligations.
+
+Rewrite using `[ValuationSubring.mem_nonunits_iff]`. Simplify using `using (hV _).2 hw`. Establish `h : σ • V = V` using `MulAction.mem_stabilizer_iff.1 hσ.1`. Rewrite using `[← h]`. Conclude with `ValuationSubring.smul_mem_pointwise_smul σ x V hx`.
+-/
 private theorem aqBd_frob (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] {q : ℕ} (hq : q.Prime) :
     ∃ s : Ω ≃ₐ[ℚ] Ω, FrobAt q s := by
   obtain ⟨w, hw⟩ := aqBd_place hq
@@ -30,6 +40,13 @@ private theorem aqBd_frob (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure 
     rw [← h]
     exact ValuationSubring.smul_mem_pointwise_smul σ x V hx
 
+/- English proof (translation)
+Introduce `l _ Ω _ _ _ ι e S A W g χ hN hχ hatt`. Take `⟨S0, hS0⟩` from `GlobalTheory.RhoAdm.frob_trace_det ι e W g χ hatt`. Establish `hc` using `(Continuous.matrix_trace (Units.continuous_val.comp (GlobalTheory.RhoAdm.untw_cont e W χ hN.cont hχ))).norm`. Use `haveI : CompactSpace (Ω ≃ₐ[ℚ] Ω) := inferInstance`. Take `⟨C, hC⟩` from `(isCompact_range hc).bddAbove`.
+
+Take `⟨k, hk⟩` from `GlobalTheory.KummerEisensteinGalois.exists_le_l_pow l (max C (∑ q ∈ S0, ‖ι.symm (g.a q)‖))`. Use `⟨k, fun q hq => le_trans ?_ hk⟩` and prove the remaining obligations. Distinguish the cases in `hqS : q ∈ S0`. Conclude with `le_max_of_le_right (Finset.single_le_sum (f := fun q => ‖ι.symm (g.a q)‖) (fun _ _ => norm_nonneg _) hqS)`. Take `⟨s, hs⟩` from `aqBd_frob Ω hq`.
+
+Rewrite using `[← (hS0 q hq hqS s hs).1]`. Conclude with `le_max_of_le_left (hC ⟨s, rfl⟩)`.
+-/
 theorem UpperTheory.V.Z.Kato.Joint.aqBd :
     UpperTheory.V.Z.Kato.Joint.AqBd := by
   intro l _ Ω _ _ _ ι e S A W g χ hN hχ hatt

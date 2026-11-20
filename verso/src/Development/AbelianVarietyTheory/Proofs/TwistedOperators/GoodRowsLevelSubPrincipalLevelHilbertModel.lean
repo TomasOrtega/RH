@@ -9,6 +9,11 @@ namespace GlobalTheory.GoodRowsLevel
 variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m}
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
 
+/- English proof (translation)
+Establish `h1 : rTup (R.βY 0) (R.dat0 R.triv) x = 1` using `Subgroup.mem_bot.1 hx.2`. Establish `h1' : rTup (R.βY 0) (R.dat0 P) x = 1` using `h1`. Use `⟨⟨hx.1, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[h1']`. Conclude with `Subgroup.one_mem _`.
+
+Unfold `levFn`. Rewrite using `[h1, h1', blockDiagonalExtendByOnePrimeField_one, blockDiagonalExtendByOnePrimeField_one]`. Both sides reduce to the same expression.
+-/
 theorem mem_lev_of_triv (R : RealDat D A Ks) (P : LevelP R.Pg D.R.r ℂ) {x : GL (Fin (Yc D 0).rank) (EAf D)}
     (hx : x ∈ Formalism.L2.DIV.lev D.sp.cm (Yc D 0).gram (R.βY 0) (R.dat0 R.triv)) :
     x ∈ Formalism.L2.DIV.lev D.sp.cm (Yc D 0).gram (R.βY 0) (R.dat0 P) ∧
@@ -21,6 +26,9 @@ theorem mem_lev_of_triv (R : RealDat D A Ks) (P : LevelP R.Pg D.R.r ℂ) {x : GL
     rw [h1, h1', blockDiagonalExtendByOnePrimeField_one, blockDiagonalExtendByOnePrimeField_one]
     rfl
 
+/- English proof (translation)
+The claim follows from `h.aut cusp := h.cusp equiv := h.equiv cont := h.cont lev v k hk g := by have hk2 : k ∈ GfC (Yc D 0) ⊓ (Formalism.L2.DIV.lev D.sp.cm (Yc D 0).gram (R.βY 0) (R.dat0 R.triv)).comap (finE (Yc D 0)) := hk rw [Subgroup.mem_inf, Subgroup.mem_comap] at hk2 have hm := mem_lev_of_triv R P …`.
+-/
 theorem isMultMap_triv (R : RealDat D A Ks) (P : LevelP R.Pg D.R.r ℂ) {S : MMap (R.MY 0)}
     (h : IsMultMap R.θ (R.MY 0) (levS _ (R.βY 0) (R.dat0 P)) (levChi _ (R.βY 0) (R.dat0 P)) S) :
     IsMultMap R.θ (R.MY 0) (levS _ (R.βY 0) (R.dat0 R.triv)) (levChi _ (R.βY 0) (R.dat0 R.triv)) S where
@@ -39,12 +47,20 @@ theorem isMultMap_triv (R : RealDat D A Ks) (P : LevelP R.Pg D.R.r ℂ) {S : MMa
     simp only [levChi]
     rw [hm.2]
 
+/- English proof (translation)
+Introduce `S hS`. Rewrite `hS`, the goal using `[RealDat.EEat, goodPart, Submodule.mem_inf]`. Use `⟨?_, hS.2⟩` and prove the remaining obligations. Conclude with `Submodule.span_mono (fun S' hS' => isMultMap_triv R P hS') hS.1`.
+-/
 theorem eeat_le_triv (R : RealDat D A Ks) (P : LevelP R.Pg D.R.r ℂ) : R.EEat P ≤ R.EEat R.triv := by
   intro S hS
   rw [RealDat.EEat, goodPart, Submodule.mem_inf] at hS ⊢
   refine ⟨?_, hS.2⟩
   exact Submodule.span_mono (fun S' hS' => isMultMap_triv R P hS') hS.1
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T A Ks _ _ _ R hM`. Establish `h2 : ∀ P, R.EEat P ≤ LinearMap.range R.HE.e` using `fun P => by`. Rewrite using `[hM.HE.2.1]`. Conclude with `eeat_le_triv R P`. Use `⟨eeat_le_triv R, h2, ?_⟩` and prove the remaining obligations.
+
+Introduce `P S hS S' hS'`. Take `⟨x, rfl⟩` from `h2 P hS`. Take `⟨y, rfl⟩` from `h2 P hS'`. Rewrite using `[← hM.HE.2.2 x y]`. Conclude with `GlobalTheory.SchurPolar.isMultiplicityInner_inner (R.MY 0) R.ν0 R.fd0 R.HE _ hM.HE x y`.
+-/
 theorem eeat_sub_principal : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks), R.IsModels → (∀ P, R.EEat P ≤ R.EEat R.triv) ∧ (∀ P, R.EEat P ≤ LinearMap.range R.HE.e) ∧ ∀ P, ∀ S ∈ R.EEat P, ∀ S' ∈ R.EEat P, IsMultIP (R.MY 0) R.ν0 R.fd0 S S' (ipM (R.MY 0) R.ν0 R.fd0 S S') := by
   intro D G _ _ Pl0 T A Ks _ _ _ R hM
   have h2 : ∀ P, R.EEat P ≤ LinearMap.range R.HE.e := fun P => by

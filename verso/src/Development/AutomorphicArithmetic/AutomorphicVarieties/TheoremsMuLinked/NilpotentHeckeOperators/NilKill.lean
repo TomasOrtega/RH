@@ -10,6 +10,17 @@ open UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.Hi UpperTheory.V.AlgebraToo
 open scoped TensorProduct
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
+/- English proof (translation)
+Break down `isEmpty_or_nonempty (Fin n) with h | h` into its components or cases. Conclude with `⟨1, fun _ _ i => h.elim i⟩`. Take `⟨p, hp⟩` from `Finite.exists_min (fun p : Fin n × Fin n => valuation k ((t p.2 * (t p.1)⁻¹ : kˣ) : k))`. Use `set c : kˣ := t p.2 * (t p.1)⁻¹ with hc`. Establish `h1 : valuation k (c : k) ≤ 1` using `by simpa using hp (p.1, p.1)`.
+
+Use `⟨c, fun s hs i j hij => ?_⟩` and prove the remaining obligations. Break down `hij.eq_or_lt with rfl | hlt` into its components or cases. Conclude with `le_rfl`. Establish `h2 : valuation k (s i : k) * valuation k (c : k) ≤ valuation k (s j : k)`. Break down `hs with rfl | rfl` into its components or cases.
+
+Simplify using `using h1`. Use `mul_le_mul_right (hp (i, j)) (valuation k (s i : k))` as an intermediate fact. Use `this.trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[← map_mul, ← Units.val_mul]`. Use `congr 2`.
+
+Simplify using the standard rewrite rules. Establish `hj` using `j.2`. Establish `hlt' : (i : ℕ) < j` using `hlt`. Establish `e : n - (i : ℕ) = 1 + ((n - j) + (j - i - 1))` using `by omega`. Rewrite using `[e]`.
+
+Simplify using `only [Units.val_mul, Units.val_pow_eq_pow_val, map_mul, map_pow, pow_add, pow_one]`. Rewrite using `[← mul_assoc]`. Conclude with `mul_le_mul' h2 (mul_le_of_le_one_right' (pow_le_one' h1 _))`.
+-/
 private theorem nilKill_split {k : Type} [Field k] [ValuativeRel k] {n : ℕ} (t : Fin n → kˣ) :
     ∃ c : kˣ, ∀ s : Fin n → kˣ, (s = 1 ∨ s = t) → ∀ i j : Fin n, i ≤ j →
       valuation k ((s i * c ^ (n - i) : kˣ) : k) ≤ valuation k ((s j * c ^ (n - j) : kˣ) : k) := by
@@ -37,6 +48,9 @@ private theorem nilKill_split {k : Type} [Field k] [ValuativeRel k] {n : ℕ} (t
   rw [← mul_assoc]
   exact mul_le_mul' h2 (mul_le_of_le_one_right' (pow_le_one' h1 _))
 
+/- English proof (translation)
+Use `haveI : Fintype (MulAction.orbit K (x : G ⧸ K')) := Set.Finite.fintype hx`. Unfold `dc`. Rewrite using `[finsum_eq_sum_of_fintype, finsum_eq_sum_of_fintype, LinearMap.sum_apply, LinearMap.sum_apply, map_sum]`. Conclude with `Finset.sum_congr rfl fun q _ => (hf _ _).symm`.
+-/
 private theorem nilKill_dc {A M A' M' G : Type} [CommRing A] [AddCommGroup M] [Module A M] [CommRing A'] [AddCommGroup M']
     [Module A' M'] [Group G] (ρ : Representation A G M) (ρ' : Representation A' G M') (K K' : Subgroup G) (x : G)
     (hx : FinOrb K K' x) (f : M →+ M') (hf : ∀ g m, f (ρ g m) = ρ' g (f m)) (m : M) :
@@ -46,6 +60,9 @@ private theorem nilKill_dc {A M A' M' G : Type} [CommRing A] [AddCommGroup M] [M
   rw [finsum_eq_sum_of_fintype, finsum_eq_sum_of_fintype, LinearMap.sum_apply, LinearMap.sum_apply, map_sum]
   exact Finset.sum_congr rfl fun q _ => (hf _ _).symm
 
+/- English proof (translation)
+Establish `hinj : Function.Injective (θ' b).val` using `((Module.End.isUnit_iff _).1 (θ' b).isUnit).1`. Apply `hinj` to reduce the goal to its premises. Establish `h` using `ha m`. Rewrite `h` using `[map_mul, map_mul, Units.val_mul, Units.val_mul, Module.End.mul_apply, Module.End.mul_apply]`. Rewrite using `[h, hb]`.
+-/
 private theorem nilKill_ext {A N A' N' T : Type} [CommRing A] [AddCommGroup N] [Module A N] [CommRing A'] [AddCommGroup N']
     [Module A' N'] [Group T] (θ : T →* (Module.End A N)ˣ) (θ' : T →* (Module.End A' N')ˣ) (g : N → N') (t b : T)
     (hb : ∀ m, (θ' b).val (g m) = g ((θ b).val m)) (ha : ∀ m, (θ' (b * t)).val (g m) = g ((θ (b * t)).val m)) (m : N) :
@@ -56,12 +73,20 @@ private theorem nilKill_ext {A N A' N' T : Type} [CommRing A] [AddCommGroup N] [
   rw [map_mul, map_mul, Units.val_mul, Units.val_mul, Module.End.mul_apply, Module.End.mul_apply] at h
   rw [h, hb]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(MonoidAlgebra.lift ℂ (Module.End ℂ W) T ((Units.coeHom _).comp θ)).comp (MvPolynomial.aeval fun a => MonoidAlgebra.single (t a) 1), fun a => by simp⟩`.
+-/
 private theorem nilKill_act {T W κ : Type} [CommGroup T] [AddCommGroup W] [Module ℂ W]
     (θ : T →* (Module.End ℂ W)ˣ) (t : κ → T) :
     ∃ act : MvPolynomial κ ℂ →ₐ[ℂ] Module.End ℂ W, ∀ a, act (MvPolynomial.X a) = θ (t a) :=
   ⟨(MonoidAlgebra.lift ℂ (Module.End ℂ W) T ((Units.coeHom _).comp θ)).comp
     (MvPolynomial.aeval fun a => MonoidAlgebra.single (t a) 1), fun a => by simp⟩
 
+/- English proof (translation)
+Proceed by induction on `F using MvPolynomial.induction_on generalizing v with`. Consider the case `C c`. Rewrite using `[← MvPolynomial.algebraMap_eq, AlgHom.commutes, AlgHom.commutes]`. Simplify using the standard rewrite rules. Consider the case `add p q hp hq => simp [hp, hq]`.
+
+Consider the case `mul_X p a hp => simp [h, hp]`.
+-/
 private theorem nilKill_int {W W' κ : Type} [AddCommGroup W] [Module ℂ W] [AddCommGroup W'] [Module ℂ W']
     (act : MvPolynomial κ ℂ →ₐ[ℂ] Module.End ℂ W) (act' : MvPolynomial κ ℂ →ₐ[ℂ] Module.End ℂ W') (g : W →ₗ[ℂ] W')
     (h : ∀ a v, act' (MvPolynomial.X a) (g v) = g (act (MvPolynomial.X a) v)) (F : MvPolynomial κ ℂ) (v : W) :
@@ -73,6 +98,23 @@ private theorem nilKill_int {W W' κ : Type} [AddCommGroup W] [Module ℂ W] [Ad
   | add p q hp hq => simp [hp, hq]
   | mul_X p a hp => simp [h, hp]
 
+/- English proof (translation)
+Establish `hq : IsUnit (resCard k : ℂ)` using `(Nat.cast_ne_zero.2 (Nat.card_pos (α := 𝓀[k])).ne').isUnit`. Take `⟨θ, hθ, -⟩` from `thetaEx k n C ℂ σ.V σ.ρ hq`. Take `⟨hfd, hrk, -⟩` from `jqLine hG hBZ k n C σ.V σ.ρ σ.smooth σ.irred`. Take `⟨actσ, hσ⟩` from `nilKill_act θ t`. Establish `hnil` using `absNil _ _ κ θ t actσ hσ (fun a => by`.
+
+Take `⟨C', δ, i, h1, h2⟩` from `ht a`. Rewrite using `[h2]`. Conclude with `thetaFin k n ℂ σ.V σ.ρ C C' θ hθ δ h1 i) _ hrk F (hF θ hθ)`. Establish `ho : IsOpen (iwC k n C : Set (GL (Fin n) k))` using `Subgroup.isOpen_mono (H₁ := KOne k (Fin n)) (le_sup_left.trans le_sup_left) GlobalTheory.StepData.isOpen_KOne`. Establish `hle : iwC k n C ≤ iwahori k (Fin n)` using `fun g hg => (((memIwC k n C).1 g).1 hg).1`.
+
+Establish `hc : IsCompact (iwC k n C : Set (GL (Fin n) k))` using `(IwahoriOnto.isCompact_iwahori k (Fin n)).of_isClosed_subset (Subgroup.isClosed_of_isOpen _ ho) hle`. Use `LinearMap.ext fun y => ?_` and prove the remaining obligations. Establish `hy` using `isoFix k n Y π σ _ hc hs y y.2`. Establish `hsub : (⨆ f : {f : σ.V →ₗ[ℂ] Y // ∀ g v, f (σ.ρ g v) = π g (f v)}, (fixd σ.ρ (iwC k n C)).map f.1) ≤ (LinearMap.ker (act F)).map (fixd π (iwC k n C)).subtype`. Use `iSup_le ?_` and prove the remaining obligations.
+
+Introduce and unpack `⟨f, hf⟩ _ ⟨v, hv, rfl⟩`. Set `g : fixd σ.ρ (iwC k n C) →ₗ[ℂ] fixd π (iwC k n C)` to `f.restrict fun x hx u hu => by rw [← hf, hx u hu]`. Establish `hd : ∀ s, Dom s → ∀ v, (θY s).val (g v) = g ((θ s).val v)`. Introduce `s hs v`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Express the relevant statement in the definitionally equal form `_ = f _`. Establish `hfin : FinOrb (iwC k n C) (iwC k n C) (diagT k (Fin n) s)` using `(heckePairIwC _ n C).1 _`. Rewrite using `[hY s hs, hθ s hs]`. Use `((hkApply ℂ _ Y π _ _ _ hfin).1 (g v)).trans ?_` and prove the remaining obligations. Use `(nilKill_dc σ.ρ π _ _ _ hfin f.toAddMonoidHom hf v).trans ?_` and prove the remaining obligations.
+
+Conclude with `congrArg f ((hkApply ℂ _ σ.V σ.ρ _ _ _ hfin).1 v).symm`. Establish `hall : ∀ s v, (θY s).val (g v) = g ((θ s).val v)`. Introduce `s v`. Take `⟨c, hc⟩` from `nilKill_split s`. Use `nilKill_ext θ θY g s (fun i : Fin n => c ^ (n - (i : ℕ))) (hd _ ?_) (hd _ ?_) v` and prove the remaining obligations.
+
+Introduce `i i' hi`. Simplify using `using hc 1 (Or.inl rfl) i i' hi`. Rewrite using `[mul_comm]`. Conclude with `hc s (Or.inr rfl)`. Use `⟨g ⟨v, hv⟩, ?_, rfl⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `act _ _ = 0`. Rewrite using `[nilKill_int actσ act g (fun a v => by rw [hact, hσ, hall]), hnil, LinearMap.zero_apply, map_zero]`. Take `⟨y', hy', e⟩` from `hsub hy`. Take `rfl : y' = y` from `Subtype.ext e`. Conclude with `hy'`.
+-/
 private theorem nilKill_loc (hG : GlobalTheory.Published.GeometricLemma) (hBZ : GlobalTheory.Published.BernsteinZelevinskyFiniteness)
     {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n : ℕ}
     (C : Subgroup 𝓀[k]ˣ) {Y : Type} [AddCommGroup Y] [Module ℂ Y] (π : Representation ℂ (GL (Fin n) k) Y)
@@ -127,6 +169,15 @@ private theorem nilKill_loc (hG : GlobalTheory.Published.GeometricLemma) (hBZ : 
   obtain rfl : y' = y := Subtype.ext e
   exact hy'
 
+/- English proof (translation)
+Introduce `hG hBZ L _ _ n q w Y _ _ π C Θ hΘ j σ hs κ t ht act hact F hF`. Establish `hq : IsUnit (resCard ((w j).adicCompletion L) : ℂ)` using `(Nat.cast_ne_zero.2 (Nat.card_pos (α := 𝓀[(w j).adicCompletion L])).ne').isUnit`. Take `⟨θY, hY, -⟩` from `thetaEx _ n (C j) ℂ Y (π.comp (atJ n w j)) hq`. Take `⟨actY, haY⟩` from `nilKill_act θY t`. Establish `h0` using `nilKill_loc hG hBZ (C j) (π.comp (atJ n w j)) σ hs t ht θY hY actY haY F hF`.
+
+Establish `hle : fixd π (UC n w C) ≤ fixd (π.comp (atJ n w j)) (iwC _ n (C j))`. Introduce `x hx u hu`. Use `hx (atJ n w j u) fun j' _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : j' = j`. Substitute `h` using the available equality.
+
+Simplify `hu` using `[atJ]`. Establish `: atJ n w j u j' = 1` using `Pi.mulSingle_eq_of_ne (M := fun j => GLw n (w j)) h u`. Rewrite using `[this]`. Conclude with `(iwC _ n (C j')).one_mem`. Use `LinearMap.ext fun m => Submodule.inclusion_injective hle ?_` and prove the remaining obligations.
+
+Rewrite using `[← nilKill_int act actY (Submodule.inclusion hle) (fun a v => ?_), h0, LinearMap.zero_apply, LinearMap.zero_apply, map_zero]`. Rewrite using `[haY, hact]`. Conclude with `Subtype.ext (thetaLoc L n q w ℂ Y π C Θ hΘ j θY hY (t a) v _ rfl)`.
+-/
 theorem UpperTheory.V.Th.nilKillX :
     GlobalTheory.Published.GeometricLemma → GlobalTheory.Published.BernsteinZelevinskyFiniteness → ∀ (L : Type) [Field L] [NumberField L] (n q : ℕ) (w : Fin q → Plc L) (Y : Type) [AddCommGroup Y] [Module ℂ Y] (π : Representation ℂ (GV n w) Y) (C : ∀ j, Subgroup 𝓀[(w j).adicCompletion L]ˣ) (Θ), IsThetaQ π C Θ → ∀ (j : Fin q) (σ : SmIrr (GLw n (w j))), IsoSum (π.comp (atJ n w j)) ⊤ σ → ∀ (κ : Type) (t : κ ⊕ κ → Fin n → ((w j).adicCompletion L)ˣ), (∀ a, ∃ (C' : Subgroup 𝓀[(w j).adicCompletion L]ˣ) (δ : ((w j).adicCompletion L)ˣ) (i : Fin n), IsGenMod _ C' δ ∧ t (.inr a) = Pi.mulSingle i δ) → ∀ (act : MvPolynomial (κ ⊕ κ) ℂ →ₐ[ℂ] Module.End ℂ (fixd π (UC n w C))), (∀ a, act (MvPolynomial.X a) = Θ j (t a)) → ∀ F : MvPolynomial (κ ⊕ κ) ℂ, (∀ θ, IsTheta σ.ρ (C j) θ → ∀ χ : (Fin n → ((w j).adicCompletion L)ˣ) →* ℂˣ, (⨅ t, Module.End.maxGenEigenspace (θ t : Module.End ℂ (fixd σ.ρ (iwC _ n (C j)))) (χ t : ℂ)) ≠ ⊥ → ∀ (S : Type) [CommRing S] [Algebra ℂ S] (φ : MvPolynomial (κ ⊕ κ) ℂ →ₐ[ℂ] S), (∀ a, (φ (MvPolynomial.X (.inl a)) - algebraMap ℂ S (χ (t (.inl a)) : ℂ)) ^ n.factorial = 0) → (∀ a, φ (MvPolynomial.X (.inr a)) = algebraMap ℂ S (χ (t (.inr a)) : ℂ)) → φ F = 0) → act F = 0 := by
   intro hG hBZ L _ _ n q w Y _ _ π C Θ hΘ j σ hs κ t ht act hact F hF

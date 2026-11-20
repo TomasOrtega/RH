@@ -35,6 +35,9 @@ def Calc.Reads [IsIntegral X] : Prop :=
 
 omit [Fintype ι] in
 
+/- English proof (translation)
+Rewrite using `[smul_zero]`. Conclude with `⟨fun _ z => CxPts.cInfAt_const 0 z, fun _ _ _ _ _ _ _ => rfl⟩`.
+-/
 example : (∀ σ z, CxPts.CInfAt (M.pull ε π ((2 : ℝ) • 0) σ) z) ∧ ∀ σ σ',
     (Weight.ofFun (M.pull ε π ((2 : ℝ) • 0) σ)).IsConj (Weight.ofFun (M.pull ε π ((2 : ℝ) • 0) σ')) := by
   rw [smul_zero]

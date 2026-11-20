@@ -20,6 +20,9 @@ namespace GlobalTheory.CompanionTheory.RelKill
 section Per
 variable {K : Type} [Field K] {W Y : Scheme.{0}} {q : Y ⟶ Spec (CommRingCat.of K)} {i : W ⟶ Y}
 
+/- English proof (translation)
+Rewrite using `[Scheme.homOfLE_appTop]`. Simplify using `only [rs, Scheme.Opens.topIso_hom, CommRingCat.comp_apply]`. Rewrite using `[← CommRingCat.comp_apply, ← CommRingCat.comp_apply, ← Functor.map_comp, ← Functor.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem rs_topIso {V V' : Y.Opens} (h : V' ≤ V) (x : Γ(V, ⊤)) :
     rs h (V.topIso.hom.hom x) = V'.topIso.hom.hom ((Y.homOfLE h).appTop.hom x) := by
   rw [Scheme.homOfLE_appTop]
@@ -29,12 +32,18 @@ theorem rs_topIso {V V' : Y.Opens} (h : V' ≤ V) (x : Γ(V, ⊤)) :
 
 def kerI (q : Y ⟶ Spec (CommRingCat.of K)) (i : W ⟶ Y) (V : Y.Opens) : Ideal (Sec q V) := RingHom.ker (i.app V).hom
 
+/- English proof (translation)
+Substitute `hP` using the available equality. Conclude with `(hAR K W Y q i hQ V d d' hc hc' b).1 j hj`.
+-/
 theorem one_P [CharZero K] [IsClosedImmersion i] (hAR : AffRel) (hQ : Cosieve (On q i)) {V : Y.Opens} {P : ObjectProperty (Thick (smFun Y q))}
     (hP : P = inU q V) {d d' : ℕ} (hc : Nonempty (Coord q V d)) (hc' : Nonempty (Coord (i ≫ q) (i ⁻¹ᵁ V) d')) (b j : ℕ)
     (hj : j ≠ b) : Subsingleton ((RC (G q b) P hQ).H j) := by
   subst hP
   exact (hAR K W Y q i hQ V d d' hc hc' b).1 j hj
 
+/- English proof (translation)
+Substitute `hP` using the available equality. Conclude with `((hAR K W Y q i hQ V d d' hc hc' b).2 E hE (incl (G q b) (inU q V) hQ) fun _ _ => rfl).1`.
+-/
 theorem inj_P [CharZero K] [IsClosedImmersion i] (hAR : AffRel) (hQ : Cosieve (On q i)) {V : Y.Opens} {P : ObjectProperty (Thick (smFun Y q))}
     (hP : P = inU q V) {d d' : ℕ} (hc : Nonempty (Coord q V d)) (hc' : Nonempty (Coord (i ≫ q) (i ⁻¹ᵁ V) d')) (b : ℕ)
     (E : Om K (Sec q V) b →ₗ[K] HV q V b b) (hE : IsOm q V b E) :
@@ -42,6 +51,9 @@ theorem inj_P [CharZero K] [IsClosedImmersion i] (hAR : AffRel) (hQ : Cosieve (O
   subst hP
   exact ((hAR K W Y q i hQ V d d' hc hc' b).2 E hE (incl (G q b) (inU q V) hQ) fun _ _ => rfl).1
 
+/- English proof (translation)
+Substitute `hP` using the available equality. Conclude with `((hAR K W Y q i hQ V d d' hc hc' b).2 E hE (incl (G q b) (inU q V) hQ) fun _ _ => rfl).2 ω`.
+-/
 theorem range_P [CharZero K] [IsClosedImmersion i] (hAR : AffRel) (hQ : Cosieve (On q i)) {V : Y.Opens} {P : ObjectProperty (Thick (smFun Y q))}
     (hP : P = inU q V) {d d' : ℕ} (hc : Nonempty (Coord q V d)) (hc' : Nonempty (Coord (i ≫ q) (i ⁻¹ᵁ V) d')) (b : ℕ)
     (E : Om K (Sec q V) b →ₗ[K] HV q V b b) (hE : IsOm q V b E) (ω : Om K (Sec q V) b) :
@@ -50,6 +62,9 @@ theorem range_P [CharZero K] [IsClosedImmersion i] (hAR : AffRel) (hQ : Cosieve 
   subst hP
   exact ((hAR K W Y q i hQ V d d' hc hc' b).2 E hE (incl (G q b) (inU q V) hQ) fun _ _ => rfl).2 ω
 
+/- English proof (translation)
+Substitute `hP hP'` using the available equality. Conclude with `h k ω`.
+-/
 theorem pull_P {V V' : Y.Opens} {P P' : ObjectProperty (Thick (smFun Y q))} (hP : P = inU q V) (hP' : P' = inU q V') (k : P' ≤ P)
     (b : ℕ) (E : Om K (Sec q V) b →ₗ[K] HV q V b b) (E' : Om K (Sec q V') b →ₗ[K] HV q V' b b)
     (φ : Om K (Sec q V) b →ₗ[K] Om K (Sec q V') b)
@@ -58,6 +73,9 @@ theorem pull_P {V V' : Y.Opens} {P P' : ObjectProperty (Thick (smFun Y q))} (hP 
   subst hP hP'
   exact h k ω
 
+/- English proof (translation)
+Substitute `hP` using the available equality. Take `⟨hb, hform⟩` from `hf k₁ k₂`. Conclude with `cup_form hFL hFU hFC E₂ E₃ h₂ h₃ g₁ t _ hb hform w hw y hy ω hcls hz`.
+-/
 theorem cup_P (hFL : FormLaws) (hFU : FormUniq) (hFC : FormCup) {V : Y.Opens} {P U₁ U₂ : ObjectProperty (Thick (smFun Y q))} (hP : P = inU q V)
     (k₁ : P ≤ U₁) (k₂ : P ≤ U₂) (β₁ : CH.Cn (U₁.ι ⋙ G q 1) 1) (β₂ : CH.Cn (U₂.ι ⋙ G q 1) 1) {a : ℕ}
     (E₂ : Om K (Sec q V) a →ₗ[K] HV q V a a) (E₃ : Om K (Sec q V) (a + 1) →ₗ[K] HV q V (a + 1) (a + 1))
@@ -77,6 +95,9 @@ theorem cup_P (hFL : FormLaws) (hFU : FormUniq) (hFC : FormCup) {V : Y.Opens} {P
   obtain ⟨hb, hform⟩ := hf k₁ k₂
   exact cup_form hFL hFU hFC E₂ E₃ h₂ h₃ g₁ t _ hb hform w hw y hy ω hcls hz
 
+/- English proof (translation)
+Introduce `s hs`. Establish `hx' : x ((CH.back_mono h).functor ⋙ s) = 0` using `hx _ (hQ (s.map (homOfLE (Fin.zero_le _))) hs)`. Express the relevant statement in the definitionally equal form `P.μ _ _ (CH.term F₂ s x (CH.back h) (CH.back_mono h)) = 0`. Unfold `CH.term`. Rewrite using `[hx', map_zero, map_zero]`.
+-/
 theorem cup_mem_relS {R : Type} [CommRing R] {C : Type 1} [Category.{0} C] {F₁ F₂ F₃ : C ⥤ ModuleCat.{0} R} (P : CH.Pairing F₁ F₂ F₃)
     {Q : ObjectProperty C} (hQ : Cosieve Q) {p n m : ℕ} (h : p + n = m) (b : CH.Cn F₁ p) (x : CH.Cn F₂ n) (hx : x ∈ relS F₂ Q n) :
     P.cupC h b x ∈ relS F₃ Q m := by

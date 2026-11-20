@@ -22,11 +22,17 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.Ker.ZakLaws
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ k a`. Simplify using `only [embR, Matrix.neg_apply, map_neg, Pi.neg_apply]`.
+-/
 theorem embR_neg {E : Type} [Field E] [NumberField E] [IsCMField E] {r n : ℕ} (X : Data E r)
     (y : Matrix (Fin n) (Fin r) E) : embR X (-y) = -embR X y := by
   funext τ k a
   simp only [embR, Matrix.neg_apply, map_neg, Pi.neg_apply]
 
+/- English proof (translation)
+Unfold `EFR hermC`. Simplify using `only [Pi.neg_apply, map_neg, mul_neg, Finset.sum_neg_distrib, Complex.neg_re]`.
+-/
 theorem EFR_neg_right {E : Type} [Field E] [NumberField E] [IsCMField E] {r n : ℕ} (X : Data E r)
     (v v' : WR X n) : EFR X v (-v') = -EFR X v v' := by
   unfold EFR hermC
@@ -34,12 +40,24 @@ theorem EFR_neg_right {E : Type} [Field E] [NumberField E] [IsCMField E] {r n : 
 
 variable {D : D7} {S T : HSp D}
 
+/- English proof (translation)
+Establish `h` using `(C.inf τ).1 e`. Simplify using `only [infPart, Formalism.L2.Theta.incA] at h ⊢`. Conclude with `h`.
+-/
 theorem inf_incA (C : Ctx S T) (τ : D.what₂.Tau) (e : D.host.E) :
     C.θ τ (infPart D (incA D e)) = tauE D τ e := by
   have h := (C.inf τ).1 e
   simp only [infPart, Formalism.L2.Theta.incA] at h ⊢
   exact h
 
+/- English proof (translation)
+Take `⟨-, -, -, -, -, -, -, -, -, hact⟩` from `GlobalTheory.T.realPoints_classicalModel_realVectorSpace D S T C`. Use function extensionality and compare the values at `σ k a`. Establish `he : ∀ z, (σ.1 : D.host.E →+* ℂ) z = conj (tauE D (C.m.e.symm σ) z)`. Introduce `z`. Establish `hz` using `C.m.e_emb (C.m.e.symm σ)`.
+
+Rewrite `hz` using `[Equiv.apply_symm_apply]`. Rewrite using `[hz, ComplexEmbedding.conjugate_coe_eq]`. Establish `hm : Formalism.L2.Theta.mt S 1⁻¹ = 1`. Simplify using `[Formalism.L2.Theta.mt]`. Establish `hg : Formalism.L2.Theta.mt T γ = (ga : Matrix (Fin T.rank) (Fin T.rank) D.host.E).map (incA D)` using `h`.
+
+Establish `h1 : compAt C.θ (C.m.e.symm σ) (1 : Matrix (Fin S.rank) (Fin S.rank) (AE D)) = 1`. Use extensionality with `i j`. Simplify using `[compAt, Matrix.one_apply, apply_ite]`. Simplify using `only [Ctx.realPt]`. Rewrite using `[(hact 1 γ w).2.2 (C.m.e.symm σ), hm, hg, h1, Matrix.mul_one]`.
+
+Simplify using `only [compAt, Matrix.map_apply, Matrix.mul_apply, Matrix.mulVec, dotProduct, map_sum, map_mul, inf_incA C, he, Ctx.realPt]`.
+-/
 theorem realPt_actO (C : Ctx S T) {ga : GL (Fin T.rank) D.host.E} {γ : GA D T} (h : IsRatOf T ga γ)
     (w : WO S T) :
     C.realPt (actO S T 1 γ w) =
@@ -66,6 +84,29 @@ end GlobalTheory.Ker.ZakLaws
 
 namespace GlobalTheory.Ker
 
+/- English proof (translation)
+Introduce `D S T C x hx φ hφ`. Take `⟨R, -, -, hadd, hR, -, -, hfin0, -, hact⟩` from `GlobalTheory.T.realPoints_classicalModel_realVectorSpace D S T C`. Establish `hth` using `GlobalTheory.T.thetaFunction_space_heisenberg_laws D S T C`. Establish `hzak` using `GlobalTheory.T.adelicZakTheta_exists_unique D S T C`. Establish `hlaws` using `thR_laws D.host.E T.rank C.X C.g C.q0 C.hr C.bas C.idx S.rank C.sympl C.even`.
+
+Establish `hZ : C.IsZak x φ (C.Th x φ)` using `(hzak x hx φ hφ).1`. Establish `huniq : ∀ ψ, SW.IsSB ψ → ∀ f, C.IsZak x ψ f → f = C.Th x ψ` using `fun ψ hψ => (hzak x hx ψ hψ).2`. Establish `hsub : ∀ w u, C.realPt (w - u) = C.realPt w - C.realPt u`. Introduce `w u`. Establish `hwu` using `hadd (w - u) u`.
+
+Rewrite `hwu` using `[sub_add_cancel]`. Rewrite using `[hwu, add_sub_cancel_right]`. Use `⟨fun φ' hφ' => ⟨?_, ?_⟩, fun a => ?_, fun y => ?_, fun ga γ hγ w => ?_⟩` and prove the remaining obligations. Establish `hsb` using `(GlobalTheory.SW.isSB_algebra_haar_linear _ _ _ φ φ' hφ hφ').1`. Establish `hZ'` using `(hzak x hx φ' hφ').1`.
+
+Use `(huniq _ hsb _ ⟨(hth.2.1 _ _ hZ.1 hZ'.1).1, fun w hw => ?_⟩).symm` and prove the remaining obligations. Rewrite using `[Pi.add_apply, hZ.2 w hw, hZ'.2 w hw, ((hlaws x hx φ hφ).2.2.2.1 φ' hφ').2, Pi.add_apply]`. Introduce `heq`. Establish `hZ'` using `(hzak x hx φ' hφ').1`. Apply `((hlaws x hx φ hφ).2.2.2.1 φ' hφ').1` to reduce the goal to its premises.
+
+Use function extensionality and compare the values at `v`. Take `⟨hR1, hR2⟩` from `hR v`. Establish `e1` using `hZ.2 (R v) hR1`. Establish `e2` using `hZ'.2 (R v) hR1`. Rewrite `e1`, `e2` using `[hR2]`.
+
+Rewrite using `[← e1, ← e2, heq]`. Establish `hsb` using `(GlobalTheory.SW.isSB_algebra_haar_linear _ _ _ φ φ hφ hφ).2.1 a`. Use `(huniq _ hsb _ ⟨(hth.2.2 _ hZ.1).1 a, fun w hw => ?_⟩).symm` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, hZ.2 w hw, (hlaws x hx φ hφ).2.2.2.2 a, Pi.smul_apply]`. Establish `hsb` using `((heisG_laws D.host.E T.rank C.X C.g C.bas C.idx S.rank C.sympl C.even).2.2.2 (-y) φ hφ).1`.
+
+Use `huniq _ hsb _ ⟨(hth.2.2 _ hZ.1).2.1 _, fun w hw => ?_⟩` and prove the remaining obligations. Take `⟨hrat, hfinW, hreal, -⟩` from `(GlobalTheory.T.symplecticCharacter_real_finite_points_match D S T C).2.2.2.2.2.2.2 y`. Establish `hw' : IsRealPt (w - (ratW T S yᵀ - finW S T y))`. Unfold `IsRealPt at hw hreal ⊢`. Rewrite using `[Matrix.map_sub _ (map_sub (finPart D)), hw, hreal, sub_zero]`.
+
+Rewrite using `[(hth.2.2 _ hZ.1).2.2.2.1 y w hw, hZ.2 _ hw', hsub, hsub, hrat, hfin0 _ hfinW, sub_zero, (hlaws x hx φ hφ).2.1 (-y), ZakLaws.embR_neg, ZakLaws.EFR_neg_right]`. Simplify using `only [Complex.ofReal_neg, mul_neg, neg_neg, sub_eq_add_neg]`. Establish `hq` using `(GlobalTheory.T.rational_unitary_group_structure D S T C).2.1`. Establish `hinv : IsRatOf T ga⁻¹ γ⁻¹` using `(hq γ γ ga ga hγ hγ).2.1`. Establish `hun : IsUn C.X ga` using `(hq γ γ ga ga hγ hγ).2.2.2.1`.
+
+Establish `hGQ : γ⁻¹ ∈ GQ T` using `(hq _ _ _ _ hinv hinv).2.2.1`. Establish `hx' : lact ga x ∈ C.X.dom` using `IsUn.lact_mem hun hx`. Establish `hsbw` using `(wG_laws D.host.E T.rank C.X C.g C.bas C.idx S.rank C.sympl C.even ga hun φ hφ).1`. Establish `hZw : C.IsZak (lact ga x) (wG C.X C.bas C.idx ga φ) (fun w => C.Th x φ (actO S T 1 γ⁻¹ w))`. Use `⟨(hth.2.2 _ hZ.1).2.2.2.2.1 1 (one_mem _) γ⁻¹ hGQ, fun w hw => ?_⟩` and prove the remaining obligations.
+
+Simplify using `only`. Establish `hwr : IsRealPt (actO S T 1 γ⁻¹ w)` using `(hact 1 γ⁻¹ w).1 hw`. Rewrite using `[hZ.2 _ hwr, ZakLaws.realPt_actO C hinv w, ← (hlaws x hx φ hφ).2.2.1 ga hun]`. Use `congr 1`. Use function extensionality and compare the values at `τ k`.
+
+Rewrite using `[Matrix.mulVec_mulVec, ← Matrix.map_mul, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.map_one _ (map_zero _) (map_one _), Matrix.one_mulVec]`. Conclude with `(congrFun ((hzak (lact ga x) hx' _ hsbw).2 _ hZw) w).symm`.
+-/
 theorem Ctx.th_laws : ∀ (D : D7) (S T : HSp D) (C : Ctx S T), ∀ x ∈ C.X.dom, ∀ φ : TF S.rank C.g, SW.IsSB φ → (∀ φ', SW.IsSB φ' → C.Th x (φ + φ') = C.Th x φ + C.Th x φ' ∧ (C.Th x φ = C.Th x φ' → φ = φ')) ∧ (∀ a : ℂ, C.Th x (a • φ) = a • C.Th x φ) ∧ (∀ y : Matrix (Fin S.rank) (Fin T.rank) D.host.E, C.rho (finW S T y) (C.Th x φ) = C.Th x (heisG C.X C.bas (-y) φ)) ∧ ∀ (ga : GL (Fin T.rank) D.host.E) (γ : GA D T), IsRatOf T ga γ → ∀ w, C.Th (lact ga x) (wG C.X C.bas C.idx ga φ) w = C.Th x φ (actO S T 1 γ⁻¹ w) := by
   intro D S T C x hx φ hφ
   obtain ⟨R, -, -, hadd, hR, -, -, hfin0, -, hact⟩ := GlobalTheory.T.realPoints_classicalModel_realVectorSpace D S T C

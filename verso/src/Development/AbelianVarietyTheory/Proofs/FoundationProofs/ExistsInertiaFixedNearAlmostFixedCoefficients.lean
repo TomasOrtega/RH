@@ -10,6 +10,9 @@ namespace GlobalTheory.PerFix
 
 variable {l : ℕ} [Fact l.Prime]
 
+/- English proof (translation)
+The claim follows from `(spectralNorm_eq_of_equiv σ y).symm`.
+-/
 theorem norm_aut (σ : Qbar l ≃ₐ[ℚ_[l]] Qbar l) (y : Qbar l) : ‖σ y‖ = ‖y‖ :=
   (spectralNorm_eq_of_equiv σ y).symm
 
@@ -36,6 +39,21 @@ def inertiaC (c : Coef l) : Subgroup (Qbar l ≃ₐ[ℚ_[l]] Qbar l) where
       rw [e, norm_aut, norm_sub_rev]
       exact hσ2 y hy
 
+/- English proof (translation)
+Introduce `l _ c`. Take `⟨C, -, hC⟩` from `GlobalTheory.AxLemma.ax_lemma l`. Establish `hl : ‖((l : ℕ) : Qbar l)‖ = (l : ℝ)⁻¹`. Rewrite using `[show ((l : ℕ) : Qbar l) = (((l : ℕ) : ℚ_[l]) : Qbar l) from (map_natCast _ _).symm, PadicAlgCl.norm_extends, Padic.norm_p]`. Establish `hl1 : (1 : ℝ) < l` using `by exact_mod_cast (Fact.out : l.Prime).one_lt`.
+
+Take `⟨c₁, hc₁⟩` from `pow_unbounded_of_one_lt C hl1`. Use `⟨c₁, fun k x hx hfix => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hk : k ≤ c₁`. Use `⟨0, by simp, fun σ _ _ => map_zero σ, ?_⟩` and prove the remaining obligations. Establish `h0 : k - c₁ = 0` using `by omega`.
+
+Simplify `hx` using `[Cg, h0]`. Take `⟨y, hyH, hxy⟩` from `hC (inertiaC c) x ‖((l : ℕ) : Qbar l) ^ k‖ (fun g hg => hfix g hg.1 hg.2)`. Establish `hlpos : (0 : ℝ) < l` using `by linarith`. Establish `key : C * ‖((l : ℕ) : Qbar l) ^ k‖ ≤ ‖((l : ℕ) : Qbar l) ^ (k - c₁)‖`. Rewrite using `[norm_pow, norm_pow, hl]`.
+
+Establish `e : (l : ℝ)⁻¹ ^ k = (l : ℝ)⁻¹ ^ (k - c₁) * (l : ℝ)⁻¹ ^ c₁`. Rewrite using `[← pow_add]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers. Rewrite using `[e, mul_comm, mul_assoc]`.
+
+Apply `mul_le_of_le_one_right (by positivity)` to reduce the goal to its premises. Rewrite using `[inv_pow, inv_mul_le_iff₀ (by positivity)]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hxy'` using `hxy.trans key`. Establish `hle1 : ‖((l : ℕ) : Qbar l) ^ (k - c₁)‖ ≤ 1`.
+
+Rewrite using `[norm_pow, hl]`. Conclude with `pow_le_one₀ (by positivity) (inv_le_one_of_one_le₀ hl1.le)`. Use `⟨y, ?_, fun σ h1 h2 => hyH σ ⟨h1, h2⟩, hxy'⟩` and prove the remaining obligations. Establish `e : y = x + (y - x)` using `by ring`. Rewrite using `[e]`.
+
+Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le hx ((norm_sub_rev y x).le.trans (hxy'.trans hle1)))`.
+-/
 theorem exists_fixed_near : ∀ (l : ℕ) [Fact l.Prime] (c : Coef l), ∃ c₁ : ℕ, ∀ (k : ℕ) (x : Qbar l), ‖x‖ ≤ 1 →
   (∀ σ : Qbar l ≃ₐ[ℚ_[l]] Qbar l, (∀ b ∈ c.O, σ b = b) → (∀ y : Qbar l, ‖y‖ ≤ 1 → ‖σ y - y‖ < 1) → Cg k (σ x) x) →
   ∃ x' : Qbar l, ‖x'‖ ≤ 1 ∧ GlobalTheory.LambdaValuationPowers.FixIc c x' ∧ Cg (k - c₁) x x' := by

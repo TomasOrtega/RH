@@ -23,6 +23,13 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c β}
   {F : Type} [Field F] [NumberField F] {e : F ≃+* c.F} (Y : FlagCpt Z e)
 
+/- English proof (translation)
+Establish `h : ∀ x : Letter Dw, expo Dw (Finsupp.single (b, R, .inl (τ, (k : ℕ))) 1) x = if (⟨τ, k⟩ : Letter Dw) = x then 1 else 0`. Introduce `x`. Unfold `expo`. Rewrite using `[Finsupp.sum_single_index (by simp)]`. Simplify using `only [letterOf, dif_pos k.2, Option.some.injEq]`.
+
+Rewrite using `[Finset.prod_eq_single (⟨τ, k⟩ : Letter Dw)]`. Rewrite using `[h, if_pos rfl, zpow_one]`. Introduce `x _ hx`. Rewrite using `[h, if_neg (Ne.symm hx), zpow_zero]`. Introduce `hx`.
+
+Conclude with `absurd (Finset.mem_univ _) hx`.
+-/
 theorem prod_expo_single {M : Type} [CommGroup M] (t : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → M) (b : ℕ → Bool) (R : Option ℝ)
     (τ : E →+* ℂ) (k : Fin (Dw.mult τ)) :
     ∏ x : Letter Dw, t x.1 x.2 ^ expo Dw (Finsupp.single (b, R, .inl (τ, (k : ℕ))) 1) x = t τ k := by
@@ -39,6 +46,11 @@ theorem prod_expo_single {M : Type} [CommGroup M] (t : ∀ τ : E →+* ℂ, Fin
   · intro hx
     exact absurd (Finset.mem_univ _) hx
 
+/- English proof (translation)
+Establish `hp` using `prod_expo_single (Y.gr_spec (below y.1)).choose_spec.choose_spec.choose b R τ k`. Rewrite `hp` using `[← hw]`. Establish `ht` using `GradedLogInvariants.GlobalTheory.CompanionTheory.GradedInv.isEqn_prod Y (below y.1) (expo Dw w)`. Rewrite `ht` using `[hp]`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+
+Simplify `(Base.isEqn_eqn (divOf Y (expo Dw w)) (below y.1)).iff_unitAt.1 ht` using `[div_eq_mul_inv]`. Rewrite using `[GlobalTheory.CovHt.Link.lgOf_eq_stepSumVia, hp]`. Use `congr 2`. Unfold `GlobalTheory.CovHt.Link.stepSumVia`. Rewrite using `[hw, Finsupp.sum_single_index (by simp), Int.cast_one, one_mul]`.
+-/
 theorem lgOf_single_inl (w : Pad.Sym E →₀ ℤ) (b : ℕ → Bool) (R : Option ℝ) (τ : E →+* ℂ) (k : Fin (Dw.mult τ))
     (hw : w = Finsupp.single (b, R, .inl (τ, (k : ℕ))) 1)
     (v : HeightOneSpectrum (𝓞 F)) [Fact (resP v).Prime] (ε : Ext v) (y : AlgPt Y.Y) :

@@ -1,5 +1,18 @@
 import Mathlib
 
+/- English proof (translation)
+Introduce `O X _ _ _ A B C hAB hBC`. Set `f : (↥B ⧸ Submodule.comap B.subtype A) →ₗ[O] (↥C ⧸ Submodule.comap C.subtype A)` to `Submodule.mapQ _ _ (Submodule.inclusion hBC) (fun x hx => hx)`. Set `g : (↥C ⧸ Submodule.comap C.subtype A) →ₗ[O] (↥C ⧸ Submodule.comap C.subtype B)` to `Submodule.mapQ _ _ LinearMap.id (fun x hx => hAB hx)`. Use `Module.length_eq_add_of_exact f g ?_ ?_ ?_` and prove the remaining obligations. Rewrite using `[injective_iff_map_eq_zero]`.
+
+Introduce `y`. Proceed by induction on `y using Submodule.Quotient.induction_on with`. Consider the case `H x`. Introduce `h`. Establish `h' : Submodule.Quotient.mk (p` using `Submodule.comap C.subtype A) (Submodule.inclusion hBC x) = 0 := h`.
+
+Rewrite `h'`, the goal using `[Submodule.Quotient.mk_eq_zero]`. Conclude with `h'`. Introduce `y`. Proceed by induction on `y using Submodule.Quotient.induction_on with`. Consider the case `H x => exact ⟨Submodule.Quotient.mk x, rfl⟩`.
+
+Introduce `y`. Proceed by induction on `y using Submodule.Quotient.induction_on with`. Consider the case `H x`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+
+Establish `h' : Submodule.Quotient.mk (p` using `Submodule.comap C.subtype B) x = 0 := h`. Rewrite `h'` using `[Submodule.Quotient.mk_eq_zero]`. Conclude with `⟨Submodule.Quotient.mk ⟨x.1, h'⟩, rfl⟩`. Introduce and unpack `⟨z, hz⟩`. Rewrite using `[← hz]`.
+
+Proceed by induction on `z using Submodule.Quotient.induction_on with`. Consider the case `H w`. Establish `: Submodule.Quotient.mk (p` using `Submodule.comap C.subtype B) (Submodule.inclusion hBC w) = 0 := (Submodule.Quotient.mk_eq_zero _).2 w.2`. Conclude with `this`.
+-/
 theorem UpperTheory.Reformulated.B.JointEigenvalueBoundsFromAnyDatum.length_chain :
     ∀ {O X : Type} [inst : CommRing O] [inst_1 : AddCommGroup X]
     [inst_2 : _root_.Module O X] {A B C : Submodule O X},

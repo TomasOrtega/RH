@@ -14,6 +14,11 @@ section
 variable {V : Type} [AddCommGroup V] [Module ℂ V] {n : ℕ}
   {E : Fin n → Fin n → Module.End ℂ V} {ν : Fin n → ℂ} {v : V}
 
+/- English proof (translation)
+Establish `h` using `congrArg (fun f : Module.End ℂ V => f y) (hE a b c d)`. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply] at h`. Apply the tactic sequence `have h1 : (if b = c then E a d else 0) y = if b = c then E a d y else 0 := by split_ifs <;> simp`. Apply the tactic sequence `have h2 : (if d = a then E c b else 0) y = if d = a then E c b y else 0 := by split_ifs <;> simp`. Rewrite `h` using `[h1, h2]`.
+
+Rewrite using `[add_sub_assoc, ← h]`. Normalize the expressions using the abelian group laws.
+-/
 theorem glRel_apply_comm (hE : GlRel E) (a b c d : Fin n) (y : V) :
     E a b (E c d y) = E c d (E a b y) + (if b = c then E a d y else 0)
       - (if d = a then E c b y else 0) := by
@@ -27,6 +32,11 @@ theorem glRel_apply_comm (hE : GlRel E) (a b c d : Fin n) (y : V) :
   rw [add_sub_assoc, ← h]
   abel
 
+/- English proof (translation)
+Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨N, hN⟩` from `hx`. Conclude with `Submodule.subset_span ⟨_, hN.step a b hab⟩`.
+
+Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul c x _ hx => rw [map_smul]`. Conclude with `Submodule.smul_mem _ _ hx`.
+-/
 theorem loweringWord_span_lower (a b : Fin n) (hab : b < a) :
     ∀ x ∈ Submodule.span ℂ {x | ∃ N, LoweringWord E v N x},
       E a b x ∈ Submodule.span ℂ {x | ∃ N, LoweringWord E v N x} := by
@@ -39,6 +49,15 @@ theorem loweringWord_span_lower (a b : Fin n) (hab : b < a) :
   | add x y _ _ hx hy => rw [map_add]; exact Submodule.add_mem _ hx hy
   | smul c x _ hx => rw [map_smul]; exact Submodule.smul_mem _ _ hx
 
+/- English proof (translation)
+Proceed by induction on `hx with`. Consider the case `base`. Introduce `a b`. Break down `lt_trichotomy a b with h | h | h` into its components or cases. Rewrite using `[hv.2 a b h]`.
+
+Conclude with `Submodule.zero_mem _`. Substitute `h` using the available equality. Rewrite using `[hv.1 a]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨0, LoweringWord.base⟩)`. Conclude with `Submodule.subset_span ⟨_, LoweringWord.base.step a b h⟩`.
+
+Consider the case `step c d h _ ih`. Introduce `a b`. Rewrite using `[glRel_apply_comm hE]`. Use `Submodule.sub_mem _ (Submodule.add_mem _ (loweringWord_span_lower c d h _ (ih a b)) ?_) ?_` and prove the remaining obligations. Use `split_ifs`.
+
+Conclude with `ih _ _`. Conclude with `Submodule.zero_mem _`. Use `split_ifs`. Conclude with `ih _ _`. Conclude with `Submodule.zero_mem _`.
+-/
 theorem loweringWord_apply_mem (hE : GlRel E) (hv : IsHW E ν v) {N : ℕ} {x : V}
     (hx : LoweringWord E v N x) :
     ∀ a b, E a b x ∈ Submodule.span ℂ {x | ∃ N, LoweringWord E v N x} := by
@@ -62,6 +81,13 @@ theorem loweringWord_apply_mem (hE : GlRel E) (hv : IsHW E ν v) {N : ℕ} {x : 
       · exact ih _ _
       · exact Submodule.zero_mem _
 
+/- English proof (translation)
+Proceed by induction on `hx with`. Consider the case `base`. Simplify using `[LinearMap.sum_apply, hv.1, Finset.sum_smul, mul_smul]`. Consider the case `@step N y c d h _ ih`. Establish `key : (∑ a : Fin n, ((a.val : ℕ) : ℂ) • E a a) (E c d y) = E c d ((∑ a : Fin n, ((a.val : ℕ) : ℂ) • E a a) y) + ((c.val : ℕ) : ℂ) • E c d y - ((d.val : ℕ) : ℂ) • E c d y`.
+
+Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply, map_sum, map_smul]`. Simplify using `only [glRel_apply_comm hE _ _ c d y, smul_sub, smul_add, Finset.sum_sub_distrib, Finset.sum_add_distrib, smul_ite, smul_zero, Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Rewrite using `[key, ih, map_smul]`. Establish `hle : d.val ≤ c.val` using `le_of_lt h`. Move the coercions through the operations in `[Nat.cast_sub hle]`.
+
+Use `module`.
+-/
 theorem loweringWord_height (hE : GlRel E) (hv : IsHW E ν v) {N : ℕ} {x : V}
     (hx : LoweringWord E v N x) :
     (∑ a : Fin n, ((a.val : ℕ) : ℂ) • E a a) x
@@ -82,6 +108,9 @@ theorem loweringWord_height (hE : GlRel E) (hv : IsHW E ν v) {N : ℕ} {x : V}
     push_cast [Nat.cast_sub hle]
     module
 
+/- English proof (translation)
+Consider the cases of `hx with`. Consider the case `base => exact Or.inl rfl`. Consider the case `step c d h _ => right`. Establish `: d.val < c.val` using `h`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem loweringWord_zero_or_pos {N : ℕ} {x : V} (hx : LoweringWord E v N x) :
     x = v ∨ 0 < N := by
   cases hx with
@@ -93,6 +122,23 @@ theorem loweringWord_zero_or_pos {N : ℕ} {x : V} (hx : LoweringWord E v N x) :
 
 end
 
+/- English proof (translation)
+Introduce `V _ _ n E ν v hE hv`. Use `⟨Submodule.span ℂ {x | ∃ N, LoweringWord E v N x}, ?_, Submodule.subset_span ⟨0, LoweringWord.base⟩, ?_⟩` and prove the remaining obligations. Introduce `a b x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`.
+
+Take `⟨N, hN⟩` from `hx`. Conclude with `loweringWord_apply_mem hE hv hN a b`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `Submodule.add_mem _ hx hy`.
+
+Consider the case `smul c x _ hx => rw [map_smul]`. Conclude with `Submodule.smul_mem _ _ hx`. Introduce `x hx hw set H : Module.End ℂ V := ∑ a : Fin n, ((a.val : ℕ) : ℂ) • E a a with hH set h : ℂ := ∑ a : Fin n, ((a.val : ℕ) : ℂ) * ν a with hh`. Establish `hle : Submodule.span ℂ {x | ∃ N, LoweringWord E v N x} ≤ Submodule.span ℂ {v} ⊔ ⨆ (μ : ℂ) (_ : μ ≠ h), H.eigenspace μ`. Rewrite using `[Submodule.span_le]`.
+
+Introduce and unpack `y ⟨N, hN⟩`. Break down `loweringWord_zero_or_pos hN with rfl | hpos` into its components or cases. Conclude with `Submodule.mem_sup_left (Submodule.mem_span_singleton_self _)`. Use `Submodule.mem_sup_right ?_` and prove the remaining obligations. Establish `hne : h + (N : ℂ) ≠ h`.
+
+Establish `: (N : ℂ) ≠ 0` using `by exact_mod_cast hpos.ne'`. Simplify using `using this`. Use `Submodule.mem_iSup_of_mem (h + (N : ℂ)) (Submodule.mem_iSup_of_mem hne ?_)` and prove the remaining obligations. Rewrite using `[Module.End.mem_eigenspace_iff]`. Conclude with `loweringWord_height hE hv hN`.
+
+Take `⟨y, hy, z, hz, hyz⟩` from `Submodule.mem_sup.1 (hle hx)`. Take `⟨c, rfl⟩` from `Submodule.mem_span_singleton.1 hy`. Establish `hxe : x ∈ H.eigenspace h`. Rewrite using `[Module.End.mem_eigenspace_iff]`. Simplify using `[hH, hh, LinearMap.sum_apply, hw, Finset.sum_smul, mul_smul]`.
+
+Establish `hve : v ∈ H.eigenspace h`. Rewrite using `[Module.End.mem_eigenspace_iff]`. Simplify using `[hH, hh, LinearMap.sum_apply, hv.1, Finset.sum_smul, mul_smul]`. Establish `hze : z ∈ H.eigenspace h`. Establish `: z = x - c • v` using `by rw [← hyz]; abel`.
+
+Rewrite using `[this]`. Conclude with `Submodule.sub_mem _ hxe (Submodule.smul_mem _ _ hve)`. Establish `hd` using `Module.End.eigenspaces_iSupIndep H h`. Establish `hz0 : z = 0` using `(Submodule.disjoint_def.1 hd) z hze hz`. Conclude with `⟨c, by rw [← hyz, hz0, add_zero]⟩`.
+-/
 theorem exists_stable_submodule_topWeight_line :
     ∀ (V : Type) [AddCommGroup V] [Module ℂ V] (n : ℕ) (E : Fin n → Fin n → Module.End ℂ V)
       (ν : Fin n → ℂ) (v : V), GlRel E → IsHW E ν v →

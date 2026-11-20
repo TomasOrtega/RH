@@ -8,6 +8,9 @@ open Formalism.IndefR.Fin.LevelGroupLemmas (resG detAt)
 
 namespace GlobalTheory.IdemSumF
 
+/- English proof (translation)
+Introduce `he` and use `Formalism.IndefR.Fin.LevelGroupLemmas.idemSum_eps he`.
+-/
 theorem exists_idem_below : ∀ {D : D7} {P : Finset (Pl D.host.E)} {e : AE D}, IsIdemSum e P →
     ∃ ε : AF D.host.F, IsIdempotentElem ε ∧ algebraMap (AF D.host.F) (AE D) ε = e + cA D e :=
   fun he => Formalism.IndefR.Fin.LevelGroupLemmas.idemSum_eps he

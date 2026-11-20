@@ -4,6 +4,13 @@ open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC LateralTh
 
 namespace UpperTheory
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Set `φ : Γ(T, ⊤) →+* T.presheaf.stalk x` to `(T.presheaf.germ ⊤ x trivial).hom`. Establish `hle : Ideal.span (Set.range v) ≤ (IsLocalRing.maximalIdeal (T.presheaf.stalk x)).comap φ`. Use `Ideal.span_le.2 ?_` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨j, rfl⟩`. Establish `h1` using `hc j`. Rewrite `h1` using `[Scheme.mem_basicOpen_top]`. Conclude with `h1`. Rewrite `hle` using `[h, top_le_iff]`.
+
+Establish `h1 : (1 : Γ(T, ⊤)) ∈ (IsLocalRing.maximalIdeal (T.presheaf.stalk x)).comap φ`. Rewrite using `[hle]`. Discharge the goal by the elementary cases of `trivial`. Simplify using `at h1`.
+-/
 private theorem exists_mem_basicOpen {T : Scheme.{0}} {N : ℕ} (v : Fin N → Γ(T, ⊤))
     (h : Ideal.span (Set.range v) = ⊤) (x : T) : ∃ j, x ∈ T.basicOpen (v j) := by
   by_contra hc
@@ -20,6 +27,11 @@ private theorem exists_mem_basicOpen {T : Scheme.{0}} {N : ℕ} (v : Fin N → �
     rw [hle]; trivial
   simp at h1
 
+/- English proof (translation)
+Establish `h` using `T.toRingedSpace.isUnit_res_basicOpen f`. Establish `key : ∀ (W : T.Opens) (_ : W = T.basicOpen f) (hle : W ≤ ⊤), IsUnit ((T.presheaf.map (homOfLE hle).op).hom f)`. Introduce `W hW hle`. Substitute `hW` using the available equality. Conclude with `h`.
+
+Rewrite using `[Scheme.Opens.ι_appTop]`. Conclude with `key _ (by simp) _`.
+-/
 private theorem isUnit_ι {T : Scheme.{0}} (f : Γ(T, ⊤)) : IsUnit ((T.basicOpen f).ι.appTop.hom f) := by
   have h := T.toRingedSpace.isUnit_res_basicOpen f
   have key : ∀ (W : T.Opens) (_ : W = T.basicOpen f) (hle : W ≤ ⊤),
@@ -39,6 +51,9 @@ private def sieveOf {T : Scheme.{0}} {N : ℕ} (v : Fin N → Γ(T, ⊤)) : Siev
     rw [Scheme.Hom.comp_appTop]
     exact h
 
+/- English proof (translation)
+Use `choose j hj using exists_mem_basicOpen v h`. Set `𝒰 : Scheme.Cover (Scheme.precoverage @Etale) T` to `Scheme.Cover.mkOfCovers (Fin N) (fun j => (T.basicOpen (v j)).toScheme) (fun j => (T.basicOpen (v j)).ι) (fun x => ⟨j x, ⟨x, hj x⟩, rfl⟩) (fun _ => inferInstance)`. Use `Scheme.mem_grothendieckTopology_iff.2 ⟨𝒰, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ _ ⟨i⟩`. Conclude with `⟨i, isUnit_ι _⟩`.
+-/
 private theorem sieveOf_mem {T : Scheme.{0}} {N : ℕ} (v : Fin N → Γ(T, ⊤))
     (h : Ideal.span (Set.range v) = ⊤) : sieveOf v ∈ Scheme.etaleTopology.{0} T := by
   choose j hj using exists_mem_basicOpen v h
@@ -54,16 +69,27 @@ variable (D : Type) [CommRing D] (d : ℕ)
 private abbrev Sm (X : RF) (p : ℕ) (T : Scheme.{0}) : Type :=
   {x : Fin (p + 1) → X.obj Γ(T, ⊤) // ∀ i j, X.rel (x i) (x j)}
 
+/- English proof (translation)
+Take `⟨_, u, h2⟩` from `h`. Rewrite using `[h2]`. Conclude with `u.isUnit.mul hy`.
+-/
 private theorem rel_unit {N : ℕ} {A : Type} [CommRing A] {x y : (Vec D N).obj A} (h : (Vec D N).rel x y)
     (j : Fin N) (hy : IsUnit (y.1.2 j)) : IsUnit (x.1.2 j) := by
   obtain ⟨_, u, h2⟩ := h
   rw [h2]
   exact u.isUnit.mul hy
 
+/- English proof (translation)
+The claim follows from `Ideal.eq_top_of_isUnit_mem _ (Ideal.subset_span ⟨j, rfl⟩) h`.
+-/
 private theorem unimodular_of_unit_coord {A : Type} [CommRing A] {x : (Vec D (d + 1)).obj A} (j : Fin d)
     (h : IsUnit (x.1.2 j.castSucc)) : P2 x :=
   Ideal.eq_top_of_isUnit_mem _ (Ideal.subset_span ⟨j, rfl⟩) h
 
+/- English proof (translation)
+Set `y' : Sm (Vec D (d + 1)) p T` to `y`. Use `⟨sieveOf (y'.1 0).1.2, sieveOf_mem _ (y'.1 0).2, ?_⟩` and prove the remaining obligations. Introduce and unpack `V k ⟨j, hj⟩`. Establish `hrel : ∀ i, (Vec D (d + 1)).rel ((Vec D (d + 1)).map k.appTop.hom (y'.1 i)) ((Vec D (d + 1)).map k.appTop.hom (y'.1 0))` using `fun i => (Vec D (d + 1)).map_rel _ (y'.2 i 0)`. Proceed by induction on `j using Fin.lastCases with`.
+
+Consider the case `last => right`. Use `⟨(⟨fun i => ⟨(Vec D (d + 1)).map k.appTop.hom (y'.1 i), rel_unit D (hrel i) _ hj⟩, fun i j => (Vec D (d + 1)).map_rel _ (y'.2 i j)⟩ : Sm (L1 D d) p V), rfl⟩` and prove the remaining obligations. Consider the case `cast j => left`. Use `⟨(⟨fun i => ⟨(Vec D (d + 1)).map k.appTop.hom (y'.1 i), unimodular_of_unit_coord D d j (rel_unit D (hrel i) _ hj)⟩, fun i j => (Vec D (d + 1)).map_rel _ (y'.2 i j)⟩ : Sm (L2 D d) p V), rfl⟩` and prove the remaining obligations.
+-/
 private theorem cond1 (p : ℕ) (T : Scheme.{0}) (y : Sx (CN (Vec D (d + 1))) p T) :
     EtLoc T fun V k =>
       (∃ u : Sx (CN (L2 D d)) p V,
@@ -86,6 +112,11 @@ private theorem cond1 (p : ℕ) (T : Scheme.{0}) (y : Sx (CN (Vec D (d + 1))) p 
       unimodular_of_unit_coord D d j (rel_unit D (hrel i) _ hj)⟩,
       fun i j => (Vec D (d + 1)).map_rel _ (y'.2 i j)⟩ : Sm (L2 D d) p V), rfl⟩
 
+/- English proof (translation)
+Establish `hab : a = b`. Set `a' : Sm (L1 D d) p T` to `a`. Set `b' : Sm (L1 D d) p T` to `b`. Establish `h' : ∀ i, (a'.1 i).1 = (b'.1 i).1` using `fun i => congrFun (congrArg Subtype.val h) i`. Conclude with `Subtype.ext (funext fun i => Subtype.ext (h' i))`.
+
+Conclude with `⟨⊤, Scheme.etaleTopology.top_mem T, fun V k _ => Or.inl (by rw [hab])⟩`.
+-/
 private theorem cond2 (p : ℕ) (T : Scheme.{0}) (a b : Sx (CN (L1 D d)) p T)
     (h : sxMap (CN.map ((Vec D (d + 1)).subι P1 first_property_map) ((Vec D (d + 1)).subι_rel P1 first_property_map)) a =
       sxMap (CN.map ((Vec D (d + 1)).subι P1 first_property_map) ((Vec D (d + 1)).subι_rel P1 first_property_map)) b) :
@@ -99,6 +130,13 @@ private theorem cond2 (p : ℕ) (T : Scheme.{0}) (a b : Sx (CN (L1 D d)) p T)
     exact Subtype.ext (funext fun i => Subtype.ext (h' i))
   exact ⟨⊤, Scheme.etaleTopology.top_mem T, fun V k _ => Or.inl (by rw [hab])⟩
 
+/- English proof (translation)
+Establish `h : ∀ n, Mono ((CN.map ((Vec D (d + 1)).subι P2 second_property_map) ((Vec D (d + 1)).subι_rel P2 second_property_map)).app n)`. Introduce `n`. Establish `h' : ∀ U, Mono (((CN.map ((Vec D (d + 1)).subι P2 second_property_map) ((Vec D (d + 1)).subι_rel P2 second_property_map)).app n).app U)`. Introduce `U`. Rewrite using `[mono_iff_injective]`.
+
+Introduce `a b hab`. Set `a' : {x : Fin (n.unop.len + 1) → (L2 D d).obj Γ(U.unop, ⊤) // ∀ i j, (L2 D d).rel (x i) (x j)}` to `a`. Set `b' : {x : Fin (n.unop.len + 1) → (L2 D d).obj Γ(U.unop, ⊤) // ∀ i j, (L2 D d).rel (x i) (x j)}` to `b`. Establish `h2 : ∀ i, (a'.1 i).1 = (b'.1 i).1` using `fun i => congrFun (congrArg Subtype.val hab) i`. Conclude with `Subtype.ext (funext fun i => Subtype.ext (h2 i))`.
+
+Conclude with `NatTrans.mono_of_mono_app _`. Conclude with `NatTrans.mono_of_mono_app _`.
+-/
 private theorem mono2 : Mono (CN.map ((Vec D (d + 1)).subι P2 second_property_map) ((Vec D (d + 1)).subι_rel P2 second_property_map)) := by
   have h : ∀ n, Mono ((CN.map ((Vec D (d + 1)).subι P2 second_property_map) ((Vec D (d + 1)).subι_rel P2 second_property_map)).app n) := by
     intro n
@@ -113,6 +151,13 @@ private theorem mono2 : Mono (CN.map ((Vec D (d + 1)).subι P2 second_property_m
     exact NatTrans.mono_of_mono_app _
   exact NatTrans.mono_of_mono_app _
 
+/- English proof (translation)
+Use `IsPullback.of_forall_isPullback_app fun n => IsPullback.of_forall_isPullback_app fun U => ?_` and prove the remaining obligations. Rewrite using `[Types.isPullback_iff]`. Use `⟨rfl, fun x y h => ?_, fun x₂ x₃ h => ?_⟩` and prove the remaining obligations. Set `x' : {x : Fin (n.unop.len + 1) → (lift_levelP_alt₂ D d).obj Γ(U.unop, ⊤) // ∀ i j, (lift_levelP_alt₂ D d).rel (x i) (x j)}` to `x`. Set `y' : {x : Fin (n.unop.len + 1) → (lift_levelP_alt₂ D d).obj Γ(U.unop, ⊤) // ∀ i j, (lift_levelP_alt₂ D d).rel (x i) (x j)}` to `y`.
+
+Establish `h1 : ∀ i, (x'.1 i).1 = (y'.1 i).1` using `fun i => congrArg (fun z : (L2 D d).obj Γ(U.unop, ⊤) => z.1) (congrFun (congrArg Subtype.val h.1) i)`. Conclude with `Subtype.ext (funext fun i => Subtype.ext (h1 i))`. Set `a : {x : Fin (n.unop.len + 1) → (L2 D d).obj Γ(U.unop, ⊤) // ∀ i j, (L2 D d).rel (x i) (x j)}` to `x₂`. Set `b : {x : Fin (n.unop.len + 1) → (L1 D d).obj Γ(U.unop, ⊤) // ∀ i j, (L1 D d).rel (x i) (x j)}` to `x₃`. Establish `h' : ∀ i, (a.1 i).1 = (b.1 i).1` using `fun i => congrFun (congrArg Subtype.val h) i`.
+
+Set `z : {x : Fin (n.unop.len + 1) → (lift_levelP_alt₂ D d).obj Γ(U.unop, ⊤) // ∀ i j, (lift_levelP_alt₂ D d).rel (x i) (x j)}` to `⟨fun i => ⟨(a.1 i).1, (a.1 i).2, by rw [h' i]; exact (b.1 i).2⟩, fun i j => a.2 i j⟩`. Use `⟨z, ?_, ?_⟩` and prove the remaining obligations. Conclude with `Subtype.ext (funext fun i => Subtype.ext rfl)`. Conclude with `Subtype.ext (funext fun i => Subtype.ext (h' i))`.
+-/
 private theorem isPb : IsPullback (CN.map (bothToSecond D d) (both_to_second_relation D d)) (CN.map (bothToFirst D d) (both_to_first_relation D d))
     (CN.map ((Vec D (d + 1)).subι P2 second_property_map) ((Vec D (d + 1)).subι_rel P2 second_property_map))
     (CN.map ((Vec D (d + 1)).subι P1 first_property_map) ((Vec D (d + 1)).subι_rel P1 first_property_map)) := by
@@ -133,6 +178,9 @@ private theorem isPb : IsPullback (CN.map (bothToSecond D d) (both_to_second_rel
     · exact Subtype.ext (funext fun i => Subtype.ext rfl)
     · exact Subtype.ext (funext fun i => Subtype.ext (h' i))
 
+/- English proof (translation)
+Introduce `n`. Use `(Function.bijective_iff_has_inverse).2 ⟨pull R e.inv F n, fun x => ?_, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[← pull_comp, e.inv_hom_id, pull_id]`. Rewrite using `[← pull_comp, e.hom_inv_id, pull_id]`.
+-/
 private theorem eqv_iso {R : Type} [CommRing R] (F : Shv R) {E E' : Spc} (e : E ≅ E') : Eqv R e.hom F := by
   intro n
   refine (Function.bijective_iff_has_inverse).2 ⟨pull R e.inv F n, fun x => ?_, fun x => ?_⟩
@@ -141,6 +189,11 @@ private theorem eqv_iso {R : Type} [CommRing R] (F : Shv R) {E E' : Spc} (e : E 
 
 end UpperTheory
 
+/- English proof (translation)
+Introduce `hE hA R _ F c d D _ hC`. Use `haveI := UpperTheory.mono2 D d`. Establish `h` using `(hE hA R F c (CN.map ((Vec D (d + 1)).subι P2 second_property_map) ((Vec D (d + 1)).subι_rel P2 second_property_map)) (CN.map ((Vec D (d + 1)).subι P1 first_property_map) ((Vec D (d + 1)).subι_rel P1 first_property_map)) (UpperTheory.cond1 D d) (UpperTheory.cond2 D d)).1 hC`. Establish `hp` using `UpperTheory.isPb D d`. Use `(conn_sq F c (CN.map (bothToFirst D d) (both_to_first_relation D d)) _ hp.isoPullback.hom (𝟙 _) ?_ (UpperTheory.eqv_iso F _) (UpperTheory.eqv_iso F (Iso.refl _))).2 h` and prove the remaining obligations.
+
+Rewrite using `[Category.comp_id, IsPullback.isoPullback_hom_snd]`.
+-/
 theorem UpperTheory.connected_of_unimodular_sub :
     LeafExc → A1 → ∀ (R : Type) [CommRing R] (F : Shv R) (c : ℤ) (d : ℕ) (D : Type) [CommRing D], Conn R F c (CN.map ((Vec D (d + 1)).subι P2 second_property_map) ((Vec D (d + 1)).subι_rel P2 second_property_map)) → Conn R F c (CN.map (bothToFirst D d) (both_to_first_relation D d)) := by
   intro hE hA R _ F c d D _ hC

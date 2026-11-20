@@ -15,6 +15,23 @@ section Pow1
 
 variable {k : Type} [Field k] {d : ℕ}
 
+/- English proof (translation)
+Use `set θ : MvPolynomial (Fin 2 × Fin d) k →ₐ[k] B := MvPolynomial.aeval (fun q : Fin 2 × Fin d => if q.1 = 0 then (0 : B) else z q.2) with hθ`. Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C a => simp`. Consider the case `add P Q hP hQ`. Simplify using `only [map_add, hP, hQ, mul_add, Finset.sum_add_distrib]`.
+
+Expand and normalize the polynomial expressions, which then agree. Consider the case `mul_X P q hP`. Take `⟨a, j⟩` from `q`. Rewrite using `[map_mul, hP, MvPolynomial.aeval_X]`. Distinguish the cases in `ha : a = 0`.
+
+Substitute `ha` using the available equality. Establish `key : ∀ i, τ (θ (MvPolynomial.pderiv ((0 : Fin 2), i) (P * MvPolynomial.X ((0 : Fin 2), j)))) = if j = i then τ (θ P) else 0`. Introduce `i`. Establish `hX : θ (MvPolynomial.X ((0 : Fin 2), j)) = 0` using `by simp [hθ]`. Rewrite using `[Derivation.leibniz, smul_eq_mul, smul_eq_mul, map_add, map_mul, map_mul, hX, zero_mul, add_zero, MvPolynomial.pderiv_X]`.
+
+Distinguish the cases in `hij : j = i`. Substitute `hij` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, hij, Ne.symm hij]`. Simplify using `only [key, mul_ite, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true]`.
+
+Establish `hX : θ (P * MvPolynomial.X ((0 : Fin 2), j)) = 0` using `by simp [hθ]`. Rewrite using `[hX, map_zero, zero_add]`. Take the linear combination `(algebraMap k A (c j) * ∑ i, algebraMap k A (c i) * τ (θ (MvPolynomial.pderiv ((0 : Fin 2), i) P))) * hε`. Establish `key : ∀ i, θ (MvPolynomial.pderiv ((0 : Fin 2), i) (P * MvPolynomial.X (a, j))) = θ (MvPolynomial.pderiv ((0 : Fin 2), i) P) * z j`. Introduce `i`.
+
+Establish `h0 : MvPolynomial.pderiv ((0 : Fin 2), i) (MvPolynomial.X (a, j) : MvPolynomial (Fin 2 × Fin d) k) = 0`. Rewrite using `[MvPolynomial.pderiv_X, Pi.single_apply, if_neg]`. Introduce `h`. Conclude with `ha (congrArg Prod.fst h)`. Rewrite using `[Derivation.leibniz, h0, smul_zero, zero_add, smul_eq_mul, map_mul, mul_comm]`.
+
+Simplify using `[hθ, ha]`. Establish `hX : θ (P * MvPolynomial.X (a, j)) = θ P * z j` using `by simp [hθ, ha]`. Simplify using `only [key, hX, ha, if_false, map_mul, Finset.mul_sum, Finset.sum_mul, add_mul]`. Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem aeval_firstOrder {B A : Type} [CommRing B] [Algebra k B] [CommRing A] [Algebra k A]
     (τ : B →ₐ[k] A) (ε : A) (hε : ε * ε = 0) (c : Fin d → k) (z : Fin d → B)
     (P : MvPolynomial (Fin 2 × Fin d) k) :
@@ -61,6 +78,11 @@ theorem aeval_firstOrder {B A : Type} [CommRing B] [Algebra k B] [CommRing A] [A
       refine Finset.sum_congr rfl fun i _ => ?_
       ring
 
+/- English proof (translation)
+Rewrite using `[psJet, Ideal.Quotient.eq]`. Use `GermD.mem_orig_pow_of fun e he => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hlt`. Use `push Not at hlt`. Apply `MvPolynomial.mem_support_iff.mp he` to reduce the goal to its premises.
+
+Rewrite using `[MvPolynomial.coeff_sub, GermFun.coeff_psTrunc _ _ _ (by omega), GermFun.coeff_psTrunc _ _ _ (by omega), sub_self]`.
+-/
 theorem mk_psTrunc_of_le {κ : Type} [Fintype κ] [DecidableEq κ] {m N : ℕ} (hN : m ≤ N)
     (f : MvPowerSeries κ k) :
     Ideal.Quotient.mk (orig k κ ^ (m + 1)) (psTrunc N f) = psJet m f := by
@@ -71,6 +93,11 @@ theorem mk_psTrunc_of_le {κ : Type} [Fintype κ] [DecidableEq κ] {m N : ℕ} (
   apply MvPolynomial.mem_support_iff.mp he
   rw [MvPolynomial.coeff_sub, GermFun.coeff_psTrunc _ _ _ (by omega), GermFun.coeff_psTrunc _ _ _ (by omega), sub_self]
 
+/- English proof (translation)
+Rewrite using `[psJet, Ideal.Quotient.eq]`. Use `GermD.mem_orig_pow_of fun e he => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hlt`. Use `push Not at hlt`. Apply `MvPolynomial.mem_support_iff.mp he` to reduce the goal to its premises.
+
+Establish `hd : (e + Finsupp.single q 1).degree = e.degree + 1` using `by simp`. Rewrite using `[MvPolynomial.coeff_sub, MvPolynomial.coeff_pderiv, GermFun.coeff_psTrunc _ _ _ (by omega), GermFun.coeff_psTrunc _ _ _ (by omega), MvPowerSeries.coeff_pderiv, sub_self]`.
+-/
 theorem mk_pderiv_psTrunc {κ : Type} [Fintype κ] [DecidableEq κ] {m N : ℕ} (hN : m + 1 ≤ N)
     (f : MvPowerSeries κ k) (q : κ) :
     Ideal.Quotient.mk (orig k κ ^ (m + 1)) (MvPolynomial.pderiv q (psTrunc N f)) =
@@ -84,6 +111,15 @@ theorem mk_pderiv_psTrunc {κ : Type} [Fintype κ] [DecidableEq κ] {m N : ℕ} 
   rw [MvPolynomial.coeff_sub, MvPolynomial.coeff_pderiv, GermFun.coeff_psTrunc _ _ _ (by omega),
     GermFun.coeff_psTrunc _ _ _ (by omega), MvPowerSeries.coeff_pderiv, sub_self]
 
+/- English proof (translation)
+Establish `ha : ∀ q : Fin 2 × Fin d, MvPowerSeries.constantCoeff ((![0, Germ.pt k d 0] : Fin 2 → Germ.Pt k 1 d) q.1 q.2) = 0`. Introduce and unpack `⟨a, j⟩`. Apply the tactic sequence `fin_cases a <;> simp [Germ.pt]`. Rewrite using `[Germ.ev, FBIdJet.psJet_subst m _ ha, ← hP, GermD.jetMap_mk]`. Establish `e : (MvPolynomial.aeval (fun q : Fin 2 × Fin d => if q.1 = 0 then (0 : Jet k (Fin 1 × Fin d) m) else Ideal.Quotient.mk _ (MvPolynomial.X ((0 : Fin 1), q.2))) : MvPolynomial (Fin 2 × Fin d) k →ₐ[k] _) = (Ideal.Quotient.mkₐ k _).comp (MvPolynomial.aeval fun q : Fin 2 × Fin d => psT …`.
+
+Use `MvPolynomial.algHom_ext fun q => ?_` and prove the remaining obligations. Take `⟨a, j⟩` from `q`. Rewrite using `[MvPolynomial.aeval_X, AlgHom.comp_apply, MvPolynomial.aeval_X]`. Use `show _ = psJet m _`. Use `fin_cases a`.
+
+Simplify using `[psJet, psTrunc]`. Establish `: (![0, Germ.pt k d 0] : Fin 2 → Germ.Pt k 1 d) 1 j = ((MvPolynomial.X ((0 : Fin 1), j) : MvPolynomial (Fin 1 × Fin d) k) : MvPowerSeries _ k)`. Simplify using `[Germ.pt]`. Simplify using `only [Fin.mk_one, this, ExpGF.psJet_coe]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[e]`. Both sides reduce to the same expression.
+-/
 theorem aeval_axis_eq_psJet (m : ℕ) (P : MvPolynomial (Fin 2 × Fin d) k) (h : Germ.PS k 2 d)
     (hP : Ideal.Quotient.mk (orig k (Fin 2 × Fin d) ^ (m + 1)) P = psJet m h) :
     MvPolynomial.aeval (fun q : Fin 2 × Fin d => if q.1 = 0 then (0 : Jet k (Fin 1 × Fin d) m)
@@ -112,6 +148,13 @@ theorem aeval_axis_eq_psJet (m : ℕ) (P : MvPolynomial (Fin 2 × Fin d) k) (h :
   rw [e]
   rfl
 
+/- English proof (translation)
+Establish `hadd : ∀ f g : MvPowerSeries κ k, psJet m (f + g) = psJet m f + psJet m g` using `fun f g => by`. Simplify using `[psJet, psTrunc, Finset.sum_add_distrib]`. Establish `hzero : psJet m (0 : MvPowerSeries κ k) = 0` using `by simp [psJet, psTrunc]`. Establish `hC : ∀ c : k, psJet m (MvPowerSeries.C c : MvPowerSeries κ k) = algebraMap k (Jet k κ m) c` using `fun c => by`. Establish `: (MvPowerSeries.C c : MvPowerSeries κ k) = ((MvPolynomial.C c : MvPolynomial κ k) : MvPowerSeries κ k)` using `by simp`.
+
+Rewrite using `[this, ExpGF.psJet_coe]`. Both sides reduce to the same expression. Set `L : MvPowerSeries κ k →+ Jet k κ m` to `⟨⟨psJet m, hzero⟩, hadd⟩`. Use `map_sum L (fun i => MvPowerSeries.C (u i) * h i) Finset.univ` as an intermediate fact. Use `this.trans (Finset.sum_congr rfl fun i _ => ?_)` and prove the remaining obligations.
+
+Use `show psJet m _ = _`. Rewrite using `[FBIdJet.psJet_mul, hC]`.
+-/
 theorem psJet_sum_C_mul {κ : Type} [Fintype κ] [DecidableEq κ] (m : ℕ) (u : Fin d → k)
     (h : Fin d → MvPowerSeries κ k) :
     psJet m (∑ i, MvPowerSeries.C (u i) * h i) = ∑ i, algebraMap k (Jet k κ m) (u i) * psJet m (h i) := by
@@ -128,6 +171,23 @@ theorem psJet_sum_C_mul {κ : Type} [Fintype κ] [DecidableEq κ] (m : ℕ) (u :
   show psJet m _ = _
   rw [FBIdJet.psJet_mul, hC]
 
+/- English proof (translation)
+Establish `hp : p ≠ 0` using `(Fact.out : p.Prime).ne_zero`. Use `set B := Jet k (Fin 1 × Fin d) m with hB`. Use `set A := Jet B Unit p with hA`. Establish `hε : dQ B p ^ p * dQ B p ^ p = 0`. Rewrite using `[← pow_add]`.
+
+Conclude with `pow_eq_zero_of_le (by omega) (dQ_pow B p)`. Establish `ha : ∀ q : Fin 2 × Fin d, MvPowerSeries.constantCoeff ((![ptPow k d p 0, Germ.pt k d 1] : Fin 2 → Germ.Pt k 2 d) q.1 q.2) = 0`. Introduce and unpack `⟨a, j⟩`. Use `fin_cases a`. Simplify using `[ptPow, hp]`.
+
+Simplify using `[Germ.pt]`. Establish `hjq : ∀ Q : MvPolynomial (Fin 2 × Fin d) k, jq w p m (Ideal.Quotient.mk _ Q) = MvPolynomial.aeval (fun q : Fin 2 × Fin d => if q.1 = 0 then algebraMap k A (w q.2) * dQ B p else inR (k` using `k) B p (Ideal.Quotient.mk _ (MvPolynomial.X ((0 : Fin 1), q.2)))) Q := fun Q => rfl`. Establish `step : jq w p m (psJet (p + m + 1) (Germ.ev (n` using `2) ![ptPow k d p 0, Germ.pt k d 1] g)) = MvPolynomial.aeval (fun q : Fin 2 × Fin d => if q.1 = 0 then algebraMap k A (w q.2 ^ p) * dQ B p ^ p else inR (k := k) B p (Ideal.Quotient.mk _ (MvPolynomial.X ((0 : Fin 1), q.2)))) (psTrunc (p + m + 1) g) := by`. Rewrite using `[Germ.ev, FBIdJet.psJet_subst _ _ ha, psJet, GermD.jetMap_mk, hjq, MvPolynomial.comp_aeval_apply]`. Use `congr 2`.
+
+Use function extensionality and compare the values at `q`. Take `⟨a, j⟩` from `q`. Rewrite using `[← hjq]`. Use `show jq w p m (psJet _ _) = _`. Use `fin_cases a`.
+
+Establish `: (![ptPow k d p 0, Germ.pt k d 1] : Fin 2 → Germ.Pt k 2 d) 0 j = ((MvPolynomial.X ((0 : Fin 2), j) ^ p : MvPolynomial (Fin 2 × Fin d) k) : MvPowerSeries _ k)`. Simplify using `[ptPow]`. Simplify using `only [Fin.zero_eta, this, ExpGF.psJet_coe, hjq]`. Simplify using `[mul_pow]`. Establish `: (![ptPow k d p 0, Germ.pt k d 1] : Fin 2 → Germ.Pt k 2 d) 1 j = ((MvPolynomial.X ((1 : Fin 2), j) : MvPolynomial (Fin 2 × Fin d) k) : MvPowerSeries _ k)`.
+
+Simplify using `[Germ.pt]`. Simplify using `only [Fin.mk_one, this, ExpGF.psJet_coe, hjq]`. Simplify using the standard rewrite rules. Rewrite using `[step, aeval_firstOrder (inR (k := k) B p) (dQ B p ^ p) hε (fun i => w i ^ p) (fun j => Ideal.Quotient.mk _ (MvPolynomial.X ((0 : Fin 1), j))) (psTrunc (p + m + 1) g)]`. Rewrite using `[aeval_axis_eq_psJet m _ g (mk_psTrunc_of_le (by omega) g), hg.1, FBIdJet.psJet_one, map_one]`.
+
+Use `congr 2`. Rewrite using `[dSer, psJet_sum_C_mul, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[aeval_axis_eq_psJet m _ _ (mk_pderiv_psTrunc (by omega) g _), map_mul]`. Rewrite using `[← IsScalarTower.algebraMap_apply]`.
+
+Both sides reduce to the same expression.
+-/
 theorem jq_psJet_ptPow (k : Type) [Field k] (p : ℕ) [Fact p.Prime] [CharP k p] (d m : ℕ) (w : Fin d → k)
     (g : Germ.PS k 2 d) (hg : AxOne g) :
     jq w p m (psJet (p + m + 1) (Germ.ev (n := 2) ![ptPow k d p 0, Germ.pt k d 1] g)) =

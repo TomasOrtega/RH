@@ -12,6 +12,9 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.TorusPart
 
+/- English proof (translation)
+Establish `: IsIntegral (p.fiber s)` using `inferInstance`. Use `⟨p.fiberι s (genericPoint _), GlobalTheory.FibreStalk.image_eq C Y p s _, ?_⟩` and prove the remaining obligations. Rewrite using `[← GlobalTheory.FibreStalk.ker_stalkMap_fiberι]`. Use `letI : Field ((p.fiber s).presheaf.stalk (genericPoint _)) := inferInstanceAs (Field (p.fiber s).functionField)`. Conclude with `IsLocalRing.eq_maximalIdeal (RingHom.ker_isMaximal_of_surjective _ ((p.fiberι s).stalkMap_surjective _))`.
+-/
 private theorem exists_pt {Y C : Scheme.{0}} (p : Y ⟶ C) [GeometricallyIntegral p] (s : C) :
     ∃ y : Y, p y = s ∧ (IsLocalRing.maximalIdeal (C.presheaf.stalk (p y))).map (p.stalkMap y).hom =
       IsLocalRing.maximalIdeal (Y.presheaf.stalk y) := by
@@ -21,6 +24,11 @@ private theorem exists_pt {Y C : Scheme.{0}} (p : Y ⟶ C) [GeometricallyIntegra
   letI : Field ((p.fiber s).presheaf.stalk (genericPoint _)) := inferInstanceAs (Field (p.fiber s).functionField)
   exact IsLocalRing.eq_maximalIdeal (RingHom.ker_isMaximal_of_surjective _ ((p.fiberι s).stalkMap_surjective _))
 
+/- English proof (translation)
+Establish `hϖ : ¬ IsUnit ϖ` using `(IsLocalRing.mem_maximalIdeal ϖ).1 (h ▸ Ideal.mem_span_singleton_self ϖ)`. Take `⟨n, b, hb, e⟩` from `WfDvdMonoid.max_power_factor' ha hϖ`. Establish `: IsUnit b`. Assume the negation of the conclusion as `hu`. Conclude with `hb (Ideal.mem_span_singleton.1 (h ▸ (IsLocalRing.mem_maximalIdeal b).2 hu))`.
+
+Conclude with `⟨n, this.unit, e⟩`.
+-/
 private theorem exists_pow_unit {R : Type} [CommRing R] [IsDomain R] [IsLocalRing R] [IsNoetherianRing R] {ϖ : R}
     (h : IsLocalRing.maximalIdeal R = Ideal.span {ϖ}) {a : R} (ha : a ≠ 0) : ∃ (n : ℕ) (e : Rˣ), a = ϖ ^ n * e := by
   have hϖ : ¬ IsUnit ϖ := (IsLocalRing.mem_maximalIdeal ϖ).1 (h ▸ Ideal.mem_span_singleton_self ϖ)
@@ -32,6 +40,21 @@ private theorem exists_pow_unit {R : Type} [CommRing R] [IsDomain R] [IsLocalRin
 
 open GlobalTheory.PrimeSection in
 
+/- English proof (translation)
+Take `⟨x, hx⟩` from `hU`. Establish `hg : genericPoint Y ∈ U` using `PrimeSection.genericPoint_mem hx`. Take `⟨a, b, hb, hab⟩` from `IsFractionRing.div_surjective (A := Y.presheaf.stalk y) (K := Y.functionField) (Y.presheaf.germ U _ hg f)`. Establish `hb0 : b ≠ 0` using `nonZeroDivisors.ne_zero hb`. Establish `hb' : algebraMap _ Y.functionField b ≠ 0` using `by simpa using hb0`.
+
+Establish `ha0 : a ≠ 0`. Introduce and unpack `rfl`. Rewrite `hab` using `[map_zero, zero_div]`. Conclude with `(hf.map (Y.presheaf.germ U _ hg).hom).ne_zero hab.symm`. Take `⟨n, a₁, rfl⟩` from `exists_pow_unit hπ ha0`.
+
+Take `⟨m, b₁, rfl⟩` from `exists_pow_unit hπ hb0`. Take `⟨U₀, hy, f₀, hf₀⟩` from `Y.presheaf.exists_germ_eq (a₁ * b₁⁻¹).val`. Take `⟨W, hW, π₀, rfl⟩` from `C.presheaf.exists_germ_eq π`. Establish `hϖ : (p.stalkMap y).hom (C.presheaf.germ W _ hW π₀) = Y.presheaf.germ (p ⁻¹ᵁ W) y hW (p.app W π₀)` using `Scheme.Hom.germ_stalkMap_apply ..`. Rewrite `hab`, `ha0`, `hb'` using `[hϖ]`.
+
+Establish `hy₁ : y ∈ Y.basicOpen f₀` using `(Y.mem_basicOpen f₀ y hy).2 (hf₀ ▸ Units.isUnit _)`. Establish `hd : p.app W (π₀ ^ n) ≠ 0` using `fun h0 => by`. Rewrite `ha0` using `[← map_pow, ← map_pow, h0, map_zero, zero_mul]`. Conclude with `ha0 rfl`. Use `⟨W, π₀ ^ m, π₀ ^ n, Y.basicOpen f₀, Y.presheaf.map (homOfLE (Y.basicOpen_le f₀)).op f₀, U ⊓ Y.basicOpen f₀ ⊓ Y.basicOpen (p.app W (π₀ ^ n)), inf_le_left.trans inf_le_left, inf_le_left.trans inf_le_right, inf_le_right.trans (Y.basicOpen_le _), hy₁, Y.toRingedSpace.isUnit_res_basic …` and prove the remaining obligations.
+
+Use `(Y.toRingedSpace.isUnit_res_basicOpen (p.app W (π₀ ^ n))).map (Y.presheaf.map (homOfLE (inf_le_right : U ⊓ Y.basicOpen f₀ ⊓ Y.basicOpen (p.app W (π₀ ^ n)) ≤ _)).op).hom` as an intermediate fact. Conclude with `(res_res _ _ _).symm ▸ this`. Use `eq_of_germ_eq fun hV => ?_` and prove the remaining obligations. Establish `e : ∀ (c : Γ(C, W)) h₂, Y.presheaf.germ _ _ hV ((p.appLE W _ h₂).hom c) = algebraMap _ Y.functionField (Y.presheaf.germ (p ⁻¹ᵁ W) y hW (p.app W c))` using `fun c h₂ => (germ_res h₂ hV (p.app W c)).trans (algebraMap_germ (W := p ⁻¹ᵁ W) (x := y) hW _).symm`. Rewrite using `[map_mul, map_mul, e, e, germ_res, germ_res, germ_res]`.
+
+Rewrite using `[← hab, ← algebraMap_germ hy, hf₀, div_mul_eq_mul_div, div_eq_iff hb']`. Simplify using `only [← map_mul, map_pow]`. Simplify using `only [← map_pow (algebraMap _ Y.functionField), ← map_mul]`. Use `congr 1`. Rewrite using `[Units.val_mul]`.
+
+Take the linear combination `(-(Y.presheaf.germ (p ⁻¹ᵁ W) y hW (p.app W π₀)) ^ (n + m) * a₁.val) * b₁.inv_mul`.
+-/
 private theorem exists_unit_near {Y C : Scheme.{0}} (p : Y ⟶ C) [IsIntegral Y] [IsLocallyNoetherian Y] (y : Y)
     (π : C.presheaf.stalk (p y))
     (hπ : IsLocalRing.maximalIdeal (Y.presheaf.stalk y) = Ideal.span {(p.stalkMap y).hom π})
@@ -79,6 +102,21 @@ private theorem exists_unit_near {Y C : Scheme.{0}} (p : Y ⟶ C) [IsIntegral Y]
     rw [Units.val_mul]
     linear_combination (-(Y.presheaf.germ (p ⁻¹ᵁ W) y hW (p.app W π₀)) ^ (n + m) * a₁.val) * b₁.inv_mul
 
+/- English proof (translation)
+Set `T` to `splitTorus S X`. Set `O : (T ⊗ G).left.Opens` to `((fst T G ≫ u) * snd T G).left ⁻¹ᵁ V ⊓ (snd T G).left ⁻¹ᵁ V`. Establish `hO : Nonempty O`. Take `⟨x, hx⟩` from `hV`. Set `σ : G ⟶ T ⊗ G` to `lift 1 (𝟙 G)`.
+
+Establish `e₁ : σ ≫ ((fst T G ≫ u) * snd T G) = 𝟙 G`. Rewrite using `[MonObj.comp_mul, ← Category.assoc, lift_fst, lift_snd, MonObj.one_comp, _root_.one_mul]`. Establish `e₂ : σ ≫ snd T G = 𝟙 G` using `lift_snd _ _`. Establish `k : ∀ r : T ⊗ G ⟶ G, σ ≫ r = 𝟙 G → σ.left x ∈ r.left ⁻¹ᵁ V` using `fun r hr => by`. Establish `: r.left (σ.left x) = x`.
+
+Rewrite using `[← Scheme.Hom.comp_apply, ← Over.comp_left, hr]`. Both sides reduce to the same expression. Use `show r.left (σ.left x) ∈ V`. Rewrite using `[this]`. Conclude with `hx`.
+
+Conclude with `⟨⟨σ.left x, k _ e₁, k _ e₂⟩⟩`. Set `Z : Over S` to `Over.mk (O.ι ≫ (T ⊗ G).hom)`. Set `j : Z ⟶ T ⊗ G` to `Over.homMk O.ι rfl`. Establish `hj : lift (j ≫ fst T G) (j ≫ snd T G) = j` using `by rw [← comp_lift, lift_fst_snd, Category.comp_id]`. Establish `k : ∀ r : T ⊗ G ⟶ G, O ≤ r.left ⁻¹ᵁ V → ⊤ ≤ (j ≫ r).left ⁻¹ᵁ V` using `fun r hr z _ => hr z.2`.
+
+Establish `k₁ : ⊤ ≤ (((j ≫ fst T G) ≫ u) * (j ≫ snd T G)).left ⁻¹ᵁ V`. Rewrite using `[Category.assoc, ← MonObj.comp_mul]`. Conclude with `k _ inf_le_left`. Establish `k₂ : ⊤ ≤ (j ≫ snd T G).left ⁻¹ᵁ V` using `k _ inf_le_right`. Establish `e : ∀ (r : Z.left ⟶ G.left) (k : ⊤ ≤ r ⁻¹ᵁ V), (r.appLE V ⊤ k).hom ((G.left.presheaf.map (homOfLE h).op).hom f) = (r.appLE U ⊤ (k.trans (r.preimage_mono h))).hom f` using `fun r k => congrArg (fun q => q.hom f) (r.map_appLE k (homOfLE h).op)`.
+
+Use `hW S G X u hI U f χ Z (j ≫ fst T G) (j ≫ snd T G) ?_ (k₁.trans (Scheme.Hom.preimage_mono _ h)) (k₂.trans (Scheme.Hom.preimage_mono _ h)) ?_` and prove the remaining obligations. Rewrite using `[hj] show IsDominant O.ι`. Use `⟨?_⟩` and prove the remaining obligations. Rewrite using `[DenseRange, Scheme.Opens.range_ι]`. Conclude with `O.isOpen.dense (by obtain ⟨z⟩ := hO; exact ⟨z.1, z.2⟩)`.
+
+Rewrite using `[← e _ k₁, ← e _ k₂]`. Conclude with `hf Z _ _ k₁ k₂`.
+-/
 private theorem wt_of_res (hW : WtGeneric) {S : Scheme.{0}} {G : Over S} [GrpObj G] {X : Type} [AddCommGroup X]
     (u : splitTorus S X ⟶ G) [IsMonHom u] (hI : IsIntegral (splitTorus S X ⊗ G).left) {U V : G.left.Opens}
     (h : V ≤ U) (hV : (V : Set G.left).Nonempty) (f : Γ(G.left, U)) (χ : X)
@@ -117,6 +155,9 @@ private theorem wt_of_res (hW : WtGeneric) {S : Scheme.{0}} {G : Over S} [GrpObj
   · rw [← e _ k₁, ← e _ k₂]
     exact hf Z _ _ k₁ k₂
 
+/- English proof (translation)
+Introduce `Z t g h₁ h₂` and use `by rw [← chV_val, chV_zero, Units.val_one, _root_.one_mul, ← CommRingCat.comp_apply, ← CommRingCat.comp_apply, Scheme.Hom.appLE_comp_appLE, Scheme.Hom.appLE_comp_appLE] simp only [Over.w]`.
+-/
 private theorem isWt_base {S : Scheme.{0}} {G : Over S} [GrpObj G] {X : Type} [AddCommGroup X]
     (u : splitTorus S X ⟶ G) {V : G.left.Opens} (W : S.Opens) (h : V ≤ G.hom ⁻¹ᵁ W) (c : Γ(S, W)) :
     IsWt u V ((G.hom.appLE W V h).hom c) 0 := fun Z t g h₁ h₂ => by
@@ -124,6 +165,17 @@ private theorem isWt_base {S : Scheme.{0}} {G : Over S} [GrpObj G] {X : Type} [A
     Scheme.Hom.appLE_comp_appLE, Scheme.Hom.appLE_comp_appLE]
   simp only [Over.w]
 
+/- English proof (translation)
+Introduce `hW k _ _ C _ hC G _ hG X _ _ _ u hu χ U f hU hf hw s`. Establish `: IsIntegral C` using `LieSemineg.isIntegral_curve hC.1 hC.2.2`. Use `hC.1` as an intermediate fact. Establish `: Smooth (strHom k C)` using `SmoothOfRelativeDimension.smooth 1 _`. Establish `: IsLocallyNoetherian C` using `LocallyOfFiniteType.isLocallyNoetherian (strHom k C)`.
+
+Use `hG.smooth` as an intermediate fact. Use `hG.geomConnected` as an intermediate fact. Establish `: IsLocallyNoetherian G.left` using `LocallyOfFiniteType.isLocallyNoetherian G.hom`. Establish `: IsIntegral G.left` using `isIntegral_left_of_isSemiAbelian G`. Use `geometricallyIntegral_of_isSemiAbelian G` as an intermediate fact.
+
+Establish `hI : IsIntegral (splitTorus C X ⊗ G).left`. Establish `: IsIntegral (splitTorus C X).left` using `isIntegral_left_of_isSemiAbelian (splitTorus C X) (h := Diag.isSemiAbelian C X)`. Establish `: Smooth (fst (splitTorus C X) G).left` using `inferInstanceAs (Smooth (pullback.fst _ G.hom))`. Establish `: GeometricallyConnected (fst (splitTorus C X) G).left` using `inferInstanceAs (GeometricallyConnected (pullback.fst _ G.hom))`. Conclude with `isIntegral_of_smooth_of_geometricallyConnected (fst (splitTorus C X) G).left`.
+
+Take `⟨y, hy, hm⟩` from `exists_pt G.hom s`. Use `GlobalTheory.ProjHol.valuationRing_stalk (strHom k C) (G.hom y)` as an intermediate fact. Establish `: IsPrincipalIdealRing (C.presheaf.stalk (G.hom y))` using `IsPrincipalIdealRing.of_isNoetherianRing_of_isBezout`. Take `⟨π, hπ⟩` from `(IsPrincipalIdealRing.principal (IsLocalRing.maximalIdeal (C.presheaf.stalk (G.hom y)))).principal`. Rewrite `hm` using `[hπ, Ideal.submodule_span_eq, Ideal.map_span, Set.image_singleton]`.
+
+Take `⟨W, c, d, U₁, f₁, V, h, h₁, h₂, hy₁, hf₁, hV, hd, e⟩` from `exists_unit_near G.hom y π hm.symm U f hU hf`. Use `⟨U₁, f₁, ⟨y, hy₁, hy⟩, hf₁, wt_of_res hW u hI h₁ hV f₁ χ ?_⟩` and prove the remaining obligations. Establish `w₁` using `((IsWt.res (i := u) hw h).mul (isWt_base u W h₂ c)).mul (IsWt.inv (u := hd.unit) (isWt_base u W h₂ d))`. Rewrite `w₁` using `[e, _root_.mul_assoc, IsUnit.mul_val_inv, _root_.mul_one]`. Simplify using `using w₁`.
+-/
 theorem UpperTheory.torus_weight_unit_local :
     WtGeneric → ∀ (k : Type) [Field k] [IsAlgClosed k] (C : Scheme.{0}) [Algebra k Γ(C, ⊤)], IsCurve k C →
         ∀ (G : Over C) [GrpObj G], IsSemiAbelian G → ∀ (X : Type) [AddCommGroup X] [Module.Free ℤ X] [Module.Finite ℤ X] (u : splitTorus C X ⟶ G), IsMonHom u →

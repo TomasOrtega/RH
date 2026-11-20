@@ -54,6 +54,9 @@ def IsSphericalOff (S : Finset (HeightOneSpectrum (𝓞 D.host.F))) (σ : Repres
 
 variable {σ : Representation ℂ (GfC V) W} {σv : Representation ℂ (Gv V v) Y} {τ : Representation ℂ (Kv V v) Z}
 
+/- English proof (translation)
+Introduce `_ hv` and use `let ⟨x, hx, h0⟩ := (Submodule.ne_bot_iff _).1 h (Submodule.ne_bot_iff _).2 ⟨x, LGrp.mem_fixed.2 fun _ hk => LGrp.mem_fixed.1 hx _ (emb_mem_levelOff hv hk), h0⟩`.
+-/
 theorem isSphericalOff_of_fixed {S : Finset (HeightOneSpectrum (𝓞 D.host.F))} (h : LGrp.IsSpherical σ (KOff V S)) :
     IsSphericalOff S σ := fun _ hv =>
   let ⟨x, hx, h0⟩ := (Submodule.ne_bot_iff _).1 h
@@ -106,13 +109,22 @@ def mCuspDS (σ : Representation ℂ (GfC V) W) (M : DSModel V S) : Cardinal :=
 variable {μ} {π : GA D V →* (H →L[ℂ] H)} {π' : GA D V →* (X →L[ℂ] X)} {σ : Representation ℂ (GfC V) W}
   {δ : GinfC V →* (X →L[ℂ] X)} {M : DSModel V S}
 
+/- English proof (translation)
+The claim follows from `(multIn_rep (isSubrep_L2cusp V μ)).symm`.
+-/
 theorem mCusp_eq_Rcusp : mCusp V μ π = multIn π (Rcusp V μ) ⊤ := (multIn_rep (isSubrep_L2cusp V μ)).symm
 
+/- English proof (translation)
+The claim follows from `congrArg (fun U : Submodule ℂ _ => Module.rank ℂ U) (homIn_disc hπ (isUnitaryRep_RG V μ))`.
+-/
 theorem mDisc_eq_top (hπ : IsIrrUnitary π) : mDisc V μ π = multIn π (RG V μ) ⊤ :=
   congrArg (fun U : Submodule ℂ _ => Module.rank ℂ U) (homIn_disc hπ (isUnitaryRep_RG V μ))
 
 open Classical in
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨multTensorPi_congr e, multTensorPi_congr e⟩`.
+-/
 theorem mDS_congr {W' : Type} [AddCommGroup W'] [Module ℂ W'] {σ' : Representation ℂ (GfC V) W'} (e : σ.Equiv σ') :
     mDiscDS μ σ M = mDiscDS μ σ' M ∧ mCuspDS μ σ M = mCuspDS μ σ' M := ⟨multTensorPi_congr e, multTensorPi_congr e⟩
 
@@ -127,6 +139,9 @@ def finVec (π : GA D V →* (H →L[ℂ] H)) : Submodule ℂ H := kFinVec (toRe
 omit [μ.IsMulRightInvariant] in
 variable {V μ} in
 
+/- English proof (translation)
+The claim follows from `EventuallyEq.trans (ae_quotMeasure_iff.1 (Lp.coeFn_add F F')) (e.add e')`.
+-/
 theorem lift_add_ae {F F' : DividedPowerChartLift V μ} {φ ψ : GA D V → ℂ} (e : lift (GQ V) F =ᵐ[μ] φ) (e' : lift (GQ V) F' =ᵐ[μ] ψ) :
     lift (GQ V) (F + F' : DividedPowerChartLift V μ) =ᵐ[μ] φ + ψ :=
   EventuallyEq.trans (ae_quotMeasure_iff.1 (Lp.coeFn_add F F')) (e.add e')
@@ -134,6 +149,9 @@ theorem lift_add_ae {F F' : DividedPowerChartLift V μ} {φ ψ : GA D V → ℂ}
 omit [μ.IsMulRightInvariant] in
 variable {V μ} in
 
+/- English proof (translation)
+The claim follows from `EventuallyEq.trans (ae_quotMeasure_iff.1 (Lp.coeFn_smul c F)) (e.const_smul c)`.
+-/
 theorem lift_smul_ae (c : ℂ) {F : DividedPowerChartLift V μ} {φ : GA D V → ℂ} (e : lift (GQ V) F =ᵐ[μ] φ) :
     lift (GQ V) (c • F : DividedPowerChartLift V μ) =ᵐ[μ] c • φ :=
   EventuallyEq.trans (ae_quotMeasure_iff.1 (Lp.coeFn_smul c F)) (e.const_smul c)
@@ -172,6 +190,9 @@ variable {θ A μ} {π : GA D V →* (H →L[ℂ] H)} {φ ψ : GA D V → ℂ}
 
 omit [μ.IsMulRightInvariant] in
 
+/- English proof (translation)
+The claim follows from `have hd := isFundamentalDomain_stdDom (GQ V) μ have h : MemL2Quotient (GQ V) μ φ := (memL2_iff_fundamental_domain hd).2 ⟨hφ, ((memL2_iff_fundamental_domain hd).1 (memL2_lift F)).2.ae_eq (ae_restrict_of_ae e)⟩ ⟨h, l2DiscreteQuotient_ext_iff_lift_ae_eq.2 (h.lift_toL2_ae_eq.trans e. …`.
+-/
 theorem exists_toL2_eq_of_ae_eq {F : DividedPowerChartLift V μ} (hφ : LeftInv (GQ V) φ) (e : lift (GQ V) F =ᵐ[μ] φ) :
     ∃ h : MemL2Quotient (GQ V) μ φ, h.toL2 = F :=
   have hd := isFundamentalDomain_stdDom (GQ V) μ
@@ -180,12 +201,18 @@ theorem exists_toL2_eq_of_ae_eq {F : DividedPowerChartLift V μ} (hφ : LeftInv 
 
 omit [μ.IsMulRightInvariant] in
 
+/- English proof (translation)
+Take `⟨h, rfl⟩` from `exists_toL2_eq_of_ae_eq hφ e`. Take `⟨h', rfl⟩` from `exists_toL2_eq_of_ae_eq hψ e'`. Conclude with `(h.inner_toL2_eq_theta_pairing h').symm`.
+-/
 theorem petersson_eq_inner {F F' : DividedPowerChartLift V μ} (hφ : LeftInv (GQ V) φ) (hψ : LeftInv (GQ V) ψ) (e : lift (GQ V) F =ᵐ[μ] φ)
     (e' : lift (GQ V) F' =ᵐ[μ] ψ) : petersson V μ φ ψ = ⟪F', F⟫_ℂ := by
   obtain ⟨h, rfl⟩ := exists_toL2_eq_of_ae_eq hφ e
   obtain ⟨h', rfl⟩ := exists_toL2_eq_of_ae_eq hψ e'
   exact (h.inner_toL2_eq_theta_pairing h').symm
 
+/- English proof (translation)
+The claim follows from `(petersson_eq_inner (hφ.mul_right g) hψ ((lift_R g _).trans ((measurePreserving_mul_right μ g).quasiMeasurePreserving.ae e)) e').trans (inner_apply_eq_be hπ (isUnitaryRep_RG V μ) hT hT' g x y)`.
+-/
 theorem petersson_rTr_eq_be (hπ : IsIrrUnitary π) {U U' : Submodule ℂ (DividedPowerChartLift V μ)} {T T' : H →L[ℂ] DividedPowerChartLift V μ}
     (hT : T ∈ homIn π (RG V μ) U) (hT' : T' ∈ homIn π (RG V μ) U') {x y : H} (hφ : LeftInv (GQ V) φ)
     (hψ : LeftInv (GQ V) ψ) (e : lift (GQ V) (T x) =ᵐ[μ] φ) (e' : lift (GQ V) (T' y) =ᵐ[μ] ψ) (g : GA D V) :
@@ -196,6 +223,11 @@ theorem petersson_rTr_eq_be (hπ : IsIrrUnitary π) {U U' : Submodule ℂ (Divid
 
 variable {ι ι' : finVec V θ A π →ₗ[ℂ] (GA D V → ℂ)}
 
+/- English proof (translation)
+Take `⟨h, T, hT, e⟩` from `h`. Take `⟨h', T', hT', e'⟩` from `h'`. Rewrite using `[petersson_rTr_eq_be hπ hT hT' (h x).2.2.1 (h' y).2.2.1 (e x) (e' y)]`. Break down `subsingleton_or_nontrivial (finVec V θ A π) with h0 | h0` into its components or cases. Simplify using `[Subsingleton.elim y 0]`.
+
+Rewrite using `[beF, petersson_eq_inner (h _).2.2.1 (h' _).2.2.1 (e _) (e' _), inner_eq_be hπ (isUnitaryRep_RG V μ) hT hT', ← Submodule.coe_inner, inner_self_eq_norm_sq_to_K, norm_unitVec]`. Simplify using the standard rewrite rules.
+-/
 theorem petersson_rTr_eq_beF (hπ : IsIrrUnitary π) (h : ι ∈ formHom V θ A μ π) (h' : ι' ∈ formHom V θ A μ π)
     (g : GA D V) (x y : finVec V θ A π) : petersson V μ (rTr V g (ι x)) (ι' y) = beF μ ι ι' * ⟪(y : H), π g x⟫_ℂ := by
   obtain ⟨h, T, hT, e⟩ := h
@@ -207,6 +239,9 @@ theorem petersson_rTr_eq_beF (hπ : IsIrrUnitary π) (h : ι ∈ formHom V θ A 
       ← Submodule.coe_inner, inner_self_eq_norm_sq_to_K, norm_unitVec]
     simp
 
+/- English proof (translation)
+Establish `e : rTr V 1 (ι x) = ι x` using `funext fun g => congrArg (ι x) (mul_one g)`. Simplify `petersson_rTr_eq_beF hπ h h' 1 x y` using `only [e, map_one, one_apply_eq_self, Submodule.coe_inner]`.
+-/
 theorem petersson_eq_beF (hπ : IsIrrUnitary π) (h : ι ∈ formHom V θ A μ π) (h' : ι' ∈ formHom V θ A μ π)
     (x y : finVec V θ A π) : petersson V μ (ι x) (ι' y) = beF μ ι ι' * ⟪y, x⟫_ℂ := by
   have e : rTr V 1 (ι x) = ι x := funext fun g => congrArg (ι x) (mul_one g)
@@ -214,6 +249,9 @@ theorem petersson_eq_beF (hπ : IsIrrUnitary π) (h : ι ∈ formHom V θ A μ �
 
 omit [μ.IsHaarMeasure] [μ.IsMulRightInvariant] in
 
+/- English proof (translation)
+The claim follows from `petersson_smul_left c _ _`.
+-/
 theorem beF_smul_left (c : ℂ) (ι ι' : X →ₗ[ℂ] (GA D V → ℂ)) : beF μ (c • ι) ι' = c * beF μ ι ι' :=
   petersson_smul_left c _ _
 
@@ -223,6 +261,9 @@ section Examples
 
 variable (μ : Measure (GA D V)) [μ.IsHaarMeasure] [μ.IsMulRightInvariant]
 
+/- English proof (translation)
+Introduce `e` and use `by have h1 : ContinuousLinearMap.toSpanSingleton ℂ (memL2_const (Γ := GQ V) (μ := μ) 1).toL2 ∈ homIn (charRep (1 : GA D V →* Circle)) (RG V μ) U := ⟨fun c => U.smul_mem c h, fun g c => by simp [charRep, right_translate_toL2]⟩ rw [multIn_eq_zero_iff.1 e, Submodule.mem_bot] at h1 e …`.
+-/
 theorem multIn_one_ne_zero {U : Submodule ℂ (DividedPowerChartLift V μ)} (h : (memL2_const (Γ := GQ V) (μ := μ) 1).toL2 ∈ U) :
     multIn (charRep (1 : GA D V →* Circle)) (RG V μ) U ≠ 0 := fun e => by
   have h1 : ContinuousLinearMap.toSpanSingleton ℂ (memL2_const (Γ := GQ V) (μ := μ) 1).toL2 ∈
@@ -232,18 +273,30 @@ theorem multIn_one_ne_zero {U : Submodule ℂ (DividedPowerChartLift V μ)} (h :
   exact (isIrredSubrep_const (Γ := GQ V) (μ := μ)).2.1 (Submodule.span_singleton_eq_bot.2
     ((one_smul ℂ _).symm.trans (DFunLike.congr_fun h1 1)))
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨isIrrUnitary_charRep continuous_const, multIn_one_ne_zero V μ (isIrredSubrep_const.le_disc (Submodule.mem_span_singleton_self _))⟩`.
+-/
 theorem isDiscreteRep_one : IsDiscreteRep V μ (charRep 1) :=
   ⟨isIrrUnitary_charRep continuous_const,
     multIn_one_ne_zero V μ (isIrredSubrep_const.le_disc (Submodule.mem_span_singleton_self _))⟩
 
+/- English proof (translation)
+The claim follows from `IsFactorisation.hasCompPl (δ := fun _ => charRep 1) (isRestrTensor_charRep (projPl _ _) (fun _ => 1) 1 (fun _ => .of_forall fun _ => rfl) fun _ => by simp) v`.
+-/
 example (v : Formalism.MainNotions.SchurIrreducible.Pl D.host.F) :
     HasCompPl D.sp.cm.sig V.gram v (charRep 1) (charRep (1 : GA D V →* Circle)) :=
   IsFactorisation.hasCompPl (δ := fun _ => charRep 1)
     (isRestrTensor_charRep (projPl _ _) (fun _ => 1) 1 (fun _ => .of_forall fun _ => rfl) fun _ => by simp) v
 
+/- English proof (translation)
+The claim follows from `isSphericalOff_of_fixed ((Submodule.ne_bot_iff _).2 ⟨1, LGrp.mem_fixed.2 fun _ _ => rfl, one_ne_zero⟩)`.
+-/
 example : IsSphericalOff ∅ (Representation.trivial ℂ (GfC V) ℂ) :=
   isSphericalOff_of_fixed ((Submodule.ne_bot_iff _).2 ⟨1, LGrp.mem_fixed.2 fun _ _ => rfl, one_ne_zero⟩)
 
+/- English proof (translation)
+Introduce `hc` and use `by obtain ⟨f, h0, e⟩ := contains_iff.1 hc have := LinearMap.rank_le_of_injective f (injective_of_mem_homInto (C := ⊤) hτ ⟨fun _ => trivial, e⟩ h0) exact h.not_ge (by simpa using this)`.
+-/
 example {v : HeightOneSpectrum (𝓞 D.host.F)} (τ : Representation ℂ (Kv V v) W) (hτ : τ.IsIrreducible)
     (h : 1 < Module.rank ℂ W) : ¬ ContainsAt τ (Representation.trivial ℂ (GfC V) ℂ) := fun hc => by
   obtain ⟨f, h0, e⟩ := contains_iff.1 hc

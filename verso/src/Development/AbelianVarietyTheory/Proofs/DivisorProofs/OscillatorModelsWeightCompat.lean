@@ -30,6 +30,9 @@ open GlobalTheory.OneMapRef GlobalTheory.WeilParts GlobalTheory.IndefiniteRowSid
 
 namespace GlobalTheory.GalOne
 
+/- English proof (translation)
+Introduce `a ha` and use `by obtain ⟨u, hu, e⟩ := h a ha refine ⟨m • u, zsmul_mem hu _, ?_⟩ rw [LinearMap.smul_apply, LinearMap.smul_apply, e, smul_add, smul_comm m l.M]`.
+-/
 theorem markOver_zsmul {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
     {l l₂ : Level H} {r : ℕ} {L : Lt E r} {mk mk₂ : Dw.La →ₗ[𝓞 E] (Fin r → E)} (h : MarkOver l l₂ L mk mk₂) (m : ℤ) :
     MarkOver l l₂ L (m • mk) (m • mk₂) := fun a ha => by
@@ -44,6 +47,9 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.
 
 omit [Algebra T.Q.c.F D.what₂.LL] in
 
+/- English proof (translation)
+Substitute `hV` using the available equality. Establish `h0 : T.cE j s (T.dict j s h).1 ≠ 0` using `norm_ne_zero_iff.1 ((hc _).trans_ne one_ne_zero)`. Express the relevant statement in the definitionally equal form `cst (T.dict j s h).1 / T.cE j s (T.dict j s h).1 * ((lieFac (T.Q.Dw j) (xiR D) a : ℂ) * (T.cE j s (T.dict j s h).1 * T.mu j s h * rdU (T.U j s) f (T.dict j s h).1 (T.dict j s h).2)) = (lieFac (T.Q.Dw j) (xiR D) a : ℂ) * (cst (T.dict j s h).1 * T.mu j s h * rdU (T.U j s) f (T.dict …`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem div_mul_phiC {s : T.Q.c.F →+* ℂ} {W : HSp D} {j : ℕ} (hV : T.V j s = W) (hc : CUnit (T.cE j s))
     (cst : (T.U j s).Comp → ℂ) (a : (D.host.E →+* ℂ) × ℕ → ℕ) (f : T.R j) (h : GA D W) :
     cst (castDict hV (T.dict j s) h).1 / T.cE j s (castDict hV (T.dict j s) h).1 * phiC T hV a f h =
@@ -56,12 +62,18 @@ theorem div_mul_phiC {s : T.Q.c.F →+* ℂ} {W : HSp D} {j : ℕ} (hV : T.V j s
     (lieFac (T.Q.Dw j) (xiR D) a : ℂ) * (cst (T.dict j s h).1 * T.mu j s h * rdU (T.U j s) f (T.dict j s h).1 (T.dict j s h).2)
   field_simp
 
+/- English proof (translation)
+The claim follows from `(injective_iff_map_eq_zero c).2 fun x hx => by by_contra h0 exact (h 1 (fun _ => x) (linearIndependent_unique_iff.2 h0)).ne_zero 0 hx`.
+-/
 theorem inj_of_indep {K X M : Type} [Field K] [AddCommGroup X] [Module K X] [AddCommGroup M] [Module ℂ M] {s : K →+* ℂ}
     (c : X →ₛₗ[s] M) (h : ∀ (m : ℕ) (b : Fin m → X), LinearIndependent K b → LinearIndependent ℂ fun j => c (b j)) :
     Function.Injective c := (injective_iff_map_eq_zero c).2 fun x hx => by
   by_contra h0
   exact (h 1 (fun _ => x) (linearIndependent_unique_iff.2 h0)).ne_zero 0 hx
 
+/- English proof (translation)
+Establish `hs : Function.Surjective O.jL` using `fun y => by`. Take `⟨x, hx⟩ : (y : ℂ) ∈ D.what₂.embLL.toRatAlgHom.fieldRange` from `hF ▸ y.2`. Conclude with `⟨x, Subtype.ext ((RingHom.congr_fun hP.lift.field x).trans hx)⟩`. Set `e` to `RingEquiv.ofBijective O.jL ⟨O.jL.injective, hs⟩`. Conclude with `⟨σ.comp e.symm.toRingHom, RingHom.ext fun x => congrArg σ (e.symm_apply_apply x)⟩`.
+-/
 theorem exists_ext (O : OM T R i) (hF : O.c'.F = D.what₂.embLL.toRatAlgHom.fieldRange) (hP : Pinned κ v₀ O)
     (σ : D.what₂.LL →+* ℂ) : ∃ σ' : O.c'.F →+* ℂ, σ'.comp O.jL = σ := by
   have hs : Function.Surjective O.jL := fun y => by

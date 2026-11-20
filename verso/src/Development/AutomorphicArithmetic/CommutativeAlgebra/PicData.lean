@@ -26,6 +26,9 @@ variable {A C}
 
 def theta (g : C ⊗[A] C) : C →ₗ[C] C ⊗[A] C := LinearMap.toSpanSingleton C _ g
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem theta_apply (g : C ⊗[A] C) (b : C) : theta g b = b • g := rfl
 
 abbrev Mg (g : C ⊗[A] C) : Submodule A C := GlobalTheory.FlatDescent.invariants (theta g)
@@ -63,31 +66,55 @@ def dd (R : Type) [CommRing R] : P.S0.obj (CommRingCat.of R) →+ P.S1.obj (Comm
 def un {R : Type} [CommRing R] (u : Rˣ) : P.S0.obj (CommRingCat.of R) :=
   P.ι (CommRingCat.of R) (Additive.ofMul u)
 
+/- English proof (translation)
+Simplify using `[r0, CommRingCat.ofHom_comp]`.
+-/
 theorem mapDegZero_comp {R S T : Type} [CommRing R] [CommRing S] [CommRing T] (f : R →+* S) (g : S →+* T)
     (x : P.S0.obj (CommRingCat.of R)) : P.r0 g (P.r0 f x) = P.r0 (g.comp f) x := by
   simp [r0, CommRingCat.ofHom_comp]
 
+/- English proof (translation)
+Simplify using `[r1, CommRingCat.ofHom_comp]`.
+-/
 theorem mapDegOne_comp {R S T : Type} [CommRing R] [CommRing S] [CommRing T] (f : R →+* S) (g : S →+* T)
     (x : P.S1.obj (CommRingCat.of R)) : P.r1 g (P.r1 f x) = P.r1 (g.comp f) x := by
   simp [r1, CommRingCat.ofHom_comp]
 
+/- English proof (translation)
+Use `congrArg (fun φ => φ.hom x) (P.d.naturality (CommRingCat.ofHom f))` as an intermediate fact. Simplify `this` using `[dd, r0, r1]`.
+-/
 theorem diff_mapDegZero {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) (x : P.S0.obj (CommRingCat.of R)) :
     P.dd S (P.r0 f x) = P.r1 f (P.dd R x) := by
   have := congrArg (fun φ => φ.hom x) (P.d.naturality (CommRingCat.ofHom f))
   simpa [dd, r0, r1] using this
 
+/- English proof (translation)
+The claim follows from `P.ι_nat (CommRingCat.ofHom f) u`.
+-/
 theorem mapDegZero_ofUnit {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) (u : Rˣ) :
     P.r0 f (P.un u) = P.un (Units.map f.toMonoidHom u) :=
   P.ι_nat (CommRingCat.ofHom f) u
 
+/- English proof (translation)
+The claim follows from `map_add (P.ι (CommRingCat.of R)) (Additive.ofMul u) (Additive.ofMul v)`.
+-/
 theorem un_mul {R : Type} [CommRing R] (u v : Rˣ) : P.un (u * v) = P.un u + P.un v :=
   map_add (P.ι (CommRingCat.of R)) (Additive.ofMul u) (Additive.ofMul v)
 
+/- English proof (translation)
+Introduce `_ _ h` and use `Additive.ofMul.injective (P.ι_inj _ h)`.
+-/
 theorem un_injective {R : Type} [CommRing R] : Function.Injective (P.un (R := R)) :=
   fun _ _ h => Additive.ofMul.injective (P.ι_inj _ h)
 
+/- English proof (translation)
+The claim follows from `map_zero (P.ι (CommRingCat.of R))`.
+-/
 theorem un_one {R : Type} [CommRing R] : P.un (1 : Rˣ) = 0 := map_zero (P.ι (CommRingCat.of R))
 
+/- English proof (translation)
+Rewrite using `[dd, P.d_eq_zero]`. Conclude with `⟨fun ⟨u, h⟩ => ⟨u.toMul, h⟩, fun ⟨u, h⟩ => ⟨Additive.ofMul u, h⟩⟩`.
+-/
 theorem dd_eq_zero {R : Type} [CommRing R] (w : P.S0.obj (CommRingCat.of R)) :
     P.dd R w = 0 ↔ ∃ u : Rˣ, P.un u = w := by
   rw [dd, P.d_eq_zero]

@@ -10,6 +10,15 @@ open NumberField CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestric
 
 namespace GlobalTheory.Mean4O.Cover
 
+/- English proof (translation)
+Introduce `F _ _ C Y V A L k hk hI hA`. Take `⟨r, hr, hu, -⟩` from `hI`. Establish `hL : (L.B.pull V.j).IsLB` using `LB.isLB_pull L.isLB V.j`. Establish `hφ : V.φ = GlobalTheory.functionFieldMap V.π`. Take `⟨hη, e⟩` from `V.φ_eq_fnMap`.
+
+Conclude with `e`. Establish `hP : GlobalTheory.Cartier.Presents (GlobalTheory.Cartier.DomPull.pullback V.π (k • A.D)) (L.B.pull V.j) r`. Use `⟨hL, hr, fun i x hx => ?_⟩` and prove the remaining obligations. Establish `h₁` using `GlobalTheory.Cartier.DomPull.isEqn_pullback V.π (k • A.D) ((Base.isEqn_eqn A.D (V.π x)).nsmul k)`. Use `h₁.iff_unitAt.2 ?_` and prove the remaining obligations.
+
+Establish `h₂` using `hu i x hx`. Rewrite `h₂` using `[hφ]`. Use `h₂ using 1` and compare the differences between its conclusion and the goal. Simplify using `only [genAt, Units.coe_map, MonoidHom.coe_coe, RingHom.toMonoidHom_eq_coe, Units.val_pow_eq_pow_val, Units.val_inv_eq_inv_val, map_pow, map_inv₀, inv_pow, div_eq_inv_mul]`. Establish `hk' : IsAmpleLB (GlobalTheory.Cartier.toLB (k • A.D))` using `Var.ample_nsmul F Y A.D k hk hA`.
+
+Conclude with `(hk'.pull_of_isFinite V.π).of_lbIso hL (hP.lbIso (GlobalTheory.Cartier.DomPull.presents_pullback V.π _))`.
+-/
 theorem isAmpleLB_pull_of_induces : ∀ {F : Type} [Field F] [NumberField F] {C : CxSt F} {Y : Var F} (V : Cover Y)
     (A : Adl C Y) (L : HermLB V.p) (k : ℕ), 0 < k → V.Induces A L k → Y.ample A.D → IsAmpleLB (L.B.pull V.j) := by
   intro F _ _ C Y V A L k hk hI hA

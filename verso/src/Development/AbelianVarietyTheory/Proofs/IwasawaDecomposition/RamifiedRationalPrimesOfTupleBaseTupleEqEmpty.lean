@@ -13,10 +13,18 @@ namespace GlobalTheory.Mem.HD.ReQ
 
 variable {D : D7} {C : CharFrame D} {nch : NChoice D}
 
+/- English proof (translation)
+Rewrite using `[aboveF, Set.Finite.mem_toFinset]`. Both sides reduce to the same expression.
+-/
 theorem mem_aboveF_iff {v : HeightOneSpectrum (𝓞 D.host.F)} {P : HeightOneSpectrum (𝓞 D.host.E)} :
     P ∈ aboveF (L := D.host.E) D.host.F v ↔ P.under (𝓞 D.host.F) = v := by
   rw [aboveF, Set.Finite.mem_toFinset]; rfl
 
+/- English proof (translation)
+Rewrite `hP` using `[mem_aboveF_iff]`. Substitute `hP` using the available equality. Establish `hd : Ideal.absNorm (P.under (𝓞 D.host.F)).asIdeal ∣ Ideal.absNorm P.asIdeal`. Rewrite using `[Ideal.absNorm_apply, Ideal.absNorm_apply, Submodule.cardQuot_apply, Submodule.cardQuot_apply]`. Conclude with `AddSubgroup.card_dvd_of_injective (Ideal.quotientMap P.asIdeal (algebraMap (𝓞 D.host.F) (𝓞 D.host.E)) le_rfl).toAddMonoidHom Ideal.quotientMap_injective`.
+
+Conclude with `((Nat.dvd_prime h).1 hd).resolve_left fun h1 => (P.under (𝓞 D.host.F)).isPrime.ne_top (Ideal.absNorm_eq_one_iff.1 h1)`.
+-/
 theorem absNorm_eq_of_mem {v : HeightOneSpectrum (𝓞 D.host.F)} {P : HeightOneSpectrum (𝓞 D.host.E)}
     (hP : P ∈ aboveF (L := D.host.E) D.host.F v) (h : (Ideal.absNorm P.asIdeal).Prime) :
     Ideal.absNorm v.asIdeal = Ideal.absNorm P.asIdeal := by
@@ -30,12 +38,22 @@ theorem absNorm_eq_of_mem {v : HeightOneSpectrum (𝓞 D.host.F)} {P : HeightOne
   exact ((Nat.dvd_prime h).1 hd).resolve_left fun h1 =>
     (P.under (𝓞 D.host.F)).isPrime.ne_top (Ideal.absNorm_eq_one_iff.1 h1)
 
+/- English proof (translation)
+Use `le_antisymm h (not_lt.1 fun h1 => h' ?_)` and prove the remaining obligations. Rewrite using `[← WithZero.lt_mul_exp_iff_le WithZero.exp_ne_zero, ← WithZero.exp_add, sub_add_cancel]`. Conclude with `h1`.
+-/
 theorem eq_exp_of_le {x : WithZero (Multiplicative ℤ)} {m : ℤ} (h : x ≤ WithZero.exp m)
     (h' : ¬ x ≤ WithZero.exp (m - 1)) : x = WithZero.exp m := by
   refine le_antisymm h (not_lt.1 fun h1 => h' ?_)
   rw [← WithZero.lt_mul_exp_iff_le WithZero.exp_ne_zero, ← WithZero.exp_add, sub_add_cancel]
   exact h1
 
+/- English proof (translation)
+Use `⟨h1, ?_⟩` and prove the remaining obligations. Establish `hmem : ((Ideal.absNorm P.asIdeal : ℕ) : 𝓞 L) ∈ P.asIdeal` using `Ideal.absNorm_mem _`. Establish `e : ((qP P : ℕ) : P.adicCompletion L) = algebraMap L (P.adicCompletion L) (algebraMap (𝓞 L) L ((Ideal.absNorm P.asIdeal : ℕ) : 𝓞 L))`. Simplify using `[qP]`. Establish `hv : ∀ y : L, Valued.v (algebraMap L (P.adicCompletion L) y) = P.valuation L y` using `fun y => HeightOneSpectrum.valuedAdicCompletion_eq_valuation' P y`.
+
+Rewrite using `[e, hv, HeightOneSpectrum.valuation_of_algebraMap]`. Establish `a1` using `(P.intValuation_le_pow_iff_mem _ 1).2 (by simpa using hmem)`. Establish `a2 : ¬ P.intValuation ((Ideal.absNorm P.asIdeal : ℕ) : 𝓞 L) ≤ WithZero.exp (-((2 : ℕ) : ℤ))` using `fun h => h2 ((P.intValuation_le_pow_iff_mem _ 2).1 h)`. Use `eq_exp_of_le (by simpa using a1) fun h => a2 ?_` and prove the remaining obligations. Use `h using 2` and compare the differences between its conclusion and the goal.
+
+Evaluate the numerical expressions.
+-/
 theorem degreeOne_of_prime_absNorm_not_mem_sq {L : Type} [Field L] [NumberField L] (P : HeightOneSpectrum (𝓞 L))
     (h1 : (Ideal.absNorm P.asIdeal).Prime) (h2 : ((Ideal.absNorm P.asIdeal : ℕ) : 𝓞 L) ∉ P.asIdeal ^ 2) : Deg1 P := by
   refine ⟨h1, ?_⟩
@@ -53,14 +71,25 @@ theorem degreeOne_of_prime_absNorm_not_mem_sq {L : Type} [Field L] [NumberField 
   convert h using 2
   norm_num
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.tupleChar_ramified_at_all_primes_over_place`.
+-/
 theorem ramTransfer : ∀ (D : D7) (C : CharFrame D) (nch : NChoice D) (Tp : TupTied D C nch), TupPins Tp → ∀ (μ : D.what₂.Tup) (v : HeightOneSpectrum (𝓞 D.host.F)) (w P : HeightOneSpectrum (𝓞 D.host.E)), w ∈ aboveF (L := D.host.E) D.host.F v → P ∈ aboveF (L := D.host.E) D.host.F v → ¬ (Tp.xi μ).UnrAt w → ¬ (Tp.xi μ).UnrAt P := GlobalTheory.T.tupleChar_ramified_at_all_primes_over_place
 
+/- English proof (translation)
+Use `((GlobalTheory.Mem.UnrAe.finite_ramified (Tp.xi μ)).image fun w => w.under (𝓞 D.host.F)).subset ?_` and prove the remaining obligations. Introduce and unpack `v ⟨w, hw, hr⟩`. Conclude with `⟨w, hr, mem_aboveF_iff.1 hw⟩`.
+-/
 theorem finite_inQ (Tp : TupTied D C nch) (μ : D.what₂.Tup) :
     {v : HeightOneSpectrum (𝓞 D.host.F) | Tp.InQ' μ v}.Finite := by
   refine ((GlobalTheory.Mem.UnrAe.finite_ramified (Tp.xi μ)).image fun w => w.under (𝓞 D.host.F)).subset ?_
   rintro v ⟨w, hw, hr⟩
   exact ⟨w, hr, mem_aboveF_iff.1 hw⟩
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Take `⟨a, b, hab⟩` from `Nat.isCoprime_iff_coprime.2 ((Nat.coprime_primes hp hq).2 hne)`. Establish `h : ((a * p + b * q : ℤ) : 𝓞 D.host.E) ∈ w.asIdeal`. Use `push_cast`. Conclude with `w.asIdeal.add_mem (w.asIdeal.mul_mem_left _ (by exact_mod_cast h1)) (w.asIdeal.mul_mem_left _ (by exact_mod_cast h2))`.
+
+Rewrite `h` using `[hab, Int.cast_one]`. Conclude with `w.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h)`.
+-/
 theorem prime_eq_of_overP {p q : ℕ} (hp : p.Prime) (hq : q.Prime) {w : HeightOneSpectrum (𝓞 D.host.E)}
     (h1 : OverP D.host p w) (h2 : OverP D.host q w) : p = q := by
   by_contra hne
@@ -72,6 +101,9 @@ theorem prime_eq_of_overP {p q : ℕ} (hp : p.Prime) (hq : q.Prime) {w : HeightO
   rw [hab, Int.cast_one] at h
   exact w.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h)
 
+/- English proof (translation)
+Establish `hs : ∀ w : HeightOneSpectrum (𝓞 D.host.E), Set.Subsingleton {p : ℕ | p.Prime ∧ OverP D.host p w}` using `fun w p hp q hq => prime_eq_of_overP hp.1 hq.1 hp.2 hq.2`. Use `((GlobalTheory.Mem.UnrAe.finite_ramified (Tp.xi μ)).biUnion fun w _ => (hs w).finite).subset ?_` and prove the remaining obligations. Introduce and unpack `p ⟨hp, w, hw, hr⟩`. Conclude with `Set.mem_biUnion hr ⟨hp, hw⟩`.
+-/
 theorem finite_qp (Tp : TupTied D C nch) (μ : D.what₂.Tup) :
     {p : ℕ | p.Prime ∧ ∃ w, OverP D.host p w ∧ ¬ (Tp.xi μ).UnrAt w}.Finite := by
   have hs : ∀ w : HeightOneSpectrum (𝓞 D.host.E), Set.Subsingleton {p : ℕ | p.Prime ∧ OverP D.host p w} :=
@@ -82,25 +114,40 @@ theorem finite_qp (Tp : TupTied D C nch) (μ : D.what₂.Tup) :
 
 def qpSet (Tp : TupTied D C nch) (μ : D.what₂.Tup) : Finset ℕ := (finite_qp Tp μ).toFinset
 
+/- English proof (translation)
+Rewrite using `[qpSet, Set.Finite.mem_toFinset]`. Both sides reduce to the same expression.
+-/
 theorem mem_qpSet (Tp : TupTied D C nch) (μ : D.what₂.Tup) (p : ℕ) :
     p ∈ qpSet Tp μ ↔ p.Prime ∧ ∃ w, OverP D.host p w ∧ ¬ (Tp.xi μ).UnrAt w := by
   rw [qpSet, Set.Finite.mem_toFinset]; rfl
 
+/- English proof (translation)
+Use `Finset.eq_empty_of_forall_notMem fun p hp => ?_` and prove the remaining obligations. Take `⟨-, w, -, hr⟩` from `(mem_qpSet Tp _ p).1 hp`. Conclude with `hr fun x _ => by rw [Tp.trueColumnChoices_heckeChar_reference_eq_one]; rfl`.
+-/
 theorem ramifiedRationalPrimesOfTuple_baseTuple_eq_empty (Tp : TupTied D C nch) : qpSet Tp D.what₂.mu0 = ∅ := by
   refine Finset.eq_empty_of_forall_notMem fun p hp => ?_
   obtain ⟨-, w, -, hr⟩ := (mem_qpSet Tp _ p).1 hp
   exact hr fun x _ => by rw [Tp.trueColumnChoices_heckeChar_reference_eq_one]; rfl
 
+/- English proof (translation)
+Introduce `h` and use `by obtain ⟨-, w', hw', hr⟩ := (mem_qpSet Tp _ _).1 h exact hr (hp.atl w w' hw')`.
+-/
 theorem qpSet_muAt (Tp : TupTied D C nch) (hp : TupPins Tp) (w : D.what₂.places.Pl) :
     D.what₂.places.resChar w ∉ qpSet Tp (D.what₂.muAt w) := fun h => by
   obtain ⟨-, w', hw', hr⟩ := (mem_qpSet Tp _ _).1 h
   exact hr (hp.atl w w' hw')
 
+/- English proof (translation)
+Introduce `h` and use `by obtain ⟨-, w, hw, hr⟩ := (mem_qpSet Tp _ _).1 h exact (hp.ram μ w hr).2.2.2 i hw`.
+-/
 theorem qpSet_g (Tp : TupTied D C nch) (hp : TupPins Tp) (μ : D.what₂.Tup) (i : Fin 2) :
     D.host.g i ∉ qpSet Tp μ := fun h => by
   obtain ⟨-, w, hw, hr⟩ := (mem_qpSet Tp _ _).1 h
   exact (hp.ram μ w hr).2.2.2 i hw
 
+/- English proof (translation)
+Establish `h0 : Ideal.absNorm v.asIdeal ≠ 0` using `fun h => v.ne_bot (Ideal.absNorm_eq_zero_iff.1 h)`. Establish `h1 : Ideal.absNorm v.asIdeal ≠ 1` using `fun h => v.isPrime.ne_top (Ideal.absNorm_eq_one_iff.1 h)`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem one_lt_absNorm {L : Type} [Field L] [NumberField L] (v : HeightOneSpectrum (𝓞 L)) :
     1 < Ideal.absNorm v.asIdeal := by
   have h0 : Ideal.absNorm v.asIdeal ≠ 0 := fun h => v.ne_bot (Ideal.absNorm_eq_zero_iff.1 h)
@@ -112,29 +159,47 @@ variable (Tp : TupTied D C nch) (hp : TupPins Tp) (Pv : HeightOneSpectrum (𝓞 
 
 include hp hPv in
 
+/- English proof (translation)
+Take `⟨w, hw, hr⟩` from `v.2`. Conclude with `ramTransfer D C nch Tp hp μ v.1 w (Pv v.1) hw (hPv v.1) hr`.
+-/
 theorem ram_Pv (μ : D.what₂.Tup) (v : {v : HeightOneSpectrum (𝓞 D.host.F) // Tp.InQ' μ v}) :
     ¬ (Tp.xi μ).UnrAt (Pv v.1) := by
   obtain ⟨w, hw, hr⟩ := v.2
   exact ramTransfer D C nch Tp hp μ v.1 w (Pv v.1) hw (hPv v.1) hr
 
 include hp hPv in
+/- English proof (translation)
+The claim follows from `degreeOne_of_prime_absNorm_not_mem_sq _ (hp.ram μ _ (ram_Pv Tp hp Pv hPv μ v)).2.1 (hp.ram μ _ (ram_Pv Tp hp Pv hPv μ v)).2.2.1`.
+-/
 theorem chosenPrimeAbove_ramifiedPlace_degreeOne (μ : D.what₂.Tup) (v : {v : HeightOneSpectrum (𝓞 D.host.F) // Tp.InQ' μ v}) : Deg1 (Pv v.1) :=
   degreeOne_of_prime_absNorm_not_mem_sq _ (hp.ram μ _ (ram_Pv Tp hp Pv hPv μ v)).2.1 (hp.ram μ _ (ram_Pv Tp hp Pv hPv μ v)).2.2.1
 
 include hp hPv in
+/- English proof (translation)
+The claim follows from `(hp.ram μ _ (ram_Pv Tp hp Pv hPv μ v)).2.2.2`.
+-/
 theorem offg_Pv (μ : D.what₂.Tup) (v : {v : HeightOneSpectrum (𝓞 D.host.F) // Tp.InQ' μ v}) :
     ∀ k, ¬ OverP D.host (D.host.g k) (Pv v.1) :=
   (hp.ram μ _ (ram_Pv Tp hp Pv hPv μ v)).2.2.2
 
 include hp hPv in
+/- English proof (translation)
+The claim follows from `absNorm_eq_of_mem (hPv v.1) (hp.ram μ _ (ram_Pv Tp hp Pv hPv μ v)).2.1`.
+-/
 theorem absNorm_Pv (μ : D.what₂.Tup) (v : {v : HeightOneSpectrum (𝓞 D.host.F) // Tp.InQ' μ v}) :
     Ideal.absNorm v.1.asIdeal = qP (Pv v.1) :=
   absNorm_eq_of_mem (hPv v.1) (hp.ram μ _ (ram_Pv Tp hp Pv hPv μ v)).2.1
 
+/- English proof (translation)
+Use `D.R.three_m_lt_t` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem one_le_letterBlockLength : 1 ≤ D.R.t := by have := D.R.three_m_lt_t; omega
 
 include hp hPv in
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.exists_type_dimension_and_local_integrals_degree_one D.host.E (Pv v.1) (chosenPrimeAbove_ramifiedPlace_degreeOne Tp hp Pv hPv μ v) _ _ (isDel_delQ Tp μ (ram_Pv Tp hp Pv hPv μ v)) (isNu_nuP C (offg_Pv Tp hp Pv hPv μ v)) D.R.r D.R.t j one_le_letterBlockLength`.
+-/
 theorem stepEx (μ : D.what₂.Tup) (v : {v : HeightOneSpectrum (𝓞 D.host.F) // Tp.InQ' μ v}) (j : ℕ) :
     (∃ n, TypeDimAt (Pv v.1) (delQ Tp μ (Pv v.1)) (nuP C (Pv v.1)) D.R.r D.R.t j n) ∧
       ∃ z, StepAt (Pv v.1) (delQ Tp μ (Pv v.1)) (nuP C (Pv v.1)) D.R.r D.R.t j z :=
@@ -184,6 +249,9 @@ def reducedDivisorCharacter (Z₀ : DivX D) : DivisorCharacterCompatibility D C 
   eQPl := fun _ => Equiv.refl _
   qv_eq := fun _ _ => rfl
 
+/- English proof (translation)
+Use `⟨fun μ v => hPv _, ?_⟩` and prove the remaining obligations. Use `{ qv_eq := fun μ v => absNorm_Pv Tp hp Pv hPv μ v deg1 := fun μ v => chosenPrimeAbove_ramifiedPlace_degreeOne Tp hp Pv hPv μ v ram := fun μ v => ram_Pv Tp hp Pv hPv μ v off_g := fun μ v => offg_Pv Tp hp Pv hPv μ v nu_eq := fun μ v i => ?_ typeDim_eq := fun μ v j _ => (stepEx Tp h …` and prove the remaining obligations. Use `show ((nuP C (Pv v.1) (i.1 + 1) (piP (Pv v.1)) : ℂˣ) : ℂ) = _`. Rewrite using `[nuP_succ]`. Both sides reduce to the same expression.
+-/
 theorem reLoc (Z₀ : DivX D) : QLocTiedC (reducedDivisorCharacter Tp hp Pv hPv Z₀) Pv := by
   refine ⟨fun μ v => hPv _, ?_⟩
   refine
@@ -200,108 +268,264 @@ theorem reLoc (Z₀ : DivX D) : QLocTiedC (reducedDivisorCharacter Tp hp Pv hPv 
   rw [nuP_succ]
   rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem reQ_geo (Z₀ : DivX D) : (reQ Tp hp Pv hPv Z₀).geo = Z₀.geo := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem reQ_Lev (Z₀ : DivX D) : (reQ Tp hp Pv hPv Z₀).Lev = Z₀.Lev := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem reQ_levPr (Z₀ : DivX D) : (reQ Tp hp Pv hPv Z₀).levPr = Z₀.levPr := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem reQ_shv (Z₀ : DivX D) : (reQ Tp hp Pv hPv Z₀).shv = Z₀.shv := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem reQ_shv_N (Z₀ : DivX D) : (reQ Tp hp Pv hPv Z₀).shv_N = Z₀.shv_N := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem reQ_shv_lev (Z₀ : DivX D) : (reQ Tp hp Pv hPv Z₀).shv_lev = Z₀.shv_lev := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem reQ_PlP (Z₀ : DivX D) : (reQ Tp hp Pv hPv Z₀).PlP = Z₀.PlP := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem reQ_plpNe (Z₀ : DivX D) : (reQ Tp hp Pv hPv Z₀).plpNe = Z₀.plpNe := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem reQ_wtP (Z₀ : DivX D) : (reQ Tp hp Pv hPv Z₀).wtP = Z₀.wtP := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem reQ_wtP_nonneg (Z₀ : DivX D) : (reQ Tp hp Pv hPv Z₀).divisorWeight_nonneg = Z₀.divisorWeight_nonneg := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem reQ_wtP_sum (Z₀ : DivX D) : (reQ Tp hp Pv hPv Z₀).divisorWeight_sum = Z₀.divisorWeight_sum := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem reQ_plP (Z₀ : DivX D) : (reQ Tp hp Pv hPv Z₀).plP = Z₀.plP := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem reQ_wtP_def (Z₀ : DivX D) : (reQ Tp hp Pv hPv Z₀).divisorWeight_def = Z₀.divisorWeight_def := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem reQ_jC (Z₀ : DivX D) : (reQ Tp hp Pv hPv Z₀).jC = Z₀.jC := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem reQ_Mp (Z₀ : DivX D) : (reQ Tp hp Pv hPv Z₀).Mp = Z₀.Mp := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem reQ_vdd (Z₀ : DivX D) : (reQ Tp hp Pv hPv Z₀).vdd = Z₀.vdd := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem reQ_vdd_unram (Z₀ : DivX D) : (reQ Tp hp Pv hPv Z₀).vdd_unram = Z₀.vdd_unram := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem reQ_phiFr_unram (Z₀ : DivX D) : (reQ Tp hp Pv hPv Z₀).phiFr_unram = Z₀.phiFr_unram := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem reQ_vdd_nonneg (Z₀ : DivX D) : (reQ Tp hp Pv hPv Z₀).vdd_nonneg = Z₀.vdd_nonneg := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem reQ_CurveM (Z₀ : DivX D) : (reQ Tp hp Pv hPv Z₀).CurveM = Z₀.CurveM := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem reQ_degM (Z₀ : DivX D) : (reQ Tp hp Pv hPv Z₀).degM = Z₀.degM := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem reQ_htMdl (Z₀ : DivX D) : (reQ Tp hp Pv hPv Z₀).htMdl = Z₀.htMdl := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem reQ_htCurve (Z₀ : DivX D) : (reQ Tp hp Pv hPv Z₀).htCurve = Z₀.htCurve := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem reQ_htCurve_deg (Z₀ : DivX D) : (reQ Tp hp Pv hPv Z₀).htCurve_deg = Z₀.htCurve_deg := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem reQ_MjH (Z₀ : DivX D) : (reQ Tp hp Pv hPv Z₀).MjH = Z₀.MjH := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem reQ_MjH_good (Z₀ : DivX D) : (reQ Tp hp Pv hPv Z₀).MjH_good = Z₀.MjH_good := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem reQ_jM (Z₀ : DivX D) : (reQ Tp hp Pv hPv Z₀).jM = Z₀.jM := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem reQ_jM_basis (Z₀ : DivX D) : (reQ Tp hp Pv hPv Z₀).jM_basis = Z₀.jM_basis := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem reQ_jM_lat (Z₀ : DivX D) : (reQ Tp hp Pv hPv Z₀).jM_lat = Z₀.jM_lat := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem reQ_MjLat_sub (Z₀ : DivX D) : (reQ Tp hp Pv hPv Z₀).MjLat_sub = Z₀.MjLat_sub := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem reQ_jM_metric (Z₀ : DivX D) : (reQ Tp hp Pv hPv Z₀).jM_metric = Z₀.jM_metric := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem reQ_Comp (Z₀ : DivX D) : (reQ Tp hp Pv hPv Z₀).Comp = Z₀.Comp := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem reQ_degHH (Z₀ : DivX D) : (reQ Tp hp Pv hPv Z₀).degHH = Z₀.degHH := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem reQ_Yv (Z₀ : DivX D) : (reQ Tp hp Pv hPv Z₀).Yv = Z₀.Yv := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem reQ_Ybd (Z₀ : DivX D) : (reQ Tp hp Pv hPv Z₀).Ybd = Z₀.Ybd := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem reQ_Lw (Z₀ : DivX D) : (reQ Tp hp Pv hPv Z₀).Lw = Z₀.Lw := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem reQ_iMj (Z₀ : DivX D) : (reQ Tp hp Pv hPv Z₀).iMj = Z₀.iMj := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem reQ_iMj_mem (Z₀ : DivX D) : (reQ Tp hp Pv hPv Z₀).iMj_mem = Z₀.iMj_mem := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem reQ_logLam (Z₀ : DivX D) : (reQ Tp hp Pv hPv Z₀).logLam = Z₀.logLam := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem reQ_logLam_base (Z₀ : DivX D) : (reQ Tp hp Pv hPv Z₀).logLam_base = Z₀.logLam_base := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem reQ_kapR (Z₀ : DivX D) : (reQ Tp hp Pv hPv Z₀).kapR = Z₀.kapR := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem reQ_kapR_pos (Z₀ : DivX D) : (reQ Tp hp Pv hPv Z₀).kapR_pos = Z₀.kapR_pos := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem reQ_kapR_conj (Z₀ : DivX D) : (reQ Tp hp Pv hPv Z₀).kapR_conj = Z₀.kapR_conj := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem reQ_Surf (Z₀ : DivX D) : (reQ Tp hp Pv hPv Z₀).Surf = Z₀.Surf := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem reQ_surfCh2 (Z₀ : DivX D) : (reQ Tp hp Pv hPv Z₀).surfCh2 = Z₀.surfCh2 := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem reQ_surfDegOm (Z₀ : DivX D) : (reQ Tp hp Pv hPv Z₀).surfDegOm = Z₀.surfDegOm := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem reQ_SurfFp (Z₀ : DivX D) : (reQ Tp hp Pv hPv Z₀).SurfFp = Z₀.SurfFp := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem reQ_surfFpCh2 (Z₀ : DivX D) : (reQ Tp hp Pv hPv Z₀).surfFpCh2 = Z₀.surfFpCh2 := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem reQ_plpFin (Z₀ : DivX D) : (reQ Tp hp Pv hPv Z₀).plpFin = Z₀.plpFin := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem reQ_compFin (Z₀ : DivX D) : (reQ Tp hp Pv hPv Z₀).compFin = Z₀.compFin := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem reQ_Qp (Z₀ : DivX D) : (reQ Tp hp Pv hPv Z₀).Qp = qpSet Tp := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem reQ_QPl (Z₀ : DivX D) (μ : D.what₂.Tup) :
     (reQ Tp hp Pv hPv Z₀).QPl μ = {v : HeightOneSpectrum (𝓞 D.host.F) // Tp.InQ' μ v} := rfl
 

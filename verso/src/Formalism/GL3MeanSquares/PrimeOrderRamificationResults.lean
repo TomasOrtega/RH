@@ -5,6 +5,9 @@ import Formalism.GL3MeanSquares.HookFormulaTorsion.LemmaCTwistRamified
 
 namespace Formalism.HermitianLattices.Final
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Formalism.HermitianLattices.LocalLatticeBases.sum_zero_lattice_spanning, Formalism.HermitianLattices.LocalLatticeBases.slope_kronecker_formula, Formalism.HermitianLattices.LocalLatticeBases.length_average_bound, Formalism.HermitianLattices.LocalLatticeBases.length_bound_under_tw …`.
+-/
 theorem coset_kernel_results :
     Formalism.HermitianLattices.LocalLatticeBases.SumZeroLatticeSpanning ∧
     Formalism.HermitianLattices.LocalLatticeBases.SlopeTensorProductAdditive ∧
@@ -59,6 +62,9 @@ theorem coset_kernel_results :
    Formalism.HermitianLattices.LocalLatticeBases.quotient_length_embedding_bound,
    Formalism.HermitianLattices.LocalLatticeBases.joint_coefficient_formula⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Formalism.HermitianLattices.RamifiedHeckeModels.prime_order_element, Formalism.HermitianLattices.RamifiedHeckeModels.logarithmic_bound, Formalism.HermitianLattices.RamifiedHeckeModels.lemma_c_under_twist, Formalism.HermitianLattices.RamifiedHeckeModels.lemma_c_twist_ramified, Fo …`.
+-/
 theorem prime_order_ramification_results :
     Formalism.HermitianLattices.RamifiedHeckeModels.RationalMatrixPrimeOrderBound ∧
     Formalism.HermitianLattices.RamifiedHeckeModels.LogRatioAtMostOne ∧

@@ -9,6 +9,11 @@ open Finset MeasureTheory
 
 namespace Pgsn2pfran
 
+/- English proof (translation)
+Introduce `a b hab`. Use `show (if b < c then (1:ℝ) else 0) ≤ (if a < c then (1:ℝ) else 0)`. Distinguish the cases in `h1 : b < c`. Establish `h2 : a < c` using `lt_of_le_of_lt hab h1`. Simplify using `[h1, h2]`.
+
+Apply the tactic sequence `by_cases h2 : a < c <;> simp [h1, h2]`.
+-/
 lemma ind_anti (c : ℝ) : Antitone (fun τ : ℝ => if τ < c then (1:ℝ) else 0) := by
   intro a b hab
   show (if b < c then (1:ℝ) else 0) ≤ (if a < c then (1:ℝ) else 0)
@@ -17,6 +22,15 @@ lemma ind_anti (c : ℝ) : Antitone (fun τ : ℝ => if τ < c then (1:ℝ) else
     simp [h1, h2]
   · by_cases h2 : a < c <;> simp [h1, h2]
 
+/- English proof (translation)
+Establish `hi1 : IntervalIntegrable (fun τ : ℝ => if τ < c then (1:ℝ) else 0) volume 0 c` using `(ind_anti c).intervalIntegrable`. Establish `hi2 : IntervalIntegrable (fun τ : ℝ => if τ < c then (1:ℝ) else 0) volume c HH` using `(ind_anti c).intervalIntegrable`. Establish `hne : ∀ᵐ x ∂(volume : Measure ℝ), x ≠ c`. Rewrite using `[ae_iff]`. Simplify using the standard rewrite rules.
+
+Establish `h1 : ∫ τ in (0:ℝ)..c, (if τ < c then (1:ℝ) else 0) = ∫ τ in (0:ℝ)..c, (1:ℝ)`. Apply `intervalIntegral.integral_congr_ae` to reduce the goal to its premises. Use `filter_upwards [hne] with x hx hmem`. Rewrite `hmem` using `[Set.uIoc_of_le hc0]`. Establish `hxc : x < c` using `lt_of_le_of_ne hmem.2 hx`.
+
+Simplify using `[hxc]`. Establish `h2 : ∫ τ in c..HH, (if τ < c then (1:ℝ) else 0) = ∫ τ in c..HH, (0:ℝ)`. Apply `intervalIntegral.integral_congr` to reduce the goal to its premises. Introduce `x hx`. Rewrite `hx` using `[Set.uIcc_of_le hc]`.
+
+Simplify using `[not_lt.mpr hx.1]`. Rewrite using `[← intervalIntegral.integral_add_adjacent_intervals hi1 hi2, h1, h2]`. Simplify using the standard rewrite rules.
+-/
 lemma ind_int (c HH : ℝ) (hc0 : 0 ≤ c) (hc : c ≤ HH) :
     ∫ τ in (0:ℝ)..HH, (if τ < c then (1:ℝ) else 0) = c := by
   have hi1 : IntervalIntegrable (fun τ : ℝ => if τ < c then (1:ℝ) else 0) volume 0 c :=
@@ -40,6 +54,11 @@ lemma ind_int (c HH : ℝ) (hc0 : 0 ≤ c) (hc : c ≤ HH) :
   rw [← intervalIntegral.integral_add_adjacent_intervals hi1 hi2, h1, h2]
   simp
 
+/- English proof (translation)
+Break down `le_total (a - xj) 0 with h0 | h0` into its components or cases. Establish `hpos : 0 ≤ ∫ τ in (0:ℝ)..HH, (if τ < a - xj then (1:ℝ) else 0)`. Apply `intervalIntegral.integral_nonneg hHH` to reduce the goal to its premises. Introduce `u _`. Apply the tactic sequence `split_ifs <;> norm_num`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `le_of_eq (ind_int (a - xj) HH h0 (by linarith)).symm`.
+-/
 lemma ind_lb (a xj HH : ℝ) (h : a - HH ≤ xj) (hHH : 0 ≤ HH) :
     a - xj ≤ ∫ τ in (0:ℝ)..HH, (if τ < a - xj then (1:ℝ) else 0) := by
   rcases le_total (a - xj) 0 with h0 | h0
@@ -54,6 +73,21 @@ end Pgsn2pfran
 
 open Pgsn2pfran
 
+/- English proof (translation)
+Unfold `LayerCake`. Introduce `D x a HH w hD hHH hx hw hcnt`. Establish `hDpos : (0:ℝ) < D` using `by exact_mod_cast hD`. Establish `hcount : ∀ τ : ℝ, ∑ j, (if τ < a - x j then (1:ℝ) else 0) = ((Finset.univ.filter fun j => x j < a - τ).card : ℝ)`. Introduce `τ`.
+
+Rewrite using `[Finset.sum_boole]`. Apply the tactic sequence `have hf : (Finset.univ.filter fun j => τ < a - x j) = (Finset.univ.filter fun j => x j < a - τ) := Finset.filter_congr (fun j _ => by constructor <;> intro hh <;> linarith)`. Rewrite using `[hf]`. Establish `hanti : Antitone (fun τ : ℝ => ∑ j, (if τ < a - x j then (1:ℝ) else 0))` using `fun t1 t2 ht => Finset.sum_le_sum fun j _ => ind_anti (a - x j) ht`. Establish `hint : ∫ τ in (0:ℝ)..HH, ∑ j, (if τ < a - x j then (1:ℝ) else 0) = ∑ j, ∫ τ in (0:ℝ)..HH, (if τ < a - x j then (1:ℝ) else 0)` using `intervalIntegral.integral_finset_sum fun j _ => (ind_anti (a - x j)).intervalIntegrable`.
+
+Establish `hsum : ∑ j, (a - x j) ≤ ∑ j, ∫ τ in (0:ℝ)..HH, (if τ < a - x j then (1:ℝ) else 0)` using `Finset.sum_le_sum fun j _ => ind_lb a (x j) HH (hx j) hHH`. Establish `hL : ∑ j, (a - x j) = (D:ℝ) * a - ∑ j, x j`. Rewrite using `[Finset.sum_sub_distrib, Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]`. Establish `hmono : ∫ τ in (0:ℝ)..HH, ∑ j, (if τ < a - x j then (1:ℝ) else 0) ≤ ∫ τ in (0:ℝ)..HH, (D:ℝ) * min 1 (w τ)`. Apply `intervalIntegral.integral_mono_on hHH hanti.intervalIntegrable (hw.const_mul (D:ℝ))` to reduce the goal to its premises.
+
+Introduce `τ hτ`. Use `show ∑ j, (if τ < a - x j then (1:ℝ) else 0) ≤ (D:ℝ) * min 1 (w τ)`. Rewrite using `[hcount τ]`. Establish `hc1 : (Finset.univ.filter fun j => x j < a - τ).card ≤ D`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hc1' : ((Finset.univ.filter fun j => x j < a - τ).card : ℝ) ≤ D`. Conclude with `hc1` after adjusting the coercions. Establish `hc2` using `hcnt τ hτ`. Break down `le_total 1 (w τ) with hw1 | hw1` into its components or cases. Rewrite using `[min_eq_left hw1]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[min_eq_right hw1]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite `hmono` using `[intervalIntegral.integral_const_mul]`. Rewrite using `[le_div_iff₀ hDpos]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem layer_cake_formula : LayerCake := by
   unfold LayerCake
   intro D x a HH w hD hHH hx hw hcnt

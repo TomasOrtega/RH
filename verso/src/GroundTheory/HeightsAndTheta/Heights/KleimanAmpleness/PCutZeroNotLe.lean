@@ -16,6 +16,25 @@ section CutZeroNotLeAux
 variable {S : Type u} [CommRing S] {Ω : Type w} [Field Ω] [Algebra S Ω] {N : ℕ}
   {x : Fin (N + 1) → Ω}
 
+/- English proof (translation)
+Take `⟨f, s, n, hs, hf, hsn, hz⟩` from `hy σ hσ`. Establish `hs0` using `eval_ne_zero_of_mem_monos I hs`. Establish `hfz : y * σ * aeval x s = aeval x f` using `(eq_div_iff hs0).mp hz`. Establish `hyU` using `mul_mem_chartRing_union D I`. Use `choose G hG using hfg`.
+
+Establish `hgen : ∀ p : Σ K : Chart x, (G K : Set Ω), y * (p.2 : Ω) ∈ chartRing S x (chartUnion I p.1)` using `fun p => hyU p.1 y hy _ (D.mono p.1 (chartUnion I p.1) (show p.1.1 ⊆ (chartUnion I p.1).1 from Finset.subset_union_right) _ (by rw [← hG p.1]; exact Submodule.subset_span p.2.2))`. Use `choose u hu d hd hud using fun p : (Σ K : Chart x, (G K : Set Ω)) => exists_monos_mul_mem_twistMod (S := S) I p.1 (y * (p.2 : Ω)) (hgen p)`. Take `⟨U, hUdef⟩ : ∃ U : Poly S N, U = ∏ p, u p` from `⟨_, rfl⟩`. Take `⟨dU, hdUdef⟩ : ∃ dU : ℕ, dU = ∑ p, d p` from `⟨_, rfl⟩`. Establish `hUm : U ∈ monos (S` using `S) I.1 := hUdef ▸ prod_mem fun p _ => hu p`.
+
+Establish `hUh : U.IsHomogeneous dU` using `hUdef ▸ hdUdef ▸ IsHomogeneous.prod _ _ _ fun p _ => hd p`. Establish `key : ∀ p : Σ K : Chart x, (G K : Set Ω), aeval x U * (y * (p.2 : Ω)) ∈ twistMod S x (dU : ℤ) p.1`. Introduce `p`. Establish `hsplit : U = u p * ∏ q ∈ Finset.univ.erase p, u q`. Rewrite using `[hUdef, Finset.mul_prod_erase _ _ (Finset.mem_univ p)]`.
+
+Establish `hdsplit : dU = d p + ∑ q ∈ Finset.univ.erase p, d q`. Rewrite using `[hdUdef, Finset.add_sum_erase _ _ (Finset.mem_univ p)]`. Establish `h2` using `aeval_mem_twistMod (x := x) (IsHomogeneous.prod _ _ _ fun q _ => hd q : (∏ q ∈ Finset.univ.erase p, u q).IsHomogeneous _) p.1`. Establish `h3` using `twistMod_mul_mem (hud p) h2`. Rewrite using `[hsplit, hdsplit, map_mul, Nat.cast_add]`.
+
+Use `h3 using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Establish `hUK : ∀ (K : Chart x), ∀ δ ∈ D.sub K, aeval x U * (y * δ) ∈ twistMod S x (dU : ℤ) K`. Introduce `K δ hδ`. Rewrite `hδ` using `[← hG K]`.
+
+Proceed by induction on `hδ using Submodule.span_induction with`. Consider the case `mem δ hδ => exact key ⟨K, ⟨δ, hδ⟩⟩`. Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb => rw [mul_add, mul_add]`. Conclude with `add_mem ha hb`.
+
+Consider the case `smul a b _ hb`. Rewrite using `[chartRing_smul_def, show aeval x U * (y * ((a : Ω) * b)) = (a : Ω) * (aeval x U * (y * b)) by ring, ← chartRing_smul_def]`. Conclude with `Submodule.smul_mem _ a hb`. Establish `hU0` using `eval_ne_zero_of_mem_monos I hUm`. Establish `hfU : f * U ∈ zeroIdeal D.toSubSystem σ`.
+
+Use `Ideal.subset_span ⟨n + dU, hf.mul hUh, fun K δ hδ => ?_⟩` and prove the remaining obligations. Use `⟨aeval x s * (aeval x U * (y * δ)), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Nat.cast_add]`. Conclude with `twistMod_mul_mem (aeval_mem_twistMod hsn K) (hUK K δ hδ)`. Rewrite using `[map_mul, ← hfz]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `⟨f * U, s * U, n + dU, hfU, mul_mem hs hUm, hf.mul hUh, hsn.mul hUh, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, ← hfz]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem exists_zeroIdeal_div_eq (D : SubFamily S x Ω) (hfg : ∀ K, (D.sub K).FG) (I : Chart x)
     {σ y : Ω} (hσ : σ ∈ D.sub I) (hy : ∀ δ ∈ D.sub I, y * δ ∈ chartRing S x I) :
     ∃ (g t : Poly S N) (n : ℕ), g ∈ zeroIdeal D.toSubSystem σ ∧ t ∈ monos I.1 ∧
@@ -79,6 +98,19 @@ theorem exists_zeroIdeal_div_eq (D : SubFamily S x Ω) (hfg : ∀ K, (D.sub K).F
 
 end CutZeroNotLeAux
 
+/- English proof (translation)
+Introduce `k _ Ω _ _ N x e pp L s _ hs ⟨I, hI⟩`. Establish `hsI : s ∈ L.sub I` using `(Submodule.mem_iInf _).mp hs I`. Take `⟨P, hP⟩` from `L.invertible I`. Establish `hex : ∃ y ∈ P, s * y ∉ idealMod pp I`. Assume the negation of the conclusion as `hcon`.
+
+Use `push Not at hcon`. Apply `hI` to reduce the goal to its premises. Rewrite using `[SubSystem.twist_sub_eq_mul_sub]`. Establish `hle : Submodule.span (chartRing k x I) {s} * P ≤ idealMod pp I`. Use `Submodule.mul_le.mpr fun a ha b hb => ?_` and prove the remaining obligations.
+
+Take `⟨c, rfl⟩` from `Submodule.mem_span_singleton.mp ha`. Rewrite using `[smul_mul_assoc]`. Conclude with `Submodule.smul_mem _ c (hcon b hb)`. Establish `hmem : s ∈ Submodule.span (chartRing k x I) {s} * P * L.sub I`. Rewrite using `[mul_assoc, mul_comm P, hP, mul_one]`.
+
+Conclude with `Submodule.mem_span_singleton_self s`. Conclude with `mul_le_mul' hle le_rfl hmem`. Take `⟨y, hyP, hsy⟩` from `hex`. Establish `hy : ∀ δ ∈ L.sub I, y * δ ∈ chartRing k x I`. Introduce `δ hδ`.
+
+Establish `h` using `Submodule.mul_mem_mul hδ hyP`. Rewrite `h` using `[hP]`. Take `⟨a, ha⟩` from `Submodule.mem_one.mp h`. Rewrite using `[mul_comm, ← ha]`. Conclude with `a.2`.
+
+Take `⟨g, t, n, hg, ht, hgn, htn, hst⟩` from `exists_zeroIdeal_div_eq L.toSubFamily L.fg I hsI hy`. Use `⟨g, hg, fun hgp => hsy ?_⟩` and prove the remaining obligations. Rewrite using `[hst]`. Conclude with `Submodule.subset_span ⟨g, t, n, hgp, ht, hgn, htn, rfl⟩`.
+-/
 theorem CutZeroNotLe.proof : CutZeroNotLe.Statement.{u, w} := by
   intro k _ Ω _ _ N x e pp L s _ hs ⟨I, hI⟩
   have hsI : s ∈ L.sub I := (Submodule.mem_iInf _).mp hs I

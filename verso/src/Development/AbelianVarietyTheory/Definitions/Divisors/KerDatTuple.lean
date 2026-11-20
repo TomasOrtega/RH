@@ -70,12 +70,21 @@ structure KerDat (ξ : Formalism.L2.Host.HChar D.host.E) (χ : (AE D)ˣ →* Cir
 
 variable {R i}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨χ, ξR, h.chr, h.res, h.weil, h.vec⟩`.
+-/
 theorem KerDat.isKernel {ξ χ ξR Q ω φ} (h : KerDat R i ξ χ ξR Q ω φ) : IsKernel R i ξ Q ω φ :=
   ⟨χ, ξR, h.chr, h.res, h.weil, h.vec⟩
 
+/- English proof (translation)
+The claim follows from `h.vec`.
+-/
 theorem KerDat.vecOf {ξ χ ξR Q ω φ} (h : KerDat R i ξ χ ξR Q ω φ) :
     VecOf R i Q (fun y => omegaK R.Pg y * omegaQ Q (Wc D i).rank ξR (-1) y) φ := h.vec
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hL.xi t, hL.xi_fin t, hL.xi_triv t, hL.xi_tame t, hL.Q_pl t, fun PP h => (hL.Q_off t PP h).1, hL.Q_ram t, hL.xiR t, hP.ωP i t, hP.vP i t⟩`.
+-/
 theorem kerDat_tuple (hL : R.toLevCh.Is A.μ0) (hP : R.IsThP) (t : T0) :
     KerDat R i (R.xiH t) (R.xi t) (R.xiR t) (R.Q t) (R.ωP i t) (R.vP i t) :=
   ⟨hL.xi t, hL.xi_fin t, hL.xi_triv t, hL.xi_tame t, hL.Q_pl t, fun PP h => (hL.Q_off t PP h).1, hL.Q_ram t, hL.xiR t,

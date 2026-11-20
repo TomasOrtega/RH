@@ -19,10 +19,16 @@ namespace GlobalTheory.CompanionTheory.ColumnSplitting.InvU
 
 variable {D : D7} {n t : ℕ} {B W : HSp D}
 
+/- English proof (translation)
+Simplify using `only [ac, mm, mt_mul, Matrix.mul_assoc]`.
+-/
 theorem ac_mul (V : HSp D) {a b : ℕ} (g h : GA D V) (z : Mx D V.rank a × Mx D V.rank b) :
     ac V (g * h) z = ac V g (ac V h z) := by
   simp only [ac, mm, mt_mul, Matrix.mul_assoc]
 
+/- English proof (translation)
+Take `⟨g1, g2⟩` from `top_pair (D := D) V.rank a b`. Establish `o1 : OpensMeasurableSpace (Mx D V.rank a × Mx D V.rank b)` using `g1.opensMeasurable`. Establish `hc : Continuous (ac V g : Mx D V.rank a × Mx D V.rank b → Mx D V.rank a × Mx D V.rank b)` using `(continuous_ac V).comp (continuous_const.prodMk continuous_id)`. Conclude with `hc.measurable`.
+-/
 theorem measurable_ac (V : HSp D) {a b : ℕ} (g : GA D V) :
     Measurable (ac V g : Mx D V.rank a × Mx D V.rank b → Mx D V.rank a × Mx D V.rank b) := by
   obtain ⟨g1, g2⟩ := top_pair (D := D) V.rank a b
@@ -31,6 +37,9 @@ theorem measurable_ac (V : HSp D) {a b : ℕ} (g : GA D V) :
     (continuous_ac V).comp (continuous_const.prodMk continuous_id)
   exact hc.measurable
 
+/- English proof (translation)
+The claim follows from `Measure.map_apply (measurable_zp d hn x₀) hA`.
+-/
 theorem rho_apply {d : HypDec B W t} (hn : W.rank + t = n) (I : IkD d n) (μ : Measure (Mx D W.rank t))
     (x₀ : Matrix (Fin W.rank) (Fin W.rank) D.host.E)
     {A : Set (Mx D B.rank W.rank × Mx D B.rank t)} (hA : MeasurableSet A) :
@@ -41,6 +50,15 @@ def sA {d : HypDec B W t} (hn : W.rank + t = n) (I : IkD d n) (μ : Measure (Mx 
     (x₀ : Matrix (Fin W.rank) (Fin W.rank) D.host.E) (A : Set (Mx D B.rank W.rank × Mx D B.rank t)) (x : GA D B) : ℝ≥0∞ :=
   rho hn I μ x₀ {z | ac B x⁻¹ z ∈ A}
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `top_par (D := D) n t W`. Take `⟨g1, g2⟩` from `top_pair (D := D) B.rank W.rank t`. Take `⟨-, k2, -, -, k5, -⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D B`. Establish `hB : BorelSpace (GA D B)` using `⟨rfl⟩`. Establish `o0 : OpensMeasurableSpace (Par D n t W)` using `h1.opensMeasurable`.
+
+Establish `oB : OpensMeasurableSpace (GA D B)` using `hB.opensMeasurable`. Establish `e1 : SecondCountableTopologyEither (GA D B) (Par D n t W)` using `⟨Or.inr h2⟩`. Establish `o1 : OpensMeasurableSpace (GA D B × Par D n t W)` using `Prod.opensMeasurableSpace`. Use `sigmaFinite_parameter_product_measure I μ hμ` as an intermediate fact. Establish `hc : Continuous fun p : GA D B × Par D n t W => ac B p.1⁻¹ (zp d hn x₀ p.2)` using `(continuous_ac B).comp ((continuous_fst.inv).prodMk ((continuous_zp d hn x₀).comp continuous_snd))`.
+
+Establish `hS : MeasurableSet {p : GA D B × Par D n t W | ac B p.1⁻¹ (zp d hn x₀ p.2) ∈ A}` using `hc.measurable hA`. Establish `key` using `measurable_measure_prodMk_left (ν := Q0 I μ) hS`. Establish `e : sA hn I μ x₀ A = fun x => Q0 I μ (Prod.mk x ⁻¹' {p : GA D B × Par D n t W | ac B p.1⁻¹ (zp d hn x₀ p.2) ∈ A})`. Use function extensionality and compare the values at `x`. Conclude with `rho_apply hn I μ x₀ (measurable_ac B x⁻¹ hA)`.
+
+Rewrite using `[e]`. Conclude with `key`.
+-/
 theorem measurable_sA {d : HypDec B W t} (hn : W.rank + t = n) (I : IkD d n) (μ : Measure (Mx D W.rank t))
     (hμ : μ.IsAddHaarMeasure) (x₀ : Matrix (Fin W.rank) (Fin W.rank) D.host.E)
     {A : Set (Mx D B.rank W.rank × Mx D B.rank t)} (hA : MeasurableSet A) : Measurable (sA hn I μ x₀ A) := by
@@ -63,6 +81,13 @@ theorem measurable_sA {d : HypDec B W t} (hn : W.rank + t = n) (I : IkD d n) (μ
   rw [e]
   exact key
 
+/- English proof (translation)
+Establish `hA' : MeasurableSet {z | ac B x⁻¹ z ∈ A}` using `measurable_ac B x⁻¹ hA`. Establish `h1` using `congrArg (fun ν : Measure _ => ν {z | ac B x⁻¹ z ∈ A}) (hL D n t B W d hn I μ hμ x₀ q⁻¹)`. Use `beta_reduce at h1`. Rewrite `h1` using `[Measure.map_apply (measurable_ac B _) hA']`. Establish `e : sA hn I μ x₀ A (q * x) = rho hn I μ x₀ (ac B ((q⁻¹ : GlobalTheory.RegSW.stab d) : GA D B) ⁻¹' {z | ac B x⁻¹ z ∈ A})`.
+
+Unfold `sA`. Use `congr 1`. Use extensionality with `z`. Simplify using `only [Set.mem_setOf_eq, Set.mem_preimage, ← ac_mul, mul_inv_rev, Subgroup.coe_inv]`. Rewrite using `[e, h1, map_inv, inv_inv]`.
+
+Both sides reduce to the same expression.
+-/
 theorem sA_stab (hL : Law) {d : HypDec B W t} (hn : W.rank + t = n) (I : IkD d n) (μ : Measure (Mx D W.rank t))
     (hμ : μ.IsAddHaarMeasure) (x₀ : Matrix (Fin W.rank) (Fin W.rank) D.host.E)
     {A : Set (Mx D B.rank W.rank × Mx D B.rank t)} (hA : MeasurableSet A) (q : GlobalTheory.RegSW.stab d) (x : GA D B) :
@@ -79,6 +104,9 @@ theorem sA_stab (hL : Law) {d : HypDec B W t} (hn : W.rank + t = n) (I : IkD d n
   rw [e, h1, map_inv, inv_inv]
   rfl
 
+/- English proof (translation)
+Use `sigmaFinite_parameter_product_measure I μ hμ` as an intermediate fact. Unfold `nuT`. Rewrite using `[Measure.map_apply (measurable_pi hn I x₀) hA, Measure.prod_apply (measurable_pi hn I x₀ hA)]`. Use `lintegral_congr fun k => ?_` and prove the remaining obligations. Conclude with `(rho_apply hn I μ x₀ (measurable_ac B (k : GA D B)⁻¹ hA)).symm`.
+-/
 theorem nuT_apply {d : HypDec B W t} (hn : W.rank + t = n) (I : IkD d n) (μ : Measure (Mx D W.rank t))
     (hμ : μ.IsAddHaarMeasure) (x₀ : Matrix (Fin W.rank) (Fin W.rank) D.host.E)
     {A : Set (Mx D B.rank W.rank × Mx D B.rank t)} (hA : MeasurableSet A) :
@@ -89,6 +117,13 @@ theorem nuT_apply {d : HypDec B W t} (hn : W.rank + t = n) (I : IkD d n) (μ : M
   refine lintegral_congr fun k => ?_
   exact (rho_apply hn I μ x₀ (measurable_ac B (k : GA D B)⁻¹ hA)).symm
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(nuT hn I μ x₀).map (ac B h) = nuT hn I μ x₀`. Use `Measure.ext fun A hA => ?_` and prove the remaining obligations. Establish `hA' : MeasurableSet (ac B h ⁻¹' A)` using `measurable_ac B h hA`. Rewrite using `[Measure.map_apply (measurable_ac B h) hA, nuT_apply hn I μ hμ x₀ hA', nuT_apply hn I μ hμ x₀ hA]`. Establish `key` using `hQ D t B W d I.l I.good I.νK I.haarK (sA hn I μ x₀ A) (measurable_sA hn I μ hμ x₀ hA) (fun q x => sA_stab hL hn I μ hμ x₀ hA q x) h⁻¹`.
+
+Rewrite using `[← key]`. Use `lintegral_congr fun k => ?_` and prove the remaining obligations. Unfold `sA`. Use `congr 1`. Use extensionality with `z`.
+
+Simplify using `only [Set.mem_setOf_eq, Set.mem_preimage, ← ac_mul, mul_inv_rev, inv_inv]`.
+-/
 theorem nuT_map_ac (hQ : QK) (hL : Law) (D : D7) (n t : ℕ) (B W : HSp D) (d : HypDec B W t) (hn : W.rank + t = n)
     (I : IkD d n) (μ : Measure (Mx D W.rank t)) (hμ : μ.IsAddHaarMeasure) (x₀) (h : GA D B) :
     (nuT hn I μ x₀).map (fun z => (mm (mt B h) z.1, mm (mt B h) z.2)) = nuT hn I μ x₀ := by

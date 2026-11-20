@@ -14,6 +14,9 @@ namespace GlobalTheory.UPel.HT.MulEpi
 
 attribute [local instance] Over.cartesianMonoidalCategory
 
+/- English proof (translation)
+Take `⟨h1, h2, h3⟩` from `GlobalTheory.UPel.HT.SiegUniqBase.flat_surjective_qc_pow S A hA k hk`. Use `haveI : Epi ((𝟙 A) ^ k).left := Flat.epi_of_flat_of_surjective _`. Conclude with `(Over.forget S).epi_of_epi_map this`.
+-/
 theorem epi_pow_of_isAbelianScheme (S : Scheme.{0}) (A : Over S) [GrpObj A] (hA : IsAbelianScheme A)
     (k : ℕ) (hk : 0 < k) : Epi ((𝟙 A) ^ k) := by
   obtain ⟨h1, h2, h3⟩ := GlobalTheory.UPel.HT.SiegUniqBase.flat_surjective_qc_pow S A hA k hk

@@ -10,6 +10,13 @@ noncomputable section
 
 namespace GlobalTheory.HTW.SumJumps
 
+/- English proof (translation)
+Rewrite using `[← Module.finrank_prod]`. Use `LinearEquiv.finrank_eq (LinearEquiv.ofBijective ((p₁.restrict a₁).prod (p₂.restrict a₂)) ⟨?_, ?_⟩)` and prove the remaining obligations. Introduce `x y hxy`. Establish `e1 : p₁ x = p₁ y` using `congrArg (fun z : S₁ × S₂ => (z.1 : M₁)) hxy`. Establish `e2 : p₂ x = p₂ y` using `congrArg (fun z : S₁ × S₂ => (z.2 : M₂)) hxy`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[← h x, ← h y, e1, e2]`. Introduce and unpack `⟨x, y⟩`. Use `⟨⟨i₁ x + i₂ y, S.add_mem (b₁ _ x.2) (b₂ _ y.2)⟩, ?_⟩` and prove the remaining obligations. Use `ext`.
+
+Simplify using `[h11, h12]`. Simplify using `[h21, h22]`.
+-/
 theorem finrank_add_of_biprod {L M M₁ M₂ : Type} [Field L] [AddCommGroup M] [Module L M]
     [AddCommGroup M₁] [Module L M₁] [AddCommGroup M₂] [Module L M₂]
     (p₁ : M →ₗ[L] M₁) (p₂ : M →ₗ[L] M₂) (i₁ : M₁ →ₗ[L] M) (i₂ : M₂ →ₗ[L] M)
@@ -53,6 +60,9 @@ def ext1 (Qp : Type) [Field Qp] {LL : Type} [Field LL] [Algebra Qp LL]
     V ⊗[Qp] C →ₗ[LL] V' ⊗[Qp] C :=
   AlgebraTensorModule.map f LinearMap.id
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => simp [ext1, hf]`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`.
+-/
 theorem ext1_comm {C C' : Type} [AddCommGroup C] [Module Qp C] [AddCommGroup C'] [Module Qp C']
     (f : V →ₗ[LL] V') (r : V →ₗ[LL] V) (r' : V' →ₗ[LL] V') (hf : ∀ v, f (r v) = r' (f v))
     (u : C →ₗ[Qp] C') (x : V ⊗[Qp] C) :
@@ -62,6 +72,9 @@ theorem ext1_comm {C C' : Type} [AddCommGroup C] [Module Qp C] [AddCommGroup C']
   | tmul a b => simp [ext1, hf]
   | add a b ha hb => simp only [map_add, ha, hb]
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => simp [ext1]`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`.
+-/
 theorem ext1_comp_ext1 {C : Type} [AddCommGroup C] [Module Qp C]
     (f : V →ₗ[LL] V') (f' : V' →ₗ[LL] V'') (x : V ⊗[Qp] C) :
     ext1 Qp C f' (ext1 Qp C f x) = ext1 Qp C (f' ∘ₗ f) x := by
@@ -70,10 +83,16 @@ theorem ext1_comp_ext1 {C : Type} [AddCommGroup C] [Module Qp C]
   | tmul a b => simp [ext1]
   | add a b ha hb => simp only [map_add, ha, hb]
 
+/- English proof (translation)
+Simplify using `[ext1]`.
+-/
 theorem ext1_id {C : Type} [AddCommGroup C] [Module Qp C] (x : V ⊗[Qp] C) :
     ext1 Qp C (LinearMap.id : V →ₗ[LL] V) x = x := by
   simp [ext1]
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => simp [ext1]`. Consider the case `add a b ha hb => simp only [map_add, ha, hb, add_zero]`.
+-/
 theorem ext1_zero {C : Type} [AddCommGroup C] [Module Qp C] (x : V ⊗[Qp] C) :
     ext1 Qp C (0 : V →ₗ[LL] V') x = 0 := by
   induction x using TensorProduct.induction_on with
@@ -81,12 +100,20 @@ theorem ext1_zero {C : Type} [AddCommGroup C] [Module Qp C] (x : V ⊗[Qp] C) :
   | tmul a b => simp [ext1]
   | add a b ha hb => simp only [map_add, ha, hb, add_zero]
 
+/- English proof (translation)
+Simplify using `[ext1, AlgebraTensorModule.map_add_left]`.
+-/
 theorem ext1_add {C : Type} [AddCommGroup C] [Module Qp C] (f f' : V →ₗ[LL] V') (x : V ⊗[Qp] C) :
     ext1 Qp C f x + ext1 Qp C f' x = ext1 Qp C (f + f') x := by
   simp [ext1, AlgebraTensorModule.map_add_left]
 
 variable {ρ : Representation LL G V} {ρ' : Representation LL G V'}
 
+/- English proof (translation)
+Introduce `x hx`. Simplify using `only [Dcris, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, sub_eq_zero] at hx ⊢`. Introduce `g`. Use `hx g` as an intermediate fact. Unfold `actVB at this ⊢`.
+
+Rewrite using `[ext1_comm f (ρ g) (ρ' g) (hf g), this]`.
+-/
 theorem dcris_map (f : V →ₗ[LL] V') (hf : ∀ g v, f (ρ g v) = ρ' g (f v)) :
     ∀ x ∈ Dcris PD ρ, ext1 Qp B f x ∈ Dcris PD ρ' := by
   intro x hx
@@ -97,6 +124,13 @@ theorem dcris_map (f : V →ₗ[LL] V') (hf : ∀ g v, f (ρ g v) = ρ' g (f v))
   unfold actVB at this ⊢
   rw [ext1_comm f (ρ g) (ρ' g) (hf g), this]
 
+/- English proof (translation)
+Introduce `x hx`. Simplify using `only [FildR, DdRE, DdR, FilV, Submodule.mem_inf, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, LinearMap.smul_apply, sub_eq_zero, LinearMap.mem_range] at hx ⊢`. Take `⟨⟨h1, h2⟩, y, hy⟩` from `hx`. Use `⟨⟨fun g => ?_, fun c => ?_⟩, ext1 Qp _ f y, ?_⟩` and prove the remaining obligations. Use `h1 g` as an intermediate fact.
+
+Unfold `actVdR at this ⊢`. Rewrite using `[ext1_comm f (ρ g) (ρ' g) (hf g), this]`. Use `h2 c` as an intermediate fact. Unfold `mulVdR at this ⊢`. Rewrite using `[ext1_comm f LinearMap.id LinearMap.id (fun _ => rfl), this, map_smul]`.
+
+Rewrite using `[ext1_comm f LinearMap.id LinearMap.id (fun _ => rfl), hy]`.
+-/
 theorem fildR_map (f : V →ₗ[LL] V') (hf : ∀ g v, f (ρ g v) = ρ' g (f v)) (τ : K →ₐ[Qp] LL) (a : ℤ) :
     ∀ x ∈ FildR PD ρ τ a, ext1 Qp BdR f x ∈ FildR PD ρ' τ a := by
   intro x hx
@@ -113,6 +147,19 @@ theorem fildR_map (f : V →ₗ[LL] V') (hf : ∀ g v, f (ρ g v) = ρ' g (f v))
     rw [ext1_comm f LinearMap.id LinearMap.id (fun _ => rfl), this, map_smul]
   · rw [ext1_comm f LinearMap.id LinearMap.id (fun _ => rfl), hy]
 
+/- English proof (translation)
+Use `finrank_add_of_biprod _ _ _ _ ?_ ?_ ?_ ?_ ?_ S S₁ S₂ a₁ a₂ b₁ b₂` and prove the remaining obligations. Introduce `x`. Rewrite using `[ext1_comp_ext1]`. Use `ext1_id (LL := LL) x` and compare the differences between its conclusion and the goal. Use extensionality with `v`.
+
+Simplify using the standard rewrite rules. Introduce `x`. Rewrite using `[ext1_comp_ext1]`. Use `ext1_id (LL := LL) x` and compare the differences between its conclusion and the goal. Use extensionality with `v`.
+
+Simplify using the standard rewrite rules. Introduce `x`. Rewrite using `[ext1_comp_ext1]`. Use `ext1_zero (LL := LL) x` and compare the differences between its conclusion and the goal. Use extensionality with `v`.
+
+Simplify using the standard rewrite rules. Introduce `x`. Rewrite using `[ext1_comp_ext1]`. Use `ext1_zero (LL := LL) x` and compare the differences between its conclusion and the goal. Use extensionality with `v`.
+
+Simplify using the standard rewrite rules. Introduce `x`. Rewrite using `[ext1_comp_ext1, ext1_comp_ext1, ext1_add]`. Use `ext1_id (LL := LL) x` and compare the differences between its conclusion and the goal. Use extensionality with `v`.
+
+Simplify using `only [LinearMap.add_apply, LinearMap.comp_apply, LinearEquiv.coe_coe, LinearMap.id_apply, ← map_add]`. Apply `e.injective` to reduce the goal to its premises. Simplify using the standard rewrite rules.
+-/
 theorem finrank_add_tensor {C : Type} [AddCommGroup C] [Module Qp C] (e : V ≃ₗ[LL] (V' × V''))
     (S : Submodule LL (V ⊗[Qp] C)) (S₁ : Submodule LL (V' ⊗[Qp] C)) (S₂ : Submodule LL (V'' ⊗[Qp] C))
     [Module.Finite LL S₁] [Module.Finite LL S₂]
@@ -149,6 +196,11 @@ theorem finrank_add_tensor {C : Type} [AddCommGroup C] [Module Qp C] (e : V ≃�
 
 variable {ρ'' : Representation LL G V''}
 
+/- English proof (translation)
+Use `⟨fun g v => by simp [he], fun g v => by simp [he], fun g v => ?_, fun g v => ?_⟩` and prove the remaining obligations. Apply `e.injective` to reduce the goal to its premises. Rewrite using `[he]`. Simplify using the standard rewrite rules. Apply `e.injective` to reduce the goal to its premises.
+
+Rewrite using `[he]`. Simplify using the standard rewrite rules.
+-/
 theorem equivariant_inl_inr_of_prod_equiv (e : V ≃ₗ[LL] (V' × V''))
     (he : ∀ g v, e (ρ g v) = (ρ' g (e v).1, ρ'' g (e v).2)) :
     (∀ g v, (LinearMap.fst LL V' V'' ∘ₗ e.toLinearMap) (ρ g v) =
@@ -165,6 +217,9 @@ theorem equivariant_inl_inr_of_prod_equiv (e : V ≃ₗ[LL] (V' × V''))
   · apply e.injective
     rw [he]; simp
 
+/- English proof (translation)
+Take `⟨h1, h2, h3, h4⟩` from `equivariant_inl_inr_of_prod_equiv e he`. Conclude with `finrank_add_tensor e _ _ _ (dcris_map PD _ h1) (dcris_map PD _ h2) (dcris_map PD _ h3) (dcris_map PD _ h4)`.
+-/
 theorem finrank_dcris_add (e : V ≃ₗ[LL] (V' × V''))
     (he : ∀ g v, e (ρ g v) = (ρ' g (e v).1, ρ'' g (e v).2))
     [Module.Finite LL (Dcris PD ρ')] [Module.Finite LL (Dcris PD ρ'')] :
@@ -173,10 +228,18 @@ theorem finrank_dcris_add (e : V ≃ₗ[LL] (V' × V''))
   exact finrank_add_tensor e _ _ _ (dcris_map PD _ h1) (dcris_map PD _ h2) (dcris_map PD _ h3)
     (dcris_map PD _ h4)
 
+/- English proof (translation)
+The claim follows from `Submodule.finiteDimensional_of_le (S₂ := DdR PD ρ) (inf_le_left.trans inf_le_left)`.
+-/
 theorem finite_fildR [Module.Finite LL (DdR PD ρ)] (τ : K →ₐ[Qp] LL) (a : ℤ) :
     Module.Finite LL (FildR PD ρ τ a) :=
   Submodule.finiteDimensional_of_le (S₂ := DdR PD ρ) (inf_le_left.trans inf_le_left)
 
+/- English proof (translation)
+Take `⟨h1, h2, h3, h4⟩` from `equivariant_inl_inr_of_prod_equiv e he`. Establish `key : ∀ b, finrank LL (FildR PD ρ τ b) = finrank LL (FildR PD ρ' τ b) + finrank LL (FildR PD ρ'' τ b)` using `fun b => by haveI := finite_fildR PD (ρ := ρ') τ b haveI := finite_fildR PD (ρ := ρ'') τ b`. Conclude with `finrank_add_tensor e _ _ _ (fildR_map PD _ h1 τ b) (fildR_map PD _ h2 τ b) (fildR_map PD _ h3 τ b) (fildR_map PD _ h4 τ b)`. Simplify using `only [multV, key]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem multV_add (e : V ≃ₗ[LL] (V' × V''))
     (he : ∀ g v, e (ρ g v) = (ρ' g (e v).1, ρ'' g (e v).2))
     [Module.Finite LL (DdR PD ρ')] [Module.Finite LL (DdR PD ρ'')] (τ : K →ₐ[Qp] LL) (a : ℤ) :
@@ -194,6 +257,17 @@ theorem multV_add (e : V ≃ₗ[LL] (V' × V''))
 
 end Funct
 
+/- English proof (translation)
+Introduce `G _ _ Qp K₀ K _ _ _ _ _ _ _ B BdR _ _ _ _ _ _ _ _ _ _ _ _ PD LL _ _ _ O _ _ hF hT hO A W Bk T e Pr τ J J' he hA mA mB hD`. Take `⟨⟨fW, lW⟩, ⟨gW, -⟩, -⟩` from `hF LL O hO W`. Take `⟨⟨fB, lB⟩, ⟨gB, -⟩, -⟩` from `hF LL O hO Bk`. Establish `hW : IsCrys PD W.ρ`. Establish `h1` using `finrank_dcris_add PD e he`.
+
+Establish `h2 : finrank LL A.V = finrank LL W.V + finrank LL Bk.V`. Rewrite using `[e.finrank_eq, Module.finrank_prod]`. Unfold `IsCrys at hA ⊢`. Rewrite `hA` using `[h1, h2, mul_add]`. Use linear arithmetic over natural numbers and integers.
+
+Take `⟨c, m⟩` from `hT LL O hO W T Pr hW hD`. Use `⟨c, fun a => ?_⟩` and prove the remaining obligations. Establish `hinj : Function.Injective fun u : ℤ => -u - 1` using `fun x y h => by`. Simplify using `only at h`. Use linear arithmetic over natural numbers and integers.
+
+Establish `ha : a = -(-a - 1) - 1` using `by ring`. Establish `h3` using `multV_add PD e he τ (-a - 1)`. Rewrite `h3` using `[mA, mB, Multiset.count_add]`. Rewrite using `[ha, m τ, Multiset.count_map_eq_count' _ _ hinj]`. Move the coercions through the operations in `at h3`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem tateDual_summand : ∀ {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field K] [Algebra Qp K₀] [Algebra Qp K] [Algebra K₀ K] [IsScalarTower Qp K₀ K] {B BdR : Type} [CommRing B] [CommRing BdR] [Algebra Qp B] [Algebra K₀ B] [IsScalarTower Qp K₀ B] [Algebra Qp BdR] [Algebra K₀ BdR] [Algebra K BdR] [IsScalarTower Qp K BdR] [IsScalarTower K₀ K BdR] [IsScalarTower Qp K₀ BdR] [TopologicalSpace Qp] (PD : PeriodData G Qp K₀ K B BdR) {LL : Type} [Field LL] [Algebra Qp LL] [TopologicalSpace LL] {O : Type} [CommRing O] [Algebra O LL], Formalism.MainNotions.LocalSituation.fontCore PD → TateDualRule PD → GoodO (Qp := Qp) LL O → ∀ (A W Bk T : GRep G Qp LL O) (e : A.V ≃ₗ[LL] (W.V × Bk.V)) (Pr : W.V →ₗ[LL] T.V →ₗ[LL] LL) (τ : K →ₐ[Qp] LL) (J J' : Multiset ℤ), (∀ g v, e (A.ρ g v) = (W.ρ g (e v).1, Bk.ρ g (e v).2)) → IsCrys PD A.ρ → (∀ a, multV PD A.ρ τ a = ((J + J').count a : ℕ)) → (∀ a, multV PD Bk.ρ τ a = (J'.count a : ℕ)) → IsDual1 PD W.ρ T.ρ Pr → IsCrys PD T.ρ ∧ ∀ a, multV PD T.ρ τ a = ((J.map fun u => -u - 1).count a : ℕ) := by
   intro G _ _ Qp K₀ K _ _ _ _ _ _ _ B BdR _ _ _ _ _ _ _ _ _ _ _ _ PD LL _ _ _ O _ _ hF hT hO A W Bk T e Pr
     τ J J' he hA mA mB hD

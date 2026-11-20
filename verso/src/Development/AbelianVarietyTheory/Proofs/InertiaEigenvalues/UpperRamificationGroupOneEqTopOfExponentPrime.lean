@@ -6,6 +6,15 @@ open Formalism.BasicNotions Formalism.BasicNotions.Loc ValuativeRel GroundTheory
 
 namespace GlobalTheory.PMon.Ram
 
+/- English proof (translation)
+Establish `hnu : ¬ IsUnit (p : 𝒪[F])`. Introduce `hu`. Use `(IsDiscreteValuationRing.addVal_eq_zero_of_unit (hu.unit))` as an intermediate fact. Unfold `OrdIs at h`. Simplify using `at this`.
+
+Rewrite `h` using `[this]`. Normalize the coercions in `at h`. Use linear arithmetic over natural numbers and integers. Establish `hm : (p : 𝒪[F]) ∈ IsLocalRing.maximalIdeal 𝒪[F]` using `hnu`. Establish `h0 : ((p : ℕ) : 𝓀[F]) = 0`.
+
+Rewrite using `[← map_natCast (IsLocalRing.residue 𝒪[F]), IsLocalRing.residue_eq_zero_iff]`. Conclude with `hm`. Establish `hd : ringChar 𝓀[F] ∣ p` using `(ringChar.spec 𝓀[F] p).mp h0`. Break down `(Nat.dvd_prime hp).mp hd with h1 | h1` into its components or cases. Conclude with `absurd h1 CharP.ringChar_ne_one`.
+
+Conclude with `h1`.
+-/
 theorem ringChar_residue_eq_of_ordIs (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F]
     [IsNonarchimedeanLocalField F] (p e : ℕ) (hp : p.Prime) (he : 0 < e) (h : OrdIs F p e) :
     ringChar 𝓀[F] = p := by
@@ -26,6 +35,19 @@ theorem ringChar_residue_eq_of_ordIs (F : Type) [Field F] [ValuativeRel F] [Topo
   · exact absurd h1 CharP.ringChar_ne_one
   · exact h1
 
+/- English proof (translation)
+Introduce `F M _ _ _ _ _ _ _ _ _ _ _ _ p e hp he hord h0 hexp`. Rewrite `h0` using `[upperRamificationGroup_zero]`. Establish `hchar` using `ringChar_residue_eq_of_ordIs F p e hp he hord`. Establish `hcop` using `coprime_card_lowerRamificationGroup_zero_quotient F M`. Rewrite `hcop` using `[hchar]`.
+
+Establish `h1 : lowerRamificationGroup F M 1 = ⊤`. Rewrite using `[eq_top_iff]`. Introduce `σ _`. Establish `hσ0 : σ ∈ lowerRamificationGroup F M 0` using `by rw [h0]; trivial`. Use `set q : lowerRamificationGroup F M 0 ⧸ (lowerRamificationGroup F M 1).subgroupOf (lowerRamificationGroup F M 0) := QuotientGroup.mk ⟨σ, hσ0⟩ with hq`.
+
+Establish `hqp : q ^ p = 1`. Rewrite using `[hq, ← QuotientGroup.mk_pow]`. Establish `: (⟨σ, hσ0⟩ : lowerRamificationGroup F M 0) ^ p = 1` using `Subtype.ext (by simpa using hexp σ)`. Rewrite using `[this, QuotientGroup.mk_one]`. Establish `hqc : q ^ Nat.card (lowerRamificationGroup F M 0 ⧸ (lowerRamificationGroup F M 1).subgroupOf (lowerRamificationGroup F M 0)) = 1` using `pow_card_eq_one'`.
+
+Establish `hg : q ^ Nat.gcd _ p = 1` using `pow_gcd_eq_one.mpr ⟨hqc, hqp⟩`. Rewrite `hg` using `[hcop, pow_one, hq, QuotientGroup.eq_one_iff, Subgroup.mem_subgroupOf]`. Conclude with `hg`. Establish `hphi0 : herbrandPhi F M 0 = 0` using `by simp [herbrandPhi]`. Establish `hphi1 : herbrandPhi F M 1 = 1`.
+
+Use `herbrandPhi_of_mem_Icc (K := F) (L := M) 0 (u := 1) (by norm_num)` as an intermediate fact. Establish `h1' : lowerRamificationGroup F M (((0 : ℕ) : ℤ) + 1) = ⊤` using `by simpa using h1`. Rewrite `this` using `[h1', Subgroup.relIndex_top_left]`. Simplify `this` using `[hphi0]`. Rewrite using `[← hphi1, upperRamificationGroup_herbrandPhi, ← Nat.cast_one, lowerRamificationGroupReal_natCast]`.
+
+Simplify using `using h1`.
+-/
 theorem upperRamificationGroup_one_eq_top_of_exponent :
     ∀ (F M : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [Field M]
       [ValuativeRel M] [TopologicalSpace M] [IsNonarchimedeanLocalField M] [Algebra F M] [ValuativeExtension F M]

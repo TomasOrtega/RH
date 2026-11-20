@@ -36,6 +36,15 @@ def Psi : Set (E →+* ℂ) := {τ | τ H.s = H.s₀}
 
 def f (_H : Host E) : ℕ := Module.finrank ℚ (maximalRealSubfield E)
 
+/- English proof (translation)
+Take `⟨φ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Apply `φ.injective` to reduce the goal to its premises. Rewrite using `[IsCMField.complexEmbedding_complexConj, map_neg]`. Establish `h : (φ H.s) ^ 2 = -(H.d : ℂ)` using `by rw [← map_pow, H.s_sq, map_neg, map_natCast]`. Establish `hd : (0 : ℝ) < H.d` using `by exact_mod_cast H.d_prime.pos`.
+
+Establish `h1` using `congrArg Complex.re h`. Establish `h2` using `congrArg Complex.im h`. Simplify using `only [sq, Complex.mul_re, Complex.mul_im, Complex.neg_re, Complex.neg_im, Complex.natCast_re, Complex.natCast_im, neg_zero] at h1 h2`. Establish `hre : (φ H.s).re = 0`. Assume the negation of the conclusion as `hne`.
+
+Establish `him : (φ H.s).im = 0`. Establish `: (φ H.s).re * (φ H.s).im = 0` using `by linarith`. Conclude with `(mul_eq_zero.mp this).resolve_left hne`. Rewrite `h1` using `[him]`. Use polynomial arithmetic with `[mul_self_nonneg (φ H.s).re]`.
+
+Apply the tactic sequence `apply Complex.ext <;> simp [hre]`.
+-/
 theorem isCMField_complexConj_s_eq_neg : IsCMField.complexConj E H.s = -H.s := by
   obtain ⟨φ⟩ : Nonempty (E →+* ℂ) := inferInstance
   apply φ.injective
@@ -55,6 +64,11 @@ theorem isCMField_complexConj_s_eq_neg : IsCMField.complexConj E H.s = -H.s := b
     nlinarith [mul_self_nonneg (φ H.s).re]
   apply Complex.ext <;> simp [hre]
 
+/- English proof (translation)
+Establish `h : (τ H.s) ^ 2 = H.s₀ ^ 2`. Rewrite using `[← map_pow, H.s_sq, map_neg, map_natCast, H.s₀_sq]`. Break down `sq_eq_sq_iff_eq_or_eq_neg.mp h with h | h` into its components or cases. Conclude with `Or.inl h`. Use `right`.
+
+Express the relevant statement in the definitionally equal form `(starRingEnd ℂ) (τ H.s) = H.s₀`. Rewrite using `[← IsCMField.complexEmbedding_complexConj, H.isCMField_complexConj_s_eq_neg, map_neg, h, neg_neg]`.
+-/
 theorem mem_Psi_or (τ : E →+* ℂ) : τ ∈ H.Psi ∨ (starRingEnd ℂ).comp τ ∈ H.Psi := by
   have h : (τ H.s) ^ 2 = H.s₀ ^ 2 := by
     rw [← map_pow, H.s_sq, map_neg, map_natCast, H.s₀_sq]
@@ -64,6 +78,11 @@ theorem mem_Psi_or (τ : E →+* ℂ) : τ ∈ H.Psi ∨ (starRingEnd ℂ).comp 
     change (starRingEnd ℂ) (τ H.s) = H.s₀
     rw [← IsCMField.complexEmbedding_complexConj, H.isCMField_complexConj_s_eq_neg, map_neg, h, neg_neg]
 
+/- English proof (translation)
+Take `⟨k, hk⟩ : ∃ k : ℕ, H.d + 1 = 4 * k` from `⟨(H.d + 1) / 4, by have := H.d_mod; omega⟩`. Establish `hk' : (H.d : E) + 1 = 4 * k` using `by exact_mod_cast hk`. Use `⟨Polynomial.X ^ 2 - Polynomial.X + Polynomial.C (k : ℤ), ?_, ?_⟩` and prove the remaining obligations. Use `monicity!`. Establish `hs` using `H.s_sq`.
+
+Simplify using `only [Polynomial.eval₂_add, Polynomial.eval₂_sub, Polynomial.eval₂_X_pow, Polynomial.eval₂_X, Polynomial.eval₂_C, eq_intCast, Int.cast_natCast, Polynomial.eval₂_natCast]`. Take the linear combination `(1 / 4 : E) * hs - (1 / 4 : E) * hk'`.
+-/
 theorem isIntegral_half : IsIntegral ℤ ((1 + H.s) / 2) := by
   obtain ⟨k, hk⟩ : ∃ k : ℕ, H.d + 1 = 4 * k := ⟨(H.d + 1) / 4, by have := H.d_mod; omega⟩
   have hk' : (H.d : E) + 1 = 4 * k := by exact_mod_cast hk
@@ -77,12 +96,22 @@ theorem isIntegral_half : IsIntegral ℤ ((1 + H.s) / 2) := by
 
 def w₀ : 𝓞 E := ⟨(1 + H.s) / 2, H.isIntegral_half⟩
 
+/- English proof (translation)
+Apply `RingOfIntegers.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(1 + H.s) / 2 + IsCMField.complexConj E ((1 + H.s) / 2) = 1`. Rewrite using `[map_div₀, map_add, map_one, H.isCMField_complexConj_s_eq_neg, map_ofNat]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem w₀_add_conj : H.w₀ + conjO E H.w₀ = 1 := by
   apply RingOfIntegers.ext
   change (1 + H.s) / 2 + IsCMField.complexConj E ((1 + H.s) / 2) = 1
   rw [map_div₀, map_add, map_one, H.isCMField_complexConj_s_eq_neg, map_ofNat]
   ring
 
+/- English proof (translation)
+Proceed by induction on `hx using IntermediateField.adjoin_induction with`. Consider the case `mem x hx`. Rewrite using `[Set.mem_singleton_iff.mp hx, H.isCMField_complexConj_s_eq_neg]`. Conclude with `neg_mem (IntermediateField.mem_adjoin_simple_self ℚ H.s)`. Consider the case `algebraMap q => rw [eq_ratCast, map_ratCast]`.
+
+Conclude with `SubfieldClass.ratCast_mem _ q`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`. Consider the case `inv x _ hx => rw [map_inv₀]`. Conclude with `inv_mem hx`.
+
+Consider the case `mul x y _ _ hx hy => rw [map_mul]`. Conclude with `mul_mem hx hy`.
+-/
 theorem conj_mem_K {x : E} (hx : x ∈ H.K) : IsCMField.complexConj E x ∈ H.K := by
   induction hx using IntermediateField.adjoin_induction with
   | mem x hx =>
@@ -190,14 +219,26 @@ def GoodAt (L : Level H) (p : ℕ) : Prop := p.Prime ∧ 3 ≤ L.M₀ p
 
 def Dvd (L L₂ : Level H) : Prop := L.M ∣ L₂.M ∧ L.A ∣ L₂.A ∧ L.MM ∣ L₂.MM
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨dvd_rfl, dvd_rfl, dvd_rfl⟩`.
+-/
 theorem Dvd.refl (L : Level H) : L.Dvd L := ⟨dvd_rfl, dvd_rfl, dvd_rfl⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.1.trans h'.1, h.2.1.trans h'.2.1, h.2.2.trans h'.2.2⟩`.
+-/
 theorem Dvd.trans {L L₂ L₃ : Level H} (h : L.Dvd L₂) (h' : L₂.Dvd L₃) : L.Dvd L₃ :=
   ⟨h.1.trans h'.1, h.2.1.trans h'.2.1, h.2.2.trans h'.2.2⟩
 
+/- English proof (translation)
+The claim follows from `Nat.lcm_pos (by have := L.three_le; omega) L.one_le`.
+-/
 theorem M'_pos (L : Level H) : 0 < L.M' :=
   Nat.lcm_pos (by have := L.three_le; omega) L.one_le
 
+/- English proof (translation)
+The claim follows from `Nat.coprime_ordCompl hp (by have := L.three_le; omega)`.
+-/
 theorem M₀_coprime (L : Level H) {p : ℕ} (hp : p.Prime) : Nat.Coprime p (L.M₀ p) :=
   Nat.coprime_ordCompl hp (by have := L.three_le; omega)
 

@@ -17,26 +17,44 @@ namespace GlobalTheory.Dieu.Integrality
 
 variable {p : ℕ} [Fact p.Prime] (T : Theory p) {k : Type} [Field k] [CharP k p] [PerfectRing k p]
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.T.dieudonneFunctorBase_functor_properties p _ T.base k G G G trivial trivial trivial).1`.
+-/
 theorem map_id' (G : PDivGroup p k) : T.map (𝟙 G) = LinearMap.id :=
   (GlobalTheory.T.dieudonneFunctorBase_functor_properties p _ T.base k G G G trivial trivial trivial).1
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.T.dieudonneFunctorBase_functor_properties p _ T.base k G H K trivial trivial trivial).2.1 f g`.
+-/
 theorem map_comp' {G H K : PDivGroup p k} (f : G ⟶ H) (g : H ⟶ K) :
     T.map (f ≫ g) = T.map f ∘ₗ T.map g :=
   (GlobalTheory.T.dieudonneFunctorBase_functor_properties p _ T.base k G H K trivial trivial trivial).2.1 f g
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.T.dieudonneFunctorBase_functor_properties p _ T.base k G H H trivial trivial trivial).2.2.2.2.1 n f m`.
+-/
 theorem map_pow_smul' {G H : PDivGroup p k} (n : ℕ) (f : G ⟶ H) (m : T.M H) :
     T.map ((p : ℤ_[p]) ^ n • f) m = p ^ n • T.map f m :=
   (GlobalTheory.T.dieudonneFunctorBase_functor_properties p _ T.base k G H H trivial trivial trivial).2.2.2.2.1 n f m
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.T.dieudonneFunctorBase_functor_properties p _ T.base k G H H trivial trivial trivial).2.2.2.2.2.1 f m`.
+-/
 theorem red_map' {G H : PDivGroup p k} (f : G ⟶ H) (m : T.M H) :
     T.red G (T.map f m) = rigExtMap f (T.red H m) :=
   (GlobalTheory.T.dieudonneFunctorBase_functor_properties p _ T.base k G H H trivial trivial trivial).2.2.2.2.2.1 f m
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.T.dieudonneFunctorBase_functor_properties p _ T.base k G G G trivial trivial trivial).2.2.2.2.2.2.2.2 n m h`.
+-/
 theorem eq_zero_of_pow_smul' {G : PDivGroup p k} (n : ℕ) (m : T.M G) (h : p ^ n • m = 0) : m = 0 :=
   (GlobalTheory.T.dieudonneFunctorBase_functor_properties p _ T.base k G G G trivial trivial trivial).2.2.2.2.2.2.2.2 n m h
 
 def DivP {G H : PDivGroup p k} (f : G ⟶ H) : Prop := ∀ m, ∃ m', T.map f m = p • m'
 
+/- English proof (translation)
+Introduce `m`. Take `⟨m', hm'⟩` from `hf (T.map b m)`. Use `⟨T.map a m', ?_⟩` and prove the remaining obligations. Rewrite using `[map_comp', map_comp', LinearMap.comp_apply, LinearMap.comp_apply, hm', map_nsmul]`.
+-/
 theorem divP_comp {G' G H H' : PDivGroup p k} (a : G' ⟶ G) (f : G ⟶ H) (b : H ⟶ H')
     (hf : DivP T f) : DivP T (a ≫ f ≫ b) := by
   intro m
@@ -44,6 +62,13 @@ theorem divP_comp {G' G H H' : PDivGroup p k} (a : G' ⟶ G) (f : G ⟶ H) (b : 
   refine ⟨T.map a m', ?_⟩
   rw [map_comp', map_comp', LinearMap.comp_apply, LinearMap.comp_apply, hm', map_nsmul]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hf`. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Take `⟨m, rfl⟩` from `T.base.red_surjective H trivial x`. Take `⟨m', hm'⟩` from `hf m`.
+
+Establish `h` using `(T.base.red_eq_zero G trivial (T.map f m)).2 ⟨m', hm'⟩`. Rewrite using `[LinearMap.zero_apply, ← h]`. Conclude with `(red_map' T f m).symm`. Introduce `hf m`. Establish `h : T.red G (T.map f m) = 0` using `by rw [red_map', hf, LinearMap.zero_apply]`.
+
+Conclude with `(T.base.red_eq_zero G trivial _).1 h`.
+-/
 theorem divP_iff_red {G H : PDivGroup p k} (f : G ⟶ H) : DivP T f ↔ rigExtMap f = 0 := by
   constructor
   · intro hf
@@ -57,6 +82,11 @@ theorem divP_iff_red {G H : PDivGroup p k} (f : G ⟶ H) : DivP T f ↔ rigExtMa
     have h : T.red G (T.map f m) = 0 := by rw [red_map', hf, LinearMap.zero_apply]
     exact (T.base.red_eq_zero G trivial _).1 h
 
+/- English proof (translation)
+Establish `hq : IsIsog ((p : ℤ_[p]) ^ 1 • 𝟙 G)` using `((GlobalTheory.T.pDivisibleGroup_isogeny_basic_properties p k G).1 1).1`. Take `⟨g, hg⟩` from `GlobalTheory.T.exists_factor_through_isogeny_of_dieudonne_range_le p T k G G H _ f hG hq (by`. Introduce and unpack `x ⟨m, rfl⟩`. Take `⟨m', hm'⟩` from `hf m`. Use `⟨m', ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hm', map_pow_smul', map_id', LinearMap.id_apply, pow_one])`. Use `⟨g, ?_⟩` and prove the remaining obligations. Rewrite using `[← hg, Linear.smul_comp, Category.id_comp, pow_one]`.
+-/
 theorem exists_of_isConn {G H : PDivGroup p k} (hG : G.IsConn) (f : G ⟶ H) (hf : DivP T f) :
     ∃ g : G ⟶ H, f = (p : ℤ_[p]) • g := by
   have hq : IsIsog ((p : ℤ_[p]) ^ 1 • 𝟙 G) := ((GlobalTheory.T.pDivisibleGroup_isogeny_basic_properties p k G).1 1).1
@@ -68,6 +98,9 @@ theorem exists_of_isConn {G H : PDivGroup p k} (hG : G.IsConn) (f : G ⟶ H) (hf
   refine ⟨g, ?_⟩
   rw [← hg, Linear.smul_comp, Category.id_comp, pow_one]
 
+/- English proof (translation)
+Establish `h1 : rigExtMap (dualHom G H f) = 0` using `GlobalTheory.T.rigidifiedExtensionPullback_dualHom_eq_zero_of_isEt p k G H f hG hH ((divP_iff_red T f).1 hf)`. Take `⟨g', hg'⟩` from `exists_of_isConn T (PDivGroup.dual_isConn_of_isEt p k H hH) _ ((divP_iff_red T _).2 h1)`. Take `⟨g, rfl⟩` from `(dualHom_bijective (G := G) (H := H)).2 g'`. Use `⟨g, (dualHom_bijective (G := G) (H := H)).1 ?_⟩` and prove the remaining obligations. Rewrite using `[hg', map_smul]`.
+-/
 theorem exists_of_isEt {G H : PDivGroup p k} (hG : G.IsEt) (hH : H.IsEt) (f : G ⟶ H)
     (hf : DivP T f) : ∃ g : G ⟶ H, f = (p : ℤ_[p]) • g := by
   have h1 : rigExtMap (dualHom G H f) = 0 :=
@@ -78,6 +111,13 @@ theorem exists_of_isEt {G H : PDivGroup p k} (hG : G.IsEt) (hH : H.IsEt) (f : G 
   refine ⟨g, (dualHom_bijective (G := G) (H := H)).1 ?_⟩
   rw [hg', map_smul]
 
+/- English proof (translation)
+Take `⟨G₀, G₁, i₀, q₀, i₁, q₁, hG₀, hG₁, -, -, hG⟩` from `PDivGroup.exists_isConn_isEt_splitting p k G`. Take `⟨H₀, H₁, j₀, r₀, j₁, r₁, hH₀, hH₁, -, -, hH⟩` from `PDivGroup.exists_isConn_isEt_splitting p k H`. Take `⟨g₀, hg₀⟩` from `exists_of_isConn T hG₀ (i₀ ≫ f) (by`. Simplify using `using divP_comp T i₀ f (𝟙 H) hf)`. Take `⟨g₁, hg₁⟩` from `exists_of_isEt T hG₁ hH₁ (i₁ ≫ f ≫ r₁) (divP_comp T i₁ f r₁ hf)`.
+
+Establish `h0 : i₁ ≫ f ≫ r₀ = 0` using `(PDivGroup.hom_eq_zero_of_isConn_of_isEt p k H₀ G₁ hH₀ hG₁).2 _`. Establish `e1 : i₁ ≫ f = (i₁ ≫ f ≫ r₀) ≫ j₀ + (i₁ ≫ f ≫ r₁) ≫ j₁` using `by conv_lhs => rw [← Category.comp_id f, ← hH]`. Simplify using `only [Preadditive.comp_add, Category.assoc]`. Use `⟨q₀ ≫ g₀ + q₁ ≫ g₁ ≫ j₁, ?_⟩` and prove the remaining obligations. Use `conv_lhs => rw [← Category.id_comp f, ← hG]`.
+
+Rewrite using `[Preadditive.add_comp, Category.assoc, Category.assoc, hg₀, e1, h0, hg₁, Limits.zero_comp, zero_add, Linear.smul_comp, Linear.comp_smul, Linear.comp_smul, smul_add]`.
+-/
 theorem exists_of_divP {G H : PDivGroup p k} (f : G ⟶ H) (hf : DivP T f) :
     ∃ g : G ⟶ H, f = (p : ℤ_[p]) • g := by
   obtain ⟨G₀, G₁, i₀, q₀, i₁, q₁, hG₀, hG₁, -, -, hG⟩ :=
@@ -96,6 +136,17 @@ theorem exists_of_divP {G H : PDivGroup p k} (f : G ⟶ H) (hf : DivP T f) :
   rw [Preadditive.add_comp, Category.assoc, Category.assoc, hg₀, e1, h0, hg₁, Limits.zero_comp,
     zero_add, Linear.smul_comp, Linear.comp_smul, Linear.comp_smul, smul_add]
 
+/- English proof (translation)
+Introduce `p _ T k _ _ _ G H f`. Establish `part1 : ∀ (n : ℕ) (f : G ⟶ H), (∀ m, ∃ m', T.map f m = p ^ n • m') → ∃ g : G ⟶ H, f = (p : ℤ_[p]) ^ n • g`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro f _; exact ⟨f, by rw [pow_zero, one_smul]⟩`.
+
+Consider the case `succ n ih`. Introduce `f hf`. Take `⟨g, rfl⟩` from `exists_of_divP T f (fun m => by`. Take `⟨m', hm'⟩` from `hf m`. Conclude with `⟨p ^ n • m', by rw [hm', pow_succ', mul_smul]⟩)`.
+
+Take `⟨g', rfl⟩` from `ih g (fun m => by`. Take `⟨m', hm'⟩` from `hf m`. Use `⟨m', eq_of_sub_eq_zero (eq_zero_of_pow_smul' T 1 _ ?_)⟩` and prove the remaining obligations. Establish `h` using `map_pow_smul' T 1 g m`. Simplify using `only [pow_one] at h`.
+
+Rewrite using `[pow_one, smul_sub, ← h, hm', pow_succ', mul_smul, sub_self])`. Conclude with `⟨g', by rw [smul_smul, ← pow_succ']⟩`. Use `⟨fun n => part1 n f, fun h0 => ?_⟩` and prove the remaining obligations. Use `hom_ext_conv fun n => ?_` and prove the remaining obligations. Take `⟨g, rfl⟩` from `part1 n f (fun m => ⟨0, by rw [h0, LinearMap.zero_apply, smul_zero]⟩)`.
+
+Rewrite using `[pow_smul_conv, zero_conv]`.
+-/
 theorem exists_pow_smul_and_faithful : ∀ (p : ℕ) [Fact p.Prime] (T : Theory p) (k : Type) [Field k] [CharP k p] [PerfectRing k p]
     (G H : PDivGroup p k) (f : G ⟶ H), (∀ n : ℕ, (∀ m, ∃ m', T.map f m = p ^ n • m') →
       ∃ g : G ⟶ H, f = (p : ℤ_[p]) ^ n • g) ∧ (T.map f = 0 → f = 0) := by

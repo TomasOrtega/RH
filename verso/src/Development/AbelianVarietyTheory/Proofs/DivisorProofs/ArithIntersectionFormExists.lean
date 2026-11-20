@@ -17,6 +17,11 @@ namespace GlobalTheory.VertForm.FormEx
 
 variable {k : Type} [CommRing k] {X : Scheme.{0}} [IsIntegral X] {p : X ⟶ Sp k} {D : ℕ}
 
+/- English proof (translation)
+Establish `h` using `((H.arIso k X p D hX).2 κ M Ψ hΨ).2.2 ι L (fun i => Pi.single (r i) 1) (fun i => by`. Rewrite using `[← hr i]`. Conclude with `isometric_comb_single M (r i))`. Rewrite using `[Model.isArFun_unique hX hΦ h]`. Use `congr 2`.
+
+Use `MvPolynomial.algHom_ext fun i => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.aeval_X, lin_single, MvPolynomial.rename_X]`.
+-/
 theorem arFun_eq_rename (H : GlobalTheory.Published.ArCalc) (hX : IsArithVar p D) {ι κ : Type} [Fintype ι] [Fintype κ]
     {L : ι → HermLB p} {M : κ → HermLB p} {Φ : MvPolynomial ι ℝ →ₗ[ℝ] ℝ} {Ψ : MvPolynomial κ ℝ →ₗ[ℝ] ℝ}
     (hΦ : IsArFun L D Φ) (hΨ : IsArFun M D Ψ) (r : ι → κ) (hr : ∀ i, M (r i) = L i) :
@@ -31,18 +36,30 @@ theorem arFun_eq_rename (H : GlobalTheory.Published.ArCalc) (hX : IsArithVar p D
 def famFn (H : GlobalTheory.Published.ArCalc) (hX : IsArithVar p D) {n : ℕ} (f : Fin n → HermLB p) : MvPolynomial (Fin n) ℝ →ₗ[ℝ] ℝ :=
   Classical.choose (((H.arExists k X p D hX).2 (Fin n) f).1)
 
+/- English proof (translation)
+The claim follows from `Classical.choose_spec (((H.arExists k X p D hX).2 (Fin n) f).1)`.
+-/
 theorem famFn_spec (H : GlobalTheory.Published.ArCalc) (hX : IsArithVar p D) {n : ℕ} (f : Fin n → HermLB p) :
     IsArFun f D (famFn H hX f) :=
   Classical.choose_spec (((H.arExists k X p D hX).2 (Fin n) f).1)
 
 def enum (S : Finset (HermLB p)) (i : Fin S.card) : HermLB p := (S.equivFin.symm i).1
 
+/- English proof (translation)
+Introduce `_ _ h` and use `S.equivFin.symm.injective (Subtype.ext h)`.
+-/
 theorem enum_injective (S : Finset (HermLB p)) : Function.Injective (enum S) :=
   fun _ _ h => S.equivFin.symm.injective (Subtype.ext h)
 
+/- English proof (translation)
+Simplify using `[enum]`.
+-/
 theorem enum_equivFin (S : Finset (HermLB p)) {x : HermLB p} (hx : x ∈ S) : enum S (S.equivFin ⟨x, hx⟩) = x := by
   simp [enum]
 
+/- English proof (translation)
+The claim follows from `Set.ext fun x => ⟨by rintro ⟨i, rfl⟩; exact (S.equivFin.symm i).2, fun hx => ⟨_, enum_equivFin S hx⟩⟩`.
+-/
 theorem range_enum (S : Finset (HermLB p)) : Set.range (enum S) = S :=
   Set.ext fun x => ⟨by rintro ⟨i, rfl⟩; exact (S.equivFin.symm i).2, fun hx => ⟨_, enum_equivFin S hx⟩⟩
 
@@ -50,6 +67,15 @@ def total (H : GlobalTheory.Published.ArCalc) (hX : IsArithVar p D) : MvPolynomi
   (MvPolynomial.basisMonomials (HermLB p) ℝ).constr ℝ fun m =>
     famFn H hX (enum m.support) (MvPolynomial.monomial (m.comapDomain (enum m.support) (enum_injective _).injOn) 1)
 
+/- English proof (translation)
+Use `(MvPolynomial.basisMonomials ι ℝ).ext fun m => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.coe_basisMonomials, LinearMap.comp_apply, AlgHom.toLinearMap_apply, MvPolynomial.rename_monomial, total, ← congrFun (MvPolynomial.coe_basisMonomials (HermLB p) ℝ) (Finsupp.mapDomain L m), Module.Basis.constr_basis]`. Use `set n := Finsupp.mapDomain L m`. Set `T : Finset (HermLB p)` to `Finset.univ.image L`. Establish `hL (i : ι) : L i ∈ T` using `Finset.mem_image_of_mem L (Finset.mem_univ i)`.
+
+Establish `hST : n.support ⊆ T` using `fun x hx => by`. Take `⟨i, -, rfl⟩` from `Finset.mem_image.1 (Finsupp.mapDomain_support hx)`. Conclude with `hL i`. Establish `hS (i : Fin n.support.card) : enum n.support i ∈ T` using `hST (by rw [← Finset.mem_coe, ← range_enum]; exact ⟨i, rfl⟩)`. Establish `k1` using `arFun_eq_rename H hX hΦ (famFn_spec H hX (enum T)) (fun i => T.equivFin ⟨L i, hL i⟩) fun i => enum_equivFin T (hL i)`.
+
+Establish `k2` using `arFun_eq_rename H hX (famFn_spec H hX (enum n.support)) (famFn_spec H hX (enum T)) (fun i => T.equivFin ⟨_, hS i⟩) fun i => enum_equivFin T (hS i)`. Rewrite using `[k1, k2, LinearMap.comp_apply, LinearMap.comp_apply, AlgHom.toLinearMap_apply, AlgHom.toLinearMap_apply, MvPolynomial.rename_monomial, MvPolynomial.rename_monomial]`. Use `congr 3`. Use `Finsupp.mapDomain_injective (M := ℕ) (enum_injective T) ?_` and prove the remaining obligations. Rewrite using `[← Finsupp.mapDomain_comp (M := ℕ), ← Finsupp.mapDomain_comp (M := ℕ)]`.
+
+Establish `e1 : enum T ∘ (fun i => T.equivFin ⟨_, hS i⟩) = enum n.support` using `funext fun i => enum_equivFin T (hS i)`. Establish `e2 : enum T ∘ (fun i => T.equivFin ⟨L i, hL i⟩) = L` using `funext fun i => enum_equivFin T (hL i)`. Rewrite using `[e1, e2, Finsupp.mapDomain_comapDomain _ (enum_injective _) _ (by rw [range_enum])]`.
+-/
 theorem total_rename (H : GlobalTheory.Published.ArCalc) (hX : IsArithVar p D) {ι : Type} [Fintype ι] (L : ι → HermLB p)
     {Φ : MvPolynomial ι ℝ →ₗ[ℝ] ℝ} (hΦ : IsArFun L D Φ) :
     total H hX ∘ₗ (MvPolynomial.rename L : MvPolynomial ι ℝ →ₐ[ℝ] MvPolynomial (HermLB p) ℝ).toLinearMap = Φ := by
@@ -82,6 +108,9 @@ def num (H : GlobalTheory.Published.ArCalc) (hX : IsArithVar p D) : Form (Cl p) 
   (total H hX).compMultilinearMap
     ((MultilinearMap.mkPiAlgebra ℝ (Fin (D + 1)) (MvPolynomial (HermLB p) ℝ)).compLinearMap fun _ => linOf)
 
+/- English proof (translation)
+Simplify using `[num]`.
+-/
 theorem num_apply (H : GlobalTheory.Published.ArCalc) (hX : IsArithVar p D) (v : Fin (D + 1) → Cl p) :
     num H hX v = total H hX (∏ j, linOf (v j)) := by
   simp [num]
@@ -90,6 +119,11 @@ end GlobalTheory.VertForm.FormEx
 
 namespace GlobalTheory.VertForm
 
+/- English proof (translation)
+Introduce `H k _ X _ p D hX`. Use `⟨FormEx.num H hX, fun ι _ L Φ hΦ a => ?_, fun v π => ?_⟩` and prove the remaining obligations. Rewrite using `[FormEx.num_apply, ← FormEx.total_rename H hX L hΦ, LinearMap.comp_apply, AlgHom.toLinearMap_apply, map_prod]`. Use `congr 1`. Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Simplify using `[lin, FormEx.linOf, map_sum, cl, Finsupp.linearCombination_single, MvPolynomial.smul_eq_C_mul]`. Rewrite using `[FormEx.num_apply, FormEx.num_apply]`. Use `congr 1`. Conclude with `Equiv.prod_comp π fun j => FormEx.linOf (v j)`.
+-/
 theorem exists_symm_arForm : GlobalTheory.Published.ArCalc → ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X]
     (p : X ⟶ Sp k) (D : ℕ), IsArithVar p D → ∃ num : Form (Cl p) D, IsArForm D num ∧ IsSymm num := by
   intro H k _ X _ p D hX

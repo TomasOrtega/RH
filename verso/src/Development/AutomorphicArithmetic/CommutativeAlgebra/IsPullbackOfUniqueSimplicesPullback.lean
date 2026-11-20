@@ -2,6 +2,17 @@ import Development.AutomorphicArithmetic.BlowupCategories.SpanScale
 
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex GlobalTheory.EtC UpperTheory.Pbf UpperTheory.Blow
 
+/- English proof (translation)
+Introduce `P A B C t l r u hw h`. Use `IsPullback.of_forall_isPullback_app (fun n => ?_)` and prove the remaining obligations. Use `IsPullback.of_forall_isPullback_app (fun T => ?_)` and prove the remaining obligations. Take `⟨⟨k⟩⟩` from `n`. Take `⟨T⟩` from `T`.
+
+Establish `hw' : ∀ x : Sx P k T, Sx.map r (Sx.map t x) = Sx.map u (Sx.map l x)`. Introduce `x`. Use `congrArg (fun f : P ⟶ C => (f.app (op ⟨k⟩)).app (op T) x) hw` as an intermediate fact. Simplify `this` using `[Sx.map]`. Rewrite using `[Types.isPullback_iff]`.
+
+Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Conclude with `hw' x`. Introduce and unpack `x y ⟨h1, h2⟩`. Take `⟨z, -, hz⟩` from `h k T (Sx.map t (x : Sx P k T)) (Sx.map l (x : Sx P k T)) (hw' x)`.
+
+Establish `hx` using `hz x ⟨rfl, rfl⟩`. Establish `hy` using `hz y ⟨h1.symm, h2.symm⟩`. Conclude with `hx.trans hy.symm`. Introduce `a b hab`. Take `⟨z, ⟨h1, h2⟩, -⟩` from `h k T a b hab`.
+
+Conclude with `⟨z, h1, h2⟩`.
+-/
 theorem UpperTheory.isPullback_of_unique_simplices_pullback :
     ∀ {P A B C : Spc} (t : P ⟶ A) (l : P ⟶ B) (r : A ⟶ C) (u : B ⟶ C), t ≫ r = l ≫ u →
         (∀ (k : ℕ) (T : Scheme.{0}) (x : Sx A k T) (y : Sx B k T), x.map r = y.map u → ∃! z : Sx P k T, z.map t = x ∧ z.map l = y) →

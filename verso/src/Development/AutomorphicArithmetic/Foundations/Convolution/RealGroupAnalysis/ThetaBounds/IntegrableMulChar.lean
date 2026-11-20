@@ -9,6 +9,9 @@ open Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual GlobalTheory.CuspR
 open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.Ff
 open scoped Classical
 
+/- English proof (translation)
+Introduce `t v`. Simplify using `only [W.Om_n]`. Conclude with `(h t v).const_mul _`.
+-/
 private theorem der_nU {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     [IsTotallyReal F] [IsTotallyComplex E] {D : Dat F E} (W : Weil D) {Ψ Ψ' : ℝ → S4 F}
     (h : Der Ψ Ψ') (b : A F) :
@@ -17,6 +20,11 @@ private theorem der_nU {F E : Type} [Field F] [NumberField F] [Field E] [NumberF
   simp only [W.Om_n]
   exact (h t v).const_mul _
 
+/- English proof (translation)
+Take `⟨N, hN⟩` from `wtInt F`. Take `⟨hφ, K, hK, hB⟩` from `wtBound F φ`. Take `⟨B, hB⟩` from `hB N`. Use `Integrable.mono' ((hN K hK).const_mul B) (hφ.mul hc).aestronglyMeasurable (Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul, hn, mul_one]`.
+
+Conclude with `hB () (Set.mem_univ _) y`.
+-/
 private theorem integrable_mul_char {F : Type} [Field F] [NumberField F] (φ : S4 F)
     {c : V4 F → ℂ} (hc : Continuous c) (hn : ∀ y, ‖c y‖ = 1) :
     Integrable (fun y => φ.1 y * c y) (adeleMeasurePi F) := by
@@ -28,6 +36,13 @@ private theorem integrable_mul_char {F : Type} [Field F] [NumberField F] (φ : S
   rw [norm_mul, hn, mul_one]
   exact hB () (Set.mem_univ _) y
 
+/- English proof (translation)
+Introduce `t v`. Simplify using `only [W.Om_w, ft4]`. Take `⟨N, hN⟩` from `wtInt F`. Take `⟨K, hK, hB⟩` from `hd t`. Take `⟨B, hB⟩` from `hB N`.
+
+Establish `e : ∀ i, Continuous fun y : V4 F => y i` using `fun i => continuous_apply i`. Establish `cB : Continuous fun y : V4 F => B4 D.δ y v` using `((continuous_const.mul (((e 2).mul continuous_const).sub (continuous_const.mul ((e 3).mul continuous_const)))).sub ((e 1).mul continuous_const)).sub ((e 0).mul continuous_const)`. Establish `cψ : Continuous fun y : V4 F => ψ (B4 D.δ y v)` using `continuous_ψ.comp cB`. Establish `cont : ∀ φ : S4 F, Continuous fun y => φ.1 y * ψ (B4 D.δ y v)` using `fun φ => (wtBound F φ).1.mul cψ`. Conclude with `(hasDerivAt_integral_of_dominated_loc_of_deriv_le (F := fun s y => (Ψ s).1 y * ψ (B4 D.δ y v)) (F' := fun s y => (Ψ' s).1 y * ψ (B4 D.δ y v)) (bound := fun y => B * wt K N y) (μ := adeleMeasurePi F) (Metric.ball_mem_nhds t one_pos) (Eventually.of_forall fun s => (cont (Ψ s)).aest …`.
+
+Rewrite using `[norm_mul, norm_ψ, mul_one]`. Conclude with `hB s hs y)`. Use the proof step `((hN K hK).const_mul B)`. Use the proof step `(Eventually.of_forall fun y s _ => (h s y).mul_const _)).2`.
+-/
 private theorem der_wW {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     [IsTotallyReal F] [IsTotallyComplex E] {D : Dat F E} (W : Weil D) {Ψ Ψ' : ℝ → S4 F}
     (h : Der Ψ Ψ') (hd : ∀ t, Dom (Metric.ball t 1) fun s => (Ψ' s).1) :
@@ -58,6 +73,17 @@ private theorem der_wW {F E : Type} [Field F] [NumberField F] [Field E] [NumberF
     ((hN K hK).const_mul B)
     (Eventually.of_forall fun y s _ => (h s y).mul_const _)).2
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ _ D W Ψ Ψ' h hd g`. Establish `hg : g ∈ Subgroup.closure (Set.range (nU (F` using `F)) ∪ {wW F}) := by`. Rewrite using `[(gen F).1]`. Discharge the goal by the elementary cases of `trivial`. Establish `wstep : ∀ y, Der (fun s => W.Om y (Ψ s)) (fun s => W.Om y (Ψ' s)) → Der (fun s => W.Om (wW F * y) (Ψ s)) (fun s => W.Om (wW F * y) (Ψ' s))`.
+
+Introduce `y hy`. Simplify using `only [map_mul, Module.End.mul_apply]`. Conclude with `der_wW W hy (hd y)`. Proceed by induction on `hg using Subgroup.closure_induction_left with`. Consider the case `one => simpa using h`.
+
+Consider the case `mul_left x hx y _ ih`. Break down `hx with ⟨b, rfl⟩ | hx` into its components or cases. Simplify using `only [map_mul, Module.End.mul_apply]`. Conclude with `der_nU W ih b`. Rewrite using `[Set.mem_singleton_iff.1 hx]`.
+
+Conclude with `wstep y ih`. Consider the case `inv_mul_cancel x hx y _ ih`. Break down `hx with ⟨b, rfl⟩ | hx` into its components or cases. Rewrite using `[← nU_neg]`. Simplify using `only [map_mul, Module.End.mul_apply]`.
+
+Conclude with `der_nU W ih (-b)`. Rewrite using `[Set.mem_singleton_iff.1 hx, wW_inv, ← wW_mul_wW, mul_assoc, mul_assoc]`. Conclude with `wstep _ (wstep _ (wstep y ih))`.
+-/
 theorem UpperTheory.ConvolutionTheory.R2.Ff.omDer :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E] (D : Dat F E) (W : Weil D), OmDer W := by
   intro F E _ _ _ _ _ _ _ D W Ψ Ψ' h hd g

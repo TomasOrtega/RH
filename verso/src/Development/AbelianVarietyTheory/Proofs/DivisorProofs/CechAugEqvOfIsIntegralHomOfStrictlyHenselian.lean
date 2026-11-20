@@ -18,6 +18,9 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 
 namespace GlobalTheory.EtC.IntDescent
 
+/- English proof (translation)
+Use `haveI : Algebra.IsIntegral A (IsLocalRing.ResidueField A) := Algebra.IsIntegral.of_surjective (Algebra.ofId A (IsLocalRing.ResidueField A)) IsLocalRing.residue_surjective`. Use `haveI : Algebra.IsIntegral (IsLocalRing.ResidueField A) (AlgebraicClosure (IsLocalRing.ResidueField A)) := Algebra.IsAlgebraic.isIntegral`. Conclude with `Algebra.IsIntegral.trans (IsLocalRing.ResidueField A)`.
+-/
 theorem isIntegral_algClosure_residue (A : Type) [CommRing A] [IsLocalRing A] :
     Algebra.IsIntegral A (AlgebraicClosure (IsLocalRing.ResidueField A)) := by
   haveI : Algebra.IsIntegral A (IsLocalRing.ResidueField A) :=
@@ -26,6 +29,11 @@ theorem isIntegral_algClosure_residue (A : Type) [CommRing A] [IsLocalRing A] :
     Algebra.IsAlgebraic.isIntegral
   exact Algebra.IsIntegral.trans (IsLocalRing.ResidueField A)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => exact isIntegral_zero`. Consider the case `tmul x y`.
+
+Establish `h1 : IsIntegral A (Algebra.TensorProduct.includeLeft (R` using `A) (S := A) (A := C) (B := B) x) := (Algebra.IsIntegral.isIntegral x).map _`. Establish `h2 : IsIntegral A (Algebra.TensorProduct.includeRight (R` using `A) (A := C) (B := B) y) := (Algebra.IsIntegral.isIntegral y).map _`. Use `h1.mul h2` as an intermediate fact. Simplify `this` using `[Algebra.TensorProduct.tmul_mul_tmul]`. Consider the case `add x y hx hy => exact hx.add hy`.
+-/
 theorem isIntegral_tensor (A C B : Type) [CommRing A] [CommRing C] [CommRing B] [Algebra A C] [Algebra A B]
     [Algebra.IsIntegral A C] [Algebra.IsIntegral A B] : Algebra.IsIntegral A (C ⊗[A] B) := by
   constructor
@@ -41,6 +49,13 @@ theorem isIntegral_tensor (A C B : Type) [CommRing A] [CommRing C] [CommRing B] 
       simpa [Algebra.TensorProduct.tmul_mul_tmul] using this
   | add x y hx hy => exact hx.add hy
 
+/- English proof (translation)
+Introduce `q i A _ _ _ hq B _ _ _`. Establish `hSH : SH A` using `⟨inferInstance, inferInstance⟩`. Take `⟨ζ0⟩` from `GlobalTheory.T.nonempty_cyclotomicPrimitiveRoots_of_strictlyHenselian q A hSH hq`. Set `ζ : Prim q Γ(Spec (CommRingCat.of A), ⊤)` to `ζ0.map (Scheme.ΓSpecIso (CommRingCat.of A)).inv.hom`. Establish `hgen` using `GlobalTheory.T.tateTwist_isFreeRankOne_on_generatorSection q i (Spec (CommRingCat.of A)) ζ`.
+
+Use `haveI := isIntegral_algClosure_residue A`. Use `haveI := isIntegral_tensor A (AlgebraicClosure (IsLocalRing.ResidueField A)) B`. Establish `hfin` using `GlobalTheory.T.tateTwist_finitary q i`. Establish `hU` using `GlobalTheory.T.integral_strictHenselian_acyclic_finitary (ZMod q) (tw q i) hfin A B hSH`. Establish `hU'` using `GlobalTheory.T.integral_strictHenselian_acyclic_finitary (ZMod q) (tw q i) hfin A (AlgebraicClosure (IsLocalRing.ResidueField A) ⊗[A] B) hSH`.
+
+Establish `hbij` using `GlobalTheory.T.bijective_locallyConstant_comap_algClosure_tensor_of_henselian (ZMod q) A B`. Conclude with `GlobalTheory.T.etaleCohomologyEquiv_of_locallyConstant_bijective (ZMod q) (tw q i) _ _ hgen (Spec (CommRingCat.of B)) _ (Spec.map (CommRingCat.ofHom (algebraMap A B))) _ hU hU' hbij`.
+-/
 theorem L1 : ∀ (q : ℕ) (i : ℤ) (A : Type) [CommRing A] [HenselianLocalRing A] [IsSepClosed (IsLocalRing.ResidueField A)],
     IsUnit (q : A) → ∀ (B : Type) [CommRing B] [Algebra A B] [Algebra.IsIntegral A B],
     Eqv (ZMod q) (spMap (Algebra.TensorProduct.includeRight : B →ₐ[A] AlgebraicClosure (IsLocalRing.ResidueField A) ⊗[A] B).toRingHom) (tw q i) := by
@@ -64,6 +79,13 @@ namespace GlobalTheory.EtC
 
 open IntDescent in
 
+/- English proof (translation)
+Introduce `q i A _ hSH hq Y g hg hsurj`. Take `⟨_, _⟩` from `hSH`. Use `set Ω := AlgebraicClosure (IsLocalRing.ResidueField A)`. Use `set u : Spec (CommRingCat.of Ω) ⟶ Spec (CommRingCat.of A) := Spec.map (CommRingCat.ofHom (algebraMap A Ω)) with hu_def`. Establish `hpb : IsPullback (pullback.fst g u) (pullback.snd g u) g u` using `IsPullback.of_hasPullback g u`.
+
+Take `⟨m, hm, -⟩` from `GlobalTheory.T.etaleCechNerve_baseChange_isPullback _ _ _ _ (pullback.fst g u) (pullback.snd g u) g u hpb`. Establish `hsq : ∀ (Z Z' : Scheme.{0}) (h : Z ⟶ Spec (CommRingCat.of A)) (h' : Z' ⟶ Spec (CommRingCat.of Ω)) (φ : Z' ⟶ Z), IsIntegralHom h → IsPullback φ h' h u → Eqv (ZMod q) (sch.map φ) (tw q i)` using `GlobalTheory.T.etaleCohomologyEquivalence_pullback_integral_affine (ZMod q) (tw q i) A Ω (fun B _ _ _ => L1 q i A hq B)`. Establish `hEm : Eqv (ZMod q) m (tw q i)` using `GlobalTheory.T.levelwiseEquivalence_isEquivalence (ZMod q) m (tw q i) (GlobalTheory.T.cechNerve_levelwise_equivalence_integral_pullback (ZMod q) (tw q i) _ _ _ _ _ _ g u hpb hg hsq m hm)`. Establish `hEu : Eqv (ZMod q) (sch.map u) (tw q i)` using `hsq _ _ (𝟙 _) (𝟙 _) u inferInstance (IsPullback.id_vert u)`. Take `⟨s, hs⟩` from `GlobalTheory.T.exists_point_algClosure_residueField_of_integral_surjective A Y g hg hsurj`.
+
+Establish `hEs : Eqv (ZMod q) (cechAug (pullback.snd g u)) (tw q i)` using `GlobalTheory.T.etaleCechAugmentation_equiv_of_section (ZMod q) (tw q i) _ _ (pullback.snd g u) (pullback.lift s (𝟙 _) (by rw [hs, Category.id_comp])) (pullback.lift_snd _ _ _)`. Take `⟨-, hcomp, -, -⟩` from `GlobalTheory.T.etaleCohomologyEquivalence_basic_properties (ZMod q) (tw q i)`. Establish `h1 : Eqv (ZMod q) (cechAug (pullback.snd g u) ≫ sch.map u) (tw q i)` using `(hcomp _ _ _ _ _).1 hEs hEu`. Rewrite `h1` using `[← hm.w]`. Conclude with `(hcomp _ _ _ _ _).2.1 hEm h1`.
+-/
 theorem cechAug_eqv_of_isIntegralHom_of_strictlyHenselian : ∀ (q : ℕ) (i : ℤ) (A : Type) [CommRing A], SH A → IsUnit (q : A) →
     ∀ (Y : Scheme.{0}) (g : Y ⟶ Spec (CommRingCat.of A)), IsIntegralHom g → Surjective g → Eqv _ (cechAug g) (tw q i) := by
   intro q i A _ hSH hq Y g hg hsurj

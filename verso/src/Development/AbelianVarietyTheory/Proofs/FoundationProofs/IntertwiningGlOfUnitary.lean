@@ -9,6 +9,11 @@ open scoped DirectSum
 
 namespace GlobalTheory.Branching
 
+/- English proof (translation)
+Establish `ha : d ^ a = d ^ (min a b) * d ^ (a - b).toNat`. Rewrite using `[← zpow_natCast, ← zpow_add₀ hd]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers. Establish `hb : d ^ b = d ^ (min a b) * d ^ (b - a).toNat`.
+
+Rewrite using `[← zpow_natCast, ← zpow_add₀ hd]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers. Rewrite using `[ha, hb, mul_assoc, mul_assoc, mul_right_inj' (zpow_ne_zero _ hd)]`.
+-/
 theorem zpow_mul_eq_iff_toNat (d x y : ℂ) (hd : d ≠ 0) (a b : ℤ) :
     d ^ a * x = d ^ b * y ↔ d ^ (a - b).toNat * x = d ^ (b - a).toNat * y := by
   have ha : d ^ a = d ^ (min a b) * d ^ (a - b).toNat := by
@@ -17,6 +22,11 @@ theorem zpow_mul_eq_iff_toNat (d x y : ℂ) (hd : d ≠ 0) (a b : ℤ) :
     rw [← zpow_natCast, ← zpow_add₀ hd]; congr 1; omega
   rw [ha, hb, mul_assoc, mul_assoc, mul_right_inj' (zpow_ne_zero _ hd)]
 
+/- English proof (translation)
+Take `⟨L, hL⟩` from `LinearMap.exists_extend l`. Take `⟨P, hP⟩` from `GlobalTheory.Branching.rowAct_coef_poly_and_unitary_dense.1 n n f L`. Use `⟨rename Prod.swap P, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[← hL, LinearMap.comp_apply, Submodule.subtype_apply, sqRep_coe, sqAct, map_smul, hP, eval_rename]`. Simplify using `only [detPow, smul_eq_mul, Units.val_zpow_eq_zpow_val, Matrix.GeneralLinearGroup.val_det_apply]`.
+
+Both sides reduce to the same expression.
+-/
 theorem exists_coef_sqRep (n : ℕ) (mu : DomWeight n) (f : nablaSq ℂ n mu)
     (l : Module.Dual ℂ (nablaSq ℂ n mu)) :
     ∃ P : MvPolynomial (Fin n × Fin n) ℂ, ∀ g : GL (Fin n) ℂ,
@@ -29,6 +39,15 @@ theorem exists_coef_sqRep (n : ℕ) (mu : DomWeight n) (f : nablaSq ℂ n mu)
   simp only [detPow, smul_eq_mul, Units.val_zpow_eq_zpow_val, Matrix.GeneralLinearGroup.val_det_apply]
   rfl
 
+/- English proof (translation)
+Rewrite using `[← sub_eq_zero, ← Module.forall_dual_apply_eq_zero_iff ℂ]`. Introduce `l`. Rewrite using `[map_sub, sub_eq_zero]`. Take `⟨P, hP⟩` from `exists_coef_sqRep n mu f (l ∘ₗ φ.toLinearMap)`. Take `⟨Q, hQ⟩` from `exists_coef_sqRep n nu (φ f) l`.
+
+Set `D : MvPolynomial (Fin n × Fin n) ℂ` to `(Matrix.mvPolynomialX (Fin n) (Fin n) ℂ).det`. Establish `hD : ∀ m : Matrix (Fin n) (Fin n) ℂ, eval (fun x => m x.1 x.2) D = m.det`. Introduce `m`. Rewrite using `[RingHom.map_det]`. Use `congr 1`.
+
+Use extensionality with `i j`. Simplify using the standard rewrite rules. Establish `key : ∀ g : GL (Fin n) ℂ, l (φ (sqRep ℂ n mu g f)) = l (sqRep ℂ n nu g (φ f)) ↔ eval (fun x => (g : Matrix (Fin n) (Fin n) ℂ) x.1 x.2) (D ^ (mu.detShift - nu.detShift).toNat * P - D ^ (nu.detShift - mu.detShift).toNat * Q) = 0`. Introduce `g`. Establish `h1 : l (φ (sqRep ℂ n mu g f)) = _` using `hP g`.
+
+Rewrite using `[h1, hQ, zpow_mul_eq_iff_toNat _ _ _ (Matrix.GeneralLinearGroup.det_ne_zero g)]`. Simplify using `only [map_sub, map_mul, map_pow, hD, sub_eq_zero]`. Establish `hz` using `GlobalTheory.Branching.rowAct_coef_poly_and_unitary_dense.2 n _ fun u hu => (key (unitaryIncl n ⟨u, hu⟩)).1 (congrArg l (φ.isIntertwining _ _ ⟨u, hu⟩ f))`. Rewrite using `[key, hz, map_zero]`.
+-/
 theorem intertwining_gl_of_unitary (n : ℕ) (mu nu : DomWeight n)
     (φ : (smallRep (unitaryIncl n) mu).IntertwiningMap (smallRep (unitaryIncl n) nu))
     (g : GL (Fin n) ℂ) (f : nablaSq ℂ n mu) :

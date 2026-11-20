@@ -11,6 +11,21 @@ namespace GlobalTheory.MemLoc
 
 variable {l : ℕ} [Fact l.Prime]
 
+/- English proof (translation)
+Establish `hcC : (c : ℂ_[l]) ^ m = 1`. Use `congrArg (algebraMap (Om l) ℂ_[l]) hc` as an intermediate fact. Rewrite `this` using `[map_pow, map_one]`. Conclude with `this`. Establish `hn : ‖(c : ℂ_[l])‖ = 1`.
+
+Use `congrArg norm hcC` as an intermediate fact. Rewrite `this` using `[norm_pow, norm_one]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) hm.ne').1 this`. Set `C : Per.OC l` to `⟨(c : ℂ_[l]), (GlobalTheory.RingBasics.mem_OC _).2 hn.le⟩`. Establish `hC : C ^ m = 1` using `Subtype.ext (by simpa using hcC)`.
+
+Establish `hcop : Nat.Coprime l m` using `((Fact.out : l.Prime).coprime_iff_not_dvd).2 hl`. Choose the witnesses or unpack the hypotheses as in `⟨a, ha⟩ : ∃ a : ℕ, a * l ≡ 1 [MOD m] := by`. Use `⟨l ^ (Nat.totient m - 1), ?_⟩` and prove the remaining obligations. Rewrite using `[← pow_succ, Nat.sub_add_cancel (Nat.totient_pos.2 hm)]`. Conclude with `Nat.ModEq.pow_totient hcop`.
+
+Set `y : ℕ → Per.OC l` to `fun k => C ^ (a ^ k)`. Establish `hy : ∀ k, y (k + 1) ^ l = y k`. Introduce `k`. Simplify using `only [y]`. Rewrite using `[← pow_mul]`.
+
+Use `pow_eq_pow_of_modEq ?_ hC` and prove the remaining obligations. Rewrite using `[pow_succ, mul_assoc]`. Simplify using `using ha.mul_left (a ^ k)`. Establish `hy0 : ∀ k, y k ^ (l ^ k) = C`. Introduce `k`.
+
+Proceed by induction on `k with`. Consider the case `zero => simp [y]`. Consider the case `succ k ih => rw [pow_succ', pow_mul, hy, ih]`. Use `⟨(⟨fun k => Ideal.Quotient.mk _ (y k), fun k => ?_⟩ : Perfection (ModP (Per.OC l) l) l), fun k => ⟨y k, ?_, ?_, rfl⟩⟩` and prove the remaining obligations. Rewrite using `[← map_pow, hy]`.
+
+Use `congrArg Subtype.val (hy0 k)` as an intermediate fact. Simplify using `using this`. Simplify using `only [y]`. Rewrite using `[← pow_mul, mul_comm, pow_mul, hC, one_pow]`.
+-/
 theorem exists_isTiltOf (c : Om l) (m : ℕ) (hm : 0 < m) (hl : ¬ l ∣ m) (hc : c ^ m = 1) :
     ∃ xb : Per.Fl l, IsTiltOf c m xb := by
   have hcC : (c : ℂ_[l]) ^ m = 1 := by
@@ -48,12 +63,20 @@ theorem exists_isTiltOf (c : Om l) (m : ℕ) (hm : 0 < m) (hl : ¬ l ∣ m) (hc 
   · simp only [y]
     rw [← pow_mul, mul_comm, pow_mul, hC, one_pow]
 
+/- English proof (translation)
+Use `Perfection.ext fun k => ?_` and prove the remaining obligations. Take `⟨y, -, h2, h3⟩` from `h k`. Express the relevant statement in the definitionally equal form `PreTilt.coeff k (xb ^ m) = PreTilt.coeff k (1 : Per.Fl l)`. Rewrite using `[map_pow, map_one, h3, ← map_pow, h2, map_one]`.
+-/
 theorem IsTiltOf.pow_eq_one {c : Om l} {m : ℕ} {xb : Per.Fl l} (h : IsTiltOf c m xb) : xb ^ m = 1 := by
   refine Perfection.ext fun k => ?_
   obtain ⟨y, -, h2, h3⟩ := h k
   change PreTilt.coeff k (xb ^ m) = PreTilt.coeff k (1 : Per.Fl l)
   rw [map_pow, map_one, h3, ← map_pow, h2, map_one]
 
+/- English proof (translation)
+Take `⟨y0, h0, -, -⟩` from `h 0`. Rewrite `h0` using `[pow_zero, pow_one]`. Establish `: xb.untilt = y0`. Use `Perfection.teichmuller_spec (I := Ideal.span {((l : ℕ) : Per.OC l)}) fun n => ?_` and prove the remaining obligations. Take `⟨y, h1, -, h3⟩` from `h n`.
+
+Use `⟨y, h3.symm, ?_⟩` and prove the remaining obligations. Establish `: y ^ l ^ n = y0` using `Subtype.ext (by simpa [h0] using h1)`. Rewrite using `[this]`. Rewrite using `[this, h0]`.
+-/
 theorem IsTiltOf.untilt_eq {c : Om l} {m : ℕ} {xb : Per.Fl l} (h : IsTiltOf c m xb) :
     ((xb.untilt : Per.OC l) : ℂ_[l]) = (c : ℂ_[l]) := by
   obtain ⟨y0, h0, -, -⟩ := h 0
@@ -66,6 +89,17 @@ theorem IsTiltOf.untilt_eq {c : Om l} {m : ℕ} {xb : Per.Fl l} (h : IsTiltOf c 
     rw [this]
   rw [this, h0]
 
+/- English proof (translation)
+Introduce `l _ o ho c m hm hl hc`. Use `⟨exists_isTiltOf c m hm hl hc, fun xb h => ⟨IsTiltOf.pow_eq_one h, IsTiltOf.untilt_eq h, ?_⟩⟩` and prove the remaining obligations. Take `⟨-, -, hu, hθ, -⟩` from `GlobalTheory.T.thetaBdRPlus_surjective_ker_units_equivariant l`. Establish `h1 : aDp l (Per.tm xb) ^ m = 1`. Rewrite using `[← map_pow, ← map_pow, IsTiltOf.pow_eq_one h, map_one, map_one]`.
+
+Establish `h2 : o c ^ m = 1` using `by rw [← map_pow, hc, map_one]`. Establish `t1 : Per.θD l (aDp l (Per.tm xb)) = (c : ℂ_[l])`. Rewrite using `[hθ, WittVector.fontaineTheta_teichmuller, IsTiltOf.untilt_eq h]`. Establish `t2 : Per.θD l (o c) = (c : ℂ_[l])` using `ho.th c`. Generalize the expression as in `aDp l (Per.tm xb) = y at h1 t1 ⊢`.
+
+Establish `hc0 : (c : ℂ_[l]) ≠ 0`. Introduce `h0`. Use `congrArg (Per.θD l) h2` as an intermediate fact. Rewrite `this` using `[map_pow, map_one, t2, h0, zero_pow hm.ne']`. Conclude with `zero_ne_one this`.
+
+Establish `hg` using `(Commute.all y (o c)).geom_sum₂_mul m`. Rewrite `hg` using `[h1, h2, sub_self]`. Establish `hS : IsUnit (∑ i ∈ Finset.range m, y ^ i * o c ^ (m - 1 - i))`. Apply `hu` to reduce the goal to its premises. Rewrite using `[map_sum]`.
+
+Simplify using `only [map_mul, map_pow, t1, t2]`. Rewrite using `[geom_sum₂_self]`. Conclude with `mul_ne_zero (by exact_mod_cast hm.ne') (pow_ne_zero _ hc0)`. Conclude with `sub_eq_zero.1 (hS.mul_right_eq_zero.1 hg)`.
+-/
 theorem rootOfUnity_teichmuller : ∀ (l : ℕ) [Fact l.Prime], ∀ o : Om l →+* Per.BdRp l, IsSec o → ∀ (c : Om l) (m : ℕ), 0 < m → ¬ l ∣ m → c ^ m = 1 → (∃ xb : Per.Fl l, IsTiltOf c m xb) ∧ ∀ xb : Per.Fl l, IsTiltOf c m xb → xb ^ m = 1 ∧ ((xb.untilt : Per.OC l) : ℂ_[l]) = (c : ℂ_[l]) ∧ aDp l (Per.tm xb) = o c := by
   intro l _ o ho c m hm hl hc
   refine ⟨exists_isTiltOf c m hm hl hc, fun xb h => ⟨IsTiltOf.pow_eq_one h, IsTiltOf.untilt_eq h, ?_⟩⟩

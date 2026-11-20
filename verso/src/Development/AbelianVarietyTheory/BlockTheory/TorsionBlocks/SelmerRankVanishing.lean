@@ -30,8 +30,14 @@ def val_vp (l : ℕ) (x : FractionRing A) : EReal :=
 def len_vp (l : ℕ) (n : ℕ∞) : EReal :=
   if n = ⊤ then ⊤ else (((n.toNat : ℝ) / (ordFrac A (l : FractionRing A) : ℝ) : ℝ) : EReal)
 
+/- English proof (translation)
+Simplify using `[val_vp]`.
+-/
 example (l : ℕ) : val_vp A l 0 = ⊤ := by simp [val_vp]
 
+/- English proof (translation)
+Simplify using `[val_vp, ordFrac]`.
+-/
 example (l : ℕ) : val_vp A l 1 = 0 := by simp [val_vp, ordFrac]
 
 end Val
@@ -424,6 +430,9 @@ def SelmerBoundWithInertiaCondition (D : D7) : Prop :=
     InputsT D i → InertiaTrivialOverDeltaPrime D i → ThmBK D i → TLoc → TGlob → PoitouTate → JInvariantIntegrality D i N₀ → CM2 D i →
     ThmACD D i N₀
 
+/- English proof (translation)
+Introduce `N₀ i hi hT _` and use `h N₀ i hi hT`.
+-/
 theorem SelmerBoundFromLocalInputs.full {D : D7} (h : SelmerBoundFromLocalInputs D) : SelmerBoundWithInertiaCondition D :=
   fun N₀ i hi hT _ => h N₀ i hi hT
 

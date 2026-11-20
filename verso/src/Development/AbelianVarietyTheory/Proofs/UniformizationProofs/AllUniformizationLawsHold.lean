@@ -19,6 +19,9 @@ open CategoryTheory CategoryTheory.Limits MonoidalCategory CartesianMonoidalCate
 open scoped CategoryTheory.Obj in
 attribute [local instance] Over.cartesianMonoidalCategory in
 
+/- English proof (translation)
+Unfold `_root_.GlobalTheory.UT.LL`. Take `⟨h₁, h₂, h₃, h₄, h₅, -⟩` from `_root_.GlobalTheory.allSixLaws`. Conclude with `⟨h₁, h₂, h₃, h₄, h₅⟩`.
+-/
 theorem _root_.GlobalTheory.firstFiveLaws : _root_.GlobalTheory.UT.LL := by
   unfold _root_.GlobalTheory.UT.LL
   obtain ⟨h₁, h₂, h₃, h₄, h₅, -⟩ := _root_.GlobalTheory.allSixLaws

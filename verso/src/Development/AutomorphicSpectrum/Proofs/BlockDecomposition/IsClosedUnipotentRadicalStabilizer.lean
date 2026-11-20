@@ -12,6 +12,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.CompanionTheory.QKAvg
 
+/- English proof (translation)
+Introduce `D B W t d`. Establish `e : (radN d : Set (GlobalTheory.RegSW.stab d)) = (Subtype.val : GlobalTheory.RegSW.stab d → GA D B) ⁻¹' (GlobalTheory.MixPer.radX d : Set (GA D B))`. Use extensionality with `q`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, b, h⟩`.
+
+Conclude with `(GlobalTheory.MixPer.Decomp.mem_radX_iff d).2 ⟨b, c, h.trans (d.nC_mul_nB b c)⟩`. Introduce `h`. Take `⟨b, c, h⟩` from `(GlobalTheory.MixPer.Decomp.mem_radX_iff d).1 h`. Conclude with `⟨c, b, h.trans (d.nC_mul_nB b c).symm⟩`. Rewrite using `[e]`.
+
+Conclude with `(GlobalTheory.JacMeas.isClosed_radX d).preimage continuous_subtype_val`.
+-/
 theorem isClosed_radN : ∀ (D : D7) (B W : HSp D) (t : ℕ) (d : HypDec B W t),
     IsClosed (radN d : Set (GlobalTheory.RegSW.stab d)) := by
   intro D B W t d

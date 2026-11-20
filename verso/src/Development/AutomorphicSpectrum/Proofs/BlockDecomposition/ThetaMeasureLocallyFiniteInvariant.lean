@@ -16,6 +16,11 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.WeilSiegel.Free.ThetaFrame
 
+/- English proof (translation)
+Establish `hk : LinearMap.ker (Matrix.mulVecLin (g : Matrix (Fin M) (Fin M) S)) = ⊥`. Rewrite using `[LinearMap.ker_eq_bot]`. Introduce `x y h`. Establish `h2` using `congrArg (Matrix.mulVec ((g⁻¹ : GL (Fin M) S) : Matrix (Fin M) (Fin M) S)) h`. Simplify `h2` using `[Matrix.mulVec_mulVec]`.
+
+Conclude with `hY.map' _ hk`.
+-/
 theorem free_act {S : Type} [CommRing S] {M n : ℕ} (g : GL (Fin M) S) {Y : Fin n → Fin M → S}
     (hY : LinearIndependent S Y) :
     LinearIndependent S fun a => (g : Matrix (Fin M) (Fin M) S) *ᵥ Y a := by
@@ -26,6 +31,11 @@ theorem free_act {S : Type} [CommRing S] {M n : ℕ} (g : GL (Fin M) S) {Y : Fin
     simpa [Matrix.mulVec_mulVec] using h2
   exact hY.map' _ hk
 
+/- English proof (translation)
+Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg a`. Establish `h1` using `congrFun hg i`. Simplify using `only [Fin.sum_univ_one, Pi.smul_apply, smul_eq_mul, Pi.zero_apply] at h1`. Rewrite using `[Subsingleton.elim a 0]`.
+
+Conclude with `hu.mul_left_eq_zero.1 h1`.
+-/
 theorem free_of_unit {S : Type} [CommRing S] {M : ℕ} {Y : Fin 1 → Fin M → S} {i : Fin M}
     (hu : IsUnit (Y 0 i)) : LinearIndependent S Y := by
   rw [Fintype.linearIndependent_iff]
@@ -39,6 +49,9 @@ section Rat
 
 variable {F E : Type} [Field F] [Field E] [Algebra F E]
 
+/- English proof (translation)
+Take `⟨i, hi⟩` from `Function.ne_iff.1 (hX.ne_zero 0)`. Conclude with `free_of_unit (i := i) ((isUnit_iff_ne_zero.2 hi).map (inclR (F := F) R))`.
+-/
 theorem free_ratTup (R : Type) [CommRing R] [Algebra F R] {M : ℕ} {X : Fin 1 → Fin M → E}
     (hX : LinearIndependent E X) : LinearIndependent (R ⊗[F] E) (ratTup (F := F) R X) := by
   obtain ⟨i, hi⟩ := Function.ne_iff.1 (hX.ne_zero 0)
@@ -46,16 +59,25 @@ theorem free_ratTup (R : Type) [CommRing R] [Algebra F R] {M : ℕ} {X : Fin 1 �
 
 variable [NumberField F]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a i`. Simplify using `[projInf, ratTup, inclR]`.
+-/
 theorem projInf_ratTup {M n : ℕ} (X : Fin n → Fin M → E) :
     projInf (ratTup (F := F) (AF F) X) = ratTup (Ainf F) X := by
   funext a i
   simp [projInf, ratTup, inclR]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a i`. Simplify using `[projV, projFin, ratTup, inclR]`.
+-/
 theorem projV_ratTup (v : HeightOneSpectrum (𝓞 F)) {M n : ℕ} (X : Fin n → Fin M → E) :
     projV v (projFin (ratTup (F := F) (AF F) X)) = ratTup (Fv F v) X := by
   funext a i
   simp [projV, projFin, ratTup, inclR]
 
+/- English proof (translation)
+Take `⟨γ, g, -, e⟩` from `γ`. Use `⟨fun a => g.val *ᵥ X a, free_act g hX, funext fun a => funext fun i => ?_⟩` and prove the remaining obligations. Establish `e' : (HA.mat (AF F) σ J γ).val = g.val.map (inclR (AF F))` using `(congrArg Units.val e).symm`. Simplify using `only [actW, actTup, e', ratTup, Matrix.mulVec, dotProduct, Matrix.map_apply, map_sum, map_mul]`.
+-/
 theorem act_rat_free {σ : E →ₐ[F] E} {M n : ℕ} {J : Matrix (Fin M) (Fin M) E} (γ : HFinIn (AF F) σ J)
     {X : Fin n → Fin M → E} (hX : LinearIndependent E X) :
     ∃ X' : Fin n → Fin M → E, LinearIndependent E X' ∧
@@ -67,6 +89,21 @@ theorem act_rat_free {σ : E →ₐ[F] E} {M n : ℕ} {J : Matrix (Fin M) (Fin M
 
 end Rat
 
+/- English proof (translation)
+Take `⟨⟨_, _, _⟩, -⟩` from `GlobalTheory.T.adeles_locally_compact_second_countable F`. Take `⟨_, _, _, _, -, -, -, hB, -, hg⟩` from `GlobalTheory.T.tensor_locally_compact_ring F E σ hcm (AF F)`. Use `hB n M` as an intermediate fact. Take `⟨_, _, _, _, _, hact⟩` from `GlobalTheory.T.adelic_unitary_group_locally_compact F E σ hcm M J hJ (AF F)`. Take `⟨ac, a1, a2, ag⟩` from `hact n`.
+
+Establish `hl` using `PositivityTheory.PlacePermOperatorBicommutantSpan.theta_lint F E σ hcm M J hJ μ 𝓕 hμ h𝓕 n S`. Establish `hinj : Function.Injective (inclR (F` using `F) (E := E) (AF F)) := Algebra.TensorProduct.includeRight_injective (AdeleRing.algebraMap_injective _ _)`. Establish `hri : Function.Injective (ratTup (F` using `F) (AF F) : (Fin n → Fin M → E) → _) := fun X Y h =>`. Use function extensionality and compare the values at `fun a => funext fun i => hinj (congrFun (congrFun h a) i)`. Establish `hm : Measurable (actW (AF F) σ J h : (Fin n → Fin M → _) → _)` using `(ac.comp (continuous_const.prodMk continuous_id)).measurable`.
+
+Establish `hfin` using `((GlobalTheory.T.unitary_group_finite_volume F E σ hcm M J hJ).2 μ hμ).2 𝓕 h𝓕`. Establish `: μ.IsHaarMeasure` using `hμ`. Set `Γ : Subgroup (HA (AF F) σ J)` to `HFinIn (AF F) σ J`. Establish `: Countable Γ` using `(GlobalTheory.T.arithmetic_unitary_group_discrete F E σ hcm M J hJ).1`. Establish `h𝓕' : IsFundamentalDomain Γ 𝓕 μ` using `h𝓕`.
+
+Take `⟨-, _, -⟩` from `GlobalTheory.T.finite_covolume_unimodular (HA (AF F) σ J) Γ μ 𝓕 h𝓕' hfin`. Use `Measure.ext_of_lintegral _ fun Φ hΦ => ?_` and prove the remaining obligations. Rewrite using `[lintegral_map hΦ hm, hl (fun X => Φ (actW (AF F) σ J h X)) (hΦ.comp hm), hl _ hΦ]`. Use `congr 1`. Use `set f : HA (AF F) σ J → ℝ≥0∞ := fun g => ∑' X : S, Φ (actW (AF F) σ J g⁻¹ (ratTup (AF F) (X : Fin n → Fin M → E))) with hf`.
+
+Establish `hle : ∀ (γ : Γ) g, f (γ • g) ≤ f g` using `fun γ g => by choose t hts ht using fun X : S => hS γ⁻¹ X.1 X.2`. Establish `ht' : ∀ X, actW (AF F) σ J (γ : HA (AF F) σ J)⁻¹ (ratTup (AF F) X.1) = ratTup (AF F) (t X)` using `ht`. Establish `hti : Function.Injective fun X => (⟨t X, hts X⟩ : S)` using `fun X Y e => by`. Establish `h1` using `congrArg (actW (AF F) σ J γ) ((ht' X).trans ((congrArg (fun Z => ratTup (AF F) Z.1) e).trans (ht' Y).symm))`. Simplify using `only [← a2, mul_inv_cancel, a1] at h1`.
+
+Conclude with `Subtype.ext (hri h1)`. Use `le_trans (le_of_eq (tsum_congr fun X => ?_)) (ENNReal.tsum_comp_le_tsum_of_injective hti _)` and prove the remaining obligations. Rewrite using `[Subgroup.smul_def, smul_eq_mul, mul_inv_rev, a2, ht']`. Establish `hinv : ∀ (γ : Γ) g, f (γ • g) = f g` using `fun γ g => (hle γ g).antisymm (by simpa using hle γ⁻¹ (γ • g))`. Establish `hD` using `h𝓕'.preimage_of_equiv (measurePreserving_mul_right μ h).quasiMeasurePreserving (e := id) Function.bijective_id fun γ g => (mul_assoc _ _ _)`.
+
+Rewrite using `[h𝓕'.setLIntegral_eq hD f hinv, ← (measurePreserving_mul_right μ h).setLIntegral_comp_preimage_emb (measurableEmbedding_mulRight _)]`. Simplify using `only [hf, mul_inv_rev, ← a2, mul_inv_cancel_left]`.
+-/
 theorem theta_inv_of_stable (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (hcm : IsCMExt F E σ) (M : ℕ) (J : Matrix (Fin M) (Fin M) E) (hJ : IsHermND σ J)
     (μ : Measure (HA (AF F) σ J)) (𝓕 : Set (HA (AF F) σ J)) (hμ : IsHaarH F E σ M J μ)
@@ -115,6 +152,13 @@ theorem theta_inv_of_stable (F E : Type) [Field F] [NumberField F] [Field E] [Nu
     (measurableEmbedding_mulRight _)]
   simp only [hf, mul_inv_rev, ← a2, mul_inv_cancel_left]
 
+/- English proof (translation)
+Take `⟨⟨_, _, _⟩, -⟩` from `GlobalTheory.T.adeles_locally_compact_second_countable F`. Take `⟨_, _, _, _, -, -, -, hB, -, hg⟩` from `GlobalTheory.T.tensor_locally_compact_ring F E σ hcm (AF F)`. Use `hB 1 M` as an intermediate fact. Establish `: FiniteDimensional F E` using `Module.finite_of_finrank_pos (by rw [hcm.2.2.1]; norm_num)`. Take `⟨c1, c2, c3, -⟩` from `GlobalTheory.T.adelic_tuple_projections F E σ hcm _ (Module.finBasis F E) 1 M`.
+
+Establish `o1 : IsOpen {X : Fin 1 → Fin M → Ainf F ⊗[F] E | LinearIndependent (Ainf F ⊗[F] E) X}` using `PI.VolStabSW.TensAllW.isOpen_linIndep (Module.finBasis F E) (Ainf F) (PI.VolStabSW.isOpen_units_Ainf F) (PI.VolStabSW.lip_ainf F)`. Establish `o2 : ∀ v, IsOpen {X : Fin 1 → Fin M → Fv F v ⊗[F] E | LinearIndependent (Fv F v ⊗[F] E) X}` using `fun v => PI.VolStabSW.TensAllW.isOpen_linIndep (Module.finBasis F E) (Fv F v) (PI.VolStabSW.isOpen_units_Fv F v) (PI.VolStabSW.TensAllW.lip_field _)`. Establish `m1 : MeasurableSet {X : Fin 1 → Fin M → AF F ⊗[F] E | gramR (AF F) σ J X = (0 : Matrix (Fin 1) (Fin 1) E).map (inclR (AF F))}` using `(isClosed_eq (hg 1 M J) continuous_const).measurableSet`. Establish `m2 : MeasurableSet {X : Fin 1 → Fin M → AF F ⊗[F] E | LinearIndependent (Ainf F ⊗[F] E) (projInf X)}` using `(o1.preimage c1).measurableSet`. Establish `m3 : MeasurableSet {X : Fin 1 → Fin M → AF F ⊗[F] E | ∀ v, LinearIndependent (Fv F v ⊗[F] E) (projV v (projFin X))}`.
+
+Rewrite using `[Set.setOf_forall]`. Conclude with `MeasurableSet.iInter fun v => (((o2 v).preimage (c3 v)).preimage c2).measurableSet`. Conclude with `m1.inter (m2.inter m3)`.
+-/
 theorem measurableSet_free (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (hcm : IsCMExt F E σ) (M : ℕ) (J : Matrix (Fin M) (Fin M) E) :
     MeasurableSet {X : Fin 1 → Fin M → AF F ⊗[F] E | gramR (AF F) σ J X = (0 : Matrix (Fin 1) (Fin 1) E).map (inclR (AF F)) ∧
@@ -139,6 +183,23 @@ theorem measurableSet_free (F E : Type) [Field F] [NumberField F] [Field E] [Num
     exact MeasurableSet.iInter fun v => (((o2 v).preimage (c3 v)).preimage c2).measurableSet
   exact m1.inter (m2.inter m3)
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hcm M J hJ hM μ 𝓕 hμ h𝓕`. Take `⟨⟨_, _, _⟩, -⟩` from `GlobalTheory.T.adeles_locally_compact_second_countable F`. Take `⟨_, _, _, _, -, -, -, hB, -, hg⟩` from `GlobalTheory.T.tensor_locally_compact_ring F E σ hcm (AF F)`. Use `hB 1 M` as an intermediate fact. Take `⟨_, _, _, _, _, hact⟩` from `GlobalTheory.T.adelic_unitary_group_locally_compact F E σ hcm M J hJ (AF F)`.
+
+Take `⟨ac, a1, a2, ag⟩` from `hact 1`. Establish `hrat` using `(GlobalTheory.T.gram_matrix_local_global F E σ hcm M J hJ 1 0 0).2`. Take `⟨pinf, p, hp, -, -⟩` from `GlobalTheory.T.adelic_unitary_group_projections F E σ hcm M J hJ`. Establish `hl` using `PositivityTheory.PlacePermOperatorBicommutantSpan.theta_lint F E σ hcm M J hJ μ 𝓕 hμ h𝓕 1`. Establish `hinj : Function.Injective (inclR (F` using `F) (E := E) (AF F)) := Algebra.TensorProduct.includeRight_injective (AdeleRing.algebraMap_injective _ _)`.
+
+Use `⟨⟨fun X => ?_⟩, fun h => ?_, ?_⟩` and prove the remaining obligations. Take `⟨K, hK, hX⟩` from `exists_compact_mem_nhds X`. Take `⟨N, r, hN, hr, hsub⟩` from `(GlobalTheory.T.adelic_tuple_compact_sets F E σ hcm _ (Module.finBasis F E) 1 M).2 K hK`. Take `⟨C, hC⟩` from `GlobalTheory.T.theta_measure_nonzero_vectors_bound F E σ hcm M J hJ hM _ (Module.finBasis F E) μ 𝓕 hμ h𝓕 N hN`. Use `⟨K, hX, lt_of_le_of_lt (le_trans ?_ ((measure_mono hsub).trans (hC r hr))) ENNReal.ofReal_lt_top⟩` and prove the remaining obligations.
+
+Establish `hm : Measurable (K.indicator (1 : (Fin 1 → Fin M → AF F ⊗[F] E) → ℝ≥0∞))` using `measurable_one.indicator hK.measurableSet`. Rewrite using `[← lintegral_indicator_one hK.measurableSet, ← lintegral_indicator_one hK.measurableSet, hl _ _ hm, hl _ _ hm]`. Establish `hs : framesE σ J (0 : Matrix (Fin 1) (Fin 1) E) ⊆ {X | X ≠ 0}` using `fun X hX h0 => hX.1.ne_zero 0 (congrFun h0 0)`. Conclude with `mul_le_mul_right (lintegral_mono fun h => ENNReal.tsum_mono_subtype (fun X => K.indicator (1 : (Fin 1 → Fin M → AF F ⊗[F] E) → ℝ≥0∞) (actW (AF F) σ J h⁻¹ (ratTup (AF F) X))) hs) _`. Use `theta_inv_of_stable F E σ hcm M J hJ μ 𝓕 hμ h𝓕 1 _ (fun γ X hX => ?_) h` and prove the remaining obligations.
+
+Take `⟨X', hX', e⟩` from `act_rat_free γ hX.1`. Use `⟨X', ⟨hX', ?_⟩, e⟩` and prove the remaining obligations. Use `Matrix.map_injective hinj ?_` and prove the remaining obligations. Use `show (gramE σ J X').map (inclR (AF F)) = (0 : Matrix (Fin 1) (Fin 1) E).map (inclR (AF F))`. Rewrite using `[← hrat, ← e]`.
+
+Use `(ag _ _).trans ?_` and prove the remaining obligations. Rewrite using `[hrat, hX.2]`. Establish `hc` using `(measurableSet_free F E σ hcm M J).compl`. Rewrite using `[← lintegral_indicator_one hc, hl _ _ (measurable_one.indicator hc)]`. Establish `e : ∀ (h : HA (AF F) σ J) (X : framesE σ J (0 : Matrix (Fin 1) (Fin 1) E)), Set.indicator {X : Fin 1 → Fin M → AF F ⊗[F] E | gramR (AF F) σ J X = (0 : Matrix (Fin 1) (Fin 1) E).map (inclR (AF F)) ∧ LinearIndependent (Ainf F ⊗[F] E) (projInf X) ∧ ∀ v, LinearIndependent (Fv F v ⊗[F …` using `fun h X => by`.
+
+Apply `Set.indicator_of_notMem` to reduce the goal to its premises. Rewrite using `[Set.notMem_compl_iff]`. Use `⟨?_, ?_, fun v => ?_⟩` and prove the remaining obligations. Rewrite using `[ag, hrat, X.2.2]`. Rewrite using `[(hp 1 h⁻¹ _).1, projInf_ratTup]`.
+
+Conclude with `free_act (HA.mat (Ainf F) σ J (pinf h⁻¹)) (free_ratTup _ X.2.1)`. Rewrite using `[(hp 1 h⁻¹ _).2 v, projV_ratTup]`. Conclude with `free_act (HA.mat (Fv F v) σ J (p v h⁻¹)) (free_ratTup _ X.2.1)`. Simplify using `only [e, tsum_zero, lintegral_zero, mul_zero]`.
+-/
 theorem theta_frames_zero : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → 3 ≤ M → ∀ (μ : Measure (HA (AF F) σ J)) (𝓕 : Set (HA (AF F) σ J)), IsHaarH F E σ M J μ → IsFDH F E σ M J μ 𝓕 → IsLocallyFiniteMeasure (thetaMeas σ J μ 𝓕 (framesE σ J (0 : Matrix (Fin 1) (Fin 1) E))) ∧ (∀ h : HA (AF F) σ J, (thetaMeas σ J μ 𝓕 (framesE σ J (0 : Matrix (Fin 1) (Fin 1) E))).map (actW (AF F) σ J h) = thetaMeas σ J μ 𝓕 (framesE σ J (0 : Matrix (Fin 1) (Fin 1) E))) ∧ thetaMeas σ J μ 𝓕 (framesE σ J (0 : Matrix (Fin 1) (Fin 1) E)) {X : Fin 1 → Fin M → AF F ⊗[F] E | gramR (AF F) σ J X = (0 : Matrix (Fin 1) (Fin 1) E).map (inclR (AF F)) ∧ LinearIndependent (Ainf F ⊗[F] E) (projInf X) ∧ ∀ v, LinearIndependent (Fv F v ⊗[F] E) (projV v (projFin X))}ᶜ = 0 := by
   intro F E _ _ _ _ _ σ hcm M J hJ hM μ 𝓕 hμ h𝓕
   obtain ⟨⟨_, _, _⟩, -⟩ := GlobalTheory.T.adeles_locally_compact_second_countable F

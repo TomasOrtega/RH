@@ -24,6 +24,11 @@ def thetaSub (p : Pair T) : Submodule ℂ (WO (G.pS p) (G.pT p) → ℂ) where
   zero_mem' := GlobalTheory.OrientedHeis.theta_zero
   smul_mem' c _ hf := GlobalTheory.OrientedHeis.theta_smul c hf
 
+/- English proof (translation)
+Establish `e : (fun j => if h : j < D.R.m then kkVec S (.top t j) (fs (.inl ⟨j, h⟩)) (x j) (x (j + 1)) else 0) = (fun j => if h : j < D.R.m then kkVec S (.top t j) (fs' (.inl ⟨j, h⟩)) (x j) (x (j + 1)) else 0)`. Use function extensionality and compare the values at `j`. Use `split_ifs with hj`. Rewrite using `[h]`. Both sides reduce to the same expression.
+
+Simplify using `only [colV, e]`.
+-/
 theorem colV_congr (S : GridChoice W U) {t : T} {fs fs' : Vecs G t} (h : ∀ j, fs (.inl j) = fs' (.inl j))
     (x : ∀ j, FinPt G (.top j)) : colV S fs x = colV S fs' x := by
   have e : (fun j => if h : j < D.R.m then kkVec S (.top t j) (fs (.inl ⟨j, h⟩)) (x j) (x (j + 1)) else 0) =
@@ -33,6 +38,11 @@ theorem colV_congr (S : GridChoice W U) {t : T} {fs fs' : Vecs G t} (h : ∀ j, 
     · rfl
   simp only [colV, e]
 
+/- English proof (translation)
+Establish `e : (fun i => if h : i < D.R.m then kkVec S (.chi i D.R.m) (fs (.inr ⟨i, h⟩)) (y i) (y (i + 1)) else 0) = (fun i => if h : i < D.R.m then kkVec S (.chi i D.R.m) (fs' (.inr ⟨i, h⟩)) (y i) (y (i + 1)) else 0)`. Use function extensionality and compare the values at `i`. Use `split_ifs with hi`. Rewrite using `[h]`. Both sides reduce to the same expression.
+
+Simplify using `only [rowV, e]`.
+-/
 theorem rowV_congr (S : GridChoice W U) {t : T} {fs fs' : Vecs G t} (h : ∀ i, fs (.inr i) = fs' (.inr i))
     (y : ∀ i, FinPt G (.grid i D.R.m)) : rowV S fs y = rowV S fs' y := by
   have e : (fun i => if h : i < D.R.m then kkVec S (.chi i D.R.m) (fs (.inr ⟨i, h⟩)) (y i) (y (i + 1)) else 0) =
@@ -42,6 +52,13 @@ theorem rowV_congr (S : GridChoice W U) {t : T} {fs fs' : Vecs G t} (h : ∀ i, 
     · rfl
   simp only [rowV, e]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = j₀.1`. Substitute `hj` using the available equality. Rewrite using `[Function.update_self, dif_pos j₀.2]`. Use `show kkVec S (.top t j₀.1) (Function.update fs (.inl j₀) F (.inl j₀)) _ _ = _`.
+
+Rewrite using `[Function.update_self]`. Rewrite using `[Function.update_of_ne hj] split_ifs with h`. Rewrite using `[Function.update_of_ne]`. Introduce `e`. Conclude with `hj (congrArg Fin.val (Sum.inl_injective e))`.
+
+Both sides reduce to the same expression.
+-/
 theorem colK_update (S : GridChoice W U) {t : T} (fs : Vecs G t) (x : ∀ j, FinPt G (.top j)) (j₀ : Fin D.R.m)
     (F : WO (G.pS (arrP t (.inl j₀ : Arr D))) (G.pT (arrP t (.inl j₀ : Arr D))) → ℂ) :
     (fun j => if h : j < D.R.m then kkVec S (.top t j) (Function.update fs (.inl j₀) F (.inl ⟨j, h⟩)) (x j) (x (j + 1))
@@ -66,6 +83,13 @@ namespace GlobalTheory.TopZeroInv
 
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {W : G.Weil} {U : Set T}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Distinguish the cases in `hi : i = i₀.1`. Substitute `hi` using the available equality. Rewrite using `[Function.update_self, dif_pos i₀.2]`. Use `show kkVec S (.chi i₀.1 D.R.m) (Function.update fs (.inr i₀) F (.inr i₀)) _ _ = _`.
+
+Rewrite using `[Function.update_self]`. Rewrite using `[Function.update_of_ne hi] split_ifs with h`. Rewrite using `[Function.update_of_ne]`. Introduce `e`. Conclude with `hi (congrArg Fin.val (Sum.inr_injective e))`.
+
+Both sides reduce to the same expression.
+-/
 theorem rowK_update (S : GridChoice W U) {t : T} (fs : Vecs G t) (y : ∀ i, FinPt G (.grid i D.R.m)) (i₀ : Fin D.R.m)
     (F : WO (G.pS (arrP t (.inr i₀ : Arr D))) (G.pT (arrP t (.inr i₀ : Arr D))) → ℂ) :
     (fun i => if h : i < D.R.m then kkVec S (.chi i D.R.m) (Function.update fs (.inr i₀) F (.inr ⟨i, h⟩)) (y i) (y (i + 1))
@@ -84,6 +108,9 @@ theorem rowK_update (S : GridChoice W U) {t : T} (fs : Vecs G t) (y : ∀ i, Fin
       intro e; exact hi (congrArg Fin.val (Sum.inr_injective e))
     · rfl
 
+/- English proof (translation)
+Establish `h : kkVec S (.top t j₀.1) (F + F') (x j₀.1) (x (j₀.1 + 1)) = kkVec S (.top t j₀.1) F (x j₀.1) (x (j₀.1 + 1)) + kkVec S (.top t j₀.1) F' (x j₀.1) (x (j₀.1 + 1))` using `GlobalTheory.T.normalizedKernelOfVector_add S (.top t j₀.1) hF hF' _ _`. Rewrite using `[colV, colV, colV, colK_update, colK_update, colK_update, h, GlobalTheory.T.linearMapChainComposite_update_add _ _ _ _ _ j₀.2, LinearMap.add_comp]`.
+-/
 theorem colV_update_add (S : GridChoice W U) {t : T} (fs : Vecs G t) (x : ∀ j, FinPt G (.top j)) (j₀ : Fin D.R.m)
     {F F' : WO (G.pS (arrP t (.inl j₀ : Arr D))) (G.pT (arrP t (.inl j₀ : Arr D))) → ℂ}
     (hF : IsThetaFunO W.ψ _ _ F) (hF' : IsThetaFunO W.ψ _ _ F') :
@@ -94,6 +121,9 @@ theorem colV_update_add (S : GridChoice W U) {t : T} (fs : Vecs G t) (x : ∀ j,
     GlobalTheory.T.normalizedKernelOfVector_add S (.top t j₀.1) hF hF' _ _
   rw [colV, colV, colV, colK_update, colK_update, colK_update, h, GlobalTheory.T.linearMapChainComposite_update_add _ _ _ _ _ j₀.2, LinearMap.add_comp]
 
+/- English proof (translation)
+Establish `h : kkVec S (.top t j₀.1) (c • F) (x j₀.1) (x (j₀.1 + 1)) = c • kkVec S (.top t j₀.1) F (x j₀.1) (x (j₀.1 + 1))` using `GlobalTheory.T.normalizedKernelOfVector_smul S (.top t j₀.1) c F _ _`. Rewrite using `[colV, colV, colK_update, colK_update, h, GlobalTheory.T.linearMapChainComposite_update_smul _ _ _ _ _ j₀.2, LinearMap.smul_comp]`.
+-/
 theorem colV_update_smul (S : GridChoice W U) {t : T} (fs : Vecs G t) (x : ∀ j, FinPt G (.top j)) (j₀ : Fin D.R.m) (c : ℂ)
     (F : WO (G.pS (arrP t (.inl j₀ : Arr D))) (G.pT (arrP t (.inl j₀ : Arr D))) → ℂ) :
     colV S (Function.update fs (.inl j₀) (c • F)) x = c • colV S (Function.update fs (.inl j₀) F) x := by
@@ -101,6 +131,9 @@ theorem colV_update_smul (S : GridChoice W U) {t : T} (fs : Vecs G t) (x : ∀ j
     GlobalTheory.T.normalizedKernelOfVector_smul S (.top t j₀.1) c F _ _
   rw [colV, colV, colK_update, colK_update, h, GlobalTheory.T.linearMapChainComposite_update_smul _ _ _ _ _ j₀.2, LinearMap.smul_comp]
 
+/- English proof (translation)
+Establish `h : kkVec S (.chi i₀.1 D.R.m) (F + F') (y i₀.1) (y (i₀.1 + 1)) = kkVec S (.chi i₀.1 D.R.m) F (y i₀.1) (y (i₀.1 + 1)) + kkVec S (.chi i₀.1 D.R.m) F' (y i₀.1) (y (i₀.1 + 1))` using `GlobalTheory.T.normalizedKernelOfVector_add S (.chi i₀.1 D.R.m) hF hF' _ _`. Rewrite using `[rowV, rowV, rowV, rowK_update, rowK_update, rowK_update, h, GlobalTheory.T.linearMapChainComposite_update_add _ _ _ _ _ i₀.2, LinearMap.add_comp]`.
+-/
 theorem rowV_update_add (S : GridChoice W U) {t : T} (fs : Vecs G t) (y : ∀ i, FinPt G (.grid i D.R.m)) (i₀ : Fin D.R.m)
     {F F' : WO (G.pS (arrP t (.inr i₀ : Arr D))) (G.pT (arrP t (.inr i₀ : Arr D))) → ℂ}
     (hF : IsThetaFunO W.ψ _ _ F) (hF' : IsThetaFunO W.ψ _ _ F') :
@@ -111,6 +144,9 @@ theorem rowV_update_add (S : GridChoice W U) {t : T} (fs : Vecs G t) (y : ∀ i,
     GlobalTheory.T.normalizedKernelOfVector_add S (.chi i₀.1 D.R.m) hF hF' _ _
   rw [rowV, rowV, rowV, rowK_update, rowK_update, rowK_update, h, GlobalTheory.T.linearMapChainComposite_update_add _ _ _ _ _ i₀.2, LinearMap.add_comp]
 
+/- English proof (translation)
+Establish `h : kkVec S (.chi i₀.1 D.R.m) (c • F) (y i₀.1) (y (i₀.1 + 1)) = c • kkVec S (.chi i₀.1 D.R.m) F (y i₀.1) (y (i₀.1 + 1))` using `GlobalTheory.T.normalizedKernelOfVector_smul S (.chi i₀.1 D.R.m) c F _ _`. Rewrite using `[rowV, rowV, rowK_update, rowK_update, h, GlobalTheory.T.linearMapChainComposite_update_smul _ _ _ _ _ i₀.2, LinearMap.smul_comp]`.
+-/
 theorem rowV_update_smul (S : GridChoice W U) {t : T} (fs : Vecs G t) (y : ∀ i, FinPt G (.grid i D.R.m)) (i₀ : Fin D.R.m)
     (c : ℂ) (F : WO (G.pS (arrP t (.inr i₀ : Arr D))) (G.pT (arrP t (.inr i₀ : Arr D))) → ℂ) :
     rowV S (Function.update fs (.inr i₀) (c • F)) y = c • rowV S (Function.update fs (.inr i₀) F) y := by
@@ -124,11 +160,17 @@ namespace GlobalTheory.TopZeroInv
 
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {W : G.Weil} {U : Set T}
 
+/- English proof (translation)
+The claim follows from `funext fun l => Function.apply_update (fun l (q : thetaSub W (arrP t l)) => (q : WO (G.pS (arrP t l)) (G.pT (arrP t l)) → ℂ)) m i z l`.
+-/
 theorem coe_update {t : T} (m : ∀ l : Arr D, thetaSub W (arrP t l)) (i : Arr D) (z : thetaSub W (arrP t i)) :
     (fun l => ((Function.update m i z l : thetaSub W (arrP t l)) : WO (G.pS (arrP t l)) (G.pT (arrP t l)) → ℂ)) =
       Function.update (fun l => (m l : WO (G.pS (arrP t l)) (G.pT (arrP t l)) → ℂ)) i (z : _ → ℂ) :=
   funext fun l => Function.apply_update (fun l (q : thetaSub W (arrP t l)) => (q : WO (G.pS (arrP t l)) (G.pT (arrP t l)) → ℂ)) m i z l
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pairVec_apply (S : GridChoice W U) {t : T} (x : ∀ j, FinPt G (.top j)) (y : ∀ i, FinPt G (.grid i D.R.m)) (fs : Vecs G t)
     (v : VV ℂ (wt G (.top 0))) (w : VV ℂ (listedWt G (.grid 0 D.R.m))) :
     pairVec S x y fs v w =
@@ -173,6 +215,15 @@ end GlobalTheory.TopZeroInv
 
 namespace GlobalTheory.TopZeroInv
 
+/- English proof (translation)
+Introduce `D T L sc G W U S t κ a f g x y v w hf hg hprod`. Set `f' : κ → ∀ l : Arr D, thetaSub W (arrP t l)` to `fun c l => if h : c ∈ a.support then ⟨f c l, hf c h l⟩ else 0`. Set `g' : κ → ∀ l : Arr D, thetaSub W (arrP t l)` to `fun c l => if h : c ∈ a.support then ⟨g c l, hg c h l⟩ else 0`. Establish `ef : ∀ c ∈ a.support, ∀ l, ((f' c l : thetaSub W (arrP t l)) : WO (G.pS (arrP t l)) (G.pT (arrP t l)) → ℂ) = f c l` using `fun c h l => by simp only [f', dif_pos h]`. Establish `eg : ∀ c ∈ a.support, ∀ l, ((g' c l : thetaSub W (arrP t l)) : WO (G.pS (arrP t l)) (G.pT (arrP t l)) → ℂ) = g c l` using `fun c h l => by simp only [g', dif_pos h]`.
+
+Establish `key` using `GlobalTheory.T.multilinearMap_sum_eq_of_sum_prod_eval_eq (fun l : Arr D => thetaSub W (arrP t l)) (pairML S x y v w) a f' g' (fun z => by`. Use `hprod z` as an intermediate fact. Unfold `Finsupp.sum at this ⊢`. Use `(Finset.sum_congr rfl fun c h => ?_).trans (this.trans (Finset.sum_congr rfl fun c h => ?_))` and prove the remaining obligations. Simplify using `only [ef c h]`.
+
+Simplify using `only [eg c h])`. Unfold `Finsupp.sum at key ⊢`. Use `(Finset.sum_congr rfl fun c h => ?_).trans (key.trans (Finset.sum_congr rfl fun c h => ?_))` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = _ * pairVec S (t := t) x y (fun l => ((f' c l : thetaSub W (arrP t l)) : WO (G.pS (arrP t l)) (G.pT (arrP t l)) → ℂ)) v w`. Rewrite using `[funext (ef c h)]`.
+
+Express the relevant statement in the definitionally equal form `_ * pairVec S (t := t) x y (fun l => ((g' c l : thetaSub W (arrP t l)) : WO (G.pS (arrP t l)) (G.pT (arrP t l)) → ℂ)) v w = _`. Rewrite using `[funext (eg c h)]`.
+-/
 theorem pairVec_sum_eq_of_prod_eq : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {W : G.Weil} {U : Set T}
     (S : GridChoice W U) {t : T} {κ : Type} (a : κ →₀ ℂ) (f g : κ → Vecs G t)
     (x : ∀ j, FinPt G (.top j)) (y : ∀ i, FinPt G (.grid i D.R.m)) (v : VV ℂ (wt G (.top 0)))

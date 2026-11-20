@@ -12,6 +12,11 @@ open GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle (Tri)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.RowEx MeasureTheory
 namespace GlobalTheory.BotDictAlg
+/- English proof (translation)
+Introduce `D T _ L μ₀ sc G W i j A A' WW X hP hI hL hX n`. Take `⟨Ω, hΩ, H⟩` from `_root_.GlobalTheory.T.bottom_field_minor_jet_description hP hI hL hX n`. Use `⟨Ω, hΩ, fun t x hx h hh U => ?_⟩` and prove the remaining obligations. Take `⟨cc, δ, t0, e0, k, c, s, hc, ht0, he0, hca, hs, hU⟩` from `H t x hx h hh`. Take `⟨Q, hQ, heq⟩` from `hU U`.
+
+Rewrite using `[heq, mul_div_cancel_left₀ _ hΩ]`. Use `applyAt0_isAlgebraic hQ ?_` and prove the remaining obligations. Conclude with `((hI D).alg cc δ hc t0 ht0 A'.rank WW.rank (StandardLatticesGL3.stdL D A'.rank) (StandardLatticesGL3.stdL D WW.rank) (GlobalTheory.MovedVacuum.sd_stdL D _) (GlobalTheory.MovedVacuum.sd_stdL D _) (even_bot hX) e0 he0.2.2.2.1).2.2.1 k c s (fun l => (mem_algebraicClosure_iff).2 (hca …`.
+-/
 theorem kernel_div_period_isAlgebraic_alt : ∀ {D : D7} {T : Type} [Finite T] {L : LevCh D T} {μ₀ : T} {sc : Consts} {G : GridData L sc} {W : G.Weil}
     {i j : Fin D.R.m} {A A' WW : HSp D} {X : Tri T A A' WW}, _root_.GlobalTheory.FunPr.ThetaLocalInputs → (∀ D, GlobalTheory.NormSum.Inp D) → L.Is μ₀ →
     IsBottomTri W i j X →
@@ -38,6 +43,9 @@ open GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle (Tri)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.RowEx MeasureTheory
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.BotDictAlg.kernel_div_period_isAlgebraic_alt | exact _root_.GlobalTheory.BotDictAlg.kernel_div_period_isAlgebraic_alt | (intros; apply _root_.GlobalTheory.BotDictAlg.kernel_div_period_isAlgebraic_alt <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.twist_kernel_div_period_isAlgebraic : ∀ {D : D7} {T : Type} [Finite T] {L : LevCh D T} {μ₀ : T} {sc : Consts} {G : GridData L sc} {W : G.Weil}
     {i j : Fin D.R.m} {A A' WW : HSp D} {X : Tri T A A' WW}, _root_.GlobalTheory.FunPr.ThetaLocalInputs → (∀ D, GlobalTheory.NormSum.Inp D) → L.Is μ₀ →
     IsBottomTri W i j X →

@@ -13,6 +13,11 @@ section Weil
 
 variable {G : Type} [Group G] [MeasurableSpace G]
 
+/- English proof (translation)
+Establish `hKae : ∀ᵐ s ∂μS, s ∈ K` using `MeasureTheory.mem_ae_iff.mpr hK`. Establish `key : ∀ x, ∫⁻ s, F (s * x) * β (s * x) ∂μS = F x`. Introduce `x`. Establish `hae : (fun s => F (s * x) * β (s * x)) =ᵐ[μS] fun s => F x * β (s * x)` using `by filter_upwards [hKae] with s hs`. Rewrite using `[hinv s hs x]`.
+
+Rewrite using `[lintegral_congr_ae hae, lintegral_const_mul _ (show Measurable fun s => β (s * x) from hβm.comp (measurable_mul_const x)), hβ1 x, mul_one]`. Rewrite using `[hW (fun x => F x * β x) (hF.mul hβm)]`. Use `lintegral_congr fun x => ?_` and prove the remaining obligations. Conclude with `(key x).symm`.
+-/
 theorem weil_bruhat [MeasurableMul G] {μG μS ν : Measure G} (K : Set G) (hK : μS Kᶜ = 0)
     (hW : ∀ F : G → ℝ≥0∞, Measurable F → ∫⁻ x, F x ∂μG = ∫⁻ x, ∫⁻ s, F (s * x) ∂μS ∂ν)
     {β : G → ℝ≥0∞} (hβm : Measurable β) (hβ1 : ∀ x, ∫⁻ s, β (s * x) ∂μS = 1)
@@ -37,6 +42,75 @@ open Classical Formalism.L2.SG.Pf.WFL
 
 variable {k r : ℕ}
 
+/- English proof (translation)
+Substitute `hn` using the available equality. Establish `hmapG : (fun γ : Formalism.REAL.UJ ε => Matrix.of.symm (Formalism.L2.SG.RealObj.trG Q Qi γ)) = cM Qi Q` using `rfl`. Rewrite `hQB` using `[hmapG]`. Use `set e : Formalism.REAL.UJ ε → Formalism.QuantumDeterminants.Mt k r := cM Qi Q with he_def`. Establish `he : MeasurableEmbedding e` using `cM_measEmb (ε := ε) (A := Qi) (B := Q) (A' := Q) (B' := Qi) h2 h2`.
+
+Establish `hqi` using `qiHqi ε h2 hg`. Establish `emul : ∀ a b : Formalism.REAL.UJ ε, (Matrix.of (e (a * b)) : Matrix _ _ ℂ) = (Matrix.of (e a) : Matrix _ _ ℂ) * Matrix.of (e b)`. Introduce `a b`. Use `show Qi * uMat (a * b) * Q = (Qi * uMat a * Q) * (Qi * uMat b * Q)`. Rewrite using `[Formalism.L2.SG.WuDecayPf.uMat_mul']`.
+
+Simplify using `only [← Matrix.mul_assoc]`. Rewrite using `[Matrix.mul_assoc (Qi * uMat a) Q Qi, h2, Matrix.mul_one]`. Establish `eUH : ∀ x : Formalism.REAL.UJ ε, (Matrix.of (e x) : Matrix _ _ ℂ) ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r)`. Introduce `x`. Use `show (Qi * uMat x * Q)ᴴ * Formalism.QuantumDeterminants.Hpk k r * (Qi * uMat x * Q) = Formalism.QuantumDeterminants.Hpk k r`.
+
+Establish `hx : (uMat x)ᴴ * Formalism.REAL.Jm ε * uMat x = Formalism.REAL.Jm ε` using `x.2`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = Formalism.QuantumDeterminants.Hpk k r := by rw [hqi, hx, hg]`. Establish `hrange : ∀ y : Formalism.QuantumDeterminants.Mt k r, y ∈ Set.range e ↔ (Matrix.of y : Matrix _ _ ℂ) ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r)`.
+
+Introduce `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, rfl⟩`. Conclude with `eUH x`. Introduce `hy`.
+
+Use `⟨toUJn (Q * Matrix.of y * Qi) (cond_tr h2 hg hy), ?_⟩` and prove the remaining obligations. Use `show Qi * (Q * Matrix.of y * Qi) * Q = y`. Simplify using `only [← Matrix.mul_assoc, h1, Matrix.one_mul]`. Rewrite using `[Matrix.mul_assoc, h1, Matrix.mul_one]`. Both sides reduce to the same expression.
+
+Establish `hlm : ∀ a : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ, Measurable (Formalism.QuantumDeterminants.lmulM (k` using `k) (r := r) a) := fun a => WlocSk.HM.lmul_meas a`. Establish `hmulP : Measurable (WlocSk.mulP (k` using `k) (r := r)) := WlocSk.HM.mulP_meas`. Use `haveI := hSB.1`. Establish `lint_range : ∀ (ν : Measure (Formalism.QuantumDeterminants.Mt k r)) (g : Formalism.QuantumDeterminants.Mt k r → ℝ≥0∞), Measurable g → (∀ y, y ∉ Set.range e → g y = 0) → ∫⁻ y, g y ∂ν = ∫⁻ x, g (e x) ∂(ν.comap e)`. Introduce `ν g hg hg0`.
+
+Establish `h3 : g = (Set.range e).indicator g`. Use function extensionality and compare the values at `y`. Distinguish the cases in `hy : y ∈ Set.range e`. Rewrite using `[Set.indicator_of_mem hy]`. Rewrite using `[Set.indicator_of_notMem hy, hg0 y hy]`.
+
+Rewrite using `[h3, lintegral_indicator he.measurableSet_range, ← he.map_comap, he.lintegral_map]`. Use `lintegral_congr fun x => ?_` and prove the remaining obligations. Rewrite using `[Set.indicator_of_mem (Set.mem_range_self x)]`. Use `set μSU := μSB.comap e with hμSU`. Use `set νU := νB.comap e with hνU`.
+
+Establish `hmapS : μSU.map e = μSB`. Rewrite using `[hμSU, he.map_comap]`. Apply `Measure.restrict_eq_self_of_ae_mem` to reduce the goal to its premises. Establish `h0 : μSB {x | (Matrix.of x : Matrix _ _ ℂ) ∉ Formalism.QuantumDeterminants.Sset k r z} = 0` using `hSB.2.2.1`. Use `filter_upwards [measure_eq_zero_iff_ae_notMem.1 h0] with y hy`.
+
+Rewrite using `[hrange]`. Simplify using `only [Set.mem_setOf_eq, not_not] at hy`. Conclude with `hSsub hy`. Establish `hInvU : QPK.InvOn μSU K`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Use `haveI := hSB.1`. Conclude with `SigmaFinite.of_map μSU he.measurable.aemeasurable (by rw [hmapS]; infer_instance)`. Introduce `h0`. Apply `hSB.2.1` to reduce the goal to its premises. Rewrite using `[← hmapS, h0, Measure.map_zero]`.
+
+Rewrite using `[hμSU, he.comap_apply]`. Use `measure_mono_null ?_ hSB.2.2.1` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Introduce `hxS`. Conclude with `hx ((hd x).1 hxS)`.
+
+Introduce `s hs`. Establish `key : (μSU.map (fun x => s * x)).map e = μSU.map e`. Rewrite using `[Measure.map_map he.measurable (measurable_const_mul s)]`. Establish `hc : e ∘ (fun x => s * x) = Formalism.QuantumDeterminants.lmulM (Matrix.of (e s)) ∘ e`. Use function extensionality and compare the values at `x`.
+
+Simplify using `only [Function.comp_apply, Formalism.QuantumDeterminants.lmulM]`. Conclude with `emul s x`. Establish `hsS : (Matrix.of (e s) : Matrix _ _ ℂ) ∈ Formalism.QuantumDeterminants.Sset k r z` using `(hd s).2 hs`. Rewrite using `[hc, ← Measure.map_map (hlm _) he.measurable, hmapS, hSB.2.2.2 _ hsS]`. Use `congrArg (Measure.comap e) key` as an intermediate fact.
+
+Rewrite `this` using `[he.comap_map, he.comap_map]`. Then use the resulting hypothesis. Establish `hWU : ∀ F : Formalism.REAL.UJ ε → ℝ≥0∞, Measurable F → ∫⁻ x, F x ∂(Formalism.REAL.muG ε) = ∫⁻ x, ∫⁻ s, F (s * x) ∂μSU ∂νU`. Introduce `F hF`. Use `set Ft := Function.extend e F 0 with hFtdef`. Establish `hFt : Measurable Ft` using `he.measurable_extend hF measurable_const`.
+
+Establish `hFte : ∀ x, Ft (e x) = F x` using `fun x => he.injective.extend_apply F 0 x`. Establish `hFt0 : ∀ y, y ∉ Set.range e → Ft y = 0` using `fun y hy => by`. Rewrite using `[hFtdef, Function.extend_apply' F (0 : Formalism.QuantumDeterminants.Mt k r → ℝ≥0∞) y (by simpa using hy)]; rfl`. Establish `e1 : ∫⁻ x, F x ∂(Formalism.REAL.muG ε) = ∫⁻ y, Ft y ∂((Formalism.REAL.muG ε).map e)`. Rewrite using `[he.lintegral_map]`.
+
+Simplify using `only [hFte]`. Rewrite using `[e1, hQB Ft hFt]`. Use `set I : Formalism.QuantumDeterminants.Mt k r → ℝ≥0∞ := fun y => ∫⁻ s, Ft (fun i j => (Matrix.of s * Matrix.of y) i j) ∂μSB with hIdef`. Establish `hIm : Measurable I` using `by show Measurable fun y => ∫⁻ s, (fun p : Formalism.QuantumDeterminants.Mt k r × Formalism.QuantumDeterminants.Mt k r => Ft (WlocSk.mulP p)) (s, y) ∂μSB`. Conclude with `Measurable.lintegral_prod_left' (hFt.comp hmulP)`.
+
+Establish `hI0 : ∀ y, y ∉ Set.range e → I y = 0`. Introduce `y hy`. Apply `(lintegral_eq_zero_iff' ((hFt.comp hmulP).comp (measurable_id.prodMk measurable_const)).aemeasurable).2` to reduce the goal to its premises. Establish `h0 : μSB {x | (Matrix.of x : Matrix _ _ ℂ) ∉ Formalism.QuantumDeterminants.Sset k r z} = 0` using `hSB.2.2.1`. Use `filter_upwards [measure_eq_zero_iff_ae_notMem.1 h0] with s hs`.
+
+Simplify using `only [Set.mem_setOf_eq, not_not] at hs`. Apply `hFt0` to reduce the goal to its premises. Introduce `hmem`. Apply `hy` to reduce the goal to its premises. Rewrite `hmem`, the goal using `[hrange]`.
+
+Establish `hsU` using `hSsub hs`. Establish `hu` using `WlocSk.HM.isUnit_of_uh hsU`. Establish `: (Matrix.of y : Matrix _ _ ℂ) = (Matrix.of s)⁻¹ * ((Matrix.of s) * Matrix.of y)`. Rewrite using `[← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hu, Matrix.one_mul]`. Rewrite using `[this]`.
+
+Conclude with `WlocSk.HM.uh_mul (WlocSk.HM.uh_inv hsU) hmem`. Establish `hIe : ∀ x, I (e x) = ∫⁻ s, F (s * x) ∂μSU`. Introduce `x`. Rewrite using `[hIdef]`. Simplify using `only []`.
+
+Rewrite using `[← hmapS, he.lintegral_map]`. Use `lintegral_congr fun s => ?_` and prove the remaining obligations. Establish `: (fun i j => ((Matrix.of (e s) : Matrix _ _ ℂ) * Matrix.of (e x)) i j) = e (s * x)`. Rewrite using `[← emul]`. Both sides reduce to the same expression.
+
+Rewrite using `[this, hFte]`. Rewrite using `[lint_range νB I hIm hI0]`. Simplify using `only [hIe]`. Both sides reduce to the same expression. Take `⟨c, hc0, hct, hμ⟩` from `QPK.haar_measure_uniqueness (Formalism.REAL.UJ ε) K hKc hKg μSU μS hInvU hS`.
+
+Establish `hWc : ∀ F : Formalism.REAL.UJ ε → ℝ≥0∞, Measurable F → ∫⁻ x, F x ∂(Formalism.REAL.muG ε) = ∫⁻ x, ∫⁻ s, F (s * x) ∂μS ∂(c • νU)`. Introduce `F hF`. Rewrite using `[hWU F hF, hμ, lintegral_smul_measure]`. Simplify using `only [lintegral_smul_measure, smul_eq_mul]`. Rewrite using `[lintegral_const_mul' _ _ hct]`.
+
+Use `set F0 : Formalism.REAL.UJ ε → ℝ≥0∞ := fun x => ‖f x‖ₑ ^ 2 with hF0`. Establish `hF0m : Measurable F0` using `hf.enorm.measurable.pow_const 2`. Establish `hF0K : ∀ s ∈ K, ∀ x, F0 (s * x) = F0 x`. Introduce `s hs x`. Simplify using `only [hF0]`.
+
+Rewrite using `[← enorm_norm (f (s * x)), hfK s hs x, enorm_norm]`. Establish `h_l` using `weil_bruhat K hS.2.2.1 hWl hβm hβ1 F0 hF0m hF0K`. Establish `h_u` using `weil_bruhat K hS.2.2.1 hWc hβm hβ1 F0 hF0m hF0K`. Rewrite `h_u` using `[← h_l, lintegral_smul_measure, smul_eq_mul]`. Establish `hwT : ∀ y : Formalism.QuantumDeterminants.Mt k r, ((‖wTg Q Qi f (Matrix.of y)‖₊ : ℝ≥0∞)) ^ 2 = Function.extend e F0 0 y`.
+
+Introduce `y`. Distinguish the cases in `hy : y ∈ Set.range e`. Take `⟨x, rfl⟩` from `hy`. Rewrite using `[he.injective.extend_apply F0 0 x]`. Establish `: wTg Q Qi f (Matrix.of (e x)) = f x`.
+
+Use `wTg_eq f x ?_` and prove the remaining obligations. Use `show uMat x = Q * (Qi * uMat x * Q) * Qi`. Simplify using `only [← Matrix.mul_assoc, h2, Matrix.one_mul]`. Rewrite using `[Matrix.mul_assoc, h2, Matrix.mul_one]`. Rewrite using `[this]`.
+
+Both sides reduce to the same expression. Rewrite using `[Function.extend_apply' F0 (0 : Formalism.QuantumDeterminants.Mt k r → ℝ≥0∞) y (by simpa using hy)]`. Establish `: wTg Q Qi f (Matrix.of y) = 0`. Unfold `wTg`. Rewrite using `[dif_neg]`.
+
+Introduce and unpack `⟨γ, hγ⟩`. Apply `hy` to reduce the goal to its premises. Use `⟨γ, ?_⟩` and prove the remaining obligations. Use `show Qi * uMat γ * Q = y`. Rewrite using `[hγ]`.
+
+Simplify using `only [← Matrix.mul_assoc, h1, Matrix.one_mul]`. Rewrite using `[Matrix.mul_assoc, h1, Matrix.mul_one]`. Both sides reduce to the same expression. Rewrite using `[this]`. Simplify using the standard rewrite rules.
+
+Use `⟨c⁻¹, ENNReal.inv_ne_zero.2 hct, ENNReal.inv_ne_top.2 hc0, ?_⟩` and prove the remaining obligations. Unfold `l2SG`. Simplify using `only [hwT]`. Establish `hz0 : ∀ y, y ∉ Set.range e → Function.extend e F0 (0 : Formalism.QuantumDeterminants.Mt k r → ℝ≥0∞) y = 0` using `fun y hy => by`. Rewrite using `[Function.extend_apply' F0 (0 : Formalism.QuantumDeterminants.Mt k r → ℝ≥0∞) y (by simpa using hy)]; rfl`.
+
+Rewrite using `[lint_range νB (Function.extend e F0 (0 : Formalism.QuantumDeterminants.Mt k r → ℝ≥0∞)) (he.measurable_extend hF0m measurable_const) hz0]`. Establish `hext : ∀ x, Function.extend e F0 (0 : Formalism.QuantumDeterminants.Mt k r → ℝ≥0∞) (e x) = F0 x` using `fun x => he.injective.extend_apply F0 0 x`. Simplify using `only [hext]`. Use `show ∫⁻ x, F0 x ∂νU = c⁻¹ * ∫⁻ x, F0 x ∂νl`. Rewrite using `[← h_u, ← mul_assoc, ENNReal.inv_mul_cancel hc0 hct, one_mul]`.
+-/
 theorem exists_const_l2SG_transport_eq_mul_lintegral {n : ℕ} (hn : n = 2 * r + k + 1) (ε : Fin n → Bool) {Q : Matrix (Fin n) (Fin (2 * r + k + 1)) ℂ}
     {Qi : Matrix (Fin (2 * r + k + 1)) (Fin n) ℂ} (h1 : Qi * Q = 1) (h2 : Q * Qi = 1)
     (hg : Qᴴ * Formalism.REAL.Jm ε * Q = Formalism.QuantumDeterminants.Hpk k r) {z : Fin (2 * r + k + 1) → ℂ}
@@ -241,6 +315,11 @@ def SDict (C : Choice X θ) (u : D.what₂.Word) (τ : D.what₂.Tau) : Prop :=
 
 def SDictAll : Prop := ∀ (D : D7) (X : HidaSetting D) (θ : ℝ) (C : Choice X θ) u τ, SDict C u τ
 
+/- English proof (translation)
+Introduce `g hg`. Take `⟨h, hh, m, hm, rfl⟩` from `hg`. Simplify using `only [Formalism.QuantumDeterminants.UWset, Formalism.QuantumDeterminants.Nset, Formalism.QuantumDeterminants.UH, Set.mem_setOf_eq] at hh hm ⊢`. Rewrite using `[Matrix.conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [Matrix.mul_assoc]`. Use `_ = Formalism.QuantumDeterminants.Hpk k r := by rw [hh.1, hm.1]`.
+-/
 theorem sset_sub_UH {k r : ℕ} (z : Fin (2 * r + k + 1) → ℂ) :
     Formalism.QuantumDeterminants.Sset k r z ⊆ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r) := by
   intro g hg
@@ -251,6 +330,13 @@ theorem sset_sub_UH {k r : ℕ} (z : Fin (2 * r + k + 1) → ℂ) :
         simp only [Matrix.mul_assoc]
     _ = Formalism.QuantumDeterminants.Hpk k r := by rw [hh.1, hm.1]
 
+/- English proof (translation)
+Take `⟨hNc, hHc, hNg, hHg, hnorm, hunim⟩` from `place_facts X u v`. Take `⟨-, -, hloc, -⟩` from `hQ`. Take `⟨hSv, -⟩` from `hloc v`. Take `⟨μN, μH, β, -, -, hM, hβm, hβ1, -⟩` from `QPK.locPack_of QPK.haar_measure_existence QPK.conjugation_invariant_measure QPK.siegel_measure_definition QPK.bruhat_decomposition' QPK.local_weil_representation (Formalism.REAL.UJ (X.B.I.ε v)) (Formalism.REAL.muG (X.B.I.ε v)) (Nloc X u v) (Hfix X u v) hNc hHc hNg hHg hnorm hunim`. Establish `hK` using `QPK.prodSet_isClosed hNc hHc`.
+
+Establish `hKg` using `QPK.prodSet_isGrp hNg hHg hnorm`. Establish `hSv' : QPK.InvOn (μS v) (QPK.prodSet (Nloc X u v) (Hfix X u v))`. Rewrite using `[← NHloc_eq]`. Conclude with `hSv`. Take `⟨c, hc0, hct, hμS⟩` from `QPK.haar_measure_uniqueness (Formalism.REAL.UJ (X.B.I.ε v)) _ hK hKg (μS v) _ hSv' hM`.
+
+Use `⟨fun x => c⁻¹ * β x, measurable_const.mul hβm, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[hμS, lintegral_smul_measure, lintegral_const_mul' _ _ (ENNReal.inv_ne_top.2 hc0), hβ1 x, mul_one, smul_eq_mul, ENNReal.mul_inv_cancel hc0 hct]`.
+-/
 theorem bruhat_loc (X : HidaSetting D) (u : D.what₂.Word) {μS νl : ∀ v, Measure (Formalism.REAL.UJ (X.B.I.ε v))} {Cc : ℝ≥0∞}
     (hQ : QuotWit X u μS νl Cc) (v : InfinitePlace X.B.I.F) :
     ∃ β : Formalism.REAL.UJ (X.B.I.ε v) → ℝ≥0∞, Measurable β ∧ ∀ x, ∫⁻ s, β (s * x) ∂(μS v) = 1 := by
@@ -269,6 +355,15 @@ theorem bruhat_loc (X : HidaSetting D) (u : D.what₂.Word) {μS νl : ∀ v, Me
   rw [hμS, lintegral_smul_measure, lintegral_const_mul' _ _ (ENNReal.inv_ne_top.2 hc0), hβ1 x, mul_one,
     smul_eq_mul, ENNReal.mul_inv_cancel hc0 hct]
 
+/- English proof (translation)
+Introduce `D hG X θ C u τ`. Take `⟨μS, νl, Cc, hQ⟩` from `quotAll_of Formalism.L2.SG.Closed.QuotProdK_holds Formalism.L2.SG.Pf.WFL.locHNProps_holds Formalism.L2.SG.Closed.NUnimodLoc_holds D X u`. Take `⟨hL0, hLt⟩` from `localRepresentationL2 X u hQ (vOf X τ)`. Take `⟨β, hβm, hβ1⟩` from `bruhat_loc X u hQ (vOf X τ)`. Take `⟨hNc, hHc, hNg, hHg, hnorm, -⟩` from `place_facts X u (vOf X τ)`.
+
+Establish `hKc : IsClosed (NHloc X u (vOf X τ))` using `by rw [NHloc_eq]; exact QPK.prodSet_isClosed hNc hHc`. Establish `hKg : QPK.IsGrp (NHloc X u (vOf X τ))` using `by rw [NHloc_eq]; exact QPK.prodSet_isGrp hNg hHg hnorm`. Establish `hQ'` using `hQ`. Take `⟨-, -, hloc, -⟩` from `hQ'`. Take `⟨hSv, hWv⟩` from `hloc (vOf X τ)`.
+
+Establish `hfK : ∀ s ∈ NHloc X u (vOf X τ), ∀ x, ‖X.Wloc u (vOf X τ) (s * x)‖ = ‖X.Wloc u (vOf X τ) x‖`. Introduce and unpack `s ⟨m, hm, h, hh, rfl⟩ x`. Conclude with `norm_Wloc_inv X u (vOf X τ) (mul_mem_Sloc X u _ (Nloc_sub X u _ hm) (Hloc_sub X u _ hh)) x`. Take `⟨c, hc0, hct, heq⟩` from `exists_const_l2SG_transport_eq_mul_lintegral (n_eq' X) (X.B.I.ε (vOf X τ)) (C.isT τ).1 (C.isT τ).2.1 (C.isT τ).2.2.1 (NHloc X u (vOf X τ)) hKc hKg (hD D X θ C u τ) (sset_sub_UH _) (muS_haar C u τ) (C.nuS_q u τ) hSv hWv hβm hβ1 (X.Wloc u (vOf X τ)) (X.Wloc_cont u _) hfK`. Establish `e : l2SG (C.nuS u τ) (wT C u τ) = c * ∫⁻ x, ‖X.Wloc u (vOf X τ) x‖ₑ ^ 2 ∂(νl (vOf X τ))` using `heq`.
+
+Rewrite using `[e]`. Conclude with `⟨mul_ne_zero hc0 hL0, ENNReal.mul_lt_top (lt_top_iff_ne_top.2 hct) (lt_top_iff_ne_top.2 hLt)⟩`.
+-/
 theorem local_l2_all_of_dictionary (hD : SDictAll) : L2ConditionAllChoices := by
   intro D hG X θ C u τ
   obtain ⟨μS, νl, Cc, hQ⟩ := quotAll_of Formalism.L2.SG.Closed.QuotProdK_holds Formalism.L2.SG.Pf.WFL.locHNProps_holds

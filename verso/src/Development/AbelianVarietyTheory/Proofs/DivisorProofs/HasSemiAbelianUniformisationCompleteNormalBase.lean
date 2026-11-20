@@ -24,11 +24,21 @@ open GlobalTheory.Mum
 
 namespace GlobalTheory.Mum
 
+/- English proof (translation)
+Take `⟨bc, mbc, -⟩` from `grpPullback_iso h (isGrpPullback_pullback G f)`. Conclude with `GlobalTheory.isSemiAbelian_of_grpIso bc (IsSemiAbelian.pullback f G hG)`.
+-/
 theorem isSemiAbelian_of_isGrpPullback' {S T : Scheme.{0}} {f : T ⟶ S} {G : Over S} [GrpObj G] {G' : Over T} [GrpObj G']
     [IsCommMonObj G'] {π : G'.left ⟶ G.left} (h : IsGrpPullback G' G f π) (hG : IsSemiAbelian G) : IsSemiAbelian G' := by
   obtain ⟨bc, mbc, -⟩ := grpPullback_iso h (isGrpPullback_pullback G f)
   exact GlobalTheory.isSemiAbelian_of_grpIso bc (IsSemiAbelian.pullback f G hG)
 
+/- English proof (translation)
+Introduce `R _ _ _ hB D`. Break down `subsingleton_or_nontrivial D.toPre.X with hX | hX` into its components or cases. Conclude with `GlobalTheory.Mum.has_of_subsingleton R hB.1 D hX`. Take `⟨E, _, _, _, H, Dm, D', hmod, o, hPel, F, hA⟩` from `GlobalTheory.T.exists_unitaryPELType_factor_degData R hB D hX`. Establish `hX' : Nontrivial D'.toPre.X` using `(Function.LeftInverse.injective (g := F.xp) (f := F.xi) F.xp_xi).nontrivial`.
+
+Take `⟨R', _, _, _, ρ, D'', hρ, hpull, hcov⟩` from `GlobalTheory.T.exists_labelledCover_unitaryPELType_finiteExt R hB E H Dm D' o hX' hPel`. Establish `hB' : Base R'` using `⟨hρ.1, @charZero_of_injective_ringHom _ _ _ _ ρ hρ.2.1 hB.2⟩`. Establish `hfin'' : HasFin D''` using `GlobalTheory.T.hasSemiAbelianUniformisation_of_labelledCover R' hB' D'' hcov`. Establish `hfin' : HasFin D'` using `GlobalTheory.Mum.hasFin_of_finExt R R' ρ hρ D' D'' hpull hfin''`. Take `⟨G', _, _, A', hG', ⟨U'⟩⟩` from `GlobalTheory.T.hasSemiAbelianUniformisation_of_finiteExt R hB D' hfin'`.
+
+Take `⟨oA, oG, hlin⟩` from `GlobalTheory.T.exists_ringAction_extension_to_uniformised_semiAbelian R hB D' A' G' hG' U' F.O F.o`. Establish `hidem : oG.act F.e ≫ oG.act F.e = oG.act F.e` using `by rw [← oG.map_mul, F.idem]`. Take `⟨G, _, _, inc, pr, hG, hinc, hpr, hip, hpi⟩` from `GlobalTheory.Mum.IdemImage.isSemiAbelian_image (Sp R) G' hG' (oG.act F.e) (oG.hom F.e) hidem`. Take `⟨R₁, _, _, _, ρ₁, D₁, G₁, _, _, β, β₂, A₁, U₁, hρ₁, hpull₁, hgp, -, -⟩` from `GlobalTheory.T.idempotentFactor_uniformised_of_degData_factor R hB D D' F hA A' G' hG' U' oA oG hlin G hG inc pr hinc hpr hip hpi`. Conclude with `GlobalTheory.T.hasSemiAbelianUniformisation_of_finiteExt R hB D ⟨R₁, _, _, _, ρ₁, D₁, hρ₁, hpull₁, G₁, _, _, A₁, isSemiAbelian_of_isGrpPullback' hgp hG, ⟨U₁⟩⟩`.
+-/
 theorem has_of_base : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R →
     ∀ D : DegData R (maximalIdeal R), Has D := by
   intro R _ _ _ hB D

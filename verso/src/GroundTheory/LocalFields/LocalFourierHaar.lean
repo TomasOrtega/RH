@@ -19,27 +19,45 @@ instance t2Space_nonarchimedeanLocalField : T2Space K := by
   have := isUniformAddGroup_of_addCommGroup (G := K)
   infer_instance
 
+/- English proof (translation)
+Rewrite using `[mem_valBall, normalizedValuation_eq_exp_ord hx, WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem mem_valBall_iff_le_ord {n : ℤ} {x : K} (hx : x ≠ 0) : x ∈ valBall K n ↔ n ≤ ord x := by
   rw [mem_valBall, normalizedValuation_eq_exp_ord hx, WithZero.exp_le_exp]
   omega
 
+/- English proof (translation)
+Distinguish the cases in `hx : x = 0`. Rewrite using `[hx]`. Conclude with `zero_mem _`. Conclude with `(mem_valBall_iff_le_ord hx).mpr le_rfl`.
+-/
 theorem mem_valBall_ord {x : K} : x ∈ valBall K (ord x) := by
   by_cases hx : x = 0
   · rw [hx]; exact zero_mem _
   · exact (mem_valBall_iff_le_ord hx).mpr le_rfl
 
+/- English proof (translation)
+Establish `h` using `ord_mul hx (inv_ne_zero hx)`. Rewrite `h` using `[mul_inv_cancel₀ hx, ord_one]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem ord_inv {x : K} (hx : x ≠ 0) : ord x⁻¹ = -ord x := by
   have h := ord_mul hx (inv_ne_zero hx)
   rw [mul_inv_cancel₀ hx, ord_one] at h
   omega
 
+/- English proof (translation)
+Rewrite using `[mem_valBall, neg_zero, WithZero.exp_zero, normalizedValuation_le_one_iff]`.
+-/
 theorem mem_valBall_zero_iff {x : K} : x ∈ valBall K 0 ↔ x ∈ 𝒪[K] := by
   rw [mem_valBall, neg_zero, WithZero.exp_zero, normalizedValuation_le_one_iff]
 
+/- English proof (translation)
+Use extensionality with `x`. Conclude with `mem_valBall_zero_iff`.
+-/
 theorem coe_valBall_zero : (valBall K 0 : Set K) = 𝒪[K] := by
   ext x
   exact mem_valBall_zero_iff
 
+/- English proof (translation)
+Distinguish the cases in `hx : x = 0`. Simplify using `[hx]`. Rewrite using `[mem_valBall_iff_le_ord hx, ← map_one (valuation K), ← normalizedValuation_lt_iff, normalizedValuation_eq_exp_ord hx, map_one, ← WithZero.exp_zero, WithZero.exp_lt_exp]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem mem_valBall_one_iff {x : K} : x ∈ valBall K 1 ↔ valuation K x < 1 := by
   by_cases hx : x = 0
   · simp [hx]
@@ -47,16 +65,29 @@ theorem mem_valBall_one_iff {x : K} : x ∈ valBall K 1 ↔ valuation K x < 1 :=
     normalizedValuation_eq_exp_ord hx, map_one, ← WithZero.exp_zero, WithZero.exp_lt_exp]
   omega
 
+/- English proof (translation)
+Rewrite using `[mem_valBall_one_iff, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, Valuation.Integer.not_isUnit_iff_valuation_lt_one]`.
+-/
 theorem mem_maximalIdeal_iff_mem_valBall_one {z : 𝒪[K]} : z ∈ 𝓂[K] ↔ (z : K) ∈ valBall K 1 := by
   rw [mem_valBall_one_iff, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff,
     Valuation.Integer.not_isUnit_iff_valuation_lt_one]
 
+/- English proof (translation)
+Rewrite using `[← sub_eq_zero, ← map_sub, IsLocalRing.residue_eq_zero_iff, mem_maximalIdeal_iff_mem_valBall_one]`. Both sides reduce to the same expression.
+-/
 theorem residue_eq_residue_iff {a b : 𝒪[K]} :
     IsLocalRing.residue 𝒪[K] a = IsLocalRing.residue 𝒪[K] b ↔ (a : K) - b ∈ valBall K 1 := by
   rw [← sub_eq_zero, ← map_sub, IsLocalRing.residue_eq_zero_iff,
     mem_maximalIdeal_iff_mem_valBall_one]
   rfl
 
+/- English proof (translation)
+Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Use `mul_mem_valBall (mem_valBall_ord (x := c)) hy` as an intermediate fact. Rewrite using `[add_comm]`.
+
+Conclude with `this`. Introduce `hx`. Use `⟨c⁻¹ * x, ?_, by simp [smul_eq_mul, hc]⟩` and prove the remaining obligations. Establish `h1 : c⁻¹ ∈ valBall K (-ord c)`. Rewrite using `[← ord_inv hc]`.
+
+Conclude with `mem_valBall_ord`. Use `mul_mem_valBall h1 hx` as an intermediate fact. Simplify using `using this`.
+-/
 theorem smul_valBall {c : K} (hc : c ≠ 0) (n : ℤ) :
     c • (valBall K n : Set K) = valBall K (n + ord c) := by
   ext x
@@ -72,6 +103,11 @@ theorem smul_valBall {c : K} (hc : c ≠ 0) (n : ℤ) :
     have := mul_mem_valBall h1 hx
     simpa using this
 
+/- English proof (translation)
+Take `⟨c, hc, hcn⟩` from `exists_ord_eq K n`. Establish `h0 : IsCompact (valBall K 0 : Set K)`. Establish `: (valBall K 0 : Set K) = {x : K | valuation K x ≤ 1}`. Use extensionality with `x`. Conclude with `mem_valBall_zero_iff`.
+
+Rewrite using `[this]`. Conclude with `IsNonarchimedeanLocalField.isCompact_closedBall K 1`. Use `h0.smul c` as an intermediate fact. Rewrite `this` using `[smul_valBall hc, zero_add, hcn]`. Then use the resulting hypothesis.
+-/
 theorem isCompact_valBall (n : ℤ) : IsCompact (valBall K n : Set K) := by
   obtain ⟨c, hc, hcn⟩ := exists_ord_eq K n
   have h0 : IsCompact (valBall K 0 : Set K) := by
@@ -83,6 +119,9 @@ theorem isCompact_valBall (n : ℤ) : IsCompact (valBall K n : Set K) := by
   have := h0.smul c
   rwa [smul_valBall hc, zero_add, hcn] at this
 
+/- English proof (translation)
+Use `⟨(-ord x).toNat, valBall_antitone ?_ mem_valBall_ord⟩` and prove the remaining obligations. Use linear arithmetic over natural numbers and integers.
+-/
 theorem exists_mem_valBall_neg_nat (x : K) : ∃ m : ℕ, x ∈ valBall K (-(m : ℤ)) := by
   refine ⟨(-ord x).toNat, valBall_antitone ?_ mem_valBall_ord⟩
   omega
@@ -105,15 +144,27 @@ variable (K) in
 
 def residueCard : ℕ := Nat.card 𝓀[K]
 
+/- English proof (translation)
+The claim follows from `Finite.one_lt_card`.
+-/
 theorem one_lt_residueCard : 1 < residueCard K := Finite.one_lt_card
 
+/- English proof (translation)
+Use `one_lt_residueCard (K := K)` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem residueCard_ne_zero : residueCard K ≠ 0 := by
   have := one_lt_residueCard (K := K)
   omega
 
+/- English proof (translation)
+Conclude with `one_lt_residueCard` after adjusting the coercions.
+-/
 theorem one_lt_residueCard_nnreal : 1 < (residueCard K : ℝ≥0) := by
   exact_mod_cast one_lt_residueCard
 
+/- English proof (translation)
+Conclude with `residueCard_ne_zero` after adjusting the coercions.
+-/
 theorem residueCard_nnreal_ne_zero : (residueCard K : ℝ≥0) ≠ 0 := by
   exact_mod_cast residueCard_ne_zero
 
@@ -124,24 +175,44 @@ section Modulus
 def modulus (x : K) : ℝ≥0 := by
   classical exact if x = 0 then 0 else (residueCard K : ℝ≥0) ^ (-ord x)
 
+/- English proof (translation)
+Simplify using `[modulus, hx]`. Use the proof step `@[simp]`.
+-/
 theorem modulus_of_ne_zero {x : K} (hx : x ≠ 0) :
     modulus x = (residueCard K : ℝ≥0) ^ (-ord x) := by
   simp [modulus, hx]
 
 @[simp]
+/- English proof (translation)
+Simplify using `[modulus]`.
+-/
 theorem modulus_zero : modulus (0 : K) = 0 := by
   simp [modulus]
 
+/- English proof (translation)
+Rewrite using `[modulus_of_ne_zero hx]`. Conclude with `zpow_pos (zero_lt_one.trans one_lt_residueCard_nnreal) _`.
+-/
 theorem modulus_pos {x : K} (hx : x ≠ 0) : 0 < modulus x := by
   rw [modulus_of_ne_zero hx]
   exact zpow_pos (zero_lt_one.trans one_lt_residueCard_nnreal) _
 
+/- English proof (translation)
+The claim follows from `(modulus_pos hx).ne' @[simp]`.
+-/
 theorem modulus_ne_zero {x : K} (hx : x ≠ 0) : modulus x ≠ 0 := (modulus_pos hx).ne'
 
 @[simp]
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => by_contra fun hx => modulus_ne_zero hx h, fun h => h ▸ modulus_zero⟩`.
+-/
 theorem modulus_eq_zero {x : K} : modulus x = 0 ↔ x = 0 :=
   ⟨fun h => by_contra fun hx => modulus_ne_zero hx h, fun h => h ▸ modulus_zero⟩
 
+/- English proof (translation)
+Distinguish the cases in `hx : x = 0`. Simplify using `[hx]`. Distinguish the cases in `hy : y = 0`. Simplify using `[hy]`. Rewrite using `[modulus_of_ne_zero hx, modulus_of_ne_zero hy, modulus_of_ne_zero (mul_ne_zero hx hy), ord_mul hx hy, neg_add, zpow_add₀ residueCard_nnreal_ne_zero]`.
+
+Use the proof step `@[simp]`.
+-/
 theorem modulus_mul (x y : K) : modulus (x * y) = modulus x * modulus y := by
   by_cases hx : x = 0
   · simp [hx]
@@ -151,14 +222,23 @@ theorem modulus_mul (x y : K) : modulus (x * y) = modulus x * modulus y := by
     ord_mul hx hy, neg_add, zpow_add₀ residueCard_nnreal_ne_zero]
 
 @[simp]
+/- English proof (translation)
+Rewrite using `[modulus_of_ne_zero one_ne_zero, ord_one, neg_zero, zpow_zero]`.
+-/
 theorem modulus_one : modulus (1 : K) = 1 := by
   rw [modulus_of_ne_zero one_ne_zero, ord_one, neg_zero, zpow_zero]
 
+/- English proof (translation)
+Distinguish the cases in `hx : x = 0`. Simplify using `[hx]`. Rewrite using `[modulus_of_ne_zero hx, modulus_of_ne_zero (inv_ne_zero hx), ord_inv hx, zpow_neg]`.
+-/
 theorem modulus_inv (x : K) : modulus x⁻¹ = (modulus x)⁻¹ := by
   by_cases hx : x = 0
   · simp [hx]
   rw [modulus_of_ne_zero hx, modulus_of_ne_zero (inv_ne_zero hx), ord_inv hx, zpow_neg]
 
+/- English proof (translation)
+Distinguish the cases in `hx : x = 0`. Simplify using `only [hx, modulus_zero, zero_le, true_iff]`. Conclude with `zero_mem _`. Rewrite using `[modulus_of_ne_zero hx, ← mem_valBall_zero_iff, mem_valBall_iff_le_ord hx, zpow_le_one_iff_right₀ one_lt_residueCard_nnreal]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem modulus_le_one_iff {x : K} : modulus x ≤ 1 ↔ x ∈ 𝒪[K] := by
   by_cases hx : x = 0
   · simp only [hx, modulus_zero, zero_le, true_iff]
@@ -167,6 +247,9 @@ theorem modulus_le_one_iff {x : K} : modulus x ≤ 1 ↔ x ∈ 𝒪[K] := by
     zpow_le_one_iff_right₀ one_lt_residueCard_nnreal]
   omega
 
+/- English proof (translation)
+Distinguish the cases in `hx : x = 0`. Simplify using `[hx]`. Rewrite using `[modulus_of_ne_zero hx, ← zpow_zero (residueCard K : ℝ≥0), (zpow_right_strictMono₀ one_lt_residueCard_nnreal).injective.eq_iff]`. Simplify using `[hx]`.
+-/
 theorem modulus_eq_one_iff {x : K} : modulus x = 1 ↔ x ≠ 0 ∧ ord x = 0 := by
   by_cases hx : x = 0
   · simp [hx]
@@ -174,6 +257,11 @@ theorem modulus_eq_one_iff {x : K} : modulus x = 1 ↔ x ≠ 0 ∧ ord x = 0 := 
     (zpow_right_strictMono₀ one_lt_residueCard_nnreal).injective.eq_iff]
   simp [hx]
 
+/- English proof (translation)
+Establish `hlt : normalizedValuation K d < normalizedValuation K x`. Rewrite using `[normalizedValuation_eq_exp_ord hx]`. Conclude with `lt_of_le_of_lt (mem_valBall.mp hd) (WithZero.exp_lt_exp.mpr (by omega))`. Establish `heq : normalizedValuation K (x + d) = normalizedValuation K x` using `Valuation.map_add_eq_of_lt_left _ hlt`. Establish `hne : x + d ≠ 0`.
+
+Introduce `h`. Rewrite `heq` using `[h, map_zero, normalizedValuation_eq_exp_ord hx]`. Conclude with `WithZero.exp_ne_zero heq.symm`. Conclude with `⟨hne, by simp only [ord, heq]⟩`.
+-/
 theorem ord_add_eq {x d : K} (hx : x ≠ 0) (hd : d ∈ valBall K (ord x + 1)) :
     x + d ≠ 0 ∧ ord (x + d) = ord x := by
   have hlt : normalizedValuation K d < normalizedValuation K x := by
@@ -187,11 +275,17 @@ theorem ord_add_eq {x d : K} (hx : x ≠ 0) (hd : d ∈ valBall K (ord x + 1)) :
     exact WithZero.exp_ne_zero heq.symm
   exact ⟨hne, by simp only [ord, heq]⟩
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `ord_add_eq hx hd`. Rewrite using `[modulus_of_ne_zero h1, modulus_of_ne_zero hx, h2]`.
+-/
 theorem modulus_add_eq {x d : K} (hx : x ≠ 0) (hd : d ∈ valBall K (ord x + 1)) :
     modulus (x + d) = modulus x := by
   obtain ⟨h1, h2⟩ := ord_add_eq hx hd
   rw [modulus_of_ne_zero h1, modulus_of_ne_zero hx, h2]
 
+/- English proof (translation)
+Distinguish the cases in `h0 : x = 0`. Simplify using `[h0]`. Rewrite using `[modulus_of_ne_zero h0]`. Use `(mem_valBall_iff_le_ord h0).mp hx` as an intermediate fact. Conclude with `zpow_le_zpow_right₀ one_lt_residueCard_nnreal.le (by omega)`.
+-/
 theorem modulus_le_of_mem_valBall {n : ℤ} {x : K} (hx : x ∈ valBall K n) :
     modulus x ≤ (residueCard K : ℝ≥0) ^ (-n) := by
   by_cases h0 : x = 0
@@ -200,6 +294,13 @@ theorem modulus_le_of_mem_valBall {n : ℤ} {x : K} (hx : x ∈ valBall K n) :
   have := (mem_valBall_iff_le_ord h0).mp hx
   exact zpow_le_zpow_right₀ one_lt_residueCard_nnreal.le (by omega)
 
+/- English proof (translation)
+Rewrite using `[continuous_iff_continuousAt]`. Introduce `x`. Distinguish the cases in `hx : x = 0`. Substitute `hx` using the available equality. Rewrite using `[ContinuousAt, modulus_zero, tendsto_order]`.
+
+Use `⟨fun a ha => (not_lt_zero ha).elim, fun ε hε => ?_⟩` and prove the remaining obligations. Take `⟨k, hk⟩` from `exists_pow_lt_of_lt_one hε (inv_lt_one_of_one_lt₀ (one_lt_residueCard_nnreal (K := K)))`. Use `filter_upwards [valBall_mem_nhds (K := K) k] with y hy`. Combine the equalities or inequalities in the displayed calculation. Establish `hmem : {y : K | y - x ∈ valBall K (ord x + 1)} ∈ 𝓝 x` using `((isOpen_valBall _).preimage (continuous_id.sub continuous_const)).mem_nhds (by simp)`.
+
+Establish `hev : ∀ᶠ y in 𝓝 x, modulus x = modulus y` using `by filter_upwards [hmem] with y hy`. Use `modulus_add_eq hx hy` as an intermediate fact. Rewrite `this` using `[add_sub_cancel]`. Conclude with `this.symm`. Conclude with `tendsto_const_nhds.congr' hev`.
+-/
 theorem continuous_modulus : Continuous (modulus : K → ℝ≥0) := by
   rw [continuous_iff_continuousAt]
   intro x
@@ -228,12 +329,35 @@ section Haar
 
 variable [MeasurableSpace K] [BorelSpace K]
 
+/- English proof (translation)
+The claim follows from `(isOpen_valBall n).measurableSet`.
+-/
 theorem measurableSet_valBall (n : ℤ) : MeasurableSet (valBall K n : Set K) :=
   (isOpen_valBall n).measurableSet
 
+/- English proof (translation)
+The claim follows from `continuous_modulus.measurable`.
+-/
 theorem measurable_modulus : Measurable (modulus : K → ℝ≥0) :=
   continuous_modulus.measurable
 
+/- English proof (translation)
+Establish `: Fintype 𝓀[K]` using `Fintype.ofFinite _`. Use `choose s hs using (IsLocalRing.residue_surjective : Function.Surjective (IsLocalRing.residue 𝒪[K]))`. Set `T : 𝓀[K] → Set K` to `fun r => (fun x => -((s r : 𝒪[K]) : K) + x) ⁻¹' (valBall K 1 : Set K)`. Establish `hmem : ∀ r x, x ∈ T r ↔ ∃ h : x ∈ 𝒪[K], IsLocalRing.residue 𝒪[K] ⟨x, h⟩ = r`. Introduce `r x`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hx`. Establish `hx' : x - (s r : K) ∈ valBall K 1`. Establish `: -((s r : 𝒪[K]) : K) + x ∈ valBall K 1` using `hx`. Rewrite `this` using `[neg_add_eq_sub]`. Then use the resulting hypothesis.
+
+Establish `h1` using `add_mem (valBall_antitone (show (0 : ℤ) ≤ 1 by norm_num) hx') (mem_valBall_zero_iff.mpr (s r).2)`. Rewrite `h1` using `[sub_add_cancel]`. Use `⟨mem_valBall_zero_iff.mp h1, ?_⟩` and prove the remaining obligations. Rewrite using `[← hs r, residue_eq_residue_iff]`. Conclude with `hx'`.
+
+Introduce and unpack `⟨h, hr⟩`. Rewrite `hr` using `[← hs r, residue_eq_residue_iff]`. Use `show -((s r : 𝒪[K]) : K) + x ∈ valBall K 1`. Rewrite using `[neg_add_eq_sub]`. Conclude with `hr`.
+
+Establish `hunion : (valBall K 0 : Set K) = ⋃ r, T r`. Use extensionality with `x`. Simplify using `only [Set.mem_iUnion, hmem, SetLike.mem_coe, mem_valBall_zero_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `hx`.
+
+Conclude with `⟨_, hx, rfl⟩`. Introduce and unpack `⟨r, h, -⟩`. Conclude with `h`. Establish `hdisj : Pairwise (Function.onFun Disjoint T)`. Introduce `r r' hne`.
+
+Use `Set.disjoint_left.mpr fun x hx hx' => hne ?_` and prove the remaining obligations. Take `⟨h, rfl⟩` from `(hmem r x).mp hx`. Take `⟨h', rfl⟩` from `(hmem r' x).mp hx'`. Both sides reduce to the same expression. Establish `hmeas : ∀ r, MeasurableSet (T r)` using `fun r => (measurableSet_valBall 1).preimage (measurable_const_add _)`.
+
+Establish `hμ : ∀ r, μ (T r) = μ (valBall K 1)` using `fun r => measure_preimage_add μ _ _`. Rewrite using `[hunion, measure_iUnion hdisj hmeas, tsum_fintype]`. Simplify using `only [hμ, Finset.sum_const, Finset.card_univ, nsmul_eq_mul, residueCard, Nat.card_eq_fintype_card]`.
+-/
 theorem measure_valBall_zero_eq_mul (μ : Measure K) [μ.IsAddLeftInvariant] :
     μ (valBall K 0) = residueCard K * μ (valBall K 1) := by
   classical
@@ -282,10 +406,18 @@ theorem measure_valBall_zero_eq_mul (μ : Measure K) [μ.IsAddLeftInvariant] :
 
 variable (μ : Measure K) [μ.IsAddHaarMeasure]
 
+/- English proof (translation)
+The claim follows from `(distribHaarChar_mul μ (Units.mk0 c hc) s).symm`.
+-/
 theorem measure_smul_eq_distribHaarChar {c : K} (hc : c ≠ 0) (s : Set K) :
     μ (c • s) = distribHaarChar K (Units.mk0 c hc) * μ s :=
   (distribHaarChar_mul μ (Units.mk0 c hc) s).symm
 
+/- English proof (translation)
+Take `⟨c, hc, hcn⟩` from `exists_ord_eq K n`. Establish `h0` using `measure_smul_eq_distribHaarChar μ hc (valBall K 0)`. Establish `h1` using `measure_smul_eq_distribHaarChar μ hc (valBall K 1)`. Rewrite `h0` using `[smul_valBall hc, zero_add, hcn]`. Rewrite `h1` using `[smul_valBall hc, hcn, add_comm]`.
+
+Rewrite using `[h0, h1, measure_valBall_zero_eq_mul μ]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem measure_valBall_eq_mul_succ (n : ℤ) :
     μ (valBall K n) = residueCard K * μ (valBall K (n + 1)) := by
   obtain ⟨c, hc, hcn⟩ := exists_ord_eq K n
@@ -296,6 +428,15 @@ theorem measure_valBall_eq_mul_succ (n : ℤ) :
   rw [h0, h1, measure_valBall_zero_eq_mul μ]
   ring
 
+/- English proof (translation)
+Establish `hq0` using `residueCard_nnreal_ne_zero (K := K)`. Establish `hq : ((residueCard K : ℝ≥0) : ℝ≥0∞) ≠ 0` using `by exact_mod_cast hq0`. Establish `hqt : ((residueCard K : ℝ≥0) : ℝ≥0∞) ≠ ∞` using `ENNReal.coe_ne_top`. Establish `hcast : ((residueCard K : ℕ) : ℝ≥0∞) = ((residueCard K : ℝ≥0) : ℝ≥0∞)` using `rfl`. Proceed by induction on `n using Int.induction_on with`.
+
+Consider the case `zero => simp`. Consider the case `succ k ih`. Establish `h` using `measure_valBall_eq_mul_succ μ (k : ℤ)`. Rewrite `h` using `[ih, hcast]`. Establish `: μ (valBall K (k + 1)) = ((residueCard K : ℝ≥0) : ℝ≥0∞)⁻¹ * (((residueCard K : ℝ≥0) ^ (-(k : ℤ)) : ℝ≥0) * μ (valBall K 0))`.
+
+Rewrite using `[h, ← mul_assoc, ENNReal.inv_mul_cancel hq hqt, one_mul]`. Establish `e : ((residueCard K : ℝ≥0))⁻¹ * (residueCard K : ℝ≥0) ^ (-(k : ℤ)) = (residueCard K : ℝ≥0) ^ (-((k : ℤ) + 1))`. Rewrite using `[show -((k : ℤ) + 1) = -1 + -(k : ℤ) by ring, zpow_add₀ hq0, zpow_neg_one]`. Rewrite using `[this, ← mul_assoc, ← ENNReal.coe_inv hq0, ← ENNReal.coe_mul, e]`. Consider the case `pred k ih`.
+
+Establish `h` using `measure_valBall_eq_mul_succ μ (-(k : ℤ) - 1)`. Rewrite `h` using `[sub_add_cancel, ih, hcast]`. Establish `e : (residueCard K : ℝ≥0) * (residueCard K : ℝ≥0) ^ (-(-(k : ℤ))) = (residueCard K : ℝ≥0) ^ (-(-(k : ℤ) - 1))`. Rewrite using `[show -(-(k : ℤ) - 1) = 1 + -(-(k : ℤ)) by ring, zpow_add₀ hq0, zpow_one]`. Rewrite using `[h, ← mul_assoc, ← ENNReal.coe_mul, e]`.
+-/
 theorem measure_valBall (n : ℤ) :
     μ (valBall K n) = ((residueCard K : ℝ≥0) ^ (-n) : ℝ≥0) * μ (valBall K 0) := by
   have hq0 := residueCard_nnreal_ne_zero (K := K)
@@ -339,11 +480,19 @@ instance : (haarIntegers K).IsAddHaarMeasure := by
   unfold haarIntegers
   infer_instance
 
+/- English proof (translation)
+Rewrite using `[measureReal_def, measureReal_def, measure_valBall μ n, ENNReal.toReal_mul, ENNReal.coe_toReal, NNReal.coe_zpow, NNReal.coe_natCast]`.
+-/
 theorem measureReal_valBall (n : ℤ) :
     μ.real (valBall K n) = (residueCard K : ℝ) ^ (-n) * μ.real (valBall K 0) := by
   rw [measureReal_def, measureReal_def, measure_valBall μ n, ENNReal.toReal_mul,
     ENNReal.coe_toReal, NNReal.coe_zpow, NNReal.coe_natCast]
 
+/- English proof (translation)
+Establish `h0 : haarIntegers K (valBall K 0) ≠ 0` using `((isOpen_valBall 0).measure_pos (haarIntegers K) ⟨0, zero_mem _⟩).ne'`. Establish `ht : haarIntegers K (valBall K 0) ≠ ∞` using `(isCompact_valBall 0).measure_lt_top.ne`. Use `distribHaarChar_eq_of_measure_smul_eq_mul (μ := haarIntegers K) h0 ht ?_` and prove the remaining obligations. Establish `hu : ((u : K)) ≠ 0` using `u.ne_zero`. Establish `: u • (valBall K 0 : Set K) = (u : K) • (valBall K 0 : Set K)` using `rfl`.
+
+Rewrite using `[this, smul_valBall hu, zero_add, measure_valBall (haarIntegers K), modulus_of_ne_zero hu]`.
+-/
 theorem distribHaarChar_eq_modulus (u : Kˣ) : distribHaarChar K u = modulus (u : K) := by
   have h0 : haarIntegers K (valBall K 0) ≠ 0 :=
     ((isOpen_valBall 0).measure_pos (haarIntegers K) ⟨0, zero_mem _⟩).ne'
@@ -353,9 +502,17 @@ theorem distribHaarChar_eq_modulus (u : Kˣ) : distribHaarChar K u = modulus (u 
   have : u • (valBall K 0 : Set K) = (u : K) • (valBall K 0 : Set K) := rfl
   rw [this, smul_valBall hu, zero_add, measure_valBall (haarIntegers K), modulus_of_ne_zero hu]
 
+/- English proof (translation)
+Rewrite using `[measure_smul_eq_distribHaarChar μ ha, distribHaarChar_eq_modulus, Units.val_mk0]`.
+-/
 theorem addHaar_smul {a : K} (ha : a ≠ 0) (s : Set K) : μ (a • s) = modulus a * μ s := by
   rw [measure_smul_eq_distribHaarChar μ ha, distribHaarChar_eq_modulus, Units.val_mk0]
 
+/- English proof (translation)
+Use extensionality with `s hs`. Rewrite using `[Measure.map_apply (measurable_const_mul a) hs]`. Establish `: (fun x => a * x) ⁻¹' s = a⁻¹ • s`. Use extensionality with `x`. Simplify using `[Set.mem_smul_set_iff_inv_smul_mem₀ (inv_ne_zero ha), smul_eq_mul]`.
+
+Rewrite using `[this, addHaar_smul μ (inv_ne_zero ha), modulus_inv, Measure.smul_apply, ENNReal.smul_def, smul_eq_mul]`.
+-/
 theorem map_mul_left_eq_smul {a : K} (ha : a ≠ 0) :
     Measure.map (fun x => a * x) μ = (modulus a)⁻¹ • μ := by
   ext s hs
@@ -366,6 +523,9 @@ theorem map_mul_left_eq_smul {a : K} (ha : a ≠ 0) :
   rw [this, addHaar_smul μ (inv_ne_zero ha), modulus_inv, Measure.smul_apply, ENNReal.smul_def,
     smul_eq_mul]
 
+/- English proof (translation)
+Establish `he : MeasurableEmbedding (fun x : K => a * x)` using `(Homeomorph.mulLeft₀ a ha).measurableEmbedding`. Rewrite using `[← he.integral_map, map_mul_left_eq_smul μ ha, integral_smul_nnreal_measure]`. Simplify using `[NNReal.smul_def]`.
+-/
 theorem integral_comp_mul_left {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     {a : K} (ha : a ≠ 0) (f : K → E) :
     ∫ x, f (a * x) ∂μ = ((modulus a : ℝ))⁻¹ • ∫ x, f x ∂μ := by
@@ -374,6 +534,9 @@ theorem integral_comp_mul_left {E : Type*} [NormedAddCommGroup E] [NormedSpace �
   rw [← he.integral_map, map_mul_left_eq_smul μ ha, integral_smul_nnreal_measure]
   simp [NNReal.smul_def]
 
+/- English proof (translation)
+Establish `he : MeasurableEmbedding (fun x : K => a * x)` using `(Homeomorph.mulLeft₀ a ha).measurableEmbedding`. Rewrite using `[← he.lintegral_map, map_mul_left_eq_smul μ ha, lintegral_smul_measure, ENNReal.smul_def, smul_eq_mul, ENNReal.coe_inv (modulus_ne_zero ha)]`.
+-/
 theorem lintegral_comp_mul_left {a : K} (ha : a ≠ 0) (f : K → ℝ≥0∞) :
     ∫⁻ x, f (a * x) ∂μ = ((modulus a : ℝ≥0∞))⁻¹ * ∫⁻ x, f x ∂μ := by
   have he : MeasurableEmbedding (fun x : K => a * x) :=
@@ -381,14 +544,23 @@ theorem lintegral_comp_mul_left {a : K} (ha : a ≠ 0) (f : K → ℝ≥0∞) :
   rw [← he.lintegral_map, map_mul_left_eq_smul μ ha, lintegral_smul_measure,
     ENNReal.smul_def, smul_eq_mul, ENNReal.coe_inv (modulus_ne_zero ha)]
 
+/- English proof (translation)
+Rewrite using `[← coe_valBall_zero]`. Conclude with `addHaarMeasure_self`.
+-/
 theorem haarIntegers_integers : haarIntegers K (𝒪[K] : Set K) = 1 := by
   rw [← coe_valBall_zero]
   exact addHaarMeasure_self
 
+/- English proof (translation)
+Rewrite using `[measure_valBall (haarIntegers K), coe_valBall_zero, haarIntegers_integers, mul_one]`.
+-/
 theorem haarIntegers_valBall (n : ℤ) :
     haarIntegers K (valBall K n) = ((residueCard K : ℝ≥0) ^ (-n) : ℝ≥0) := by
   rw [measure_valBall (haarIntegers K), coe_valBall_zero, haarIntegers_integers, mul_one]
 
+/- English proof (translation)
+Use `addHaarMeasure_unique ν (integersPositiveCompacts K)` as an intermediate fact. Rewrite using `[← coe_valBall_zero]`. Conclude with `this`.
+-/
 theorem eq_smul_haarIntegers (ν : Measure K) [ν.IsAddHaarMeasure] :
     ν = ν (𝒪[K] : Set K) • haarIntegers K := by
   have := addHaarMeasure_unique ν (integersPositiveCompacts K)

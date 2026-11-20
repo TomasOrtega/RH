@@ -17,5 +17,8 @@ open ReciprocityTheory.PGsh ReciprocityTheory.PGsh.Up ReciprocityTheory.PGsh.Be2
 open ReciprocityTheory.ChartRestriction.G.Chart (sp spMap)
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.LiftDim.smoothOfRelativeDimension_of_isGrpPullback | exact GlobalTheory.LiftDim.smoothOfRelativeDimension_of_isGrpPullback | (intros; apply GlobalTheory.LiftDim.smoothOfRelativeDimension_of_isGrpPullback <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.smoothOfRelativeDimension_of_grpPullback_localRing : ∀ (R' O : Type) [CommRing R'] [IsLocalRing R'] [CommRing O] [Nontrivial O] (π : R' →+* O) (G : Over (Spec (CommRingCat.of R'))) [GrpObj G] (G' : Over (Spec (CommRingCat.of O))) [GrpObj G'] (ψ : G'.left ⟶ G.left) (g : ℕ), IsAbelianScheme G → Geo.Tor.IsGrpPullback G' G (Spec.map (CommRingCat.ofHom π)) ψ → SmoothOfRelativeDimension g G'.hom → SmoothOfRelativeDimension g G.hom := by
   first | exact @GlobalTheory.LiftDim.smoothOfRelativeDimension_of_isGrpPullback | exact GlobalTheory.LiftDim.smoothOfRelativeDimension_of_isGrpPullback | (intros; apply GlobalTheory.LiftDim.smoothOfRelativeDimension_of_isGrpPullback <;> assumption)

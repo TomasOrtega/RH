@@ -20,27 +20,46 @@ variable (L : Type) [Field L] [NumberField L] [IsCMField L]
 def epsOff (T : Finset (HeightOneSpectrum (𝓞 (maximalRealSubfield L)))) : AL L :=
   ∏ v ∈ T, (1 - idemAt L v)
 
+/- English proof (translation)
+Rewrite using `[epsOff, map_prod]`. Conclude with `Finset.prod_eq_zero hw (by rw [map_sub, map_one, compAt_idemAt_self, sub_self])`.
+-/
 theorem compAt_epsOff_of_mem {T : Finset (HeightOneSpectrum (𝓞 (maximalRealSubfield L)))}
     {w : HeightOneSpectrum (𝓞 (maximalRealSubfield L))} (hw : w ∈ T) :
     compAt L w (epsOff L T) = 0 := by
   rw [epsOff, map_prod]
   exact Finset.prod_eq_zero hw (by rw [map_sub, map_one, compAt_idemAt_self, sub_self])
 
+/- English proof (translation)
+The claim follows from `Subring.prod_mem _ fun v _ => Subring.sub_mem _ (one_mem _) (idemAt_mem L v)`.
+-/
 theorem epsOff_mem (T : Finset (HeightOneSpectrum (𝓞 (maximalRealSubfield L)))) :
     epsOff L T ∈ ALint L :=
   Subring.prod_mem _ fun v _ => Subring.sub_mem _ (one_mem _) (idemAt_mem L v)
 
+/- English proof (translation)
+Rewrite using `[epsOff, Finset.prod_insert hv, epsOff]`.
+-/
 theorem epsOff_insert [DecidableEq (HeightOneSpectrum (𝓞 (maximalRealSubfield L)))]
     {T : Finset (HeightOneSpectrum (𝓞 (maximalRealSubfield L)))}
     {v : HeightOneSpectrum (𝓞 (maximalRealSubfield L))} (hv : v ∉ T) :
     epsOff L (insert v T) = (1 - idemAt L v) * epsOff L T := by
   rw [epsOff, Finset.prod_insert hv, epsOff]
 
+/- English proof (translation)
+Conclude with `⟨epsOff L (T' \ T), epsOff_mem L _, (Finset.prod_sdiff h).symm⟩`.
+-/
 theorem epsOff_mono {T T' : Finset (HeightOneSpectrum (𝓞 (maximalRealSubfield L)))} (h : T ⊆ T') :
     ∃ c ∈ ALint L, epsOff L T' = c * epsOff L T := by
   classical
   exact ⟨epsOff L (T' \ T), epsOff_mem L _, (Finset.prod_sdiff h).symm⟩
 
+/- English proof (translation)
+Take `⟨S, Y, hY, h⟩` from `GlobalTheory.FormInner.exists_int_off z`. Use `⟨S, ?_⟩` and prove the remaining obligations. Establish `e : epsOff L S * z = epsOff L S * Y`. Apply `sub_eq_zero.1` to reduce the goal to its premises. Apply `eq_zero_of_compAt` to reduce the goal to its premises.
+
+Introduce `w`. Rewrite using `[map_sub, map_mul, map_mul]`. Distinguish the cases in `hw : w ∈ S`. Rewrite using `[compAt_epsOff_of_mem L hw]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[h w hw]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `Subring.mul_mem _ (epsOff_mem L S) hY`.
+-/
 theorem exists_epsOff_mul_mem (z : AL L) :
     ∃ T : Finset (HeightOneSpectrum (𝓞 (maximalRealSubfield L))), epsOff L T * z ∈ ALint L := by
   classical
@@ -57,6 +76,9 @@ theorem exists_epsOff_mul_mem (z : AL L) :
   rw [e]
   exact Subring.mul_mem _ (epsOff_mem L S) hY
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Use `show (g.1 : Matrix (Fin n) (Fin n) (AL L)) = fold (idemAt L v) _ * fold (1 - idemAt L v) _`. Rewrite using `[fold_mul_fold he, ← add_smul, add_sub_cancel, one_smul]`.
+-/
 theorem gaFold_split {n : ℕ} (v : HeightOneSpectrum (𝓞 (maximalRealSubfield L))) (g : GAf L n)
     (he : idemAt L v * idemAt L v = idemAt L v) (hσ : conjAL L (idemAt L v) = idemAt L v)
     (he' : (1 - idemAt L v) * (1 - idemAt L v) = 1 - idemAt L v)
@@ -66,6 +88,25 @@ theorem gaFold_split {n : ℕ} (v : HeightOneSpectrum (𝓞 (maximalRealSubfield
   show (g.1 : Matrix (Fin n) (Fin n) (AL L)) = fold (idemAt L v) _ * fold (1 - idemAt L v) _
   rw [fold_mul_fold he, ← add_smul, add_sub_cancel, one_smul]
 
+/- English proof (translation)
+Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty`. Introduce `g hg`. Establish `hg' : ∀ i j, ∃ y ∈ ALint L, (g.1 : Matrix (Fin n) (Fin n) (AL L)) i j - (1 : Matrix (Fin n) (Fin n) (AL L)) i j = (N : AL L) * y`. Introduce `i j`.
+
+Take `⟨y, hy, e⟩` from `hg i j`. Rewrite `e` using `[epsOff, Finset.prod_empty, one_mul]`. Conclude with `⟨y, hy, e⟩`. Apply `hC` to reduce the goal to its premises. Use `⟨fun i j => ?_, hg'⟩` and prove the remaining obligations.
+
+Take `⟨y, hy, e⟩` from `hg' i j`. Establish `h1 : (g.1 : Matrix (Fin n) (Fin n) (AL L)) i j = (1 : Matrix (Fin n) (Fin n) (AL L)) i j + (N : AL L) * y` using `by rw [← e]; ring`. Rewrite using `[h1]`. Conclude with `Subring.add_mem _ (one_apply_mem L i j) (Subring.mul_mem _ (natCast_mem _ _) hy)`. Consider the case `@insert v T hv ih`.
+
+Introduce `g hg`. Establish `he : idemAt L v * idemAt L v = idemAt L v` using `idemAt_mul_self L v`. Establish `he' : (1 - idemAt L v) * (1 - idemAt L v) = 1 - idemAt L v`. Rewrite using `[sub_mul, one_mul, mul_sub, mul_one, he, sub_self, sub_zero]`. Establish `hσ : conjAL L (idemAt L v) = idemAt L v` using `conjAL_idemAt L v`.
+
+Establish `hσ' : conjAL L (1 - idemAt L v) = 1 - idemAt L v` using `by rw [map_sub, map_one, hσ]`. Establish `hx : TrivOutside {v} (gaFold he hσ g)`. Introduce `w hw`. Establish `hw' : w ≠ v` using `by simpa using hw`. Use extensionality with `i j`.
+
+Rewrite using `[Matrix.map_apply, gaFold_val, fold_apply, map_add, map_mul, map_mul, map_sub, map_one, compAt_idemAt_ne L v hw', compAt_one_apply]`. Simplify using the standard rewrite rules. Establish `hy : TrivOutside {v}ᶜ (gaFold he' hσ' g)`. Introduce `w hw`. Establish `hw' : w = v` using `by simpa using hw`.
+
+Rewrite using `[hw']`. Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, gaFold_val, fold_apply, map_add, map_mul, map_sub, map_one, compAt_idemAt_self, compAt_one_apply]`. Simplify using the standard rewrite rules. Establish `hp : p (gaFold he' hσ' g)`.
+
+Apply `ih` to reduce the goal to its premises. Introduce `i j`. Take `⟨y, hy, eq⟩` from `hg i j`. Use `⟨y, hy, ?_⟩` and prove the remaining obligations. Rewrite `eq` using `[epsOff_insert L hv]`.
+
+Rewrite using `[gaFold_val, fold_apply]`. Take the linear combination `eq`. Use `hstep v _ _ hx hy hp` as an intermediate fact. Rewrite `this` using `[← gaFold_split L v g he hσ he' hσ']`. Then use the resulting hypothesis.
+-/
 theorem ind_epsOff (n N : ℕ) (p : GAf L n → Prop) (hC : ∀ κ, NG.Cong L n N κ → p κ)
     (hstep : ∀ (v : HeightOneSpectrum (𝓞 (maximalRealSubfield L))) (x y : GAf L n),
       TrivOutside {v} x → TrivOutside {v}ᶜ y → p y → p (x * y))
@@ -122,6 +163,13 @@ theorem ind_epsOff (n N : ℕ) (p : GAf L n → Prop) (hC : ∀ κ, NG.Cong L n 
     have := hstep v _ _ hx hy hp
     rwa [← gaFold_split L v g he hσ he' hσ'] at this
 
+/- English proof (translation)
+Introduce `L _ _ _ n N hN p hC hstep g`. Establish `hN' : (N : L) ≠ 0` using `Nat.cast_ne_zero.2 hN.ne'`. Take `⟨u, hu⟩ : ∃ u : AL L, (N : AL L) * u = 1` from `⟨algebraMap L (AL L) (N : L)⁻¹, by`. Rewrite using `[← map_natCast (algebraMap L (AL L)), ← map_mul, mul_inv_cancel₀ hN', map_one]⟩`. Establish `hT : ∀ q : Fin n × Fin n, ∃ T : Finset (HeightOneSpectrum (𝓞 (maximalRealSubfield L))), epsOff L T * (u * ((g.1 : Matrix (Fin n) (Fin n) (AL L)) q.1 q.2 - (1 : Matrix (Fin n) (Fin n) (AL L)) q.1 q.2)) ∈ ALint L` using `fun q => exists_epsOff_mul_mem L _`.
+
+Use `choose T hT using hT`. Use `ind_epsOff L n N p hC hstep (Finset.univ.biUnion T) g fun i j => ?_` and prove the remaining obligations. Take `⟨c, hc, e⟩` from `epsOff_mono L (Finset.subset_biUnion_of_mem T (Finset.mem_univ (i, j)))`. Use `⟨c * (epsOff L (T (i, j)) * (u * ((g.1 : Matrix (Fin n) (Fin n) (AL L)) i j - (1 : Matrix (Fin n) (Fin n) (AL L)) i j))), Subring.mul_mem _ hc (hT (i, j)), ?_⟩` and prove the remaining obligations. Rewrite using `[e]`.
+
+Take the linear combination `(-(c * epsOff L (T (i, j)) * ((g.1 : Matrix (Fin n) (Fin n) (AL L)) i j - (1 : Matrix (Fin n) (Fin n) (AL L)) i j))) * hu`.
+-/
 theorem induction_places : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (N : ℕ), 0 < N → ∀ p : GAf L n → Prop, (∀ κ, NG.Cong L n N κ → p κ) → (∀ (v : HeightOneSpectrum (𝓞 (maximalRealSubfield L))) (x y : GAf L n), TrivOutside {v} x → TrivOutside {v}ᶜ y → p y → p (x * y)) → ∀ g, p g := by
   intro L _ _ _ n N hN p hC hstep g
   classical

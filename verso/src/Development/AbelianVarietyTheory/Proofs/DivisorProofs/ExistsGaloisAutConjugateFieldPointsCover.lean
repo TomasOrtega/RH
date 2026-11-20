@@ -16,6 +16,25 @@ namespace GlobalTheory.Poinc.FieldConj
 open GlobalTheory.Points RatModel
 open scoped Pointwise
 
+/- English proof (translation)
+Use `set x := (y ≫ q) (IsLocalRing.closedPoint K) with hx`. Establish `hxz : q (y (IsLocalRing.closedPoint K)) = x` using `rfl`. Establish `hxz' : q (y' (IsLocalRing.closedPoint K)) = x` using `by rw [hx, hyy]; rfl`. Take `⟨V, hV, hxV, -⟩` from `exists_isAffineOpen_mem_and_subset (U := (⊤ : X.Opens)) (x := x) trivial`. Establish `hU : IsAffineOpen (q ⁻¹ᵁ V)` using `hV.preimage q`.
+
+Establish `hsub : ∀ a ∈ M.ringOn (q ⁻¹ᵁ V : Set M.Z), a ∈ M.ringOn {z | q z = x}` using `fun a ha => M.ringOn_anti (fun z (hz : q z = x) => show q z ∈ V by rw [hz]; exact hxV) ha`. Establish `hzU : y (IsLocalRing.closedPoint K) ∈ q ⁻¹ᵁ V` using `show q _ ∈ V by rw [hxz]; exact hxV`. Establish `hzU' : y' (IsLocalRing.closedPoint K) ∈ q ⁻¹ᵁ V` using `show q _ ∈ V by rw [hxz']; exact hxV`. Establish `hr` using `range_eq_singleton y (IsLocalRing.closedPoint K)`. Establish `hr'` using `range_eq_singleton y' (IsLocalRing.closedPoint K)`.
+
+Establish `hinv : ∀ {w : Sp K ⟶ M.Z} (hw : Set.range w = {w (IsLocalRing.closedPoint K)}) {a : Ω}, a ∈ M.O (w (IsLocalRing.closedPoint K)) → a ≠ 0 → (a⁻¹ ∈ M.O (w (IsLocalRing.closedPoint K)) ↔ M.val w a ≠ 0)`. Introduce `w hw a ha h0`. Rewrite using `[val_ne_zero_iff hw ⟨a, ha⟩, isUnit_O_iff]`. Conclude with `⟨fun h => ⟨h0, h⟩, fun h => h.2⟩`. Establish `hpt : y (IsLocalRing.closedPoint K) = y' (IsLocalRing.closedPoint K)`.
+
+Use `GlobalTheory.Points.point_eq_of_inv_mem_iff o Ω M _ hU _ _ hzU hzU' fun a ha h0 => ?_` and prove the remaining obligations. Rewrite using `[hinv hr (M.ringOn_le_O hzU ha) h0, hinv hr' (M.ringOn_le_O hzU' ha) h0, h a (hsub a ha)]`. Use `set z := y (IsLocalRing.closedPoint K) with hz`. Establish `hO : ∀ a ∈ M.O z, M.val y a = M.val y' a`. Introduce `a ha`.
+
+Take `⟨c, hc, d, hd, hd0, hdi, rfl⟩` from `GlobalTheory.Poinc.exists_eq_div_of_mem_O_affine o Ω M _ hU z hzU a ha`. Establish `hsp : ∀ w, y w ⤳ z` using `fun w => by rw [Subsingleton.elim w (IsLocalRing.closedPoint K)]`. Establish `hsp' : ∀ w, y' w ⤳ z` using `fun w => by rw [Subsingleton.elim w (IsLocalRing.closedPoint K), hpt]`. Establish `hcz` using `M.ringOn_le_O hzU hc`. Establish `hdz` using `M.ringOn_le_O hzU hd`.
+
+Establish `hq : c / d ∈ M.O z` using `ha`. Establish `e1` using `val_mul hsp hq hdz`. Establish `e1'` using `val_mul hsp' hq hdz`. Rewrite `e1`, `e1'` using `[div_mul_cancel₀ c hd0]`. Establish `hne : M.val y d ≠ 0` using `(hinv hr hdz hd0).1 hdi`.
+
+Establish `hne' : M.val y' d ≠ 0` using `by rw [← h d (hsub d hd)]; exact hne`. Rewrite using `[eq_div_of_mul_eq hne e1.symm, eq_div_of_mul_eq hne' e1'.symm, h c (hsub c hc), h d (hsub d hd)]`. Use `ReciprocityTheory.ChartRestriction.G.PullbackSections.hom_ext_of_local hpt fun W h₁ h₂ => ?_` and prove the remaining obligations. Establish `hW : z ∈ W` using `h₁ (x := IsLocalRing.closedPoint K) trivial`. Use extensionality with `f`.
+
+Establish `e1` using `val_valF ((top_le_preimage_iff y W).1 h₁) f`. Establish `e2` using `val_valF ((top_le_preimage_iff y' W).1 h₂) f`. Establish `e3` using `hO _ (valF_mem_O hW f)`. Rewrite `e3` using `[e1, e2]`. Unfold `valF at e3`.
+
+Rewrite `e3` using `[dif_pos h₁, dif_pos h₂]`. Conclude with `(Scheme.ΓSpecIso (CommRingCat.of K)).commRingCatIsoToRingEquiv.injective e3`.
+-/
 theorem eq_of_val_eq_fibre {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] (M : RatModel o Ω) {X : Scheme.{0}}
     (q : M.Z ⟶ X) [IsAffineHom q] {K : Type} [Field K] (y y' : Sp K ⟶ M.Z) (hyy : y ≫ q = y' ≫ q)
     (h : ∀ b ∈ M.ringOn {z | q z = (y ≫ q) (IsLocalRing.closedPoint K)}, M.val y b = M.val y' b) : y = y' := by
@@ -66,6 +85,31 @@ theorem eq_of_val_eq_fibre {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] 
   rw [dif_pos h₁, dif_pos h₂] at e3
   exact (Scheme.ΓSpecIso (CommRingCat.of K)).commRingCatIsoToRingEquiv.injective e3
 
+/- English proof (translation)
+Introduce `A F L K _ _ _ _ _ _ _ _ _ _ _ _ _ _ B hB e e' hA`. Establish `hσB : ∀ (σ : L ≃ₐ[F] L) (b : L), b ∈ B → σ b ∈ B` using `fun σ b hb => (hB _).2 (IsIntegral.map ((σ : L →ₐ[F] L).restrictScalars A) ((hB b).1 hb))`. Set `σB : (L ≃ₐ[F] L) → B →+* B` to `fun σ => ((σ : L →+* L).comp B.subtype).codRestrict B fun b => hσB σ b b.2`. Establish `hσB_apply : ∀ σ (b : B), ((σB σ b : B) : L) = σ b` using `fun _ _ => rfl`. Establish `claim : ∀ b : B, ∃ σ : L ≃ₐ[F] L, e' b = e (σB σ b)`.
+
+Introduce `b`. Set `P : Polynomial B` to `∏ σ : L ≃ₐ[F] L, (Polynomial.X - Polynomial.C (σB σ b))`. Establish `hPmap : ∀ τ : L ≃ₐ[F] L, (P.map B.subtype).map (τ : L →+* L) = P.map B.subtype`. Introduce `τ`. Simplify using `only [P, Polynomial.map_prod, Polynomial.map_sub, Polynomial.map_X, Polynomial.map_C]`.
+
+Use `Fintype.prod_equiv (Equiv.mulLeft τ) _ _ fun σ => ?_` and prove the remaining obligations. Both sides reduce to the same expression. Establish `hcoeff : ∀ n, ∃ a : A, algebraMap A L a = (P.coeff n : L)`. Introduce `n`. Establish `hfix : ∀ τ : L ≃ₐ[F] L, τ (P.coeff n : L) = P.coeff n`.
+
+Introduce `τ`. Use `congrArg (fun p => Polynomial.coeff p n) (hPmap τ)` as an intermediate fact. Simplify `this` using `[Polynomial.coeff_map]`. Take `⟨f, hf⟩` from `(IsGalois.mem_bot_iff_fixed (P.coeff n : L)).2 hfix`. Express the relevant statement in the definitionally equal form `algebraMap F L f = _ at hf`.
+
+Establish `hint : IsIntegral A (algebraMap F L f)` using `by rw [hf]; exact (hB _).1 (P.coeff n).2`. Establish `hint' : IsIntegral A f`. Rewrite using `[← isIntegral_algHom_iff (IsScalarTower.toAlgHom A F L) (algebraMap F L).injective]`. Conclude with `hint`. Take `⟨a, ha⟩` from `IsIntegrallyClosed.isIntegral_iff.1 hint'`.
+
+Conclude with `⟨a, by rw [IsScalarTower.algebraMap_apply A F L, ha, hf]⟩`. Establish `hmap : P.map e = P.map e'`. Use extensionality with `n`. Rewrite using `[Polynomial.coeff_map, Polynomial.coeff_map]`. Take `⟨a, ha⟩` from `hcoeff n`.
+
+Conclude with `hA _ ⟨a, ha⟩`. Establish `h0 : (P.map e').eval (e' b) = 0`. Rewrite using `[Polynomial.eval_map, Polynomial.eval₂_at_apply]`. Simplify using `only [P, Polynomial.eval_prod, Polynomial.eval_sub, Polynomial.eval_X, Polynomial.eval_C]`. Rewrite using `[Finset.prod_eq_zero (Finset.mem_univ 1) (by rw [sub_eq_zero]; exact Subtype.ext rfl), map_zero]`.
+
+Rewrite `h0` using `[← hmap]`. Simplify using `only [P, Polynomial.map_prod, Polynomial.map_sub, Polynomial.map_X, Polynomial.map_C, Polynomial.eval_prod, Polynomial.eval_sub, Polynomial.eval_X, Polynomial.eval_C] at h0`. Take `⟨σ, -, hσ⟩` from `Finset.prod_eq_zero_iff.1 h0`. Conclude with `⟨σ, sub_eq_zero.1 hσ⟩`. Set `H : (L ≃ₐ[F] L) → AddSubgroup B` to `fun σ => (e'.toAddMonoidHom - (e.comp (σB σ)).toAddMonoidHom).ker`.
+
+Establish `hmemH : ∀ σ (b : B), b ∈ H σ ↔ e' b = e (σB σ b)` using `fun σ b => by`. Simplify using `[H, AddMonoidHom.mem_ker, sub_eq_zero]`. Establish `hcover : ⋃ σ ∈ (Finset.univ : Finset (L ≃ₐ[F] L)), (0 : B) +ᵥ ((H σ : AddSubgroup B) : Set B) = Set.univ`. Use `Set.eq_univ_of_forall fun b => ?_` and prove the remaining obligations. Take `⟨σ, hσ⟩` from `claim b`.
+
+Use `Set.mem_iUnion₂.2 ⟨σ, Finset.mem_univ _, ?_⟩` and prove the remaining obligations. Rewrite using `[zero_vadd]`. Conclude with `(hmemH σ b).2 hσ`. Take `⟨σ, -, hfin⟩` from `AddSubgroup.exists_finiteIndex_of_leftCoset_cover hcover`. Use `⟨σ, fun b c hc => ?_⟩` and prove the remaining obligations.
+
+Establish `hcσ : c = σB σ b` using `Subtype.ext hc`. Substitute `hcσ` using the available equality. Establish `hn : (H σ).index ≠ 0` using `hfin.index_ne_zero`. Establish `hmem` using `(hmemH σ _).1 (AddSubgroup.nsmul_index_mem (H σ) b)`. Rewrite `hmem` using `[map_nsmul, map_nsmul, map_nsmul, nsmul_eq_mul, nsmul_eq_mul]`.
+
+Conclude with `mul_left_cancel₀ (Nat.cast_ne_zero.2 hn) hmem`.
+-/
 theorem galConj : ∀ (A F L K : Type) [CommRing A] [IsDomain A] [Field F] [Field L] [Field K] [CharZero K] [Algebra A F] [IsFractionRing A F] [IsIntegrallyClosed A] [Algebra F L] [Algebra A L] [IsScalarTower A F L] [FiniteDimensional F L] [IsGalois F L] (B : Subring L), (∀ b : L, b ∈ B ↔ IsIntegral A b) → ∀ e e' : B →+* K, (∀ b : B, (∃ a : A, algebraMap A L a = b) → e b = e' b) → ∃ σ : L ≃ₐ[F] L, ∀ b c : B, (c : L) = σ b → e' b = e c := by
   intro A F L K _ _ _ _ _ _ _ _ _ _ _ _ _ _ B hB e e' hA
   classical
@@ -130,6 +174,11 @@ theorem galConj : ∀ (A F L K : Type) [CommRing A] [IsDomain A] [Field F] [Fiel
   rw [map_nsmul, map_nsmul, map_nsmul, nsmul_eq_mul, nsmul_eq_mul] at hmem
   exact mul_left_cancel₀ (Nat.cast_ne_zero.2 hn) hmem
 
+/- English proof (translation)
+Take `⟨U, f, hzU, rfl⟩` from `hx`. Establish `h1 : Set.range (y ≫ q) ⊆ U`. Rewrite using `[range_eq_singleton _ (IsLocalRing.closedPoint K)]`. Conclude with `Set.singleton_subset_iff.2 hzU`. Establish `h2 : Set.range y ⊆ q ⁻¹ᵁ U`.
+
+Rewrite using `[range_eq_singleton _ (IsLocalRing.closedPoint K)]`. Conclude with `Set.singleton_subset_iff.2 hzU`. Rewrite using `[← GlobalTheory.Poinc.FinPts.valF_app hg ⟨_, hzU⟩ f, val_valF h2, val_valF h1]`. Conclude with `(valR_comp y q U f).symm`.
+-/
 theorem val_algebraMap_of_comp {o₁ Ω₁ o₂ Ω₂ : Type} [CommRing o₁] [Field Ω₁] [Algebra o₁ Ω₁] [CommRing o₂] [Field Ω₂]
     [Algebra o₂ Ω₂] [Algebra Ω₁ Ω₂] {M₁ : RatModel o₁ Ω₁} {M₂ : RatModel o₂ Ω₂} {q : M₂.Z ⟶ M₁.Z}
     (hg : M₂.pt ≫ q = spMap (algebraMap Ω₁ Ω₂) ≫ M₁.pt) {K : Type} [Field K] (y : Sp K ⟶ M₂.Z) {x : Ω₁}
@@ -143,6 +192,25 @@ theorem val_algebraMap_of_comp {o₁ Ω₁ o₂ Ω₂ : Type} [CommRing o₁] [F
   rw [← GlobalTheory.Poinc.FinPts.valF_app hg ⟨_, hzU⟩ f, val_valF h2, val_valF h1]
   exact (valR_comp y q U f).symm
 
+/- English proof (translation)
+Introduce `o₁ Ω₁ o₂ Ω₂ _ _ _ _ _ _ _ _ _ M₁ M₂ q hN₁ hN₂ hF hg K _ _ y y' hyy`. Use `set z₁ := (y ≫ q) (IsLocalRing.closedPoint K) with hz₁`. Use `haveI : IsIntegrallyClosed (M₁.O z₁) := isIntegrallyClosed_O hN₁ z₁`. Set `B : Subring Ω₂` to `(M₂.ringOn {z | q z = z₁}).toSubring`. Establish `hB : ∀ b : Ω₂, b ∈ B ↔ IsIntegral (M₁.O z₁) b`.
+
+Introduce `b`. Use `letI : Algebra (M₁.Z.presheaf.stalk z₁) Ω₂ := ((algebraMap Ω₁ Ω₂).comp (M₁.stalkHom z₁)).toAlgebra`. Establish `h1` using `(GlobalTheory.Poinc.integralClosure_stalk_fibre o₁ Ω₁ o₂ Ω₂ M₁ M₂ q hN₂ hF hg z₁).1 b`. Establish `h2 : IsIntegral (M₁.Z.presheaf.stalk z₁) b ↔ IsIntegral (M₁.O z₁) b`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hb`. Conclude with `IsIntegral.map_of_comp_eq (M₁.stalkEquiv z₁).toRingHom (RingHom.id Ω₂) (RingHom.ext fun _ => rfl) hb`. Introduce `hb`. Use `IsIntegral.map_of_comp_eq (M₁.stalkEquiv z₁).symm.toRingHom (RingHom.id Ω₂) (RingHom.ext fun x => ?_) hb` and prove the remaining obligations. Use `show algebraMap Ω₁ Ω₂ (M₁.stalkHom z₁ ((M₁.stalkEquiv z₁).symm x)) = algebraMap Ω₁ Ω₂ (x : Ω₁)`.
+
+Rewrite using `[← coe_stalkEquiv, RingEquiv.apply_symm_apply]`. Rewrite using `[← h2, ← mem_integralClosure_iff, h1, Subalgebra.mem_toSubring, mem_ringOn]`. Both sides reduce to the same expression. Establish `hr` using `range_eq_singleton y (IsLocalRing.closedPoint K)`. Establish `hr'` using `range_eq_singleton y' (IsLocalRing.closedPoint K)`.
+
+Establish `hz : q (y (IsLocalRing.closedPoint K)) = z₁` using `rfl`. Establish `hz' : q (y' (IsLocalRing.closedPoint K)) = z₁` using `by rw [hz₁, hyy]; rfl`. Set `e : B →+* K` to `(M₂.valHom y _ hr).comp (Subring.inclusion (show B ≤ (M₂.O (y (IsLocalRing.closedPoint K))).toSubring from fun b hb => mem_ringOn.1 hb _ hz))`. Set `e' : B →+* K` to `(M₂.valHom y' _ hr').comp (Subring.inclusion (show B ≤ (M₂.O (y' (IsLocalRing.closedPoint K))).toSubring from fun b hb => mem_ringOn.1 hb _ hz'))`. Establish `he : ∀ b : B, e b = M₂.val y b` using `fun _ => rfl`.
+
+Establish `he' : ∀ b : B, e' b = M₂.val y' b` using `fun _ => rfl`. Establish `hA : ∀ b : B, (∃ a : M₁.O z₁, algebraMap (M₁.O z₁) Ω₂ a = b) → e b = e' b`. Introduce and unpack `b ⟨a, hab⟩`. Rewrite using `[he, he', ← hab]`. Use `show M₂.val y (algebraMap Ω₁ Ω₂ a) = M₂.val y' (algebraMap Ω₁ Ω₂ a)`.
+
+Rewrite using `[val_algebraMap_of_comp hg y a.2, val_algebraMap_of_comp hg y' (by rw [← hyy]; exact a.2), hyy]`. Take `⟨σ, hσ⟩` from `galConj (M₁.O z₁) Ω₁ Ω₂ K B hB e e' hA`. Take `⟨s, hs1, hs2, hs3⟩` from `GlobalTheory.Poinc.GalAut.autAct o₁ Ω₁ o₂ Ω₂ M₁ M₂ q hN₂ hF hg σ`. Use `haveI := hF`. Establish `key : y ≫ s = y'`.
+
+Use `eq_of_val_eq_fibre M₂ q (y ≫ s) y' (by rw [Category.assoc, hs2, hyy]) fun b hb => ?_` and prove the remaining obligations. Establish `hys : (y ≫ s) ≫ q = y ≫ q` using `by rw [Category.assoc, hs2]`. Rewrite `hb` using `[hys]`. Establish `hbB : b ∈ B` using `hb`. Establish `hσB : σ b ∈ B` using `(hB _).2 (IsIntegral.map ((σ : Ω₂ →ₐ[Ω₁] Ω₂).restrictScalars (M₁.O z₁)) ((hB b).1 hbB))`.
+
+Rewrite using `[hs3]`. Conclude with `(hσ ⟨b, hbB⟩ ⟨σ b, hσB⟩ rfl).symm`. Use `⟨σ, s, hs1, key, fun b => ?_⟩` and prove the remaining obligations. Rewrite using `[← key]`. Conclude with `hs3 K y b`.
+-/
 theorem exists_aut_eq_of_comp_eq : ∀ (o₁ Ω₁ o₂ Ω₂ : Type) [CommRing o₁] [Field Ω₁] [Algebra o₁ Ω₁] [CommRing o₂] [Field Ω₂] [Algebra o₂ Ω₂] [Algebra Ω₁ Ω₂] [FiniteDimensional Ω₁ Ω₂] [IsGalois Ω₁ Ω₂] (M₁ : RatModel o₁ Ω₁) (M₂ : RatModel o₂ Ω₂) (q : M₂.Z ⟶ M₁.Z), ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme M₁.Z → ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme M₂.Z → IsFinite q → M₂.pt ≫ q = spMap (algebraMap Ω₁ Ω₂) ≫ M₁.pt → ∀ (K : Type) [Field K] [CharZero K] (y y' : Sp K ⟶ M₂.Z), y ≫ q = y' ≫ q → ∃ (σ : Ω₂ ≃ₐ[Ω₁] Ω₂) (s : M₂.Z ⟶ M₂.Z), M₂.pt ≫ s = spMap (σ : Ω₂ →+* Ω₂) ≫ M₂.pt ∧ y ≫ s = y' ∧ ∀ b : Ω₂, M₂.val y' b = M₂.val y (σ b) := by
   intro o₁ Ω₁ o₂ Ω₂ _ _ _ _ _ _ _ _ _ M₁ M₂ q hN₁ hN₂ hF hg K _ _ y y' hyy
   set z₁ := (y ≫ q) (IsLocalRing.closedPoint K) with hz₁

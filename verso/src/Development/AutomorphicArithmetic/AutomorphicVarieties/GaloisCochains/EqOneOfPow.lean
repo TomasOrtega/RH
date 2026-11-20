@@ -8,6 +8,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PartsConj
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Module UpperTheory.V UpperTheory.V.Fr UpperTheory.V.GC
 
 open scoped Pointwise in
+/- English proof (translation)
+Rewrite `hσ`, the goal using `[mem_Ine]`. Take `⟨hd, hv⟩` from `hσ`. Use `⟨?_, fun x hx => by rw [UpperTheory.V.Base.galEmb_apply]; exact hv x hx⟩` and prove the remaining obligations. Rewrite `hd`, the goal using `[MulAction.mem_stabilizer_iff]`. Use `conv_rhs => rw [← hd]`.
+
+Use extensionality with `x`. Rewrite using `[ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem, ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem, ← map_inv, AlgEquiv.smul_def, AlgEquiv.smul_def, UpperTheory.V.Base.galEmb_apply]`.
+-/
 private theorem galEmb_mem_inertia (k E Ω : Type) [Field k] [NumberField k] [Field E] [NumberField E] [Field Ω]
     [Algebra k Ω] [Algebra E Ω] [Algebra k E] [IsScalarTower k E Ω] (Av : ValuationSubring Ω)
     (σ : G E Ω) (hσ : σ ∈ Ine Av) : UpperTheory.V.Base.galEmb k E Ω σ ∈ Ine Av := by
@@ -21,6 +26,9 @@ private theorem galEmb_mem_inertia (k E Ω : Type) [Field k] [NumberField k] [Fi
     ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem, ← map_inv, AlgEquiv.smul_def,
     AlgEquiv.smul_def, UpperTheory.V.Base.galEmb_apply]
 
+/- English proof (translation)
+Distinguish the cases in `hx : x = 0`. Simplify using `[hx]`. Rewrite using `[← ValuationSubring.valuation_le_one_iff, not_le, map_inv₀]`. Simplify using `only [hx, false_or]`. Rewrite using `[← map_inv₀, Valuation.one_lt_val_iff _ (inv_ne_zero hx), inv_inv]`.
+-/
 private theorem valuation_lt_one_iff_zero_or_inv_not_mem {Ω : Type} [Field Ω] (Av : ValuationSubring Ω) (x : Ω) :
     Av.valuation x < 1 ↔ (x = 0 ∨ x⁻¹ ∉ Av) := by
   by_cases hx : x = 0
@@ -30,6 +38,15 @@ private theorem valuation_lt_one_iff_zero_or_inv_not_mem {Ω : Type} [Field Ω] 
     rw [← map_inv₀, Valuation.one_lt_val_iff _ (inv_ne_zero hx), inv_inv]
 
 open scoped Pointwise in
+/- English proof (translation)
+Rewrite `hτ`, the goal using `[mem_Ine]`. Take `⟨hd, hv⟩` from `hτ`. Rewrite `hd` using `[MulAction.mem_stabilizer_iff]`. Use `⟨?_, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[MulAction.mem_stabilizer_iff, mul_smul, mul_smul, hd, inv_smul_smul]`.
+
+Establish `hx' : σ x ∈ σ • Av` using `ValuationSubring.smul_mem_pointwise_smul σ x Av ((ValuationSubring.valuation_le_one_iff _ _).1 hx)`. Establish `h` using `hv (σ x) ((ValuationSubring.valuation_le_one_iff _ _).2 hx')`. Rewrite `h`, the goal using `[valuation_lt_one_iff_zero_or_inv_not_mem]`. Establish `he : (σ⁻¹ * τ * σ) x - x = σ⁻¹ (τ (σ x) - σ x)`. Simplify using `[map_sub]`.
+
+Rewrite using `[he]`. Break down `h with h | h` into its components or cases. Use `left`. Rewrite using `[h, map_zero]`. Use `right`.
+
+Rewrite using `[← map_inv₀]`. Introduce `hm`. Apply `h` to reduce the goal to its premises. Rewrite using `[ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem, AlgEquiv.smul_def]`. Conclude with `hm`.
+-/
 private theorem conj_mem_inertia_of_mem_inertia_smul {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω]
     (Av : ValuationSubring Ω) (σ τ : G F Ω) (hτ : τ ∈ Ine (σ • Av)) : σ⁻¹ * τ * σ ∈ Ine Av := by
   rw [mem_Ine] at hτ ⊢
@@ -53,6 +70,11 @@ private theorem conj_mem_inertia_of_mem_inertia_smul {F Ω : Type} [Field F] [Nu
       rw [ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem, AlgEquiv.smul_def]
       exact hm
 
+/- English proof (translation)
+Take `⟨m, hm⟩` from `hB y`. Establish `h1` using `orderOf_dvd_of_pow_eq_one hm`. Establish `h2` using `orderOf_dvd_of_pow_eq_one hy`. Establish `hc : Nat.Coprime (l ^ m) n` using `Nat.Coprime.pow_left m ((Nat.Prime.coprime_iff_not_dvd hl).2 hn)`. Establish `: orderOf y ∣ 1`.
+
+Rewrite using `[← hc]`. Conclude with `Nat.dvd_gcd h1 h2`. Conclude with `orderOf_eq_one_iff.1 (Nat.dvd_one.1 this)`.
+-/
 private theorem eq_one_of_pow_coprime_in_pGroup {B : Type} [CommGroup B] {l : ℕ} (hl : l.Prime) (hB : IsPGroup l B)
     (y : B) (n : ℕ) (hn : ¬ l ∣ n) (hy : y ^ n = 1) : y = 1 := by
   obtain ⟨m, hm⟩ := hB y
@@ -65,6 +87,79 @@ private theorem eq_one_of_pow_coprime_in_pGroup {B : Type} [CommGroup B] {l : �
   exact orderOf_eq_one_iff.1 (Nat.dvd_one.1 this)
 
 open UpperTheory.V.Base UpperTheory.V.Kum in
+/- English proof (translation)
+Introduce `F Ω _ _ _ _ _ l _ k _ _ Φ S K π ι A pl e c hL`. Use `set U : Subgroup (G F Ω) := Φ.del.ker.comap π with hU`. Establish `hUo : IsOpen (U : Set (G F Ω))` using `hL.g.cont.isOpen_preimage _ hL.del_open`. Set `Uc : ClosedSubgroup (G F Ω)` to `⟨U, U.isClosed_of_isOpen hUo⟩`. Use `set E : IntermediateField F Ω := IntermediateField.fixedField (Uc : Subgroup (G F Ω)) with hE`.
+
+Establish `hEU : E.fixingSubgroup = U` using `InfiniteGalois.fixingSubgroup_fixedField Uc`. Use `haveI : FiniteDimensional F E := (InfiniteGalois.isOpen_iff_finite E).1 (by rw [hEU]; exact hUo)`. Use `haveI : NumberField E := inferInstance`. Use `haveI : IsAlgClosure E Ω := ⟨IsAlgClosure.isAlgClosed F, Algebra.IsAlgebraic.tower_top (K := F) E⟩`. Establish `hgal : UpperTheory.V.Base.galOf F E Ω = U`.
+
+Rewrite using `[← hEU]`. Use extensionality with `σ`. Simplify using `[UpperTheory.V.Base.galOf, IntermediateField.mem_fixingSubgroup_iff]`. Use `⟨2 * Nat.card (ClassGroup (𝓞 E)), ?_, ?_⟩` and prove the remaining obligations. Establish `: 0 < Nat.card (ClassGroup (𝓞 E))` using `Nat.card_pos`.
+
+Use linear arithmetic over natural numbers and integers. Introduce `B _ _ hB χ hχo hχI g`. Establish `hmemU : ∀ σ : G E Ω, π (UpperTheory.V.Base.galEmb F E Ω σ) ∈ Φ.del.ker` using `fun σ => by`. Use `UpperTheory.V.Base.galEmb_mem F E Ω σ` as an intermediate fact. Rewrite `this` using `[hgal]`.
+
+Conclude with `this`. Set `f : G E Ω →* Φ.G0` to `(π.comp (UpperTheory.V.Base.galEmb F E Ω)).codRestrict Φ.del.ker hmemU`. Set `ψ : G E Ω →* B` to `(χ.comp f) ^ 2`. Establish `key : ∀ (Av : ValuationSubring Ω) (τ : G F Ω), τ ∈ Ine Av → ∀ hτ : π τ ∈ Φ.del.ker, χ ⟨π τ, hτ⟩ = 1`. Introduce `Av τ hτA hτ`.
+
+Establish `hZ : ∀ y : Ω, IsIntegral ℤ y → y ∈ Av`. Introduce `y hy`. Establish `hy' : IsIntegral Av y` using `hy.tower_top`. Take `⟨a, ha⟩` from `IsIntegrallyClosed.isIntegral_iff.1 hy'`. Rewrite using `[← ha]`.
+
+Conclude with `a.2`. Set `φ : 𝓞 F →+* Av` to `((algebraMap F Ω).comp (algebraMap (𝓞 F) F)).codRestrict Av (fun x => hZ _ ((x.2).map (IsScalarTower.toAlgHom ℤ F Ω)))`. Set `P : Ideal (𝓞 F)` to `(IsLocalRing.maximalIdeal Av).comap φ`. Establish `hP : ∀ x : 𝓞 F, x ∈ P ↔ Av.valuation (algebraMap F Ω x) < 1`. Introduce `x`.
+
+Conclude with `(Av.valuation_lt_one_iff (φ x))`. Distinguish the cases in `hPb : P = ⊥`. Establish `hall : ∀ y : Ω, y ∈ Av`. Introduce `y`. Use `haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap F Ω).injective`.
+
+Use `haveI : Algebra.IsAlgebraic F Ω := IsAlgClosure.isAlgebraic`. Use `haveI : Algebra.IsAlgebraic ℚ Ω := Algebra.IsAlgebraic.trans ℚ F Ω`. Establish `halg : IsAlgebraic ℤ y`. Rewrite using `[IsFractionRing.isAlgebraic_iff ℤ ℚ Ω]`. Conclude with `Algebra.IsAlgebraic.isAlgebraic y`.
+
+Take `⟨m, hm0, hm⟩` from `halg.exists_integral_multiple`. Establish `h1 : m • y ∈ Av` using `hZ _ hm`. Establish `hcast : algebraMap F Ω ((m : 𝓞 F) : F) = (m : Ω)` using `by simp`. Establish `h2 : Av.valuation (m : Ω) = 1`. Establish `hnot : (m : 𝓞 F) ∉ P`.
+
+Rewrite using `[hPb, Ideal.mem_bot]`. Conclude with `hm0` after adjusting the coercions. Rewrite `hnot` using `[hP, hcast]`. Establish `hle : Av.valuation (m : Ω) ≤ 1` using `(Av.valuation_le_one_iff _).2 (intCast_mem Av m)`. Conclude with `le_antisymm hle (not_lt.1 hnot)`.
+
+Rewrite `h1`, the goal using `[← Av.valuation_le_one_iff]`. Rewrite `h1` using `[zsmul_eq_mul, map_mul, h2, one_mul]`. Conclude with `h1`. Establish `hτ1 : τ = 1`. Use extensionality with `x`.
+
+Rewrite `hτA` using `[mem_Ine]`. Establish `h` using `hτA.2 x ((Av.valuation_le_one_iff x).2 (hall x))`. Rewrite `h` using `[valuation_lt_one_iff_zero_or_inv_not_mem]`. Break down `h with h | h` into its components or cases. Simplify `h` using `[sub_eq_zero]`.
+
+Conclude with `absurd (hall _) h`. Establish `: (⟨π τ, hτ⟩ : Φ.G0) = 1`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[hτ1]`. Rewrite using `[this, map_one]`.
+
+Use `haveI : P.IsPrime := Ideal.comap_isPrime φ (IsLocalRing.maximalIdeal Av)`. Set `v : HeightOneSpectrum (𝓞 F)` to `⟨P, inferInstance, hPb⟩`. Establish `hA : IsPlaceOver Av v` using `fun x => (hP x).symm`. Distinguish the cases in `hvS : v ∈ S`. Establish `hlv : (l : 𝓞 F) ∈ v.asIdeal` using `hL.only v hvS`.
+
+Take `⟨u, hu⟩` from `(hL.loc.mem v).2 hlv`. Establish `hAu : IsPlaceOver Av (pl u)` using `hu ▸ hA`. Take `⟨σ, hσ⟩` from `exists_smul_eq_of_isPlaceOver (hL.loc.isOver u) hAu`. Rewrite `hτA` using `[← hσ]`. Establish `hc` using `conj_mem_inertia_of_mem_inertia_smul (A u) σ τ hτA`.
+
+Establish `hdec : σ⁻¹ * τ * σ ∈ (ι u).range`. Rewrite using `[hL.loc.range u]`. Conclude with `Ine_le_Dec _ hc`. Take `⟨s, hs⟩` from `hdec`. Establish `hsI : s ∈ Φ.Iv u`.
+
+Rewrite using `[hL.ine u, Subgroup.mem_comap, hs]`. Conclude with `hc`. Establish `hπτ : π τ = π σ * ((Φ.loc0 u s : Φ.G0) : Φ.Γ) * (π σ)⁻¹`. Establish `h1 : ((Φ.loc0 u s : Φ.G0) : Φ.Γ) = π (ι u s)` using `hL.loc_eq u s`. Rewrite using `[h1, hs, map_mul, map_mul, map_inv]`.
+
+Use `group`. Break down `Int.units_eq_one_or (Φ.del (π σ)) with hd | hd` into its components or cases. Establish `ha : π σ ∈ Φ.del.ker` using `hd`. Establish `: (⟨π τ, hτ⟩ : Φ.G0) = ⟨π σ, ha⟩ * Φ.loc0 u s * (⟨π σ, ha⟩ : Φ.G0)⁻¹`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Simplify using `[hπτ]`. Rewrite using `[this, map_mul, map_mul, map_inv, mul_comm (χ _), mul_inv_cancel_right]`. Establish `h` using `hχI (u, false) s hsI`. Simplify `h` using `[UpperTheory.V.Fr.Frame.loc2]`. Establish `ha : Φ.c⁻¹ * π σ ∈ Φ.del.ker`.
+
+Rewrite using `[MonoidHom.mem_ker, map_mul, map_inv, hd, hL.del_c]`. Both sides reduce to the same expression. Establish `: (⟨π τ, hτ⟩ : Φ.G0) = Φ.conj (⟨Φ.c⁻¹ * π σ, ha⟩ * Φ.loc0 u s * (⟨Φ.c⁻¹ * π σ, ha⟩ : Φ.G0)⁻¹)`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [UpperTheory.V.Fr.Frame.conj, MulEquiv.coe_toMonoidHom, MulAut.conjNormal_apply]`.
+
+Simplify using `[hπτ]`. Use `group`. Rewrite using `[this, map_mul, map_mul, map_inv, map_mul, map_mul, map_inv, mul_comm (χ _), mul_inv_cancel_right]`. Establish `h` using `hχI (u, true) s hsI`. Simplify `h` using `[UpperTheory.V.Fr.Frame.loc2]`.
+
+Use `haveI := hL.g.normal set n := K.index with hn`. Establish `hK : τ ^ n ∈ K` using `K.pow_index_mem τ`. Establish `hI : τ ^ n ∈ Ine Av` using `(Ine Av).pow_mem hτA n`. Establish `hT : τ ^ n ∈ tameN (↑S) K`. Apply `Subgroup.le_topologicalClosure` to reduce the goal to its premises.
+
+Apply `Subgroup.subset_normalClosure` to reduce the goal to its premises. Use `Set.mem_iUnion₂.2 ⟨v, by simpa using hvS, Set.mem_iUnion₂.2 ⟨Av, hA, ?_⟩⟩` and prove the remaining obligations. Conclude with `Subgroup.mem_inf.2 ⟨hI, hK⟩`. Establish `hπ : π (τ ^ n) = 1`. Rewrite using `[← MonoidHom.mem_ker, hL.g.ker]`.
+
+Conclude with `hT`. Apply `eq_one_of_pow_coprime_in_pGroup (Fact.out : l.Prime) hB _ n hL.g.idx` to reduce the goal to its premises. Rewrite using `[← map_pow]`. Establish `: (⟨π τ, hτ⟩ : Φ.G0) ^ n = 1`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Simplify using `[← map_pow, hπ]`. Rewrite using `[this, map_one]`. Establish `hopen : IsOpen (ψ.ker : Set (G E Ω))`. Establish `hc : Continuous f`. Establish `h1 : Continuous (UpperTheory.V.Base.galEmb F E Ω)` using `(UpperTheory.V.Base.galEmbTop F E Ω).1.continuous`.
+
+Conclude with `(hL.g.cont.comp h1).subtype_mk _`. Establish `h2 : IsOpen ((χ.comp f).ker : Set (G E Ω))` using `hχo.preimage hc`. Use `Subgroup.isOpen_mono ?_ h2` and prove the remaining obligations. Introduce `x hx`. Simplify using `only [MonoidHom.mem_ker] at hx ⊢`.
+
+Simplify using `[ψ, hx]`. Establish `hine : ∀ Av : ValuationSubring Ω, Ine Av ≤ ψ.ker`. Introduce `Av σ hσ`. Establish `h` using `key Av _ (galEmb_mem_inertia F E Ω Av σ hσ) (hmemU σ)`. Rewrite using `[MonoidHom.mem_ker]`.
+
+Establish `: ψ σ = χ ⟨π (UpperTheory.V.Base.galEmb F E Ω σ), hmemU σ⟩ ^ 2` using `rfl`. Rewrite using `[this, h, one_pow]`. Establish `hconj : ∀ σ : G E Ω, IsConjOm σ.toRingEquiv → ψ σ = 1`. Introduce `σ ⟨j, hj⟩`. Establish `hsq : σ * σ = 1`.
+
+Use extensionality with `x`. Apply `j.injective` to reduce the goal to its premises. Simplify using `only [AlgEquiv.mul_apply, AlgEquiv.one_apply]`. Use `hj (σ x)` as an intermediate fact. Simplify using `only [AlgEquiv.toRingEquiv_eq_coe, RingEquiv.coe_toEquiv, AlgEquiv.coe_ringEquiv] at this hj`.
+
+Rewrite using `[this, hj, Complex.conj_conj]`. Establish `: ψ σ = χ (f (σ * σ))`. Simplify using `[ψ, pow_two]`. Rewrite using `[this, hsq, map_one, map_one]`. Establish `hker` using `UpperTheory.V.Kum.artKer E Ω B ψ hopen hine hconj`.
+
+Take `⟨τ, hτ⟩` from `hL.g.onto (g : Φ.Γ)`. Establish `hτU : τ ∈ UpperTheory.V.Base.galOf F E Ω`. Rewrite using `[hgal]`. Use `show π τ ∈ Φ.del.ker`. Rewrite using `[hτ]`.
+
+Conclude with `g.2`. Set `σ : G E Ω` to `{ τ with commutes' := fun x => hτU x }`. Establish `hσ : f σ = g`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show π (UpperTheory.V.Base.galEmb F E Ω σ) = g`.
+
+Rewrite using `[← hτ]`. Use `congr 1`. Establish `h1 : ψ (σ ^ Nat.card (ClassGroup (𝓞 E))) = 1`. Apply `hker` to reduce the goal to its premises. Rewrite using `[MonoidHom.mem_ker, map_pow]`.
+
+Conclude with `pow_card_eq_one'`. Rewrite `h1` using `[map_pow]`. Establish `h2 : ψ σ = χ g ^ 2`. Simplify using `[ψ, hσ]`. Rewrite `h1` using `[h2, ← pow_mul]`.
+
+Conclude with `h1`.
+-/
 theorem UpperTheory.V.GC.cl :
     ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime] (k : Type) [Field k] [CharP k l] (Φ : Fr.Frame l k) (S : Finset (HeightOneSpectrum (𝓞 F))) (K : Subgroup (G F Ω)) (π : G F Ω →* Φ.Γ) (ι : ∀ v, Φ.Gv v →* G F Ω) (A : Φ.V → ValuationSubring Ω) (pl : Φ.V → HeightOneSpectrum (𝓞 F)) (e : Φ.Inf ≃ InfinitePlace F) (c : Φ.Inf → G F Ω), FLink l Φ S K π ι A pl e c → ∃ h : ℕ, h ≠ 0 ∧ ∀ (B : Type) [CommGroup B] [Finite B], IsPGroup l B → ∀ χ : Φ.G0 →* B,
     IsOpen (χ.ker : Set Φ.G0) → (∀ p : Φ.V × Bool, ∀ g ∈ Φ.Iv p.1, χ (Φ.loc2 p g) = 1) → ∀ g, χ g ^ h = 1 := by

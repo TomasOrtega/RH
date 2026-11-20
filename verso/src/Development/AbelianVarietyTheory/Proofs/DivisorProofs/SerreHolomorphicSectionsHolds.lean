@@ -11,6 +11,21 @@ open CategoryTheory AlgebraicGeometry TopologicalSpace Set
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GlobalTheory GlobalTheory.CxPts
 
+/- English proof (translation)
+Introduce `Y p D hs hp R B hB`. Use `⟨fun s t h => ?_, fun s => ?_⟩` and prove the remaining obligations. Establish `e : s.f = t.f` using `funext fun i => GlobalTheory.eq_of_ev_eq_of_smoothOfRelativeDimension Y p D hs _ _ _ fun y _ => congrFun₂ (congrArg Subtype.val h) i y`. Consider the cases of `s`. Consider the cases of `t`.
+
+Reduce the equality to equality of the corresponding arguments. Establish `loc (i : B.ι) (x : B.U i) : ∃ V : Y.Opens, x.1 ∈ V ∧ V ≤ B.U i ∧ ∃ c : Γ(Y, V), ∀ y ∈ ptsIn p (RingHom.id ℂ) V, ev p (RingHom.id ℂ) V c y = s.1 i y`. Take `⟨U, hxU, hU⟩` from `GlobalTheory.exists_open_isDomain_of_smooth_complex Y p D hs x`. Take `⟨V, n, u, hx, hV, ha, h⟩` from `GlobalTheory.exists_affine_boundary_functions_of_isProjOver Y p hp (U ⊓ B.U i) x ⟨hxU, x.2⟩`. Establish `hi` using `hV.trans inf_le_right`.
+
+Establish `hd` using `hU V (hV.trans inf_le_left) hx`. Establish `hh` using `(s.2.2 i).mono (ptsIn_mono hi)`. Take `⟨C, m, hC⟩` from `GlobalTheory.continuous_section_polynomial_growth Y p hp B hB s.1 s.2.1 (fun j => (s.2.2 j).continuousOn (isOpen_ptsIn _)) i V n u hi h`. Take `⟨a, b, hb, e⟩` from `SerreSections.exists_mul_eq_of_polynomial_growth Y p D hs R V ha hd _ hh n u C m hC`. Conclude with `⟨V, hx, hi, GlobalTheory.exists_ev_eq_of_continuousOn_quotient Y p D hs V ha hd _ (hh.continuousOn (isOpen_ptsIn _)) a b hb e⟩`.
+
+Use `choose V hx hV c hc using loc`. Establish `glue (i : B.ι) : ∃ f : Γ(Y, B.U i), ∀ y ∈ ptsIn p (RingHom.id ℂ) (B.U i), ev p (RingHom.id ℂ) _ f y = s.1 i y`. Take `⟨f, hf, -⟩` from `TopCat.Sheaf.existsUnique_gluing' Y.sheaf (V i) (B.U i) (fun x => homOfLE (hV i x)) (fun x h => Opens.mem_iSup.2 ⟨⟨x, h⟩, hx i _⟩) (c i) fun x x' => GlobalTheory.eq_of_ev_eq_of_smoothOfRelativeDimension Y p D hs (V i x ⊓ V i x') _ _ fun y hy => ((ev_res inf_le_left hy _).trans (h …`. Use `⟨f, fun y hy => ?_⟩` and prove the remaining obligations. Establish `hy' : y ∈ ptsIn p (RingHom.id ℂ) (V i ⟨_, mem_ptsIn.1 hy⟩)` using `mem_ptsIn.2 (hx i _)`.
+
+Rewrite using `[← hc i _ y hy', ← hf]`. Conclude with `(ev_res _ hy' _).symm`. Use `choose f hf using glue`. Use `⟨⟨f, fun i j => GlobalTheory.eq_of_ev_eq_of_smoothOfRelativeDimension Y p D hs _ _ _ fun y hy => ?_⟩, Subtype.ext (funext₂ fun i y => ?_)⟩` and prove the remaining obligations. Establish `h` using `mem_ptsIn_inf.1 hy`.
+
+Use `(ev_res inf_le_left hy _).trans (Eq.trans ?_ (ev_mul _ _ _).symm)` and prove the remaining obligations. Rewrite using `[hf i y h.1, s.2.1.1 i j y h.1 h.2, ← hf j y h.2]`. Conclude with `congrArg _ (ev_res inf_le_right hy _).symm`. Distinguish the cases in `h : y ∈ ptsIn p (RingHom.id ℂ) (B.U i)`. Conclude with `hf i y h`.
+
+Conclude with `(ev_of_notMem h _).trans (s.2.1.2 i y h).symm`.
+-/
 theorem GlobalTheory.Published.serreHolomorphicSections_holds : GlobalTheory.Published.SerreHolomorphicSections := by
   intro Y p D hs hp R B hB
   refine ⟨fun s t h => ?_, fun s => ?_⟩
@@ -50,6 +65,9 @@ theorem GlobalTheory.Published.serreHolomorphicSections_holds : GlobalTheory.Pub
     · exact hf i y h
     · exact (ev_of_notMem h _).trans (s.2.1.2 i y h).symm
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.Published.serreHolomorphicSections_holds.bijective_valC hp R hB`.
+-/
 theorem GlobalTheory.AnRead.bijective_valC {F : Type} [Field F] {Y : Scheme.{0}} {p : Y ⟶ Sp F} {σ : F →+* ℂ} {D : ℕ}
     [SmoothOfRelativeDimension D p] (hp : IsProjOver p) (R : AnRead p σ D) {B : LB Y} (hB : B.IsLB) :
     Function.Bijective (R.valC B) :=

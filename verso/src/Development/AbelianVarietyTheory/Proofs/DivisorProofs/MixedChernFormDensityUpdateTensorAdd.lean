@@ -13,6 +13,11 @@ open GlobalTheory GlobalTheory.Cartier GlobalTheory.CxPts GlobalTheory.Points Gl
 
 namespace GlobalTheory.Mix
 
+/- English proof (translation)
+Establish `key : ∀ R : Matrix (Fin D) (Fin D) ℂ, (Matrix.of fun j l => Function.update F i R (τ l) j l) = (Matrix.of fun j l => Function.update F i 0 (τ l) j l).updateCol (τ.symm i) (fun j => R j (τ.symm i))`. Introduce `R`. Use extensionality with `j l`. Distinguish the cases in `h : l = τ.symm i`. Substitute `h` using the available equality.
+
+Simplify using the standard rewrite rules. Establish `hl : τ l ≠ i` using `fun e => h (by rw [← e, Equiv.symm_apply_apply])`. Simplify using `[Matrix.updateCol_ne h, Function.update_of_ne hl]`. Rewrite using `[key (P + Q), key P, key Q, ← Matrix.det_updateCol_add]`. Both sides reduce to the same expression.
+-/
 theorem det_perm_update_add {D : ℕ} (F : Fin D → Matrix (Fin D) (Fin D) ℂ) (i : Fin D)
     (P Q : Matrix (Fin D) (Fin D) ℂ) (τ : Equiv.Perm (Fin D)) :
     (Matrix.of fun j l => Function.update F i (P + Q) (τ l) j l).det =
@@ -31,6 +36,15 @@ theorem det_perm_update_add {D : ℕ} (F : Fin D → Matrix (Fin D) (Fin D) ℂ)
   rw [key (P + Q), key P, key Q, ← Matrix.det_updateCol_add]
   rfl
 
+/- English proof (translation)
+Introduce `k _ X p σ D L i A B c y hy`. Set `G : MLine p σ → Matrix (Fin D) (Fin D) ℂ` to `fun M => c.hess M.φ (pick M.φ.isLB y) y`. Establish `hd : ∀ L' : Fin D → MLine p σ, dens L' c y = (Real.pi ^ D)⁻¹ * (∑ τ : Equiv.Perm (Fin D), (Matrix.of fun j l => (G ∘ L') (τ l) j l).det).re` using `fun _ => rfl`. Establish `hT : G (A.tens B) = G A + G B`. Establish `ha` using `mem_pick A.φ.isLB y`.
+
+Establish `hb` using `mem_pick B.φ.isLB y`. Establish `hab : y ∈ ptsIn p σ ((A.tens B).B.U (pick A.φ.isLB y, pick B.φ.isLB y))` using `mem_ptsIn_inf.2 ⟨ha, hb⟩`. Use `show c.hess (A.tens B).φ _ y = _`. Rewrite using `[c.hess_eq (A.tens B).cInf hy hab (mem_pick _ y)]`. Establish `ho` using `isOpen_over c.e (isOpen_ptsIn (p := p) (σ := σ) (A.B.U (pick A.φ.isLB y) ⊓ B.B.U (pick B.φ.isLB y)))`.
+
+Establish `hm` using `mem_over c.e hy (mem_ptsIn_inf.2 ⟨ha, hb⟩)`. Establish `e` using `ReciprocityTheory.L2DbarEstimates.I.MongeAmpereIntegrability.cHess_add_smul ho ((contDiffOn_chart (A.cInf _) c).mono fun v hv => ⟨hv.1, (mem_ptsIn_inf.1 hv.2).1⟩) ((contDiffOn_chart (B.cInf _) c).mono fun v hv => ⟨hv.1, (mem_ptsIn_inf.1 hv.2).2⟩) 1 hm`. Simplify using `only [one_mul, Complex.ofReal_one, one_smul, Function.comp_apply] at e`. Conclude with `e`. Rewrite using `[hd, hd, hd, Function.comp_update, Function.comp_update, Function.comp_update, hT]`.
+
+Simplify using `only [det_perm_update_add, Finset.sum_add_distrib, Complex.add_re]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem dens_update_tens : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) (σ : k →+* ℂ) (D : ℕ) (L : Fin D → MLine p σ) (i : Fin D) (A B : MLine p σ) (c : AlgChart p σ D), ∀ y ∈ c.e.source, dens (Function.update L i (A.tens B)) c y = dens (Function.update L i A) c y + dens (Function.update L i B) c y := by
   intro k _ X p σ D L i A B c y hy
   let G : MLine p σ → Matrix (Fin D) (Fin D) ℂ := fun M => c.hess M.φ (pick M.φ.isLB y) y

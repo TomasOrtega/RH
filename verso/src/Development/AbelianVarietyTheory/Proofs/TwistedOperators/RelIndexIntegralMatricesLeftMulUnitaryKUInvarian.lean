@@ -13,6 +13,13 @@ namespace GlobalTheory.InertHomIdx
 
 open Formalism.UG in
 
+/- English proof (translation)
+Take `⟨h, rfl⟩` from `hg`. Establish `hint : ∀ (a : GL (Fin r) (intL L)) (X : Matrix (Fin r) (Fin n) L), X ∈ intMat L r n → lmul (n` using `n) ((Formalism.UG.bc (n := Fin r) (intL L).subtype a : GL (Fin r) L) : Matrix (Fin r) (Fin r) L) X ∈ intMat L r n := by`. Introduce `a X hX i j`. Rewrite using `[lmul_apply, Matrix.mul_apply]`. Use `Subring.sum_mem _ fun k _ => Subring.mul_mem _ ?_ (hX k j)` and prove the remaining obligations.
+
+Conclude with `((a : Matrix (Fin r) (Fin r) (intL L)) i k).2`. Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨X, hX, rfl⟩`. Conclude with `hint h X hX`. Introduce `X hX`.
+
+Use `⟨lmul (n := n) ((Formalism.UG.bc (n := Fin r) (intL L).subtype h⁻¹ : GL (Fin r) L) : Matrix (Fin r) (Fin r) L) X, hint h⁻¹ X hX, ?_⟩` and prove the remaining obligations. Simplify using `only [lmul_apply]`. Rewrite using `[← Matrix.mul_assoc, ← Units.val_mul, ← map_mul, mul_inv_cancel, map_one, Units.val_one, Matrix.one_mul]`.
+-/
 theorem intMat_map_lmul_of_mem_range {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))]
     {r n : ℕ} {g : GL (Fin r) L} (hg : g ∈ (Formalism.UG.bc (n := Fin r) (intL L).subtype).range) :
     (intMat L r n).map (lmul (n := n) (g : Matrix (Fin r) (Fin r) L)) = intMat L r n := by
@@ -33,6 +40,13 @@ theorem intMat_map_lmul_of_mem_range {L : Type} [Field L] [Valued L (WithZero (M
     simp only [lmul_apply]
     rw [← Matrix.mul_assoc, ← Units.val_mul, ← map_mul, mul_inv_cancel, map_one, Units.val_one, Matrix.one_mul]
 
+/- English proof (translation)
+Establish `h₁` using `intMat_map_lmul_of_mem_range (n := n) ((Subgroup.mem_subgroupOf.mp hk₁)).2`. Establish `h₂` using `intMat_map_lmul_of_mem_range (n := n) ((Subgroup.mem_subgroupOf.mp hk₂)).2`. Establish `hcomp : (lmul (n` using `n) (k₁ * t * k₂).1.1) = (lmul (n := n) k₁.1.1).comp ((lmul (n := n) t.1.1).comp (lmul (n := n) k₂.1.1)) := by`. Use extensionality with `X : 1`. Simplify using `only [lmul_apply, AddMonoidHom.comp_apply, Subgroup.coe_mul, Units.val_mul, Matrix.mul_assoc]`.
+
+Establish `hinj : Function.Injective (lmul (n` using `n) k₁.1.1) := by`. Introduce `X Y hXY`. Use `congrArg (fun Z => ((k₁.1⁻¹ : GL (Fin r) L) : Matrix (Fin r) (Fin r) L) * Z) hXY` as an intermediate fact. Simplify `this` using `only [lmul_apply, ← Matrix.mul_assoc, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mul]`. Rewrite using `[hcomp, ← AddSubgroup.map_map, ← AddSubgroup.map_map, h₂]`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem relIndex_intMat_lmul_KU {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))]
     (c : L →+* L) (r n : ℕ) (t k₁ k₂ : GU c r) (hk₁ : k₁ ∈ KU c r) (hk₂ : k₂ ∈ KU c r) :
     (intMat L r n).relIndex ((intMat L r n).map (lmul (k₁ * t * k₂).1.1)) =

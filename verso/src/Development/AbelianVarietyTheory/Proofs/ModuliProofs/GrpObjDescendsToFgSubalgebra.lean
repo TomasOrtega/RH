@@ -15,6 +15,11 @@ open GrpDense
 
 variable {Z U : Scheme.{0}} {j : U ⟶ Z}
 
+/- English proof (translation)
+Establish `hsd : IsSchemeTheoreticallyDominant (pullback.fst X.hom j)` using `inferInstance`. Set `t : Over.mk ((Over.mk (pullback.snd X.hom j) : Over U).hom ≫ j) ⟶ X` to `Over.homMk (pullback.fst X.hom j) pullback.condition`. Establish `ht : t ≫ f = t ≫ g` using `h _ t`. Establish `hdom : IsSchemeTheoreticallyDominant ((equalizer.lift t ht).left ≫ (equalizer.ι f g).left)`. Rewrite using `[← Over.comp_left, equalizer.lift_ι]`.
+
+Conclude with `hsd`. Establish `hker : (equalizer.ι f g).left.ker = ⊥` using `le_bot_iff.mp ((Scheme.Hom.le_ker_comp _ _).trans hdom.ker_eq_bot.le)`. Establish `: IsIso (equalizer.ι f g).left` using `IsClosedImmersion.isIso_iff_ker_eq_bot.mpr hker`. Use `ext1`. Rewrite using `[← cancel_epi (equalizer.ι f g).left, ← Over.comp_left, ← Over.comp_left, equalizer.condition]`.
+-/
 theorem hom_ext_of_points (j : U ⟶ Z) [QuasiCompact j] [IsSchemeTheoreticallyDominant j] {X Y : Over Z}
     [Flat X.hom] [IsSeparated Y.hom] {f g : X ⟶ Y}
     (h : ∀ (T : Over U) (t : Over.mk (T.hom ≫ j) ⟶ X), t ≫ f = t ≫ g) : f = g := by
@@ -37,6 +42,11 @@ variable {G : Over Z} {A : Over U} {φ : A.left ⟶ G.left}
 def sq (w : φ ≫ G.hom = A.hom ≫ j) : (A ⊗ A).left ⟶ (G ⊗ G).left :=
   (lift (pushPt w (fst A A)) (pushPt w (snd A A))).left
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Simplify using `only [sq]`. Rewrite using `[← Over.comp_left, lift_fst]`. Both sides reduce to the same expression. Simplify using `only [sq]`.
+
+Rewrite using `[← Over.comp_left, lift_snd]`. Both sides reduce to the same expression.
+-/
 theorem isSquare_sq (w : φ ≫ G.hom = A.hom ≫ j) : IsSquare φ (sq w) := by
   constructor
   · simp only [sq]
@@ -46,6 +56,11 @@ theorem isSquare_sq (w : φ ≫ G.hom = A.hom ≫ j) : IsSquare φ (sq w) := by
     rw [← Over.comp_left, lift_snd]
     rfl
 
+/- English proof (translation)
+Establish `hab : a ≫ (G ⊗ G).hom = b ≫ (G ⊗ G).hom`. Rewrite using `[← Over.w (fst G G), ← Category.assoc, ← Category.assoc, h₁]`. Set `a' : Over.mk (a ≫ (G ⊗ G).hom) ⟶ G ⊗ G` to `Over.homMk a rfl`. Set `b' : Over.mk (a ≫ (G ⊗ G).hom) ⟶ G ⊗ G` to `Over.homMk b hab.symm`. Establish `e : a' = b'` using `CartesianMonoidalCategory.hom_ext _ _ (Over.OverMorphism.ext (by simpa [a', b'] using h₁)) (Over.OverMorphism.ext (by simpa [a', b'] using h₂))`.
+
+Conclude with `congrArg CommaMorphism.left e`.
+-/
 theorem sq_ext {W : Scheme.{0}} {a b : W ⟶ (G ⊗ G).left} (h₁ : a ≫ (fst G G).left = b ≫ (fst G G).left)
     (h₂ : a ≫ (snd G G).left = b ≫ (snd G G).left) : a = b := by
   have hab : a ≫ (G ⊗ G).hom = b ≫ (G ⊗ G).hom := by
@@ -57,9 +72,27 @@ theorem sq_ext {W : Scheme.{0}} {a b : W ⟶ (G ⊗ G).left} (h₁ : a ≫ (fst 
     (Over.OverMorphism.ext (by simpa [a', b'] using h₂))
   exact congrArg CommaMorphism.left e
 
+/- English proof (translation)
+The claim follows from `sq_ext (h.1.trans (isSquare_sq w).1.symm) (h.2.trans (isSquare_sq w).2.symm)`.
+-/
 theorem eq_sq (w : φ ≫ G.hom = A.hom ≫ j) {φ₂ : (A ⊗ A).left ⟶ (G ⊗ G).left} (h : IsSquare φ φ₂) :
     φ₂ = sq w := sq_ext (h.1.trans (isSquare_sq w).1.symm) (h.2.trans (isSquare_sq w).2.symm)
 
+/- English proof (translation)
+Establish `hs` using `isSquare_sq hA.w`. Establish `comm : sq hA.w ≫ (G ⊗ G).hom = (A ⊗ A).hom ≫ j`. Rewrite using `[← Over.w (fst G G), ← Category.assoc, hs.1, Category.assoc, hA.w, ← Category.assoc, Over.w (fst A A)]`. Set `u : ∀ (s : PullbackCone (G ⊗ G).hom j) (p : G ⊗ G ⟶ G), s.pt ⟶ A.left` to `fun s p => hA.lift (s.fst ≫ p.left) s.snd (by rw [Category.assoc, Over.w p, s.condition])`. Set `L : ∀ s : PullbackCone (G ⊗ G).hom j, s.pt ⟶ (A ⊗ A).left` to `fun s => (lift (Over.homMk (u s (fst G G)) (hA.lift_snd _ _ _) : Over.mk s.snd ⟶ A) (Over.homMk (u s (snd G G)) (hA.lift_snd _ _ _) : Over.mk s.snd ⟶ A)).left`.
+
+Establish `L1 : ∀ s, L s ≫ (fst A A).left = u s (fst G G)` using `fun s => by`. Simplify using `only [L]`. Rewrite using `[← Over.comp_left, lift_fst]`. Both sides reduce to the same expression. Establish `L2 : ∀ s, L s ≫ (snd A A).left = u s (snd G G)` using `fun s => by`.
+
+Simplify using `only [L]`. Rewrite using `[← Over.comp_left, lift_snd]`. Both sides reduce to the same expression. Establish `fl : ∀ s : PullbackCone (G ⊗ G).hom j, L s ≫ sq hA.w = s.fst` using `fun s => by`. Apply `sq_ext` to reduce the goal to its premises.
+
+Rewrite using `[Category.assoc, hs.1, ← Category.assoc, L1]`. Conclude with `hA.lift_fst _ _ _`. Rewrite using `[Category.assoc, hs.2, ← Category.assoc, L2]`. Conclude with `hA.lift_fst _ _ _`. Establish `fr : ∀ s : PullbackCone (G ⊗ G).hom j, L s ≫ (A ⊗ A).hom = s.snd` using `fun s => by`.
+
+Rewrite using `[← Over.w (fst A A), ← Category.assoc, L1]`. Conclude with `hA.lift_snd _ _ _`. Establish `un : ∀ (s : PullbackCone (G ⊗ G).hom j) (m : s.pt ⟶ (A ⊗ A).left), m ≫ sq hA.w = s.fst → m ≫ (A ⊗ A).hom = s.snd → m = L s` using `fun s m h1 h2 => by`. Apply `sq_ext` to reduce the goal to its premises. Rewrite using `[L1]`.
+
+Apply `hA.hom_ext` to reduce the goal to its premises. Rewrite using `[hA.lift_fst, Category.assoc, ← hs.1, ← Category.assoc, h1]`. Rewrite using `[hA.lift_snd, Category.assoc, Over.w (fst A A), h2]`. Rewrite using `[L2]`. Apply `hA.hom_ext` to reduce the goal to its premises.
+
+Rewrite using `[hA.lift_fst, Category.assoc, ← hs.2, ← Category.assoc, h1]`. Rewrite using `[hA.lift_snd, Category.assoc, Over.w (snd A A), h2]`. Conclude with `IsPullback.of_isLimit (PullbackCone.IsLimit.mk comm L fl fr un)`.
+-/
 theorem isPullback_sq (hA : IsPullback φ A.hom G.hom j) :
     IsPullback (sq hA.w) (A ⊗ A).hom (G ⊗ G).hom j := by
   have hs := isSquare_sq hA.w
@@ -101,16 +134,53 @@ theorem isPullback_sq (hA : IsPullback φ A.hom G.hom j) :
       · rw [hA.lift_snd, Category.assoc, Over.w (snd A A), h2]
   exact IsPullback.of_isLimit (PullbackCone.IsLimit.mk comm L fl fr un)
 
+/- English proof (translation)
+Rewrite using `[Over.tensorObj_hom]`. Use `infer_instance`.
+-/
 private theorem flat_tensor_hom {S : Scheme.{0}} (X Y : Over S) [Flat X.hom] [Flat Y.hom] :
     Flat (X ⊗ Y).hom := by
   rw [Over.tensorObj_hom]
   infer_instance
 
+/- English proof (translation)
+Use `show Flat (𝟙 S)`. Establish `: IsOpenImmersion (𝟙 S)` using `inferInstance`. Use `infer_instance`.
+-/
 private theorem flat_tensorUnit_hom {S : Scheme.{0}} : Flat (𝟙_ (Over S)).hom := by
   show Flat (𝟙 S)
   have : IsOpenImmersion (𝟙 S) := inferInstance
   infer_instance
 
+/- English proof (translation)
+Establish `hm' : ∀ φ₂ : (A ⊗ A).left ⟶ (G ⊗ G).left, IsSquare φ φ₂ → φ₂ ≫ m.left = (μ[A]).left ≫ φ` using `fun φ₂ hφ => by rw [eq_sq h.w hφ, hm]`. Establish `pmul : ∀ {T : Over U} (x y : T ⟶ A), lift (pushPt h.w x) (pushPt h.w y) ≫ m = pushPt h.w (x * y)` using `fun x y => GrpDense.pushPt_mul h.w hm' x y`. Establish `pinv : ∀ {T : Over U} (x : T ⟶ A), pushPt h.w x ≫ i = pushPt h.w x⁻¹` using `fun x => GrpDense.pushPt_inv h.w hi x`. Establish `pone : ∀ (T : Over U), toUnit _ ≫ e = pushPt h.w (1 : T ⟶ A)` using `fun T => GrpDense.pushPt_one h.w he T`. Establish `psurj : ∀ (T : Over U) (x₀ : Over.mk (T.hom ≫ j) ⟶ G), ∃ x : T ⟶ A, pushPt h.w x = x₀` using `GrpDense.pushPt_surjective h`.
+
+Establish `: Flat (𝟙_ (Over Z)).hom` using `flat_tensorUnit_hom`. Establish `: Flat (G ⊗ G).hom` using `flat_tensor_hom G G`. Establish `: Flat ((G ⊗ G) ⊗ G).hom` using `flat_tensor_hom _ G`. Establish `: Flat (𝟙_ (Over Z) ⊗ G).hom` using `flat_tensor_hom _ G`. Establish `: Flat (G ⊗ 𝟙_ (Over Z)).hom` using `flat_tensor_hom G _`.
+
+Use `letI inst : GrpObj G := { one := e mul := m inv := i one_mul := by`. Apply `hom_ext_of_points j` to reduce the goal to its premises. Introduce `T t`. Take `⟨x, hx⟩` from `psurj T (t ≫ snd _ _)`. Establish `ht : t ≫ e ▷ G = lift (pushPt h.w 1) (pushPt h.w x)`.
+
+Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, whiskerRight_fst, ← Category.assoc, toUnit_unique (t ≫ fst _ _) (toUnit _), pone, lift_fst]`. Rewrite using `[Category.assoc, whiskerRight_snd, hx, lift_snd]`. Rewrite using `[← Category.assoc, ht, pmul, _root_.one_mul, hx, leftUnitor_hom]`. Use `mul_one := by`.
+
+Apply `hom_ext_of_points j` to reduce the goal to its premises. Introduce `T t`. Take `⟨x, hx⟩` from `psurj T (t ≫ fst _ _)`. Establish `ht : t ≫ G ◁ e = lift (pushPt h.w x) (pushPt h.w 1)`. Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises.
+
+Rewrite using `[Category.assoc, whiskerLeft_fst, hx, lift_fst]`. Rewrite using `[Category.assoc, whiskerLeft_snd, ← Category.assoc, toUnit_unique (t ≫ snd _ _) (toUnit _), pone, lift_snd]`. Rewrite using `[← Category.assoc, ht, pmul, _root_.mul_one, hx, rightUnitor_hom]`. Use `mul_assoc := by`. Apply `hom_ext_of_points j` to reduce the goal to its premises.
+
+Introduce `T t`. Take `⟨x, hx⟩` from `psurj T (t ≫ fst _ _ ≫ fst _ _)`. Take `⟨y, hy⟩` from `psurj T (t ≫ fst _ _ ≫ snd _ _)`. Take `⟨z, hz⟩` from `psurj T (t ≫ snd _ _)`. Establish `ht : t = lift (lift (pushPt h.w x) (pushPt h.w y)) (pushPt h.w z)`.
+
+Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises. Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises. Simplify using `only [Category.assoc, lift_fst]`. Conclude with `hx.symm`. Simplify using `only [Category.assoc, lift_fst_assoc, lift_snd]`.
+
+Conclude with `hy.symm`. Simplify using `only [lift_snd]`. Conclude with `hz.symm`. Rewrite using `[ht, lift_whiskerRight_assoc, pmul, pmul, lift_lift_associator_hom_assoc, lift_whiskerLeft_assoc, pmul, pmul, _root_.mul_assoc]`. Use `left_inv := by`.
+
+Apply `hom_ext_of_points j` to reduce the goal to its premises. Introduce `T t`. Take `⟨x, hx⟩` from `psurj T t`. Rewrite using `[← hx, ← Category.assoc, comp_lift, pinv, Category.comp_id, pmul, _root_.inv_mul_cancel, ← Category.assoc, toUnit_unique (pushPt h.w x ≫ toUnit _) (toUnit _), pone]`. Use `right_inv := by`.
+
+Apply `hom_ext_of_points j` to reduce the goal to its premises. Introduce `T t`. Take `⟨x, hx⟩` from `psurj T t`. Rewrite using `[← hx, ← Category.assoc, comp_lift, pinv, Category.comp_id, pmul, _root_.mul_inv_cancel, ← Category.assoc, toUnit_unique (pushPt h.w x ≫ toUnit _) (toUnit _), pone] }`. Use `⟨inst, ⟨?_⟩, ⟨h, ?_⟩⟩` and prove the remaining obligations.
+
+Apply `hom_ext_of_points j` to reduce the goal to its premises. Introduce `T t`. Take `⟨x, hx⟩` from `psurj T (t ≫ fst _ _)`. Take `⟨y, hy⟩` from `psurj T (t ≫ snd _ _)`. Establish `ht : t = lift (pushPt h.w x) (pushPt h.w y)`.
+
+Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises. Rewrite using `[hx, lift_fst]`. Rewrite using `[hy, lift_snd]`. Use `show t ≫ (β_ G G).hom ≫ m = t ≫ m`. Rewrite using `[ht, lift_braiding_hom_assoc, pmul, pmul, _root_.mul_comm]`.
+
+Introduce `T x y x₀ y₀ hx hy`. Establish `ex : x₀ = pushPt h.w x` using `Over.OverMorphism.ext hx`. Establish `ey : y₀ = pushPt h.w y` using `Over.OverMorphism.ext hy`. Rewrite using `[ex, ey]`. Use `show (lift (pushPt h.w x) (pushPt h.w y) ≫ m).left = _`.
+
+Rewrite using `[pmul]`. Both sides reduce to the same expression.
+-/
 theorem exists_grpObj (j : U ⟶ Z) [QuasiCompact j] [IsSchemeTheoreticallyDominant j] [Flat G.hom]
     [IsSeparated G.hom] [GrpObj A] [IsCommMonObj A] (h : IsPullback φ A.hom G.hom j)
     (m : G ⊗ G ⟶ G) (i : G ⟶ G) (e : 𝟙_ (Over Z) ⟶ G)
@@ -204,6 +274,15 @@ theorem exists_grpObj (j : U ⟶ Z) [QuasiCompact j] [IsSchemeTheoreticallyDomin
     rw [pmul]
     rfl
 
+/- English proof (translation)
+Set `φ' : pullback pB (spMap (algebraMap k V)) ⟶ X` to `hb.isoPullback.inv ≫ f`. Establish `hφ' : φ' ≫ p = pullback.fst _ _ ≫ pB`. Simplify using `only [φ', Category.assoc, hf, hb.isoPullback_inv_fst_assoc]`. Take `⟨R, ψ, hR, hψp, hψ⟩` from `GlobalTheory.Spread.exists_fg_comp_eq pB p φ' hφ'`. Use `⟨R, hR, fun R' hRR' B₁ q₁ b₁ c h1 h2 h3 => ?_⟩` and prove the remaining obligations.
+
+Establish `cond : b₁ ≫ pB = (q₁ ≫ spMap (Subalgebra.inclusion hRR').toRingHom) ≫ spMap (algebraMap k R)`. Rewrite using `[h1, Category.assoc, GlobalTheory.Spread.spMap_algHom_comp]`. Use `⟨pullback.lift b₁ _ cond ≫ ψ, ?_, ?_⟩` and prove the remaining obligations. Establish `e : (R'.val.toRingHom).comp (Subalgebra.inclusion hRR').toRingHom = R.val.toRingHom` using `by ext; rfl`. Establish `key : c ≫ pullback.lift b₁ _ cond = hb.isoPullback.hom ≫ GlobalTheory.Spread.bcMap pB R.val`.
+
+Apply `pullback.hom_ext` to reduce the goal to its premises. Simplify using `only [Category.assoc, pullback.lift_fst, GlobalTheory.Spread.bcMap_fst, hb.isoPullback_hom_fst, h2]`. Simplify using `only [Category.assoc, pullback.lift_snd, GlobalTheory.Spread.bcMap_snd, hb.isoPullback_hom_snd_assoc]`. Rewrite using `[← Category.assoc, h3, Category.assoc, ← spMap_comp, e]`. Rewrite using `[← Category.assoc, key, Category.assoc, hψ, Iso.hom_inv_id_assoc]`.
+
+Rewrite using `[Category.assoc, hψp, pullback.lift_fst_assoc, h1]`.
+-/
 theorem exists_fg_descent {k V : Type} [CommRing k] [CommRing V] [Algebra k V] {B B' X : Scheme.{0}}
     (pB : B ⟶ Sp k) [QuasiCompact pB] [QuasiSeparated pB] (p : X ⟶ Sp k) [LocallyOfFinitePresentation p]
     {q' : B' ⟶ Sp V} {b : B' ⟶ B} (hb : IsPullback b q' pB (spMap (algebraMap k V))) (f : B' ⟶ X)
@@ -236,6 +315,39 @@ namespace GlobalTheory
 
 open GrpSpread
 
+/- English proof (translation)
+Introduce `k V _ _ _ A _ _ X p φ F hsm hsep hqc hA`. Set `G : Over (Sp k)` to `Over.mk p`. Establish `hAG : IsPullback φ A.hom G.hom (spMap (algebraMap k V))` using `hA`. Establish `: QuasiCompact (G ⊗ G).hom`. Rewrite using `[Over.tensorObj_hom]`.
+
+Use `show QuasiCompact (pullback.fst p p ≫ p)`. Use `infer_instance`. Establish `: QuasiSeparated (G ⊗ G).hom`. Rewrite using `[Over.tensorObj_hom]`. Use `show QuasiSeparated (pullback.fst p p ≫ p)`.
+
+Use `infer_instance`. Establish `: LocallyOfFinitePresentation p` using `inferInstance`. Establish `hf₁ : ((μ[A]).left ≫ φ) ≫ p = sq hAG.w ≫ (G ⊗ G).hom`. Rewrite using `[Category.assoc, hA.w, ← Category.assoc, Over.w (μ[A]), (isPullback_sq hAG).w]`. Take `⟨R₁, hR₁, H₁⟩` from `exists_fg_descent (G ⊗ G).hom p (isPullback_sq hAG) _ hf₁`.
+
+Establish `hf₂ : ((ι[A]).left ≫ φ) ≫ p = φ ≫ p`. Rewrite using `[Category.assoc, hA.w, ← Category.assoc, Over.w (ι[A])]`. Take `⟨R₂, hR₂, H₂⟩` from `exists_fg_descent p p hA _ hf₂`. Establish `hf₃ : ((η[A]).left ≫ φ) ≫ p = spMap (algebraMap k V) ≫ 𝟙 (Sp k)`. Rewrite using `[Category.assoc, hA.w, ← Category.assoc, Over.w (η[A]), Category.comp_id]`.
+
+Conclude with `Category.id_comp _`. Take `⟨R₃, hR₃, H₃⟩` from `exists_fg_descent (𝟙 (Sp k)) p (IsPullback.id_vert (spMap (algebraMap k V))) ((η[A]).left ≫ φ) hf₃`. Set `R : Subalgebra k V` to `R₁ ⊔ R₂ ⊔ R₃ ⊔ Algebra.adjoin k (F : Set V)`. Establish `hRfg : R.FG` using `((hR₁.sup hR₂).sup hR₃).sup (Subalgebra.fg_adjoin_finset F)`. Establish `le₁ : R₁ ≤ R` using `le_sup_left.trans (le_sup_left.trans le_sup_left)`.
+
+Establish `le₂ : R₂ ≤ R` using `le_sup_right.trans (le_sup_left.trans le_sup_left)`. Establish `le₃ : R₃ ≤ R` using `le_sup_right.trans le_sup_left`. Establish `hF : (F : Set V) ⊆ R` using `fun x hx => (le_sup_right : Algebra.adjoin k (F : Set V) ≤ R) (Algebra.subset_adjoin hx)`. Take `⟨A₀, f₀, h₀, hsm₀, hse₀, hqc₀⟩ : ∃ (A₀ : Over (Sp R)) (f₀ : A₀.left ⟶ X), IsPullback f₀ A₀.hom p (spMap (algebraMap k R)) ∧ Smooth A₀.hom ∧ IsSeparated A₀.hom ∧ QuasiCompact A₀.hom` from `⟨Over.mk (pullback.snd p _), pullback.fst p _, IsPullback.of_hasPullback _ _, by dsimp; infer_instance, by dsimp; infer_instance, by dsimp; infer_instance⟩`. Establish `h₀G : IsPullback f₀ A₀.hom G.hom (spMap (algebraMap k R))` using `h₀`.
+
+Establish `hP` using `GlobalTheory.Spread.isPullback_bcMap (𝟙 (Sp k)) R.val`. Establish `: Flat (𝟙 (Sp k))`. Establish `: IsOpenImmersion (𝟙 (Sp k))` using `inferInstance`. Use `infer_instance`. Use `GlobalTheory.Spread.isSchemeTheoreticallyDominant_bcMap (𝟙 (Sp k)) R.val Subtype.val_injective` as an intermediate fact.
+
+Establish `eJ : spMap R.val.toRingHom = inv (pullback.snd (𝟙 (Sp k)) (spMap (algebraMap k V))) ≫ GlobalTheory.Spread.bcMap (𝟙 (Sp k)) R.val ≫ pullback.snd _ _`. Rewrite using `[hP.w, IsIso.inv_hom_id_assoc]`. Establish `: IsSchemeTheoreticallyDominant (spMap R.val.toRingHom)`. Rewrite using `[eJ]`. Use `infer_instance`.
+
+Establish `: QuasiCompact (spMap R.val.toRingHom)`. Rewrite using `[eJ]`. Use `infer_instance`. Establish `eV : spMap R.val.toRingHom ≫ spMap (algebraMap k R) = spMap (algebraMap k V)` using `GlobalTheory.Spread.spMap_algHom_comp R.val`. Take `⟨ψ, hψ₁, hψ₂⟩ : ∃ ψ : A.left ⟶ A₀.left, ψ ≫ f₀ = φ ∧ ψ ≫ A₀.hom = A.hom ≫ spMap R.val.toRingHom` from `⟨h₀.lift φ (A.hom ≫ spMap R.val.toRingHom) (by rw [hA.w, Category.assoc, eV]), h₀.lift_fst _ _ _, h₀.lift_snd _ _ _⟩`.
+
+Establish `hψ : IsPullback ψ A.hom A₀.hom (spMap R.val.toRingHom)`. Use `IsPullback.of_right ?_ hψ₂ h₀` and prove the remaining obligations. Rewrite using `[hψ₁, eV]`. Conclude with `hA`. Establish `c₂ : sq hψ.w ≫ sq h₀G.w = sq hAG.w`.
+
+Apply `sq_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, (isSquare_sq h₀G.w).1, ← Category.assoc, (isSquare_sq hψ.w).1, Category.assoc, hψ₁, (isSquare_sq hAG.w).1]`. Rewrite using `[Category.assoc, (isSquare_sq h₀G.w).2, ← Category.assoc, (isSquare_sq hψ.w).2, Category.assoc, hψ₁, (isSquare_sq hAG.w).2]`. Take `⟨g₁, hg₁, hg₁p⟩` from `H₁ R le₁ (A₀ ⊗ A₀).left (A₀ ⊗ A₀).hom (sq h₀G.w) (sq hψ.w) (isPullback_sq h₀G).w c₂ (isPullback_sq hψ).w`. Set `m₀ : A₀ ⊗ A₀ ⟶ A₀` to `Over.homMk (h₀.lift g₁ (A₀ ⊗ A₀).hom hg₁p) (h₀.lift_snd _ _ _)`.
+
+Establish `hm : sq hψ.w ≫ m₀.left = (μ[A]).left ≫ ψ`. Apply `h₀.hom_ext` to reduce the goal to its premises. Simplify using `only [m₀, Over.homMk_left]`. Rewrite using `[Category.assoc, h₀.lift_fst, hg₁, Category.assoc, hψ₁]`. Simplify using `only [m₀, Over.homMk_left]`.
+
+Rewrite using `[Category.assoc, h₀.lift_snd, (isPullback_sq hψ).w, Category.assoc, hψ₂, ← Category.assoc, Over.w (μ[A])]`. Take `⟨g₂, hg₂, hg₂p⟩` from `H₂ R le₂ A₀.left A₀.hom f₀ ψ h₀.w hψ₁ hψ₂`. Set `i₀ : A₀ ⟶ A₀` to `Over.homMk (h₀.lift g₂ A₀.hom hg₂p) (h₀.lift_snd _ _ _)`. Establish `hi : ψ ≫ i₀.left = (ι[A]).left ≫ ψ`. Apply `h₀.hom_ext` to reduce the goal to its premises.
+
+Simplify using `only [i₀, Over.homMk_left]`. Rewrite using `[Category.assoc, h₀.lift_fst, hg₂, Category.assoc, hψ₁]`. Simplify using `only [i₀, Over.homMk_left]`. Rewrite using `[Category.assoc, h₀.lift_snd, hψ₂, Category.assoc, hψ₂, ← Category.assoc, Over.w (ι[A])]`. Take `⟨g₃, hg₃, hg₃p⟩` from `H₃ R le₃ (Sp R) (𝟙 _) (spMap (algebraMap k R)) (spMap R.val.toRingHom) (by rw [Category.comp_id, Category.id_comp]) eV (by rw [Category.comp_id, Category.id_comp])`.
+
+Set `e₀ : 𝟙_ (Over (Sp R)) ⟶ A₀` to `Over.homMk (h₀.lift g₃ (𝟙 (Sp R)) hg₃p) (h₀.lift_snd _ _ _)`. Establish `he : spMap R.val.toRingHom ≫ e₀.left = (η[A]).left ≫ ψ`. Apply `h₀.hom_ext` to reduce the goal to its premises. Simplify using `only [e₀, Over.homMk_left]`. Rewrite using `[Category.assoc, h₀.lift_fst, hg₃, Category.assoc, hψ₁]`.
+
+Simplify using `only [e₀, Over.homMk_left]`. Rewrite using `[Category.assoc, h₀.lift_snd, Category.comp_id, Category.assoc, hψ₂, ← Category.assoc, Over.w (η[A])]`. Conclude with `(Category.id_comp _).symm`. Take `⟨inst, hcomm, hgp⟩` from `exists_grpObj (spMap R.val.toRingHom) hψ m₀ i₀ e₀ hm hi he`. Conclude with `⟨R, A₀, inst, hcomm, ψ, hF, hRfg, hsm₀, hse₀, hqc₀, hgp⟩`.
+-/
 theorem grpObj_descends_to_fg_subalgebra :
     ∀ (k V : Type) [CommRing k] [CommRing V] [Algebra k V] (A : Over (Sp V)) [GrpObj A] [IsCommMonObj A] (X : Scheme.{0}) (p : X ⟶ Sp k) (φ : A.left ⟶ X) (F : Finset V), Smooth p → IsSeparated p → QuasiCompact p → IsPullback φ A.hom p (spMap (algebraMap k V)) → ∃ (R : Subalgebra k V) (A₀ : Over (Sp R)) (_ : GrpObj A₀) (_ : IsCommMonObj A₀) (ψ : A.left ⟶ A₀.left), (F : Set V) ⊆ R ∧ R.FG ∧ Smooth A₀.hom ∧ IsSeparated A₀.hom ∧ QuasiCompact A₀.hom ∧ IsGrpPullback A A₀ (spMap R.val.toRingHom) ψ := by
   intro k V _ _ _ A _ _ X p φ F hsm hsep hqc hA

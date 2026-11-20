@@ -6,6 +6,11 @@ open scoped Formalism.Per NNReal
 
 namespace GlobalTheory.BSP
 
+/- English proof (translation)
+Introduce `A A' _ _ k N _ _ N' _ _ τ t t' a y y' z m z' n i j h1 h2 h3 h4 h5`. Unfold `IsFrac at h1 h2 h3 h4`. Take `⟨⟨_, r₁, rfl⟩, e1⟩` from `LocalizedModule.mk_eq.1 (h1.symm.trans h2)`. Take `⟨⟨_, r₂, rfl⟩, e2⟩` from `LocalizedModule.mk_eq.1 (h3.symm.trans h4)`. Simplify using `only [Submonoid.smul_def] at e1 e2`.
+
+Establish `e3` using `congrArg τ e1`. Simplify using `only [map_smulₛₗ, map_pow] at e3`. Use `⟨r₁ + r₂ + a, ?_⟩` and prove the remaining obligations. Take the linear combination `(norm := skip) (-(k t ^ r₂ * t' ^ (r₁ + r₂ + a) * t' ^ j)) • e3 + (k t ^ (r₂ + r₁ + i) * t' ^ (r₁ + r₂ + j)) • h5 + (k t ^ (r₁ + r₂ + a + i) * t' ^ r₁) • e2`. Apply the tactic sequence `match_scalars <;> ring`.
+-/
 theorem isFrac_transition : ∀ (A A' : Type) [CommRing A] [CommRing A'] (k : A →+* A') (N : Type) [AddCommGroup N] [Module A N] (N' : Type) [AddCommGroup N'] [Module A' N'] (τ : N →ₛₗ[k] N') (t : A) (t' : A') (a : ℕ) (y : LocalizedModule (Submonoid.powers t) N) (y' : LocalizedModule (Submonoid.powers t') N') (z m : N) (z' n : N') (i j : ℕ), IsFrac t y z a → IsFrac t y m i → IsFrac t' y' z' a → IsFrac t' y' n j → t' ^ a • τ z = k t ^ a • z' → ∃ r : ℕ, (k t * t') ^ r • (t' ^ j • τ m - k t ^ i • n) = 0 := by
   intro A A' _ _ k N _ _ N' _ _ τ t t' a y y' z m z' n i j h1 h2 h3 h4 h5
   unfold IsFrac at h1 h2 h3 h4

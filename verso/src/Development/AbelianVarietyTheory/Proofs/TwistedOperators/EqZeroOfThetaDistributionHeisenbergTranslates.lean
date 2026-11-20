@@ -22,6 +22,15 @@ noncomputable section
 
 namespace GlobalTheory.ThetaSeparates
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ n d Y Wd M ψ hψ Φ hΦ h`. Use `letI : MeasurableSpace (Fin n × Fin d → AF F) := borel _`. Use `haveI : BorelSpace (Fin n × Fin d → AF F) := ⟨rfl⟩`. Use `haveI : LocallyCompactSpace (AF F) := GlobalTheory.AdelicUnitaryTop.locallyCompact_adele F`. Set `μ : Measure (Fin n × Fin d → AF F)` to `Measure.addHaar`.
+
+Take `⟨𝓕₁, hF, h0, htop⟩` from `GlobalTheory.RatVecDomain.exists_fundamentalDomain F (Fin n × Fin d) μ inferInstance`. Use function extensionality and compare the values at `x`. Establish `hP` using `GlobalTheory.ThetaParsevalInner.lintegral_thetaSum_schr_sq F ψ (GlobalTheory.StdCharFromIsStd.isCharAF hψ) (Fin n × Fin d) μ inferInstance 𝓕₁ hF htop Φ hΦ x`. Establish `hz : ∀ y, GlobalTheory.WeilM.thetaSum F (GlobalTheory.WeilM.schr ψ (x, y) Φ) = 0`. Introduce `y`.
+
+Use `h (M.co.e.symm (x, y))` as an intermediate fact. Simplify `this` using `[GlobalTheory.WeilM.Darboux.rho]`. Simplify using `only [hz, enorm_zero, ne_eq, OfNat.ofNat_ne_zero, not_false_eq_true, zero_pow, MeasureTheory.lintegral_zero] at hP`. Establish `hs` using `(mul_eq_zero.mp hP.symm).resolve_left h0`. Establish `h1` using `ENNReal.tsum_eq_zero.mp hs 0`.
+
+Establish `e : ((fun _ => (0 : AF F)) : Fin n × Fin d → AF F) + x = x` using `zero_add x`. Simplify using `only [map_zero, enorm_eq_zero, ne_eq, OfNat.ofNat_ne_zero, not_false_eq_true, pow_eq_zero_iff] at h1`. Simplify `h1` using `[e]`.
+-/
 theorem eq_zero_of_thetaSum_rho : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n d : ℕ}
     {Y : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E n} {Wd : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E d} (M : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Model σ Y Wd)
     (ψ : AddChar (AF F) ℂ), GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsStd ψ → ∀ Φ ∈ GlobalTheory.WeilM.schA F (Fin n × Fin d),

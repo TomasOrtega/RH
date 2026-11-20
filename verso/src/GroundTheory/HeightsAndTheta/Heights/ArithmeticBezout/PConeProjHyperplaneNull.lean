@@ -9,6 +9,11 @@ namespace GroundTheory.Heights₂.Heights
 
 open MvPolynomial MeasureTheory
 
+/- English proof (translation)
+Introduce `n e P Ψ hP hΨ`. Use `set J : Ideal (MvPolynomial (Fin n) ℂ) := complexFibreIdeal P ⊔ Ideal.span {coneFirstForm Ψ} with hJ`. Establish `hlt : ringKrullDim (MvPolynomial (Fin n) ℂ ⧸ J) < ((e + 1 : ℕ) : WithBot ℕ∞)` using `(hDim n e P Ψ hP hΨ).trans_lt (by exact_mod_cast Nat.lt_succ_self e)`. Use `measure_mono_null (fun z hz => ?_) (hNull n (e + 1) J hlt)` and prove the remaining obligations. Introduce `q hq`.
+
+Take `⟨a, ha, b, hb, rfl⟩` from `Submodule.mem_sup.mp hq`. Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton'.mp hb`. Rewrite using `[map_add, map_mul, hz.1 a ha, eval_coneFirstForm, hz.2, mul_zero, add_zero]`.
+-/
 theorem ConeProjHyperplaneNull.proof (hNull : NullSmaller.Statement)
     (hDim : ConeProjHyperplaneDim.Statement) : ConeProjHyperplaneNull.Statement := by
   intro n e P Ψ hP hΨ

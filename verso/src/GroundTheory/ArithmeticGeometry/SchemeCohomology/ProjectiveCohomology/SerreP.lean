@@ -24,6 +24,19 @@ variable {A : Type u} [CommRing A] [IsNoetherianRing A] {n : ℕ}
 
 attribute [local instance] algebraOfOver
 
+/- English proof (translation)
+Use `hG.1` as an intermediate fact. Take `⟨q₀, hq₀⟩` from `exists_generatingSections_twist G hG`. Take `⟨σ, hσ⟩` from `hq₀ q₀ le_rfl`. Establish `: Finite σ.I` using `hσ.finite`. Set `ψ : freeP A n σ.I ⟶ twist G q₀` to `σ.π`.
+
+Establish `: Epi ψ` using `σ.epi`. Establish `hK : IsCoherent (kernel ψ)` using `isCoherent_kernel ψ (isCoherent_freeP σ.I)`. Set `S : ShortComplex (projectiveSpace A n).Modules` to `ShortComplex.mk (kernel.ι ψ) ψ (kernel.condition ψ)`. Establish `hS : S.ShortExact` using `⟨S.exact_of_f_is_kernel (kernelIsKernel ψ)⟩`. Establish `hSk : ∀ k : ℤ, (S.map (twistEquiv (A` using `A) (n := n) k).functor).ShortExact := fun k => shortExact_tensorEquiv _ hS`.
+
+Establish `eK : ∀ k : ℤ, (S.map (twistEquiv (A` using `A) (n := n) k).functor).X₁ ≅ twist (kernel ψ) k := fun k => eqToIso (twistEquiv_obj k _)`. Establish `eG : ∀ k : ℤ, (S.map (twistEquiv (A` using `A) (n := n) k).functor).X₃ ≅ twist G (q₀ + k) := fun k => eqToIso (twistEquiv_obj k _) ≪≫ twistTwistIso G q₀ k`. Prove the components needed by the constructor for the conclusion. Establish `h1 : Module.Finite A (Sheaf.H.{w'} (modulesAb (S.map (twistEquiv (A` using `A) (n := n) (-q₀)).functor).X₁) (p + 1)) :=`. Use `(ih _ (isCoherent_twist hK (-q₀))).1` as an intermediate fact.
+
+Use the proof step `Module.Finite.equiv (H.linearEquivOfIso A (eK (-q₀)) (p + 1)).symm`. Establish `h2 : Module.Finite A (Sheaf.H.{w'} (modulesAb (S.map (twistEquiv (A` using `A) (n := n) (-q₀)).functor).X₂) p) := finite_H_twist_free σ.I (-q₀) p`. Establish `h3` using `finite_H_X₃ A (hSk (-q₀)) p`. Establish `e : (S.map (twistEquiv (A` using `A) (n := n) (-q₀)).functor).X₃ ≅ G := eG (-q₀) ≪≫ eqToIso (congrArg (twist G) (add_neg_cancel (q₀ : ℤ))) ≪≫ twistZero G`. Conclude with `Module.Finite.equiv (H.linearEquivOfIso A e p)`.
+
+Introduce `hp`. Take `⟨q₁, hq₁⟩` from `(ih (kernel ψ) hK).2`. Use `⟨q₀ + q₁, fun q hq => ?_⟩` and prove the remaining obligations. Establish `h1 : Subsingleton (Sheaf.H.{w'} (modulesAb (S.map (twistEquiv (A` using `A) (n := n) ((q - q₀ : ℕ) : ℤ)).functor).X₁) (p + 1)) :=`. Use `hq₁ (q - q₀) (by omega)` as an intermediate fact.
+
+Use the proof step `(H.linearEquivOfIso A (eK ((q - q₀ : ℕ) : ℤ)) (p + 1)).toEquiv.subsingleton`. Establish `h2 : Subsingleton (Sheaf.H.{w'} (modulesAb (S.map (twistEquiv (A` using `A) (n := n) ((q - q₀ : ℕ) : ℤ)).functor).X₂) p) := subsingleton_H_twist_free σ.I (Int.natCast_nonneg _) hp`. Establish `h3` using `subsingleton_H_X₃ (hSk ((q - q₀ : ℕ) : ℤ)) p`. Establish `e : (S.map (twistEquiv (A` using `A) (n := n) ((q - q₀ : ℕ) : ℤ)).functor).X₃ ≅ twist G q := eG _ ≪≫ eqToIso (congrArg (twist G) (by omega))`. Conclude with `(H.linearEquivOfIso A e p).symm.toEquiv.subsingleton`.
+-/
 theorem serre_step (p : ℕ)
     (ih : ∀ R : (projectiveSpace A n).Modules, IsCoherent R →
       Module.Finite A (Sheaf.H.{w'} (modulesAb R) (p + 1)) ∧
@@ -75,6 +88,11 @@ theorem serre_step (p : ℕ)
       eG _ ≪≫ eqToIso (congrArg (twist G) (by omega))
     exact (H.linearEquivOfIso A e p).symm.toEquiv.subsingleton
 
+/- English proof (translation)
+Proceed by induction on `d with`. Consider the case `zero`. Introduce `p hp G hG`. Use `hG.1` as an intermediate fact. Establish `: Subsingleton (Sheaf.H.{w'} (modulesAb G) p)` using `subsingleton_H_of_lt G (by omega)`.
+
+Conclude with `⟨Module.Finite.of_finite, fun _ => ⟨0, fun q _ => subsingleton_H_of_lt (twist G q) (by omega)⟩⟩`. Consider the case `succ d ih`. Introduce `p hp G hG`. Conclude with `serre_step p (fun R hR => ⟨(ih (p + 1) (by omega) R hR).1, (ih (p + 1) (by omega) R hR).2 (Nat.succ_pos p)⟩) G hG`.
+-/
 theorem serre_all (d : ℕ) : ∀ p : ℕ, n < p + d →
     ∀ G : (projectiveSpace A n).Modules, IsCoherent G →
       Module.Finite A (Sheaf.H.{w'} (modulesAb G) p) ∧
@@ -92,10 +110,20 @@ theorem serre_all (d : ℕ) : ∀ p : ℕ, n < p + d →
     exact serre_step p (fun R hR => ⟨(ih (p + 1) (by omega) R hR).1,
       (ih (p + 1) (by omega) R hR).2 (Nat.succ_pos p)⟩) G hG
 
+/- English proof (translation)
+The claim follows from `(serre_all (n + 1) p (by omega) G hG).1`.
+-/
 theorem finite_H (G : (projectiveSpace A n).Modules) (hG : IsCoherent G) (p : ℕ) :
     Module.Finite A (Sheaf.H.{w'} (modulesAb G) p) :=
   (serre_all (n + 1) p (by omega) G hG).1
 
+/- English proof (translation)
+Establish `h : ∀ p : ℕ, ∃ q₀ : ℕ, ∀ q : ℕ, q₀ ≤ q → 0 < p → Subsingleton (Sheaf.H.{w'} (modulesAb (twist G q)) p)` using `fun p => by`. Break down `Nat.eq_zero_or_pos p with rfl | hp` into its components or cases. Conclude with `⟨0, fun _ _ h => absurd h (lt_irrefl 0)⟩`. Take `⟨q₀, hq₀⟩` from `(serre_all (n + 1) p (by omega) G hG).2 hp`. Conclude with `⟨q₀, fun q hq _ => hq₀ q hq⟩`.
+
+Use `choose f hf using h`. Use `⟨∑ p ∈ Finset.range (n + 1), f p, fun q hq p hp => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hpn : p ≤ n`. Conclude with `hf p q (le_trans (Finset.single_le_sum (fun _ _ => Nat.zero_le _) (Finset.mem_range.2 (by omega))) hq) hp`. Use `hG.1` as an intermediate fact.
+
+Conclude with `subsingleton_H_of_lt (twist G q) (by omega)`.
+-/
 theorem exists_subsingleton_H_twist (G : (projectiveSpace A n).Modules) (hG : IsCoherent G) :
     ∃ q₀ : ℕ, ∀ q : ℕ, q₀ ≤ q → ∀ p : ℕ, 0 < p →
       Subsingleton (Sheaf.H.{w'} (modulesAb (twist G q)) p) := by

@@ -9,12 +9,18 @@ section
 
 variable {F : Type} [Field F] [NumberField F] {l : ℕ} [Fact l.Prime]
 
+/- English proof (translation)
+Establish `: (l : Qbar l) = algebraMap ℚ_[l] (Qbar l) (l : ℚ_[l])` using `(map_natCast _ l).symm`. Rewrite using `[this, norm_algebraMap']`. Conclude with `Padic.norm_p_lt_one`.
+-/
 private theorem exL_norm_l : ‖(l : Qbar l)‖ < 1 := by
   have : (l : Qbar l) = algebraMap ℚ_[l] (Qbar l) (l : ℚ_[l]) := (map_natCast _ l).symm
   rw [this, norm_algebraMap']
   exact Padic.norm_p_lt_one
 
 omit [NumberField F] in
+/- English proof (translation)
+Establish `hy : IsIntegral ℤ (σ (x : F))` using `map_isIntegral_int σ (RingOfIntegers.isIntegral_coe x)`. Establish `h : IsIntegral (NormedField.valuation (K` using `Qbar l)).integer (σ (x : F)) := hy.tower_top`. Establish `h2` using `(Valuation.integer.integers (NormedField.valuation (K := Qbar l))).mem_of_integral h`. Rewrite `h2` using `[Valuation.mem_integer_iff, NormedField.valuation_apply]`. Conclude with `h2` after adjusting the coercions.
+-/
 private theorem exL_le (σ : F →+* Qbar l) (x : 𝓞 F) : ‖σ (x : F)‖ ≤ 1 := by
   have hy : IsIntegral ℤ (σ (x : F)) := map_isIntegral_int σ (RingOfIntegers.isIntegral_coe x)
   have h : IsIntegral (NormedField.valuation (K := Qbar l)).integer (σ (x : F)) := hy.tower_top
@@ -23,10 +29,24 @@ private theorem exL_le (σ : F →+* Qbar l) (x : 𝓞 F) : ‖σ (x : F)‖ ≤
   exact_mod_cast h2
 
 omit [NumberField F] in
+/- English proof (translation)
+Rewrite using `[h, show ((l : 𝓞 F) : F) = (l : F) from map_natCast (algebraMap (𝓞 F) F) l, map_natCast]`. Conclude with `exL_norm_l`.
+-/
 private theorem exL_mem {w : Pl F} {σ : F →+* Qbar l} (h : EmbAt w σ) : ((l : ℕ) : 𝓞 F) ∈ w.asIdeal := by
   rw [h, show ((l : 𝓞 F) : F) = (l : F) from map_natCast (algebraMap (𝓞 F) F) l, map_natCast]
   exact exL_norm_l
 
+/- English proof (translation)
+Set `ν : Valuation (𝓞 F) NNReal` to `(NormedField.valuation (K := Qbar l)).comap (σ.comp (algebraMap (𝓞 F) F))`. Establish `hν : ∀ x : 𝓞 F, ν x < 1 ↔ ‖σ (x : F)‖ < 1` using `fun x => Iff.rfl`. Establish `hle : ∀ x : 𝓞 F, ν x ≤ 1` using `fun x => exL_le σ x`. Set `I : Ideal (𝓞 F)` to `{ carrier := {x | ν x < 1} add_mem' := fun hx hy => ν.map_add_lt hx hy zero_mem' := by simp smul_mem' := fun c x hx => by`. Express the relevant statement in the definitionally equal form `ν (c * x) < 1`.
+
+Rewrite using `[map_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_left' (hle c)) hx }`. Establish `hI : ∀ x, x ∈ I ↔ ν x < 1` using `fun x => Iff.rfl`. Use `⟨⟨I, ⟨?_, ?_⟩, ?_⟩, fun x => Iff.rfl⟩` and prove the remaining obligations. Rewrite using `[Ideal.ne_top_iff_one, hI]`.
+
+Simplify using the standard rewrite rules. Introduce `x y hxy`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Rewrite `hxy` using `[hI, map_mul, le_antisymm (hle x) (not_lt.1 hc.1), le_antisymm (hle y) (not_lt.1 hc.2), one_mul]`.
+
+Conclude with `lt_irrefl _ hxy`. Introduce `h`. Establish `: ((l : ℕ) : 𝓞 F) ∈ I`. Rewrite using `[hI, hν, show ((l : 𝓞 F) : F) = (l : F) from map_natCast (algebraMap (𝓞 F) F) l, map_natCast]`. Conclude with `exL_norm_l`.
+
+Rewrite `this` using `[h, Ideal.mem_bot]`. Conclude with `(Fact.out : l.Prime).ne_zero (by exact_mod_cast this)`.
+-/
 private theorem exL_place (σ : F →+* Qbar l) : ∃ w : Pl F, EmbAt w σ := by
   let ν : Valuation (𝓞 F) NNReal := (NormedField.valuation (K := Qbar l)).comap (σ.comp (algebraMap (𝓞 F) F))
   have hν : ∀ x : 𝓞 F, ν x < 1 ↔ ‖σ (x : F)‖ < 1 := fun x => Iff.rfl
@@ -54,20 +74,36 @@ private theorem exL_place (σ : F →+* Qbar l) : ∃ w : Pl F, EmbAt w σ := by
     rw [h, Ideal.mem_bot] at this
     exact (Fact.out : l.Prime).ne_zero (by exact_mod_cast this)
 
+/- English proof (translation)
+The claim follows from `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' w x`.
+-/
 private theorem exL_val (w : Pl F) (x : F) :
     Valued.v (algebraMap F (w.adicCompletion F) x) = w.valuation F x :=
   HeightOneSpectrum.valuedAdicCompletion_eq_valuation' w x
 
+/- English proof (translation)
+Rewrite using `[exL_val]`. Conclude with `w.valuation_of_algebraMap x`.
+-/
 private theorem exL_valO (w : Pl F) (x : 𝓞 F) :
     Valued.v (algebraMap F (w.adicCompletion F) (x : F)) = w.intValuation x := by
   rw [exL_val]; exact w.valuation_of_algebraMap x
 
+/- English proof (translation)
+Use `exL_valO w (k : 𝓞 F)` as an intermediate fact. Rewrite `this` using `[show ((k : 𝓞 F) : F) = (k : F) from map_intCast (algebraMap (𝓞 F) F) k, map_intCast]`. Rewrite using `[this]`. Conclude with `w.intValuation_le_one _`.
+-/
 private theorem exL_int (w : Pl F) (k : ℤ) : Valued.v ((k : ℤ) : w.adicCompletion F) ≤ 1 := by
   have := exL_valO w (k : 𝓞 F)
   rw [show ((k : 𝓞 F) : F) = (k : F) from map_intCast (algebraMap (𝓞 F) F) k, map_intCast] at this
   rw [this]; exact w.intValuation_le_one _
 
 omit [Fact l.Prime] in
+/- English proof (translation)
+Use `exL_valO w (l : 𝓞 F)` as an intermediate fact. Rewrite `this` using `[show ((l : 𝓞 F) : F) = (l : F) from map_natCast (algebraMap (𝓞 F) F) l, map_natCast]`. Rewrite using `[this]`. Rewrite `h1` using `[← pow_one w.asIdeal, ← w.intValuation_le_pow_iff_mem]`. Rewrite `h2` using `[← w.intValuation_le_pow_iff_mem, not_le]`.
+
+Establish `h0 : w.intValuation (l : 𝓞 F) ≠ 0` using `(lt_of_le_of_lt zero_le h2).ne'`. Rewrite `h1`, `h2`, the goal using `[← WithZero.exp_log h0]`. Rewrite `h1` using `[WithZero.exp_le_exp]`. Rewrite `h2` using `[WithZero.exp_lt_exp]`. Use `congr 1`.
+
+Move the coercions through the operations in `at h1 h2`. Use linear arithmetic over natural numbers and integers.
+-/
 private theorem exL_unif {w : Pl F} (h1 : ((l : ℕ) : 𝓞 F) ∈ w.asIdeal) (h2 : ((l : ℕ) : 𝓞 F) ∉ w.asIdeal ^ 2) :
     Valued.v ((l : ℕ) : w.adicCompletion F) = WithZero.exp (-1 : ℤ) := by
   have := exL_valO w (l : 𝓞 F)
@@ -83,6 +119,9 @@ private theorem exL_unif {w : Pl F} (h1 : ((l : ℕ) : 𝓞 F) ∈ w.asIdeal) (h
   push_cast at h1 h2
   omega
 
+/- English proof (translation)
+Establish `h1 : Filter.Tendsto (fun n : ℕ => x ^ n) Filter.atTop (nhds 0)` using `Valued.tendsto_zero_pow_of_v_lt_one hx`. Establish `h2` using `(hJ.tendsto 0).comp h1`. Rewrite `h2` using `[map_zero]`. Rewrite using `[← tendsto_pow_atTop_nhds_zero_iff_norm_lt_one]`. Simplify `h2` using `[Function.comp_def]`.
+-/
 private theorem exL_lt_of_cont {w : Pl F} (J : w.adicCompletion F →+* Qbar l) (hJ : Continuous J)
     (x : w.adicCompletion F) (hx : Valued.v x < 1) : ‖J x‖ < 1 := by
   have h1 : Filter.Tendsto (fun n : ℕ => x ^ n) Filter.atTop (nhds 0) := Valued.tendsto_zero_pow_of_v_lt_one hx
@@ -91,6 +130,11 @@ private theorem exL_lt_of_cont {w : Pl F} (J : w.adicCompletion F →+* Qbar l) 
   rw [← tendsto_pow_atTop_nhds_zero_iff_norm_lt_one]
   simpa [Function.comp_def] using h2
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hc`. Rewrite `hc` using `[not_le]`. Establish `hp : 0 < ‖(l : Qbar l)‖` using `norm_pos_iff.2 (Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero)`. Take `⟨n, hn⟩` from `pow_unbounded_of_one_lt ‖(l : Qbar l)‖⁻¹ hc`. Establish `h` using `exL_lt_of_cont J hJ (x ^ n * l) (by`.
+
+Rewrite using `[map_mul, map_pow]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_left' (pow_le_one' hx n)) hl)`. Rewrite `h` using `[map_mul, map_pow, map_natCast, norm_mul, norm_pow]`. Rewrite `hn` using `[inv_lt_iff_one_lt_mul₀ hp]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 private theorem exL_le_of_cont {w : Pl F} (hl : Valued.v ((l : ℕ) : w.adicCompletion F) < 1)
     (J : w.adicCompletion F →+* Qbar l) (hJ : Continuous J)
     (x : w.adicCompletion F) (hx : Valued.v x ≤ 1) : ‖J x‖ ≤ 1 := by
@@ -105,6 +149,13 @@ private theorem exL_le_of_cont {w : Pl F} (hl : Valued.v ((l : ℕ) : w.adicComp
   rw [inv_lt_iff_one_lt_mul₀ hp] at hn
   linarith
 
+/- English proof (translation)
+Use `⟨⟨fun h => ?_, exL_le_of_cont hl J hJ x⟩, ⟨fun h => ?_, exL_lt_of_cont J hJ x⟩⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hc`. Rewrite `hc` using `[not_le]`. Establish `h0 : x ≠ 0` using `by rintro rfl; simp at hc`. Establish `h1` using `exL_lt_of_cont J hJ x⁻¹ (by rw [map_inv₀]; exact inv_lt_one_of_one_lt₀ hc)`.
+
+Rewrite `h1` using `[map_inv₀, norm_inv, inv_lt_one₀ (norm_pos_iff.2 ((map_ne_zero J).2 h0))]`. Combine the linear equalities and inequalities to obtain the conclusion. Assume the negation of the conclusion as `hc`. Rewrite `hc` using `[not_lt]`. Establish `h0 : x ≠ 0` using `by rintro rfl; simp at hc`.
+
+Establish `h1` using `exL_le_of_cont hl J hJ x⁻¹ (by rw [map_inv₀]; exact inv_le_one_of_one_le₀ hc)`. Rewrite `h1` using `[map_inv₀, norm_inv, inv_le_one₀ (norm_pos_iff.2 ((map_ne_zero J).2 h0))]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 private theorem exL_iff {w : Pl F} (hl : Valued.v ((l : ℕ) : w.adicCompletion F) < 1)
     (J : w.adicCompletion F →+* Qbar l) (hJ : Continuous J) (x : w.adicCompletion F) :
     (‖J x‖ ≤ 1 ↔ Valued.v x ≤ 1) ∧ (‖J x‖ < 1 ↔ Valued.v x < 1) := by
@@ -122,6 +173,17 @@ private theorem exL_iff {w : Pl F} (hl : Valued.v ((l : ℕ) : w.adicCompletion 
     rw [map_inv₀, norm_inv, inv_le_one₀ (norm_pos_iff.2 ((map_ne_zero J).2 h0))] at h1
     linarith
 
+/- English proof (translation)
+Establish `ho : IsOpen {y : w.adicCompletion F | Valued.v (x - y) < 1}`. Establish `: IsOpen {y : w.adicCompletion F | Valued.v y < 1}`. Use `Valued.isOpen_ball (w.adicCompletion F) 1` as an intermediate fact. Simplify `this` using `[Valuation.restrict_lt_one_iff]`. Conclude with `this.preimage (continuous_const.sub continuous_id)`.
+
+Take `⟨y, hy⟩` from `(w.denseRange_algebraMap F).exists_mem_open ho ⟨x, by simp⟩`. Use `replace hy : Valued.v (x - algebraMap F _ y) < 1 := hy`. Establish `hy1 : w.valuation F y ≤ 1`. Rewrite using `[← exL_val, show algebraMap F (w.adicCompletion F) y = x - (x - algebraMap F _ y) by ring]`. Conclude with `Valuation.map_sub_le _ hx hy.le`.
+
+Take `⟨b, hb⟩` from `w.exists_valuation_sub_lt_of_integer hy1 1`. Rewrite `hb` using `[Units.val_one, ← exL_val, map_sub]`. Establish `hc : Nat.card (𝓞 F ⧸ w.asIdeal) = l` using `by rw [← hN, Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Establish `: Finite (𝓞 F ⧸ w.asIdeal)` using `Nat.finite_of_card_ne_zero (hc ▸ (Fact.out : l.Prime).ne_zero)`. Set `` to `Fintype.ofFinite (𝓞 F ⧸ w.asIdeal)`.
+
+Set `e` to `ZMod.ringEquivOfPrime (𝓞 F ⧸ w.asIdeal) (Fact.out : l.Prime) (by rw [← Nat.card_eq_fintype_card, hc])`. Take `⟨z, hz⟩` from `e.surjective (Ideal.Quotient.mk _ b)`. Take `⟨a, rfl⟩` from `ZMod.intCast_surjective z`. Rewrite `hz` using `[map_intCast, ← map_intCast (Ideal.Quotient.mk w.asIdeal), eq_comm, Ideal.Quotient.eq, ← w.intValuation_lt_one_iff_mem, ← exL_valO]`. Establish `hz' : Valued.v (algebraMap F (w.adicCompletion F) (algebraMap (𝓞 F) F (b - a))) < 1` using `hz`.
+
+Rewrite `hz'` using `[map_sub, map_sub, map_intCast, map_intCast]`. Use `⟨a, ?_⟩` and prove the remaining obligations. Use `Valuation.map_add_lt _ (Valuation.map_sub_lt _ hy hb) hz'` as an intermediate fact. Use `this using 2` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem exL_digit {w : Pl F} (hN : Ideal.absNorm w.asIdeal = l) (x : w.adicCompletion F) (hx : Valued.v x ≤ 1) :
     ∃ a : ℤ, Valued.v (x - a) < 1 := by
   have ho : IsOpen {y : w.adicCompletion F | Valued.v (x - y) < 1} := by
@@ -151,6 +213,11 @@ private theorem exL_digit {w : Pl F} (hN : Ideal.absNorm w.asIdeal = l) (x : w.a
   convert this using 2
   ring
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ m ih`. Rewrite using `[show x ^ (m + 1) - y ^ (m + 1) = x * (x ^ m - y ^ m) + y ^ m * (x - y) by ring]`. Use `ν.map_add_lt ?_ ?_` and prove the remaining obligations.
+
+Rewrite using `[map_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_left' hx) ih`. Rewrite using `[map_mul, map_pow]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_left' (pow_le_one' hy m)) h`.
+-/
 private theorem exL_pow {R Γ : Type*} [CommRing R] [LinearOrderedCommGroupWithZero Γ] (ν : Valuation R Γ) {x y : R}
     (hx : ν x ≤ 1) (hy : ν y ≤ 1) (h : ν (x - y) < 1) (m : ℕ) : ν (x ^ m - y ^ m) < 1 := by
   induction m with
@@ -161,6 +228,15 @@ private theorem exL_pow {R Γ : Type*} [CommRing R] [LinearOrderedCommGroupWithZ
     · rw [map_mul]; exact lt_of_le_of_lt (mul_le_of_le_one_left' hx) ih
     · rw [map_mul, map_pow]; exact lt_of_le_of_lt (mul_le_of_le_one_left' (pow_le_one' hy m)) h
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `exL_digit hN x hx.le`. Establish `hdiv : ∀ k : ℤ, (l : ℤ) ∣ k → Valued.v ((k : ℤ) : w.adicCompletion F) < 1`. Introduce and unpack `_ ⟨k, rfl⟩`. Rewrite using `[Int.cast_mul, Int.cast_natCast, map_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_right' (exL_int w k)) hl`.
+
+Establish `ha0 : (a : ZMod l) ≠ 0`. Introduce `h`. Use `Valuation.map_add_lt _ ha (hdiv a ((ZMod.intCast_zmod_eq_zero_iff_dvd a l).1 h))` as an intermediate fact. Rewrite `this` using `[sub_add_cancel, hx]`. Conclude with `lt_irrefl _ this`.
+
+Establish `h1` using `hdiv (a ^ (l - 1) - 1) ((ZMod.intCast_zmod_eq_zero_iff_dvd _ l).1 (by`. Use `push_cast`. Rewrite using `[ZMod.pow_card_sub_one_eq_one ha0, sub_self]))`. Use `Valuation.map_add_lt _ (exL_pow _ hx.le (exL_int w a) ha (l - 1)) h1` as an intermediate fact. Use `this using 2` and compare the differences between its conclusion and the goal.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem exL_res {w : Pl F} (hN : Ideal.absNorm w.asIdeal = l) (hl : Valued.v ((l : ℕ) : w.adicCompletion F) < 1)
     (x : w.adicCompletion F) (hx : Valued.v x = 1) : Valued.v (x ^ (l - 1) - 1) < 1 := by
   obtain ⟨a, ha⟩ := exL_digit hN x hx.le
@@ -181,6 +257,23 @@ private theorem exL_res {w : Pl F} (hN : Ideal.absNorm w.asIdeal = l) (hl : Valu
   push_cast
   ring
 
+/- English proof (translation)
+Establish `hl0 : ((l : ℕ) : w.adicCompletion F) ≠ 0`. Introduce `h`. Rewrite `hl` using `[h, map_zero]`. Conclude with `WithZero.exp_ne_zero hl.symm`. Establish `key : ∀ n : ℕ, ∀ x, Valued.v x ≤ 1 → ‖J x - J' x‖ ≤ ‖(l : Qbar l)‖ ^ n`.
+
+Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `x hx`. Rewrite using `[pow_zero, sub_eq_add_neg]`.
+
+Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le (hJ x hx) (by rw [norm_neg]; exact hJ' x hx))`. Consider the case `succ n ih`. Introduce `x hx`. Take `⟨a, ha⟩` from `exL_digit hN x hx`. Establish `hy : Valued.v ((x - a) / l) ≤ 1`.
+
+Rewrite using `[map_div₀, hl, div_le_one₀ (by simp)]`. Distinguish the cases in `h0 : Valued.v (x - a) = 0`. Rewrite using `[h0]`. Conclude with `zero_le`. Rewrite `ha`, the goal using `[← WithZero.exp_log h0]`.
+
+Rewrite `ha` using `[← WithZero.exp_zero, WithZero.exp_lt_exp]`. Rewrite using `[WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers. Establish `e : x = a + l * ((x - a) / l)` using `by field_simp; ring`. Establish `e2 : J x - J' x = l * (J ((x - a) / l) - J' ((x - a) / l))`.
+
+Generalize the expression as in `(x - a) / l = y at e`. Rewrite using `[e]`. Simplify using `only [map_add, map_mul, map_intCast, map_natCast]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e2, norm_mul, pow_succ']`.
+
+Conclude with `mul_le_mul_of_nonneg_left (ih _ hy) (norm_nonneg _)`. Establish `key2 : ∀ x, Valued.v x ≤ 1 → J x = J' x`. Introduce `x hx`. Rewrite using `[← sub_eq_zero, ← norm_le_zero_iff]`. Conclude with `ge_of_tendsto' (tendsto_pow_atTop_nhds_zero_of_lt_one (norm_nonneg _) exL_norm_l) fun n => key n x hx`.
+
+Use extensionality with `x`. Break down `le_total (Valued.v x) 1 with h | h` into its components or cases. Conclude with `key2 x h`. Use `key2 x⁻¹ (by rw [map_inv₀]; exact inv_le_one_of_one_le₀ h)` as an intermediate fact. Rewrite `this` using `[map_inv₀, map_inv₀, inv_inj]`. Then use the resulting hypothesis.
+-/
 private theorem exL_uniq {w : Pl F} (hN : Ideal.absNorm w.asIdeal = l)
     (hl : Valued.v ((l : ℕ) : w.adicCompletion F) = WithZero.exp (-1 : ℤ)) (J J' : w.adicCompletion F →+* Qbar l)
     (hJ : ∀ x, Valued.v x ≤ 1 → ‖J x‖ ≤ 1) (hJ' : ∀ x, Valued.v x ≤ 1 → ‖J' x‖ ≤ 1) : J = J' := by
@@ -227,6 +320,29 @@ end
 end UpperTheory.V.Sd.Wc
 
 open UpperTheory.V.Sd.Wc in
+/- English proof (translation)
+Introduce `F _ _ _ l _ ι hS`. Set `τ : InfinitePlace F → F →+* Qbar l` to `fun v => ι.symm.toRingHom.comp v.embedding`. Use `choose pl hpl using fun v => exL_place (τ v)`. Establish `hext : ∀ (w : Pl F) (σ : F →+* Qbar l), EmbAt w σ → ∃ J : w.adicCompletion F →+* Qbar l, (∀ x : F, J (algebraMap F _ x) = σ x) ∧ ∀ x, (‖J x‖ ≤ 1 ↔ Valued.v x ≤ 1) ∧ (‖J x‖ < 1 ↔ Valued.v x < 1)`. Introduce `w σ h`.
+
+Take `⟨J, hJ, hJ1, -⟩` from `KStar.IdealValuations.exists_completion_map w σ fun x => (h x).symm`. Use `⟨J, hJ1, exL_iff ?_ J hJ⟩` and prove the remaining obligations. Rewrite using `[exL_unif (exL_mem h) (hS w (exL_mem h)).2, ← WithZero.exp_zero, WithZero.exp_lt_exp]`. Evaluate the numerical expressions. Establish `hplace : ∀ (σ : F →+* Qbar l) (w w' : Pl F), EmbAt w σ → EmbAt w' σ → w = w'` using `fun σ w w' h h' => HeightOneSpectrum.ext (Ideal.ext fun x => (h x).trans (h' x).symm)`.
+
+Establish `hτ : ∀ σ : F →+* Qbar l, τ (InfinitePlace.mk (ι.toRingHom.comp σ)) = σ`. Introduce `σ`. Use extensionality with `x`. Simplify using `only [τ]`. Rewrite using `[InfinitePlace.embedding_mk_eq_of_isReal (IsTotallyReal.complexEmbedding_isReal _)]`.
+
+Simplify using the standard rewrite rules. Use `choose J hJ1 hJ2 using fun v => hext (pl v) (τ v) (hpl v)`. Establish `hnu : ∀ y : Qbar l, nu ι (ι y) = ‖y‖₊` using `fun y => by rw [nu_apply, RingEquiv.symm_apply_apply]`. Establish `hu` using `fun v => exL_unif (exL_mem (hpl v)) (hS _ (exL_mem (hpl v))).2`. Establish `hlt : ∀ v x, nu ι (ι.toRingHom.comp (J v) x) < 1 ↔ Valued.v x < 1` using `fun v x => by`.
+
+Rewrite using `[← (hJ2 v x).2]`. Express the relevant statement in the definitionally equal form `nu ι (ι (J v x)) < 1 ↔ _`. Rewrite using `[hnu]`. Conclude with `Iff.rfl`. Establish `hemb : ∀ (σ : F →+* Qbar l) (w : Pl F), EmbAt w σ ↔ pl (InfinitePlace.mk (ι.toRingHom.comp σ)) = w`.
+
+Introduce `σ w`. Establish `h` using `hpl (InfinitePlace.mk (ι.toRingHom.comp σ))`. Rewrite `h` using `[hτ]`. Conclude with `⟨fun h' => hplace σ _ _ h h', fun e => e ▸ h⟩`. Use `⟨ { pl := pl em := fun v => ι.toRingHom.comp (J v) em_alg := fun v x => ?_ le := fun v x => ?_ lt := hlt res := fun v x hx => ?_ mem := fun v => exL_mem (hpl v) inj := fun v v' e => ?_ surj := fun w hw => ?_ norm := fun v => ?_ unif := hu embAt := hemb }⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `ι (J v _) = _`. Rewrite using `[hJ1]`. Conclude with `ι.apply_symm_apply _`. Rewrite using `[← (hJ2 v x).1]`. Express the relevant statement in the definitionally equal form `nu ι (ι (J v x)) ≤ 1 ↔ _`.
+
+Rewrite using `[hnu]`. Conclude with `Iff.rfl`. Use `(hlt v _).2 (exL_res (hS _ (exL_mem (hpl v))).1 (by` as an intermediate fact. Rewrite using `[hu, ← WithZero.exp_zero, WithZero.exp_lt_exp]`. Use the proof step `norm_num) x hx)`.
+
+Rewrite `this` using `[map_sub, map_pow, map_one]`. Then use the resulting hypothesis. Take `⟨J', h1, h2⟩` from `hext (pl v) (τ v') (e ▸ hpl v')`. Establish `hJJ` using `exL_uniq (hS _ (exL_mem (hpl v))).1 (hu v) (J v) J' (fun x => (hJ2 v x).1.2) fun x => (h2 x).1.2`. Establish `: v.embedding = v'.embedding`. Use extensionality with `x`.
+
+Apply `ι.symm.injective` to reduce the goal to its premises. Conclude with `((hJ1 v x).symm.trans (by rw [hJJ])).trans (h1 x)`. Rewrite using `[← v.mk_embedding, this, v'.mk_embedding]`. Take `⟨σ, hσ⟩` from `KStar.IdealValuations.exists_embedding_place w hw`. Conclude with `⟨_, (hemb σ w).1 fun x => (hσ x).symm⟩`.
+
+Rewrite using `[← (hS _ (exL_mem (hpl v))).1, Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Both sides reduce to the same expression.
+-/
 theorem UpperTheory.V.Sd.Wc.exL :
     UpperTheory.V.Sd.Wc.ExL := by
   intro F _ _ _ l _ ι hS

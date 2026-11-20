@@ -14,5 +14,8 @@ open NumberField IsDedekindDomain MeasureTheory Formalism.BasicNotions Formalism
 open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.LowSmooth.lowSm_MW | exact GlobalTheory.LowSmooth.lowSm_MW | (intros; apply GlobalTheory.LowSmooth.lowSm_MW <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.lowest_kType_smooth_models_on_theta_targets : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : FamIn D.what₂.LL G Pl0 T0 D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks), ∀ i σ, LowSm (R.MW i σ) := by
   first | exact @GlobalTheory.LowSmooth.lowSm_MW | exact GlobalTheory.LowSmooth.lowSm_MW | (intros; apply GlobalTheory.LowSmooth.lowSm_MW <;> assumption)

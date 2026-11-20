@@ -44,15 +44,24 @@ def AdelicUnitaryHaar : Prop :=
       ∀ x : Fin 1 → Fin M → E, hE σ J (x 0) (x 0) ≠ 0 →
         IsDiscreteWithDomains (HstabFin (AF F) σ J x)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, ⟨Measure.haar, inferInstance⟩, fun _ _ => inferInstance⟩`.
+-/
 theorem isUnimodularLC_of_commGroup (G : Type) [CommGroup G] [TopologicalSpace G]
     [IsTopologicalGroup G] [T2Space G] [LocallyCompactSpace G] [SecondCountableTopology G]
     [MeasurableSpace G] [BorelSpace G] : IsUnimodularLC G :=
   ⟨inferInstance, inferInstance, inferInstance, inferInstance, inferInstance,
     ⟨Measure.haar, inferInstance⟩, fun _ _ => inferInstance⟩
 
+/- English proof (translation)
+The claim follows from `@isUnimodularLC_of_commGroup Circle _ _ _ _ _ _ (borel Circle) (@BorelSpace.mk _ _ (borel Circle) rfl)`.
+-/
 example : @IsUnimodularLC Circle _ _ (borel Circle) :=
   @isUnimodularLC_of_commGroup Circle _ _ _ _ _ _ (borel Circle) (@BorelSpace.mk _ _ (borel Circle) rfl)
 
+/- English proof (translation)
+Use `⟨inferInstance, inferInstance, fun μ _ => ⟨Set.univ, MeasurableSet.univ, ?_⟩⟩` and prove the remaining obligations. Conclude with `IsFundamentalDomain.mk' MeasurableSet.univ.nullMeasurableSet fun x => ⟨1, Set.mem_univ _, fun _ _ => Subsingleton.elim _ _⟩`.
+-/
 example (G : Type) [Group G] [TopologicalSpace G] [MeasurableSpace G] :
     IsDiscreteWithDomains (⊥ : Subgroup G) := by
   refine ⟨inferInstance, inferInstance, fun μ _ => ⟨Set.univ, MeasurableSet.univ, ?_⟩⟩

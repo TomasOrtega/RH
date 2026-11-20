@@ -64,6 +64,13 @@ def Reads {H : Type*} [AddCommGroup H] [Module K H] [Module R H] [IsScalarTower 
 
 variable {w a b} in
 
+/- English proof (translation)
+Take `⟨h₁, h₂, h₃, h₄⟩` from `h`. Use `⟨fun s => ?_, fun t' => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← h₂, h₁, ← h'.1]`. Both sides reduce to the same expression. Introduce and unpack `⟨s, hs, rfl⟩`.
+
+Conclude with `(h₃ s).1 (h'.2 ▸ Submodule.mem_sup_left hs)`. Introduce and unpack `⟨t, rfl⟩`. Take `⟨s, hs⟩` from `h₄ (resSec w B t)`. Take `⟨x, hx, y, hy, e⟩` from `Submodule.mem_sup.1 (h'.2.ge ((h₃ s).2 ⟨t, hs⟩))`. Use `⟨E.symm x, by simpa using hx, ?_⟩` and prove the remaining obligations.
+
+Establish `e' : s = E.symm x + E.symm y` using `by rw [← map_add, e, E.symm_apply_apply]`. Rewrite using `[← hs, e', map_add, (h₁ (E.symm y)).2 (by simpa using hy), add_zero]`.
+-/
 theorem Reads.latSeq {H : Type*} [AddCommGroup H] [Module K H] [Module R H] [IsScalarTower R K H]
     {E : Γ((Scheme.Modules.pullback ξ).obj D, ⊤) ≃+ H} {β : LinearMap.BilinForm K H} {F : Submodule K H}
     {N Λ : Submodule R H} (h : Reads w a b E β F N) (h' : IsAdapted β F N Λ) : LatSeq w a b fun s => E s ∈ Λ := by
@@ -141,6 +148,9 @@ structure FinTower (Γ : PDivGroup p R) (G : Over (Sp R)) [GrpObj G] : Type wher
 def FinTower.ofTower {Γ : PDivGroup p R} {G : Over (Sp R)} [GrpObj G] (t : Γ.TorsionTower G) : FinTower Γ G :=
   ⟨t.y, t.mul, t.inj, fun n B _ _ _ => t.surj n B, t.res⟩
 
+/- English proof (translation)
+The claim follows from `.ofTower (muTower p R)`.
+-/
 example [Fact p.Prime] : FinTower (mu p R) (Gm (Sp R)) := .ofTower (muTower p R)
 
 def FinTower.IsIncl {Γ : PDivGroup p R} {G : Over (Sp R)} [GrpObj G] (s : FinTower Γ G) {𝒜 : PDivGroup p K}

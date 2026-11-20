@@ -14,6 +14,13 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 namespace PositivityTheory.SiegelWeilFormula.KWhit
 open PositivityTheory.SiegelWeilFormula
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
+/- English proof (translation)
+Take `⟨w⟩ : Nonempty (InfinitePlace F)` from `inferInstance`. Establish `key : (d.A.J.map (d.B.emb w).1).det ≠ 0`. Break down `d.ok.sign with ⟨hA, -⟩ | ⟨hA, -⟩` into its components or cases. Conclude with `meas_det_of_hasSig (hA.sig w)`. Establish `h` using `meas_det_of_hasSig (hA.sig w)`.
+
+Rewrite `h` using `[Matrix.det_smul]`. Introduce `h0; exact h (by rw [h0, mul_zero])`. Introduce `h0`. Apply `key` to reduce the goal to its premises. Establish `hm` using `RingHom.map_det (d.B.emb w).1 d.A.J`.
+
+Rewrite `hm` using `[RingHom.mapMatrix_apply, h0, map_zero]`. Conclude with `hm.symm`.
+-/
 theorem meas_detA_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) : d.A.J.det ≠ 0 := by
   obtain ⟨w⟩ : Nonempty (InfinitePlace F) := inferInstance
   have key : (d.A.J.map (d.B.emb w).1).det ≠ 0 := by
@@ -27,6 +34,9 @@ theorem meas_detA_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) : d.
   have hm := RingHom.map_det (d.B.emb w).1 d.A.J
   rw [RingHom.mapMatrix_apply, h0, map_zero] at hm
   exact hm.symm
+/- English proof (translation)
+Use `⟨fun i j => ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [_root_.PositivityTheory.SiegelWeilFormula.KWhit.Jd_k, Matrix.transpose_apply, Matrix.smul_apply, smul_eq_mul]`. Conclude with `hh j i`. Rewrite using `[_root_.PositivityTheory.SiegelWeilFormula.KWhit.Jd_k, Matrix.det_transpose, Matrix.det_smul]`. Conclude with `mul_ne_zero (pow_ne_zero _ hη) (_root_.PositivityTheory.SiegelWeilFormula.KWhit.meas_detA_k d)`.
+-/
 theorem meas_hermND'_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) {η : E} (hη : η ≠ 0) (hh : ∀ i j, σ (η * d.A.J j i) = η * d.A.J i j) :
     HeckeCharacterZeroLocus.SiegelWeilU.IsHermND σ (_root_.PositivityTheory.SiegelWeilFormula.KWhit.Jd_k d η) := by
   refine ⟨fun i j => ?_, ?_⟩

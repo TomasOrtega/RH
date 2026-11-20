@@ -10,6 +10,9 @@ variable {G : Type} [TopologicalSpace G] [MeasurableSpace G] {μ : Measure G}
 open MeasureTheory in
 variable {G : Type} [TopologicalSpace G] [MeasurableSpace G] {μ : Measure G}
   {K : Type} [NormedAddCommGroup K] [InnerProductSpace ℂ K] {ι : K → G → ℂ} in
+/- English proof (translation)
+Use `filter_upwards [hlin 1 0 0] with x hx`. Simplify using `using hx`.
+-/
 theorem _root_.GlobalTheory.LocRep.rep_zero (hlin : ∀ (a : ℂ) v w, ι (a • v + w) =ᵐ[μ] fun x => a * ι v x + ι w x) :
     ι 0 =ᵐ[μ] fun _ => 0 := by
   filter_upwards [hlin 1 0 0] with x hx
@@ -18,6 +21,9 @@ theorem _root_.GlobalTheory.LocRep.rep_zero (hlin : ∀ (a : ℂ) v w, ι (a •
 open MeasureTheory in
 variable {G : Type} [TopologicalSpace G] [MeasurableSpace G] {μ : Measure G}
   {K : Type} [NormedAddCommGroup K] [InnerProductSpace ℂ K] {ι : K → G → ℂ} in
+/- English proof (translation)
+Use `filter_upwards [hlin 1 v w] with x hx`. Simplify using `using hx`.
+-/
 theorem _root_.GlobalTheory.LocRep.rep_add (hlin : ∀ (a : ℂ) v w, ι (a • v + w) =ᵐ[μ] fun x => a * ι v x + ι w x) (v w : K) :
     ι (v + w) =ᵐ[μ] fun x => ι v x + ι w x := by
   filter_upwards [hlin 1 v w] with x hx
@@ -26,6 +32,9 @@ theorem _root_.GlobalTheory.LocRep.rep_add (hlin : ∀ (a : ℂ) v w, ι (a • 
 open MeasureTheory in
 variable {G : Type} [TopologicalSpace G] [MeasurableSpace G] {μ : Measure G}
   {K : Type} [NormedAddCommGroup K] [InnerProductSpace ℂ K] {ι : K → G → ℂ} in
+/- English proof (translation)
+Use `filter_upwards [hlin a v 0, _root_.GlobalTheory.LocRep.rep_zero hlin] with x hx h0`. Simplify using `only [add_zero] at hx`. Rewrite using `[hx, h0, add_zero]`.
+-/
 theorem _root_.GlobalTheory.LocRep.rep_smul (hlin : ∀ (a : ℂ) v w, ι (a • v + w) =ᵐ[μ] fun x => a * ι v x + ι w x) (a : ℂ) (v : K) :
     ι (a • v) =ᵐ[μ] fun x => a * ι v x := by
   filter_upwards [hlin a v 0, _root_.GlobalTheory.LocRep.rep_zero hlin] with x hx h0
@@ -35,6 +44,9 @@ theorem _root_.GlobalTheory.LocRep.rep_smul (hlin : ∀ (a : ℂ) v w, ι (a •
 open MeasureTheory in
 variable {G : Type} [TopologicalSpace G] [MeasurableSpace G] {μ : Measure G}
   {K : Type} [NormedAddCommGroup K] [InnerProductSpace ℂ K] {ι : K → G → ℂ} in
+/- English proof (translation)
+Use `filter_upwards [hlin (-1) w v] with x hx`. Rewrite using `[show v - w = (-1 : ℂ) • w + v by rw [neg_one_smul]; abel, hx]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem _root_.GlobalTheory.LocRep.rep_sub (hlin : ∀ (a : ℂ) v w, ι (a • v + w) =ᵐ[μ] fun x => a * ι v x + ι w x) (v w : K) :
     ι (v - w) =ᵐ[μ] fun x => ι v x - ι w x := by
   filter_upwards [hlin (-1) w v] with x hx
@@ -44,6 +56,9 @@ theorem _root_.GlobalTheory.LocRep.rep_sub (hlin : ∀ (a : ℂ) v w, ι (a • 
 open MeasureTheory in
 variable {G : Type} [TopologicalSpace G] [MeasurableSpace G] {μ : Measure G}
   {K : Type} [NormedAddCommGroup K] [InnerProductSpace ℂ K] {ι : K → G → ℂ} in
+/- English proof (translation)
+Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Simplify using `using _root_.GlobalTheory.LocRep.rep_zero hlin`. Introduce `j s hj ih filter_upwards [_root_.GlobalTheory.LocRep.rep_add hlin (v j) (∑ i ∈ s, v i), ih] with x h1 h2`. Rewrite using `[Finset.sum_insert hj, h1, h2, Finset.sum_insert hj]`.
+-/
 theorem _root_.GlobalTheory.LocRep.rep_sum (hlin : ∀ (a : ℂ) v w, ι (a • v + w) =ᵐ[μ] fun x => a * ι v x + ι w x) {J : Type} (s : Finset J)
     (v : J → K) : ι (∑ j ∈ s, v j) =ᵐ[μ] fun x => ∑ j ∈ s, ι (v j) x := by
   classical
@@ -57,6 +72,13 @@ open MeasureTheory in
 variable {G : Type} [TopologicalSpace G] [MeasurableSpace G] {μ : Measure G}
   {K : Type} [NormedAddCommGroup K] [InnerProductSpace ℂ K] {ι : K → G → ℂ} in
 
+/- English proof (translation)
+Take `⟨M, hM⟩` from `hloc C hC`. Establish `hint : ∀ (a : ℂ) v w, ∫ x in C, ι (a • v + w) x ∂μ = a * ∫ x in C, ι v x ∂μ + ∫ x in C, ι w x ∂μ`. Introduce `a v w`. Rewrite using `[integral_congr_ae (ae_restrict_of_ae (hlin a v w)), integral_add ((hM v).1.const_mul a) (hM w).1, integral_const_mul]`. Establish `hz : ∫ x in C, ι 0 x ∂μ = 0`.
+
+Rewrite using `[integral_congr_ae (ae_restrict_of_ae (_root_.GlobalTheory.LocRep.rep_zero hlin))]`. Simplify using the standard rewrite rules. Set `L : K →ₗ[ℂ] ℂ` to `{ toFun := fun v => ∫ x in C, ι v x ∂μ map_add' := fun v w => by simpa using hint 1 v w map_smul' := fun a v => by`. Simplify using `only [RingHom.id_apply, smul_eq_mul]`. Simplify `hint a v 0 }` using `[hz]`.
+
+Use `⟨L.mkContinuous M fun v => ?_, fun v => rfl⟩` and prove the remaining obligations. Conclude with `(norm_integral_le_integral_norm _).trans (hM v).2`.
+-/
 theorem _root_.GlobalTheory.LocRep.exists_pairing
     (hloc : ∀ C, IsCompact C → ∃ M : ℝ, ∀ v, IntegrableOn (ι v) C μ ∧ ∫ x in C, ‖ι v x‖ ∂μ ≤ M * ‖v‖)
     (hlin : ∀ (a : ℂ) v w, ι (a • v + w) =ᵐ[μ] fun x => a * ι v x + ι w x) {C : Set G} (hC : IsCompact C) :
@@ -82,6 +104,9 @@ theorem _root_.GlobalTheory.LocRep.exists_pairing
 open MeasureTheory in
 variable {G : Type} [TopologicalSpace G] [MeasurableSpace G] {μ : Measure G}
   {K : Type} [NormedAddCommGroup K] [InnerProductSpace ℂ K] {ι : K → G → ℂ} in
+/- English proof (translation)
+Introduce `x`. Take `⟨C, hC, hCx⟩` from `exists_compact_mem_nhds x`. Take `⟨M, hM⟩` from `hloc C hC`. Conclude with `⟨C, hCx, (hM v).1⟩`.
+-/
 theorem _root_.GlobalTheory.LocRep.locallyIntegrable_rep [LocallyCompactSpace G]
     (hloc : ∀ C, IsCompact C → ∃ M : ℝ, ∀ v, IntegrableOn (ι v) C μ ∧ ∫ x in C, ‖ι v x‖ ∂μ ≤ M * ‖v‖) (v : K) :
     LocallyIntegrable (ι v) μ := by
@@ -94,6 +119,11 @@ open MeasureTheory in
 variable {G : Type} [TopologicalSpace G] [MeasurableSpace G] {μ : Measure G}
   {K : Type} [NormedAddCommGroup K] [InnerProductSpace ℂ K] {ι : K → G → ℂ} in
 
+/- English proof (translation)
+Establish `hv : LocallyIntegrable (ι v) μ` using `_root_.GlobalTheory.LocRep.locallyIntegrable_rep hloc v`. Establish `hdiff : (ι v - φ) =ᵐ[μ] 0`. Use `ae_eq_zero_of_forall_setIntegral_isCompact_eq_zero' (hv.sub hφ) fun C hC => ?_` and prove the remaining obligations. Simplify using `only [Pi.sub_apply]`. Rewrite using `[integral_sub (hv.integrableOn_isCompact hC) (hφ.integrableOn_isCompact hC), h C hC, sub_self]`.
+
+Use `filter_upwards [hdiff] with x hx`. Simplify `hx` using `[sub_eq_zero]`.
+-/
 theorem _root_.GlobalTheory.LocRep.rep_of_pairing [LocallyCompactSpace G] [SecondCountableTopology G] [T2Space G] [BorelSpace G]
     [IsLocallyFiniteMeasure μ]
     (hloc : ∀ C, IsCompact C → ∃ M : ℝ, ∀ v, IntegrableOn (ι v) C μ ∧ ∫ x in C, ‖ι v x‖ ∂μ ≤ M * ‖v‖)

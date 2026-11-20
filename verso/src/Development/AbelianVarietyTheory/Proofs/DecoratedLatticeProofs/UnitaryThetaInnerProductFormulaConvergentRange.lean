@@ -33,6 +33,45 @@ open GlobalTheory.Core.Rk.IP
 
 namespace GlobalTheory.Core.Rk.IP
 
+/- English proof (translation)
+Introduce `hC hWS hSEC D ψ θ A B χA χB sA sB t cA a om ν 𝓕 hP hwitt hat m mH hm hmH Φ₁ Φ₂ hΦ₁ hΦ₂ u₁ hu₁ u₂ hu₂`. Establish `hW` using `GlobalTheory.weilRepresentationUnitaryPair`. Take `⟨ha, ht, hb, hθ, hSig, hCart, -⟩` from `hP.setting`. Take `⟨omh, homh⟩` from `GlobalTheory.T.exists_weilDatum_hermitianSpaceDoubled hW D ψ A B χA χB om hP.weil`. Establish `hTC` using `GlobalTheory.T.doublingMap_thetaIdentity_any_weilData D ψ A B χA χB om omh hP.weil homh`.
+
+Establish `hCC` using `GlobalTheory.T.siegelWeilSection_doubling_eq_matrixCoefficient D ψ A B χA χB om omh hP.weil hTC ν 𝓕 hP.covol`. Take `⟨hφ, hid⟩` from `hTC Φ₁ Φ₂ hΦ₁.1 hΦ₂.1`. Establish `hK` using `GlobalTheory.T.doublingVector_fockPair_isCompactFinite D ψ θ A B χA χB sA sB t cA a om ν 𝓕 hP omh homh Φ₁ Φ₂ hΦ₁ hΦ₂`. Establish `h2a : 2 * A.rank < B.rank` using `by omega`. Establish `hw : wittIndex B = 0 ∨ A.rank + wittIndex B < B.rank`.
+
+Break down `hwitt with h | h` into its components or cases. Conclude with `Or.inl h`. Conclude with `Or.inr (by omega)`. Take `⟨-, hEis⟩` from `GlobalTheory.T.thetaIntegral_eq_siegelEisenstein_of_weilRange hWS D ψ A B ha h2a hw χB omh homh ν 𝓕 hP.covol mH hmH (delta A B Φ₁ Φ₂) hφ`. Establish `hI : HasIwasawa D.sp.cm.sig (dblSp A).gram (Khat A a)` using `GlobalTheory.T.adelicIwasawa_doubledGroup_selfDualLattice D A (frameLat A) a (GlobalTheory.WeilAtPlace.isSelfDualC_frameLat A) hP.maj`.
+
+Establish `hmem` using `GlobalTheory.T.doublingSiegelWeilSection_mem_degeneratePrincipalSeries hW D ψ A B χB omh homh ν 𝓕 hP.covol (delta A B Φ₁ Φ₂) hφ a hK`. Establish `hHk : IsHeckeChar D χB⁻¹`. Establish `h` using `homh.hecT`. Use `⟨?_, fun x => ?_⟩` and prove the remaining obligations. Establish `: (χB⁻¹ : (AE D)ˣ →* Circle) = fun x => (χB x)⁻¹` using `rfl`.
+
+Rewrite using `[this]`. Conclude with `h.1.inv`. Rewrite using `[MonoidHom.inv_apply, h.2 x, inv_one]`. Establish `hf₁` using `GlobalTheory.T.cuspFormsArchimedeanKFinite_star_comp_mem D θ A cA hθ u₁ hu₁`. Establish `hf₂` using `GlobalTheory.T.cuspFormsArchimedeanKFinite_star_comp_mem D θ A cA hθ u₂ hu₂`.
+
+Establish `rd : ∀ u ∈ A0 θ A cA, GlobalTheory.Grow.RapidDec A u` using `fun u hu => GlobalTheory.Grow.rapidDec_of_cuspForm hC hθ (mem_cuspForms.1 hu).1.1 (mem_cuspForms.1 hu).1.2`. Establish `hre : (A.rank : ℝ) / 2 < (sZero A B).re`. Establish `e : (sZero A B).re = ((B.rank : ℝ) - A.rank) / 2`. Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.SphericalZero.sZero, Complex.div_re]`. Rewrite using `[e]`.
+
+Establish `: (A.rank : ℝ) < t` using `by exact_mod_cast hat`. Establish `hb' : (B.rank : ℝ) = A.rank + t` using `by exact_mod_cast hb`. Rewrite using `[hb']`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hBI` using `GlobalTheory.T.doublingBasicIdentity_flatSection_cuspForms hSEC hC D A (by omega) a hP.maj hI χB⁻¹ hHk (sZero A B) (swSec A B omh ν 𝓕 (delta A B Φ₁ Φ₂)) hmem θ hθ cA m hm _ hf₁ _ hf₂ (sZero A B) hre`.
+
+Simplify using `only [flatH_self] at hBI`. Take `⟨-, hZc, hZe⟩` from `hBI`. Establish `hpt : ∀ g, swSec A B omh ν 𝓕 (delta A B Φ₁ Φ₂) (io A (g, 1)) * conj (GlobalTheory.Eis.petCoef A m (fun x => conj (u₁ x)) (fun x => conj (u₂ x)) g) = wcoef om ν 𝓕 Φ₁ Φ₂ g * rcoef m u₁ u₂ g`. Introduce `g`. Establish `e1 : swSec A B omh ν 𝓕 (delta A B Φ₁ Φ₂) (io A (g, 1)) = wcoef om ν 𝓕 Φ₁ Φ₂ g` using `(hCC Φ₁ Φ₂ hΦ₁.1 hΦ₂.1).2 g`.
+
+Establish `e2 : conj (GlobalTheory.Eis.petCoef A m (fun x => conj (u₁ x)) (fun x => conj (u₂ x)) g) = rcoef m u₁ u₂ g`. Simplify using `only [GlobalTheory.Eis.petCoef, rcoef, petersson, pet, rTr, GlobalTheory.AutomorphicL2Unitary.descend]`. Rewrite using `[← integral_conj]`. Use `congr 1`. Use function extensionality and compare the values at `q`.
+
+Simplify using the standard rewrite rules. Rewrite using `[e1, e2]`. Establish `hInt : Integrable (fun g => wcoef om ν 𝓕 Φ₁ Φ₂ g * rcoef m u₁ u₂ g) m`. Establish `e : (fun g => wcoef om ν 𝓕 Φ₁ Φ₂ g * rcoef m u₁ u₂ g) = fun g => swSec A B omh ν 𝓕 (delta A B Φ₁ Φ₂) (io A (g, 1)) * starRingEnd ℂ (GlobalTheory.Eis.petCoef A m (fun x => conj (u₁ x)) (fun x => conj (u₂ x)) g)`. Use function extensionality and compare the values at `fun g => (hpt g).symm`.
+
+Rewrite using `[e]`. Conclude with `hZc`. Establish `hZ : GlobalTheory.Eis.dblInt A χB⁻¹ m (GlobalTheory.Eis.eis A (swSec A B omh ν 𝓕 (delta A B Φ₁ Φ₂))) (fun x => conj (u₁ x)) (fun x => conj (u₂ x)) = ∫ g, wcoef om ν 𝓕 Φ₁ Φ₂ g * rcoef m u₁ u₂ g ∂m`. Rewrite using `[hZe]`. Unfold `zetaH pairInt`.
+
+Conclude with `integral_congr_ae (.of_forall fun g => hpt g)`. Establish `hKer : ∀ Φ, IsFockVec ψ θ A B sA sB Φ → Continuous (Function.uncurry fun g h => thetaKO om g h Φ) ∧ (∀ γ ∈ GQ A, ∀ g h, thetaKO om (γ * g) h Φ = thetaKO om g h Φ) ∧ (∀ g, MemL2Quotient (GQ B) mH fun h => thetaKO om g h Φ) ∧ (GlobalTheory.Grow.ModGrowth A fun g => petersson B mH ( …`. Introduce `Φ hΦ`. Take `⟨hL2, hMG⟩` from `GlobalTheory.T.thetaKernel_normSq_moderateGrowth_large hWS hSEC D ψ θ A B χA χB sA sB t cA a om ν 𝓕 hP hwitt hat mH hmH Φ hΦ`. Use `⟨hP.weil.om_cont Φ hΦ.1 0, fun γ hγ g h => ?_, hL2, hMG, fun h => ?_⟩` and prove the remaining obligations.
+
+Establish `e : ((γ * g, h) : GA D A × GA D B) = (γ, 1) * (g, h)` using `by simp`. Unfold `thetaKO`. Rewrite using `[e, map_mul]`. Conclude with `hP.weil.om_aut γ hγ 1 (one_mem _) _ (hP.weil.om_pres _ _ hΦ.1)`. Take `⟨C, N, hCN⟩` from `GlobalTheory.T.theta_kernel_moderate_growth_both_variables D ψ A B χA χB om hP.weil Φ hΦ.1`.
+
+Use `⟨C * GlobalTheory.Grow.height B h ^ N, N, fun g => (hCN g h).trans (le_of_eq ?_)⟩` and prove the remaining obligations. Rewrite using `[mul_pow]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨i₁, i₂, l₁, l₂, hss⟩` from `GlobalTheory.T.seesaw_fubini_two_lifts_moderate_growth_kernels D A B m mH hm hmH (fun g h => thetaKO om g h Φ₁) (fun g h => thetaKO om g h Φ₂) (fun K hK => by`. Break down `hK with rfl | rfl` into its components or cases.
+
+Use `exacts [hKer Φ₁ hΦ₁, hKer Φ₂ hΦ₂]) u₁ u₂ (rd u₁ hu₁) (rd u₂ hu₂)`. Use `⟨⟨i₁, l₁⟩, ⟨i₂, l₂⟩, hInt, ?_⟩` and prove the remaining obligations. Rewrite using `[← hZ, ← hEis]`. Establish `key : ∀ g₁ g₂ h, thetaKO om g₁ h Φ₁ * conj (thetaKO om g₂ h Φ₂) = ((χB (detA A g₂) : Circle) : ℂ) * thetaKO omh (io A (g₁, g₂)) h (delta A B Φ₁ Φ₂)`. Introduce `g₁ g₂ h`.
+
+Rewrite using `[(hid g₁ g₂ h).2]`. Establish `e : ((χB (detA A g₂) : Circle) : ℂ) * (((χB (detA A g₂))⁻¹ : Circle) : ℂ) = 1`. Rewrite using `[← Circle.coe_mul, mul_inv_cancel, Circle.coe_one]`. Take the linear combination `(-(thetaKO om g₁ h Φ₁ * conj (thetaKO om g₂ h Φ₂))) * e`. Establish `hpet : ∀ g₁ g₂, petersson B mH (fun h => thetaKO om g₁ h Φ₁) (fun h => thetaKO om g₂ h Φ₂) = ((χB (detA A g₂) : Circle) : ℂ) * ((volQ B mH : ℂ) * GlobalTheory.ThetaMean.thetaMean omh mH (delta A B Φ₁ Φ₂) (io A (g₁, g₂)))`.
+
+Introduce `g₁ g₂`. Establish `e1 : petersson B mH (fun h => thetaKO om g₁ h Φ₁) (fun h => thetaKO om g₂ h Φ₂) = ((χB (detA A g₂) : Circle) : ℂ) * ∫ q, GlobalTheory.AutomorphicL2Unitary.descend (GQ B) (fun h => thetaKO omh (io A (g₁, g₂)) h (delta A B Φ₁ Φ₂)) q ∂autMeasure B mH`. Rewrite using `[← integral_const_mul]`. Simplify using `only [petersson, pet, GlobalTheory.AutomorphicL2Unitary.descend]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `q`. Conclude with `key g₁ g₂ _`. Rewrite using `[e1, ← measure_smul_average, GlobalTheory.ThetaMean.thetaMean, Complex.real_smul]`. Both sides reduce to the same expression. Establish `hss' : petersson B mH (up om m Φ₁ u₁) (up om m Φ₂ u₂) = _` using `hss`.
+
+Rewrite using `[hss', GlobalTheory.Eis.dblInt, ← integral_const_mul]`. Use `integral_congr_ae (.of_forall fun q => ?_)` and prove the remaining obligations. Simplify using `only [GlobalTheory.Eis.dblIntegrandQ, GlobalTheory.Eis.dblIntegrand, hpet, MonoidHom.inv_apply, Circle.coe_inv, inv_inv, RCLike.conj_conj]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem innerProduct_convergent : GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.WeilSiegelFormulaUnitary → GlobalTheory.Published.SiegelEisensteinContinuation → ∀ D : D7, ∀ (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (A B : HSp D) (χA χB : (AE D)ˣ →* Circle) (sA : RealMat A) (sB : RealMat B) (t : ℕ) (cA : CptF A) (a : GL (Fin A.rank) (AE D)) (om : GlobalTheory.Core.Rk.IP.WRep A B) (ν : Measure (WO A B)) (𝓕 : Set (WO A B)), Pair ψ θ A B χA χB sA sB t cA a om ν 𝓕 → (wittIndex B = 0 ∨ wittIndex B < t) → A.rank < t → ∀ (m : Measure (GA D A)) (mH : Measure (GA D B)), m.IsHaarMeasure → mH.IsHaarMeasure → ∀ Φ₁ Φ₂, IsFockVec ψ θ A B sA sB Φ₁ → IsFockVec ψ θ A B sA sB Φ₂ → ∀ u₁ ∈ A0 θ A cA, ∀ u₂ ∈ A0 θ A cA, UpConv om m mH Φ₁ u₁ ∧ UpConv om m mH Φ₂ u₂ ∧ Integrable (fun g => wcoef om ν 𝓕 Φ₁ Φ₂ g * rcoef m u₁ u₂ g) m ∧ petersson B mH (up om m Φ₁ u₁) (up om m Φ₂ u₂) = volQ B mH * ∫ g, wcoef om ν 𝓕 Φ₁ Φ₂ g * rcoef m u₁ u₂ g ∂m := by
   intro hC hWS hSEC D ψ θ A B χA χB sA sB t cA a om ν 𝓕 hP hwitt hat m mH hm hmH Φ₁ Φ₂ hΦ₁ hΦ₂ u₁ hu₁ u₂ hu₂
   have hW := GlobalTheory.weilRepresentationUnitaryPair

@@ -36,6 +36,11 @@ def NInv (u : G1 F → ℂ) : Prop := Measurable u ∧ ∀ (c : F) g, u (nU (rt 
 
 def wt4 (L : (FractionalIdeal (𝓞 F)⁰ F)ˣ) (N : ℕ) (v : V4 F) : ℝ := ∏ i, GlobalTheory.CompanionTheory.EpConvB.adeleWeight L N (v i)
 
+/- English proof (translation)
+Establish `h : ∀ r : Rw F, ∃ γ : Matrix.SpecialLinearGroup (Fin 2) F, γ.1 1 = r.1`. Introduce and unpack `⟨r, hr⟩`. Distinguish the cases in `h1 : r 1 = 0`. Apply the tactic sequence `have h0 : r 0 ≠ 0 := fun h0 => hr (by ext i; fin_cases i <;> simp [h0, h1])`. Apply the tactic sequence `exact ⟨⟨!![0, -(r 0)⁻¹; r 0, r 1], by simp [Matrix.det_fin_two, h0]⟩, by ext i; fin_cases i <;> simp⟩`.
+
+Apply the tactic sequence `exact ⟨⟨!![(r 1)⁻¹, 0; r 0, r 1], by simp [Matrix.det_fin_two, h1]⟩, by ext i; fin_cases i <;> simp⟩`. Use `choose σ hσ using h`. Conclude with `⟨σ, hσ⟩`.
+-/
 theorem exists_rowSec : ∃ σ : Rw F → Matrix.SpecialLinearGroup (Fin 2) F, M.RowSec σ := by
   have h : ∀ r : Rw F, ∃ γ : Matrix.SpecialLinearGroup (Fin 2) F, γ.1 1 = r.1 := by
     rintro ⟨r, hr⟩
@@ -49,11 +54,17 @@ theorem exists_rowSec : ∃ σ : Rw F → Matrix.SpecialLinearGroup (Fin 2) F, M
 variable [IsTotallyReal F]
 
 def qInf (δ : F) (v : V4 F) : ℝ := ∑ w, TR.pInf F (v 0 ^ 2 + v 1 ^ 2 + 2 * (v 2 ^ 2 - rt δ * v 3 ^ 2)) w
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem gauss_eq (δ : F) (v : V4 F) : gauss δ v = Complex.exp (-(Real.pi : ℂ) * (qInf δ v : ℝ)) := rfl
 
 def FockFn (δ : F) : Submodule ℂ (V4 F → ℂ) :=
   Submodule.span ℂ {φ : V4 F → ℂ | ∃ p ∈ polyFn (F := F), ∃ g ∈ finiteSchwartzBruhatPi F (ι := Fin 4),
     φ = fun v => p v * gauss δ v * g (finPartPi v)}
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_fock {δ : F} {φ : S4 F} : φ ∈ Fock δ ↔ φ.1 ∈ FockFn δ := Iff.rfl
 
 def polyOn (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (ι : Type) : Subalgebra ℂ ((ι → A F) → ℂ) :=

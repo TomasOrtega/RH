@@ -16,6 +16,21 @@ open UpperTheory.Zero.ConvolutionTheory.EB PositivityTheory.Rg.BcB.F.RS
 
 attribute [local instance] borelG borelF borelA borelH
 
+/- English proof (translation)
+Unfold `heckeVec`. Set `e : G₁ ⧸ K₁ → (G₁ × G₂) ⧸ (K₁.prod K₂)` to `fun c => QuotientGroup.mk (c.out, 1)`. Establish `he : Function.Injective e`. Introduce `c d hcd`. Establish `h2` using `QuotientGroup.eq.1 hcd`.
+
+Establish `h3 : c.out⁻¹ * d.out ∈ K₁` using `by simpa using (Subgroup.mem_prod.1 h2).1`. Rewrite using `[← QuotientGroup.out_eq' c, ← QuotientGroup.out_eq' d]`. Conclude with `QuotientGroup.eq.2 h3`. Establish `hsupp : Function.support (fun c : (G₁ × G₂) ⧸ (K₁.prod K₂) => (f c.out.1 * h c.out.2) • ρ c.out x) ⊆ Set.range e`. Introduce `d hd`.
+
+Establish `hk : d.out.2 ∈ K₂`. Assume the negation of the conclusion as `hn`. Conclude with `hd (by simp [h0 _ hn])`. Use `⟨QuotientGroup.mk d.out.1, ?_⟩` and prove the remaining obligations. Rewrite using `[← QuotientGroup.out_eq' d]`.
+
+Use `QuotientGroup.eq.2 (Subgroup.mem_prod.2 ⟨?_, by simpa using hk⟩)` and prove the remaining obligations. Establish `h3 : (QuotientGroup.mk d.out.1 : G₁ ⧸ K₁).out⁻¹ * d.out.1 ∈ K₁` using `QuotientGroup.eq.1 (QuotientGroup.out_eq' _)`. Simplify using `using h3`. Establish `key : ∑ᶠ d : (G₁ × G₂) ⧸ (K₁.prod K₂), (f d.out.1 * h d.out.2) • ρ d.out x = ∑ᶠ c : G₁ ⧸ K₁, (f (e c).out.1 * h (e c).out.2) • ρ (e c).out x`. Rewrite using `[← finsum_mem_range he (f := fun d : (G₁ × G₂) ⧸ (K₁.prod K₂) => (f d.out.1 * h d.out.2) • ρ d.out x), finsum_mem_def, Set.indicator_eq_self.2 hsupp]`.
+
+Use `key.trans (finsum_congr fun c => ?_)` and prove the remaining obligations. Establish `hm : ((c.out, 1) : G₁ × G₂)⁻¹ * (e c).out ∈ K₁.prod K₂` using `QuotientGroup.eq.1 (QuotientGroup.out_eq' (e c)).symm`. Take `⟨m1, m2⟩` from `Subgroup.mem_prod.1 hm`. Establish `m1' : c.out⁻¹ * (e c).out.1 ∈ K₁` using `by simpa using m1`. Establish `m2' : (e c).out.2 ∈ K₂` using `by simpa using m2`.
+
+Establish `hfd : f (e c).out.1 = f c.out`. Use `hf c.out _ m1'` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel_left]`. Then use the resulting hypothesis. Establish `hρ : ρ (e c).out x = ρ (c.out, 1) x`. Establish `h5 : ρ (((c.out, 1) : G₁ × G₂) * (((c.out, 1) : G₁ × G₂)⁻¹ * (e c).out)) x = ρ (c.out, 1) x`.
+
+Rewrite using `[map_mul, Module.End.mul_apply, GlobalTheory.LGrp.mem_fixed.1 hx _ hm]`. Rewrite `h5` using `[mul_inv_cancel_left]`. Then use the resulting hypothesis. Rewrite using `[hfd, h1 _ m2', hρ, mul_one]`. Both sides reduce to the same expression.
+-/
 private theorem heckeVec_fst {G₁ G₂ V : Type} [Group G₁] [Group G₂] [AddCommGroup V] [Module ℂ V]
     (ρ : Representation ℂ (G₁ × G₂) V) (K₁ : Subgroup G₁) (K₂ : Subgroup G₂) {x : V}
     (hx : x ∈ fixed ρ (K₁.prod K₂)) (f : G₁ → ℂ) (h : G₂ → ℂ)
@@ -61,6 +76,21 @@ private theorem heckeVec_fst {G₁ G₂ V : Type} [Group G₁] [Group G₂] [Add
   rw [hfd, h1 _ m2', hρ, mul_one]
   rfl
 
+/- English proof (translation)
+Unfold `heckeVec`. Set `e : G₂ ⧸ K₂ → (G₁ × G₂) ⧸ (K₁.prod K₂)` to `fun c => QuotientGroup.mk (1, c.out)`. Establish `he : Function.Injective e`. Introduce `c d hcd`. Establish `h2` using `QuotientGroup.eq.1 hcd`.
+
+Establish `h3 : c.out⁻¹ * d.out ∈ K₂` using `by simpa using (Subgroup.mem_prod.1 h2).2`. Rewrite using `[← QuotientGroup.out_eq' c, ← QuotientGroup.out_eq' d]`. Conclude with `QuotientGroup.eq.2 h3`. Establish `hsupp : Function.support (fun c : (G₁ × G₂) ⧸ (K₁.prod K₂) => (h c.out.1 * f c.out.2) • ρ c.out x) ⊆ Set.range e`. Introduce `d hd`.
+
+Establish `hk : d.out.1 ∈ K₁`. Assume the negation of the conclusion as `hn`. Conclude with `hd (by simp [h0 _ hn])`. Use `⟨QuotientGroup.mk d.out.2, ?_⟩` and prove the remaining obligations. Rewrite using `[← QuotientGroup.out_eq' d]`.
+
+Use `QuotientGroup.eq.2 (Subgroup.mem_prod.2 ⟨by simpa using hk, ?_⟩)` and prove the remaining obligations. Establish `h3 : (QuotientGroup.mk d.out.2 : G₂ ⧸ K₂).out⁻¹ * d.out.2 ∈ K₂` using `QuotientGroup.eq.1 (QuotientGroup.out_eq' _)`. Simplify using `using h3`. Establish `key : ∑ᶠ d : (G₁ × G₂) ⧸ (K₁.prod K₂), (h d.out.1 * f d.out.2) • ρ d.out x = ∑ᶠ c : G₂ ⧸ K₂, (h (e c).out.1 * f (e c).out.2) • ρ (e c).out x`. Rewrite using `[← finsum_mem_range he (f := fun d : (G₁ × G₂) ⧸ (K₁.prod K₂) => (h d.out.1 * f d.out.2) • ρ d.out x), finsum_mem_def, Set.indicator_eq_self.2 hsupp]`.
+
+Use `key.trans (finsum_congr fun c => ?_)` and prove the remaining obligations. Establish `hm : ((1, c.out) : G₁ × G₂)⁻¹ * (e c).out ∈ K₁.prod K₂` using `QuotientGroup.eq.1 (QuotientGroup.out_eq' (e c)).symm`. Take `⟨m1, m2⟩` from `Subgroup.mem_prod.1 hm`. Establish `m1' : (e c).out.1 ∈ K₁` using `by simpa using m1`. Establish `m2' : c.out⁻¹ * (e c).out.2 ∈ K₂` using `by simpa using m2`.
+
+Establish `hfd : f (e c).out.2 = f c.out`. Use `hf c.out _ m2'` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel_left]`. Then use the resulting hypothesis. Establish `hρ : ρ (e c).out x = ρ (1, c.out) x`. Establish `h5 : ρ (((1, c.out) : G₁ × G₂) * (((1, c.out) : G₁ × G₂)⁻¹ * (e c).out)) x = ρ (1, c.out) x`.
+
+Rewrite using `[map_mul, Module.End.mul_apply, GlobalTheory.LGrp.mem_fixed.1 hx _ hm]`. Rewrite `h5` using `[mul_inv_cancel_left]`. Then use the resulting hypothesis. Rewrite using `[hfd, h1 _ m1', hρ, one_mul]`. Both sides reduce to the same expression.
+-/
 private theorem heckeVec_snd {G₁ G₂ V : Type} [Group G₁] [Group G₂] [AddCommGroup V] [Module ℂ V]
     (ρ : Representation ℂ (G₁ × G₂) V) (K₁ : Subgroup G₁) (K₂ : Subgroup G₂) {x : V}
     (hx : x ∈ fixed ρ (K₁.prod K₂)) (f : G₂ → ℂ) (h : G₁ → ℂ)
@@ -106,6 +136,9 @@ private theorem heckeVec_snd {G₁ G₂ V : Type} [Group G₁] [Group G₂] [Add
   rw [hfd, h1 _ m1', hρ, one_mul]
   rfl
 
+/- English proof (translation)
+Introduce `g hg`. Unfold `Tj`. Use `Set.indicator_of_mem ?_ _` and prove the remaining obligations. Conclude with `⟨g, hg, 1, one_mem _, by simp [diagJ]⟩`.
+-/
 private theorem tj_zero_mem {E : Type} [Field E] [NumberField E] (w : Pl E) (n : ℕ) (ϖ : w.adicCompletion E) :
     ∀ g ∈ KGL w n, Tj ℂ n (Ov E w) ϖ 0 g = 1 := by
   intro g hg
@@ -113,6 +146,11 @@ private theorem tj_zero_mem {E : Type} [Field E] [NumberField E] (w : Pl E) (n :
   refine Set.indicator_of_mem ?_ _
   exact ⟨g, hg, 1, one_mem _, by simp [diagJ]⟩
 
+/- English proof (translation)
+Introduce `g hg`. Unfold `Tj`. Use `Set.indicator_of_notMem ?_ _` and prove the remaining obligations. Introduce and unpack `⟨x, hx, y, hy, e⟩`. Use `hg ?_` and prove the remaining obligations.
+
+Establish `: g = x * y` using `Units.ext (by simpa [diagJ] using e)`. Rewrite using `[this]`. Conclude with `mul_mem hx hy`.
+-/
 private theorem tj_zero_not {E : Type} [Field E] [NumberField E] (w : Pl E) (n : ℕ) (ϖ : w.adicCompletion E) :
     ∀ g, g ∉ KGL w n → Tj ℂ n (Ov E w) ϖ 0 g = 0 := by
   intro g hg
@@ -124,15 +162,36 @@ private theorem tj_zero_not {E : Type} [Field E] [NumberField E] (w : Pl E) (n :
   rw [this]
   exact mul_mem hx hy
 
+/- English proof (translation)
+Introduce `g k hk`. Use `(Tj_mem_hecke (n := n) hϖ i).1 1 ⟨k, hk⟩ g` as an intermediate fact. Simplify using `using this`.
+-/
 private theorem tj_right {E : Type} [Field E] [NumberField E] (w : Pl E) (n : ℕ) {ϖ : w.adicCompletion E}
     (hϖ : IsUnifV E w ϖ) (i : ℕ) : ∀ g, ∀ k ∈ KGL w n, Tj ℂ n (Ov E w) ϖ i (g * k) = Tj ℂ n (Ov E w) ϖ i g := by
   intro g k hk
   have := (Tj_mem_hecke (n := n) hϖ i).1 1 ⟨k, hk⟩ g
   simpa using this
 
+/- English proof (translation)
+Simplify using `[satEig, Multiset.esymm]`.
+-/
 private theorem sat_zero (q n : ℕ) (B : Multiset ℂˣ) : satEig q n B 0 = 1 := by
   simp [satEig, Multiset.esymm]
 
+/- English proof (translation)
+Introduce `E _ _ _ a b w G B₁ B₂ hS`. Take `⟨hfix, c₁, c₂, hT⟩` from `hS`. Use `⟨fun φ m₂ hφ h0 => ?_, fun φ m₁ hφ h0 => ?_⟩` and prove the remaining obligations. Establish `hG0 : G ≠ 0`. Introduce and unpack `rfl`.
+
+Conclude with `h0 (Subtype.ext hφ)`. Establish `s1 : IsSatVecGL w ((pairRt a b w).comp (MonoidHom.inl _ _)) G B₁`. Use `⟨hG0, GlobalTheory.LGrp.mem_fixed.2 fun k hk => ?_, c₁, fun ϖ hϖ i hi => ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.LGrp.mem_fixed.1 hfix _ (Subgroup.mem_prod.2 ⟨hk, one_mem _⟩)`. Establish `h1` using `hT ϖ hϖ i hi 0 (Nat.zero_le _)`.
+
+Rewrite `h1` using `[heckeVec_fst _ _ _ hfix _ _ (tj_right w a hϖ i) (tj_zero_not w b ϖ) (tj_zero_mem w b ϖ), sat_zero, mul_one]`. Conclude with `h1`. Set `L : (H E a b → ℂ) →ₗ[ℂ] (GA E a → ℂ)` to `{ toFun := fun F x => F (x, m₂), map_add' := fun _ _ => rfl, map_smul' := fun _ _ => rfl }`. Establish `s2 : IsSatVecGL w ((rightReg ℂ (GA E a) ℂ).comp (embW a w)) (L G) B₁` using `s1.map L (fun g y => by`. Use function extensionality and compare the values at `x`.
+
+Simplify using `[L, pairRt, rightReg, LinearMap.funLeft]) (fun e => h0 (Subtype.ext (hφ.trans e)))`. Establish `e : (Sm E a).subtype φ = L G` using `hφ`. Rewrite `s2` using `[← e]`. Conclude with `IsSatVecGL.of_map (Sm E a).subtype (fun _ _ => rfl) Subtype.val_injective s2`. Establish `hG0 : G ≠ 0`.
+
+Introduce and unpack `rfl`. Conclude with `h0 (Subtype.ext hφ)`. Establish `s1 : IsSatVecGL w ((pairRt a b w).comp (MonoidHom.inr _ _)) G B₂`. Use `⟨hG0, GlobalTheory.LGrp.mem_fixed.2 fun k hk => ?_, c₂, fun ϖ hϖ i hi => ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.LGrp.mem_fixed.1 hfix _ (Subgroup.mem_prod.2 ⟨one_mem _, hk⟩)`.
+
+Establish `h1` using `hT ϖ hϖ 0 (Nat.zero_le _) i hi`. Rewrite `h1` using `[heckeVec_snd _ _ _ hfix _ _ (tj_right w b hϖ i) (tj_zero_not w a ϖ) (tj_zero_mem w a ϖ), sat_zero, one_mul]`. Conclude with `h1`. Set `L : (H E a b → ℂ) →ₗ[ℂ] (GA E b → ℂ)` to `{ toFun := fun F x => F (m₁, x), map_add' := fun _ _ => rfl, map_smul' := fun _ _ => rfl }`. Establish `s2 : IsSatVecGL w ((rightReg ℂ (GA E b) ℂ).comp (embW b w)) (L G) B₂` using `s1.map L (fun g y => by`.
+
+Use function extensionality and compare the values at `x`. Simplify using `[L, pairRt, rightReg, LinearMap.funLeft]) (fun e => h0 (Subtype.ext (hφ.trans e)))`. Establish `e : (Sm E b).subtype φ = L G` using `hφ`. Rewrite `s2` using `[← e]`. Conclude with `IsSatVecGL.of_map (Sm E b).subtype (fun _ _ => rfl) Subtype.val_injective s2`.
+-/
 theorem UpperTheory.Zero.ConvolutionTheory.EB.sat2Slice :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (a b : ℕ) (w : Pl E) (G : H E a b → ℂ) (B₁ B₂ : Multiset ℂˣ), IsSat2 w (pairRt a b w) G B₁ B₂ →
     (∀ (φ : Sm E a) m₂, (φ.1 = fun x => G (x, m₂)) → φ ≠ 0 → IsSatVecGL w (UpperTheory.V.Cj.S.fL a w) φ B₁) ∧

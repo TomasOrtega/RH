@@ -5,6 +5,11 @@ open MeasureTheory
 
 namespace GlobalTheory.FockFamily
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Rewrite using `[contDiff_clm_apply_iff]`. Introduce `q`. Simplify `(hJ (0, q)).fst` using `only [blockB_apply]`. Rewrite using `[contDiff_clm_apply_iff]`.
+
+Introduce `q`. Simplify `(hJ (0, q)).snd` using `only [blockD_apply]`.
+-/
 theorem contDiff_blockB_blockD {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V]
     (J : ℝ → (V × V) →ₗ[ℝ] (V × V)) (hJ : ∀ w, ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) fun t => J t w) :
     ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun t => GlobalTheory.FockFamily.blockB (J t)) ∧

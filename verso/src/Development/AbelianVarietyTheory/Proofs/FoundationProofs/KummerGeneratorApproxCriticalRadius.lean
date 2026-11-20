@@ -6,6 +6,29 @@ open scoped NNReal
 
 namespace GlobalTheory.AlmostEt
 
+/- English proof (translation)
+Introduce `L _ v p hp F hF hvp α hα hvp0 s hs`. Take `⟨θ, hθ, hθF⟩` from `hF`. Establish `hp2 : 2 ≤ p` using `hp.two_le`. Establish `hp1 : p - 1 ≠ 0` using `by omega`. Distinguish the cases in `hα0 : α = 0`.
+
+Use `⟨0, F.zero_mem, ?_⟩` and prove the remaining obligations. Simplify using `[hα0, zero_pow hp1]`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Establish `hs0 : (0 : ℝ≥0) < s` using `zero_lt_one.trans hs`.
+
+Establish `ha : 0 < v α` using `(Valuation.pos_iff v).2 hα0`. Use `set a := v α with ha_def`. Use `set c := s * v (p : L) * a ^ (p - 1) with hc_def`. Establish `hc : 0 < c` using `by positivity`. Use `set η : ℝ≥0 := max s⁻¹ (max θ (v (p : L))) with hη_def`.
+
+Establish `hη : η < 1`. Simplify using `only [hη_def, max_lt_iff]`. Conclude with `⟨inv_lt_one_of_one_lt₀ hs, hθ, hvp⟩`. Establish `step : ∀ y ∈ F, v (α - y) ≤ a → ∃ y' ∈ F, v (α - y') ^ p ≤ η * v (α - y) ^ p`. Introduce `y hy hya`.
+
+Take `⟨y', hy', h⟩` from `GlobalTheory.T.exists_improved_approx_kummer_generator L v p hp F θ hθ.le hvp.le hθF α y hα hy hya`. Use `⟨y', hy', h.trans ?_⟩` and prove the remaining obligations. Establish `hcb` using `hcon y hy`. Use `set b := v (α - y)`. Apply `max_le` to reduce the goal to its premises.
+
+Establish `h0 : s * (v (p : L) * a ^ (p - 1)) ≤ b ^ (p - 1)`. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : v (p : L) * a ^ (p - 1) ≤ s⁻¹ * b ^ (p - 1)`. Combine the equalities or inequalities in the displayed calculation. Establish `h1 : v (p : L) * b * a ^ (p - 1) ≤ s⁻¹ * b ^ p`.
+
+Combine the equalities or inequalities in the displayed calculation. Conclude with `h1.trans (by gcongr; exact le_max_left _ _)`. Use `gcongr`. Conclude with `le_max_right _ _`. Establish `iter : ∀ k : ℕ, ∃ y ∈ F, v (α - y) ≤ a ∧ v (α - y) ^ p ≤ η ^ k * a ^ p`.
+
+Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => exact ⟨0, F.zero_mem, by simp [ha_def], by simp [ha_def]⟩`. Consider the case `succ k ih`. Take `⟨y, hy, hya, hyk⟩` from `ih`.
+
+Take `⟨y', hy', h'⟩` from `step y hy hya`. Establish `hle : v (α - y') ^ p ≤ v (α - y) ^ p` using `h'.trans (mul_le_of_le_one_left (by positivity) hη.le)`. Use `⟨y', hy', ?_, ?_⟩` and prove the remaining obligations. Conclude with `((pow_le_pow_iff_left₀ (by positivity) (by positivity) hp.ne_zero).1 hle).trans hya`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hA : 0 < (a ^ p) ^ (p - 1)` using `by positivity`. Take `⟨k, hk⟩` from `exists_pow_lt_of_lt_one (div_pos (pow_pos hc p) hA) hη`. Take `⟨y, hy, -, hyk⟩` from `iter k`. Establish `hcb` using `hcon y hy`. Establish `e1 : c ^ p < (v (α - y) ^ p) ^ (p - 1)`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `e2 : (v (α - y) ^ p) ^ (p - 1) ≤ η ^ k * (a ^ p) ^ (p - 1)`. Combine the equalities or inequalities in the displayed calculation. Establish `e3 : η ^ k * (a ^ p) ^ (p - 1) < c ^ p` using `(lt_div_iff₀ hA).1 hk`. Conclude with `lt_irrefl _ ((e1.trans_le e2).trans e3)`.
+-/
 theorem kummer_approx_critical : ∀ (L : Type) [Field L] (v : Valuation L ℝ≥0) (p : ℕ), p.Prime →
     ∀ F : Subfield L, ApproxRoot p v F → v (p : L) < 1 → ∀ α : L, α ^ p ∈ F → 0 < v (p : L) →
     ∀ s : ℝ≥0, 1 < s → ∃ y ∈ F, v (α - y) ^ (p - 1) ≤ s * v (p : L) * v α ^ (p - 1) := by

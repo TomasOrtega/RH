@@ -18,6 +18,13 @@ open GlobalTheory.CompanionTheory.LocInert
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
+/- English proof (translation)
+Establish `h` using `hC E (w.under (𝓞 (maximalRealSubfield E)))`. Use `set X : Af E := sLoc E w (evR hw x) with hX`. Establish `hp : pLoc E w X = evR hw x`. Express the relevant statement in the definitionally equal form `(Pi.single w (evR hw x) : ∀ u : Pl E, u.adicCompletion E) w = _`. Simplify using the standard rewrite rules.
+
+Establish `hx : projv _ X = x`. Use function extensionality and compare the values at `u`. Take `rfl` from `eq_aw hw u`. Conclude with `hp`. Establish `hs : cjv (w.under (𝓞 (maximalRealSubfield E))) = h.choose`.
+
+Rewrite using `[cjv, dif_pos h]`. Rewrite using `[← hx, hs, ← h.choose_spec.2 X, evR_apply, evR_apply]`. Express the relevant statement in the definitionally equal form `pLoc E w (conjFin (IsCMField.complexConj E).toRingEquiv X) = cj w (pLoc E w X)`. Rewrite using `[pLoc_conjFin]`. Conclude with `GlobalTheory.BCT.GlobLev.conjLoc_eq_cj hw X`.
+-/
 theorem cjv_apply (hC : CjEx) {w : Pl E} (hw : ¬ IsSplitAt w)
     (x : Av (w.under (𝓞 (maximalRealSubfield E)))) : evR hw (cjv _ x) = cj w (evR hw x) := by
   have h := hC E (w.under (𝓞 (maximalRealSubfield E)))
@@ -36,6 +43,9 @@ theorem cjv_apply (hC : CjEx) {w : Pl E} (hw : ¬ IsSplitAt w)
   rw [pLoc_conjFin]
   exact GlobalTheory.BCT.GlobLev.conjLoc_eq_cj hw X
 
+/- English proof (translation)
+Establish `h : ∀ n (g : GL (Fin n) (Av (w.under (𝓞 (maximalRealSubfield E))))), GeneralLinearGroup.map (evR hw).toRingHom (thetaGL n (cjv _) g) = thL n w (GeneralLinearGroup.map (evR hw).toRingHom g)` using `fun n g => by`. Rewrite using `[thL, if_neg hw]`. Conclude with `GlobalTheory.ThetaPull.map_thetaGL _ _ _ (cjv_apply hC hw) g`. Conclude with `Prod.ext (h a y.1) (h b y.2)`.
+-/
 theorem evY_thv (hC : CjEx) {w : Pl E} (hw : ¬ IsSplitAt w) (a b : ℕ)
     (y : Yv a b (w.under (𝓞 (maximalRealSubfield E)))) :
     evY hw a b (thv a b _ y) = ((thL a w).prodMap (thL b w)) (evY hw a b y) := by
@@ -46,6 +56,9 @@ theorem evY_thv (hC : CjEx) {w : Pl E} (hw : ¬ IsSplitAt w) (a b : ℕ)
     exact GlobalTheory.ThetaPull.map_thetaGL _ _ _ (cjv_apply hC hw) g
   exact Prod.ext (h a y.1) (h b y.2)
 
+/- English proof (translation)
+Introduce `hC E _ _ _ a b v w hw`. Take `⟨w, rfl⟩` from `w`. Conclude with `⟨evY hw a b, evY_apply hw a b, evY_thv hC hw a b, mem_Kv_iff hw a b⟩`.
+-/
 theorem inert_iso : CjEx → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (a b : ℕ) (v : PlF E) (w : Above v), ¬ IsSplitAt w.1 →
   ∃ e : Yv a b v ≃ₜ* (GLw a w.1 × GLw b w.1), (∀ y, e y = evw w y) ∧
     (∀ y, e (thv a b v y) = ((thL a w.1).prodMap (thL b w.1)) (e y)) ∧ ∀ y, y ∈ Kv a b v ↔ e y ∈ K2 a b w.1 := by

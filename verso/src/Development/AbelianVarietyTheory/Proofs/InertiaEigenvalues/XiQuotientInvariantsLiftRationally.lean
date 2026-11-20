@@ -24,9 +24,17 @@ def co (k : ι) : T ⊗[R] M →ₗ[R] M :=
   (TensorProduct.lid R M).toLinearMap ∘ₗ LinearMap.rTensor M (b.coord k)
 
 omit [Fintype ι] in
+/- English proof (translation)
+Simplify using `[co]`.
+-/
 theorem co_tmul (k : ι) (t : T) (m : M) : co b k (t ⊗ₜ[R] m) = b.repr t k • m := by
   simp [co]
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul t m`. Simplify using `only [co_tmul, ← smul_tmul]`. Rewrite using `[← sum_tmul, b.sum_repr]`.
+
+Consider the case `add x y hx hy => simp only [map_add, tmul_add, Finset.sum_add_distrib, hx, hy]`.
+-/
 theorem sum_co (x : T ⊗[R] M) : ∑ k, b k ⊗ₜ[R] co b k x = x := by
   induction x using TensorProduct.induction_on with
   | zero => simp
@@ -35,6 +43,13 @@ theorem sum_co (x : T ⊗[R] M) : ∑ k, b k ⊗ₜ[R] co b k x = x := by
     rw [← sum_tmul, b.sum_repr]
   | add x y hx hy => simp only [map_add, tmul_add, Finset.sum_add_distrib, hx, hy]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, rfl⟩ k`. Proceed by induction on `u using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul t m`.
+
+Rewrite using `[LinearMap.lTensor_tmul, co_tmul]`. Conclude with `S.smul_mem _ m.2`. Consider the case `add x y hx hy => rw [map_add, map_add]`. Conclude with `S.add_mem hx hy`. Introduce `h`.
+
+Rewrite using `[← sum_co b x]`. Conclude with `Submodule.sum_mem _ fun k _ => ⟨b k ⊗ₜ[R] ⟨_, h k⟩, rfl⟩`.
+-/
 theorem mem_range_iff (S : Submodule R M) (x : T ⊗[R] M) :
     x ∈ LinearMap.range (LinearMap.lTensor T S.subtype) ↔ ∀ k, co b k x ∈ S := by
   constructor
@@ -49,6 +64,9 @@ theorem mem_range_iff (S : Submodule R M) (x : T ⊗[R] M) :
     rw [← sum_co b x]
     exact Submodule.sum_mem _ fun k _ => ⟨b k ⊗ₜ[R] ⟨_, h k⟩, rfl⟩
 
+/- English proof (translation)
+Simplify using `[map_sum, co_tmul, Finsupp.single_apply]`.
+-/
 theorem co_sum [DecidableEq ι] (m : ι → M) (k : ι) : co b k (∑ j, b j ⊗ₜ[R] m j) = m k := by
   simp [map_sum, co_tmul, Finsupp.single_apply]
 
@@ -67,11 +85,17 @@ def Phi (i : T →+ V) (hi : ∀ (c : R) t, i (c • t) = algebraMap R F c • i
       (fun t t' => by ext m; simp [add_tmul]))
     (fun c t m => by simp [hi, hβ, smul_tmul])
 
+/- English proof (translation)
+Simplify using `[Phi]`.
+-/
 theorem Phi_tmul (i : T →+ V) (hi : ∀ (c : R) t, i (c • t) = algebraMap R F c • i t) (β : M →+ B)
     (hβ : ∀ (c : R) m, β (c • m) = algebraMap R F c • β m) (t : T) (m : M) :
     Phi i hi β hβ (t ⊗ₜ[R] m) = i t ⊗ₜ[F] β m := by
   simp [Phi]
 
+/- English proof (translation)
+Use `conv_lhs => rw [← sum_co bT x]`. Rewrite using `[map_sum]`. Simplify using `only [Phi_tmul, hb]`. Conclude with `co_sum bV _ k`.
+-/
 theorem co_Phi {ι : Type} [Fintype ι] (bT : Basis ι R T) (bV : Basis ι F V)
     (i : T →+ V) (hi : ∀ (c : R) t, i (c • t) = algebraMap R F c • i t) (β : M →+ B)
     (hβ : ∀ (c : R) m, β (c • m) = algebraMap R F c • β m) (hb : ∀ k, i (bT k) = bV k)
@@ -82,6 +106,35 @@ theorem co_Phi {ι : Type} [Fintype ι] (bT : Basis ι R T) (bV : Basis ι F V)
   simp only [Phi_tmul, hb]
   exact co_sum bV _ k
 
+/- English proof (translation)
+Use `set Φ := Phi i hi β hβ with hΦ`. Establish `hco : ∀ x k, co bV k (Φ x) = β (co bT k x)` using `co_Phi bT bV i hi β hβ hb`. Establish `hker : ∀ (S : Submodule F B) (N : Submodule R M), (∀ m, β m ∈ S ↔ m ∈ N) → ∀ x, Φ x ∈ LinearMap.range (LinearMap.lTensor V S.subtype) ↔ LinearMap.lTensor T N.mkQ x = 0`. Introduce `S N h x`. Rewrite using `[← LinearMap.mem_ker, lTensor_mkQ, mem_range_iff bV, mem_range_iff bT]`.
+
+Simplify using `only [hco, h]`. Establish `hequi : ∀ g x, Φ (TensorProduct.map (ρT g) (ρM g) x) = TensorProduct.map (ρV g) (ρB g) (Φ x)`. Introduce `g x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+
+Consider the case `tmul t m => simp only [hΦ, map_tmul, Phi_tmul, hiρ, hβρ]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Establish `hsm : ∀ (c : R) x, Φ (c • x) = algebraMap R F c • Φ x`. Introduce `c x`. Proceed by induction on `x using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp`. Consider the case `tmul t m => rw [smul_tmul', hΦ, Phi_tmul, Phi_tmul, hi, smul_tmul']`. Consider the case `add x y hx hy => simp only [smul_add, map_add, hx, hy]`. Establish `hq : ∀ (N : Submodule R M) (q : G → (M ⧸ N) →ₗ[R] (M ⧸ N)), (∀ g m, q g (Submodule.Quotient.mk m) = Submodule.Quotient.mk (ρM g m)) → ∀ g x, TensorProduct.map (ρT g) (q g) (LinearMap.lTensor T N.mkQ x) = LinearMap.lTensor T N.mkQ (TensorProduct.map (ρT g) (ρM g) x)`. Introduce `N q h g x`.
+
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul t m => simp [h]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Take `⟨z', rfl⟩` from `LinearMap.lTensor_surjective T Ne.mkQ_surjective z`.
+
+Take `⟨w, hwG, hwa, hwe⟩` from `ht (Φ z') (by`. Rewrite using `[mem_range_iff bV]; intro k; rw [hco]; exact ha _) (by`. Introduce `g`. Rewrite using `[← hequi, ← map_sub, hker Se Ne he, map_sub, ← hq Ne qe hqe, hz, sub_self])`. Rewrite `hwa` using `[mem_range_iff bV]`.
+
+Use `choose n m hm using fun k => hden _ (hwa k)`. Use `set N := ∑ k, n k with hN`. Establish `hle : ∀ k, n k ≤ N` using `fun k => Finset.single_le_sum (fun _ _ => Nat.zero_le _) (Finset.mem_univ k)`. Use `set x' : T ⊗[R] M := ∑ k, bT k ⊗ₜ[R] (r ^ (N - n k) • m k) with hx'`. Establish `hx : algebraMap R F r ^ N • w - Φ x' ∈ LinearMap.range (LinearMap.lTensor V Sb.subtype)`.
+
+Rewrite using `[mem_range_iff bV]`. Introduce `k`. Rewrite using `[map_sub, map_smul, hco, hx', co_sum, hβ, map_pow]`. Use `Sb.smul_mem (algebraMap R F r ^ (N - n k)) (hm k)` as an intermediate fact. Rewrite `this` using `[smul_sub, smul_smul, ← pow_add, Nat.sub_add_cancel (hle k)]`. Then use the resulting hypothesis.
+
+Use `⟨N, LinearMap.lTensor T Nb.mkQ x', fun g => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hq Nb qb hqb, ← sub_eq_zero, ← map_sub, ← hker Sb Nb hbb, map_sub, hequi]`. Establish `h1 : TensorProduct.map (ρV g) (ρB g) (algebraMap R F r ^ N • w - Φ x') ∈ LinearMap.range (LinearMap.lTensor V Sb.subtype)`. Take `⟨u, hu⟩` from `hx`. Rewrite using `[← hu]`.
+
+Use `clear hu`. Proceed by induction on `u using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul t m => exact ⟨ρV g t ⊗ₜ[F] ⟨_, hSb g _ m.2⟩, rfl⟩`. Consider the case `add x y hx hy => rw [map_add, map_add]`.
+
+Conclude with `Submodule.add_mem _ hx hy`. Rewrite `h1` using `[map_sub, map_smul, hwG]`. Use `Submodule.sub_mem _ hx h1` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Normalize the expressions using the abelian group laws.
+
+Establish `h2 : LinearMap.lTensor T p (LinearMap.lTensor T Nb.mkQ x') = LinearMap.lTensor T Ne.mkQ x'`. Rewrite using `[← LinearMap.comp_apply, ← LinearMap.lTensor_comp]`. Use `congr 2`. Use extensionality with `m`. Conclude with `hp m`.
+
+Rewrite using `[h2, ← map_smul, ← sub_eq_zero, ← map_sub, ← hker Se Ne he, map_sub, hsm, map_pow]`. Establish `h3 : algebraMap R F r ^ N • w - Φ x' ∈ LinearMap.range (LinearMap.lTensor V Se.subtype)`. Rewrite `hx`, the goal using `[mem_range_iff bV]`. Conclude with `fun k => hbe (hx k)`. Use `Submodule.neg_mem _ (Submodule.add_mem _ h3 (Submodule.smul_mem _ (algebraMap R F r ^ N) hwe))` as an intermediate fact.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Rewrite using `[smul_sub]`. Normalize the expressions using the abelian group laws.
+-/
 theorem core {ι : Type} [Fintype ι] (bT : Basis ι R T) (bV : Basis ι F V)
     (i : T →+ V) (hi : ∀ (c : R) t, i (c • t) = algebraMap R F c • i t) (β : M →+ B)
     (hβ : ∀ (c : R) m, β (c • m) = algebraMap R F c • β m) (hb : ∀ k, i (bT k) = bV k)
@@ -187,14 +240,23 @@ variable {l : ℕ} [Fact l.Prime] {P : LocPrime l} (AI : LocAinf l P)
 
 def iD : Ainf l →+* P.R.BdR := (P.ιB : P.R.B →+* P.R.BdR).comp AI.ιA
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem iD_apply (a : Ainf l) : iD AI a = P.ιB (AI.ιA a) := rfl
 
+/- English proof (translation)
+Establish `h2 : AI.ιA (AI.actWHom g a) = P.actQ g (AI.ιA a)` using `AI.ιA_act g a`. Establish `h3` using `(P.PD (botExt l)).ι_comm ⟨g, mem_GK_bot g⟩ (AI.ιA a)`. Rewrite `h3` using `[P.PD_ι, P.PD_ι, P.PD_actB, P.PD_actdR]`. Rewrite using `[iD_apply, iD_apply, h2, h3]`.
+-/
 theorem iD_act (g : GQ l) (a : Ainf l) : iD AI (AI.actWHom g a) = P.actQdR g (iD AI a) := by
   have h2 : AI.ιA (AI.actWHom g a) = P.actQ g (AI.ιA a) := AI.ιA_act g a
   have h3 := (P.PD (botExt l)).ι_comm ⟨g, mem_GK_bot g⟩ (AI.ιA a)
   rw [P.PD_ι, P.PD_ι, P.PD_actB, P.PD_actdR] at h3
   rw [iD_apply, iD_apply, h2, h3]
 
+/- English proof (translation)
+Establish `h : AI.ιA (algebraMap ℤ_[l] (Ainf l) c) = algebraMap ℚ_[l] P.R.B (c : ℚ_[l])`. Apply `LT.eB.injective` to reduce the goal to its premises. Rewrite using `[LT.ιA, LT.zB]`. Conclude with `GlobalTheory.RingIface.aB_algebraMap_padicInt l c`. Rewrite using `[iD_apply, h, AlgHom.commutes]`.
+-/
 theorem iD_zl (LT : LocTied l P AI) (c : ℤ_[l]) :
     iD AI (algebraMap ℤ_[l] (Ainf l) c) = algebraMap ℚ_[l] P.R.BdR (c : ℚ_[l]) := by
   have h : AI.ιA (algebraMap ℤ_[l] (Ainf l) c) = algebraMap ℚ_[l] P.R.B (c : ℚ_[l]) := by
@@ -203,6 +265,9 @@ theorem iD_zl (LT : LocTied l P AI) (c : ℤ_[l]) :
     exact GlobalTheory.RingIface.aB_algebraMap_padicInt l c
   rw [iD_apply, h, AlgHom.commutes]
 
+/- English proof (translation)
+The claim follows from `WittVector.map_injective _ (IsFractionRing.injective (OCb l) (Cb l))`.
+-/
 theorem inclW_inj : Function.Injective (inclW l) :=
   WittVector.map_injective _ (IsFractionRing.injective (OCb l) (Cb l))
 
@@ -211,9 +276,17 @@ def eM (a : ℤ) : Ainf l →ₗ[ℤ_[l]] ↥(Mxi (AinfSub l) (xiU AI) a) :=
     ((LinearMap.mulLeft ℤ_[l] (((xiU AI) ^ a : (WCb l)ˣ) : WCb l)) ∘ₗ (inclWA l).toLinearMap)
     (fun y => ⟨inclWA l y, ⟨y, rfl⟩, rfl⟩)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem eM_coe (a : ℤ) (y : Ainf l) :
     (eM AI a y : WCb l) = (((xiU AI) ^ a : (WCb l)ˣ) : WCb l) * inclW l y := rfl
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `y y' h`. Establish `h1` using `congrArg (fun m : ↥(Mxi (AinfSub l) (xiU AI) a) => (m : WCb l)) h`. Simplify using `only [eM_coe] at h1`. Conclude with `inclW_inj ((Units.isUnit _).mul_left_cancel h1)`.
+
+Introduce and unpack `⟨x, y, ⟨y', rfl⟩, rfl⟩`. Conclude with `⟨y', rfl⟩`.
+-/
 theorem eM_bij (a : ℤ) : Function.Bijective (eM AI a) := by
   constructor
   · intro y y' h
@@ -226,9 +299,15 @@ theorem eM_bij (a : ℤ) : Function.Bijective (eM AI a) := by
 def eE (a : ℤ) : Ainf l ≃ₗ[ℤ_[l]] ↥(Mxi (AinfSub l) (xiU AI) a) :=
   LinearEquiv.ofBijective (eM AI a) (eM_bij AI a)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem eE_coe (a : ℤ) (y : Ainf l) :
     (eE AI a y : WCb l) = (((xiU AI) ^ a : (WCb l)ˣ) : WCb l) * inclW l y := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem xiU_coe : ((xiU AI : (WCb l)ˣ) : WCb l) = inclW l AI.ξ := rfl
 
 variable (u : (P.R.BdR)ˣ)
@@ -237,10 +316,16 @@ def beta (a : ℤ) : ↥(Mxi (AinfSub l) (xiU AI) a) →+ P.R.BdR :=
   (AddMonoidHom.mulLeft ((u ^ a : (P.R.BdR)ˣ) : P.R.BdR)).comp
     ((iD AI).toAddMonoidHom.comp (eE AI a).symm.toLinearMap.toAddMonoidHom)
 
+/- English proof (translation)
+Simplify using `[beta]`.
+-/
 theorem beta_eE (a : ℤ) (y : Ainf l) :
     beta AI u a (eE AI a y) = ((u ^ a : (P.R.BdR)ˣ) : P.R.BdR) * iD AI y := by
   simp [beta]
 
+/- English proof (translation)
+Take `⟨y, rfl⟩` from `(eE AI a).surjective m`. Rewrite using `[← map_smul, beta_eE, beta_eE, Algebra.smul_def, map_mul, iD_zl AI LT, Algebra.smul_def]`. Express the relevant statement in the definitionally equal form `_ = algebraMap ℚ_[l] P.R.BdR (c : ℚ_[l]) * _`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem beta_smul (LT : LocTied l P AI) (a : ℤ) (c : ℤ_[l]) (m : ↥(Mxi (AinfSub l) (xiU AI) a)) :
     beta AI u a (c • m) = algebraMap ℤ_[l] ℚ_[l] c • beta AI u a m := by
   obtain ⟨y, rfl⟩ := (eE AI a).surjective m
@@ -251,6 +336,9 @@ theorem beta_smul (LT : LocTied l P AI) (a : ℤ) (c : ℤ_[l]) (m : ↥(Mxi (Ai
 variable (hu : (u : P.R.BdR) = iD AI AI.ξ)
 include hu
 
+/- English proof (translation)
+Take `⟨y, rfl⟩` from `(eE AI a).surjective m`. Take `⟨n, hn⟩` from `Int.eq_ofNat_of_zero_le hN`. Use `⟨AI.ξ ^ n * y, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[eE_coe, map_mul, map_pow, ← xiU_coe, ← mul_assoc, ← Units.val_pow_eq_pow_val, ← Units.val_pow_eq_pow_val, ← Units.val_mul, ← zpow_natCast, ← zpow_natCast, ← zpow_add, ← hn, add_comm]`. Rewrite using `[beta_eE, map_mul, map_pow, ← hu, ← mul_assoc, ← Units.val_pow_eq_pow_val, ← Units.val_pow_eq_pow_val, ← Units.val_mul, ← zpow_natCast, ← zpow_natCast, ← zpow_add, ← hn, add_comm]`.
+-/
 theorem beta_clear (a : ℤ) (N : ℕ) (hN : 0 ≤ a + N) (m : ↥(Mxi (AinfSub l) (xiU AI) a)) :
     ∃ y : Ainf l, inclW l AI.ξ ^ N * (m : WCb l) = inclW l y ∧
       (u : P.R.BdR) ^ N * beta AI u a m = iD AI y := by
@@ -264,6 +352,13 @@ theorem beta_clear (a : ℤ) (N : ℕ) (hN : 0 ≤ a + N) (m : ↥(Mxi (AinfSub 
       ← Units.val_pow_eq_pow_val, ← Units.val_mul, ← zpow_natCast, ← zpow_natCast, ← zpow_add, ← hn,
       add_comm]
 
+/- English proof (translation)
+Take `⟨N, hN⟩ : ∃ N : ℕ, 0 ≤ a + N` from `⟨a.natAbs, by omega⟩`. Take `⟨y0, h0, h0'⟩` from `beta_clear AI u hu a N hN m`. Take `⟨y1, h1, h1'⟩` from `beta_clear AI u hu a N hN m'`. Take `⟨b, hb⟩` from `xi_dvd_act AI g AI.ξ ⟨1, (mul_one _).symm⟩`. Establish `h2` using `congrArg (AI.actWCbHom g) h0`.
+
+Rewrite `h2` using `[map_mul, map_pow, inclW_act, inclW_act, hb, ← h, map_mul, mul_pow, mul_right_comm, h1, ← map_pow, ← map_mul]`. Establish `h3` using `congrArg (iD AI) (inclW_inj h2)`. Rewrite `h3` using `[iD_act, ← h0', map_mul, ← h1', map_mul, map_pow, map_pow]`. Establish `h4 : P.actQdR g u = u * iD AI b` using `by rw [hu, ← iD_act, hb, map_mul]`. Establish `h5 : IsUnit (P.actQdR g u ^ N)` using `((Units.isUnit u).map (P.actQdR g)).pow N`.
+
+Apply `h5.mul_left_cancel` to reduce the goal to its premises. Rewrite using `[← h3, h4]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem beta_act (a : ℤ) (g : GQ l) (m m' : ↥(Mxi (AinfSub l) (xiU AI) a))
     (h : (m' : WCb l) = AI.actWCbHom g m) : beta AI u a m' = P.actQdR g (beta AI u a m) := by
   obtain ⟨N, hN⟩ : ∃ N : ℕ, 0 ≤ a + N := ⟨a.natAbs, by omega⟩
@@ -281,6 +376,15 @@ theorem beta_act (a : ℤ) (g : GQ l) (m m' : ↥(Mxi (AinfSub l) (xiU AI) a))
   rw [← h3, h4]
   ring
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h1` using `(P.PD (botExt l)).Fil_mul _ _ _ _ hw h`. Rewrite `h1` using `[zero_add, J.fil_succ_iff_mul_t]`. Take `⟨y, hy, hxy⟩` from `h1`.
+
+Establish `hunit : IsUnit (P.ιB P.tB)`. Use `(P.PD (botExt l)).t_unit` as an intermediate fact. Rewrite `this` using `[P.period_datum_t_eq]`. Conclude with `this.map P.ιB`. Establish `: x = y`.
+
+Apply `hunit.mul_left_cancel` to reduce the goal to its premises. Rewrite using `[← hxy, ht, hu, iD_apply]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]` and apply the resulting hypothesis. Introduce `h`.
+
+Establish `h1 : (u : P.R.BdR) ∈ (P.PD (botExt l)).Fil 1`. Rewrite using `[hu, iD_apply]`. Conclude with `(AI.ainf_image_mem_filtration_one_iff (botExt l) AI.ξ).mpr ⟨1, (mul_one _).symm⟩`. Rewrite using `[add_comm]`. Conclude with `(P.PD (botExt l)).Fil_mul _ _ _ _ h1 h`.
+-/
 theorem u_mul_mem (J : ThetaL P AI) (w : P.R.BdR) (hw : w ∈ (P.PD (botExt l)).Fil 0)
     (ht : P.ιB P.tB = P.ιB (AI.ιA AI.ξ) * w) (c : ℤ) (x : P.R.BdR) :
     (u : P.R.BdR) * x ∈ (P.PD (botExt l)).Fil (c + 1) ↔ x ∈ (P.PD (botExt l)).Fil c := by
@@ -305,6 +409,11 @@ theorem u_mul_mem (J : ThetaL P AI) (w : P.R.BdR) (hw : w ∈ (P.PD (botExt l)).
     rw [add_comm]
     exact (P.PD (botExt l)).Fil_mul _ _ _ _ h1 h
 
+/- English proof (translation)
+Establish `H` using `u_mul_mem AI u hu J w hw ht`. Proceed by induction on `a using Int.induction_on with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Introduce `c x`.
+
+Rewrite using `[zpow_add_one, Units.val_mul, mul_assoc, ← H c x, ← ih (c + 1), show c + ((k : ℤ) + 1) = c + 1 + k by ring]`. Consider the case `pred k ih`. Introduce `c x`. Rewrite using `[zpow_sub_one, Units.val_mul, mul_assoc, show c + (-(k : ℤ) - 1) = c - 1 + -k by ring, ih (c - 1), ← H (c - 1), ← mul_assoc, Units.mul_inv, one_mul, sub_add_cancel]`.
+-/
 theorem zpow_mul_mem (J : ThetaL P AI) (w : P.R.BdR) (hw : w ∈ (P.PD (botExt l)).Fil 0)
     (ht : P.ιB P.tB = P.ιB (AI.ιA AI.ξ) * w) (a : ℤ) : ∀ (c : ℤ) (x : P.R.BdR),
     ((u ^ a : (P.R.BdR)ˣ) : P.R.BdR) * x ∈ (P.PD (botExt l)).Fil (c + a) ↔
@@ -323,6 +432,25 @@ theorem zpow_mul_mem (J : ThetaL P AI) (w : P.R.BdR) (hw : w ∈ (P.PD (botExt l
 
 omit hu in
 
+/- English proof (translation)
+Establish `hF : ∀ c x, x ∈ (P.PD K).Fil c ↔ x ∈ (P.PD (botExt l)).Fil c` using `fun c x => by`. Rewrite using `[← SetLike.mem_coe, P.PD_Fil K (botExt l) c, SetLike.mem_coe]`. Take `⟨-, -, w, hw, ht, -⟩` from `GlobalTheory.BdRQuot.fil_quotient l P AI LT J 0`. Establish `hunit : IsUnit (P.ιB P.tB)`. Use `(P.PD (botExt l)).t_unit` as an intermediate fact.
+
+Rewrite `this` using `[P.period_datum_t_eq]`. Conclude with `this.map P.ιB`. Rewrite `hunit` using `[ht]`. Take `⟨u, hu⟩` from `isUnit_of_mul_isUnit_left hunit`. Establish `H` using `zpow_mul_mem AI u hu J w hw ht a`.
+
+Use `⟨beta AI u a, beta_smul AI u LT a, ?_, ?_, ?_, beta_act AI u hu a⟩` and prove the remaining obligations. Introduce `m`. Take `⟨y, rfl⟩` from `(eE AI a).surjective m`. Rewrite using `[hF, beta_eE]`. Use `(H 0 (iD AI y)).mpr (AI.ainf_image_mem_filtration_zero (botExt l) y)` as an intermediate fact.
+
+Rewrite `this` using `[zero_add]`. Then use the resulting hypothesis. Introduce `b hab m`. Take `⟨n, rfl⟩` from `Int.exists_add_of_le hab`. Take `⟨y, rfl⟩` from `(eE AI a).surjective m`. Take `⟨-, h2, -⟩` from `GlobalTheory.BdRQuot.fil_quotient l P AI LT J n`.
+
+Rewrite using `[hF, beta_eE, add_comm a, H, iD_apply, h2, eE_coe]`. Establish `key : ∀ y' : Ainf l, (((xiU AI) ^ ((n : ℤ) + a) : (WCb l)ˣ) : WCb l) * inclW l y' = (((xiU AI) ^ a : (WCb l)ˣ) : WCb l) * inclW l (AI.ξ ^ n * y')`. Introduce `y'`. Rewrite using `[zpow_add, Units.val_mul, zpow_natCast, Units.val_pow_eq_pow_val, xiU_coe, map_mul, map_pow]`. Expand and normalize the polynomial expressions, which then agree.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y', rfl⟩`. Conclude with `⟨inclW l y', ⟨y', rfl⟩, key y'⟩`. Introduce and unpack `⟨_, ⟨y', rfl⟩, h⟩`. Use `⟨y', inclW_inj (((xiU AI) ^ a).isUnit.mul_left_cancel ?_)⟩` and prove the remaining obligations.
+
+Rewrite using `[← key]`. Conclude with `h.symm`. Introduce `b hab x hx`. Take `⟨n, rfl⟩` from `Int.exists_add_of_le hab`. Take `⟨h1, -, -⟩` from `GlobalTheory.BdRQuot.fil_quotient l P AI LT J n`.
+
+Establish `hx' : (((u ^ a)⁻¹ : (P.R.BdR)ˣ) : P.R.BdR) * x ∈ (P.PD (botExt l)).Fil 0`. Rewrite using `[← H 0, ← mul_assoc, Units.mul_inv, one_mul, zero_add, ← hF]`. Conclude with `hx`. Take `⟨k, y, hy⟩` from `h1 _ hx'`. Use `⟨k, eE AI a y, ?_⟩` and prove the remaining obligations.
+
+Rewrite `hy` using `[← H, add_comm, ← hF]`. Use `hy using 1` and compare the differences between its conclusion and the goal. Rewrite using `[beta_eE, mul_sub, iD_apply, mul_left_comm, ← mul_assoc _ _ x, Units.mul_inv, one_mul, map_natCast, Algebra.smul_def, map_pow, map_natCast]`.
+-/
 theorem exists_beta (LT : LocTied l P AI) (J : ThetaL P AI) (K : FinExt l) (a : ℤ) :
     ∃ β : ↥(Mxi (AinfSub l) (xiU AI) a) →+ P.R.BdR,
       (∀ (c : ℤ_[l]) m, β (c • m) = algebraMap ℤ_[l] ℚ_[l] c • β m) ∧
@@ -382,6 +510,15 @@ end Period
 
 section Bases
 
+/- English proof (translation)
+Use `letI : Module R V := Module.compHom V (algebraMap R F)`. Use `haveI : IsScalarTower R F V := ⟨fun c x v => by`. Rewrite using `[Algebra.smul_def, mul_smul]`. Use the proof step `rfl⟩`. Set `j : T →ₗ[R] V` to `{ toFun := i, map_add' := map_add i, map_smul' := hi }`.
+
+Use `haveI : Module.IsTorsionFree R V := Module.IsTorsionFree.trans_faithfulSMul R F V`. Use `haveI : Module.IsTorsionFree R T := Function.Injective.moduleIsTorsionFree j hinj (map_smul j)`. Set `bT` to `Module.finBasis R T`. Establish `hli : LinearIndependent F (j ∘ bT)` using `(LinearIndependent.iff_fractionRing R F).mp (bT.linearIndependent.map' j (LinearMap.ker_eq_bot.mpr hinj))`. Establish `hs : ⊤ ≤ Submodule.span F (Set.range (j ∘ bT))`.
+
+Rewrite using `[← hsp, Submodule.span_le]`. Introduce and unpack `_ ⟨t, rfl⟩`. Express the relevant statement in the definitionally equal form `j t ∈ _`. Rewrite using `[← bT.sum_repr t, map_sum]`. Use `Submodule.sum_mem _ fun k _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_smul]`. Conclude with `Submodule.smul_of_tower_mem _ _ (Submodule.subset_span ⟨k, rfl⟩)`. Conclude with `⟨_, bT, Basis.mk hli hs, fun k => by rw [Basis.mk_apply]; rfl⟩`.
+-/
 theorem exists_bases {R F T V : Type} [CommRing R] [IsDomain R] [IsPrincipalIdealRing R] [Field F]
     [Algebra R F] [IsFractionRing R F] [AddCommGroup T] [Module R T] [Module.Finite R T]
     [AddCommGroup V] [Module F V] (i : T →+ V)
@@ -417,6 +554,9 @@ open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.Main
 variable {R F LL O G : Type} [CommRing R] [Field F] [Field LL] [CommRing O] [Algebra R F]
   [Algebra F LL] [Algebra O LL] [Algebra R O] [TopologicalSpace LL] [Group G] [TopologicalSpace G]
 
+/- English proof (translation)
+Introduce `c t`. Express the relevant statement in the definitionally equal form `algebraMap R O c • (t : T.V) = algebraMap R F c • (t : T.V)`. Rewrite using `[← algebraMap_smul LL (algebraMap R O c), ← algebraMap_smul LL (algebraMap R F c), hc]`.
+-/
 theorem lat_smul
     (hc : ∀ c, algebraMap O LL (algebraMap R O c) = algebraMap F LL (algebraMap R F c))
     (T : LocLat G F LL O) :
@@ -427,6 +567,19 @@ theorem lat_smul
   change algebraMap R O c • (t : T.V) = algebraMap R F c • (t : T.V)
   rw [← algebraMap_smul LL (algebraMap R O c), ← algebraMap_smul LL (algebraMap R F c), hc]
 
+/- English proof (translation)
+Use `letI : Module R ↥T.L.T := Module.compHom ↥T.L.T (algebraMap R O)`. Use `haveI : IsScalarTower R O ↥T.L.T := ⟨fun c x v => by`. Rewrite using `[Algebra.smul_def, mul_smul]`. Use the proof step `rfl⟩`. Use `haveI : Module.Finite O ↥T.L.T := Module.Finite.iff_fg.mpr T.L.fg`.
+
+Use `haveI : Module.Finite R ↥T.L.T := Module.Finite.trans O _`. Use `exists_bases _ (lat_smul hc T) Subtype.val_injective ?_` and prove the remaining obligations. Rewrite using `[eq_top_iff]`. Establish `key : ∀ v ∈ Submodule.span LL (T.L.T : Set T.V), ∀ c : LL, c • v ∈ Submodule.span F (Set.range T.L.T.subtype.toAddMonoidHom)`. Introduce `v hv`.
+
+Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx`. Introduce `c`. Take `⟨z, a, rfl⟩` from `hd c`. Rewrite using `[smul_assoc, algebraMap_smul]`.
+
+Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨⟨_, T.L.T.smul_mem _ hx⟩, rfl⟩)`. Consider the case `zero => intro c`. Simplify using the standard rewrite rules. Consider the case `add x y _ _ hx hy => intro c`. Rewrite using `[smul_add]`.
+
+Conclude with `Submodule.add_mem _ (hx c) (hy c)`. Consider the case `smul a x _ hx => intro c`. Rewrite using `[smul_smul]`. Conclude with `hx _`. Introduce `v _`.
+
+Use `key v (by rw [T.L.span]; trivial) 1` as an intermediate fact. Rewrite `this` using `[one_smul]`. Then use the resulting hypothesis.
+-/
 theorem lat_bases [IsDomain R] [IsPrincipalIdealRing R] [IsFractionRing R F] [Module.Finite R O]
     (hc : ∀ c, algebraMap O LL (algebraMap R O c) = algebraMap F LL (algebraMap R F c))
     (hd : ∀ c : LL, ∃ (z : F) (a : O), c = z • algebraMap O LL a)
@@ -457,6 +610,9 @@ theorem lat_bases [IsDomain R] [IsPrincipalIdealRing R] [IsFractionRing R F] [Mo
   have := key v (by rw [T.L.span]; trivial) 1
   rwa [one_smul] at this
 
+/- English proof (translation)
+Use `haveI : ContinuousAdd V := IsModuleTopology.toContinuousAdd LL V`. Set `e` to `(Module.finBasis LL V).equivFun`. Set `e' : (Fin (finrank LL V) → LL) ≃L[F] V` to `{ e.symm.restrictScalars F with continuous_toFun := IsModuleTopology.continuous_of_linearMap e.symm.toLinearMap continuous_invFun := IsModuleTopology.continuous_of_linearMap e.toLinearMap }`. Conclude with `IsModuleTopology.iso e'`.
+-/
 theorem modTop_trans [TopologicalSpace F] [IsTopologicalRing LL] [IsModuleTopology F LL] (V : Type)
     [AddCommGroup V] [Module LL V] [Module F V] [IsScalarTower F LL V] [FiniteDimensional LL V]
     [TopologicalSpace V] [IsModuleTopology LL V] : IsModuleTopology F V := by
@@ -495,6 +651,11 @@ open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.Basi
 
 variable {l : ℕ} [Fact l.Prime]
 
+/- English proof (translation)
+Use `haveI : FiniteDimensional ℚ_[l] ↥LL.1 := LL.2`. Establish `halg : IsAlgebraic ℤ_[l] c` using `(IsFractionRing.isAlgebraic_iff ℤ_[l] ℚ_[l] ↥LL.1).mpr (Algebra.IsAlgebraic.isAlgebraic c)`. Take `⟨z, hz, hint⟩` from `halg.exists_integral_multiple`. Establish `hz' : (z : ℚ_[l]) ≠ 0` using `fun h => hz (Subtype.ext h)`. Use `⟨(z : ℚ_[l])⁻¹, ⟨z • c, hint⟩, ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `c = (z : ℚ_[l])⁻¹ • ((z : ℚ_[l]) • c)`. Rewrite using `[smul_smul, inv_mul_cancel₀ hz', one_smul]`.
+-/
 theorem denom (LL : FinExt l) (c : ↥LL.1) :
     ∃ (z : ℚ_[l]) (a : ↥(OL LL)), c = z • algebraMap ↥(OL LL) ↥LL.1 a := by
   haveI : FiniteDimensional ℚ_[l] ↥LL.1 := LL.2
@@ -506,18 +667,32 @@ theorem denom (LL : FinExt l) (c : ↥LL.1) :
   change c = (z : ℚ_[l])⁻¹ • ((z : ℚ_[l]) • c)
   rw [smul_smul, inv_mul_cancel₀ hz', one_smul]
 
+/- English proof (translation)
+The claim follows from `haveI : FiniteDimensional ℚ_[l] ↥LL.1 := LL.2 IsIntegralClosure.finite ℤ_[l] ℚ_[l] ↥LL.1 ↥(integralClosure ℤ_[l] ↥LL.1)`.
+-/
 theorem finOL (LL : FinExt l) : Module.Finite ℤ_[l] ↥(OL LL) :=
   haveI : FiniteDimensional ℚ_[l] ↥LL.1 := LL.2
   IsIntegralClosure.finite ℤ_[l] ℚ_[l] ↥LL.1 ↥(integralClosure ℤ_[l] ↥LL.1)
 
+/- English proof (translation)
+The claim follows from `haveI : FiniteDimensional ℚ_[l] ↥LL.1 := LL.2 isModuleTopologyOfFiniteDimensional`.
+-/
 theorem modTopLL (LL : FinExt l) : IsModuleTopology ℚ_[l] ↥LL.1 :=
   haveI : FiniteDimensional ℚ_[l] ↥LL.1 := LL.2
   isModuleTopologyOfFiniteDimensional
 
+/- English proof (translation)
+Use `⟨⟨inferInstance, inferInstance, inferInstance⟩, inferInstance, inferInstance, inferInstance, ?_⟩` and prove the remaining obligations. Conclude with `PadicInt.isOpenEmbedding_coe.isOpen_range`.
+-/
 theorem goodO : GoodO (Qp := ℚ_[l]) ℚ_[l] ℤ_[l] := by
   refine ⟨⟨inferInstance, inferInstance, inferInstance⟩, inferInstance, inferInstance, inferInstance, ?_⟩
   exact PadicInt.isOpenEmbedding_coe.isOpen_range
 
+/- English proof (translation)
+Use `haveI := K.2`. Use `haveI : FiniteDimensional ℚ_[l] ↥(K0 K) := FiniteDimensional.of_injective (IntermediateField.inclusion (inf_le_left : K0 K ≤ K.1)).toLinearMap (IntermediateField.inclusion_injective (inf_le_left : K0 K ≤ K.1))`. Establish `hpos : 0 < l ^ s` using `pow_pos (Fact.out : l.Prime).pos s`. Use `haveI : Finite {x : Om l | x ^ (l ^ s) = 1} := by`. Use `Set.Finite.to_subtype (Set.Finite.subset (Polynomial.nthRoots (l ^ s) (1 : Om l)).toFinset.finite_toSet ?_)` and prove the remaining obligations.
+
+Introduce `x hx`. Simplify `hx` using `[Polynomial.mem_nthRoots hpos]`. Use `haveI : FiniteDimensional ℚ_[l] ↥(IntermediateField.adjoin ℚ_[l] {x : Om l | x ^ (l ^ s) = 1}) := IntermediateField.finiteDimensional_adjoin fun x _ => (Algebra.IsAlgebraic.isAlgebraic x).isIntegral`. Conclude with `IntermediateField.finiteDimensional_sup _ _`.
+-/
 theorem finKs (K : FinExt l) (s : ℕ) : FiniteDimensional ℚ_[l] ↥(Ks K s) := by
   classical
   haveI := K.2
@@ -538,6 +713,13 @@ theorem finKs (K : FinExt l) (s : ℕ) : FiniteDimensional ℚ_[l] ↥(Ks K s) :
 
 def lev (K : FinExt l) (j : ℕ) : FinExt l := ⟨Ks K j, finKs K j⟩
 
+/- English proof (translation)
+Establish `h1` using `(GlobalTheory.Cyc.finrank_Ks_and_chi_surjective l K).1 j hj`. Establish `h2` using `(GlobalTheory.Cyc.finrank_Ks_and_chi_surjective l (lev K j)).1 j hj`. Establish `h3 : Ks (lev K j) j = Ks K j`. Apply `le_antisymm` to reduce the goal to its premises. Conclude with `sup_le inf_le_left le_sup_right`.
+
+Use `sup_le (le_sup_of_le_left (le_inf ?_ inf_le_right)) le_sup_right` and prove the remaining obligations. Conclude with `le_sup_left`. Rewrite `h2` using `[h3, h1]`. Establish `hl : 2 ≤ l` using `(Fact.out : l.Prime).two_le`. Establish `hpos : 0 < (l - 1) * l ^ (j - 1)` using `Nat.mul_pos (by omega) (by positivity)`.
+
+Conclude with `(Nat.eq_of_mul_eq_mul_right hpos h2).symm`.
+-/
 theorem finrank_maxUnramified_cyclotomicLevel (K : FinExt l) (j : ℕ) (hj : 1 ≤ j) :
     finrank ℚ_[l] ↥(K0 (lev K j)) = finrank ℚ_[l] ↥(K0 K) := by
   have h1 := (GlobalTheory.Cyc.finrank_Ks_and_chi_surjective l K).1 j hj
@@ -552,6 +734,13 @@ theorem finrank_maxUnramified_cyclotomicLevel (K : FinExt l) (j : ℕ) (hj : 1 �
   have hpos : 0 < (l - 1) * l ^ (j - 1) := Nat.mul_pos (by omega) (by positivity)
   exact (Nat.eq_of_mul_eq_mul_right hpos h2).symm
 
+/- English proof (translation)
+Establish `hl0 : (l : ℚ_[l]) ≠ 0` using `Nat.cast_ne_zero.mpr (Fact.out : l.Prime).ne_zero`. Establish `hlR : (0 : ℝ) < l` using `by exact_mod_cast (Fact.out : l.Prime).pos`. Establish `h1 : ‖x / (l : ℚ_[l]) ^ s‖ ≤ 1`. Rewrite using `[norm_div, norm_pow, Padic.norm_p, div_le_one (by positivity), inv_pow]`. Simplify using `using hx`.
+
+Establish `h2 : 0 ≤ P.v LL (algebraMap ℚ_[l] ↥LL.1 (x / (l : ℚ_[l]) ^ s))`. Rewrite using `[P.v_O]`. Conclude with `(OL LL).algebraMap_mem (⟨_, h1⟩ : ℤ_[l])`. Establish `h3 : x = (l : ℚ_[l]) ^ s * (x / (l : ℚ_[l]) ^ s)` using `by field_simp`. Rewrite using `[h3, map_mul, map_pow, map_natCast, AddValuation.map_mul, AddValuation.map_pow, P.v_l]`.
+
+Establish `: (s : WithTop ℚ) = s • (1 : WithTop ℚ)` using `by simp`. Rewrite using `[← this]`. Conclude with `le_add_of_nonneg_right h2`.
+-/
 theorem le_val (P : LocPrime l) (LL : FinExt l) (s : ℕ) (x : ℚ_[l]) (hx : ‖x‖ ≤ (l : ℝ) ^ (-(s : ℤ))) :
     (s : WithTop ℚ) ≤ P.v LL (algebraMap ℚ_[l] ↥LL.1 x) := by
   have hl0 : (l : ℚ_[l]) ≠ 0 := Nat.cast_ne_zero.mpr (Fact.out : l.Prime).ne_zero
@@ -588,11 +777,25 @@ variable {R F LL O G H : Type} [CommRing R] [Field F] [Field LL] [CommRing O] [A
   [IsScalarTower K₀' K' BdR] [IsScalarTower F K₀' BdR]
 
 omit [TopologicalSpace H] [TopologicalSpace F] in
+/- English proof (translation)
+Simplify using `only [Dcris, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, sub_eq_zero]`.
+-/
 theorem mem_Dcris (PD' : PeriodData H F K₀' K' B BdR) {V : Type} [AddCommGroup V] [Module F V]
     (ρ : Representation F H V) (x : V ⊗[F] B) : x ∈ Dcris PD' ρ ↔ ∀ g, actVB PD' ρ g x = x := by
   simp only [Dcris, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply,
     sub_eq_zero]
 
+/- English proof (translation)
+Take `⟨⟨hfin, hle⟩, -, h3⟩` from `hF F R hO (resRep R f hf T)`. Apply `h3` to reduce the goal to its premises. Apply `le_antisymm hle` to reduce the goal to its premises. Use `set W := ⨅ g : S, LinearMap.ker (actVB PD T.ρ (g : G) - LinearMap.id) with hW`. Establish `hmem : ∀ x : W, (x : T.V ⊗[F] B) ∈ Dcris PD' (resRep R f hf T).ρ`.
+
+Introduce and unpack `⟨x, hx⟩`. Rewrite `hx` using `[hW, Submodule.mem_iInf]`. Use `(mem_Dcris PD' (resRep R f hf T).ρ x).mpr fun h => ?_` and prove the remaining obligations. Establish `h1` using `hx ⟨f h, hS h⟩`. Rewrite `h1` using `[LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, sub_eq_zero]`.
+
+Establish `h2 : ∀ y : T.V ⊗[F] B, actVB PD' (resRep R f hf T).ρ h y = actVB PD T.ρ (f h) y`. Introduce `y`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => exact (map_zero _).trans (map_zero _).symm`. Consider the case `tmul v b`.
+
+Express the relevant statement in the definitionally equal form `T.ρ (f h) v ⊗ₜ[F] PD'.actB h b = T.ρ (f h) v ⊗ₜ[F] PD.actB (f h) b`. Rewrite using `[hact]`. Consider the case `add x y hx hy => exact (map_add _ x y).trans ((congrArg₂ (· + ·) hx hy).trans (map_add _ x y).symm)`. Conclude with `(h2 x).trans h1`. Set `j : W →ₗ[F] ↥(Dcris PD' (resRep R f hf T).ρ)` to `LinearMap.codRestrict _ (W.subtype.restrictScalars F) hmem`.
+
+Establish `hj : Function.Injective j` using `fun x y h => Subtype.ext (congrArg Subtype.val h :)`. Establish `h4` using `LinearMap.finrank_le_finrank_of_injective hj`. Rewrite `h4` using `[← Module.finrank_mul_finrank F LL W, hcr, mul_left_comm, Module.finrank_mul_finrank, ← hK]`. Conclude with `h4`.
+-/
 theorem isDR_res (PD : PeriodData G F K₀ K B BdR) (PD' : PeriodData H F K₀' K' B BdR)
     (f : H →* G) (hf : Continuous f) (T : LocLat G F LL O) (S : Subgroup G) (hS : ∀ h, f h ∈ S)
     (hact : ∀ h b, PD'.actB h b = PD.actB (f h) b)
@@ -626,6 +829,11 @@ theorem isDR_res (PD : PeriodData G F K₀ K B BdR) (PD' : PeriodData H F K₀' 
   rw [← Module.finrank_mul_finrank F LL W, hcr, mul_left_comm, Module.finrank_mul_finrank, ← hK] at h4
   exact h4
 
+/- English proof (translation)
+Introduce `y hy hG`. Take `⟨w, ⟨hw1, hw2⟩, hw3⟩` from `ht F R hO (resRep R f hf T) hdR a e y hy hG`. Use `⟨w, fun g => ?_, hw2, hw3⟩` and prove the remaining obligations. Establish `h1` using `(Submodule.mem_iInf _).mp hw1 g`. Rewrite `h1` using `[LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, sub_eq_zero]`.
+
+Conclude with `h1`.
+-/
 theorem lift_res (PD' : PeriodData H F K₀' K' B BdR)
     (f : H →* G) (hf : Continuous f) (T : LocLat G F LL O)
     (hO : GoodO (Qp := F) F R) (ht : TateFilteredInvariants PD') (hdR : IsDR PD' (resRep R f hf T).ρ) (a e : ℤ) :
@@ -648,6 +856,11 @@ end Crys
 
 open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions.N Formalism.MainNotions.LocalSituation GlobalTheory.Cyc
 
+/- English proof (translation)
+Rewrite using `[(HW.W K s LL h).GKs_def, HW.W_s, P.PD_χ, ← map_one (algebraMap ℚ_[l] ↥LL.1), ← map_sub]`. Apply `le_val` to reduce the goal to its premises. Establish `h0 : (g : GQ l) ∈ (K0 K).fixingSubgroup` using `fun x => hg ⟨x.1, (le_sup_left : K0 K ≤ Ks K j) x.2⟩`. Establish `h1` using `(((GlobalTheory.Cyc.cyc_basic l P.χQ P.χQ_cyc).2.2 K g h0).1 j).mp hg`. Use `h1.trans (zpow_le_zpow_right₀ ?_ (by omega))` and prove the remaining obligations.
+
+Conclude with `(Fact.out : l.Prime).one_le` after adjusting the coercions.
+-/
 theorem mem_GKs {l : ℕ} [Fact l.Prime] (P : LocPrime l) (HW : LocHW l P) (K : FinExt l) (s : ℕ)
     (LL : FinExt l) (h : Good K s LL) (j : ℕ) (hj : s ≤ j) (g : ↥(GK K)) (hg : (g : GQ l) ∈ Gj K j) :
     g ∈ (HW.W K s LL h).GKs := by
@@ -658,6 +871,9 @@ theorem mem_GKs {l : ℕ} [Fact l.Prime] (P : LocPrime l) (HW : LocHW l P) (K : 
   refine h1.trans (zpow_le_zpow_right₀ ?_ (by omega))
   exact_mod_cast (Fact.out : l.Prime).one_le
 
+/- English proof (translation)
+The claim follows from `isDR_res (R := ℤ_[l]) (P.PD K) (P.PD (lev K j)) (Subgroup.inclusion hle) (continuous_inclusion hle) T (HW.W K s LL h).GKs (fun g => mem_GKs P HW K s LL h j hj _ g.2) (fun g x => by rw [P.PD_actB, P.PD_actB]; rfl) hcr (finrank_maxUnramified_cyclotomicLevel K j (h.1.trans hj)) good …`.
+-/
 theorem isDR_lev {l : ℕ} [Fact l.Prime] (P : LocPrime l) (HW : LocHW l P) (K : FinExt l) (s : ℕ)
     (LL : FinExt l) (h : Good K s LL) (j : ℕ) (hj : s ≤ j) (hle : GK (lev K j) ≤ GK K)
     [FiniteDimensional ℚ_[l] ↥LL.1] [IsModuleTopology ℚ_[l] ↥LL.1]
@@ -672,6 +888,11 @@ theorem isDR_lev {l : ℕ} [Fact l.Prime] (P : LocPrime l) (HW : LocHW l P) (K :
     (fun g x => by rw [P.PD_actB, P.PD_actB]; rfl) hcr
     (finrank_maxUnramified_cyclotomicLevel K j (h.1.trans hj)) goodO h7
 
+/- English proof (translation)
+Use `letI : Module ℤ_[l] ↥T.L.T := Module.compHom ↥T.L.T (algebraMap ℤ_[l] O)`. Introduce `ρT hρ z hz`. Take `⟨β, b1, b2, b3, b4, b5⟩` from `exists_beta AI LT J K' a`. Take `⟨n, bT, bV, hb⟩` from `lat_bases hc hd T`. Establish `ht` using `lift_res (R := ℤ_[l]) (P.PD K') f hf T goodO h5 hdR a e`.
+
+Establish `hX` using `xiOK_res AI K'`. Establish `hanti : ∀ c d : ℤ, c ≤ d → (P.PD K').Fil d ≤ (P.PD K').Fil c` using `fun c d hcd => antitone_int_of_succ_le (P.PD K').Fil_anti hcd`. Conclude with `core bT bV T.L.T.subtype.toAddMonoidHom (lat_smul hc T) β b1 hb (l : ℤ_[l]) (((P.PD K').Fil a).restrictScalars ℚ_[l]) (((P.PD K').Fil e).restrictScalars ℚ_[l]) (((P.PD K').Fil b).restrictScalars ℚ_[l]) ((Mxi (AinfSub l) (xiU AI) e).comap (Mxi (AinfSub l) (xiU AI) a).subtype) ((Mx …`.
+-/
 theorem lift_of_isDR {l : ℕ} [Fact l.Prime] {P : LocPrime l} (AI : LocAinf l P) (LT : LocTied l P AI)
     (J : ThetaL P AI) (K' : FinExt l) {LL O G : Type} [Field LL] [CommRing O] [Algebra ℚ_[l] LL]
     [Algebra O LL] [Algebra ℤ_[l] O] [TopologicalSpace LL] [Group G] [TopologicalSpace G]
@@ -711,6 +932,11 @@ theorem lift_of_isDR {l : ℕ} [Fact l.Prime] {P : LocPrime l} (AI : LocAinf l P
     (fun g => actQab hX a e g) (fun _ _ => rfl) (fun g => actQab hX a b g) (fun _ _ => rfl)
     ht p hp z hz
 
+/- English proof (translation)
+Take `⟨J⟩` from `J`. Use `haveI : FiniteDimensional ℚ_[l] ↥LL.1 := LL.2`. Use `haveI := modTopLL LL`. Use `haveI := finOL LL`. Establish `hle' : GK (lev K j) ≤ GK K` using `hle`.
+
+Establish `hdR` using `isDR_lev P HW K s LL h j hj hle' T h7 hcr`. Use `letI := zlMod LL T`. Conclude with `lift_of_isDR AI LT J (lev K j) (LL := ↥LL.1) (O := ↥(OL LL)) (G := ↥(GK K)) (fun _ => rfl) (denom LL) (Subgroup.inclusion hle') (continuous_inclusion hle') T h5 hdR a e b hae heb p hp ((actTZ LL T).comp (Subgroup.inclusion hle')) (fun _ _ => rfl)`.
+-/
 theorem lift_lev {l : ℕ} [Fact l.Prime] {P : LocPrime l} (AI : LocAinf l P) (LT : LocTied l P AI)
     (J : Nonempty (ThetaL P AI)) (HW : LocHW l P) (K : FinExt l) (s : ℕ)
     (LL : FinExt l) (h : Good K s LL) (T : LocLat ↥(GK K) ℚ_[l] ↥LL.1 ↥(OL LL)) (a e b : ℤ) (j : ℕ)
@@ -741,6 +967,9 @@ theorem lift_lev {l : ℕ} [Fact l.Prime] {P : LocPrime l} (AI : LocAinf l P) (L
 
 open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions.N Formalism.MainNotions.LocalSituation GlobalTheory.Cyc in
 
+/- English proof (translation)
+Introduce `D HW _ h5 h7 l _ K s LL h T a e b j hle hsj hae heb hcr p hp` and use `lift_lev (D.locA l) (D.locT l) (GlobalTheory.ThetaTie.nonempty_thetaL D l) (HW l) K s LL h T a e b j hle hsj hae heb (h5 l (lev K j)) (h7 l (lev K j)) hcr p hp`.
+-/
 theorem invariants_lift : ∀ (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW), adm5 D → adm7 D → ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (s : ℕ) (LL : FinExt l) (h : Good K s LL), let S := sit D.loc HW l (D.locA l) K s LL h; let E : S.Comparison₂ := ((F l).E K s LL h).tie; ∀ (T : LocLat S.G S.Qp S.LL S.O) (a e b : ℤ) (j : ℕ) (hle : Gj K j ≤ GK K), s ≤ j → a ≤ e → e ≤ b → IsCrysOn S S.W.GKs T → ∀ p : Qab (AinfSub l) (xiU (D.locA l)) a b →ₗ[ℤ_[l]] Qab (AinfSub l) (xiU (D.locA l)) a e, (∀ x, p (Submodule.Quotient.mk x) = Submodule.Quotient.mk x) → letI := zlMod LL T; ∀ z : (TensorProduct ℤ_[l] ↥T.L.T (Qab (AinfSub l) (xiU (D.locA l)) a e)), (∀ g, (repQ (D.locA l) (Gj K j) ((actTZ LL T).comp (Subgroup.inclusion hle)) a e) g z = z) → ∃ (k : ℕ) (x : (TensorProduct ℤ_[l] ↥T.L.T (Qab (AinfSub l) (xiU (D.locA l)) a b))), (∀ g, (repQ (D.locA l) (Gj K j) ((actTZ LL T).comp (Subgroup.inclusion hle)) a b) g x = x) ∧ LinearMap.lTensor ↥T.L.T p x = (l : ℤ_[l]) ^ k • z :=
   fun D HW _ h5 h7 l _ K s LL h T a e b j hle hsj hae heb hcr p hp =>
     lift_lev (D.locA l) (D.locT l) (GlobalTheory.ThetaTie.nonempty_thetaL D l) (HW l) K s LL h T a e b j hle hsj hae heb

@@ -30,6 +30,9 @@ def DiagEt3 : Prop := ∀ (l : ℕ) [Fact l.Prime] (K : IntermediateField ℚ_[l
     (∀ k, one.lev k = GlobalTheory.EtC.one (l ^ k) M.spc) ∧ N ≠ 0 ∧
     LinearIndependent ℚ_[l] (fun s => M.toV _ (a₀ s)) ∧ ∑ s, M.toV 0 (b₀ s) = N • M.toV 0 one
 
+/- English proof (translation)
+Introduce `l _ K _ M d hd hM hs S _` and use `h l K M d hd hM hs S`.
+-/
 theorem diagEt3_of (h : DiagEt2) : DiagEt3 := fun l _ K _ M d hd hM hs S _ => h l K M d hd hM hs S
 
 def OntoOf3 : Prop := CupLaws → Slant → HodgeKill → SqEx3 → DiagEt3 → EtFin → HodgeTateSurjectiveOfTopDegreeInjective

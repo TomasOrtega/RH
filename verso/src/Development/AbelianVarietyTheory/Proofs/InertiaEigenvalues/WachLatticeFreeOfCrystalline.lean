@@ -9,6 +9,11 @@ namespace GlobalTheory.HWL
 
 open PowerSeries TensorProduct in
 
+/- English proof (translation)
+Use `letI : Module D⟦X⟧ M := Module.compHom M f`. Take `⟨z, hz⟩` from `_root_.GlobalTheory.WachFree.mem_X_smul_of_projective c hc x y (by`. Express the relevant statement in the definitionally equal form `f (C c) • x = f X • y`. Rewrite using `[ha, hb]`. Conclude with `h)`.
+
+Use `⟨z, ?_⟩` and prove the remaining obligations. Rewrite using `[hz]`. Express the relevant statement in the definitionally equal form `f X • z = b • z`. Rewrite using `[hb]`.
+-/
 theorem _root_.GlobalTheory.HWL.mem_smul_of_projective_comp {D A M : Type} [CommRing D] [IsDomain D] [CommRing A]
     [AddCommGroup M] [Module A M] (f : D⟦X⟧ →+* A)
     (hp : @Module.Projective D⟦X⟧ _ M _ (Module.compHom _ f)) (c : D) (hc : c ≠ 0) {a b : A}
@@ -24,6 +29,11 @@ theorem _root_.GlobalTheory.HWL.mem_smul_of_projective_comp {D A M : Type} [Comm
   rw [hb]
 
 open PowerSeries TensorProduct in
+/- English proof (translation)
+Use `letI : Module D⟦X⟧ M := Module.compHom M f`. Establish `hreg` using `Module.Flat.isSMulRegular_of_nonZeroDivisors (R := D⟦X⟧) (M := M) (mem_nonZeroDivisors_of_ne_zero (X_ne_zero : (X : D⟦X⟧) ≠ 0))`. Introduce `x y h`. Apply `hreg` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `f X • x = f X • y`.
+
+Rewrite using `[hb]`. Conclude with `h`.
+-/
 private theorem isSMulRegular_of_projective_powerSeries_comp_lemma {D A M : Type} [CommRing D]
     [IsDomain D] [CommRing A] [AddCommGroup M] [Module A M] (f : D⟦X⟧ →+* A)
     (hp : @Module.Projective D⟦X⟧ _ M _ (Module.compHom _ f)) {b : A} (hb : f X = b) :
@@ -40,6 +50,17 @@ private theorem isSMulRegular_of_projective_powerSeries_comp_lemma {D A M : Type
 open PowerSeries TensorProduct in
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Introduce `l _ P AI K s LL _ Γ R I _ E Mo T hc`. Take `⟨_, -, hl⟩` from `_root_.GlobalTheory.FinExtIntegers.dvr_complete LL`. Establish `hfree` using `E.DD_free T`. Use `haveI := hfree.1`. Use `haveI : FiniteDimensional ℚ_[l] ↥(_root_.Formalism.BasicNotions.Loc.K0 K) := by haveI := K.2`.
+
+Establish `hle : _root_.Formalism.BasicNotions.Loc.K0 K ≤ ↑K` using `inf_le_left`. Conclude with `Module.Finite.of_injective (IntermediateField.inclusion hle).toLinearMap (IntermediateField.inclusion hle).toRingHom.injective`. Use `haveI : NeZero (Module.finrank ℚ_[l] ↥(_root_.Formalism.BasicNotions.Loc.K0 K)) := ⟨Module.finrank_pos.ne'⟩`. Use `haveI : Module.Finite _ (Mo.N T) := Module.Finite.iff_fg.mpr (Mo.N_fg T)`. Establish `hl0 : (l : ℤ_[l]) ≠ 0` using `Nat.cast_ne_zero.mpr (Fact.out : l.Prime).ne_zero`.
+
+Establish `hzX : _root_.Formalism.BasicNotions.Loc.zlA LL (Module.finrank ℚ_[l] ↥(_root_.Formalism.BasicNotions.Loc.K0 K)) X = fun _ => X` using `by ext1; simp [_root_.Formalism.BasicNotions.Loc.zlA]`. Establish `hzC : _root_.Formalism.BasicNotions.Loc.zlA LL (Module.finrank ℚ_[l] ↥(_root_.Formalism.BasicNotions.Loc.K0 K)) (C (l : ℤ_[l])) = fun _ => C (l : _root_.Formalism.BasicNotions.Loc.OL LL)` using `by ext1; simp [_root_.Formalism.BasicNotions.Loc.zlA]`. Establish `key` using `_root_.GlobalTheory.WachFree.basis_of_regular R.EE_inj (Mo.N T).subtype (Mo.N_base T hc) (l : _root_.Formalism.BasicNotions.Loc.OL LL) ?_ hl ?_ ?_`. Rewrite `key` using `[hfree.2]`. Then use the resulting hypothesis. Introduce `h0 haveI : CharZero ↥LL.1 := charZero_of_injective_algebraMap (algebraMap ℚ_[l] ↥LL.1).injective`.
+
+Establish `hcast : ((l : _root_.Formalism.BasicNotions.Loc.OL LL) : ↥LL.1) = 0` using `by rw [h0]; rfl`. Move the coercions through the operations in `at hcast`. Conclude with `(Fact.out : l.Prime).ne_zero (by exact_mod_cast hcast)`. Conclude with `isSMulRegular_of_projective_powerSeries_comp_lemma _ (Mo.N_proj T) hzX`. Introduce `x y h`.
+
+Conclude with `_root_.GlobalTheory.HWL.mem_smul_of_projective_comp (_root_.Formalism.BasicNotions.Loc.zlA LL _) (Mo.N_proj T) (l : ℤ_[l]) hl0 hzC hzX x y h`.
+-/
 theorem _root_.GlobalTheory.HWL.lattice_free : ∀ (l : ℕ) [Fact l.Prime] (P : _root_.Formalism.BasicNotions.LocPrime l) (AI : _root_.Formalism.BasicNotions.LocAinf l P) (K : _root_.Formalism.BasicNotions.Loc.FinExt l) (s : ℕ) (LL : _root_.Formalism.BasicNotions.Loc.FinExt l), _root_.Formalism.BasicNotions.Loc.Good K s LL → ∀ (Γ : _root_.GlobalTheory.HWL.GamS P K s LL) (R : _root_.GlobalTheory.HWL.WSer Γ) (I : _root_.GlobalTheory.HWL.IoS AI R), _root_.GlobalTheory.HWL.IoW I → ∀ (E : _root_.GlobalTheory.HWL.WEt I) (Mo : _root_.GlobalTheory.HWL.NS E) (T : _root_.Formalism.BasicNotions.LocLat ↥(_root_.Formalism.BasicNotions.Loc.GK K) ℚ_[l] ↥LL.1 ↥(_root_.Formalism.BasicNotions.Loc.OL LL)), _root_.Formalism.WeaklyAdmissibleFiltrations.IsCrys (P.PD K) T.ρ → Nonempty (Module.Basis (Fin (Module.finrank ↥(_root_.Formalism.BasicNotions.Loc.OL LL) ↥T.L.T)) (_root_.Formalism.BasicNotions.LetA ↥(_root_.Formalism.BasicNotions.Loc.OL LL) (Module.finrank ℚ_[l] ↥(_root_.Formalism.BasicNotions.Loc.K0 K))) ↥(Mo.N T)) := by
   intro l _ P AI K s LL _ Γ R I _ E Mo T hc
   obtain ⟨_, -, hl⟩ := _root_.GlobalTheory.FinExtIntegers.dvr_complete LL

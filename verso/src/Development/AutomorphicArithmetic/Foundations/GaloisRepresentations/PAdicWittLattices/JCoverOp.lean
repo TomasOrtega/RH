@@ -4,16 +4,25 @@ universe u v
 
 namespace UpperTheory.Gal.G3
 
+/- English proof (translation)
+Establish `h : IsUnit ((l : Ω))` using `isUnit_iff_ne_zero.2 (Nat.cast_ne_zero.2 hl)`. Establish `h2` using `h.map (Scheme.ΓSpecIso (CommRingCat.of Ω)).inv.hom`. Simplify using `using h2`.
+-/
 private theorem isUnit_natCast_sp (l : ℕ) (hl : l ≠ 0) (Ω : Type) [Field Ω] [CharZero Ω] :
     IsUnit ((l : Γ(sp Ω, ⊤))) := by
   have h : IsUnit ((l : Ω)) := isUnit_iff_ne_zero.2 (Nat.cast_ne_zero.2 hl)
   have h2 := h.map (Scheme.ΓSpecIso (CommRingCat.of Ω)).inv.hom
   simpa using h2
 
+/- English proof (translation)
+Substitute `e` using the available equality. Both sides reduce to the same expression.
+-/
 private theorem th_pull_congr {B : Scheme.{0}} {R : Type} [Field R] (T : Th.{u} B R) {X Y : Scheme.{0}} {p : X ⟶ B}
     {q : Y ⟶ B} {f f' : Y ⟶ X} (e : f = f') (h : f ≫ p = q) (h' : f' ≫ p = q) : T.pull f h = T.pull f' h' := by
   subst e; rfl
 
+/- English proof (translation)
+Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, bcMap_fst, ← Category.assoc, bcMap_fst, bcMap_fst, Category.assoc]`. Rewrite using `[Category.assoc, bcMap_snd, bcMap_snd, bcMap_snd]`.
+-/
 private theorem bcMap_comp' {B B' X Y Z : Scheme.{0}} (g : B ⟶ B') {p : X ⟶ B'} {q : Y ⟶ B'} {r : Z ⟶ B'} (u : Z ⟶ Y)
     (f : Y ⟶ X) (hu : u ≫ q = r) (hf : f ≫ p = q) (h : (u ≫ f) ≫ p = r) :
     bcMap g u hu ≫ bcMap g f hf = bcMap g (u ≫ f) h := by
@@ -21,6 +30,11 @@ private theorem bcMap_comp' {B B' X Y Z : Scheme.{0}} (g : B ⟶ B') {p : X ⟶ 
   · rw [Category.assoc, bcMap_fst, ← Category.assoc, bcMap_fst, bcMap_fst, Category.assoc]
   · rw [Category.assoc, bcMap_snd, bcMap_snd, bcMap_snd]
 
+/- English proof (translation)
+Apply `DFinsupp.ext` to reduce the goal to its premises. Introduce `m`. Establish `hs : ∀ s : Finset I, (∑ i ∈ s, DirectSum.lmap (S i) x) m = ∑ i ∈ s, S i m (x m)`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`.
+
+Consider the case `empty => simp`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, DirectSum.add_apply, ih, DirectSum.lmap_apply]`. Rewrite using `[hs, DirectSum.lmap_apply, DirectSum.lmap_apply]`. Conclude with `h m (x m)`.
+-/
 private theorem lmap_of_key {R : Type*} [Semiring R] {M N P : ℤ → Type*} [∀ m, AddCommMonoid (M m)]
     [∀ m, AddCommMonoid (N m)] [∀ m, AddCommMonoid (P m)] [∀ m, Module R (M m)] [∀ m, Module R (N m)]
     [∀ m, Module R (P m)] (T : ∀ m, M m →ₗ[R] N m) (C : ∀ m, N m →ₗ[R] P m) {I : Type*} [Fintype I]
@@ -38,6 +52,21 @@ private theorem lmap_of_key {R : Type*} [Semiring R] {M N P : ℤ → Type*} [�
   rw [hs, DirectSum.lmap_apply, DirectSum.lmap_apply]
   exact h m (x m)
 
+/- English proof (translation)
+Establish `hu` using `isUnit_natCast_sp l (Fact.out : l.Prime).ne_zero Ω`. Establish `hGood` using `fun m : ℤ => hE l (sp Ω) hu m 0`. Set `g₀ : sp Ω ⟶ sp k` to `Spec.map (CommRingCat.ofHom (algebraMap k Ω))`. Establish `hσs : ∀ j, σ j ≫ H.s g ≫ H.q = c ≫ H.q` using `fun j => by`. Rewrite using `[← Category.assoc, hSp.choose j]`.
+
+Establish `hac : ∀ x, a x ≫ c ≫ H.q = c ≫ H.q` using `fun x => by`. Rewrite using `[← Category.assoc, hGal.2.2.2.2.2.choose x]`. Take `⟨hfin, het, hspl⟩` from `hS g₀ H.q (H.s g ≫ H.q) (c ≫ H.q) (H.s g) rfl c rfl I σ hσs`. Establish `hsp'` using `hspl hSp`. Establish `hgal'` using `hG g₀ H.q (c ≫ H.q) c rfl G a hac hGal`.
+
+Use `choose tr htr using fun m : ℤ => (hGood m).tr (pullback.snd H.q g₀) (pullback.snd (H.s g ≫ H.q) g₀) (bcMap g₀ (H.s g) rfl) (bcMap_snd _ _ _)`. Set `Tm : ∀ m : ℤ, HQ l (sch.obj (H.geomZ Ω)) m 0 →ₗ[ℚ_[l]] HQ l (sch.obj (H.geomZ Ω)) m 0` to `fun m => tr m ∘ₗ (etn l (sp Ω) m 0).pull (bcMap g₀ (H.t g) (H.comm g)) (bcMap_snd _ _ _)`. Establish `key : ∀ (m : ℤ) (x : HQ l (sch.obj (H.geomZ Ω)) m 0), pullHQ l (sch.map (geomMap Ω (c ≫ H.q) c rfl)) m 0 (Tm m x) = ∑ i, pullHQ l (sch.map (geomMap Ω (c ≫ H.q) (σ i ≫ H.t g) (hσ i))) m 0 x`. Introduce `m x`. Establish `h1` using `htr m _ (pullback.snd (c ≫ H.q) g₀) (bcMap g₀ c rfl) (bcMap_snd _ _ _) I (fun j => bcMap g₀ (σ j) (hσs j)) (fun j => bcMap_snd _ _ _) hsp' ((etn l (sp Ω) m 0).pull (bcMap g₀ (H.t g) (H.comm g)) (bcMap_snd _ _ _) x)`.
+
+Use `h1.trans (Finset.sum_congr rfl fun i _ => ?_)` and prove the remaining obligations. Establish `e` using `bcMap_comp' g₀ (σ i) (H.t g) (hσs i) (H.comm g) (hσ i)`. Establish `h2` using `(etn l (sp Ω) m 0).pull_comp (bcMap g₀ (σ i) (hσs i)) (bcMap g₀ (H.t g) (H.comm g)) (bcMap_snd _ _ _) (bcMap_snd _ _ _) (by rw [Category.assoc, bcMap_snd, bcMap_snd]) x`. Rewrite using `[← h2, th_pull_congr _ e _ (bcMap_snd _ _ _)]`. Both sides reduce to the same expression.
+
+Establish `hA : IsCorrOp l (H.sΩ Ω g) (H.tΩ Ω g) (DirectSum.lmap Tm)`. Use `⟨_, bcMap g₀ c rfl, G, inferInstance, inferInstance, fun x => bcMap g₀ (a x) (hac x), I, inferInstance, fun j => bcMap g₀ (σ j) (hσs j), hgal', hsp', fun x => ?_⟩` and prove the remaining obligations. Establish `e : ∀ j, bcMap g₀ (σ j) (hσs j) ≫ H.tΩ Ω g = geomMap Ω (c ≫ H.q) (σ j ≫ H.t g) (hσ j)` using `fun j => bcMap_comp' g₀ (σ j) (H.t g) (hσs j) (H.comm g) (hσ j)`. Simplify using `only [e]`. Conclude with `lmap_of_key Tm (fun m => pullHQ l (sch.map (geomMap Ω (c ≫ H.q) c rfl)) m 0) (fun i m => pullHQ l (sch.map (geomMap Ω (c ≫ H.q) (σ i ≫ H.t g) (hσ i))) m 0) key x`.
+
+Use `⟨Tm, ?_, key, fun m => ?_⟩` and prove the remaining obligations. Establish `hh : hop l H Ω g = hEx.choose`. Unfold `hop`. Conclude with `dif_pos hEx`. Rewrite using `[hh]`.
+
+Conclude with `hU l Ω (pullback.snd H.q g₀) _ _ _ _ hEx.choose_spec hA`. Conclude with `(hGood m).inj _ _ (bcMap g₀ c rfl) (bcMap_snd _ _ _) G _ hgal'`.
+-/
 private theorem coverCore (hE : EtnGood) (hS : BcSplits) (hG : BcGal) (hU : CorrUniq) (l : ℕ) [Fact l.Prime]
     {k Ω : Type} [Field k] [Field Ω] [Algebra k Ω] [CharZero Ω] (H : HTower k) (g : H.Γ) [IsFinite (H.s g)] [Etale (H.s g)]
     (W : Scheme.{0}) (c : W ⟶ H.Z) (G : Type) [Group G] [Finite G] (a : G → (W ⟶ W)) (I : Type) [Fintype I]
@@ -94,6 +123,11 @@ private theorem coverCore (hE : EtnGood) (hS : BcSplits) (hG : BcGal) (hU : Corr
 
 end UpperTheory.Gal.G3
 
+/- English proof (translation)
+Introduce `hE hS hG hU l _ K H _ g _ _ W c G _ _ a I _ σ hσ hGal hSp hEx n`. Take `⟨Tm, h1, h2, h3⟩` from `coverCore hE hS hG hU l H g W c G a I σ hσ hGal hSp hEx`. Use `⟨h3 n, Tm n, fun x => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[h1, DirectSum.lmap_lof]`. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations.
+
+Rewrite using `[LinearMap.comp_apply, LinearMap.sum_apply]`. Conclude with `h2 n x`.
+-/
 theorem UpperTheory.Gal.G3.jCoverOp :
     EtnGood → BcSplits → BcGal → CorrUniq → PositivityTheory.AutomorphicGaloisHodgeTate.G8.CoverOp := by
   intro hE hS hG hU l _ K H _ g _ _ W c G _ _ a I _ σ hσ hGal hSp hEx n

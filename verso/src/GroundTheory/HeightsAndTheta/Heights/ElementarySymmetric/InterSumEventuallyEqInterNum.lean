@@ -19,12 +19,22 @@ section Symmetry
 
 variable {S : Type u} [CommRing S] {Ω : Type w} [Field Ω] [Algebra S Ω] {N : ℕ} {x : Fin (N + 1) → Ω}
 
+/- English proof (translation)
+Unfold `tensorSub`. Rewrite using `[List.foldl_map]`.
+-/
 theorem tensorSub_eq_foldl_map {n : ℕ} (L : Fin n → SubSystem S x Ω) (T : Finset (Fin n)) :
     tensorSub L T = (((List.finRange n).filter (· ∈ T)).map L).foldl
       (fun F Q => F.twist Q) (twistSys S x 0) := by
   unfold tensorSub
   rw [List.foldl_map]
 
+/- English proof (translation)
+Rewrite using `[tensorSub_eq_foldl_map, tensorSub_eq_foldl_map]`. Establish `hp : (((List.finRange n).filter (· ∈ T)).map σ).Perm ((List.finRange n).filter (· ∈ T.map σ.toEmbedding))`. Rewrite using `[List.perm_ext_iff_of_nodup (((List.nodup_finRange n).filter _).map σ.injective) ((List.nodup_finRange n).filter _)]`. Introduce `a`. Simplify using `only [List.mem_map, List.mem_filter, List.mem_finRange, true_and, decide_eq_true_eq, Finset.mem_map_equiv]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨b, hb, rfl⟩`. Simplify using `using hb`. Introduce `ha`. Conclude with `⟨σ.symm a, ha, by simp⟩`.
+
+Establish `hfun : (fun i => L (σ i)) = L ∘ σ` using `rfl`. Rewrite using `[hfun, ← List.map_map]`. Conclude with `(hp.map L).foldl_eq' (fun F _ P _ Q => by`. Rewrite using `[SubSystem.twist_assoc, SubSystem.twist_comm F, ← SubSystem.twist_assoc]) _`.
+-/
 theorem tensorSub_comp_perm {n : ℕ} (L : Fin n → SubSystem S x Ω) (σ : Equiv.Perm (Fin n))
     (T : Finset (Fin n)) :
     tensorSub (fun i => L (σ i)) T = tensorSub L (T.map σ.toEmbedding) := by
@@ -46,6 +56,9 @@ theorem tensorSub_comp_perm {n : ℕ} (L : Fin n → SubSystem S x Ω) (σ : Equ
   exact (hp.map L).foldl_eq' (fun F _ P _ Q => by
     rw [SubSystem.twist_assoc, SubSystem.twist_comm F, ← SubSystem.twist_assoc]) _
 
+/- English proof (translation)
+Unfold `interSum`. Use `Fintype.sum_equiv (Equiv.finsetCongr σ) _ _ fun T => ?_` and prove the remaining obligations. Rewrite using `[Equiv.finsetCongr_apply, Finset.card_map, tensorSub_comp_perm]`.
+-/
 theorem interSum_comp_perm (pp : Ideal (Poly S N)) {n : ℕ} (L : Fin n → SubSystem S x Ω)
     (σ : Equiv.Perm (Fin n)) (c : ℕ) :
     interSum pp (fun i => L (σ i)) c = interSum pp L c := by
@@ -53,6 +66,9 @@ theorem interSum_comp_perm (pp : Ideal (Poly S N)) {n : ℕ} (L : Fin n → SubS
   refine Fintype.sum_equiv (Equiv.finsetCongr σ) _ _ fun T => ?_
   rw [Equiv.finsetCongr_apply, Finset.card_map, tensorSub_comp_perm]
 
+/- English proof (translation)
+Unfold `interNum`. Use `congr 1`. Use function extensionality and compare the values at `c`. Conclude with `interSum_comp_perm pp L σ c`.
+-/
 theorem interNum_comp_perm (pp : Ideal (Poly S N)) {n : ℕ} (L : Fin n → SubSystem S x Ω)
     (σ : Equiv.Perm (Fin n)) :
     interNum pp (fun i => L (σ i)) = interNum pp L := by
@@ -61,6 +77,9 @@ theorem interNum_comp_perm (pp : Ideal (Poly S N)) {n : ℕ} (L : Fin n → SubS
   funext c
   exact interSum_comp_perm pp L σ c
 
+/- English proof (translation)
+Establish `ht : Tendsto (interSum pp L) atTop (nhds m)` using `tendsto_const_nhds.congr' (h.mono fun _ hc => hc.symm)`. Establish `hm : interNum pp L = m` using `ht.limUnder_eq`. Rewrite using `[hm]`. Conclude with `h`.
+-/
 theorem interSum_eventually_eq_interNum (pp : Ideal (Poly S N)) {n : ℕ} (L : Fin n → SubSystem S x Ω)
     {m : ℤ} (h : ∀ᶠ c : ℕ in atTop, interSum pp L c = m) :
     ∀ᶠ c : ℕ in atTop, interSum pp L c = interNum pp L := by
@@ -72,6 +91,11 @@ theorem interSum_eventually_eq_interNum (pp : Ideal (Poly S N)) {n : ℕ} (L : F
 
 end Symmetry
 
+/- English proof (translation)
+Introduce `k _ Ω _ _ N x`. Use `⟨fun n pp L hW => ?_, fun n pp L σ _ => ?_, fun n pp L i L' L'' hW => ?_, fun n pp L Lc s hW hs hne => ?_, fun pp hW => ?_⟩` and prove the remaining obligations. Take `⟨m, hm⟩` from `hE k Ω N x n pp L hW`. Conclude with `interSum_eventually_eq_interNum pp _ hm`. Conclude with `interNum_comp_perm pp (fun i => (L i).toSubSystem) σ`.
+
+Conclude with `hA k Ω N x n pp L i L' L'' hW`. Conclude with `hC k Ω N x n pp L Lc s hW hs hne`. Conclude with `hP k Ω N x pp hW`.
+-/
 theorem GenericPointSectionInput.proof (hE : InterNumEventual.Statement.{u, w})
     (hA : InterNumAdditive.Statement.{u, w}) (hC : InterNumCut.Statement.{u, w})
     (hP : InterNumPointDeg.Statement.{u, w}) : GenericPointSectionInput.Statement.{u, w} := by

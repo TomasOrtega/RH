@@ -55,14 +55,23 @@ def outSec : S.Sec where
   rep := Quotient.out
   spec := fun c => Quotient.out_eq c
 
+/- English proof (translation)
+Unfold `cls`. Rewrite using `[Quotient.eq, MulAction.orbitRel_apply, MulAction.mem_orbit_iff]`.
+-/
 theorem cls_eq_iff (d e : S.D) : S.cls d = S.cls e ↔ ∃ g : S.G, g • e = d := by
   unfold cls
   rw [Quotient.eq, MulAction.orbitRel_apply, MulAction.mem_orbit_iff]
 
+/- English proof (translation)
+Conclude with `(S.cls_eq_iff _ _).2 ⟨g, rfl⟩`.
+-/
 theorem cls_smul (g : S.G) (d : S.D) : S.cls (g • d) = S.cls d := by
   exact (S.cls_eq_iff _ _).2 ⟨g, rfl⟩
 
 variable {S} in
+/- English proof (translation)
+Conclude with `(S.cls_eq_iff d (s.rep (S.cls d))).1 (s.spec _).symm`.
+-/
 theorem Sec.exists_mv (s : S.Sec) (d : S.D) : ∃ g : S.G, g • s.rep (S.cls d) = d := by
   exact (S.cls_eq_iff d (s.rep (S.cls d))).1 (s.spec _).symm
 
@@ -71,6 +80,9 @@ variable {S} in
 def Sec.mv (s : S.Sec) (d : S.D) : S.G := (s.exists_mv d).choose
 
 variable {S} in
+/- English proof (translation)
+Conclude with `(s.exists_mv d).choose_spec`.
+-/
 theorem Sec.mv_smul (s : S.Sec) (d : S.D) : s.mv d • s.rep (S.cls d) = d := by
   exact (s.exists_mv d).choose_spec
 
@@ -102,6 +114,9 @@ def EqFun : Submodule K (S.D → S.V) where
     intro a φ hφ g d
     simp only [Pi.smul_apply, map_smul, hφ g d]
 
+/- English proof (translation)
+Conclude with `Iff.rfl`.
+-/
 theorem mem_EqFun (φ : S.D → S.V) : φ ∈ S.EqFun ↔ ∀ (g : S.G) (d : S.D), φ (g • d) = S.ρ g (φ d) := by
   exact Iff.rfl
 
@@ -121,13 +136,22 @@ def intNab : Submodule (𝓞 K) S.EqFun := S.intOf S.Nab
 
 def intDel : Submodule (𝓞 K) S.EqFun := S.intOf S.Del
 
+/- English proof (translation)
+Conclude with `Iff.rfl`.
+-/
 theorem mem_intOf (N : S.D → Submodule (𝓞 K) S.V) (φ : S.EqFun) :
     φ ∈ S.intOf N ↔ ∀ d, (φ : S.D → S.V) d ∈ N d := by
   exact Iff.rfl
 
+/- English proof (translation)
+Conclude with `Iff.rfl`.
+-/
 theorem mem_intNab (φ : S.EqFun) : φ ∈ S.intNab ↔ ∀ d, (φ : S.D → S.V) d ∈ S.Nab d := by
   exact Iff.rfl
 
+/- English proof (translation)
+Conclude with `Iff.rfl`.
+-/
 theorem mem_intDel (φ : S.EqFun) : φ ∈ S.intDel ↔ ∀ d, (φ : S.D → S.V) d ∈ S.Del d := by
   exact Iff.rfl
 
@@ -147,6 +171,11 @@ theorem mem_intDel (φ : S.EqFun) : φ ∈ S.intDel ↔ ∀ d, (φ : S.D → S.V
 
 @[reducible] def toCSD (h : S.Ok) : CSD K := S.toCSDOf h S.outSec
 
+/- English proof (translation)
+Establish `hmem : g₂⁻¹ * g₁ ∈ MulAction.stabilizer S.G (s.rep c)`. Rewrite using `[MulAction.mem_stabilizer_iff, mul_smul, e, ← mul_smul, inv_mul_cancel, one_smul]`. Establish `hf : S.ρ (g₂⁻¹ * g₁) ((f.1 : S.Cl → S.V) c) = (f.1 : S.Cl → S.V) c` using `f.2 c ⟨_, hmem⟩`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_inv_cancel_left]`.
+
+Use `_ = S.ρ g₂ (S.ρ (g₂⁻¹ * g₁) ((f.1 : S.Cl → S.V) c)) := by`. Rewrite using `[map_mul, Module.End.mul_apply]`. Use `_ = S.ρ g₂ ((f.1 : S.Cl → S.V) c) := by rw [hf]`.
+-/
 theorem rho_eq_of_smul_eq (h : S.Ok) (s : S.Sec) (f : (S.toCSDOf h s).Forms) (c : S.Cl) (g₁ g₂ : S.G)
     (e : g₁ • s.rep c = g₂ • s.rep c) :
     S.ρ g₁ ((f.1 : S.Cl → S.V) c) = S.ρ g₂ ((f.1 : S.Cl → S.V) c) := by
@@ -192,9 +221,15 @@ def resOf (h : S.Ok) (s : S.Sec) : S.EqFun ≃ₗ[K] (S.toCSDOf h s).Forms where
 
 def res (h : S.Ok) : S.EqFun ≃ₗ[K] (S.toCSD h).Forms := S.resOf h S.outSec
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem resOf_apply (h : S.Ok) (s : S.Sec) (φ : S.EqFun) (c : S.Cl) :
     ((S.resOf h s φ).1 : S.Cl → S.V) c = (φ : S.D → S.V) (s.rep c) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem resOf_symm_apply (h : S.Ok) (s : S.Sec) (f : (S.toCSDOf h s).Forms) (d : S.D) :
     (((S.resOf h s).symm f : S.EqFun) : S.D → S.V) d = S.ρ (s.mv d) ((f.1 : S.Cl → S.V) (S.cls d)) := rfl
 
@@ -220,6 +255,9 @@ structure Rat : Prop where
   act_rat : ∀ (g : S.G) i j, S.bV.repr (S.ρ g (S.bV j)) i ∈ cmMax K
   pos : ∀ v : InfinitePlace K, (S.gramV.map v.embedding).PosDef
 
+/- English proof (translation)
+The claim follows from `G.symm nondeg := G.nondeg inv := fun c γ x y => G.ok.inv ((γ : MulAction.stabilizer S.G (s.rep c)) : S.G) x y nab_lat := fun c => G.nab_lat (s.rep c) del_le := fun c => G.del_le (s.rep c) del_stable := by intro c γ y hy have h1 := G.ok.del_smul ((γ : MulAction.stabilizer S.G (s.r …`.
+-/
 theorem toCSDOf_good {n : ℕ} (G : S.Good n) (s : S.Sec) : (S.toCSDOf G.ok s).Good n where
   symm := G.symm
   nondeg := G.nondeg
@@ -239,6 +277,9 @@ theorem toCSDOf_good {n : ℕ} (G : S.Good n) (s : S.Sec) : (S.toCSDOf G.ok s).G
   dual_le := fun c => G.dual_le (s.rep c)
   del_dual := fun c => G.del_dual (s.rep c)
 
+/- English proof (translation)
+The claim follows from `R.pair_rat act_rat := fun c γ i j => R.act_rat ((γ : MulAction.stabilizer S.G (s.rep c)) : S.G) i j pos := R.pos`.
+-/
 theorem toCSDOf_rat (h : S.Ok) (R : S.Rat) (s : S.Sec) : (S.toCSDOf h s).Rat where
   pair_rat := R.pair_rat
   act_rat := fun c γ i j => R.act_rat ((γ : MulAction.stabilizer S.G (s.rep c)) : S.G) i j
@@ -263,6 +304,11 @@ variable {S S' : GSD K} (A : LocOp S S')
 
 def app (φ : S.D → S.V) (d' : S'.D) : S'.V := (A.ker d').sum fun d k => k (φ d)
 
+/- English proof (translation)
+Use extensionality with `d : 1`. Rewrite using `[Finsupp.mapRange_apply, Finsupp.equivMapDomain_apply]`. Establish `h` using `A.equiv g d' ((MulAction.toPerm (A.tr g)).symm d)`. Establish `hd : A.tr g • (MulAction.toPerm (A.tr g)).symm d = d` using `(MulAction.toPerm (A.tr g)).apply_symm_apply d`. Rewrite `h` using `[hd]`.
+
+Conclude with `h`.
+-/
 theorem ker_smul (g : S'.G) (d' : S'.D) :
     A.ker (g • d') = (Finsupp.equivMapDomain (MulAction.toPerm (A.tr g)) (A.ker d')).mapRange
       (fun k => (S'.ρ g) ∘ₗ k ∘ₗ (S.ρ (A.tr g)⁻¹)) (by simp) := by
@@ -274,6 +320,11 @@ theorem ker_smul (g : S'.G) (d' : S'.D) :
   rw [hd] at h
   exact h
 
+/- English proof (translation)
+Rewrite using `[GSD.mem_EqFun]`. Introduce `g d'`. Use `show (A.ker (g • d')).sum (fun d k => k ((φ : S.D → S.V) d)) = S'.ρ g ((A.ker d').sum fun d k => k ((φ : S.D → S.V) d))`. Rewrite using `[A.ker_smul, Finsupp.sum_mapRange_index (by simp), Finsupp.sum_equivMapDomain, map_finsuppSum]`. Use `Finsupp.sum_congr fun d _ => ?_` and prove the remaining obligations.
+
+Simplify using `only [LinearMap.comp_apply, MulAction.toPerm_apply]`. Rewrite using `[(S.mem_EqFun _).1 φ.2, ← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]`.
+-/
 theorem app_mem (φ : S.EqFun) : A.app φ ∈ S'.EqFun := by
   rw [GSD.mem_EqFun]
   intro g d'
@@ -301,6 +352,9 @@ def op : S.EqFun →ₗ[K] S'.EqFun where
     simp only [map_smul]
     exact Finsupp.smul_sum.symm
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem op_apply (φ : S.EqFun) (d' : S'.D) :
     ((A.op φ : S'.EqFun) : S'.D → S'.V) d' = (A.ker d').sum fun d k => k ((φ : S.D → S.V) d) := rfl
 
@@ -321,6 +375,9 @@ def ofMap (tr : S'.G →* S.G) (p : S'.D → S.D) (T : S.V →ₗ[K] S'.V)
     · rw [if_neg e, if_neg (fun e' => e (MulAction.injective (tr g) e'))]
       simp
 
+/- English proof (translation)
+Rewrite using `[op_apply]`. Use `show (Finsupp.single (p d') T).sum (fun d k => k ((φ : S.D → S.V) d)) = _`. Rewrite using `[Finsupp.sum_single_index]`. Simplify using the standard rewrite rules.
+-/
 theorem ofMap_op_apply (tr : S'.G →* S.G) (p : S'.D → S.D) (T : S.V →ₗ[K] S'.V)
     (hp : ∀ g d', p (g • d') = tr g • p d') (hT : ∀ g x, T (S.ρ (tr g) x) = S'.ρ g (T x)) (φ : S.EqFun)
     (d' : S'.D) : (((ofMap tr p T hp hT).op φ : S'.EqFun) : S'.D → S'.V) d' = T ((φ : S.D → S.V) (p d')) := by
@@ -348,6 +405,9 @@ def ofNbr (tr : S'.G →* S.G) (nb : S'.D → Finset S.D) (T : S.V →ₗ[K] S'.
     · rw [dif_neg e, dif_neg (fun e' => e ((hn g d' d).mp e'))]
       simp
 
+/- English proof (translation)
+Rewrite using `[op_apply]`. Use `show (Finsupp.indicator (nb d') (fun _ _ => T)).sum (fun d k => k ((φ : S.D → S.V) d)) = _`. Rewrite using `[Finsupp.sum_indicator_index _ (fun _ _ => by simp)]`.
+-/
 theorem ofNbr_op_apply (tr : S'.G →* S.G) (nb : S'.D → Finset S.D) (T : S.V →ₗ[K] S'.V)
     (hn : ∀ g d' d, tr g • d ∈ nb (g • d') ↔ d ∈ nb d') (hT : ∀ g x, T (S.ρ (tr g) x) = S'.ρ g (T x))
     (φ : S.EqFun) (d' : S'.D) :
@@ -447,6 +507,9 @@ def onForms : S.EqFun ≃ₗ[K] S'.EqFun where
     show e.eV (e.eV.symm ((ψ : S'.D → S'.V) (e.eD (e.eD.symm d')))) = (ψ : S'.D → S'.V) d'
     rw [LinearEquiv.apply_symm_apply, Equiv.apply_symm_apply]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem onForms_apply (φ : S.EqFun) (d' : S'.D) :
     ((e.onForms φ : S'.EqFun) : S'.D → S'.V) d' = e.eV ((φ : S.D → S.V) (e.eD.symm d')) := rfl
 
@@ -485,6 +548,9 @@ namespace GSD
 
 variable (K) (G D : Type) [Group G] [MulAction G D]
 
+/- English proof (translation)
+The claim follows from `h1 fin_stab := h2 nab_smul := by intro g d show (1 : Submodule (𝓞 K) K) = (1 : Submodule (𝓞 K) K).map ((1 : Module.End K K).restrictScalars (𝓞 K)) exact (Submodule.map_id _).symm del_smul := by intro g d show (1 : Submodule (𝓞 K) K) = (1 : Submodule (𝓞 K) K).map ((1 : Module.End …`.
+-/
 theorem triv_ok (h1 : Finite (MulAction.orbitRel.Quotient G D)) (h2 : ∀ d : D, Finite (MulAction.stabilizer G d)) :
     (triv K G D).Ok where
   fin_orb := h1
@@ -501,6 +567,9 @@ theorem triv_ok (h1 : Finite (MulAction.orbitRel.Quotient G D)) (h2 : ∀ d : D,
     intro g x y
     rfl
 
+/- English proof (translation)
+The claim follows from `triv_ok K G D h1 h2 symm := (CSD.one_good K).symm nondeg := (CSD.one_good K).nondeg nab_lat := fun _ => (CSD.one_good K).nab_lat () del_le := fun _ => le_rfl s_pos := Nat.one_pos dual_le := fun _ => (CSD.one_good K).dual_le () del_dual := fun _ => (CSD.one_good K).del_dual ()`.
+-/
 theorem triv_good (h1 : Finite (MulAction.orbitRel.Quotient G D))
     (h2 : ∀ d : D, Finite (MulAction.stabilizer G d)) : (triv K G D).Good 1 where
   ok := triv_ok K G D h1 h2
@@ -514,11 +583,17 @@ theorem triv_good (h1 : Finite (MulAction.orbitRel.Quotient G D))
 
 def trivOne : (triv K G D).EqFun := ⟨fun _ => (1 : K), fun _ _ => rfl⟩
 
+/- English proof (translation)
+Introduce `d`. Use `show (1 : K) ∈ (1 : Submodule (𝓞 K) K)`. Conclude with `Submodule.one_le.mp le_rfl`.
+-/
 theorem trivOne_mem : trivOne K G D ∈ (triv K G D).intDel := by
   intro d
   show (1 : K) ∈ (1 : Submodule (𝓞 K) K)
   exact Submodule.one_le.mp le_rfl
 
+/- English proof (translation)
+Introduce `h`. Take `⟨d⟩` from `‹Nonempty D›`. Establish `h'` using `congrArg (fun φ : (triv K G D).EqFun => (φ : D → K) d) h`. Simplify using `[trivOne] at h'`.
+-/
 theorem trivOne_ne_zero [Nonempty D] : trivOne K G D ≠ 0 := by
   intro h
   obtain ⟨d⟩ := ‹Nonempty D›
@@ -668,6 +743,9 @@ def resOf (h : F.Ok) (s : ∀ b, (F.mem b).Sec) : F.Forms ≃ₗ[K] (F.toCSDOf h
       left_inv := fun _ => rfl
       right_inv := fun _ => rfl }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem resOf_apply (h : F.Ok) (s : ∀ b, (F.mem b).Sec) (φ : F.Forms) (c : F.Cl) :
     (F.resOf h s φ).1 c = ((φ c.1 : (F.mem c.1).EqFun) : F.D c.1 → F.V) ((s c.1).rep c.2) := rfl
 

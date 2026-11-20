@@ -19,9 +19,15 @@ namespace GlobalTheory.CompanionTheory.MPDict
 
 variable {m : ℕ} {n : Fin (m + 1) → ℕ}
 
+/- English proof (translation)
+Simplify using `[ptCoord]`.
+-/
 theorem ptCoord_ptChart (x : MP ℤ m n) (k : Fin (m + 1)) : ptCoord x ⟨k, ptChart x k⟩ = 1 := by
   simp [ptCoord]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨RingHom.ker_isPrime _, GroundTheory.Heights₂.Heights.CoordinateConeArithVar.isMultiHomogIdeal (ptCoord x), GroundTheory.Heights₂.Heights.CoordinateConeArithVar.relevant (ptCoord x) (ptChart x) fun k => by rw [ptCoord_ptChart]; exact one_ne_zero⟩`.
+-/
 theorem isMultiProjPrime_ptIdeal (m : ℕ) (n : Fin (m + 1) → ℕ) (x : MP ℤ m n) :
     Geo.IsMultiProjPrime (ptIdeal x) :=
   ⟨RingHom.ker_isPrime _, GroundTheory.Heights₂.Heights.CoordinateConeArithVar.isMultiHomogIdeal (ptCoord x),

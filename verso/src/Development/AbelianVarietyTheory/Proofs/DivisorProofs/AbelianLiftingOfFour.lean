@@ -12,6 +12,9 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianSchemeHomLif
 
 namespace GlobalTheory.LiftFour
 
+/- English proof (translation)
+Introduce `a c d e` and use `GlobalTheory.T.abelianSchemeHomLiftingNilDP_of_hodge_cube_duality_unobstructed a GlobalTheory.T.theoremOfCubeAbelianScheme_over_arbitrary_base c d e`.
+-/
 theorem abelianLifting_of_four :
     GlobalTheory.Published.AbelianHodgeDeRham → GlobalTheory.Published.DualAbelianScheme →
       GlobalTheory.Published.PoincareDeRhamDuality → GlobalTheory.Published.AbelianUnobstructed →

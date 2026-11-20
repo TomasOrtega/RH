@@ -7,6 +7,9 @@ open UpperTheory.Gal.Int.Geo (Lv IsTrans Integ KS Mem FEt KSEx KSNice)
 open scoped TensorProduct
 universe u
 
+/- English proof (translation)
+Unfold `Hecke.sq2`. Rewrite using `[← Over.comp_left]`. Use `congr 1`. Apply the tactic sequence `ext <;> simp`.
+-/
 private theorem square_map_comp {S : Scheme.{0}} {A B C : Over S} [GrpObj A] [IsCommMonObj A] [GrpObj B] [IsCommMonObj B]
     [GrpObj C] [IsCommMonObj C] (f : A ⟶ B) (g : B ⟶ C) :
     Hecke.sq2 f ≫ Hecke.sq2 g = Hecke.sq2 (f ≫ g) := by
@@ -15,16 +18,29 @@ private theorem square_map_comp {S : Scheme.{0}} {A B C : Over S} [GrpObj A] [Is
   congr 1
   ext <;> simp
 
+/- English proof (translation)
+Simplify using `[Hecke.sq2]`.
+-/
 private theorem square_map_id {S : Scheme.{0}} {A : Over S} [GrpObj A] [IsCommMonObj A] :
     Hecke.sq2 (𝟙 A) = 𝟙 _ := by
   simp [Hecke.sq2]
 
+/- English proof (translation)
+Unfold `Hecke.lbPow at h ⊢`. Rewrite using `[GlobalTheory.CechPic.cls_linComb hP]`. Simplify using `only [GlobalTheory.CechPic.pull_id, one_smul, Finset.sum_const, Finset.card_univ, Fintype.card_fin]`.
+-/
 private theorem cls_pow' {X : Scheme.{0}} {P : LB X} (hP : P.IsLB) (n : ℕ) (h : (Hecke.lbPow P n).IsLB) :
     GlobalTheory.CechPic.cls (Hecke.lbPow P n) h = n • GlobalTheory.CechPic.cls P hP := by
   unfold Hecke.lbPow at h ⊢
   rw [GlobalTheory.CechPic.cls_linComb hP]
   simp only [GlobalTheory.CechPic.pull_id, one_smul, Finset.sum_const, Finset.card_univ, Fintype.card_fin]
 
+/- English proof (translation)
+Establish `hQθ` using `pull_isLB hQ (Hecke.sq2 θ)`. Establish `hTχ` using `pull_isLB hT (Hecke.sq2 χ)`. Establish `hTθχ` using `pull_isLB hT (Hecke.sq2 (θ ≫ χ))`. Establish `hP1 : (Hecke.lbPow P 1).IsLB` using `LB.isLB_linComb hP _ _`. Establish `hPc : (Hecke.lbPow P c).IsLB` using `LB.isLB_linComb hP _ _`.
+
+Establish `hQc : (Hecke.lbPow Q c).IsLB` using `LB.isLB_linComb hQ _ _`. Rewrite `h₁` using `[← GlobalTheory.CechPic.cls_eq_iff hP1 hQθ, cls_pow' hP, GlobalTheory.CechPic.cls_pull hQ]`. Rewrite `h₂` using `[← GlobalTheory.CechPic.cls_eq_iff hPc hTθχ, cls_pow' hP, GlobalTheory.CechPic.cls_pull hT]`. Rewrite using `[← GlobalTheory.CechPic.cls_eq_iff hQc hTχ, cls_pow' hQ, GlobalTheory.CechPic.cls_pull hT]`. Establish `key : ∀ x, GlobalTheory.CechPic.pull (Hecke.sq2 (inv θ)) (GlobalTheory.CechPic.pull (Hecke.sq2 θ) x) = x`.
+
+Introduce `x`. Rewrite using `[← GlobalTheory.CechPic.pull_comp, square_map_comp, IsIso.inv_hom_id, square_map_id, GlobalTheory.CechPic.pull_id]`. Rewrite using `[← key (c • _), ← key (GlobalTheory.CechPic.pull (Hecke.sq2 χ) _), map_nsmul, ← h₁, one_smul, h₂, ← square_map_comp, GlobalTheory.CechPic.pull_comp]`.
+-/
 private theorem bundle_cancel {S : Scheme.{0}} {A B C : Over S} [GrpObj A] [IsCommMonObj A] [GrpObj B] [IsCommMonObj B]
     [GrpObj C] [IsCommMonObj C] (θ : A ⟶ B) [IsIso θ] (χ : B ⟶ C) (P : LB (G2 A).left) (Q : LB (G2 B).left)
     (T : LB (G2 C).left) (hP : P.IsLB) (hQ : Q.IsLB) (hT : T.IsLB) (c : ℕ)
@@ -46,6 +62,31 @@ private theorem bundle_cancel {S : Scheme.{0}} {A B C : Over S} [GrpObj A] [IsCo
   rw [← key (c • _), ← key (GlobalTheory.CechPic.pull (Hecke.sq2 χ) _), map_nsmul, ← h₁, one_smul, h₂,
     ← square_map_comp, GlobalTheory.CechPic.pull_comp]
 
+/- English proof (translation)
+Introduce `hMB hRC hTD hTT hTI p _ D G L R _ _ gb S s M N' N o o₁ o₂ θ χ h hint hadm hθ hθχ`. Establish `hθiso : IsIso θ` using `hTI p D G L R gb S s M N' o o₁ θ 1 (one_mem _) hθ`. Take `⟨hθm, hθa, ⟨θ', d₁, hθ'm, hθ'a, hθθ', hθ'θ, hd₁⟩, ⟨c₁, hc₁, ⟨hPθ⟩, t₁, t₁', ht₁, ht₁', htt₁, hc₁e⟩, hθpt⟩` from `hθ`. Take `⟨hχm₀, hχa₀, ⟨ω, d, hωm, hωa, hχω, hωχ, hd⟩, ⟨c, hc, ⟨hPχ⟩, t, t', ht, ht', htt, hce⟩, hχpt⟩` from `hθχ`. Establish `hinvm : IsMonHom (inv θ)`.
+
+Prove the components needed by the constructor for the conclusion. Rewrite using `[← cancel_mono θ]`. Simplify using the standard rewrite rules. Rewrite using `[← cancel_mono θ]`. Simplify using `[IsMonHom.mul_hom]`.
+
+Establish `hχm : IsMonHom χ`. Establish `e : χ = inv θ ≫ (θ ≫ χ)` using `by simp`. Rewrite using `[e]`. Use `infer_instance`. Establish `hc1 : c₁ = 1` using `(hMB p).1 _ c₁ 1 hc₁ (Nat.coprime_one_left p) ⟨t₁, t₁', ht₁, ht₁', htt₁, hc₁e⟩ ((hMB p).2.2 D G L 1 (one_mem _))`.
+
+Substitute `hc1` using the available equality. Use `⟨hχm, ?_, ⟨ω ≫ θ, d, inferInstance, ?_, ?_, ?_, hd⟩, ⟨c, hc, ⟨bundle_cancel θ χ o.P o₁.P o₂.P o.isLB o₁.isLB o₂.isLB c hPθ hPχ⟩, t, t', ht, ht', htt, hce⟩, ?_⟩` and prove the remaining obligations. Introduce `e`. Rewrite using `[← cancel_epi θ, ← Category.assoc, ← hθa e, Category.assoc, hχa₀ e, Category.assoc]`. Introduce `e`.
+
+Rewrite using `[← Category.assoc, hωa e, Category.assoc, hθa e, Category.assoc]`. Rewrite using `[← cancel_epi θ]`. Simplify using `only [← Category.assoc]`. Rewrite using `[hχω, MonObj.pow_comp, MonObj.comp_pow]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[Category.assoc]`. Conclude with `hωχ`. Introduce `k _ _ tt β htβ`. Take `⟨I, I₁, hI, hI₁, hr₁⟩` from `hθpt k tt β htβ`. Take `⟨J, J₂, hJ, hJ₂, hr₂⟩` from `hχpt k tt β htβ`.
+
+Take `⟨u, hu, hIJ⟩` from `hTD p D G L R gb S s M o k tt I J hI hJ`. Take `⟨J', hJ', hJJ'⟩` from `hTT p D G L R gb S s N o₂ k tt J₂ hJ₂ (h * u⁻¹ * h⁻¹) (hadm _ (inv_mem hu))`. Establish `hu1 : u ∈ L.KN 1` using `UpperTheory.Gal.Int.Geo.KN_anti (one_dvd _) hu`. Establish `hu'1 : h * u⁻¹ * h⁻¹ ∈ L.KN 1` using `UpperTheory.Gal.Int.Geo.KN_anti (one_dvd _) (hadm _ (inv_mem hu))`. Establish `r0 : UpperTheory.Gal.G3.Rel L I₁ I (inv θ) 1`.
+
+Introduce `n hn hnp x y`. Establish `e : I₁.ev n x ≫ inv θ = I.ev n y ↔ I.ev n y ≫ θ = I₁.ev n x`. Prove the components needed by the constructor for the conclusion. Introduce `e`. Rewrite using `[← e]`.
+
+Simplify using the standard rewrite rules. Introduce `e`. Rewrite using `[← e]`. Simplify using the standard rewrite rules. Rewrite using `[e, hr₁ n hn hnp y x]`.
+
+Simplify using `only [map_one, Module.End.one_apply]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨v, hv, e⟩`. Conclude with `⟨-v, neg_mem hv, by rw [e]; simp⟩`. Introduce and unpack `⟨v, hv, e⟩`.
+
+Conclude with `⟨-v, neg_mem hv, by rw [e]; simp⟩`. Establish `r1` using `(hRC p D G L R gb S s N' M M o₁ o o k tt I₁ I J (inv θ) (𝟙 o.A) 1 u inferInstance inferInstance (UpperTheory.Gal.Int.Geo.integ_of_mem hu1)).2 r0 hIJ`. Establish `r2` using `(hRC p D G L R gb S s N' M N o₁ o o₂ k tt I₁ J J₂ (inv θ ≫ 𝟙 o.A) (θ ≫ χ) (u * 1) h inferInstance inferInstance hint).2 r1 hr₂`. Establish `r3` using `(hRC p D G L R gb S s N' N N o₁ o₂ o₂ k tt I₁ J₂ J' ((inv θ ≫ 𝟙 o.A) ≫ (θ ≫ χ)) (𝟙 o₂.A) (h * (u * 1)) (h * u⁻¹ * h⁻¹) inferInstance inferInstance (UpperTheory.Gal.Int.Geo.integ_of_mem hu'1)).2 r2 hJJ'`. Establish `e1 : ((inv θ ≫ 𝟙 o.A) ≫ (θ ≫ χ)) ≫ 𝟙 o₂.A = χ` using `by simp`.
+
+Establish `e2 : h * u⁻¹ * h⁻¹ * (h * (u * 1)) = h` using `by group`. Rewrite `r3` using `[e1, e2]`. Conclude with `⟨I₁, J', hI₁, hJ', r3⟩`.
+-/
 theorem UpperTheory.Gal.G3.pTransCancel :
     MultBasic → RelComp → TateDiff → TateTwist → TransIso → TransCancel := by
   intro hMB hRC hTD hTT hTI p _ D G L R _ _ gb S s M N' N o o₁ o₂ θ χ h hint hadm hθ hθχ

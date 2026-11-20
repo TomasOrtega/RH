@@ -6,6 +6,11 @@ open Matrix Finset Module
 section Lin
 variable {K : Type*} [Field K]
 
+/- English proof (translation)
+Set `f : LinearMap.range i ≃ₗ[K] LinearMap.range i'` to `(LinearEquiv.ofInjective i hi).symm ≪≫ₗ LinearEquiv.ofInjective i' hi'`. Take `⟨g, hg⟩` from `Submodule.exists_linearEquiv_restrict_eq f`. Use `⟨g, fun x => ?_⟩` and prove the remaining obligations. Establish `h1` using `hg ⟨i x, LinearMap.mem_range_self i x⟩`. Establish `h2 : (LinearEquiv.ofInjective i hi).symm ⟨i x, LinearMap.mem_range_self i x⟩ = x`.
+
+Rewrite using `[LinearEquiv.symm_apply_eq]`. Both sides reduce to the same expression. Simplify using `only [f, LinearEquiv.trans_apply, h2] at h1`. Rewrite using `[← h1]`. Both sides reduce to the same expression.
+-/
 lemma exists_equiv_comp {A V : Type*} [AddCommGroup A] [Module K A] [AddCommGroup V] [Module K V]
     [FiniteDimensional K A] (i i' : A →ₗ[K] V) (hi : Function.Injective i)
     (hi' : Function.Injective i') : ∃ g : V ≃ₗ[K] V, ∀ x, g (i x) = i' x := by
@@ -19,6 +24,15 @@ lemma exists_equiv_comp {A V : Type*} [AddCommGroup A] [Module K A] [AddCommGrou
   simp only [f, LinearEquiv.trans_apply, h2] at h1
   rw [← h1]; rfl
 
+/- English proof (translation)
+Take `⟨σ, hσ⟩` from `R.rangeRestrict.exists_rightInverse_of_surjective R.range_rangeRestrict`. Take `⟨τ, hτ⟩` from `LinearMap.exists_extend σ`. Use `⟨f ∘ₗ τ, fun x => ?_⟩` and prove the remaining obligations. Establish `h1 : τ (R x) = σ ⟨R x, LinearMap.mem_range_self R x⟩`. Rewrite using `[← hτ]`.
+
+Both sides reduce to the same expression. Establish `h2 : R (σ ⟨R x, LinearMap.mem_range_self R x⟩) = R x`. Use `congrArg (fun φ => ((φ ⟨R x, LinearMap.mem_range_self R x⟩ : LinearMap.range R) : B)) hσ` as an intermediate fact. Simplify using `using this`. Establish `h3 : σ ⟨R x, LinearMap.mem_range_self R x⟩ - x ∈ LinearMap.ker f`.
+
+Apply `h` to reduce the goal to its premises. Simplify using `[h2]`. Rewrite using `[LinearMap.comp_apply, h1]`. Use `LinearMap.mem_ker.mp h3` as an intermediate fact. Rewrite `this` using `[map_sub, sub_eq_zero]`.
+
+Conclude with `this`.
+-/
 lemma exists_factor {A B U : Type*} [AddCommGroup A] [Module K A] [AddCommGroup B] [Module K B]
     [AddCommGroup U] [Module K U] (R : A →ₗ[K] B) (f : A →ₗ[K] U)
     (h : LinearMap.ker R ≤ LinearMap.ker f) : ∃ S : B →ₗ[K] U, ∀ x, S (R x) = f x := by
@@ -37,6 +51,17 @@ lemma exists_factor {A B U : Type*} [AddCommGroup A] [Module K A] [AddCommGroup 
   rw [map_sub, sub_eq_zero] at this
   exact this
 
+/- English proof (translation)
+Set `b` to `Module.finBasis K W`. Establish `key : ∀ s : Fin (finrank K W) → U, LinearIndependent K s ↔ Function.Injective (b.constr K s : W →ₗ[K] U)`. Introduce `s`. Use `show Function.Injective (Finsupp.linearCombination K s) ↔ _`. Establish `: ((b.constr K s : W →ₗ[K] U) : W → U) = (Finsupp.linearCombination K s) ∘ b.repr`.
+
+Use function extensionality and compare the values at `x`. Rewrite using `[Basis.constr_apply, Function.comp_apply, Finsupp.linearCombination_apply]`. Rewrite using `[this]`. Conclude with `(EquivLike.injective_comp b.repr _).symm`. Establish `e : {f : W →ₗ[K] U // Function.Injective f} ≃ {s : Fin (finrank K W) → U // LinearIndependent K s}` using `((b.constr K (M' := U)).toEquiv.subtypeEquiv (p := fun s => LinearIndependent K s) (q := fun f : W →ₗ[K] U => Function.Injective f) key).symm`.
+
+Rewrite using `[Nat.card_congr e]`. Distinguish the cases in `hk : finrank K W ≤ finrank K U`. Rewrite using `[card_linearIndependent hk, Finset.prod_range]`. Rewrite `hk` using `[not_le]`. Rewrite using `[Finset.prod_eq_zero (Finset.mem_range.mpr hk) (by simp)]`.
+
+Rewrite using `[Nat.card_eq_zero]`. Use `left`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, hs⟩`. Use `hs.fintype_card_le_finrank` as an intermediate fact.
+
+Simplify using `at this`. Use linear arithmetic over natural numbers and integers.
+-/
 lemma card_injective [Fintype K] (W U : Type*) [AddCommGroup W] [Module K W] [AddCommGroup U]
     [Module K U] [Finite W] [Finite U] :
     Nat.card {f : W →ₗ[K] U // Function.Injective f} =
@@ -77,6 +102,19 @@ open Matrix Finset Module
 section Lin
 variable {K : Type*} [Field K]
 
+/- English proof (translation)
+Take `⟨W', hW'⟩` from `Submodule.exists_isCompl (LinearMap.ker R)`. Establish `key : ∀ φψ : (LinearMap.ker R →ₗ[K] U) × (W' →ₗ[K] U), Function.Injective φψ.1 ↔ LinearMap.ker R ⊓ LinearMap.ker (LinearMap.ofIsComplProdEquiv hW' φψ) = ⊥`. Introduce and unpack `⟨φ, ψ⟩`. Rewrite using `[Submodule.eq_bot_iff, ← LinearMap.ker_eq_bot, Submodule.eq_bot_iff]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `h x ⟨hx1, hx2⟩`. Use `h ⟨x, hx1⟩ (by` as an intermediate fact. Rewrite using `[LinearMap.mem_ker]`. Establish `h3` using `LinearMap.mem_ker.mp hx2`. Simplify `(LinearMap.ofIsCompl_apply_left hW' (φ := φ) (ψ := ψ) ⟨x, hx1⟩).symm.trans h3)` using `[LinearMap.ofIsComplProdEquiv]`.
+
+Simplify using `using congrArg Subtype.val this`. Introduce and unpack `h ⟨x, hx1⟩ hx2`. Use `h x ⟨hx1, by` as an intermediate fact. Rewrite using `[SetLike.mem_coe, LinearMap.mem_ker]`. Establish `h3` using `LinearMap.mem_ker.mp hx2`.
+
+Conclude with `(LinearMap.ofIsCompl_apply_left hW' (φ := φ) (ψ := ψ) ⟨x, hx1⟩).trans h3⟩`. Conclude with `Subtype.ext this`. Establish `e : {Y : A →ₗ[K] U // LinearMap.ker R ⊓ LinearMap.ker Y = ⊥} ≃ {φ : LinearMap.ker R →ₗ[K] U // Function.Injective φ} × (W' →ₗ[K] U)` using `(((LinearMap.ofIsComplProdEquiv hW' (F := U)).toEquiv.subtypeEquiv (p := fun φψ : (LinearMap.ker R →ₗ[K] U) × (W' →ₗ[K] U) => Function.Injective φψ.1) (q := fun Y : A →ₗ[K] U => LinearMap.ker R ⊓ LinearMap.ker Y = ⊥) key).symm).trans (Equiv.prodSubtypeFstEquivSubtypeProd (p := fu …`. Establish `: Finite (W' →ₗ[K] U)` using `Module.finite_of_finite K`. Set `_ : Fintype (W' →ₗ[K] U)` to `Fintype.ofFinite _`.
+
+Rewrite using `[Nat.card_congr e, Nat.card_prod, card_injective, mul_comm]`. Use `congr 1`. Rewrite using `[Nat.card_eq_fintype_card, Module.card_eq_pow_finrank (K := K), Module.finrank_linearMap]`. Establish `h1` using `Submodule.finrank_add_eq_of_isCompl hW'`. Establish `h2` using `LinearMap.finrank_range_add_finrank_ker R`.
+
+Use `congr 1`. Rewrite using `[mul_comm]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers.
+-/
 lemma card_ker_inf [Fintype K] {A B : Type*} (U : Type*) [AddCommGroup A] [Module K A]
     [AddCommGroup B] [Module K B] [AddCommGroup U] [Module K U] [Finite A] [Finite U]
     (R : A →ₗ[K] B) :
@@ -129,9 +167,21 @@ def kerPart (π : V →ₗ[K] A) (σ : A →ₗ[K] V) (hσ : ∀ x, π (σ x) = 
     A' →ₗ[K] LinearMap.ker π :=
   LinearMap.codRestrict _ (j - σ ∘ₗ π ∘ₗ j) (fun x => by simp [hσ])
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma kerPart_coe (π : V →ₗ[K] A) (σ : A →ₗ[K] V) (hσ : ∀ x, π (σ x) = x) (j : A' →ₗ[K] V)
     (x : A') : (kerPart π σ hσ j x : V) = j x - σ (π (j x)) := rfl
 
+/- English proof (translation)
+Rewrite using `[Submodule.eq_bot_iff, ← LinearMap.ker_eq_bot, Submodule.eq_bot_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `h x ⟨hx1, hx2⟩`. Apply `h` to reduce the goal to its premises. Establish `h1 : π (j x) = 0` using `hx1`.
+
+Establish `h2 : (kerPart π σ hσ j x : V) = 0`. Rewrite using `[LinearMap.mem_ker.mp hx2]`. Both sides reduce to the same expression. Rewrite `h2` using `[kerPart_coe, h1, map_zero, sub_zero]`. Conclude with `h2`.
+
+Introduce and unpack `h x hx`. Establish `hx' : j x = 0` using `hx`. Apply `h` to reduce the goal to its premises. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `show π (j x) = 0`.
+
+Rewrite using `[hx', map_zero]`. Use `show kerPart π σ hσ j x = 0`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[kerPart_coe, hx']`. Simplify using the standard rewrite rules.
+-/
 lemma injective_iff_kerPart (π : V →ₗ[K] A) (σ : A →ₗ[K] V) (hσ : ∀ x, π (σ x) = x)
     (j : A' →ₗ[K] V) :
     Function.Injective j ↔ LinearMap.ker (π ∘ₗ j) ⊓ LinearMap.ker (kerPart π σ hσ j) = ⊥ := by
@@ -177,6 +227,27 @@ def fibEquiv (π : V →ₗ[K] A) (σ : A →ₗ[K] V) (hσ : ∀ x, π (σ x) =
     apply Subtype.ext
     ext x; rw [kerPart_coe]; simp [hσ]
 
+/- English proof (translation)
+Take `⟨σ, hσ0⟩` from `π.exists_rightInverse_of_surjective (LinearMap.range_eq_top.mpr hπ)`. Establish `hσ : ∀ x, π (σ x) = x` using `fun x => by`. Simplify using `using congrArg (fun φ => φ x) hσ0`. Use `set R := π ∘ₗ j' with hR`. Use `set y := kerPart π σ hσ j with hy`.
+
+Use `set y' := kerPart π σ hσ j' with hy'`. Establish `hy1` using `(injective_iff_kerPart π σ hσ j).mp hj`. Establish `hy1'` using `(injective_iff_kerPart π σ hσ j').mp hj'`. Rewrite `hy1` using `[hjj]`. Establish `inj : ∀ z : A' →ₗ[K] LinearMap.ker π, LinearMap.ker R ⊓ LinearMap.ker z = ⊥ → Function.Injective (z ∘ₗ (LinearMap.ker R).subtype)`.
+
+Introduce `z hz`. Rewrite using `[← LinearMap.ker_eq_bot, Submodule.eq_bot_iff]`. Introduce and unpack `⟨x, hx⟩ hx2`. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `(Submodule.eq_bot_iff _).mp hz x ⟨hx, hx2⟩`.
+
+Take `⟨T, hT⟩` from `exists_equiv_comp _ _ (inj y' hy1') (inj y hy1)`. Take `⟨S, hS⟩` from `exists_factor R (y - T.toLinearMap ∘ₗ y') (by`. Introduce `x hx`. Use `hT ⟨x, hx⟩` as an intermediate fact. Simplify using `only [LinearMap.comp_apply, Submodule.subtype_apply] at this`.
+
+Simplify using `[this])`. Set `P : V →ₗ[K] LinearMap.ker π` to `kerPart π σ hσ LinearMap.id`. Establish `hP : ∀ v, (P v : V) = v - σ (π v)` using `fun v => rfl`. Use `⟨(LinearMap.ker π).subtype ∘ₗ (T.toLinearMap ∘ₗ P + S ∘ₗ π) + σ ∘ₗ π, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← LinearMap.ker_eq_bot, Submodule.eq_bot_iff]`.
+
+Introduce `v hv`. Establish `hv' : ((T (P v) + S (π v) : LinearMap.ker π) : V) + σ (π v) = 0` using `hv`. Establish `h1 : π v = 0`. Use `congrArg π hv'` as an intermediate fact. Simplify `this` using `[hσ]`.
+
+Rewrite `hv'` using `[h1]`. Simplify using `only [map_zero, add_zero] at hv'`. Establish `h2 : P v = 0`. Establish `: T (P v) = 0` using `Subtype.ext hv'`. Simplify using `using this`.
+
+Establish `h3` using `hP v`. Rewrite `h3` using `[h2, h1]`. Simplify using `using h3.symm`. Use extensionality with `v`. Simplify using `[hσ]`.
+
+Use extensionality with `x`. Establish `h1 : P (j' x) = y' x` using `rfl`. Establish `h2` using `hS x`. Establish `h3 : π (j' x) = R x` using `rfl`. Establish `h4 : π (j x) = R x` using `by rw [← hjj]; rfl`.
+
+Simplify using `only [LinearMap.comp_apply, LinearMap.add_apply, Submodule.subtype_apply, h1, h3, h2, LinearMap.sub_apply, LinearEquiv.coe_coe]`. Simplify using `only [add_sub_cancel, hy, kerPart_coe, h4]`. Simplify using the standard rewrite rules.
+-/
 lemma exists_over [FiniteDimensional K A'] (π : V →ₗ[K] A) (hπ : Function.Surjective π)
     (j j' : A' →ₗ[K] V) (hj : Function.Injective j) (hj' : Function.Injective j')
     (hjj : π ∘ₗ j = π ∘ₗ j') :
@@ -240,6 +311,11 @@ open Matrix Finset Module
 section Mat
 variable {K : Type} [Field K]
 
+/- English proof (translation)
+Establish `h` using `LinearMap.finrank_range_add_finrank_ker (Matrix.toLin' X)`. Rewrite `h` using `[Module.finrank_fin_fun]`. Establish `h0 : X.rank = finrank K (LinearMap.range (Matrix.toLin' X))`. Rewrite using `[Matrix.rank, Matrix.toLin'_apply']`. Rewrite using `[← LinearMap.ker_eq_bot, ← Submodule.finrank_eq_zero, h0]`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 lemma rank_eq_iff_injective {n a : ℕ} (X : Matrix (Fin n) (Fin a) K) :
     X.rank = a ↔ Function.Injective (Matrix.toLin' X) := by
   have h := LinearMap.finrank_range_add_finrank_ker (Matrix.toLin' X)
@@ -249,6 +325,9 @@ lemma rank_eq_iff_injective {n a : ℕ} (X : Matrix (Fin n) (Fin a) K) :
   rw [← LinearMap.ker_eq_bot, ← Submodule.finrank_eq_zero, h0]
   omega
 
+/- English proof (translation)
+Rewrite using `[← LinearMap.range_eq_top]`. Apply `Submodule.eq_top_of_finrank_eq` to reduce the goal to its premises. Establish `h` using `Matrix.rank_transpose X`. Rewrite `h` using `[Matrix.rank, ← Matrix.toLin'_apply', hX]`. Rewrite using `[Module.finrank_fin_fun, h]`.
+-/
 lemma surjective_of_rank {n a : ℕ} (X : Matrix (Fin n) (Fin a) K) (hX : X.rank = a) :
     Function.Surjective (Matrix.toLin' Xᵀ) := by
   rw [← LinearMap.range_eq_top]
@@ -257,6 +336,9 @@ lemma surjective_of_rank {n a : ℕ} (X : Matrix (Fin n) (Fin a) K) (hX : X.rank
   rw [Matrix.rank, ← Matrix.toLin'_apply', hX] at h
   rw [Module.finrank_fin_fun, h]
 
+/- English proof (translation)
+Establish `h` using `LinearMap.finrank_range_add_finrank_ker (Matrix.toLin' Xᵀ)`. Rewrite `h` using `[Module.finrank_fin_fun, LinearMap.range_eq_top.mpr (surjective_of_rank X hX), finrank_top, Module.finrank_fin_fun]`. Use linear arithmetic over natural numbers and integers.
+-/
 lemma finrank_ker_of_rank {n a : ℕ} (X : Matrix (Fin n) (Fin a) K) (hX : X.rank = a) :
     finrank K (LinearMap.ker (Matrix.toLin' Xᵀ)) = n - a := by
   have h := LinearMap.finrank_range_add_finrank_ker (Matrix.toLin' Xᵀ)
@@ -264,6 +346,9 @@ lemma finrank_ker_of_rank {n a : ℕ} (X : Matrix (Fin n) (Fin a) K) (hX : X.ran
     Module.finrank_fin_fun] at h
   omega
 
+/- English proof (translation)
+Establish `e : {X : Matrix (Fin n) (Fin a) K // X.rank = a} ≃ {f : (Fin a → K) →ₗ[K] (Fin n → K) // Function.Injective f}` using `(Matrix.toLin' (R := K) (m := Fin n) (n := Fin a)).toEquiv.subtypeEquiv (p := fun X : Matrix (Fin n) (Fin a) K => X.rank = a) (q := fun f : (Fin a → K) →ₗ[K] (Fin n → K) => Function.Injective f) (fun X => rank_eq_iff_injective X)`. Rewrite using `[Nat.card_congr e, card_injective, Module.finrank_fin_fun, Module.finrank_fin_fun]`.
+-/
 lemma card_rank [Fintype K] (n a : ℕ) :
     Nat.card {X : Matrix (Fin n) (Fin a) K // X.rank = a} =
       ∏ j ∈ range a, (Fintype.card K ^ n - Fintype.card K ^ j) := by
@@ -275,6 +360,13 @@ lemma card_rank [Fintype K] (n a : ℕ) :
       (fun X => rank_eq_iff_injective X)
   rw [Nat.card_congr e, card_injective, Module.finrank_fin_fun, Module.finrank_fin_fun]
 
+/- English proof (translation)
+Take `⟨σ, hσ0⟩` from `(Matrix.toLin' X₁ᵀ).exists_rightInverse_of_surjective (LinearMap.range_eq_top.mpr (surjective_of_rank X₁ hX))`. Establish `hσ : ∀ x, Matrix.toLin' X₁ᵀ (σ x) = x` using `fun x => by`. Simplify using `using congrArg (fun φ => φ x) hσ0`. Establish `e : {X₂ : Matrix (Fin n) (Fin a) K // X₂.rank = a ∧ X₂ᵀ * X₁ = Rᵀ} ≃ {j : (Fin a → K) →ₗ[K] (Fin n → K) // Function.Injective j ∧ Matrix.toLin' X₁ᵀ ∘ₗ j = Matrix.toLin' R}` using `(Matrix.toLin' (R := K) (m := Fin n) (n := Fin a)).toEquiv.subtypeEquiv (p := fun X₂ : Matrix (Fin n) (Fin a) K => X₂.rank = a ∧ X₂ᵀ * X₁ = Rᵀ) (q := fun j : (Fin a → K) →ₗ[K] (Fin n → K) => Function.Injective j ∧ Matrix.toLin' X₁ᵀ ∘ₗ j = Matrix.toLin' R) (fun X₂ => by`. Use `and_congr (rank_eq_iff_injective X₂) ?_` and prove the remaining obligations.
+
+Use `show _ ↔ Matrix.toLin' X₁ᵀ ∘ₗ Matrix.toLin' X₂ = Matrix.toLin' R`. Rewrite using `[← Matrix.toLin'_mul, (Matrix.toLin' (R := K)).injective.eq_iff, ← Matrix.transpose_inj, Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.transpose_transpose])`. Rewrite using `[Nat.card_congr e, Nat.card_congr (fibEquiv _ σ hσ _), card_ker_inf, finrank_ker_of_rank X₁ hX]`. Establish `h` using `LinearMap.finrank_range_add_finrank_ker (Matrix.toLin' R)`. Rewrite `h` using `[Module.finrank_fin_fun]`.
+
+Establish `h0 : R.rank = finrank K (LinearMap.range (Matrix.toLin' R))`. Rewrite using `[Matrix.rank, Matrix.toLin'_apply']`. Rewrite `h`, the goal using `[← h0]`. Establish `h1 : finrank K (LinearMap.ker (Matrix.toLin' R)) = a - R.rank` using `by omega`. Rewrite using `[h1]`.
+-/
 lemma card_fibre [Fintype K] (n a : ℕ) (R : Matrix (Fin a) (Fin a) K)
     (X₁ : Matrix (Fin n) (Fin a) K) (hX : X₁.rank = a) :
     Nat.card {X₂ : Matrix (Fin n) (Fin a) K // X₂.rank = a ∧ X₂ᵀ * X₁ = Rᵀ} =
@@ -313,6 +405,9 @@ end Formalism.FourierDecayAlt.P.S3x4
 namespace Formalism.FourierDecayAlt.P
 open Matrix Finset Module Formalism.FourierDecayAlt.P.S3x4
 
+/- English proof (translation)
+Introduce `K _ _ n a R`. Set `e : {p : Matrix (Fin n) (Fin a) K × Matrix (Fin n) (Fin a) K // p.1.rank = a ∧ p.2.rank = a ∧ p.2ᵀ * p.1 = Rᵀ} ≃ Σ X₁ : {X : Matrix (Fin n) (Fin a) K // X.rank = a}, {X₂ : Matrix (Fin n) (Fin a) K // X₂.rank = a ∧ X₂ᵀ * X₁.1 = Rᵀ}` to `{ toFun := fun p => ⟨⟨p.1.1, p.2.1⟩, ⟨p.1.2, p.2.2⟩⟩ invFun := fun s => ⟨(s.1.1, s.2.1), s.1.2, s.2.2⟩ left_inv := fun p => rfl right_inv := fun s => rfl }`. Set `_ : Fintype {X : Matrix (Fin n) (Fin a) K // X.rank = a}` to `Fintype.ofFinite _`. Rewrite using `[Nat.card_congr e, Nat.card_sigma, Finset.sum_congr rfl (fun X₁ _ => card_fibre n a R X₁.1 X₁.2), Finset.sum_const, Finset.card_univ, ← Nat.card_eq_fintype_card, card_rank, smul_eq_mul, mul_assoc]`.
+-/
 theorem s3_split_frame_count : Formalism.FourierDecayAlt.S3.SplitFrameCount := by
   intro K _ _ n a R
   classical
@@ -329,6 +424,25 @@ theorem s3_split_frame_count : Formalism.FourierDecayAlt.S3.SplitFrameCount := b
     Finset.sum_congr rfl (fun X₁ _ => card_fibre n a R X₁.1 X₁.2), Finset.sum_const,
     Finset.card_univ, ← Nat.card_eq_fintype_card, card_rank, smul_eq_mul, mul_assoc]
 
+/- English proof (translation)
+Introduce `K _ _ n a X₁ X₂ Y₁ Y₂ hX₁ hX₂ hY₁ hY₂ hXY`. Take `⟨g₀, hg₀⟩` from `exists_equiv_comp _ _ ((rank_eq_iff_injective X₁).mp hX₁) ((rank_eq_iff_injective Y₁).mp hY₁)`. Use `set G := LinearMap.toMatrix' g₀.toLinearMap with hG`. Establish `hGl : Matrix.toLin' G = g₀.toLinearMap` using `by rw [hG, Matrix.toLin'_toMatrix']`. Establish `hGdet : IsUnit G.det`.
+
+Rewrite using `[← Matrix.isUnit_iff_isUnit_det, ← Matrix.mulVec_injective_iff_isUnit]`. Introduce `x y hxy`. Establish `: Matrix.toLin' G x = Matrix.toLin' G y` using `hxy`. Rewrite `this` using `[hGl]`. Conclude with `g₀.injective this`.
+
+Establish `hGX : G * X₁ = Y₁`. Apply `(Matrix.toLin' (R := K)).injective` to reduce the goal to its premises. Rewrite using `[Matrix.toLin'_mul, hGl]`. Conclude with `LinearMap.ext hg₀`. Establish `hY₂' : (Gᵀ * Y₂).rank = a`.
+
+Rewrite using `[Matrix.rank_mul_eq_right_of_isUnit_det _ _ (by rwa [Matrix.det_transpose]), hY₂]`. Establish `hjj : X₁ᵀ * X₂ = X₁ᵀ * (Gᵀ * Y₂)`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.transpose_mul, hGX]`. Use `congrArg Matrix.transpose hXY` as an intermediate fact. Simplify `this` using `[Matrix.transpose_mul]`.
+
+Take `⟨h, hinj, hπ, hh⟩` from `exists_over (Matrix.toLin' X₁ᵀ) (surjective_of_rank X₁ hX₁) (Matrix.toLin' X₂) (Matrix.toLin' (Gᵀ * Y₂)) ((rank_eq_iff_injective X₂).mp hX₂) ((rank_eq_iff_injective _).mp hY₂') (by rw [← Matrix.toLin'_mul, ← Matrix.toLin'_mul, hjj])`. Use `set H := LinearMap.toMatrix' h with hH`. Establish `hHl : Matrix.toLin' H = h` using `by rw [hH, Matrix.toLin'_toMatrix']`. Establish `hHdet : IsUnit H.det`. Rewrite using `[← Matrix.isUnit_iff_isUnit_det, ← Matrix.mulVec_injective_iff_isUnit]`.
+
+Introduce `x y hxy`. Establish `: Matrix.toLin' H x = Matrix.toLin' H y` using `hxy`. Rewrite `this` using `[hHl]`. Conclude with `hinj this`. Establish `h1 : X₁ᵀ * H = X₁ᵀ`.
+
+Apply `(Matrix.toLin' (R := K)).injective` to reduce the goal to its premises. Rewrite using `[Matrix.toLin'_mul, hHl, hπ]`. Establish `h2 : H * (Gᵀ * Y₂) = X₂`. Apply `(Matrix.toLin' (R := K)).injective` to reduce the goal to its premises. Rewrite using `[Matrix.toLin'_mul, hHl, hh]`.
+
+Use `⟨G * Hᵀ, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.det_mul, Matrix.det_transpose]`. Conclude with `hGdet.mul hHdet`. Establish `h3 : Hᵀ * X₁ = X₁`. Use `congrArg Matrix.transpose h1` as an intermediate fact.
+
+Simplify `this` using `[Matrix.transpose_mul]`. Rewrite using `[Matrix.mul_assoc, h3, hGX]`. Rewrite using `[Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.mul_assoc, h2]`.
+-/
 theorem s3_split_frame_transitive : Formalism.FourierDecayAlt.S3.SplitFrameTransitive := by
   intro K _ _ n a X₁ X₂ Y₁ Y₂ hX₁ hX₂ hY₁ hY₂ hXY
   obtain ⟨g₀, hg₀⟩ := exists_equiv_comp _ _ ((rank_eq_iff_injective X₁).mp hX₁)
@@ -382,20 +496,38 @@ end Formalism.FourierDecayAlt.P
 namespace Formalism.FourierDecayAlt.P.S3x4
 open Matrix Finset Module Formalism.FourierDecayAlt.S3
 
+/- English proof (translation)
+Unfold `densP`. Conclude with `Finset.prod_eq_zero (Finset.mem_Icc.mpr ⟨h1, h2⟩) (by simp)`.
+-/
 lemma densityProduct_eq_zero (q : ℕ) (lo hi : ℤ) (h1 : lo ≤ 0) (h2 : 0 ≤ hi) : densP 1 q lo hi = 0 := by
   unfold densP
   exact Finset.prod_eq_zero (Finset.mem_Icc.mpr ⟨h1, h2⟩) (by simp)
 
+/- English proof (translation)
+Unfold `densP`. Rewrite using `[Finset.Icc_eq_empty (by omega), Finset.prod_empty]`.
+-/
 lemma densityProduct_eq_one_of_lt (q : ℕ) (lo hi : ℤ) (h : hi < lo) : densP 1 q lo hi = 1 := by
   unfold densP
   rw [Finset.Icc_eq_empty (by omega), Finset.prod_empty]
 
+/- English proof (translation)
+Unfold `densP`. Rewrite using `[← Finset.insert_Icc_add_one_left_eq_Icc h, Finset.prod_insert (by simp)]`. Simplify using the standard rewrite rules.
+-/
 lemma densityProduct_step (q : ℕ) (lo hi : ℤ) (h : lo ≤ hi) :
     densP 1 q lo hi = (1 - (q : ℝ) ^ (-lo)) * densP 1 q (lo + 1) hi := by
   unfold densP
   rw [← Finset.insert_Icc_add_one_left_eq_Icc h, Finset.prod_insert (by simp)]
   simp
 
+/- English proof (translation)
+Establish `hq' : (q : ℝ) ≠ 0` using `by positivity`. Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Establish `ih'` using `ih (by omega)`.
+
+Rewrite using `[Finset.prod_range_succ, Nat.cast_mul, mul_right_comm, ih', densityProduct_step q ((m : ℤ) - (k + 1 : ℕ) + 1) hi (by push_cast; omega)]`. Establish `e1 : ((m : ℤ) - (k + 1 : ℕ) + 1 + 1) = (m : ℤ) - k + 1` using `by push_cast; ring`. Rewrite using `[e1, Nat.cast_sub (Nat.pow_le_pow_right hq (by omega))]`. Establish `e2 : (q : ℝ) ^ (-((m : ℤ) - (k + 1 : ℕ) + 1)) = (q : ℝ) ^ k / (q : ℝ) ^ m`. Establish `: -((m : ℤ) - (k + 1 : ℕ) + 1) = (k : ℤ) - m` using `by push_cast; ring`.
+
+Rewrite using `[this, zpow_sub₀ hq', zpow_natCast, zpow_natCast]`. Rewrite using `[e2]`. Use `push_cast`. Establish `hm0 : (q : ℝ) ^ m ≠ 0` using `pow_ne_zero _ hq'`. Rewrite using `[Nat.mul_succ, pow_add]`.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 lemma prod_densP (q : ℕ) (hq : 0 < q) (m : ℕ) (hi : ℤ) (hm : (m : ℤ) ≤ hi) (k : ℕ) (hk : k ≤ m) :
     ((∏ j ∈ range k, (q ^ m - q ^ j) : ℕ) : ℝ) * densP 1 q ((m : ℤ) + 1) hi =
       (q : ℝ) ^ (m * k) * densP 1 q ((m : ℤ) - k + 1) hi := by
@@ -422,6 +554,21 @@ end Formalism.FourierDecayAlt.P.S3x4
 namespace Formalism.FourierDecayAlt.P
 open Matrix Finset Module Formalism.FourierDecayAlt.P.S3x4 Formalism.FourierDecayAlt.S3
 
+/- English proof (translation)
+Introduce `K _ _ n a R`. Rewrite using `[s3_split_frame_count K n a R]`. Establish `hq : 0 < Fintype.card K` using `Fintype.card_pos`. Use `set q := Fintype.card K with hqdef`. Establish `hq' : (q : ℝ) ≠ 0` using `by positivity`.
+
+Establish `hρ : R.rank ≤ a` using `by simpa using R.rank_le_width`. Use `set ρ := R.rank with hρdef`. Distinguish the cases in `h1 : n < a`. Rewrite using `[Finset.prod_eq_zero (Finset.mem_range.mpr h1) (by simp), densityProduct_eq_zero q _ _ (by omega) (by omega)]`. Simplify using the standard rewrite rules.
+
+Rewrite `h1` using `[not_lt]`. Distinguish the cases in `h2 : n - a < a - ρ`. Rewrite using `[Finset.prod_eq_zero (s := range (a - ρ)) (Finset.mem_range.mpr h2) (by simp), densityProduct_eq_zero q _ _ (by omega) (by omega)]`. Simplify using the standard rewrite rules. Rewrite `h2` using `[not_lt]`.
+
+Establish `g1` using `prod_densP q hq n n le_rfl a h1`. Rewrite `g1` using `[densityProduct_eq_one_of_lt q _ _ (by omega), mul_one]`. Establish `g2` using `prod_densP q hq (n - a) n (by omega) (a - ρ) h2`. Establish `e1 : (((n - a : ℕ) : ℤ) + 1) = (n : ℤ) - a + 1` using `by omega`. Establish `e2 : (((n - a : ℕ) : ℤ) - ((a - ρ : ℕ) : ℤ) + 1) = (n : ℤ) - a - ((a : ℤ) - ρ) + 1` using `by omega`.
+
+Rewrite `g2` using `[e1, e2]`. Rewrite using `[Nat.cast_mul, Nat.cast_mul, g1]`. Establish `: (q : ℝ) ^ (n * a) * densP 1 q ((n : ℤ) - a + 1) n * ((q ^ ((n - a) * ρ) : ℕ) : ℝ) * ((∏ j ∈ range (a - ρ), (q ^ (n - a) - q ^ j) : ℕ) : ℝ) = (q : ℝ) ^ (n * a) * ((q ^ ((n - a) * ρ) : ℕ) : ℝ) * (((∏ j ∈ range (a - ρ), (q ^ (n - a) - q ^ j) : ℕ) : ℝ) * densP 1 q ((n : ℤ) - a + 1) …`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, g2, ← mul_assoc]`.
+
+Use `congr 1`. Use `push_cast`. Rewrite using `[← pow_add, ← pow_add, ← zpow_natCast]`. Use `congr 1`. Move the coercions through the operations in `[Nat.cast_sub h1, Nat.cast_sub hρ]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem split_frame_density : Formalism.FourierDecayAlt.S3.SplitFrameDensity := by
   intro K _ _ n a R
   rw [s3_split_frame_count K n a R]

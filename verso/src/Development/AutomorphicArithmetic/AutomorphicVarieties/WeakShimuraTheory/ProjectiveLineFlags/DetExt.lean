@@ -4,6 +4,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.Deter
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws GlobalTheory.GalOfCusp
 
+/- English proof (translation)
+Introduce `n A A' G _ _ _ D f D' h`. Apply `CA.d_gext` to reduce the goal to its premises. Introduce `g i _ _`. Rewrite using `[(AlgebraTools.Det.mapApi D f).2.2.1 i g]`. Simplify using `only [W.GDet.lam, map_mul, map_pow, map_neg, map_one]`.
+
+Rewrite using `[← Polynomial.coeff_map, h g]`.
+-/
 theorem UpperTheory.V.Ws.P1.detExt :
     ∀ {n : ℕ} {A A' G : Type} [CommRing A] [CommRing A'] [Group G] (D : W.GDet n A G) (f : A →+* A') (D' : W.GDet n A' G),
           (∀ g : G, (D.chi (MonoidAlgebra.single g 1)).map f = D'.chi (MonoidAlgebra.single g 1)) → D.map f = D' := by

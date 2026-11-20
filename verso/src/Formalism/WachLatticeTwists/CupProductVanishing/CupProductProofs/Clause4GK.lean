@@ -14,6 +14,9 @@ noncomputable section
 
 namespace Formalism.RepresentationBoundsCohomology.T2
 
+/- English proof (translation)
+Introduce `p _ K O _ _ _ _ A T' G _ _ _ _ _ _ _ _ r χ E Dw _ ε hK hO e hε hA`. Take `⟨F⟩` from `ReciprocityTheory.ChartRestriction.T2.natInv_all_iso hK hO e (ε := ε.comp Dw.subtype) hε`. Conclude with `clause4 O A T' G r χ E Dw ε hA ⟨F⟩`.
+-/
 theorem clause4GK : CupClauseGK := by
   intro p _ K O _ _ _ _ A T' G _ _ _ _ _ _ _ _ r χ E Dw _ ε hK hO e hε hA
   obtain ⟨F⟩ := ReciprocityTheory.ChartRestriction.T2.natInv_all_iso hK hO e (ε := ε.comp Dw.subtype) hε

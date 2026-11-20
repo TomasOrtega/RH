@@ -13,6 +13,9 @@ open scoped ContDiff
 
 namespace GlobalTheory.HCA
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => rfl`. Consider the case `cons X l ih`. Simplify using `only [List.foldr_cons, ih]`. Conclude with `h.rightDeriv_leftTranslate X (l.foldr h.rightDeriv f) g`.
+-/
 theorem foldr_rightDeriv_leftTranslate {𝔸 : Type} [NormedRing 𝔸] [NormedAlgebra ℝ 𝔸] [CompleteSpace 𝔸]
     [FiniteDimensional ℝ 𝔸] {G : Subgroup 𝔸ˣ} {𝔤 : Submodule ℝ 𝔸} (h : IsExpLieAlgebra G 𝔤)
     (l : List 𝔤) (f : G → ℂ) (g : G) :
@@ -23,6 +26,13 @@ theorem foldr_rightDeriv_leftTranslate {𝔸 : Type} [NormedRing 𝔸] [NormedAl
     simp only [List.foldr_cons, ih]
     exact h.rightDeriv_leftTranslate X (l.foldr h.rightDeriv f) g
 
+/- English proof (translation)
+Introduce `𝔸 _ _ _ _ G 𝔤 h d b P hP _ _ μ hμ l`. Take `⟨hcont, hinv, K, hK, hfam⟩` from `GlobalTheory.T.laplacePolynomialKernel_derivativeWords_family 𝔸 G 𝔤 h d b P hP μ hμ`. Take `⟨α, hαs, hαc, hα⟩` from `GlobalTheory.T.first_functional_integral_smooth_compact 𝔸 G 𝔤 h d b μ hμ (solG h b P) hcont hinv K hK _ (hfam l)`. Use `⟨α, hαs, ?_, hαc, ?_⟩` and prove the remaining obligations. Use `letI := h.chartedSpace`.
+
+Conclude with `hαs.continuous`. Introduce `f hf g`. Establish `hmem : (f : G → ℂ) ∈ solG h b P` using `(mem_solG h b).2 ⟨f.2, hf⟩`. Establish `h1` using `hα _ (hinv _ hmem g)`. Simplify using `only [List.map_nil, List.nil_append] at h1`.
+
+Rewrite using `[h1, foldr_rightDeriv_leftTranslate h l (f : G → ℂ) g]`. Simplify using `only [mul_one]`.
+-/
 theorem exists_alpha_convolution : ∀ (𝔸 : Type) [NormedRing 𝔸] [NormedAlgebra ℝ 𝔸] [CompleteSpace 𝔸] [FiniteDimensional ℝ 𝔸] (G : Subgroup 𝔸ˣ) (𝔤 : Submodule ℝ 𝔸) (h : IsExpLieAlgebra G 𝔤) (d : ℕ) (b : Module.Basis (Fin d) ℝ 𝔤) (P : Polynomial ℂ), P.Monic → ∀ [MeasurableSpace G] [BorelSpace G] (μ : Measure G), μ.IsHaarMeasure → ∀ l : List 𝔤, ∃ α : G → ℂ, h.IsSmoothFun α ∧ Continuous α ∧ HasCompactSupport α ∧ ∀ f : h.smoothFuns (F := ℂ), Polynomial.aeval (∑ i, h.rightDerivEnd (F := ℂ) (b i) * h.rightDerivEnd (F := ℂ) (b i)) P f = 0 → ∀ g, ∫ y, (f : G → ℂ) (g * y) * α y ∂μ = l.foldr h.rightDeriv (f : G → ℂ) g := by
   intro 𝔸 _ _ _ _ G 𝔤 h d b P hP _ _ μ hμ l
   obtain ⟨hcont, hinv, K, hK, hfam⟩ := GlobalTheory.T.laplacePolynomialKernel_derivativeWords_family 𝔸 G 𝔤 h d b P hP μ hμ

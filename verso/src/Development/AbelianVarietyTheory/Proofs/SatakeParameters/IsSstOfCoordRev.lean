@@ -27,6 +27,13 @@ variable {l : ℕ} [Fact l.Prime] (P : LocPrime l) {K L L' : FinExt l}
   {ρ : Representation ↥L.1 ↥(GK K) V} {ρ' : Representation ↥L'.1 ↥(GK K) V'}
   {ι : Type} [Fintype ι] [DecidableEq ι] {E : V' ≃ₗ[↥L.1] (ι → V)}
 
+/- English proof (translation)
+Establish `hm : ∀ x : V' ⊗[ℚ_[l]] Bst P, x ∈ Dst P ρ' ↔ ∀ i, tensCoord E (Bst P) x i ∈ Dst P ρ` using `fun x => by`. Simplify using `only [mem_Dst]`. Use `⟨fun hx i g => by rw [← GlobalTheory.PstExt.tensCoord_stRep P hE, hx g], fun hx g => ?_⟩` and prove the remaining obligations. Conclude with `(tensCoord E (Bst P)).injective (funext fun i => by rw [GlobalTheory.PstExt.tensCoord_stRep P hE, hx i g])`. Set `e : ↥(Dst P ρ') ≃ₗ[ℚ_[l]] (ι → ↥(Dst P ρ))` to `{ toFun := fun x i => ⟨tensCoord E (Bst P) x.1 i, (hm _).1 x.2 i⟩ invFun := fun y => ⟨(tensCoord E (Bst P)).symm fun i => (y i).1, (hm _).2 fun i => by`.
+
+Rewrite using `[LinearEquiv.apply_symm_apply]`. Conclude with `(y i).2⟩`. Use the proof step `map_add' := fun x y => funext fun i => Subtype.ext (congrFun (map_add (tensCoord E (Bst P)) x.1 y.1) i)`. Use the proof step `map_smul' := fun c x => funext fun i => Subtype.ext (congrFun (((tensCoord E (Bst P)).restrictScalars ℚ_[l]).map_smul c x.1) i)`. Use `left_inv := fun x => Subtype.ext ((tensCoord E (Bst P)).symm_apply_apply x.1)`.
+
+Use `right_inv := fun y => funext fun i => Subtype.ext (congrFun ((tensCoord E (Bst P)).apply_symm_apply fun i => (y i).1) i) }`. Rewrite `h`, the goal using `[GlobalTheory.AboveL.RepConj.isSst_iff]`. Rewrite `h` using `[e.finrank_eq, (E.restrictScalars ℚ_[l]).finrank_eq, GlobalTheory.AboveL.RepConj.finrank_pi_card, GlobalTheory.AboveL.RepConj.finrank_pi_card, mul_left_comm]`. Conclude with `Nat.eq_of_mul_eq_mul_left Fintype.card_pos h`.
+-/
 theorem isSst_of_coord_rev [Nonempty ι] (hE : ∀ g x i, E (ρ' g x) i = ρ g (E x i)) (h : IsSst P ρ') :
     IsSst P ρ := by
   have hm : ∀ x : V' ⊗[ℚ_[l]] Bst P, x ∈ Dst P ρ' ↔ ∀ i, tensCoord E (Bst P) x i ∈ Dst P ρ := fun x => by
@@ -53,6 +60,11 @@ end Coord
 variable {l : ℕ} [Fact l.Prime] (P : LocPrime l) {E Ω : Type} [Field E] [Field Ω] [Algebra E Ω]
   {O : Type} [CommRing O] [Algebra ℤ_[l] O] [TopologicalSpace O] {m : ℕ}
 
+/- English proof (translation)
+Set `_ : Algebra ↥L₁.1 ↥L₂.1` to `(IntermediateField.inclusion hL).toRingHom.toAlgebra`. Establish `: IsScalarTower ℚ_[l] ↥L₁.1 ↥L₂.1` using `IsScalarTower.of_algebraMap_eq fun _ => rfl`. Use `L₂.2` as an intermediate fact. Establish `: FiniteDimensional ↥L₁.1 ↥L₂.1` using `Module.Finite.of_restrictScalars_finite ℚ_[l] _ _`. Establish `: Nonempty (Fin (finrank ↥L₁.1 ↥L₂.1))` using `⟨⟨0, finrank_pos⟩⟩`.
+
+Establish `hρ : ∀ g, ∃ M : Matrix (Fin m) (Fin m) ↥L₁.1, (∀ x, Bw.repE L₁ r₁ g x = M.mulVec x) ∧ ∀ x, Bw.repE L₂ (mapRep (IntermediateField.inclusion hL).toRingHom r₁) g x = (M.map (algebraMap ↥L₁.1 ↥L₂.1)).mulVec x` using `fun g => ⟨r₁ (Bw.e.symm g), fun _ => rfl, fun _ => rfl⟩`. Conclude with `isSst_of_coord_rev P (E := vecCoord ↥L₁.1 ↥L₂.1 m) (vecCoord_rep hρ) h`.
+-/
 theorem isSst_of_enlarge {Gw : Subgroup (Ω ≃ₐ[E] Ω)} (Bw : LocBridge l E Ω Gw O) {L₁ L₂ : FinExt l}
     (hL : L₁.1 ≤ L₂.1) (r₁ : ↥Gw →* GL (Fin m) ↥L₁.1)
     (h : IsSst P (Bw.repE L₂ (mapRep (IntermediateField.inclusion hL).toRingHom r₁))) :
@@ -68,6 +80,11 @@ theorem isSst_of_enlarge {Gw : Subgroup (Ω ≃ₐ[E] Ω)} (Bw : LocBridge l E �
     fun g => ⟨r₁ (Bw.e.symm g), fun _ => rfl, fun _ => rfl⟩
   exact isSst_of_coord_rev P (E := vecCoord ↥L₁.1 ↥L₂.1 m) (vecCoord_rep hρ) h
 
+/- English proof (translation)
+Take `⟨L₁, r₁, h₁, hp⟩` from `hs`. Establish `l₁ : L₁.1 ≤ (supExt L₁ L).1` using `le_sup_left`. Establish `l₂ : L.1 ≤ (supExt L₁ L).1` using `le_sup_right`. Establish `e` using `IsModel.unique Bw r (h₁.enlarge l₁) (hm.enlarge l₂)`. Establish `h3` using `GlobalTheory.AboveL.RepConj.isSst_enlarge P Bw l₁ r₁ hp`.
+
+Rewrite `h3` using `[e]`. Conclude with `isSst_of_enlarge P Bw l₂ r' h3`.
+-/
 theorem isSst_of_isModel {Gw : Subgroup (Ω ≃ₐ[E] Ω)} {Bw : LocBridge l E Ω Gw O} {r : ↥Gw →* GL (Fin m) (Om l)}
     {L : FinExt l} {r' : ↥Gw →* GL (Fin m) ↥L.1} (hm : IsModel Bw r L r') (hs : IsSstAt P Bw r) :
     IsSst P (Bw.repE L r') := by
@@ -83,6 +100,9 @@ end GlobalTheory.SstModel
 
 namespace GlobalTheory.SstModel
 
+/- English proof (translation)
+Introduce `l _ P AI _ E Ω _ _ _ Gw O _ _ _ Bw a r LL' r' hm hs`. Conclude with `isSst_of_isModel P hm hs`.
+-/
 theorem main : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P), Nonempty (LocTied l P AI) → ∀ (E Ω : Type) [Field E] [Field Ω] [Algebra E Ω] (Gw : Subgroup (Ω ≃ₐ[E] Ω)) (O : Type) [CommRing O] [Algebra ℤ_[l] O] [TopologicalSpace O] (Bw : LocBridge l E Ω Gw O) (a : ℕ) (r : ↥Gw →* GL (Fin a) (Om l)) (LL' : FinExt l) (r' : ↥Gw →* GL (Fin a) ↥LL'.1), IsModel Bw r LL' r' → IsSstAt P Bw r → IsSst P (Bw.repE LL' r') := by
   intro l _ P AI _ E Ω _ _ _ Gw O _ _ _ Bw a r LL' r' hm hs
   exact isSst_of_isModel P hm hs

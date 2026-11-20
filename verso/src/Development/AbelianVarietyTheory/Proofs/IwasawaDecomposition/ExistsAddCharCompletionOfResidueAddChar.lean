@@ -30,6 +30,13 @@ def charUnitC {A : Type} [AddCommGroup A] (ψ : AddChar A ℂ) (x : A) : ℂˣ :
   ⟨ψ x, ψ (-x), by rw [← AddChar.map_add_eq_mul, add_neg_cancel, AddChar.map_zero_eq_one],
     by rw [← AddChar.map_add_eq_mul, neg_add_cancel, AddChar.map_zero_eq_one]⟩
 
+/- English proof (translation)
+Set `_` to `unitsDivC`. Set `g : S →ₗ[ℤ] Additive ℂˣ` to `AddMonoidHom.toIntLinearMap { toFun := fun x => Additive.ofMul (charUnitC ψ x) map_zero' := by`. Apply `Additive.toMul.injective` to reduce the goal to its premises. Use `ext`. Simplify using `[charUnitC, AddChar.map_zero_eq_one]`.
+
+Use the proof step `map_add' := fun x y => by`. Apply `Additive.toMul.injective` to reduce the goal to its premises. Use `ext`. Simplify using `[charUnitC, AddChar.map_add_eq_mul] }`. Set `f : S →ₗ[ℤ] K` to `(S.subtype : S →+* K).toAddMonoidHom.toIntLinearMap`.
+
+Take `⟨h, hh⟩` from `(Module.Baer.of_divisible (Additive ℂˣ)).extension_property f Subtype.val_injective g`. Use `⟨{ toFun := fun x => ((Additive.toMul (h x) : ℂˣ) : ℂ) map_zero_eq_one' := by simp map_add_eq_mul' := fun x y => by simp [map_add] }, fun x => ?_⟩` and prove the remaining obligations. Establish `e` using `congrArg (fun φ => ((Additive.toMul (φ x) : ℂˣ) : ℂ)) hh`. Simplify `e` using `[f, g, charUnitC]`.
+-/
 theorem addChar_extend_subring {K : Type} [Ring K] (S : Subring K) (ψ : AddChar S ℂ) :
     ∃ ψ₀ : AddChar K ℂ, ∀ x : S, ψ₀ x = ψ x := by
   let _ := unitsDivC
@@ -51,6 +58,15 @@ theorem addChar_extend_subring {K : Type} [Ring K] (S : Subring K) (ψ : AddChar
   have e := congrArg (fun φ => ((Additive.toMul (φ x) : ℂˣ) : ℂ)) hh
   simpa [f, g, charUnitC] using e
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h`. Use `set n : ℕ := (-(red y)⁻¹ : ZMod p).val with hn`. Establish `hnc : ((n : ℕ) : ZMod p) = -(red y)⁻¹` using `ZMod.natCast_zmod_val _`. Use `set z : v.adicCompletionIntegers K := 1 + y * (n : v.adicCompletionIntegers K) with hz`. Establish `hred : red z = 0`.
+
+Rewrite using `[hz, map_add, map_one, map_mul, map_natCast, hnc, mul_neg, mul_inv_cancel₀ h, add_neg_cancel]`. Establish `hlt : Valued.v ((y * (n : v.adicCompletionIntegers K) : v.adicCompletionIntegers K) : v.adicCompletion K) < 1`. Establish `hn1 : Valued.v (((n : v.adicCompletionIntegers K)) : v.adicCompletion K) ≤ 1` using `(HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).1 (n : v.adicCompletionIntegers K).2`. Rewrite using `[Subring.coe_mul, map_mul]`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hz1 : Valued.v ((z : v.adicCompletionIntegers K) : v.adicCompletion K) = 1`. Rewrite using `[hz, Subring.coe_add, Subring.coe_one]`. Rewrite using `[Valuation.map_add_eq_of_lt_left]`. Conclude with `map_one _`. Rewrite using `[map_one]`.
+
+Conclude with `hlt`. Establish `hu : IsUnit z` using `(HeightOneSpectrum.adicCompletionIntegers.isUnit_iff_valued_eq_one).2 hz1`. Establish `hu' : IsUnit (red z)` using `hu.map red`. Rewrite `hu'` using `[hred]`. Conclude with `not_isUnit_zero hu'`.
+-/
 theorem red_eq_zero_of_lt_one {K : Type} [Field K] [NumberField K] (v : HeightOneSpectrum (𝓞 K)) (p : ℕ) [Fact p.Prime]
     (red : v.adicCompletionIntegers K →+* ZMod p) (y : v.adicCompletionIntegers K)
     (hy : Valued.v (y : v.adicCompletion K) < 1) : red y = 0 := by
@@ -78,6 +94,17 @@ theorem red_eq_zero_of_lt_one {K : Type} [Field K] [NumberField K] (v : HeightOn
   rw [hred] at hu'
   exact not_isUnit_zero hu'
 
+/- English proof (translation)
+Introduce `K _ _ v p _ red ψ' hne`. Take `⟨ψ₀, h⟩` from `addChar_extend_subring (v.adicCompletionIntegers K).toSubring (ψ'.compAddMonoidHom red.toAddMonoidHom)`. Use `⟨ψ₀, fun x hx => ?_, ?_, fun x => h x⟩` and prove the remaining obligations. Establish `hx1 : x ∈ v.adicCompletionIntegers K` using `(HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).2 hx.le`. Establish `e1` using `h ⟨x, hx1⟩`.
+
+Establish `e2 : red ⟨x, hx1⟩ = 0` using `red_eq_zero_of_lt_one v p red ⟨x, hx1⟩ hx`. Rewrite using `[show ψ₀ x = ψ₀ ((⟨x, hx1⟩ : (v.adicCompletionIntegers K).toSubring) : v.adicCompletion K) from rfl, e1]`. Use `show ψ' (red ⟨x, hx1⟩) = 1`. Rewrite using `[e2, AddChar.map_zero_eq_one]`. Choose the witnesses or unpack the hypotheses as in `⟨y, hy⟩ : ∃ y, ψ' y ≠ 1 := by`.
+
+Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Apply `hne` to reduce the goal to its premises. Use extensionality with `y`. Rewrite using `[hc y, AddChar.one_apply]`.
+
+Establish `hy' : ((y.val : ℕ) : ZMod p) = y` using `ZMod.natCast_zmod_val y`. Set `x : v.adicCompletionIntegers K` to `(y.val : v.adicCompletionIntegers K)`. Use `⟨x, (HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).1 x.2, ?_⟩` and prove the remaining obligations. Establish `e1` using `h x`. Rewrite using `[show ψ₀ (x : v.adicCompletion K) = ψ₀ ((x : (v.adicCompletionIntegers K).toSubring) : v.adicCompletion K) from rfl, e1]`.
+
+Use `show ψ' (red x) ≠ 1`. Rewrite using `[show red x = y by simp only [x, map_natCast, hy']]`. Conclude with `hy`.
+-/
 theorem exists_addChar_completion_lift_residue : ∀ (K : Type) [Field K] [NumberField K] (v : HeightOneSpectrum (𝓞 K)) (p : ℕ) [Fact p.Prime]
     (red : v.adicCompletionIntegers K →+* ZMod p) (ψ' : AddChar (ZMod p) ℂ), ψ' ≠ 1 →
     ∃ ψ₀ : AddChar (v.adicCompletion K) ℂ, (∀ x, Valued.v x < 1 → ψ₀ x = 1) ∧ (∃ x, Valued.v x ≤ 1 ∧ ψ₀ x ≠ 1) ∧

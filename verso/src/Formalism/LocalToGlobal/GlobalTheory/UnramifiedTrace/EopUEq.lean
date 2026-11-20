@@ -65,6 +65,13 @@ def DUFib0F (T : Forms0 D u) : Prop :=
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Use function extensionality and compare the values at `s`. Simplify using `only [Formalism.MainNotions.product_first_zeroth_parts.Dop, LinearMap.pi_apply, LinearMap.sum_apply, Finset.sum_apply]`. Rewrite using `[Finset.sum_subtype (Finset.univ.filter (fun x : Module.Dual ((D.mem u).A.Fv v) ((D.fm u).lk 0 v c) => x ((D.fm u).te 0 v c) = 1)) (p := fun x : Module.Dual ((D.mem u).A.Fv v) ((D.fm u).lk 0 v c) => x ((D.fm u).te 0 v c) = 1) (by intro x; simp), Fintype.sum_sigma]`. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, LinearMap.proj_apply, LinearEquiv.coe_coe]`.
+
+Establish `hg0 : g.1 ≠ 0`. Introduce `h0`. Use `g.2` as an intermediate fact. Rewrite `this` using `[h0, LinearMap.zero_apply]`. Conclude with `zero_ne_one this`.
+
+Take `⟨-, h2, h3⟩` from `hmv g.1 hg0`. Conclude with `congrFun (dnU_term T v ψ hG hψ c g.1 (γ g.1) (η g.1) (κ g.1) h2 h3 (Mu g.1) (hMu g.1)) s`.
+-/
 theorem dopU_eq (T : Forms0 D u) (v : (D.mem u).A.vT) (ψ : Fn D u 0)
     {G : UPts (sigD D) (gramN D 0 (Nat.zero_le _)) (FiniteAdeleRing (𝓞 D.host.F) D.host.F) → Fr D 0 (Nat.zero_le _) → ℂ}
     (hG : G ∈ AdFun T.cls0.lev (embT D))
@@ -94,6 +101,11 @@ theorem dopU_eq (T : Forms0 D u) (v : (D.mem u).A.vT) (ψ : Fn D u 0)
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Use function extensionality and compare the values at `s`. Simplify using `only [Formalism.MainNotions.product_first_zeroth_parts.Eop, LinearMap.pi_apply, LinearMap.sum_apply, Finset.sum_apply]`. Rewrite using `[Finset.sum_subtype (Finset.univ.filter (fun x : Module.Dual ((D.mem u).A.Fv v) ((D.fm u).lk 0 v c) => x ≠ 0)) (p := fun x : Module.Dual ((D.mem u).A.Fv v) ((D.fm u).lk 0 v c) => x ≠ 0) (by intro x; simp), Fintype.sum_sigma]`. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, LinearMap.proj_apply, LinearEquiv.coe_coe]`.
+
+Take `⟨-, h2, h3⟩` from `hmv g.1 g.2`. Conclude with `congrFun (dnU_term T v ψ hG hψ c g.1 (γ g.1) (η g.1) (κ g.1) h2 h3 (Mu g.1) (hMu g.1)) s`.
+-/
 theorem eopU_eq (T : Forms0 D u) (v : (D.mem u).A.vT) (ψ : Fn D u 0)
     {G : UPts (sigD D) (gramN D 0 (Nat.zero_le _)) (FiniteAdeleRing (𝓞 D.host.F) D.host.F) → Fr D 0 (Nat.zero_le _) → ℂ}
     (hG : G ∈ AdFun T.cls0.lev (embT D))

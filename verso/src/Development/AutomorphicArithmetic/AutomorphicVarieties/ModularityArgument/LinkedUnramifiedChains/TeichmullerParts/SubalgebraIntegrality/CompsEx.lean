@@ -18,6 +18,13 @@ set_option synthInstance.maxHeartbeats 200000
 
 namespace UpperTheory.V.Z.J.D
 
+/- English proof (translation)
+Introduce `l _ L Ω _ _ _ _ _ _ s n hn V hV σ hσ`. Establish `hund : ∀ {A : ValuationSubring Ω} {w : Plc L}, IsPlaceOver A w → IsPlaceOver A (w.under (𝓞 (Lp L)))` using `fun hA y => hA (algebraMap (𝓞 (Lp L)) (𝓞 L) y)`. Establish `hwv : ∀ v, (s.w v).under (𝓞 (Lp L)) = v` using `fun v => HeightOneSpectrum.ext (Ideal.ext fun y => (hund (s.hw v) y).symm.trans (s.hA v y))`. Establish `hsp : ∀ v ∈ s.S, IsSplitAt (s.w v)` using `fun v hv => UpperTheory.isSplitAt_of_decomposition_le_restriction_range L Ω _ _ (s.hA v) (s.split v hv) _ (hwv v)`. Establish `hex : ∀ w : Plc L, IsSplitAt w → ∃ τ : SmIrr (GLw n w), Cp σ w τ` using `fun w hw => by`.
+
+Take `⟨τ, -, h1, -⟩` from `GlobalTheory.DefU.exists_locComp_split L n ⟨σ, hσ⟩ w hw`. Conclude with `⟨τ, h1⟩`. Establish `hl : ∀ v : V.frame.Vl, v.1 ∈ s.S` using `fun v => Or.inl v.2`. Establish `hu : ∀ u : s.St, u.1 ∈ s.S` using `fun u => Or.inr (Or.inl u.2)`. Establish `ho : s.v0 ∈ s.S` using `Or.inr (Or.inr rfl)`.
+
+Use `choose f hf using fun v (hv : v ∈ s.S) => hex (s.w v) (hsp v hv)`. Conclude with `⟨⟨fun v => f _ (hl v), fun u => f _ (hu u), f _ ho, fun v => hf _ (hl v), fun u => hf _ (hu u), hf _ ho⟩⟩`.
+-/
 theorem compsEx : CompsEx := by
   intro l _ L Ω _ _ _ _ _ _ s n hn V hV σ hσ
   have hund : ∀ {A : ValuationSubring Ω} {w : Plc L}, IsPlaceOver A w → IsPlaceOver A (w.under (𝓞 (Lp L))) :=

@@ -20,6 +20,23 @@ namespace GlobalTheory.TypeCharUnits
 
 open Formalism.L2.JoinChr GlobalTheory.ConjTwist Formalism.IndefR.Datum
 
+/- English proof (translation)
+Establish `haP : a ∉ PP.asIdeal` using `fun h0 => u.ne_zero (ha ▸ Ideal.Quotient.eq_zero_iff_mem.2 h0)`. Establish `ha1 : a ≠ 0` using `fun h0 => haP (h0 ▸ zero_mem _)`. Establish `hinf : infPart D (idemAt PP) = 0` using `GlobalTheory.PlaceVec.idemSum_infPart (P := {PP}) ⟨⟨idemAt, by simpa using h, by simp⟩, h.1.2.1⟩`. Establish `hai : finPart D (idemAt PP * incA D ((a : D.host.E)⁻¹)) ∈ intAE D`. Assume the negation of the conclusion as `k`.
+
+Conclude with `haP ((h.2 a ha1).2 k)`. Take `⟨hi, h1⟩` from `GlobalTheory.IdemRes.resS_idem_eq_one D _ PP h`. Establish `he : idemAt PP * idemAt PP = idemAt PP` using `h.1.1`. Establish `hb : toEAf D (incA D (a : D.host.E)) = ((oToS D.host.F D.host.E a : Formalism.L2.Herm.intAf D.host.F D.host.E) : EAf D)` using `rfl`. Establish `hxv : ((locU h.1.1 (Units.mk0 (a : D.host.E) ha0) : (AE D)ˣ) : AE D) = 1 + idemAt PP * (incA D (a : D.host.E) - 1)` using `locU_val _ _`.
+
+Establish `hxi : (((locU h.1.1 (Units.mk0 (a : D.host.E) ha0))⁻¹ : (AE D)ˣ) : AE D) = 1 + idemAt PP * (incA D ((a : D.host.E)⁻¹) - 1)`. Rewrite using `[GlobalTheory.HeckeDetChar.locU_inv, Units.val_inv_eq_inv_val, Units.val_mk0]`. Both sides reduce to the same expression. Generalize the expression as in `locU h.1.1 (Units.mk0 (a : D.host.E) ha0) = x at hxv hxi`. Generalize the expression as in `incA D (a : D.host.E) = b at hb hxv`.
+
+Generalize the expression as in `incA D ((a : D.host.E)⁻¹) = b' at hai hxi`. Establish `hv : toEAf D (x : AE D) = ((1 + ⟨_, hi⟩ * (oToS D.host.F D.host.E a - 1) : Formalism.L2.Herm.intAf D.host.F D.host.E) : EAf D)`. Rewrite using `[hxv, map_loc, hb]`. Both sides reduce to the same expression. Establish `hx : toEAf D (x : AE D) ∈ Formalism.L2.Herm.intAf D.host.F D.host.E`.
+
+Rewrite using `[hv]`. Conclude with `Subtype.property _`. Use `⟨?_, ?_, GlobalTheory.PlaceDatum.finPart_mem_of_toEAf hx, ?_, hx, ?_⟩` and prove the remaining obligations. Rewrite using `[hxv]`. Take the linear combination `(1 - b) * he`.
+
+Rewrite using `[hxv, map_loc, hinf, zero_mul, add_zero]`. Rewrite using `[hxi]`. Establish `e1 : finPart D (1 + idemAt PP * (b' - 1)) = finPart D (1 - idemAt PP) + finPart D (idemAt PP * b')`. Rewrite using `[← RingHom.map_add]`. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1]`. Use `add_mem (GlobalTheory.AdIdem.idempotent_mem_intAE D _ ?_) hai` and prove the remaining obligations. Rewrite using `[← RingHom.map_mul]`. Use `congr 1`.
+
+Take the linear combination `he`. Establish `e2 : (⟨_, hx⟩ : Formalism.L2.Herm.intAf D.host.F D.host.E) = 1 + ⟨_, hi⟩ * (oToS D.host.F D.host.E a - 1)` using `Subtype.ext hv`. Use `(congrArg (resS D.host.F PP) e2).trans ?_` and prove the remaining obligations. Rewrite using `[map_loc, h1, resS_oToS, ha]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem isLocUnit_locU {D : D7} {PP : Pl D.host.E} (h : Formalism.L2.NTheta.IsIdemAt (idemAt PP) PP) (a : 𝓞 D.host.E)
     (ha0 : (a : D.host.E) ≠ 0) (u : (kP PP)ˣ) (ha : (u : kP PP) = Ideal.Quotient.mk PP.asIdeal a) :
     IsLocUnit PP u (locU h.1.1 (Units.mk0 (a : D.host.E) ha0)) := by
@@ -69,6 +86,11 @@ theorem isLocUnit_locU {D : D7} {PP : Pl D.host.E} (h : Formalism.L2.NTheta.IsId
     rw [map_loc, h1, resS_oToS, ha]
     ring
 
+/- English proof (translation)
+Introduce `D S T B hB χ hχ PP hg u hu z hz`. Take `⟨P, h1, h2, hP⟩` from `hB.places.split`. Establish `hI` using `hP.isIdemAt (h1 hg)`. Establish `hx` using `isLocUnit_locU hI u hu z hz`. Establish `e1` using `hx.eq (hB.tame PP hg)`.
+
+Establish `e2` using `hx.eq_one hB.de.unram hP h2 (h1 hg) (Finset.disjoint_left.1 hB.places.disj hg)`. Establish `e3` using `hχ.2 PP _ (GlobalTheory.HeckeDetChar.isPlIdem hI) _ _ (locU_val hI.1.1 (Units.mk0 (u : D.host.E) hu))`. Rewrite `e1` using `[Base.mu, MonoidHom.mul_apply, e2, mul_one]`. Rewrite using `[← e3, e1]`. Both sides reduce to the same expression.
+-/
 theorem muC_eq_locK : ∀ (D : D7) (S T : HSp D) (B : GlobalTheory.ExportSeries.Base S T), B.Good → ∀ χ : HChar D.host.E, ChrEq B.mu0 χ → ∀ PP ∈ B.G.Pg, ∀ (u : 𝓞 D.host.E) (hu : (u : D.host.E) ≠ 0) (z : (kP PP)ˣ), (z : kP PP) = Ideal.Quotient.mk PP.asIdeal u → ((B.G.muC PP z : ℂˣ) : ℂ) = ((χ.locK PP (Units.mk0 (u : D.host.E) hu) : ℂˣ) : ℂ) := by
   intro D S T B hB χ hχ PP hg u hu z hz
   obtain ⟨P, h1, h2, hP⟩ := hB.places.split

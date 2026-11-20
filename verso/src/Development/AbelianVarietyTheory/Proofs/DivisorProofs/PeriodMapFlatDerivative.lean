@@ -4,6 +4,9 @@ open Matrix MeasureTheory GlobalTheory.IndefiniteRowSideFullHecke.SiegelReframe
 
 namespace GlobalTheory.FlatVert
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih`. Simplify using `only [Finset.prod_insert ha]`. Conclude with `(h a (Finset.mem_insert_self a s)).mul (ih fun i hi => h i (Finset.mem_insert_of_mem hi))`.
+-/
 theorem differentiableAt_finset_prod_of {ι F : Type} [NormedAddCommGroup F] [NormedSpace ℝ F]
     (s : Finset ι) {f : ι → F → ℝ} {x : F} (h : ∀ i ∈ s, DifferentiableAt ℝ (f i) x) :
     DifferentiableAt ℝ (fun y => ∏ i ∈ s, f i y) x := by
@@ -15,6 +18,9 @@ theorem differentiableAt_finset_prod_of {ι F : Type} [NormedAddCommGroup F] [No
     exact (h a (Finset.mem_insert_self a s)).mul
       (ih fun i hi => h i (Finset.mem_insert_of_mem hi))
 
+/- English proof (translation)
+Simplify using `only [Matrix.det_apply, Units.smul_def, zsmul_eq_mul]`. Use `DifferentiableAt.fun_sum fun σ _ => ?_` and prove the remaining obligations. Conclude with `(differentiableAt_finset_prod_of Finset.univ (f := fun i y => M y (σ i) i) fun i _ => h _ _).const_mul _`.
+-/
 theorem differentiableAt_det_of {n : Type} [Fintype n] [DecidableEq n] {F : Type}
     [NormedAddCommGroup F] [NormedSpace ℝ F] {M : F → Matrix n n ℝ} {x : F}
     (h : ∀ i j, DifferentiableAt ℝ (fun y => M y i j) x) :
@@ -24,6 +30,11 @@ theorem differentiableAt_det_of {n : Type} [Fintype n] [DecidableEq n] {F : Type
   exact (differentiableAt_finset_prod_of Finset.univ (f := fun i y => M y (σ i) i)
     fun i _ => h _ _).const_mul _
 
+/- English proof (translation)
+Establish `hadj : DifferentiableAt ℝ (fun y => (M y).adjugate i j) x`. Simplify using `only [Matrix.adjugate_apply]`. Use `differentiableAt_det_of fun k l => ?_` and prove the remaining obligations. Simplify using `only [Matrix.updateRow_apply]`. Use `split_ifs`.
+
+Conclude with `differentiableAt_const _`. Conclude with `h _ _`. Simplify using `only [Matrix.inv_def, Matrix.smul_apply, smul_eq_mul, Ring.inverse_eq_inv']`. Conclude with `((differentiableAt_det_of h).inv h0).mul hadj`.
+-/
 theorem differentiableAt_inv_of {n : Type} [Fintype n] [DecidableEq n] {F : Type}
     [NormedAddCommGroup F] [NormedSpace ℝ F] {M : F → Matrix n n ℝ} {x : F}
     (h : ∀ i j, DifferentiableAt ℝ (fun y => M y i j) x) (h0 : (M x).det ≠ 0) (i j : n) :
@@ -59,9 +70,23 @@ noncomputable def flatLin (τ : Matrix (Fin g) (Fin g) ℂ) : (Fin g → ℂ) �
     funext k
     rcases k with i | i <;> simp <;> ring
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem flatLin_apply (τ : Matrix (Fin g) (Fin g) ℂ) (z : Fin g → ℂ) :
     flatLin τ z = flatOf τ z := rfl
 
+/- English proof (translation)
+Establish `hent : ∀ i j, DifferentiableAt ℝ (fun P : Pt E g => τ P.1 i j) (b, z)` using `fun i j => by`. Establish `h1 : DifferentiableAt ℝ (fun b => τ b i j) b` using `((hτ.2.1 i j).differentiableAt (hτ.1.mem_nhds hb)).restrictScalars ℝ`. Establish `h2 : DifferentiableAt ℝ (fun P : Pt E g => P.1) (b, z)` using `differentiableAt_fst`. Conclude with `h1.comp (b, z) h2`. Establish `him : ∀ i j, DifferentiableAt ℝ (fun P : Pt E g => ((τ P.1).map Complex.im) i j) (b, z)` using `fun i j => by`.
+
+Simplify using `only [Matrix.map_apply]`. Conclude with `Complex.imCLM.differentiableAt.comp _ (hent i j)`. Establish `hre : ∀ i j, DifferentiableAt ℝ (fun P : Pt E g => ((τ P.1).map Complex.re) i j) (b, z)` using `fun i j => by`. Simplify using `only [Matrix.map_apply]`. Conclude with `Complex.reCLM.differentiableAt.comp _ (hent i j)`.
+
+Establish `hdet : ((τ b).map Complex.im).det ≠ 0` using `((hτ.2.2 b hb).2.det_pos).ne'`. Establish `hinv` using `differentiableAt_inv_of (M := fun P : Pt E g => (τ P.1).map Complex.im) him hdet`. Establish `hzi : ∀ j, DifferentiableAt ℝ (fun P : Pt E g => (P.2 j).im) (b, z)` using `fun j => by fun_prop`. Establish `hzr : ∀ j, DifferentiableAt ℝ (fun P : Pt E g => (P.2 j).re) (b, z)` using `fun j => by fun_prop`. Establish `hp : ∀ i, DifferentiableAt ℝ (fun P : Pt E g => ((fun j => (P.2 j).im) ᵥ* ((τ P.1).map Complex.im)⁻¹) i) (b, z)` using `fun i => by`.
+
+Simplify using `only [Matrix.vecMul, dotProduct]`. Conclude with `DifferentiableAt.fun_sum fun j _ => (hzi j).mul (hinv j i)`. Rewrite using `[differentiableAt_pi]`. Introduce and unpack `(i | i)`. Conclude with `hp i`.
+
+Simplify using `only [flat, flatOf, Sum.elim_inr, Pi.sub_apply]`. Use `(hzr i).sub ?_` and prove the remaining obligations. Simplify using `only [Matrix.vecMul, dotProduct] at hp ⊢`. Conclude with `DifferentiableAt.fun_sum fun k _ => (hp k).mul (hre k i)`.
+-/
 theorem differentiableAt_flat {B : Set E} {τ : E → Matrix (Fin g) (Fin g) ℂ}
     (hτ : IsPeriodMap B τ) {b : E} (hb : b ∈ B) (z : Fin g → ℂ) :
     DifferentiableAt ℝ (flat τ) (b, z) := by
@@ -94,6 +119,11 @@ theorem differentiableAt_flat {B : Set E} {τ : E → Matrix (Fin g) (Fin g) ℂ
     simp only [Matrix.vecMul, dotProduct] at hp ⊢
     exact DifferentiableAt.fun_sum fun k _ => (hp k).mul (hre k i)
 
+/- English proof (translation)
+Introduce `g E _ _ B τ hτ b hb z v`. Establish `hd` using `differentiableAt_flat hτ hb z`. Establish `hc : HasFDerivAt (fun w : Fin g → ℂ => ((b, w) : Pt E g)) ((0 : (Fin g → ℂ) →L[ℝ] E).prod (ContinuousLinearMap.id ℝ _)) z` using `(hasFDerivAt_const b z).prodMk (hasFDerivAt_id z)`. Establish `h2 : HasFDerivAt (flatOf (τ b)) ((fderiv ℝ (flat τ) (b, z)).comp ((0 : (Fin g → ℂ) →L[ℝ] E).prod (ContinuousLinearMap.id ℝ _))) z` using `hd.hasFDerivAt.comp z hc`. Establish `h3 : HasFDerivAt (flatOf (τ b)) (LinearMap.toContinuousLinearMap (flatLin (τ b))) z` using `(LinearMap.toContinuousLinearMap (flatLin (τ b))).hasFDerivAt`.
+
+Establish `e` using `congrArg (fun L : (Fin g → ℂ) →L[ℝ] Fl g => L v) (h2.unique h3)`. Simplify `e` using `[dflat, flatLin_apply]`.
+-/
 theorem dflat_vert : ∀ {g : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {B : Set E}
     {τ : E → Matrix (Fin g) (Fin g) ℂ}, IsPeriodMap B τ → ∀ b ∈ B, ∀ z v : Fin g → ℂ,
     dflat τ (b, z) ((0 : E), v) = flatOf (τ b) v := by

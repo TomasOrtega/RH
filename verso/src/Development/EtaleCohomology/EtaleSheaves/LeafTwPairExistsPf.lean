@@ -8,11 +8,17 @@ namespace LateralTheory.E.LeafTwPairExistsPf
 
 variable {R : Type} [CommRing R]
 
+/- English proof (translation)
+Establish `h` using `LinearMap.congr_fun (congrArg ModuleCat.Hom.hom (φ.hom.naturality g.op)) x`. Simplify using `using h.symm`.
+-/
 theorem res_map {F G : Shv R} (φ : F ⟶ G) {V U : Scheme.{0}} (g : V ⟶ U) (x : Sec F U) :
     Sec.res g (Sec.map φ x) = Sec.map φ (Sec.res g x) := by
   have h := LinearMap.congr_fun (congrArg ModuleCat.Hom.hom (φ.hom.naturality g.op)) x
   simpa using h.symm
 
+/- English proof (translation)
+Simplify using `[Sec.map]`.
+-/
 theorem map_map {F G H : Shv R} (φ : F ⟶ G) (ψ : G ⟶ H) {U : Scheme.{0}} (x : Sec F U) :
     Sec.map ψ (Sec.map φ x) = Sec.map (φ ≫ ψ) x := by
   simp [Sec.map]
@@ -28,6 +34,9 @@ def post {I J K K' : Cx R} (μ : Pair I J K) (u : K ⟶ K') : Pair I J K' where
     rw [map_map, u.comm w (w + 1), ← map_map, μ.leibniz]
     simp only [Sec.map, map_add, map_zsmul_unit]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem post_mul {I J K K' : Cx R} (μ : Pair I J K) (u : K ⟶ K') (U : Scheme.{0}) (s t w : ℤ) (h : s + t = w)
     (a : Sec (I.X s) U) (b : Sec (J.X t) U) : (post μ u).mul U s t w h a b = Sec.map (u.f w) (μ.mul U s t w h a b) := rfl
 
@@ -41,6 +50,9 @@ def LeafTwTensRes : Prop := ∀ (q : ℕ) [NeZero q] (i j : ℤ) (T : Cx (ZMod q
 def LeafTwResExt : Prop := ∀ (q : ℕ) [NeZero q] (k : ℤ) (T : Cx (ZMod q)) (e : ∀ U : Scheme.{0}, Prim q Γ(U, ⊤) → Sec (T.X 0) U),
   IsTwRes q k T e → ∃ u : T ⟶ res _ (tw q k), ∀ U ζ, Sec.map (u.f 0) (e U ζ) = resGen k ζ
 
+/- English proof (translation)
+Introduce `q _ i j`. Take `⟨T, τ, hτ⟩` from `h1 q i j`. Take `⟨u, hu⟩` from `h3 q (i + j) T _ (h2 q i j T τ hτ)`. Conclude with `⟨post τ u, fun U ζ => by rw [post_mul]; exact hu U ζ⟩`.
+-/
 theorem LeafTwPairExists_of (h1 : LeafTwTensEx) (h2 : LeafTwTensRes) (h3 : LeafTwResExt) :
     LateralTheory.E.CupProductRingLaws.LeafTwPairExists := by
   intro q _ i j

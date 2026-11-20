@@ -17,6 +17,11 @@ section Forms
 
 variable {R : Type u} [CommRing R] {N : ℕ}
 
+/- English proof (translation)
+Rewrite using `[show r * g = ∑ i ∈ Finset.range (r.totalDegree + 1), homogeneousComponent i r * g by`. Rewrite using `[← Finset.sum_mul, sum_homogeneousComponent], map_sum]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Establish `hm : homogeneousComponent i r * g ∈ homogeneousSubmodule (Fin (N + 1)) R (i + d)` using `(mem_homogeneousSubmodule _ _).mpr ((homogeneousComponent_isHomogeneous i r).mul hg)`. Rewrite using `[homogeneousComponent_of_mem hm]`.
+
+Use `split_ifs with h`. Conclude with `Submodule.subset_span ⟨_, i, homogeneousComponent_isHomogeneous i r, h.symm, rfl⟩`. Conclude with `Submodule.zero_mem _`.
+-/
 theorem homogeneousComponent_mul_form (r g : Poly R N) {d : ℕ} (hg : g.IsHomogeneous d) (e : ℕ) :
     homogeneousComponent e (r * g) ∈ Submodule.span R
       {z | ∃ (h : Poly R N) (d' : ℕ), h.IsHomogeneous d' ∧ d' + d = e ∧ z = h * g} := by
@@ -30,6 +35,11 @@ theorem homogeneousComponent_mul_form (r g : Poly R N) {d : ℕ} (hg : g.IsHomog
   · exact Submodule.subset_span ⟨_, i, homogeneousComponent_isHomogeneous i r, h.symm, rfl⟩
   · exact Submodule.zero_mem _
 
+/- English proof (translation)
+Take `⟨c, t, htG, -, rfl⟩` from `Submodule.mem_span_iff_exists_finset_subset.mp hf`. Rewrite using `[← homogeneousComponent_eq_self he, map_sum]`. Use `Submodule.sum_mem _ fun g hg => ?_` and prove the remaining obligations. Establish `hc` using `homogeneousComponent_mul_form (c g) g (hG g (htG hg)) e`. Rewrite using `[smul_eq_mul]`.
+
+Use `Submodule.span_le.mpr ?_ hc` and prove the remaining obligations. Introduce and unpack `_ ⟨h, d', hh, hd, rfl⟩`. Conclude with `Submodule.subset_span ⟨g, htG hg, h, d', hh, hd, rfl⟩`.
+-/
 theorem mem_span_forms_of_mem_ideal {G : Set (Poly R N)} (deg : Poly R N → ℕ)
     (hG : ∀ g ∈ G, g.IsHomogeneous (deg g)) {f : Poly R N} {e : ℕ} (hf : f ∈ Ideal.span G)
     (he : f.IsHomogeneous e) :
@@ -44,6 +54,9 @@ theorem mem_span_forms_of_mem_ideal {G : Set (Poly R N)} (deg : Poly R N → ℕ
   rintro _ ⟨h, d', hh, hd, rfl⟩
   exact Submodule.subset_span ⟨g, htG hg, h, d', hh, hd, rfl⟩
 
+/- English proof (translation)
+Distinguish the cases in `h0 : g = 0`. Rewrite using `[h0]`. Conclude with `isHomogeneous_zero _ _ _`. Rewrite using `[hg.totalDegree h0]` and apply the resulting hypothesis.
+-/
 theorem isHomogeneous_totalDegree {g : Poly R N} {d : ℕ} (hg : g.IsHomogeneous d) :
     g.IsHomogeneous g.totalDegree := by
   by_cases h0 : g = 0
@@ -56,6 +69,13 @@ section Chart
 
 variable {k : Type u} [Field k] {Ω : Type w} [Field Ω] [Algebra k Ω] {N : ℕ} {x : Fin (N + 1) → Ω}
 
+/- English proof (translation)
+Use `Submodule.span_induction (p := fun o _ => aeval x h * o ∈ twistMod k x (c + d) I) ?_ ?_ ?_ ?_ ho` and prove the remaining obligations. Introduce and unpack `_ ⟨f, s, e, e', hs, hf, hse, hc, rfl⟩`. Conclude with `Submodule.subset_span ⟨h * f, s, e, d + e', hs, hh.mul hf, hse, by push_cast; omega, by rw [map_mul, mul_div_assoc]⟩`. Rewrite using `[mul_zero]`. Conclude with `Submodule.zero_mem _`.
+
+Introduce `a b _ _ ha hb`. Rewrite using `[mul_add]`. Conclude with `Submodule.add_mem _ ha hb`. Introduce `a z _ hz`. Use `Submodule.smul_mem _ a hz` as an intermediate fact.
+
+Rewrite `this`, the goal using `[chartRing_smul_def]`. Rewrite using `[mul_left_comm]` and apply the resulting hypothesis.
+-/
 theorem form_mul_mem_twistMod {h : Poly k N} {d : ℕ} (hh : h.IsHomogeneous d) {c : ℤ} (I : Chart x)
     {o : Ω} (ho : o ∈ twistMod k x c I) : aeval x h * o ∈ twistMod k x (c + d) I := by
   refine Submodule.span_induction (p := fun o _ => aeval x h * o ∈ twistMod k x (c + d) I) ?_ ?_ ?_ ?_ ho
@@ -69,6 +89,11 @@ theorem form_mul_mem_twistMod {h : Poly k N} {d : ℕ} (hh : h.IsHomogeneous d) 
     rw [chartRing_smul_def] at this ⊢
     rwa [mul_left_comm]
 
+/- English proof (translation)
+Take `⟨i, hi⟩` from `I.2.1`. Rewrite `ho` using `[twistMod_eq_span _ I hi, Submodule.mem_span_singleton]`. Take `⟨a, rfl⟩` from `ho`. Establish `hq : x i ^ (e : ℤ) / aeval x s ∈ chartRing k x I` using `⟨X i ^ e, s, e, hs, isHomogeneous_X_pow i e, hse, by rw [map_pow, aeval_X, zpow_natCast]⟩`. Rewrite using `[chartRing_smul_def, mul_div_assoc]`.
+
+Conclude with `mul_mem a.2 hq`.
+-/
 theorem div_mem_chartRing {e : ℕ} (I : Chart x) {o : Ω} (ho : o ∈ twistMod k x e I) {s : Poly k N}
     (hs : s ∈ monos I.1) (hse : s.IsHomogeneous e) : o / aeval x s ∈ chartRing k x I := by
   obtain ⟨i, hi⟩ := I.2.1
@@ -81,6 +106,15 @@ theorem div_mem_chartRing {e : ℕ} (I : Chart x) {o : Ω} (ho : o ∈ twistMod 
 
 variable (T : StepData k x)
 
+/- English proof (translation)
+Establish `hG : ∀ g ∈ {f : Poly k N | ∃ c : ℕ, f.IsHomogeneous c ∧ ∀ (I : Chart x), ∀ δ ∈ T.D.sub I, ∃ o ∈ twistMod k x (c : ℤ) I, aeval x f * δ = T.si * o}, g.IsHomogeneous g.totalDegree` using `fun g ⟨c, hc, _⟩ => isHomogeneous_totalDegree hc`. Establish `hmem` using `mem_span_forms_of_mem_ideal _ hG hf he`. Use `Submodule.span_induction (p := fun f _ => ∃ o ∈ twistMod k x e I, aeval x f * δ = T.si * o) ?_ ?_ ?_ ?_ hmem` and prove the remaining obligations. Introduce and unpack `_ ⟨g, ⟨c, hc, hg⟩, h, d', hh, hd, rfl⟩`. Distinguish the cases in `h0 : g = 0`.
+
+Conclude with `⟨0, Submodule.zero_mem _, by rw [h0, mul_zero, map_zero, zero_mul, mul_zero]⟩`. Take `⟨o, ho, hgo⟩` from `hg I δ hδ`. Rewrite `hd` using `[hc.totalDegree h0]`. Use `⟨aeval x h * o, ?_, by rw [map_mul, mul_assoc, hgo, mul_left_comm]⟩` and prove the remaining obligations. Use `form_mul_mem_twistMod hh I ho` as an intermediate fact.
+
+Rewrite `this` using `[show (c : ℤ) + d' = e by omega]`. Then use the resulting hypothesis. Conclude with `⟨0, Submodule.zero_mem _, by rw [map_zero, zero_mul, mul_zero]⟩`. Introduce and unpack `_ _ _ _ ⟨o, ho, h1⟩ ⟨o', ho', h2⟩`. Conclude with `⟨o + o', Submodule.add_mem _ ho ho', by rw [map_add, add_mul, h1, h2, mul_add]⟩`. Introduce and unpack `a _ _ ⟨o, ho, h1⟩`.
+
+Use `⟨a • o, (twistMod k x e I).smul_of_tower_mem a ho, ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, smul_mul_assoc, h1, mul_smul_comm]`.
+-/
 theorem StepData.form_mem_J {f : Poly k N} {e : ℕ} (hf : f ∈ T.J) (he : f.IsHomogeneous e) (I : Chart x)
     {δ : Ω} (hδ : δ ∈ T.D.sub I) : ∃ o ∈ twistMod k x e I, aeval x f * δ = T.si * o := by
   have hG : ∀ g ∈ {f : Poly k N | ∃ c : ℕ, f.IsHomogeneous c ∧ ∀ (I : Chart x), ∀ δ ∈ T.D.sub I,
@@ -142,6 +176,15 @@ def StepData.Jg : FinGradedSub (S := k) (x := x) Ω where
       · intro a b _ _ ha hb; rw [map_add]; exact Submodule.add_mem _ ha hb
       · intro a z _ hz; rw [map_smul]; exact Submodule.smul_mem _ a hz
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨m, s, a, e, hs, hse, hm, hae, rfl⟩`. Use `Submodule.span_induction (p := fun m _ => (aeval x s)⁻¹ • m ∈ idealMod T.J I) ?_ ?_ ?_ ?_ hm` and prove the remaining obligations. Introduce and unpack `_ ⟨f, e', hf, hfe, rfl, rfl⟩`.
+
+Establish `he : e' = e` using `by omega`. Substitute `he` using the available equality. Conclude with `Submodule.subset_span ⟨f, s, e', hf, hs, hfe, hse, by rw [smul_eq_mul, div_eq_inv_mul]⟩`. Rewrite using `[smul_zero]`. Conclude with `Submodule.zero_mem _`.
+
+Introduce `a b _ _ ha hb`. Rewrite using `[smul_add]`. Conclude with `Submodule.add_mem _ ha hb`. Introduce `c z _ hz`. Rewrite using `[smul_comm]`.
+
+Conclude with `(idealMod T.J I).smul_of_tower_mem c hz`. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨f, s, e, hf, hs, hfe, hse, rfl⟩`. Conclude with `Submodule.subset_span ⟨aeval x f, s, e, e, hs, hse, Submodule.subset_span ⟨f, e, hf, hfe, rfl, rfl⟩, sub_self _, by rw [smul_eq_mul, div_eq_inv_mul]⟩`.
+-/
 theorem StepData.Jg_tilde (I : Chart x) : (T.Jg.tildeSys 0).sub I = idealMod T.J I := by
   apply le_antisymm
   · refine Submodule.span_le.mpr ?_
@@ -160,6 +203,11 @@ theorem StepData.Jg_tilde (I : Chart x) : (T.Jg.tildeSys 0).sub I = idealMod T.J
     exact Submodule.subset_span ⟨aeval x f, s, e, e, hs, hse,
       Submodule.subset_span ⟨f, e, hf, hfe, rfl, rfl⟩, sub_self _, by rw [smul_eq_mul, div_eq_inv_mul]⟩
 
+/- English proof (translation)
+Take `⟨i, hi⟩` from `I.2.1`. Establish `h0 : (twistSys k x 0).sub I = 1`. Express the relevant statement in the definitionally equal form `twistMod k x 0 I = 1`. Rewrite using `[twistMod_eq_span 0 I hi, zpow_zero, Submodule.one_eq_span]`. Establish `hO : IsUnit ((twistSys k x (T.m - T.c₁)).sub I)` using `IsUnit.of_mul_eq_one ((twistSys k x (-(T.m - T.c₁))).sub I) (by rw [twistSys_sub_mul, add_neg_cancel, h0])`.
+
+Take `⟨Q', hQ'⟩` from `T.M.invertible I`. Rewrite using `[StepData.D, twistMul_sub]`. Conclude with `hO.mul ((IsUnit.of_mul_eq_one _ hQ').pow _)`.
+-/
 theorem StepData.isUnit_D (I : Chart x) : IsUnit (T.D.sub I) := by
   obtain ⟨i, hi⟩ := I.2.1
   have h0 : (twistSys k x 0).sub I = 1 := by
@@ -171,6 +219,17 @@ theorem StepData.isUnit_D (I : Chart x) : IsUnit (T.D.sub I) := by
   rw [StepData.D, twistMul_sub]
   exact hO.mul ((IsUnit.of_mul_eq_one _ hQ').pow _)
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Use `Submodule.mul_le.mpr fun a ha δ hδ => ?_` and prove the remaining obligations. Take `⟨g, s, e, hg, hs, hge, hse, rfl⟩` from `idealMod_mem_form T.J I ha`. Take `⟨o, ho, hgo⟩` from `T.form_mem_J hg hge I hδ`. Use `Submodule.mem_span_singleton.mpr ⟨⟨o / aeval x s, div_mem_chartRing I ho hs hse⟩, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[chartRing_smul_def]`. Express the relevant statement in the definitionally equal form `o / aeval x s * T.si = aeval x g / aeval x s * δ`. Rewrite using `[div_mul_eq_mul_div (aeval x g), hgo]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨Q', hQ'⟩` from `(T.isUnit_D I).exists_right_inv`.
+
+Establish `hle : Submodule.span (chartRing k x I) {T.si} * Q' ≤ idealMod T.J I`. Use `Submodule.mul_le.mpr fun a ha b hb => ?_` and prove the remaining obligations. Take `⟨c, rfl⟩` from `Submodule.mem_span_singleton.mp ha`. Rewrite using `[smul_mul_assoc]`. Use `Submodule.smul_mem _ c (hZ k Ω N x T I b fun δ hδ => ?_)` and prove the remaining obligations.
+
+Establish `h1 : b * δ ∈ T.D.sub I * Q'`. Rewrite using `[mul_comm b]`. Conclude with `Submodule.mul_mem_mul hδ hb`. Rewrite `h1` using `[hQ', Submodule.mem_one]`. Take `⟨y, hy⟩` from `h1`.
+
+Rewrite using `[← hy]`. Conclude with `y.2`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_assoc, mul_comm Q', hQ', mul_one]`. Use `_ ≤ idealMod T.J I * T.D.sub I := Submodule.mul_le.mpr fun a ha b hb => Submodule.mul_mem_mul (hle ha) hb`.
+-/
 theorem StepData.idealMod_mul_D (hZ : ZeroIdealChart.Statement.{u, w}) (I : Chart x) :
     idealMod T.J I * T.D.sub I = Submodule.span (chartRing k x I) {T.si} := by
   apply le_antisymm
@@ -200,6 +259,13 @@ theorem StepData.idealMod_mul_D (hZ : ZeroIdealChart.Statement.{u, w}) (I : Char
 
 end Chart
 
+/- English proof (translation)
+Introduce `k _ Ω _ _ N x T`. Use `⟨T.Jg, fun c => rfl, fun b c I z => ?_⟩` and prove the remaining obligations. Establish `hm : (twistSys k x T.m).sub I = (twistSys k x T.c₁).sub I * (twistSys k x (T.m - T.c₁)).sub I`. Rewrite using `[twistSys_sub_mul, show T.c₁ + (T.m - T.c₁) = T.m by ring]`. Establish `hc : (twistSys k x (c + T.c₁)).sub I = (twistSys k x c).sub I * (twistSys k x T.c₁).sub I`.
+
+Rewrite using `[twistSys_sub_mul]`. Establish `hJD` using `T.idealMod_mul_D hZ I`. Establish `hL : T.L.sub I = (twistSys k x T.c₁).sub I * T.D.sub I`. Rewrite using `[StepData.L, StepData.D, twistMul_sub, twistMul_sub, hm, mul_assoc]`. Establish `key : ((T.Jg.tildeSys 0).twist ((T.L.pow (b + 1)).twist (twistSys k x c))).sub I = Submodule.span (chartRing k x I) {T.si} * ((T.L.pow b).twist (twistSys k x (c + T.c₁))).sub I`.
+
+Simplify using `only [SubSystem.twist_sub_eq_mul_of_line, SubSystem.pow_sub, T.Jg_tilde I, hc, ← hJD, hL]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key, Submodule.mem_span_singleton_mul]`. Conclude with `⟨fun ⟨y, hy, h⟩ => ⟨y, hy, h.symm⟩, fun ⟨y, hy, h⟩ => ⟨y, hy, h.symm⟩⟩`.
+-/
 theorem ClaimSeq.proof (hZ : ZeroIdealChart.Statement.{u, w}) : ClaimSeq.Statement.{u, w} := by
   intro k _ Ω _ _ N x T
   refine ⟨T.Jg, fun c => rfl, fun b c I z => ?_⟩

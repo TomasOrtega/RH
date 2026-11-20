@@ -10,6 +10,13 @@ namespace UpperTheory.V.Z.Sym.Glob
 private def val {K : Type} [Field K] (d : K) : Subgroup Kˣ :=
   (Units.map (QuadraticAlgebra.norm : QuadraticAlgebra K d 0 →* K)).range
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, rfl⟩`. Use `⟨(w : QuadraticAlgebra K d 0).re, (w : QuadraticAlgebra K d 0).im, ?_⟩` and prove the remaining obligations. Simplify using `only [Units.coe_map, MonoidHom.coe_coe, QuadraticAlgebra.norm_def]`. Expand and normalize the polynomial expressions, which then agree.
+
+Introduce and unpack `⟨a, b, h⟩`. Establish `hn : QuadraticAlgebra.norm (⟨a, b⟩ : QuadraticAlgebra K d 0) = u`. Rewrite using `[QuadraticAlgebra.norm_def]`. Simplify using `only`. Take the linear combination `h`.
+
+Establish `hw : IsUnit (⟨a, b⟩ : QuadraticAlgebra K d 0)` using `QuadraticAlgebra.isUnit_iff_norm_isUnit.mpr (hn ▸ u.isUnit)`. Use `⟨hw.unit, Units.ext ?_⟩` and prove the remaining obligations. Simplify using `[hn]`.
+-/
 private theorem mem_val {K : Type} [Field K] (d : K) (u : Kˣ) :
     u ∈ val d ↔ ∃ a b : K, a ^ 2 - d * b ^ 2 = u := by
   constructor
@@ -27,11 +34,45 @@ private theorem mem_val {K : Type} [Field K] (d : K) (u : Kˣ) :
     refine ⟨hw.unit, Units.ext ?_⟩
     simp [hn]
 
+/- English proof (translation)
+Rewrite using `[Algebra.norm_apply, ← QuadraticAlgebra.det_toLinearMap_eq_norm]`. Both sides reduce to the same expression.
+-/
 private theorem algNorm {K : Type} [Field K] (d : K) (z : QuadraticAlgebra K d 0) :
     Algebra.norm K z = QuadraticAlgebra.norm z := by
   rw [Algebra.norm_apply, ← QuadraticAlgebra.det_toLinearMap_eq_norm]
   rfl
 
+/- English proof (translation)
+Use `haveI : IsSepClosure K (AlgebraicClosure K) := IsSepClosure.of_isAlgClosure_of_perfectField K (AlgebraicClosure K)`. Take `⟨α, hα⟩ : ∃ α : AlgebraicClosure K, α ^ 2 = algebraMap K (AlgebraicClosure K) d` from `IsAlgClosed.exists_pow_nat_eq _ two_pos`. Establish `hirr : Irreducible (Polynomial.X ^ 2 - Polynomial.C d : Polynomial K)`. Use `X_pow_sub_C_irreducible_of_prime Nat.prime_two ?_` and prove the remaining obligations. Introduce `b hb`.
+
+Conclude with `hd ⟨b, by rw [← hb]; ring⟩`. Establish `hmin : (Polynomial.X ^ 2 - Polynomial.C d : Polynomial K) = minpoly K α` using `minpoly.eq_of_irreducible_of_monic hirr (by simp [hα]) (Polynomial.monic_X_pow_sub_C _ two_ne_zero)`. Establish `hint : IsIntegral K α` using `Algebra.IsIntegral.isIntegral α`. Use `set L : IntermediateField K (AlgebraicClosure K) := IntermediateField.adjoin K {α} with hL`. Establish `hrank : Module.finrank K L = 2`.
+
+Rewrite using `[hL, IntermediateField.adjoin.finrank hint, ← hmin, Polynomial.natDegree_X_pow_sub_C]`. Use `haveI : FiniteDimensional K L := Module.finite_of_finrank_eq_succ hrank`. Use `haveI : Algebra.IsQuadraticExtension K L := ⟨hrank⟩`. Use `haveI : IsAbelianGalois K L := IsAbelianGalois.of_isCyclic K L`. Establish `key` using `GroundTheory.LocalField.index_range_normUnits_of_isAbelianGalois (K := K) (Ω := AlgebraicClosure K) L`.
+
+Rewrite `key` using `[hrank]`. Rewrite using `[← key]`. Use `congr 1`. Set `β : L` to `⟨α, IntermediateField.mem_adjoin_simple_self K α⟩`. Establish `hβ : β ^ 2 = algebraMap K L d` using `Subtype.ext (by simpa using hα)`.
+
+Set `φ : QuadraticAlgebra K d 0 →ₐ[K] L` to `{ toFun := fun z => algebraMap K L z.re + algebraMap K L z.im * β map_one' := by show algebraMap K L (1 : QuadraticAlgebra K d 0).re + algebraMap K L (1 : QuadraticAlgebra K d 0).im * β = 1`. Rewrite using `[show (1 : QuadraticAlgebra K d 0).re = 1 from rfl, show (1 : QuadraticAlgebra K d 0).im = 0 from rfl]`. Simplify using the standard rewrite rules. Use the proof step `map_mul' := by`. Introduce `z w`.
+
+Simplify using `only [QuadraticAlgebra.re_mul, QuadraticAlgebra.im_mul, map_add, map_mul, map_zero, zero_mul, add_zero]`. Take the linear combination `(-(algebraMap K L z.im * algebraMap K L w.im)) * hβ`. Use the proof step `map_zero' := by simp`. Use the proof step `map_add' := by`. Introduce `z w`.
+
+Simplify using `only [QuadraticAlgebra.re_add, QuadraticAlgebra.im_add, map_add]`. Expand and normalize the polynomial expressions, which then agree. Use the proof step `commutes' := by intro r; simp }`. Establish `hφ : Function.Injective φ`. Rewrite using `[injective_iff_map_eq_zero]`.
+
+Introduce `z hz`. Establish `hz' : algebraMap K L z.re + algebraMap K L z.im * β = 0` using `hz`. Establish `him : z.im = 0`. Assume the negation of the conclusion as `h`. Apply `hd` to reduce the goal to its premises.
+
+Establish `hA : algebraMap K L z.im ≠ 0` using `by simpa using h`. Establish `h1 : β = algebraMap K L (-z.re / z.im)`. Rewrite using `[map_div₀, map_neg, eq_div_iff hA]`. Take the linear combination `hz'`. Establish `h2` using `hβ`.
+
+Rewrite `h2` using `[h1, ← map_pow]`. Establish `h3` using `(algebraMap K L).injective h2`. Conclude with `⟨-z.re / z.im, by linear_combination (-1 : K) * h3⟩`. Establish `hre : z.re = 0`. Rewrite `hz'` using `[him, map_zero, zero_mul, add_zero]`.
+
+Simplify using `using hz'`. Apply the tactic sequence `ext <;> simp [hre, him]`. Establish `hφs : Function.Surjective φ` using `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank (f := φ.toLinearMap) (by rw [QuadraticAlgebra.finrank_eq_two, hrank])).mp hφ`. Set `e` to `AlgEquiv.ofBijective φ ⟨hφ, hφs⟩`. Establish `hnorm : ∀ z : QuadraticAlgebra K d 0, Algebra.norm K (φ z) = QuadraticAlgebra.norm z`.
+
+Introduce `z`. Rewrite using `[← algNorm, ← Algebra.norm_eq_of_algEquiv e z]`. Both sides reduce to the same expression. Use extensionality with `u`. Simplify using `only [val, GroundTheory.LocalField.normUnits, MonoidHom.mem_range]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, hw⟩`. Use `⟨Units.map (φ : QuadraticAlgebra K d 0 →* L) w, Units.ext ?_⟩` and prove the remaining obligations. Rewrite using `[← hw]`. Simplify using `[hnorm]`.
+
+Introduce and unpack `⟨x, hx⟩`. Use `⟨Units.map (e.symm : L →* QuadraticAlgebra K d 0) x, Units.ext ?_⟩` and prove the remaining obligations. Rewrite using `[← hx]`. Establish `hx' : φ (e.symm x) = x` using `e.apply_symm_apply x`. Simplify using `only [Units.coe_map, MonoidHom.coe_coe]`.
+
+Rewrite using `[← hnorm, hx']`.
+-/
 private theorem index_val {K : Type} [Field K] [CharZero K] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K] (d : K) (hd : ¬ IsSquare d) : (val d).index = 2 := by
   classical
@@ -120,6 +161,17 @@ private theorem index_val {K : Type} [Field K] [CharZero K] [ValuativeRel K] [To
     simp only [Units.coe_map, MonoidHom.coe_coe]
     rw [← hnorm, hx']
 
+/- English proof (translation)
+Distinguish the cases in `hsq : IsSquare d`. Take `⟨r, rfl⟩` from `hsq`. Establish `hr : r ≠ 0`. Introduce and unpack `rfl`. Simplify using `at hd`.
+
+Establish `all : ∀ z : K, hs (r * r) z = 1`. Introduce `z`. Unfold `hs`. Rewrite using `[if_pos]`. Use `⟨(z + 1) / 2, (z - 1) / (2 * r), ?_⟩` and prove the remaining obligations.
+
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[all, all, all, one_mul]`. Establish `hidx` using `index_val d hsq`. Establish `key : ∀ (z : K) (hz : z ≠ 0), hs d z = if Units.mk0 z hz ∈ val d then (1 : ℂ) else -1`.
+
+Introduce `z hz`. Simplify using `only [hs, mem_val, Units.val_mk0]`. Rewrite using `[key _ (mul_ne_zero hx hy), key _ hx, key _ hy]`. Establish `hm : Units.mk0 (x * y) (mul_ne_zero hx hy) = Units.mk0 x hx * Units.mk0 y hy` using `Units.ext rfl`. Rewrite using `[hm, Subgroup.mul_mem_iff_of_index_two hidx]`.
+
+Apply the tactic sequence `split_ifs <;> simp_all`.
+-/
 private theorem hs_mul {K : Type} [Field K] [CharZero K] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K] (d x y : K) (hd : d ≠ 0) (hx : x ≠ 0) (hy : y ≠ 0) :
     hs d (x * y) = hs d x * hs d y := by
@@ -150,6 +202,9 @@ private theorem hs_mul {K : Type} [Field K] [CharZero K] [ValuativeRel K] [Topol
 
 end UpperTheory.V.Z.Sym.Glob
 
+/- English proof (translation)
+Introduce `F _ _ v d x y hd hx hy`. Use `haveI : CharZero (Kv v) := charZero_of_injective_algebraMap (algebraMap F (Kv v)).injective`. Conclude with `hs_mul d x y hd hx hy`.
+-/
 theorem UpperTheory.V.Z.Sym.Glob.hsMul :
     UpperTheory.V.Z.Sym.Glob.HsMul := by
   intro F _ _ v d x y hd hx hy

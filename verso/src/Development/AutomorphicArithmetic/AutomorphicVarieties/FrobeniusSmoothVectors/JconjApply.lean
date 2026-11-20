@@ -2,6 +2,15 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVec
 
 open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.U3 UpperTheory.V.Fr
 
+/- English proof (translation)
+Establish `h1 : ∀ k, (Jmat R n * Mᵀ) i k = M k i.rev`. Introduce `k`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single i.rev]`. Simplify using `[Jmat]`. Introduce `b _ hb`.
+
+Simplify using `[Jmat, hb]`. Simplify using the standard rewrite rules. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single j.rev]`. Rewrite using `[h1]`. Simplify using `[Jmat]`.
+
+Introduce `b _ hb`. Establish `: j ≠ b.rev`. Introduce `h`. Apply `hb` to reduce the goal to its premises. Rewrite using `[h, Fin.rev_rev]`.
+
+Simplify using `[Jmat, this]`. Simplify using the standard rewrite rules.
+-/
 private theorem jconj_apply {R : Type} [CommRing R] {n : ℕ} (M : Matrix (Fin n) (Fin n) R) (i j : Fin n) :
     (Jmat R n * Mᵀ * Jmat R n) i j = M j.rev i.rev := by
   have h1 : ∀ k, (Jmat R n * Mᵀ) i k = M k i.rev := by
@@ -22,6 +31,41 @@ private theorem jconj_apply {R : Type} [CommRing R] {n : ℕ} (M : Matrix (Fin n
     simp [Jmat, this]
   · simp
 
+/- English proof (translation)
+Introduce `O _ _ C' _ _ _ C _ _ p n Z hmI hIm hZ hoff hdiag`. Establish `hII : ∀ a b : C', a ∈ RingHom.ker p → b ∈ RingHom.ker p → a * b = 0`. Introduce `a b ha hb`. Establish `hab : a * b ∈ maximalIdeal C' * RingHom.ker p` using `Ideal.mul_mem_mul (hIm ha) hb`. Rewrite `hab` using `[hmI]`.
+
+Simplify using `using hab`. Establish `hZI : ∀ i j, i ≠ j → Z i j ∈ RingHom.ker p`. Introduce `i j hij`. Rewrite using `[RingHom.mem_ker]`. Conclude with `hoff i j hij`.
+
+Establish `hunit : ∀ i j, i ≠ j → IsUnit (Z i i - Z j j)`. Introduce `i j hij`. Assume the negation of the conclusion as `hu`. Establish `hm : Z i i - Z j j ∈ maximalIdeal C'` using `(IsLocalRing.mem_maximalIdeal _).2 hu`. Rewrite `hm` using `[← res_eq_zero_iff O C', map_sub, sub_eq_zero]`.
+
+Conclude with `hdiag i j hij hm`. Establish `hZr : ∀ i j, Z j.rev i.rev = -Z i j`. Introduce `i j`. Establish `hij` using `congrFun (congrFun hZ i) j`. Simplify using `only [thetaLie, Matrix.neg_apply, jconj_apply] at hij`.
+
+Rewrite using `[← hij, neg_neg]`. Take `⟨A, hA⟩ : ∃ A : Matrix (Fin n) (Fin n) C', ∀ i j, A i j = if i = j then 0 else Z i j * Ring.inverse (Z i i - Z j j)` from `⟨Matrix.of fun i j => if i = j then 0 else Z i j * Ring.inverse (Z i i - Z j j), fun i j => rfl⟩`. Establish `hAI : ∀ i j, A i j ∈ RingHom.ker p`. Introduce `i j`. Rewrite using `[hA]`.
+
+Use `split_ifs with h`. Conclude with `Ideal.zero_mem _`. Conclude with `Ideal.mul_mem_right _ _ (hZI i j h)`. Establish `hAA : A * A = 0`. Use extensionality with `i j`.
+
+Rewrite using `[Matrix.mul_apply, Matrix.zero_apply]`. Conclude with `Finset.sum_eq_zero fun k _ => hII _ _ (hAI i k) (hAI k j)`. Establish `hAr : ∀ i j, A j.rev i.rev = -A i j`. Introduce `i j`. Rewrite using `[hA, hA]`.
+
+Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using the standard rewrite rules. Establish `hrev : j.rev ≠ i.rev` using `fun h => hij (Fin.rev_injective h).symm`. Rewrite using `[if_neg hrev, if_neg hij, hZr i j, hZr j j, hZr i i]`.
+
+Establish `hd : -Z j j - -Z i i = Z i i - Z j j` using `by ring`. Rewrite using `[hd]`. Expand and normalize the polynomial expressions, which then agree. Establish `h1 : (1 + A) * (1 - A) = 1`. Rewrite using `[show (1 + A) * (1 - A) = 1 - A * A by noncomm_ring, hAA, sub_zero]`.
+
+Establish `h2 : (1 - A) * (1 + A) = 1`. Rewrite using `[show (1 - A) * (1 + A) = 1 - A * A by noncomm_ring, hAA, sub_zero]`. Use `⟨⟨1 + A, 1 - A, h1, h2⟩, ?_, ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Establish `h0 : p (A i j) = 0`.
+
+Use `hAI i j` as an intermediate fact. Rewrite `this` using `[RingHom.mem_ker]`. Then use the resulting hypothesis. Simplify using `only [Units.val_mk, Matrix.map_apply, Matrix.add_apply, map_add, h0, add_zero, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Apply `Units.ext` to reduce the goal to its premises.
+
+Rewrite using `[theta_val]`. Use `show Jmat C' n * (1 - A)ᵀ * Jmat C' n = 1 + A`. Rewrite using `[Matrix.transpose_sub, Matrix.transpose_one, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, Jmat_mul_Jmat, sub_eq_add_neg]`. Use `congr 1`. Use extensionality with `i j`.
+
+Rewrite using `[Matrix.neg_apply, jconj_apply, hAr, neg_neg]`. Introduce `i j hij show ((1 + A) * Z * (1 - A)) i j = 0`. Rewrite using `[show (1 + A) * Z * (1 - A) = Z + A * Z - Z * A - A * Z * A by noncomm_ring]`. Establish `hAZ : (A * Z) i j = A i j * Z j j`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single j]`.
+
+Introduce `k _ hk`. Conclude with `hII _ _ (hAI i k) (hZI k j hk)`. Simplify using the standard rewrite rules. Establish `hZA : (Z * A) i j = Z i i * A i j`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single i]`.
+
+Introduce `k _ hk`. Conclude with `hII _ _ (hZI i k (Ne.symm hk)) (hAI k j)`. Simplify using the standard rewrite rules. Establish `hAZA : (A * Z * A) i j = 0`. Rewrite using `[Matrix.mul_apply]`.
+
+Use `Finset.sum_eq_zero fun k _ => hII _ _ ?_ (hAI k j)` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply]`. Conclude with `Ideal.sum_mem _ fun l _ => Ideal.mul_mem_right _ _ (hAI i l)`. Rewrite using `[Matrix.sub_apply, Matrix.sub_apply, Matrix.add_apply, hAZ, hZA, hAZA, hA, if_neg hij]`. Establish `hu` using `Ring.inverse_mul_cancel _ (hunit i j hij)`.
+
+Take the linear combination `(-(Z i j)) * hu`.
+-/
 theorem UpperTheory.V.Fr.pr_norm2 :
     ∀ (O : Type) [CommRing O] [IsLocalRing O], ∀ (C' : Type) [CommRing C'] [Algebra O C'] [IsCO O C'] (C : Type) [CommRing C] [Algebra O C] (p : C' →ₐ[O] C) (n : ℕ) (Z : Matrix (Fin n) (Fin n) C'), maximalIdeal C' * RingHom.ker p = ⊥ → RingHom.ker p ≤ maximalIdeal C' → thetaLie Z = Z → (∀ i j, i ≠ j → p (Z i j) = 0) → (∀ i j, i ≠ j → res O C' (Z i i) ≠ res O C' (Z j j)) → ∃ h : GL (Fin n) C', (h : Matrix (Fin n) (Fin n) C').map p = 1 ∧ theta h = h ∧ ∀ i j, i ≠ j → ((h : Matrix (Fin n) (Fin n) C') * Z * ((h⁻¹ : GL (Fin n) C') : Matrix (Fin n) (Fin n) C')) i j = 0 := by
   intro O _ _ C' _ _ _ C _ _ p n Z hmI hIm hZ hoff hdiag

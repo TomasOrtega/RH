@@ -27,6 +27,9 @@ open GlobalTheory.SiegelSet (IsRealLine lineDer)
 
 variable {D : D7} {θ : InfFam D} {V : HSp D}
 
+/- English proof (translation)
+Use `⟨placeOf D τ, embOverOf D τ, X, hX, fun t => ?_⟩` and prove the remaining obligations. Take `⟨x, hx⟩` from `exists_archEquiv_eq V (embOverOf D τ) rfl (GlobalTheory.SmoothAutCheck.exp_mem_UH (GlobalTheory.SmoothAutCheck.gramAt_unit V τ) hX t)`. Use `⟨x, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[oneP, ← hx, atTau_archEquiv hθ V _ rfl x]`. Rewrite using `[GlobalTheory.Orb.archMat_eq_archEquiv _ (isCMExt_host D), hx]`.
+-/
 theorem isRealLine_oneP (hθ : IsInfFam θ) (V : HSp D) {τ : D.what₂.Tau}
     {X : Matrix (Fin V.rank) (Fin V.rank) ℂ} (hX : X ∈ lieAt V τ) :
     IsRealLine D.sp.cm.sig V.gram (oneP θ V τ X) := by
@@ -37,6 +40,9 @@ theorem isRealLine_oneP (hθ : IsInfFam θ) (V : HSp D) {τ : D.what₂.Tau}
   · rw [oneP, ← hx, atTau_archEquiv hθ V _ rfl x]
   · rw [GlobalTheory.Orb.archMat_eq_archEquiv _ (isCMExt_host D), hx]
 
+/- English proof (translation)
+Introduce `k τs Xs hX g` and use `h k (fun i => oneP θ V (τs i) (Xs i)) (fun i => isRealLine_oneP hθ V (hX i)) g`.
+-/
 theorem mem_smFun_of_isSm (hθ : IsInfFam θ) {f : GA D V → ℂ} (h : GlobalTheory.UAut.IsSm D.sp.cm.sig V.gram f) :
     f ∈ SmFun θ V :=
   fun k τs Xs hX g => h k (fun i => oneP θ V (τs i) (Xs i)) (fun i => isRealLine_oneP hθ V (hX i)) g
@@ -44,6 +50,11 @@ theorem mem_smFun_of_isSm (hθ : IsInfFam θ) {f : GA D V → ℂ} (h : GlobalTh
 def derSpan (V : HSp D) (f : GA D V → ℂ) : Submodule ℂ (GA D V → ℂ) :=
   Submodule.span ℂ {g | ∃ l : List (ℝ → GA D V), (∀ γ ∈ l, IsRealLine D.sp.cm.sig V.gram γ) ∧ g = l.foldr lineDer f}
 
+/- English proof (translation)
+Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨l, hl, rfl⟩`. Proceed by induction on `l with`. Consider the case `nil => exact hf`. Consider the case `cons γ l ih`.
+
+Take `⟨p, hp, rfl⟩` from `(hl γ List.mem_cons_self).eq_oneP hθ`. Conclude with `GlobalTheory.Mem.AutSpace.Rder_mem (ih fun δ hδ => hl δ (List.mem_cons_of_mem _ hδ)) hp`.
+-/
 theorem derSpan_le (hθ : IsInfFam θ) {f : GA D V → ℂ} (hf : f ∈ SmFun θ V) : derSpan V f ≤ SmFun θ V := by
   refine Submodule.span_le.2 ?_
   rintro _ ⟨l, hl, rfl⟩

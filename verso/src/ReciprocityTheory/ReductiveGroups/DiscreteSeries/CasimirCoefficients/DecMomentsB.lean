@@ -10,6 +10,9 @@ open ReciprocityTheory.ChartRestriction.DS
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation.
+-/
 lemma dm_swap4 (F : Fin n → Fin n → Fin n → Fin n → ℂ) :
     ∑ k, ∑ l, ∑ a, ∑ b, F k l a b = ∑ a, ∑ b, ∑ k, ∑ l, F k l a b := by
   calc ∑ k, ∑ l, ∑ a, ∑ b, F k l a b = ∑ k, ∑ a, ∑ l, ∑ b, F k l a b :=
@@ -21,10 +24,16 @@ lemma dm_swap4 (F : Fin n → Fin n → Fin n → Fin n → ℂ) :
 
 variable {U Y : Matrix (Fin n) (Fin n) ℂ} {y : Fin n → ℝ}
 
+/- English proof (translation)
+Rewrite using `[hY, dm_entry]`.
+-/
 lemma dm_Ye (hY : Y = U * Matrix.diagonal (fun j => (y j : ℂ)) * Uᴴ) (a b : Fin n) :
     Y a b = ∑ j, U a j * (y j : ℂ) * star (U b j) := by
   rw [hY, dm_entry]
 
+/- English proof (translation)
+Rewrite using `[dm_Ye hY, dm_Ye hY, star_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [star_mul', star_star]`. Simplify using `only [Complex.star_def, Complex.conj_ofReal]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma dm_herm (hY : Y = U * Matrix.diagonal (fun j => (y j : ℂ)) * Uᴴ) (a b : Fin n) :
     Y b a = star (Y a b) := by
   rw [dm_Ye hY, dm_Ye hY, star_sum]
@@ -33,6 +42,9 @@ lemma dm_herm (hY : Y = U * Matrix.diagonal (fun j => (y j : ℂ)) * Uᴴ) (a b 
   simp only [Complex.star_def, Complex.conj_ofReal]
   ring
 
+/- English proof (translation)
+Simplify using `only [dmK, Finset.mul_sum, dm_Ye hY]`. Use `conv_lhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma trace_diag_conj_eq (hY : Y = U * Matrix.diagonal (fun j => (y j : ℂ)) * Uᴴ) (i : ℕ) :
     ∑ k, (y k : ℂ) * dmK U i k k = ∑ a, dmChi i a * Y a a := by
   simp only [dmK, Finset.mul_sum, dm_Ye hY]
@@ -40,6 +52,13 @@ lemma trace_diag_conj_eq (hY : Y = U * Matrix.diagonal (fun j => (y j : ℂ)) * 
   refine Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun k _ => ?_
   ring
 
+/- English proof (translation)
+Establish `hL : ∀ k l, (y k : ℂ) * (y l : ℂ) * (dmK U i k l * dmK U i l k) = ∑ a, ∑ b, (y k : ℂ) * (y l : ℂ) * ((dmChi i a * (star (U a k) * U a l)) * (dmChi i b * (star (U b l) * U b k)))`. Introduce `k l`. Rewrite using `[dmK, dmK, Finset.sum_mul_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`.
+
+Establish `hR : ∀ a b, dmChi i a * dmChi i b * (Y b a * Y a b) = ∑ k, ∑ l, dmChi i a * dmChi i b * ((U b k * (y k : ℂ) * star (U a k)) * (U a l * (y l : ℂ) * star (U b l)))`. Introduce `a b`. Rewrite using `[dm_Ye hY b a, dm_Ye hY a b, Finset.sum_mul_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`.
+
+Simplify using `only [hL, hR]`. Rewrite using `[dm_swap4]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma trace_sq_diag_conj_eq (hY : Y = U * Matrix.diagonal (fun j => (y j : ℂ)) * Uᴴ) (i : ℕ) :
     ∑ k, ∑ l, (y k : ℂ) * (y l : ℂ) * (dmK U i k l * dmK U i l k) =
       ∑ a, ∑ b, dmChi i a * dmChi i b * (Y b a * Y a b) := by
@@ -63,6 +82,13 @@ lemma trace_sq_diag_conj_eq (hY : Y = U * Matrix.diagonal (fun j => (y j : ℂ))
     Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_
   ring
 
+/- English proof (translation)
+Establish `hYY : Y * Y = U * Matrix.diagonal (fun j => (y j : ℂ) ^ 2) * Uᴴ`. Rewrite using `[hY]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc Uᴴ U, dm_UhU hU, Matrix.one_mul, ← Matrix.mul_assoc (Matrix.diagonal _), Matrix.diagonal_mul_diagonal]`. Simplify using `only [sq]`.
+
+Establish `hrow : ∀ a, ∑ b, Y a b * Y b a = ∑ k, U a k * (y k : ℂ) ^ 2 * star (U a k)`. Introduce `a`. Rewrite using `[← Matrix.mul_apply, hYY, dm_entry]`. Simplify using `only [hrow, dmK, Finset.mul_sum]`. Use `conv_lhs => rw [Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma trace_pow_two_diag_conj (hU : U ∈ Matrix.unitaryGroup (Fin n) ℂ) (hY : Y = U * Matrix.diagonal (fun j => (y j : ℂ)) * Uᴴ)
     (i : ℕ) :
     ∑ k, (y k : ℂ) ^ 2 * dmK U i k k = ∑ a, dmChi i a * ∑ b, Y a b * Y b a := by
@@ -80,6 +106,13 @@ lemma trace_pow_two_diag_conj (hU : U ∈ Matrix.unitaryGroup (Fin n) ℂ) (hY :
   refine Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun k _ => ?_
   ring
 
+/- English proof (translation)
+Apply `Complex.ofReal_injective` to reduce the goal to its premises. Establish `h3` using `trace_pow_two_diag_conj hU hY n`. Establish `hchi : ∀ a : Fin n, dmChi n a = 1` using `by intro a; simp [dmChi, a.isLt]`. Establish `hKn : ∀ k, dmK U n k k = 1`. Introduce `k`.
+
+Establish `h` using `congrFun (congrFun (dm_UhU hU) k) k`. Rewrite `h` using `[Matrix.mul_apply, Matrix.one_apply_eq]`. Simplify using `only [dmK, hchi, one_mul]`. Rewrite using `[← h]`. Both sides reduce to the same expression.
+
+Simplify using `only [hchi, hKn, one_mul, mul_one] at h3`. Rewrite using `[hs, Complex.ofReal_sum, Complex.ofReal_sum]`. Simplify using `only [Complex.ofReal_sum, Complex.ofReal_pow, h3]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[← Complex.ofReal_pow, dm_normsq, ← dm_herm hY a b]`.
+-/
 lemma dm_hs (hU : U ∈ Matrix.unitaryGroup (Fin n) ℂ) (hY : Y = U * Matrix.diagonal (fun j => (y j : ℂ)) * Uᴴ) :
     hs Y = ∑ k, y k ^ 2 := by
   apply Complex.ofReal_injective
@@ -98,12 +131,20 @@ lemma dm_hs (hU : U ∈ Matrix.unitaryGroup (Fin n) ℂ) (hY : Y = U * Matrix.di
   refine Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_
   rw [← Complex.ofReal_pow, dm_normsq, ← dm_herm hY a b]
 
+/- English proof (translation)
+Use `push_cast`. Unfold `dmInd`. Simplify using `only [ite_mul, one_mul, zero_mul]`. Rewrite using `[Finset.sum_ite_mem, Finset.univ_inter]`.
+-/
 lemma dm_S (J : Finset (Fin n)) : ((∑ j ∈ J, y j : ℝ) : ℂ) = ∑ k, dmInd J k * (y k : ℂ) := by
   push_cast
   unfold dmInd
   simp only [ite_mul, one_mul, zero_mul]
   rw [Finset.sum_ite_mem, Finset.univ_inter]
 
+/- English proof (translation)
+Simplify using `only [dm_S, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Establish `h : ∀ k, ∑ J : {J : Finset (Fin n) // J.card = i}, ((dmW U hi J : ℝ) : ℂ) * (dmInd J.1 k * (y k : ℂ)) = (y k : ℂ) * dmK U i k k`. Introduce `k`. Rewrite using `[← sum_minorWeights_indicator hU hi k, Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun J _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [h, trace_diag_conj_eq hY, hd, mul_zero, Finset.sum_const_zero]`.
+-/
 lemma dm_mean (hU : U ∈ Matrix.unitaryGroup (Fin n) ℂ) (hY : Y = U * Matrix.diagonal (fun j => (y j : ℂ)) * Uᴴ)
     (hd : ∀ a, Y a a = 0) {i : ℕ} (hi : i ≤ n) :
     ∑ J : {J : Finset (Fin n) // J.card = i}, ((dmW U hi J : ℝ) : ℂ) * ((∑ j ∈ J.1, y j : ℝ) : ℂ) = 0 := by
@@ -117,6 +158,21 @@ lemma dm_mean (hU : U ∈ Matrix.unitaryGroup (Fin n) ℂ) (hY : Y = U * Matrix.
     ring
   simp only [h, trace_diag_conj_eq hY, hd, mul_zero, Finset.sum_const_zero]
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun J _ => ?_` and prove the remaining obligations. Rewrite using `[dm_S, sq, Finset.sum_mul_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Use `_ = ∑ k, ∑ J : {J : Finset (Fin n) // J.card = i}, ∑ l, ((dmW U hi J : ℝ) : ℂ) * (dmInd J.1 k * dmInd J.1 l) * ((y k : ℂ) * (y l : ℂ)) := Finset.sum_comm`. Use `_ = ∑ k, ∑ l, ∑ J : {J : Finset (Fin n) // J.card = i}, ((dmW U hi J : ℝ) : ℂ) * (dmInd J.1 k * dmInd J.1 l) * ((y k : ℂ) * (y l : ℂ)) := Finset.sum_congr rfl fun k _ => Finset.sum_comm`. Use `_ = ∑ k, ∑ l, (y k : ℂ) * (y l : ℂ) * (dmK U i k k * dmK U i l l - dmK U i k l * dmK U i l k + if k = l then dmK U i k k else 0) := by`.
+
+Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[← dm_m hU hi k l, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun J _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Use `_ = (∑ k, (y k : ℂ) * dmK U i k k) * (∑ l, (y l : ℂ) * dmK U i l l) - ∑ k, ∑ l, (y k : ℂ) * (y l : ℂ) * (dmK U i k l * dmK U i l k) + ∑ k, (y k : ℂ) ^ 2 * dmK U i k k := by`.
+
+Establish `hk : ∀ k, ∑ l, (y k : ℂ) * (y l : ℂ) * (dmK U i k k * dmK U i l l - dmK U i k l * dmK U i l k + if k = l then dmK U i k k else 0) = ∑ l, ((y k : ℂ) * dmK U i k k) * ((y l : ℂ) * dmK U i l l) - ∑ l, (y k : ℂ) * (y l : ℂ) * (dmK U i k l * dmK U i l k) + (y k : ℂ) ^ 2 * dmK U i k k`. Introduce `k`. Establish `e : ∀ l, (y k : ℂ) * (y l : ℂ) * (dmK U i k k * dmK U i l l - dmK U i k l * dmK U i l k + if k = l then dmK U i k k else 0) = ((y k : ℂ) * dmK U i k k) * ((y l : ℂ) * dmK U i l l) - (y k : ℂ) * (y l : ℂ) * (dmK U i k l * dmK U i l k) + if k = l then (y k : ℂ) ^ 2 * dmK U i k k el …`. Introduce `l`. Use `split_ifs with h`.
+
+Substitute `h` using the available equality. Expand and normalize the polynomial expressions, which then agree. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.sum_congr rfl fun l _ => e l, Finset.sum_add_distrib, Finset.sum_sub_distrib, Finset.sum_ite_eq]`. Simplify using `only [Finset.mem_univ, if_true]`.
+
+Rewrite using `[Finset.sum_congr rfl fun k _ => hk k, Finset.sum_add_distrib, Finset.sum_sub_distrib, Finset.sum_mul_sum]`. Use `_ = ∑ a, ∑ b, dmChi i a * (1 - dmChi i b) * (Y a b * Y b a) := by`. Rewrite using `[trace_diag_conj_eq hY, trace_sq_diag_conj_eq hY, trace_pow_two_diag_conj hU hY]`. Simplify using `only [hd, mul_zero, Finset.sum_const_zero, zero_sub]`. Establish `e : ∀ a b, dmChi i a * (1 - dmChi i b) * (Y a b * Y b a) = dmChi i a * (Y a b * Y b a) - dmChi i a * dmChi i b * (Y b a * Y a b)`.
+
+Introduce `a b`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [e, Finset.sum_sub_distrib, ← Finset.mul_sum]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma dm_var (hU : U ∈ Matrix.unitaryGroup (Fin n) ℂ) (hY : Y = U * Matrix.diagonal (fun j => (y j : ℂ)) * Uᴴ)
     (hd : ∀ a, Y a a = 0) {i : ℕ} (hi : i ≤ n) :
     ∑ J : {J : Finset (Fin n) // J.card = i}, ((dmW U hi J : ℝ) : ℂ) * ((∑ j ∈ J.1, y j : ℝ) : ℂ) ^ 2 =
@@ -173,6 +229,13 @@ lemma dm_var (hU : U ∈ Matrix.unitaryGroup (Fin n) ℂ) (hY : Y = U * Matrix.d
           simp only [e, Finset.sum_sub_distrib, ← Finset.mul_sum]
           ring
 
+/- English proof (translation)
+Use `conv_lhs => rw [Finset.sum_comm]`. Rewrite using `[Complex.ofReal_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.ofReal_sum]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations.
+
+Apply the tactic sequence `by_cases hb : (b : ℕ) < i <;> by_cases ha : (a : ℕ) < i`. Rewrite using `[if_neg (fun h => absurd h.2 (not_le.mpr ha))]`. Simplify using `[dmChi, hb, ha]`. Rewrite using `[if_pos ⟨hb, not_lt.mp ha⟩, dm_normsq, ← dm_herm hY a b]`. Simplify using `only [dmChi, if_pos hb, if_neg ha]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg (fun h => hb h.1)]`. Simplify using `[dmChi, hb, ha]`. Rewrite using `[if_neg (fun h => hb h.1)]`. Simplify using `[dmChi, hb, ha]`.
+-/
 lemma dm_rhs (hY : Y = U * Matrix.diagonal (fun j => (y j : ℂ)) * Uᴴ) (i : ℕ) :
     ∑ a, ∑ b, dmChi i a * (1 - dmChi i b) * (Y a b * Y b a) =
       ((∑ a : Fin n, ∑ b : Fin n, if (b : ℕ) < i ∧ i ≤ (a : ℕ) then ‖Y a b‖ ^ 2 else 0 : ℝ) : ℂ) := by

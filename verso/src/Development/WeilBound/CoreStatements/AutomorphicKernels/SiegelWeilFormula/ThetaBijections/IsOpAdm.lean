@@ -9,6 +9,25 @@ namespace PositivityTheory.SiegelWeilFormula.TBij
 
 variable {F : Type} [Field F] [NumberField F]
 
+/- English proof (translation)
+Establish `hfamOf : ∀ φ : (v : Pl F) → (κ → Fv F v) → ℂ, (∀ v, φ v ∈ SB (κ → Fv F v)) → (∀ᶠ v in Filter.cofinite, φ v = {x : κ → Fv F v | ∀ i, x i ∈ IsDedekindDomain.HeightOneSpectrum.adicCompletionIntegers F v}.indicator 1) → IsFam φ` using `fun φ h1 h2 => ⟨h1, h2⟩`. Establish `hSB : ∀ φ : (v : Pl F) → (κ → Fv F v) → ℂ, IsFam φ → (fun y : κ → Af F => ∏ᶠ v, φ v fun i => evalV F v (y i)) ∈ SB (κ → Af F)`. Introduce `φ hφ`. Conclude with `⟨isLocallyConstant_finprod_evalV φ hφ.1 hφ.2, GlobalTheory.AdelicCoordSupport.hasCompactSupport_finprod φ hφ.1 hφ.2⟩`. Establish `hpure : ∀ (f : SInf F κ) (φ : (v : Pl F) → (κ → Fv F v) → ℂ), pureA F f (fun y : κ → Af F => ∏ᶠ v, φ v fun i => evalV F v (y i)) = GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ`.
+
+Introduce `f φ`. Both sides reduce to the same expression. Introduce `g hg`. Establish `key : ∀ p ∈ Submodule.span ℂ {p : (κ → Af F) → ℂ | ∃ φ : (v : Pl F) → (κ → Fv F v) → ℂ, (∀ v : IsDedekindDomain.HeightOneSpectrum (𝓞 F), φ v ∈ SB (κ → Fv F v)) ∧ (∀ᶠ v in Filter.cofinite, φ v = {x : κ → Fv F v | ∀ i, x i ∈ IsDedekindDomain.HeightOneSpectrum.adicCompletionIntegers …`. Introduce `p hp`.
+
+Proceed by induction on `hp using Submodule.span_induction with`. Consider the case `mem p hp`. Take `⟨φ, h1, h2, rfl⟩` from `hp`. Establish `hφ : IsFam φ` using `hfamOf φ h1 h2`. Establish `hφ'` using `h.isFam hφ`.
+
+Take `⟨T, hT⟩` from `hl _ (hSB _ hφ')`. Use `⟨T.comp ei, fun f => ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.comp_apply, hpure, (h.2.2.2.2.2 f φ hφ).1, ← hpure]`. Conclude with `hT (ei f)`. Consider the case `zero`.
+
+Use `⟨0, fun f => ?_⟩` and prove the remaining obligations. Establish `: pureA F f (0 : (κ → Af F) → ℂ) = 0`. Use function extensionality and compare the values at `x`. Simplify using `[pureA]`. Rewrite using `[this, map_zero]`.
+
+Both sides reduce to the same expression. Consider the case `add p q _ _ hp hq`. Take `⟨T1, h1⟩` from `hp`. Take `⟨T2, h2⟩` from `hq`. Use `⟨T1 + T2, fun f => ?_⟩` and prove the remaining obligations.
+
+Establish `: pureA F f (p + q) = pureA F f p + pureA F f q`. Use function extensionality and compare the values at `x`. Simplify using `[pureA, mul_add]`. Rewrite using `[this, map_add, h1, h2]`. Both sides reduce to the same expression.
+
+Consider the case `smul a p _ hp`. Take `⟨T1, h1⟩` from `hp`. Use `⟨a • T1, fun f => ?_⟩` and prove the remaining obligations. Establish `: pureA F f (a • p) = a • pureA F f p`. Use function extensionality and compare the values at `x`.
+
+Simplify using `[pureA]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, map_smul, h1]`. Both sides reduce to the same expression. Conclude with `key g (GlobalTheory.SBSpan.mem_span_restrictedProd F κ g hg)`.
+-/
 theorem isOp_adm {κ : Type} [Fintype κ] {ψ : AddChar (AF F) ℂ} {a : Matrix (κ ⊕ κ) (κ ⊕ κ) F}
     {e : ((κ → AF F) → ℂ) →ₗ[ℂ] (κ → AF F) → ℂ} {c : ℂ} {ei : SInf F κ →L[ℂ] SInf F κ}
     {ev : ∀ v : Pl F, ((κ → Fv F v) → ℂ) →ₗ[ℂ] (κ → Fv F v) → ℂ} (h : IsOp ψ a e c ei ev)

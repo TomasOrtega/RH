@@ -17,6 +17,9 @@ section Fdeg
 
 variable {n : ℕ} {ε : Fin n → Bool} {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
 
+/- English proof (translation)
+Rewrite using `[← integral_complex_ofReal]`. Use `congr 1`. Use function extensionality and compare the values at `g`. Rewrite using `[Complex.star_def, Complex.mul_conj, Complex.normSq_eq_norm_sq]`.
+-/
 theorem integral_normSq_coef {X : Type*} [MeasurableSpace X] {μ : Measure X} {f : X → ℂ} :
     ∫ g, f g * star (f g) ∂μ = ((∫ g, ‖f g‖ ^ 2 ∂μ : ℝ) : ℂ) := by
   rw [← integral_complex_ofReal]
@@ -24,10 +27,20 @@ theorem integral_normSq_coef {X : Type*} [MeasurableSpace X] {μ : Measure X} {f
   funext g
   rw [Complex.star_def, Complex.mul_conj, Complex.normSq_eq_norm_sq]
 
+/- English proof (translation)
+Simplify using the standard rewrite rules.
+-/
 theorem inner_self_C {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℂ E] (v : E) :
     ⟪v, v⟫_ℂ = ((‖v‖ ^ 2 : ℝ) : ℂ) := by
   simp
 
+/- English proof (translation)
+Take `⟨hd, hF⟩` from `h`. Establish `e` using `(hF v v v v).2`. Rewrite `e` using `[integral_normSq_coef, inner_self_C]`. Establish `hn : 0 < ‖v‖` using `norm_pos_iff.2 hv`. Establish `e' : (∫ g, ‖coefOn σ v v g‖ ^ 2 ∂μ) = ‖v‖ ^ 4 / d`.
+
+Establish `: (((∫ g, ‖coefOn σ v v g‖ ^ 2 ∂μ : ℝ)) : ℂ) = ((‖v‖ ^ 4 / d : ℝ) : ℂ)`. Rewrite using `[e]`. Use `push_cast`. Put the polynomial expressions in normal form. Conclude with `this` after adjusting the coercions.
+
+Unfold `fdegOf`. Rewrite using `[e']`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem fdegOf_eq {μ : Measure (Formalism.REAL.UJ ε)} {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {d : ℝ}
     (h : IsFdeg μ σ d) {v : H} (hv : v ≠ 0) : fdegOf μ σ v = d := by
   obtain ⟨hd, hF⟩ := h
@@ -48,6 +61,15 @@ section SchurH
 
 variable {k r : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
 
+/- English proof (translation)
+Take `⟨P, hP, hDS⟩` from `hσ`. Establish `: CompleteSpace H` using `hDS.1`. Take `⟨d, hd, hF⟩` from `Formalism.MainNotions.BridgeCSchur.fdeg_of_DS _ _ hDS`. Take `⟨c, hc0, hcT, rfl⟩` from `Formalism.MainNotions.LeviCoordinates.haar_eq_smul_cayley_image hP hμ`. Establish `hemb` using `Formalism.MainNotions.LeviCoordinates.cayleyEmbedding_measurable hP`.
+
+Establish `hcpos : 0 < c.toReal` using `ENNReal.toReal_pos hc0 hcT`. Use `⟨d / c.toReal, div_pos hd hcpos, fun v w v' w' => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Use `Integrable.smul_measure ?_ hcT` and prove the remaining obligations. Rewrite using `[hemb.integrable_map_iff]`. Conclude with `(hF v w v' w').1`.
+
+Rewrite using `[integral_smul_measure, hemb.integral_map]`. Establish `h2` using `(hF v w v' w').2`. Establish `h3 : ∫ g, inner ℂ w (σ (Matrix.of (Formalism.MainNotions.LeviCoordinates.cayleyEmbedding P g)) v) * star (inner ℂ w' (σ (Matrix.of (Formalism.MainNotions.LeviCoordinates.cayleyEmbedding P g)) v')) ∂(Formalism.REAL.muG ε) = inner ℂ v' v * inner ℂ w w' / (d : ℂ)` using `h2`. Rewrite using `[h3]`. Establish `hc' : ((c.toReal : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast hcpos.ne'`.
+
+Establish `hd' : (d : ℂ) ≠ 0` using `by exact_mod_cast hd.ne'`. Rewrite using `[Complex.real_smul]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem schurH {ε : Fin (2 * r + k + 1) → Bool} {lam : Fin (2 * r + k + 1) → ℝ}
     (σ : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ → (H →L[ℂ] H)) (hσ : IsDSHpk k r ε lam σ)
     {μG : Measure (Mt k r)} (hμ : IsHaarOn (UH (Hpk k r)) μG) :
@@ -76,6 +98,13 @@ theorem schurH {ε : Fin (2 * r + k + 1) → Bool} {lam : Fin (2 * r + k + 1) �
     push_cast
     field_simp
 
+/- English proof (translation)
+Establish `e` using `hS w0 w0 w0 w0`. Establish `hI : ∫ x, ⟪w0, σ (Matrix.of x) w0⟫_ℂ * star ⟪w0, σ (Matrix.of x) w0⟫_ℂ ∂μG = ((∫ x, ‖⟪w0, σ (Matrix.of x) w0⟫_ℂ‖ ^ 2 ∂μG : ℝ) : ℂ)` using `integral_normSq_coef`. Rewrite `e` using `[hI, inner_self_C]`. Establish `hn : 0 < ‖w0‖` using `norm_pos_iff.2 hw`. Establish `e' : (∫ x, ‖⟪w0, σ (Matrix.of x) w0⟫_ℂ‖ ^ 2 ∂μG) = ‖w0‖ ^ 4 / d`.
+
+Establish `: (((∫ x, ‖⟪w0, σ (Matrix.of x) w0⟫_ℂ‖ ^ 2 ∂μG : ℝ)) : ℂ) = ((‖w0‖ ^ 4 / d : ℝ) : ℂ)`. Rewrite using `[e]`. Use `push_cast`. Put the polynomial expressions in normal form. Conclude with `this` after adjusting the coercions.
+
+Unfold `fdegH`. Rewrite using `[e']`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem fdegH_eq {σ : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ → (H →L[ℂ] H)} {μG : Measure (Mt k r)} {d : ℝ}
     (hd : 0 < d) (hS : ∀ v w v' w' : H,
       ∫ x, ⟪w, σ (Matrix.of x) v⟫_ℂ * star ⟪w', σ (Matrix.of x) v'⟫_ℂ ∂μG = ⟪v', v⟫_ℂ * ⟪w, w'⟫_ℂ / (d : ℂ))
@@ -103,12 +132,20 @@ variable {k r : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
   {ε : Fin (2 * r + k + 1) → Bool} {lam : Fin (2 * r + k + 1) → ℝ}
   {σ : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ → (H →L[ℂ] H)}
 
+/- English proof (translation)
+Take `⟨P, hP, hDS⟩` from `hσ`. Establish `h` using `hDS.2.2.1.1.1`. Establish `hu : IsUnit P.det` using `(Matrix.isUnit_iff_isUnit_det _).1 hP.1.1`. Simplify `h` using `[Matrix.nonsing_inv_mul _ hu]`.
+-/
 theorem ds_one (hσ : IsDSHpk k r ε lam σ) : σ 1 = 1 := by
   obtain ⟨P, hP, hDS⟩ := hσ
   have h := hDS.2.2.1.1.1
   have hu : IsUnit P.det := (Matrix.isUnit_iff_isUnit_det _).1 hP.1.1
   simpa [Matrix.nonsing_inv_mul _ hu] using h
 
+/- English proof (translation)
+Establish `h1` using `Formalism.MainNotions.LeviCoordinates.discrete_series_inner hσ ha (σ a⁻¹ y) z`. Establish `h2 : σ a (σ a⁻¹ y) = y`. Establish `e : σ (a * a⁻¹) = (σ a).comp (σ a⁻¹)` using `Formalism.MainNotions.LeviCoordinates.discrete_series_map_mul hσ ha (uh_inv ha)`. Rewrite `e` using `[Matrix.mul_nonsing_inv _ (isUnit_of_uh ha), ds_one hσ]`. Use `congrArg (fun T : H →L[ℂ] H => T y) e` as an intermediate fact.
+
+Simplify using `using this.symm`. Rewrite `h1` using `[h2]`. Conclude with `h1.symm`.
+-/
 theorem ds_inv_adj (hσ : IsDSHpk k r ε lam σ) {a : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     (ha : a ∈ UH (Hpk k r)) (y z : H) : ⟪σ a⁻¹ y, z⟫_ℂ = ⟪y, σ a z⟫_ℂ := by
   have h1 := Formalism.MainNotions.LeviCoordinates.discrete_series_inner hσ ha (σ a⁻¹ y) z
@@ -120,6 +157,17 @@ theorem ds_inv_adj (hσ : IsDSHpk k r ε lam σ) {a : Matrix (Fin (2 * r + k + 1
   rw [h2] at h1
   exact h1.symm
 
+/- English proof (translation)
+Use `set fb := stdOrthonormalBasis ℂ Wp`. Use `set eb := stdOrthonormalBasis ℂ Wq`. Establish `hrep : σ (a⁻¹ * x * b) = ((σ a⁻¹).comp (σ x)).comp (σ b)`. Rewrite using `[Formalism.MainNotions.LeviCoordinates.discrete_series_map_mul hσ (uh_mul (uh_inv ha) hx) hb, Formalism.MainNotions.LeviCoordinates.discrete_series_map_mul hσ (uh_inv ha) hx]`. Unfold `hsInner`.
+
+Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [ContinuousLinearMap.smul_apply, ContinuousLinearMap.comp_apply, inner_smul_left, hrep]`. Use `congr 1`. Rewrite using `[ContinuousLinearMap.adjoint_inner_left]`.
+
+Use `set v := P (σ x (Q (eb i)))`. Use `set u := P (σ a⁻¹ (σ x (σ b (Q (C (eb i))))))`. Establish `hv : v = ∑ c, ⟪fb c, v⟫_ℂ • fb c` using `(fb.sum_repr' v).symm`. Use `conv_lhs => rw [hv]`. Rewrite using `[map_sum, inner_sum]`.
+
+Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, inner_smul_right]`. Use `congr 1`. Simplify using `only [v]`. Rewrite using `[ContinuousLinearMap.adjoint_inner_left]`.
+
+Simplify using `only [u]`. Rewrite using `[← ContinuousLinearMap.adjoint_inner_right, ds_inv_adj hσ ha, ← inner_conj_symm]`. Both sides reduce to the same expression.
+-/
 theorem hs_point {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [FiniteDimensional ℂ Wp]
     [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq]
     (hσ : IsDSHpk k r ε lam σ) (P : H →L[ℂ] Wp) (Q : Wq →L[ℂ] H) (A : Wp →L[ℂ] Wp) (C : Wq →L[ℂ] Wq) (τ : ℂ)
@@ -153,6 +201,11 @@ theorem hs_point {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ W
     rw [← ContinuousLinearMap.adjoint_inner_right, ds_inv_adj hσ ha, ← inner_conj_symm]
     rfl
 
+/- English proof (translation)
+Rewrite using `[integral_congr_ae (hμ.mono fun x hx => hs_point hσ P Q A C τ ha hb hx)]`. Rewrite using `[integral_const_mul]`. Use `congr 1`. Rewrite using `[integral_finsetSum _ (fun i _ => integrable_finsetSum _ (fun c _ => (hS _ _ _ _).1))]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[integral_finsetSum _ (fun c _ => (hS _ _ _ _).1)]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Conclude with `(hS _ _ _ _).2`.
+-/
 theorem inner_int {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [FiniteDimensional ℂ Wp]
     [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq]
     (hσ : IsDSHpk k r ε lam σ) {μG : Measure (Mt k r)} (hμ : ∀ᵐ x ∂μG, Matrix.of x ∈ UH (Hpk k r)) {d : ℝ}
@@ -197,14 +250,39 @@ def rfun (L : LocBessel k r) (σ : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k 
     ∑ i, ⟪σ (Matrix.of p.1 * Matrix.of p.2) (Q (L.π' (Matrix.of p.1)⁻¹ (stdOrthonormalBasis ℂ L.Wq i))),
       Q (stdOrthonormalBasis ℂ L.Wq i)⟫_ℂ
 
+/- English proof (translation)
+The claim follows from `((Measure.quasiMeasurePreserving_fst).ae hp).and ((Measure.quasiMeasurePreserving_snd).ae hq)`.
+-/
 theorem ae_prod_both {α β : Type*} [MeasurableSpace α] [MeasurableSpace β] {μ : Measure α} {ν : Measure β} [SFinite μ] [SFinite ν]
     {p : α → Prop} {q : β → Prop} (hp : ∀ᵐ x ∂μ, p x) (hq : ∀ᵐ y ∂ν, q y) : ∀ᵐ z ∂μ.prod ν, p z.1 ∧ q z.2 :=
   ((Measure.quasiMeasurePreserving_fst).ae hp).and ((Measure.quasiMeasurePreserving_snd).ae hq)
 
+/- English proof (translation)
+The claim follows from `ae_iff.2 h.2.2.1`.
+-/
 theorem ae_of_haar {S : Set (Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ)} {μ : Measure (Mt k r)} (h : IsHaarOn S μ) :
     ∀ᵐ x ∂μ, Matrix.of x ∈ S :=
   ae_iff.2 h.2.2.1
 
+/- English proof (translation)
+Establish `: SigmaFinite μW` using `hW.1`. Establish `: SigmaFinite μN` using `hN.1`. Establish `hC : MeasurableSet {y : Mt k r | Matrix.of y ∈ UH (Hpk k r)}` using `(show IsClosed {y : Mt k r | Matrix.of y ∈ UH (Hpk k r)} from Formalism.MainNotions.LeviCoordinates.isClosed_unitary_group k r).measurableSet`. Use `set A : Set (Mt k r) := {y | Matrix.of y ∉ UH (Hpk k r)} with hAdef`. Establish `hA : MeasurableSet A` using `hC.compl`.
+
+Establish `hmc : Continuous (fun p : Mt k r × Mt k r => (fun i j => (Matrix.of p.1 * Matrix.of p.2) i j : Mt k r))`. Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Simplify using `only [Matrix.mul_apply, Matrix.of_apply]`. Conclude with `continuous_finsetSum _ fun l _ => by fun_prop`. Establish `hm : Measurable (fun p : Mt k r × Mt k r => fun i j => (Matrix.of p.1 * Matrix.of p.2) i j)` using `hmc.measurable`.
+
+Establish `hSae : ∀ᵐ s ∂(muSof μW μN), Matrix.of s ∈ UH (Hpk k r)`. Unfold `muSof`. Rewrite using `[ae_map_iff hm.aemeasurable hC]`. Conclude with `(ae_prod_both (ae_of_haar hW) (ae_of_haar hN)).mono fun p hp => uh_mul hp.1.1 hp.2.1`. Establish `hSu : muSof μW μN Set.univ ≠ 0`.
+
+Unfold `muSof`. Rewrite using `[Measure.map_apply hm MeasurableSet.univ, Set.preimage_univ, ← Set.univ_prod_univ, Measure.prod_prod, hW1, one_mul]`. Conclude with `Measure.measure_univ_ne_zero.2 hN.2.1`. Establish `h0 : μG A = 0` using `hG.2.2.1`. Establish `e` using `hq (A.indicator 1) (measurable_one.indicator hA)`.
+
+Rewrite `e` using `[lintegral_indicator_one hA, h0]`. Establish `hle : ∫⁻ x, A.indicator (fun _ => muSof μW μN Set.univ) x ∂νq ≤ ∫⁻ x, (∫⁻ s, A.indicator 1 (fun i j => (Matrix.of s * Matrix.of x) i j) ∂(muSof μW μN)) ∂νq`. Use `lintegral_mono fun x => ?_` and prove the remaining obligations. Distinguish the cases in `hx : x ∈ A`. Rewrite using `[Set.indicator_of_mem hx, ← lintegral_one]`.
+
+Use `le_of_eq (lintegral_congr_ae (hSae.mono fun s hs => ?_)).symm` and prove the remaining obligations. Establish `hsx : (fun i j => (Matrix.of s * Matrix.of x) i j) ∈ A`. Introduce `hin`. Apply `hx` to reduce the goal to its premises. Establish `hu` using `isUnit_of_uh hs`.
+
+Establish `e1 : (Matrix.of s)⁻¹ * (Matrix.of s * Matrix.of x) = Matrix.of x` using `Matrix.nonsing_inv_mul_cancel_left _ _ hu`. Use `show Matrix.of x ∈ UH (Hpk k r)`. Rewrite using `[← e1]`. Conclude with `uh_mul (uh_inv hs) hin`. Rewrite using `[Set.indicator_of_mem hsx]`.
+
+Both sides reduce to the same expression. Rewrite using `[Set.indicator_of_notMem hx]`. Conclude with `bot_le`. Rewrite `hle` using `[← e, lintegral_indicator_const hA]`. Establish `hq0 : νq A = 0`.
+
+Break down `(mul_eq_zero.1 (le_zero_iff.1 hle)) with h | h` into its components or cases. Conclude with `absurd h hSu`. Conclude with `h`. Conclude with `ae_iff.2 hq0`.
+-/
 theorem quot_ae {z : Fin (2 * r + k + 1) → ℂ} {μG μW μN νq : Measure (Mt k r)} (hG : IsHaarOn (UH (Hpk k r)) μG)
     (hW : IsHaarOn (UWset k r z) μW) (hW1 : μW Set.univ = 1) (hN : IsHaarOn (Nset k r) μN)
     (hq : IsQuotMeas μG (muSof μW μN) νq) : ∀ᵐ x ∂νq, Matrix.of x ∈ UH (Hpk k r) := by

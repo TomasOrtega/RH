@@ -18,6 +18,9 @@ def ringInv : ringOn X U →+* ringOn Y (f ''ᵁ U) := (f.appIso U).inv.hom
 
 def ringHom : ringOn Y (f ''ᵁ U) →+* ringOn X U := (f.appIso U).hom.hom
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(f.appIso U).inv ((f.appIso U).hom r) = r`. Conclude with `(f.appIso U).hom_inv_id_apply r`.
+-/
 lemma ringInv_ringHom (r : ringOn Y (f ''ᵁ U)) : ringInv f U (ringHom f U r) = r := by
   change (f.appIso U).inv ((f.appIso U).hom r) = r
   exact (f.appIso U).hom_inv_id_apply r
@@ -25,12 +28,18 @@ lemma ringInv_ringHom (r : ringOn Y (f ''ᵁ U)) : ringInv f U (ringHom f U r) =
 def sec : ((preMod X).obj (M.restrict f)).obj (op U) →+ ((preMod Y).obj M).obj (op (f ''ᵁ U)) :=
   AddMonoidHom.id _
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma sec_smul (r : ringOn X U) (m : ((preMod X).obj (M.restrict f)).obj (op U)) :
     sec f M U (r • m) = ringInv f U r • sec f M U m := rfl
 
 def sec' : ((preMod Y).obj M).obj (op (f ''ᵁ U)) →+ ((preMod X).obj (M.restrict f)).obj (op U) :=
   AddMonoidHom.id _
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `r • m = ringInv f U (ringHom f U r) • m`. Rewrite using `[ringInv_ringHom]`.
+-/
 lemma sec'_smul (r : ringOn Y (f ''ᵁ U)) (m : ((preMod Y).obj M).obj (op (f ''ᵁ U))) :
     sec' f M U (r • m) = ringHom f U r • sec' f M U m := by
   change r • m = ringInv f U (ringHom f U r) • m
@@ -49,6 +58,9 @@ def toImage :
       simp only [AddMonoidHom.mk'_apply, sec_smul]
       exact smul_tmul _ _ _)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma toImage_tmul (m : ((preMod X).obj (M.restrict f)).obj (op U))
     (n : ((preMod X).obj (N.restrict f)).obj (op U)) :
     toImage f M N U (m ⊗ₜ n) = sec f M U m ⊗ₜ sec f N U n := rfl
@@ -66,6 +78,9 @@ def ofImage :
       simp only [AddMonoidHom.mk'_apply, sec'_smul]
       exact smul_tmul _ _ _)
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul m n => rfl`. Consider the case `add a b ha hb => rw [map_add, map_add, ha, hb]`.
+-/
 lemma ofImage_toImage (z : ((preMod X).obj (M.restrict f)).obj (op U) ⊗[ringOn X U]
     ((preMod X).obj (N.restrict f)).obj (op U)) : ofImage f M N U (toImage f M N U z) = z := by
   induction z using TensorProduct.induction_on with
@@ -73,6 +88,9 @@ lemma ofImage_toImage (z : ((preMod X).obj (M.restrict f)).obj (op U) ⊗[ringOn
   | tmul m n => rfl
   | add a b ha hb => rw [map_add, map_add, ha, hb]
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul m n => rfl`. Consider the case `add a b ha hb => rw [map_add, map_add, ha, hb]`.
+-/
 lemma toImage_ofImage (z : ((preMod Y).obj M).obj (op (f ''ᵁ U)) ⊗[ringOn Y (f ''ᵁ U)]
     ((preMod Y).obj N).obj (op (f ''ᵁ U))) : toImage f M N U (ofImage f M N U z) = z := by
   induction z using TensorProduct.induction_on with
@@ -80,6 +98,9 @@ lemma toImage_ofImage (z : ((preMod Y).obj M).obj (op (f ''ᵁ U)) ⊗[ringOn Y 
   | tmul m n => rfl
   | add a b ha hb => rw [map_add, map_add, ha, hb]
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul m n`. Rewrite using `[TensorProduct.smul_tmul', toImage_tmul, toImage_tmul, sec_smul, TensorProduct.smul_tmul']`. Consider the case `add a b ha hb => rw [smul_add, map_add, map_add, ha, hb, smul_add]`.
+-/
 lemma toImage_smul (r : ringOn X U) (z : ((preMod X).obj (M.restrict f)).obj (op U) ⊗[ringOn X U]
     ((preMod X).obj (N.restrict f)).obj (op U)) :
     toImage f M N U (r • z) = ringInv f U r • toImage f M N U z := by
@@ -94,6 +115,9 @@ def compApp : ((preMod X).obj (M.restrict f) ⊗ (preMod X).obj (N.restrict f)).
   (sec' f (M ⊗ N) U).comp (((tensorToSheaf M N).app (op (f ''ᵁ U))).hom.toAddMonoidHom.comp
     (toImage f M N U))
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `sec' f (M ⊗ N) U ((tensorToSheaf M N).app (op (f ''ᵁ U)) (toImage f M N U (r • z))) = sec' f (M ⊗ N) U (ringInv f U r • (tensorToSheaf M N).app (op (f ''ᵁ U)) (toImage f M N U z))`. Conclude with `congrArg (sec' f (M ⊗ N) U) ((congrArg ((tensorToSheaf M N).app (op (f ''ᵁ U))).hom (toImage_smul f M N U r z)).trans (((tensorToSheaf M N).app (op (f ''ᵁ U))).hom.map_smul (ringInv f U r) (toImage f M N U z)))`.
+-/
 lemma compApp_smul (r : ringOn X U)
     (z : ((preMod X).obj (M.restrict f) ⊗ (preMod X).obj (N.restrict f)).obj (op U)) :
     compApp f M N U (r • z) = r • compApp f M N U z := by
@@ -123,6 +147,11 @@ def comp : (preMod X).obj (M.restrict f) ⊗ (preMod X).obj (N.restrict f) ⟶
           exact (map_add L a b).trans ((congrArg₂ (· + ·) ha hb).trans (map_add R a b).symm) }
     (fun U r z => compApp_smul f M N U.unop r z)
 
+/- English proof (translation)
+Set `L` to `(toImage f M N V).comp (((preMod X).obj (M.restrict f) ⊗ (preMod X).obj (N.restrict f)).map (homOfLE h).op).hom.toAddMonoidHom`. Set `R` to `(((preMod Y).obj M ⊗ (preMod Y).obj N).map (homOfLE (f.image_mono h)).op).hom.toAddMonoidHom.comp (toImage f M N U)`. Express the relevant statement in the definitionally equal form `L z = R z`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => exact (map_zero L).trans (map_zero R).symm`.
+
+Consider the case `tmul m n => rfl`. Consider the case `add a b ha hb => exact (map_add L a b).trans ((congrArg₂ (· + ·) ha hb).trans (map_add R a b).symm)`.
+-/
 lemma toImage_map {U V : X.Opens} (h : V ≤ U)
     (z : ((preMod X).obj (M.restrict f) ⊗ (preMod X).obj (N.restrict f)).obj (op U)) :
     toImage f M N V (((preMod X).obj (M.restrict f) ⊗ (preMod X).obj (N.restrict f)).map
@@ -138,6 +167,21 @@ lemma toImage_map {U V : X.Opens} (h : V ≤ U)
   | tmul m n => rfl
   | add a b ha hb => exact (map_add L a b).trans ((congrArg₂ (· + ·) ha hb).trans (map_add R a b).symm)
 
+/- English proof (translation)
+Take `⟨hT₁, hT₂⟩` from `(ModulesTensor.W_toPresheaf_iff (tensorToSheaf M N)).1 (W_tensorToSheaf M N)`. Rewrite using `[ModulesTensor.W, MorphismProperty.inverseImage_iff, ModulesTensor.W_toPresheaf_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `U z hz`. Establish `h0 : (tensorToSheaf M N).app (op (f ''ᵁ U.unop)) (toImage f M N U.unop z) = 0` using `hz`.
+
+Establish `hS` using `hT₁ (op (f ''ᵁ U.unop)) _ h0`. Rewrite `hS`, the goal using `[Opens.mem_grothendieckTopology]`. Introduce `x hx`. Take `⟨W', i, hi, hxW'⟩` from `hS (f x) ⟨x, hx, rfl⟩`. Establish `hVU : f ⁻¹ᵁ W' ≤ U.unop`.
+
+Rewrite using `[← f.preimage_image_eq U.unop]`. Conclude with `f.preimage_mono i.le`. Use `⟨f ⁻¹ᵁ W', homOfLE hVU, ?_, hxW'⟩` and prove the remaining obligations. Establish `hi' : ((preMod Y).obj M ⊗ (preMod Y).obj N).map (homOfLE (f.image_mono hVU)).op (toImage f M N U.unop z) = 0` using `(ModulesTensor.zeroSieve _).downward_closed hi (homOfLE (f.image_preimage_le W'))`. Express the relevant statement in the definitionally equal form `(((preMod X).obj (M.restrict f) ⊗ (preMod X).obj (N.restrict f)).map (homOfLE hVU).op z) = 0`.
+
+Rewrite using `[← ofImage_toImage f M N (f ⁻¹ᵁ W') (((preMod X).obj (M.restrict f) ⊗ (preMod X).obj (N.restrict f)).map (homOfLE hVU).op z), toImage_map]`. Use `erw [hi', map_zero]`. Both sides reduce to the same expression. Introduce `U y`. Establish `hS` using `hT₂ (op (f ''ᵁ U.unop)) y`.
+
+Rewrite `hS`, the goal using `[Opens.mem_grothendieckTopology]`. Introduce `x hx`. Take `⟨W', i, hi, hxW'⟩` from `hS (f x) ⟨x, hx, rfl⟩`. Establish `hVU : f ⁻¹ᵁ W' ≤ U.unop`. Rewrite using `[← f.preimage_image_eq U.unop]`.
+
+Conclude with `f.preimage_mono i.le`. Use `⟨f ⁻¹ᵁ W', homOfLE hVU, ?_, hxW'⟩` and prove the remaining obligations. Take `⟨w, hw⟩` from `(ModulesTensor.imSieve _ _).downward_closed hi (homOfLE (f.image_preimage_le W'))`. Use `⟨ofImage f M N (f ⁻¹ᵁ W') w, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `sec' f (M ⊗ N) _ ((tensorToSheaf M N).app _ (toImage f M N (f ⁻¹ᵁ W') (ofImage f M N (f ⁻¹ᵁ W') w))) = _`.
+
+Use `erw [toImage_ofImage]`. Conclude with `hw`.
+-/
 lemma W_comp : ModulesTensor.W (Opens.grothendieckTopology X) X.sheaf.obj (comp f M N) := by
   obtain ⟨hT₁, hT₂⟩ := (ModulesTensor.W_toPresheaf_iff (tensorToSheaf M N)).1 (W_tensorToSheaf M N)
   rw [ModulesTensor.W, MorphismProperty.inverseImage_iff, ModulesTensor.W_toPresheaf_iff]

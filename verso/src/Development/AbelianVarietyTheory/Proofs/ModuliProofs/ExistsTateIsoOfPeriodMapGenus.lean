@@ -18,6 +18,41 @@ namespace GlobalTheory
 
 open PeriodTate in
 
+/- English proof (translation)
+Introduce `hL hL2 hT hU E _ _ _ H D D' f ν Q u Hm χ act P hpq ⟨_, _, htow, hmod, hν⟩ hAH hinj hΛ hE hact k _ _ β`. Take `⟨Ef, hEf, -, -, -, -, -, -, hW₀⟩` from `GlobalTheory.T.appellHumbert_uniformisation_riemannForm hL hL2 hT hU Q u Hm χ hAH`. Establish `hadd` using `u.ex_add`. Establish `hsurj` using `u.ex_onto`. Establish `hker : ∀ z, u.ex z = 1 ↔ z ∈ P.range` using `fun z => (u.ker z).trans (hΛ z)`.
+
+Establish `hW : ∀ (n : ℕ) (a b : D'.La), 0 < n → Out.WeilIs Q.A Q.L n (u.ex ((n : ℂ)⁻¹ • P a)) (u.ex ((n : ℂ)⁻¹ • P b)) (unitOn (rt n (D'.EF a b)))`. Introduce `n a b hn`. Establish `h : Ef ⟨P a, (hΛ _).2 ⟨a, rfl⟩⟩ ⟨P b, (hΛ _).2 ⟨b, rfl⟩⟩ = D'.EF a b`. Use `(hEf ⟨P a, (hΛ _).2 ⟨a, rfl⟩⟩ ⟨P b, (hΛ _).2 ⟨b, rfl⟩⟩).trans (hE a b)` as an intermediate fact. Conclude with `this` after adjusting the coercions.
+
+Conclude with `hW₀ n ⟨P a, (hΛ _).2 ⟨a, rfl⟩⟩ ⟨P b, (hΛ _).2 ⟨b, rfl⟩⟩ _ hn (by rw [h, rt_val])`. Generalize the expression as in `u.ex = e at hadd hsurj hker hW hact ⊢`. Establish `: Nontrivial D.La` using `Module.nontrivial_of_finrank_pos (R := 𝓞 E) (by rw [D.rank]; omega)`. Take `⟨a₀, b₀, h₀⟩` from `exists_pairing_one D`. Establish `: Nontrivial D'.La`.
+
+Use `⟨f 2 a₀, 0, fun h => ?_⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `((hmod 2 two_pos).1 a₀).1 ⟨0, by rw [h, smul_zero]⟩`. Rewrite `h₀` using `[hc, map_nsmul, LinearMap.smul_apply, nsmul_eq_mul]`. Use linear arithmetic over natural numbers and integers. Take `⟨a₁, b₁, h₁⟩` from `exists_pairing_one D'`.
+
+Establish `hcong : ∀ (n : ℕ) (a b c d : D'.La), (n : ℤ) ∣ D'.EF (a + n • c) (b + n • d) - D'.EF a b`. Introduce `n a b c d`. Use `⟨D'.EF a d + D'.EF c b + n * D'.EF c d, ?_⟩` and prove the remaining obligations. Simplify using `only [map_add, map_nsmul, LinearMap.add_apply, LinearMap.smul_apply, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hcop : ∀ n : ℕ, 0 < n → IsCoprime (ν n) n`. Introduce `n hn`. Take `⟨a, c, ha⟩` from `(hmod n hn).2 a₁`. Take `⟨b, d, hb⟩` from `(hmod n hn).2 b₁`. Take `⟨s, hs⟩` from `hcong n (f n a) (f n b) c d`.
+
+Take `⟨v, hv⟩` from `hν n hn a b`. Rewrite `hs` using `[← ha, ← hb, h₁]`. Conclude with `⟨D.EF a b, s + v, by linear_combination -hs - hv⟩`. Establish `hνt : ∀ n m : ℕ, 0 < n → 0 < m → (n : ℤ) ∣ ν (n * m) - ν n`. Introduce `n m hn hm`.
+
+Take `⟨c, hc⟩` from `htow n m hn hm a₀`. Take `⟨d, hd⟩` from `htow n m hn hm b₀`. Take `⟨s, hs⟩` from `hcong n (f n a₀) (f n b₀) c d`. Take `⟨v, hv⟩` from `hν n hn a₀ b₀`. Take `⟨w, hw⟩` from `hν (n * m) (Nat.mul_pos hn hm) a₀ b₀`.
+
+Rewrite `hs` using `[← hc, ← hd]`. Rewrite `hv`, `hw` using `[h₀]`. Move the coercions through the operations in `at hw`. Conclude with `⟨s + v - m * w, by linear_combination hs + hv - hw⟩`. Set `e' : Multiplicative (Fin Q.g → ℂ) →* (𝟙_ (Over (Sp ℂ)) ⟶ Q.A)` to `MonoidHom.mk' (fun z => e z.toAdd) fun z w => hadd _ _`.
+
+Establish `hpow : ∀ (n : ℕ) z, e z ^ n = e (n • z)` using `fun n z => (map_pow e' (Multiplicative.ofAdd z) n).symm`. Set `ρ` to `preHom (G := Q.A) (toUnit (Over.mk (spMap β)))`. Establish `hρ : Function.Injective ρ` using `pre_injective β Q.A`. Establish `hl : (toUnit (Over.mk (spMap β))).left = spMap β`. Simplify using `using Over.w (toUnit (Over.mk (spMap β)))`.
+
+Establish `hsm : ∀ n : ℕ, 0 < n → ∀ z : Fin Q.g → ℂ, n • (n : ℂ)⁻¹ • z = z` using `fun n hn z => by`. Rewrite using `[← Nat.cast_smul_eq_nsmul ℂ, smul_smul, mul_inv_cancel₀ (by exact_mod_cast hn.ne'), one_smul]`. Establish `hsm' : ∀ n : ℕ, 0 < n → ∀ z : Fin Q.g → ℂ, (n : ℂ)⁻¹ • n • z = z` using `fun n hn z => by`. Rewrite using `[smul_comm, hsm n hn]`. Establish `hshift : ∀ n : ℕ, 0 < n → ∀ a c : D'.La, e ((n : ℂ)⁻¹ • P (a + n • c)) = e ((n : ℂ)⁻¹ • P a)`.
+
+Introduce `n hn a c`. Rewrite using `[map_add, smul_add, hadd, map_nsmul, hsm' n hn, (hker _).2 ⟨c, rfl⟩, _root_.mul_one]`. Use `⟨{ ζ := fun n => Units.map β.toMonoidHom (rt n (ν n)) ζ_prim := fun n hn => (rt_prim hn (hcop n hn)).map_of_injective (Units.map_injective β.injective) ζ_pow := fun n m hn hm => by rw [← map_pow, rt_pow hm, rt_congr hn (hνt n m hn hm)] ev := fun n a => ρ (e ((n : ℂ)⁻¹ • P (f n a) …` and prove the remaining obligations. Use `show toUnit (Over.mk (spMap β)) ≫ _ = (toUnit (Over.mk (spMap β)) ≫ _) ≫ _`. Rewrite using `[Category.assoc, ← hact, map_smul]`.
+
+Rewrite using `[map_eq_one_iff ρ hρ, hker, ← (hmod n hn).1 a]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, hc⟩`. Conclude with `⟨c, hinj (by rw [map_nsmul, hc, hsm n hn])⟩`. Introduce and unpack `⟨c, hc⟩`.
+
+Conclude with `⟨c, by rw [hc, map_nsmul, hsm' n hn]⟩`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Take `⟨y, hy, rfl⟩` from `pre_onto hL.mulN β Q hn x hx`. Take `⟨z, rfl⟩` from `hsurj y`.
+
+Rewrite `hy` using `[hpow, hker]`. Take `⟨a', ha'⟩` from `hy`. Take `⟨a, c, rfl⟩` from `(hmod n hn).2 a'`. Use `⟨a, congrArg ρ ?_⟩` and prove the remaining obligations. Rewrite using `[← hshift n hn _ c, ha', hsm' n hn]`.
+
+Introduce and unpack `⟨a, rfl⟩`. Rewrite using `[← map_pow, hpow, hsm n hn, (hker _).2 ⟨_, rfl⟩, map_one]`. Take `⟨c, hc⟩` from `htow n m hn hm a`. Rewrite using `[← map_pow, hpow, Nat.cast_mul, mul_inv_rev, mul_smul, hsm m hm, hc, hshift n hn]`. Establish `h` using `CommPairing.weilIs_pull hL.globalFns Q.isAb Q.isLB (toUnit (Over.mk (spMap β))) (hW n (f n a) (f n b) hn)`.
+
+Rewrite `h` using `[unitOn_pull, rt_congr hn (hν n hn a b), rt_mul, map_zpow]`. Conclude with `h`. Conclude with `congrArg (· ≫ (e ((n : ℂ)⁻¹ • P (f n a))).left) hl`.
+-/
 theorem exists_tateIso_of_periodMap_genus : Out.Laws → Out.Laws2 → (∀ (S : Scheme.{0}) (P : Out.PolAV S) (M : LB P.A.left), M.IsLB → ∃ t : LB.Gen (Theta P.A M), t.IsGen) → ThetaUnifAV → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (D' : Datum H) (f : ℕ → D.La →ₗ[𝓞 E] D'.La) (ν : ℕ → ℤ) (P : Out.PolAV (Sp ℂ)) (u : HolUnif P.A P.L P.g) (Hm : Matrix (Fin P.g) (Fin P.g) ℂ) (χ : u.Λ → ℂ) (act : OAct (𝓞 E) P.A) (Q : D'.La →+ (Fin P.g → ℂ)), 1 ≤ D.p + D.q → (D'.p = D.p ∧ D'.q = D.q ∧ (∀ n m : ℕ, 0 < n → 0 < m → ∀ x, ∃ y, f (n * m) x = f n x + n • y) ∧ (∀ n : ℕ, 0 < n → (∀ x, (∃ y, f n x = n • y) ↔ ∃ y, x = n • y) ∧ ∀ x', ∃ x y, x' = f n x + n • y) ∧ ∀ n : ℕ, 0 < n → ∀ x x', (n : ℤ) ∣ D'.EF (f n x) (f n x') - ν n * D.EF x x') → u.IsAH Hm χ → Function.Injective Q → (∀ z, z ∈ u.Λ ↔ z ∈ Q.range) → (∀ x y, (hermForm Hm (Q x) (Q y)).im = D'.EF x y) → (∀ (a : 𝓞 E) (n : ℕ) x, u.ex ((n : ℂ)⁻¹ • Q (a • x)) = u.ex ((n : ℂ)⁻¹ • Q x) ≫ act.act a) → ∀ (K : Type) [Field K] [IsAlgClosed K] (β : ℂ →+* K), ∃ I : TateIso D K (Over.mk (spMap β) ⟶ P.A) (fun c y => y ≫ act.act c) (fun n y y' c => Out.WeilIs P.A P.L n y y' (unitOn c)), ∀ n : ℕ, 0 < n → (I.ζ n : K) = β (Complex.exp (-(2 * Real.pi * Complex.I) * (ν n : ℂ) / n)) ∧ ∀ x, (I.ev n x).left = spMap β ≫ (u.ex ((n : ℂ)⁻¹ • Q (f n x))).left := by
   intro hL hL2 hT hU E _ _ _ H D D' f ν Q u Hm χ act P hpq ⟨_, _, htow, hmod, hν⟩ hAH hinj hΛ hE hact k _ _ β
   obtain ⟨Ef, hEf, -, -, -, -, -, -, hW₀⟩ := GlobalTheory.T.appellHumbert_uniformisation_riemannForm hL hL2 hT hU Q u Hm χ hAH

@@ -11,23 +11,46 @@ open scoped InnerProductSpace
 
 noncomputable section
 
+/- English proof (translation)
+Simplify using `[spherePoint, PiLp.inner_apply, Fin.sum_univ_three, Real.cos_sub]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem inner_spherePoint (c₁ φ₁ c₂ φ₂ : ℝ) :
     ⟪spherePoint c₁ φ₁, spherePoint c₂ φ₂⟫_ℝ =
       c₁ * c₂ + Real.sqrt (1 - c₁ ^ 2) * Real.sqrt (1 - c₂ ^ 2) * Real.cos (φ₂ - φ₁) := by
   simp [spherePoint, PiLp.inner_apply, Fin.sum_univ_three, Real.cos_sub]
   ring
 
+/- English proof (translation)
+Simplify using `[spherePoint]`.
+-/
 theorem spherePoint_two (c φ : ℝ) : spherePoint c φ 2 = c := by
   simp [spherePoint]
 
+/- English proof (translation)
+Unfold `spherePoint`. Use `fun_prop`.
+-/
 theorem continuous_spherePoint : Continuous (fun q : ℝ × ℝ => spherePoint q.1 q.2) := by
   unfold spherePoint
   fun_prop
 
+/- English proof (translation)
+Unfold `kernelL`. Conclude with `measurable_const.mul (Real.measurable_log.comp ((measurable_const.sub measurable_id).div_const _))`.
+-/
 theorem measurable_kernelL : Measurable kernelL := by
   unfold kernelL
   exact measurable_const.mul (Real.measurable_log.comp ((measurable_const.sub measurable_id).div_const _))
 
+/- English proof (translation)
+Take `⟨a₁, b₁⟩` from `h₁`. Take `⟨a₂, b₂⟩` from `h₂`. Establish `hs₁ : Real.sqrt (1 - c₁ ^ 2) ^ 2 = 1 - c₁ ^ 2` using `Real.sq_sqrt (by nlinarith)`. Establish `hs₂ : Real.sqrt (1 - c₂ ^ 2) ^ 2 = 1 - c₂ ^ 2` using `Real.sq_sqrt (by nlinarith)`. Establish `hB2 : (Real.sqrt (1 - c₁ ^ 2) * Real.sqrt (1 - c₂ ^ 2)) ^ 2 = (1 - c₁ ^ 2) * (1 - c₂ ^ 2)`.
+
+Rewrite using `[mul_pow, hs₁, hs₂]`. Use `set B := Real.sqrt (1 - c₁ ^ 2) * Real.sqrt (1 - c₂ ^ 2)`. Establish `hB : 0 ≤ B` using `mul_nonneg (Real.sqrt_nonneg _) (Real.sqrt_nonneg _)`. Establish `hA : 0 ≤ 1 - c₁ * c₂` using `by nlinarith`. Establish `hA' : 0 ≤ 1 + c₁ * c₂` using `by nlinarith`.
+
+Use `⟨hB, ?_, ?_, fun hne => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Rewrite `h` using `[not_le]`. Use polynomial arithmetic with `[sq_nonneg (c₁ - c₂)]`. Assume the negation of the conclusion as `h`.
+
+Rewrite `h` using `[not_le]`. Use polynomial arithmetic with `[sq_nonneg (c₁ + c₂)]`. Establish `hd : 0 < (c₁ - c₂) ^ 2`. Establish `: c₁ - c₂ ≠ 0` using `sub_ne_zero.mpr hne`. Check the signs of the components of the expression.
+
+Assume the negation of the conclusion as `h`. Rewrite `h` using `[not_lt]`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem sqrt_mul_sqrt_le {c₁ c₂ : ℝ} (h₁ : c₁ ∈ Icc (-1 : ℝ) 1) (h₂ : c₂ ∈ Icc (-1 : ℝ) 1) :
     0 ≤ Real.sqrt (1 - c₁ ^ 2) * Real.sqrt (1 - c₂ ^ 2) ∧
     Real.sqrt (1 - c₁ ^ 2) * Real.sqrt (1 - c₂ ^ 2) ≤ 1 - c₁ * c₂ ∧
@@ -57,6 +80,11 @@ theorem sqrt_mul_sqrt_le {c₁ c₂ : ℝ} (h₁ : c₁ ∈ Icc (-1 : ℝ) 1) (h
     rw [not_lt] at h
     nlinarith
 
+/- English proof (translation)
+Take `⟨hB, hB₁, hB₂, -⟩` from `sqrt_mul_sqrt_le h₁ h₂`. Use `set B := Real.sqrt (1 - c₁ ^ 2) * Real.sqrt (1 - c₂ ^ 2)`. Establish `hc` using `Real.neg_one_le_cos (φ₂ - φ₁)`. Establish `hc'` using `Real.cos_le_one (φ₂ - φ₁)`. Rewrite using `[inner_spherePoint, kernelL]`.
+
+Establish `e₁ : 0 ≤ (1 - (c₁ * c₂ + B * Real.cos (φ₂ - φ₁))) / 2` using `by nlinarith`. Establish `e₂ : (1 - (c₁ * c₂ + B * Real.cos (φ₂ - φ₁))) / 2 ≤ 1` using `by nlinarith`. Use `Real.log_nonpos e₁ e₂` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem kernelL_spherePoint_nonpos {c₁ c₂ : ℝ} (h₁ : c₁ ∈ Icc (-1 : ℝ) 1)
     (h₂ : c₂ ∈ Icc (-1 : ℝ) 1) (φ₁ φ₂ : ℝ) :
     kernelL ⟪spherePoint c₁ φ₁, spherePoint c₂ φ₂⟫_ℝ ≤ 0 := by
@@ -70,6 +98,11 @@ theorem kernelL_spherePoint_nonpos {c₁ c₂ : ℝ} (h₁ : c₁ ∈ Icc (-1 : 
   have := Real.log_nonpos e₁ e₂
   linarith
 
+/- English proof (translation)
+Take `⟨hB, -, -, hlt⟩` from `sqrt_mul_sqrt_le h₁ h₂`. Establish `hlt` using `hlt hne`. Use `set B := Real.sqrt (1 - c₁ ^ 2) * Real.sqrt (1 - c₂ ^ 2)`. Simplify using `only [inner_spherePoint, kernelL]`. Use `continuous_const.mul (Continuous.log (by fun_prop) fun φ₂ => ?_)` and prove the remaining obligations.
+
+Establish `hc'` using `Real.cos_le_one (φ₂ - φ₁)`. Apply `ne_of_gt` to reduce the goal to its premises. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left hc' hB]`.
+-/
 theorem continuous_kernelL_spherePoint {c₁ c₂ : ℝ} (h₁ : c₁ ∈ Icc (-1 : ℝ) 1)
     (h₂ : c₂ ∈ Icc (-1 : ℝ) 1) (hne : c₁ ≠ c₂) (φ₁ : ℝ) :
     Continuous (fun φ₂ => kernelL ⟪spherePoint c₁ φ₁, spherePoint c₂ φ₂⟫_ℝ) := by
@@ -82,6 +115,13 @@ theorem continuous_kernelL_spherePoint {c₁ c₂ : ℝ} (h₁ : c₁ ∈ Icc (-
   apply ne_of_gt
   nlinarith [mul_le_mul_of_nonneg_left hc' hB]
 
+/- English proof (translation)
+Establish `hcont` using `continuous_kernelL_spherePoint h₁ h₂ hne φ₁`. Use `⟨hcont.integrableOn_Icc.mono_set Ioc_subset_Icc_self, ?_⟩` and prove the remaining obligations. Establish `hshift : ∀ φ₂, kernelL ⟪spherePoint c₁ φ₁, spherePoint c₂ φ₂⟫_ℝ = (fun φ => kernelL ⟪spherePoint c₁ 0, spherePoint c₂ φ⟫_ℝ) (φ₂ - φ₁)`. Introduce `φ₂`. Simplify using `only [inner_spherePoint, sub_zero]`.
+
+Establish `hper : Function.Periodic (fun φ => kernelL ⟪spherePoint c₁ 0, spherePoint c₂ φ⟫_ℝ) (2 * Real.pi)`. Introduce `φ`. Simplify using `only [inner_spherePoint, sub_zero, Real.cos_add_two_pi]`. Establish `e₁` using `intervalIntegral.integral_comp_sub_right (fun φ => kernelL ⟪spherePoint c₁ 0, spherePoint c₂ φ⟫_ℝ) (a := 0) (b := 2 * Real.pi) φ₁`. Establish `e₂` using `hper.intervalIntegral_add_eq (0 - φ₁) 0`.
+
+Establish `hk` using `hK c₁ h₁ c₂ h₂ hne`. Rewrite using `[← intervalIntegral.integral_of_le Real.two_pi_pos.le]`. Repeatedly rewrite using `[hshift]`. Rewrite using `[e₁, show 2 * Real.pi - φ₁ = 0 - φ₁ + 2 * Real.pi by ring, e₂, zero_add, ← hk]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem integral_longitude (hK : ZonalKernel.Statement) {c₁ c₂ : ℝ} (h₁ : c₁ ∈ Icc (-1 : ℝ) 1)
     (h₂ : c₂ ∈ Icc (-1 : ℝ) 1) (hne : c₁ ≠ c₂) (φ₁ : ℝ) :
     IntegrableOn (fun φ₂ => kernelL ⟪spherePoint c₁ φ₁, spherePoint c₂ φ₂⟫_ℝ)
@@ -107,6 +147,9 @@ theorem integral_longitude (hK : ZonalKernel.Statement) {c₁ c₂ : ℝ} (h₁ 
   rw [e₁, show 2 * Real.pi - φ₁ = 0 - φ₁ + 2 * Real.pi by ring, e₂, zero_add, ← hk]
   field_simp
 
+/- English proof (translation)
+The claim follows from `|zonalKernel c₁ c₂| ≤ -(1 / 2) * Real.log ((1 - c₁ ^ 2) / 4) := by obtain ⟨a₁, b₁⟩ := h₁ obtain ⟨a₂, b₂⟩ := h₂ have hmax₁ : c₁ ≤ max c₁ c₂ := le_max_left _ _ have hmax₂ : max c₁ c₂ ≤ 1 := max_le b₁.le b₂ have hmin₁ : min c₁ c₂ ≤ c₁ := min_le_left _ _ have hmin₂ : -1 ≤ min c₁ c₂ : …`.
+-/
 theorem abs_zonalKernel_le {c₁ c₂ : ℝ} (h₁ : c₁ ∈ Ioo (-1 : ℝ) 1) (h₂ : c₂ ∈ Icc (-1 : ℝ) 1) :
     |zonalKernel c₁ c₂| ≤ -(1 / 2) * Real.log ((1 - c₁ ^ 2) / 4) := by
   obtain ⟨a₁, b₁⟩ := h₁
@@ -127,6 +170,13 @@ theorem abs_zonalKernel_le {c₁ c₂ : ℝ} (h₁ : c₁ ∈ Ioo (-1 : ℝ) 1) 
   rw [zonalKernel, abs_of_nonpos (by linarith)]
   linarith
 
+/- English proof (translation)
+Rewrite using `[integrableOn_Icc_iff_integrableOn_Ioo]`. Establish `i₁ : IntervalIntegrable (fun c => Real.log (1 - c)) volume (-1) 1`. Use `(intervalIntegral.intervalIntegrable_log' (a := 2) (b := 0)).comp_sub_left 1` as an intermediate fact. Evaluate the numerical expressions using `at this`. Conclude with `this`.
+
+Establish `i₂ : IntervalIntegrable (fun c => Real.log (c + 1)) volume (-1) 1`. Use `(intervalIntegral.intervalIntegrable_log' (a := 0) (b := 2)).comp_add_right 1` as an intermediate fact. Evaluate the numerical expressions using `at this`. Conclude with `this`. Establish `i₃ : IntegrableOn (fun c => Real.log (1 - c) + Real.log (c + 1) - Real.log 4) (Ioo (-1) 1)` using `(intervalIntegrable_iff_integrableOn_Ioo_of_le (by norm_num)).mp ((i₁.add i₂).sub intervalIntegrable_const)`.
+
+Use `i₃.congr_fun (fun c hc => ?_) measurableSet_Ioo` and prove the remaining obligations. Take `⟨a, b⟩` from `hc`. Rewrite using `[show (1 - c ^ 2) / 4 = (1 - c) * (c + 1) / 4 by ring, Real.log_div (by nlinarith) (by norm_num), Real.log_mul (by linarith) (by linarith)]`.
+-/
 theorem integrableOn_log_one_sub_sq :
     IntegrableOn (fun c : ℝ => Real.log ((1 - c ^ 2) / 4)) (Icc (-1) 1) := by
   rw [integrableOn_Icc_iff_integrableOn_Ioo]
@@ -148,6 +198,21 @@ theorem integrableOn_log_one_sub_sq :
 abbrev heightLongitudeMeasure : Measure (ℝ × ℝ) :=
   (volume.restrict (Icc (-1 : ℝ) 1)).prod (volume.restrict (Ioc 0 (2 * Real.pi)))
 
+/- English proof (translation)
+Establish `h₁' : c₁ ∈ Icc (-1 : ℝ) 1` using `Ioo_subset_Icc_self h₁`. Establish `hne : ∀ᵐ x ∂(volume : Measure ℝ), x ≠ c₁` using `compl_mem_ae_iff.mpr (measure_singleton c₁)`. Establish `hae : ∀ᵐ c₂ ∂(volume.restrict (Icc (-1 : ℝ) 1)), c₂ ∈ Icc (-1 : ℝ) 1 ∧ c₂ ≠ c₁` using `by filter_upwards [ae_restrict_mem measurableSet_Icc, ae_restrict_of_ae hne] with c₂ h h'`. Conclude with `⟨h, h'⟩`. Take `⟨M, hM⟩` from `(isCompact_Icc : IsCompact (Icc (-1 : ℝ) 1)).exists_bound_of_continuousOn hh.continuousOn`.
+
+Establish `hmeas : Measurable (fun q : ℝ × ℝ => kernelL ⟪spherePoint c₁ φ₁, spherePoint q.1 q.2⟫_ℝ * h q.1)` using `(measurable_kernelL.comp ((continuous_const.inner continuous_spherePoint).measurable)).mul (hh.measurable.comp measurable_fst)`. Establish `hint : Integrable (fun q : ℝ × ℝ => kernelL ⟪spherePoint c₁ φ₁, spherePoint q.1 q.2⟫_ℝ * h q.1) heightLongitudeMeasure`. Rewrite using `[heightLongitudeMeasure, integrable_prod_iff hmeas.aestronglyMeasurable]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `filter_upwards [hae] with c₂ hc₂`.
+
+Conclude with `(integral_longitude hK h₁' hc₂.1 hc₂.2.symm φ₁).1.mul_const (h c₂)`. Use `Integrable.mono' (integrable_const (2 * Real.pi * (-(1 / 2) * Real.log ((1 - c₁ ^ 2) / 4)) * M)) hmeas.aestronglyMeasurable.norm.integral_prod_right' ?_ filter_upwards [hae] with c₂ hc₂` and prove the remaining obligations. Establish `hl` using `(integral_longitude hK h₁' hc₂.1 hc₂.2.symm φ₁).2`. Establish `hnp` using `kernelL_spherePoint_nonpos h₁' hc₂.1 φ₁`. Establish `e : ∫ φ₂ in Ioc 0 (2 * Real.pi), ‖kernelL ⟪spherePoint c₁ φ₁, spherePoint (c₂, φ₂).1 (c₂, φ₂).2⟫_ℝ * h (c₂, φ₂).1‖ = -(2 * Real.pi * zonalKernel c₁ c₂) * |h c₂|`.
+
+Rewrite using `[← hl, ← integral_neg, ← integral_mul_const]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun φ₂ => ?_)` and prove the remaining obligations. Simplify using `only [norm_mul, Real.norm_eq_abs, abs_of_nonpos (hnp φ₂)]`. Rewrite using `[e]`. Establish `hz` using `abs_zonalKernel_le h₁ hc₂.1`.
+
+Establish `hM' : |h c₂| ≤ M` using `by simpa [Real.norm_eq_abs] using hM c₂ hc₂.1`. Establish `hz' : -(2 * Real.pi * zonalKernel c₁ c₂) ≤ 2 * Real.pi * (-(1 / 2) * Real.log ((1 - c₁ ^ 2) / 4))`. Use `neg_abs_le (zonalKernel c₁ c₂)` as an intermediate fact. Use polynomial arithmetic with `[Real.pi_pos]`. Establish `h0 : 0 ≤ -(2 * Real.pi * zonalKernel c₁ c₂)`.
+
+Rewrite using `[← hl]`. Conclude with `neg_nonneg.mpr (setIntegral_nonpos measurableSet_Ioc fun φ₂ _ => hnp φ₂)`. Rewrite using `[Real.norm_eq_abs, abs_of_nonneg (mul_nonneg h0 (abs_nonneg _))]`. Conclude with `mul_le_mul hz' hM' (abs_nonneg _) (h0.trans hz')`. Use `⟨hint, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[heightLongitudeMeasure, integral_prod _ hint]`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hae] with c₂ hc₂`. Rewrite using `[integral_mul_const, (integral_longitude hK h₁' hc₂.1 hc₂.2.symm φ₁).2]`.
+-/
 theorem integral_kernelL_mul (hK : ZonalKernel.Statement) {c₁ : ℝ} (h₁ : c₁ ∈ Ioo (-1 : ℝ) 1)
     (φ₁ : ℝ) {h : ℝ → ℝ} (hh : Continuous h) :
     Integrable (fun q : ℝ × ℝ => kernelL ⟪spherePoint c₁ φ₁, spherePoint q.1 q.2⟫_ℝ * h q.1)
@@ -203,6 +268,41 @@ theorem integral_kernelL_mul (hK : ZonalKernel.Statement) {c₁ : ℝ} (h₁ : c
   filter_upwards [hae] with c₂ hc₂
   rw [integral_mul_const, (integral_longitude hK h₁' hc₂.1 hc₂.2.symm φ₁).2]
 
+/- English proof (translation)
+Introduce `F H`. Establish `: IsProbabilityMeasure sphereMeasure` using `⟨sphereMeasure_univ⟩`. Use `set μ := heightLongitudeMeasure with hμ`. Establish `hsp : Measurable (fun q : ℝ × ℝ => spherePoint q.1 q.2)` using `continuous_spherePoint.measurable`. Establish `hι : Measurable (fun n : Sphere2 => (n : E3))` using `measurable_subtype_coe`.
+
+Use `set k : ENNReal := (ENNReal.ofReal (4 * Real.pi))⁻¹ with hk`. Establish `hA' : sphereMeasure.map (fun n : Sphere2 => (n : E3)) = k • μ.map (fun q : ℝ × ℝ => spherePoint q.1 q.2)`. Rewrite using `[hA, hμ, heightLongitudeMeasure, Measure.prod_restrict, ← Measure.volume_eq_prod]`. Establish `hmap : pairMeasure.map (Prod.map (fun n : Sphere2 => (n : E3)) (fun n : Sphere2 => (n : E3))) = (k * k) • (μ.prod μ).map (Prod.map (fun q : ℝ × ℝ => spherePoint q.1 q.2) (fun q : ℝ × ℝ => spherePoint q.1 q.2))`. Rewrite using `[pairMeasure, ← Measure.map_prod_map _ _ hι hι, hA', Measure.prod_smul_left, Measure.prod_smul_right, Measure.map_prod_map _ _ hsp hsp, smul_smul]`.
+
+Establish `h4 : ENNReal.ofReal (4 * Real.pi) ≠ 0` using `(ENNReal.ofReal_pos.mpr (by positivity)).ne'`. Establish `hk0 : k * k ≠ 0` using `mul_ne_zero (ENNReal.inv_ne_zero.mpr ENNReal.ofReal_ne_top) (ENNReal.inv_ne_zero.mpr ENNReal.ofReal_ne_top)`. Establish `hktop : k * k ≠ ⊤` using `ENNReal.mul_ne_top (ENNReal.inv_ne_top.mpr h4) (ENNReal.inv_ne_top.mpr h4)`. Use `set g : E3 × E3 → ℝ := fun x => kernelL ⟪x.1, x.2⟫_ℝ * F.eval (x.1 2) * H.eval (x.2 2) with hg`. Establish `hgm : Measurable g`.
+
+Establish `hF : Continuous (fun x : E3 × E3 => F.eval (x.1 2))` using `by fun_prop`. Establish `hH : Continuous (fun x : E3 × E3 => H.eval (x.2 2))` using `by fun_prop`. Conclude with `((measurable_kernelL.comp continuous_inner.measurable).mul hF.measurable).mul hH.measurable`. Use `set ψ : (ℝ × ℝ) × (ℝ × ℝ) → ℝ := fun q => kernelL ⟪spherePoint q.1.1 q.1.2, spherePoint q.2.1 q.2.2⟫_ℝ * F.eval q.1.1 * H.eval q.2.1 with hψdef`. Establish `hgψ : g ∘ Prod.map (fun q : ℝ × ℝ => spherePoint q.1 q.2) (fun q : ℝ × ℝ => spherePoint q.1 q.2) = ψ`.
+
+Use function extensionality and compare the values at `q`. Simplify using `[hg, hψdef, spherePoint_two]`. Establish `hψm : Measurable ψ` using `hgψ ▸ hgm.comp (hsp.prodMap hsp)`. Establish `haeI : ∀ᵐ c ∂(volume.restrict (Icc (-1 : ℝ) 1)), c ∈ Ioo (-1 : ℝ) 1` using `ae_restrict_of_ae_eq_of_ae_restrict Ioo_ae_eq_Icc (ae_restrict_mem measurableSet_Ioo)`. Establish `hae₁ : ∀ᵐ q ∂μ, q.1 ∈ Ioo (-1 : ℝ) 1` using `Measure.quasiMeasurePreserving_fst.ae haeI`.
+
+Establish `hae₂ : ∀ᵐ q ∂μ, q.1 ∈ Icc (-1 : ℝ) 1` using `Measure.quasiMeasurePreserving_fst.ae (ae_restrict_mem measurableSet_Icc)`. Take `⟨MF, hMF⟩` from `(isCompact_Icc : IsCompact (Icc (-1 : ℝ) 1)).exists_bound_of_continuousOn F.continuous.continuousOn`. Take `⟨MH, hMH⟩` from `(isCompact_Icc : IsCompact (Icc (-1 : ℝ) 1)).exists_bound_of_continuousOn H.continuous.continuousOn`. Establish `hslice : ∀ q₁ : ℝ × ℝ, (fun q₂ => ψ (q₁, q₂)) = fun q₂ : ℝ × ℝ => kernelL ⟪spherePoint q₁.1 q₁.2, spherePoint q₂.1 q₂.2⟫_ℝ * (F.eval q₁.1 * H.eval q₂.1)`. Introduce `q₁`.
+
+Use function extensionality and compare the values at `q₂`. Simplify using `only [hψdef]`. Expand and normalize the polynomial expressions, which then agree. Establish `hψint : Integrable ψ (μ.prod μ)`. Rewrite using `[integrable_prod_iff hψm.aestronglyMeasurable]`.
+
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `filter_upwards [hae₁] with q₁ hq₁`. Rewrite using `[hslice q₁]`. Conclude with `(integral_kernelL_mul hK hq₁ q₁.2 (h := fun c₂ => F.eval q₁.1 * H.eval c₂) (by fun_prop)).1`. Establish `hw` using `(((((integrableOn_log_one_sub_sq.comp_fst (volume.restrict (Ioc 0 (2 * Real.pi)))).const_mul (-(1 / 2))).const_mul (2 * Real.pi)).mul_const (MF * MH)).mul_const 2)`.
+
+Use `Integrable.mono' hw hψm.aestronglyMeasurable.norm.integral_prod_right' ?_` and prove the remaining obligations. Use `filter_upwards [hae₁] with q₁ hq₁`. Establish `hq₁'` using `Ioo_subset_Icc_self hq₁`. Establish `e : ∫ q₂, ‖ψ (q₁, q₂)‖ ∂μ = ∫ q₂, kernelL ⟪spherePoint q₁.1 q₁.2, spherePoint q₂.1 q₂.2⟫_ℝ * (-(|F.eval q₁.1| * |H.eval q₂.1|)) ∂μ`. Use `integral_congr_ae ?_` and prove the remaining obligations.
+
+Use `filter_upwards [hae₂] with q₂ hq₂`. Use `kernelL_spherePoint_nonpos hq₁' hq₂ q₁.2 q₂.2` as an intermediate fact. Simplify using `only [hψdef, norm_mul, Real.norm_eq_abs, abs_of_nonpos this]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, (integral_kernelL_mul hK hq₁ q₁.2 (h := fun c₂ => -(|F.eval q₁.1| * |H.eval c₂|)) (by fun_prop)).2]`.
+
+Use `(norm_setIntegral_le_of_norm_le_const_ae' (C := 2 * Real.pi * (-(1 / 2) * Real.log ((1 - q₁.1 ^ 2) / 4)) * (MF * MH)) measure_Icc_lt_top (Filter.Eventually.of_forall fun c₂ hc₂ => ?_)).trans (le_of_eq ?_)` and prove the remaining obligations. Establish `hz` using `abs_zonalKernel_le hq₁ hc₂`. Establish `hF : |F.eval q₁.1| ≤ MF` using `by simpa [Real.norm_eq_abs] using hMF q₁.1 hq₁'`. Establish `hH : |H.eval c₂| ≤ MH` using `by simpa [Real.norm_eq_abs] using hMH c₂ hc₂`. Simplify using `only [norm_mul, norm_neg, Real.norm_eq_abs, abs_abs, abs_of_pos Real.pi_pos, abs_two]`.
+
+Establish `hw0 : 0 ≤ -(1 / 2) * Real.log ((1 - q₁.1 ^ 2) / 4)` using `(abs_nonneg _).trans hz`. Conclude with `mul_le_mul (mul_le_mul_of_nonneg_left hz (by positivity)) (mul_le_mul hF hH (abs_nonneg _) ((abs_nonneg _).trans hF)) (by positivity) (by positivity)`. Simplify using `[measureReal_def, Real.volume_Icc]`. Evaluate the numerical expressions. Establish `hψval : ∫ q, ψ q ∂(μ.prod μ) = 4 * Real.pi ^ 2 * ∫ c₁ in (-1 : ℝ)..1, ∫ c₂ in (-1 : ℝ)..1, zonalKernel c₁ c₂ * F.eval c₁ * H.eval c₂`.
+
+Rewrite using `[integral_prod ψ hψint]`. Establish `e : ∀ᵐ q₁ ∂μ, ∫ q₂, ψ (q₁, q₂) ∂μ = (fun c₁ => 2 * Real.pi * ∫ c₂ in (-1 : ℝ)..1, zonalKernel c₁ c₂ * F.eval c₁ * H.eval c₂) q₁.1` using `by filter_upwards [hae₁] with q₁ hq₁`. Rewrite using `[hslice q₁, (integral_kernelL_mul hK hq₁ q₁.2 (h := fun c₂ => F.eval q₁.1 * H.eval c₂) (by fun_prop)).2, integral_Icc_eq_integral_Ioc, ← intervalIntegral.integral_of_le (by norm_num), ← intervalIntegral.integral_const_mul]`. Use `intervalIntegral.integral_congr fun c₂ _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[integral_congr_ae e, hμ, heightLongitudeMeasure, integral_fun_fst (fun c₁ : ℝ => 2 * Real.pi * ∫ c₂ in (-1 : ℝ)..1, zonalKernel c₁ c₂ * F.eval c₁ * H.eval c₂), integral_Icc_eq_integral_Ioc, ← intervalIntegral.integral_of_le (by norm_num), intervalIntegral.integral_const_mul]`. Simplify using `[measureReal_def, Real.volume_Ioc, ENNReal.toReal_ofReal, Real.pi_pos.le]`. Expand and normalize the polynomial expressions, which then agree. Establish `hf : (fun p : Sphere2 × Sphere2 => kernelL ⟪(p.1 : E3), (p.2 : E3)⟫_ℝ * F.eval (height p.1) * H.eval (height p.2)) = g ∘ Prod.map (fun n : Sphere2 => (n : E3)) (fun n : Sphere2 => (n : E3))` using `rfl`. Establish `hT` using `hsp.prodMap hsp`.
+
+Establish `hI` using `hι.prodMap hι`. Rewrite using `[hf]`. Prove the components needed by the constructor for the conclusion. Rewrite using `[← integrable_map_measure hgm.aestronglyMeasurable hI.aemeasurable, hmap, integrable_smul_measure hk0 hktop, integrable_map_measure hgm.aestronglyMeasurable hT.aemeasurable, hgψ]`. Conclude with `hψint`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hmap, integral_smul_measure, integral_map hT.aemeasurable hgm.aestronglyMeasurable]`. Both sides reduce to the same expression. Use `_ = (k * k).toReal • ∫ q, ψ q ∂(μ.prod μ) := by rw [hgψ]`. Use `_ = _ := by`.
+
+Rewrite using `[hψval, hk, ENNReal.toReal_mul, ENNReal.toReal_inv, ENNReal.toReal_ofReal (by positivity), smul_eq_mul]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem ZonalHeightReduction.proof (hA : SphereLongitudeCoordinates.Statement)
     (hK : ZonalKernel.Statement) : ZonalHeightReduction.Statement := by
   intro F H

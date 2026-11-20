@@ -18,6 +18,9 @@ open scoped ContDiff ComplexOrder ENNReal Classical
 
 namespace GlobalTheory.GenericChart
 
+/- English proof (translation)
+Introduce `k _ X _ p D h`. Take `⟨U, hU, hη, t, ht⟩` from `GlobalTheory.GenericCoords.exists_affine_etale_coords h`. Use `⟨(U : Set X)ᶜ, U.isOpen.isClosed_compl, fun h' => h' hη, fun σ y hy => ?_⟩` and prove the remaining obligations. Take `⟨c, hc, -⟩` from `AlgChart.exists_of_etale (σ := σ) hU t ht (y := y) (mem_ptsIn.2 (not_not.1 hy))`. Conclude with `⟨c, hc⟩`.
+-/
 theorem exists_isClosed_chart : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ), IsArithVar p D → ∃ T : Set X, IsClosed T ∧ genericPoint X ∉ T ∧ ∀ (σ : k →+* ℂ) (y : CxPts p σ), y.1 (IsLocalRing.closedPoint ℂ) ∉ T → ∃ c : AlgChart p σ D, y ∈ c.e.source := by
   intro k _ X _ p D h
   obtain ⟨U, hU, hη, t, ht⟩ := GlobalTheory.GenericCoords.exists_affine_etale_coords h

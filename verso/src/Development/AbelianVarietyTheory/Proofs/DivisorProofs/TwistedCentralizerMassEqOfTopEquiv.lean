@@ -10,6 +10,9 @@ section Closed
 
 variable {G : Type} [Group G] [TopologicalSpace G]
 
+/- English proof (translation)
+Establish `hE : Topology.IsClosedEmbedding (Subtype.val : T → G)` using `hT.isClosedEmbedding_subtypeVal`. Establish `h1 : (Subgroup.zpowers (t : G) : Set G) = Subtype.val '' (Subgroup.zpowers t : Set T)`. Use `MonoidHom.map_zpowers T.subtype t` as an intermediate fact. Rewrite using `[← Subgroup.coe_subtype, ← Subgroup.coe_map, this]`. Rewrite using `[h1, hE.closure_image_eq, ← hE.isEmbedding.isCompact_iff]`.
+-/
 theorem isCompact_closure_zpowers_iff {T : Subgroup G} (hT : IsClosed (T : Set G)) (t : T) :
     IsCompact (closure (Subgroup.zpowers (t : G) : Set G)) ↔ IsCompact (closure (Subgroup.zpowers t : Set T)) := by
   have hE : Topology.IsClosedEmbedding (Subtype.val : T → G) := hT.isClosedEmbedding_subtypeVal
@@ -18,6 +21,11 @@ theorem isCompact_closure_zpowers_iff {T : Subgroup G} (hT : IsClosed (T : Set G
     rw [← Subgroup.coe_subtype, ← Subgroup.coe_map, this]
   rw [h1, hE.closure_image_eq, ← hE.isEmbedding.isCompact_iff]
 
+/- English proof (translation)
+Rewrite using `[MonoidHom.map_closure]`. Unfold `cptPart`. Use `congr 1`. Use extensionality with `g`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨hg, hc⟩`. Conclude with `⟨⟨g, hg⟩, (isCompact_closure_zpowers_iff hT ⟨g, hg⟩).1 hc, rfl⟩`. Introduce and unpack `⟨t, ht, rfl⟩`. Conclude with `⟨t.2, (isCompact_closure_zpowers_iff hT t).2 ht⟩`.
+-/
 theorem cptPart_eq_map {T : Subgroup G} (hT : IsClosed (T : Set G)) :
     cptPart T = (Subgroup.closure {t : T | IsCompact (closure (Subgroup.zpowers t : Set T))}).map T.subtype := by
   rw [MonoidHom.map_closure]
@@ -30,9 +38,17 @@ theorem cptPart_eq_map {T : Subgroup G} (hT : IsClosed (T : Set G)) :
   · rintro ⟨t, ht, rfl⟩
     exact ⟨t.2, (isCompact_closure_zpowers_iff hT t).2 ht⟩
 
+/- English proof (translation)
+The claim follows from `(Subgroup.closure_le _).2 fun _ hg => hg.1`.
+-/
 theorem cptPart_le (T : Subgroup G) : cptPart T ≤ T :=
   (Subgroup.closure_le _).2 fun _ hg => hg.1
 
+/- English proof (translation)
+Rewrite using `[cptPart_eq_map hT, Subgroup.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, hs, h⟩`. Rewrite `hs` using `[show s = t from Subtype.ext h]`. Then use the resulting hypothesis. Introduce `h`.
+
+Conclude with `⟨t, h, rfl⟩`.
+-/
 theorem mem_cptPart_iff {T : Subgroup G} (hT : IsClosed (T : Set G)) (t : T) :
     (t : G) ∈ cptPart T ↔ t ∈ Subgroup.closure {s : T | IsCompact (closure (Subgroup.zpowers s : Set T))} := by
   rw [cptPart_eq_map hT, Subgroup.mem_map]
@@ -44,6 +60,19 @@ theorem mem_cptPart_iff {T : Subgroup G} (hT : IsClosed (T : Set G)) (t : T) :
 
 end Closed
 
+/- English proof (translation)
+Establish `key : ∀ s : A, IsCompact (closure (Subgroup.zpowers s : Set A)) ↔ IsCompact (closure (Subgroup.zpowers (e s) : Set B))`. Introduce `s`. Establish `h1 : (Subgroup.zpowers (e s) : Set B) = e '' (Subgroup.zpowers s : Set A)`. Use `MonoidHom.map_zpowers e.toMulEquiv.toMonoidHom s` as an intermediate fact. Establish `h` using `congrArg (fun H : Subgroup B => (H : Set B)) this`.
+
+Rewrite `h` using `[Subgroup.coe_map]`. Conclude with `h.symm`. Rewrite using `[h1]`. Establish `h2` using `e.toHomeomorph.image_closure (Subgroup.zpowers s : Set A)`. Establish `h3` using `e.toHomeomorph.isCompact_image (s := closure (Subgroup.zpowers s : Set A))`.
+
+Rewrite `h2`, `h3` using `[show (⇑e.toHomeomorph : A → B) = ⇑e from rfl]`. Rewrite using `[← h2, h3]`. Establish `himg : e.toMulEquiv.toMonoidHom '' {s : A | IsCompact (closure (Subgroup.zpowers s : Set A))} = {s : B | IsCompact (closure (Subgroup.zpowers s : Set B))}`. Use extensionality with `b`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨s, hs, rfl⟩`. Conclude with `(key s).1 hs`. Introduce `hb`. Use `⟨e.symm b, (key _).2 ?_, ?_⟩` and prove the remaining obligations. Simplify using `using hb`.
+
+Conclude with `e.apply_symm_apply b`. Establish `hmap` using `MonoidHom.map_closure e.toMulEquiv.toMonoidHom {s : A | IsCompact (closure (Subgroup.zpowers s : Set A))}`. Rewrite `hmap` using `[himg]`. Rewrite using `[← hmap, Subgroup.mem_map]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h`. Conclude with `⟨a, h, rfl⟩`. Introduce and unpack `⟨x, hx, h⟩`. Establish `: x = a` using `e.injective h`. Rewrite using `[← this]` and apply the resulting hypothesis.
+-/
 theorem mem_closure_cpt_iff {A B : Type} [Group A] [TopologicalSpace A] [Group B] [TopologicalSpace B] (e : A ≃ₜ* B)
     (a : A) :
     a ∈ Subgroup.closure {s : A | IsCompact (closure (Subgroup.zpowers s : Set A))} ↔
@@ -82,6 +111,13 @@ theorem mem_closure_cpt_iff {A B : Type} [Group A] [TopologicalSpace A] [Group B
     have : x = a := e.injective h
     rwa [← this]
 
+/- English proof (translation)
+Apply `Nat.card_congr` to reduce the goal to its premises. Use `Quotient.congr e.toEquiv fun x y => ?_` and prove the remaining obligations. Rewrite using `[DoubleCoset.rel_iff, DoubleCoset.rel_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, b, hb, rfl⟩`.
+
+Conclude with `⟨e a, (hH a).1 ha, e b, (hK b).1 hb, by simp [map_mul]⟩`. Introduce and unpack `⟨a, ha, b, hb, h⟩`. Use `⟨e.symm a, (hH _).2 (by simpa using ha), e.symm b, (hK _).2 (by simpa using hb), ?_⟩` and prove the remaining obligations. Apply `e.injective` to reduce the goal to its premises. Simplify using `only [MulEquiv.toEquiv_eq_coe, MulEquiv.coe_toEquiv] at h`.
+
+Simplify using `[map_mul, h]`.
+-/
 theorem card_doubleCoset_congr {A B : Type} [Group A] [Group B] (e : A ≃* B) (H K : Subgroup A) (H' K' : Subgroup B)
     (hH : ∀ a, a ∈ H ↔ e a ∈ H') (hK : ∀ a, a ∈ K ↔ e a ∈ K') :
     Nat.card (DoubleCoset.Quotient (H : Set A) (K : Set A)) =
@@ -98,10 +134,18 @@ theorem card_doubleCoset_congr {A B : Type} [Group A] [Group B] (e : A ≃* B) (
     simp only [MulEquiv.toEquiv_eq_coe, MulEquiv.coe_toEquiv] at h
     simp [map_mul, h]
 
+/- English proof (translation)
+The claim follows from `isClosed_eq (continuous_id.mul continuous_const) (continuous_const.mul hθ)`.
+-/
 theorem isClosed_twCent {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [T2Space G] (θ : G →* G)
     (hθ : Continuous θ) (δ : G) : IsClosed (twCent θ δ : Set G) :=
   isClosed_eq (continuous_id.mul continuous_const) (continuous_const.mul hθ)
 
+/- English proof (translation)
+Establish `hC : ∀ t : twCent θ δ, (t : G) ∈ cptPart (twCent θ δ) ↔ ((e t : twCent θ' δ') : G') ∈ cptPart (twCent θ' δ')` using `fun t => by rw [mem_cptPart_iff hT, mem_cptPart_iff hT', mem_closure_cpt_iff e]`. Establish `hmem : ∀ t : twCent θ δ, (t : G) ∈ Γ ⊓ cptPart (twCent θ δ) ↔ ((e t : twCent θ' δ') : G') ∈ Γ' ⊓ cptPart (twCent θ' δ')` using `fun t => by`. Simplify using `only [Subgroup.mem_inf]`. Rewrite using `[hΓ t, hC t]`. Set `f : (Γ ⊓ cptPart (twCent θ δ) : Subgroup G) ≃ (Γ' ⊓ cptPart (twCent θ' δ') : Subgroup G')` to `{ toFun := fun g => ⟨(e ⟨g, cptPart_le _ g.2.2⟩ : G'), (hmem _).1 g.2⟩ invFun := fun g' => ⟨(e.symm ⟨g', cptPart_le _ g'.2.2⟩ : G), (hmem (e.symm ⟨g', cptPart_le _ g'.2.2⟩)).2 (by rw [e.apply_symm_apply]; exact g'.2)⟩ left_inv := fun g => by ext; simp right_inv := fun g' => by ex …`.
+
+Unfold `mass`. Rewrite using `[card_doubleCoset_congr e.toMulEquiv _ _ (Γ'.subgroupOf (twCent θ' δ')) ((cptPart (twCent θ' δ')).subgroupOf _) (fun a => by simp only [Subgroup.mem_subgroupOf]; exact hΓ a) (fun a => by simp only [Subgroup.mem_subgroupOf]; exact hC a), Nat.card_congr f]`.
+-/
 theorem mass_eq_of_equiv (G G' : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Group G']
     [TopologicalSpace G'] [IsTopologicalGroup G'] (θ : G →* G) (θ' : G' →* G') (Γ : Subgroup G) (Γ' : Subgroup G')
     (δ : G) (δ' : G') (hT : IsClosed (twCent θ δ : Set G)) (hT' : IsClosed (twCent θ' δ' : Set G'))

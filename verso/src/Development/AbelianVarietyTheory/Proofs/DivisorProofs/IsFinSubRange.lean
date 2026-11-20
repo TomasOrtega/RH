@@ -30,22 +30,34 @@ def finFam {S : Scheme.{0}} {K : Type} [Field K] (gp : Sp K ⟶ S) {r : ℕ} (V 
   ⨅ i, (Subring.closure (Set.range (gp.app (W ⊓ V i)).hom ∪
     resK gp (inf_le_right : W ⊓ V i ≤ V i) '' (t i : Set _))).comap (resK gp (inf_le_left : W ⊓ V i ≤ W))
 
+/- English proof (translation)
+Rewrite using `[resK, ← CommRingCat.comp_apply, ← CommRingCat.comp_apply, gp.naturality]`. Both sides reduce to the same expression.
+-/
 theorem resK_app {S : Scheme.{0}} {K : Type} [Field K] (gp : Sp K ⟶ S) {V W : S.Opens} (h : W ≤ V) (a : Γ(S, V)) :
     resK gp h ((gp.app V).hom a) = (gp.app W).hom ((S.presheaf.map (homOfLE h).op).hom a) := by
   rw [resK, ← CommRingCat.comp_apply, ← CommRingCat.comp_apply, gp.naturality]
   rfl
 
+/- English proof (translation)
+Rewrite using `[resK, resK, resK, ← CommRingCat.comp_apply, ← Functor.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem resK_resK {S : Scheme.{0}} {K : Type} [Field K] (gp : Sp K ⟶ S) {V W X : S.Opens} (h : W ≤ V) (h' : X ≤ W)
     (x : Γ(Sp K, gp ⁻¹ᵁ V)) : resK gp h' (resK gp h x) = resK gp (h'.trans h) x := by
   rw [resK, resK, resK, ← CommRingCat.comp_apply, ← Functor.map_comp]
   rfl
 
+/- English proof (translation)
+Simplify using `[finFam, Subring.mem_iInf]`.
+-/
 theorem mem_finFam {S : Scheme.{0}} {K : Type} [Field K] (gp : Sp K ⟶ S) {r : ℕ} (V : Fin r → S.Opens)
     (t : ∀ i, Finset Γ(Sp K, gp ⁻¹ᵁ V i)) (W : S.Opens) (x : Γ(Sp K, gp ⁻¹ᵁ W)) :
     x ∈ finFam gp V t W ↔ ∀ i, resK gp (inf_le_left : W ⊓ V i ≤ W) x ∈ Subring.closure (Set.range (gp.app (W ⊓ V i)).hom ∪
       resK gp (inf_le_right : W ⊓ V i ≤ V i) '' (t i : Set _)) := by
   simp [finFam, Subring.mem_iInf]
 
+/- English proof (translation)
+Rewrite using `[mem_finFam]`. Introduce `i`. Rewrite using `[resK_app]`. Conclude with `Subring.subset_closure (Or.inl ⟨_, rfl⟩)`.
+-/
 theorem finFam_range {S : Scheme.{0}} {K : Type} [Field K] (gp : Sp K ⟶ S) {r : ℕ} (V : Fin r → S.Opens)
     (t : ∀ i, Finset Γ(Sp K, gp ⁻¹ᵁ V i)) (W : S.Opens) (a : Γ(S, W)) : (gp.app W).hom a ∈ finFam gp V t W := by
   rw [mem_finFam]
@@ -53,6 +65,13 @@ theorem finFam_range {S : Scheme.{0}} {K : Type} [Field K] (gp : Sp K ⟶ S) {r 
   rw [resK_app]
   exact Subring.subset_closure (Or.inl ⟨_, rfl⟩)
 
+/- English proof (translation)
+Rewrite `hx`, the goal using `[mem_finFam]`. Introduce `i`. Establish `hii : W' ⊓ V i ≤ W ⊓ V i` using `inf_le_inf_right _ hle`. Establish `e : resK gp (inf_le_left : W' ⊓ V i ≤ W') (resK gp hle x) = resK gp hii (resK gp (inf_le_left : W ⊓ V i ≤ W) x)`. Rewrite using `[resK_resK, resK_resK]`.
+
+Rewrite using `[e]`. Establish `hm : resK gp hii (resK gp (inf_le_left : W ⊓ V i ≤ W) x) ∈ (Subring.closure _).map (resK gp hii)` using `⟨_, hx i, rfl⟩`. Rewrite `hm` using `[RingHom.map_closure]`. Use `Subring.closure_mono ?_ hm` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy | ⟨z, hz, rfl⟩, rfl⟩`.
+
+Take `⟨a, rfl⟩` from `hy`. Conclude with `Or.inl ⟨_, (resK_app gp hii a).symm⟩`. Conclude with `Or.inr ⟨z, hz, by rw [resK_resK]⟩`.
+-/
 theorem finFam_res {S : Scheme.{0}} {K : Type} [Field K] (gp : Sp K ⟶ S) {r : ℕ} (V : Fin r → S.Opens)
     (t : ∀ i, Finset Γ(Sp K, gp ⁻¹ᵁ V i)) (W W' : S.Opens) (hle : W' ≤ W) (x : Γ(Sp K, gp ⁻¹ᵁ W))
     (hx : x ∈ finFam gp V t W) : resK gp hle x ∈ finFam gp V t W' := by

@@ -13,6 +13,11 @@ variable {g : ℕ} [Fact g.Prime] {N : ℕ}
 open Polynomial in
 open scoped Classical in
 variable {g : ℕ} [Fact g.Prime] {N : ℕ} in
+/- English proof (translation)
+Unfold `_root_.GlobalTheory.GLq.tr _root_.Formalism.MainNotions.ArithmeticCylinders.eDat`. Simplify using `only [MonoidAlgebra.coeff_smul, MonoidAlgebra.coeff_sum, Finsupp.smul_apply, Finsupp.finset_sum_apply, MonoidAlgebra.coeff_single_apply, smul_eq_mul, Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun u _ => ?_` and prove the remaining obligations. Simplify using `only [mul_ite, ite_mul, mul_zero, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 private lemma traceOnCharacter_averagedSingles_eq (g N : ℕ) [Fact g.Prime]
     (Φ : Matrix (Fin N) (Fin N) (ZMod g) → Prop) (E : Matrix (Fin N) (Fin N) (ZMod g) → ZMod g)
     (ψ : AddChar (ZMod g) ℂ) (χ : GL (Fin N) (ZMod g) → ℂ) :
@@ -35,6 +40,27 @@ open Polynomial in
 open scoped Classical in
 variable {g : ℕ} [Fact g.Prime] {N : ℕ} in
 
+/- English proof (translation)
+Introduce `g _ ψ N Φ E σ χ hχ`. Unfold `_root_.GlobalTheory.GLm.ePat`. Rewrite using `[traceOnCharacter_averagedSingles_eq, traceOnCharacter_averagedSingles_eq]`. Use `set Q : GL (Fin N) (ZMod g) := (Matrix.permMatrixHom (R := ZMod g)).toHomUnits σ⁻¹ with hQdef`. Establish `hQ : ∀ (u : GL (Fin N) (ZMod g)) (x y : Fin N), ((Q⁻¹ * u * Q : GL (Fin N) (ZMod g)) : Matrix (Fin N) (Fin N) (ZMod g)) x y = (u : Matrix (Fin N) (Fin N) (ZMod g)) (σ.symm x) (σ.symm y)`.
+
+Introduce `u x y`. Establish `hinv : ((Q⁻¹ : GL (Fin N) (ZMod g)) : Matrix (Fin N) (Fin N) (ZMod g)) = (σ⁻¹ : Equiv.Perm (Fin N)).toPEquiv.toMatrix`. Rewrite using `[hQdef]`. Use `show (((σ⁻¹)⁻¹)⁻¹ : Equiv.Perm (Fin N)).toPEquiv.toMatrix = _`. Rewrite using `[inv_inv]`.
+
+Establish `hval : ((Q : GL (Fin N) (ZMod g)) : Matrix (Fin N) (Fin N) (ZMod g)) = σ.toPEquiv.toMatrix`. Rewrite using `[hQdef]`. Use `show ((σ⁻¹)⁻¹ : Equiv.Perm (Fin N)).toPEquiv.toMatrix = _`. Rewrite using `[inv_inv]`. Rewrite using `[Units.val_mul, Units.val_mul, hinv, hval, PEquiv.toMatrix_toPEquiv_mul, PEquiv.mul_toMatrix_toPEquiv]`.
+
+Both sides reduce to the same expression. Set `e : GL (Fin N) (ZMod g) ≃ GL (Fin N) (ZMod g)` to `(MulAut.conj Q⁻¹).toEquiv`. Establish `he : ∀ u, e u = Q⁻¹ * u * Q`. Introduce `u`. Simplify using `[e, MulAut.conj_apply]`.
+
+Establish `hmem : ∀ u : GL (Fin N) (ZMod g), _root_.GlobalTheory.GLm.InPat (fun a b => Φ (σ a) (σ b)) (u : Matrix (Fin N) (Fin N) (ZMod g)) ↔ _root_.GlobalTheory.GLm.InPat Φ (e u : Matrix (Fin N) (Fin N) (ZMod g))`. Introduce `u`. Unfold `_root_.GlobalTheory.GLm.InPat`. Simplify using `only [he, hQ]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h x y hxy`. Establish `hxy'` using `h (σ.symm x) (σ.symm y) (by simpa using hxy)`. Rewrite using `[hxy', Matrix.one_apply, Matrix.one_apply]`. Simplify using the standard rewrite rules. Introduce `h a b hab`.
+
+Establish `hab'` using `h (σ a) (σ b) hab`. Simplify using `only [Equiv.symm_apply_apply] at hab'`. Rewrite using `[hab', Matrix.one_apply, Matrix.one_apply]`. Simplify using the standard rewrite rules. Establish `hsum : ∀ u : GL (Fin N) (ZMod g), _root_.GlobalTheory.GLm.sumAt (fun a b => E (σ a) (σ b)) (u : Matrix (Fin N) (Fin N) (ZMod g)) = _root_.GlobalTheory.GLm.sumAt E (e u : Matrix (Fin N) (Fin N) (ZMod g))`.
+
+Introduce `u`. Unfold `_root_.GlobalTheory.GLm.sumAt`. Simplify using `only [he, hQ]`. Use `conv_rhs => rw [← Equiv.sum_comp σ]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+
+Use `conv_rhs => rw [← Equiv.sum_comp σ]`. Simplify using `only [Equiv.symm_apply_apply]`. Use `congr 1`. Use `congr 2`. Conclude with `Finset.card_equiv e (fun u => by simp [hmem])`.
+
+Use `Finset.sum_equiv e (fun u => by simp [hmem]) (fun u _ => ?_)` and prove the remaining obligations. Rewrite using `[hsum, he]`. Use `congr 1`. Establish `hconj` using `hχ u Q⁻¹`. Simplify using `using hconj.symm`.
+-/
 theorem _root_.GlobalTheory.GLm.tr_ePat_renumber : ∀ (g : ℕ) [Fact g.Prime]
     (ψ : AddChar (ZMod g) ℂ) (N : ℕ) (Φ E : Fin N → Fin N → Prop)
     (σ : Equiv.Perm (Fin N)) (χ : _root_.GlobalTheory.GLq.Gn g N → ℂ), _root_.GlobalTheory.GLq.IsClass χ →

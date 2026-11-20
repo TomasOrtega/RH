@@ -14,6 +14,9 @@ open GlobalTheory.Doubling (absE absEv unitFin ideleAt)
 open scoped GlobalTheory.VacAny
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ThK.EvLocInv.ev_schr_of_mem | exact GlobalTheory.ThK.EvLocInv.ev_schr_of_mem | (intros; apply GlobalTheory.ThK.EvLocInv.ev_schr_of_mem <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.good_model_eigen_continuous : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n d n₁ d₁ : ℕ}
     {X : Spc F E n} {W : Spc F E d} {X₁ : Spc F E n₁} {W₁ : Spc F E d₁} (B : Base F E) (M : Model σ X W) (M₁ : Model σ X₁ W₁)
     (ι : Matrix (Fin n) (Fin n₁) E) (ι' : Matrix (Fin d) (Fin d₁) E) (I : Set (Matrix (Fin n) (Fin d) (AE F E)))

@@ -21,6 +21,13 @@ open scoped GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 
 namespace GlobalTheory.LatBound
 
+/- English proof (translation)
+Establish `key : ∀ x : Fv F v, ∃ c : Fv F v, c ≠ 0 ∧ c ∈ v.adicCompletionIntegers F ∧ c * x ∈ v.adicCompletionIntegers F`. Introduce `x`. Distinguish the cases in `hx : x ∈ v.adicCompletionIntegers F`. Conclude with `⟨1, one_ne_zero, one_mem _, by simpa using hx⟩`. Establish `hx0 : x ≠ 0` using `by rintro rfl; exact hx (zero_mem _)`.
+
+Use `⟨x⁻¹, inv_ne_zero hx0, ?_, by rw [inv_mul_cancel₀ hx0]; exact one_mem _⟩` and prove the remaining obligations. Conclude with `((v.adicCompletionIntegers F).mem_or_inv_mem x).resolve_left hx`. Use `choose cw hcw0 hcwO hcw using key`. Use `⟨∏ t, cw (w t), Finset.prod_ne_zero_iff.2 fun t _ => hcw0 _, fun t => ?_⟩` and prove the remaining obligations. Rewrite using `[← Finset.mul_prod_erase Finset.univ (fun t => cw (w t)) (Finset.mem_univ t), mul_comm (cw (w t)), mul_assoc]`.
+
+Conclude with `mul_mem (prod_mem fun t' _ => hcwO _) (hcw _)`.
+-/
 theorem exists_mul_mem_integers {F : Type} [Field F] [NumberField F] (v : IsDedekindDomain.HeightOneSpectrum (𝓞 F))
     {T : Type} [Fintype T] (w : T → Fv F v) :
     ∃ c : Fv F v, c ≠ 0 ∧ ∀ t, c * w t ∈ v.adicCompletionIntegers F := by
@@ -38,6 +45,15 @@ theorem exists_mul_mem_integers {F : Type} [Field F] [NumberField F] (v : IsDede
   rw [← Finset.mul_prod_erase Finset.univ (fun t => cw (w t)) (Finset.mem_univ t), mul_comm (cw (w t)), mul_assoc]
   exact mul_mem (prod_mem fun t' _ => hcwO _) (hcw _)
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ n d X Y v B κ _ co hX hY`. Take `⟨M, _, g, hg⟩` from `GlobalTheory.LatParam.latAtV_param X Y hX hY v`. Take `⟨c, hc0, hc⟩` from `exists_mul_mem_integers v (fun t : Bool × M × κ => if t.1 then (GlobalTheory.LatVac.locCo co v (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM F (g t.2.1))).1 t.2.2 else (GlobalTheory.LatVac.locCo co v (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM …`. Establish `hsmul : ∀ (t : Fv F v) z, GlobalTheory.LatVac.locCo co v (GlobalTheory.EmbChart.atPlace v t • z) = t • GlobalTheory.LatVac.locCo co v z`. Introduce `t z`.
+
+Simplify using `only [GlobalTheory.LatVac.locCo, AddMonoidHom.coe_mk, ZeroHom.coe_mk, map_smul]`. Apply the tactic sequence `ext k <;> simp [smul_eq_mul, map_mul, GlobalTheory.EmbChart.evFin_atPlace]`. Use `⟨c, hc0, fun γ hγ i => ?_⟩` and prove the remaining obligations. Take `⟨a, rfl⟩` from `(hg γ).1 hγ`. Simplify using `only [map_sum, hsmul, Prod.fst_sum, Prod.snd_sum, Finset.sum_apply, Prod.smul_fst, Prod.smul_snd, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`.
+
+Prove the components needed by the constructor for the conclusion. Use `sum_mem fun m _ => ?_` and prove the remaining obligations. Rewrite using `[mul_left_comm]`. Conclude with `mul_mem (a m).2 (by simpa using hc (true, m, i))`. Use `sum_mem fun m _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[mul_left_comm]`. Conclude with `mul_mem (a m).2 (by simpa using hc (false, m, i))`.
+-/
 theorem locCo_latAtV_bounded : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n d : ℕ}
     (X : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E n) (Y : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E d) (v : IsDedekindDomain.HeightOneSpectrum (𝓞 F))
     {B : Matrix (Fin n) (Fin d) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.AE F E) → Matrix (Fin n) (Fin d) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.AE F E) → AF F}

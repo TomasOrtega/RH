@@ -15,6 +15,19 @@ noncomputable section
 
 namespace GlobalTheory.GaussMean.RealDensity
 
+/- English proof (translation)
+Establish `hemb : Topology.IsClosedEmbedding T` using `T.toHomeomorph.isClosedEmbedding`. Establish `hme : MeasurableEmbedding T` using `hemb.measurableEmbedding`. Establish `: μ.IsAddHaarMeasure` using `h.1`. Use `⟨inferInstance, ?_⟩` and prove the remaining obligations. Introduce `Φ hΦc hΦs hint z`.
+
+Establish `hin : (fun y => ∫ x, Φ x * χ' x y ∂(μ.map T)) ∘ T = fun y => ∫ x, Φ (T x) * χ x y ∂μ`. Use function extensionality and compare the values at `y`. Simplify using `only [Function.comp_apply]`. Rewrite using `[hemb.integral_map]`. Simplify using `only [hχ]`.
+
+Establish `hint' : Integrable (fun y => ∫ x, Φ (T x) * χ x y ∂μ) μ`. Rewrite using `[← hin, ← hme.integrable_map_iff]`. Conclude with `hint`. Establish `hc : Continuous (fun x => Φ (T x))` using `hΦc.comp T.continuous`. Establish `hs : HasCompactSupport (fun x => Φ (T x))` using `hΦs.comp_homeomorph T.toHomeomorph`.
+
+Establish `key` using `h.2 (fun x => Φ (T x)) hc hs hint' (T.symm z)`. Rewrite using `[hemb.integral_map]`. Establish `hz : z = T (T.symm z)` using `(T.apply_symm_apply z).symm`. Combine the equalities or inequalities in the displayed calculation. Use `congr 1`.
+
+Use function extensionality and compare the values at `y`. Use `congrFun hin y` as an intermediate fact. Simplify using `only [Function.comp_apply] at this`. Rewrite using `[this, hz, ← hχ, T.symm_apply_apply]`. Use `_ = Φ (T (-(T.symm z))) := key`.
+
+Use `_ = Φ (-z) := by rw [map_neg, T.apply_symm_apply]`.
+-/
 theorem selfDual_map {V V' : Type} [AddCommGroup V] [TopologicalSpace V] [MeasurableSpace V] [BorelSpace V]
     [IsTopologicalAddGroup V]
     [AddCommGroup V'] [TopologicalSpace V'] [MeasurableSpace V'] [BorelSpace V'] [IsTopologicalAddGroup V']
@@ -50,6 +63,19 @@ theorem selfDual_map {V V' : Type} [AddCommGroup V] [TopologicalSpace V] [Measur
     _ = Φ (T (-(T.symm z))) := key
     _ = Φ (-z) := by rw [map_neg, T.apply_symm_apply]
 
+/- English proof (translation)
+Take `⟨T, hTm, hTv⟩` from `GlobalTheory.T.complex_coordinates_measure_preserving ι n`. Set `d' : ι × Fin n × Bool → ℝ` to `fun k => d k.1 k.2.1`. Establish `hd'0 : ∀ k, d' k ≠ 0` using `fun k => hd k.1 k.2.1`. Establish `hsum : ∀ x y : ι → Fin n → ℂ, (∑ v, ∑ i, d v i * ((x v i).re * (y v i).re + (x v i).im * (y v i).im) : ℝ) = ∑ k, d' k * (T x k * T y k)`. Introduce `x y`.
+
+Rewrite using `[Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Fintype.sum_bool, (hTv x v i).1, (hTv x v i).2, (hTv y v i).1, (hTv y v i).2]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hmap : SelfDual (μ.map T) (fun x y : ι × Fin n × Bool → ℝ => Complex.exp (2 * Real.pi * Complex.I * ((∑ k, d' k * (x k * y k) : ℝ) : ℂ)))` using `selfDual_map T h (fun x y => by simp only [hsum])`. Establish `h2` using `GlobalTheory.T.self_dual_measure_real_diagonal (ι × Fin n × Bool) d' hd'0 (μ.map T) hmap`. Establish `hconst : (∏ k, √|d' k|) = ∏ v, ∏ i, |d v i|`. Rewrite using `[Fintype.prod_prod_type]`.
+
+Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[Fintype.prod_prod_type]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Fintype.prod_bool]`. Conclude with `Real.mul_self_sqrt (abs_nonneg _)`.
+
+Set `e : (ι → Fin n → ℂ) ≃ᵐ (ι × Fin n × Bool → ℝ)` to `T.toHomeomorph.toMeasurableEquiv`. Establish `hmp : MeasurePreserving e volume volume` using `hTm`. Establish `h2' : μ.map e = ENNReal.ofReal (∏ k, √|d' k|) • (volume : Measure (ι × Fin n × Bool → ℝ))` using `h2`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h2']`.
+
+Use `_ = ENNReal.ofReal (∏ k, √|d' k|) • (volume : Measure (ι × Fin n × Bool → ℝ)).map e.symm := Measure.map_smul _ _ _`. Use `_ = ENNReal.ofReal (∏ v, ∏ i, |d v i|) • (volume : Measure (ι → Fin n → ℂ)) := by`. Rewrite using `[(hmp.symm e).map_eq, hconst]`.
+-/
 theorem selfDual_complex {ι : Type} [Fintype ι] {n : ℕ} (d : ι → Fin n → ℝ) (hd : ∀ v i, d v i ≠ 0)
     (μ : Measure (ι → Fin n → ℂ))
     (h : SelfDual μ (fun x y => Complex.exp (2 * Real.pi * Complex.I *
@@ -91,6 +117,15 @@ theorem selfDual_complex {ι : Type} [Fintype ι] {n : ℕ} (d : ι → Fin n �
     _ = ENNReal.ofReal (∏ v, ∏ i, |d v i|) • (volume : Measure (ι → Fin n → ℂ)) := by
         rw [(hmp.symm e).map_eq, hconst]
 
+/- English proof (translation)
+Introduce `I θ hθ`. Establish `hRe : ∀ v : InfinitePlace I.F, v.IsReal` using `fun v => (GlobalTheory.Mem.Vol.cmData_isCMExt_and_gram_isHermND I.F I.E I.cm).1.1.isReal v`. Set `e : Ainf I.F ≃+* (InfinitePlace I.F → ℝ)` to `RingEquiv.piCongrRight fun v => InfinitePlace.Completion.ringEquivRealOfIsReal (hRe v)`. Establish `hec : Continuous e` using `continuous_pi fun v => (InfinitePlace.Completion.isometry_extensionEmbeddingOfIsReal (hRe v)).continuous.comp (continuous_apply v)`. Establish `hesc : Continuous e.symm` using `continuous_pi fun v => (InfinitePlace.Completion.isometryEquivRealOfIsReal (hRe v)).symm.continuous.comp (continuous_apply v)`.
+
+Use `⟨{ toAddEquiv := e.toAddEquiv, continuous_toFun := hec, continuous_invFun := hesc }, ?_⟩` and prove the remaining obligations. Introduce `x v`. Establish `hfun : (fun y : Ainf I.F => θ v (y ⊗ₜ[I.F] (1 : I.E))) = fun y => InfinitePlace.Completion.extensionEmbedding v (y v)`. Use `(InfiniteAdeleRing.denseRange_algebraMap I.F).equalizer (hθ v).2 ((InfinitePlace.Completion.isometry_extensionEmbedding v).continuous.comp (continuous_apply v)) ?_` and prove the remaining obligations. Use function extensionality and compare the values at `a`.
+
+Simplify using `only [Function.comp_apply, InfiniteAdeleRing.algebraMap_apply]`. Rewrite using `[Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul, ← Algebra.algebraMap_eq_smul_one, (hθ v).1, I.φ_over]`. Conclude with `(InfinitePlace.Completion.extensionEmbedding_coe v _).symm`. Establish `hx` using `congrFun hfun x`. Express the relevant statement in the definitionally equal form `θ v (x ⊗ₜ[I.F] (1 : I.E)) = ((InfinitePlace.Completion.extensionEmbeddingOfIsReal (hRe v) (x v) : ℝ) : ℂ)`.
+
+Rewrite using `[hx, InfinitePlace.Completion.extensionEmbeddingOfIsReal_apply]`.
+-/
 theorem exists_coord_base : ∀ (I : AutInst) (θ : InfinitePlace I.F → (Ainf I.F ⊗[I.F] I.E →+* ℂ)), (∀ v, Formalism.MainNotions.StandardLattice.IsInfEmb (I.φ v) (θ v)) → ∃ a : Ainf I.F ≃ₜ+ (InfinitePlace I.F → ℝ), ∀ x v, θ v (x ⊗ₜ[I.F] (1 : I.E)) = ((a x v : ℝ) : ℂ) := by
   intro I θ hθ
   have hRe : ∀ v : InfinitePlace I.F, v.IsReal := fun v =>
@@ -121,6 +156,47 @@ theorem exists_coord_base : ∀ (I : AutInst) (θ : InfinitePlace I.F → (Ainf 
     ((InfinitePlace.Completion.extensionEmbeddingOfIsReal (hRe v) (x v) : ℝ) : ℂ)
   rw [hx, InfinitePlace.Completion.extensionEmbeddingOfIsReal_apply]
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `exists_coord_base I θ hθ`. Establish `hcm` using `(GlobalTheory.Mem.Vol.cmData_isCMExt_and_gram_isHermND I.F I.E I.cm).1`. Take `⟨b⟩ : Nonempty (Module.Basis (Fin 2) I.F I.E)` from `⟨Module.finBasisOfFinrankEq I.F I.E I.cm.deg2⟩`. Set `B : Module.Basis (Fin 2) (Ainf I.F) (Ainf I.F ⊗[I.F] I.E)` to `Algebra.TensorProduct.basis (Ainf I.F) b`. Establish `hBk : ∀ k, B k = (1 : Ainf I.F) ⊗ₜ[I.F] b k` using `fun k => Algebra.TensorProduct.basis_apply b k`.
+
+Establish `: IsModuleTopology (Ainf I.F) (Ainf I.F ⊗[I.F] I.E)` using `⟨rfl⟩`. Establish `: ContinuousAdd (Ainf I.F ⊗[I.F] I.E)` using `IsModuleTopology.toContinuousAdd (Ainf I.F) (Ainf I.F ⊗[I.F] I.E)`. Establish `hcE : Continuous B.equivFun` using `IsModuleTopology.continuous_of_linearMap B.equivFun.toLinearMap`. Establish `hcEs : Continuous B.equivFun.symm` using `IsModuleTopology.continuous_of_linearMap B.equivFun.symm.toLinearMap`. Establish `hsum : ∀ z v, θ v z = ∑ k, ((a (B.equivFun z k) v : ℝ) : ℂ) * I.φ v (b k)`.
+
+Introduce `z v`. Use `conv_lhs => rw [← B.sum_equivFun z]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[hBk, TensorProduct.smul_tmul', smul_eq_mul, mul_one, ← ha, ← (hθ v).1 (b k), ← map_mul, Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]`.
+
+Establish `hD : ∀ v, (I.φ v (b 0) * (starRingEnd ℂ) (I.φ v (b 1))).im ≠ 0`. Introduce `v hzero`. Establish `h0 : b 0 ≠ 0` using `b.ne_zero 0`. Establish `hφ0 : I.φ v (b 0) ≠ 0` using `(map_ne_zero (I.φ v)).2 h0`. Establish `hφ0' : (starRingEnd ℂ) (I.φ v (b 0)) ≠ 0` using `(map_ne_zero _).2 hφ0`.
+
+Establish `hreal : (starRingEnd ℂ) (I.φ v (b 1 / b 0)) = I.φ v (b 1 / b 0)`. Rewrite using `[map_div₀, map_div₀, div_eq_div_iff hφ0' hφ0]`. Apply the tactic sequence `apply Complex.ext <;>`. Apply the tactic sequence `simp only [Complex.mul_re, Complex.mul_im, Complex.conj_re, Complex.conj_im] at hzero ⊢ <;>`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hfix : I.cm.sig (b 1 / b 0) = b 1 / b 0` using `(I.φ v).injective (by rw [hcm.2.2.2, ← starRingEnd_apply, hreal])`. Take `⟨f, hf⟩` from `(I.cm.fixed (b 1 / b 0)).1 hfix`. Establish `hx : b 1 = f • b 0`. Rewrite using `[Algebra.smul_def, hf, div_mul_cancel₀ _ h0]`. Use `congrArg (fun z => b.repr z 1) hx` as an intermediate fact.
+
+Simplify using `[Module.Basis.repr_self] at this`. Establish `hD' : ∀ v, (I.φ v (b 1) * (starRingEnd ℂ) (I.φ v (b 0))).im ≠ 0`. Introduce `v h`. Apply `hD v` to reduce the goal to its premises. Simplify using `only [Complex.mul_im, Complex.conj_re, Complex.conj_im] at h ⊢`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Set `t : Fin 2 → InfinitePlace I.F → ℂ → ℝ` to `fun k v w => (w * (starRingEnd ℂ) (I.φ v (b (k + 1)))).im / (I.φ v (b k) * (starRingEnd ℂ) (I.φ v (b (k + 1)))).im`. Establish `ht0 : ∀ v w, t 0 v w = (w * (starRingEnd ℂ) (I.φ v (b 1))).im / (I.φ v (b 0) * (starRingEnd ℂ) (I.φ v (b 1))).im` using `fun v w => rfl`. Establish `ht1 : ∀ v w, t 1 v w = (w * (starRingEnd ℂ) (I.φ v (b 0))).im / (I.φ v (b 1) * (starRingEnd ℂ) (I.φ v (b 0))).im` using `fun v w => rfl`. Establish `hnz : ∀ v, -((I.φ v (b 0)).re * (I.φ v (b 1)).im) + (I.φ v (b 0)).im * (I.φ v (b 1)).re ≠ 0 ∧ -((I.φ v (b 1)).re * (I.φ v (b 0)).im) + (I.φ v (b 1)).im * (I.φ v (b 0)).re ≠ 0`.
+
+Introduce `v`. Establish `h0` using `hD v`. Establish `h1` using `hD' v`. Simplify using `only [Complex.mul_im, Complex.conj_re, Complex.conj_im] at h0 h1`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h`. Apply `h0` to reduce the goal to its premises. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `h`. Apply `h1` to reduce the goal to its premises.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `ht : ∀ v (r : Fin 2 → ℝ) k, t k v (∑ j, ((r j : ℝ) : ℂ) * I.φ v (b j)) = r k`. Introduce `v r k`. Take `⟨h0, h1⟩` from `hnz v`. Apply the tactic sequence `have hk : k = 0 ∨ k = 1 := by fin_cases k <;> simp`.
+
+Break down `hk with rfl | rfl` into its components or cases. Rewrite using `[ht0, div_eq_iff (hD v), Fin.sum_univ_two]`. Simplify using `only [Complex.mul_im, Complex.add_im, Complex.add_re, Complex.mul_re, Complex.ofReal_re, Complex.ofReal_im, Complex.conj_re, Complex.conj_im]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[ht1, div_eq_iff (hD' v), Fin.sum_univ_two]`.
+
+Simplify using `only [Complex.mul_im, Complex.add_im, Complex.add_re, Complex.mul_re, Complex.ofReal_re, Complex.ofReal_im, Complex.conj_re, Complex.conj_im]`. Expand and normalize the polynomial expressions, which then agree. Establish `ht' : ∀ v (w : ℂ), ∑ j, ((t j v w : ℝ) : ℂ) * I.φ v (b j) = w`. Introduce `v w`. Establish `e0 : t 0 v w * (I.φ v (b 0) * (starRingEnd ℂ) (I.φ v (b 1))).im = (w * (starRingEnd ℂ) (I.φ v (b 1))).im` using `by rw [ht0, div_mul_cancel₀ _ (hD v)]`.
+
+Establish `e1 : t 1 v w * (I.φ v (b 1) * (starRingEnd ℂ) (I.φ v (b 0))).im = (w * (starRingEnd ℂ) (I.φ v (b 0))).im` using `by rw [ht1, div_mul_cancel₀ _ (hD' v)]`. Establish `hD0` using `hD v`. Rewrite using `[Fin.sum_univ_two]`. Simplify using `only [Complex.mul_im, Complex.conj_re, Complex.conj_im] at e0 e1 hD0`. Apply the tactic sequence `apply Complex.ext <;>`.
+
+Apply the tactic sequence `simp only [Complex.add_im, Complex.add_re, Complex.mul_re, Complex.mul_im, Complex.ofReal_re, Complex.ofReal_im] <;>`. Apply `mul_left_cancel₀ hD0` to reduce the goal to its premises. Take the linear combination `(I.φ v (b 0)).re * e0 - (I.φ v (b 1)).re * e1`. Take the linear combination `(I.φ v (b 0)).im * e0 - (I.φ v (b 1)).im * e1`. Use `⟨{ toFun := fun z v => θ v z invFun := fun w => B.equivFun.symm (fun k => a.symm (fun v => t k v (w v))) left_inv := ?_ right_inv := ?_ map_add' := fun z z' => funext fun v => map_add (θ v) z z' continuous_toFun := ?_ continuous_invFun := ?_ }, fun z v => rfl⟩` and prove the remaining obligations.
+
+Introduce `z`. Apply `B.equivFun.injective` to reduce the goal to its premises. Rewrite using `[LinearEquiv.apply_symm_apply]`. Use function extensionality and compare the values at `k`. Rewrite using `[a.symm_apply_eq]`.
+
+Use function extensionality and compare the values at `v`. Express the relevant statement in the definitionally equal form `t k v (θ v z) = a (B.equivFun z k) v`. Rewrite using `[hsum z v]`. Conclude with `ht v (fun j => a (B.equivFun z j) v) k`. Introduce `w`.
+
+Use function extensionality and compare the values at `v`. Express the relevant statement in the definitionally equal form `θ v (B.equivFun.symm (fun k => a.symm (fun v' => t k v' (w v')))) = w v`. Rewrite using `[hsum, LinearEquiv.apply_symm_apply]`. Simplify using `only [a.apply_symm_apply]`. Conclude with `ht' v (w v)`.
+
+Use `continuous_pi fun v => ?_` and prove the remaining obligations. Establish `: (fun z => θ v z) = fun z => ∑ k, ((a (B.equivFun z k) v : ℝ) : ℂ) * I.φ v (b k)`. Use function extensionality and compare the values at `fun z => hsum z v`. Use `show Continuous (fun z => θ v z)`. Rewrite using `[this]`.
+
+Conclude with `continuous_finsetSum _ fun k _ => (Complex.continuous_ofReal.comp ((continuous_apply v).comp (a.continuous.comp ((continuous_apply k).comp hcE)))).mul continuous_const`. Conclude with `hcEs.comp (continuous_pi fun k => a.symm.continuous.comp (continuous_pi fun v => ((Complex.continuous_im.comp ((continuous_apply v).mul continuous_const)).div_const _)))`.
+-/
 private theorem exists_coord_homeomorph_tensor (I : AutInst) (θ : InfinitePlace I.F → (Ainf I.F ⊗[I.F] I.E →+* ℂ))
     (hθ : ∀ v, Formalism.MainNotions.StandardLattice.IsInfEmb (I.φ v) (θ v)) :
     ∃ Ψ : (Ainf I.F ⊗[I.F] I.E) ≃ₜ+ (InfinitePlace I.F → ℂ), ∀ z v, Ψ z v = θ v z := by
@@ -243,6 +319,19 @@ private theorem exists_coord_homeomorph_tensor (I : AutInst) (θ : InfinitePlace
   · exact hcEs.comp (continuous_pi fun k => a.symm.continuous.comp (continuous_pi fun v =>
       ((Complex.continuous_im.comp ((continuous_apply v).mul continuous_const)).div_const _)))
 
+/- English proof (translation)
+Introduce `I θ hθ`. Take `⟨Ψ, hΨ⟩` from `exists_coord_homeomorph_tensor I θ hθ`. Establish `hPu : ∀ v, IsUnit (I.P v).det` using `fun v => (Matrix.isUnit_iff_isUnit_det _).1 (I.P_unit v)`. Establish `hinv : ∀ v (u : Fin I.n → ℂ), I.P v *ᵥ ((I.P v)⁻¹ *ᵥ u) = u` using `fun v u => by`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ (hPu v), Matrix.one_mulVec]`.
+
+Establish `hinv' : ∀ v (u : Fin I.n → ℂ), (I.P v)⁻¹ *ᵥ (I.P v *ᵥ u) = u` using `fun v u => by`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ (hPu v), Matrix.one_mulVec]`. Use `⟨{ toFun := fun X v => (I.P v)⁻¹ *ᵥ fun i => Ψ (X 0 i) v invFun := fun Y _ i => Ψ.symm (fun v => (I.P v *ᵥ Y v) i) left_inv := ?_ right_inv := ?_ map_add' := ?_ continuous_toFun := ?_ continuous_invFun := ?_ }, ?_⟩` and prove the remaining obligations. Introduce `X`. Use function extensionality and compare the values at `o i`.
+
+Establish `ho : o = 0` using `Subsingleton.elim o 0`. Substitute `ho` using the available equality. Simplify using `only [hinv]`. Conclude with `Ψ.symm_apply_apply (X 0 i)`. Introduce `Y`.
+
+Use function extensionality and compare the values at `v`. Simplify using `only [Ψ.apply_symm_apply]`. Conclude with `hinv' v (Y v)`. Introduce `X Y`. Use function extensionality and compare the values at `v`.
+
+Express the relevant statement in the definitionally equal form `(I.P v)⁻¹ *ᵥ _ = (I.P v)⁻¹ *ᵥ _ + (I.P v)⁻¹ *ᵥ _`. Rewrite using `[← Matrix.mulVec_add]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `[map_add]`.
+
+Conclude with `continuous_pi fun v => Continuous.matrix_mulVec continuous_const (continuous_pi fun i => (continuous_apply v).comp (Ψ.continuous.comp ((continuous_apply i).comp (continuous_apply 0))))`. Conclude with `continuous_pi fun _ => continuous_pi fun i => Ψ.symm.continuous.comp (continuous_pi fun v => (continuous_apply i).comp (Continuous.matrix_mulVec continuous_const (continuous_apply v)))`. Introduce `X v`. Express the relevant statement in the definitionally equal form `(I.P v)⁻¹ *ᵥ (fun i => Ψ (X 0 i) v) = _`. Simplify using `only [hΨ]`.
+-/
 theorem exists_coord_space : ∀ (I : AutInst) (θ : InfinitePlace I.F → (Ainf I.F ⊗[I.F] I.E →+* ℂ)), (∀ v, Formalism.MainNotions.StandardLattice.IsInfEmb (I.φ v) (θ v)) → ∃ T : (Fin 1 → Fin I.n → Ainf I.F ⊗[I.F] I.E) ≃ₜ+ (InfinitePlace I.F → Fin I.n → ℂ), ∀ X v, T X v = (I.P v)⁻¹ *ᵥ fun i => θ v (X 0 i) := by
   intro I θ hθ
   obtain ⟨Ψ, hΨ⟩ := exists_coord_homeomorph_tensor I θ hθ
@@ -283,6 +372,11 @@ theorem exists_coord_space : ∀ (I : AutInst) (θ : InfinitePlace I.F → (Ainf
     change (I.P v)⁻¹ *ᵥ (fun i => Ψ (X 0 i) v) = _
     simp only [hΨ]
 
+/- English proof (translation)
+Establish `hRe : v.IsReal` using `(GlobalTheory.Mem.Vol.cmData_isCMExt_and_gram_isHermND I.F I.E I.cm).1.1.isReal v`. Establish `hfun : (fun y : Ainf I.F => θ (y ⊗ₜ[I.F] (1 : I.E))) = fun y => InfinitePlace.Completion.extensionEmbedding v (y v)`. Use `(InfiniteAdeleRing.denseRange_algebraMap I.F).equalizer hθ.2 ((InfinitePlace.Completion.isometry_extensionEmbedding v).continuous.comp (continuous_apply v)) ?_` and prove the remaining obligations. Use function extensionality and compare the values at `a`. Simplify using `only [Function.comp_apply, InfiniteAdeleRing.algebraMap_apply]`.
+
+Rewrite using `[Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul, ← Algebra.algebraMap_eq_smul_one, hθ.1, I.φ_over]`. Conclude with `(InfinitePlace.Completion.extensionEmbedding_coe v _).symm`. Establish `hx` using `congrFun hfun r`. Rewrite using `[hx, ← InfinitePlace.Completion.extensionEmbeddingOfIsReal_apply hRe, Complex.conj_ofReal]`.
+-/
 private theorem tmul_one_conj_real (I : AutInst) (v : InfinitePlace I.F) (θ : Ainf I.F ⊗[I.F] I.E →+* ℂ)
     (hθ : Formalism.MainNotions.StandardLattice.IsInfEmb (I.φ v) θ) (r : Ainf I.F) :
     (starRingEnd ℂ) (θ (r ⊗ₜ[I.F] (1 : I.E))) = θ (r ⊗ₜ[I.F] (1 : I.E)) := by
@@ -299,6 +393,15 @@ private theorem tmul_one_conj_real (I : AutInst) (v : InfinitePlace I.F) (θ : A
   have hx := congrFun hfun r
   rw [hx, ← InfinitePlace.Completion.extensionEmbeddingOfIsReal_apply hRe, Complex.conj_ofReal]
 
+/- English proof (translation)
+Establish `: Algebra.IsQuadraticExtension I.F I.E` using `{ finrank_eq_two' := I.cm.deg2 }`. Set `τ : I.E ≃ₐ[I.F] I.E` to `AlgEquiv.ofAlgHom I.cm.sig I.cm.sig (AlgHom.ext fun a => star_star a) (AlgHom.ext fun a => star_star a)`. Establish `hτ : τ ≠ 1`. Introduce `h`. Establish `hall : ∀ a : I.E, a ∈ (algebraMap I.F I.E).range` using `fun a => (I.cm.fixed a).1 (by have := DFunLike.congr_fun h a; exact this)`.
+
+Establish `hsurj : Function.Surjective (Algebra.linearMap I.F I.E)` using `fun a => by`. Take `⟨b, hb⟩` from `hall a`. Conclude with `⟨b, hb⟩`. Establish `hfr` using `(LinearEquiv.ofBijective (Algebra.linearMap I.F I.E) ⟨(algebraMap I.F I.E).injective, hsurj⟩).finrank_eq`. Rewrite `hfr` using `[Module.finrank_self, I.cm.deg2]`.
+
+Conclude with `absurd hfr (by norm_num)`. Establish `hcard : Fintype.card Gal(I.E/I.F) = 2`. Rewrite using `[← Nat.card_eq_fintype_card, IsGalois.card_aut_eq_finrank, I.cm.deg2]`. Establish `huniv : (Finset.univ : Finset Gal(I.E/I.F)) = {1, τ}`. Use `symm`.
+
+Apply `Finset.eq_univ_of_card` to reduce the goal to its premises. Rewrite using `[Finset.card_pair (Ne.symm hτ), hcard]`. Rewrite using `[trace_eq_sum_automorphisms, huniv, Finset.sum_pair (Ne.symm hτ)]`. Both sides reduce to the same expression.
+-/
 private theorem algebraMap_trace_eq_add_sig (I : AutInst) (e : I.E) :
     algebraMap I.F I.E (Algebra.trace I.F I.E e) = e + I.cm.sig e := by
   classical
@@ -325,6 +428,35 @@ private theorem algebraMap_trace_eq_add_sig (I : AutInst) (e : I.E) :
   rw [trace_eq_sum_automorphisms, huniv, Finset.sum_pair (Ne.symm hτ)]
   rfl
 
+/- English proof (translation)
+Introduce `I v θ hθ x y`. Establish `hcm` using `(GlobalTheory.Mem.Vol.cmData_isCMExt_and_gram_isHermND I.F I.E I.cm).1`. Establish `hmul : ∀ (r : Ainf I.F) (e : I.E), θ (r ⊗ₜ[I.F] e) = θ (r ⊗ₜ[I.F] (1 : I.E)) * I.φ v e`. Introduce `r e`. Rewrite using `[← hθ.1 e, ← map_mul, Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]`.
+
+Establish `hconj : ∀ e : I.E, I.φ v (I.cm.sig e) = (starRingEnd ℂ) (I.φ v e)`. Introduce `e`. Rewrite using `[starRingEnd_apply]`. Conclude with `hcm.2.2.2 _ _`. Establish `hB : ∀ z, θ (sigR (Ainf I.F) I.cm.sig z) = (starRingEnd ℂ) (θ z)`.
+
+Introduce `z`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul r e`. Establish `hs : sigR (Ainf I.F) I.cm.sig (r ⊗ₜ[I.F] e) = r ⊗ₜ[I.F] I.cm.sig e`.
+
+Simplify using `[sigR, Algebra.TensorProduct.map_tmul]`. Rewrite using `[hs, hmul r (I.cm.sig e), hmul r e, map_mul, tmul_one_conj_real I v θ hθ r, hconj]`. Consider the case `add a b ha hb => rw [map_add, map_add, ha, hb, map_add, map_add]`. Establish `htr1 : ∀ e : I.E, Algebra.trace (Ainf I.F) (Ainf I.F ⊗[I.F] I.E) ((1 : Ainf I.F) ⊗ₜ[I.F] e) = algebraMap I.F (Ainf I.F) (Algebra.trace I.F I.E e)`. Introduce `e`.
+
+Establish `hl : Algebra.lmul (Ainf I.F) (Ainf I.F ⊗[I.F] I.E) ((1 : Ainf I.F) ⊗ₜ[I.F] e) = (Algebra.lmul I.F I.E e).baseChange (Ainf I.F)`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `w`. Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+
+Consider the case `tmul a b => simp [Algebra.TensorProduct.tmul_mul_tmul, LinearMap.baseChange_tmul]`. Consider the case `add a b ha hb => rw [map_add, map_add, ha, hb]`. Rewrite using `[Algebra.trace_apply, hl, LinearMap.trace_baseChange, Algebra.trace_apply]`. Establish `hA : ∀ z : Ainf I.F ⊗[I.F] I.E, θ (Algebra.trace (Ainf I.F) (Ainf I.F ⊗[I.F] I.E) z ⊗ₜ[I.F] (1 : I.E)) = θ z + (starRingEnd ℂ) (θ z)`. Introduce `z`.
+
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul r e`. Establish `hal : θ ((algebraMap I.F (Ainf I.F) (Algebra.trace I.F I.E e)) ⊗ₜ[I.F] (1 : I.E)) = I.φ v e + (starRingEnd ℂ) (I.φ v e)`. Rewrite using `[Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul, ← Algebra.algebraMap_eq_smul_one, hθ.1, algebraMap_trace_eq_add_sig, map_add, hconj]`.
+
+Establish `hre : r ⊗ₜ[I.F] e = r • ((1 : Ainf I.F) ⊗ₜ[I.F] e)`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Establish `htr : Algebra.trace (Ainf I.F) (Ainf I.F ⊗[I.F] I.E) (r ⊗ₜ[I.F] e) = r * algebraMap I.F (Ainf I.F) (Algebra.trace I.F I.E e)`. Rewrite using `[hre, map_smul, htr1, smul_eq_mul]`. Establish `hsplit : (r * algebraMap I.F (Ainf I.F) (Algebra.trace I.F I.E e)) ⊗ₜ[I.F] (1 : I.E) = (r ⊗ₜ[I.F] (1 : I.E)) * (algebraMap I.F (Ainf I.F) (Algebra.trace I.F I.E e) ⊗ₜ[I.F] (1 : I.E))`.
+
+Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, mul_one]`. Rewrite using `[htr, hsplit, map_mul, hal, hmul r e, map_mul, tmul_one_conj_real I v θ hθ r]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `add a b ha hb => rw [map_add, TensorProduct.add_tmul, map_add, ha, hb, map_add, map_add]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[hA]`. Establish `hC : θ (hR (Ainf I.F) I.cm.sig I.J x y) = ∑ i, ∑ j, (starRingEnd ℂ) (θ (x i)) * (I.J.map (I.φ v)) i j * θ (y j)`. Rewrite using `[hR]`. Unfold `Formalism.UG.hform`. Simplify using `only [map_sum, map_mul, hB, JR, Matrix.map_apply, inclR, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, Algebra.TensorProduct.includeRight_apply, hθ.1]`.
+
+Establish `hPu : IsUnit (I.P v).det` using `(Matrix.isUnit_iff_isUnit_det _).1 (I.P_unit v)`. Establish `hD : ∀ a b : Fin I.n → ℂ, ∑ i, ∑ j, (starRingEnd ℂ) (a i) * (I.J.map (I.φ v)) i j * b j = ∑ i, star (((I.P v)⁻¹ *ᵥ a) i) * ((if I.ε v i then 1 else -1) * ((I.P v)⁻¹ *ᵥ b) i)`. Introduce `a b`. Establish `ha : a = I.P v *ᵥ ((I.P v)⁻¹ *ᵥ a)`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ hPu, Matrix.one_mulVec]`.
+
+Establish `hb : b = I.P v *ᵥ ((I.P v)⁻¹ *ᵥ b)`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ hPu, Matrix.one_mulVec]`. Establish `h1 : ∑ i, ∑ j, (starRingEnd ℂ) (a i) * (I.J.map (I.φ v)) i j * b j = star a ⬝ᵥ (I.J.map (I.φ v) *ᵥ b)`. Simplify using `only [dotProduct, Matrix.mulVec, Finset.mul_sum, Pi.star_apply, starRingEnd_apply, mul_assoc]`. Rewrite using `[h1]`.
+
+Generalize the expression as in `(I.P v)⁻¹ *ᵥ a = u at ha ⊢`. Generalize the expression as in `(I.P v)⁻¹ *ᵥ b = w at hb ⊢`. Substitute `ha hb` using the available equality. Rewrite using `[Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, I.P_spec v]`. Simplify using `only [Formalism.REAL.Jm, dotProduct, Matrix.mulVec_diagonal, Pi.star_apply]`.
+
+Rewrite using `[hC, hD, Complex.add_conj]`. Use `congr 1`. Rewrite using `[Complex.re_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp [Complex.mul_re, Complex.conj_re, Complex.conj_im] <;> ring`.
+-/
 theorem trace_form : ∀ (I : AutInst) (v : InfinitePlace I.F) (θ : Ainf I.F ⊗[I.F] I.E →+* ℂ), Formalism.MainNotions.StandardLattice.IsInfEmb (I.φ v) θ → ∀ x y : Fin I.n → Ainf I.F ⊗[I.F] I.E, θ (Algebra.trace (Ainf I.F) (Ainf I.F ⊗[I.F] I.E) (hR (Ainf I.F) I.cm.sig I.J x y) ⊗ₜ[I.F] (1 : I.E)) = ((∑ i, (if I.ε v i then 2 else -2) * ((((I.P v)⁻¹ *ᵥ fun j => θ (x j)) i).re * (((I.P v)⁻¹ *ᵥ fun j => θ (y j)) i).re + (((I.P v)⁻¹ *ᵥ fun j => θ (x j)) i).im * (((I.P v)⁻¹ *ᵥ fun j => θ (y j)) i).im) : ℝ) : ℂ) := by
   intro I v θ hθ x y
   have hcm := (GlobalTheory.Mem.Vol.cmData_isCMExt_and_gram_isHermND I.F I.E I.cm).1
@@ -416,6 +548,59 @@ theorem trace_form : ∀ (I : AutInst) (v : InfinitePlace I.F) (θ : Ainf I.F �
   refine Finset.sum_congr rfl fun i _ => ?_
   split_ifs <;> simp [Complex.mul_re, Complex.conj_re, Complex.conj_im] <;> ring
 
+/- English proof (translation)
+Introduce `I θ hn hθ lamv χ hlam hχ μi νi hμ hν Fi hF s`. Take `⟨a, ha⟩` from `exists_coord_base I θ hθ`. Take `⟨T, hT⟩` from `exists_coord_space I θ hθ`. Take `⟨Ψ, -⟩` from `exists_coord_homeomorph_tensor I θ hθ`. Establish `: IsModuleTopology (Ainf I.F) (Ainf I.F ⊗[I.F] I.E)` using `⟨rfl⟩`.
+
+Establish `: IsTopologicalAddGroup (Ainf I.F ⊗[I.F] I.E)` using `IsModuleTopology.topologicalAddGroup (Ainf I.F) (Ainf I.F ⊗[I.F] I.E)`. Establish `: SecondCountableTopology (Ainf I.F ⊗[I.F] I.E)` using `Ψ.toHomeomorph.secondCountableTopology`. Establish `: BorelSpace (Ainf I.F ⊗[I.F] I.E)` using `⟨rfl⟩`. Establish `: BorelSpace (Ainf I.F)` using `⟨rfl⟩`. Set `d : InfinitePlace I.F → Fin I.n → ℝ` to `fun v i => lamv v * (if I.ε v i then 2 else -2)`.
+
+Apply the tactic sequence `have hd : ∀ v i, d v i ≠ 0 := fun v i => mul_ne_zero (hlam v) (by split_ifs <;> norm_num)`. Establish `hpair : ∀ X Y, χ (BR (Ainf I.F) I.cm.sig I.J X Y) = (fun x y : InfinitePlace I.F → Fin I.n → ℂ => Complex.exp (2 * Real.pi * Complex.I * ((∑ v, ∑ i, d v i * ((x v i).re * (y v i).re + (x v i).im * (y v i).im) : ℝ) : ℂ))) (T X) (T Y)`. Introduce `X Y`. Establish `key : ∀ v, lamv v * (θ v (Algebra.trace (Ainf I.F) (Ainf I.F ⊗[I.F] I.E) (hR (Ainf I.F) I.cm.sig I.J (X 0) (Y 0)) ⊗ₜ[I.F] (1 : I.E))).re = ∑ i, d v i * ((T X v i).re * (T Y v i).re + (T X v i).im * (T Y v i).im)`. Introduce `v`.
+
+Rewrite using `[trace_form I v (θ v) (hθ v), Complex.ofReal_re, Finset.mul_sum, hT X v, hT Y v]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [d]`. Expand and normalize the polynomial expressions, which then agree. Establish `hBR : BR (Ainf I.F) I.cm.sig I.J X Y = Algebra.trace (Ainf I.F) (Ainf I.F ⊗[I.F] I.E) (hR (Ainf I.F) I.cm.sig I.J (X 0) (Y 0))`.
+
+Simplify using `[BR]`. Rewrite using `[hBR, hχ]`. Simplify using `only [key]`. Establish `hμeq` using `selfDual_complex d hd (μi.map T) (selfDual_map T hμ hpair)`. Establish `hmult : ∀ x y : Ainf I.F, ∀ v, a (x * y) v = a x v * a y v`.
+
+Introduce `x y v`. Apply `Complex.ofReal_injective` to reduce the goal to its premises. Rewrite using `[← ha, Complex.ofReal_mul, ← ha, ← ha, ← map_mul, Algebra.TensorProduct.tmul_mul_tmul, mul_one]`. Establish `hνpair : ∀ x y : Ainf I.F, χ (x * y) = (fun s t : InfinitePlace I.F → ℝ => Complex.exp (2 * Real.pi * Complex.I * ((∑ v, lamv v * (s v * t v) : ℝ) : ℂ))) (a x) (a y)`. Introduce `x y`.
+
+Rewrite using `[hχ]`. Simplify using `only [ha, Complex.ofReal_re, hmult]`. Establish `hνeq` using `GlobalTheory.T.self_dual_measure_real_diagonal (InfinitePlace I.F) lamv hlam (νi.map a) (selfDual_map a hν hνpair)`. Establish `hq : ∀ X, a (qR (Ainf I.F) I.cm.sig I.J (X 0)) = fun v => qEps (I.ε v) (T X v)`. Introduce `X`.
+
+Use function extensionality and compare the values at `v`. Apply `Complex.ofReal_injective` to reduce the goal to its premises. Rewrite using `[← ha]`. Establish `hhalf : θ v (algebraMap I.F (Ainf I.F) (1 / 2) ⊗ₜ[I.F] (1 : I.E)) = 1 / 2`. Rewrite using `[Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul, ← Algebra.algebraMap_eq_smul_one, (hθ v).1, I.φ_over, map_div₀, map_one, map_ofNat]`.
+
+Rewrite using `[qR, ← mul_one (1 : I.E), ← Algebra.TensorProduct.tmul_mul_tmul, map_mul, hhalf, trace_form I v (θ v) (hθ v), hT X v]`. Simplify using `only [qEps, Complex.ofReal_sum, Complex.ofReal_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.sq_norm, Complex.normSq_apply]`. Apply the tactic sequence `split_ifs <;> push_cast <;> ring`.
+
+Establish `hTme : MeasurableEmbedding T` using `T.toHomeomorph.isClosedEmbedding.measurableEmbedding`. Establish `hame : MeasurableEmbedding a` using `a.toHomeomorph.isClosedEmbedding.measurableEmbedding`. Use `set c1 : ℝ := ∏ v, ∏ i, |d v i| with hc1`. Use `set c2 : ℝ := ∏ v, √|lamv v| with hc2`. Establish `hc1pos : 0 < c1` using `Finset.prod_pos fun v _ => Finset.prod_pos fun i _ => abs_pos.2 (hd v i)`.
+
+Establish `hc2pos : 0 < c2` using `Finset.prod_pos fun v _ => Real.sqrt_pos.2 (abs_pos.2 (hlam v))`. Set `G : (InfinitePlace I.F → ℝ) → ℂ` to `fun t => ((c2 / c1 : ℝ) : ℂ) * Fi (a.symm t)`. Establish `hGc : Continuous G` using `continuous_const.mul (hF.1.comp a.symm.continuous)`. Establish `hGint : ∀ S : Set (InfinitePlace I.F → ℝ), IsCompact S → ∫ y in (fun (y : InfinitePlace I.F → Fin I.n → ℂ) (v : InfinitePlace I.F) => qEps (I.ε v) (y v)) ⁻¹' S, ((∏ v, gauss (y v) : ℝ) : ℂ) = ∫ b in S, G b`. Introduce `S hS`.
+
+Establish `hS' : IsCompact (a.symm '' S)` using `hS.image a.symm.continuous`. Establish `h` using `hF.2 (a.symm '' S) hS'`. Rewrite `h` using `[Set.image_id]`. Establish `hL : ∫ X in (fun X => qR (Ainf I.F) I.cm.sig I.J (X 0)) ⁻¹' (a.symm '' S), ((∏ v, gauss ((I.P v)⁻¹ *ᵥ fun i => θ v (X 0 i)) : ℝ) : ℂ) ∂μi = (c1 : ℂ) * ∫ y in (fun (y : InfinitePlace I.F → Fin I.n → ℂ) (v : InfinitePlace I.F) => qEps (I.ε v) (y v)) ⁻¹' S, ((∏ v, gauss (y v) : ℝ) : …`. Establish `hpre : (fun X => qR (Ainf I.F) I.cm.sig I.J (X 0)) ⁻¹' (a.symm '' S) = T ⁻¹' ((fun (y : InfinitePlace I.F → Fin I.n → ℂ) (v : InfinitePlace I.F) => qEps (I.ε v) (y v)) ⁻¹' S)`.
+
+Use extensionality with `X`. Simplify using `only [Set.mem_preimage, Set.mem_image]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨t, ht, hts⟩`. Rewrite using `[← hq X, ← hts, a.apply_symm_apply]`.
+
+Conclude with `ht`. Introduce `hX`. Use `⟨_, hX, ?_⟩` and prove the remaining obligations. Rewrite using `[← hq X, a.symm_apply_apply]`. Rewrite using `[hpre]`.
+
+Establish `h1` using `hTme.setIntegral_map (μ := μi) (fun y : InfinitePlace I.F → Fin I.n → ℂ => ((∏ v, gauss (y v) : ℝ) : ℂ)) ((fun (y : InfinitePlace I.F → Fin I.n → ℂ) (v : InfinitePlace I.F) => qEps (I.ε v) (y v)) ⁻¹' S)`. Simplify using `only [hT] at h1`. Rewrite using `[← h1, hμeq, Measure.restrict_smul, integral_smul_measure, ENNReal.toReal_ofReal hc1pos.le, Complex.real_smul]`. Establish `hR' : ∫ b in a.symm '' S, Fi b ∂νi = (c2 : ℂ) * ∫ t in S, Fi (a.symm t)`. Establish `hpre : a.symm '' S = a ⁻¹' S`.
+
+Use extensionality with `x`. Simplify using `only [Set.mem_image, Set.mem_preimage]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨t, ht, rfl⟩`. Rewrite using `[a.apply_symm_apply]` and apply the resulting hypothesis.
+
+Introduce `hx`. Conclude with `⟨a x, hx, a.symm_apply_apply x⟩`. Rewrite using `[hpre]`. Establish `h1` using `hame.setIntegral_map (μ := νi) (fun t => Fi (a.symm t)) S`. Simplify using `only [a.symm_apply_apply] at h1`.
+
+Rewrite using `[← h1, hνeq, Measure.restrict_smul, integral_smul_measure, ENNReal.toReal_ofReal hc2pos.le, Complex.real_smul]`. Rewrite `h` using `[hL, hR']`. Simplify using `only [G]`. Rewrite using `[integral_const_mul]`. Establish `hc1' : (c1 : ℂ) ≠ 0` using `by exact_mod_cast hc1pos.ne'`.
+
+Rewrite using `[Complex.ofReal_div, div_mul_eq_mul_div, eq_div_iff hc1']`. Take the linear combination `h`. Establish `hfin` using `GlobalTheory.T.gaussian_pushforward_density (InfinitePlace I.F) I.n I.ε G hGc hGint (a (sgn (Ainf I.F) s))`. Establish `hsg : a (sgn (Ainf I.F) s) = fun _ => sgn ℝ s`. Use function extensionality and compare the values at `v`.
+
+Apply `Complex.ofReal_injective` to reduce the goal to its premises. Rewrite using `[← ha]`. Consider the cases of `s`. Use `show θ v ((-1 : Ainf I.F) ⊗ₜ[I.F] (1 : I.E)) = ((-1 : ℝ) : ℂ)`. Rewrite using `[TensorProduct.neg_tmul, map_neg, ← Algebra.TensorProduct.one_def, map_one]`.
+
+Simplify using the standard rewrite rules. Use `show θ v ((1 : Ainf I.F) ⊗ₜ[I.F] (1 : I.E)) = ((1 : ℝ) : ℂ)`. Rewrite using `[← Algebra.TensorProduct.one_def, map_one]`. Simplify using the standard rewrite rules. Rewrite `hfin` using `[hsg]`.
+
+Apply the tactic sequence `have hfin' := hfin (fun v => by cases s <;> simp [sgn])`. Simplify using `only [G] at hfin'`. Rewrite using `[show Fi (sgn (Ainf I.F) s) = Fi (a.symm (fun _ => sgn ℝ s)) by rw [← hsg, a.symm_apply_apply]]`. Establish `hcc : (c2 / c1 : ℝ) ≠ 0` using `div_ne_zero hc2pos.ne' hc1pos.ne'`. Rewrite using `[← mul_right_inj' (Complex.ofReal_ne_zero.2 hcc), hfin']`.
+
+Establish `hconst : ∀ v, 2 ^ I.n * |lamv v| ^ ((I.n : ℝ) - 1 / 2) = (∏ i, |d v i|) / √|lamv v|`. Introduce `v`. Establish `hl : 0 < |lamv v|` using `abs_pos.2 (hlam v)`. Establish `hdi : ∀ i, |d v i| = 2 * |lamv v|` using `fun i => by`. Apply the tactic sequence `simp only [d]; split_ifs <;> simp [abs_mul] <;> ring`.
+
+Simplify using `only [hdi, Finset.prod_const, Finset.card_univ, Fintype.card_fin]`. Rewrite using `[Real.rpow_sub hl, Real.rpow_natCast, Real.sqrt_eq_rpow, mul_pow]`. Clear the denominators using the available nonvanishing facts. Simplify using `only [hconst, Finset.prod_mul_distrib, Finset.prod_div_distrib]`. Rewrite using `[hc1, hc2]`.
+
+Use `push_cast`. Clear the denominators using the available nonvanishing facts. Establish `hA : (∏ v, ((√|lamv v| : ℝ) : ℂ)) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun v _ => by`. Conclude with `(Real.sqrt_pos.2 (abs_pos.2 (hlam v))).ne'` after adjusting the coercions. Establish `hB : (∏ v, ∏ i, ((|d v i| : ℝ) : ℂ)) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun v _ => Finset.prod_ne_zero_iff.2 fun i _ => by exact_mod_cast (abs_pos.2 (hd v i)).ne'`.
+
+Rewrite using `[mul_assoc, mul_div_assoc, div_self (mul_ne_zero hA hB), mul_one]`.
+-/
 theorem density_at_sign : ∀ (I : AutInst) (θ : InfinitePlace I.F → (Ainf I.F ⊗[I.F] I.E →+* ℂ)), 2 ≤ I.n → (∀ v, Formalism.MainNotions.StandardLattice.IsInfEmb (I.φ v) (θ v)) → ∀ (lamv : InfinitePlace I.F → ℝ) (χ : Ainf I.F → ℂ), (∀ v, lamv v ≠ 0) → (∀ x, χ x = Complex.exp (2 * Real.pi * Complex.I * ((∑ v, lamv v * (θ v (x ⊗ₜ[I.F] (1 : I.E))).re : ℝ) : ℂ))) → ∀ (μi : Measure (Fin 1 → Fin I.n → Ainf I.F ⊗[I.F] I.E)) (νi : Measure (Ainf I.F)), SelfDual μi (fun X Y => χ (BR (Ainf I.F) I.cm.sig I.J X Y)) → SelfDual νi (fun s t => χ (s * t)) → ∀ Fi : Ainf I.F → ℂ, IsContDensity μi (fun X => qR (Ainf I.F) I.cm.sig I.J (X 0)) id νi (fun X => ((∏ v, gauss ((I.P v)⁻¹ *ᵥ fun i => θ v (X 0 i)) : ℝ) : ℂ)) Fi → ∀ s : Bool, Fi (sgn (Ainf I.F) s) = ((∏ v, 2 ^ I.n * |lamv v| ^ ((I.n : ℝ) - 1 / 2) * gaussDens (I.ε v) (sgn ℝ s) : ℝ) : ℂ) := by
   intro I θ hn hθ lamv χ hlam hχ μi νi hμ hν Fi hF s
   obtain ⟨a, ha⟩ := exists_coord_base I θ hθ

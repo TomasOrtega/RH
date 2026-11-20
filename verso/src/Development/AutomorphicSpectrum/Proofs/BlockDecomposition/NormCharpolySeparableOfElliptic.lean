@@ -13,6 +13,11 @@ open scoped Classical
 
 namespace GlobalTheory.CompanionTheory.SepLocEl
 
+/- English proof (translation)
+Establish `key : ∀ (v : Pl E) (_ : v = w) (f : v.adicCompletion E →+* w.adicCompletion E), Continuous f → (∀ k : E, f (algebraMap E _ k) = algebraMap E _ (GlobalTheory.SplitPts.conjE E k)) → GlobalTheory.BCT.cj w (algebraMap E _ x) = algebraMap E _ (IsCMField.complexConj E x)`. Introduce and unpack `v rfl f hf h`. Establish `hex : ∃ s : v.adicCompletion E →+* v.adicCompletion E, Continuous s ∧ ∀ x : E, s (algebraMap E _ x) = algebraMap E _ (IsCMField.complexConj E x)` using `⟨f, hf, h⟩`. Rewrite using `[GlobalTheory.BCT.cj, dif_pos hex]`. Conclude with `hex.choose_spec.2 x`.
+
+Conclude with `key _ (GlobalTheory.BCT.GlobLev.conjSrc_eq_of_not_split hw) _ (conjLoc_spec (GlobalTheory.SplitPts.conjE E) _).1 (conjLoc_spec (GlobalTheory.SplitPts.conjE E) _).2.1`.
+-/
 theorem cj_algebraMap {E : Type} [Field E] [NumberField E] [IsCMField E] {w : Pl E} (hw : ¬ IsSplitAt w) (x : E) :
     GlobalTheory.BCT.cj w (algebraMap E _ x) = algebraMap E _ (IsCMField.complexConj E x) := by
   have key : ∀ (v : Pl E) (_ : v = w) (f : v.adicCompletion E →+* w.adicCompletion E), Continuous f →
@@ -26,6 +31,11 @@ theorem cj_algebraMap {E : Type} [Field E] [NumberField E] [IsCMField E] {w : Pl
   exact key _ (GlobalTheory.BCT.GlobLev.conjSrc_eq_of_not_split hw) _
     (conjLoc_spec (GlobalTheory.SplitPts.conjE E) _).1 (conjLoc_spec (GlobalTheory.SplitPts.conjE E) _).2.1
 
+/- English proof (translation)
+Distinguish the cases in `h : IsSplitAt w`. Simplify using `only [nrmL, locEl, if_pos h]`. Simplify using `only [nrmL, locEl, if_neg h]`. Rewrite using `[map_mul]`. Use `congr 1`.
+
+Conclude with `(GlobalTheory.ThetaPull.map_thetaGL (algebraMap E (w.adicCompletion E)) _ (GlobalTheory.BCT.cj w) (fun x => (cj_algebraMap h x).symm) δ).symm`.
+-/
 theorem nrmL_locEl {E : Type} [Field E] [NumberField E] [IsCMField E] (n : ℕ) (w : Pl E) (δ : GL (Fin n) E) :
     nrmL n w (locEl n w δ) = GeneralLinearGroup.map (algebraMap E (w.adicCompletion E)) (δ * thE E n δ) := by
   by_cases h : IsSplitAt w
@@ -36,6 +46,9 @@ theorem nrmL_locEl {E : Type} [Field E] [NumberField E] [IsCMField E] (n : ℕ) 
     exact (GlobalTheory.ThetaPull.map_thetaGL (algebraMap E (w.adicCompletion E)) _ (GlobalTheory.BCT.cj w)
       (fun x => (cj_algebraMap h x).symm) δ).symm
 
+/- English proof (translation)
+Introduce `_ E _ _ _ n w δ hδ`. Rewrite using `[nrmL_locEl]`. Establish `e : (GeneralLinearGroup.map (algebraMap E (w.adicCompletion E)) (δ * thE E n δ)).val = (δ * thE E n δ).val.map (algebraMap E (w.adicCompletion E))` using `rfl`. Rewrite using `[e, Matrix.charpoly_map]`. Conclude with `Polynomial.Separable.map hδ.2.2.1`.
+-/
 theorem separable_charpoly_nrmL_locEl : CjEx → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (w : Pl E) (δ : GL (Fin n) E), polE δ ∈ Ell E n →
     (nrmL n w (locEl n w δ)).val.charpoly.Separable := by
   intro _ E _ _ _ n w δ hδ

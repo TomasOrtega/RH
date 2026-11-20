@@ -35,26 +35,51 @@ variable {R : Type} [CommRing R] [IsDomain R] {j : ℕ} {D' D : DegPre R} (pD : 
 
 def intersection_update_fsHerm_neg_one (i : Fin j) (χ : D.X) : D'.X := pD.xe.symm (Pi.single i χ)
 
+/- English proof (translation)
+The claim follows from `pD.xe.apply_symm_apply _`.
+-/
 theorem xe_position (i : Fin j) (χ : D.X) : pD.xe (intersection_update_fsHerm_neg_one pD i χ) = Pi.single i χ := pD.xe.apply_symm_apply _
 
+/- English proof (translation)
+Rewrite using `[xe_position, Pi.single_eq_same]`.
+-/
 theorem xe_position_self (i : Fin j) (χ : D.X) : pD.xe (intersection_update_fsHerm_neg_one pD i χ) i = χ := by
   rw [xe_position, Pi.single_eq_same]
 
+/- English proof (translation)
+Rewrite using `[xe_position, Pi.single_eq_of_ne h]`.
+-/
 theorem xe_position_ne {i i' : Fin j} (h : i' ≠ i) (χ : D.X) : pD.xe (intersection_update_fsHerm_neg_one pD i χ) i' = 0 := by
   rw [xe_position, Pi.single_eq_of_ne h]
 
+/- English proof (translation)
+Rewrite using `[intersection_update_fsHerm_neg_one, Pi.single_add, map_add]`. Both sides reduce to the same expression.
+-/
 theorem position_add (i : Fin j) (χ χ' : D.X) : intersection_update_fsHerm_neg_one pD i (χ + χ') = intersection_update_fsHerm_neg_one pD i χ + intersection_update_fsHerm_neg_one pD i χ' := by
   rw [intersection_update_fsHerm_neg_one, Pi.single_add, map_add]; rfl
 
+/- English proof (translation)
+Rewrite using `[intersection_update_fsHerm_neg_one, Pi.single_zero, map_zero]`.
+-/
 theorem position_zero (i : Fin j) : intersection_update_fsHerm_neg_one pD i 0 = 0 := by
   rw [intersection_update_fsHerm_neg_one, Pi.single_zero, map_zero]
 
+/- English proof (translation)
+Apply `pD.xe.injective` to reduce the goal to its premises. Rewrite using `[map_sum]`. Simplify using `only [xe_position]`. Conclude with `Finset.univ_sum_single _`.
+-/
 theorem sum_position (x : D'.X) : ∑ i, intersection_update_fsHerm_neg_one pD i (pD.xe x i) = x := by
   apply pD.xe.injective
   rw [map_sum]
   simp only [xe_position]
   exact Finset.univ_sum_single _
 
+/- English proof (translation)
+Use `choose v hv vv using fun χ => exists_gen_val (F := F) D.P.isLB (DegPre.gtφ D F b χ) DegPre.gtε hJ (f χ)`. Use `(exists_gt b v hv (fun _ _ _ _ => rfl) (fun y' J' hJ' => ?_) (fun χ χ' y' J' hJ' => ?_)).imp fun _ h => ⟨h.1, fun χ => (h.2 χ y J hJ).trans (vv χ)⟩` and prove the remaining obligations. Take `rfl` from `pt_eq y y'`. Use `(val_eq_of_val_eq (φ' := PEmpty.elim) (ε' := PEmpty.elim) (fun U _ h => ?_) (hv 0) oneGen_isGen hJ hJ' ((vv 0).trans (f₀.trans (val_one _).symm))).trans (val_one _)` and prove the remaining obligations. Rewrite using `[prod_gt, cPoint_zero, _root_.one_mul]`.
+
+Simplify using the standard rewrite rules. Take `rfl` from `pt_eq y y'`. Use `((val_mul hJ' _ _ _).trans (congrArg₂ (· * ·) rfl (val_cubAt hJ' _ _ _))).symm.trans (Eq.trans (val_eq_of_val_eq (fun U _ h => ?_) (mulGen_isGen _ _ _ _ _ _ _ (hv _) (cubAt_isGen _ _ _)) (mulGen_isGen _ _ _ _ _ _ _ (hv χ) (hv χ')) hJ hJ' (((val_mul hJ _ _ _).trans (congrArg₂ (· * …` and prove the remaining obligations. Use `(prod_sum₂ (K := Fin 4) (K' := thK) (U := U) _ (prod_gt b (χ + χ') h) (prod_cub (cP D _ χ) (cP D _ χ') b h)).trans (Eq.trans ?_ (prod_sum₂ (K := Fin 4) (K' := Fin 4) (U := U) _ (prod_gt b χ h) (prod_gt b χ' h)).symm)` and prove the remaining obligations. Rewrite using `[cPoint_add]`.
+
+Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`. Normalize the expressions using the abelian group laws.
+-/
 theorem exists_gt_at {y : (TF (R := R) F).left} {J} (hJ : Good D.P.L y J) (b : TF (R := R) F ⟶ D.P.A)
     (f : D.X → ((TF (R := R) F).left.presheaf.stalk y)ˣ) (f₀ : f 0 = 1)
     (hf : ∀ χ χ', f (χ + χ') * th D y J (cP D _ χ) (cP D _ χ') b = f χ * f χ') :
@@ -86,6 +111,9 @@ variable {y : (TF (R := R) F).left} {J : ((TF (R := R) F).left ⟶ D.P.A.left) �
   {J' : ((TF (R := R) F).left ⟶ D'.P.A.left) → D'.P.L.ι} (hJ : Good D.P.L y J) (hJ' : Good D'.P.L y J')
 include hJ
 
+/- English proof (translation)
+Establish `C : IsCub (th D (T` using `TF (R := R) F) y J) := isCub_cubV D.cub hJ`. Rewrite using `[Finset.prod_eq_single i (fun i' _ h => by rw [cPoint_pr, xe_position_ne pD h, cPoint_zero, C.face]) (by simp), cPoint_pr, xe_position_self]`.
+-/
 theorem prod_th_factor (i : Fin j) (χ : D.X) (x w : TF (R := R) F ⟶ D'.P.A) :
     ∏ i', th D y J (cP D' _ (intersection_update_fsHerm_neg_one pD i χ) ≫ pD.pw.pr i') (x ≫ pD.pw.pr i') (w ≫ pD.pw.pr i') =
       th D y J (cP D _ χ) (x ≫ pD.pw.pr i) (w ≫ pD.pw.pr i) := by
@@ -95,12 +123,20 @@ theorem prod_th_factor (i : Fin j) (χ : D.X) (x w : TF (R := R) F ⟶ D'.P.A) :
 
 include hJ'
 
+/- English proof (translation)
+Establish `e₂ : ∏ i', charVal (g i') (pD.xe (intersection_update_fsHerm_neg_one pD i χ) i') y J = charVal (g i) χ y J`. Rewrite using `[Finset.prod_eq_single i (fun i' _ h => by rw [xe_position_ne pD h, charVal_zero _ hJ]) (by simp), xe_position_self]`. Conclude with `(box_val pD hJ hJ' h (intersection_update_fsHerm_neg_one pD i χ)).trans e₂`.
+-/
 theorem position_val {g' : GtPtF D' F} {g : Fin j → GtPtF D F} (h : IsBoxGtF pD F g' g) (i : Fin j) (χ : D.X) :
     omL pD y J J' (cP D' _ (intersection_update_fsHerm_neg_one pD i χ)) g'.b * charVal g' (intersection_update_fsHerm_neg_one pD i χ) y J' = charVal (g i) χ y J := by
   have e₂ : ∏ i', charVal (g i') (pD.xe (intersection_update_fsHerm_neg_one pD i χ) i') y J = charVal (g i) χ y J := by
     rw [Finset.prod_eq_single i (fun i' _ h => by rw [xe_position_ne pD h, charVal_zero _ hJ]) (by simp), xe_position_self]
   exact (box_val pD hJ hJ' h (intersection_update_fsHerm_neg_one pD i χ)).trans e₂
 
+/- English proof (translation)
+Establish `e₂ : ∏ i', tauVal D F (pD.xe z i') (pD.xe (intersection_update_fsHerm_neg_one pD i χ) i') y J = tauVal D F (pD.xe z i) χ y J`. Rewrite using `[Finset.prod_eq_single i (fun i' _ h => ?_) (by simp), xe_position_self]`. Establish `C : IsCub (th D (T` using `TF (R := R) F) y J) := isCub_cubV D.cub hJ`. Establish `t` using `tau_mul (𝟙 (TF (R := R) F)) hJ hB 0 0 (pD.xe z i')`. Rewrite `t` using `[add_zero, cPoint_zero, C.face, _root_.mul_one]`.
+
+Rewrite using `[xe_position_ne pD h]`. Conclude with `(tau_symm (𝟙 (TF (R := R) F)) hJ _ _).trans (mul_eq_left.1 t.symm)`. Conclude with `(tau_box pD hJ hJ' z (intersection_update_fsHerm_neg_one pD i χ)).trans e₂`.
+-/
 theorem tau_position (hB : D.TauBimult) (i : Fin j) (χ : D.X) (z : D'.X) :
     omL pD y J J' (cP D' _ (intersection_update_fsHerm_neg_one pD i χ)) (cP D' _ z) * tauVal D' F z (intersection_update_fsHerm_neg_one pD i χ) y J' =
       tauVal D F (pD.xe z i) χ y J := by
@@ -113,6 +149,13 @@ theorem tau_position (hB : D.TauBimult) (i : Fin j) (χ : D.X) (z : D'.X) :
     exact (tau_symm (𝟙 (TF (R := R) F)) hJ _ _).trans (mul_eq_left.1 t.symm)
   exact (tau_box pD hJ hJ' z (intersection_update_fsHerm_neg_one pD i χ)).trans e₂
 
+/- English proof (translation)
+Use `exists_gt_at hJ _ _ ?_ fun χ χ' => ?_` and prove the remaining obligations. Rewrite using `[position_zero, cPoint_zero, omL_one', charVal_zero g' hJ', _root_.one_mul]`. Establish `e` using `th_box pD hJ hJ' hG (cP D' _ (intersection_update_fsHerm_neg_one pD i χ)) (cP D' _ (intersection_update_fsHerm_neg_one pD i χ')) g'.b`. Rewrite `e` using `[prod_th_factor pD hJ, cPoint_pr, xe_position_self, ← cPoint_add, ← position_add]`. Establish `e₂` using `charVal_add g' hJ' (intersection_update_fsHerm_neg_one pD i χ) (intersection_update_fsHerm_neg_one pD i χ')`.
+
+Rewrite `e₂` using `[← position_add]`. Establish `a₁` using `congrArg Additive.ofMul e`. Establish `a₂` using `congrArg Additive.ofMul e₂`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul] at a₁ a₂ ⊢`.
+
+Take the linear combination `(norm := abel) a₂ - a₁`.
+-/
 theorem exists_comp (hG : GlobalFnsSt) (g' : GtPtF D' F) (i : Fin j) :
     ∃ g : GtPtF D F, g.b = g'.b ≫ pD.pw.pr i ∧ ∀ χ, charVal g χ y J =
       omL pD y J J' (cP D' _ (intersection_update_fsHerm_neg_one pD i χ)) g'.b * charVal g' (intersection_update_fsHerm_neg_one pD i χ) y J' := by
@@ -130,6 +173,15 @@ theorem exists_comp (hG : GlobalFnsSt) (g' : GtPtF D' F) (i : Fin j) :
 
 end Values
 
+/- English proof (translation)
+Take `⟨y, J, hJ⟩` from `exists_good_chart D F`. Take `⟨J', hJ'⟩` from `exists_good_at D'.P.isLB y`. Use `choose g hb hv using exists_comp pD hJ hJ' hG g'`. Take `⟨g'', h⟩` from `exists_boxGt pD hG g`. Establish `eb : g''.b = g'.b` using `pt_ext pD fun i => (h.1 i).trans (hb i)`.
+
+Establish `add : ∀ a b, charVal g'' a y J' = charVal g' a y J' → charVal g'' b y J' = charVal g' b y J' → charVal g'' (a + b) y J' = charVal g' (a + b) y J'` using `fun a b ha hb => by`. Establish `e₁` using `charVal_add g'' hJ' a b`. Rewrite `e₁` using `[eb, ha, hb, ← charVal_add g' hJ' a b]`. Conclude with `mul_right_cancel e₁`. Establish `all : ∀ x, charVal g'' x y J' = charVal g' x y J'` using `fun x => by`.
+
+Rewrite using `[← sum_position pD x]`. Use `Finset.sum_induction _ (fun x => charVal g'' x y J' = charVal g' x y J') add ((charVal_zero g'' hJ').trans (charVal_zero g' hJ').symm) fun i _ => ?_` and prove the remaining obligations. Establish `e` using `(position_val pD hJ hJ' h i (pD.xe x i)).trans (hv i _)`. Rewrite `e` using `[eb]`. Conclude with `mul_left_cancel e`.
+
+Take `rfl : g'' = g'` from `gt_ext_val_at eb hJ' all`. Conclude with `⟨g, h⟩`.
+-/
 theorem exists_unboxGt (hG : GlobalFnsSt) (g' : GtPtF D' F) : ∃ g : Fin j → GtPtF D F, IsBoxGtF pD F g' g := by
   obtain ⟨y, J, hJ⟩ := exists_good_chart D F
   obtain ⟨J', hJ'⟩ := exists_good_at D'.P.isLB y
@@ -151,6 +203,9 @@ theorem exists_unboxGt (hG : GlobalFnsSt) (g' : GtPtF D' F) : ∃ g : Fin j → 
   obtain rfl : g'' = g' := gt_ext_val_at eb hJ' all
   exact ⟨g, h⟩
 
+/- English proof (translation)
+Use `haveI := pD.pw.hom i`. Take `⟨b, v⟩` from `(isZero_iff_val _).1 hz`. Use `(isZero_iff_val _).2 ⟨by rw [← h.1, b, MonObj.one_comp], fun χ y J hJ => ?_⟩` and prove the remaining obligations. Take `⟨J', hJ'⟩` from `exists_good_at D'.P.isLB y`. Rewrite using `[← position_val pD hJ hJ' h, v _ y J' hJ', b, omL_one, _root_.mul_one]`.
+-/
 theorem unbox_isZero {g' : GtPtF D' F} {g : Fin j → GtPtF D F} (h : IsBoxGtF pD F g' g) (hz : g'.IsZero)
     (i : Fin j) : (g i).IsZero := by
   haveI := pD.pw.hom i
@@ -159,6 +214,13 @@ theorem unbox_isZero {g' : GtPtF D' F} {g : Fin j → GtPtF D F} (h : IsBoxGtF p
   obtain ⟨J', hJ'⟩ := exists_good_at D'.P.isLB y
   rw [← position_val pD hJ hJ' h, v _ y J' hJ', b, omL_one, _root_.mul_one]
 
+/- English proof (translation)
+Use `haveI := pD.pw.hom i`. Take `⟨b, v⟩` from `(isAdd_iff_val _ _ _).1 ha`. Use `(isAdd_iff_val _ _ _).2 ⟨by rw [← h₃.1, ← h₁.1, ← h₂.1, b, MonObj.mul_comp], fun χ y J hJ => ?_⟩` and prove the remaining obligations. Take `⟨J', hJ'⟩` from `exists_good_at D'.P.isLB y`. Establish `e` using `th_box' pD hJ hJ' hG (cP D' _ (intersection_update_fsHerm_neg_one pD i χ)) g₁'.b g₂'.b`.
+
+Rewrite `e` using `[prod_th_factor pD hJ, ← b, h₁.1, h₂.1]`. Rewrite using `[← position_val pD hJ hJ' h₁, ← position_val pD hJ hJ' h₂, ← position_val pD hJ hJ' h₃]`. Establish `a₁` using `congrArg Additive.ofMul e`. Establish `a₂` using `congrArg Additive.ofMul (v (intersection_update_fsHerm_neg_one pD i χ) y J' hJ')`. Apply `Additive.ofMul.injective` to reduce the goal to its premises.
+
+Simplify using `only [ofMul_mul] at a₁ a₂ ⊢`. Take the linear combination `(norm := abel) a₂ - a₁`.
+-/
 theorem unbox_isAdd (hG : GlobalFnsSt) {g₁' g₂' g₃' : GtPtF D' F} {g₁ g₂ g₃ : Fin j → GtPtF D F}
     (h₁ : IsBoxGtF pD F g₁' g₁) (h₂ : IsBoxGtF pD F g₂' g₂) (h₃ : IsBoxGtF pD F g₃' g₃)
     (ha : g₁'.IsAdd g₂' g₃') (i : Fin j) : (g₁ i).IsAdd (g₂ i) (g₃ i) := by
@@ -175,6 +237,9 @@ theorem unbox_isAdd (hG : GlobalFnsSt) {g₁' g₂' g₃' : GtPtF D' F} {g₁ g�
   simp only [ofMul_mul] at a₁ a₂ ⊢
   linear_combination (norm := abel) a₂ - a₁
 
+/- English proof (translation)
+Take `⟨b, v⟩` from `(isIota_iff_val _ _).1 hι`. Use `(isIota_iff_val _ _).2 ⟨by rw [← h.1, b, cPoint_pr], fun χ y J hJ => ?_⟩` and prove the remaining obligations. Take `⟨J', hJ'⟩` from `exists_good_at D'.P.isLB y`. Rewrite using `[← position_val pD hJ hJ' h, v _ y J' hJ', b]`. Conclude with `tau_position pD hJ hJ' hB i χ x`.
+-/
 theorem unbox_isIota (hB : D.TauBimult) {g' : GtPtF D' F} {g : Fin j → GtPtF D F} (h : IsBoxGtF pD F g' g)
     {x : D'.X} (hι : GtPtF.IsIota x g') (i : Fin j) : GtPtF.IsIota (pD.xe x i) (g i) := by
   obtain ⟨b, v⟩ := (isIota_iff_val _ _).1 hι
@@ -183,6 +248,9 @@ theorem unbox_isIota (hB : D.TauBimult) {g' : GtPtF D' F} {g : Fin j → GtPtF D
   rw [← position_val pD hJ hJ' h, v _ y J' hJ', b]
   exact tau_position pD hJ hJ' hB i χ x
 
+/- English proof (translation)
+Use `choose ub hub using fun g' : GtPtF D' F => exists_unboxGt pD hG g'`. Take `⟨h, ⟨gs, g₀, gst, gl⟩, hι⟩` from `p'.eq`. Conclude with `⟨fun i => ⟨pD.xe p'.y i, ub p'.g i, ub h i, ⟨fun n => ub (gs n) i, unbox_isZero pD (hub _) g₀ i, fun n => unbox_isAdd pD hG (hub _) (hub _) (hub _) (gst n) i, congrArg (fun g => ub g i) gl⟩, unbox_isIota pD hB (hub _) hι i⟩, rfl, hub _⟩`.
+-/
 theorem exists_unbox (hG : GlobalFnsSt) (hB : D.TauBimult) {k : ℕ} (p' : QkPt D' F k) :
     ∃ p : Fin j → QkPt D F k, IsBoxQk pD F k p' p := by
   choose ub hub using fun g' : GtPtF D' F => exists_unboxGt pD hG g'
@@ -196,6 +264,13 @@ end Deg
 
 open FieldBaseChange TorsionImage in
 
+/- English proof (translation)
+Take `⟨w₀, hw₀⟩` from `U.ext`. Take `⟨θ, rfl, -⟩` from `TorsionTheta.exists_theta_acts hL.kerPow _ A F _ n hn x (hx w₀ hw₀).1`. Take `⟨θ', rfl, -⟩` from `TorsionTheta.exists_theta_acts hL.kerPow _ A F _ n hn x' (hx' w₀ hw₀).1`. Take `⟨w, hw, h⟩` from `(hx w₀ hw₀).2 θ rfl`. Take `⟨w', hw', h'⟩` from `(hx' w₀ hw₀).2 θ' rfl`.
+
+Take `⟨e, he⟩` from `exists_linearEquiv_expandsF hL.globalFns U F hn w₀ hw₀`. Take `⟨c, hc, hcs⟩` from `exists_smul_of_phiVal p w w' hw hw'`. Use `pt_eq_of_proportional hL.secBaseChange A _ hn θ θ' (Units.map (Scheme.ΓSpecIso (CommRingCat.of F)).inv.hom.toMonoidHom (Units.mk0 c hc)) fun t u u' hu hu' y J hJ => ?_` and prove the remaining obligations. Establish `a` using `hcs _ _ _ ((DVR.phiRel_iff hL.globalFns p w hw _ _).1 (h t u _ _ ((he _ _).2 rfl) ((he _ _).2 rfl) hu)) ((DVR.phiRel_iff hL.globalFns p w' hw' _ _).1 (h' t u' _ _ ((he _ _).2 rfl) ((he _ _).2 rfl) hu'))`. Take `rfl` from `e.injective (a.trans (e.map_smul c u).symm)`.
+
+Conclude with `(sval_smul' hJ _ c _).trans (congrArg (· * _) (gs_unit _ y ⊤ trivial (Units.map (Scheme.ΓSpecIso (CommRingCat.of F)).inv.hom.toMonoidHom (Units.mk0 c hc))))`.
+-/
 theorem image_unique (hL : Laws) {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D : DegData R I}
     {A : PolAV (Spec (CommRingCat.of (FractionRing R)))} {G : Over (Spec (CommRingCat.of R))} [GrpObj G]
     [IsCommMonObj G] (U : Unif I D A G) (F : Type) [Field F] [Algebra (FractionRing R) F] (n : ℕ) (hn : 1 ≤ n)
@@ -218,6 +293,11 @@ theorem image_unique (hL : Laws) {R : Type} [CommRing R] [IsDomain R] {I : Ideal
   exact (sval_smul' hJ _ c _).trans (congrArg (· * _) (gs_unit _ y ⊤ trivial
     (Units.map (Scheme.ΓSpecIso (CommRingCat.of F)).inv.hom.toMonoidHom (Units.mk0 c hc))))
 
+/- English proof (translation)
+Introduce `hL _ _ _ V _ _ _ _ _ E _ _ _ H t P hT j D' A' G' _ _ pD pA pG U' PU F _ _ _ k hk p'`. Take `⟨p, hp⟩` from `exists_unbox pD hL.globalFns P.D.tau_bimult p'`. Use `⟨p, hp, fun x' hx' i => ?_⟩` and prove the remaining obligations. Take `⟨f, hf, -⟩` from `hT F k hk`. Set `x'' : TFK (R` to `V) F ⟶ A'.A := pA.lim.lift (Fan.mk _ fun i => f (p i))`.
+
+Establish `hx : ∀ i, x'' ≫ pA.pr i = f (p i)` using `fun i => pA.lim.fac (Fan.mk _ fun i => f (p i)) ⟨i⟩`. Establish `h` using `ProdTorsion.qkToAk_box hL V _ j P.D D' P.A A' t.G G' pD pA pG U' P.U PU (expansion_bijective_over_fields hL.globalFns V _ _ _ _ P.U) (expansion_bijective_over_fields hL.globalFns V _ _ _ _ U') F k hk p' p hp x'' (fun i => f (p i)) hx (fun i => (hf _ _).2 rfl)`. Rewrite using `[image_unique hL U' F k hk p' x' x'' hx' h, hx]`. Conclude with `(hf _ _).2 rfl`.
+-/
 theorem exists_isBoxQk_toA : Laws → Laws2 → Laws4 → TwistBaseChangeStatement → ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [IsAdicComplete (maximalIdeal V) V] [CharZero V] (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (t : SAB H (Sp V)) (P : PELUnif (maximalIdeal V) t), P.TorsionIso → ∀ (j : ℕ) (D' : DegData V (maximalIdeal V)) (A' : PolAV (Spec (CommRingCat.of (FractionRing V)))) (G' : Over (Sp V)) [GrpObj G'] [IsCommMonObj G'] (pD : IsPowDeg D'.toPre P.D.toPre j) (pA : IsPowPolAV A' P.A j) (pG : IsPowGrp G' t.G j) (U' : Unif (maximalIdeal V) D' A' G') (PU : UnifPowOf3 pD pA pG U' P.U) (F : Type) [Field F] [Algebra (FractionRing V) F] [IsAlgClosed F] (k : ℕ), 1 ≤ k → ∀ p' : QkPt D'.toPre F k, ∃ p : Fin j → QkPt P.D.toPre F k, IsBoxQk pD F k p' p ∧ ∀ x' : TFK (R := V) F ⟶ A'.A, QkToAkU U'.toUnifPre F k p' x' → ∀ i, P.ToA F k (p i) (x' ≫ pA.pr i) := by
   intro hL _ _ _ V _ _ _ _ _ E _ _ _ H t P hT j D' A' G' _ _ pD pA pG U' PU F _ _ _ k hk p'
   obtain ⟨p, hp⟩ := exists_unbox pD hL.globalFns P.D.tau_bimult p'

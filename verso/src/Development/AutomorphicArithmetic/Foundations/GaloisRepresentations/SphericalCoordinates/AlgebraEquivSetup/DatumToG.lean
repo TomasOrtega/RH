@@ -53,6 +53,9 @@ def trd : 𝓞 E →ₗ[ℤ] ℤ :=
           rw [← h, ← h1, ← h2, ← map_add, ← mul_add]; simp
         exact_mod_cast this }
 
+/- English proof (translation)
+The claim follows from `(A.δ_int x).choose_spec.symm`.
+-/
 theorem trd_spec (x : 𝓞 E) : ((A.trd x : ℤ) : ℚ) = Algebra.trace ℚ E (A.δ * x) := (A.δ_int x).choose_spec.symm
 
 def dg (n : ℕ) (i : Fin n) : 𝓞 E := if (i : ℕ) = 0 then 1 else A.c
@@ -68,6 +71,9 @@ def EF (n : ℕ) : LinearMap.BilinForm ℤ (Fin n → 𝓞 E) :=
     (fun x y y' => by simp [mul_add, Finset.sum_add_distrib])
     (fun m x y => by rw [← map_smul, Finset.smul_sum]; simp [mul_assoc, mul_left_comm])
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem EF_apply (n : ℕ) (x y : Fin n → 𝓞 E) : A.EF n x y = A.trd (∑ i, A.hd n i * x i * A.bar (y i)) := rfl
 
 def SplitK (q : ℕ) : Prop := ¬ (q : ℤ) ∣ A.tr ^ 2 - 4 * A.nm ∧ ∃ r : ℤ, (q : ℤ) ∣ r ^ 2 - A.tr * r + A.nm
@@ -102,10 +108,22 @@ structure Facts (n : ℕ) : Prop where
   form : A.FormOK n
   dom : A.Dom n
 
+/- English proof (translation)
+Use `ext`. Rewrite using `[A.bar_eq, A.bar_eq, IsCMField.complexConj_apply_apply]`.
+-/
 theorem bar_bar (x : 𝓞 E) : A.bar (A.bar x) = x := by
   ext
   rw [A.bar_eq, A.bar_eq, IsCMField.complexConj_apply_apply]
 
+/- English proof (translation)
+Use `⟨ { toFun := fun x => Matrix.of fun _ _ => x invFun := fun M => M 0 0 left_inv := fun x => rfl right_inv := fun M => by` and prove the remaining obligations. Use extensionality with `i j`. Use `fin_cases i`. Use `fin_cases j`. Both sides reduce to the same expression.
+
+Use the proof step `map_mul' := fun x y => by`. Use extensionality with `i j`. Simplify using `[Matrix.mul_apply]`. Use the proof step `map_add' := fun x y => by`. Use extensionality with `i j`.
+
+Both sides reduce to the same expression. Use the proof step `commutes' := fun r => by`. Use extensionality with `i j`. Use `fin_cases i`. Use `fin_cases j`.
+
+Simplify using `[Matrix.algebraMap_matrix_apply] }⟩`.
+-/
 theorem splitOne (q : ℕ) [Fact q.Prime] :
     Nonempty ((𝓞 E ⊗[ℤ] ℤ_[q]) ≃ₐ[𝓞 E] Matrix (Fin 1) (Fin 1) (𝓞 E ⊗[ℤ] ℤ_[q])) := by
   refine ⟨
@@ -126,6 +144,9 @@ theorem splitOne (q : ℕ) [Fact q.Prime] :
         fin_cases i; fin_cases j
         simp [Matrix.algebraMap_matrix_apply] }⟩
 
+/- English proof (translation)
+Establish `h : A.ω ^ 2 - (A.tr : 𝓞 E) * A.ω + (A.nm : 𝓞 E) = 0`. Rewrite using `[← A.tr_eq, ← A.nm_eq]`. Expand and normalize the polynomial expressions, which then agree. Establish `h2` using `congrArg (fun y : 𝓞 E => A.τ₀ (y : E)) h`. Simplify using `using h2`.
+-/
 theorem root : (A.τ₀ (A.ω : E)) ^ 2 - A.tr * A.τ₀ (A.ω : E) + A.nm = 0 := by
   have h : A.ω ^ 2 - (A.tr : 𝓞 E) * A.ω + (A.nm : 𝓞 E) = 0 := by
     rw [← A.tr_eq, ← A.nm_eq]; ring
@@ -178,9 +199,17 @@ def datum {n : ℕ} (h : A.Facts n) (q : ℕ) [Fact q.Prime] (hs : A.SplitK q) (
     have ht : A.tau 0 = A.τ₀ := rfl
     simpa [ht] using this
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem datum_toG {n : ℕ} (h : A.Facts n) (q q' : ℕ) [Fact q.Prime] [Fact q'.Prime] (hs hp hs' hp') :
     (A.datum h q hs hp).toG = (A.datum h q' hs' hp').toG := rfl
 
+/- English proof (translation)
+Rewrite using `[H, Matrix.diagonal_map (map_zero _), Matrix.diagonal_transpose]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Use `show IsCMField.complexConj E _ = _`. Rewrite using `[← A.bar_eq]`.
+
+Use `congr 1`. Simplify using `only [hd, dg, map_mul, map_neg, A.c_real]`. Apply the tactic sequence `split_ifs <;> simp [A.c_real]`.
+-/
 theorem herm (n : ℕ) : ((A.H n).map (cj E))ᵀ = A.H n := by
   rw [H, Matrix.diagonal_map (map_zero _), Matrix.diagonal_transpose]
   congr 1
@@ -191,6 +220,9 @@ theorem herm (n : ℕ) : ((A.H n).map (cj E))ᵀ = A.H n := by
   simp only [hd, dg, map_mul, map_neg, A.c_real]
   split_ifs <;> simp [A.c_real]
 
+/- English proof (translation)
+Introduce `h`. Establish `hn` using `A.c_neg`. Establish `h0 : A.c = 0` using `RingOfIntegers.ext (by simpa using h)`. Rewrite `hn` using `[h0]`. Simplify using `at hn`.
+-/
 theorem c_ne : (A.c : E) ≠ 0 := by
   intro h
   have hn := A.c_neg
@@ -198,6 +230,9 @@ theorem c_ne : (A.c : E) ≠ 0 := by
   rw [h0] at hn
   simp at hn
 
+/- English proof (translation)
+Unfold `H`. Rewrite using `[Matrix.det_diagonal, Finset.prod_ne_zero_iff]`. Introduce `i _`. Use `A.c_ne` as an intermediate fact. Apply the tactic sequence `unfold hd dg; split_ifs <;> simp [this]`.
+-/
 theorem det_ne (n : ℕ) : (A.H n).det ≠ 0 := by
   unfold H
   rw [Matrix.det_diagonal, Finset.prod_ne_zero_iff]

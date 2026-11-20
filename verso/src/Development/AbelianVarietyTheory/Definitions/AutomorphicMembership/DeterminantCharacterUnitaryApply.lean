@@ -15,12 +15,18 @@ section General
 
 variable {L : Type} [Field L] [NumberField L]
 
+/- English proof (translation)
+Use `show Function.update (fun w : HeightOneSpectrum (𝓞 L) => (1 : w.adicCompletion L)) v (x : v.adicCompletion L) v = _`. Simplify using the standard rewrite rules.
+-/
 theorem loc_self (v : HeightOneSpectrum (𝓞 L)) (x : (v.adicCompletion L)ˣ) :
     ((localIdele L v x : Ideles L) : AdeleRing (𝓞 L) L).2 v = x := by
   classical
   show Function.update (fun w : HeightOneSpectrum (𝓞 L) => (1 : w.adicCompletion L)) v (x : v.adicCompletion L) v = _
   simp
 
+/- English proof (translation)
+Use `show Function.update (fun w : HeightOneSpectrum (𝓞 L) => (1 : w.adicCompletion L)) v (x : v.adicCompletion L) w = _`. Conclude with `Function.update_of_ne h _ _`.
+-/
 theorem loc_ne {v w : HeightOneSpectrum (𝓞 L)} (h : w ≠ v) (x : (v.adicCompletion L)ˣ) :
     ((localIdele L v x : Ideles L) : AdeleRing (𝓞 L) L).2 w = 1 := by
   classical
@@ -36,27 +42,42 @@ def valAt (w : HeightOneSpectrum (𝓞 L)) : Ideles L →* WithZero (Multiplicat
     show Valued.v ((a : AdeleRing (𝓞 L) L).2 w * (b : AdeleRing (𝓞 L) L).2 w) = _
     exact map_mul _ _ _
 
+/- English proof (translation)
+Use `show Valued.v (((localIdele L v _ : Ideles L) : AdeleRing (𝓞 L) L).2 v) = _`. Rewrite using `[loc_self]`. Conclude with `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v _`.
+-/
 theorem valAt_loc_self (v : HeightOneSpectrum (𝓞 L)) (k : Lˣ) :
     valAt v (localIdele L v (atFin v k)) = v.valuation L (k : L) := by
   show Valued.v (((localIdele L v _ : Ideles L) : AdeleRing (𝓞 L) L).2 v) = _
   rw [loc_self]
   exact HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v _
 
+/- English proof (translation)
+Use `show Valued.v (((localIdele L v _ : Ideles L) : AdeleRing (𝓞 L) L).2 w) = _`. Rewrite using `[loc_ne h, map_one]`.
+-/
 theorem valAt_loc_ne {v w : HeightOneSpectrum (𝓞 L)} (h : w ≠ v) (x : (v.adicCompletion L)ˣ) :
     valAt w (localIdele L v x) = 1 := by
   show Valued.v (((localIdele L v _ : Ideles L) : AdeleRing (𝓞 L) L).2 w) = _
   rw [loc_ne h, map_one]
 
+/- English proof (translation)
+Establish `h : Valued.v (((unif v : Lˣ) : L) : v.adicCompletion L) = WithZero.exp (-1 : ℤ)` using `unif_spec v`. Rewrite `h` using `[HeightOneSpectrum.valuedAdicCompletion_eq_valuation']`. Then use the resulting hypothesis.
+-/
 theorem valuation_unif (v : HeightOneSpectrum (𝓞 L)) : v.valuation L (unif v : L) = WithZero.exp (-1 : ℤ) := by
   have h : Valued.v (((unif v : Lˣ) : L) : v.adicCompletion L) = WithZero.exp (-1 : ℤ) := unif_spec v
   rwa [HeightOneSpectrum.valuedAdicCompletion_eq_valuation'] at h
 
+/- English proof (translation)
+Introduce `h`. Establish `h1 : valAt v (localIdele L v (atFin v (unif v))) = 1` using `h v`. Rewrite `h1` using `[valAt_loc_self, valuation_unif, ← WithZero.exp_zero, WithZero.exp_inj]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem unif_not_mem_unitIdl (v : HeightOneSpectrum (𝓞 L)) : localIdele L v (atFin v (unif v)) ∉ unitIdl L := by
   intro h
   have h1 : valAt v (localIdele L v (atFin v (unif v))) = 1 := h v
   rw [valAt_loc_self, valuation_unif, ← WithZero.exp_zero, WithZero.exp_inj] at h1
   omega
 
+/- English proof (translation)
+Use extensionality with `x`. Distinguish the cases in `hx : x = 0`. Simplify using `[hx]`. Establish `h1` using `congrArg Units.val (h.diag (Units.mk0 x hx))`. Conclude with `((AdeleRing.algebraMap_injective (𝓞 L) L) h1).symm`.
+-/
 theorem eq_refl_of_isConjI_id {c : L ≃+* L} (h : IsConjI c (MonoidHom.id (Ideles L))) : c = RingEquiv.refl L := by
   ext x
   by_cases hx : x = 0
@@ -64,6 +85,19 @@ theorem eq_refl_of_isConjI_id {c : L ≃+* L} (h : IsConjI c (MonoidHom.id (Idel
   · have h1 := congrArg Units.val (h.diag (Units.mk0 x hx))
     exact ((AdeleRing.algebraMap_injective (𝓞 L) L) h1).symm
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Establish `h1 : ∀ s : Finset (InfinitePlace L), ((∏ w ∈ s, infIdele L w (atInf w k) : Ideles L) : AdeleRing (𝓞 L) L).2 = 1 ∧ ∀ w', ((∏ w ∈ s, infIdele L w (atInf w k) : Ideles L) : AdeleRing (𝓞 L) L).1 w' = if w' ∈ s then algebraMap L w'.Completion (k : L) else 1`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact ⟨rfl, fun _ => rfl⟩`.
+
+Consider the case `insert a s ha ih`. Rewrite using `[Finset.prod_insert ha]`. Use `⟨?_, fun w' => ?_⟩` and prove the remaining obligations. Use `show (1 : FiniteAdeleRing (𝓞 L) L) * _ = 1`. Rewrite using `[one_mul]`.
+
+Conclude with `ih.1`. Use `show (Pi.mulSingle (M := fun w : InfinitePlace L => w.Completion) a (algebraMap L a.Completion (k : L)) w') * _ = _`. Rewrite using `[ih.2 w']`. Distinguish the cases in `h : w' = a`. Substitute `h` using the available equality.
+
+Simplify using `[ha]`. Simplify using `[h]`. Establish `h2 : infDiag k = ∏ w, infIdele L w (atInf w k)`. Unfold `infDiag`. Rewrite using `[MonoidHom.finsetProd_apply]`.
+
+Both sides reduce to the same expression. Rewrite using `[h2]`. Use `Prod.ext (funext fun w => ?_) ?_` and prove the remaining obligations. Use `show _ = ((∏ w, infIdele L w (atInf w k) : Ideles L) : AdeleRing (𝓞 L) L).1 w * 1`. Rewrite using `[(h1 _).2 w, if_pos (Finset.mem_univ _), mul_one]`.
+
+Both sides reduce to the same expression. Use `show _ = ((∏ w, infIdele L w (atInf w k) : Ideles L) : AdeleRing (𝓞 L) L).2 * _`. Rewrite using `[(h1 _).1, one_mul]`. Both sides reduce to the same expression.
+-/
 theorem diag_eq (k : Lˣ) : diagUnits L k = infDiag k * finPartI L (diagUnits L k) := by
   classical
   apply Units.ext
@@ -93,11 +127,21 @@ theorem diag_eq (k : Lˣ) : diagUnits L k = infDiag k * finPartI L (diagUnits L 
   · show _ = ((∏ w, infIdele L w (atInf w k) : Ideles L) : AdeleRing (𝓞 L) L).2 * _
     rw [(h1 _).1, one_mul]; rfl
 
+/- English proof (translation)
+Establish `h` using `χ.2.2 k`. Rewrite `h` using `[diag_eq, map_mul]`. Conclude with `eq_inv_of_mul_eq_one_right h`.
+-/
 theorem fin_diag (χ : HChar L) (k : Lˣ) : χ.1 (finPartI L (diagUnits L k)) = (χ.inf k)⁻¹ := by
   have h := χ.2.2 k
   rw [diag_eq, map_mul] at h
   exact eq_inv_of_mul_eq_one_right h
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `z ⟨x, hx, rfl⟩`. Take `⟨a, ha⟩` from `Submodule.mem_span_singleton.1 (hx 0)`. Use `Submodule.mem_span_singleton.2 ⟨a, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Matrix.det_fin_one]`. Conclude with `congrFun ha 0`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `z rfl`. Use `det_mem_detSub (M := Submodule.span (𝓞 L) {(fun _ => z : Fin 1 → L)}) (fun _ _ => z) (fun _ => Submodule.mem_span_singleton_self _)` as an intermediate fact.
+
+Rewrite `this` using `[Matrix.det_fin_one]`. Then use the resulting hypothesis.
+-/
 theorem detSub_rank_one (u : L) :
     detSub (Submodule.span (𝓞 L) {(fun _ => u : Fin 1 → L)}) = Submodule.span (𝓞 L) {u} := by
   apply le_antisymm
@@ -113,6 +157,11 @@ theorem detSub_rank_one (u : L) :
       (fun _ => Submodule.mem_span_singleton_self _)
     rwa [Matrix.det_fin_one] at this
 
+/- English proof (translation)
+Unfold `detSub`. Use `congr 1`. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, -, rfl⟩`.
+
+Simplify using the standard rewrite rules. Introduce and unpack `rfl; exact ⟨fun i => i.elim0, fun i => i.elim0, by simp⟩`.
+-/
 theorem detSub_rank_zero (M : Submodule (𝓞 L) (Fin 0 → L)) : detSub M = Submodule.span (𝓞 L) {1} := by
   unfold detSub
   congr 1
@@ -121,6 +170,11 @@ theorem detSub_rank_zero (M : Submodule (𝓞 L) (Fin 0 → L)) : detSub M = Sub
   · rintro ⟨x, -, rfl⟩; simp
   · rintro rfl; exact ⟨fun i => i.elim0, fun i => i.elim0, by simp⟩
 
+/- English proof (translation)
+Unfold `SplitsC`. Establish `: {v : HeightOneSpectrum (𝓞 L) | ((1 : ℕ) : 𝓞 L) ∈ v.asIdeal} = ∅`. Use extensionality with `v`. Simplify using `using (Ideal.ne_top_iff_one _).1 v.isPrime.ne_top`. Rewrite using `[this, Set.ncard_empty]`.
+
+Conclude with `Module.finrank_pos.ne`.
+-/
 theorem not_splitsC_one : ¬ SplitsC L 1 := by
   unfold SplitsC
   have : {v : HeightOneSpectrum (𝓞 L) | ((1 : ℕ) : 𝓞 L) ∈ v.asIdeal} = ∅ := by
@@ -133,9 +187,15 @@ end General
 
 variable {R : Ranks} (H : Formalism.BasicNotions.Host R)
 
+/- English proof (translation)
+The claim follows from `H.conjE_apply σ z`.
+-/
 theorem emb_conj (σ : H.E →+* ℂ) (z : H.E) : σ (H.conj z) = star (σ z) :=
   H.conjE_apply σ z
 
+/- English proof (translation)
+The claim follows from `(H.conjE_mem_hostF_iff _).1 k.2`.
+-/
 theorem conj_F (k : H.F) : H.conj (k : H.E) = k := (H.conjE_mem_hostF_iff _).1 k.2
 
 def pack : DtPack H :=
@@ -155,8 +215,14 @@ def pack : DtPack H :=
     relDet_mul := (GlobalTheory.MemberDetLaws.det_laws R H).choose_spec.choose_spec.2.2.1
     relDet_smul := (GlobalTheory.MemberDetLaws.det_laws R H).choose_spec.choose_spec.2.2.2 }
 
+/- English proof (translation)
+Introduce `_ _ h` and use `h`.
+-/
 theorem pack_chiD_injective : Function.Injective (pack H).chiD := fun _ _ h => h
 
+/- English proof (translation)
+Use `mem_KD_of_congG H ⟨fun v => ?_, fun k v _ => ?_⟩` and prove the remaining obligations. Use `show Valued.v (1 : v.adicCompletion H.E) = 1`. Conclude with `map_one _`. Use `show Valued.v ((1 : v.adicCompletion H.E) - 1) < 1`. Simplify using the standard rewrite rules.
+-/
 theorem infIdele_mem_KD (w : InfinitePlace H.E) (y : (w.Completion)ˣ) : infIdele H.E w y ∈ KD H := by
   refine mem_KD_of_congG H ⟨fun v => ?_, fun k v _ => ?_⟩
   · show Valued.v (1 : v.adicCompletion H.E) = 1
@@ -164,6 +230,15 @@ theorem infIdele_mem_KD (w : InfinitePlace H.E) (y : (w.Completion)ˣ) : infIdel
   · show Valued.v ((1 : v.adicCompletion H.E) - 1) < 1
     simp
 
+/- English proof (translation)
+Rewrite using `[← hf k z hz, tildeD_mk H h, fin_diag, Units.val_inv_eq_inv_val, hχ.inf k, ← Finset.prod_inv_distrib]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Use `congr 1`. Establish `h1` using `congrArg (embPsi H τ) hz`. Rewrite `h1` using `[map_mul, emb_conj]`.
+
+Establish `h0 : embPsi H τ (k : H.E) ≠ 0` using `by simp`. Use `show _ = embPsi H τ z.1`. Generalize the expression as in `embPsi H τ (k : H.E) = a at *`. Generalize the expression as in `embPsi H τ z.1 = b at *`. Establish `hn : ((‖a‖ : ℝ) : ℂ) ≠ 0` using `by simpa using h0`.
+
+Establish `h2 : a * star a = ((‖a‖ : ℝ) : ℂ) ^ 2`. Rewrite using `[Complex.star_def, Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Use `push_cast`. Both sides reduce to the same expression. Rewrite using `[zpow_ofNat, div_pow, div_eq_iff (pow_ne_zero _ hn), ← h2]`.
+
+Take the linear combination `(-a) * h1`.
+-/
 theorem determinantCharacter_unitary_apply {χ : HChar H.E} (hχ : IsChiPsi H χ) (h : KD H ≤ (χ.1.comp (finPartI H.E)).ker)
     (f : (letI := H.cmStar; unitary H.E) →* DtT H) (hf : IsRationalUnitaryDeterminantMap H f) (k : H.Eˣ) (z : (letI := H.cmStar; unitary H.E))
     (hz : (z.1 : H.E) * H.conj (k : H.E) = k) :
@@ -183,6 +258,13 @@ theorem determinantCharacter_unitary_apply {χ : HChar H.E} (hχ : IsChiPsi H χ
   rw [zpow_ofNat, div_pow, div_eq_iff (pow_ne_zero _ hn), ← h2]
   linear_combination (-a) * h1
 
+/- English proof (translation)
+Unfold `locF`. Rewrite using `[map_prod]`. Establish `hm : ∀ Q, Q ∈ aboveF (L` using `H.E) H.F v ↔ Q.under (𝓞 H.F) = v := fun Q => by`. Unfold `aboveF`. Rewrite using `[Set.Finite.mem_toFinset]`.
+
+Both sides reduce to the same expression. Use `split_ifs with hw`. Rewrite using `[Finset.prod_eq_single w (fun Q _ hQ => valAt_loc_ne hQ.symm _) (fun h => absurd ((hm w).2 hw) h), valAt_loc_self]`. Both sides reduce to the same expression. Use `Finset.prod_eq_one fun Q hQ => valAt_loc_ne ?_ _` and prove the remaining obligations.
+
+Introduce and unpack `rfl`. Conclude with `hw ((hm _).1 hQ)`.
+-/
 theorem valAt_locF (w : HeightOneSpectrum (𝓞 H.E)) (v : HeightOneSpectrum (𝓞 H.F)) (k : (H.F)ˣ) :
     open Classical in valAt w (locF H.F v k) = if w.under (𝓞 H.F) = v then w.valuation H.E ((k : H.F) : H.E) else 1 := by
   classical
@@ -197,6 +279,9 @@ theorem valAt_locF (w : HeightOneSpectrum (𝓞 H.E)) (v : HeightOneSpectrum (�
     rintro rfl
     exact hw ((hm _).1 hQ)
 
+/- English proof (translation)
+Use extensionality with `x`. Use `show algebraMap (𝓞 H.F) (𝓞 H.E) x ∈ w.asIdeal ↔ algebraMap (𝓞 H.F) (𝓞 H.E) x ∈ w'.asIdeal`. Rewrite using `[← HeightOneSpectrum.valuation_lt_one_iff_mem (K := H.E), ← HeightOneSpectrum.valuation_lt_one_iff_mem (K := H.E), ← h]`. Establish `: H.conj.toRingEquiv (algebraMap (𝓞 H.E) H.E (algebraMap (𝓞 H.F) (𝓞 H.E) x)) = algebraMap (𝓞 H.E) H.E (algebraMap (𝓞 H.F) (𝓞 H.E) x)` using `conj_F H (x : H.F)`. Conclude with `this ▸ Iff.rfl`.
+-/
 theorem under_eq {w w' : HeightOneSpectrum (𝓞 H.E)} (h : ConjPl H.conj.toRingEquiv w w') :
     w.under (𝓞 H.F) = w'.under (𝓞 H.F) := by
   ext x
@@ -206,6 +291,11 @@ theorem under_eq {w w' : HeightOneSpectrum (𝓞 H.E)} (h : ConjPl H.conj.toRing
       algebraMap (𝓞 H.E) H.E (algebraMap (𝓞 H.F) (𝓞 H.E) x) := conj_F H (x : H.F)
   exact this ▸ Iff.rfl
 
+/- English proof (translation)
+Establish `: KD H ≤ MonoidHom.eqLocus (valAt w) (valAt w')`. Use `(Subgroup.closure_le _).2 ?_` and prove the remaining obligations. Introduce and unpack `b (hb | ⟨v, k, rfl⟩)`. Conclude with `(hb.1 w).trans (hb.1 w').symm`. Use `show valAt w _ = valAt w' _`.
+
+Rewrite using `[valAt_locF, valAt_locF, under_eq H h]`. Use `split_ifs`. Rewrite using `[← h, show H.conj.toRingEquiv ((k : H.F) : H.E) = ((k : H.F) : H.E) from conj_F H _]`. Both sides reduce to the same expression. Conclude with `this ha`.
+-/
 theorem val_eq_of_mem_KD {w w' : HeightOneSpectrum (𝓞 H.E)} (h : ConjPl H.conj.toRingEquiv w w') {a : Ideles H.E}
     (ha : a ∈ KD H) : valAt w a = valAt w' a := by
   have : KD H ≤ MonoidHom.eqLocus (valAt w) (valAt w') := by
@@ -219,6 +309,11 @@ theorem val_eq_of_mem_KD {w w' : HeightOneSpectrum (𝓞 H.E)} (h : ConjPl H.con
       · rfl
   exact this ha
 
+/- English proof (translation)
+Take `⟨u, hu, e⟩` from `(mem_UOT H).1 ha`. Establish `h1` using `val_eq_of_mem_KD H h (QuotientGroup.eq.1 e)`. Establish `hu' : u⁻¹ ∈ unitIdl H.E` using `(unitIdl H.E).inv_mem hu`. Establish `e1 : valAt w u⁻¹ = 1` using `hu' w`. Establish `e2 : valAt w' u⁻¹ = 1` using `hu' w'`.
+
+Rewrite `h1` using `[map_mul, map_mul, e1, e2, one_mul, one_mul]`. Then use the resulting hypothesis.
+-/
 theorem val_eq_of_mem_UOT {w w' : HeightOneSpectrum (𝓞 H.E)} (h : ConjPl H.conj.toRingEquiv w w') {a : Ideles H.E}
     (ha : (QuotientGroup.mk a : DtT H) ∈ UOT H) : valAt w a = valAt w' a := by
   obtain ⟨u, hu, e⟩ := (mem_UOT H).1 ha
@@ -228,6 +323,11 @@ theorem val_eq_of_mem_UOT {w w' : HeightOneSpectrum (𝓞 H.E)} (h : ConjPl H.co
   have e2 : valAt w' u⁻¹ = 1 := hu' w'
   rwa [map_mul, map_mul, e1, e2, one_mul, one_mul] at h1
 
+/- English proof (translation)
+Use `Infinite.of_injective (fun n : ℤ => (QuotientGroup.mk (QuotientGroup.mk (localIdele H.E w (atFin w (unif w)) ^ n)) : DtT H ⧸ UOT H)) fun m n e => ?_` and prove the remaining obligations. Establish `h1` using `QuotientGroup.eq.1 e`. Rewrite `h1` using `[← QuotientGroup.mk_inv, ← QuotientGroup.mk_mul, ← zpow_neg, ← zpow_add]`. Establish `h2` using `val_eq_of_mem_UOT H h h1`. Rewrite `h2` using `[map_zpow, map_zpow, valAt_loc_self, valAt_loc_ne hne, valuation_unif, one_zpow, ← WithZero.exp_zsmul, ← WithZero.exp_zero, WithZero.exp_inj]`.
+
+Simplify using `at h2`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem infinite_of_split {w w' : HeightOneSpectrum (𝓞 H.E)} (h : ConjPl H.conj.toRingEquiv w w') (hne : w' ≠ w) :
     Infinite (DtT H ⧸ UOT H) := by
   refine Infinite.of_injective (fun n : ℤ => (QuotientGroup.mk (QuotientGroup.mk
@@ -240,6 +340,9 @@ theorem infinite_of_split {w w' : HeightOneSpectrum (𝓞 H.E)} (h : ConjPl H.co
   simp at h2
   omega
 
+/- English proof (translation)
+Rewrite using `[MonoidHom.map_finprod _ (hn.subset fun v hv h0 => hv (by simp [h0])), finprod_eq_single _ w]`. Rewrite using `[map_pow, valAt_loc_self, valuation_unif, ← WithZero.exp_nsmul]`. Simplify using the standard rewrite rules. Introduce `v hv`. Rewrite using `[map_pow, valAt_loc_ne hv.symm, one_pow]`.
+-/
 theorem valAt_finprod {L : Type} [Field L] [NumberField L] (n : HeightOneSpectrum (𝓞 L) → ℤ) (hn : {w | n w ≠ 0}.Finite)
     (w : HeightOneSpectrum (𝓞 L)) :
     valAt w (∏ᶠ v : HeightOneSpectrum (𝓞 L), localIdele L v (atFin v (unif v)) ^ (n v).toNat) =
@@ -249,11 +352,19 @@ theorem valAt_finprod {L : Type} [Field L] [NumberField L] (n : HeightOneSpectru
   · intro v hv
     rw [map_pow, valAt_loc_ne hv.symm, one_pow]
 
+/- English proof (translation)
+Unfold `ordF`. Rewrite using `[neg_neg, WithZero.exp_log (by simp)]`.
+-/
 theorem valuation_eq_exp {L : Type} [Field L] [NumberField L] (w : HeightOneSpectrum (𝓞 L)) (k : Lˣ) :
     w.valuation L (k : L) = WithZero.exp (-ordF w k) := by
   unfold ordF
   rw [neg_neg, WithZero.exp_log (by simp)]
 
+/- English proof (translation)
+Use `⟨_, rfl, ?_⟩` and prove the remaining obligations. Establish `o1 : ∀ v : HeightOneSpectrum (𝓞 H.E), ordF v (1 : H.Eˣ) = 0` using `fun v => by simp [ordF]`. Simplify using `only [detSub_rank_one, ordSub_span_singleton, o1, sub_zero]`. Rewrite using `[valAt_finprod _ hfin, valAt_finprod _ hfin]`. Establish `a1` using `congrArg (w'.valuation H.E) hu`.
+
+Establish `a2` using `congrArg (w'.valuation H.E) hu1`. Rewrite `a1` using `[map_mul, show w'.valuation H.E (H.conj (k : H.E)) = _ from h _]`. Rewrite `a2` using `[map_mul, show w'.valuation H.E (H.conj (u : H.E)) = _ from h _, map_one]`. Simplify using `only [valuation_eq_exp, ← WithZero.exp_add, ← WithZero.exp_zero, WithZero.exp_inj] at a1 a2 ⊢`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem relDet_sign (u k : H.Eˣ) (hu : (u : H.E) * H.conj (k : H.E) = k) (hu1 : (u : H.E) * H.conj (u : H.E) = 1)
     (hfin : {w | ordF w u ≠ 0}.Finite) {w w' : HeightOneSpectrum (𝓞 H.E)} (h : ConjPl H.conj.toRingEquiv w w') :
     ∃ x : Ideles H.E, relDetT H 1 (Submodule.span _ {fun _ => ((1 : H.Eˣ) : H.E)}) (Submodule.span _ {fun _ => (u : H.E)}) =

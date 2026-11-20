@@ -16,24 +16,39 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 
 variable {d : SD σ} (L : LD d)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `only [phz, flat, kunf.ht_eq]`.
+-/
 theorem phz_eq_flat {s₁ z : ℂ} {f : d.G → ℂ} : phz d f s₁ z = flat d.a f s₁ z := by
   funext x
   simp only [phz, flat, kunf.ht_eq]
 
+/- English proof (translation)
+Rewrite using `[phz_eq_flat]`. Conclude with `Law.flat hf.law d.ok.hgt (kunf.a_pos d) z`.
+-/
 theorem phz_law {s₁ : ℂ} {f : d.G → ℂ} (hf : IsSec d.K d.χ s₁ f) (z : ℂ) :
     Law d.χ (z - s₁ + (s₁ + (d.n : ℂ) / 2)) (phz d f s₁ z) := by
   rw [phz_eq_flat]
   exact Law.flat hf.law d.ok.hgt (kunf.a_pos d) z
 
+/- English proof (translation)
+Rewrite using `[phz_law hf z p t g hp, ht, map_one, map_one]`. Simplify using the standard rewrite rules.
+-/
 theorem phz_par {s₁ : ℂ} {f : d.G → ℂ} (hf : IsSec d.K d.χ s₁ f) (z : ℂ) {p : d.G} {t : GL (Fin d.n) (AE F E)}
     (hp : IsPar p t) (ht : Matrix.GeneralLinearGroup.det t = 1) (g : d.G) : phz d f s₁ z (p * g) = phz d f s₁ z g := by
   rw [phz_law hf z p t g hp, ht, map_one, map_one]
   simp
 
+/- English proof (translation)
+The claim follows from `(phz_law hf z).rat d.ok.hecke hp hr g`.
+-/
 theorem phz_rat {s₁ : ℂ} {f : d.G → ℂ} (hf : IsSec d.K d.χ s₁ f) (z : ℂ) {p : d.G} (hp : p ∈ par2 σ d.Y)
     (hr : p ∈ rat2 σ d.Y) (g : d.G) : phz d f s₁ z (p * g) = phz d f s₁ z g :=
   (phz_law hf z).rat d.ok.hecke hp hr g
 
+/- English proof (translation)
+Conclude with `key_id_pf L hnb hnb' hU h β u x`.
+-/
 theorem key_id {nb : nA σ d.Y d.b → d.G} {nb' : nA σ L.Y L.b → G2 σ L.Y} (hnb : IsNMap d.b nb)
     (hnb' : IsNMap L.b nb') {uM : (Fin L.n → AE F E) → d.G} {ν : Measure (Fin L.n → AE F E)}
     {𝓤 : Set (Fin L.n → AE F E)} (hU : L.UData uM ν 𝓤) (h : G2 σ L.Y) (β : nA σ d.Y d.b) (u : Fin L.n → AE F E)
@@ -41,6 +56,13 @@ theorem key_id {nb : nA σ d.Y d.b → d.G} {nb' : nA σ L.Y L.b → G2 σ L.Y} 
       L.j h * (nb β * (uM u * x)) = p * (L.j (h * nb' (prj L β)) * x) := by
   exact key_id_pf L hnb hnb' hU h β u x
 
+/- English proof (translation)
+Take `⟨h0, h1⟩` from `hT`. Establish `hout : ∀ i, i ∉ Set.range L.em → i = L.i₀` using `fun i hi => by`. Assume the negation of the conclusion as `h`. Conclude with `hi ((L.rng i).1 h)`. Simplify using `only [Matrix.trace, Matrix.diag, Matrix.mul_apply, prj_val, h1, Matrix.submatrix_apply]`.
+
+Use `symm`. Use `Fintype.sum_of_injective L.em L.inj _ _ (fun i hi => ?_) (fun a => ?_)` and prove the remaining obligations. Rewrite using `[hout i hi]`. Simplify using `[(h0 _).1]`. Use `Fintype.sum_of_injective L.em L.inj _ _ (fun k hk => ?_) (fun b => rfl)` and prove the remaining obligations.
+
+Rewrite using `[hout k hk]`. Simplify using `[(h0 _).2]`.
+-/
 theorem tr_sub {T : nF σ d.Y d.b} {T' : nF σ L.Y L.b} (hT : L.IsSub T T') (β : nA σ d.Y d.b) :
     Matrix.trace (T.1.1 * β.1) = Matrix.trace (T'.1.1 * (prj L β).1) := by
   obtain ⟨h0, h1⟩ := hT
@@ -56,6 +78,9 @@ theorem tr_sub {T : nF σ d.Y d.b} {T' : nF σ L.Y L.b} (hT : L.IsSub T T') (β 
     rw [hout k hk]
     simp [(h0 _).2]
 
+/- English proof (translation)
+Conclude with `cos_bij_pf L`.
+-/
 theorem cos_bij : ∃ e : Cs L.sd ≃ {q : Cs d // LagrangianCondition L (rep q)}, ∀ q', ∃ p ∈ par2 σ d.Y, p ∈ rat2 σ d.Y ∧
     rep (e q').1 = p * L.j (rep q') := by
   exact cos_bij_pf L

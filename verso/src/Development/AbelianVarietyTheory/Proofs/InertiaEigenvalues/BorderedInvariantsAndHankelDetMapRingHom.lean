@@ -8,12 +8,18 @@ namespace GlobalTheory.JR.Step.InvMap
 
 variable {k k' : Type} [CommRing k] [CommRing k'] (φ : k →+* k') {r : ℕ}
 
+/- English proof (translation)
+Establish `hp : (Y.1.map φ) ^ i = (Y.1 ^ i).map φ`. Use `map_pow φ.mapMatrix Y.1 i` as an intermediate fact. Simplify `this.symm` using `only [RingHom.mapMatrix_apply]`. Simplify using `only [mom, glMap, hp, dotProduct, Matrix.mulVec, Matrix.map_apply, map_sum, map_mul]`.
+-/
 theorem mom_glMap (Y : Gl r k) (i : ℕ) : mom (glMap φ Y) i = φ (mom Y i) := by
   have hp : (Y.1.map φ) ^ i = (Y.1 ^ i).map φ := by
     have := map_pow φ.mapMatrix Y.1 i
     simpa only [RingHom.mapMatrix_apply] using this.symm
   simp only [mom, glMap, hp, dotProduct, Matrix.mulVec, Matrix.map_apply, map_sum, map_mul]
 
+/- English proof (translation)
+Use `Prod.ext ?_ (Prod.ext ?_ rfl)` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Simplify using `only [GlobalTheory.JR.inv, Inv.map, glMap, Matrix.charpoly_map, Polynomial.coeff_map]`. Use function extensionality and compare the values at `i`. Conclude with `mom_glMap φ Y i`.
+-/
 theorem inv_glMap (Y : Gl r k) : GlobalTheory.JR.inv (glMap φ Y) = (GlobalTheory.JR.inv Y).map φ := by
   refine Prod.ext ?_ (Prod.ext ?_ rfl)
   · funext i
@@ -21,6 +27,11 @@ theorem inv_glMap (Y : Gl r k) : GlobalTheory.JR.inv (glMap φ Y) = (GlobalTheor
   · funext i
     exact mom_glMap φ Y i
 
+/- English proof (translation)
+Use `Prod.ext ?_ (Prod.ext ?_ rfl)` and prove the remaining obligations. Use extensionality with `i j`. Simplify using `only [sec, companion, glMap, Inv.map, Matrix.map_apply, Matrix.of_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Use function extensionality and compare the values at `i`.
+
+Simplify using `only [sec, glMap]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem sec_map (a : Inv r k) : sec (a.map φ) = glMap φ (sec a) := by
   refine Prod.ext ?_ (Prod.ext ?_ rfl)
   · ext i j
@@ -30,6 +41,9 @@ theorem sec_map (a : Inv r k) : sec (a.map φ) = glMap φ (sec a) := by
     simp only [sec, glMap]
     split_ifs <;> simp
 
+/- English proof (translation)
+Rewrite using `[Delta, Delta, RingHom.map_det]`. Use `congr 1`. Use extensionality with `i j`. Simplify using `only [hankel, sec_map, mom_glMap, RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply]`.
+-/
 theorem Delta_map (a : Inv r k) : Delta (a.map φ) = φ (Delta a) := by
   rw [Delta, Delta, RingHom.map_det]
   congr 1
@@ -38,6 +52,11 @@ theorem Delta_map (a : Inv r k) : Delta (a.map φ) = φ (Delta a) := by
 
 open Matrix MeasureTheory Filter Topology in
 variable {k k' : Type} [CommRing k] [CommRing k'] (φ : k →+* k') {r : ℕ} in
+/- English proof (translation)
+Unfold `_root_.GlobalTheory.JR.mom _root_.GlobalTheory.JR.Step.glMap`. Rewrite using `[RingHom.map_dotProduct]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[Function.comp_apply, RingHom.map_mulVec, Matrix.map_pow]`.
+
+Both sides reduce to the same expression.
+-/
 private theorem mom_glMap_eq_map_mom (ψ : k →+* k') (Y : _root_.GlobalTheory.JR.Gl r k) (n : ℕ) :
     _root_.GlobalTheory.JR.mom (_root_.GlobalTheory.JR.Step.glMap ψ Y) n = ψ (_root_.GlobalTheory.JR.mom Y n) := by
   unfold _root_.GlobalTheory.JR.mom _root_.GlobalTheory.JR.Step.glMap
@@ -49,6 +68,9 @@ private theorem mom_glMap_eq_map_mom (ψ : k →+* k') (Y : _root_.GlobalTheory.
 
 open Matrix MeasureTheory Filter Topology in
 variable {k k' : Type} [CommRing k] [CommRing k'] (φ : k →+* k') {r : ℕ} in
+/- English proof (translation)
+Unfold `_root_.GlobalTheory.JR.sec _root_.GlobalTheory.JR.Inv.map _root_.GlobalTheory.JR.Step.glMap`. Simplify using `only [_root_.GlobalTheory.JR.ImgSec.companion_map, Prod.mk.injEq, true_and, and_true]`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 private theorem sec_map_eq_glMap_sec (ψ : k →+* k') (a : _root_.GlobalTheory.JR.Inv r k) :
     _root_.GlobalTheory.JR.sec (a.map ψ) = _root_.GlobalTheory.JR.Step.glMap ψ (_root_.GlobalTheory.JR.sec a) := by
   unfold _root_.GlobalTheory.JR.sec _root_.GlobalTheory.JR.Inv.map _root_.GlobalTheory.JR.Step.glMap
@@ -59,6 +81,13 @@ private theorem sec_map_eq_glMap_sec (ψ : k →+* k') (a : _root_.GlobalTheory.
 open Matrix MeasureTheory Filter Topology in
 variable {k k' : Type} [CommRing k] [CommRing k'] (φ : k →+* k') {r : ℕ} in
 
+/- English proof (translation)
+Introduce `k k' _ _ φ r`. Use `⟨fun Y => ?_, fun a => ?_⟩` and prove the remaining obligations. Unfold `_root_.GlobalTheory.JR.inv _root_.GlobalTheory.JR.Inv.map`. Simplify using `only [mom_glMap_eq_map_mom]`. Use `Prod.ext ?_ rfl` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `i`. Simplify using `[_root_.GlobalTheory.JR.Step.glMap, Matrix.charpoly_map]`. Unfold `_root_.GlobalTheory.JR.Delta`. Rewrite using `[RingHom.map_det]`. Use `congr 1`.
+
+Use extensionality with `i j`. Simplify using `[_root_.GlobalTheory.JR.hankel, sec_map_eq_glMap_sec, mom_glMap_eq_map_mom]`.
+-/
 theorem _root_.GlobalTheory.JR.Step.InvMap.inv_and_Delta_map : ∀ (k k' : Type) [CommRing k] [CommRing k'] (φ : k →+* k') (r : ℕ),
     (∀ Y : _root_.GlobalTheory.JR.Gl r k, _root_.GlobalTheory.JR.inv (_root_.GlobalTheory.JR.Step.glMap φ Y) = (_root_.GlobalTheory.JR.inv Y).map φ) ∧
       (∀ a : _root_.GlobalTheory.JR.Inv r k, _root_.GlobalTheory.JR.Delta (a.map φ) = φ (_root_.GlobalTheory.JR.Delta a)) := by

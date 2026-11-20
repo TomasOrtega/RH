@@ -9,6 +9,17 @@ attribute [local instance] IsCMField.starRing
 namespace GlobalTheory.SelfDualDet
 open ReciprocityTheory.ChartRestriction.G.FD GlobalTheory.SelfDualGenus GlobalTheory.LocalConjugacy GlobalTheory.LocalLattice
 
+/- English proof (translation)
+Take `⟨e, P, hP⟩` from `hA`. Take `⟨f, R, hR⟩` from `hB`. Establish `hc : ∀ M : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ, Formalism.UG.cT (starRingEnd ℂ) M = Mᴴ` using `fun _ => rfl`. Rewrite `hP`, `hR` using `[hc]`. Establish `h1 : Matrix.reindex f f B = (P * R⁻¹).1ᴴ * Matrix.reindex e e A * (P * R⁻¹).1`.
+
+Establish `h2 : (R⁻¹).1ᴴ * R.1ᴴ = 1`. Rewrite using `[← Matrix.conjTranspose_mul, Units.mul_inv, Matrix.conjTranspose_one]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h2, Units.mul_inv, Matrix.one_mul, Matrix.mul_one]`. Use `_ = (R⁻¹).1ᴴ * (R.1ᴴ * Matrix.reindex f f B * R.1) * (R⁻¹).1 := by simp only [Matrix.mul_assoc]`.
+
+Use `_ = _ := by`. Rewrite using `[hR, ← hP, Units.val_mul, Matrix.conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc]`. Generalize the expression as in `P * R⁻¹ = S at h1`. Use `⟨S.1.submatrix e f, ?_, ?_⟩` and prove the remaining obligations.
+
+Use `(Matrix.isUnit_det_of_right_inverse (B := (S⁻¹).1.submatrix f e) ?_).ne_zero` and prove the remaining obligations. Rewrite using `[Matrix.submatrix_mul_equiv, Units.mul_inv, Matrix.submatrix_one_equiv]`. Establish `h3` using `congrArg (fun M => (Matrix.submatrix M f f)ᵀ) h1`. Simplify using `only [Matrix.reindex_apply, Matrix.submatrix_submatrix, Equiv.symm_comp_self, Matrix.submatrix_id_id] at h3`. Rewrite `h3` using `[← Matrix.submatrix_mul_equiv _ _ f e f, ← Matrix.submatrix_mul_equiv _ _ f e e, Matrix.transpose_mul, Matrix.transpose_mul, ← Matrix.mul_assoc, Matrix.submatrix_submatrix, Equiv.symm_comp_self, Matrix.submatrix_id_id]`.
+
+Conclude with `h3`.
+-/
 theorem congr_of_hasSignature {r p q : ℕ} {A B : Matrix (Fin r) (Fin r) ℂ}
     (hA : Formalism.UG.HasSignature A p q) (hB : Formalism.UG.HasSignature B p q) :
     ∃ Q : Matrix (Fin r) (Fin r) ℂ, Q.det ≠ 0 ∧ Bᵀ = Qᵀ * Aᵀ * Q.map conj := by
@@ -40,6 +51,11 @@ theorem congr_of_hasSignature {r p q : ℕ} {A B : Matrix (Fin r) (Fin r) ℂ}
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
+/- English proof (translation)
+Substitute `h` using the available equality. Take `⟨P, -, hP⟩` from `congr_of_modular (E := E) (𝔟 := 1) (GlobalTheory.LocalQuad.landherr_of_hasseNormSt GlobalTheory.QNorm.hasseNormSt) GlobalTheory.QNorm.hasseNormSt one_ne_zero (fun _ hz => mem_one_fractionalIdeal_iff.2 (isIntegral_cc (mem_one_fractionalIdeal_iff.1 hz))) hG hG' (by rwa [Matrix.det_ …`. Take `⟨p, q, h1, h2⟩` from `hs τ`. Conclude with `congr_of_hasSignature h1 h2`. Establish `h1` using `congrArg Matrix.det hP`.
+
+Rewrite `h1` using `[Matrix.det_mul, Matrix.det_mul, Matrix.det_transpose, Matrix.det_transpose, Matrix.det_transpose, Published.det_map_cc]`. Use `⟨P.det, h1.trans ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = _ * cc _ * _`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem det_eq_of_matrix [Algebra.Unramified (𝓞 (maximalRealSubfield E)) (𝓞 E)] {r r' : ℕ} (h : r = r')
     {G : Matrix (Fin r) (Fin r) E} {G' : Matrix (Fin r') (Fin r') E}
     (hG : ∀ a b, cc (Gᵀ a b) = Gᵀ b a) (hG' : ∀ a b, cc (G'ᵀ a b) = G'ᵀ b a)
@@ -67,6 +83,9 @@ theorem det_eq_of_matrix [Algebra.Unramified (𝓞 (maximalRealSubfield E)) (�
   change _ = _ * cc _ * _
   ring
 
+/- English proof (translation)
+Introduce `E _ _ _ hc W₁ W₂ h₁ h₂ hr hs`. Use `haveI := GlobalTheory.DefiniteMass.unramified_of_isCMUnram hc`. Conclude with `det_eq_of_matrix hr (fun a b => W₁.herm.eq (W₁.frame b) (W₁.frame a)) (fun a b => W₂.herm.eq (W₂.frame b) (W₂.frame a)) (GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.gram_det_isUnit W₁).ne_zero (GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.gram_det_i …`.
+-/
 theorem det_eq_norm_mul : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Formalism.HermitianLatticesTheory.IsCMUnram E → ∀ W₁ W₂ : HSpace E, W₁.SigOK → W₂.SigOK → W₁.rank = W₂.rank → (∀ τ, W₁.sig τ = W₂.sig τ) → ∃ z : E, W₂.gram.det = z * star z * W₁.gram.det := by
   intro E _ _ _ hc W₁ W₂ h₁ h₂ hr hs
   haveI := GlobalTheory.DefiniteMass.unramified_of_isCMUnram hc

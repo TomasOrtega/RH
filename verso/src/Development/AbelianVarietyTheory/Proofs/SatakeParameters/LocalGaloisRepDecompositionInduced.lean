@@ -36,6 +36,9 @@ def letterLift (q : D →+ M) (h1 : ∀ (a : LL) x, q (a • x) = algebraMap LL 
       rw [h2, smul_comm, sub_self]
     | add y z hy hz => rw [map_add]; exact add_mem hy hz)
 
+/- English proof (translation)
+Use `show (1 : F) • q x = q x`. Rewrite using `[one_smul]`.
+-/
 @[simp] theorem letterLift_mk (q : D →+ M) (h1 : ∀ (a : LL) x, q (a • x) = algebraMap LL F a • q x)
     (h2 : ∀ c x, q (m c x) = τ c • q x) (x : D) :
     letterLift m F τ q h1 h2 (letterMk m F τ x) = q x := by
@@ -44,6 +47,13 @@ def letterLift (q : D →+ M) (h1 : ∀ (a : LL) x, q (a • x) = algebraMap LL 
 
 end Letter
 
+/- English proof (translation)
+Establish `hinv : ∀ y, d (((u⁻¹ : (End R A)ˣ) : End R A) y) = ((u'⁻¹ : (End R' B)ˣ) : End R' B) (d y)`. Introduce `y`. Establish `e1 : (u : End R A) (((u⁻¹ : (End R A)ˣ) : End R A) y) = y` using `LinearMap.congr_fun (Units.mul_inv u) y`. Establish `e2` using `h (((u⁻¹ : (End R A)ˣ) : End R A) y)`. Rewrite `e2` using `[e1]`.
+
+Rewrite using `[e2, ← End.mul_apply, Units.inv_mul, End.one_apply]`. Proceed by induction on `n using Int.induction_on generalizing x with`. Consider the case `zero => rfl`. Consider the case `succ n ih => rw [zpow_add_one, zpow_add_one, Units.val_mul, Units.val_mul, End.mul_apply, End.mul_apply, ih, h]`. Consider the case `pred n ih`.
+
+Rewrite using `[zpow_sub_one, zpow_sub_one, Units.val_mul, Units.val_mul, End.mul_apply, End.mul_apply, ih, hinv]`.
+-/
 theorem zpow_semiconj {R R' A B : Type} [Field R] [Field R'] [AddCommGroup A] [Module R A] [AddCommGroup B]
     [Module R' B] (u : (End R A)ˣ) (u' : (End R' B)ˣ) (d : A →+ B)
     (h : ∀ x, d ((u : End R A) x) = (u' : End R' B) (d x)) (n : ℤ) (x : A) :
@@ -69,8 +79,14 @@ variable {l : ℕ} [Fact l.Prime] (P : LocPrime l) {K L L' : FinExt l}
 
 def stMap : V ⊗[ℚ_[l]] Bst P →ₗ[ℚ_[l]] V' ⊗[ℚ_[l]] Bst P := f.rTensor (Bst P)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem stMap_tmul (v : V) (b : Bst P) : stMap P f (v ⊗ₜ b) = f v ⊗ₜ b := rfl
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v b => rfl`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+-/
 theorem stMap_onB (T : End ℚ_[l] (Bst P)) (x : V ⊗[ℚ_[l]] Bst P) :
     stMap P f (onB P ↥L.1 V T x) = onB P ↥L'.1 V' T (stMap P f x) := by
   induction x using TensorProduct.induction_on with
@@ -78,6 +94,9 @@ theorem stMap_onB (T : End ℚ_[l] (Bst P)) (x : V ⊗[ℚ_[l]] Bst P) :
   | tmul v b => rfl
   | add x y hx hy => simp only [map_add, hx, hy]
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v b => rw [smul_tmul', stMap_tmul, h, stMap_tmul, smul_tmul']`. Consider the case `add x y hx hy => simp only [map_add, smul_add, hx, hy]`.
+-/
 theorem stMap_smul {a : ↥L.1} {a' : ↥L'.1} (h : ∀ x, f (a • x) = a' • f x) (x : V ⊗[ℚ_[l]] Bst P) :
     stMap P f (a • x) = a' • stMap P f x := by
   induction x using TensorProduct.induction_on with
@@ -87,6 +106,9 @@ theorem stMap_smul {a : ↥L.1} {a' : ↥L'.1} (h : ∀ x, f (a • x) = a' • 
 
 variable {f ρ ρ'}
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v b => simp [he]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+-/
 theorem stMap_stRep (he : ∀ g x, f (ρ g x) = ρ' g (f x)) (g : ↥(GK K)) (x : V ⊗[ℚ_[l]] Bst P) :
     stMap P f (stRep P ρ g x) = stRep P ρ' g (stMap P f x) := by
   induction x using TensorProduct.induction_on with
@@ -94,6 +116,9 @@ theorem stMap_stRep (he : ∀ g x, f (ρ g x) = ρ' g (f x)) (g : ↥(GK K)) (x 
   | tmul v b => simp [he]
   | add x y hx hy => simp only [map_add, hx, hy]
 
+/- English proof (translation)
+Take `⟨K', hx⟩` from `(mem_Dpst P ρ).mp hx`. Conclude with `(mem_Dpst P ρ').mpr ⟨K', fun g hg => by rw [← stMap_stRep P he, hx g hg]⟩`.
+-/
 theorem stMap_mem_Dpst (he : ∀ g x, f (ρ g x) = ρ' g (f x)) {x : V ⊗[ℚ_[l]] Bst P} (hx : x ∈ Dpst P ρ) :
     stMap P f x ∈ Dpst P ρ' := by
   obtain ⟨K', hx⟩ := (mem_Dpst P ρ).mp hx
@@ -104,6 +129,9 @@ def dMap (he : ∀ g x, f (ρ g x) = ρ' g (f x)) : ↥(Dpst P ρ) →+ ↥(Dpst
   map_zero' := Subtype.ext (map_zero _)
   map_add' x y := Subtype.ext (map_add _ _ _)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coe_dMap (he : ∀ g x, f (ρ g x) = ρ' g (f x)) (x : ↥(Dpst P ρ)) :
     (dMap P he x : V' ⊗[ℚ_[l]] Bst P) = stMap P f x := rfl
 
@@ -111,23 +139,38 @@ variable (he : ∀ g x, f (ρ g x) = ρ' g (f x))
 
 include he
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (stMap_onB P f _ x.1)`.
+-/
 theorem dMap_phiD (x : ↥(Dpst P ρ)) : dMap P he (phiD P ρ x) = phiD P ρ' (dMap P he x) :=
   Subtype.ext (stMap_onB P f _ x.1)
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (stMap_onB P f _ x.1)`.
+-/
 theorem dMap_mulD (c : ↥(MaximalUnramifiedExtension l)) (x : ↥(Dpst P ρ)) :
     dMap P he (mulD P ρ c x) = mulD P ρ' c (dMap P he x) :=
   Subtype.ext (stMap_onB P f _ x.1)
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (stMap_stRep P he g x.1)`.
+-/
 theorem dMap_actD (g : ↥(GK K)) (x : ↥(Dpst P ρ)) :
     dMap P he (actD P ρ g x) = actD P ρ' g (dMap P he x) :=
   Subtype.ext (stMap_stRep P he g x.1)
 
+/- English proof (translation)
+Proceed by induction on `n generalizing x with`. Consider the case `zero => rfl`. Consider the case `succ n ih => rw [pow_succ, pow_succ, End.mul_apply, End.mul_apply, ih, dMap_phiD]`.
+-/
 theorem dMap_phiD_pow (n : ℕ) (x : ↥(Dpst P ρ)) :
     dMap P he ((phiD P ρ ^ n) x) = (phiD P ρ' ^ n) (dMap P he x) := by
   induction n generalizing x with
   | zero => rfl
   | succ n ih => rw [pow_succ, pow_succ, End.mul_apply, End.mul_apply, ih, dMap_phiD]
 
+/- English proof (translation)
+The claim follows from `zpow_semiconj (phiU P ρ) (phiU P ρ') (dMap P he) (dMap_phiD P he) n x`.
+-/
 theorem dMap_phiU_zpow [FiniteDimensional ↥(MaximalUnramifiedExtension l) (DpstUr P ρ)] [FiniteDimensional ↥(MaximalUnramifiedExtension l) (DpstUr P ρ')]
     (n : ℤ) (x : ↥(Dpst P ρ)) :
     dMap P he (((phiU P ρ ^ n : (End ↥L.1 ↥(Dpst P ρ))ˣ) : End ↥L.1 ↥(Dpst P ρ)) x) =
@@ -167,11 +210,23 @@ def wdFun : WDSpace P ι ρ →ₗ[ℂ] WDSpace P ι ρ' :=
       rw [dMap_mulD, wdMk_mul]
       rfl)
 
+/- English proof (translation)
+The claim follows from `letI := algC ι L letterLift_mk _ _ _ _ _ _ x`.
+-/
 theorem wdFun_mk (x : ↥(Dpst P ρ)) :
     wdFun P ι hm (wdMk P ι ρ x) = wdMk P ι ρ' (dMap P hm.equiv x) :=
   letI := algC ι L
   letterLift_mk _ _ _ _ _ _ x
 
+/- English proof (translation)
+Choose the witnesses or unpack the hypotheses as in `⟨x, hx⟩ : ∃ x, wdMk P ι ρ x ≠ 0 := by`. Assume the negation of the conclusion as `hall`. Use `push_neg at hall`. Establish `h1 : (⊤ : Submodule ℂ (WDSpace P ι ρ)) ≤ ⊥`. Rewrite using `[← span_wdMk P ι ρ, Submodule.span_le]`.
+
+Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `hall x`. Conclude with `top_ne_bot (le_bot_iff.mp h1)`. Establish `hx0 : dMap P hm.equiv x ≠ 0`. Introduce `h0`.
+
+Establish `h1 : stMap P f x.1 = 0` using `congrArg Subtype.val h0`. Establish `h2 : Function.Injective (stMap P f)` using `Module.Flat.rTensor_preserves_injective_linearMap f hinj`. Establish `h3 : x = 0` using `Subtype.ext (h2 (h1.trans (map_zero _).symm))`. Conclude with `hx (by rw [h3, wdMk_zero])`. Assume the negation of the conclusion as `hall`.
+
+Use `push_neg at hall`. Conclude with `hx0 (GlobalTheory.PstFaithful.eq_zero_of_wdMk_phiD_pow l P ι K L' V' ρ' _ fun n => by`. Rewrite using `[← dMap_phiD_pow, ← wdFun_mk P ι hm]`. Conclude with `hall _)`.
+-/
 theorem exists_wdFun_ne_zero (hinj : Function.Injective f) [Nontrivial (WDSpace P ι ρ)] :
     ∃ u, wdFun P ι hm u ≠ 0 := by
   obtain ⟨x, hx⟩ : ∃ x, wdMk P ι ρ x ≠ 0 := by
@@ -199,6 +254,11 @@ section Decomp
 
 variable {n : ℕ} {e : Fin n → ↥L'.1} {A : Fin n → V' →ₗ[ℚ_[l]] V}
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v b => conv_rhs => rw [← hs v]`. Rewrite using `[TensorProduct.sum_tmul]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [stMap_tmul, stMap_tmul, smul_tmul']`.
+
+Consider the case `add x y hx hy`. Simplify using `only [map_add, smul_add, Finset.sum_add_distrib, hx, hy]`.
+-/
 theorem sum_stMap (hs : ∀ y, ∑ i, e i • f (A i y) = y) (x : V' ⊗[ℚ_[l]] Bst P) :
     ∑ i, e i • stMap P f (stMap P (A i) x) = x := by
   induction x using TensorProduct.induction_on with
@@ -214,6 +274,9 @@ variable (he : ∀ g x, f (ρ g x) = ρ' g (f x)) (hA : ∀ i g y, A i (ρ' g y)
   (hs : ∀ y, ∑ i, e i • f (A i y) = y)
 
 include hs in
+/- English proof (translation)
+The claim follows from `Subtype.ext (by rw [AddSubmonoidClass.coe_finset_sum] exact sum_stMap P hs x.1)`.
+-/
 theorem sum_dMap (x : ↥(Dpst P ρ')) : ∑ i, e i • dMap P he (dMap P (hA i) x) = x :=
   Subtype.ext (by
     rw [AddSubmonoidClass.coe_finset_sum]
@@ -221,6 +284,13 @@ theorem sum_dMap (x : ↥(Dpst P ρ')) : ∑ i, e i • dMap P he (dMap P (hA i)
 
 include he hA hs in
 
+/- English proof (translation)
+Set `T : (Fin n → DpstUr P ρ) →ₗ[↥(MaximalUnramifiedExtension l)] DpstUr P ρ'` to `{ toFun := fun t => toUr P ρ' (∑ i, e i • dMap P he ((toUr P ρ).symm (t i))) map_add' := fun s t => by`. Simplify using `only [Pi.add_apply, map_add, smul_add, Finset.sum_add_distrib]`. Use the proof step `map_smul' := fun c t => by show toUr P ρ' (∑ i, e i • dMap P he (mulD P ρ c ((toUr P ρ).symm (t i)))) = toUr P ρ' (mulD P ρ' c (∑ i, e i • dMap P he ((toUr P ρ).symm (t i))))`. Use `congr 1`. Rewrite using `[map_sum]`.
+
+Conclude with `Finset.sum_congr rfl fun i _ => by rw [dMap_mulD, map_smul] }`. Establish `hT : Function.Surjective T` using `fun y => by`. Use `⟨fun i => toUr P ρ (dMap P (hA i) ((toUr P ρ').symm y)), ?_⟩` and prove the remaining obligations. Use `show toUr P ρ' _ = y`. Simplify using `only [AddEquiv.symm_apply_apply]`.
+
+Rewrite using `[sum_dMap P he hA hs, AddEquiv.apply_symm_apply]`. Conclude with `Module.Finite.of_surjective T hT`.
+-/
 theorem finite_of_decomp [FiniteDimensional ↥(MaximalUnramifiedExtension l) (DpstUr P ρ)] :
     FiniteDimensional ↥(MaximalUnramifiedExtension l) (DpstUr P ρ') := by
   let T : (Fin n → DpstUr P ρ) →ₗ[↥(MaximalUnramifiedExtension l)] DpstUr P ρ' :=
@@ -242,6 +312,13 @@ theorem finite_of_decomp [FiniteDimensional ↥(MaximalUnramifiedExtension l) (D
 
 include hA hs in
 
+/- English proof (translation)
+Rewrite using `[← LinearMap.range_eq_top, eq_top_iff, ← span_wdMk P ι ρ', Submodule.span_le]`. Introduce and unpack `_ ⟨x, rfl⟩`. Establish `e1 : wdMk P ι ρ' x = ∑ i, ι (e i : Om l) • wdFun P ι hm (wdMk P ι ρ (dMap P (hA i) x))`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[sum_dMap P hm.equiv hA hs]`.
+
+Both sides reduce to the same expression. Use `_ = ∑ i, wdMkHom P ι ρ' (e i • dMap P hm.equiv (dMap P (hA i) x)) := map_sum _ _ _`. Use `_ = _ := Finset.sum_congr rfl fun i _ => by show wdMk P ι ρ' _ = _`. Rewrite using `[wdMk_smul, wdFun_mk]`. Rewrite using `[SetLike.mem_coe, e1]`.
+
+Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ ⟨_, rfl⟩`.
+-/
 theorem wdFun_surjective : Function.Surjective (wdFun P ι hm) := by
   rw [← LinearMap.range_eq_top, eq_top_iff, ← span_wdMk P ι ρ', Submodule.span_le]
   rintro _ ⟨x, rfl⟩
@@ -259,6 +336,19 @@ end Decomp
 
 end Fun
 
+/- English proof (translation)
+Establish `hd : T₁.charpoly.natDegree = 1` using `by rw [LinearMap.charpoly_natDegree, h1]`. Establish `hp` using `(LinearMap.charpoly_monic T₁).eq_X_add_C hd`. Use `set a := T₁.charpoly.coeff 0 with ha`. Establish `hT₁ : ∀ y, T₁ y = (-a) • y` using `fun y => by`. Establish `h0` using `LinearMap.congr_fun (LinearMap.aeval_self_charpoly T₁) y`.
+
+Rewrite `h0` using `[hp]`. Simplify using `only [map_add, aeval_X, aeval_C, LinearMap.add_apply, Module.algebraMap_end_apply, LinearMap.zero_apply] at h0`. Rewrite using `[neg_smul]`. Conclude with `eq_neg_of_add_eq_zero_left h0`. Take `⟨u, hu⟩` from `hF₁`.
+
+Take `⟨y, hy⟩` from `hF₂ (F₁ u)`. Establish `hT : T (F₁ u) = (-a) • F₁ u` using `by rw [← h₁, hT₁, map_smul]`. Establish `hpow : ∀ n : ℕ, F₂ ((T₂ ^ n) y) = (-a) ^ n • F₁ u` using `fun n => by`. Proceed by induction on `n with`. Consider the case `zero => simpa using hy`.
+
+Consider the case `succ n ih => rw [pow_succ', End.mul_apply, h₂, ih, map_smul, hT, smul_smul, pow_succ]`. Establish `hq : ∀ q : ℂ[X], F₂ (aeval T₂ q y) = q.eval (-a) • F₁ u` using `fun q => by`. Proceed by induction on `q using Polynomial.induction_on' with`. Consider the case `add p q hp hq => simp only [map_add, LinearMap.add_apply, hp, hq, eval_add, add_smul]`. Consider the case `monomial n c`.
+
+Rewrite using `[aeval_monomial, End.mul_apply, Module.algebraMap_end_apply, map_smul, hpow, eval_monomial, smul_smul]`. Establish `h0` using `hq T₂.charpoly`. Rewrite `h0` using `[LinearMap.aeval_self_charpoly, LinearMap.zero_apply, map_zero]`. Establish `hroot : T₂.charpoly.eval (-a) = 0` using `(smul_eq_zero.mp h0.symm).resolve_right hu`. Establish `e : T₁.charpoly = X - C (-a)` using `by rw [hp]; simp`.
+
+Rewrite using `[e, roots_X_sub_C, Multiset.singleton_le, mem_roots (LinearMap.charpoly_monic T₂).ne_zero]`. Conclude with `hroot`.
+-/
 theorem roots_le_of_line {W₁ W₂ W : Type} [AddCommGroup W₁] [Module ℂ W₁] [FiniteDimensional ℂ W₁]
     [AddCommGroup W₂] [Module ℂ W₂] [FiniteDimensional ℂ W₂] [AddCommGroup W] [Module ℂ W]
     (h1 : finrank ℂ W₁ = 1) (T₁ : End ℂ W₁) (T₂ : End ℂ W₂) (T : End ℂ W) (F₁ : W₁ →ₗ[ℂ] W) (F₂ : W₂ →ₗ[ℂ] W)
@@ -305,12 +395,18 @@ variable {l : ℕ} [Fact l.Prime] (P : LocPrime l) (ι : Om l ≃+* ℂ)
   [AddCommGroup V'] [Module ↥L'.1 V'] [Module ℚ_[l] V'] [IsScalarTower ℚ_[l] ↥L'.1 V']
   {f : V →ₗ[ℚ_[l]] V'} {ρ : Representation ↥L.1 ↥(GK Bw.Kw) V} {ρ' : Representation ↥L'.1 ↥(GK Bw.Kw) V'}
 
+/- English proof (translation)
+Conclude with `(dMap_actD P he (weilToGK Bw h σ) _).trans (congrArg (actD P ρ' (weilToGK Bw h σ)) (dMap_phiU_zpow P he _ x))`.
+-/
 theorem dMap_weilD [FiniteDimensional ↥(MaximalUnramifiedExtension l) (DpstUr P ρ)] [FiniteDimensional ↥(MaximalUnramifiedExtension l) (DpstUr P ρ')]
     (he : ∀ g x, f (ρ g x) = ρ' g (f x)) (σ : ↥(Weil h)) (x : ↥(Dpst P ρ)) :
     dMap P he (weilD Bw h P ρ σ x) = weilD Bw h P ρ' σ (dMap P he x) := by
   exact (dMap_actD P he (weilToGK Bw h σ) _).trans
     (congrArg (actD P ρ' (weilToGK Bw h σ)) (dMap_phiU_zpow P he _ x))
 
+/- English proof (translation)
+Establish `e : (wdFun P ι hm) ∘ₗ (wdRho P ι Bw h hj ρ σ) = (wdRho P ι Bw h hj ρ' σ) ∘ₗ (wdFun P ι hm)` using `LinearMap.ext_on_range (span_wdMk P ι ρ) fun x => by`. Simplify using `only [LinearMap.comp_apply, wdRho_mk, wdFun_mk, dMap_weilD]`. Conclude with `LinearMap.congr_fun e y`.
+-/
 theorem wdFun_wdRho [FiniteDimensional ↥(MaximalUnramifiedExtension l) (DpstUr P ρ)] [FiniteDimensional ↥(MaximalUnramifiedExtension l) (DpstUr P ρ')]
     {hL : L.1 ≤ L'.1} (hm : IsMor hL f ρ ρ') (σ : ↥(Weil h)) (y : WDSpace P ι ρ) :
     wdFun P ι hm (wdRho P ι Bw h hj ρ σ y) = wdRho P ι Bw h hj ρ' σ (wdFun P ι hm y) := by
@@ -319,6 +415,9 @@ theorem wdFun_wdRho [FiniteDimensional ↥(MaximalUnramifiedExtension l) (DpstUr
       simp only [LinearMap.comp_apply, wdRho_mk, wdFun_mk, dMap_weilD]
   exact LinearMap.congr_fun e y
 
+/- English proof (translation)
+Rewrite using `[wdPst_of_isPst ι Bw h hj hV, WD.charPol_mk]`. Take `⟨u, -, hu, -, hc, hρ⟩` from `wdRep_spec P ι Bw h hj ρ`. Conclude with `(GlobalTheory.WeilDeligne.isFrobSS_of_unipotent u hu hc hρ).charpoly_eq σ`.
+-/
 theorem charPol_wdPst [FiniteDimensional ↥L.1 V] (hV : IsPst P ρ)
     [FiniteDimensional ↥(MaximalUnramifiedExtension l) (DpstUr P ρ)] (σ : ↥(Weil h)) :
     WD.charPol (wdPst P ι Bw h hj ρ) σ = (wdRho P ι Bw h hj ρ σ).charpoly := by
@@ -339,11 +438,25 @@ def incV : (Fin m → ↥L.1) →ₗ[ℚ_[l]] (Fin m → ↥L'.1) :=
 
 abbrev upRep : ↥Gw →* GL (Fin m) ↥L'.1 := mapRep (IntermediateField.inclusion hL).toRingHom r
 
+/- English proof (translation)
+The claim follows from `funext fun i => map_mul (IntermediateField.inclusion hL) a (x i) equiv g x := funext fun i => by exact RingHom.map_mulVec (IntermediateField.inclusion hL).toRingHom _ x i`.
+-/
 theorem isMor_incV : IsMor hL (incV hL m) (Bw.repE L r) (Bw.repE L' (upRep hL m r)) where
   smul a x := funext fun i => map_mul (IntermediateField.inclusion hL) a (x i)
   equiv g x := funext fun i => by
     exact RingHom.map_mulVec (IntermediateField.inclusion hL).toRingHom _ x i
 
+/- English proof (translation)
+Set `_ : Algebra ↥L.1 ↥L'.1` to `(IntermediateField.inclusion hL).toRingHom.toAlgebra`. Establish `: IsScalarTower ℚ_[l] ↥L.1 ↥L'.1` using `IsScalarTower.of_algebraMap_eq fun _ => rfl`. Use `L'.2` as an intermediate fact. Establish `: FiniteDimensional ↥L.1 ↥L'.1` using `Module.Finite.of_restrictScalars_finite ℚ_[l] _ _`. Set `b` to `finBasis ↥L.1 ↥L'.1`.
+
+Use `⟨_, b, fun i => ((b.coord i).restrictScalars ℚ_[l]).compLeft (Fin m), ?_, ?_⟩` and prove the remaining obligations. Introduce `i g y`. Use function extensionality and compare the values at `j`. Use `show b.coord i (∑ k : Fin m, _) = ∑ k : Fin m, _`. Rewrite using `[map_sum]`.
+
+Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Establish `e1 : ∀ (c : ↥L.1) (z : ↥L'.1), (IntermediateField.inclusion hL) c * z = c • z` using `fun c z => (Algebra.smul_def c z).symm`. Use `show b.coord i ((IntermediateField.inclusion hL) _ * _) = _`. Rewrite using `[e1, map_smul]`. Both sides reduce to the same expression.
+
+Introduce `y`. Use function extensionality and compare the values at `j`. Establish `e1` using `b.sum_repr (y j)`. Rewrite using `[Finset.sum_apply]`. Use `conv_rhs => rw [← e1]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `show b i * (IntermediateField.inclusion hL) (b.repr (y j) i) = b.repr (y j) i • b i`. Rewrite using `[Algebra.smul_def, mul_comm]`. Both sides reduce to the same expression.
+-/
 theorem exists_decomp : ∃ (n : ℕ) (e : Fin n → ↥L'.1) (A : Fin n → (Fin m → ↥L'.1) →ₗ[ℚ_[l]] (Fin m → ↥L.1)),
     (∀ i g y, A i (Bw.repE L' (upRep hL m r) g y) = Bw.repE L r g (A i y)) ∧
     ∀ y, ∑ i, e i • incV hL m (A i y) = y := by
@@ -379,6 +492,9 @@ section Line
 
 variable {l : ℕ} [Fact l.Prime]
 
+/- English proof (translation)
+Use `fun j => (adjExt (v j)).2` as an intermediate fact. Use `⟨supExt (supExt L₁ L₂) ⟨⨆ j, (adjExt (v j)).1, inferInstance⟩, ?_, ?_, fun j => ?_⟩` and prove the remaining obligations. Conclude with `le_sup_of_le_left (le_sup_left (a := L₁.1) (b := L₂.1))`. Conclude with `le_sup_of_le_left (le_sup_right (a := L₁.1) (b := L₂.1))`. Conclude with `(le_sup_of_le_right (le_iSup (fun j => (adjExt (v j)).1) j) : (adjExt (v j)).1 ≤ (supExt L₁ L₂).1 ⊔ ⨆ j, (adjExt (v j)).1) (mem_adjExt (v j))`.
+-/
 theorem exists_common (L₁ L₂ : FinExt l) {a : ℕ} (v : Fin a → Om l) :
     ∃ L : FinExt l, L₁.1 ≤ L.1 ∧ L₂.1 ≤ L.1 ∧ ∀ j, v j ∈ L.1 := by
   have := fun j => (adjExt (v j)).2
@@ -398,6 +514,11 @@ def lineV (u : Fin a → ↥L.1) : (Fin 1 → ↥L₁.1) →ₗ[ℚ_[l]] (Fin a 
     rw [show IntermediateField.inclusion hL (c • x 0) = c • IntermediateField.inclusion hL (x 0) from
       (IntermediateField.inclusion hL).toLinearMap.map_smul c (x 0), smul_assoc]
 
+/- English proof (translation)
+Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Establish `h0 : x 0 = 0`. Use `(smul_eq_zero.mp hx).resolve_right hu` as an intermediate fact. Conclude with `(IntermediateField.inclusion hL).toRingHom.injective (this.trans (map_zero _).symm)`.
+
+Use function extensionality and compare the values at `i`. Rewrite using `[Subsingleton.elim i 0, h0]`. Both sides reduce to the same expression.
+-/
 theorem lineV_injective {u : Fin a → ↥L.1} (hu : u ≠ 0) : Function.Injective (lineV hL u) := by
   rw [injective_iff_map_eq_zero]
   intro x hx
@@ -411,6 +532,11 @@ theorem lineV_injective {u : Fin a → ↥L.1} (hu : u ≠ 0) : Function.Injecti
 variable {E Ω : Type} [Field E] [Field Ω] [Algebra E Ω] {Gw : Subgroup (Ω ≃ₐ[E] Ω)}
   {O : Type} [CommRing O] [Algebra ℤ_[l] O] [TopologicalSpace O] (Bw : LocBridge l E Ω Gw O)
 
+/- English proof (translation)
+Use `show IntermediateField.inclusion hL (b * x 0) • u = _ • IntermediateField.inclusion hL (x 0) • u`. Rewrite using `[map_mul, mul_smul]`. Use `equiv g x := by show IntermediateField.inclusion hL (((c (Bw.e.symm g) : Matrix (Fin 1) (Fin 1) ↥L₁.1)).mulVec x 0) • u = Bw.repE L r g (IntermediateField.inclusion hL (x 0) • u)`. Rewrite using `[map_smul]`. Use `show _ = IntermediateField.inclusion hL (x 0) • (r (Bw.e.symm g) : Matrix (Fin a) (Fin a) ↥L.1).mulVec u`.
+
+Rewrite using `[hu, smul_smul]`. Simplify using `[Matrix.mulVec, dotProduct, mul_comm]`.
+-/
 theorem isMor_lineV (r : ↥Gw →* GL (Fin a) ↥L.1) (c : ↥Gw →* GL (Fin 1) ↥L₁.1) (u : Fin a → ↥L.1)
     (hu : ∀ g, (r g : Matrix (Fin a) (Fin a) ↥L.1).mulVec u =
       IntermediateField.inclusion hL ((c g : Matrix (Fin 1) (Fin 1) ↥L₁.1) 0 0) • u) :
@@ -435,6 +561,13 @@ variable {l : ℕ} [Fact l.Prime] (P : LocPrime l) (ι : Om l ≃+* ℂ) {E Ω :
   {w : HeightOneSpectrum (𝓞 E)} {O : Type} [CommRing O] [Algebra ℤ_[l] O] [TopologicalSpace O]
   (Bw : LocBridge l E Ω (Dec (F := E) A) O) (h : IsPlaceOver A w) (hj : Induces Bw) {a : ℕ}
 
+/- English proof (translation)
+Establish `hm` using `isMor_incV Bw hL₂ a r₂`. Establish `fL : FiniteDimensional ↥(MaximalUnramifiedExtension l) (DpstUr P (Bw.repE L (upRep hL₂ a r₂)))` using `finite_of_decomp P hm.equiv hB hs`. Establish `hm'` using `isMor_lineV hL₁ Bw (upRep hL₂ a r₂) c₁ u hu`. Establish `h1 : finrank ℂ (WDSpace P ι (Bw.repE L₁ c₁)) = 1`. Rewrite using `[GlobalTheory.Pst.LetterDim.finrank_wdSpace l P ι _ L₁ _ _ hp₁]`.
+
+Simplify using the standard rewrite rules. Establish `: Nontrivial (WDSpace P ι (Bw.repE L₁ c₁))` using `Module.nontrivial_of_finrank_pos (R := ℂ) (by omega)`. Establish `a1` using `exists_wdFun_ne_zero P ι hm' (lineV_injective hL₁ hu0)`. Establish `a2` using `wdFun_surjective P ι hm hB hs`. Establish `a3` using `wdFun_wdRho P ι Bw h hj hm' σ`.
+
+Establish `a4` using `wdFun_wdRho P ι Bw h hj hm σ`. Conclude with `roots_le_of_line (W₁ := WDSpace P ι (Bw.repE L₁ c₁)) (W₂ := WDSpace P ι (Bw.repE L₂ r₂)) (W := WDSpace P ι (Bw.repE L (upRep hL₂ a r₂))) h1 _ _ _ _ _ a1 a2 a3 a4`.
+-/
 theorem roots_le_of_decomp {L₁ L₂ L : FinExt l} (hL₁ : L₁.1 ≤ L.1) (hL₂ : L₂.1 ≤ L.1)
     (r₂ : ↥(Dec (F := E) A) →* GL (Fin a) ↥L₂.1) (c₁ : ↥(Dec (F := E) A) →* GL (Fin 1) ↥L₁.1)
     (hp₁ : IsPst P (Bw.repE L₁ c₁))
@@ -471,6 +604,13 @@ section Vec
 variable {l : ℕ} [Fact l.Prime] {E Ω : Type} [Field E] [Field Ω] [Algebra E Ω] {Gw : Subgroup (Ω ≃ₐ[E] Ω)}
   {O : Type} [CommRing O] [Algebra ℤ_[l] O] [TopologicalSpace O] {Bw : LocBridge l E Ω Gw O} {a : ℕ}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Establish `eR : (((upRep hL₂ a r₂) g : Matrix (Fin a) (Fin a) ↥L.1)).map (algebraMap ↥L.1 (Om l)) = (r g : Matrix (Fin a) (Fin a) (Om l))`. Rewrite using `[← hm₂.2]`. Both sides reduce to the same expression. Establish `eC : (c g : Matrix (Fin 1) (Fin 1) (Om l)) 0 0 = (((c₁ g : Matrix (Fin 1) (Fin 1) ↥L₁.1) 0 0 : ↥L₁.1) : Om l)`.
+
+Rewrite using `[← hm₁.2]`. Both sides reduce to the same expression. Establish `h2` using `RingHom.map_mulVec (algebraMap ↥L.1 (Om l)) ((upRep hL₂ a r₂) g : Matrix (Fin a) (Fin a) ↥L.1) (fun j => ⟨v j, hvL j⟩) i`. Rewrite `h2` using `[eR]`. Use `Subtype.ext (h2.trans ?_)` and prove the remaining obligations.
+
+Establish `h3 : (algebraMap ↥L.1 (Om l)) ∘ (fun j => (⟨v j, hvL j⟩ : ↥L.1)) = v` using `rfl`. Rewrite using `[h3, hvec g, eC]`. Both sides reduce to the same expression.
+-/
 theorem stable_of_models {r : ↥Gw →* GL (Fin a) (Om l)} {c : ↥Gw →* GL (Fin 1) (Om l)}
     {L₁ L₂ L : FinExt l} (hL₁ : L₁.1 ≤ L.1) (hL₂ : L₂.1 ≤ L.1) {r₂ : ↥Gw →* GL (Fin a) ↥L₂.1}
     {c₁ : ↥Gw →* GL (Fin 1) ↥L₁.1} (hm₂ : IsModel Bw r L₂ r₂) (hm₁ : IsModel Bw c L₁ c₁)
@@ -496,6 +636,11 @@ theorem stable_of_models {r : ↥Gw →* GL (Fin a) (Om l)} {c : ↥Gw →* GL (
 
 end Vec
 
+/- English proof (translation)
+Introduce `l _ P ι E Ω _ _ _ _ _ A w O _ _ _ Bw h hj a r c hr hc v hv hvec σ`. Take `⟨L₂, r₂, hm₂, hp₂, e₂⟩` from `wdAt_of_isPstAt ι Bw h hj hr`. Take `⟨L₁, c₁, hm₁, hp₁, e₁⟩` from `wdAt_of_isPstAt ι Bw h hj hc`. Take `⟨L, hL₁, hL₂, hvL⟩` from `exists_common L₁ L₂ v`. Establish `f₁` using `hp₁.finite`.
+
+Establish `f₂` using `hp₂.finite`. Establish `t₁ : WD.charPol (wdAt P ι Bw h hj c) σ = (wdRho P ι Bw h hj (Bw.repE L₁ c₁) σ).charpoly` using `(congrArg (fun x => WD.charPol x σ) e₁).trans (charPol_wdPst P ι Bw h hj hp₁ σ)`. Establish `t₂ : WD.charPol (wdAt P ι Bw h hj r) σ = (wdRho P ι Bw h hj (Bw.repE L₂ r₂) σ).charpoly` using `(congrArg (fun x => WD.charPol x σ) e₂).trans (charPol_wdPst P ι Bw h hj hp₂ σ)`. Establish `key : (wdRho P ι Bw h hj (Bw.repE L₁ c₁) σ).charpoly.roots ≤ (wdRho P ι Bw h hj (Bw.repE L₂ r₂) σ).charpoly.roots` using `Exists.elim (exists_decomp Bw hL₂ a r₂) fun n d => Exists.elim d fun e d => Exists.elim d fun B d => roots_le_of_decomp P ι Bw h hj hL₁ hL₂ r₂ c₁ hp₁ (fun j => ⟨v j, hvL j⟩) (fun h0 => hv (funext fun j => congrArg Subtype.val (congrFun h0 j))) (stable_of_models hL₁ hL₂ hm₂ hm₁ hv …`. Conclude with `(congrArg Polynomial.roots t₁).le.trans (key.trans (congrArg Polynomial.roots t₂).ge)`.
+-/
 theorem roots_charPol_le : ∀ {l : ℕ} [Fact l.Prime] (P : LocPrime l) (ι : Om l ≃+* ℂ) {E Ω : Type} [Field E]
     [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] {A : ValuationSubring Ω}
     {w : HeightOneSpectrum (𝓞 E)} {O : Type} [CommRing O] [Algebra ℤ_[l] O] [TopologicalSpace O]

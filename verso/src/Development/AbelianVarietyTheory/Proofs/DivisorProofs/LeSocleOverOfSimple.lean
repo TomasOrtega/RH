@@ -19,11 +19,20 @@ def IsSimpleOver (T : Set (Module.End ℂ V)) (N S : Submodule ℂ V) : Prop :=
 def socleOver (T : Set (Module.End ℂ V)) (N D : Submodule ℂ V) : Submodule ℂ V :=
   N ⊔ sSup {S | S ≤ D ∧ IsSimpleOver T N S}
 
+/- English proof (translation)
+The claim follows from `le_sup_left`.
+-/
 theorem le_socleOver (T : Set (Module.End ℂ V)) (N D : Submodule ℂ V) : N ≤ socleOver T N D := le_sup_left
 
+/- English proof (translation)
+The claim follows from `sup_le h (sSup_le fun _ hS => hS.1)`.
+-/
 theorem socleOver_le (T : Set (Module.End ℂ V)) {N D : Submodule ℂ V} (h : N ≤ D) : socleOver T N D ≤ D :=
   sup_le h (sSup_le fun _ hS => hS.1)
 
+/- English proof (translation)
+The claim follows from `le_sup_of_le_right (le_sSup ⟨hSD, hS⟩)`.
+-/
 theorem le_socleOver_of_simple (T : Set (Module.End ℂ V)) {N D S : Submodule ℂ V} (hSD : S ≤ D)
     (hS : IsSimpleOver T N S) : S ≤ socleOver T N D :=
   le_sup_of_le_right (le_sSup ⟨hSD, hS⟩)
@@ -33,6 +42,9 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 def opsAt {n d : ℕ} {Y : Spc F E n} {W : Spc F E d} (om : Rep σ Y W) (v : Pl F) : Set (Module.End ℂ (Fn F n d)) :=
   (fun h => om (1, h)) '' UAt σ W (evFin F v)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hP h hh Φ hΦ`. Conclude with `hP _ ⟨h, hh, rfl⟩ Φ hΦ`. Introduce and unpack `hP _ ⟨h, hh, rfl⟩ Φ hΦ`. Conclude with `hP h hh Φ hΦ`.
+-/
 theorem opStable_opsAt_iff {n d : ℕ} {Y : Spc F E n} {W : Spc F E d} (om : Rep σ Y W) (v : Pl F)
     (P : Submodule ℂ (Fn F n d)) :
     OpStable (opsAt om v) P ↔ ∀ h ∈ UAt σ W (evFin F v), ∀ Φ ∈ P, om (1, h) Φ ∈ P := by

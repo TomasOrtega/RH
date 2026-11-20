@@ -8,6 +8,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory
 
+/- English proof (translation)
+The claim follows from `unramExt`.
+-/
 theorem unramExt_law : UnramExtSt := unramExt
 
 end GlobalTheory

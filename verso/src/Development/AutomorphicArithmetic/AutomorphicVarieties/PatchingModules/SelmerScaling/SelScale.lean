@@ -4,6 +4,13 @@ open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.AlgebraT
 
 namespace UpperTheory.V.Pa
 
+/- English proof (translation)
+Take `⟨h1, -, h3, h4, h5, -⟩` from `hz'`. Establish `inj : Function.Injective fun Z : Matrix (Fin n) (Fin n) R => Z.map f` using `Matrix.map_injective hf`. Use `⟨fun g => hV _ _ (h1 g) (hz g), hc, fun g g' => inj ?_, fun g => inj ?_, fun u g hg => inj ?_, fun v => ⟨Y v, hV _ _ (hY' v).1 (hY v), fun g => ?_⟩⟩` and prove the remaining obligations. Simplify using `only [Matrix.map_add f (map_add f), Matrix.map_mul, hz, hρ, h3, smul_add, Matrix.mul_smul, Matrix.smul_mul]`. Simplify using `only [Matrix.map_neg f (map_neg f), Matrix.transpose_map, hz, h4, smul_neg, Matrix.transpose_smul]`.
+
+Simplify using `only [hz, h5 u g hg, smul_zero, Matrix.map_zero f (map_zero f)]`. Establish `key : (wi v * (z (F.φ v g) - dY F ρ (Y v) (F.φ v g)) * w v).map f = c • (wi' v * (z' (F.φ v g) - dY F ρ' (Y' v) (F.φ v g)) * w' v)`. Simplify using `only [dY, Matrix.map_sub f (map_sub f), Matrix.map_mul, hz, hρ, hw, hwi, hY, ← smul_sub, Matrix.mul_smul, Matrix.smul_mul]`. Establish `k2 : ∀ i j, (wi' v * (z' (F.φ v g) - dY F ρ' (Y' v) (F.φ v g)) * w' v) i j = 0 → (wi v * (z (F.φ v g) - dY F ρ (Y v) (F.φ v g)) * w v) i j = 0`. Introduce `i j h0`.
+
+Apply `hf` to reduce the goal to its premises. Use `congrFun (congrFun key i) j` as an intermediate fact. Rewrite `this` using `[Matrix.map_apply, Matrix.smul_apply, h0, smul_zero]`. Rewrite using `[this, map_zero]`. Conclude with `⟨fun i j hij => k2 i j (((hY' v).2 g).1 i j hij), fun hg i => k2 i i (((hY' v).2 g).2 hg i)⟩`.
+-/
 private theorem selLift {l : ℕ} [Fact l.Prime] (F : GFrame l) {n : ℕ} {A R R' : Type} [CommRing A] [CommRing R] [CommRing R']
     [Algebra A R] [Algebra A R'] (t : A) (f : R →+* R') (hf : Function.Injective f)
     (ρ : F.G₀ → Matrix (Fin n) (Fin n) R) (w wi : F.Vl → Matrix (Fin n) (Fin n) R)
@@ -36,6 +43,11 @@ private theorem selLift {l : ℕ} [Fact l.Prime] (F : GFrame l) {n : ℕ} {A R R
       rw [this, map_zero]
     exact ⟨fun i j hij => k2 i j (((hY' v).2 g).1 i j hij), fun hg i => k2 i i (((hY' v).2 g).2 hg i)⟩
 
+/- English proof (translation)
+Establish `B` using `fun φ hφ => Filter.eventually_atTop.2 ((bndOps K Γ).2.2.2.2 φ hφ)`. Establish `e1` using `Filter.eventually_all.2 fun i => Filter.eventually_all.2 fun j => B _ (hz i j)`. Use `filter_upwards [e1] with s a1`. Use `choose b1 c1 a1 using a1`. Use `⟨fun g => Matrix.of fun i j => b1 i j g, fun i j => c1 i j, fun g => ?_⟩` and prove the remaining obligations.
+
+Use extensionality with `i j`. Conclude with `a1 i j g`.
+-/
 private theorem liftF {K Γ : Type} [Field K] [TopologicalSpace Γ] [Group Γ] [IsTopologicalGroup Γ] {n : ℕ}
     (z : Γ → Matrix (Fin n) (Fin n) (FractionRing (PowerSeries K))) (hz : BndM (PowerSeries.X : PowerSeries K) z) :
     ∀ᶠ s : ℕ in Filter.atTop, ∃ z' : Γ → Matrix (Fin n) (Fin n) (PowerSeries K),
@@ -52,6 +64,15 @@ private theorem liftF {K Γ : Type} [Field K] [TopologicalSpace Γ] [Group Γ] [
 
 end UpperTheory.V.Pa
 
+/- English proof (translation)
+Introduce `l _ L G G0 h n x b z hz hb`. Use `choose Y hY using hz.2.2.2.2.2`. Establish `c0` using `(bndOps x.K G.G₀).1`. Establish `e1` using `liftF z hb`. Establish `e2` using `Filter.eventually_all.2 fun v => liftF (K := x.K) (fun _ : G.G₀ => Y v) fun i j => c0 _`.
+
+Apply `Filter.eventually_atTop.1` to reduce the goal to its premises. Use `filter_upwards [e1, e2] with s a1 a2`. Take `⟨z', hc, hz'⟩` from `a1`. Use `choose Y' _ hY' using a2`. Establish `hf : Function.Injective (algebraMap x.A x.Fr)` using `IsFractionRing.injective _ _`.
+
+Use `⟨z', selLift G.frame x.t (algebraMap x.A x.Fr) hf _ _ _ _ _ _ (fun g => rfl) (fun v => rfl) (fun v => rfl) _ _ (algebraMap x.A x.Fr x.t ^ s) (fun Z Z' hZ' hZ => ?_) z hz Y hY z' hc hz' (fun v => Y' v 1) (fun v => hY' v 1), hz'⟩` and prove the remaining obligations. Establish `key : ∀ i j, Z' i j = 0 → Z i j = 0` using `fun i j e => hf (by`. Use `congrFun (congrFun hZ i) j` as an intermediate fact. Rewrite `this` using `[Matrix.map_apply, Matrix.smul_apply, e, smul_zero]`. Rewrite using `[this, map_zero])`.
+
+Consider the cases of `b`. Conclude with `fun i j => ⟨fun e => key i j ((hZ' i j).1 e), fun _ => trivial⟩`. Conclude with `fun i j => ⟨fun _ => trivial, fun e => key i j ((hZ' i j).2 e)⟩`.
+-/
 theorem UpperTheory.V.Pa.selScale :
     ∀ (l : ℕ) [Fact l.Prime] (L : Loc) (G G0 : Glob l L) (h : G.Hom G0) (n : ℕ) (x : NP G0.frame n), ∀ b : Bool, ∀ z ∈ SelZ G.frame x.t (fun g => x.ρX x.Fr (h.p₀ g)) (x.wX x.Fr) (x.wiX x.Fr) (if b then Ev x.A x.Fr n x.a else Od x.A x.Fr n x.a), BndM x.t z → ∃ s₀ : ℕ, ∀ s, s₀ ≤ s → ∃ z' ∈ SelZ G.frame x.t (fun g => x.ρX x.A (h.p₀ g)) (x.wX x.A) (x.wiX x.A) (if b then Ev x.A x.A n x.a else Od x.A x.A n x.a), ∀ g, (z' g).map (algebraMap x.A x.Fr) = algebraMap x.A x.Fr x.t ^ s • z g := by
   intro l _ L G G0 h n x b z hz hb

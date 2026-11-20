@@ -12,16 +12,25 @@ open PI.SwBig
 attribute [local instance] Matrix.frobeniusNormedAddCommGroup Matrix.frobeniusNormedSpace
   Matrix.frobeniusNormedRing Matrix.frobeniusNormedAlgebra
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [w0B, tM, Matrix.mul_diagonal, bigCell, tv]`. Apply the tactic sequence `split_ifs <;> simp_all`.
+-/
 theorem bigCell_eq_w0B_mul_tM (k r : ℕ) (c : Fin r → ℂ) :
     bigCell k r c 1 = w0B k r * tM k r c := by
   ext i j
   simp only [w0B, tM, Matrix.mul_diagonal, bigCell, tv]
   split_ifs <;> simp_all
 
+/- English proof (translation)
+The claim follows from `Matrix.exp_neg X`.
+-/
 theorem exp_neg_eq_inv (k r : ℕ) (X : Mat k r) :
     NormedSpace.exp (-X) = (NormedSpace.exp X)⁻¹ :=
   Matrix.exp_neg X
 
+/- English proof (translation)
+Introduce `k r X x Z X'`. Rewrite using `[Phi, exp_neg_eq_inv, bigCell_eq_w0B_mul_tM]`. Simplify using `only [Matrix.mul_assoc]`.
+-/
 theorem phiForm : PhiForm := by
   intro k r X x Z X'
   rw [Phi, exp_neg_eq_inv, bigCell_eq_w0B_mul_tM]

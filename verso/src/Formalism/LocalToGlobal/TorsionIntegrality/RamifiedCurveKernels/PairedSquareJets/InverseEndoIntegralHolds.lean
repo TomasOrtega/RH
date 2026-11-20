@@ -15,6 +15,9 @@ section SlopeTestRemainingChoices
 
 variable {K : Type} [Field K]
 
+/- English proof (translation)
+Establish `key : ∀ f : PowerSeries K, PowerSeries.coeff 1 f = PowerSeries.constantCoeff (PowerSeries.derivative K f)`. Introduce `f`. Rewrite using `[← PowerSeries.coeff_zero_eq_constantCoeff_apply, PowerSeries.coeff_derivative]`. Simplify using the standard rewrite rules. Rewrite using `[key, PowerSeries.derivative_subst (JetSubstitutionLemmas.hs1 ha), map_mul, JetSubstitutionLemmas.cc_subst1 ha, ← key, ← key]`.
+-/
 theorem coeff_one_subst1 (g : PowerSeries K) {a : PowerSeries K}
     (ha : PowerSeries.constantCoeff a = 0) :
     PowerSeries.coeff 1 (PowerSeries.subst a g : PowerSeries K) =
@@ -26,21 +29,45 @@ theorem coeff_one_subst1 (g : PowerSeries K) {a : PowerSeries K}
     simp
   rw [key, PowerSeries.derivative_subst (JetSubstitutionLemmas.hs1 ha), map_mul, JetSubstitutionLemmas.cc_subst1 ha, ← key, ← key]
 
+/- English proof (translation)
+Establish `h0 : PowerSeries.constantCoeff (PowerSeries.C a * l) = 0` using `by rw [map_mul, h.1, mul_zero]`. Rewrite using `[mulBy, coeff_one_subst1 linv h0, Pts.coeff_one_linv h, PowerSeries.coeff_C_mul, h.2.1, one_mul, mul_one]`.
+-/
 theorem coeff_one_mulBy {l linv : PowerSeries K} (h : IsLogPair l linv) (a : K) :
     PowerSeries.coeff 1 (mulBy l linv a) = a := by
   have h0 : PowerSeries.constantCoeff (PowerSeries.C a * l) = 0 := by rw [map_mul, h.1, mul_zero]
   rw [mulBy, coeff_one_subst1 linv h0, Pts.coeff_one_linv h, PowerSeries.coeff_C_mul, h.2.1, one_mul,
     mul_one]
 
+/- English proof (translation)
+Rewrite using `[← Pts.fmul_eq_subst_mulBy h b (Pts.constantCoeff_mulBy h a), Pts.mulBy_eq_fmul a, Pts.fmul_fmul h b a PowerSeries.constantCoeff_X, ← Pts.mulBy_eq_fmul]`.
+-/
 theorem subst_mulBy_mulBy {l linv : PowerSeries K} (h : IsLogPair l linv) (a b : K) :
     PowerSeries.subst (mulBy l linv a) (mulBy l linv b) = mulBy l linv (b * a) := by
   rw [← Pts.fmul_eq_subst_mulBy h b (Pts.constantCoeff_mulBy h a), Pts.mulBy_eq_fmul a,
     Pts.fmul_fmul h b a PowerSeries.constantCoeff_X, ← Pts.mulBy_eq_fmul]
 
+/- English proof (translation)
+Rewrite using `[Pts.mulBy_eq_fmul, Pts.fmul_one h PowerSeries.constantCoeff_X]`.
+-/
 theorem mulBy_one {l linv : PowerSeries K} (h : IsLogPair l linv) :
     mulBy l linv 1 = PowerSeries.X := by
   rw [Pts.mulBy_eq_fmul, Pts.fmul_one h PowerSeries.constantCoeff_X]
 
+/- English proof (translation)
+Set `f' : PowerSeries R` to `PowerSeries.mk fun n => ⟨PowerSeries.coeff n f, hf n⟩`. Establish `hmap : PowerSeries.map R.subtype f' = f`. Use extensionality with `n`. Rewrite using `[PowerSeries.coeff_map, PowerSeries.coeff_mk]`. Both sides reduce to the same expression.
+
+Establish `hf'0 : PowerSeries.constantCoeff f' = 0`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[← PowerSeries.coeff_zero_eq_constantCoeff_apply, PowerSeries.coeff_mk]`. Simplify using `using hf0`. Establish `hf'1 : IsUnit (PowerSeries.coeff 1 f')`.
+
+Use `IsUnit.of_mul_eq_one ⟨(PowerSeries.coeff 1 f)⁻¹, hu⟩ ?_` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[PowerSeries.coeff_mk]`. Conclude with `mul_inv_cancel₀ hne`. Use `set t' : PowerSeries R := f'.substInvOfIsUnit hf'1 with ht'`.
+
+Establish `ht'0 : PowerSeries.constantCoeff t' = 0` using `PowerSeries.constantCoeff_substInvOfIsUnit f' hf'1`. Establish `hr : PowerSeries.subst t' f' = PowerSeries.X` using `PowerSeries.subst_substInvOfIsUnit_right f' hf'0 hf'1`. Use `set t : PowerSeries K := PowerSeries.map R.subtype t' with ht`. Establish `ht0 : PowerSeries.constantCoeff t = 0`. Rewrite using `[← PowerSeries.coeff_zero_eq_constantCoeff_apply, ht, PowerSeries.coeff_map, PowerSeries.coeff_zero_eq_constantCoeff_apply, ht'0, map_zero]`.
+
+Establish `hft : PowerSeries.subst t f = PowerSeries.X`. Use `PowerSeries.map_subst (PowerSeries.HasSubst.substInvOfIsUnit f' hf'1) (h := R.subtype) f'` as an intermediate fact. Rewrite `this` using `[← ht', hr, hmap]`. Rewrite using `[← PowerSeries.map_X R.subtype]`. Conclude with `this.symm`.
+
+Establish `hgt : g = t`. Establish `key` using `Pts.subst_subst hf0 ht0 g`. Rewrite `key` using `[hg, hft, PowerSeries.subst_X (JetSubstitutionLemmas.hs1 ht0), PowerSeries.X_subst]`. Conclude with `key.symm`. Introduce `n`.
+
+Rewrite using `[hgt, ht, PowerSeries.coeff_map]`. Conclude with `(PowerSeries.coeff n t').2`.
+-/
 theorem intPS_of_left_inverse (R : Subring K) {f g : PowerSeries K} (hf : IntPS R f)
     (hf0 : PowerSeries.constantCoeff f = 0) (hu : (PowerSeries.coeff 1 f)⁻¹ ∈ R)
     (hne : PowerSeries.coeff 1 f ≠ 0) (hg : PowerSeries.subst f g = PowerSeries.X) : IntPS R g := by
@@ -83,6 +110,9 @@ theorem intPS_of_left_inverse (R : Subring K) {f g : PowerSeries K} (hf : IntPS 
 
 end SlopeTestRemainingChoices
 
+/- English proof (translation)
+Introduce `K _ R l linv a h ha hai hE`. Use `intPS_of_left_inverse R hE (Pts.constantCoeff_mulBy h a) ?_ ?_ ?_` and prove the remaining obligations. Rewrite using `[coeff_one_mulBy h a]` and apply the resulting hypothesis. Rewrite using `[coeff_one_mulBy h a]` and apply the resulting hypothesis. Rewrite using `[subst_mulBy_mulBy h, inv_mul_cancel₀ ha, mulBy_one h]`.
+-/
 theorem inverse_endo_integral_holds : InvEndInt := by
   intro K _ R l linv a h ha hai hE
   refine intPS_of_left_inverse R hE (Pts.constantCoeff_mulBy h a) ?_ ?_ ?_
@@ -90,6 +120,9 @@ theorem inverse_endo_integral_holds : InvEndInt := by
   · rwa [coeff_one_mulBy h a]
   · rw [subst_mulBy_mulBy h, inv_mul_cancel₀ ha, mulBy_one h]
 
+/- English proof (translation)
+Introduce `K _ _ R l linv ph a b N hFr hF1 ha hai hEa hEb hN hPh`. Use `adjFromNorm K R l linv ph a b hFr ha hEa (inverse_endo_integral_holds K R l linv a hFr.1 ha hai hEa) hEb hPh ?_` and prove the remaining obligations. Rewrite using `[hN]`. Conclude with `zLinInt K R l linv ph hFr hF1 N`.
+-/
 theorem adjoint_unit_norm_holds : AdjUnitNorm := by
   intro K _ _ R l linv ph a b N hFr hF1 ha hai hEa hEb hN hPh
   refine adjFromNorm K R l linv ph a b hFr ha hEa (inverse_endo_integral_holds K R l linv a hFr.1 ha hai hEa) hEb
@@ -97,6 +130,13 @@ theorem adjoint_unit_norm_holds : AdjUnitNorm := by
   rw [hN]
   exact zLinInt K R l linv ph hFr hF1 N
 
+/- English proof (translation)
+Introduce `K _ S c d hc hd hS`. Establish `hdpos : 0 < ‖(d : K)‖` using `norm_pos_iff.mpr hd`. Establish `hcn : ‖c‖ ^ 2 = ‖(d : K)‖` using `by rw [← norm_pow, hc, norm_neg]`. Establish `hcpos : 0 < ‖c‖`. Break down `(norm_nonneg c).lt_or_eq with h | h` into its components or cases.
+
+Conclude with `h`. Rewrite `hcn` using `[← h]`. Simplify using `at hcn`. Conclude with `absurd hcn.symm (ne_of_gt hdpos)`. Establish `hsq : ‖(d : K)‖ ^ (1 / 2 : ℝ) = ‖c‖`.
+
+Rewrite using `[← hcn, ← Real.sqrt_eq_rpow, Real.sqrt_sq (norm_nonneg c)]`. Rewrite using `[Real.rpow_neg hdpos.le, hsq]`. Rewrite `hS` using `[norm_mul]`. Rewrite using `[← one_div, le_div_iff₀ hcpos, mul_comm]`. Conclude with `hS`.
+-/
 theorem half_valuation_holds : HalfValuation := by
   intro K _ S c d hc hd hS
   have hdpos : 0 < ‖(d : K)‖ := norm_pos_iff.mpr hd
@@ -114,6 +154,21 @@ theorem half_valuation_holds : HalfValuation := by
   rw [← one_div, le_div_iff₀ hcpos, mul_comm]
   exact hS
 
+/- English proof (translation)
+Introduce `K _ _ _ l linv ph a b d hFr hF1 hNeg h2 hAdj hab hd`. Establish `hlp : IsLogPair l linv` using `hFr.1`. Establish `h2i : (2 : K)⁻¹ ∈ unitBall K` using `by show ‖(2 : K)⁻¹‖ ≤ 1`. Rewrite using `[norm_inv, h2, inv_one]`. Establish `hdK : (d : K) ≠ 0` using `Nat.cast_ne_zero.mpr hd`.
+
+Take `⟨⟨H, hH, hexp⟩, hS⟩` from `jetsShape K (unitBall K) l linv ph hFr hF1 hNeg h2i`. Establish `hl' : IsOneUnit (unitBall K) (PowerSeries.derivative K l)` using `logDerivInt K (unitBall K) l linv hlp hFr.2.1`. Use `⟨half_valuation_holds K _ (a - b) d hab hdK (hS a b hAdj), ?_, ?_⟩` and prove the remaining obligations. Introduce `i hi hi2`. Break down `Nat.lt_or_ge i 3 with h3 | h3` into its components or cases.
+
+Establish `: i = 1` using `by omega`. Substitute `this` using the available equality. Conclude with `jetOne K (unitBall K) l linv ph hlp hl' hFr.2.2 hNeg h2i`. Conclude with `(derivation_cube_integral_jet K (unitBall K) l linv ph hFr hF1).2 i h3`. Establish `hs : PowerSeries.HasSubst linv` using `JetSubstitutionLemmas.hs1 hlp.2.2.1 set c : K := jet l ph 2 / 2 with hc`.
+
+Establish `hq0 : PowerSeries.constantCoeff (-(PowerSeries.C c * l ^ 2)) = 0`. Rewrite using `[map_neg, map_mul, map_pow, hlp.1]`. Simplify using the standard rewrite rules. Establish `hq0' : PowerSeries.constantCoeff (-(PowerSeries.C c * PowerSeries.X ^ 2) : PowerSeries K) = 0`. Simplify using the standard rewrite rules.
+
+Establish `hph0 : PowerSeries.constantCoeff (-ph) = 0` using `by rw [map_neg, hFr.2.2, neg_zero]`. Establish `hsub : PowerSeries.subst linv (-(PowerSeries.C c * l ^ 2)) = (-(PowerSeries.C c * PowerSeries.X ^ 2) : PowerSeries K)`. Rewrite using `[← PowerSeries.coe_substAlgHom hs, map_neg, map_mul, map_pow, PowerSeries.coe_substAlgHom hs, PowerSeries.subst_C, hlp.2.2.2.2]`. Both sides reduce to the same expression. Establish `hid : PowerSeries.subst linv (mvExp (-ph) : PowerSeries K) = (mvExp (-(PowerSeries.C c * PowerSeries.X ^ 2)) : PowerSeries K) * PowerSeries.subst linv H`.
+
+Rewrite using `[hexp, PowerSeries.subst_mul hs, mvExpSubst K Unit _ linv hq0 hlp.2.2.1, hsub]`. Use `⟨PowerSeries.subst linv H, (jets_of_dist_jets_holds K (unitBall K) l linv H hlp).1 hH, ?_, hid⟩` and prove the remaining obligations. Establish `hcc` using `congrArg PowerSeries.constantCoeff hid`. Rewrite `hcc` using `[map_mul, JetSubstitutionLemmas.cc_subst1 hlp.2.2.1]`. Establish `e1 : PowerSeries.constantCoeff (mvExp (-ph) : PowerSeries K) = 1` using `(mvExpLaws K Unit).2.1 _ hph0`.
+
+Establish `e2 : PowerSeries.constantCoeff (mvExp (-(PowerSeries.C c * PowerSeries.X ^ 2)) : PowerSeries K) = 1` using `(mvExpLaws K Unit).2.1 _ hq0'`. Rewrite `hcc` using `[e1, e2, one_mul]`. Conclude with `hcc.symm`.
+-/
 theorem ramified_shape_holds : RamifiedShape := by
   intro K _ _ _ l linv ph a b d hFr hF1 hNeg h2 hAdj hab hd
   have hlp : IsLogPair l linv := hFr.1

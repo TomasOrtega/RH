@@ -14,6 +14,11 @@ def CentredRingNormal.Statement : Prop :=
         (integralClosure
           (Localization.subalgebra.ofField L m.primeCompl m.primeCompl_le_nonZeroDivisors) L).toSubring
 
+/- English proof (translation)
+Set `e : (⊥ : Subalgebra ℤ ℚ) ≃ₐ[ℤ] ℤ` to `Algebra.botEquivOfInjective Int.cast_injective`. Establish `hft : Algebra.FiniteType ℤ (⊥ : Subalgebra ℤ ℚ)` using `Algebra.FiniteType.equiv inferInstance e.symm`. Establish `hfr : IsFractionRing (⊥ : Subalgebra ℤ ℚ) ℚ`. Use `IsFractionRing.of_field (⊥ : Subalgebra ℤ ℚ) ℚ fun z ↦ ⟨algebraMap ℤ _ z.num, algebraMap ℤ _ z.den, ?_⟩` and prove the remaining obligations. Rewrite using `[← IsScalarTower.algebraMap_apply, ← IsScalarTower.algebraMap_apply]`.
+
+Simplify using `[Rat.num_div_den]`. Take `⟨m, hm, -⟩` from `Ideal.exists_le_maximal (⊥ : Ideal (⊥ : Subalgebra ℤ ℚ)) bot_ne_top`. Conclude with `⟨⊥, m, hft, hfr, hm⟩`.
+-/
 example : ∃ (O : Subalgebra ℤ ℚ) (m : Ideal O), Algebra.FiniteType ℤ O ∧
     IsFractionRing O ℚ ∧ m.IsMaximal := by
   let e : (⊥ : Subalgebra ℤ ℚ) ≃ₐ[ℤ] ℤ := Algebra.botEquivOfInjective Int.cast_injective

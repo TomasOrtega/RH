@@ -14,6 +14,11 @@ namespace Formalism.L2.SG.Pf.StabilizerIndexVolumes
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Take `⟨h1, hm, hi⟩` from `hSt E n W`. Introduce `x hx`. Proceed by induction on `hx using Subgroup.closure_induction with`. Consider the case `mem x hx => exact hK hx`. Consider the case `one => exact h1`.
+
+Consider the case `mul x y _ _ hx hy => exact hm x hx y hy`. Consider the case `inv x _ hx => exact hi x hx`.
+-/
 theorem closure_subset_StSet (hSt : StClosed) {E : Type} [Field E] [NumberField E] {n : ℕ}
     (W : Matrix (Fin n) (Fin n) E) (K : Set (Matrix.GeneralLinearGroup (Fin n) E))
     (hK : K ⊆ StSet W) : ((Subgroup.closure K : Subgroup _) : Set _) ⊆ StSet W := by
@@ -25,6 +30,9 @@ theorem closure_subset_StSet (hSt : StClosed) {E : Type} [Field E] [NumberField 
   | mul x y _ _ hx hy => exact hm x hx y hy
   | inv x _ hx => exact hi x hx
 
+/- English proof (translation)
+Introduce `hSt _ _ t w F' L U _ _ _ _`. Apply `closure_subset_StSet hSt` to reduce the goal to its premises. Introduce and unpack `a ⟨h1, b, hb, hab, _⟩`. Conclude with `⟨h1, b, hb, hab⟩`.
+-/
 theorem volume_index_a_stable (D : D7) (u u' : D.what₂.Word)
     (F0 : FlagG (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E))
     (what₂ : Finset (Submodule (𝓞 D.host.E) (VS D).V))
@@ -36,6 +44,9 @@ theorem volume_index_a_stable (D : D7) (u u' : D.what₂.Word)
   rintro a ⟨h1, b, hb, hab, _⟩
   exact ⟨h1, b, hb, hab⟩
 
+/- English proof (translation)
+The claim follows from `volume_index_a_stable D u u' F0 what₂ δ M`.
+-/
 example (D : D7) (u u' : D.what₂.Word)
     (F0 : FlagG (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E))
     (what₂ : Finset (Submodule (𝓞 D.host.E) (VS D).V))

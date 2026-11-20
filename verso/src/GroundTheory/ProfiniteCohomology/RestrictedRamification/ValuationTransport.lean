@@ -7,6 +7,11 @@ open NumberField IsDedekindDomain IsDedekindDomain.HeightOneSpectrum
 
 open scoped Pointwise
 
+/- English proof (translation)
+Establish `key : ∀ {a b : WithZero (Multiplicative ℤ)}, a ≠ 0 → a ≤ 1 → (∀ n : ℕ, a ≤ WithZero.exp (-(n : ℤ)) → b ≤ WithZero.exp (-(n : ℤ))) → b ≤ a`. Introduce `a b ha0 ha1 h`. Establish `hlog : WithZero.log a ≤ 0`. Rewrite using `[← WithZero.exp_le_exp, WithZero.exp_log ha0, WithZero.exp_zero]`. Conclude with `ha1`.
+
+Establish `hn : ((-WithZero.log a).toNat : ℤ) = -WithZero.log a` using `Int.toNat_of_nonneg (by omega)`. Use `h (-WithZero.log a).toNat (by rw [hn, neg_neg, WithZero.exp_log ha0])` as an intermediate fact. Rewrite `this` using `[hn, neg_neg, WithZero.exp_log ha0]`. Then use the resulting hypothesis. Conclude with `le_antisymm (key hb0 hb1 fun n => (h n).2) (key ha0 ha1 fun n => (h n).1)`.
+-/
 theorem eq_of_forall_le_exp_iff {a b : WithZero (Multiplicative ℤ)} (ha0 : a ≠ 0) (hb0 : b ≠ 0)
     (ha1 : a ≤ 1) (hb1 : b ≤ 1)
     (h : ∀ n : ℕ, a ≤ WithZero.exp (-(n : ℤ)) ↔ b ≤ WithZero.exp (-(n : ℤ))) : a = b := by
@@ -36,10 +41,18 @@ def smulPlace (σ : G) (w : HeightOneSpectrum B) : HeightOneSpectrum B where
     exact Ideal.map_bot
 
 omit [IsDedekindDomain B] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem smulPlace_asIdeal (σ : G) (w : HeightOneSpectrum B) :
     (smulPlace σ w).asIdeal = σ • w.asIdeal :=
   rfl
 
+/- English proof (translation)
+Break down `eq_or_ne r 0 with rfl | hr` into its components or cases. Rewrite using `[smul_zero, map_zero, map_zero]`. Establish `hσr : σ • r ≠ 0` using `fun h => hr (by rw [← inv_smul_smul σ r, h, smul_zero])`. Use `eq_of_forall_le_exp_iff (intValuation_ne_zero _ _ hσr) (intValuation_ne_zero _ _ hr) (intValuation_le_one _ _) (intValuation_le_one _ _) fun n => ?_` and prove the remaining obligations. Rewrite using `[intValuation_le_pow_iff_mem, intValuation_le_pow_iff_mem, smulPlace_asIdeal, ← smul_pow']`.
+
+Conclude with `Ideal.smul_mem_pointwise_smul_iff`.
+-/
 theorem intValuation_smulPlace (σ : G) (w : HeightOneSpectrum B) (r : B) :
     (smulPlace σ w).intValuation (σ • r) = w.intValuation r := by
   rcases eq_or_ne r 0 with rfl | hr
@@ -56,6 +69,9 @@ section NumberField
 
 variable {F M : Type*} [Field F] [Field M] [NumberField M] [Algebra F M]
 
+/- English proof (translation)
+Take `⟨a, b, hb, rfl⟩` from `IsFractionRing.div_surjective (A := 𝓞 M) x`. Establish `ha : σ (algebraMap (𝓞 M) M a) = algebraMap (𝓞 M) M (σ • a)` using `rfl`. Establish `hb' : σ (algebraMap (𝓞 M) M b) = algebraMap (𝓞 M) M (σ • b)` using `rfl`. Rewrite using `[map_div₀, ha, hb', map_div₀, map_div₀, valuation_of_algebraMap, valuation_of_algebraMap, valuation_of_algebraMap, valuation_of_algebraMap, intValuation_smulPlace, intValuation_smulPlace]`.
+-/
 theorem valuation_smulPlace (σ : Gal(M/F)) (w : HeightOneSpectrum (𝓞 M)) (x : M) :
     (smulPlace σ w).valuation M (σ x) = w.valuation M x := by
   obtain ⟨a, b, hb, rfl⟩ := IsFractionRing.div_surjective (A := 𝓞 M) x
@@ -65,6 +81,9 @@ theorem valuation_smulPlace (σ : Gal(M/F)) (w : HeightOneSpectrum (𝓞 M)) (x 
     valuation_of_algebraMap, valuation_of_algebraMap, intValuation_smulPlace,
     intValuation_smulPlace]
 
+/- English proof (translation)
+Rewrite using `[← valuation_smulPlace σ w (σ⁻¹ x)]`. Use `congr 1`. Conclude with `(AlgEquiv.apply_symm_apply σ x).symm`.
+-/
 theorem valuation_smulPlace_apply (σ : Gal(M/F)) (w : HeightOneSpectrum (𝓞 M)) (x : M) :
     (smulPlace σ w).valuation M x = w.valuation M (σ⁻¹ x) := by
   rw [← valuation_smulPlace σ w (σ⁻¹ x)]
@@ -77,6 +96,9 @@ section Unramified
 
 variable {K L : Type*} [Field K] [Field L] [NumberField K] [NumberField L] [Algebra K L]
 
+/- English proof (translation)
+Rewrite using `[← valuation_liesOver L w W x, Ideal.ramificationIdx'_eq_ramificationIdx' w.asIdeal W.asIdeal (Ideal.map_ne_bot_of_ne_bot w.ne_bot), Ideal.ramificationIdx_eq_one, pow_one]`.
+-/
 theorem valuation_algebraMap_of_isUnramifiedAt (w : HeightOneSpectrum (𝓞 K))
     (W : HeightOneSpectrum (𝓞 L)) [W.asIdeal.LiesOver w.asIdeal]
     [Algebra.IsUnramifiedAt (𝓞 K) W.asIdeal] (x : K) :

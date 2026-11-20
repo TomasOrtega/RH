@@ -21,6 +21,9 @@ section Push
 
 variable {R : Type} [CommRing R] {G : Over (Sp R)} [GrpObj G] [IsCommMonObj G]
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simp only [pow_zero]`. Conclude with `(MonObj.one_comp f).symm`. Consider the case `succ n ih => rw [pow_succ, pow_succ, MonObj.mul_comp, ih]`.
+-/
 theorem comp_pow_of_isMonHom (f : G ⟶ G) [IsMonHom f] {Z : Over (Sp R)} (t : Z ⟶ G) (n : ℕ) :
     (t ≫ f) ^ n = (t ^ n) ≫ f := by
   induction n with
@@ -33,17 +36,29 @@ def torsPush {N N' : ℕ} (h : N ∣ N') (f : G ⟶ G) [IsMonHom f] {B : Type} [
 
 variable {N N' : ℕ} (h : N ∣ N') (f : G ⟶ G) [IsMonHom f]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem torsPush_val {B : Type} [CommRing B] [Algebra R B] (z : Tors G N B) :
     (torsPush h f z).1 = z.1 ≫ f := rfl
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (by simp [MonObj.mul_comp])`.
+-/
 theorem torsPush_mul {B : Type} [CommRing B] [Algebra R B] (x y : Tors G N B) :
     torsPush h f (x * y) = torsPush h f x * torsPush h f y :=
   Subtype.ext (by simp [MonObj.mul_comp])
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (by simp [MonObj.one_comp])`.
+-/
 theorem torsPush_one {B : Type} [CommRing B] [Algebra R B] :
     torsPush h f (1 : Tors G N B) = 1 :=
   Subtype.ext (by simp [MonObj.one_comp])
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (by simp)`.
+-/
 theorem torsPush_map {B C : Type} [CommRing B] [Algebra R B] [CommRing C] [Algebra R C] (φ : B →ₐ[R] C)
     (z : Tors G N B) : torsPush h f (torsMap φ z) = torsMap φ (torsPush h f z) :=
   Subtype.ext (by simp)
@@ -55,6 +70,11 @@ section Pt
 variable {R : Type} [CommRing R] {G : Over (Sp R)} [GrpObj G] [IsCommMonObj G] {N : ℕ}
   {A : Type} [CommRing A] [HopfAlgebra R A]
 
+/- English proof (translation)
+Apply the tactic sequence `have H : (Algebra.TensorProduct.lmul' R).comp (Algebra.TensorProduct.map f f) = f.comp (Algebra.TensorProduct.lmul' R) := by ext <;> simp`. Use `trans toConv <| ((Algebra.TensorProduct.lmul' R).comp (Algebra.TensorProduct.map f f)).comp ((Algebra.TensorProduct.map (HopfAlgebra.antipodeAlgHom R A) (.id _ _)).comp (comulAlgHom R A))`. Rewrite using `[AlgHom.comp_assoc, ← AlgHom.comp_assoc (Algebra.TensorProduct.map f f), ← Algebra.TensorProduct.map_comp]`. Both sides reduce to the same expression. Rewrite using `[H, AlgHom.comp_assoc, WithConv.ext_iff, ← AlgHom.toLinearMap_injective.eq_iff]`.
+
+Express the relevant statement in the definitionally equal form `f.toLinearMap.comp (toConv (HopfAlgebra.antipode R (A := A)) * toConv LinearMap.id).ofConv = ofConv (1 : WithConv <| A →ₗ[R] B)`. Rewrite using `[LinearMap.antipode_mul_id]`. Use `ext`. Simplify using the standard rewrite rules.
+-/
 theorem antipode_conv_mul {B : Type} [CommRing B] [Algebra R B] (f : A →ₐ[R] B) :
     toConv (f.comp (HopfAlgebra.antipodeAlgHom R A)) * toConv f = 1 := by
   have H : (Algebra.TensorProduct.lmul' R).comp (Algebra.TensorProduct.map f f) =
@@ -70,6 +90,9 @@ theorem antipode_conv_mul {B : Type} [CommRing B] [Algebra R B] (f : A →ₐ[R]
   ext
   simp
 
+/- English proof (translation)
+Establish `h1 : toConv (θ.pt B 1) * toConv (θ.pt B 1) = toConv (θ.pt B 1)`. Rewrite using `[← θ.mul, _root_.mul_one]`. Establish `h2` using `congrArg (fun F => toConv ((θ.pt B 1).comp (HopfAlgebra.antipodeAlgHom R A)) * F) h1`. Simplify using `only [← _root_.mul_assoc, antipode_conv_mul, _root_.one_mul] at h2`. Conclude with `h2`.
+-/
 theorem pt_one (θ : TorsPt G N A) (B : Type) [CommRing B] [Algebra R B] : toConv (θ.pt B 1) = 1 := by
   have h1 : toConv (θ.pt B 1) * toConv (θ.pt B 1) = toConv (θ.pt B 1) := by
     rw [← θ.mul, _root_.mul_one]
@@ -77,6 +100,9 @@ theorem pt_one (θ : TorsPt G N A) (B : Type) [CommRing B] [Algebra R B] : toCon
   simp only [← _root_.mul_assoc, antipode_conv_mul, _root_.one_mul] at h2
   exact h2
 
+/- English proof (translation)
+Use `congrArg (fun F : WithConv (A →ₐ[R] B) => (ofConv F) x) (pt_one θ B)` as an intermediate fact. Simplify `this` using `[AlgHom.convOne_def]`.
+-/
 theorem pt_one_apply (θ : TorsPt G N A) (B : Type) [CommRing B] [Algebra R B] (x : A) :
     θ.pt B 1 x = algebraMap R B (counit x) := by
   have := congrArg (fun F : WithConv (A →ₐ[R] B) => (ofConv F) x) (pt_one θ B)
@@ -96,6 +122,9 @@ variable {R K : Type} [CommRing R] [IsDomain R] [IsIntegrallyClosed R] [Field K]
   {A' : Type} [CommRing A'] [HopfAlgebra R A'] [IsCocomm R A'] [Module.Finite R A'] [Module.Projective R A']
 
 include R K in
+/- English proof (translation)
+Rewrite using `[← sub_eq_zero]`. Apply `(GlobalTheory.T.finite_hopf_points_separate R K A).2.1` to reduce the goal to its premises. Introduce `ψ`. Take `⟨z, rfl⟩` from `hθ.gen.2 ψ`. Rewrite using `[map_sub, hxy, sub_self]`.
+-/
 theorem eq_of_pts {θ : TorsPt G N A} (hθ : IsLevel K θ) {x y : A}
     (hxy : ∀ z : Tors G N K, θ.pt K z x = θ.pt K z y) : x = y := by
   rw [← sub_eq_zero]
@@ -104,6 +133,17 @@ theorem eq_of_pts {θ : TorsPt G N A} (hθ : IsLevel K θ) {x y : A}
   obtain ⟨z, rfl⟩ := hθ.gen.2 ψ
   rw [map_sub, hxy, sub_self]
 
+/- English proof (translation)
+Use `haveI : Finite (A →ₐ[R] K) := (GlobalTheory.T.finite_hopf_points_separate R K A).1`. Use `haveI : Finite (A' →ₐ[R] K) := (GlobalTheory.T.finite_hopf_points_separate R K A').1`. Set `e` to `Equiv.ofBijective _ hθ.gen`. Establish `he : ∀ z, e.symm (θ.pt K z) = z` using `fun z => e.symm_apply_apply z`. Set `fn : (A →ₐ[R] K) → K` to `fun ψ => θ'.pt K (torsPush h f (e.symm ψ)) a'`.
+
+Establish `hloc : ∀ (P : Ideal A) [P.IsPrime], (1 : A) ∉ P → ∃ c : Localization.AtPrime P, ∀ ψ : Localization.AtPrime P →ₐ[R] K, ψ c = fn (ψ.comp (IsScalarTower.toAlgHom R A (Localization.AtPrime P)))`. Introduce `P _ _`. Take `⟨z, s, hzs⟩` from `GlobalTheory.T.level_structure_local_points R K G hG N hN A θ hθ (Localization.AtPrime P) (IsScalarTower.toAlgHom R A _)`. Take `⟨w, hw⟩` from `hθ.gen.2 ((Algebra.ofId R K).comp s)`. Take `⟨s', hs'⟩` from `GlobalTheory.finiteAlg_fieldPoint_factors_through_base R K A' (GlobalTheory.T.finite_hopf_points_separate R K A').2.1 K (θ'.pt K (torsPush h f w))`.
+
+Set `c0 : A' →ₐ[R] Localization.AtPrime P` to `ofConv (toConv (θ'.pt (Localization.AtPrime P) (torsPush h f z)) * toConv ((Algebra.ofId R (Localization.AtPrime P)).comp s'))`. Use `⟨c0 a', fun ψ => ?_⟩` and prove the remaining obligations. Establish `hψid : ψ.comp (Algebra.ofId R (Localization.AtPrime P)) = Algebra.ofId R K` using `AlgHom.ext fun r => ψ.commutes r`. Establish `L : ψ.comp c0 = θ'.pt K (torsPush h f (torsMap ψ z * w))`. Rewrite using `[AlgHom.comp_convMul_distrib, ofConv_toConv, ofConv_toConv, ← θ'.nat, ← torsPush_map, ← AlgHom.comp_assoc, hψid, ← hs', ← θ'.mul, torsPush_mul, ofConv_toConv]`.
+
+Establish `Rt : ψ.comp (IsScalarTower.toAlgHom R A (Localization.AtPrime P)) = θ.pt K (torsMap ψ z * w)`. Rewrite using `[← ofConv_toConv (IsScalarTower.toAlgHom R A (Localization.AtPrime P)), hzs, AlgHom.comp_convMul_distrib, ofConv_toConv, ofConv_toConv, ← θ.nat, ← AlgHom.comp_assoc, hψid, ← hw, ← θ.mul, ofConv_toConv]`. Rewrite using `[Rt]`. Rewrite using `[← AlgHom.comp_apply, L]`. Simplify using `only [fn, he]`.
+
+Take `⟨k, a, ha⟩` from `GlobalTheory.AlgPointsLocal.exists_pow_mul_of_locally_integral R K A 1 fn hloc`. Use `⟨a, fun z => ?_⟩` and prove the remaining obligations. Rewrite using `[ha, map_one, one_pow, _root_.one_mul]`. Simplify using `only [fn, he]`.
+-/
 theorem exists_val (hG : IsSemiAbelian G) (hN : N ≠ 0) (h : N ∣ N') (f : G ⟶ G) [IsMonHom f]
     (θ : TorsPt G N A) (θ' : TorsPt G N' A') (hθ : IsLevel K θ) (a' : A') :
     ∃ a : A, ∀ z : Tors G N K, θ.pt K z a = θ'.pt K (torsPush h f z) a' := by
@@ -150,6 +190,27 @@ end GlobalTheory.GroupBplus.Aff.LevMap
 
 namespace GlobalTheory.GroupBplus.Aff.LevMap
 
+/- English proof (translation)
+Introduce `R K _ _ _ _ _ _ _ _ G _ _ hG N N' hN h A _ _ _ _ _ A' _ _ _ _ _ θ θ' hθ hθ' f hf`. Use `haveI : IsMonHom f := hf`. Use `choose gfun hg using exists_val (K := K) hG hN h f θ θ' hθ`. Set `gA : A' →ₐ[R] A` to `{ toFun := gfun map_one' := eq_of_pts (K := K) hθ fun z => by rw [hg, map_one, map_one] map_mul' := fun x y => eq_of_pts (K := K) hθ fun z => by rw [hg, map_mul, map_mul, hg, hg] map_zero' := eq_of_pts (K := K) hθ fun z => by rw [hg, map_zero, map_zero] map_add' := fun x y => eq_ …`. Establish `hgA : ∀ (a' : A') (z : Tors G N K), θ.pt K z (gA a') = θ'.pt K (torsPush h f z) a'` using `hg`.
+
+Establish `hB : ∀ (B : Type) [CommRing B] [Algebra R B] (z : Tors G N B) (a' : A'), θ'.pt B (torsPush h f z) a' = θ.pt B z (gA a')`. Introduce `B _ _ z a'`. Use `GlobalTheory.T.torsion_pairing_functorial R K G hG N N hN hN (fun B _ _ x _ => θ'.pt B (torsPush h f x) a' - θ.pt B x (gA a')) (fun B C _ _ _ _ φ x y => by simp only [torsPush_map, θ'.nat, θ.nat, AlgHom.comp_apply, map_sub]) (fun x y => by simp only [hgA, sub_self]) B z z` as an intermediate fact. Conclude with `sub_eq_zero.mp this`. Establish `hcounit : (counitAlgHom R A).comp gA = counitAlgHom R A'`.
+
+Use extensionality with `a'`. Apply `IsFractionRing.injective R K` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `algebraMap R K (counit (gA a')) = algebraMap R K (counit a')`. Rewrite using `[← pt_one_apply θ K, hgA, torsPush_one, pt_one_apply]`. Establish `hcomul : (Algebra.TensorProduct.map gA gA).comp (comulAlgHom R A') = (comulAlgHom R A).comp gA`.
+
+Use extensionality with `a'`. Express the relevant statement in the definitionally equal form `Algebra.TensorProduct.map gA gA (comul a') = comul (gA a')`. Rewrite using `[← sub_eq_zero]`. Apply `(GlobalTheory.T.finite_hopf_points_separate R K (A ⊗[R] A)).2.1` to reduce the goal to its premises. Introduce `ψ`.
+
+Set `ψ1 : A →ₐ[R] K` to `ψ.comp Algebra.TensorProduct.includeLeft`. Set `ψ2 : A →ₐ[R] K` to `ψ.comp Algebra.TensorProduct.includeRight`. Establish `hψ : ψ = (Algebra.TensorProduct.lmul' R).comp (Algebra.TensorProduct.map ψ1 ψ2)`. Apply the tactic sequence `apply Algebra.TensorProduct.ext <;> ext x <;> simp [ψ1, ψ2, ← Algebra.TensorProduct.one_def]`. Use `clear_value ψ1 ψ2`.
+
+Take `⟨z1, hz1⟩` from `hθ.gen.2 ψ1`. Take `⟨z2, hz2⟩` from `hθ.gen.2 ψ2`. Establish `e1 : ψ1.comp gA = θ'.pt K (torsPush h f z1)` using `AlgHom.ext fun a' => by rw [AlgHom.comp_apply, ← hz1, hgA]`. Establish `e2 : ψ2.comp gA = θ'.pt K (torsPush h f z2)` using `AlgHom.ext fun a' => by rw [AlgHom.comp_apply, ← hz2, hgA]`. Establish `E1 : ((Algebra.TensorProduct.lmul' R).comp (Algebra.TensorProduct.map ψ1 ψ2)) (Algebra.TensorProduct.map gA gA (comul a')) = (ofConv (toConv (θ'.pt K (torsPush h f z1)) * toConv (θ'.pt K (torsPush h f z2))) : A' →ₐ[R] K) a'`.
+
+Rewrite using `[← e1, ← e2, AlgHom.convMul_def, ofConv_toConv, Algebra.TensorProduct.map_comp]`. Both sides reduce to the same expression. Establish `E2 : ((Algebra.TensorProduct.lmul' R).comp (Algebra.TensorProduct.map ψ1 ψ2)) (comul (gA a')) = (ofConv (toConv ψ1 * toConv ψ2) : A →ₐ[R] K) (gA a')`. Rewrite using `[AlgHom.convMul_def, ofConv_toConv]`. Both sides reduce to the same expression.
+
+Rewrite using `[map_sub, sub_eq_zero, hψ, E1, E2, ← hz1, ← hz2, ← θ.mul, ← θ'.mul, ← torsPush_mul, ofConv_toConv, ofConv_toConv, hgA]`. Set `gB : A' →ₐc[R] A` to `BialgHom.ofAlgHom gA hcounit hcomul`. Use `⟨gB, fun B _ _ z z' hz' => ?_, fun g' hg' => ?_⟩` and prove the remaining obligations. Establish `hzz : z' = torsPush h f z` using `Subtype.ext hz'`. Substitute `hzz` using the available equality.
+
+Use extensionality with `a'`. Conclude with `hB B z a'`. Use extensionality with `a'`. Apply `eq_of_pts (K := K) hθ` to reduce the goal to its premises. Introduce `z`.
+
+Use `congrArg (fun F : A' →ₐ[R] K => F a') (hg' K z (torsPush h f z) rfl)` as an intermediate fact. Conclude with `this.symm.trans (hgA a' z).symm`.
+-/
 theorem existsUnique_bialgHom_of_levels : ∀ (R K : Type) [CommRing R] [IsDomain R] [IsIntegrallyClosed R] [Field K] [IsAlgClosed K] [CharZero K] [Algebra R K] [IsFractionRing R K] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ (N N' : ℕ), N ≠ 0 → N ∣ N' → ∀ (A : Type) [CommRing A] [HopfAlgebra R A] [IsCocomm R A] [Module.Finite R A] [Module.Projective R A] (A' : Type) [CommRing A'] [HopfAlgebra R A'] [IsCocomm R A'] [Module.Finite R A'] [Module.Projective R A'] (θ : TorsPt G N A) (θ' : TorsPt G N' A'), IsLevel K θ → IsLevel K θ' → ∀ f : G ⟶ G, IsMonHom f → ∃! g : A' →ₐc[R] A, ∀ (B : Type) [CommRing B] [Algebra R B] (z : Tors G N B) (z' : Tors G N' B), z'.1 = z.1 ≫ f → θ'.pt B z' = (θ.pt B z).comp (g : A' →ₐ[R] A) := by
   intro R K _ _ _ _ _ _ _ _ G _ _ hG N N' hN h A _ _ _ _ _ A' _ _ _ _ _ θ θ' hθ hθ' f hf
   haveI : IsMonHom f := hf

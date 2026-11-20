@@ -21,9 +21,17 @@ def VStd (D : D7) : Prop :=
 
 variable {D : D7}
 
+/- English proof (translation)
+The claim follows from `D.sp.V_rank _ (Nat.le_add_left 1 _) i.isLt`.
+-/
 theorem rank_eq (i : Fin D.R.m) : (Vc D i).rank = D.R.nV :=
   D.sp.V_rank _ (Nat.le_add_left 1 _) i.isLt
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `hL.βV i`. Unfold `Formalism.IndefR.Lev.IsBaseFrame at hc`. Take `⟨-, -, -, h1, h2⟩` from `hc`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hx`. Simplify using `using h2 x hx`. Introduce `hx`. Simplify using `using h1 x hx`.
+-/
 theorem baseLat_eq {T : Type} {L : LevCh D T} {μ0 : T} (hL : L.Is μ0) (i : Fin D.R.m) :
     (L.ΛV i : Set (Fin (Vc D i).rank → D.host.E)) = L0c D (Vc D i) := by
   obtain ⟨c, hc⟩ := hL.βV i

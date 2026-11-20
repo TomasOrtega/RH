@@ -4,6 +4,9 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Annih
 open CategoryTheory AlgebraicGeometry TensorProduct
 open UpperTheory.Gal.crystallineComparison
 
+/- English proof (translation)
+Unfold `form`. Rewrite using `[Polynomial.map_sub, Polynomial.map_X, Polynomial.map_C]`. Use `congr 2`. Simplify using `[map_sum, MvPolynomial.map_C, MvPolynomial.map_X]`.
+-/
 private theorem form_map' {A A' ι : Type} [CommRing A] [CommRing A'] [Fintype ι] (ρ : A →+* A') (c : ι → A) :
     (form c).map (MvPolynomial.map ρ) = form (fun k => ρ (c k)) := by
   unfold form
@@ -11,6 +14,9 @@ private theorem form_map' {A A' ι : Type} [CommRing A] [CommRing A'] [Fintype �
   congr 2
   simp [map_sum, MvPolynomial.map_C, MvPolynomial.map_X]
 
+/- English proof (translation)
+Unfold `form`. Use `show Polynomial.eval _ _ = _`. Rewrite using `[Polynomial.eval_sub, Polynomial.eval_X, Polynomial.eval_C, ← Finset.sum_sub_distrib]`. Conclude with `Finset.sum_congr rfl fun k _ => by rw [map_sub, sub_mul]`.
+-/
 private theorem form_eval' {A ι : Type} [CommRing A] [Fintype ι] (x y : ι → A) :
     Polynomial.evalRingHom (∑ k, MvPolynomial.C (x k) * MvPolynomial.X k) (form y) =
       ∑ k, MvPolynomial.C (x k - y k) * MvPolynomial.X k := by
@@ -19,6 +25,11 @@ private theorem form_eval' {A ι : Type} [CommRing A] [Fintype ι] (x y : ι →
   rw [Polynomial.eval_sub, Polynomial.eval_X, Polynomial.eval_C, ← Finset.sum_sub_distrib]
   exact Finset.sum_congr rfl fun k _ => by rw [map_sub, sub_mul]
 
+/- English proof (translation)
+Rewrite using `[Polynomial.natDegree_multiset_prod_of_monic]`. Simplify using `only [Multiset.map_map, Function.comp_def, form, Polynomial.natDegree_X_sub_C]`. Simplify using the standard rewrite rules. Introduce `f hf`. Take `⟨c, -, rfl⟩` from `Multiset.mem_map.1 hf`.
+
+Conclude with `Polynomial.monic_X_sub_C _`.
+-/
 private theorem form_natDegree' {A ι : Type} [CommRing A] [Fintype ι] [Nontrivial A] (v : Multiset (ι → A)) :
     ((v.map form).prod).natDegree = v.card := by
   rw [Polynomial.natDegree_multiset_prod_of_monic]
@@ -28,6 +39,17 @@ private theorem form_natDegree' {A ι : Type} [CommRing A] [Fintype ι] [Nontriv
     obtain ⟨c, -, rfl⟩ := Multiset.mem_map.1 hf
     exact Polynomial.monic_X_sub_C _
 
+/- English proof (translation)
+Introduce `A ι _ _`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `A' _ ρ u u' h`. Unfold `SameNorm at h ⊢`. Establish `e` using `congrArg (Polynomial.map (MvPolynomial.map ρ)) h`.
+
+Simplify using `only [Polynomial.map_multiset_prod, Multiset.map_map, Function.comp_def, form_map'] at e`. Simplify `e` using `[Multiset.map_map, Function.comp_def]`. Introduce `x u u' h`. Simplify using `only [SameNorm, Multiset.map_cons, Multiset.prod_cons] at h ⊢`. Conclude with `(show (form x).Monic from Polynomial.monic_X_sub_C _).isRegular.left h`.
+
+Introduce `_ u u' h`. Unfold `SameNorm at h`. Establish `e` using `congrArg Polynomial.natDegree h`. Rewrite `e` using `[form_natDegree', form_natDegree']`. Then use the resulting hypothesis. Introduce `x u u' h hx`.
+
+Unfold `SameNorm at h`. Establish `e` using `congrArg (Polynomial.evalRingHom (∑ k, MvPolynomial.C (x k) * MvPolynomial.X k)) h`. Rewrite `e` using `[map_multiset_prod, map_multiset_prod, Multiset.map_map, Multiset.map_map]`. Simplify using `only [Function.comp_def, form_eval'] at e`. Rewrite using `[← e]`.
+
+Apply `Multiset.prod_eq_zero` to reduce the goal to its premises. Conclude with `Multiset.mem_map.2 ⟨x, hx, by simp⟩`.
+-/
 theorem UpperTheory.Gal.crystallineComparison.snBasic_of :
     SameNormBasic := by
   intro A ι _ _

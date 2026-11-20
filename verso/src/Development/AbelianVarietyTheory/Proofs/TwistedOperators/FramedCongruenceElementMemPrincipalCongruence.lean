@@ -24,6 +24,13 @@ open scoped Pointwise
 
 namespace GlobalTheory.LevFrame
 
+/- English proof (translation)
+Establish `A : ∀ h : GL n 𝒪[k], ∀ y ∈ (Submodule.pi Set.univ fun _ : n => (1 : Submodule 𝒪[k] k)), Matrix.GeneralLinearGroup.map (algebraMap 𝒪[k] k) h • y ∈ (Submodule.pi Set.univ fun _ : n => (1 : Submodule 𝒪[k] k))`. Introduce `h y hy`. Establish `hy' : ∀ j, ∃ c : 𝒪[k], algebraMap 𝒪[k] k c = y j` using `fun j => Submodule.mem_one.1 (hy j (Set.mem_univ j))`. Use `choose c hc using hy'`. Introduce `i _`.
+
+Use `Submodule.mem_one.2 ⟨∑ j, h.1 i j * c j, ?_⟩` and prove the remaining obligations. Use `show _ = ((Matrix.GeneralLinearGroup.map (algebraMap 𝒪[k] k) h).1 *ᵥ y) i`. Simplify using `only [Matrix.mulVec, dotProduct, map_sum, map_mul, ← hc]`. Both sides reduce to the same expression. Use `Submodule.ext fun x => (Submodule.mem_smul_pointwise_iff_exists x _ _).trans ⟨?_, ?_⟩` and prove the remaining obligations.
+
+Introduce and unpack `⟨y, hy, rfl⟩`. Conclude with `A k₀ y hy`. Introduce `hx`. Use `⟨Matrix.GeneralLinearGroup.map (algebraMap 𝒪[k] k) k₀⁻¹ • x, A _ x hx, ?_⟩` and prove the remaining obligations. Rewrite using `[map_inv, smul_inv_smul]`.
+-/
 theorem gl_smul_pi_one {k : Type} [Field k] [ValuativeRel k] {n : Type} [Fintype n] [DecidableEq n] (k₀ : GL n 𝒪[k]) :
     Matrix.GeneralLinearGroup.map (algebraMap 𝒪[k] k) k₀ • (Submodule.pi Set.univ fun _ : n => (1 : Submodule 𝒪[k] k)) =
       Submodule.pi Set.univ fun _ : n => (1 : Submodule 𝒪[k] k) := by
@@ -46,6 +53,21 @@ theorem gl_smul_pi_one {k : Type} [Field k] [ValuativeRel k] {n : Type} [Fintype
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Introduce `D hQ T L μ0 hL sc G W M hM X hsd v hv k _ _ _ _ p hpv hid n _ _ β hlat k₀ hk₀`. Use `set g := β.gl (Matrix.GeneralLinearGroup.map (algebraMap 𝒪[k] k) k₀) with hg`. Establish `hff` using `GlobalTheory.FrameAt.frame_facts D k p (G.V X) n β`. Establish `hgrp : g ∈ grpAt (G.V X) (· = p.v)` using `(hff.1 g).2 ⟨_, rfl⟩`. Establish `hinK : InK (G.V X) (G.Λ X) (· = p.v) g`.
+
+Take `⟨Λ₀, -, hΛ₀, hK⟩` from `hff.2.2.2.1 (G.Λ X) hsd`. Establish `hΛeq : Λ₀ = Submodule.pi Set.univ fun _ : n => (1 : Submodule 𝒪[k] k)` using `Submodule.ext fun x => (hΛ₀ x).trans (hlat x).symm`. Rewrite using `[hg, hK, hΛeq]`. Conclude with `gl_smul_pi_one k₀`. Establish `hsupp : ∀ y, y ∈ latV (G.V X) (G.Λ X) (· = p.v) → ∀ i, y i ∈ idAt D (· = p.v)` using `fun y hy => (((GlobalTheory.FinPl.localComponents D (· = p.v)).2 (G.V X)).2.2.2 (G.Λ X) y hsd.1).1 hy |>.1`.
+
+Establish `hmov : ∀ κ, InK (G.V X) (G.Λ X) (· = p.v) κ → ∀ y, y ∈ latV (G.V X) (G.Λ X) (· = p.v) → (mt (G.V X) κ - 1) *ᵥ y ∈ latV (G.V X) (G.Λ X) (· = p.v)`. Introduce `κ hκ y hy`. Rewrite using `[Matrix.sub_mulVec, Matrix.one_mulVec]`. Conclude with `sub_mem ((hκ.2 y (hsupp y hy)).1 hy) hy`. Use `show g ∈ Lev.levA (G.V X) (G.levCong X)`.
+
+Use `Lev.mem_levA.2 ⟨GlobalTheory.SplitHecke.Stab.mem_GfC p.split (β.gl_supp _), ?_⟩` and prove the remaining obligations. Use `show Lev.finE (G.V X) g ∈ congLev D.sp.cm (G.V X).gram (G.Λ X) G.modul`. Use `mem_congLev.2 ⟨GlobalTheory.LevSplit.finE_mem_UA _ _, fun x => ⟨fun hx => ?_, fun hx => ?_⟩, fun x hx => ?_⟩` and prove the remaining obligations. Establish `h1` using `add_mem (GlobalTheory.T.sub_mem_lattice_completion_of_supported_places D (G.V X) _ (G.Λ X) (G.Λ X) g hgrp (hmov g hinK) x hx) hx`. Rewrite `h1` using `[sub_add_cancel]`. Then use the resulting hypothesis.
+
+Establish `h1` using `add_mem (GlobalTheory.T.sub_mem_lattice_completion_of_supported_places D (G.V X) _ (G.Λ X) (G.Λ X) g⁻¹ (inv_mem hgrp) (hmov g⁻¹ (inK_inv hinK)) _ hx) hx`. Rewrite `h1` using `[sub_add_cancel, Matrix.mulVec_mulVec, ← Units.val_mul, ← map_mul, inv_mul_cancel, map_one, Units.val_one, Matrix.one_mulVec]`. Then use the resulting hypothesis. Take `⟨⟨m, hm, hm'⟩, m₂, hm₂, hm₂'⟩` from `GlobalTheory.T.gridModulus_exact_order_witness G v hv`. Use `GlobalTheory.T.sub_mem_lattice_completion_of_supported_places D (G.V X) _ (G.Λ X) (G.modul • G.Λ X) g hgrp (fun y hy => ?_) x hx` and prove the remaining obligations. Establish `hz` using `hmov g hinK y hy`.
+
+Take `⟨ε, hε, hsum⟩` from `p.above`. Establish `hsplit : (mt (G.V X) g - 1) *ᵥ y = (fun i => p.e * ((mt (G.V X) g - 1) *ᵥ y) i) + (fun i => cA D p.e * ((mt (G.V X) g - 1) *ᵥ y) i)`. Use function extensionality and compare the values at `i`. Rewrite using `[Pi.add_apply, ← add_mul, hsum]`. Conclude with `(((GlobalTheory.T.placeIdempotent_acts_on_supportedAndOff D p.v ε hε).1 _).1 (hsupp _ hz i)).symm`.
+
+Rewrite using `[hsplit]`. Conclude with `add_mem (GlobalTheory.T.frameCongruent_sub_one_mulVec_mem_idealLatticeCompletion D k p (G.V X) (G.Λ X) n β hlat G.modul (G.pl.depth sc v) ⟨m, hm, GlobalTheory.T.integer_outside_prime_pow_dvd_maximal_ideal_pow D k p (G.pl.w v) hid _ m hm'⟩ k₀ hk₀ y hy) (GlobalTheory.T.cA_smul_mem_ …`.
+-/
 theorem gl_mem_lev : All fun {D} _ _ {sc} {G} _ _ => ∀ (X : Node), IsSelfDualC (G.V X) (G.Λ X) → ∀ v ∈ G.pl.S0,
   ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (p : GlobalTheory.FinPl.SplitPt D k),
   p.v = v → Formalism.L2.NTheta.IsIdemAt p.e (G.pl.w v) → ∀ (n : Type) [Fintype n] [DecidableEq n] (β : GlobalTheory.FinPl.Frame p (G.V X) n),

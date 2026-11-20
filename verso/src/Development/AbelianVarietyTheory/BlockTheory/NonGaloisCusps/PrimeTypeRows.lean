@@ -24,6 +24,9 @@ def twGL (r : Γ →* GL (Fin n) O) (χ : Γ →* Oˣ) : Γ →* GL (Fin n) O wh
 
 def charGL (χ : Γ →* Oˣ) : Γ →* GL (Fin 1) O := twGL 1 χ
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `Matrix.scalar (Fin n) ((χ g : Oˣ) : O) * (r g : Matrix (Fin n) (Fin n) O) = _`. Rewrite using `[Matrix.scalar_apply, ← Matrix.smul_eq_diagonal_mul]`.
+-/
 theorem twGL_val (r : Γ →* GL (Fin n) O) (χ : Γ →* Oˣ) (g : Γ) :
     ((twGL r χ g : GL (Fin n) O) : Matrix (Fin n) (Fin n) O) =
       ((χ g : Oˣ) : O) • (r g : Matrix (Fin n) (Fin n) O) := by
@@ -173,11 +176,17 @@ def TypePrimeClosed (C : FamClass) : Prop := Closed C fun Fm _ => TypePrimeF Fm
 
 def RowClosed (C : FamClass) : Prop := Closed C fun Fm _ => RowF Fm
 
+/- English proof (translation)
+Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `s s'`. Use `revert s s'`. Evaluate the decidable proposition. Apply the tactic sequence `all_goals decide`.
+-/
 example : IsRunWeight (n := 4) 1 2 ![2, 0, 0, -1] := by
   refine ⟨?_, ?_, ?_, ?_⟩
   · intro s s'; revert s s'; decide
   all_goals decide
 
+/- English proof (translation)
+Introduce `h`. Conclude with `absurd (h.2.2.2 1 3 (by decide) (by decide)) (by decide)`.
+-/
 example : ¬ IsRunWeight (n := 4) 1 2 ![2, 0, 0, 0] := by
   intro h
   exact absurd (h.2.2.2 1 3 (by decide) (by decide)) (by decide)

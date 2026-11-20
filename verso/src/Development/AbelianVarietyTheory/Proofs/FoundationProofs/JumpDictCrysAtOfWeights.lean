@@ -19,14 +19,23 @@ section Emb
 
 variable (D : D7)
 
+/- English proof (translation)
+The claim follows from `((factEmb D.R D.host).2 _).2 (D.eTau ρ).2`.
+-/
 theorem embOver_false_sqrt (ρ : D.what₂.Tau) :
     embOver D ρ false D.host.sqrtMinusD = Complex.I * (Real.sqrt D.host.d : ℂ) :=
   ((factEmb D.R D.host).2 _).2 (D.eTau ρ).2
 
+/- English proof (translation)
+The claim follows from `D.host.conjE_apply (embOver D ρ false) x`.
+-/
 theorem embOver_true_apply (ρ : D.what₂.Tau) (x : D.host.E) :
     embOver D ρ true x = starRingEnd ℂ (embOver D ρ false x) :=
   D.host.conjE_apply (embOver D ρ false) x
 
+/- English proof (translation)
+Introduce `h`. Establish `h1` using `congrArg Complex.im h`. Establish `: 0 < Real.sqrt H.d` using `Real.sqrt_pos.2 (by exact_mod_cast H.hyp.2.1.pos)`. Simplify using `at h1`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem conj_ne {R : Ranks} (H : Host R) :
     starRingEnd ℂ (Complex.I * (Real.sqrt H.d : ℂ)) ≠ Complex.I * (Real.sqrt H.d : ℂ) := by
   intro h
@@ -35,12 +44,20 @@ theorem conj_ne {R : Ranks} (H : Host R) :
   simp at h1
   linarith
 
+/- English proof (translation)
+Introduce `h`. Establish `h1` using `DFunLike.congr_fun h D.host.sqrtMinusD`. Rewrite `h1` using `[embOver_true_apply, embOver_false_sqrt, embOver_false_sqrt]`. Conclude with `conj_ne D.host h1`.
+-/
 theorem embOver_true_ne (ρ ρ' : D.what₂.Tau) : embOver D ρ true ≠ embOver D ρ' false := by
   intro h
   have h1 := DFunLike.congr_fun h D.host.sqrtMinusD
   rw [embOver_true_apply, embOver_false_sqrt, embOver_false_sqrt] at h1
   exact conj_ne D.host h1
 
+/- English proof (translation)
+Establish `h0 : (Complex.I * (Real.sqrt H.d : ℂ)) ^ 2 = -(H.d : ℂ)`. Rewrite using `[mul_pow, Complex.I_sq, ← Complex.ofReal_pow, Real.sq_sqrt (Nat.cast_nonneg _)]`. Simplify using the standard rewrite rules. Establish `h3 : H.φ₀ H.sqrtMinusD = Complex.I * (Real.sqrt H.d : ℂ)` using `H.φ₀_mem`. Apply `H.φ₀.injective` to reduce the goal to its premises.
+
+Rewrite using `[map_pow, h3, h0]`. Simplify using the standard rewrite rules.
+-/
 theorem sqrt_sq {R : Ranks} (H : Host R) : H.sqrtMinusD ^ 2 = -(H.d : H.E) := by
   have h0 : (Complex.I * (Real.sqrt H.d : ℂ)) ^ 2 = -(H.d : ℂ) := by
     rw [mul_pow, Complex.I_sq, ← Complex.ofReal_pow, Real.sq_sqrt (Nat.cast_nonneg _)]
@@ -50,6 +67,15 @@ theorem sqrt_sq {R : Ranks} (H : Host R) : H.sqrtMinusD ^ 2 = -(H.d : H.E) := by
   rw [map_pow, h3, h0]
   simp
 
+/- English proof (translation)
+Establish `key : ∀ ψ : D.host.E →+* ℂ, ψ D.host.sqrtMinusD = Complex.I * (Real.sqrt D.host.d : ℂ) → ∃ ρ, ψ = embOver D ρ false`. Introduce `ψ h`. Take `⟨g, rfl⟩` from `(factEmb D.R D.host).1.2 ψ`. Use `⟨D.eTau.symm ⟨g, ((factEmb D.R D.host).2 g).1 h⟩, ?_⟩` and prove the remaining obligations. Simplify using `[embOver]`.
+
+Establish `h0 : (Complex.I * (Real.sqrt D.host.d : ℂ)) ^ 2 = -(D.host.d : ℂ)`. Rewrite using `[mul_pow, Complex.I_sq, ← Complex.ofReal_pow, Real.sq_sqrt (Nat.cast_nonneg _)]`. Simplify using the standard rewrite rules. Establish `h1 : φ D.host.sqrtMinusD ^ 2 = (Complex.I * (Real.sqrt D.host.d : ℂ)) ^ 2`. Rewrite using `[← map_pow, sqrt_sq, h0]`.
+
+Simplify using the standard rewrite rules. Break down `sq_eq_sq_iff_eq_or_eq_neg.1 h1 with h2 | h2` into its components or cases. Take `⟨ρ, h⟩` from `key φ h2`. Conclude with `⟨ρ, false, h⟩`. Take `⟨ρ, h⟩` from `key ((starRingEnd ℂ).comp φ) (by rw [RingHom.comp_apply, h2]; simp)`.
+
+Use `⟨ρ, true, RingHom.ext fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[embOver_true_apply, ← h]`. Simplify using the standard rewrite rules.
+-/
 theorem exists_embOver (φ : D.host.E →+* ℂ) : ∃ ρ b, φ = embOver D ρ b := by
   have key : ∀ ψ : D.host.E →+* ℂ, ψ D.host.sqrtMinusD = Complex.I * (Real.sqrt D.host.d : ℂ) →
       ∃ ρ, ψ = embOver D ρ false := by
@@ -76,6 +102,25 @@ section Frob
 
 variable {R : Ranks} (H : Host R)
 
+/- English proof (translation)
+Establish `hint : IsIntegral ℤ H.sqrtMinusD`. Apply `IsIntegral.of_pow (n := 2) (by norm_num)` to reduce the goal to its premises. Rewrite using `[sqrt_sq]`. Use `(isIntegral_algebraMap (R := ℤ) (A := H.E) (x := (H.d : ℤ))).neg` as an intermediate fact. Simplify using `using this`.
+
+Set `c : 𝓞 H.E →+* 𝓞 H.E` to `RingOfIntegers.mapRingHom (H.conj : H.E →+* H.E)`. Set `b : 𝓞 H.E` to `⟨_, hint⟩`. Establish `hb : c b - b ≠ 0`. Introduce `h`. Establish `h1 : H.conj H.sqrtMinusD = H.sqrtMinusD` using `congrArg (fun y : 𝓞 H.E => (y : H.E)) (sub_eq_zero.1 h)`.
+
+Establish `h2` using `H.conjE_apply H.φ₀ H.sqrtMinusD`. Establish `h3 : H.φ₀ H.sqrtMinusD = Complex.I * (Real.sqrt H.d : ℂ)` using `H.φ₀_mem`. Establish `h4 : H.φ₀ (H.conj H.sqrtMinusD) = starRingEnd ℂ (H.φ₀ H.sqrtMinusD)` using `h2`. Rewrite `h4` using `[h1, h3]`. Conclude with `conj_ne H h4.symm`.
+
+Use `⟨{v | v.asIdeal ∣ Ideal.span {c b - b}}, Ideal.finite_factors (by simpa [Ideal.span_singleton_eq_bot] using hb), fun v hv hd => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hs`. Apply `hv` to reduce the goal to its premises. Establish `hp` using `((GlobalTheory.absNorm_prime_iff_inertiaDeg_eq_one_and_finite_ramified H.E).1 v).2 hd`. Establish `hst : ∀ x ∈ v.asIdeal, c x ∈ v.asIdeal`.
+
+Introduce `x hx`. Assume the negation of the conclusion as `hx'`. Use `hs ⟨x, hx, fun y hy => ?_⟩` and prove the remaining obligations. Establish `: y = c x` using `RingOfIntegers.ext hy`. Rewrite using `[this]` and apply the resulting hypothesis.
+
+Establish `: Fact (Ideal.absNorm v.asIdeal).Prime` using `⟨hp⟩`. Establish `hcard : Nat.card (𝓞 H.E ⧸ v.asIdeal) = Ideal.absNorm v.asIdeal` using `rfl`. Use `v.isPrime` as an intermediate fact. Establish `htop : AddSubgroup.zmultiples (1 : 𝓞 H.E ⧸ v.asIdeal) = ⊤` using `zmultiples_eq_top_of_prime_card hcard one_ne_zero`. Establish `hmem : Ideal.Quotient.mk v.asIdeal b ∈ AddSubgroup.zmultiples (1 : 𝓞 H.E ⧸ v.asIdeal)`.
+
+Rewrite using `[htop]`. Discharge the goal by the elementary cases of `trivial`. Take `⟨n, hn⟩` from `AddSubgroup.mem_zmultiples_iff.1 hmem`. Establish `h1 : b - (n : 𝓞 H.E) ∈ v.asIdeal`. Rewrite using `[← Ideal.Quotient.eq, ← hn]`.
+
+Simplify using the standard rewrite rules. Establish `h2` using `hst _ h1`. Rewrite `h2` using `[map_sub, map_intCast]`. Use `show v.asIdeal ∣ _`. Rewrite using `[Ideal.dvd_span_singleton]`.
+
+Use `v.asIdeal.sub_mem h2 h1` as an intermediate fact. Simplify using `using this`.
+-/
 theorem exists_finite_split : ∃ A : Set (HeightOneSpectrum (𝓞 H.E)), A.Finite ∧
     ∀ v, v ∉ A → v.asIdeal.inertiaDeg ℤ = 1 → IsSplitPl H v := by
   have hint : IsIntegral ℤ H.sqrtMinusD := by
@@ -123,6 +168,13 @@ theorem exists_finite_split : ∃ A : Set (HeightOneSpectrum (𝓞 H.E)), A.Fini
 
 variable {H} {what₂ : Rows.Data R} (N : NData R H what₂)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `g`. Assume the negation of the conclusion as `hne`. Establish `hV : IsOpen {s : G H.E N.Om | a (s * g) ≠ b (s * g)}` using `(isClosed_eq (ha.comp (continuous_mul_const g)) (hb.comp (continuous_mul_const g))).isOpen_compl`. Establish `: IsGalois H.E N.Om` using `{}`. Take `⟨U, hU⟩` from `ProfiniteGrp.exist_openNormalSubgroup_sub_open_nhds_of_one hV (by simpa using hne)`.
+
+Take `⟨A, hA, hsp⟩` from `exists_finite_split H`. Establish `hl : (placesOver H.E (N.l i)).Finite`. Establish `h0 : ((N.l i : ℕ) : 𝓞 H.E) ≠ 0` using `Nat.cast_ne_zero.2 (N.lPrime i).out.ne_zero`. Use `(Ideal.finite_factors (I := Ideal.span {((N.l i : ℕ) : 𝓞 H.E)}) (by simpa [Ideal.span_singleton_eq_bot] using h0)).subset fun v hv => ?_` and prove the remaining obligations. Conclude with `Ideal.dvd_span_singleton.2 hv`.
+
+Take `⟨v, hv, hd, -, B, hB, -, σ, hσ, hU'⟩` from `hC H.E N.Om U.toSubgroup U.isOpen U.isNormal' g (hA.toFinset ∪ hl.toFinset ∪ N.S i ∪ N.Q i)`. Simplify using `only [Finset.mem_union, Set.Finite.mem_toFinset, not_or] at hv`. Use `hU hU'` as an intermediate fact. Simplify using `only [Set.mem_ofPred_eq, inv_mul_cancel_right] at this`. Conclude with `this (h v ⟨hsp v hv.1.1.1 hd, hv.1.1.2, hv.1.2, hv.2⟩ B σ hB hσ)`.
+-/
 theorem eq_of_frob (hC : GlobalTheory.TwSys.Cheb) (i : N.Loc) {Y : Type} [TopologicalSpace Y] [T2Space Y]
     {a b : G H.E N.Om → Y} (ha : Continuous a) (hb : Continuous b)
     (h : ∀ w, SplitOut N i w → ∀ (B : ValuationSubring N.Om) (σ : G H.E N.Om),
@@ -173,6 +225,9 @@ variable (i : D.nd.Loc) (w : HeightOneSpectrum (𝓞 D.host.E)) (hw : w ∈ plac
 def globEmb (τ : LocEmb D i w hw) : D.host.E →+* Qbar (D.nd.l i) :=
   (D.nbr i w hw).LL.1.val.toRingHom.comp (τ.toRingHom.comp (Br.cEw D.nbr i w hw))
 
+/- English proof (translation)
+Establish `h` using `((D.loc_tie i w hw).2.1 n r hc).2.2.2 (globEmb D i w hw τ) τ (fun _ => rfl)`. Conclude with `⟨(h.1 hd a).symm, (h.2 hd a).symm⟩`.
+-/
 theorem mult_eq_count {n : ℕ} (r : GE D.nd →* GL (Fin n) (D.nd.O i))
     (hc : Continuous fun g => ((r g : GL (Fin n) (D.nd.O i)) : Matrix (Fin n) (Fin n) (D.nd.O i)))
     (hd : Br.IsdRW D.loc D.nbr i w hw r) (τ : LocEmb D i w hw) (a : ℤ) :
@@ -183,6 +238,9 @@ theorem mult_eq_count {n : ℕ} (r : GE D.nd →* GL (Fin n) (D.nd.O i))
   have h := ((D.loc_tie i w hw).2.1 n r hc).2.2.2 (globEmb D i w hw τ) τ (fun _ => rfl)
   exact ⟨(h.1 hd a).symm, (h.2 hd a).symm⟩
 
+/- English proof (translation)
+Use `⟨h1, fun a => ?_, h2⟩` and prove the remaining obligations. Take `⟨e1, e2⟩` from `mult_eq_count D i w hw r hc hd τ a`. Rewrite `e2` using `[h2 a, Nat.cast_inj]`. Rewrite using `[e1, ← Multiset.one_le_count_iff_mem, ← Multiset.one_le_count_iff_mem, e2]`.
+-/
 theorem jumpsAre_of_mult {n : ℕ} (r : GE D.nd →* GL (Fin n) (D.nd.O i))
     (hc : Continuous fun g => ((r g : GL (Fin n) (D.nd.O i)) : Matrix (Fin n) (Fin n) (D.nd.O i)))
     (hd : Br.IsdRW D.loc D.nbr i w hw r) (τ : LocEmb D i w hw) (J : Multiset ℚ)
@@ -195,6 +253,9 @@ theorem jumpsAre_of_mult {n : ℕ} (r : GE D.nd →* GL (Fin n) (D.nd.O i))
   rw [e1, ← Multiset.one_le_count_iff_mem, ← Multiset.one_le_count_iff_mem, e2]
 
 include hw in
+/- English proof (translation)
+Establish `h : (iotaOQ D.nd D.naut i : D.nd.O i → Qbar (D.nd.l i)) = fun x => (((D.nbr i w hw).toLL x : ↥(D.nbr i w hw).LL.1) : Loc.Om (D.nd.l i))`. Use function extensionality and compare the values at `(D.loc_tie i w hw).1`. Rewrite using `[h]`. Conclude with `continuous_subtype_val.comp (continuous_subtype_val.comp (D.nbr i w hw).eO_cont)`.
+-/
 theorem continuous_iotaOQ : Continuous (iotaOQ D.nd D.naut i) := by
   have h : (iotaOQ D.nd D.naut i : D.nd.O i → Qbar (D.nd.l i)) =
       fun x => (((D.nbr i w hw).toLL x : ↥(D.nbr i w hw).LL.1) : Loc.Om (D.nd.l i)) :=
@@ -208,12 +269,18 @@ section Block
 
 variable (i : D.nd.Loc)
 
+/- English proof (translation)
+Take `rfl : a = b` from `Subsingleton.elim _ _`. Simplify using `[chiGL]`.
+-/
 theorem chiGL_apply (k : ℕ) (g : GE D.nd) (a b : Fin 1) :
     ((chiGL D i k g : GL (Fin 1) (D.nd.O i)) : Matrix (Fin 1) (Fin 1) (D.nd.O i)) a b =
       ((D.nd.chi i k g : (D.nd.O i)ˣ) : D.nd.O i) := by
   obtain rfl : a = b := Subsingleton.elim _ _
   simp [chiGL]
 
+/- English proof (translation)
+Use `continuous_pi fun a => continuous_pi fun b => ?_` and prove the remaining obligations. Simplify using `only [chiGL_apply]`. Conclude with `D.nd.chi_cont i k`.
+-/
 theorem continuous_chiGL (k : ℕ) : Continuous fun g =>
     ((chiGL D i k g : GL (Fin 1) (D.nd.O i)) : Matrix (Fin 1) (Fin 1) (D.nd.O i)) := by
   refine continuous_pi fun a => continuous_pi fun b => ?_
@@ -222,6 +289,13 @@ theorem continuous_chiGL (k : ℕ) : Continuous fun g =>
 
 def blockExp (k : ℕ) : ℝ := ((D.R.t : ℝ) - 1) / 2 + (1 - (D.R.nV : ℝ)) / 2 + -((k : ℝ) - 1)
 
+/- English proof (translation)
+Take `⟨hu, hf⟩` from `D.naut.chi_mu i w hw`. Rewrite using `[blockExp, ← D.naut.lpTw_add, D.naut.frobEig_tw _ _ ((D.naut.unr_tw _ _).2 hu), hf B σ hB hσ, Multiset.map_singleton, D.nd.chi_def i k h1 h2]`. Use `congr 1`. Establish `hc` using `cycZ_of_isFrob (l := D.nd.l i) hw.2.1 hB hσ`. Set `F : (D.nd.O i)ˣ →* ℂˣ` to `Units.map (iotaO D.nd D.naut i).toMonoidHom`.
+
+Establish `hF : ∀ u : (D.nd.O i)ˣ, D.naut.iotaQC i (iotaOQ D.nd D.naut i (u : D.nd.O i)) = (F u : ℂ)` using `fun _ => rfl`. Establish `he : (F (((Units.map (algebraMap ℤ_[D.nd.l i] (D.nd.O i)).toMonoidHom).comp (cycZ (F` using `D.host.E) (Ω := D.nd.Om) (D.nd.l i))) σ) : ℂ) = (normV w : ℂ) := by`. Express the relevant statement in the definitionally equal form `iotaO D.nd D.naut i (algebraMap ℤ_[D.nd.l i] (D.nd.O i) ((cycZ D.host.E D.nd.Om (D.nd.l i) σ : ℤ_[D.nd.l i]ˣ) : ℤ_[D.nd.l i])) = _`. Rewrite using `[hc, map_natCast, map_natCast]`. Rewrite using `[hF, MonoidHom.mul_apply, MonoidHom.zpow_apply, map_mul, map_zpow, Units.val_mul, Units.val_zpow_eq_zpow_val, he, ← Complex.cpow_intCast]`.
+
+Use `push_cast`. Both sides reduce to the same expression.
+-/
 theorem chi_frob (k : ℕ) (h1 : 1 ≤ k) (h2 : k ≤ D.R.t) (w : PlE D.host) (hw : SplitOut D.nd i w)
     (B : ValuationSubring D.nd.Om) (σ : GE D.nd) (hB : IsPlaceOver (F := D.host.E) B w)
     (hσ : IsFrob (F := D.host.E) B (normV w) σ) :
@@ -246,6 +320,9 @@ theorem chi_frob (k : ℕ) (h1 : 1 ≤ k) (h2 : k ≤ D.R.t) (w : PlE D.host) (h
 
 end Block
 
+/- English proof (translation)
+Use `Multiset.map_eq_map_of_bij_of_nodup _ _ (Multiset.nodup_range t) (Multiset.nodup_range t) (fun k _ => t - 1 - k) (fun k hk => ?_) (fun a ha b hb h => ?_) (fun b hb => ⟨t - 1 - b, ?_, ?_⟩) (fun _ _ => rfl)` and prove the remaining obligations. Apply the tactic sequence `all_goals simp only [Multiset.mem_range] at *`. Apply the tactic sequence `all_goals omega`.
+-/
 theorem range_map_reflect (t : ℕ) (f : ℕ → ℚ) :
     (Multiset.range t).map (fun k => f (t - 1 - k)) = (Multiset.range t).map f := by
   refine Multiset.map_eq_map_of_bij_of_nodup _ _ (Multiset.nodup_range t) (Multiset.nodup_range t)
@@ -254,12 +331,20 @@ theorem range_map_reflect (t : ℕ) (f : ℕ → ℚ) :
   all_goals simp only [Multiset.mem_range] at *
   all_goals omega
 
+/- English proof (translation)
+Use `(Multiset.Nodup.ext (Finset.Icc 1 t).nodup ((Multiset.nodup_range t).map (add_left_injective 1))).2 fun a => ?_` and prove the remaining obligations. Simplify using `only [Finset.mem_val, Finset.mem_Icc, Multiset.mem_map, Multiset.mem_range]`. Conclude with `⟨fun h => ⟨a - 1, by omega, by omega⟩, fun ⟨b, h1, h2⟩ => by omega⟩`.
+-/
 theorem icc_val (t : ℕ) : (Finset.Icc 1 t).val = (Multiset.range t).map (· + 1) := by
   refine (Multiset.Nodup.ext (Finset.Icc 1 t).nodup
     ((Multiset.nodup_range t).map (add_left_injective 1))).2 fun a => ?_
   simp only [Finset.mem_val, Finset.mem_Icc, Multiset.mem_map, Multiset.mem_range]
   exact ⟨fun h => ⟨a - 1, by omega, by omega⟩, fun ⟨b, h1, h2⟩ => by omega⟩
 
+/- English proof (translation)
+Unfold `GlobalTheory.IndefiniteRowSideFullHecke.PrimeTypeWeightPartitions.fullPar GlobalTheory.IndefiniteRowSideFullHecke.PrimeTypeWeightPartitions.sigPar GlobalTheory.IndefiniteRowSideFullHecke.PrimeTypeWeightPartitions.runPar param run`. Rewrite using `[icc_val, Multiset.map_map]`. Use `congr 1`. Use `Multiset.map_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `only [Function.comp]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem fullPar_eq {R : Ranks} (P : HCParam R) (j : Fin R.m) :
     GlobalTheory.IndefiniteRowSideFullHecke.PrimeTypeWeightPartitions.fullPar P j = param P j := by
   unfold GlobalTheory.IndefiniteRowSideFullHecke.PrimeTypeWeightPartitions.fullPar GlobalTheory.IndefiniteRowSideFullHecke.PrimeTypeWeightPartitions.sigPar GlobalTheory.IndefiniteRowSideFullHecke.PrimeTypeWeightPartitions.runPar param run
@@ -270,9 +355,17 @@ theorem fullPar_eq {R : Ranks} (P : HCParam R) (j : Fin R.m) :
   push_cast
   ring
 
+/- English proof (translation)
+Apply the tactic sequence `cases b <;> rfl`.
+-/
 theorem embAt_eq (ρ : D.what₂.Tau) (b : Bool) : GlobalTheory.IndefiniteRowSideFullHecke.PrimeTypeWeightPartitions.embAt D ρ (!b) = embOver D ρ b := by
   cases b <;> rfl
 
+/- English proof (translation)
+Introduce `i ρ b`. Rewrite using `[fullPar_eq]`. Consider the cases of `b`. Use `(h i ρ).2.trans (Multiset.map_congr rfl fun p _ => ?_)` and prove the remaining obligations. Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.PrimeTypeWeightPartitions.sg]`.
+
+Use `(h i ρ).1.trans (Multiset.map_congr rfl fun p _ => ?_)` and prove the remaining obligations. Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.PrimeTypeWeightPartitions.sg]`.
+-/
 theorem paramTie_of_weightParam (h : WeightParam D) : GlobalTheory.IndefiniteRowSideFullHecke.PrimeTypeWeightPartitions.ParamTie D := by
   intro i ρ b
   rw [fullPar_eq]
@@ -282,6 +375,9 @@ theorem paramTie_of_weightParam (h : WeightParam D) : GlobalTheory.IndefiniteRow
   · refine (h i ρ).1.trans (Multiset.map_congr rfl fun p _ => ?_)
     simp [GlobalTheory.IndefiniteRowSideFullHecke.PrimeTypeWeightPartitions.sg]
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `R.k_even`. Take `⟨b, hb⟩` from `R.m_even`. Take `⟨v, hv⟩` from `R.t_odd`. Use `R.two_le_m` as an intermediate fact. Apply the tactic sequence `refine ⟨a + b - 1, v, ?_, hv, ?_⟩ <;> simp only [Ranks.nV, Ranks.r] <;> omega`.
+-/
 theorem exists_halves (R : Ranks) : ∃ u v : ℕ, R.r = 2 * u + 1 ∧ R.t = 2 * v + 1 ∧ R.nV = 2 * (u + v + 1) := by
   obtain ⟨a, ha⟩ := R.k_even
   obtain ⟨b, hb⟩ := R.m_even
@@ -292,6 +388,11 @@ theorem exists_halves (R : Ranks) : ∃ u v : ℕ, R.r = 2 * u + 1 ∧ R.t = 2 *
 def firstJump (i : D.nd.Loc) (ρ : D.what₂.Tau) (b : Bool) : ℚ :=
   (if b then -1 else 1) * ((D.hc ρ).e (liftIdx D i) + 1 / 2) + (D.R.r : ℚ) / 2
 
+/- English proof (translation)
+Take `⟨u, v, hu, -, -⟩` from `exists_halves D.R`. Take `⟨e, he⟩` from `(D.hc ρ).e_int (liftIdx D i)`. Unfold `firstJump`. Rewrite using `[he, hu]`. Consider the cases of `b`.
+
+Conclude with `⟨e + u + 1, by simp; ring⟩`. Conclude with `⟨-e + u, by simp; ring⟩`.
+-/
 theorem firstJump_int (i : D.nd.Loc) (ρ : D.what₂.Tau) (b : Bool) : ∃ a : ℤ, firstJump D i ρ b = a := by
   obtain ⟨u, v, hu, -, -⟩ := exists_halves D.R
   obtain ⟨e, he⟩ := (D.hc ρ).e_int (liftIdx D i)
@@ -301,6 +402,13 @@ theorem firstJump_int (i : D.nd.Loc) (ρ : D.what₂.Tau) (b : Bool) : ∃ a : �
   · exact ⟨e + u + 1, by simp; ring⟩
   · exact ⟨-e + u, by simp; ring⟩
 
+/- English proof (translation)
+Consider the cases of `b`. Rewrite using `[(hB i ρ).1, Multiset.map_singleton]`. Use `congr 1`. Simplify using `only [blockExp, firstJump, Ranks.nV]`. Use `push_cast`.
+
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[(hB i ρ).2, Multiset.map_singleton]`. Use `congr 1`. Simplify using `only [blockExp, firstJump, Ranks.nV]`.
+
+Use `push_cast`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem inf_block (hB : BlockCharParam D) (i : D.nd.Loc) (k : ℕ) (ρ : D.what₂.Tau) (b : Bool) :
     (D.naut.infG (D.naut.tw (D.naut.muC i) D.naut.etaTinv) (embOver D ρ b)).map (· + (blockExp D k : ℂ)) =
       {((-(firstJump D i ρ b + ((k : ℚ) - 1)) : ℚ) : ℂ)} := by
@@ -318,6 +426,21 @@ theorem inf_block (hB : BlockCharParam D) (i : D.nd.Loc) (k : ℕ) (ρ : D.what�
     simp
     ring
 
+/- English proof (translation)
+Establish `hz : ∀ φ, ∃ z : ℤ, (D.naut.infG (D.naut.tw (D.naut.muC i) D.naut.etaTinv) φ).map (· + (blockExp D k : ℂ)) = {(z : ℂ)}`. Introduce `φ`. Take `⟨ρ, b, rfl⟩` from `exists_embOver D φ`. Take `⟨a, ha⟩` from `firstJump_int D i ρ b`. Use `⟨-(a + (k - 1)), ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[inf_block D hB, ha]`. Use `push_cast`. Both sides reduce to the same expression. Use `choose z hz using hz`. Take `⟨r, hrc, hrf, hrd, hrj⟩` from `hG i _ _ z hz`.
+
+Establish `hr : r = mapRep (iotaOQ D.nd D.naut i) (chiGL D i k)`. Establish `h` using `eq_of_frob D.nd hC i (a := fun g => ((r g : GL (Fin 1) (Qbar (D.nd.l i))) : Matrix (Fin 1) (Fin 1) (Qbar (D.nd.l i))) 0 0) (b := fun g => iotaOQ D.nd D.naut i ((D.nd.chi i k g : (D.nd.O i)ˣ) : D.nd.O i)) ((continuous_apply 0).comp ((continuous_apply 0).comp hrc)) ((continuous_iot …`. Establish `e1` using `hrf v hv.2.1 (D.naut.chi_mu i v hv).1 B σ hB hσ`. Rewrite `e1` using `[chi_frob D i k h1 h2 v hv B σ hB hσ, Multiset.singleton_inj]`. Conclude with `((D.naut.iotaQC i).injective e1).symm`.
+
+Use extensionality with `g a b`. Take `rfl : a = 0` from `Subsingleton.elim _ _`. Take `rfl : b = 0` from `Subsingleton.elim _ _`. Use `(congrFun h g).trans ?_` and prove the remaining obligations. Rewrite using `[← chiGL_apply D i k g 0 0]`.
+
+Both sides reduce to the same expression. Substitute `hr` using the available equality. Establish `hd : Br.IsdRW D.loc D.nbr i w hw (chiGL D i k)` using `((D.loc_tie i w hw).2.1 1 _ (continuous_chiGL D i k)).2.1.1 (hrd w hw)`. Use `⟨hd, fun τ ρ b hτ => ?_⟩` and prove the remaining obligations. Establish `hq : firstJump D i ρ b + ((k : ℚ) - 1) = ((-z (embOver D ρ b) : ℤ) : ℚ)`.
+
+Establish `e` using `(inf_block D hB i k ρ b).symm.trans (hz _)`. Rewrite `e` using `[Multiset.singleton_inj]`. Establish `e' : -(firstJump D i ρ b + ((k : ℚ) - 1)) = (z (embOver D ρ b) : ℚ)` using `by exact_mod_cast e`. Rewrite using `[Int.cast_neg, ← e', neg_neg]`. Rewrite using `[hq]`.
+
+Use `jumpsAre_of_mult D i w hw _ (continuous_chiGL D i k) hd τ _ (fun q hq => ⟨_, Multiset.mem_singleton.1 hq⟩) fun a => ?_` and prove the remaining obligations. Rewrite using `[(mult_eq_count D i w hw _ (continuous_chiGL D i k) hd τ a).2, hrj, ← hτ]`. Simplify using `only [Multiset.count_singleton, Int.cast_inj]`. Both sides reduce to the same expression.
+-/
 theorem chi_jumps (hG : AlgebraicCharacter_at D) (hC : GlobalTheory.TwSys.Cheb) (hB : BlockCharParam D)
     (i : D.nd.Loc) (w : HeightOneSpectrum (𝓞 D.host.E)) (hw : w ∈ placesOver D.host.E (D.nd.l i))
     (k : ℕ) (h1 : 1 ≤ k) (h2 : k ≤ D.R.t) :
@@ -366,6 +489,19 @@ theorem chi_jumps (hG : AlgebraicCharacter_at D) (hC : GlobalTheory.TwSys.Cheb) 
   simp only [Multiset.count_singleton, Int.cast_inj]
   rfl
 
+/- English proof (translation)
+Introduce `i π hπ r hr k h1 h2`. Take `⟨ρ, ⟨e, he⟩, -, -⟩` from `h i π hπ r hr`. Set `c : Fin D.R.t` to `⟨k - 1, by omega⟩`. Establish `hc : c.1 + 1 = k` using `by simp only [c]; omega`. Set `f : (Fin D.R.nV → KK D.nd i) →ₗ[KK D.nd i] KK D.nd i` to `(LinearMap.proj c) ∘ₗ (LinearMap.snd _ _ _) ∘ₗ e.toLinearMap`.
+
+Establish `hf : ∀ u, f u = (e u).2 c` using `fun _ => rfl`. Establish `hrep : ∀ g u, matRep (mapM (toK D.nd i) ((Units.coeHom _).comp r)) g u = GlobalTheory.IndefiniteRowSideFullHecke.BlockRepresentationsSemisimple.fracRep r g u` using `fun _ _ => rfl`. Establish `hv : f (e.symm (0, Pi.single c 1)) = 1` using `by simp [hf]`. Use `⟨e.symm (0, Pi.single c 1), LinearMap.ker f, fun h0 => ?_, fun g => ?_, fun g u hu => ?_, ?_⟩` and prove the remaining obligations. Rewrite `hv` using `[h0, map_zero]`.
+
+Conclude with `zero_ne_one hv`. Apply `e.injective` to reduce the goal to its premises. Rewrite using `[hrep, he, GlobalTheory.IndefiniteRowSideFullHecke.BlockRepresentationsSemisimple.blockRep_apply, map_smul, e.apply_symm_apply]`. Use `Prod.ext (by simp) (funext fun c' => ?_)` and prove the remaining obligations. Distinguish the cases in `hcc : c' = c`.
+
+Substitute `hcc` using the available equality. Simplify using `only [hc, Prod.smul_snd, Pi.smul_apply, smul_eq_mul]`. Simplify using `[Pi.single_eq_of_ne hcc]`. Rewrite `hu`, the goal using `[LinearMap.mem_ker, hf]`. Rewrite using `[hrep, he, GlobalTheory.IndefiniteRowSideFullHecke.BlockRepresentationsSemisimple.blockRep_apply]`.
+
+Simplify using `[hu]`. Use `set v := e.symm (0, Pi.single c 1)`. Use `⟨Submodule.disjoint_def.2 fun u h1 h2 => ?_, codisjoint_iff.2 (eq_top_iff.2 fun u _ => ?_)⟩` and prove the remaining obligations. Take `⟨a, rfl⟩` from `Submodule.mem_span_singleton.1 h1`. Rewrite `h2` using `[LinearMap.mem_ker, map_smul, hv, smul_eq_mul, mul_one]`.
+
+Rewrite using `[h2, zero_smul]`. Use `Submodule.mem_sup.2 ⟨f u • v, Submodule.mem_span_singleton.2 ⟨_, rfl⟩, u - f u • v, ?_, by simp⟩` and prove the remaining obligations. Rewrite using `[LinearMap.mem_ker, map_sub, map_smul, hv, smul_eq_mul, mul_one, sub_self]`.
+-/
 theorem summand_of_complement (h : GlobalTheory.IndefiniteRowSideFullHecke.BlockRepresentationsSemisimple.Complement_at D) : Summand_at D := by
   intro i π hπ r hr k h1 h2
   obtain ⟨ρ, ⟨e, he⟩, -, -⟩ := h i π hπ r hr
@@ -403,6 +539,11 @@ open Classical in
 def shift (φ : D.host.E →+* ℂ) : ℤ :=
   if ∃ ρ, φ = embOver D ρ false then (D.R.nV / 2 : ℕ) else ((D.R.nV / 2 : ℕ) : ℤ) - 1
 
+/- English proof (translation)
+Take `⟨u, v, -, -, hn⟩` from `exists_halves D.R`. Establish `h2 : D.R.nV / 2 = u + v + 1` using `by omega`. Unfold `shift`. Consider the cases of `b`. Rewrite using `[if_pos ⟨ρ, rfl⟩, h2, hn]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[if_neg (fun ⟨ρ', h⟩ => embOver_true_ne D ρ ρ' h), h2, hn]`. Simplify using the standard rewrite rules.
+-/
 theorem shift_embOver (ρ : D.what₂.Tau) (b : Bool) :
     (shift D (embOver D ρ b) : ℚ) = (D.R.nV : ℚ) / 2 - if b then 1 else 0 := by
   obtain ⟨u, v, -, -, hn⟩ := exists_halves D.R
@@ -414,6 +555,15 @@ theorem shift_embOver (ρ : D.what₂.Tau) (b : Bool) :
   · rw [if_neg (fun ⟨ρ', h⟩ => embOver_true_ne D ρ ρ' h), h2, hn]
     simp
 
+/- English proof (translation)
+Introduce `i x r hr w hw τ ρ b hτ`. Take `⟨hd, hj⟩` from `hJ (paramTie_of_weightParam D hW) i x r hr w hw`. Establish `key : GlobalTheory.IndefiniteRowSideFullHecke.PrimeTypeWeightPartitions.JumpsAre D i w hw r τ ((PP D i ρ).map fun p => sgnOf true b * p + (shift D (embOver D ρ b) : ℚ))`. Rewrite using `[shift_embOver]`. Consider the cases of `b`.
+
+Establish `h` using `((hj τ ρ).1 hτ).1`. Rewrite `h` using `[fullPar_eq]`. Use `h using 1` and compare the differences between its conclusion and the goal. Use `Multiset.map_congr rfl fun p _ => ?_` and prove the remaining obligations. Simplify using `only [sgnOf]`.
+
+Evaluate the numerical expressions. Expand and normalize the polynomial expressions, which then agree. Establish `h` using `(hj τ ρ).2 hτ`. Rewrite `h` using `[fullPar_eq]`. Use `h using 1` and compare the differences between its conclusion and the goal.
+
+Use `Multiset.map_congr rfl fun p _ => ?_` and prove the remaining obligations. Simplify using `only [sgnOf]`. Evaluate the numerical expressions. Expand and normalize the polynomial expressions, which then agree. Conclude with `jumpsAre_of_mult D i w hw r hr.1 hd τ _ key.1 key.2`.
+-/
 theorem jumpsWith (hJ : GlobalTheory.IndefiniteRowSideFullHecke.PrimeTypeWeightPartitions.Explicit_at D) (hW : WeightParam D) :
     JumpsWith D true fun _ _ => shift D := by
   intro i x r hr w hw τ ρ b hτ
@@ -438,6 +588,13 @@ theorem jumpsWith (hJ : GlobalTheory.IndefiniteRowSideFullHecke.PrimeTypeWeightP
       ring
   exact jumpsAre_of_mult D i w hw r hr.1 hd τ _ key.1 key.2
 
+/- English proof (translation)
+Rewrite using `[shift_embOver, blockPP, run, Multiset.map_map]`. Consider the cases of `b`. Use `Multiset.map_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `only [Function.comp, sgnOf, firstJump, Ranks.nV]`. Evaluate the numerical expressions.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← range_map_reflect D.R.t fun k : ℕ => firstJump D i ρ true + (k : ℚ)]`. Use `Multiset.map_congr rfl fun k hk => ?_` and prove the remaining obligations. Rewrite `hk` using `[Multiset.mem_range]`. Establish `e : ((D.R.t - 1 - k : ℕ) : ℚ) = (D.R.t : ℚ) - 1 - k`.
+
+Rewrite using `[Nat.cast_sub (by omega), Nat.cast_sub (by omega), Nat.cast_one]`. Simplify using `only [Function.comp, sgnOf, firstJump, Ranks.nV, e]`. Evaluate the numerical expressions. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem block_interval (i : D.nd.Loc) (ρ : D.what₂.Tau) (b : Bool) :
     ((blockPP D i ρ).map fun p => sgnOf true b * p + (shift D (embOver D ρ b) : ℚ)) =
       (Multiset.range D.R.t).map fun k : ℕ => firstJump D i ρ b + (k : ℚ) := by
@@ -456,6 +613,11 @@ theorem block_interval (i : D.nd.Loc) (ρ : D.what₂.Tau) (b : Bool) :
     norm_num
     ring
 
+/- English proof (translation)
+Introduce `i w hw`. Use `⟨fun k h1 h2 => (chi_jumps D hG hC hB i w hw k h1 h2).1, fun τ ρ b hτ => ?_⟩` and prove the remaining obligations. Take `⟨a, ha⟩` from `firstJump_int D i ρ b`. Use `⟨a, fun k h1 h2 => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← ha]`.
+
+Conclude with `(chi_jumps D hG hC hB i w hw k h1 h2).2 τ ρ b hτ`. Rewrite using `[← ha]`. Conclude with `block_interval D i ρ b`.
+-/
 theorem blockWith (hG : AlgebraicCharacter_at D) (hC : GlobalTheory.TwSys.Cheb) (hB : BlockCharParam D) :
     BlockWith D true fun _ _ => shift D := by
   intro i w hw
@@ -467,11 +629,17 @@ theorem blockWith (hG : AlgebraicCharacter_at D) (hC : GlobalTheory.TwSys.Cheb) 
   · rw [← ha]
     exact block_interval D i ρ b
 
+/- English proof (translation)
+Introduce `hW hB` and use `⟨fun i x r hr w hw => (hJ (paramTie_of_weightParam D hW) i x r hr w hw).1, ⟨true, fun _ _ => shift D, jumpsWith D hJ hW, blockWith D hG hC hB⟩, summand_of_complement D hZ⟩`.
+-/
 theorem jumpDictTied_at (hJ : GlobalTheory.IndefiniteRowSideFullHecke.PrimeTypeWeightPartitions.Explicit_at D) (hG : AlgebraicCharacter_at D)
     (hC : GlobalTheory.TwSys.Cheb) (hZ : GlobalTheory.IndefiniteRowSideFullHecke.BlockRepresentationsSemisimple.Complement_at D) : JumpDictionaryAt D := fun hW hB =>
   ⟨fun i x r hr w hw => (hJ (paramTie_of_weightParam D hW) i x r hr w hw).1,
     ⟨true, fun _ _ => shift D, jumpsWith D hJ hW, blockWith D hG hC hB⟩, summand_of_complement D hZ⟩
 
+/- English proof (translation)
+The claim follows from `jumpDictTied_at D hJ hG hC hZ hW hB`.
+-/
 theorem jumpDict_at (hW : WeightParam D) (hB : BlockCharParam D) (hJ : GlobalTheory.IndefiniteRowSideFullHecke.PrimeTypeWeightPartitions.Explicit_at D)
     (hG : AlgebraicCharacter_at D) (hC : GlobalTheory.TwSys.Cheb) (hZ : GlobalTheory.IndefiniteRowSideFullHecke.BlockRepresentationsSemisimple.Complement_at D) :
     JumpDict_at D := jumpDictTied_at D hJ hG hC hZ hW hB
@@ -481,14 +649,23 @@ def InputsF {eps : ℝ} (Fm : FamP eps) : Prop :=
     GlobalTheory.IndefiniteRowSideFullHecke.PrimeTypeWeightPartitions.Explicit_at (Fm.D x a) ∧ AlgebraicCharacter_at (Fm.D x a) ∧
     GlobalTheory.IndefiniteRowSideFullHecke.BlockRepresentationsSemisimple.Complement_at (Fm.D x a)
 
+/- English proof (translation)
+Introduce `x hx a`. Take `⟨hW, hB, hJ, hG, hZ⟩` from `h x hx a`. Conclude with `jumpDict_at _ hW hB hJ hG hC hZ`.
+-/
 theorem jumpDictF {eps : ℝ} (Fm : FamP eps) (hC : GlobalTheory.TwSys.Cheb) (h : InputsF Fm) : JumpDictF Fm := by
   intro x hx a
   obtain ⟨hW, hB, hJ, hG, hZ⟩ := h x hx a
   exact jumpDict_at _ hW hB hJ hG hC hZ
 
+/- English proof (translation)
+The claim follows from `h.imp fun Fm _ _ hI => jumpDictF Fm hC hI`.
+-/
 theorem jumpDictClosed (C : FamClass) (hC : GlobalTheory.TwSys.Cheb) (h : Closed C fun Fm _ => InputsF Fm) :
     JumpDictClosed C := h.imp fun Fm _ _ hI => jumpDictF Fm hC hI
 
+/- English proof (translation)
+Unfold `GlobalTheory.IndefiniteRowSideFullHecke.TwistedGLEmbedding.fullPar GlobalTheory.IndefiniteRowSideFullHecke.TwistedGLEmbedding.sigPar GlobalTheory.IndefiniteRowSideFullHecke.TwistedGLEmbedding.runPar param run`. Use `congr 1`. Use `Multiset.map_congr rfl fun k _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem fullPar_eq' {R : Ranks} (P : HCParam R) (j : Fin R.m) :
     GlobalTheory.IndefiniteRowSideFullHecke.TwistedGLEmbedding.fullPar P j = param P j := by
   unfold GlobalTheory.IndefiniteRowSideFullHecke.TwistedGLEmbedding.fullPar GlobalTheory.IndefiniteRowSideFullHecke.TwistedGLEmbedding.sigPar GlobalTheory.IndefiniteRowSideFullHecke.TwistedGLEmbedding.runPar param run
@@ -496,12 +673,22 @@ theorem fullPar_eq' {R : Ranks} (P : HCParam R) (j : Fin R.m) :
   refine Multiset.map_congr rfl fun k _ => ?_
   ring
 
+/- English proof (translation)
+Introduce `i ρ`. Rewrite using `[GlobalTheory.IndefiniteRowSideFullHecke.TwistedGLEmbedding.lamWt_eq, fullPar_eq', Multiset.map_map, Multiset.map_map]`. Use `⟨(h i ρ).1, (h i ρ).2.trans (Multiset.map_congr rfl fun p _ => ?_)⟩` and prove the remaining obligations. Simplify using the standard rewrite rules.
+-/
 theorem weightTie_of_weightParam (h : WeightParam D) : GlobalTheory.IndefiniteRowSideFullHecke.TwistedGLEmbedding.WeightTie D := by
   intro i ρ
   rw [GlobalTheory.IndefiniteRowSideFullHecke.TwistedGLEmbedding.lamWt_eq, fullPar_eq', Multiset.map_map, Multiset.map_map]
   refine ⟨(h i ρ).1, (h i ρ).2.trans (Multiset.map_congr rfl fun p _ => ?_)⟩
   simp
 
+/- English proof (translation)
+Introduce `i ρ`. Take `⟨h1, h2, h3⟩` from `h ρ`. Prove the components needed by the constructor for the conclusion. Use `(D.naut.infG_tw _ _ _ _ h2).trans ?_` and prove the remaining obligations. Rewrite using `[(h1 i).1, Multiset.map_singleton]`.
+
+Use `congr 1`. Use `push_cast`. Both sides reduce to the same expression. Use `(D.naut.infG_tw _ _ _ _ h3).trans ?_` and prove the remaining obligations. Rewrite using `[(h1 i).2, Multiset.map_singleton]`.
+
+Use `congr 1`. Use `push_cast`. Both sides reduce to the same expression.
+-/
 theorem blockCharParam_of_charTie (h : GlobalTheory.IndefiniteRowSideFullHecke.TwistedGLEmbedding.CharTie D) : BlockCharParam D := by
   intro i ρ
   obtain ⟨h1, h2, h3⟩ := h ρ
@@ -517,6 +704,11 @@ theorem blockCharParam_of_charTie (h : GlobalTheory.IndefiniteRowSideFullHecke.T
     push_cast
     rfl
 
+/- English proof (translation)
+Take `⟨r₀, h₀, -⟩` from `hR`. Use `⟨Function.update r₀ x r, fun y => ?_, Function.update_self ..⟩` and prove the remaining obligations. Distinguish the cases in `hy : y = x`. Substitute `hy` using the available equality. Rewrite using `[Function.update_self]` and apply the resulting hypothesis.
+
+Rewrite using `[Function.update_of_ne hy]`. Conclude with `h₀ y`.
+-/
 theorem exists_family {i : D.nd.Loc} (hR : GlobalTheory.IndefiniteRowSideFullHecke.DeterminantInTorus.RxConcl D i) {x : D.nd.X i}
     {r : GE D.nd →* GL (Fin D.R.nV) (D.nd.O i)} (hr : IsHeckeGalois D.nd i x r) :
     ∃ r', GoodR D.nd i r' ∧ r' x = r := by
@@ -529,6 +721,21 @@ theorem exists_family {i : D.nd.Loc} (hR : GlobalTheory.IndefiniteRowSideFullHec
   · rw [Function.update_of_ne hy]
     exact h₀ y
 
+/- English proof (translation)
+Take `⟨hc, ht⟩` from `hG2 (weightTie_of_weightParam D hW) hT`. Establish `hd : ∀ i r, GoodR D.nd i r → ∀ w hw, GlobalTheory.IndefiniteRowSideFullHecke.TwistedGLEmbedding.DeRhamAt (D` using `D) i w hw r := by`. Introduce `i r hr w hw`. Distinguish the cases in `hl : ∃ k, D.nd.l i = D.host.g k`. Conclude with `(ht i hl r hr w hw).1`.
+
+Conclude with `(hc i (not_exists.1 hl) r hr w hw).2`. Use `⟨⟨fun i x r hr w hw => ?_, ⟨true, fun _ _ => shift D, fun i x r hr w hw τ ρ b hτ => ?_, blockWith D hG hC (blockCharParam_of_charTie D hT)⟩, summand_of_complement D hZ⟩, fun i hl x r hr w hw => ?_⟩` and prove the remaining obligations. Take `⟨r', h', rfl⟩` from `exists_family D (hR i) hr`. Conclude with `(hd i r' h' w hw).1 x`. Take `⟨r', h', rfl⟩` from `exists_family D (hR i) hr`.
+
+Take `⟨h1, h2⟩` from `hd i r' h' w hw`. Establish `key : GlobalTheory.IndefiniteRowSideFullHecke.TwistedGLEmbedding.HasJumps i w hw (r' x) τ ((PP D i ρ).map fun p => sgnOf true b * p + (shift D (embOver D ρ b) : ℚ))`. Rewrite using `[shift_embOver]`. Consider the cases of `b`. Establish `h` using `(((h2 τ).2 ρ).1 hτ).1 x`.
+
+Rewrite `h` using `[fullPar_eq']`. Use `h using 1` and compare the differences between its conclusion and the goal. Use `Multiset.map_congr rfl fun p _ => ?_` and prove the remaining obligations. Simplify using `only [sgnOf]`. Evaluate the numerical expressions.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `h` using `(((h2 τ).2 ρ).2 hτ).1 x`. Rewrite `h` using `[fullPar_eq']`. Use `h using 1` and compare the differences between its conclusion and the goal. Use `Multiset.map_congr rfl fun p _ => ?_` and prove the remaining obligations.
+
+Simplify using `only [sgnOf]`. Evaluate the numerical expressions. Expand and normalize the polynomial expressions, which then agree. Conclude with `jumpsAre_of_mult D i w hw _ hr.1 (h1 x) τ _ key.1 key.2`. Take `⟨r', h', rfl⟩` from `exists_family D (hR i) hr`.
+
+Conclude with `(hc i hl r' h' w hw).1 x`.
+-/
 theorem jumpDictCrys_at_of_weights (hW : WeightParam D) (hT : GlobalTheory.IndefiniteRowSideFullHecke.TwistedGLEmbedding.CharTie D)
     (hG2 : GlobalTheory.IndefiniteRowSideFullHecke.TwistedGLEmbedding.Weights_at D) (hR : ∀ i, GlobalTheory.IndefiniteRowSideFullHecke.DeterminantInTorus.RxConcl D i)
     (hG : AlgebraicCharacter_at D) (hC : GlobalTheory.TwSys.Cheb) (hZ : GlobalTheory.IndefiniteRowSideFullHecke.BlockRepresentationsSemisimple.Complement_at D) :

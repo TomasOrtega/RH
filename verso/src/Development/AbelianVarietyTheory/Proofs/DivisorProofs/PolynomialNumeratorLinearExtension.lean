@@ -4,12 +4,18 @@ open GlobalTheory.ShFam.Pad
 
 namespace GlobalTheory.NumLRename
 
+/- English proof (translation)
+Establish `h2 : MvPolynomial.monomial m a = a • MvPolynomial.basisMonomials A ℝ m`. Simplify using `[MvPolynomial.smul_monomial]`. Rewrite using `[h2, map_smul, numL, Module.Basis.constr_basis, smul_eq_mul]`.
+-/
 theorem numL_monomial {A : Type} (num : Multiset A → ℝ) (d : ℕ) (m : A →₀ ℕ) (a : ℝ) :
     numL num d (MvPolynomial.monomial m a) = a * (if m.degree = d then num (Finsupp.toMultiset m) else 0) := by
   have h2 : MvPolynomial.monomial m a = a • MvPolynomial.basisMonomials A ℝ m := by
     simp [MvPolynomial.smul_monomial]
   rw [h2, map_smul, numL, Module.Basis.constr_basis, smul_eq_mul]
 
+/- English proof (translation)
+Rewrite using `[← MvPolynomial.prod_X_pow_eq_monomial, Finsupp.toMultiset_map, Finsupp.prod_toMultiset, Finsupp.prod_mapDomain_index (fun _ => pow_zero _) (fun _ _ _ => pow_add _ _ _)]`. Both sides reduce to the same expression.
+-/
 theorem prod_map_X_toMultiset {ι : Type} (m : ι →₀ ℕ) :
     ((Finsupp.toMultiset m).map MvPolynomial.X).prod = (MvPolynomial.monomial m 1 : MvPolynomial ι ℝ) := by
   classical
@@ -17,6 +23,17 @@ theorem prod_map_X_toMultiset {ι : Type} (m : ι →₀ ℕ) :
     Finsupp.prod_mapDomain_index (fun _ => pow_zero _) (fun _ _ _ => pow_add _ _ _)]
   rfl
 
+/- English proof (translation)
+Introduce `A ι num d w Ψ c h P hP`. Use `conv_lhs => rw [P.as_sum]`. Use `conv_rhs => rw [P.as_sum]`. Rewrite using `[map_sum, map_sum, map_sum, Finset.sum_div]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations.
+
+Establish `hdeg : m.degree = d`. Use `hP (MvPolynomial.mem_support_iff.1 hm)` as an intermediate fact. Rewrite using `[Finsupp.degree_eq_weight_one]`. Conclude with `this`. Rewrite using `[MvPolynomial.rename_monomial, numL_monomial]`.
+
+Establish `hdeg' : (Finsupp.mapDomain w m).degree = d`. Rewrite using `[Finsupp.degree_mapDomain, hdeg]`. Rewrite using `[if_pos hdeg', ← Finsupp.toMultiset_map]`. Establish `hcard : Multiset.card (Finsupp.toMultiset m) = d`. Rewrite using `[Finsupp.card_toMultiset, ← hdeg, Finsupp.degree, Finsupp.sum]`.
+
+Both sides reduce to the same expression. Rewrite using `[h _ hcard, prod_map_X_toMultiset]`. Establish `: (MvPolynomial.monomial m (P.coeff m) : MvPolynomial ι ℝ) = P.coeff m • MvPolynomial.monomial m 1`. Simplify using `[MvPolynomial.smul_monomial]`. Rewrite using `[this, map_smul, smul_eq_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem numL_rename_of_agree : ∀ {A ι : Type} (num : Multiset A → ℝ) (d : ℕ) (w : ι → A)
     (Ψ : MvPolynomial ι ℝ →ₗ[ℝ] ℝ) (c : ℝ),
     (∀ μ : Multiset ι, Multiset.card μ = d → num (μ.map w) = Ψ ((μ.map MvPolynomial.X).prod) / c) →

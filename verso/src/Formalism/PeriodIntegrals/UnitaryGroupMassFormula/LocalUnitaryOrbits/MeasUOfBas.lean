@@ -12,6 +12,21 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (ψ : AddChar (AF F) ℂ)
   (v : HeightOneSpectrum (𝓞 F)) (Λ : Set (Fin n → E))
 
+/- English proof (translation)
+Take `⟨b, hb, hmem⟩` from `hB hG`. Establish `hCM` using `hG.1.1`. Establish `hfr : Module.finrank F E = 2` using `hCM.2.2.1`. Establish `: FiniteDimensional F E` using `Module.finite_of_finrank_pos (by rw [hfr]; norm_num)`. Establish `: IsModuleTopology (Fv F v) (Fv F v ⊗[F] E)` using `⟨rfl⟩`.
+
+Establish `hV : Module.finrank (Fv F v) (Fin n → Fv F v ⊗[F] E) = 2 * n`. Rewrite using `[Module.finrank_pi_fintype, Finset.sum_const, Finset.card_univ, Fintype.card_fin, smul_eq_mul, Module.finrank_baseChange, hfr, mul_comm]`. Establish `: FiniteDimensional (Fv F v) (Fin n → Fv F v ⊗[F] E)` using `inferInstance`. Set `bb` to `basisOfLinearIndependentOfCardEqFinrank' b hb (by rw [Fintype.card_fin, hV])`. Establish `hbb : ∀ i, bb i = b i` using `fun i => by simp [bb]`.
+
+Establish `e : (latLoc (E` using `E) v Λ : Set (Fin n → Fv F v ⊗[F] E)) = bb.equivFun.symm '' Set.univ.pi (fun _ => (v.adicCompletionIntegers F : Set (Fv F v))) := by`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Take `⟨c, rfl⟩` from `(hmem x).1 hx`.
+
+Use `⟨fun i => (c i : Fv F v), fun i _ => (c i).2, ?_⟩` and prove the remaining obligations. Rewrite using `[Module.Basis.equivFun_symm_apply]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [hbb]`. Introduce and unpack `⟨c, hc, rfl⟩`. Use `(hmem _).2 ⟨fun i => ⟨c i, hc i (Set.mem_univ i)⟩, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Module.Basis.equivFun_symm_apply]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [hbb]`. Establish `hc : Continuous bb.equivFun` using `IsModuleTopology.continuous_of_linearMap bb.equivFun.toLinearMap`. Establish `hL : IsOpen (latLoc (E` using `E) v Λ : Set (Fin n → Fv F v ⊗[F] E)) := by`. Rewrite using `[e, LinearEquiv.image_eq_preimage_symm, LinearEquiv.symm_symm]`.
+
+Conclude with `(isOpen_set_pi Set.finite_univ fun _ _ => Valued.isOpen_valuationSubring _).preimage hc`. Establish `: LamT v Λ a = Set.univ.pi (fun _ => (latLoc (E` using `E) v Λ : Set (Fin n → Fv F v ⊗[F] E))) := by`. Use extensionality with `X`. Simplify using `[LamT]`. Rewrite using `[this]`.
+
+Conclude with `isOpen_set_pi Set.finite_univ fun _ _ => hL`.
+-/
 theorem lamT_open (a : ℕ) (Y : TupV (E := E) v n a) (hB : LatBasO σ J ψ v Λ a Y) (hG : GoodY σ J ψ v Λ a Y) :
     IsOpen (LamT v Λ a) := by
   obtain ⟨b, hb, hmem⟩ := hB hG
@@ -48,6 +63,15 @@ theorem lamT_open (a : ℕ) (Y : TupV (E := E) v n a) (hB : LatBasO σ J ψ v Λ
   rw [this]
   exact isOpen_set_pi Set.finite_univ fun _ _ => hL
 
+/- English proof (translation)
+Introduce `hG ϖ hϖ`. Use `PI.VolStabSW.secondCountable_Fv F v` as an intermediate fact. Establish `: IsModuleTopology (Fv F v) (Fv F v ⊗[F] E)` using `⟨rfl⟩`. Establish `: IsTopologicalAddGroup (Fv F v ⊗[F] E)` using `IsModuleTopology.topologicalAddGroup (Fv F v) (Fv F v ⊗[F] E)`. Establish `: BorelSpace (Fv F v ⊗[F] E)` using `⟨rfl⟩`.
+
+Establish `hOpen` using `lamT_open σ J ψ v Λ a Y hB hG`. Use `⟨inferInstance, hOpen.measurableSet, ?_⟩` and prove the remaining obligations. Establish `e : (lamP v Λ a ϖ : Set (TupV (E` using `E) v n a)) = (fun X => ϖ • X) '' LamT v Λ a := by`. Unfold `lamP`. Rewrite using `[AddSubgroup.coe_map]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `X`. Use function extensionality and compare the values at `i p`. Use `show sc (E := E) v ϖ * X i p = ϖ • X i p`. Rewrite using `[Algebra.smul_def, Algebra.TensorProduct.algebraMap_apply]`.
+
+Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `(isOpenMap_smul₀ (unif_ne_zero v hϖ) _ hOpen).measurableSet`.
+-/
 theorem measU_of_bas (a : ℕ) (Y : TupV (E := E) v n a) (hB : LatBasO σ J ψ v Λ a Y) :
     MeasU σ J ψ v Λ a Y := by
   intro hG ϖ hϖ
@@ -70,6 +94,9 @@ theorem measU_of_bas (a : ℕ) (Y : TupV (E := E) v n a) (hB : LatBasO σ J ψ v
   rw [e]
   exact (isOpenMap_smul₀ (unif_ne_zero v hϖ) _ hOpen).measurableSet
 
+/- English proof (translation)
+The claim follows from `countU_of σ J ψ v Λ a Y (measU_of_bas σ J ψ v Λ a Y hB) (idxU_of σ J ψ v Λ a Y (idxV_of σ J ψ v Λ a Y hB hQ)) (clsU_of σ J ψ v Λ a Y hR)`.
+-/
 theorem countU_of_bas' (a : ℕ) (Y : TupV (E := E) v n a)
     (hB : LatBasO σ J ψ v Λ a Y) (hQ : ResIdx v) (hR : RedU σ J ψ v Λ a Y) : CountU σ J ψ v Λ a Y :=
   countU_of σ J ψ v Λ a Y (measU_of_bas σ J ψ v Λ a Y hB)

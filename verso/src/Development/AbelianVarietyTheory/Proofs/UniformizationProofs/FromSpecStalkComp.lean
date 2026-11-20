@@ -17,12 +17,28 @@ open GlobalTheory.UU
 
 namespace GlobalTheory.LevelVanishing
 
+/- English proof (translation)
+Rewrite using `[Spec.map_comp, Spec.map_comp, ← Scheme.fromSpecStalk_toSpecΓ, Category.assoc, Category.assoc, ← Scheme.toSpecΓ_naturality_assoc, toSpecΓ_SpecMap_ΓSpecIso_inv, Category.comp_id]`.
+-/
 theorem fromSpecStalk_comp {R : Type} [CommRing R] {Y : Scheme.{0}} (p : Y ⟶ Spec (CommRingCat.of R)) (z : Y) :
     Y.fromSpecStalk z ≫ p =
       Spec.map ((Scheme.ΓSpecIso (CommRingCat.of R)).inv ≫ p.appTop ≫ Y.presheaf.germ ⊤ z trivial) := by
   rw [Spec.map_comp, Spec.map_comp, ← Scheme.fromSpecStalk_toSpecΓ, Category.assoc, Category.assoc,
     ← Scheme.toSpecΓ_naturality_assoc, toSpecΓ_SpecMap_ΓSpecIso_inv, Category.comp_id]
 
+/- English proof (translation)
+Use `set ψ := (Y.presheaf.germ ⊤ z trivial).hom.comp ((p.appTop.hom).comp (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom) with hψ`. Distinguish the cases in `htop : I.map ψ = ⊤`. Rewrite using `[htop]`. Discharge the goal by the elementary cases of `trivial`. Establish `: Nontrivial (Y.presheaf.stalk z ⧸ I.map ψ)` using `Ideal.Quotient.nontrivial_iff.2 htop`.
+
+Establish `: IsLocalRing (Y.presheaf.stalk z ⧸ I.map ψ)` using `IsLocalRing.of_surjective' (Ideal.Quotient.mk _) Ideal.Quotient.mk_surjective`. Set `Q : CommRingCat.{0}` to `CommRingCat.of (Y.presheaf.stalk z ⧸ I.map ψ)`. Set `q : Y.presheaf.stalk z ⟶ Q` to `CommRingCat.ofHom (R := Y.presheaf.stalk z) (Ideal.Quotient.mk (I.map ψ))`. Establish `: IsLocalHom q.hom` using `IsLocalHom.of_surjective _ Ideal.Quotient.mk_surjective`. Set `r : Spec Q ⟶ Y` to `Spec.map q ≫ Y.fromSpecStalk z`.
+
+Set `w : Spec Q` to `IsLocalRing.closedPoint Q`. Establish `hw : r w = z`. Rewrite using `[Scheme.Hom.comp_apply, Spec_closedPoint, Scheme.fromSpecStalk_closedPoint]`. Establish `hl : ∃ ρ : Spec Q ⟶ Spec (CommRingCat.of (R ⧸ I)), ρ ≫ Spec.map (CommRingCat.ofHom (Ideal.Quotient.mk I)) = r ≫ p`. Use `⟨Spec.map (CommRingCat.ofHom (Ideal.quotientMap (I.map ψ) ψ Ideal.le_comap_map)), ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Category.assoc, fromSpecStalk_comp, ← Spec.map_comp, ← Spec.map_comp]`. Use `congr 1`. Use `choose I' hI' using fun χ : Spec Q ⟶ X => exists_chart hL (χ w)`. Establish `hz : z ∈ LB.wchart L φ (fun k => J (𝟙 _ ≫ φ k))` using `hJ.mem φ (𝟙 _)`. Establish `hm : r w ∈ LB.wchart L φ (fun k => J (𝟙 _ ≫ φ k))` using `hw ▸ hz`.
+
+Establish `e` using `sec_trans d r w (j := fun k => J (𝟙 _ ≫ φ k)) hm (Good.mem hI' φ r)`. Establish `e0 : gs r w (LB.wchart L φ (fun k => I' (r ≫ φ k))) (d.f (fun k => I' (r ≫ φ k))) = 0` using `H _ r hl w I' hI'`. Rewrite `e` using `[e0, mul_zero]`. Use `replace e := (Scheme.Hom.germ_stalkMap_apply r _ w hm _).trans ((gs_eq r w _ hm _).symm.trans e)`. Establish `e1` using `congrArg (fun t => t.hom (d.f (fun k => J (𝟙 _ ≫ φ k)))) (Scheme.germ_stalkClosedPointTo_Spec_fromSpecStalk q _ hm)`.
+
+Simplify using `only [Scheme.stalkClosedPointTo, CommRingCat.hom_comp, RingHom.comp_apply] at e1`. Use `Ideal.Quotient.eq_zero_iff_mem.1 ((congrArg _ (gs_eq (𝟙 Y) z _ hz _)).trans ?_)` and prove the remaining obligations. Conclude with `e1.symm.trans ((congrArg (stalkClosedPointIso Q).hom.hom e).trans (map_zero _))`.
+-/
 theorem sval_mem_map {R : Type} [CommRing R] (I : Ideal R) {X Y : Scheme.{0}} (p : Y ⟶ Spec (CommRingCat.of R))
     {L : LB X} (hL : L.IsLB) {K : Type} [Fintype K] {φ : K → (Y ⟶ X)} {ε : K → ℤ} (d : LB.Sec (LB.LinComb L φ ε))
     (H : ∀ (Z : Scheme.{0}) (r : Z ⟶ Y), (∃ ρ : Z ⟶ Spec (CommRingCat.of (R ⧸ I)),
@@ -62,6 +78,13 @@ theorem sval_mem_map {R : Type} [CommRing R] (I : Ideal R) {X Y : Scheme.{0}} (p
   refine Ideal.Quotient.eq_zero_iff_mem.1 ((congrArg _ (gs_eq (𝟙 Y) z _ hz _)).trans ?_)
   exact e1.symm.trans ((congrArg (stalkClosedPointIso Q).hom.hom e).trans (map_zero _))
 
+/- English proof (translation)
+Introduce `V _ _ _ _ D A G _ _ U k σ f h e`. Take `⟨s, hs⟩` from `h e`. Use `⟨s, fun α hα z J hJ => sval_mem_map _ (𝟙_ _ ⊗ D.P.A).hom D.P.isLB (f α) ?_ z J hJ⟩` and prove the remaining obligations. Use `GlobalTheory.LiftTest.main V _ D e G (U.gt e) (𝟙_ _ ⊗ D.P.A) (snd _ _) _ D.P.L D.P.isLB _ _ _ (f α) ?_` and prove the remaining obligations. Introduce `Z x r hr z J hJ`.
+
+Use `choose JG hJG using fun χ : Z ⟶ G.left => exists_chart U.P.L.isLB (χ z)`. Establish `hb : r ≫ (𝟙_ _ ⊗ D.P.A).hom = x ≫ (fstG (IsLocalRing.maximalIdeal V) e G).left ≫ G.hom`. Rewrite using `[← Over.w (snd (𝟙_ _) D.P.A), ← Category.assoc, hr, Category.assoc, Over.w, Over.w]`. Set `xG : Over.mk (r ≫ (𝟙_ _ ⊗ D.P.A).hom) ⟶ G` to `Over.homMk (x ≫ (fstG (IsLocalRing.maximalIdeal V) e G).left) (by rw [Category.assoc]; exact hb.symm)`. Set `rB : Over.mk (r ≫ (𝟙_ _ ⊗ D.P.A).hom) ⟶ 𝟙_ _ ⊗ D.P.A` to `Over.homMk r`.
+
+Use `(hs Z x (lift (rB ≫ fst _ _) xG).left r ?_ hr ?_ z JG J hJG hJ).1 α hα` and prove the remaining obligations. Conclude with `congrArg CommaMorphism.left (lift_snd (rB ≫ fst _ _) xG)`. Conclude with `(congrArg CommaMorphism.left (lift_fst (rB ≫ fst _ _) xG)).symm`.
+-/
 theorem main : (AllPre fun {V} _ _ _ {D} {A} {G} _ _ U => ∀ (k : ℕ) (σ : U.SecGT (𝟙_ _) k) f, U.ExpT (𝟙_ _) k σ f → ∀ e : ℕ, ∃ s : Finset D.X, ∀ α ∉ s, ∀ (z : (𝟙_ _ ⊗ D.P.A).left) (J), Good D.P.L z J → sval (f α) (𝟙 _) z J ∈ (IsLocalRing.maximalIdeal V ^ (e + 1)).map (((𝟙_ _ ⊗ D.P.A).left.presheaf.germ ⊤ z trivial).hom.comp (((𝟙_ _ ⊗ D.P.A).hom.appTop.hom).comp (Scheme.ΓSpecIso (CommRingCat.of V)).inv.hom))) := by
   intro V _ _ _ _ D A G _ _ U k σ f h e
   obtain ⟨s, hs⟩ := h e

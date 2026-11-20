@@ -12,6 +12,21 @@ variable {g : ℕ} [Fact g.Prime]
 
 open Classical in
 
+/- English proof (translation)
+Use `set alg := algebraMap (ZMod g) (Fbar g) with halg`. Use `set c' := alg (c : ZMod g) with hc'`. Establish `hc0 : c' ≠ 0` using `(_root_.map_ne_zero _).2 c.ne_zero`. Use `set R : (ZMod g)[X] → Finset (Fbar g) := fun P => (P.map alg).roots.toFinset with hRdef`. Establish `hR : ∀ P ∈ Q, (R P).card = k`.
+
+Introduce `P hP`. Take `⟨⟨hmon, hirr, -⟩, hdeg⟩` from `hQ P hP`. Establish `hsep : (P.map alg).Separable` using `(PerfectField.separable_of_irreducible hirr).map`. Rewrite using `[hRdef, Multiset.toFinset_card_of_nodup (nodup_roots hsep), IsAlgClosed.card_roots_eq_natDegree, natDegree_map, hdeg]`. Establish `hdisj : (Q : Set (ZMod g)[X]).PairwiseDisjoint R`.
+
+Introduce `P hP P' hP' hne`. Use `Finset.disjoint_left.2 (fun z hz hz' => hne ?_)` and prove the remaining obligations. Take `⟨⟨hmon, hirr, -⟩, -⟩` from `hQ P hP`. Take `⟨⟨hmon', hirr', -⟩, -⟩` from `hQ P' hP'`. Rewrite `hz` using `[hRdef, Multiset.mem_toFinset, mem_roots_map hmon.ne_zero]`.
+
+Rewrite `hz'` using `[hRdef, Multiset.mem_toFinset, mem_roots_map hmon'.ne_zero]`. Rewrite using `[minpoly.eq_of_irreducible_of_monic (A := ZMod g) (x := z) hirr (by rw [aeval_def]; exact hz) hmon, minpoly.eq_of_irreducible_of_monic (A := ZMod g) (x := z) hirr' (by rw [aeval_def]; exact hz') hmon']`. Establish `hcard : (Q.biUnion R).card = k * Q.card`. Rewrite using `[Finset.card_biUnion hdisj, Finset.sum_congr rfl hR, Finset.sum_const, smul_eq_mul, mul_comm]`. Establish `hgk : g ≤ g ^ k` using `Nat.le_self_pow (by omega) g`.
+
+Establish `hN : 2 ≤ g ^ k - 1` using `by omega`. Rewrite using `[← hcard]`. Use `le_trans ?_ (card_ppRoots_le (K := Fbar g) (g ^ k - 1) hN)` and prove the remaining obligations. Use `Finset.card_le_card_of_injOn (fun z => z * c'⁻¹) ?_ ?_` and prove the remaining obligations. Introduce `z hz`.
+
+Rewrite `hz` using `[Finset.mem_coe, Finset.mem_biUnion]`. Take `⟨P, hP, hzP⟩` from `hz`. Take `⟨hgood, hdeg⟩` from `hQ P hP`. Rewrite `hzP` using `[hRdef, Multiset.mem_toFinset]`. Establish `h` using `good_root c P hgood z hzP`.
+
+Rewrite `h` using `[hdeg]`. Rewrite using `[Finset.mem_coe, Finset.mem_filter, Polynomial.mem_nthRootsFinset (by omega)]`. Conclude with `h`. Introduce `z1 _ z2 _ h`. Conclude with `mul_right_cancel₀ (inv_ne_zero hc0) h`.
+-/
 theorem count_good (c : (ZMod g)ˣ) (hg : 3 ≤ g) (k : ℕ) (hk : 1 ≤ k)
     (Q : Finset (ZMod g)[X]) (hQ : ∀ P ∈ Q, Good c P ∧ P.natDegree = k) :
     k * Q.card ≤ ppSum (g ^ k - 1) := by
@@ -56,6 +71,11 @@ theorem count_good (c : (ZMod g)ˣ) (hg : 3 ≤ g) (k : ℕ) (hk : 1 ≤ k)
   · intro z1 _ z2 _ h
     exact mul_right_cancel₀ (inv_ne_zero hc0) h
 
+/- English proof (translation)
+Use extensionality with `n`. Break down `lt_trichotomy n m with hlt | heq | hgt` into its components or cases. Conclude with `hc n hlt`. Establish `e1 : h1.coeff m = 1` using `by rw [← hd1]; exact hm1.coeff_natDegree`. Establish `e2 : h2.coeff m = 1` using `by rw [← hd2]; exact hm2.coeff_natDegree`.
+
+Rewrite using `[heq, e1, e2]`. Rewrite using `[coeff_eq_zero_of_natDegree_lt (by omega), coeff_eq_zero_of_natDegree_lt (by omega)]`.
+-/
 theorem monic_ext {h1 h2 : (ZMod g)[X]} {m : ℕ} (hm1 : h1.Monic) (hm2 : h2.Monic)
     (hd1 : h1.natDegree = m) (hd2 : h2.natDegree = m)
     (hc : ∀ i < m, h1.coeff i = h2.coeff i) : h1 = h2 := by
@@ -67,6 +87,11 @@ theorem monic_ext {h1 h2 : (ZMod g)[X]} {m : ℕ} (hm1 : h1.Monic) (hm2 : h2.Mon
     rw [heq, e1, e2]
   · rw [coeff_eq_zero_of_natDegree_lt (by omega), coeff_eq_zero_of_natDegree_lt (by omega)]
 
+/- English proof (translation)
+Establish `hmod : f %ₘ P = 0` using `(modByMonic_eq_zero_iff_dvd hP).2 hdvd`. Establish `heq : f = P * (f /ₘ P)`. Use `modByMonic_add_div f P` as an intermediate fact. Rewrite `this` using `[hmod, zero_add]`. Conclude with `this.symm`.
+
+Use `⟨heq, ?_, ?_⟩` and prove the remaining obligations. Apply `hP.of_mul_monic_left` to reduce the goal to its premises. Rewrite using `[← heq]`. Conclude with `hf.1`. Rewrite using `[natDegree_divByMonic f hP, hf.2.1]`.
+-/
 theorem divByMonic_facts {r : ℕ} {f P : (ZMod g)[X]} (hf : IsLab g r f) (hP : P.Monic)
     (hdvd : P ∣ f) :
     f = P * (f /ₘ P) ∧ (f /ₘ P).Monic ∧ (f /ₘ P).natDegree = r - P.natDegree := by
@@ -82,6 +107,13 @@ theorem divByMonic_facts {r : ℕ} {f P : (ZMod g)[X]} (hf : IsLab g r f) (hP : 
 
 open Classical in
 
+/- English proof (translation)
+Establish `hu : (Finset.univ : Finset (Fin (r - P.natDegree) → ZMod g)).card = g ^ (r - P.natDegree)`. Simplify using `[ZMod.card]`. Rewrite using `[← hu]`. Use `Finset.card_le_card_of_injOn (fun f (i : Fin (r - P.natDegree)) => (f /ₘ P).coeff i) ?_ ?_` and prove the remaining obligations. Introduce `f _`.
+
+Conclude with `Finset.mem_coe.2 (Finset.mem_univ _)`. Introduce `f1 hf1 f2 hf2 h`. Rewrite `hf1`, `hf2` using `[Finset.mem_coe, Finset.mem_filter]`. Take `⟨e1, m1, d1⟩` from `divByMonic_facts (hT f1 hf1.1) hP hf1.2`. Take `⟨e2, m2, d2⟩` from `divByMonic_facts (hT f2 hf2.1) hP hf2.2`.
+
+Establish `hq : f1 /ₘ P = f2 /ₘ P` using `monic_ext m1 m2 d1 d2 (fun i hi => congrFun h ⟨i, hi⟩)`. Rewrite using `[e1, e2, hq]`.
+-/
 theorem count_mult (r : ℕ) (T : Finset (ZMod g)[X]) (hT : ∀ f ∈ T, IsLab g r f)
     (P : (ZMod g)[X]) (hP : P.Monic) :
     (T.filter (fun f => P ∣ f)).card ≤ g ^ (r - P.natDegree) := by

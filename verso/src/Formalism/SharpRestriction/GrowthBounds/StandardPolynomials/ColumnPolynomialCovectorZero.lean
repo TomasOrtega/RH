@@ -14,6 +14,11 @@ variable {C0 Cde CE1 CE2 mu E : ℝ} {X : Loc} [NeZero X.m] [Fact X.p.Prime] {O 
   [IsDiscreteValuationRing O] [Algebra (WF X.p X.n') O] {β : GlobalTheory X} {L : LvDat C0 CE1 CE2 mu X β}
   {G : ∀ j, MvPolynomial (Fin (2 * segS X.TT j + 1) × Fin X.m) (KK O)}
 
+/- English proof (translation)
+Establish `h : ∀ c, (Cs j).pl a ((topEnd X j', false), c) = 0`. Introduce `c`. Establish `hle : (Cs j).pl a ≤ ∑ b, (Cs j).pl b` using `Finset.single_le_sum (f := (Cs j).pl) (fun _ _ => zero_le) (Finset.mem_univ a)`. Establish `h2` using `hle ((topEnd X j', false), c)`. Rewrite `h2` using `[(Cs j).plSum]`.
+
+Simplify using `[Finsupp.single_apply] at h2`. Conclude with `h2`. Simplify using `[multideg, h]`.
+-/
 theorem column_polynomial_covector_zero {w : O} (Cs : ∀ j, ColSys C0 CE1 CE2 X O w mu β L j (G j)) (j : Fin (numSeg X.TT)) (a : (Cs j).ι)
     (j' : Fin (numSeg X.TT)) : multideg ((Cs j).pl a) (topEnd X j', false) = 0 := by
   classical
@@ -27,6 +32,11 @@ theorem column_polynomial_covector_zero {w : O} (Cs : ∀ j, ColSys C0 CE1 CE2 X
     exact h2
   simp [multideg, h]
 
+/- English proof (translation)
+Establish `hd : dgH (l2x C0 CE1 CE2 mu X β j i) l ≤ 1`. Break down `l with ⟨y, b⟩` into its components or cases. Simplify using `only [dgH, dX, Prod.mk.injEq]`. Apply the tactic sequence `cases b <;> split_ifs <;> simp_all`. Establish `hP : l2P C0 CE1 CE2 mu X β j i ≤ X.p ^ X.G'`.
+
+Simplify using `only [l2P, SegData.P]`. Conclude with `Nat.pow_le_pow_right hp (le_trans (Nat.sub_le _ _) (hGle j))`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem level_degree_le_prime_pow (hp : 0 < X.p) (hGle : ∀ j, segG X.TT j ≤ X.G') (j : Fin (numSeg X.TT))
     (i : Fin (BDk C0 CE1 CE2 mu X β j).T.t) (l : X.TT × Bool) :
     l2P C0 CE1 CE2 mu X β j i * dgH (l2x C0 CE1 CE2 mu X β j i) l ≤ X.p ^ X.G' := by
@@ -40,11 +50,17 @@ theorem level_degree_le_prime_pow (hp : 0 < X.p) (hGle : ∀ j, segG X.TT j ≤ 
   calc _ ≤ X.p ^ X.G' * 1 := Nat.mul_le_mul hP hd
     _ = _ := mul_one _
 
+/- English proof (translation)
+Establish `hne` using `topOdd_ne_endAny X j (uTop (X.seg C0 CE1 CE2 j) i) j'`. Simplify using `[dgH, dX, l2x, hne]`.
+-/
 theorem level_degree_covector_zero (j : Fin (numSeg X.TT)) (i : Fin (BDk C0 CE1 CE2 mu X β j).T.t) (j' : Fin (numSeg X.TT)) :
     l2P C0 CE1 CE2 mu X β j i * dgH (l2x C0 CE1 CE2 mu X β j i) (topEnd X j', false) = 0 := by
   have hne := topOdd_ne_endAny X j (uTop (X.seg C0 CE1 CE2 j) i) j'
   simp [dgH, dX, l2x, hne]
 
+/- English proof (translation)
+Rewrite using `[support_monomial, if_neg one_ne_zero]`. Conclude with `Finset.mem_singleton_self _`.
+-/
 theorem monomial_mem_support (M : MonH X) : M ∈ (monomial M (1 : KK O) : RHH O X).support := by
   classical
   rw [support_monomial, if_neg one_ne_zero]
@@ -119,6 +135,11 @@ def lemmaRData (S : UniformizedDVR X.p O) (hS : S.SqP) (hD : D1num X) (h2 : 2 �
 
 end Ctx
 
+/- English proof (translation)
+Introduce `X _ _ O _ _ _ _ S hS hD hH hc mm _ n hn1 hnc β hβ L G Cs hG0 Std hStd`. Establish `h2 : 2 ≤ numSeg X.TT` using `hH.1.2.2.2.1`. Establish `hGle : ∀ j, segG X.TT j ≤ X.G'` using `fun j => (hH.1.2.2.2.2.1 j).1`. Establish `hrm` using `hroom X hD hH hc n hn1 hnc β hβ (fun j => (Cs j).a0) (fun j => (Cs j).a0le) ⟨0, by omega⟩`. Establish `hsg : ∀ j (i : Fin (segS X.TT j)), ¬ (i : ℕ) < (X.seg C0 CE1 CE2 j).sigma → (β j).sg i = 0` using `fun j i h => ((hβ j).2.1 i (not_lt.1 h)).2.2.2`.
+
+Establish `hstd` using `std_eq O L (fun j => (Cs j).a0) ⟨0, by omega⟩ hsg hrm Std hStd`. Establish `hplsum : ∑ j, ∑ a, (Cs j).pl a = ∑ j, (Finsupp.single ((topStart X j, true), 0) ((X.seg C0 CE1 CE2 j).Qj X.p * (Cs j).a0) + zPart C0 CE1 CE2 X β j)` using `Finset.sum_congr rfl fun j _ => (Cs j).plSum`. Use `⟨lemmaRData S hS hD h2 hGle hβ Cs hG0 ⟨0, by omega⟩ Std hStd ?_⟩` and prove the remaining obligations. Rewrite using `[hplsum, sum_aMk]`. Conclude with `hstd`.
+-/
 theorem preAt_of {C0 CYb Cde Ck CD Cb CE1 CE2 Cc : ℝ} (hroom : RoomAt C0 CYb Cde Ck CD Cb CE1 CE2 Cc) :
     PreAt C0 CYb Cde Ck CD Cb CE1 CE2 Cc := by
   intro X _ _ O _ _ _ _ S hS hD hH hc mm _ n hn1 hnc β hβ L G Cs hG0 Std hStd
@@ -135,6 +156,9 @@ theorem preAt_of {C0 CYb Cde Ck CD Cb CE1 CE2 Cc : ℝ} (hroom : RoomAt C0 CYb C
   rw [hplsum, sum_aMk]
   exact hstd
 
+/- English proof (translation)
+The claim follows from `TransportedAlt.mono (fun _ _ _ _ _ _ _ _ _ _ h => preAt_of h) restRoom`.
+-/
 theorem restPre : RestPre := TransportedAlt.mono (fun _ _ _ _ _ _ _ _ _ _ h => preAt_of h) restRoom
 
 end Formalism.MainNotions.ColumnSystems.Pf

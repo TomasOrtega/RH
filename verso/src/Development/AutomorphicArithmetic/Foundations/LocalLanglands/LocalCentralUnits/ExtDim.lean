@@ -16,6 +16,11 @@ variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAl
   {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w}
   {a : Weil h →* (w.adicCompletion E)ˣ} {ha : IsLocalArtin h a} {r : IrrGL (w.adicCompletion E) → WD h}
 
+/- English proof (translation)
+Rewrite using `[(GlobalTheory.WeilDeligne.charPol_lpTw_lpChar_lpSp E Ω A w h (r Δ.first)).2 Δ.len σ, Segment.ms, Multiset.map_map]`. Establish `h1 : ∀ j : Fin Δ.len, (r (Δ.term j)).charPol σ = ((r Δ.first).lpTw ((j : ℕ) : ℝ)).charPol σ`. Introduce `j`. Rewrite using `[Segment.term, show (((j : ℕ) : ℂ)) = ((((j : ℕ) : ℝ)) : ℂ) by push_cast; rfl, H.nu _ Δ.isCusp_first]`. Express the relevant statement in the definitionally equal form `_ = ∏ j : Fin Δ.len, (fun y => (r y).charPol σ) (Δ.term j)`.
+
+Simplify using `only [h1]`. Rewrite using `[Fin.prod_univ_eq_prod_range (fun j => ((r Δ.first).lpTw (j : ℝ)).charPol σ) Δ.len]`. Both sides reduce to the same expression.
+-/
 private theorem charPol_seg (H : CuspT a ha r) (Δ : Segment (w.adicCompletion E)) (σ : Weil h) :
     (((r Δ.first).lpTw (((Δ.len : ℝ) - 1) / 2)).lpChar (WD.lpSp h Δ.len)).charPol σ
       = (Δ.ms.map fun y => (r y).charPol σ).prod := by
@@ -28,6 +33,13 @@ private theorem charPol_seg (H : CuspT a ha r) (Δ : Segment (w.adicCompletion E
   rw [Fin.prod_univ_eq_prod_range (fun j => ((r Δ.first).lpTw (j : ℝ)).charPol σ) Δ.len]
   rfl
 
+/- English proof (translation)
+Use `haveI : CharZero (w.adicCompletion E) := charZero_of_injective_algebraMap (algebraMap E _).injective`. Take `⟨𝔪, hm⟩` from `Pr.exh (w.adicCompletion E) x`. Establish `hs : HasSupport x.rep (msupp 𝔪)` using `GlobalTheory.LocGL.hasSupport_msupp_of_isL Pr.zel _ 𝔪 x hm`. Establish `hcp : ∀ σ, (rc x).charPol σ = ((msupp 𝔪).map fun y => (r y).charPol σ).prod`. Introduce `σ`.
+
+Rewrite using `[L 𝔪.toList x (by rw [Multiset.coe_toList]; exact hm), segSum, CuspExt.charPol_sumList, List.map_map, msupp, Multiset.map_bind, Multiset.prod_bind]`. Establish `hl : ∀ (l : List (Segment (w.adicCompletion E))) (F : Segment (w.adicCompletion E) → ℂ[X]), (l.map F).prod = ((l : Multiset _).map F).prod` using `fun l F => by rw [Multiset.map_coe, Multiset.prod_coe]`. Rewrite using `[hl, Multiset.coe_toList]`. Conclude with `congrArg Multiset.prod (Multiset.map_congr rfl fun Δ _ => charPol_seg H Δ σ)`. Use `⟨?_, msupp 𝔪, hs, fun y hy => hs.isCusp hy, hcp⟩` and prove the remaining obligations.
+
+Rewrite using `[← WD.charPol_natDegree (rc x) 1, hcp, Polynomial.natDegree_multiset_prod_of_monic _ (fun f hf => by obtain ⟨y, -, rfl⟩ := Multiset.mem_map.1 hf; exact WD.charPol_monic _ _), Multiset.map_map]`. Establish `h2 : ((msupp 𝔪).map ((fun p : ℂ[X] => p.natDegree) ∘ fun y => (r y).charPol 1)) = (msupp 𝔪).map Sigma.fst` using `Multiset.map_congr rfl fun y hy => by`. Simplify using `only [Function.comp_apply, WD.charPol_natDegree]`. Conclude with `H.dim y (hs.isCusp hy)`. Rewrite using `[h2, hs.sum_fst, Fintype.card_fin]`.
+-/
 private theorem dim_charPol {rc : IrrGL (w.adicCompletion E) → WD h} (H : CuspT a ha r) (L : IsLExt r rc)
     (x : IrrGL (w.adicCompletion E)) :
     (rc x).lpDim = x.1 ∧ ∃ s, HasSupport x.rep s ∧ (∀ y ∈ s, y.IsCusp) ∧
@@ -54,6 +66,15 @@ private theorem dim_charPol {rc : IrrGL (w.adicCompletion E) → WD h} (H : Cusp
 
 end UpperTheory.Zero.LLC
 
+/- English proof (translation)
+Introduce `E Ω _ _ _ _ _ A w h a ha r rc H L x`. Use `haveI : CharZero (w.adicCompletion E) := charZero_of_injective_algebraMap (algebraMap E _).injective`. Take `⟨hd, s, hs, hc, hcp⟩` from `dim_charPol H L x`. Use `⟨⟨hd, s, hs, hc, hcp⟩, fun ω hω σ => ?_⟩` and prove the remaining obligations. Take `⟨f, hf, hprod⟩` from `GlobalTheory.T.centralCharacter_eq_prod_supercuspidalSupport Pr.bz (w.adicCompletion E) x s ω hs hω`.
+
+Establish `he : ((rc x).eig σ).prod = (s.map fun y => ((r y).eig σ).prod).prod`. Rewrite using `[WD.eig, hcp, prod_roots_prod_of_monic s (fun y => (r y).charPol σ) fun y => WD.charPol_monic _ _]`. Both sides reduce to the same expression. Establish `hw : ((ω (a σ) : ℂˣ) : ℂ) = (s.map fun y => ((f y (a σ) : ℂˣ) : ℂ)).prod`. Rewrite using `[hprod, ← Units.coeHom_apply, map_multiset_prod, Multiset.map_map]`.
+
+Both sides reduce to the same expression. Prove the components needed by the constructor for the conclusion. Establish `hn : ∀ m : Multiset ℂ, ‖m.prod‖ = (m.map fun z => ‖z‖).prod` using `fun m => map_multiset_prod (normHom (α := ℂ)) m`. Rewrite using `[he, hw, hn, hn, Multiset.map_map, Multiset.map_map]`. Conclude with `congrArg Multiset.prod (Multiset.map_congr rfl fun y hy => H.absCentral y (hc y hy) (f y) (hf y hy) σ)`.
+
+Introduce and unpack `⟨s', hs', hg⟩`. Take `rfl` from `(goodSeg (w.adicCompletion E)).2.2 x _ _ hs' hs`. Rewrite using `[he, hw]`. Conclude with `congrArg Multiset.prod (Multiset.map_congr rfl fun y hy => H.central y (hc y hy) (hg y hy) (f y) (hf y hy) σ)`.
+-/
 theorem UpperTheory.Zero.LLC.extDim :
     UpperTheory.Zero.LLC.ExtDim := by
   intro E Ω _ _ _ _ _ A w h a ha r rc H L x

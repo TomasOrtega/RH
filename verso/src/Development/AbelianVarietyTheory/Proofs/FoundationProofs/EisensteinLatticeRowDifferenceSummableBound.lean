@@ -9,6 +9,9 @@ open scoped MatrixGroups Real ComplexConjugate Manifold ModularForm
 noncomputable section
 namespace GlobalTheory.RowBd
 
+/- English proof (translation)
+Establish `h` using `EisensteinSeries.summable_one_div_norm_rpow (k := 3) (by norm_num)`. Rewrite `h` using `[← (finTwoArrowEquiv ℤ).symm.summable_iff]`. Use `h.congr fun p => ?_` and prove the remaining obligations. Simplify using `[EisensteinSeries.norm_eq_max_natAbs, Prod.norm_def, Int.norm_eq_abs]`.
+-/
 lemma summ3 : Summable (fun x : ℤ × ℤ => ‖x‖ ^ (-(3:ℝ))) := by
   have h := EisensteinSeries.summable_one_div_norm_rpow (k := 3) (by norm_num)
   rw [← (finTwoArrowEquiv ℤ).symm.summable_iff] at h
@@ -21,6 +24,19 @@ def shear (n : ℤ) : ℤ × ℤ ≃ ℤ × ℤ where
   left_inv x := by ext <;> simp
   right_inv x := by ext <;> simp
 
+/- English proof (translation)
+Use `set m := min 1 τ.im`. Establish `hm1 : m ≤ 1` using `min_le_left _ _`. Establish `hmy : m ≤ τ.im` using `min_le_right _ _`. Establish `hm0 : 0 < m` using `lt_min one_pos τ.im_pos`. Use `set z : ℂ := (c : ℂ) * τ + d`.
+
+Establish `hre : z.re = c * τ.re + d` using `by simp [z]`. Establish `him : z.im = c * τ.im` using `by simp [z]`. Establish `h1 : |z.re| ≤ ‖z‖` using `Complex.abs_re_le_norm z`. Establish `h2 : |z.im| ≤ ‖z‖` using `Complex.abs_im_le_norm z`. Establish `hfl0 : (0:ℝ) ≤ τ.re - ⌊τ.re⌋` using `by have := Int.floor_le τ.re; linarith`.
+
+Establish `hfl1 : τ.re - ⌊τ.re⌋ < 1` using `by have := Int.lt_floor_add_one τ.re; linarith`. Establish `hc : m * |(c:ℝ)| ≤ ‖z‖`. Rewrite `h2` using `[him, abs_mul, abs_of_pos τ.im_pos]`. Use polynomial arithmetic with `[abs_nonneg (c:ℝ)]`. Establish `he : |((d + ⌊τ.re⌋ * c : ℤ) : ℝ)| ≤ |z.re| + |(c:ℝ)|`.
+
+Establish `: ((d + ⌊τ.re⌋ * c : ℤ) : ℝ) = z.re - c * (τ.re - ⌊τ.re⌋)` using `by rw [hre]; push_cast; ring`. Rewrite using `[this]`. Establish `ha` using `abs_sub z.re (c * (τ.re - ⌊τ.re⌋))`. Establish `hb : |(c:ℝ) * (τ.re - ⌊τ.re⌋)| ≤ |(c:ℝ)|`. Rewrite using `[abs_mul, abs_of_nonneg hfl0]`.
+
+Use polynomial arithmetic with `[abs_nonneg (c:ℝ)]`. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `only [shear, Equiv.coe_fn_mk, Prod.norm_def, Int.norm_eq_abs]`. Rewrite using `[mul_max_of_nonneg _ _ hm0.le, max_le_iff]`. Prove the components needed by the constructor for the conclusion.
+
+Use polynomial arithmetic with `[norm_nonneg z]`. Use polynomial arithmetic with `[abs_nonneg (c:ℝ), abs_nonneg z.re]`.
+-/
 lemma low (τ : ℍ) (c d : ℤ) :
     min 1 τ.im * ‖shear ⌊τ.re⌋ (c, d)‖ ≤ 2 * ‖(c : ℂ) * τ + d‖ := by
   set m := min 1 τ.im
@@ -51,6 +67,17 @@ lemma low (τ : ℍ) (c d : ℤ) :
   · nlinarith [norm_nonneg z]
   · nlinarith [abs_nonneg (c:ℝ), abs_nonneg z.re]
 
+/- English proof (translation)
+Establish `hB : 1 ≤ (μ ^ (j + 2))⁻¹` using `(one_le_inv₀ (pow_pos hμ0 _)).mpr (pow_le_one₀ hμ0.le hμ1)`. Break down `hz with rfl | hz` into its components or cases. Simplify using `[trm, zero_pow (by omega : j ≠ 0)]`. Check the signs of the components of the expression. Use `set t := ‖z‖ with ht`.
+
+Establish `ht0 : 0 < t` using `hμ0.trans_le hz`. Establish `hn : ‖trm j s z‖ = (t ^ j)⁻¹ * t ^ (-2 * s)`. Simplify using `only [trm, norm_mul, norm_inv, norm_pow, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (Real.rpow_nonneg (norm_nonneg z) _), ht]`. Rewrite using `[hn]`. Break down `le_or_gt 1 t with h1 | h1` into its components or cases.
+
+Establish `a1 : t ^ (-2 * s) ≤ 1` using `Real.rpow_le_one_of_one_le_of_nonpos h1 (by linarith)`. Establish `a2 : (t ^ j)⁻¹ ≤ 1` using `inv_le_one_of_one_le₀ (one_le_pow₀ h1)`. Establish `a3 : 0 ≤ t ^ (-2 * s)` using `Real.rpow_nonneg ht0.le _`. Combine the equalities or inequalities in the displayed calculation. Establish `a1 : t ^ (-2 * s) ≤ t ^ (-2 : ℝ)` using `Real.rpow_le_rpow_of_exponent_ge ht0 h1.le (by linarith)`.
+
+Establish `a3 : t ^ (-2:ℝ) = (t ^ 2)⁻¹` using `by rw [Real.rpow_neg ht0.le]; norm_cast`. Establish `a4 : 0 ≤ (t ^ j)⁻¹` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← a3]`. Conclude with `mul_le_mul_of_nonneg_left a1 a4`.
+
+Use `_ = (t ^ (j + 2))⁻¹ := by rw [pow_add, mul_inv]`. Use `_ ≤ (μ ^ (j + 2))⁻¹ := inv_anti₀ (pow_pos hμ0 _) (pow_le_pow_left₀ hμ0.le hz _)`.
+-/
 lemma trm_le {j : ℕ} (hj : 1 ≤ j) {s : ℝ} (hs0 : 0 ≤ s) (hs1 : s ≤ 1) {μ : ℝ} (hμ0 : 0 < μ)
     (hμ1 : μ ≤ 1) {z : ℂ} (hz : z = 0 ∨ μ ≤ ‖z‖) : ‖trm j s z‖ ≤ (μ ^ (j + 2))⁻¹ := by
   have hB : 1 ≤ (μ ^ (j + 2))⁻¹ := (one_le_inv₀ (pow_pos hμ0 _)).mpr (pow_le_one₀ hμ0.le hμ1)
@@ -78,12 +105,20 @@ lemma trm_le {j : ℕ} (hj : 1 ≤ j) {s : ℝ} (hs0 : 0 ≤ s) (hs1 : s ≤ 1) 
       _ = (t ^ (j + 2))⁻¹ := by rw [pow_add, mul_inv]
       _ ≤ (μ ^ (j + 2))⁻¹ := inv_anti₀ (pow_pos hμ0 _) (pow_le_pow_left₀ hμ0.le hz _)
 
+/- English proof (translation)
+Simplify using `only [dif]`. Rewrite using `[Finset.sum_sub_distrib, Finset.sum_const, Finset.card_range, nsmul_eq_mul, mul_sub, ← mul_assoc, inv_mul_cancel₀ (by exact_mod_cast hL.ne'), one_mul]`.
+-/
 lemma dif_eq {L : ℕ} (hL : 0 < L) (v : ℤ × ℤ) (F : ℤ × ℤ → ℂ) (x : ℤ × ℤ) :
     dif L v F x = (L : ℂ)⁻¹ * ∑ r ∈ Finset.range L, (F x - F (x + (r:ℤ) • v)) := by
   simp only [dif]
   rw [Finset.sum_sub_distrib, Finset.sum_const, Finset.card_range, nsmul_eq_mul, mul_sub,
     ← mul_assoc, inv_mul_cancel₀ (by exact_mod_cast hL.ne'), one_mul]
 
+/- English proof (translation)
+Rewrite using `[dif_eq hL, norm_mul, norm_inv, Complex.norm_natCast]`. Establish `h1` using `norm_sum_le (Finset.range L) (fun r => F x - F (x + (r:ℤ) • v))`. Establish `h2 : ∑ r ∈ Finset.range L, ‖F x - F (x + (r:ℤ) • v)‖ ≤ L * B`. Simplify using `using Finset.sum_le_card_nsmul _ _ _ h`. Rewrite using `[inv_mul_le_iff₀ (by exact_mod_cast hL)]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 lemma dif_le {L : ℕ} (hL : 0 < L) (v : ℤ × ℤ) (F : ℤ × ℤ → ℂ) (x : ℤ × ℤ) (B : ℝ)
     (h : ∀ r ∈ Finset.range L, ‖F x - F (x + (r:ℤ) • v)‖ ≤ B) : ‖dif L v F x‖ ≤ B := by
   rw [dif_eq hL, norm_mul, norm_inv, Complex.norm_natCast]
@@ -93,6 +128,9 @@ lemma dif_le {L : ℕ} (hL : 0 < L) (v : ℤ × ℤ) (F : ℤ × ℤ → ℂ) (x
   rw [inv_mul_le_iff₀ (by exact_mod_cast hL)]
   linarith
 
+/- English proof (translation)
+Rewrite using `[Prod.norm_def, Int.norm_eq_abs, Int.norm_eq_abs]`. Distinguish the cases in `h1 : x.1 = 0`. Establish `h2 : x.2 ≠ 0` using `fun h => hx (Prod.ext h1 h)`. Conclude with `le_max_of_le_right (by exact_mod_cast Int.one_le_abs h2)`. Conclude with `le_max_of_le_left (by exact_mod_cast Int.one_le_abs h1)`.
+-/
 lemma one_le_norm {x : ℤ × ℤ} (hx : x ≠ 0) : 1 ≤ ‖x‖ := by
   rw [Prod.norm_def, Int.norm_eq_abs, Int.norm_eq_abs]
   by_cases h1 : x.1 = 0
@@ -102,17 +140,88 @@ lemma one_le_norm {x : ℤ × ℤ} (hx : x ≠ 0) : 1 ≤ ‖x‖ := by
 
 def g (x : ℤ × ℤ) : ℝ := ‖x‖ ^ (-(3:ℝ)) + if x = 0 then 1 else 0
 
+/- English proof (translation)
+The claim follows from `summ3.add (hasSum_ite_eq (0 : ℤ × ℤ) (1:ℝ)).summable`.
+-/
 lemma g_summ : Summable g := summ3.add (hasSum_ite_eq (0 : ℤ × ℤ) (1:ℝ)).summable
 
+/- English proof (translation)
+Apply the tactic sequence `unfold g; have := Real.rpow_nonneg (norm_nonneg x) (-(3:ℝ)); split_ifs <;> linarith`.
+-/
 lemma g_nonneg (x : ℤ × ℤ) : 0 ≤ g x := by
   unfold g; have := Real.rpow_nonneg (norm_nonneg x) (-(3:ℝ)); split_ifs <;> linarith
 
+/- English proof (translation)
+Simplify using `[g, Real.zero_rpow (by norm_num : -(3:ℝ) ≠ 0)]`.
+-/
 lemma g_zero : g 0 = 1 := by simp [g, Real.zero_rpow (by norm_num : -(3:ℝ) ≠ 0)]
 
+/- English proof (translation)
+Simplify using `only [g, if_neg hx, add_zero]`. Rewrite using `[Real.rpow_neg (norm_nonneg x)]`. Use `norm_cast`.
+-/
 lemma g_ne {x : ℤ × ℤ} (hx : x ≠ 0) : g x = (‖x‖ ^ 3)⁻¹ := by
   simp only [g, if_neg hx, add_zero]
   rw [Real.rpow_neg (norm_nonneg x)]; norm_cast
 
+/- English proof (translation)
+Introduce `j L hj hL`. Take `⟨C1, hC1⟩` from `GlobalTheory.T.norm_trm_sub_trm_add_le j`. Use `set C1' := max C1 0 with hC1'`. Establish `hC1'0 : 0 ≤ C1'` using `le_max_right _ _`. Establish `hLr : (1:ℝ) ≤ L` using `by exact_mod_cast hL`.
+
+Use `set K : ℝ := 2 ^ (j + 3) * (4 * L) ^ 3 + 8 * C1' * L with hK`. Establish `hK0 : 0 ≤ K` using `by positivity`. Use `set S : ℝ := ∑' x : ℤ × ℤ, g x`. Establish `hS : 0 ≤ S` using `tsum_nonneg g_nonneg`. Use `⟨K * S, j + 5, fun τ => ?_⟩` and prove the remaining obligations.
+
+Use `set m := min 1 τ.im with hmdef`. Establish `hm0 : 0 < m` using `lt_min one_pos τ.im_pos`. Establish `hm1 : m ≤ 1` using `min_le_left _ _`. Use `set e := shear ⌊τ.re⌋ with he`. Use `set M : ℝ := (m ^ (j + 5))⁻¹ with hM`.
+
+Use `⟨fun x => K * M * g (e x), ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(e.summable_iff.mpr g_summ).mul_left _`. Rewrite using `[tsum_mul_left, e.tsum_eq g]`. Establish `hMb : M ≤ τ.im ^ (j + 5) + (τ.im ^ (j + 5))⁻¹`. Break down `le_total 1 τ.im with h | h` into its components or cases.
+
+Establish `h' : m = 1` using `min_eq_left h`. Use `one_le_pow₀ h (n := j + 5)` as an intermediate fact. Establish `: 0 ≤ (τ.im ^ (j + 5))⁻¹` using `by positivity`. Rewrite using `[hM, h', one_pow, inv_one]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `h' : m = τ.im` using `min_eq_right h`. Use `pow_pos τ.im_pos (j + 5)` as an intermediate fact. Rewrite using `[hM, h']`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation.
+
+Introduce `s x hs0 hs1 set F : ℤ × ℤ → ℂ := fun y : ℤ × ℤ => trm j s ((y.1 : ℂ) * τ + y.2) with hF`. Establish `hlow : ∀ y : ℤ × ℤ, m * ‖e y‖ ≤ 2 * ‖(y.1 : ℂ) * τ + y.2‖` using `fun y => low τ y.1 y.2`. Establish `hez : ∀ y : ℤ × ℤ, e y = 0 → y = 0` using `fun y hy => by`. Simplify using `only [he, shear, Equiv.coe_fn_mk, Prod.ext_iff, Prod.fst_zero, Prod.snd_zero] at hy ⊢`. Take `⟨h1, h2⟩` from `hy`.
+
+Rewrite `h2` using `[h1, mul_zero, add_zero]`. Conclude with `⟨h1, h2⟩`. Establish `hFb : ∀ y, ‖F y‖ ≤ ((m / 2) ^ (j + 2))⁻¹`. Introduce `y`. Use `trm_le (by omega) hs0 hs1 (by positivity) (by linarith) ?_` and prove the remaining obligations.
+
+Distinguish the cases in `hy : y = 0`. Use `left`. Simplify using `[hy]`. Use `right`. Establish `h1 : 1 ≤ ‖e y‖` using `one_le_norm (fun h => hy (hez y h))`.
+
+Use `hlow y` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish `htr : ∀ r : ℕ, F (x + (r:ℤ) • ((0:ℤ), (1:ℤ))) = trm j s (((x.1 : ℂ) * τ + x.2) + (r:ℂ))`. Introduce `r`. Simplify using `only [hF]`.
+
+Use `congr 1`. Simplify using the standard rewrite rules. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hM' : M = (m ^ (j + 2))⁻¹ * (m ^ 3)⁻¹`.
+
+Rewrite using `[hM, ← mul_inv, ← pow_add]`. Establish `hm3 : 1 ≤ (m ^ 3)⁻¹` using `(one_le_inv₀ (pow_pos hm0 _)).mpr (pow_le_one₀ hm0.le hm1)`. Establish `ha0 : 0 < (m ^ (j + 2))⁻¹` using `by positivity`. Establish `hB0 : ((m / 2) ^ (j + 2))⁻¹ = 2 ^ (j + 2) * (m ^ (j + 2))⁻¹`. Rewrite using `[div_pow, inv_div, div_eq_mul_inv]`.
+
+Use `set t := ‖(x.1 : ℂ) * τ + x.2‖ with ht`. Use `set P := ‖e x‖ with hP`. Establish `hxl : m * P ≤ 2 * t` using `hlow x`. Establish `hP0 : 0 ≤ P` using `norm_nonneg _`. Break down `le_or_gt (2 * (L:ℝ)) t with hA | hB` into its components or cases.
+
+Establish `ht1 : 1 ≤ t` using `by linarith`. Establish `ht0 : 0 < t` using `by linarith`. Establish `hx0 : e x ≠ 0`. Introduce `h0`. Establish `hx : x = 0` using `hez x h0`.
+
+Simplify using `[ht, hx] at hA`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hP1 : 1 ≤ P` using `one_le_norm hx0`. Establish `hstep : ∀ r ∈ Finset.range L, ‖F x - F (x + (r:ℤ) • ((0:ℤ), (1:ℤ)))‖ ≤ C1' * L * (t ^ 3)⁻¹`. Introduce `r hr`.
+
+Establish `hrL : (r:ℝ) ≤ L` using `by exact_mod_cast (Finset.mem_range.mp hr).le`. Establish `hx' : F x = trm j s ((x.1 : ℂ) * τ + x.2)` using `rfl`. Rewrite using `[htr, hx']`. Establish `hra : ‖(r:ℂ)‖ = r` using `by simp`. Establish `h` using `hC1 s ((x.1 : ℂ) * τ + x.2) (r:ℂ) hs0 hs1 ht1 (by rw [hra]; linarith)`.
+
+Rewrite `h` using `[hra, ← ht]`. Establish `hpow : t ^ 3 ≤ t ^ (j + 1)` using `pow_le_pow_right₀ ht1 (by omega)`. Establish `hr0 : (0:ℝ) ≤ r` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Use `(dif_le hL _ F x _ hstep).trans ?_` and prove the remaining obligations.
+
+Use `show C1' * L * (t ^ 3)⁻¹ ≤ K * M * g (e x)`. Rewrite using `[g_ne hx0, hM']`. Establish `hmP : 0 < m * P` using `by positivity`. Establish `h8 : (t ^ 3)⁻¹ ≤ 8 * ((m * P) ^ 3)⁻¹`. Establish `h1 : (m * P) ^ 3 ≤ (2 * t) ^ 3` using `pow_le_pow_left₀ hmP.le hxl 3`.
+
+Establish `h2 : ((2 * t) ^ 3)⁻¹ ≤ ((m * P) ^ 3)⁻¹` using `inv_anti₀ (by positivity) h1`. Rewrite `h2` using `[mul_pow, mul_inv]`. Evaluate the numerical expressions using `at h2`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hmp : ((m * P) ^ 3)⁻¹ = (m ^ 3)⁻¹ * (P ^ 3)⁻¹` using `by rw [mul_pow, mul_inv]`.
+
+Establish `hq0 : 0 ≤ (m ^ 3)⁻¹ * (P ^ 3)⁻¹` using `by positivity`. Establish `hK1 : 8 * C1' * L ≤ K`. Establish `: (0:ℝ) ≤ 2 ^ (j + 3) * (4 * L) ^ 3` using `by positivity`. Rewrite using `[hK]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← hmp]; exact mul_le_mul_of_nonneg_left h8 (by positivity)`. Use `_ = (8 * C1' * L) * 1 * ((m ^ 3)⁻¹ * (P ^ 3)⁻¹) := by ring`. Use `_ ≤ K * (m ^ (j + 2))⁻¹ * ((m ^ 3)⁻¹ * (P ^ 3)⁻¹) := by gcongr`. Conclude with `(one_le_inv₀ (pow_pos hm0 _)).mpr (pow_le_one₀ hm0.le hm1)`.
+
+Use `_ = K * ((m ^ (j + 2))⁻¹ * (m ^ 3)⁻¹) * (P ^ 3)⁻¹ := by ring`. Establish `hstep : ∀ r ∈ Finset.range L, ‖F x - F (x + (r:ℤ) • ((0:ℤ), (1:ℤ)))‖ ≤ 2 * ((m / 2) ^ (j + 2))⁻¹`. Introduce `r _`. Establish `h1` using `hFb x`. Establish `h2` using `hFb (x + (r:ℤ) • ((0:ℤ), (1:ℤ)))`.
+
+Conclude with `(norm_sub_le _ _).trans (by linarith)`. Use `(dif_le hL _ F x _ hstep).trans ?_` and prove the remaining obligations. Use `show 2 * ((m / 2) ^ (j + 2))⁻¹ ≤ K * M * g (e x)`. Rewrite using `[hB0, hM']`. Establish `hK2 : 2 ^ (j + 3) * (4 * L) ^ 3 ≤ K`.
+
+Establish `: 0 ≤ 8 * C1' * L` using `by positivity`. Rewrite using `[hK]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2j : (2:ℝ) * 2 ^ (j + 2) = 2 ^ (j + 3)` using `by ring`. Distinguish the cases in `hx0 : e x = 0`.
+
+Rewrite using `[hx0, g_zero]`. Establish `h4 : (1:ℝ) ≤ (4 * L) ^ 3` using `one_le_pow₀ (by linarith)`. Establish `hK3 : 2 ^ (j + 3) ≤ K`. Establish `: (2:ℝ) ^ (j + 3) * 1 ≤ 2 ^ (j + 3) * (4 * L) ^ 3` using `by gcongr`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← h2j]`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ K * (m ^ (j + 2))⁻¹ * (m ^ 3)⁻¹ := by gcongr`. Use `_ = _ := by ring`.
+
+Rewrite using `[g_ne hx0]`. Establish `hP1 : 1 ≤ P` using `one_le_norm hx0`. Establish `hmP : 0 < m * P` using `by positivity`. Establish `hmPL : (m * P) ^ 3 ≤ (4 * L) ^ 3` using `pow_le_pow_left₀ hmP.le (by linarith) 3`. Establish `hinv : ((4 * (L:ℝ)) ^ 3)⁻¹ ≤ (m ^ 3)⁻¹ * (P ^ 3)⁻¹`.
+
+Rewrite using `[← mul_inv, ← mul_pow]; exact inv_anti₀ (by positivity) hmPL`. Establish `h4 : (0:ℝ) < (4 * L) ^ 3` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← h2j]`. Clear the denominators using the available nonvanishing facts.
+
+Use `_ ≤ K * (m ^ (j + 2))⁻¹ * ((m ^ 3)⁻¹ * (P ^ 3)⁻¹) := by gcongr`. Use `_ = K * ((m ^ (j + 2))⁻¹ * (m ^ 3)⁻¹) * (P ^ 3)⁻¹ := by ring`.
+-/
 theorem rowbd : ∀ j L : ℕ, 2 ≤ j → 0 < L → ∃ (C : ℝ) (A : ℕ), ∀ τ : ℍ, ∃ u : ℤ × ℤ → ℝ,
     Summable u ∧ ∑' x, u x ≤ C * (τ.im ^ A + (τ.im ^ A)⁻¹) ∧
     ∀ (s : ℝ) (x : ℤ × ℤ), 0 ≤ s → s ≤ 1 →

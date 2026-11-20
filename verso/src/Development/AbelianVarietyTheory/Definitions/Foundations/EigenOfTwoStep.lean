@@ -26,6 +26,11 @@ namespace SSAdm
 
 variable {R : Type} [CommRing R] {A : Set Letter}
 
+/- English proof (translation)
+Proceed by induction on `hP using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Take `⟨T, hT, rfl⟩` from `hx`. Simplify using `[h T hT]`. Consider the case `algebraMap r => simp`.
+
+Consider the case `add x y _ _ hx hy => simp [hx, hy]`. Consider the case `mul x y _ _ hx hy => simp [hx, hy]`.
+-/
 theorem lift_congr {B : Type} [Semiring B] [Algebra R B] {f g : Letter → B} (h : ∀ T ∈ A, f T = g T)
     {P : FreeAlgebra R Letter} (hP : P ∈ Algebra.adjoin R (FreeAlgebra.ι R '' A)) :
     FreeAlgebra.lift R f P = FreeAlgebra.lift R g P := by
@@ -45,6 +50,19 @@ variable {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ} in
 variable {R : Type} [CommRing R] {A : Set _root_.GlobalTheory.KZ.Letter} in
 variable {M : Type} [AddCommGroup M] [Module R M] in
 
+/- English proof (translation)
+Establish `key : ∀ P ∈ Algebra.adjoin R (FreeAlgebra.ι R '' A), (∀ y ∈ W, FreeAlgebra.lift R f P y ∈ W) ∧ FreeAlgebra.lift R f P x - FreeAlgebra.lift R lam P • x ∈ W`. Introduce `P hP`. Proceed by induction on `hP using Algebra.adjoin_induction with`. Consider the case `mem P hP`. Take `⟨T, hT, rfl⟩` from `hP`.
+
+Simplify using `only [FreeAlgebra.lift_ι_apply]`. Conclude with `⟨hW T hT, hx T hT⟩`. Consider the case `algebraMap r`. Simplify using `only [AlgHom.commutes, Module.algebraMap_end_apply, Algebra.algebraMap_self, RingHom.id_apply, sub_self]`. Conclude with `⟨fun y hy => W.smul_mem r hy, W.zero_mem⟩`.
+
+Consider the case `add P Q _ _ hP hQ`. Use `⟨fun y hy => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, LinearMap.add_apply]`. Conclude with `W.add_mem (hP.1 y hy) (hQ.1 y hy)`. Use `W.add_mem hP.2 hQ.2 using 1` and compare the differences between its conclusion and the goal.
+
+Simplify using `only [map_add, LinearMap.add_apply, add_smul]`. Normalize the expressions using the abelian group laws. Consider the case `mul P Q _ _ hP hQ`. Use `⟨fun y hy => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, Module.End.mul_apply]`.
+
+Conclude with `hP.1 _ (hQ.1 y hy)`. Use `W.add_mem (hP.1 _ hQ.2) (W.smul_mem (FreeAlgebra.lift R lam Q) hP.2) using 1` and compare the differences between its conclusion and the goal. Simplify using `only [map_mul, Module.End.mul_apply, map_sub, LinearMap.map_smul, smul_sub, smul_smul]`. Rewrite using `[mul_comm (FreeAlgebra.lift R lam Q)]`. Normalize the expressions using the abelian group laws.
+
+Conclude with `(key P hP).2`.
+-/
 theorem _root_.GlobalTheory.KZ.SSAdm.lift_sub_smul_mem {f : _root_.GlobalTheory.KZ.Letter → Module.End R M}
     {lam : _root_.GlobalTheory.KZ.Letter → R} {W : Submodule R M}
     (hW : ∀ T ∈ A, ∀ x ∈ W, f T x ∈ W) {x : M} (hx : ∀ T ∈ A, f T x - lam T • x ∈ W)
@@ -81,6 +99,15 @@ theorem _root_.GlobalTheory.KZ.SSAdm.lift_sub_smul_mem {f : _root_.GlobalTheory.
         abel
   exact (key P hP).2
 
+/- English proof (translation)
+Set `W : Submodule R M` to `⨅ T ∈ A, Z.comap (f T - lam T • (1 : Module.End R M))`. Establish `hmem : ∀ y, y ∈ W ↔ ∀ T ∈ A, (f T - lam T • (1 : Module.End R M)) y ∈ Z`. Introduce `y`. Simplify using `only [W, Submodule.mem_iInf, Submodule.mem_comap]`. Establish `hZW : ∀ z ∈ Z, z ∈ W` using `fun z hz => (hmem z).2 fun T hT => by`.
+
+Simplify using `using Z.sub_mem (hZ T hT z hz) (Z.smul_mem _ hz)`. Establish `hW : ∀ T ∈ A, ∀ y ∈ W, f T y ∈ W` using `fun T hT y hy => by`. Establish `h` using `W.add_mem (hZW _ ((hmem y).1 hy T hT)) (W.smul_mem (lam T) hy)`. Simplify using `using h`. Establish `hx' : ∀ T ∈ A, f T x - lam T • x ∈ W` using `fun T hT => (hmem _).2 fun S hS => by`.
+
+Simplify using `using hx S hS T hT`. Establish `h2` using `lift_sub_smul_mem hW hx' hP`. Rewrite `h2` using `[h1, one_smul]`. Establish `h3` using `W.sub_mem ((hmem _).2 hPx) h2`. Rewrite `h3` using `[sub_sub_cancel]`.
+
+Conclude with `(hmem x).1 h3`.
+-/
 theorem eigen_of_two_step {f : Letter → Module.End R M} {lam : Letter → R} {Z : Submodule R M}
     (hZ : ∀ T ∈ A, ∀ z ∈ Z, f T z ∈ Z) {P : FreeAlgebra R Letter}
     (hP : P ∈ Algebra.adjoin R (FreeAlgebra.ι R '' A)) (h1 : FreeAlgebra.lift R lam P = 1) {x : M}
@@ -106,6 +133,11 @@ theorem eigen_of_two_step {f : Letter → Module.End R M} {lam : Letter → R} {
 
 end SSAdm
 
+/- English proof (translation)
+Establish `key : ∀ {a b : Letter → ℂ}, (∀ T, admitted N l T → a T = b T) → SSPotA N l w a → SSPotA N l w b`. Introduce and unpack `a b hab ⟨P, hP, h1, h2⟩`. Use `⟨P, hP, ?_, fun F hF T hT => ?_⟩` and prove the remaining obligations. Rewrite using `[← SSAdm.lift_congr (A := {T | admitted N l T}) hab hP, h1]`. Rewrite using `[← hab T hT]`.
+
+Conclude with `h2 F hF T hT`. Conclude with `⟨key h, key fun T hT => (h T hT).symm⟩`.
+-/
 theorem SSPotA_congr {N l w : ℕ} {lam lam' : Letter → ℂ} (h : ∀ T, admitted N l T → lam T = lam' T) :
     SSPotA N l w lam ↔ SSPotA N l w lam' := by
   have key : ∀ {a b : Letter → ℂ}, (∀ T, admitted N l T → a T = b T) → SSPotA N l w a → SSPotA N l w b := by
@@ -115,6 +147,9 @@ theorem SSPotA_congr {N l w : ℕ} {lam lam' : Letter → ℂ} (h : ∀ T, admit
     · rw [← hab T hT]; exact h2 F hF T hT
   exact ⟨key h, key fun T hT => (h T hT).symm⟩
 
+/- English proof (translation)
+Take `⟨P, hP, h1, hk⟩` from `h`. Introduce `T hT`. Use `SSAdm.eigen_of_two_step (A := {T | admitted N l T}) (Z := ⊥) (f := X.opV N l E) (lam := lam) (fun T _ z hz => by rw [(Submodule.mem_bot E).1 hz, map_zero]; exact Submodule.zero_mem _) hP h1 (x := x) (fun T hT => (Submodule.mem_bot E).2 (hk x hx T hT)) (fun S hS T hT => (Submodule …` as an intermediate fact. Rewrite `this` using `[Submodule.mem_bot, LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply]`. Conclude with `sub_eq_zero.1 this`.
+-/
 theorem Tower.SSBA.eigen_of_two_step {X : Tower Ω ε} {N l w : ℕ} [Fact l.Prime] {E : Type} [Field E]
     [Algebra ℤ_[l] E] {lam : Letter → E} (h : X.SSBA N l w E lam) {x : E ⊗[ℤ_[l]] X.Fn l} (hx : x ∈ X.VB N l w E)
     (h2 : ∀ S, admitted N l S → ∀ T, admitted N l T →
@@ -130,13 +165,22 @@ theorem Tower.SSBA.eigen_of_two_step {X : Tower Ω ε} {N l w : ℕ} [Fact l.Pri
   rw [Submodule.mem_bot, LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply] at this
   exact sub_eq_zero.1 this
 
+/- English proof (translation)
+Introduce `h` and use `Nat.not_prime_one h.1`.
+-/
 example (N l : ℕ) : ¬ admitted N l (Letter.T 1) := fun h => Nat.not_prime_one h.1
 
+/- English proof (translation)
+Simplify using `only [admitted]`. Evaluate the numerical expressions.
+-/
 example : admitted 5 3 (Letter.T 2) ∧ admitted 5 3 Letter.U ∧ admitted 5 3 (Letter.D 2) ∧
     ¬ admitted 5 3 (Letter.T 3) ∧ ¬ admitted 5 3 (Letter.T 5) ∧ ¬ admitted 5 3 (Letter.D 5) := by
   simp only [admitted]
   norm_num
 
+/- English proof (translation)
+Use `SSPotA_congr fun T hT => ?_` and prove the remaining obligations. Use `split`. Conclude with `absurd hT.1 Nat.not_prime_one`. Both sides reduce to the same expression.
+-/
 example (N l w : ℕ) (lam : Letter → ℂ) (c : ℂ) :
     SSPotA N l w lam ↔
       SSPotA N l w (fun T => match T with | Letter.T 1 => c | T => lam T) := by
@@ -145,6 +189,11 @@ example (N l w : ℕ) (lam : Letter → ℂ) (c : ℂ) :
   · exact absurd hT.1 Nat.not_prime_one
   · rfl
 
+/- English proof (translation)
+Introduce and unpack `⟨P, hP, h1, hk⟩`. Establish `hcase : ∀ T, admitted N l T → f T = 0 ∨ f T = LinearMap.inl ℂ ℂ ℂ ∘ₗ LinearMap.snd ℂ ℂ ℂ` using `fun T hT => by`. Distinguish the cases in `h : T = Letter.U`. Conclude with `Or.inr (h ▸ hU)`. Conclude with `Or.inl (hf T hT h)`.
+
+Use `SSAdm.eigen_of_two_step (A := {T | admitted N l T}) (Z := ⊥) (f := f) (lam := lam) (fun T _ z hz => by rw [(Submodule.mem_bot ℂ).1 hz, map_zero]; exact Submodule.zero_mem _) hP h1 (x := (0, 1)) (fun T hT => (Submodule.mem_bot ℂ).2 (hk _ T hT)) (fun S hS T hT => by` as an intermediate fact. Apply the tactic sequence `rcases hcase S hS with a | a <;> rcases hcase T hT with b | b <;> simp [a, b, hl S hS, hl T hT])`. Use the proof step `Letter.U trivial`. Simplify using `[hU, hl Letter.U trivial] at this`.
+-/
 example (N l : ℕ) (f : Letter → Module.End ℂ (ℂ × ℂ)) (lam : Letter → ℂ)
     (hU : f Letter.U = LinearMap.inl ℂ ℂ ℂ ∘ₗ LinearMap.snd ℂ ℂ ℂ)
     (hf : ∀ T, admitted N l T → T ≠ Letter.U → f T = 0) (hl : ∀ T, admitted N l T → lam T = 0) :

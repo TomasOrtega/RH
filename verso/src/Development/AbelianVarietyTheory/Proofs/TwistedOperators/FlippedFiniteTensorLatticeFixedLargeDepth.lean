@@ -15,6 +15,11 @@ noncomputable section
 
 namespace GlobalTheory.RowKFix
 
+/- English proof (translation)
+Introduce `t Φ τ hτ J hJ k hk y v`. Establish `hJ' : 1 ≤ J ∧ J + 1 < D.R.m`. Simplify using `only [idx, List.mem_range'_1] at hJ`. Use linear arithmetic over natural numbers and integers. Take `⟨j, rfl⟩ : ∃ j, J = j + 1` from `⟨J - 1, by omega⟩`.
+
+Establish `hj : j + 1 + 1 < D.R.m` using `hJ'.2`. Take `⟨c₁, c₂, h1, h2, h3⟩` from `GlobalTheory.T.lastRowInnerVertex_vacua_scaled_localProduct ch large₂ F hS hch hsh t Φ j hj k hk`. Conclude with `GlobalTheory.T.weilRep_pair_fixes_flippedTensorSum ch large₂ F hS hch t Φ τ hτ j hj k hk c₁ c₂ h1 h2 h3 y v`.
+-/
 theorem key {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type} {A : FamIn D.what₂.LL Γ Pl0 T D.R.m} {Ks : Type} [Field Ks]
     [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks} (ch : Choice R) (large₂ : SizeData₂ D) (F : Face D A)
     (hS : HidaSetting large₂ R F) (hch : ch.Is) (hsh : ShapeAt ch) : KFix ch := by
@@ -27,6 +32,9 @@ theorem key {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type} {A : Fam
   obtain ⟨c₁, c₂, h1, h2, h3⟩ := GlobalTheory.T.lastRowInnerVertex_vacua_scaled_localProduct ch large₂ F hS hch hsh t Φ j hj k hk
   exact GlobalTheory.T.weilRep_pair_fixes_flippedTensorSum ch large₂ F hS hch t Φ τ hτ j hj k hk c₁ c₂ h1 h2 h3 y v
 
+/- English proof (translation)
+Take `⟨CF0, h⟩` from `GlobalTheory.T.lastRowLatticesGoodPosition_large_depth`. Use `⟨CF0, fun ε CF hCF => ?_⟩` and prove the remaining obligations. Take `⟨x₀, hx⟩` from `h ε CF hCF`. Conclude with `⟨x₀, fun D large₂ he hx' Γ _ _ Pl0 T A Ks _ _ _ R F hS ch hch hsc => key ch large₂ F hS hch (hx D large₂ he hx' Γ Pl0 T A Ks R F hS ch hch hsc)⟩`.
+-/
 theorem kfix : Big fun ch => KFix ch := by
   obtain ⟨CF0, h⟩ := GlobalTheory.T.lastRowLatticesGoodPosition_large_depth
   refine ⟨CF0, fun ε CF hCF => ?_⟩

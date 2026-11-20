@@ -8,6 +8,9 @@ namespace GlobalTheory.UnitLemma.ResDeg
 
 open GlobalTheory.UnitLemma GlobalTheory.UnitLemma.Unr Polynomial
 
+/- English proof (translation)
+Introduce `K B₁ B₂ h₁ h₂ _ i₁ i₂ hl`. Conclude with `card_residueField (B₁.prod B₂) (Prod.ext h₁ h₂) (IsIntegral.pair i₁ i₂) hl`.
+-/
 theorem card_residueField_prod_any : ∀ (K : UQ) (B₁ B₂ : InvAlg K), B₁.g * B₁.σ B₁.g = 1 →
     B₂.g * B₂.σ B₂.g = 1 → (B₁.P * B₂.P).Separable → IsIntegral K.O B₁.g → IsIntegral K.O B₂.g →
     ∀ hl : IsLocalRing (Algebra.adjoin K.O ({(B₁.prod B₂).g} : Set (B₁.prod B₂).A)),

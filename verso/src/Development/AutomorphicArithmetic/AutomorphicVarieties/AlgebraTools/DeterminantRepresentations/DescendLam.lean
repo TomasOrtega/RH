@@ -4,6 +4,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.Deter
 
 open Polynomial UpperTheory.V.W
 
+/- English proof (translation)
+Introduce `n A G _ _ A' _ ι D' hι h`. Use `UpperTheory.V.AlgebraTools.Det.descend ι D' hι fun m g β => ?_` and prove the remaining obligations. Use `(Subring.closure_le (t := ι.range)).2 ?_ (UpperTheory.V.AlgebraTools.Det.amitsurSub D' m g β)` and prove the remaining obligations. Introduce and unpack `a ⟨i, hi, s, rfl⟩`. Conclude with `h i hi s`.
+-/
 theorem UpperTheory.V.AlgebraTools.Det.descendLam :
     ∀ {n : ℕ} {A G : Type} [CommRing A] [Group G] {A' : Type} [CommRing A'] (ι : A →+* A') (D' : GDet n A' G), Function.Injective ι →
     (∀ i ≤ n, ∀ g : G, D'.lam i (MonoidAlgebra.single g 1) ∈ ι.range) → ∃! D : GDet n A G, D.map ι = D' := by

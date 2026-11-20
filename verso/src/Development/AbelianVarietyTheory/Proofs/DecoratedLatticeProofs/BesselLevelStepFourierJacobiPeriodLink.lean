@@ -16,6 +16,11 @@ noncomputable section
 
 namespace GlobalTheory.UnfLink
 
+/- English proof (translation)
+Establish `h1 : ‖ψ a‖ = 1` using `hψ.1.2.1 a`. Establish `h2 : ψ a * star (ψ a) = 1`. Rewrite using `[Complex.star_def, Complex.mul_conj', h1]`. Simplify using the standard rewrite rules. Establish `h3 : ψ a * ψ (-a) = 1` using `by rw [← AddChar.map_add_eq_mul, add_neg_cancel, AddChar.map_zero_eq_one]`.
+
+Establish `h0 : ψ a ≠ 0` using `by intro h; rw [h, zero_mul] at h3; exact zero_ne_one h3`. Conclude with `mul_left_cancel₀ h0 (h2.trans h3.symm)`.
+-/
 theorem star_psi {D : D7} {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) (a : AF D.host.F) :
     star (ψ a) = ψ (-a) := by
   have h1 : ‖ψ a‖ = 1 := hψ.1.2.1 a
@@ -25,11 +30,21 @@ theorem star_psi {D : D7} {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ
   have h0 : ψ a ≠ 0 := by intro h; rw [h, zero_mul] at h3; exact zero_ne_one h3
   exact mul_left_cancel₀ h0 (h2.trans h3.symm)
 
+/- English proof (translation)
+Establish `h : hO S T 0 w = 0` using `by simp [hO]`. Simplify using `[heisO, symplOH, symplO, h]`.
+-/
 theorem heisO_at_zero' {D : D7} (ψ : AddChar (AF D.host.F) ℂ) {S T : HSp D} (w : WO S T) (f : WO S T → ℂ) :
     heisO ψ S T w f 0 = f w := by
   have h : hO S T 0 w = 0 := by simp [hO]
   simp [heisO, symplOH, symplO, h]
 
+/- English proof (translation)
+Introduce `D ψ ρ B J s L' ζ' hz l φ Ξ hφ hΞ`. Use `⟨GlobalTheory.T.besselToFourierJacobi_handedFamily_continuous_automorphic D ψ ρ B J s L' ζ' hz l φ Ξ hφ hΞ, fun G' => ?_⟩` and prove the remaining obligations. Unfold `JacLev.perAll JacLev.per fjAll fjSrcKer`. Use `congr 1`. Use function extensionality and compare the values at `h`.
+
+Use `congr 1`. Use function extensionality and compare the values at `n`. Establish `hk` using `GlobalTheory.T.fourierJacobiKernel_eq_weilRepresentation_apply D ψ J.W J.W₀ B.V₀ B.A B.L ρ J.d B.o B.ζ _ _ s.om₀ s.weil₀ Ξ hΞ`. Take `⟨hp, hc⟩` from `GlobalTheory.T.jacobiActions_match_through_linkMap D ρ ρ B L' ζ' hz l J.W J.W₀ J.d n.1 n.2`. Simplify using `only [fjAllFun, fjSrcKerFun, JacLev.ker, jacS, handBF, hk, Pi.smul_apply, smul_eq_mul, heisO_at_zero', hp, hc]`.
+
+Rewrite using `[star_mul', star_star, star_psi s.weil₀.std]`. Repeatedly rewrite using `[mul_left_comm (φ _) (ψ _)]`. Rewrite using `[integral_const_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem link : ∀ D : D7, LinkLaw D := by
   intro D ψ ρ B J s L' ζ' hz l φ Ξ hφ hΞ
   refine ⟨GlobalTheory.T.besselToFourierJacobi_handedFamily_continuous_automorphic D ψ ρ B J s L' ζ' hz l φ Ξ hφ hΞ, fun G' => ?_⟩

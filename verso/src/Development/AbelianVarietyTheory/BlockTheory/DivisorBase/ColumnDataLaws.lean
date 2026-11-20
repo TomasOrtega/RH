@@ -125,6 +125,9 @@ abbrev σ' : Y.c'.F →+* ℂ := Y.c'.F.val.toRingHom
 abbrev σ : T.Q.c.F →+* ℂ := Y.σ'.comp (incF T.Q.c Y.c' Y.hle)
 
 omit [Group G] [Fintype G] in
+/- English proof (translation)
+The claim follows from `RingHom.ext fun _ => rfl`.
+-/
 theorem σ_eq : Y.σ = T.σ₀ := RingHom.ext fun _ => rfl
 
 abbrev U : Unf (T.Q.Xo ((i : ℕ) + 1)) T.Q.c Y.σ D.R.r := T.U ((i : ℕ) + 1) Y.σ
@@ -149,6 +152,9 @@ def phi (cc : Y.U.Comp → ℂ) (f : Rul (T.Q.Xo ((i : ℕ) + 1)) Y.c') : GA D (
   adel (Wc D i) Y.dict' (muPin (Wc D i) Y.dict' Y.mu cc) (rdU (Y.U' Y.σ') f)
 
 omit [Group G] [Fintype G] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem phi_apply (cc : Y.U.Comp → ℂ) (f : Rul (T.Q.Xo ((i : ℕ) + 1)) Y.c') (x : GA D (Wc D i)) :
     Y.phi cc f x = cc (Y.dict x).1 * Y.mu x * rdU (Y.U' Y.σ') f (Y.dict x).1 (Y.dict x).2 := rfl
 
@@ -178,9 +184,15 @@ def EquivAt : Prop := ∃ cc : Y.U.Comp → ℂ, CUnit cc ∧ Y.LevelEquiv R cc
 
 def EquivFrameAt : Prop := ∃ cc : Y.U.Comp → ℂ, CUnit cc ∧ Y.FrameConst R cc ∧ Y.LevelEquiv R cc
 
+/- English proof (translation)
+The claim follows from `h.imp fun _ hc => ⟨hc.1, hc.2.2⟩`.
+-/
 theorem EquivFrameAt.equivAt (h : Y.EquivFrameAt R) : Y.EquivAt R :=
   h.imp fun _ hc => ⟨hc.1, hc.2.2⟩
 
+/- English proof (translation)
+Introduce `a ha g f hf`. Use `⟨(h a ha g f hf).1, fun κ hκ x => ?_⟩` and prove the remaining obligations. Use `(h a ha g f hf).2 κ hκ x` as an intermediate fact. Simplify using `only [phi_apply] at this ⊢`. Take the linear combination `u * this`.
+-/
 theorem LevelEquiv.smul {cc : Y.U.Comp → ℂ} (h : Y.LevelEquiv R cc) (u : ℂ) : Y.LevelEquiv R fun k => u * cc k := by
   intro a ha g f hf
   refine ⟨(h a ha g f hf).1, fun κ hκ x => ?_⟩
@@ -198,6 +210,11 @@ def ofField (h : LawsM T.toCore) (c' : Coeff T.Q.l) (hle : T.Q.c.F ≤ c'.F)
 
 omit [Group G] [Fintype G] in
 
+/- English proof (translation)
+Take `⟨hr, g, e, F, ik, φ, th, -, -, h3, h4⟩` from `h.adPin ((i : ℕ) + 1) ⟨Nat.le_add_left _ _, i.2⟩ Y.σ T.toCore.good_σ₀`. Establish `key : ∀ (W : HSp D) (hV : T.V ((i : ℕ) + 1) Y.σ = W) (hW : W.rank = D.R.r), DictLat Y.U W hW (castDict hV (T.dict ((i : ℕ) + 1) Y.σ)) (LinearMap.funLeft (𝓞 D.host.E) D.host.E (Fin.cast hW) ∘ₗ T.iota ((i : ℕ) + 1)) e F ik φ th (T.x₀ ((i : ℕ) + 1) Y.σ)`. Introduce `W hV hW`. Substitute `hV` using the available equality. Conclude with `h4`.
+
+Conclude with `⟨⟨g, e, F, ik, φ, th⟩, h3, key _ Y.hV _⟩`.
+-/
 theorem exists_dictDat (h : LawsJ T) :
     ∃ d : DictDat Y.U, d.Is (Wc D i) (rank_Wc i) Y.dict Y.ι (T.x₀ ((i : ℕ) + 1) Y.σ) := by
   obtain ⟨hr, g, e, F, ik, φ, th, -, -, h3, h4⟩ :=
@@ -225,6 +242,9 @@ def EquivRowBare : Prop :=
     (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A)
     (T : CoreJ D) (i : Fin D.R.m) (Y : RowDat T G i), Y.Ties R F → Y.EquivAt R
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T0 A Ks _ _ _ R F T i Y hY` and use `(h D G Pl0 T0 A Ks R F T i Y hY).equivAt`.
+-/
 theorem EquivRow.bare (h : EquivRow) : EquivRowBare :=
   fun D G _ _ Pl0 T0 A Ks _ _ _ R F T i Y hY => (h D G Pl0 T0 A Ks R F T i Y hY).equivAt
 

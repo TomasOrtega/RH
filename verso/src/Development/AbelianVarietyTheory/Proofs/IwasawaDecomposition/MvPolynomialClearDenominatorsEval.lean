@@ -4,6 +4,15 @@ namespace GlobalTheory
 
 open MvPolynomial Finset
 
+/- English proof (translation)
+Use `set N := F.totalDegree`. Use `⟨∑ m ∈ F.support, C (F.coeff m) * ∏ i ∈ F.vars, (P i) ^ (m i) * (D i) ^ (N - m i), ∏ i ∈ F.vars, (D i) ^ N, fun y hy => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[map_prod]`. Conclude with `Finset.prod_ne_zero_iff.mpr fun i _ => by rw [map_pow]; exact pow_ne_zero _ (hy i)`. Establish `hle : ∀ m ∈ F.support, ∀ i, m i ≤ N` using `fun m hm i => (monomial_le_degreeOf i hm).trans (degreeOf_le_totalDegree F i)`.
+
+Establish `hsub : ∀ m ∈ F.support, m.support ⊆ F.vars` using `fun m hm i hi => (mem_vars i).mpr ⟨m, hm, hi⟩`. Rewrite using `[MvPolynomial.eval_eq (fun i => MvPolynomial.eval y (P i) / MvPolynomial.eval y (D i)) F, map_prod, Finset.mul_sum, map_sum]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations. Rewrite using `[map_mul, eval_C, map_prod]`. Rewrite using `[Finset.prod_subset (hsub m hm) (fun i _ hi => by`.
+
+Rewrite using `[Finsupp.notMem_support_iff.mp hi, pow_zero])]`. Rewrite using `[mul_left_comm, ← Finset.prod_mul_distrib]`. Use `congr 1`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [map_mul, map_pow]`.
+
+Establish `hd` using `hy i`. Establish `hk` using `hle m hm i`. Rewrite using `[div_pow, ← pow_sub_mul_pow (MvPolynomial.eval y (D i)) hk]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem clearDenominators {K : Type} [Field K] {ι τ : Type} (F : MvPolynomial ι K)
     (P D : ι → MvPolynomial τ K) :
     ∃ G M : MvPolynomial τ K, ∀ y : τ → K, (∀ i, MvPolynomial.eval y (D i) ≠ 0) →

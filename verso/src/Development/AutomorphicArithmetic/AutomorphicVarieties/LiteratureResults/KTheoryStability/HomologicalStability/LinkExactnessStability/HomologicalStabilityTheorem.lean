@@ -7,6 +7,13 @@ open CategoryTheory CategoryTheory.Limits GlobalTheory.HomStab GlobalTheory.SeqC
 
 namespace GlobalTheory.HomStab
 
+/- English proof (translation)
+Introduce `R _ s hs`. Establish `key : ∀ i : ℕ, ∀ m m' (h : m ≤ m'), m' = m + 1 → (2 * i + s + 1 ≤ m → Function.Surjective (grpHMap (stab R m m' h) i).hom) ∧ (2 * i + s + 2 ≤ m → Function.Injective (grpHMap (stab R m m' h) i).hom)`. Introduce `i`. Proceed by induction on `i using Nat.strong_induction_on with`. Consider the case `_ i ih`.
+
+Establish `hyp : ∀ q m m' (h : m ≤ m'), q < i → m' = m + 1 → (2 * q + s + 1 ≤ m → Function.Surjective (grpHMap (stab R m m' h) q).hom) ∧ (2 * q + s + 2 ≤ m → Function.Injective (grpHMap (stab R m m' h) q).hom)` using `fun q m m' h hq hm => ih q hq m m' h hm`. Introduce `m m' h hm`. Conclude with `⟨GlobalTheory.T.groupHomology_GL_stab_surjective_of_stableRange_induction R s hs i hyp m m' h hm, GlobalTheory.T.groupHomology_GL_stab_injective_of_stableRange_induction R s hs i hyp m m' h hm⟩`. Introduce `i n hn`. Establish `h1` using `key i n (n + 1) (Nat.le_succ n) rfl`.
+
+Rewrite using `[ConcreteCategory.isIso_iff_bijective]`. Conclude with `⟨(h1.2 hn), (h1.1 (by omega))⟩`.
+-/
 theorem kStability_main : UpperTheory.V.Published.KStability := by
   intro R _ s hs
   have key : ∀ i : ℕ, ∀ m m' (h : m ≤ m'), m' = m + 1 →

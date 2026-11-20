@@ -16,6 +16,11 @@ def SettingAtPoint : Prop := Closed FamHyp fun Fm _ => _root_.GlobalTheory.BigTo
   GlobalTheory.GLq.ESerTie (Fm.D x i) → HidaSetting (Fm.L x i) p.R.toRealDat p.F.lv2
 def CharacterAtPoint (Q : ChP) : Prop := ∃ CF0 : ℝ, ∀ CF, CF0 ≤ CF → Closed FamHyp fun Fm _ => _root_.GlobalTheory.BigTop.EventuallyAtPoints Fm fun _ _ _ p =>
   ∀ (G : Grid p CF) (W : G.Weil) (n : ℕ) (a : SlopeTestRemainingChoices p G W n), a.OK → Q a.ch
+/- English proof (translation)
+Take `⟨c, hQ⟩` from `hQ`. Use `⟨c, fun CF hCF => h.imp fun {eps} Fm _ _ a => ?_⟩` and prove the remaining obligations. Take `⟨x₀, hx₀⟩` from `hQ eps CF hCF`. Take `⟨x₁, a⟩` from `a`. Use `⟨max x₀ x₁, fun x hx hle i p hp G W n b hb => ?_⟩` and prove the remaining obligations.
+
+Conclude with `hx₀ _ (Fm.L x i) (Fm.L_eps x i) ((le_of_max_le_left hle).trans (Fm.L_x x i hx).ge) _ _ _ _ _ _ _ (a x hx (le_of_max_le_right hle) i p hp hb.eser) b.ch hb.is b.atScale`.
+-/
 theorem SettingAtPoint.atPt (h : _root_.GlobalTheory.BigTop.Fun.SettingAtPoint) {Q : ChP} (hQ : Big Q) : _root_.GlobalTheory.BigTop.Fun.CharacterAtPoint Q := by
   obtain ⟨c, hQ⟩ := hQ
   refine ⟨c, fun CF hCF => h.imp fun {eps} Fm _ _ a => ?_⟩

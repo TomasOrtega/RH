@@ -18,6 +18,15 @@ variable {D : D7} {V : HSp D} {n : ℕ}
 def RatFrame (P : principalLevelFrame.RowPsi V n) : Prop :=
   ∀ h, h ∈ ReciprocityTheory.Aut.GQ D.host.E n ↔ ∃ γ ∈ Formalism.L2.Theta.GQ V, finHom V γ = finHom V (P.ψ h)
 
+/- English proof (translation)
+Rewrite using `[injective_iff_map_eq_one]`. Introduce and unpack `⟨γ, γ₀, h₀, e⟩ h`. Establish `h1 : finHom V γ = 1` using `congrArg Subtype.val h`. Establish `h2 : γ₀ = 1`. Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations.
+
+Establish `h3 : ((finHom V γ).1 i j) = inclR (F` using `D.host.F) (Af D.host.F) (γ₀.1 i j) := by`. Establish `: (matHom V γ).1 i j = inclR (F` using `D.host.F) (AF D.host.F) (γ₀.1 i j) := (congrArg (fun g : GL (Fin V.rank) (AF D.host.F ⊗[D.host.F] D.host.E) => g.1 i j) e).symm`. Use `show Algebra.TensorProduct.map (sndA D.host.F) (AlgHom.id D.host.F D.host.E) ((matHom V γ).1 i j) = _`. Rewrite using `[this]`. Simplify using `[inclR]`.
+
+Establish `hi : Function.Injective (inclR (F` using `D.host.F) (E := D.host.E) (Af D.host.F)) := by haveI : Nontrivial (Af D.host.F) := Formalism.L2.DIV.af_nontrivial D.host.F`. Conclude with `Algebra.TensorProduct.includeRight_injective (RingHom.injective _)`. Apply `hi` to reduce the goal to its premises. Rewrite using `[← h3, h1]`. Apply the tactic sequence `by_cases hij : i = j <;> simp [Matrix.one_apply, hij]`.
+
+Substitute `h2` using the available equality. Conclude with `Subtype.ext (Subtype.ext (e.symm.trans (map_one _)))`.
+-/
 theorem ratF_injective (V : HSp D) : Function.Injective (Bridge.ratF V) := by
   rw [injective_iff_map_eq_one]
   rintro ⟨γ, γ₀, h₀, e⟩ h
@@ -46,12 +55,21 @@ def frameEquiv (P : principalLevelFrame.RowPsi V n) : GAf D.host.E n ≃* Bridge
       obtain ⟨g, rfl⟩ := P.onto h hh
       exact ⟨g, e⟩⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem frameEquiv_apply (P : principalLevelFrame.RowPsi V n) (g) : frameEquiv P g = (finHom V).rangeRestrict (P.ψ g) := rfl
 
+/- English proof (translation)
+The claim follows from `(h g).trans ⟨fun ⟨γ, hγ, e⟩ => ⟨⟨γ, hγ⟩, Subtype.ext e⟩, fun ⟨γ, e⟩ => ⟨γ.1, γ.2, congrArg Subtype.val e⟩⟩`.
+-/
 theorem RatFrame.iff {P : principalLevelFrame.RowPsi V n} (h : RatFrame P) (g) :
     g ∈ ReciprocityTheory.Aut.GQ D.host.E n ↔ ∃ γ, Bridge.ratF V γ = frameEquiv P g :=
   (h g).trans ⟨fun ⟨γ, hγ, e⟩ => ⟨⟨γ, hγ⟩, Subtype.ext e⟩, fun ⟨γ, e⟩ => ⟨γ.1, γ.2, congrArg Subtype.val e⟩⟩
 
+/- English proof (translation)
+Introduce `κ hκ` and use `(hP.2 κ).2 ((GlobalTheory.FinZeta.LevelOff.finE_mem_St_iff hβ (P.into κ)).1 (GlobalTheory.FinZeta.LevelOff.finE_mem_St_of_mem_levG (Lv := flag1L Lv) ⟨P.into κ, hκ⟩))`.
+-/
 theorem comap_le_Umax {hF : D.host.F = maximalRealSubfield D.host.E} {P : principalLevelFrame.RowPsi V n} (hP : GlobalTheory.Mem.R3.StdFrame hF P)
     {β : GL (Fin V.rank) (Lev.EAf D)} {Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)} (hβ : IsBaseFrame V β Λ 1)
     (Lv : Formalism.L2.DIV.LevDat D.host.E ℂ V.rank) :
@@ -65,6 +83,21 @@ variable {μ : D.what₂.Tup} {j : ℕ} (X : MtReal D μ j) {G Γ W : Type} [Gro
   [InnerProductSpace ℂ W] (ι : Γ →* G) (φ : GAf D.host.E D.R.nV ≃* G) (ρ : Γ →* Module.End ℂ W) (J : Subgroup G) (χ : J →* ℂˣ)
   (e : X.wt.W ≃ₗ[ℂ] W) (Fm : D.what₂.Mt μ j → G → W)
 
+/- English proof (translation)
+Establish `hA : ∀ x, X.real x ∈ NG.TypeSp X.wt.ρ X.J X.χ` using `fun x => X.real_range ▸ LinearMap.mem_range_self _ x`. Set `U : Subrepresentation X.wt.ρ` to `⟨Submodule.span ℂ (Set.range (X.real x₀)), fun g w hw => by`. Use `Submodule.span_induction (p := fun w _ => X.wt.ρ g w ∈ Submodule.span ℂ (Set.range (X.real x₀))) ?_ ?_ ?_ ?_ hw` and prove the remaining obligations. Introduce and unpack `_ ⟨h, rfl⟩`. Conclude with `Submodule.subset_span ⟨g * h, (hA x₀).1.1 g h⟩`.
+
+Simplify using the standard rewrite rules. Introduce `a b _ _ ha hb`. Rewrite using `[map_add]`. Conclude with `add_mem ha hb`. Introduce `c a _ ha`.
+
+Rewrite using `[map_smul]`. Conclude with `Submodule.smul_mem _ c ha⟩`. Establish `hU : U = ⊤` using `by haveI := X.wt.irr`. Use `(eq_bot_or_eq_top U).resolve_left fun hb => h₀ (X.real_inj ?_)` and prove the remaining obligations. Rewrite using `[map_zero]`.
+
+Use function extensionality and compare the values at `g`. Establish `: X.real x₀ g ∈ U.toSubmodule` using `Submodule.subset_span ⟨g, rfl⟩`. Rewrite `this` using `[hb]`. Conclude with `this`. Establish `hv : v ∈ Submodule.span ℂ (Set.range (X.real x₀))` using `by show v ∈ U.toSubmodule`.
+
+Rewrite using `[hU]`. Conclude with `Submodule.mem_top`. Use `Submodule.span_induction (p := fun v _ => e (X.wt.ρ γ v) = ρ δ (e v)) ?_ ?_ ?_ ?_ hv` and prove the remaining obligations. Introduce and unpack `_ ⟨h, rfl⟩`. Use `hFm x₀ δ (φ h) 1` as an intermediate fact.
+
+Rewrite using `[← (hA x₀).1.1 γ h, hread, hread, map_mul, ← hδ]`. Simplify using `using this`. Simplify using the standard rewrite rules. Introduce `a b _ _ ha hb`. Simplify using `only [map_add, ha, hb]`.
+
+Introduce `c a _ ha`. Simplify using `only [map_smul, ha]`.
+-/
 theorem weight_match (hFm : ∀ x, Fm x ∈ Bridge.AdForms ι ρ J χ) (hread : ∀ x g, e (X.real x g) = Fm x (φ g))
     {x₀ : D.what₂.Mt μ j} (h₀ : x₀ ≠ 0) (γ : ReciprocityTheory.Aut.GQ D.host.E D.R.nV) (δ : Γ) (hδ : ι δ = φ γ) (v : X.wt.W) :
     e (X.wt.ρ γ v) = ρ δ (e v) := by
@@ -103,8 +136,24 @@ theorem weight_match (hFm : ∀ x, Fm x ∈ Bridge.AdForms ι ρ J χ) (hread : 
 
 def pullForm : X.wt.W →ₗ⋆[ℂ] X.wt.W →ₗ[ℂ] ℂ := ((innerₛₗ ℂ : W →ₗ⋆[ℂ] W →ₗ[ℂ] ℂ).comp e.toLinearMap).compl₂ e.toLinearMap
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pullForm_apply (a b : X.wt.W) : pullForm X e a b = inner ℂ (e a) (e b) := rfl
 
+/- English proof (translation)
+Establish `hA : ∀ x, X.real x ∈ NG.TypeSp X.wt.ρ X.J X.χ` using `fun x => X.real_range ▸ LinearMap.mem_range_self _ x`. Take `⟨N, hN, hNJ⟩` from `X.J_open`. Take `⟨T', hT', htr⟩` from `classSum_transport (W := W) ι hι φ hrat J y hy`. Use `⟨hX, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hz : ∀ x : D.what₂.Mt μ j, x = 0`.
+
+Take `⟨β, hβ⟩` from `h0 hz`. Take `⟨T, c', hT, -, -⟩` from `classSum_compare hβ hX hN (fun κ h => (hNJ κ h).1) hJ hT'`. Use `⟨β, T, 1, hβ, hT, one_pos, fun x x' => ?_⟩` and prove the remaining obligations. Rewrite using `[hz x]`. Simplify using `[classSum]`.
+
+Take `⟨x₀, h₀⟩` from `not_forall.1 hz`. Establish `hβ : IsInvForm X.wt (pullForm X e)`. Use `⟨fun a b => by rw [pullForm_apply, pullForm_apply, inner_conj_symm], fun a ha => ?_, fun γ a b => ?_⟩` and prove the remaining obligations. Rewrite using `[pullForm_apply]`. Conclude with `(re_inner_self_pos (𝕜 := ℂ) (x := e a)).2 (fun h => ha (e.map_eq_zero_iff.1 h))`.
+
+Take `⟨δ, hδ⟩` from `(hrat _).1 γ.2`. Establish `hw` using `weight_match X ι φ ρ J χ e Fm hFm hread h₀ γ δ hδ`. Conclude with `(congrArg₂ (inner ℂ) (hw a) (hw b)).trans (hρ δ _ _)`. Take `⟨T, c', hT, hc', hcmp⟩` from `classSum_compare hβ hX hN (fun κ h => (hNJ κ h).1) hJ hT'`. Establish `hB : ∀ x, X.real x ∈ NG.TypeSp X.wt.ρ (J.comap φ.toMonoidHom) (χ.comp (φ.toMonoidHom.subgroupComap J))` using `fun x => ⟨(hA x).1, fun κ => funext fun g => e.injective (by`.
+
+Use `hFm x 1 (φ g) ⟨φ κ, κ.2⟩` as an intermediate fact. Use `show e (X.real x (g * κ)) = e (((χ ⟨φ κ, κ.2⟩ : ℂˣ) : ℂ) • X.real x g)`. Rewrite using `[map_smul, hread, hread, map_mul]`. Simplify using `using this)⟩`. Use `⟨_, T, c * c', hβ, hT, mul_pos hc hc', fun x x' => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hip, ← htr X.wt (pullForm X e) (X.real x) (X.real x') _ _ fun g => by rw [pullForm_apply, hread, hread], hcmp _ _ _ _ (hA x) (hA x') (hB x) (hB x')]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem classSum_of_read {I : Type} [Fintype I] (y : I → G) (hy : Bridge.IsReps ι J y) (hι : Function.Injective ι)
     (hrat : ∀ h, h ∈ ReciprocityTheory.Aut.GQ D.host.E D.R.nV ↔ ∃ γ, ι γ = φ h) (hρ : ∀ δ (a b : W), inner ℂ (ρ δ a) (ρ δ b) = inner ℂ a b)
     (hJ : IsBounded (J.comap φ.toMonoidHom)) (hX : IsBounded X.J)

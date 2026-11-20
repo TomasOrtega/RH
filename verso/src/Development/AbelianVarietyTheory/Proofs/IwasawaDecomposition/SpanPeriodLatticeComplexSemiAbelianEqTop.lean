@@ -10,6 +10,33 @@ open MonoidalCategory CartesianMonoidalCategory MonObj GlobalTheory.PeriodSpan
 
 namespace GlobalTheory.PeriodSpan
 
+/- English proof (translation)
+Introduce `X G _ y g e hG ⟨hadd, hsurj, hhol, _, hd2⟩`. Establish `hhol' : IsHolTo Set.univ (fun z => (e z).left)` using `hhol`. Establish `h0 : e 0 = 1`. Establish `h` using `hadd 0 0`. Rewrite `h` using `[add_zero]`.
+
+Conclude with `mul_eq_left.mp h.symm`. Establish `hsub : ∀ z w, e (z - w) = e z * (e w)⁻¹` using `fun z w => eq_mul_inv_of_mul_eq (by rw [← hadd, sub_add_cancel])`. Assume the negation of the conclusion as `hne`. Take `⟨ℓ, hℓ0, hle⟩` from `Submodule.exists_le_ker_of_lt_top _ (lt_top_iff_ne_top.2 hne)`. Establish `hℓK : ∀ z, e z = 1 → ℓ z = 0` using `fun z hz => hle (Submodule.subset_span hz)`.
+
+Establish `hℓeq : ∀ z w, e z = e w → ℓ z = ℓ w` using `fun z w h => by`. Use `hℓK (z - w) (by rw [hsub, h, mul_inv_cancel])` as an intermediate fact. Rewrite `this` using `[map_sub, sub_eq_zero]`. Then use the resulting hypothesis. Set `lam : (Over.mk y ⟶ G) → ℂ` to `fun x => ℓ (hsurj x).choose`. Establish `hlam : ∀ z, lam (e z) = ℓ z` using `fun z => hℓeq _ _ (hsurj (e z)).choose_spec`.
+
+Set `S : Subgroup (Over.mk y ⟶ G)` to `{ carrier := {x | lam x = 0} one_mem' := by show lam 1 = 0`. Rewrite using `[← h0, hlam, map_zero]`. Use the proof step `mul_mem' := by`. Introduce `x x' hx hx'`. Take `⟨a, rfl⟩` from `hsurj x`.
+
+Take `⟨b, rfl⟩` from `hsurj x'`. Use `show lam (e a * e b) = 0`. Establish `hx : lam (e a) = 0` using `hx`. Establish `hx' : lam (e b) = 0` using `hx'`. Rewrite using `[← hadd, hlam, map_add, ← hlam, ← hlam, hx, hx', add_zero]`.
+
+Use the proof step `inv_mem' := by`. Introduce `x hx`. Take `⟨a, rfl⟩` from `hsurj x`. Establish `hx : lam (e a) = 0` using `hx`. Use `show lam (e a)⁻¹ = 0`.
+
+Establish `hinv : (e a)⁻¹ = e (-a)` using `inv_eq_of_mul_eq_one_right (by rw [← hadd, add_neg_cancel, h0])`. Rewrite using `[hinv, hlam, map_neg, ← hlam, hx, neg_zero] }`. Establish `hper : perHolSub G y ≤ S`. Use `Subgroup.closure_le _ |>.2 (Set.iUnion₂_subset fun ψ hψ => Set.range_subset_iff.2 fun s => ?_)` and prove the remaining obligations. Take `⟨hψadd, hψhol, hψper⟩` from `hψ`.
+
+Take `⟨h, hh, -⟩` from `(GlobalTheory.holomorphic_hom_determined X G).2.2.1 y ℂ g ψ e hψadd hadd hψhol hhol' hd2`. Establish `hlin : ∀ s : ℂ, h s = s • h 1` using `fun s => by rw [← h.map_smul, smul_eq_mul, _root_.mul_one]`. Establish `h1 : ℓ (h 1) = 0`. Establish `h2 : ℓ (h (2 * Real.pi * Complex.I)) = 0` using `hℓK _ (by rw [← hh, hψper])`. Rewrite `h2` using `[hlin, map_smul, smul_eq_mul]`.
+
+Use `(mul_eq_zero.1 h2).resolve_left ?_` and prove the remaining obligations. Simplify using `[Real.pi_ne_zero, Complex.I_ne_zero]`. Use `show lam (ψ s) = 0`. Rewrite using `[hh, hlam, hlin, map_smul, h1, smul_zero]`. Take `⟨E⟩` from `hG.fibres ℂ y`.
+
+Establish `htor : ∀ x ∈ torusPts G y E, lam x = 0` using `fun x hx => hper (GlobalTheory.T.torusPoints_subset_holPeriodicOneParamSpan X G y E hx)`. Take `⟨C, hC, hCz⟩` from `GlobalTheory.T.exists_compact_representatives_mod_torusPoints X G y g e E hG hadd hsurj hhol' hd2`. Take `⟨M, hM⟩` from `hC.exists_bound_of_continuousOn (LinearMap.continuous_of_finiteDimensional ℓ).continuousOn`. Establish `hbd : ∀ z, ‖ℓ z‖ ≤ M` using `fun z => by`. Take `⟨c, hc, hzc⟩` from `hCz z`.
+
+Use `htor _ hzc` as an intermediate fact. Rewrite `this` using `[hlam, map_sub, sub_eq_zero]`. Rewrite using `[this]`. Conclude with `hM c hc`. Apply `hℓ0` to reduce the goal to its premises.
+
+Use `LinearMap.ext fun z => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hz0`. Establish `hz : ℓ z ≠ 0` using `by simpa using hz0`. Establish `hpos : 0 < ‖ℓ z‖` using `norm_pos_iff.2 hz`. Use `hbd ((((|M| + 1) / ‖ℓ z‖ : ℝ) : ℂ) • z)` as an intermediate fact.
+
+Rewrite `this` using `[map_smul, norm_smul, Complex.norm_real, Real.norm_eq_abs, abs_of_pos (by positivity), div_mul_cancel₀ _ hpos.ne']`. Combine the linear relations using `[le_abs_self M]`.
+-/
 theorem span_ker_eq_top : ∀ (X : Scheme.{0}) (G : Over X) [GrpObj G] (y : Sp ℂ ⟶ X) (g : ℕ) (e : (Fin g → ℂ) → (Over.mk y ⟶ G)), IsSemiAbelian G → ((∀ z w, e (z + w) = e z * e w) ∧ Function.Surjective (e) ∧ IsHolTo Set.univ (fun z => (show Sp ℂ ⟶ G.left from (e z).left)) ∧ (∀ w, ∃! v : epsPt (y) ⟶ G, IsDerivAt0 (fun z => (e z).left) w v.left) ∧ (∀ v : epsPt (y) ⟶ G, spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom ≫ v.left = (e 0).left → ∃! w, IsDerivAt0 (fun z => (e z).left) w v.left)) → Submodule.span ℂ {z | e z = 1} = ⊤ := by
   intro X G _ y g e hG ⟨hadd, hsurj, hhol, _, hd2⟩
   have hhol' : IsHolTo Set.univ (fun z => (e z).left) := hhol

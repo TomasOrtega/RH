@@ -23,6 +23,13 @@ section Box
 
 variable {X X' Y Z : Scheme.{0}} {M : LB X} {M' : LB X'} {j : ℕ} {pr : Fin j → (X' ⟶ X)}
 
+/- English proof (translation)
+Unfold `gm`. Distinguish the cases in `h : s (r z) ∈ U`. Establish `h' : (r ≫ s) z ∈ U` using `h`. Rewrite using `[dif_pos h, dif_pos h']`. Apply `Units.ext` to reduce the goal to its premises.
+
+Simplify using `only [Units.coe_map, MonoidHom.coe_coe]`. Unfold `pullU`. Simplify using `only [Units.coe_map, MonoidHom.coe_coe, MonoidHom.comp_apply]`. Establish `key` using `congrArg (fun φ => φ.hom ((s.app U).hom a.val)) (Scheme.Hom.germ_stalkMap r (s ⁻¹ᵁ U) z h)`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply] at key`.
+
+Conclude with `key`. Establish `h' : ¬ (r ≫ s) z ∈ U` using `h`. Rewrite using `[dif_neg h, dif_neg h']`. Simplify using the standard rewrite rules.
+-/
 private theorem units_map_stalkMap_gm_eq_gm_comp {X Y Z : Scheme.{0}} (r : Z ⟶ Y) (s : Y ⟶ X) (z : Z) (U : X.Opens)
     (a : Γ(X, U)ˣ) :
     Units.map ((r.stalkMap z).hom : Y.presheaf.stalk (r z) →* Z.presheaf.stalk z) (gm s (r z) U a) =
@@ -42,6 +49,9 @@ private theorem units_map_stalkMap_gm_eq_gm_comp {X Y Z : Scheme.{0}} (r : Z ⟶
     rw [dif_neg h, dif_neg h']
     simp
 
+/- English proof (translation)
+Unfold `bw`. Conclude with `units_map_stalkMap_gm_eq_gm_comp r ψ z _ _`.
+-/
 private theorem units_map_stalkMap_bw_eq_bw_comp {X X' Y Z : Scheme.{0}} {M : LB X} {M' : LB X'} {j : ℕ} {pr : Fin j → (X' ⟶ X)}
     (w : LB.Iso M' (LB.LinComb M pr (fun _ => 1))) (r : Z ⟶ Y) (ψ : Y ⟶ X') (z : Z) (jN : Fin j → M.ι) (k : M'.ι) :
     Units.map ((r.stalkMap z).hom : Y.presheaf.stalk (r z) →* Z.presheaf.stalk z) (bw w ψ (r z) jN k) =
@@ -49,6 +59,9 @@ private theorem units_map_stalkMap_bw_eq_bw_comp {X X' Y Z : Scheme.{0}} {M : LB
   unfold bw
   exact units_map_stalkMap_gm_eq_gm_comp r ψ z _ _
 
+/- English proof (translation)
+Rewrite using `[val_of t (r ≫ s) z J (fun k => J (r ≫ s ≫ φ k)) (fun k => by rw [Category.assoc]), val_of t s (r z) _ (fun k => J (r ≫ s ≫ φ k)) (fun k => rfl)]`. Conclude with `units_map_stalkMap_gm_eq_gm_comp r s z _ _`.
+-/
 private theorem units_map_stalkMap_val_eq_val_comp {X Y Y₁ Z : Scheme.{0}} {L : LB X} {K : Type} [Fintype K] {φ : K → (Y₁ ⟶ X)}
     {ε : K → ℤ} (t : LB.Gen (LB.LinComb L φ ε)) (r : Z ⟶ Y) (s : Y ⟶ Y₁) (z : Z) (J : (Z ⟶ X) → L.ι) :
     Units.map ((r.stalkMap z).hom : Y.presheaf.stalk (r z) →* Z.presheaf.stalk z)
@@ -57,6 +70,11 @@ private theorem units_map_stalkMap_val_eq_val_comp {X Y Y₁ Z : Scheme.{0}} {L 
     val_of t s (r z) _ (fun k => J (r ≫ s ≫ φ k)) (fun k => rfl)]
   exact units_map_stalkMap_gm_eq_gm_comp r s z _ _
 
+/- English proof (translation)
+Establish `E` using `box_gen_val w hψ t' t H (r y) (J := fun ψ => J (r ≫ ψ)) (J' := fun ψ => J' (r ≫ ψ)) (fun ψ => hJ (r ≫ ψ)) (fun ψ => hJ' (r ≫ ψ))`. Establish `E2` using `congrArg (Units.map ((r.stalkMap y).hom : Y.presheaf.stalk (r y) →* Z.presheaf.stalk y)) E`. Rewrite `E2` using `[map_mul, map_prod, map_prod]`. Simplify using `only [map_zpow, units_map_stalkMap_bw_eq_bw_comp, units_map_stalkMap_val_eq_val_comp, Category.comp_id] at E2`. Simplify using `only [Category.assoc]`.
+
+Conclude with `E2`.
+-/
 theorem box_gen_val_along (w : LB.Iso M' (LB.LinComb M pr (fun _ => 1))) {K : Type} [Fintype K] {Y₀ : Scheme.{0}}
     {φ' : K → (Y ⟶ X')} {φ : Fin j → K → (Y₀ ⟶ X)} {ε : K → ℤ} {ρ : Fin j → (Y ⟶ Y₀)}
     (hψ : ∀ i a, φ' a ≫ pr i = ρ i ≫ φ i a) (t' : LB.Gen (LB.LinComb M' φ' ε)) (t : ∀ i, LB.Gen (LB.LinComb M (φ i) ε))
@@ -80,6 +98,9 @@ section Coord
 variable {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D : DegPre R} {e : ℕ}
   {G : Over (Spec (CommRingCat.of R))} [GrpObj G] [IsCommMonObj G] (g : GtCoord I D e G)
 
+/- English proof (translation)
+Establish `h1` using `GlobalTheory.TorusCoord.val_torus g χ hJ τ 1`. Rewrite `h1` using `[_root_.mul_one]`. Rewrite using `[h1, GlobalTheory.TorusCoord.val_unit g χ hJ, _root_.mul_one]`.
+-/
 theorem val_on_torus {Z : Over (Spec (CommRingCat.of (R ⧸ I ^ (e + 1))))} (χ : D.X) {z : Z.left}
     {J : (Z.left ⟶ D.P.A.left) → D.P.L.ι} (hJ : Good D.P.L z J) (τ : Z ⟶ splitTorus _ D.X) :
     val (g.t χ) (τ ≫ g.i).left z J = gm τ.left z ⊤ (charUnit _ D.X χ) := by
@@ -87,6 +108,15 @@ theorem val_on_torus {Z : Over (Spec (CommRingCat.of (R ⧸ I ^ (e + 1))))} (χ 
   rw [_root_.mul_one] at h1
   rw [h1, GlobalTheory.TorusCoord.val_unit g χ hJ, _root_.mul_one]
 
+/- English proof (translation)
+Establish `k0 : g.i ≫ g.q = (1 : splitTorus (Spec (CommRingCat.of (R ⧸ I ^ (e + 1)))) D.X ⟶ thickObj R I e G) ≫ g.q`. Use `g.q_hom` as an intermediate fact. Rewrite using `[g.isKernel.w, MonObj.one_comp]`. Both sides reduce to the same expression. Establish `k1 : (Over.map (thick R I e)).map g.i ≫ g.pG = 1`.
+
+Establish `h` using `GlobalTheory.TorusCoord.im_congr g k0`. Rewrite `h` using `[GlobalTheory.TorusCoord.im_one]`. Conclude with `h`. Establish `e0 : g.i.left ≫ (padd D.P.A g.pG (toUnit ((Over.map (thick R I e)).obj (thickObj R I e G)) ≫ D.c χ)).left = g.i.left ≫ (toUnit ((Over.map (thick R I e)).obj (thickObj R I e G)) ≫ D.c χ).left`. Express the relevant statement in the definitionally equal form `((Over.map (thick R I e)).map g.i ≫ _).left = ((Over.map (thick R I e)).map g.i ≫ _).left`.
+
+Establish `hp : padd D.P.A g.pG (toUnit ((Over.map (thick R I e)).obj (thickObj R I e G)) ≫ D.c χ) = g.pG * (toUnit ((Over.map (thick R I e)).obj (thickObj R I e G)) ≫ D.c χ)` using `rfl`. Rewrite using `[hp, MonObj.comp_mul, k1, _root_.one_mul]`. Establish `e2 : g.i.left ≫ g.pG.left = g.i.left ≫ (toUnit ((Over.map (thick R I e)).obj (thickObj R I e G)) ≫ η).left`. Express the relevant statement in the definitionally equal form `((Over.map (thick R I e)).map g.i ≫ _).left = ((Over.map (thick R I e)).map g.i ≫ _).left`. Rewrite using `[k1, ← Category.assoc, toUnit_unique ((Over.map (thick R I e)).map g.i ≫ toUnit _) (toUnit _)]`.
+
+Both sides reduce to the same expression. Simplify using `only [Fin.prod_univ_four, Oinvε, DegPre.Oφ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.cons_val_three, Matrix.head_cons, Matrix.tail_cons]`. Use `erw [e0, e2]`. Use `group`.
+-/
 theorem prod_on_torus (χ : D.X) {V : Type} [CommGroup V]
     (f : ((splitTorus (Spec (CommRingCat.of (R ⧸ I ^ (e + 1)))) D.X).left ⟶ D.P.A.left) → V) :
     ∏ k, f (g.i.left ≫ D.Oφ g.pG χ k) ^ Oinvε k = 1 := by
@@ -115,6 +145,11 @@ theorem prod_on_torus (χ : D.X) {V : Type} [CommGroup V]
 
 end Coord
 
+/- English proof (translation)
+Establish `h` using `GlobalTheory.splitTorusPointsEquiv_val S X (splitTorus S X) (𝟙 _) 0`. Rewrite `h` using `[ofAdd_zero, map_one, Units.val_one]`. Establish `h2 : charUnit S X 0 = 1`. Use `ext`. Rewrite using `[Units.val_one, h]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[h2, map_one]`.
+-/
 theorem gm_char_zero {S : Scheme.{0}} {X : Type} [AddCommGroup X] {Z : Over S} (τ : Z ⟶ splitTorus S X)
     (z : Z.left) : gm τ.left z ⊤ (charUnit S X 0) = 1 := by
   have h := GlobalTheory.splitTorusPointsEquiv_val S X (splitTorus S X) (𝟙 _) 0
@@ -125,6 +160,9 @@ theorem gm_char_zero {S : Scheme.{0}} {X : Type} [AddCommGroup X] {Z : Over S} (
     simp
   rw [h2, map_one]
 
+/- English proof (translation)
+Apply `(splitTorusPointsEquiv S X Z).injective` to reduce the goal to its premises. Use `MonoidHom.ext fun χ => Units.ext ?_` and prove the remaining obligations. Take `⟨x, rfl⟩` from `Multiplicative.ofAdd.surjective χ`. Rewrite using `[GlobalTheory.splitTorusPointsEquiv_val, GlobalTheory.splitTorusPointsEquiv_val]`. Conclude with `GlobalTheory.TorusCoord.appTop_eq_of_gm _ _ _ (h x)`.
+-/
 theorem torus_ext {S : Scheme.{0}} {X : Type} [AddCommGroup X] {Z : Over S} (τ τ' : Z ⟶ splitTorus S X)
     (h : ∀ χ z, gm τ.left z ⊤ (charUnit S X χ) = gm τ'.left z ⊤ (charUnit S X χ)) : τ = τ' := by
   apply (splitTorusPointsEquiv S X Z).injective
@@ -141,6 +179,11 @@ variable {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {j : ℕ} {D D' : De
   {pD : IsPowDeg D'.toPre D.toPre j} {pA : IsPowPolAV A' A j} {pG : IsPowGrp G' G j}
   {U' : Unif I D' A' G'} {U : Unif I D A G}
 
+/- English proof (translation)
+Establish `hk` using `(U.gt e).isKernel`. Establish `hη : (η : 𝟙_ _ ⟶ thickObj R I e D'.toPre.P.A) ≫ (Over.pullback (thick R I e)).map (pD.pw.pr i) = η`. Establish `hm` using `pD.pw.hom i`. Express the relevant statement in the definitionally equal form `(_ ≫ _) ≫ _ = _ ≫ _`. Rewrite using `[Category.assoc, ← Functor.map_comp, hm.one_hom]`.
+
+Establish `hc : ((U'.gt e).i ≫ (Over.pullback (thick R I e)).map (pG.pr i)) ≫ (U.gt e).q = toUnit _ ≫ η`. Rewrite using `[Category.assoc, ← P.q_pr e i, ← Category.assoc, (U'.gt e).isKernel.w, Category.assoc, hη]`. Conclude with `⟨hk.lift _ _ hc, hk.lift_fst _ _ hc⟩`.
+-/
 theorem exists_factor (P : UnifPowOf3 pD pA pG U' U) (e : ℕ) (i : Fin j) :
     ∃ h : splitTorus (Spec (CommRingCat.of (R ⧸ I ^ (e + 1)))) D'.toPre.X ⟶
         splitTorus (Spec (CommRingCat.of (R ⧸ I ^ (e + 1)))) D.toPre.X,
@@ -157,6 +200,13 @@ theorem exists_factor (P : UnifPowOf3 pD pA pG U' U) (e : ℕ) (i : Fin j) :
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Take `⟨J, hJ, -⟩` from `exists_good D.toPre.P.L D.toPre.P.isLB z (K := PEmpty) (fun k => k.elim) (fun k => k.elim) (fun a => a.elim) (fun k => k.elim)`. Take `⟨J', hJ', -⟩` from `exists_good D'.toPre.P.L D'.toPre.P.isLB z (K := PEmpty) (fun k => k.elim) (fun k => k.elim) (fun a => a.elim) (fun k => k.elim)`. Take `⟨hψ, H⟩` from `P.t_pr e x`. Establish `B` using `box_gen_val_along pD.w hψ ((U'.gt e).t x) (fun i => (U.gt e).t (pD.xe x i)) H (U'.gt e).i.left z hJ hJ'`. Establish `hP` using `prod_on_torus (U'.gt e) x (fun ψ => bw pD.w ψ z (fun i => J (ψ ≫ (pD.pw.pr i).left)) (J' ψ))`.
+
+Rewrite `B` using `[hP, _root_.one_mul]`. Establish `L1` using `val_on_torus (U'.gt e) x hJ' (𝟙 _)`. Rewrite `L1` using `[Category.id_comp]`. Rewrite `B` using `[L1]`. Use `B.trans (Finset.prod_congr rfl fun i _ => ?_)` and prove the remaining obligations.
+
+Rewrite using `[← val_on_torus (U.gt e) (pD.xe x i) hJ (h i), hh i]`. Both sides reduce to the same expression.
+-/
 theorem char_prod (P : UnifPowOf3 pD pA pG U' U) (e : ℕ)
     (h : Fin j → (splitTorus (Spec (CommRingCat.of (R ⧸ I ^ (e + 1)))) D'.toPre.X ⟶
         splitTorus (Spec (CommRingCat.of (R ⧸ I ^ (e + 1)))) D.toPre.X))
@@ -181,6 +231,15 @@ theorem char_prod (P : UnifPowOf3 pD pA pG U' U) (e : ℕ)
 
 end Pow
 
+/- English proof (translation)
+Introduce `R _ _ I j D D' A A' G G' _ _ _ _ pD pA pG U' U P e`. Take `⟨p, hp⟩` from `GlobalTheory.exists_isPowGrp_splitTorus (Spec (CommRingCat.of (R ⧸ I ^ (e + 1)))) D.toPre.X D'.toPre.X j pD.xe`. Use `choose h hh using fun i => exists_factor P e i`. Use `⟨p, fun i => ?_, hp⟩` and prove the remaining obligations. Establish `key : h i = p.pr i`.
+
+Apply `torus_ext` to reduce the goal to its premises. Introduce `χ z`. Establish `c` using `char_prod P e h hh (pD.xe.symm (Pi.single i χ)) z`. Rewrite `c` using `[Finset.prod_eq_single i]`. Rewrite `c` using `[AddEquiv.apply_symm_apply, Pi.single_eq_same]`.
+
+Rewrite using `[← c]`. Establish `hz` using `(gm_rp₁ (p.pr i).left z ⊤ ⊤ _ trivial (charUnit _ D.toPre.X χ)).symm.trans (congrArg (gm (𝟙 _) z ⊤) (hp i χ))`. Conclude with `hz.symm`. Introduce `b _ hb`. Rewrite using `[AddEquiv.apply_symm_apply, Pi.single_eq_of_ne hb, gm_char_zero]`.
+
+Introduce `hi`. Conclude with `absurd (Finset.mem_univ i) hi`. Rewrite using `[← hh i, key]`.
+-/
 theorem torus_isPow : ∀ (R : Type) [CommRing R] [IsDomain R] (I : Ideal R) (j : ℕ) (D D' : DegData R I) (A A' : PolAV (Spec (CommRingCat.of (FractionRing R)))) (G G' : Over (Spec (CommRingCat.of R))) [GrpObj G] [IsCommMonObj G] [GrpObj G'] [IsCommMonObj G'] (pD : IsPowDeg D'.toPre D.toPre j) (pA : IsPowPolAV A' A j) (pG : IsPowGrp G' G j) (U' : Unif I D' A' G') (U : Unif I D A G) (P : UnifPowOf3 pD pA pG U' U) (e : ℕ), ∃ pT : IsPowGrp (splitTorus (Spec (CommRingCat.of (R ⧸ I ^ (e + 1)))) D'.toPre.X) (splitTorus (Spec (CommRingCat.of (R ⧸ I ^ (e + 1)))) D.toPre.X) j, (∀ i, (U'.gt e).i ≫ (Over.pullback (thick R I e)).map (pG.pr i) = pT.pr i ≫ (U.gt e).i) ∧ ∀ (i : Fin j) (χ : D.toPre.X), res (fun x _ => show (pT.pr i).left.base x ∈ (⊤ : TopologicalSpace.Opens _) from trivial) (pullU (pT.pr i).left ⊤ (charUnit _ D.toPre.X χ)) = charUnit _ D'.toPre.X (pD.xe.symm (Pi.single i χ)) := by
   intro R _ _ I j D D' A A' G G' _ _ _ _ pD pA pG U' U P e
   obtain ⟨p, hp⟩ := GlobalTheory.exists_isPowGrp_splitTorus (Spec (CommRingCat.of (R ⧸ I ^ (e + 1)))) D.toPre.X

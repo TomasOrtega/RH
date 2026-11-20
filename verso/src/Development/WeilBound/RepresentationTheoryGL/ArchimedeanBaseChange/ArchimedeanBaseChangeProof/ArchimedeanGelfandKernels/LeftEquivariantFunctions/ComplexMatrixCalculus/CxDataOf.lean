@@ -12,6 +12,9 @@ open PositivityTheory.RgTw (Mat hb)
 
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
+/- English proof (translation)
+Establish `hQ : IsUnit (sqQ lam)` using `(hA n lam).1`. Conclude with `{ smooth := smooth_f hF one := one_f hQ hF mul := mul_f hQ hF onK := fun k => rfl car := car_f hQ hB hCP frι := frι_f hQ hC hM frε := frε_f hQ hC hM Γsq := Γsq_f hQ hG Γε := Γε_f hQ hG hC Γι := Γι_f hQ hG hC ΓFr := fun x _ => ΓFr_f hQ hG x ΓT := ΓT_f hQ hG Tsq := Tsq_f hQ hS Tiso …`.
+-/
 theorem cxData_of (hCP : CfPair) (hM : MtLaws) (hG : GamMul) (hB : Car) (hC : GamCre) (hScal : GamScal) (hN : Number)
     (hRL : RmLaws) (hRC : RmChar) (hA : Avg) (hF : MatrixFrechetDerivativeAtZeroLaws) (hS : SwapLaws)
     (hTD : ∀ (n : ℕ) (lam : Fin n → ℤ), lefT n lam * (∑ p, lefε n lam (hb p) * fderiv ℝ (lefFr n lam) 1 (hb p)) =

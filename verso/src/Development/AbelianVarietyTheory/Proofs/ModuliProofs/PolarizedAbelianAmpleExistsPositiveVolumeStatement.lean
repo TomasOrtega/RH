@@ -10,5 +10,8 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped CategoryTheory.Obj TensorProduct
 open GlobalTheory.ZV
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.VolEx.exists_vol | exact GlobalTheory.VolEx.exists_vol | (intros; apply GlobalTheory.VolEx.exists_vol <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.polarizedAbelian_ample_exists_positive_volume : Out.Laws → Out.Laws2 → ∀ (K : Type) [Field K] [IsAlgClosed K] (P : Out.PolAV (Sp K)) (M : LB P.A.left), M.IsLB → Out.RelAmple P.A M → ∃ δ : ℝ, 0 < δ ∧ Vol P.A.hom M P.g δ := by
   first | exact @GlobalTheory.VolEx.exists_vol | exact GlobalTheory.VolEx.exists_vol | (intros; apply GlobalTheory.VolEx.exists_vol <;> assumption)

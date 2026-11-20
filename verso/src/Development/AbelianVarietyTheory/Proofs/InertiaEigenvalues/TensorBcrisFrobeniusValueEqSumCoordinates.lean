@@ -11,6 +11,15 @@ noncomputable section
 
 namespace GlobalTheory.XiDecomp
 
+/- English proof (translation)
+Introduce `l _ a e _ _ O K _ _ _ _ _ _ _ _ _ t ϖ ι _ _ P w hwS hw hd`. Establish `hsum : (⟨P.xiExt w, hw⟩ : P.MMl) = ∑ j, (⟨(fun τ => w τ j) • P.xi (fun _ => Pi.single j 1), P.smul_tot_mem_ext (fun τ => hwS τ j) (hd j)⟩ : P.MMl)`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show P.xiExt w = _`. Rewrite using `[Submodule.coe_sum]`.
+
+Use `conv_lhs => rw [eq_sum_bas w, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `show _ = (fun τ => w τ j) • P.xi (fun _ => Pi.single j 1)`. Rewrite using `[PhiMod.xiExt_smul_tot, PhiMod.xi_apply, cst_single]`. Rewrite using `[hsum, map_sum]`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `ext1 k`. Rewrite using `[Pi.smul_apply, toBcris_apply, toBcris_apply, smul_eq_mul, ← map_mul]`. Use `congr 1`. Use function extensionality and compare the values at `τ`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[coordL, Matrix.mulVec_smul]`.
+-/
 theorem toBcris_xiExt_eq_sum : ∀ (l : ℕ) [Fact l.Prime] (a e : ℕ) [NeZero a] [NeZero e] (O K : Type) [CommRing O] [Algebra ℤ_[l] O] [Module.Free ℤ_[l] O] [Module.Finite ℤ_[l] O] [NormedField K] [IsUltrametricDist K] [Algebra O K] [IsUnitBall O K] [NormedAlgebra ℚ_[l] K] (t : Wq l a →ₐ[ℤ_[l]] O) (ϖ : PiSys l e) (ι : Type) [Fintype ι] [DecidableEq ι] (P : PhiMod O K l e a ι) (w : Vec K a ι) (hwS : ∀ τ j, w τ j ∈ invL l (S O K e)) (hw : P.xiExt w ∈ P.MMl) (hd : ∀ j, P.xi (fun _ => Pi.single j 1) ∈ P.MMl), toBcris t ϖ P ⟨P.xiExt w, hw⟩ = ∑ j, ϖ.iB t K (fun τ => ⟨w τ j, hwS τ j⟩) • toBcris t ϖ P ⟨P.xi (fun _ => Pi.single j 1), hd j⟩ := by
   intro l _ a e _ _ O K _ _ _ _ _ _ _ _ _ t ϖ ι _ _ P w hwS hw hd
   have hsum : (⟨P.xiExt w, hw⟩ : P.MMl) = ∑ j, (⟨(fun τ => w τ j) • P.xi (fun _ => Pi.single j 1),

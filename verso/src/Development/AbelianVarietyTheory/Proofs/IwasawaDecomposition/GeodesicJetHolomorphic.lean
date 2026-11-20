@@ -14,6 +14,11 @@ namespace GlobalTheory.ChernReg
 
 variable {d : ℕ}
 
+/- English proof (translation)
+Establish `h1 : ContDiffAt ℝ ((i + 1 : ℕ) : ℕ∞) u t₀` using `hu.of_le (by exact_mod_cast le_top)`. Use `filter_upwards [h1.eventually (by simp)] with t ht`. Establish `h2 : ContDiffAt ℝ 1 (iteratedFDeriv ℝ i u) t` using `ht.iteratedFDeriv_right (by push_cast; exact (add_comm _ _).le)`. Establish `h3` using `h2.differentiableAt one_ne_zero`. Establish `e : iteratedDeriv i u = fun x => iteratedFDeriv ℝ i u x (fun _ => 1)`.
+
+Use function extensionality and compare the values at `fun x => iteratedDeriv_eq_iteratedFDeriv`. Rewrite using `[e]`. Conclude with `h3.continuousMultilinear_apply_const _`.
+-/
 theorem eventually_differentiableAt_iteratedDeriv_of_contDiffAt {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] {u : ℝ → E} {t₀ : ℝ} (hu : ContDiffAt ℝ ∞ u t₀) (i : ℕ) :
     ∀ᶠ t in 𝓝 t₀, DifferentiableAt ℝ (iteratedDeriv i u) t := by
@@ -27,16 +32,27 @@ theorem eventually_differentiableAt_iteratedDeriv_of_contDiffAt {E : Type*} [Nor
   rw [e]
   exact h3.continuousMultilinear_apply_const _
 
+/- English proof (translation)
+Rewrite using `[← iteratedDerivWithin_univ, ← iteratedDerivWithin_univ]`. Conclude with `Filter.EventuallyEq.iteratedDerivWithin_eq (by rwa [nhdsWithin_univ]) h.eq_of_nhds`.
+-/
 theorem iteratedDeriv_eq_of_eventuallyEq {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     {f g : ℝ → E} {t₀ : ℝ} (h : f =ᶠ[𝓝 t₀] g) (n : ℕ) : iteratedDeriv n f t₀ = iteratedDeriv n g t₀ := by
   rw [← iteratedDerivWithin_univ, ← iteratedDerivWithin_univ]
   exact Filter.EventuallyEq.iteratedDerivWithin_eq (by rwa [nhdsWithin_univ]) h.eq_of_nhds
 
+/- English proof (translation)
+Use `filter_upwards [h.eventuallyEq_nhds] with q' hq'`. Simplify using `only [holSpray_apply, GlobalTheory.del_congr hq']`.
+-/
 theorem holSpray_eventuallyEq {b : V d → Matrix (Fin d) (Fin d) ℂ} {f f' : V d × V d → V d}
     {q : V d × V d} (h : f =ᶠ[𝓝 q] f') : holSpray b f =ᶠ[𝓝 q] holSpray b f' := by
   filter_upwards [h.eventuallyEq_nhds] with q' hq'
   simp only [holSpray_apply, GlobalTheory.del_congr hq']
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => intro f f' h`. Conclude with `h`. Consider the case `succ n ih`. Introduce `f f' h`.
+
+Simplify using `only [Function.iterate_succ_apply]`. Conclude with `ih (holSpray_eventuallyEq h)`.
+-/
 theorem iterate_holSpray_eventuallyEq {b : V d → Matrix (Fin d) (Fin d) ℂ} {q : V d × V d} (n : ℕ) :
     ∀ {f f' : V d × V d → V d}, f =ᶠ[𝓝 q] f' → (holSpray b)^[n] f =ᶠ[𝓝 q] (holSpray b)^[n] f' := by
   induction n with
@@ -46,6 +62,9 @@ theorem iterate_holSpray_eventuallyEq {b : V d → Matrix (Fin d) (Fin d) ℂ} {
     simp only [Function.iterate_succ_apply]
     exact ih (holSpray_eventuallyEq h)
 
+/- English proof (translation)
+Rewrite using `[holSpray_apply, GlobalTheory.del_comp (hG.restrictScalars ℝ) hJ, GlobalTheory.dbar_eq_zero hG, GlobalTheory.del_eq_fderiv hG, ContinuousLinearMap.zero_apply, add_zero]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Use `GlobalTheory.del_clm_comp (ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin (m + 1) => V d) i) hJ (q.2, -christoffel b q.1 q.2)` as an intermediate fact. Conclude with `this.symm`.
+-/
 theorem holSpray_comp_jets (b : V d → Matrix (Fin d) (Fin d) ℂ) {m : ℕ} {G : (Fin (m + 1) → V d) → V d}
     {q : V d × V d} (hJ : DifferentiableAt ℝ (fun q => fun i : Fin (m + 1) => jet b i q) q)
     (hG : DifferentiableAt ℂ G (fun i : Fin (m + 1) => jet b i q)) :
@@ -59,6 +78,9 @@ theorem holSpray_comp_jets (b : V d → Matrix (Fin d) (Fin d) ℂ) {m : ℕ} {G
     (q.2, -christoffel b q.1 q.2)
   exact this.symm
 
+/- English proof (translation)
+Establish `hc : HasDerivAt (fun t => fun i : Fin (m + 1) => iteratedDeriv i u t) (fun i : Fin (m + 1) => iteratedDeriv (i + 1) u t) t` using `hasDerivAt_pi.2 fun i => by rw [iteratedDeriv_succ]; exact (hd i).hasDerivAt`. Conclude with `(hG.hasFDerivAt.restrictScalars ℝ).comp_hasDerivAt t hc`.
+-/
 theorem hasDerivAt_comp_derivs {u : ℝ → V d} {m : ℕ} {G : (Fin (m + 1) → V d) → V d} {t : ℝ}
     (hd : ∀ i : Fin (m + 1), DifferentiableAt ℝ (iteratedDeriv i u) t)
     (hG : DifferentiableAt ℂ G (fun i : Fin (m + 1) => iteratedDeriv i u t)) :
@@ -73,6 +95,9 @@ theorem hasDerivAt_comp_derivs {u : ℝ → V d} {m : ℕ} {G : (Fin (m + 1) →
 def jetsDeriv {m : ℕ} (G : (Fin (m + 1) → V d) → V d) (x : Fin (m + 2) → V d) : V d :=
   fderiv ℂ G (fun i : Fin (m + 1) => x i.castSucc) (fun i : Fin (m + 1) => x i.succ)
 
+/- English proof (translation)
+Introduce `x hx`. Establish `hp : Differentiable ℂ (fun x : Fin (m + 2) → V d => fun i : Fin (m + 1) => x i.castSucc)` using `differentiable_pi.2 fun i => differentiable_apply _`. Establish `hs : Differentiable ℂ (fun x : Fin (m + 2) → V d => fun i : Fin (m + 1) => x i.succ)` using `differentiable_pi.2 fun i => differentiable_apply _`. Establish `hf` using `((GlobalTheory.SCV.differentiableOn_fderiv hW hG) _ hx).differentiableAt (hW.mem_nhds hx)`. Conclude with `((hf.comp x (hp x)).clm_apply (hs x)).differentiableWithinAt`.
+-/
 theorem differentiableOn_jetsDeriv {m : ℕ} {G : (Fin (m + 1) → V d) → V d} {W : Set (Fin (m + 1) → V d)}
     (hW : IsOpen W) (hG : DifferentiableOn ℂ G W) :
     DifferentiableOn ℂ (jetsDeriv G) {x | (fun i : Fin (m + 1) => x i.castSucc) ∈ W} := by
@@ -86,6 +111,17 @@ theorem differentiableOn_jetsDeriv {m : ℕ} {G : (Fin (m + 1) → V d) → V d}
 
 variable {U : Set (V d)} {b : V d → Matrix (Fin d) (Fin d) ℂ} {z ξ : V d} {u : ℝ → V d}
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero`. Introduce `m W G _ _ _`. Simplify using `only [iteratedDeriv_zero, Function.iterate_zero, id, hu0]`. Consider the case `succ n ih`.
+
+Introduce `m W G hW hG hmem`. Establish `hJd : ∀ i, ∀ q ∈ U ×ˢ (Set.univ : Set (V d)), DifferentiableAt ℝ (jet b i) q` using `fun i q hq => ((hJ i).contDiffAt ((hU.prod isOpen_univ).mem_nhds hq)).differentiableAt (by simp)`. Establish `hJm : ∀ q ∈ U ×ˢ (Set.univ : Set (V d)), DifferentiableAt ℝ (fun q => fun i : Fin (m + 1) => jet b i q) q` using `fun q hq => differentiableAt_pi.2 fun i => hJd i q hq`. Establish `hzq : (z, ξ) ∈ U ×ˢ (Set.univ : Set (V d))` using `⟨hz, trivial⟩`. Establish `hdu : ∀ᶠ t in 𝓝 (0 : ℝ), ∀ i : Fin (m + 2), DifferentiableAt ℝ (iteratedDeriv i u) t` using `Filter.eventually_all.2 fun i => eventually_differentiableAt_iteratedDeriv_of_contDiffAt hu i`.
+
+Establish `hcW : ∀ᶠ t in 𝓝 (0 : ℝ), (fun i : Fin (m + 1) => iteratedDeriv i u t) ∈ W`. Establish `hc : ContinuousAt (fun t => fun i : Fin (m + 1) => iteratedDeriv i u t) 0` using `continuousAt_pi.2 fun i => (hdu.self_of_nhds i.castSucc).continuousAt`. Use `hc.preimage_mem_nhds (hW.mem_nhds ?_)` and prove the remaining obligations. Simplify `hmem` using `only [hu0]`. Establish `hL : deriv (fun t => G (fun i : Fin (m + 1) => iteratedDeriv i u t)) =ᶠ[𝓝 0] fun t => jetsDeriv G (fun i : Fin (m + 2) => iteratedDeriv i u t)` using `by filter_upwards [hdu, hcW] with t ht htW`.
+
+Conclude with `(hasDerivAt_comp_derivs (fun i => ht i.castSucc) (hG.differentiableAt (hW.mem_nhds htW))).deriv`. Establish `hJW : ∀ᶠ q in 𝓝 (z, ξ), (fun i : Fin (m + 1) => jet b i q) ∈ W` using `(hJm _ hzq).continuousAt.preimage_mem_nhds (hW.mem_nhds hmem)`. Establish `hR : holSpray b (fun q => G (fun i : Fin (m + 1) => jet b i q)) =ᶠ[𝓝 (z, ξ)] fun q => jetsDeriv G (fun i : Fin (m + 2) => jet b i q)` using `by filter_upwards [(hU.prod isOpen_univ).mem_nhds hzq, hJW] with q hq hqW`. Conclude with `holSpray_comp_jets b (hJm q hq) (hG.differentiableAt (hW.mem_nhds hqW))`. Rewrite using `[iteratedDeriv_succ', iteratedDeriv_eq_of_eventuallyEq hL, Function.iterate_succ_apply, (iterate_holSpray_eventuallyEq n hR).eq_of_nhds]`.
+
+Conclude with `ih (m + 1) _ (jetsDeriv G) (hW.preimage (f := fun x : Fin (m + 2) → V d => fun i : Fin (m + 1) => x i.castSucc) (continuous_pi fun i => continuous_apply _)) (differentiableOn_jetsDeriv hW hG) hmem`.
+-/
 theorem iteratedDeriv_comp_derivs (hU : IsOpen U)
     (hJ : ∀ n, ContDiffOn ℝ ∞ (jet b n) (U ×ˢ (Set.univ : Set (V d)))) (hz : z ∈ U)
     (hu : ContDiffAt ℝ ∞ u 0) (hu0 : ∀ n, iteratedDeriv n u 0 = jet b n (z, ξ)) (n : ℕ) :
@@ -131,6 +167,9 @@ theorem iteratedDeriv_comp_derivs (hU : IsOpen U)
         (continuous_pi fun i => continuous_apply _))
       (differentiableOn_jetsDeriv hW hG) hmem
 
+/- English proof (translation)
+Introduce `z hz ξ u hu hu0 n`. Establish `hG : DifferentiableOn ℂ (fun x : Fin 1 → V d => g (x 0)) {x | x 0 ∈ U}` using `hg.comp (differentiable_apply 0).differentiableOn fun _ hx => hx`. Establish `h` using `iteratedDeriv_comp_derivs hU hJ hz hu hu0 n 0 {x | x 0 ∈ U} _ (hU.preimage (continuous_apply 0)) hG hz`. Simplify `h` using `only [Fin.coe_ofNat_eq_mod, Nat.zero_mod, iteratedDeriv_zero, jet_zero, Function.comp_def, Fin.isValue, Fin.val_zero]`.
+-/
 theorem iteratedDeriv_comp_eq_iterate_holSpray (d : ℕ) (U : Set (V d)) (b : V d → Matrix (Fin d) (Fin d) ℂ)
     (g : V d → V d) (hU : IsOpen U)
     (hJ : ∀ n, ContDiffOn ℝ ∞ (GlobalTheory.ChernReg.jet b n) (U ×ˢ (Set.univ : Set (V d))))

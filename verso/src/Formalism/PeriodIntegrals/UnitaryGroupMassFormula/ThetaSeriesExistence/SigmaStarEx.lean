@@ -9,6 +9,9 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.ThetaSeriesExistence.La
 
 namespace PI.SSE
 
+/- English proof (translation)
+The claim follows from `sigmaStarEx_of_parts thetaA thetaDerivNe reduceBasis genEqOf latExt`.
+-/
 theorem sigmaStarEx : PI.SigmaStarEx :=
   sigmaStarEx_of_parts thetaA thetaDerivNe reduceBasis genEqOf latExt
 

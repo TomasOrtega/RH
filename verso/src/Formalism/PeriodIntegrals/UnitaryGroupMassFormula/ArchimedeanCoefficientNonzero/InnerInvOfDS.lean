@@ -16,6 +16,21 @@ section rep
 
 variable {k r : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
 
+/- English proof (translation)
+Take `⟨P, ⟨⟨_, hPJ⟩, hPU⟩, hDS⟩` from `h`. Take `⟨_, _, ⟨⟨h1, hmul⟩, hiso, _⟩, _⟩` from `hDS`. Establish `hsP : P.conjTranspose * P = 1`. Simplify `Matrix.mem_unitaryGroup_iff'.mp hPU` using `[Matrix.star_eq_conjTranspose]`. Establish `hPP : P * P.conjTranspose = 1`.
+
+Simplify `Matrix.mem_unitaryGroup_iff.mp hPU` using `[Matrix.star_eq_conjTranspose]`. Establish `hinv : P⁻¹ = P.conjTranspose` using `Matrix.inv_eq_left_inv hsP`. Establish `conj : ∀ x : Mat k r, P⁻¹ * (P * x * P.conjTranspose) * P = x`. Introduce `x`. Rewrite using `[hinv]`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hmem : ∀ a ∈ UH (Hpk k r), P * a * P.conjTranspose ∈ PI.UpqRep.UJset ε`. Introduce `a ha`. Establish `ha' : a.conjTranspose * Hpk k r * a = Hpk k r` using `ha`. Use `show (P * a * P.conjTranspose).conjTranspose * PI.UpqRep.Jm ε * (P * a * P.conjTranspose) = PI.UpqRep.Jm ε`.
+
+Rewrite using `[Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[show Hpk k r = P.conjTranspose * PI.UpqRep.Jm ε * P from hPJ.symm]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = PI.UpqRep.Jm ε := by rw [hPP, Matrix.one_mul, Matrix.mul_one]`.
+
+Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Establish `h1' : σ (P⁻¹ * 1 * P) = 1` using `h1`. Rewrite `h1'` using `[Matrix.mul_one, hinv, hsP]`. Then use the resulting hypothesis. Introduce `a ha b hb`. Establish `e : P * a * P.conjTranspose * (P * b * P.conjTranspose) = P * (a * b) * P.conjTranspose`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `hmul _ (hmem a ha) _ (hmem b hb)` as an intermediate fact. Simplify using `only [e, conj] at this`. Conclude with `this`. Introduce `a ha v`.
+
+Use `hiso _ (hmem a ha) v` as an intermediate fact. Simplify using `only [conj] at this`. Conclude with `this`.
+-/
 theorem rep_of_DS {ε : Fin (2 * r + k + 1) → Bool} {lm : Fin (2 * r + k + 1) → ℝ} {σ : Mat k r → (H →L[ℂ] H)}
     (h : PI.UpqRep.IsDSHpk k r ε lm σ) :
     σ 1 = 1 ∧ (∀ a ∈ UH (Hpk k r), ∀ b ∈ UH (Hpk k r), σ (a * b) = (σ a).comp (σ b)) ∧
@@ -58,6 +73,11 @@ theorem rep_of_DS {ε : Fin (2 * r + k + 1) → Bool} {lm : Fin (2 * r + k + 1) 
     simp only [conj] at this
     exact this
 
+/- English proof (translation)
+Establish `ha' : a.conjTranspose * Hpk k r * a = Hpk k r` using `ha`. Establish `h1 : (a.conjTranspose * Hpk k r * a).det = (Hpk k r).det` using `by rw [ha']`. Establish `h2 : (Hpk k r).det * (Hpk k r).det = 1`. Rewrite using `[← Matrix.det_mul, Formalism.QuantumDeterminants.GBasic.Hpk_sq, Matrix.det_one]`. Rewrite `h1` using `[Matrix.det_mul, Matrix.det_mul]`.
+
+Use `isUnit_iff_ne_zero.mpr fun h0 => ?_` and prove the remaining obligations. Rewrite `h1` using `[h0, mul_zero]`. Rewrite `h2` using `[← h1, zero_mul]`. Conclude with `zero_ne_one h2`.
+-/
 private theorem isUnit_det_of_mem_UH_Hpk' {a : Mat k r} (ha : a ∈ UH (Hpk k r)) : IsUnit a.det := by
   have ha' : a.conjTranspose * Hpk k r * a = Hpk k r := ha
   have h1 : (a.conjTranspose * Hpk k r * a).det = (Hpk k r).det := by rw [ha']
@@ -69,6 +89,13 @@ private theorem isUnit_det_of_mem_UH_Hpk' {a : Mat k r} (ha : a ∈ UH (Hpk k r)
   rw [← h1, zero_mul] at h2
   exact zero_ne_one h2
 
+/- English proof (translation)
+Take `⟨h1, hmul, hiso⟩` from `rep_of_DS h`. Establish `hinvm : a⁻¹ ∈ UH (Hpk k r)` using `Formalism.QuantumDeterminants.WeylGroupFacts.uh_inv ha`. Establish `hc : σ a (σ a⁻¹ w) = w`. Use `hmul a ha a⁻¹ hinvm` as an intermediate fact. Rewrite `this` using `[Matrix.mul_nonsing_inv a (isUnit_det_of_mem_UH_Hpk' ha), h1]`.
+
+Rewrite using `[← ContinuousLinearMap.comp_apply, ← this]`. Both sides reduce to the same expression. Set `L : H →ₗᵢ[ℂ] H` to `{ toLinearMap := (σ a : H →ₗ[ℂ] H), norm_map' := hiso a ha }`. Combine the equalities or inequalities in the displayed calculation. Express the relevant statement in the definitionally equal form `⟪σ a u, σ a (σ a⁻¹ w)⟫_ℂ = _`.
+
+Rewrite using `[hc]`.
+-/
 theorem inner_inv_of_DS {ε : Fin (2 * r + k + 1) → Bool} {lm : Fin (2 * r + k + 1) → ℝ} {σ : Mat k r → (H →L[ℂ] H)}
     (h : PI.UpqRep.IsDSHpk k r ε lm σ) {a : Mat k r} (ha : a ∈ UH (Hpk k r)) (u w : H) :
     ⟪u, σ a⁻¹ w⟫_ℂ = ⟪σ a u, w⟫_ℂ := by
@@ -92,6 +119,11 @@ section hs
 variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
   [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq]
 
+/- English proof (translation)
+Use `symm`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[(stdOrthonormalBasis ℂ Wq).sum_repr' ξ']`. Use `_ = _ := by`. Rewrite using `[map_sum, inner_sum]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, inner_smul_right, ← inner_conj_symm (stdOrthonormalBasis ℂ Wq i) ξ']`. Both sides reduce to the same expression.
+-/
 theorem sum_basis_inner (T : Wq →L[ℂ] Wq) (ξ' : Wq) :
     ∑ i, star ⟪ξ', stdOrthonormalBasis ℂ Wq i⟫_ℂ * ⟪ξ', T (stdOrthonormalBasis ℂ Wq i)⟫_ℂ = ⟪ξ', T ξ'⟫_ℂ := by
   symm
@@ -103,6 +135,9 @@ theorem sum_basis_inner (T : Wq →L[ℂ] Wq) (ξ' : Wq) :
       rw [map_smul, inner_smul_right, ← inner_conj_symm (stdOrthonormalBasis ℂ Wq i) ξ']
       rfl
 
+/- English proof (translation)
+Rewrite using `[← sum_basis_inner T ξ']`. Establish `e : ∀ x y : Wq, innerSL ℂ x y = ⟪x, y⟫_ℂ` using `fun _ _ => rfl`. Simplify using `only [hsInner, hsVec, PiLp.inner_apply, ContinuousLinearMap.comp_apply, ContinuousLinearMap.smulRight_apply, e, map_smul, inner_smul_left, inner_smul_right, starRingEnd_apply, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hsInner_rank1 (T : Wq →L[ℂ] Wq) (U : Wp →L[ℂ] Wp) (α β : ℂ) (ξ : Wp) (ξ' : Wq) :
     hsInner (U.comp (((innerSL ℂ ξ').smulRight (α • ξ)).comp T)) ((innerSL ℂ ξ').smulRight (β • ξ)) =
       α * star β * ⟪ξ, U ξ⟫_ℂ * ⟪ξ', T ξ'⟫_ℂ := by
@@ -116,6 +151,9 @@ theorem hsInner_rank1 (T : Wq →L[ℂ] Wq) (U : Wp →L[ℂ] Wp) (α β : ℂ) 
 
 end hs
 
+/- English proof (translation)
+Establish `ha' : a.conjTranspose * Hpk k r * a = Hpk k r` using `ha`. Establish `hb' : b.conjTranspose * Hpk k r * b = Hpk k r` using `hb`. Use `show (a * b).conjTranspose * Hpk k r * (a * b) = Hpk k r`. Rewrite using `[Matrix.conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem mul_mem_UH_Hpk_archimedean_coefficient_nonzero {k r : ℕ} {a b : Mat k r} (ha : a ∈ UH (Hpk k r)) (hb : b ∈ UH (Hpk k r)) :
     a * b ∈ UH (Hpk k r) := by
   have ha' : a.conjTranspose * Hpk k r * a = Hpk k r := ha
@@ -125,6 +163,19 @@ private theorem mul_mem_UH_Hpk_archimedean_coefficient_nonzero {k r : ℕ} {a b 
   calc b.conjTranspose * a.conjTranspose * Hpk k r * (a * b) = b.conjTranspose * (a.conjTranspose * Hpk k r * a) * b := by simp only [Matrix.mul_assoc]
     _ = Hpk k r := by rw [ha', hb']
 
+/- English proof (translation)
+Use `show (aDil k r t).conjTranspose * Hpk k r * aDil k r t = Hpk k r`. Establish `hs : ∀ x : ℝ, star (x : ℂ) = x` using `fun x => Complex.conj_ofReal x`. Use extensionality with `i j`. Unfold `aDil`. Rewrite using `[Matrix.diagonal_conjTranspose, Matrix.mul_diagonal, Matrix.diagonal_mul, Pi.star_apply]`.
+
+Unfold `Formalism.QuantumDeterminants.Hpk`. Use `beta_reduce`. Establish `hi` using `i.isLt`. Establish `hj` using `j.isLt`. Distinguish the cases in `h1 : i.val < r ∧ i.val + j.val = 2 * r + k`.
+
+Establish `e : j.val - (r + k) = r - i.val` using `by omega`. Establish `hj1 : ¬ j.val < r` using `by omega`. Establish `hj2 : ¬ j.val ≤ r + k` using `by omega`. Establish `hne : t ^ (r - i.val) ≠ 0` using `pow_ne_zero _ ht.ne'`. Rewrite using `[if_pos h1, if_pos h1.1, if_neg hj1, if_neg hj2, hs, e, mul_one, ← Complex.ofReal_mul, mul_inv_cancel₀ hne, Complex.ofReal_one]`.
+
+Distinguish the cases in `h2 : j.val < r ∧ i.val + j.val = 2 * r + k`. Establish `e : i.val - (r + k) = r - j.val` using `by omega`. Establish `hi1 : ¬ i.val < r` using `by omega`. Establish `hi2 : ¬ i.val ≤ r + k` using `by omega`. Establish `hne : t ^ (r - j.val) ≠ 0` using `pow_ne_zero _ ht.ne'`.
+
+Rewrite using `[if_neg h1, if_pos h2, if_pos h2.1, if_neg hi1, if_neg hi2, hs, e, mul_one, ← Complex.ofReal_mul, inv_mul_cancel₀ hne, Complex.ofReal_one]`. Distinguish the cases in `h3 : r ≤ i.val ∧ i.val ≤ r + k ∧ i = j`. Establish `hij : i = j` using `h3.2.2`. Substitute `hij` using the available equality. Establish `hi1 : ¬ i.val < r` using `by omega`.
+
+Rewrite using `[if_neg h1, if_neg h2, if_pos h3, if_neg hi1, if_pos h3.2.1]`. Simplify using the standard rewrite rules. Rewrite using `[if_neg h1, if_neg h2, if_neg h3, mul_zero, zero_mul]`.
+-/
 private theorem aDil_mem_gv {k r : ℕ} {t : ℝ} (ht : 0 < t) : aDil k r t ∈ UH (Hpk k r) := by
   show (aDil k r t).conjTranspose * Hpk k r * aDil k r t = Hpk k r
   have hs : ∀ x : ℝ, star (x : ℂ) = x := fun x => Complex.conj_ofReal x
@@ -157,6 +208,19 @@ private theorem aDil_mem_gv {k r : ℕ} {t : ℝ} (ht : 0 < t) : aDil k r t ∈ 
         simp
       · rw [if_neg h1, if_neg h2, if_neg h3, mul_zero, zero_mul]
 
+/- English proof (translation)
+Introduce `k r Wp Wq _ _ _ _ _ _ D ε lm H _ _ _ σ hlm hDS`. Establish `hG` using `D.haarG`. Use `haveI : IsFiniteMeasureOnCompacts D.μG := ⟨hG.finite_compact⟩`. Establish `hHaar : PI.BesselPeriodGGP.IsHaarOn (UH (Hpk k r)) D.μG` using `⟨inferInstance, hG.ne_zero, hG.conc, hG.left⟩`. Take `⟨d, hd, hSch⟩` from `hS k r ε lm H σ D.μG hlm hDS hHaar`.
+
+Use `⟨d, hd, ?_⟩` and prove the remaining obligations. Introduce `v v' ξ ξ' p hp t ht1 ht2`. Take `⟨h11, h12, h21, h22⟩` from `hp`. Take `⟨-, hmul, -⟩` from `rep_of_DS hDS`. Establish `hq12 : Matrix.of (conjM (aDil k r t.1) p.1.2) ∈ UH (Hpk k r)` using `mul_mem_UH_Hpk_archimedean_coefficient_nonzero (mul_mem_UH_Hpk_archimedean_coefficient_nonzero (aDil_mem_gv ht1) h12.1) (Formalism.QuantumDeterminants.WeylGroupFacts.uh_inv (aDil_mem_gv ht1))`.
+
+Establish `hq22 : Matrix.of (conjM (aDil k r t.2) p.2.2) ∈ UH (Hpk k r)` using `mul_mem_UH_Hpk_archimedean_coefficient_nonzero (mul_mem_UH_Hpk_archimedean_coefficient_nonzero (aDil_mem_gv ht2) h22.1) (Formalism.QuantumDeterminants.WeylGroupFacts.uh_inv (aDil_mem_gv ht2))`. Establish `hB : (Matrix.of (conjM (aDil k r t.2) p.2.2) * Matrix.of p.2.1) ∈ UH (Hpk k r)` using `mul_mem_UH_Hpk_archimedean_coefficient_nonzero hq22 h21.1`. Establish `hC : (Matrix.of (conjM (aDil k r t.1) p.1.2) * Matrix.of p.1.1) ∈ UH (Hpk k r)` using `mul_mem_UH_Hpk_archimedean_coefficient_nonzero hq12 h11.1`. Establish `hCi` using `Formalism.QuantumDeterminants.WeylGroupFacts.uh_inv hC`. Establish `hae : ∀ᵐ g ∂D.μG, Matrix.of g ∈ UH (Hpk k r)` using `ae_iff.mpr hG.conc`.
+
+Establish `key : ∀ᵐ g ∂D.μG, hsInner (rho D (dilation₂ t p) (coefM σ v v' ξ ξ') (Matrix.of g)) (coefM σ v v' ξ ξ' (Matrix.of g)) = (⟪σ (Matrix.of (conjM (aDil k r t.1) p.1.2) * Matrix.of p.1.1) v, σ (Matrix.of g) (σ (Matrix.of (conjM (aDil k r t.2) p.2.2) * Matrix.of p.2.1) v')⟫_ℂ * star ⟪v …` using `by filter_upwards [hae] with g hg`. Establish `e : (Matrix.of p.1.1)⁻¹ * (Matrix.of (conjM (aDil k r t.1) p.1.2))⁻¹ * Matrix.of g * Matrix.of (conjM (aDil k r t.2) p.2.2) * Matrix.of p.2.1 = (Matrix.of (conjM (aDil k r t.1) p.1.2) * Matrix.of p.1.1)⁻¹ * Matrix.of g * (Matrix.of (conjM (aDil k r t.2) p.2.2) * Matrix.of p.2.1)`. Rewrite using `[Matrix.mul_inv_rev]`. Simplify using `only [Matrix.mul_assoc]`. Establish `hσ : σ ((Matrix.of (conjM (aDil k r t.1) p.1.2) * Matrix.of p.1.1)⁻¹ * Matrix.of g * (Matrix.of (conjM (aDil k r t.2) p.2.2) * Matrix.of p.2.1)) = (σ (Matrix.of (conjM (aDil k r t.1) p.1.2) * Matrix.of p.1.1)⁻¹).comp ((σ (Matrix.of g)).comp (σ (Matrix.of (conjM (aDil k r t.2) p.2 …`.
+
+Rewrite using `[hmul _ (mul_mem_UH_Hpk_archimedean_coefficient_nonzero hCi hg) _ hB, hmul _ hCi _ hg, ContinuousLinearMap.comp_assoc]`. Express the relevant statement in the definitionally equal form `hsInner ((D.π (Matrix.of p.1.1)).comp (((innerSL ℂ ξ').smulRight (⟪v, σ ((Matrix.of p.1.1)⁻¹ * (Matrix.of (conjM (aDil k r t.1) p.1.2))⁻¹ * Matrix.of g * Matrix.of (conjM (aDil k r t.2) p.2.2) * Matrix.of p.2.1) v'⟫_ℂ • ξ)).comp (D.π' (Matrix.of p.2.1)⁻¹))) ((innerSL ℂ ξ').smulRi …`. Rewrite using `[hsInner_rank1, e, hσ, ContinuousLinearMap.comp_apply, ContinuousLinearMap.comp_apply, inner_inv_of_DS hDS hC]`. Expand and normalize the polynomial expressions, which then agree. Unfold `Ph`.
+
+Rewrite using `[integral_congr_ae key, integral_mul_const, (hSch (σ (Matrix.of (conjM (aDil k r t.2) p.2.2) * Matrix.of p.2.1) v') (σ (Matrix.of (conjM (aDil k r t.1) p.1.2) * Matrix.of p.1.1) v) v' v).2]`. Simplify using `only [Lf, Rf]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem phiAt_of (hS : Formalism.FourierDecayAlt.ThreeDimData.SchurH) : PhiAt := by
   intro k r Wp Wq _ _ _ _ _ _ D ε lm H _ _ _ σ hlm hDS
   have hG := D.haarG

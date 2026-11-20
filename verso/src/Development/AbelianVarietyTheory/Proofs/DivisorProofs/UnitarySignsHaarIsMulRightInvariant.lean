@@ -5,6 +5,9 @@ namespace GlobalTheory
 
 open MeasureTheory
 
+/- English proof (translation)
+Introduce `n ε μ _`. Use `haveI : (Formalism.REAL.muG ε).IsMulRightInvariant := ⟨fun g => Formalism.REAL.indefinite_unitary_unimodular _ _ g⟩`. Rewrite using `[Measure.isMulLeftInvariant_eq_smul μ (Formalism.REAL.muG ε)]`. Use `infer_instance`.
+-/
 theorem unitarySigns_haar_isMulRightInvariant :
     ∀ (n : ℕ) (ε : Fin n → Bool) (μ : MeasureTheory.Measure (Formalism.REAL.UJ ε)) [μ.IsHaarMeasure],
       μ.IsMulRightInvariant := by

@@ -26,6 +26,19 @@ open GlobalTheory.Cartier GlobalTheory.CechPic GlobalTheory.Cartier.CartierDiv
 
 namespace GlobalTheory.PicOrderTors
 
+/- English proof (translation)
+Introduce `k _ k' _ _ _ h B hB`. Use `haveI : IsIntegral (Sp k') := h.isIntegral`. Use `haveI : IsFractionRing Γ(Sp k', ⊤) (Sp k').functionField := functionField_isFractionRing_of_isAffineOpen _ ⊤ (isAffineOpen_top _)`. Use `haveI : CharZero Γ(Sp k', ⊤) := h.charZero`. Use `haveI : Module.Finite ℤ k' := GlobalTheory.T.arithmetic_zero_dimensional_finite k k' h`.
+
+Use `haveI : Module.Finite ℤ Γ(Sp k', ⊤) := Module.Finite.equiv (Scheme.ΓSpecIso (CommRingCat.of k')).commRingCatIsoToRingEquiv.symm.toAddEquiv.toIntLinearEquiv`. Take `⟨M, hM, happ⟩` from `GlobalTheory.T.fractional_ideal_inverse_bounded_index Γ(Sp k', ⊤) (Sp k').functionField`. Take `⟨D, hD⟩` from `Cartier.toPic_surjective (cls B hB)`. Establish `hIJ : D.sections * (-D).sections = 1`. Rewrite using `[← GlobalTheory.T.sections_add_divisor, add_neg_cancel, GlobalTheory.T.sections_zero_divisor]`.
+
+Take `⟨e, he, x, hx⟩` from `GlobalTheory.T.class_group_torsion_principal_power _ _ M hM happ _ _ hIJ`. Establish `hpow : ∀ n : ℕ, (n • D).sections = D.sections ^ n`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => rw [zero_nsmul, pow_zero, GlobalTheory.T.sections_zero_divisor]`.
+
+Consider the case `succ n ih => rw [succ_nsmul, GlobalTheory.T.sections_add_divisor, ih, pow_succ]`. Establish `hx0 : x ≠ 0`. Introduce and unpack `rfl`. Establish `h1 : D.sections ^ e * (-D).sections ^ e = 1` using `by rw [← mul_pow, hIJ, one_pow]`. Rewrite `h1` using `[hx, Submodule.span_singleton_eq_bot.2 rfl, Submodule.bot_mul]`.
+
+Establish `h2 : (1 : (Sp k').functionField) ∈ (1 : Submodule Γ(Sp k', ⊤) (Sp k').functionField)` using `Submodule.mem_one.2 ⟨1, map_one _⟩`. Rewrite `h2` using `[← h1, Submodule.mem_bot]`. Conclude with `one_ne_zero h2`. Establish `hg : e • D = principal (Units.mk0 x hx0)⁻¹` using `GlobalTheory.T.divisor_eq_of_sections_eq _ _ _ (by rw [hpow, hx, GlobalTheory.T.sections_principal_divisor]; simp)`. Establish `hL : (lbPow B e).IsLB` using `isLB_lbPow hB e`.
+
+Use `⟨e, he, (cls_eq_zero_iff hL).1 ?_⟩` and prove the remaining obligations. Rewrite using `[cls_lbPow hB e hL, ← hD, ← map_nsmul, hg, toPic_principal]`.
+-/
 theorem gen_pow : ∀ (k : Type) [CommRing k] (k' : Type) [CommRing k'] [IsDomain k'] [Algebra k k'],
     IsArithVar (spMap (algebraMap k k')) 0 → ∀ (B : LB (Sp k')), B.IsLB →
       ∃ e : ℕ, 0 < e ∧ ∃ t : LB.Gen (lbPow B e), t.IsGen := by

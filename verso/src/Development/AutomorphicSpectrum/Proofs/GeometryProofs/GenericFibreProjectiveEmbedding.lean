@@ -10,6 +10,15 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 
 namespace GlobalTheory.CompanionTheory.Ar.SncBase
 
+/- English proof (translation)
+Introduce `F _ _ P s hs hn`. Establish `hp : IsProjOver (pullback.snd s (spMap (algebraMap (𝓞 F) F)))` using `GlobalTheory.ProjSpace.isProjOver_pullback_snd _ hs`. Establish `hb : IsPreimmersion (spMap (algebraMap (𝓞 F) F))` using `IsPreimmersion.of_isLocalization (R := CommRingCat.of (𝓞 F)) (S := F) (nonZeroDivisors (𝓞 F))`. Establish `hbf : Flat (spMap (algebraMap (𝓞 F) F))`. Rewrite using `[Flat.SpecMap_iff]`.
+
+Conclude with `RingHom.flat_algebraMap_iff.mpr (IsLocalization.flat F (nonZeroDivisors (𝓞 F)))`. Establish `h1 : IsPreimmersion (pullback.fst s (spMap (algebraMap (𝓞 F) F)))` using `MorphismProperty.of_isPullback (P := @IsPreimmersion) (IsPullback.of_hasPullback _ _).flip hb`. Establish `hiso` using `GlobalTheory.isIso_stalkMap_of_flat_of_surjectiveOnStalks (pullback.fst s (spMap (algebraMap (𝓞 F) F)))`. Use `GlobalTheory.SchemeWords.isProper_of_isProjOver hp` as an intermediate fact. Use `⟨?_, LocallyOfFiniteType.isLocallyNoetherian (pullback.snd s (spMap (algebraMap (𝓞 F) F))), hp⟩` and prove the remaining obligations.
+
+Establish `: ∀ x, _root_.IsReduced ((pullback s (spMap (algebraMap (𝓞 F) F))).presheaf.stalk x)` using `fun x => by`. Use `hiso x` as an intermediate fact. Establish `i` using `(asIso ((pullback.fst s (spMap (algebraMap (𝓞 F) F))).stalkMap x)).commRingCatIsoToRingEquiv`. Take `⟨_, _⟩` from `hn (pullback.fst s (spMap (algebraMap (𝓞 F) F)) x)`. Conclude with `isReduced_of_injective i.symm i.symm.injective`.
+
+Conclude with `isReduced_of_isReduced_stalk _`.
+-/
 theorem genericFibre_reduced_noetherian_closed : ∀ (F : Type) [Field F] [NumberField F] (P : Scheme.{0}) (s : P ⟶ Sp (𝓞 F)), IsProjOver s → Tor.IsNormalScheme P → IsReduced (pullback s (spMap (algebraMap (𝓞 F) F))) ∧ IsLocallyNoetherian (pullback s (spMap (algebraMap (𝓞 F) F))) ∧ ∃ (M : ℕ) (i : pullback s (spMap (algebraMap (𝓞 F) F)) ⟶ PSpace F M), IsClosedImmersion i ∧ i ≫ PSpace.str F M = pullback.snd _ _ := by
   intro F _ _ P s hs hn
   have hp : IsProjOver (pullback.snd s (spMap (algebraMap (𝓞 F) F))) :=

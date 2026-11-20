@@ -24,6 +24,35 @@ namespace PositivityTheory.SiegelWeilFormula.Act.C4
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 variable {d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ} (L : _root_.PositivityTheory.SiegelWeilFormula.LD_k d)
 namespace Bq
+/- English proof (translation)
+Establish `hσ` using `_root_.PositivityTheory.SiegelWeilFormula.kfour.sigma_sigma_of_good_k d.ok.good`. Take `⟨⟨ε, hε⟩, -⟩` from `d.ok.frame`. Take `⟨⟨ε', hε'⟩, -⟩` from `L.ok.frame`. Establish `hee : ε = ε'` using `_root_.PositivityTheory.SiegelWeilFormula.Afc.eps_eq_k L hε hε'`. Substitute `hee` using the available equality.
+
+Take `⟨G0, hG0⟩` from `Afc.rat_frame (b := d.b) γ hγ`. Take `⟨G0', hG0'⟩` from `Afc.rat_frame (b := d.b) γ⁻¹ (inv_mem hγ)`. Establish `hGG : G0' * G0 = 1` using `kfour.incM_injective (F := F) (by`. Rewrite using `[kfour.incM_mul', ← hG0, ← hG0', ← GlobalTheory.EisBL.DoubledParabolic.inFrame_mul, inv_mul_cancel, GlobalTheory.EisBL.DoubledParabolic.inFrame_one, Afc.incM_one'])`. Establish `hS0 : ∀ i, G0 (Sum.inr i) (Sum.inl L.i₀) = 0` using `fun i => by`.
+
+Establish `h1` using `hS i`. Rewrite `h1` using `[hG0]`. Conclude with `kfour.inclR_injective (F := F) (h1.trans (map_zero _).symm)`. Use `set v : Fin d.n → E := fun k => G0 (Sum.inl k) (Sum.inl L.i₀) with hv_def`. Establish `hv : v ≠ 0`.
+
+Introduce `h0`. Establish `h1` using `congrFun (congrFun hGG (Sum.inl L.i₀)) (Sum.inl L.i₀)`. Establish `h2 : ∀ k, G0 (Sum.inl k) (Sum.inl L.i₀) = 0` using `fun k => congrFun h0 k`. Rewrite `h1` using `[Matrix.mul_apply, Fintype.sum_sum_type]`. Simplify using `only [h2, hS0, mul_zero, Finset.sum_const_zero, add_zero, Matrix.one_apply_eq] at h1`.
+
+Conclude with `zero_ne_one h1`. Take `⟨a, ha⟩` from `exists_gl_col L.i₀ v hv`. Take `⟨p1, hp1r, hp1⟩` from `Afc.levi_ex hσ d.ok.frame a⁻¹`. Establish `hp1P : p1 ∈ par2 σ d.Y` using `(ComplexParameterFamilyContinuity.mem_stabiliser_iff_frame_lower_block d.ok.frame p1).2 (by rw [hp1, Matrix.toBlocks_fromBlocks₂₁])`. Use `set P1 : Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n ⊕ Fin d.n) E := Matrix.fromBlocks (a⁻¹).1 0 0 ((((a⁻¹)⁻¹).1)ᵀ.map σ) with hP1_def`.
+
+Establish `hP1 : inFrame d.b p1 = incM F P1`. Rewrite using `[hp1, hP1_def, Afc.incM_fromBlocks, show incM F (0 : Matrix (Fin d.n) (Fin d.n) E) = 0 from kfour.incM_zero]`. Use `set M1 := P1 * G0 with hM1_def`. Establish `hM1 : inFrame d.b (p1 * γ) = incM F M1`. Rewrite using `[GlobalTheory.EisBL.DoubledParabolic.inFrame_mul, hP1, hG0, hM1_def, kfour.incM_mul']`.
+
+Establish `hγ1 : p1 * γ ∈ rat2 σ d.Y` using `mul_mem hp1r hγ`. Establish `hx : ∀ r, M1 r (Sum.inl L.i₀) = (1 : Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n ⊕ Fin d.n) E) r (Sum.inl L.i₀)`. Introduce `r`. Rewrite using `[hM1_def, Matrix.mul_apply, Fintype.sum_sum_type]`. Break down `r with i | i` into its components or cases.
+
+Simplify using `only [hP1_def, Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₁₂, Matrix.zero_apply, zero_mul, Finset.sum_const_zero, add_zero]`. Establish `e1 : ∀ j, G0 (Sum.inl j) (Sum.inl L.i₀) = a.1 j L.i₀` using `fun j => (ha j).symm`. Simplify using `only [e1]`. Rewrite using `[← Matrix.mul_apply, ← Units.val_mul, inv_mul_cancel, Units.val_one]`. Simplify using `[Matrix.one_apply]`.
+
+Simplify using `[hP1_def, hS0, Matrix.one_apply]`. Establish `hform` using `form_E hε (p1 * γ) hM1`. Establish `hy` using `yrow_zero hform hx`. Use `set H := M1.submatrix (_root_.PositivityTheory.SiegelWeilFormula.Act.C4.emS_k L) (_root_.PositivityTheory.SiegelWeilFormula.Act.C4.emS_k L) with hH_def`. Establish `hH` using `_root_.PositivityTheory.SiegelWeilFormula.Act.C4.Bq.blockH_form_k L hform hx hy`.
+
+Establish `hε1 : (((ε : ℤ) : E)) * (((ε : ℤ) : E)) = 1`. Rewrite using `[← Int.cast_mul, ← Units.val_mul, Int.units_mul_self, Units.val_one, Int.cast_one]`. Establish `hεσ : (σ : E →+* E) (((ε : ℤ) : E)) = ((ε : ℤ) : E)` using `map_intCast _ _`. Take `⟨hHH', hH'H⟩` from `kunf.frame_inv_pf (σ : E →+* E) hσ (((ε : ℤ) : E)) hε1 hεσ H hH`. Use `set H' := Matrix.fromBlocks ((H.toBlocks₂₂.map (σ : E →+* E))ᵀ) ((((ε : ℤ) : E)) • (H.toBlocks₁₂.map (σ : E →+* E))ᵀ) ((((ε : ℤ) : E)) • (H.toBlocks₂₁.map (σ : E →+* E))ᵀ) ((H.toBlocks₁₁.map (σ : E →+* E))ᵀ) with hH'_def`.
+
+Establish `hIA : incM F H * incM F H' = 1` using `by rw [← kfour.incM_mul', hHH', Afc.incM_one']`. Establish `hformA : (incM F H)ᵀ * kunf.jw L.n (((ε : ℤ) : AE F E)) * (incM F H).map (cA σ) = kunf.jw L.n (((ε : ℤ) : AE F E))`. Establish `h1` using `congrArg (incM F) hH`. Rewrite `h1` using `[kfour.incM_mul', kfour.incM_mul', ← Afc.incM_transpose, ← Afc.incM_map_cA, ← QA_eq]`. Conclude with `h1`.
+
+Take `⟨h, hh⟩` from `kunf.exists_of_frame (Y := L.Y) hε' (incM F H) (incM F H') hIA hformA`. Establish `hhr : h ∈ rat2 σ L.Y` using `kunf.rat_of_inFrame hh`. Establish `hh' : inFrame L.b h⁻¹ = incM F H'`. Rewrite using `[GlobalTheory.EisBL.DoubledParabolic.inFrame_inv, hh]`. Conclude with `Matrix.inv_eq_right_inv hIA`.
+
+Establish `hnF : inFrame d.b (p1 * γ * L.j h⁻¹) = incM F (M1 * _root_.PositivityTheory.SiegelWeilFormula.Act.C4.padE_k L H')`. Rewrite using `[GlobalTheory.EisBL.DoubledParabolic.inFrame_mul, GlobalTheory.EisBL.DoubledParabolic.inFrame_mul, hP1, hG0, _root_.PositivityTheory.SiegelWeilFormula.Act.C4.inFrame_j_k, hh', _root_.PositivityTheory.SiegelWeilFormula.Act.C4.padM_incM_k, hM1_def, kfour.incM_mul', kfour.incM_mul']`. Establish `hnq : NQ (Sum.inl L.i₀) (Sum.inr L.i₀) (inFrame d.b (p1 * γ * L.j h⁻¹))`. Rewrite using `[hnF]`. Conclude with `NQ.map _ (_root_.PositivityTheory.SiegelWeilFormula.Act.C4.Bq.nq_E_k L hx hy hHH')`.
+
+Establish `hnP : p1 * γ * L.j h⁻¹ ∈ par2 σ d.Y` using `(ComplexParameterFamilyContinuity.mem_stabiliser_iff_frame_lower_block d.ok.frame _).2 hnq.projected_block_lower_sum`. Establish `hnR : p1 * γ * L.j h⁻¹ ∈ rat2 σ d.Y` using `mul_mem hγ1 (_root_.PositivityTheory.SiegelWeilFormula.Act.C4.j_rat_k L (inv_mem hhr))`. Use `⟨p1⁻¹ * (p1 * γ * L.j h⁻¹), mul_mem (inv_mem hp1P) hnP, mul_mem (inv_mem hp1r) hnR, h, hhr, ?_⟩` and prove the remaining obligations. Rewrite using `[map_inv]`. Use `group`.
+-/
 theorem surj_k {γ : d.G} (hγ : γ ∈ rat2 σ d.Y) (hS : _root_.PositivityTheory.SiegelWeilFormula.Act.FirstOrbit L γ) :
     ∃ p ∈ par2 σ d.Y, p ∈ rat2 σ d.Y ∧ ∃ g ∈ rat2 σ L.Y, γ = p * L.j g := by
   have hσ := _root_.PositivityTheory.SiegelWeilFormula.kfour.sigma_sigma_of_good_k d.ok.good
@@ -103,6 +132,9 @@ theorem surj_k {γ : d.G} (hγ : γ ∈ rat2 σ d.Y) (hS : _root_.PositivityTheo
   refine ⟨p1⁻¹ * (p1 * γ * L.j h⁻¹), mul_mem (inv_mem hp1P) hnP, mul_mem (inv_mem hp1r) hnR, h, hhr, ?_⟩
   rw [map_inv]
   group
+/- English proof (translation)
+Take `⟨γ, hγ⟩` from `GlobalTheory.AutomorphicL2Unitary.mk_eq_iff.1 (Quotient.out_eq (GlobalTheory.AutomorphicL2Unitary.mk ((par2 σ d.Y).subgroupOf (rat2 σ d.Y)) x)).symm`. Use `⟨((γ : rat2 σ d.Y) : d.G), Subgroup.mem_subgroupOf.1 γ.2, (γ : rat2 σ d.Y).2, ?_⟩` and prove the remaining obligations. Use `show (((Quotient.out (GlobalTheory.AutomorphicL2Unitary.mk ((par2 σ d.Y).subgroupOf (rat2 σ d.Y)) x)) : rat2 σ d.Y) : d.G) = _`. Rewrite using `[← hγ]`. Both sides reduce to the same expression.
+-/
 theorem rep_mk_k {d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ} (x : rat2 σ d.Y) :
     ∃ p ∈ par2 σ d.Y, p ∈ rat2 σ d.Y ∧ _root_.PositivityTheory.SiegelWeilFormula.Act.rep_k (GlobalTheory.AutomorphicL2Unitary.mk ((par2 σ d.Y).subgroupOf (rat2 σ d.Y)) x) = p * x := by
   obtain ⟨γ, hγ⟩ := GlobalTheory.AutomorphicL2Unitary.mk_eq_iff.1
@@ -112,6 +144,33 @@ theorem rep_mk_k {d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ} (x : ra
   rw [← hγ]
   rfl
 end Bq
+/- English proof (translation)
+Use `set H := (par2 σ d.Y).subgroupOf (rat2 σ d.Y) with hH`. Use `set H' := (par2 σ L.Y).subgroupOf (rat2 σ L.Y) with hH'`. Set `jr : rat2 σ L.Y → rat2 σ d.Y` to `fun γ => ⟨L.j γ, _root_.PositivityTheory.SiegelWeilFormula.Act.C4.j_rat_k L γ.2⟩`. Set `e0 : _root_.PositivityTheory.SiegelWeilFormula.Act.Cs_k L.sd → _root_.PositivityTheory.SiegelWeilFormula.Act.Cs_k d` to `Quotient.lift (fun γ => GlobalTheory.AutomorphicL2Unitary.mk H (jr γ)) (by`. Introduce `a b hab`.
+
+Establish `hab' : b * a⁻¹ ∈ H'` using `QuotientGroup.rightRel_apply.1 hab`. Rewrite using `[GlobalTheory.AutomorphicL2Unitary.mk_eq_iff]`. Use `⟨⟨jr (b * a⁻¹), ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite `hab'` using `[hH', Subgroup.mem_subgroupOf]`. Rewrite using `[hH, Subgroup.mem_subgroupOf]`.
+
+Conclude with `_root_.PositivityTheory.SiegelWeilFormula.Act.C4.j_par_k L hab'`. Apply `Subtype.ext show L.j ((b : G2 σ L.Y) * (a : G2 σ L.Y)⁻¹) * L.j a = L.j b` to reduce the goal to its premises. Rewrite using `[map_mul, map_inv, inv_mul_cancel_right])`. Establish `he0 : ∀ γ, e0 (GlobalTheory.AutomorphicL2Unitary.mk H' γ) = GlobalTheory.AutomorphicL2Unitary.mk H (jr γ)` using `fun γ => rfl`. Establish `hS : ∀ q', _root_.PositivityTheory.SiegelWeilFormula.Act.FirstOrbit L (_root_.PositivityTheory.SiegelWeilFormula.Act.rep_k (e0 q'))`.
+
+Introduce `q'`. Proceed by induction on `q' using Quotient.inductionOn with`. Consider the case `h γ`. Take `⟨p, hp, -, hrep⟩` from `_root_.PositivityTheory.SiegelWeilFormula.Act.C4.Bq.rep_mk_k (jr γ)`. Establish `e1 : _root_.PositivityTheory.SiegelWeilFormula.Act.rep_k (e0 (GlobalTheory.AutomorphicL2Unitary.mk H' γ)) = p * L.j γ` using `by rw [he0]; exact hrep`.
+
+Use `show _root_.PositivityTheory.SiegelWeilFormula.Act.FirstOrbit L (_root_.PositivityTheory.SiegelWeilFormula.Act.rep_k (e0 (GlobalTheory.AutomorphicL2Unitary.mk H' γ)))`. Rewrite using `[e1]`. Conclude with `_root_.PositivityTheory.SiegelWeilFormula.Act.C4.Bq.inStabilizer_parabolic_mul L hp (_root_.PositivityTheory.SiegelWeilFormula.Act.C4.Bq.inStabilizer_smallerGroupEmbed L γ)`. Set `e : _root_.PositivityTheory.SiegelWeilFormula.Act.Cs_k L.sd → {q : _root_.PositivityTheory.SiegelWeilFormula.Act.Cs_k d // _root_.PositivityTheory.SiegelWeilFormula.Act.FirstOrbit L (_root_.PositivityTheory.SiegelWeilFormula.Act.rep_k q)}` to `fun q' => ⟨e0 q', hS q'⟩`. Establish `hinj : Function.Injective e`.
+
+Introduce `q1 q2 h12`. Establish `h0 : e0 q1 = e0 q2` using `congrArg Subtype.val h12`. Proceed by induction on `q1 using Quotient.inductionOn with`. Consider the case `h a`. Proceed by induction on `q2 using Quotient.inductionOn with`.
+
+Consider the case `h b`. Express the relevant statement in the definitionally equal form `GlobalTheory.AutomorphicL2Unitary.mk H (jr a) = GlobalTheory.AutomorphicL2Unitary.mk H (jr b) at h0`. Take `⟨γ, hγ⟩` from `GlobalTheory.AutomorphicL2Unitary.mk_eq_iff.1 h0`. Establish `hγv : ((γ : rat2 σ d.Y) : d.G) = L.j ((b : G2 σ L.Y) * (a : G2 σ L.Y)⁻¹)`. Use `congrArg Subtype.val hγ` as an intermediate fact.
+
+Simplify using `only [Subgroup.coe_mul, jr] at this`. Rewrite using `[map_mul, map_inv, ← this, mul_inv_cancel_right]`. Establish `hP : (b : G2 σ L.Y) * (a : G2 σ L.Y)⁻¹ ∈ par2 σ L.Y`. Apply `_root_.PositivityTheory.SiegelWeilFormula.Act.C4.Bq.par_of_j_k L` to reduce the goal to its premises. Rewrite using `[← hγv]`.
+
+Conclude with `Subgroup.mem_subgroupOf.1 γ.2`. Express the relevant statement in the definitionally equal form `GlobalTheory.AutomorphicL2Unitary.mk H' a = GlobalTheory.AutomorphicL2Unitary.mk H' b`. Rewrite using `[GlobalTheory.AutomorphicL2Unitary.mk_eq_iff]`. Use `⟨⟨b * a⁻¹, Subgroup.mem_subgroupOf.2 hP⟩, ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules.
+
+Establish `hsurj : Function.Surjective e`. Introduce and unpack `⟨q, hq⟩`. Take `⟨p, hpP, hpR, g, hg, hγ⟩` from `_root_.PositivityTheory.SiegelWeilFormula.Act.C4.Bq.surj_k L (Quotient.out q).2 hq`. Use `⟨GlobalTheory.AutomorphicL2Unitary.mk H' ⟨g, hg⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Use `show GlobalTheory.AutomorphicL2Unitary.mk H (jr ⟨g, hg⟩) = q`.
+
+Use `conv_rhs => rw [← Quotient.out_eq q]`. Rewrite using `[GlobalTheory.AutomorphicL2Unitary.mk_eq_iff]`. Use `⟨⟨⟨p, hpR⟩, Subgroup.mem_subgroupOf.2 hpP⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Conclude with `hγ.symm`. Use `⟨Equiv.ofBijective e ⟨hinj, hsurj⟩, fun q' => ?_⟩` and prove the remaining obligations.
+
+Proceed by induction on `q' using Quotient.inductionOn with`. Consider the case `h γ`. Take `⟨p, hpP, hpR, hrep⟩` from `_root_.PositivityTheory.SiegelWeilFormula.Act.C4.Bq.rep_mk_k (jr γ)`. Take `⟨p', hp'P, hp'R, hrep'⟩` from `_root_.PositivityTheory.SiegelWeilFormula.Act.C4.Bq.rep_mk_k (d := L.sd) γ`. Use `⟨p * L.j p'⁻¹, mul_mem hpP (_root_.PositivityTheory.SiegelWeilFormula.Act.C4.j_par_k L (inv_mem hp'P)), mul_mem hpR (_root_.PositivityTheory.SiegelWeilFormula.Act.C4.j_rat_k L (inv_mem hp'R)), ?_⟩` and prove the remaining obligations.
+
+Use `show _root_.PositivityTheory.SiegelWeilFormula.Act.rep_k (e0 (GlobalTheory.AutomorphicL2Unitary.mk H' γ)) = _`. Rewrite using `[he0, hrep, hrep', map_mul, map_inv]`. Simplify using `only [jr]`. Use `group`.
+-/
 theorem cos_bij_pf_k : ∃ e : _root_.PositivityTheory.SiegelWeilFormula.Act.Cs_k L.sd ≃ {q : _root_.PositivityTheory.SiegelWeilFormula.Act.Cs_k d // _root_.PositivityTheory.SiegelWeilFormula.Act.FirstOrbit L (_root_.PositivityTheory.SiegelWeilFormula.Act.rep_k q)}, ∀ q', ∃ p ∈ par2 σ d.Y, p ∈ rat2 σ d.Y ∧
     _root_.PositivityTheory.SiegelWeilFormula.Act.rep_k (e q').1 = p * L.j (_root_.PositivityTheory.SiegelWeilFormula.Act.rep_k q') := by
   set H := (par2 σ d.Y).subgroupOf (rat2 σ d.Y) with hH

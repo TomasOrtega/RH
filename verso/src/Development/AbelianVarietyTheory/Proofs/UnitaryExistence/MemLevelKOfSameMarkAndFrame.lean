@@ -17,12 +17,20 @@ open GlobalTheory.Member
 
 namespace GlobalTheory.Member
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `[ReciprocityTheory.ChartRestriction.G.FD.gram, hermC, ReciprocityTheory.ChartRestriction.G.FD.col, Matrix.mul_apply, Finset.mul_sum, mul_assoc]`.
+-/
 private theorem fib_gram_eq {E : Type} [Field E] {r : ℕ} (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E)
     (x : Matrix (Fin r) (Fin r) ℂ) :
     ReciprocityTheory.ChartRestriction.G.FD.gram τ G x = xᵀ * (G.map τ * x.map (starRingEnd ℂ)) := by
   ext a b
   simp [ReciprocityTheory.ChartRestriction.G.FD.gram, hermC, ReciprocityTheory.ChartRestriction.G.FD.col, Matrix.mul_apply, Finset.mul_sum, mul_assoc]
 
+/- English proof (translation)
+Establish `e2 : (f g').1 *ᵥ v - (f g).1 *ᵥ v = N • ((f g).1 *ᵥ y)`. Rewrite using `[ey, smul_sub, ← e, ← e']`. Normalize the expressions using the abelian group laws. Establish `hi : ∀ z, (f g⁻¹).1 *ᵥ ((f g).1 *ᵥ z) = z` using `fun z => by`. Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, ← map_mul, inv_mul_cancel, map_one, Units.val_one, Matrix.one_mulVec]`.
+
+Establish `e3` using `congrArg (fun z => (f g⁻¹).1 *ᵥ z) e2`. Simplify using `only [Matrix.mulVec_sub, Matrix.mulVec_smul, hi] at e3`. Rewrite using `[map_mul, Units.val_mul, ← Matrix.mulVec_mulVec]`. Conclude with `e3`.
+-/
 private theorem fib_cancel {R G : Type} [CommRing R] [Group G] {n : ℕ} (f : G →* GL (Fin n) R) (g g' : G) (N : ℕ)
     (p v w w' y : Fin n → R) (e : p - (f g).1 *ᵥ v = N • w) (e' : p - (f g').1 *ᵥ v = N • w')
     (ey : (f g).1 *ᵥ y = w - w') : (f (g⁻¹ * g')).1 *ᵥ v - v = N • y := by
@@ -36,6 +44,25 @@ private theorem fib_cancel {R G : Type} [CommRing R] [Group G] {n : ℕ} (f : G 
   rw [map_mul, Units.val_mul, ← Matrix.mulVec_mulVec]
   exact e3
 
+/- English proof (translation)
+Introduce `D H Dw l Xo c σ V r C hC Kf hK h h' k γ γ' hm hm' hfr`. Take `rfl : V.rank = r` from `C.hr`. Take `⟨-, hL, hM⟩` from `hm`. Take `⟨-, hL', hM'⟩` from `hm'`. Generalize the expression as in `γ * h = g at *`.
+
+Generalize the expression as in `γ' * h' = g' at *`. Take `⟨hA, hG, -⟩` from `GlobalTheory.T.archimedeanMatrix_unitary_continuous_multiplicative D V C.θ hC.inf`. Rewrite using `[hK]`. Use `⟨hG _ fun τ hτ => ?_, ?_⟩` and prove the remaining obligations. Establish `hΨ : τ ∈ (C.M.X k).Ψ`.
+
+Rewrite using `[(hC.base.type k).2, hC.iota.rt, hC.iota.rt0]`. Conclude with `hτ`. Establish `hx : (C.x₀ τ).det ≠ 0`. Introduce `h0`. Establish `h1` using `congrArg Matrix.det (hC.orth k τ hΨ)`.
+
+Simplify using `only [fib_gram_eq, Matrix.det_mul, Matrix.det_transpose, h0, zero_mul, Matrix.det_diagonal] at h1`. Use `Finset.prod_ne_zero_iff.2 (fun a _ => ?_) h1.symm` and prove the remaining obligations. Unfold `sgn`. Apply the tactic sequence `split_ifs <;> simp`. Establish `h1 : archM V (C.θ τ) g * C.x₀ τ = archM V (C.θ τ) g' * C.x₀ τ` using `congrFun hfr ⟨τ, hΨ⟩`.
+
+Establish `hu : IsUnit (C.x₀ τ)` using `(Matrix.isUnit_iff_isUnit_det _).2 (Ne.isUnit hx)`. Establish `h2` using `hu.mul_right_cancel h1`. Rewrite using `[(hA τ).2.1, ← h2, ← (hA τ).2.1, inv_mul_cancel, (hA τ).1]`. Establish `hlat : (latG V g : Set (Fin V.rank → D.host.E)) = latG V g'`. Establish `e` using `hL.symm.trans hL'`.
+
+Establish `e1 : (fun v : Fin V.rank → D.host.E => v ∘ Fin.cast C.hr.symm) = id` using `rfl`. Rewrite `e` using `[e1, Set.image_id, Set.image_id]`. Then use the resulting hypothesis. Establish `hhat : latGHat V g' = latGHat V g`. Rewrite using `[(GlobalTheory.T.adelicElementLattice_full_and_completion D V g).2.2.2.2.1, (GlobalTheory.T.adelicElementLattice_full_and_completion D V g').2.2.2.2.1, hlat]`. Establish `himg` using `(GlobalTheory.T.adelicElementLattice_full_and_completion D V g).2.2.2.1`.
+
+Rewrite `himg` using `[← (GlobalTheory.T.adelicElementLattice_full_and_completion D V 1).2.2.2.2.1]`. Use `((GlobalTheory.T.principalLevel_eq_halfMarking_stabilizer D H l V).1 _).2 ((((GlobalTheory.T.congruence_lattice_fractionalMultiple_agree D V) _).2 _ _).2 ?_)` and prove the remaining obligations. Introduce `a ha`. Rewrite `ha` using `[← hC.iota.emb.2, LinearMap.range_eq_map, ← Submodule.map_smul'']`. Take `⟨b, hb, rfl⟩` from `ha`.
+
+Take `⟨w, hw, e⟩` from `hM b hb`. Take `⟨w', hw', e'⟩` from `hM' b hb`. Rewrite `hw'` using `[hhat]`. Establish `hd : w - w' ∈ (latGHat V g : Set _)` using `sub_mem hw hw'`. Rewrite `hd` using `[himg]`.
+
+Take `⟨y, hy, ey⟩` from `hd`. Conclude with `⟨y, hy, fib_cancel (finHom V) g g' l.M _ _ w w' y e e' ey⟩`.
+-/
 theorem mem_level_of_mark_of_frame_eq : ∀ (D : D7) (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (V : HSp D) (r : ℕ) (C : Ctx Xo c σ V r), C.OK → ∀ (Kf : Subgroup (GA D V)), IsLevelK V l.M Kf → ∀ h h' k γ γ', C.Mark h k γ → C.Mark h' k γ' → C.fr (γ * h) k = C.fr (γ' * h') k → (γ * h)⁻¹ * (γ' * h') ∈ Kf := by
   intro D H Dw l Xo c σ V r C hC Kf hK h h' k γ γ' hm hm' hfr
   obtain rfl : V.rank = r := C.hr
